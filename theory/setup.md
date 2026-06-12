@@ -9,8 +9,8 @@ updated: "2026-06-12T18:00:00+00:00"
 
 # Setup — the multiplication map and its fibres
 
-**Stub.** The first expedition (`expeditions/2026-06-12-paper-digest/`) fleshes this into the
-formalisation-ready substrate. For the full reader-facing map see
+**Stub.** The `core-quiver-engine` expedition (`expeditions/2026-06-12-core-quiver-engine/`) fleshes this
+into the formalisation-ready substrate. For the full reader-facing map see
 [`../docs/expositions/paper-digest/high-level-overview.md`](../docs/expositions/paper-digest/high-level-overview.md);
 the primary source is `../paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex`.
 
@@ -43,7 +43,7 @@ and their number $\theta$.
 - **Application (DLN).** The square-Frobenius loss $K^{\mathrm{DLN}}_B(A_\ast)=\lVert\operatorname{mult}(A_\ast)-B\rVert_2^2$,
   whose zero-set is exactly $\operatorname{mult}^{-1}(B)$, and the RLCT payoff $\operatorname{rlct}=C/2$.
 
-## To be filled by the first expedition
+## To be filled by the core-quiver-engine expedition
 
 - the type-A quiver translation (orbits ↔ Kostant partitions ↔ rank patterns) at formalisation grain;
 - the precise statements of the reductions (§4) and the three $(C,\theta)$ computations (§§5–7);

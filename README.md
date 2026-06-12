@@ -74,5 +74,6 @@ scripts/sorries      # audit: expect zero
 ```
 
 First expedition:
-[`expeditions/2026-06-12-paper-digest/`](expeditions/2026-06-12-paper-digest/) — produce a
-formalisation-ready digest, a Core/DLN target ladder, and a map of what Mathlib already provides.
+[`expeditions/2026-06-12-core-quiver-engine/`](expeditions/2026-06-12-core-quiver-engine/) — build the
+network-free `DLNFibre.Core` spine: the ambient objects + the orbit ↔ Kostant ↔ rank-pattern correspondence
+(§§2–3), opening with a Mathlib-coverage recon.

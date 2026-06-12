@@ -2,8 +2,8 @@
 
 The programme-level map: the destination, the bundles of work toward it, and what each depends on. Written
 to be elementary; pick up a **bundle** only when it is *whole-in-reach*, rather than nibbling one lemma at a
-time. This is a **first cut** — the real, sized ladder is the first expedition's deliverable (it also resolves
-the load-bearing unknown: what Mathlib already provides). Update at each expedition close.
+time. This is a **first cut**; the `core-quiver-engine` expedition sharpens the ladder and, via an opening recon,
+resolves the load-bearing unknown (what Mathlib already provides). Update at each expedition close.
 
 ## The destination, plainly
 
@@ -41,8 +41,8 @@ Everything above "rlct" is **network-free** → `DLNFibre.Core`. The loss + RLCT
 **What does Mathlib already provide?** Quiver representations, the type-A / `A_n` story, Gabriel's theorem,
 `Ext` for quiver reps / representations of a category, equivariant cohomology. The answer decides how much of
 the engine is *reuse* vs *build-from-scratch* — and the build-from-scratch part *is* the reusable asset, so
-getting its API right is high-value. **This is the first expedition's central deliverable.** Until it lands,
-the reachability tags below are estimates.
+getting its API right is high-value. **The `core-quiver-engine` expedition's opening recon resolves this.**
+Until it lands, the reachability tags below are estimates.
 
 ## The bundles
 
