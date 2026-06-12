@@ -8,7 +8,7 @@ Pinned identifiers + signatures the 4c/4d teammates cite verbatim. From a read-o
 | Complement existence | `Submodule.exists_isCompl` | `(p : Submodule K V) : ∃ q, IsCompl p q` | `LinearAlgebra/Basis/VectorSpace` | EXISTS |
 | `IsCompl` | `IsCompl` | `Disjoint x y ∧ Codisjoint x y` | `Order/Disjoint` | EXISTS |
 | quotient finrank | `Submodule.finrank_quotient_add_finrank` | `[Module.Finite R M] (N) : finrank (M⧸N) + finrank N = finrank M` | `…/Dimension/RankNullity` | EXISTS |
-| **IsCompl finrank add** | — | derive: `finrank_quotient_add_finrank` + `Submodule.quotientEquivOfIsCompl S T h : (V⧸S)≃ₗT` + `LinearEquiv.finrank_eq` | — | **ABSENT (compose)** |
+| **IsCompl finrank add** | `Submodule.finrank_add_eq_of_isCompl` | `IsCompl S T → finrank S + finrank T = finrank V` | `…/Dimension/*` | **EXISTS** (barcode confirmed 2026-06-12 — used directly; no `quotientEquivOfIsCompl` compose needed) |
 | rank·left-unit | `Matrix.rank_mul_eq_left_of_isUnit_det` | `(A : Matrix n n R)(B : Matrix m n R)(hA : IsUnit A.det) : (B*A).rank = B.rank` | `…/Matrix/Rank` | EXISTS |
 | rank·right-unit | `Matrix.rank_mul_eq_right_of_isUnit_det` | `(A : Matrix m m R)(B : Matrix m n R)(hA : IsUnit A.det) : (A*B).rank = B.rank` | `…/Matrix/Rank` | EXISTS |
 | rank of unit | `Matrix.rank_of_isUnit` | `[Nontrivial R](A : Matrix n n R)(h : IsUnit A) : A.rank = card n` | `…/Matrix/Rank` | EXISTS |

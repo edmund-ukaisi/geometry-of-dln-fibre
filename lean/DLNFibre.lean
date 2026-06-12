@@ -6,4 +6,5 @@ import DLNFibre.Core.Setup
 import DLNFibre.Core.RankPattern
 import DLNFibre.Core.Submult
 import DLNFibre.Core.IntervalModule
+import DLNFibre.Core.BaseChange
 import DLNFibre.DLN.Basic

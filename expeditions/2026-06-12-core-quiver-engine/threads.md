@@ -23,7 +23,7 @@ branches, and report to the controller, who merges → green-gates → commits o
 | 06-submult-rankpattern | formalisation | review-pending | **4a:** `Core.Submult` — `submult`/`rankPattern`/bridge. Green, axiom-clean. |
 | 07-gabriel-design | pen-and-paper | closed | Peel-one-interval design; no general Gabriel needed; uniqueness free via `diff_cumul`. + `mathlib-levers.md`. |
 | 08-interval-modules | formalisation | review-pending | **4b LANDED:** `Core.IntervalModule` — `intervalModule`, `dirSum`, `rank_fromBlocks_zero_zero` (Field), `rankPattern_intervalDirectSum_eq_cumul`. Green, axiom-clean. |
-| 09-basechange | formalisation (teammate `basechange`) | in-progress | **4c:** `Core.BaseChange` — `G_d` action, `submult(g•A) i j = P_j (submult) P_i⁻¹`, rank-pattern invariance. Worktree. |
-| 10-barcode | formalisation (teammate `barcode`) | in-progress | **4d CRUX:** `Core.Barcode` — splitting FACT + barcode-basis existence (abstract `LinearMap` chain, peel induction). Worktree. |
+| 09-basechange | formalisation (teammate `basechange`) | review-pending | **4c LANDED** (ran in the shared MAIN checkout, not a worktree — committed `720d298`/`0d319ca`, then controller-wired): `Core.BaseChange` — `baseChange`/`MulAction`, `submult_baseChange` (telescoping conjugation), `rankPattern_baseChange` (invariance), `CommRing`. Green, axiom-clean. |
+| 10-barcode | formalisation (teammate `barcode`) | in-progress | **4d CRUX — partial banked:** `Core.Barcode` (worktree `barcode/rung-4d`) — splitting FACT + pointwise peel landed sorry-free; continuing to global induction / abstract-chain existence. |
 | 11-orbits-kostant | formalisation | pending | **4e (≈free):** orbits ↔ Kostant (Cor 2.9) = `cumulDiffEquiv` restricted. After 4d. |
 | 12-rung4-review | review | pending | Decorrelated fidelity/precision audit over 4a/4b/4c/4d/4e before rung 4 closes. |

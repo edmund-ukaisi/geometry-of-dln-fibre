@@ -12,6 +12,10 @@ The controller's *internal* integrative ground, flushed every tick (recovery sub
   - **4a landed** (`Core.Submult`): `submult`/`rankPattern`/`rankPattern_self`/`mult_eq_submult`, the
     `Nat.leRec` cast-free route. Green, axiom-clean, controller-checked; reviewer audit batched.
   - **Design done** (thread 07, sympy-certified) — see "the plan" below.
+  - **4b landed** (`Core.IntervalModule`): interval modules, `dirSum`, block-rank additivity (Field), headline `rankPattern_intervalDirectSum_eq_cumul`.
+  - **4c landed** (`Core.BaseChange`, teammate `basechange`): `MulAction`, `submult_baseChange` (telescoping conjugation), `rankPattern_baseChange` (invariance), `CommRing`. Wired + green-gated (whole lib 1797 jobs).
+  - **4d (crux) partial banked** (worktree `barcode/rung-4d`, teammate `barcode`): the splitting FACT + a pointwise peel landed sorry-free; continuing toward the abstract-chain existence theorem. NOT yet merged.
+  - **Team mode:** Agent Teams; `barcode` properly isolated in a worktree, `basechange` landed in the shared main checkout (isolation didn't take — see `lessons.md`).
 - Whole lib green (1795 jobs), 0 sorries, axiom-clean. Cosmetic `abel_nf` info at RankPattern.lean:128.
 
 ## The plan for rung 4 (from the 07 design — key simplification)
