@@ -20,7 +20,7 @@ on integer-indexed arrays are mutually inverse.
 - `cumul N m i j = ∑_{0≤k≤i} ∑_{j≤l≤N} m k l` (the paper's `r_{ij}=∑_{k≤i≤j≤l} m_{kl}`).
 - `diff r i j = r_{ij} − r_{i,j+1} − r_{i−1,j} + r_{i−1,j+1}` (out-of-range `= 0`).
 - Headline: `diff_cumul : diff (cumul N m) = m` and `cumul_diff : cumul N (diff r) = r` (each under
-  `m`/`r` vanishing for `i<0` and `j>N`); packaged as `rankPatternEquiv N : SuppArray N R ≃ SuppArray N R`.
+  `m`/`r` vanishing for `i<0` and `j>N`); packaged as `cumulDiffEquiv N : SuppArray N R ≃ SuppArray N R`.
 
 Verbatim:
 ```lean
@@ -28,7 +28,7 @@ theorem diff_cumul (N : ℤ) (m : ℤ → ℤ → R)
     (hi : ∀ i j, i < 0 → m i j = 0) (hj : ∀ i j, N < j → m i j = 0) : diff (cumul N m) = m
 theorem cumul_diff (N : ℤ) (r : ℤ → ℤ → R)
     (hi : ∀ i j, i < 0 → r i j = 0) (hj : ∀ i j, N < j → r i j = 0) : cumul N (diff r) = r
-noncomputable def rankPatternEquiv (N : ℤ) : SuppArray N R ≃ SuppArray N R
+noncomputable def cumulDiffEquiv (N : ℤ) : SuppArray N R ≃ SuppArray N R
 ```
 
 ## Encoding decision (the crux) + the box→half-plane correction
@@ -47,12 +47,12 @@ closure, giving the guard-free `Equiv`. The paper's finite triangular arrays are
 
 `N=2`, `ℤ`, `mWitness` = the `(2,2,2)` Kostant partition `m₀₀=m₀₁=m₁₂=m₂₂=1`. By kernel `decide`:
 `cumul` gives diagonal `(2,2,2)` (recovers `d`) + off-diagonal `(1,0,1)`; `diff (cumul m) = m` and the
-`rankPatternEquiv` round-trip.
+`cumulDiffEquiv` round-trip.
 
 ## Build / audit status
 
 - `lake build` (whole lib) green, 1794 jobs; `scripts/sorries` → 0 across the board.
-- `#print axioms` on `diff_cumul`/`cumul_diff`/`rankPatternEquiv` → only `[propext, Classical.choice, Quot.sound]`.
+- `#print axioms` on `diff_cumul`/`cumul_diff`/`cumulDiffEquiv` → only `[propext, Classical.choice, Quot.sound]`.
 - Cosmetic: one info `Try this: abel_nf` at line 127 (harmless; cleanup candidate).
 
 ## Deferred (probed, sharp note in-module)
@@ -73,8 +73,8 @@ helpers (`Icc_insert_top`/`_bot`, `sum_Icc_diffRow`/`_diffCol`) proved directly.
 
 ## For the controller / open precision question
 
-- **`rankPatternEquiv` naming.** The equiv is the *abstract* cumul↔diff inversion (no `Matrix.rank`).
-  Does the name `rankPatternEquiv` overclaim (suggest matrix rank patterns) vs the content (the
+- **`cumulDiffEquiv` naming.** The equiv is the *abstract* cumul↔diff inversion (no `Matrix.rank`).
+  Does the name `cumulDiffEquiv` overclaim (suggest matrix rank patterns) vs the content (the
   inclusion-exclusion bijection)? → flagged to the reviewer (precision); candidate rename `cumulDiffEquiv`.
 
 ---
@@ -85,7 +85,7 @@ helpers (`Icc_insert_top`/`_bot`, `sum_Icc_diffRow`/`_diffCol`) proved directly.
 > finite-difference map `T` (`m_{ij}=r_{ij}−r_{i,j+1}−r_{i−1,j}+r_{i−1,j+1}`, out-of-range `=0`) on
 > integer-indexed arrays over an abelian group are mutually inverse.
 >
-> - **Lean:** `DLNFibre.Core.diff_cumul`, `DLNFibre.Core.cumul_diff`, `DLNFibre.Core.rankPatternEquiv`
+> - **Lean:** `DLNFibre.Core.diff_cumul`, `DLNFibre.Core.cumul_diff`, `DLNFibre.Core.cumulDiffEquiv`
 >   (`lean/DLNFibre/Core/RankPattern.lean` @ `<commit-sha — pin at review>`)
 > - **Gloss.** Over any `AddCommGroup R`, for arrays `ℤ→ℤ→R` vanishing for `i<0` and `j>N`:
 >   `diff (cumul N m) = m`, `cumul N (diff r) = r`; packaged as an `Equiv` on the supported-array subtype.
@@ -96,4 +96,4 @@ helpers (`Icc_insert_top`/`_bot`, `sum_Icc_diffRow`/`_diffCol`) proved directly.
 > - **Cited.** none.
 > - **Deferred.** Prop 3.1b — an actual tuple's `rankPattern` (`= rank(A_j⋯A_{i+1})`) equals `cumul` of
 >   its type-A Gabriel multiplicities; needs rung 4. Also the `submult`/`rankPattern` matrix-side defs.
-> - **Status.** sorry-free (pending reviewer fidelity audit).
+> - **Status.** sorry-free + reviewed (thread 04; the `rankPatternEquiv`→`cumulDiffEquiv` rename and the stale-box-docstring fix applied).

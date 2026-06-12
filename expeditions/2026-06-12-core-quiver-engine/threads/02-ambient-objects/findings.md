@@ -157,4 +157,4 @@ patterns); pulling it in here would gold-plate past rung 1's scope. The current 
 >   results being invoked).
 > - **Deferred.** none for rung 1. (Interval sub-products `submult` / the rank patterns `r_{ij}` are
 >   thread 03 / rungs 2-3, a *separate* result this card does not claim.)
-> - **Status.** sorry-free (awaiting reviewer fidelity audit).
+> - **Status.** sorry-free + reviewed (thread 04 — fidelity confirmed, incl. an `A₁A₂ ≠ A₂A₁` order-discriminating witness).

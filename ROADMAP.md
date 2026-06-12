@@ -54,7 +54,13 @@ quiver-rep infrastructure: rank patterns ↔ Kostant-partition multiplicities an
 inversion (§3, Prop 3.1); the quadratic integer program (§6, Thm 6.1); the explicit codimension formula and
 the closest-lattice-point component count (§7, Thm 7.10); the reductions rank-$r$ → rank-$0$ and fibre-codim
 (§4, Lemmas 4.5–4.6). **Reachability:** the most reachable bundle — finite types, matrices, ℕ-combinatorics.
-A good first formalisation target after the digest.
+**Landed (expedition `core-quiver-engine`, reviewed + bedrock):** the ambient objects
+(`DLNFibre.Core.Setup`: `mult`, `Σ^r`/`Σ^{≤r}`, `fibre`) and the **abstract Prop 3.1a inclusion-exclusion
+inversion** (`DLNFibre.Core.RankPattern`: `cumul`↔`diff` mutually inverse, `cumulDiffEquiv`). *Scope:* the
+inversion is the array-level bijection; that an *actual tuple's* rank pattern is `cumul` of its Gabriel
+multiplicities (Prop 3.1b) is **Deferred** to Bundle 2. **Remaining in Bundle 1:** the matrix-side
+`submult`/`rankPattern` (deferred — variable-lower-bound cast), the QIP (Thm 6.1), the explicit
+lattice-point formula (Thm 7.10), and the §4 reductions.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,

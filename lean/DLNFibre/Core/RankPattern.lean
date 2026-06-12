@@ -14,15 +14,16 @@ indexed by integer pairs are mutually inverse. This is pure combinatorics over a
 `ℤ` is the intended instance.
 
 Over an `AddCommGroup R`, arrays are total functions `ℤ → ℤ → R` and the paper's "out-of-range
-index `= 0`" convention is realised by **support**: an array is `BoxSupported N` when it vanishes
-outside the square box `0 ≤ i ≤ N`, `0 ≤ j ≤ N`. The two maps are
+index `= 0`" convention is realised by **support**: an array is `Supported N` when it vanishes
+for `i < 0` and for `j > N` (the half-plane the difference map reaches off the edge — *not* the
+square box, which neither map preserves; see the `Supported` section below). The two maps are
 
 * `cumul N m i j = ∑_{k ≤ i, j ≤ l ≤ N} m k l` — the cumulative map `S`
   (the paper's `r_{ij} = ∑_{k≤i≤j≤l} m_{kl}`);
 * `diff r i j = r_{ij} − r_{i,j+1} − r_{i−1,j} + r_{i−1,j+1}` — the finite-difference map `T`.
 
-`cumul_diff` and `diff_cumul` are the two telescoping inversions; `rankPatternEquiv` packages them
-as an `Equiv` on `BoxSupported` arrays. This is the *abstract* identity only: the statement that an
+`cumul_diff` and `diff_cumul` are the two telescoping inversions; `cumulDiffEquiv` packages them
+as an `Equiv` on `Supported` arrays. This is the *abstract* identity only: the statement that an
 actual matrix tuple's rank pattern is `cumul` of its Gabriel multiplicities (Prop 3.1b) needs the
 type-A Gabriel decomposition (rung 4) and is **out of scope** here.
 
@@ -247,7 +248,7 @@ theorem supported_diff {N : ℤ} {r : ℤ → ℤ → R} (hr : Supported N r) : 
 finite-difference map `T = diff` are mutually inverse — the abstract form of the paper's
 rank-pattern ↔ Kostant-partition bijection (no representation theory; the tuple/Gabriel direction
 is deferred). -/
-noncomputable def rankPatternEquiv (N : ℤ) : SuppArray N R ≃ SuppArray N R where
+noncomputable def cumulDiffEquiv (N : ℤ) : SuppArray N R ≃ SuppArray N R where
   toFun m := ⟨cumul N m.1, supported_cumul N m.1⟩
   invFun r := ⟨diff r.1, supported_diff r.2⟩
   left_inv m := Subtype.ext (diff_cumul N m.1 m.2.1 m.2.2)
@@ -289,7 +290,7 @@ example : diff (cumul 2 mWitness) = mWitness :=
   diff_cumul 2 mWitness supported_mWitness.1 supported_mWitness.2
 
 /-- The packaged `Equiv` sends the witness partition to its rank pattern and back. -/
-example : (rankPatternEquiv 2 (R := ℤ)).symm ⟨cumul 2 mWitness, supported_cumul 2 mWitness⟩
+example : (cumulDiffEquiv 2 (R := ℤ)).symm ⟨cumul 2 mWitness, supported_cumul 2 mWitness⟩
     = ⟨mWitness, supported_mWitness⟩ :=
   Subtype.ext (diff_cumul 2 mWitness supported_mWitness.1 supported_mWitness.2)
 

@@ -1,46 +1,43 @@
 # synthesis.md — controller's integrative read (core-quiver-engine)
 
-The controller's *internal* integrative ground, flushed every tick (recovery substrate). Deliverable is
-the audited `DLNFibre.Core` slice (rungs 1–3) + the Mathlib-coverage map.
+The controller's *internal* integrative ground, flushed every tick (recovery substrate).
 
-## State (after tick 1)
+## State (after tick 2 + audit)
 
-- **Branch:** `expedition/core-quiver-engine` (off `dev`).
-- **Controller mode:** dispatch-and-integrate — the controller spawns role-typed subagents per thread,
-  green-gates + integrates their returns, and is the sole committer (no live Agent-Teams mailbox this run;
-  the docs are the durable source of truth, per expedition.md § recovery).
-- **Tick 1 landed:**
-  - Thread 01 (recon) — **closed**; coverage map below.
-  - Thread 02 (rung 1, ambient objects) — **sorry-free, controller-verified** (whole-lib green 1792 jobs,
-    0 sorries, axiom-clean `[propext, Classical.choice, Quot.sound]`); **reviewer fidelity audit pending**
-    (batched with Prop 3.1).
-- **In flight:** Thread 03 (rungs 2–3, the abstract Prop 3.1 inversion).
+- **Branch:** `expedition/core-quiver-engine` (off `dev`); commits `adbb67e` (tick 1), `7422de7` (tick 2),
+  + the audit/precision-fix commit. Not pushed (expedition PRs at close, signal-and-wait).
+- **Controller mode:** dispatch-and-integrate (role-typed subagents; controller green-gates + is sole
+  committer). Docs are the durable source of truth.
+- **Landed + reviewed (bedrock):**
+  - Thread 01 (recon) — closed.
+  - Thread 02 (rung 1) — `DLNFibre.Core.Setup`: `Tuple`/`mult`/`Σ^r`/`Σ^{≤r}`/`fibre`. **closed, reviewed.**
+  - Thread 03 (rungs 2–3) — `DLNFibre.Core.RankPattern`: Prop 3.1a inversion (`diff_cumul`/`cumul_diff`/
+    `cumulDiffEquiv`). **closed, reviewed.**
+  - Thread 04 (audit) — both SURVIVED on the math; two precision findings fixed (the `rankPatternEquiv`→
+    `cumulDiffEquiv` rename; the stale phantom-`BoxSupported` docstring). **closed.**
+- Whole lib green (1794 jobs), 0 sorries, axiom-clean. Cosmetic `abel_nf` info at RankPattern.lean:128.
 
-## Current read
+## RESOLUTION (what is Proved, at exact scope)
 
-- Rungs 1–3 are basic-Mathlib reachable (confirmed; rung 1 landed). The spine is: ambient objects →
-  rank patterns `r_{ij}` + Kostant multiplicities `m_{ij}` → the inclusion-exclusion bijection (Prop 3.1a,
-  abstract) → [rung 4] orbits ↔ Kostant via Gabriel (build-from-scratch).
-- **Encoding decision (endorsed):** `d : Fin (N+1) → ℕ` as a fixed parameter; `Rep_d = Tuple d` the
-  product space; loci/fibre honest `Set (Tuple d)`. Faithful to the paper (which fixes `d` and varies it
-  as a parameter — e.g. permutation invariance), keeps every intermediate `d k` first-class (needed for
-  `r_{ij}` and the Kostant constraint), and the `Fin.castSucc` transport is contained in `multPrefix`
-  behind two `rfl` step lemmas. Reversed the brief's "weigh (ii)/List-inductive" steer; Codex-corroborated.
-- **`submult` (interval sub-products `A_j⋯A_{i+1}`) is the rung-2/3 primitive** — `multPrefix` is its
-  `i=0` slice. Thread 03 introduces `submult` and defines `r_{ij} := (submult A i j).rank`; `mult` bridges
-  as `submult 0 (last)`.
+- **Ambient objects** (Proved): `mult = A_N⋯A_1` over `CommRing k`, with the product-rank loci `Σ^r`/`Σ^{≤r}`
+  and the fibre `mult⁻¹(B)` as `Set (Tuple d)` for a fixed `d : Fin (N+1) → ℕ`. Order pinned by witness.
+- **Prop 3.1a** (Proved): the *abstract* cumul↔diff inclusion-exclusion inversion on half-plane-supported
+  integer-indexed arrays over an `AddCommGroup`, as an `Equiv` (`cumulDiffEquiv`). The hypothesis
+  `Supported` is shown necessary (off-stratum counter-witness), not vacuous.
+- **Deferred / Cited (named, not hidden):** Prop 3.1b — that an *actual tuple's* rank pattern equals `cumul`
+  of its Gabriel multiplicities — needs type-A Gabriel (rung 4). The matrix-side `submult`/`rankPattern`
+  (thread 06). The `rlct = ½·codim` cap (Bundle 4, cited analytic bound) — out of this expedition.
 
-## Mathlib-coverage map (from thread 01)
+## Next — rung 4 is the boundary (strategic call surfaced to operator)
 
-- quiver basics: **reuse** (`Quiver`, `Path`, `Prefunctor`, `Rep k G`); quiver-rep layer / path algebra: build.
-- type-A interval modules / equioriented chain / Kostant data: **build-from-scratch**.
-- Gabriel / Krull–Schmidt decomposition: **build-from-scratch** (the heavy part of rung 4).
-- `Ext`: **reuse** (machinery present; instantiate to a module category for Cor 3.5 — next expedition).
-- ambient objects + abstract Prop 3.1: **reuse** basic Mathlib (`Matrix.rank`, `Finset`, `Fin`). Confirmed.
+Rung 4 (orbits ↔ Kostant via type-A Gabriel) is **build-from-scratch and not single-tide whole-in-reach**
+(recon: "largest new infrastructure"). It is roadmapped, not nibbled. The strategic fork (full-build the
+type-A Gabriel/interval-module decomposition — the reusable asset — vs cite Gabriel and prove the orbit↔
+Kostant corollary on top) is surfaced to the operator. The `submult`/`rankPattern` follow-up (thread 06) is
+a smaller, reachable item that unblocks Prop 3.1b and could precede rung 4.
 
 ## Drift guard
 
-Tag every result Proved / Assumed / Cited / Deferred. Prop 3.1 here is the **abstract array inversion**
-(3.1a) — name it as such; the "rank pattern of an *actual tuple* = Σ Gabriel-multiplicities" direction
-(3.1b) needs rung 4 and is a *separate*, deferred claim. Keep `Core` free of any `DLN`/network import.
-No `Core` name may assert orbit/Gabriel content that is only Cited.
+`Core` imports no `DLN`. Every result tagged Proved/Assumed/Cited/Deferred. No `Core` name asserts
+Gabriel/tuple content (the `rankPatternEquiv` overclaim was caught + fixed). Prefer characterisations
+(the `Equiv`) and the weakest hypotheses (shown necessary).
