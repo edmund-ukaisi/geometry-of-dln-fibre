@@ -7,4 +7,5 @@ import DLNFibre.Core.RankPattern
 import DLNFibre.Core.Submult
 import DLNFibre.Core.IntervalModule
 import DLNFibre.Core.BaseChange
+import DLNFibre.Core.Barcode
 import DLNFibre.DLN.Basic
