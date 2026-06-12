@@ -1,25 +1,29 @@
 # priorities.md — the taste ledger (core-quiver-engine)
 
-The ranked decision queue. The controller proposes a ranking by value-of-information and directed
-suspicion; **the operator edits this file directly** (highest-authority signal). Nothing unranked;
-"unclear-but-keep-going" is first-class.
+The ranked decision queue. The controller proposes; **the operator edits this file directly**. Nothing
+unranked; "unclear-but-keep-going" is first-class.
 
-## Ranked (controller's opening proposal — operator to edit)
+## Done (tick 1)
+- ✅ **Mathlib recon** (thread 01) — rungs 1–3 = basic Mathlib; rung 4 = build-from-scratch. (was #1)
+- ✅ **Ambient objects** (thread 02, rung 1) — landed green + axiom-clean; encoding (i) endorsed. (was #2)
 
-1. **[VOI: highest] Mathlib quiver-representation recon.** Does Mathlib have quiver reps, the type-A / $A_n$
-   indecomposables, Gabriel, `Ext` of representations? Gates build-vs-reuse for rung 4 and the whole engine.
-   → spawn a `scout` (read-only Mathlib recon + `scripts/lean-search`); record the map in `synthesis.md`.
-2. **[reachable now] Ambient objects (rung 1).** Pin `Rep_d`, `mult`, product-rank loci as `DLNFibre.Core`
-   defs; green build. Low-risk; de-risks everything downstream. → `formaliser`.
-3. **[reachable, first real theorem] Prop 3.1 correspondence (rungs 2–3).** Rank patterns + Kostant
-   partitions as data, and the inclusion-exclusion bijection as a characterisation. Pure combinatorics /
-   linear algebra. → `formaliser`; statement-card + reviewer fidelity audit at AUDIT.
-4. **[depends on #1] Orbits ↔ Kostant (rung 4, Gabriel).** The representation-theoretic identification;
-   possibly build-from-scratch. Open only when #1 says whether it is whole-in-reach.
-5. **[parked, next expedition] `Ext` codimension (Cor 3.5).** Out of scope here; named successor.
+## Ranked (controller's proposal — operator to edit)
+
+1. **[in flight] Prop 3.1a — the inclusion-exclusion bijection (thread 03, rungs 2–3).** Introduce
+   `submult`/`r_{ij}`/`m_{ij}` and prove the abstract array inversion as a characterisation. The first
+   real *theorem* of the engine. → `formaliser`.
+2. **[gate] Decorrelated fidelity audit of the Core slice (thread 04).** Once 03 lands, one reviewer pass
+   over `Setup.lean` (definitions match the paper's `Rep_d`/`mult`/`Σ^r`/fibre) **and** Prop 3.1 (the Lean
+   statement is the paper's identity, stated as the abstract inversion — not over-claiming the tuple/Gabriel
+   direction). Base audited hardest. → `reviewer` (+ `local-codex-consult`).
+3. **[next sub-build, gated] Rung 4 — orbits ↔ Kostant via type-A Gabriel (thread 05).** Build-from-scratch:
+   interval modules `M_{ij}`, the equioriented chain, the decomposition. Decide full-build vs cite-and-
+   corollary when opened. Whole-in-reach check first; do **not** nibble. → its own thread.
+4. **[parked, next expedition] `Ext` codimension (Cor 3.5).** Reuse Mathlib `Ext` once reps are in a module
+   category. Out of scope for this expedition; named successor. (unclear-but-keep-going: depends on rung 4.)
 
 ## Notes
 - Read `../../lean/CLAUDE.md` before any Lean (Core never imports DLN).
-- Keep `synthesis.md` current each tick (recovery substrate).
-- In-repo memory only; never `~/.claude` (CLAUDE.md § Memory).
+- Statement-card every landed result (Proved/Assumed/Cited/Deferred); pin the commit SHA at integration.
+- In-repo memory only; never `~/.claude`.
 - Reader-facing paper digestion is the operator's activity — not a thread here.

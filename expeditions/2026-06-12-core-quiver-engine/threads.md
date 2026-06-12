@@ -1,14 +1,14 @@
 # threads.md — thread index (core-quiver-engine)
 
-The durable thread-status ledger. One row per thread: `NN-slug` · type · status · one-line subject.
+The durable thread-status ledger. `NN-slug` · type · status · one-line subject.
 Status ∈ `open` / `in-progress` / `blocked` / `review-pending` / `closed` / `abandoned`.
 
 | Thread | Type | Status | Subject |
 |---|---|---|---|
-| _(none yet)_ | — | — | Spawn from `priorities.md` when the expedition opens. |
+| 01-mathlib-recon | explore | closed | Mathlib coverage: rungs 1–3 = basic Mathlib; rung 4 (Gabriel/interval modules/Kostant) = build-from-scratch; `Ext` reusable. |
+| 02-ambient-objects | formalisation | review-pending | `DLNFibre.Core.Setup`: `Tuple`/`mult`/`Σ^r`/`Σ^{≤r}`/`fibre` (rung 1). Green, axiom-clean, witnessed. Fidelity audit batched with 03. |
+| 03-prop31-inversion | formalisation | in-progress | Prop 3.1a: the abstract rank-pattern ↔ Kostant-multiplicity inclusion-exclusion bijection (rungs 2–3). |
 
-<!-- e.g.
-| 01-mathlib-quiver-recon | explore       | open | What does Mathlib provide for quiver reps / type-A / Gabriel / Ext? |
-| 02-ambient-objects      | formalisation | open | Rep_d, mult, product-rank loci as DLNFibre.Core defs (rung 1). |
-| 03-rank-pattern-corr    | formalisation | open | Prop 3.1: rank patterns ↔ Kostant multiplicities, as a characterisation (rungs 2–3). |
--->
+Planned:
+| 04-review-core | review | pending | Decorrelated fidelity audit of Setup (defs) + Prop 3.1 (theorem), once 03 lands. |
+| 05-rung4-orbits-kostant | formalisation | pending | Orbits ↔ Kostant via type-A Gabriel — its own sub-build; open only when whole-in-reach. |
