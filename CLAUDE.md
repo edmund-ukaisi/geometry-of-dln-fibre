@@ -93,8 +93,10 @@ If dispatched into a role, read its role file and agent definition first.
   to directly.
 - Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `master` directly. One
   expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
-- **Don't push, open, or merge PRs without an explicit instruction** — the operator performs merges and the
-  `dev → master` promotion. When you push, confirm the target is `origin`.
+- **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
+  2026-06-12) — push freely to bank and share work. **Opening/merging PRs and the `dev → master` promotion
+  remain operator-gated** (signal-and-wait); the operator performs those. Always confirm the push target is
+  `origin`, never a non-`origin` remote.
 
 ## Memory
 
