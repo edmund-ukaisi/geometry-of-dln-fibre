@@ -348,6 +348,71 @@ end ChainWitness
 
 end Chain
 
+/-! ## Complete-lattice helpers for the `Fin.cons` combine
+
+The strong induction adds one bar at a time (`Fin.cons` of a new line onto the family). These two
+general complete-lattice facts are the combine for the supremum and for `iSupIndep` across a
+`Fin.cons`; neither is in Mathlib at this pin. -/
+
+section CompleteLatticeAux
+
+variable {α : Type*} [CompleteLattice α]
+
+/-- The supremum over `Fin (n+1)` of a `Fin.cons` splits off the head: `⨆ Fin.cons a g = a ⊔ ⨆ g`. -/
+theorem iSup_fin_cons {n : ℕ} (a : α) (g : Fin n → α) :
+    ⨆ i : Fin (n + 1), Fin.cons a g i = a ⊔ ⨆ i, g i := by
+  apply le_antisymm
+  · refine iSup_le fun i => ?_
+    rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨k, rfl⟩
+    · rw [Fin.cons_zero]; exact le_sup_left
+    · rw [Fin.cons_succ]; exact le_sup_of_le_right (le_iSup g k)
+  · refine sup_le (le_iSup_of_le 0 (by rw [Fin.cons_zero])) (iSup_le fun k => ?_)
+    exact le_iSup_of_le k.succ (by rw [Fin.cons_succ])
+
+end CompleteLatticeAux
+
+section SubmoduleAux
+
+variable {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
+
+/-- `iSupIndep` is preserved by consing a head disjoint from the supremum of the tail: if a family
+of submodules `g` is independent and `a` is disjoint from `⨆ g`, then `Fin.cons a g` is independent.
+The supremum-disjoint head suffices precisely because `iSupIndep` is the genuine (not merely
+pairwise) independence; the codisjoint half of the new vertex is proved element-wise (the submodule
+lattice is modular, not distributive, so `Disjoint.sup_right` does not apply). -/
+theorem iSupIndep_fin_cons {n : ℕ} {a : Submodule R M} {g : Fin n → Submodule R M}
+    (hg : iSupIndep g) (ha : Disjoint a (⨆ i, g i)) : iSupIndep (Fin.cons a g) := by
+  rw [iSupIndep_def]
+  intro i
+  rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨m, rfl⟩
+  · rw [Fin.cons_zero]
+    refine ha.mono_right (iSup₂_le fun j hj => ?_)
+    rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨k, rfl⟩
+    · exact absurd rfl hj
+    · rw [Fin.cons_succ]; exact le_iSup g k
+  · rw [Fin.cons_succ]
+    rw [iSupIndep_def] at hg
+    have hsplit : (⨆ j, ⨆ (_ : j ≠ m.succ), Fin.cons a g j) ≤ a ⊔ ⨆ j, ⨆ (_ : j ≠ m), g j := by
+      refine iSup₂_le fun j hj => ?_
+      rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨k, rfl⟩
+      · rw [Fin.cons_zero]; exact le_sup_left
+      · rw [Fin.cons_succ]
+        exact le_sup_of_le_right (le_iSup₂_of_le k (fun hk => hj (by rw [hk])) le_rfl)
+    refine Disjoint.mono_right hsplit ?_
+    rw [Submodule.disjoint_def]
+    intro x hxgm hxac
+    obtain ⟨a', ha', c', hc', hsum⟩ := Submodule.mem_sup.mp hxac
+    have hc'_le : c' ∈ ⨆ i, g i :=
+      (iSup₂_le fun j _ => le_iSup g j : (⨆ j, ⨆ (_ : j ≠ m), g j) ≤ ⨆ i, g i) hc'
+    have ha'_le : a' ∈ ⨆ i, g i := by
+      have hax : a' = x - c' := by rw [← hsum]; abel
+      rw [hax]; exact Submodule.sub_mem _ (le_iSup g m hxgm) hc'_le
+    have ha'0 : a' = 0 := (Submodule.disjoint_def.mp ha) a' ha' ha'_le
+    have hxc' : x = c' := by rw [← hsum, ha'0, zero_add]
+    exact (Submodule.disjoint_def.mp (hg m)) x hxgm (hxc' ▸ hc')
+
+end SubmoduleAux
+
 /-! ## Subrepresentations and total dimension (induction substrate)
 
 The total-dimension induction runs over **subrepresentations** `P_* ≤ V_*` of a *fixed* ambient
