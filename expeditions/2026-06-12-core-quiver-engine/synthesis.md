@@ -14,7 +14,7 @@ The controller's *internal* integrative ground, flushed every tick (recovery sub
   - **Design done** (thread 07, sympy-certified) — see "the plan" below.
   - **4b landed** (`Core.IntervalModule`): interval modules, `dirSum`, block-rank additivity (Field), headline `rankPattern_intervalDirectSum_eq_cumul`.
   - **4c landed** (`Core.BaseChange`, teammate `basechange`): `MulAction`, `submult_baseChange` (telescoping conjugation), `rankPattern_baseChange` (invariance), `CommRing`. Wired + green-gated (whole lib 1797 jobs).
-  - **4d (crux) partial banked** (worktree `barcode/rung-4d`, teammate `barcode`): the splitting FACT + a pointwise peel landed sorry-free; continuing toward the abstract-chain existence theorem. NOT yet merged.
+  - **4d (crux) toolkit MERGED + wired** (`Core.Barcode`, green/axiom-clean on origin): the splitting FACT + the **relative** splitting fact (`relSplitting`, recursion-ready), `finrank_comap_add_one`, the `compMap` abstract-chain layer (+`compMap_trans`), and the pointwise peel lemmas. The **full barcode-basis existence theorem is NOT yet proved** — what remains is module-sized **assembly** (no new crux): index-finding (least-`s`/last-`j`), global subrep + Finset total-dim strict-drop, wiring `relSplitting` + `Nat.strong_induction` along the bar, the Λ-barcode/iso output, and `Tuple` transport. Handoff in `threads/10-barcode/findings.md`. To be done as a **fresh tide** (barcode's earned taste-call: fresh context for the induction wiring).
   - **Team mode:** Agent Teams; `barcode` properly isolated in a worktree, `basechange` landed in the shared main checkout (isolation didn't take — see `lessons.md`).
 - Whole lib green (1795 jobs), 0 sorries, axiom-clean. Cosmetic `abel_nf` info at RankPattern.lean:128.
 
