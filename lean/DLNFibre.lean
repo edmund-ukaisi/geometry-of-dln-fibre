@@ -3,4 +3,5 @@
 -- Core = the network-free engine; DLN = the application (depends on Core).
 import DLNFibre.Core.Basic
 import DLNFibre.Core.Setup
+import DLNFibre.Core.RankPattern
 import DLNFibre.DLN.Basic
