@@ -14,4 +14,7 @@ lean/build/
 *.swp
 *~
 
-# Agent Teams runtime state lives outside the repo (~/.claude/teams, ~/.claude/tasks) — nothing to ignore here.
+# Agent Teams runtime: per-teammate git worktrees live here (local working state, not repo content).
+.claude/worktrees/
+
+# Agent Teams runtime state also lives outside the repo (~/.claude/teams, ~/.claude/tasks).
