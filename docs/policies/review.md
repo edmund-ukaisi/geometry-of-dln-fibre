@@ -38,14 +38,14 @@ A reviewer is aimed at one target with one function:
 ## Wording: object-level focus
 
 Authored docs state what to do and why, at the object level. Remove authorial
-self-reassurance; keep only object-level directives to the reader.
+self-reassurance; keep only object-level directives to the reader. Resist meta-commentary.
 
 Banned-wording list (flag each, judge, remove the hedging use; an object-level
 directive such as "report the result honestly" stays):
 
 ```
-honestly · to be clear · it's worth noting · importantly · fundamentally ·
-of course · simply · just · note that · needless to say · clearly · obviously
+honestly · importantly · fundamentally · the whole point is · definitely · 
+of course · simply · just · needless to say · clearly · obviously · this is loadbearing
 ```
 
 `grep -rniE` the list across authored docs during a wording pass.

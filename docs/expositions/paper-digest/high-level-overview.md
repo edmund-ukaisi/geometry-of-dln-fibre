@@ -703,8 +703,9 @@ This overview follows the paper's structure:
 - Section 7: explicit formula via closest lattice points.
 - Section 8: real log-canonical threshold of deep linear networks.
 
-The paper source is available locally at `paper-source/source/main.tex`, and
-the PDF is available at `paper-source/2411.19920.pdf`.
+The paper source is available locally at
+`paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex`, and the PDF is
+available at `paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/2411.19920.pdf`.
 
 The citation [Aoy24] is the Aoyagi paper as listed in the paper's references.
 

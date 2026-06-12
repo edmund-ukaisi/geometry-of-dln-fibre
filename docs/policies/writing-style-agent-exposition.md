@@ -28,9 +28,10 @@ prior results, domain background) the reader has not been given here; prefer a c
 exact statements over one dense one. Reach for an analogy only when it is exact and
 load-bearing — most are not. (Disposition: [`../../CLAUDE.md`](../../CLAUDE.md).)
 
-Concretely: name-dropping an object as prose ("the path-lifting, a product of edge weights") is
-not enough — define it with an equation before you use it ($\phi_q(w)=\prod_{e\in q}w_e$,
-having first said what an edge and a path are), and carry a small running example.
+Concretely: name-dropping an object as prose ("the multiplication map, a product of composable
+matrices") is not enough — define it with an equation before you use it
+($\operatorname{mult}(A_\ast)=A_N\cdots A_1$, having first said what a composable tuple is), and
+carry a small running example.
 
 ## Object-level focus
 
@@ -42,8 +43,8 @@ why. The banned-wording list and the review function that enforces it are in
 
 Write mathematics as TeX — inline `$…$`, display `$$…$$` (KaTeX). Never put math in code spans
 (`` `x` ``). Reserve code spans for code, identifiers (Lean names), file paths, commit hashes,
-and literal markdown/CLI syntax. A symbol such as $\mathcal{W}$, $\mu_X$, or $\Sigma_\kappa$ is
-math; `Set.image_inter_preimage` and `lean/Neuroalgebraic/Setup/Fiber.lean` are code. Display
+and literal markdown/CLI syntax. A symbol such as $\operatorname{Rep}_{\underline d}$, $\operatorname{mult}$, or $\Sigma^r$ is
+math; `Set.image_inter_preimage` and `lean/DLNFibre/Core/Orbit.lean` are code. Display
 math must be a **block** (fences on their own lines, blank line above and below) — see
 **Rendering rules** below; a single-line `$$…$$` does not render.
 
