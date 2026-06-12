@@ -1,23 +1,31 @@
 # Thread 10 — Barcode-basis / interval normal form (rung 4d, THE CRUX) — formalisation
 
 **Type:** formalisation (tide). **Module:** `lean/DLNFibre/Core/Barcode.lean` (new, network-free,
-namespace `DLNFibre.Core`). **Branch:** `barcode/rung-4d` (worktree; not pushed). **Build:** green,
-`0 sorry / 0 axiom / 0 native_decide`; gate theorems depend only on `[propext, Classical.choice,
-Quot.sound]`. **Pinned at** `1d5a36c`.
+namespace `DLNFibre.Core`, 722 lines). **Branch:** `barcode/rung-4d` (pushed to `origin`). **Build:**
+green, `0 sorry / 0 axiom / 0 native_decide`; the headline `hasBarcode_of_isSubrep` depends only on
+`[propext, Classical.choice, Quot.sound]`. **Pinned at** `ea5a334`.
 
-## TL;DR (what landed)
+## TL;DR (what landed) — THE FULL ABSTRACT-CHAIN EXISTENCE THEOREM
 
-The **load-bearing splitting fact** (the crux's heart) landed cleanly — in both an **ambient** and a
-**relative** (recursion-ready) form — plus the *entire local content* of the barcode peel. A key
-simplification over the design: with the abstract composite map's composition law, the design's
-"single hardest formal step" (the indexed *downward* preimage construction `U_{t-1} = f_t⁻¹(U_t)`
-threaded down the chain) collapses to a **pointwise** application of the splitting fact at each
-interior vertex, with **no downward recursion**.
+Rung 4d is **complete on abstract chains**. The headline `hasBarcode_of_isSubrep`: every
+finite-dimensional subrepresentation of an abstract chain `V₀ --f₁--> ⋯ --f_N--> V_N` has a
+**barcode** — a finite family of interval bars whose lines, at every vertex `t`, form an internal
+direct sum (`iSupIndep` + `⨆ = P_t`) of interval-module lines, each bar a genuine interval module
+(support + trajectory `f e (line) = line` inside + death `f e (line) = 0` past `death`). This is the
+**existence** half of type-A Gabriel (Le Halleur–Rimányi 2024, Thm 2.5): every finite chain of f.d.
+`k`-vector spaces is isomorphic to a direct sum of interval modules. Whole-chain form
+`hasBarcode_top` (`P = ⊤`) + concrete identity-chain witness.
 
-What is **not** yet done: the *global* assembly — index-finding (least-nonzero `s`, last-nonzero
-`j`), the global subrepresentation + total-dimension strict-drop packaging, the strong-induction
-recursion, the `Λ`-indexed-barcode / iso-to-`⊕ M_{ij}` output, and the transport to `Setup.Tuple`.
-The geometric content of the inductive step is done; what remains is bookkeeping (see §"Remaining").
+The proof, bottom-up: the **splitting fact** (crux heart, ambient + relative) → the abstract
+**`compMap`** layer (composition law `compMap_trans`) → the **pointwise peel** (the splitting applied
+vertex-wise via `compMap_trans` — collapsing the design's downward recursion) → the **peel**
+`exists_peel` (one inductive step: bar + complementary subrep of strictly smaller total dimension) →
+two **`Fin.cons` lattice combine** helpers → the **total-dimension strong induction**
+(`Nat.strongRecOn`).
+
+**Remaining (separate, sanctioned out-of-scope for this tide):** the transport to `Setup.Tuple`
+(change-of-basis cast bookkeeping) and uniqueness of multiplicities (near-free downstream via
+`RankPattern.diff_cumul` + 4b/4c). Neither is part of the existence headline.
 
 ## 1. The splitting fact (`isCompl_span_singleton_comap`) — landed
 
@@ -99,60 +107,83 @@ All as listed in `mathlib-levers.md` **except**:
   `Submodule.mem_sup`(`_left`/`_right`), `Submodule.exists_isCompl`, `smul_eq_zero` — used.
 - `Nat.leRec` / `Nat.leRec_self` / `Nat.leRec_succ` — used (compMap, mirroring `submult`).
 
-## 5. What remains + the obstacle (precise)
+## 4b. The induction (all LANDED)
 
-The geometric content of the inductive step is **done**; the rest is assembly. Remaining, in order:
+- **`IsSubrep` / `compMap_mem` / `totalDim`** — the induction substrate (subreps `P_* ≤ V_*`,
+  forward-closed; `compMap` preserves a subrep; the measure `∑ finrank P_t`).
+- **`exists_least_nonzero` / `exists_last_nonzero`** — index-finding (`Finset.min'`/`max'`), the bar
+  endpoints `s` (least nonzero vertex) and `j` (last vertex where the trajectory is nonzero).
+- **`exists_peel`** — one inductive step: from a subrep with some `P_t ≠ ⊥`, peel a bar `(s,j,v)`
+  and a complementary subrep `P'` with `P_t = k·v_t ⊕ P'_t` on `[s,j]`, `P'_t = P_t` off it,
+  `totalDim P' < totalDim P`, plus the bar's trajectory + death. Splitting via `relSplitting`
+  vertex-wise (`compMap_trans`); subrep of `P'` via `comap_compMap_edge` (interior edges) +
+  `s`-minimality (bottom edge); strict drop via `finrank_sup_add_finrank_inf_eq` at `s` →
+  `Finset.sum_lt_sum`.
+- **`iSup_fin_cons` / `iSupIndep_fin_cons`** — the `Fin.cons` combine for the supremum and for
+  `iSupIndep` (the latter proved *element-wise* for submodules: `Disjoint.sup_right` needs a
+  *distributive* lattice but the submodule lattice is only *modular*). Neither in Mathlib at this pin.
+- **`HasBarcode` / `hasBarcode_of_isSubrep` / `hasBarcode_top`** — the headline (total-dimension
+  `Nat.strongRecOn`): consing the peeled bar onto the IH's barcode, each conjunct combining by
+  `Fin.eq_zero_or_eq_succ` case-split (new bar from the peel, old from the IH; spanning via
+  `iSup_fin_cons`, independence via `iSupIndep_fin_cons`).
 
-1. **Index-finding** (`∃ s, j`). `s` = least vertex with `V_s ≠ 0` (`Nontrivial`/`⊤ ≠ ⊥`); `j` =
-   last vertex with the trajectory `compMap f s t v_s ≠ 0`. Obstacle: `Fin` min/max over a filtered
-   `Finset`, where the trajectory predicate `compMap f s t _ v_s ≠ 0` is **dependent** (`V t`-valued,
-   and `compMap` needs the proof `s ≤ t` inside the filter) — the `Fin`/decidability/dependent-filter
-   bookkeeping the design flagged. Tractable, not yet attempted.
-2. **Global subrep + total-dimension strict drop.** Package `U_t := if s ≤ t ≤ j then
-   (compMap f t j)⁻¹(U_j) else ⊤` into one family; prove it is a subrepresentation (3 edge cases:
-   below `s` — uses `s`-minimality so `V_{e.castSucc}` is trivial; interior — `comap_compMap_edge`;
-   above `j` — `U = ⊤` trivial) and `∑ finrank U_t < ∑ finrank V_t` (the per-vertex
-   `finrank_interval_complement` drops summed over `[s,j]`; the off-interval `U_t = ⊤` contribute
-   `finrank V_t`). Obstacle: the dependent-`if` (`dif`) unfolding + the `Finset.sum` split over the
-   `[s,j]` subset of `Fin (N+1)`. Fiddly arithmetic, not yet attempted.
-3. **The strong-induction recursion.** Induct on total dimension. The peel produces `U_*` as
-   submodules of the **ambient** `V_t`; recursing means peeling **within** `U_*` — a
-   sub-sub-representation. Route (a) (recommended): `Nat`-strong induction on `∑ finrank P_t` over
-   subreps `P_* ≤ V_*`, with all types fixed as `Submodule k (V t)`. The relative splitting fact
-   **`relSplitting`** (now landed, §1) is the per-vertex lever for this route — it splits a line off
-   `P_t` directly. (Route (b), a `Chain` structure with the submodule types as the spaces, changes
-   types each peel and needs `Submodule.subtype` transport — dispreferred.) Obstacle remaining for
-   route (a): wiring the pointwise `relSplitting` along the bar (a relative analogue of
-   `isCompl_interval_complement` — apply `relSplitting` to `g = compMap t j` restricted to `P`),
-   then the `Nat.strong_induction` itself (generalising over the subrep). Not yet attempted.
-4. **The barcode output / completeness.** Either the `Λ`-indexed basis or "chain `≅ ⊕ M_{s,j}`"
-   (needs the abstract interval module as a chain + chain-iso). With existence, *uniqueness is free*
-   via the already-landed `RankPattern.diff_cumul` (design §3).
-5. **Transport to `Setup.Tuple`** (design §1.1): one change-of-basis lemma per vertex
-   (`Matrix.toLin'`/`mulVecLin`). Localises all `Fin`/`Matrix` casts.
+## 5. What remains (separate; out of scope for this tide, by the controller's steer)
+
+1. **Transport to `Setup.Tuple`** (design §1.1): a change-of-basis lemma per vertex
+   (`Matrix.toLin'`/`mulVecLin`) turning the abstract barcode into a `G_d` base change `g · A =
+   ⊕ M_{ij}^{m}`. Mostly `Fin`/`Matrix` cast bookkeeping; localised, no new mathematics.
+2. **Uniqueness of the multiplicities** — near-free downstream from existence via the already-landed
+   `RankPattern.diff_cumul` + 4b `rankPattern_intervalDirectSum_eq_cumul` + 4c rank-pattern
+   invariance. Not part of the existence headline.
 
 **Discarded routes** (design §2.4) were **not** re-tried: one-pass column reduction (fails),
 Smith/staircase, full kernel/image filtration.
 
-## 6. Recommended next step
+## 6. Note for the follow-up
 
-A focused follow-up tide for the **global peel** (§5.1–2) + the **strong induction** (§5.3) — these
-chain together. The reusable inputs all exist: the pointwise lemmas (§3), the ambient *and*
-**relative** splitting facts, `finrank_comap_add_one`, and the `compMap` layer. What is left is
-genuinely assembly — index-finding, the `Finset` sum drop, wiring `relSplitting` along the bar, the
-`Nat.strong_induction`, the barcode output, the `Tuple` transport. Estimate: a substantial
-module-sized effort, best done with fresh context; the crux mathematics is no longer the bottleneck.
+The abstract existence is closed and sorry-free; the `Tuple` transport (§5.1) is the natural next
+tide. The reusable assets for it: the `HasBarcode` predicate, `intervalModule`/`dirSum`/
+`intervalDirectSum` (4b), and `submult`/`rankPattern` (4a/06). The crux mathematics is no longer the
+bottleneck — what remains is matrix/`Fin` cast bookkeeping to read the abstract barcode off in
+coordinates.
 
 ---
 
 ## Draft statement cards
+
+> **Claim (THE headline — barcode-basis existence, rung 4d).** Every finite-dimensional
+> subrepresentation `P` of an abstract chain `V₀ --f₁--> ⋯ --f_N--> V_N` of `k`-vector spaces (`k` a
+> field) has a barcode: a finite family of interval bars (each an interval module — supported on
+> `[birth,death]`, nonzero there, `f` acting as a trajectory inside and dying past `death`) whose
+> lines form an internal direct sum equal to `P_t` at every vertex `t`. Equivalently, every finite
+> chain of f.d. `k`-vector spaces is isomorphic to a direct sum of interval modules.
+>
+> - **Lean:** `DLNFibre.Core.hasBarcode_of_isSubrep` (and the `P = ⊤` form
+>   `DLNFibre.Core.hasBarcode_top`), predicate `DLNFibre.Core.HasBarcode`
+>   (`lean/DLNFibre/Core/Barcode.lean` @ `ea5a334`)
+> - **Gloss.** `IsSubrep V f P → HasBarcode V f P`, where `HasBarcode P` packages: a finite
+>   `birth death : Fin M → Fin (N+1)`, `line : Fin M → ∀ t, V t`, with `birth ≤ death`, support
+>   (`line λ t = 0` off `[birth λ, death λ]`), nonzero-alive, trajectory
+>   (`f e (line λ e.castSucc) = line λ e.succ` for `e` inside the bar), death
+>   (`f e (line λ e.castSucc) = 0` once `death λ < e.succ`), and at each `t` the lines
+>   `iSupIndep (fun λ => k ∙ line λ t)` with `⨆ λ, k ∙ line λ t = P t`.
+> - **Proved.** Unconditionally (field `k`, f.d. spaces), by total-dimension strong induction. The
+>   **existence** half of type-A Gabriel (Thm 2.5). Non-vacuity: the identity chain `ℚ → ℚ` (in-file).
+> - **Assumed.** `P` a subrepresentation (the headline `hasBarcode_top` takes `P = ⊤`); finite
+>   dimensionality of each `V t`.
+> - **Cited.** none beyond Mathlib `Submodule`/`finrank` API.
+> - **Deferred.** the transport to `Setup.Tuple` (a `G_d` base change `g · A = ⊕ M^m` — separate
+>   change-of-basis lemma); uniqueness of the multiplicities (near-free downstream via
+>   `RankPattern.diff_cumul`). Neither is claimed by the name (which says *existence*, not the full
+>   Gabriel bijection).
+> - **Status.** sorry-free, axiom-clean (`[propext, Classical.choice, Quot.sound]`).
 
 > **Claim (the splitting fact, crux heart).** For `f : V →ₗ[k] W` over a field `k`, a vector `v`
 > with `f v ≠ 0`, and a complement decomposition `W = k·(f v) ⊕ U`, the preimage `f⁻¹(U)` is a
 > complement of the source line `k·v`: `V = k·v ⊕ f⁻¹(U)`.
 >
 > - **Lean:** `DLNFibre.Core.isCompl_span_singleton_comap`
->   (`lean/DLNFibre/Core/Barcode.lean` @ `1d5a36c`)
+>   (`lean/DLNFibre/Core/Barcode.lean` @ `ea5a334`)
 > - **Gloss.** `IsCompl (k ∙ f v) U → IsCompl (k ∙ v) (U.comap f)`, given `f v ≠ 0`. Pulling back a
 >   complement of the image line along `f` gives a complement of the source line.
 > - **Proved.** Unconditionally (field `k`). The one geometric fact behind the barcode peel.
@@ -167,7 +198,7 @@ module-sized effort, best done with fresh context; the crux mathematics is no lo
 > `v ∈ P` with `f v ≠ 0`, and `Q = k·(f v) ⊕ U` inside `Q`, then `P = k·v ⊕ (f⁻¹(U) ⊓ P)` inside
 > `P`.
 >
-> - **Lean:** `DLNFibre.Core.relSplitting` (`lean/DLNFibre/Core/Barcode.lean` @ `943c13d`)
+> - **Lean:** `DLNFibre.Core.relSplitting` (`lean/DLNFibre/Core/Barcode.lean` @ `ea5a334`)
 > - **Gloss.** `Disjoint (k∙v) (U.comap f ⊓ P) ∧ k∙v ⊔ (U.comap f ⊓ P) = P`, given `P.map f ≤ Q`,
 >   `v ∈ P`, `f v ≠ 0`, `Disjoint (k∙f v) U`, `k∙(f v) ⊔ U = Q`. Splits a line off a
 >   *subrepresentation*, types fixed — the lever for the recursion (route a).
@@ -178,7 +209,7 @@ module-sized effort, best done with fresh context; the crux mathematics is no lo
 > `finrank` by exactly one.
 >
 > - **Lean:** `DLNFibre.Core.finrank_comap_add_one`
->   (`lean/DLNFibre/Core/Barcode.lean` @ `1d5a36c`)
+>   (`lean/DLNFibre/Core/Barcode.lean` @ `ea5a334`)
 > - **Gloss.** `[FiniteDimensional k V] → IsCompl (k ∙ f v) U → finrank (U.comap f) + 1 = finrank V`
 >   (given `f v ≠ 0`).
 > - **Proved.** Unconditionally. **Assumed.** finite-dimensional `V`; `f v ≠ 0`; the `IsCompl`.
@@ -191,7 +222,7 @@ module-sized effort, best done with fresh context; the crux mathematics is no lo
 >
 > - **Lean:** `DLNFibre.Core.isCompl_interval_complement`, `…finrank_interval_complement`,
 >   `…comap_compMap_edge` (with `compMap`, `compMap_trans`, `compMap_edge`)
->   (`lean/DLNFibre/Core/Barcode.lean` @ `1d5a36c`)
+>   (`lean/DLNFibre/Core/Barcode.lean` @ `ea5a334`)
 > - **Gloss.** The geometric content of the inductive step, *pointwise* (no downward recursion —
 >   `compMap_trans` collapses it). See §3.
 > - **Proved.** The local (per-vertex / per-edge) content, unconditionally. **Assumed.** the
