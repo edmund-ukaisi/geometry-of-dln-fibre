@@ -348,4 +348,375 @@ end ChainWitness
 
 end Chain
 
+/-! ## Complete-lattice helpers for the `Fin.cons` combine
+
+The strong induction adds one bar at a time (`Fin.cons` of a new line onto the family). These two
+general complete-lattice facts are the combine for the supremum and for `iSupIndep` across a
+`Fin.cons`; neither is in Mathlib at this pin. -/
+
+section CompleteLatticeAux
+
+variable {α : Type*} [CompleteLattice α]
+
+/-- The supremum of a `Fin.cons` splits off the head: `⨆ Fin.cons a g = a ⊔ ⨆ g`. -/
+theorem iSup_fin_cons {n : ℕ} (a : α) (g : Fin n → α) :
+    ⨆ i : Fin (n + 1), Fin.cons a g i = a ⊔ ⨆ i, g i := by
+  apply le_antisymm
+  · refine iSup_le fun i => ?_
+    rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨k, rfl⟩
+    · rw [Fin.cons_zero]; exact le_sup_left
+    · rw [Fin.cons_succ]; exact le_sup_of_le_right (le_iSup g k)
+  · refine sup_le (le_iSup_of_le 0 (by rw [Fin.cons_zero])) (iSup_le fun k => ?_)
+    exact le_iSup_of_le k.succ (by rw [Fin.cons_succ])
+
+end CompleteLatticeAux
+
+section SubmoduleAux
+
+variable {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
+
+/-- `iSupIndep` is preserved by consing a head disjoint from the supremum of the tail: if a family
+of submodules `g` is independent and `a` is disjoint from `⨆ g`, then `Fin.cons a g` is independent.
+The supremum-disjoint head suffices precisely because `iSupIndep` is the genuine (not merely
+pairwise) independence; the codisjoint half of the new vertex is proved element-wise (the submodule
+lattice is modular, not distributive, so `Disjoint.sup_right` does not apply). -/
+theorem iSupIndep_fin_cons {n : ℕ} {a : Submodule R M} {g : Fin n → Submodule R M}
+    (hg : iSupIndep g) (ha : Disjoint a (⨆ i, g i)) : iSupIndep (Fin.cons a g) := by
+  rw [iSupIndep_def]
+  intro i
+  rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨m, rfl⟩
+  · rw [Fin.cons_zero]
+    refine ha.mono_right (iSup₂_le fun j hj => ?_)
+    rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨k, rfl⟩
+    · exact absurd rfl hj
+    · rw [Fin.cons_succ]; exact le_iSup g k
+  · rw [Fin.cons_succ]
+    rw [iSupIndep_def] at hg
+    have hsplit : (⨆ j, ⨆ (_ : j ≠ m.succ), Fin.cons a g j) ≤ a ⊔ ⨆ j, ⨆ (_ : j ≠ m), g j := by
+      refine iSup₂_le fun j hj => ?_
+      rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨k, rfl⟩
+      · rw [Fin.cons_zero]; exact le_sup_left
+      · rw [Fin.cons_succ]
+        exact le_sup_of_le_right (le_iSup₂_of_le k (fun hk => hj (by rw [hk])) le_rfl)
+    refine Disjoint.mono_right hsplit ?_
+    rw [Submodule.disjoint_def]
+    intro x hxgm hxac
+    obtain ⟨a', ha', c', hc', hsum⟩ := Submodule.mem_sup.mp hxac
+    have hc'_le : c' ∈ ⨆ i, g i :=
+      (iSup₂_le fun j _ => le_iSup g j : (⨆ j, ⨆ (_ : j ≠ m), g j) ≤ ⨆ i, g i) hc'
+    have ha'_le : a' ∈ ⨆ i, g i := by
+      have hax : a' = x - c' := by rw [← hsum]; abel
+      rw [hax]; exact Submodule.sub_mem _ (le_iSup g m hxgm) hc'_le
+    have ha'0 : a' = 0 := (Submodule.disjoint_def.mp ha) a' ha' ha'_le
+    have hxc' : x = c' := by rw [← hsum, ha'0, zero_add]
+    exact (Submodule.disjoint_def.mp (hg m)) x hxgm (hxc' ▸ hc')
+
+end SubmoduleAux
+
+/-! ## Subrepresentations and total dimension (induction substrate)
+
+The total-dimension induction runs over **subrepresentations** `P_* ≤ V_*` of a *fixed* ambient
+chain — families of submodules closed forward under the edge maps. Keeping the ambient `V` fixed and
+inducting on `∑_t finrank (P_t)` (a `ℕ`) means the types never change; the peel produces a smaller
+subrep and `relSplitting` does the splitting *inside* `P`. -/
+
+section Subrep
+
+variable {k : Type u} [Field k] {N : ℕ}
+  (V : Fin (N + 1) → Type v) [∀ t, AddCommGroup (V t)] [∀ t, Module k (V t)]
+  (f : ∀ t : Fin N, V t.castSucc →ₗ[k] V t.succ)
+
+/-- A **subrepresentation**: a family of submodules forward-closed under every edge map,
+`f e (P e.castSucc) ⊆ P e.succ`. -/
+def IsSubrep (P : ∀ t, Submodule k (V t)) : Prop :=
+  ∀ e : Fin N, (P e.castSucc).map (f e) ≤ P e.succ
+
+/-- The whole chain `V_*` (every `P_t = ⊤`) is a subrepresentation. -/
+theorem isSubrep_top : IsSubrep V f (fun _ => ⊤) := fun _ => le_top
+
+/-- The composite map preserves a subrepresentation: `x ∈ P i ⟹ compMap f i j x ∈ P j`. -/
+theorem compMap_mem {P : ∀ t, Submodule k (V t)} (hP : IsSubrep V f P) {i j : Fin (N + 1)}
+    (hij : i ≤ j) {x : V i} (hx : x ∈ P i) : compMap V f i j hij x ∈ P j := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp hij
+    rw [show compMap V f 0 0 hij = LinearMap.id from compMap_self V f 0]
+    exact hx
+  | succ p ih =>
+    rcases eq_or_lt_of_le hij with rfl | hlt
+    · rw [show compMap V f p.succ p.succ hij = LinearMap.id from compMap_self V f p.succ]; exact hx
+    · have hip : i ≤ p.castSucc := by rw [Fin.le_castSucc_iff]; exact hlt
+      rw [compMap_succ V f i p hip, LinearMap.comp_apply]
+      exact hP p (Submodule.mem_map_of_mem (ih hip))
+
+/-- The total dimension `∑_t finrank (P_t)` of a subrep family — the induction's well-founded
+measure. -/
+noncomputable def totalDim [∀ t, FiniteDimensional k (V t)] (P : ∀ t, Submodule k (V t)) : ℕ :=
+  ∑ t, Module.finrank k (P t)
+
+/-! ### Index-finding: the least-nonzero vertex `s` and the last-nonzero vertex `j` -/
+
+/-- The **least vertex** `s` with `P_s ≠ ⊥` (every earlier vertex is `⊥`). The bottom of the bar;
+its minimality is what makes the peeled complement forward-closed across the edge entering `s`. -/
+theorem exists_least_nonzero {P : ∀ t, Submodule k (V t)} (h : ∃ t, P t ≠ ⊥) :
+    ∃ s, P s ≠ ⊥ ∧ ∀ t, t < s → P t = ⊥ := by
+  classical
+  let S := Finset.univ.filter (fun t => P t ≠ ⊥)
+  have hSne : S.Nonempty := by
+    obtain ⟨t, ht⟩ := h; exact ⟨t, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ht⟩⟩
+  refine ⟨S.min' hSne, (Finset.mem_filter.mp (S.min'_mem hSne)).2, fun t ht => ?_⟩
+  by_contra hP
+  exact absurd (S.min'_le t (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hP⟩)) (not_le.mpr ht)
+
+/-- The **last vertex** `j ≥ s` at which the forward trajectory `compMap f s · vs` is nonzero
+(beyond `j` it vanishes). The top of the bar; `compMap f s j vs ≠ 0` feeds the top complement, and
+the death `compMap f s t vs = 0` for `t > j` is what makes the bar an interval module. -/
+theorem exists_last_nonzero {s : Fin (N + 1)} {vs : V s} (hvs : vs ≠ 0) :
+    ∃ j, ∃ hsj : s ≤ j, compMap V f s j hsj vs ≠ 0
+      ∧ ∀ t (hst : s ≤ t), j < t → compMap V f s t hst vs = 0 := by
+  classical
+  let S := Finset.univ.filter (fun t => ∃ h : s ≤ t, compMap V f s t h vs ≠ 0)
+  have hsS : s ∈ S := Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_rfl, by
+    rw [show compMap V f s s le_rfl = LinearMap.id from compMap_self V f s]; exact hvs⟩
+  have hSne : S.Nonempty := ⟨s, hsS⟩
+  refine ⟨S.max' hSne, S.le_max' s hsS, ?_, fun t hst htgt => ?_⟩
+  · obtain ⟨_, hne⟩ := (Finset.mem_filter.mp (S.max'_mem hSne)).2
+    exact hne
+  · by_contra hne
+    exact absurd (S.le_max' t (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hst, hne⟩))
+      (not_le.mpr htgt)
+
+/-! ### The peel — one inductive step
+
+From a subrep `P` with some `P_t ≠ ⊥`, peel one interval bar: the least-nonzero vertex `s`, a
+trajectory line `v_t = compMap f s t vs` running to the last-nonzero vertex `j`, and a complementary
+subrep `P'` with `P_t = k·v_t ⊕ P'_t` on `[s,j]`, `P'_t = P_t` off it, and **strictly smaller total
+dimension**. The splitting is `relSplitting` applied vertex-wise (via `compMap_trans`); the
+subrepresentation property of `P'` uses `compMap_edge` at interior edges and `s`-minimality at the
+bottom edge; the strict drop is `finrank_sup_add_finrank_inf_eq` at `s` fed to `Finset.sum_lt_sum`.
+The engine of the total-dimension induction. -/
+theorem exists_peel [∀ t, FiniteDimensional k (V t)] {P : ∀ t, Submodule k (V t)}
+    (hP : IsSubrep V f P) (hne : ∃ t, P t ≠ ⊥) :
+    ∃ (s j : Fin (N + 1)) (_ : s ≤ j) (v : ∀ t, V t) (P' : ∀ t, Submodule k (V t)),
+      IsSubrep V f P' ∧ (∀ t, P' t ≤ P t)
+        ∧ (∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t ∧ v t = 0)
+        ∧ (∀ t, s ≤ t → t ≤ j →
+            Disjoint (k ∙ v t) (P' t) ∧ k ∙ v t ⊔ P' t = P t ∧ v t ≠ 0)
+        ∧ (∀ e : Fin N, s ≤ e.castSucc → e.succ ≤ j → f e (v e.castSucc) = v e.succ)
+        ∧ (∀ e : Fin N, j < e.succ → f e (v e.castSucc) = 0)
+        ∧ totalDim V P' < totalDim V P := by
+  classical
+  obtain ⟨s, hs_ne, hs_min⟩ := exists_least_nonzero V hne
+  obtain ⟨vs, hvs_mem, hvs_ne⟩ := (Submodule.ne_bot_iff (P s)).mp hs_ne
+  obtain ⟨j, hsj, hvj_ne0, hj_last⟩ := exists_last_nonzero V f hvs_ne
+  set vj := compMap V f s j hsj vs with hvj_def
+  have hvj_mem : vj ∈ P j := compMap_mem V f hP hsj hvs_mem
+  have hkvj_le : (k ∙ vj) ≤ P j := by rw [Submodule.span_singleton_le_iff_mem]; exact hvj_mem
+  obtain ⟨C, hC⟩ := Submodule.exists_isCompl (k ∙ vj)
+  set Uj := C ⊓ P j with hUj_def
+  have hUj_disj : Disjoint (k ∙ vj) Uj := hC.disjoint.mono_right inf_le_left
+  have hUj_sup : k ∙ vj ⊔ Uj = P j := by
+    rw [hUj_def, ← sup_inf_assoc_of_le C hkvj_le, codisjoint_iff.mp hC.codisjoint, top_inf_eq]
+  set v : ∀ t, V t := fun t => if h : s ≤ t ∧ t ≤ j then compMap V f s t h.1 vs else 0
+    with hv_def
+  set P' : ∀ t, Submodule k (V t) :=
+    fun t => if h : s ≤ t ∧ t ≤ j then Uj.comap (compMap V f t j h.2) ⊓ P t else P t with hP'_def
+  have hv_pos : ∀ t (h : s ≤ t ∧ t ≤ j), v t = compMap V f s t h.1 vs := by
+    intro t h; simp only [hv_def]; exact dif_pos h
+  have hv_neg : ∀ t, ¬ (s ≤ t ∧ t ≤ j) → v t = 0 := by
+    intro t h; simp only [hv_def]; exact dif_neg h
+  have hP'_pos : ∀ t (h : s ≤ t ∧ t ≤ j),
+      P' t = Uj.comap (compMap V f t j h.2) ⊓ P t := by
+    intro t h; simp only [hP'_def]; exact dif_pos h
+  have hP'_neg : ∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t := by
+    intro t h; simp only [hP'_def]; exact dif_neg h
+  have htrans : ∀ t (h : s ≤ t ∧ t ≤ j),
+      compMap V f t j h.2 (compMap V f s t h.1 vs) = vj := by
+    intro t h; rw [← LinearMap.comp_apply, ← compMap_trans V f s h.1 h.2, hvj_def]
+  have h_split : ∀ t, s ≤ t → t ≤ j →
+      Disjoint (k ∙ v t) (P' t) ∧ k ∙ v t ⊔ P' t = P t ∧ v t ≠ 0 := by
+    intro t hst htj
+    have h : s ≤ t ∧ t ≤ j := ⟨hst, htj⟩
+    have hmem : compMap V f s t h.1 vs ∈ P t := compMap_mem V f hP h.1 hvs_mem
+    have hfv : compMap V f t j h.2 (compMap V f s t h.1 vs) ≠ 0 := by
+      rw [htrans t h]; exact hvj_ne0
+    have hPQ : (P t).map (compMap V f t j h.2) ≤ P j :=
+      Submodule.map_le_iff_le_comap.mpr fun x hx =>
+        Submodule.mem_comap.mpr (compMap_mem V f hP h.2 hx)
+    have hdisj' : Disjoint (k ∙ compMap V f t j h.2 (compMap V f s t h.1 vs)) Uj := by
+      rw [htrans t h]; exact hUj_disj
+    have hsup' : k ∙ compMap V f t j h.2 (compMap V f s t h.1 vs) ⊔ Uj = P j := by
+      rw [htrans t h]; exact hUj_sup
+    obtain ⟨hd, hsp⟩ := relSplitting (compMap V f t j h.2) hmem hfv hPQ hdisj' hsup'
+    rw [hv_pos t h, hP'_pos t h]
+    exact ⟨hd, hsp, fun hz => hfv (by rw [hz, map_zero])⟩
+  have h_le : ∀ t, P' t ≤ P t := by
+    intro t
+    by_cases h : s ≤ t ∧ t ≤ j
+    · rw [hP'_pos t h]; exact inf_le_right
+    · exact le_of_eq (hP'_neg t h)
+  have h_off : ∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t ∧ v t = 0 :=
+    fun t h => ⟨hP'_neg t h, hv_neg t h⟩
+  have h_traj : ∀ e : Fin N, s ≤ e.castSucc → e.succ ≤ j → f e (v e.castSucc) = v e.succ := by
+    intro e hse hej
+    have hca : s ≤ e.castSucc ∧ e.castSucc ≤ j := ⟨hse, le_trans (Fin.castSucc_le_succ e) hej⟩
+    have hsu : s ≤ e.succ ∧ e.succ ≤ j := ⟨le_trans hse (Fin.castSucc_le_succ e), hej⟩
+    have hstep : compMap V f s e.succ hsu.1 vs = f e (compMap V f s e.castSucc hca.1 vs) := by
+      rw [← LinearMap.comp_apply, ← compMap_succ V f s e hca.1]
+    rw [hv_pos e.castSucc hca, hv_pos e.succ hsu, hstep]
+  have h_death : ∀ e : Fin N, j < e.succ → f e (v e.castSucc) = 0 := by
+    intro e hje
+    by_cases hca : s ≤ e.castSucc ∧ e.castSucc ≤ j
+    · rw [hv_pos e.castSucc hca]
+      have hstep : compMap V f s e.succ (le_trans hca.1 (Fin.castSucc_le_succ e)) vs
+          = f e (compMap V f s e.castSucc hca.1 vs) := by
+        rw [← LinearMap.comp_apply, ← compMap_succ V f s e hca.1]
+      rw [← hstep]
+      exact hj_last e.succ (le_trans hca.1 (Fin.castSucc_le_succ e)) hje
+    · rw [hv_neg e.castSucc hca, map_zero]
+  have h_subrep : IsSubrep V f P' := by
+    intro e
+    by_cases hb : s ≤ e.succ ∧ e.succ ≤ j
+    · by_cases ha : s ≤ e.castSucc ∧ e.castSucc ≤ j
+      · rw [hP'_pos e.castSucc ha, hP'_pos e.succ hb, Submodule.map_le_iff_le_comap]
+        intro x hx
+        have hxUj : compMap V f e.castSucc j ha.2 x ∈ Uj := (Submodule.mem_inf.mp hx).1
+        have hxP : x ∈ P e.castSucc := (Submodule.mem_inf.mp hx).2
+        have hedge : compMap V f e.succ j hb.2 (f e x) = compMap V f e.castSucc j ha.2 x := by
+          rw [← LinearMap.comp_apply, ← compMap_edge V f e (Fin.castSucc_le_succ e),
+            ← compMap_trans V f e.castSucc (Fin.castSucc_le_succ e) hb.2]
+        rw [Submodule.mem_comap]
+        refine Submodule.mem_inf.mpr ⟨?_, hP e (Submodule.mem_map_of_mem hxP)⟩
+        rw [Submodule.mem_comap, hedge]; exact hxUj
+      · have ha_lt : e.castSucc < s := by
+          rcases not_and_or.mp ha with h1 | h2
+          · exact not_le.mp h1
+          · exact absurd (le_trans (Fin.castSucc_le_succ e) hb.2) h2
+        rw [hP'_neg e.castSucc (by rw [not_and_or]; exact Or.inl (not_le.mpr ha_lt)),
+          hs_min e.castSucc ha_lt, Submodule.map_bot]
+        exact bot_le
+    · rw [hP'_neg e.succ hb]
+      exact le_trans (Submodule.map_mono (h_le e.castSucc)) (hP e)
+  have h_drop : totalDim V P' < totalDim V P := by
+    rw [totalDim, totalDim]
+    refine Finset.sum_lt_sum (fun t _ => Submodule.finrank_mono (h_le t))
+      ⟨s, Finset.mem_univ s, ?_⟩
+    obtain ⟨hd, hsp, hvne⟩ := h_split s le_rfl hsj
+    have hkey := Submodule.finrank_sup_add_finrank_inf_eq (k ∙ v s) (P' s)
+    rw [hsp, hd.eq_bot, finrank_bot, finrank_span_singleton hvne] at hkey
+    omega
+  exact ⟨s, j, hsj, v, P', h_subrep, h_le, h_off, h_split, h_traj, h_death, h_drop⟩
+
+/-! ### The barcode-basis existence theorem (the headline) -/
+
+/-- A **barcode** for a subrepresentation `P`: a finite family of interval bars `λ` (each with
+`birth λ ≤ death λ`, a line `line λ : ∀ t, V t` supported on `[birth λ, death λ]`, nonzero there,
+running as a trajectory `f e (line λ) = line λ` inside the interval and dying past `death λ`) whose
+lines, at *every* vertex `t`, form an internal direct sum (`iSupIndep`) equal to `P_t` (spanning).
+This is the abstract-chain form of "`P` is isomorphic to a direct sum of interval modules": bar `λ`
+*is* the interval module `M_{birth λ, death λ}`, and the last two clauses say
+`P_t = ⨁_λ k·(line λ)_t` at each vertex, with the edge maps acting as the interval-module maps. -/
+def HasBarcode (P : ∀ t, Submodule k (V t)) : Prop :=
+  ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)) (line : Fin M → ∀ t, V t),
+    (∀ lam, birth lam ≤ death lam)
+    ∧ (∀ lam t, ¬ (birth lam ≤ t ∧ t ≤ death lam) → line lam t = 0)
+    ∧ (∀ lam t, birth lam ≤ t → t ≤ death lam → line lam t ≠ 0)
+    ∧ (∀ lam (e : Fin N), birth lam ≤ e.castSucc → e.succ ≤ death lam →
+          f e (line lam e.castSucc) = line lam e.succ)
+    ∧ (∀ lam (e : Fin N), death lam < e.succ → f e (line lam e.castSucc) = 0)
+    ∧ (∀ t, iSupIndep (fun lam => k ∙ line lam t))
+    ∧ (∀ t, ⨆ lam, (k ∙ line lam t) = P t)
+
+/-- **The barcode-basis existence theorem (rung 4d, the crux).** Every finite-dimensional
+subrepresentation of an abstract chain has a barcode: an internal direct sum of interval-module
+lines at every vertex. Equivalently, every finite chain of finite-dimensional `k`-vector spaces is
+isomorphic to a direct sum of interval modules — the **existence** half of type-A Gabriel
+(Le Halleur–Rimányi 2024, Thm 2.5). Proved by total-dimension strong induction, peeling one bar per
+step (`exists_peel`) and consing it onto the IH's barcode (`iSup_fin_cons` / `iSupIndep_fin_cons`).
+**Existence only**: uniqueness of the multiplicities is the separate (near-free) step via
+`RankPattern.diff_cumul`, and the transport to `Setup.Tuple` is a separate change-of-basis lemma. -/
+theorem hasBarcode_of_isSubrep [∀ t, FiniteDimensional k (V t)]
+    (P : ∀ t, Submodule k (V t)) (hP : IsSubrep V f P) : HasBarcode V f P := by
+  suffices H : ∀ n (Q : ∀ t, Submodule k (V t)), IsSubrep V f Q → totalDim V Q = n →
+      HasBarcode V f Q by
+    exact H (totalDim V P) P hP rfl
+  intro n
+  induction n using Nat.strongRecOn with
+  | ind n ih =>
+    intro Q hQ hn
+    by_cases hzero : ∃ t, Q t ≠ ⊥
+    · obtain ⟨s, j, hsj, v, Q', hsubrep, hle, hoff, hsplit, htraj, hdeath, hdrop⟩ :=
+        exists_peel V f hQ hzero
+      have hlt : totalDim V Q' < n := hn ▸ hdrop
+      obtain ⟨M, birth, death, line, hbd, hsupp, hnz, htr, hde, hindep, hspan⟩ :=
+        ih (totalDim V Q') hlt Q' hsubrep rfl
+      refine ⟨M + 1, Fin.cons s birth, Fin.cons j death, Fin.cons v line,
+        ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+      · intro lam
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simpa using hsj
+        · simpa using hbd m
+      · intro lam t hlam
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at hlam ⊢; exact (hoff t hlam).2
+        · simp only [Fin.cons_succ] at hlam ⊢; exact hsupp m t hlam
+      · intro lam t h1 h2
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at h1 h2 ⊢; exact (hsplit t h1 h2).2.2
+        · simp only [Fin.cons_succ] at h1 h2 ⊢; exact hnz m t h1 h2
+      · intro lam e h1 h2
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at h1 h2 ⊢; exact htraj e h1 h2
+        · simp only [Fin.cons_succ] at h1 h2 ⊢; exact htr m e h1 h2
+      · intro lam e h1
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at h1 ⊢; exact hdeath e h1
+        · simp only [Fin.cons_succ] at h1 ⊢; exact hde m e h1
+      · intro t
+        have hfam : (fun lam : Fin (M + 1) => k ∙ (Fin.cons v line : Fin (M + 1) → ∀ u, V u) lam t)
+            = Fin.cons (k ∙ v t) (fun m => k ∙ line m t) := by
+          funext lam; rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩ <;> simp
+        rw [hfam]
+        refine iSupIndep_fin_cons (hindep t) ?_
+        rw [hspan t]
+        by_cases h : s ≤ t ∧ t ≤ j
+        · exact (hsplit t h.1 h.2).1
+        · rw [(hoff t h).2, Submodule.span_zero_singleton]; exact disjoint_bot_left
+      · intro t
+        have hfam : (fun lam : Fin (M + 1) => k ∙ (Fin.cons v line : Fin (M + 1) → ∀ u, V u) lam t)
+            = Fin.cons (k ∙ v t) (fun m => k ∙ line m t) := by
+          funext lam; rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩ <;> simp
+        rw [hfam, iSup_fin_cons, hspan t]
+        by_cases h : s ≤ t ∧ t ≤ j
+        · exact (hsplit t h.1 h.2).2.1
+        · rw [(hoff t h).2, Submodule.span_zero_singleton, bot_sup_eq]; exact (hoff t h).1
+    · simp only [not_exists, not_ne_iff] at hzero
+      refine ⟨0, Fin.elim0, Fin.elim0, Fin.elim0, fun lam => lam.elim0, fun lam => lam.elim0,
+        fun lam => lam.elim0, fun lam => lam.elim0, fun lam => lam.elim0, fun t => ?_, fun t => ?_⟩
+      · rw [iSupIndep_def]; exact fun i => i.elim0
+      · rw [hzero t]; exact iSup_of_empty _
+
+/-- **Every finite chain of finite-dimensional `k`-vector spaces has a barcode** (the whole-chain
+form, `P = ⊤`): it is an internal direct sum of interval-module lines at every vertex — isomorphic
+to a direct sum of interval modules. The existence half of type-A Gabriel on an abstract chain. -/
+theorem hasBarcode_top [∀ t, FiniteDimensional k (V t)] : HasBarcode V f (fun _ => ⊤) :=
+  hasBarcode_of_isSubrep V f _ (isSubrep_top V f)
+
+end Subrep
+
+section BarcodeWitness
+
+/-! ## Non-vacuity for the barcode theorem
+
+The two-vertex identity chain `ℚ --id--> ℚ` (`witnessV`/`witnessF`) has a barcode — `hasBarcode_top`
+fires on a concrete chain, so the theorem is non-vacuous. (Its barcode is the single bar `M_{0,1}`:
+one line `1 ↦ 1` alive across both vertices.) -/
+
+/-- The identity chain `ℚ → ℚ` has a barcode — the barcode theorem is non-vacuous. -/
+example : HasBarcode witnessV witnessF (fun _ => ⊤) := by
+  haveI : ∀ t, FiniteDimensional ℚ (witnessV t) := fun _ => inferInstanceAs (FiniteDimensional ℚ ℚ)
+  exact hasBarcode_top witnessV witnessF
+
+end BarcodeWitness
+
 end DLNFibre.Core
