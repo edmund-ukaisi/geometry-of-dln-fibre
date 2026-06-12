@@ -7,11 +7,12 @@ Quot.sound]`. **Pinned at** `1d5a36c`.
 
 ## TL;DR (what landed)
 
-The **load-bearing splitting fact** (the crux's heart) landed cleanly, plus the *entire local
-content* of the barcode peel — and a key simplification over the design: with the abstract
-composite map's composition law, the design's "single hardest formal step" (the indexed *downward*
-preimage construction `U_{t-1} = f_t⁻¹(U_t)` threaded down the chain) collapses to a **pointwise**
-application of the splitting fact at each interior vertex, with **no downward recursion**.
+The **load-bearing splitting fact** (the crux's heart) landed cleanly — in both an **ambient** and a
+**relative** (recursion-ready) form — plus the *entire local content* of the barcode peel. A key
+simplification over the design: with the abstract composite map's composition law, the design's
+"single hardest formal step" (the indexed *downward* preimage construction `U_{t-1} = f_t⁻¹(U_t)`
+threaded down the chain) collapses to a **pointwise** application of the splitting fact at each
+interior vertex, with **no downward recursion**.
 
 What is **not** yet done: the *global* assembly — index-finding (least-nonzero `s`, last-nonzero
 `j`), the global subrepresentation + total-dimension strict-drop packaging, the strong-induction
@@ -37,8 +38,14 @@ Companions landed on top of it:
 - **`finrank_comap_add_one`** — the quantitative companion: `finrank (f⁻¹U) + 1 = finrank V`. The
   engine of termination (each peeled line drops the running dimension by one). Uses
   `Submodule.finrank_add_eq_of_isCompl` + `finrank_span_singleton`.
+- **`relSplitting`** — the splitting fact **relative to an ambient pair `(P, Q)`**: if `f` restricts
+  `P → Q` (`P.map f ≤ Q`), `v ∈ P` with `f v ≠ 0`, and `Q = k·(f v) ⊕ U` *inside `Q`*, then
+  `P = k·v ⊕ (f⁻¹(U) ⊓ P)` *inside `P`*. The **recursion-ready** form (route a below): it peels a
+  line off a *subrepresentation* `P_t`, not just the ambient space, keeping all types fixed. `P = Q
+  = ⊤` recovers the ambient form (witnessed in-file). Same proof as the ambient case, intersecting
+  with `P` in the codisjoint half.
 
-In-file witnesses ground all three on `ℚ` (identity at `1`).
+In-file witnesses ground all of these on `ℚ` (identity at `1`).
 
 ## 2. The abstract-chain encoding (per design §1.1) — landed
 
@@ -108,14 +115,16 @@ The geometric content of the inductive step is **done**; the rest is assembly. R
    `finrank_interval_complement` drops summed over `[s,j]`; the off-interval `U_t = ⊤` contribute
    `finrank V_t`). Obstacle: the dependent-`if` (`dif`) unfolding + the `Finset.sum` split over the
    `[s,j]` subset of `Fin (N+1)`. Fiddly arithmetic, not yet attempted.
-3. **The strong-induction recursion.** Induct on total dimension. *Obstacle (the real one):* the
-   peel produces `U_*` as submodules of the **ambient** `V_t`; recursing means peeling **within**
-   `U_*` — a sub-sub-representation. Two routes: (a) a **relative splitting fact** (complement
-   *inside* an ambient submodule `P`, keeping all types as fixed `Submodule k (V t)` — `Nat`-strong
-   induction on `∑ finrank P_t`); or (b) a **`Chain` structure** with the spaces as the submodule
-   types (changing types each peel; the ambient splitting fact suffices but the output must be
-   transported through `Submodule.subtype`). Both have real friction; (a) is the cleaner bet (fixed
-   types, no subtype transport) and is the recommended next move.
+3. **The strong-induction recursion.** Induct on total dimension. The peel produces `U_*` as
+   submodules of the **ambient** `V_t`; recursing means peeling **within** `U_*` — a
+   sub-sub-representation. Route (a) (recommended): `Nat`-strong induction on `∑ finrank P_t` over
+   subreps `P_* ≤ V_*`, with all types fixed as `Submodule k (V t)`. The relative splitting fact
+   **`relSplitting`** (now landed, §1) is the per-vertex lever for this route — it splits a line off
+   `P_t` directly. (Route (b), a `Chain` structure with the submodule types as the spaces, changes
+   types each peel and needs `Submodule.subtype` transport — dispreferred.) Obstacle remaining for
+   route (a): wiring the pointwise `relSplitting` along the bar (a relative analogue of
+   `isCompl_interval_complement` — apply `relSplitting` to `g = compMap t j` restricted to `P`),
+   then the `Nat.strong_induction` itself (generalising over the subrep). Not yet attempted.
 4. **The barcode output / completeness.** Either the `Λ`-indexed basis or "chain `≅ ⊕ M_{s,j}`"
    (needs the abstract interval module as a chain + chain-iso). With existence, *uniqueness is free*
    via the already-landed `RankPattern.diff_cumul` (design §3).
@@ -127,12 +136,12 @@ Smith/staircase, full kernel/image filtration.
 
 ## 6. Recommended next step
 
-A focused follow-up tide for the **relative splitting fact** (§5.3 route (a)) + the **global peel**
-(§5.1–2) + the **strong induction** (§5.3) — these chain together. The pointwise lemmas (§3) are the
-reusable inputs; `isCompl_span_singleton_comap` and `finrank_comap_add_one` already exist in both an
-ambient form (used at the top level) and will need a relative analogue for the recursion. Estimate:
-a substantial module-sized effort (index-finding + sum drop + recursion + barcode output), best done
-with fresh context; the crux mathematics is no longer the bottleneck.
+A focused follow-up tide for the **global peel** (§5.1–2) + the **strong induction** (§5.3) — these
+chain together. The reusable inputs all exist: the pointwise lemmas (§3), the ambient *and*
+**relative** splitting facts, `finrank_comap_add_one`, and the `compMap` layer. What is left is
+genuinely assembly — index-finding, the `Finset` sum drop, wiring `relSplitting` along the bar, the
+`Nat.strong_induction`, the barcode output, the `Tuple` transport. Estimate: a substantial
+module-sized effort, best done with fresh context; the crux mathematics is no longer the bottleneck.
 
 ---
 
@@ -153,6 +162,17 @@ with fresh context; the crux mathematics is no longer the bottleneck.
 > - **Deferred.** none for *this* statement. (The full barcode existence — peeling this down a chain
 >   by total-dimension induction — is rung 4d's remaining work; see §5.)
 > - **Status.** sorry-free.
+
+> **Claim (relative splitting fact, recursion-ready).** If `f` restricts `P → Q` (`P.map f ≤ Q`),
+> `v ∈ P` with `f v ≠ 0`, and `Q = k·(f v) ⊕ U` inside `Q`, then `P = k·v ⊕ (f⁻¹(U) ⊓ P)` inside
+> `P`.
+>
+> - **Lean:** `DLNFibre.Core.relSplitting` (`lean/DLNFibre/Core/Barcode.lean` @ `943c13d`)
+> - **Gloss.** `Disjoint (k∙v) (U.comap f ⊓ P) ∧ k∙v ⊔ (U.comap f ⊓ P) = P`, given `P.map f ≤ Q`,
+>   `v ∈ P`, `f v ≠ 0`, `Disjoint (k∙f v) U`, `k∙(f v) ⊔ U = Q`. Splits a line off a
+>   *subrepresentation*, types fixed — the lever for the recursion (route a).
+> - **Proved.** Unconditionally (field). **Assumed.** the named hypotheses. **Cited.** none.
+>   **Deferred.** none (`P=Q=⊤` recovers the ambient form, witnessed in-file). **Status.** sorry-free.
 
 > **Claim (dimension drop).** Peeling the line `k·v` off `V` via the preimage complement drops
 > `finrank` by exactly one.
