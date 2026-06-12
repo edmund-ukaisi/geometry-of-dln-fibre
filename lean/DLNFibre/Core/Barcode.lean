@@ -389,6 +389,38 @@ measure. -/
 noncomputable def totalDim [∀ t, FiniteDimensional k (V t)] (P : ∀ t, Submodule k (V t)) : ℕ :=
   ∑ t, Module.finrank k (P t)
 
+/-! ### Index-finding: the least-nonzero vertex `s` and the last-nonzero vertex `j` -/
+
+/-- The **least vertex** `s` with `P_s ≠ ⊥` (every earlier vertex is `⊥`). The bottom of the bar;
+its minimality is what makes the peeled complement forward-closed across the edge entering `s`. -/
+theorem exists_least_nonzero {P : ∀ t, Submodule k (V t)} (h : ∃ t, P t ≠ ⊥) :
+    ∃ s, P s ≠ ⊥ ∧ ∀ t, t < s → P t = ⊥ := by
+  classical
+  let S := Finset.univ.filter (fun t => P t ≠ ⊥)
+  have hSne : S.Nonempty := by
+    obtain ⟨t, ht⟩ := h; exact ⟨t, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ht⟩⟩
+  refine ⟨S.min' hSne, (Finset.mem_filter.mp (S.min'_mem hSne)).2, fun t ht => ?_⟩
+  by_contra hP
+  exact absurd (S.min'_le t (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hP⟩)) (not_le.mpr ht)
+
+/-- The **last vertex** `j ≥ s` at which the forward trajectory `compMap f s · vs` is nonzero
+(beyond `j` it vanishes). The top of the bar; `compMap f s j vs ≠ 0` feeds the top complement, and
+the death `compMap f s t vs = 0` for `t > j` is what makes the bar an interval module. -/
+theorem exists_last_nonzero {s : Fin (N + 1)} {vs : V s} (hvs : vs ≠ 0) :
+    ∃ j, ∃ hsj : s ≤ j, compMap V f s j hsj vs ≠ 0
+      ∧ ∀ t (hst : s ≤ t), j < t → compMap V f s t hst vs = 0 := by
+  classical
+  let S := Finset.univ.filter (fun t => ∃ h : s ≤ t, compMap V f s t h vs ≠ 0)
+  have hsS : s ∈ S := Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_rfl, by
+    rw [show compMap V f s s le_rfl = LinearMap.id from compMap_self V f s]; exact hvs⟩
+  have hSne : S.Nonempty := ⟨s, hsS⟩
+  refine ⟨S.max' hSne, S.le_max' s hsS, ?_, fun t hst htgt => ?_⟩
+  · obtain ⟨_, hne⟩ := (Finset.mem_filter.mp (S.max'_mem hSne)).2
+    exact hne
+  · by_contra hne
+    exact absurd (S.le_max' t (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hst, hne⟩))
+      (not_le.mpr htgt)
+
 end Subrep
 
 end DLNFibre.Core
