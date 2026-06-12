@@ -15,3 +15,13 @@ New, DLN-specific Lean/Mathlib gotchas also go to `../../lean/CLAUDE.md`.
   controller — sent `basechange` that instruction). Directed suspicion: after spawning worktree teammates,
   `git worktree list` to see who actually got isolated, and treat any in the main checkout as a shared-tree
   (serial, controller-commits) thread.
+- **2026-06-12 — verify a teammate has actually STOPPED before spawning a successor for the same work.**
+  I told `barcode` "you're done, stand by" and (treating it as stopped) spawned a fresh `assembly` tide for
+  the remaining 4d assembly. But `barcode` kept working (momentum + async message-crossing) and had already
+  landed step 1 (index-finding) + the subrep substrate — so `assembly` would have duplicated/raced it.
+  `assembly`'s git-safety guard (it too landed in the main checkout) + its check of `barcode/rung-4d`'s live
+  commits *before writing a byte* caught the collision; I stood `assembly` down and let `barcode` (warm,
+  isolated, ahead) finish. **Rule:** before spawning a successor for work a teammate might still hold, confirm
+  it is genuinely idle — an idle notification AND no recent commits on its branch (`git worktree list` +
+  `git log <branch>`) — not merely that a "stop" message was sent. The git-safety + check-for-live-work guard
+  on every spawned teammate is what made this recoverable (it worked twice).
