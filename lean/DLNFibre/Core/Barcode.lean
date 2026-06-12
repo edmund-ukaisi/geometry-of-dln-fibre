@@ -99,6 +99,48 @@ theorem finrank_comap_add_one [FiniteDimensional k V] (f : V →ₗ[k] W) {v : V
   rw [finrank_span_singleton hv0] at hadd
   omega
 
+/-- **The splitting fact, relative to an ambient pair `(P, Q)`** (recursion-ready form). If `f`
+restricts to `P → Q` (`P.map f ≤ Q`), `v ∈ P` with `f v ≠ 0`, and `Q = k·(f v) ⊕ U` *inside `Q`*
+(`Disjoint (k·f v) U` and `k·(f v) ⊔ U = Q`), then `P = k·v ⊕ (f⁻¹(U) ⊓ P)` *inside `P`*. This is
+the form the total-dimension **induction** consumes: peeling a line off a *subrepresentation* `P_t`
+(not just the ambient space) — the splitting happens within `P`, keeping the types fixed. Taking
+`P = ⊤, Q = ⊤` recovers `isCompl_span_singleton_comap`. -/
+theorem relSplitting (f : V →ₗ[k] W) {v : V} {P : Submodule k V} {Q : Submodule k W}
+    (hvP : v ∈ P) (hfv : f v ≠ 0) (hPQ : P.map f ≤ Q)
+    {U : Submodule k W} (hdisj : Disjoint (k ∙ f v) U) (hsup : k ∙ f v ⊔ U = Q) :
+    Disjoint (k ∙ v) (U.comap f ⊓ P) ∧ k ∙ v ⊔ (U.comap f ⊓ P) = P := by
+  refine ⟨?_, ?_⟩
+  · -- Disjoint inside `P` (the `P`-membership is unused, exactly as in the ambient case).
+    rw [Submodule.disjoint_def]
+    intro x hxv hxinf
+    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hxv
+    have hxU : c • f v ∈ U := by
+      have h1 : (c • v) ∈ U.comap f := (Submodule.mem_inf.mp hxinf).1
+      rwa [Submodule.mem_comap, map_smul] at h1
+    have hmem : c • f v ∈ (k ∙ f v) := Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
+    have hzero : c • f v = 0 := (Submodule.disjoint_def.mp hdisj) _ hmem hxU
+    rcases smul_eq_zero.mp hzero with hc | hfv'
+    · rw [hc, zero_smul]
+    · exact absurd hfv' hfv
+  · -- Span `= P`: `≤` from `v ∈ P`; `≥` writes `f x = a·(f v) + u` for `x ∈ P` (`Q = k·f v ⊔ U`).
+    apply le_antisymm
+    · exact sup_le (by rw [Submodule.span_singleton_le_iff_mem]; exact hvP) inf_le_right
+    · intro x hxP
+      have hfx : f x ∈ k ∙ f v ⊔ U := by
+        rw [hsup]; exact hPQ (Submodule.mem_map.mpr ⟨x, hxP, rfl⟩)
+      obtain ⟨y, hy, z, hz, hyz⟩ := Submodule.mem_sup.mp hfx
+      obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.mp hy
+      have hmemv : a • v ∈ k ∙ v :=
+        Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
+      have hrest : x - a • v ∈ U.comap f ⊓ P := by
+        refine Submodule.mem_inf.mpr ⟨?_, P.sub_mem hxP (P.smul_mem a hvP)⟩
+        rw [Submodule.mem_comap, map_sub, map_smul]
+        have hz' : f x - a • f v = z := by rw [← hyz]; abel
+        rw [hz']; exact hz
+      have hx : x = a • v + (x - a • v) := by abel
+      rw [hx]
+      exact Submodule.add_mem _ (Submodule.mem_sup_left hmemv) (Submodule.mem_sup_right hrest)
+
 section Witness
 
 /-! ## Non-vacuity
@@ -121,6 +163,12 @@ example : ∃ U : Submodule ℚ ℚ,
     Module.finrank ℚ (U.comap (LinearMap.id (R := ℚ) (M := ℚ))) + 1 = Module.finrank ℚ ℚ := by
   obtain ⟨U, hU, _⟩ := exists_isCompl_comap (LinearMap.id (R := ℚ) (M := ℚ)) one_ne_zero
   exact ⟨U, finrank_comap_add_one _ one_ne_zero hU⟩
+
+/-- `relSplitting` generalizes the ambient splitting fact: at `P = Q = ⊤` it reproduces
+`isCompl_span_singleton_comap` (unfolded to `Disjoint` + `⊔ = ⊤`). -/
+example (f : V →ₗ[k] W) {v : V} (hfv : f v ≠ 0) {U : Submodule k W} (h : IsCompl (k ∙ f v) U) :
+    Disjoint (k ∙ v) (U.comap f ⊓ ⊤) ∧ k ∙ v ⊔ (U.comap f ⊓ ⊤) = ⊤ :=
+  relSplitting f Submodule.mem_top hfv le_top h.disjoint (codisjoint_iff.mp h.codisjoint)
 
 end Witness
 
