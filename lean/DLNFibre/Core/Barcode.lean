@@ -31,7 +31,7 @@ namespace DLNFibre.Core
 
 open Submodule
 
-universe u
+universe u v
 
 /-! ## The splitting fact (the load-bearing lemma)
 
@@ -123,5 +123,74 @@ example : ∃ U : Submodule ℚ ℚ,
   exact ⟨U, finrank_comap_add_one _ one_ne_zero hU⟩
 
 end Witness
+
+/-! ## Abstract chains and the composite map (cast-free `submult` analogue)
+
+An abstract chain is a family `V : Fin (N+1) → Type` of `k`-vector spaces with edge maps
+`f t : V t.castSucc →ₗ[k] V t.succ`. The composite `compMap f i j : V i →ₗ[k] V j` (for `i ≤ j`)
+is the ordered composition `f_{j-1} ∘ ⋯ ∘ f_i` of the edges from vertex `i` to vertex `j` (the
+identity at `i = j`). It is the abstract, cast-free analogue of `Setup.submult`: defined by
+`Nat.leRec` on the *upper* index with a function-valued motive carrying the `< N+1` bound and
+holding `i` fixed, so the base (`= id`) and step (`compose f_m on the left`) close by the
+`Nat.leRec` reduction lemmas with no dependent cast in any statement. -/
+
+section Chain
+
+variable {k : Type u} [Field k] {N : ℕ}
+  (V : Fin (N + 1) → Type v) [∀ t, AddCommGroup (V t)] [∀ t, Module k (V t)]
+  (f : ∀ t : Fin N, V t.castSucc →ₗ[k] V t.succ)
+
+/-- The left-compose step of `compMap`: prepend the edge `f_m` to the composite reaching vertex
+`m`. Named so the `Nat.leRec` reduction lemmas have a stable term (the `submultStep` analogue). -/
+def compMapStep (i : Fin (N + 1)) :
+    ⦃m : ℕ⦄ → (i ≤ m) → ((hm : m < N + 1) → (V i →ₗ[k] V ⟨m, hm⟩)) →
+      ((hm : m + 1 < N + 1) → (V i →ₗ[k] V ⟨m + 1, hm⟩)) :=
+  fun {m} _ rec hm =>
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ hm⟩
+    show V i →ₗ[k] V p.succ from
+      (f p).comp (show V i →ₗ[k] V p.castSucc from rec p.castSucc.isLt)
+
+/-- The composite map `compMap f i j = f_{j-1} ∘ ⋯ ∘ f_i : V i →ₗ[k] V j` (the identity at
+`i = j`). The abstract, cast-free analogue of `Setup.submult` (the `i = 0` slice is the chain's
+total map). -/
+def compMap (i j : Fin (N + 1)) (hij : i ≤ j) : V i →ₗ[k] V j :=
+  Nat.leRec (motive := fun m _ => (hm : m < N + 1) → (V i →ₗ[k] V ⟨m, hm⟩))
+    (fun _ => LinearMap.id) (compMapStep V f i) hij j.isLt
+
+/-- The diagonal composite is the identity (the empty composition). -/
+theorem compMap_self (i : Fin (N + 1)) : compMap V f i i le_rfl = LinearMap.id := by
+  unfold compMap
+  exact congrFun (Nat.leRec_self (motive := fun m _ => (hm : m < N + 1) →
+    (V i →ₗ[k] V ⟨m, hm⟩)) (fun _ => LinearMap.id) (compMapStep V f i)) i.isLt
+
+/-- **Composition step** (the `submult_succ` analogue): the composite to `p.succ` gains its top
+edge on the left, `compMap f i p.succ = f_p ∘ compMap f i p.castSucc`. -/
+theorem compMap_succ (i : Fin (N + 1)) (p : Fin N) (h : i ≤ p.castSucc) :
+    compMap V f i p.succ (h.trans (Fin.castSucc_le_succ p))
+      = (f p).comp (compMap V f i p.castSucc h) := by
+  unfold compMap
+  exact congrFun (Nat.leRec_succ (h1 := Fin.val_fin_le.mpr h)
+    (h2 := Fin.val_fin_le.mpr (h.trans (Fin.castSucc_le_succ p)))
+    (refl := fun _ => LinearMap.id) (le_succ_of_le := compMapStep V f i)) p.succ.isLt
+
+/-- **Composition law.** The composite splits at any intermediate vertex `m`:
+`compMap f i j = compMap f m j ∘ compMap f i m` for `i ≤ m ≤ j`. Proved by induction on the upper
+index `j` through `compMap_succ`. The chain analogue of associativity of the ordered product. -/
+theorem compMap_trans (i : Fin (N + 1)) {m j : Fin (N + 1)} (him : i ≤ m) (hmj : m ≤ j) :
+    compMap V f i j (him.trans hmj)
+      = (compMap V f m j hmj).comp (compMap V f i m him) := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : m = 0 := Fin.le_zero_iff.mp hmj
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp him
+    rw [compMap_self]; rfl
+  | succ p ih =>
+    rcases eq_or_lt_of_le hmj with rfl | hlt
+    · rw [compMap_self, LinearMap.id_comp]
+    · have hmp : m ≤ p.castSucc := by rw [Fin.le_castSucc_iff]; exact hlt
+      have himp : i ≤ p.castSucc := him.trans hmp
+      rw [compMap_succ V f i p himp, compMap_succ V f m p hmp, ih hmp, LinearMap.comp_assoc]
+
+end Chain
 
 end DLNFibre.Core
