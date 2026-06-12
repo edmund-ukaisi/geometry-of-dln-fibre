@@ -1,0 +1,39 @@
+threads:
+- id: c-c96a5f82
+  kind: anchored
+  status: open
+  anchor: studies a concrete linear-algebraic question
+  anchor_prefix: "# High-Level Overview of the Paper\n\nThe paper "
+  anchor_suffix: |-
+    : how can a chain of
+    matrices multiply to zero, or
+  created_at: "2026-06-12T15:23:00"
+  updated_at: "2026-06-12T15:23:00"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-12T15:23:00"
+    text: Worth a sentence saying that this is motivated by studying learning behaviour
+      of DLN and also cite Aoyagi here.
+    id: p-ad5fa2cb
+    labels: [addressed]
+- id: c-4e177f1a
+  kind: anchored
+  status: open
+  anchor: composable matrix tuples
+  anchor_prefix: "_N).\n$$\n\nThe ambient affine space is the space of "
+  anchor_suffix: |2-
+
+
+    $$
+    \operatorname{Rep}_{\underline d}
+    =
+    \prod_{i=
+  created_at: "2026-06-12T17:20:12"
+  updated_at: "2026-06-12T17:20:12"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-12T17:20:12"
+    text: Please define the notation here. $\mathrm{Mat}$ is the space of matrices?
+      $k$ is a field?
+    id: p-12274b94
+    labels: [addressed]

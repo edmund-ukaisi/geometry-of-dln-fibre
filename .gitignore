@@ -1,0 +1,17 @@
+# Lean / Lake build artifacts
+lean/.lake/
+**/*.olean
+**/*.ilean
+**/*.trace
+lean/build/
+
+# Python tooling cruft (scripts/)
+**/__pycache__/
+*.pyc
+
+# Editor / OS cruft
+.DS_Store
+*.swp
+*~
+
+# Agent Teams runtime state lives outside the repo (~/.claude/teams, ~/.claude/tasks) — nothing to ignore here.

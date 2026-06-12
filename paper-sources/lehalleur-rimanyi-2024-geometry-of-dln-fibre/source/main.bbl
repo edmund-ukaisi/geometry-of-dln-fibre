@@ -1,0 +1,258 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{WHvW{\etalchar{+}}24}
+
+\bibitem[AAR99]{special}
+G.~E. Andrews, R.~Askey, and R.~Roy.
+\newblock {\em Special Functions}.
+\newblock Number~71 in Enc. of Math. and Appl. CUP, 1999.
+
+\bibitem[AB83]{AB83}
+M.~Atiyah and R.~Bott.
+\newblock The {Y}ang-{M}ills equation over {R}iemann surfaces.
+\newblock {\em Phil. Trans. of the Royal Soc. London}, 308(1505):523--615,
+  1983.
+
+\bibitem[ACGH19]{arora-al:convergence_GD_DLN}
+Sanjeev Arora, Nadav Cohen, Noah Golowich, and Wei Hu.
+\newblock A convergence analysis of gradient descent for deep linear neural
+  networks, 2019.
+
+\bibitem[AD80]{abeasis-del_fra:equioriented}
+S.~Abeasis and A.~{Del Fra}.
+\newblock Degenerations for the representations of an equioriented quiver of
+  type {{\(A_m\)}}.
+\newblock {\em Boll. Unione Mat. Ital., Suppl.}, 2:157--171, 1980.
+
+\bibitem[AD84]{ABEASIS198481}
+S.~Abeasis and A.~{Del Fra}.
+\newblock Degenerations for the representations of an equioriented quiver of
+  type {$D^m$}.
+\newblock {\em Adv. Math.}, 52(2):81--172, 1984.
+
+\bibitem[AD85]{abeasis-del_fra}
+S.~Abeasis and A.~{Del Fra}.
+\newblock Degenerations for the representations of a quiver of type
+  {{\({\mathcal A}_ m\)}}.
+\newblock {\em Journal of Algebra}, 93:376--412, 1985.
+
+\bibitem[ADK81]{abeasis-del_fra-kraft}
+S.~Abeasis, A.~{Del Fra}, and H.~Kraft.
+\newblock The geometry of representations of {{\(A_m\)}}.
+\newblock {\em Math. Ann.}, 256:401--418, 1981.
+
+\bibitem[AMG24]{achour-al:DLN_landscape_Hessian}
+E.~Mehdi Achour, F.~Malgouyres, and S.~Gerchinovitz.
+\newblock The loss landscape of deep linear neural networks: a second-order
+  analysis, 2024.
+
+\bibitem[Aoy24]{aoyagi}
+M.~Aoyagi.
+\newblock Consideration on the learning efficiency of multiple-layered neural
+  networks with linear units.
+\newblock {\em Neural Networks}, 172(106132):1--11, 2024.
+
+\bibitem[Ati70]{atiyah}
+M.~Atiyah.
+\newblock Resolution of singularities and division of distributions.
+\newblock {\em Communications on pure and applied mathematics}, 23(2):145--150,
+  1970.
+
+\bibitem[BFR05]{BFRpositivity}
+A.~S. Buch, L.~Feh\'er, and R.~Rim\'anyi.
+\newblock Positivity of quiver coefficients through {T}hom polynomials.
+\newblock {\em Adv. Math.}, 197:306--320, 2005.
+
+\bibitem[CLM{\etalchar{+}}23]{chen2023dynamicalversusbayesianphase}
+Z.~Chen, E.~Lau, J.~Mendel, S.~Wei, and D.~Murfet.
+\newblock Dynamical versus bayesian phase transitions in a toy model of
+  superposition, 2023.
+
+\bibitem[CS81]{concini-strickland:complexes}
+C.~De Concini and E.~Strickland.
+\newblock On the variety of complexes.
+\newblock {\em Advances in Mathematics}, 41(1):57--77, 1981.
+
+\bibitem[CS88]{ConwaySloane}
+J.~Conway and N.~Sloane.
+\newblock {\em Sphere Packings, Lattices and Groups}, volume 290 of {\em GL}.
+\newblock Springer, 1988.
+
+\bibitem[DAP{\etalchar{+}}24]{saxe-al:exact-dynamics-DLN}
+C.~C.~J. Dominé, N.~Anguita, A.~M. Proca, L.~Braun, D.~Kunin, P.~A.~M.
+  Mediano, and A.~M. Saxe.
+\newblock From lazy to rich: Exact learning dynamics in deep linear networks,
+  2024.
+
+\bibitem[FR02]{FRduke}
+L.~Feh\'er and R.~Rim\'anyi.
+\newblock Classes of degeneracy loci for quivers---the {T}hom polynomial point
+  of view.
+\newblock {\em Duke Math. J.}, 114(2):193--213, 2002.
+
+\bibitem[FR04]{FRavoiding}
+L.~M. Feh\'er and R.~Rim\'anyi.
+\newblock Calculation of {T}hom polynomials and other cohomological
+  obstructions for group actions.
+\newblock In T.~Gaffney and M.~Ruas, editors, {\em Real and Complex
+  Singularities (Sao Carlos, 2002)}, number 354 in Contemp. Math., pages
+  69--93. AMS, 2004.
+
+\bibitem[HWFR{\etalchar{+}}24]{hoogland2024developmentallandscapeincontextlearning}
+J.~Hoogland, G.~Wang, M.~Farrugia-Roberts, L.~Carroll, S.~Wei, and D.~Murfet.
+\newblock The developmental landscape of in-context learning, 2024.
+
+\bibitem[JGc{\etalchar{+}}22]{jacot-al:saddle-to-saddle-DLN}
+A.~Jacot, F.~Ged, B.~\c{S}im\c{s}ek, C.~Hongler, and F.~Gabriel.
+\newblock Saddle-to-saddle dynamics in deep linear networks: Small
+  initialization training, symmetry, and sparsity, 2022.
+
+\bibitem[JT19]{ji-telgarsky:GD-DLN}
+Z.~Ji and M.~Telgarsky.
+\newblock Gradient descent aligns the layers of deep linear networks, 2019.
+
+\bibitem[Kaw16]{kawaguchi:DLN_no_local_min}
+K.~Kawaguchi.
+\newblock Deep learning without poor local minima.
+\newblock {\em Advances in neural information processing systems}, 29, 2016.
+
+\bibitem[Kaz97]{Kaz97}
+M.~E. Kazarian.
+\newblock Characteristic classes of singularity theory.
+\newblock In {\em The Arnold-Gelfand mathematical seminars}, pages 325--340.
+  Birkhauser, 1997.
+
+\bibitem[Kir16]{kirillov}
+A.~Kirillov.
+\newblock {\em Quiver representations and quiver varieties}.
+\newblock Number 174 in GSM. AMS, 2016.
+
+\bibitem[KMS06]{knutson-miller-shimozono}
+A.~Knutson, E.~Miller, and M.~Shimozono.
+\newblock Four positive formulae for type a quiver polynomials.
+\newblock {\em Inv. Math.}, 166(2):229--325, 2006.
+
+\bibitem[Kol97]{kollar:lct-survey}
+J.~Koll{\'a}r.
+\newblock Singularities of pairs.
+\newblock In {\em Proceedings of Symposia in Pure Mathematics}, volume~62,
+  pages 221--288. American Mathematical Society, 1997.
+
+\bibitem[KR15]{kinser:quiver-schubert}
+R.~Kinser and J.~Rajschot.
+\newblock Type a quiver loci and schubert varieties.
+\newblock {\em Journal of Commutative Algebra}, 7(2):265--301, 2015.
+
+\bibitem[KR24]{KR}
+J.~Koncki and R.~Rim\'anyi.
+\newblock The main reasons for matrices multiplying to zero.
+\newblock In preparation, 2024.
+
+\bibitem[Leh24]{spl:real-jets}
+S.~P. Lehalleur.
+\newblock Real jet schemes, real contact loci and the real log-canonical
+  threshold.
+\newblock to appear, 2024.
+
+\bibitem[LFW{\etalchar{+}}24]{lau2024locallearningcoefficientsingularityaware}
+E.~Lau, Z.~Furman, G.~Wang, D.~Murfet, and S.~Wei.
+\newblock The local learning coefficient: A singularity-aware complexity
+  measure, 2024.
+
+\bibitem[Lin11]{lin:phd_thesis}
+Sh. Lin.
+\newblock {\em Algebraic methods for evaluating integrals in Bayesian
+  statistics}.
+\newblock University of California, Berkeley, 2011.
+
+\bibitem[LK17]{kawaguchi-lu:DLN_no_local_min_II}
+H.~Lu and K.~Kawaguchi.
+\newblock Depth creates no bad local minima, 2017.
+
+\bibitem[LM98]{lakshmibai-magyar:quiver-schubert}
+V.~Lakshmibai and Peter Magyar.
+\newblock Degeneracy schemes, quiver schemes, and schubert varieties.
+\newblock {\em International Mathematics Research Notices}, 1998(12):627--640,
+  01 1998.
+
+\bibitem[ML24]{marion-chizat:DLN-flat-minima}
+P.~Marion and Ch. Lénaïc.
+\newblock Deep linear networks for regression are implicitly regularized
+  towards flat minima, 2024.
+
+\bibitem[MS83]{musili-seshadri:schubert-complexes}
+Ch. Musili and C.~S. Seshadri.
+\newblock Schubert varieties and the variety of complexes.
+\newblock In {\em Arithmetic and Geometry: Papers Dedicated to IR Shafarevich
+  on the Occasion of His Sixtieth Birthday. Volume II: Geometry}, pages
+  329--359. Springer, 1983.
+
+\bibitem[Mus11]{mustata:lct-survey}
+M.~Mustata.
+\newblock Impanga lecture notes on log canonical thresholds, 2011.
+
+\bibitem[Rei10]{Reineke}
+M.~Reineke.
+\newblock Poisson automorphisms and quiver moduli.
+\newblock {\em Journal of the Institute of Mathematics of Jussieu},
+  9(3):653–667, 2010.
+
+\bibitem[Rim13]{RRcoha}
+R.~Rimanyi.
+\newblock On the cohomological hall algebra of dynkin quivers, 2013.
+
+\bibitem[RWY18]{RWY}
+R.~Rim\'anyi, A.~Weigandt, and A.~Yong.
+\newblock Partition identities and quiver representations.
+\newblock {\em J. of Alg. Comb.}, 47:129--169, 2018.
+
+\bibitem[SB24]{bhattacharya-shewchuk}
+J.~R. Shewchuk and S.~Bhattacharya.
+\newblock The geometry of the set of equivalent linear neural networks, 2024.
+\newblock arXiv:2404.14855.
+
+\bibitem[SMG14]{saxe-mcclellang-ganguli:DLN}
+A.~M. Saxe, J.~L. McClelland, and S.~Ganguli.
+\newblock Exact solutions to the nonlinear dynamics of learning in deep linear
+  neural networks, 2014.
+
+\bibitem[TKB20]{trager-kohn-bruna:DLN-spurious-critical}
+M.~Trager, K.~Kohn, and J.~Bruna.
+\newblock Pure and spurious critical points: a geometric study of linear
+  networks, 2020.
+
+\bibitem[Voi77]{voight}
+D.~Voigt.
+\newblock {\em Endliche algebraische Gruppen}.
+\newblock Number 592 in Lecture Notes in Math. Springer, 1977.
+
+\bibitem[Wat09]{watanabe2009}
+S.~Watanabe.
+\newblock {\em Algebraic Geometry and Statistical Learning Theory}.
+\newblock CUP, 2009.
+
+\bibitem[Wat18]{watanabe2018}
+S.~Watanabe.
+\newblock {\em Mathematical theory of {B}ayesian statistics}.
+\newblock Chapman\&{}Hall, 2018.
+
+\bibitem[Wat24]{watanabe2024recent}
+Sumio Watanabe.
+\newblock Recent advances in algebraic geometry and bayesian statistics.
+\newblock {\em Information Geometry}, 7(Suppl 1):187--209, 2024.
+
+\bibitem[WHvW{\etalchar{+}}24]{wang2024differentiationspecializationattentionheads}
+G.~Wang, J.~Hoogland, S.~van Wingerden, Z.~Furman, and D.~Murfet.
+\newblock Differentiation and specialization of attention heads via the refined
+  local learning coefficient, 2024.
+
+\bibitem[Zel85]{zelevinskii:schubert}
+A.~V. Zelevinskii.
+\newblock Two remarks on graded nilpotent classes.
+\newblock {\em Russian Mathematical Surveys}, 40(1):249, 1985.
+
+\bibitem[ZLM22]{Liu-Li-Meng:exact_DLN}
+L.~Ziyin, B.~Li, and X.~Meng.
+\newblock Exact solutions of a deep linear network.
+\newblock arXiv, 2022.
+
+\end{thebibliography}
