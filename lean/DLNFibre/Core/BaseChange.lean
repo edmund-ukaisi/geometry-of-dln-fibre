@@ -24,7 +24,7 @@ in the same `G_d`-orbit have the same rank pattern.
 
 **Typeclass.** `CommRing k` throughout — the two rank levers
 `Matrix.rank_mul_eq_left_of_isUnit_det` / `…_right_…` are stated over a `CommRing` (no `Field`
-needed). The non-vacuity witness additionally uses `Nontrivial ℤ` only through `Matrix.rank_of_isUnit`.
+needed). The non-vacuity witness additionally uses `Nontrivial ℤ` (via `Matrix.rank_of_isUnit`).
 **Dependency rule:** never import `DLNFibre.DLN`.
 -/
 
@@ -46,11 +46,12 @@ variable {d : Fin (N + 1) → ℕ}
 /-- The `G_d` base-change action on `Tuple d`: on edge `i`, conjugate `A i` by the target-vertex
 unit `P i.succ` on the left and the source-vertex unit inverse `(P i.castSucc)⁻¹` on the right. -/
 def baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) : Tuple (k := k) d :=
-  fun i ↦ ↑(P i.succ) * A i * ↑((P i.castSucc)⁻¹)
+  fun i ↦ Units.val (P i.succ) * A i * Units.val ((P i.castSucc)⁻¹)
 
 /-- The defining formula of the action, edge by edge. -/
 @[simp] theorem baseChange_apply (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
-    (i : Fin N) : baseChange P A i = ↑(P i.succ) * A i * ↑((P i.castSucc)⁻¹) := rfl
+    (i : Fin N) :
+    baseChange P A i = Units.val (P i.succ) * A i * Units.val ((P i.castSucc)⁻¹) := rfl
 
 /-- The identity base change fixes every tuple. -/
 theorem baseChange_one (A : Tuple (k := k) d) :
@@ -62,7 +63,7 @@ theorem baseChange_one (A : Tuple (k := k) d) :
 theorem baseChange_mul (P Q : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) :
     baseChange (P * Q) A = baseChange P (baseChange Q A) := by
   funext i
-  simp only [baseChange_apply, Pi.mul_apply, Units.val_mul, mul_inv_rev, Matrix.mul_assoc]
+  simp only [baseChange_apply, Pi.mul_apply, Units.val_mul, _root_.mul_inv_rev, Matrix.mul_assoc]
 
 /-- The base change is a genuine group action of `G_d = ∏_v GL_{d_v}` on `Tuple d`. -/
 instance : MulAction (BaseChangeGroup (k := k) d) (Tuple (k := k) d) where
@@ -83,8 +84,7 @@ inner units cancel (`P_t⁻¹ P_t = 1`); proved by induction on the upper index 
 theorem submult_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
     (i j : Fin (N + 1)) (hij : i ≤ j) :
     submult d (baseChange P A) i j hij
-      = (P j : Matrix (Fin (d j)) (Fin (d j)) k) * submult d A i j hij
-          * ((P i)⁻¹ : Matrix (Fin (d i)) (Fin (d i)) k) := by
+      = Units.val (P j) * submult d A i j hij * Units.val ((P i)⁻¹) := by
   revert hij
   induction j using Fin.induction with
   | zero =>
@@ -100,25 +100,24 @@ theorem submult_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) 
       rw [Matrix.mul_one, Units.mul_inv]
     · -- active edge `i ≤ p.castSucc`: peel the top factor and cancel the inner units
       have hcast : i ≤ p.castSucc := Fin.le_castSucc_iff.mpr hlt
-      rw [submult_succ d (baseChange P A) i p hcast, ih hcast, submult_succ d A i p hcast]
-      simp only [baseChange_apply, Matrix.mul_assoc]
-      rw [← Matrix.mul_assoc ((P p.castSucc)⁻¹ : Matrix (Fin (d p.castSucc)) (Fin (d p.castSucc)) k)
-            (P p.castSucc : Matrix (Fin (d p.castSucc)) (Fin (d p.castSucc)) k),
+      rw [submult_succ d (baseChange P A) i p hcast, ih hcast, submult_succ d A i p hcast,
+          baseChange_apply]
+      simp only [Matrix.mul_assoc]
+      rw [← Matrix.mul_assoc (Units.val ((P p.castSucc)⁻¹)) (Units.val (P p.castSucc)),
           Units.inv_mul, Matrix.one_mul]
 
 /-- Telescoping conjugation, in `•` notation. -/
 theorem submult_smul (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
     (i j : Fin (N + 1)) (hij : i ≤ j) :
     submult d (P • A) i j hij
-      = (P j : Matrix (Fin (d j)) (Fin (d j)) k) * submult d A i j hij
-          * ((P i)⁻¹ : Matrix (Fin (d i)) (Fin (d i)) k) :=
+      = Units.val (P j) * submult d A i j hij * Units.val ((P i)⁻¹) :=
   submult_baseChange P A i j hij
 
 /-! ## Rank-pattern base-change invariance -/
 
 /-- **Rank-pattern base-change invariance.** Conjugating by units does not change rank, so the rank
-pattern is constant on `G_d`-orbits: `rankPattern (P • A) i j = rankPattern A i j`. (Orbit-side input
-to Prop 3.1b.) -/
+pattern is constant on `G_d`-orbits: `rankPattern (P • A) i j = rankPattern A i j`. (Orbit-side
+input to Prop 3.1b.) -/
 theorem rankPattern_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
     (i j : Fin (N + 1)) (hij : i ≤ j) :
     rankPattern d (baseChange P A) i j hij = rankPattern d A i j hij := by
@@ -141,8 +140,8 @@ Conjugate the landed `(2,2,2)` witness `Setup.tupleWitness` by the `GL₂(ℤ)` 
 `r_{02} = rank(A₂A₁) = 2` survives the conjugation — the headline `rankPattern_smul` applied to a
 genuine, non-identity base change of a concrete tuple. -/
 
-/-- A concrete `GL₂(ℤ)` element, `!![1,1;0,1]` (determinant `1`), with explicit inverse `!![1,-1;0,1]`
-(so the unit is computable: `val * inv = inv * val = 1` by `decide`). -/
+/-- A concrete `GL₂(ℤ)` element, `!![1,1;0,1]` (determinant `1`), with explicit inverse
+`!![1,-1;0,1]` (so the unit is computable: `val * inv = inv * val = 1` by `decide`). -/
 def witnessUnit : (Matrix (Fin 2) (Fin 2) ℤ)ˣ where
   val := !![1, 1; 0, 1]
   inv := !![1, -1; 0, 1]
@@ -165,14 +164,16 @@ example (i j : Fin 3) (hij : i ≤ j) :
 
 /-- The off-diagonal product rank survives the base change: `r_{02} = rank(A₂A₁) = 2`. -/
 example : rankPattern dWitness (witnessBaseChange • tupleWitness) 0 2 (Fin.zero_le _) = 2 := by
-  rw [rankPattern_smul]
+  rw [rankPattern_smul, rankPattern]
   have hsub : submult dWitness tupleWitness 0 2 (Fin.zero_le _) = !![1, 2; 3, 7] := by
     rw [submult_zero]; unfold multPrefix tupleWitness dWitness; decide
   have hunit : IsUnit (!![1, 2; 3, 7] : Matrix (Fin 2) (Fin 2) ℤ) := by
     rw [Matrix.isUnit_iff_isUnit_det,
       show (!![1, 2; 3, 7] : Matrix (Fin 2) (Fin 2) ℤ).det = 1 from by decide]
     exact isUnit_one
-  rw [rankPattern, hsub, Matrix.rank_of_isUnit _ hunit, Fintype.card_fin]
+  have hrank : (!![1, 2; 3, 7] : Matrix (Fin 2) (Fin 2) ℤ).rank = 2 := by
+    rw [Matrix.rank_of_isUnit _ hunit, Fintype.card_fin]
+  rw [hsub]; exact hrank
 
 end Witness
 
