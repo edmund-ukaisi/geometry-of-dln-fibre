@@ -502,11 +502,13 @@ theorem exists_peel [∀ t, FiniteDimensional k (V t)] {P : ∀ t, Submodule k (
         ∧ (∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t ∧ v t = 0)
         ∧ (∀ t, s ≤ t → t ≤ j →
             Disjoint (k ∙ v t) (P' t) ∧ k ∙ v t ⊔ P' t = P t ∧ v t ≠ 0)
+        ∧ (∀ e : Fin N, s ≤ e.castSucc → e.succ ≤ j → f e (v e.castSucc) = v e.succ)
+        ∧ (∀ e : Fin N, j < e.succ → f e (v e.castSucc) = 0)
         ∧ totalDim V P' < totalDim V P := by
   classical
   obtain ⟨s, hs_ne, hs_min⟩ := exists_least_nonzero V hne
   obtain ⟨vs, hvs_mem, hvs_ne⟩ := (Submodule.ne_bot_iff (P s)).mp hs_ne
-  obtain ⟨j, hsj, hvj_ne0, _hj_last⟩ := exists_last_nonzero V f hvs_ne
+  obtain ⟨j, hsj, hvj_ne0, hj_last⟩ := exists_last_nonzero V f hvs_ne
   set vj := compMap V f s j hsj vs with hvj_def
   have hvj_mem : vj ∈ P j := compMap_mem V f hP hsj hvs_mem
   have hkvj_le : (k ∙ vj) ≤ P j := by rw [Submodule.span_singleton_le_iff_mem]; exact hvj_mem
@@ -555,6 +557,23 @@ theorem exists_peel [∀ t, FiniteDimensional k (V t)] {P : ∀ t, Submodule k (
     · exact le_of_eq (hP'_neg t h)
   have h_off : ∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t ∧ v t = 0 :=
     fun t h => ⟨hP'_neg t h, hv_neg t h⟩
+  have h_traj : ∀ e : Fin N, s ≤ e.castSucc → e.succ ≤ j → f e (v e.castSucc) = v e.succ := by
+    intro e hse hej
+    have hca : s ≤ e.castSucc ∧ e.castSucc ≤ j := ⟨hse, le_trans (Fin.castSucc_le_succ e) hej⟩
+    have hsu : s ≤ e.succ ∧ e.succ ≤ j := ⟨le_trans hse (Fin.castSucc_le_succ e), hej⟩
+    have hstep : compMap V f s e.succ hsu.1 vs = f e (compMap V f s e.castSucc hca.1 vs) := by
+      rw [← LinearMap.comp_apply, ← compMap_succ V f s e hca.1]
+    rw [hv_pos e.castSucc hca, hv_pos e.succ hsu, hstep]
+  have h_death : ∀ e : Fin N, j < e.succ → f e (v e.castSucc) = 0 := by
+    intro e hje
+    by_cases hca : s ≤ e.castSucc ∧ e.castSucc ≤ j
+    · rw [hv_pos e.castSucc hca]
+      have hstep : compMap V f s e.succ (le_trans hca.1 (Fin.castSucc_le_succ e)) vs
+          = f e (compMap V f s e.castSucc hca.1 vs) := by
+        rw [← LinearMap.comp_apply, ← compMap_succ V f s e hca.1]
+      rw [← hstep]
+      exact hj_last e.succ (le_trans hca.1 (Fin.castSucc_le_succ e)) hje
+    · rw [hv_neg e.castSucc hca, map_zero]
   have h_subrep : IsSubrep V f P' := by
     intro e
     by_cases hb : s ≤ e.succ ∧ e.succ ≤ j
@@ -586,7 +605,7 @@ theorem exists_peel [∀ t, FiniteDimensional k (V t)] {P : ∀ t, Submodule k (
     have hkey := Submodule.finrank_sup_add_finrank_inf_eq (k ∙ v s) (P' s)
     rw [hsp, hd.eq_bot, finrank_bot, finrank_span_singleton hvne] at hkey
     omega
-  exact ⟨s, j, hsj, v, P', h_subrep, h_le, h_off, h_split, h_drop⟩
+  exact ⟨s, j, hsj, v, P', h_subrep, h_le, h_off, h_split, h_traj, h_death, h_drop⟩
 
 end Subrep
 
