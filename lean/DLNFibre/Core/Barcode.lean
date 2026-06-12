@@ -421,6 +421,108 @@ theorem exists_last_nonzero {s : Fin (N + 1)} {vs : V s} (hvs : vs ≠ 0) :
     exact absurd (S.le_max' t (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hst, hne⟩))
       (not_le.mpr htgt)
 
+/-! ### The peel — one inductive step
+
+From a subrep `P` with some `P_t ≠ ⊥`, peel one interval bar: the least-nonzero vertex `s`, a
+trajectory line `v_t = compMap f s t vs` running to the last-nonzero vertex `j`, and a complementary
+subrep `P'` with `P_t = k·v_t ⊕ P'_t` on `[s,j]`, `P'_t = P_t` off it, and **strictly smaller total
+dimension**. The splitting is `relSplitting` applied vertex-wise (via `compMap_trans`); the
+subrepresentation property of `P'` uses `compMap_edge` at interior edges and `s`-minimality at the
+bottom edge; the strict drop is `finrank_sup_add_finrank_inf_eq` at `s` fed to `Finset.sum_lt_sum`.
+The engine of the total-dimension induction. -/
+theorem exists_peel [∀ t, FiniteDimensional k (V t)] {P : ∀ t, Submodule k (V t)}
+    (hP : IsSubrep V f P) (hne : ∃ t, P t ≠ ⊥) :
+    ∃ (s j : Fin (N + 1)) (_ : s ≤ j) (v : ∀ t, V t) (P' : ∀ t, Submodule k (V t)),
+      IsSubrep V f P' ∧ (∀ t, P' t ≤ P t)
+        ∧ (∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t ∧ v t = 0)
+        ∧ (∀ t, s ≤ t → t ≤ j →
+            Disjoint (k ∙ v t) (P' t) ∧ k ∙ v t ⊔ P' t = P t ∧ v t ≠ 0)
+        ∧ totalDim V P' < totalDim V P := by
+  classical
+  obtain ⟨s, hs_ne, hs_min⟩ := exists_least_nonzero V hne
+  obtain ⟨vs, hvs_mem, hvs_ne⟩ := (Submodule.ne_bot_iff (P s)).mp hs_ne
+  obtain ⟨j, hsj, hvj_ne0, _hj_last⟩ := exists_last_nonzero V f hvs_ne
+  set vj := compMap V f s j hsj vs with hvj_def
+  have hvj_mem : vj ∈ P j := compMap_mem V f hP hsj hvs_mem
+  have hkvj_le : (k ∙ vj) ≤ P j := by rw [Submodule.span_singleton_le_iff_mem]; exact hvj_mem
+  obtain ⟨C, hC⟩ := Submodule.exists_isCompl (k ∙ vj)
+  set Uj := C ⊓ P j with hUj_def
+  have hUj_disj : Disjoint (k ∙ vj) Uj := hC.disjoint.mono_right inf_le_left
+  have hUj_sup : k ∙ vj ⊔ Uj = P j := by
+    rw [hUj_def, ← sup_inf_assoc_of_le C hkvj_le, codisjoint_iff.mp hC.codisjoint, top_inf_eq]
+  set v : ∀ t, V t := fun t => if h : s ≤ t ∧ t ≤ j then compMap V f s t h.1 vs else 0
+    with hv_def
+  set P' : ∀ t, Submodule k (V t) :=
+    fun t => if h : s ≤ t ∧ t ≤ j then Uj.comap (compMap V f t j h.2) ⊓ P t else P t with hP'_def
+  have hv_pos : ∀ t (h : s ≤ t ∧ t ≤ j), v t = compMap V f s t h.1 vs := by
+    intro t h; simp only [hv_def]; exact dif_pos h
+  have hv_neg : ∀ t, ¬ (s ≤ t ∧ t ≤ j) → v t = 0 := by
+    intro t h; simp only [hv_def]; exact dif_neg h
+  have hP'_pos : ∀ t (h : s ≤ t ∧ t ≤ j),
+      P' t = Uj.comap (compMap V f t j h.2) ⊓ P t := by
+    intro t h; simp only [hP'_def]; exact dif_pos h
+  have hP'_neg : ∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t := by
+    intro t h; simp only [hP'_def]; exact dif_neg h
+  have htrans : ∀ t (h : s ≤ t ∧ t ≤ j),
+      compMap V f t j h.2 (compMap V f s t h.1 vs) = vj := by
+    intro t h; rw [← LinearMap.comp_apply, ← compMap_trans V f s h.1 h.2, hvj_def]
+  have h_split : ∀ t, s ≤ t → t ≤ j →
+      Disjoint (k ∙ v t) (P' t) ∧ k ∙ v t ⊔ P' t = P t ∧ v t ≠ 0 := by
+    intro t hst htj
+    have h : s ≤ t ∧ t ≤ j := ⟨hst, htj⟩
+    have hmem : compMap V f s t h.1 vs ∈ P t := compMap_mem V f hP h.1 hvs_mem
+    have hfv : compMap V f t j h.2 (compMap V f s t h.1 vs) ≠ 0 := by
+      rw [htrans t h]; exact hvj_ne0
+    have hPQ : (P t).map (compMap V f t j h.2) ≤ P j :=
+      Submodule.map_le_iff_le_comap.mpr fun x hx =>
+        Submodule.mem_comap.mpr (compMap_mem V f hP h.2 hx)
+    have hdisj' : Disjoint (k ∙ compMap V f t j h.2 (compMap V f s t h.1 vs)) Uj := by
+      rw [htrans t h]; exact hUj_disj
+    have hsup' : k ∙ compMap V f t j h.2 (compMap V f s t h.1 vs) ⊔ Uj = P j := by
+      rw [htrans t h]; exact hUj_sup
+    obtain ⟨hd, hsp⟩ := relSplitting (compMap V f t j h.2) hmem hfv hPQ hdisj' hsup'
+    rw [hv_pos t h, hP'_pos t h]
+    exact ⟨hd, hsp, fun hz => hfv (by rw [hz, map_zero])⟩
+  have h_le : ∀ t, P' t ≤ P t := by
+    intro t
+    by_cases h : s ≤ t ∧ t ≤ j
+    · rw [hP'_pos t h]; exact inf_le_right
+    · exact le_of_eq (hP'_neg t h)
+  have h_off : ∀ t, ¬ (s ≤ t ∧ t ≤ j) → P' t = P t ∧ v t = 0 :=
+    fun t h => ⟨hP'_neg t h, hv_neg t h⟩
+  have h_subrep : IsSubrep V f P' := by
+    intro e
+    by_cases hb : s ≤ e.succ ∧ e.succ ≤ j
+    · by_cases ha : s ≤ e.castSucc ∧ e.castSucc ≤ j
+      · rw [hP'_pos e.castSucc ha, hP'_pos e.succ hb, Submodule.map_le_iff_le_comap]
+        intro x hx
+        have hxUj : compMap V f e.castSucc j ha.2 x ∈ Uj := (Submodule.mem_inf.mp hx).1
+        have hxP : x ∈ P e.castSucc := (Submodule.mem_inf.mp hx).2
+        have hedge : compMap V f e.succ j hb.2 (f e x) = compMap V f e.castSucc j ha.2 x := by
+          rw [← LinearMap.comp_apply, ← compMap_edge V f e (Fin.castSucc_le_succ e),
+            ← compMap_trans V f e.castSucc (Fin.castSucc_le_succ e) hb.2]
+        rw [Submodule.mem_comap]
+        refine Submodule.mem_inf.mpr ⟨?_, hP e (Submodule.mem_map_of_mem hxP)⟩
+        rw [Submodule.mem_comap, hedge]; exact hxUj
+      · have ha_lt : e.castSucc < s := by
+          rcases not_and_or.mp ha with h1 | h2
+          · exact not_le.mp h1
+          · exact absurd (le_trans (Fin.castSucc_le_succ e) hb.2) h2
+        rw [hP'_neg e.castSucc (by rw [not_and_or]; exact Or.inl (not_le.mpr ha_lt)),
+          hs_min e.castSucc ha_lt, Submodule.map_bot]
+        exact bot_le
+    · rw [hP'_neg e.succ hb]
+      exact le_trans (Submodule.map_mono (h_le e.castSucc)) (hP e)
+  have h_drop : totalDim V P' < totalDim V P := by
+    rw [totalDim, totalDim]
+    refine Finset.sum_lt_sum (fun t _ => Submodule.finrank_mono (h_le t))
+      ⟨s, Finset.mem_univ s, ?_⟩
+    obtain ⟨hd, hsp, hvne⟩ := h_split s le_rfl hsj
+    have hkey := Submodule.finrank_sup_add_finrank_inf_eq (k ∙ v s) (P' s)
+    rw [hsp, hd.eq_bot, finrank_bot, finrank_span_singleton hvne] at hkey
+    omega
+  exact ⟨s, j, hsj, v, P', h_subrep, h_le, h_off, h_split, h_drop⟩
+
 end Subrep
 
 end DLNFibre.Core
