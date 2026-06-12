@@ -191,6 +191,113 @@ theorem compMap_trans (i : Fin (N + 1)) {m j : Fin (N + 1)} (him : i ≤ m) (hmj
       have himp : i ≤ p.castSucc := him.trans hmp
       rw [compMap_succ V f i p himp, compMap_succ V f m p hmp, ih hmp, LinearMap.comp_assoc]
 
+/-- The composite over a single edge `e` (vertex `e.castSucc → e.succ`) is that edge's map `f e`. -/
+theorem compMap_edge (e : Fin N) (h : e.castSucc ≤ e.succ) :
+    compMap V f e.castSucc e.succ h = f e := by
+  have hstep := compMap_succ V f e.castSucc e le_rfl
+  rw [compMap_self V f e.castSucc, LinearMap.comp_id] at hstep
+  exact hstep
+
+/-! ## The peel — local content (pointwise, no recursion)
+
+The geometric heart of the barcode induction (design §2.2 steps 3–4), but *pointwise* rather than by
+the design's downward recursion: along a forward trajectory `v_t := compMap f s t vs` that survives
+to a top vertex `j` (`compMap f s j vs ≠ 0`), a complement `U_j` of the top line `k·v_j` pulls back
+to `U_t := (compMap f t j)⁻¹(U_j)`, which is a complement of the line `k·v_t` at *every* interior
+vertex `t ∈ [s,j]`. The collapse of the recursion is `compMap_trans`: `compMap f t j` sends
+`v_t ↦ v_j`, so the splitting fact applies directly at each `t` with no threading down the chain.
+This isolates the design's "single hardest formal step" to a one-line application of the splitting
+fact plus the composition law. (Index-finding — the least-nonzero `s`, the last-nonzero `j` — and
+the global total-dimension drop / strong induction are the remaining assembly; see the thread
+findings.) -/
+
+/-- **The interval complement splits the line at every interior vertex.** For a trajectory
+`v_t = compMap f s t vs` surviving to `j` and a top complement `IsCompl (k·v_j) U_j`, the pullback
+`U_t := (compMap f t j)⁻¹(U_j)` satisfies `IsCompl (k·v_t) U_t` for every `t ∈ [s,j]`. The splitting
+fact applied to `g = compMap f t j` (sends `v_t ↦ v_j` by `compMap_trans`). -/
+theorem isCompl_interval_complement
+    {s j : Fin (N + 1)} (hsj : s ≤ j) (vs : V s) (hvs : compMap V f s j hsj vs ≠ 0)
+    {Uj : Submodule k (V j)} (hUj : IsCompl (k ∙ compMap V f s j hsj vs) Uj)
+    {t : Fin (N + 1)} (hst : s ≤ t) (htj : t ≤ j) :
+    IsCompl (k ∙ compMap V f s t hst vs) (Uj.comap (compMap V f t j htj)) := by
+  have hcomp : compMap V f t j htj (compMap V f s t hst vs)
+      = compMap V f s j (hst.trans htj) vs := by
+    rw [compMap_trans V f s hst htj]; rfl
+  refine isCompl_span_singleton_comap (compMap V f t j htj)
+    (v := compMap V f s t hst vs) ?_ ?_
+  · rw [hcomp]; exact hvs
+  · rw [hcomp]; exact hUj
+
+/-- **The interval complement drops `finrank` by one at every interior vertex.** With the trajectory
+and top complement as above, `finrank (U_t) + 1 = finrank (V_t)` for every `t ∈ [s,j]` — so summing
+over the interval, the bar removes `j − s + 1` from the total dimension (the engine of termination
+of the total-dimension induction). The dimension-drop fact applied to `g = compMap f t j`. -/
+theorem finrank_interval_complement [∀ t, FiniteDimensional k (V t)]
+    {s j : Fin (N + 1)} (hsj : s ≤ j) (vs : V s) (hvs : compMap V f s j hsj vs ≠ 0)
+    {Uj : Submodule k (V j)} (hUj : IsCompl (k ∙ compMap V f s j hsj vs) Uj)
+    {t : Fin (N + 1)} (hst : s ≤ t) (htj : t ≤ j) :
+    Module.finrank k (Uj.comap (compMap V f t j htj)) + 1 = Module.finrank k (V t) := by
+  have hcomp : compMap V f t j htj (compMap V f s t hst vs)
+      = compMap V f s j (hst.trans htj) vs := by
+    rw [compMap_trans V f s hst htj]; rfl
+  refine finrank_comap_add_one (compMap V f t j htj) (v := compMap V f s t hst vs) ?_ ?_
+  · rw [hcomp]; exact hvs
+  · rw [hcomp]; exact hUj
+
+/-- **The interval complement is forward-closed (a subrepresentation across each interior edge).**
+For an edge `e` inside the bar (`e.succ ≤ j`), the pullback complement at the lower endpoint equals
+the preimage under `f e` of the one at the upper endpoint:
+`U_{e.castSucc} = (f e)⁻¹(U_{e.succ})`. Hence `f e` maps `U_{e.castSucc}` into `U_{e.succ}`, so the
+complement chain is a subrepresentation along the bar. From `compMap_trans` +
+`compMap_edge` + `comap_comp`. -/
+theorem comap_compMap_edge {j : Fin (N + 1)} (e : Fin N) (hej : e.succ ≤ j)
+    (Uj : Submodule k (V j)) :
+    Uj.comap (compMap V f e.castSucc j ((Fin.castSucc_le_succ e).trans hej))
+      = (Uj.comap (compMap V f e.succ j hej)).comap (f e) := by
+  have hsplit : compMap V f e.castSucc j ((Fin.castSucc_le_succ e).trans hej)
+      = (compMap V f e.succ j hej).comp (f e) := by
+    rw [compMap_trans V f e.castSucc (Fin.castSucc_le_succ e) hej,
+      compMap_edge V f e (Fin.castSucc_le_succ e)]
+  rw [hsplit, Submodule.comap_comp]
+
+section ChainWitness
+
+/-! ## Non-vacuity for the chain layer
+
+The two-vertex identity chain `ℚ --id--> ℚ` (`N = 1`): the forward trajectory from `vs = 1`
+survives to the top vertex (`compMap = id`, value `1 ≠ 0`), so the peel theorems' antecedents are
+satisfiable and `isCompl_interval_complement` / `finrank_interval_complement` fire on it. -/
+
+/-- Witness chain spaces: two vertices, both `ℚ`. -/
+abbrev witnessV : Fin 2 → Type := fun _ => ℚ
+
+/-- Witness edge: the identity `ℚ →ₗ[ℚ] ℚ`. -/
+def witnessF : ∀ t : Fin 1, witnessV t.castSucc →ₗ[ℚ] witnessV t.succ := fun _ => LinearMap.id
+
+/-- The composite over the single edge is the identity, so the trajectory from `1` survives:
+`compMap witnessV witnessF 0 1 (1) = 1 ≠ 0`. -/
+theorem compMap_witness : compMap witnessV witnessF 0 1 (by decide) (1 : ℚ) = 1 := by
+  have h01 : compMap witnessV witnessF (0 : Fin 1).castSucc (0 : Fin 1).succ
+      (Fin.castSucc_le_succ 0) = witnessF 0 := compMap_edge witnessV witnessF 0 _
+  exact congrFun (congrArg _ h01) 1
+
+/-- The trajectory survives, so the peel's antecedent `compMap … vs ≠ 0` is satisfiable. -/
+example : compMap witnessV witnessF 0 1 (by decide) (1 : ℚ) ≠ 0 := by
+  rw [compMap_witness]; exact one_ne_zero
+
+/-- `isCompl_interval_complement` fires on the witness chain: a complement of the top line pulls
+back to a complement of the source line at vertex `0`. -/
+example : ∃ Uj : Submodule ℚ (witnessV 1),
+    IsCompl (ℚ ∙ compMap witnessV witnessF (0 : Fin 2) 0 le_rfl (1 : ℚ))
+      (Uj.comap (compMap witnessV witnessF (0 : Fin 2) 1 (by decide))) := by
+  have hvs : compMap witnessV witnessF 0 1 (by decide) (1 : ℚ) ≠ 0 := by
+    rw [compMap_witness]; exact one_ne_zero
+  obtain ⟨Uj, hUj⟩ :=
+    Submodule.exists_isCompl (ℚ ∙ compMap witnessV witnessF 0 1 (by decide) (1 : ℚ))
+  exact ⟨Uj, isCompl_interval_complement witnessV witnessF (by decide) 1 hvs hUj le_rfl (by decide)⟩
+
+end ChainWitness
+
 end Chain
 
 end DLNFibre.Core
