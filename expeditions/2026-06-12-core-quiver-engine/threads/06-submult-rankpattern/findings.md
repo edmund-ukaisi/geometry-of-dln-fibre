@@ -59,7 +59,7 @@ later rung (4d); nothing here is named as if it asserted the Gabriel decompositi
 > diagonal (`k` nontrivial).
 >
 > - **Lean:** `DLNFibre.Core.submult`, `submult_self`, `submult_succ`, `submult_zero`, `mult_eq_submult`,
->   `rankPattern`, `rankPattern_self` (`lean/DLNFibre/Core/Submult.lean` @ `<pin>`)
+>   `rankPattern`, `rankPattern_self` (`lean/DLNFibre/Core/Submult.lean` @ `490d507`)
 > - **Gloss.** `submult … (h : i ≤ j) : Matrix (Fin (d j)) (Fin (d i)) k` = ordered product of
 >   `A_{i+1},…,A_j` (empty `= 1` at `i=j`); `submult_succ` = left-multiply step; `submult_zero` ties the
 >   `i=0` slice to `multPrefix`; `mult_eq_submult` recovers `mult`; `rankPattern = (submult).rank`;
