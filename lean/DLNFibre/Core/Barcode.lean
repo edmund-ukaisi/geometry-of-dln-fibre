@@ -358,7 +358,7 @@ section CompleteLatticeAux
 
 variable {α : Type*} [CompleteLattice α]
 
-/-- The supremum over `Fin (n+1)` of a `Fin.cons` splits off the head: `⨆ Fin.cons a g = a ⊔ ⨆ g`. -/
+/-- The supremum of a `Fin.cons` splits off the head: `⨆ Fin.cons a g = a ⊔ ⨆ g`. -/
 theorem iSup_fin_cons {n : ℕ} (a : α) (g : Fin n → α) :
     ⨆ i : Fin (n + 1), Fin.cons a g i = a ⊔ ⨆ i, g i := by
   apply le_antisymm
@@ -607,6 +607,116 @@ theorem exists_peel [∀ t, FiniteDimensional k (V t)] {P : ∀ t, Submodule k (
     omega
   exact ⟨s, j, hsj, v, P', h_subrep, h_le, h_off, h_split, h_traj, h_death, h_drop⟩
 
+/-! ### The barcode-basis existence theorem (the headline) -/
+
+/-- A **barcode** for a subrepresentation `P`: a finite family of interval bars `λ` (each with
+`birth λ ≤ death λ`, a line `line λ : ∀ t, V t` supported on `[birth λ, death λ]`, nonzero there,
+running as a trajectory `f e (line λ) = line λ` inside the interval and dying past `death λ`) whose
+lines, at *every* vertex `t`, form an internal direct sum (`iSupIndep`) equal to `P_t` (spanning).
+This is the abstract-chain form of "`P` is isomorphic to a direct sum of interval modules": bar `λ`
+*is* the interval module `M_{birth λ, death λ}`, and the last two clauses say
+`P_t = ⨁_λ k·(line λ)_t` at each vertex, with the edge maps acting as the interval-module maps. -/
+def HasBarcode (P : ∀ t, Submodule k (V t)) : Prop :=
+  ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)) (line : Fin M → ∀ t, V t),
+    (∀ lam, birth lam ≤ death lam)
+    ∧ (∀ lam t, ¬ (birth lam ≤ t ∧ t ≤ death lam) → line lam t = 0)
+    ∧ (∀ lam t, birth lam ≤ t → t ≤ death lam → line lam t ≠ 0)
+    ∧ (∀ lam (e : Fin N), birth lam ≤ e.castSucc → e.succ ≤ death lam →
+          f e (line lam e.castSucc) = line lam e.succ)
+    ∧ (∀ lam (e : Fin N), death lam < e.succ → f e (line lam e.castSucc) = 0)
+    ∧ (∀ t, iSupIndep (fun lam => k ∙ line lam t))
+    ∧ (∀ t, ⨆ lam, (k ∙ line lam t) = P t)
+
+/-- **The barcode-basis existence theorem (rung 4d, the crux).** Every finite-dimensional
+subrepresentation of an abstract chain has a barcode: an internal direct sum of interval-module
+lines at every vertex. Equivalently, every finite chain of finite-dimensional `k`-vector spaces is
+isomorphic to a direct sum of interval modules — the **existence** half of type-A Gabriel
+(Le Halleur–Rimányi 2024, Thm 2.5). Proved by total-dimension strong induction, peeling one bar per
+step (`exists_peel`) and consing it onto the IH's barcode (`iSup_fin_cons` / `iSupIndep_fin_cons`).
+**Existence only**: uniqueness of the multiplicities is the separate (near-free) step via
+`RankPattern.diff_cumul`, and the transport to `Setup.Tuple` is a separate change-of-basis lemma. -/
+theorem hasBarcode_of_isSubrep [∀ t, FiniteDimensional k (V t)]
+    (P : ∀ t, Submodule k (V t)) (hP : IsSubrep V f P) : HasBarcode V f P := by
+  suffices H : ∀ n (Q : ∀ t, Submodule k (V t)), IsSubrep V f Q → totalDim V Q = n →
+      HasBarcode V f Q by
+    exact H (totalDim V P) P hP rfl
+  intro n
+  induction n using Nat.strongRecOn with
+  | ind n ih =>
+    intro Q hQ hn
+    by_cases hzero : ∃ t, Q t ≠ ⊥
+    · obtain ⟨s, j, hsj, v, Q', hsubrep, hle, hoff, hsplit, htraj, hdeath, hdrop⟩ :=
+        exists_peel V f hQ hzero
+      have hlt : totalDim V Q' < n := hn ▸ hdrop
+      obtain ⟨M, birth, death, line, hbd, hsupp, hnz, htr, hde, hindep, hspan⟩ :=
+        ih (totalDim V Q') hlt Q' hsubrep rfl
+      refine ⟨M + 1, Fin.cons s birth, Fin.cons j death, Fin.cons v line,
+        ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+      · intro lam
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simpa using hsj
+        · simpa using hbd m
+      · intro lam t hlam
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at hlam ⊢; exact (hoff t hlam).2
+        · simp only [Fin.cons_succ] at hlam ⊢; exact hsupp m t hlam
+      · intro lam t h1 h2
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at h1 h2 ⊢; exact (hsplit t h1 h2).2.2
+        · simp only [Fin.cons_succ] at h1 h2 ⊢; exact hnz m t h1 h2
+      · intro lam e h1 h2
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at h1 h2 ⊢; exact htraj e h1 h2
+        · simp only [Fin.cons_succ] at h1 h2 ⊢; exact htr m e h1 h2
+      · intro lam e h1
+        rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩
+        · simp only [Fin.cons_zero] at h1 ⊢; exact hdeath e h1
+        · simp only [Fin.cons_succ] at h1 ⊢; exact hde m e h1
+      · intro t
+        have hfam : (fun lam : Fin (M + 1) => k ∙ (Fin.cons v line : Fin (M + 1) → ∀ u, V u) lam t)
+            = Fin.cons (k ∙ v t) (fun m => k ∙ line m t) := by
+          funext lam; rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩ <;> simp
+        rw [hfam]
+        refine iSupIndep_fin_cons (hindep t) ?_
+        rw [hspan t]
+        by_cases h : s ≤ t ∧ t ≤ j
+        · exact (hsplit t h.1 h.2).1
+        · rw [(hoff t h).2, Submodule.span_zero_singleton]; exact disjoint_bot_left
+      · intro t
+        have hfam : (fun lam : Fin (M + 1) => k ∙ (Fin.cons v line : Fin (M + 1) → ∀ u, V u) lam t)
+            = Fin.cons (k ∙ v t) (fun m => k ∙ line m t) := by
+          funext lam; rcases Fin.eq_zero_or_eq_succ lam with rfl | ⟨m, rfl⟩ <;> simp
+        rw [hfam, iSup_fin_cons, hspan t]
+        by_cases h : s ≤ t ∧ t ≤ j
+        · exact (hsplit t h.1 h.2).2.1
+        · rw [(hoff t h).2, Submodule.span_zero_singleton, bot_sup_eq]; exact (hoff t h).1
+    · simp only [not_exists, not_ne_iff] at hzero
+      refine ⟨0, Fin.elim0, Fin.elim0, Fin.elim0, fun lam => lam.elim0, fun lam => lam.elim0,
+        fun lam => lam.elim0, fun lam => lam.elim0, fun lam => lam.elim0, fun t => ?_, fun t => ?_⟩
+      · rw [iSupIndep_def]; exact fun i => i.elim0
+      · rw [hzero t]; exact iSup_of_empty _
+
+/-- **Every finite chain of finite-dimensional `k`-vector spaces has a barcode** (the whole-chain
+form, `P = ⊤`): it is an internal direct sum of interval-module lines at every vertex — isomorphic
+to a direct sum of interval modules. The existence half of type-A Gabriel on an abstract chain. -/
+theorem hasBarcode_top [∀ t, FiniteDimensional k (V t)] : HasBarcode V f (fun _ => ⊤) :=
+  hasBarcode_of_isSubrep V f _ (isSubrep_top V f)
+
 end Subrep
+
+section BarcodeWitness
+
+/-! ## Non-vacuity for the barcode theorem
+
+The two-vertex identity chain `ℚ --id--> ℚ` (`witnessV`/`witnessF`) has a barcode — `hasBarcode_top`
+fires on a concrete chain, so the theorem is non-vacuous. (Its barcode is the single bar `M_{0,1}`:
+one line `1 ↦ 1` alive across both vertices.) -/
+
+/-- The identity chain `ℚ → ℚ` has a barcode — the barcode theorem is non-vacuous. -/
+example : HasBarcode witnessV witnessF (fun _ => ⊤) := by
+  haveI : ∀ t, FiniteDimensional ℚ (witnessV t) := fun _ => inferInstanceAs (FiniteDimensional ℚ ℚ)
+  exact hasBarcode_top witnessV witnessF
+
+end BarcodeWitness
 
 end DLNFibre.Core
