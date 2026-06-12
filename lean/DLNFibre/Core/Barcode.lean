@@ -348,4 +348,47 @@ end ChainWitness
 
 end Chain
 
+/-! ## Subrepresentations and total dimension (induction substrate)
+
+The total-dimension induction runs over **subrepresentations** `P_* ≤ V_*` of a *fixed* ambient
+chain — families of submodules closed forward under the edge maps. Keeping the ambient `V` fixed and
+inducting on `∑_t finrank (P_t)` (a `ℕ`) means the types never change; the peel produces a smaller
+subrep and `relSplitting` does the splitting *inside* `P`. -/
+
+section Subrep
+
+variable {k : Type u} [Field k] {N : ℕ}
+  (V : Fin (N + 1) → Type v) [∀ t, AddCommGroup (V t)] [∀ t, Module k (V t)]
+  (f : ∀ t : Fin N, V t.castSucc →ₗ[k] V t.succ)
+
+/-- A **subrepresentation**: a family of submodules forward-closed under every edge map,
+`f e (P e.castSucc) ⊆ P e.succ`. -/
+def IsSubrep (P : ∀ t, Submodule k (V t)) : Prop :=
+  ∀ e : Fin N, (P e.castSucc).map (f e) ≤ P e.succ
+
+/-- The whole chain `V_*` (every `P_t = ⊤`) is a subrepresentation. -/
+theorem isSubrep_top : IsSubrep V f (fun _ => ⊤) := fun _ => le_top
+
+/-- The composite map preserves a subrepresentation: `x ∈ P i ⟹ compMap f i j x ∈ P j`. -/
+theorem compMap_mem {P : ∀ t, Submodule k (V t)} (hP : IsSubrep V f P) {i j : Fin (N + 1)}
+    (hij : i ≤ j) {x : V i} (hx : x ∈ P i) : compMap V f i j hij x ∈ P j := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp hij
+    rw [show compMap V f 0 0 hij = LinearMap.id from compMap_self V f 0]
+    exact hx
+  | succ p ih =>
+    rcases eq_or_lt_of_le hij with rfl | hlt
+    · rw [show compMap V f p.succ p.succ hij = LinearMap.id from compMap_self V f p.succ]; exact hx
+    · have hip : i ≤ p.castSucc := by rw [Fin.le_castSucc_iff]; exact hlt
+      rw [compMap_succ V f i p hip, LinearMap.comp_apply]
+      exact hP p (Submodule.mem_map_of_mem (ih hip))
+
+/-- The total dimension `∑_t finrank (P_t)` of a subrep family — the induction's well-founded
+measure. -/
+noncomputable def totalDim [∀ t, FiniteDimensional k (V t)] (P : ∀ t, Submodule k (V t)) : ℕ :=
+  ∑ t, Module.finrank k (P t)
+
+end Subrep
+
 end DLNFibre.Core
