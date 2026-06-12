@@ -143,7 +143,7 @@ patterns); pulling it in here would gold-plate past rung 1's scope. The current 
 >
 > - **Lean:** `DLNFibre.Core.mult`, `DLNFibre.Core.productRankLocus`,
 >   `DLNFibre.Core.productRankLocusLE`, `DLNFibre.Core.fibre`
->   (`lean/DLNFibre/Core/Setup.lean` @ `<commit-sha — controller pins on integration>`)
+>   (`lean/DLNFibre/Core/Setup.lean` @ `32c8048`)
 > - **Gloss.** `mult d A := multPrefix d A (Fin.last N)`, where `multPrefix d A j` is the product of
 >   the first `j` factors built by `Fin.induction` with step `A_i * prev` (top factor on the left).
 >   `Sigma^r` / `Sigma^{<=r}` / fibre are the set-builder predicates on `(mult d A).rank` resp.

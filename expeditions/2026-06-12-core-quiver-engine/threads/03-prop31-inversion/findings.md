@@ -86,7 +86,7 @@ helpers (`Icc_insert_top`/`_bot`, `sum_Icc_diffRow`/`_diffCol`) proved directly.
 > integer-indexed arrays over an abelian group are mutually inverse.
 >
 > - **Lean:** `DLNFibre.Core.diff_cumul`, `DLNFibre.Core.cumul_diff`, `DLNFibre.Core.cumulDiffEquiv`
->   (`lean/DLNFibre/Core/RankPattern.lean` @ `<commit-sha — pin at review>`)
+>   (`lean/DLNFibre/Core/RankPattern.lean` @ `32c8048`)
 > - **Gloss.** Over any `AddCommGroup R`, for arrays `ℤ→ℤ→R` vanishing for `i<0` and `j>N`:
 >   `diff (cumul N m) = m`, `cumul N (diff r) = r`; packaged as an `Equiv` on the supported-array subtype.
 > - **Proved.** Both inversions + the bijection, unconditionally, by 2-D telescoping; `N=2` `(2,2,2)`
