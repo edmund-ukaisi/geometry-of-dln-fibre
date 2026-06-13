@@ -176,7 +176,14 @@ coordinates.
 >   change-of-basis lemma); uniqueness of the multiplicities (near-free downstream via
 >   `RankPattern.diff_cumul`). Neither is claimed by the name (which says *existence*, not the full
 >   Gabriel bijection).
-> - **Status.** sorry-free, axiom-clean (`[propext, Classical.choice, Quot.sound]`).
+> - **Form note (rung-4 audit, thread 12).** The deliverable is the internal-direct-sum *predicate*
+>   `HasBarcode` (chosen ambient barcode-basis lines, f-stable + `iSupIndep` + `⨆=P_t`), which is
+>   *logically equivalent* to — but not yet constructed as — an explicit Lean iso object
+>   `P ≅ ⊕ M_{birth,death}`. The abstract iso is a near-free corollary; a downstream consumer (the
+>   Tuple transport) that wants the iso as an object must construct it. Honest + correctly named
+>   (docstring: "Equivalently … isomorphic to a direct sum of interval modules").
+> - **Status.** sorry-free, axiom-clean (`[propext, Classical.choice, Quot.sound]`); **reviewer-audited
+>   (thread 12): SURVIVED — faithful, non-vacuous (adversarial in-Lean probe), no overclaim.**
 
 > **Claim (the splitting fact, crux heart).** For `f : V →ₗ[k] W` over a field `k`, a vector `v`
 > with `f v ≠ 0`, and a complement decomposition `W = k·(f v) ⊕ U`, the preimage `f⁻¹(U)` is a
