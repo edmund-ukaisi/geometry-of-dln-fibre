@@ -296,26 +296,14 @@ example : (cumulDiffEquiv 2 (R := ℤ)).symm ⟨cumul 2 mWitness, supported_cumu
 
 end Witness
 
-/-! ## Deferred: the matrix-side rank-pattern objects (`submult` / `rankPattern`)
+/-! ## The matrix-side rank-pattern objects (`submult` / `rankPattern`) — landed in `Submult.lean`
 
 The matrix-side objects `submult d A i j = A_j ⋯ A_{i+1} : Matrix (Fin (d j)) (Fin (d i)) k`
-(generalising `Setup.multPrefix`, the `i = 0` slice), the bridge
-`mult d A = submult d A 0 (last N)`, and `rankPattern d A i j = (submult d A i j).rank`
-(with `r_{ii} = d_i`) are **deferred**.
-
-*Obstacle (probed, not assumed cheap).* `submult` is a product of consecutive factors with a
-*variable* lower bound `i`, whose return type `Matrix (Fin (d j)) (Fin (d i)) k` depends on both
-ends. `Setup.multPrefix` recurses with `Fin.induction` from the fixed base `0` (value
-`1 : Matrix (Fin (d 0)) (Fin (d 0))`), giving the clean `rfl`-step lemmas `multPrefix_succ`. For
-`submult` the empty product is reached at the *variable* index `i`, not `0`, so the base case
-forces a dependent `Eq.mpr`/`▸` cast (from `h : jj.succ = i`, identifying `Matrix (Fin (d jj.succ))`
-with `Matrix (Fin (d i))`) that destroys the `rfl`-step pattern — a cast-laden def failing bedrock.
-
-*Recommended follow-up.* Either (a) define `submult` on the shifted tail tuple
-`A' k = A (i + k)` over dimension vector `d' k = d (i + k)` and recover it as `multPrefix d' A'`,
-proving the bridge by a reindexing lemma; or (b) define it via `List.prod` over an explicit factor
-list `(List.range (j - i)).map (fun t => A ⟨i + 1 + t, _⟩)`, with the dependent composition handled
-by `Matrix` heterogeneous-mul lemmas. Both keep the cast localised to one bridge lemma. This is a
-self-contained successor; the abstract inversion above does not depend on it. -/
+(generalising `Setup.multPrefix`, the `i = 0` slice), the bridge `mult d A = submult d A 0 (last N)`,
+and `rankPattern d A i j = (submult d A i j).rank` (with `r_{ii} = d_i`) are in
+`DLNFibre.Core.Submult`. The variable-lower-bound dependent-cast obstacle this note once flagged was
+sidestepped there by recursing on the *upper* index over `ℕ` via `Nat.leRec` with a function-valued
+motive — a cast-free third route (neither the shifted-tail nor the `List.prod` options originally
+proposed). The abstract inversion above does not depend on it. -/
 
 end DLNFibre.Core

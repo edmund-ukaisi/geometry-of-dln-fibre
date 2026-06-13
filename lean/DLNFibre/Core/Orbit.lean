@@ -310,6 +310,7 @@ whose alive-bar count is the dimension vector (Kostant constraint) and whose cum
 bar-multiplicity array is the rank pattern. The reusable barcode-to-`barMult` interface. -/
 theorem exists_cumul_barMult {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
     ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
+      (∀ lam, birth lam ≤ death lam) ∧
       (∀ t, (Finset.univ.filter (fun lam ↦ birth lam ≤ t ∧ t ≤ death lam)).card = d t) ∧
       ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
         (rankPattern d A i j hij : ℤ) = cumul (N : ℤ) (barMult M birth death) (i : ℤ) (j : ℤ) := by
@@ -321,7 +322,7 @@ theorem exists_cumul_barMult {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
     rw [rankPattern_eq_finrank_range_compMap]
     exact finrank_range_compMap_eq_card (chainSpace k d) (chainEdge d A)
       M birth death line hsupp hnz htraj hdeath hindep hspan i j hij
-  refine ⟨M, birth, death, fun t ↦ ?_, fun i j hij ↦ ?_⟩
+  refine ⟨M, birth, death, hbd, fun t ↦ ?_, fun i j hij ↦ ?_⟩
   · have ht := hcount t t le_rfl; rw [rankPattern_self] at ht; exact ht.symm
   · rw [cumul_barMult_eq_card, hcount i j hij]
 
@@ -334,23 +335,31 @@ Proved from the complete invariant (`orbit_of_rankPattern_eq`) by exhibiting the
 as a tuple with the same rank pattern as `A`. -/
 theorem baseChange_normalForm {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
     ∃ (L : List (Fin (N + 1) × Fin (N + 1))) (h : foldDim L = d) (P : BaseChangeGroup (k := k) d),
-      P • A = h ▸ intervalDirectSum L := by
-  obtain ⟨M, birth, death, hkost, hcum⟩ := exists_cumul_barMult A
+      P • A = h ▸ intervalDirectSum L ∧ (∀ p ∈ L, p.1 ≤ p.2) ∧
+      ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+        (rankPattern d A i j hij : ℤ) = cumul (N : ℤ) (multiplicityArray L) (i : ℤ) (j : ℤ) := by
+  obtain ⟨M, birth, death, hbd, hkost, hcum⟩ := exists_cumul_barMult A
   set L : List (Fin (N + 1) × Fin (N + 1)) :=
     (List.finRange M).map (fun lam ↦ (birth lam, death lam)) with hL
   have hfold : foldDim L = d :=
     funext fun t ↦ (foldDim_map_finRange M birth death t).trans (hkost t)
+  have hmult : multiplicityArray L = barMult M birth death := by
+    rw [hL]; exact multiplicityArray_map_finRange M birth death
   have hrank : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
       rankPattern d A i j hij = rankPattern d (hfold ▸ intervalDirectSum (k := k) L) i j hij := by
     intro i j hij
     have hz : (rankPattern d A i j hij : ℤ)
         = (rankPattern d (hfold ▸ intervalDirectSum (k := k) L) i j hij : ℤ) := by
       rw [hcum i j hij, rankPattern_transport hfold (intervalDirectSum (k := k) L),
-        rankPattern_intervalDirectSum_eq_cumul (K := k) L i j hij, hL,
-        multiplicityArray_map_finRange]
+        rankPattern_intervalDirectSum_eq_cumul (K := k) L i j hij, hmult]
     exact_mod_cast hz
   obtain ⟨P, hP⟩ := orbit_of_rankPattern_eq A (hfold ▸ intervalDirectSum (k := k) L) hrank
-  exact ⟨L, hfold, P, hP⟩
+  refine ⟨L, hfold, P, hP, ?_, fun i j hij ↦ ?_⟩
+  · intro p hp
+    rw [hL, List.mem_map] at hp
+    obtain ⟨lam, _, rfl⟩ := hp
+    exact hbd lam
+  · rw [hcum i j hij, hmult]
 
 section Witness
 
@@ -394,8 +403,9 @@ example : (∀ (i j : Fin 3) (hij : i ≤ j),
 /-- The Gabriel normal-form object fires on the witness: `tupleWitnessQ` is `G_d`-equivalent to a
 reindexing of an interval direct sum of its own bars. -/
 example : ∃ (L : List (Fin 3 × Fin 3)) (h : foldDim L = dWitness)
-    (P : BaseChangeGroup (k := ℚ) dWitness), P • tupleWitnessQ = h ▸ intervalDirectSum L :=
-  baseChange_normalForm tupleWitnessQ
+    (P : BaseChangeGroup (k := ℚ) dWitness), P • tupleWitnessQ = h ▸ intervalDirectSum L := by
+  obtain ⟨L, h, P, hP, _, _⟩ := baseChange_normalForm tupleWitnessQ
+  exact ⟨L, h, P, hP⟩
 
 end Witness
 
