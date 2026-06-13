@@ -55,12 +55,12 @@ inversion (§3, Prop 3.1); the quadratic integer program (§6, Thm 6.1); the exp
 the closest-lattice-point component count (§7, Thm 7.10); the reductions rank-$r$ → rank-$0$ and fibre-codim
 (§4, Lemmas 4.5–4.6). **Reachability:** the most reachable bundle — finite types, matrices, ℕ-combinatorics.
 **Landed (expedition `core-quiver-engine`, reviewed + bedrock):** the ambient objects
-(`DLNFibre.Core.Setup`: `mult`, `Σ^r`/`Σ^{≤r}`, `fibre`) and the **abstract Prop 3.1a inclusion-exclusion
-inversion** (`DLNFibre.Core.RankPattern`: `cumul`↔`diff` mutually inverse, `cumulDiffEquiv`). *Scope:* the
-inversion is the array-level bijection; that an *actual tuple's* rank pattern is `cumul` of its Gabriel
-multiplicities (Prop 3.1b) is **Deferred** to Bundle 2. **Remaining in Bundle 1:** the matrix-side
-`submult`/`rankPattern` (deferred — variable-lower-bound cast), the QIP (Thm 6.1), the explicit
-lattice-point formula (Thm 7.10), and the §4 reductions.
+(`Core.Setup`: `mult`, `Σ^r`/`Σ^{≤r}`, `fibre`); the matrix-side rank pattern (`Core.Submult`:
+`submult`/`rankPattern`, `r_{ii}=d_i`); and **Prop 3.1 in BOTH directions** — the abstract `cumul`↔`diff`
+inversion (`Core.RankPattern.cumulDiffEquiv`) AND, for an *arbitrary tuple*, `r_{ij}` = `cumul` of its
+Gabriel multiplicities with the Kostant constraint (Prop 3.1b, `Core.Gabriel.exists_barcode_rankPattern`).
+**Remaining in Bundle 1 (future expeditions):** the QIP (Thm 6.1), the explicit lattice-point formula
+(Thm 7.10), and the §4 rank-$r$→rank-$0$ / fibre-codim reductions.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
@@ -68,6 +68,13 @@ orbits = isomorphism classes (Thm 2.4), Gabriel's interval-module decomposition 
 partitions (Cor 2.9), the orbit-closure order (Thm 3.8), and the $\operatorname{Ext}(M,M)$ normal-slice
 codimension (Cor 3.5, Voigt). **Depends on:** the Mathlib-coverage answer. **Reachability:** real work;
 possibly build-from-scratch for Gabriel/`Ext` in this special type-A case.
+**Landed (expedition `core-quiver-engine`, reviewed + bedrock; built from scratch — Mathlib had no type-A
+Gabriel — on the `Tuple`-as-representation encoding):** the $G_{\underline d}$-action (`Core.BaseChange`);
+**type-A Gabriel existence** (Thm 2.5) on abstract chains (`Core.Barcode.hasBarcode_of_isSubrep`) carried to
+tuples (`Core.Gabriel.hasBarcode_tuple`); the **complete $G_{\underline d}$-invariant**
+`rankPattern A = rankPattern B ↔ A ~ B` + the Gabriel **normal-form object** `g·A = ⊕ M^m` (`Core.Orbit`);
+and **orbits ↔ Kostant (Cor 2.9)** as `Core.OrbitKostant.orbitKostantEquiv`. **Remaining (future):** the
+orbit-closure order (Thm 3.8) and the $\operatorname{Ext}(M,M)$ codimension (Cor 3.5).
 
 ### Bundle 3 — the topology  ·  `DLNFibre.Core` (Poincaré)
 **Plainly.** The Poincaré series in equivariant cohomology (Thm 5.5) and the permutation invariance it yields

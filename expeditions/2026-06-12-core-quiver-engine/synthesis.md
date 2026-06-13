@@ -2,10 +2,20 @@
 
 The controller's *internal* integrative ground, flushed every tick (recovery substrate).
 
+## CLOSE — the core quiver engine is complete (2026-06-13)
+
+**The §§2–3 quiver-orbit spine is formalized, audited, and on `origin` (`ac40439`):** ambient objects;
+Prop 3.1 (both directions); type-A Gabriel existence (Thm 2.5); the complete `G_d`-invariant + the Gabriel
+normal-form object; and orbits ↔ Kostant (Cor 2.9) as `orbitKostantEquiv`. 10 `Core` modules, ~2969 lines,
+whole library green, **0 sorries, axiom-clean** throughout; `Core` never imports `DLN`. Two decorrelated
+audits (threads 12, 15) SURVIVED. **Out of scope (future expeditions, per `ROADMAP.md`):** the `Ext`
+codimension (Cor 3.5), the `(C,θ)` computations (§§5–7), the RLCT cap (§8). Close = this synthesis + ROADMAP
++ the close-phase PR into `dev` (operator-gated).
+
 ## State
 
-- **Branch:** `expedition/core-quiver-engine` (off `dev`), not pushed. Controller mode:
-  dispatch-and-integrate (role-typed subagents; controller green-gates + sole committer).
+- **Branch:** `expedition/core-quiver-engine` (off `dev`), pushed to `origin` (`ac40439`). Controller mode:
+  Agent Teams / dispatch-and-integrate (controller green-gates + sole merger).
 - **Rungs 1–3 — closed, reviewed bedrock:** `Core.Setup` (ambient objects), `Core.RankPattern` (Prop
   3.1a abstract inversion `cumulDiffEquiv`); audited (thread 04), two precision fixes applied.
 - **Rung 4 (type-A Gabriel) — FULL BUILD chosen by operator; opened:**
