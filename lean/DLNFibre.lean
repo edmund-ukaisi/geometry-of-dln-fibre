@@ -10,4 +10,5 @@ import DLNFibre.Core.BaseChange
 import DLNFibre.Core.Barcode
 import DLNFibre.Core.Gabriel
 import DLNFibre.Core.Orbit
+import DLNFibre.Core.OrbitKostant
 import DLNFibre.DLN.Basic
