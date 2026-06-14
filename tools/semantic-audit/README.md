@@ -175,16 +175,16 @@ inspector.
 ## Batch Worker Orchestration
 
 Batch orchestration is the queue-oriented version of the same workflow. It does not introduce a new
-durable memory store. It creates generated queue plans and generated bundles, then ingests returned
-`answer.json` files through the same controller boundary.
+durable memory store. It creates generated queue plans and generated bundles, prepares prompts for
+Claude Code/Codex/Agent Teams/human workers, then validates returned `answer.json` files through the
+same controller boundary.
 
 Preview a deterministic queue:
 
 ```bash
 python3 tools/semantic-audit/semantic_audit.py packet queue \
-  --kind lean_reconstruction \
+  --kind source_intention \
   --status open \
-  --priority high \
   --limit 3
 ```
 
@@ -192,9 +192,8 @@ Create a batch of worker bundles:
 
 ```bash
 python3 tools/semantic-audit/semantic_audit.py packet bundle-batch \
-  --kind lean_reconstruction \
+  --kind source_intention \
   --status open \
-  --priority high \
   --limit 3
 ```
 
@@ -214,7 +213,43 @@ The command writes:
 Each worker receives one bundle directory, reads `instructions.md` and `context.json`, and edits only
 that bundle's `answer.json`.
 
-After answers return, validate the whole batch without writing durable records:
+Prepare agent-native dispatch prompts:
+
+```bash
+python3 tools/semantic-audit/semantic_audit.py packet dispatch-batch \
+  .semantic-audit/work/<run-id>/batch-<digest>
+```
+
+This writes:
+
+```text
+.semantic-audit/work/<run-id>/batch-<digest>/
+  dispatch-manifest.json
+  bundles/
+    <packet-id>/
+      worker-prompt.md
+```
+
+The repo tool does not launch agents. The active controller session assigns each `worker-prompt.md`
+to a Claude Code, Codex, Agent Teams, or human worker. V1 assumes shared bundle files: workers edit
+the generated `answer.json` in the same checkout. If a substrate uses isolated worktrees, copy the
+completed `answer.json` files back before collection.
+
+Collect returned answers and write a generated run report:
+
+```bash
+python3 tools/semantic-audit/semantic_audit.py packet collect-batch \
+  .semantic-audit/work/<run-id>/batch-<digest>
+```
+
+This writes:
+
+```text
+.semantic-audit/work/<run-id>/batch-<digest>/worker-run.json
+```
+
+`collect-batch` validates the whole batch without writing durable records. The lower-level validator
+remains available when no worker-run report is needed:
 
 ```bash
 python3 tools/semantic-audit/semantic_audit.py packet ingest-batch \
@@ -224,22 +259,23 @@ python3 tools/semantic-audit/semantic_audit.py packet ingest-batch \
 Append only after the batch dry run is clean:
 
 ```bash
-python3 tools/semantic-audit/semantic_audit.py packet ingest-batch \
+python3 tools/semantic-audit/semantic_audit.py packet collect-batch \
   .semantic-audit/work/<run-id>/batch-<digest> \
   --append
 ```
 
-`ingest-batch` is two-phase. It validates every bundle first, rejects duplicate identities inside the
-batch, and only then rewrites touched durable record files. A validation failure leaves durable
-records unchanged.
+`collect-batch --append` delegates to the same two-phase append logic as `ingest-batch`: it validates
+every bundle first, rejects duplicate identities inside the batch, and only then rewrites touched
+durable record files. A validation failure leaves durable records unchanged.
 
 Batch commands require a fresh technically attested latest run: `lake build` and the sorry/axiom
 check must both be clean, and live config, record, Lean/source, and audit-tool inputs must match the
 latest run's `audit-input-snapshot.json`. Rerun the audit after ingesting records before assigning
 the next stratum.
 
-The default queue includes only `open` and `stale` packets. Blocked, answered, internally dependent,
-or non-fresh batches require explicit debug flags. In normal use, keep strata separate:
+The default queue includes only `open` and `stale` packets. Dispatch defaults to `source_intention`
+packets. Blocked, answered, internally dependent, non-source, or non-fresh batches require explicit
+debug flags. In normal use, keep strata separate:
 
 ```text
 Lean reconstructions or source-intention cards

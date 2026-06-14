@@ -36,14 +36,20 @@ SCHEMA_VERSION = "0.1.0"
 BUNDLE_ARTIFACT = "semantic-audit-packet-bundle"
 QUEUE_PLAN_ARTIFACT = "semantic-audit-queue-plan"
 INPUT_SNAPSHOT_ARTIFACT = "semantic-audit-input-snapshot"
+DISPATCH_MANIFEST_ARTIFACT = "semantic-audit-dispatch-manifest"
+WORKER_RUN_ARTIFACT = "semantic-audit-worker-run"
 QUEUE_PLAN_FILE = "queue-plan.json"
 INPUT_SNAPSHOT_FILE = "audit-input-snapshot.json"
+DISPATCH_MANIFEST_FILE = "dispatch-manifest.json"
+WORKER_RUN_FILE = "worker-run.json"
+WORKER_PROMPT_FILE = "worker-prompt.md"
 PACKET_KINDS = ["lean_reconstruction", "source_intention", "comparison", "api_boundary"]
 PACKET_STATUSES = ["open", "blocked", "answered", "stale"]
 ASSIGNABLE_PACKET_STATUSES = ["open", "stale"]
 PACKET_PRIORITIES = ["high", "medium", "low"]
 PRIORITY_ORDER = {priority: index for index, priority in enumerate(PACKET_PRIORITIES)}
 KIND_ORDER = {kind: index for index, kind in enumerate(PACKET_KINDS)}
+DEFAULT_DISPATCH_KINDS = ["source_intention"]
 
 
 @dataclass
@@ -3218,6 +3224,530 @@ def bundle_paths_from_batch_input(repo: Path, input_path: Path) -> tuple[dict[st
     return plan, bundle_paths
 
 
+def queue_plan_from_batch_input(repo: Path, input_path: Path) -> tuple[dict[str, Any], Path, list[Path]]:
+    if input_path.is_file():
+        plan_path = input_path
+        batch_dir = input_path.parent
+    elif (input_path / QUEUE_PLAN_FILE).exists():
+        plan_path = input_path / QUEUE_PLAN_FILE
+        batch_dir = input_path
+    else:
+        raise SystemExit(f"Expected a batch directory or {QUEUE_PLAN_FILE}: {input_path}")
+    plan, bundle_paths = bundle_paths_from_batch_input(repo, plan_path)
+    return plan, batch_dir, bundle_paths
+
+
+def bundle_file_errors(bundle_dir: Path, *, require_answer: bool = True) -> list[str]:
+    errors: list[str] = []
+    filenames = ["manifest.json", "context.json", "instructions.md"]
+    if require_answer:
+        filenames.append("answer.json")
+    for filename in filenames:
+        path = bundle_dir / filename
+        if not path.exists():
+            errors.append(f"Bundle is missing {filename}: {bundle_dir}")
+        elif not path.is_file():
+            errors.append(f"Bundle path is not a file: {path}")
+    return errors
+
+
+def dispatch_allowed_kind_errors(packets: list[dict[str, Any]], allowed_kinds: list[str]) -> list[str]:
+    allowed = set(allowed_kinds)
+    return [
+        f"Packet {packet.get('packet_id', '')} has kind `{packet.get('packet_kind', '')}`, not one of {sorted(allowed)}."
+        for packet in packets
+        if packet.get("packet_kind") not in allowed
+    ]
+
+
+def dispatch_assignment(
+    repo: Path,
+    packet: dict[str, Any],
+    bundle_dir: Path,
+    *,
+    index: int,
+) -> dict[str, Any]:
+    worker_id = f"worker-{index + 1:04d}"
+    return {
+        "worker_id": worker_id,
+        "packet_id": packet.get("packet_id", ""),
+        "packet_kind": packet.get("packet_kind", ""),
+        "packet_status": packet.get("status", ""),
+        "packet_target": packet.get("target", ""),
+        "priority": packet.get("priority", ""),
+        "bundle_dir": path_label(repo, bundle_dir),
+        "manifest": path_label(repo, bundle_dir / "manifest.json"),
+        "context": path_label(repo, bundle_dir / "context.json"),
+        "instructions": path_label(repo, bundle_dir / "instructions.md"),
+        "answer": path_label(repo, bundle_dir / "answer.json"),
+        "worker_prompt": path_label(repo, bundle_dir / WORKER_PROMPT_FILE),
+    }
+
+
+def worker_prompt_text(assignment: dict[str, Any], run_id: str) -> str:
+    bundle_arg = shlex.quote(assignment.get("bundle_dir", ""))
+    run_guard = f" --expect-run-id {shlex.quote(run_id)}" if run_id else ""
+    return "\n".join([
+        "# Semantic Audit Worker Assignment",
+        "",
+        "You are a semantic audit worker running inside the current Claude Code, Codex, or compatible agent substrate.",
+        "",
+        "## Assignment",
+        "",
+        f"- Worker id: `{assignment.get('worker_id', '')}`",
+        f"- Packet id: `{assignment.get('packet_id', '')}`",
+        f"- Kind: `{assignment.get('packet_kind', '')}`",
+        f"- Target: `{assignment.get('packet_target', '')}`",
+        f"- Bundle directory: `{assignment.get('bundle_dir', '')}`",
+        "",
+        "## Files",
+        "",
+        f"- Read: `{assignment.get('instructions', '')}`",
+        f"- Read: `{assignment.get('context', '')}`",
+        f"- Edit: `{assignment.get('answer', '')}`",
+        f"- Do not edit: `{assignment.get('manifest', '')}`",
+        "",
+        "## Rules",
+        "",
+        "- Edit only this bundle's `answer.json`.",
+        "- Preserve protected provenance and identity fields already present in `answer.json`.",
+        "- Set `status` to `answered` only when the answer is complete.",
+        "- Use TeX delimiters such as `\\(...\\)` or `\\[...\\]` for mathematical notation.",
+        "- Do not edit durable records under `tools/semantic-audit/records/`.",
+        "- Do not edit queue plans, dispatch manifests, other bundles, Lean files, or exposition files.",
+        "- Use only the evidence allowed by `context.json` and the evidence discipline in `instructions.md`.",
+        "",
+        "## Controller Validation",
+        "",
+        "The controller will validate your returned answer with:",
+        "",
+        "```bash",
+        f"python3 tools/semantic-audit/semantic_audit.py packet ingest {bundle_arg}{run_guard}",
+        "```",
+        "",
+        "Leave your completed answer in `answer.json` for the controller to collect.",
+        "",
+    ])
+
+
+def dispatch_manifest(
+    repo: Path,
+    state: dict[str, Any],
+    plan: dict[str, Any],
+    batch_dir: Path,
+    packets: list[dict[str, Any]],
+    bundle_paths: list[Path],
+    *,
+    allowed_kinds: list[str],
+) -> dict[str, Any]:
+    assignments = [
+        dispatch_assignment(repo, packet, bundle_path, index=index)
+        for index, (packet, bundle_path) in enumerate(zip(packets, bundle_paths, strict=True))
+    ]
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "artifact": DISPATCH_MANIFEST_ARTIFACT,
+        "created_at": now_utc(),
+        "run_id": state.get("run", {}).get("run_id", ""),
+        "run_commit": state.get("run", {}).get("commit", ""),
+        "batch_dir": path_label(repo, batch_dir),
+        "queue_plan": path_label(repo, batch_dir / QUEUE_PLAN_FILE),
+        "allowed_kinds": sorted(allowed_kinds),
+        "assignment_count": len(assignments),
+        "assignments": assignments,
+        "worker_contract": {
+            "workspace_model": "shared_bundle_files",
+            "worker_output": "edit_answer_json",
+            "durable_append": "controller_only",
+        },
+    }
+
+
+def read_dispatch_manifest(batch_dir: Path) -> dict[str, Any]:
+    path = batch_dir / DISPATCH_MANIFEST_FILE
+    if not path.exists():
+        return {}
+    return read_json(path)
+
+
+def dispatch_manifest_errors(
+    repo: Path,
+    state: dict[str, Any],
+    batch_dir: Path,
+    plan: dict[str, Any],
+    bundle_paths: list[Path],
+    dispatch: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    if dispatch.get("schema_version") != SCHEMA_VERSION:
+        errors.append(f"Dispatch manifest schema_version is {dispatch.get('schema_version')!r}, expected {SCHEMA_VERSION}.")
+    if dispatch.get("artifact") != DISPATCH_MANIFEST_ARTIFACT:
+        errors.append(f"Dispatch manifest artifact is {dispatch.get('artifact')!r}, expected {DISPATCH_MANIFEST_ARTIFACT}.")
+    latest_run_id = state.get("run", {}).get("run_id", "")
+    if dispatch.get("run_id") != latest_run_id:
+        errors.append("Dispatch manifest run_id does not match the latest run.")
+    if dispatch.get("batch_dir") != path_label(repo, batch_dir):
+        errors.append("Dispatch manifest batch_dir does not match the collected batch directory.")
+    if dispatch.get("queue_plan") != path_label(repo, batch_dir / QUEUE_PLAN_FILE):
+        errors.append("Dispatch manifest queue_plan does not match the collected queue plan.")
+
+    assignments = dispatch.get("assignments", [])
+    if not isinstance(assignments, list):
+        errors.append("Dispatch manifest `assignments` must be a list.")
+        return errors
+    if dispatch.get("assignment_count") != len(assignments):
+        errors.append(
+            f"Dispatch manifest assignment_count is {dispatch.get('assignment_count')!r}, "
+            f"but assignments has length {len(assignments)}."
+        )
+    for index, assignment in enumerate(assignments):
+        if not isinstance(assignment, dict):
+            errors.append(f"Dispatch manifest assignment {index} must be an object.")
+
+    expected_packet_ids = packet_ids_from_queue_plan(plan)
+    assigned_packet_ids = [
+        str(assignment.get("packet_id", ""))
+        for assignment in assignments
+        if isinstance(assignment, dict)
+    ]
+    if assigned_packet_ids != expected_packet_ids:
+        errors.append(
+            "Dispatch manifest packet ids do not match the queue plan: "
+            f"expected {expected_packet_ids}, got {assigned_packet_ids}."
+        )
+
+    expected_bundle_dirs = [path_label(repo, bundle_path) for bundle_path in bundle_paths]
+    assigned_bundle_dirs = [
+        str(assignment.get("bundle_dir", ""))
+        for assignment in assignments
+        if isinstance(assignment, dict)
+    ]
+    if assigned_bundle_dirs != expected_bundle_dirs:
+        errors.append("Dispatch manifest bundle directories do not match the queue plan.")
+
+    return errors
+
+
+def classify_answer_record(answer_path: Path) -> tuple[str, dict[str, Any], list[str]]:
+    if not answer_path.exists():
+        return "missing", {}, [f"Missing answer.json: {answer_path}"]
+    try:
+        record = read_record_object(answer_path)
+    except (OSError, json.JSONDecodeError, SystemExit) as exc:
+        return "unreadable", {}, [f"Could not read answer.json: {exc}"]
+    if record.get("status") != "answered":
+        return "draft", record, [f"Answer status is `{record.get('status', '')}`, not `answered`."]
+    return "answered", record, []
+
+
+def collect_assignment_outcome(
+    repo: Path,
+    state: dict[str, Any],
+    bundle_path: Path,
+    assignment: dict[str, Any] | None,
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    answer_status, _record, read_errors = classify_answer_record(bundle_path / "answer.json")
+    base = {
+        "worker_id": assignment.get("worker_id", "") if assignment else "",
+        "packet_id": assignment.get("packet_id", "") if assignment else "",
+        "packet_kind": assignment.get("packet_kind", "") if assignment else "",
+        "bundle_dir": path_label(repo, bundle_path),
+        "answer": path_label(repo, bundle_path / "answer.json"),
+        "status": answer_status,
+        "warnings": [],
+        "errors": read_errors,
+    }
+    if answer_status != "answered":
+        return base
+
+    outcome = ingest_validation_outcome(
+        repo,
+        state,
+        bundle_path,
+        kind_override=args.kind,
+        replace=args.replace,
+        append_requested=args.append,
+        allow_stale=args.allow_stale,
+        allow_nonassignable=args.allow_nonassignable,
+        strict=args.strict,
+        require_bundle=True,
+    )
+    status = "answered-invalid" if outcome.get("errors") else "answered-valid"
+    base.update({
+        "status": status,
+        "kind": outcome.get("kind", ""),
+        "identity": outcome.get("identity", ""),
+        "identity_field": outcome.get("identity_field", ""),
+        "record_path": outcome.get("record_path", ""),
+        "warnings": outcome.get("warnings", []),
+        "errors": outcome.get("errors", []),
+        "validation": public_ingest_outcome(outcome),
+        "_ingest_outcome": outcome,
+    })
+    return base
+
+
+def public_collect_assignment(assignment: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in assignment.items()
+        if not key.startswith("_")
+    }
+
+
+def worker_run_report(
+    repo: Path,
+    state: dict[str, Any],
+    batch_dir: Path,
+    plan: dict[str, Any],
+    dispatch: dict[str, Any],
+    assignments: list[dict[str, Any]],
+    *,
+    append_requested: bool,
+    appended: bool,
+) -> dict[str, Any]:
+    counts: dict[str, int] = {}
+    for assignment in assignments:
+        status = assignment.get("status", "")
+        counts[status] = counts.get(status, 0) + 1
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "artifact": WORKER_RUN_ARTIFACT,
+        "created_at": now_utc(),
+        "run_id": state.get("run", {}).get("run_id", ""),
+        "run_commit": state.get("run", {}).get("commit", ""),
+        "batch_dir": path_label(repo, batch_dir),
+        "queue_plan": path_label(repo, batch_dir / QUEUE_PLAN_FILE),
+        "dispatch_manifest": path_label(repo, batch_dir / DISPATCH_MANIFEST_FILE) if dispatch else "",
+        "dispatch_present": bool(dispatch),
+        "packet_count": len(plan.get("packets", [])),
+        "assignment_count": len(assignments),
+        "status_counts": counts,
+        "ok": bool(assignments) and all(assignment.get("status") == "answered-valid" for assignment in assignments),
+        "append_requested": append_requested,
+        "appended": appended,
+        "assignments": [public_collect_assignment(assignment) for assignment in assignments],
+    }
+
+
+def validate_batch_for_dispatch(
+    state: dict[str, Any],
+    plan: dict[str, Any],
+    packets: list[dict[str, Any]],
+    bundle_paths: list[Path],
+    *,
+    allowed_kinds: list[str],
+    allow_blocked: bool = False,
+    allow_internal_dependencies: bool = False,
+    require_answers: bool = True,
+    require_nonempty: bool = True,
+) -> list[str]:
+    errors = validate_queue_plan(plan, state)
+    if require_nonempty and not packets:
+        errors.append("Queue selection is empty. Create a non-empty batch before dispatch or collection.")
+    errors.extend(validate_selected_packets(
+        state,
+        packets,
+        plan,
+        allow_blocked=allow_blocked,
+        allow_internal_dependencies=allow_internal_dependencies,
+    ))
+    errors.extend(dispatch_allowed_kind_errors(packets, allowed_kinds))
+    if len(bundle_paths) != len(packets):
+        errors.append(f"Queue plan has {len(packets)} packets but {len(bundle_paths)} bundle paths.")
+    for bundle_path in bundle_paths:
+        errors.extend(bundle_file_errors(bundle_path, require_answer=require_answers))
+    return errors
+
+
+def print_collect_report(report: dict[str, Any]) -> None:
+    for assignment in report.get("assignments", []):
+        print(
+            f"{assignment.get('status', ''):17} {assignment.get('packet_kind', ''):20} "
+            f"{assignment.get('packet_id', ''):60} {assignment.get('identity', '')}"
+        )
+        for warning in assignment.get("warnings", []):
+            print(f"  WARNING: {warning}", file=sys.stderr)
+        for error in assignment.get("errors", []):
+            print(f"  ERROR: {error}", file=sys.stderr)
+    print(f"assignments: {report.get('assignment_count', 0)}")
+    print(f"ok: {str(report.get('ok', False)).lower()}")
+    print(f"appended: {str(report.get('appended', False)).lower()}")
+    print(f"report: {Path(report.get('batch_dir', '.')) / WORKER_RUN_FILE}")
+
+
+def command_packet_dispatch_batch(args: argparse.Namespace) -> None:
+    repo = repo_root_from_script()
+    state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
+    enforce_semantic_work_preflight(repo, state, allow_unstable=args.allow_unstable)
+    plan, batch_dir, bundle_paths = queue_plan_from_batch_input(repo, Path(args.input))
+    packets = packets_from_queue_plan(state, plan)
+    allowed_kinds = sorted(set(DEFAULT_DISPATCH_KINDS + (args.allow_kind or [])))
+    errors = validate_batch_for_dispatch(
+        state,
+        plan,
+        packets,
+        bundle_paths,
+        allowed_kinds=allowed_kinds,
+        allow_blocked=args.allow_blocked,
+        allow_internal_dependencies=args.allow_internal_dependencies,
+    )
+    manifest_path = batch_dir / DISPATCH_MANIFEST_FILE
+    if manifest_path.exists() and not args.force:
+        errors.append(f"Dispatch manifest already exists: {manifest_path}. Use --force to overwrite.")
+    for bundle_path in bundle_paths:
+        prompt_path = bundle_path / WORKER_PROMPT_FILE
+        if prompt_path.exists() and not args.force:
+            errors.append(f"Worker prompt already exists: {prompt_path}. Use --force to overwrite.")
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}", file=sys.stderr)
+        raise SystemExit(1)
+
+    manifest = dispatch_manifest(
+        repo,
+        state,
+        plan,
+        batch_dir,
+        packets,
+        bundle_paths,
+        allowed_kinds=allowed_kinds,
+    )
+    for assignment in manifest.get("assignments", []):
+        prompt_path = path_from_label(repo, assignment["worker_prompt"])
+        prompt_path.write_text(worker_prompt_text(assignment, manifest.get("run_id", "")), encoding="utf-8")
+    write_json(manifest_path, manifest)
+
+    print(batch_dir)
+    print(f"dispatch: {manifest_path}")
+    print(f"assignments: {len(manifest.get('assignments', []))}")
+    run_guard = f" --expect-run-id {shlex.quote(manifest.get('run_id', ''))}" if manifest.get("run_id") else ""
+    print(
+        "collect: python3 tools/semantic-audit/semantic_audit.py packet collect-batch "
+        f"{shlex.quote(path_label(repo, batch_dir))}{run_guard}"
+    )
+
+
+def command_packet_collect_batch(args: argparse.Namespace) -> None:
+    repo = repo_root_from_script()
+    state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
+    enforce_semantic_work_preflight(repo, state, allow_unstable=args.allow_unstable)
+    plan, batch_dir, bundle_paths = queue_plan_from_batch_input(repo, Path(args.input))
+    packets = packets_from_queue_plan(state, plan)
+    dispatch = read_dispatch_manifest(batch_dir)
+    allowed_kinds = sorted(set(DEFAULT_DISPATCH_KINDS + (args.allow_kind or [])))
+    errors = validate_batch_for_dispatch(
+        state,
+        plan,
+        packets,
+        bundle_paths,
+        allowed_kinds=allowed_kinds,
+        allow_blocked=args.allow_blocked,
+        allow_internal_dependencies=args.allow_internal_dependencies,
+        require_answers=False,
+    )
+    if dispatch:
+        errors.extend(dispatch_manifest_errors(repo, state, batch_dir, plan, bundle_paths, dispatch))
+    if errors:
+        report = worker_run_report(
+            repo,
+            state,
+            batch_dir,
+            plan,
+            dispatch,
+            [{
+                "status": "unreadable",
+                "packet_id": "",
+                "packet_kind": "",
+                "bundle_dir": path_label(repo, batch_dir),
+                "answer": "",
+                "warnings": [],
+                "errors": errors,
+            }],
+            append_requested=args.append,
+            appended=False,
+        )
+        write_json(batch_dir / WORKER_RUN_FILE, report)
+        if args.json:
+            emit_json(report, None)
+        else:
+            print_collect_report(report)
+        raise SystemExit(1)
+
+    dispatch_by_packet = {
+        assignment.get("packet_id", ""): assignment
+        for assignment in dispatch.get("assignments", [])
+        if isinstance(assignment, dict) and assignment.get("packet_id")
+    }
+    collect_assignments: list[dict[str, Any]] = []
+    for index, (packet, bundle_path) in enumerate(zip(packets, bundle_paths, strict=True)):
+        assignment = dispatch_by_packet.get(packet.get("packet_id", ""))
+        if assignment is None:
+            assignment = dispatch_assignment(repo, packet, bundle_path, index=index)
+        collect_assignments.append(collect_assignment_outcome(repo, state, bundle_path, assignment, args))
+
+    ingest_outcomes = [
+        assignment["_ingest_outcome"]
+        for assignment in collect_assignments
+        if assignment.get("_ingest_outcome")
+    ]
+    add_batch_duplicate_errors(ingest_outcomes)
+    for assignment in collect_assignments:
+        outcome = assignment.get("_ingest_outcome")
+        if not outcome:
+            continue
+        assignment["errors"] = outcome.get("errors", [])
+        assignment["warnings"] = outcome.get("warnings", [])
+        assignment["validation"] = public_ingest_outcome(outcome)
+        if outcome.get("errors"):
+            assignment["status"] = "answered-invalid"
+
+    ok = bool(collect_assignments) and all(
+        assignment.get("status") == "answered-valid"
+        for assignment in collect_assignments
+    )
+    appended = False
+    if args.append:
+        if not ok:
+            report = worker_run_report(
+                repo,
+                state,
+                batch_dir,
+                plan,
+                dispatch,
+                collect_assignments,
+                append_requested=True,
+                appended=False,
+            )
+            write_json(batch_dir / WORKER_RUN_FILE, report)
+            if args.json:
+                emit_json(report, None)
+            else:
+                print_collect_report(report)
+            raise SystemExit(1)
+        commit_batch_ingest_outcomes(repo, ingest_outcomes, replace=args.replace)
+        appended = True
+
+    report = worker_run_report(
+        repo,
+        state,
+        batch_dir,
+        plan,
+        dispatch,
+        collect_assignments,
+        append_requested=args.append,
+        appended=appended,
+    )
+    write_json(batch_dir / WORKER_RUN_FILE, report)
+    if args.json:
+        emit_json(report, None)
+    else:
+        print_collect_report(report)
+    if not ok:
+        raise SystemExit(1)
+
+
 def command_packet_queue(args: argparse.Namespace) -> None:
     repo = repo_root_from_script()
     state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
@@ -3553,6 +4083,17 @@ def main() -> None:
     bundle_batch_parser.add_argument("--allow-unstable", action="store_true", help="allow bundling from a non-fresh or non-attested latest run")
     bundle_batch_parser.set_defaults(func=command_packet_bundle_batch)
 
+    dispatch_batch_parser = packet_subparsers.add_parser("dispatch-batch", help="write agent-native worker prompts for a generated batch")
+    dispatch_batch_parser.add_argument("input", help="batch directory or queue-plan.json")
+    dispatch_batch_parser.add_argument("--out-root", default=str(DEFAULT_OUT), help="audit output root containing latest/")
+    dispatch_batch_parser.add_argument("--expect-run-id", help="fail if latest/ does not point to this run id")
+    dispatch_batch_parser.add_argument("--allow-kind", choices=PACKET_KINDS, action="append", help="additional packet kind allowed for dispatch; default allows source_intention")
+    dispatch_batch_parser.add_argument("--force", action="store_true", help="overwrite existing dispatch manifest and worker prompts")
+    dispatch_batch_parser.add_argument("--allow-blocked", action="store_true", help="dispatch blocked packets for debugging")
+    dispatch_batch_parser.add_argument("--allow-internal-dependencies", action="store_true", help="dispatch same-batch context dependencies for debugging")
+    dispatch_batch_parser.add_argument("--allow-unstable", action="store_true", help="allow dispatch from a non-fresh or non-attested latest run")
+    dispatch_batch_parser.set_defaults(func=command_packet_dispatch_batch)
+
     validate_parser = packet_subparsers.add_parser("validate", help="validate a single answer record JSON object")
     validate_parser.add_argument("record", help="path to a JSON record object")
     validate_parser.add_argument("--kind", choices=PACKET_KINDS)
@@ -3593,6 +4134,23 @@ def main() -> None:
     ingest_batch_parser.add_argument("--strict", action="store_true", help="treat lint warnings as errors")
     ingest_batch_parser.add_argument("--json", action="store_true", help="emit JSON result instead of a compact table")
     ingest_batch_parser.set_defaults(func=command_packet_ingest_batch)
+
+    collect_batch_parser = packet_subparsers.add_parser("collect-batch", help="collect shared-bundle worker answers and write a worker-run report")
+    collect_batch_parser.add_argument("input", help="batch directory or queue-plan.json")
+    collect_batch_parser.add_argument("--out-root", default=str(DEFAULT_OUT), help="audit output root containing latest/")
+    collect_batch_parser.add_argument("--expect-run-id", help="fail if latest/ does not point to this run id")
+    collect_batch_parser.add_argument("--kind", choices=PACKET_KINDS)
+    collect_batch_parser.add_argument("--append", action="store_true", help="append only if every assignment validates")
+    collect_batch_parser.add_argument("--replace", action="store_true", help="replace existing records with matching identities")
+    collect_batch_parser.add_argument("--allow-kind", choices=PACKET_KINDS, action="append", help="additional packet kind allowed for collection; default allows source_intention")
+    collect_batch_parser.add_argument("--allow-stale", action="store_true", help="allow stale bundles and mark stale-accepted records when appending")
+    collect_batch_parser.add_argument("--allow-unstable", action="store_true", help="allow collection against a non-fresh or non-attested latest run")
+    collect_batch_parser.add_argument("--allow-nonassignable", action="store_true", help="allow collection for blocked or already-answered latest packet states")
+    collect_batch_parser.add_argument("--allow-blocked", action="store_true", help="collect blocked packets for debugging")
+    collect_batch_parser.add_argument("--allow-internal-dependencies", action="store_true", help="collect same-batch context dependencies for debugging")
+    collect_batch_parser.add_argument("--strict", action="store_true", help="treat lint warnings as errors")
+    collect_batch_parser.add_argument("--json", action="store_true", help="emit JSON report instead of a compact table")
+    collect_batch_parser.set_defaults(func=command_packet_collect_batch)
 
     args = parser.parse_args()
     if getattr(args, "packet_command", None) == "ingest" and args.dry_run and args.append:

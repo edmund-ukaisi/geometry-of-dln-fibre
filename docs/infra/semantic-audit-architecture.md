@@ -35,7 +35,7 @@ statement as ground truth. The comparison packet is where those views meet.
 
 ## Artifact Model
 
-There are six artifact types.
+There are eight artifact types.
 
 ```text
 Run
@@ -50,14 +50,21 @@ Bundle
 Queue plan
   a generated batch assignment listing packet ids and bundle paths
 
+Dispatch manifest
+  a generated assignment index for Claude Code, Codex, Agent Teams, or human workers
+
 Answer
   the worker-filled answer.json inside a bundle
+
+Worker run
+  a generated collection/validation report for returned worker answers
 
 Record
   durable accepted audit memory under tools/semantic-audit/records/*.jsonl
 ```
 
-Only records are durable memory. Runs, packets, bundles, and queue plans are generated artifacts.
+Only records are durable memory. Runs, packets, bundles, queue plans, dispatch manifests, and worker
+runs are generated artifacts.
 
 ## Bundle Files
 
@@ -141,6 +148,38 @@ bundle one stratum
 ```
 
 This keeps each accepted record current against the run that generated its context.
+
+## Agent-Native Dispatch
+
+The repo tool does not launch Claude Code, Codex, Agent Teams, or other agent processes. The active
+controller substrate does that.
+
+The repo tool provides a substrate-neutral filesystem protocol:
+
+```text
+bundle-batch
+  -> queue-plan.json and per-packet bundles
+
+dispatch-batch
+  -> dispatch-manifest.json and one worker-prompt.md per bundle
+
+agent substrate
+  -> worker reads its prompt and edits only its bundle's answer.json
+
+collect-batch
+  -> worker-run.json and controller validation results
+```
+
+For v1, dispatch defaults to `source_intention` packets. Broader packet kinds require explicit debug
+overrides until the workflow has been dogfooded on independent source-intention strata.
+
+The default workspace model is shared bundle files: workers edit the generated `answer.json` in the
+same checkout. If a future substrate uses isolated worktrees, that substrate must copy the completed
+`answer.json` files back into the batch before `collect-batch`.
+
+When a dispatch manifest is present, `collect-batch` treats it as part of the controller boundary: it
+must have the same run id, batch path, queue-plan path, packet ids, and bundle directories as the
+batch being collected.
 
 ## Minimal Provenance
 
