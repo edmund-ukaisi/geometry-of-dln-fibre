@@ -1,0 +1,143 @@
+{
+  "schema_version": "0.1.0",
+  "declarations": [
+    {
+      "name": "DLNFibre.Core.HasBarcode",
+      "tier": "T0",
+      "reason": "Central bridge between abstract barcode data and interval-module decompositions."
+    },
+    {
+      "name": "DLNFibre.Core.Supported",
+      "tier": "T0",
+      "reason": "Boundary convention for finite difference and cumulative rank-pattern arrays."
+    },
+    {
+      "name": "DLNFibre.Core.intervalModule",
+      "tier": "T0",
+      "reason": "Basic formal interval representation used to connect the paper's bars to Lean tuples."
+    },
+    {
+      "name": "DLNFibre.Core.rankPattern",
+      "tier": "T0",
+      "reason": "Formal version of the paper's rank-pattern invariant."
+    },
+    {
+      "name": "DLNFibre.Core.cumulDiffEquiv",
+      "tier": "T0",
+      "reason": "Finite-difference inverse underlying the rank-pattern/Kostant-partition bijection."
+    },
+    {
+      "name": "DLNFibre.Core.rankPattern_eq_cumul_barMult",
+      "tier": "T0",
+      "reason": "Bridge from Gabriel barcode multiplicities to the cumulative rank pattern."
+    },
+    {
+      "name": "DLNFibre.Core.exists_barcode_rankPattern",
+      "tier": "T0",
+      "reason": "Existence of a barcode whose interval counts recover a tuple's rank pattern."
+    },
+    {
+      "name": "DLNFibre.Core.rankPattern_eq_of_smul",
+      "tier": "T0",
+      "reason": "Orbit-invariance direction for the rank pattern."
+    },
+    {
+      "name": "DLNFibre.Core.orbit_of_rankPattern_eq",
+      "tier": "T0",
+      "reason": "Hard direction from equal rank patterns to a base-change orbit witness."
+    },
+    {
+      "name": "DLNFibre.Core.rankPattern_eq_iff_orbit",
+      "tier": "T0",
+      "reason": "Complete invariant statement for rank patterns and base-change orbits."
+    }
+  ],
+  "source_targets": [
+    {
+      "source_id": "paper.rank-patterns.prop-3.1a",
+      "paper_label": "Proposition 3.1(a)",
+      "path": "paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex",
+      "line_hint": "finite-difference/cumulative bijection around lines 555-565",
+      "summary": "The paper asserts a finite-difference/cumulative bijection between supported Kostant multiplicity data and rank patterns."
+    },
+    {
+      "source_id": "paper.rank-patterns.prop-3.1b",
+      "paper_label": "Proposition 3.1(b)",
+      "path": "paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex",
+      "line_hint": "rank patterns and Gabriel multiplicities around lines 546-577",
+      "summary": "For a type-A representation, the rank pattern is recovered as the cumulative count of interval summands."
+    },
+    {
+      "source_id": "paper.orbit-correspondence.cor-2.9",
+      "paper_label": "Corollary 2.9",
+      "path": "paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex",
+      "line_hint": "orbit classification by Kostant data around lines 380-388",
+      "summary": "The rank-pattern or Kostant multiplicity data classifies base-change orbits of type-A representations."
+    },
+    {
+      "source_id": "paper.orbit-closure.thm-3.8",
+      "paper_label": "Theorem 3.8",
+      "path": "paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex",
+      "line_hint": "orbit hierarchy and closure order around lines 700-725",
+      "summary": "The paper describes the closure order on orbits in terms of the rank-pattern partial order."
+    },
+    {
+      "source_id": "paper.multiplication-loci.definition",
+      "paper_label": "Multiplication loci",
+      "path": "paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex",
+      "line_hint": "definitions of Sigma^r and cSigma^r around lines 749-817",
+      "summary": "The paper defines multiplication rank loci and relates their strata to rank-pattern inequalities."
+    },
+    {
+      "source_id": "paper.irred-components.corollary",
+      "paper_label": "Corollary on irreducible components",
+      "path": "paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex",
+      "line_hint": "irreducible components of cSigma^r around line 809",
+      "summary": "The paper identifies irreducible components of the multiplication locus from extremal rank patterns."
+    }
+  ],
+  "comparisons": [
+    {
+      "comparison_id": "cmp.cumulDiffEquiv.prop-3.1a",
+      "lean_declaration": "DLNFibre.Core.cumulDiffEquiv",
+      "source_id": "paper.rank-patterns.prop-3.1a",
+      "kind": "theorem_alignment"
+    },
+    {
+      "comparison_id": "cmp.rankPattern_eq_cumul_barMult.prop-3.1b",
+      "lean_declaration": "DLNFibre.Core.rankPattern_eq_cumul_barMult",
+      "source_id": "paper.rank-patterns.prop-3.1b",
+      "kind": "theorem_alignment"
+    },
+    {
+      "comparison_id": "cmp.exists_barcode_rankPattern.prop-3.1b",
+      "lean_declaration": "DLNFibre.Core.exists_barcode_rankPattern",
+      "source_id": "paper.rank-patterns.prop-3.1b",
+      "kind": "theorem_alignment"
+    },
+    {
+      "comparison_id": "cmp.rankPattern_eq_iff_orbit.cor-2.9",
+      "lean_declaration": "DLNFibre.Core.rankPattern_eq_iff_orbit",
+      "source_id": "paper.orbit-correspondence.cor-2.9",
+      "kind": "theorem_alignment"
+    },
+    {
+      "comparison_id": "cmp.orbit_of_rankPattern_eq.cor-2.9",
+      "lean_declaration": "DLNFibre.Core.orbit_of_rankPattern_eq",
+      "source_id": "paper.orbit-correspondence.cor-2.9",
+      "kind": "theorem_alignment"
+    }
+  ],
+  "api_boundary_targets": [
+    {
+      "target_id": "api.HasBarcode.domain",
+      "lean_declaration": "DLNFibre.Core.HasBarcode",
+      "question": "Does the abstract barcode predicate exactly capture the paper's interval-decomposition domain, or does it intentionally expose a broader API?"
+    },
+    {
+      "target_id": "api.rankPattern.domain",
+      "lean_declaration": "DLNFibre.Core.rankPattern",
+      "question": "Does the Lean rankPattern API encode the same domain conventions as the paper, including diagonal and out-of-range behavior?"
+    }
+  ]
+}

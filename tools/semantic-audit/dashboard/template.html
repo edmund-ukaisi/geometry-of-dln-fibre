@@ -1,0 +1,3542 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Semantic Audit Dashboard</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --ink: #20242a;
+      --muted: #68717d;
+      --line: #d9dee6;
+      --blue: #2463eb;
+      --green: #1f7a4d;
+      --yellow: #9a6700;
+      --orange: #b45309;
+      --red: #b42318;
+      --chip: #eef2f7;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      padding: 18px 24px 12px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      font-weight: 680;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: 680;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .view-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .view-tab {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--muted);
+      padding: 0 11px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .view-tab.active {
+      color: var(--blue);
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--chip);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .chip.pass { color: var(--green); background: #edf8f2; border-color: #b9e2c9; }
+    .chip.fail { color: var(--red); background: #fff0ee; border-color: #fac5bd; }
+    .chip.warn { color: var(--orange); background: #fff7ed; border-color: #fed7aa; }
+    .chip.tier-t0 { color: #1d4ed8; background: #eff6ff; border-color: #bfdbfe; }
+    .chip.tier-t1 { color: #6d28d9; background: #f5f3ff; border-color: #ddd6fe; }
+    .chip.tier-t2 { color: #475569; background: #f8fafc; border-color: #cbd5e1; }
+    .chip.tier-unassigned { color: var(--muted); background: #f8fafc; border-color: var(--line); }
+
+    main {
+      padding: 16px 24px 24px;
+    }
+
+    main.dashboard-view {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 16px;
+    }
+
+    main.graph-explorer-view {
+      display: block;
+    }
+
+    main.hidden { display: none; }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .stack { display: grid; gap: 16px; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      padding: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .stat span { color: var(--muted); }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    input, select {
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0 9px;
+      font: inherit;
+    }
+
+    input { min-width: 280px; flex: 1; }
+    select { min-width: 150px; }
+
+    .check-control {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 0 9px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .check-control input {
+      width: 16px;
+      height: 16px;
+      min-width: auto;
+      flex: 0;
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .wide-table {
+      overflow-x: auto;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 7px;
+      text-align: left;
+      vertical-align: top;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      background: #fbfcfd;
+      position: sticky;
+      top: 74px;
+      z-index: 4;
+    }
+
+    tr { cursor: pointer; }
+    tr:hover td { background: #f8fafc; }
+    tr.selected td { background: #eef4ff; }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #f6f8fb;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    mjx-container {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    mjx-container[display="true"] {
+      margin: 0.55em 0;
+    }
+
+    .detail-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr);
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+    }
+
+    .kv:last-child { border-bottom: 0; padding-bottom: 0; }
+    .kv .key { color: var(--muted); }
+    .kv > div:last-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .finding {
+      border: 1px solid var(--line);
+      border-left-width: 4px;
+      border-radius: 7px;
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #fff;
+    }
+
+    .finding.blocker { border-left-color: var(--red); }
+    .finding.high { border-left-color: var(--orange); }
+    .finding.medium { border-left-color: var(--yellow); }
+    .finding.low { border-left-color: var(--blue); }
+
+    .finding-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .section-head h2 { margin-bottom: 0; }
+
+    .graph-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .view-guide {
+      display: grid;
+      gap: 8px;
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border: 1px solid #e5e9f0;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--muted);
+    }
+
+    .view-guide p {
+      margin: 0;
+      max-width: 1120px;
+    }
+
+    .legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 26px;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .line-swatch {
+      width: 28px;
+      border-top: 2px solid #2563eb;
+    }
+
+    .line-swatch.proof {
+      border-top-color: #b45309;
+      border-top-style: dashed;
+    }
+
+    .node-swatch {
+      width: 15px;
+      height: 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .node-swatch.def { background: #eff6ff; border-color: #93c5fd; }
+    .node-swatch.theorem { background: #edf8f2; border-color: #9bd5b2; }
+    .node-swatch.inductive { background: #f5f3ff; border-color: #c4b5fd; }
+    .node-swatch.selected { background: #fff7ed; border-color: #b45309; border-width: 2px; }
+    .node-swatch.t0 { background: #fff; border-color: #1d4ed8; border-width: 2px; }
+    .node-swatch.dimmed { background: #fff; opacity: 0.45; }
+
+    .dot-swatch {
+      width: 13px;
+      height: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #fff;
+    }
+
+    .dot-swatch.def { background: #eff6ff; border-color: #93c5fd; }
+    .dot-swatch.theorem { background: #edf8f2; border-color: #9bd5b2; }
+    .dot-swatch.inductive { background: #f5f3ff; border-color: #c4b5fd; }
+    .dot-swatch.selected { background: #fff7ed; border-color: #b45309; border-width: 2px; }
+
+    .axis-guide {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .axis-card {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 8px;
+      color: var(--muted);
+    }
+
+    .axis-card strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--ink);
+      font-size: 12px;
+    }
+
+    .graph-shell {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      overflow: auto;
+    }
+
+    .graph-svg {
+      display: block;
+      width: 100%;
+      min-width: 980px;
+      height: auto;
+    }
+
+    .graph-node { cursor: pointer; }
+    .graph-node rect {
+      fill: #fff;
+      stroke: #cbd5e1;
+      stroke-width: 1;
+    }
+    .graph-node.focus rect {
+      fill: #fff7ed;
+      stroke: #b45309;
+      stroke-width: 2;
+    }
+    .graph-node.tier-t0 rect {
+      fill: #eff6ff;
+      stroke: #93c5fd;
+    }
+    .graph-node:hover rect {
+      stroke: var(--blue);
+      stroke-width: 2;
+    }
+    .graph-node text {
+      fill: var(--ink);
+      font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      pointer-events: none;
+    }
+    .graph-node .module-label {
+      fill: var(--muted);
+      font: 11px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .graph-lane-title {
+      fill: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    .graph-edge {
+      fill: none;
+      stroke-width: 1.8;
+      opacity: 0.72;
+    }
+    .graph-edge.type { stroke: #2563eb; }
+    .graph-edge.value { stroke: #b45309; stroke-dasharray: 5 4; }
+    .graph-overflow {
+      fill: var(--muted);
+      font-size: 12px;
+    }
+
+    .graph-ledger {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .graph-ledger h3 {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .graph-list {
+      display: grid;
+      gap: 4px;
+      align-content: start;
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .graph-link {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 5px 7px;
+      text-align: left;
+      font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--ink);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .graph-link:hover {
+      border-color: var(--blue);
+      background: #f8fafc;
+    }
+
+    .explorer-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .explorer-shell {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      height: calc(100vh - 230px);
+      min-height: 620px;
+      overflow: auto;
+    }
+
+    .explorer-svg {
+      display: block;
+      min-width: 1200px;
+      height: auto;
+    }
+
+    .explorer-module-band {
+      fill: #f3f6fa;
+      stroke: var(--line);
+      stroke-width: 1;
+    }
+
+    .explorer-module-title {
+      fill: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .explorer-edge {
+      fill: none;
+      stroke-width: 1.25;
+      opacity: 0.22;
+    }
+
+    .explorer-edge.type { stroke: #2563eb; }
+    .explorer-edge.proof { stroke: #b45309; stroke-dasharray: 5 4; }
+    .explorer-edge.focus {
+      stroke-width: 2.25;
+      opacity: 0.78;
+    }
+    .explorer-edge.dimmed { opacity: 0.08; }
+
+    .explorer-node { cursor: pointer; }
+    .explorer-node rect {
+      fill: #fff;
+      stroke: #cbd5e1;
+      stroke-width: 1;
+    }
+
+    .explorer-node.kind-def rect { fill: #eff6ff; stroke: #93c5fd; }
+    .explorer-node.kind-theorem rect { fill: #edf8f2; stroke: #9bd5b2; }
+    .explorer-node.kind-inductive rect,
+    .explorer-node.kind-constructor rect { fill: #f5f3ff; stroke: #c4b5fd; }
+    .explorer-node.tier-t0 rect { stroke: #1d4ed8; stroke-width: 2; }
+    .explorer-node.selected rect { fill: #fff7ed; stroke: #b45309; stroke-width: 2.4; }
+    .explorer-node.neighbor rect { stroke-width: 1.8; }
+    .explorer-node.dimmed { opacity: 0.58; }
+    .explorer-node:hover rect { stroke: var(--blue); stroke-width: 2.4; }
+
+    .explorer-node text {
+      fill: var(--ink);
+      font: 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      pointer-events: none;
+    }
+
+    .explorer-inspector {
+      position: sticky;
+      top: 112px;
+      max-height: calc(100vh - 132px);
+      overflow: auto;
+    }
+
+    .explorer-inspector h3 {
+      margin: 10px 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .analysis-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .analysis-shell {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      height: calc(100vh - 230px);
+      min-height: 620px;
+      overflow: auto;
+    }
+
+    .analysis-svg {
+      display: block;
+      min-width: 1120px;
+      height: auto;
+    }
+
+    .analysis-inspector {
+      position: sticky;
+      top: 112px;
+      max-height: calc(100vh - 132px);
+      overflow: auto;
+    }
+
+    .analysis-inspector h3 {
+      margin: 10px 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .strata-band {
+      fill: #f3f6fa;
+      stroke: var(--line);
+      stroke-width: 1;
+    }
+
+    .strata-title,
+    .axis-label {
+      fill: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .strata-edge,
+    .role-edge {
+      fill: none;
+      stroke-width: 1.2;
+      opacity: 0.18;
+    }
+
+    .strata-edge.type,
+    .role-edge.type { stroke: #2563eb; }
+    .strata-edge.proof,
+    .role-edge.proof { stroke: #b45309; stroke-dasharray: 5 4; }
+    .strata-edge.focus,
+    .role-edge.focus {
+      stroke-width: 2.2;
+      opacity: 0.76;
+    }
+
+    .strata-node,
+    .role-node {
+      cursor: pointer;
+    }
+
+    .strata-node rect,
+    .role-node circle {
+      fill: #fff;
+      stroke: #cbd5e1;
+      stroke-width: 1;
+    }
+
+    .strata-node.kind-def rect,
+    .role-node.kind-def circle { fill: #eff6ff; stroke: #93c5fd; }
+    .strata-node.kind-theorem rect,
+    .role-node.kind-theorem circle { fill: #edf8f2; stroke: #9bd5b2; }
+    .strata-node.kind-inductive rect,
+    .strata-node.kind-constructor rect,
+    .role-node.kind-inductive circle,
+    .role-node.kind-constructor circle { fill: #f5f3ff; stroke: #c4b5fd; }
+    .strata-node.tier-t0 rect,
+    .role-node.tier-t0 circle { stroke: #1d4ed8; stroke-width: 2; }
+    .strata-node.selected rect,
+    .role-node.selected circle { fill: #fff7ed; stroke: #b45309; stroke-width: 2.4; }
+    .strata-node.neighbor rect,
+    .role-node.neighbor circle { stroke-width: 1.8; }
+    .strata-node.dimmed,
+    .role-node.dimmed { opacity: 0.54; }
+
+    .strata-node text {
+      fill: var(--ink);
+      font: 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      pointer-events: none;
+    }
+
+    .role-node:hover circle,
+    .strata-node:hover rect {
+      stroke: var(--blue);
+      stroke-width: 2.4;
+    }
+
+    .role-label {
+      fill: var(--ink);
+      font: 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      pointer-events: none;
+    }
+
+    .axis-line {
+      stroke: #cbd5e1;
+      stroke-width: 1;
+    }
+
+    .axis-grid {
+      stroke: #e7ebf0;
+      stroke-width: 1;
+    }
+
+    .quadrant-label {
+      fill: #8a94a3;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .matrix-shell {
+      display: grid;
+      gap: 10px;
+      overflow-x: auto;
+    }
+
+    .matrix-table {
+      table-layout: fixed;
+      min-width: 960px;
+      border-collapse: separate;
+      border-spacing: 3px;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      border: 0;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .matrix-table th {
+      position: static;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .matrix-row-label {
+      width: 150px;
+      text-align: right;
+      padding-right: 8px !important;
+      white-space: nowrap;
+    }
+
+    .matrix-col-label {
+      height: 74px;
+      vertical-align: bottom;
+    }
+
+    .matrix-col-label > div {
+      transform: rotate(-38deg);
+      transform-origin: left bottom;
+      width: 120px;
+      white-space: nowrap;
+    }
+
+    .matrix-cell {
+      width: 58px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      cursor: pointer;
+    }
+
+    .matrix-cell:hover,
+    .matrix-cell.selected {
+      outline: 2px solid var(--blue);
+      outline-offset: 1px;
+    }
+
+    .matrix-legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .packet-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .packet-queue-shell {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .packet-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+    }
+
+    .packet-summary-card {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 9px 10px;
+    }
+
+    .packet-summary-card strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.1;
+      margin-bottom: 3px;
+      overflow-wrap: anywhere;
+    }
+
+    .packet-summary-card span { color: var(--muted); }
+
+    .packet-queue {
+      display: grid;
+      gap: 8px;
+      max-height: calc(100vh - 370px);
+      min-height: 520px;
+      overflow: auto;
+      padding-right: 3px;
+    }
+
+    .packet-card {
+      width: 100%;
+      display: grid;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-left-width: 4px;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 10px;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .packet-card.open { border-left-color: var(--orange); }
+    .packet-card.stale { border-left-color: var(--yellow); }
+    .packet-card.blocked { border-left-color: var(--red); }
+    .packet-card.answered { border-left-color: var(--green); }
+    .packet-card.selected {
+      border-color: #93c5fd;
+      border-left-color: var(--blue);
+      background: #f8fbff;
+      box-shadow: 0 0 0 1px #bfdbfe inset;
+    }
+
+    .packet-card:hover { border-color: var(--blue); }
+
+    .packet-card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .packet-card-title {
+      min-width: 0;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .packet-card-target {
+      color: var(--muted);
+      font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow-wrap: anywhere;
+    }
+
+    .packet-card-meta,
+    .packet-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .packet-json {
+      max-height: 360px;
+      overflow: auto;
+    }
+
+    .command-block {
+      display: grid;
+      gap: 7px;
+    }
+
+    .command-row {
+      display: grid;
+      gap: 3px;
+    }
+
+    .command-row .command-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .command-row pre {
+      max-height: none;
+      padding: 8px;
+      background: #101820;
+      border-color: #101820;
+      color: #f8fafc;
+    }
+
+    .muted { color: var(--muted); }
+    .hidden { display: none; }
+    .small { font-size: 12px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media (max-width: 1050px) {
+      main.dashboard-view { grid-template-columns: 1fr; }
+      th { position: static; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .graph-ledger { grid-template-columns: 1fr; }
+      .explorer-layout { grid-template-columns: 1fr; }
+      .explorer-inspector {
+        position: static;
+        max-height: none;
+      }
+      .axis-guide { grid-template-columns: 1fr; }
+      .analysis-layout { grid-template-columns: 1fr; }
+      .analysis-inspector {
+        position: static;
+        max-height: none;
+      }
+      .packet-layout { grid-template-columns: 1fr; }
+      .packet-queue {
+        max-height: none;
+        min-height: auto;
+      }
+    }
+  </style>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"], ["$", "$"]],
+        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+        processEscapes: true
+      },
+      svg: {
+        fontCache: "global"
+      },
+      options: {
+        skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+      }
+    };
+  </script>
+  <script defer src="./vendor/mathjax/tex-svg.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Semantic Audit Dashboard</h1>
+    <div class="meta" id="run-meta">__RUN_META__</div>
+    <div class="view-tabs" role="tablist" aria-label="Dashboard views">
+      <button id="tab-overview" class="view-tab active" type="button" data-view="overview" role="tab" aria-selected="true">Audit Overview</button>
+      <button id="tab-packets" class="view-tab" type="button" data-view="packets" role="tab" aria-selected="false">Work Packets</button>
+      <button id="tab-explorer" class="view-tab" type="button" data-view="explorer" role="tab" aria-selected="false">Graph Explorer</button>
+      <button id="tab-strata" class="view-tab" type="button" data-view="strata" role="tab" aria-selected="false">Build Strata</button>
+      <button id="tab-roles" class="view-tab" type="button" data-view="roles" role="tab" aria-selected="false">Role Map</button>
+      <button id="tab-matrix" class="view-tab" type="button" data-view="matrix" role="tab" aria-selected="false">Module Matrix</button>
+    </div>
+  </header>
+
+  <main id="overview-view" class="dashboard-view">
+    <div class="stack">
+      <div class="stats" id="stats">__STATS__</div>
+
+      <section>
+        <div class="section-head">
+          <h2>Semantic Graph</h2>
+          <div class="graph-meta" id="graph-meta"></div>
+        </div>
+        <div class="view-guide">
+          <p>This focused neighborhood reads from prerequisites on the left, through the selected declaration, to declarations that use it on the right. It is meant for checking the local mathematical interface around one declaration.</p>
+          <div class="legend-row" aria-label="Semantic graph legend">
+            <span class="legend-item"><span class="line-swatch"></span>blue solid: statement/type relation</span>
+            <span class="legend-item"><span class="line-swatch proof"></span>orange dashed: proof-only relation</span>
+            <span class="legend-item"><span class="node-swatch selected"></span>selected declaration</span>
+            <span class="legend-item"><span class="node-swatch t0"></span>T0 audit boundary</span>
+          </div>
+        </div>
+        <div class="controls">
+          <select id="graph-focus"><option value="">Select declaration</option></select>
+          <select id="graph-limit">
+            <option value="8">Compact neighborhood</option>
+            <option value="14">Expanded neighborhood</option>
+            <option value="999">Full neighborhood</option>
+          </select>
+          <label class="check-control"><input id="graph-artifacts" type="checkbox"> Show Lean artifacts</label>
+        </div>
+        <div class="graph-shell">
+          <svg id="semantic-graph-svg" class="graph-svg" role="img" aria-label="Focused semantic dependency graph"></svg>
+        </div>
+        <div class="graph-ledger" id="graph-ledger"></div>
+      </section>
+
+      <section>
+        <h2>Declarations</h2>
+        <div class="controls">
+          <input id="decl-search" type="search" placeholder="Search declarations, modules, docs">
+          <select id="tier-filter"><option value="">All tiers</option></select>
+          <select id="kind-filter"><option value="">All kinds</option></select>
+          <select id="module-filter"><option value="">All modules</option></select>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 34%">Name</th>
+              <th style="width: 10%">Kind</th>
+              <th style="width: 10%">Tier</th>
+              <th style="width: 28%">Module</th>
+              <th style="width: 9%">Type Deps</th>
+              <th style="width: 9%">Value Deps</th>
+            </tr>
+          </thead>
+          <tbody id="decl-table">__DECL_ROWS__</tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Findings</h2>
+        <div class="controls">
+          <input id="finding-search" type="search" placeholder="Search findings">
+          <select id="severity-filter"><option value="">All severities</option></select>
+        </div>
+        <div id="finding-list">__FINDING_CARDS__</div>
+      </section>
+
+      <section>
+        <h2>Work Packets</h2>
+        <div class="controls">
+          <input id="packet-search" type="search" placeholder="Search packets">
+          <select id="packet-kind-filter"><option value="">All packet kinds</option></select>
+          <select id="packet-status-filter"><option value="">All statuses</option></select>
+        </div>
+        <div class="wide-table">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 30%">Packet</th>
+                <th style="width: 14%">Kind</th>
+                <th style="width: 30%">Target</th>
+                <th style="width: 8%">Tier</th>
+                <th style="width: 9%">Status</th>
+                <th style="width: 9%">Priority</th>
+              </tr>
+            </thead>
+            <tbody id="packet-table">__PACKET_ROWS__</tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <aside class="stack">
+      <section>
+        <h2>Selected Declaration</h2>
+        <div id="decl-detail" class="detail-grid muted">__DECL_DETAIL__</div>
+      </section>
+
+      <section>
+        <h2>Modules</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 55%">Module</th>
+              <th style="width: 15%">Decls</th>
+              <th style="width: 15%">Imports</th>
+              <th style="width: 15%">Imported</th>
+            </tr>
+          </thead>
+          <tbody id="module-table">__MODULE_ROWS__</tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Source Targets</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 40%">Target</th>
+              <th style="width: 20%">Label</th>
+              <th style="width: 16%">Status</th>
+              <th style="width: 24%">Hint</th>
+            </tr>
+          </thead>
+          <tbody id="source-table">__SOURCE_ROWS__</tbody>
+        </table>
+      </section>
+    </aside>
+  </main>
+
+  <main id="packets-view" class="graph-explorer-view hidden">
+    <section>
+      <div class="section-head">
+        <h2>Work Packets</h2>
+        <div class="graph-meta" id="packet-workbench-meta"></div>
+      </div>
+      <div class="view-guide">
+        <p>Work packets are the actionable queue produced by the deterministic audit run. A packet becomes durable audit memory only after an answer is appended to the corresponding records JSONL file and the pipeline is rerun.</p>
+        <div class="legend-row" aria-label="Work packet legend">
+          <span class="legend-item">open: ready for semantic work</span>
+          <span class="legend-item">stale: answered before the current context</span>
+          <span class="legend-item">blocked: waiting on prerequisite records</span>
+          <span class="legend-item">answered: backed by a durable record</span>
+          <span class="legend-item">answer text renders TeX math</span>
+          <span class="legend-item">default sort: next best packet first</span>
+        </div>
+      </div>
+      <div class="controls">
+        <input id="packet-workbench-search" type="search" placeholder="Search packet id, target, title, instructions, inputs">
+        <select id="packet-workbench-kind-filter"><option value="">All packet kinds</option></select>
+        <select id="packet-workbench-status-filter"><option value="">All statuses</option></select>
+        <select id="packet-workbench-tier-filter"><option value="">All tiers</option></select>
+        <select id="packet-workbench-priority-filter"><option value="">All priorities</option></select>
+        <select id="packet-workbench-sort">
+          <option value="next">Next best first</option>
+          <option value="status">Status, kind, target</option>
+          <option value="kind">Kind, status, target</option>
+          <option value="target">Target name</option>
+        </select>
+      </div>
+      <div class="packet-layout">
+        <div class="packet-queue-shell">
+          <div class="packet-summary-grid" id="packet-workbench-summary"></div>
+          <div class="packet-queue" id="packet-workbench-list"></div>
+        </div>
+        <aside class="analysis-inspector">
+          <section>
+            <h2>Packet Inspector</h2>
+            <div id="packet-workbench-inspector" class="detail-grid muted">Select a packet.</div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <main id="explorer-view" class="graph-explorer-view hidden">
+    <section>
+      <div class="section-head">
+        <h2>Graph Explorer</h2>
+        <div class="graph-meta" id="explorer-meta"></div>
+      </div>
+      <div class="view-guide">
+        <p>This is the full declaration-level semantic graph, grouped by Lean module. Arrows follow dependency direction: a declaration points to another declaration that appears in its statement or proof.</p>
+        <div class="legend-row" aria-label="Graph explorer legend">
+          <span class="legend-item"><span class="line-swatch"></span>blue solid: statement/type dependency</span>
+          <span class="legend-item"><span class="line-swatch proof"></span>orange dashed: proof-only dependency</span>
+          <span class="legend-item"><span class="node-swatch def"></span>definition</span>
+          <span class="legend-item"><span class="node-swatch theorem"></span>theorem</span>
+          <span class="legend-item"><span class="node-swatch inductive"></span>inductive/constructor</span>
+          <span class="legend-item"><span class="node-swatch selected"></span>selected</span>
+          <span class="legend-item"><span class="node-swatch dimmed"></span>outside highlight radius</span>
+        </div>
+      </div>
+      <div class="controls">
+        <select id="explorer-focus"><option value="">Select declaration</option></select>
+        <input id="explorer-search" type="search" placeholder="Filter declarations by name, module, doc, type">
+        <select id="explorer-module-filter"><option value="">All modules</option></select>
+        <select id="explorer-edge-mode">
+          <option value="focus">Focus neighborhood edges</option>
+          <option value="statement">All statement edges</option>
+          <option value="proof">All proof-only edges</option>
+          <option value="all">All semantic edges</option>
+        </select>
+        <select id="explorer-radius">
+          <option value="1">Highlight 1-hop</option>
+          <option value="2">Highlight 2-hop</option>
+          <option value="0">No dimming</option>
+        </select>
+        <label class="check-control"><input id="explorer-artifacts" type="checkbox"> Show Lean artifacts</label>
+      </div>
+      <div class="explorer-layout">
+        <div class="explorer-shell">
+          <svg id="graph-explorer-svg" class="explorer-svg" role="img" aria-label="Full semantic declaration graph explorer"></svg>
+        </div>
+        <aside class="explorer-inspector">
+          <section>
+            <h2>Explorer Inspector</h2>
+            <div id="explorer-inspector" class="detail-grid muted">Select a declaration.</div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <main id="strata-view" class="graph-explorer-view hidden">
+    <section>
+      <div class="section-head">
+        <h2>Build Strata</h2>
+        <div class="graph-meta" id="strata-meta"></div>
+      </div>
+      <div class="view-guide">
+        <p>Columns are dependency depth: depth 0 declarations have no visible prerequisites, and larger depths depend on earlier strata. This view is for seeing the formal build order of the mathematics.</p>
+        <div class="legend-row" aria-label="Build strata legend">
+          <span class="legend-item"><span class="line-swatch"></span>blue solid: statement prerequisite</span>
+          <span class="legend-item"><span class="line-swatch proof"></span>orange dashed: proof-only prerequisite</span>
+          <span class="legend-item"><span class="node-swatch selected"></span>selected declaration</span>
+          <span class="legend-item"><span class="node-swatch dimmed"></span>not in selected closure</span>
+          <span class="legend-item">arrows point prerequisite -> user</span>
+        </div>
+      </div>
+      <div class="controls">
+        <select id="strata-focus"><option value="">Select declaration</option></select>
+        <input id="strata-search" type="search" placeholder="Filter declarations">
+        <select id="strata-module-filter"><option value="">All modules</option></select>
+        <select id="strata-metric">
+          <option value="all">Proof-aware semantic depth</option>
+          <option value="type">Statement-interface depth</option>
+        </select>
+        <select id="strata-scope">
+          <option value="all">All declarations</option>
+          <option value="focus">Focus ancestors and users</option>
+        </select>
+        <label class="check-control"><input id="strata-artifacts" type="checkbox"> Show Lean artifacts</label>
+      </div>
+      <div class="analysis-layout">
+        <div class="analysis-shell">
+          <svg id="strata-svg" class="analysis-svg" role="img" aria-label="Declaration build strata"></svg>
+        </div>
+        <aside class="analysis-inspector">
+          <section>
+            <h2>Strata Inspector</h2>
+            <div id="strata-inspector" class="detail-grid muted">Select a declaration.</div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <main id="roles-view" class="graph-explorer-view hidden">
+    <section>
+      <div class="section-head">
+        <h2>Role Map</h2>
+        <div class="graph-meta" id="roles-meta"></div>
+      </div>
+      <div class="view-guide">
+        <p>Each dot is a declaration. The coordinate mode asks whether the declaration is important because other declarations use it, or because it itself depends on many things. Axis counts are exact; dot positions use a square-root scale so high-degree hubs do not collapse the rest of the map.</p>
+        <div id="roles-mode-description" class="axis-guide"></div>
+        <div class="legend-row" aria-label="Role map legend">
+          <span class="legend-item"><span class="line-swatch"></span>blue focus curve: statement relation</span>
+          <span class="legend-item"><span class="line-swatch proof"></span>orange dashed focus curve: proof-only relation</span>
+          <span class="legend-item"><span class="dot-swatch def"></span>definition</span>
+          <span class="legend-item"><span class="dot-swatch theorem"></span>theorem</span>
+          <span class="legend-item"><span class="dot-swatch inductive"></span>inductive/constructor</span>
+          <span class="legend-item"><span class="dot-swatch selected"></span>selected</span>
+          <span class="legend-item">larger dot: more total role activity</span>
+        </div>
+      </div>
+      <div class="controls">
+        <select id="roles-focus"><option value="">Select declaration</option></select>
+        <input id="roles-search" type="search" placeholder="Filter declarations">
+        <select id="roles-module-filter"><option value="">All modules</option></select>
+        <select id="roles-kind-filter"><option value="">All kinds</option></select>
+        <select id="roles-scale">
+          <option value="users">Users: statement vs proof-only</option>
+          <option value="deps">Dependencies: statement vs proof-only</option>
+        </select>
+        <label class="check-control"><input id="roles-artifacts" type="checkbox"> Show Lean artifacts</label>
+      </div>
+      <div class="analysis-layout">
+        <div class="analysis-shell">
+          <svg id="roles-svg" class="analysis-svg" role="img" aria-label="Declaration role map"></svg>
+        </div>
+        <aside class="analysis-inspector">
+          <section>
+            <h2>Role Inspector</h2>
+            <div id="roles-inspector" class="detail-grid muted">Select a declaration.</div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <main id="matrix-view" class="graph-explorer-view hidden">
+    <section>
+      <div class="section-head">
+        <h2>Module Matrix</h2>
+        <div class="graph-meta" id="matrix-meta"></div>
+      </div>
+      <div class="view-guide">
+        <p>Rows are modules containing declarations; columns are modules those declarations depend on. A strong off-diagonal cell marks a cross-module semantic dependence worth auditing as an API boundary.</p>
+        <div class="legend-row" aria-label="Module matrix legend">
+          <span class="legend-item">row: using module</span>
+          <span class="legend-item">column: dependency module</span>
+          <span class="legend-item">darker cell: more edges</span>
+          <span class="legend-item"><span class="line-swatch"></span>blue: statement-heavy</span>
+          <span class="legend-item"><span class="line-swatch proof"></span>orange: proof-heavy</span>
+        </div>
+      </div>
+      <div class="controls">
+        <select id="matrix-mode">
+          <option value="all">All semantic edges</option>
+          <option value="type">Statement edges</option>
+          <option value="proof">Proof-only edges</option>
+        </select>
+        <select id="matrix-normalize">
+          <option value="count">Raw edge counts</option>
+          <option value="row">Row-normalized intensity</option>
+        </select>
+        <label class="check-control"><input id="matrix-artifacts" type="checkbox"> Show Lean artifacts</label>
+      </div>
+      <div class="analysis-layout">
+        <div class="matrix-shell">
+          <div class="matrix-legend" id="matrix-legend"></div>
+          <div id="matrix-table"></div>
+        </div>
+        <aside class="analysis-inspector">
+          <section>
+            <h2>Matrix Inspector</h2>
+            <div id="matrix-inspector" class="detail-grid muted">Select a cell.</div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script id="audit-data" type="application/json">__AUDIT_DATA__</script>
+  <script>
+    const data = JSON.parse(document.getElementById("audit-data").textContent);
+    const declarations = data.declarations || [];
+    const modules = data.modules || [];
+    const findings = data.findings || [];
+    const attestation = data.attestation || {};
+    const run = data.run || {};
+    const graph = data.graph || { reverseDeps: {} };
+    const config = data.config || {};
+    const records = data.records || {};
+    const workPackets = data.work_packets || [];
+    const coverage = data.coverage || {};
+    const sourceTargets = config.source_targets || [];
+    const declarationByName = new Map(declarations.map(d => [d.name, d]));
+    const graphEdges = graph.edges || [];
+
+    const preferredFocusNames = [
+      "DLNFibre.Core.rankPattern_eq_iff_orbit",
+      "DLNFibre.Core.orbit_of_rankPattern_eq",
+      "DLNFibre.Core.rankPattern_eq_cumul_barMult",
+      "DLNFibre.Core.exists_barcode_rankPattern",
+      "DLNFibre.Core.rankPattern"
+    ];
+    const preferredModuleNames = [
+      "DLNFibre.Core.Basic",
+      "DLNFibre.DLN.Basic",
+      "DLNFibre.Core.Setup",
+      "DLNFibre.Core.RankPattern",
+      "DLNFibre.Core.Submult",
+      "DLNFibre.Core.BaseChange",
+      "DLNFibre.Core.IntervalModule",
+      "DLNFibre.Core.Barcode",
+      "DLNFibre.Core.Gabriel",
+      "DLNFibre.Core.Orbit"
+    ];
+    let selectedName =
+      preferredFocusNames.find(name => declarationByName.has(name)) ||
+      declarations.find(d => d.audit_tier === "T0")?.name ||
+      declarations[0]?.name ||
+      null;
+    let lastExplorerCenteredName = null;
+    let lastStrataCenteredKey = null;
+    let selectedMatrixCell = null;
+    let selectedPacketId = null;
+
+    function byId(id) { return document.getElementById(id); }
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+      })[c]);
+    }
+    function safeClass(value) {
+      return String(value || "").replace(/[^A-Za-z0-9_-]+/g, "-").replace(/^-+|-+$/g, "");
+    }
+    function chip(text, cls = "") {
+      const klass = cls ? ` ${safeClass(cls)}` : "";
+      return `<span class="chip${klass}">${esc(text)}</span>`;
+    }
+    function typesetMath(root) {
+      if (!window.MathJax || !window.MathJax.typesetPromise) return;
+      const target = root || document.body;
+      try {
+        window.MathJax.typesetClear?.([target]);
+      } catch (_) {
+        // MathJax may not have tracked this node yet.
+      }
+      window.MathJax.typesetPromise([target]).catch(error => {
+        console.warn("MathJax typeset failed", error);
+      });
+    }
+    function tierClass(tier) { return `tier-${safeClass(String(tier || "unassigned").toLowerCase())}`; }
+
+    function statusClass(value) {
+      if (value === true || value === "pass" || value === 0 || value === "answered") return "pass";
+      if (value === false || value === "fail" || value === "blocked") return "fail";
+      return "warn";
+    }
+
+    function attestationStatus(record) {
+      if (record?.skipped) return ["skipped", "warn"];
+      if (record?.ok === true) return ["pass", "pass"];
+      if (record?.ok === false) return ["fail", "fail"];
+      return ["unknown", "warn"];
+    }
+
+    function sourceLabel(decl) {
+      const module = modules.find(m => m.module === decl.module);
+      if (!module || !decl.source_range || !decl.source_range.range) return "";
+      const line = decl.source_range.range.start.line;
+      return `${module.path}:${line}`;
+    }
+
+    function declId(name) { return `decl:${name}`; }
+    function declNameFromId(id) { return String(id || "").startsWith("decl:") ? String(id).slice(5) : ""; }
+    function shortName(name) { return String(name || "").split(".").slice(-1)[0] || name; }
+    function shortModule(name) {
+      return String(name || "").replace(/^DLNFibre\./, "");
+    }
+    function truncateText(value, limit = 28) {
+      const text = String(value || "");
+      return text.length > limit ? `${text.slice(0, Math.max(0, limit - 3))}...` : text;
+    }
+    function unique(values) { return [...new Set(values.filter(Boolean))]; }
+    function difference(left, right) {
+      const remove = new Set(right);
+      return left.filter(name => !remove.has(name));
+    }
+    function isLeanArtifactDeclaration(name) {
+      const leaf = shortName(name);
+      return /^(match_\d+(?:_\d+)*|eq_\d+(?:_\d+)*|eq_def|congr_simp)$/.test(leaf);
+    }
+    function showLeanArtifacts() {
+      return Boolean(byId("graph-artifacts")?.checked);
+    }
+    function showExplorerArtifacts() {
+      return Boolean(byId("explorer-artifacts")?.checked);
+    }
+    function showStrataArtifacts() {
+      return Boolean(byId("strata-artifacts")?.checked);
+    }
+    function showRolesArtifacts() {
+      return Boolean(byId("roles-artifacts")?.checked);
+    }
+    function showMatrixArtifacts() {
+      return Boolean(byId("matrix-artifacts")?.checked);
+    }
+    function graphVisibleNames(names, includeArtifacts) {
+      return includeArtifacts ? names : names.filter(name => !isLeanArtifactDeclaration(name));
+    }
+    function graphHiddenArtifactCount(names, includeArtifacts) {
+      return includeArtifacts ? 0 : names.filter(isLeanArtifactDeclaration).length;
+    }
+    function dependencyNames(name, kind) {
+      const source = declId(name);
+      return unique(graphEdges
+        .filter(e => e.source === source && e.kind === kind)
+        .map(e => declNameFromId(e.target))
+        .filter(name => declarationByName.has(name)));
+    }
+    function userNames(name, kind) {
+      const target = declId(name);
+      return unique(graphEdges
+        .filter(e => e.target === target && e.kind === kind)
+        .map(e => declNameFromId(e.source))
+        .filter(name => declarationByName.has(name)));
+    }
+    function relatedSort(focusName) {
+      const focus = declarationByName.get(focusName) || {};
+      return (a, b) => {
+        const da = declarationByName.get(a) || {};
+        const db = declarationByName.get(b) || {};
+        const tierA = da.audit_tier === "T0" ? 0 : 1;
+        const tierB = db.audit_tier === "T0" ? 0 : 1;
+        if (tierA !== tierB) return tierA - tierB;
+        const moduleA = da.module === focus.module ? 0 : 1;
+        const moduleB = db.module === focus.module ? 0 : 1;
+        if (moduleA !== moduleB) return moduleA - moduleB;
+        return a.localeCompare(b);
+      };
+    }
+    function graphNeighborhoodFor(name, includeArtifacts) {
+      const rawTypeDeps = dependencyNames(name, "USES_CONSTANT_TYPE").sort(relatedSort(name));
+      const rawValueDeps = dependencyNames(name, "USES_CONSTANT_VALUE").sort(relatedSort(name));
+      const rawTypeUsers = userNames(name, "USES_CONSTANT_TYPE").sort(relatedSort(name));
+      const rawValueUsers = userNames(name, "USES_CONSTANT_VALUE").sort(relatedSort(name));
+      const rawProofDeps = difference(rawValueDeps, rawTypeDeps);
+      const rawProofUsers = difference(rawValueUsers, rawTypeUsers);
+      return {
+        typeDeps: graphVisibleNames(rawTypeDeps, includeArtifacts),
+        proofDeps: graphVisibleNames(rawProofDeps, includeArtifacts),
+        typeUsers: graphVisibleNames(rawTypeUsers, includeArtifacts),
+        proofUsers: graphVisibleNames(rawProofUsers, includeArtifacts),
+        hiddenArtifacts: {
+          typeDeps: graphHiddenArtifactCount(rawTypeDeps, includeArtifacts),
+          proofDeps: graphHiddenArtifactCount(rawProofDeps, includeArtifacts),
+          typeUsers: graphHiddenArtifactCount(rawTypeUsers, includeArtifacts),
+          proofUsers: graphHiddenArtifactCount(rawProofUsers, includeArtifacts),
+        },
+      };
+    }
+    function graphNeighborhood(name) {
+      return graphNeighborhoodFor(name, showLeanArtifacts());
+    }
+    function explorerNeighborhood(name) {
+      return graphNeighborhoodFor(name, showExplorerArtifacts());
+    }
+
+    function renderMeta() {
+      const dirty = (attestation.git_status || []).length;
+      const [buildStatus, buildClass] = attestationStatus(attestation.lake_build);
+      const [sorriesStatus, sorriesClass] = attestationStatus(attestation.sorries);
+      byId("run-meta").innerHTML = [
+        chip(`run ${run.run_id || "unknown"}`),
+        chip(`commit ${(run.commit || "").slice(0, 12) || "unknown"}`),
+        chip(`lake build ${buildStatus}`, buildClass),
+        chip(`sorries ${sorriesStatus}`, sorriesClass),
+        chip(`${dirty} git status entries`, dirty === 0 ? "pass" : "warn")
+      ].join("");
+    }
+
+    function renderStats() {
+      const severityCounts = findings.reduce((acc, f) => {
+        acc[f.severity] = (acc[f.severity] || 0) + 1;
+        return acc;
+      }, {});
+      const blocked = coverage.semantic_status === "blocked";
+      const ratio = (answered, total) => blocked ? "blocked" : `${coverage[answered] || 0}/${coverage[total] || 0}`;
+      byId("stats").innerHTML = [
+        ["Declarations", declarations.length],
+        ["Modules", modules.length],
+        ["T0 Lean cards", ratio("t0_lean_reconstructions_answered", "t0_total")],
+        ["Source cards", ratio("source_intentions_answered", "source_intentions_total")],
+        ["Comparisons", ratio("comparisons_answered", "comparisons_total")],
+        ["API boundary", ratio("api_boundaries_answered", "api_boundaries_total")],
+        ["Unanswered packets", coverage.packets_unanswered ?? coverage.packets_open ?? 0],
+        ["Findings", findings.length],
+        ["High+", (severityCounts.blocker || 0) + (severityCounts.high || 0)]
+      ].map(([label, value]) => `<div class="stat"><strong>${esc(value)}</strong><span>${esc(label)}</span></div>`).join("");
+    }
+
+    function populateFilters() {
+      const kinds = [...new Set(declarations.map(d => d.kind))].sort();
+      byId("kind-filter").innerHTML = `<option value="">All kinds</option>` + kinds.map(k => `<option>${esc(k)}</option>`).join("");
+      const tiers = [...new Set(declarations.map(d => d.audit_tier || "unassigned"))].sort();
+      byId("tier-filter").innerHTML = `<option value="">All tiers</option>` + tiers.map(t => `<option>${esc(t)}</option>`).join("");
+      const moduleNames = [...new Set(declarations.map(d => d.module))].sort();
+      byId("module-filter").innerHTML = `<option value="">All modules</option>` + moduleNames.map(m => `<option>${esc(m)}</option>`).join("");
+      const severities = [...new Set(findings.map(f => f.severity))].sort();
+      byId("severity-filter").innerHTML = `<option value="">All severities</option>` + severities.map(s => `<option>${esc(s)}</option>`).join("");
+      const packetKinds = [...new Set(workPackets.map(p => p.packet_kind))].sort();
+      byId("packet-kind-filter").innerHTML = `<option value="">All packet kinds</option>` + packetKinds.map(k => `<option>${esc(k)}</option>`).join("");
+      const packetStatuses = [...new Set(workPackets.map(p => p.status))].sort();
+      byId("packet-status-filter").innerHTML = `<option value="">All statuses</option>` + packetStatuses.map(s => `<option>${esc(s)}</option>`).join("");
+      populateGraphFocus();
+      populatePacketWorkbenchControls();
+      populateExplorerControls();
+      populateStrataControls();
+      populateRolesControls();
+    }
+
+    function populatePacketWorkbenchControls() {
+      const packetKinds = [...new Set(workPackets.map(p => p.packet_kind).filter(Boolean))].sort();
+      const packetStatuses = [...new Set(workPackets.map(p => p.status).filter(Boolean))].sort();
+      const packetTiers = [...new Set(workPackets.map(p => p.tier || "unassigned").filter(Boolean))].sort();
+      const packetPriorities = [...new Set(workPackets.map(p => p.priority).filter(Boolean))].sort();
+      byId("packet-workbench-kind-filter").innerHTML =
+        `<option value="">All packet kinds</option>` + packetKinds.map(k => `<option value="${esc(k)}">${esc(k)}</option>`).join("");
+      byId("packet-workbench-status-filter").innerHTML =
+        `<option value="">All statuses</option>` + packetStatuses.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+      byId("packet-workbench-tier-filter").innerHTML =
+        `<option value="">All tiers</option>` + packetTiers.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+      byId("packet-workbench-priority-filter").innerHTML =
+        `<option value="">All priorities</option>` + packetPriorities.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join("");
+    }
+
+    function populateGraphFocus() {
+      const selected = selectedName && declarationByName.has(selectedName)
+        ? declarationByName.get(selectedName)
+        : null;
+      const candidates = declarations
+        .filter(d => showLeanArtifacts() || !isLeanArtifactDeclaration(d.name));
+      if (selected && !candidates.some(d => d.name === selected.name)) {
+        candidates.unshift(selected);
+      }
+      const graphOptions = candidates
+        .slice()
+        .sort((a, b) => {
+          const tierA = a.audit_tier === "T0" ? 0 : 1;
+          const tierB = b.audit_tier === "T0" ? 0 : 1;
+          if (tierA !== tierB) return tierA - tierB;
+          return a.name.localeCompare(b.name);
+        })
+        .map(d => {
+          const prefix = d.audit_tier === "T0" ? "T0 - " : (isLeanArtifactDeclaration(d.name) ? "artifact - " : "");
+          return `<option value="${esc(d.name)}">${esc(prefix + d.name)}</option>`;
+        })
+        .join("");
+      byId("graph-focus").innerHTML = `<option value="">Select declaration</option>${graphOptions}`;
+      if (selectedName) byId("graph-focus").value = selectedName;
+    }
+
+    function moduleByName() {
+      return new Map(modules.map(m => [m.module, m]));
+    }
+
+    function moduleDepths() {
+      const byName = moduleByName();
+      const memo = new Map();
+      function depth(name, visiting = new Set()) {
+        if (memo.has(name)) return memo.get(name);
+        if (visiting.has(name)) return 0;
+        const module = byName.get(name);
+        if (!module) return 0;
+        const nextVisiting = new Set(visiting);
+        nextVisiting.add(name);
+        const internalImports = (module.imports || []).filter(imported => byName.has(imported));
+        const value = internalImports.length
+          ? 1 + Math.max(...internalImports.map(imported => depth(imported, nextVisiting)))
+          : 0;
+        memo.set(name, value);
+        return value;
+      }
+      modules.forEach(module => depth(module.module));
+      return memo;
+    }
+
+    function sortedModuleNames(names) {
+      const depths = moduleDepths();
+      return [...names].sort((a, b) => {
+        const preferredA = preferredModuleNames.indexOf(a);
+        const preferredB = preferredModuleNames.indexOf(b);
+        if (preferredA !== -1 || preferredB !== -1) {
+          if (preferredA === -1) return 1;
+          if (preferredB === -1) return -1;
+          return preferredA - preferredB;
+        }
+        const da = depths.get(a) || 0;
+        const db = depths.get(b) || 0;
+        if (da !== db) return da - db;
+        return a.localeCompare(b);
+      });
+    }
+
+    function populateExplorerControls() {
+      const moduleNames = sortedModuleNames(new Set(declarations.map(d => d.module).filter(Boolean)));
+      byId("explorer-module-filter").innerHTML =
+        `<option value="">All modules</option>` + moduleNames.map(m => `<option value="${esc(m)}">${esc(shortModule(m))}</option>`).join("");
+      populateExplorerFocus();
+    }
+
+    function populateExplorerFocus() {
+      const selected = selectedName && declarationByName.has(selectedName)
+        ? declarationByName.get(selectedName)
+        : null;
+      const candidates = declarations.filter(d => showExplorerArtifacts() || !isLeanArtifactDeclaration(d.name));
+      if (selected && !candidates.some(d => d.name === selected.name)) {
+        candidates.unshift(selected);
+      }
+      const graphOptions = candidates
+        .slice()
+        .sort((a, b) => {
+          const tierA = a.audit_tier === "T0" ? 0 : 1;
+          const tierB = b.audit_tier === "T0" ? 0 : 1;
+          if (tierA !== tierB) return tierA - tierB;
+          return a.name.localeCompare(b.name);
+        })
+        .map(d => {
+          const prefix = d.audit_tier === "T0" ? "T0 - " : (isLeanArtifactDeclaration(d.name) ? "artifact - " : "");
+          return `<option value="${esc(d.name)}">${esc(prefix + d.name)}</option>`;
+        })
+        .join("");
+      byId("explorer-focus").innerHTML = `<option value="">Select declaration</option>${graphOptions}`;
+      if (selectedName) byId("explorer-focus").value = selectedName;
+    }
+
+    function populateStrataControls() {
+      const moduleNames = sortedModuleNames(new Set(declarations.map(d => d.module).filter(Boolean)));
+      byId("strata-module-filter").innerHTML =
+        `<option value="">All modules</option>` + moduleNames.map(m => `<option value="${esc(m)}">${esc(shortModule(m))}</option>`).join("");
+      populateStrataFocus();
+    }
+
+    function populateStrataFocus() {
+      const selected = selectedName && declarationByName.has(selectedName)
+        ? declarationByName.get(selectedName)
+        : null;
+      const candidates = declarations.filter(d => showStrataArtifacts() || !isLeanArtifactDeclaration(d.name));
+      if (selected && !candidates.some(d => d.name === selected.name)) {
+        candidates.unshift(selected);
+      }
+      const graphOptions = candidates
+        .slice()
+        .sort((a, b) => {
+          const tierA = a.audit_tier === "T0" ? 0 : 1;
+          const tierB = b.audit_tier === "T0" ? 0 : 1;
+          if (tierA !== tierB) return tierA - tierB;
+          return a.name.localeCompare(b.name);
+        })
+        .map(d => {
+          const prefix = d.audit_tier === "T0" ? "T0 - " : (isLeanArtifactDeclaration(d.name) ? "artifact - " : "");
+          return `<option value="${esc(d.name)}">${esc(prefix + d.name)}</option>`;
+        })
+        .join("");
+      byId("strata-focus").innerHTML = `<option value="">Select declaration</option>${graphOptions}`;
+      if (selectedName) byId("strata-focus").value = selectedName;
+    }
+
+    function populateRolesControls() {
+      const moduleNames = sortedModuleNames(new Set(declarations.map(d => d.module).filter(Boolean)));
+      byId("roles-module-filter").innerHTML =
+        `<option value="">All modules</option>` + moduleNames.map(m => `<option value="${esc(m)}">${esc(shortModule(m))}</option>`).join("");
+      const kinds = [...new Set(declarations.map(d => d.kind).filter(Boolean))].sort();
+      byId("roles-kind-filter").innerHTML =
+        `<option value="">All kinds</option>` + kinds.map(kind => `<option value="${esc(kind)}">${esc(kind)}</option>`).join("");
+      populateRolesFocus();
+    }
+
+    function populateRolesFocus() {
+      const selected = selectedName && declarationByName.has(selectedName)
+        ? declarationByName.get(selectedName)
+        : null;
+      const candidates = declarations.filter(d => showRolesArtifacts() || !isLeanArtifactDeclaration(d.name));
+      if (selected && !candidates.some(d => d.name === selected.name)) {
+        candidates.unshift(selected);
+      }
+      const graphOptions = candidates
+        .slice()
+        .sort((a, b) => {
+          const tierA = a.audit_tier === "T0" ? 0 : 1;
+          const tierB = b.audit_tier === "T0" ? 0 : 1;
+          if (tierA !== tierB) return tierA - tierB;
+          return a.name.localeCompare(b.name);
+        })
+        .map(d => {
+          const prefix = d.audit_tier === "T0" ? "T0 - " : (isLeanArtifactDeclaration(d.name) ? "artifact - " : "");
+          return `<option value="${esc(d.name)}">${esc(prefix + d.name)}</option>`;
+        })
+        .join("");
+      byId("roles-focus").innerHTML = `<option value="">Select declaration</option>${graphOptions}`;
+      if (selectedName) byId("roles-focus").value = selectedName;
+    }
+
+    function filteredDeclarations() {
+      const q = byId("decl-search").value.toLowerCase();
+      const kind = byId("kind-filter").value;
+      const tier = byId("tier-filter").value;
+      const module = byId("module-filter").value;
+      return declarations.filter(d => {
+        if (kind && d.kind !== kind) return false;
+        if (tier && (d.audit_tier || "unassigned") !== tier) return false;
+        if (module && d.module !== module) return false;
+        if (!q) return true;
+        return [d.name, d.module, d.kind, d.audit_tier, d.doc, d.type].some(v => String(v || "").toLowerCase().includes(q));
+      });
+    }
+
+    function renderDeclarations() {
+      const rows = filteredDeclarations().slice(0, 1000).map(d => {
+        const selected = d.name === selectedName ? " selected" : "";
+        return `<tr class="${selected}" data-name="${esc(d.name)}">
+          <td><code>${esc(d.name)}</code><div class="muted">${esc(sourceLabel(d))}</div></td>
+          <td>${esc(d.kind)}</td>
+          <td>${chip(d.audit_tier || "unassigned", tierClass(d.audit_tier))}</td>
+          <td>${esc(d.module)}</td>
+          <td>${esc((d.deps_type || []).length)}</td>
+          <td>${esc((d.deps_value || []).length)}</td>
+        </tr>`;
+      }).join("");
+      byId("decl-table").innerHTML = rows || `<tr><td colspan="6" class="muted">No declarations match.</td></tr>`;
+      byId("decl-table").querySelectorAll("tr[data-name]").forEach(row => {
+        row.addEventListener("click", () => {
+          selectDeclaration(row.dataset.name);
+        });
+      });
+    }
+
+    function leanRecordFor(name) {
+      return (records.lean_reconstructions || [])
+        .filter(r => r.declaration === name && r.status === "answered")
+        .slice(-1)[0];
+    }
+
+    function comparisonRecordsFor(name) {
+      const validComparisonIds = new Set(
+        workPackets
+          .filter(p => p.packet_kind === "comparison" && p.status === "answered")
+          .map(p => p.target)
+      );
+      return (records.comparisons || []).filter(
+        r => r.lean_declaration === name && validComparisonIds.has(r.comparison_id)
+      );
+    }
+
+    function packetsForDeclaration(name) {
+      return workPackets.filter(p => p.target === name || p.inputs?.lean_declaration === name);
+    }
+
+    function renderDeclarationDetail() {
+      const d = declarations.find(x => x.name === selectedName);
+      if (!d) {
+        byId("decl-detail").innerHTML = "Select a declaration.";
+        return;
+      }
+      const reverse = graph.reverseDeps[d.name] || [];
+      const localFindings = findings.filter(f => f.target === d.name || f.declaration === d.name);
+      const leanRecord = leanRecordFor(d.name);
+      const comparisonRecords = comparisonRecordsFor(d.name);
+      const localPackets = packetsForDeclaration(d.name);
+      byId("decl-detail").innerHTML = `
+        <div class="kv"><div class="key">Name</div><div><code>${esc(d.name)}</code></div></div>
+        <div class="kv"><div class="key">Kind</div><div>${esc(d.kind)}</div></div>
+        <div class="kv"><div class="key">Tier</div><div>${chip(d.audit_tier || "unassigned", tierClass(d.audit_tier))} ${esc(d.audit_reason || "")}</div></div>
+        <div class="kv"><div class="key">Module</div><div>${esc(d.module)}</div></div>
+        <div class="kv"><div class="key">Source</div><div>${esc(sourceLabel(d) || "unknown")}</div></div>
+        <div class="kv"><div class="key">Type</div><div><pre>${esc(d.type)}</pre></div></div>
+        <div class="kv"><div class="key">Doc</div><div><pre>${esc(d.doc || "(none)")}</pre></div></div>
+        <div class="kv"><div class="key">Deps</div><div>${chip(`${(d.deps_type || []).length} type`)} ${chip(`${(d.deps_value || []).length} value/proof`)}</div></div>
+        <div class="kv"><div class="key">Reverse</div><div>${chip(`${reverse.length} dependents`)}</div></div>
+        <div class="kv"><div class="key">Lean card</div><div>${leanRecord ? esc(leanRecord.summary || leanRecord.record_id) : "none"}</div></div>
+        <div class="kv"><div class="key">Comparisons</div><div>${comparisonRecords.map(r => chip(r.alignment || r.status || "recorded", statusClass(r.status))).join(" ") || "none"}</div></div>
+        <div class="kv"><div class="key">Packets</div><div>${localPackets.map(p => chip(`${p.packet_kind}: ${p.status}`, statusClass(p.status))).join(" ") || "none"}</div></div>
+        <div class="kv"><div class="key">Findings</div><div>${localFindings.map(f => chip(`${f.severity}: ${f.kind}`, f.severity)).join(" ") || "none"}</div></div>
+      `;
+      typesetMath(byId("decl-detail"));
+    }
+
+    function nodeSvg(name, x, y, cls = "", width = 190, nameLimit = 23, moduleLimit = 28) {
+      const d = declarationByName.get(name) || {};
+      const tier = d.audit_tier || "unassigned";
+      const className = ["graph-node", tierClass(tier), cls].filter(Boolean).map(safeClass).join(" ");
+      return `<g class="${className}" data-name="${esc(name)}" transform="translate(${x}, ${y})">
+        <title>${esc(name)}</title>
+        <rect width="${width}" height="48" rx="7"></rect>
+        <text x="10" y="20">${esc(truncateText(shortName(name), nameLimit))}</text>
+        <text class="module-label" x="10" y="38">${esc(truncateText(shortModule(d.module || ""), moduleLimit))}</text>
+      </g>`;
+    }
+
+    function edgeSvg(from, to, kind) {
+      const marker = kind === "type" ? "url(#arrow-type)" : "url(#arrow-value)";
+      const c1x = from.x + (to.x - from.x) * 0.45;
+      const c2x = from.x + (to.x - from.x) * 0.55;
+      return `<path class="graph-edge ${kind}" marker-end="${marker}" d="M ${from.x} ${from.y} C ${c1x} ${from.y}, ${c2x} ${to.y}, ${to.x} ${to.y}"></path>`;
+    }
+
+    function laneNodes(names, limit) {
+      return names.slice(0, limit);
+    }
+
+    function renderSemanticGraph() {
+      const focus = declarationByName.get(selectedName);
+      const svg = byId("semantic-graph-svg");
+      if (!focus || !svg) {
+        if (svg) svg.innerHTML = "";
+        byId("graph-meta").innerHTML = "";
+        byId("graph-ledger").innerHTML = "";
+        return;
+      }
+
+      const limit = Number(byId("graph-limit").value || 8);
+      const neighborhood = graphNeighborhood(selectedName);
+      const lanes = [
+        { key: "typeDeps", title: "Statement dependencies", kind: "type", names: neighborhood.typeDeps, x: 26 },
+        { key: "proofDeps", title: "Proof-only dependencies", kind: "value", names: neighborhood.proofDeps, x: 258 },
+        { key: "typeUsers", title: "Statement users", kind: "type", names: neighborhood.typeUsers, x: 726 },
+        { key: "proofUsers", title: "Proof-only users", kind: "value", names: neighborhood.proofUsers, x: 958 },
+      ];
+      const visibleLanes = lanes.map(lane => ({ ...lane, visible: laneNodes(lane.names, limit) }));
+      const maxRows = Math.max(1, ...visibleLanes.map(lane => lane.visible.length));
+      const rowGap = 62;
+      const height = Math.max(340, 104 + maxRows * rowGap);
+      const focusX = 476;
+      const focusWidth = 220;
+      const focusY = 66 + Math.max(0, maxRows - 1) * rowGap / 2;
+      const focusPointLeft = { x: focusX + 2, y: focusY + 24 };
+      const focusPointRight = { x: focusX + focusWidth - 2, y: focusY + 24 };
+
+      let body = `<defs>
+        <marker id="arrow-type" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"></path>
+        </marker>
+        <marker id="arrow-value" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"></path>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="1180" height="${height}" fill="#fbfcfd"></rect>
+      <text class="graph-lane-title" x="26" y="28">Statement dependencies</text>
+      <text class="graph-lane-title" x="258" y="28">Proof-only dependencies</text>
+      <text class="graph-lane-title" x="492" y="28">Focused declaration</text>
+      <text class="graph-lane-title" x="726" y="28">Statement users</text>
+      <text class="graph-lane-title" x="958" y="28">Proof-only users</text>`;
+
+      const positioned = [];
+      for (const lane of visibleLanes) {
+        lane.visible.forEach((name, index) => {
+          const y = 66 + index * rowGap;
+          positioned.push({ lane, name, x: lane.x, y });
+        });
+      }
+
+      for (const item of positioned) {
+        const nodePoint = item.lane.key.endsWith("Deps")
+          ? { x: item.x + 190, y: item.y + 24 }
+          : { x: item.x, y: item.y + 24 };
+        if (item.lane.key.endsWith("Deps")) {
+          body += edgeSvg(nodePoint, focusPointLeft, item.lane.kind);
+        } else {
+          body += edgeSvg(focusPointRight, nodePoint, item.lane.kind);
+        }
+      }
+
+      for (const item of positioned) {
+        body += nodeSvg(item.name, item.x, item.y);
+      }
+      body += nodeSvg(selectedName, focusX, focusY, "focus", focusWidth, 28, 30);
+
+      for (const lane of visibleLanes) {
+        const hidden = lane.names.length - lane.visible.length;
+        if (hidden > 0) {
+          const y = 66 + lane.visible.length * rowGap + 18;
+          body += `<text class="graph-overflow" x="${lane.x + 4}" y="${y}">+${hidden} more</text>`;
+        }
+      }
+
+      svg.setAttribute("viewBox", `0 0 1180 ${height}`);
+      svg.innerHTML = body;
+      svg.querySelectorAll(".graph-node[data-name]").forEach(node => {
+        node.addEventListener("click", () => selectDeclaration(node.dataset.name));
+      });
+
+      const hiddenArtifactTotal = Object.values(neighborhood.hiddenArtifacts).reduce((sum, value) => sum + value, 0);
+      const metaChips = [
+        chip(shortName(selectedName), tierClass(focus.audit_tier)),
+        chip(shortModule(focus.module || "")),
+        chip(`${neighborhood.typeDeps.length} statement deps`, "pass"),
+        chip(`${neighborhood.proofDeps.length} proof-only deps`, "warn"),
+        chip(`${neighborhood.typeUsers.length} statement users`, "pass"),
+        chip(`${neighborhood.proofUsers.length} proof-only users`, "warn")
+      ];
+      if (hiddenArtifactTotal > 0) {
+        metaChips.push(chip(`${hiddenArtifactTotal} Lean artifacts hidden`, "warn"));
+      }
+      byId("graph-meta").innerHTML = metaChips.join("");
+
+      const ledgerGroups = [
+        ["Statement dependencies", neighborhood.typeDeps],
+        ["Proof-only dependencies", neighborhood.proofDeps],
+        ["Statement users", neighborhood.typeUsers],
+        ["Proof-only users", neighborhood.proofUsers],
+      ];
+      byId("graph-ledger").innerHTML = ledgerGroups.map(([title, names]) => `
+        <div>
+          <h3>${esc(title)}</h3>
+          <div class="graph-list">
+            ${names.length ? names.map(name => `<button class="graph-link" data-name="${esc(name)}" title="${esc(name)}">${esc(name)}</button>`).join("") : `<div class="muted small">none</div>`}
+          </div>
+        </div>
+      `).join("");
+      byId("graph-ledger").querySelectorAll(".graph-link[data-name]").forEach(button => {
+        button.addEventListener("click", () => selectDeclaration(button.dataset.name));
+      });
+    }
+
+    function declarationSourceLine(decl) {
+      return decl?.source_range?.range?.start?.line || Number.MAX_SAFE_INTEGER;
+    }
+
+    function declarationMatchesExplorerQuery(decl, query) {
+      if (!query) return true;
+      return [decl.name, decl.module, decl.kind, decl.audit_tier, decl.doc, decl.type]
+        .some(value => String(value || "").toLowerCase().includes(query));
+    }
+
+    function explorerVisibleDeclarations() {
+      const query = byId("explorer-search").value.toLowerCase();
+      const moduleFilter = byId("explorer-module-filter").value;
+      const includeArtifacts = showExplorerArtifacts();
+      const visible = declarations.filter(decl => {
+        if (!includeArtifacts && isLeanArtifactDeclaration(decl.name)) return false;
+        if (moduleFilter && decl.module !== moduleFilter) return false;
+        return declarationMatchesExplorerQuery(decl, query);
+      });
+      const selected = selectedName ? declarationByName.get(selectedName) : null;
+      if (
+        selected &&
+        (includeArtifacts || !isLeanArtifactDeclaration(selected.name)) &&
+        !visible.some(decl => decl.name === selected.name)
+      ) {
+        visible.push(selected);
+      }
+      return visible;
+    }
+
+    function semanticDeclarationEdges(visibleNames) {
+      const typePairs = new Set();
+      const edges = [];
+      for (const edge of graphEdges) {
+        if (edge.kind !== "USES_CONSTANT_TYPE") continue;
+        const source = declNameFromId(edge.source);
+        const target = declNameFromId(edge.target);
+        if (!visibleNames.has(source) || !visibleNames.has(target)) continue;
+        typePairs.add(`${source}||${target}`);
+        edges.push({ source, target, kind: "type" });
+      }
+      for (const edge of graphEdges) {
+        if (edge.kind !== "USES_CONSTANT_VALUE") continue;
+        const source = declNameFromId(edge.source);
+        const target = declNameFromId(edge.target);
+        if (!visibleNames.has(source) || !visibleNames.has(target)) continue;
+        if (typePairs.has(`${source}||${target}`)) continue;
+        edges.push({ source, target, kind: "proof" });
+      }
+      return edges;
+    }
+
+    function explorerHighlightedNames(edges, radius) {
+      if (!selectedName || radius <= 0) return new Set();
+      const highlighted = new Set([selectedName]);
+      let frontier = new Set([selectedName]);
+      for (let step = 0; step < radius; step += 1) {
+        const next = new Set();
+        for (const edge of edges) {
+          if (frontier.has(edge.source) && !highlighted.has(edge.target)) next.add(edge.target);
+          if (frontier.has(edge.target) && !highlighted.has(edge.source)) next.add(edge.source);
+        }
+        for (const name of next) highlighted.add(name);
+        frontier = next;
+        if (frontier.size === 0) break;
+      }
+      return highlighted;
+    }
+
+    function explorerDrawEdges(edges, highlighted, radius) {
+      const mode = byId("explorer-edge-mode").value;
+      if (mode === "statement") return edges.filter(edge => edge.kind === "type");
+      if (mode === "proof") return edges.filter(edge => edge.kind === "proof");
+      if (mode === "all") return edges;
+      return edges.filter(edge => {
+        if (edge.source === selectedName || edge.target === selectedName) return true;
+        return radius > 1 && highlighted.has(edge.source) && highlighted.has(edge.target);
+      });
+    }
+
+    function explorerLayout(decls) {
+      const grouped = new Map();
+      for (const decl of decls) {
+        if (!grouped.has(decl.module)) grouped.set(decl.module, []);
+        grouped.get(decl.module).push(decl);
+      }
+      const moduleNames = sortedModuleNames(grouped.keys());
+      const nodeWidth = 170;
+      const nodeHeight = 22;
+      const colWidth = 214;
+      const rowGap = 28;
+      const left = 26;
+      const top = 68;
+      const positions = new Map();
+      let maxRows = 1;
+
+      moduleNames.forEach((module, moduleIndex) => {
+        const entries = grouped.get(module)
+          .slice()
+          .sort((a, b) => {
+            const lineA = declarationSourceLine(a);
+            const lineB = declarationSourceLine(b);
+            if (lineA !== lineB) return lineA - lineB;
+            return a.name.localeCompare(b.name);
+          });
+        maxRows = Math.max(maxRows, entries.length);
+        entries.forEach((decl, rowIndex) => {
+          positions.set(decl.name, {
+            x: left + moduleIndex * colWidth,
+            y: top + rowIndex * rowGap,
+            width: nodeWidth,
+            height: nodeHeight,
+          });
+        });
+      });
+
+      return {
+        moduleNames,
+        grouped,
+        positions,
+        nodeWidth,
+        nodeHeight,
+        colWidth,
+        rowGap,
+        left,
+        top,
+        width: Math.max(1180, left + moduleNames.length * colWidth + 24),
+        height: Math.max(620, top + maxRows * rowGap + 48),
+      };
+    }
+
+    function explorerNodeSvg(decl, position, highlighted, radius, query) {
+      const isSelected = decl.name === selectedName;
+      const isHighlighted = highlighted.has(decl.name);
+      const isDimmed = radius > 0 && !isSelected && !isHighlighted;
+      const isMatch = query && declarationMatchesExplorerQuery(decl, query);
+      const classes = [
+        "explorer-node",
+        `kind-${safeClass(String(decl.kind || "unknown").toLowerCase())}`,
+        tierClass(decl.audit_tier),
+        isSelected ? "selected" : "",
+        isHighlighted && !isSelected ? "neighbor" : "",
+        isDimmed ? "dimmed" : "",
+        isMatch ? "match" : "",
+      ].filter(Boolean).map(safeClass).join(" ");
+      return `<g class="${classes}" data-name="${esc(decl.name)}" transform="translate(${position.x}, ${position.y})">
+        <title>${esc(decl.name)}</title>
+        <rect width="${position.width}" height="${position.height}" rx="5"></rect>
+        <text x="7" y="15">${esc(truncateText(shortName(decl.name), 24))}</text>
+      </g>`;
+    }
+
+    function explorerEdgeSvg(edge, positions, highlighted, radius) {
+      const from = positions.get(edge.source);
+      const to = positions.get(edge.target);
+      if (!from || !to) return "";
+      const sx = from.x + from.width / 2;
+      const sy = from.y + from.height / 2;
+      const tx = to.x + to.width / 2;
+      const ty = to.y + to.height / 2;
+      const sameColumn = Math.abs(sx - tx) < 4;
+      const c1x = sameColumn ? sx + 62 : sx + (tx - sx) * 0.45;
+      const c2x = sameColumn ? tx + 62 : sx + (tx - sx) * 0.55;
+      const isFocus = edge.source === selectedName || edge.target === selectedName;
+      const isDimmed = radius > 0 && (!highlighted.has(edge.source) || !highlighted.has(edge.target));
+      const marker = edge.kind === "type" ? "url(#explorer-arrow-type)" : "url(#explorer-arrow-proof)";
+      const classes = ["explorer-edge", edge.kind, isFocus ? "focus" : "", isDimmed ? "dimmed" : ""]
+        .filter(Boolean).map(safeClass).join(" ");
+      return `<path class="${classes}" marker-end="${marker}" d="M ${sx} ${sy} C ${c1x} ${sy}, ${c2x} ${ty}, ${tx} ${ty}"></path>`;
+    }
+
+    function renderExplorerInspector(neighborhood) {
+      const decl = selectedName ? declarationByName.get(selectedName) : null;
+      if (!decl) {
+        byId("explorer-inspector").innerHTML = "Select a declaration.";
+        return;
+      }
+      const list = (title, names) => `
+        <h3>${esc(title)}</h3>
+        <div class="graph-list">
+          ${names.length ? names.map(name => `<button class="graph-link" data-name="${esc(name)}" title="${esc(name)}">${esc(name)}</button>`).join("") : `<div class="muted small">none</div>`}
+        </div>
+      `;
+      byId("explorer-inspector").innerHTML = `
+        <div class="kv"><div class="key">Name</div><div><code>${esc(decl.name)}</code></div></div>
+        <div class="kv"><div class="key">Kind</div><div>${esc(decl.kind)}</div></div>
+        <div class="kv"><div class="key">Tier</div><div>${chip(decl.audit_tier || "unassigned", tierClass(decl.audit_tier))}</div></div>
+        <div class="kv"><div class="key">Module</div><div>${esc(decl.module)}</div></div>
+        <div class="kv"><div class="key">Source</div><div>${esc(sourceLabel(decl) || "unknown")}</div></div>
+        <div class="kv"><div class="key">Role</div><div>
+          ${chip(`${neighborhood.typeDeps.length} statement deps`, "pass")}
+          ${chip(`${neighborhood.proofDeps.length} proof-only deps`, "warn")}
+          ${chip(`${neighborhood.typeUsers.length} statement users`, "pass")}
+          ${chip(`${neighborhood.proofUsers.length} proof-only users`, "warn")}
+        </div></div>
+        ${list("Statement dependencies", neighborhood.typeDeps)}
+        ${list("Proof-only dependencies", neighborhood.proofDeps)}
+        ${list("Statement users", neighborhood.typeUsers)}
+        ${list("Proof-only users", neighborhood.proofUsers)}
+      `;
+      byId("explorer-inspector").querySelectorAll(".graph-link[data-name]").forEach(button => {
+        button.addEventListener("click", () => selectDeclaration(button.dataset.name));
+      });
+    }
+
+    function centerExplorerOnSelection(layout) {
+      const shell = byId("graph-explorer-svg")?.closest(".explorer-shell");
+      const position = selectedName ? layout.positions.get(selectedName) : null;
+      if (!shell || !position || shell.clientWidth === 0 || lastExplorerCenteredName === selectedName) return;
+      const targetLeft = position.x + position.width / 2 - shell.clientWidth * 0.56;
+      const targetTop = position.y + position.height / 2 - shell.clientHeight * 0.34;
+      shell.scrollLeft = Math.max(0, targetLeft);
+      shell.scrollTop = Math.max(0, targetTop);
+      lastExplorerCenteredName = selectedName;
+    }
+
+    function renderGraphExplorer() {
+      const svg = byId("graph-explorer-svg");
+      if (!svg) return;
+      const visibleDecls = explorerVisibleDeclarations();
+      const visibleNames = new Set(visibleDecls.map(decl => decl.name));
+      const allEdges = semanticDeclarationEdges(visibleNames);
+      const radius = Number(byId("explorer-radius").value || 1);
+      const highlighted = explorerHighlightedNames(allEdges, radius);
+      const drawEdges = explorerDrawEdges(allEdges, highlighted, radius);
+      const layout = explorerLayout(visibleDecls);
+      const query = byId("explorer-search").value.toLowerCase();
+      const hiddenArtifactTotal = showExplorerArtifacts() ? 0 : declarations.filter(decl => isLeanArtifactDeclaration(decl.name)).length;
+
+      let body = `<defs>
+        <marker id="explorer-arrow-type" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"></path>
+        </marker>
+        <marker id="explorer-arrow-proof" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"></path>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="${layout.width}" height="${layout.height}" fill="#fbfcfd"></rect>`;
+
+      layout.moduleNames.forEach((module, index) => {
+        const decls = layout.grouped.get(module) || [];
+        const x = layout.left + index * layout.colWidth - 10;
+        const height = Math.max(44, decls.length * layout.rowGap + 14);
+        body += `<rect class="explorer-module-band" x="${x}" y="36" width="${layout.nodeWidth + 20}" height="${height}"></rect>`;
+        body += `<text class="explorer-module-title" x="${x + 8}" y="24">${esc(truncateText(shortModule(module), 24))}</text>`;
+      });
+
+      for (const edge of drawEdges) {
+        body += explorerEdgeSvg(edge, layout.positions, highlighted, radius);
+      }
+      for (const decl of visibleDecls) {
+        body += explorerNodeSvg(decl, layout.positions.get(decl.name), highlighted, radius, query);
+      }
+
+      svg.setAttribute("viewBox", `0 0 ${layout.width} ${layout.height}`);
+      svg.innerHTML = body;
+      svg.querySelectorAll(".explorer-node[data-name]").forEach(node => {
+        node.addEventListener("click", () => selectDeclaration(node.dataset.name));
+      });
+
+      const metaChips = [
+        chip(`${visibleDecls.length} declarations`),
+        chip(`${layout.moduleNames.length} modules`),
+        chip(`${drawEdges.length}/${allEdges.length} edges shown`),
+        chip(byId("explorer-edge-mode").selectedOptions[0]?.textContent || "edges"),
+      ];
+      if (hiddenArtifactTotal > 0) metaChips.push(chip(`${hiddenArtifactTotal} Lean artifacts hidden`, "warn"));
+      byId("explorer-meta").innerHTML = metaChips.join("");
+      renderExplorerInspector(explorerNeighborhood(selectedName));
+      centerExplorerOnSelection(layout);
+    }
+
+    function strataCandidateDeclarations() {
+      const query = byId("strata-search").value.toLowerCase();
+      const moduleFilter = byId("strata-module-filter").value;
+      const includeArtifacts = showStrataArtifacts();
+      const visible = declarations.filter(decl => {
+        if (!includeArtifacts && isLeanArtifactDeclaration(decl.name)) return false;
+        if (moduleFilter && decl.module !== moduleFilter) return false;
+        return declarationMatchesExplorerQuery(decl, query);
+      });
+      const selected = selectedName ? declarationByName.get(selectedName) : null;
+      if (
+        selected &&
+        (includeArtifacts || !isLeanArtifactDeclaration(selected.name)) &&
+        !visible.some(decl => decl.name === selected.name)
+      ) {
+        visible.push(selected);
+      }
+      return visible;
+    }
+
+    function strataEdgesForMetric(visibleNames, metric) {
+      const edges = semanticDeclarationEdges(visibleNames);
+      return metric === "type" ? edges.filter(edge => edge.kind === "type") : edges;
+    }
+
+    function buildDepthMap(names, edges) {
+      const depsBySource = new Map();
+      for (const name of names) depsBySource.set(name, []);
+      for (const edge of edges) {
+        if (!depsBySource.has(edge.source)) depsBySource.set(edge.source, []);
+        depsBySource.get(edge.source).push(edge.target);
+      }
+      const memo = new Map();
+      const visiting = new Set();
+      function depth(name) {
+        if (memo.has(name)) return memo.get(name);
+        if (visiting.has(name)) return 0;
+        visiting.add(name);
+        const depDepths = (depsBySource.get(name) || [])
+          .filter(dep => names.has(dep))
+          .map(dep => depth(dep));
+        visiting.delete(name);
+        const value = depDepths.length ? 1 + Math.max(...depDepths) : 0;
+        memo.set(name, value);
+        return value;
+      }
+      for (const name of names) depth(name);
+      return memo;
+    }
+
+    function focusClosureNames(edges, names) {
+      if (!selectedName || !names.has(selectedName)) return new Set(names);
+      const forward = new Map();
+      const reverse = new Map();
+      for (const edge of edges) {
+        if (!forward.has(edge.source)) forward.set(edge.source, []);
+        if (!reverse.has(edge.target)) reverse.set(edge.target, []);
+        forward.get(edge.source).push(edge.target);
+        reverse.get(edge.target).push(edge.source);
+      }
+      const seen = new Set([selectedName]);
+      const queue = [selectedName];
+      while (queue.length) {
+        const current = queue.shift();
+        for (const next of forward.get(current) || []) {
+          if (!names.has(next) || seen.has(next)) continue;
+          seen.add(next);
+          queue.push(next);
+        }
+      }
+      for (const user of reverse.get(selectedName) || []) {
+        if (names.has(user)) seen.add(user);
+      }
+      return seen;
+    }
+
+    function strataLayout(decls, depths) {
+      const grouped = new Map();
+      for (const decl of decls) {
+        const depth = depths.get(decl.name) || 0;
+        if (!grouped.has(depth)) grouped.set(depth, []);
+        grouped.get(depth).push(decl);
+      }
+      const levels = [...grouped.keys()].sort((a, b) => a - b);
+      const nodeWidth = 180;
+      const nodeHeight = 24;
+      const colWidth = 226;
+      const rowGap = 31;
+      const left = 28;
+      const top = 72;
+      const positions = new Map();
+      let maxRows = 1;
+
+      levels.forEach((level, levelIndex) => {
+        const entries = grouped.get(level)
+          .slice()
+          .sort((a, b) => {
+            const moduleOrder = sortedModuleNames(new Set([a.module, b.module]));
+            if (a.module !== b.module) return moduleOrder.indexOf(a.module) - moduleOrder.indexOf(b.module);
+            const lineA = declarationSourceLine(a);
+            const lineB = declarationSourceLine(b);
+            if (lineA !== lineB) return lineA - lineB;
+            return a.name.localeCompare(b.name);
+          });
+        grouped.set(level, entries);
+        maxRows = Math.max(maxRows, entries.length);
+        entries.forEach((decl, rowIndex) => {
+          positions.set(decl.name, {
+            x: left + levelIndex * colWidth,
+            y: top + rowIndex * rowGap,
+            width: nodeWidth,
+            height: nodeHeight,
+          });
+        });
+      });
+
+      return {
+        levels,
+        grouped,
+        positions,
+        nodeWidth,
+        nodeHeight,
+        colWidth,
+        rowGap,
+        left,
+        top,
+        width: Math.max(1180, left + levels.length * colWidth + 36),
+        height: Math.max(620, top + maxRows * rowGap + 58),
+      };
+    }
+
+    function strataNodeSvg(decl, position, closureNames) {
+      const isSelected = decl.name === selectedName;
+      const isNeighbor = closureNames.has(decl.name) && !isSelected;
+      const isDimmed = byId("strata-scope").value === "all" && selectedName && !isSelected && !isNeighbor;
+      const classes = [
+        "strata-node",
+        `kind-${safeClass(String(decl.kind || "unknown").toLowerCase())}`,
+        tierClass(decl.audit_tier),
+        isSelected ? "selected" : "",
+        isNeighbor ? "neighbor" : "",
+        isDimmed ? "dimmed" : "",
+      ].filter(Boolean).map(safeClass).join(" ");
+      return `<g class="${classes}" data-name="${esc(decl.name)}" transform="translate(${position.x}, ${position.y})">
+        <title>${esc(decl.name)}</title>
+        <rect width="${position.width}" height="${position.height}" rx="5"></rect>
+        <text x="7" y="16">${esc(truncateText(shortName(decl.name), 25))}</text>
+      </g>`;
+    }
+
+    function strataEdgeSvg(edge, positions) {
+      const user = positions.get(edge.source);
+      const dependency = positions.get(edge.target);
+      if (!user || !dependency) return "";
+      const sx = dependency.x + dependency.width;
+      const sy = dependency.y + dependency.height / 2;
+      const tx = user.x;
+      const ty = user.y + user.height / 2;
+      const c1x = sx + Math.max(34, Math.abs(tx - sx) * 0.38);
+      const c2x = tx - Math.max(34, Math.abs(tx - sx) * 0.38);
+      const isFocus = edge.source === selectedName || edge.target === selectedName;
+      const marker = edge.kind === "type" ? "url(#strata-arrow-type)" : "url(#strata-arrow-proof)";
+      const classes = ["strata-edge", edge.kind, isFocus ? "focus" : ""]
+        .filter(Boolean).map(safeClass).join(" ");
+      return `<path class="${classes}" marker-end="${marker}" d="M ${sx} ${sy} C ${c1x} ${sy}, ${c2x} ${ty}, ${tx} ${ty}"></path>`;
+    }
+
+    function renderStrataInspector(depths, typeDepths, allDepths) {
+      const decl = selectedName ? declarationByName.get(selectedName) : null;
+      if (!decl) {
+        byId("strata-inspector").innerHTML = "Select a declaration.";
+        return;
+      }
+      const neighborhood = graphNeighborhoodFor(selectedName, showStrataArtifacts());
+      const list = (title, names) => `
+        <h3>${esc(title)}</h3>
+        <div class="graph-list">
+          ${names.length ? names.map(name => `<button class="graph-link" data-name="${esc(name)}" title="${esc(name)}">${esc(name)}</button>`).join("") : `<div class="muted small">none</div>`}
+        </div>
+      `;
+      byId("strata-inspector").innerHTML = `
+        <div class="kv"><div class="key">Name</div><div><code>${esc(decl.name)}</code></div></div>
+        <div class="kv"><div class="key">Kind</div><div>${esc(decl.kind)}</div></div>
+        <div class="kv"><div class="key">Module</div><div>${esc(decl.module)}</div></div>
+        <div class="kv"><div class="key">Active depth</div><div>${chip(depths.get(decl.name) ?? "filtered")}</div></div>
+        <div class="kv"><div class="key">Depths</div><div>${chip(`statement ${typeDepths.get(decl.name) ?? "filtered"}`, "pass")} ${chip(`proof-aware ${allDepths.get(decl.name) ?? "filtered"}`, "warn")}</div></div>
+        <div class="kv"><div class="key">Role</div><div>
+          ${chip(`${neighborhood.typeDeps.length} statement deps`, "pass")}
+          ${chip(`${neighborhood.proofDeps.length} proof-only deps`, "warn")}
+          ${chip(`${neighborhood.typeUsers.length} statement users`, "pass")}
+          ${chip(`${neighborhood.proofUsers.length} proof-only users`, "warn")}
+        </div></div>
+        ${list("Statement dependencies", neighborhood.typeDeps)}
+        ${list("Proof-only dependencies", neighborhood.proofDeps)}
+        ${list("Statement users", neighborhood.typeUsers)}
+        ${list("Proof-only users", neighborhood.proofUsers)}
+      `;
+      byId("strata-inspector").querySelectorAll(".graph-link[data-name]").forEach(button => {
+        button.addEventListener("click", () => selectDeclaration(button.dataset.name));
+      });
+    }
+
+    function centerStrataOnSelection(layout) {
+      const shell = byId("strata-svg")?.closest(".analysis-shell");
+      const position = selectedName ? layout.positions.get(selectedName) : null;
+      const key = [
+        selectedName,
+        byId("strata-metric").value,
+        byId("strata-scope").value,
+        byId("strata-module-filter").value,
+        byId("strata-search").value,
+      ].join("|");
+      if (!shell || !position || shell.clientWidth === 0 || lastStrataCenteredKey === key) return;
+      shell.scrollLeft = Math.max(0, position.x + position.width / 2 - shell.clientWidth * 0.52);
+      shell.scrollTop = Math.max(0, position.y + position.height / 2 - shell.clientHeight * 0.34);
+      lastStrataCenteredKey = key;
+    }
+
+    function renderBuildStrata() {
+      const svg = byId("strata-svg");
+      if (!svg) return;
+      const candidates = strataCandidateDeclarations();
+      const candidateNames = new Set(candidates.map(decl => decl.name));
+      const typeEdges = strataEdgesForMetric(candidateNames, "type");
+      const allEdges = strataEdgesForMetric(candidateNames, "all");
+      const metric = byId("strata-metric").value;
+      const activeEdges = metric === "type" ? typeEdges : allEdges;
+      const typeDepths = buildDepthMap(candidateNames, typeEdges);
+      const allDepths = buildDepthMap(candidateNames, allEdges);
+      const depths = metric === "type" ? typeDepths : allDepths;
+      const closure = focusClosureNames(activeEdges, candidateNames);
+      const scope = byId("strata-scope").value;
+      const displayDecls = scope === "focus"
+        ? candidates.filter(decl => closure.has(decl.name))
+        : candidates;
+      const displayNames = new Set(displayDecls.map(decl => decl.name));
+      const drawEdges = activeEdges.filter(edge => displayNames.has(edge.source) && displayNames.has(edge.target));
+      const layout = strataLayout(displayDecls, depths);
+      const hiddenArtifactTotal = showStrataArtifacts() ? 0 : declarations.filter(decl => isLeanArtifactDeclaration(decl.name)).length;
+
+      let body = `<defs>
+        <marker id="strata-arrow-type" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"></path>
+        </marker>
+        <marker id="strata-arrow-proof" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"></path>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="${layout.width}" height="${layout.height}" fill="#fbfcfd"></rect>`;
+
+      layout.levels.forEach((level, index) => {
+        const entries = layout.grouped.get(level) || [];
+        const x = layout.left + index * layout.colWidth - 10;
+        const height = Math.max(48, entries.length * layout.rowGap + 16);
+        body += `<rect class="strata-band" x="${x}" y="38" width="${layout.nodeWidth + 20}" height="${height}"></rect>`;
+        body += `<text class="strata-title" x="${x + 8}" y="25">Depth ${level}</text>`;
+      });
+
+      for (const edge of drawEdges) body += strataEdgeSvg(edge, layout.positions);
+      for (const decl of displayDecls) body += strataNodeSvg(decl, layout.positions.get(decl.name), closure);
+
+      svg.setAttribute("viewBox", `0 0 ${layout.width} ${layout.height}`);
+      svg.innerHTML = body;
+      svg.querySelectorAll(".strata-node[data-name]").forEach(node => {
+        node.addEventListener("click", () => selectDeclaration(node.dataset.name));
+      });
+
+      const metricLabel = metric === "type" ? "statement-interface depth" : "proof-aware depth";
+      const metaChips = [
+        chip(`${displayDecls.length}/${candidates.length} declarations`),
+        chip(`${layout.levels.length} visible levels`),
+        chip(`${drawEdges.length} edges`),
+        chip(metricLabel),
+      ];
+      if (hiddenArtifactTotal > 0) metaChips.push(chip(`${hiddenArtifactTotal} Lean artifacts hidden`, "warn"));
+      byId("strata-meta").innerHTML = metaChips.join("");
+      renderStrataInspector(depths, typeDepths, allDepths);
+      centerStrataOnSelection(layout);
+    }
+
+    function roleMetrics(name, includeArtifacts) {
+      const neighborhood = graphNeighborhoodFor(name, includeArtifacts);
+      return {
+        statementUsers: neighborhood.typeUsers.length,
+        proofUsers: neighborhood.proofUsers.length,
+        statementDeps: neighborhood.typeDeps.length,
+        proofDeps: neighborhood.proofDeps.length,
+      };
+    }
+
+    function roleVisibleDeclarations() {
+      const query = byId("roles-search").value.toLowerCase();
+      const moduleFilter = byId("roles-module-filter").value;
+      const kindFilter = byId("roles-kind-filter").value;
+      const includeArtifacts = showRolesArtifacts();
+      const visible = declarations.filter(decl => {
+        if (!includeArtifacts && isLeanArtifactDeclaration(decl.name)) return false;
+        if (moduleFilter && decl.module !== moduleFilter) return false;
+        if (kindFilter && decl.kind !== kindFilter) return false;
+        return declarationMatchesExplorerQuery(decl, query);
+      });
+      const selected = selectedName ? declarationByName.get(selectedName) : null;
+      if (
+        selected &&
+        (includeArtifacts || !isLeanArtifactDeclaration(selected.name)) &&
+        !visible.some(decl => decl.name === selected.name)
+      ) {
+        visible.push(selected);
+      }
+      return visible;
+    }
+
+    function roleValues(metrics, mode) {
+      if (mode === "deps") {
+        return {
+          x: metrics.statementDeps,
+          y: metrics.proofDeps,
+          xLabel: "Statement dependencies",
+          yLabel: "Proof-only dependencies",
+        };
+      }
+      return {
+        x: metrics.statementUsers,
+        y: metrics.proofUsers,
+        xLabel: "Statement users",
+        yLabel: "Proof-only users",
+      };
+    }
+
+    function roleLayout(decls, metricsByName) {
+      const mode = byId("roles-scale").value;
+      const margin = { left: 72, right: 160, top: 42, bottom: 70 };
+      const width = 1160;
+      const height = 650;
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+      const values = decls.map(decl => roleValues(metricsByName.get(decl.name), mode));
+      const maxX = Math.max(1, ...values.map(value => value.x));
+      const maxY = Math.max(1, ...values.map(value => value.y));
+      const positions = new Map();
+      const occupied = new Map();
+
+      decls.forEach(decl => {
+        const value = roleValues(metricsByName.get(decl.name), mode);
+        const x = margin.left + Math.sqrt(value.x / maxX) * plotWidth;
+        const y = margin.top + plotHeight - Math.sqrt(value.y / maxY) * plotHeight;
+        const key = `${Math.round(x / 18)}:${Math.round(y / 18)}`;
+        const index = occupied.get(key) || 0;
+        occupied.set(key, index + 1);
+        const angle = index * 2.399963;
+        const radius = index === 0 ? 0 : 7 + 2.6 * Math.sqrt(index);
+        positions.set(decl.name, {
+          x: x + Math.cos(angle) * radius,
+          y: y + Math.sin(angle) * radius,
+          rawX: value.x,
+          rawY: value.y,
+        });
+      });
+
+      return {
+        width,
+        height,
+        margin,
+        plotWidth,
+        plotHeight,
+        maxX,
+        maxY,
+        positions,
+        xLabel: values[0]?.xLabel || "Statement users",
+        yLabel: values[0]?.yLabel || "Proof-only users",
+      };
+    }
+
+    function roleFocusEdges(visibleNames, includeArtifacts) {
+      if (!selectedName || !visibleNames.has(selectedName)) return [];
+      const neighborhood = graphNeighborhoodFor(selectedName, includeArtifacts);
+      const edges = [];
+      for (const name of neighborhood.typeDeps) {
+        if (visibleNames.has(name)) edges.push({ source: name, target: selectedName, kind: "type" });
+      }
+      for (const name of neighborhood.proofDeps) {
+        if (visibleNames.has(name)) edges.push({ source: name, target: selectedName, kind: "proof" });
+      }
+      for (const name of neighborhood.typeUsers) {
+        if (visibleNames.has(name)) edges.push({ source: selectedName, target: name, kind: "type" });
+      }
+      for (const name of neighborhood.proofUsers) {
+        if (visibleNames.has(name)) edges.push({ source: selectedName, target: name, kind: "proof" });
+      }
+      return edges;
+    }
+
+    function roleEdgeSvg(edge, positions) {
+      const from = positions.get(edge.source);
+      const to = positions.get(edge.target);
+      if (!from || !to) return "";
+      const c1x = from.x + (to.x - from.x) * 0.45;
+      const c2x = from.x + (to.x - from.x) * 0.55;
+      const classes = ["role-edge", edge.kind, "focus"].map(safeClass).join(" ");
+      return `<path class="${classes}" d="M ${from.x} ${from.y} C ${c1x} ${from.y}, ${c2x} ${to.y}, ${to.x} ${to.y}"></path>`;
+    }
+
+    function roleNodeSvg(decl, position, metrics) {
+      const isSelected = decl.name === selectedName;
+      const totalUsers = metrics.statementUsers + metrics.proofUsers;
+      const totalDeps = metrics.statementDeps + metrics.proofDeps;
+      const radius = Math.min(13, 4.5 + Math.sqrt(Math.max(totalUsers, totalDeps)) * 1.15);
+      const classes = [
+        "role-node",
+        `kind-${safeClass(String(decl.kind || "unknown").toLowerCase())}`,
+        tierClass(decl.audit_tier),
+        isSelected ? "selected" : "",
+      ].filter(Boolean).map(safeClass).join(" ");
+      return `<g class="${classes}" data-name="${esc(decl.name)}" transform="translate(${position.x}, ${position.y})">
+        <title>${esc(decl.name)}</title>
+        <circle r="${radius}"></circle>
+      </g>`;
+    }
+
+    function roleLabelSvg(decl, position, metricsByName, index) {
+      const metrics = metricsByName.get(decl.name);
+      const score = metrics.statementUsers + metrics.proofUsers + metrics.statementDeps + metrics.proofDeps;
+      if (decl.name !== selectedName && (index > 12 || score < 8)) return "";
+      return `<text class="role-label" x="${position.x + 9}" y="${position.y - 8}">${esc(truncateText(shortName(decl.name), 26))}</text>`;
+    }
+
+    function renderRoleInspector(metricsByName) {
+      const decl = selectedName ? declarationByName.get(selectedName) : null;
+      if (!decl) {
+        byId("roles-inspector").innerHTML = "Select a declaration.";
+        return;
+      }
+      const metrics = metricsByName.get(selectedName) || roleMetrics(selectedName, showRolesArtifacts());
+      const neighborhood = graphNeighborhoodFor(selectedName, showRolesArtifacts());
+      const list = (title, names) => `
+        <h3>${esc(title)}</h3>
+        <div class="graph-list">
+          ${names.length ? names.map(name => `<button class="graph-link" data-name="${esc(name)}" title="${esc(name)}">${esc(name)}</button>`).join("") : `<div class="muted small">none</div>`}
+        </div>
+      `;
+      byId("roles-inspector").innerHTML = `
+        <div class="kv"><div class="key">Name</div><div><code>${esc(decl.name)}</code></div></div>
+        <div class="kv"><div class="key">Kind</div><div>${esc(decl.kind)}</div></div>
+        <div class="kv"><div class="key">Module</div><div>${esc(decl.module)}</div></div>
+        <div class="kv"><div class="key">Users</div><div>${chip(`${metrics.statementUsers} statement`, "pass")} ${chip(`${metrics.proofUsers} proof-only`, "warn")}</div></div>
+        <div class="kv"><div class="key">Deps</div><div>${chip(`${metrics.statementDeps} statement`, "pass")} ${chip(`${metrics.proofDeps} proof-only`, "warn")}</div></div>
+        ${list("Statement users", neighborhood.typeUsers)}
+        ${list("Proof-only users", neighborhood.proofUsers)}
+        ${list("Statement dependencies", neighborhood.typeDeps)}
+        ${list("Proof-only dependencies", neighborhood.proofDeps)}
+      `;
+      byId("roles-inspector").querySelectorAll(".graph-link[data-name]").forEach(button => {
+        button.addEventListener("click", () => selectDeclaration(button.dataset.name));
+      });
+    }
+
+    function renderRoleModeDescription(mode) {
+      const target = byId("roles-mode-description");
+      if (!target) return;
+      if (mode === "deps") {
+        target.innerHTML = `
+          <div class="axis-card"><strong>x-axis: statement dependencies</strong>How many declarations appear in this declaration's own statement/type. Far right means the statement has many visible mathematical ingredients.</div>
+          <div class="axis-card"><strong>y-axis: proof-only dependencies</strong>How many additional declarations are used by the proof/value but not by the statement. High up means the proof is formally busy.</div>
+        `;
+      } else {
+        target.innerHTML = `
+          <div class="axis-card"><strong>x-axis: statement users</strong>How many other declarations mention this declaration in their statement/type. Far right means mathematical interface or vocabulary.</div>
+          <div class="axis-card"><strong>y-axis: proof-only users</strong>How many other declarations use this declaration only in their proof/value. High up means proof infrastructure.</div>
+        `;
+      }
+    }
+
+    function renderRoleMap() {
+      const svg = byId("roles-svg");
+      if (!svg) return;
+      const decls = roleVisibleDeclarations();
+      const metricsByName = new Map(decls.map(decl => [decl.name, roleMetrics(decl.name, showRolesArtifacts())]));
+      const layout = roleLayout(decls, metricsByName);
+      const visibleNames = new Set(decls.map(decl => decl.name));
+      const focusEdges = roleFocusEdges(visibleNames, showRolesArtifacts());
+      const hiddenArtifactTotal = showRolesArtifacts() ? 0 : declarations.filter(decl => isLeanArtifactDeclaration(decl.name)).length;
+      const mode = byId("roles-scale").value;
+      renderRoleModeDescription(mode);
+
+      const x0 = layout.margin.left;
+      const y0 = layout.margin.top + layout.plotHeight;
+      const x1 = layout.margin.left + layout.plotWidth;
+      const y1 = layout.margin.top;
+      let body = `<rect x="0" y="0" width="${layout.width}" height="${layout.height}" fill="#fbfcfd"></rect>`;
+      for (let i = 0; i <= 4; i += 1) {
+        const x = x0 + (layout.plotWidth * i / 4);
+        const y = y0 - (layout.plotHeight * i / 4);
+        body += `<line class="axis-grid" x1="${x}" y1="${y1}" x2="${x}" y2="${y0}"></line>`;
+        body += `<line class="axis-grid" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"></line>`;
+      }
+      body += `<line class="axis-line" x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}"></line>`;
+      body += `<line class="axis-line" x1="${x0}" y1="${y0}" x2="${x0}" y2="${y1}"></line>`;
+      body += `<text class="axis-label" x="${x0}" y="${layout.height - 24}">${esc(layout.xLabel)}</text>`;
+      body += `<text class="axis-label" x="${x0}" y="${y1 - 16}">${esc(layout.yLabel)}</text>`;
+      body += `<text class="axis-label" x="${x1 - 20}" y="${y0 + 22}">${layout.maxX}</text>`;
+      body += `<text class="axis-label" x="${x0 - 24}" y="${y1 + 4}">${layout.maxY}</text>`;
+      const xRole = mode === "deps" ? "statement-heavy" : "interfaces";
+      const yRole = mode === "deps" ? "proof-heavy constructions" : "proof infrastructure";
+      const mixedRole = mode === "deps" ? "complex formal bridges" : "mixed hubs";
+      body += `<text class="quadrant-label" x="${x1 - 180}" y="${y0 - 12}">${esc(xRole)}</text>`;
+      body += `<text class="quadrant-label" x="${x0 + 12}" y="${y1 + 18}">${esc(yRole)}</text>`;
+      body += `<text class="quadrant-label" x="${x1 - 130}" y="${y1 + 18}">${esc(mixedRole)}</text>`;
+      body += `<text class="quadrant-label" x="${x0 + 12}" y="${y0 - 12}">local leaves</text>`;
+
+      for (const edge of focusEdges) body += roleEdgeSvg(edge, layout.positions);
+      const labelDecls = decls
+        .slice()
+        .sort((a, b) => {
+          const ma = metricsByName.get(a.name);
+          const mb = metricsByName.get(b.name);
+          const scoreA = ma.statementUsers + ma.proofUsers + ma.statementDeps + ma.proofDeps;
+          const scoreB = mb.statementUsers + mb.proofUsers + mb.statementDeps + mb.proofDeps;
+          return scoreB - scoreA;
+        });
+      for (const decl of decls) body += roleNodeSvg(decl, layout.positions.get(decl.name), metricsByName.get(decl.name));
+      labelDecls.forEach((decl, index) => {
+        body += roleLabelSvg(decl, layout.positions.get(decl.name), metricsByName, index);
+      });
+
+      svg.setAttribute("viewBox", `0 0 ${layout.width} ${layout.height}`);
+      svg.innerHTML = body;
+      svg.querySelectorAll(".role-node[data-name]").forEach(node => {
+        node.addEventListener("click", () => selectDeclaration(node.dataset.name));
+      });
+
+      const metaChips = [
+        chip(`${decls.length} declarations`),
+        chip(`${focusEdges.length} focus edges`),
+        chip(mode === "deps" ? "dependency role coordinates" : "user role coordinates"),
+      ];
+      if (hiddenArtifactTotal > 0) metaChips.push(chip(`${hiddenArtifactTotal} Lean artifacts hidden`, "warn"));
+      byId("roles-meta").innerHTML = metaChips.join("");
+      renderRoleInspector(metricsByName);
+    }
+
+    function matrixVisibleNames() {
+      return new Set(
+        declarations
+          .filter(decl => showMatrixArtifacts() || !isLeanArtifactDeclaration(decl.name))
+          .map(decl => decl.name)
+      );
+    }
+
+    function matrixEdgesForMode(visibleNames, mode) {
+      const edges = semanticDeclarationEdges(visibleNames);
+      if (mode === "type") return edges.filter(edge => edge.kind === "type");
+      if (mode === "proof") return edges.filter(edge => edge.kind === "proof");
+      return edges;
+    }
+
+    function matrixData() {
+      const visibleNames = matrixVisibleNames();
+      const mode = byId("matrix-mode").value;
+      const edges = matrixEdgesForMode(visibleNames, mode);
+      const moduleNames = sortedModuleNames(new Set(
+        declarations
+          .filter(decl => visibleNames.has(decl.name))
+          .map(decl => decl.module)
+          .filter(Boolean)
+      ));
+      const cells = new Map();
+      const ensure = (row, col) => {
+        const key = `${row}||${col}`;
+        if (!cells.has(key)) cells.set(key, { row, col, type: 0, proof: 0, total: 0, edges: [] });
+        return cells.get(key);
+      };
+      for (const edge of edges) {
+        const source = declarationByName.get(edge.source);
+        const target = declarationByName.get(edge.target);
+        if (!source || !target) continue;
+        const cell = ensure(source.module, target.module);
+        cell[edge.kind] += 1;
+        cell.total += 1;
+        cell.edges.push(edge);
+      }
+      return { moduleNames, cells, edges };
+    }
+
+    function matrixCellColor(cell, intensity, mode) {
+      if (!cell || cell.total === 0) return "#fff";
+      const alpha = 0.12 + intensity * 0.72;
+      if (mode === "type") return `rgba(37, 99, 235, ${alpha})`;
+      if (mode === "proof") return `rgba(180, 83, 9, ${alpha})`;
+      const proofRatio = cell.proof / Math.max(1, cell.total);
+      const r = Math.round(37 * (1 - proofRatio) + 180 * proofRatio);
+      const g = Math.round(99 * (1 - proofRatio) + 83 * proofRatio);
+      const b = Math.round(235 * (1 - proofRatio) + 9 * proofRatio);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function chooseDefaultMatrixCell(data) {
+      if (selectedMatrixCell && data.cells.has(`${selectedMatrixCell.row}||${selectedMatrixCell.col}`)) return selectedMatrixCell;
+      const selectedDecl = selectedName ? declarationByName.get(selectedName) : null;
+      if (selectedDecl) {
+        const sameRow = [...data.cells.values()]
+          .filter(cell => cell.row === selectedDecl.module)
+          .sort((a, b) => b.total - a.total)[0];
+        if (sameRow) return { row: sameRow.row, col: sameRow.col };
+      }
+      const strongest = [...data.cells.values()].sort((a, b) => b.total - a.total)[0];
+      return strongest ? { row: strongest.row, col: strongest.col } : null;
+    }
+
+    function renderMatrixInspector(cell) {
+      if (!cell) {
+        byId("matrix-inspector").innerHTML = "Select a cell.";
+        return;
+      }
+      const topEdges = cell.edges
+        .slice()
+        .sort((a, b) => {
+          const sourceA = declarationByName.get(a.source);
+          const sourceB = declarationByName.get(b.source);
+          const lineA = declarationSourceLine(sourceA);
+          const lineB = declarationSourceLine(sourceB);
+          if (lineA !== lineB) return lineA - lineB;
+          return a.source.localeCompare(b.source);
+        })
+        .slice(0, 24);
+      byId("matrix-inspector").innerHTML = `
+        <div class="kv"><div class="key">From</div><div>${esc(shortModule(cell.row))}</div></div>
+        <div class="kv"><div class="key">Uses</div><div>${esc(shortModule(cell.col))}</div></div>
+        <div class="kv"><div class="key">Edges</div><div>${chip(`${cell.type} statement`, "pass")} ${chip(`${cell.proof} proof-only`, "warn")} ${chip(`${cell.total} total`)}</div></div>
+        <h3>Declaration edges</h3>
+        <div class="graph-list">
+          ${topEdges.length ? topEdges.map(edge => {
+            const label = `${shortName(edge.source)} -> ${shortName(edge.target)}`;
+            return `<button class="graph-link" data-name="${esc(edge.source)}" title="${esc(edge.source + " uses " + edge.target)}">${esc(label)}</button>`;
+          }).join("") : `<div class="muted small">none</div>`}
+        </div>
+      `;
+      byId("matrix-inspector").querySelectorAll(".graph-link[data-name]").forEach(button => {
+        button.addEventListener("click", () => selectDeclaration(button.dataset.name));
+      });
+    }
+
+    function renderModuleMatrix() {
+      const data = matrixData();
+      const mode = byId("matrix-mode").value;
+      const normalize = byId("matrix-normalize").value;
+      selectedMatrixCell = chooseDefaultMatrixCell(data);
+      const selectedKey = selectedMatrixCell ? `${selectedMatrixCell.row}||${selectedMatrixCell.col}` : "";
+      const maxTotal = Math.max(1, ...[...data.cells.values()].map(cell => cell.total));
+      const rowMax = new Map();
+      for (const row of data.moduleNames) {
+        const values = data.moduleNames.map(col => data.cells.get(`${row}||${col}`)?.total || 0);
+        rowMax.set(row, Math.max(1, ...values));
+      }
+
+      const header = `<tr><th class="matrix-row-label">from / uses</th>${data.moduleNames.map(module => `<th class="matrix-col-label"><div>${esc(shortModule(module))}</div></th>`).join("")}</tr>`;
+      const rows = data.moduleNames.map(row => {
+        const cells = data.moduleNames.map(col => {
+          const key = `${row}||${col}`;
+          const cell = data.cells.get(key) || { row, col, type: 0, proof: 0, total: 0, edges: [] };
+          const denominator = normalize === "row" ? rowMax.get(row) : maxTotal;
+          const intensity = cell.total / Math.max(1, denominator);
+          const selected = key === selectedKey ? " selected" : "";
+          const title = `${row} uses ${col}: ${cell.total} total (${cell.type} statement, ${cell.proof} proof-only)`;
+          return `<td><button class="matrix-cell${selected}" data-row="${esc(row)}" data-col="${esc(col)}" title="${esc(title)}" style="background:${matrixCellColor(cell, intensity, mode)}">${cell.total || ""}</button></td>`;
+        }).join("");
+        return `<tr><th class="matrix-row-label">${esc(shortModule(row))}</th>${cells}</tr>`;
+      }).join("");
+      byId("matrix-table").innerHTML = `<table class="matrix-table"><thead>${header}</thead><tbody>${rows}</tbody></table>`;
+      byId("matrix-table").querySelectorAll(".matrix-cell[data-row]").forEach(button => {
+        button.addEventListener("click", () => {
+          selectedMatrixCell = { row: button.dataset.row, col: button.dataset.col };
+          renderModuleMatrix();
+        });
+      });
+
+      const selectedCell = selectedMatrixCell ? data.cells.get(`${selectedMatrixCell.row}||${selectedMatrixCell.col}`) : null;
+      byId("matrix-meta").innerHTML = [
+        chip(`${data.moduleNames.length} modules`),
+        chip(`${data.edges.length} edges`),
+        chip(mode === "type" ? "statement edges" : mode === "proof" ? "proof-only edges" : "all semantic edges"),
+        chip(normalize === "row" ? "row-normalized" : "raw counts"),
+      ].join("");
+      byId("matrix-legend").innerHTML = [
+        chip("rows: declaration module"),
+        chip("columns: dependency module"),
+        chip("blue: statement-heavy"),
+        chip("orange: proof-heavy", "warn"),
+      ].join("");
+      renderMatrixInspector(selectedCell || { row: selectedMatrixCell?.row || "", col: selectedMatrixCell?.col || "", type: 0, proof: 0, total: 0, edges: [] });
+    }
+
+    function packetStatusRank(status) {
+      return { stale: 0, open: 1, blocked: 2, answered: 3 }[status] ?? 4;
+    }
+
+    function packetPriorityRank(priority) {
+      return { high: 0, medium: 1, low: 2 }[priority] ?? 3;
+    }
+
+    function packetTierRank(tier) {
+      return { T0: 0, T1: 1, T2: 2, unassigned: 3 }[tier || "unassigned"] ?? 4;
+    }
+
+    function packetKindRank(kind) {
+      return {
+        lean_reconstruction: 0,
+        source_intention: 1,
+        api_boundary: 2,
+        comparison: 3,
+      }[kind] ?? 4;
+    }
+
+    function comparePacketTuples(left, right) {
+      for (let i = 0; i < Math.min(left.length, right.length); i += 1) {
+        if (left[i] < right[i]) return -1;
+        if (left[i] > right[i]) return 1;
+      }
+      return 0;
+    }
+
+    function packetSortKey(packet, mode) {
+      const target = String(packet.target || "");
+      const kind = String(packet.packet_kind || "");
+      const status = String(packet.status || "");
+      if (mode === "status") return [packetStatusRank(status), packetKindRank(kind), target];
+      if (mode === "kind") return [packetKindRank(kind), packetStatusRank(status), target];
+      if (mode === "target") return [target, packetKindRank(kind), packetStatusRank(status)];
+      return [
+        packetStatusRank(status),
+        packetPriorityRank(packet.priority),
+        packetTierRank(packet.tier),
+        packetKindRank(kind),
+        target,
+      ];
+    }
+
+    function packetRecordPath(packet) {
+      const kind = packet.packet_kind;
+      if (kind === "lean_reconstruction") return "tools/semantic-audit/records/lean-reconstructions.jsonl";
+      if (kind === "source_intention") return "tools/semantic-audit/records/source-intentions.jsonl";
+      if (kind === "comparison") return "tools/semantic-audit/records/comparisons.jsonl";
+      if (kind === "api_boundary") return "tools/semantic-audit/records/api-boundaries.jsonl";
+      return "tools/semantic-audit/records/";
+    }
+
+    function shellQuote(value) {
+      return `'${String(value || "").replace(/'/g, `'\\''`)}'`;
+    }
+
+    function packetCommandSlug(packet) {
+      return String(packet.packet_id || packet.target || "packet")
+        .replace(/[^A-Za-z0-9_.-]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 120) || "packet";
+    }
+
+    function packetSelector(packet) {
+      return packet.target || packet.packet_id || "";
+    }
+
+    function packetLocalCommands(packet) {
+      const selector = shellQuote(packetSelector(packet));
+      const slug = packetCommandSlug(packet);
+      const bundlePath = `.semantic-audit/work/${run.run_id || "latest"}/${slug}`;
+      const runGuard = run.run_id ? ` --expect-run-id ${shellQuote(run.run_id)}` : "";
+      return [
+        ["Create worker bundle", `python3 tools/semantic-audit/semantic_audit.py packet bundle ${selector}${runGuard} --output ${bundlePath}`],
+        ["Worker contract", `# worker reads ${bundlePath}/context.json and fills ${bundlePath}/answer.json`],
+        ["Controller dry-run", `python3 tools/semantic-audit/semantic_audit.py packet ingest ${bundlePath}${runGuard} --dry-run`],
+        ["Controller append", `python3 tools/semantic-audit/semantic_audit.py packet ingest ${bundlePath}${runGuard} --append`],
+        ["Regenerate dashboard", "python3 tools/semantic-audit/semantic_audit.py run"],
+      ];
+    }
+
+    function commandSection(packet) {
+      return `
+        <h3>Local Commands</h3>
+        <div class="command-block">
+          ${packetLocalCommands(packet).map(([label, command]) => `
+            <div class="command-row">
+              <div class="command-label">${esc(label)}</div>
+              <pre>${esc(command)}</pre>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function packetAnswerRecord(packet) {
+      const inputs = packet.inputs || {};
+      const recordId = packet.record_id || "";
+      if (packet.packet_kind === "lean_reconstruction") {
+        const candidates = records.lean_reconstructions || [];
+        if (recordId) return candidates.find(record => record.record_id === recordId) || null;
+        return candidates.slice().reverse().find(record =>
+          record.declaration === inputs.declaration ||
+          record.declaration === packet.target
+        ) || null;
+      }
+      if (packet.packet_kind === "source_intention") {
+        const candidates = records.source_intentions || [];
+        if (recordId) return candidates.find(record => record.record_id === recordId) || null;
+        return candidates.slice().reverse().find(record =>
+          record.source_id === inputs.source_id ||
+          record.source_id === packet.target
+        ) || null;
+      }
+      if (packet.packet_kind === "comparison") {
+        const candidates = records.comparisons || [];
+        if (recordId) return candidates.find(record => record.comparison_id === recordId || record.record_id === recordId) || null;
+        return candidates.slice().reverse().find(record =>
+          record.comparison_id === inputs.comparison_id ||
+          record.comparison_id === packet.target
+        ) || null;
+      }
+      if (packet.packet_kind === "api_boundary") {
+        const candidates = records.api_boundaries || [];
+        if (recordId) return candidates.find(record => record.record_id === recordId) || null;
+        return candidates.slice().reverse().find(record =>
+          record.target_id === inputs.target_id ||
+          record.target_id === packet.target
+        ) || null;
+      }
+      return null;
+    }
+
+    function formatRecordList(values) {
+      const list = Array.isArray(values) ? values : [];
+      if (!list.length) return "";
+      return `<ul>${list.map(value => `<li>${esc(value)}</li>`).join("")}</ul>`;
+    }
+
+    function answerRecordFields(record) {
+      if (!record) return "";
+      const fields = [];
+      if (record.summary) fields.push(["Summary", record.summary]);
+      if (record.reconstructed_statement) fields.push(["Lean reconstruction", record.reconstructed_statement]);
+      if (record.intended_statement) fields.push(["Source intention", record.intended_statement]);
+      if (record.alignment) fields.push(["Alignment", record.alignment]);
+      if (record.notes) fields.push(["Notes", record.notes]);
+      if (record.assumptions?.length) fields.push(["Assumptions", formatRecordList(record.assumptions)]);
+      if (record.evidence?.length) fields.push(["Evidence", formatRecordList(record.evidence)]);
+      if (record.updated_at) fields.push(["Updated", record.updated_at]);
+      if (!fields.length) return `<div class="muted small">No recognized summary fields.</div>`;
+      return fields.map(([label, value]) => {
+        const isHtml = String(value).startsWith("<ul>");
+        return `<div class="kv"><div class="key">${esc(label)}</div><div>${isHtml ? value : esc(value)}</div></div>`;
+      }).join("");
+    }
+
+    function answerRecordSection(packet) {
+      const record = packetAnswerRecord(packet);
+      if (!record && packet.status !== "answered") return "";
+      if (!record) {
+        return `
+          <h3>Answer Record</h3>
+          <div class="finding high">
+            <div class="finding-title"><span>Missing answer body</span><span class="muted">record lookup</span></div>
+            <div>This packet is marked answered, but no matching record was found in <code>${esc(packetRecordPath(packet))}</code>.</div>
+          </div>
+        `;
+      }
+      return `
+        <h3>Answer Record</h3>
+        ${answerRecordFields(record)}
+        <h3>Raw Answer JSON</h3>
+        <pre class="packet-json">${esc(JSON.stringify(record, null, 2))}</pre>
+      `;
+    }
+
+    function packetPrimaryDeclaration(packet) {
+      const inputs = packet.inputs || {};
+      return inputs.declaration || inputs.lean_declaration || packet.target || "";
+    }
+
+    function packetDependencyStatus(packet) {
+      const inputs = packet.inputs || {};
+      const missing = [];
+      if (packet.packet_kind === "comparison") {
+        if (!inputs.lean_reconstruction_record_id) {
+          missing.push(`Lean reconstruction record for ${inputs.lean_declaration || "the Lean declaration"}`);
+        }
+        if (!inputs.source_intention_record_id) {
+          missing.push(`source-intention record for ${inputs.source_id || "the source target"}`);
+        }
+      }
+      if (packet.status === "answered") {
+        return {
+          label: "answered",
+          cls: "pass",
+          lines: [packet.record_id ? `Durable record: ${packet.record_id}` : "Marked answered, but no record id is recorded."],
+        };
+      }
+      if (packet.status === "stale") {
+        const reasons = packet.stale_reasons?.length
+          ? packet.stale_reasons
+          : ["The durable answer was produced for an older or different packet context."];
+        return {
+          label: "stale",
+          cls: "warn",
+          lines: reasons.concat([
+            "Regenerate the worker bundle from the current run, then ingest the new current answer.",
+          ]),
+        };
+      }
+      if (missing.length) {
+        return {
+          label: "blocked",
+          cls: "fail",
+          lines: missing.map(item => `Missing ${item}.`),
+        };
+      }
+      if (packet.status === "blocked") {
+        return {
+          label: "blocked",
+          cls: "fail",
+          lines: ["Marked blocked by the current run. Inspect the packet inputs and upstream findings."],
+        };
+      }
+      return {
+        label: "ready",
+        cls: "warn",
+        lines: [
+          "Answer by creating a worker bundle, filling answer.json, running controller ingest --dry-run, then ingest --append.",
+          `Durable destination after controller ingest: ${packetRecordPath(packet)}.`,
+        ],
+      };
+    }
+
+    function packetMatchesQuery(packet, query) {
+      if (!query) return true;
+      return JSON.stringify(packet).toLowerCase().includes(query);
+    }
+
+    function filteredWorkbenchPackets() {
+      const query = byId("packet-workbench-search").value.toLowerCase();
+      const kind = byId("packet-workbench-kind-filter").value;
+      const status = byId("packet-workbench-status-filter").value;
+      const tier = byId("packet-workbench-tier-filter").value;
+      const priority = byId("packet-workbench-priority-filter").value;
+      const sortMode = byId("packet-workbench-sort").value;
+      return workPackets
+        .filter(packet => {
+          if (kind && packet.packet_kind !== kind) return false;
+          if (status && packet.status !== status) return false;
+          if (tier && (packet.tier || "unassigned") !== tier) return false;
+          if (priority && packet.priority !== priority) return false;
+          return packetMatchesQuery(packet, query);
+        })
+        .slice()
+        .sort((a, b) => comparePacketTuples(packetSortKey(a, sortMode), packetSortKey(b, sortMode)));
+    }
+
+    function packetSummaryCards(packets) {
+      const counts = packets.reduce((acc, packet) => {
+        acc[packet.status] = (acc[packet.status] || 0) + 1;
+        return acc;
+      }, {});
+      const next = packets.find(packet => packet.status === "stale")
+        || packets.find(packet => packet.status === "open")
+        || packets[0];
+      const nextLabel = next
+        ? truncateText(
+            declarationByName.has(packetPrimaryDeclaration(next))
+              ? shortName(packetPrimaryDeclaration(next))
+              : (next.target || next.packet_id),
+            24
+          )
+        : "none";
+      return [
+        ["Visible", packets.length],
+        ["Open", counts.open || 0],
+        ["Stale", counts.stale || 0],
+        ["Blocked", counts.blocked || 0],
+        ["Answered", counts.answered || 0],
+        ["Next", nextLabel],
+      ].map(([label, value]) => `
+        <div class="packet-summary-card"><strong>${esc(value)}</strong><span>${esc(label)}</span></div>
+      `).join("");
+    }
+
+    function packetCard(packet) {
+      const status = String(packet.status || "unknown");
+      const selected = packet.packet_id === selectedPacketId ? " selected" : "";
+      const dependency = packetDependencyStatus(packet);
+      return `<button class="packet-card ${safeClass(status)}${selected}" type="button" data-packet-id="${esc(packet.packet_id)}">
+        <div class="packet-card-head">
+          <div class="packet-card-title">${esc(packet.title || packet.packet_id)}</div>
+          ${chip(status, statusClass(status))}
+        </div>
+        <div class="packet-card-target">${esc(packet.target || "")}</div>
+        <div class="packet-card-meta">
+          ${chip(packet.packet_kind || "unknown")}
+          ${chip(packet.tier || "unassigned", tierClass(packet.tier))}
+          ${chip(packet.priority || "priority?")}
+          ${chip(dependency.label, dependency.cls)}
+        </div>
+      </button>`;
+    }
+
+    function chooseSelectedPacket(packets) {
+      if (selectedPacketId && packets.some(packet => packet.packet_id === selectedPacketId)) return;
+      selectedPacketId = packets[0]?.packet_id || null;
+    }
+
+    function renderPacketInspector(packet) {
+      if (!packet) {
+        byId("packet-workbench-inspector").innerHTML = "No packet matches the current filters.";
+        return;
+      }
+      const dependency = packetDependencyStatus(packet);
+      const primaryDecl = packetPrimaryDeclaration(packet);
+      const targetButton = declarationByName.has(primaryDecl)
+        ? `<button class="graph-link" data-name="${esc(primaryDecl)}" title="${esc(primaryDecl)}">${esc(primaryDecl)}</button>`
+        : `<code>${esc(primaryDecl || packet.target || "")}</code>`;
+      byId("packet-workbench-inspector").innerHTML = `
+        <div class="kv"><div class="key">Packet</div><div><code>${esc(packet.packet_id)}</code></div></div>
+        <div class="kv"><div class="key">Status</div><div>${chip(packet.status || "", statusClass(packet.status))} ${chip(dependency.label, dependency.cls)}</div></div>
+        <div class="kv"><div class="key">Kind</div><div>${esc(packet.packet_kind || "")}</div></div>
+        <div class="kv"><div class="key">Target</div><div>${targetButton}</div></div>
+        <div class="kv"><div class="key">Tier</div><div>${chip(packet.tier || "unassigned", tierClass(packet.tier))}</div></div>
+        <div class="kv"><div class="key">Priority</div><div>${esc(packet.priority || "")}</div></div>
+        <div class="kv"><div class="key">Record</div><div>${packet.record_id ? `<code>${esc(packet.record_id)}</code>` : "none yet"}</div></div>
+        <div class="kv"><div class="key">Record file</div><div><code>${esc(packetRecordPath(packet))}</code></div></div>
+        ${packet.status === "blocked" ? "" : commandSection(packet)}
+        <h3>Unblock State</h3>
+        <div class="graph-list">
+          ${dependency.lines.map(line => `<div class="muted small">${esc(line)}</div>`).join("")}
+        </div>
+        <h3>Instructions</h3>
+        <pre>${esc(packet.instructions || "")}</pre>
+        <h3>Inputs</h3>
+        <pre class="packet-json">${esc(JSON.stringify(packet.inputs || {}, null, 2))}</pre>
+        ${answerRecordSection(packet)}
+        <h3>Raw Packet JSON</h3>
+        <pre class="packet-json">${esc(JSON.stringify(packet, null, 2))}</pre>
+      `;
+      byId("packet-workbench-inspector").querySelectorAll(".graph-link[data-name]").forEach(button => {
+        button.addEventListener("click", () => {
+          selectDeclaration(button.dataset.name);
+          setActiveView("explorer");
+        });
+      });
+      typesetMath(byId("packet-workbench-inspector"));
+    }
+
+    function renderPacketWorkbench() {
+      const packets = filteredWorkbenchPackets();
+      chooseSelectedPacket(packets);
+      const selectedPacket = packets.find(packet => packet.packet_id === selectedPacketId) || null;
+      byId("packet-workbench-summary").innerHTML = packetSummaryCards(packets);
+      byId("packet-workbench-list").innerHTML = packets.length
+        ? packets.map(packetCard).join("")
+        : `<div class="muted">No packets match the current filters.</div>`;
+      byId("packet-workbench-list").querySelectorAll(".packet-card[data-packet-id]").forEach(button => {
+        button.addEventListener("click", () => {
+          selectedPacketId = button.dataset.packetId;
+          renderPacketWorkbench();
+        });
+      });
+      const statusCounts = workPackets.reduce((acc, packet) => {
+        acc[packet.status] = (acc[packet.status] || 0) + 1;
+        return acc;
+      }, {});
+      byId("packet-workbench-meta").innerHTML = [
+        chip(`${workPackets.length} total`),
+        chip(`${statusCounts.open || 0} open`, "warn"),
+        chip(`${statusCounts.stale || 0} stale`, "warn"),
+        chip(`${statusCounts.blocked || 0} blocked`, "fail"),
+        chip(`${statusCounts.answered || 0} answered`, "pass"),
+      ].join("");
+      renderPacketInspector(selectedPacket);
+    }
+
+    function selectDeclaration(name) {
+      if (!declarationByName.has(name)) return;
+      selectedName = name;
+      if (byId("graph-focus").value !== name) byId("graph-focus").value = name;
+      if (byId("explorer-focus").value !== name) byId("explorer-focus").value = name;
+      if (byId("strata-focus").value !== name) byId("strata-focus").value = name;
+      if (byId("roles-focus").value !== name) byId("roles-focus").value = name;
+      renderDeclarations();
+      renderDeclarationDetail();
+      renderSemanticGraph();
+      renderGraphExplorer();
+      renderBuildStrata();
+      renderRoleMap();
+      renderModuleMatrix();
+    }
+
+    function filteredFindings() {
+      const q = byId("finding-search").value.toLowerCase();
+      const severity = byId("severity-filter").value;
+      return findings.filter(f => {
+        if (severity && f.severity !== severity) return false;
+        if (!q) return true;
+        return JSON.stringify(f).toLowerCase().includes(q);
+      });
+    }
+
+    function renderFindings() {
+      byId("finding-list").innerHTML = filteredFindings().map(f => `
+        <div class="finding ${esc(f.severity)}">
+          <div class="finding-title">
+            <span>${esc(f.kind)}</span>
+            <span class="muted">${esc(f.severity)}</span>
+          </div>
+          <div><code>${esc(f.target || f.declaration || "")}</code></div>
+          <div>${esc(f.message || "")}</div>
+          ${f.recommended_action ? `<div class="muted">Action: ${esc(f.recommended_action)}</div>` : ""}
+        </div>
+      `).join("") || `<div class="muted">No findings match.</div>`;
+    }
+
+    function filteredPackets() {
+      const q = byId("packet-search").value.toLowerCase();
+      const kind = byId("packet-kind-filter").value;
+      const status = byId("packet-status-filter").value;
+      return workPackets.filter(p => {
+        if (kind && p.packet_kind !== kind) return false;
+        if (status && p.status !== status) return false;
+        if (!q) return true;
+        return JSON.stringify(p).toLowerCase().includes(q);
+      });
+    }
+
+    function renderPackets() {
+      byId("packet-table").innerHTML = filteredPackets().map(p => `
+        <tr data-packet-id="${esc(p.packet_id)}">
+          <td><code>${esc(p.packet_id)}</code><div class="muted">${esc(p.title || "")}</div></td>
+          <td>${esc(p.packet_kind || "")}</td>
+          <td><code>${esc(p.target || "")}</code></td>
+          <td>${chip(p.tier || "unassigned", tierClass(p.tier))}</td>
+          <td>${chip(p.status || "", statusClass(p.status))}</td>
+          <td>${esc(p.priority || "")}</td>
+        </tr>
+      `).join("") || `<tr><td colspan="6" class="muted">No packets match.</td></tr>`;
+      byId("packet-table").querySelectorAll("tr[data-packet-id]").forEach(row => {
+        row.addEventListener("click", () => {
+          selectedPacketId = row.dataset.packetId;
+          setActiveView("packets");
+        });
+      });
+    }
+
+    function renderModules() {
+      byId("module-table").innerHTML = modules.map(m => `
+        <tr>
+          <td><code>${esc(m.module)}</code><div class="muted">${esc(m.path)}</div></td>
+          <td>${esc(m.declaration_count || 0)}</td>
+          <td>${esc((m.imports || []).length)}</td>
+          <td>${esc((m.imported_by || []).length)}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderSources() {
+      const answered = new Set((records.source_intentions || []).filter(r => r.status === "answered").map(r => r.source_id));
+      byId("source-table").innerHTML = sourceTargets.map(t => {
+        const status = answered.has(t.source_id) ? "answered" : "open";
+        return `<tr>
+          <td><code>${esc(t.source_id)}</code><div class="muted">${esc(t.summary || "")}</div></td>
+          <td>${esc(t.paper_label || "")}</td>
+          <td>${chip(status, statusClass(status))}</td>
+          <td class="small">${esc(t.line_hint || "")}</td>
+        </tr>`;
+      }).join("") || `<tr><td colspan="4" class="muted">No source targets configured.</td></tr>`;
+    }
+
+    function setActiveView(view) {
+      const viewNames = ["overview", "packets", "explorer", "strata", "roles", "matrix"];
+      for (const name of viewNames) {
+        byId(`${name}-view`).classList.toggle("hidden", view !== name);
+        byId(`tab-${name}`).classList.toggle("active", view === name);
+        byId(`tab-${name}`).setAttribute("aria-selected", view === name ? "true" : "false");
+      }
+      if (view === "packets") renderPacketWorkbench();
+      if (view === "explorer") renderGraphExplorer();
+      if (view === "strata") renderBuildStrata();
+      if (view === "roles") renderRoleMap();
+      if (view === "matrix") renderModuleMatrix();
+    }
+
+    function bindControls() {
+      ["decl-search", "tier-filter", "kind-filter", "module-filter"].forEach(id => byId(id).addEventListener("input", renderDeclarations));
+      ["finding-search", "severity-filter"].forEach(id => byId(id).addEventListener("input", renderFindings));
+      ["packet-search", "packet-kind-filter", "packet-status-filter"].forEach(id => byId(id).addEventListener("input", renderPackets));
+      [
+        "packet-workbench-search",
+        "packet-workbench-kind-filter",
+        "packet-workbench-status-filter",
+        "packet-workbench-tier-filter",
+        "packet-workbench-priority-filter",
+        "packet-workbench-sort",
+      ].forEach(id => byId(id).addEventListener("input", renderPacketWorkbench));
+      byId("graph-focus").addEventListener("input", event => selectDeclaration(event.target.value));
+      byId("graph-limit").addEventListener("input", renderSemanticGraph);
+      byId("graph-artifacts").addEventListener("input", () => {
+        populateGraphFocus();
+        renderSemanticGraph();
+      });
+      byId("explorer-focus").addEventListener("input", event => selectDeclaration(event.target.value));
+      ["explorer-search", "explorer-module-filter"].forEach(id => {
+        byId(id).addEventListener("input", () => {
+          lastExplorerCenteredName = null;
+          renderGraphExplorer();
+        });
+      });
+      ["explorer-edge-mode", "explorer-radius"].forEach(id => {
+        byId(id).addEventListener("input", renderGraphExplorer);
+      });
+      byId("explorer-artifacts").addEventListener("input", () => {
+        lastExplorerCenteredName = null;
+        populateExplorerFocus();
+        renderGraphExplorer();
+      });
+      byId("strata-focus").addEventListener("input", event => selectDeclaration(event.target.value));
+      ["strata-search", "strata-module-filter", "strata-metric", "strata-scope"].forEach(id => {
+        byId(id).addEventListener("input", () => {
+          lastStrataCenteredKey = null;
+          renderBuildStrata();
+        });
+      });
+      byId("strata-artifacts").addEventListener("input", () => {
+        lastStrataCenteredKey = null;
+        populateStrataFocus();
+        renderBuildStrata();
+      });
+      byId("roles-focus").addEventListener("input", event => selectDeclaration(event.target.value));
+      ["roles-search", "roles-module-filter", "roles-kind-filter", "roles-scale"].forEach(id => {
+        byId(id).addEventListener("input", renderRoleMap);
+      });
+      byId("roles-artifacts").addEventListener("input", () => {
+        populateRolesFocus();
+        renderRoleMap();
+      });
+      ["matrix-mode", "matrix-normalize"].forEach(id => {
+        byId(id).addEventListener("input", () => {
+          selectedMatrixCell = null;
+          renderModuleMatrix();
+        });
+      });
+      byId("matrix-artifacts").addEventListener("input", () => {
+        selectedMatrixCell = null;
+        renderModuleMatrix();
+      });
+      byId("tab-overview").addEventListener("click", () => setActiveView("overview"));
+      byId("tab-packets").addEventListener("click", () => setActiveView("packets"));
+      byId("tab-explorer").addEventListener("click", () => setActiveView("explorer"));
+      byId("tab-strata").addEventListener("click", () => setActiveView("strata"));
+      byId("tab-roles").addEventListener("click", () => setActiveView("roles"));
+      byId("tab-matrix").addEventListener("click", () => setActiveView("matrix"));
+    }
+
+    renderMeta();
+    renderStats();
+    populateFilters();
+    bindControls();
+    renderDeclarations();
+    renderSemanticGraph();
+    renderFindings();
+    renderPackets();
+    renderPacketWorkbench();
+    renderModules();
+    renderSources();
+    renderDeclarationDetail();
+    renderGraphExplorer();
+    renderBuildStrata();
+    renderRoleMap();
+    renderModuleMatrix();
+  </script>
+</body>
+</html>

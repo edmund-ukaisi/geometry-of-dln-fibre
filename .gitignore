@@ -1,5 +1,6 @@
 # Lean / Lake build artifacts
 lean/.lake/
+lean/.lake
 **/*.olean
 **/*.ilean
 **/*.trace
@@ -8,6 +9,9 @@ lean/build/
 # Python tooling cruft (scripts/)
 **/__pycache__/
 *.pyc
+
+# Generated semantic audit runs
+.semantic-audit/
 
 # Editor / OS cruft
 .DS_Store
