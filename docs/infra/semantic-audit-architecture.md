@@ -32,8 +32,9 @@ Comparison
 The key rule is decorrelation. A worker answering a Lean reconstruction should not be guided by the
 paper-intention card. A worker answering a source-intention card should not treat the current Lean
 statement as ground truth. The comparison packet is where those views meet, but it should preserve
-the order of attention: first read the frozen Lean reconstruction and its speculative source-facing
-role, then reveal the source-intention card, then judge the match.
+the order of attention: first read the frozen formal Lean reconstruction and its speculative
+source-facing role, then reveal quarantined Lean prose, then reveal the source-intention card, then
+judge the match.
 
 Lean reconstruction cards therefore separate:
 
@@ -55,6 +56,7 @@ Comparison cards then record the staged read in separate fields:
 
 ```text
 blind_lean_summary
+lean_prose_summary
 source_summary
 match_analysis
 discrepancies
@@ -63,11 +65,11 @@ discrepancies
 This makes failed Lean-only speculation visible instead of letting the comparison worker silently
 read the paper claim back into the Lean statement.
 
-The blind Lean stage is blind to source-intention and comparison cards, not necessarily to all
-paper-flavored prose: Lean docstrings and source comments may already mention paper labels. Lean
-contexts therefore include an attention-protocol caveat and embedded-reference markers when such
-phrases appear. These protocol fields guide the worker's attention but are excluded from the semantic
-context fingerprint.
+The blind Lean stage is blind to source-intention cards, comparison cards, prior Lean-card prose,
+docstrings, and raw source comments. It is generated from Lean-native extracted formal data:
+declaration metadata, elaborated type, dependencies, reverse dependencies, and source location. Lean
+docstrings and nearby source comments are still auditable, but only later as
+`lean_prose_reveal` inside comparison contexts.
 
 ## Artifact Model
 

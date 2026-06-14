@@ -97,8 +97,9 @@ answer.json
 
 The worker reads `instructions.md` and `context.json`, then edits only `answer.json`. For
 `lean_reconstruction` packets, the context intentionally excludes source-intention and comparison
-records. It includes the Lean declaration signature, docstring, source excerpt, direct statement
-dependencies, proof-only dependencies, users, and any answered Lean cards for dependencies.
+records. It also excludes docstrings, raw Lean source excerpts, and prior human-written Lean-card
+summaries. It includes only formal Lean evidence: declaration metadata, elaborated type, direct
+statement dependencies, proof-only dependencies, and users.
 
 Lean reconstruction answers are intentionally a blind first stage. New templates ask for:
 
@@ -111,15 +112,16 @@ speculation_confidence
 
 The speculation fields are not source evidence. They are a labeled Lean-only guess so later
 comparison can notice when the paper reveal confirms, sharpens, or falsifies the initial read.
-If Lean docstrings or source comments already mention paper labels, the generated context calls this
-out under `attention_protocol.embedded_reference_markers`; workers should record that exposure in
-`assumptions`.
+Because docstrings and source comments are not in the blind bundle, this stage should not inherit
+paper labels merely because a Lean docstring cited them.
 
-Comparison answers use a reveal discipline. The worker first summarizes the frozen Lean card, then
-summarizes the source-intention card, and only then writes the match judgment:
+Comparison answers use a reveal discipline. The worker first summarizes the frozen formal Lean card,
+then reads the quarantined Lean prose reveal, then summarizes the source-intention card, and only
+then writes the match judgment:
 
 ```text
 blind_lean_summary
+lean_prose_summary
 source_summary
 match_analysis
 discrepancies
