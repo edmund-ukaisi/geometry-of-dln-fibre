@@ -34,6 +34,16 @@ RECORD_FILE_NAMES = {
 }
 SCHEMA_VERSION = "0.1.0"
 BUNDLE_ARTIFACT = "semantic-audit-packet-bundle"
+QUEUE_PLAN_ARTIFACT = "semantic-audit-queue-plan"
+INPUT_SNAPSHOT_ARTIFACT = "semantic-audit-input-snapshot"
+QUEUE_PLAN_FILE = "queue-plan.json"
+INPUT_SNAPSHOT_FILE = "audit-input-snapshot.json"
+PACKET_KINDS = ["lean_reconstruction", "source_intention", "comparison", "api_boundary"]
+PACKET_STATUSES = ["open", "blocked", "answered", "stale"]
+ASSIGNABLE_PACKET_STATUSES = ["open", "stale"]
+PACKET_PRIORITIES = ["high", "medium", "low"]
+PRIORITY_ORDER = {priority: index for index, priority in enumerate(PACKET_PRIORITIES)}
+KIND_ORDER = {kind: index for index, kind in enumerate(PACKET_KINDS)}
 
 
 @dataclass
@@ -119,6 +129,20 @@ def write_jsonl(path: Path, records: list[dict[str, Any]]) -> None:
     )
 
 
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def file_digest_or_missing(path: Path) -> str | None:
+    if not path.exists() or not path.is_file():
+        return None
+    return file_sha256(path)
+
+
 def load_audit_config(repo: Path) -> dict[str, Any]:
     config = read_json(repo / CONFIG_PATH)
     config.setdefault("schema_version", SCHEMA_VERSION)
@@ -164,6 +188,13 @@ def comparison_records_by_id(records: list[dict[str, Any]]) -> dict[str, dict[st
 def technical_gate_failed(attestation: dict[str, Any]) -> bool:
     return any(
         attestation.get(key, {}).get("ok") is False
+        for key in ("lake_build", "sorries")
+    )
+
+
+def technical_gate_ready(attestation: dict[str, Any]) -> bool:
+    return all(
+        attestation.get(key, {}).get("ok") is True
         for key in ("lake_build", "sorries")
     )
 
@@ -261,6 +292,37 @@ def git_tracked_files(repo: Path) -> set[str]:
 def git_status(repo: Path) -> list[str]:
     result = run_cmd(["git", "status", "--porcelain"], repo)
     return result.stdout.splitlines()
+
+
+def audit_input_file_paths(repo: Path, config: dict[str, Any]) -> list[Path]:
+    paths: set[Path] = {
+        CONFIG_PATH,
+        Path("tools/semantic-audit/semantic_audit.py"),
+        Path("tools/semantic-audit/LeanExtract.lean"),
+    }
+    paths.update(path.relative_to(repo) for path in lean_files(repo))
+    for target in config.get("source_targets", []):
+        rel_path = target.get("path", "")
+        if rel_path:
+            paths.add(Path(rel_path))
+    return sorted(paths, key=lambda path: path.as_posix())
+
+
+def audit_input_snapshot(repo: Path, config: dict[str, Any], records: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "artifact": INPUT_SNAPSHOT_ARTIFACT,
+        "created_at": now_utc(),
+        "files": {
+            path.as_posix(): file_digest_or_missing(repo / path)
+            for path in audit_input_file_paths(repo, config)
+        },
+        "config_digest": digest_json(config),
+        "record_digests": {
+            filename: digest_json(records.get(key, []))
+            for key, filename in RECORD_FILE_NAMES.items()
+        },
+    }
 
 
 def build_modules(repo: Path, declarations: list[dict[str, Any]]) -> list[ModuleRecord]:
@@ -1306,6 +1368,7 @@ def run_audit(args: argparse.Namespace) -> None:
 
     attestation = technical_attestation(repo, skip_build=args.skip_build)
     write_json(run_dir / "technical-attestation.json", attestation)
+    write_json(run_dir / INPUT_SNAPSHOT_FILE, audit_input_snapshot(repo, config, records))
 
     if (
         not args.skip_build
@@ -1397,6 +1460,8 @@ def load_latest_state(repo: Path, out: str | Path = DEFAULT_OUT) -> dict[str, An
     return {
         "run_dir": run_dir,
         "run": read_json(run_dir / "audit-run.json"),
+        "attestation": read_json(run_dir / "technical-attestation.json"),
+        "input_snapshot": read_json(run_dir / INPUT_SNAPSHOT_FILE),
         "config": read_json(run_dir / "audit-config.resolved.json"),
         "declarations": read_jsonl(run_dir / "declarations.jsonl"),
         "modules": read_jsonl(run_dir / "modules.jsonl"),
@@ -1417,6 +1482,82 @@ def load_state_for_cli(repo: Path, out: str | Path, expected_run_id: str | None 
     return state
 
 
+def latest_snapshot_freshness_errors(repo: Path, state: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    run_dir = Path(state.get("run_dir", ""))
+    attestation = state.get("attestation", {})
+    input_snapshot = state.get("input_snapshot", {})
+    run_commit = state.get("run", {}).get("commit", "")
+    current_head = current_commit(repo)
+    if run_commit and current_head and run_commit != current_head:
+        errors.append(f"Latest run commit is {run_commit}, but current HEAD is {current_head}. Rerun the audit.")
+    if attestation.get("commit") and current_head and attestation.get("commit") != current_head:
+        errors.append(
+            f"Technical attestation commit is {attestation.get('commit')}, but current HEAD is {current_head}. Rerun the audit."
+        )
+
+    live_config_digest = digest_json(load_audit_config(repo))
+    run_config_digest = input_snapshot.get("config_digest") or digest_json(read_json(run_dir / "audit-config.resolved.json"))
+    if live_config_digest != run_config_digest:
+        errors.append("Live audit config differs from the latest run snapshot. Rerun the audit.")
+
+    for key, filename in RECORD_FILE_NAMES.items():
+        live_digest = digest_json(read_jsonl(repo / RECORDS_DIR / filename))
+        run_digest = input_snapshot.get("record_digests", {}).get(filename) or digest_json(read_jsonl(run_dir / filename))
+        if live_digest != run_digest:
+            errors.append(f"Live durable records `{filename}` differ from the latest run snapshot. Rerun the audit.")
+
+    if input_snapshot:
+        if input_snapshot.get("schema_version") != SCHEMA_VERSION:
+            errors.append("Latest run input snapshot has an unsupported schema version. Rerun the audit.")
+        if input_snapshot.get("artifact") != INPUT_SNAPSHOT_ARTIFACT:
+            errors.append("Latest run input snapshot has an unsupported artifact type. Rerun the audit.")
+        live_snapshot = audit_input_snapshot(repo, load_audit_config(repo), load_record_inputs(repo))
+        snapshot_files = input_snapshot.get("files", {})
+        live_files = live_snapshot.get("files", {})
+        if set(live_files) != set(snapshot_files):
+            added = sorted(set(live_files) - set(snapshot_files))
+            removed = sorted(set(snapshot_files) - set(live_files))
+            errors.append(
+                "Live audit input file set differs from the latest run snapshot. "
+                f"Added: {added[:5]}; removed: {removed[:5]}. Rerun the audit."
+            )
+        for path, expected_digest in snapshot_files.items():
+            live_digest = live_files.get(path)
+            if live_digest != expected_digest:
+                errors.append(f"Live audit input `{path}` differs from the latest run snapshot. Rerun the audit.")
+    else:
+        current_status = git_status(repo)
+        if attestation.get("git_status", []) != current_status:
+            errors.append("Current git status differs from the latest run's technical attestation. Rerun the audit.")
+        errors.append(f"Latest run is missing `{INPUT_SNAPSHOT_FILE}`. Rerun the audit.")
+    return errors
+
+
+def semantic_work_preflight_errors(repo: Path, state: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    attestation = state.get("attestation", {})
+    if not technical_gate_ready(attestation):
+        errors.append(
+            "Latest run is not technically attested: `lake_build.ok` and `sorries.ok` must both be true. "
+            "Rerun without --skip-build before assigning semantic work."
+        )
+    errors.extend(latest_snapshot_freshness_errors(repo, state))
+    return errors
+
+
+def enforce_semantic_work_preflight(repo: Path, state: dict[str, Any], *, allow_unstable: bool = False) -> None:
+    errors = semantic_work_preflight_errors(repo, state)
+    if not errors:
+        return
+    stream = sys.stderr
+    prefix = "WARNING" if allow_unstable else "ERROR"
+    for error in errors:
+        print(f"{prefix}: {error}", file=stream)
+    if not allow_unstable:
+        raise SystemExit(1)
+
+
 def packet_identity(packet: dict[str, Any]) -> str:
     return packet.get("packet_id") or packet.get("target") or ""
 
@@ -1432,6 +1573,253 @@ def find_packet(packets: list[dict[str, Any]], selector: str) -> dict[str, Any]:
         options = "\n".join(f"- {packet_identity(packet)} ({packet.get('packet_kind')}, {packet.get('status')})" for packet in matches)
         raise SystemExit(f"Selector is ambiguous: {selector}\n{options}")
     return matches[0]
+
+
+def packet_sort_key(packet: dict[str, Any]) -> tuple[int, int, str]:
+    return (
+        PRIORITY_ORDER.get(packet.get("priority", ""), len(PRIORITY_ORDER)),
+        KIND_ORDER.get(packet.get("packet_kind", ""), len(KIND_ORDER)),
+        packet_identity(packet),
+    )
+
+
+def selection_filter_summary(args: argparse.Namespace) -> dict[str, Any]:
+    return {
+        "kind": sorted(args.kind or []),
+        "status": sorted(args.status or ASSIGNABLE_PACKET_STATUSES),
+        "priority": sorted(args.priority or []),
+        "limit": int(args.limit or 0),
+    }
+
+
+def select_queue_packets(
+    packets: list[dict[str, Any]],
+    *,
+    kinds: list[str] | None = None,
+    statuses: list[str] | None = None,
+    priorities: list[str] | None = None,
+    limit: int = 0,
+) -> list[dict[str, Any]]:
+    wanted_kinds = set(kinds or [])
+    wanted_statuses = set(statuses or ASSIGNABLE_PACKET_STATUSES)
+    wanted_priorities = set(priorities or [])
+    selected = [
+        packet for packet in packets
+        if (not wanted_kinds or packet.get("packet_kind") in wanted_kinds)
+        and packet.get("status") in wanted_statuses
+        and (not wanted_priorities or packet.get("priority") in wanted_priorities)
+    ]
+    selected = sorted(selected, key=packet_sort_key)
+    if limit > 0:
+        selected = selected[:limit]
+    return selected
+
+
+def queue_plan_digest_payload(
+    state: dict[str, Any],
+    filters: dict[str, Any],
+    packets: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "run_id": state.get("run", {}).get("run_id", ""),
+        "filters": filters,
+        "packet_ids": [packet.get("packet_id", "") for packet in packets],
+    }
+
+
+def default_batch_dir(repo: Path, state: dict[str, Any], work_root: str | Path, digest: str) -> Path:
+    root = Path(work_root)
+    if not root.is_absolute():
+        root = repo / root
+    run_id = state.get("run", {}).get("run_id", "unknown-run")
+    return root / run_id / f"batch-{digest[:12]}"
+
+
+def queue_packet_entry(repo: Path, batch_dir: Path, packet: dict[str, Any]) -> dict[str, Any]:
+    bundle_dir = batch_dir / "bundles" / safe_path_segment(packet_identity(packet))
+    return {
+        "packet_id": packet.get("packet_id", ""),
+        "packet_kind": packet.get("packet_kind", ""),
+        "status": packet.get("status", ""),
+        "priority": packet.get("priority", ""),
+        "target": packet.get("target", ""),
+        "title": packet.get("title", ""),
+        "record_id": packet.get("record_id", ""),
+        "bundle_dir": path_label(repo, bundle_dir),
+    }
+
+
+def duplicate_values(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    duplicates: set[str] = set()
+    for value in values:
+        if value in seen:
+            duplicates.add(value)
+        else:
+            seen.add(value)
+    return sorted(duplicates)
+
+
+def unique_values(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    unique: list[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        unique.append(value)
+    return unique
+
+
+def selected_packet_target_key(packet: dict[str, Any]) -> tuple[str, str]:
+    return (packet.get("packet_kind", ""), expected_record_target(packet))
+
+
+def selected_lean_targets(packets: list[dict[str, Any]]) -> set[str]:
+    return {
+        expected_record_target(packet)
+        for packet in packets
+        if packet.get("packet_kind") == "lean_reconstruction"
+    }
+
+
+def selected_source_targets(packets: list[dict[str, Any]]) -> set[str]:
+    return {
+        expected_record_target(packet)
+        for packet in packets
+        if packet.get("packet_kind") == "source_intention"
+    }
+
+
+def internal_batch_dependency_errors(state: dict[str, Any], packets: list[dict[str, Any]]) -> list[str]:
+    errors: list[str] = []
+    selected_lean = selected_lean_targets(packets)
+    selected_source = selected_source_targets(packets)
+
+    if len(selected_lean) >= 2:
+        selected_decl_nodes = {f"decl:{name}" for name in selected_lean}
+        for edge in state.get("graph", {}).get("edges", []):
+            if not str(edge.get("kind", "")).startswith("USES_CONSTANT_"):
+                continue
+            source = str(edge.get("source", ""))
+            target = str(edge.get("target", ""))
+            if source in selected_decl_nodes and target in selected_decl_nodes:
+                errors.append(
+                    "Queue contains mutually context-sensitive Lean packets: "
+                    f"{source.removeprefix('decl:')} uses {target.removeprefix('decl:')}. "
+                    "Bundle and ingest one stratum, rerun the audit, then bundle dependents."
+                )
+
+    for packet in packets:
+        if packet.get("packet_kind") != "comparison":
+            continue
+        inputs = packet.get("inputs", {})
+        lean_declaration = inputs.get("lean_declaration", "")
+        source_id = inputs.get("source_id", "")
+        if lean_declaration in selected_lean:
+            errors.append(
+                f"Comparison packet {packet.get('packet_id', '')} depends on Lean packet "
+                f"{packet_id('lean_reconstruction', lean_declaration)} selected in the same batch."
+            )
+        if source_id in selected_source:
+            errors.append(
+                f"Comparison packet {packet.get('packet_id', '')} depends on source packet "
+                f"{packet_id('source_intention', source_id)} selected in the same batch."
+            )
+    return unique_values(errors)
+
+
+def validate_selected_packets(
+    state: dict[str, Any],
+    packets: list[dict[str, Any]],
+    plan: dict[str, Any],
+    *,
+    allow_blocked: bool = False,
+    allow_internal_dependencies: bool = False,
+) -> list[str]:
+    errors: list[str] = []
+    packet_ids = [packet.get("packet_id", "") for packet in packets]
+    for duplicate in duplicate_values(packet_ids):
+        errors.append(f"Queue contains duplicate packet id `{duplicate}`.")
+    target_keys = [":".join(selected_packet_target_key(packet)) for packet in packets]
+    for duplicate in duplicate_values(target_keys):
+        errors.append(f"Queue contains duplicate packet target `{duplicate}`.")
+    bundle_dirs = [
+        str(entry.get("bundle_dir", ""))
+        for entry in plan.get("packets", [])
+        if entry.get("bundle_dir")
+    ]
+    for duplicate in duplicate_values(bundle_dirs):
+        errors.append(f"Queue contains duplicate bundle directory `{duplicate}`.")
+
+    unassignable = [
+        packet for packet in packets
+        if packet.get("status") not in ASSIGNABLE_PACKET_STATUSES
+        and not (allow_blocked and packet.get("status") == "blocked")
+    ]
+    if unassignable:
+        ids = ", ".join(packet.get("packet_id", "") for packet in unassignable)
+        errors.append(f"Queue contains non-assignable packet status(es): {ids}.")
+
+    if not allow_internal_dependencies:
+        errors.extend(internal_batch_dependency_errors(state, packets))
+    return errors
+
+
+def build_queue_plan(
+    repo: Path,
+    state: dict[str, Any],
+    packets: list[dict[str, Any]],
+    filters: dict[str, Any],
+    *,
+    work_root: str | Path = DEFAULT_WORK,
+    batch_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    digest = digest_json(queue_plan_digest_payload(state, filters, packets))
+    resolved_batch_dir = Path(batch_dir) if batch_dir else default_batch_dir(repo, state, work_root, digest)
+    if not resolved_batch_dir.is_absolute():
+        resolved_batch_dir = repo / resolved_batch_dir
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "artifact": QUEUE_PLAN_ARTIFACT,
+        "created_at": now_utc(),
+        "run_id": state.get("run", {}).get("run_id", ""),
+        "run_commit": state.get("run", {}).get("commit", ""),
+        "selection_digest": digest,
+        "filters": filters,
+        "packet_count": len(packets),
+        "paths": {
+            "batch_dir": path_label(repo, resolved_batch_dir),
+            "queue_plan": QUEUE_PLAN_FILE,
+            "bundles_dir": "bundles",
+        },
+        "packets": [
+            queue_packet_entry(repo, resolved_batch_dir, packet)
+            for packet in packets
+        ],
+    }
+
+
+def validate_queue_plan(plan: dict[str, Any], state: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if plan.get("schema_version") != SCHEMA_VERSION:
+        errors.append(f"Queue plan schema_version is {plan.get('schema_version')!r}, expected {SCHEMA_VERSION}.")
+    if plan.get("artifact") != QUEUE_PLAN_ARTIFACT:
+        errors.append(f"Queue plan artifact is {plan.get('artifact')!r}, expected {QUEUE_PLAN_ARTIFACT}.")
+    latest_run_id = state.get("run", {}).get("run_id", "")
+    if plan.get("run_id") != latest_run_id:
+        errors.append(f"Queue plan was created from run {plan.get('run_id')!r}, latest run is {latest_run_id!r}.")
+    packets = plan.get("packets", [])
+    if not isinstance(packets, list):
+        errors.append("Queue plan `packets` must be a list.")
+    return errors
+
+
+def path_from_label(repo: Path, label: str | Path) -> Path:
+    path = Path(label)
+    if path.is_absolute():
+        return path
+    return repo / path
 
 
 def source_label_from_decl(decl: dict[str, Any], modules_by_name: dict[str, dict[str, Any]]) -> str:
@@ -1893,6 +2281,79 @@ def bundle_manifest(
     }
 
 
+def answer_contract_for_kind(kind: str) -> dict[str, list[str]]:
+    common_protected = [
+        "schema_version",
+        "packet_id",
+        "source_run_id",
+        "context_fingerprint",
+        "updated_at",
+    ]
+    if kind == "lean_reconstruction":
+        return {
+            "protected": common_protected + ["record_id", "declaration"],
+            "fill": ["status", "summary", "reconstructed_statement", "assumptions"],
+            "notes": [
+                "`status` must be `answered` before ingest.",
+                "`reconstructed_statement` should say what the Lean declaration currently asserts, not what the paper should assert.",
+                "`assumptions` should include decorrelation caveats and any uncertainty about notation or scope.",
+            ],
+        }
+    if kind == "source_intention":
+        return {
+            "protected": common_protected + ["record_id", "source_id", "paper_label"],
+            "fill": ["status", "summary", "intended_statement", "evidence"],
+            "notes": [
+                "`status` must be `answered` before ingest.",
+                "`intended_statement` should reconstruct the source target without treating Lean as ground truth.",
+                "`evidence` should identify the source excerpts or labels used.",
+            ],
+        }
+    if kind == "comparison":
+        return {
+            "protected": common_protected + [
+                "comparison_id",
+                "lean_declaration",
+                "lean_record_id",
+                "source_id",
+                "source_record_id",
+            ],
+            "fill": ["status", "alignment", "summary", "notes"],
+            "notes": [
+                "`status` must be `answered` before ingest.",
+                "`alignment` should be one of: match, exact, partial, lean_weaker, lean_stronger, mismatch, convention_mismatch, unclear.",
+                "`notes` should name the exact hypothesis, convention, or scope differences.",
+            ],
+        }
+    if kind == "api_boundary":
+        return {
+            "protected": common_protected + ["record_id", "target_id", "lean_declaration"],
+            "fill": ["status", "summary", "notes"],
+            "notes": [
+                "`status` must be `answered` before ingest.",
+                "`notes` should distinguish intentional mathematical generality from accidental API overbreadth.",
+            ],
+        }
+    return {
+        "protected": common_protected,
+        "fill": ["status", "summary"],
+        "notes": ["Use only the evidence in `context.json`."],
+    }
+
+
+def format_answer_contract(contract: dict[str, list[str]]) -> list[str]:
+    lines = [
+        "- Edit `answer.json` only.",
+        "- Set `status` to `answered` when complete.",
+        "- Use TeX delimiters such as `\\(...\\)` or `\\[...\\]` for mathematical notation.",
+        "- Make assumptions explicit in the relevant field rather than hiding them.",
+        f"- Protected fields: {', '.join(f'`{field}`' for field in contract.get('protected', []))}.",
+        f"- Worker-filled fields: {', '.join(f'`{field}`' for field in contract.get('fill', []))}.",
+    ]
+    lines.extend(f"- {note}" for note in contract.get("notes", []))
+    return lines
+
+
 def instructions_for_packet(manifest: dict[str, Any], packet: dict[str, Any]) -> str:
     kind = packet.get("packet_kind", "")
     target = packet.get("target", "")
@@ -1917,6 +2378,7 @@ def instructions_for_packet(manifest: dict[str, Any], packet: dict[str, Any]) ->
     bundle_dir_arg = shlex.quote(manifest["paths"]["bundle_dir"])
     run_id = manifest.get("run_id", "")
     run_guard = f" --expect-run-id {shlex.quote(run_id)}" if run_id else ""
+    contract = answer_contract_for_kind(kind)
     return "\n".join([
         "# Semantic Audit Packet",
         "",
@@ -1942,11 +2404,7 @@ def instructions_for_packet(manifest: dict[str, Any], packet: dict[str, Any]) ->
         "",
         "## Answer Contract",
         "",
-        "- Edit `answer.json` only.",
-        "- Set `status` to `answered` when complete.",
-        "- Fill every required textual field with concise mathematical content.",
-        "- Use TeX delimiters such as `\\(...\\)` or `\\[...\\]` for mathematical notation.",
-        "- Make assumptions explicit in the relevant field rather than hiding them.",
+        *format_answer_contract(contract),
         "",
         "## Controller Commands",
         "",
@@ -2405,6 +2863,506 @@ def read_record_object(path: Path) -> dict[str, Any]:
     return value
 
 
+def ingest_validation_outcome(
+    repo: Path,
+    state: dict[str, Any],
+    input_path: Path,
+    *,
+    kind_override: str | None = None,
+    replace: bool = False,
+    append_requested: bool = False,
+    allow_stale: bool = False,
+    allow_unbundled: bool = False,
+    allow_nonassignable: bool = False,
+    strict: bool = False,
+    require_bundle: bool = False,
+) -> dict[str, Any]:
+    outcome: dict[str, Any] = {
+        "input": input_path.as_posix(),
+        "kind": "",
+        "packet_id": "",
+        "identity": "",
+        "identity_field": "",
+        "action": "",
+        "record_path": "",
+        "warnings": [],
+        "errors": [],
+    }
+    errors: list[str] = outcome["errors"]
+    warnings: list[str] = outcome["warnings"]
+
+    try:
+        bundle = read_bundle_input(input_path)
+    except (OSError, json.JSONDecodeError, SystemExit) as exc:
+        errors.append(str(exc))
+        return outcome
+
+    record = bundle["record"]
+    manifest = bundle.get("manifest", {})
+    if require_bundle and not manifest:
+        errors.append("Batch ingest requires packet bundle directories with manifest.json.")
+
+    try:
+        kind = kind_override or infer_record_kind(record)
+    except SystemExit as exc:
+        errors.append(str(exc))
+        return outcome
+
+    outcome["kind"] = kind
+    identity_field = record_identity_field(kind)
+    outcome["identity_field"] = identity_field
+    outcome["identity"] = record.get(identity_field, "")
+
+    errors.extend(validate_record(record, kind, for_append=True))
+    warnings.extend(lint_record(record, kind))
+
+    packet = None
+    if not manifest and append_requested and not allow_unbundled:
+        errors.append("packet ingest --append requires a bundle manifest. Use packet append for raw records, or pass --allow-unbundled.")
+    if manifest.get("packet_id"):
+        try:
+            packet = find_packet(state["packets"], manifest["packet_id"])
+        except SystemExit as exc:
+            errors.append(str(exc))
+    else:
+        packet = packet_for_record(state, kind, record)
+        if packet is None:
+            errors.append("Could not locate a latest work packet matching this record target.")
+
+    if packet is not None:
+        outcome["packet_id"] = packet.get("packet_id", "")
+        if (
+            not allow_nonassignable
+            and packet.get("status") not in ASSIGNABLE_PACKET_STATUSES
+        ):
+            errors.append(
+                f"Latest packet status is `{packet.get('status', '')}`; ingest expects one of "
+                f"{ASSIGNABLE_PACKET_STATUSES}. Pass the debug override only if this is intentional."
+            )
+        errors.extend(validate_record_against_packet(record, kind, packet))
+        errors.extend(validate_manifest_record_consistency(manifest, record, kind, packet))
+        provenance_errors, provenance_warnings = validate_bundle_provenance(
+            manifest,
+            bundle.get("context", {}),
+            packet,
+            state,
+            allow_stale=allow_stale,
+        )
+        errors.extend(provenance_errors)
+        warnings.extend(provenance_warnings)
+        live_errors, live_warnings = validate_current_context_for_append(
+            repo,
+            state,
+            manifest,
+            packet,
+            allow_stale=allow_stale,
+        )
+        errors.extend(live_errors)
+        warnings.extend(live_warnings)
+
+    if strict and warnings:
+        errors.extend(f"Strict lint: {warning}" for warning in warnings)
+
+    record_to_write = record
+    if allow_stale and warnings:
+        record_to_write = dict(record)
+        record_to_write["stale_accepted"] = {
+            "accepted_at": now_utc(),
+            "warnings": warnings,
+        }
+
+    if not errors:
+        try:
+            result = append_record_to_store(repo, record_to_write, kind, replace=replace, dry_run=True)
+            outcome["action"] = result["action"]
+            outcome["record_path"] = result["path"]
+        except SystemExit as exc:
+            errors.append(str(exc))
+
+    outcome["_record"] = record_to_write
+    return outcome
+
+
+def public_ingest_outcome(outcome: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in outcome.items()
+        if not key.startswith("_")
+    }
+
+
+def add_batch_duplicate_errors(outcomes: list[dict[str, Any]]) -> None:
+    seen: dict[tuple[str, str], int] = {}
+    for index, outcome in enumerate(outcomes):
+        if outcome.get("errors"):
+            continue
+        key = (outcome.get("kind", ""), outcome.get("identity", ""))
+        if not key[0] or not key[1]:
+            continue
+        previous = seen.get(key)
+        if previous is None:
+            seen[key] = index
+            continue
+        message = (
+            f"Batch contains duplicate {outcome.get('identity_field', 'record identity')} "
+            f"`{key[1]}` for kind `{key[0]}`."
+        )
+        outcomes[previous].setdefault("errors", []).append(message)
+        outcome.setdefault("errors", []).append(message)
+
+
+def apply_record_to_records(
+    records: list[dict[str, Any]],
+    record: dict[str, Any],
+    kind: str,
+    *,
+    replace: bool = False,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    identity_field = record_identity_field(kind)
+    identity = record.get(identity_field, "")
+    target_field = record_target_field_for_kind(kind)
+    target = record.get(target_field, "")
+    duplicate_indexes = [
+        index for index, existing in enumerate(records)
+        if existing.get(identity_field) == identity
+    ]
+    conflicting_targets = sorted({
+        str(records[index].get(target_field, ""))
+        for index in duplicate_indexes
+        if records[index].get(target_field, "") != target
+    })
+    if conflicting_targets:
+        raise SystemExit(
+            f"Record `{identity}` exists for target(s) {conflicting_targets}, not target `{target}`. "
+            "Refusing to replace an unrelated durable record."
+        )
+    if replace and not duplicate_indexes:
+        raise SystemExit(f"Cannot replace `{identity}`: no existing record with {identity_field} `{identity}`.")
+    if duplicate_indexes and not replace:
+        raise SystemExit(f"Record `{identity}` already exists. Use --replace to replace by {identity_field}.")
+
+    action = "replace" if duplicate_indexes and replace else "append"
+    if duplicate_indexes and replace:
+        first = duplicate_indexes[0]
+        duplicate_set = set(duplicate_indexes)
+        updated = [
+            existing
+            for index, existing in enumerate(records)
+            if index not in duplicate_set
+        ]
+        updated.insert(first, record)
+    else:
+        updated = [*records, record]
+    return updated, {
+        "action": action,
+        "identity": identity,
+        "identity_field": identity_field,
+    }
+
+
+def batch_record_write_plan(
+    repo: Path,
+    outcomes: list[dict[str, Any]],
+    *,
+    replace: bool = False,
+) -> dict[Path, list[dict[str, Any]]]:
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for outcome in outcomes:
+        if outcome.get("errors"):
+            raise SystemExit("Cannot create a batch write plan while outcomes contain errors.")
+        grouped.setdefault(outcome["kind"], []).append(outcome)
+
+    writes: dict[Path, list[dict[str, Any]]] = {}
+    for kind, kind_outcomes in grouped.items():
+        key = record_file_key_for_kind(kind)
+        path = repo / RECORDS_DIR / RECORD_FILE_NAMES[key]
+        records = read_jsonl(path)
+        for outcome in kind_outcomes:
+            records, result = apply_record_to_records(
+                records,
+                outcome["_record"],
+                kind,
+                replace=replace,
+            )
+            outcome["action"] = result["action"]
+            outcome["identity"] = result["identity"]
+            outcome["identity_field"] = result["identity_field"]
+            outcome["record_path"] = path.as_posix()
+        writes[path] = records
+    return writes
+
+
+def write_jsonl_atomic(path: Path, records: list[dict[str, Any]]) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".{path.name}.tmp")
+    tmp.write_text(
+        "".join(json.dumps(record, sort_keys=True) + "\n" for record in records),
+        encoding="utf-8",
+    )
+    return tmp
+
+
+def commit_batch_ingest_outcomes(repo: Path, outcomes: list[dict[str, Any]], *, replace: bool = False) -> None:
+    if any(outcome.get("errors") for outcome in outcomes):
+        raise SystemExit("Cannot append a batch with validation errors.")
+    writes = batch_record_write_plan(repo, outcomes, replace=replace)
+    temp_paths: list[tuple[Path, Path]] = []
+    try:
+        for path, records in writes.items():
+            temp_paths.append((write_jsonl_atomic(path, records), path))
+        for tmp, path in temp_paths:
+            tmp.replace(path)
+    finally:
+        for tmp, _path in temp_paths:
+            if tmp.exists():
+                tmp.unlink()
+
+
+def commit_ingest_outcome(repo: Path, outcome: dict[str, Any], *, replace: bool = False) -> None:
+    if outcome.get("errors"):
+        raise SystemExit(f"Cannot append invalid bundle {outcome.get('input', '')}.")
+    result = append_record_to_store(
+        repo,
+        outcome["_record"],
+        outcome["kind"],
+        replace=replace,
+        dry_run=False,
+    )
+    outcome["action"] = result["action"]
+    outcome["identity"] = result["identity"]
+    outcome["identity_field"] = result["identity_field"]
+    outcome["record_path"] = result["path"]
+
+
+def print_ingest_outcome(outcome: dict[str, Any]) -> None:
+    status = "error" if outcome.get("errors") else "ok"
+    print(
+        f"{status:5} {outcome.get('kind', ''):20} "
+        f"{outcome.get('packet_id', ''):60} {outcome.get('identity', '')}"
+    )
+    for warning in outcome.get("warnings", []):
+        print(f"  WARNING: {warning}", file=sys.stderr)
+    for error in outcome.get("errors", []):
+        print(f"  ERROR: {error}", file=sys.stderr)
+
+
+def queue_plan_from_args(
+    repo: Path,
+    state: dict[str, Any],
+    args: argparse.Namespace,
+    *,
+    batch_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    filters = selection_filter_summary(args)
+    selected = select_queue_packets(
+        state["packets"],
+        kinds=args.kind,
+        statuses=args.status,
+        priorities=args.priority,
+        limit=args.limit,
+    )
+    return build_queue_plan(
+        repo,
+        state,
+        selected,
+        filters,
+        work_root=args.work_root,
+        batch_dir=batch_dir,
+    )
+
+
+def packet_ids_from_queue_plan(plan: dict[str, Any]) -> list[str]:
+    return [
+        str(entry.get("packet_id", ""))
+        for entry in plan.get("packets", [])
+        if entry.get("packet_id")
+    ]
+
+
+def packets_from_queue_plan(state: dict[str, Any], plan: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        find_packet(state["packets"], packet_id)
+        for packet_id in packet_ids_from_queue_plan(plan)
+    ]
+
+
+def bundle_paths_from_batch_input(repo: Path, input_path: Path) -> tuple[dict[str, Any], list[Path]]:
+    if input_path.is_file():
+        plan = read_json(input_path)
+        base_dir = input_path.parent
+    elif (input_path / QUEUE_PLAN_FILE).exists():
+        plan = read_json(input_path / QUEUE_PLAN_FILE)
+        base_dir = input_path
+    elif (input_path / "manifest.json").exists():
+        return {}, [input_path]
+    else:
+        manifest_paths = sorted((input_path / "bundles").glob("*/manifest.json"))
+        if manifest_paths:
+            return {}, [path.parent for path in manifest_paths]
+        raise SystemExit(
+            f"Could not find {QUEUE_PLAN_FILE}, manifest.json, or bundles/*/manifest.json under {input_path}."
+        )
+
+    if plan.get("artifact") != QUEUE_PLAN_ARTIFACT:
+        raise SystemExit(f"Expected a {QUEUE_PLAN_ARTIFACT} artifact in {input_path}.")
+    bundle_paths: list[Path] = []
+    for entry in plan.get("packets", []):
+        bundle_label = entry.get("bundle_dir", "")
+        if not bundle_label:
+            continue
+        bundle_path = Path(bundle_label)
+        if not bundle_path.is_absolute():
+            repo_path = repo / bundle_path
+            bundle_path = repo_path if repo_path.exists() else base_dir / bundle_path
+        bundle_paths.append(bundle_path)
+    return plan, bundle_paths
+
+
+def command_packet_queue(args: argparse.Namespace) -> None:
+    repo = repo_root_from_script()
+    state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
+    enforce_semantic_work_preflight(repo, state, allow_unstable=args.allow_unstable)
+    plan = queue_plan_from_args(repo, state, args)
+    packets = packets_from_queue_plan(state, plan)
+    errors = validate_selected_packets(
+        state,
+        packets,
+        plan,
+        allow_blocked=args.allow_blocked,
+        allow_internal_dependencies=args.allow_internal_dependencies,
+    )
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}", file=sys.stderr)
+        raise SystemExit(1)
+    if args.output:
+        emit_json(plan, args.output)
+    else:
+        emit_json(plan, None)
+
+
+def command_packet_bundle_batch(args: argparse.Namespace) -> None:
+    repo = repo_root_from_script()
+    state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
+    enforce_semantic_work_preflight(repo, state, allow_unstable=args.allow_unstable)
+    if args.plan:
+        plan = read_json(Path(args.plan))
+        errors = validate_queue_plan(plan, state)
+        if errors:
+            for error in errors:
+                print(f"ERROR: {error}", file=sys.stderr)
+            raise SystemExit(1)
+        batch_dir = path_from_label(repo, args.output or plan.get("paths", {}).get("batch_dir", ""))
+    else:
+        batch_dir = Path(args.output) if args.output else None
+        plan = queue_plan_from_args(repo, state, args, batch_dir=batch_dir)
+        batch_dir = path_from_label(repo, plan.get("paths", {}).get("batch_dir", ""))
+
+    packets = packets_from_queue_plan(state, plan)
+    if not packets and not args.allow_empty:
+        raise SystemExit("Queue selection is empty. Adjust filters or pass --allow-empty.")
+    if batch_dir.exists() and not args.force:
+        raise SystemExit(f"Batch directory already exists: {batch_dir}. Use --force to overwrite generated bundle files.")
+
+    plan = build_queue_plan(
+        repo,
+        state,
+        packets,
+        plan.get("filters", {}),
+        work_root=args.work_root,
+        batch_dir=batch_dir,
+    )
+    errors = validate_selected_packets(
+        state,
+        packets,
+        plan,
+        allow_blocked=args.allow_blocked,
+        allow_internal_dependencies=args.allow_internal_dependencies,
+    )
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}", file=sys.stderr)
+        raise SystemExit(1)
+    batch_dir.mkdir(parents=True, exist_ok=True)
+    write_json(batch_dir / QUEUE_PLAN_FILE, plan)
+    for packet, entry in zip(packets, plan.get("packets", []), strict=True):
+        bundle_dir = path_from_label(repo, entry["bundle_dir"])
+        write_packet_bundle(repo, state, packet, bundle_dir, force=args.force)
+
+    run_id = state.get("run", {}).get("run_id", "")
+    run_guard = f" --expect-run-id {shlex.quote(run_id)}" if run_id else ""
+    print(batch_dir)
+    print(f"queue: {batch_dir / QUEUE_PLAN_FILE}")
+    print(f"bundles: {len(packets)}")
+    print(
+        "ingest: python3 tools/semantic-audit/semantic_audit.py packet ingest-batch "
+        f"{shlex.quote(path_label(repo, batch_dir))}{run_guard}"
+    )
+
+
+def command_packet_ingest_batch(args: argparse.Namespace) -> None:
+    repo = repo_root_from_script()
+    state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
+    enforce_semantic_work_preflight(repo, state, allow_unstable=args.allow_unstable)
+    try:
+        plan, bundle_paths = bundle_paths_from_batch_input(repo, Path(args.input))
+    except (OSError, json.JSONDecodeError, SystemExit) as exc:
+        raise SystemExit(str(exc))
+    if plan:
+        errors = validate_queue_plan(plan, state)
+        stale_run_errors = [error for error in errors if "latest run is" in error]
+        hard_errors = [error for error in errors if error not in stale_run_errors]
+        if hard_errors or (stale_run_errors and not args.allow_stale):
+            for error in errors:
+                print(f"ERROR: {error}", file=sys.stderr)
+            raise SystemExit(1)
+        for error in stale_run_errors:
+            if args.allow_stale:
+                print(f"WARNING: {error}", file=sys.stderr)
+
+    outcomes = [
+        ingest_validation_outcome(
+            repo,
+            state,
+            bundle_path,
+            kind_override=args.kind,
+            replace=args.replace,
+            append_requested=args.append,
+            allow_stale=args.allow_stale,
+            allow_nonassignable=args.allow_nonassignable,
+            strict=args.strict,
+            require_bundle=True,
+        )
+        for bundle_path in bundle_paths
+    ]
+    add_batch_duplicate_errors(outcomes)
+    has_errors = any(outcome.get("errors") for outcome in outcomes)
+
+    if args.json:
+        emit_json({
+            "schema_version": SCHEMA_VERSION,
+            "artifact": "semantic-audit-ingest-batch-result",
+            "input": args.input,
+            "bundle_count": len(outcomes),
+            "ok": not has_errors,
+            "append": bool(args.append),
+            "outcomes": [public_ingest_outcome(outcome) for outcome in outcomes],
+        }, None)
+    else:
+        for outcome in outcomes:
+            print_ingest_outcome(outcome)
+        print(f"bundles: {len(outcomes)}")
+        print(f"errors: {sum(1 for outcome in outcomes if outcome.get('errors'))}")
+
+    if has_errors:
+        raise SystemExit(1)
+
+    if args.append:
+        commit_batch_ingest_outcomes(repo, outcomes, replace=args.replace)
+        if not args.json:
+            print(f"appended: {len(outcomes)}")
+
+
 def command_packet_list(args: argparse.Namespace) -> None:
     repo = repo_root_from_script()
     state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
@@ -2490,73 +3448,33 @@ def command_packet_append(args: argparse.Namespace) -> None:
 def command_packet_ingest(args: argparse.Namespace) -> None:
     repo = repo_root_from_script()
     state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
-    bundle = read_bundle_input(Path(args.input))
-    record = bundle["record"]
-    kind = args.kind or infer_record_kind(record)
-    errors = validate_record(record, kind, for_append=True)
-    warnings = lint_record(record, kind)
-
-    packet = None
-    manifest = bundle.get("manifest", {})
-    if args.append and not manifest and not args.allow_unbundled:
-        errors.append("packet ingest --append requires a bundle manifest. Use packet append for raw records, or pass --allow-unbundled.")
-    if manifest.get("packet_id"):
-        try:
-            packet = find_packet(state["packets"], manifest["packet_id"])
-        except SystemExit as exc:
-            errors.append(str(exc))
-    else:
-        packet = packet_for_record(state, kind, record)
-        if packet is None:
-            errors.append("Could not locate a latest work packet matching this record target.")
-
-    if packet is not None:
-        errors.extend(validate_record_against_packet(record, kind, packet))
-        errors.extend(validate_manifest_record_consistency(manifest, record, kind, packet))
-        provenance_errors, provenance_warnings = validate_bundle_provenance(
-            manifest,
-            bundle.get("context", {}),
-            packet,
-            state,
-            allow_stale=args.allow_stale,
-        )
-        errors.extend(provenance_errors)
-        warnings.extend(provenance_warnings)
-        live_errors, live_warnings = validate_current_context_for_append(
-            repo,
-            state,
-            manifest,
-            packet,
-            allow_stale=args.allow_stale,
-        )
-        errors.extend(live_errors)
-        warnings.extend(live_warnings)
-
-    if args.strict and warnings:
-        errors.extend(f"Strict lint: {warning}" for warning in warnings)
-
-    for warning in warnings:
+    outcome = ingest_validation_outcome(
+        repo,
+        state,
+        Path(args.input),
+        kind_override=args.kind,
+        replace=args.replace,
+        append_requested=args.append,
+        allow_stale=args.allow_stale,
+        allow_unbundled=args.allow_unbundled,
+        allow_nonassignable=args.allow_nonassignable,
+        strict=args.strict,
+    )
+    for warning in outcome.get("warnings", []):
         print(f"WARNING: {warning}", file=sys.stderr)
-    if errors:
-        for error in errors:
+    if outcome.get("errors"):
+        for error in outcome["errors"]:
             print(f"ERROR: {error}", file=sys.stderr)
         raise SystemExit(1)
 
-    if args.allow_stale and args.append and warnings:
-        record = dict(record)
-        record["stale_accepted"] = {
-            "accepted_at": now_utc(),
-            "warnings": warnings,
-        }
-
-    result = append_record_to_store(repo, record, kind, replace=args.replace, dry_run=not args.append)
     if args.append:
-        print(f"wrote {result['identity']} to {result['path']}")
+        commit_ingest_outcome(repo, outcome, replace=args.replace)
+        print(f"wrote {outcome['identity']} to {outcome['record_path']}")
     else:
-        print(f"dry-run: would {result['action']} {result['identity']} in {result['path']}")
-    print(f"kind: {kind}")
-    if packet is not None:
-        print(f"packet: {packet.get('packet_id', '')}")
+        print(f"dry-run: would {outcome['action']} {outcome['identity']} in {outcome['record_path']}")
+    print(f"kind: {outcome['kind']}")
+    if outcome.get("packet_id"):
+        print(f"packet: {outcome['packet_id']}")
 
 
 def main() -> None:
@@ -2573,11 +3491,25 @@ def main() -> None:
     list_parser = packet_subparsers.add_parser("list", help="list packets from the latest audit run")
     list_parser.add_argument("--out-root", default=str(DEFAULT_OUT), help="audit output root containing latest/")
     list_parser.add_argument("--expect-run-id", help="fail if latest/ does not point to this run id")
-    list_parser.add_argument("--kind", choices=["lean_reconstruction", "source_intention", "comparison", "api_boundary"])
-    list_parser.add_argument("--status", choices=["open", "blocked", "answered", "stale"])
+    list_parser.add_argument("--kind", choices=PACKET_KINDS)
+    list_parser.add_argument("--status", choices=PACKET_STATUSES)
     list_parser.add_argument("--limit", type=int, default=0)
     list_parser.add_argument("--json", action="store_true", help="emit JSON instead of a compact table")
     list_parser.set_defaults(func=command_packet_list)
+
+    queue_parser = packet_subparsers.add_parser("queue", help="emit a deterministic queue plan for assignable packets")
+    queue_parser.add_argument("--out-root", default=str(DEFAULT_OUT), help="audit output root containing latest/")
+    queue_parser.add_argument("--expect-run-id", help="fail if latest/ does not point to this run id")
+    queue_parser.add_argument("--kind", choices=PACKET_KINDS, action="append", help="packet kind to include; repeat to include multiple kinds")
+    queue_parser.add_argument("--status", choices=PACKET_STATUSES, action="append", help="packet status to include; default: open and stale")
+    queue_parser.add_argument("--priority", choices=PACKET_PRIORITIES, action="append", help="packet priority to include; repeat to include multiple priorities")
+    queue_parser.add_argument("--limit", type=int, default=0, help="maximum packets after deterministic sorting")
+    queue_parser.add_argument("--work-root", default=str(DEFAULT_WORK), help="root directory for generated worker batches")
+    queue_parser.add_argument("--output", "-o", help="write queue plan JSON to this path instead of stdout")
+    queue_parser.add_argument("--allow-blocked", action="store_true", help="allow blocked packets in the queue plan for debugging")
+    queue_parser.add_argument("--allow-internal-dependencies", action="store_true", help="allow same-batch context dependencies for debugging")
+    queue_parser.add_argument("--allow-unstable", action="store_true", help="allow queueing from a non-fresh or non-attested latest run")
+    queue_parser.set_defaults(func=command_packet_queue)
 
     context_parser = packet_subparsers.add_parser("context", help="emit an isolated context bundle for one packet")
     context_parser.add_argument("selector", help="packet_id, target, or Lean declaration")
@@ -2604,15 +3536,32 @@ def main() -> None:
     bundle_parser.add_argument("--allow-blocked", action="store_true", help="create a debugging bundle even if the packet is blocked")
     bundle_parser.set_defaults(func=command_packet_bundle)
 
+    bundle_batch_parser = packet_subparsers.add_parser("bundle-batch", help="create a queue plan and worker bundles for many packets")
+    bundle_batch_parser.add_argument("--out-root", default=str(DEFAULT_OUT), help="audit output root containing latest/")
+    bundle_batch_parser.add_argument("--expect-run-id", help="fail if latest/ does not point to this run id")
+    bundle_batch_parser.add_argument("--plan", help="existing queue-plan.json to materialize")
+    bundle_batch_parser.add_argument("--kind", choices=PACKET_KINDS, action="append", help="packet kind to include; repeat to include multiple kinds")
+    bundle_batch_parser.add_argument("--status", choices=PACKET_STATUSES, action="append", help="packet status to include; default: open and stale")
+    bundle_batch_parser.add_argument("--priority", choices=PACKET_PRIORITIES, action="append", help="packet priority to include; repeat to include multiple priorities")
+    bundle_batch_parser.add_argument("--limit", type=int, default=0, help="maximum packets after deterministic sorting")
+    bundle_batch_parser.add_argument("--work-root", default=str(DEFAULT_WORK), help="root directory for generated worker batches")
+    bundle_batch_parser.add_argument("--output", "-o", help="write the batch to this directory instead of the deterministic default")
+    bundle_batch_parser.add_argument("--force", action="store_true", help="overwrite generated queue and bundle files if the batch directory exists")
+    bundle_batch_parser.add_argument("--allow-empty", action="store_true", help="write an empty queue plan when selection has no packets")
+    bundle_batch_parser.add_argument("--allow-blocked", action="store_true", help="create debugging bundles for blocked packets")
+    bundle_batch_parser.add_argument("--allow-internal-dependencies", action="store_true", help="allow same-batch context dependencies for debugging")
+    bundle_batch_parser.add_argument("--allow-unstable", action="store_true", help="allow bundling from a non-fresh or non-attested latest run")
+    bundle_batch_parser.set_defaults(func=command_packet_bundle_batch)
+
     validate_parser = packet_subparsers.add_parser("validate", help="validate a single answer record JSON object")
     validate_parser.add_argument("record", help="path to a JSON record object")
-    validate_parser.add_argument("--kind", choices=["lean_reconstruction", "source_intention", "comparison", "api_boundary"])
+    validate_parser.add_argument("--kind", choices=PACKET_KINDS)
     validate_parser.add_argument("--for-append", action="store_true", help="require durable answered-record constraints")
     validate_parser.set_defaults(func=command_packet_validate)
 
     append_parser = packet_subparsers.add_parser("append", help="append a validated answered record to the durable JSONL store")
     append_parser.add_argument("record", help="path to a JSON record object")
-    append_parser.add_argument("--kind", choices=["lean_reconstruction", "source_intention", "comparison", "api_boundary"])
+    append_parser.add_argument("--kind", choices=PACKET_KINDS)
     append_parser.add_argument("--replace", action="store_true", help="replace an existing record with the same identity")
     append_parser.add_argument("--dry-run", action="store_true", help="validate and report the target file without writing")
     append_parser.set_defaults(func=command_packet_append)
@@ -2621,14 +3570,29 @@ def main() -> None:
     ingest_parser.add_argument("input", help="bundle directory containing answer.json, or a raw JSON answer record")
     ingest_parser.add_argument("--out-root", default=str(DEFAULT_OUT), help="audit output root containing latest/")
     ingest_parser.add_argument("--expect-run-id", help="fail if latest/ does not point to this run id")
-    ingest_parser.add_argument("--kind", choices=["lean_reconstruction", "source_intention", "comparison", "api_boundary"])
+    ingest_parser.add_argument("--kind", choices=PACKET_KINDS)
     ingest_parser.add_argument("--dry-run", action="store_true", help="validate and report the target file without writing")
     ingest_parser.add_argument("--append", action="store_true", help="write the validated answer into durable records")
     ingest_parser.add_argument("--replace", action="store_true", help="replace an existing record with the same identity")
     ingest_parser.add_argument("--allow-stale", action="store_true", help="allow bundle run/packet digests to differ from latest")
     ingest_parser.add_argument("--allow-unbundled", action="store_true", help="allow packet ingest --append for a raw JSON record without bundle provenance")
+    ingest_parser.add_argument("--allow-nonassignable", action="store_true", help="allow ingest for blocked or already-answered latest packet states")
     ingest_parser.add_argument("--strict", action="store_true", help="treat lint warnings as errors")
     ingest_parser.set_defaults(func=command_packet_ingest)
+
+    ingest_batch_parser = packet_subparsers.add_parser("ingest-batch", help="lint and ingest a queue/bundle batch with two-phase validation")
+    ingest_batch_parser.add_argument("input", help="batch directory, queue-plan.json, or bundle directory")
+    ingest_batch_parser.add_argument("--out-root", default=str(DEFAULT_OUT), help="audit output root containing latest/")
+    ingest_batch_parser.add_argument("--expect-run-id", help="fail if latest/ does not point to this run id")
+    ingest_batch_parser.add_argument("--kind", choices=PACKET_KINDS)
+    ingest_batch_parser.add_argument("--append", action="store_true", help="write all validated answers into durable records")
+    ingest_batch_parser.add_argument("--replace", action="store_true", help="replace existing records with matching identities")
+    ingest_batch_parser.add_argument("--allow-stale", action="store_true", help="allow stale bundles and mark stale-accepted records when appending")
+    ingest_batch_parser.add_argument("--allow-unstable", action="store_true", help="allow ingesting against a non-fresh or non-attested latest run")
+    ingest_batch_parser.add_argument("--allow-nonassignable", action="store_true", help="allow ingest for blocked or already-answered latest packet states")
+    ingest_batch_parser.add_argument("--strict", action="store_true", help="treat lint warnings as errors")
+    ingest_batch_parser.add_argument("--json", action="store_true", help="emit JSON result instead of a compact table")
+    ingest_batch_parser.set_defaults(func=command_packet_ingest_batch)
 
     args = parser.parse_args()
     if getattr(args, "packet_command", None) == "ingest" and args.dry_run and args.append:

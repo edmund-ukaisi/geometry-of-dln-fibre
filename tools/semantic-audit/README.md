@@ -42,6 +42,7 @@ Important generated files include:
 
 ```text
 audit-config.resolved.json
+audit-input-snapshot.json
 lean-reconstructions.jsonl
 source-intentions.jsonl
 comparisons.jsonl
@@ -170,3 +171,80 @@ exists for the same commit and worktree state.
 
 The dashboard will then mark the packet answered and show the answer body in the Work Packets
 inspector.
+
+## Batch Worker Orchestration
+
+Batch orchestration is the queue-oriented version of the same workflow. It does not introduce a new
+durable memory store. It creates generated queue plans and generated bundles, then ingests returned
+`answer.json` files through the same controller boundary.
+
+Preview a deterministic queue:
+
+```bash
+python3 tools/semantic-audit/semantic_audit.py packet queue \
+  --kind lean_reconstruction \
+  --status open \
+  --priority high \
+  --limit 3
+```
+
+Create a batch of worker bundles:
+
+```bash
+python3 tools/semantic-audit/semantic_audit.py packet bundle-batch \
+  --kind lean_reconstruction \
+  --status open \
+  --priority high \
+  --limit 3
+```
+
+The command writes:
+
+```text
+.semantic-audit/work/<run-id>/batch-<digest>/
+  queue-plan.json
+  bundles/
+    <packet-id>/
+      manifest.json
+      context.json
+      instructions.md
+      answer.json
+```
+
+Each worker receives one bundle directory, reads `instructions.md` and `context.json`, and edits only
+that bundle's `answer.json`.
+
+After answers return, validate the whole batch without writing durable records:
+
+```bash
+python3 tools/semantic-audit/semantic_audit.py packet ingest-batch \
+  .semantic-audit/work/<run-id>/batch-<digest>
+```
+
+Append only after the batch dry run is clean:
+
+```bash
+python3 tools/semantic-audit/semantic_audit.py packet ingest-batch \
+  .semantic-audit/work/<run-id>/batch-<digest> \
+  --append
+```
+
+`ingest-batch` is two-phase. It validates every bundle first, rejects duplicate identities inside the
+batch, and only then rewrites touched durable record files. A validation failure leaves durable
+records unchanged.
+
+Batch commands require a fresh technically attested latest run: `lake build` and the sorry/axiom
+check must both be clean, and live config, record, Lean/source, and audit-tool inputs must match the
+latest run's `audit-input-snapshot.json`. Rerun the audit after ingesting records before assigning
+the next stratum.
+
+The default queue includes only `open` and `stale` packets. Blocked, answered, internally dependent,
+or non-fresh batches require explicit debug flags. In normal use, keep strata separate:
+
+```text
+Lean reconstructions or source-intention cards
+  -> rerun audit
+  -> comparisons
+  -> rerun audit
+  -> API-boundary reviews or follow-up strata
+```
