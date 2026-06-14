@@ -50,6 +50,10 @@ PACKET_PRIORITIES = ["high", "medium", "low"]
 PRIORITY_ORDER = {priority: index for index, priority in enumerate(PACKET_PRIORITIES)}
 KIND_ORDER = {kind: index for index, kind in enumerate(PACKET_KINDS)}
 DEFAULT_DISPATCH_KINDS = ["source_intention"]
+REFERENCE_MARKER_RE = re.compile(
+    r"\b(Le Halleur|Rimanyi|Rim\\'anyi|Prop(?:osition)?|Theorem|Cor(?:ollary)?|Lemma|paper|source|ref)\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass
@@ -1858,6 +1862,19 @@ def source_excerpt(repo: Path, rel_path: str, start_line: int | None, end_line: 
     }
 
 
+def embedded_reference_markers(texts: list[str], *, limit: int = 12) -> list[str]:
+    markers: list[str] = []
+    for text in texts:
+        for raw_line in text.splitlines():
+            line = raw_line.strip()
+            if not line or not REFERENCE_MARKER_RE.search(line):
+                continue
+            markers.append(line)
+            if len(markers) >= limit:
+                return markers
+    return markers
+
+
 def declaration_excerpt(repo: Path, decl: dict[str, Any], modules_by_name: dict[str, dict[str, Any]]) -> dict[str, Any]:
     module = modules_by_name.get(decl.get("module", ""))
     source_range = decl.get("source_range", {}).get("range", {})
@@ -1981,11 +1998,24 @@ def build_lean_reconstruction_context(repo: Path, state: dict[str, Any], packet:
     value_deps = list(dict.fromkeys(decl.get("deps_value", [])))
     proof_only_deps = [name for name in value_deps if name not in set(type_deps)]
     reverse = state.get("graph", {}).get("reverseDeps", {}).get(declaration, [])
+    excerpt = declaration_excerpt(repo, decl, modules_by_name)
     return {
         "schema_version": SCHEMA_VERSION,
         "context_kind": "lean_reconstruction",
         "generated_at": now_utc(),
         "packet": packet,
+        "attention_protocol": {
+            "stage": "blind_lean_reconstruction",
+            "caveat": (
+                "Blind here means independent of source-intention and comparison cards. Lean docstrings "
+                "and source comments may themselves contain paper labels or intended-role prose; treat those "
+                "as Lean-side evidence and call out any such exposure in assumptions."
+            ),
+            "embedded_reference_markers": embedded_reference_markers([
+                decl.get("doc", ""),
+                excerpt.get("text", ""),
+            ]),
+        },
         "decorrelation": (
             "This context is for Lean reconstruction. It intentionally excludes source-intention "
             "and comparison records; use only the Lean signature, docstring, source excerpt, and Lean dependency context."
@@ -2001,7 +2031,7 @@ def build_lean_reconstruction_context(repo: Path, state: dict[str, Any], packet:
             "audit_tier": decl.get("audit_tier", "unassigned"),
             "audit_reason": decl.get("audit_reason", ""),
         },
-        "source_excerpt": declaration_excerpt(repo, decl, modules_by_name),
+        "source_excerpt": excerpt,
         "dependencies": {
             "statement": [
                 short_decl_context(name, declarations_by_name, lean_answered)
@@ -2030,6 +2060,10 @@ def build_source_intention_context(repo: Path, state: dict[str, Any], packet: di
         "context_kind": "source_intention",
         "generated_at": now_utc(),
         "packet": packet,
+        "attention_protocol": {
+            "stage": "paper_only_source_intention",
+            "caveat": "Use the source excerpt and source target only. Do not import Lean-side speculation into this card.",
+        },
         "decorrelation": (
             "This context is for source-intention reconstruction. It intentionally excludes current Lean declarations "
             "as ground truth; read the source passage and state the intended mathematical claim."
@@ -2044,13 +2078,58 @@ def build_comparison_context(repo: Path, state: dict[str, Any], packet: dict[str
     inputs = packet.get("inputs", {})
     lean_records = answered_by(state["records"].get("lean_reconstructions", []), "declaration")
     source_records = answered_by(state["records"].get("source_intentions", []), "source_id")
+    lean_record = lean_records.get(inputs.get("lean_declaration", ""))
+    source_record = source_records.get(inputs.get("source_id", ""))
     return {
         "schema_version": SCHEMA_VERSION,
         "context_kind": "comparison",
         "generated_at": now_utc(),
         "packet": packet,
-        "lean_record": lean_records.get(inputs.get("lean_declaration", "")),
-        "source_record": source_records.get(inputs.get("source_id", "")),
+        "prerequisite_status": {
+            "lean_reconstruction": {
+                "declaration": inputs.get("lean_declaration", ""),
+                "record_id": lean_record.get("record_id", "") if lean_record else "",
+                "available": bool(lean_record),
+            },
+            "source_intention": {
+                "source_id": inputs.get("source_id", ""),
+                "record_id": source_record.get("record_id", "") if source_record else "",
+                "available": bool(source_record),
+            },
+        },
+        "staged_protocol": {
+            "stage_1_blind_lean_reading": (
+                "Read the frozen lean_record first. Treat its reconstructed_statement, mathematical_role, "
+                "and speculative_source_intent as the Lean-only view, produced without using the source card."
+            ),
+            "stage_2_reference_reveal": (
+                "Only after the Lean-only view is explicit, read source_record as the paper/source intention."
+            ),
+            "stage_3_match_judgment": (
+                "Compare the Lean-only view with the source intention. Record exact agreement, missing bridge "
+                "hypotheses, convention shifts, weaker/stronger scope, and any failed speculation."
+            ),
+        },
+        "pre_reference_lean_view": {
+            "declaration": inputs.get("lean_declaration", ""),
+            "record_id": lean_record.get("record_id", "") if lean_record else "",
+            "summary": lean_record.get("summary", "") if lean_record else "",
+            "reconstructed_statement": lean_record.get("reconstructed_statement", "") if lean_record else "",
+            "mathematical_role": lean_record.get("mathematical_role", "") if lean_record else "",
+            "speculative_source_intent": lean_record.get("speculative_source_intent", "") if lean_record else "",
+            "speculation_confidence": lean_record.get("speculation_confidence", "") if lean_record else "",
+            "assumptions": lean_record.get("assumptions", []) if lean_record else [],
+        },
+        "reference_reveal": {
+            "source_id": inputs.get("source_id", ""),
+            "record_id": source_record.get("record_id", "") if source_record else "",
+            "paper_label": source_record.get("paper_label", "") if source_record else "",
+            "summary": source_record.get("summary", "") if source_record else "",
+            "intended_statement": source_record.get("intended_statement", "") if source_record else "",
+            "evidence": source_record.get("evidence", []) if source_record else [],
+        },
+        "lean_record": lean_record,
+        "source_record": source_record,
         "record_template": record_template_for_packet(packet, state),
     }
 
@@ -2117,6 +2196,9 @@ def record_template_for_packet(
             **provenance,
             "summary": "",
             "reconstructed_statement": "",
+            "mathematical_role": "",
+            "speculative_source_intent": "",
+            "speculation_confidence": "",
             "assumptions": [
                 "This reconstruction uses only the Lean signature, docstring, source excerpt, and Lean dependency context; it is not a paper-intention card."
             ],
@@ -2149,6 +2231,10 @@ def record_template_for_packet(
             **provenance,
             "alignment": "",
             "summary": "",
+            "blind_lean_summary": "",
+            "source_summary": "",
+            "match_analysis": "",
+            "discrepancies": [],
             "notes": "",
             "updated_at": today,
         }
@@ -2183,6 +2269,11 @@ def normalized_context_for_fingerprint(context: dict[str, Any]) -> dict[str, Any
         return {}
     normalized.pop("generated_at", None)
     normalized.pop("record_template", None)
+    normalized.pop("attention_protocol", None)
+    normalized.pop("staged_protocol", None)
+    normalized.pop("pre_reference_lean_view", None)
+    normalized.pop("reference_reveal", None)
+    normalized.pop("prerequisite_status", None)
     packet = normalized.get("packet")
     if isinstance(packet, dict):
         packet.pop("status", None)
@@ -2298,10 +2389,21 @@ def answer_contract_for_kind(kind: str) -> dict[str, list[str]]:
     if kind == "lean_reconstruction":
         return {
             "protected": common_protected + ["record_id", "declaration"],
-            "fill": ["status", "summary", "reconstructed_statement", "assumptions"],
+            "fill": [
+                "status",
+                "summary",
+                "reconstructed_statement",
+                "mathematical_role",
+                "speculative_source_intent",
+                "speculation_confidence",
+                "assumptions",
+            ],
             "notes": [
                 "`status` must be `answered` before ingest.",
                 "`reconstructed_statement` should say what the Lean declaration currently asserts, not what the paper should assert.",
+                "`mathematical_role` should say what job the declaration appears to perform in the Lean development, using Lean-only evidence.",
+                "`speculative_source_intent` is allowed to guess the paper-facing role, but it must remain explicitly speculative.",
+                "`speculation_confidence` should be one of: none, low, medium, high.",
                 "`assumptions` should include decorrelation caveats and any uncertainty about notation or scope.",
             ],
         }
@@ -2324,11 +2426,24 @@ def answer_contract_for_kind(kind: str) -> dict[str, list[str]]:
                 "source_id",
                 "source_record_id",
             ],
-            "fill": ["status", "alignment", "summary", "notes"],
+            "fill": [
+                "status",
+                "alignment",
+                "summary",
+                "blind_lean_summary",
+                "source_summary",
+                "match_analysis",
+                "discrepancies",
+                "notes",
+            ],
             "notes": [
                 "`status` must be `answered` before ingest.",
                 "`alignment` should be one of: match, exact, partial, lean_weaker, lean_stronger, mismatch, convention_mismatch, unclear.",
-                "`notes` should name the exact hypothesis, convention, or scope differences.",
+                "`blind_lean_summary` should be written from the Lean reconstruction before using the source-intention card.",
+                "`source_summary` should summarize the source-intention card after the reference reveal.",
+                "`match_analysis` should compare the blind Lean view against the revealed source intention.",
+                "`discrepancies` should be a list naming exact hypothesis, convention, or scope differences.",
+                "`notes` may add residual uncertainty or follow-up actions.",
             ],
         }
     if kind == "api_boundary":
@@ -2373,8 +2488,9 @@ def instructions_for_packet(manifest: dict[str, Any], packet: dict[str, Any]) ->
             "Use only the source target and excerpt in context.json. Do not treat the current Lean code as ground truth."
         ),
         "comparison": (
-            "Compare the answered Lean reconstruction with the answered source-intention card. "
-            "Record exact matches, weakenings, overclaims, convention mismatches, and missing bridge hypotheses."
+            "Use the staged protocol in context.json. First read the pre-reference Lean view, including any "
+            "Lean-only speculation. Only then read the source-intention reference reveal. Record exact matches, "
+            "weakenings, overclaims, convention mismatches, failed speculation, and missing bridge hypotheses."
         ),
         "api_boundary": (
             "Audit whether the public Lean interface exposes the intended mathematical domain. "
@@ -2389,6 +2505,7 @@ def instructions_for_packet(manifest: dict[str, Any], packet: dict[str, Any]) ->
         "# Semantic Audit Packet",
         "",
         "You are a packet worker. Read `context.json`, fill `answer.json`, and do not edit durable records.",
+        "If `context.json` contains `attention_protocol` or `staged_protocol`, read that section before reading the evidence.",
         "",
         "The controller will validate and ingest the answer. Leave `manifest.json` and `context.json` unchanged.",
         "",
@@ -2506,6 +2623,15 @@ def lint_record(record: dict[str, Any], kind: str) -> list[str]:
     if kind == "lean_reconstruction":
         if not record.get("assumptions"):
             warnings.append("Lean reconstruction has no assumptions/decorrelation note.")
+        confidence = str(record.get("speculation_confidence", "")).strip()
+        if "mathematical_role" not in record:
+            warnings.append("Lean reconstruction lacks `mathematical_role`; new cards should include the Lean-only role diagnosis.")
+        if "speculative_source_intent" not in record:
+            warnings.append("Lean reconstruction lacks `speculative_source_intent`; new cards should include an explicit blind speculation field.")
+        if "speculation_confidence" not in record:
+            warnings.append("Lean reconstruction lacks `speculation_confidence`; new cards should make the speculation level explicit.")
+        elif confidence and confidence not in {"none", "low", "medium", "high"}:
+            warnings.append("Lean reconstruction speculation_confidence should be one of: none, low, medium, high.")
     if kind == "source_intention":
         if not record.get("evidence"):
             warnings.append("Source-intention record has no evidence entries.")
@@ -2514,6 +2640,16 @@ def lint_record(record: dict[str, Any], kind: str) -> list[str]:
         alignment = str(record.get("alignment", "")).strip()
         if alignment and alignment not in allowed:
             warnings.append(f"Comparison alignment `{alignment}` is not one of {sorted(allowed)}.")
+        if "blind_lean_summary" not in record:
+            warnings.append("Comparison lacks `blind_lean_summary`; new cards should preserve the pre-reference Lean reading.")
+        if "source_summary" not in record:
+            warnings.append("Comparison lacks `source_summary`; new cards should separate the reference reveal from the Lean reading.")
+        if "match_analysis" not in record:
+            warnings.append("Comparison lacks `match_analysis`; new cards should explicitly compare blind Lean view against source intention.")
+        if "discrepancies" not in record:
+            warnings.append("Comparison lacks `discrepancies`; new cards should list exact mismatches or bridge obligations.")
+        elif not isinstance(record.get("discrepancies"), list):
+            warnings.append("Comparison `discrepancies` should be a list.")
     return warnings
 
 

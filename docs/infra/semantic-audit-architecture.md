@@ -20,18 +20,54 @@ The pipeline is not a theorem prover. Its job is to coordinate independent atten
 
 ```text
 Lean reconstruction
-  what the current Lean declaration says
+  what the current Lean declaration says, plus a Lean-only role diagnosis and explicit speculation
 
 Source intention
   what the paper or exposition appears to intend
 
 Comparison
-  whether those two independently produced statements match
+  whether the blind Lean reading matches the revealed source intention
 ```
 
 The key rule is decorrelation. A worker answering a Lean reconstruction should not be guided by the
 paper-intention card. A worker answering a source-intention card should not treat the current Lean
-statement as ground truth. The comparison packet is where those views meet.
+statement as ground truth. The comparison packet is where those views meet, but it should preserve
+the order of attention: first read the frozen Lean reconstruction and its speculative source-facing
+role, then reveal the source-intention card, then judge the match.
+
+Lean reconstruction cards therefore separate:
+
+```text
+reconstructed_statement
+  what the Lean declaration asserts
+
+mathematical_role
+  what job the declaration appears to perform in the Lean development
+
+speculative_source_intent
+  a deliberately labeled Lean-only guess about the paper-facing role
+
+speculation_confidence
+  none, low, medium, or high
+```
+
+Comparison cards then record the staged read in separate fields:
+
+```text
+blind_lean_summary
+source_summary
+match_analysis
+discrepancies
+```
+
+This makes failed Lean-only speculation visible instead of letting the comparison worker silently
+read the paper claim back into the Lean statement.
+
+The blind Lean stage is blind to source-intention and comparison cards, not necessarily to all
+paper-flavored prose: Lean docstrings and source comments may already mention paper labels. Lean
+contexts therefore include an attention-protocol caveat and embedded-reference markers when such
+phrases appear. These protocol fields guide the worker's attention but are excluded from the semantic
+context fingerprint.
 
 ## Artifact Model
 
@@ -212,6 +248,10 @@ If the record exists but the fingerprint is missing or different, the packet is 
 If no record exists, the packet is open.
 
 If a comparison is missing prerequisite Lean/source records, the packet is blocked.
+
+If an older durable card lacks newer attention-discipline fields, it remains readable. The controller
+emits lint warnings for new cards missing those fields, and `--strict` can turn those warnings into
+errors during review.
 
 This single invariant is the reason we can safely reuse audit memory across refactors without
 pretending old answers are still current.

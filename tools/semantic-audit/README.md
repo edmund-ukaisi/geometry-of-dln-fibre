@@ -100,6 +100,34 @@ The worker reads `instructions.md` and `context.json`, then edits only `answer.j
 records. It includes the Lean declaration signature, docstring, source excerpt, direct statement
 dependencies, proof-only dependencies, users, and any answered Lean cards for dependencies.
 
+Lean reconstruction answers are intentionally a blind first stage. New templates ask for:
+
+```text
+reconstructed_statement
+mathematical_role
+speculative_source_intent
+speculation_confidence
+```
+
+The speculation fields are not source evidence. They are a labeled Lean-only guess so later
+comparison can notice when the paper reveal confirms, sharpens, or falsifies the initial read.
+If Lean docstrings or source comments already mention paper labels, the generated context calls this
+out under `attention_protocol.embedded_reference_markers`; workers should record that exposure in
+`assumptions`.
+
+Comparison answers use a reveal discipline. The worker first summarizes the frozen Lean card, then
+summarizes the source-intention card, and only then writes the match judgment:
+
+```text
+blind_lean_summary
+source_summary
+match_analysis
+discrepancies
+```
+
+If a comparison bundle is generated with debug overrides while still blocked, `context.json` includes
+`prerequisite_status` so the missing Lean/source card is visible before a worker tries to answer it.
+
 Bundle-generated answer templates include three provenance fields:
 
 ```text
@@ -280,7 +308,7 @@ debug flags. In normal use, keep strata separate:
 ```text
 Lean reconstructions or source-intention cards
   -> rerun audit
-  -> comparisons
+  -> comparisons using blind-Lean-then-reference reveal
   -> rerun audit
   -> API-boundary reviews or follow-up strata
 ```
