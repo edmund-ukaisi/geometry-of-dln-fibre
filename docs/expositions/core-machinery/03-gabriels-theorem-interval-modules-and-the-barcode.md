@@ -54,7 +54,7 @@ $M_{ii}$, is a single $k$ at vertex $i$ with no nonzero arrow.
 
 ??? info "Formalised in Lean — Core.IntervalModule.intervalModule"
 
-    ```lean
+    ```
     def intervalDim (i j : Fin (N + 1)) (l : Fin (N + 1)) : ℕ :=
       if i ≤ l ∧ l ≤ j then 1 else 0
 
@@ -88,7 +88,7 @@ contributing one.
 
 ??? info "Formalised in Lean — Core.IntervalModule"
 
-    ```lean
+    ```
     def dirSum {d d' : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (B : Tuple (k := k) d') :
         Tuple (k := k) (fun l ↦ d l + d' l)
 
@@ -163,7 +163,7 @@ $x \mapsto A_i x$.
     The abstract-chain statement (`Core.Barcode`) packages a barcode as a finite
     family of bars with the trajectory and basis conditions:
 
-    ```lean
+    ```
     def HasBarcode (P : ∀ t, Submodule k (V t)) : Prop :=
       ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)) (line : Fin M → ∀ t, V t),
         (∀ lam, birth lam ≤ death lam)

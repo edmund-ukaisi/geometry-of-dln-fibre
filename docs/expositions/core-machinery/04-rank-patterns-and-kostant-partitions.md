@@ -42,7 +42,7 @@ on $G_{\underline d}$-orbits, so it is an invariant of the isomorphism class.
 
 ??? info "Formalised in Lean — Core.Submult.rankPattern"
 
-    ```lean
+    ```
     noncomputable def rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
         (i j : Fin (N + 1)) (hij : i ≤ j) : ℕ :=
       (submult d A i j hij).rank
@@ -78,7 +78,7 @@ barcode of a tuple with dimension vector $\underline d$.
 
 ??? info "Formalised in Lean — Core.IntervalModule.multiplicityArray"
 
-    ```lean
+    ```
     def multiplicityArray (L : List (Fin (N + 1) × Fin (N + 1))) : ℤ → ℤ → ℤ :=
       fun a b ↦ (L.map (fun p ↦ if a = (p.1 : ℤ) ∧ b = (p.2 : ℤ) then 1 else 0)).sum
     ```
@@ -151,7 +151,7 @@ containing $[i{-}1, j{+}1]$ that were subtracted twice.
     The abstract inversion (Proposition 3.1a) is an `Equiv` between supported
     arrays under the cumulative map `cumul` and the difference map `diff`:
 
-    ```lean
+    ```
     def diff (r : ℤ → ℤ → R) : ℤ → ℤ → R := diffRow (diffCol r)
     -- diff r i j = r i j - r i (j+1) - r (i-1) j + r (i-1) (j+1)
 
@@ -166,7 +166,7 @@ containing $[i{-}1, j{+}1]$ that were subtracted twice.
     tuple-side statement (Proposition 3.1b) is that an arbitrary tuple's rank
     pattern is the cumulative count of its barcode multiplicities:
 
-    ```lean
+    ```
     theorem exists_barcode_rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
         ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
           (∀ lam, birth lam ≤ death lam) ∧
@@ -199,7 +199,7 @@ needed.
 
 ??? info "Formalised in Lean — Core.Gabriel.rankPattern_eq_cumul_barMult"
 
-    ```lean
+    ```
     theorem rankPattern_eq_cumul_barMult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
         ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
           Supported (N : ℤ) (barMult M birth death) ∧

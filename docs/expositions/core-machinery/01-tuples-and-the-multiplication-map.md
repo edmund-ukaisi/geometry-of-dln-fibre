@@ -78,7 +78,7 @@ conditions on that map in §1.3.
 
 ??? info "Formalised in Lean — Core.Setup.Tuple"
 
-    ```lean
+    ```
     abbrev Tuple (d : Fin (N + 1) → ℕ) : Type u :=
       ∀ i : Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k
     ```
@@ -126,7 +126,7 @@ $\operatorname{mult}$.
 
 ??? info "Formalised in Lean — Core.Setup.mult"
 
-    ```lean
+    ```
     def mult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
         Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k :=
       multPrefix d A (Fin.last N)
@@ -136,7 +136,7 @@ $\operatorname{mult}$.
     `multPrefix`. The interval compositions $A_j \cdots A_{i+1}$ are
     `Core.Submult.submult i j`, and the two agree at the top:
 
-    ```lean
+    ```
     theorem mult_eq_submult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
         mult d A = submult d A 0 (Fin.last N) (Fin.zero_le _)
     ```
@@ -230,7 +230,7 @@ quantity.
 
 ??? info "Formalised in Lean — Core.Setup loci"
 
-    ```lean
+    ```
     def productRankLocus (d : Fin (N + 1) → ℕ) (r : ℕ) : Set (Tuple (k := k) d) :=
       {A | (mult d A).rank = r}
 

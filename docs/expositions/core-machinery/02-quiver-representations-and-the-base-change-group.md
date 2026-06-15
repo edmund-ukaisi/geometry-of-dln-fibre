@@ -96,7 +96,7 @@ vertex by vertex.
 
 ??? info "Formalised in Lean — Core.BaseChange"
 
-    ```lean
+    ```
     abbrev BaseChangeGroup (d : Fin (N + 1) → ℕ) : Type u :=
       ∀ v : Fin (N + 1), (Matrix (Fin (d v)) (Fin (d v)) k)ˣ
 
@@ -172,7 +172,7 @@ matrices, and conjugation by invertibles preserves rank.
     The telescoping identity (`submult_baseChange`) and its rank consequence
     (`rankPattern_baseChange`) are proved by induction on the upper index:
 
-    ```lean
+    ```
     theorem submult_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
         (i j : Fin (N + 1)) (hij : i ≤ j) :
         submult d (baseChange P A) i j hij
