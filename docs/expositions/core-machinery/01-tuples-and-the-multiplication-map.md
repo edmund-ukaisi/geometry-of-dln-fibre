@@ -77,6 +77,7 @@ multiplication map defined on it in §1.2 and the subsets defined by rank
 conditions on that map in §1.3.
 
 ??? info "Formalised in Lean — Core.Setup.Tuple"
+
     ```lean
     abbrev Tuple (d : Fin (N + 1) → ℕ) : Type u :=
       ∀ i : Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k
@@ -124,6 +125,7 @@ $\operatorname{mult}$.
    the object of study.
 
 ??? info "Formalised in Lean — Core.Setup.mult"
+
     ```lean
     def mult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
         Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k :=
@@ -227,6 +229,7 @@ which the product rank is constant and orbit codimension is a combinatorial
 quantity.
 
 ??? info "Formalised in Lean — Core.Setup loci"
+
     ```lean
     def productRankLocus (d : Fin (N + 1) → ℕ) (r : ℕ) : Set (Tuple (k := k) d) :=
       {A | (mult d A).rank = r}

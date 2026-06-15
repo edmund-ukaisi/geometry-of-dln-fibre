@@ -95,6 +95,7 @@ $(PQ) \cdot A_\ast = P \cdot (Q \cdot A_\ast)$, because the basis changes compos
 vertex by vertex.
 
 ??? info "Formalised in Lean — Core.BaseChange"
+
     ```lean
     abbrev BaseChangeGroup (d : Fin (N + 1) → ℕ) : Type u :=
       ∀ v : Fin (N + 1), (Matrix (Fin (d v)) (Fin (d v)) k)ˣ

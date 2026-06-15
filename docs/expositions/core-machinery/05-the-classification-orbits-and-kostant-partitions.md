@@ -58,6 +58,7 @@ orbit-invariance of Chapter 2. The forward direction runs through the barcode.
     $P \cdot A_\ast = B_\ast$.
 
 ??? info "Formalised in Lean — Core.Orbit"
+
     ```lean
     theorem orbit_of_rankPattern_eq {d : Fin (N + 1) → ℕ} (A B : Tuple (k := k) d)
         (h : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
@@ -97,6 +98,7 @@ the explicit normal form: every orbit contains exactly one block-diagonal tuple
 $\bigoplus M_{ij}^{\,m_{ij}}$, and the orbit is named by the multiplicities.
 
 ??? info "Formalised in Lean — Core.Orbit.baseChange_normalForm"
+
     ```lean
     theorem baseChange_normalForm {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
         ∃ (L : List (Fin (N + 1) × Fin (N + 1))) (h : foldDim L = d)
@@ -140,6 +142,7 @@ $\operatorname{cumul}/\operatorname{diff}$ bijection turns the right-hand side
 into Kostant partitions.
 
 ??? info "Formalised in Lean — Core.OrbitKostant.orbitKostantEquiv"
+
     ```lean
     abbrev RealizableRank (d : Fin (N + 1) → ℕ) := ↥(Set.range (rankFn (k := k) d))
 

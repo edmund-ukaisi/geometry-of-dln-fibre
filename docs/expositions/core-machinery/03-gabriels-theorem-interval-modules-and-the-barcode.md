@@ -53,6 +53,7 @@ is one-dimensional at every vertex with identity maps throughout; the shortest,
 $M_{ii}$, is a single $k$ at vertex $i$ with no nonzero arrow.
 
 ??? info "Formalised in Lean — Core.IntervalModule.intervalModule"
+
     ```lean
     def intervalDim (i j : Fin (N + 1)) (l : Fin (N + 1)) : ℕ :=
       if i ≤ l ∧ l ≤ j then 1 else 0
@@ -86,6 +87,7 @@ at vertex $l$ is $\sum_{i \le l \le j} m_{ij}$ — each interval covering $l$
 contributing one.
 
 ??? info "Formalised in Lean — Core.IntervalModule"
+
     ```lean
     def dirSum {d d' : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (B : Tuple (k := k) d') :
         Tuple (k := k) (fun l ↦ d l + d' l)

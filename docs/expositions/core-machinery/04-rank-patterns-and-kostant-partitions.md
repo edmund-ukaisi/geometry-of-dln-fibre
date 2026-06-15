@@ -41,6 +41,7 @@ invariance of interval ranks (Chapter 2), the whole array $r_{ij}$ is constant
 on $G_{\underline d}$-orbits, so it is an invariant of the isomorphism class.
 
 ??? info "Formalised in Lean — Core.Submult.rankPattern"
+
     ```lean
     noncomputable def rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
         (i j : Fin (N + 1)) (hij : i ≤ j) : ℕ :=
@@ -76,6 +77,7 @@ picks out, among all arrays of nonnegative integers, those that can be the
 barcode of a tuple with dimension vector $\underline d$.
 
 ??? info "Formalised in Lean — Core.IntervalModule.multiplicityArray"
+
     ```lean
     def multiplicityArray (L : List (Fin (N + 1) × Fin (N + 1))) : ℤ → ℤ → ℤ :=
       fun a b ↦ (L.map (fun p ↦ if a = (p.1 : ℤ) ∧ b = (p.2 : ℤ) then 1 else 0)).sum
@@ -196,6 +198,7 @@ the inversion already proved — no separate argument about indecomposables is
 needed.
 
 ??? info "Formalised in Lean — Core.Gabriel.rankPattern_eq_cumul_barMult"
+
     ```lean
     theorem rankPattern_eq_cumul_barMult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
         ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
