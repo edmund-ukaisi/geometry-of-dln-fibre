@@ -139,6 +139,22 @@ def write_jsonl(path: Path, records: list[dict[str, Any]]) -> None:
     )
 
 
+def jsonl_record_line(record: dict[str, Any]) -> str:
+    return json.dumps(record, sort_keys=True) + "\n"
+
+
+def append_jsonl_records_atomic(path: Path, records: list[dict[str, Any]]) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    old_text = path.read_text(encoding="utf-8") if path.exists() else ""
+    separator = "" if not old_text or old_text.endswith("\n") else "\n"
+    tmp = path.with_name(f".{path.name}.tmp")
+    tmp.write_text(
+        old_text + separator + "".join(jsonl_record_line(record) for record in records),
+        encoding="utf-8",
+    )
+    return tmp
+
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -2924,9 +2940,10 @@ def append_record_to_store(
             if index not in set(duplicate_indexes)
         ]
         records.insert(first, record)
+        write_jsonl(path, records)
     else:
-        records.append(record)
-    write_jsonl(path, records)
+        tmp = append_jsonl_records_atomic(path, [record])
+        tmp.replace(path)
     return result
 
 
@@ -3271,8 +3288,15 @@ def commit_batch_ingest_outcomes(repo: Path, outcomes: list[dict[str, Any]], *, 
     writes = batch_record_write_plan(repo, outcomes, replace=replace)
     temp_paths: list[tuple[Path, Path]] = []
     try:
-        for path, records in writes.items():
-            temp_paths.append((write_jsonl_atomic(path, records), path))
+        if not replace and all(outcome.get("action") == "append" for outcome in outcomes):
+            append_groups: dict[Path, list[dict[str, Any]]] = {}
+            for outcome in outcomes:
+                append_groups.setdefault(Path(outcome["record_path"]), []).append(outcome["_record"])
+            for path, records in append_groups.items():
+                temp_paths.append((append_jsonl_records_atomic(path, records), path))
+        else:
+            for path, records in writes.items():
+                temp_paths.append((write_jsonl_atomic(path, records), path))
         for tmp, path in temp_paths:
             tmp.replace(path)
     finally:
@@ -4053,7 +4077,7 @@ def command_packet_ingest_batch(args: argparse.Namespace) -> None:
 def command_packet_list(args: argparse.Namespace) -> None:
     repo = repo_root_from_script()
     state = load_state_for_cli(repo, args.out_root, args.expect_run_id)
-    packets = state["packets"]
+    packets = sorted(state["packets"], key=packet_sort_key)
     if args.kind:
         packets = [packet for packet in packets if packet.get("packet_kind") == args.kind]
     if args.status:
