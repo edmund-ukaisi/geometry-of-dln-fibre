@@ -65,9 +65,11 @@ The full list and the review function that enforces it are in [`docs/policies/re
 - **Pipeline: markdown → Lean.** Theory develops in markdown (`theory/`, expedition notes). A stable claim is
   formalised in Lean (`lean/`, library `DLNFibre`). The reader-facing digest/expositions live in
   `docs/expositions/`.
-  - *Gotcha:* the **scholium** editor corrupts exposition markdown on save (duplicates the body, mangles `$$`
-    fences). Treat scholium as read-only for these docs; if a doc is hit, restore with
-    `git checkout HEAD -- <file>`.
+  - *Scholium* is a **viewer** (renders these markdown docs with KaTeX + callouts), not an editor; write to its
+    conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
+    recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
+    (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
+    subscripts render as emphasis.
 - **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
   source ([`docs/policies/claims.md`](docs/policies/claims.md)).
 - **Codex** is the independent second model for strategy and review
