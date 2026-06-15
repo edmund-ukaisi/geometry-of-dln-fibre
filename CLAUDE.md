@@ -69,7 +69,8 @@ The full list and the review function that enforces it are in [`docs/policies/re
     conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
     recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
     (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
-    subscripts render as emphasis.
+    subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
+    indented code block (8-space indent) there; top-level fenced code is fine.
 - **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
   source ([`docs/policies/claims.md`](docs/policies/claims.md)).
 - **Codex** is the independent second model for strategy and review
