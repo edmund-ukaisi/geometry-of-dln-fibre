@@ -59,17 +59,15 @@ orbit-invariance of Chapter 2. The forward direction runs through the barcode.
 
 ??? info "Formalised in Lean — Core.Orbit"
 
-    ```
-    theorem orbit_of_rankPattern_eq {d : Fin (N + 1) → ℕ} (A B : Tuple (k := k) d)
-        (h : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
-          rankPattern d A i j hij = rankPattern d B i j hij) :
-        ∃ P : BaseChangeGroup (k := k) d, P • A = B
+        theorem orbit_of_rankPattern_eq {d : Fin (N + 1) → ℕ} (A B : Tuple (k := k) d)
+            (h : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+              rankPattern d A i j hij = rankPattern d B i j hij) :
+            ∃ P : BaseChangeGroup (k := k) d, P • A = B
 
-    theorem rankPattern_eq_iff_orbit {d : Fin (N + 1) → ℕ} (A B : Tuple (k := k) d) :
-        (∀ (i j : Fin (N + 1)) (hij : i ≤ j),
-            rankPattern d A i j hij = rankPattern d B i j hij)
-          ↔ ∃ P : BaseChangeGroup (k := k) d, P • A = B
-    ```
+        theorem rankPattern_eq_iff_orbit {d : Fin (N + 1) → ℕ} (A B : Tuple (k := k) d) :
+            (∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+                rankPattern d A i j hij = rankPattern d B i j hij)
+              ↔ ∃ P : BaseChangeGroup (k := k) d, P • A = B
 
     `orbit_of_rankPattern_eq` is the forward construction: equal rank patterns
     give equal bar-multiplicity arrays (`diff_cumul`), a relabelling of bars, a
@@ -99,14 +97,12 @@ $\bigoplus M_{ij}^{\,m_{ij}}$, and the orbit is named by the multiplicities.
 
 ??? info "Formalised in Lean — Core.Orbit.baseChange_normalForm"
 
-    ```
-    theorem baseChange_normalForm {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
-        ∃ (L : List (Fin (N + 1) × Fin (N + 1))) (h : foldDim L = d)
-          (P : BaseChangeGroup (k := k) d),
-          P • A = h ▸ intervalDirectSum L ∧ (∀ p ∈ L, p.1 ≤ p.2) ∧
-          ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
-            (rankPattern d A i j hij : ℤ) = cumul (N : ℤ) (multiplicityArray L) (i : ℤ) (j : ℤ)
-    ```
+        theorem baseChange_normalForm {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
+            ∃ (L : List (Fin (N + 1) × Fin (N + 1))) (h : foldDim L = d)
+              (P : BaseChangeGroup (k := k) d),
+              P • A = h ▸ intervalDirectSum L ∧ (∀ p ∈ L, p.1 ≤ p.2) ∧
+              ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+                (rankPattern d A i j hij : ℤ) = cumul (N : ℤ) (multiplicityArray L) (i : ℤ) (j : ℤ)
 
     Built from the complete invariant by exhibiting `intervalDirectSum L` (the
     list $L$ of the tuple's own bars) as a tuple with the same rank pattern as
@@ -143,14 +139,12 @@ into Kostant partitions.
 
 ??? info "Formalised in Lean — Core.OrbitKostant.orbitKostantEquiv"
 
-    ```
-    abbrev RealizableRank (d : Fin (N + 1) → ℕ) := ↥(Set.range (rankFn (k := k) d))
+        abbrev RealizableRank (d : Fin (N + 1) → ℕ) := ↥(Set.range (rankFn (k := k) d))
 
-    noncomputable def orbitKostantEquiv (d : Fin (N + 1) → ℕ) :
-        Quotient (orbitSetoid (k := k) d) ≃ RealizableRank (k := k) d :=
-      (Quotient.congrRight (fun A B ↦ (rankFn_eq_iff_orbit A B).symm)).trans
-        (Setoid.quotientKerEquivRange (rankFn d))
-    ```
+        noncomputable def orbitKostantEquiv (d : Fin (N + 1) → ℕ) :
+            Quotient (orbitSetoid (k := k) d) ≃ RealizableRank (k := k) d :=
+          (Quotient.congrRight (fun A B ↦ (rankFn_eq_iff_orbit A B).symm)).trans
+            (Setoid.quotientKerEquivRange (rankFn d))
 
     `orbitSetoid d` is the orbit relation; `rankFn d A` is the rank pattern as a
     total function (the complete invariant); `RealizableRank d` is its range.

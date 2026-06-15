@@ -54,16 +54,14 @@ $M_{ii}$, is a single $k$ at vertex $i$ with no nonzero arrow.
 
 ??? info "Formalised in Lean — Core.IntervalModule.intervalModule"
 
-    ```
-    def intervalDim (i j : Fin (N + 1)) (l : Fin (N + 1)) : ℕ :=
-      if i ≤ l ∧ l ≤ j then 1 else 0
+        def intervalDim (i j : Fin (N + 1)) (l : Fin (N + 1)) : ℕ :=
+          if i ≤ l ∧ l ≤ j then 1 else 0
 
-    def intervalActive (i j : Fin (N + 1)) (t : Fin N) : Prop :=
-      i ≤ t.castSucc ∧ t.succ ≤ j
+        def intervalActive (i j : Fin (N + 1)) (t : Fin N) : Prop :=
+          i ≤ t.castSucc ∧ t.succ ≤ j
 
-    def intervalModule (i j : Fin (N + 1)) : Tuple (k := k) (intervalDim i j) :=
-      fun t _ _ ↦ if intervalActive i j t then (1 : k) else 0
-    ```
+        def intervalModule (i j : Fin (N + 1)) : Tuple (k := k) (intervalDim i j) :=
+          fun t _ _ ↦ if intervalActive i j t then (1 : k) else 0
 
     `intervalDim i j` is the indicator dimension vector ($1$ on $[i,j]$); an edge
     is `intervalActive` when both its endpoints lie in $[i,j]$, and there the
@@ -88,15 +86,13 @@ contributing one.
 
 ??? info "Formalised in Lean — Core.IntervalModule"
 
-    ```
-    def dirSum {d d' : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (B : Tuple (k := k) d') :
-        Tuple (k := k) (fun l ↦ d l + d' l)
+        def dirSum {d d' : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (B : Tuple (k := k) d') :
+            Tuple (k := k) (fun l ↦ d l + d' l)
 
-    noncomputable def intervalDirectSum :
-        (L : List (Fin (N + 1) × Fin (N + 1))) → Tuple (k := k) (foldDim L)
-      | [] => zeroTuple
-      | p :: ps => dirSum (intervalModule p.1 p.2) (intervalDirectSum ps)
-    ```
+        noncomputable def intervalDirectSum :
+            (L : List (Fin (N + 1) × Fin (N + 1))) → Tuple (k := k) (foldDim L)
+          | [] => zeroTuple
+          | p :: ps => dirSum (intervalModule p.1 p.2) (intervalDirectSum ps)
 
     `dirSum` places two tuples in block-diagonal position;
     `intervalDirectSum L` folds it over a list `L` of interval endpoints (the
@@ -163,24 +159,22 @@ $x \mapsto A_i x$.
     The abstract-chain statement (`Core.Barcode`) packages a barcode as a finite
     family of bars with the trajectory and basis conditions:
 
-    ```
-    def HasBarcode (P : ∀ t, Submodule k (V t)) : Prop :=
-      ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)) (line : Fin M → ∀ t, V t),
-        (∀ lam, birth lam ≤ death lam)
-        ∧ (∀ lam t, ¬ (birth lam ≤ t ∧ t ≤ death lam) → line lam t = 0)
-        ∧ (∀ lam t, birth lam ≤ t → t ≤ death lam → line lam t ≠ 0)
-        ∧ (∀ lam (e : Fin N), birth lam ≤ e.castSucc → e.succ ≤ death lam →
-              f e (line lam e.castSucc) = line lam e.succ)
-        ∧ (∀ lam (e : Fin N), death lam < e.succ → f e (line lam e.castSucc) = 0)
-        ∧ (∀ t, iSupIndep (fun lam => k ∙ line lam t))
-        ∧ (∀ t, ⨆ lam, (k ∙ line lam t) = P t)
+        def HasBarcode (P : ∀ t, Submodule k (V t)) : Prop :=
+          ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)) (line : Fin M → ∀ t, V t),
+            (∀ lam, birth lam ≤ death lam)
+            ∧ (∀ lam t, ¬ (birth lam ≤ t ∧ t ≤ death lam) → line lam t = 0)
+            ∧ (∀ lam t, birth lam ≤ t → t ≤ death lam → line lam t ≠ 0)
+            ∧ (∀ lam (e : Fin N), birth lam ≤ e.castSucc → e.succ ≤ death lam →
+                  f e (line lam e.castSucc) = line lam e.succ)
+            ∧ (∀ lam (e : Fin N), death lam < e.succ → f e (line lam e.castSucc) = 0)
+            ∧ (∀ t, iSupIndep (fun lam => k ∙ line lam t))
+            ∧ (∀ t, ⨆ lam, (k ∙ line lam t) = P t)
 
-    theorem hasBarcode_of_isSubrep [∀ t, FiniteDimensional k (V t)]
-        (P : ∀ t, Submodule k (V t)) (hP : IsSubrep V f P) : HasBarcode V f P
+        theorem hasBarcode_of_isSubrep [∀ t, FiniteDimensional k (V t)]
+            (P : ∀ t, Submodule k (V t)) (hP : IsSubrep V f P) : HasBarcode V f P
 
-    theorem hasBarcode_tuple (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
-        HasBarcode (chainSpace k d) (chainEdge d A) (fun _ ↦ ⊤)
-    ```
+        theorem hasBarcode_tuple (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+            HasBarcode (chainSpace k d) (chainEdge d A) (fun _ ↦ ⊤)
 
     The last two clauses of `HasBarcode` are existence's heart: at every vertex
     the bar-lines are independent (`iSupIndep`) and span (`⨆ = P t`), so they

@@ -78,10 +78,8 @@ conditions on that map in §1.3.
 
 ??? info "Formalised in Lean — Core.Setup.Tuple"
 
-    ```
-    abbrev Tuple (d : Fin (N + 1) → ℕ) : Type u :=
-      ∀ i : Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k
-    ```
+        abbrev Tuple (d : Fin (N + 1) → ℕ) : Type u :=
+          ∀ i : Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k
 
     A tuple is the dependent function $i \mapsto A_i$. The $N+1$ vertices
     $0,\ldots,N$ are indexed by `Fin (N+1)` (the argument `d`) and the $N$ maps
@@ -126,20 +124,16 @@ $\operatorname{mult}$.
 
 ??? info "Formalised in Lean — Core.Setup.mult"
 
-    ```
-    def mult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
-        Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k :=
-      multPrefix d A (Fin.last N)
-    ```
+        def mult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+            Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k :=
+          multPrefix d A (Fin.last N)
 
     `mult` is the composite $A_N \cdots A_1$, assembled from the prefix products
     `multPrefix`. The interval compositions $A_j \cdots A_{i+1}$ are
     `Core.Submult.submult i j`, and the two agree at the top:
 
-    ```
-    theorem mult_eq_submult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
-        mult d A = submult d A 0 (Fin.last N) (Fin.zero_le _)
-    ```
+        theorem mult_eq_submult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+            mult d A = submult d A 0 (Fin.last N) (Fin.zero_le _)
 
 ## 1.3 The loci we study
 
@@ -230,17 +224,15 @@ quantity.
 
 ??? info "Formalised in Lean — Core.Setup loci"
 
-    ```
-    def productRankLocus (d : Fin (N + 1) → ℕ) (r : ℕ) : Set (Tuple (k := k) d) :=
-      {A | (mult d A).rank = r}
+        def productRankLocus (d : Fin (N + 1) → ℕ) (r : ℕ) : Set (Tuple (k := k) d) :=
+          {A | (mult d A).rank = r}
 
-    def productRankLocusLE (d : Fin (N + 1) → ℕ) (r : ℕ) : Set (Tuple (k := k) d) :=
-      {A | (mult d A).rank ≤ r}
+        def productRankLocusLE (d : Fin (N + 1) → ℕ) (r : ℕ) : Set (Tuple (k := k) d) :=
+          {A | (mult d A).rank ≤ r}
 
-    def fibre (d : Fin (N + 1) → ℕ)
-        (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) : Set (Tuple (k := k) d) :=
-      {A | mult d A = B}
-    ```
+        def fibre (d : Fin (N + 1) → ℕ)
+            (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) : Set (Tuple (k := k) d) :=
+          {A | mult d A = B}
 
     `productRankLocus` is $\Sigma^r$, `productRankLocusLE` is
     $\overline{\Sigma}^{\,r}$, and `fibre` is $\operatorname{mult}^{-1}(B)$, as

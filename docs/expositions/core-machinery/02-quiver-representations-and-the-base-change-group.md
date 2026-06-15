@@ -96,19 +96,17 @@ vertex by vertex.
 
 ??? info "Formalised in Lean — Core.BaseChange"
 
-    ```
-    abbrev BaseChangeGroup (d : Fin (N + 1) → ℕ) : Type u :=
-      ∀ v : Fin (N + 1), (Matrix (Fin (d v)) (Fin (d v)) k)ˣ
+        abbrev BaseChangeGroup (d : Fin (N + 1) → ℕ) : Type u :=
+          ∀ v : Fin (N + 1), (Matrix (Fin (d v)) (Fin (d v)) k)ˣ
 
-    def baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) :
-        Tuple (k := k) d :=
-      fun i ↦ Units.val (P i.succ) * A i * Units.val ((P i.castSucc)⁻¹)
+        def baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) :
+            Tuple (k := k) d :=
+          fun i ↦ Units.val (P i.succ) * A i * Units.val ((P i.castSucc)⁻¹)
 
-    instance : MulAction (BaseChangeGroup (k := k) d) (Tuple (k := k) d) where
-      smul := baseChange
-      one_smul := baseChange_one
-      mul_smul := baseChange_mul
-    ```
+        instance : MulAction (BaseChangeGroup (k := k) d) (Tuple (k := k) d) where
+          smul := baseChange
+          one_smul := baseChange_one
+          mul_smul := baseChange_mul
 
     `BaseChangeGroup d` is $G_{\underline d}$, a unit (invertible matrix) at each
     of the $N+1$ vertices. On edge $i$ (Lean's $0$-based index for the paper's
@@ -172,16 +170,14 @@ matrices, and conjugation by invertibles preserves rank.
     The telescoping identity (`submult_baseChange`) and its rank consequence
     (`rankPattern_baseChange`) are proved by induction on the upper index:
 
-    ```
-    theorem submult_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
-        (i j : Fin (N + 1)) (hij : i ≤ j) :
-        submult d (baseChange P A) i j hij
-          = Units.val (P j) * submult d A i j hij * Units.val ((P i)⁻¹)
+        theorem submult_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+            (i j : Fin (N + 1)) (hij : i ≤ j) :
+            submult d (baseChange P A) i j hij
+              = Units.val (P j) * submult d A i j hij * Units.val ((P i)⁻¹)
 
-    theorem rankPattern_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
-        (i j : Fin (N + 1)) (hij : i ≤ j) :
-        rankPattern d (baseChange P A) i j hij = rankPattern d A i j hij
-    ```
+        theorem rankPattern_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+            (i j : Fin (N + 1)) (hij : i ≤ j) :
+            rankPattern d (baseChange P A) i j hij = rankPattern d A i j hij
 
     Here `submult d A i j` is the interval composition $A_j \cdots A_{i+1}$ from
     Chapter 1; `rankPattern d A i j` is its rank, the array $r_{ij}$ treated in

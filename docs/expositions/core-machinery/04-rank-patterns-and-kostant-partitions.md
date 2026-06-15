@@ -42,14 +42,12 @@ on $G_{\underline d}$-orbits, so it is an invariant of the isomorphism class.
 
 ??? info "Formalised in Lean — Core.Submult.rankPattern"
 
-    ```
-    noncomputable def rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
-        (i j : Fin (N + 1)) (hij : i ≤ j) : ℕ :=
-      (submult d A i j hij).rank
+        noncomputable def rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
+            (i j : Fin (N + 1)) (hij : i ≤ j) : ℕ :=
+          (submult d A i j hij).rank
 
-    theorem rankPattern_self [Nontrivial k] (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
-        (i : Fin (N + 1)) : rankPattern d A i i le_rfl = d i
-    ```
+        theorem rankPattern_self [Nontrivial k] (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
+            (i : Fin (N + 1)) : rankPattern d A i i le_rfl = d i
 
     `rankPattern d A i j` is the rank of the interval composition
     `submult d A i j` (Chapter 1); `rankPattern_self` is the diagonal convention
@@ -78,10 +76,8 @@ barcode of a tuple with dimension vector $\underline d$.
 
 ??? info "Formalised in Lean — Core.IntervalModule.multiplicityArray"
 
-    ```
-    def multiplicityArray (L : List (Fin (N + 1) × Fin (N + 1))) : ℤ → ℤ → ℤ :=
-      fun a b ↦ (L.map (fun p ↦ if a = (p.1 : ℤ) ∧ b = (p.2 : ℤ) then 1 else 0)).sum
-    ```
+        def multiplicityArray (L : List (Fin (N + 1) × Fin (N + 1))) : ℤ → ℤ → ℤ :=
+          fun a b ↦ (L.map (fun p ↦ if a = (p.1 : ℤ) ∧ b = (p.2 : ℤ) then 1 else 0)).sum
 
     A barcode is carried as a list `L` of interval endpoints (Chapter 3);
     `multiplicityArray L` counts how often each $(a,b)$ occurs, the array
@@ -151,30 +147,26 @@ containing $[i{-}1, j{+}1]$ that were subtracted twice.
     The abstract inversion (Proposition 3.1a) is an `Equiv` between supported
     arrays under the cumulative map `cumul` and the difference map `diff`:
 
-    ```
-    def diff (r : ℤ → ℤ → R) : ℤ → ℤ → R := diffRow (diffCol r)
-    -- diff r i j = r i j - r i (j+1) - r (i-1) j + r (i-1) (j+1)
+        def diff (r : ℤ → ℤ → R) : ℤ → ℤ → R := diffRow (diffCol r)
+        -- diff r i j = r i j - r i (j+1) - r (i-1) j + r (i-1) (j+1)
 
-    noncomputable def cumul (N : ℤ) (m : ℤ → ℤ → R) : ℤ → ℤ → R := cumulRow (cumulCol N m)
-    -- cumul N m i j = ∑_{k ≤ i} ∑_{j ≤ l ≤ N} m k l
+        noncomputable def cumul (N : ℤ) (m : ℤ → ℤ → R) : ℤ → ℤ → R := cumulRow (cumulCol N m)
+        -- cumul N m i j = ∑_{k ≤ i} ∑_{j ≤ l ≤ N} m k l
 
-    noncomputable def cumulDiffEquiv (N : ℤ) : SuppArray N R ≃ SuppArray N R
-    ```
+        noncomputable def cumulDiffEquiv (N : ℤ) : SuppArray N R ≃ SuppArray N R
 
     `cumulDiffEquiv` packages `diff_cumul` and `cumul_diff` (the two telescoping
     identities) as a bijection on arrays supported off the index walls. The
     tuple-side statement (Proposition 3.1b) is that an arbitrary tuple's rank
     pattern is the cumulative count of its barcode multiplicities:
 
-    ```
-    theorem exists_barcode_rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
-        ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
-          (∀ lam, birth lam ≤ death lam) ∧
-          (∀ t, (Finset.univ.filter (fun lam ↦ birth lam ≤ t ∧ t ≤ death lam)).card = d t) ∧
-          ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
-            rankPattern d A i j hij
-              = (Finset.univ.filter (fun lam ↦ birth lam ≤ i ∧ j ≤ death lam)).card
-    ```
+        theorem exists_barcode_rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+            ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
+              (∀ lam, birth lam ≤ death lam) ∧
+              (∀ t, (Finset.univ.filter (fun lam ↦ birth lam ≤ t ∧ t ≤ death lam)).card = d t) ∧
+              ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+                rankPattern d A i j hij
+                  = (Finset.univ.filter (fun lam ↦ birth lam ≤ i ∧ j ≤ death lam)).card
 
     Read literally: there is a barcode whose alive-bar count at each vertex is
     $d_t$ (the Kostant constraint) and whose count of bars containing $[i,j]$ is
@@ -199,15 +191,13 @@ needed.
 
 ??? info "Formalised in Lean — Core.Gabriel.rankPattern_eq_cumul_barMult"
 
-    ```
-    theorem rankPattern_eq_cumul_barMult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
-        ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
-          Supported (N : ℤ) (barMult M birth death) ∧
-          diff (cumul (N : ℤ) (barMult M birth death)) = barMult M birth death ∧
-          ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
-            (rankPattern d A i j hij : ℤ)
-              = cumul (N : ℤ) (barMult M birth death) (i : ℤ) (j : ℤ)
-    ```
+        theorem rankPattern_eq_cumul_barMult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+            ∃ (M : ℕ) (birth death : Fin M → Fin (N + 1)),
+              Supported (N : ℤ) (barMult M birth death) ∧
+              diff (cumul (N : ℤ) (barMult M birth death)) = barMult M birth death ∧
+              ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+                (rankPattern d A i j hij : ℤ)
+                  = cumul (N : ℤ) (barMult M birth death) (i : ℤ) (j : ℤ)
 
     The bar-multiplicity array `barMult` satisfies `diff (cumul barMult) =
     barMult` (the inversion `diff_cumul`) and its cumulative form is the rank
