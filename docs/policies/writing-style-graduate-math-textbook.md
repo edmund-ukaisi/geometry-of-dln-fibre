@@ -105,6 +105,22 @@ This observation reduces the geometric question to a finite orbit
 combinatorics problem.
 ```
 
+## Register
+
+The target is a classical graduate mathematics text — Arnold's expository books
+are the model: object-level, direct, and motivated by the mathematics itself.
+State the object, the claim, and the geometry that makes the claim true, and let
+those carry the reader. Motivation comes from *what the mathematics is*, not from
+rhetoric about the reader or about the exposition.
+
+This is not the register of popular-mathematics writing. Do not narrate the
+exposition ("the road is short", "we now observe that…"), address the reader's
+supposed level ("the answer every schoolchild knows", "recall from your first
+course"), or substitute a metaphor for the mathematics ("coordinates are a
+distraction", "the machine that counts them"). A leading rhetorical question
+("What is the simplest chain?") is scaffolding — cut it and state the answer.
+Vividness is earned by an exact picture or a sharp example, not by tone.
+
 ## Structure Of An Exposition
 
 A typical file should have:
@@ -377,6 +393,14 @@ Avoid:
 - proof details inline when they break the main line;
 - vague evaluative prose such as "deep", "remarkable", or "natural" without
   saying what mathematical role the fact plays;
-- citations as substitutes for explanation.
+- citations as substitutes for explanation;
+- narration about the exposition itself ("the road is short", "we now turn to",
+  roadmap flourishes) — let the section headings do this work;
+- condescension or appeals to the reader's level ("every schoolchild knows",
+  "this is easy", "recall from undergrad");
+- leading rhetorical questions used as scaffolding — state the answer instead;
+- metaphors that stand in for the mathematics rather than an exact, load-bearing
+  picture (a barcode drawn from the actual decomposition earns its place; "the
+  machine that counts them" does not).
 
 Use the paper as source material, but write the exposition as a teaching text.
