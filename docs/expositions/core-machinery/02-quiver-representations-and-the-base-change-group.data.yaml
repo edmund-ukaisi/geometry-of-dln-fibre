@@ -1,0 +1,56 @@
+threads:
+- id: c-0faefb76
+  kind: anchored
+  status: open
+  anchor: equioriented type-A quiver
+  anchor_prefix: "he diagram.\n\n!!! definition \"Definition 2.1 — The "
+  anchor_suffix: |2-
+     and its representations"
+        The **equioriented t
+  created_at: "2026-06-15T17:12:14"
+  updated_at: "2026-06-15T17:12:14"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-15T17:12:14"
+    text: Hmm .. this is not very textbook like.. You should develop quiver, equioriented
+      and then the types.
+    id: p-0c2900c0
+- id: c-057bc3e8
+  kind: anchored
+  status: open
+  anchor: Theorem 2.4 of the paper
+  anchor_prefix: |-
+    ctly when they are isomorphic as representations
+    (
+  anchor_suffix: ); in this development that identification is buil
+  created_at: "2026-06-15T17:16:46"
+  updated_at: "2026-06-15T17:16:46"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-15T17:16:46"
+    text: I think this kind of reference should just become proper academic inline
+      citation? Something like Lehalleur and Rimanyi, Theorem 2.4
+    id: p-4662e2f3
+- id: c-39a0dd85
+  kind: anchored
+  status: open
+  anchor: interval composition
+  anchor_prefix: ".\n\nThe reason is that base change conjugates each "
+  anchor_suffix: |2-
+     by invertible
+    matrices, and conjugation by invert
+  created_at: "2026-06-15T17:22:19"
+  updated_at: "2026-06-15T17:22:58"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-15T17:22:19"
+    text: What is "interval" here? I think this term appear rather abruptly.
+    id: p-01c28a92
+  - author: edmund.lau
+    date: "2026-06-15T17:22:39"
+    text: Ah, was it introduced in first chapter?
+    id: p-0b01f167
+  - author: edmund.lau
+    date: "2026-06-15T17:22:58"
+    text: Right it was.
+    id: p-e4fa72ab
