@@ -180,3 +180,21 @@ engine-verifiable rank-locus/orbit-closure-codimension fact, and build the AG li
 programme. Controller recommendation: honest-hybrid for the immediate Proved-modulo-one-checkable-fact
 result + commission the AG-library build as a separate sub-expedition (so we get the result now AND the
 bedrock, without blocking one on the other).
+
+## PHASE B — DECISION: hybrid-now, discharge-later (operator, 2026-06-18)
+
+Operator: do the hybrid in DEFINED-OBJECTS form now; the full AG (`voigt`) discharge is a later, separate
+AG sub-expedition. Structure so B-full = proving ONE named lemma against a fixed interface, nothing
+rebuilt. Layer to land now (`Core.OrbitCodim`):
+- `orbitRankLocus M := {A | ∀ i j h, rankPattern A i j h ≤ rankPattern M i j h}` (engine-concrete; = orbit
+  closure for type A by Thm 3.8, cited/engine-verifiable).
+- `codimRep` — lightest faithful Mathlib def of the codimension of a closed subset of Rep_d (Ideal.height
+  of the vanishing ideal, or topological codim; Codex-pick). FALLBACK if it's a variety-scaffolding rabbit
+  hole: abstract `codimO : ℕ` parameter + document codimRep as a B-full def. Either is dischargeable.
+- Conditional headline: `(hVoigt : codimRep (orbitRankLocus M) = orbitLinearCodim M) ⊢
+  (codimRep (orbitRankLocus M) : ℤ) = Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}` (trivial from
+  orbitLinearCodim_eq_multSum). `hVoigt` = THE single open obligation (Voigt's lemma), discharged later.
+- Statement card: Proved (conditional + formula) / Assumed (hVoigt) / Cited (Thm 3.8 closure order;
+  Voigt/KMS codim). Verified on (2,2,2) by rankloc-probe (3,4,4,8). axiom-clean (no global axiom).
+The `voigt` discharge (the AG dimension-theory library) is queued as its own sub-expedition for when the
+operator calls it; the hybrid does not make it smaller, only crisp and non-blocking.
