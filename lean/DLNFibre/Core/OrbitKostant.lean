@@ -23,14 +23,16 @@ Two forms of the bijection:
 
 * `orbitKostantEquiv d : Quotient (orbitSetoid d) ≃ RealizableRank d` — orbits ↔ realizable **rank
   patterns** (the honest building block; `⟦A⟧ ↦ rankFn A`).
-* `orbitKostantPartitionEquiv d : Quotient (orbitSetoid d) ≃ RealizableKostant d` — the **literal**
-  Cor 2.9: orbits ↔ realizable **Kostant partitions** (multiplicity arrays). It composes
-  `orbitKostantEquiv` with the abstract inversion `RankPattern.cumulDiffEquiv.symm = diff`, after
-  embedding the `ℕ`-valued `Fin`-indexed rank pattern into the `ℤ`-indexed supported-array shape
-  (`embedRank`). The codomain element `⟦A⟧ ↦ diff (rankFn A)` is the genuine Kostant partition on
-  the support `i ≤ j`; below the diagonal it carries `rankFn`-convention artifacts (the bijection is
-  exact regardless). The realizing tuple of any rank pattern is the interval direct sum `⊕ M^{m̄}`
-  (`Orbit.baseChange_normalForm`).
+* `orbitDiffArrayEquiv d : Quotient (orbitSetoid d) ≃ RealizableDiffArray d` — orbits ↔ the
+  **second-difference (multiplicity-array) form** of the realizable rank patterns,
+  `⟦A⟧ ↦ diff (rankFn A)`. It composes `orbitKostantEquiv` with the abstract inversion
+  `RankPattern.cumulDiffEquiv.symm = diff`, after embedding the `ℕ`-valued `Fin`-indexed rank
+  pattern into the `ℤ`-indexed supported-array shape (`embedRank`). **On `i ≤ j` the image is
+  exactly the paper's Kostant partition** (the interval multiplicities `m̄`, verified on the
+  witness); below the diagonal it carries `rankFn`-convention artifacts (e.g. `-3`) — so the *full*
+  array is the `diff`-form, not literally a Kostant partition. Restricting the codomain to a genuine
+  nonnegative `i ≤ j` Kostant partition is roadmapped (needs the rank-pattern inequalities for
+  nonnegativity). The realizing tuple is `⊕ M^{m̄}` (`Orbit.baseChange_normalForm`).
 
 **Typeclass.** `Field k`. **Dependency rule:** never import `DLNFibre.DLN`.
 -/
@@ -95,14 +97,20 @@ noncomputable def orbitKostantEquiv (d : Fin (N + 1) → ℕ) :
     ((orbitKostantEquiv d (Quotient.mk _ A) : RealizableRank (k := k) d)
       : Fin (N + 1) → Fin (N + 1) → ℕ) = rankFn d A := rfl
 
-/-! ## The literal Kostant codomain: one inversion further (Cor 2.9)
+/-! ## One inversion further: the multiplicity-array form (towards Cor 2.9)
 
 `orbitKostantEquiv` lands in **rank patterns**; the paper's Cor 2.9 phrases the bijection against
 **Kostant partitions** — the multiplicity arrays `m̄ = diff r`. Composing with the abstract
-inversion `RankPattern.cumulDiffEquiv` (whose `.symm` is `diff`) closes that last step. The bridge
-is `embedRank`: a finite `ℕ`-valued rank pattern `Fin (N+1) → Fin (N+1) → ℕ` cast into the
-`ℤ`-indexed `ℤ`-valued supported-array shape `cumulDiffEquiv` operates on (zero outside the square
-`[0,N]²`, so `Supported` holds by the guard, for free). -/
+inversion `RankPattern.cumulDiffEquiv` (whose `.symm` is `diff`) takes that step. The bridge is
+`embedRank`: a finite `ℕ`-valued rank pattern `Fin (N+1) → Fin (N+1) → ℕ` cast into the `ℤ`-indexed
+`ℤ`-valued supported-array shape `cumulDiffEquiv` operates on (zero outside the square `[0,N]²`, so
+`Supported` holds by the guard, for free).
+
+**Scope of the name.** The result is `orbitDiffArrayEquiv`, an `Equiv` onto the `diff`-image. On
+`i ≤ j` this image is exactly the paper's Kostant partition (verified on the witness); below the
+diagonal it carries artifacts of `rankFn`'s lower-triangle-zero convention, so the *full* array is
+the `diff`-form, not literally a Kostant partition (which is nonnegative, supported on `i ≤ j`). The
+genuinely-literal Cor 2.9 codomain — the nonnegative `i ≤ j` restriction — is roadmapped. -/
 
 /-- An integer index lies in the `Fin (N+1)` range `0 ≤ i ≤ N` (decidable, for the guard `if`). -/
 abbrev InFinRange (N : ℕ) (i : ℤ) : Prop := 0 ≤ i ∧ i ≤ (N : ℤ)
@@ -152,50 +160,53 @@ theorem embedRank_injective {N : ℕ} : Function.Injective (embedRank (N := N)) 
   rw [embedRank_apply_fin, embedRank_apply_fin] at hij
   exact_mod_cast hij
 
-/-- The **Kostant multiplicity array** `m̄ = diff r` of a rank pattern, via the abstract inversion
+/-- The **second-difference array** `m̄ = diff r` of a rank pattern, via the abstract inversion
 `cumulDiffEquiv.symm`. On the support `i ≤ j` (where Kostant partitions live) this is the paper's
 interval-multiplicity partition; below the diagonal it carries `rankFn`-convention artifacts (see
-the witness). -/
-noncomputable def kostantArrayOfRank {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) :
+the witness), so it is the `diff`-form, not literally a Kostant partition. -/
+noncomputable def diffArrayOfRank {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) :
     SuppArray (N : ℤ) ℤ :=
   (cumulDiffEquiv (R := ℤ) (N := (N : ℤ))).symm (embedRank r)
 
-/-- `kostantArrayOfRank r` is literally the second finite difference of the embedded pattern. -/
-@[simp] theorem kostantArrayOfRank_val {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) :
-    (kostantArrayOfRank r).1 = diff (embedRank r).1 := rfl
+/-- `diffArrayOfRank r` is literally the second finite difference of the embedded pattern. -/
+@[simp] theorem diffArrayOfRank_val {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) :
+    (diffArrayOfRank r).1 = diff (embedRank r).1 := rfl
 
-/-- `kostantArrayOfRank` is injective: it is `diff ∘ embedRank`, both injective (`diff` via
-`cumulDiffEquiv`). The multiplicity array is therefore a complete invariant of the rank pattern. -/
-theorem kostantArrayOfRank_injective {N : ℕ} :
-    Function.Injective (kostantArrayOfRank (N := N)) := fun _ _ h =>
+/-- `diffArrayOfRank` is injective: it is `diff ∘ embedRank`, both injective (`diff` via
+`cumulDiffEquiv`). The second-difference array is therefore a complete invariant of the rank
+pattern. -/
+theorem diffArrayOfRank_injective {N : ℕ} :
+    Function.Injective (diffArrayOfRank (N := N)) := fun _ _ h =>
   embedRank_injective ((cumulDiffEquiv (R := ℤ) (N := (N : ℤ))).symm.injective h)
 
-/-- The realizable Kostant partitions of `d`: the `diff`-image (multiplicity arrays) of the
-realizable rank patterns. The literal Kostant codomain of Cor 2.9. -/
-abbrev RealizableKostant (d : Fin (N + 1) → ℕ) :=
-  ↥(kostantArrayOfRank (N := N) '' Set.range (rankFn (k := k) d))
+/-- The realizable second-difference arrays of `d`: the `diff`-image of the realizable rank
+patterns. On `i ≤ j` each is the paper's Kostant partition (see `orbitDiffArrayEquiv`). -/
+abbrev RealizableDiffArray (d : Fin (N + 1) → ℕ) :=
+  ↥(diffArrayOfRank (N := N) '' Set.range (rankFn (k := k) d))
 
-/-- Realizable rank patterns ↔ realizable Kostant partitions, by the corestriction of `diff` (one
-inversion further than `orbitKostantEquiv`). -/
-noncomputable def rankKostantEquiv (d : Fin (N + 1) → ℕ) :
-    RealizableRank (k := k) d ≃ RealizableKostant (k := k) d :=
-  Equiv.Set.image (kostantArrayOfRank (N := N)) (Set.range (rankFn (k := k) d))
-    (kostantArrayOfRank_injective (N := N))
+/-- Realizable rank patterns ↔ realizable second-difference arrays, by the corestriction of `diff`
+(one inversion further than `orbitKostantEquiv`). -/
+noncomputable def rankDiffArrayEquiv (d : Fin (N + 1) → ℕ) :
+    RealizableRank (k := k) d ≃ RealizableDiffArray (k := k) d :=
+  Equiv.Set.image (diffArrayOfRank (N := N)) (Set.range (rankFn (k := k) d))
+    (diffArrayOfRank_injective (N := N))
 
-/-- **The literal orbit ↔ Kostant-partition bijection (Le Halleur–Rimányi 2024, Cor 2.9).** The set
-of `G_d`-orbits of `Tuple d` is in bijection with the realizable **Kostant partitions**
-(multiplicity arrays) of `d`, via `⟦A⟧ ↦ diff (rankFn A)`. This is `orbitKostantEquiv` (orbits ↔
-rank patterns) composed with `cumulDiffEquiv.symm` (rank patterns ↔ multiplicity arrays). The image
-element is the genuine Kostant partition on the support `i ≤ j`; below the diagonal it carries
-`rankFn`-convention artifacts (the bijection is exact regardless — see `kostantArrayOfRank`). -/
-noncomputable def orbitKostantPartitionEquiv (d : Fin (N + 1) → ℕ) :
-    Quotient (orbitSetoid (k := k) d) ≃ RealizableKostant (k := k) d :=
-  (orbitKostantEquiv d).trans (rankKostantEquiv d)
+/-- **Orbits ↔ the multiplicity-array form of realizable rank patterns (towards Cor 2.9).** The set
+of `G_d`-orbits of `Tuple d` is in bijection with the realizable second-difference arrays of `d`,
+via `⟦A⟧ ↦ diff (rankFn A)`. This is `orbitKostantEquiv` (orbits ↔ rank patterns) composed with
+`cumulDiffEquiv.symm` (rank patterns ↔ second-difference arrays). **On `i ≤ j` the image is exactly
+the paper's Kostant partition** (the interval multiplicities `m̄`, verified on the witness); below
+the diagonal it carries `rankFn`-convention artifacts (the bijection is exact regardless — see
+`diffArrayOfRank`). The genuinely-literal Cor 2.9 codomain (nonnegative `i ≤ j` restriction) is
+roadmapped. -/
+noncomputable def orbitDiffArrayEquiv (d : Fin (N + 1) → ℕ) :
+    Quotient (orbitSetoid (k := k) d) ≃ RealizableDiffArray (k := k) d :=
+  (orbitKostantEquiv d).trans (rankDiffArrayEquiv d)
 
-/-- The literal bijection sends `⟦A⟧` to its Kostant multiplicity array `diff (rankFn A)`. -/
-@[simp] theorem orbitKostantPartitionEquiv_mk {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
-    (orbitKostantPartitionEquiv d (Quotient.mk _ A) : RealizableKostant (k := k) d).1
-      = kostantArrayOfRank (rankFn d A) := rfl
+/-- The bijection sends `⟦A⟧` to its second-difference array `diff (rankFn A)`. -/
+@[simp] theorem orbitDiffArrayEquiv_mk {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
+    (orbitDiffArrayEquiv d (Quotient.mk _ A) : RealizableDiffArray (k := k) d).1
+      = diffArrayOfRank (rankFn d A) := rfl
 
 section Witness
 
@@ -210,46 +221,52 @@ example :
       : RealizableRank (k := ℚ) dWitness) : Fin 3 → Fin 3 → ℕ)
       = rankFn dWitness tupleWitnessQ := rfl
 
-/-- The **literal** bijection is non-vacuous: it sends `⟦tupleWitnessQ⟧` to the Kostant multiplicity
-array of its rank pattern. -/
+/-- The multiplicity-array bijection is non-vacuous: it sends `⟦tupleWitnessQ⟧` to the
+second-difference array of its rank pattern. -/
 example :
-    (orbitKostantPartitionEquiv dWitness (Quotient.mk (orbitSetoid dWitness) tupleWitnessQ)
-      : RealizableKostant (k := ℚ) dWitness).1
-      = kostantArrayOfRank (rankFn dWitness tupleWitnessQ) := rfl
+    (orbitDiffArrayEquiv dWitness (Quotient.mk (orbitSetoid dWitness) tupleWitnessQ)
+      : RealizableDiffArray (k := ℚ) dWitness).1
+      = diffArrayOfRank (rankFn dWitness tupleWitnessQ) := rfl
 
-/-! ### Concrete multiplicity values
+/-! ### Concrete multiplicity values, and the lower-triangle artifact
 
 The paper's `(2,2,2)` rank pattern is `rWitness = [[2,1,0],[0,2,1],[0,0,2]]` (`rankFn`'s convention:
 `r_{ij}` for `i ≤ j`, `0` below the diagonal). On the support `i ≤ j` — where Kostant partitions
-live — `kostantArrayOfRank rWitness = diff (embed rWitness)` reproduces the interval-multiplicity
+live — `diffArrayOfRank rWitness = diff (embed rWitness)` reproduces the interval-multiplicity
 partition `m̄₀₀ = m̄₀₁ = m̄₁₂ = m̄₂₂ = 1`, rest `0` (the paper's `mWitness`, last of the six
-partitions of `(2,2,2)`; cf. `RankPattern.mWitness`). The `decide` checks below exhibit these.
+partitions of `(2,2,2)`; cf. `RankPattern.mWitness`). So on `i ≤ j` the array **is** the Kostant
+partition.
 
-**Caveat (lives next to the claim).** Below the diagonal `kostantArrayOfRank rWitness` carries
-**artifacts** (e.g. `(diff r)_{1,0} = -3`) from `rankFn` zeroing the lower triangle rather than
-continuing the rank pattern there. The honest content is on `i ≤ j`; `RealizableKostant` is the
-genuine bijection image, and its elements *are* the Kostant partition on the `i ≤ j` support. -/
+Below the diagonal the array carries **artifacts** (here `(diff r)_{1,0} = -3`) from `rankFn`
+zeroing the lower triangle rather than continuing the rank pattern there. A genuine Kostant
+partition is nonnegative and supported on `i ≤ j`, so the *full* array is the `diff`-form, not
+literally a Kostant partition — exhibited (with the negative entry) below. -/
 
 /-- The paper's `(2,2,2)` witness rank pattern `[[2,1,0],[0,2,1],[0,0,2]]` (`rankFn` convention). -/
 def rWitness : Fin 3 → Fin 3 → ℕ := ![![2, 1, 0], ![0, 2, 1], ![0, 0, 2]]
 
-/-- On the diagonal the Kostant array of `rWitness` is `m̄₀₀ = m̄₂₂ = 1`, `m̄₁₁ = 0` (the paper's
+/-- On the diagonal the array of `rWitness` is `m̄₀₀ = m̄₂₂ = 1`, `m̄₁₁ = 0` (the paper's
 `mWitness`). -/
 example :
-    (kostantArrayOfRank (N := 2) rWitness).1 0 0 = 1
-      ∧ (kostantArrayOfRank (N := 2) rWitness).1 1 1 = 0
-      ∧ (kostantArrayOfRank (N := 2) rWitness).1 2 2 = 1 := by
+    (diffArrayOfRank (N := 2) rWitness).1 0 0 = 1
+      ∧ (diffArrayOfRank (N := 2) rWitness).1 1 1 = 0
+      ∧ (diffArrayOfRank (N := 2) rWitness).1 2 2 = 1 := by
   refine ⟨?_, ?_, ?_⟩ <;>
-    · rw [kostantArrayOfRank_val, diff_apply]; decide
+    · rw [diffArrayOfRank_val, diff_apply]; decide
 
-/-- Above the diagonal the Kostant array of `rWitness` is `m̄₀₁ = m̄₁₂ = 1`, `m̄₀₂ = 0` — completing
-the interval-multiplicity partition `mWitness` on the support `i ≤ j`. -/
+/-- Above the diagonal the array of `rWitness` is `m̄₀₁ = m̄₁₂ = 1`, `m̄₀₂ = 0` — completing the
+interval-multiplicity partition `mWitness` on the support `i ≤ j`. -/
 example :
-    (kostantArrayOfRank (N := 2) rWitness).1 0 1 = 1
-      ∧ (kostantArrayOfRank (N := 2) rWitness).1 1 2 = 1
-      ∧ (kostantArrayOfRank (N := 2) rWitness).1 0 2 = 0 := by
+    (diffArrayOfRank (N := 2) rWitness).1 0 1 = 1
+      ∧ (diffArrayOfRank (N := 2) rWitness).1 1 2 = 1
+      ∧ (diffArrayOfRank (N := 2) rWitness).1 0 2 = 0 := by
   refine ⟨?_, ?_, ?_⟩ <;>
-    · rw [kostantArrayOfRank_val, diff_apply]; decide
+    · rw [diffArrayOfRank_val, diff_apply]; decide
+
+/-- The lower-triangle artifact is real: `(diff r)_{1,0} = -3` is negative, so the full array is the
+`diff`-form, not a (nonnegative, `i ≤ j`-supported) Kostant partition. -/
+example : (diffArrayOfRank (N := 2) rWitness).1 1 0 = -3 := by
+  rw [diffArrayOfRank_val, diff_apply]; decide
 
 end Witness
 
