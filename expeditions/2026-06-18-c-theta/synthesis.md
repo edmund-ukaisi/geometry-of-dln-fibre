@@ -115,3 +115,35 @@ any feasible e with e_k≥1 (k>m) is beaten by an explicit unit transfer.
 - Lean targets (cert §5): `qip_unit_transfer_decreases` (6-step skeleton) → `qip_minimiser_support_le_m`
   (by_contra). Square-bridge (Gqip↔Φ) is the prerequisite small tide. Most-likely-to-break: integer
   min≤average (keep m·min≤Σ, no division) + the index off-by-one.
+
+## CLOSE-OUT — explicit-formula tail LANDED (2026-06-18); perm-invariance roadmapped
+
+All committed/pushed on `expedition/c-theta`, whole library green, 0 sorry / 0 axiom, axiom-clean
+([propext, Classical.choice, Quot.sound]) on every headline.
+
+**PROVED (honest Lean, r=0 / Monotone d):**
+- **C as QIP (Thm 6.1):** `cCodim_eq_qipMin` (full equality). [committed earlier]
+- **C closed form (Thm 7.10):** `qipMin_eq_cValue : qipMin d hne = cValue d`,
+  `cValue = ½(d_0² − Σ_{i=1}^m(d_i−d_0)² + m(a−d_0)² + 2(a−d_0)δ + |δ|)`, `a=⌊S/m+½⌋`, `δ=S−ma`,
+  `m=qipM d` (Nat.findGreatest), `S=qipS d`. Witnesses by decide+kernel: cValue_d222=3, cValue_d639=55.
+  Replaces Conway–Sloane with the elementary integer-square lemma `isLeast_sumSq`.
+- **θ closed form (Thm 7.10):** `qipNumMinimisers_eq_cTheta : #{QIP minimisers} = cTheta d = Nat.choose m |δ|`,
+  via the minimiser↔|δ|-subset bijection (`Finset.card_bij'` + `card_powersetCard`) on the
+  `{0,sgn δ}`-valued equality case `sumSq_eq_abs_characterization`. Witnesses: cTheta_d222=1, cTheta_d639=4.
+- **Drop-to-m wall:** `qip_unit_transfer_decreases` + `qip_minimiser_support_le_m` (Core.CThetaDropM).
+- **Square bridges:** `two_Gqipℤ_sub_sq` + `isLeast_sumSq` (Core.CThetaExplicit).
+- Branch-sensitive nonneg caught (Codex): witness needs d_i≤a−1 when δ<0, not just a≥d_i.
+
+**NOT proved — ROADMAPPED (genuine lift, honest):**
+- **Permutation invariance (Cor 5.10):** `cValue`/`cTheta` read `d` through order-sensitive prefix sums
+  (qipM/qipS/qipRound/qipDelta) and the closed form needs `Monotone d`; a permuted `d` is non-monotone
+  and falls outside it. No sort-normalisation bridge in the engine; `codimForm`/`kostantPartitions` carry
+  no manifest permutation symmetry; no θ-side `numTop d 0 = qipNumMinimisers` bridge yet. The paper's route
+  is the Poincaré series (Bundle 3). A real lift, not free — left for the operator to roadmap.
+
+**Engine-internal C-for-rank-r:** `cCodim_rankShift` (C(d,r)=C(d−r,0)) composes with `cCodim_eq_qipMin`
++ `qipMin_eq_cValue` to give the rank-r C as the closed form on the reduced vector (Monotone). Fibre-codim
+(Lemma 4.6) not done.
+
+**Residual cosmetic:** one `linter.style.show` note in CThetaValue (load-bearing `show` for `omega`); not an
+error. Cleanup-eligible.
