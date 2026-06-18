@@ -69,3 +69,28 @@ Euler identity) is the realistic Lean path — it uses only Phase-A objects plus
 
 (2,2,2) dim-O column now also confirmed (origin dim O = 0 / codim 8; (1,1) dim O = 5 / codim 3). Recon
 team (recon-mathlib, recon-ext-design) stood down.
+
+## PHASE A CLOSED (2026-06-18) — Cor 3.5 algebraic content, in honest Lean
+
+`Core.DeformationExt` (≈1223 LoC, green / sorry-free / axiom-clean) — built from scratch on `Tuple`,
+standard hereditary route (no path algebra / derived Ext needed for the headline). Commits e43b95b
+(Euler layer) → 69a6835 (indicators) → 815102b (additivity + list headline + witnesses) → 0a0e64a (grid
+m-form) → a327d01 (verbatim Cor 3.5 + lint).
+
+### Statement card — Phase A
+- **PROVED.** `finrank_deformationExt1_self_eq_multSum`:
+  `(finrank (deformationExt1 (intervalDirectSum L) (intervalDirectSum L)) : ℤ)
+     = Σ_{i∈[1,N]} Σ_{u∈[i,N]} Σ_{j∈[u,N]} Σ_{v∈[j,N]} m_{i-1,j-1} m_{u,v}`  (m = multiplicityArray L)
+  — Lehalleur–Rimányi Cor 3.5 verbatim, the algebraic content `dim Ext¹(M,M) = Σ m_{i-1,j-1} m_{uv}`.
+  Supporting: `euler_identity`, `euler_interval`, `finrank_Hom_interval` (=1[u≤i≤v≤j]),
+  `finrank_deformationExt1_interval` (=1[i<u≤j+1≤v]), bi-additivity over `dirSum`, the grid form
+  `finrank_deformationExt1_intervalDirectSum_mult`. Axiom-clean ([propext, Classical.choice, Quot.sound]).
+  Non-vacuous: (2,2,2)/ℚ witnesses (1,1)→3, {A=0}→4, matching the paper.
+- **CITED / DEFERRED.** `deformationExt1` = derived Ext¹ for the hereditary path algebra kQ — the
+  categorical-Ext bridge is deferred (named in the docstring, not proved). Standard (ASS / Crawley-Boevey).
+- **DEFERRED (Phase B).** The *geometric* `codim O_M = dim Ext¹(M,M)` (Voigt). Reduces to the single
+  orbit-dimension fact `dim O_M = dim G_d − dim Aut(M)` (+ dim Ō = dim O, codim = dim Rep − dim O). Nothing
+  named `codim…` exists yet. Operator decision pending: (A) name that fact as a Cited/Assumed hypothesis;
+  (B) build the orbit-dimension AG to prove it.
+
+Team: ext-phaseA (four tides) stood down. Phase B awaits the operator A/B call.
