@@ -16,4 +16,5 @@ import DLNFibre.Core.OrbitLinearCodim
 import DLNFibre.Core.OrbitCodim
 import DLNFibre.Core.CTheta
 import DLNFibre.Core.CThetaQIP
+import DLNFibre.Core.CThetaQIPConverse
 import DLNFibre.DLN.Basic
