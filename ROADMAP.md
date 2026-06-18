@@ -109,7 +109,23 @@ groups / variety dimension / catenary; this is a **multi-expedition sub-build**,
 **Plainly.** The Poincaré series in equivariant cohomology (Thm 5.5) and the permutation invariance it yields
 (Cor 5.10). **Reachability:** the heaviest; equivariant-cohomology machinery may be absent in Mathlib. A
 likely **cited** layer, with permutation invariance possibly reachable by an independent combinatorial route
-from Bundle 1 — to be probed.
+from Bundle 1.
+
+**Permutation invariance (Cor 5.10) — the open lift, scoped (`c-theta` close, 2026-06-18).** $(C,\theta)$
+depend only on the multiset $\{d_0,\dots,d_N\}$, not the order. We did **not** prove this: the landed
+$(C,\theta)$ (Bundle 1) read $\underline d$ through order-sensitive prefix sums ($m,S,a,\delta$) and the QIP /
+closed-form equalities (`cCodim_eq_qipMin`, `qipMin_eq_cValue`) require `Monotone d`; a permuted $\underline d$
+is non-monotone and falls outside them, and `cCodim`/`codimForm`/`kostantPartitions` carry **no manifest
+permutation symmetry** and **no sort-normalisation bridge**. Two routes, cheapest first:
+1. **Combinatorial-bridge recon (do this first).** Probe whether $\min_{\text{Kostant}(\underline d)}$ of the
+   quadratic form is permutation-invariant by an *elementary* argument — a bijection on Kostant partitions
+   under transposition of adjacent $d_i$, or a `cCodim d = cCodim (sort d)` normalisation lemma. If it exists,
+   Cor 5.10 is a **contained Lean tide** (a scout/pen-and-paper recon scopes it; θ needs the same bridge plus a
+   `numTop d 0 = qipNumMinimisers` link, not yet built). The paper did **not** take this route, so its
+   existence is itself an open question.
+2. **Poincaré series (Thm 5.5), the paper's route.** Equivariant cohomology of the strata; the series is
+   manifestly symmetric in $\underline d$, so invariance falls out of its shape. Heavy, Mathlib-absent — if
+   route 1 fails, Cor 5.10 stays **Cited** to this argument, named as such.
 
 ### Bundle 4 — the DLN / RLCT application  ·  `DLNFibre.DLN`
 **Plainly.** The square-Frobenius loss $K^{\mathrm{DLN}}_B$, its zero-set = the fibre, and the payoff
