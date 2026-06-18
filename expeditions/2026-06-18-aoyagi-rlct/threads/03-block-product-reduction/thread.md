@@ -35,7 +35,8 @@ Outcome: landed two algebraic block identities in
 `schurComplement_blockElim_fromBlocks`. Theorems are over `[CommRing K]` with
 explicit chart hypothesis `IsUnit A1.det`, and contain no rank/RLCT/germ/ideal
 claim. Controller verified targeted build, full `DLNFibre` build, and
-`scripts/sorries`.
+`scripts/sorries`. Statement card:
+`statement-card-a1-block-identities.md`.
 
 Remaining A1 target: rank formula as a separate theorem, likely via a
 block-diagonal rank lemma over a field. A2 remains blocked by the checker
