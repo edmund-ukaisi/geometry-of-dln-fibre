@@ -5,7 +5,7 @@ Module `lean/DLNFibre/Core/CThetaThetaBridge.lean` (new file, imports `Core.CThe
 `qipNumMinimisers_eq_cTheta` counts `Gqip`-minimisers `e`, but the paper's `θ` is the **Kostant-side**
 component count `numTop d 0` (`Core.CTheta`). This file proves they agree, so the paper's `θ` is the
 closed form `cTheta d`. Import appended to `DLNFibre.lean` (single-writer, at end). Sorry-free,
-axiom-clean (`propext, Classical.choice, Quot.sound`). Commit `ecef4cc`.
+axiom-clean (`propext, Classical.choice, Quot.sound`). Commit `ebc41ad`.
 
 **Scope (name = content).** This is the **combinatorial** `θ`: a minimiser count of a ℤ-quadratic
 form over Kostant partitions. The geometric reading (`θ` = number of top-dimensional components of
