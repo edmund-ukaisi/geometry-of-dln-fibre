@@ -18,3 +18,4 @@ import DLNFibre.Core.CTheta
 import DLNFibre.Core.CThetaQIP
 import DLNFibre.Core.CThetaQIPConverse
 import DLNFibre.DLN.Basic
+import DLNFibre.Core.CThetaExplicit
