@@ -1,0 +1,275 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/ext-codimension/expeditions/2026-06-17-ext-codimension/threads/04-rankloc-probe
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ed9ea-6b24-73a3-90cc-df1e23179203
+--------
+user
+<task>
+Setting: the equioriented type-A quiver Q = (1 ->A1 2 ->A2 ... ->A_{N-1} N) with dimension
+vector d = (d_0, ..., d_N). A representation is a tuple of matrices A_t : k^{d_{t-1}} -> k^{d_t}.
+Rep_d = affine space of such tuples (dim = sum d_{t-1} d_t). GL_d = prod GL(d_t) acts by base change;
+its orbits are the isomorphism classes of representations. For an indecomposable-decomposition class M,
+the orbit O_M has a closure Ō_M.
+
+Two classical facts I want you to assess for provability by CLASSICAL COMMUTATIVE ALGEBRA (regular
+sequences, determinantal ideal heights, Eagon-Northcott, Cohen-Macaulayness) WITHOUT invoking
+algebraic-group / orbit-dimension theory (dim O = dim G - dim Stab, Chevalley fibre dimension,
+scheme tangent spaces):
+
+(1) For equioriented type A, is the orbit closure Ō_M exactly the "rank locus"
+      Ō_M = { tuple A : rank(A_j ... A_{i+1}) <= r_{ij}(M) for all 0<=i<=j<=N }
+    cut by the minors of the interval products? (This is the orbit-closure order = rank-pattern order.)
+    What is the precise statement and its standard reference?
+
+(2) Is the CODIMENSION of this rank locus in Rep_d computable by classical determinantal CA?
+    I.e. is codim Ō_M = sum of determinantal-height contributions, via a known regular sequence /
+    determinantal ideal height theorem, so that one could in principle PROVE codim = dim Ext^1(M,M)
+    using only commutative-algebra height theory (Krull height, Cohen-Macaulay determinantal rings)
+    rather than algebraic-group orbit dimension?
+</task>
+
+<output_contract>
+- State whether (1) is a theorem and cite it precisely (author/result), and whether it holds over a
+  general field / in arbitrary characteristic. Distinguish "the SET equality of varieties" from "the
+  IDEAL of minors is radical / defines a reduced/normal scheme".
+- For (2): give the standard codimension result for type-A quiver orbit closures. Is it a CLASSICAL
+  determinantal-CA computation, or does the standard proof genuinely route through algebraic groups
+  (Ext, orbit dimension)? Be explicit about which.
+- Key question: for the SINGLE interval i->j the codim of {rank(product) <= r} is the generic
+  determinantal codim (m-r)(n-r). But the type-A orbit closure intersects MANY such loci
+  simultaneously (a "matrix Schubert"-like / quiver-flag situation). Is the resulting ideal a complete
+  intersection? Cohen-Macaulay? Is its height the SUM of the individual contributions, or is there
+  excess intersection? Name the relevant theory (Zelevinsky / Lakshmibai-Magyar quiver loci,
+  Knutson-Miller-Shimozono, Buch-Fulton, Bobinski-Zwara normality/CM).
+- Estimate the SIZE of a from-scratch Lean (Mathlib) build of "codimension of a type-A quiver rank
+  locus by determinantal CA". Compare to a from-scratch "algebraic-group + orbit-dimension" build.
+  Which is the smaller / more self-contained foundational build?
+- Flag every place you are inferring vs citing a definite theorem.
+</output_contract>
+
+<grounding_rules>
+- Distinguish set-theoretic variety equality from scheme-theoretic / ideal-radicality claims explicitly.
+- If the codimension does NOT decompose as a sum of independent determinantal heights (excess
+  intersection / non-complete-intersection), say so and explain what the correct CA statement is.
+- Do not assume Mathlib has any of: algebraic groups, orbit dimension, determinantal variety codim,
+  the catenary equality dim R/I = dim R - height I. It has only Krull dim, Ideal.height, and Krull's
+  height theorem (height <= number of generators), as inequalities.
+</grounding_rules>
+
+codex
+I’ll verify the literature rather than rely on memory, because the distinction between rank-order, ideal radicality, and codimension formulas is exactly where citations matter. I’ll first check the local repo for any notes/sources, then corroborate against standard references.
+exec
+/bin/bash -lc 'pwd && rg --files | head -200' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/ext-codimension/expeditions/2026-06-17-ext-codimension/threads/04-rankloc-probe
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/ext-codimension/expeditions/2026-06-17-ext-codimension/threads/04-rankloc-probe
+codex/rankloc-prompt.md
+codex/rankloc-run.log
+
+exec
+/bin/bash -lc 'rg -n "Abeasis|Del Fra|Zelevinsky|Lakshmibai|Magyar|Knutson|Miller|Shimozono|Buch|Fulton|orbit closure|rank locus|quiver loci|Ext" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/ext-codimension/expeditions/2026-06-17-ext-codimension/threads/04-rankloc-probe
+ succeeded in 0ms:
+./codex/rankloc-prompt.md:13:(1) For equioriented type A, is the orbit closure Ō_M exactly the "rank locus"
+./codex/rankloc-prompt.md:18:(2) Is the CODIMENSION of this rank locus in Rep_d computable by classical determinantal CA?
+./codex/rankloc-prompt.md:20:    determinantal ideal height theorem, so that one could in principle PROVE codim = dim Ext^1(M,M)
+./codex/rankloc-prompt.md:29:- For (2): give the standard codimension result for type-A quiver orbit closures. Is it a CLASSICAL
+./codex/rankloc-prompt.md:31:  (Ext, orbit dimension)? Be explicit about which.
+./codex/rankloc-prompt.md:33:  determinantal codim (m-r)(n-r). But the type-A orbit closure intersects MANY such loci
+./codex/rankloc-prompt.md:36:  excess intersection? Name the relevant theory (Zelevinsky / Lakshmibai-Magyar quiver loci,
+./codex/rankloc-prompt.md:37:  Knutson-Miller-Shimozono, Buch-Fulton, Bobinski-Zwara normality/CM).
+./codex/rankloc-run.log:27:(1) For equioriented type A, is the orbit closure Ō_M exactly the "rank locus"
+./codex/rankloc-run.log:32:(2) Is the CODIMENSION of this rank locus in Rep_d computable by classical determinantal CA?
+./codex/rankloc-run.log:34:    determinantal ideal height theorem, so that one could in principle PROVE codim = dim Ext^1(M,M)
+./codex/rankloc-run.log:43:- For (2): give the standard codimension result for type-A quiver orbit closures. Is it a CLASSICAL
+./codex/rankloc-run.log:45:  (Ext, orbit dimension)? Be explicit about which.
+./codex/rankloc-run.log:47:  determinantal codim (m-r)(n-r). But the type-A orbit closure intersects MANY such loci
+./codex/rankloc-run.log:50:  excess intersection? Name the relevant theory (Zelevinsky / Lakshmibai-Magyar quiver loci,
+./codex/rankloc-run.log:51:  Knutson-Miller-Shimozono, Buch-Fulton, Bobinski-Zwara normality/CM).
+
+exec
+/bin/bash -lc "find .. -maxdepth 4 -name CLAUDE.md -o -name README.md -o -path '*policies*' | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/ext-codimension/expeditions/2026-06-17-ext-codimension/threads/04-rankloc-probe
+ succeeded in 0ms:
+web search: 
+web search: Abeasis Del Fra degenerations representations equioriented quiver type A rank conditions orbit closure order
+web search: 
+web search: Abeasis Del Fra Degenerations for representations of an equioriented quiver of type A_m citation
+web search: 
+web search: https://arxiv.org/abs/math/0308142
+web search: 
+web search: https://arxiv.org/abs/math/0308142
+web search: 
+web search: https://arxiv.org/abs/math/0308142
+web search: 
+web search: https://arxiv.org/pdf/math/0308142
+web search: 
+web search: 'Definition 1.1' in https://arxiv.org/pdf/math/0308142
+web search: 
+web search: https://arxiv.org/pdf/math/0308142
+web search: 
+web search: 'Theorem 1.14' in https://arxiv.org/pdf/math/0308142
+web search: 
+web search: Lakshmibai Magyar Degeneracy schemes quiver schemes equioriented type A normal Cohen-Macaulay Zelevinsky map main theorem
+web search: 
+web search: https://arxiv.org/abs/alg-geom/9709018
+web search: 
+web search: https://arxiv.org/pdf/alg-geom/9709018
+web search: 
+web search: 'Theorem 2.2' in https://arxiv.org/pdf/alg-geom/9709018
+web search: 
+web search: https://arxiv.org/pdf/alg-geom/9709018
+web search: 
+web search: Buch Fulton Chern class formulas for quiver varieties codimension d(r) rectangle array rank conditions
+web search: 
+web search: https://arxiv.org/abs/math/9804041
+web search: 
+web search: quiver representation orbit codimension Ext^1 dimension formula dim orbit dim GL dim End Euler form
+web search: 
+web search: "dim Ext^1(M,M)" "codim" "orbit" "Rep" "GL"
+web search: 
+web search: "The Geometry of Quiver Representations" "codimension" "Ext^1"
+web search: 
+web search: Derksen Weyman quiver representations pdf Euler form Ext orbit dimension
+web search: 
+web search: "Rep(Q,d)" "Aut(M)" "Ext^1(M,M)" "Euler"
+web search: 
+web search: Crawley-Boevey lectures representations of quivers Euler form Ext Hom pdf
+web search: 
+web search: Bobinski Zwara normal Cohen-Macaulay orbit closures type A quiver representations
+web search: 
+web search: https://arxiv.org/abs/1307.6261
+web search: 
+web search: https://arxiv.org/pdf/alg-geom/9709018
+codex
+**Bottom Line**
+
+(1) **Yes, for equioriented type A this is a theorem.** If `r = r(M)` is the rank array of a representation `M`, then the orbit closure is exactly the rank locus cut out by the inequalities
+\[
+\operatorname{rank}(A_j\cdots A_{i+1})\le r_{ij}(M).
+\]
+A precise modern statement is Knutson-Miller-Shimozono, Definition 1.1 and Lemma/Convention 1.3-1.4: for an occurring rank array, the quiver locus `Ω_r` is the closure of the `GL`-orbit with that rank array. Their Theorem 1.14 identifies it scheme-theoretically via the Zelevinsky map with a Schubert patch. Lakshmibai-Magyar, Theorem 2.2, proves the stronger ideal statement: the minors-of-products ideal is prime and is the vanishing ideal. These results are over an arbitrary field; KMS explicitly say their schemes are defined over `Z` and their results hold over arbitrary `k`. ([arxiv.org](https://arxiv.org/pdf/math/0308142))
+
+So distinguish:
+
+- **Set/variety equality:** yes, orbit closure equals rank-pattern locus.
+- **Scheme/ideal statement:** also yes in type A equioriented: the product-minor ideal is radical, in fact prime, and the scheme is reduced; KMS/LM further give normal and Cohen-Macaulay, with rational singularities in characteristic zero language. ([arxiv.org](https://arxiv.org/pdf/alg-geom/9709018))
+
+The older standard degeneration-order reference is Abeasis-Del Fra, *Degenerations for the representations of a quiver of type A_m*, J. Algebra 93 (1985), 376-412; Lakshmibai-Magyar list it as the dimension/degeneration source. ([arxiv.org](https://arxiv.org/pdf/alg-geom/9709018))
+
+**Codimension**
+
+The standard codimension formula is
+\[
+\operatorname{codim}(\Omega_r)
+=
+d(r)
+=
+\sum_{0\le i<j\le N}
+(r_{i,j-1}-r_{ij})(r_{i+1,j}-r_{ij}),
+\]
+the sum of the areas of the Buch-Fulton rectangles. Equivalently, with lace multiplicities `s_{ab}`,
+\[
+d(r)=\ell(v(r))-\ell(v(\mathrm{Hom}))
+=
+\sum_{0\le k\le i<j\le m\le N}
+s_{k,j-1}s_{i+1,m}.
+\]
+This is stated in Buch-Fulton and in KMS Corollary 1.16. ([arxiv.org](https://arxiv.org/pdf/math/9804041))
+
+But this is **not** a naive sum of generic determinantal codimensions for all interval products. The conditions are highly dependent. The correct theory is quiver loci / Zelevinsky maps / Schubert determinantal ideals / matrix Schubert varieties, not a regular sequence of all product minors. KMS explicitly frame these ideals as “minors in products of generic matrices” analyzed through Schubert determinantal ideals and Zelevinsky’s map. ([arxiv.org](https://arxiv.org/pdf/math/0308142))
+
+One correction to the premise: for a **non-adjacent single product** `BA`, the locus `rank(BA) ≤ r` in the space of pairs `(A,B)` need not have generic matrix codimension `(m-r)(n-r)`. Example, for two `2×2` maps and condition `BA=0`, the ambient dimension is `8`, while the component with `rank A = rank B = 1` and `im A ⊂ ker B` has dimension `5`, so codimension `3`, not `4`. This is my calculation, not a cited theorem.
+
+**Complete Intersection?**
+
+No, not in general. These quiver ideals are **Cohen-Macaulay, normal, reduced/prime** in the equioriented type-A case, but they are not generally complete intersections. Their height is the Buch-Fulton/KMS rectangle sum above, not the sum of all individual interval determinantal heights. The right CA/geometric package is Schubert/quiver determinantal theory: Zelevinsky, Lakshmibai-Magyar, Buch-Fulton, Knutson-Miller-Shimozono; Bobinski-Zwara extend normality/CM/rational-singularity results to arbitrary type-A orientations. ([arxiv.org](https://arxiv.org/abs/1307.6261))
+
+**Ext¹ Comparison**
+
+The equality
+\[
+\operatorname{codim}\overline{O_M}=\dim \operatorname{Ext}^1(M,M)
+\]
+is usually proved by the representation-theoretic orbit-dimension route:
+\[
+\dim O_M=\dim GL_{\mathbf d}-\dim \operatorname{End}(M),
+\]
+combined with the hereditary Euler form. That proof genuinely uses algebraic-group/orbit-dimension ideas. It is not the same as the Lakshmibai-Magyar/KMS codimension proof.
+
+Inference: in equioriented type A, one can separately compute `dim Ext¹(M,M)` from interval summands and match the KMS lace-sum formula, but that is a combinatorial homological comparison, not a generic determinantal-height or regular-sequence proof.
+
+**Lean Feasibility**
+
+A from-scratch Lean proof via “determinantal CA” is the larger build. You would need polynomial rings, minors, determinantal ideals, radical/prime/height, matrix Schubert ideals or standard monomial/Groebner theory, and dimension-height infrastructure not currently assumed.
+
+The algebraic-group/orbit-dimension route is still substantial, but smaller and more self-contained for proving `codim = Ext¹`: mostly finite-dimensional linear algebra, `End`, `Ext¹` via an explicit complex, rank-nullity, plus a comparatively small amount of affine orbit-dimension theory. If the goal is a Lean formalization, I would not start with quiver determinantal CA.
+tokens used
+126,291
+**Bottom Line**
+
+(1) **Yes, for equioriented type A this is a theorem.** If `r = r(M)` is the rank array of a representation `M`, then the orbit closure is exactly the rank locus cut out by the inequalities
+\[
+\operatorname{rank}(A_j\cdots A_{i+1})\le r_{ij}(M).
+\]
+A precise modern statement is Knutson-Miller-Shimozono, Definition 1.1 and Lemma/Convention 1.3-1.4: for an occurring rank array, the quiver locus `Ω_r` is the closure of the `GL`-orbit with that rank array. Their Theorem 1.14 identifies it scheme-theoretically via the Zelevinsky map with a Schubert patch. Lakshmibai-Magyar, Theorem 2.2, proves the stronger ideal statement: the minors-of-products ideal is prime and is the vanishing ideal. These results are over an arbitrary field; KMS explicitly say their schemes are defined over `Z` and their results hold over arbitrary `k`. ([arxiv.org](https://arxiv.org/pdf/math/0308142))
+
+So distinguish:
+
+- **Set/variety equality:** yes, orbit closure equals rank-pattern locus.
+- **Scheme/ideal statement:** also yes in type A equioriented: the product-minor ideal is radical, in fact prime, and the scheme is reduced; KMS/LM further give normal and Cohen-Macaulay, with rational singularities in characteristic zero language. ([arxiv.org](https://arxiv.org/pdf/alg-geom/9709018))
+
+The older standard degeneration-order reference is Abeasis-Del Fra, *Degenerations for the representations of a quiver of type A_m*, J. Algebra 93 (1985), 376-412; Lakshmibai-Magyar list it as the dimension/degeneration source. ([arxiv.org](https://arxiv.org/pdf/alg-geom/9709018))
+
+**Codimension**
+
+The standard codimension formula is
+\[
+\operatorname{codim}(\Omega_r)
+=
+d(r)
+=
+\sum_{0\le i<j\le N}
+(r_{i,j-1}-r_{ij})(r_{i+1,j}-r_{ij}),
+\]
+the sum of the areas of the Buch-Fulton rectangles. Equivalently, with lace multiplicities `s_{ab}`,
+\[
+d(r)=\ell(v(r))-\ell(v(\mathrm{Hom}))
+=
+\sum_{0\le k\le i<j\le m\le N}
+s_{k,j-1}s_{i+1,m}.
+\]
+This is stated in Buch-Fulton and in KMS Corollary 1.16. ([arxiv.org](https://arxiv.org/pdf/math/9804041))
+
+But this is **not** a naive sum of generic determinantal codimensions for all interval products. The conditions are highly dependent. The correct theory is quiver loci / Zelevinsky maps / Schubert determinantal ideals / matrix Schubert varieties, not a regular sequence of all product minors. KMS explicitly frame these ideals as “minors in products of generic matrices” analyzed through Schubert determinantal ideals and Zelevinsky’s map. ([arxiv.org](https://arxiv.org/pdf/math/0308142))
+
+One correction to the premise: for a **non-adjacent single product** `BA`, the locus `rank(BA) ≤ r` in the space of pairs `(A,B)` need not have generic matrix codimension `(m-r)(n-r)`. Example, for two `2×2` maps and condition `BA=0`, the ambient dimension is `8`, while the component with `rank A = rank B = 1` and `im A ⊂ ker B` has dimension `5`, so codimension `3`, not `4`. This is my calculation, not a cited theorem.
+
+**Complete Intersection?**
+
+No, not in general. These quiver ideals are **Cohen-Macaulay, normal, reduced/prime** in the equioriented type-A case, but they are not generally complete intersections. Their height is the Buch-Fulton/KMS rectangle sum above, not the sum of all individual interval determinantal heights. The right CA/geometric package is Schubert/quiver determinantal theory: Zelevinsky, Lakshmibai-Magyar, Buch-Fulton, Knutson-Miller-Shimozono; Bobinski-Zwara extend normality/CM/rational-singularity results to arbitrary type-A orientations. ([arxiv.org](https://arxiv.org/abs/1307.6261))
+
+**Ext¹ Comparison**
+
+The equality
+\[
+\operatorname{codim}\overline{O_M}=\dim \operatorname{Ext}^1(M,M)
+\]
+is usually proved by the representation-theoretic orbit-dimension route:
+\[
+\dim O_M=\dim GL_{\mathbf d}-\dim \operatorname{End}(M),
+\]
+combined with the hereditary Euler form. That proof genuinely uses algebraic-group/orbit-dimension ideas. It is not the same as the Lakshmibai-Magyar/KMS codimension proof.
+
+Inference: in equioriented type A, one can separately compute `dim Ext¹(M,M)` from interval summands and match the KMS lace-sum formula, but that is a combinatorial homological comparison, not a generic determinantal-height or regular-sequence proof.
+
+**Lean Feasibility**
+
+A from-scratch Lean proof via “determinantal CA” is the larger build. You would need polynomial rings, minors, determinantal ideals, radical/prime/height, matrix Schubert ideals or standard monomial/Groebner theory, and dimension-height infrastructure not currently assumed.
+
+The algebraic-group/orbit-dimension route is still substantial, but smaller and more self-contained for proving `codim = Ext¹`: mostly finite-dimensional linear algebra, `End`, `Ext¹` via an explicit complex, rank-nullity, plus a comparatively small amount of affine orbit-dimension theory. If the goal is a Lean formalization, I would not start with quiver determinantal CA.
