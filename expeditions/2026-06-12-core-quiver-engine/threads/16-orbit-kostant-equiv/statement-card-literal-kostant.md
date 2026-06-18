@@ -13,8 +13,8 @@ codomain — the **nonnegative, `i ≤ j`-supported** multiplicity arrays. Addit
 `RealizableRank`, `orbitDiffArrayEquiv`, `RealizableDiffArray` are kept exactly. The new equiv lands
 in a literal Kostant-partition object with **no lower-triangle artifacts**.
 
-- **Lean:** `DLNFibre.Core.orbitKostantPartitionEquiv` (`lean/DLNFibre/Core/OrbitKostant.lean`,
-  SHA pending controller commit).
+- **Lean:** `DLNFibre.Core.orbitKostantPartitionEquiv` (`lean/DLNFibre/Core/OrbitKostant.lean` @
+  `74e2c1f`).
 - **Signature.**
   `(d : Fin (N+1) → ℕ) : Quotient (orbitSetoid d) ≃ KostantPartition d`
   where
