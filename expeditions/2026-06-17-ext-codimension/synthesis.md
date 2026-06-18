@@ -52,3 +52,20 @@ that bridge an explicit named theorem/assumption. Name = content.
 ## STATE
 Recon tasks #1, #2 closed. Task #3 (this synthesis) effectively done. Backend: in-process teammates
 (operator-confirmed fine). Next: spawn Phase-A formaliser(s) on the finrank deformation-complex ladder.
+
+## ADDENDUM (recon-ext-design certificate, full) — Phase-B bridge narrows to ONE fact
+
+The certificate (threads/02-ext-design/findings.md) confirms everything and sharpens Phase B. Key glue:
+⟨d,d⟩ = dim G − dim Rep, and dim O_M = dim G − dim Aut(M) (orbit dim = dim G − dim Stab; Stab = Aut(M)
+open in End(M), so dim Stab = dim End(M) = dim Hom(M,M)). Hence
+  codim O_M = dim Rep − dim O_M = dim Hom(M,M) − ⟨d,d⟩ = dim Ext¹(M,M).
+So **the Hom−Euler identity IS the Voigt computation** — and the *only* genuinely geometric input is the
+single orbit-dimension fact **dim O_M = dim G_d − dim Aut(M)** (plus dim Ō = dim O, codim = dim Rep − dim O).
+The Phase-B "AG desert" is therefore not "build all of algebraic groups" but **one named orbit-dimension
+theorem**. That sharpens the operator decision: option (A) names exactly this one fact as the Cited/Assumed
+bridge; option (B) builds the orbit-map fibre-dimension theorem (still needs algebraic-group-action
+machinery underneath, but bounded to that target). Route (b) (dim O = dim G − dim Aut(M) + the Phase-A
+Euler identity) is the realistic Lean path — it uses only Phase-A objects plus that one geometric fact.
+
+(2,2,2) dim-O column now also confirmed (origin dim O = 0 / codim 8; (1,1) dim O = 5 / codim 3). Recon
+team (recon-mathlib, recon-ext-design) stood down.
