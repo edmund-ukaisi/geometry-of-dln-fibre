@@ -21,3 +21,4 @@ import DLNFibre.DLN.Basic
 import DLNFibre.Core.CThetaExplicit
 import DLNFibre.Core.CThetaDropM
 import DLNFibre.Core.CThetaValue
+import DLNFibre.Core.CThetaThetaBridge
