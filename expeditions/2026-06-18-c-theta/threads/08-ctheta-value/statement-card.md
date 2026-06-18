@@ -3,7 +3,7 @@
 Module `lean/DLNFibre/Core/CThetaValue.lean` (new file, imports `Core.CThetaDropM`, transitively
 `Core.CThetaExplicit`). Lehalleur–Rimányi Thm 7.10 (`r = 0`): the QIP minimum and minimiser-count in
 closed form. Import appended to `DLNFibre.lean` (single-writer). Sorry-free, axiom-clean
-(`propext, Classical.choice, Quot.sound`). Commit `<FILL>`.
+(`propext, Classical.choice, Quot.sound`). Commit `d72f199`.
 
 **Scope (name = content).** This file proves two things about the **QIP** (`Gqip`/`qipMin` of
 `Core.CThetaQIP`) for `Monotone d`: (i) `qipMin d = cValue d`, the explicit `C` closed form; (ii) the
