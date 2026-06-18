@@ -221,9 +221,12 @@ The barcode of a concrete tuple is found by tracing threads through the chain.
     the bars $[0,0]$ and $[0,1]$ ($\dim = 2$), vertex $1$ carries $[0,1]$ and
     $[1,2]$ ($\dim = 2$), vertex $2$ carries $[1,2]$ and $[2,2]$ ($\dim = 2$).
 
-    This is the decomposition the next chapter reads off the rank pattern, and it
-    is the orbit used as the classification witness over $\mathbb Q$
-    (`Core.Gabriel.tupleWitnessQ`).
+    This is the decomposition the next chapter reads off the rank pattern. It is
+    the barcode of the rank-one $(2,2,2)$ pair of Example 2.6, formalised as the
+    classification witness `Core.Orbit.tupleWitnessRankOneQ` over $\mathbb Q$
+    (its interval ranks $r_{01} = r_{12} = 1$, $r_{02} = 0$ are pinned in
+    `Core.Orbit.rankPattern_tupleWitnessRankOneQ`; the multiplicity array is the
+    paper's $(2,2,2)$ Kostant partition).
 
 !!! question "Checkpoint"
     Which interval modules occur in the decomposition of the $(2,2,2)$ tuple

@@ -91,9 +91,12 @@ representative for each orbit.
     P \cdot A_\ast = \bigoplus_{(i,j) \in L} M_{ij}.
     $$
 
-The right-hand side is manifestly a direct sum of interval modules, so this is
-the explicit normal form: every orbit contains exactly one block-diagonal tuple
-$\bigoplus M_{ij}^{\,m_{ij}}$, and the orbit is named by the multiplicities.
+The right-hand side is manifestly a direct sum of interval modules. The
+multiplicity array $\underline m$ is a complete invariant of the orbit, so the
+isomorphism class $\bigoplus M_{ij}^{\,m_{ij}}$ it names is unique; choosing an
+ordering of the bars (and bases at each vertex) then produces a block-diagonal
+representative tuple. The orbit is named by the multiplicities — not by a single
+literal matrix tuple, which still depends on those ordering/basis choices.
 
 ??? info "Formalised in Lean — Core.Orbit.baseChange_normalForm"
 
@@ -106,8 +109,12 @@ $\bigoplus M_{ij}^{\,m_{ij}}$, and the orbit is named by the multiplicities.
 
     Built from the complete invariant by exhibiting `intervalDirectSum L` (the
     list $L$ of the tuple's own bars) as a tuple with the same rank pattern as
-    `A`, then applying `orbit_of_rankPattern_eq`. The final clause records that
-    $L$'s multiplicity array is the second difference of the rank pattern.
+    `A`, then applying `orbit_of_rankPattern_eq`. The final clause records the
+    *cumulative* equality $r(A_\ast) = \operatorname{cumul}(\underline m)$; the
+    companion theorem `Core.Orbit.multiplicityArray_normalForm_eq_diff` turns
+    this into the second-difference form
+    $\underline m = \operatorname{diff}(r(A_\ast))$ via the `diff_cumul`
+    inversion.
 
 ## 5.3 Orbits, rank patterns, and Kostant partitions coincide
 
@@ -135,7 +142,15 @@ The bijection is the complete invariant read as a quotient: injectivity is the
 forward direction of §5.1 (equal rank pattern $\Rightarrow$ same orbit), and
 surjectivity is the definition of "realizable". Composing with the
 $\operatorname{cumul}/\operatorname{diff}$ bijection turns the right-hand side
-into Kostant partitions.
+into Kostant partitions — with one subtlety the formalisation makes precise.
+Applying $\operatorname{diff}$ to a rank pattern across the *full* index square
+produces negative artifacts below the diagonal (the rank pattern is set to $0$
+there by convention), whereas a Kostant partition is nonnegative and supported
+on $i \le j$. Truncating the second difference below the diagonal removes the
+artifacts, and the truncated array is exactly the multiplicity array — its
+nonnegativity is the bar count of the Gabriel decomposition. So the literal
+Kostant-partition codomain goes through this truncation, formalised as the
+equivalences below.
 
 ??? info "Formalised in Lean — Core.OrbitKostant.orbitKostantEquiv"
 
@@ -150,8 +165,30 @@ into Kostant partitions.
     total function (the complete invariant); `RealizableRank d` is its range.
     `orbitKostantEquiv` is the bijection orbits $\leftrightarrow$ realizable rank
     patterns, via the first isomorphism theorem `Setoid.quotientKerEquivRange`.
-    Identifying realizable rank patterns with Kostant partitions is the
-    `cumulDiffEquiv` of Chapter 4. Sorry-free and axiom-clean.
+
+    The **literal** Kostant-partition codomain is built on top of this, via the
+    below-diagonal truncation `kostantArrayOfRank`:
+
+        -- orbits ↔ realizable, nonnegative, i ≤ j-supported multiplicity arrays
+        noncomputable def orbitKostantPartitionEquiv (d : Fin (N + 1) → ℕ) :
+            Quotient (orbitSetoid (k := k) d) ≃ KostantPartition (k := k) d
+
+        -- the paper's predicate CM⁺_d: nonneg, i ≤ j, dimension equations d_k = Σ_{i≤k≤j} m_ij
+        def CMPlus (d : Fin (N + 1) → ℕ) (m : SuppArray (N : ℤ) ℤ) : Prop :=
+          IsKostantArray m ∧ ∀ k, (d k : ℤ) = cumul (N : ℤ) m.1 (k : ℤ) (k : ℤ)
+
+        -- orbits ↔ the paper's CM⁺_d object (Corollary 2.9, literal)
+        noncomputable def orbitCMPlusEquiv (d : Fin (N + 1) → ℕ) :
+            Quotient (orbitSetoid (k := k) d) ≃ { m // CMPlus (k := k) d m }
+
+    `KostantPartition d` is the realizable, nonnegative, $i \le j$-supported
+    multiplicity arrays; `CMPlus` is the paper's `CM⁺_d` predicate stated
+    independently (nonnegativity, support, and the dimension equations). The two
+    coincide (`cMPlus_iff_mem_image`): realizable $\Rightarrow$ `CMPlus` is
+    $r_{kk} = d_k$, and `CMPlus` $\Rightarrow$ realizable exhibits the explicit
+    realizer $\bigoplus M_{ij}^{\,m_{ij}}$. So orbits, isomorphism classes,
+    realizable rank patterns, and Kostant partitions are literally the same
+    finite set. Sorry-free and axiom-clean.
 
 ## 5.4 The orbits of the $(2,2,2)$ zero-product locus
 

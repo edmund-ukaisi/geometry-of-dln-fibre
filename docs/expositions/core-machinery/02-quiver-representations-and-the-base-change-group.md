@@ -220,23 +220,26 @@ and the number of orbits is the number of ways those pieces can occur.
 
     so $BA = 0$ and $\operatorname{rank} A = \operatorname{rank} B = 1$. Apply the
     base change that is the identity at vertices $0$ and $2$ and
-    $P_1 = \left(\begin{smallmatrix} 1 & 1 \\ 0 & 1 \end{smallmatrix}\right)$ at
+    $P_1 = \left(\begin{smallmatrix} 1 & 0 \\ 1 & 1 \end{smallmatrix}\right)$ at
     vertex $1$:
 
     $$
-    A' = P_1 A = \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix},
+    A' = P_1 A = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix},
     \qquad
     B' = B P_1^{-1} = \begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}
-      \begin{pmatrix} 1 & -1 \\ 0 & 1 \end{pmatrix}
-      = \begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}.
+      \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
+      = \begin{pmatrix} 0 & 0 \\ -1 & 1 \end{pmatrix}.
     $$
 
     The pair $(A', B')$ still satisfies $B'A' = 0$ with both factors of rank one,
-    so it lies in the same rank locus $\Sigma^0_{(2,2,2)}$; the base change has
-    moved within the orbit without changing any interval rank. This is the
-    concrete $\operatorname{GL}_2(\mathbb Q)$ base change used as the
-    non-vacuity witness for the classification in Chapter 5
-    (`Core.Orbit.witnessBaseChangeQ`).
+    so it lies in the same rank locus $\Sigma^0_{(2,2,2)}$: the base change has
+    moved to a different-looking representative without changing any interval
+    rank ($r_{01} = r_{12} = 1$, $r_{02} = 0$). The original pair $(A, B)$ is the
+    rank-one classification witness `Core.Orbit.tupleWitnessRankOneQ`, whose
+    interval ranks are pinned in `Core.Orbit.rankPattern_tupleWitnessRankOneQ`.
+    (A base change that *fixed* the pair, such as
+    $P_1 = \left(\begin{smallmatrix} 1 & 1 \\ 0 & 1 \end{smallmatrix}\right)$,
+    would leave both matrices unchanged — it lies in the pair's stabiliser.)
 
 ## Sources and cross-references
 
