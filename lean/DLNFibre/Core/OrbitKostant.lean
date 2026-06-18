@@ -19,7 +19,7 @@ tuple), via `⟦A⟧ ↦ rankPattern A`.
   realizing tuple's orbit). Via `Setoid.quotientKerEquivRange` after identifying the orbit relation
   with `Setoid.ker (rankFn d)`.
 
-Two forms of the bijection:
+Three forms of the bijection, each `⟦A⟧ ↦` a successively more literal encoding of the same datum:
 
 * `orbitKostantEquiv d : Quotient (orbitSetoid d) ≃ RealizableRank d` — orbits ↔ realizable **rank
   patterns** (the honest building block; `⟦A⟧ ↦ rankFn A`).
@@ -30,9 +30,17 @@ Two forms of the bijection:
   pattern into the `ℤ`-indexed supported-array shape (`embedRank`). **On `i ≤ j` the image is
   exactly the paper's Kostant partition** (the interval multiplicities `m̄`, verified on the
   witness); below the diagonal it carries `rankFn`-convention artifacts (e.g. `-3`) — so the *full*
-  array is the `diff`-form, not literally a Kostant partition. Restricting the codomain to a genuine
-  nonnegative `i ≤ j` Kostant partition is roadmapped (needs the rank-pattern inequalities for
-  nonnegativity). The realizing tuple is `⊕ M^{m̄}` (`Orbit.baseChange_normalForm`).
+  array is the `diff`-form, not literally a Kostant partition. The realizing tuple is `⊕ M^{m̄}`
+  (`Orbit.baseChange_normalForm`).
+* `orbitKostantPartitionEquiv d : Quotient (orbitSetoid d) ≃ KostantPartition d` — orbits ↔ the
+  **literal Kostant partitions** (Le Halleur–Rimányi 2024, Cor 2.9): the realizable **nonnegative,
+  `i ≤ j`-supported** multiplicity arrays, with no lower-triangle artifacts. The codomain carrier is
+  `kostantArrayOfRank (rankFn A)` — `diff (rankFn A)` **truncated to `0` below the diagonal**. The
+  bridge `kostantArrayOfRank_isKostant` identifies that truncation, for a realizable pattern, with
+  the bar-multiplicity array `barMult` of a Gabriel decomposition (`Gabriel.exists_cumul_barMult`),
+  which is manifestly nonnegative (a sum of `singleDelta` indicators) and `i ≤ j`-supported
+  (`birth ≤ death`). Truncation is invisible to `cumul` on the upper triangle, so the truncated
+  array still determines the rank pattern (`kostantArrayOfRank_injOn`), and the equiv corestricts.
 
 **Typeclass.** `Field k`. **Dependency rule:** never import `DLNFibre.DLN`.
 -/
@@ -208,6 +216,180 @@ noncomputable def orbitDiffArrayEquiv (d : Fin (N + 1) → ℕ) :
     (orbitDiffArrayEquiv d (Quotient.mk _ A) : RealizableDiffArray (k := k) d).1
       = diffArrayOfRank (rankFn d A) := rfl
 
+/-! ## The literal Kostant-partition codomain (Cor 2.9)
+
+`orbitDiffArrayEquiv` lands in the *full* `diff`-array, which below the diagonal carries
+`rankFn`-convention artifacts (the `-3`). A genuine Kostant partition is **nonnegative** and
+**supported on `i ≤ j`**. This section restricts the codomain to that literal object.
+
+The carrier is `kostantArrayOfRank`: the `diff`-array **truncated to `0` below the diagonal**. The
+bridge fact `kostantArrayOfRank_eq_barMult` identifies it, for a realizable rank pattern, with the
+**bar-multiplicity array** `barMult` of a Gabriel decomposition (`Gabriel.exists_cumul_barMult`),
+which is manifestly nonnegative (a sum of `singleDelta` indicators) and `i ≤ j`-supported (bars have
+`birth ≤ death`). Truncation is invisible to `cumul` on the upper triangle
+(`cumul_truncBelow_of_le`), so the truncated array still determines the rank pattern — hence the map
+stays injective and the bijection corestricts. -/
+
+/-- A supported array is a **literal Kostant partition**: nonnegative and zero below the diagonal
+(supported on `i ≤ j`), as Kostant partitions are. -/
+def IsKostantArray {N : ℕ} (m : SuppArray (N : ℤ) ℤ) : Prop :=
+  (∀ i j : ℤ, 0 ≤ m.1 i j) ∧ (∀ i j : ℤ, j < i → m.1 i j = 0)
+
+/-- The `diff`-array of `r` **truncated to `0` below the diagonal** — the literal Kostant-partition
+carrier (nonnegative, `i ≤ j`-supported once `r` is realizable; see
+`kostantArrayOfRank_isKostant`). Agrees with `diffArrayOfRank r` on `i ≤ j`. -/
+noncomputable def kostantArrayOfRank {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) :
+    SuppArray (N : ℤ) ℤ :=
+  ⟨fun i j ↦ if i ≤ j then (diffArrayOfRank r).1 i j else 0, by
+    refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩ <;> dsimp only <;> split_ifs with h
+    · exact (diffArrayOfRank r).2.1 i j hi
+    · rfl
+    · exact (diffArrayOfRank r).2.2 i j hj
+    · rfl⟩
+
+/-- On `i ≤ j` the truncated array is the full `diff`-array. -/
+@[simp] theorem kostantArrayOfRank_of_le {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) {i j : ℤ}
+    (hij : i ≤ j) : (kostantArrayOfRank r).1 i j = (diffArrayOfRank r).1 i j := by
+  simp [kostantArrayOfRank, hij]
+
+/-- Below the diagonal the truncated array is `0`. -/
+@[simp] theorem kostantArrayOfRank_of_gt {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) {i j : ℤ}
+    (hij : j < i) : (kostantArrayOfRank r).1 i j = 0 := by
+  simp [kostantArrayOfRank, not_le.mpr hij]
+
+/-- Truncating an array below the diagonal is invisible to `cumul` on the upper triangle: for
+`i ≤ j`, `cumul` only sums entries `(a,b)` with `a ≤ i ≤ j ≤ b`, hence `a ≤ b`. -/
+theorem cumul_truncBelow_of_le {N : ℤ} (f : ℤ → ℤ → ℤ) {i j : ℤ} (hij : i ≤ j) :
+    cumul N (fun a b ↦ if a ≤ b then f a b else 0) i j = cumul N f i j := by
+  rw [cumul_apply, cumul_apply]
+  refine Finset.sum_congr rfl fun a ha ↦ Finset.sum_congr rfl fun b hb ↦ ?_
+  rw [Finset.mem_Icc] at ha hb
+  rw [if_pos (le_trans ha.2 (le_trans hij hb.1))]
+
+/-- **The bridge fact.** For a realizable rank pattern `rankFn d A`, the truncated `diff`-array is
+the bar-multiplicity array `barMult` of a Gabriel decomposition of `A`: nonnegative (sum of
+`singleDelta` indicators) and `i ≤ j`-supported (bars have `birth ≤ death`). The truncated array is
+therefore a literal Kostant partition. Uses `Gabriel.exists_cumul_barMult` (the barcode bar-count =
+rank-pattern identity) — no new barcode lemma; only the truncation/`diff` bookkeeping. -/
+theorem kostantArrayOfRank_isKostant {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
+    IsKostantArray (kostantArrayOfRank (rankFn d A)) := by
+  obtain ⟨M, birth, death, hbd, _hkost, hcum⟩ := exists_cumul_barMult A
+  set mbar := barMult M birth death with hmbar
+  -- `embedRank (rankFn d A)` agrees with `cumul N mbar` on the upper triangle `x ≤ y`.
+  have hagree : ∀ x y : ℤ, x ≤ y →
+      (embedRank (rankFn d A)).1 x y = cumul (N : ℤ) mbar x y := by
+    intro x y hxy
+    rcases lt_or_ge x 0 with hx | hx
+    · rw [(embedRank (rankFn d A)).2.1 x y hx, (supported_cumul (N : ℤ) mbar).1 x y hx]
+    rcases lt_or_ge (N : ℤ) y with hy | hy
+    · rw [(embedRank (rankFn d A)).2.2 x y hy, (supported_cumul (N : ℤ) mbar).2 x y hy]
+    have hy0 : 0 ≤ y := le_trans hx hxy
+    have hxN : x ≤ (N : ℤ) := le_trans hxy hy
+    obtain ⟨i, hi⟩ : ∃ i : Fin (N + 1), (i : ℤ) = x :=
+      ⟨⟨x.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hx]⟩
+    obtain ⟨j, hj⟩ : ∃ j : Fin (N + 1), (j : ℤ) = y :=
+      ⟨⟨y.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hy0]⟩
+    have hij : i ≤ j := by
+      have : (i : ℤ) ≤ (j : ℤ) := by rw [hi, hj]; exact hxy
+      exact_mod_cast this
+    rw [← hi, ← hj, embedRank_apply_fin, ← hcum i j hij]
+    simp [rankFn, hij]
+  -- hence the full `diff`-array equals `mbar` on the upper triangle (all four `diff`-points have
+  -- row ≤ col), and `mbar` is nonnegative and `i ≤ j`-supported.
+  have hdiff : ∀ i j : ℤ, i ≤ j → (diffArrayOfRank (rankFn d A)).1 i j = mbar i j := by
+    intro i j hij
+    have hbarmult : diff (cumul (N : ℤ) mbar) i j = mbar i j :=
+      congrFun (congrFun (diff_cumul (N : ℤ) mbar (supported_barMult M birth death).1
+        (supported_barMult M birth death).2) i) j
+    rw [diffArrayOfRank_val, diff_apply, hagree i j hij, hagree i (j + 1) (by omega),
+      hagree (i - 1) j (by omega), hagree (i - 1) (j + 1) (by omega), ← diff_apply]
+    exact hbarmult
+  have hnonneg : ∀ a b : ℤ, 0 ≤ mbar a b := fun a b ↦ by
+    rw [hmbar, barMult]
+    exact Finset.sum_nonneg fun lam _ ↦ by rw [singleDelta]; split_ifs <;> norm_num
+  refine ⟨fun i j ↦ ?_, fun i j hij ↦ ?_⟩
+  · rcases le_or_gt i j with h | h
+    · rw [kostantArrayOfRank_of_le _ h, hdiff i j h]; exact hnonneg i j
+    · rw [kostantArrayOfRank_of_gt _ h]
+  · rw [kostantArrayOfRank_of_gt _ hij]
+
+/-- `cumul` of the truncated array recovers the embedded rank pattern on the upper triangle:
+`cumul N (kostantArrayOfRank r) x y = (embedRank r) x y` for `x ≤ y`. The truncation is invisible to
+`cumul` there (`cumul_truncBelow_of_le`), and `cumul` inverts `diff` on the supported `embedRank r`
+(`cumul_diff`). The key to injectivity: the truncated array still determines the rank pattern. -/
+theorem cumul_kostantArrayOfRank_of_le {N : ℕ} (r : Fin (N + 1) → Fin (N + 1) → ℕ) {x y : ℤ}
+    (hxy : x ≤ y) :
+    cumul (N : ℤ) (kostantArrayOfRank r).1 x y = (embedRank r).1 x y := by
+  have htrunc : (kostantArrayOfRank r).1
+      = fun a b ↦ if a ≤ b then (diff (embedRank r).1) a b else 0 := by
+    funext a b; by_cases h : a ≤ b
+    · rw [kostantArrayOfRank_of_le _ h, diffArrayOfRank_val, if_pos h]
+    · rw [kostantArrayOfRank_of_gt _ (lt_of_not_ge h), if_neg h]
+  rw [htrunc, cumul_truncBelow_of_le (diff (embedRank r).1) hxy,
+    show cumul (N : ℤ) (diff (embedRank r).1) = (embedRank r).1 from
+      cumul_diff (N : ℤ) (embedRank r).1 (embedRank r).2.1 (embedRank r).2.2]
+
+/-- **The truncated array is a complete invariant of the rank pattern.** `kostantArrayOfRank` is
+injective: it determines `embedRank r` on the upper triangle (`cumul_kostantArrayOfRank_of_le`),
+hence `r` on `i ≤ j` (`embedRank_apply_fin`), and `r` is `0` below the diagonal by the `rankFn`
+convention — but stated for any pattern with that convention, so injectivity is unconditional on the
+realizable set. -/
+theorem kostantArrayOfRank_injOn {d : Fin (N + 1) → ℕ} :
+    Set.InjOn (kostantArrayOfRank (N := N)) (Set.range (rankFn (k := k) d)) := by
+  rintro _ ⟨A, rfl⟩ _ ⟨B, rfl⟩ h
+  -- upper triangle: `cumul` of the (equal) truncated arrays recovers `embedRank`
+  have hemb : ∀ i j : Fin (N + 1), (i : ℤ) ≤ (j : ℤ) →
+      (embedRank (rankFn d A)).1 (i : ℤ) (j : ℤ) = (embedRank (rankFn d B)).1 (i : ℤ) (j : ℤ) := by
+    intro i j hij
+    rw [← cumul_kostantArrayOfRank_of_le (rankFn d A) hij, h,
+      cumul_kostantArrayOfRank_of_le (rankFn d B) hij]
+  funext i j
+  by_cases hij : i ≤ j
+  · have hijZ : (i : ℤ) ≤ (j : ℤ) := by exact_mod_cast hij
+    have := hemb i j hijZ
+    rw [embedRank_apply_fin, embedRank_apply_fin] at this
+    exact_mod_cast this
+  · rw [rankFn, rankFn, dif_neg hij, dif_neg hij]
+
+/-- **The literal Kostant-partition codomain (Le Halleur–Rimányi 2024, Cor 2.9).** The realizable,
+**nonnegative, `i ≤ j`-supported** multiplicity arrays of `d`: the image of the realizable rank
+patterns under `kostantArrayOfRank`, each certified `IsKostantArray` (the certificate is total by
+`kostantArrayOfRank_isKostant`). The genuine paper-side object — no lower-triangle artifacts. -/
+abbrev KostantPartition (d : Fin (N + 1) → ℕ) :=
+  { m : SuppArray (N : ℤ) ℤ //
+      m ∈ kostantArrayOfRank (N := N) '' Set.range (rankFn (k := k) d) ∧ IsKostantArray m }
+
+/-- Realizable rank patterns ↔ literal Kostant partitions: `kostantArrayOfRank` corestricted onto
+its image (injective by `kostantArrayOfRank_injOn`), then the `IsKostantArray` certificate attached
+for free (`kostantArrayOfRank_isKostant`). -/
+noncomputable def rankKostantPartitionEquiv (d : Fin (N + 1) → ℕ) :
+    RealizableRank (k := k) d ≃ KostantPartition (k := k) d :=
+  (Equiv.Set.imageOfInjOn (kostantArrayOfRank (N := N)) (Set.range (rankFn (k := k) d))
+      kostantArrayOfRank_injOn).trans
+    (Equiv.subtypeEquivRight fun m ↦
+      ⟨fun hm ↦ ⟨hm, by
+          obtain ⟨r, ⟨A, hA⟩, hrm⟩ := hm
+          rw [← hrm, ← hA]
+          exact kostantArrayOfRank_isKostant A⟩,
+        fun hm ↦ hm.1⟩)
+
+/-- **Orbits ↔ literal Kostant partitions (Le Halleur–Rimányi 2024, Cor 2.9).** The set of
+`G_d`-orbits of `Tuple d` is in bijection with the realizable Kostant partitions of `d` — the
+**nonnegative, `i ≤ j`-supported** multiplicity arrays — via `⟦A⟧ ↦` the truncated `diff (rankFn A)`
+(the Kostant partition). This is `orbitKostantEquiv` (orbits ↔ rank patterns) composed with
+`rankKostantPartitionEquiv`. The
+literal-codomain form of `orbitDiffArrayEquiv`: same bijection, but the codomain is the genuine
+paper-side Kostant partition (no lower-triangle artifacts). -/
+noncomputable def orbitKostantPartitionEquiv (d : Fin (N + 1) → ℕ) :
+    Quotient (orbitSetoid (k := k) d) ≃ KostantPartition (k := k) d :=
+  (orbitKostantEquiv d).trans (rankKostantPartitionEquiv d)
+
+/-- The bijection sends `⟦A⟧` to the truncated second-difference array
+`kostantArrayOfRank (rankFn A)` (the literal Kostant partition of `A`). -/
+@[simp] theorem orbitKostantPartitionEquiv_mk {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
+    (orbitKostantPartitionEquiv d (Quotient.mk _ A) : KostantPartition (k := k) d).1
+      = kostantArrayOfRank (rankFn d A) := rfl
+
 section Witness
 
 /-! ## Non-vacuity witness
@@ -227,6 +409,13 @@ example :
     (orbitDiffArrayEquiv dWitness (Quotient.mk (orbitSetoid dWitness) tupleWitnessQ)
       : RealizableDiffArray (k := ℚ) dWitness).1
       = diffArrayOfRank (rankFn dWitness tupleWitnessQ) := rfl
+
+/-- The literal Kostant-partition bijection is non-vacuous: it sends `⟦tupleWitnessQ⟧` to the
+literal Kostant partition `kostantArrayOfRank (rankFn tupleWitnessQ)` of the witness. -/
+example :
+    (orbitKostantPartitionEquiv dWitness (Quotient.mk (orbitSetoid dWitness) tupleWitnessQ)
+      : KostantPartition (k := ℚ) dWitness).1
+      = kostantArrayOfRank (rankFn dWitness tupleWitnessQ) := rfl
 
 /-! ### Concrete multiplicity values, and the lower-triangle artifact
 
@@ -267,6 +456,57 @@ example :
 `diff`-form, not a (nonnegative, `i ≤ j`-supported) Kostant partition. -/
 example : (diffArrayOfRank (N := 2) rWitness).1 1 0 = -3 := by
   rw [diffArrayOfRank_val, diff_apply]; decide
+
+/-! ### The literal Kostant partition: the artifact is truncated away
+
+`kostantArrayOfRank` truncates the lower triangle to `0`, so on the witness it lands **exactly** on
+the paper's Kostant partition `RankPattern.mWitness` (`1` at `(0,0),(0,1),(1,2),(2,2)`, rest `0`) —
+so the `-3` artifact is gone. The literal bijection `orbitKostantPartitionEquiv` fires here. -/
+
+/-- The literal Kostant array of `rWitness` agrees with the full `diff`-array on `i ≤ j` (the six
+upper-triangular multiplicities, the paper's `mWitness`). -/
+example :
+    (kostantArrayOfRank (N := 2) rWitness).1 0 0 = 1
+      ∧ (kostantArrayOfRank (N := 2) rWitness).1 0 1 = 1
+      ∧ (kostantArrayOfRank (N := 2) rWitness).1 1 1 = 0
+      ∧ (kostantArrayOfRank (N := 2) rWitness).1 1 2 = 1
+      ∧ (kostantArrayOfRank (N := 2) rWitness).1 0 2 = 0
+      ∧ (kostantArrayOfRank (N := 2) rWitness).1 2 2 = 1 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    · rw [kostantArrayOfRank_of_le _ (by decide), diffArrayOfRank_val, diff_apply]; decide
+
+/-- The artifact is **truncated away**: where the full `diff`-array had `-3`, the literal Kostant
+array is `0`. So `kostantArrayOfRank rWitness` is nonnegative and `i ≤ j`-supported — a genuine
+Kostant partition, not the `diff`-form. -/
+example : (kostantArrayOfRank (N := 2) rWitness).1 1 0 = 0 :=
+  kostantArrayOfRank_of_gt rWitness (by decide)
+
+/-- The literal Kostant array of `rWitness` is the paper's Kostant partition `RankPattern.mWitness`
+(the last of the six partitions of `(2,2,2)`) — exactly, on the whole `ℤ × ℤ` plane. Both sides are
+supported on `i ≤ j`; there they are equal (`diff` of the witness rank pattern is `mWitness`), and
+below the diagonal both are `0` (truncation vs. `mWitness`'s support). -/
+example : (kostantArrayOfRank (N := 2) rWitness).1 = mWitness := by
+  have hsupp : Supported (2 : ℤ) mWitness := supported_mWitness
+  funext i j
+  by_cases hij : i ≤ j
+  · rw [kostantArrayOfRank_of_le _ hij, diffArrayOfRank_val,
+      ← diff_cumul (2 : ℤ) mWitness hsupp.1 hsupp.2, diff_apply, diff_apply]
+    have hpt : ∀ a b : ℤ, a ≤ b → (embedRank rWitness).1 a b = cumul (2 : ℤ) mWitness a b := by
+      intro a b hab
+      rcases lt_or_ge a 0 with ha | ha
+      · rw [(embedRank rWitness).2.1 a b ha, (supported_cumul (2 : ℤ) mWitness).1 a b ha]
+      rcases lt_or_ge (2 : ℤ) b with hb | hb
+      · rw [(embedRank rWitness).2.2 a b hb, (supported_cumul (2 : ℤ) mWitness).2 a b hb]
+      · have ha2 : a ≤ 2 := le_trans hab hb
+        have hb0 : 0 ≤ b := le_trans ha hab
+        interval_cases a <;> interval_cases b <;> first
+          | omega
+          | (simp only [embedRank, rWitness, cumul_apply, mWitness]; decide)
+    rw [hpt i j hij, hpt i (j + 1) (by omega), hpt (i - 1) j (by omega),
+      hpt (i - 1) (j + 1) (by omega)]
+  · rw [kostantArrayOfRank_of_gt _ (lt_of_not_ge hij), mWitness,
+      if_neg (by rintro ⟨_, h⟩; omega), if_neg (by rintro ⟨_, h⟩; omega),
+      if_neg (by rintro ⟨h, _⟩; omega), if_neg (by rintro ⟨h, _⟩; omega)]
 
 end Witness
 
