@@ -41,6 +41,12 @@ Three forms of the bijection, each `⟦A⟧ ↦` a successively more literal enc
   which is manifestly nonnegative (a sum of `singleDelta` indicators) and `i ≤ j`-supported
   (`birth ≤ death`). Truncation is invisible to `cumul` on the upper triangle, so the truncated
   array still determines the rank pattern (`kostantArrayOfRank_injOn`), and the equiv corestricts.
+* `orbitCMPlusEquiv d : Quotient (orbitSetoid d) ≃ { m // CMPlus d m }` — orbits ↔ the **paper's
+  independently-defined object** `CM⁺_d` (`CMPlus`): the nonnegative, `i ≤ j`-supported arrays
+  satisfying the **dimension equations** `d_k = ∑_{i ≤ k ≤ j} m_{ij}`, with no reference to tuples
+  or realizability. The image-coded carrier above and `CMPlus` coincide (`cMPlus_iff_mem_image`):
+  realizable ⟹ CMPlus is `cMPlus_kostantArrayOfRank` (`r_{kk} = d_k`), and CMPlus ⟹ realizable is
+  `kostantArrayOfRank_rankFn_realizer` (the explicit realizer `⊕ M^m` over `realizer`).
 
 **Typeclass.** `Field k`. **Dependency rule:** never import `DLNFibre.DLN`.
 -/
@@ -223,7 +229,7 @@ noncomputable def orbitDiffArrayEquiv (d : Fin (N + 1) → ℕ) :
 **supported on `i ≤ j`**. This section restricts the codomain to that literal object.
 
 The carrier is `kostantArrayOfRank`: the `diff`-array **truncated to `0` below the diagonal**. The
-bridge fact `kostantArrayOfRank_eq_barMult` identifies it, for a realizable rank pattern, with the
+bridge fact `kostantArrayOfRank_isKostant` identifies it, for a realizable rank pattern, with the
 **bar-multiplicity array** `barMult` of a Gabriel decomposition (`Gabriel.exists_cumul_barMult`),
 which is manifestly nonnegative (a sum of `singleDelta` indicators) and `i ≤ j`-supported (bars have
 `birth ≤ death`). Truncation is invisible to `cumul` on the upper triangle
@@ -390,6 +396,248 @@ noncomputable def orbitKostantPartitionEquiv (d : Fin (N + 1) → ℕ) :
     (orbitKostantPartitionEquiv d (Quotient.mk _ A) : KostantPartition (k := k) d).1
       = kostantArrayOfRank (rankFn d A) := rfl
 
+/-! ## The paper's predicate `CM⁺_d`, independently, and the realizability equivalence (Def, p.~8)
+
+`KostantPartition d` above is **image-coded**: it bakes "realizable by a tuple" into the carrier.
+The paper (Le Halleur–Rimányi 2024, p.~8) defines `CM⁺_d` *independently* as the upper-triangular
+nonnegative multiplicity arrays satisfying the **dimension equations** `d_k = ∑_{i ≤ k ≤ j} m_{ij}`.
+This section exposes that standalone predicate (`CMPlus`) and proves it coincides with
+realizability, so the image-coded carrier and the genuine paper-side object agree.
+
+The dimension-equation sum `∑_{i ≤ k ≤ j} m_{ij}` is exactly `cumul N m` on the **diagonal** `(k,k)`
+(`cumul N m k k = ∑_{a ≤ k} ∑_{k ≤ b ≤ N} m_{ab} = ∑_{a ≤ k ≤ b} m_{ab}`), so `CMPlus` reads the
+diagonal of `cumul`. -/
+
+/-- **The paper's predicate `CM⁺_d` (Le Halleur–Rimányi 2024, p.~8), standalone.** A supported array
+`m` is a **Kostant partition of `d`** when it is a nonnegative, `i ≤ j`-supported multiplicity array
+(`IsKostantArray`) and satisfies the **dimension equations** `d_k = ∑_{i ≤ k ≤ j} m_{ij}` — the
+diagonal of `cumul N m` (`cumul N m k k = ∑_{a ≤ k ≤ b} m_{ab}`). No reference to tuples or
+realizability: the purely combinatorial paper definition. -/
+def CMPlus (d : Fin (N + 1) → ℕ) (m : SuppArray (N : ℤ) ℤ) : Prop :=
+  IsKostantArray m ∧ ∀ k : Fin (N + 1), (d k : ℤ) = cumul (N : ℤ) m.1 (k : ℤ) (k : ℤ)
+
+/-! ### Realizable ⟹ CMPlus (the forward direction)
+
+A realizable array `kostantArrayOfRank (rankFn d A)` is a Kostant partition: it is `IsKostantArray`
+(`kostantArrayOfRank_isKostant`), and its diagonal `cumul` recovers `d_k`: `cumul` of the truncated
+array on the diagonal is the embedded rank pattern there (`cumul_kostantArrayOfRank_of_le`), which
+is `r_{kk} = d_k` (`rankPattern_self`). -/
+
+/-- **Realizable ⟹ CMPlus.** Every realizable array satisfies the paper's dimension equations: the
+diagonal of its `cumul` is `r_{kk} = d_k`. -/
+theorem cMPlus_kostantArrayOfRank {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
+    CMPlus d (kostantArrayOfRank (rankFn d A)) := by
+  refine ⟨kostantArrayOfRank_isKostant A, fun k ↦ ?_⟩
+  rw [cumul_kostantArrayOfRank_of_le (rankFn d A) (le_refl (k : ℤ)), embedRank_apply_fin]
+  rw [rankFn, dif_pos (le_refl k), rankPattern_self]
+
+/-! ### CMPlus ⟹ realizable (the reverse direction, the substantive one)
+
+A paper-style Kostant partition `m` (with `CMPlus d m`) is realized by an explicit tuple: the
+interval direct sum `⊕_{(i,j)} M_{ij}^{m_{ij}}` carrying `m_{ij}` copies of the bar `M_{ij}`. We
+encode the multiplicities as a **`CopyIndex`** — the finite sigma type with `(m_{ij}).toNat` copies
+of each endpoint pair `(i,j)` — and read off a bar list `listOfArray m`. Its multiplicity array is
+`m` (`multiplicityArray_listOfArray`, via the bar-count bridge `barMult_eq_card_fiber` and the fibre
+equiv `Equiv.sigmaSubtype`), so `intervalDirectSum (listOfArray m)` has rank pattern `cumul m`
+(`rankPattern_intervalDirectSum_eq_cumul`). The diagonal dimension equation pins `foldDim = d`, and
+the upper-triangular rank pattern (pinned by `m` itself, *not* by the diagonal) feeds the assembly
+`kostantArrayOfRank (rankFn d realizer) = m`. -/
+
+/-- The copy-index of a multiplicity array: `(m_{ij}).toNat` copies of each endpoint pair `(i,j)`.
+A `Fintype` (finite sigma), and the bar index set of the realizing direct sum. -/
+abbrev CopyIndex (m : SuppArray (N : ℤ) ℤ) : Type :=
+  Σ p : Fin (N + 1) × Fin (N + 1), Fin (m.1 (p.1 : ℤ) (p.2 : ℤ)).toNat
+
+/-- The number of bars of the realizer: the total copy count `∑_{ij} (m_{ij}).toNat`. -/
+noncomputable def copyCard (m : SuppArray (N : ℤ) ℤ) : ℕ := Fintype.card (CopyIndex m)
+
+/-- The chosen labelling of the `copyCard m` bars by their endpoint pairs (via `Fintype.equivFin`).
+`copyBar m lam = (i, j)` says bar `lam` is a copy of `M_{ij}`. -/
+noncomputable def copyBar (m : SuppArray (N : ℤ) ℤ) (lam : Fin (copyCard m)) :
+    Fin (N + 1) × Fin (N + 1) :=
+  ((Fintype.equivFin (CopyIndex m)).symm lam).1
+
+/-- The bar list of `m`: one entry `(i,j)` per copy. Its multiplicity array is `m`
+(`multiplicityArray_listOfArray`). -/
+noncomputable def listOfArray (m : SuppArray (N : ℤ) ℤ) :
+    List (Fin (N + 1) × Fin (N + 1)) :=
+  (List.finRange (copyCard m)).map (copyBar m)
+
+/-- The `(birth,death) = (i,j)` fibre of the bar labelling has cardinality `(m_{ij}).toNat`: it is
+the copy-index fibre over `(i,j)`, equivalent to `Fin (m_{ij}).toNat` via `Equiv.sigmaSubtype`. -/
+theorem card_copyBar_fiber (m : SuppArray (N : ℤ) ℤ) (i j : Fin (N + 1)) :
+    Fintype.card {lam // (copyBar m lam).1 = i ∧ (copyBar m lam).2 = j}
+      = (m.1 (i : ℤ) (j : ℤ)).toNat := by
+  classical
+  -- `{lam // copyBar lam = (i,j)}` ≃ `{c : CopyIndex // c.1 = (i,j)}` ≃ `Fin (m_{ij}).toNat`
+  have e₁ : {lam // (copyBar m lam).1 = i ∧ (copyBar m lam).2 = j}
+      ≃ {lam // copyBar m lam = (i, j)} :=
+    Equiv.subtypeEquivRight fun lam ↦ by rw [Prod.ext_iff]
+  have e₂ : {lam // copyBar m lam = (i, j)}
+      ≃ {c : CopyIndex m // c.1 = (i, j)} :=
+    Equiv.subtypeEquivOfSubtype (p := fun c : CopyIndex m ↦ c.1 = (i, j))
+      (Fintype.equivFin (CopyIndex m)).symm
+  have e₃ : {c : CopyIndex m // c.1 = (i, j)} ≃ Fin (m.1 (i : ℤ) (j : ℤ)).toNat :=
+    Equiv.sigmaSubtype (i, j)
+  rw [Fintype.card_congr (e₁.trans (e₂.trans e₃)), Fintype.card_fin]
+
+/-- **The realizer's multiplicity array is `m`.** `multiplicityArray (listOfArray m) = m.1`: the
+list has `(m_{ij}).toNat = m_{ij}` copies of each `(i,j)` (`card_copyBar_fiber`, nonnegativity), and
+vanishes off the `i ≤ j` support of `m` exactly as `barMult` does. -/
+theorem multiplicityArray_listOfArray {d : Fin (N + 1) → ℕ} (m : SuppArray (N : ℤ) ℤ)
+    (hm : CMPlus d m) :
+    multiplicityArray (listOfArray m) = m.1 := by
+  rw [listOfArray, multiplicityArray_map_finRange]
+  set birth := fun lam ↦ (copyBar m lam).1 with hbirth
+  set death := fun lam ↦ (copyBar m lam).2 with hdeath
+  funext a b
+  -- `barMult` vanishes off `[0,N]²`; on a cast pair `(i,j)` it is the fibre count `(m_{ij}).toNat`
+  rcases lt_or_ge a 0 with ha | ha
+  · rw [(supported_barMult _ birth death).1 a b ha, m.2.1 a b ha]
+  rcases lt_or_ge (N : ℤ) b with hb | hb
+  · rw [(supported_barMult _ birth death).2 a b hb, m.2.2 a b hb]
+  -- below the diagonal `b < 0 ≤ a`: both `barMult` (death ≥ 0) and `m` (`IsKostantArray`) vanish
+  rcases lt_or_ge b 0 with hb0 | hb0
+  · rw [hm.1.2 a b (lt_of_lt_of_le hb0 ha), hbirth, hdeath, barMult]
+    refine Finset.sum_eq_zero fun lam _ ↦ ?_
+    rw [singleDelta, if_neg]
+    rintro ⟨_, rfl⟩
+    exact absurd hb0 (not_lt.mpr (by positivity))
+  -- `a > N ≥ b`: below the diagonal again — both `barMult` (birth ≤ N) and `m` vanish
+  rcases lt_or_ge (N : ℤ) a with haN | haN
+  · rw [hm.1.2 a b (lt_of_le_of_lt hb haN), hbirth, hdeath, barMult]
+    refine Finset.sum_eq_zero fun lam _ ↦ ?_
+    rw [singleDelta, if_neg]
+    rintro ⟨rfl, _⟩
+    exact absurd haN (not_lt.mpr (by exact_mod_cast Nat.lt_succ_iff.mp (copyBar m lam).1.isLt))
+  -- in range: name the `Fin (N+1)` indices `i, j`
+  obtain ⟨i, hi⟩ : ∃ i : Fin (N + 1), (i : ℤ) = a :=
+    ⟨⟨a.toNat, by omega⟩, by simp [Int.toNat_of_nonneg ha]⟩
+  obtain ⟨j, hj⟩ : ∃ j : Fin (N + 1), (j : ℤ) = b :=
+    ⟨⟨b.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hb0]⟩
+  subst hi hj
+  rw [show barMult _ birth death (i : ℤ) (j : ℤ)
+      = barMult _ birth death ((i, j).1 : ℤ) ((i, j).2 : ℤ) from rfl,
+    barMult_eq_card_fiber _ birth death (i, j)]
+  rw [card_copyBar_fiber m i j]
+  -- `(m_{ij}).toNat = m_{ij}` since `m_{ij} ≥ 0`
+  exact Int.toNat_of_nonneg (hm.1.1 (i : ℤ) (j : ℤ))
+
+/-- **The dimension vector of the realizer is `d`.** `foldDim (listOfArray m) = d`: the diagonal
+rank pattern `r_{kk} = foldDim` of the interval direct sum is `cumul (multiplicityArray) k k =
+cumul m k k = d_k` by the dimension equation. The only place the diagonal `CMPlus` equation is
+used. -/
+theorem foldDim_listOfArray {d : Fin (N + 1) → ℕ} (m : SuppArray (N : ℤ) ℤ) (hm : CMPlus d m) :
+    foldDim (listOfArray m) = d := by
+  funext t
+  -- `foldDim L t = r_{tt}(⊕ M^L) = cumul (mult L) t t = cumul m t t = d_t`; any field works for the
+  -- middle rank identity (the multiplicity array is field-free), so we instantiate at `ℚ`.
+  have hZ : (foldDim (listOfArray m) t : ℤ) = (d t : ℤ) := by
+    have hself : (foldDim (listOfArray m) t : ℤ)
+        = (rankPattern (foldDim (listOfArray m))
+            (intervalDirectSum (k := ℚ) (listOfArray m)) t t le_rfl : ℤ) := by
+      rw [rankPattern_self]
+    rw [hself, rankPattern_intervalDirectSum_eq_cumul, multiplicityArray_listOfArray m hm,
+      ← hm.2 t]
+  exact_mod_cast hZ
+
+/-- The explicit realizer of a Kostant partition `m`: the interval direct sum
+`⊕_{(i,j)} M_{ij}^{m_{ij}}`, cast to live over `d` (its dimension vector is `d`,
+`foldDim_listOfArray`). -/
+noncomputable def realizer {d : Fin (N + 1) → ℕ} (m : SuppArray (N : ℤ) ℤ) (hm : CMPlus d m) :
+    Tuple (k := k) d :=
+  foldDim_listOfArray m hm ▸ intervalDirectSum (k := k) (listOfArray m)
+
+/-- The realizer's rank pattern is `cumul m` on the upper triangle: `r_{ij}(realizer) = cumul N m`
+(`rankPattern_intervalDirectSum_eq_cumul` + `multiplicityArray_listOfArray`, through the transport
+`rankPattern_transport`). -/
+theorem rankPattern_realizer {d : Fin (N + 1) → ℕ} (m : SuppArray (N : ℤ) ℤ) (hm : CMPlus d m)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    (rankPattern d (realizer (k := k) m hm) i j hij : ℤ)
+      = cumul (N : ℤ) m.1 (i : ℤ) (j : ℤ) := by
+  rw [realizer, rankPattern_transport (foldDim_listOfArray m hm)
+    (intervalDirectSum (k := k) (listOfArray m)),
+    rankPattern_intervalDirectSum_eq_cumul, multiplicityArray_listOfArray m hm]
+
+/-- **CMPlus ⟹ realizable.** `kostantArrayOfRank (rankFn d (realizer m)) = m`: the realizer's rank
+pattern is `cumul m` (`rankPattern_realizer`), so on the upper triangle `kostantArrayOfRank`
+recovers `embedRank` of the rank pattern, which `diff`-inverts (`diff_cumul`) `m` back to `m`;
+below the diagonal both sides are `0` (`kostantArrayOfRank_of_gt`, `IsKostantArray`). The whole
+upper triangle is pinned by `m` itself (it *is* the multiplicity array), not by the diagonal
+equation. -/
+theorem kostantArrayOfRank_rankFn_realizer {d : Fin (N + 1) → ℕ} (m : SuppArray (N : ℤ) ℤ)
+    (hm : CMPlus d m) :
+    kostantArrayOfRank (rankFn d (realizer (k := k) m hm)) = m := by
+  -- the truncated `diff`-array of the realizer's rank pattern agrees with `m` on the upper triangle
+  set r := rankFn d (realizer (k := k) m hm) with hr
+  -- `embedRank r` equals `cumul m` on the upper triangle (both supported; `embedRank r = cumul m`)
+  have hembed : ∀ x y : ℤ, x ≤ y → (embedRank r).1 x y = cumul (N : ℤ) m.1 x y := by
+    intro x y hxy
+    rcases lt_or_ge x 0 with hx | hx
+    · rw [(embedRank r).2.1 x y hx, (supported_cumul (N : ℤ) m.1).1 x y hx]
+    rcases lt_or_ge (N : ℤ) y with hy | hy
+    · rw [(embedRank r).2.2 x y hy, (supported_cumul (N : ℤ) m.1).2 x y hy]
+    have hy0 : 0 ≤ y := le_trans hx hxy
+    have hxN : x ≤ (N : ℤ) := le_trans hxy hy
+    obtain ⟨i, hi⟩ : ∃ i : Fin (N + 1), (i : ℤ) = x :=
+      ⟨⟨x.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hx]⟩
+    obtain ⟨j, hj⟩ : ∃ j : Fin (N + 1), (j : ℤ) = y :=
+      ⟨⟨y.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hy0]⟩
+    have hij : i ≤ j := by
+      have : (i : ℤ) ≤ (j : ℤ) := by rw [hi, hj]; exact hxy
+      exact_mod_cast this
+    rw [← hi, ← hj, embedRank_apply_fin, hr, rankFn, dif_pos hij]
+    exact_mod_cast rankPattern_realizer (k := k) m hm i j hij
+  -- `m = diff (cumul m)` (supported), so `cumul m` agrees with `m` after one `diff`
+  have hdiffm : diff (cumul (N : ℤ) m.1) = m.1 := diff_cumul (N : ℤ) m.1 m.2.1 m.2.2
+  apply Subtype.ext
+  funext x y
+  by_cases hxy : x ≤ y
+  · rw [kostantArrayOfRank_of_le _ hxy, diffArrayOfRank_val, diff_apply,
+      hembed x y hxy, hembed x (y + 1) (by omega), hembed (x - 1) y (by omega),
+      hembed (x - 1) (y + 1) (by omega), ← diff_apply, hdiffm]
+  · rw [kostantArrayOfRank_of_gt _ (lt_of_not_ge hxy), (hm.1.2 x y (lt_of_not_ge hxy)).symm]
+
+/-! ### The realizability ↔ CMPlus equivalence (the two directions packaged)
+
+The image-coded `KostantPartition d` carrier (`m ∈ kostantArrayOfRank '' Set.range (rankFn d) ∧
+IsKostantArray m`) and the standalone paper predicate `CMPlus d m` define the same set. -/
+
+/-- **Realizability characterizes the paper predicate.** A supported array is a realizable Kostant
+array (image-coded) iff it satisfies the paper's standalone predicate `CMPlus d`. The forward
+direction is `cMPlus_kostantArrayOfRank` (with `IsKostantArray` from the bridge), the reverse is the
+realizer `kostantArrayOfRank_rankFn_realizer`. -/
+theorem cMPlus_iff_mem_image {d : Fin (N + 1) → ℕ} (m : SuppArray (N : ℤ) ℤ) :
+    CMPlus d m ↔
+      (m ∈ kostantArrayOfRank (N := N) '' Set.range (rankFn (k := k) d) ∧ IsKostantArray m) := by
+  constructor
+  · intro hm
+    exact ⟨⟨rankFn d (realizer (k := k) m hm), ⟨realizer (k := k) m hm, rfl⟩,
+      kostantArrayOfRank_rankFn_realizer m hm⟩, hm.1⟩
+  · rintro ⟨⟨_, ⟨A, rfl⟩, rfl⟩, _⟩
+    exact cMPlus_kostantArrayOfRank A
+
+/-- The image-coded Kostant-partition carrier coincides with the subtype of the paper predicate
+`CMPlus d`: `KostantPartition d ≃ { m // CMPlus d m }`. The genuine paper-side object. -/
+noncomputable def kostantPartitionCMPlusEquiv (d : Fin (N + 1) → ℕ) :
+    KostantPartition (k := k) d ≃ { m : SuppArray (N : ℤ) ℤ // CMPlus d m } :=
+  Equiv.subtypeEquivRight fun m ↦ (cMPlus_iff_mem_image (k := k) m).symm
+
+/-- **Orbits ↔ Kostant partitions of `d`, paper predicate form (Le Halleur–Rimányi 2024, Cor 2.9).**
+The set of `G_d`-orbits of `Tuple d` is in bijection with `{ m // CMPlus d m }` — the arrays
+satisfying the paper's standalone dimension equations `d_k = ∑_{i ≤ k ≤ j} m_{ij}`, nonnegative and
+`i ≤ j`-supported. The literal-codomain form of `orbitKostantPartitionEquiv`, retargeted onto the
+independently-defined paper object. -/
+noncomputable def orbitCMPlusEquiv (d : Fin (N + 1) → ℕ) :
+    Quotient (orbitSetoid (k := k) d) ≃ { m : SuppArray (N : ℤ) ℤ // CMPlus d m } :=
+  (orbitKostantPartitionEquiv d).trans (kostantPartitionCMPlusEquiv d)
+
+/-- The bijection sends `⟦A⟧` to the (paper-predicate) Kostant partition
+`kostantArrayOfRank (rankFn A)` of `A`. -/
+@[simp] theorem orbitCMPlusEquiv_mk {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
+    (orbitCMPlusEquiv d (Quotient.mk _ A) : { m : SuppArray (N : ℤ) ℤ // CMPlus d m }).1
+      = kostantArrayOfRank (rankFn d A) := rfl
+
 section Witness
 
 /-! ## Non-vacuity witness
@@ -507,6 +755,41 @@ example : (kostantArrayOfRank (N := 2) rWitness).1 = mWitness := by
   · rw [kostantArrayOfRank_of_gt _ (lt_of_not_ge hij), mWitness,
       if_neg (by rintro ⟨_, h⟩; omega), if_neg (by rintro ⟨_, h⟩; omega),
       if_neg (by rintro ⟨h, _⟩; omega), if_neg (by rintro ⟨h, _⟩; omega)]
+
+/-! ### The paper predicate `CMPlus` on the witness
+
+`⟨mWitness, supported_mWitness⟩` (the paper's last partition of `(2,2,2)`, `m₀₀=m₀₁=m₁₂=m₂₂=1`)
+satisfies the standalone `CMPlus dWitness`: it is nonnegative, `i ≤ j`-supported, and meets the
+dimension equations `d_k = ∑_{i ≤ k ≤ j} m_{ij} = 2`. It is also the realized array of the
+`(2,2,2)/ℚ` witness tuple (`= kostantArrayOfRank (rankFn dWitness tupleWitnessQ)`). -/
+
+/-- The paper's `(2,2,2)` Kostant partition as a `SuppArray`. -/
+def mWitnessSupp : SuppArray (2 : ℤ) ℤ := ⟨mWitness, supported_mWitness⟩
+
+/-- **The paper predicate fires on the witness.** `mWitnessSupp` satisfies `CMPlus dWitness`: it is
+a genuine Kostant partition of `(2,2,2)`. The dimension equations are `cumul 2 mWitness k k = 2`,
+matching `d_k = 2` at each of the three diagonal vertices. -/
+theorem cMPlus_mWitnessSupp : CMPlus dWitness mWitnessSupp := by
+  refine ⟨⟨fun i j ↦ ?_, fun i j hij ↦ ?_⟩, fun k ↦ ?_⟩
+  · -- nonnegative
+    simp only [mWitnessSupp, mWitness]; split_ifs <;> norm_num
+  · -- `i ≤ j`-supported (zero below the diagonal)
+    simp only [mWitnessSupp, mWitness]; split_ifs with h₁ h₂ h₃ h₄ <;> omega
+  · -- dimension equations `d_k = cumul 2 mWitness k k`, k = 0,1,2
+    fin_cases k <;>
+      · simp only [mWitnessSupp, dWitness]
+        rw [cumul_apply]
+        unfold mWitness
+        decide
+
+/-- The witness Kostant partition is **realized** — by its own `realizer` (`⊕ M^{mWitness}`):
+`kostantArrayOfRank (rankFn dWitness (realizer mWitnessSupp _)) = mWitnessSupp`. So
+`orbitCMPlusEquiv` lands on it from the orbit of that realizing tuple, confirming the reverse
+direction concretely (over `ℚ`). -/
+example :
+    kostantArrayOfRank (rankFn dWitness (realizer (k := ℚ) mWitnessSupp cMPlus_mWitnessSupp))
+      = mWitnessSupp :=
+  kostantArrayOfRank_rankFn_realizer mWitnessSupp cMPlus_mWitnessSupp
 
 end Witness
 
