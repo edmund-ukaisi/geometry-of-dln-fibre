@@ -198,3 +198,21 @@ rebuilt. Layer to land now (`Core.OrbitCodim`):
   Voigt/KMS codim). Verified on (2,2,2) by rankloc-probe (3,4,4,8). axiom-clean (no global axiom).
 The `voigt` discharge (the AG dimension-theory library) is queued as its own sub-expedition for when the
 operator calls it; the hybrid does not make it smaller, only crisp and non-blocking.
+
+## PHASE B HYBRID — LANDED (2026-06-18). Commit chain through Core.OrbitCodim.
+
+`Core.OrbitCodim` (green/0-sorry/axiom-clean, reviewed PASS): the geometric codimation result in honest
+Lean, modulo ONE named hypothesis hVoigt (Voigt's lemma). `orbitRankLocus` (engine-concrete, = orbit
+closure by Thm 3.8 cited), `codimRep coord Z := (vanishingIdeal (coord '' Z)).height` (standard affine
+codim; coord = canonical linear flattening, parameter), and `codimRep_orbitRankLocus_eq_multSum` =
+Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv} modulo hVoigt. hVoigt is a HYPOTHESIS (not axiom); axiom-clean.
+
+### Expedition status
+- **Cor 3.5 algebraic content (Proved):** dim Ext¹(M,M) = Σ m_{i-1,j-1} m_{uv} (DeformationExt).
+- **Tangent codimension (Proved):** orbitLinearCodim = dim Ext¹ (OrbitLinearCodim).
+- **Geometric codimension (Proved-modulo-hVoigt):** codimRep(orbitRankLocus) = Σ m_{i-1,j-1} m_{uv}
+  (OrbitCodim). One open hole: hVoigt (Voigt). Engine-verified on (2,2,2) by rankloc-probe (3,4,4,8).
+- **Open (queued sub-expedition):** the `voigt` discharge = AG dimension-theory library (proves hVoigt;
+  fixes coord to the canonical flattening). Drops in against the OrbitCodim interface; nothing rebuilt.
+- Remaining beyond Phase B (future): (C,θ) via minimising Σ m_{i-1,j-1} m_{uv} over Kostant partitions
+  (§§5–7); the RLCT payoff (§8, Aoyagi-cited).
