@@ -30,15 +30,25 @@ by `orbitLinearCodim_eq_multSum`. The math is verified exact on `(2,2,2)` (codim
 **`codimRep` faithfulness.** `codimRep coord Z := (vanishingIdeal k (coord '' Z)).height`: the
 codimension of the Zariski closure of `coord '' Z`, read through a coordinatisation
 `coord : Rep_d ≃ (RepCoord d → k)`. The geometric codimension is the height read through the
-**canonical linear flattening** (one coordinate per matrix entry); for a *linear* `coord` the height
-is coordinate-independent (invariant under the induced ring automorphism). `coord` is left a
-parameter — the headline is the honest implication "for this `coord`, given `hVoigt`, …"; the future
-Voigt discharge fixes the canonical flattening, at which `hVoigt` is Voigt's lemma. (An
-unconstrained set-bijection `coord` need not preserve height; `hVoigt` is only expected/true at the
-canonical linear one, and the theorem asserts nothing when `hVoigt` fails.) Definition only — none
-of the deep dimension theorems (catenary `dim R/I = n − ht I`, determinantal height, Nullstellensatz
-radical bridge) are invoked; those are the `voigt` sub-expedition. `Ideal.height : ℕ∞`, locus codim
-is `ℕ∞`-valued.
+**canonical linear flattening** `canonicalCoord d` (one coordinate per matrix entry,
+`A ↦ fun ⟨i, r, c⟩ ↦ A i r c`), now constructed below from `Equiv.curry`/`Equiv.piCurry`. The
+geometric headlines are also stated at `canonicalCoord d` directly (`…_canonical` variants and
+`codimRepCanonical`), so their `hVoigt` reads `codimRep (canonicalCoord d) (orbitRankLocus M) =
+orbitLinearCodim M` — Voigt's lemma at THE canonical flattening, not an arbitrary set-equiv. The
+general `codimRep coord …` theorems are kept as honest implications "for this `coord`, given
+`hVoigt`, …" — `codimRep` is an honest general building block (any `coord`), and the canonical
+specialisation is what the future Voigt discharge targets. (An unconstrained set-bijection `coord`
+need not preserve height; `hVoigt` is only expected/true at the canonical linear one, and the
+theorem asserts nothing when `hVoigt` fails.) **Linear-coordinate invariance is NOT proved here:**
+for any *linear* re-coordinatisation the height should agree with the canonical one (invariant under
+the induced ring automorphism of `MvPolynomial (RepCoord d) k`), but Mathlib v4.29 has no transport
+lemma for `Ideal.height` under a `RingEquiv`/`comap`; proving it needs (i) the `AlgEquiv` of the
+coordinate change on `MvPolynomial`, (ii) `vanishingIdeal (φ ∘ coord '' Z) = comap φ (vanishingIdeal
+(coord '' Z))`, and (iii) `(comap φ I).height = I.height` for `φ` a ring iso — none of which is
+cheap at this pin. It is left to the `voigt` sub-expedition. Definition only — none of the deep
+dimension theorems (catenary `dim R/I = n − ht I`, determinantal height, Nullstellensatz radical
+bridge) are invoked; those are the `voigt` sub-expedition. `Ideal.height : ℕ∞`, locus codim is
+`ℕ∞`-valued.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -79,6 +89,21 @@ abbrev RepCoord (d : Fin (N + 1) → ℕ) : Type :=
 instance (d : Fin (N + 1) → ℕ) : Finite (RepCoord d) := by
   unfold RepCoord; infer_instance
 
+/-- The **canonical linear flattening** `Rep_d ≃ (RepCoord d → k)`, one coordinate per matrix entry:
+`A ↦ fun ⟨i, r, c⟩ ↦ (A i) r c`. Assembled from `Equiv.curry` (each `Matrix … ↔ (… × … → k)`) and
+`Equiv.piCurry` (Sigma-currying `∀ i, (… × … → k) ↔ (RepCoord d → k)`). This is the coordinatisation
+at which `codimRep` is the genuine geometric codimension. -/
+noncomputable def canonicalCoord (d : Fin (N + 1) → ℕ) :
+    Tuple (k := k) d ≃ (RepCoord d → k) :=
+  (Equiv.piCongrRight (fun i : Fin N ↦
+      (Equiv.curry (Fin (d i.succ)) (Fin (d i.castSucc)) k).symm)).trans
+    (Equiv.piCurry (fun (_ : Fin N) (_ : Fin (d _) × Fin (d _)) ↦ k)).symm
+
+omit [Field k] in
+/-- `canonicalCoord` is the entry-flattening: the coordinate `⟨i, r, c⟩` of `A` is `(A i) r c`. -/
+@[simp] theorem canonicalCoord_apply {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d)
+    (x : RepCoord d) : canonicalCoord d A x = A x.1 x.2.1 x.2.2 := rfl
+
 /-- The **geometric codimension** of a subset `Z ⊆ Rep_d`, read through a coordinatisation
 `coord : Rep_d ≃ (RepCoord d → k)`: the `Ideal.height` of the vanishing ideal of `coord '' Z` in the
 coordinate polynomial ring — the standard codimension of the Zariski closure of `coord '' Z`.
@@ -90,6 +115,12 @@ noncomputable def codimRep {d : Fin (N + 1) → ℕ} (coord : Tuple (k := k) d �
     (Z : Set (Tuple (k := k) d)) : ℕ∞ :=
   Ideal.height
     (MvPolynomial.vanishingIdeal (σ := RepCoord d) (k := k) (K := k) (coord '' Z))
+
+/-- The geometric codimension of `Z ⊆ Rep_d` at the **canonical linear flattening**
+`canonicalCoord d` — the genuine geometric codimension (height of `Z`'s vanishing ideal in the
+coordinate ring, one variable per matrix entry). `codimRep` specialised to the canonical coord. -/
+noncomputable def codimRepCanonical {d : Fin (N + 1) → ℕ} (Z : Set (Tuple (k := k) d)) : ℕ∞ :=
+  codimRep (canonicalCoord d) Z
 
 /-! ## The conditional headline — geometric codim = Cor 3.5 quadratic form, modulo Voigt
 
@@ -123,5 +154,36 @@ theorem codimRep_orbitRankLocus_eq_multSum (L : List (Fin (N + 1) × Fin (N + 1)
           ∑ v ∈ Finset.Icc j (N : ℤ),
           multiplicityArray L (i - 1) (j - 1) * multiplicityArray L u v := by
   rw [hVoigt, ENat.toNat_coe, ← orbitLinearCodim_eq_multSum (k := k)]
+
+/-! ## The canonical-coordinate headlines — `hVoigt` at THE canonical flattening
+
+The same two headlines, stated at `canonicalCoord d` so the `hVoigt` hypothesis is Voigt's lemma at
+the genuine geometric coordinatisation (one variable per matrix entry), not at an arbitrary
+set-equiv. These are the statements the future Voigt discharge targets; they are direct
+specialisations of the general theorems, so they inherit the same proofs. -/
+
+/-- **Geometric codim = expected codim at the canonical flattening, modulo Voigt (`ℕ∞` form).**
+`codimRep_orbitRankLocus_eq_finrank_deformationExt1` specialised to `coord = canonicalCoord d`: the
+canonical geometric codimension of the orbit closure equals `dim Ext¹(M,M)`, given Voigt's lemma at
+the canonical flattening. -/
+theorem codimRepCanonical_orbitRankLocus_eq_finrank_deformationExt1 {d : Fin (N + 1) → ℕ}
+    (M : Tuple (k := k) d)
+    (hVoigt : codimRep (canonicalCoord d) (orbitRankLocus M) = (orbitLinearCodim M : ℕ∞)) :
+    codimRepCanonical (orbitRankLocus M) = (finrank k (deformationExt1 M M) : ℕ∞) :=
+  codimRep_orbitRankLocus_eq_finrank_deformationExt1 (canonicalCoord d) M hVoigt
+
+/-- **The geometric-codimension headline (Lehalleur–Rimányi Cor 3.5) at the canonical flattening,
+modulo Voigt.** `codimRep_orbitRankLocus_eq_multSum` specialised to `coord = canonicalCoord (foldDim
+L)`: the canonical geometric codimension of `Ō_M` equals the paper's quadratic form, given Voigt's
+lemma `hVoigt` at THE canonical flattening (one variable per matrix entry). -/
+theorem codimRepCanonical_orbitRankLocus_eq_multSum (L : List (Fin (N + 1) × Fin (N + 1)))
+    (hVoigt : codimRep (canonicalCoord (foldDim L))
+        (orbitRankLocus (intervalDirectSum (k := k) L))
+      = (orbitLinearCodim (intervalDirectSum (k := k) L) : ℕ∞)) :
+    ((codimRepCanonical (orbitRankLocus (intervalDirectSum (k := k) L))).toNat : ℤ)
+      = ∑ i ∈ Finset.Icc (1 : ℤ) N, ∑ u ∈ Finset.Icc i (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),
+          ∑ v ∈ Finset.Icc j (N : ℤ),
+          multiplicityArray L (i - 1) (j - 1) * multiplicityArray L u v :=
+  codimRep_orbitRankLocus_eq_multSum L (canonicalCoord (foldDim L)) hVoigt
 
 end DLNFibre.Core
