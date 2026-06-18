@@ -229,6 +229,306 @@ theorem euler_interval (i j u v : Fin (N + 1)) :
   have hi := i.isLt; have hj := j.isLt; have hu := u.isLt; have hv := v.isLt
   split <;> split <;> split <;> omega
 
+/-! ## The Hom and Ext¹ indicators between interval modules
+
+The two indicator formulas (matching the recon Codex certificate): for interval modules `M_{ij}` (source)
+and `M_{uv}` (target) over a field,
+`finrank Hom(M_{ij}, M_{uv}) = 1[u≤i≤v≤j]` and
+`finrank deformationExt1(M_{ij}, M_{uv}) = 1[i<u≤j+1≤v]` (the latter false at `j = N`).
+The `Hom` side is proved directly (constancy of a morphism's scalar on the connected overlap, with a
+failing boundary forcing it to zero); the `Ext¹` side follows from it and `euler_identity` +
+`euler_interval`. -/
+
+/-- An inhabited interval-dimension index forces value membership `i ≤ w ≤ j`. -/
+theorem mem_of_intervalDim_index {i j w : Fin (N + 1)} (r : Fin (intervalDim i j w)) :
+    (i : ℕ) ≤ w ∧ (w : ℕ) ≤ j := by
+  rw [intervalDim_eq_ite] at r
+  by_cases h : (i : ℕ) ≤ w ∧ (w : ℕ) ≤ j
+  · exact h
+  · rw [if_neg h] at r; exact r.elim0
+
+/-- `intervalDim i j w = 1` from value membership. -/
+theorem intervalDim_eq_one_of_mem {i j w : Fin (N + 1)} (h : (i : ℕ) ≤ w ∧ (w : ℕ) ≤ j) :
+    intervalDim i j w = 1 := by rw [intervalDim_eq_ite, if_pos h]
+
+/-- **One-edge constancy.** On an edge `t` active in both modules, a morphism's scalar is unchanged:
+`φ t.succ = φ t.castSucc` (the `1×1` commuting square `φ·1 = 1·φ`). -/
+theorem hom_const_on_active (i j u v : Fin (N + 1))
+    (φ : cochain0 (k := k) (intervalDim i j) (intervalDim u v))
+    (hφ : φ ∈ Hom (intervalModule i j) (intervalModule u v)) (t : Fin N)
+    (hMt : intervalActive i j t) (hNt : intervalActive u v t)
+    (rs : Fin (intervalDim u v t.succ)) (cs : Fin (intervalDim i j t.succ))
+    (rc : Fin (intervalDim u v t.castSucc)) (cc : Fin (intervalDim i j t.castSucc)) :
+    φ t.succ rs cs = φ t.castSucc rc cc := by
+  rw [mem_Hom_iff] at hφ
+  have hd : intervalDim i j t.succ = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; obtain ⟨h1, h2⟩ := hMt
+    simp only [Fin.le_def, Fin.val_succ, Fin.val_castSucc] at h1 h2 ⊢; omega
+  have he : intervalDim u v t.castSucc = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; obtain ⟨h1, h2⟩ := hNt
+    simp only [Fin.le_def, Fin.val_succ, Fin.val_castSucc] at h1 h2 ⊢; omega
+  have huniq_d : Unique (Fin (intervalDim i j t.succ)) := by rw [hd]; infer_instance
+  have huniq_e : Unique (Fin (intervalDim u v t.castSucc)) := by rw [he]; infer_instance
+  have h := congrFun (congrFun (hφ t) rs) cc
+  rw [intervalModule_active_eq_one i j t hMt, intervalModule_active_eq_one u v t hNt] at h
+  simp only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton] at h
+  rw [mul_one, one_mul] at h
+  rw [Subsingleton.elim cs (default : Fin (intervalDim i j t.succ)),
+      Subsingleton.elim rc (default : Fin (intervalDim u v t.castSucc))]
+  exact h
+
+/-- **General overlap constancy.** For `a ≤ w` both inside the overlap `[max i u, min j v]`, the
+scalars agree: `φ w = φ a`. Forward induction; each edge strictly inside the overlap is active in both
+modules (`hom_const_on_active`). -/
+theorem hom_scalar_const_gen (i j u v : Fin (N + 1))
+    (φ : cochain0 (k := k) (intervalDim i j) (intervalDim u v))
+    (hφ : φ ∈ Hom (intervalModule i j) (intervalModule u v)) (a : Fin (N + 1))
+    (hai : (i : ℕ) ≤ a) (hau : (u : ℕ) ≤ a) (haj : (a : ℕ) ≤ j) (hav : (a : ℕ) ≤ v) :
+    ∀ (w : Fin (N + 1)), (a : ℕ) ≤ w → (w : ℕ) ≤ j → (w : ℕ) ≤ v →
+      ∀ (rs : Fin (intervalDim u v w)) (cs : Fin (intervalDim i j w))
+        (ra : Fin (intervalDim u v a)) (ca : Fin (intervalDim i j a)),
+      φ w rs cs = φ a ra ca := by
+  intro w
+  induction w using Fin.induction with
+  | zero =>
+    intro haw hwj hwv rs cs ra ca
+    have ha0 : a = 0 := by apply Fin.ext; simp only [Fin.val_zero] at haw ⊢; omega
+    subst ha0
+    have h1u : intervalDim u v (0 : Fin (N + 1)) = 1 :=
+      intervalDim_eq_one_of_mem ⟨hau, by simpa using hwv⟩
+    have h1i : intervalDim i j 0 = 1 :=
+      intervalDim_eq_one_of_mem ⟨by simpa using hai, by simpa using hwj⟩
+    have su : Subsingleton (Fin (intervalDim u v (0 : Fin (N + 1)))) := by rw [h1u]; infer_instance
+    have si : Subsingleton (Fin (intervalDim i j 0)) := by rw [h1i]; infer_instance
+    congr 1
+    · exact su.elim rs ra
+    · exact si.elim cs ca
+  | succ p ih =>
+    intro haw hwj hwv rs cs ra ca
+    by_cases hbase : (p.succ : ℕ) ≤ a
+    · have hpa : a = p.succ := by apply Fin.ext; omega
+      subst hpa
+      have h1u : intervalDim u v p.succ = 1 :=
+        intervalDim_eq_one_of_mem ⟨hau, by simpa using hwv⟩
+      have h1i : intervalDim i j p.succ = 1 :=
+        intervalDim_eq_one_of_mem ⟨by simpa using hai, by simpa using hwj⟩
+      have su : Subsingleton (Fin (intervalDim u v p.succ)) := by rw [h1u]; infer_instance
+      have si : Subsingleton (Fin (intervalDim i j p.succ)) := by rw [h1i]; infer_instance
+      congr 1
+      · exact su.elim rs ra
+      · exact si.elim cs ca
+    · push_neg at hbase
+      have hvp : (p.castSucc : ℕ) = (p : ℕ) := by simp [Fin.val_castSucc]
+      have hsp : (p.succ : ℕ) = (p : ℕ) + 1 := by simp [Fin.val_succ]
+      have hap : (a : ℕ) ≤ (p : ℕ) := by omega
+      have hpj : (p : ℕ) ≤ j := by omega
+      have hpv : (p : ℕ) ≤ v := by omega
+      have hMt : intervalActive i j p := by
+        refine ⟨?_, ?_⟩ <;> rw [Fin.le_def] <;> simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
+      have hNt : intervalActive u v p := by
+        refine ⟨?_, ?_⟩ <;> rw [Fin.le_def] <;> simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
+      have h1u : intervalDim u v p.castSucc = 1 :=
+        intervalDim_eq_one_of_mem ⟨by rw [hvp]; omega, by rw [hvp]; omega⟩
+      have h1i : intervalDim i j p.castSucc = 1 :=
+        intervalDim_eq_one_of_mem ⟨by rw [hvp]; omega, by rw [hvp]; omega⟩
+      have hrc : Nonempty (Fin (intervalDim u v p.castSucc)) := by rw [h1u]; exact ⟨0⟩
+      have hcc : Nonempty (Fin (intervalDim i j p.castSucc)) := by rw [h1i]; exact ⟨0⟩
+      obtain ⟨rc0⟩ := hrc; obtain ⟨cc0⟩ := hcc
+      have hc := hom_const_on_active i j u v φ hφ p hMt hNt rs cs rc0 cc0
+      rw [hc, ih (by rw [hvp]; omega) (by rw [hvp]; omega) (by rw [hvp]; omega) rc0 cc0 ra ca]
+
+/-- The const-`1` generator family of `Hom(M_{ij}, M_{uv})` (the identity on the overlap). -/
+def homGen (i j u v : Fin (N + 1)) : cochain0 (k := k) (intervalDim i j) (intervalDim u v) :=
+  fun _ _ _ ↦ (1 : k)
+
+/-- The const-`1` generator is a morphism when `u≤i≤v≤j` (the overlap is connected and left-aligned,
+so every edge in it is active in both modules). -/
+theorem homGen_mem (i j u v : Fin (N + 1)) (h : (u : ℕ) ≤ i ∧ (i : ℕ) ≤ v ∧ (v : ℕ) ≤ j) :
+    homGen (k := k) i j u v ∈ Hom (intervalModule i j) (intervalModule u v) := by
+  rw [mem_Hom_iff]; intro t; funext a b
+  have ha : (u : ℕ) ≤ (t : ℕ) + 1 ∧ (t : ℕ) + 1 ≤ v := by
+    by_contra hc
+    have : intervalDim u v t.succ = 0 := by
+      rw [intervalDim_eq_ite, if_neg]; simpa [Fin.val_succ] using hc
+    rw [this] at a; exact a.elim0
+  have hb : (i : ℕ) ≤ (t : ℕ) ∧ (t : ℕ) ≤ j := by
+    by_contra hc
+    have : intervalDim i j t.castSucc = 0 := by
+      rw [intervalDim_eq_ite, if_neg]; simpa [Fin.val_castSucc] using hc
+    rw [this] at b; exact b.elim0
+  have hMact : intervalModule (k := k) i j t = fun _ _ ↦ (1 : k) := by
+    apply intervalModule_active_eq_one; constructor <;> rw [Fin.le_def] <;>
+      simp only [Fin.val_succ, Fin.val_castSucc] <;> omega
+  have hNact : intervalModule (k := k) u v t = fun _ _ ↦ (1 : k) := by
+    apply intervalModule_active_eq_one; constructor <;> rw [Fin.le_def] <;>
+      simp only [Fin.val_succ, Fin.val_castSucc] <;> omega
+  rw [hMact, hNact]
+  simp only [homGen, Matrix.mul_apply]
+  have hd1 : intervalDim i j t.succ = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; simp only [Fin.val_succ]; omega
+  have he1 : intervalDim u v t.castSucc = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; simp only [Fin.val_castSucc]; omega
+  rw [Finset.sum_congr rfl (fun _ _ ↦ by ring : ∀ x ∈ _, (1 : k) * 1 = 1),
+      Finset.sum_congr rfl (fun _ _ ↦ by ring : ∀ x ∈ _, (1 : k) * 1 = 1)]
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, hd1, he1, one_smul]
+
+/-- Boundary forcing (lower vertex): if the source edge `p` is active but the target's lower vertex is
+empty, the morphism's scalar at the upper vertex is `0` (the commuting square reads `φ·1 = (empty sum)`). -/
+theorem hom_force_zero_lower (i j u v : Fin (N + 1))
+    (φ : cochain0 (k := k) (intervalDim i j) (intervalDim u v))
+    (hφ : φ ∈ Hom (intervalModule i j) (intervalModule u v)) (p : Fin N)
+    (hMp : intervalActive i j p) (hNlo : intervalDim u v p.castSucc = 0)
+    (rs : Fin (intervalDim u v p.succ)) (cs : Fin (intervalDim i j p.succ)) :
+    φ p.succ rs cs = 0 := by
+  rw [mem_Hom_iff] at hφ
+  have hdlo : intervalDim i j p.castSucc = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; obtain ⟨h1, h2⟩ := hMp
+    simp only [Fin.le_def, Fin.val_succ, Fin.val_castSucc] at h1 h2 ⊢; omega
+  have huniq : Unique (Fin (intervalDim i j p.castSucc)) := by rw [hdlo]; infer_instance
+  have hempty : IsEmpty (Fin (intervalDim u v p.castSucc)) := by rw [hNlo]; infer_instance
+  have hd : intervalDim i j p.succ = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; obtain ⟨h1, h2⟩ := hMp
+    simp only [Fin.le_def, Fin.val_succ, Fin.val_castSucc] at h1 h2 ⊢; omega
+  have : Unique (Fin (intervalDim i j p.succ)) := by rw [hd]; infer_instance
+  have h := congrFun (congrFun (hφ p) rs) (default : Fin (intervalDim i j p.castSucc))
+  rw [intervalModule_active_eq_one i j p hMp] at h
+  simp only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton, mul_one,
+    Finset.univ_eq_empty, Finset.sum_empty] at h
+  rw [Subsingleton.elim cs (default : Fin (intervalDim i j p.succ))]
+  exact h
+
+/-- Boundary forcing (upper vertex): if the target edge `p` is active but the source's upper vertex is
+empty, the morphism's scalar at the lower vertex is `0`. -/
+theorem hom_force_zero_upper (i j u v : Fin (N + 1))
+    (φ : cochain0 (k := k) (intervalDim i j) (intervalDim u v))
+    (hφ : φ ∈ Hom (intervalModule i j) (intervalModule u v)) (p : Fin N)
+    (hNp : intervalActive u v p) (hMup : intervalDim i j p.succ = 0)
+    (rs : Fin (intervalDim u v p.castSucc)) (cs : Fin (intervalDim i j p.castSucc)) :
+    φ p.castSucc rs cs = 0 := by
+  rw [mem_Hom_iff] at hφ
+  have heup : intervalDim u v p.succ = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; obtain ⟨h1, h2⟩ := hNp
+    simp only [Fin.le_def, Fin.val_succ, Fin.val_castSucc] at h1 h2 ⊢; omega
+  have : Unique (Fin (intervalDim u v p.succ)) := by rw [heup]; infer_instance
+  have hempty : IsEmpty (Fin (intervalDim i j p.succ)) := by rw [hMup]; infer_instance
+  have he : intervalDim u v p.castSucc = 1 := by
+    rw [intervalDim_eq_ite, if_pos]; obtain ⟨h1, h2⟩ := hNp
+    simp only [Fin.le_def, Fin.val_succ, Fin.val_castSucc] at h1 h2 ⊢; omega
+  have : Unique (Fin (intervalDim u v p.castSucc)) := by rw [he]; infer_instance
+  have h := congrFun (congrFun (hφ p) (default : Fin (intervalDim u v p.succ))) cs
+  rw [intervalModule_active_eq_one u v p hNp] at h
+  simp only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton, one_mul,
+    Finset.univ_eq_empty, Finset.sum_empty] at h
+  rw [Subsingleton.elim rs (default : Fin (intervalDim u v p.castSucc))]
+  exact h.symm
+
+/-- Positive case of the `Hom` indicator: `finrank Hom = 1` when `u≤i≤v≤j`. `Hom = k ∙ homGen` —
+every morphism is its scalar at vertex `i` times the const-`1` generator (overlap constancy plus
+vanishing `0`-dimensional entries). -/
+theorem finrank_Hom_interval_pos (i j u v : Fin (N + 1))
+    (hpos : (u : ℕ) ≤ i ∧ (i : ℕ) ≤ v ∧ (v : ℕ) ≤ j) :
+    finrank k (Hom (intervalModule (k := k) i j) (intervalModule u v)) = 1 := by
+  have hg := homGen_mem (k := k) i j u v hpos
+  have hi1u : intervalDim u v i = 1 := intervalDim_eq_one_of_mem ⟨hpos.1, hpos.2.1⟩
+  have hi1i : intervalDim i j i = 1 :=
+    intervalDim_eq_one_of_mem ⟨le_refl _, le_trans hpos.2.1 hpos.2.2⟩
+  have pu : 0 < intervalDim u v i := by rw [hi1u]; norm_num
+  have pii : 0 < intervalDim i j i := by rw [hi1i]; norm_num
+  have hspan : Hom (intervalModule (k := k) i j) (intervalModule u v)
+      = k ∙ homGen (k := k) i j u v := by
+    apply le_antisymm
+    · intro φ hφ
+      rw [Submodule.mem_span_singleton]
+      refine ⟨φ i ⟨0, pu⟩ ⟨0, pii⟩, ?_⟩
+      funext w rs cs
+      show (φ i ⟨0, pu⟩ ⟨0, pii⟩ • homGen (k := k) i j u v) w rs cs = φ w rs cs
+      simp only [homGen, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, mul_one]
+      obtain ⟨hwu, hwv⟩ := mem_of_intervalDim_index rs
+      obtain ⟨hwi, hwj⟩ := mem_of_intervalDim_index cs
+      exact (hom_scalar_const_gen i j u v φ hφ i (le_refl _) hpos.1 (le_trans hpos.2.1 hpos.2.2)
+        hpos.2.1 w hwi hwj hwv rs cs ⟨0, pu⟩ ⟨0, pii⟩).symm
+    · rw [Submodule.span_singleton_le_iff_mem]; exact hg
+  rw [hspan, finrank_span_singleton]
+  intro hz
+  have := congrFun (congrFun (congrFun hz i) ⟨0, pu⟩) ⟨0, pii⟩
+  simp only [homGen, Pi.zero_apply] at this
+  exact one_ne_zero this
+
+/-- Negative case of the `Hom` indicator: `Hom = ⊥` when `¬(u≤i≤v≤j)`. A failing boundary forces the
+overlap scalar to `0` (left edge if `i<u`, right edge if `j<v`); an empty overlap (`i>v`) admits no
+scalar. Overlap constancy (`hom_scalar_const_gen`) spreads the zero. -/
+theorem Hom_interval_eq_bot (i j u v : Fin (N + 1))
+    (hneg : ¬ ((u : ℕ) ≤ i ∧ (i : ℕ) ≤ v ∧ (v : ℕ) ≤ j)) :
+    Hom (intervalModule (k := k) i j) (intervalModule u v) = ⊥ := by
+  rw [eq_bot_iff]
+  intro φ hφ
+  rw [Submodule.mem_bot]
+  funext w rs cs
+  simp only [Pi.zero_apply, Matrix.zero_apply]
+  obtain ⟨hwu, hwv⟩ := mem_of_intervalDim_index rs
+  obtain ⟨hwi, hwj⟩ := mem_of_intervalDim_index cs
+  rcases not_and_or.mp hneg with hui | hrest
+  · have hiu : (i : ℕ) < u := by omega
+    have hpu : (u : ℕ) - 1 < N := by have := u.isLt; omega
+    set p : Fin N := ⟨(u : ℕ) - 1, hpu⟩ with hp
+    have hpsucc : (p.succ : ℕ) = (u : ℕ) := by simp [hp, Fin.val_succ]; omega
+    have hpcast : (p.castSucc : ℕ) = (u : ℕ) - 1 := by simp [hp, Fin.val_castSucc]
+    have hMp : intervalActive i j p := by
+      refine ⟨?_, ?_⟩ <;> rw [Fin.le_def] <;> simp only [Fin.val_castSucc, Fin.val_succ, hp] <;> omega
+    have hNlo : intervalDim u v p.castSucc = 0 := by
+      rw [intervalDim_eq_ite, if_neg]; rw [hpcast]; push_neg; intro h; omega
+    have h1ru : intervalDim u v p.succ = 1 := by
+      rw [intervalDim_eq_ite, if_pos]; constructor <;> rw [hpsucc] <;> omega
+    have h1cu : intervalDim i j p.succ = 1 := by
+      rw [intervalDim_eq_ite, if_pos]; constructor <;> rw [hpsucc] <;> omega
+    have rz : Fin (intervalDim u v p.succ) := ⟨0, by rw [h1ru]; norm_num⟩
+    have cz : Fin (intervalDim i j p.succ) := ⟨0, by rw [h1cu]; norm_num⟩
+    have hforce := hom_force_zero_lower i j u v φ hφ p hMp hNlo rz cz
+    have hconst := hom_scalar_const_gen i j u v φ hφ p.succ
+      (by rw [hpsucc]; omega) (by rw [hpsucc]) (by rw [hpsucc]; omega) (by rw [hpsucc]; omega)
+      w (by rw [hpsucc]; omega) hwj hwv rs cs rz cz
+    rw [hconst, hforce]
+  · rcases not_and_or.mp hrest with hiv | hvj
+    · exact absurd (le_trans hwi hwv) hiv
+    · have hjv : (j : ℕ) < v := by omega
+      have hjN : (j : ℕ) < N := by have := v.isLt; omega
+      set p : Fin N := ⟨(j : ℕ), hjN⟩ with hp
+      have hpcast : (p.castSucc : ℕ) = (j : ℕ) := by simp [hp, Fin.val_castSucc]
+      have hpsucc : (p.succ : ℕ) = (j : ℕ) + 1 := by simp [hp, Fin.val_succ]
+      have hNp : intervalActive u v p := by
+        refine ⟨?_, ?_⟩ <;> rw [Fin.le_def] <;> simp only [Fin.val_castSucc, Fin.val_succ, hp] <;> omega
+      have hMup : intervalDim i j p.succ = 0 := by
+        rw [intervalDim_eq_ite, if_neg]; rw [hpsucc]; push_neg; intro h; omega
+      have h1rj : intervalDim u v p.castSucc = 1 := by
+        rw [intervalDim_eq_ite, if_pos]; constructor <;> rw [hpcast] <;> omega
+      have h1cj : intervalDim i j p.castSucc = 1 := by
+        rw [intervalDim_eq_ite, if_pos]; constructor <;> rw [hpcast] <;> omega
+      have rz : Fin (intervalDim u v p.castSucc) := ⟨0, by rw [h1rj]; norm_num⟩
+      have cz : Fin (intervalDim i j p.castSucc) := ⟨0, by rw [h1cj]; norm_num⟩
+      have hforce := hom_force_zero_upper i j u v φ hφ p hNp hMup rz cz
+      have hconst := hom_scalar_const_gen i j u v φ hφ w
+        hwi hwu hwj hwv p.castSucc (by rw [hpcast]; omega) (by rw [hpcast]) (by rw [hpcast]; omega)
+        rz cz rs cs
+      rw [← hconst, hforce]
+
+/-- **The Hom indicator.** `finrank Hom(M_{ij}, M_{uv}) = 1[u≤i≤v≤j]` (the target bar starts no later
+than the source and ends inside it). -/
+theorem finrank_Hom_interval (i j u v : Fin (N + 1)) :
+    finrank k (Hom (intervalModule (k := k) i j) (intervalModule u v))
+      = if (u : ℕ) ≤ i ∧ (i : ℕ) ≤ v ∧ (v : ℕ) ≤ j then 1 else 0 := by
+  by_cases h : (u : ℕ) ≤ i ∧ (i : ℕ) ≤ v ∧ (v : ℕ) ≤ j
+  · rw [if_pos h, finrank_Hom_interval_pos i j u v h]
+  · rw [if_neg h, Hom_interval_eq_bot i j u v h, finrank_bot]
+
+/-- **The Ext¹ indicator.** `finrank deformationExt1(M_{ij}, M_{uv}) = 1[i<u≤j+1≤v]` (false when
+`j = N`). From the `Hom` indicator and the Euler identity. -/
+theorem finrank_deformationExt1_interval (i j u v : Fin (N + 1)) :
+    finrank k (deformationExt1 (intervalModule (k := k) i j) (intervalModule u v))
+      = if (i : ℕ) < u ∧ (u : ℕ) ≤ (j : ℕ) + 1 ∧ (j : ℕ) + 1 ≤ v then 1 else 0 := by
+  have he := euler_identity (intervalModule (k := k) i j) (intervalModule u v)
+  rw [euler_interval, finrank_Hom_interval] at he
+  split_ifs at he ⊢ <;> push_cast at he ⊢ <;> omega
+
 section Witness
 
 /-! ## Non-vacuity witness for the interval Euler form
@@ -245,6 +545,17 @@ example :
         - finrank ℚ (cochain1 (k := ℚ) (intervalDim (0 : Fin 3) 1) (intervalDim 1 2))
       = (0 : ℤ) - 1 := by
   rw [euler_interval]; decide
+
+/-- The `Hom` indicator on `M_{01} → M_{12}` over `Fin 3`/`ℚ`: `finrank Hom = 0` (the target bar
+`[1,2]` starts strictly after the source's left end `0`, so no morphism). -/
+example : finrank ℚ (Hom (intervalModule (k := ℚ) (0 : Fin 3) 1) (intervalModule 1 2)) = 0 := by
+  rw [finrank_Hom_interval]; decide
+
+/-- The `Ext¹` indicator on `M_{01} → M_{12}` over `Fin 3`/`ℚ`: `finrank deformationExt1 = 1`
+(`1[0<1≤2≤2]`). -/
+example :
+    finrank ℚ (deformationExt1 (intervalModule (k := ℚ) (0 : Fin 3) 1) (intervalModule 1 2)) = 1 := by
+  rw [finrank_deformationExt1_interval]; decide
 
 end Witness
 
