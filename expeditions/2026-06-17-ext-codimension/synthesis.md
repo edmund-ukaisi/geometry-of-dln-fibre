@@ -151,3 +151,32 @@ possible GENUINE Proved route via regular-sequence determinantal heights — to 
 "Build it" is now: commission a multi-expedition AG (or determinantal-CA) dimension-theory sub-expedition.
 Plan: land Layer 1 now; probe the (2,2,2) rank-locus ideal height (cheap, picks the buildable route);
 then commit the Layer-2 build route. Operator steer requested on the multi-expedition commitment + route.
+
+## PHASE B — Layer 1 LANDED + rank-locus probe verdict (2026-06-18)
+
+**Layer 1 committed:** `Core.OrbitLinearCodim` — `orbitLinearCodim = dim Ext¹` (the expected/tangent
+codimension), chained to the verbatim Cor 3.5 m-form; green/sorry-free/axiom-clean, reviewed PASS. Named
+honestly (NOT geometric codim O).
+
+**rankloc-probe verdict (sympy + Buch–Fulton/KMS + Codex, all converge):** the type-A orbit closure is
+the quiver rank locus; its codimension is a GENUINE exact invariant — and on (2,2,2) the heights match
+dim Ext¹ exactly (3,4,4,8) [KMS rectangle sum Σ(r_{i,j-1}−r_{ij})(r_{i+1,j}−r_{ij}); locus prime/normal/CM,
+Lakshmibai–Magyar / KMS]. BUT it is NOT a complete intersection, has EXCESS intersection (codim ≠ Σ
+determinantal heights; {BA=0} is reducible, codim 3 not 4), and NO regular sequence cuts it — so the cheap
+CA shortcut is unavailable. A from-scratch Lean determinantal-CA proof needs Schubert/determinantal ideals
++ standard-monomial/Gröbner + the catenary dim R/I = n − ht I (all absent). **Determinantal-CA RELOCATES
+and ENLARGES the ocean, not shrinks it.** Codex: "if the goal is Lean formalization, I would not start with
+quiver determinantal CA."
+
+**Hardened conclusion:** BOTH build routes (algebraic-group orbit dimension; determinantal-CA) hit the
+SAME missing AG-dimension core (image/orbit-closure dimension; catenary). No shortcut. The geometric codim
+is a genuine multi-expedition AG-dimension-theory build. The math is CERTAIN (codim = dim Ext¹ verified
+exact). The type-A rank-locus identity is the cleanest **engine-verifiable CITED bridge** if we go hybrid.
+
+**Decision re-surfaced to operator:** (B-full) commission the multi-expedition AG-dimension sub-expedition
+(route b: dim O = dim G − dim Aut(M), reusing δ; the orbit-dimension input still needs image-dimension
+theory — possibly itself unbounded); or (honest-hybrid) deliver codim Ō = dim Ext¹ NOW modulo the named,
+engine-verifiable rank-locus/orbit-closure-codimension fact, and build the AG library as its own deliberate
+programme. Controller recommendation: honest-hybrid for the immediate Proved-modulo-one-checkable-fact
+result + commission the AG-library build as a separate sub-expedition (so we get the result now AND the
+bedrock, without blocking one on the other).
