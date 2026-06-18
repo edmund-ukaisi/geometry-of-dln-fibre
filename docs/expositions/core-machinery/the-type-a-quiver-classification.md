@@ -1,13 +1,20 @@
 ---
 title: "Composable Matrix Chains and the Type-A Quiver Classification"
-status: draft
+status: archive
 source: exposition
 topics: [core-machinery, quiver-representations, gabriel, rank-pattern, kostant, orbit-classification]
 created: "2026-06-15"
-updated: "2026-06-17"
+updated: "2026-06-18"
 ---
 
 # Composable Matrix Chains and the Type-A Quiver Classification
+
+!!! warning "Archival / non-canonical"
+    This is a consolidated single-file draft of the core-machinery development.
+    The **canonical** exposition is the numbered chapter series indexed in
+    [`README.md`](README.md) (chapters 1–5). This file is kept as a continuous-read
+    source/archive; it is not maintained in step with the chapters and is not linked
+    from the index. Prefer the numbered chapters.
 
 Let $A_1, \ldots, A_N$ be composable matrices, $A_i$ of size $d_i \times
 d_{i-1}$, with product $A_N \cdots A_1$. We study the chains with a prescribed
