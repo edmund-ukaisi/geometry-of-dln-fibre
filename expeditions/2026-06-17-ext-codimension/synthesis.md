@@ -94,3 +94,26 @@ m-form) → a327d01 (verbatim Cor 3.5 + lint).
   (B) build the orbit-dimension AG to prove it.
 
 Team: ext-phaseA (four tides) stood down. Phase B awaits the operator A/B call.
+
+## PHASE B — DECISION: BUILD IT (operator, 2026-06-18)
+
+Operator chose (B): build the orbit-dimension AG and prove the geometric codim O_M = dim Ext¹(M,M) as
+hardened bedrock — NOT a cited bridge. Rising-sea: develop standard AG on Mathlib's foundations until the
+geometric codimension is a corollary. Largest/least-charted build of the programme (Mathlib lacks
+algebraic groups / orbit dimension / scheme tangent space).
+
+### Two candidate routes (design pass to pick the Lean-feasible standard one)
+- **Tangent-space route (ties to Phase A's δ).** T_M Rep = C¹ (affine space, smooth); the orbit's tangent
+  space at M is B¹ = im δ_M (the Phase-A coboundary map δ_M : C⁰ → C¹). Orbit smooth ⇒ dim O = dim T_M O =
+  dim(im δ_M); dim Ō = dim O; codim Ō = dim Rep − dim O = dim C¹ − dim(im δ_M) = dim(C¹/B¹) = dim Ext¹
+  (Z¹=C¹ hereditary). Connects the geometry directly to the committed DeformationExt δ.
+- **Orbit–stabiliser route.** dim O = dim G − dim Stab, Stab = Aut(M) open in End(M), dim Stab = dim Hom;
+  codim = dim Rep − dim G + dim Hom = dim Hom − ⟨d,d⟩ = dim Ext¹. Needs the fibre-dimension theorem.
+
+### Geometric facts to build (the Phase-B ladder, to be pinned by the design pass)
+(i) define codim of a closed subvariety of affine space (Krull dim / Ideal.height / ambient − dim);
+(ii) the orbit is a smooth locally-closed irreducible subvariety with T_M O = im δ_M;
+(iii) dim O = dim T_M O (smoothness); (iv) dim Ō = dim O; (v) codim Ō = dim Rep − dim Ō; glue via Phase A.
+On Mathlib primitives: MulAction.orbit/stabilizer, ringKrullDim/topologicalKrullDim, Ideal.height + Krull
+height theorem, MvPolynomial varieties, Module.Cotangent/KaehlerDifferential. Codex-check the standard
+development at each step.
