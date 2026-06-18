@@ -38,21 +38,25 @@ No such claim is formalisation-ready until both fields are filled.
 
 ## Claim A1 - block elimination
 
-- **Statement.** Aoyagi's full-rank block reduction preserves the relevant ideal
-  or loss germ and rewrites the matrix product in the stated block coordinates.
+- **Statement.** Aoyagi's full-rank block reduction rewrites a block matrix on
+  an explicit full-rank chart into a block diagonal form by triangular
+  invertible matrices; broader ideal/loss-germ consequences are separate.
 - **Tier.** Established in Aoyagi; to be proved in Lean if elementary.
-- **Status.** open.
+- **Status.** partially reproduction-checked: algebraic chart identities and
+  rank formula only.
 - **Kill-condition.** The transformation requires an analytic/local inverse or
   rank-open chart hypothesis not represented in the Lean statement.
 - **Evidence/source.** Aoyagi Lemma 2, PDF pp. 10-11.
 - **Pen-and-paper reproduction.** draft at
   `threads/03-block-product-reduction/reproduction-draft.md`.
-- **Reproduction check.** pending.
+- **Reproduction check.** partial pass at
+  `threads/03-block-product-reduction/reproduction-check.md`.
 - **Lean target.** TBD by thread 03.
 - **Proved.** pending.
 - **Assumed.** full-rank block/open chart hypotheses.
 - **Cited.** none planned.
-- **Deferred.** none planned.
+- **Deferred.** RLCT/local-germ invariance consequences until analytic boundary
+  is resolved.
 
 ## Claim A2 - product reduction
 
@@ -60,20 +64,24 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
-- **Status.** open.
+- **Status.** reproduced but check failed for full claim; algebraic induction
+  needs stronger source-faithful hypotheses.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
   contribution, PDF pp. 11-13.
 - **Pen-and-paper reproduction.** draft at
   `threads/03-block-product-reduction/reproduction-draft.md`.
-- **Reproduction check.** pending.
+- **Reproduction check.** findings at
+  `threads/03-block-product-reduction/reproduction-check.md`; not
+  formalisation-ready as stated.
 - **Lean target.** TBD by thread 03.
 - **Proved.** pending.
 - **Assumed.** rank and dimension hypotheses.
 - **Cited.** analytic invariance only if source inventory shows it is not purely
   algebraic.
-- **Deferred.** none planned.
+- **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
+  until the allowed analytic interface is fixed.
 
 ## Claim A3 - deepest singular point
 
@@ -107,7 +115,8 @@ No such claim is formalisation-ready until both fields are filled.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof.
 - **Evidence/source.** Aoyagi blow-up section, PDF pp. 14-23.
-- **Pen-and-paper reproduction.** pending.
+- **Pen-and-paper reproduction.** draft at
+  `threads/04-blow-up-certificate/reproduction-draft.md`.
 - **Reproduction check.** pending.
 - **Lean target.** TBD by thread 04.
 - **Proved.** pending.
@@ -125,7 +134,8 @@ No such claim is formalisation-ready until both fields are filled.
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
   PDF pp. 22-27.
-- **Pen-and-paper reproduction.** pending.
+- **Pen-and-paper reproduction.** draft at
+  `threads/05-arithmetic-tail/reproduction-draft.md`.
 - **Reproduction check.** pending.
 - **Lean target.** TBD by thread 05.
 - **Proved.** pending.

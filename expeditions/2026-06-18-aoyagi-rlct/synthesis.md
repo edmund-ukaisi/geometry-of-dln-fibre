@@ -82,15 +82,27 @@ interface without surfacing it.
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at
-  `threads/03-block-product-reduction/reproduction-draft.md`. Independent check
-  pending. Main caution: the algebraic Schur-complement/product calculation is
-  clear, but the RLCT consequences use local coordinate invariance,
-  ideal-generator replacement, and regular-coordinate additivity. These cannot
-  become hidden extra analytic citations.
+  `threads/03-block-product-reduction/reproduction-draft.md`; independent
+  check landed at `threads/03-block-product-reduction/reproduction-check.md`.
+  A1 is checked only for algebraic chart identities/rank formula. A2 is not
+  formalisation-ready as stated: it needs explicit neighborhood/rank/open-chart
+  hypotheses, a through-layer basis/open-chart lemma, and a decision on hidden
+  analytic steps (local coordinate invariance, generator replacement,
+  regular-coordinate additivity).
 - A3 Theorem 4: xhigh scout reports this is an analytic RLCT comparison theorem
   cited to Aoyagi [22], not proved in the 2023 paper. Because the user allowed
   only the normal-crossing extraction citation in Lean, this is a scope conflict
   unless we can avoid it or prove a restricted homogeneous version.
+- A5 arithmetic tail: draft reproduction landed at
+  `threads/05-arithmetic-tail/reproduction-draft.md`. Independent check pending.
+  Main hazards: `a = ell` boundary despite Lemma 3's printed range, ordered
+  subcollection vs literal set in Definition 3, and Lemma 5 equality depending
+  on the admissibility of the displayed `T_{s,k}` families.
+- A4 blow-up certificate: draft reproduction/certificate design landed at
+  `threads/04-blow-up-certificate/reproduction-draft.md`. Independent check
+  pending. Main hazards: missing pivot charts, regularity/divisibility of
+  ratios in `P`, and source-fidelity of normalizing the paper's base case to
+  `S=1,J=0`.
 
 ## Drift guard
 

@@ -9,12 +9,12 @@
 |---|---|---|---|
 | 01-source-inventory | explore | in-progress | xhigh scout `Aquinas`: PDF theorem/definition inventory; fill `theorem-ledger.md` and initial claim cards. Controller source map started. |
 | 02-analytic-interface | explore/formalisation | closed | xhigh scout `Boole` returned. Normal-crossing interface mapped; Theorem 4 flagged as analytic/scope conflict unless avoided/proved restricted. |
-| 03-block-product-reduction | formalisation | review-pending | xhigh scout `Galileo` returned. Draft reproduction landed; independent check pending before Lean. |
-| 04-blow-up-certificate | pen-and-paper/formalisation | in-progress | xhigh scout `Ptolemy`: Case 1 / Case 2 transition invariant and terminal exponent certificate. |
-| 05-arithmetic-tail | formalisation | in-progress | xhigh scout `Raman`: Lemmas 3-5 style minimisation and pole-order count. |
+| 03-block-product-reduction | formalisation | blocked | xhigh scout `Galileo` returned and checker `Ramanujan` reviewed. A1 algebraic chart identities partially pass; A2 not formalisation-ready as stated. Needs source-faithful hypotheses and analytic-boundary decision. |
+| 04-blow-up-certificate | pen-and-paper/formalisation | review-pending | xhigh scout `Ptolemy` returned. Draft certificate reproduction landed; independent check pending before Lean. |
+| 05-arithmetic-tail | formalisation | review-pending | xhigh scout `Raman` returned. Draft reproduction landed; independent check pending before Lean. |
 | 06-dln-translation | formalisation | pending | Translate Aoyagi dimension/rank notation to repo DLN notation without quiver inputs. |
 | 07-review-hardener | review/hardener | pending | Fidelity, precision, source, and bedrock pass over broad theorems and final assembly. |
-| 08-reproduction-checks | pen-and-paper/review | pending | Standing gate: reproduce each substantial Aoyagi calculation and independently check it before Lean relies on it. |
+| 08-reproduction-checks | pen-and-paper/review | in-progress | Standing gate. Completed block/product check (`Ramanujan`); arithmetic-tail checker `Planck` and blow-up checker `Copernicus` running. |
 
 ## Execution notes
 

@@ -9,17 +9,17 @@ holding PDF line numbers only in context.
 | RLCT definition and normal-crossing extraction | A0 | Aoyagi background, pages TBD | external analytic theorem | cite-interface check pending | interface TBD; open/Cited | pending |
 | Theorem 1, cited three-layer formula | context/special case | PDF pp. 6-7 | prior result [12]; likely derivable from Theorem 2 at `L=2` | pending/optional | no Lean target yet | pending |
 | Theorem 2 multi-layer main formula | A6 | PDF pp. 8-9 | A0-A5 | pending | final theorem TBD; open | pending |
-| Lemma 2 block elimination | A1 | PDF pp. 10-11 | matrix rank/open block hypotheses | draft reproduction: `threads/03-block-product-reduction/reproduction-draft.md`; check pending | TBD; open | pending |
-| Theorem 3 product reduction | A2 | PDF pp. 11-13 | A1, product/block notation | draft reproduction: `threads/03-block-product-reduction/reproduction-draft.md`; check pending | TBD; open | pending |
+| Lemma 2 block elimination | A1 | PDF pp. 10-11 | matrix rank/open block hypotheses | draft + partial check: `threads/03-block-product-reduction/reproduction-draft.md`, `threads/03-block-product-reduction/reproduction-check.md`; algebraic chart identities checked only | narrow algebraic chart theorem TBD; open | partial check |
+| Theorem 3 product reduction | A2 | PDF pp. 11-13 | A1, product/block notation, through-layer open-chart/basis lemma | draft + failed full check: `threads/03-block-product-reduction/reproduction-draft.md`, `threads/03-block-product-reduction/reproduction-check.md`; not formalisation-ready as stated | split algebraic induction target TBD; open | findings pending resolution |
 | Theorem 4 deepest singular point | A3 | PDF p. 14 | A2, analytic/global comparison | scout report: `threads/02-analytic-interface/scout-report.md`; scope conflict under current citation rule | no Lean target until restricted proof/avoidance chosen | pending |
-| Blow-up inductive statement | A4 | PDF pp. 14-15 | reduced product coordinates | pending | invariant theorem TBD; open | pending |
-| Blow-up Case 1 | A4 | PDF pp. 15-18 | reduced product coordinates, inductive statement | pending | transition lemma TBD; open | pending |
-| Blow-up Case 2 | A4 | PDF pp. 19-22 | reduced product coordinates, inductive statement | pending | transition lemma TBD; open | pending |
-| Terminal normal-crossing exponents | A4 | PDF p. 22 | Case 1/2 induction | pending | certificate theorem TBD; open | pending |
-| Quadratic exponent expression | A5 | PDF pp. 22-24 | terminal exponents | pending | arithmetic theorem TBD; open | pending |
-| Lemma 3 minimisation | A5 | PDF p. 24 | exponent vector definitions | pending | arithmetic theorem TBD; open | pending |
-| Lemma 4 pole/order comparison | A5 | PDF p. 25 | Lemma 3 | pending | arithmetic theorem TBD; open | pending |
-| Lemma 5 final order count | A5 | PDF pp. 25-27 | Lemmas 3-4 | pending | arithmetic theorem TBD; open | pending |
+| Blow-up inductive statement | A4 | PDF pp. 14-15 | reduced product coordinates | draft reproduction: `threads/04-blow-up-certificate/reproduction-draft.md`; check pending | invariant theorem TBD; open | pending |
+| Blow-up Case 1 | A4 | PDF pp. 15-18 | reduced product coordinates, inductive statement | draft reproduction: `threads/04-blow-up-certificate/reproduction-draft.md`; check pending | transition lemma TBD; open | pending |
+| Blow-up Case 2 | A4 | PDF pp. 19-22 | reduced product coordinates, inductive statement | draft reproduction: `threads/04-blow-up-certificate/reproduction-draft.md`; check pending | transition lemma TBD; open | pending |
+| Terminal normal-crossing exponents | A4 | PDF p. 22 | Case 1/2 induction | draft reproduction: `threads/04-blow-up-certificate/reproduction-draft.md`; check pending | certificate theorem TBD; open | pending |
+| Quadratic exponent expression | A5 | PDF pp. 22-24 | terminal exponents | draft reproduction: `threads/05-arithmetic-tail/reproduction-draft.md`; check pending | arithmetic theorem TBD; open | pending |
+| Lemma 3 minimisation | A5 | PDF p. 24 | exponent vector definitions | draft reproduction: `threads/05-arithmetic-tail/reproduction-draft.md`; check pending | arithmetic theorem TBD; open | pending |
+| Lemma 4 pole/order comparison | A5 | PDF p. 25 | Lemma 3 | draft reproduction: `threads/05-arithmetic-tail/reproduction-draft.md`; check pending | arithmetic theorem TBD; open | pending |
+| Lemma 5 final order count | A5 | PDF pp. 25-27 | Lemmas 3-4 | draft reproduction: `threads/05-arithmetic-tail/reproduction-draft.md`; check pending | arithmetic theorem TBD; open | pending |
 | Notation translation to repo DLN dimensions | A6 | Aoyagi PDF pp. 8-9 | source inventory | pending | translation theorem TBD; open | pending |
 
 ## Ledger rules
