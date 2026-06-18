@@ -15,4 +15,5 @@ import DLNFibre.Core.DeformationExt
 import DLNFibre.Core.OrbitLinearCodim
 import DLNFibre.Core.OrbitCodim
 import DLNFibre.Core.CTheta
+import DLNFibre.Core.CThetaQIP
 import DLNFibre.DLN.Basic
