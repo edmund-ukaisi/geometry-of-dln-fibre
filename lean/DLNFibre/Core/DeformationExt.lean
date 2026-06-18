@@ -828,6 +828,92 @@ theorem finrank_deformationExt1_intervalDirectSum {N:ℕ}
     rw [hstep, ih, finrank_deformationExt1_intervalDirectSum_right (intervalModule (k:=k) p.1 p.2) L',
       List.map_cons, List.sum_cons]
 
+/-! ### The multiplicity form `Σ m_{i-1,j-1} m_{uv}` (Le Halleur–Rimányi Cor 3.5)
+
+Regrouping the ordered list double-sum by interval multiplicities (`multiplicityArray`, the count of
+each endpoint pair in `L`) turns the headline into the paper's quadratic form: a sum over the endpoint
+grid of `m(p)·m(q)·1[i<u≤j+1≤v]`. The `Ext¹` indicator `extIndicator` is the `ℤ` form of
+`finrank_deformationExt1_interval`; `multiplicityArray_eq_count` is the bridge `m = list count`. -/
+
+theorem multiplicityArray_eq_count (L : List (Fin (N+1) × Fin (N+1))) (a : Fin (N+1) × Fin (N+1)) :
+    multiplicityArray L (a.1 : ℤ) (a.2 : ℤ) = (L.count a : ℤ) := by
+  unfold multiplicityArray
+  induction L with
+  | nil => simp
+  | cons p ps ih =>
+    rw [List.map_cons, List.sum_cons, ih, List.count_cons]
+    have hiff : ((a.1 : ℤ) = (p.1 : ℤ) ∧ (a.2 : ℤ) = (p.2 : ℤ)) ↔ a = p := by
+      refine ⟨fun ⟨h1,h2⟩ => Prod.ext (Fin.ext (Nat.cast_injective (R:=ℤ) h1))
+        (Fin.ext (Nat.cast_injective (R:=ℤ) h2)), ?_⟩
+      rintro rfl; exact ⟨rfl, rfl⟩
+    by_cases hap : a = p
+    · rw [if_pos (hiff.mpr hap)]; simp only [hap, beq_self_eq_true, if_true]; push_cast; ring
+    · rw [if_neg (fun hc => hap (hiff.mp hc)),
+        if_neg (by simp only [beq_iff_eq]; exact fun hc => hap hc.symm)]; push_cast; ring
+theorem list_sum_to_grid (L : List (Fin (N+1) × Fin (N+1))) (h : (Fin (N+1) × Fin (N+1)) → ℤ) :
+    (L.map h).sum = ∑ q : Fin (N+1) × Fin (N+1), multiplicityArray L (q.1 : ℤ) (q.2 : ℤ) * h q := by
+  induction L with
+  | nil =>
+    simp only [List.map_nil, List.sum_nil]
+    symm
+    refine Finset.sum_eq_zero (fun q _ => ?_)
+    rw [show multiplicityArray ([] : List (Fin (N+1)×Fin (N+1))) (q.1:ℤ) (q.2:ℤ) = 0 from by
+      simp [multiplicityArray], zero_mul]
+  | cons p ps ih =>
+    rw [List.map_cons, List.sum_cons, ih]
+    rw [show (multiplicityArray (p :: ps) : ℤ → ℤ → ℤ)
+        = fun a b => singleDelta p.1 p.2 a b + multiplicityArray ps a b from multiplicityArray_cons p ps]
+    have hsplit : ∑ q : Fin (N+1) × Fin (N+1),
+        (singleDelta p.1 p.2 (q.1:ℤ) (q.2:ℤ) + multiplicityArray ps (q.1:ℤ) (q.2:ℤ)) * h q
+        = (∑ q : Fin (N+1) × Fin (N+1), singleDelta p.1 p.2 (q.1:ℤ) (q.2:ℤ) * h q)
+          + ∑ q : Fin (N+1) × Fin (N+1), multiplicityArray ps (q.1:ℤ) (q.2:ℤ) * h q := by
+      rw [← Finset.sum_add_distrib]; exact Finset.sum_congr rfl (fun q _ => by ring)
+    rw [hsplit]
+    congr 1
+    -- Σ singleDelta_p ↑q.1 ↑q.2 * h q = h p
+    rw [Finset.sum_eq_single p]
+    · rw [show singleDelta p.1 p.2 (p.1:ℤ) (p.2:ℤ) = 1 from by simp [singleDelta], one_mul]
+    · intro q _ hqp
+      rw [show singleDelta p.1 p.2 (q.1:ℤ) (q.2:ℤ) = 0 from by
+        simp only [singleDelta]; rw [if_neg]; rintro ⟨h1, h2⟩
+        exact hqp (Prod.ext (Fin.ext (Nat.cast_injective (R:=ℤ) h1)) (Fin.ext (Nat.cast_injective (R:=ℤ) h2))), zero_mul]
+    · intro hp; exact absurd (Finset.mem_univ p) hp
+
+theorem list_double_sum_to_grid (L : List (Fin (N+1) × Fin (N+1)))
+    (g : (Fin (N+1)×Fin (N+1)) → (Fin (N+1)×Fin (N+1)) → ℤ) :
+    ((L.map (fun a => (L.map (fun b => g a b)).sum)).sum)
+      = ∑ p : Fin (N+1)×Fin (N+1), ∑ q : Fin (N+1)×Fin (N+1),
+          multiplicityArray L (p.1:ℤ) (p.2:ℤ) * multiplicityArray L (q.1:ℤ) (q.2:ℤ) * g p q := by
+  rw [list_sum_to_grid L (fun a => (L.map (fun b => g a b)).sum)]
+  refine Finset.sum_congr rfl (fun p _ => ?_)
+  rw [list_sum_to_grid L (fun b => g p b), Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun q _ => ?_); ring
+
+def extIndicator (p q : Fin (N+1) × Fin (N+1)) : ℤ :=
+  if (p.1:ℕ) < q.1 ∧ (q.1:ℕ) ≤ (p.2:ℕ) + 1 ∧ (p.2:ℕ) + 1 ≤ q.2 then 1 else 0
+
+theorem finrank_deformationExt1_interval_cast (a b : Fin (N+1) × Fin (N+1)) :
+    ((finrank k (deformationExt1 (intervalModule (k:=k) a.1 a.2) (intervalModule b.1 b.2)) : ℕ) : ℤ)
+      = extIndicator a b := by
+  rw [finrank_deformationExt1_interval, extIndicator]; split <;> simp
+
+theorem cast_listSum (L : List (Fin (N+1)×Fin (N+1))) (f : (Fin (N+1)×Fin (N+1)) → ℕ) :
+    ((L.map f).sum : ℤ) = (L.map (fun a => (f a : ℤ))).sum := by
+  induction L with
+  | nil => simp
+  | cons a as ih => simp [ih]
+
+theorem finrank_deformationExt1_intervalDirectSum_mult (L : List (Fin (N+1) × Fin (N+1))) :
+    (finrank k (deformationExt1 (intervalDirectSum (k:=k) L) (intervalDirectSum (k:=k) L)) : ℤ)
+      = ∑ p : Fin (N+1) × Fin (N+1), ∑ q : Fin (N+1) × Fin (N+1),
+          multiplicityArray L (p.1:ℤ) (p.2:ℤ) * multiplicityArray L (q.1:ℤ) (q.2:ℤ) * extIndicator p q := by
+  rw [← list_double_sum_to_grid L extIndicator, finrank_deformationExt1_intervalDirectSum,
+    cast_listSum]
+  refine congrArg List.sum (List.map_congr_left (fun a _ => ?_))
+  rw [cast_listSum]
+  refine congrArg List.sum (List.map_congr_left (fun b _ => ?_))
+  exact finrank_deformationExt1_interval_cast a b
+
 section Witness
 
 /-! ## Non-vacuity witness for the interval Euler form
@@ -882,6 +968,15 @@ example :
   simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil,
     finrank_deformationExt1_interval]
   decide
+
+/-- **`(2,2,2)` `(1,1)`-orbit via the multiplicity form:** the paper's
+`Σ_{p,q} m(p)·m(q)·1[i<u≤j+1≤v] = 3` for `m = multiplicityArray` of the orbit's endpoint list, matching
+`finrank_deformationExt1_intervalDirectSum_mult`. -/
+example :
+    (finrank ℚ (deformationExt1
+        (intervalDirectSum (k := ℚ) [((0 : Fin 3), (0 : Fin 3)), (0, 1), (1, 2), (2, 2)])
+        (intervalDirectSum [((0 : Fin 3), (0 : Fin 3)), (0, 1), (1, 2), (2, 2)])) : ℤ) = 3 := by
+  rw [finrank_deformationExt1_intervalDirectSum_mult]; decide
 
 end Witness
 
