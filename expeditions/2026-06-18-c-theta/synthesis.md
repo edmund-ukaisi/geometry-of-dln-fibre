@@ -91,3 +91,27 @@ Thm 7.10 closed-form C, θ, minimiser set, perm-invariance, rank-r — all exact
 **Tides:** square-bridge [small] ‖ integer-square-lemma [small, self-contained] → **drop-to-m [HARD, the wall]**
 → value assembly [medium] → θ-count [bounded] → perm-invariance [free]. Recommended order: square-bridge +
 integer-square-lemma first (independent), then drop-to-m, then assembly + θ + perm-invariance.
+
+## WALL CLEARED — drop-to-m active-support reduction PROVEN on paper (ctheta-dropm, 2026-06-18)
+
+Certificate `threads/06-drop-to-m/certificate.md` (+ Codex xhigh line-by-line audit, no gap). Exact algebra.
+THEOREM (Monotone d): with Φ(e)=Σ(e_i−s_i)², every minimiser on Σe=d'_0, e≥0 has e_i=0 for i>m. Stronger:
+any feasible e with e_k≥1 (k>m) is beaten by an explicit unit transfer.
+- **m via Nat.findGreatest** of antitone decidable Pred(l): A_l := Σ_{0..l}d'_i − l·d'_l, A_1=d'_0≥0,
+  A_{l+1}=A_l − l(d'_{l+1}−d'_l) ≤ A_l. Qualifying set = initial interval {1..m}. (Codex's derivation —
+  cleaner than the argmax form; supersedes the brief's max-formulation.)
+- **Separation (load-bearing), integer form:** m<N ⟹ m·d'_{m+1} − S ≥ 1, S=Σ_{0..m}d'_i. = integer negation
+  of Pred(m+1).
+- **Unit transfer:** u_i=e_i−d'_0+d'_i, move k→j, j=argmin_{≤m}u; ΔΦ=2(u_j−u_k+1)≤−2. Gap u_k−u_j≥2 from
+  u_k≥1+d'_{m+1}−d'_0, u_j≤S/m−d'_0 (min≤average via Σ_{≤m}e≤d'_0). **All in ℤ — multiply by m, never divide.**
+- **ORDERING OBLIGATION (sharpened, load-bearing for soundness):** a≥d'_i for i≤m ALWAYS (in-face nonneg
+  clean). BUT d'_{m+1}>a is NOT always true — 3549/30161 boundary cases d'_{m+1}=a (witnesses d'=(4,5,8,9,10,10),
+  (2,5,6,7,10), both m=2) where naive full-coordinate rounding keeps spurious support but the true minimiser
+  drops it. ⟹ drop-to-m is a SEPARATE optimality fact proved BEFORE rounding; **rounding/assembly stated on the
+  m-face only (i≤m), never on all N coords.** Get the i>m ⟺ 0-based Fin index ≥ m off-by-one wrong → wall lemma
+  vacuous/false at the boundary.
+- Numerics: Ex6.2 (2,2,2)→m=N=2 no drop; Ex6.3 →m=4, sep 52>49, A-seq (8,5,5,5,−3,−3,−3,−17) non-incr.
+  Batteries 0 failures across support-drop/transfer/bound-chain/in-face-nonneg (124k cases).
+- Lean targets (cert §5): `qip_unit_transfer_decreases` (6-step skeleton) → `qip_minimiser_support_le_m`
+  (by_contra). Square-bridge (Gqip↔Φ) is the prerequisite small tide. Most-likely-to-break: integer
+  min≤average (keep m·min≤Σ, no division) + the index off-by-one.
