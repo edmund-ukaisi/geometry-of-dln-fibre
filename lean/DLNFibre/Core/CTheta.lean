@@ -150,6 +150,248 @@ noncomputable def numTop (d : Fin (N + 1) → ℕ) (r : ℕ)
     (h : (kostantPartitions d r).Nonempty) : ℕ :=
   ((kostantPartitions d r).filter (fun m ↦ codimForm N (extendℤ m) = cCodim d r h)).card
 
+/-! ## The rank-shift `cCodim d r = cCodim (d−r) 0` (Lehalleur–Rimányi Lemma 4.5)
+
+The paper's rank-`r` → rank-`0` reduction: subtracting `r` copies of the all-covering interval
+module `M_{0N}` (the projective-injective object, Thm 3.7) carries the rank-`r` orbit problem to the
+zero-product one without changing `(C, θ)`. Combinatorially: the corner multiplicity `m_{0N}` is the
+**only** entry `codimForm` never reads (every `m (u,v)` has `u ≥ 1 ≠ 0`; every `m (i-1,j-1)` has
+`j-1 < N`), and `M_{0N}` covers every vertex, so the map `m ↦ Function.update m (0,last) 0` is a
+`codimForm`-preserving bijection `kostantPartitions d r ≃ kostantPartitions (d−r) 0` (with
+`d−r := fun k ↦ d k − r`, valid when `r ≤ d k` everywhere). Hence `cCodim` and `numTop` transport.
+
+`codimForm`-blindness to the corner is `codimForm_update_corner`; the bijection is
+`kostantEquivShift`; the conclusions are `cCodim_rankShift` / `numTop_rankShift`. **Proved**
+(elementary `Finset` combinatorics; the geometric reading still rides on `hVoigt`, as in L1). -/
+
+/-- `extendℤ` is blind to a corner `update` (at `(0, last N)`) when the first index is `≥ 1`
+(so `⟨a.toNat,_⟩ ≠ 0`): the updated and original arrays agree there. -/
+theorem extendℤ_update_corner_of_fst_pos (m : Fin (N + 1) × Fin (N + 1) → ℕ) (c : ℕ)
+    {a b : ℤ} (ha : 1 ≤ a) :
+    extendℤ (Function.update m (0, Fin.last N) c) a b = extendℤ m a b := by
+  unfold extendℤ
+  split_ifs with h
+  · rw [Function.update_apply, if_neg]
+    rintro hpair
+    have : (⟨a.toNat, by omega⟩ : Fin (N + 1)) = 0 := (Prod.mk.injEq .. ▸ hpair).1
+    rw [Fin.ext_iff] at this; simp only [Fin.val_zero] at this; omega
+  · rfl
+
+/-- `extendℤ` is blind to a corner `update` (at `(0, last N)`) when the second index is `< N`
+(so `⟨b.toNat,_⟩ ≠ Fin.last N`): the updated and original arrays agree there. -/
+theorem extendℤ_update_corner_of_snd_lt (m : Fin (N + 1) × Fin (N + 1) → ℕ) (c : ℕ)
+    {a b : ℤ} (hb : b < (N : ℤ)) :
+    extendℤ (Function.update m (0, Fin.last N) c) a b = extendℤ m a b := by
+  unfold extendℤ
+  split_ifs with h
+  · rw [Function.update_apply, if_neg]
+    rintro hpair
+    have : (⟨b.toNat, by omega⟩ : Fin (N + 1)) = Fin.last N := (Prod.mk.injEq .. ▸ hpair).2
+    rw [Fin.ext_iff, Fin.val_last] at this; simp only at this; omega
+  · rfl
+
+/-- **`codimForm` is blind to the corner entry.** Updating `m` at `(0, last N)` to any `c` leaves
+`codimForm N (extendℤ m)` unchanged: the form sums `m (i-1) (j-1) · m (u,v)` over
+`1 ≤ i ≤ u ≤ j ≤ v ≤ N`, where the first factor has second index `j-1 < N` and the second factor has
+first index `u ≥ 1`, so neither ever reads `(0, N)`. -/
+theorem codimForm_update_corner (m : Fin (N + 1) × Fin (N + 1) → ℕ) (c : ℕ) :
+    codimForm N (extendℤ (Function.update m (0, Fin.last N) c)) = codimForm N (extendℤ m) := by
+  unfold codimForm
+  refine Finset.sum_congr rfl fun i hi ↦ Finset.sum_congr rfl fun u hu ↦
+    Finset.sum_congr rfl fun j hj ↦ Finset.sum_congr rfl fun v hv ↦ ?_
+  rw [Finset.mem_Icc] at hi hu hj hv
+  rw [extendℤ_update_corner_of_snd_lt m c (by omega),
+      extendℤ_update_corner_of_fst_pos m c (by omega)]
+
+/-! ### The corner-dropping bijection -/
+
+/-- Drop the corner: set `m (0, last N)` to `0`. The map realising the rank-`r` → rank-`0` shift. -/
+def dropCorner (m : Fin (N + 1) × Fin (N + 1) → ℕ) : Fin (N + 1) × Fin (N + 1) → ℕ :=
+  Function.update m (0, Fin.last N) 0
+
+/-- The shifted dimension vector `d − r`: `(d − r) k = d k − r` (ℕ truncated subtraction; honest
+when `r ≤ d k`). -/
+def dminus (d : Fin (N + 1) → ℕ) (r : ℕ) : Fin (N + 1) → ℕ := fun k ↦ d k - r
+
+/-- The corner `(0, last N)` lies in the Kostant filter at every vertex `k` (the all-covering
+interval `[0, N]` contains `k`). -/
+theorem corner_mem_filter (k : Fin (N + 1)) :
+    ((0 : Fin (N + 1)), Fin.last N) ∈
+      Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2) := by
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def, Fin.val_zero,
+    Fin.val_last]
+  exact ⟨Nat.zero_le _, Nat.le_of_lt_succ k.isLt⟩
+
+/-- **Kostant filter sum after dropping the corner.** At every vertex `k`, the filtered sum of
+`dropCorner m` is the filtered sum of `m` minus the corner value `m (0, last N)`. -/
+theorem sum_filter_dropCorner (m : Fin (N + 1) × Fin (N + 1) → ℕ) (k : Fin (N + 1)) :
+    ∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2),
+        dropCorner m p
+      = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2), m p)
+        - m (0, Fin.last N) := by
+  set S := Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2) with hS
+  have hc : ((0 : Fin (N + 1)), Fin.last N) ∈ S := corner_mem_filter k
+  -- split the corner off both sums
+  rw [← Finset.add_sum_erase S m hc, ← Finset.add_sum_erase S (dropCorner m) hc]
+  -- `dropCorner m` is `0` at the corner and `= m` on the erased set
+  have hcorner : dropCorner m (0, Fin.last N) = 0 := Function.update_self _ _ _
+  have herase : ∀ p ∈ S.erase (0, Fin.last N), dropCorner m p = m p := by
+    intro p hp
+    exact Function.update_of_ne (Finset.ne_of_mem_erase hp) _ _
+  rw [hcorner, Finset.sum_congr rfl herase, zero_add, Nat.add_sub_cancel_left]
+
+/-- **The bound is a consequence of the Kostant constraint.** A partition supported on `i ≤ j` and
+Kostant for `e` satisfies `m p ≤ e p.1` automatically: for `p.1 ≤ p.2` the entry `m p` is one
+summand of the filtered sum `e p.1`; off the triangle `m p = 0`. -/
+theorem bound_of_kostant {e : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
+    (hsupp : ∀ p, ¬ p.1 ≤ p.2 → m p = 0) (hk : ∀ k, kostantAt e m k)
+    (p : Fin (N + 1) × Fin (N + 1)) :
+    m p ≤ e p.1 := by
+  by_cases hp : p.1 ≤ p.2
+  · rw [hk p.1]
+    refine Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) ?_
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨le_rfl, hp⟩
+  · rw [hsupp p hp]; exact Nat.zero_le _
+
+/-- **Dropping the corner lands in the shifted partitions.** If `m` is Kostant for `d` with corner
+`r`, then `dropCorner m` is Kostant for `d − r` with corner `0`. (No `r ≤ d k` hypothesis: a Kostant
+partition has corner `m_{0N} = r ≤ d k` at every vertex automatically, so `d k − r` is honest.) -/
+theorem dropCorner_mem {d : Fin (N + 1) → ℕ} {r : ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
+    (hm : m ∈ kostantPartitions d r) :
+    dropCorner m ∈ kostantPartitions (dminus d r) 0 := by
+  rw [mem_kostantPartitions] at hm ⊢
+  obtain ⟨-, hsupp, hk, hcorner⟩ := hm
+  -- support of dropCorner: off the triangle it is m (= 0); at the corner it is 0
+  have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → dropCorner m p = 0 := by
+    intro p hp
+    by_cases hpc : p = (0, Fin.last N)
+    · rw [hpc]; exact Function.update_self _ _ _
+    · rw [dropCorner, Function.update_of_ne hpc]; exact hsupp p hp
+  -- Kostant for d - r: filtered sum drops by m corner = r
+  have hk' : ∀ k, kostantAt (dminus d r) (dropCorner m) k := by
+    intro k
+    rw [kostantAt, sum_filter_dropCorner, ← hk k, hcorner]; rfl
+  exact ⟨bound_of_kostant hsupp' hk', hsupp', hk', Function.update_self _ _ _⟩
+
+/-- **Restoring the corner inverts the drop.** If `m'` is Kostant for `d − r` with corner `0` (and
+`r ≤ d k` everywhere), then `Function.update m' (0, last) r` is Kostant for `d` with corner `r`, and
+dropping its corner returns `m'`. -/
+theorem addCorner_mem {d : Fin (N + 1) → ℕ} {r : ℕ} {m' : Fin (N + 1) × Fin (N + 1) → ℕ}
+    (hr : ∀ k, r ≤ d k) (hm' : m' ∈ kostantPartitions (dminus d r) 0) :
+    Function.update m' (0, Fin.last N) r ∈ kostantPartitions d r := by
+  rw [mem_kostantPartitions] at hm' ⊢
+  obtain ⟨-, hsupp, hk, hcorner⟩ := hm'
+  set m := Function.update m' (0, Fin.last N) r with hmdef
+  have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → m p = 0 := by
+    intro p hp
+    have hpc : p ≠ (0, Fin.last N) := by
+      rintro rfl; exact hp (by simp [Fin.le_def])
+    rw [hmdef, Function.update_of_ne hpc]; exact hsupp p hp
+  have hmc : m (0, Fin.last N) = r := Function.update_self _ _ _
+  -- `dropCorner m = m'` since `m` is `m'` with the corner re-set, and `m'` has corner 0
+  have hdrop : dropCorner m = m' := by
+    funext q
+    by_cases hqc : q = (0, Fin.last N)
+    · subst hqc
+      rw [dropCorner, Function.update_self, hcorner]
+    · rw [dropCorner, Function.update_of_ne hqc, hmdef, Function.update_of_ne hqc]
+  -- Kostant for d: the corner sum rises by r; m' was Kostant for d - r with corner 0
+  have hk' : ∀ k, kostantAt d m k := by
+    intro k
+    -- ∑ filterₖ m' = ∑ filterₖ m − r   (drop the corner), and  d k − r = ∑ filterₖ m'
+    have hdc : (∑ p ∈ Finset.univ.filter
+          (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2), m' p)
+        = (∑ p ∈ Finset.univ.filter
+          (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2), m p) - r := by
+      have := sum_filter_dropCorner m k
+      rw [hdrop, hmc] at this; exact this
+    have hk2 : d k - r = ∑ p ∈ Finset.univ.filter
+        (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2), m' p := hk k
+    -- corner ∈ filterₖ contributes `m corner = r`, so `r ≤ ∑ filterₖ m`
+    have hge : r ≤ ∑ p ∈ Finset.univ.filter
+        (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ k ∧ k ≤ p.2), m p := by
+      rw [← hmc]
+      exact Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) (corner_mem_filter k)
+    have hrk := hr k
+    rw [kostantAt]; omega
+  exact ⟨bound_of_kostant hsupp' hk', hsupp', hk', hmc⟩
+
+/-- **The corner-dropping bijection (set form).** `kostantPartitions (d − r) 0` is the image of
+`kostantPartitions d r` under `dropCorner` (for `r ≤ d k` everywhere) — the paper's rank-`r` →
+rank-`0` reduction realised as a `Finset` bijection. -/
+theorem kostantPartitions_dminus_eq_image {d : Fin (N + 1) → ℕ} {r : ℕ} (hr : ∀ k, r ≤ d k) :
+    kostantPartitions (dminus d r) 0 = (kostantPartitions d r).image dropCorner := by
+  ext m'
+  rw [Finset.mem_image]
+  constructor
+  · intro hm'
+    refine ⟨Function.update m' (0, Fin.last N) r, addCorner_mem hr hm', ?_⟩
+    -- dropCorner (addCorner m') = m', since m' has corner 0
+    have hcorner : m' (0, Fin.last N) = 0 := (mem_kostantPartitions.mp hm').2.2.2
+    funext q
+    by_cases hqc : q = (0, Fin.last N)
+    · subst hqc
+      rw [dropCorner, Function.update_self]; exact hcorner.symm
+    · rw [dropCorner, Function.update_of_ne hqc, Function.update_of_ne hqc]
+  · rintro ⟨m, hm, rfl⟩
+    exact dropCorner_mem hm
+
+/-- `dropCorner` is injective on `kostantPartitions d r`: its corner is fixed at `r`, so the corner
+can be restored, recovering `m`. -/
+theorem dropCorner_injOn {d : Fin (N + 1) → ℕ} {r : ℕ} :
+    Set.InjOn dropCorner (kostantPartitions d r : Set (Fin (N + 1) × Fin (N + 1) → ℕ)) := by
+  intro m₁ hm₁ m₂ hm₂ heq
+  have hc₁ : m₁ (0, Fin.last N) = r := (mem_kostantPartitions.mp hm₁).2.2.2
+  have hc₂ : m₂ (0, Fin.last N) = r := (mem_kostantPartitions.mp hm₂).2.2.2
+  funext q
+  by_cases hqc : q = (0, Fin.last N)
+  · rw [hqc, hc₁, hc₂]
+  · have := congrFun heq q
+    rwa [dropCorner, Function.update_of_ne hqc, dropCorner, Function.update_of_ne hqc] at this
+
+/-! ### The rank-shift conclusions -/
+
+/-- **Rank-shift for `C` (Lehalleur–Rimányi Lemma 4.5).** The combinatorial codimension is unchanged
+under the rank-`r` → rank-`0` reduction: `cCodim (d − r) 0 = cCodim d r` (for `r ≤ d k` everywhere).
+`codimForm` is blind to the corner (`codimForm_update_corner`) and `dropCorner` is a bijection
+`kostantPartitions d r ≃ kostantPartitions (d − r) 0`, so the minimum transports. -/
+theorem cCodim_rankShift {d : Fin (N + 1) → ℕ} {r : ℕ} (hr : ∀ k, r ≤ d k)
+    (h₀ : (kostantPartitions (dminus d r) 0).Nonempty)
+    (hr' : (kostantPartitions d r).Nonempty) :
+    cCodim (dminus d r) 0 h₀ = cCodim d r hr' := by
+  have himg : ((kostantPartitions d r).image dropCorner).Nonempty := by
+    rw [← kostantPartitions_dminus_eq_image hr]; exact h₀
+  have h1 : ((kostantPartitions d r).image dropCorner).inf' himg (fun m ↦ codimForm N (extendℤ m))
+      = (kostantPartitions d r).inf' himg.of_image
+          ((fun m ↦ codimForm N (extendℤ m)) ∘ dropCorner) :=
+    Finset.inf'_image himg _
+  have h2 : (kostantPartitions d r).inf' himg.of_image
+        ((fun m ↦ codimForm N (extendℤ m)) ∘ dropCorner)
+      = (kostantPartitions d r).inf' hr' (fun m ↦ codimForm N (extendℤ m)) :=
+    Finset.inf'_congr himg.of_image rfl (fun m _ ↦ codimForm_update_corner m 0)
+  simpa only [cCodim, kostantPartitions_dminus_eq_image hr] using h1.trans h2
+
+/-- **Rank-shift for `θ` (Lehalleur–Rimányi Lemma 4.5).** The combinatorial component count is
+unchanged: `numTop (d − r) 0 = numTop d r` (for `r ≤ d k` everywhere). The minimiser set bijects
+under the corner-dropping bijection, which preserves `codimForm` and (by `cCodim_rankShift`) the
+minimum. -/
+theorem numTop_rankShift {d : Fin (N + 1) → ℕ} {r : ℕ} (hr : ∀ k, r ≤ d k)
+    (h₀ : (kostantPartitions (dminus d r) 0).Nonempty)
+    (hr' : (kostantPartitions d r).Nonempty) :
+    numTop (dminus d r) 0 h₀ = numTop d r hr' := by
+  unfold numTop
+  rw [cCodim_rankShift hr h₀ hr', kostantPartitions_dminus_eq_image hr, Finset.filter_image]
+  -- the inner predicate `codimForm (dropCorner a) = …` equals `codimForm a = …` (corner-blind)
+  have hfilter : ((kostantPartitions d r).filter
+        (fun a ↦ codimForm N (extendℤ (dropCorner a)) = cCodim d r hr'))
+      = (kostantPartitions d r).filter (fun m ↦ codimForm N (extendℤ m) = cCodim d r hr') :=
+    Finset.filter_congr (fun m _ ↦ by
+      rw [show dropCorner m = Function.update m (0, Fin.last N) 0 from rfl,
+        codimForm_update_corner m 0])
+  rw [hfilter]
+  exact Finset.card_image_of_injOn (dropCorner_injOn.mono (fun m hm ↦ (Finset.mem_filter.mp hm).1))
+
 /-! ## Non-vacuity witness — `(2,2,2)`, `r = 0` (Lehalleur–Rimányi Ex 4.3)
 
 `N = 2`, `d = (2,2,2)`, corner `r = 0` (the zero-product / `Σ^0` case). There are exactly six
@@ -187,6 +429,46 @@ theorem cCodim_d222_zero : cCodim d222 0 kostantPartitions_d222_nonempty = 3 := 
 partition (`mMin`): the combinatorial `θ = 1` (one minimiser). The geometric reading "the rank-`0`
 locus has one top-dimensional component" rests on the deferred `hVoigt` (see module docstring). -/
 theorem numTop_d222_zero : numTop d222 0 kostantPartitions_d222_nonempty = 1 := by
+  decide +kernel
+
+/-! ### Rank-shift witness — `(2,2,2)`, `r = 1` reduces to `(1,1,1)`, `r = 0`
+
+`dminus ![2,2,2] 1 = ![1,1,1]` (pointwise `2 − 1`), and `1 ≤ 2` at every vertex, so the rank-shift
+applies: `cCodim ![2,2,2] 1 = cCodim ![1,1,1] 0` and likewise for `numTop`. Both sides have
+`C = 1, θ = 2`. -/
+
+/-- A Kostant partition of `(2,2,2)` with corner `r = 1`: `m₀₁ = m₀₂ = m₂₂ = 1`. -/
+def mShift : Fin 3 × Fin 3 → ℕ := fun p ↦
+  if p = (0, 1) then 1 else if p = (0, 2) then 1 else if p = (2, 2) then 1 else 0
+
+theorem mShift_mem : mShift ∈ kostantPartitions d222 1 := by
+  rw [mem_kostantPartitions]; refine ⟨?_, ?_, ?_, ?_⟩ <;> decide
+
+theorem kostantPartitions_d222_one_nonempty : (kostantPartitions d222 1).Nonempty :=
+  ⟨mShift, mShift_mem⟩
+
+/-- `1 ≤ d k` at every vertex of `(2,2,2)` — the rank-shift hypothesis. -/
+theorem d222_one_le : ∀ k, (1 : ℕ) ≤ d222 k := by decide
+
+theorem kostantPartitions_d222_dminus_nonempty :
+    (kostantPartitions (dminus d222 1) 0).Nonempty := by
+  rw [kostantPartitions_dminus_eq_image d222_one_le]
+  exact kostantPartitions_d222_one_nonempty.image dropCorner
+
+/-- **Rank-shift witness.** `(2,2,2)` at rank `1` reduces to `(1,1,1) = dminus ![2,2,2] 1` at rank
+`0`: `cCodim (dminus ![2,2,2] 1) 0 = cCodim ![2,2,2] 1` (`= 1`), via `cCodim_rankShift`. -/
+theorem cCodim_d222_one_rankShift :
+    cCodim (dminus d222 1) 0 kostantPartitions_d222_dminus_nonempty
+      = cCodim d222 1 kostantPartitions_d222_one_nonempty :=
+  cCodim_rankShift d222_one_le _ _
+
+/-- **`(2,2,2)`, `r = 1`: `C = 1`.** Concrete value of the rank-`1` codimension (matches the
+`(1,1,1)`, `r = 0` value via `cCodim_d222_one_rankShift`). -/
+theorem cCodim_d222_one : cCodim d222 1 kostantPartitions_d222_one_nonempty = 1 := by
+  decide +kernel
+
+/-- **`(2,2,2)`, `r = 1`: `θ = 2`.** Two top minimisers (matches `(1,1,1)`, `r = 0`). -/
+theorem numTop_d222_one : numTop d222 1 kostantPartitions_d222_one_nonempty = 2 := by
   decide +kernel
 
 end Witness
