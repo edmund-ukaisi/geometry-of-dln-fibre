@@ -65,9 +65,12 @@ The full list and the review function that enforces it are in [`docs/policies/re
 - **Pipeline: markdown → Lean.** Theory develops in markdown (`theory/`, expedition notes). A stable claim is
   formalised in Lean (`lean/`, library `DLNFibre`). The reader-facing digest/expositions live in
   `docs/expositions/`.
-  - *Gotcha:* the **scholium** editor corrupts exposition markdown on save (duplicates the body, mangles `$$`
-    fences). Treat scholium as read-only for these docs; if a doc is hit, restore with
-    `git checkout HEAD -- <file>`.
+  - *Scholium* is a **viewer** (renders these markdown docs with KaTeX + callouts), not an editor; write to its
+    conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
+    recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
+    (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
+    subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
+    indented code block (8-space indent) there; top-level fenced code is fine.
 - **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
   source ([`docs/policies/claims.md`](docs/policies/claims.md)).
 - **Codex** is the independent second model for strategy and review
@@ -93,8 +96,10 @@ If dispatched into a role, read its role file and agent definition first.
   to directly.
 - Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `master` directly. One
   expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
-- **Don't push, open, or merge PRs without an explicit instruction** — the operator performs merges and the
-  `dev → master` promotion. When you push, confirm the target is `origin`.
+- **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
+  2026-06-12) — push freely to bank and share work. **Opening/merging PRs and the `dev → master` promotion
+  remain operator-gated** (signal-and-wait); the operator performs those. Always confirm the push target is
+  `origin`, never a non-`origin` remote.
 
 ## Memory
 

@@ -190,6 +190,30 @@ Inside a `???` or `!!!` block, indent every line of the display:
 Use KaTeX-supported commands. Avoid unsupported TeX macros unless we define
 a local convention and verify the viewer renders them.
 
+## Code Blocks
+
+Top-level fenced code blocks (triple backticks) render normally. Inside a `???`
+or `!!!` callout, scholium does **not** parse a fenced code block: the fences
+appear as literal backticks and the code spills out as prose. A language tag
+(e.g. ` ```lean `) is not recognised and does not help.
+
+Inside a callout, use an **indented code block** — indent the code four spaces
+beyond the callout body (eight spaces from the margin), with a blank line before
+and after:
+
+```markdown
+??? info "Formalised in Lean"
+
+        def baseChange (P) (A) := ...
+        instance : MulAction ... where ...
+
+    A prose gloss follows, back at the four-space callout-body indent.
+```
+
+The indented block renders as monospace. This is the same family as the
+display-math rule: a callout reparses its body as markdown, and code must be
+handed to that reparse as an indented block, not a fence.
+
 ## Lists And Nested Callouts
 
 Put a blank line before every list. Wrapped continuation lines of a list item

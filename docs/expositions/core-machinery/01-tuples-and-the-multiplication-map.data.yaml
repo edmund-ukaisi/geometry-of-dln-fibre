@@ -1,0 +1,233 @@
+threads:
+- id: c-e02b5374
+  kind: anchored
+  status: resolved
+  anchor: a tuple
+  anchor_prefix: "te \"Formalised\"\n    `DLNFibre.Core.Setup.Tuple` — "
+  anchor_suffix: |2-
+     is the dependent function
+        $i \mapsto A_i$ wit
+  created_at: "2026-06-14T17:30:21"
+  updated_at: "2026-06-14T23:28:13"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:30:21"
+    text: I think I would like this to be a collapsible and the lean code to be available
+      here together with the latex write out
+    id: p-6c7baa01
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: 'Done: the Tuple formalisation pointer is now a collapsible (??? info) carrying
+      the Lean `abbrev Tuple` plus the index/LaTeX correspondence (map at index i
+      is A_{i+1}: k^{d_i} -> k^{d_{i+1}}). Same collapsible-with-code form applied
+      to mult and the loci.'
+    id: p-claude-e02b5374
+    labels:
+    - addressed
+- id: c-dcb9df73
+  kind: anchored
+  status: resolved
+  anchor: ' dimension vector '
+  anchor_prefix: |-
+    ^{a}$. The **space of
+        composable tuples** with
+  anchor_suffix: |-
+    $\underline d$ is the product
+
+        $$
+        \operato
+  created_at: "2026-06-14T17:31:33"
+  updated_at: "2026-06-14T23:27:58"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:31:33"
+    text: Is there a way to have "Def" signalled prominently in this box?
+    id: p-367b1797
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: 'Done: definition titles now read ''Definition 1.1 — ...''. Scholium renders
+      the callout title as the box header (it does not auto-label the type), so writing
+      the kind into the title is how it is signalled prominently.'
+    id: p-claude-dcb9df73
+    labels:
+    - addressed
+- id: c-86266d0b
+  kind: anchored
+  status: resolved
+  anchor: The content is not in this space
+  anchor_prefix: "{Rep}_{\\underline d} =\n\\sum_{i=1}^N d_i d_{i-1}$. "
+  anchor_suffix: " but in the maps and\nloci we put on it.\n\n!!! note "
+  created_at: "2026-06-14T17:34:27"
+  updated_at: "2026-06-14T23:26:40"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:34:27"
+    text: This sentence is a little opaque. I sort of understand what you're trying
+      to say, but I don't like the "bait" register and vagueness here.
+    id: p-40d1ef09
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: 'Reworded: now states plainly that Rep_d is an affine space of dimension
+      sum d_i d_{i-1} (one coordinate per entry) and that the structure comes from
+      the multiplication map (§1.2) and the rank-condition subsets (§1.3). Dropped
+      the ''content is not in this space'' framing.'
+    id: p-claude-86266d0b
+    labels:
+    - addressed
+- id: c-8576fdb2
+  kind: anchored
+  status: open
+  anchor: part
+  anchor_prefix: 'olynomial map are the objects of the rest of this '
+  anchor_suffix: |-
+    .
+
+    Two features of $\operatorname{mult}$ are worth
+  created_at: "2026-06-14T17:36:32"
+  updated_at: "2026-06-14T22:50:00"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:36:32"
+    text: Here and above you're using "part" to refer to this whole doc. I think this
+      word is too overloaded. We can just go with chapter..? Section might get misunderstood
+      as we do have section headers. Document? Let's go with chapter.
+    id: p-331189e0
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: 'Done: ''part'' -> ''chapter'' for this document and ''these chapters''/''development''
+      for the whole. The two remaining ''part'' occurrences mean ''portion'' (of the
+      closed-ness argument; of the locus).'
+    id: p-claude-8576fdb2
+    labels:
+    - addressed
+- id: c-07a0da80
+  kind: anchored
+  status: resolved
+  anchor: |-
+    we will package in
+    Chapter 4
+  anchor_prefix: 's of all these interval compositions are the data '
+  anchor_suffix: '. And $\operatorname{mult}$ is far from injective:'
+  created_at: "2026-06-14T17:38:22"
+  updated_at: "2026-06-14T23:26:48"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:38:22"
+    text: Premature referencing, perhaps just spell out what it will be used for.
+    id: p-8ad55498
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: 'Done: removed the forward pointer to ''Chapter 4''. The text now says what
+      the interval-composition ranks are for — a complete record of a tuple up to
+      change of basis.'
+    id: p-claude-07a0da80
+    labels:
+    - addressed
+- id: c-d9b6f9b6
+  kind: anchored
+  status: resolved
+  anchor: Two features
+  anchor_prefix: |+
+    al map are the objects of the rest of this part.
+
+  anchor_suffix: ' of $\operatorname{mult}$ are worth stating now, b'
+  created_at: "2026-06-14T17:38:51"
+  updated_at: "2026-06-14T23:27:02"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:38:51"
+    text: If it is two features, then use two enumerated bullets.
+    id: p-a78bb0dc
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: 'Done: rewritten as two enumerated bullets (1. the composite is the longest
+      interval composition; 2. mult is far from injective).'
+    id: p-claude-d9b6f9b6
+    labels:
+    - addressed
+- id: c-28e16d90
+  kind: anchored
+  status: resolved
+  anchor: because both recur
+  anchor_prefix: 's of $\operatorname{mult}$ are worth stating now, '
+  anchor_suffix: |-
+    .
+    The full composite $A_N \cdots A_1$ is the longe
+  created_at: "2026-06-14T17:39:12"
+  updated_at: "2026-06-14T23:27:11"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:39:12"
+    text: over justification.
+    id: p-75715a81
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: Removed the 'because both recur' clause (over-justification); the two facts
+      are now stated directly.
+    id: p-claude-28e16d90
+    labels:
+    - addressed
+- id: c-88c6711c
+  kind: anchored
+  status: resolved
+  anchor: cut
+  anchor_prefix: " $0$ to vertex $N$.\n\n## 1.3 The loci we study\n\nWe "
+  anchor_suffix: ' $\operatorname{Rep}_{\underline d}$ by conditions'
+  created_at: "2026-06-14T17:40:06"
+  updated_at: "2026-06-14T23:27:19"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T17:40:06"
+    text: what is "cut"? Please don't introduce formal sounding terms that isn't formalised.
+      Reach for precision rather than analogies.
+    id: p-227d2e72
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: Replaced 'cut' with 'define subsets of Rep_d by imposing conditions on the
+      composite'.
+    id: p-claude-88c6711c
+    labels:
+    - addressed
+- id: c-573cd8f0
+  kind: anchored
+  status: open
+  anchor: product-rank-$r$ locus*
+  anchor_prefix: |-
+    nk}(A_N \cdots A_1) \le r \,\},
+        $$
+
+        the **
+  anchor_suffix: |-
+    * and its closure, and
+
+        $$
+        \operatorname{m
+  created_at: "2026-06-14T22:18:54"
+  updated_at: "2026-06-14T22:50:00"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-14T22:18:54"
+    text: I don't think $A_*$ is defined?
+    id: p-fd49b795
+  - author: edmund.lau
+    date: "2026-06-14T22:19:58"
+    text: Also, I think it should be spell out why the closure (Zariski?) is like
+      so. Likely quite a spell out proof in a collapsible.
+    id: p-aaaa5043
+  - author: edmund.lau
+    date: "2026-06-14T22:21:20"
+    text: Ah, you did say something about this immediately after, but I think a spell
+      out proof of "rank can drop under limits and that is all that an happen" is
+      still needed for clarify and give familiarity of the space.
+    id: p-f84c86b1
+  - author: claude
+    date: "2026-06-14T22:50:00"
+    text: 'Done: A_* is now defined explicitly in Definition 1.1 as notation for a
+      point/tuple (with a note that the subscript denotes the whole list). Added a
+      ??? proof collapsible spelling out closed-ness via the (r+1)-minors and rank
+      lower-semicontinuity (''rank drops in the limit, never jumps''). The density
+      direction (closure of Sigma^r equals Sigma^{<=r}) is honestly attributed to
+      Theorem 3.8 of the paper, not proved here.'
+    id: p-claude-573cd8f0
+    labels:
+    - addressed
