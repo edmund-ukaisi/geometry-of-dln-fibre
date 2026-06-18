@@ -67,3 +67,27 @@ green/sorry-free/axiom-clean, reviewed. Hypothesis strengthened to Monotone-d-on
 reading stays modulo hVoigt. **Remaining (C,θ): L4 explicit closed form (Thm 7.10) via rounding/exchange;
 θ = minimiser count (binomial, needs the HL normal-form/lattice count); permutation invariance (Cor 5.10,
 falls out of L4). The design flagged L4/θ as the harder tail.**
+
+## EXPLICIT-FORMULA TAIL — charted (ctheta-explicit, 2026-06-18); BOUNDED, not a grind
+
+Thm 7.10 closed-form C, θ, minimiser set, perm-invariance, rank-r — all exact-verified vs direct QIP
+(Ex6.2/6.3 + batteries). r=0 on weakly-incr positive d'; rank-r reduces to r=0 on sort(d−r).
+- **Square completion:** 2 G_d(e) − (Σe)² = Σ_i(e_i−s_i)² − Σ s_i², s_i = d'_0−d'_i (symbolic N≤5). So on
+  Σe=d'_0, min G_d ⇔ min ‖e−s‖² (integer, e≥0). Bridges into the committed cCodim=qipMin.
+- **Drop-to-m:** m = max{l∈1..N : Σ_{0..l} d'_i ≥ l d'_l}; every minimiser has e_i=0 for i>m (m<N ⟹ S/m <
+  d'_{m+1} strict, S=Σ_{0..m} d'). **THE WALL** (Codex concurs) — argmax m + rational strict inequality +
+  unit-transfer-strictly-decreases construction. e≥0 is automatic AFTER drop-to-m (a≥d'_m), FALSE before —
+  caveat: drop-to-m must precede rounding.
+- **Round:** on the m-face e_i = a − d'_i + Δ_i, a=⌊S/m+½⌋, δ=S−m·a, Δ∈{0,ε}^m with |δ| coords =ε=sgn δ.
+  This IS the full minimiser set.
+- **Integer-square lemma (optimality core):** min{Σt_i² : t∈ℤ^m, Σt=δ} = |δ| for |δ|≤m, attained exactly at
+  0/ε-valued t; exchange t_i≥t_j+2 ⟹ swap drops Σt² by 2(t_i−t_j−1)>0. Replaces Conway–Sloane (Codex same).
+- **Closed-form C (pure ℤ, a,δ form):** C = ½(d'_0² − Σ_{i=1}^m(d'_i−d'_0)² + m(a−d'_0)² + 2(a−d'_0)δ + |δ|);
+  = direct QIP 4000/4000, always integer.
+- **θ = Nat.choose m |δ|** via bijection {A⊆Fin m : |A|=|δ|} ↦ e(A) onto the minimiser Finset (card_powersetCard).
+- **Perm-invariance (Cor 5.10):** the closed form reads only sort(d) ⟹ trivial corollary (one def-unfold),
+  no Poincaré, no KP-bijection.
+
+**Tides:** square-bridge [small] ‖ integer-square-lemma [small, self-contained] → **drop-to-m [HARD, the wall]**
+→ value assembly [medium] → θ-count [bounded] → perm-invariance [free]. Recommended order: square-bridge +
+integer-square-lemma first (independent), then drop-to-m, then assembly + θ + perm-invariance.
