@@ -19,10 +19,10 @@ partitions via `A ↦ diff (rankPattern A)`.
   ∃ g, g • A = B`.
 * `baseChange_normalForm` — **the Gabriel normal-form object** (cast-free): every tuple is
   `G_d`-equivalent to a reindexing of the interval direct sum `⊕ M^{m̄}` of its own bars.
-The orbit ↔ Kostant bijection as a single `Equiv` object (`orbitRel.Quotient ≃` realizable-Kostant)
-is a **deferred** packaging step: its content is already in hand (the complete invariant above +
-`RankPattern.cumulDiffEquiv` + the realizability in `baseChange_normalForm`); only the
-quotient / `SuppArray` bookkeeping remains.
+The orbit ↔ Kostant bijection as a single `Equiv` object is packaged in `Core.OrbitKostant`
+(`orbitKostantPartitionEquiv`, `orbitCMPlusEquiv`): the complete invariant above +
+`RankPattern.cumulDiffEquiv` + the realizability in `baseChange_normalForm` assemble into a genuine
+`Quotient (orbitSetoid d) ≃ KostantPartition d`.
 
 **Typeclass.** `Field k` (the barcode existence; `Tuple`/`baseChange` themselves only need
 `CommRing`). **Dependency rule:** never import `DLNFibre.DLN`.
@@ -330,9 +330,13 @@ theorem exists_cumul_barMult {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
 `G_d`-equivalent to (a reindexing along `foldDim L = d` of) the interval direct sum `⊕_{(a,b) ∈ L}
 M_{ab}` of its own bars — i.e. `∃ L (h : foldDim L = d) P, P • A = h ▸ intervalDirectSum L`. This is
 the genuine Gabriel normal form (Le Halleur–Rimányi 2024, Thm 2.5 / Cor 2.9): the right-hand side is
-manifestly a direct sum of interval modules, and `L`'s multiplicity array is `diff (rankPattern A)`.
-Proved from the complete invariant (`orbit_of_rankPattern_eq`) by exhibiting the interval direct sum
-as a tuple with the same rank pattern as `A`. -/
+manifestly a direct sum of interval modules, and on the upper triangle `i ≤ j` the cumulative count
+of `L`'s multiplicity array recovers the rank pattern,
+`(r_{ij} : ℤ) = cumul N (multiplicityArray L)`.
+The multiplicities `multiplicityArray L` are therefore `diff` of that cumulative array
+(`multiplicityArray_normalForm_eq_diff`, the `diff_cumul` inversion), pinning `L` from `A`'s rank
+pattern. Proved from the complete invariant (`orbit_of_rankPattern_eq`) by exhibiting the interval
+direct sum as a tuple with the same rank pattern as `A`. -/
 theorem baseChange_normalForm {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
     ∃ (L : List (Fin (N + 1) × Fin (N + 1))) (h : foldDim L = d) (P : BaseChangeGroup (k := k) d),
       P • A = h ▸ intervalDirectSum L ∧ (∀ p ∈ L, p.1 ≤ p.2) ∧
@@ -360,6 +364,35 @@ theorem baseChange_normalForm {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
     obtain ⟨lam, _, rfl⟩ := hp
     exact hbd lam
   · rw [hcum i j hij, hmult]
+
+/-- **The normal-form multiplicities are `diff` of the rank pattern (uniqueness, Cor 2.9).** The bar
+list `L` of `baseChange_normalForm` has its multiplicity array pinned by `A`'s rank pattern: there
+is a supported array `r` (the cumulative count `cumul N (multiplicityArray L)`) that equals the rank
+pattern on the upper triangle `i ≤ j` and whose second finite difference is exactly
+`multiplicityArray L` — so `multiplicityArray L = diff r` with `r = (rankPattern A)` on `i ≤ j`. The
+`diff_cumul` inversion of the cumulative equality in `baseChange_normalForm`; makes the
+"multiplicity array is `diff (rankPattern A)`" reading literal. -/
+theorem multiplicityArray_normalForm_eq_diff {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
+    ∃ (L : List (Fin (N + 1) × Fin (N + 1))) (h : foldDim L = d) (P : BaseChangeGroup (k := k) d)
+      (r : ℤ → ℤ → ℤ),
+      P • A = h ▸ intervalDirectSum L ∧ (∀ p ∈ L, p.1 ≤ p.2) ∧
+      Supported (N : ℤ) r ∧ diff r = multiplicityArray L ∧
+      ∀ (i j : Fin (N + 1)) (hij : i ≤ j), r (i : ℤ) (j : ℤ) = (rankPattern d A i j hij : ℤ) := by
+  obtain ⟨L, h, P, hP, hbd, hcum⟩ := baseChange_normalForm A
+  refine ⟨L, h, P, cumul (N : ℤ) (multiplicityArray L), hP, hbd,
+    supported_cumul (N : ℤ) (multiplicityArray L), ?_, fun i j hij ↦ (hcum i j hij).symm⟩
+  -- `multiplicityArray L` is supported (it counts a finite bar list), so `cumul` inverts to it
+  refine diff_cumul (N : ℤ) (multiplicityArray L) ?_ ?_
+  · intro a b ha
+    refine List.sum_eq_zero fun x hx ↦ ?_
+    obtain ⟨p, _, rfl⟩ := List.mem_map.mp hx
+    rw [if_neg]; rintro ⟨rfl, _⟩; exact absurd ha (not_lt.mpr (by positivity))
+  · intro a b hb
+    refine List.sum_eq_zero fun x hx ↦ ?_
+    obtain ⟨p, _, rfl⟩ := List.mem_map.mp hx
+    rw [if_neg]
+    rintro ⟨_, rfl⟩
+    exact absurd hb (not_lt.mpr (by exact_mod_cast Nat.lt_succ_iff.mp p.2.isLt))
 
 section Witness
 
@@ -399,6 +432,94 @@ example : (∀ (i j : Fin 3) (hij : i ≤ j),
     ↔ ∃ Q : BaseChangeGroup (k := ℚ) dWitness,
         Q • tupleWitnessQ = witnessBaseChangeQ • tupleWitnessQ :=
   rankPattern_eq_iff_orbit tupleWitnessQ (witnessBaseChangeQ • tupleWitnessQ)
+
+/-! ### A rank-one zero-product witness
+
+The exposition's running rank-one example (Example 2.6): `(2,2,2)/ℚ` with edge factors
+`A = diag(1,0)` and `B = diag(0,1)`, so `B·A = 0` and both factors have rank `1`. This is a
+genuinely **degenerate** pair (`tupleWitnessQ` above is the invertible/full-rank pair). Its rank
+pattern is `r_{01} = r_{12} = 1`, `r_{02} = 0`, diagonal `r_{kk} = 2`. -/
+
+/-- The `(2,2,2)/ℚ` **rank-one zero-product** tuple: edge `0` is `diag(1,0) = !![1,0;0,0]`, edge `1`
+is `diag(0,1) = !![0,0;0,1]`, so the product `B·A = 0` and each factor is rank `1` (the exposition's
+Example 2.6). -/
+def tupleWitnessRankOneQ : Tuple (k := ℚ) dWitness := fun i ↦
+  match i with
+  | 0 => !![1, 0; 0, 0]
+  | 1 => !![0, 0; 0, 1]
+
+/-- The first factor (`submult 0 1`) of the rank-one witness is `A = !![1,0;0,0]` (`multPrefix`
+bridge: `submult 0 1 = A 0 · 1 = A 0`). -/
+theorem submult_tupleWitnessRankOneQ_zero_one :
+    submult dWitness tupleWitnessRankOneQ 0 (Fin.succ 0) (Fin.zero_le _) = !![1, 0; 0, 0] := by
+  rw [submult_succ dWitness tupleWitnessRankOneQ 0 0 (Fin.zero_le _)]
+  convert Matrix.mul_one (tupleWitnessRankOneQ 0) using 2
+
+/-- The second factor (`submult 1 2`) of the rank-one witness is `B = !![0,0;0,1]`, a genuine
+`i ≠ 0` slice via the composition step `submult_succ` and the diagonal `submult_self`. -/
+theorem submult_tupleWitnessRankOneQ_one_two :
+    submult dWitness tupleWitnessRankOneQ 1 (Fin.succ 1) (by decide) = !![0, 0; 0, 1] := by
+  rw [submult_succ dWitness tupleWitnessRankOneQ 1 1 le_rfl]
+  convert Matrix.mul_one (tupleWitnessRankOneQ 1) using 2
+
+/-- The whole-chain product (`submult 0 2 = B·A`) of the rank-one witness is the zero matrix:
+`!![0,0;0,1] · !![1,0;0,0] = 0`. The zero-product condition `B·A = 0`. -/
+theorem submult_tupleWitnessRankOneQ_zero_two :
+    submult dWitness tupleWitnessRankOneQ 0 (Fin.succ 1) (Fin.zero_le _) = 0 := by
+  rw [submult_succ dWitness tupleWitnessRankOneQ 0 1 (by decide),
+    show submult dWitness tupleWitnessRankOneQ 0 (Fin.castSucc 1) (by decide)
+      = submult dWitness tupleWitnessRankOneQ 0 (Fin.succ 0) (Fin.zero_le _) from rfl,
+    submult_tupleWitnessRankOneQ_zero_one]
+  convert_to (!![0, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ) * !![1, 0; 0, 0] = 0 using 2
+  ext i j; fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two]
+
+/-- `!![1,0;0,0]` has rank `1` (one nonzero diagonal entry), via `rank_diagonal`. -/
+theorem rank_matWitnessA : (!![1, 0; 0, 0] : Matrix (Fin 2) (Fin 2) ℚ).rank = 1 := by
+  rw [show (!![1, 0; 0, 0] : Matrix (Fin 2) (Fin 2) ℚ) = Matrix.diagonal ![1, 0] from by
+    funext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.diagonal], Matrix.rank_diagonal,
+    Fintype.card_congr (Equiv.subtypeEquivRight (q := fun i ↦ i = 0)
+      (fun i ↦ by fin_cases i <;> simp)), Fintype.card_subtype_eq]
+
+/-- `!![0,0;0,1]` has rank `1` (one nonzero diagonal entry), via `rank_diagonal`. -/
+theorem rank_matWitnessB : (!![0, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ).rank = 1 := by
+  rw [show (!![0, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ) = Matrix.diagonal ![0, 1] from by
+    funext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.diagonal], Matrix.rank_diagonal,
+    Fintype.card_congr (Equiv.subtypeEquivRight (q := fun i ↦ i = 1)
+      (fun i ↦ by fin_cases i <;> simp)), Fintype.card_subtype_eq]
+
+/-- **The rank-one witness rank pattern.** `r_{01} = r_{12} = 1` (each factor has one nonzero
+diagonal entry), `r_{02} = 0` (`B·A = 0`), and the diagonal `r_{kk} = 2`. A genuinely degenerate
+zero-product pair, distinct from the full-rank `tupleWitnessQ`. -/
+theorem rankPattern_tupleWitnessRankOneQ :
+    rankPattern dWitness tupleWitnessRankOneQ 0 1 (by decide) = 1
+      ∧ rankPattern dWitness tupleWitnessRankOneQ 1 2 (by decide) = 1
+      ∧ rankPattern dWitness tupleWitnessRankOneQ 0 2 (by decide) = 0
+      ∧ rankPattern dWitness tupleWitnessRankOneQ 0 0 le_rfl = 2
+      ∧ rankPattern dWitness tupleWitnessRankOneQ 1 1 le_rfl = 2
+      ∧ rankPattern dWitness tupleWitnessRankOneQ 2 2 le_rfl = 2 := by
+  refine ⟨?_, ?_, ?_, rankPattern_self dWitness tupleWitnessRankOneQ 0,
+    rankPattern_self dWitness tupleWitnessRankOneQ 1,
+    rankPattern_self dWitness tupleWitnessRankOneQ 2⟩
+  · rw [show rankPattern dWitness tupleWitnessRankOneQ 0 1 (by decide)
+        = rankPattern dWitness tupleWitnessRankOneQ 0 (Fin.succ 0) (Fin.zero_le _) from rfl,
+      rankPattern, submult_tupleWitnessRankOneQ_zero_one]; exact rank_matWitnessA
+  · rw [show rankPattern dWitness tupleWitnessRankOneQ 1 2 (by decide)
+        = rankPattern dWitness tupleWitnessRankOneQ 1 (Fin.succ 1) (by decide) from rfl,
+      rankPattern, submult_tupleWitnessRankOneQ_one_two]; exact rank_matWitnessB
+  · rw [show rankPattern dWitness tupleWitnessRankOneQ 0 2 (by decide)
+        = rankPattern dWitness tupleWitnessRankOneQ 0 (Fin.succ 1) (Fin.zero_le _) from rfl,
+      rankPattern, submult_tupleWitnessRankOneQ_zero_two, Matrix.rank_zero]
+
+/-- The Gabriel normal form fires on the **rank-one** witness too: the degenerate zero-product pair
+is `G_d`-equivalent to a reindexing of the interval direct sum of its own bars (here the bars
+`M_{00}, M_{01}, M_{12}, M_{22}` forced by its rank pattern). The complete invariant is non-vacuous
+on a genuinely degenerate tuple, not only the full-rank `tupleWitnessQ`. -/
+example : ∃ (L : List (Fin 3 × Fin 3)) (h : foldDim L = dWitness)
+    (P : BaseChangeGroup (k := ℚ) dWitness),
+      P • tupleWitnessRankOneQ = h ▸ intervalDirectSum L := by
+  obtain ⟨L, h, P, hP, _, _⟩ := baseChange_normalForm tupleWitnessRankOneQ
+  exact ⟨L, h, P, hP⟩
 
 /-- The Gabriel normal-form object fires on the witness: `tupleWitnessQ` is `G_d`-equivalent to a
 reindexing of an interval direct sum of its own bars. -/

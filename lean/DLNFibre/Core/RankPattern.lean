@@ -246,8 +246,9 @@ theorem supported_diff {N : ℤ} {r : ℤ → ℤ → R} (hr : Supported N r) : 
 
 /-- **Prop 3.1a (characterisation).** On supported arrays the cumulative map `S = cumul N` and the
 finite-difference map `T = diff` are mutually inverse — the abstract form of the paper's
-rank-pattern ↔ Kostant-partition bijection (no representation theory; the tuple/Gabriel direction
-is deferred). -/
+rank-pattern ↔ Kostant-partition bijection (no representation theory here). The tuple/Gabriel
+direction — orbits ↔ Kostant partitions — is built on this in `Core.OrbitKostant`
+(`orbitKostantPartitionEquiv`). -/
 noncomputable def cumulDiffEquiv (N : ℤ) : SuppArray N R ≃ SuppArray N R where
   toFun m := ⟨cumul N m.1, supported_cumul N m.1⟩
   invFun r := ⟨diff r.1, supported_diff r.2⟩

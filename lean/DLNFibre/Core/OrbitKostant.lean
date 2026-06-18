@@ -37,7 +37,7 @@ Three forms of the bijection, each `⟦A⟧ ↦` a successively more literal enc
   `i ≤ j`-supported** multiplicity arrays, with no lower-triangle artifacts. The codomain carrier is
   `kostantArrayOfRank (rankFn A)` — `diff (rankFn A)` **truncated to `0` below the diagonal**. The
   bridge `kostantArrayOfRank_isKostant` identifies that truncation, for a realizable pattern, with
-  the bar-multiplicity array `barMult` of a Gabriel decomposition (`Gabriel.exists_cumul_barMult`),
+  the bar-multiplicity array `barMult` of a Gabriel decomposition (`Orbit.exists_cumul_barMult`),
   which is manifestly nonnegative (a sum of `singleDelta` indicators) and `i ≤ j`-supported
   (`birth ≤ death`). Truncation is invisible to `cumul` on the upper triangle, so the truncated
   array still determines the rank pattern (`kostantArrayOfRank_injOn`), and the equiv corestricts.
@@ -124,7 +124,9 @@ inversion `RankPattern.cumulDiffEquiv` (whose `.symm` is `diff`) takes that step
 `i ≤ j` this image is exactly the paper's Kostant partition (verified on the witness); below the
 diagonal it carries artifacts of `rankFn`'s lower-triangle-zero convention, so the *full* array is
 the `diff`-form, not literally a Kostant partition (which is nonnegative, supported on `i ≤ j`). The
-genuinely-literal Cor 2.9 codomain — the nonnegative `i ≤ j` restriction — is roadmapped. -/
+genuinely-literal Cor 2.9 codomain — the nonnegative `i ≤ j` restriction — is
+`orbitKostantPartitionEquiv` below (carrier `kostantArrayOfRank`, the `diff`-array truncated to `0`
+below the diagonal). -/
 
 /-- An integer index lies in the `Fin (N+1)` range `0 ≤ i ≤ N` (decidable, for the guard `if`). -/
 abbrev InFinRange (N : ℕ) (i : ℤ) : Prop := 0 ≤ i ∧ i ≤ (N : ℤ)
@@ -212,7 +214,7 @@ via `⟦A⟧ ↦ diff (rankFn A)`. This is `orbitKostantEquiv` (orbits ↔ rank 
 the paper's Kostant partition** (the interval multiplicities `m̄`, verified on the witness); below
 the diagonal it carries `rankFn`-convention artifacts (the bijection is exact regardless — see
 `diffArrayOfRank`). The genuinely-literal Cor 2.9 codomain (nonnegative `i ≤ j` restriction) is
-roadmapped. -/
+`orbitKostantPartitionEquiv` below. -/
 noncomputable def orbitDiffArrayEquiv (d : Fin (N + 1) → ℕ) :
     Quotient (orbitSetoid (k := k) d) ≃ RealizableDiffArray (k := k) d :=
   (orbitKostantEquiv d).trans (rankDiffArrayEquiv d)
@@ -230,7 +232,7 @@ noncomputable def orbitDiffArrayEquiv (d : Fin (N + 1) → ℕ) :
 
 The carrier is `kostantArrayOfRank`: the `diff`-array **truncated to `0` below the diagonal**. The
 bridge fact `kostantArrayOfRank_isKostant` identifies it, for a realizable rank pattern, with the
-**bar-multiplicity array** `barMult` of a Gabriel decomposition (`Gabriel.exists_cumul_barMult`),
+**bar-multiplicity array** `barMult` of a Gabriel decomposition (`Orbit.exists_cumul_barMult`),
 which is manifestly nonnegative (a sum of `singleDelta` indicators) and `i ≤ j`-supported (bars have
 `birth ≤ death`). Truncation is invisible to `cumul` on the upper triangle
 (`cumul_truncBelow_of_le`), so the truncated array still determines the rank pattern — hence the map
@@ -275,7 +277,7 @@ theorem cumul_truncBelow_of_le {N : ℤ} (f : ℤ → ℤ → ℤ) {i j : ℤ} (
 /-- **The bridge fact.** For a realizable rank pattern `rankFn d A`, the truncated `diff`-array is
 the bar-multiplicity array `barMult` of a Gabriel decomposition of `A`: nonnegative (sum of
 `singleDelta` indicators) and `i ≤ j`-supported (bars have `birth ≤ death`). The truncated array is
-therefore a literal Kostant partition. Uses `Gabriel.exists_cumul_barMult` (the barcode bar-count =
+therefore a literal Kostant partition. Uses `Orbit.exists_cumul_barMult` (the barcode bar-count =
 rank-pattern identity) — no new barcode lemma; only the truncation/`diff` bookkeeping. -/
 theorem kostantArrayOfRank_isKostant {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) :
     IsKostantArray (kostantArrayOfRank (rankFn d A)) := by
