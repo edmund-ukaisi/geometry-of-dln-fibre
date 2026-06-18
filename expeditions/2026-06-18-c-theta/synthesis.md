@@ -36,3 +36,26 @@ direct integer rounding-exchange lemma (NOT a black box; Codex concurs).
 - L6 — permutation invariance LAST: falls out of L4+L5 (no KP-only route; avoid the Poincaré series).
 
 Geometric "C = codim Σ^r" rides on hVoigt (deferred); the combinatorial C,θ do not.
+
+## QIP CONVERSE PROTOTYPE (ctheta-qip, 2026-06-18) — crossable, SINGLE-STEP
+
+The converse (every codimForm-minimiser is in the e-image) is formalisable as a single-step contradiction,
+NOT a descent measure.
+- **HL (horizontal-lace)** = every supported interval touches an endpoint (m_{a,b}=0 for 1≤a ∧ b≤N−1).
+  For weakly-incr d, corner 0: e-image = exactly the HL KPs (bijection m(e)↦e); codimForm(m(e))=G_d(e) exact.
+- **Two moves, exact Δ≤−1** (proven symbolic, all N≤7): (A) uncross [a,b]+[c,d]→[a,d]+[c,b] (a≤c≤b≤d);
+  (B) concat [a,b]+[b+1,d]→[a,d]. Each source-multiplicity coeff = −1, constant +1, all other coeffs ≤0 ⇒
+  both sources present ⇒ ΔF ≤ −1 strict.
+- **Exhaustiveness** (exhaustive N≤4): every non-HL corner-0 KP admits a strictly-decreasing valid corner-0
+  move. CAVEAT (load-bearing, must sit by the statement): needs weakly-increasing **with d_0≥1** (no interior
+  zero column — else an interior interval is walled with no partner: d=(1,0,1,0)); and moves must forbid
+  creating [0,N].
+- **Theorem (converse):** weakly-incr d, d_0≥1, corner 0 ⟹ every codimForm-minimiser is HL. Proof =
+  exhaustiveness + per-move Δ≤−1 + min'_le. **No descent measure** — Codex's proposed M=Σ m·min(a,N−b) was
+  FALSIFIED by the prototype (uncross creates interior mass); the single-step contradiction sidesteps it.
+- **Formaliser:** hardest sub-step = the exhaustiveness lemma (interior interval ⇒ partner, via d_{a−1}≥1
+  from weakly-incr). Δ lemmas = mechanical Finset.sum on the proven kernel (corner-blindness already proved).
+- **θ = #minimisers + the constructive HL bijection** need a terminating normal form — SEPARATE, harder
+  layer; do NOT bundle with the converse.
+- Numerics: minimisers all-HL on (2,2,2)→(3,1) … (2,3,4)→(6,2), Ex6.2, and Ex6.3 (8,8,11,11,11,13,13,13,15)
+  → min G=55, 4 minimisers, matching the paper's printed e-tuples.
