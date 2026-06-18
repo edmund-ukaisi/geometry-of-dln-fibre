@@ -21,27 +21,24 @@ on the session's original cwd.
 
 ## Ranked next
 
-1. Source inventory. Fill `theorem-ledger.md` from the PDF with source page,
-   exact statement, hypotheses, dependency edges, and candidate Lean target.
-   This blocks reliable formalisation.
-2. Reproduction discipline. For each substantial source cluster, assign a
-   pen-and-paper reproduction before Lean work depends on it, then assign a
-   separate checker. Record both statuses in `claims.md` and
-   `theorem-ledger.md`.
+1. Narrow A1 Lean tide. Formalise only the reproduction-checked algebraic block
+   elimination chart identity and rank formula under explicit invertible-block
+   hypotheses. Avoid RLCT/local-germ names and consequences.
+2. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
+   and exact hypotheses from the PDF where the first scout still left TBDs.
 3. Analytic interface shape. Define the cited normal-crossing extraction
-   interface precisely enough that later theorem names cannot overclaim.
-4. Lean module placement probe. Decide between `DLNFibre.DLN.Aoyagi.*` and a
-   flatter `DLNFibre.DLN.*` layout after reading the first source inventory.
-   Keep `DLNFibre.lean` single-writer.
-5. Block/product reductions. Start with the elementary matrix algebra before the
-   blow-up recursion; it will expose the needed coordinate objects. Do not start
-   the Lean tide until the block/product reproduction has been checked.
-6. Blow-up transition design. Convert Aoyagi's recursive proof to a formal
-   certificate early, before polishing later arithmetic. This needs the
-   strongest reproduction/checking gate in the expedition.
-7. Arithmetic tail. Formalise the minimisation and order count once exponent
-   vectors have a stable representation and the arithmetic reproduction is
-   checked.
+   interface precisely enough that later theorem names cannot overclaim; do not
+   smuggle Aoyagi Lemma 1 or Theorem 4 as extra citations.
+4. Repair A4 blow-up reproduction. Separate actual layer widths from prefix
+   minima, redo Case 1/2 updates, cover pivot charts, prove `P`
+   regularity/divisibility, and replace the termination measure.
+5. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
+   `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's
+   chart-family/order-count construction.
+6. Product reduction repair. Re-state A2 with source-faithful rank/open-chart
+   hypotheses and isolate analytic invariance from algebraic induction.
+7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
+   DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

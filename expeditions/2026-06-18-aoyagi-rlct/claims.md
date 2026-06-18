@@ -111,16 +111,20 @@ No such claim is formalisation-ready until both fields are filled.
   transform the reduced ideal into a monomial/diagonal normal-crossing form with
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of established Aoyagi proof.
-- **Status.** open.
+- **Status.** blocked after independent reproduction check; draft has a
+  source-fidelity error in width bookkeeping and unresolved chart,
+  regularity/divisibility, termination, and boundary-case gaps.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof.
 - **Evidence/source.** Aoyagi blow-up section, PDF pp. 14-23.
 - **Pen-and-paper reproduction.** draft at
   `threads/04-blow-up-certificate/reproduction-draft.md`.
-- **Reproduction check.** pending.
+- **Reproduction check.** failed/blocked at
+  `threads/04-blow-up-certificate/reproduction-check.md`.
 - **Lean target.** TBD by thread 04.
 - **Proved.** pending.
-- **Assumed.** finite dimension/rank hypotheses.
+- **Assumed.** finite dimension/rank hypotheses; no transition invariant is
+  accepted yet.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
@@ -129,17 +133,21 @@ No such claim is formalisation-ready until both fields are filled.
 - **Statement.** The exponent vectors from the blow-up certificate have minimum
   ratio and multiplicity/order equal to Aoyagi's closed formula.
 - **Tier.** Established in Aoyagi; to be proved in Lean.
-- **Status.** open.
+- **Status.** blocked after independent reproduction check; interior quadratic
+  algebra is promising, but endpoint cases, terminal-variable restriction,
+  minimiser feasibility, and Lemma 5 order-count construction are not checked.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
   PDF pp. 22-27.
 - **Pen-and-paper reproduction.** draft at
   `threads/05-arithmetic-tail/reproduction-draft.md`.
-- **Reproduction check.** pending.
+- **Reproduction check.** failed/blocked at
+  `threads/05-arithmetic-tail/reproduction-check.md`.
 - **Lean target.** TBD by thread 05.
 - **Proved.** pending.
-- **Assumed.** exact integer hypotheses from Aoyagi.
+- **Assumed.** exact integer hypotheses from Aoyagi; no RLCT/arithmetic final
+  theorem is accepted yet.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

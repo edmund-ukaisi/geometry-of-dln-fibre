@@ -93,16 +93,28 @@ interface without surfacing it.
   cited to Aoyagi [22], not proved in the 2023 paper. Because the user allowed
   only the normal-crossing extraction citation in Lean, this is a scope conflict
   unless we can avoid it or prove a restricted homogeneous version.
-- A5 arithmetic tail: draft reproduction landed at
-  `threads/05-arithmetic-tail/reproduction-draft.md`. Independent check pending.
-  Main hazards: `a = ell` boundary despite Lemma 3's printed range, ordered
-  subcollection vs literal set in Definition 3, and Lemma 5 equality depending
-  on the admissibility of the displayed `T_{s,k}` families.
 - A4 blow-up certificate: draft reproduction/certificate design landed at
-  `threads/04-blow-up-certificate/reproduction-draft.md`. Independent check
-  pending. Main hazards: missing pivot charts, regularity/divisibility of
-  ratios in `P`, and source-fidelity of normalizing the paper's base case to
-  `S=1,J=0`.
+  `threads/04-blow-up-certificate/reproduction-draft.md`; independent check
+  landed at `threads/04-blow-up-certificate/reproduction-check.md`. Verdict:
+  blocked, not formalisation-ready. Main blockers are a source-fidelity error
+  conflating actual layer widths `M^{(S+1)}` with prefix minima `M(S+1)`,
+  missing pivot charts, incomplete invariant recurrence, regularity/divisibility
+  of `P`, unstable termination measure, and unchecked boundary cases.
+- A5 arithmetic tail: draft reproduction landed at
+  `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
+  at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not
+  formalisation-ready. Interior quadratic algebra is promising, but the draft
+  drops Aoyagi's `\tilde t_{s,k}=0` terminal-variable restriction, leaves
+  Lemma 3 endpoints unresolved, has not proved minimiser feasibility, and does
+  not reproduce Lemma 5's chart-family/order-count construction.
+
+## Current next target
+
+The broad A2/A4/A5 targets are blocked by reproduction checks. The only checked
+mathematical surface currently suitable for a first Lean tide is the narrow A1
+algebraic block-elimination chart identity and rank formula on an explicit
+invertible chart. This tide must avoid naming any RLCT/local-germ consequence
+and should state only matrix/block algebra under explicit hypotheses.
 
 ## Drift guard
 

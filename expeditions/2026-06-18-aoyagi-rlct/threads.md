@@ -7,14 +7,14 @@
 
 | Thread | Type | Status | Subject |
 |---|---|---|---|
-| 01-source-inventory | explore | in-progress | xhigh scout `Aquinas`: PDF theorem/definition inventory; fill `theorem-ledger.md` and initial claim cards. Controller source map started. |
+| 01-source-inventory | explore | closed | xhigh scout `Aquinas` returned. Source inventory saved; ledger already aligned with key correction that final target is Theorem 2. |
 | 02-analytic-interface | explore/formalisation | closed | xhigh scout `Boole` returned. Normal-crossing interface mapped; Theorem 4 flagged as analytic/scope conflict unless avoided/proved restricted. |
 | 03-block-product-reduction | formalisation | blocked | xhigh scout `Galileo` returned and checker `Ramanujan` reviewed. A1 algebraic chart identities partially pass; A2 not formalisation-ready as stated. Needs source-faithful hypotheses and analytic-boundary decision. |
-| 04-blow-up-certificate | pen-and-paper/formalisation | review-pending | xhigh scout `Ptolemy` returned. Draft certificate reproduction landed; independent check pending before Lean. |
-| 05-arithmetic-tail | formalisation | review-pending | xhigh scout `Raman` returned. Draft reproduction landed; independent check pending before Lean. |
+| 04-blow-up-certificate | pen-and-paper/formalisation | blocked | xhigh scout `Ptolemy` returned and checker `Copernicus` reviewed. Draft has a width-notation source-fidelity error and unresolved chart/regularity/termination gaps. |
+| 05-arithmetic-tail | formalisation | blocked | xhigh scout `Raman` returned and checker `Planck` reviewed. Interior quadratic algebra mostly reproducible, but Lemma 3 endpoints, `tilde t=0`, feasibility, and Lemma 5 count are unresolved. |
 | 06-dln-translation | formalisation | pending | Translate Aoyagi dimension/rank notation to repo DLN notation without quiver inputs. |
 | 07-review-hardener | review/hardener | pending | Fidelity, precision, source, and bedrock pass over broad theorems and final assembly. |
-| 08-reproduction-checks | pen-and-paper/review | in-progress | Standing gate. Completed block/product check (`Ramanujan`); arithmetic-tail checker `Planck` and blow-up checker `Copernicus` running. |
+| 08-reproduction-checks | pen-and-paper/review | closed | Standing gate for first reproduction round. Completed block/product (`Ramanujan`), blow-up (`Copernicus`), and arithmetic-tail (`Planck`) checks; all broad claims still need repair before formalisation except the narrow A1 algebraic chart identity. |
 
 ## Execution notes
 

@@ -1,6 +1,6 @@
 # Thread 04 - blow-up certificate
 
-Type: pen-and-paper/formalisation. Status: pending.
+Type: pen-and-paper/formalisation. Status: blocked.
 
 ## Task
 
@@ -20,3 +20,13 @@ coordinate substitutions.
 
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
+
+## 2026-06-18 check result
+
+Draft reproduction: `reproduction-draft.md`. Independent checker:
+`Copernicus`, saved at `reproduction-check.md`.
+
+Status: not formalisation-ready. The certificate must first separate actual
+layer widths `M^{(S+1)}` from prefix minima `M(S+1)`, repair the Case 1/2
+transition updates, cover missing pivot charts, prove regularity/divisibility
+for the `P` matrices, and replace the unstable termination measure.

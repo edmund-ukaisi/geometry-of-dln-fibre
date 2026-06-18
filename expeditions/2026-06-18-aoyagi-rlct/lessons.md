@@ -13,3 +13,6 @@ Append-only methodological learnings. Mathematical results belong in
 - 2026-06-18 - For long formalisation threads, verify worktree isolation and
   teammate idleness before spawning successors. This carries over from the
   core-quiver expedition lessons.
+- 2026-06-18 - In Aoyagi, never compress actual layer widths into prefix minima
+  without checking the source formula. The blow-up transition uses both notions,
+  and conflating them changes exponent counts.
