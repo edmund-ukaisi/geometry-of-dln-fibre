@@ -59,3 +59,11 @@ NOT a descent measure.
   layer; do NOT bundle with the converse.
 - Numerics: minimisers all-HL on (2,2,2)→(3,1) … (2,3,4)→(6,2), Ex6.2, and Ex6.3 (8,8,11,11,11,13,13,13,15)
   → min G=55, 4 minimisers, matching the paper's printed e-tuples.
+
+## QIP CLOSED (Thm 6.1) — Layers 3a+3b landed (2026-06-18)
+`Core.CThetaQIP` (easy ≤) + `Core.CThetaQIPConverse` (≥) ⟹ `cCodim_eq_qipMin (Monotone d) : cCodim d 0 =
+qipMin d`. The combinatorial codimension of the zero-product locus = the QIP minimum, both directions,
+green/sorry-free/axiom-clean, reviewed. Hypothesis strengthened to Monotone-d-only (d_0≥1 dropped). Geometric
+reading stays modulo hVoigt. **Remaining (C,θ): L4 explicit closed form (Thm 7.10) via rounding/exchange;
+θ = minimiser count (binomial, needs the HL normal-form/lattice count); permutation invariance (Cor 5.10,
+falls out of L4). The design flagged L4/θ as the harder tail.**
