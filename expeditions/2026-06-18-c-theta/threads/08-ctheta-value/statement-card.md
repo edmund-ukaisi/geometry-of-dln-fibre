@@ -108,8 +108,15 @@ a sort-normalisation bridge on the Kostant side; the latter would also need the 
 - Numerics: `scratch/value_derivation.py` — brute `qipMin`/minimiser-count vs closed form, 0 mismatches
   on (2,2,2)→(3,1), Ex 6.3 (8,8,11,11,11,13,13,13,15)→(55,4), (4,5,8,9,10,10)→(20,2),
   (2,5,6,7,10)→(10,2), (2,2,3)→(4,2), (1,4,4,9)→(4,2), (3,3,3,3)→(6,1).
-- Fidelity review (Lean ↔ informal claim): **PENDING** (reviewer to be spawned).
-- **Status: sorry-free (review pending).**
+- Fidelity review (Lean ↔ informal claim): **PASS** (reviewer, 2026-06-18; decorrelated Codex at
+  `codex/bijection-equality-{prompt,answer}.md` + an independent `Gqip` brute-forcer). All five checks
+  survived: (1) `qipNumMinimisers_eq_cTheta` filter predicate = minimiser condition, `cTheta = C(m,|δ|)`,
+  weakest hypotheses, `N=0` branch genuine; (2) `sumSq_eq_abs_characterization` correct across `δ<0`,
+  `δ=0`; (3) the `card_bij'` bijection genuinely inverse (no `simp` gap), `eOfSupport_feasible`/
+  `Gqip_eOfSupport` proved for ARBITRARY `A ⊆ qipLow`, `#A=|δ|`; (4) `cTheta_d222=1`, `cTheta_d639=4`
+  non-vacuous; (5) perm-invariance (Cor 5.10) obstruction verdict honest (no over/under-claim). No
+  discrepancies.
+- **Status: sorry-free + reviewed.**
 
 ## Judgement calls
 
