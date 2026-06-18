@@ -71,7 +71,15 @@ do **not** touch `cCodim`/`qipMin` — those are later tides. No geometric (Voig
 - Numerics (sympy, exact): square-completion identity holds for `N = 1..6` against the committed `Gqip`
   (recovers `s_i = d 0 − d i.succ`, NOT `d'_0 − d'_i`); integer-square optimum `min ∑ t² = |δ|` for all
   `m = 1..4`, `|δ| ≤ m` (brute force).
-- **Status: sorry-free.** Fidelity review pending (reviewer requested).
+- Fidelity review (Lean ↔ informal claim): **PASS** (reviewer, 2026-06-18; decorrelated Codex, high
+  effort, on the square-completion sign/shift). All four checks survived: (1) Lean statements match the
+  card (name = content); (2) the **deviation `s_i = d 0 − d i.succ` is correct** against the committed
+  `Gqip` — independent sympy `N=1..6` exact-zero, and Codex reproduced the telescope
+  `∑_{j≤i}(d_{j+1}−d_j) = d_{i+1}−d_0` and the cross-term reconciliation; the brief's `d'_0 − d'_i` is a
+  genuine mismatch (off by `2(d_1−d_0)·∑e`, nonzero on the feasible face unless `d_0 = d_1`); (3)
+  Proved/Assumed/Deferred honest — pure ℤ-algebra, no closed-form `C` / drop-to-m / `cCodim`, and
+  `abs_le_sumSq` genuinely carries no `|δ| ≤ m`; (4) build green, `#print axioms` clean. No discrepancies.
+- **Status: sorry-free + reviewed.**
 
 ## Judgement calls
 
