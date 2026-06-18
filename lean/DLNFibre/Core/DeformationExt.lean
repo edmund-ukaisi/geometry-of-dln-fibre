@@ -529,6 +529,305 @@ theorem finrank_deformationExt1_interval (i j u v : Fin (N + 1)) :
   rw [euler_interval, finrank_Hom_interval] at he
   split_ifs at he ⊢ <;> push_cast at he ⊢ <;> omega
 
+/-! ## Additivity over `dirSum` and the headline `dim Ext¹(M,M)` formula
+
+The deformation differential `δ` is block-diagonal under the binary direct sum `dirSum` (the engine's
+`Fin a ⊕ Fin b ≃ Fin (a+b)` reindexed block matrix), so `range δ` — and hence the cokernel
+`deformationExt1` — splits as a product, and `finrank` adds. Folded over the interval list, this gives
+the headline: `finrank deformationExt1(⊕L, ⊕L)` is the double sum over ordered list pairs of the `Ext¹`
+indicator (Le Halleur–Rimányi Cor 3.5, the algebraic `Ext` codimension). -/
+
+noncomputable def matrixRowSplit (a b : ℕ) (γ : Type*) [Fintype γ] :
+    Matrix (Fin (a+b)) γ k ≃ₗ[k] Matrix (Fin a) γ k × Matrix (Fin b) γ k where
+  toFun M := (Matrix.of (fun i j => M (finSumFinEquiv (Sum.inl i)) j),
+              Matrix.of (fun i j => M (finSumFinEquiv (Sum.inr i)) j))
+  invFun P := Matrix.of (fun i j => Sum.elim (fun a => P.1 a j) (fun b => P.2 b j) (finSumFinEquiv.symm i))
+  map_add' M M' := rfl
+  map_smul' r M := by refine Prod.ext ?_ ?_ <;> · funext i j; rfl
+  left_inv M := by
+    funext i j
+    show Sum.elim (fun a => M (finSumFinEquiv (Sum.inl a)) j) (fun b => M (finSumFinEquiv (Sum.inr b)) j)
+        (finSumFinEquiv.symm i) = M i j
+    conv_rhs => rw [← Equiv.apply_symm_apply finSumFinEquiv i]
+    rcases finSumFinEquiv.symm i with c | d <;> simp only [Sum.elim_inl, Sum.elim_inr]
+  right_inv P := by
+    refine Prod.ext ?_ ?_ <;> funext i j <;>
+      simp only [Matrix.of_apply, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr]
+@[simp] theorem rowSplit_fst {a b : ℕ} {γ : Type*} [Fintype γ] (M : Matrix (Fin (a+b)) γ k) (i j) :
+    (matrixRowSplit a b γ M).1 i j = M (finSumFinEquiv (Sum.inl i)) j := rfl
+@[simp] theorem rowSplit_snd {a b : ℕ} {γ : Type*} [Fintype γ] (M : Matrix (Fin (a+b)) γ k) (i j) :
+    (matrixRowSplit a b γ M).2 i j = M (finSumFinEquiv (Sum.inr i)) j := rfl
+theorem rowSplit_block_mul {p q r s m : ℕ}
+    (P : Matrix (Fin p) (Fin r) k) (Q : Matrix (Fin q) (Fin s) k)
+    (φ : Matrix (Fin (r+s)) (Fin m) k) :
+    matrixRowSplit p q (Fin m)
+        (Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks P 0 0 Q) * φ)
+      = (P * (matrixRowSplit r s (Fin m) φ).1, Q * (matrixRowSplit r s (Fin m) φ).2) := by
+  refine Prod.ext ?_ ?_
+  · funext i j
+    rw [rowSplit_fst, Matrix.mul_apply]
+    rw [← finSumFinEquiv.sum_comp (fun x =>
+      Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks P 0 0 Q) (finSumFinEquiv (Sum.inl i)) x * φ x j)]
+    rw [Fintype.sum_sum_type]
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+      fromBlocks_apply₁₁, fromBlocks_apply₁₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero,
+      add_zero, Matrix.mul_apply, rowSplit_fst]
+  · funext i j
+    rw [rowSplit_snd, Matrix.mul_apply]
+    rw [← finSumFinEquiv.sum_comp (fun x =>
+      Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks P 0 0 Q) (finSumFinEquiv (Sum.inr i)) x * φ x j)]
+    rw [Fintype.sum_sum_type]
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+      fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero,
+      zero_add, Matrix.mul_apply, rowSplit_snd]
+-- row-split commutes with right-mult (shared source)
+theorem rowSplit_mul_right {p q r m : ℕ} (X : Matrix (Fin (p+q)) (Fin r) k) (M : Matrix (Fin r) (Fin m) k) :
+    matrixRowSplit p q (Fin m) (X * M)
+      = ((matrixRowSplit p q (Fin r) X).1 * M, (matrixRowSplit p q (Fin r) X).2 * M) := by
+  refine Prod.ext ?_ ?_ <;> · funext i j; simp only [rowSplit_fst, rowSplit_snd, Matrix.mul_apply]
+-- pi-prod swap
+noncomputable def piProdSwap (ι : Type*) (A B : ι → Type*) [∀ i, AddCommGroup (A i)]
+    [∀ i, AddCommGroup (B i)] [∀ i, Module k (A i)] [∀ i, Module k (B i)] :
+    (∀ i, A i × B i) ≃ₗ[k] (∀ i, A i) × (∀ i, B i) where
+  toFun f := (fun i => (f i).1, fun i => (f i).2)
+  invFun p := fun i => (p.1 i, p.2 i)
+  map_add' f g := rfl
+  map_smul' r f := rfl
+  left_inv f := rfl
+  right_inv p := rfl
+
+-- cochain1 split: cochain1 d (e+e') ≃ₗ cochain1 d e × cochain1 d e'
+noncomputable def cochain1Split {N : ℕ} (d e e' : Fin (N+1) → ℕ) :
+    cochain1 (k:=k) d (fun l => e l + e' l) ≃ₗ[k] cochain1 (k:=k) d e × cochain1 (k:=k) d e' :=
+  (LinearEquiv.piCongrRight (fun i => matrixRowSplit (e i.succ) (e' i.succ) (Fin (d i.castSucc)))).trans
+    (piProdSwap (Fin N) _ _)
+
+noncomputable def cochain0Split {N : ℕ} (d e e' : Fin (N+1) → ℕ) :
+    cochain0 (k:=k) d (fun l => e l + e' l) ≃ₗ[k] cochain0 (k:=k) d e × cochain0 (k:=k) d e' :=
+  (LinearEquiv.piCongrRight (fun v => matrixRowSplit (e v) (e' v) (Fin (d v)))).trans
+    (piProdSwap (Fin (N+1)) _ _)
+theorem cochain1Split_fst {N:ℕ} {d e e' : Fin (N+1) → ℕ} (φ : cochain1 (k:=k) d (fun l => e l + e' l)) (i) :
+    (cochain1Split d e e' φ).1 i = (matrixRowSplit (e i.succ) (e' i.succ) (Fin (d i.castSucc)) (φ i)).1 := rfl
+theorem cochain1Split_snd {N:ℕ} {d e e' : Fin (N+1) → ℕ} (φ : cochain1 (k:=k) d (fun l => e l + e' l)) (i) :
+    (cochain1Split d e e' φ).2 i = (matrixRowSplit (e i.succ) (e' i.succ) (Fin (d i.castSucc)) (φ i)).2 := rfl
+theorem cochain0Split_fst {N:ℕ} {d e e' : Fin (N+1) → ℕ} (φ : cochain0 (k:=k) d (fun l => e l + e' l)) (v) :
+    (cochain0Split d e e' φ).1 v = (matrixRowSplit (e v) (e' v) (Fin (d v)) (φ v)).1 := rfl
+theorem cochain0Split_snd {N:ℕ} {d e e' : Fin (N+1) → ℕ} (φ : cochain0 (k:=k) d (fun l => e l + e' l)) (v) :
+    (cochain0Split d e e' φ).2 v = (matrixRowSplit (e v) (e' v) (Fin (d v)) (φ v)).2 := rfl
+theorem deformationδ_dirSum_compat {N:ℕ} {d e e' : Fin (N+1) → ℕ} (M : Tuple (k:=k) d)
+    (Nt : Tuple (k:=k) e) (Nt' : Tuple (k:=k) e') (φ : cochain0 (k:=k) d (fun l => e l + e' l)) :
+    cochain1Split d e e' (deformationδ M (dirSum Nt Nt') φ)
+      = (deformationδ M Nt (cochain0Split d e e' φ).1,
+         deformationδ M Nt' (cochain0Split d e e' φ).2) := by
+  refine Prod.ext ?_ ?_
+  · funext i
+    rw [cochain1Split_fst]
+    show ((matrixRowSplit _ _ _ (φ i.succ * M i - dirSum Nt Nt' i * φ i.castSucc)).1) = _
+    rw [map_sub, rowSplit_mul_right, dirSum, rowSplit_block_mul]
+    simp only [Prod.fst_sub, deformationδ_apply, cochain0Split_fst]
+  · funext i
+    rw [cochain1Split_snd]
+    show ((matrixRowSplit _ _ _ (φ i.succ * M i - dirSum Nt Nt' i * φ i.castSucc)).2) = _
+    rw [map_sub, rowSplit_mul_right, dirSum, rowSplit_block_mul]
+    simp only [Prod.snd_sub, deformationδ_apply, cochain0Split_snd]
+theorem range_deformationδ_dirSum {N:ℕ} {d e e' : Fin (N+1) → ℕ} (M : Tuple (k:=k) d)
+    (Nt : Tuple (k:=k) e) (Nt' : Tuple (k:=k) e') :
+    Submodule.map ((cochain1Split d e e' (k:=k)) : _ →ₗ[k] _) (LinearMap.range (deformationδ M (dirSum Nt Nt')))
+      = (LinearMap.range (deformationδ M Nt)).prod (LinearMap.range (deformationδ M Nt')) := by
+  ext y
+  simp only [Submodule.mem_map, LinearMap.mem_range, Submodule.mem_prod, LinearEquiv.coe_coe]
+  constructor
+  · rintro ⟨x, ⟨φ, rfl⟩, rfl⟩
+    rw [deformationδ_dirSum_compat]
+    exact ⟨⟨(cochain0Split d e e' φ).1, rfl⟩, ⟨(cochain0Split d e e' φ).2, rfl⟩⟩
+  · rintro ⟨⟨ψ, hψ⟩, ⟨ψ', hψ'⟩⟩
+    refine ⟨deformationδ M (dirSum Nt Nt') ((cochain0Split d e e').symm (ψ, ψ')), ⟨_, rfl⟩, ?_⟩
+    rw [deformationδ_dirSum_compat]
+    simp only [LinearEquiv.apply_symm_apply, hψ, hψ']
+
+/-- **Additivity in the target.** `finrank deformationExt1` adds over a direct sum of targets:
+the differential is block-diagonal under `dirSum`, so the range (and hence the cokernel) splits. -/
+theorem finrank_deformationExt1_dirSum_right {N:ℕ} {d e e' : Fin (N+1) → ℕ} (M : Tuple (k:=k) d)
+    (Nt : Tuple (k:=k) e) (Nt' : Tuple (k:=k) e') :
+    finrank k (deformationExt1 M (dirSum Nt Nt'))
+      = finrank k (deformationExt1 M Nt) + finrank k (deformationExt1 M Nt') := by
+  have hq : ∀ {ee : Fin (N+1)→ℕ} (NN : Tuple (k:=k) ee), finrank k (deformationExt1 M NN)
+      + finrank k (LinearMap.range (deformationδ M NN)) = finrank k (cochain1 (k:=k) d ee) :=
+    fun NN => Submodule.finrank_quotient_add_finrank _
+  have hr : finrank k (LinearMap.range (deformationδ M (dirSum Nt Nt')))
+      = finrank k (LinearMap.range (deformationδ M Nt)) + finrank k (LinearMap.range (deformationδ M Nt')) := by
+    rw [← LinearEquiv.finrank_map_eq (cochain1Split d e e' (k:=k))
+        (LinearMap.range (deformationδ M (dirSum Nt Nt'))), range_deformationδ_dirSum,
+      finrank_submodule_prod]
+  have hc1 : finrank k (cochain1 (k:=k) d (fun l => e l + e' l))
+      = finrank k (cochain1 (k:=k) d e) + finrank k (cochain1 (k:=k) d e') := by
+    rw [(cochain1Split d e e' (k:=k)).finrank_eq, Module.finrank_prod]
+  have e1 := hq (dirSum Nt Nt'); have e2 := hq Nt; have e3 := hq Nt'
+  rw [hc1] at e1; omega
+noncomputable def matrixColSplit (γ : Type*) [Fintype γ] (a b : ℕ) :
+    Matrix γ (Fin (a+b)) k ≃ₗ[k] Matrix γ (Fin a) k × Matrix γ (Fin b) k where
+  toFun M := (Matrix.of (fun i j => M i (finSumFinEquiv (Sum.inl j))),
+              Matrix.of (fun i j => M i (finSumFinEquiv (Sum.inr j))))
+  invFun P := Matrix.of (fun i j => Sum.elim (fun a => P.1 i a) (fun b => P.2 i b) (finSumFinEquiv.symm j))
+  map_add' M M' := rfl
+  map_smul' r M := by refine Prod.ext ?_ ?_ <;> · funext i j; rfl
+  left_inv M := by
+    funext i j
+    show Sum.elim (fun a => M i (finSumFinEquiv (Sum.inl a))) (fun b => M i (finSumFinEquiv (Sum.inr b)))
+        (finSumFinEquiv.symm j) = M i j
+    conv_rhs => rw [← Equiv.apply_symm_apply finSumFinEquiv j]
+    rcases finSumFinEquiv.symm j with c | d <;> simp only [Sum.elim_inl, Sum.elim_inr]
+  right_inv P := by
+    refine Prod.ext ?_ ?_ <;> funext i j <;>
+      simp only [Matrix.of_apply, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr]
+@[simp] theorem colSplit_fst {γ : Type*} [Fintype γ] {a b : ℕ} (M : Matrix γ (Fin (a+b)) k) (i j) :
+    (matrixColSplit γ a b M).1 i j = M i (finSumFinEquiv (Sum.inl j)) := rfl
+@[simp] theorem colSplit_snd {γ : Type*} [Fintype γ] {a b : ℕ} (M : Matrix γ (Fin (a+b)) k) (i j) :
+    (matrixColSplit γ a b M).2 i j = M i (finSumFinEquiv (Sum.inr j)) := rfl
+-- X * reindex(fromBlocks A 0 0 B) col-splits as (X.col1 * A, X.col2 * B)
+theorem colSplit_mul_block {p r s t1 t2 : ℕ}
+    (X : Matrix (Fin p) (Fin (r+s)) k) (A : Matrix (Fin r) (Fin t1) k) (B : Matrix (Fin s) (Fin t2) k) :
+    matrixColSplit (Fin p) t1 t2
+        (X * Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks A 0 0 B))
+      = ((matrixColSplit (Fin p) r s X).1 * A, (matrixColSplit (Fin p) r s X).2 * B) := by
+  refine Prod.ext ?_ ?_
+  · funext i j
+    rw [colSplit_fst, Matrix.mul_apply]
+    rw [← finSumFinEquiv.sum_comp (fun x =>
+      X i x * Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks A 0 0 B) x (finSumFinEquiv (Sum.inl j)))]
+    rw [Fintype.sum_sum_type]
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+      fromBlocks_apply₁₁, fromBlocks_apply₂₁, Matrix.zero_apply, mul_zero, Finset.sum_const_zero,
+      add_zero, Matrix.mul_apply, colSplit_fst]
+  · funext i j
+    rw [colSplit_snd, Matrix.mul_apply]
+    rw [← finSumFinEquiv.sum_comp (fun x =>
+      X i x * Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks A 0 0 B) x (finSumFinEquiv (Sum.inr j)))]
+    rw [Fintype.sum_sum_type]
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+      fromBlocks_apply₁₂, fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero,
+      zero_add, Matrix.mul_apply, colSplit_snd]
+-- col-split commutes with left-mult (shared target N)
+theorem colSplit_mul_left {p q r s : ℕ} (Y : Matrix (Fin p) (Fin q) k) (X : Matrix (Fin q) (Fin (r+s)) k) :
+    matrixColSplit (Fin p) r s (Y * X)
+      = (Y * (matrixColSplit (Fin q) r s X).1, Y * (matrixColSplit (Fin q) r s X).2) := by
+  refine Prod.ext ?_ ?_ <;> · funext i j; simp only [colSplit_fst, colSplit_snd, Matrix.mul_apply]
+-- pi-prod swap (reuse)
+noncomputable def piProdSwapL (ι : Type*) (A B : ι → Type*) [∀ i, AddCommGroup (A i)]
+    [∀ i, AddCommGroup (B i)] [∀ i, Module k (A i)] [∀ i, Module k (B i)] :
+    (∀ i, A i × B i) ≃ₗ[k] (∀ i, A i) × (∀ i, B i) where
+  toFun f := (fun i => (f i).1, fun i => (f i).2)
+  invFun p := fun i => (p.1 i, p.2 i)
+  map_add' f g := rfl
+  map_smul' r f := rfl
+  left_inv f := rfl
+  right_inv p := rfl
+-- cochain splits on COLUMNS (source dim d = d1+d2)
+noncomputable def cochain0SplitL {N : ℕ} (d1 d2 e : Fin (N+1) → ℕ) :
+    cochain0 (k:=k) (fun l => d1 l + d2 l) e ≃ₗ[k] cochain0 (k:=k) d1 e × cochain0 (k:=k) d2 e :=
+  (LinearEquiv.piCongrRight (fun v => matrixColSplit (Fin (e v)) (d1 v) (d2 v))).trans
+    (piProdSwapL (Fin (N+1)) _ _)
+noncomputable def cochain1SplitL {N : ℕ} (d1 d2 e : Fin (N+1) → ℕ) :
+    cochain1 (k:=k) (fun l => d1 l + d2 l) e ≃ₗ[k] cochain1 (k:=k) d1 e × cochain1 (k:=k) d2 e :=
+  (LinearEquiv.piCongrRight (fun i => matrixColSplit (Fin (e i.succ)) (d1 i.castSucc) (d2 i.castSucc))).trans
+    (piProdSwapL (Fin N) _ _)
+theorem cochain1SplitL_fst {N:ℕ} {d1 d2 e : Fin (N+1) → ℕ} (φ : cochain1 (k:=k) (fun l => d1 l + d2 l) e) (i) :
+    (cochain1SplitL d1 d2 e φ).1 i = (matrixColSplit (Fin (e i.succ)) (d1 i.castSucc) (d2 i.castSucc) (φ i)).1 := rfl
+theorem cochain1SplitL_snd {N:ℕ} {d1 d2 e : Fin (N+1) → ℕ} (φ : cochain1 (k:=k) (fun l => d1 l + d2 l) e) (i) :
+    (cochain1SplitL d1 d2 e φ).2 i = (matrixColSplit (Fin (e i.succ)) (d1 i.castSucc) (d2 i.castSucc) (φ i)).2 := rfl
+theorem cochain0SplitL_fst {N:ℕ} {d1 d2 e : Fin (N+1) → ℕ} (φ : cochain0 (k:=k) (fun l => d1 l + d2 l) e) (v) :
+    (cochain0SplitL d1 d2 e φ).1 v = (matrixColSplit (Fin (e v)) (d1 v) (d2 v) (φ v)).1 := rfl
+theorem cochain0SplitL_snd {N:ℕ} {d1 d2 e : Fin (N+1) → ℕ} (φ : cochain0 (k:=k) (fun l => d1 l + d2 l) e) (v) :
+    (cochain0SplitL d1 d2 e φ).2 v = (matrixColSplit (Fin (e v)) (d1 v) (d2 v) (φ v)).2 := rfl
+
+theorem deformationδ_dirSum_compat_left {N:ℕ} {d1 d2 e : Fin (N+1) → ℕ} (A : Tuple (k:=k) d1)
+    (B : Tuple (k:=k) d2) (Nt : Tuple (k:=k) e) (φ : cochain0 (k:=k) (fun l => d1 l + d2 l) e) :
+    cochain1SplitL d1 d2 e (deformationδ (dirSum A B) Nt φ)
+      = (deformationδ A Nt (cochain0SplitL d1 d2 e φ).1,
+         deformationδ B Nt (cochain0SplitL d1 d2 e φ).2) := by
+  refine Prod.ext ?_ ?_
+  · funext i
+    rw [cochain1SplitL_fst]
+    show ((matrixColSplit _ _ _ (φ i.succ * dirSum A B i - Nt i * φ i.castSucc)).1) = _
+    rw [map_sub, dirSum, colSplit_mul_block, colSplit_mul_left]
+    simp only [Prod.fst_sub, deformationδ_apply, cochain0SplitL_fst]
+  · funext i
+    rw [cochain1SplitL_snd]
+    show ((matrixColSplit _ _ _ (φ i.succ * dirSum A B i - Nt i * φ i.castSucc)).2) = _
+    rw [map_sub, dirSum, colSplit_mul_block, colSplit_mul_left]
+    simp only [Prod.snd_sub, deformationδ_apply, cochain0SplitL_snd]
+
+theorem range_deformationδ_dirSum_left {N:ℕ} {d1 d2 e : Fin (N+1) → ℕ} (A : Tuple (k:=k) d1)
+    (B : Tuple (k:=k) d2) (Nt : Tuple (k:=k) e) :
+    Submodule.map ((cochain1SplitL d1 d2 e (k:=k)) : _ →ₗ[k] _) (LinearMap.range (deformationδ (dirSum A B) Nt))
+      = (LinearMap.range (deformationδ A Nt)).prod (LinearMap.range (deformationδ B Nt)) := by
+  ext y
+  simp only [Submodule.mem_map, LinearMap.mem_range, Submodule.mem_prod, LinearEquiv.coe_coe]
+  constructor
+  · rintro ⟨x, ⟨φ, rfl⟩, rfl⟩
+    rw [deformationδ_dirSum_compat_left]
+    exact ⟨⟨(cochain0SplitL d1 d2 e φ).1, rfl⟩, ⟨(cochain0SplitL d1 d2 e φ).2, rfl⟩⟩
+  · rintro ⟨⟨ψ, hψ⟩, ⟨ψ', hψ'⟩⟩
+    refine ⟨deformationδ (dirSum A B) Nt ((cochain0SplitL d1 d2 e).symm (ψ, ψ')), ⟨_, rfl⟩, ?_⟩
+    rw [deformationδ_dirSum_compat_left]
+    simp only [LinearEquiv.apply_symm_apply, hψ, hψ']
+
+theorem finrank_deformationExt1_dirSum_left {N:ℕ} {d1 d2 e : Fin (N+1) → ℕ} (A : Tuple (k:=k) d1)
+    (B : Tuple (k:=k) d2) (Nt : Tuple (k:=k) e) :
+    finrank k (deformationExt1 (dirSum A B) Nt)
+      = finrank k (deformationExt1 A Nt) + finrank k (deformationExt1 B Nt) := by
+  have hq : ∀ {dd : Fin (N+1)→ℕ} (AA : Tuple (k:=k) dd), finrank k (deformationExt1 AA Nt)
+      + finrank k (LinearMap.range (deformationδ AA Nt)) = finrank k (cochain1 (k:=k) dd e) :=
+    fun AA => Submodule.finrank_quotient_add_finrank _
+  have hr : finrank k (LinearMap.range (deformationδ (dirSum A B) Nt))
+      = finrank k (LinearMap.range (deformationδ A Nt)) + finrank k (LinearMap.range (deformationδ B Nt)) := by
+    rw [← LinearEquiv.finrank_map_eq (cochain1SplitL d1 d2 e (k:=k))
+        (LinearMap.range (deformationδ (dirSum A B) Nt)), range_deformationδ_dirSum_left,
+      finrank_submodule_prod]
+  have hc1 : finrank k (cochain1 (k:=k) (fun l => d1 l + d2 l) e)
+      = finrank k (cochain1 (k:=k) d1 e) + finrank k (cochain1 (k:=k) d2 e) := by
+    rw [(cochain1SplitL d1 d2 e (k:=k)).finrank_eq, Module.finrank_prod]
+  have e1 := hq (dirSum A B); have e2 := hq A; have e3 := hq B
+  rw [hc1] at e1; omega
+theorem finrank_deformationExt1_eq_zero_of_cochain1 {N:ℕ} {d e : Fin (N+1) → ℕ} (M : Tuple (k:=k) d)
+    (Nt : Tuple (k:=k) e) (h : finrank k (cochain1 (k:=k) d e) = 0) :
+    finrank k (deformationExt1 M Nt) = 0 := by
+  have hle : finrank k (deformationExt1 M Nt) ≤ finrank k (cochain1 (k:=k) d e) :=
+    Submodule.finrank_quotient_le _
+  omega
+theorem finrank_deformationExt1_intervalDirectSum_right {N:ℕ} {d : Fin (N+1) → ℕ} (M : Tuple (k:=k) d)
+    (L : List (Fin (N+1) × Fin (N+1))) :
+    finrank k (deformationExt1 M (intervalDirectSum (k:=k) L))
+      = (L.map (fun b => finrank k (deformationExt1 M (intervalModule b.1 b.2)))).sum := by
+  induction L with
+  | nil =>
+    simp only [List.map_nil, List.sum_nil]
+    refine finrank_deformationExt1_eq_zero_of_cochain1 _ _ ?_
+    rw [finrank_cochain1]; exact Finset.sum_eq_zero (fun i _ => by simp [foldDim])
+  | cons p ps ih =>
+    have hstep : finrank k (deformationExt1 M (intervalDirectSum (k:=k) (p :: ps)))
+        = finrank k (deformationExt1 M (intervalModule p.1 p.2))
+          + finrank k (deformationExt1 M (intervalDirectSum (k:=k) ps)) :=
+      finrank_deformationExt1_dirSum_right M (intervalModule p.1 p.2) (intervalDirectSum ps)
+    rw [hstep, ih, List.map_cons, List.sum_cons]
+theorem finrank_deformationExt1_intervalDirectSum {N:ℕ}
+    (L L' : List (Fin (N+1) × Fin (N+1))) :
+    finrank k (deformationExt1 (intervalDirectSum (k:=k) L) (intervalDirectSum (k:=k) L'))
+      = (L.map (fun a => (L'.map (fun b =>
+          finrank k (deformationExt1 (intervalModule (k:=k) a.1 a.2) (intervalModule b.1 b.2)))).sum)).sum := by
+  induction L with
+  | nil =>
+    simp only [List.map_nil, List.sum_nil]
+    refine finrank_deformationExt1_eq_zero_of_cochain1 _ _ ?_
+    rw [finrank_cochain1]; exact Finset.sum_eq_zero (fun i _ => by simp [foldDim])
+  | cons p ps ih =>
+    have hstep : finrank k (deformationExt1 (intervalDirectSum (k:=k) (p :: ps)) (intervalDirectSum (k:=k) L'))
+        = finrank k (deformationExt1 (intervalModule (k:=k) p.1 p.2) (intervalDirectSum (k:=k) L'))
+          + finrank k (deformationExt1 (intervalDirectSum (k:=k) ps) (intervalDirectSum (k:=k) L')) :=
+      finrank_deformationExt1_dirSum_left (intervalModule p.1 p.2) (intervalDirectSum ps) (intervalDirectSum L')
+    rw [hstep, ih, finrank_deformationExt1_intervalDirectSum_right (intervalModule (k:=k) p.1 p.2) L',
+      List.map_cons, List.sum_cons]
+
 section Witness
 
 /-! ## Non-vacuity witness for the interval Euler form
@@ -556,6 +855,33 @@ example : finrank ℚ (Hom (intervalModule (k := ℚ) (0 : Fin 3) 1) (intervalMo
 example :
     finrank ℚ (deformationExt1 (intervalModule (k := ℚ) (0 : Fin 3) 1) (intervalModule 1 2)) = 1 := by
   rw [finrank_deformationExt1_interval]; decide
+
+/-! ### The `(2,2,2)` headline witnesses (Le Halleur–Rimányi Ex 4.3, `C = 3`; the `{A=0}` locus)
+
+`N = 2` (`Fin 3`), over `ℚ`. Two Kostant partitions of the dimension vector `(2,2,2)`:
+the `(1,1)`-orbit `M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}` has `dim Ext¹(M,M) = 3` (the codimension `C`);
+the zero-product locus `{A = 0} = M_{00}² ⊕ M_{12}²` has `dim Ext¹(M,M) = 4`. Both computed from the
+list expansion + the `Ext¹` indicator + `decide`. -/
+
+/-- **`(2,2,2)` `(1,1)`-orbit:** `dim Ext¹(M,M) = 3` for `M = M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}`. -/
+example :
+    finrank ℚ (deformationExt1
+        (intervalDirectSum (k := ℚ) [((0 : Fin 3), (0 : Fin 3)), (0, 1), (1, 2), (2, 2)])
+        (intervalDirectSum [((0 : Fin 3), (0 : Fin 3)), (0, 1), (1, 2), (2, 2)])) = 3 := by
+  rw [finrank_deformationExt1_intervalDirectSum]
+  simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil,
+    finrank_deformationExt1_interval]
+  decide
+
+/-- **`(2,2,2)` zero-product locus:** `dim Ext¹(M,M) = 4` for `M = M_{00}² ⊕ M_{12}²` (`{A = 0}`). -/
+example :
+    finrank ℚ (deformationExt1
+        (intervalDirectSum (k := ℚ) [((0 : Fin 3), (0 : Fin 3)), (0, 0), (1, 2), (1, 2)])
+        (intervalDirectSum [((0 : Fin 3), (0 : Fin 3)), (0, 0), (1, 2), (1, 2)])) = 4 := by
+  rw [finrank_deformationExt1_intervalDirectSum]
+  simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil,
+    finrank_deformationExt1_interval]
+  decide
 
 end Witness
 
