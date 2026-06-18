@@ -60,7 +60,13 @@ the closest-lattice-point component count (§7, Thm 7.10); the reductions rank-$
 inversion (`Core.RankPattern.cumulDiffEquiv`) AND, for an *arbitrary tuple*, `r_{ij}` = `cumul` of its
 Gabriel multiplicities with the Kostant constraint (Prop 3.1b, `Core.Gabriel.exists_barcode_rankPattern`).
 **Remaining in Bundle 1 (future expeditions):** the QIP (Thm 6.1), the explicit lattice-point formula
-(Thm 7.10), and the §4 rank-$r$→rank-$0$ / fibre-codim reductions.
+(Thm 7.10), and the §4 rank-$r$→rank-$0$ / fibre-codim reductions. *With Cor 3.5 now Proved as the explicit
+quadratic form $\sum m_{i-1,j-1}m_{uv}$ (Bundle 2, `Core.DeformationExt`), the $(C,\theta)$ computation
+reduces to **minimising that form** over the Kostant partitions of $\underline d$ with $m_{0N}=r$ and
+**counting minimisers** — pure ℕ-combinatorics, no AG: $C=\min_{\underline m}\sum m_{i-1,j-1}m_{uv}$,
+$\theta=\#\{\text{minimisers}\}$. The QIP (Thm 6.1) is exactly this minimisation; Thm 7.10 solves it as a
+closest-lattice-point count. The geometric reading "$C=\operatorname{codim}\Sigma^r$" rides on `hVoigt`;
+the combinatorial $(C,\theta)$ does not.*
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
@@ -73,8 +79,20 @@ Gabriel — on the `Tuple`-as-representation encoding):** the $G_{\underline d}$
 **type-A Gabriel existence** (Thm 2.5) on abstract chains (`Core.Barcode.hasBarcode_of_isSubrep`) carried to
 tuples (`Core.Gabriel.hasBarcode_tuple`); the **complete $G_{\underline d}$-invariant**
 `rankPattern A = rankPattern B ↔ A ~ B` + the Gabriel **normal-form object** `g·A = ⊕ M^m` (`Core.Orbit`);
-and **orbits ↔ Kostant (Cor 2.9)** as `Core.OrbitKostant.orbitKostantEquiv`. **Remaining (future):** the
-orbit-closure order (Thm 3.8) and the $\operatorname{Ext}(M,M)$ codimension (Cor 3.5).
+and **orbits ↔ Kostant (Cor 2.9)** as `Core.OrbitKostant.orbitKostantEquiv`.
+**Landed (expedition `ext-codimension`, reviewed + bedrock; standard hereditary route built from scratch on
+the Phase-A `Tuple` δ):** the **$\operatorname{Ext}(M,M)$ codimension (Cor 3.5)** — the algebraic content
+$\dim\operatorname{Ext}^1(M,M)=\sum_{1\le i\le u\le j\le v\le N} m_{i-1,j-1}m_{uv}$ **Proved** via the
+2-term deformation/Ringel complex (`Core.DeformationExt`); the tangent codimension
+$\operatorname{orbitLinearCodim}=\dim\operatorname{Ext}^1$ **Proved** (`Core.OrbitLinearCodim`); and the
+geometric codimension $\operatorname{codim}(\operatorname{orbitRankLocus} M)=\sum m_{i-1,j-1}m_{uv}$
+**Proved modulo one named hypothesis `hVoigt`** (Voigt's lemma) (`Core.OrbitCodim`).
+**Remaining (future): the `voigt` discharge** — an AG dimension-theory library (affine-variety codimension
+via `Ideal.height`; orbit smoothness; $\dim\mathcal O=\dim G-\dim\operatorname{Aut}$, i.e. tangent =
+$\operatorname{im}\delta$) that proves `hVoigt` to full unconditional bedrock. Mathlib has no algebraic
+groups / variety dimension / catenary; this is a **multi-expedition sub-build**, a drop-in against the
+`Core.OrbitCodim` interface (nothing rebuilt). The orbit-closure order (Thm 3.8) is **Cited** there
+(orbitRankLocus = orbit closure; engine-verifiable, numerically checked on $(2,2,2)$).
 
 ### Bundle 3 — the topology  ·  `DLNFibre.Core` (Poincaré)
 **Plainly.** The Poincaré series in equivariant cohomology (Thm 5.5) and the permutation invariance it yields
