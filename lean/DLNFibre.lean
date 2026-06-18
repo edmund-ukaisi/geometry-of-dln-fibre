@@ -12,4 +12,5 @@ import DLNFibre.Core.Gabriel
 import DLNFibre.Core.Orbit
 import DLNFibre.Core.OrbitKostant
 import DLNFibre.Core.DeformationExt
+import DLNFibre.Core.OrbitLinearCodim
 import DLNFibre.DLN.Basic
