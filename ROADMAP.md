@@ -59,14 +59,25 @@ the closest-lattice-point component count (§7, Thm 7.10); the reductions rank-$
 `submult`/`rankPattern`, `r_{ii}=d_i`); and **Prop 3.1 in BOTH directions** — the abstract `cumul`↔`diff`
 inversion (`Core.RankPattern.cumulDiffEquiv`) AND, for an *arbitrary tuple*, `r_{ij}` = `cumul` of its
 Gabriel multiplicities with the Kostant constraint (Prop 3.1b, `Core.Gabriel.exists_barcode_rankPattern`).
-**Remaining in Bundle 1 (future expeditions):** the QIP (Thm 6.1), the explicit lattice-point formula
-(Thm 7.10), and the §4 rank-$r$→rank-$0$ / fibre-codim reductions. *With Cor 3.5 now Proved as the explicit
-quadratic form $\sum m_{i-1,j-1}m_{uv}$ (Bundle 2, `Core.DeformationExt`), the $(C,\theta)$ computation
-reduces to **minimising that form** over the Kostant partitions of $\underline d$ with $m_{0N}=r$ and
-**counting minimisers** — pure ℕ-combinatorics, no AG: $C=\min_{\underline m}\sum m_{i-1,j-1}m_{uv}$,
-$\theta=\#\{\text{minimisers}\}$. The QIP (Thm 6.1) is exactly this minimisation; Thm 7.10 solves it as a
-closest-lattice-point count. The geometric reading "$C=\operatorname{codim}\Sigma^r$" rides on `hVoigt`;
-the combinatorial $(C,\theta)$ does not.*
+**Landed (expedition `c-theta`, reviewed + bedrock; pure ℕ-combinatorics on the proven Cor 3.5 form, no
+AG):** the combinatorial $(C,\theta)$ as the minimisation of $\sum m_{i-1,j-1}m_{uv}$ over the Kostant
+partitions of $\underline d$ with $m_{0N}=r$ (`Core.CTheta`: `cCodim`/`numTop`, rank-shift
+`cCodim_rankShift`); **the QIP (Thm 6.1)** as the full equality `cCodim_eq_qipMin` (`Core.CThetaQIP`/
+`CThetaQIPConverse`, `Monotone d`); and **the explicit formula (Thm 7.10, $r=0$)** in both parts —
+**$C$**: `qipMin_eq_cValue : qipMin d = cValue d` with the closed form
+$C=\tfrac12(d_0^2-\sum_{i=1}^m(d_i-d_0)^2+m(a-d_0)^2+2(a-d_0)\delta+|\delta|)$ (`Core.CThetaValue`,
+$m=$`qipM` a `Nat.findGreatest`, $a=\lfloor S/m+\tfrac12\rfloor$, $\delta=S-ma$), via the drop-to-$m$
+active-support reduction (`Core.CThetaDropM`: `qip_minimiser_support_le_m`) + the square-completion bridge
+and the **elementary integer-square lemma** `isLeast_sumSq` (`Core.CThetaExplicit`) **replacing the paper's
+Conway–Sloane closest-vector apparatus**; and **$\theta$**: `qipNumMinimisers_eq_cTheta : \#\{\text{QIP
+minimisers}\}=\binom{m}{|\delta|}$ via a minimiser↔$|\delta|$-subset bijection. Witnesses (decide+kernel):
+$(2,2,2)\!\to\!(3,1)$, Ex 6.3 $\to\!(55,4)$, matching the paper. All axiom-clean.
+**Remaining in Bundle 1 (future):** **permutation invariance (Cor 5.10) — a genuine lift, NOT free.**
+`cValue`/`cTheta` read $\underline d$ through order-sensitive prefix sums and the closed form requires
+`Monotone d`; relating $\underline d$ to its sorted form needs either a sort-normalisation bridge or the
+paper's **Poincaré-series route (Bundle 3)**. Also the §4 fibre-codim reduction (Lemma 4.6). The geometric
+reading "$C=\operatorname{codim}\Sigma^r$" rides on `hVoigt` (Bundle 2); the combinatorial $(C,\theta)$ does
+not.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
