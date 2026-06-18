@@ -117,3 +117,37 @@ algebraic groups / orbit dimension / scheme tangent space).
 On Mathlib primitives: MulAction.orbit/stabilizer, ringKrullDim/topologicalKrullDim, Ideal.height + Krull
 height theorem, MvPolynomial varieties, Module.Cotangent/KaehlerDifferential. Codex-check the standard
 development at each step.
+
+## PHASE B DESIGN — scoping correction (phaseB-design + Codex, 2026-06-18)
+
+**B-full is unbounded (multi-expedition), not a bounded tide.** Mathlib grep + Codex (decorrelated):
+ABSENT — algebraic groups / group schemes; variety dimension; scheme Zariski tangent space;
+`dim O = dim G − dim Stab` (MulAction orbit–stabiliser is pure cardinality); Chevalley/fibre-dimension;
+determinantal-variety codim; the catenary `dim R/I = dim R − height I`; dim = trdeg. PRESENT only to
+INEQUALITY level: ringKrullDim, topologicalKrullDim, Ideal.height + Höhensatz (height ≤ spanrank),
+MvPolynomial Krull dim. The "one orbit-dimension fact" IS the deep theorem; both routes (a/b) need the
+same missing geometric core. Codex: "the break is not the linear algebra; it is the missing dimension
+theory for images/orbit closures."
+
+### Three-layer split (the honest structure)
+- **Layer 1 — NOW, bedrock regardless.** `orbitLinearCodim M := finrank C¹ − finrank (range δ_M)`,
+  prove `= finrank (deformationExt1 M M)` (rank-nullity, trivial from `finrank_quotient_add_finrank`),
+  + `Stab_{G_d}(M) ↔ ker δ`-style linear identities. NAMED orbit-linear / tangent / *expected* codimension
+  — NOT `codim…` (the geometric equality is unproven). Ties the geometry-to-come onto the committed δ.
+- **Layer 2 — the ocean, its own sub-expedition.** AG dimension theory: (i) codim of a closed subset of
+  affine kⁿ as a usable def; (ii) orbit locally closed + irreducible; (iii) dim Ō = dim O; (iv)
+  `dim O = finrank im δ` — research-grade core, large from scratch. Likely upstream-Mathlib-worthy.
+- **Layer 3 — bridge corollary:** `codim_Rep Ō = orbitLinearCodim = dim Ext¹`.
+
+### Type-A rank-locus shortcut (Codex-surfaced; ties to our engine)
+For equioriented type A the orbit closure is the explicit quiver rank locus
+`Ō = {A : rankPattern A ≤ rankPattern M pointwise}` — a determinantal ideal (minors of `submult`), the one
+place `RankPattern`/`Orbit.rankPattern_eq_iff_orbit`/orbit↔Kostant plug into geometry. Its codimension is
+classical determinantal CA (also absent in Mathlib, but classical CA rather than algebraic-group theory).
+Best uses: (1) the single cleanest CITED/ASSUMED bridge if we go honest-hybrid (engine-verifiable); (2) a
+possible GENUINE Proved route via regular-sequence determinantal heights — to be probed on (2,2,2) first.
+
+### Operator decision (re-scoped): the cost basis changed
+"Build it" is now: commission a multi-expedition AG (or determinantal-CA) dimension-theory sub-expedition.
+Plan: land Layer 1 now; probe the (2,2,2) rank-locus ideal height (cheap, picks the buildable route);
+then commit the Layer-2 build route. Operator steer requested on the multi-expedition commitment + route.
