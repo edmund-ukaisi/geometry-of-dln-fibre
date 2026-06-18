@@ -29,6 +29,11 @@ The thread is the working unit; a formalisation thread (tide) is the fine unit.
   for an independent Codex opinion. A thread never reviews itself.
 - **Operator** — the human. Injects taste by editing `priorities.md` (the
   highest-authority signal) and can seize a thread to drive it directly.
+- **Seats, not per-task hires.** Reuse a bounded set of named seats (one
+  `formaliser`, one `pen-and-paper`, one `reviewer`, …) across tides rather than
+  spawning a fresh teammate per task — synchronous subagents do not self-terminate,
+  so per-task names pile up in the roster. Stand every seat down explicitly at
+  expedition close.
 
 Communication is the Agent Teams mailbox (turn-based, non-blocking). Run with
 `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`; one team per expedition; cwd is this
