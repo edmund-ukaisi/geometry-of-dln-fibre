@@ -80,3 +80,4 @@ import DLNFibre.Core.CThetaGeometricPerm
 -- Explicit closed-form (C,θ) for an ARBITRARY (non-monotone) d: compose the sort bridge with the
 -- Monotone-gated cValue/cTheta. cCodim d r = cValue ((d−r) ∘ Tuple.sort (d−r)) (and θ via cTheta).
 import DLNFibre.Core.CThetaArbitrary
+import DLNFibre.DLN.Aoyagi.BlockElimination

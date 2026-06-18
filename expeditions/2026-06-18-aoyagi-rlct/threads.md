@@ -9,7 +9,7 @@
 |---|---|---|---|
 | 01-source-inventory | explore | closed | xhigh scout `Aquinas` returned. Source inventory saved; ledger already aligned with key correction that final target is Theorem 2. |
 | 02-analytic-interface | explore/formalisation | closed | xhigh scout `Boole` returned. Normal-crossing interface mapped; Theorem 4 flagged as analytic/scope conflict unless avoided/proved restricted. |
-| 03-block-product-reduction | formalisation | blocked | xhigh scout `Galileo` returned and checker `Ramanujan` reviewed. A1 algebraic chart identities partially pass; A2 not formalisation-ready as stated. Needs source-faithful hypotheses and analytic-boundary decision. |
+| 03-block-product-reduction | formalisation | blocked | A1 narrow Lean tide landed two algebraic block-elimination identities with xhigh worker `Lovelace` and reviewer `Euclid`; A1 rank formula and A2 remain open/blocking. |
 | 04-blow-up-certificate | pen-and-paper/formalisation | blocked | xhigh scout `Ptolemy` returned and checker `Copernicus` reviewed. Draft has a width-notation source-fidelity error and unresolved chart/regularity/termination gaps. |
 | 05-arithmetic-tail | formalisation | blocked | xhigh scout `Raman` returned and checker `Planck` reviewed. Interior quadratic algebra mostly reproducible, but Lemma 3 endpoints, `tilde t=0`, feasibility, and Lemma 5 count are unresolved. |
 | 06-dln-translation | formalisation | pending | Translate Aoyagi dimension/rank notation to repo DLN notation without quiver inputs. |

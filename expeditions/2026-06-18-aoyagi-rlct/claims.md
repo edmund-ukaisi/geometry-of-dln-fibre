@@ -42,8 +42,8 @@ No such claim is formalisation-ready until both fields are filled.
   an explicit full-rank chart into a block diagonal form by triangular
   invertible matrices; broader ideal/loss-germ consequences are separate.
 - **Tier.** Established in Aoyagi; to be proved in Lean if elementary.
-- **Status.** partially reproduction-checked: algebraic chart identities and
-  rank formula only.
+- **Status.** partially formalised: algebraic Schur-complement block identities
+  are proved and reviewed in Lean; rank formula remains a separate A1 target.
 - **Kill-condition.** The transformation requires an analytic/local inverse or
   rank-open chart hypothesis not represented in the Lean statement.
 - **Evidence/source.** Aoyagi Lemma 2, PDF pp. 10-11.
@@ -51,12 +51,16 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-draft.md`.
 - **Reproduction check.** partial pass at
   `threads/03-block-product-reduction/reproduction-check.md`.
-- **Lean target.** TBD by thread 03.
-- **Proved.** pending.
-- **Assumed.** full-rank block/open chart hypotheses.
+- **Lean target.** `DLNFibre.DLN.Aoyagi.schurComplement_leftBlockElim_fromBlocks`
+  and `DLNFibre.DLN.Aoyagi.schurComplement_blockElim_fromBlocks` in
+  `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`.
+- **Proved.** two algebraic block identities over a commutative ring, under
+  explicit determinant-unit chart hypothesis `IsUnit A1.det`.
+- **Assumed.** determinant-unit chart for the top-left block.
 - **Cited.** none planned.
-- **Deferred.** RLCT/local-germ invariance consequences until analytic boundary
-  is resolved.
+- **Deferred.** rank formula `rank(C4)=rank(A)-r` until a separate
+  block-diagonal rank theorem/corollary is proved; RLCT/local-germ invariance
+  consequences until analytic boundary is resolved.
 
 ## Claim A2 - product reduction
 

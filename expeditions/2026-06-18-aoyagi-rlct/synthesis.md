@@ -71,8 +71,11 @@ Do not place Aoyagi/DLN application code in `DLNFibre.Core`.
 ## Lean baseline
 
 Initial scanner run in the Aoyagi worktree: `lean/scripts/sorries` reports
-`0 sorry`, `0 #exit`, `0 native_decide`, and `0 axiom`. Full `lake build` has
-not yet been run in this expedition.
+`0 sorry`, `0 #exit`, `0 native_decide`, and `0 axiom`. After the first A1 Lean
+tide, controller verified `lake build DLNFibre.DLN.Aoyagi.BlockElimination`,
+`lake build DLNFibre`, and `scripts/sorries`; the full build succeeds with only
+pre-existing Core linter/style warnings, and the scanner remains at
+`0 sorry`, `0 #exit`, `0 native_decide`, and `0 axiom`.
 
 Analytic-interface caution: PDF p. 5 includes an RLCT ideal-generator comparison
 lemma. The user's allowed cited boundary is only the normal-crossing-to-RLCT
@@ -84,11 +87,15 @@ interface without surfacing it.
 - A1/A2 block and product reduction: draft reproduction landed at
   `threads/03-block-product-reduction/reproduction-draft.md`; independent
   check landed at `threads/03-block-product-reduction/reproduction-check.md`.
-  A1 is checked only for algebraic chart identities/rank formula. A2 is not
-  formalisation-ready as stated: it needs explicit neighborhood/rank/open-chart
-  hypotheses, a through-layer basis/open-chart lemma, and a decision on hidden
-  analytic steps (local coordinate invariance, generator replacement,
-  regular-coordinate additivity).
+  A1 algebraic block identities are now proved in Lean as
+  `schurComplement_leftBlockElim_fromBlocks` and
+  `schurComplement_blockElim_fromBlocks` in
+  `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`, over `[CommRing K]` with
+  explicit chart hypothesis `IsUnit A1.det`. A1 rank formula remains open as a
+  separate tide. A2 is not formalisation-ready as stated: it needs explicit
+  neighborhood/rank/open-chart hypotheses, a through-layer basis/open-chart
+  lemma, and a decision on hidden analytic steps (local coordinate invariance,
+  generator replacement, regular-coordinate additivity).
 - A3 Theorem 4: xhigh scout reports this is an analytic RLCT comparison theorem
   cited to Aoyagi [22], not proved in the 2023 paper. Because the user allowed
   only the normal-crossing extraction citation in Lean, this is a scope conflict
@@ -110,11 +117,11 @@ interface without surfacing it.
 
 ## Current next target
 
-The broad A2/A4/A5 targets are blocked by reproduction checks. The only checked
-mathematical surface currently suitable for a first Lean tide is the narrow A1
-algebraic block-elimination chart identity and rank formula on an explicit
-invertible chart. This tide must avoid naming any RLCT/local-germ consequence
-and should state only matrix/block algebra under explicit hypotheses.
+The broad A2/A4/A5 targets are blocked by reproduction checks. The first A1
+Lean tide landed the checked algebraic block-elimination identities and avoided
+all RLCT/local-germ consequences. The next A1-sized target is the rank formula:
+prove or reuse a block-diagonal rank theorem over a field, then state the Schur
+complement rank corollary separately from the elimination identities.
 
 ## Drift guard
 

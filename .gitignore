@@ -1,4 +1,5 @@
 # Lean / Lake build artifacts
+lean/.lake
 lean/.lake/
 **/*.olean
 **/*.ilean

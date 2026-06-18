@@ -1,6 +1,6 @@
 # Thread 03 - block and product reduction
 
-Type: formalisation. Status: pending.
+Type: formalisation. Status: blocked.
 
 ## Task
 
@@ -17,3 +17,27 @@ and product reduction.
 
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
+
+## 2026-06-18 A1 narrow tide
+
+Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is
+only Aoyagi Lemma 2's checked algebraic block-elimination chart identity, and
+possibly the rank formula if it falls out without overclaiming. Explicitly out
+of scope: RLCT invariance, local-germ/ideal consequences, Theorem 3 product
+reduction, and target-normalisation claims.
+
+Read-only xhigh statement reviewer `Euclid` was also opened to audit the exact
+statement shape before controller acceptance.
+
+Outcome: landed two algebraic block identities in
+`lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`:
+`schurComplement_leftBlockElim_fromBlocks` and
+`schurComplement_blockElim_fromBlocks`. Theorems are over `[CommRing K]` with
+explicit chart hypothesis `IsUnit A1.det`, and contain no rank/RLCT/germ/ideal
+claim. Controller verified targeted build, full `DLNFibre` build, and
+`scripts/sorries`.
+
+Remaining A1 target: rank formula as a separate theorem, likely via a
+block-diagonal rank lemma over a field. A2 remains blocked by the checker
+findings: source-faithful basis/open-chart hypotheses and analytic-boundary
+decision.

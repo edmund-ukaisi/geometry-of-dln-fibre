@@ -21,9 +21,10 @@ on the session's original cwd.
 
 ## Ranked next
 
-1. Narrow A1 Lean tide. Formalise only the reproduction-checked algebraic block
-   elimination chart identity and rank formula under explicit invertible-block
-   hypotheses. Avoid RLCT/local-germ names and consequences.
+1. A1 rank formula tide. Prove the separate rank formula for the Schur
+   complement chart, starting with a block-diagonal rank lemma over a field if
+   Mathlib has no suitable theorem. Keep it separate from the already-landed
+   algebraic block identities.
 2. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
    and exact hypotheses from the PDF where the first scout still left TBDs.
 3. Analytic interface shape. Define the cited normal-crossing extraction
