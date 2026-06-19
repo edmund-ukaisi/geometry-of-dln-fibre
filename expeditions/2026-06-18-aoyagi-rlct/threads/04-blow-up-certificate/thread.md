@@ -1124,3 +1124,33 @@ factored-base recurrence from the original pre-state, prove hidden old-label
 source validity, prove that a chart produces the supplied post-data, or assert
 chart coverage, regularity, Jacobians, normal crossings, RLCT extraction, or a
 full transition invariant.
+
+## 2026-06-19 Lean Case 1 selected-old source substitution
+
+Statement card:
+`statement-card-a4-case1-selected-old-source-substitution.md`.
+
+Lean now proves the elementary same-domain recurrence substitution for the
+hidden old selected variable in Case 1(2). The new generic finite-product
+lemmas show that scaling one existing label variable scales exactly the
+recurrence factor at that label's level and leaves all other recurrence factors
+unchanged. The Case 1 package
+`IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData` then records
+the supplied interpretation of `source` as the pulled-back source recurrence
+after `old = u*old'`, relative to a factored-base recurrence using `old'`.
+
+Under first-jump selected-level data, Lean proves
+
+```text
+source.step = mulStepAt factoredBase.step u (J+J1).
+```
+
+The row-strip corollary rewrites the old-weight convention used by the
+displayed source matrix as these substituted source recurrence weights on
+residual rows.
+
+This is still recurrence bookkeeping. It does not construct the selected-old
+chart, identify the hidden old label behind the `Unit` center generator,
+construct the factored-base state, produce post-data, or prove chart coverage,
+regularity, Jacobians, normal crossings, RLCT extraction, or a transition
+invariant.

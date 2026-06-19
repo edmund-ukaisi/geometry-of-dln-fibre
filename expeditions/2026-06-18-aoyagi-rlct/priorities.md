@@ -223,9 +223,13 @@ on the session's original cwd.
    invariants, and supplied Case 1 exponent post-data; it proves the
    source-order identity with original source recurrence weights on the left
    and supplied post weights on the right, and extends the exponent certificate
-   domain to `(S,J+1)`. Next A4 target: chart-production/hidden-old-label
-   validity boundary, or a similarly narrow source-facing wrapper for another
-   displayed piece; keep arbitrary pivots explicit and supplied.
+   domain to `(S,J+1)`. The selected-old source substitution boundary now
+   proves the recurrence effect of the supplied hidden old-label substitution
+   `old = u*old'`: the pulled-back source recurrence is
+   `mulStepAt factoredBase.step u (J+J1)`. Next A4 target:
+   chart-production/hidden-old-label validity boundary, or a similarly narrow
+   source-facing wrapper for another displayed piece; keep arbitrary pivots
+   explicit and supplied.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

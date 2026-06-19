@@ -711,6 +711,29 @@ Jacobians, normal crossings, or RLCT extraction. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-displayed-row-strip-local-handoff-a4.md`.
 
+Latest A4 update: the selected-old source substitution boundary has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`levelProductStep_updateVar_eq_mul_of_mem`,
+`levelProductStep_updateVar_eq_of_ne`,
+`levelProductStep_eq_mulStepAt_of_updateSelected`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.step_selectedLevel_eq_mul`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.step_eq_of_ne_selectedLevel`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.step_eq_mulStepAt_selectedLevel`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.step_eq_mulStepAt_of_firstJump`,
+and
+`case1ResidualRowStripOldWeight_eq_sourceWeight_of_selectedOldFactoredBase`.
+This checkpoint proves the finite-product recurrence effect of replacing the
+selected old variable by `u*old'` in the pulled-back source recurrence:
+`source.step = mulStepAt factoredBase.step u (J+J1)`, under supplied
+same-domain factorisation data. It does not construct the selected-old chart,
+identify the hidden old label behind the `Unit` center generator, construct the
+factored-base state, produce post-data, prove coverage/regularity/Jacobians,
+or prove normal crossings/RLCT. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-source-substitution.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-source-substitution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

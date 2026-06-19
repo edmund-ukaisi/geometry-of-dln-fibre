@@ -846,7 +846,16 @@ No such claim is formalisation-ready until both fields are filled.
   level-tail invariants, and supplied Case 1 exponent post-data. It proves the
   displayed top-left source-order identity with original source recurrence
   weights on the left and supplied post weights on the right, and extends the
-  exponent certificate domain to `(S,J+1)`.
+  exponent certificate domain to `(S,J+1)`. Added the selected-old source
+  substitution boundary:
+  `levelProductStep_eq_mulStepAt_of_updateSelected`,
+  `IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData`,
+  `IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.step_eq_mulStepAt_of_firstJump`,
+  and
+  `case1ResidualRowStripOldWeight_eq_sourceWeight_of_selectedOldFactoredBase`.
+  This proves, under supplied same-domain selected-old factorisation data, that
+  the pulled-back source recurrence after `old = u*old'` is
+  `mulStepAt factoredBase.step u (J+J1)`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -870,7 +879,10 @@ No such claim is formalisation-ready until both fields are filled.
   does not prove a chart leaves old exponent assignments unchanged. The Case
   1(2) local handoff also assumes the factored-base state, recurrence
   post-data, exponent post-data, and normalized pivot block; it does not prove
-  chart production or hidden old-label source validity.
+  chart production or hidden old-label source validity. The selected-old
+  source substitution boundary assumes the supplied hidden old label and
+  substituted source recurrence; it does not identify the `Unit` center
+  generator with a source label or construct the selected-old chart.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

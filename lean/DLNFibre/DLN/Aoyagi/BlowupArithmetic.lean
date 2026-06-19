@@ -2641,6 +2641,78 @@ theorem levelProductStep_insert_eq_of_ne
           intro p hp
           exact hvar_old p ((Finset.mem_filter.mp hp).1)
 
+/-- Scaling the variable of one existing label scales the recurrence factor at
+that label's level. -/
+theorem levelProductStep_updateVar_eq_mul_of_mem
+    {β : Type*} (labels : Finset β) {a : β}
+    (ha : a ∈ labels) (level : β → ℕ) (var var' : β → α) (u : α)
+    (hvar_a : var' a = u * var a)
+    (hvar_old : ∀ p, p ∈ labels → p ≠ a → var' p = var p) :
+    levelProductStep labels level var' (level a) =
+      u * levelProductStep labels level var (level a) := by
+  classical
+  let filtered := labels.filter (fun p ↦ level p = level a)
+  have ha_filter : a ∈ filtered := by
+    simp [filtered, ha]
+  have hnot : a ∉ filtered.erase a := by simp
+  calc
+    levelProductStep labels level var' (level a)
+        = filtered.prod var' := rfl
+    _ = (insert a (filtered.erase a)).prod var' := by
+          rw [Finset.insert_erase ha_filter]
+    _ = var' a * (filtered.erase a).prod var' := by
+          rw [Finset.prod_insert hnot]
+    _ = (u * var a) * (filtered.erase a).prod var := by
+          rw [hvar_a]
+          congr 1
+          apply Finset.prod_congr rfl
+          intro p hp
+          have hp' := Finset.mem_erase.mp hp
+          exact hvar_old p ((Finset.mem_filter.mp hp'.2).1) hp'.1
+    _ = u * (var a * (filtered.erase a).prod var) := by
+          ac_rfl
+    _ = u * (insert a (filtered.erase a)).prod var := by
+          rw [Finset.prod_insert hnot]
+    _ = u * levelProductStep labels level var (level a) := by
+          rw [Finset.insert_erase ha_filter]
+          rfl
+
+/-- Scaling the variable of one existing label leaves all other recurrence
+factors unchanged. -/
+theorem levelProductStep_updateVar_eq_of_ne
+    {β : Type*} (labels : Finset β) {a : β}
+    (level : β → ℕ) (var var' : β → α) {r : ℕ}
+    (hne : r ≠ level a)
+    (hvar_old : ∀ p, p ∈ labels → p ≠ a → var' p = var p) :
+    levelProductStep labels level var' r =
+      levelProductStep labels level var r := by
+  classical
+  apply Finset.prod_congr rfl
+  intro p hp
+  exact hvar_old p ((Finset.mem_filter.mp hp).1) (by
+    intro hpa
+    subst hpa
+    exact hne (Finset.mem_filter.mp hp).2.symm)
+
+/-- A same-domain selected-variable scaling changes the recurrence factor
+function by inserting one multiplicative factor at the selected label's level.
+-/
+theorem levelProductStep_eq_mulStepAt_of_updateSelected
+    {β : Type*} (labels : Finset β) {a : β}
+    (ha : a ∈ labels) (level : β → ℕ) (var var' : β → α) (u : α)
+    (hvar_a : var' a = u * var a)
+    (hvar_old : ∀ p, p ∈ labels → p ≠ a → var' p = var p) :
+    levelProductStep labels level var' =
+      mulStepAt (levelProductStep labels level var) u (level a) := by
+  classical
+  funext r
+  by_cases hr : r = level a
+  · subst r
+    simp [mulStepAt, levelProductStep_updateVar_eq_mul_of_mem
+      labels ha level var var' u hvar_a hvar_old]
+  · rw [mulStepAt_of_ne (levelProductStep labels level var) u hr]
+    exact levelProductStep_updateVar_eq_of_ne labels level var var' hr hvar_old
+
 namespace IntroducedLabelRecurrenceState
 
 /-- The recurrence factor obtained from the introduced labels of a packaged state. -/
@@ -2660,6 +2732,116 @@ def case2ResidualRowWeight {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
     (state : IntroducedLabelRecurrenceState L n S J α)
     (i : Case2ResidualRowIndex n S J) : α :=
   state.weight (case2ResidualRowLevel n S J i)
+
+/-- Supplied same-domain source substitution data for the old selected Case 1
+exceptional variable.
+
+The `source` state represents the original recurrence after the source
+substitution `old = u * old'`, not the raw pre-chart coordinate recurrence.
+It has the same levels as `factoredBase`, agrees with `factoredBase` on all
+introduced variables except `(s0,k0)`, and has selected variable
+`source.var s0 k0 = u * factoredBase.var s0 k0`.
+
+This is recurrence bookkeeping only; it does not construct the selected-old
+chart or prove source validity beyond the supplied introduced-label
+hypothesis. -/
+structure Case1SelectedOldFactoredBaseData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (source factoredBase : IntroducedLabelRecurrenceState L n S J α)
+    (s0 k0 : ℕ) (u : α) : Prop where
+  selectedIntroduced : introducedLabel L n S J s0 k0
+  level_eq : source.level = factoredBase.level
+  var_selected : source.var s0 k0 = u * factoredBase.var s0 k0
+  var_old :
+    ∀ {s k}, introducedLabel L n S J s k → (s, k) ≠ (s0, k0) →
+      source.var s k = factoredBase.var s k
+
+namespace Case1SelectedOldFactoredBaseData
+
+/-- At the selected old label's level, the substituted source recurrence factor
+is the factored-base recurrence factor multiplied by the selected chart
+variable. -/
+theorem step_selectedLevel_eq_mul
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 : ℕ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J α}
+    {u : α}
+    (data : Case1SelectedOldFactoredBaseData source factoredBase s0 k0 u) :
+    source.step (factoredBase.level s0 k0) =
+      u * factoredBase.step (factoredBase.level s0 k0) := by
+  rw [step, step, data.level_eq]
+  exact levelProductStep_updateVar_eq_mul_of_mem
+    (introducedLabelFinset L n S J)
+    (a := Sigma.mk s0 k0)
+    ((mem_introducedLabelFinset).mpr data.selectedIntroduced)
+    (fun p : Σ _ : ℕ, ℕ ↦ factoredBase.level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ factoredBase.var p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ source.var p.1 p.2)
+    u data.var_selected
+    (fun p hp hpne ↦ by
+      exact data.var_old (mem_introducedLabelFinset.mp hp) (by
+        intro hpair
+        apply hpne
+        cases p with
+        | mk s k =>
+            cases hpair
+            rfl))
+
+/-- Away from the selected old label's level, the substituted source and
+factored-base recurrence factors agree. -/
+theorem step_eq_of_ne_selectedLevel
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 r : ℕ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J α}
+    {u : α}
+    (data : Case1SelectedOldFactoredBaseData source factoredBase s0 k0 u)
+    (hne : r ≠ factoredBase.level s0 k0) :
+    source.step r = factoredBase.step r := by
+  rw [step, step, data.level_eq]
+  exact levelProductStep_updateVar_eq_of_ne
+    (a := Sigma.mk s0 k0)
+    (introducedLabelFinset L n S J)
+    (fun p : Σ _ : ℕ, ℕ ↦ factoredBase.level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ factoredBase.var p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ source.var p.1 p.2)
+    hne
+    (fun p hp hpne ↦ by
+      exact data.var_old (mem_introducedLabelFinset.mp hp) (by
+        intro hpair
+        apply hpne
+        cases p with
+        | mk s k =>
+            cases hpair
+            rfl))
+
+/-- The substituted source recurrence factors are exactly the factored-base
+recurrence with a single factor `u` inserted at the selected old label's
+level. -/
+theorem step_eq_mulStepAt_selectedLevel
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 : ℕ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J α}
+    {u : α}
+    (data : Case1SelectedOldFactoredBaseData source factoredBase s0 k0 u) :
+    source.step = mulStepAt factoredBase.step u (factoredBase.level s0 k0) := by
+  funext r
+  by_cases hr : r = factoredBase.level s0 k0
+  · subst r
+    simp [mulStepAt, data.step_selectedLevel_eq_mul]
+  · rw [mulStepAt_of_ne factoredBase.step u hr]
+    exact data.step_eq_of_ne_selectedLevel hr
+
+/-- First-jump specialization: if the selected old label has Case 1 level
+`J+J1`, the substituted source recurrence is the factored-base recurrence with
+a single factor inserted at level `J+J1`. -/
+theorem step_eq_mulStepAt_of_firstJump
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J α}
+    {u : α} {vector : ℕ → ℕ → ℕ → ℤ}
+    (data : Case1SelectedOldFactoredBaseData source factoredBase s0 k0 u)
+    (hfirst :
+      Case1FirstJumpHypotheses L n S J J1 s0 k0 factoredBase.level vector) :
+    source.step = mulStepAt factoredBase.step u (J + J1) := by
+  rw [data.step_eq_mulStepAt_selectedLevel, hfirst.selectedLevel]
+
+end Case1SelectedOldFactoredBaseData
 
 /-- If a supplied Case 2 successor state keeps all old introduced-label data and
 adds `(S,J+1)` at level `J` with variable `u`, then the recurrence factor at
@@ -3717,6 +3899,30 @@ theorem case1ResidualRowStripOldWeight_eq_sourceMulStepAt
         (case2ResidualRowLevel n S J i) :=
   case1RowStripOldWeight_eq_monomialRec_mulStepAt_of_level
     step u (J + J1) (case2ResidualRowLevel n S J)
+
+/-- Case 1(2) row-strip old-weight convention rewritten as substituted source
+recurrence weights, under supplied same-domain old selected-variable
+factorisation data.
+
+The `source` recurrence is already the pullback after `old = u * old'`; this
+does not construct that pullback from coordinates. -/
+theorem case1ResidualRowStripOldWeight_eq_sourceWeight_of_selectedOldFactoredBase
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {vector : ℕ → ℕ → ℕ → ℤ}
+    (data : IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData
+      source factoredBase s0 k0 u)
+    (hfirst :
+      Case1FirstJumpHypotheses L n S J J1 s0 k0 factoredBase.level vector) :
+    case1RowStripOldWeight (case1ResidualRowStrip n S J J1) u
+        (fun i ↦ factoredBase.case2ResidualRowWeight i) =
+      fun i ↦ source.weight (case2ResidualRowLevel n S J i) := by
+  change case1RowStripOldWeight (case1ResidualRowStrip n S J J1) u
+      (fun i ↦ monomialRec factoredBase.step (case2ResidualRowLevel n S J i)) =
+    fun i ↦ monomialRec source.step (case2ResidualRowLevel n S J i)
+  rw [case1ResidualRowStripOldWeight_eq_sourceMulStepAt factoredBase.step u n S J J1]
+  rw [← data.step_eq_mulStepAt_of_firstJump hfirst]
 
 /-- Elementary Case 1(2) row-strip weighting identity.
 

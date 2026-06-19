@@ -966,6 +966,17 @@ certificate package to `(S,J+1)`. This is not chart production: the
 factored-base state, recurrence post-data, exponent post-data, normalized pivot
 block, and hidden old-label source validity remain external.
 
+The selected-old source substitution boundary is now Lean-proved as recurrence
+bookkeeping. The generic finite-product update lemmas show that changing one
+existing label variable from `old'` to `u*old'` changes exactly the recurrence
+factor at that label's level. The Case 1 wrapper
+`Case1SelectedOldFactoredBaseData` then proves that the pulled-back source
+recurrence after `old = u*old'` satisfies
+`source.step = mulStepAt factoredBase.step u (J+J1)`. The row-strip corollary
+identifies the old-weight convention with these substituted source weights.
+This still assumes the hidden old label and substituted source recurrence; it
+does not construct the selected-old chart or identify the `Unit` generator.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
