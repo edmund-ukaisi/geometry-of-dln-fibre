@@ -7,7 +7,10 @@
 >
 > - **Lean:**
 >   `DLNFibre.DLN.Aoyagi.schurComplement_leftBlockElim_fromBlocks` and
->   `DLNFibre.DLN.Aoyagi.schurComplement_blockElim_fromBlocks`
+>   `DLNFibre.DLN.Aoyagi.schurComplement_blockElim_fromBlocks`, plus indexed
+>   variants
+>   `DLNFibre.DLN.Aoyagi.schurComplement_leftBlockElim_fromBlocks_indexed` and
+>   `DLNFibre.DLN.Aoyagi.schurComplement_blockElim_fromBlocks_indexed`
 >   (`lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean` @ `cd3a4e0`)
 > - **Gloss.** For matrices over a commutative ring, assuming
 >   `hA1 : IsUnit A1.det`, left multiplication by
@@ -16,7 +19,8 @@
 >   multiplication by `fromBlocks 1 (-(A1⁻¹ * A2)) 0 1` also zeros the
 >   upper-right block.
 > - **Proved.** The two algebraic block-matrix identities, including the signs
->   and multiplication order used in Aoyagi Lemma 2.
+>   and multiplication order used in Aoyagi Lemma 2. The indexed variants state
+>   the same identities for arbitrary finite row/column index types.
 > - **Assumed.** The determinant-unit chart hypothesis `IsUnit A1.det`.
 > - **Cited.** None.
 > - **Deferred.** The rank formula for the Schur complement; invertibility of

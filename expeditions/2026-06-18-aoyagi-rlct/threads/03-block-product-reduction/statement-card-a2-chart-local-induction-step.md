@@ -6,6 +6,8 @@
 >
 > - **Lean:**
 >   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks`
+>   and
+>   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks_indexed`
 >   (`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean` @ `7a30e80`)
 > - **Gloss.** For matrices over a commutative ring, assume
 >   `hC1 : IsUnit C1.det` and `hA1 : IsUnit A1.det`. Then multiplying
@@ -15,7 +17,8 @@
 >   `fromBlocks (C1 * A1) 0 0 (D * (A4 - A3 * A1⁻¹ * A2))`.
 > - **Proved.** The chart-local algebraic block identity used for one
 >   induction step in Aoyagi's product reduction, including the signs,
->   multiplication order, and the residual Schur-complement factor.
+>   multiplication order, and the residual Schur-complement factor. The indexed
+>   variant states the same identity for arbitrary finite block index types.
 > - **Assumed.** Matrix dimensions encoded by the `Fin` indices, and the
 >   determinant-unit chart hypotheses `IsUnit C1.det` and `IsUnit A1.det`.
 >   The file includes an identity-corner example witnessing that these chart

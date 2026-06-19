@@ -47,6 +47,33 @@ theorem schurComplement_blockElim_fromBlocks {r p q : ℕ}
   rw [fromBlocks_multiply]
   simp [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left A1 A2 hA1, sub_eq_add_neg]
 
+/-- Indexed left block elimination exposes the Schur complement in the lower-right block. -/
+theorem schurComplement_leftBlockElim_fromBlocks_indexed
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ]
+    (A1 : Matrix ρ ρ K) (A2 : Matrix ρ ν K)
+    (A3 : Matrix μ ρ K) (A4 : Matrix μ ν K)
+    (hA1 : IsUnit A1.det) :
+    fromBlocks (1 : Matrix ρ ρ K) 0 (-(A3 * A1⁻¹)) 1
+        * fromBlocks A1 A2 A3 A4 =
+      fromBlocks A1 A2 0 (A4 - A3 * A1⁻¹ * A2) := by
+  rw [fromBlocks_multiply]
+  simp [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hA1, sub_eq_add_neg, add_comm]
+
+/-- Indexed two-sided block elimination produces a block diagonal matrix. -/
+theorem schurComplement_blockElim_fromBlocks_indexed
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ]
+    [Fintype ν] [DecidableEq ν]
+    (A1 : Matrix ρ ρ K) (A2 : Matrix ρ ν K)
+    (A3 : Matrix μ ρ K) (A4 : Matrix μ ν K)
+    (hA1 : IsUnit A1.det) :
+    fromBlocks (1 : Matrix ρ ρ K) 0 (-(A3 * A1⁻¹)) 1
+        * fromBlocks A1 A2 A3 A4
+        * fromBlocks (1 : Matrix ρ ρ K) (-(A1⁻¹ * A2)) 0 1 =
+      fromBlocks A1 0 0 (A4 - A3 * A1⁻¹ * A2) := by
+  rw [schurComplement_leftBlockElim_fromBlocks_indexed A1 A2 A3 A4 hA1]
+  rw [fromBlocks_multiply]
+  simp [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left A1 A2 hA1, sub_eq_add_neg]
+
 end Identities
 
 section Rank

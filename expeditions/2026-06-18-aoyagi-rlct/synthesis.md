@@ -213,6 +213,14 @@ the reversed paper chain. The endpoint wrapper
 gives the total paper product the adapted `[I 0; 0 0]` form. Still open:
 determinant/open chart wrappers and Theorem 3 assembly.
 
+Indexed block algebra is also Lean-proved now:
+`schurComplement_leftBlockElim_fromBlocks_indexed`,
+`schurComplement_blockElim_fromBlocks_indexed`, and
+`productReduction_chartLocalInductionStep_fromBlocks_indexed`. These are exact
+finite-index generalisations of the existing `Fin`-indexed block identities and
+the chart-local induction step. They do not add a new mathematical claim; they
+remove index-conversion friction for future chart-data assembly.
+
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
 source basis adapted to `U₀ ⊕ ker P` and target basis adapted to

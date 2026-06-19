@@ -422,3 +422,16 @@ paper-order matrix wrappers:
 This transfers the finite adapted-basis edge and endpoint statements into the
 paper-order orientation. It still does not provide determinant/open chart
 wrappers, the product-reduction induction, or analytic/RLCT consequences.
+
+## 2026-06-19 A2 indexed block algebra
+
+Extended the pure block algebra layer with indexed variants:
+
+- `schurComplement_leftBlockElim_fromBlocks_indexed`;
+- `schurComplement_blockElim_fromBlocks_indexed`;
+- `productReduction_chartLocalInductionStep_fromBlocks_indexed`.
+
+These are the same identities as the existing `Fin`-indexed A1/A2 block
+theorems, but stated for arbitrary finite block index types. This is
+infrastructure for chart-data assembly only; it does not prove the
+product-reduction induction or any analytic consequence.
