@@ -292,3 +292,22 @@ So `codimRep = orbitLinearCodim` ✓. Remaining tides (orbit-specific; size-then
 Suggested order: L6 (or L1) first (set up the variety = orbit closure, prime), then L3 (smoothness), L2 (tangent),
 assembly. Each size-then-build.
 - 2026-06-19: **L4★ COMPLETE.** Next: orbit geometry — start with L6/L1 (variety = irreducible orbit closure).
+
+## ORBIT GEOMETRY — sized [2026-06-19, thread 14]. Full blueprint in `threads/14-geometry-recon/findings.md`.
+Key insight: `varietyDim` depends only on `vanishingIdeal` ⟹ **L6 stated at the IDEAL level** (no point-space
+topology). The whole AG bridge keys on producing `IsSmoothAt k m_M` + `κ(m_M)=k` + `varietyDim(Z_M)=r`.
+- **L6** `vanishingIdeal Z_M = vanishingIdeal O_M` — **sub-library (3–4 modules)**. Core = box-move/lace-diagram
+  **degeneration** (L6.1+L6.2) — the Abeasis–Del Fra theorem the PAPER ITSELF only cites; genuine new content.
+  KILL-COND: if the generation doesn't reduce to a clean `diff`-induction it inflates. (Within "build it" mandate;
+  surface only if the kill-condition fires.)
+- **L1** primeness — one module (orbit ideal = ker μ_M^* into a domain `𝒪(G_d)`), given L6.4.
+- **L2/L3** — bounded via the **pivot chart** L3.0 (`O_M` nbhd of `M` ≅ `Localization.Away f (k[Fin r])`,
+  `r=finrank(range δ⁰)`, from `baseChange_normalForm`). KILL-COND: chart not an `AlgEquiv` ⟹ heavy fallback.
+- L6.0 (limit lemma: polynomial curve in `O_M` for `t≠0` ⟹ `t=0` limit in `V(vanishingIdeal O_M)`) — FREE,
+  bricks verified, independent.
+**Build order:** (1) L6.0 [free] → (2) L3.0 pivot chart on (2,2,2) [high-leverage gamble, collapses L2+L3] →
+(3) L3.1+L2.* [chart payoff] → (4) L6.1+L6.2 [box-move generation, heavy] → (5) L6.3/6.4/L1 → (6) L4-assembly+L7.
+Critical path: L6 stays on it for the dimension (chart gives `dim O_M`; `varietyDim(Z_M)` needs L6.4 ideal equality).
+- 2026-06-19: thread 14 (geometry sizing) CLOSED. Next: build L6.0 (limit lemma, free), then the (2,2,2) pivot
+  chart witness. L6's degeneration is a 3–4 module sub-library (paper-cited) — anticipated, within mandate; surface
+  only if a kill-condition fires.
