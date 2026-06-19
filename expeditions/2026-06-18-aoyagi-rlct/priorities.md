@@ -242,11 +242,14 @@ on the session's original cwd.
    displayed top-left chart token only. The elementary Case 1(1)
    selected-old source-coordinate row-strip identity is also Lean-proved:
    source entries on the selected-old divided strip carry the old factor, and
-   the post weights absorb that factor exactly on the strip. Next A4 target:
-   package a supplied Case 1(1) selected-old boundary tying this row-wise
-   identity to the existing same-domain lower-tail exponent update, or only
-   then revisit recurrence-state source overrides if they remain explicitly
-   assumption-level and source-faithful. Avoid raw Case 1(2) hidden-old
+   the post weights absorb that factor exactly on the strip. This now feeds a
+   supplied Case 1(1) same-domain boundary: selected old exponent post-data,
+   same-domain lower-tail certificate update, and source-coordinate row-strip
+   identity are projected together without chart production. Next A4 target:
+   decide between a recurrence-weight interpretation of the Case 1(1) strip
+   post weights and a chart-family/regularity assumption boundary for the
+   selected-old branch; keep either source-faithful and explicitly supplied
+   where coordinates are not constructed. Avoid raw Case 1(2) hidden-old
    pullback construction, arbitrary chart coverage, or non-displayed
    transition claims.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight

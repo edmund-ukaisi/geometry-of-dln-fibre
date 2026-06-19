@@ -1277,3 +1277,39 @@ This is the Case 1(1) row-wise calculation only. It does not introduce
 not assert a `Q/P` transition, chart construction, atlas coverage,
 regularity, Jacobian, normal crossings, RLCT extraction, or a transition
 invariant.
+
+## 2026-06-19 Lean Case 1 selected-old same-domain boundary
+
+Statement card:
+`statement-card-a4-case1-selected-old-same-domain-boundary.md`.
+
+Lean now packages the supplied same-domain boundary for Aoyagi Case 1(1). The
+new `Case1SelectedOldLowerTailExponentPostData` records that the selected old
+label `(s0,k0)` receives the lower-tail vector, the actual-width numerator
+increment
+
+```text
+J1 * (n(S+1)-J),
+```
+
+and least value `J`, while every other introduced label at `(S,J)` is supplied
+unchanged.
+
+The theorem
+`IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_postData`
+feeds this post-data into the existing same-domain lower-tail update, and
+`case1_selectedLowerTail_of_levelTailInvariants_postData` uses the packaged
+level/tail invariants. The new boundary
+`Case1SelectedOldSuppliedSameDomainBoundary` carries first-jump data,
+pre-state certificates, level-tail invariants, and supplied post-data, then
+projects:
+
+- selected introducedness and selected level;
+- the generic and source-coordinate Case 1(1) row-strip identities;
+- the same-domain exponent-certificate update over `(S,J)`.
+
+This is still an assumption interface. It does not construct the selected-old
+chart, prove that coordinates produce the post-data, introduce `(S,J+1)`, use
+the displayed Case 1(2) pivot, assert `Q/P`, prove chart coverage or
+regularity, compute Jacobians, prove normal crossings, extract RLCT, or prove
+a transition invariant.

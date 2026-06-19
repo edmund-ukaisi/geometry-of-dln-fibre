@@ -889,7 +889,17 @@ No such claim is formalisation-ready until both fields are filled.
   `case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates`. This proves
   only the elementary row-wise selected-old denominator algebra for Case 1(1);
   it does not introduce `(S,J+1)`, use the displayed Case 1(2) pivot, assert
-  `Q/P`, or produce charts/transitions.
+  `Q/P`, or produce charts/transitions. Added the supplied Case 1(1)
+  same-domain boundary:
+  `Case1SelectedOldLowerTailExponentPostData`,
+  `IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_postData`,
+  `IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_levelTailInvariants_postData`,
+  `Case1SelectedOldSuppliedSameDomainBoundary`,
+  `Case1SelectedOldSuppliedSameDomainBoundary.sourceCoordinates_identity`, and
+  `Case1SelectedOldSuppliedSameDomainBoundary.updateExponentCertificates`.
+  This packages supplied selected-old post-data with the row-wise source
+  identity and same-domain exponent update, still without chart production or
+  domain advancement.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

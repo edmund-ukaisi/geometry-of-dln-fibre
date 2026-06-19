@@ -1035,6 +1035,20 @@ a transition invariant. Xhigh review found only a low docstring hazard in the
 shared row-strip helpers; the helper comments now explicitly distinguish the
 Case 1(1) old denominator from the Case 1(2) displayed pivot.
 
+The Case 1(1) selected-old same-domain boundary is now Lean-proved as a
+supplied interface. `Case1SelectedOldLowerTailExponentPostData` records the
+selected old label lower-tail vector, actual-width numerator increment
+`J1*(n(S+1)-J)`, least value `J`, and unchanged non-selected introduced labels.
+The post-data theorem reuses the existing same-domain lower-tail certificate
+update, and `Case1SelectedOldSuppliedSameDomainBoundary` projects both the
+same-domain exponent certificate update and the row-wise source-coordinate
+identity. It remains strictly at `(S,J)`: no `(S,J+1)`, no displayed
+Case 1(2) pivot, no `Q/P`, no chart production, no coverage/regularity,
+Jacobian, normal crossings, RLCT, or transition invariant. Xhigh review passed
+with no findings; residual risk is the intended one that the scalar `u` is not
+type-level identified with the actual coordinate `u_(s0,k0)` and source
+validity remains future integration work.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

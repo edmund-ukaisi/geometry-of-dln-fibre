@@ -836,6 +836,27 @@ transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-chart-source-coordinates-a4.md`.
 
+Latest A4 update: the Case 1(1) selected-old same-domain boundary has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`Case1SelectedOldLowerTailExponentPostData`,
+`IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_postData`,
+`IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_levelTailInvariants_postData`,
+`Case1SelectedOldSuppliedSameDomainBoundary`,
+`Case1SelectedOldSuppliedSameDomainBoundary.selectedIntroduced`,
+`Case1SelectedOldSuppliedSameDomainBoundary.selectedLevel`,
+`Case1SelectedOldSuppliedSameDomainBoundary.sourceMatrix_identity`,
+`Case1SelectedOldSuppliedSameDomainBoundary.sourceCoordinates_identity`, and
+`Case1SelectedOldSuppliedSameDomainBoundary.updateExponentCertificates`.
+This checkpoint packages supplied Case 1(1) exponent post-data with the
+already proved row-strip identity and lower-tail update. It stays at `(S,J)`,
+uses the actual-width numerator increment, and does not introduce `(S,J+1)`,
+use the displayed Case 1(2) pivot, assert `Q/P`, construct charts, prove
+coverage/regularity/Jacobians, prove normal crossings/RLCT, or prove a
+transition invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-same-domain-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-same-domain-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
