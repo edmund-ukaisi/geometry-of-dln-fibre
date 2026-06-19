@@ -324,3 +324,37 @@ This proves the elementary finite-dimensional supplied-data construction needed
 by the through-basis repair. It does not prove Aoyagi's fixed-coordinate chart
 claim, the paper-order rank/open-neighborhood bridge, the product-reduction
 induction, or any analytic/RLCT consequence.
+
+## 2026-06-19 A2 concrete finite-basis block corollaries
+
+Added concrete finite-dimensional wrappers around the supplied-data block
+theorems:
+
+- `exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`
+  instantiates the per-edge `[I B; 0 D]` theorem with the chosen complements
+  and `Module.finBasis` bases from `throughSubspaceChartDataOfFiniteDimensional`.
+- `exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`
+  instantiates the unitriangular chart-preservation theorem with the same
+  concrete finite indices.
+- `toMatrix_chainMap_zero_last_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`
+  instantiates the endpoint `[I 0; 0 0]` theorem using `Module.finBasis` for
+  `U₀`, `ker P`, and the chosen target complement.
+
+These are still adapted-coordinate statements. They do not identify Aoyagi's
+paper-order top-left coordinate blocks, prove rank-open neighborhoods, run the
+induction, or state analytic/RLCT consequences.
+
+## 2026-06-19 A2 paper-order bridge notes
+
+Added `paper-order-bridge-notes.md` recording the source-to-Lean direction
+reversal:
+
+```text
+V_j = W_(L+1-j),    Lean edge j = paper layer s = L-j.
+```
+
+The note identifies the next elementary bridge obligations: a reindexing lemma,
+a finite chart-data-to-paper-block wrapper, a determinant-open chart statement,
+the paper-order induction assembly, and optional rank corollaries. It also
+records nonclaims: this does not prove Theorem 3, does not make the Lemma 1
+normalization elementary, and does not justify the post-Theorem-3 RLCT shift.

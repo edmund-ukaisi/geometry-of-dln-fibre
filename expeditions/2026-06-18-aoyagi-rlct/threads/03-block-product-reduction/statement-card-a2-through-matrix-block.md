@@ -13,6 +13,10 @@
 >   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
 >   and
 >   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
+>   and
+>   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`
+>   and
+>   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`
 >   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
 > - **Gloss.** For a through-subspace edge
 >   `A p : V p.castSucc -> V p.succ`, choose a basis `bU` of the source
@@ -27,8 +31,9 @@
 >   `ThroughSubspaceChartData` bundles supplied complements and complement
 >   bases for every layer, and the bundled unitriangular corollary says the
 >   transformed edge matrix remains in some identity-corner chart form.
->   Finite-dimensional construction of such supplied data is tracked in the
->   separate chart-data existence card.
+>   Finite-dimensional variants instantiate this chart data using the concrete
+>   `Fin (finrank ...)` indices tracked in the separate chart-data existence
+>   card.
 > - **Proved.** The basis-coordinate bookkeeping: transported bases give the
 >   identity top-left block; transported subspace coordinates give the zero
 >   lower-left block. The direct-sum version uses

@@ -464,6 +464,101 @@ theorem nonempty_throughSubspaceChartDataOfFiniteDimensional
       (Fin (Module.finrank K U₀)) (throughSubspaceComplementIndex V A U₀)) :=
   ⟨throughSubspaceChartDataOfFiniteDimensional V A U₀⟩
 
+/-- A finite-dimensional through-layer edge has concrete adapted-basis block form `[I B; 0 D]`. -/
+theorem exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero
+    [∀ j, FiniteDimensional K (V j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (p : Fin N) :
+    ∃ B : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex V A U₀ p.castSucc) K,
+      ∃ D : Matrix (throughSubspaceComplementIndex V A U₀ p.succ)
+          (throughSubspaceComplementIndex V A U₀ p.castSucc) K,
+        LinearMap.toMatrix
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement V A U₀ p.castSucc)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv V A U₀ p.castSucc hU₀))
+              (Module.finBasis K (throughSubspaceComplement V A U₀ p.castSucc)))
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement V A U₀ p.succ)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv V A U₀ p.succ hU₀))
+              (Module.finBasis K (throughSubspaceComplement V A U₀ p.succ)))
+            (A p) =
+          fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) B 0 D := by
+  simpa [throughSubspaceChartDataOfFiniteDimensional] using
+    (exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero V A U₀ hU₀
+      (throughSubspaceChartDataOfFiniteDimensional V A U₀) p)
+
+/-- Concrete finite-dimensional adapted-basis edge form survives a unitriangular multiplier. -/
+theorem exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero
+    [∀ j, FiniteDimensional K (V j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (p : Fin N)
+    (F : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex V A U₀ p.succ) K) :
+    ∃ B' : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex V A U₀ p.castSucc) K,
+      ∃ D' : Matrix (throughSubspaceComplementIndex V A U₀ p.succ)
+          (throughSubspaceComplementIndex V A U₀ p.castSucc) K,
+        fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) (-F) 0 1 *
+          LinearMap.toMatrix
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement V A U₀ p.castSucc)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv V A U₀ p.castSucc hU₀))
+              (Module.finBasis K (throughSubspaceComplement V A U₀ p.castSucc)))
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement V A U₀ p.succ)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv V A U₀ p.succ hU₀))
+              (Module.finBasis K (throughSubspaceComplement V A U₀ p.succ)))
+            (A p) =
+          fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) B' 0 D' := by
+  simpa [throughSubspaceChartDataOfFiniteDimensional] using
+    (exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero V A U₀
+      hU₀ (throughSubspaceChartDataOfFiniteDimensional V A U₀) p F)
+
+/-- The finite-dimensional total chain map has concrete adapted-basis form `[I 0; 0 0]`. -/
+theorem toMatrix_chainMap_zero_last_ker_finiteDimensional_eq_fromBlocks_one_zero_zero
+    [∀ j, FiniteDimensional K (V j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))))) :
+      LinearMap.toMatrix
+          (basisOfIsCompl hU₀ (Module.finBasis K U₀)
+            (Module.finBasis K
+              (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))))))
+          (basisOfIsCompl
+            (throughSubspace_isCompl_complement V A U₀ (Fin.last N))
+            ((Module.finBasis K U₀).map (linearEquivMapOfDisjointKer
+              (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) U₀ hU₀.disjoint))
+            (Module.finBasis K (throughSubspaceComplement V A U₀ (Fin.last N))))
+          (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) =
+        fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K
+              (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))) K)
+          (0 : Matrix (throughSubspaceComplementIndex V A U₀ (Fin.last N))
+            (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (throughSubspaceComplementIndex V A U₀ (Fin.last N))
+            (Fin (Module.finrank K
+              (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))) K) := by
+  exact toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero
+    V A U₀ hU₀
+    (throughSubspace_isCompl_complement V A U₀ (Fin.last N))
+    (Module.finBasis K U₀)
+    (Module.finBasis K
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (Module.finBasis K (throughSubspaceComplement V A U₀ (Fin.last N)))
+
 /-- Finite-dimensional layers supply a kernel complement with finite-indexed chart data. -/
 theorem exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional
     [∀ j, FiniteDimensional K (V j)] :

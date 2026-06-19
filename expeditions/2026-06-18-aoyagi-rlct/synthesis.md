@@ -172,16 +172,19 @@ The finite-dimensional existence layer is also Lean-proved:
 `Module.finBasis`. The theorem
 `exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional` chooses `U₀`
 complementary to the total kernel while preserving the already proved
-`finrank U₀ = finrank range P` equality. This is still an existential
-through-basis coordinate construction, not Aoyagi's printed fixed-coordinate
-chart theorem.
+`finrank U₀ = finrank range P` equality. Concrete finite-basis corollaries now
+instantiate the per-edge `[I B; 0 D]` form, the unitriangular chart-preservation
+form, and the endpoint `[I 0; 0 0]` form with these chosen complements and
+`Module.finBasis` bases. This is still an existential through-basis coordinate
+construction, not Aoyagi's printed fixed-coordinate chart theorem.
 
 Still open for this repair: translate the source-to-target Lean orientation
 back to Aoyagi's paper order, express the paper-side rank/open-chart hypotheses
 against these finite chart-data statements, and connect the matrix corollaries
 to the chart-local product-reduction identity. Full Theorem 3 remains blocked
 until those corollaries, the induction assembly, and analytic certificate
-transport are built.
+transport are built. The current bridge inventory is saved in
+`threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
