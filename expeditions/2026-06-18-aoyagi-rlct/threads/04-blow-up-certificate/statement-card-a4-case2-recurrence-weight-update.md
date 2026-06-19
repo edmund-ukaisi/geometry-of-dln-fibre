@@ -3,7 +3,7 @@
 ## Lean artifacts
 
 File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` @
-`TBD-after-commit`.
+`eef6e74324b3f86292e50a81fd2c59394c36d3f1`.
 
 Names:
 
