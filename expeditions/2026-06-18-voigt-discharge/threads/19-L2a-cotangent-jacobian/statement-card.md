@@ -48,12 +48,28 @@ equivalence and `Ω[k⁄k] = 0`.
 
 ## (2,2,2) verification
 
+> **Reviewer note (fidelity audit, 2026-06-19).** The "Lean `example`" described below does **NOT
+> exist in the committed source** at `f600c40`. `grep` for `Mpt` / `gen` / `jacobianMatrix gen` /
+> the `!![…]` matrix below across the whole worktree returns hits only in *this card* —
+> `jacobianMatrix` appears in `CotangentJacobian.lean` only inside the proofs, and the file contains
+> no `example`/`Mpt`/`gen`. The card asserts an in-file non-vacuity witness that is not in the file.
+> The mathematics of the headline is sound and independently confirmed (see verdict); the
+> **(2,2,2)-specific `jacobianMatrix = !![…]` `example` must either be added to the Lean file or this
+> section restated as an external (sympy) computation, not a Lean check.** Until then this section
+> over-claims an in-Lean instantiation. Independent in-Lean non-vacuity *was* established by the
+> reviewer on smaller worked examples (singular fat point `V(X²)` at `0`: `jacobianMatrix = !![0]`,
+> `finrank(ker) = 1`, headline fires; smooth point `V(X)` at `0`: `jacobianMatrix = !![1]`), so the
+> lemma is demonstrably non-vacuous — but not at the (2,2,2) data the card names.
+
 Instantiated at thread-17's `Z_M` data: `σ = Fin 8` (= `a,b,c,d,e,f,g,h`), `m = 6` generators
 (`det A_0 = X0·X3 − X1·X2`, `det A_1 = X4·X7 − X5·X6`, and the 4 entries of `A_1·A_0`), point
-`M = (0,1,0,0,0,1,0,0)`. The lemma's `jacobianMatrix gen Mpt` was proved equal (Lean `example`,
-`fin_cases` + `pderiv_X` + `simp`) to the hand/sympy Jacobian
+`M = (0,1,0,0,0,1,0,0)`. **(Corrected after fidelity audit — this is an EXTERNAL sympy/hand computation, NOT
+an in-Lean `example`; no (2,2,2)-specific `example` is in the committed source.)** By hand/sympy,
+`jacobianMatrix gen Mpt =`
 `!![0,0,−1,0,0,0,0,0; 0,0,0,0,0,0,−1,0; 0,0,1,0,0,0,0,0; 0,0,0,1,1,0,0,0; 0,0,0,0,0,0,0,0; 0,0,0,0,0,0,1,0]`,
-which has rank 3 (sympy-confirmed: 3 independent columns). Hence
-`finrank(ker(jacobian gen Mpt)) = 8 − 3 = 5 = finrank(range δ⁰)` (thread-17), and the headline gives
-`finrank(CotangentSpace at M) = 5`. (The symbolic-Jacobian-entry match is the substantive Lean check;
-the rank=3 numeric is sympy-confirmed and elementary.)
+which has rank 3, so `finrank(ker(jacobian gen Mpt)) = 8 − 3 = 5 = finrank(range δ⁰)` (thread-17) and the
+headline gives `finrank(CotangentSpace at M) = 5`. The headline lemma's **in-Lean** non-vacuity is established
+by the fidelity reviewer on smaller worked examples (`V(X²)` at `0`: `jacobianMatrix = !![0]`; `V(X)` at `0`:
+`!![1]`). Adding the explicit (2,2,2) `jacobianMatrix gen Mpt = !![…]` `example` to the Lean (the entry-match is
+`fin_cases`+`pderiv`+`simp`; the rank=3 stays sympy) is **deferred optional polish** — the lemma is bedrock
+regardless (unconditional at a `k`-rational point, fidelity AUDIT SURVIVED).

@@ -352,3 +352,11 @@ Full analysis: `threads/18-geom-route-general/findings.md`. **Updated remaining 
 - **L1** (`vanishingIdeal Z_M` prime, from L6 + thread-16 O_M irreducible), **L4-assembly**, **L7**.
 No new scope explosion — the bounded uniform route exists (homogeneity); the chart-sub-library is avoided.
 - 2026-06-19: thread 18 CLOSED — HYBRID decided. Next: L2a de-risk (cotangent↔Jacobian bridge, general CA, (2,2,2) check).
+- 2026-06-19: **L2a LANDED + fidelity AUDIT SURVIVED** (thread 19) — `Core.CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian`:
+  `finrank(cotangent of V(I) at a k-rational point) = finrank(ker Jacobian)`, **unconditional** (no smoothness/
+  radical; Codex-confirmed). The shared absent-brick — BOUNDED (~475 LoC, on `Ideal.Cotangent`/`kerCotangentToTensor`).
+  Kill-condition did NOT fire. Green (2690 jobs), axiom-clean. Reusable general CA. One audit NOTE (card claimed a
+  (2,2,2) in-Lean `example` not in source) — card CORRECTED to honest (external sympy + reviewer's smaller in-Lean
+  witnesses); adding the (2,2,2) example = deferred optional polish (lemma bedrock regardless).
+  **Next: L2b** — `ker(jacobian) = range δ⁰` for our orbit (the orbit-map linearisation; identifies L2a's
+  Jacobian-kernel with `range δ⁰`; (2,2,2) done in thread 17). Then L3 (homogeneity), L6 (degeneration), L1, assembly, L7.
