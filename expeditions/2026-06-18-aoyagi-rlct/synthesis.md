@@ -944,6 +944,17 @@ and pivot membership facts, but still does not construct the chart, identify
 the hidden old label, prove quotient regularity from recurrence data, or
 produce exponent/transition post-data.
 
+The displayed Case 1(2) row-strip quotient layer is now Lean-proved for the
+top-left pivot. The new theorems choose right-oriented witnesses for
+`u * monomialRec step rowLevel_i = q_i * (u * monomialRec step (J+1))` using
+ordinary monomial recurrence divisibility from the displayed pivot row level
+`J+1` to every residual row level. The recurrence-state wrapper uses supplied
+`IntroducedLabelRecurrenceState` weights, and the source-order wrappers feed
+these witnesses into `case1RowStrip_sourceOrder_identity`. This deliberately
+does not use the Case 1 first-jump gap as if it were a full Case 2 gap; it
+also does not prove arbitrary row-strip pivot quotients, chart production,
+hidden old-label factorisation, or exponent/transition post-data.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -3574,6 +3574,161 @@ theorem case1RowStrip_sourceOrder_identity
     (case1RowStrip_weightedPivotFirstSubstitutionData
       strip u baseWeight A C q hpivot hquot)
 
+/-- Displayed Case 1(2) row-strip pivot quotients for monomial-recursive row
+weights.  This is only the divisibility needed by the displayed top-left `P`
+matrix; it does not derive the recurrence data from a chart transition. -/
+theorem exists_case1DisplayedRowStripPivot_quotients_of_rowIndex_monomialRec
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      ∀ i,
+        monomialRec step (case2ResidualRowLevel n S J i.1) =
+          q i * monomialRec step
+            (case2ResidualRowLevel n S J (case2DisplayedPivotRow n hS hcont)) := by
+  rcases exists_right_quotients_monomialRec_of_le
+      (step := step) (a := J + 1)
+      (level := fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        case2ResidualRowLevel n S J i.1)
+      (fun i ↦ case2ResidualRowLevel_ge n S J i.1) with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  intro i
+  simpa [case2ResidualRowLevel_displayedPivotRow] using hq i
+
+/-- Displayed Case 1(2) row-strip pivot quotients after common multiplication
+by the selected variable.  The selected variable remains on both sides, so the
+proof uses divisibility witnesses rather than cancellation or inverses. -/
+theorem exists_case1DisplayedRowStripPivot_pivotMul_quotients_of_rowIndex_monomialRec
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      ∀ i,
+        u * monomialRec step (case2ResidualRowLevel n S J i.1) =
+          q i * (u * monomialRec step
+            (case2ResidualRowLevel n S J (case2DisplayedPivotRow n hS hcont))) := by
+  rcases exists_right_quotients_pivotMul_monomialRec_of_le
+      (step := step) u (a := J + 1)
+      (level := fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        case2ResidualRowLevel n S J i.1)
+      (fun i ↦ case2ResidualRowLevel_ge n S J i.1) with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  intro i
+  simpa [case2ResidualRowLevel_displayedPivotRow] using hq i
+
+/-- Packaged recurrence-state form of the displayed Case 1(2) row-strip pivot
+quotients.  The state supplies the recurrence weights; no chart production or
+post-transition data is asserted. -/
+theorem exists_case1DisplayedRowStripPivot_pivotMul_quotients_of_recurrenceState
+    (L : ℕ) {n : ℕ → ℕ} {S J : ℕ}
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (state : IntroducedLabelRecurrenceState L n S J R) (u : R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      ∀ i,
+        u * state.case2ResidualRowWeight i.1 =
+          q i * (u * state.case2ResidualRowWeight
+            (case2DisplayedPivotRow n hS hcont)) := by
+  rcases exists_case1DisplayedRowStripPivot_pivotMul_quotients_of_rowIndex_monomialRec
+      state.step n hS hcont u with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  intro i
+  simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight,
+    IntroducedLabelRecurrenceState.weight] using hq i
+
+/-- Displayed Case 1(2) row-strip source-order identity with quotient
+witnesses chosen from row-indexed monomial recurrence weights.  The normalised
+matrix, strip predicate, old-variable factorisation convention, and following
+factor are still supplied. -/
+theorem exists_case1RowStrip_sourceOrder_identity_of_rowIndex_monomialRec
+    {ι κ τ R : Type*} [CommRing R] [Fintype ι] [DecidableEq ι] [DecidableEq κ]
+    {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (step : ℕ → R) (rowLevel : ι → ℕ) (pivotLevel : ℕ)
+    (A : Matrix ι κ R)
+    (C : Matrix (Unit ⊕ pivotComplement colPivot) τ R)
+    (hpivot : A rowPivot colPivot = 1)
+    (hpivotLevel : rowLevel rowPivot = pivotLevel)
+    (hlevel : ∀ i : pivotComplement rowPivot, pivotLevel ≤ rowLevel i.1) :
+    ∃ q : pivotComplement rowPivot → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+          (diagonal
+              (case1RowStripOldWeight strip u
+                (fun i ↦ monomialRec step (rowLevel i))) *
+            case1RowStripSourceMatrix strip u A).submatrix
+            (pivotFirstIndexEquiv rowPivot) (pivotFirstIndexEquiv colPivot)) *
+          C =
+        (weightedPivotDiagonal
+            (u * monomialRec step (rowLevel rowPivot))
+            (fun i : pivotComplement rowPivot ↦
+              u * monomialRec step (rowLevel i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD rowPivot colPivot A -
+              pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A)) *
+          (pivotQinv (pivotFirstY rowPivot colPivot A) * C) := by
+  rcases exists_right_quotients_pivotMul_monomialRec_of_le
+      (step := step) u (a := pivotLevel)
+      (level := fun i : pivotComplement rowPivot ↦ rowLevel i.1)
+      hlevel with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  refine case1RowStrip_sourceOrder_identity strip u
+    (fun i ↦ monomialRec step (rowLevel i)) A C q hpivot ?_
+  intro i
+  change u * monomialRec step (rowLevel i.1) =
+    q i * (u * monomialRec step (rowLevel rowPivot))
+  rw [hpivotLevel]
+  exact hq i
+
+/-- Displayed Case 1(2) source-order identity for the top-left residual pivot,
+with quotient witnesses chosen from the residual row index recurrence.  This is
+finite source-order algebra only, not a Case 1 transition theorem. -/
+theorem exists_case1DisplayedRowStrip_sourceOrder_identity_of_rowIndex_monomialRec
+    {τ R : Type*} [CommRing R]
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (strip : Case2ResidualRowIndex n S J → Prop) [DecidablePred strip] (u : R)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (C : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (hpivot :
+      A (case2DisplayedPivotRow n hS hcont) (case2DisplayedPivotCol n hS hcont) = 1) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) A i ()) *
+          (diagonal
+              (case1RowStripOldWeight strip u
+                (fun i ↦ monomialRec step (case2ResidualRowLevel n S J i))) *
+            case1RowStripSourceMatrix strip u A).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          C =
+        (weightedPivotDiagonal
+            (u * monomialRec step (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) A -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont) A *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont) A)) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont) A) * C) := by
+  rcases exists_case1RowStrip_sourceOrder_identity_of_rowIndex_monomialRec
+      strip u step (case2ResidualRowLevel n S J) (J + 1) A C hpivot
+      (case2ResidualRowLevel_displayedPivotRow n hS hcont)
+      (fun i ↦ case2ResidualRowLevel_ge n S J i.1) with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  simpa [case2ResidualRowLevel_displayedPivotRow] using hq
+
 /-- Supplied-data boundary for Aoyagi's displayed Case 1(2) row-strip pivot.
 It combines the finite first-jump/source-validity facts with an already
 supplied weighted pivot-first source block.  It does not construct the

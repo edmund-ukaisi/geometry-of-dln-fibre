@@ -214,10 +214,12 @@ on the session's original cwd.
    row-strip weighted source block is now Lean-proved as finite algebra:
    strip rows get the selected factor from source entries, lower rows get it
    from the hidden old-variable factorisation, and the selected variable is
-   counted once before applying the generic `Q/P` adapter. Next A4 target:
-   derive the Case 1(2) quotient witnesses from recurrence/first-jump data, or
-   package the Case 1(2) exponent/post-data update; keep chart production and
-   hidden old-label validity explicit.
+   counted once before applying the generic `Q/P` adapter. The displayed
+   top-left Case 1(2) quotient witnesses are now also Lean-proved from
+   row-indexed monomial recurrence divisibility and fed into the row-strip
+   source-order wrapper. Next A4 target: package the Case 1(2)
+   exponent/post-data update, or begin the chart-production/hidden-old-label
+   validity boundary; keep arbitrary pivots explicit.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
