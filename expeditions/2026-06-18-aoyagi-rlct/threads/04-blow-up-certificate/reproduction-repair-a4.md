@@ -385,6 +385,77 @@ Lean status: this arithmetic is formalised in
 `monomialRec_dvd_of_le`, `monomialRec_pivot_dvd`,
 `mul_left_dvd_mul_left_of_dvd`, and `pivotMul_monomialRec_dvd_of_le`.
 
+### Normalized `P` row-operation algebra
+
+After choosing a consistent normalization for the common pivot factor, the
+displayed `P` identity is elementary block algebra.  Reindex the displayed
+pivot block so the pivot row and column are indexed by `0`, and the remaining
+rows and columns are indexed separately.  Write the `Q`-normalised block as
+
+```text
+D'' = [ 1  0
+       x  D ],
+```
+
+where the top row zeros are the output of the `Q` operation.  Let the diagonal
+weights be
+
+```text
+B = diag(b'_0, b'_lower),
+```
+
+and suppose quotient witnesses `q_i` satisfy
+
+```text
+b'_i = q_i * b'_0
+```
+
+for every lower row `i`.  Define
+
+```text
+P = [ 1   0
+     -q_i*x_i   I ].
+```
+
+Then, for the first column and lower row `i`,
+
+```text
+(P B D'')_(i,0)
+  = -(q_i*x_i)*(b'_0*1) + b'_i*x_i
+  = 0.
+```
+
+For a lower-right entry `(i,j)`, the top-row zero gives
+
+```text
+(P B D'')_(i,j)
+  = -(q_i*x_i)*(b'_0*0) + b'_i*D_ij
+  = b'_i*D_ij.
+```
+
+The top row is unchanged.  Thus
+
+```text
+P * B * D'' = B * [ 1  0
+                   0  D ].
+```
+
+This proof is independent of the Case 2 vector typo: it uses only the
+already-normalised local matrix `D''`, quotient witnesses, and the decision to
+count the common pivot factor once.  It applies verbatim to Case 1(2) and
+Case 2; only the source of the quotient witnesses differs.
+
+Independent check: xhigh scout `Gauss the 2nd` reproduced the same normalized
+row-operation certificate from PDF pp. 17-21 and confirmed that the printed
+outside `u` versus `b'_i=u*b_i` display must be resolved by a single
+normalization choice.
+
+Lean status: the normalized block theorem is formalised as
+`weightedPivotBlockRowOp_mul_diagonal_mul` in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`, with helper definitions
+`weightedPivotBlockRowOp`, `weightedPivotBlockMatrix`,
+`weightedPivotClearedBlock`, and `weightedPivotDiagonal`.
+
 ## Pivot-chart coverage obligation
 
 The source displays only the chart where the pivot entry is `d_(J+1,J+1)`.

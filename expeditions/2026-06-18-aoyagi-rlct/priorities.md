@@ -88,10 +88,10 @@ on the session's original cwd.
    and exact hypotheses from the PDF where the first scout still left TBDs.
 5. Repair A4 blow-up reproduction. Keep actual layer widths and prefix minima
    separate; the terminal-exponent split and the monomial recurrence
-   divisibility needed for `P` are Lean-proved. Next either build the corrected
-   certificate's finite vector invariant around prefix-minimum coordinates or
-   choose a normalization for the `b'_i`/standalone-`u` display and prove the
-   displayed row-operation algebra. Then redo Case 1/2 updates, cover pivot
+   divisibility needed for `P` are Lean-proved, and the normalized `P`
+   row-operation algebra is also Lean-proved. Next build the surrounding `Q`
+   operation algebra or the corrected certificate's finite vector invariant
+   around prefix-minimum coordinates. Then redo Case 1/2 updates, cover pivot
    charts, repair the remaining recurrence bookkeeping, and replace the
    termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve

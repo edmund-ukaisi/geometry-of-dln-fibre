@@ -133,6 +133,12 @@ interface without surfacing it.
   recurrence monomials divide later recurrence monomials, even after common
   pivot multiplication. This is the arithmetic witness for `b'_i/b'_(J+1)`,
   not yet a construction of the row-operation matrix.
+  The normalized `P` row-operation algebra is now also Lean-proved:
+  `weightedPivotBlockRowOp_mul_diagonal_mul` packages the pivot split
+  `[1 0; x D]` and proves the lower first column is cleared under quotient
+  witnesses `b_i=q_i*b0`. This still assumes the `Q`-normalised shape and a
+  consistent choice about whether the common pivot factor is inside the
+  diagonal weights or outside.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

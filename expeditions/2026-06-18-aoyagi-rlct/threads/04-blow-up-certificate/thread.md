@@ -78,3 +78,22 @@ monomial recurrence lemma.  Lean now proves that a recurrence
 `b_(k+1)=step_k*b_k` has tail-product divisibility `b_a | b_b` for `a <= b`,
 and that common multiplication by a pivot variable preserves this divisibility.
 This still does not construct `P` or prove the matrix row-operation identity.
+
+## 2026-06-19 Lean normalized `P` row operation
+
+Statement card: `statement-card-a4-normalized-p-row-operation.md`.
+
+Xhigh scout `Gauss the 2nd` reproduced the normalized row-operation algebra.
+Lean now proves `weightedPivotBlockRowOp_mul_diagonal_mul`: in a pivot split
+`Unit ⊕ lower`, if the `Q`-normalised block is `[1 0; x D]` and lower weights
+satisfy `b_i=q_i*b0`, then the lower-unitriangular `P` matrix clears the lower
+first column and leaves the lower-right block unchanged:
+
+```text
+P * diag(b0,b) * [1 0; x D] = diag(b0,b) * [1 0; 0 D].
+```
+
+This is independent of the Case 2 vector typo and applies to both displayed
+pivot branches after choosing one normalization for the common pivot factor.
+It still does not prove the surrounding `Q` operation, pivot-chart coverage, or
+the full transition invariant.

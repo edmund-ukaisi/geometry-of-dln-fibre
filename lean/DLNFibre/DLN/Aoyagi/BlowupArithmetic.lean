@@ -1,4 +1,5 @@
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Data.Matrix.Block
 import Mathlib.Data.Int.Order.Basic
 import Mathlib.Tactic
 
@@ -12,6 +13,7 @@ not formalise a blow-up chart or an RLCT extraction theorem.
 noncomputable section
 
 open scoped BigOperators
+open Matrix
 
 namespace DLNFibre
 namespace DLN
@@ -255,6 +257,82 @@ theorem pivotMul_monomialRec_dvd_of_le (step : ℕ → α) (u : α) {a b : ℕ}
   mul_left_dvd_mul_left_of_dvd (monomialRec_dvd_of_le step h)
 
 end MonomialRecurrence
+
+section RowOperationScalars
+
+variable {R : Type*} [CommRing R]
+
+/-- Scalar algebra for the weighted row operation used in the pivot chart. -/
+theorem weightedPivotRow_scalar (b0 bi q di0 d0j dij : R)
+    (hbi : bi = q * b0) :
+    -(q * di0) * (b0 * d0j) + bi * dij = bi * (dij - di0 * d0j) := by
+  rw [hbi]
+  ring
+
+/-- The pivot row operation clears the first-column entry below the pivot. -/
+theorem weightedPivotRow_firstColumn_zero (b0 bi q di0 : R)
+    (hbi : bi = q * b0) :
+    -(q * di0) * b0 + bi * di0 = 0 := by
+  rw [hbi]
+  ring
+
+/-- If the post-`Q` top row has zero off the pivot, the lower-right entry is unchanged. -/
+theorem weightedPivotRow_topRowZero (b0 bi q di0 dij : R)
+    (hbi : bi = q * b0) :
+    -(q * di0) * (b0 * 0) + bi * dij = bi * dij := by
+  rw [hbi]
+  ring
+
+end RowOperationScalars
+
+section RowOperationBlocks
+
+variable {R ρ κ : Type*} [CommRing R] [Fintype ρ] [DecidableEq ρ]
+
+/-- The lower-unitriangular row-operation matrix used after the pivot row has been normalised. -/
+def weightedPivotBlockRowOp (q x : ρ → R) : Matrix (Unit ⊕ ρ) (Unit ⊕ ρ) R :=
+  fromBlocks 1 0 (fun i _ ↦ -(q i * x i)) 1
+
+/-- The post-`Q` pivot block: top row `(1,0,...,0)` and lower-left column `x`. -/
+def weightedPivotBlockMatrix (x : ρ → R) (D : Matrix ρ κ R) :
+    Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R :=
+  fromBlocks 1 0 (fun i _ ↦ x i) D
+
+/-- The same pivot block after the first column has been cleared below the pivot. -/
+def weightedPivotClearedBlock (D : Matrix ρ κ R) : Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R :=
+  fromBlocks 1 0 0 D
+
+/-- Diagonal weights split into the pivot weight and the lower-row weights. -/
+def weightedPivotDiagonal (b0 : R) (b : ρ → R) : Matrix (Unit ⊕ ρ) (Unit ⊕ ρ) R :=
+  fromBlocks (fun _ _ ↦ b0) 0 0 (diagonal b)
+
+set_option linter.flexible false in
+/-- The normalised `P` row operation clears the first column below the pivot. -/
+theorem weightedPivotBlockRowOp_mul_diagonal_mul
+    (b0 : R) (b q x : ρ → R) (D : Matrix ρ κ R)
+    (h : ∀ i, b i = q i * b0) :
+    weightedPivotBlockRowOp q x * weightedPivotDiagonal b0 b * weightedPivotBlockMatrix x D =
+      weightedPivotDiagonal b0 b * weightedPivotClearedBlock D := by
+  rw [Matrix.mul_assoc]
+  ext r c
+  rcases r with (_ | i)
+  · rcases c with (_ | j)
+    · simp [weightedPivotBlockRowOp, weightedPivotDiagonal, weightedPivotBlockMatrix,
+        weightedPivotClearedBlock, Matrix.fromBlocks_multiply]
+    · simp [weightedPivotBlockRowOp, weightedPivotDiagonal, weightedPivotBlockMatrix,
+        weightedPivotClearedBlock, Matrix.fromBlocks_multiply]
+  · rcases c with (_ | j)
+    · simp [weightedPivotBlockRowOp, weightedPivotDiagonal, weightedPivotBlockMatrix,
+        weightedPivotClearedBlock, Matrix.fromBlocks_multiply, Matrix.mul_apply,
+        Matrix.one_apply]
+      have hdiag : (∑ x_1, diagonal b i x_1 * x x_1) = b i * x i := by
+        simpa [dotProduct] using (diagonal_dotProduct (v := b) (w := x) i)
+      rw [hdiag, h i]
+      ring
+    · simp [weightedPivotBlockRowOp, weightedPivotDiagonal, weightedPivotBlockMatrix,
+        weightedPivotClearedBlock, Matrix.fromBlocks_multiply, h]
+
+end RowOperationBlocks
 
 end Aoyagi
 end DLN

@@ -511,7 +511,10 @@ No such claim is formalisation-ready until both fields are filled.
   `monomialRec_add_eq_tail_mul`, `monomialRec_dvd_of_le`,
   `monomialRec_pivot_dvd`, `mul_left_dvd_mul_left_of_dvd`, and
   `pivotMul_monomialRec_dvd_of_le`, which isolates the arithmetic needed for
-  regularity of `b'_i / b'_(J+1)`.
+  regularity of `b'_i / b'_(J+1)`. Also proved the normalized block
+  row-operation theorem `weightedPivotBlockRowOp_mul_diagonal_mul`, with helper
+  definitions `weightedPivotBlockRowOp`, `weightedPivotBlockMatrix`,
+  `weightedPivotClearedBlock`, and `weightedPivotDiagonal`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.
