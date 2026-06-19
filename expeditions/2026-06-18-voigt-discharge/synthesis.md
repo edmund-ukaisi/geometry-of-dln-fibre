@@ -166,3 +166,24 @@ inflates — doesn't favour S (shared); build the regular-local-ring bridge as i
 then L2, then L3 (density), L1, L4-assembly.
 - 2026-06-19: thread 07 (Phase B architecture) CLOSED — Route A decided. Next: de-risk L4(a)+L4(d) (smooth ⟹
   regular local ring + local↔global dim) as a standalone general-CA tide; report if it balloons (kill-condition).
+
+## ⚠ KILL-CONDITION FIRED — L4 is a foundational sub-library (operator decision pending) [2026-06-19, thread 08]
+Sizing of L4(a)/(d) (formaliser + decorrelated Codex, both independent): **the regular-local-ring finish is NOT
+module-scale — it is a multi-week foundational AG/CA sub-library Mathlib entirely lacks.** No Lean landed
+(correctly — sorry-patching a sub-library is forbidden).
+- **The absent theory** (verified by `rg`): `rg ringKrullDim` over all of `RingTheory/{Kaehler,Smooth,Etale}/`
+  = **0 hits** — no `rank Ω ↔ ringKrullDim` link anywhere. `IsRegularLocalRing` is an **isolated definition**
+  (nothing produces it; only `iff_finrank_cotangentSpace` consumes it). No affine-domain dimension formula
+  (`height m + dim(A/m) = dim A` for `A = R/I`, only our R-only L5). Codex: "multi-week."
+- **No shortcut:** the alternative route (orbit-stabiliser / fibre-dimension `dim O = dim G − dim Stab`) hits the
+  SAME absent dimension theory (fibre-dimension ↔ ringKrullDim, also 0 hits). Every standard route to
+  `varietyDim(Ō_M) = dim(im δ⁰)` needs the infinitesimal↔Krull-dimension bridge Mathlib does not have.
+- **Sub-sizing:** L4(d) (affine-domain equidimensionality, lift L5 to `R/I`) ≈ 1–2 modules (Noether normalization
+  PRESENT; reuses `ringKrullDim_eq_of_integral_injective`). L4(a) (smooth ⟹ regular via cotangent↔dim + the
+  conormal/Kähler comparison) = the binding multi-week sub-library.
+- **Mandate tension:** the only module-scale alternative is to **Cite** the smooth-point regularity bridge as a
+  named interface — a *new cited interface*, forbidden by the zero-cited mandate. So: build the sub-library, or
+  relax the mandate to one named standard citation, or stop at the current hybrid. **SURFACED TO OPERATOR.**
+- **Banked regardless:** Phase A (L5 polynomial dimension formula + L0 Nullstellensatz bridge) is real
+  upstream-grade reusable bedrock, independent of this decision.
+- **Autonomous loop PAUSED** (cron `e5d64339` deleted) pending the operator's scope decision.
