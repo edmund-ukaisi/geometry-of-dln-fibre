@@ -259,6 +259,12 @@ interface without surfacing it.
   variant. This removes a mechanical bridge but does not prove selected-entry
   chart construction, coordinate/weight transport, or Aoyagi-specific row
   hypotheses.
+  The source-displayed Case 2 top-left pivot is now Lean-instantiated:
+  displayed residual row/column index types, displayed pivot row/column
+  elements, selected-entry normalisation, and the flat-row-weight
+  product-preservation `Q/P` identity are proved. This remains local to
+  `d_(J+1,J+1)` and still does not prove arbitrary-pivot charts, atlas
+  coverage, full source-variable transport, or exponent updates.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

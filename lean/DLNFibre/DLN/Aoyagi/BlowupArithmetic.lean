@@ -652,6 +652,14 @@ def case2ResidualBlockRows (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
 def case2ResidualBlockCols (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
   Finset.Icc (J + 1) (n (S + 1))
 
+/-- Finite row index type for the corrected Case 2 residual block. -/
+abbrev Case2ResidualRowIndex (n : ℕ → ℕ) (S J : ℕ) :=
+  (case2ResidualBlockRows n S J : Type)
+
+/-- Finite column index type for the corrected Case 2 residual block. -/
+abbrev Case2ResidualColIndex (n : ℕ → ℕ) (S J : ℕ) :=
+  (case2ResidualBlockCols n S J : Type)
+
 /-- Candidate selected entries in the Case 2 residual-block center, not a chart cover proof. -/
 def case2ResidualBlockPivotEntries (n : ℕ → ℕ) (S J : ℕ) : Finset (ℕ × ℕ) :=
   (case2ResidualBlockRows n S J).product (case2ResidualBlockCols n S J)
@@ -679,6 +687,25 @@ theorem case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
   refine ⟨le_rfl, ?_, le_rfl, ?_⟩
   · exact le_trans hcont (prefixMinNat_succ_le n hS)
   · exact le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
+
+/-- The displayed Case 2 pivot row `J+1`, as an element of the residual-row index type. -/
+def case2DisplayedPivotRow
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    Case2ResidualRowIndex n S J :=
+  ⟨J + 1, by
+    rw [mem_case2ResidualBlockRows]
+    exact ⟨le_rfl, le_trans hcont (prefixMinNat_succ_le n hS)⟩⟩
+
+/-- The displayed Case 2 pivot column `J+1`, as an element of the residual-column index type. -/
+def case2DisplayedPivotCol
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    Case2ResidualColIndex n S J :=
+  ⟨J + 1, by
+    rw [mem_case2ResidualBlockCols]
+    exact ⟨le_rfl,
+      le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))⟩⟩
 
 /-- Case 1 center generator symbols after externally choosing the old exceptional variable.
 The `Unit` branch does not encode the old label, its validity, level, minimality, or
@@ -902,15 +929,37 @@ chart or prove chart coverage, regularity, transition formulas, or Jacobian fact
 def selectedEntryChartMap (pivot : ι) (u : α) (residual : ι → α) (i : ι) : α :=
   u * if i = pivot then 1 else residual i
 
+/-- The normalised selected-entry chart coordinate: the pivot is `1`, all other
+center generators are residual coordinates. -/
+def selectedEntryNormalizedMap (pivot : ι) (residual : ι → α) (i : ι) : α :=
+  if i = pivot then 1 else residual i
+
 @[simp] theorem selectedEntryChartMap_pivot
     (pivot : ι) (u : α) (residual : ι → α) :
     selectedEntryChartMap pivot u residual pivot = u := by
   simp [selectedEntryChartMap]
 
+@[simp] theorem selectedEntryNormalizedMap_pivot
+    (pivot : ι) (residual : ι → α) :
+    selectedEntryNormalizedMap pivot residual pivot = 1 := by
+  simp [selectedEntryNormalizedMap]
+
 theorem selectedEntryChartMap_of_ne
     {pivot i : ι} (u : α) (residual : ι → α) (hi : i ≠ pivot) :
     selectedEntryChartMap pivot u residual i = u * residual i := by
   simp [selectedEntryChartMap, hi]
+
+theorem selectedEntryNormalizedMap_of_ne
+    {pivot i : ι} (residual : ι → α) (hi : i ≠ pivot) :
+    selectedEntryNormalizedMap pivot residual i = residual i := by
+  simp [selectedEntryNormalizedMap, hi]
+
+/-- The selected-entry substitution is the selected variable times the normalised chart. -/
+theorem selectedEntryChartMap_eq_mul_normalized
+    (pivot : ι) (u : α) (residual : ι → α) (i : ι) :
+    selectedEntryChartMap pivot u residual i =
+      u * selectedEntryNormalizedMap pivot residual i :=
+  rfl
 
 /-- Every transformed center generator is divisible by the selected pivot variable. -/
 theorem selectedEntryChartMap_pivot_dvd
@@ -926,6 +975,52 @@ theorem selectedEntryChartMap_pivot_mem_valueSet
   ⟨pivot, hpivot, by simp⟩
 
 end SelectedEntryChart
+
+section SelectedEntrySubstitutionMatrix
+
+variable {ι κ α : Type*} [DecidableEq ι] [DecidableEq κ] [Monoid α]
+
+/-- Normalised matrix form of a selected-entry substitution at a chosen matrix pivot. -/
+def selectedEntryNormalizedMatrix
+    (rowPivot : ι) (colPivot : κ) (residual : ι → κ → α) :
+    Matrix ι κ α :=
+  fun i j ↦
+    selectedEntryNormalizedMap (rowPivot, colPivot)
+      (fun p : ι × κ ↦ residual p.1 p.2) (i, j)
+
+/-- Matrix-valued selected-entry substitution before factoring out the selected variable. -/
+def selectedEntrySubstitutionMatrix
+    (rowPivot : ι) (colPivot : κ) (u : α) (residual : ι → κ → α) :
+    Matrix ι κ α :=
+  fun i j ↦
+    selectedEntryChartMap (rowPivot, colPivot) u
+      (fun p : ι × κ ↦ residual p.1 p.2) (i, j)
+
+@[simp] theorem selectedEntryNormalizedMatrix_pivot
+    (rowPivot : ι) (colPivot : κ) (residual : ι → κ → α) :
+    selectedEntryNormalizedMatrix rowPivot colPivot residual rowPivot colPivot = 1 := by
+  simp [selectedEntryNormalizedMatrix]
+
+@[simp] theorem selectedEntrySubstitutionMatrix_pivot
+    (rowPivot : ι) (colPivot : κ) (u : α) (residual : ι → κ → α) :
+    selectedEntrySubstitutionMatrix rowPivot colPivot u residual rowPivot colPivot = u := by
+  simp [selectedEntrySubstitutionMatrix]
+
+theorem selectedEntryNormalizedMatrix_of_ne
+    {rowPivot : ι} {colPivot : κ} {i : ι} {j : κ}
+    (residual : ι → κ → α) (hij : (i, j) ≠ (rowPivot, colPivot)) :
+    selectedEntryNormalizedMatrix rowPivot colPivot residual i j = residual i j := by
+  exact selectedEntryNormalizedMap_of_ne _ hij
+
+/-- Matrix-valued selected-entry substitution factors as the selected variable times the
+normalised selected-entry matrix. -/
+theorem selectedEntrySubstitutionMatrix_eq_mul_normalized
+    (rowPivot : ι) (colPivot : κ) (u : α) (residual : ι → κ → α) :
+    selectedEntrySubstitutionMatrix rowPivot colPivot u residual =
+      fun i j ↦ u * selectedEntryNormalizedMatrix rowPivot colPivot residual i j :=
+  rfl
+
+end SelectedEntrySubstitutionMatrix
 
 /-- In the Case 2 residual-block center, the displayed selected-entry chart has value `u`
 at the displayed pivot. This is only finite selected-entry bookkeeping. -/
@@ -1939,6 +2034,84 @@ theorem exists_pivotFirstQP_mul_of_pivotMul_monomialRec_eq_or_le
   rcases exists_right_quotients_pivotMul_monomialRec_of_eq_or_le step u hlevel with ⟨q, hq⟩
   exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul
     (u * monomialRec step a) (fun i ↦ u * monomialRec step (level i)) q A hA C hq⟩
+
+/-- Source-displayed Case 2 top-left selected-entry substitution instantiates the
+pivot-first product `Q/P` identity under flat residual-row weights.  The selected
+variable has already been factored into the row weights as `u * weight`; this is
+not an arbitrary-pivot chart or chart-coverage theorem. -/
+theorem exists_case2DisplayedQP_mul_of_flat_weights
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (weight : Case2ResidualRowIndex n S J → R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (hflat : ∀ i, weight i = weight (case2DisplayedPivotRow n hS hcont)) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (selectedEntryNormalizedMatrix
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) residual) i ()) *
+          weightedPivotDiagonal
+            (u * weight (case2DisplayedPivotRow n hS hcont))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * weight i.1) *
+          pivotFirstMatrix
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (selectedEntryNormalizedMatrix
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont) residual)) *
+          C =
+        (weightedPivotDiagonal
+            (u * weight (case2DisplayedPivotRow n hS hcont))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * weight i.1) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (selectedEntryNormalizedMatrix
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont) residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (selectedEntryNormalizedMatrix
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont) residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (selectedEntryNormalizedMatrix
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont) residual))) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (selectedEntryNormalizedMatrix
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) residual)) * C) := by
+  refine exists_pivotFirstQP_mul_of_forall_dvd
+    (u * weight (case2DisplayedPivotRow n hS hcont))
+    (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦ u * weight i.1)
+    (selectedEntryNormalizedMatrix
+      (case2DisplayedPivotRow n hS hcont)
+      (case2DisplayedPivotCol n hS hcont) residual)
+    (selectedEntryNormalizedMatrix_pivot
+      (case2DisplayedPivotRow n hS hcont)
+      (case2DisplayedPivotCol n hS hcont) residual)
+    C ?_
+  intro i
+  change
+    u * weight (case2DisplayedPivotRow n hS hcont) ∣
+      u * weight i.1
+  rw [hflat i.1]
 
 end ColumnOperationBlocks
 

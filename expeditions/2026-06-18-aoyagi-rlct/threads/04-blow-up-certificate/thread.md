@@ -344,6 +344,26 @@ prove selected-entry chart construction, coordinate/weight transport,
 Aoyagi-specific arbitrary row hypotheses, chart coverage, exponent updates, or
 a transition invariant.
 
+## 2026-06-19 Lean Case 2 displayed pivot `Q/P`
+
+Reproduction: `reproduction-case2-displayed-pivot-q-p-a4.md`.
+Statement card: `statement-card-a4-case2-displayed-pivot-q-p.md`.
+
+Lean now instantiates the pivot-first product `Q/P` identity for the
+source-displayed Case 2 top-left pivot `d_(J+1,J+1)`. The new finite row and
+column index types record the corrected residual-block row range `J+1..mu_S`
+and actual-width column range `J+1..n_(S+1)`. Under the source continuation
+bound, `case2DisplayedPivotRow` and `case2DisplayedPivotCol` package the
+displayed pivot indices.
+
+The selected-entry substitution is split into a selected variable times a
+normalised matrix with pivot entry `1`, and
+`exists_case2DisplayedQP_mul_of_flat_weights` applies the existing
+pivot-first existential `Q/P` wrapper under flat displayed residual-row
+weights. This is the displayed Case 2 local algebra only. It does not prove
+arbitrary selected-entry charts, affine atlas coverage, full source-variable
+transport, exponent updates, or a transition invariant.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

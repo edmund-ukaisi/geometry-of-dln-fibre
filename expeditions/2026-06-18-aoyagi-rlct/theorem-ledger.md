@@ -303,6 +303,21 @@ construction, coordinate/weight transport, arbitrary row hypotheses, chart
 coverage, exponent updates, or transition invariants. Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-pivot-first-existential-q-p.md`.
 
+Fifth latest A4 update: the source-displayed Case 2 top-left pivot `Q/P`
+instantiation has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+Proved Lean names include `Case2ResidualRowIndex`,
+`Case2ResidualColIndex`, `case2DisplayedPivotRow`,
+`case2DisplayedPivotCol`, `selectedEntryNormalizedMap`,
+`selectedEntrySubstitutionMatrix`, `selectedEntryNormalizedMatrix`, and
+`exists_case2DisplayedQP_mul_of_flat_weights`. This checkpoint packages the
+displayed pivot row/column under the continuation bound, splits the
+selected-entry substitution as `u` times a normalised matrix with pivot entry
+`1`, and applies the pivot-first product `Q/P` identity under flat displayed
+row weights. It does not prove arbitrary selected-entry charts, atlas
+coverage, full coordinate/weight transport, exponent updates, or transition
+invariants. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-pivot-q-p.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

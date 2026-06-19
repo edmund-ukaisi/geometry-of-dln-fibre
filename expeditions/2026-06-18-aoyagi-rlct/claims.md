@@ -484,9 +484,11 @@ No such claim is formalisation-ready until both fields are filled.
   `(M^{(S)}-J)(M^{(S+1)}-J)` unless `M(S)=M^{(S)}`. The monomial divisibility
   and normalized local `Q/P` algebra are now proved narrowly, and the quotient
   witness layer is connected to pivot-first `Q/P` algebra by existential
-  wrappers. Missing pivot charts, full polynomial-coordinate chart construction,
-  coordinate/weight transport, the printed `b'_i` versus standalone-`u`
-  ambiguity, termination, and boundary cases remain open.
+  wrappers. The source-displayed Case 2 top-left pivot `Q/P` product identity
+  is also proved under flat displayed residual-row weights. Missing arbitrary
+  pivot charts, full polynomial-coordinate chart construction,
+  coordinate/weight transport from source variables, the printed `b'_i` versus
+  standalone-`u` ambiguity, termination, and boundary cases remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
   genuine source gap with no certificate-level repair compatible with the
@@ -627,7 +629,12 @@ No such claim is formalisation-ready until both fields are filled.
   `exists_pivotFirstQP_mul_of_monomialRec_eq_or_le`, and
   `exists_pivotFirstQP_mul_of_pivotMul_monomialRec_eq_or_le`, plus the small
   `Case1FirstJumpHypotheses` displayed-pivot and strip-entry membership
-  corollaries.
+  corollaries. Added source-displayed Case 2 top-left pivot data and algebra:
+  `Case2ResidualRowIndex`, `Case2ResidualColIndex`,
+  `case2DisplayedPivotRow`, `case2DisplayedPivotCol`,
+  `selectedEntryNormalizedMap`, `selectedEntryNormalizedMatrix`,
+  `selectedEntrySubstitutionMatrix`, and
+  `exists_case2DisplayedQP_mul_of_flat_weights`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
   transport, row-weight hypotheses in pivot-first coordinates, and exponent
