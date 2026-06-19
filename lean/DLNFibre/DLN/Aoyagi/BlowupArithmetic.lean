@@ -3413,7 +3413,7 @@ theorem exists_weightedPivotFirstSubstitution_sourceOrder_identity_of_forall_dvd
           (pivotQinv y * C) := by
   rcases exists_right_quotients_of_forall_dvd hdiv with ⟨q, hq⟩
   exact ⟨q,
-    (WeightedPivotFirstSubstitutionData.sourceOrder_identity
+      (WeightedPivotFirstSubstitutionData.sourceOrder_identity
       ({ b0 := b0
          b := b
          q := q
@@ -3425,6 +3425,233 @@ theorem exists_weightedPivotFirstSubstitution_sourceOrder_identity_of_forall_dvd
          source_eq := hsource
          quotient := hq } :
         WeightedPivotFirstSubstitutionData R ρ κ τ))⟩
+
+/-- Left multiplication by a diagonal matrix weights each row. -/
+theorem diagonal_mul_apply
+    {ι κ R : Type*} [Semiring R] [Fintype ι] [DecidableEq ι]
+    (weight : ι → R) (A : Matrix ι κ R) (i : ι) (j : κ) :
+    (diagonal weight * A) i j = weight i * A i j := by
+  exact Matrix.diagonal_mul weight A i j
+
+/-- Case 1(2) row-strip source matrix from an already normalised pre-`Q`
+matrix `A`.  It reconstructs the old source entries as `u * A i j` on strip
+rows and leaves lower residual rows unchanged.  This is only the elementary
+row-wise source algebra, not a chart construction. -/
+def case1RowStripSourceMatrix
+    {ι κ R : Type*} [CommRing R]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (A : Matrix ι κ R) : Matrix ι κ R :=
+  fun i j ↦ if strip i then u * A i j else A i j
+
+/-- Case 1(2) old row weights after the hidden old exceptional variable has
+been factored as `old = u * old'`.  The row strip has not gained the old
+factor, while lower residual rows have. -/
+def case1RowStripOldWeight
+    {ι R : Type*} [CommRing R]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (baseWeight : ι → R) : ι → R :=
+  fun i ↦ if strip i then baseWeight i else u * baseWeight i
+
+/-- Elementary Case 1(2) row-strip weighting identity.
+
+The selected variable is counted once on the right.  In strip rows it comes
+from the divided matrix entries; below the strip it comes from the hidden
+old-variable factorisation. -/
+theorem case1RowStrip_diagonal_mul_sourceMatrix
+    {ι κ R : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (baseWeight : ι → R) (A : Matrix ι κ R) :
+    diagonal (case1RowStripOldWeight strip u baseWeight) *
+        case1RowStripSourceMatrix strip u A =
+      diagonal (fun i ↦ u * baseWeight i) * A := by
+  ext i j
+  calc
+    (diagonal (case1RowStripOldWeight strip u baseWeight) *
+          case1RowStripSourceMatrix strip u A) i j
+        = case1RowStripOldWeight strip u baseWeight i *
+            case1RowStripSourceMatrix strip u A i j := by
+            rw [diagonal_mul_apply]
+    _ = (u * baseWeight i) * A i j := by
+        by_cases hi : strip i
+        · simp [case1RowStripOldWeight, case1RowStripSourceMatrix, hi]
+          ring
+        · simp [case1RowStripOldWeight, case1RowStripSourceMatrix, hi]
+    _ = (diagonal (fun i ↦ u * baseWeight i) * A) i j := by
+        rw [diagonal_mul_apply]
+
+/-- Pivot-first form of the Case 1(2) row-strip weighting identity.  This is
+the source-order input expected by the generic displayed top-left `Q/P`
+adapter once a pivot row and column have already been chosen. -/
+theorem case1RowStrip_diagonal_mul_sourceMatrix_pivotFirst
+    {ι κ R : Type*} [CommRing R] [Fintype ι] [DecidableEq ι] [DecidableEq κ]
+    {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (baseWeight : ι → R) (A : Matrix ι κ R) :
+    (diagonal (case1RowStripOldWeight strip u baseWeight) *
+        case1RowStripSourceMatrix strip u A).submatrix
+        (pivotFirstIndexEquiv rowPivot) (pivotFirstIndexEquiv colPivot) =
+      weightedPivotDiagonal (u * baseWeight rowPivot)
+        (fun i : pivotComplement rowPivot ↦ u * baseWeight i.1) *
+        pivotFirstMatrix rowPivot colPivot A := by
+  rw [case1RowStrip_diagonal_mul_sourceMatrix]
+  rw [← Matrix.submatrix_mul_equiv
+    (diagonal (fun i ↦ u * baseWeight i))
+    A
+    (pivotFirstIndexEquiv rowPivot)
+    (pivotFirstIndexEquiv rowPivot)
+    (pivotFirstIndexEquiv colPivot)]
+  rw [← weightedPivotDiagonal_eq_pivotFirst_diagonal rowPivot
+    (fun i ↦ u * baseWeight i)]
+  rw [pivotFirstMatrix]
+
+/-- Case 1(2) row-strip source data, transported to pivot-first coordinates,
+as a supplied instance of the generic displayed top-left adapter.  The
+row-strip algebra is proved here; the selected chart, source validity of the
+hidden old label, quotient regularity, and transition post-data remain
+explicit inputs. -/
+def case1RowStrip_weightedPivotFirstSubstitutionData
+    {ι κ τ R : Type*} [CommRing R] [Fintype ι] [DecidableEq ι] [DecidableEq κ]
+    {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (baseWeight : ι → R) (A : Matrix ι κ R)
+    (C : Matrix (Unit ⊕ pivotComplement colPivot) τ R)
+    (q : pivotComplement rowPivot → R)
+    (hpivot : A rowPivot colPivot = 1)
+    (hquot :
+      ∀ i : pivotComplement rowPivot,
+        u * baseWeight i.1 = q i * (u * baseWeight rowPivot)) :
+    WeightedPivotFirstSubstitutionData
+      R (pivotComplement rowPivot) (pivotComplement colPivot) τ where
+  b0 := u * baseWeight rowPivot
+  b := fun i ↦ u * baseWeight i.1
+  q := q
+  x := pivotFirstX rowPivot colPivot A
+  y := pivotFirstY rowPivot colPivot A
+  D := pivotFirstD rowPivot colPivot A
+  weightedSource :=
+    (diagonal (case1RowStripOldWeight strip u baseWeight) *
+        case1RowStripSourceMatrix strip u A).submatrix
+      (pivotFirstIndexEquiv rowPivot) (pivotFirstIndexEquiv colPivot)
+  C := C
+  source_eq := by
+    rw [case1RowStrip_diagonal_mul_sourceMatrix_pivotFirst]
+    rw [pivotFirstMatrix_eq_pivotPreQBlock A hpivot]
+  quotient := hquot
+
+/-- Case 1(2) displayed row-strip source-order `Q/P` identity from the
+elementary row-strip weighting algebra and supplied quotient witnesses.  The
+selected variable is counted once in the post row weights. -/
+theorem case1RowStrip_sourceOrder_identity
+    {ι κ τ R : Type*} [CommRing R] [Fintype ι] [DecidableEq ι] [DecidableEq κ]
+    {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (baseWeight : ι → R) (A : Matrix ι κ R)
+    (C : Matrix (Unit ⊕ pivotComplement colPivot) τ R)
+    (q : pivotComplement rowPivot → R)
+    (hpivot : A rowPivot colPivot = 1)
+    (hquot :
+      ∀ i : pivotComplement rowPivot,
+        u * baseWeight i.1 = q i * (u * baseWeight rowPivot)) :
+    (weightedPivotBlockRowOp q
+          (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+        (diagonal (case1RowStripOldWeight strip u baseWeight) *
+          case1RowStripSourceMatrix strip u A).submatrix
+          (pivotFirstIndexEquiv rowPivot) (pivotFirstIndexEquiv colPivot)) *
+        C =
+      (weightedPivotDiagonal
+          (u * baseWeight rowPivot)
+          (fun i : pivotComplement rowPivot ↦ u * baseWeight i.1) *
+        weightedPivotClearedBlock
+          (pivotFirstD rowPivot colPivot A -
+            pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A)) *
+        (pivotQinv (pivotFirstY rowPivot colPivot A) * C) :=
+  WeightedPivotFirstSubstitutionData.sourceOrder_identity
+    (case1RowStrip_weightedPivotFirstSubstitutionData
+      strip u baseWeight A C q hpivot hquot)
+
+/-- Supplied-data boundary for Aoyagi's displayed Case 1(2) row-strip pivot.
+It combines the finite first-jump/source-validity facts with an already
+supplied weighted pivot-first source block.  It does not construct the
+selected-entry chart, encode the hidden old label, prove coverage, or produce
+transition post-data. -/
+structure Case1DisplayedRowStripSuppliedWeightedSourceData
+    (R ρ κ τ : Type*) [CommRing R] [Fintype ρ] [DecidableEq ρ]
+    [Fintype κ] [DecidableEq κ]
+    (L : ℕ) (n : ℕ → ℕ) (S J J1 s k : ℕ)
+    (level : ℕ → ℕ → ℕ) (vector : ℕ → ℕ → ℕ → ℤ) where
+  firstJump : Case1FirstJumpHypotheses L n S J J1 s k level vector
+  stage_pos : 1 ≤ S
+  source_col_bound : J + 1 ≤ n (S + 1)
+  weighted : WeightedPivotFirstSubstitutionData R ρ κ τ
+
+namespace Case1DisplayedRowStripSuppliedWeightedSourceData
+
+/-- The displayed Case 1(2) pivot satisfies the continuation bound once the
+actual source column bound is supplied. -/
+theorem continuationBound
+    {R ρ κ τ : Type*} [CommRing R] [Fintype ρ] [DecidableEq ρ]
+    [Fintype κ] [DecidableEq κ]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (data :
+      Case1DisplayedRowStripSuppliedWeightedSourceData
+        R ρ κ τ L n S J J1 s k level vector) :
+    J + 1 ≤ prefixMinNat n (S + 1) :=
+  data.firstJump.continuationBound_of_colBound data.stage_pos data.source_col_bound
+
+/-- The displayed top-left strip entry belongs to the finite Case 1 center. -/
+theorem displayedPivot_mem_center
+    {R ρ κ τ : Type*} [CommRing R] [Fintype ρ] [DecidableEq ρ]
+    [Fintype κ] [DecidableEq κ]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (data :
+      Case1DisplayedRowStripSuppliedWeightedSourceData
+        R ρ κ τ L n S J J1 s k level vector) :
+    (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) ∈
+      case1CenterGenerators n S J J1 :=
+  data.firstJump.displayedPivot_mem_center_of_colBound data.source_col_bound
+
+/-- The displayed top-left strip entry is also a residual-block pivot entry
+under the first-jump row bound and source column bound. -/
+theorem displayedPivot_mem_residualBlockPivotEntries
+    {R ρ κ τ : Type*} [CommRing R] [Fintype ρ] [DecidableEq ρ]
+    [Fintype κ] [DecidableEq κ]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (data :
+      Case1DisplayedRowStripSuppliedWeightedSourceData
+        R ρ κ τ L n S J J1 s k level vector) :
+    (J + 1, J + 1) ∈ case2ResidualBlockPivotEntries n S J :=
+  data.firstJump.displayedPivot_mem_residualBlockPivotEntries_of_colBound
+    data.source_col_bound
+
+/-- The generic displayed top-left source-order identity applies to the
+supplied Case 1(2) weighted pivot-first source block. -/
+theorem sourceOrder_identity
+    {R ρ κ τ : Type*} [CommRing R] [Fintype ρ] [DecidableEq ρ]
+    [Fintype κ] [DecidableEq κ]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (data :
+      Case1DisplayedRowStripSuppliedWeightedSourceData
+        R ρ κ τ L n S J J1 s k level vector) :
+    (weightedPivotBlockRowOp data.weighted.q
+          (fun i ↦ data.weighted.x i ()) *
+        data.weighted.weightedSource) *
+        data.weighted.C =
+      (weightedPivotDiagonal data.weighted.b0 data.weighted.b *
+          weightedPivotClearedBlock
+            (data.weighted.D - data.weighted.x * data.weighted.y)) *
+        (pivotQinv data.weighted.y * data.weighted.C) :=
+  WeightedPivotFirstSubstitutionData.sourceOrder_identity data.weighted
+
+end Case1DisplayedRowStripSuppliedWeightedSourceData
 
 /-- Pure algebraic product-preservation form of the pivot-first reindexed `Q/P` identity.
 The following factor and weights are already in pivot-first coordinates; this

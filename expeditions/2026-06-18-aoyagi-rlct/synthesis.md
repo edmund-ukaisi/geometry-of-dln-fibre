@@ -928,6 +928,22 @@ still supply the weighted source block. The Case 1 helper
 `continuationBound_of_colBound` proves only finite width bookkeeping for the
 displayed pivot.
 
+The Case 1(2) displayed row-strip weighted source block is now Lean-proved as
+finite algebra. The generic `case1RowStripSourceMatrix` takes an already
+normalised pre-`Q` matrix `A`, reconstructing source entries as `u*A` on the
+row strip and leaving lower residual rows unchanged. The old row-weight
+convention `case1RowStripOldWeight` puts the hidden old-variable factor `u`
+only below the strip. The theorem `case1RowStrip_diagonal_mul_sourceMatrix`
+proves that these two sources of `u` combine to a single post row-weight
+factor `u*baseWeight` on every residual row; the pivot-first and
+`case1RowStrip_sourceOrder_identity` wrappers feed this equality into the
+generic displayed top-left `Q/P` adapter under supplied quotient witnesses.
+The Case 1-specific `Case1DisplayedRowStripSuppliedWeightedSourceData` package
+adds first-jump/source-column hypotheses and projects displayed continuation
+and pivot membership facts, but still does not construct the chart, identify
+the hidden old label, prove quotient regularity from recurrence data, or
+produce exponent/transition post-data.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
