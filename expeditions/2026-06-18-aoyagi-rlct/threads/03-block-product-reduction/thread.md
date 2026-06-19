@@ -53,5 +53,5 @@ Outcome: landed `rank_fromBlocks_zero_zero` and
 `rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det` in
 `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`. Controller verified targeted
 build, full `DLNFibre` build, and `scripts/sorries`. Xhigh reviewer `Euclid`
-accepted after minor docstring/name edits. Rank statement card pending after
-commit.
+accepted after minor docstring/name edits. Rank statement card:
+`statement-card-a1-rank-formula.md`.
