@@ -166,6 +166,12 @@ interface without surfacing it.
   `correctedCase2PivotVector` and
   `terminalExponent_correctedCase2PivotVector` also package the prefix-minimum
   Case 2 repair over natural widths.
+  The introduced-label convention is now Lean-proved as `introducedLabel` with
+  monotonicity in `J` and before/after lemmas for the new pivot label
+  `(S,J+1)`. This gives a finite active-label domain for later vector/exponent
+  assignments; it does not yet assign or update those data. The prefix-bound
+  corollary keeps the actual-width label validity separate from the stronger
+  source continuation condition.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

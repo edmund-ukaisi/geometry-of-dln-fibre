@@ -75,6 +75,10 @@ Lean status: the actual-width label convention is formalised in
 `correctedCase2PivotVector`, and
 `terminalExponent_correctedCase2PivotVector`.
 
+The introduced-variable convention is formalised by `introducedLabel`,
+`introducedLabel_mono_J`, `not_introducedLabel_case2_new_before`, and
+`introducedLabel_case2_new_after`.
+
 ## Corrected invariant shape
 
 For `1 <= S <= L` and the displayed step range where `J` lies inside the

@@ -538,7 +538,13 @@ No such claim is formalisation-ready until both fields are filled.
   `correctedCase2PivotVector`, and
   `terminalExponent_correctedCase2PivotVector`, separating source label ranges
   from prefix-minimum continuation bounds and packaging the corrected Case 2
-  vector over natural widths.
+  vector over natural widths. Also proved introduced-label bookkeeping:
+  `introducedLabel`, `introducedLabel_mono_J`,
+  `not_introducedLabel_case2_new_before`, and
+  `introducedLabel_case2_new_after`, identifying the active source labels at
+  state `(S,J)` and the new pivot label added by advancing `J`; the prefix-bound
+  corollary keeps the actual-width label result separate from the stronger
+  source continuation condition.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

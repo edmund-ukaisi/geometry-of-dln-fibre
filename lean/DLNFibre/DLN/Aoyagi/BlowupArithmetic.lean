@@ -108,11 +108,40 @@ def actualWidthLabel (L : ℕ) (n : ℕ → ℕ) (s k : ℕ) : Prop :=
 def prefixWidthLabel (L : ℕ) (n : ℕ → ℕ) (s k : ℕ) : Prop :=
   1 ≤ s ∧ s ≤ L ∧ 1 ≤ k ∧ k ≤ prefixMinNat n (s + 1)
 
+/-- Labels whose exceptional variables have been introduced by state `(S,J)`. -/
+def introducedLabel (L : ℕ) (n : ℕ → ℕ) (S J s k : ℕ) : Prop :=
+  actualWidthLabel L n s k ∧ (s < S ∨ s = S ∧ k ≤ J)
+
 /-- Prefix-minimum labels are actual-width labels, but not conversely in general. -/
 theorem actualWidthLabel_of_prefixWidthLabel {L : ℕ} {n : ℕ → ℕ} {s k : ℕ}
     (h : prefixWidthLabel L n s k) : actualWidthLabel L n s k := by
   rcases h with ⟨hs0, hsL, hk0, hk⟩
   exact ⟨hs0, hsL, hk0, le_trans hk (prefixMinNat_le_width n (by omega : 1 ≤ s + 1))⟩
+
+/-- Introduced labels are always source-valid actual-width labels. -/
+theorem actualWidthLabel_of_introducedLabel {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ}
+    (h : introducedLabel L n S J s k) : actualWidthLabel L n s k :=
+  h.1
+
+/-- A label from an earlier layer is introduced at state `(S,J)`. -/
+theorem introducedLabel_of_lt_stage {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ}
+    (hlabel : actualWidthLabel L n s k) (hs : s < S) :
+    introducedLabel L n S J s k :=
+  ⟨hlabel, Or.inl hs⟩
+
+/-- A label in the current layer is introduced exactly up to the processed index `J`. -/
+theorem introducedLabel_of_eq_stage_le {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ}
+    (hlabel : actualWidthLabel L n s k) (hs : s = S) (hk : k ≤ J) :
+    introducedLabel L n S J s k :=
+  ⟨hlabel, Or.inr ⟨hs, hk⟩⟩
+
+/-- Increasing `J` can only add introduced labels in the current layer. -/
+theorem introducedLabel_mono_J {L : ℕ} {n : ℕ → ℕ} {S J J' s k : ℕ}
+    (hJJ : J ≤ J') (h : introducedLabel L n S J s k) :
+    introducedLabel L n S J' s k := by
+  rcases h with ⟨hlabel, hs | ⟨hs, hk⟩⟩
+  · exact ⟨hlabel, Or.inl hs⟩
+  · exact ⟨hlabel, Or.inr ⟨hs, le_trans hk hJJ⟩⟩
 
 /-- If the actual width is larger than the prefix minimum, prefix labels undercount. -/
 theorem actualWidthLabel_not_prefixWidthLabel_of_prefixMinNat_lt_width
@@ -137,6 +166,27 @@ theorem prefixWidthLabel_case2_new (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
     (hS : 1 ≤ S) (hSL : S ≤ L) (hJ : J + 1 ≤ prefixMinNat n (S + 1)) :
     prefixWidthLabel L n S (J + 1) :=
   ⟨hS, hSL, by omega, hJ⟩
+
+/-- Before the pivot advance, the would-be new label `(S,J+1)` is not introduced. -/
+theorem not_introducedLabel_case2_new_before (L : ℕ) (n : ℕ → ℕ) (S J : ℕ) :
+    ¬ introducedLabel L n S J S (J + 1) := by
+  intro h
+  rcases h.2 with hlt | ⟨heq, hk⟩
+  · omega
+  · omega
+
+/-- After the pivot advance, the new label `(S,J+1)` is introduced. -/
+theorem introducedLabel_case2_new_after (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L) (hJ : J + 1 ≤ n (S + 1)) :
+    introducedLabel L n S (J + 1) S (J + 1) :=
+  ⟨actualWidthLabel_case2_new L n hS hSL hJ, Or.inr ⟨rfl, le_rfl⟩⟩
+
+/-- The source continuation bound is a stronger way to introduce `(S,J+1)`. -/
+theorem introducedLabel_case2_new_after_of_prefixBound (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L) (hJ : J + 1 ≤ prefixMinNat n (S + 1)) :
+    introducedLabel L n S (J + 1) S (J + 1) :=
+  introducedLabel_case2_new_after L n hS hSL
+    (le_trans hJ (prefixMinNat_le_width n (by omega : 1 ≤ S + 1)))
 
 /-- The corrected Case 2 pivot vector, using prefix minima before `S`. -/
 def correctedCase2PivotVector (n : ℕ → ℕ) (S J : ℕ) : ℕ → ℤ :=

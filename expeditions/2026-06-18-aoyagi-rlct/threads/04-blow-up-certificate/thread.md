@@ -160,3 +160,19 @@ the existing prefix-minimum terminal-exponent theorem.
 
 This is finite bookkeeping only. It does not yet define the full corrected
 vector invariant or prove any transition.
+
+## 2026-06-19 Lean introduced labels
+
+Statement card: `statement-card-a4-introduced-labels.md`.
+
+Lean now defines `introducedLabel L n S J s k` for the source labels whose
+exceptional variables have been introduced by state `(S,J)`: actual-width
+labels with either `s < S` or `s = S` and `k <= J`. It proves introducedness is
+monotone in `J`, that `(S,J+1)` is not introduced before the pivot advance, and
+that `(S,J+1)` is introduced after the advance under the actual-width bound.
+The prefix-bound corollary records that the source continuation condition
+`J+1 <= mu_(S+1)` implies this label fact, without treating actual-width
+validity as a continuation theorem.
+
+This records the active-label domain for later vector/exponent assignments. It
+does not assign those data or prove a transition.
