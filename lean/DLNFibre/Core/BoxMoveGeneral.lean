@@ -3,16 +3,23 @@ import DLNFibre.Core.BoxMoveDegeneration
 /-!
 # `DLNFibre.Core.BoxMoveGeneral` — the general box-move degeneration (L6.1-general)
 
-The per-box-move degeneration for **arbitrary** intervals `a < c ≤ b+1 ≤ e` and an **arbitrary**
-common summand `rest`, generalising the certified `(1,2,1)` witness of
-`DLNFibre.Core.BoxMoveDegeneration`. Two building blocks above the landed degeneration engine
-`mem_zeroLocus_vanishingIdeal_orbitSet_of_polynomialFamily`:
+Two building blocks above the landed degeneration engine
+`mem_zeroLocus_vanishingIdeal_orbitSet_of_polynomialFamily`, generalising the certified `(1,2,1)`
+witness of `DLNFibre.Core.BoxMoveDegeneration` towards the full box move (`a < c ≤ b+1 ≤ e`,
+arbitrary `rest`):
 
 * **Common-summand lemma** (`mem_closure_dirSum_of_mem_closure`): if the downstairs flattening of
   `D₀` lies in the Zariski closure of the orbit of `U₀` (via *any* polynomial family), then the same
   holds for `dirSum D₀ R`/`dirSum U₀ R` with a common block-diagonal summand `R`. The degeneration
   family is `dirSumPoly F₀ (const R)` (block-diagonal, `R` fixed) and the `t ≠ 0` base change is
-  `1_R ⊕ P₀` (`liftDirSumBaseChange`). This isolates `rest` from the symbolic two-interval move.
+  `P₀ ⊕ 1_R` (`liftDirSumBaseChange`: `P₀` on the first block, identity on the common `R`). This
+  isolates `rest` from the symbolic two-interval move.
+
+* **Split box move** (`splitCut_mem_closure`, `splitCut_orbit_intervalDirectSum`): the split case
+  `c = b+1` with no `rest` — `M_{[a,e]} ⇝ M_{[a,b]} ⊕ M_{[b+1,e]}` for arbitrary intervals, via the
+  cut chain `splitCut a e b` and the explicit diagonal base change `splitBaseChange`. The
+  **non-split** case (`c ≤ b`, dim-2 overlap) and the list-gluing to `intervalDirectSum
+  (Lmove ++ rest)` are the remaining gap above these two blocks (see the thread report).
 
 The mechanism reuses the block-diagonal levers of `Core.IntervalModule` (`reindex_fromBlocks_mul`,
 `reindex_fromBlocks_one`).
