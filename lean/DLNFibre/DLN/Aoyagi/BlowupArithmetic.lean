@@ -1316,6 +1316,80 @@ theorem pivotMul_monomialRec_dvd_of_le (step : ℕ → α) (u : α) {a b : ℕ}
     u * monomialRec step a ∣ u * monomialRec step b :=
   mul_left_dvd_mul_left_of_dvd (monomialRec_dvd_of_le step h)
 
+/-- Divisibility data supplies the right-oriented quotient witnesses used by `P`. -/
+theorem exists_right_quotients_of_forall_dvd
+    {ι : Type*} {b0 : α} {b : ι → α} (h : ∀ i, b0 ∣ b i) :
+    ∃ q : ι → α, ∀ i, b i = q i * b0 := by
+  choose q hq using h
+  refine ⟨q, ?_⟩
+  intro i
+  rw [hq i]
+  ac_rfl
+
+/-- Equal row weights admit the trivial right-oriented quotient witnesses. -/
+theorem exists_right_quotients_of_forall_eq
+    {ι : Type*} {b0 : α} {b : ι → α} (h : ∀ i, b i = b0) :
+    ∃ q : ι → α, ∀ i, b i = q i * b0 :=
+  ⟨fun _ ↦ 1, by intro i; rw [h i]; simp⟩
+
+/-- Equality with the pivot weight, or divisibility by it, supplies quotient witnesses. -/
+theorem exists_right_quotients_of_forall_eq_or_dvd
+    {ι : Type*} {b0 : α} {b : ι → α} (h : ∀ i, b i = b0 ∨ b0 ∣ b i) :
+    ∃ q : ι → α, ∀ i, b i = q i * b0 :=
+  exists_right_quotients_of_forall_dvd (fun i ↦ by
+    rcases h i with hi | hdiv
+    · simp [hi]
+    · exact hdiv)
+
+/-- Tail-product form with the quotient explicitly on the right. -/
+theorem monomialRec_tail_eq_right_mul (step : ℕ → α) {a b : ℕ} (h : a ≤ b) :
+    monomialRec step b = monomialTail step a (b - a) * monomialRec step a := by
+  obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le h
+  subst hk
+  rw [Nat.add_sub_cancel_left, monomialRec_add_eq_tail_mul]
+
+/-- Monomial recurrence terms later than `a` admit right quotient witnesses over `b_a`. -/
+theorem exists_right_quotients_monomialRec_of_le
+    (step : ℕ → α) {ι : Type*} {a : ℕ} {level : ι → ℕ}
+    (hlevel : ∀ i, a ≤ level i) :
+    ∃ q : ι → α, ∀ i, monomialRec step (level i) = q i * monomialRec step a :=
+  exists_right_quotients_of_forall_dvd (fun i ↦ monomialRec_dvd_of_le step (hlevel i))
+
+/-- Equal pivot-strip weights or later recurrence levels admit quotient witnesses over `b_a`. -/
+theorem exists_right_quotients_monomialRec_of_eq_or_le
+    (step : ℕ → α) {ι : Type*} {a : ℕ} {level : ι → ℕ}
+    (hlevel : ∀ i, monomialRec step (level i) = monomialRec step a ∨ a ≤ level i) :
+    ∃ q : ι → α, ∀ i, monomialRec step (level i) = q i * monomialRec step a :=
+  exists_right_quotients_of_forall_eq_or_dvd (fun i ↦
+    (hlevel i).imp id (fun hle ↦ monomialRec_dvd_of_le step hle))
+
+/-- Common pivot multiplication preserves right quotient witnesses for monomial recurrence terms. -/
+theorem exists_right_quotients_pivotMul_monomialRec_of_le
+    (step : ℕ → α) (u : α) {ι : Type*} {a : ℕ} {level : ι → ℕ}
+    (hlevel : ∀ i, a ≤ level i) :
+    ∃ q : ι → α, ∀ i,
+      u * monomialRec step (level i) = q i * (u * monomialRec step a) :=
+  exists_right_quotients_of_forall_dvd
+    (fun i ↦ pivotMul_monomialRec_dvd_of_le step u (hlevel i))
+
+/-- Common pivot multiplication preserves equality-or-later recurrence quotient witnesses. -/
+theorem exists_right_quotients_pivotMul_monomialRec_of_eq_or_le
+    (step : ℕ → α) (u : α) {ι : Type*} {a : ℕ} {level : ι → ℕ}
+    (hlevel : ∀ i, monomialRec step (level i) = monomialRec step a ∨ a ≤ level i) :
+    ∃ q : ι → α, ∀ i,
+      u * monomialRec step (level i) = q i * (u * monomialRec step a) :=
+  exists_right_quotients_of_forall_eq_or_dvd (fun i ↦ by
+    rcases hlevel i with heq | hle
+    · left
+      rw [heq]
+    · right
+      exact pivotMul_monomialRec_dvd_of_le step u hle)
+
+/-- Constant row weights admit the trivial quotient witnesses. -/
+theorem exists_right_quotients_const {ι : Type*} (b0 : α) :
+    ∃ q : ι → α, ∀ i, b0 = q i * b0 :=
+  ⟨fun _ ↦ 1, by intro i; simp⟩
+
 end MonomialRecurrence
 
 section RowOperationScalars
@@ -1391,6 +1465,16 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul
       ring
     · simp [weightedPivotBlockRowOp, weightedPivotDiagonal, weightedPivotBlockMatrix,
         weightedPivotClearedBlock, Matrix.fromBlocks_multiply, h]
+
+/-- Divisibility of every lower-row weight by the pivot weight supplies a `P` matrix. -/
+theorem exists_weightedPivotBlockRowOp_mul_diagonal_mul_of_forall_dvd
+    (b0 : R) (b x : ρ → R) (D : Matrix ρ κ R)
+    (hdiv : ∀ i, b0 ∣ b i) :
+    ∃ q : ρ → R,
+      weightedPivotBlockRowOp q x * weightedPivotDiagonal b0 b * weightedPivotBlockMatrix x D =
+        weightedPivotDiagonal b0 b * weightedPivotClearedBlock D := by
+  rcases exists_right_quotients_of_forall_dvd hdiv with ⟨q, hq⟩
+  exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul b0 b q x D hq⟩
 
 end RowOperationBlocks
 
