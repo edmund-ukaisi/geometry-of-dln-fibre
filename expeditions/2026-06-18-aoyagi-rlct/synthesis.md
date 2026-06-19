@@ -525,7 +525,12 @@ vertices, and the left unitriangular transform changes the Schur residual. In
 `FixedBasepointChart.lean`, the transformed fixed-base reversed-edge residual
 rank is proved pointwise from determinant-chart membership and an exact rank
 hypothesis on the edge map. Exact-rank conditions remain hypotheses, not
-neighborhood conclusions.
+neighborhood conclusions. The combined theorem
+`paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_rankImp_mem_nhds`
+therefore states the safe source-facing boundary: near the base chain,
+recursive determinant charts and endpoint block form hold, and exact edge ranks
+may be supplied pointwise to obtain residual ranks. It does not prove a
+neighborhood of exact edge ranks.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

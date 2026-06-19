@@ -221,7 +221,11 @@ recurrence, not a product of raw edge residuals. In `FixedBasepointChart.lean`,
 transformed residual-rank wrappers prove pointwise rank formulas for arbitrary
 reversed edge families under explicit determinant-chart and exact-rank
 hypotheses. These theorems do not assert that exact-rank conditions hold in a
-neighborhood.
+neighborhood. The follow-on theorem
+`paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_rankImp_mem_nhds`
+packages the honest neighborhood boundary: recursive charts and endpoint block
+form hold nearby, and transformed residual-rank conclusions are available
+nearby as implications from exact pointwise edge ranks.
 
 ## Ledger rules
 

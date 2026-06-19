@@ -1060,7 +1060,18 @@ matrix without claiming it is a raw product of the original edge residuals.
 In `FixedBasepointChart.lean`, added the reversed-edge rank bridge
 `rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range` and
 pointwise transformed residual-rank wrappers, including
-`rank_schurResidualBlock_chartLocalSuffixState_transformedEdge_fixedBaseReverseEdges_eq_range_sub`.
+`rank_transformedEdge_fixedBaseReverseEdges_eq_range_sub`.
 These results assume determinant-chart membership and exact edge rank at the
 point. They do not assert exact-rank openness or any neighborhood of exact-rank
 conditions.
+
+Then added the first source-facing rank/certificate boundary theorem:
+
+- `paperEndpointFixedBaseContinuousEdgesRecursiveDetCharts`;
+- `paperEndpointFixedBaseContinuousEdgesRecursiveResidualRankImplications`;
+- `paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_rankImp_mem_nhds`.
+
+This theorem gives one neighborhood on which recursive determinant charts and
+endpoint block form hold, and on which every residual rank conclusion is
+available as an implication from an exact pointwise edge-rank hypothesis. It
+does not place exact-rank hypotheses inside the neighborhood conclusion.

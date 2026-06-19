@@ -133,7 +133,10 @@ No such claim is formalisation-ready until both fields are filled.
   fixed from `B`. A pointwise rank bridge for transformed fixed-base reversed
   edges is proved under explicit exact-rank hypotheses, and the deterministic
   `D` field now has a named recurrence as a product by the visited Schur
-  residual block. The full source Theorem 3 claim remains blocked.
+  residual block. A neighborhood theorem now combines recursive charts,
+  endpoint block form, and residual-rank implications from exact pointwise
+  edge-rank hypotheses, without asserting exact-rank openness. The full source
+  Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable

@@ -66,9 +66,11 @@ on the session's original cwd.
    endpoint block-diagonal neighborhood handoff is also Lean-proved for
    continuous reversed-edge families based at `reverseEdge W B`. The adapted
    residual block recurrence and pointwise transformed residual-rank bridge are
-   also Lean-proved under explicit exact-rank hypotheses. Next assemble the
-   source-facing Theorem 3 statement and certificate boundary, without
-   pretending that exact-rank strata are open.
+   also Lean-proved under explicit exact-rank hypotheses. A combined
+   neighborhood theorem now packages endpoint block form with residual-rank
+   implications from pointwise exact ranks. Next assemble the remaining
+   source-facing Theorem 3 certificate boundary, without pretending that
+   exact-rank strata are open.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

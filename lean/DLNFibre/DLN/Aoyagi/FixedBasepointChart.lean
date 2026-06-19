@@ -438,7 +438,7 @@ theorem
 /-- A deterministic transformed fixed-base reversed edge has Schur-residual rank equal to
 source rank minus through-rank. -/
 theorem
-    rank_schurResidualBlock_chartLocalSuffixState_transformedEdge_fixedBaseReverseEdges_eq_range_sub
+    rank_transformedEdge_fixedBaseReverseEdges_eq_range_sub
     [∀ j, FiniteDimensional K (W j)]
     (U₀ : Submodule K (reverseVertex W 0))
     (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
@@ -1165,6 +1165,32 @@ theorem
   simpa [EMat, S, ChartLocalSuffixState.transformedEdge, hbase,
     paperEndpointFixedBaseEdgeMatrix] using hunit
 
+/-- The recursive transformed determinant-chart predicates for a continuous reversed-edge
+family in endpoint bases fixed from `B`. -/
+def paperEndpointFixedBaseContinuousEdgesRecursiveDetCharts
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) : Prop :=
+  ∀ p : Fin N,
+    identityCornerDetChart
+      (ChartLocalSuffixState.transformedEdge
+        (fun q : Fin N ↦
+          LinearMap.toMatrix
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+            (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+        p
+        (ChartLocalSuffixState.suffixState
+          (fun q : Fin N ↦
+            LinearMap.toMatrix
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+              (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+          (Fin.last N) p.succ p.succ.le_last))
+
 /-- The deterministic endpoint block form for a continuous reversed edge family in the
 endpoint bases fixed from `B`. -/
 def paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal
@@ -1190,6 +1216,23 @@ def paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal
             (throughSubspaceEndpointComplementIndex
               (reverseVertex W) (reverseEdge W B) U₀ 0) K) =
       fromBlocks S.Ctop 0 0 S.D
+
+/-- Pointwise residual-rank consequences available once exact edge ranks are supplied. -/
+def paperEndpointFixedBaseContinuousEdgesRecursiveResidualRankImplications
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (rEdge : Fin N → ℕ) (x : α) : Prop :=
+  let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  ∀ p : Fin N,
+    Module.finrank K (LinearMap.range (E p)) = rEdge p →
+      (ChartLocalSuffixState.residualBlock
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+        (Fin.last N) p p.succ.le_last).rank =
+        rEdge p - Module.finrank K U₀
 
 /-- Near a parameter where the recursive transformed determinant charts hold, the fixed-base
 endpoint product has the deterministic block diagonal form. -/
@@ -1277,6 +1320,86 @@ theorem paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiago
     W B U₀ hU₀ Cedge hCedge
     (paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_detChart
       W B U₀ hU₀ Cedge hbase)
+
+/-- Near a continuous edge family based at `B`, the recursive charts, endpoint block form,
+and pointwise residual-rank implications all hold. -/
+theorem
+    paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_rankImp_mem_nhds
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (rEdge : Fin N → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    {x : α |
+      paperEndpointFixedBaseContinuousEdgesRecursiveDetCharts W B U₀ hU₀ Cedge x ∧
+      paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal W B U₀ hU₀ Cedge x ∧
+      paperEndpointFixedBaseContinuousEdgesRecursiveResidualRankImplications
+        W B U₀ hU₀ Cedge rEdge x} ∈
+      nhds x₀ := by
+  classical
+  have hchart₀ :=
+    paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_detChart
+      W B U₀ hU₀ Cedge hbase
+  have hraw :
+      {x : α |
+        ∀ p : Fin N,
+          identityCornerDetChart
+            (ChartLocalSuffixState.transformedEdge
+              (fun q : Fin N ↦
+                LinearMap.toMatrix
+                  (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                  (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                  (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+              p
+              (ChartLocalSuffixState.suffixState
+                (fun q : Fin N ↦
+                  LinearMap.toMatrix
+                    (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                    (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                    (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+                (Fin.last N) p.succ p.succ.le_last))} ∈
+        nhds x₀ :=
+    paperEndpointFixedBaseContinuousEdges_recursiveBprev_mem_nhds_transformed_identityCornerDetChart
+      W B U₀ hU₀ Cedge hCedge hchart₀
+  have hcharts :
+      {x : α |
+        paperEndpointFixedBaseContinuousEdgesRecursiveDetCharts W B U₀ hU₀ Cedge x} ∈
+      nhds x₀ := by
+    simpa [paperEndpointFixedBaseContinuousEdgesRecursiveDetCharts] using
+      hraw
+  exact Filter.mem_of_superset hcharts (by
+    intro x hx
+    let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+      fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    have hxE : ∀ p : Fin N,
+        identityCornerDetChart
+          (ChartLocalSuffixState.transformedEdge
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+            p
+            (ChartLocalSuffixState.suffixState
+              (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+              (Fin.last N) p.succ p.succ.le_last)) := by
+      intro p
+      simpa [paperEndpointFixedBaseContinuousEdgesRecursiveDetCharts, E,
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges] using hx p
+    refine ⟨hx, ?_, ?_⟩
+    · simpa [paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal, E] using
+        paperEndpointFixedBaseChainMapMatrixOfReverseEdges_recursiveChart_blockDiagonal
+          W B U₀ hU₀ E hxE
+    · intro p hrank
+      have hres :=
+        rank_transformedEdge_fixedBaseReverseEdges_eq_range_sub
+          W B U₀ hU₀ E p
+          (ChartLocalSuffixState.suffixState
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+            (Fin.last N) p.succ p.succ.le_last)
+          (hxE p)
+      simpa [paperEndpointFixedBaseContinuousEdgesRecursiveResidualRankImplications,
+        ChartLocalSuffixState.residualBlock, E, hrank] using hres)
 
 end FixedBaseContinuousEdgeTopology
 
