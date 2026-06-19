@@ -257,6 +257,87 @@ theorem exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zer
     (throughSubspaceEdgeEquiv V A U₀ p hU₀)
     (throughSubspaceEdgeEquiv_apply V A U₀ p hU₀) bU bW bW'
 
+/-- Disjointness from the total kernel implies disjointness from every prefix kernel. -/
+theorem disjoint_ker_chainMap_prefix_of_disjoint_ker_total
+    (U₀ : Submodule K (V 0)) (j : Fin (N + 1))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))))) :
+    Disjoint U₀ (LinearMap.ker (chainMap V A 0 j (Fin.zero_le j))) := by
+  have hfactor : chainMap V A 0 (Fin.last N) ((Fin.zero_le j).trans j.le_last)
+      = (chainMap V A j (Fin.last N) j.le_last).comp
+        (chainMap V A 0 j (Fin.zero_le j)) :=
+    chainMap_zero_last_eq_suffix_comp_prefix V A j
+  have hcomp : Disjoint U₀
+      (LinearMap.ker ((chainMap V A j (Fin.last N) j.le_last).comp
+        (chainMap V A 0 j (Fin.zero_le j)))) := by
+    simpa [← hfactor] using hU₀
+  exact disjoint_ker_of_disjoint_ker_comp (chainMap V A 0 j (Fin.zero_le j))
+    (chainMap V A j (Fin.last N) j.le_last) U₀ hcomp
+
+/-- Prefix transport from the initial through-subspace to a later through-subspace. -/
+def throughSubspacePrefixEquiv (U₀ : Submodule K (V 0)) (j : Fin (N + 1))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))))) :
+    U₀ ≃ₗ[K] throughSubspace V A U₀ j :=
+  linearEquivMapOfDisjointKer (chainMap V A 0 j (Fin.zero_le j)) U₀
+    (disjoint_ker_chainMap_prefix_of_disjoint_ker_total V A U₀ j hU₀)
+
+/-- Prefix transport applies as the prefix chain map. -/
+@[simp]
+theorem throughSubspacePrefixEquiv_apply (U₀ : Submodule K (V 0)) (j : Fin (N + 1))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (x : U₀) :
+    (throughSubspacePrefixEquiv V A U₀ j hU₀ x : V j) =
+      chainMap V A 0 j (Fin.zero_le j) x :=
+  linearEquivMapOfDisjointKer_apply (chainMap V A 0 j (Fin.zero_le j)) U₀
+    (disjoint_ker_chainMap_prefix_of_disjoint_ker_total V A U₀ j hU₀) x
+
+/-- Adjacent prefix-transported vectors are related by the edge map. -/
+theorem throughSubspacePrefixEquiv_succ_apply (U₀ : Submodule K (V 0)) (p : Fin N)
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (x : U₀) :
+    (throughSubspacePrefixEquiv V A U₀ p.succ hU₀ x : V p.succ) =
+      A p (throughSubspacePrefixEquiv V A U₀ p.castSucc hU₀ x) := by
+  rw [throughSubspacePrefixEquiv_apply, throughSubspacePrefixEquiv_apply,
+    chainMap_succ V A 0 p (Fin.zero_le p.castSucc)]
+  rfl
+
+/-- A through-layer edge has block form `[I B; 0 D]` using prefix-transported bases. -/
+theorem exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero
+    (U₀ : Submodule K (V 0)) (p : Fin N)
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    {W : Submodule K (V p.castSucc)} {W' : Submodule K (V p.succ)}
+    (hW : IsCompl (throughSubspace V A U₀ p.castSucc) W)
+    (hW' : IsCompl (throughSubspace V A U₀ p.succ) W')
+    (bU₀ : Module.Basis ι K U₀)
+    (bW : Module.Basis κ K W) (bW' : Module.Basis κ' K W') :
+    ∃ B : Matrix ι κ K, ∃ D : Matrix κ' κ K,
+      LinearMap.toMatrix
+          (basisOfIsCompl hW
+            (bU₀.map (throughSubspacePrefixEquiv V A U₀ p.castSucc hU₀)) bW)
+          (basisOfIsCompl hW'
+            (bU₀.map (throughSubspacePrefixEquiv V A U₀ p.succ hU₀)) bW')
+          (A p) =
+        fromBlocks (1 : Matrix ι ι K) B 0 D := by
+  let eSrc := throughSubspacePrefixEquiv V A U₀ p.castSucc hU₀
+  let eTgt := throughSubspacePrefixEquiv V A U₀ p.succ hU₀
+  let eEdge : throughSubspace V A U₀ p.castSucc ≃ₗ[K] throughSubspace V A U₀ p.succ :=
+    eSrc.symm.trans eTgt
+  have he : ∀ x : throughSubspace V A U₀ p.castSucc, (eEdge x : V p.succ) = A p x := by
+    intro x
+    change (eTgt (eSrc.symm x) : V p.succ) = A p x
+    rw [throughSubspacePrefixEquiv_succ_apply V A U₀ p hU₀ (eSrc.symm x)]
+    simp [eSrc]
+  have hbasis : (bU₀.map eSrc).map eEdge = bU₀.map eTgt := by
+    ext i
+    simp [eSrc, eTgt, eEdge]
+  simpa [eSrc, eTgt, eEdge, hbasis] using
+    (exists_toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero hW hW' (A p) eEdge he
+      (bU₀.map eSrc) bW bW')
+
 /-- The total chain map has block form `[I 0; 0 0]` when the source complement is its kernel. -/
 theorem toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero
     (U₀ : Submodule K (V 0))
