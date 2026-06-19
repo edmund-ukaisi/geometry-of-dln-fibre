@@ -12,7 +12,9 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 | 05 | L5-noether-monic | formaliser | closed | Build monic-coordinate-positioning (Noether normalization) → close L5.7 ≥ → full `height+dim=n` |
 
 | 07 | L1-geometry-recon | scout | closed | Phase B architecture — **Route A (concrete affine)** decided; L1–L4 ladder; kill-condition L4(a)/(d) |
-| 08 | L4-regular-local | formaliser | open | De-risk kill-condition — smooth ⟹ IsRegularLocalRing (L4a) + local↔global dim (L4d), standalone CA |
+| 08 | L4-regular-local | formaliser | closed (sizing: L4a = sub-library) | De-risk kill-condition — smooth ⟹ IsRegularLocalRing (L4a) + local↔global dim (L4d), standalone CA |
+
+| 09 | L4d-affine-domain-dim | formaliser | closed | Affine-domain equidimensionality (one module, fidelity PASS); local↔global feed-in for L4a |
 
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)

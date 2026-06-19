@@ -213,3 +213,18 @@ tools first, they feed smooth⟹regular):
 
 - 2026-06-19: operator chose BUILD IT (zero-cited). Loop re-armed (cron, every ~10 min, session-only; 7-day
   expiry — re-arm weekly for the multi-week horizon). Building L4d (affine-domain equidimensionality) first.
+
+- 2026-06-19: **L4d LANDED** (thread 09, one module, reviewer fidelity PASS) — `Core.AffineDomainDimension`:
+  `affine_domain_height_add_ringKrullDim_quotient_eq` (affine-domain dim formula via Noether-normalize + L5),
+  `height_eq_ringKrullDim_of_isMaximal`, **`ringKrullDim_localizationAtPrime_isMaximal_eq`** (the local↔global
+  feed-in L4a needs). Kill-condition did NOT fire (going-down theorem IS in Mathlib `@[stacks 00H8]`, another
+  recon misread like L5). Axiom-clean.
+  **REMAINING L4★ core = L4a only** (the genuine multi-week sub-library): the cotangent↔Krull-dimension bridge.
+  Two absent pieces (thread 08): (i) **cotangent comparison** — `IsLocalRing.CotangentSpace (AtPrime m) = m/m²`
+  identified with the Kähler `Ω[A⁄k] ⊗ k(m)` at a `k`-rational point; (ii) **`rank Ω = ringKrullDim` at a smooth
+  point** (uses L4d equidimensionality `ringKrullDim_localizationAtPrime_isMaximal_eq`). Then
+  `IsRegularLocalRing.iff_finrank_cotangentSpace` ⟹ `IsRegularLocalRing` at a smooth `k`-point.
+  **NEXT TICK:** a pen-and-paper/scout produces the **L4a build sub-ladder** (the exact lemma chain + which
+  Mathlib cotangent/Kähler API to build on — `Ideal.cotangentSpace`, `KaehlerDifferential`, `Extension.Cotangent`,
+  `SubmersivePresentation.rank_kaehlerDifferential`), decorrelated Codex; THEN build tides. After L4a: geometry
+  L1 (irreducible=prime), L2 (T_M = range δ⁰), L3 (smooth point via homogeneity+density), L4-assembly, L6, L7.
