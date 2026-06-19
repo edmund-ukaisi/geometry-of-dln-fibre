@@ -2,7 +2,7 @@
 
 ## Lean artifacts
 
-File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` @ `26f4171`.
 
 Names:
 
@@ -72,8 +72,7 @@ printed-vector mismatch.
 
 ## Status
 
-- Sorry-free and xhigh source-fidelity reviewed.
-- Commit SHA pin pending until the Lean-theorem commit exists.
+- Sorry-free and xhigh source-fidelity reviewed at `26f4171`.
 
 ## Verification
 
