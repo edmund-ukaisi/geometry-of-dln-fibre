@@ -19,6 +19,8 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 | 10 | L4a-recon | pen-and-paper | closed | L4a sub-ladder — **BOUNDED ~3 modules via étale route**; load-bearing lemma `height_eq_under_of_flat_quasiFiniteAt` |
 | 11 | L4a-M1-flat-qf-height | formaliser | closed (kill-cond did NOT fire) | M1 — flat + quasi-finite ⟹ prime height = contraction height (general CA, de-risks route) |
 
+| 12 | L4a-M2-dim-bridge | formaliser | closed | Non-circular dimension bridge ringKrullDim(AtPrime m)=n=rank Ω (étale route, any field); reviewer FAITHFUL |
+
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
 - 0N — L1 GL/orbit/irreducibility (scout recon → formaliser)

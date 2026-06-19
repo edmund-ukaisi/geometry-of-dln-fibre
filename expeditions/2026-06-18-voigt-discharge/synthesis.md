@@ -253,3 +253,13 @@ reduction — continuing the drive, no need to re-surface per the autonomous man
   The étale route is CONFIRMED viable. **Next: M2** (`Core/SmoothLocalRelativeDimension.lean`) — the dimension
   bridge `ringKrullDim(AtPrime m) = n = rank Ω` (standard-smooth presentation + `exists_etale_mvPolynomial` +
   M1's `height_eq_under_of_etale` + our catenary `p.height = n` for the maximal `p` of `k[x₁..xₙ]`). Then M3/L2.
+- 2026-06-19: **M2 LANDED** (thread 12, reviewer FAITHFUL) — `Core.SmoothLocalRelativeDimension.ringKrullDim_localizationAtPrime_eq_of_isSmoothAt`:
+  the **non-circular dimension bridge** `ringKrullDim(AtPrime m) = n = rank Ω` via the étale route (M1
+  `height_eq_under_of_etale` + L5 catenary + Zariski's lemma for the maximal contraction). Came in BOUNDED;
+  **holds for ANY field** (no IsAlgClosed needed — stronger than planned). Green (2674 jobs), axiom-clean.
+  Non-circularity independently traced (routes M1+L5+Zariski only, never cotangent=dim). **Next: M3**
+  (`Core/SmoothPointRegular.lean`) — transport `rank Ω = n` to `AtPrime m`, the cotangent comparison
+  `finrank(m/m²) = rank Ω = n` (scope JOINTLY with L2's tangent identification), then
+  `iff_finrank_cotangentSpace.mpr` ⟹ `IsRegularLocalRing` (= L4a target `smooth_point_isRegularLocalRing`).
+  After M3 (L4a done): geometry L1 (irreducible=prime), L2 (T_M = range δ⁰; overlaps M3 cotangent), L3 (smooth
+  point of Ō_M via homogeneity), L4-assembly, L6, L7.
