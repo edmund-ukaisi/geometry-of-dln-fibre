@@ -128,6 +128,31 @@ def prefixWidthLabel (L : ℕ) (n : ℕ → ℕ) (s k : ℕ) : Prop :=
 def introducedLabel (L : ℕ) (n : ℕ → ℕ) (S J s k : ℕ) : Prop :=
   actualWidthLabel L n s k ∧ (s < S ∨ s = S ∧ k ≤ J)
 
+/-- Finite actual-width source labels, represented as dependent pairs `(s,k)`. -/
+def actualWidthLabelFinset (L : ℕ) (n : ℕ → ℕ) : Finset (Σ _ : ℕ, ℕ) :=
+  (Finset.Icc 1 L).sigma fun s ↦ Finset.Icc 1 (n (s + 1))
+
+/-- Membership in the finite actual-width label set is exactly `actualWidthLabel`. -/
+theorem mem_actualWidthLabelFinset {L : ℕ} {n : ℕ → ℕ} {p : Σ _ : ℕ, ℕ} :
+    p ∈ actualWidthLabelFinset L n ↔ actualWidthLabel L n p.1 p.2 := by
+  simp only [actualWidthLabelFinset, actualWidthLabel, Finset.mem_sigma, Finset.mem_Icc]
+  constructor
+  · rintro ⟨⟨hs1, hsL⟩, hk1, hkN⟩
+    exact ⟨hs1, hsL, hk1, hkN⟩
+  · rintro ⟨hs1, hsL, hk1, hkN⟩
+    exact ⟨⟨hs1, hsL⟩, hk1, hkN⟩
+
+/-- Finite introduced labels at state `(S,J)`. -/
+def introducedLabelFinset (L : ℕ) (n : ℕ → ℕ) (S J : ℕ) :
+    Finset (Σ _ : ℕ, ℕ) :=
+  (actualWidthLabelFinset L n).filter fun p ↦ p.1 < S ∨ p.1 = S ∧ p.2 ≤ J
+
+/-- Membership in the finite introduced-label set is exactly `introducedLabel`. -/
+theorem mem_introducedLabelFinset
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : Σ _ : ℕ, ℕ} :
+    p ∈ introducedLabelFinset L n S J ↔ introducedLabel L n S J p.1 p.2 := by
+  simp [introducedLabelFinset, introducedLabel, mem_actualWidthLabelFinset]
+
 /-- Prefix-minimum labels are actual-width labels, but not conversely in general. -/
 theorem actualWidthLabel_of_prefixWidthLabel {L : ℕ} {n : ℕ → ℕ} {s k : ℕ}
     (h : prefixWidthLabel L n s k) : actualWidthLabel L n s k := by
@@ -1603,6 +1628,24 @@ theorem levelProductStep_eq_one_of_gap
   intro p hp hlevel
   exact hgap p hp ⟨by simpa [hlevel], by simpa [hlevel]⟩
 
+/-- The level-product factor over the finite introduced-label domain is `1`
+through a Case 2 gap interval when every introduced label avoids that interval. -/
+theorem levelProductStep_introducedLabelFinset_eq_one_of_gap
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (level : ℕ → ℕ → ℕ) (var : ℕ → ℕ → α) {r : ℕ}
+    (hgap : ∀ {s k}, introducedLabel L n S J s k →
+      ¬ (J + 1 ≤ level s k ∧ level s k < prefixMinNat n S))
+    (hrJ : J + 1 ≤ r) (hrS : r < prefixMinNat n S) :
+    levelProductStep (introducedLabelFinset L n S J)
+        (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+        (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2) r = 1 := by
+  refine levelProductStep_eq_one_of_gap
+    (introducedLabelFinset L n S J)
+    (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2) ?_ hrJ hrS
+  intro p hp
+  exact hgap ((mem_introducedLabelFinset.mp hp))
+
 /-- In displayed Case 2, a gap of trivial recurrence factors over
 `J+1..mu_S-1` makes every residual row weight equal to the pivot row weight. -/
 theorem case2ResidualRow_monomialRec_eq_pivot_of_gap
@@ -1633,6 +1676,30 @@ theorem case2ResidualRow_levelProduct_monomialRec_eq_pivot_of_gap
     (levelProductStep labels level var) n S J ?_ i
   intro k hk hkS
   exact levelProductStep_eq_one_of_gap labels level var hgap hk hkS
+
+/-- Displayed Case 2 row weights are flat when the finite product is taken over
+Lean's introduced-label domain and all introduced labels avoid the Case 2 gap. -/
+theorem case2ResidualRow_introducedLabel_monomialRec_eq_pivot_of_gap
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (level : ℕ → ℕ → ℕ) (var : ℕ → ℕ → α)
+    (hgap : ∀ {s k}, introducedLabel L n S J s k →
+      ¬ (J + 1 ≤ level s k ∧ level s k < prefixMinNat n S))
+    (i : Case2ResidualRowIndex n S J) :
+    monomialRec
+        (levelProductStep (introducedLabelFinset L n S J)
+          (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+          (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2))
+        (case2ResidualRowLevel n S J i) =
+      monomialRec
+        (levelProductStep (introducedLabelFinset L n S J)
+          (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+          (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2)) (J + 1) := by
+  refine case2ResidualRow_levelProduct_monomialRec_eq_pivot_of_gap
+    (introducedLabelFinset L n S J)
+    (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2) n S J ?_ i
+  intro p hp
+  exact hgap ((mem_introducedLabelFinset.mp hp))
 
 end MonomialRecurrence
 
@@ -2659,6 +2726,67 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_labelGap
     (levelProductStep labels level var) n hS hcont
     (fun k hk hkS ↦ levelProductStep_eq_one_of_gap labels level var hgap hk hkS)
     u residual C
+
+/-- Displayed Case 2 source-substitution `Q/P` identity when the monomial
+recurrence factors are products over Lean's finite introduced-label domain and
+the introduced labels avoid the Case 2 gap interval. -/
+theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_introducedLabelGap
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (level : ℕ → ℕ → ℕ) (var : ℕ → ℕ → R)
+    (hgap : ∀ {s k}, introducedLabel L n S J s k →
+      ¬ (J + 1 ≤ level s k ∧ level s k < prefixMinNat n S))
+    (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal
+              (fun i ↦
+                monomialRec
+                  (levelProductStep (introducedLabelFinset L n S J)
+                    (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+                    (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2))
+                  (case2ResidualRowLevel n S J i)) *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (u * monomialRec
+              (levelProductStep (introducedLabelFinset L n S J)
+                (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+                (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2)) (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * monomialRec
+                (levelProductStep (introducedLabelFinset L n S J)
+                  (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+                  (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2))
+                (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          case2DisplayedTransportedFollowingFactor n hS hcont residual C := by
+  exact exists_case2DisplayedQP_mul_sourceSubstitution_of_labelGap
+    (introducedLabelFinset L n S J)
+    (fun p : Σ _ : ℕ, ℕ ↦ level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ var p.1 p.2) n hS hcont
+    (fun p hp ↦ hgap ((mem_introducedLabelFinset.mp hp))) u residual C
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence
 indexed by the residual source row. This supplies quotient witnesses from the
