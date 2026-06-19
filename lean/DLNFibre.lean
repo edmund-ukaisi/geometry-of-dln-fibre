@@ -83,3 +83,4 @@ import DLNFibre.Core.CThetaArbitrary
 import DLNFibre.DLN.Aoyagi.BlockElimination
 import DLNFibre.DLN.Aoyagi.ProductReduction
 import DLNFibre.DLN.Aoyagi.EntryIdeal
+import DLNFibre.DLN.Aoyagi.ThroughLayerBasis
