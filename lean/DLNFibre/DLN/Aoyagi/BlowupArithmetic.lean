@@ -419,6 +419,38 @@ theorem terminalExponent_correctedCase2PivotVector
     (J : ℤ) hS hSL, ← prefixMinNat_cast]
   rfl
 
+/-- Finite certificate assigned only to the corrected Case 2 new pivot label. -/
+structure CorrectedCase2NewLabelCertificate (L : ℕ) (n : ℕ → ℕ) (S J : ℕ) : Prop where
+  introduced : introducedLabel L n S (J + 1) S (J + 1)
+  terminalExponent_eq :
+    terminalExponent L (widthZ n) (correctedCase2PivotVector n S J) =
+      ((prefixMinNat n S : ℤ) - (J : ℤ)) * ((n (S + 1) : ℤ) - (J : ℤ))
+  least_value :
+    IsLeast
+      {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧ correctedCase2PivotVector n S J i = v}
+      (J : ℤ)
+
+/-- Actual label validity plus the state bound give the corrected new-label certificate. -/
+theorem correctedCase2NewLabelCertificate_of_actualBound_of_stateBound
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hJactual : J + 1 ≤ n (S + 1))
+    (hJstate : J ≤ prefixMinNat n S) :
+    CorrectedCase2NewLabelCertificate L n S J where
+  introduced := introducedLabel_case2_new_after L n hS hSL hJactual
+  terminalExponent_eq := terminalExponent_correctedCase2PivotVector L S n J hS hSL
+  least_value := correctedCase2PivotVector_isLeast_valueSet_Icc n hS hSL hJstate
+
+/-- The source continuation bound is a sufficient way to get the corrected certificate. -/
+theorem correctedCase2NewLabelCertificate_of_prefixBound
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hJcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    CorrectedCase2NewLabelCertificate L n S J := by
+  refine correctedCase2NewLabelCertificate_of_actualBound_of_stateBound L n hS hSL
+    (le_trans hJcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))) ?_
+  exact le_trans (by omega : J ≤ J + 1) (le_trans hJcont (prefixMinNat_succ_le n hS))
+
 section MonomialRecurrence
 
 variable {α : Type*} [CommMonoid α]
