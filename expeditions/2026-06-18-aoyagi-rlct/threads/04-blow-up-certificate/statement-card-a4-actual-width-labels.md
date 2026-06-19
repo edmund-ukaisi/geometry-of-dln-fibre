@@ -2,7 +2,7 @@
 
 ## Lean artifacts
 
-File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` @ `c9eaffb`.
 
 Names:
 
@@ -78,8 +78,7 @@ printed in the PDF.
 
 ## Status
 
-- Sorry-free.
-- Commit SHA pin pending until the Lean-theorem commit exists.
+- Sorry-free and xhigh source-fidelity reviewed at `c9eaffb`.
 
 ## Verification
 
