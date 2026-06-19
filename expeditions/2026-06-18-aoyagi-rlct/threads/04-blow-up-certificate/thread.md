@@ -569,6 +569,27 @@ chart coverage, chart regularity/Jacobian facts, exponent updates, transition
 invariants, termination, normal crossings, RLCT extraction, or the printed Case
 2 vector repair.
 
+## 2026-06-19 Lean Case 2 recurrence-state interface
+
+Reproduction: `reproduction-case2-recurrence-state-interface-a4.md`.
+Statement card: `statement-card-a4-case2-recurrence-state-interface.md`.
+Review artifact: `review-case2-recurrence-state-interface-a4.md`.
+
+Lean now packages the introduced-label recurrence data used by the Case 2
+row-weight bridge. `IntroducedLabelRecurrenceState` stores only the source-level
+map and variable map; `step`, `weight`, and `case2ResidualRowWeight` are derived
+from `introducedLabelFinset`, not independent fields. The package includes a
+Nat-valued Case 2 gap predicate, an integer least-value gap bridge through
+the equality-only `IntroducedLabelLevelInvariants`, residual-row weight flatness lemmas, and a
+displayed source-substitution `Q/P` wrapper
+`exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap`.
+
+This is still an assumption interface. It does not prove that Aoyagi's
+transition produces the state, that the Case 2 gap holds, or that the source's
+comparability sentence follows. It also does not resolve arbitrary pivots,
+regularity/Jacobian facts, exponent updates, transition invariants, termination,
+normal crossings, RLCT extraction, or the printed Case 2 vector repair.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.
