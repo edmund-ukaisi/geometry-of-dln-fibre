@@ -3,7 +3,7 @@
 ## Lean Artifacts
 
 File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` @
-`PENDING-COMMIT`.
+`54d9148b68be9354574f4fc1225e76efb96c336d`.
 
 Names:
 
