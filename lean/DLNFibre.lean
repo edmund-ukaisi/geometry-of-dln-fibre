@@ -81,3 +81,4 @@ import DLNFibre.Core.CThetaGeometricPerm
 -- Monotone-gated cValue/cTheta. cCodim d r = cValue ((d−r) ∘ Tuple.sort (d−r)) (and θ via cTheta).
 import DLNFibre.Core.CThetaArbitrary
 import DLNFibre.DLN.Aoyagi.BlockElimination
+import DLNFibre.DLN.Aoyagi.ProductReduction
