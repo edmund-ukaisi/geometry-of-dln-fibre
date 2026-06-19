@@ -168,7 +168,13 @@ on the session's original cwd.
    the successor recurrence-level gap. Next A4 target: arbitrary selected-entry
    Case 2 source-substitution transport, with pivot membership, row/column
    reindexing, diagonal weights, and following factors kept explicit; do not
-   claim arbitrary-pivot chart coverage or source-displayed status.
+   claim arbitrary-pivot chart coverage or source-displayed status. That
+   arbitrary selected-entry source-substitution transport is now Lean-proved
+   as finite algebra, including conditional `Q/P` under explicit divisibility
+   or flat row weights. Next A4 target: decide whether to extend this
+   arbitrary-pivot wrapper to recurrence-weight/post-data hypotheses, or move
+   to the missing chart-family coverage/regularity scaffolding; keep any
+   non-displayed pivot statement conditional.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

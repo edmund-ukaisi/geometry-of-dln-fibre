@@ -755,7 +755,21 @@ No such claim is formalisation-ready until both fields are filled.
   `IntroducedLabelRecurrenceState.Case2SuppliedPostData.case2Gap_of_leastValueGap_of_correctedExponentPostData`,
   packaging explicit old/new exponent-map data and connecting supplied
   recurrence post-data plus supplied corrected exponent least values to the
-  successor recurrence-level Case 2 gap.
+  successor recurrence-level Case 2 gap. Added arbitrary selected-entry Case 2
+  source-substitution transport:
+  `case2ResidualBlockPivotRowOfMem`, `case2ResidualBlockPivotColOfMem`,
+  `case2ResidualBlockPivotOfMem_pair`, `case2SelectedNormalizedMatrix`,
+  `case2SelectedSubstitutionMatrix`,
+  `case2SelectedSubstitutionMatrix_eq_mul_normalized`,
+  `case2Selected_diagonal_mul_substitutionMatrix_pivotFirst`,
+  `case2SelectedFollowingFactor`,
+  `case2SelectedTransportedFollowingFactor`,
+  `case2SelectedNormalizedMatrix_mul_followingFactor`,
+  `case2Selected_diagonal_mul_substitutionMatrix_mul_followingFactor`,
+  `exists_case2SelectedQP_mul_sourceSubstitution_of_forall_dvd`, and
+  `exists_case2SelectedQP_mul_sourceSubstitution_of_flat_weights`, proving
+  finite pivot-first transport and conditional `Q/P` for any supplied Case 2
+  residual-block pivot under explicit row-weight divisibility or flatness.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

@@ -845,6 +845,22 @@ that the corrected vector is the PDF's printed Case 2 vector. Next A4 target:
 arbitrary selected-entry Case 2 source-substitution transport, with coverage,
 Jacobian, recurrence production, and full `Q/P` transition still out of scope.
 
+The arbitrary selected-entry Case 2 source-substitution transport is now
+Lean-proved as finite algebra. `case2ResidualBlockPivotRowOfMem` and
+`case2ResidualBlockPivotColOfMem` extract row/column subtype pivots from finite
+center membership, and `case2ResidualBlockPivotOfMem_pair` records the paired
+source-coordinate equality. The `case2Selected...` API names the normalised
+selected matrix, source-substitution matrix, pivot-first diagonal transport,
+following-factor reindexing, and transported `Q^-1 C` factor for any supplied
+residual-block pivot. The conditional wrappers
+`exists_case2SelectedQP_mul_sourceSubstitution_of_forall_dvd` and
+`exists_case2SelectedQP_mul_sourceSubstitution_of_flat_weights` apply the
+generic pivot-first `Q/P` identity under explicit row-weight divisibility or
+flatness. This still does not prove an affine blow-up atlas, chart coverage,
+regularity/Jacobian facts, recurrence post-state production, exponent updates,
+transition invariants, source comparability, normal crossings, or RLCT
+extraction.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -718,6 +718,32 @@ production, an exponent transition invariant, arbitrary-pivot transport, source
 comparability, normal crossing, RLCT extraction, or a claim that the corrected
 vector is the PDF's printed Case 2 vector.
 
+## 2026-06-19 Lean Case 2 arbitrary selected-entry source substitution
+
+Reproduction: `reproduction-case2-arbitrary-selected-source-substitution-a4.md`.
+Statement card:
+`statement-card-a4-case2-arbitrary-selected-source-substitution.md`.
+Review artifact: `review-case2-arbitrary-selected-source-substitution-a4.md`.
+
+Lean now has the arbitrary selected-entry analogue of the displayed Case 2
+source-substitution transport. A finite pivot entry in
+`case2ResidualBlockPivotEntries` can be converted to row/column subtype pivots.
+For any supplied residual-row pivot and residual-column pivot,
+`case2SelectedSubstitutionMatrix` is `u` times the normalised selected-entry
+matrix, and pivot-first reindexing absorbs the selected variable into row
+weights. The following factor is also reindexed into pivot-first column order.
+
+The conditional wrapper
+`exists_case2SelectedQP_mul_sourceSubstitution_of_forall_dvd` applies the
+existing pivot-first `Q/P` identity under explicit divisibility of every lower
+row weight by the selected pivot-row weight; the flat-row-weight corollary is
+`exists_case2SelectedQP_mul_sourceSubstitution_of_flat_weights`.
+
+This is finite algebra and chart-family scaffolding. It is not a proof of an
+affine blow-up atlas, arbitrary-pivot chart coverage, chart regularity/Jacobian
+facts, recurrence post-state production, exponent updates, transition
+invariants, source comparability, normal crossings, or RLCT extraction.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

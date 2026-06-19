@@ -555,6 +555,27 @@ vector. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-corrected-exponent-post-data-a4.md`.
 
+Latest A4 update: arbitrary selected-entry Case 2 source-substitution transport
+has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names include `case2ResidualBlockPivotRowOfMem`,
+`case2ResidualBlockPivotColOfMem`, `case2ResidualBlockPivotOfMem_pair`,
+`case2SelectedNormalizedMatrix`,
+`case2SelectedSubstitutionMatrix`,
+`case2Selected_diagonal_mul_substitutionMatrix_pivotFirst`,
+`case2SelectedFollowingFactor`, `case2SelectedTransportedFollowingFactor`,
+`case2Selected_diagonal_mul_substitutionMatrix_mul_followingFactor`,
+`exists_case2SelectedQP_mul_sourceSubstitution_of_forall_dvd`, and
+`exists_case2SelectedQP_mul_sourceSubstitution_of_flat_weights`. The theorem
+family is finite algebra for a supplied residual-block pivot: it reindexes the
+selected substitution and following factor into pivot-first coordinates and
+applies `Q/P` only under explicit row-weight divisibility or flatness. It does
+not prove arbitrary-pivot chart coverage, chart regularity/Jacobian facts,
+recurrence post-state production, exponent updates, source comparability,
+normal crossings, or RLCT extraction. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-arbitrary-selected-source-substitution.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-arbitrary-selected-source-substitution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
