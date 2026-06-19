@@ -187,3 +187,29 @@ module-scale — it is a multi-week foundational AG/CA sub-library Mathlib entir
 - **Banked regardless:** Phase A (L5 polynomial dimension formula + L0 Nullstellensatz bridge) is real
   upstream-grade reusable bedrock, independent of this decision.
 - **Autonomous loop PAUSED** (cron `e5d64339` deleted) pending the operator's scope decision.
+
+## OPERATOR DECISION: BUILD IT (zero-cited) [2026-06-19]
+Operator chose to build the foundational sub-library — full zero-cited discharge, multi-week accepted. The
+drive resumes. **L4 is restructured into a sub-campaign (L4★)**, staged (recon's order: equidimensionality
+tools first, they feed smooth⟹regular):
+
+### L4★ sub-ladder (the infinitesimal↔Krull-dimension sub-library, network-free Core, upstream-grade)
+- **L4d — affine-domain dimension formula / equidimensionality.** For a finite-type DOMAIN `A` over a field:
+  `height p + ringKrullDim (A ⧸ p) = ringKrullDim A` (lift L5's polynomial-ring formula to `A = R/I`); hence
+  `height m = ringKrullDim A` for maximal `m`, and `ringKrullDim (Localization.AtPrime m) = ringKrullDim A`
+  (local↔global). *~1–2 modules.* Reuses Noether normalization (present) + `ringKrullDim_eq_of_integral_injective`
+  + the going-down height-additivity. **BUILD FIRST.**
+- **L4a — cotangent ↔ dimension + smooth ⟹ regular** (the binding multi-week core). Stages: cotangent space at a
+  `k`-point = `m/m²` (Mathlib cotangent API); smooth-at-`m` ⟹ `finrank(cotangent) = relative dim (rank Ω)`
+  (the absent Kähler/conormal comparison); at a smooth point `relative dim = ringKrullDim(AtPrime m)` (the
+  absent `rank Ω = ringKrullDim` bridge, uses L4d equidimensionality); combine via
+  `IsRegularLocalRing.iff_finrank_cotangentSpace` ⟹ `IsRegularLocalRing`. **Size then build.**
+- **L4-assembly:** smooth point of Ō_M (L3) + `T_M = range δ⁰` (L2) + L4a ⟹ `varietyDim(Ō_M) = finrank(range δ⁰)`.
+
+### Updated sequencing
+1. **L4d** (bounded, build now) → 2. **L4a** (the sub-library, size-then-build) → 3. geometry **L1** (irreducible
+= prime), **L2** (T_M = range δ⁰), **L3** (smooth point via homogeneity + density) → 4. **L4-assembly** → 5.
+**L6** (orbitRankLocus = Ō_M, Phase D) → 6. **L7** (final assembly closing hVoigt).
+
+- 2026-06-19: operator chose BUILD IT (zero-cited). Loop re-armed (cron, every ~10 min, session-only; 7-day
+  expiry — re-arm weekly for the multi-week horizon). Building L4d (affine-domain equidimensionality) first.
