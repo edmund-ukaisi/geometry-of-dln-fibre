@@ -118,3 +118,25 @@ following factor by `Q^-1 C` preserves the local product. This applies to both
 displayed pivot branches after normalizing the pivot entry to `1`. It still
 does not prove pivot-chart coverage, exponent updates, or the full transition
 invariant.
+
+## 2026-06-19 Lean normalized pivot step
+
+Statement card: `statement-card-a4-normalized-pivot-step.md`.
+
+Lean now packages the local `Q` and `P` identities together. The bridge lemma
+`pivotPostQBlock_eq_weightedPivotBlockMatrix` identifies the post-`Q` block
+with the input shape required by the row-operation theorem. The combined
+theorem `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ`
+then proves:
+
+```text
+P * diag(b0,b) * ([1 y; x D] * Q)
+  = diag(b0,b) * [1 0; 0 D - x*y].
+```
+
+The product version
+`weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul` is the algebraic
+corollary with the following factor multiplied by `Q^-1`. This is still only a
+normalized displayed matrix identity. It does not construct the pivot chart,
+prove polynomial regularity/Jacobian facts, update exponents, cover all pivot
+charts, or prove a transition invariant.

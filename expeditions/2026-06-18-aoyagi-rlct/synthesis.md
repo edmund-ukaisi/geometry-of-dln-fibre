@@ -147,6 +147,15 @@ interface without surfacing it.
   replacing the following factor by `Q^-1 C` preserves the local product. This
   closes the narrow normalized pivot-algebra layer, not pivot-chart coverage,
   exponent recurrence, termination, or a full transition theorem.
+  The `Q/P` composition is now also Lean-proved:
+  `pivotPostQBlock_eq_weightedPivotBlockMatrix`,
+  `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock`,
+  `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ`, and
+  `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul` package the
+  displayed local pivot calculation into one product identity, including the
+  following-factor replacement by `Q^-1`. This is still finite matrix algebra
+  only; it does not prove chart coverage, regular coordinate-change/Jacobian
+  facts, exponent updates, or the transition invariant.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

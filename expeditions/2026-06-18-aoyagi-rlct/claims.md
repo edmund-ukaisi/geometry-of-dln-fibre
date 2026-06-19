@@ -523,7 +523,13 @@ No such claim is formalisation-ready until both fields are filled.
   `pivotPostQBlock`, `pivotPreQBlock_mul_pivotQ`,
   `pivotQ_mul_pivotQinv`, `pivotQinv_mul_pivotQ`, and
   `pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul`, which clears the pivot row and
-  transports the following factor by the displayed inverse.
+  multiplies the following factor by the displayed inverse. Also proved the
+  combined normalized pivot-step API
+  `pivotPostQBlock_eq_weightedPivotBlockMatrix`,
+  `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock`,
+  `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ`, and
+  `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul`, which package
+  the displayed `Q` and `P` matrix identities into one local product identity.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

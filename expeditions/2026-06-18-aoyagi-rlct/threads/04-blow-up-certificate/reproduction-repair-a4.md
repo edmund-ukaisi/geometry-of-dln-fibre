@@ -506,6 +506,44 @@ Lean status: this algebra is formalised in
 `pivotQ_mul_pivotQinv`, `pivotQinv_mul_pivotQ`, and
 `pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul`.
 
+### Combined normalized pivot-step algebra
+
+The two displayed operations compose without adding any new analytic input.
+The post-`Q` block
+
+```text
+[ 1 0
+  x D - x*y ]
+```
+
+has the exact shape required by the normalized `P` theorem after reading the
+one-column matrix `x` as the function `i ↦ x_i`. Hence the local identity is:
+
+```text
+P * diag(b0,b) * (D' Q)
+  = diag(b0,b) * [ 1 0
+                   0 D - x*y ],
+```
+
+where `P` is built from quotient witnesses `b_i=q_i*b0`. With the following
+factor included, the product-preserving form is:
+
+```text
+(P * diag(b0,b) * D') * C
+  = (diag(b0,b) * [ 1 0
+                    0 D - x*y ]) * (Q^-1 C).
+```
+
+This remains a finite matrix identity. It does not prove that the pivot chart
+exists, that these substitutions are regular polynomial coordinate changes with
+unit Jacobian, or that the exponent bookkeeping is correct.
+
+Lean status: this algebra is formalised as
+`pivotPostQBlock_eq_weightedPivotBlockMatrix`,
+`weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock`,
+`weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ`, and
+`weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul`.
+
 ## Pivot-chart coverage obligation
 
 The source displays only the chart where the pivot entry is `d_(J+1,J+1)`.
@@ -561,9 +599,10 @@ ordered lexicographically.  This is not yet checked.  It must prove:
 ## Current blockers
 
 - Full pivot-chart coverage is still not reproduced.
-- The recurrence divisibility and normalized displayed `Q/P` matrix identities
-  are proved narrowly, but the full polynomial-coordinate pivot chart
-  construction and chart-family coverage are not proved.
+- The recurrence divisibility and normalized displayed `Q/P` matrix identities,
+  including their combined local pivot-step identity, are proved narrowly, but
+  the full polynomial-coordinate pivot chart construction and chart-family
+  coverage are not proved.
 - The printed Case 2 vector update is incompatible with the terminal exponent
   formula for arbitrary widths.  The prefix-minimum vector repairs the
   arithmetic but is a corrected certificate, not source-faithful printed data.

@@ -400,6 +400,76 @@ theorem pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul
             rw [pivotQ_mul_pivotQinv]
             simp
 
+omit [Fintype κ] [DecidableEq κ] in
+/-- The `Q`-normalised block is the same block shape used by the `P` row-operation API. -/
+theorem pivotPostQBlock_eq_weightedPivotBlockMatrix
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R) :
+    pivotPostQBlock x y D =
+      weightedPivotBlockMatrix (fun i ↦ x i ()) (D - x * y) := by
+  ext r c
+  rcases r with (_ | i)
+  · rcases c with (_ | j)
+    · simp [pivotPostQBlock, weightedPivotBlockMatrix]
+    · simp [pivotPostQBlock, weightedPivotBlockMatrix]
+  · rcases c with (_ | j)
+    · simp [pivotPostQBlock, weightedPivotBlockMatrix]
+    · simp [pivotPostQBlock, weightedPivotBlockMatrix]
+
+omit [Fintype κ] [DecidableEq κ] in
+/-- After `Q` normalisation, the weighted `P` row operation clears the pivot column. -/
+theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock
+    [Fintype ρ] [DecidableEq ρ]
+    (b0 : R) (b q : ρ → R)
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R)
+    (h : ∀ i, b i = q i * b0) :
+    weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedPivotDiagonal b0 b *
+        pivotPostQBlock x y D =
+      weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y) := by
+  rw [pivotPostQBlock_eq_weightedPivotBlockMatrix]
+  exact weightedPivotBlockRowOp_mul_diagonal_mul b0 b q (fun i ↦ x i ()) (D - x * y) h
+
+/-- The local normalised `Q`-then-`P` pivot identity. -/
+theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ
+    [Fintype ρ] [DecidableEq ρ]
+    (b0 : R) (b q : ρ → R)
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R)
+    (h : ∀ i, b i = q i * b0) :
+    weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedPivotDiagonal b0 b *
+        (pivotPreQBlock x y D * pivotQ y) =
+      weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y) := by
+  rw [pivotPreQBlock_mul_pivotQ]
+  exact weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock b0 b q x y D h
+
+/-- An algebraic pivot-step corollary with the following factor multiplied by `Q⁻¹`. -/
+theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
+    [Fintype ρ] [DecidableEq ρ]
+    (b0 : R) (b q : ρ → R)
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R)
+    (C : Matrix (Unit ⊕ κ) τ R) (h : ∀ i, b i = q i * b0) :
+    (weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedPivotDiagonal b0 b *
+        pivotPreQBlock x y D) * C =
+      (weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y)) *
+        (pivotQinv y * C) := by
+  calc
+    (weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedPivotDiagonal b0 b *
+          pivotPreQBlock x y D) * C
+        =
+          (weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedPivotDiagonal b0 b) *
+            (pivotPreQBlock x y D * C) := by
+            rw [Matrix.mul_assoc]
+    _ =
+          (weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedPivotDiagonal b0 b) *
+            (pivotPostQBlock x y D * (pivotQinv y * C)) := by
+            rw [pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul]
+    _ =
+          (weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedPivotDiagonal b0 b *
+            pivotPostQBlock x y D) * (pivotQinv y * C) := by
+            rw [← Matrix.mul_assoc]
+    _ =
+          (weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y)) *
+            (pivotQinv y * C) := by
+            rw [weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock b0 b q x y D h]
+
 end ColumnOperationBlocks
 
 end Aoyagi
