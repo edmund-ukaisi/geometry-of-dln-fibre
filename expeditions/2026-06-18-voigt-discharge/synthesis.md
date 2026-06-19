@@ -140,3 +140,11 @@ A/B are largely independent and can interleave once L5 is sized; C depends on B+
   needs the orbit-closure variety-dimension identified with orbitLinearCodim (= dim Rep − dim im δ⁰), i.e.
   varietyDim(Ō_M) = dim(orbit) = dim(im δ⁰) — that's the geometry's job (L1–L4), then L6 (orbitRankLocus = Ō_M),
   then L7 plugs codimRep = #σ − varietyDim into orbitLinearCodim.
+- 2026-06-19: L0 hardener pass — **BEDROCK CONFIRMED** (no critical; defs honest — `IsZariskiIrreducible`
+  rescued by `isIrreducible_iff_closure`; non-vacuity at a real point; `[IsAlgClosed k]` placement drop-probed).
+  **Phase A fully gated (L5 + L0, both AUDIT + hardener).** 2 optional-polish notes deferred to close:
+  add inhabitation `example`s for `IsZariskiClosed`/`IsZariskiIrreducible`; the `[IsAlgClosed k]` on the
+  `codimRep_*` corollaries is provably-unused-but-co-located (documented, keep). Cron heartbeat `e5d64339`
+  armed (every ~10 min, session-only) as a backstop for genuine yields; driving continuously in-turn meanwhile.
+  **Now Phase B (orbit geometry).** Goal: `varietyDim(Ō_M) = dim(im δ⁰)` via Ō_M irreducible + M smooth point
+  + Zariski tangent at M = im δ⁰. Opening with an L1 recon to DECIDE schemes-vs-concrete-affine.

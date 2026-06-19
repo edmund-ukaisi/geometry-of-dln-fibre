@@ -155,3 +155,37 @@ orbit-closure variety-dimension count.
   dictionary, rather than inventing a point-space topology instance.
 - **`varietyDim` as `ℕ∞` via `unbotD 0`.** Keeps the geometry-layer statement in `ℕ∞` (where `codimRep`
   lives); the `⊥` default never fires on a prime ideal (quotient nontrivial ⟹ dim `≥ 0`).
+
+## Hardener pass (2026-06-19) — BEDROCK CONFIRMED
+
+Independent principles/taste/bedrock pass (decorrelated from the fidelity reviewer). Verdict:
+**BEDROCK CONFIRMED.** No critical findings; two minor hardening suggestions (controller's call).
+
+Probed (all in-Lean, throwaway files, not committed):
+- **Definitions honest, not gerrymandered (decorrelated Codex agreed).** `IsZariskiClosed Z = (Z =
+  zeroLocus (vanishingIdeal Z))` is the closure-operator fixpoint (field-generic; correct at ∅/univ/finite).
+  `IsZariskiIrreducible Z = IsIrreducible (pointToPoint '' Z)` is rescued to "closure of the image is
+  irreducible" by Mathlib's `isIrreducible_iff_closure`, matching the genuine notion; ∅ correctly
+  non-irreducible (`IsIrreducible` carries `Nonempty`). Image-not-closure is not a defect.
+- **Non-vacuity at a GENUINE proper variety.** Bridge fires at a single point `{x}` (a real proper
+  irreducible variety, prime by Mathlib instance): `varietyDim {x} = 0`, `height = Nat.card σ` (full
+  codim) — both terms non-degenerate, strictly stronger than the `Z = univ` (height-0) in-file witness.
+- **`unbotD 0` swallow confined off-hypothesis.** `varietyDim ∅ = 0` from a genuine `⊥` (`vanishingIdeal
+  ∅ = ⊤`), but `⊤` not prime ⟹ no headline fires there; the in-file proof proves `ringKrullDim ≠ ⊥` from
+  primality before unfolding. The default never bites under the stated hypothesis.
+- **`[IsAlgClosed k]` placement verified by drop-probe.** Additive headline + `codimRep` corollary both
+  typecheck with `[IsAlgClosed k]` REMOVED. Dropped correctly from the additive headline; carried-but-
+  droppable on the `codimRep_*` corollaries — defensible (the geometric reading's consumer needs it to get
+  irreducible⟹prime via the dictionary), not a hidden citation.
+- **Hygiene:** axiom-clean (`propext, Classical.choice, Quot.sound`) on all 11 headlines; no
+  `sorry`/`native_decide`/`axiom`; no `DLNFibre.DLN` import; whole library `scripts/sorries` = 0.
+
+Minor hardening suggestions (non-blocking):
+1. *(non-vacuity §2.1)* `IsZariskiClosed`/`IsZariskiIrreducible` have no in-file inhabitation `example`.
+   Both are inhabited at `univ` (probed; `IsZariskiIrreducible univ` typechecks, `IsZariskiClosed univ`
+   reduces to `Set.univ = ⊤`). A one-line `example` per predicate would close §2.1 cleanly.
+2. *(precision §1.3)* The `[IsAlgClosed k]` on the `codimRep_*` corollaries is provably unused by their
+   proofs. Defensible as a co-located geometric-reading hypothesis, but it is the one decorative-looking
+   hypothesis; either keep with the existing docstring note or drop and let the consumer carry it.
+
+Decorrelated Codex artefact: `codex/hardener-taste-{prompt,answer}.md`.
