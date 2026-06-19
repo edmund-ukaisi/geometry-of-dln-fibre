@@ -122,9 +122,9 @@ No such claim is formalisation-ready until both fields are filled.
   assembled over a fixed finite family of accumulated upper blocks in the
   edge-family product topology. A variable-parameter continuity handoff for
   continuous edge and `Bprev` families is also proved. The deterministic
-  one-step suffix-state update that produces the next `Bprev` is now also
-  proved at the abstract chart-local level. The full source Theorem 3 claim
-  remains blocked.
+  one-step suffix-state update and the full recursive suffix-state
+  block-diagonal invariant are now also proved at the abstract chart-local
+  algebra level. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -170,7 +170,13 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.BlockDiagonal`,
   `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.transformedEdge`,
   `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.step`,
-  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.step_blockDiagonal`, and
+  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.terminal`,
+  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.suffixState`,
+  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.suffixState_self`,
+  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.terminal_blockDiagonal`,
+  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.suffixState_castSucc`,
+  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.step_blockDiagonal`,
+  `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.suffixState_blockDiagonal`, and
   `DLNFibre.DLN.Aoyagi.productReduction_identityCorner_suffixChain_rightElim`
   in the same file; rank bridge theorems
   `DLNFibre.DLN.Aoyagi.rank_toMatrix_eq_finrank_range` and
@@ -403,10 +409,11 @@ No such claim is formalisation-ready until both fields are filled.
   are proved, and the continuous-linear-map pullback plus fixed-family
   edge-product neighborhood assembly plus variable-`Bprev` continuity handoff
   are proved, but this is not yet the source-faithful neighborhood theorem
-  needed for the induction-produced `Bprev` blocks. The deterministic one-step
-  suffix-state update is proved, but the full recursive suffix-chain theorem
-  built from that state is still open. Still open: source-faithful Theorem 3
-  statement and certificate transport. Exact rank-stratum hypotheses remain separate; see
+  needed for the induction-produced `Bprev` blocks. The deterministic recursive
+  suffix-state algebra is proved, but continuity of that recursive data and
+  source-faithful chart neighborhoods are still open. Still open:
+  source-faithful Theorem 3 statement and certificate transport. Exact
+  rank-stratum hypotheses remain separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

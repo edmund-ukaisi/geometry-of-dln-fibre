@@ -26,10 +26,10 @@
 >   block-diagonal invariant, and the determinant-chart hypothesis for the
 >   transformed edge.
 > - **Cited.** None.
-> - **Deferred.** The full deterministic recursive suffix-chain state from an
->   endpoint `j` down to an initial index `i`, continuity of that recursive
->   state, source-faithful chain neighborhoods, exact rank strata, regular
->   coordinate-change certificates, and RLCT consequences.
-> - **Kill conditions.** Do not read the one-step theorem as a completed
->   recursive construction or as a proof that the recursive chart hypotheses
->   hold on a neighborhood.
+> - **Deferred beyond this card.** The recursive suffix-chain state is covered
+>   separately in `statement-card-a2-deterministic-suffix-chain.md`. Continuity
+>   of that recursive state, source-faithful chain neighborhoods, exact rank
+>   strata, regular coordinate-change certificates, and RLCT consequences
+>   remain deferred.
+> - **Kill conditions.** Do not read the one-step theorem as a proof that the
+>   recursive chart hypotheses hold on a neighborhood.

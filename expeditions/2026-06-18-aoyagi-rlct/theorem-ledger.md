@@ -164,6 +164,19 @@ step theorem proves preservation of the block-diagonal invariant under the
 recursive determinant-chart hypothesis for the transformed edge. It does not
 yet define or prove the full recursive suffix-chain state from `j` down to `i`.
 
+Twelfth latest A2 update: the deterministic recursive suffix state has landed.
+`ChartLocalSuffixState.terminal`, `ChartLocalSuffixState.suffixState`,
+`ChartLocalSuffixState.suffixState_self`,
+`ChartLocalSuffixState.terminal_blockDiagonal`,
+`ChartLocalSuffixState.suffixState_castSucc`, and
+`ChartLocalSuffixState.suffixState_blockDiagonal` now define the state obtained
+by iterating the one-step recurrence downward and prove the recursive
+block-diagonal invariant under recursive determinant-chart hypotheses. The
+older public theorem `productReduction_chartLocal_suffixChain_blockDiagonal_indexed`
+is now a wrapper extracting its witnesses from this deterministic state. This
+is still algebraic: continuity of the recursive state and source-faithful chart
+neighborhoods remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

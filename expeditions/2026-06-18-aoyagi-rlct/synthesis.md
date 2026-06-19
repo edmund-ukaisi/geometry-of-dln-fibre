@@ -456,22 +456,29 @@ Pen-and-paper reproduction of the suffix-chain proof identifies the recursive
 right-elimination block. With `U_+(B) = [I B; 0 I]`, the transformed edge is
 `M_p = U_+(Bprev) * E p`, and the next block is
 `(topLeftCorner M_p)⁻¹ * upperRightBlock M_p`. The existing existential proof
-already passes this witness forward; the next Lean target is to make this
-deterministic recurrence explicit, prove the corresponding chart-local
-reduction under recursive chart hypotheses, and then prove continuity on a
-neighborhood where those chart hypotheses hold.
+already passed this witness forward. Lean now makes this deterministic
+recurrence explicit and proves the corresponding chart-local reduction under
+recursive chart hypotheses; continuity on a neighborhood where those chart
+hypotheses hold remains open.
 
-The one-step deterministic state layer is now Lean-proved in
-`ProductReduction.lean`. `ChartLocalSuffixState` packages the current left
-multiplier, right-elimination block `B`, top block `Ctop`, and residual block
-`D`. `ChartLocalSuffixState.transformedEdge` forms `[I B; 0 I] * E p`,
+The deterministic state layer is now Lean-proved in `ProductReduction.lean`.
+`ChartLocalSuffixState` packages the current left multiplier,
+right-elimination block `B`, top block `Ctop`, and residual block `D`.
+`ChartLocalSuffixState.transformedEdge` forms `[I B; 0 I] * E p`,
 `ChartLocalSuffixState.step` updates the state with
 `Bnext = (topLeftCorner M)⁻¹ * upperRightBlock M`, and
 `ChartLocalSuffixState.step_blockDiagonal` proves that this deterministic
 update preserves the block-diagonal invariant under the recursive
-determinant-chart hypothesis on `M`. This is still one step: the full
-deterministic recursive suffix-chain construction remains the next algebraic
-target.
+determinant-chart hypothesis on `M`. The recursive layer is also proved:
+`ChartLocalSuffixState.terminal`, `ChartLocalSuffixState.suffixState`,
+`ChartLocalSuffixState.suffixState_self`, and
+`ChartLocalSuffixState.suffixState_castSucc` define and unfold the state
+obtained by descending from endpoint `j` to `i`, while
+`ChartLocalSuffixState.suffixState_blockDiagonal` proves the full recursive
+block-diagonal invariant. The public existential theorem
+`productReduction_chartLocal_suffixChain_blockDiagonal_indexed` is now a
+wrapper extracting the four fields from this deterministic state. The next
+target is continuity of `suffixState` and source-faithful chart neighborhoods.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

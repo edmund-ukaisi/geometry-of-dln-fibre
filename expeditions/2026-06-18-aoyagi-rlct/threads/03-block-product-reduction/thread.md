@@ -942,3 +942,35 @@ Still open: define the full recursive state from endpoint `j` down to `i`,
 prove its block-diagonal invariant by iterating this step, and then prove
 continuity of that recursive state on a chart neighborhood. Exact rank
 assumptions remain separate.
+
+## 2026-06-19 A2 deterministic recursive suffix state
+
+Extended the deterministic suffix-state layer from one step to the full
+recursive chart-local chain:
+
+- `ChartLocalSuffixState.terminal`;
+- `ChartLocalSuffixState.suffixState`;
+- `ChartLocalSuffixState.suffixState_self`;
+- `ChartLocalSuffixState.terminal_blockDiagonal`;
+- `ChartLocalSuffixState.suffixState_castSucc`;
+- `ChartLocalSuffixState.suffixState_blockDiagonal`.
+
+The definition uses `Nat.decreasingInduction` on the lower endpoint `m ≤ j.val`
+and keeps the dependent `Fin` casts local to `ProductReduction.lean`.
+`suffixState E j i hij` is the deterministic state obtained by starting from
+the terminal state at `j` and repeatedly applying
+`ChartLocalSuffixState.step` down to `i`. The theorem
+`suffixState_blockDiagonal` proves the full recursive block-diagonal invariant
+under determinant-chart hypotheses for the actual transformed edges
+
+`ChartLocalSuffixState.transformedEdge E p (suffixState E j p.succ hpj)`.
+
+The older public existential theorem
+`productReduction_chartLocal_suffixChain_blockDiagonal_indexed` is now a
+wrapper extracting `L`, `B`, `Ctop`, and `D` from `suffixState`, rather than a
+separate duplicate induction.
+
+Still open: continuity of the recursively produced `suffixState` fields,
+source-faithful neighborhoods where the recursive transformed-edge charts hold,
+certificate transport, and the full source Theorem 3 statement. Exact rank
+assumptions remain separate.
