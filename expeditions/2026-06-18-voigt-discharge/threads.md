@@ -26,6 +26,8 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 | 14 | geometry-recon | pen-and-paper | closed | Orbit geometry sized — L6 (3–4 mod sub-library, paper-cited degeneration), L1/L2/L3 bounded via pivot chart |
 | 15 | L6.0-limit-lemma | formaliser | closed | Polynomial-curve limit ⟹ in V(vanishingIdeal) — free/independent; first geometry tide |
 
+| 16 | orbit-variety | formaliser | closed | O_M irreducible (vanishingIdeal prime), orbit map, 𝒪(G_d) domain — 402 LoC, FAITHFUL |
+
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
 - 0N — L1 GL/orbit/irreducibility (scout recon → formaliser)

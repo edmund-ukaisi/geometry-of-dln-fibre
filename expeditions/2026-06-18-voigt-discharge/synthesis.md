@@ -316,3 +316,9 @@ Critical path: L6 stays on it for the dimension (chart gives `dim O_M`; `variety
   (no IsAlgClosed; Codex-confirmed sharp). Curve encoding `c : σ → Polynomial k` (feeds L6.1's explicit family).
   Green, axiom-clean. **Next: L3.0 pivot chart on (2,2,2)** — the high-leverage gamble (collapses L2+L3 if it
   lands; fires the L3 kill-condition). Then L3.1+L2.* payoff, then L6.1+L6.2 box-move generation (the heavy core).
+- 2026-06-19: **Orbit-variety foundation LANDED** (thread 16, FAITHFUL) — `Core.OrbitVariety`:
+  `isPrime_vanishingIdeal_orbitSet` (O_M Zariski-irreducible), orbit map `orbitMap M`, `groupRing d = 𝒪(G_d)`
+  domain, `vanishingIdeal_range_orbitMap_eq_ker` (= ker μ_M^*). Bounded (402 LoC). Green (2688 jobs), axiom-clean.
+  Prerequisite for chart/L6/L1 in place. **Next: L3.0 pivot chart on (2,2,2)** (high-leverage gamble for L2+L3,
+  built on `baseChange_normalForm` + `orbitMap`). Then L6 degeneration (heavy core), L4-assembly, L7.
+  Handoff note: this gives O_M irreducible; transferring primeness to Z_M (= orbitRankLocus) needs L6.
