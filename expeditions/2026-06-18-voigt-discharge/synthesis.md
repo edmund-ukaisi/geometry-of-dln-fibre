@@ -373,3 +373,16 @@ sub-library (zero-cited, another major sub-campaign, subsumes L6); (b) Cite the 
 theorem the SOURCE PAPER ITSELF cites (Abeasis–Del Fra / Lakshmibai–Magyar) — closes the geometry in modules,
 reduces hVoigt to one named standard citation, consistent with the paper + the Aoyagi-RLCT precedent; (c) bank the
 CA bedrock, defer the geometry. Decision pending.
+
+## OPERATOR DECISION: BUILD IT (zero-cited) — the geometry-dimension sub-library [2026-06-19]
+Operator chose to build the second foundational sub-library. The drive resumes. **Remaining = one sub-campaign:
+prove `varietyDim(orbitRankLocus M) = finrank(range δ⁰)` (then L1 + L4-assembly + L7 close hVoigt).** Two
+non-circular routes to the core `dim O_M = finrank(range δ⁰)`:
+- **(a) Determinantal-KMS:** `vanishingIdeal(Z_M) = (minors)` prime (Lakshmibai–Magyar/KMS) + `ker(J_minors)=range δ⁰`
+  + L2a/L4★/L3. Subsumes L6. Reuses landed work.
+- **(b) Orbit-stabiliser/fibre-dimension:** `dim O_M = dim G − dim Stab = finrank C⁰ − finrank(ker δ⁰) =
+  finrank(range δ⁰)` (rank-nullity LANDED) via Chevalley fibre-dimension + `Stab(M)=Aut(M)` open in `Hom(M,M)=ker δ⁰`
+  + `dim Z_M = dim O_M` (closure). Sidesteps L2a/L4★/L3/IsSmoothAt entirely IF Chevalley fibre-dim is in/near Mathlib.
+**NEXT (final scoping): sizing recon comparing (a) vs (b)** — pick the genuinely smaller Lean build, produce its
+build sub-ladder. Then build, layer by layer. Loop re-armed.
+- 2026-06-19: operator BUILD IT. Next: route-sizing recon (determinantal-KMS vs orbit-stabiliser/Chevalley).
