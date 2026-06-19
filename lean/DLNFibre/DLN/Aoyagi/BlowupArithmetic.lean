@@ -1185,6 +1185,36 @@ theorem IntroducedLabelExponentCertificates.case1_selectedLowerTail_updateData
   · intro s k _ hne
     exact updateSelectedLabelScalar_of_ne (J : ℤ) leastValue hne
 
+/-- Conditional level and above-pivot flat-tail bridges for labels introduced at a state. -/
+structure IntroducedLabelLevelTailInvariants
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (level : ℕ → ℕ → ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ) (leastValue : ℕ → ℕ → ℤ) : Prop where
+  leastValue_eq_level :
+    ∀ {s k}, introducedLabel L n S J s k → leastValue s k = (level s k : ℤ)
+  flatTail_abovePivot :
+    ∀ {s k}, introducedLabel L n S J s k → J < level s k →
+      FlatTailFromPred L S (t s k) (level s k : ℤ)
+
+/-- If the level/above-pivot flat-tail bridge is supplied, the Case 1 same-domain
+update-data theorem no longer needs separate selected-label bridge hypotheses. -/
+theorem IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_levelTailInvariants
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hinv : IntroducedLabelLevelTailInvariants L n S J level t leastValue)
+    (hS : 2 ≤ S) (hSL : S ≤ L) :
+    IntroducedLabelExponentCertificates L n S J
+      (updateSelectedLabelVector s0 k0 (lowerTailVector (t s0 k0) S (J : ℤ)) t)
+      (updateSelectedLabelScalar s0 k0
+        (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar s0 k0 (J : ℤ) leastValue) :=
+  hcert.case1_selectedLowerTail_updateData hfirst
+    (hinv.leastValue_eq_level hfirst.selectedIntroduced)
+    (hinv.flatTail_abovePivot hfirst.selectedIntroduced hfirst.lt_selectedLevel) hS hSL
+
 section MonomialRecurrence
 
 variable {α : Type*} [CommMonoid α]
