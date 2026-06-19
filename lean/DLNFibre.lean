@@ -25,3 +25,4 @@ import DLNFibre.Core.CThetaThetaBridge
 import DLNFibre.Core.IntegralDimension
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NoetherMonicPositioning
+import DLNFibre.Core.NullstellensatzCodim
