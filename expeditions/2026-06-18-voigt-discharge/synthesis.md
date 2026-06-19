@@ -118,3 +118,9 @@ A/B are largely independent and can interleave once L5 is sized; C depends on B+
   catch with an explicit counterexample. Remaining L5 risk concentrates on **L5.6** (going-DOWN additivity →
   IsIntegrallyClosed/HasGoingDown propagation still untested). Hardener bedrock pass deferred to L5-phase close.
   Next: L5.6 (the hard one) and/or L0 (gates the geometry).
+- 2026-06-19: thread 04 (L5.5/L5.7-≤) LANDED. `Core.PolynomialDimension`: L5.5 `dim(R/p)=noetherRank`,
+  L5.7 `≤` (`primeHeight p + dim(R/p) ≤ n`), + the polynomial-tower additive height brick
+  (`height_eq_height_under_add_height_map_quotient`). **Kill-condition CLEAN** (going-down instances fire by
+  inferInstance). Full L5.7 equality NOT yet stated (no overclaim): the catenary `≥` needs a
+  **monic-coordinate-positioning lemma** (Noether-normalization degree trick, `private` in Mathlib). Next:
+  build that brick + close L5.7 `≥` → full equality. Then L0, then geometry.
