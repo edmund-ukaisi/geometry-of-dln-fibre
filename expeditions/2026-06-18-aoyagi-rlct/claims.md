@@ -915,7 +915,14 @@ No such claim is formalisation-ready until both fields are filled.
   `factoredBase.level`; it still does not identify the `Unit` center generator
   with a source label or construct the selected-old chart. The supplied
   chart-family package assumes chart regularity and transition regularity as
-  fields; it does not prove them from coordinates or prove chart coverage.
+  fields; it does not prove them from coordinates or prove chart coverage. The
+  selected-old source-coordinate wrapper restricts source residual and
+  following-factor functions into the existing displayed source-order boundary
+  under the displayed pivot normalization, and projects finite
+  principalization facts for the displayed top-left chart token. It does not
+  project selected-old `Unit` principalization with this same displayed pivot
+  variable. It still does not construct the selected-old chart, raw source
+  pullback, chart-produced post-data, or a transition invariant.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

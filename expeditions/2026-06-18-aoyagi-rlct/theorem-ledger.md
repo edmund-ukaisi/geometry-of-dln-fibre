@@ -800,6 +800,26 @@ Jacobians, prove normal crossings, or extract RLCT. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-supplied-chart-family-boundary-a4.md`.
 
+Latest A4 update: the Case 1 selected-old source-coordinate wrapper has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.displayedPivot_selectedEntryChartMap_value_mem`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.displayedPivot_center_dvd`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.displayedPivot_centerIdeal_eq_span_singleton`,
+`case2DisplayedSourceFollowingFactor`, and
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.sourceOrder_identity_sourceCoordinates`.
+This checkpoint adapts the existing displayed Case 1(2) source-order
+identity from source-coordinate residual/following-factor functions under
+`residual (J+1,J+1)=1`, and projects finite selected-entry principalization
+facts for the displayed top-left chart token. It does not
+construct the selected-old chart, prove atlas coverage, derive `(s0,k0)` from
+`Unit`, project selected-old `Unit` principalization with the displayed pivot
+variable, construct the source pullback, produce chart post-data, compute
+Jacobians, prove normal crossings, extract RLCT, or prove a transition
+invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-source-coordinate-wrapper.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-source-coordinate-wrapper-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

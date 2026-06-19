@@ -1221,3 +1221,31 @@ This is still a supplied interface. It does not construct charts, prove
 coverage, derive `(s0,k0)` from `Unit`, construct the raw source pullback,
 compute Jacobians, assert normal crossings, extract RLCT, or prove a
 transition invariant.
+
+## 2026-06-19 Lean Case 1 selected-old source-coordinate wrapper
+
+Statement card:
+`statement-card-a4-case1-selected-old-source-coordinate-wrapper.md`.
+
+Lean now adapts the already supplied selected-old chart-family boundary to
+source-coordinate residual and following-factor functions. The new
+`case2DisplayedSourceFollowingFactor` restricts a source following factor to
+the residual columns and reindexes it into the displayed top-left pivot-first
+column order. The theorem
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.sourceOrder_identity_sourceCoordinates`
+then applies the existing source-order identity to
+`case2SourceResidualBlock residual`, using the source-coordinate pivot
+normalization `residual (J+1,J+1) = 1`.
+
+The same checkpoint projects finite selected-entry principalization facts for
+the displayed top-left row-strip pivot. The selected variable occurs as a
+transformed center value, divides all transformed finite center generators,
+and generates the transformed finite center ideal for that displayed pivot
+token. The selected-old `Unit` principalization projection is intentionally
+not made with this same variable, because here `u` is the displayed row-strip
+pivot factor in `old = u*old'`.
+
+This is still not chart production. It does not construct the selected-old
+chart, prove atlas coverage, derive `(s0,k0)` from `Unit`, construct the raw
+source pullback, produce chart post-data, compute Jacobians, prove normal
+crossings, extract RLCT, or prove a transition invariant.

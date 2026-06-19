@@ -1007,6 +1007,20 @@ in both directions. It also carries through the source-label, source-step,
 source-order, and exponent-domain projections. This is a supplied regularity
 interface, not chart production or atlas coverage.
 
+The selected-old source-coordinate wrapper is now Lean-proved. It restricts a
+source-coordinate residual function `Nat x Nat -> R` to the residual block and
+a source following factor `Nat -> tau -> R` to the residual columns, then
+applies the selected-old supplied chart-family boundary under the displayed
+pivot normalization `residual (J+1,J+1)=1`. The checkpoint also projects the
+finite selected-entry principalization facts for the displayed top-left
+row-strip pivot: the selected variable occurs, divides all transformed finite
+center generators, and generates the transformed finite center ideal. It does
+not project selected-old `Unit` principalization with this same variable,
+because `u` is the displayed row-strip pivot factor in `old = u*old'`. This
+remains an adapter/projection layer; it does not construct the selected-old
+chart, source pullback, atlas coverage, chart post-data, Jacobian, normal
+crossings, RLCT, or a transition invariant.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

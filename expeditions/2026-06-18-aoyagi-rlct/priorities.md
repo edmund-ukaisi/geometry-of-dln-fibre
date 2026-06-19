@@ -236,9 +236,13 @@ on the session's original cwd.
    proving chart production. The selected-old supplied chart-family boundary
    now adds supplied regularity and transition-regularity projections for the
    selected old token and displayed top-left pivot, without constructing those
-   charts. Next A4 target: raw source-coordinate/chart-production data for the
-   displayed Case 1(2) charts, or a similarly narrow source-facing wrapper for
-   another displayed piece; keep arbitrary pivots explicit and supplied.
+   charts. The selected-old source-coordinate wrapper now adapts this supplied
+   boundary to source residual/following-factor functions under the displayed
+   pivot normalization and projects finite center principalization for the
+   displayed top-left chart token only. Next A4 target:
+   raw coordinate construction of the selected-old/source pullback or another
+   source-displayed piece only if it can be stated without claiming atlas
+   coverage; keep arbitrary pivots explicit and supplied.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
