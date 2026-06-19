@@ -577,7 +577,14 @@ No such claim is formalisation-ready until both fields are filled.
   flat-tail and `2 <= S <= L` hypotheses explicit. Also proved
   `FlatTailFromPred`, lower-tail component/minimum facts, and the one-label
   transformer `LabelExponentCertificate.lowerTailVector_of_flatFromPred_add`,
-  which additionally assumes old least value `J+J1` and `J <= J+J1`.
+  which additionally assumes old least value `J+J1` and `J <= J+J1`. Also
+  proved finite Case 1 center-generator bookkeeping:
+  `Case1CenterGenerator`, `case1StripRows`, `case1StripCols`,
+  `case1StripEntries`, `case1CenterGenerators`,
+  `mem_case1StripEntries_iff`, `case1_selectedOld_mem_center`,
+  `case1_stripEntry_mem_center`, `case1_displayedPivot_mem_center_of_bounds`,
+  and selected-entry value-set specializations for the selected-old and
+  displayed-pivot choices.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

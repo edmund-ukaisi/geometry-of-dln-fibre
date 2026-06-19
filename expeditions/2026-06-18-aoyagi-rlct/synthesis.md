@@ -209,6 +209,10 @@ interface without surfacing it.
   transformer `LabelExponentCertificate.lowerTailVector_of_flatFromPred_add`
   are also proved; the transformer is conditional on old least value `J+J1`
   and `J<=J+J1`, and is not an all-label transition.
+  Case 1 center generators are now finite symbols in Lean: one chosen old
+  exceptional generator plus the actual-width row strip. This supports later
+  selected-entry chart bookkeeping, but does not encode old-label hypotheses,
+  row-strip source validity, chart coverage, or transition formulas.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

@@ -267,6 +267,26 @@ This is finite algebra only. It does not construct blow-up charts, prove chart
 coverage, prove non-displayed selected-entry transition formulas, or establish
 regularity/Jacobian facts.
 
+## 2026-06-19 Lean Case 1 center generators
+
+Statement card: `statement-card-a4-case1-center-generators.md`.
+
+Lean now has finite symbols for the Case 1 center after the old exceptional
+variable has been chosen externally. The type `Case1CenterGenerator` is
+`Unit ⊕ (Nat × Nat)`: the `Unit` branch is the chosen old exceptional
+generator, and the right branch is a row-strip entry `d_ij`. The row strip is
+`J+1..J+J1` by `J+1..n_(S+1)`, with actual active column width.
+
+Lean proves row/column/entry membership criteria, membership of the chosen old
+generator, membership of any row-strip entry, and membership of Aoyagi's
+displayed pivot entry under `1 <= J1` and `J+1 <= n_(S+1)`. It also specializes
+the generic selected-entry substitution value-set lemma to the selected-old and
+displayed-pivot choices.
+
+This remains finite generator bookkeeping. It does not encode the old label's
+validity, level, minimality, or comparability, and it does not prove row-strip
+source validity, chart coverage, or transition formulas.
+
 ## 2026-06-19 Lean Case 1 tail exponent increment
 
 Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.

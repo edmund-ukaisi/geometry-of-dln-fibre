@@ -136,6 +136,14 @@ d_ij = 0,  i = J+1, ..., J+J1,  j = J+1, ..., n_(S+1),
 u_(s,k) = 0.
 ```
 
+Lean status: the finite generator symbols for this Case 1 center are packaged
+as `Case1CenterGenerator` and `case1CenterGenerators`.  The `Unit` branch
+represents the chosen old exceptional generator after that label has been
+chosen externally; it does not encode actual-width validity, level `J+J1`,
+minimality, or comparability.  The row-strip entries use actual active column
+width `n_(S+1)`, and the displayed pivot-entry membership theorem assumes only
+the finite entry bounds, not full row-strip source validity.
+
 ### Case 1(1): selected `u_(s,k)` chart
 
 The whole `J1 x (n_(S+1)-J)` row strip is divided by `u_(s,k)`.
