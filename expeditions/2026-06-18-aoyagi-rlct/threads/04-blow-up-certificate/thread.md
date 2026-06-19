@@ -765,6 +765,23 @@ not chart production, arbitrary-pivot chart coverage, regularity/Jacobian,
 exponent update, transition invariant, source comparability, normal crossings,
 or RLCT extraction.
 
+## 2026-06-19 Lean Case 2 source-selected pair wrapper
+
+Reproduction: `reproduction-case2-source-selected-pair-wrapper-a4.md`.
+Statement card: `statement-card-a4-case2-source-selected-pair-wrapper.md`.
+Review artifact: `review-case2-source-selected-pair-wrapper-a4.md`.
+
+Lean now has a source-coordinate adapter for supplied arbitrary Case 2
+residual-block pivot pairs. A source pair `p : Nat × Nat` with
+`p ∈ case2ResidualBlockPivotEntries n S J` extracts row and column subtype
+pivots, restricts source residual data to the residual block, restricts a
+source-column following factor to residual columns, and instantiates the
+arbitrary selected-pivot recurrence-gap and supplied-post-data `Q/P` wrappers.
+
+This is a usability bridge from source-coordinate data into the finite algebra.
+It is not chart coverage, not a claim that Aoyagi displays non-top-left Case 2
+charts, and not a source-order transition theorem for non-displayed pivots.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

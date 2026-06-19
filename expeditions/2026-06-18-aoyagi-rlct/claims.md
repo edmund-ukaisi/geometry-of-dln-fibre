@@ -779,6 +779,19 @@ No such claim is formalisation-ready until both fields are filled.
   `CorrectedCase2NewLabelCertificate.exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData`,
   proving the same arbitrary selected-pivot handoff under packaged old
   recurrence gaps and supplied successor post-data.
+  Added source-selected pair wrappers:
+  `case2SourceResidualBlock`, `case2SourceFollowingFactor`,
+  `case2SourceSelectedNormalizedMatrixOfMem`,
+  `case2SourceSelectedSubstitutionMatrixOfMem`,
+  `case2SourceSelectedFollowingFactorOfMem`,
+  `case2SourceSelectedTransportedFollowingFactorOfMem`,
+  `exists_case2SourceSelectedQP_mul_sourceSubstitution_of_recurrenceStateGap`,
+  `CorrectedCase2NewLabelCertificate.case2SourceSelected_diagonal_mul_substitutionMatrix_pivotFirst_succWeights_of_postData`,
+  and
+  `CorrectedCase2NewLabelCertificate.exists_case2SourceSelectedQP_of_recurrenceStateGap_succWeights_of_postData`,
+  instantiating the arbitrary selected-pivot recurrence/post-data theorems
+  from a supplied source pivot pair in `case2ResidualBlockPivotEntries` and
+  source-coordinate residual/following data.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

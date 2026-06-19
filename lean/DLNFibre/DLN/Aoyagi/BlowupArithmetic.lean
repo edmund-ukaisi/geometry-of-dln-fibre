@@ -3595,6 +3595,236 @@ theorem exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap_succ
 
 end CorrectedCase2NewLabelCertificate
 
+/-- Restrict source-coordinate residual data to the Case 2 residual block.
+Rows are the prefix-minimum residual rows and columns are the actual-width
+residual columns. -/
+def case2SourceResidualBlock
+    {n : ℕ → ℕ} {S J : ℕ}
+    (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  fun i j ↦ residual (i.1, j.1)
+
+/-- Restrict a source-coordinate following factor to the Case 2 residual
+columns. -/
+def case2SourceFollowingFactor
+    {n : ℕ → ℕ} {S J : ℕ}
+    (C : ℕ → τ → R) :
+    Matrix (Case2ResidualColIndex n S J) τ R :=
+  fun j t ↦ C j.1 t
+
+/-- Source-coordinate normalised matrix for a supplied Case 2 residual-block
+pivot pair.  The membership proof only extracts row and column subtype pivots;
+it is not a chart-coverage assertion. -/
+def case2SourceSelectedNormalizedMatrixOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  case2SelectedNormalizedMatrix
+    (case2ResidualBlockPivotRowOfMem hp)
+    (case2ResidualBlockPivotColOfMem hp)
+    (case2SourceResidualBlock residual)
+
+/-- Source-coordinate selected-entry substitution matrix for a supplied Case 2
+residual-block pivot pair. -/
+def case2SourceSelectedSubstitutionMatrixOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  case2SelectedSubstitutionMatrix
+    (case2ResidualBlockPivotRowOfMem hp)
+    (case2ResidualBlockPivotColOfMem hp)
+    u (case2SourceResidualBlock residual)
+
+/-- Source-coordinate following factor reindexed into the selected pivot-first
+column order. -/
+def case2SourceSelectedFollowingFactorOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (C : ℕ → τ → R) :
+    Matrix (Unit ⊕ pivotComplement (case2ResidualBlockPivotColOfMem hp)) τ R :=
+  case2SelectedFollowingFactor
+    (case2ResidualBlockPivotColOfMem hp)
+    (case2SourceFollowingFactor C)
+
+/-- Source-coordinate following factor after the arbitrary selected-pivot
+`Q⁻¹ C` transport. -/
+def case2SourceSelectedTransportedFollowingFactorOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    Matrix (Unit ⊕ pivotComplement (case2ResidualBlockPivotColOfMem hp)) τ R :=
+  case2SelectedTransportedFollowingFactor
+    (case2ResidualBlockPivotRowOfMem hp)
+    (case2ResidualBlockPivotColOfMem hp)
+    (case2SourceResidualBlock residual)
+    (case2SourceFollowingFactor C)
+
+@[simp] theorem case2SourceSelectedNormalizedMatrixOfMem_pivot
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) :
+    case2SourceSelectedNormalizedMatrixOfMem hp residual
+      (case2ResidualBlockPivotRowOfMem hp)
+      (case2ResidualBlockPivotColOfMem hp) = 1 := by
+  simp [case2SourceSelectedNormalizedMatrixOfMem, case2SelectedNormalizedMatrix]
+
+@[simp] theorem case2SourceSelectedSubstitutionMatrixOfMem_pivot
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2SourceSelectedSubstitutionMatrixOfMem hp u residual
+      (case2ResidualBlockPivotRowOfMem hp)
+      (case2ResidualBlockPivotColOfMem hp) = u := by
+  simp [case2SourceSelectedSubstitutionMatrixOfMem, case2SelectedSubstitutionMatrix]
+
+/-- Source-coordinate Case 2 selected-pivot `Q/P` identity for a source pivot
+pair known to lie in the residual-block center and an old recurrence state
+satisfying the Case 2 gap.  This is a wrapper around finite algebra for a
+supplied pivot pair; it does not prove chart production or chart coverage. -/
+theorem exists_case2SourceSelectedQP_mul_sourceSubstitution_of_recurrenceStateGap
+    (L : ℕ) {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (state : IntroducedLabelRecurrenceState L n S J R)
+    (hgap : state.case2Gap) (u : R)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    ∃ q : pivotComplement (case2ResidualBlockPivotRowOfMem hp) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2ResidualBlockPivotRowOfMem hp)
+              (case2ResidualBlockPivotColOfMem hp)
+              (case2SourceSelectedNormalizedMatrixOfMem hp residual) i ()) *
+          (diagonal (fun i ↦ state.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionMatrixOfMem hp u residual).submatrix
+            (pivotFirstIndexEquiv (case2ResidualBlockPivotRowOfMem hp))
+            (pivotFirstIndexEquiv (case2ResidualBlockPivotColOfMem hp))) *
+          case2SourceSelectedFollowingFactorOfMem hp C =
+        (weightedPivotDiagonal
+            (u * state.case2ResidualRowWeight
+              (case2ResidualBlockPivotRowOfMem hp))
+            (fun i : pivotComplement (case2ResidualBlockPivotRowOfMem hp) ↦
+              u * state.case2ResidualRowWeight i.1) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2ResidualBlockPivotRowOfMem hp)
+                (case2ResidualBlockPivotColOfMem hp)
+                (case2SourceSelectedNormalizedMatrixOfMem hp residual) -
+              pivotFirstX
+                  (case2ResidualBlockPivotRowOfMem hp)
+                  (case2ResidualBlockPivotColOfMem hp)
+                  (case2SourceSelectedNormalizedMatrixOfMem hp residual) *
+                pivotFirstY
+                  (case2ResidualBlockPivotRowOfMem hp)
+                  (case2ResidualBlockPivotColOfMem hp)
+                  (case2SourceSelectedNormalizedMatrixOfMem hp residual))) *
+          case2SourceSelectedTransportedFollowingFactorOfMem hp residual C := by
+  simpa [case2SourceSelectedNormalizedMatrixOfMem,
+    case2SourceSelectedSubstitutionMatrixOfMem,
+    case2SourceSelectedFollowingFactorOfMem,
+    case2SourceSelectedTransportedFollowingFactorOfMem,
+    case2SourceResidualBlock, case2SourceFollowingFactor] using
+    exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap
+      L state hgap
+      (case2ResidualBlockPivotRowOfMem hp)
+      (case2ResidualBlockPivotColOfMem hp)
+      u (case2SourceResidualBlock residual) (case2SourceFollowingFactor C)
+
+namespace CorrectedCase2NewLabelCertificate
+
+/-- Source-coordinate selected-pivot source-variable transport from a supplied
+successor recurrence post-data package. -/
+theorem case2SourceSelected_diagonal_mul_substitutionMatrix_pivotFirst_succWeights_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u)
+    (residual : ℕ × ℕ → R) :
+    (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+        case2SourceSelectedSubstitutionMatrixOfMem hp u residual).submatrix
+        (pivotFirstIndexEquiv (case2ResidualBlockPivotRowOfMem hp))
+        (pivotFirstIndexEquiv (case2ResidualBlockPivotColOfMem hp)) =
+      weightedPivotDiagonal
+        (post.weight
+          (case2ResidualRowLevel n S J (case2ResidualBlockPivotRowOfMem hp)))
+        (fun i : pivotComplement (case2ResidualBlockPivotRowOfMem hp) ↦
+          post.weight (case2ResidualRowLevel n S J i.1)) *
+        pivotFirstMatrix
+          (case2ResidualBlockPivotRowOfMem hp)
+          (case2ResidualBlockPivotColOfMem hp)
+          (case2SourceSelectedNormalizedMatrixOfMem hp residual) := by
+  simpa [case2SourceSelectedNormalizedMatrixOfMem,
+    case2SourceSelectedSubstitutionMatrixOfMem, case2SourceResidualBlock] using
+    hnew.case2Selected_diagonal_mul_substitutionMatrix_pivotFirst_succWeights_of_postData
+      hpost
+      (case2ResidualBlockPivotRowOfMem hp)
+      (case2ResidualBlockPivotColOfMem hp)
+      (case2SourceResidualBlock residual)
+
+/-- Source-coordinate selected-pivot `Q/P` identity from a source pivot pair,
+old Case 2 gap, and supplied successor recurrence post-data.  This remains
+conditional finite algebra for the supplied pair, not arbitrary-pivot chart
+coverage. -/
+theorem exists_case2SourceSelectedQP_of_recurrenceStateGap_succWeights_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u)
+    (hgap : pre.case2Gap)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    ∃ q : pivotComplement (case2ResidualBlockPivotRowOfMem hp) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2ResidualBlockPivotRowOfMem hp)
+              (case2ResidualBlockPivotColOfMem hp)
+              (case2SourceSelectedNormalizedMatrixOfMem hp residual) i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionMatrixOfMem hp u residual).submatrix
+            (pivotFirstIndexEquiv (case2ResidualBlockPivotRowOfMem hp))
+            (pivotFirstIndexEquiv (case2ResidualBlockPivotColOfMem hp))) *
+          case2SourceSelectedFollowingFactorOfMem hp C =
+        (weightedPivotDiagonal
+            (post.weight
+              (case2ResidualRowLevel n S J
+                (case2ResidualBlockPivotRowOfMem hp)))
+            (fun i : pivotComplement (case2ResidualBlockPivotRowOfMem hp) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2ResidualBlockPivotRowOfMem hp)
+                (case2ResidualBlockPivotColOfMem hp)
+                (case2SourceSelectedNormalizedMatrixOfMem hp residual) -
+              pivotFirstX
+                  (case2ResidualBlockPivotRowOfMem hp)
+                  (case2ResidualBlockPivotColOfMem hp)
+                  (case2SourceSelectedNormalizedMatrixOfMem hp residual) *
+                pivotFirstY
+                  (case2ResidualBlockPivotRowOfMem hp)
+                  (case2ResidualBlockPivotColOfMem hp)
+                  (case2SourceSelectedNormalizedMatrixOfMem hp residual))) *
+          case2SourceSelectedTransportedFollowingFactorOfMem hp residual C := by
+  simpa [case2SourceSelectedNormalizedMatrixOfMem,
+    case2SourceSelectedSubstitutionMatrixOfMem,
+    case2SourceSelectedFollowingFactorOfMem,
+    case2SourceSelectedTransportedFollowingFactorOfMem,
+    case2SourceResidualBlock, case2SourceFollowingFactor] using
+    hnew.exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData
+      hpost hgap
+      (case2ResidualBlockPivotRowOfMem hp)
+      (case2ResidualBlockPivotColOfMem hp)
+      (case2SourceResidualBlock residual)
+      (case2SourceFollowingFactor C)
+
+end CorrectedCase2NewLabelCertificate
+
 /-- Source-displayed Case 2 top-left selected-entry substitution instantiates the
 pivot-first product `Q/P` identity under flat residual-row weights.  The selected
 variable has already been factored into the row weights as `u * weight`; this is

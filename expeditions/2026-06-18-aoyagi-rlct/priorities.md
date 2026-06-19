@@ -180,7 +180,14 @@ on the session's original cwd.
    `post.weight`. Next A4 target: source-facing wrappers from a source pivot
    pair `p : Nat × Nat` and residual functions in source coordinates, or begin
    chart-family coverage/regularity scaffolding; avoid treating either as
-   source-displayed arbitrary-pivot coverage.
+   source-displayed arbitrary-pivot coverage. The source-facing wrappers are
+   now Lean-proved: source residual data and source-column following factors
+   restrict to the residual row/column subtypes, and a supplied source pivot
+   pair in `case2ResidualBlockPivotEntries` instantiates the arbitrary
+   selected-pivot recurrence-gap and supplied-post-data `Q/P` theorems. Next
+   A4 target: chart-family coverage/regularity scaffolding or source-order
+   transition interfaces for non-displayed pivots, without claiming either as
+   proved by the source-pair wrapper.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

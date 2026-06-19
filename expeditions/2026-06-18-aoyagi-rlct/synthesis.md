@@ -872,6 +872,17 @@ right-side diagonal is rewritten at the actual selected row level
 `J+1` row. This remains supplied-pivot/supplied-post-state finite algebra, not
 chart production or coverage.
 
+The source-selected pair wrapper is now Lean-proved. The adapter restricts
+source-coordinate residual data and source-column following factors to the
+Case 2 residual row/column subtypes, then uses
+`case2ResidualBlockPivotRowOfMem` and `case2ResidualBlockPivotColOfMem` to
+instantiate the arbitrary selected-pivot recurrence-gap and supplied-post-data
+wrappers from a supplied pair `p ∈ case2ResidualBlockPivotEntries n S J`. This
+is only a source-coordinate usability bridge. It does not prove that Aoyagi
+displays non-top-left Case 2 charts, arbitrary-pivot chart coverage,
+source-order transition formulas, chart-produced post-data, regularity,
+Jacobian facts, exponent transitions, normal crossings, or RLCT extraction.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
