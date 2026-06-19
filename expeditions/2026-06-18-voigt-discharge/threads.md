@@ -28,6 +28,9 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 
 | 16 | orbit-variety | formaliser | closed | O_M irreducible (vanishingIdeal prime), orbit map, 𝒪(G_d) domain — 402 LoC, FAITHFUL |
 
+| 17 | chart-design | pen-and-paper | closed | chart>descent; (2,2,2) pivot chart certified (Gröbner); general scale unsized |
+| 18 | geom-route-general | pen-and-paper | open | Size chart-GENERAL vs homogeneity for general-M L3/L2; recommend (resolve before building) |
+
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
 - 0N — L1 GL/orbit/irreducibility (scout recon → formaliser)

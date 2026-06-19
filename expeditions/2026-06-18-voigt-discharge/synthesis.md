@@ -322,3 +322,15 @@ Critical path: L6 stays on it for the dimension (chart gives `dim O_M`; `variety
   Prerequisite for chart/L6/L1 in place. **Next: L3.0 pivot chart on (2,2,2)** (high-leverage gamble for L2+L3,
   built on `baseChange_normalForm` + `orbitMap`). Then L6 degeneration (heavy core), L4-assembly, L7.
   Handoff note: this gives O_M irreducible; transferring primeness to Z_M (= orbitRankLocus) needs L6.
+
+## L2/L3 route — chart>descent (thread 17); OPEN: chart-general vs homogeneity (thread 18) [2026-06-19]
+Thread 17: smooth-descent rejected (fppf descent of smoothness absent in Mathlib). (2,2,2) chart CERTIFIED
+(pivot f=A_1[0,1], r=5=finrank(range δ⁰), graph-ideal=closure-ideal by Gröbner; `R_f̄ ≅ Away f (k[Fin 5])`;
+L2: cotangent ≃ Dual(range δ⁰)). Cert in `threads/17-chart-design/findings.md`.
+**BUT** that's ONE orbit; hVoigt is general (`M = intervalDirectSum L`). The chart route needs a GENERAL per-orbit
+construction — **scale unsized**. The recons compared chart vs descent, NOT chart-general vs the UNIFORM
+**homogeneity** route (O_M smooth because homogeneous: generic-smoothness + G-stable smooth locus + transitivity
+G·M=O_M; L2 via orbit-map differential dμ_M=δ⁰). For general M, uniform may beat per-orbit charts. **Thread 18
+resolves this fork BEFORE building** (a wrong choice risks a large wasted general-chart sub-library).
+- 2026-06-19: thread 17 (chart design) CLOSED — chart>descent, (2,2,2) cert ready. Next: thread 18 sizes
+  chart-general vs homogeneity for general-M L3/L2; recommend. Then build the chosen route.
