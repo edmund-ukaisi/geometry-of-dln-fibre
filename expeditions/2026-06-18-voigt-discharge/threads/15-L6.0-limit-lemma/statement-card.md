@@ -38,8 +38,26 @@
 >   `Set.Finite.infinite_compl` + `Set.finite_singleton`. No external/analytic interface.
 > - **Deferred.** none for this lemma. (Downstream L6.1 supplies an explicit polynomial family for `c`;
 >   L6.2 the box-move chain; L6.4 assembles the ideal equality. L6.0 is the reusable brick beneath them.)
-> - **Status.** sorry-free. Axioms `[propext, Classical.choice, Quot.sound]` (re-checked on all four
->   theorems). Whole library green. Awaiting reviewer fidelity check → `sorry-free + reviewed`.
+> - **Status.** sorry-free + reviewed. Axioms `[propext, Classical.choice, Quot.sound]` (re-checked on
+>   all four theorems). Whole library green. Reviewer verdict (thread 15, decorrelated Codex):
+>   **FAITHFUL-WITH-NOTES** — statement matches the claim with no weakening; `[Infinite k]` is
+>   load-bearing and sharp (Codex supplied a finite-field counterexample: one coord `c(t)=t`,
+>   `Z = k∖{0}`, killed by `X^(|k|−1)−1` — the lemma is **false** without it); `σ`-finiteness genuinely
+>   unneeded; evaluation-commutation + `aeval↔eval` bridge sound; non-vacuity genuine (and the empty `Z`
+>   makes the hypothesis inconsistent, so the lemma is never applied vacuously); "Cited: none" /
+>   "Deferred: none" both honest. No critical findings. Two precision notes recorded below.
+>
+> **Reviewer precision notes (not defects).**
+> 1. **"Zariski closure" = the `k`-rational polynomial-closure operator `V(I(·))`, not a
+>    topological/scheme-theoretic closure.** For non-algebraically-closed `k` this differs from a
+>    `Spec` closure or a closure after base change. The docstring/card use "Zariski closure" as a gloss
+>    for the Mathlib `zeroLocus∘vanishingIdeal` operator on `k`-points and never claim a topological
+>    closure — consistent with the recon's plan to run L6 at the ideal level (thread 14 findings). A
+>    downstream topological-closure bridge, if ever needed, is a separate theorem.
+> 2. **The non-vacuity `example` certifies the conclusion is inhabited under a consistent hypothesis**
+>    (constant curve), but does not exhibit a genuine degeneration where `curvePoint c 0 ∈ V(I(Z))`
+>    while `curvePoint c 0 ∉ Z`. The card states this precisely; a degeneration witness is L6.1's job,
+>    not L6.0's. Flagged only so the witness is not later mistaken for a degeneration example.
 
 ## Route taken (what fought back, what came in bounded)
 
