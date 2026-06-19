@@ -93,11 +93,15 @@ interface without surfacing it.
   `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`, over `[CommRing K]` with
   explicit chart hypothesis `IsUnit A1.det`. The A1 rank formula is now proved
   as `rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det`, using
-  the reusable block-diagonal theorem `rank_fromBlocks_zero_zero`. A2 is not
-  formalisation-ready as stated: it needs explicit neighborhood/rank/open-chart
-  hypotheses, a through-layer basis/open-chart lemma, and a decision on hidden
-  analytic steps (local coordinate invariance, generator replacement,
-  regular-coordinate additivity).
+  the reusable block-diagonal theorem `rank_fromBlocks_zero_zero`. The A2
+  chart-local algebraic induction step is now proved in Lean as
+  `productReduction_chartLocalInductionStep_fromBlocks` in
+  `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`, with xhigh hardener and
+  fidelity-review passes at that narrow scope. Full Aoyagi Theorem 3 is still
+  not formalisation-ready as stated: it needs explicit
+  neighborhood/rank/open-chart hypotheses, a through-layer basis/open-chart
+  lemma, and a decision on hidden analytic steps (local coordinate invariance,
+  generator replacement, regular-coordinate additivity).
 - A3 Theorem 4: xhigh scout reports this is an analytic RLCT comparison theorem
   cited to Aoyagi [22], not proved in the 2023 paper. Because the user allowed
   only the normal-crossing extraction citation in Lean, this is a scope conflict
@@ -119,12 +123,13 @@ interface without surfacing it.
 
 ## Current next target
 
-The broad A2/A4/A5 targets are blocked by reproduction checks. The A1 algebraic
-core now has Lean block-elimination identities and rank formula, with no
-RLCT/local-germ consequences. The next useful target is to repair the A2 product
-reduction statement/reproduction: make the through-layer basis/open-chart
-hypotheses explicit and separate algebraic product induction from analytic
-invariance.
+The A1 algebraic core and the A2 chart-local induction step are Lean-proved, but
+the broad A2/A4/A5 targets remain blocked by reproduction checks. The next
+useful target is to make the analytic interface precise enough that Aoyagi
+Lemma 1, target-product normalization, local coordinate invariance, generator
+replacement, and regular-coordinate additivity cannot be smuggled into theorem
+names. In parallel, source-inventory gaps should be closed before attempting
+the through-layer basis/open-chart lemma or repairing the blow-up certificate.
 
 ## Drift guard
 

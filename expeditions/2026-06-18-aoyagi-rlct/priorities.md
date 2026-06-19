@@ -21,12 +21,13 @@ on the session's original cwd.
 
 ## Ranked next
 
-1. Product reduction repair. Re-state A2 with source-faithful rank/open-chart
-   and through-layer basis hypotheses, and isolate algebraic induction from
-   analytic invariance before any Lean tide.
-2. Analytic interface shape. Define the cited normal-crossing extraction
+1. Analytic interface shape. Define the cited normal-crossing extraction
    interface precisely enough that later theorem names cannot overclaim; do not
    smuggle Aoyagi Lemma 1 or Theorem 4 as extra citations.
+2. Product reduction repair beyond the landed chart-local step. Re-state A2
+   with source-faithful rank/open-chart and through-layer basis hypotheses, and
+   keep analytic invariance separate from the algebraic induction identity now
+   proved in Lean.
 3. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
    and exact hypotheses from the PDF where the first scout still left TBDs.
 4. Repair A4 blow-up reproduction. Separate actual layer widths from prefix

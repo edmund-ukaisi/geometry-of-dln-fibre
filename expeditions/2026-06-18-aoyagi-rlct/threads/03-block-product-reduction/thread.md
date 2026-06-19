@@ -67,3 +67,31 @@ Outcome: report saved at `reproduction-repair-a2.md`. Verdict: full Theorem 3
 is still blocked, but the chart-local algebraic induction-step theorem is
 reproduction-ready for Lean. The target-product normalization and post-Theorem-3
 RLCT equality remain analytic-boundary issues.
+
+## 2026-06-18 A2 chart-local induction-step tide
+
+Opened xhigh formalisation work on only the reproduction-ready chart-local
+algebraic induction step from the A2 repair report. Scope is the block identity
+for a prefix diagonal block `fromBlocks C1 0 0 D` multiplied by the next
+transformed layer `fromBlocks A1 A2 A3 A4`, under explicit determinant-unit
+chart hypotheses for `C1` and `A1`.
+
+Outcome: landed
+`DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
+`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`, imported by the single-writer
+aggregator. The theorem proves only the chart-local algebraic block identity:
+left lower-left multiplier `-(D * A3 * (C1 * A1)⁻¹)`, right upper-right
+multiplier `-(A1⁻¹ * A2)`, and residual block
+`D * (A4 - A3 * A1⁻¹ * A2)`. It includes an identity-corner example showing
+the determinant-unit chart hypotheses are inhabited, including zero-size
+corners.
+
+Controller verified targeted build, full `DLNFibre` build, `scripts/sorries`,
+and `#print axioms` for the theorem. Xhigh hardener `Jason` and xhigh fidelity
+reviewer `Huygens` passed the artifact at this narrow scope. Statement card:
+`statement-card-a2-chart-local-induction-step.md`.
+
+Still blocked: full Aoyagi Theorem 3 from source rank/neighborhood hypotheses,
+through-layer basis/open-chart existence, target-product normalization via
+Aoyagi Lemma 1, local analytic/ideal-germ invariance, regular-coordinate RLCT
+additivity, and every final RLCT consequence.

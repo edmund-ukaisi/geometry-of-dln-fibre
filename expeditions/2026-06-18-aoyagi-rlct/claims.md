@@ -73,8 +73,9 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
-- **Status.** full claim blocked; chart-local algebraic induction step is
-  reproduction-ready after repair report.
+- **Status.** partial algebraic Lean artifact landed and reviewed: the
+  chart-local induction-step block identity is proved. The full source Theorem
+  3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -85,14 +86,23 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
   `threads/03-block-product-reduction/reproduction-repair-a2.md`.
-- **Lean target.** chart-local algebraic induction-step theorem next; full
-  Theorem 3 target blocked.
-- **Proved.** pending.
-- **Assumed.** rank and dimension hypotheses.
-- **Cited.** analytic invariance only if source inventory shows it is not purely
-  algebraic.
+- **Lean target.**
+  `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
+  `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; full Theorem 3 target
+  blocked.
+- **Proved.** one chart-local algebraic induction-step identity over a
+  commutative ring, under explicit determinant-unit hypotheses for the prefix
+  corner `C1` and next-layer corner `A1`.
+- **Assumed.** matrix dimensions encoded by types; determinant-unit chart
+  hypotheses `IsUnit C1.det` and `IsUnit A1.det`. The full product-reduction
+  theorem would additionally need rank/neighborhood and through-layer
+  basis/open-chart hypotheses, not yet proved.
+- **Cited.** none for the chart-local algebraic theorem. Analytic invariance
+  may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
-  until the allowed analytic interface is fixed.
+  until the allowed analytic interface is fixed; full Theorem 3 assembly from
+  source hypotheses; target-product normalization via Aoyagi Lemma 1; local
+  analytic/ideal-germ invariance.
 
 ## Claim A3 - deepest singular point
 

@@ -9,7 +9,7 @@
 |---|---|---|---|
 | 01-source-inventory | explore | closed | xhigh scout `Aquinas` returned. Source inventory saved; ledger already aligned with key correction that final target is Theorem 2. |
 | 02-analytic-interface | explore/formalisation | closed | xhigh scout `Boole` returned and controller interface draft saved. Normal-crossing interface mapped; Theorem 4 flagged as analytic/scope conflict unless avoided/proved restricted. |
-| 03-block-product-reduction | formalisation | in-progress | A1 algebraic block identities and rank formula landed; xhigh scout `Erdos` repaired A2 reproduction enough for a chart-local algebraic induction-step Lean tide. |
+| 03-block-product-reduction | formalisation | in-progress | A1 algebraic block identities and rank formula landed; A2 chart-local induction-step theorem landed/reviewed; full Aoyagi Theorem 3 remains blocked by through-layer chart and analytic-boundary issues. |
 | 04-blow-up-certificate | pen-and-paper/formalisation | blocked | xhigh scout `Ptolemy` returned and checker `Copernicus` reviewed. Draft has a width-notation source-fidelity error and unresolved chart/regularity/termination gaps. |
 | 05-arithmetic-tail | formalisation | blocked | xhigh scout `Raman` returned and checker `Planck` reviewed. Interior quadratic algebra mostly reproducible, but Lemma 3 endpoints, `tilde t=0`, feasibility, and Lemma 5 count are unresolved. |
 | 06-dln-translation | formalisation | pending | Translate Aoyagi dimension/rank notation to repo DLN notation without quiver inputs. |
