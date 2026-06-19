@@ -8,6 +8,9 @@
 >   `DLNFibre.DLN.Aoyagi.upperUnitriangular_mul_fromBlocks_one_zero`
 >   and
 >   `DLNFibre.DLN.Aoyagi.exists_fromBlocks_one_zero_of_upperUnitriangular_mul`
+>   and their indexed variants
+>   `upperUnitriangular_mul_fromBlocks_one_zero_indexed`,
+>   `exists_fromBlocks_one_zero_of_upperUnitriangular_mul_indexed`
 >   (`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`).
 > - **Gloss.** Over a commutative ring,
 >   `fromBlocks 1 (-F) 0 1 * fromBlocks 1 B 0 D =
@@ -15,6 +18,8 @@
 >   the through-layer basis/open-chart repair. The existential corollary says
 >   any matrix known to have some form `fromBlocks 1 B 0 D` remains in some
 >   form `fromBlocks 1 B' 0 D'` after this upper-unitriangular multiplication.
+>   The indexed versions allow arbitrary finite row/inner index types, matching
+>   the basis indices used by the through-layer chart data.
 > - **Proved.** The purely algebraic block identity, including the sign and the
 >   updated upper-right block `B - F * D`, plus the chart-form preservation
 >   corollary.

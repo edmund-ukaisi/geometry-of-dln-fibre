@@ -282,3 +282,24 @@ multiplier leaves it in some such form.
 This is still pure block algebra over a commutative ring. It does not run the
 product-reduction induction, choose the complement data supplied to the
 through-layer matrix theorems, or state analytic/RLCT consequences.
+
+## 2026-06-19 A2 supplied chart-data bundle
+
+Extended the matrix/chart layer with indexed and bundled forms:
+
+- `upperUnitriangular_mul_fromBlocks_one_zero_indexed` and
+  `exists_fromBlocks_one_zero_of_upperUnitriangular_mul_indexed` generalize the
+  unitriangular chart-form lemmas from `Fin` dimensions to arbitrary finite
+  basis index types.
+- `ThroughSubspaceChartData` bundles, for every layer, a complement to the
+  through-subspace and a basis of that complement, together with one initial
+  through-basis.
+- `exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
+  restates the prefix-compatible edge block theorem using the bundled data.
+- `exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
+  combines the bundled edge matrix form with the indexed unitriangular
+  chart-preservation lemma.
+
+This is still a supplied-data theorem. It does not construct finite indexed
+complement data from Aoyagi's rank hypotheses, does not run the product-reduction
+induction, and does not state analytic/RLCT consequences.

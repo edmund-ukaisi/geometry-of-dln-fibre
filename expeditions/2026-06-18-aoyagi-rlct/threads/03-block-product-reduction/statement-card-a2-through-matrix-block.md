@@ -9,6 +9,10 @@
 >   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zero`
 >   and
 >   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero`
+>   and
+>   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
+>   and
+>   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
 >   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
 > - **Gloss.** For a through-subspace edge
 >   `A p : V p.castSucc -> V p.succ`, choose a basis `bU` of the source
@@ -20,22 +24,26 @@
 >   `basisOfIsCompl`, the same block form holds in direct-sum adapted bases.
 >   A prefix-transported variant uses one initial basis of `U₀` and transports
 >   it to both adjacent through-subspaces by `throughSubspacePrefixEquiv`.
+>   `ThroughSubspaceChartData` bundles supplied complements and complement
+>   bases for every layer, and the bundled unitriangular corollary says the
+>   transformed edge matrix remains in some identity-corner chart form.
 > - **Proved.** The basis-coordinate bookkeeping: transported bases give the
 >   identity top-left block; transported subspace coordinates give the zero
 >   lower-left block. The direct-sum version uses
 >   `Submodule.prodEquivOfIsCompl` to build the ambient adapted bases. The
 >   prefix variant proves the adjacent top bases are compatible with one common
->   initial through-basis.
+>   initial through-basis. The chart-data variants remove repeated local
+>   arguments but do not construct complements or bases.
 > - **Assumed.** Finite/decidable source index types for `LinearMap.toMatrix`,
 >   a finite target quotient/complement index, explicit bases of the source
->   through-subspace, and either quotient bases or complement bases. The
->   complements and bases are inputs, not constructed here.
+>   through-subspace, and either quotient bases or complement bases. In the
+>   bundled version, the complement subspaces and complement bases are still
+>   inputs.
 > - **Cited.** None.
-> - **Deferred.** Bundling all local complement choices and complement bases
->   across the intermediate layers; translating the source-to-target Lean
->   orientation back to Aoyagi's paper-order matrices; connecting this
->   block-form corollary to the chart-local product-reduction identity; full
->   Aoyagi Theorem 3; and every analytic/RLCT consequence.
+> - **Deferred.** Constructing finite indexed complement data from only Aoyagi's
+>   rank hypotheses; translating the source-to-target Lean orientation back to
+>   Aoyagi's paper-order matrices; running the chart-local product-reduction
+>   induction; full Aoyagi Theorem 3; and every analytic/RLCT consequence.
 > - **Kill conditions.** Arbitrary adapted bases give `[C B; 0 D]` with
 >   invertible `C`, not necessarily `[I B; 0 D]`. The identity corner requires
 >   transported through-subspace bases. This is still not a fixed-coordinate

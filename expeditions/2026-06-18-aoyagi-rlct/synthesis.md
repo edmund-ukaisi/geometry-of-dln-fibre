@@ -167,6 +167,13 @@ Aoyagi's paper order, and connect the matrix corollaries to the chart-local
 product-reduction identity. Full Theorem 3 remains blocked until those
 corollaries and the analytic certificate transport are built.
 
+The local complement choices are now packaged when supplied: `ThroughSubspaceChartData`
+stores complements, complement bases, and one initial through-basis, and
+`exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
+states the per-edge transformed matrix remains in identity-corner chart form.
+This still does not construct finite indexed chart data from Aoyagi's rank
+hypotheses, translate orientation, or run the full induction.
+
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
 source basis adapted to `U₀ ⊕ ker P` and target basis adapted to
@@ -180,7 +187,9 @@ The local chart-stability block calculation from this repair is Lean-proved as
 `[I B - F D; 0 D]`. The corollary
 `exists_fromBlocks_one_zero_of_upperUnitriangular_mul` packages this as
 preservation of the identity-corner chart form once a matrix is known to have
-some form `[I B; 0 D]`. It does not run Aoyagi's full induction.
+some form `[I B; 0 D]`; indexed variants support the arbitrary basis index
+types used by `ThroughSubspaceChartData`. It does not run Aoyagi's full
+induction.
 
 ## Drift guard
 

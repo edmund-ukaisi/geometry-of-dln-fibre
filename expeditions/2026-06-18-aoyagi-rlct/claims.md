@@ -84,8 +84,9 @@ No such claim is formalisation-ready until both fields are filled.
   transport lemmas, through-subspace transport theorem, and per-edge
   transported-basis matrix block forms are proved; prefix-transported through
   bases, the endpoint total-product block form, and the local unitriangular
-  chart-form preservation corollary are also proved. The full source Theorem 3
-  claim remains blocked.
+  chart-form preservation corollary are also proved. A supplied chart-data
+  bundle now packages local complements and complement bases across the chain.
+  The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -115,6 +116,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zero`
   and prefix-basis matrix theorem
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero`
+  and bundled chart-data theorem
+  `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
   plus endpoint total-product theorem
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`
   in `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`; full Theorem 3 target
@@ -137,11 +140,15 @@ No such claim is formalisation-ready until both fields are filled.
   total chain map has endpoint matrix form `[I 0; 0 0]` when the
   source complement is the total kernel and the target through-basis is
   transported. Also proved that the upper-unitriangular chart transformation
-  preserves existence of an identity-corner, zero-lower-left block form.
+  preserves existence of an identity-corner, zero-lower-left block form,
+  including indexed versions for arbitrary finite basis index types. Also
+  bundled supplied per-layer complement choices and complement bases in
+  `ThroughSubspaceChartData`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`. The full product-reduction
-  theorem would additionally need rank/neighborhood, bundled local complement
-  data, and product-reduction induction assembly, not yet proved.
+  theorem would additionally need rank/neighborhood, construction of finite
+  indexed chart data from source hypotheses, and product-reduction induction
+  assembly, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
@@ -149,8 +156,8 @@ No such claim is formalisation-ready until both fields are filled.
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
   local analytic/certificate transport remain open. The through-subspace theorem
-  still needs bundled complement choices/bases across all intermediate layers
-  and connection to the chart-local product-reduction identity.
+  still needs construction of the finite indexed chart data from rank
+  hypotheses and assembly of the chart-local product-reduction induction.
 
 ## Claim A3 - deepest singular point
 
