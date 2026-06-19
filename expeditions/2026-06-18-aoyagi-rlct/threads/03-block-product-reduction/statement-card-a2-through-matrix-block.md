@@ -17,6 +17,10 @@
 >   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`
 >   and
 >   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`
+>   and the paper-order wrappers
+>   `DLNFibre.DLN.Aoyagi.exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`
+>   and
+>   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`
 >   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
 > - **Gloss.** For a through-subspace edge
 >   `A p : V p.castSucc -> V p.succ`, choose a basis `bU` of the source
@@ -48,9 +52,8 @@
 >   bundled version, the complement subspaces and complement bases are still
 >   inputs.
 > - **Cited.** None.
-> - **Deferred.** Translating the source-to-target Lean orientation back to
->   Aoyagi's paper-order matrices; expressing the paper-side rank/open-chart
->   hypotheses against the finite chart-data construction; running the
+> - **Deferred.** Expressing the paper-side rank/open-chart hypotheses against
+>   the finite chart-data construction; running the
 >   chart-local product-reduction induction; full Aoyagi Theorem 3; and every
 >   analytic/RLCT consequence.
 > - **Kill conditions.** Arbitrary adapted bases give `[C B; 0 D]` with

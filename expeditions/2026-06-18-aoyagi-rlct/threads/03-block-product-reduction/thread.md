@@ -400,3 +400,25 @@ and Aoyagi's printed product order. It still does not transfer the finite
 adapted-basis block corollaries into paper notation, prove determinant-open
 chart wrappers, run the product-reduction induction, or state analytic/RLCT
 consequences.
+
+## 2026-06-19 A2 paper-order finite matrix blocks
+
+Extended `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean` with finite
+paper-order matrix wrappers:
+
+- `disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap`: converts a
+  disjointness hypothesis for the paper-order total product into the reversed
+  source-to-target total-kernel hypothesis, using `chainMap_reverse_eq_paper`.
+- `isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap`: the matching
+  complement-hypothesis bridge.
+- `exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`:
+  instantiates the concrete finite edge block theorem on `reverseVertex W` and
+  `reverseEdge W B`.
+- `exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`:
+  gives the corresponding unitriangular chart-form preservation wrapper.
+- `toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`:
+  gives the endpoint `[I 0; 0 0]` form for the total paper product.
+
+This transfers the finite adapted-basis edge and endpoint statements into the
+paper-order orientation. It still does not provide determinant/open chart
+wrappers, the product-reduction induction, or analytic/RLCT consequences.

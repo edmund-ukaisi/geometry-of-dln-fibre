@@ -197,9 +197,21 @@ reverses the paper-order vertex family, `reverseEdge` is the one-edge
 paper-order composite viewed as a source-to-target edge, and
 `chainMap_reverse_eq_paper` proves that the source-to-target `chainMap` on
 these reversed vertices is exactly the corresponding `paperChainMap`. This
-removes the orientation bookkeeping obstruction, but it does not transfer
-finite adapted-basis block statements into paper notation or assemble
-Theorem 3.
+removes the orientation bookkeeping obstruction.
+
+The finite paper-order edge block wrappers are now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`.
+`disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap` turns the paper-order
+total-kernel disjointness hypothesis into the reversed chain hypothesis,
+`isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap` does the same for
+kernel complements, and
+`exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero` plus
+`exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`
+instantiate the finite adapted-basis edge and unitriangular block statements on
+the reversed paper chain. The endpoint wrapper
+`toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`
+gives the total paper product the adapted `[I 0; 0 0]` form. Still open:
+determinant/open chart wrappers and Theorem 3 assembly.
 
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with

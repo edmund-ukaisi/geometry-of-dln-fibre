@@ -1,0 +1,32 @@
+# Statement card - A2 paper-order finite edge block
+
+> **Claim.** In finite-dimensional paper-order chains, each reversed paper edge
+> has concrete adapted-basis block form `[I B; 0 D]`, this form survives the
+> local upper-unitriangular chart transformation, and the total paper product
+> has endpoint block form `[I 0; 0 0]`.
+>
+> - **Lean:**
+>   `DLNFibre.DLN.Aoyagi.disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap`,
+>   `DLNFibre.DLN.Aoyagi.isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap`,
+>   `DLNFibre.DLN.Aoyagi.exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
+>   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
+>   and
+>   `DLNFibre.DLN.Aoyagi.toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`
+>   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
+> - **Gloss.** The theorem applies the finite through-layer block theorem to the
+>   reversed paper chain `reverseVertex W`, `reverseEdge W B`. The hypothesis is
+>   phrased against the paper-order total product `paperChainMap`; the helper
+>   theorem converts it to the source-to-target total-kernel or complement
+>   hypothesis by `chainMap_reverse_eq_paper`.
+> - **Proved.** Concrete finite-basis per-edge `[I B; 0 D]` form and
+>   unitriangular chart-form preservation for paper-order edges viewed through
+>   the reversed chain; endpoint `[I 0; 0 0]` form for the total paper product
+>   when the source complement is the total kernel.
+> - **Assumed.** Field-vector-space hypotheses, finite-dimensional layers, and a
+>   through-subspace disjointness hypothesis for the paper-order total product.
+> - **Cited.** None.
+> - **Deferred.** Determinant/open chart wrappers; product-reduction induction
+>   assembly; and every analytic/RLCT consequence.
+> - **Kill conditions.** This is adapted-coordinate bookkeeping. It does not
+>   state that Aoyagi's fixed coordinate blocks are invertible, prove rank
+>   preservation, or prove Theorem 3.

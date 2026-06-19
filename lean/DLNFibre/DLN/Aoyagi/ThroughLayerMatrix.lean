@@ -579,6 +579,180 @@ theorem exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional
 
 end FiniteChartData
 
+section PaperOrderFiniteChartData
+
+universe u v
+
+variable {K : Type u} [Field K] {N : ℕ}
+  (W : Fin (N + 1) → Type v) [∀ i, AddCommGroup (W i)] [∀ i, Module K (W i)]
+  (B : ∀ i : Fin N, W i.succ →ₗ[K] W i.castSucc)
+
+/-- A paper-order total-kernel hypothesis as a reversed source-to-target hypothesis. -/
+theorem disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N)))))) :
+    Disjoint U₀
+      (LinearMap.ker
+        (chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+          (Fin.zero_le (Fin.last N)))) := by
+  simpa [chainMap_reverse_eq_paper] using hU₀
+
+/-- A paper-order total-kernel complement as a reversed source-to-target complement. -/
+theorem isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N)))))) :
+    IsCompl U₀
+      (LinearMap.ker
+        (chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+          (Fin.zero_le (Fin.last N)))) := by
+  simpa [chainMap_reverse_eq_paper] using hU₀
+
+/-- A paper-order edge has concrete adapted-basis block form `[I B; 0 D]`. -/
+theorem exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) :
+    ∃ Bmat : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K,
+      ∃ Dmat : Matrix
+          (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K,
+        LinearMap.toMatrix
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement
+                (reverseVertex W) (reverseEdge W B) U₀ p.castSucc)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv (reverseVertex W) (reverseEdge W B) U₀
+                  p.castSucc
+                  (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀)))
+              (Module.finBasis K
+                (throughSubspaceComplement
+                  (reverseVertex W) (reverseEdge W B) U₀ p.castSucc)))
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv (reverseVertex W) (reverseEdge W B) U₀
+                  p.succ
+                  (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀)))
+              (Module.finBasis K
+                (throughSubspaceComplement
+                  (reverseVertex W) (reverseEdge W B) U₀ p.succ)))
+            (reverseEdge W B p) =
+          fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) Bmat 0 Dmat := by
+  exact exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero
+    (reverseVertex W) (reverseEdge W B) U₀
+    (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀) p
+
+/-- A paper-order edge remains in identity-corner block form after a unitriangular multiplier. -/
+theorem exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N)
+    (F : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) :
+    ∃ B' : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K,
+      ∃ D' : Matrix
+          (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K,
+        fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) (-F) 0 1 *
+          LinearMap.toMatrix
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement
+                (reverseVertex W) (reverseEdge W B) U₀ p.castSucc)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv (reverseVertex W) (reverseEdge W B) U₀
+                  p.castSucc
+                  (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀)))
+              (Module.finBasis K
+                (throughSubspaceComplement
+                  (reverseVertex W) (reverseEdge W B) U₀ p.castSucc)))
+            (basisOfIsCompl
+              (throughSubspace_isCompl_complement
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+              ((Module.finBasis K U₀).map
+                (throughSubspacePrefixEquiv (reverseVertex W) (reverseEdge W B) U₀
+                  p.succ
+                  (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀)))
+              (Module.finBasis K
+                (throughSubspaceComplement
+                  (reverseVertex W) (reverseEdge W B) U₀ p.succ)))
+            (reverseEdge W B p) =
+          fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) B' 0 D' := by
+  exact exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero
+    (reverseVertex W) (reverseEdge W B) U₀
+    (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀) p F
+
+/-- The paper-order total product has endpoint adapted-basis form `[I 0; 0 0]`. -/
+theorem toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N)))))) :
+      LinearMap.toMatrix
+          (basisOfIsCompl
+            (isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀)
+            (Module.finBasis K U₀)
+            (Module.finBasis K
+              (LinearMap.ker
+                (chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+                  (Fin.zero_le (Fin.last N))))))
+          (basisOfIsCompl
+            (throughSubspace_isCompl_complement
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            ((Module.finBasis K U₀).map (linearEquivMapOfDisjointKer
+              (chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+                (Fin.zero_le (Fin.last N))) U₀
+              (isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀).disjoint))
+            (Module.finBasis K
+              (throughSubspaceComplement
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))))
+          (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+            (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N)))) =
+        fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K
+              (LinearMap.ker
+                (chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+                  (Fin.zero_le (Fin.last N)))))) K)
+          (0 : Matrix
+            (throughSubspaceComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix
+            (throughSubspaceComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (Fin (Module.finrank K
+              (LinearMap.ker
+                (chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+                  (Fin.zero_le (Fin.last N)))))) K) := by
+  simpa [chainMap_reverse_eq_paper] using
+    (toMatrix_chainMap_zero_last_ker_finiteDimensional_eq_fromBlocks_one_zero_zero
+      (reverseVertex W) (reverseEdge W B) U₀
+      (isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀))
+
+end PaperOrderFiniteChartData
+
 end Aoyagi
 end DLN
 end DLNFibre

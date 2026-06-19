@@ -8,6 +8,8 @@
 >   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`
 >   and
 >   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`
+>   and the paper-order wrapper
+>   `DLNFibre.DLN.Aoyagi.toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`
 >   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
 > - **Gloss.** Let `P = chainMap V A 0 (Fin.last N) ...`. Choose
 >   `U₀` complementary to `ker P`, choose any complement `Wlast` to
@@ -29,10 +31,9 @@
 >   `[∀ j, FiniteDimensional K (V j)]` and `hU₀`; the remaining complement and
 >   basis choices are chosen noncomputably.
 > - **Cited.** None.
-> - **Deferred.** Translating the source-to-target Lean orientation back to
->   Aoyagi's paper-order matrices; connecting the per-edge and endpoint block
->   forms to the chart-local product-reduction identity; full Aoyagi Theorem 3;
->   and every analytic/RLCT consequence.
+> - **Deferred.** Connecting the per-edge and endpoint block forms to the
+>   chart-local product-reduction identity; full Aoyagi Theorem 3; and every
+>   analytic/RLCT consequence.
 > - **Kill conditions.** The theorem is not a fixed-coordinate statement and
 >   does not say arbitrary endpoint bases give `[I 0; 0 0]`. The source
 >   complement must be the total kernel, and the target through-basis must be

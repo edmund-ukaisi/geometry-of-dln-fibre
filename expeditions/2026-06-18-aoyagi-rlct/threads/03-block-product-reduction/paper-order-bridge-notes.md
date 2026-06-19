@@ -69,9 +69,9 @@ nonvanishing at the base point gives a local open chart is separate.
 1. Done in Lean: `paperChainMap` has the expected identity, one-edge,
    transitivity, and prefix/suffix split laws; `chainMap_reverse_eq_paper`
    relates the reversed Lean chain to `paperChainMap`.
-2. A finite chart-data-to-paper-block lemma: after reindexing, the concrete
-   finite chart data gives paper-layer adapted bases with true layer matrices
-   `[I B; 0 D]`, and the endpoint product matrix `[I 0; 0 0]`.
+2. Done in Lean: the concrete finite chart data gives paper-layer adapted bases
+   with true layer matrices `[I B; 0 D]`, unitriangular chart-form preservation,
+   and endpoint product matrix `[I 0; 0 0]` after reversing the paper chain.
 3. A transformed-next-layer chart lemma: `[I -F; 0 I] [I B; 0 D] =
    [I B-FD; 0 D]`, so the next selected determinant chart contains the base
    point. The block algebra is already Lean-proved; the paper-order wrapper is

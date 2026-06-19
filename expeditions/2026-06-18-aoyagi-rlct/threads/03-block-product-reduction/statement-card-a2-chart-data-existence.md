@@ -32,9 +32,8 @@
 >   `[∀ j, FiniteDimensional K (V j)]`. The construction is noncomputable and
 >   makes arbitrary complement and basis choices.
 > - **Cited.** None.
-> - **Deferred.** Translating this source-to-target Lean construction back to
->   Aoyagi's paper-order matrices; expressing the paper-side rank/open-chart
->   hypotheses against these coordinates; running the chart-local
+> - **Deferred.** Expressing the paper-side rank/open-chart hypotheses against
+>   these coordinates; running the chart-local
 >   product-reduction induction; and all analytic/RLCT consequences.
 > - **Kill conditions.** This is not a fixed-coordinate chart theorem. Product
 >   rank alone does not make preselected top-left layer blocks invertible; the
