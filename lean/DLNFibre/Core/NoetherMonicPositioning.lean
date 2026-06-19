@@ -157,11 +157,11 @@ theorem exists_monic_mem_of_isUnit_leadingCoeff_mem {A : Type*} [CommRing A]
     ∃ g' ∈ I, g'.Monic :=
   ⟨h.unit⁻¹ • g, Submodule.smul_of_tower_mem _ _ hg, monic_of_isUnit_leadingCoeff_inv_smul h⟩
 
-/-- **Quotient dimension is preserved by a monic peel.** If a prime `P` of `A[X]` contains a monic
+/-- **Quotient dimension is preserved by a monic peel.** If an ideal `P` of `A[X]` contains a monic
 polynomial, then `A[X] ⧸ P` is integral over `A ⧸ (P.under A)` via an injective map, so the two
 quotients have the same Krull dimension. -/
 theorem ringKrullDim_quotient_eq_under_of_monic {A : Type*} [CommRing A]
-    (P : Ideal (Polynomial A)) [P.IsPrime] {g : Polynomial A} (mon : g.Monic) (hg : g ∈ P) :
+    (P : Ideal (Polynomial A)) {g : Polynomial A} (mon : g.Monic) (hg : g ∈ P) :
     ringKrullDim (Polynomial A ⧸ P) = ringKrullDim (A ⧸ P.under A) := by
   have hint : (Ideal.quotientMap P (algebraMap A (Polynomial A)) le_rfl).IsIntegral := by
     rw [isIntegral_quotientMap_iff]
