@@ -127,7 +127,17 @@ orbit-closure variety-dimension count.
 - Codex framing consult (`codex/framing-{prompt,answer}.md`, gpt-5.x xhigh): recommended (A)+hybrid —
   algebraic `IsPrime` hypothesis as the main, `IsZariskiClosed`/`IsZariskiIrreducible` predicates for the
   geometric reading, additive headline over lossy subtraction, no installed topology. Followed.
-- **Status: sorry-free** (awaiting fidelity review).
+- Fidelity review (Lean ↔ informal claim): **PASS** (reviewer, 2026-06-19; decorrelated Codex at
+  `codex/fidelity-review-{prompt,answer}.md`). All five checks survived: (1) bridge faithfully states
+  "geometric codim + variety dim = ambient dim"; `varietyDim`/`unbotD 0` sound (never swallows a real
+  `⊥`, excluded by the prime hypothesis); `codimRep coord Z` defeq `(vanishingIdeal (coord '' Z)).height`
+  so the corollaries are honest specialisations; (2) `(vanishingIdeal Z).IsPrime` the right stand-in for
+  irreducible; `[IsAlgClosed k]` on the `codimRep` corollaries verified carried-but-not-consumed;
+  `[Finite σ]`-public / internal `Fintype.ofFinite` is the weakest-hypothesis choice; (3) all cited
+  Mathlib lemmas used at their genuine signatures; (4) `Z = univ` witness genuine (non-vacuous); (5)
+  build green, `scripts/sorries` = 0, `#print axioms` = `[propext, Classical.choice, Quot.sound]`. The
+  headline is honestly about `Z`'s Zariski closure, caveat co-located in the docstrings. No discrepancy.
+- **Status: sorry-free + reviewed.**
 
 ## Judgement calls
 
