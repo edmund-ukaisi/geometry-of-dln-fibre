@@ -21,6 +21,8 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 
 | 12 | L4a-M2-dim-bridge | formaliser | closed | Non-circular dimension bridge ringKrullDim(AtPrime m)=n=rank Ω (étale route, any field); reviewer FAITHFUL |
 
+| 13 | L4a-M3-cotangent-regular | formaliser | closed | smooth⟹regular (cotangent comparison bounded); **L4★ COMPLETE**; reviewer FAITHFUL |
+
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
 - 0N — L1 GL/orbit/irreducibility (scout recon → formaliser)

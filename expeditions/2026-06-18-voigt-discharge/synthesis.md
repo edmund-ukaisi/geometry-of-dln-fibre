@@ -263,3 +263,32 @@ reduction — continuing the drive, no need to re-surface per the autonomous man
   `iff_finrank_cotangentSpace.mpr` ⟹ `IsRegularLocalRing` (= L4a target `smooth_point_isRegularLocalRing`).
   After M3 (L4a done): geometry L1 (irreducible=prime), L2 (T_M = range δ⁰; overlaps M3 cotangent), L3 (smooth
   point of Ō_M via homogeneity), L4-assembly, L6, L7.
+
+## ✅ L4★ COMPLETE — the infinitesimal↔Krull-dimension sub-library is bedrock [2026-06-19]
+M3 landed (thread 13, reviewer FAITHFUL): **`Core.SmoothPointRegular.smooth_point_isRegularLocalRing`** — for a
+finite-type `k`-algebra (`k` PERFECT — `[IsAlgClosed k]` only used via `PerfectField`), `m` maximal,
+`IsSmoothAt k m` ⟹ `IsRegularLocalRing (Localization.AtPrime m)`. Cotangent comparison bounded (conormal
+injectivity `FormallySmooth.kerCotangentToTensor_injective_iff`, no conormal sub-library). Also exposes
+**`finrank_cotangentSpace_eq_of_isSmoothAt`** (`finrank_{κ(m)}(m/m²) = n`) — the L2 reuse point.
+**L4★ = L4d (equidimensionality) + M1 (flat/q-finite height) + M2 (dimension bridge) + M3 (smooth⟹regular), all
+landed/gated/axiom-clean.** The feared "multi-week tower" is done. 10 Core modules; whole lib green (2686 jobs).
+
+## REMAINING — the orbit geometry (apply L4★ to our orbit) → assembly
+Goal still owed: **`varietyDim(orbitRankLocus M) = finrank(range δ⁰)`**, then L7 chains to `hVoigt`.
+The assembly logic (all pieces now have a home):
+`codimRep(orbitRankLocus M) =[L0, needs L1 prime] #σ − varietyDim` ; `varietyDim =[L4d local↔global] ringKrullDim(AtPrime m_M)`
+`=[M3: regular ⟹ iff] finrank(cotangent at m_M) =[L2] finrank(range δ⁰)` ; `orbitLinearCodim =[Phase A] #σ − finrank(range δ⁰)`.
+So `codimRep = orbitLinearCodim` ✓. Remaining tides (orbit-specific; size-then-build each):
+- **L6** `orbitRankLocus M = Ō_M` (rank locus = orbit closure; the degeneration-order ≤-direction). Needed so the
+  variety is the orbit closure (irreducible, smooth at M). Currently Thm 3.8 Cited — must PROVE (zero-cited).
+- **L1** `(vanishingIdeal (canonicalCoord '' orbitRankLocus M)).IsPrime` (irreducible) — `O_M = image of
+  irreducible ∏GL` under a poly map ⟹ closure irreducible ⟹ ideal prime. Feeds L0.
+- **L3** `IsSmoothAt k m_M` for the coordinate ring of `orbitRankLocus M` (= Ō_M) — via homogeneity: orbit smooth
+  (smooth locus G-stable + dense), M in the open orbit. **The density is the substantive piece** (recon's crux;
+  ring-side density from `FormallySmooth.of_perfectField` or a minimal Spec detour).
+- **L2** cotangent/tangent of `orbitRankLocus M` at M = `range δ⁰` over `k` (with `κ(m)=k`, identify M3's
+  `finrank(m/m²)=n` with `finrank(range δ⁰)`). The orbit-map differential = `δ⁰` is already pinned (recon 07).
+- **L4-assembly** + **L7** (drop `hVoigt` from `codimRepCanonical_orbitRankLocus_eq_multSum`).
+Suggested order: L6 (or L1) first (set up the variety = orbit closure, prime), then L3 (smoothness), L2 (tangent),
+assembly. Each size-then-build.
+- 2026-06-19: **L4★ COMPLETE.** Next: orbit geometry — start with L6/L1 (variety = irreducible orbit closure).
