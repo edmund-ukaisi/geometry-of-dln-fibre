@@ -7,7 +7,7 @@
 > closure of `orbit(U)`.
 >
 > - **Lean:** `DLNFibre.Core.mem_zeroLocus_vanishingIdeal_orbitSet_of_polynomialFamily`
->   (`lean/DLNFibre/Core/BoxMoveDegeneration.lean` @ `<SHA>`)
+>   (`lean/DLNFibre/Core/BoxMoveDegeneration.lean` @ `31ec681`)
 > - **Gloss.** Over an infinite field `k`, for tuples `U D : Tuple d` and a polynomial-coefficient
 >   tuple `Fpoly : Tuple (Polynomial k) d`: if `tupleEval Fpoly 0 = D` and for every `t ≠ 0` there is
 >   a base change `P` with `P • U = tupleEval Fpoly t`, then
@@ -28,7 +28,7 @@
 > of the upstairs nested sum `M_{[0,2]} ⊕ M_{[1,1]}` over `d = (1,2,1)`.
 >
 > - **Lean:** `DLNFibre.Core.boxMoveWitness_downstairs_mem_closure`
->   (`lean/DLNFibre/Core/BoxMoveDegeneration.lean` @ `<SHA>`)
+>   (`lean/DLNFibre/Core/BoxMoveDegeneration.lean` @ `31ec681`)
 > - **Gloss.** Over an infinite field, `canonicalCoord boxDim boxMoveWitnessDown ∈ zeroLocus
 >   (vanishingIdeal (orbitSet boxMoveWitnessUp))` for the explicit `(1,2,1)` tuples (edge maps
 >   upstairs `[[1],[0]]`, `[[1,0]]`; downstairs `[[1],[0]]`, `[[0,1]]`).
