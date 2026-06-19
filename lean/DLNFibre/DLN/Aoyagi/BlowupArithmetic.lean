@@ -3843,10 +3843,12 @@ theorem diagonal_mul_apply
     (diagonal weight * A) i j = weight i * A i j := by
   exact Matrix.diagonal_mul weight A i j
 
-/-- Case 1(2) row-strip source matrix from an already normalised pre-`Q`
-matrix `A`.  It reconstructs the old source entries as `u * A i j` on strip
-rows and leaves lower residual rows unchanged.  This is only the elementary
-row-wise source algebra, not a chart construction. -/
+/-- Case 1 row-strip source matrix from an already divided row-strip matrix
+`A`.  It reconstructs the source entries as `u * A i j` on strip rows and
+leaves lower residual rows unchanged.  In Case 1(1), `u` is the selected old
+chart denominator; in displayed Case 1(2), `u` is the displayed row-strip
+pivot.  This is only elementary row-wise source algebra, not a chart
+construction. -/
 def case1RowStripSourceMatrix
     {ι κ R : Type*} [CommRing R]
     (strip : ι → Prop) [DecidablePred strip] (u : R)
@@ -3862,8 +3864,19 @@ def case1RowStripOldWeight
     (baseWeight : ι → R) : ι → R :=
   fun i ↦ if strip i then baseWeight i else u * baseWeight i
 
-/-- Canonical residual-row predicate for the displayed Case 1(2) row strip:
-rows from `J+1` through the old selected level `J+J1`. -/
+/-- Case 1(1) post row weights in the selected-old chart.  The selected old
+chart variable is absorbed exactly on the divided row strip, while lower rows
+keep their pre-chart weights. -/
+def case1SelectedOldPostWeight
+    {ι R : Type*} [CommRing R]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (baseWeight : ι → R) : ι → R :=
+  fun i ↦ if strip i then u * baseWeight i else baseWeight i
+
+/-- Canonical residual-row predicate for the Case 1 row strip: rows from
+`J+1` through the old selected level `J+J1`.  The same finite predicate marks
+the selected-old divided rows in Case 1(1) and the displayed divided rows in
+Case 1(2); the chart denominator is supplied separately. -/
 def case1ResidualRowStrip (n : ℕ → ℕ) (S J J1 : ℕ)
     (i : Case2ResidualRowIndex n S J) : Prop :=
   case2ResidualRowLevel n S J i ≤ J + J1
@@ -3949,6 +3962,32 @@ theorem case1RowStrip_diagonal_mul_sourceMatrix
           ring
         · simp [case1RowStripOldWeight, case1RowStripSourceMatrix, hi]
     _ = (diagonal (fun i ↦ u * baseWeight i) * A) i j := by
+        rw [diagonal_mul_apply]
+
+/-- Elementary Case 1(1) selected-old row-strip identity.
+
+In the selected-old chart, strip entries are divided by the selected old
+variable.  Equivalently, multiplying the source matrix by the pre-chart
+diagonal weights is the same as multiplying the post-chart matrix by row
+weights that have absorbed the selected old factor on precisely the strip
+rows. -/
+theorem case1SelectedOld_diagonal_mul_sourceMatrix
+    {ι κ R : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]
+    (strip : ι → Prop) [DecidablePred strip] (u : R)
+    (baseWeight : ι → R) (A : Matrix ι κ R) :
+    diagonal baseWeight * case1RowStripSourceMatrix strip u A =
+      diagonal (case1SelectedOldPostWeight strip u baseWeight) * A := by
+  ext i j
+  calc
+    (diagonal baseWeight * case1RowStripSourceMatrix strip u A) i j
+        = baseWeight i * case1RowStripSourceMatrix strip u A i j := by
+            rw [diagonal_mul_apply]
+    _ = case1SelectedOldPostWeight strip u baseWeight i * A i j := by
+        by_cases hi : strip i
+        · simp [case1SelectedOldPostWeight, case1RowStripSourceMatrix, hi]
+          ring
+        · simp [case1SelectedOldPostWeight, case1RowStripSourceMatrix, hi]
+    _ = (diagonal (case1SelectedOldPostWeight strip u baseWeight) * A) i j := by
         rw [diagonal_mul_apply]
 
 /-- Displayed Case 1(2) source-weight form of the row-strip identity.
@@ -5913,6 +5952,28 @@ def case2SourceFollowingFactor
     (C : ℕ → τ → R) :
     Matrix (Case2ResidualColIndex n S J) τ R :=
   fun j t ↦ C j.1 t
+
+/-- Source-coordinate specialization of the elementary Case 1(1) selected-old
+row-strip identity.
+
+The source residual function is restricted to residual rows `J+1..mu_S` and
+actual-width residual columns `J+1..n_(S+1)`.  This is only the row-wise
+source-coordinate algebra for the selected-old chart denominator; it does not
+introduce the displayed Case 1(2) pivot label or assert a `Q/P` transition. -/
+theorem case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates
+    {R : Type*} [CommRing R] {n : ℕ → ℕ} {S J : ℕ} (J1 : ℕ)
+    (u : R) (baseWeight : Case2ResidualRowIndex n S J → R)
+    (residual : ℕ × ℕ → R) :
+    diagonal baseWeight *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u
+          (case2SourceResidualBlock residual) =
+      diagonal
+          (case1SelectedOldPostWeight
+            (case1ResidualRowStrip n S J J1) u baseWeight) *
+        case2SourceResidualBlock residual :=
+  case1SelectedOld_diagonal_mul_sourceMatrix
+    (case1ResidualRowStrip n S J J1) u baseWeight
+    (case2SourceResidualBlock residual)
 
 /-- Source-coordinate normalised matrix for a supplied Case 2 residual-block
 pivot pair.  The membership proof only extracts row and column subtype pivots;
