@@ -87,3 +87,4 @@ import DLNFibre.DLN.Aoyagi.ThroughLayerBasis
 import DLNFibre.DLN.Aoyagi.ThroughLayerMatrix
 import DLNFibre.DLN.Aoyagi.ChartTopology
 import DLNFibre.DLN.Aoyagi.BasepointCertificate
+import DLNFibre.DLN.Aoyagi.FixedBasepointChart

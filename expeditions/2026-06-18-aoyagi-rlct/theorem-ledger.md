@@ -66,6 +66,25 @@ Remaining blocked A2 items are fixed coordinate families for variable nearby
 chains, source-faithful exact rank-stratum packaging, the full Theorem 3
 statement, and analytic/certificate transport.
 
+Fourth latest A2 update: the fixed-basepoint variable-chain layer has landed.
+Generic block API in `ProductReduction.lean`: `lowerLeftBlock`,
+`fromBlocks_corners`, `schurResidualBlock`, and
+`rank_schurResidualBlock_eq_sub_rank_of_identityCornerDetChart`. Fixed-base
+paper wrappers in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`:
+`paperEndpointFixedBaseBasis`, `paperEndpointFixedBaseChainMapMatrix`,
+`paperEndpointFixedBaseEdgeMatrix`, `paperEndpointFixedBaseTotalMatrix`,
+`paperEndpointFixedBaseChainMapMatrix_succ_right`,
+`paperEndpointFixedBaseTotalMatrix_eq_chainMapMatrix`,
+`paperEndpointFixedBaseEdgeMatrix_selfBase`,
+`paperEndpointFixedBaseTotalMatrix_selfBase`,
+`rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub`, and
+`paperEndpointFixedBaseTwoEdgeTotalMatrix_eq_edge1_mul_edge0`. Statement card:
+`threads/03-block-product-reduction/statement-card-a2-fixed-basepoint-chart.md`.
+Remaining blocked A2 items are the iterated chart-local product reduction in
+fixed bases, fixed-coordinate determinant-neighborhood packaging for variable
+chains, source-faithful exact rank-stratum packaging, the full Theorem 3
+statement, and analytic/certificate transport.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

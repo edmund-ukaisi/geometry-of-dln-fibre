@@ -110,7 +110,10 @@ No such claim is formalisation-ready until both fields are filled.
   open. The endpoint-compatible fixed-chain basepoint certificate is also
   proved, bundling the endpoint chart data, edge determinant neighborhoods,
   endpoint residual-rank bridge, total-product block form, and suffix-chain
-  right elimination. The full source Theorem 3 claim remains blocked.
+  right elimination. Fixed-basepoint variable-chain matrices are now defined:
+  a variable chain `C` is represented in bases fixed from `B`, with
+  composition laws and Schur-residual rank under explicit determinant-chart
+  and exact-rank hypotheses. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -248,7 +251,16 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.productReduction_paperEndpointAdaptedTotalMatrix_suffixChain_rightElim`,
   `DLNFibre.DLN.Aoyagi.PaperEndpointBasepointCertificate`, and
   `DLNFibre.DLN.Aoyagi.exists_paperEndpointBasepointCertificate` are in
-  `lean/DLNFibre/DLN/Aoyagi/BasepointCertificate.lean`.
+  `lean/DLNFibre/DLN/Aoyagi/BasepointCertificate.lean`. Fixed-basepoint
+  variable-chain definitions/theorems
+  `DLNFibre.DLN.Aoyagi.lowerLeftBlock`,
+  `DLNFibre.DLN.Aoyagi.schurResidualBlock`,
+  `DLNFibre.DLN.Aoyagi.rank_schurResidualBlock_eq_sub_rank_of_identityCornerDetChart`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseTotalMatrix`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseChainMapMatrix_succ_right`, and
+  `DLNFibre.DLN.Aoyagi.rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub`
+  are in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`.
 - **Proved.** one chart-local algebraic induction-step identity over a
   commutative ring, under explicit determinant-unit hypotheses for the prefix
   corner `C1` and next-layer corner `A1`, plus the same identity over arbitrary

@@ -353,6 +353,26 @@ no variable-chain fixed-coordinate family, exact rank-stratum neighborhood,
 regular coordinate-change certificate, normal-crossing extraction, or RLCT
 claim is asserted.
 
+The fixed-basepoint variable-chain layer is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`. The base chain `B` supplies
+the endpoint bases; the variable chain `C` supplies only the maps being
+represented. `paperEndpointFixedBaseEdgeMatrix`,
+`paperEndpointFixedBaseChainMapMatrix`, and
+`paperEndpointFixedBaseTotalMatrix` give the fixed-coordinate matrices, with
+`paperEndpointFixedBaseChainMapMatrix_succ_right` proving suffix composition
+and `paperEndpointFixedBaseTotalMatrix_eq_chainMapMatrix` linking the total
+matrix to the full reversed chain. At `C = B`, the fixed-base matrices are
+definitionally the endpoint adapted basepoint matrices. The generic block API
+now includes `lowerLeftBlock`, `schurResidualBlock`, and
+`rank_schurResidualBlock_eq_sub_rank_of_identityCornerDetChart`; the paper
+wrapper `rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub` keeps
+both determinant-chart membership and exact rank as explicit hypotheses. A
+two-edge wrapper records the first nontrivial product equality without relying
+on brittle `Fin` definitional equality. Still open: iterate Aoyagi's
+chart-local induction in these fixed bases, prove determinant-chart hypotheses
+from an actual fixed-coordinate neighborhood if needed, and keep exact rank as
+a stratum hypothesis.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

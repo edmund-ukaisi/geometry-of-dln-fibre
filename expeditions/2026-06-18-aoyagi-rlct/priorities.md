@@ -41,9 +41,11 @@ on the session's original cwd.
    also Lean-proved: matrix rank is transported through adapted bases, residual
    Schur/lower-right ranks are related to source layer ranks, and the selected
    determinant chart is topologically open. The endpoint-compatible fixed-chain
-   basepoint certificate is Lean-proved in `BasepointCertificate.lean`. Next
-   build the fixed-basepoint chart-data family for nearby variable layers,
-   keeping exact-rank strata as explicit hypotheses.
+   basepoint certificate is Lean-proved in `BasepointCertificate.lean`. The
+   fixed-basepoint variable-chain matrix layer is Lean-proved in
+   `FixedBasepointChart.lean`, with determinant-chart and exact-rank hypotheses
+   explicit. Next iterate the chart-local product-reduction induction in those
+   fixed bases, still keeping exact-rank strata as explicit hypotheses.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

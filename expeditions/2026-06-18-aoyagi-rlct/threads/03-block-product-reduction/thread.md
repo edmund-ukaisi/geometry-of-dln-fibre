@@ -736,3 +736,38 @@ dimension. This is the current bedrock A2 basepoint certificate. It remains a
 fixed-chain, adapted-coordinate statement: it does not prove a fixed coordinate
 family for variable nearby chains, exact rank-stratum openness, regular
 coordinate-change transport, normal-crossing extraction, or any RLCT claim.
+
+## 2026-06-19 A2 fixed-basepoint variable chart
+
+Added generic block-corner and Schur-residual API to `ProductReduction.lean`:
+
+- `lowerLeftBlock`;
+- `fromBlocks_corners`;
+- `schurResidualBlock`;
+- `rank_schurResidualBlock_eq_sub_rank_of_identityCornerDetChart`.
+
+The last theorem says that if a block matrix is in the selected determinant
+chart, then its Schur residual has rank `rank M - r`. This is the correct
+variable-edge rank statement; for a variable chain in fixed basepoint bases,
+the raw lower-right block is not the residual unless the variable edge remains
+in identity-corner form.
+
+Added `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`. It fixes endpoint
+bases from a base paper-order chain `B` and represents a variable chain `C` in
+those same bases:
+
+- `paperEndpointFixedBaseBasis`;
+- `paperEndpointFixedBaseChainMapMatrix`;
+- `paperEndpointFixedBaseEdgeMatrix`;
+- `paperEndpointFixedBaseTotalMatrix`;
+- `paperEndpointFixedBaseChainMapMatrix_succ_right`;
+- `paperEndpointFixedBaseTotalMatrix_eq_chainMapMatrix`;
+- basepoint equalities for `C = B`;
+- `rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub`;
+- two-edge wrappers
+  `paperEndpointFixedBaseTwoEdgeTotalMatrix_eq_edge1_mul_edge0`.
+
+The rank theorem keeps both hypotheses explicit:
+`identityCornerDetChart (paperEndpointFixedBaseEdgeMatrix W B C U0 hU0 p)` and
+`rank = rho`. No openness of exact rank strata, no automatic chart membership
+for nearby chains, and no re-adaptation of bases to `C` is claimed.

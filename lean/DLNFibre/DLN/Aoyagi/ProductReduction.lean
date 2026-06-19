@@ -75,9 +75,20 @@ def topLeftCorner {ι μ ν : Type*} (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Ma
 def upperRightBlock {ι μ ν : Type*} (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Matrix ι ν K :=
   M.submatrix Sum.inl Sum.inr
 
+/-- The lower-left block of a block matrix. -/
+def lowerLeftBlock {ι μ ν : Type*} (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Matrix μ ι K :=
+  M.submatrix Sum.inr Sum.inl
+
 /-- The lower-right block of a block matrix. -/
 def lowerRightBlock {ι μ ν : Type*} (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Matrix μ ν K :=
   M.submatrix Sum.inr Sum.inr
+
+omit [CommRing K] in
+/-- Reassemble a block matrix from its four selected corners. -/
+theorem fromBlocks_corners {ι μ ν : Type*} (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) :
+    fromBlocks (topLeftCorner M) (upperRightBlock M) (lowerLeftBlock M)
+      (lowerRightBlock M) = M := by
+  ext (i | i) (j | j) <;> rfl
 
 /-- A block matrix with identity top-left corner and zero lower-left block. -/
 def identityCornerForm {ι μ ν : Type*} [DecidableEq ι]
@@ -89,6 +100,11 @@ def identityCornerForm {ι μ ν : Type*} [DecidableEq ι]
 def identityCornerDetChart {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
     (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Prop :=
   IsUnit (topLeftCorner M).det
+
+/-- The Schur residual of the lower-right corner in the selected determinant chart. -/
+def schurResidualBlock {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
+    (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Matrix μ ν K :=
+  lowerRightBlock M - lowerLeftBlock M * (topLeftCorner M)⁻¹ * upperRightBlock M
 
 /-- In identity-corner form, the selected top-left corner is exactly `1`. -/
 theorem topLeftCorner_eq_one_of_identityCornerForm
@@ -453,6 +469,28 @@ theorem productReduction_chartLocalInductionStep_fromBlocks_indexed
       rw [hSchur]
 
 end InductionStep
+
+section SchurResidualRank
+
+variable {K : Type*} [Field K]
+
+/-- On the determinant chart, the selected Schur residual has rank `rank M - r`. -/
+theorem rank_schurResidualBlock_eq_sub_rank_of_identityCornerDetChart {r p q : ℕ}
+    (M : Matrix (Fin r ⊕ Fin p) (Fin r ⊕ Fin q) K)
+    (hM : identityCornerDetChart M) :
+    (schurResidualBlock M).rank = M.rank - r := by
+  let A1 : Matrix (Fin r) (Fin r) K := topLeftCorner M
+  let A2 : Matrix (Fin r) (Fin q) K := upperRightBlock M
+  let A3 : Matrix (Fin p) (Fin r) K := lowerLeftBlock M
+  let A4 : Matrix (Fin p) (Fin q) K := lowerRightBlock M
+  have hblocks : fromBlocks A1 A2 A3 A4 = M := by
+    simpa [A1, A2, A3, A4] using fromBlocks_corners (K := K) M
+  have hrank : (fromBlocks A1 A2 A3 A4).rank = M.rank := by
+    rw [hblocks]
+  have hschur := rank_schurComplement_eq_sub_rank_fromBlocks A1 A2 A3 A4 hM hrank
+  simpa [schurResidualBlock, A1, A2, A3, A4] using hschur
+
+end SchurResidualRank
 
 end Aoyagi
 end DLN
