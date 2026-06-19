@@ -908,6 +908,27 @@ theorem case2_displayedPivot_selectedEntryChartMap_value_mem
   selectedEntryChartMap_pivot_mem_valueSet
     (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont) u residual
 
+/-- In a Case 2 residual-block center, any selected entry chart has value `u` at
+the selected entry. This is finite selected-entry bookkeeping, not chart coverage. -/
+theorem case2_selectedEntryChartMap_value_mem_of_mem
+    {n : ℕ → ℕ} {S J : ℕ} {pivot : ℕ × ℕ}
+    (hpivot : pivot ∈ case2ResidualBlockPivotEntries n S J)
+    {α : Type*} [Monoid α] (u : α) (residual : ℕ × ℕ → α) :
+    u ∈
+      {v : α | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        selectedEntryChartMap pivot u residual p = v} :=
+  selectedEntryChartMap_pivot_mem_valueSet hpivot u residual
+
+/-- In a Case 2 residual-block selected-entry chart, every transformed center
+entry is divisible by the selected variable. -/
+theorem case2_selectedEntryChartMap_center_dvd_of_mem
+    {n : ℕ → ℕ} {S J : ℕ} {pivot : ℕ × ℕ}
+    (_hpivot : pivot ∈ case2ResidualBlockPivotEntries n S J)
+    {α : Type*} [Monoid α] (u : α) (residual : ℕ × ℕ → α) :
+    ∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+    u ∣ selectedEntryChartMap pivot u residual p :=
+  fun p _ ↦ selectedEntryChartMap_pivot_dvd pivot u residual p
+
 /-- In the Case 1 selected-old-variable chart, the selected generator has value `u`. -/
 theorem case1_selectedOld_selectedEntryChartMap_value_mem
     (n : ℕ → ℕ) (S J J1 : ℕ)
@@ -929,6 +950,27 @@ theorem case1_displayedPivot_selectedEntryChartMap_value_mem
           u residual g = v} :=
   selectedEntryChartMap_pivot_mem_valueSet
     (case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol) u residual
+
+/-- In a Case 1 center, any selected generator chart has value `u` at the
+selected generator. This is finite selected-entry bookkeeping, not chart coverage. -/
+theorem case1_selectedEntryChartMap_value_mem_of_mem
+    {n : ℕ → ℕ} {S J J1 : ℕ} {pivot : Case1CenterGenerator}
+    (hpivot : pivot ∈ case1CenterGenerators n S J J1)
+    {α : Type*} [Monoid α] (u : α) (residual : Case1CenterGenerator → α) :
+    u ∈
+      {v : α | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+        selectedEntryChartMap pivot u residual g = v} :=
+  selectedEntryChartMap_pivot_mem_valueSet hpivot u residual
+
+/-- In a Case 1 selected-entry chart, every transformed center generator is
+divisible by the selected variable. -/
+theorem case1_selectedEntryChartMap_center_dvd_of_mem
+    {n : ℕ → ℕ} {S J J1 : ℕ} {pivot : Case1CenterGenerator}
+    (_hpivot : pivot ∈ case1CenterGenerators n S J J1)
+    {α : Type*} [Monoid α] (u : α) (residual : Case1CenterGenerator → α) :
+    ∀ g, g ∈ case1CenterGenerators n S J J1 →
+    u ∣ selectedEntryChartMap pivot u residual g :=
+  fun g _ ↦ selectedEntryChartMap_pivot_dvd pivot u residual g
 
 /-- Lower the vector tail from stage `S` onward to the pivot level `J`. -/
 def lowerTailVector (T : ℕ → ℤ) (S : ℕ) (J : ℤ) (i : ℕ) : ℤ :=
