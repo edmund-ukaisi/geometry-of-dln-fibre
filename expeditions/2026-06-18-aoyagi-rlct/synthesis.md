@@ -157,11 +157,18 @@ bookkeeping only. It uses explicit through-subspace bases plus quotient or
 complement bases as inputs, and it is not a fixed-coordinate chart theorem.
 
 Still open for this repair: choose simultaneous compatible bases across the
-whole chain, prove the total-product normal form, translate the source-to-target
-Lean orientation back to Aoyagi's paper order, and connect the matrix
-corollaries to the chart-local product-reduction identity. Full Theorem 3
-remains blocked until those corollaries and the analytic certificate transport
-are built.
+whole chain, translate the source-to-target Lean orientation back to Aoyagi's
+paper order, and connect the matrix corollaries to the chart-local
+product-reduction identity. Full Theorem 3 remains blocked until those
+corollaries and the analytic certificate transport are built.
+
+The endpoint total-product normal form is Lean-proved as
+`toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
+source basis adapted to `U₀ ⊕ ker P` and target basis adapted to
+`throughSubspace last ⊕ Wlast`, the total composite has matrix
+`[I 0; 0 0]`. The zero complement columns use the source complement being
+`ker P`; this is not a fixed-coordinate statement and does not choose all
+intermediate layer bases simultaneously.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

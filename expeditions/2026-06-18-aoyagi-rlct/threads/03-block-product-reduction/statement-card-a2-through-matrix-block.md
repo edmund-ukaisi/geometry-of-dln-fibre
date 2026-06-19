@@ -25,11 +25,11 @@
 >   through-subspace, and either quotient bases or complement bases. The
 >   complements and bases are inputs, not constructed here.
 > - **Cited.** None.
-> - **Deferred.** Packaging simultaneous compatible bases for every layer;
->   proving total-product block form; translating the source-to-target Lean
->   orientation back to Aoyagi's paper-order matrices; connecting this
->   block-form corollary to the chart-local product-reduction identity; full
->   Aoyagi Theorem 3; and every analytic/RLCT consequence.
+> - **Deferred.** Packaging simultaneous compatible bases for every
+>   intermediate layer; translating the source-to-target Lean orientation back
+>   to Aoyagi's paper-order matrices; connecting this block-form corollary to
+>   the chart-local product-reduction identity; full Aoyagi Theorem 3; and
+>   every analytic/RLCT consequence.
 > - **Kill conditions.** Arbitrary adapted bases give `[C B; 0 D]` with
 >   invertible `C`, not necessarily `[I B; 0 D]`. The identity corner requires
 >   transported through-subspace bases. This is still not a fixed-coordinate

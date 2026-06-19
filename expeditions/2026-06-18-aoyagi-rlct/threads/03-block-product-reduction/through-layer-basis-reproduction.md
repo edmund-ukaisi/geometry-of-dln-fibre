@@ -212,9 +212,11 @@ with supplied complements and complement bases, the same block form holds for
 ambient bases built using `basisOfIsCompl`.
 
 Next prove the chain packaging matching the current `fromBlocks` APIs: choose
-simultaneous compatible bases, show the total product is
-`fromBlocks 1 0 0 0`, and then connect the Aoyagi transformed next-layer
-top-left corner to the already-proved unitriangular chart-stability identity.
+simultaneous compatible bases at the intermediate layers and then connect the
+Aoyagi transformed next-layer top-left corner to the already-proved
+unitriangular chart-stability identity. The endpoint total-product block form
+`fromBlocks 1 0 0 0` is now Lean-proved as
+`DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`.
 
 ## Checker verdict
 
@@ -227,7 +229,7 @@ finite-dimensional rank assertion.
 
 Formalisation-ready now:
 
-- simultaneous chain-basis and total-product block-form corollaries.
+- simultaneous intermediate-layer chain-basis corollaries.
 
 Still not formalisation-ready:
 

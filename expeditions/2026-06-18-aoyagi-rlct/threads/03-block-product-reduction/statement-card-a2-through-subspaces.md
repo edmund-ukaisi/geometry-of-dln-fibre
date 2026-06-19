@@ -23,10 +23,9 @@
 > - **Assumed.** A field and vector spaces. No finite-dimensional hypothesis is
 >   needed for the Lean helper; Aoyagi's matrix use case is finite-dimensional.
 > - **Cited.** None.
-> - **Deferred.** Packaging simultaneous chain bases; proving total-product
->   block form; connecting this subspace layer to the chart-local
->   product-reduction identity; full Aoyagi Theorem 3; and every analytic/RLCT
->   consequence.
+> - **Deferred.** Packaging simultaneous intermediate-layer bases; connecting
+>   this subspace layer to the chart-local product-reduction identity; full
+>   Aoyagi Theorem 3; and every analytic/RLCT consequence.
 > - **Kill conditions.** This is not a fixed-coordinate chart theorem. It does
 >   not say arbitrary bases give identity top-left blocks; identity blocks
 >   require transported bases on the through-subspaces.

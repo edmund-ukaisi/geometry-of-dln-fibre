@@ -219,3 +219,25 @@ theorem, does not package simultaneous chain bases, and does not prove Aoyagi
 Theorem 3 or any analytic/RLCT consequence.
 
 Statement card: `statement-card-a2-through-matrix-block.md`.
+
+## 2026-06-19 A2 endpoint total-product block
+
+Extended `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean` with the endpoint
+normalization theorem for the whole chain.
+
+Main Lean artifacts:
+
+- `toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero_zero_of_map_complement_eq_zero`:
+  generic direct-sum theorem saying that if the source complement maps to zero,
+  the matrix is `fromBlocks 1 0 0 0` in transported direct-sum bases.
+- `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`:
+  specialization to the total composite `chainMap V A 0 (Fin.last N) ...`,
+  with source decomposition `U₀ ⊕ ker P` and target decomposition
+  `throughSubspace last ⊕ Wlast`.
+
+This proves only endpoint matrix normalization. It does not package one
+simultaneous family of bases at every intermediate layer, does not translate
+orientation back to Aoyagi paper order, and does not yet connect the endpoint
+and per-edge block forms to the chart-local product-reduction identity.
+
+Statement card: `statement-card-a2-total-product-block.md`.
