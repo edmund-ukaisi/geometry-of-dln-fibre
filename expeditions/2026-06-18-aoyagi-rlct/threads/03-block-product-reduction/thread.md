@@ -885,3 +885,30 @@ data. It still does not control a neighborhood simultaneously for all possible
 `Bprev`, does not prove continuity or local boundedness of the `Bprev` produced
 by the suffix-chain induction, does not handle exact rank strata, and does not
 prove Aoyagi Theorem 3.
+
+## 2026-06-19 A2 variable-Bprev topology handoff
+
+Extended `FixedBasepointChart.lean` with
+`paperEndpointFixedBaseContinuousEdges_variableBprev_mem_nhds_transformed_identityCornerDetChart`.
+For an arbitrary topological parameter space, if the continuous reversed-edge
+family `Cedge x` and the accumulated-upper-block family `Bprev x` are
+continuous at `x0`, and if every transformed determinant chart holds at `x0`,
+then all those chart predicates hold on a neighborhood of `x0`.
+
+This is the reusable topological handoff for variable chart data. It does not
+construct the `Bprev` family produced by the suffix-chain induction.
+
+Pen-and-paper recurrence check for that still-open construction:
+
+- write `U_+(B) = [I B; 0 I]` and `U_-(B) = [I -B; 0 I]`;
+- the induction hypothesis has
+  `Lprev * Ptail * U_-(Bprev) = [Cprev 0; 0 Dprev]`;
+- insert `E = U_-(Bprev) * (U_+(Bprev) * E)` and set
+  `M = U_+(Bprev) * E`;
+- the next right-elimination block is
+  `(topLeftCorner M)⁻¹ * upperRightBlock M`.
+
+The next Lean target is a deterministic recursive suffix-chain reduction using
+this update under recursive determinant-chart hypotheses, followed by a
+continuity theorem for that recursive data. Exact rank assumptions remain
+separate.

@@ -437,11 +437,29 @@ whose fixed-basis coordinate matrices satisfy all transformed determinant-chart
 predicates is a neighborhood of the base edge family in the finite Pi topology.
 This is the honest finite-intersection step; it does not quantify over every
 possible accumulated upper block and does not show that the `Bprev` family
-constructed during the suffix-chain induction varies continuously. The next A2
-topology target is therefore not another finite intersection, but the bridge
-between this fixed-family statement and the actual source-faithful
-product/chain neighborhood needed by the induction, with exact rank strata kept
-as explicit hypotheses.
+constructed during the suffix-chain induction varies continuously. The
+remaining topology handoff at this stage was to allow a supplied `Bprev` family
+to vary continuously with the edge parameters, with exact rank strata kept as
+explicit hypotheses.
+
+That continuity handoff is now Lean-proved in parameter-space form as
+`paperEndpointFixedBaseContinuousEdges_variableBprev_mem_nhds_transformed_identityCornerDetChart`.
+For an arbitrary topological parameter space, if the continuous reversed-edge
+family and the accumulated-upper-block family `Bprev` are continuous at a
+parameter and the transformed determinant charts hold there, then the same
+transformed chart predicates hold on a neighborhood of that parameter. This is
+not a construction of the induction-produced `Bprev`; it is the reusable
+topological lemma that will apply once that recursive data is made
+deterministic and continuous.
+
+Pen-and-paper reproduction of the suffix-chain proof identifies the recursive
+right-elimination block. With `U_+(B) = [I B; 0 I]`, the transformed edge is
+`M_p = U_+(Bprev) * E p`, and the next block is
+`(topLeftCorner M_p)⁻¹ * upperRightBlock M_p`. The existing existential proof
+already passes this witness forward; the next Lean target is to make this
+deterministic recurrence explicit, prove the corresponding chart-local
+reduction under recursive chart hypotheses, and then prove continuity on a
+neighborhood where those chart hypotheses hold.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

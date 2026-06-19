@@ -51,10 +51,12 @@ on the session's original cwd.
    Lean-proved, and this has been pulled back along the fixed-basis coordinate
    map for one continuous-linear edge parameter. A finite product-topology
    assembly is also Lean-proved for any fixed prescribed family of accumulated
-   upper blocks `Bprev p`. Next bridge this fixed-family edge-neighborhood
-   statement toward the source-faithful product/chain neighborhood needed by
-   the explicit-chart induction, without pretending that the induction-produced
-   `Bprev` family varies continuously or that exact-rank strata are open.
+   upper blocks `Bprev p`, and a variable-parameter continuity handoff is
+   Lean-proved: if the edge family and `Bprev` family vary continuously and the
+   transformed charts hold at the base parameter, then they hold nearby. Next
+   construct the deterministic recursive `Bprev` family from the suffix-chain
+   induction and prove its chart-local reduction/continuity under recursive
+   chart hypotheses, without pretending that exact-rank strata are open.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

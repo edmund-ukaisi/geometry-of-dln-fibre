@@ -143,6 +143,18 @@ a neighborhood working for all `Bprev`, does not connect to the
 induction-produced `Bprev`, does not make exact rank strata open, and does not
 prove Aoyagi Theorem 3.
 
+Tenth latest A2 update: the variable-`Bprev` continuity handoff has landed.
+Fixed-base wrapper
+`paperEndpointFixedBaseContinuousEdges_variableBprev_mem_nhds_transformed_identityCornerDetChart`
+in `FixedBasepointChart.lean` says that if a parameterized continuous
+reversed-edge family and a parameterized accumulated-upper-block family `Bprev`
+are continuous at `x0`, and all transformed determinant charts hold at `x0`,
+then they hold in a neighborhood of `x0`. This is not a construction of the
+recursive `Bprev`; pen-and-paper reproduction identifies the next algebraic
+target as the deterministic update
+`Bnext = (topLeftCorner ([I Bprev; 0 I] * E p))⁻¹ *
+upperRightBlock ([I Bprev; 0 I] * E p)` under recursive chart hypotheses.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

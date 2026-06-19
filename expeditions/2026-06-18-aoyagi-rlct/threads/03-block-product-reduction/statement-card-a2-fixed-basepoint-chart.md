@@ -40,7 +40,8 @@
 >   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_identityCornerDetChart`,
 >   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`,
 >   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`,
->   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`,
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_variableBprev_mem_nhds_transformed_identityCornerDetChart`
 >   (`lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`).
 > - **Gloss.** The base chain `B` supplies the endpoint adapted bases. The
 >   variable chain `C` supplies only the linear maps being represented. The
@@ -54,7 +55,9 @@
 >   transformed determinant-chart neighborhood for a single continuous-linear
 >   edge parameter at the base edge. Also proved finite product-topology
 >   assembly for a fixed prescribed family of accumulated upper blocks
->   `Bprev p`. Also proved a canonical two-edge product wrapper for the first
+>   `Bprev p`, and a parameter-space continuity handoff when both the edge
+>   family and `Bprev` family vary continuously. Also proved a canonical
+>   two-edge product wrapper for the first
 >   nontrivial composition case. The suffix-step theorem advances one already
 >   reduced suffix across a supplied transformed next edge; it is not yet an
 >   iterated all-layer induction theorem. The suffix-chain theorem now iterates
@@ -67,10 +70,12 @@
 >   exact rank equation for that matrix. The continuous-edge neighborhood
 >   theorem additionally assumes a nontrivially normed complete field and
 >   topological-vector-space structures on the paper-order layers; the
->   edge-family theorem uses the finite Pi/product topology over `Fin N`.
+>   edge-family theorem uses the finite Pi/product topology over `Fin N`; the
+>   variable-`Bprev` theorem also assumes an arbitrary topological parameter
+>   space and continuity at the selected parameter.
 > - **Cited.** None.
-> - **Deferred.** Connecting the fixed-`Bprev` edge-family neighborhood to the
->   upper blocks produced by the suffix-chain induction, source-faithful
+> - **Deferred.** Deterministically constructing the upper blocks produced by
+>   the suffix-chain induction and proving their continuity, source-faithful
 >   product/chain neighborhoods, exact rank-stratum packaging, regular
 >   coordinate-change certificates, and RLCT consequences.
 > - **Kill conditions.** Do not read this as saying rank strata are open or
