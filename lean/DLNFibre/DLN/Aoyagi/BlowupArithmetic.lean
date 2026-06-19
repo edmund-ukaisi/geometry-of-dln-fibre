@@ -1884,6 +1884,182 @@ theorem IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_levelTail
     (hinv.leastValue_eq_level hfirst.selectedIntroduced)
     (hinv.flatTail_abovePivot hfirst.selectedIntroduced hfirst.lt_selectedLevel) hS hSL
 
+/-- Case 1(2) displayed row-strip new-label certificate from the old selected
+label.  This changes only the label identity from the old selected label to the
+new post-state label `(S,J+1)`; the lower-tail arithmetic is the same
+conditional certificate proved for the old vector.
+
+The source proof that Aoyagi's displayed chart produces these post-data is a
+separate obligation. -/
+theorem Case1FirstJumpHypotheses.displayedRowStrip_newLabelExponentCertificate
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ} {t : ℕ → ℕ → ℕ → ℤ} {numerator : ℤ}
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hcert :
+      LabelExponentCertificate L n S J s0 k0 (t s0 k0) numerator
+        (level s0 k0 : ℤ))
+    (hflat : FlatTailFromPred L S (t s0 k0) (level s0 k0 : ℤ))
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hcol : J + 1 ≤ n (S + 1)) :
+    LabelExponentCertificate L n S (J + 1) S (J + 1)
+      (lowerTailVector (t s0 k0) S (J : ℤ))
+      (numerator + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) (J : ℤ) := by
+  have htail :=
+    hfirst.lowerTailVector_labelExponentCertificate hcert hflat hS hSL
+  exact
+    { introduced :=
+        introducedLabel_case2_new_after L n (by omega : 1 ≤ S) hSL hcol
+      terminalExponent_eq := htail.terminalExponent_eq
+      least_value := htail.least_value }
+
+/-- Supplied exponent post-data for Aoyagi Case 1(2)'s displayed row-strip
+new label.  Old introduced labels are preserved, while the fresh label
+`(S,J+1)` receives the lower-tail vector of the old selected label and the
+printed increment `J1 * (n(S+1)-J)`.
+
+This is exponent-map bookkeeping only.  It does not assert chart production,
+regularity, recurrence production, Jacobian accounting, or normal crossings. -/
+structure Case1DisplayedRowStripExponentPostData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ) : Prop where
+  vector_old :
+    ∀ {s k}, introducedLabel L n S J s k → t' s k = t s k
+  numerator_old :
+    ∀ {s k}, introducedLabel L n S J s k → numerator' s k = numerator s k
+  leastValue_old :
+    ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k
+  vector_new : t' S (J + 1) = lowerTailVector (t s0 k0) S (J : ℤ)
+  numerator_new :
+    numerator' S (J + 1) =
+      numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))
+  leastValue_new : leastValue' S (J + 1) = (J : ℤ)
+
+namespace IntroducedLabelExponentCertificates
+
+/-- Domain-extension bookkeeping from supplied Case 1(2) displayed row-strip
+new-label post-data.  The selected old certificate and flat-tail invariant
+provide the elementary lower-tail certificate for the new label; the post-data
+supplies preservation of all previously introduced labels and the explicit new
+values. -/
+theorem extendDomain_case1DisplayedRowStripNewLabel_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hlevelLeast : leastValue s0 k0 = (level s0 k0 : ℤ))
+    (hflat : FlatTailFromPred L S (t s0 k0) (level s0 k0 : ℤ))
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hcol : J + 1 ≤ n (S + 1))
+    (hpost :
+      Case1DisplayedRowStripExponentPostData
+        (L := L) (n := n) (S := S) (J := J) (J1 := J1) (s0 := s0) (k0 := k0)
+        t t' numerator numerator' leastValue leastValue') :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' := by
+  refine hcert.extendDomain_succ_current ?_
+    hpost.vector_old hpost.numerator_old hpost.leastValue_old
+  have hselectedCert :
+      LabelExponentCertificate L n S J s0 k0 (t s0 k0) (numerator s0 k0)
+        (level s0 k0 : ℤ) := by
+    simpa [hlevelLeast] using hcert.certificate hfirst.selectedIntroduced
+  have hnew :=
+    hfirst.displayedRowStrip_newLabelExponentCertificate
+      hselectedCert hflat hS hSL hcol
+  rw [hpost.vector_new, hpost.numerator_new, hpost.leastValue_new]
+  exact hnew
+
+end IntroducedLabelExponentCertificates
+
+namespace Case1DisplayedRowStripExponentPostData
+
+/-- Concrete update data for the Case 1(2) displayed row-strip new label.  It
+updates only the fresh label `(S,J+1)`, which is not in the previous introduced
+domain. -/
+theorem updateNewLabel
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    (t : ℕ → ℕ → ℕ → ℤ) (numerator leastValue : ℕ → ℕ → ℤ) :
+    Case1DisplayedRowStripExponentPostData
+      (L := L) (n := n) (S := S) (J := J) (J1 := J1) (s0 := s0) (k0 := k0)
+      t
+      (updateSelectedLabelVector S (J + 1) (lowerTailVector (t s0 k0) S (J : ℤ)) t)
+      numerator
+      (updateSelectedLabelScalar S (J + 1)
+        (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      leastValue
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) where
+  vector_old := by
+    intro s k hintro
+    exact funext fun i ↦ updateSelectedLabelVector_of_ne
+      (lowerTailVector (t s0 k0) S (J : ℤ)) t i (by
+        rintro ⟨rfl, rfl⟩
+        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  numerator_old := by
+    intro s k hintro
+    exact updateSelectedLabelScalar_of_ne
+      (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator (by
+        rintro ⟨rfl, rfl⟩
+        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  leastValue_old := by
+    intro s k hintro
+    exact updateSelectedLabelScalar_of_ne (J : ℤ) leastValue (by
+      rintro ⟨rfl, rfl⟩
+      exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  vector_new := funext fun i ↦ updateSelectedLabelVector_selected S (J + 1)
+    (lowerTailVector (t s0 k0) S (J : ℤ)) t i
+  numerator_new := updateSelectedLabelScalar_selected S (J + 1)
+    (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator
+  leastValue_new := updateSelectedLabelScalar_selected S (J + 1) (J : ℤ) leastValue
+
+end Case1DisplayedRowStripExponentPostData
+
+namespace IntroducedLabelExponentCertificates
+
+/-- Concrete update-data wrapper for Case 1(2)'s displayed row-strip
+new-label exponent-domain extension.  It adds only `(S,J+1)` with the old
+selected label's lower-tail vector and printed exponent increment. -/
+theorem extendDomain_case1DisplayedRowStripNewLabel_updateData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hlevelLeast : leastValue s0 k0 = (level s0 k0 : ℤ))
+    (hflat : FlatTailFromPred L S (t s0 k0) (level s0 k0 : ℤ))
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hcol : J + 1 ≤ n (S + 1)) :
+    IntroducedLabelExponentCertificates L n S (J + 1)
+      (updateSelectedLabelVector S (J + 1) (lowerTailVector (t s0 k0) S (J : ℤ)) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) := by
+  exact hcert.extendDomain_case1DisplayedRowStripNewLabel_of_postData
+    hfirst hlevelLeast hflat hS hSL hcol
+    (Case1DisplayedRowStripExponentPostData.updateNewLabel t numerator leastValue)
+
+/-- Level/tail invariant wrapper for the Case 1(2) displayed row-strip
+new-label exponent-domain extension. -/
+theorem extendDomain_case1DisplayedRowStripNewLabel_of_levelTailInvariants
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hinv : IntroducedLabelLevelTailInvariants L n S J level t leastValue)
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hcol : J + 1 ≤ n (S + 1)) :
+    IntroducedLabelExponentCertificates L n S (J + 1)
+      (updateSelectedLabelVector S (J + 1) (lowerTailVector (t s0 k0) S (J : ℤ)) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) :=
+  hcert.extendDomain_case1DisplayedRowStripNewLabel_updateData hfirst
+    (hinv.leastValue_eq_level hfirst.selectedIntroduced)
+    (hinv.flatTail_abovePivot hfirst.selectedIntroduced hfirst.lt_selectedLevel)
+    hS hSL hcol
+
+end IntroducedLabelExponentCertificates
+
 /-- Named recurrence data over the introduced labels at state `(S,J)`.
 
 This packages the maps used to form the row-weight recurrence.  It does not

@@ -1010,3 +1010,27 @@ This is only arithmetic. The flat-tail hypothesis is explicit and must be
 supplied by a later corrected invariant; it is not inferred from the Case 1
 level condition alone. It is not an all-label/domain transition. The boundary
 exclusions `S=1` and `S>L` are real.
+
+## 2026-06-19 Lean Case 1 displayed row-strip new-label exponent
+
+Statement card:
+`statement-card-a4-case1-displayed-row-strip-new-label-exponent.md`.
+
+Lean now separates the Case 1(2) displayed row-strip new-label exponent
+extension from the older same-domain selected-label update. The new theorem
+`Case1FirstJumpHypotheses.displayedRowStrip_newLabelExponentCertificate`
+reuses the lower-tail terminal-exponent and least-value arithmetic for the old
+selected label, but gives the certificate to the fresh post-state label
+`(S,J+1)` using the actual-width bound `J+1 <= n(S+1)`.
+
+The accompanying post-data package
+`Case1DisplayedRowStripExponentPostData` preserves all old introduced labels
+and assigns `(S,J+1)` the source-shaped vector, numerator increment
+`J1*(n(S+1)-J)`, and least value `J`. The concrete update-data wrapper changes
+only `(S,J+1)`, relying on the fact that this label is not introduced at
+state `(S,J)`.
+
+This is not a chart-production or transition theorem. The chart-produced
+post-data, level/least-value bridge, flat-tail invariant, recurrence
+bookkeeping, hidden old-label validity, Jacobian formula, normal crossings,
+and RLCT extraction remain outside this checkpoint.
