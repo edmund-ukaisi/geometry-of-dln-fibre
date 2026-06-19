@@ -481,9 +481,10 @@ No such claim is formalisation-ready until both fields are filled.
   `t^{(i)} = M^{(i+1)}` for `i < S`, while the same chart records the
   numerator increment `(M(S)-J)(M^{(S+1)}-J)`; substituting the printed vector
   into the terminal exponent formula on PDF p. 22 gives
-  `(M^{(S)}-J)(M^{(S+1)}-J)` unless `M(S)=M^{(S)}`. Missing pivot charts,
-  regularity/divisibility for the `P` matrices, the printed `b'_i` versus
-  standalone-`u` ambiguity, termination, and boundary cases also remain open.
+  `(M^{(S)}-J)(M^{(S+1)}-J)` unless `M(S)=M^{(S)}`. The monomial divisibility
+  and normalized local `Q/P` algebra are now proved narrowly, but missing pivot
+  charts, full polynomial-coordinate chart construction, the printed `b'_i`
+  versus standalone-`u` ambiguity, termination, and boundary cases remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
   genuine source gap with no certificate-level repair compatible with the
@@ -496,6 +497,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/04-blow-up-certificate/reproduction-check.md`; source-image scout
   `Russell the 2nd` and pen-and-paper scout `Hume the 2nd` independently
   confirmed the Case 2 mismatch and the prefix-minimum repaired vector.
+  Xhigh scouts `McClintock the 2nd`, `Gauss the 2nd`, and `Franklin the 2nd`
+  checked the monomial recurrence divisibility, normalized `P` row operation,
+  and normalized `Q` column operation respectively.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -514,7 +518,12 @@ No such claim is formalisation-ready until both fields are filled.
   regularity of `b'_i / b'_(J+1)`. Also proved the normalized block
   row-operation theorem `weightedPivotBlockRowOp_mul_diagonal_mul`, with helper
   definitions `weightedPivotBlockRowOp`, `weightedPivotBlockMatrix`,
-  `weightedPivotClearedBlock`, and `weightedPivotDiagonal`.
+  `weightedPivotClearedBlock`, and `weightedPivotDiagonal`. Also proved the
+  normalized column-operation API `pivotPreQBlock`, `pivotQ`, `pivotQinv`,
+  `pivotPostQBlock`, `pivotPreQBlock_mul_pivotQ`,
+  `pivotQ_mul_pivotQinv`, `pivotQinv_mul_pivotQ`, and
+  `pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul`, which clears the pivot row and
+  transports the following factor by the displayed inverse.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

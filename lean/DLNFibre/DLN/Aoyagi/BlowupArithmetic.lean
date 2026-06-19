@@ -334,6 +334,74 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul
 
 end RowOperationBlocks
 
+section ColumnOperationBlocks
+
+variable {R ρ κ τ : Type*} [CommRing R] [Fintype κ] [DecidableEq κ]
+
+/-- The pre-`Q` pivot block, with top row `[1 y]`. -/
+def pivotPreQBlock (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R) :
+    Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R :=
+  fromBlocks 1 y x D
+
+/-- The elementary right column operation that clears the pivot row off the pivot. -/
+def pivotQ (y : Matrix Unit κ R) : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R :=
+  fromBlocks 1 (-y) 0 1
+
+/-- The inverse elementary column operation. -/
+def pivotQinv (y : Matrix Unit κ R) : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R :=
+  fromBlocks 1 y 0 1
+
+/-- The `Q`-normalised pivot block. -/
+def pivotPostQBlock (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R) :
+    Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R :=
+  fromBlocks 1 0 x (D - x * y)
+
+/-- Right multiplication by `Q` clears the pivot row away from the pivot. -/
+theorem pivotPreQBlock_mul_pivotQ
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R) :
+    pivotPreQBlock x y D * pivotQ y = pivotPostQBlock x y D := by
+  ext r c
+  rcases r with (_ | i)
+  · rcases c with (_ | j)
+    · simp [pivotPreQBlock, pivotQ, pivotPostQBlock, Matrix.fromBlocks_multiply]
+    · simp [pivotPreQBlock, pivotQ, pivotPostQBlock, Matrix.fromBlocks_multiply]
+  · rcases c with (_ | j)
+    · simp [pivotPreQBlock, pivotQ, pivotPostQBlock, Matrix.fromBlocks_multiply]
+    · simp [pivotPreQBlock, pivotQ, pivotPostQBlock, Matrix.fromBlocks_multiply,
+        sub_eq_add_neg, add_comm]
+
+/-- The displayed inverse really is a right inverse for `Q`. -/
+theorem pivotQ_mul_pivotQinv (y : Matrix Unit κ R) :
+    pivotQ y * pivotQinv y = 1 := by
+  rw [← fromBlocks_one (l := Unit) (m := κ)]
+  simp [pivotQ, pivotQinv, Matrix.fromBlocks_multiply]
+
+/-- The displayed inverse really is a left inverse for `Q`. -/
+theorem pivotQinv_mul_pivotQ (y : Matrix Unit κ R) :
+    pivotQinv y * pivotQ y = 1 := by
+  rw [← fromBlocks_one (l := Unit) (m := κ)]
+  simp [pivotQ, pivotQinv, Matrix.fromBlocks_multiply]
+
+/-- Transforming the next factor by `Q⁻¹` preserves the local product. -/
+theorem pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R)
+    (C : Matrix (Unit ⊕ κ) τ R) :
+    pivotPreQBlock x y D * C = pivotPostQBlock x y D * (pivotQinv y * C) := by
+  symm
+  calc
+    pivotPostQBlock x y D * (pivotQinv y * C)
+        = (pivotPreQBlock x y D * pivotQ y) * (pivotQinv y * C) := by
+            rw [pivotPreQBlock_mul_pivotQ]
+    _ = pivotPreQBlock x y D * (pivotQ y * (pivotQinv y * C)) := by
+            rw [Matrix.mul_assoc]
+    _ = pivotPreQBlock x y D * ((pivotQ y * pivotQinv y) * C) := by
+            rw [← Matrix.mul_assoc (pivotQ y) (pivotQinv y) C]
+    _ = pivotPreQBlock x y D * C := by
+            rw [pivotQ_mul_pivotQinv]
+            simp
+
+end ColumnOperationBlocks
+
 end Aoyagi
 end DLN
 end DLNFibre

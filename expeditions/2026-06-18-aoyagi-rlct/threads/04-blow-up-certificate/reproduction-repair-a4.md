@@ -8,8 +8,8 @@ Source used: Aoyagi 2023 PDF pp. 14-23, inspected both as text and page images.
 
 Independent rechecks:
 
-- Source-fidelity scout `Russell the 2nd`: verdict source typo/gap, not a
-  misread.
+- Source-fidelity scout `Russell the 2nd`: verdict printed-vector
+  mismatch/source gap, not a misread.
 - Pen-and-paper scout `Hume the 2nd`: verdict the prefix-minimum repaired
   vector is the one compatible with the terminal exponent formula.
 - Pen-and-paper scout `McClintock the 2nd`: verdict the `P` regularity
@@ -200,7 +200,7 @@ The source again displays only the pivot chart with pivot `d_(J+1,J+1)`:
 D_J = u_(S,J+1) * D'_J,    D'_J(J+1,J+1) = 1.
 ```
 
-The new vector uses actual earlier widths:
+The PDF prints the new vector with actual earlier widths:
 
 ```text
 t_(S,J+1)^i = n_(i+1),     i = 1, ..., S-1,
@@ -440,7 +440,7 @@ P * B * D'' = B * [ 1  0
                    0  D ].
 ```
 
-This proof is independent of the Case 2 vector typo: it uses only the
+This proof is independent of the Case 2 printed-vector mismatch: it uses only the
 already-normalised local matrix `D''`, quotient witnesses, and the decision to
 count the common pivot factor once.  It applies verbatim to Case 1(2) and
 Case 2; only the source of the quotient witnesses differs.
@@ -455,6 +455,56 @@ Lean status: the normalized block theorem is formalised as
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`, with helper definitions
 `weightedPivotBlockRowOp`, `weightedPivotBlockMatrix`,
 `weightedPivotClearedBlock`, and `weightedPivotDiagonal`.
+
+### Normalized `Q` column-operation algebra
+
+The source displays the same `Q` operation in Case 1(2) and Case 2.  After
+normalising the pivot entry to `1` and reindexing the pivot row/column first,
+write the pre-`Q` block as
+
+```text
+D' = [ 1  y
+      x  D ],
+```
+
+where `y` is the rest of the pivot row and `x` is the lower part of the pivot
+column.  Define
+
+```text
+Q    = [ 1  -y ],
+       [ 0   I ]
+
+Q^-1 = [ 1   y ].
+       [ 0   I ]
+```
+
+Then block multiplication gives
+
+```text
+D' Q = [ 1  0
+         x  D - x*y ].
+```
+
+Thus `Q` clears the pivot row away from the pivot.  Replacing the following
+factor `C` by `Q^-1 C` preserves the product:
+
+```text
+(D' Q)(Q^-1 C) = D'(Q Q^-1)C = D'C.
+```
+
+This is independent of the Case 2 printed-vector mismatch, because it uses only the local
+block entries of `D'` and the following factor `C`.  It applies verbatim to
+Case 1(2) and Case 2.
+
+Independent check: xhigh source-fidelity scout `Franklin the 2nd` reproduced
+this `Q` algebra from PDF pp. 17-21 and confirmed the following-factor
+replacement `C'_J^(S+1)=Q^-1 C_J^(S+1)`.
+
+Lean status: this algebra is formalised in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` as `pivotPreQBlock`,
+`pivotQ`, `pivotQinv`, `pivotPostQBlock`, `pivotPreQBlock_mul_pivotQ`,
+`pivotQ_mul_pivotQinv`, `pivotQinv_mul_pivotQ`, and
+`pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul`.
 
 ## Pivot-chart coverage obligation
 
@@ -511,7 +561,9 @@ ordered lexicographically.  This is not yet checked.  It must prove:
 ## Current blockers
 
 - Full pivot-chart coverage is still not reproduced.
-- Regularity of `P` is reduced to monomial divisibility but not proved.
+- The recurrence divisibility and normalized displayed `Q/P` matrix identities
+  are proved narrowly, but the full polynomial-coordinate pivot chart
+  construction and chart-family coverage are not proved.
 - The printed Case 2 vector update is incompatible with the terminal exponent
   formula for arbitrary widths.  The prefix-minimum vector repairs the
   arithmetic but is a corrected certificate, not source-faithful printed data.

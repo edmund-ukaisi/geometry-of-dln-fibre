@@ -93,7 +93,28 @@ first column and leaves the lower-right block unchanged:
 P * diag(b0,b) * [1 0; x D] = diag(b0,b) * [1 0; 0 D].
 ```
 
-This is independent of the Case 2 vector typo and applies to both displayed
-pivot branches after choosing one normalization for the common pivot factor.
-It still does not prove the surrounding `Q` operation, pivot-chart coverage, or
-the full transition invariant.
+This is independent of the Case 2 printed-vector mismatch and applies to both
+displayed pivot branches after choosing one normalization for the common pivot
+factor. It still does not prove the surrounding `Q` operation, pivot-chart
+coverage, or the full transition invariant.
+
+## 2026-06-19 Lean normalized `Q` column operation
+
+Statement card: `statement-card-a4-normalized-q-operation.md`.
+
+Xhigh scout `Franklin the 2nd` reproduced the source's normalized column
+operation. Lean now proves `pivotPreQBlock_mul_pivotQ`: for a pivot split
+
+```text
+[ 1  y
+  x  D ] * [ 1 -y
+             0  I ] = [ 1  0
+                        x  D - x*y ].
+```
+
+The inverse matrices `pivotQ` and `pivotQinv` are proved two-sided inverses,
+and `pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul` proves that replacing the
+following factor by `Q^-1 C` preserves the local product. This applies to both
+displayed pivot branches after normalizing the pivot entry to `1`. It still
+does not prove pivot-chart coverage, exponent updates, or the full transition
+invariant.

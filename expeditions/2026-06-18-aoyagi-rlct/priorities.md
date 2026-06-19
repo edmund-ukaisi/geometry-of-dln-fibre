@@ -87,13 +87,13 @@ on the session's original cwd.
 4. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
    and exact hypotheses from the PDF where the first scout still left TBDs.
 5. Repair A4 blow-up reproduction. Keep actual layer widths and prefix minima
-   separate; the terminal-exponent split and the monomial recurrence
-   divisibility needed for `P` are Lean-proved, and the normalized `P`
-   row-operation algebra is also Lean-proved. Next build the surrounding `Q`
-   operation algebra or the corrected certificate's finite vector invariant
-   around prefix-minimum coordinates. Then redo Case 1/2 updates, cover pivot
-   charts, repair the remaining recurrence bookkeeping, and replace the
-   termination measure.
+   separate; the terminal-exponent split, the monomial recurrence divisibility
+   needed for `P`, the normalized `P` row-operation algebra, and the normalized
+   `Q` column-operation algebra are Lean-proved. Next either combine the `Q`
+   and `P` results into one local normalized pivot-step theorem, or build the
+   corrected finite vector invariant around prefix-minimum coordinates. Then
+   redo Case 1/2 updates, cover pivot charts, repair the remaining recurrence
+   bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's
    chart-family/order-count construction.

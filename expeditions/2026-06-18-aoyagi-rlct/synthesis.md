@@ -139,6 +139,14 @@ interface without surfacing it.
   witnesses `b_i=q_i*b0`. This still assumes the `Q`-normalised shape and a
   consistent choice about whether the common pivot factor is inside the
   diagonal weights or outside.
+  The normalized `Q` column-operation algebra is now Lean-proved in the same
+  file: `pivotPreQBlock_mul_pivotQ` proves
+  `[1 y; x D] * [1 -y; 0 I] = [1 0; x D-x*y]`,
+  `pivotQ_mul_pivotQinv` and `pivotQinv_mul_pivotQ` prove the displayed inverse
+  is two-sided, and `pivotPreQBlock_mul_eq_postQ_mul_Qinv_mul` proves that
+  replacing the following factor by `Q^-1 C` preserves the local product. This
+  closes the narrow normalized pivot-algebra layer, not pivot-chart coverage,
+  exponent recurrence, termination, or a full transition theorem.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

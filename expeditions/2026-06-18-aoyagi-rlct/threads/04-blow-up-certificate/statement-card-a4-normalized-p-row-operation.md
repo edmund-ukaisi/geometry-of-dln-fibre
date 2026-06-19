@@ -45,7 +45,7 @@ on Aoyagi PDF pp. 17-21.  It applies to both Case 1(2) and Case 2 after the
 `Q` operation has made the pivot row `(1,0,...,0)`.
 
 Independent xhigh scout `Gauss the 2nd` checked the pen-and-paper algebra and
-confirmed that the proof is independent of the Case 2 vector typo.
+confirmed that the proof is independent of the Case 2 printed-vector mismatch.
 
 ## Proved
 
