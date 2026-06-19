@@ -265,6 +265,11 @@ interface without surfacing it.
   product-preservation `Q/P` identity are proved. This remains local to
   `d_(J+1,J+1)` and still does not prove arbitrary-pivot charts, atlas
   coverage, full source-variable transport, or exponent updates.
+  The finite following-factor reindexing transport is also proved:
+  `pivotFirstFollowingFactor` is the following factor in pivot-first column
+  coordinates, and multiplying by it commutes with reindexing the original
+  product. This handles only matrix reindexing, not the source coordinate
+  construction or regularity of the chart.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

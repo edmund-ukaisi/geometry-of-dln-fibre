@@ -318,6 +318,17 @@ coverage, full coordinate/weight transport, exponent updates, or transition
 invariants. Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-displayed-pivot-q-p.md`.
 
+Sixth latest A4 update: pivot-first following-factor transport has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. Proved Lean names are
+`pivotFirstFollowingFactor` and
+`pivotFirstMatrix_mul_pivotFirstFollowingFactor`. These prove that the
+following factor reindexed by `pivotFirstIndexEquiv colPivot` multiplies with
+the pivot-first residual block to give the original product reindexed by
+`pivotFirstIndexEquiv rowPivot`. This is finite matrix reindexing only; it
+does not prove source coordinate construction, regularity, chart coverage,
+exponent updates, or transition invariants. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-pivot-first-following-factor.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

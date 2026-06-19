@@ -364,6 +364,22 @@ weights. This is the displayed Case 2 local algebra only. It does not prove
 arbitrary selected-entry charts, affine atlas coverage, full source-variable
 transport, exponent updates, or a transition invariant.
 
+## 2026-06-19 Lean pivot-first following-factor transport
+
+Reproduction: `reproduction-pivot-first-following-factor-a4.md`.
+Statement card: `statement-card-a4-pivot-first-following-factor.md`.
+
+Lean now names the following factor in pivot-first column coordinates as
+`pivotFirstFollowingFactor` and proves
+`pivotFirstMatrix_mul_pivotFirstFollowingFactor`: multiplying a pivot-first
+residual block by this reindexed following factor is the same as reindexing the
+original product in the pivot-first row order.
+
+This is the finite matrix transport behind the displayed replacement
+`C' = Q^{-1} C`, but it remains pure reindexing algebra. It does not construct
+source coordinates, prove regularity/Jacobian facts, prove chart coverage, or
+update exponents.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

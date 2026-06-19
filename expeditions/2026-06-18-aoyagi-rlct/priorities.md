@@ -114,8 +114,9 @@ on the session's original cwd.
    are also Lean-proved; pivot-first existential wrappers now choose the `q`
    witnesses from divisibility or recurrence hypotheses; and the
    source-displayed Case 2 top-left selected-entry `Q/P` product identity is
-   Lean-proved under flat displayed row weights. Next A4 target: full
-   source-variable transport for the displayed Case 2 chart, still without
+   Lean-proved under flat displayed row weights; pivot-first following-factor
+   reindexing is also Lean-proved. Next A4 target: source-variable transport
+   for the displayed Case 2 chart beyond this finite reindexing, still without
    arbitrary-pivot coverage. Aoyagi-specific arbitrary chart construction,
    pivot-first coordinate/weight transport for non-displayed pivots, row
    hypotheses, and indexed non-displayed transition formulas are still missing.

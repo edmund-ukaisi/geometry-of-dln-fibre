@@ -1655,6 +1655,12 @@ def pivotFirstD {ι κ R : Type*} (rowPivot : ι) (colPivot : κ) (A : Matrix ι
     Matrix (pivotComplement rowPivot) (pivotComplement colPivot) R :=
   fun i j ↦ A i.1 j.1
 
+/-- Reindex a following factor so its rows match the pivot-first column order. -/
+def pivotFirstFollowingFactor {κ τ R : Type*} [DecidableEq κ]
+    (colPivot : κ) (C : Matrix κ τ R) :
+    Matrix (Unit ⊕ pivotComplement colPivot) τ R :=
+  C.submatrix (pivotFirstIndexEquiv colPivot) id
+
 @[simp] theorem pivotFirstMatrix_inl_inl {ι κ R : Type*}
     [DecidableEq ι] [DecidableEq κ]
     (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R) :
@@ -1703,6 +1709,16 @@ theorem pivotFirstMatrix_eq_pivotPreQBlock
   · rcases j with (_ | j)
     · rfl
     · rfl
+
+/-- Multiplying by a pivot-first following factor is just the original product
+reindexed in the pivot-first row order. -/
+theorem pivotFirstMatrix_mul_pivotFirstFollowingFactor
+    {ι κ τ : Type*} [DecidableEq ι] [DecidableEq κ] [Fintype κ]
+    {rowPivot : ι} {colPivot : κ} [Fintype (pivotComplement colPivot)]
+    (A : Matrix ι κ R) (C : Matrix κ τ R) :
+    pivotFirstMatrix rowPivot colPivot A * pivotFirstFollowingFactor colPivot C =
+      (A * C).submatrix (pivotFirstIndexEquiv rowPivot) id := by
+  rw [pivotFirstMatrix, pivotFirstFollowingFactor, submatrix_mul_equiv]
 
 /-- The elementary right column operation that clears the pivot row off the pivot. -/
 def pivotQ (y : Matrix Unit κ R) : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R :=
