@@ -115,12 +115,12 @@ on the session's original cwd.
    witnesses from divisibility or recurrence hypotheses; and the
    source-displayed Case 2 top-left selected-entry `Q/P` product identity is
    Lean-proved under flat displayed row weights; pivot-first following-factor
-   reindexing is also Lean-proved. Next A4 target: source-variable transport
-   for the displayed Case 2 chart beyond this finite reindexing, still without
-   arbitrary-pivot coverage. Aoyagi-specific arbitrary chart construction,
-   pivot-first coordinate/weight transport for non-displayed pivots, row
-   hypotheses, and indexed non-displayed transition formulas are still missing.
-   Then redo Case 1/2 updates, cover pivot charts, repair the
+   reindexing and diagonal row-weight reindexing are also Lean-proved. Next A4
+   target: source-variable transport for the displayed Case 2 chart beyond
+   these finite reindexing lemmas, still without arbitrary-pivot coverage.
+   Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
+   transport for non-displayed pivots, row hypotheses, and indexed
+   non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

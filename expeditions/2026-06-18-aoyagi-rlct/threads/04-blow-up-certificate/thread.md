@@ -380,6 +380,21 @@ This is the finite matrix transport behind the displayed replacement
 source coordinates, prove regularity/Jacobian facts, prove chart coverage, or
 update exponents.
 
+## 2026-06-19 Lean pivot-first diagonal weight transport
+
+Reproduction: `reproduction-pivot-first-diagonal-weights-a4.md`.
+Statement card: `statement-card-a4-pivot-first-diagonal-weights.md`.
+
+Lean now proves `weightedPivotDiagonal_eq_pivotFirst_diagonal`: the split
+diagonal matrix used by the pivot-first `P` operation is exactly the original
+row-weight diagonal matrix reindexed by `pivotFirstIndexEquiv` on rows and
+columns.
+
+This transports supplied row weights into pivot-first coordinates. It does not
+prove Aoyagi's recurrence flatness, quotient witnesses, selected-entry chart
+construction, coordinate regularity, exponent updates, or transition
+invariants.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

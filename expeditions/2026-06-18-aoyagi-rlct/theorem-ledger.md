@@ -329,6 +329,16 @@ does not prove source coordinate construction, regularity, chart coverage,
 exponent updates, or transition invariants. Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-pivot-first-following-factor.md`.
 
+Seventh latest A4 update: pivot-first diagonal row-weight transport has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean name is
+`weightedPivotDiagonal_eq_pivotFirst_diagonal`. It identifies the split
+diagonal matrix used by the pivot-first `P` operation with the original
+diagonal row-weight matrix reindexed by `pivotFirstIndexEquiv` on rows and
+columns. This is finite matrix reindexing only; it does not prove source
+row-weight assignment, recurrence flatness, quotient witnesses, chart coverage,
+exponent updates, or transition invariants. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-pivot-first-diagonal-weights.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

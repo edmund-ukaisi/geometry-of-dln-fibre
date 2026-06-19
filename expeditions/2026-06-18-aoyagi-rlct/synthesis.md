@@ -270,6 +270,10 @@ interface without surfacing it.
   coordinates, and multiplying by it commutes with reindexing the original
   product. This handles only matrix reindexing, not the source coordinate
   construction or regularity of the chart.
+  The diagonal row-weight reindexing is also proved:
+  `weightedPivotDiagonal_eq_pivotFirst_diagonal` identifies the split pivot
+  diagonal with the original supplied diagonal after pivot-first row/column
+  reindexing. This does not prove source row-weight assignment or flatness.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

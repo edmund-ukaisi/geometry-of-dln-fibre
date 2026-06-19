@@ -1720,6 +1720,30 @@ theorem pivotFirstMatrix_mul_pivotFirstFollowingFactor
       (A * C).submatrix (pivotFirstIndexEquiv rowPivot) id := by
   rw [pivotFirstMatrix, pivotFirstFollowingFactor, submatrix_mul_equiv]
 
+/-- The split pivot-row diagonal is the original diagonal weight matrix in pivot-first
+row coordinates. -/
+theorem weightedPivotDiagonal_eq_pivotFirst_diagonal
+    {ι : Type*} [DecidableEq ι] (rowPivot : ι) (weight : ι → R) :
+    weightedPivotDiagonal (weight rowPivot)
+        (fun i : pivotComplement rowPivot ↦ weight i.1) =
+      (diagonal weight).submatrix
+        (pivotFirstIndexEquiv rowPivot) (pivotFirstIndexEquiv rowPivot) := by
+  ext i j
+  rcases i with (_ | i)
+  · rcases j with (_ | j)
+    · simp [weightedPivotDiagonal, pivotFirstIndexEquiv]
+    · have hne : rowPivot ≠ j.1 := fun h ↦ j.2 h.symm
+      simp [weightedPivotDiagonal, pivotFirstIndexEquiv, diagonal_apply_ne weight hne]
+  · rcases j with (_ | j)
+    · simp [weightedPivotDiagonal, pivotFirstIndexEquiv, diagonal_apply_ne weight i.2]
+    · by_cases hij : i = j
+      · subst hij
+        simp [weightedPivotDiagonal, pivotFirstIndexEquiv]
+      · have hij_val : i.1 ≠ j.1 := by
+          intro h
+          exact hij (Subtype.ext h)
+        simp [weightedPivotDiagonal, pivotFirstIndexEquiv, hij, hij_val]
+
 /-- The elementary right column operation that clears the pivot row off the pivot. -/
 def pivotQ (y : Matrix Unit κ R) : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R :=
   fromBlocks 1 (-y) 0 1
