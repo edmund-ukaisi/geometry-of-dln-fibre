@@ -71,4 +71,8 @@ Module: `lean/DLNFibre/Core/RankLocusClosed.lean` @ `935f114`. Network-free `Cor
 
 ## Status
 
-sorry-free; reviewer fidelity check pending. Axioms `[propext, Classical.choice, Quot.sound]`.
+sorry-free + reviewed (fidelity **PASS-WITH-NOTES**, 2026-06-19): no off-by-one (minor size
+`rankPattern M i j + 1` pins the exact set — confirmed by the reviewer's decorrelated Codex consult),
+no over-claim (Thm 3.8 disclaimed), `[Field k]` genuinely sufficient, both bridge directions real.
+Notes were cosmetic only (deprecated `push_neg`, two long lines) and have been cleaned. Axioms
+`[propext, Classical.choice, Quot.sound]`.

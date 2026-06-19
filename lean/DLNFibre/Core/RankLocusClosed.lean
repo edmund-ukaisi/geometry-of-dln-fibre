@@ -144,15 +144,15 @@ theorem rank_le_iff_forall_submatrix_det_eq_zero {p q r : ℕ} (A : Matrix (Fin 
   · exact fun hr er ec ↦ submatrix_det_eq_zero_of_rank_le hr er ec
   · intro hall
     by_contra hlt
-    push_neg at hlt
-    obtain ⟨er, ec, _, _, hne⟩ := exists_submatrix_det_ne_zero_of_le_rank A hlt
+    obtain ⟨er, ec, _, _, hne⟩ :=
+      exists_submatrix_det_ne_zero_of_le_rank A (Nat.succ_le_of_lt (Nat.not_le.mp hlt))
     exact hne (hall er ec)
 
 /-! ## Polynomialization: the rank-pattern minors as coordinate polynomials
 
 The entries of `submult d A i j` are polynomials in the matrix entries of `A`. We realise this with
-the **generic tuple** `genericTuple d`, the tuple over the coordinate ring whose `(i, r, c)` entry is
-the variable `X ⟨i, r, c⟩`; evaluating at the point `canonicalCoord d A` recovers `A`. Then
+the **generic tuple** `genericTuple d`, the tuple over the coordinate ring whose `(i, r, c)` entry
+is the variable `X ⟨i, r, c⟩`; evaluating at the point `canonicalCoord d A` recovers `A`. Then
 `submult` of the generic tuple, evaluated, is `submult` of `A` (matrix multiplication commutes with
 the ring hom `eval`), and each `(s)`-minor of the generic `submult` is a polynomial whose value at
 `canonicalCoord d A` is the corresponding numerical minor of `submult d A i j`. -/
@@ -310,8 +310,8 @@ section Witness
 The determinantal-rank bridge fires on a concrete rank-1 matrix; the rank locus is inhabited (every
 `M` is in its own); the orbit inclusion is exercised on the `(2,2,2)/ℚ` orbit witness. -/
 
-/-- The bridge fires concretely: the `2×2` zero matrix over `ℚ` has rank `≤ 0`, witnessed through the
-bridge by every `1×1` minor (an entry) being `0`. -/
+/-- The bridge fires concretely: the `2×2` zero matrix over `ℚ` has rank `≤ 0`, witnessed through
+the bridge by every `1×1` minor (an entry) being `0`. -/
 example : (0 : Matrix (Fin 2) (Fin 2) ℚ).rank ≤ 0 := by
   rw [rank_le_iff_forall_submatrix_det_eq_zero]
   intro er ec
@@ -322,8 +322,10 @@ example : (0 : Matrix (Fin 2) (Fin 2) ℚ).rank ≤ 0 := by
 `2×2` minor (its determinant `1`) is nonzero. -/
 example : ¬ (1 : Matrix (Fin 2) (Fin 2) ℚ).rank ≤ 1 := by
   rw [rank_le_iff_forall_submatrix_det_eq_zero]
-  push_neg
-  exact ⟨id, id, by rw [Matrix.submatrix_id_id, Matrix.det_one]; exact one_ne_zero⟩
+  intro h
+  have := h id id
+  rw [Matrix.submatrix_id_id, Matrix.det_one] at this
+  exact one_ne_zero this
 
 /-- The rank locus is inhabited: every `M` lies in its own flattened rank locus. -/
 example {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
