@@ -111,10 +111,13 @@ on the session's original cwd.
    post-data for Case 1 selected labels, or continue chart-family scaffolding:
    arbitrary selected-entry finite-center facts and the generic pivot-first
    `Q/P` algebra bridge are Lean-proved; generic row-weight quotient witnesses
-   are also Lean-proved. Aoyagi-specific arbitrary chart construction,
-   pivot-first coordinate/weight transport, row hypotheses, and indexed
-   non-displayed transition formulas are still missing. Then redo Case 1/2
-   updates, cover pivot charts, repair the
+   are also Lean-proved; pivot-first existential wrappers now choose the `q`
+   witnesses from divisibility or recurrence hypotheses. Next A4 target:
+   Aoyagi-specific Case 2 selected-entry pivot-chart instantiation, separating
+   chart construction/normalisation/coordinate transport from the already
+   proved algebra. Aoyagi-specific arbitrary chart construction, pivot-first
+   coordinate/weight transport, row hypotheses, and indexed non-displayed
+   transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

@@ -285,6 +285,24 @@ Third latest A4 update: generic pivot-row quotient witnesses have landed in
 generic algebraic witnesses for the `P` matrix quotient hypothesis, not
 Aoyagi-specific chart construction or transition data.
 
+Fourth latest A4 update: pivot-first existential `Q/P` wrappers have landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. Proved Lean names include
+`exists_pivotFirstQP_mul_pivotQ_of_forall_dvd`,
+`exists_pivotFirstQP_mul_pivotQ_of_monomialRec_eq_or_le`,
+`exists_pivotFirstQP_mul_pivotQ_of_pivotMul_monomialRec_eq_or_le`,
+`exists_pivotFirstQP_mul_of_forall_dvd`,
+`exists_pivotFirstQP_mul_of_monomialRec_eq_or_le`,
+`exists_pivotFirstQP_mul_of_pivotMul_monomialRec_eq_or_le`,
+`Case1FirstJumpHypotheses.displayedPivot_mem_center_of_colBound`,
+`Case1FirstJumpHypotheses.displayedPivot_mem_residualBlockPivotEntries_of_colBound`,
+and `Case1FirstJumpHypotheses.stripEntry_mem_residualBlockPivotEntries`.
+These theorems choose the `q` witnesses needed by the pivot-first `Q/P`
+identities from divisibility or recurrence hypotheses. They still assume
+normalised pivot-first coordinates and do not prove Aoyagi selected-entry chart
+construction, coordinate/weight transport, arbitrary row hypotheses, chart
+coverage, exponent updates, or transition invariants. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-pivot-first-existential-q-p.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

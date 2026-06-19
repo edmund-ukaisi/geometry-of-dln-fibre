@@ -719,9 +719,10 @@ ordered lexicographically.  This is not yet checked.  It must prove:
 
 - Full pivot-chart coverage is still not reproduced.
 - The recurrence divisibility and normalized displayed `Q/P` matrix identities,
-  including their combined local pivot-step identity, are proved narrowly, but
-  the full polynomial-coordinate pivot chart construction and chart-family
-  coverage are not proved.
+  including their combined local pivot-step identity and the existential
+  pivot-first wrappers that choose quotient witnesses, are proved narrowly, but
+  the full polynomial-coordinate pivot chart construction, coordinate/weight
+  transport, and chart-family coverage are not proved.
 - The printed Case 2 vector update is incompatible with the terminal exponent
   formula for arbitrary widths.  The prefix-minimum vector repairs the
   arithmetic but is a corrected certificate, not source-faithful printed data.

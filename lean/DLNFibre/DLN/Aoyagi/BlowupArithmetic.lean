@@ -860,6 +860,37 @@ theorem case1_displayedPivot_mem_center_of_bounds
     rw [mem_case1StripEntries_iff]
     exact ⟨le_rfl, by omega, le_rfl, hcol⟩)
 
+/-- The Case 1 first-jump hypotheses imply displayed-pivot center membership once the
+source column bound is supplied. -/
+theorem Case1FirstJumpHypotheses.displayedPivot_mem_center_of_colBound
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector)
+    (hcol : J + 1 ≤ n (S + 1)) :
+    (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) ∈
+      case1CenterGenerators n S J J1 :=
+  case1_displayedPivot_mem_center_of_bounds n S h.positive hcol
+
+/-- The Case 1 first-jump hypotheses imply displayed-pivot residual-block membership once the
+source column bound is supplied. -/
+theorem Case1FirstJumpHypotheses.displayedPivot_mem_residualBlockPivotEntries_of_colBound
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector)
+    (hcol : J + 1 ≤ n (S + 1)) :
+    (J + 1, J + 1) ∈ case2ResidualBlockPivotEntries n S J :=
+  case1_displayedPivot_mem_residualBlockPivotEntries_of_bounds n S
+    h.positive h.rowBound hcol
+
+/-- A Case 1 row-strip entry is a residual-block entry under the first-jump row bound. -/
+theorem Case1FirstJumpHypotheses.stripEntry_mem_residualBlockPivotEntries
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector)
+    {p : ℕ × ℕ} (hp : p ∈ case1StripEntries n S J J1) :
+    p ∈ case2ResidualBlockPivotEntries n S J :=
+  h.stripEntries_subset_residualBlockEntries hp
+
 section SelectedEntryChart
 
 variable {ι α : Type*} [DecidableEq ι] [Monoid α]
@@ -1703,6 +1734,79 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul_pivotQ
       (pivotFirstD rowPivot colPivot A)
       h
 
+/-- Pivot-first `Q/P` identity with the quotient witnesses chosen from divisibility.
+This is still pure algebra in already-normalised pivot-first coordinates. -/
+theorem exists_pivotFirstQP_mul_pivotQ_of_forall_dvd
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    (b0 : R) (b : pivotComplement rowPivot → R)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (hdiv : ∀ i, b0 ∣ b i) :
+    ∃ q : pivotComplement rowPivot → R,
+      weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+          weightedPivotDiagonal b0 b *
+          (pivotFirstMatrix rowPivot colPivot A *
+            pivotQ (pivotFirstY rowPivot colPivot A)) =
+        weightedPivotDiagonal b0 b *
+          weightedPivotClearedBlock
+            (pivotFirstD rowPivot colPivot A -
+              pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A) := by
+  rcases exists_right_quotients_of_forall_dvd hdiv with ⟨q, hq⟩
+  exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul_pivotQ
+    b0 b q A hA hq⟩
+
+/-- Pivot-first `Q/P` identity for equality-or-later monomial recurrence row weights. -/
+theorem exists_pivotFirstQP_mul_pivotQ_of_monomialRec_eq_or_le
+    (step : ℕ → R)
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    {a : ℕ} (level : pivotComplement rowPivot → ℕ)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (hlevel : ∀ i,
+      monomialRec step (level i) = monomialRec step a ∨ a ≤ level i) :
+    ∃ q : pivotComplement rowPivot → R,
+      weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+          weightedPivotDiagonal (monomialRec step a)
+            (fun i ↦ monomialRec step (level i)) *
+          (pivotFirstMatrix rowPivot colPivot A *
+            pivotQ (pivotFirstY rowPivot colPivot A)) =
+        weightedPivotDiagonal (monomialRec step a)
+            (fun i ↦ monomialRec step (level i)) *
+          weightedPivotClearedBlock
+            (pivotFirstD rowPivot colPivot A -
+              pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A) := by
+  rcases exists_right_quotients_monomialRec_of_eq_or_le step hlevel with ⟨q, hq⟩
+  exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul_pivotQ
+    (monomialRec step a) (fun i ↦ monomialRec step (level i)) q A hA hq⟩
+
+/-- Pivot-first `Q/P` identity for equality-or-later recurrence weights after common
+multiplication by the selected pivot variable. -/
+theorem exists_pivotFirstQP_mul_pivotQ_of_pivotMul_monomialRec_eq_or_le
+    (step : ℕ → R) (u : R)
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    {a : ℕ} (level : pivotComplement rowPivot → ℕ)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (hlevel : ∀ i,
+      monomialRec step (level i) = monomialRec step a ∨ a ≤ level i) :
+    ∃ q : pivotComplement rowPivot → R,
+      weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+          weightedPivotDiagonal (u * monomialRec step a)
+            (fun i ↦ u * monomialRec step (level i)) *
+          (pivotFirstMatrix rowPivot colPivot A *
+            pivotQ (pivotFirstY rowPivot colPivot A)) =
+        weightedPivotDiagonal (u * monomialRec step a)
+            (fun i ↦ u * monomialRec step (level i)) *
+          weightedPivotClearedBlock
+            (pivotFirstD rowPivot colPivot A -
+              pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A) := by
+  rcases exists_right_quotients_pivotMul_monomialRec_of_eq_or_le step u hlevel with ⟨q, hq⟩
+  exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul_pivotQ
+    (u * monomialRec step a) (fun i ↦ u * monomialRec step (level i)) q A hA hq⟩
+
 /-- An algebraic pivot-step corollary with the following factor multiplied by `Q⁻¹`. -/
 theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
     [Fintype ρ] [DecidableEq ρ]
@@ -1760,6 +1864,81 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul
       (pivotFirstY rowPivot colPivot A)
       (pivotFirstD rowPivot colPivot A)
       C h
+
+/-- Pivot-first product-preservation identity with quotient witnesses chosen from divisibility.
+This assumes the following factor and weights are already in pivot-first coordinates. -/
+theorem exists_pivotFirstQP_mul_of_forall_dvd
+    {ι κ τ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    (b0 : R) (b : pivotComplement rowPivot → R)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (C : Matrix (Unit ⊕ pivotComplement colPivot) τ R)
+    (hdiv : ∀ i, b0 ∣ b i) :
+    ∃ q : pivotComplement rowPivot → R,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+          weightedPivotDiagonal b0 b * pivotFirstMatrix rowPivot colPivot A) * C =
+        (weightedPivotDiagonal b0 b *
+          weightedPivotClearedBlock
+            (pivotFirstD rowPivot colPivot A -
+              pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A)) *
+          (pivotQinv (pivotFirstY rowPivot colPivot A) * C) := by
+  rcases exists_right_quotients_of_forall_dvd hdiv with ⟨q, hq⟩
+  exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul
+    b0 b q A hA C hq⟩
+
+/-- Pivot-first product-preservation identity for equality-or-later recurrence row weights. -/
+theorem exists_pivotFirstQP_mul_of_monomialRec_eq_or_le
+    (step : ℕ → R)
+    {ι κ τ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    {a : ℕ} (level : pivotComplement rowPivot → ℕ)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (C : Matrix (Unit ⊕ pivotComplement colPivot) τ R)
+    (hlevel : ∀ i,
+      monomialRec step (level i) = monomialRec step a ∨ a ≤ level i) :
+    ∃ q : pivotComplement rowPivot → R,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+          weightedPivotDiagonal (monomialRec step a)
+            (fun i ↦ monomialRec step (level i)) *
+          pivotFirstMatrix rowPivot colPivot A) * C =
+        (weightedPivotDiagonal (monomialRec step a)
+            (fun i ↦ monomialRec step (level i)) *
+          weightedPivotClearedBlock
+            (pivotFirstD rowPivot colPivot A -
+              pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A)) *
+          (pivotQinv (pivotFirstY rowPivot colPivot A) * C) := by
+  rcases exists_right_quotients_monomialRec_of_eq_or_le step hlevel with ⟨q, hq⟩
+  exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul
+    (monomialRec step a) (fun i ↦ monomialRec step (level i)) q A hA C hq⟩
+
+/-- Pivot-first product-preservation identity for equality-or-later recurrence row weights
+after common multiplication by the selected pivot variable. -/
+theorem exists_pivotFirstQP_mul_of_pivotMul_monomialRec_eq_or_le
+    (step : ℕ → R) (u : R)
+    {ι κ τ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    {a : ℕ} (level : pivotComplement rowPivot → ℕ)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (C : Matrix (Unit ⊕ pivotComplement colPivot) τ R)
+    (hlevel : ∀ i,
+      monomialRec step (level i) = monomialRec step a ∨ a ≤ level i) :
+    ∃ q : pivotComplement rowPivot → R,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+          weightedPivotDiagonal (u * monomialRec step a)
+            (fun i ↦ u * monomialRec step (level i)) *
+          pivotFirstMatrix rowPivot colPivot A) * C =
+        (weightedPivotDiagonal (u * monomialRec step a)
+            (fun i ↦ u * monomialRec step (level i)) *
+          weightedPivotClearedBlock
+            (pivotFirstD rowPivot colPivot A -
+              pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A)) *
+          (pivotQinv (pivotFirstY rowPivot colPivot A) * C) := by
+  rcases exists_right_quotients_pivotMul_monomialRec_of_eq_or_le step u hlevel with ⟨q, hq⟩
+  exact ⟨q, weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul
+    (u * monomialRec step a) (fun i ↦ u * monomialRec step (level i)) q A hA C hq⟩
 
 end ColumnOperationBlocks
 

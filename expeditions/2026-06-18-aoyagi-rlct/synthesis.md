@@ -253,6 +253,12 @@ interface without surfacing it.
   common pivot multiplication can all produce witnesses `b_i = q_i*b0` for the
   `P` theorem. Aoyagi-specific arbitrary chart construction, pivot-first
   transport, and row hypotheses are still open.
+  The pivot-first existential `Q/P` wrappers now combine these two generic
+  layers: divisibility or equality-or-later recurrence hypotheses choose `q`
+  inside the pivot-first `Q/P` identities, including the common-pivot-multiple
+  variant. This removes a mechanical bridge but does not prove selected-entry
+  chart construction, coordinate/weight transport, or Aoyagi-specific row
+  hypotheses.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

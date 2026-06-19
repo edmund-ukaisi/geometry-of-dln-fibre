@@ -482,9 +482,11 @@ No such claim is formalisation-ready until both fields are filled.
   numerator increment `(M(S)-J)(M^{(S+1)}-J)`; substituting the printed vector
   into the terminal exponent formula on PDF p. 22 gives
   `(M^{(S)}-J)(M^{(S+1)}-J)` unless `M(S)=M^{(S)}`. The monomial divisibility
-  and normalized local `Q/P` algebra are now proved narrowly, but missing pivot
-  charts, full polynomial-coordinate chart construction, the printed `b'_i`
-  versus standalone-`u` ambiguity, termination, and boundary cases remain open.
+  and normalized local `Q/P` algebra are now proved narrowly, and the quotient
+  witness layer is connected to pivot-first `Q/P` algebra by existential
+  wrappers. Missing pivot charts, full polynomial-coordinate chart construction,
+  coordinate/weight transport, the printed `b'_i` versus standalone-`u`
+  ambiguity, termination, and boundary cases remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
   genuine source gap with no certificate-level repair compatible with the
@@ -616,7 +618,16 @@ No such claim is formalisation-ready until both fields are filled.
   `Q/P` identities apply under explicit quotient witnesses
   `forall i, b i = q i * b0`. Added generic pivot-row quotient witnesses from
   divisibility, equality, monomial recurrence tails, equality-or-later
-  recurrence data, and common pivot multiplication.
+  recurrence data, and common pivot multiplication. Added pivot-first
+  existential `Q/P` wrappers
+  `exists_pivotFirstQP_mul_pivotQ_of_forall_dvd`,
+  `exists_pivotFirstQP_mul_pivotQ_of_monomialRec_eq_or_le`,
+  `exists_pivotFirstQP_mul_pivotQ_of_pivotMul_monomialRec_eq_or_le`,
+  `exists_pivotFirstQP_mul_of_forall_dvd`,
+  `exists_pivotFirstQP_mul_of_monomialRec_eq_or_le`, and
+  `exists_pivotFirstQP_mul_of_pivotMul_monomialRec_eq_or_le`, plus the small
+  `Case1FirstJumpHypotheses` displayed-pivot and strip-entry membership
+  corollaries.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
   transport, row-weight hypotheses in pivot-first coordinates, and exponent

@@ -324,6 +324,26 @@ weights are already in pivot-first coordinates and does not prove Aoyagi's
 selected-entry charts, coordinate transport, arbitrary-pivot row hypotheses,
 chart coverage, exponent updates, or a transition invariant.
 
+## 2026-06-19 Lean pivot-first existential `Q/P` wrappers
+
+Reproduction: `reproduction-pivot-first-existential-q-p-a4.md`.
+Statement card: `statement-card-a4-pivot-first-existential-q-p.md`.
+
+Lean now connects the pivot-first `Q/P` algebra bridge to the quotient-witness
+layer existentially. The new `exists_pivotFirstQP...` theorems take
+divisibility or equality-or-later recurrence hypotheses and choose the `q`
+function needed by the normalised row operation. Both the local `...mul_pivotQ`
+identity and the product-preservation `...mul` identity are packaged, including
+the common-pivot-multiple recurrence variant matching the displayed `b'_i =
+u*b_i` shape.
+
+The same checkpoint adds small `Case1FirstJumpHypotheses` membership
+corollaries for the displayed pivot and row-strip entries. This is still
+conditional algebra in already-normalised, pivot-first coordinates. It does not
+prove selected-entry chart construction, coordinate/weight transport,
+Aoyagi-specific arbitrary row hypotheses, chart coverage, exponent updates, or
+a transition invariant.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.
