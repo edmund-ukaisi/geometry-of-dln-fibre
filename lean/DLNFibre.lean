@@ -31,3 +31,4 @@ import DLNFibre.Core.FlatQuasiFiniteHeight
 import DLNFibre.Core.SmoothLocalRelativeDimension
 import DLNFibre.Core.SmoothPointRegular
 import DLNFibre.Core.PolynomialCurveLimit
+import DLNFibre.Core.OrbitVariety
