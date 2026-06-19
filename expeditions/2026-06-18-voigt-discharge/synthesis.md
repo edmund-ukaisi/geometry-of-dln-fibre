@@ -334,3 +334,21 @@ G·M=O_M; L2 via orbit-map differential dμ_M=δ⁰). For general M, uniform may
 resolves this fork BEFORE building** (a wrong choice risks a large wasted general-chart sub-library).
 - 2026-06-19: thread 17 (chart design) CLOSED — chart>descent, (2,2,2) cert ready. Next: thread 18 sizes
   chart-general vs homogeneity for general-M L3/L2; recommend. Then build the chosen route.
+
+## ✅ GEOMETRY ROUTE DECIDED: HYBRID [2026-06-19, thread 18]
+Route A (general explicit chart) = SUB-LIBRARY (re-imports L6's Abeasis–Del Fra lace combinatorics; pivot set
+`L`-dependent) — REJECTED. **HYBRID** (Codex convergent): homogeneity for L3 + uniform local Jacobian for L2.
+Full analysis: `threads/18-geom-route-general/findings.md`. **Updated remaining ladder:**
+- **L2a (NEXT, de-risk):** general-CA cotangent↔Jacobian-kernel bridge — `finrank_k(cotangent of V(I) at a
+  k-rational point) = finrank(ker Jacobian of generators)` (Mathlib has `Ideal.Cotangent`/`kerCotangentToTensor`
+  but not the packaged Zariski-tangent=Jacobian-kernel; the hybrid's shared absent-brick). De-risk on (2,2,2)
+  (thread 17 has `ker J_M = range δ⁰` there). Reusable.
+- **L2b:** `ker(J_M) = range δ⁰` for our orbit (orbit-map linearisation; (2,2,2) done).
+- **L3 (homogeneity, bounded):** (i) Spec-detour generic smoothness (`dense_smoothLocus_of_perfectField` + stalk
+  iso — the ONE scheme entry point, `Group/Smooth.lean` runs the same stack); (ii) smoothLocus G-stable (ring-side
+  `k`-algebra automorphism `α_P`, `iff_of_equiv`); (iii) transitivity (DONE, `rankPattern_eq_iff_orbit`); (iv)
+  smooth witness ∈ open orbit. ⟹ `IsSmoothAt k m_M`.
+- **L6:** `orbitRankLocus = Ō_M` (box-move degeneration sub-library, 3–4 modules, paper-cited) — still needed.
+- **L1** (`vanishingIdeal Z_M` prime, from L6 + thread-16 O_M irreducible), **L4-assembly**, **L7**.
+No new scope explosion — the bounded uniform route exists (homogeneity); the chart-sub-library is avoided.
+- 2026-06-19: thread 18 CLOSED — HYBRID decided. Next: L2a de-risk (cotangent↔Jacobian bridge, general CA, (2,2,2) check).
