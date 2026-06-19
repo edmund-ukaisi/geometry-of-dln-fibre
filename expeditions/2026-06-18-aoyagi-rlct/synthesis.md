@@ -268,6 +268,15 @@ this on the reversed Aoyagi chain. Remaining work: prove the ordered product
 of edge matrices is the endpoint matrix in this basis family, then iterate the
 product-reduction step.
 
+The first matrix-composition bridge is now Lean-proved:
+`throughSubspaceAdaptedChainMapMatrix` and `throughSubspaceAdaptedEdgeMatrix`
+name chain-segment and one-edge matrices in the supplied adapted bases, and
+`throughSubspaceAdaptedChainMapMatrix_succ` proves the one-step recurrence.
+For the source-to-target Lean chain the order is `edge * prefix`, coming from
+`chainMap_succ` and Mathlib's `LinearMap.toMatrix_comp`. This is composition
+bookkeeping only; it does not yet iterate over all edges or run the
+product-reduction induction.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

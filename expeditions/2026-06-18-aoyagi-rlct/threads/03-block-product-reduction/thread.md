@@ -528,3 +528,22 @@ total product matrix can now be stated in the same endpoint-compatible adapted
 basis family, including in paper order. It still does not prove that the
 ordered product of all edge matrices equals the endpoint total matrix in this
 basis family, and it does not run the product-reduction induction.
+
+## 2026-06-19 A2 adapted matrix composition
+
+Added generic supplied-data matrix names:
+
+- `throughSubspaceAdaptedChainMapMatrix`;
+- `throughSubspaceAdaptedEdgeMatrix`.
+
+Added the one-step composition theorem
+`throughSubspaceAdaptedChainMapMatrix_succ`. For `i ≤ p.castSucc`, the matrix
+of `chainMap i p.succ` in the supplied adapted bases is
+
+`throughSubspaceAdaptedEdgeMatrix p *
+throughSubspaceAdaptedChainMapMatrix i p.castSucc`.
+
+This is the matrix form of `chainMap_succ`, using Mathlib
+`LinearMap.toMatrix_comp`. The order is edge-on-the-left and prefix-on-the-right
+for the source-to-target Lean chain. This is not yet an all-layer product
+theorem and does not use the endpoint-compatible data specifically.

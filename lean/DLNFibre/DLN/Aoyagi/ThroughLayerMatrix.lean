@@ -359,6 +359,55 @@ def throughSubspaceAdaptedBasis
     (data.bU₀.map (throughSubspacePrefixEquiv V A U₀ j hU₀))
     (data.bW j)
 
+/-- The matrix of a chain segment in supplied adapted bases. -/
+def throughSubspaceAdaptedChainMapMatrix
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    Matrix (ι ⊕ κ j) (ι ⊕ κ i) K :=
+  LinearMap.toMatrix
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data i)
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data j)
+    (chainMap V A i j hij)
+
+/-- The matrix of one edge in supplied adapted bases. -/
+def throughSubspaceAdaptedEdgeMatrix
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (p : Fin N) :
+    Matrix (ι ⊕ κ p.succ) (ι ⊕ κ p.castSucc) K :=
+  LinearMap.toMatrix
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.castSucc)
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.succ)
+    (A p)
+
+set_option linter.unusedDecidableInType false in
+/-- Extending a chain segment by one edge multiplies edge matrix by prefix matrix. -/
+theorem throughSubspaceAdaptedChainMapMatrix_succ
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (i : Fin (N + 1)) (p : Fin N) (hip : i ≤ p.castSucc) :
+    throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data i p.succ
+        (hip.trans (Fin.castSucc_le_succ p)) =
+      throughSubspaceAdaptedEdgeMatrix V A U₀ hU₀ data p *
+        throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data i p.castSucc hip := by
+  classical
+  rw [throughSubspaceAdaptedChainMapMatrix, throughSubspaceAdaptedEdgeMatrix,
+    chainMap_succ V A i p hip]
+  exact LinearMap.toMatrix_comp
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data i)
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.castSucc)
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.succ)
+    (A p) (chainMap V A i p.castSucc hip)
+
 /-- A supplied-data edge block form stated using the named adapted basis family. -/
 theorem exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero
     {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]

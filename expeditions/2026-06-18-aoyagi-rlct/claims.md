@@ -100,8 +100,9 @@ No such claim is formalisation-ready until both fields are filled.
   algebraic determinant-chart predicate layer for adapted paper edge matrices
   is proved. A one-edge right-elimination corollary for identity-corner adapted
   edges is proved. Endpoint-compatible shared adapted bases, finite chart data,
-  and paper-order one-edge/total-product block packaging are proved. The full
-  source Theorem 3 claim remains blocked.
+  and paper-order one-edge/total-product block packaging are proved. A one-step
+  adapted matrix composition law is proved. The full source Theorem 3 claim
+  remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -171,6 +172,9 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointComplement`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointComplementIndex`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointChartDataOfFiniteDimensional`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ`,
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_endpointChartData_eq_fromBlocks_one_zero_zero`,
   `DLNFibre.DLN.Aoyagi.endpointChartData_edge_and_totalProduct_blocks`,
   `DLNFibre.DLN.Aoyagi.nonempty_throughSubspaceChartDataOfFiniteDimensional`,
@@ -240,12 +244,14 @@ No such claim is formalisation-ready until both fields are filled.
   corollary in the reversed Aoyagi order. Also proved endpoint-compatible
   chart data with a shared adapted basis family: edge matrices and the total
   product matrix can now be stated in the same supplied basis family, including
-  paper-order wrappers for the reversed Aoyagi chain.
+  paper-order wrappers for the reversed Aoyagi chain. Also proved a one-step
+  adapted matrix composition law: extending a chain segment by one edge gives
+  the matrix identity `edge * prefix`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem. The full product-reduction
   theorem would additionally need the paper-side rank parameter/open-neighborhood
-  bridge, edge-matrix composition in the shared basis family, and
+  bridge, iteration/all-layer use of the edge-matrix composition API, and
   product-reduction induction assembly, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
@@ -254,10 +260,11 @@ No such claim is formalisation-ready until both fields are filled.
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
   local analytic/certificate transport remain open. The shared adapted-basis
-  layer removes the previous endpoint-basis mismatch, but it still does not
-  prove that the ordered product of all edge matrices equals the endpoint total
-  matrix or run the chart-local product-reduction induction. Any topological
-  open-neighborhood statement remains separate; see
+  layer removes the previous endpoint-basis mismatch, and the one-step
+  composition theorem gives the correct edge-on-left recurrence. Still open:
+  iterate that recurrence through all edges and run the chart-local
+  product-reduction induction. Any topological open-neighborhood statement
+  remains separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point
