@@ -825,6 +825,14 @@ No such claim is formalisation-ready until both fields are filled.
   assumptions while proving only finite center nonemptiness/membership facts
   and boundary projections. The `Unit` branch still hides an externally chosen
   old label; its source validity remains outside the finite-center theorem.
+  Added displayed top-left source-order adapter names:
+  `Case1FirstJumpHypotheses.continuationBound_of_colBound`,
+  `WeightedPivotFirstSubstitutionData`,
+  `WeightedPivotFirstSubstitutionData.sourceOrder_identity`, and
+  `exists_weightedPivotFirstSubstitution_sourceOrder_identity_of_forall_dvd`.
+  These prove only finite width bookkeeping and a supplied weighted
+  pivot-first `Q/P` product identity; chart construction, source-coordinate
+  production, and transition post-data remain explicit obligations.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

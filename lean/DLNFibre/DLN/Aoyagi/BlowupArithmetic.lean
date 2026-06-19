@@ -1048,6 +1048,20 @@ theorem Case1FirstJumpHypotheses.rowBound
     J + J1 ≤ prefixMinNat n S :=
   le_of_lt h.jumpBeforeEnd
 
+/-- The Case 1 first-jump row bound plus the actual column bound gives the
+displayed top-left pivot continuation bound `J+1 <= mu_(S+1)`.
+
+This is finite width bookkeeping for the displayed pivot, not a transition
+theorem or a proof that the state continues rather than later advances. -/
+theorem Case1FirstJumpHypotheses.continuationBound_of_colBound
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector)
+    (hS : 1 ≤ S) (hcol : J + 1 ≤ n (S + 1)) :
+    J + 1 ≤ prefixMinNat n (S + 1) := by
+  rw [prefixMinNat_succ_eq_min n hS]
+  exact le_min (le_trans (Nat.add_le_add_left h.positive J) h.rowBound) hcol
+
 /-- The selected Case 1 level is strictly after the current pivot level. -/
 theorem Case1FirstJumpHypotheses.lt_selectedLevel
     {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
@@ -3332,6 +3346,85 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
           (weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y)) *
             (pivotQinv y * C) := by
             rw [weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock b0 b q x y D h]
+
+/-- Supplied data for the source-displayed top-left pivot calculation after
+the selected chart has already been transported to pivot-first coordinates.
+
+`weightedSource` is an already weighted, already source-substituted block.  The
+field `source_eq` is the only bridge to the normalised pivot block used by the
+finite `Q/P` algebra.  This structure does not construct a selected-entry
+chart, prove atlas coverage, produce recurrence/exponent post-data, or assert
+that a Case 1 or Case 2 transition has occurred. -/
+structure WeightedPivotFirstSubstitutionData
+    (R ρ κ τ : Type*) [CommRing R] [Fintype ρ] [DecidableEq ρ]
+    [Fintype κ] [DecidableEq κ] where
+  b0 : R
+  b : ρ → R
+  q : ρ → R
+  x : Matrix ρ Unit R
+  y : Matrix Unit κ R
+  D : Matrix ρ κ R
+  weightedSource : Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R
+  C : Matrix (Unit ⊕ κ) τ R
+  source_eq :
+    weightedSource = weightedPivotDiagonal b0 b * pivotPreQBlock x y D
+  quotient : ∀ i, b i = q i * b0
+
+namespace WeightedPivotFirstSubstitutionData
+
+/-- Source-order form of the displayed top-left `Q/P` identity from supplied
+pivot-first substitution data.  The selected chart, source-coordinate
+transport, row-weight transport, and quotient witnesses are all hypotheses
+packaged in `data`. -/
+theorem sourceOrder_identity
+    {R ρ κ τ : Type*} [CommRing R] [Fintype ρ] [DecidableEq ρ]
+    [Fintype κ] [DecidableEq κ]
+    (data : WeightedPivotFirstSubstitutionData R ρ κ τ) :
+    (weightedPivotBlockRowOp data.q (fun i ↦ data.x i ()) * data.weightedSource) *
+        data.C =
+      (weightedPivotDiagonal data.b0 data.b *
+          weightedPivotClearedBlock (data.D - data.x * data.y)) *
+        (pivotQinv data.y * data.C) := by
+  rw [data.source_eq]
+  rw [← Matrix.mul_assoc]
+  exact weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
+    data.b0 data.b data.q data.x data.y data.D data.C data.quotient
+
+end WeightedPivotFirstSubstitutionData
+
+/-- Source-order displayed top-left `Q/P` identity with quotient witnesses
+chosen from divisibility of the lower row weights by the pivot row weight.
+
+The weighted source block is supplied by `hsource`; this theorem does not
+construct the selected-entry chart or prove any Case 1/Case 2 transition
+post-data. -/
+theorem exists_weightedPivotFirstSubstitution_sourceOrder_identity_of_forall_dvd
+    [Fintype ρ] [DecidableEq ρ]
+    (b0 : R) (b : ρ → R)
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R)
+    (weightedSource : Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R)
+    (C : Matrix (Unit ⊕ κ) τ R)
+    (hsource :
+      weightedSource = weightedPivotDiagonal b0 b * pivotPreQBlock x y D)
+    (hdiv : ∀ i, b0 ∣ b i) :
+    ∃ q : ρ → R,
+      (weightedPivotBlockRowOp q (fun i ↦ x i ()) * weightedSource) * C =
+        (weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y)) *
+          (pivotQinv y * C) := by
+  rcases exists_right_quotients_of_forall_dvd hdiv with ⟨q, hq⟩
+  exact ⟨q,
+    (WeightedPivotFirstSubstitutionData.sourceOrder_identity
+      ({ b0 := b0
+         b := b
+         q := q
+         x := x
+         y := y
+         D := D
+         weightedSource := weightedSource
+         C := C
+         source_eq := hsource
+         quotient := hq } :
+        WeightedPivotFirstSubstitutionData R ρ κ τ))⟩
 
 /-- Pure algebraic product-preservation form of the pivot-first reindexed `Q/P` identity.
 The following factor and weights are already in pivot-first coordinates; this

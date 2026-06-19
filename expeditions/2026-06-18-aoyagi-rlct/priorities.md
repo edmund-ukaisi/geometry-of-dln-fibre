@@ -208,7 +208,13 @@ on the session's original cwd.
    supplied boundary packages. Next A4 target: reproduce the source-displayed
    top-left selected-entry transition interface for Case 1(2)/Case 2 in source
    order, keeping arbitrary selected-entry atlas coverage and the hidden
-   old-label semantics separate.
+   old-label semantics separate. The displayed top-left source-order adapter
+   is now Lean-proved as a generic supplied weighted-pivot-first handoff plus
+   a Case 1 finite continuation-bound helper. Next A4 target: instantiate this
+   handoff for Case 1(2) only after reproducing the row-strip weighted source
+   block and hidden old-variable factorisation, or use it to simplify the
+   existing Case 2 displayed wrapper without touching the printed-vector
+   mismatch.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

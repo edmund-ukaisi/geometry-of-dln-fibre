@@ -917,6 +917,17 @@ still hides an externally chosen old label, so old-label source validity,
 minimality, comparability, and transition production remain separate
 obligations.
 
+The displayed top-left source-order adapter is now Lean-proved. The new
+`WeightedPivotFirstSubstitutionData` package is the generic handoff point after
+a selected chart has already been transported to pivot-first coordinates and
+weighted. Its theorem applies the existing finite `Q/P` algebra to a supplied
+weighted source block; the existential wrapper chooses quotient witnesses from
+divisibility. This deliberately avoids claiming Case 1(2) full residual-block
+substitution: the row-strip chart and hidden old-variable factorisation must
+still supply the weighted source block. The Case 1 helper
+`continuationBound_of_colBound` proves only finite width bookkeeping for the
+displayed pivot.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

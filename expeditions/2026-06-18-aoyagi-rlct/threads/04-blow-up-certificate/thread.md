@@ -848,6 +848,32 @@ represented by `Unit`, arbitrary row-strip pivot source-order formulas,
 chart-produced recurrence/exponent post-data, Jacobians, normal crossings, or
 RLCT extraction.
 
+## 2026-06-19 Lean displayed top-left source-order adapter
+
+Reproduction: `reproduction-displayed-top-left-source-order-adapter-a4.md`.
+Statement card: `statement-card-a4-displayed-top-left-source-order-adapter.md`.
+Review artifact: `review-displayed-top-left-source-order-adapter-a4.md`.
+
+Lean now has a generic source-order adapter for the displayed top-left
+selected-entry pivot calculation. `WeightedPivotFirstSubstitutionData` records
+an already weighted, already source-substituted block `weightedSource`,
+normalised pivot block components `x`, `y`, `D`, row weights `b0`, `b`, a
+following factor `C`, and supplied equations
+`weightedSource = weightedPivotDiagonal b0 b * pivotPreQBlock x y D` and
+`b i = q i * b0`. The theorem `sourceOrder_identity` applies the already
+proved finite `Q/P` algebra to this supplied data. The existential wrapper
+chooses quotient witnesses from divisibility.
+
+The same checkpoint proves the finite Case 1 helper
+`Case1FirstJumpHypotheses.continuationBound_of_colBound`: first-jump row
+boundedness plus the actual column bound imply `J+1 <= mu_(S+1)` for the
+displayed top-left pivot.
+
+This is not a Case 1 or Case 2 transition theorem. It does not construct the
+selected chart, prove full residual-block substitution in Case 1(2), produce
+recurrence/exponent post-data, decide continuation vs advance, prove chart
+coverage/regularity/Jacobians, normal crossings, or RLCT extraction.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.
