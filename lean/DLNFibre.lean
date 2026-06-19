@@ -89,3 +89,4 @@ import DLNFibre.DLN.Aoyagi.ChartTopology
 import DLNFibre.DLN.Aoyagi.BasepointCertificate
 import DLNFibre.DLN.Aoyagi.FixedBasepointChart
 import DLNFibre.DLN.Aoyagi.ProductReductionBoundary
+import DLNFibre.DLN.Aoyagi.BlowupArithmetic

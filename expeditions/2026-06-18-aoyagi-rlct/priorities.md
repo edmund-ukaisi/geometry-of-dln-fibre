@@ -72,8 +72,11 @@ on the session's original cwd.
    product-reduction boundary is now packaged in `ProductReductionBoundary.lean` as
    fixed-base, local fixed-base, and existential local certificates, without
    pretending that exact-rank strata are open. Next return to the A4 blow-up
-   reproduction repair: separate actual layer widths from prefix minima, cover
-   pivot charts, and rebuild the transition invariant before any Lean tide.
+   reproduction repair: the width split is now clear, but the printed Case 2
+   vector and printed numerator increment disagree after substitution into the
+   terminal exponent formula unless `M(S)=M^{(S)}`. Resolve or isolate that
+   mismatch, then cover pivot charts and rebuild the transition invariant before
+   any full Lean tide.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now
@@ -83,9 +86,12 @@ on the session's original cwd.
    citations.
 4. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
    and exact hypotheses from the PDF where the first scout still left TBDs.
-5. Repair A4 blow-up reproduction. Separate actual layer widths from prefix
-   minima, redo Case 1/2 updates, cover pivot charts, prove `P`
-   regularity/divisibility, and replace the termination measure.
+5. Repair A4 blow-up reproduction. Keep actual layer widths and prefix minima
+   separate; the terminal-exponent split is Lean-proved, so next either build
+   the corrected certificate's finite vector invariant around prefix-minimum
+   coordinates or prove the monomial divisibility needed for `P`. Then redo
+   Case 1/2 updates, cover pivot charts, repair the `b'_i` recurrence
+   bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's
    chart-family/order-count construction.

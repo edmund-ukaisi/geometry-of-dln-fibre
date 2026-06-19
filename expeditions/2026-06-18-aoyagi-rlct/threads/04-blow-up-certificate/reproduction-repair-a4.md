@@ -1,0 +1,387 @@
+# A4 repair report - blow-up transition certificate
+
+Status: blocked/source gap.  This replaces the first draft's width bookkeeping
+with source-faithful notation and records the Case 2 mismatch confirmed by two
+xhigh rechecks.  It is not a full reproduction certificate.
+
+Source used: Aoyagi 2023 PDF pp. 14-23, inspected both as text and page images.
+
+Independent rechecks:
+
+- Source-fidelity scout `Russell the 2nd`: verdict source typo/gap, not a
+  misread.
+- Pen-and-paper scout `Hume the 2nd`: verdict the prefix-minimum repaired
+  vector is the one compatible with the terminal exponent formula.
+
+## Notation lock
+
+The source uses two different width notions.
+
+- Actual reduced layer widths:
+
+  ```text
+  n_s := M^(s),          s = 1, ..., L+1.
+  ```
+
+- Prefix minima:
+
+  ```text
+  mu_S := M(S) := min { M^(q) | 1 <= q <= S },    S = 1, ..., L+1.
+  ```
+
+These must not be collapsed.  At a state `(S,J)`, the diagonal has length
+`mu_S`, but the active residual block has actual column width `n_(S+1)`:
+
+```text
+D_J = (d_ij),       J+1 <= i <= mu_S,     J+1 <= j <= n_(S+1),
+size(D_J) = (mu_S - J) x (n_(S+1) - J).
+```
+
+The advance test is different:
+
+```text
+J + 1 <= mu_(S+1) = min(mu_S, n_(S+1)).
+```
+
+If this fails, then the current residual block has one remaining row or one
+remaining column, and the process advances to `(S+1,0)`.
+
+The source labels are also actual-width indexed:
+
+```text
+(s,k),      1 <= s <= L,     1 <= k <= n_(s+1).
+```
+
+At stage `(S,J)`, the already introduced exceptional variables are
+
+```text
+u_(s,k),  1 <= s <= S-1, 1 <= k <= n_(s+1),
+u_(S,k),  1 <= k <= J.
+```
+
+Using `mu_(s+1)` for these ranges undercounts labels whenever
+`n_(s+1) > mu_(s+1)`.
+
+## Corrected invariant shape
+
+For `1 <= S <= L` and the displayed step range where `J` lies inside the
+current residual block, the source invariant should be read as
+
+```text
+< prod_{s=1}^L C^(s) >
+  =
+< diag(b_1, ..., b_(mu_S))
+    * blockdiag(E_J, D_J)
+    * prod_{s=S+1}^L C^(s) >.
+```
+
+Here `D_J` has rows through `mu_S` and columns through actual `n_(S+1)`.
+Continuation states after a pivot use the source test
+`J <= mu_(S+1) = min(mu_S,n_(S+1))`.
+The source says the initial case is obvious for `S = 0, J = 0`, but the
+matrix display is directly inhabited by the normalized state
+
+```text
+S = 1, J = 0, D_0 = C^(1), b_i = 1.
+```
+
+This reindexing should be kept unless a source-faithful convention for `M(0)`
+is recovered.
+
+The monomial recurrence is
+
+```text
+b_0 = 1,
+b_i = (prod_{tilde_t_(s,k) = i-1} u_(s,k)) * b_(i-1),
+     i = 1, ..., mu_S.
+```
+
+This recurrence is the intended source of divisibility facts for the row
+operation matrix `P`.
+
+## Case 1 source repair
+
+Case 1 assumes a first jump after the current processed block:
+
+```text
+b_(J+1) = ... = b_(J+J1),
+b_(J+J1+1) != b_(J+J1),
+{ tilde_t_(s,k) = i } is empty for i = J+1, ..., J+J1-1.
+```
+
+Choose `u_(s,k)` with `tilde_t_(s,k) = J+J1` and minimal vector among that
+level in the componentwise order.
+
+The blow-up center is
+
+```text
+d_ij = 0,  i = J+1, ..., J+J1,  j = J+1, ..., n_(S+1),
+u_(s,k) = 0.
+```
+
+### Case 1(1): selected `u_(s,k)` chart
+
+The whole `J1 x (n_(S+1)-J)` row strip is divided by `u_(s,k)`.
+
+The corrected updates are
+
+```text
+t_(s,k)^(S) = t_(s,k)^(S+1) = ... = t_(s,k)^L = J,
+tilde_t_(s,k) = J,
+b'_(J+1), ..., b'_(J+J1) are multiplied by u_(s,k),
+M'_(s,k) = M_(s,k) + J1 * (n_(S+1) - J).
+```
+
+The increment uses the actual active column count `n_(S+1)-J`, not
+`mu_(S+1)-J`.
+
+This branch keeps `(S,J)` and decreases the number of labels at
+`tilde_t = J+J1`.
+
+### Case 1(2): displayed pivot chart
+
+The source displays the chart with pivot `d_(J+1,J+1)`:
+
+```text
+strip = u_(S,J+1) * strip',
+strip'_(J+1,J+1) = 1,
+u_(s,k) = u_(S,J+1) * u'_(s,k).
+```
+
+The new label `(S,J+1)` inherits old earlier coordinates from the chosen
+minimal vector and is set to `J` from `S` onward:
+
+```text
+t_(S,J+1)^i = t_(s,k)^i,       i = 1, ..., S-1,
+t_(S,J+1)^S = ... = t_(S,J+1)^L = J,
+tilde_t_(S,J+1) = J.
+```
+
+The monomials and Jacobian numerator update as
+
+```text
+b'_(J+1), ..., b'_(mu_S) are multiplied by u_(S,J+1),
+M'_(S,J+1) = M_(s,k) + J1 * (n_(S+1) - J).
+```
+
+The residual variable `u'_(s,k)` from `u_(s,k)=u_(S,J+1)u'_(s,k)` is not
+spelled out in the source's vector bookkeeping.  It should retain the old
+label data for `(s,k)` if the `b_i` recurrence is to remain true.  This is a
+repair obligation, not a source-displayed formula.
+
+After the displayed `Q` and `P` transformations, the active block becomes
+`blockdiag(1,D_(J+1))`.  If `J+1 <= mu_(S+1)`, the state continues as
+`(S,J+1)`.  If `J+1 > mu_(S+1)`, the one-row or one-column remainder is
+absorbed into a new matrix `C'^(S+1)` of size `mu_(S+1) x n_(S+2)`, and the
+state advances to `(S+1,0)`.
+
+## Case 2 source repair
+
+Case 2 assumes there is no later jump inside the current diagonal length:
+
+```text
+b_(J+1) = ... = b_(mu_S),
+{ tilde_t_(s,k) = i } is empty for i = J+1, ..., mu_S - 1.
+```
+
+The blow-up center is the full remaining residual block
+
+```text
+d_ij = 0,  i = J+1, ..., mu_S,  j = J+1, ..., n_(S+1).
+```
+
+The source again displays only the pivot chart with pivot `d_(J+1,J+1)`:
+
+```text
+D_J = u_(S,J+1) * D'_J,    D'_J(J+1,J+1) = 1.
+```
+
+The new vector uses actual earlier widths:
+
+```text
+t_(S,J+1)^i = n_(i+1),     i = 1, ..., S-1,
+t_(S,J+1)^S = ... = t_(S,J+1)^L = J,
+tilde_t_(S,J+1) = J.
+```
+
+The numerator update is
+
+```text
+M'_(S,J+1) = (mu_S - J) * (n_(S+1) - J).
+```
+
+The first factor is the remaining row count; the second is the actual remaining
+column count.  This is not `(mu_S-J)(mu_(S+1)-J)`.
+
+There is a serious compatibility issue with the source's later terminal
+exponent formula.  If the printed vector
+
+```text
+t_(S,J+1)^i = n_(i+1) for i < S,    t_(S,J+1)^q = J for q >= S
+```
+
+is substituted into
+
+```text
+M_(s,k) =
+  (n_1 - t^1)(n_2 - t^1)
+  + sum_{j=2}^L (t^(j-1)-t^j)(n_(j+1)-t^j),
+```
+
+the terms before `S` telescope to zero and the jump at `S` contributes
+
+```text
+(n_S - J) * (n_(S+1) - J),
+```
+
+not the source's Case 2 update `(mu_S-J)*(n_(S+1)-J)` unless `mu_S=n_S`.
+Page-image inspection confirms that this is what the PDF prints: the Case 2
+vector on PDF p. 20 uses actual widths `M^(i+1)`, the transition condition on
+PDF p. 21 still defines `M(S+1)=min{M(S),M^(S+1)}`, and the terminal exponent
+formula on PDF p. 22 uses actual widths `M^(j)`.
+
+Replacing earlier entries by prefix minima repairs the calculation:
+
+```text
+t_(S,J+1)^i = mu_(i+1) = M(i+1),    i = 1, ..., S-1,
+t_(S,J+1)^q = J,                    q = S, ..., L.
+```
+
+Substitution gives
+
+```text
+(n_1-mu_2)(n_2-mu_2)
+  + sum_{j=2}^{S-1} (mu_j-mu_(j+1))(n_(j+1)-mu_(j+1))
+  + (mu_S-J)(n_(S+1)-J).
+```
+
+Every pre-`S` term vanishes because
+`mu_(j+1)=min(mu_j,n_(j+1))`, so one factor is zero.  The surviving term is
+the printed update:
+
+```text
+(mu_S-J)(n_(S+1)-J).
+```
+
+This is a mathematical repair, not a verbatim reproduction of the printed
+Case 2 vector.  A formal development should therefore split:
+
+- `Printed`: source-faithful data, including the mismatch lemma
+  `E(T_printed)=(n_S-J)(n_(S+1)-J)`.
+- `CorrectedCertificate`: prefix-minimum `T` data with actual-width label
+  ranges, proving the terminal exponent recurrence.
+
+Do not mix these two invariants.  In particular, repairing only the Case 2
+new vector inside the otherwise printed recursion can break pairwise
+comparability with older source-style vectors.  The corrected certificate must
+use prefix-minimum vector data coherently while keeping the source label
+universe `(s,k)` with `1 <= k <= n_(s+1)`.
+
+The same `Q/P` algebra gives `blockdiag(1,D_(J+1))`.  The same continuation
+criterion applies: either continue with `(S,J+1)` when
+`J+1 <= mu_(S+1)`, or advance to `(S+1,0)` and absorb the one-dimensional
+remainder into `C'^(S+1)`.
+
+## Divisibility obligation for `P`
+
+Both pivot branches define a lower-unitriangular matrix `P` with entries
+
+```text
+-(b'_i / b'_(J+1)) * d''_(i,J+1),     i = J+2, ..., mu_S.
+```
+
+For this to be a regular coordinate operation, the quotient must be a regular
+monomial.  A formal proof should derive:
+
+```text
+b'_(J+1) divides b'_i,     for i = J+2, ..., mu_S.
+```
+
+The intended reason is the recurrence
+
+```text
+b'_i = (prod_{tilde_t' = i-1} u') * b'_(i-1).
+```
+
+In Case 1, the gap
+`{tilde_t = i} = empty` for `i = J+1, ..., J+J1-1` makes the quotient trivial
+up to `J+J1`; after that it is a product of later recurrence factors.  In
+Case 2, the gap extends to `mu_S-1`, so every quotient is trivial after the
+common multiplication by the pivot variable.  This needs a precise monomial
+divisibility lemma before Lean work treats `P` as regular.
+
+There is also a source-display ambiguity in the pivot branches: the PDF defines
+`b'_i = u * b_i` and then writes a standalone factor `u` before `diag(b')` in
+the displayed algebra.  A formal certificate should define the post-chart
+`b'_i` by the monomial recurrence and then prove the displayed ideal equality,
+rather than taking both the printed `b'_i` line and the printed standalone
+factor literally.
+
+## Pivot-chart coverage obligation
+
+The source displays only the chart where the pivot entry is `d_(J+1,J+1)`.
+The full blow-up of the displayed center has additional charts for every
+generator in the center:
+
+- the selected exceptional-variable chart in Case 1(1);
+- pivot charts for every entry in the blown-up `D` strip/block.
+
+For formalisation, choose one of two routes:
+
+1. Prove a permutation/symmetry lemma reducing every nonzero pivot entry to the
+   displayed `(J+1,J+1)` chart, with the same ideal and exponent update after
+   relabelling rows/columns.
+2. Formalize a family of pivot charts indexed by the chosen pivot and prove the
+   `Q/P` elimination for that general pivot.
+
+The first route is likely shorter, but only if row/column permutations preserve
+the monomial `b_i` order or the proof explicitly permutes the active rows and
+then restores them.
+
+## Termination repair target
+
+The previous lexicographic measure is unstable because Case 1(1) can exhaust
+the current jump level and reveal a later jump.  A more faithful finite
+measure should track the multiset of unprocessed `tilde_t` levels above `J`
+inside the current state.
+
+One candidate from the repair scout:
+
+```text
+P(S,J) =
+  (mu_(S+1) - J) + sum_{q=S+1}^L mu_(q+1),
+
+Phi(S,J) =
+  sum over active labels a of max(tilde_t_a - J, 0),
+
+Measure = (P(S,J), Phi(S,J)).
+```
+
+ordered lexicographically.  This is not yet checked.  It must prove:
+
+- Case 1(1) strictly decreases the count at the first nonempty level.
+- Case 1(2) and Case 2 either increase `J` while preserving `S`, or advance
+  `S` when the current interface is exhausted; in either branch `P(S,J)`
+  decreases by one performed pivot.
+- The source's off-by-one convention for the advance test is coherent:
+  after a pivot the text says continue if `J+1 <= mu_(S+1)` and advance if
+  `J+1 > mu_(S+1)`.  Dimensionally, exhaustion occurs when the just-created
+  pivot reaches the smaller side, so this needs a repaired convention before
+  the measure can be made formal.
+
+## Current blockers
+
+- Full pivot-chart coverage is still not reproduced.
+- Regularity of `P` is reduced to monomial divisibility but not proved.
+- The printed Case 2 vector update is incompatible with the terminal exponent
+  formula for arbitrary widths.  The prefix-minimum vector repairs the
+  arithmetic but is a corrected certificate, not source-faithful printed data.
+- The source's `b'_i`/standalone-`u` display in the pivot algebra needs a
+  recurrence-based repair.
+- The termination measure above is only a repair target.
+- Boundary cases remain to check: `J=0`, `J+1=mu_(S+1)`, rectangular
+  `mu_S < n_(S+1)` and `mu_S > n_(S+1)`, `S=L`, and the advance to
+  `S=L+1`.
+
+Lean formalisation should not start before these blockers are either proved or
+split into named assumptions with a narrow certificate target.

@@ -16,3 +16,7 @@ Append-only methodological learnings. Mathematical results belong in
 - 2026-06-18 - In Aoyagi, never compress actual layer widths into prefix minima
   without checking the source formula. The blow-up transition uses both notions,
   and conflating them changes exponent counts.
+- 2026-06-19 - For Aoyagi's blow-up section, page images are necessary when a
+  decision depends on `M^{(s)}` versus `M(S)`: plaintext extraction collapses
+  the notations too often. Record the source-imaged formula before accepting a
+  repaired transition invariant.

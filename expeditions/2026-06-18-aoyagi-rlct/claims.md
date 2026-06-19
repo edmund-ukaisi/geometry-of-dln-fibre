@@ -475,18 +475,38 @@ No such claim is formalisation-ready until both fields are filled.
   transform the reduced ideal into a monomial/diagonal normal-crossing form with
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of established Aoyagi proof.
-- **Status.** blocked after independent reproduction check; draft has a
-  source-fidelity error in width bookkeeping and unresolved chart,
-  regularity/divisibility, termination, and boundary-case gaps.
+- **Status.** blocked after repair pass. The source-confirmed repair separates
+  actual widths `M^{(s)}` from prefix minima `M(S)`, but it exposes a Case 2
+  incompatibility: the printed vector update on PDF p. 20 uses
+  `t^{(i)} = M^{(i+1)}` for `i < S`, while the same chart records the
+  numerator increment `(M(S)-J)(M^{(S+1)}-J)`; substituting the printed vector
+  into the terminal exponent formula on PDF p. 22 gives
+  `(M^{(S)}-J)(M^{(S+1)}-J)` unless `M(S)=M^{(S)}`. Missing pivot charts,
+  regularity/divisibility for the `P` matrices, the printed `b'_i` versus
+  standalone-`u` ambiguity, termination, and boundary cases also remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
-  terminal state not covered by Aoyagi's proof.
+  terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
+  genuine source gap with no certificate-level repair compatible with the
+  terminal formula.
 - **Evidence/source.** Aoyagi blow-up section, PDF pp. 14-23.
 - **Pen-and-paper reproduction.** draft at
-  `threads/04-blow-up-certificate/reproduction-draft.md`.
+  `threads/04-blow-up-certificate/reproduction-draft.md`; current repair
+  report at `threads/04-blow-up-certificate/reproduction-repair-a4.md`.
 - **Reproduction check.** failed/blocked at
-  `threads/04-blow-up-certificate/reproduction-check.md`.
-- **Lean target.** TBD by thread 04.
-- **Proved.** pending.
+  `threads/04-blow-up-certificate/reproduction-check.md`; source-image scout
+  `Russell the 2nd` and pen-and-paper scout `Hume the 2nd` independently
+  confirmed the Case 2 mismatch and the prefix-minimum repaired vector.
+- **Lean target.** No full transition theorem yet. Safe narrow targets must
+  stay inside finite bookkeeping or monomial divisibility lemmas that do not
+  assert Aoyagi's Case 2 transition. The first such target is landed in
+  `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+- **Proved.** terminal-exponent split API:
+  `terminalExponent`, `printedCase2Vector`, `prefixMin`,
+  `prefixCase2Vector`, `prefixMin_step_factor_zero`,
+  `terminalExponent_printedCase2Vector`, and
+  `terminalExponent_prefixCase2Vector`. These prove that the printed Case 2
+  vector evaluates to the actual-width expression, while the prefix-minimum
+  repaired vector evaluates to the printed update.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

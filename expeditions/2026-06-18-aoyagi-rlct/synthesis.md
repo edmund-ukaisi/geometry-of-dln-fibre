@@ -109,10 +109,25 @@ interface without surfacing it.
 - A4 blow-up certificate: draft reproduction/certificate design landed at
   `threads/04-blow-up-certificate/reproduction-draft.md`; independent check
   landed at `threads/04-blow-up-certificate/reproduction-check.md`. Verdict:
-  blocked, not formalisation-ready. Main blockers are a source-fidelity error
-  conflating actual layer widths `M^{(S+1)}` with prefix minima `M(S+1)`,
-  missing pivot charts, incomplete invariant recurrence, regularity/divisibility
-  of `P`, unstable termination measure, and unchecked boundary cases.
+  blocked, not formalisation-ready. The current repair report
+  `threads/04-blow-up-certificate/reproduction-repair-a4.md` separates actual
+  widths `M^{(s)}` from prefix minima `M(S)`. Page-image inspection and xhigh
+  source/pen-and-paper rechecks confirm a sharper Case 2 obstruction: the
+  printed new vector has
+  `t_{S,J+1}^{(i)}=M^{(i+1)}` for `i<S`, while the same chart records
+  `M'_{S,J+1}=(M(S)-J)(M^{(S+1)}-J)`. The terminal exponent formula on PDF p. 22
+  uses actual widths, so substituting the printed vector gives
+  `(M^{(S)}-J)(M^{(S+1)}-J)` unless `M(S)=M^{(S)}`. The prefix-minimum vector
+  repairs the arithmetic but is not the printed source data. Other blockers are
+  missing pivot charts, incomplete invariant recurrence,
+  regularity/divisibility of `P`, the printed `b'_i`/standalone-`u` ambiguity,
+  unstable termination measure, and unchecked boundary cases.
+  The safe arithmetic split is now Lean-proved in
+  `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`:
+  `terminalExponent_printedCase2Vector` evaluates the printed vector to the
+  actual-width expression, and `terminalExponent_prefixCase2Vector` evaluates
+  the corrected prefix-minimum vector to the printed update. This does not
+  prove any blow-up chart or transition.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not
@@ -551,8 +566,14 @@ certificate chooses a total-kernel complement. This closes the previous A2
 packaging target, but not the full printed triangular product-reduction theorem
 from Aoyagi's source hypotheses; the post-Theorem-3 RLCT/regular-variable
 transport is a separate deferred analytic/certificate problem. The next honest
-target is A4 reproduction repair, beginning with actual layer widths versus
-prefix minima, pivot-chart coverage, and a corrected transition invariant.
+target is A4 reproduction repair. The actual-width/prefix-minimum split is now
+clear, but the printed Case 2 vector disagrees with the printed numerator
+increment after substitution into the terminal exponent formula unless
+`M(S)=M^{(S)}`. Resolve that source-level mismatch or split a corrected
+certificate from the printed transition before attempting a full Lean
+transition theorem. Narrow Lean work may proceed only where independent of this
+issue, such as finite bookkeeping or monomial divisibility for regularity of
+the `P` matrices.
 
 ## Drift guard
 
