@@ -203,10 +203,17 @@ edge transport and restricted-edge equivalences, proves suffix-kernel
 disjointness, proves constant `finrank` equal to the total range `finrank`, and
 identifies the last through-subspace with the total range.
 
-Next prove a matrix chart corollary matching the current `fromBlocks` APIs:
-in the chosen bases each true layer is `fromBlocks 1 B 0 D`, the total product
-is `fromBlocks 1 0 0 0`, and the Aoyagi transformed next-layer top-left corner
-is `1`.
+The first matrix chart corollary now exists in Lean as
+`DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero`:
+in transported `Module.Basis.sumQuot` bases, each through-subspace edge is
+`fromBlocks 1 B 0 D`.
+
+Next prove the complement/direct-sum packaging matching the current
+`fromBlocks` APIs: choose complements and simultaneous compatible bases, show
+each true layer is `fromBlocks 1 B 0 D` in those adapted bases, show the total
+product is `fromBlocks 1 0 0 0`, and then connect the Aoyagi transformed
+next-layer top-left corner to the already-proved unitriangular chart-stability
+identity.
 
 ## Checker verdict
 
@@ -219,9 +226,8 @@ finite-dimensional rank assertion.
 
 Formalisation-ready now:
 
-- complement and transported-basis corollaries from the through-subspace
-  theorem;
-- the matrix block-form corollary from transported bases.
+- complement/direct-sum packaging from the through-subspace theorem;
+- simultaneous chain-basis and total-product block-form corollaries.
 
 Still not formalisation-ready:
 

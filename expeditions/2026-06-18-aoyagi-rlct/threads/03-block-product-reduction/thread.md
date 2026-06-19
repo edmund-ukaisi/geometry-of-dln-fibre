@@ -182,9 +182,34 @@ Aoyagi's chain after reversing the paper-order maps
 
 Xhigh reviewers `Nietzsche` and `Pascal` accepted the statement scope. Caveats:
 this is not a fixed-coordinate chart theorem, does not choose complements to
-the through-subspaces, and does not yet produce transported bases or matrix
-block form `[I B; 0 D]`. The next target is the complement/basis/matrix corollary
-needed to connect this subspace layer to the already-proved chart-local product
-reduction identity.
+the through-subspaces, and does not itself produce basis matrices. The next
+target is the complement/direct-sum and chain-level matrix packaging needed to
+connect this subspace layer to the already-proved chart-local product reduction
+identity.
 
 Statement card: `statement-card-a2-through-subspaces.md`.
+
+## 2026-06-19 A2 through-matrix block Lean layer
+
+Landed the per-edge transported-basis matrix block theorem in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`, imported by the single-writer
+aggregator.
+
+Main Lean artifacts:
+
+- `exists_toMatrix_sumQuot_eq_fromBlocks_one_zero`: for a linear map `f : E -> F`
+  whose restriction to `U` is a specified equivalence `U ≃ U'`, transported
+  `Module.Basis.sumQuot` bases put the matrix of `f` in block form
+  `fromBlocks 1 B 0 D`.
+- `exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero`:
+  specialization to an edge `A p : V p.castSucc -> V p.succ` using
+  `throughSubspaceEdgeEquiv`.
+
+This checkpoint proves basis-coordinate bookkeeping only: transported
+through-subspace bases give the identity top-left block, and subspace
+membership gives the zero lower-left block. The quotient bases are explicit
+inputs. It is not a fixed-coordinate chart theorem, does not choose complements,
+does not package simultaneous chain bases, and does not prove Aoyagi Theorem 3
+or any analytic/RLCT consequence.
+
+Statement card: `statement-card-a2-through-matrix-block.md`.

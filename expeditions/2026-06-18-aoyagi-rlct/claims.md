@@ -80,8 +80,10 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
-  chart-local induction-step block identity and elementary matrix-entry ideal
-  transport lemmas are proved. The full source Theorem 3 claim remains blocked.
+  chart-local induction-step block identity, elementary matrix-entry ideal
+  transport lemmas, through-subspace transport theorem, and per-edge
+  transported-basis matrix block form are proved. The full source Theorem 3
+  claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -102,7 +104,10 @@ No such claim is formalisation-ready until both fields are filled.
   the same file; entry-ideal transport lemmas in
   `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`; through-layer subspace theorem
   `DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces` in
-  `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`; full Theorem 3 target
+  `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`; per-edge transported
+  quotient-basis matrix theorem
+  `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero`
+  in `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`; full Theorem 3 target
   blocked.
 - **Proved.** one chart-local algebraic induction-step identity over a
   commutative ring, under explicit determinant-unit hypotheses for the prefix
@@ -114,11 +119,13 @@ No such claim is formalisation-ready until both fields are filled.
   upper-unitriangular chart-stability block identity preserving an identity
   top-left corner and zero lower-left block. Also proved the elementary
   through-layer subspace transport theorem for an upward chain, including
-  adjacent restricted-edge equivalences.
+  adjacent restricted-edge equivalences. Also proved that a through-layer edge
+  has matrix form `[I B; 0 D]` in transported `Module.Basis.sumQuot` bases.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`. The full product-reduction
   theorem would additionally need rank/neighborhood, complement/basis choices,
-  and matrix block-form chart hypotheses, not yet proved.
+  direct-sum chart packaging, simultaneous chain bases, and total-product block
+  form, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
@@ -126,8 +133,9 @@ No such claim is formalisation-ready until both fields are filled.
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
   local analytic/certificate transport remain open. The through-subspace theorem
-  still needs complement, transported-basis, and matrix block-form corollaries
-  before it can feed the chart-local product-reduction identity.
+  still needs complement/direct-sum packaging, simultaneous compatible bases
+  across the chain, total-product normalization, and connection to the
+  chart-local product-reduction identity.
 
 ## Claim A3 - deepest singular point
 

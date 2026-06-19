@@ -21,10 +21,11 @@ on the session's original cwd.
 
 ## Ranked next
 
-1. Through-layer basis/open-chart lemma for A2. Reproduce and prove the
-   elementary linear-algebra statement that the true rank-`r` product admits
-   bases through the layers so the required top-left `r x r` charts contain the
-   base point.
+1. Through-layer basis/open-chart lemma for A2. The through-subspace theorem
+   and per-edge transported `sumQuot` matrix block form are Lean-proved. Next
+   package complements/direct-sum bases, simultaneous transported chain bases,
+   total-product normal form, and the link to the chart-local product-reduction
+   identity.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

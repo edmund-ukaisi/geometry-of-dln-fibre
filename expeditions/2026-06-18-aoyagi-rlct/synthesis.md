@@ -146,11 +146,20 @@ indexing opposite to Aoyagi's prose order. It constructs subspaces through the
 chain, proves edge transport and adjacent restricted-edge equivalences, and
 identifies the last subspace with the range of the total composite.
 
-Still open for this repair: choose complements to the through-subspaces, choose
-transported bases, prove the corresponding matrix block form `[I B; 0 D]`, and
-connect that matrix corollary to the chart-local product-reduction identity.
-Full Theorem 3 remains blocked until those corollaries and the analytic
-certificate transport are built.
+The per-edge matrix block form is now Lean-proved as
+`exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero` in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`: in transported
+`Module.Basis.sumQuot` bases, each through-layer edge has matrix form
+`[I B; 0 D]`. This is basis-coordinate bookkeeping only. It uses explicit
+through-subspace and quotient bases as inputs, and it is not a fixed-coordinate
+chart theorem.
+
+Still open for this repair: package complements/direct-sum bases, choose
+simultaneous compatible bases across the whole chain, prove the total-product
+normal form, translate the source-to-target Lean orientation back to Aoyagi's
+paper order, and connect the matrix corollaries to the chart-local
+product-reduction identity. Full Theorem 3 remains blocked until those
+corollaries and the analytic certificate transport are built.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
