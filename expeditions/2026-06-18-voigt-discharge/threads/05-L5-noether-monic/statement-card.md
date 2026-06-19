@@ -1,6 +1,9 @@
 # Statement card — L5.7 full equality (catenary `≥` → `height p + dim(R/p) = n`)
 
-Module: `lean/DLNFibre/Core/NoetherMonicPositioning.lean` @ `b7a4955`.
+Module: `lean/DLNFibre/Core/NoetherMonicPositioning.lean` @ `1e0aed9`.
+Status update: fidelity AUDIT **PASS** (reviewer + decorrelated Codex); one report-only
+simplification applied — `ringKrullDim_quotient_eq_under_of_monic` dropped its unused `[P.IsPrime]`
+(needs only an ideal containing a monic).
 Status: **sorry-free; axiom-clean; pending fidelity AUDIT.** All headline theorems depend on axioms
 `[propext, Classical.choice, Quot.sound]` (verified by `#print axioms`). Whole `DLNFibre` library
 builds green; the target module compiles warning-free; `scripts/sorries` = 0; module is network-free
@@ -38,7 +41,7 @@ it is valid over any field, including finite fields.
 
 > - `exists_monic_mem_of_isUnit_leadingCoeff_mem` — an ideal of `A[X]` containing an element of unit
 >   leading coefficient contains a monic (scale by the unit inverse). Any `CommRing A`.
-> - `ringKrullDim_quotient_eq_under_of_monic` — for a prime `P ⊆ A[X]` containing a monic,
+> - `ringKrullDim_quotient_eq_under_of_monic` — for an ideal `P ⊆ A[X]` containing a monic,
 >   `ringKrullDim (A[X] ⧸ P) = ringKrullDim (A ⧸ P.under A)`. Via `Monic.quotient_isIntegral`
 >   (`A → A[X]/P` integral) → `isIntegral_quotientMap_iff` + `quotientMap_injective` (descend to the
 >   injective integral `A/(P.under A) → A[X]/P`) → L5.4 `ringKrullDim_eq_of_integral_injective`. Any
