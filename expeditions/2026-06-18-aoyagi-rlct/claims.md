@@ -23,7 +23,9 @@ No such claim is formalisation-ready until both fields are filled.
 - **Evidence/source.** Aoyagi Definition 1, Lemma 1, Definition 2, and
   Hironaka/normal-crossing extraction discussion, PDF pp. 5-6.
 - **Pen-and-paper reproduction.** Cite-interface check pending.
-- **Reproduction check.** pending.
+- **Reproduction check.** analytic scout report at
+  `threads/02-analytic-interface/scout-report.md`; controller interface draft
+  at `threads/02-analytic-interface/interface-draft.md`.
 - **Lean target.** A named hypothesis/interface, not a theorem pretending to
   prove the analytic extraction.
 - **Proved.** none by us.
@@ -71,8 +73,8 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
-- **Status.** reproduced but check failed for full claim; algebraic induction
-  needs stronger source-faithful hypotheses.
+- **Status.** full claim blocked; chart-local algebraic induction step is
+  reproduction-ready after repair report.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -81,8 +83,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-draft.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
-  formalisation-ready as stated.
-- **Lean target.** TBD by thread 03.
+  formalisation-ready as stated. Repair report at
+  `threads/03-block-product-reduction/reproduction-repair-a2.md`.
+- **Lean target.** chart-local algebraic induction-step theorem next; full
+  Theorem 3 target blocked.
 - **Proved.** pending.
 - **Assumed.** rank and dimension hypotheses.
 - **Cited.** analytic invariance only if source inventory shows it is not purely

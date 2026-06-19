@@ -1,6 +1,6 @@
 # Thread 03 - block and product reduction
 
-Type: formalisation. Status: blocked.
+Type: formalisation. Status: in-progress.
 
 ## Task
 
@@ -55,3 +55,15 @@ Outcome: landed `rank_fromBlocks_zero_zero` and
 build, full `DLNFibre` build, and `scripts/sorries`. Xhigh reviewer `Euclid`
 accepted after minor docstring/name edits. Rank statement card:
 `statement-card-a1-rank-formula.md`.
+
+## 2026-06-18 A2 repair scout
+
+Opened xhigh read-only scout `Erdos` to repair the pen-and-paper reproduction of
+Aoyagi Theorem 3/product reduction before any A2 Lean target. The requested
+output is a source-faithful algebraic statement, induction invariant, boundary
+case analysis, and separation of analytic/RLCT assumptions.
+
+Outcome: report saved at `reproduction-repair-a2.md`. Verdict: full Theorem 3
+is still blocked, but the chart-local algebraic induction-step theorem is
+reproduction-ready for Lean. The target-product normalization and post-Theorem-3
+RLCT equality remain analytic-boundary issues.

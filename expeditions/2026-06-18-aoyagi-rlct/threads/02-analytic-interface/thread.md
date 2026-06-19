@@ -1,6 +1,6 @@
 # Thread 02 - analytic interface
 
-Type: explore/formalisation. Status: pending.
+Type: explore/formalisation. Status: closed.
 
 ## Task
 
@@ -19,3 +19,10 @@ parts of Aoyagi's use of RLCT background are genuinely analytic.
 
 The operator has allowed the normal-crossing extraction theorem to remain Cited.
 Do not expand the cited boundary without evidence.
+
+## 2026-06-18 controller draft
+
+Scout `Boole` returned and the controller extracted a draft cited-interface
+shape at `interface-draft.md`. This remains a draft until A4 supplies the exact
+normal-crossing certificate data. It explicitly excludes Aoyagi Lemma 1 and
+Theorem 4 from the allowed citation boundary.
