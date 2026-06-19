@@ -126,9 +126,12 @@ on the session's original cwd.
    source-block tail lift is also Lean-proved: displayed residual-tail
    identities can be reattached below unchanged top rows using `fromBlocks` and
    `verticalBlock`, still without arbitrary-pivot coverage or full source chart
-   construction. Next A4 target: source recurrence-to-row-weight production in
-   displayed Case 2, or arbitrary-pivot chart transport if that bridge remains
-   blocked.
+   construction. The displayed Case 2 recurrence-gap row-weight bridge is also
+   Lean-proved conditionally: if `step k=1` for `J+1<=k<mu_S`, then displayed
+   residual row weights are flat and the source-substitution `Q/P` theorem
+   applies with row weights `monomialRec step rowLevel`. Next A4 target:
+   prove the recursive state establishes this gap, or move to arbitrary-pivot
+   chart transport if that invariant bridge remains blocked.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

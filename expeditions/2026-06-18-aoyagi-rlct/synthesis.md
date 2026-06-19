@@ -308,6 +308,15 @@ interface without surfacing it.
   tail identities. This closes only the finite top-row reattachment
   bookkeeping; arbitrary pivots, source recurrence production, source chart
   regularity, exponent updates, and transition invariants remain open.
+  The displayed Case 2 recurrence-gap row-weight bridge is also Lean-proved:
+  `monomialTail_eq_one_of_forall_eq_one` and
+  `monomialRec_eq_of_step_eq_one_on_Ico` prove constancy across a recurrence
+  interval with all factors `1`, and
+  `case2ResidualRow_monomialRec_eq_pivot_of_gap` applies this to
+  residual rows `J+1..mu_S`. The wrapper
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_gap_monomialRec` feeds
+  the resulting flatness into the source-substitution `Q/P` theorem. The gap
+  itself remains an explicit hypothesis, not a proved transition invariant.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

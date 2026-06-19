@@ -487,6 +487,32 @@ source recurrence-to-row-weight production, exponent updates, transition
 invariants, termination, normal crossings, RLCT extraction, or the printed
 Case 2 vector repair.
 
+## 2026-06-19 Lean Case 2 gap row weights
+
+Reproduction: `reproduction-case2-gap-row-weights-a4.md`.
+Statement card: `statement-card-a4-case2-gap-row-weights.md`.
+
+Lean now proves the displayed Case 2 row-weight flatness consequence of an
+explicit recurrence gap. The generic lemmas
+`monomialTail_eq_one_of_forall_eq_one` and
+`monomialRec_eq_of_step_eq_one_on_Ico` say that a monomial recurrence is
+constant across an interval whose step factors are all `1`. The displayed
+wrapper `case2ResidualRow_monomialRec_eq_pivot_of_gap` applies this
+to residual rows `J+1..prefixMinNat n S`.
+
+The theorem
+`exists_case2DisplayedQP_mul_sourceSubstitution_of_gap_monomialRec` then feeds
+that flatness into the existing displayed source-substitution `Q/P` theorem,
+with row weights `monomialRec step rowLevel` and the selected variable counted
+once as `u * oldWeight`.
+
+This is a conditional row-weight bridge. It assumes the Case 2 gap as
+`step k = 1` for `J+1 <= k < prefixMinNat n S`; it does not prove that the
+recursive state establishes the gap, arbitrary-pivot chart coverage, chart
+regularity/Jacobian facts, exponent updates, transition invariants,
+termination, normal crossings, RLCT extraction, or the printed Case 2 vector
+repair.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

@@ -736,6 +736,12 @@ ordered lexicographically.  This is not yet checked.  It must prove:
   source blockdiag identity beyond this unchanged-top tail lift,
   source recurrence-to-row-weight bridge, arbitrary selected-entry pivots, and
   chart-family coverage are not proved.
+- The displayed Case 2 recurrence-gap row-weight bridge is now proved
+  conditionally: if `step k = 1` for `J+1 <= k < mu_S`, then every displayed
+  residual row weight `b_i` for `J+1 <= i <= mu_S` equals the pivot row weight
+  `b_(J+1)`, and after the selected-entry substitution the updated weights are
+  flat as `u*b_(J+1)`. This assumes the gap; it does not prove the recursive
+  invariant establishes it.
 - The printed Case 2 vector update is incompatible with the terminal exponent
   formula for arbitrary widths.  The prefix-minimum vector repairs the
   arithmetic but is a corrected certificate, not source-faithful printed data.

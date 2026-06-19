@@ -1453,6 +1453,30 @@ theorem monomialRec_add_eq_tail_mul (step : ℕ → α) (a k : ℕ) :
       rw [Nat.add_succ, monomialRec_succ, ih, monomialTail_succ]
       ac_rfl
 
+/-- If all factors in a recurrence tail are `1`, the tail product is `1`. -/
+theorem monomialTail_eq_one_of_forall_eq_one
+    (step : ℕ → α) (a k : ℕ)
+    (hstep : ∀ r, r < k → step (a + r) = 1) :
+    monomialTail step a k = 1 := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [monomialTail_succ, hstep k (Nat.lt_succ_self k)]
+      rw [ih (fun r hr ↦ hstep r (Nat.lt_trans hr (Nat.lt_succ_self k)))]
+      simp
+
+/-- A recurrence is constant across an interval whose step factors are all `1`. -/
+theorem monomialRec_eq_of_step_eq_one_on_Ico
+    (step : ℕ → α) {a b : ℕ} (hle : a ≤ b)
+    (hstep : ∀ k, a ≤ k → k < b → step k = 1) :
+    monomialRec step b = monomialRec step a := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hle
+  rw [monomialRec_add_eq_tail_mul]
+  rw [monomialTail_eq_one_of_forall_eq_one step a d]
+  · simp
+  · intro r hr
+    exact hstep (a + r) (by omega) (by omega)
+
 /-- Every later monomial recurrence term is divisible by every earlier one. -/
 theorem monomialRec_dvd_of_le (step : ℕ → α) {a b : ℕ} (h : a ≤ b) :
     monomialRec step a ∣ monomialRec step b := by
@@ -1551,6 +1575,21 @@ theorem exists_right_quotients_pivotMul_monomialRec_of_eq_or_le
 theorem exists_right_quotients_const {ι : Type*} (b0 : α) :
     ∃ q : ι → α, ∀ i, b0 = q i * b0 :=
   ⟨fun _ ↦ 1, by intro i; simp⟩
+
+/-- In displayed Case 2, a gap of trivial recurrence factors over
+`J+1..mu_S-1` makes every residual row weight equal to the pivot row weight. -/
+theorem case2ResidualRow_monomialRec_eq_pivot_of_gap
+    (step : ℕ → α) (n : ℕ → ℕ) (S J : ℕ)
+    (hgap : ∀ k, J + 1 ≤ k → k < prefixMinNat n S → step k = 1)
+    (i : Case2ResidualRowIndex n S J) :
+    monomialRec step (case2ResidualRowLevel n S J i) =
+      monomialRec step (J + 1) := by
+  have hle : J + 1 ≤ case2ResidualRowLevel n S J i :=
+    case2ResidualRowLevel_ge n S J i
+  have hupper : case2ResidualRowLevel n S J i ≤ prefixMinNat n S :=
+    ((mem_case2ResidualBlockRows n S J i.1).mp i.2).2
+  exact monomialRec_eq_of_step_eq_one_on_Ico step hle
+    (fun k hk hkrow ↦ hgap k hk (lt_of_lt_of_le hkrow hupper))
 
 end MonomialRecurrence
 
@@ -2473,6 +2512,59 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights
   refine ⟨q, ?_⟩
   rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
   simpa [Matrix.mul_assoc] using hq
+
+/-- Displayed Case 2 source-substitution `Q/P` identity when the recurrence
+factors are trivial over the displayed residual row range.  This proves the
+flat row-weight hypothesis from an explicit gap assumption; it is not a full
+transition theorem. -/
+theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_gap_monomialRec
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hgap : ∀ k, J + 1 ≤ k → k < prefixMinNat n S → step k = 1)
+    (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal (fun i ↦ monomialRec step (case2ResidualRowLevel n S J i)) *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (u * monomialRec step (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          case2DisplayedTransportedFollowingFactor n hS hcont residual C := by
+  let weight : Case2ResidualRowIndex n S J → R :=
+    fun i ↦ monomialRec step (case2ResidualRowLevel n S J i)
+  have hflat : ∀ i, weight i = weight (case2DisplayedPivotRow n hS hcont) := by
+    intro i
+    simp [weight,
+      case2ResidualRow_monomialRec_eq_pivot_of_gap step n S J hgap i]
+  rcases exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights
+      n hS hcont u weight residual C hflat with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  simpa [weight, case2ResidualRowLevel_displayedPivotRow,
+    case2DisplayedTransportedFollowingFactor] using hq
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence
 indexed by the residual source row. This supplies quotient witnesses from the

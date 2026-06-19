@@ -667,10 +667,18 @@ No such claim is formalisation-ready until both fields are filled.
   `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights`,
   and
   `exists_case2DisplayedQP_verticalBlock_transportedFollowingFactor_of_rowIndex_monomialRec`.
+  Added the displayed Case 2 recurrence-gap row-weight bridge
+  `monomialTail_eq_one_of_forall_eq_one`,
+  `monomialRec_eq_of_step_eq_one_on_Ico`,
+  `case2ResidualRow_monomialRec_eq_pivot_of_gap`, and
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_gap_monomialRec`, proving
+  flat displayed residual row weights from an explicit gap hypothesis.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
-  accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
-  transport, row-weight hypotheses in pivot-first coordinates, and exponent
-  updates remain open.
+  accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
+  explicit hypothesis of the row-weight bridge, not a proved invariant. The
+  Aoyagi-specific arbitrary chart construction, coordinate transport,
+  row-weight hypotheses in pivot-first coordinates, and exponent updates remain
+  open.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
