@@ -33,3 +33,4 @@ import DLNFibre.Core.SmoothPointRegular
 import DLNFibre.Core.PolynomialCurveLimit
 import DLNFibre.Core.OrbitVariety
 import DLNFibre.Core.CotangentJacobian
+import DLNFibre.Core.BoxMoveDegeneration
