@@ -144,6 +144,12 @@ minimality, or comparability.  The row-strip entries use actual active column
 width `n_(S+1)`, and the displayed pivot-entry membership theorem assumes only
 the finite entry bounds, not full row-strip source validity.
 
+Lean also proves the finite row-strip containment needed for source validity:
+`case1StripRows_subset_case2ResidualBlockRows` and
+`case1StripEntries_subset_case2ResidualBlockPivotEntries` require the explicit
+row bound `J+J1 <= mu_S`. This is weaker than the full Case 1 first-jump
+hypothesis and is only an entry-set containment statement.
+
 ### Case 1(1): selected `u_(s,k)` chart
 
 The whole `J1 x (n_(S+1)-J)` row strip is divided by `u_(s,k)`.

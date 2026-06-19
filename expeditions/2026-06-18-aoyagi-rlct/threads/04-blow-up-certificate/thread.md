@@ -287,6 +287,23 @@ This remains finite generator bookkeeping. It does not encode the old label's
 validity, level, minimality, or comparability, and it does not prove row-strip
 source validity, chart coverage, or transition formulas.
 
+## 2026-06-19 Lean Case 1 row-strip containment
+
+Statement card: `statement-card-a4-case1-row-strip-containment.md`.
+
+Lean now proves the finite containment that was left explicit in the Case 1
+center scaffold: if `J+J1 <= mu_S`, then the Case 1 row strip
+`J+1..J+J1` lies in the residual-block row range `J+1..mu_S`. The column ranges
+are definitionally the same actual-width range `J+1..n_(S+1)`, so the row-strip
+entries are contained in the residual-block entry set under the same row bound.
+
+It also proves that the displayed pivot `(J+1,J+1)` lies in the residual-block
+entry set under `1 <= J1`, `J+J1 <= mu_S`, and `J+1 <= n_(S+1)`.
+
+This is finite entry-set containment only. It does not prove the Case 1
+first-jump hypotheses, old-label hypotheses, chart coverage, or transition
+formulas.
+
 ## 2026-06-19 Lean Case 1 tail exponent increment
 
 Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.

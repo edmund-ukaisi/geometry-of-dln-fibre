@@ -213,6 +213,10 @@ interface without surfacing it.
   exceptional generator plus the actual-width row strip. This supports later
   selected-entry chart bookkeeping, but does not encode old-label hypotheses,
   row-strip source validity, chart coverage, or transition formulas.
+  The row-strip source-validity containment is now isolated: under
+  `J+J1<=mu_S`, the Case 1 strip rows and entries lie in the residual-block
+  entry set. This is only finite containment, not the full Case 1 first-jump or
+  chart transition theorem.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

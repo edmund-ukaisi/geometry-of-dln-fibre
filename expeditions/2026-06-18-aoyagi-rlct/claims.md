@@ -584,7 +584,12 @@ No such claim is formalisation-ready until both fields are filled.
   `mem_case1StripEntries_iff`, `case1_selectedOld_mem_center`,
   `case1_stripEntry_mem_center`, `case1_displayedPivot_mem_center_of_bounds`,
   and selected-entry value-set specializations for the selected-old and
-  displayed-pivot choices.
+  displayed-pivot choices. Also proved row-strip residual-block containment
+  `case1StripRows_subset_case2ResidualBlockRows`,
+  `case1StripCols_eq_case2ResidualBlockCols`,
+  `case1StripEntries_subset_case2ResidualBlockPivotEntries`, and
+  `case1_displayedPivot_mem_residualBlockPivotEntries_of_bounds`, making the
+  explicit row-validity bound `J+J1 <= mu_S` visible.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.
