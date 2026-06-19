@@ -1884,6 +1884,76 @@ theorem IntroducedLabelExponentCertificates.case1_selectedLowerTail_of_levelTail
     (hinv.leastValue_eq_level hfirst.selectedIntroduced)
     (hinv.flatTail_abovePivot hfirst.selectedIntroduced hfirst.lt_selectedLevel) hS hSL
 
+/-- Supplied exponent post-data for Aoyagi Case 1(1)'s selected-old chart.
+
+The selected old label stays in the same introduced-label domain and receives
+the lower-tail vector, the printed actual-width numerator increment, and least
+value `J`.  Every other introduced label is supplied unchanged.  This is only
+same-domain exponent bookkeeping; it does not construct the selected-old chart
+or prove that coordinates produce these post-data. -/
+structure Case1SelectedOldLowerTailExponentPostData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ) : Prop where
+  vector_selected : t' s0 k0 = lowerTailVector (t s0 k0) S (J : ℤ)
+  numerator_selected :
+    numerator' s0 k0 =
+      numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))
+  leastValue_selected : leastValue' s0 k0 = (J : ℤ)
+  vector_old :
+    ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+      t' s k = t s k
+  numerator_old :
+    ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+      numerator' s k = numerator s k
+  leastValue_old :
+    ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+      leastValue' s k = leastValue s k
+
+namespace IntroducedLabelExponentCertificates
+
+/-- Case 1(1) same-domain selected-old lower-tail certificate update from
+supplied post-data. -/
+theorem case1_selectedLowerTail_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hlevelLeast : leastValue s0 k0 = (level s0 k0 : ℤ))
+    (hflat : FlatTailFromPred L S (t s0 k0) (level s0 k0 : ℤ))
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hpost :
+      Case1SelectedOldLowerTailExponentPostData
+        (L := L) (n := n) (S := S) (J := J) (J1 := J1) (s0 := s0) (k0 := k0)
+        t t' numerator numerator' leastValue leastValue') :
+    IntroducedLabelExponentCertificates L n S J t' numerator' leastValue' :=
+  hcert.case1_selectedLowerTail_sameDomain hfirst hlevelLeast hflat hS hSL
+    hpost.vector_selected hpost.numerator_selected hpost.leastValue_selected
+    hpost.vector_old hpost.numerator_old hpost.leastValue_old
+
+/-- Level/tail invariant wrapper for the supplied Case 1(1) same-domain
+selected-old lower-tail post-data. -/
+theorem case1_selectedLowerTail_of_levelTailInvariants_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hinv : IntroducedLabelLevelTailInvariants L n S J level t leastValue)
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hpost :
+      Case1SelectedOldLowerTailExponentPostData
+        (L := L) (n := n) (S := S) (J := J) (J1 := J1) (s0 := s0) (k0 := k0)
+        t t' numerator numerator' leastValue leastValue') :
+    IntroducedLabelExponentCertificates L n S J t' numerator' leastValue' :=
+  hcert.case1_selectedLowerTail_of_postData hfirst
+    (hinv.leastValue_eq_level hfirst.selectedIntroduced)
+    (hinv.flatTail_abovePivot hfirst.selectedIntroduced hfirst.lt_selectedLevel)
+    hS hSL hpost
+
+end IntroducedLabelExponentCertificates
+
 /-- Case 1(2) displayed row-strip new-label certificate from the old selected
 label.  This changes only the label identity from the old selected label to the
 new post-state label `(S,J+1)`; the lower-tail arithmetic is the same
@@ -5974,6 +6044,118 @@ theorem case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates
   case1SelectedOld_diagonal_mul_sourceMatrix
     (case1ResidualRowStrip n S J J1) u baseWeight
     (case2SourceResidualBlock residual)
+
+/-- Supplied same-domain boundary for Aoyagi Case 1(1)'s selected-old chart.
+
+The boundary combines the selected old label, pre-exponent certificates,
+level/tail invariants, and supplied same-domain exponent post-data.  It exports
+the elementary row-strip source-coordinate identity and the same-domain
+selected-label exponent update as separate projections.  It does not construct
+the selected-old chart, introduce `(S,J+1)`, assert a `Q/P` transition, or
+prove coverage, regularity, Jacobians, normal crossings, or RLCT extraction. -/
+structure Case1SelectedOldSuppliedSameDomainBoundary
+    (L : ℕ) (n : ℕ → ℕ) (S J J1 s0 k0 : ℕ)
+    (level : ℕ → ℕ → ℕ)
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ) : Prop where
+  firstJump : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t
+  stage_ge_two : 2 ≤ S
+  stage_le : S ≤ L
+  exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue
+  levelTail : IntroducedLabelLevelTailInvariants L n S J level t leastValue
+  exponentPost :
+    Case1SelectedOldLowerTailExponentPostData
+      (L := L) (n := n) (S := S) (J := J) (J1 := J1) (s0 := s0) (k0 := k0)
+      t t' numerator numerator' leastValue leastValue'
+
+namespace Case1SelectedOldSuppliedSameDomainBoundary
+
+/-- The supplied Case 1(1) boundary records the selected old label as already
+introduced at the current state. -/
+theorem selectedIntroduced
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (data :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue') :
+    introducedLabel L n S J s0 k0 :=
+  data.firstJump.selectedIntroduced
+
+/-- The selected old label sits at the first jumped level `J+J1`. -/
+theorem selectedLevel
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (data :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue') :
+    level s0 k0 = J + J1 :=
+  data.firstJump.selectedLevel
+
+/-- The row-wise Case 1(1) selected-old source identity on the residual block.
+This is only the divided-row algebra; it does not produce exponent post-data. -/
+theorem sourceMatrix_identity
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (_data :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue')
+    (u : R) (baseWeight : Case2ResidualRowIndex n S J → R)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    diagonal baseWeight *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A =
+      diagonal
+          (case1SelectedOldPostWeight
+            (case1ResidualRowStrip n S J J1) u baseWeight) *
+        A :=
+  case1SelectedOld_diagonal_mul_sourceMatrix
+    (case1ResidualRowStrip n S J J1) u baseWeight A
+
+/-- Source-coordinate form of the Case 1(1) selected-old row-strip identity.
+The source residual function is only restricted to the residual block; no
+displayed pivot normalization or `Q/P` step is involved. -/
+theorem sourceCoordinates_identity
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (_data :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue')
+    (u : R) (baseWeight : Case2ResidualRowIndex n S J → R)
+    (residual : ℕ × ℕ → R) :
+    diagonal baseWeight *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u
+          (case2SourceResidualBlock residual) =
+      diagonal
+          (case1SelectedOldPostWeight
+            (case1ResidualRowStrip n S J J1) u baseWeight) *
+        case2SourceResidualBlock residual :=
+  case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates J1
+    u baseWeight residual
+
+/-- The supplied Case 1(1) boundary updates exponent certificates over the
+same introduced-label domain `(S,J)`. -/
+theorem updateExponentCertificates
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (data :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue') :
+    IntroducedLabelExponentCertificates L n S J t' numerator' leastValue' :=
+  data.exponentPre.case1_selectedLowerTail_of_levelTailInvariants_postData
+    data.firstJump data.levelTail data.stage_ge_two data.stage_le data.exponentPost
+
+end Case1SelectedOldSuppliedSameDomainBoundary
 
 /-- Source-coordinate normalised matrix for a supplied Case 2 residual-block
 pivot pair.  The membership proof only extracts row and column subtype pivots;
