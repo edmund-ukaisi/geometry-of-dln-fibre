@@ -33,6 +33,18 @@ theorem upperUnitriangular_mul_fromBlocks_one_zero {r m n : ℕ}
   rw [fromBlocks_multiply]
   simp [sub_eq_add_neg]
 
+/-- An upper unitriangular left multiplier preserves existence of an identity-corner chart form. -/
+theorem exists_fromBlocks_one_zero_of_upperUnitriangular_mul {r m n : ℕ}
+    (F : Matrix (Fin r) (Fin m) K)
+    (M : Matrix (Fin r ⊕ Fin m) (Fin r ⊕ Fin n) K)
+    (hM : ∃ B : Matrix (Fin r) (Fin n) K, ∃ D : Matrix (Fin m) (Fin n) K,
+      M = fromBlocks (1 : Matrix (Fin r) (Fin r) K) B 0 D) :
+    ∃ B' : Matrix (Fin r) (Fin n) K, ∃ D' : Matrix (Fin m) (Fin n) K,
+      fromBlocks (1 : Matrix (Fin r) (Fin r) K) (-F) 0 1 * M =
+        fromBlocks (1 : Matrix (Fin r) (Fin r) K) B' 0 D' := by
+  rcases hM with ⟨B, D, rfl⟩
+  exact ⟨B - F * D, D, upperUnitriangular_mul_fromBlocks_one_zero F B D⟩
+
 /-- The inverse of a product corner cancels the already-invertible left factor. -/
 private theorem nonsing_inv_mul_left_factor {r : ℕ}
     (C1 A1 : Matrix (Fin r) (Fin r) K) (hC1 : IsUnit C1.det) (hA1 : IsUnit A1.det) :
