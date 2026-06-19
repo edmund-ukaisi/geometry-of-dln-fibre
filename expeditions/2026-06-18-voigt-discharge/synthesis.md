@@ -63,9 +63,14 @@ progress / ☑ landed (green + AUDIT + hardener).
   smooth everywhere; `M` is a smooth point of `Ō_M`. *Size: module → sizeable.* ☐
 - **L4 — smooth ⇒ `IsRegularLocalRing` ⇒ tangent dim = local Krull dim.** (`IsRegularLocalRing.iff_finrank_
   cotangentSpace` present; geometric feed-ins absent.) *Size: module.* ☐
-- **L5 — ★ height–dimension formula / catenary.** `height I + dim(R/I) = dim R`, i.e. `dim = trdeg`, for
-  finite-type domains / `MvPolynomial` over a field. **`IsCatenary` is 0% in Mathlib.** *Size: sub-library.
-  THE RISK — size first.* ☐
+- **L5 — height–dimension formula.** `height p + dim(R/p) = dim R = n` for primes of `MvPolynomial (Fin n) k`.
+  **SIZED (thread 02): bounded 2–3 module sub-library, days — NOT greenfield catenary, NOT multi-expedition.**
+  Route = **integral-extension** (a), not catenary (b): recon 01 misread Mathlib — `dim k[x]=n` and per-prime
+  going-down additivity (`height_eq_height_add_of_liesOver_of_hasGoingDown`) are PROVED; the gap is *assembly*.
+  Sub-ladder L5.0–L5.8 in `threads/02-dimension-formula-sizing/findings.md`; hardest = L5.6 (`height+coheight=n`
+  via going-down induction) and L5.4 (integral-extension `ringKrullDim` invariance). **Kill-condition:** if
+  L5.6's induction needs absent instance-propagation it inflates toward "weeks" — first build move (L5.4+L5.1)
+  settles this. ◐ (sized; build pending)
 - **L6 — Thm 3.8 at radical-ideal level.** `orbitRankLocus = Ō_M` (the degeneration order; ≤-direction). *Size:
   module.* ☐
 - **L7 — final Voigt assembly.** Combine L0–L6 into `hVoigt`, drop the hypothesis from
@@ -80,12 +85,14 @@ progress / ☑ landed (green + AUDIT + hardener).
 A/B are largely independent and can interleave once L5 is sized; C depends on B+L5; D is independent; E last.
 
 ## Sequencing decision
-1. **Size L5 first** (highest VOI — it dominates total size; if it's a multi-module CA sub-library the
-   expedition's shape changes). A `pen-and-paper`/scout traces `NoetherNormalization` + `AlgebraicIndependent`
-   → `dim = trdeg` and reports the gap size + the cleanest target form (Codex: *smooth `k`-point of `V(I)` with
-   tangent dim `t` ⇒ `I.height = n − t`*).
-2. In parallel/after: **L0** (gates all, well-bricked) as the first build tide.
-3. Then Phase B geometry, Phase C, Phase D, Phase E.
+1. ☑ **Size L5** (thread 02) — DONE: bounded sub-library, integral-extension route. Risk materially reduced.
+2. **NEXT — first build tide: L5.4 + L5.1** (the recon's de-risking move). Both rest entirely on present
+   Mathlib bricks (order transport + `ringKrullDim_quotient`); a green L5.4 confirms the order-transport
+   machinery and de-risks the hard L5.6. New network-free `Core` module (general commutative algebra,
+   upstream-grade). Watch the L5.6 kill-condition as we proceed up the L5 sub-ladder.
+3. Then finish L5 (L5.2/5.3 → L5.4 done → L5.5 → L5.6 → L5.7), and **L0** (Nullstellensatz/`PrimeSpectrum`
+   bridge, gates the geometry).
+4. Then Phase B geometry (L1–L3), Phase C (L4), Phase D (L6), Phase E (L7 assembly).
 
 ## Discipline for this expedition
 - **Gates:** every layer → reviewer fidelity AUDIT + independent `hardener` bedrock pass; decorrelated Codex on
@@ -100,3 +107,6 @@ A/B are largely independent and can interleave once L5 is sized; C depends on B+
 - 2026-06-18: expedition scaffolded off `dev` (`9e99e01`). Recon 01 (Mathlib coverage) CLOSED — route confirmed
   (tangent+smoothness), `[IsAlgClosed k]`, orbitRankLocus = rank-locus (Thm 3.8 in scope), 8-layer ladder, L5
   (catenary/dim-formula) = dominant risk. Next: size L5.
+- 2026-06-19: thread 02 (L5 sizing) CLOSED — **L5 downgraded** to a bounded 2–3 module sub-library via the
+  integral-extension route (catenary avoided; key bricks proved in Mathlib, recon 01 misread). Sub-ladder
+  L5.0–L5.8 pinned; kill-condition on L5.6. Next: first build tide L5.4 + L5.1.
