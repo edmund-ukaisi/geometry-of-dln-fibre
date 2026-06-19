@@ -179,6 +179,13 @@ interface without surfacing it.
   the finite source range `1..L`. This is the repaired `tilde_t=J`
   bookkeeping for the new Case 2 label, not a transition theorem or
   comparability result.
+  The one-label package `CorrectedCase2NewLabelCertificate` now combines, only
+  for `(S,J+1)`, introducedness after the pivot advance, the corrected terminal
+  exponent, and the finite least-value certificate. Its main constructor keeps
+  actual source-label validity `J+1<=n_(S+1)` separate from the state bound
+  `J<=mu_S`; the continuation-bound constructor derives both from
+  `J+1<=mu_(S+1)`. This still does not assign vector data to every introduced
+  label or prove a Case 2 transition.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

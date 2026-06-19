@@ -92,7 +92,8 @@ on the session's original cwd.
    `Q` column-operation algebra, the combined local normalized pivot-step
    identity, the actual-width label-range bookkeeping, the introduced-label
    state bookkeeping, and the corrected Case 2 vector minimum certificate are
-   Lean-proved. Next build the corrected finite vector invariant around
+   Lean-proved; the corrected Case 2 new-label certificate is now packaged for
+   `(S,J+1)` only. Next build the corrected finite vector invariant around
    prefix-minimum coordinates or start the pivot-chart coverage argument. Then
    redo Case 1/2 updates, cover pivot charts, repair the remaining recurrence
    bookkeeping, and replace the termination measure.

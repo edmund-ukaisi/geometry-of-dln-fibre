@@ -274,7 +274,12 @@ Lean status: the finite minimum certificate is formalised as
 `correctedCase2PivotVector_eq_J_of_le`,
 `le_correctedCase2PivotVector_of_le_prefixMinNat`, and
 `correctedCase2PivotVector_min_certificate`. The finite source-range version
-is `correctedCase2PivotVector_isLeast_valueSet_Icc`.
+is `correctedCase2PivotVector_isLeast_valueSet_Icc`. The one-label packaging
+for the corrected Case 2 new label is
+`CorrectedCase2NewLabelCertificate`, with constructors
+`correctedCase2NewLabelCertificate_of_actualBound_of_stateBound` and
+`correctedCase2NewLabelCertificate_of_prefixBound`; it deliberately packages
+only `(S,J+1)` and not a state invariant over all labels.
 
 Substitution gives
 

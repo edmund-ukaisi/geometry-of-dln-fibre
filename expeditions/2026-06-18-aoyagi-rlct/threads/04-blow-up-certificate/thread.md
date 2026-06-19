@@ -193,3 +193,22 @@ the source component range `1..L`, assuming `1<=S<=L`.
 This uses the corrected prefix-minimum vector. It does not assert pairwise
 comparability, assign vector data to every introduced label, or prove a
 transition.
+
+## 2026-06-19 Lean corrected Case 2 new-label certificate
+
+Statement card: `statement-card-a4-corrected-case2-new-label-certificate.md`.
+
+Lean now packages the corrected Case 2 new-label bookkeeping as the Prop-valued
+certificate `CorrectedCase2NewLabelCertificate`. The certificate is deliberately
+only for `(S,J+1)`: it records introducedness after the pivot advance, the
+corrected terminal exponent formula, and the finite least-value fact for the
+corrected prefix-minimum vector.
+
+The primary theorem keeps the two hypotheses separate: actual source-label
+validity uses `J+1 <= n_(S+1)`, while the least-value certificate uses the
+state bound `J <= mu_S`. The corollary
+`correctedCase2NewLabelCertificate_of_prefixBound` derives both facts from the
+stronger continuation condition `J+1 <= mu_(S+1)`.
+
+This is not a full vector invariant, transition theorem, or claim about the
+PDF's printed Case 2 vector.

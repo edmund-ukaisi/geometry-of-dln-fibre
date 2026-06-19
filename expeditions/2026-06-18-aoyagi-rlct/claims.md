@@ -550,7 +550,13 @@ No such claim is formalisation-ready until both fields are filled.
   `correctedCase2PivotVector_eq_J_of_le`,
   `le_correctedCase2PivotVector_of_le_prefixMinNat`, and
   `correctedCase2PivotVector_min_certificate`, plus the finite source-range
-  least-value theorem `correctedCase2PivotVector_isLeast_valueSet_Icc`.
+  least-value theorem `correctedCase2PivotVector_isLeast_valueSet_Icc`. Also
+  proved the Prop-valued one-label certificate
+  `CorrectedCase2NewLabelCertificate` and constructors
+  `correctedCase2NewLabelCertificate_of_actualBound_of_stateBound` and
+  `correctedCase2NewLabelCertificate_of_prefixBound`, packaging introducedness,
+  corrected terminal exponent, and least-value data for the corrected Case 2
+  new label only.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.
