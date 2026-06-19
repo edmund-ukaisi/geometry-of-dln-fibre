@@ -6234,6 +6234,159 @@ theorem updateExponentCertificates
 
 end Case1SelectedOldSuppliedSameDomainBoundary
 
+/-- Supplied recurrence-state boundary for Aoyagi Case 1(1)'s selected-old
+level lowering.
+
+The `baseStep` recurrence is supplied: `pre` has the selected old factor at
+level `J+J1`, while `post` has the same factor moved down to level `J`.
+The same-domain exponent boundary is carried separately.  This does not
+construct the selected-old chart or derive the base recurrence from source
+coordinates. -/
+structure Case1SelectedOldLoweredRecurrenceBoundary
+    (R : Type*) [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J J1 s0 k0 : ℕ)
+    (level : ℕ → ℕ → ℕ)
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ)
+    (pre post : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (baseStep : ℕ → R) : Prop where
+  sameDomain :
+    Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 level
+      t t' numerator numerator' leastValue leastValue'
+  pre_step_eq : pre.step = mulStepAt baseStep u (J + J1)
+  post_step_eq : post.step = mulStepAt baseStep u J
+
+namespace Case1SelectedOldLoweredRecurrenceBoundary
+
+/-- The supplied lowered-recurrence boundary records the selected old label as
+already introduced at the current state. -/
+theorem selectedIntroduced
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    (data :
+      Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep) :
+    introducedLabel L n S J s0 k0 :=
+  data.sameDomain.selectedIntroduced
+
+/-- The selected old label has the first-jump level `J+J1`. -/
+theorem selectedLevel
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    (data :
+      Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep) :
+    level s0 k0 = J + J1 :=
+  data.sameDomain.selectedLevel
+
+/-- The piecewise Case 1(1) post-weight convention equals the supplied lowered
+post recurrence weights on residual rows. -/
+theorem selectedOldPostWeight_eq_postWeight
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    (data :
+      Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep) :
+    case1SelectedOldPostWeight (case1ResidualRowStrip n S J J1) u
+        (fun i ↦ pre.weight (case2ResidualRowLevel n S J i)) =
+      fun i ↦ post.weight (case2ResidualRowLevel n S J i) := by
+  change case1SelectedOldPostWeight (case1ResidualRowStrip n S J J1) u
+      (fun i ↦ monomialRec pre.step (case2ResidualRowLevel n S J i)) =
+    fun i ↦ monomialRec post.step (case2ResidualRowLevel n S J i)
+  rw [data.pre_step_eq, data.post_step_eq]
+  exact case1SelectedOldPostWeight_eq_monomialRec_loweredLevel
+    baseStep u n S J J1
+
+/-- The selected-old lowered recurrence boundary rewrites the Case 1(1)
+source identity with supplied pre and post recurrence weights. -/
+theorem sourceMatrix_identity_postWeights
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    (data :
+      Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    diagonal (fun i ↦ pre.weight (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A =
+      diagonal (fun i ↦ post.weight (case2ResidualRowLevel n S J i)) * A := by
+  calc
+    diagonal (fun i ↦ pre.weight (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A
+        = diagonal
+            (case1SelectedOldPostWeight (case1ResidualRowStrip n S J J1) u
+              (fun i ↦ pre.weight (case2ResidualRowLevel n S J i))) *
+            A := by
+              exact case1SelectedOld_diagonal_mul_sourceMatrix
+                (case1ResidualRowStrip n S J J1) u
+                (fun i ↦ pre.weight (case2ResidualRowLevel n S J i)) A
+    _ = diagonal (fun i ↦ post.weight (case2ResidualRowLevel n S J i)) * A := by
+              rw [data.selectedOldPostWeight_eq_postWeight]
+
+/-- Source-coordinate form of the supplied pre/post recurrence-weight Case
+1(1) selected-old identity. -/
+theorem sourceCoordinates_identity_postWeights
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    (data :
+      Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep)
+    (residual : ℕ × ℕ → R) :
+    diagonal (fun i ↦ pre.weight (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u
+          (case2SourceResidualBlock residual) =
+      diagonal (fun i ↦ post.weight (case2ResidualRowLevel n S J i)) *
+        case2SourceResidualBlock residual :=
+  data.sourceMatrix_identity_postWeights (case2SourceResidualBlock residual)
+
+/-- The supplied lowered-recurrence boundary carries the same-domain exponent
+certificate update from the selected-old Case 1(1) boundary. -/
+theorem updateExponentCertificates
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    (data :
+      Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep) :
+    IntroducedLabelExponentCertificates L n S J t' numerator' leastValue' :=
+  data.sameDomain.updateExponentCertificates
+
+end Case1SelectedOldLoweredRecurrenceBoundary
+
 /-- Source-coordinate normalised matrix for a supplied Case 2 residual-block
 pivot pair.  The membership proof only extracts row and column subtype pivots;
 it is not a chart-coverage assertion. -/
