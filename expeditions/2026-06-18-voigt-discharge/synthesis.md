@@ -311,3 +311,8 @@ Critical path: L6 stays on it for the dimension (chart gives `dim O_M`; `variety
 - 2026-06-19: thread 14 (geometry sizing) CLOSED. Next: build L6.0 (limit lemma, free), then the (2,2,2) pivot
   chart witness. L6's degeneration is a 3–4 module sub-library (paper-cited) — anticipated, within mandate; surface
   only if a kill-condition fires.
+- 2026-06-19: **L6.0 LANDED** (thread 15, reviewer FAITHFUL) — `Core.PolynomialCurveLimit.curvePoint_zero_mem_zeroLocus_vanishingIdeal`:
+  polynomial curve in `Z` for `t≠0` ⟹ `t=0` limit in `zeroLocus(vanishingIdeal Z)`. Weakest hyp `[Infinite k]`
+  (no IsAlgClosed; Codex-confirmed sharp). Curve encoding `c : σ → Polynomial k` (feeds L6.1's explicit family).
+  Green, axiom-clean. **Next: L3.0 pivot chart on (2,2,2)** — the high-leverage gamble (collapses L2+L3 if it
+  lands; fires the L3 kill-condition). Then L3.1+L2.* payoff, then L6.1+L6.2 box-move generation (the heavy core).

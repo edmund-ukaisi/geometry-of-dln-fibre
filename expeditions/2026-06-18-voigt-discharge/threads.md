@@ -24,7 +24,7 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 | 13 | L4a-M3-cotangent-regular | formaliser | closed | smooth⟹regular (cotangent comparison bounded); **L4★ COMPLETE**; reviewer FAITHFUL |
 
 | 14 | geometry-recon | pen-and-paper | closed | Orbit geometry sized — L6 (3–4 mod sub-library, paper-cited degeneration), L1/L2/L3 bounded via pivot chart |
-| 15 | L6.0-limit-lemma | formaliser | open | Polynomial-curve limit ⟹ in V(vanishingIdeal) — free/independent; first geometry tide |
+| 15 | L6.0-limit-lemma | formaliser | closed | Polynomial-curve limit ⟹ in V(vanishingIdeal) — free/independent; first geometry tide |
 
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
