@@ -103,11 +103,12 @@ on the session's original cwd.
    hypothesis package is Lean-proved with strict boundary, gap, minimality, and
    row-containment consequences; the conditional same-domain Case 1 lower-tail
    certificate update is Lean-proved assuming `level = leastValue`, flat-tail,
-   selected post-data, and unchanged non-selected labels. Next prove the
-   `level = leastValue`, flat-tail, and post-data invariant facts needed for
-   Case 1 selected labels or start a row/column permutation scaffold for
-   non-displayed pivot entries. Then redo Case 1/2 updates, cover pivot charts,
-   repair the
+   selected post-data, and unchanged non-selected labels; selected-label
+   update-data helpers instantiate the post-data as total assignment overrides.
+   Next prove the `level = leastValue`, flat-tail, and chart-produced post-data
+   invariant facts needed for Case 1 selected labels or start a row/column
+   permutation scaffold for non-displayed pivot entries. Then redo Case 1/2
+   updates, cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

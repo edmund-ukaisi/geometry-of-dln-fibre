@@ -230,7 +230,8 @@ interface without surfacing it.
   the selected label by its lower-tail certificate, assuming `leastValue =
   level`, flat-tail, selected post-data, and unchanged non-selected labels. It
   is not a chart transition and does not prove `b'_i` bookkeeping or domain
-  advancement.
+  advancement. The selected-label update-data helpers instantiate this theorem
+  with total assignment overrides; they add no source geometry.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

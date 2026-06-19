@@ -199,6 +199,12 @@ assumes the post-chart selected vector, numerator, and least value. It does not
 construct the chart, prove row-strip division, prove `b'_i` recurrence
 bookkeeping, or advance the domain.
 
+The convenience theorem `case1_selectedLowerTail_updateData` instantiates this
+same-domain update using total assignment overrides
+`updateSelectedLabelVector` and `updateSelectedLabelScalar`. These helpers are
+syntactic post-data functions only; values outside the introduced-label domain
+are formal and irrelevant.
+
 This branch keeps `(S,J)` and decreases the number of labels at
 `tilde_t = J+J1`.
 

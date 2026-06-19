@@ -9,6 +9,7 @@ Names:
 - `DLNFibre.DLN.Aoyagi.IntroducedLabelExponentCertificates.updateSelected`
 - `DLNFibre.DLN.Aoyagi.Case1FirstJumpHypotheses.lowerTailVector_labelExponentCertificate`
 - `DLNFibre.DLN.Aoyagi.IntroducedLabelExponentCertificates.case1_selectedLowerTail_sameDomain`
+- `DLNFibre.DLN.Aoyagi.IntroducedLabelExponentCertificates.case1_selectedLowerTail_updateData`
 
 ## Statement
 
@@ -55,6 +56,8 @@ not add `(S,J+1)`, advance `J`, or advance `S`.
 - Under assumed post-data, the all-introduced-label certificate package is
   reassembled at the same state `(S,J)`.
 - Non-selected labels are carried by explicit unchanged-data hypotheses.
+- With selected-label update-data helpers, the same theorem can be applied to
+  total post-assignment functions defined by overriding `(s,k)`.
 
 ## Not proved
 
@@ -62,6 +65,8 @@ not add `(S,J+1)`, advance `J`, or advance `S`.
 - No proof of `leastValue = level` for the selected label.
 - No proof of the selected label's flat-tail hypothesis.
 - No proof that the chart produces the post assignments.
+- The selected-label update-data helper is only a syntactic override of total
+  assignments; values outside the introduced-label domain are irrelevant.
 - No blow-up chart, coordinate pullback, row-strip division, Jacobian
   calculation, ideal equality, or chart coverage.
 - No `b'_i` recurrence bookkeeping or proof that

@@ -600,7 +600,11 @@ No such claim is formalisation-ready until both fields are filled.
   `Case1FirstJumpHypotheses.lowerTailVector_labelExponentCertificate`, and
   `IntroducedLabelExponentCertificates.case1_selectedLowerTail_sameDomain`,
   conditional on `leastValue = level`, flat-tail, boundary, selected post-data,
-  and unchanged non-selected introduced labels.
+  and unchanged non-selected introduced labels. Added selected-label
+  update-data helpers `updateSelectedLabelVector` and
+  `updateSelectedLabelScalar` plus
+  `case1_selectedLowerTail_updateData` to instantiate the same theorem with
+  total assignment overrides.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

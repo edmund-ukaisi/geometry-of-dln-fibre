@@ -346,6 +346,21 @@ chart theorem: it does not prove the chart produces those post assignments,
 does not prove `b'_i` recurrence bookkeeping, does not use minimality for
 comparability or termination, and does not extend the introduced-label domain.
 
+## 2026-06-19 Lean selected-label update data
+
+Statement card: `statement-card-a4-selected-label-update-data.md`.
+
+Lean now has total assignment overrides for one selected label:
+`updateSelectedLabelVector` and `updateSelectedLabelScalar`. They rewrite to
+the selected post-data at `(s0,k0)` and to the old assignment at every label
+different from `(s0,k0)`.
+
+The convenience theorem `case1_selectedLowerTail_updateData` applies the
+same-domain Case 1 lower-tail certificate update directly to these overrides.
+This removes six mechanical post-data equality hypotheses. It is still only
+bookkeeping: values outside the introduced-label domain are formal, and the
+helpers do not prove that a chart produces the overrides.
+
 ## 2026-06-19 Lean Case 1 tail exponent increment
 
 Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.
