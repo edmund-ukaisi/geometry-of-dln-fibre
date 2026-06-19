@@ -33,6 +33,8 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 
 | 19 | L2a-cotangent-jacobian | formaliser | closed | Zariski tangent = Jacobian kernel (general CA, unconditional); AUDIT SURVIVED |
 
+| 23 | L6.1-box-move | formaliser | closed | degeneration engine + (1,2,1) witness; general box-move = named gap; reviewer PASS |
+
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
 - 0N — L1 GL/orbit/irreducibility (scout recon → formaliser)

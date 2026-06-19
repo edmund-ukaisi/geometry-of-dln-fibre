@@ -409,3 +409,10 @@ the known-hard L6, not a new sub-library). Route: maximal `u∈[s,r)` + cover-cl
 **Next: build L6.1** (certified family — concrete progress + de-risks the L6.0+family degeneration in Lean), then
 L6.2 (cover-classification combinatorics on rank patterns), then L6.3/6.4/L1/L2b/L3/assembly/L7.
 - 2026-06-19: thread 22 CLOSED — L6.1 certified, L6.2 = 2–3 module cover-classification. Next: build L6.1.
+- 2026-06-19: **L6.1 LANDED** (thread 23, reviewer PASS) — `Core.BoxMoveDegeneration`: the degeneration ENGINE
+  `mem_zeroLocus_vanishingIdeal_orbitSet_of_polynomialFamily` (general in d; consumes L6.0; `[Infinite k]`) +
+  certified (1,2,1) box-move witness. Orbit membership via explicit base change (`t⁻¹` only in t≠0 cert, not the
+  curve). Green (2691 jobs), axiom-clean. **NAMED GAP:** the general box-move construction (arbitrary `a<c≤b+1≤e`
+  + arbitrary `rest`) plugs into the engine but needs `foldDim`-transport + `dirSum`-reindex surgery — next piece.
+  Then **L6.2 cover-classification** (the 2–3 module combinatorial sub-library: covers = linked box moves, via
+  maximal `u∈[s,r)`), then L6.3/6.4 (ideal equality) → L1 → L2b (dμ_M=δ⁰) → L3 (homogeneity) → L4-assembly → L7.
