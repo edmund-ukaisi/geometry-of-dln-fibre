@@ -360,3 +360,16 @@ No new scope explosion — the bounded uniform route exists (homogeneity); the c
   witnesses); adding the (2,2,2) example = deferred optional polish (lemma bedrock regardless).
   **Next: L2b** — `ker(jacobian) = range δ⁰` for our orbit (the orbit-map linearisation; identifies L2a's
   Jacobian-kernel with `range δ⁰`; (2,2,2) done in thread 17). Then L3 (homogeneity), L6 (degeneration), L1, assembly, L7.
+
+## ⚠⚠ SCOPE SURPRISE — geometry's remaining content IS the quiver-determinantal-ideal sub-library [2026-06-19, thread 20]
+L2b sized: NOT a bounded module. Circularity confirmed (orbit-map/smoothness route circular). Both non-circular
+routes pull a SUB-LIBRARY: (a) determinantal — `vanishingIdeal(Z_M) = (minors)` prime = **Lakshmibai–Magyar/KMS
+quiver-determinantal-ideal theorem** (absent; the ideal-level twin of L6 — so L6+L2b are ONE body of theory the
+paper invokes via lace diagrams / cites Abeasis–Del Fra); (b) orbit-stabiliser — needs algebraic-group orbit-
+dimension (absent). The CA foundations (L4★, L5, L0) are DONE bedrock; the geometry's irreducible remaining content
+is this second foundational sub-library (≈ L4★-scale, possibly larger — it's research-grade quiver-loci theory).
+**AUTONOMOUS LOOP PAUSED (cron deleted). SURFACED TO OPERATOR** with options: (a) build the quiver-determinantal
+sub-library (zero-cited, another major sub-campaign, subsumes L6); (b) Cite the one orbit-closure/determinantal
+theorem the SOURCE PAPER ITSELF cites (Abeasis–Del Fra / Lakshmibai–Magyar) — closes the geometry in modules,
+reduces hVoigt to one named standard citation, consistent with the paper + the Aoyagi-RLCT precedent; (c) bank the
+CA bedrock, defer the geometry. Decision pending.
