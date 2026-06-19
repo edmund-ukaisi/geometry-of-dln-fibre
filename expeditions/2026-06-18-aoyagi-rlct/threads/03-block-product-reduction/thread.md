@@ -1040,3 +1040,27 @@ proved by the unitriangular endpoint identity-corner theorem with `F = -Bprev`.
 Still open: exact-rank neighborhoods, certificate transport, a source-facing
 Theorem 3 statement, and any continuity of `L`, `Ctop`, or `D` if future
 certificate data needs them.
+
+## 2026-06-19 A2 adapted residual rank API
+
+Added a minimal API for the residual blocks visited by the deterministic suffix
+state. In `ProductReduction.lean`:
+
+- `ChartLocalSuffixState.residualBlock`;
+- `ChartLocalSuffixState.suffixState_D_self`;
+- `ChartLocalSuffixState.suffixState_D_castSucc`.
+
+The recurrence is intentionally adapted:
+
+`S_next.D = S_tail.D * schurResidualBlock ([I S_tail.B; 0 I] * E p)`.
+
+This names the lower-right block product in the block-diagonalized endpoint
+matrix without claiming it is a raw product of the original edge residuals.
+
+In `FixedBasepointChart.lean`, added the reversed-edge rank bridge
+`rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range` and
+pointwise transformed residual-rank wrappers, including
+`rank_schurResidualBlock_chartLocalSuffixState_transformedEdge_fixedBaseReverseEdges_eq_range_sub`.
+These results assume determinant-chart membership and exact edge rank at the
+point. They do not assert exact-rank openness or any neighborhood of exact-rank
+conditions.

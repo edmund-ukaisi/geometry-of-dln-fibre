@@ -64,8 +64,10 @@ on the session's original cwd.
    basepoint chart hypotheses, and the fixed-base transformed-chart
    neighborhood wrapper now uses that actual recursive `Bprev` family. The
    endpoint block-diagonal neighborhood handoff is also Lean-proved for
-   continuous reversed-edge families based at `reverseEdge W B`. Next assemble
-   the source-facing Theorem 3 statement and certificate boundary, without
+   continuous reversed-edge families based at `reverseEdge W B`. The adapted
+   residual block recurrence and pointwise transformed residual-rank bridge are
+   also Lean-proved under explicit exact-rank hypotheses. Next assemble the
+   source-facing Theorem 3 statement and certificate boundary, without
    pretending that exact-rank strata are open.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep

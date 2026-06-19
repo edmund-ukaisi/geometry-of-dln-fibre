@@ -514,6 +514,19 @@ bases fixed from `B`. The pen-and-paper check is the same recurrence:
 upperRightBlock M`, and the basepoint determinant chart follows from the
 endpoint unitriangular identity-corner theorem with `F = -Bprev`.
 
+The residual block data needed for a later reduced-product certificate is now
+named, but only in the adapted recursive sense. In `ProductReduction.lean`,
+`ChartLocalSuffixState.residualBlock` is
+`schurResidualBlock ([I Bprev; 0 I] * E p)` for the actual suffix state, and
+`ChartLocalSuffixState.suffixState_D_castSucc` proves that the `D` field
+updates by multiplying this visited residual block. This is deliberately not a
+closed-form `Finset.prod` of raw edge residuals; the matrix types vary with the
+vertices, and the left unitriangular transform changes the Schur residual. In
+`FixedBasepointChart.lean`, the transformed fixed-base reversed-edge residual
+rank is proved pointwise from determinant-chart membership and an exact rank
+hypothesis on the edge map. Exact-rank conditions remain hypotheses, not
+neighborhood conclusions.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

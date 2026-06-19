@@ -210,6 +210,19 @@ a neighborhood on which the endpoint product has the deterministic block form
 in endpoint bases fixed from `B`. This still does not prove exact-rank
 neighborhoods, certificate transport, or the full source Theorem 3 statement.
 
+Fifteenth latest A2 update: a small residual-rank and `D` recurrence API has
+landed. `ChartLocalSuffixState.residualBlock`,
+`ChartLocalSuffixState.suffixState_D_self`, and
+`ChartLocalSuffixState.suffixState_D_castSucc` in `ProductReduction.lean` name
+the Schur residual block actually visited by the recursive suffix state and the
+recurrence `D_next = D_tail * residualBlock`; this is an adapted residual
+recurrence, not a product of raw edge residuals. In `FixedBasepointChart.lean`,
+`rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range` and the
+transformed residual-rank wrappers prove pointwise rank formulas for arbitrary
+reversed edge families under explicit determinant-chart and exact-rank
+hypotheses. These theorems do not assert that exact-rank conditions hold in a
+neighborhood.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

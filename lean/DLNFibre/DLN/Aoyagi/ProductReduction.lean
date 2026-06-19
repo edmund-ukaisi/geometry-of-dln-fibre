@@ -613,6 +613,16 @@ theorem suffixState_self
     suffixState E j j le_rfl = terminal (ρ := ρ) (κ := κ) (K := K) j := by
   simp [suffixState]
 
+/-- The deterministic suffix state's terminal `D` block is identity. -/
+@[simp]
+theorem suffixState_D_self
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (j : Fin (N + 1)) :
+    (suffixState E j j le_rfl).D = 1 := by
+  simp [suffixState_self, terminal]
+
 /-- The terminal deterministic suffix state block-diagonalizes the empty suffix. -/
 theorem terminal_blockDiagonal
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
@@ -638,6 +648,28 @@ theorem suffixState_castSucc
   rw [Nat.decreasingInduction_succ_left]
   · simp
   · exact Fin.val_fin_le.mp hpj
+
+/-- The Schur residual block of the transformed edge visited by the suffix recursion. -/
+def residualBlock
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (j : Fin (N + 1)) (p : Fin N) (hpj : p.succ ≤ j) :
+    Matrix (κ p.succ) (κ p.castSucc) K :=
+  schurResidualBlock
+    (transformedEdge E p (suffixState E j p.succ hpj))
+
+/-- The deterministic suffix-state `D` field unfolds by multiplying the next
+visited Schur residual block. -/
+theorem suffixState_D_castSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j) :
+    (suffixState E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)).D =
+      (suffixState E j p.succ hpj).D * residualBlock E j p hpj := by
+  rw [suffixState_castSucc]
+  rfl
 
 /-- One deterministic suffix-state update preserves the block-diagonal invariant. -/
 theorem step_blockDiagonal

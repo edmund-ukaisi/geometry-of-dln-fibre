@@ -302,6 +302,18 @@ theorem rank_paperEndpointFixedBaseEdgeMatrix_eq_finrank_range
   dsimp [paperEndpointFixedBaseEdgeMatrix]
   exact rank_toMatrix_eq_finrank_range _ _ (reverseEdge W C p)
 
+/-- A fixed-base reversed-edge matrix has the rank of the underlying edge map. -/
+theorem rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (p : Fin N) :
+    (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p).rank =
+      Module.finrank K (LinearMap.range (E p)) := by
+  dsimp [paperEndpointFixedBaseEdgeMatrixOfReverseEdges]
+  exact rank_toMatrix_eq_finrank_range _ _ (E p)
+
 /-- A fixed-base variable edge has Schur-residual rank `ρ - r` under explicit chart and rank
 hypotheses. -/
 theorem rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub
@@ -329,6 +341,122 @@ theorem rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_range_sub
       Module.finrank K (LinearMap.range (reverseEdge W C p)) - Module.finrank K U₀ := by
   exact rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub W B C U₀ hU₀ p
     hdet (rank_paperEndpointFixedBaseEdgeMatrix_eq_finrank_range W B C U₀ hU₀ p)
+
+/-- A transformed fixed-base reversed edge has Schur-residual rank `ρ - r` under
+explicit chart and rank hypotheses on the untransformed edge. -/
+theorem rank_schurResidualBlock_transformed_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_sub
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (p : Fin N)
+    (Bprev : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        K)
+    {ρ : ℕ}
+    (hdet : identityCornerDetChart
+      (fromBlocks
+        (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        Bprev 0
+        (1 : Matrix
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          K) *
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p))
+    (hrank : (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p).rank = ρ) :
+    (schurResidualBlock
+      (fromBlocks
+        (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        Bprev 0
+        (1 : Matrix
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          K) *
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p)).rank =
+      ρ - Module.finrank K U₀ := by
+  let A : Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      K :=
+    fromBlocks
+      (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+      Bprev 0
+      (1 : Matrix
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        K)
+  let M := A * paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p
+  have hA : IsUnit A.det := by
+    exact (Matrix.isUnit_iff_isUnit_det (A := A)).mp
+      ((Matrix.isUnit_fromBlocks_zero₂₁).2 ⟨isUnit_one, isUnit_one⟩)
+  have hMrank : M.rank = ρ := by
+    simp [M, A, hrank,
+      Matrix.rank_mul_eq_right_of_isUnit_det A
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p) hA]
+  have h := rank_schurResidualBlock_eq_sub_rank_of_identityCornerDetChart M hdet
+  rw [hMrank] at h
+  exact h
+
+/-- A transformed fixed-base reversed edge has Schur-residual rank equal to source
+rank minus through-rank. -/
+theorem
+    rank_schurResidualBlock_transformed_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_range_sub
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (p : Fin N)
+    (Bprev : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        K)
+    (hdet : identityCornerDetChart
+      (fromBlocks
+        (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        Bprev 0
+        (1 : Matrix
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          K) *
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p)) :
+    (schurResidualBlock
+      (fromBlocks
+        (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        Bprev 0
+        (1 : Matrix
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          K) *
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p)).rank =
+      Module.finrank K (LinearMap.range (E p)) - Module.finrank K U₀ := by
+  exact
+    rank_schurResidualBlock_transformed_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_sub
+      W B U₀ hU₀ E p Bprev hdet
+      (rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range W B U₀ hU₀ E p)
+
+/-- A deterministic transformed fixed-base reversed edge has Schur-residual rank equal to
+source rank minus through-rank. -/
+theorem
+    rank_schurResidualBlock_chartLocalSuffixState_transformedEdge_fixedBaseReverseEdges_eq_range_sub
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState (Fin (Module.finrank K U₀))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀) K
+      j p.succ)
+    (hdet : identityCornerDetChart
+      (ChartLocalSuffixState.transformedEdge
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E) p S)) :
+    (schurResidualBlock
+      (ChartLocalSuffixState.transformedEdge
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E) p S)).rank =
+      Module.finrank K (LinearMap.range (E p)) - Module.finrank K U₀ := by
+  simpa [ChartLocalSuffixState.transformedEdge] using
+    rank_schurResidualBlock_transformed_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_range_sub
+      W B U₀ hU₀ E p S.B hdet
 
 /-- One fixed-base chart-local suffix step with a supplied transformed variable edge. -/
 theorem paperEndpointFixedBase_chartLocal_suffixStep
