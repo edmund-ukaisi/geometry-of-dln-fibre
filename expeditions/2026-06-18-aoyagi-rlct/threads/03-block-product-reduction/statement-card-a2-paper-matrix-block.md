@@ -24,6 +24,11 @@
 >   The one-edge right-elimination wrapper is
 >   `DLNFibre.DLN.Aoyagi.productReduction_paperAdaptedReverseEdgeMatrix_rightElim`
 >   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
+>   Endpoint-compatible paper-order wrappers are
+>   `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_paperEndpointChartDataOfFiniteDimensional`
+>   and
+>   `DLNFibre.DLN.Aoyagi.paperEndpointChartData_edge_and_totalProduct_blocks`
+>   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
 > - **Gloss.** The theorem applies the finite through-layer block theorem to the
 >   reversed paper chain `reverseVertex W`, `reverseEdge W B`. The hypothesis is
 >   phrased against the paper-order total product `paperChainMap`; the helper
@@ -37,16 +42,18 @@
 >   when the source complement is the total kernel. Also proved determinant
 >   chart membership for the adapted paper edge matrix and its unitriangular
 >   transform, plus one-edge right elimination for a block-diagonal prefix
->   followed by one adapted paper edge.
+>   followed by one adapted paper edge. Also proved endpoint-compatible paper
+>   chart data and a package combining one reversed paper edge block with the
+>   total paper-product block in the same adapted basis family.
 > - **Assumed.** Field-vector-space hypotheses, finite-dimensional layers, and a
 >   through-subspace disjointness hypothesis for the paper-order total product.
 > - **Cited.** None.
-> - **Deferred.** Endpoint-compatible shared adapted bases; product-reduction
->   induction assembly; topological open-neighborhood statements; and every
->   analytic/RLCT consequence.
+> - **Deferred.** Proving edge-matrix composition in the shared basis family;
+>   product-reduction induction assembly; topological open-neighborhood
+>   statements; and every analytic/RLCT consequence.
 > - **Kill conditions.** This is adapted-coordinate bookkeeping. It does not
 >   state that Aoyagi's fixed coordinate blocks are invertible, prove rank
 >   preservation, or prove Theorem 3. The determinant-chart predicate is
 >   algebraic `IsUnit` at the adapted base matrix, not a topology statement.
->   The concrete finite edge wrappers are not yet a composable all-layer product
->   assembly with the endpoint theorem.
+>   The endpoint-compatible wrappers remove the previous basis mismatch but do
+>   not yet prove an all-layer product assembly.

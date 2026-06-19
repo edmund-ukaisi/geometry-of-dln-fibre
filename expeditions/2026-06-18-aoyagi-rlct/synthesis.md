@@ -253,11 +253,20 @@ source basis adapted to `U₀ ⊕ ker P` and target basis adapted to
 `[I 0; 0 0]`. The zero complement columns use the source complement being
 `ker P`; this is not a fixed-coordinate statement and does not choose all
 intermediate layer bases simultaneously.
-The concrete finite edge wrappers currently use automatically chosen
-`throughSubspaceComplement` data at every vertex, while this endpoint theorem
-uses the total kernel as the source complement. A full product assembly should
-therefore first introduce endpoint-compatible supplied chart data and a shared
-adapted basis family.
+
+The endpoint-compatible shared-basis layer is now Lean-proved in
+`ThroughLayerMatrix.lean`. `throughSubspaceAdaptedBasis` names the ambient
+basis at each vertex from a supplied `ThroughSubspaceChartData` bundle.
+`toMatrix_chainMap_zero_last_chartData_eq_fromBlocks_one_zero_zero_of_maps_complement_to_zero`
+states the endpoint `[I 0; 0 0]` form using that same basis family whenever
+the source complement maps to zero. The finite endpoint construction chooses
+the source complement to be the total kernel and arbitrary complements
+elsewhere, and
+`endpointChartData_edge_and_totalProduct_blocks` packages one edge block and
+the total-product block in the same bases. Paper-order wrappers instantiate
+this on the reversed Aoyagi chain. Remaining work: prove the ordered product
+of edge matrices is the endpoint matrix in this basis family, then iterate the
+product-reduction step.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

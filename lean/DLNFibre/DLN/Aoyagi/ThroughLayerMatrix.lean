@@ -347,6 +347,37 @@ structure ThroughSubspaceChartData (U₀ : Submodule K (V 0))
   bU₀ : Module.Basis ι K U₀
   bW : ∀ j : Fin (N + 1), Module.Basis (κ j) K (W j)
 
+/-- The adapted ambient basis at one vertex from supplied through-subspace chart data. -/
+def throughSubspaceAdaptedBasis
+    {κ : Fin (N + 1) → Type*}
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (j : Fin (N + 1)) :
+    Module.Basis (ι ⊕ κ j) K (V j) :=
+  basisOfIsCompl (data.hW j)
+    (data.bU₀.map (throughSubspacePrefixEquiv V A U₀ j hU₀))
+    (data.bW j)
+
+/-- A supplied-data edge block form stated using the named adapted basis family. -/
+theorem exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]
+    [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (p : Fin N) :
+    ∃ B : Matrix ι (κ p.castSucc) K, ∃ D : Matrix (κ p.succ) (κ p.castSucc) K,
+      LinearMap.toMatrix
+          (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.castSucc)
+          (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.succ)
+          (A p) =
+        fromBlocks (1 : Matrix ι ι K) B 0 D := by
+  simpa [throughSubspaceAdaptedBasis] using
+    exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero
+      V A U₀ p hU₀ (data.hW p.castSucc) (data.hW p.succ) data.bU₀
+      (data.bW p.castSucc) (data.bW p.succ)
+
 /-- A bundled chart-data version of the prefix-compatible edge block form. -/
 theorem exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero
     {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]
@@ -367,6 +398,50 @@ theorem exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero
         fromBlocks (1 : Matrix ι ι K) B 0 D :=
   exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero V A U₀ p hU₀
     (data.hW p.castSucc) (data.hW p.succ) data.bU₀ (data.bW p.castSucc) (data.bW p.succ)
+
+/-- A supplied-data endpoint theorem using the same adapted basis family as the edge blocks. -/
+theorem toMatrix_chainMap_zero_last_chartData_eq_fromBlocks_one_zero_zero_of_maps_complement_to_zero
+    {κ : Fin (N + 1) → Type*} [Fintype (κ 0)] [Finite (κ (Fin.last N))]
+    [DecidableEq (κ 0)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (hWzero : ∀ x : data.W 0,
+      chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)) x = 0) :
+      LinearMap.toMatrix
+          (throughSubspaceAdaptedBasis V A U₀ hU₀ data 0)
+          (throughSubspaceAdaptedBasis V A U₀ hU₀ data (Fin.last N))
+          (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) =
+        fromBlocks (1 : Matrix ι ι K) 0 0 0 := by
+  let e₀ := throughSubspacePrefixEquiv V A U₀ 0 hU₀
+  let eLast := throughSubspacePrefixEquiv V A U₀ (Fin.last N) hU₀
+  let eTotal : throughSubspace V A U₀ 0 ≃ₗ[K] throughSubspace V A U₀ (Fin.last N) :=
+    e₀.symm.trans eLast
+  have heTotal : ∀ x : throughSubspace V A U₀ 0,
+      (eTotal x : V (Fin.last N)) =
+        chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)) x := by
+    intro x
+    change (eLast (e₀.symm x) : V (Fin.last N)) =
+      chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)) x
+    rw [throughSubspacePrefixEquiv_apply V A U₀ (Fin.last N) hU₀ (e₀.symm x)]
+    have hx₀ : ((e₀.symm x : U₀) : V 0) = (x : V 0) := by
+      have happly : (e₀ (e₀.symm x) : V 0) = (x : V 0) :=
+        congrArg (fun y : throughSubspace V A U₀ 0 ↦ (y : V 0))
+          (e₀.apply_symm_apply x)
+      have hleft : (e₀ (e₀.symm x) : V 0) = ((e₀.symm x : U₀) : V 0) := by
+        simpa [e₀] using
+          throughSubspacePrefixEquiv_apply V A U₀ 0 hU₀ (e₀.symm x)
+      exact hleft.symm.trans happly
+    rw [hx₀]
+  have hbasis : (data.bU₀.map e₀).map eTotal = data.bU₀.map eLast := by
+    ext i
+    simp [e₀, eLast, eTotal]
+  simpa [throughSubspaceAdaptedBasis, e₀, eLast, eTotal, hbasis] using
+    (toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero_zero_of_map_complement_eq_zero
+      (data.hW 0) (data.hW (Fin.last N))
+      (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) eTotal heTotal
+      hWzero (data.bU₀.map e₀) (data.bW 0) (data.bW (Fin.last N)))
 
 /-- Bundled chart data stays in the identity-corner chart after a unitriangular multiplier. -/
 theorem exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero
@@ -457,12 +532,150 @@ def throughSubspaceChartDataOfFiniteDimensional
     bU₀ := Module.finBasis K U₀
     bW := fun j ↦ Module.finBasis K (throughSubspaceComplement V A U₀ j) }
 
+/-- Complements chosen as the total kernel at the source and arbitrary complements elsewhere. -/
+def throughSubspaceEndpointComplement (U₀ : Submodule K (V 0)) (j : Fin (N + 1)) :
+    Submodule K (V j) :=
+  if h : j = 0 then
+    by
+      subst j
+      exact LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))
+  else
+    throughSubspaceComplement V A U₀ j
+
+/-- The endpoint-compatible complement family complements the through-subspaces. -/
+theorem throughSubspace_isCompl_endpointComplement
+    (U₀ : Submodule K (V 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (j : Fin (N + 1)) :
+    IsCompl (throughSubspace V A U₀ j) (throughSubspaceEndpointComplement V A U₀ j) := by
+  by_cases h : j = 0
+  · subst j
+    simpa [throughSubspaceEndpointComplement, throughSubspace_zero] using hU₀
+  · simp [throughSubspaceEndpointComplement, h, throughSubspace_isCompl_complement V A U₀ j]
+
+/-- The finite index family for endpoint-compatible complements. -/
+abbrev throughSubspaceEndpointComplementIndex
+    (A : ∀ i : Fin N, V i.castSucc →ₗ[K] V i.succ)
+    (U₀ : Submodule K (V 0)) : Fin (N + 1) → Type :=
+  fun j ↦ Fin (Module.finrank K (throughSubspaceEndpointComplement V A U₀ j))
+
+/-- Finite-dimensional endpoint-compatible chart data. -/
+def throughSubspaceEndpointChartDataOfFiniteDimensional
+    [∀ j, FiniteDimensional K (V j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))))) :
+    ThroughSubspaceChartData V A U₀
+      (Fin (Module.finrank K U₀)) (throughSubspaceEndpointComplementIndex V A U₀) :=
+  { W := throughSubspaceEndpointComplement V A U₀
+    hW := throughSubspace_isCompl_endpointComplement V A U₀ hU₀
+    bU₀ := Module.finBasis K U₀
+    bW := fun j ↦ Module.finBasis K (throughSubspaceEndpointComplement V A U₀ j) }
+
+/-- The source complement in endpoint-compatible chart data maps to zero under the total product. -/
+theorem maps_endpointComplement_zero
+    (U₀ : Submodule K (V 0)) :
+    ∀ x : throughSubspaceEndpointComplement V A U₀ 0,
+      chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)) x = 0 := by
+  intro x
+  exact LinearMap.mem_ker.mp x.property
+
 /-- Finite-dimensional layers supply finite-indexed through-subspace chart data. -/
 theorem nonempty_throughSubspaceChartDataOfFiniteDimensional
     [∀ j, FiniteDimensional K (V j)] (U₀ : Submodule K (V 0)) :
     Nonempty (ThroughSubspaceChartData V A U₀
       (Fin (Module.finrank K U₀)) (throughSubspaceComplementIndex V A U₀)) :=
   ⟨throughSubspaceChartDataOfFiniteDimensional V A U₀⟩
+
+/-- Finite-dimensional layers supply endpoint-compatible chart data. -/
+theorem nonempty_throughSubspaceEndpointChartDataOfFiniteDimensional
+    [∀ j, FiniteDimensional K (V j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))))) :
+    Nonempty (ThroughSubspaceChartData V A U₀
+      (Fin (Module.finrank K U₀)) (throughSubspaceEndpointComplementIndex V A U₀)) :=
+  ⟨throughSubspaceEndpointChartDataOfFiniteDimensional V A U₀ hU₀⟩
+
+/-- Finite-dimensional layers supply a kernel complement with endpoint-compatible chart data. -/
+theorem exists_isCompl_ker_throughSubspaceEndpointChartDataOfFiniteDimensional
+    [∀ j, FiniteDimensional K (V j)] :
+    ∃ U₀ : Submodule K (V 0),
+      IsCompl U₀
+          (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))) ∧
+        Module.finrank K U₀ =
+          Module.finrank K
+            (LinearMap.range
+              (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))) ∧
+          Nonempty (ThroughSubspaceChartData V A U₀
+            (Fin (Module.finrank K U₀)) (throughSubspaceEndpointComplementIndex V A U₀)) := by
+  let P : V 0 →ₗ[K] V (Fin.last N) :=
+    chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))
+  rcases exists_isCompl_ker_and_finrank_eq_range (P := P) with ⟨U₀, hU₀, hfinU₀⟩
+  exact ⟨U₀, by simpa [P] using hU₀, by simpa [P] using hfinU₀,
+    nonempty_throughSubspaceEndpointChartDataOfFiniteDimensional V A U₀
+      (by simpa [P] using hU₀)⟩
+
+/-- Endpoint-compatible finite chart data gives the total-product block form. -/
+theorem toMatrix_chainMap_zero_last_endpointChartData_eq_fromBlocks_one_zero_zero
+    [∀ j, FiniteDimensional K (V j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))))) :
+      LinearMap.toMatrix
+          (throughSubspaceAdaptedBasis V A U₀ hU₀.disjoint
+            (throughSubspaceEndpointChartDataOfFiniteDimensional V A U₀ hU₀) 0)
+          (throughSubspaceAdaptedBasis V A U₀ hU₀.disjoint
+            (throughSubspaceEndpointChartDataOfFiniteDimensional V A U₀ hU₀) (Fin.last N))
+          (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) =
+        fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (Fin (Module.finrank K U₀))
+            (throughSubspaceEndpointComplementIndex V A U₀ 0) K)
+          (0 : Matrix (throughSubspaceEndpointComplementIndex V A U₀ (Fin.last N))
+            (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (throughSubspaceEndpointComplementIndex V A U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex V A U₀ 0) K) :=
+  toMatrix_chainMap_zero_last_chartData_eq_fromBlocks_one_zero_zero_of_maps_complement_to_zero
+    V A U₀ hU₀.disjoint (throughSubspaceEndpointChartDataOfFiniteDimensional V A U₀ hU₀)
+    (maps_endpointComplement_zero V A U₀)
+
+/-- Endpoint-compatible data gives one edge block and the total-product block in shared bases. -/
+theorem endpointChartData_edge_and_totalProduct_blocks
+    [∀ j, FiniteDimensional K (V j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (p : Fin N) :
+    let data := throughSubspaceEndpointChartDataOfFiniteDimensional V A U₀ hU₀
+    (∃ B : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex V A U₀ p.castSucc) K,
+      ∃ D : Matrix
+          (throughSubspaceEndpointComplementIndex V A U₀ p.succ)
+          (throughSubspaceEndpointComplementIndex V A U₀ p.castSucc) K,
+        LinearMap.toMatrix
+            (throughSubspaceAdaptedBasis V A U₀ hU₀.disjoint data p.castSucc)
+            (throughSubspaceAdaptedBasis V A U₀ hU₀.disjoint data p.succ)
+            (A p) =
+          fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) B 0 D) ∧
+      LinearMap.toMatrix
+          (throughSubspaceAdaptedBasis V A U₀ hU₀.disjoint data 0)
+          (throughSubspaceAdaptedBasis V A U₀ hU₀.disjoint data (Fin.last N))
+          (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) =
+        fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (Fin (Module.finrank K U₀))
+            (throughSubspaceEndpointComplementIndex V A U₀ 0) K)
+          (0 : Matrix (throughSubspaceEndpointComplementIndex V A U₀ (Fin.last N))
+            (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (throughSubspaceEndpointComplementIndex V A U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex V A U₀ 0) K) := by
+  dsimp
+  constructor
+  · exact exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero
+      V A U₀ hU₀.disjoint (throughSubspaceEndpointChartDataOfFiniteDimensional V A U₀ hU₀) p
+  · exact toMatrix_chainMap_zero_last_endpointChartData_eq_fromBlocks_one_zero_zero
+      V A U₀ hU₀
 
 /-- A finite-dimensional through-layer edge has concrete adapted-basis block form `[I B; 0 D]`. -/
 theorem exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero
@@ -612,6 +825,89 @@ theorem isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap
         (chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
           (Fin.zero_le (Fin.last N)))) := by
   simpa [chainMap_reverse_eq_paper] using hU₀
+
+/-- Finite-dimensional paper-order layers supply endpoint-compatible chart data. -/
+theorem exists_isCompl_ker_paperEndpointChartDataOfFiniteDimensional
+    [∀ j, FiniteDimensional K (W j)] :
+    ∃ U₀ : Submodule K (reverseVertex W 0),
+      IsCompl U₀
+          (LinearMap.ker
+            (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+              (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))) ∧
+        Module.finrank K U₀ =
+          Module.finrank K
+            (LinearMap.range
+              (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+                (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))) ∧
+          Nonempty (ThroughSubspaceChartData (reverseVertex W) (reverseEdge W B) U₀
+            (Fin (Module.finrank K U₀))
+            (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀)) := by
+  rcases exists_isCompl_ker_throughSubspaceEndpointChartDataOfFiniteDimensional
+      (reverseVertex W) (reverseEdge W B) with
+    ⟨U₀, hU₀, hfinU₀, hdata⟩
+  refine ⟨U₀, ?_, ?_, hdata⟩
+  · simpa [chainMap_reverse_eq_paper] using hU₀
+  · have htotal :
+        chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+            (Fin.zero_le (Fin.last N)) =
+          paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+            (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))) :=
+      chainMap_reverse_eq_paper W B 0 (Fin.last N) (Fin.zero_le (Fin.last N))
+    rw [htotal] at hfinU₀
+    exact hfinU₀
+
+/-- Endpoint-compatible paper data gives one reversed edge block and the total paper block. -/
+theorem paperEndpointChartData_edge_and_totalProduct_blocks
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) :
+    let hU₀rev := isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀
+    let data := throughSubspaceEndpointChartDataOfFiniteDimensional
+      (reverseVertex W) (reverseEdge W B) U₀ hU₀rev
+    (∃ Bmat : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+          p.castSucc) K,
+      ∃ Dmat : Matrix
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+            p.castSucc) K,
+        LinearMap.toMatrix
+            (throughSubspaceAdaptedBasis (reverseVertex W) (reverseEdge W B) U₀
+              hU₀rev.disjoint data p.castSucc)
+            (throughSubspaceAdaptedBasis (reverseVertex W) (reverseEdge W B) U₀
+              hU₀rev.disjoint data p.succ)
+            (reverseEdge W B p) =
+          fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+            (Fin (Module.finrank K U₀)) K) Bmat 0 Dmat) ∧
+      LinearMap.toMatrix
+          (throughSubspaceAdaptedBasis (reverseVertex W) (reverseEdge W B) U₀
+            hU₀rev.disjoint data 0)
+          (throughSubspaceAdaptedBasis (reverseVertex W) (reverseEdge W B) U₀
+            hU₀rev.disjoint data (Fin.last N))
+          (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+            (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N)))) =
+        fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix (Fin (Module.finrank K U₀))
+            (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0)
+            K)
+          (0 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (Fin (Module.finrank K U₀)) K)
+          (0 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0)
+            K) := by
+  dsimp
+  simpa [chainMap_reverse_eq_paper] using
+    (endpointChartData_edge_and_totalProduct_blocks
+      (reverseVertex W) (reverseEdge W B) U₀
+      (isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀) p)
 
 /-- The adapted matrix of one paper-order edge in the reversed finite chart data. -/
 def paperAdaptedReverseEdgeMatrix

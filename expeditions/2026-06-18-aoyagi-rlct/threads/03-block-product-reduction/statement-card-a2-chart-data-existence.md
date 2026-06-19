@@ -12,6 +12,9 @@
 >   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`,
 >   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`,
 >   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`,
+>   `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointChartDataOfFiniteDimensional`,
+>   `DLNFibre.DLN.Aoyagi.nonempty_throughSubspaceEndpointChartDataOfFiniteDimensional`,
+>   `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_throughSubspaceEndpointChartDataOfFiniteDimensional`,
 >   and
 >   `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional`
 >   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
@@ -22,18 +25,21 @@
 >   chooses `U0` complementary to the total kernel and carries the equality
 >   `finrank K U0 = finrank K (LinearMap.range P)`. The concrete edge and
 >   endpoint corollaries instantiate the existing block-form theorems with
->   these chosen complements and `Module.finBasis` bases.
+>   these chosen complements and `Module.finBasis` bases. The
+>   endpoint-compatible construction chooses the source complement to be the
+>   total kernel and arbitrary complements elsewhere.
 > - **Proved.** Existence of concrete finite-indexed supplied chart data from
 >   finite-dimensional layer hypotheses, using only elementary complement
 >   existence and finite-dimensional bases; concrete finite-basis versions of
->   the per-edge `[I B; 0 D]`, unitriangular chart-preservation, and endpoint
->   `[I 0; 0 0]` block statements.
+>   the per-edge `[I B; 0 D]`, unitriangular chart-preservation, endpoint
+>   `[I 0; 0 0]` block statements, and endpoint-compatible chart-data
+>   existence.
 > - **Assumed.** Field-vector-space hypotheses and
 >   `[∀ j, FiniteDimensional K (V j)]`. The construction is noncomputable and
 >   makes arbitrary complement and basis choices.
 > - **Cited.** None.
 > - **Deferred.** Expressing the paper-side rank/open-chart hypotheses against
->   these coordinates; running the chart-local
+>   these coordinates; proving edge-matrix composition; running the chart-local
 >   product-reduction induction; and all analytic/RLCT consequences.
 > - **Kill conditions.** This is not a fixed-coordinate chart theorem. Product
 >   rank alone does not make preselected top-left layer blocks invertible; the

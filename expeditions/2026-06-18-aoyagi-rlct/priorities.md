@@ -32,10 +32,11 @@ on the session's original cwd.
    and `chainMap_reverse_eq_paper` are Lean-proved, finite paper-order
    edge/endpoint block wrappers are Lean-proved, and algebraic determinant-chart
    membership plus one-edge right elimination for adapted paper edge matrices
-   is Lean-proved. Next build endpoint-compatible supplied chart data: a shared
-   adapted basis family whose source complement is the total kernel, so edge
-   matrices and the endpoint total-product matrix can compose before the
-   product-reduction induction is assembled.
+   is Lean-proved. Endpoint-compatible supplied chart data and a shared adapted
+   basis family are also Lean-proved, including paper-order one-edge/total
+   product packaging. Next prove the edge-matrix composition API in that shared
+   basis family, then assemble the product-reduction induction from the
+   one-edge elimination step.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

@@ -492,3 +492,39 @@ shared adapted basis family whose endpoint source complement is the total
 kernel; the current concrete finite edge wrappers use automatically chosen
 complements at every vertex, while the endpoint total-product theorem uses
 `ker P` as the source complement.
+
+## 2026-06-19 A2 endpoint-compatible chart data
+
+Added a named shared adapted basis family:
+
+- `throughSubspaceAdaptedBasis`.
+
+Using that basis family:
+
+- `exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero`
+  restates the edge `[I B; 0 D]` theorem with the named basis at adjacent
+  vertices.
+- `toMatrix_chainMap_zero_last_chartData_eq_fromBlocks_one_zero_zero_of_maps_complement_to_zero`
+  states the endpoint `[I 0; 0 0]` theorem for any supplied chart data whose
+  source complement maps to zero under the total product.
+
+Then added endpoint-compatible finite chart data:
+
+- `throughSubspaceEndpointComplement`: source complement is the total kernel,
+  other complements are chosen arbitrarily;
+- `throughSubspaceEndpointComplementIndex`;
+- `throughSubspaceEndpointChartDataOfFiniteDimensional`;
+- `exists_isCompl_ker_throughSubspaceEndpointChartDataOfFiniteDimensional`;
+- `toMatrix_chainMap_zero_last_endpointChartData_eq_fromBlocks_one_zero_zero`;
+- `endpointChartData_edge_and_totalProduct_blocks`.
+
+Finally added paper-order wrappers:
+
+- `exists_isCompl_ker_paperEndpointChartDataOfFiniteDimensional`;
+- `paperEndpointChartData_edge_and_totalProduct_blocks`.
+
+This removes the previous endpoint-basis mismatch: one edge matrix and the
+total product matrix can now be stated in the same endpoint-compatible adapted
+basis family, including in paper order. It still does not prove that the
+ordered product of all edge matrices equals the endpoint total matrix in this
+basis family, and it does not run the product-reduction induction.

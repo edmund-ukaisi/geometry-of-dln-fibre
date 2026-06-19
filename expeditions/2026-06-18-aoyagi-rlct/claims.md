@@ -99,7 +99,9 @@ No such claim is formalisation-ready until both fields are filled.
   paper-order edge block, unitriangular, and endpoint wrappers are proved. The
   algebraic determinant-chart predicate layer for adapted paper edge matrices
   is proved. A one-edge right-elimination corollary for identity-corner adapted
-  edges is proved. The full source Theorem 3 claim remains blocked.
+  edges is proved. Endpoint-compatible shared adapted bases, finite chart data,
+  and paper-order one-edge/total-product block packaging are proved. The full
+  source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -155,13 +157,25 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero`
   and bundled chart-data theorem
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
+  plus shared adapted-basis theorem
+  `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero`
   plus endpoint total-product theorem
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`
+  and shared-basis endpoint theorem
+  `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_chartData_eq_fromBlocks_one_zero_zero_of_maps_complement_to_zero`
   and finite-dimensional endpoint theorem
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`
   plus finite chart-data existence theorems
   `DLNFibre.DLN.Aoyagi.throughSubspaceChartDataOfFiniteDimensional`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedBasis`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointComplement`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointComplementIndex`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointChartDataOfFiniteDimensional`,
+  `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_endpointChartData_eq_fromBlocks_one_zero_zero`,
+  `DLNFibre.DLN.Aoyagi.endpointChartData_edge_and_totalProduct_blocks`,
   `DLNFibre.DLN.Aoyagi.nonempty_throughSubspaceChartDataOfFiniteDimensional`,
+  `DLNFibre.DLN.Aoyagi.nonempty_throughSubspaceEndpointChartDataOfFiniteDimensional`,
+  `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_throughSubspaceEndpointChartDataOfFiniteDimensional`,
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap`,
@@ -172,6 +186,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_paperAdaptedReverseEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_unitriangular_paperAdaptedReverseEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.productReduction_paperAdaptedReverseEdgeMatrix_rightElim`,
+  `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_paperEndpointChartDataOfFiniteDimensional`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointChartData_edge_and_totalProduct_blocks`,
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`,
@@ -221,26 +237,27 @@ No such claim is formalisation-ready until both fields are filled.
   Also proved one-edge right elimination: the explicit witnessed block identity
   is proved over a `NonAssocRing`; the equality and identity-corner wrappers
   give the form used by adapted edge matrices, with the paper adapted-edge
-  corollary in the reversed Aoyagi order.
+  corollary in the reversed Aoyagi order. Also proved endpoint-compatible
+  chart data with a shared adapted basis family: edge matrices and the total
+  product matrix can now be stated in the same supplied basis family, including
+  paper-order wrappers for the reversed Aoyagi chain.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem. The full product-reduction
   theorem would additionally need the paper-side rank parameter/open-neighborhood
-  bridge, endpoint-compatible shared adapted bases, and product-reduction
-  induction assembly, not yet proved.
+  bridge, edge-matrix composition in the shared basis family, and
+  product-reduction induction assembly, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
   as analytic theorems; instead, prove the elementary entry-ideal algebra and
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
-  local analytic/certificate transport remain open. The concrete finite edge
-  wrappers do not yet compose definitionally with the endpoint theorem, because
-  the endpoint theorem uses the total kernel as the source complement while the
-  concrete finite edge wrappers use automatically chosen complements at every
-  vertex. The through-subspace/chart data layer still needs a shared adapted
-  basis family and connection to the chart-local product-reduction induction,
-  and any topological open-neighborhood statement remains separate; see
+  local analytic/certificate transport remain open. The shared adapted-basis
+  layer removes the previous endpoint-basis mismatch, but it still does not
+  prove that the ordered product of all edge matrices equals the endpoint total
+  matrix or run the chart-local product-reduction induction. Any topological
+  open-neighborhood statement remains separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point
