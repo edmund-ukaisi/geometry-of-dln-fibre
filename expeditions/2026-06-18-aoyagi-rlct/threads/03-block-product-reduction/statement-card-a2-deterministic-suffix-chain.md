@@ -32,10 +32,12 @@
 >   `P j j le_rfl = 1`, and determinant-chart hypotheses for the recursively
 >   transformed edges.
 > - **Cited.** None.
-> - **Deferred.** Continuity of the recursively produced state fields,
->   source-faithful neighborhoods where the recursive chart hypotheses hold,
->   exact rank strata, regular coordinate-change certificates, and RLCT
->   consequences.
+> - **Deferred beyond this card.** Continuity of the recursively produced
+>   `Bprev` field is covered separately in
+>   `statement-card-a2-recursive-bprev-topology.md`. Still deferred here are
+>   exact rank strata, regular coordinate-change certificates, RLCT
+>   consequences, and continuity of `L`, `Ctop`, and `D` if later certificates
+>   require those fields.
 > - **Kill conditions.** Do not read the recursive algebra theorem as a
 >   topological neighborhood theorem or as proof that exact-rank conditions are
 >   open.

@@ -177,6 +177,20 @@ is now a wrapper extracting its witnesses from this deterministic state. This
 is still algebraic: continuity of the recursive state and source-faithful chart
 neighborhoods remain open.
 
+Thirteenth latest A2 update: the recursive `Bprev` topology handoff has landed.
+`continuousAt_matrix_inv_of_isUnit_det`,
+`continuousAt_chartLocalSuffixState_step_B`, and
+`continuousAt_chartLocalSuffixState_suffixState_B` in `ChartTopology.lean`
+prove continuity of the accumulated upper block produced by the deterministic
+suffix recursion, under recursive basepoint determinant-chart hypotheses. The
+fixed-base theorem
+`paperEndpointFixedBaseContinuousEdges_recursiveBprev_mem_nhds_transformed_identityCornerDetChart`
+in `FixedBasepointChart.lean` feeds that actual recursive `Bprev` family into
+the existing variable-`Bprev` chart-neighborhood handoff. This remains a chart
+neighborhood theorem under supplied basepoint chart hypotheses; exact-rank
+neighborhoods, certificate transport, and the full source Theorem 3 statement
+remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -974,3 +974,35 @@ Still open: continuity of the recursively produced `suffixState` fields,
 source-faithful neighborhoods where the recursive transformed-edge charts hold,
 certificate transport, and the full source Theorem 3 statement. Exact rank
 assumptions remain separate.
+
+## 2026-06-19 A2 recursive-Bprev topology handoff
+
+Extended the topology layer from supplied `Bprev` families to the actual
+deterministic accumulated upper blocks produced by `suffixState`.
+
+In `ChartTopology.lean`:
+
+- `continuousAt_matrix_inv_of_isUnit_det`;
+- `continuousAt_chartLocalSuffixState_step_B`;
+- `continuousAt_chartLocalSuffixState_suffixState_B`.
+
+The one-step continuity theorem proves that the updated block
+
+`Bnext = (topLeftCorner M)⁻¹ * upperRightBlock M`
+
+varies continuously with the edge and previous accumulated upper block, assuming
+the transformed edge is in the determinant chart at the base point. The
+recursive theorem iterates this along `suffixState`, proving continuity of the
+`B` field at every lower endpoint under the recursive basepoint chart
+hypotheses.
+
+In `FixedBasepointChart.lean`,
+`paperEndpointFixedBaseContinuousEdges_recursiveBprev_mem_nhds_transformed_identityCornerDetChart`
+feeds the recursively produced `Bprev` family into the existing
+variable-`Bprev` handoff. The result is a fixed-base neighborhood on which all
+recursive transformed-edge determinant charts persist, assuming those charts
+hold at the base parameter.
+
+Still open: exact-rank neighborhoods, certificate transport, the full
+source-facing Theorem 3 statement, and continuity of `L`, `Ctop`, and `D` if a
+later certificate needs those fields. Exact rank assumptions remain separate.

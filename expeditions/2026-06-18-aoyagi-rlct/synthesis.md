@@ -478,7 +478,23 @@ obtained by descending from endpoint `j` to `i`, while
 block-diagonal invariant. The public existential theorem
 `productReduction_chartLocal_suffixChain_blockDiagonal_indexed` is now a
 wrapper extracting the four fields from this deterministic state. The next
-target is continuity of `suffixState` and source-faithful chart neighborhoods.
+topological target is the recursively produced `Bprev` field and the fixed-base
+chart neighborhood it controls.
+
+The `Bprev` part of that topology target is now Lean-proved. In
+`ChartTopology.lean`, `continuousAt_matrix_inv_of_isUnit_det` packages
+continuity of matrix inversion at a unit determinant over a normed field,
+`continuousAt_chartLocalSuffixState_step_B` proves continuity of the
+one-step accumulated upper block, and
+`continuousAt_chartLocalSuffixState_suffixState_B` iterates this down the
+deterministic suffix recursion. In `FixedBasepointChart.lean`,
+`paperEndpointFixedBaseContinuousEdges_recursiveBprev_mem_nhds_transformed_identityCornerDetChart`
+feeds the actual recursively produced `Bprev` family into the existing
+variable-`Bprev` handoff. This gives a fixed-base neighborhood where the
+recursive transformed-edge determinant charts persist, assuming those charts
+hold at the base parameter. It still does not prove exact-rank neighborhoods,
+certificate transport, or continuity of the remaining `L`, `Ctop`, and `D`
+state fields.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

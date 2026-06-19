@@ -124,7 +124,10 @@ No such claim is formalisation-ready until both fields are filled.
   continuous edge and `Bprev` families is also proved. The deterministic
   one-step suffix-state update and the full recursive suffix-state
   block-diagonal invariant are now also proved at the abstract chart-local
-  algebra level. The full source Theorem 3 claim remains blocked.
+  algebra level. The recursively produced `Bprev` block is proved continuous
+  under recursive basepoint chart hypotheses, and the fixed-base chart
+  neighborhood wrapper now uses that actual recursive `Bprev` family. The full
+  source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -178,7 +181,11 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.step_blockDiagonal`,
   `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.suffixState_blockDiagonal`, and
   `DLNFibre.DLN.Aoyagi.productReduction_identityCorner_suffixChain_rightElim`
-  in the same file; rank bridge theorems
+  in the same file; topology lemmas
+  `DLNFibre.DLN.Aoyagi.continuousAt_matrix_inv_of_isUnit_det`,
+  `DLNFibre.DLN.Aoyagi.continuousAt_chartLocalSuffixState_step_B`, and
+  `DLNFibre.DLN.Aoyagi.continuousAt_chartLocalSuffixState_suffixState_B` in
+  `lean/DLNFibre/DLN/Aoyagi/ChartTopology.lean`; rank bridge theorems
   `DLNFibre.DLN.Aoyagi.rank_toMatrix_eq_finrank_range` and
   `DLNFibre.DLN.Aoyagi.rank_schurComplement_eq_sub_rank_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`; entry-ideal transport lemmas in
@@ -295,6 +302,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`
   and
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_variableBprev_mem_nhds_transformed_identityCornerDetChart`
+  and
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_recursiveBprev_mem_nhds_transformed_identityCornerDetChart`
   are in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`; the one-step
   suffix theorem
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocal_suffixStep_fromBlocks_indexed`
@@ -408,12 +417,12 @@ No such claim is formalisation-ready until both fields are filled.
   transformed basepoint matrix-neighborhood packaging, and residual-rank bridge
   are proved, and the continuous-linear-map pullback plus fixed-family
   edge-product neighborhood assembly plus variable-`Bprev` continuity handoff
-  are proved, but this is not yet the source-faithful neighborhood theorem
-  needed for the induction-produced `Bprev` blocks. The deterministic recursive
-  suffix-state algebra is proved, but continuity of that recursive data and
-  source-faithful chart neighborhoods are still open. Still open:
-  source-faithful Theorem 3 statement and certificate transport. Exact
-  rank-stratum hypotheses remain separate; see
+  are proved. The deterministic recursive suffix-state algebra is proved, and
+  continuity of the recursively produced `Bprev` field plus its fixed-base
+  transformed-chart neighborhood handoff are now proved under recursive
+  basepoint chart hypotheses. Still open: source-faithful full Theorem 3
+  statement, certificate transport, and continuity of the remaining state
+  fields if a later certificate needs them. Exact rank-stratum hypotheses remain separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point
