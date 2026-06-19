@@ -264,3 +264,21 @@ takes local complements and complement bases as inputs for the source and target
 of a single edge. It does not yet bundle complement data across all layers, run
 the chart-local product-reduction induction, or state any analytic/RLCT
 consequence.
+
+## 2026-06-19 A2 unitriangular chart-form corollary
+
+Extended `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean` with
+`exists_fromBlocks_one_zero_of_upperUnitriangular_mul`. The theorem packages the
+already-proved identity
+
+```text
+[I -F; 0 I] [I B; 0 D] = [I B - F D; 0 D]
+```
+
+as an existential chart-form preservation statement: if a matrix has some
+identity-corner, zero-lower-left block form, then the upper-unitriangular left
+multiplier leaves it in some such form.
+
+This is still pure block algebra over a commutative ring. It does not run the
+product-reduction induction, choose the complement data supplied to the
+through-layer matrix theorems, or state analytic/RLCT consequences.

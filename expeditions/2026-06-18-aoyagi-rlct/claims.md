@@ -83,8 +83,9 @@ No such claim is formalisation-ready until both fields are filled.
   chart-local induction-step block identity, elementary matrix-entry ideal
   transport lemmas, through-subspace transport theorem, and per-edge
   transported-basis matrix block forms are proved; prefix-transported through
-  bases and the endpoint total-product block form are also proved. The full
-  source Theorem 3 claim remains blocked.
+  bases, the endpoint total-product block form, and the local unitriangular
+  chart-form preservation corollary are also proved. The full source Theorem 3
+  claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -102,6 +103,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; local chart-stability
   theorem `DLNFibre.DLN.Aoyagi.upperUnitriangular_mul_fromBlocks_one_zero` in
+  the same file; chart-form preservation corollary
+  `DLNFibre.DLN.Aoyagi.exists_fromBlocks_one_zero_of_upperUnitriangular_mul` in
   the same file; entry-ideal transport lemmas in
   `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`; through-layer subspace theorem
   `DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces` in
@@ -133,11 +136,12 @@ No such claim is formalisation-ready until both fields are filled.
   to adjacent layers by `throughSubspacePrefixEquiv`. Also proved that the
   total chain map has endpoint matrix form `[I 0; 0 0]` when the
   source complement is the total kernel and the target through-basis is
-  transported.
+  transported. Also proved that the upper-unitriangular chart transformation
+  preserves existence of an identity-corner, zero-lower-left block form.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`. The full product-reduction
   theorem would additionally need rank/neighborhood, bundled local complement
-  data, and product-reduction chart assembly, not yet proved.
+  data, and product-reduction induction assembly, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity

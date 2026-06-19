@@ -177,7 +177,10 @@ intermediate layer bases simultaneously.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
-[I B - F D; 0 D]`. It does not prove the existential basis choice.
+`[I B - F D; 0 D]`. The corollary
+`exists_fromBlocks_one_zero_of_upperUnitriangular_mul` packages this as
+preservation of the identity-corner chart form once a matrix is known to have
+some form `[I B; 0 D]`. It does not run Aoyagi's full induction.
 
 ## Drift guard
 
