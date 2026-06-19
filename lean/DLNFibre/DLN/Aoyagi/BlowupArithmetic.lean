@@ -541,6 +541,38 @@ theorem IntroducedLabelExponentCertificates.updateSelected
       · rw [ht_old hintro hsame, hl_old hintro hsame]
         exact hc.least_value
 
+/-- Replace the vector assignment at one selected label, leaving all other labels unchanged. -/
+def updateSelectedLabelVector
+    (s0 k0 : ℕ) (new : ℕ → ℤ) (old : ℕ → ℕ → ℕ → ℤ) (s k i : ℕ) : ℤ :=
+  if s = s0 ∧ k = k0 then new i else old s k i
+
+/-- Replace a scalar label assignment at one selected label, leaving all other labels unchanged. -/
+def updateSelectedLabelScalar
+    (s0 k0 : ℕ) (new : ℤ) (old : ℕ → ℕ → ℤ) (s k : ℕ) : ℤ :=
+  if s = s0 ∧ k = k0 then new else old s k
+
+@[simp] theorem updateSelectedLabelVector_selected
+    (s0 k0 : ℕ) (new : ℕ → ℤ) (old : ℕ → ℕ → ℕ → ℤ) (i : ℕ) :
+    updateSelectedLabelVector s0 k0 new old s0 k0 i = new i := by
+  simp [updateSelectedLabelVector]
+
+theorem updateSelectedLabelVector_of_ne
+    {s0 k0 s k : ℕ} (new : ℕ → ℤ) (old : ℕ → ℕ → ℕ → ℤ) (i : ℕ)
+    (hne : ¬ (s = s0 ∧ k = k0)) :
+    updateSelectedLabelVector s0 k0 new old s k i = old s k i := by
+  simp [updateSelectedLabelVector, hne]
+
+@[simp] theorem updateSelectedLabelScalar_selected
+    (s0 k0 : ℕ) (new : ℤ) (old : ℕ → ℕ → ℤ) :
+    updateSelectedLabelScalar s0 k0 new old s0 k0 = new := by
+  simp [updateSelectedLabelScalar]
+
+theorem updateSelectedLabelScalar_of_ne
+    {s0 k0 s k : ℕ} (new : ℤ) (old : ℕ → ℕ → ℤ)
+    (hne : ¬ (s = s0 ∧ k = k0)) :
+    updateSelectedLabelScalar s0 k0 new old s k = old s k := by
+  simp [updateSelectedLabelScalar, hne]
+
 /-- Domain-extension bookkeeping only: add one current-layer label certificate. -/
 theorem IntroducedLabelExponentCertificates.extendDomain_succ_current
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
@@ -1120,6 +1152,38 @@ theorem IntroducedLabelExponentCertificates.case1_selectedLowerTail_sameDomain
     hfirst.lowerTailVector_labelExponentCertificate hselectedCert hflat hS hSL
   rw [ht_selected, hn_selected, hl_selected]
   exact hnew
+
+/-- Convenience form of the conditional Case 1 same-domain update using explicit
+selected-label data overrides. This is still only certificate bookkeeping. -/
+theorem IntroducedLabelExponentCertificates.case1_selectedLowerTail_updateData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hlevelLeast : leastValue s0 k0 = (level s0 k0 : ℤ))
+    (hflat : FlatTailFromPred L S (t s0 k0) (level s0 k0 : ℤ))
+    (hS : 2 ≤ S) (hSL : S ≤ L) :
+    IntroducedLabelExponentCertificates L n S J
+      (updateSelectedLabelVector s0 k0 (lowerTailVector (t s0 k0) S (J : ℤ)) t)
+      (updateSelectedLabelScalar s0 k0
+        (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar s0 k0 (J : ℤ) leastValue) := by
+  refine hcert.case1_selectedLowerTail_sameDomain hfirst hlevelLeast hflat hS hSL
+    ?_ ?_ ?_ ?_ ?_ ?_
+  · exact funext fun i ↦ updateSelectedLabelVector_selected s0 k0
+      (lowerTailVector (t s0 k0) S (J : ℤ)) t i
+  · exact updateSelectedLabelScalar_selected s0 k0
+      (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator
+  · exact updateSelectedLabelScalar_selected s0 k0 (J : ℤ) leastValue
+  · intro s k _ hne
+    exact funext fun i ↦ updateSelectedLabelVector_of_ne
+      (lowerTailVector (t s0 k0) S (J : ℤ)) t i hne
+  · intro s k _ hne
+    exact updateSelectedLabelScalar_of_ne
+      (numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) numerator hne
+  · intro s k _ hne
+    exact updateSelectedLabelScalar_of_ne (J : ℤ) leastValue hne
 
 section MonomialRecurrence
 
