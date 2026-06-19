@@ -35,3 +35,4 @@ import DLNFibre.Core.OrbitVariety
 import DLNFibre.Core.CotangentJacobian
 import DLNFibre.Core.BoxMoveDegeneration
 import DLNFibre.Core.RankLocusClosed
+import DLNFibre.Core.BoxMoveGeneral
