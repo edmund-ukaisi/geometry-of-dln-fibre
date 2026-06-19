@@ -23,3 +23,4 @@ import DLNFibre.Core.CThetaDropM
 import DLNFibre.Core.CThetaValue
 import DLNFibre.Core.CThetaThetaBridge
 import DLNFibre.Core.IntegralDimension
+import DLNFibre.Core.PolynomialDimension
