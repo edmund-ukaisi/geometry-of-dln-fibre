@@ -610,9 +610,14 @@ No such claim is formalisation-ready until both fields are filled.
   `leastValue = level` for introduced labels and flat-tail only above the
   current pivot. Added arbitrary selected-entry finite-center facts for Case 1
   and Case 2 centers: selected value-set membership and divisibility by the
-  selected variable for every transformed finite-center generator.
+  selected variable for every transformed finite-center generator. Added the
+  generic pivot-first `Q/P` algebra bridge: a matrix with a selected pivot
+  entry equal to `1` reindexes to `pivotPreQBlock`, and the existing normalised
+  `Q/P` identities apply under explicit quotient witnesses
+  `forall i, b i = q i * b0`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
-  accepted yet.
+  accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
+  transport, row-weight quotient witnesses, and exponent updates remain open.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

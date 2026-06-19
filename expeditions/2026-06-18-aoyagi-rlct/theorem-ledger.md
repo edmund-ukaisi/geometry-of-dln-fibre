@@ -257,6 +257,19 @@ chart coverage, non-displayed transition formulas, row/column permutation
 symmetry, regularity/Jacobian facts, exponent updates, termination,
 normal-crossing certificates, or RLCT extraction.
 
+Second latest A4 update: the generic pivot-first `Q/P` algebra bridge has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. Proved Lean names
+include `pivotComplement`, `pivotFirstIndexEquiv`, `pivotFirstMatrix`,
+`pivotFirstX`, `pivotFirstY`, `pivotFirstD`,
+`pivotFirstMatrix_eq_pivotPreQBlock`,
+`weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul_pivotQ`, and
+`weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul`. This is not a
+source reproduction of arbitrary non-displayed pivot charts. It proves only
+that a matrix with selected pivot entry `1` can be put in the existing
+normalised top-left block shape and that the existing `Q/P` identities apply
+under explicit quotient witnesses `forall i, b i = q i * b0`, with the
+following factor and weights already in pivot-first coordinates.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

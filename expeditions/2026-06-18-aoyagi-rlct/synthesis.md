@@ -242,6 +242,12 @@ interface without surfacing it.
   by the selected pivot, and all transformed center generators are divisible by
   `u`. This helps chart-family indexing but is not chart coverage or a
   non-displayed transition theorem.
+  The generic pivot-first `Q/P` algebra bridge is also proved: a matrix with a
+  selected pivot entry equal to `1` can be reindexed to the existing
+  `pivotPreQBlock` shape, and the normalised `Q/P` identities apply under
+  explicit quotient witnesses. This still leaves the Aoyagi-specific arbitrary
+  chart construction, coordinate transport, row-weight quotient witnesses, and
+  exponent updates open.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

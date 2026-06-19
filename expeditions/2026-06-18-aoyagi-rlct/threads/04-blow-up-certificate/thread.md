@@ -283,6 +283,26 @@ charts. It does not construct an affine blow-up atlas, prove non-displayed
 transition formulas, establish row/column permutation symmetry, or prove chart
 coverage.
 
+## 2026-06-19 Lean generic pivot-first `Q/P` algebra bridge
+
+Reproduction: `reproduction-arbitrary-pivot-q-p-bridge-a4.md`.
+Statement card: `statement-card-a4-generic-pivot-first-q-p-bridge.md`.
+
+Lean now proves the generic algebraic bridge from an arbitrary normalised
+matrix pivot to the already-formalised top-left `Q/P` identities. The new
+`pivotFirstMatrix` API puts a chosen row and column pivot first, names the
+lower-left/upper-right/lower-right pieces, and proves that pivot entry `1`
+identifies the reindexed matrix with `pivotPreQBlock`. The two pivot-first
+`weightedPivotBlockRowOp...` corollaries apply the existing `Q/P` clearing
+identities under the explicit quotient-witness hypothesis
+`forall i, b i = q i * b0`.
+
+This is pure finite matrix algebra. Aoyagi displays only the top-left pivot
+chart in Case 1(2) and Case 2; this checkpoint does not prove non-displayed
+selected-entry charts, coordinate transport for following factors and weights,
+quotient witnesses for arbitrary Aoyagi pivot rows, chart coverage, exponent
+updates, or a transition invariant.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.
