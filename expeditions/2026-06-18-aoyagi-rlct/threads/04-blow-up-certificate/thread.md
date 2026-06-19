@@ -437,6 +437,29 @@ does not prove the full source blockdiag identity, arbitrary-pivot chart
 coverage, regularity/Jacobian facts, exponent updates, or transition
 invariants.
 
+## 2026-06-19 Lean Case 2 transported following factor and monomial rows
+
+Reproduction: `reproduction-case2-transported-following-factor-monomial-a4.md`.
+Statement card: `statement-card-a4-case2-transported-following-factor-monomial.md`.
+
+Lean now names the displayed following-factor update
+`case2DisplayedTransportedFollowingFactor`, defined as `Q^{-1}` times the
+pivot-first following factor. It also names the residual source row projection
+`case2ResidualRowLevel` and proves every displayed residual row satisfies
+`J+1 <= rowLevel`.
+
+The theorem
+`exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec`
+applies the pivot-first `Q/P` product identity when the updated row weights are
+`u * monomialRec step rowLevel`. The quotient witnesses for the `P` matrix are
+chosen from recurrence divisibility and the row-level lower bound.
+
+This is still local finite algebra. It assumes the row weights have already
+been represented in the row-index recurrence form and does not prove Aoyagi's
+source recurrence, full source blockdiag identity, arbitrary-pivot chart
+coverage, regularity/Jacobian facts, exponent updates, or transition
+invariants.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

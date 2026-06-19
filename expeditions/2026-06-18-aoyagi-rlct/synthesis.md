@@ -289,6 +289,14 @@ interface without surfacing it.
   `exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights` then applies
   the existing displayed `Q/P` theorem. This still does not prove the full
   source blockdiag identity, chart regularity, or exponent update.
+  Lean also names the displayed transported following factor
+  `case2DisplayedTransportedFollowingFactor` as `Q^{-1}` times the pivot-first
+  following factor, and proves
+  `exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec`.
+  That wrapper supplies the `P` quotient witnesses from monomial recurrence
+  divisibility using the residual source-row bound `J+1 <= rowLevel`. It
+  assumes the row weights already have the form `u * monomialRec step rowLevel`;
+  it does not prove the source recurrence or the full transition.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

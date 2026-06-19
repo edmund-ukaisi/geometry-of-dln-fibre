@@ -492,7 +492,8 @@ No such claim is formalisation-ready until both fields are filled.
   also proved: the selected variable in the displayed residual block is moved
   into updated row weights before applying `Q/P`. Missing arbitrary pivot
   charts, the full source blockdiag identity, full polynomial-coordinate chart
-  construction, the printed `b'_i` versus standalone-`u` ambiguity,
+  construction, proof that the source recurrence produces the displayed
+  row-index weights, the printed `b'_i` versus standalone-`u` ambiguity,
   termination, and boundary cases remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
@@ -654,7 +655,11 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedSubstitutionMatrix_eq_mul_normalized`,
   `case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst`,
   `case2Displayed_diagonal_mul_substitutionMatrix_mul_followingFactor`, and
-  `exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights`.
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights`. Added
+  `case2ResidualRowLevel`, `case2ResidualRowLevel_ge`,
+  `case2ResidualRowLevel_displayedPivotRow`,
+  `case2DisplayedTransportedFollowingFactor`, and
+  `exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
   transport, row-weight hypotheses in pivot-first coordinates, and exponent

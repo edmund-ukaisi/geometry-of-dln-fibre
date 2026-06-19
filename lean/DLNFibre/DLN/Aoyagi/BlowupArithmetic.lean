@@ -660,6 +660,11 @@ abbrev Case2ResidualRowIndex (n : ℕ → ℕ) (S J : ℕ) :=
 abbrev Case2ResidualColIndex (n : ℕ → ℕ) (S J : ℕ) :=
   (case2ResidualBlockCols n S J : Type)
 
+/-- The source row label underlying a displayed Case 2 residual-row index. -/
+def case2ResidualRowLevel
+    (n : ℕ → ℕ) (S J : ℕ) (i : Case2ResidualRowIndex n S J) : ℕ :=
+  i.1
+
 /-- Candidate selected entries in the Case 2 residual-block center, not a chart cover proof. -/
 def case2ResidualBlockPivotEntries (n : ℕ → ℕ) (S J : ℕ) : Finset (ℕ × ℕ) :=
   (case2ResidualBlockRows n S J).product (case2ResidualBlockCols n S J)
@@ -677,6 +682,12 @@ theorem mem_case2ResidualBlockPivotEntries_iff (n : ℕ → ℕ) (S J i j : ℕ)
     (i, j) ∈ case2ResidualBlockPivotEntries n S J ↔
       J + 1 ≤ i ∧ i ≤ prefixMinNat n S ∧ J + 1 ≤ j ∧ j ≤ n (S + 1) := by
   simp [case2ResidualBlockPivotEntries, and_assoc]
+
+/-- Every displayed Case 2 residual-row level is at or below the current pivot tail. -/
+theorem case2ResidualRowLevel_ge
+    (n : ℕ → ℕ) (S J : ℕ) (i : Case2ResidualRowIndex n S J) :
+    J + 1 ≤ case2ResidualRowLevel n S J i :=
+  ((mem_case2ResidualBlockRows n S J i.1).mp i.2).1
 
 /-- Aoyagi's displayed pivot entry is one candidate selected entry under continuation. -/
 theorem case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
@@ -696,6 +707,13 @@ def case2DisplayedPivotRow
   ⟨J + 1, by
     rw [mem_case2ResidualBlockRows]
     exact ⟨le_rfl, le_trans hcont (prefixMinNat_succ_le n hS)⟩⟩
+
+/-- The displayed Case 2 pivot row has source row level `J+1`. -/
+@[simp] theorem case2ResidualRowLevel_displayedPivotRow
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    case2ResidualRowLevel n S J (case2DisplayedPivotRow n hS hcont) = J + 1 :=
+  rfl
 
 /-- The displayed Case 2 pivot column `J+1`, as an element of the residual-column index type. -/
 def case2DisplayedPivotCol
@@ -2256,6 +2274,20 @@ def case2DisplayedFollowingFactor
     Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
   pivotFirstFollowingFactor (case2DisplayedPivotCol n hS hcont) C
 
+/-- The displayed Case 2 following factor after Aoyagi's `Q⁻¹ C` update. -/
+def case2DisplayedTransportedFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  pivotQinv
+      (pivotFirstY
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+    case2DisplayedFollowingFactor n hS hcont C
+
 /-- Displayed Case 2 following-factor transport for the normalised residual block. -/
 theorem case2DisplayedNormalizedMatrix_mul_followingFactor
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
@@ -2403,6 +2435,64 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights
   refine ⟨q, ?_⟩
   rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
   simpa [Matrix.mul_assoc] using hq
+
+/-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence
+indexed by the residual source row. This supplies quotient witnesses from the
+row-index lower bound; it is still only local finite algebra. -/
+theorem exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          weightedPivotDiagonal
+            (u * monomialRec step (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+          pivotFirstMatrix
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (u * monomialRec step (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          case2DisplayedTransportedFollowingFactor n hS hcont residual C := by
+  simpa [case2DisplayedTransportedFollowingFactor, case2DisplayedNormalizedMatrix,
+      case2DisplayedFollowingFactor] using
+    exists_pivotFirstQP_mul_of_pivotMul_monomialRec_eq_or_le
+      (R := R) step u
+      (rowPivot := case2DisplayedPivotRow n hS hcont)
+      (colPivot := case2DisplayedPivotCol n hS hcont)
+      (a := J + 1)
+      (level := fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        case2ResidualRowLevel n S J i.1)
+      (A := case2DisplayedNormalizedMatrix n hS hcont residual)
+      (selectedEntryNormalizedMatrix_pivot
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont) residual)
+      (C := case2DisplayedFollowingFactor n hS hcont C)
+      (fun i ↦ Or.inr (case2ResidualRowLevel_ge n S J i.1))
 
 end ColumnOperationBlocks
 

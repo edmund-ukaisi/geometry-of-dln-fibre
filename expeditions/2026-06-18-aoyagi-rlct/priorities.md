@@ -120,9 +120,12 @@ on the session's original cwd.
    before pivot-first reindexing. The first displayed Case 2 source-variable
    bridge is also Lean-proved: the selected-entry source substitution factors
    into updated row weights before the pivot-first `Q/P` theorem is applied.
-   Next A4 target: the fuller displayed Case 2 source block identity, including
-   top-row block bookkeeping and following-factor replacement in source
-   coordinates, still without arbitrary-pivot coverage.
+   The displayed `Q^{-1}C` transported following factor and a row-index
+   monomial-recurrence `Q/P` wrapper are Lean-proved, but they assume the row
+   weights have already been represented in that recurrence form. Next A4
+   target: the fuller displayed Case 2 source block identity, including top-row
+   block bookkeeping and following-factor replacement in source coordinates,
+   still without arbitrary-pivot coverage.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
