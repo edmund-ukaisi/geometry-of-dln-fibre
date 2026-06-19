@@ -66,9 +66,9 @@ theorem strictMono_comap_of_isIntegral [CommRing R] [CommRing S] [Algebra R S]
   simpa only [comap_asIdeal] using
     Ideal.comap_lt_comap_of_integral_mem_sdiff hle ⟨hxb, hxa⟩ (Algebra.IsIntegral.isIntegral x)
 
-/-- Integral injective extension: `dim S ≤ dim A` (going-up via strict-mono `comap`). -/
-theorem ringKrullDim_le_of_integral_injective [CommRing A] [CommRing S] {f : A →+* S}
-    (hf : f.IsIntegral) (_hinj : Function.Injective f) :
+/-- Integral extension: `dim S ≤ dim A` (going-up via strict-mono `comap`; injectivity unneeded). -/
+theorem ringKrullDim_le_of_integral [CommRing A] [CommRing S] {f : A →+* S}
+    (hf : f.IsIntegral) :
     ringKrullDim S ≤ ringKrullDim A := by
   algebraize [f]
   exact krullDim_le_of_strictMono _ strictMono_comap_of_isIntegral
@@ -123,7 +123,7 @@ theorem ringKrullDim_ge_of_integral_injective [CommRing A] [CommRing S] {f : A �
 theorem ringKrullDim_eq_of_integral_injective [CommRing A] [CommRing S] {f : A →+* S}
     (hf : f.IsIntegral) (hinj : Function.Injective f) :
     ringKrullDim S = ringKrullDim A :=
-  le_antisymm (ringKrullDim_le_of_integral_injective hf hinj)
+  le_antisymm (ringKrullDim_le_of_integral hf)
     (ringKrullDim_ge_of_integral_injective hf hinj)
 
 /-! ### Non-vacuity witnesses -/

@@ -30,17 +30,17 @@ dimension facts) and a prime `p`:
   additive half of the catenary content (the `≥` direction), proved unconditionally from the flat
   going-down instance and `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`.
 
-**Not proved here (precise gap, reported to the controller).** The full headline equality
-`height p + dim (R ⧸ p) = n` (the catenary `≥` direction `height p ≥ n − dim(R/p)`) is *not* closed.
-Its standard proof inducts on `n` peeling one variable via the additive brick above, but the step
-needs a *monic-coordinate-positioning* lemma — after a `k`-algebra coordinate change a nonzero
-element of `p` becomes monic in the top variable, so that `(A[X] ⧸ P)` is integral over `(A ⧸ q)`
-and the quotient dimension is preserved. That positioning is Mathlib's Noether-normalization `T`
-argument, which is `private` in `RingTheory.NoetherNormalization` (`T`, `T_leadingcoeff_isUnit`,
-`hom2_isIntegral`). Re-deriving it is a separate module; `IsCatenary` / `IsEquidimensional` /
-`ringKrullDim = trdeg` are all absent at this pin. The instance bundle (`Module.Flat A A[X]`,
-`Algebra.HasGoingDown A A[X]`, `P.LiesOver (P.under A)`, `Polynomial.Monic.quotient_isIntegral`) all
-fire by `inferInstance` — the gap is the positioning lemma, not instance propagation.
+**The full equality is closed downstream.** This module proves only the `≤` half
+(`primeHeight_add_ringKrullDim_quotient_le`). The catenary `≥` direction `height p ≥ n − dim(R/p)`
+and the full headline equality `height p + dim (R ⧸ p) = n` are closed in
+`Core.NoetherMonicPositioning` (`height_add_ringKrullDim_quotient_eq`), which imports this module
+and reuses its additive tower brick above. Its standard proof inducts on `n`, peeling one variable
+via that brick after a *monic-coordinate-positioning* step — a `k`-algebra coordinate change making
+a nonzero element of `p` monic in the top variable, so `(A[X] ⧸ P)` is integral over `(A ⧸ q)` and
+the quotient dimension is preserved. That positioning is Mathlib's Noether-normalization `T`
+argument, `private` in `RingTheory.NoetherNormalization`; `Core.NoetherMonicPositioning` re-derives
+the one public consequence it needs (`exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit`), over any
+field.
 -/
 
 open Order PrimeSpectrum

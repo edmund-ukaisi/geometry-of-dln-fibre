@@ -3,6 +3,7 @@ import Mathlib.RingTheory.KrullDimension.Polynomial
 import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.Ideal.GoingDown
 import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
+import Mathlib.Algebra.MvPolynomial.Division
 import DLNFibre.Core.IntegralDimension
 import DLNFibre.Core.PolynomialDimension
 
@@ -367,5 +368,22 @@ example : ringKrullDim ((MvPolynomial (Fin 2) ℚ) ⧸ (⊥ : Ideal (MvPolynomia
     = (2 : WithBot ℕ∞) := by
   rw [ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _),
     ringKrullDim_mvPolynomial_fin_field, Nat.cast_ofNat]
+
+/-- Witness that the **height summand carries weight** (not just the degenerate `⊥` case where it is
+`0`): at a prime `p` of `R = ℚ[x,y]` of height `1`, the headline reduces to `1 + dim (R ⧸ p) = 2` —
+the nonzero height `1` genuinely contributing to the sum, so `dim (R ⧸ p) = 1` (the quotient cut
+down by the height). The hypothesis is satisfiable: the next witness exhibits a concrete nonzero
+proper prime `(x)` (a principal, hence height-`1`, prime) at which it fires. -/
+example (p : Ideal (MvPolynomial (Fin 2) ℚ)) [p.IsPrime] (hp : p.height = 1) :
+    (1 : WithBot ℕ∞) + ringKrullDim ((MvPolynomial (Fin 2) ℚ) ⧸ p) = (2 : WithBot ℕ∞) := by
+  have h := height_add_ringKrullDim_quotient_eq ℚ 2 p
+  rw [hp] at h
+  exact_mod_cast h
+
+/-- The previous witness's height-`1` hypothesis is satisfiable: `(x)` is a (nonzero, proper) prime
+of `ℚ[x,y]` (`MvPolynomial.X_prime`). (Its height is `1` by Krull's principal-ideal theorem; that
+height computation is not carried out here.) -/
+example : (Ideal.span {MvPolynomial.X 0} : Ideal (MvPolynomial (Fin 2) ℚ)).IsPrime := by
+  rw [Ideal.span_singleton_prime (MvPolynomial.X_ne_zero 0)]; exact MvPolynomial.X_prime
 
 end DLNFibre.Core
