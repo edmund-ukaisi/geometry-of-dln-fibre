@@ -67,3 +67,14 @@ both the printed Case 2 vector and the prefix-minimum repaired vector:
 
 This is deliberately not a blow-up transition theorem. It isolates the source
 gap and gives a clean arithmetic target for any corrected certificate.
+
+## 2026-06-19 Lean monomial divisibility
+
+Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.
+
+Xhigh pen-and-paper scout `McClintock the 2nd` confirmed that regularity of the
+quotients `b'_i / b'_(J+1)` in the displayed `P` matrix reduces to a plain
+monomial recurrence lemma.  Lean now proves that a recurrence
+`b_(k+1)=step_k*b_k` has tail-product divisibility `b_a | b_b` for `a <= b`,
+and that common multiplication by a pivot variable preserves this divisibility.
+This still does not construct `P` or prove the matrix row-operation identity.

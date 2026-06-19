@@ -12,6 +12,10 @@ Independent rechecks:
   misread.
 - Pen-and-paper scout `Hume the 2nd`: verdict the prefix-minimum repaired
   vector is the one compatible with the terminal exponent formula.
+- Pen-and-paper scout `McClintock the 2nd`: verdict the `P` regularity
+  obligation reduces to one elementary tail-product lemma for monomial
+  recurrences, with the source's `b'_i`/standalone-`u` display requiring a
+  normalization choice.
 
 ## Notation lock
 
@@ -316,6 +320,70 @@ the displayed algebra.  A formal certificate should define the post-chart
 `b'_i` by the monomial recurrence and then prove the displayed ideal equality,
 rather than taking both the printed `b'_i` line and the printed standalone
 factor literally.
+
+### Elementary recurrence lemma
+
+The part that can already be made precise is purely monomial arithmetic.  Let
+`m_i` be the product of all variables with `tilde_t=i`; write the recurrence as
+
+```text
+b_0 = 1,
+b_(r+1) = m_r * b_r.
+```
+
+For any `a <= b`, induction on `b-a` gives
+
+```text
+b_b = (m_(b-1) * ... * m_a) * b_a,
+```
+
+with the factors taken over the levels `a, ..., b-1`.  Hence `b_a` divides
+`b_b`, and the quotient is a monomial.  In the notation needed by `P`, this
+says
+
+```text
+b_(J+1) divides b_i,       for every i >= J+1.
+```
+
+If a pivot chart multiplies the whole displayed tail by a new exceptional
+variable `u`, then
+
+```text
+b'_(J+1) = u * b_(J+1),
+b'_i     = u * b_i
+```
+
+still satisfies `b'_(J+1) | b'_i`, because common multiplication preserves
+divisibility in a commutative monoid:
+
+```text
+b_i = b_(J+1) * q
+=> u*b_i = (u*b_(J+1)) * q.
+```
+
+For Case 1(2), the source's gap
+`{tilde_t=i}=empty` for `i=J+1,...,J+J1-1` says the first tail factors after
+`J` are `1`; the quotient is trivial up to the strip level and then continues
+as the product of later recurrence factors.  For Case 2, the gap extends to
+`mu_S-1`, so the quotient is `1` for all displayed `i <= mu_S` after the
+common pivot multiplication.  The general recurrence-divisibility lemma is
+slightly more general than this equality/gap use and is the safe Lean target:
+it proves regularity of the quotient as a monomial without relying on the
+disputed Case 2 vector.
+
+Independent check: xhigh pen-and-paper scout `McClintock the 2nd` confirmed
+the same tail-product quotient.  In Case 1(2), the equality
+`b_(J+1)=...=b_(J+J1)` only makes the early quotient factors `1`; the
+inequality `b_(J+J1+1) != b_(J+J1)` is not needed for divisibility.  In
+Case 2, all factors in the relevant quotient range are `1`, so the `P`
+first-column entries reduce to `-d''_(i,J+1)` under a consistent
+normalization.
+
+Lean status: this arithmetic is formalised in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` as
+`monomialRec`, `monomialTail`, `monomialRec_add_eq_tail_mul`,
+`monomialRec_dvd_of_le`, `monomialRec_pivot_dvd`,
+`mul_left_dvd_mul_left_of_dvd`, and `pivotMul_monomialRec_dvd_of_le`.
 
 ## Pivot-chart coverage obligation
 

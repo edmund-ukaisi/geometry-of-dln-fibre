@@ -128,6 +128,11 @@ interface without surfacing it.
   actual-width expression, and `terminalExponent_prefixCase2Vector` evaluates
   the corrected prefix-minimum vector to the printed update. This does not
   prove any blow-up chart or transition.
+  The `P` quotient regularity arithmetic is also Lean-proved in the same file:
+  `monomialRec_dvd_of_le` and `pivotMul_monomialRec_dvd_of_le` show that
+  recurrence monomials divide later recurrence monomials, even after common
+  pivot multiplication. This is the arithmetic witness for `b'_i/b'_(J+1)`,
+  not yet a construction of the row-operation matrix.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

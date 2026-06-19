@@ -195,6 +195,67 @@ theorem terminalExponent_prefixCase2Vector (L S : ℕ) (n : ℕ → ℤ) (J : �
     rw [terminalExponent, hbase, hsum]
     ring
 
+section MonomialRecurrence
+
+variable {α : Type*} [CommMonoid α]
+
+/-- A monomial recurrence `b_{i+1}=step_i*b_i` with `b_0=1`. -/
+def monomialRec (step : ℕ → α) : ℕ → α
+  | 0 => 1
+  | k + 1 => step k * monomialRec step k
+
+/-- The explicit product of recurrence factors between two levels. -/
+def monomialTail (step : ℕ → α) (a : ℕ) : ℕ → α
+  | 0 => 1
+  | k + 1 => step (a + k) * monomialTail step a k
+
+@[simp] theorem monomialRec_zero (step : ℕ → α) : monomialRec step 0 = 1 := rfl
+
+@[simp] theorem monomialRec_succ (step : ℕ → α) (k : ℕ) :
+    monomialRec step (k + 1) = step k * monomialRec step k := rfl
+
+@[simp] theorem monomialTail_zero (step : ℕ → α) (a : ℕ) :
+    monomialTail step a 0 = 1 := rfl
+
+@[simp] theorem monomialTail_succ (step : ℕ → α) (a k : ℕ) :
+    monomialTail step a (k + 1) = step (a + k) * monomialTail step a k := rfl
+
+/-- A later recurrence term is the earlier one times the tail product. -/
+theorem monomialRec_add_eq_tail_mul (step : ℕ → α) (a k : ℕ) :
+    monomialRec step (a + k) = monomialTail step a k * monomialRec step a := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [Nat.add_succ, monomialRec_succ, ih, monomialTail_succ]
+      ac_rfl
+
+/-- Every later monomial recurrence term is divisible by every earlier one. -/
+theorem monomialRec_dvd_of_le (step : ℕ → α) {a b : ℕ} (h : a ≤ b) :
+    monomialRec step a ∣ monomialRec step b := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
+  refine ⟨monomialTail step a k, ?_⟩
+  rw [monomialRec_add_eq_tail_mul step a k]
+  ac_rfl
+
+/-- The divisibility needed by `P`: `b_{J+1}` divides every later `b_i`. -/
+theorem monomialRec_pivot_dvd (step : ℕ → α) {J i : ℕ} (h : J + 1 ≤ i) :
+    monomialRec step (J + 1) ∣ monomialRec step i :=
+  monomialRec_dvd_of_le step h
+
+/-- Multiplying both monomials by the pivot variable preserves divisibility. -/
+theorem mul_left_dvd_mul_left_of_dvd {a b u : α} (h : a ∣ b) :
+    u * a ∣ u * b := by
+  rcases h with ⟨c, rfl⟩
+  exact ⟨c, by ac_rfl⟩
+
+/-- The post-pivot divisibility for the common update `b'_i = u*b_i`. -/
+theorem pivotMul_monomialRec_dvd_of_le (step : ℕ → α) (u : α) {a b : ℕ}
+    (h : a ≤ b) :
+    u * monomialRec step a ∣ u * monomialRec step b :=
+  mul_left_dvd_mul_left_of_dvd (monomialRec_dvd_of_le step h)
+
+end MonomialRecurrence
+
 end Aoyagi
 end DLN
 end DLNFibre

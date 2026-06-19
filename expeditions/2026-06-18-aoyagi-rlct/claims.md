@@ -506,7 +506,12 @@ No such claim is formalisation-ready until both fields are filled.
   `terminalExponent_printedCase2Vector`, and
   `terminalExponent_prefixCase2Vector`. These prove that the printed Case 2
   vector evaluates to the actual-width expression, while the prefix-minimum
-  repaired vector evaluates to the printed update.
+  repaired vector evaluates to the printed update. Also proved the monomial
+  recurrence divisibility API `monomialRec`, `monomialTail`,
+  `monomialRec_add_eq_tail_mul`, `monomialRec_dvd_of_le`,
+  `monomialRec_pivot_dvd`, `mul_left_dvd_mul_left_of_dvd`, and
+  `pivotMul_monomialRec_dvd_of_le`, which isolates the arithmetic needed for
+  regularity of `b'_i / b'_(J+1)`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.
