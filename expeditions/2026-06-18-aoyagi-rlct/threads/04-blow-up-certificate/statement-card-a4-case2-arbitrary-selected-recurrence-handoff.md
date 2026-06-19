@@ -3,7 +3,7 @@
 ## Lean Artifacts
 
 File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` @
-`pending-checkpoint`.
+`fcaf2165ec5e82bd79ccd719f0879b0d14d15280`.
 
 Names:
 
