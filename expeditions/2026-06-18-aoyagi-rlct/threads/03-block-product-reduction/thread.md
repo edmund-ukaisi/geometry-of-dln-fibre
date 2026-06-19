@@ -861,3 +861,27 @@ still one edge only. It does not define a topology on the whole dependent
 paper-order chain, does not assemble finite intersections over all edges, does
 not handle continuity of the induction-produced `Bprev`, and does not make
 exact rank strata open.
+
+## 2026-06-19 A2 fixed-Bprev edge-family topology assembly
+
+Extended `FixedBasepointChart.lean` with
+`paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`.
+For a prescribed family of accumulated upper blocks `Bprev p`, the set of
+continuous reversed-edge families `Cedge` such that every fixed-basis coordinate
+matrix satisfies
+
+`identityCornerDetChart ([I Bprev p; 0 I] * M(Cedge p))`
+
+is a neighborhood of the base edge family
+
+`fun p => LinearMap.toContinuousLinearMap (reverseEdge W B p)`
+
+in the finite Pi/product topology. The proof is the finite intersection of the
+single-edge neighborhoods, pulled back along the coordinate projections
+`continuous_apply p`.
+
+This closes the finite-intersection part of the topology bridge for fixed chart
+data. It still does not control a neighborhood simultaneously for all possible
+`Bprev`, does not prove continuity or local boundedness of the `Bprev` produced
+by the suffix-chain induction, does not handle exact rank strata, and does not
+prove Aoyagi Theorem 3.

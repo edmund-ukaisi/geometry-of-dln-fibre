@@ -128,9 +128,20 @@ wrapper
 `paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`
 in `FixedBasepointChart.lean` pulls the transformed determinant chart back to a
 neighborhood of the base edge in the continuous-linear-map topology. Remaining
-blocked A2 items are finite product/chain-neighborhood assembly for the full
-variable chain, source-faithful exact rank-stratum packaging, the full Theorem
-3 statement, and analytic/certificate transport.
+blocked A2 items are product/chain-neighborhood assembly beyond a fixed
+prescribed edge-family chart datum, source-faithful exact rank-stratum
+packaging, the full Theorem 3 statement, and analytic/certificate transport.
+
+Ninth latest A2 update: finite product-topology assembly for fixed transformed
+edge charts has landed. Fixed-base wrapper
+`paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`
+in `FixedBasepointChart.lean` says that, for a prescribed family of accumulated
+upper blocks `Bprev p`, all transformed determinant-chart predicates hold on a
+neighborhood of the base continuous reversed-edge family. This uses only finite
+intersection/Pi-topology assembly from the one-edge theorem. It does not assert
+a neighborhood working for all `Bprev`, does not connect to the
+induction-produced `Bprev`, does not make exact rank strata open, and does not
+prove Aoyagi Theorem 3.
 
 ## Ledger rules
 

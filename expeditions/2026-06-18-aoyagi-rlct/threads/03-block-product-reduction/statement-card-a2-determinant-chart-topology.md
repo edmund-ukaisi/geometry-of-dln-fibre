@@ -13,7 +13,11 @@
 >   `DLNFibre.DLN.Aoyagi.paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`,
 >   and
 >   `DLNFibre.DLN.Aoyagi.unitriangular_paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`
->   (`lean/DLNFibre/DLN/Aoyagi/ChartTopology.lean`).
+>   (`lean/DLNFibre/DLN/Aoyagi/ChartTopology.lean`), with fixed-base wrappers
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`
+>   and
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`
+>   (`lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`).
 > - **Gloss.** The top-left block projection and determinant are continuous
 >   functions of the matrix entries, and the unit locus is open under
 >   `IsOpenUnits`.
@@ -21,15 +25,16 @@
 >   membership for adapted paper edges and their upper-unitriangular transforms,
 >   matrix-space pullback of the chart under fixed left multiplication, and
 >   continuity of the fixed-basis matrix-coordinate map on continuous linear
->   maps.
+>   maps. Also proved finite Pi-topology assembly of the fixed-base
+>   continuous-edge neighborhoods for a prescribed family of transformed charts.
 > - **Assumed.** `CommRing`, topological ring, and open-units hypotheses for
 >   determinant-chart openness; finite-dimensional layers for the paper
 >   adapted-edge wrappers; nontrivially normed complete field and target
 >   topological-vector-space hypotheses for the continuous-linear-map
 >   coordinate theorem.
 > - **Cited.** None.
-> - **Deferred.** Exact rank-stratum topology, product/chain-neighborhood
->   assembly for variable chains, analytic coordinate changes, and RLCT
->   consequences.
+> - **Deferred.** Exact rank-stratum topology, source-faithful
+>   product/chain-neighborhood assembly beyond fixed prescribed transformed
+>   charts, analytic coordinate changes, and RLCT consequences.
 > - **Kill conditions.** Do not read this as saying rank strata are open, or
 >   that the adapted bases are fixed across a neighborhood of variable chains.

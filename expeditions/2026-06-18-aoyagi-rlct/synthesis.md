@@ -427,8 +427,21 @@ pulls the transformed determinant-chart neighborhood back to a neighborhood of
 the base edge in the `ContinuousLinearMap` topology. This is still a one-edge
 statement with fixed `p` and fixed `Bprev`, not a product topology theorem for
 all chain variables and not a statement that the induction-produced `Bprev`
-varies continuously. The next A2 topology target is product/chain assembly:
-combine finitely many single-edge neighborhoods and keep rank strata explicit.
+varies continuously. This left the finite-intersection/product assembly as the
+next topology bridge, recorded in the following paragraph.
+
+The fixed-family edge-product topology assembly is now Lean-proved as
+`paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`.
+For a prescribed family `Bprev p`, the set of continuous reversed-edge families
+whose fixed-basis coordinate matrices satisfy all transformed determinant-chart
+predicates is a neighborhood of the base edge family in the finite Pi topology.
+This is the honest finite-intersection step; it does not quantify over every
+possible accumulated upper block and does not show that the `Bprev` family
+constructed during the suffix-chain induction varies continuously. The next A2
+topology target is therefore not another finite intersection, but the bridge
+between this fixed-family statement and the actual source-faithful
+product/chain neighborhood needed by the induction, with exact rank strata kept
+as explicit hypotheses.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

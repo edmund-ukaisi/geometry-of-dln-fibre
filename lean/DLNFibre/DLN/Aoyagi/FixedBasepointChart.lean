@@ -540,6 +540,38 @@ theorem paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_ident
         W B U₀ hU₀ p Bprev
   exact hcoord.continuousAt.preimage_mem_nhds hmat
 
+/-- For a fixed family of accumulated upper blocks, all transformed determinant charts
+hold on a neighborhood of the base edge family in the product topology. -/
+theorem paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Bprev : ∀ p : Fin N, Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        K) :
+    {Cedge : ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ |
+      ∀ p : Fin N,
+        identityCornerDetChart
+          (fromBlocks
+            (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+            (Bprev p) 0
+            (1 : Matrix
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) *
+            LinearMap.toMatrix
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+              (Cedge p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))} ∈
+      nhds (fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) := by
+  classical
+  simpa [Set.setOf_forall] using
+    (Filter.iInter_mem.2 fun p ↦
+      (continuous_apply p).continuousAt.preimage_mem_nhds
+        (paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart
+          W B U₀ hU₀ p (Bprev p)))
+
 end FixedBaseContinuousEdgeTopology
 
 end Aoyagi

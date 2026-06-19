@@ -118,8 +118,10 @@ No such claim is formalisation-ready until both fields are filled.
   explicit-chart block-diagonal induction is proved. Matrix-space
   neighborhoods for transformed fixed-base edge determinant charts at `C = B`
   are now also proved, pointwise in the fixed accumulated upper block, and this
-  has been pulled back to a single continuous-linear edge parameter. The full
-  source Theorem 3 claim remains blocked.
+  has been pulled back to a single continuous-linear edge parameter and then
+  assembled over a fixed finite family of accumulated upper blocks in the
+  edge-family product topology. The full source Theorem 3 claim remains
+  blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -275,6 +277,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`
   and
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`
+  and
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdges_selfBase_mem_nhds_transformed_identityCornerDetChart`
   are in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`; the one-step
   suffix theorem
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocal_suffixStep_fromBlocks_indexed`
@@ -355,16 +359,21 @@ No such claim is formalisation-ready until both fields are filled.
   neighborhoods, giving transformed fixed-base edge determinant-chart
   neighborhoods at the base chain `C = B`, pointwise in the fixed accumulated
   upper block, and the fixed-basis coordinate map pulls this back to a
-  neighborhood of the base edge in the continuous-linear-map topology.
+  neighborhood of the base edge in the continuous-linear-map topology. Also
+  proved finite product-topology assembly for a fixed prescribed family of
+  accumulated upper blocks `Bprev p`, giving a neighborhood of the base edge
+  family on which all those transformed determinant-chart predicates hold.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units
   hypotheses for determinant-chart openness; nontrivially normed complete field
   and topological-vector-space hypotheses for the continuous-linear-map edge
-  topology bridge. The full product-reduction theorem
-  would additionally need source-faithful fixed-chart assembly for nearby
-  variable layers and certificate transport, not yet proved. Exact rank strata
-  remain explicit hypotheses, not open-neighborhood conclusions.
+  and finite product-topology bridges. The full product-reduction theorem would
+  additionally need source-faithful fixed-chart assembly for nearby variable
+  layers, a bridge from the chart-local induction's produced `Bprev` blocks to
+  fixed finite neighborhood data, and certificate transport, not yet proved.
+  Exact rank strata remain explicit hypotheses, not open-neighborhood
+  conclusions.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
@@ -378,10 +387,11 @@ No such claim is formalisation-ready until both fields are filled.
   projections provide a supplied-data suffix-chain reduction theorem, now
   packaged in paper order at the endpoint. The determinant-chart openness,
   transformed basepoint matrix-neighborhood packaging, and residual-rank bridge
-  are proved, and the one-edge continuous-linear-map pullback is proved, but
-  assembling these into source-faithful product/chain neighborhoods is still
-  open. Still open: source-faithful Theorem 3 statement and certificate
-  transport. Exact rank-stratum hypotheses remain separate; see
+  are proved, and the continuous-linear-map pullback plus fixed-family
+  edge-product neighborhood assembly are proved, but this is not yet the
+  source-faithful neighborhood theorem needed for the induction-produced
+  `Bprev` blocks. Still open: source-faithful Theorem 3 statement and
+  certificate transport. Exact rank-stratum hypotheses remain separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point
