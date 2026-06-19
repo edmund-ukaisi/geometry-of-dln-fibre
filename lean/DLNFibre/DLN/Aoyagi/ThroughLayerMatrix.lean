@@ -153,6 +153,65 @@ theorem exists_toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero
       _ = 0 := by simp
   · rfl
 
+/-- If the complement maps to zero, transported direct-sum bases give block form `[I 0; 0 0]`. -/
+theorem toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero_zero_of_map_complement_eq_zero
+    (h : IsCompl U W) (h' : IsCompl U' W')
+    (f : E →ₗ[K] F) (e : U ≃ₗ[K] U') (he : ∀ x : U, (e x : F) = f x)
+    (hWzero : ∀ x : W, f x = 0)
+    (bU : Module.Basis ι K U) (bW : Module.Basis κ K W)
+    (bW' : Module.Basis κ' K W') :
+      LinearMap.toMatrix (basisOfIsCompl h bU bW)
+          (basisOfIsCompl h' (bU.map e) bW') f =
+        fromBlocks (1 : Matrix ι ι K) 0 0 0 := by
+  let bE : Module.Basis (ι ⊕ κ) K E := basisOfIsCompl h bU bW
+  let bF : Module.Basis (ι ⊕ κ') K F := basisOfIsCompl h' (bU.map e) bW'
+  ext (i | i) (j | j)
+  · have hmap : f (bU j : E) = ((bU.map e) j : F) := by
+      rw [← he (bU j)]
+      simp
+    have hbF : bF (Sum.inl j) = ((bU.map e) j : F) := by
+      simp [bF]
+    calc
+      LinearMap.toMatrix bE bF f (Sum.inl i) (Sum.inl j)
+          = bF.repr (f (bU j : E)) (Sum.inl i) := by
+            rw [LinearMap.toMatrix_apply]
+            simp [bE]
+      _ = bF.repr ((bU.map e) j : F) (Sum.inl i) := by rw [hmap]
+      _ = bF.repr (bF (Sum.inl j)) (Sum.inl i) := by rw [hbF]
+      _ = (Finsupp.single (Sum.inl j) (1 : K)) (Sum.inl i) := by
+            rw [Module.Basis.repr_self]
+      _ = (1 : Matrix ι ι K) i j := by
+            by_cases hji : i = j <;> simp [Matrix.one_apply, hji]
+  · have hzero : f (bW j : E) = 0 := hWzero (bW j)
+    calc
+      LinearMap.toMatrix bE bF f (Sum.inl i) (Sum.inr j)
+          = bF.repr (f (bW j : E)) (Sum.inl i) := by
+            rw [LinearMap.toMatrix_apply]
+            simp [bE]
+      _ = 0 := by rw [hzero]; simp
+  · have hmap : f (bU j : E) = ((bU.map e) j : F) := by
+      rw [← he (bU j)]
+      simp
+    have hbF : bF (Sum.inl j) = ((bU.map e) j : F) := by
+      simp [bF]
+    calc
+      LinearMap.toMatrix bE bF f (Sum.inr i) (Sum.inl j)
+          = bF.repr (f (bU j : E)) (Sum.inr i) := by
+            rw [LinearMap.toMatrix_apply]
+            simp [bE]
+      _ = bF.repr ((bU.map e) j : F) (Sum.inr i) := by rw [hmap]
+      _ = bF.repr (bF (Sum.inl j)) (Sum.inr i) := by rw [hbF]
+      _ = (Finsupp.single (Sum.inl j) (1 : K)) (Sum.inr i) := by
+            rw [Module.Basis.repr_self]
+      _ = 0 := by simp
+  · have hzero : f (bW j : E) = 0 := hWzero (bW j)
+    calc
+      LinearMap.toMatrix bE bF f (Sum.inr i) (Sum.inr j)
+          = bF.repr (f (bW j : E)) (Sum.inr i) := by
+            rw [LinearMap.toMatrix_apply]
+            simp [bE]
+      _ = 0 := by rw [hzero]; simp
+
 end DirectSumBlock
 
 section ThroughSubspaceBlock
@@ -197,6 +256,36 @@ theorem exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zer
   exists_toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero hW hW' (A p)
     (throughSubspaceEdgeEquiv V A U₀ p hU₀)
     (throughSubspaceEdgeEquiv_apply V A U₀ p hU₀) bU bW bW'
+
+/-- The total chain map has block form `[I 0; 0 0]` when the source complement is its kernel. -/
+theorem toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero
+    (U₀ : Submodule K (V 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    {Wlast : Submodule K (V (Fin.last N))}
+    (hWlast : IsCompl (throughSubspace V A U₀ (Fin.last N)) Wlast)
+    (bU₀ : Module.Basis ι K U₀)
+    (bKer : Module.Basis κ K
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (bWlast : Module.Basis κ' K Wlast) :
+      LinearMap.toMatrix (basisOfIsCompl hU₀ bU₀ bKer)
+          (basisOfIsCompl hWlast
+            (bU₀.map (linearEquivMapOfDisjointKer
+              (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) U₀ hU₀.disjoint))
+            bWlast)
+          (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) =
+        fromBlocks (1 : Matrix ι ι K) 0 0 0 := by
+  refine toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero_zero_of_map_complement_eq_zero
+    hU₀ hWlast
+    (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))
+    (linearEquivMapOfDisjointKer
+      (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) U₀ hU₀.disjoint)
+    ?_ ?_ bU₀ bKer bWlast
+  · intro x
+    exact linearEquivMapOfDisjointKer_apply
+      (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) U₀ hU₀.disjoint x
+  · intro x
+    exact LinearMap.mem_ker.mp x.property
 
 end ThroughSubspaceBlock
 
