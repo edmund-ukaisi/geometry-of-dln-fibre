@@ -1,0 +1,301 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019edf74-2f4d-76c2-bf87-f8f17b78f7cb
+--------
+user
+<task>
+Lean 4 + Mathlib (pin v4.29) formalisation architecture decision. I am red-teaming a route choice
+BEFORE committing. Withhold agreeing with me; give your independent verdict first.
+
+CONTEXT. I have, fully proved in Lean (call it "the engine"):
+- A point-set affine setup: a finite coordinate index `sigma` (= matrix entries), the polynomial ring
+  `R = MvPolynomial sigma k` over a field `k`, and for a Zariski-closed set `Z subset (sigma -> k)`:
+  * `vanishingIdeal k Z : Ideal R` (Mathlib's `MvPolynomial.vanishingIdeal`);
+  * `codimRep Z := Ideal.height (vanishingIdeal k Z)`  (an ENat);
+  * `varietyDim Z := (ringKrullDim (R / vanishingIdeal Z)).unbotD 0`  (an ENat).
+- A PROVED catenary bridge (over `[IsAlgClosed k]`, `Finite sigma`): if `vanishingIdeal Z` is PRIME then
+  `codimRep Z + varietyDim Z = Nat.card sigma`. (This is L0, done. It needs primeness, i.e. irreducibility,
+  fed as a hypothesis; `Spec(R/I)` irreducible <=> `R/I` domain <=> `I` prime is the only "topology" used.)
+- The object of interest: `M` is a representation of an equioriented type-A quiver = a tuple of matrices
+  `(M_0,...,M_{N-1})`, `M_i : k^{d_{i+1}} x k^{d_i}`. The group `G = prod_v GL_{d_v}` (the UNITS of the
+  matrix rings) acts by `(P . M)_i = P_{i+1} M_i P_i^{-1}`. The orbit is `O_M`; its Zariski closure is the
+  rank locus `Z = orbitRankLocus M` (closed, equals Obar_M, cited Thm 3.8).
+- A PROVED 2-term deformation complex `delta : C0 -> C1`, `delta(phi)_i = phi_{i+1} M_i - M_i phi_i`, with
+  `C0 = prod_v Mat(d_v,d_v)`, `C1 = prod_i Mat(d_{i+1},d_i)`, and `orbitLinearCodim M := finrank C1 -
+  finrank (range delta) = finrank (coker delta) = dim Ext^1(M,M)` (all PROVED). NOTE `delta` IS exactly the
+  differential of the orbit map `P -> P.M` at `P=1`; `range delta` = tangent-to-orbit at M.
+
+THE ONE REMAINING GOAL (to discharge the last hypothesis `hVoigt`):
+    varietyDim (orbitRankLocus M) = finrank (range delta).
+Then `codimRep = Nat.card sigma - varietyDim = finrank C1 - finrank(range delta) = orbitLinearCodim`. Done.
+
+THE FORK. Two candidate Lean architectures for that one dimension equality:
+
+(S) SCHEMES. Model `G = prod GL`, the orbit, and the orbit map as Mathlib `AlgebraicGeometry` schemes;
+    reuse `smooth_of_grpObj_of_isAlgClosed` (group scheme over alg-closed field is smooth) +
+    `Scheme.Hom.dense_smoothLocus_of_perfectField` (generic smoothness). Then transport scheme
+    smoothness/dimension back to `varietyDim` (= `ringKrullDim (R / I)`, a RING-side Krull dim).
+
+(A) CONCRETE AFFINE. Stay in the point-set / MvPolynomial / ringKrullDim world. Build the Zariski tangent
+    space of `V(I) subset k^n` at the point `M` directly (via `pderiv`/Jacobian, or
+    `IsLocalRing.CotangentSpace` of `(R/I)` localized at the maximal ideal of M), prove the orbit tangent
+    space = `range delta`, get orbit smoothness from HOMOGENEITY (smooth locus is dense -- generic
+    smoothness -- and G-stable, transitive on the orbit => smooth everywhere on the orbit), then use
+    `IsRegularLocalRing.iff_finrank_cotangentSpace` (regular local ring <=> finrank cotangent =
+    ringKrullDim) at the smooth point M to conclude `varietyDim = finrank(tangent) = finrank(range delta)`.
+
+WHAT I'VE VERIFIED IN MATHLIB v4.29:
+- PRESENT: `IsRegularLocalRing.iff_finrank_cotangentSpace`, `IsLocalRing.CotangentSpace`,
+  `MvPolynomial.pderiv` (bundled Derivation), `Ideal.Quotient.isDomain_iff_prime`,
+  `PrimeSpectrum.irreducibleSpace [IsDomain R]`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`,
+  `IsHomeomorph.topologicalKrullDim_eq`, scheme `smooth_of_grpObj_of_isAlgClosed`,
+  `Scheme.Hom.dense_smoothLocus_of_perfectField`, `Algebra.smoothLocus`/`isOpen_smoothLocus`.
+- ABSENT (0 hits): any notion of "dimension of a Scheme X" beyond `topologicalKrullDim` of its space; any
+  GL-as-scheme / algebraic-group / orbit-as-scheme / orbit-map-of-schemes API; `ringKrullDim = trdeg` for
+  f.g. domains (NOT assembled); any fibre-dimension theorem feeding ringKrullDim; any "smooth point =>
+  IsRegularLocalRing" bridge; any algebraic Zariski-tangent-space-of-a-variety object (`Module.tangentSpace`
+  is the manifold/normed-field tangent bundle, not this).
+</task>
+
+<questions>
+1. Which route AVOIDS introducing a NEW scheme<->ringKrullDim dimension bridge? Be concrete about the exact
+   glue route S forces (Scheme -> underlying space -> topologicalKrullDim -> via isoSpec homeomorphism ->
+   PrimeSpectrum -> ringKrullDim of R/I, AND modelling G/orbit/orbit-map as schemes), versus what route A
+   forces (smooth-point => IsRegularLocalRing; tangent = range delta; homogeneity smooth-everywhere).
+2. For EACH route, what does Mathlib actually provide vs force me to build, by exact decl name where you can.
+3. Is the homogeneity argument (generic smoothness gives a dense smooth point; G acts transitively on the
+   orbit and preserves the smooth locus, so EVERY orbit point is smooth) cleanly expressible in the point-set
+   world, or does generic smoothness itself only exist scheme-side at this pin (forcing me into schemes
+   regardless)? This is the crux.
+4. The "smooth point => IsRegularLocalRing (local ring of R/I at the maximal ideal of M)" bridge: how hard,
+   and is there a Mathlib path (e.g. via `Algebra.smoothLocus` / formal smoothness of the localization =>
+   regular)? Or is identifying `finrank CotangentSpace` with `finrank(range delta)` (Jacobian = differential
+   of the orbit map) the cleaner load-bearing lemma to aim at?
+5. Any THIRD route I'm missing that gets `varietyDim = finrank(range delta)` more cheaply (e.g. an
+   orbit-map fibre-dimension / `dim O = dim G - dim Stab` argument, or computing `ringKrullDim(R/I)` directly
+   from a rational parametrization of the orbit)? Cost it honestly against (A) and (S).
+6. Net recommendation: (S), (A), or third, and the single hardest sub-lemma of your pick.
+</questions>
+
+<output_contract>
+Answer the 6 questions in order, terse. For each route give a one-line "new bridge needed? YES/NO + what".
+End with: RECOMMENDATION = (S|A|third), HARDEST = <one sub-lemma>, KILL = <the observation that would sink
+your pick>. Distinguish what you KNOW (Mathlib decl exists / standard math) from what you INFER.
+</output_contract>
+
+codex
+I’ll check the local Mathlib/API surface before giving a verdict, since the route choice hinges on exact available declarations rather than general algebraic geometry folklore.
+exec
+/bin/bash -lc "pwd && rg --files -g 'lake-manifest.json' -g 'lakefile.*' -g 'CLAUDE.md' -g 'README.md' -g '*.lean' | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+
+exec
+/bin/bash -lc "rg \"IsRegularLocalRing\\.iff_finrank_cotangentSpace|CotangentSpace|dense_smoothLocus_of_perfectField|smooth_of_grpObj_of_isAlgClosed|topologicalKrullDim_eq_ringKrullDim|Algebra\\.smoothLocus|isOpen_smoothLocus|isDomain_iff_prime|irreducibleSpace\" -n .lake/packages/mathlib/Mathlib Mathlib . 2>/dev/null" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+ exited 2 in 0ms:
+./arch-prompt.md:30:    reuse `smooth_of_grpObj_of_isAlgClosed` (group scheme over alg-closed field is smooth) +
+./arch-prompt.md:31:    `Scheme.Hom.dense_smoothLocus_of_perfectField` (generic smoothness). Then transport scheme
+./arch-prompt.md:36:    `IsLocalRing.CotangentSpace` of `(R/I)` localized at the maximal ideal of M), prove the orbit tangent
+./arch-prompt.md:39:    `IsRegularLocalRing.iff_finrank_cotangentSpace` (regular local ring <=> finrank cotangent =
+./arch-prompt.md:43:- PRESENT: `IsRegularLocalRing.iff_finrank_cotangentSpace`, `IsLocalRing.CotangentSpace`,
+./arch-prompt.md:44:  `MvPolynomial.pderiv` (bundled Derivation), `Ideal.Quotient.isDomain_iff_prime`,
+./arch-prompt.md:45:  `PrimeSpectrum.irreducibleSpace [IsDomain R]`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`,
+./arch-prompt.md:46:  `IsHomeomorph.topologicalKrullDim_eq`, scheme `smooth_of_grpObj_of_isAlgClosed`,
+./arch-prompt.md:47:  `Scheme.Hom.dense_smoothLocus_of_perfectField`, `Algebra.smoothLocus`/`isOpen_smoothLocus`.
+./arch-prompt.md:66:   and is there a Mathlib path (e.g. via `Algebra.smoothLocus` / formal smoothness of the localization =>
+./arch-prompt.md:67:   regular)? Or is identifying `finrank CotangentSpace` with `finrank(range delta)` (Jacobian = differential
+./arch-stderr.log:44:    reuse `smooth_of_grpObj_of_isAlgClosed` (group scheme over alg-closed field is smooth) +
+./arch-stderr.log:45:    `Scheme.Hom.dense_smoothLocus_of_perfectField` (generic smoothness). Then transport scheme
+./arch-stderr.log:50:    `IsLocalRing.CotangentSpace` of `(R/I)` localized at the maximal ideal of M), prove the orbit tangent
+./arch-stderr.log:53:    `IsRegularLocalRing.iff_finrank_cotangentSpace` (regular local ring <=> finrank cotangent =
+./arch-stderr.log:57:- PRESENT: `IsRegularLocalRing.iff_finrank_cotangentSpace`, `IsLocalRing.CotangentSpace`,
+./arch-stderr.log:58:  `MvPolynomial.pderiv` (bundled Derivation), `Ideal.Quotient.isDomain_iff_prime`,
+./arch-stderr.log:59:  `PrimeSpectrum.irreducibleSpace [IsDomain R]`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`,
+./arch-stderr.log:60:  `IsHomeomorph.topologicalKrullDim_eq`, scheme `smooth_of_grpObj_of_isAlgClosed`,
+./arch-stderr.log:61:  `Scheme.Hom.dense_smoothLocus_of_perfectField`, `Algebra.smoothLocus`/`isOpen_smoothLocus`.
+./arch-stderr.log:80:   and is there a Mathlib path (e.g. via `Algebra.smoothLocus` / formal smoothness of the localization =>
+./arch-stderr.log:81:   regular)? Or is identifying `finrank CotangentSpace` with `finrank(range delta)` (Jacobian = differential
+
+codex
+The workspace copy here does not expose a writable build tree, so I’m treating this as an API-surface audit from local files plus the declarations you already verified. I’ll still grep the tree for local notes/lean files to avoid missing an existing bridge in this thread.
+exec
+/bin/bash -lc 'ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+ succeeded in 0ms:
+total 28
+drwxrwxr-x 2 ubuntu ubuntu  4096 Jun 19 10:36 .
+drwxrwxr-x 3 ubuntu ubuntu  4096 Jun 19 10:36 ..
+-rw-rw-r-- 1 ubuntu ubuntu  6218 Jun 19 10:36 arch-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 10787 Jun 19 10:36 arch-stderr.log
+
+exec
+/bin/bash -lc "find .. -maxdepth 3 -type f \\( -name '*.lean' -o -name 'lake-manifest.json' -o -name 'lakefile.lean' -o -name 'CLAUDE.md' -o -name 'README.md' -o -name '*.md' \\) | sed 's#"'^./##'"' | sort | head -300" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+ succeeded in 0ms:
+../codex/arch-prompt.md
+
+exec
+/bin/bash -lc 'rg "varietyDim|codimRep|orbitRankLocus|orbitLinearCodim|CotangentSpace|smoothLocus|topologicalKrullDim|ringKrullDim|IsRegularLocalRing" -n ..' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+ succeeded in 0ms:
+../codex/arch-stderr.log:23:  * `codimRep Z := Ideal.height (vanishingIdeal k Z)`  (an ENat);
+../codex/arch-stderr.log:24:  * `varietyDim Z := (ringKrullDim (R / vanishingIdeal Z)).unbotD 0`  (an ENat).
+../codex/arch-stderr.log:26:  `codimRep Z + varietyDim Z = Nat.card sigma`. (This is L0, done. It needs primeness, i.e. irreducibility,
+../codex/arch-stderr.log:31:  rank locus `Z = orbitRankLocus M` (closed, equals Obar_M, cited Thm 3.8).
+../codex/arch-stderr.log:33:  `C0 = prod_v Mat(d_v,d_v)`, `C1 = prod_i Mat(d_{i+1},d_i)`, and `orbitLinearCodim M := finrank C1 -
+../codex/arch-stderr.log:38:    varietyDim (orbitRankLocus M) = finrank (range delta).
+../codex/arch-stderr.log:39:Then `codimRep = Nat.card sigma - varietyDim = finrank C1 - finrank(range delta) = orbitLinearCodim`. Done.
+../codex/arch-stderr.log:45:    `Scheme.Hom.dense_smoothLocus_of_perfectField` (generic smoothness). Then transport scheme
+../codex/arch-stderr.log:46:    smoothness/dimension back to `varietyDim` (= `ringKrullDim (R / I)`, a RING-side Krull dim).
+../codex/arch-stderr.log:48:(A) CONCRETE AFFINE. Stay in the point-set / MvPolynomial / ringKrullDim world. Build the Zariski tangent
+../codex/arch-stderr.log:50:    `IsLocalRing.CotangentSpace` of `(R/I)` localized at the maximal ideal of M), prove the orbit tangent
+../codex/arch-stderr.log:53:    `IsRegularLocalRing.iff_finrank_cotangentSpace` (regular local ring <=> finrank cotangent =
+../codex/arch-stderr.log:54:    ringKrullDim) at the smooth point M to conclude `varietyDim = finrank(tangent) = finrank(range delta)`.
+../codex/arch-stderr.log:57:- PRESENT: `IsRegularLocalRing.iff_finrank_cotangentSpace`, `IsLocalRing.CotangentSpace`,
+../codex/arch-stderr.log:59:  `PrimeSpectrum.irreducibleSpace [IsDomain R]`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`,
+../codex/arch-stderr.log:60:  `IsHomeomorph.topologicalKrullDim_eq`, scheme `smooth_of_grpObj_of_isAlgClosed`,
+../codex/arch-stderr.log:61:  `Scheme.Hom.dense_smoothLocus_of_perfectField`, `Algebra.smoothLocus`/`isOpen_smoothLocus`.
+../codex/arch-stderr.log:62:- ABSENT (0 hits): any notion of "dimension of a Scheme X" beyond `topologicalKrullDim` of its space; any
+../codex/arch-stderr.log:63:  GL-as-scheme / algebraic-group / orbit-as-scheme / orbit-map-of-schemes API; `ringKrullDim = trdeg` for
+../codex/arch-stderr.log:64:  f.g. domains (NOT assembled); any fibre-dimension theorem feeding ringKrullDim; any "smooth point =>
+../codex/arch-stderr.log:65:  IsRegularLocalRing" bridge; any algebraic Zariski-tangent-space-of-a-variety object (`Module.tangentSpace`
+../codex/arch-stderr.log:70:1. Which route AVOIDS introducing a NEW scheme<->ringKrullDim dimension bridge? Be concrete about the exact
+../codex/arch-stderr.log:71:   glue route S forces (Scheme -> underlying space -> topologicalKrullDim -> via isoSpec homeomorphism ->
+../codex/arch-stderr.log:72:   PrimeSpectrum -> ringKrullDim of R/I, AND modelling G/orbit/orbit-map as schemes), versus what route A
+../codex/arch-stderr.log:73:   forces (smooth-point => IsRegularLocalRing; tangent = range delta; homogeneity smooth-everywhere).
+../codex/arch-stderr.log:79:4. The "smooth point => IsRegularLocalRing (local ring of R/I at the maximal ideal of M)" bridge: how hard,
+../codex/arch-stderr.log:80:   and is there a Mathlib path (e.g. via `Algebra.smoothLocus` / formal smoothness of the localization =>
+../codex/arch-stderr.log:81:   regular)? Or is identifying `finrank CotangentSpace` with `finrank(range delta)` (Jacobian = differential
+../codex/arch-stderr.log:83:5. Any THIRD route I'm missing that gets `varietyDim = finrank(range delta)` more cheaply (e.g. an
+../codex/arch-stderr.log:84:   orbit-map fibre-dimension / `dim O = dim G - dim Stab` argument, or computing `ringKrullDim(R/I)` directly
+../codex/arch-stderr.log:103:/bin/bash -lc "rg \"IsRegularLocalRing\\.iff_finrank_cotangentSpace|CotangentSpace|dense_smoothLocus_of_perfectField|smooth_of_grpObj_of_isAlgClosed|topologicalKrullDim_eq_ringKrullDim|Algebra\\.smoothLocus|isOpen_smoothLocus|isDomain_iff_prime|irreducibleSpace\" -n .lake/packages/mathlib/Mathlib Mathlib . 2>/dev/null" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/07-L1-geometry-recon/codex
+../codex/arch-stderr.log:106:./arch-prompt.md:31:    `Scheme.Hom.dense_smoothLocus_of_perfectField` (generic smoothness). Then transport scheme
+../codex/arch-stderr.log:107:./arch-prompt.md:36:    `IsLocalRing.CotangentSpace` of `(R/I)` localized at the maximal ideal of M), prove the orbit tangent
+../codex/arch-stderr.log:108:./arch-prompt.md:39:    `IsRegularLocalRing.iff_finrank_cotangentSpace` (regular local ring <=> finrank cotangent =
+../codex/arch-stderr.log:109:./arch-prompt.md:43:- PRESENT: `IsRegularLocalRing.iff_finrank_cotangentSpace`, `IsLocalRing.CotangentSpace`,
+../codex/arch-stderr.log:111:./arch-prompt.md:45:  `PrimeSpectrum.irreducibleSpace [IsDomain R]`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`,
+../codex/arch-stderr.log:112:./arch-prompt.md:46:  `IsHomeomorph.topologicalKrullDim_eq`, scheme `smooth_of_grpObj_of_isAlgClosed`,
+../codex/arch-stderr.log:113:./arch-prompt.md:47:  `Scheme.Hom.dense_smoothLocus_of_perfectField`, `Algebra.smoothLocus`/`isOpen_smoothLocus`.
+../codex/arch-stderr.log:114:./arch-prompt.md:66:   and is there a Mathlib path (e.g. via `Algebra.smoothLocus` / formal smoothness of the localization =>
+../codex/arch-stderr.log:115:./arch-prompt.md:67:   regular)? Or is identifying `finrank CotangentSpace` with `finrank(range delta)` (Jacobian = differential
+../codex/arch-stderr.log:117:./arch-stderr.log:45:    `Scheme.Hom.dense_smoothLocus_of_perfectField` (generic smoothness). Then transport scheme
+../codex/arch-stderr.log:118:./arch-stderr.log:50:    `IsLocalRing.CotangentSpace` of `(R/I)` localized at the maximal ideal of M), prove the orbit tangent
+../codex/arch-stderr.log:119:./arch-stderr.log:53:    `IsRegularLocalRing.iff_finrank_cotangentSpace` (regular local ring <=> finrank cotangent =
+../codex/arch-stderr.log:120:./arch-stderr.log:57:- PRESENT: `IsRegularLocalRing.iff_finrank_cotangentSpace`, `IsLocalRing.CotangentSpace`,
+../codex/arch-stderr.log:122:./arch-stderr.log:59:  `PrimeSpectrum.irreducibleSpace [IsDomain R]`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`,
+../codex/arch-stderr.log:123:./arch-stderr.log:60:  `IsHomeomorph.topologicalKrullDim_eq`, scheme `smooth_of_grpObj_of_isAlgClosed`,
+../codex/arch-stderr.log:124:./arch-stderr.log:61:  `Scheme.Hom.dense_smoothLocus_of_perfectField`, `Algebra.smoothLocus`/`isOpen_smoothLocus`.
+../codex/arch-stderr.log:125:./arch-stderr.log:80:   and is there a Mathlib path (e.g. via `Algebra.smoothLocus` / formal smoothness of the localization =>
+../codex/arch-stderr.log:126:./arch-stderr.log:81:   regular)? Or is identifying `finrank CotangentSpace` with `finrank(range delta)` (Jacobian = differential
+../codex/arch-prompt.md:9:  * `codimRep Z := Ideal.height (vanishingIdeal k Z)`  (an ENat);
+../codex/arch-prompt.md:10:  * `varietyDim Z := (ringKrullDim (R / vanishingIdeal Z)).unbotD 0`  (an ENat).
+../codex/arch-prompt.md:12:  `codimRep Z + varietyDim Z = Nat.card sigma`. (This is L0, done. It needs primeness, i.e. irreducibility,
+../codex/arch-prompt.md:17:  rank locus `Z = orbitRankLocus M` (closed, equals Obar_M, cited Thm 3.8).
+../codex/arch-prompt.md:19:  `C0 = prod_v Mat(d_v,d_v)`, `C1 = prod_i Mat(d_{i+1},d_i)`, and `orbitLinearCodim M := finrank C1 -
+../codex/arch-prompt.md:24:    varietyDim (orbitRankLocus M) = finrank (range delta).
+../codex/arch-prompt.md:25:Then `codimRep = Nat.card sigma - varietyDim = finrank C1 - finrank(range delta) = orbitLinearCodim`. Done.
+../codex/arch-prompt.md:31:    `Scheme.Hom.dense_smoothLocus_of_perfectField` (generic smoothness). Then transport scheme
+../codex/arch-prompt.md:32:    smoothness/dimension back to `varietyDim` (= `ringKrullDim (R / I)`, a RING-side Krull dim).
+../codex/arch-prompt.md:34:(A) CONCRETE AFFINE. Stay in the point-set / MvPolynomial / ringKrullDim world. Build the Zariski tangent
+../codex/arch-prompt.md:36:    `IsLocalRing.CotangentSpace` of `(R/I)` localized at the maximal ideal of M), prove the orbit tangent
+../codex/arch-prompt.md:39:    `IsRegularLocalRing.iff_finrank_cotangentSpace` (regular local ring <=> finrank cotangent =
+../codex/arch-prompt.md:40:    ringKrullDim) at the smooth point M to conclude `varietyDim = finrank(tangent) = finrank(range delta)`.
+../codex/arch-prompt.md:43:- PRESENT: `IsRegularLocalRing.iff_finrank_cotangentSpace`, `IsLocalRing.CotangentSpace`,
+../codex/arch-prompt.md:45:  `PrimeSpectrum.irreducibleSpace [IsDomain R]`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`,
+../codex/arch-prompt.md:46:  `IsHomeomorph.topologicalKrullDim_eq`, scheme `smooth_of_grpObj_of_isAlgClosed`,
+../codex/arch-prompt.md:47:  `Scheme.Hom.dense_smoothLocus_of_perfectField`, `Algebra.smoothLocus`/`isOpen_smoothLocus`.
+../codex/arch-prompt.md:48:- ABSENT (0 hits): any notion of "dimension of a Scheme X" beyond `topologicalKrullDim` of its space; any
+../codex/arch-prompt.md:49:  GL-as-scheme / algebraic-group / orbit-as-scheme / orbit-map-of-schemes API; `ringKrullDim = trdeg` for
+../codex/arch-prompt.md:50:  f.g. domains (NOT assembled); any fibre-dimension theorem feeding ringKrullDim; any "smooth point =>
+../codex/arch-prompt.md:51:  IsRegularLocalRing" bridge; any algebraic Zariski-tangent-space-of-a-variety object (`Module.tangentSpace`
+../codex/arch-prompt.md:56:1. Which route AVOIDS introducing a NEW scheme<->ringKrullDim dimension bridge? Be concrete about the exact
+../codex/arch-prompt.md:57:   glue route S forces (Scheme -> underlying space -> topologicalKrullDim -> via isoSpec homeomorphism ->
+../codex/arch-prompt.md:58:   PrimeSpectrum -> ringKrullDim of R/I, AND modelling G/orbit/orbit-map as schemes), versus what route A
+../codex/arch-prompt.md:59:   forces (smooth-point => IsRegularLocalRing; tangent = range delta; homogeneity smooth-everywhere).
+../codex/arch-prompt.md:65:4. The "smooth point => IsRegularLocalRing (local ring of R/I at the maximal ideal of M)" bridge: how hard,
+../codex/arch-prompt.md:66:   and is there a Mathlib path (e.g. via `Algebra.smoothLocus` / formal smoothness of the localization =>
+../codex/arch-prompt.md:67:   regular)? Or is identifying `finrank CotangentSpace` with `finrank(range delta)` (Jacobian = differential
+../codex/arch-prompt.md:69:5. Any THIRD route I'm missing that gets `varietyDim = finrank(range delta)` more cheaply (e.g. an
+../codex/arch-prompt.md:70:   orbit-map fibre-dimension / `dim O = dim G - dim Stab` argument, or computing `ringKrullDim(R/I)` directly
+
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs "IsRegularLocalRing.iff_finrank_cotangentSpace"
+web search: 
+web search: github mathlib4 IsRegularLocalRing.iff_finrank_cotangentSpace
+web search: 
+web search: "IsRegularLocalRing.iff_finrank_cotangentSpace"
+web search: 
+web search: Mathlib IsLocalRing CotangentSpace Lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/search?q=IsRegularLocalRing.iff_finrank_cotangentSpace&type=code
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/find/?pattern=IsRegularLocalRing.iff_finrank_cotangentSpace
+web search: 
+web search: leanprover-community mathlib4_docs find pattern IsRegularLocalRing.iff_finrank_cotangentSpace
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0/Mathlib
+web search: 
+web search: leanprover-community mathlib4 v4.29.0 Mathlib AlgebraicGeometry SmoothLocus
+codex
+1. **A avoids the new scheme-to-`ringKrullDim` dimension bridge.**
+
+S new bridge needed? **YES:** `Scheme` dimension/topological dimension of the orbit closure -> underlying space -> `topologicalKrullDim` -> affine identification with `PrimeSpectrum (R ⧸ I)` -> `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim` / `IsHomeomorph.topologicalKrullDim_eq` -> your `varietyDim`.
+
+A new bridge needed? **NO scheme-dimension bridge:** it stays at `A := R ⧸ I`, localizes at the maximal ideal of `M`, uses local regularity + cotangent dimension. But do not hide the extra ring bridge: `ringKrullDim A = ringKrullDim Aₚ` at the closed orbit point, or equivalently “local dimension at `M` equals global dimension of the irreducible variety.”
+
+2. **Mathlib surface.**
+
+S provides, by your audit: `smooth_of_grpObj_of_isAlgClosed`, `Scheme.Hom.dense_smoothLocus_of_perfectField`, `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim`, `IsHomeomorph.topologicalKrullDim_eq`, `Ideal.Quotient.isDomain_iff_prime`, `PrimeSpectrum.irreducibleSpace`.
+
+S forces you to build: GL as schemes, product group scheme, action morphism, orbit map, scheme/rank-locus comparison, dominance/image-closure statements, smooth target-point extraction, tangent/differential comparison, and final scheme-dimension transport.
+
+A provides: `MvPolynomial.vanishingIdeal`, `MvPolynomial.pderiv`, `IsLocalRing.CotangentSpace`, `IsRegularLocalRing.iff_finrank_cotangentSpace`, `Algebra.smoothLocus`, `isOpen_smoothLocus`.
+
+A forces you to build: maximal ideal/residue field of `M`, cotangent/Jacobian computation, cotangent dimension = `finrank (range delta)`, regularity at `M`, G-invariance of regular/smooth locus, orbit-open/dense-in-rank-locus, and local/global dimension equality at the closed point.
+
+3. **Crux: generic smoothness.**
+
+Generic smoothness is not cleanly point-set at this pin if the only density theorem is `Scheme.Hom.dense_smoothLocus_of_perfectField`. `Algebra.smoothLocus` plus openness is not by itself a dense/nonempty smooth-locus theorem.
+
+But this does **not** force full S. It only forces a small affine-Spec detour for `Spec(A) -> Spec(k)` unless you prove a ring-side generic smoothness theorem yourself. Do not model `G`, orbit maps, or orbit closures as schemes just to access generic smoothness.
+
+4. **Smooth point -> regular local ring.**
+
+Harder than it looks. Standard math: smooth finite-type algebra over a field has regular local rings. Mathlib path, if available, would be:
+
+`p ∈ Algebra.smoothLocus k A`
+-> localized algebra is smooth over `k`
+-> smooth over regular base field implies regular local ring
+-> `IsRegularLocalRing (Localization.AtPrime p)`.
+
+You report no direct bridge, so expect to build a commutative-algebra lemma. The cotangent computation is the cleaner load-bearing lemma:
+
+`finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime p)) = finrank k (LinearMap.range delta)`,
+
+after identifying the residue field with `k`. Cleaner, but it does not replace regularity or local/global dimension.
+
+5. **Third routes.**
+
+Orbit-map fibre dimension / `dim O = dim G - dim Stab`: elegant on paper, bad in Lean here. It needs fibre-dimension or quotient/orbit scheme infrastructure, plus stabilizer scheme smoothness. Cost: worse than A, close to S.
+
+Direct rational parametrization/local slice: possible for type A if you already have normal forms and rank charts. It avoids generic smoothness, but requires bespoke coordinate chart algebra and a dense-open chart proof. Cheaper only if that infrastructure is already mostly formalized.
+
+Direct determinantal/rank-locus dimension: likely worst. You would rebuild height/dimension theory for quiver determinantal ideals.
+
+6. **Net.**
+
+Use **A**, with a minimal affine-scheme import only to obtain dense smooth locus if necessary. Do not choose S unless you actually need reusable scheme-orbit infrastructure later.
+
+RECOMMENDATION = A, HARDEST = prove the closed orbit point `M` has a regular local ring of the correct global dimension, KILL = if you cannot get a smooth/regular closed point in the open orbit without developing substantial Nullstellensatz/local-global dimension infrastructure.
+tokens used
+34,935

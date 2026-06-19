@@ -148,3 +148,21 @@ A/B are largely independent and can interleave once L5 is sized; C depends on B+
   armed (every ~10 min, session-only) as a backstop for genuine yields; driving continuously in-turn meanwhile.
   **Now Phase B (orbit geometry).** Goal: `varietyDim(Ō_M) = dim(im δ⁰)` via Ō_M irreducible + M smooth point
   + Zariski tangent at M = im δ⁰. Opening with an L1 recon to DECIDE schemes-vs-concrete-affine.
+
+## PHASE B — ROUTE DECIDED: concrete affine (Route A) [2026-06-19, thread 07]
+Route S (schemes) rejected — forces a scheme→`ringKrullDim` bridge our point-set stack doesn't need. **Phase B
+owes exactly `varietyDim(orbitRankLocus M) = finrank(range δ⁰)`** (+ primeness). Full recon in
+`threads/07-L1-geometry-recon/findings.md`. Route-A ladder:
+- **L1** Ō_M irreducible AS `(vanishingIdeal …).IsPrime` (image of irreducible ∏GL under poly map). Module.
+- **L2** orbit-map differential = `range δ⁰` (Jacobian/cotangent linearisation; the conceptual heart). Sizeable.
+- **L3** M smooth point by homogeneity (transitive action + smooth locus G-stable + **dense** — density is the
+  crux; ring-side density to build or a minimal Spec detour, NOT modelling G_d as a scheme). Module→sizeable.
+- **L4** smooth ⟹ `IsRegularLocalRing` (a, ABSENT bridge) ⟹ `iff_finrank_cotangentSpace` (b) + `ResidueField=k`
+  (c) + local↔global dim (d) ⟹ `varietyDim = finrank(range δ⁰)`. Module (hardest finish).
+- (then L6 `orbitRankLocus = Ō_M` set-equality [Phase D], L7 assembly.)
+**KILL-CONDITION:** if L4(a)+L4(d) need a regular-locus/local↔global CA *sub-library* (not modules), Phase B
+inflates — doesn't favour S (shared); build the regular-local-ring bridge as its own Core module.
+**Sequencing (adopt recon's "size the hard middle"):** de-risk L4(a)+L4(d) FIRST (kill-condition, reusable CA),
+then L2, then L3 (density), L1, L4-assembly.
+- 2026-06-19: thread 07 (Phase B architecture) CLOSED — Route A decided. Next: de-risk L4(a)+L4(d) (smooth ⟹
+  regular local ring + local↔global dim) as a standalone general-CA tide; report if it balloons (kill-condition).

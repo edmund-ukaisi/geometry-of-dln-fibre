@@ -11,6 +11,9 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 | 04 | L5-poly-dim-formula | formaliser | closed | L5.5 + L5.7-≤ + additive height brick; ≥ gap (monic-positioning) reported |
 | 05 | L5-noether-monic | formaliser | closed | Build monic-coordinate-positioning (Noether normalization) → close L5.7 ≥ → full `height+dim=n` |
 
+| 07 | L1-geometry-recon | scout | closed | Phase B architecture — **Route A (concrete affine)** decided; L1–L4 ladder; kill-condition L4(a)/(d) |
+| 08 | L4-regular-local | formaliser | open | De-risk kill-condition — smooth ⟹ IsRegularLocalRing (L4a) + local↔global dim (L4d), standalone CA |
+
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
 - 0N — L1 GL/orbit/irreducibility (scout recon → formaliser)
