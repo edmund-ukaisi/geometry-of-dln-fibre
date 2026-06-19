@@ -341,6 +341,77 @@ theorem exists_chain_throughSubspaces :
 
 end FiniteChain
 
+section PaperChain
+
+variable {K : Type*} [Field K] {N : ℕ}
+  (W : Fin (N + 1) → Type*) [∀ i, AddCommGroup (W i)] [∀ i, Module K (W i)]
+  (B : ∀ i : Fin N, W i.succ →ₗ[K] W i.castSucc)
+
+/-- The recursion step for the paper-order descending chain composite. -/
+private def paperChainMapStep (i : Fin (N + 1)) :
+    ⦃m : ℕ⦄ → (i ≤ m) → ((hm : m < N + 1) → (W ⟨m, hm⟩ →ₗ[K] W i)) →
+      ((hm : m + 1 < N + 1) → (W ⟨m + 1, hm⟩ →ₗ[K] W i)) :=
+  fun {m} _ rec hm =>
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ hm⟩
+    show W p.succ →ₗ[K] W i from
+      (show W p.castSucc →ₗ[K] W i from rec p.castSucc.isLt).comp (B p)
+
+/-- The ordered composite in Aoyagi's paper direction, from the later layer `j` down to `i`. -/
+def paperChainMap (i j : Fin (N + 1)) (hij : i ≤ j) : W j →ₗ[K] W i :=
+  Nat.leRec (motive := fun m _ => (hm : m < N + 1) → (W ⟨m, hm⟩ →ₗ[K] W i))
+    (fun _ => LinearMap.id) (paperChainMapStep W B i) hij j.isLt
+
+/-- The empty paper-order chain composite is the identity. -/
+theorem paperChainMap_self (i : Fin (N + 1)) :
+    paperChainMap W B i i le_rfl = LinearMap.id := by
+  unfold paperChainMap
+  exact congrFun (Nat.leRec_self (motive := fun m _ => (hm : m < N + 1) →
+    (W ⟨m, hm⟩ →ₗ[K] W i)) (fun _ => LinearMap.id) (paperChainMapStep W B i)) i.isLt
+
+/-- Extending the upper endpoint by one composes with the next paper edge on the right. -/
+theorem paperChainMap_succ (i : Fin (N + 1)) (p : Fin N) (h : i ≤ p.castSucc) :
+    paperChainMap W B i p.succ (h.trans (Fin.castSucc_le_succ p))
+      = (paperChainMap W B i p.castSucc h).comp (B p) := by
+  unfold paperChainMap
+  exact congrFun (Nat.leRec_succ (h1 := Fin.val_fin_le.mpr h)
+    (h2 := Fin.val_fin_le.mpr (h.trans (Fin.castSucc_le_succ p)))
+    (refl := fun _ => LinearMap.id) (le_succ_of_le := paperChainMapStep W B i)) p.succ.isLt
+
+/-- The paper-order composite over one edge is that edge. -/
+theorem paperChainMap_edge (e : Fin N) (h : e.castSucc ≤ e.succ) :
+    paperChainMap W B e.castSucc e.succ h = B e := by
+  have hstep := paperChainMap_succ W B e.castSucc e le_rfl
+  rw [paperChainMap_self W B e.castSucc, LinearMap.id_comp] at hstep
+  exact hstep
+
+/-- The paper-order chain composite splits at an intermediate vertex. -/
+theorem paperChainMap_trans (i : Fin (N + 1)) {m j : Fin (N + 1)}
+    (him : i ≤ m) (hmj : m ≤ j) :
+    paperChainMap W B i j (him.trans hmj)
+      = (paperChainMap W B i m him).comp (paperChainMap W B m j hmj) := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : m = 0 := Fin.le_zero_iff.mp hmj
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp him
+    rw [paperChainMap_self]
+    rfl
+  | succ p ih =>
+    rcases eq_or_lt_of_le hmj with rfl | hlt
+    · rw [paperChainMap_self, LinearMap.comp_id]
+    · have hmp : m ≤ p.castSucc := by rw [Fin.le_castSucc_iff]; exact hlt
+      have himp : i ≤ p.castSucc := him.trans hmp
+      rw [paperChainMap_succ W B i p himp, paperChainMap_succ W B m p hmp, ih hmp,
+        LinearMap.comp_assoc]
+
+/-- The full paper-order product splits as prefix followed by suffix. -/
+theorem paperChainMap_zero_last_eq_prefix_comp_suffix (j : Fin (N + 1)) :
+    paperChainMap W B 0 (Fin.last N) ((Fin.zero_le j).trans j.le_last)
+      = (paperChainMap W B 0 j (Fin.zero_le j)).comp
+        (paperChainMap W B j (Fin.last N) j.le_last) :=
+  paperChainMap_trans W B 0 (Fin.zero_le j) j.le_last
+
+end PaperChain
+
 end Aoyagi
 end DLN
 end DLNFibre

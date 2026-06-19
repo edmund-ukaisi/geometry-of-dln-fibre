@@ -358,3 +358,25 @@ a finite chart-data-to-paper-block wrapper, a determinant-open chart statement,
 the paper-order induction assembly, and optional rank corollaries. It also
 records nonclaims: this does not prove Theorem 3, does not make the Lemma 1
 normalization elementary, and does not justify the post-Theorem-3 RLCT shift.
+
+## 2026-06-19 A2 paper-order chain composite
+
+Extended `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean` with
+`paperChainMap`, a descending composite for Aoyagi-order maps
+`B p : W p.succ -> W p.castSucc`.
+
+The proved API is:
+
+- `paperChainMap_self`: the empty paper-order composite is the identity.
+- `paperChainMap_succ`: extending the upper endpoint composes the new paper
+  edge on the right.
+- `paperChainMap_edge`: a one-edge paper-order composite is the edge itself.
+- `paperChainMap_trans`: the composite splits at an intermediate vertex as
+  prefix composed with suffix.
+- `paperChainMap_zero_last_eq_prefix_comp_suffix`: the full product splits as
+  paper prefix followed by paper suffix.
+
+This is only product-order bookkeeping. It does not yet relate the reversed
+source-to-target `chainMap` to `paperChainMap`, transfer adapted block forms to
+paper notation, run the product-reduction induction, or state analytic/RLCT
+consequences.

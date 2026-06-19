@@ -186,6 +186,14 @@ until those corollaries, the induction assembly, and analytic certificate
 transport are built. The current bridge inventory is saved in
 `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
+The first paper-order bridge artifact is Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`: `paperChainMap` is the
+descending composite for Aoyagi-order maps `W_(s+1) -> W_s`, with identity,
+one-edge, transitivity, and full-product prefix/suffix split lemmas. This is
+product-order bookkeeping only; it does not yet relate the reversed
+source-to-target `chainMap` to `paperChainMap`, transfer finite adapted-basis
+block statements into paper notation, or assemble Theorem 3.
+
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
 source basis adapted to `U₀ ⊕ ker P` and target basis adapted to
