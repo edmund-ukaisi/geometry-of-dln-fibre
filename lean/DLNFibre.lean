@@ -27,3 +27,4 @@ import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NoetherMonicPositioning
 import DLNFibre.Core.NullstellensatzCodim
 import DLNFibre.Core.AffineDomainDimension
+import DLNFibre.Core.FlatQuasiFiniteHeight
