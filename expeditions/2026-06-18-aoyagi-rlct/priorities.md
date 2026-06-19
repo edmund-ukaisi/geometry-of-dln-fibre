@@ -187,7 +187,14 @@ on the session's original cwd.
    selected-pivot recurrence-gap and supplied-post-data `Q/P` theorems. Next
    A4 target: chart-family coverage/regularity scaffolding or source-order
    transition interfaces for non-displayed pivots, without claiming either as
-   proved by the source-pair wrapper.
+   proved by the source-pair wrapper. The finite selected-entry
+   principalization/unit layer is now Lean-proved: the local `P`, `Q`, and
+   `Q^-1` operation matrices are units with unit determinants, and any supplied
+   selected-entry chart principalizes the finite center ideal to `(u)`, with
+   Case 1/2 specializations. Next A4 target: a named chart-family boundary
+   package for coverage/regularity/source-order transition assumptions, or
+   a genuinely elementary source-order interface if it can be stated without
+   claiming atlas coverage.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

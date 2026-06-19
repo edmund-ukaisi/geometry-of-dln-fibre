@@ -792,6 +792,15 @@ No such claim is formalisation-ready until both fields are filled.
   instantiating the arbitrary selected-pivot recurrence/post-data theorems
   from a supplied source pivot pair in `case2ResidualBlockPivotEntries` and
   source-coordinate residual/following data.
+  Added selected-entry principalization/unit facts:
+  `weightedPivotBlockRowOp_isUnit`,
+  `weightedPivotBlockRowOp_det_isUnit`, `pivotQ_isUnit`,
+  `pivotQ_det_isUnit`, `pivotQinv_isUnit`, `pivotQinv_det_isUnit`,
+  `selectedEntryChartMap_centerIdeal_eq_span_singleton`,
+  `case2_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem`,
+  and `case1_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem`,
+  proving the finite `P/Q` operation matrices are units and the pulled-back
+  finite selected-entry center ideal is `(u)`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
