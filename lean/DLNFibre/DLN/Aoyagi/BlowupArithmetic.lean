@@ -4913,6 +4913,316 @@ theorem extendExponentDomain
 
 end Case1DisplayedRowStripSelectedOldPullbackBoundary
 
+/-- Supplied chart-family boundary for Aoyagi's displayed Case 1(2)
+selected-old pullback.
+
+This combines the source-facing selected-old pullback/local handoff boundary
+with an explicitly supplied Case 1 finite chart-family regularity boundary.
+It is still not chart production: regularity and transition regularity are
+fields, not theorems constructed from coordinates. -/
+structure Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
+    (R : Type*) [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J J1 s0 k0 : ℕ)
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ)
+    (source factoredBase : IntroducedLabelRecurrenceState L n S J R)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) R)
+    (u : R)
+    (ChartRegular : Case1CenterGenerator → Prop)
+    (TransitionRegular :
+      Case1CenterGenerator → Case1CenterGenerator → Prop) : Prop where
+  pullback :
+    Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+      t t' numerator numerator' leastValue leastValue'
+      source factoredBase post u
+  chartFamily :
+    Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular
+
+namespace Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
+
+/-- The supplied boundary still records the chosen old source label as an
+introduced label through the pullback data, not through the `Unit` token alone. -/
+theorem sourcePullback_selectedIntroduced
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    introducedLabel L n S J s0 k0 :=
+  data.pullback.sourcePullback_selectedIntroduced
+
+/-- The selected old source label has level `J+J1`; this is supplied by the
+pullback/local handoff boundary. -/
+theorem selectedLevel
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    factoredBase.level s0 k0 = J + J1 :=
+  data.pullback.selectedLevel
+
+/-- The selected old `Unit` token is in the supplied finite Case 1 center. -/
+theorem selectedOld_mem_center
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    (Sum.inl () : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 :=
+  data.pullback.selectedOld_mem_center
+
+/-- The displayed top-left row-strip pivot is in the supplied finite Case 1
+center, using first-jump positivity and the source column bound. -/
+theorem displayedPivot_mem_center
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) ∈
+      case1CenterGenerators n S J J1 :=
+  data.pullback.factoredBaseFirstJump.displayedPivot_mem_center_of_colBound
+    data.pullback.handoff.source_col_bound
+
+/-- Supplied chart-family regularity for the selected old chart token. -/
+theorem chart_regular_selectedOld
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    ChartRegular (Sum.inl () : Case1CenterGenerator) :=
+  Case1CenterChartFamilyBoundary.chart_regular_of_mem data.chartFamily
+    data.selectedOld_mem_center
+
+/-- Supplied chart-family regularity for Aoyagi's displayed top-left
+row-strip chart. -/
+theorem chart_regular_displayedPivot
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    ChartRegular (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) :=
+  Case1CenterChartFamilyBoundary.chart_regular_of_mem data.chartFamily
+    data.displayedPivot_mem_center
+
+/-- Supplied transition regularity from the selected old chart token to the
+displayed top-left row-strip chart. -/
+theorem transition_regular_selectedOld_displayedPivot
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    TransitionRegular
+      (Sum.inl () : Case1CenterGenerator)
+      (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) :=
+  Case1CenterChartFamilyBoundary.transition_regular_of_mem data.chartFamily
+    data.selectedOld_mem_center data.displayedPivot_mem_center
+
+/-- Supplied transition regularity from the displayed top-left row-strip chart
+back to the selected old chart token. -/
+theorem transition_regular_displayedPivot_selectedOld
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    TransitionRegular
+      (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)
+      (Sum.inl () : Case1CenterGenerator) :=
+  Case1CenterChartFamilyBoundary.transition_regular_of_mem data.chartFamily
+    data.displayedPivot_mem_center data.selectedOld_mem_center
+
+/-- The supplied selected-old pullback still gives the recurrence update at
+the old selected level. -/
+theorem source_step_eq_mulStepAt
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    source.step = mulStepAt factoredBase.step u (J + J1) :=
+  data.pullback.source_step_eq_mulStepAt
+
+/-- The supplied chart-family boundary keeps the source-facing Case 1(2)
+source-order identity from the selected-old pullback boundary. -/
+theorem sourceOrder_identity
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (C :
+      Matrix
+        (Unit ⊕ pivotComplement
+          (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+            data.pullback.handoff.continuationBound)) τ R)
+    (hpivot :
+      A (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+          data.pullback.handoff.continuationBound)
+        (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+          data.pullback.handoff.continuationBound) = 1) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+          data.pullback.handoff.continuationBound) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                  data.pullback.handoff.continuationBound)
+                (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                  data.pullback.handoff.continuationBound)
+                A i ()) *
+          (diagonal
+              (fun i ↦ source.weight (case2ResidualRowLevel n S J i)) *
+            case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A).submatrix
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                data.pullback.handoff.continuationBound))
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                data.pullback.handoff.continuationBound))) *
+          C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i :
+                pivotComplement
+                  (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                    data.pullback.handoff.continuationBound) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                  data.pullback.handoff.continuationBound)
+                (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                  data.pullback.handoff.continuationBound)
+                A -
+              pivotFirstX
+                  (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                    data.pullback.handoff.continuationBound)
+                  (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                    data.pullback.handoff.continuationBound)
+                  A *
+                pivotFirstY
+                  (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                    data.pullback.handoff.continuationBound)
+                  (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                    data.pullback.handoff.continuationBound)
+                  A)) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                data.pullback.handoff.continuationBound)
+              (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                data.pullback.handoff.continuationBound)
+              A) * C) :=
+  data.pullback.sourceOrder_identity A C hpivot
+
+/-- The supplied chart-family boundary keeps the exponent-domain extension
+from the selected-old pullback boundary. -/
+theorem extendExponentDomain
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
+  data.pullback.extendExponentDomain
+
+end Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
+
 /-- Supplied-data boundary for Aoyagi's displayed Case 1(2) row-strip pivot.
 It combines the finite first-jump/source-validity facts with an already
 supplied weighted pivot-first source block.  It does not construct the

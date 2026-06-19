@@ -1199,3 +1199,25 @@ chart, prove that the `Unit` token determines `(s0,k0)`, construct the raw
 source pullback, produce post-data from coordinates, prove chart coverage or
 regularity, compute Jacobians, assert normal crossings, extract RLCT, or prove
 a transition invariant.
+
+## 2026-06-19 Lean Case 1 selected-old supplied chart-family boundary
+
+Statement card:
+`statement-card-a4-case1-selected-old-supplied-chart-family-boundary.md`.
+
+Lean now packages the selected-old pullback boundary together with supplied
+Case 1 finite chart-family regularity. The new structure
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary` has two fields:
+the selected-old pullback/local handoff boundary and a
+`Case1CenterChartFamilyBoundary`.
+
+The projections expose chart regularity for the selected old `Unit` token and
+the displayed top-left row-strip pivot, transition regularity in both
+directions between those two supplied center members, selected-label facts,
+the selected-old source recurrence step, the source-order identity, and the
+exponent-domain extension.
+
+This is still a supplied interface. It does not construct charts, prove
+coverage, derive `(s0,k0)` from `Unit`, construct the raw source pullback,
+compute Jacobians, assert normal crossings, extract RLCT, or prove a
+transition invariant.

@@ -998,6 +998,15 @@ domain extension. This is still an assumption interface: it does not construct
 the selected-old chart, identify the `Unit` token with `(s0,k0)` from first
 principles, or prove chart coverage/regularity/Jacobians.
 
+The selected-old supplied chart-family boundary is now Lean-packaged as
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary`. It combines
+the selected-old pullback boundary with a supplied
+`Case1CenterChartFamilyBoundary`, then projects chart regularity for the old
+`Unit` token and displayed top-left row-strip pivot, and transition regularity
+in both directions. It also carries through the source-label, source-step,
+source-order, and exponent-domain projections. This is a supplied regularity
+interface, not chart production or atlas coverage.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

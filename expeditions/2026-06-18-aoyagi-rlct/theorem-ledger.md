@@ -774,6 +774,32 @@ card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-pullback-boundary-a4.md`.
 
+Latest A4 update: the Case 1 selected-old supplied chart-family boundary has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.sourcePullback_selectedIntroduced`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.selectedLevel`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.selectedOld_mem_center`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.displayedPivot_mem_center`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.chart_regular_selectedOld`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.chart_regular_displayedPivot`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.transition_regular_selectedOld_displayedPivot`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.transition_regular_displayedPivot_selectedOld`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.source_step_eq_mulStepAt`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.sourceOrder_identity`,
+and
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.extendExponentDomain`.
+This checkpoint combines the selected-old pullback/local handoff boundary with
+a supplied `Case1CenterChartFamilyBoundary`, exposing regularity and
+transition-regularity projections for the selected old token and displayed
+top-left row-strip pivot. It does not construct charts, prove coverage, derive
+the old source label from `Unit`, construct the raw source pullback, compute
+Jacobians, prove normal crossings, or extract RLCT. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-supplied-chart-family-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-supplied-chart-family-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

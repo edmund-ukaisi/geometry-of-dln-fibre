@@ -233,10 +233,12 @@ on the session's original cwd.
    pullback boundary now packages this same source-facing data with the local
    handoff specialized to `factoredBase.level`, exposing source-step,
    center-token, source-order, and exponent-domain projections while still not
-   proving chart production. Next A4 target:
-   chart-production/hidden-old-label validity boundary, or a similarly narrow
-   source-facing wrapper for another displayed piece; keep arbitrary pivots
-   explicit and supplied.
+   proving chart production. The selected-old supplied chart-family boundary
+   now adds supplied regularity and transition-regularity projections for the
+   selected old token and displayed top-left pivot, without constructing those
+   charts. Next A4 target: raw source-coordinate/chart-production data for the
+   displayed Case 1(2) charts, or a similarly narrow source-facing wrapper for
+   another displayed piece; keep arbitrary pivots explicit and supplied.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

@@ -524,6 +524,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case1-source-substituted-local-handoff-a4.md`.
 	  Review of the Case 1 selected-old pullback boundary is saved at
 	  `threads/04-blow-up-certificate/review-case1-selected-old-pullback-boundary-a4.md`.
+	  Review of the Case 1 selected-old supplied chart-family boundary is
+	  saved at
+	  `threads/04-blow-up-certificate/review-case1-selected-old-supplied-chart-family-boundary-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -874,6 +877,12 @@ No such claim is formalisation-ready until both fields are filled.
   `residualRowStripOldWeight_eq_sourceWeight`, `sourceOrder_identity`, and
   `extendExponentDomain`. This packages the selected-old source pullback and
   displayed local handoff with the handoff specialized to `factoredBase.level`.
+  Added the supplied chart-family package
+  `Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary`, with
+  projections for selected-old/displayed-pivot finite center membership,
+  supplied chart regularity, supplied transition regularity in both
+  directions, selected-label facts, the source-step update, the source-order
+  identity, and exponent-domain extension.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -904,7 +913,9 @@ No such claim is formalisation-ready until both fields are filled.
   recurrence-state level map. The selected-old pullback package removes that
   extra equality only by specializing the supplied handoff to
   `factoredBase.level`; it still does not identify the `Unit` center generator
-  with a source label or construct the selected-old chart.
+  with a source label or construct the selected-old chart. The supplied
+  chart-family package assumes chart regularity and transition regularity as
+  fields; it does not prove them from coordinates or prove chart coverage.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
