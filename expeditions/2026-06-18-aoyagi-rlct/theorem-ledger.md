@@ -103,10 +103,23 @@ landed. Generic theorem:
 `ProductReduction.lean`; fixed-base wrapper:
 `productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDiagonal`
 in `FixedBasepointChart.lean`, supported by
-`paperEndpointFixedBaseChainMapMatrix_proof_irrel`. Remaining blocked A2 items
-are fixed-coordinate determinant-neighborhood packaging for variable chains,
-source-faithful exact rank-stratum packaging, the full Theorem 3 statement, and
-analytic/certificate transport.
+`paperEndpointFixedBaseChainMapMatrix_proof_irrel`. At that checkpoint the next
+blocked item was fixed-coordinate determinant-neighborhood packaging for
+variable chains, followed by exact rank-stratum packaging, the full Theorem 3
+statement, and analytic/certificate transport.
+
+Seventh latest A2 update: the matrix-local transformed determinant-neighborhood
+package has landed. Generic topology helpers:
+`leftMul_identityCornerDetChart_mem_nhds` and
+`fromBlocks_leftMul_identityCornerDetChart_mem_nhds` in `ChartTopology.lean`;
+fixed-base wrapper:
+`paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`
+in `FixedBasepointChart.lean`. The theorem is pointwise in a fixed edge `p` and
+fixed accumulated block `Bprev`; it does not assert a single neighborhood
+working for all `Bprev`. Remaining blocked A2 items are pulling these
+matrix-space neighborhoods back along a formal topology/continuity statement
+for fixed-coordinate variable chains, source-faithful exact rank-stratum
+packaging, the full Theorem 3 statement, and analytic/certificate transport.
 
 ## Ledger rules
 

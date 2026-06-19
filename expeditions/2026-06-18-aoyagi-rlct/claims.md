@@ -115,8 +115,10 @@ No such claim is formalisation-ready until both fields are filled.
   composition laws and Schur-residual rank under explicit determinant-chart
   and exact-rank hypotheses. The first chart-local suffix step in these fixed
   bases is now proved with a supplied transformed edge, and the all-layer
-  explicit-chart block-diagonal induction is proved. The full source Theorem 3
-  claim remains blocked.
+  explicit-chart block-diagonal induction is proved. Matrix-space
+  neighborhoods for transformed fixed-base edge determinant charts at `C = B`
+  are now also proved, pointwise in the fixed accumulated upper block. The full
+  source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -240,6 +242,8 @@ No such claim is formalisation-ready until both fields are filled.
   blocked. Topological determinant-chart theorems
   `DLNFibre.DLN.Aoyagi.isOpen_identityCornerDetChart`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_mem_nhds`,
+  `DLNFibre.DLN.Aoyagi.leftMul_identityCornerDetChart_mem_nhds`,
+  `DLNFibre.DLN.Aoyagi.fromBlocks_leftMul_identityCornerDetChart_mem_nhds`,
   `DLNFibre.DLN.Aoyagi.identityCornerForm_mem_nhds_identityCornerDetChart`,
   `DLNFibre.DLN.Aoyagi.paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`,
   and
@@ -263,6 +267,10 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseTotalMatrix`,
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseChainMapMatrix_succ_right`, and
   `DLNFibre.DLN.Aoyagi.rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub`
+  plus the basepoint topology wrappers
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_identityCornerDetChart`
+  and
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`
   are in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`; the one-step
   suffix theorem
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocal_suffixStep_fromBlocks_indexed`
@@ -338,7 +346,11 @@ No such claim is formalisation-ready until both fields are filled.
   has rank `finrank range(reverseEdge) - finrank U0`. Also proved the
   topological determinant-chart bridge: over a topological ring with open
   units, the selected determinant chart is open, hence adapted paper edge
-  matrices and their unitriangular transforms have chart neighborhoods.
+  matrices and their unitriangular transforms have chart neighborhoods; fixed
+  left multiplication pulls chart neighborhoods back to matrix-space
+  neighborhoods, giving transformed fixed-base edge determinant-chart
+  neighborhoods at the base chain `C = B`, pointwise in the fixed accumulated
+  upper block.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units
@@ -357,11 +369,12 @@ No such claim is formalisation-ready until both fields are filled.
   composition theorem identifies the adapted total matrix with the recursively
   ordered edge product, and the suffix theorem plus deterministic block
   projections provide a supplied-data suffix-chain reduction theorem, now
-  packaged in paper order at the endpoint. The determinant-chart openness and
-  residual-rank bridge are proved, but source-faithful fixed-coordinate
-  variable-layer charts are still open. Still open: source-faithful Theorem 3
-  statement and certificate transport. Exact rank-stratum hypotheses remain
-  separate; see
+  packaged in paper order at the endpoint. The determinant-chart openness,
+  transformed basepoint matrix-neighborhood packaging, and residual-rank bridge
+  are proved, but pulling those matrix neighborhoods back to source-faithful
+  variable-chain neighborhoods is still open. Still open: source-faithful
+  Theorem 3 statement and certificate transport. Exact rank-stratum hypotheses
+  remain separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

@@ -402,6 +402,21 @@ hypotheses on an actual fixed-coordinate neighborhood, exact rank-stratum
 packaging, regular coordinate-change/certificate transport, and RLCT
 consequences.
 
+The matrix-level basepoint determinant-neighborhood package is now Lean-proved.
+`leftMul_identityCornerDetChart_mem_nhds` and
+`fromBlocks_leftMul_identityCornerDetChart_mem_nhds` in `ChartTopology.lean`
+pull the selected determinant chart back along fixed left multiplication. The
+fixed-base wrapper
+`paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`
+in `FixedBasepointChart.lean` applies this at `C = B`: for a fixed edge `p` and
+fixed accumulated upper block `Bprev`, the predicate
+`identityCornerDetChart ([I Bprev; 0 I] * M)` is an ambient matrix-space
+neighborhood of the base fixed-base edge matrix. This is pointwise in `Bprev`;
+it is not an infinite-intersection statement over all possible previous blocks,
+and it is not yet a neighborhood theorem for variable chains. The next bridge
+is a topology on the fixed-coordinate chain/edge parameter space and continuity
+of `C ↦ paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p`.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

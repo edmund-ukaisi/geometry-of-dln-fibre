@@ -52,6 +52,31 @@ theorem identityCornerDetChart_mem_nhds
     {N : Matrix (ι ⊕ μ) (ι ⊕ ν) K | identityCornerDetChart N} ∈ nhds M :=
   IsOpen.mem_nhds isOpen_identityCornerDetChart hM
 
+/-- Left multiplication pulls the selected determinant chart back to a neighborhood of
+the untransformed matrix. -/
+theorem leftMul_identityCornerDetChart_mem_nhds
+    [Fintype μ]
+    (A : Matrix (ι ⊕ μ) (ι ⊕ μ) K)
+    {M : Matrix (ι ⊕ μ) (ι ⊕ ν) K}
+    (hAM : identityCornerDetChart (A * M)) :
+    {N : Matrix (ι ⊕ μ) (ι ⊕ ν) K | identityCornerDetChart (A * N)} ∈ nhds M := by
+  exact (continuous_const.matrix_mul continuous_id).continuousAt.preimage_mem_nhds
+    (identityCornerDetChart_mem_nhds hAM)
+
+/-- Upper-block left multiplication pulls the selected determinant chart back to a
+neighborhood of the untransformed matrix. -/
+theorem fromBlocks_leftMul_identityCornerDetChart_mem_nhds
+    [Fintype μ] [DecidableEq μ]
+    (F : Matrix ι μ K)
+    {M : Matrix (ι ⊕ μ) (ι ⊕ ν) K}
+    (hFM : identityCornerDetChart
+      (fromBlocks (1 : Matrix ι ι K) F 0 (1 : Matrix μ μ K) * M)) :
+    {N : Matrix (ι ⊕ μ) (ι ⊕ ν) K |
+      identityCornerDetChart
+        (fromBlocks (1 : Matrix ι ι K) F 0 (1 : Matrix μ μ K) * N)} ∈ nhds M :=
+  leftMul_identityCornerDetChart_mem_nhds
+    (fromBlocks (1 : Matrix ι ι K) F 0 (1 : Matrix μ μ K)) hFM
+
 /-- Identity-corner form gives an open determinant-chart neighborhood of the matrix. -/
 theorem identityCornerForm_mem_nhds_identityCornerDetChart
     {M : Matrix (ι ⊕ μ) (ι ⊕ ν) K} (hM : identityCornerForm M) :

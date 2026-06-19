@@ -37,7 +37,8 @@
 >   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseTwoEdgeTotalMatrix`,
 >   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseTwoEdgeTotalMatrix_eq_edge1_mul_edge0`,
 >   and
->   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_identityCornerDetChart`
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_identityCornerDetChart`,
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`
 >   (`lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`).
 > - **Gloss.** The base chain `B` supplies the endpoint adapted bases. The
 >   variable chain `C` supplies only the linear maps being represented. The
@@ -45,21 +46,24 @@
 >   `A4 - A3 * A1^{-1} * A2`, not the raw lower-right block unless the
 >   variable edge is still in identity-corner form.
 > - **Proved.** Fixed-basis matrix definitions, chain composition bookkeeping,
->   basepoint equality checks, determinant-chart neighborhood membership at
->   `C = B`, Schur-residual rank under explicit determinant and rank
->   hypotheses, and a canonical two-edge product wrapper for the first
+>   basepoint equality checks, untransformed and transformed determinant-chart
+>   neighborhood membership at `C = B` in ambient matrix space, Schur-residual
+>   rank under explicit determinant and rank hypotheses, and a canonical
+>   two-edge product wrapper for the first
 >   nontrivial composition case. The suffix-step theorem advances one already
 >   reduced suffix across a supplied transformed next edge; it is not yet an
 >   iterated all-layer induction theorem. The suffix-chain theorem now iterates
 >   that step under explicit determinant-chart hypotheses for every transformed
->   edge.
+>   edge. The transformed-neighborhood theorem is pointwise in a fixed
+>   previously accumulated block `Bprev`.
 > - **Assumed.** Finite-dimensional paper-order layers and a supplied
 >   total-kernel complement for the base chain. The residual-rank theorem
 >   assumes both `identityCornerDetChart` for the variable edge matrix and an
 >   exact rank equation for that matrix.
 > - **Cited.** None.
-> - **Deferred.** Proving determinant-chart hypotheses on an actual chain
->   neighborhood, exact rank-stratum packaging, regular coordinate-change
+> - **Deferred.** Pulling determinant-chart hypotheses back to an actual chain
+>   neighborhood by formalizing a topology and continuity for fixed-coordinate
+>   edge maps, exact rank-stratum packaging, regular coordinate-change
 >   certificates, and RLCT consequences.
 > - **Kill conditions.** Do not read this as saying rank strata are open or
 >   that bases are re-chosen for the variable chain `C`.

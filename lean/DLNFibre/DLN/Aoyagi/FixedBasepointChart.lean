@@ -416,6 +416,51 @@ theorem paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_identityCornerDetChar
   simpa [paperEndpointFixedBaseEdgeMatrix_selfBase] using
     paperEndpointAdaptedEdgeMatrix_mem_nhds_identityCornerDetChart W B U₀ hU₀ p
 
+/-- At the fixed base chain, each transformed fixed-base edge determinant chart is a
+neighborhood of the untransformed edge matrix. -/
+theorem paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (p : Fin N)
+    (Bprev : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        K) :
+    {M : Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K |
+      identityCornerDetChart
+        (fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          Bprev 0
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) * M)} ∈
+      nhds (paperEndpointFixedBaseEdgeMatrix W B B U₀ hU₀ p) := by
+  have hdet :
+      identityCornerDetChart
+        (fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          Bprev 0
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) *
+            paperEndpointFixedBaseEdgeMatrix W B B U₀ hU₀ p) := by
+    convert
+      (identityCornerDetChart_unitriangular_paperEndpointAdaptedEdgeMatrix
+        W B U₀ hU₀ p (-Bprev)) using 2
+    rw [paperEndpointUnitriangularLeft]
+    congr
+    exact (neg_neg Bprev).symm
+  exact fromBlocks_leftMul_identityCornerDetChart_mem_nhds Bprev hdet
+
 end FixedBaseTopology
 
 end Aoyagi

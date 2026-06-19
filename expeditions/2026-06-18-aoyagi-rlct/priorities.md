@@ -46,9 +46,11 @@ on the session's original cwd.
    `FixedBasepointChart.lean`, with determinant-chart and exact-rank hypotheses
    explicit. The first fixed-base chart-local suffix step with a supplied
    transformed edge is Lean-proved, and the all-layer explicit-chart
-   product-reduction theorem in fixed bases is Lean-proved. Next package the
-   transformed determinant-chart hypotheses over an actual fixed-coordinate
-   neighborhood, still keeping exact-rank strata as explicit hypotheses.
+   product-reduction theorem in fixed bases is Lean-proved. The matrix-space
+   basepoint neighborhood for each fixed transformed determinant chart is also
+   Lean-proved. Next formalize the topology/continuity bridge that pulls these
+   matrix neighborhoods back along the fixed-coordinate variable edge maps,
+   still keeping exact-rank strata as explicit hypotheses.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

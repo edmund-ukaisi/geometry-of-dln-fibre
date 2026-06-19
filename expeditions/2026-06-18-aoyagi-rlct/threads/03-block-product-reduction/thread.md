@@ -817,3 +817,27 @@ The fixed-base wrapper applies this to variable paper-order chains expressed
 in endpoint bases fixed from `B`. It still assumes all transformed-edge
 determinant-chart hypotheses explicitly; it does not prove these from
 neighborhood membership or exact rank.
+
+## 2026-06-19 A2 fixed-base transformed determinant neighborhood
+
+Extended `ChartTopology.lean` with matrix-space pullback lemmas for the
+selected determinant chart:
+
+- `leftMul_identityCornerDetChart_mem_nhds`;
+- `fromBlocks_leftMul_identityCornerDetChart_mem_nhds`.
+
+Extended `FixedBasepointChart.lean` with
+`paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`.
+For each fixed edge `p` and fixed accumulated upper block `Bprev`, the set of
+matrices `M` such that `[I Bprev; 0 I] * M` lies in the selected determinant
+chart is an ambient matrix-space neighborhood of the base fixed-base edge
+matrix at `C = B`. The proof uses the endpoint unitriangular basepoint
+certificate with parameter `-Bprev`, then pulls back the open determinant chart
+along fixed left multiplication.
+
+This closes the matrix-local determinant-neighborhood package needed by the
+explicit-chart induction. It still does not prove a chain-neighborhood theorem:
+there is no formal topology on the variable paper-order chain space here and
+no continuity theorem for
+`C ↦ paperEndpointFixedBaseEdgeMatrix W B C U0 hU0 p`. Exact rank remains an
+explicit hypothesis, not an ambient-open condition.
