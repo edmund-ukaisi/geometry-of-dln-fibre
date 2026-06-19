@@ -1075,3 +1075,38 @@ This theorem gives one neighborhood on which recursive determinant charts and
 endpoint block form hold, and on which every residual rank conclusion is
 available as an implication from an exact pointwise edge-rank hypothesis. It
 does not place exact-rank hypotheses inside the neighborhood conclusion.
+
+## 2026-06-19 A2 product-reduction boundary certificate
+
+Landed `lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`, imported by the
+single-writer aggregator.
+
+Main Lean artifacts:
+
+- `PaperEndpointFixedBaseProductReductionCertificate`: a Prop-valued package
+  for the fixed-base recursive determinant charts, endpoint block form, and
+  residual-rank implications.
+- `paperEndpointFixedBaseProductReductionCertificate_of_recursiveDetCharts`:
+  a pointwise constructor from recursive determinant charts, reusing the
+  deterministic endpoint block theorem and transformed residual-rank bridge.
+- `paperEndpointFixedBaseProductReductionCertificate_selfBase_mem_nhds`: the
+  neighborhood theorem for a continuous reversed-edge family based at
+  `reverseEdge W B`.
+- `PaperEndpointFixedBaseProductReductionLocalCertificate` and
+  `paperEndpointFixedBaseProductReductionLocalCertificate_of_isCompl`: the
+  fixed-base local package carrying both the basepoint certificate and the
+  product-reduction certificate neighborhood.
+- `PaperEndpointProductReductionLocalCertificate` and
+  `exists_paperEndpointProductReductionLocalCertificate`: the existential local
+  package choosing a total-kernel complement.
+
+This checkpoint packages the current source-facing elementary/topological
+boundary. It does not prove exact-rank openness, analytic ideal-germ transport,
+regular-suspension/RLCT additivity, normal-crossing extraction, or the full
+printed triangular product-reduction theorem from Aoyagi's source hypotheses.
+The post-Theorem-3 RLCT transport remains a separate deferred problem. Xhigh
+scouts `Herschel` and `Ohm` independently recommended this boundary shape,
+with the same non-claims. Controller verified targeted build, full `DLNFibre`
+build, `scripts/sorries`, `git diff --check`, and axiom spot checks for the
+public theorems. Statement card:
+`statement-card-a2-product-reduction-boundary-certificate.md`.

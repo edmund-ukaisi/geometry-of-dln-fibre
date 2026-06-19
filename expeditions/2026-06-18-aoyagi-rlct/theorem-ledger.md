@@ -227,6 +227,19 @@ packages the honest neighborhood boundary: recursive charts and endpoint block
 form hold nearby, and transformed residual-rank conclusions are available
 nearby as implications from exact pointwise edge ranks.
 
+Sixteenth latest A2 update: the source-facing elementary product-reduction
+boundary has landed in `lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`.
+`PaperEndpointFixedBaseProductReductionCertificate` packages the three proved
+fixed-base fields: recursive determinant charts, deterministic endpoint block
+form, and residual-rank implications. The local certificate
+`PaperEndpointFixedBaseProductReductionLocalCertificate` adds the basepoint
+certificate and the neighborhood membership, and
+`exists_paperEndpointProductReductionLocalCertificate` chooses a total-kernel
+complement for a continuous reversed-edge family based at `B`. This remains an
+elementary/topological A2 boundary only: no exact-rank openness, no analytic
+ideal-germ transport, no regular-suspension/RLCT additivity, and no
+normal-crossing extraction is included.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -68,9 +68,12 @@ on the session's original cwd.
    residual block recurrence and pointwise transformed residual-rank bridge are
    also Lean-proved under explicit exact-rank hypotheses. A combined
    neighborhood theorem now packages endpoint block form with residual-rank
-   implications from pointwise exact ranks. Next assemble the remaining
-   source-facing Theorem 3 certificate boundary, without pretending that
-   exact-rank strata are open.
+   implications from pointwise exact ranks. The source-facing elementary
+   product-reduction boundary is now packaged in `ProductReductionBoundary.lean` as
+   fixed-base, local fixed-base, and existential local certificates, without
+   pretending that exact-rank strata are open. Next return to the A4 blow-up
+   reproduction repair: separate actual layer widths from prefix minima, cover
+   pivot charts, and rebuild the transition invariant before any Lean tide.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

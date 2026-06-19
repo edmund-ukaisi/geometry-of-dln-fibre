@@ -541,6 +541,19 @@ some form `[I B; 0 D]`; indexed variants support the arbitrary basis index
 types used by `ThroughSubspaceChartData`. It does not run Aoyagi's full
 induction.
 
+The source-facing elementary A2 boundary is now packaged in
+`ProductReductionBoundary.lean`. The fixed-base certificate records exactly the three
+nearby facts proved so far: recursive determinant charts, deterministic
+endpoint block form, and transformed residual-rank implications from exact
+pointwise edge ranks. The local fixed-base certificate adds the basepoint
+certificate and a neighborhood membership statement; the existential local
+certificate chooses a total-kernel complement. This closes the previous A2
+packaging target, but not the full printed triangular product-reduction theorem
+from Aoyagi's source hypotheses; the post-Theorem-3 RLCT/regular-variable
+transport is a separate deferred analytic/certificate problem. The next honest
+target is A4 reproduction repair, beginning with actual layer widths versus
+prefix minima, pivot-chart coverage, and a corrected transition invariant.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

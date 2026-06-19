@@ -135,8 +135,12 @@ No such claim is formalisation-ready until both fields are filled.
   `D` field now has a named recurrence as a product by the visited Schur
   residual block. A neighborhood theorem now combines recursive charts,
   endpoint block form, and residual-rank implications from exact pointwise
-  edge-rank hypotheses, without asserting exact-rank openness. The full source
-  Theorem 3 claim remains blocked.
+  edge-rank hypotheses, without asserting exact-rank openness. The currently
+  proved elementary/topological product-reduction boundary is now named in
+  `ProductReductionBoundary.lean`, including a fixed-base certificate, a local
+  fixed-base certificate carrying the basepoint certificate plus neighborhood
+  membership, and an existential local certificate choosing a total-kernel
+  complement. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -322,6 +326,15 @@ No such claim is formalisation-ready until both fields are filled.
   wrappers `DLNFibre.DLN.Aoyagi.paperEndpointFixedBase_chartLocal_suffixStep`
   and
   `DLNFibre.DLN.Aoyagi.productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDiagonal`.
+  Product-reduction boundary certificate wrappers
+  `DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseProductReductionCertificate`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseProductReductionCertificate_of_recursiveDetCharts`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseProductReductionCertificate_selfBase_mem_nhds`,
+  `DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseProductReductionLocalCertificate`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseProductReductionLocalCertificate_of_isCompl`,
+  `DLNFibre.DLN.Aoyagi.PaperEndpointProductReductionLocalCertificate`, and
+  `DLNFibre.DLN.Aoyagi.exists_paperEndpointProductReductionLocalCertificate`
+  are in `lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`.
 - **Proved.** one chart-local algebraic induction-step identity over a
   commutative ring, under explicit determinant-unit hypotheses for the prefix
   corner `C1` and next-layer corner `A1`, plus the same identity over arbitrary
