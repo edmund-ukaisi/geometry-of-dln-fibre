@@ -1022,6 +1022,24 @@ theorem selectedEntrySubstitutionMatrix_eq_mul_normalized
 
 end SelectedEntrySubstitutionMatrix
 
+section SelectedEntryWeightedMatrix
+
+variable {ι κ α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq κ] [CommSemiring α]
+
+/-- Row-weighted selected-entry substitution factors the selected variable into the
+row diagonal. This is finite algebra only, not a chart construction. -/
+theorem diagonal_mul_selectedEntrySubstitutionMatrix
+    (rowPivot : ι) (colPivot : κ) (u : α) (weight : ι → α)
+    (residual : ι → κ → α) :
+    diagonal weight * selectedEntrySubstitutionMatrix rowPivot colPivot u residual =
+      diagonal (fun i ↦ u * weight i) *
+        selectedEntryNormalizedMatrix rowPivot colPivot residual := by
+  ext i j
+  simp [selectedEntrySubstitutionMatrix_eq_mul_normalized]
+  ac_rfl
+
+end SelectedEntryWeightedMatrix
+
 /-- In the Case 2 residual-block center, the displayed selected-entry chart has value `u`
 at the displayed pivot. This is only finite selected-entry bookkeeping. -/
 theorem case2_displayedPivot_selectedEntryChartMap_value_mem
@@ -1744,6 +1762,30 @@ theorem weightedPivotDiagonal_eq_pivotFirst_diagonal
           exact hij (Subtype.ext h)
         simp [weightedPivotDiagonal, pivotFirstIndexEquiv, hij, hij_val]
 
+/-- After a selected-entry substitution, pivot-first reindexing identifies the
+row-weighted source block with the normalised block whose row weights include
+the selected variable. This is finite matrix algebra only. -/
+theorem pivotFirst_diagonal_mul_selectedEntrySubstitutionMatrix
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq κ]
+    {rowPivot : ι} {colPivot : κ}
+    (u : R) (weight : ι → R) (residual : ι → κ → R) :
+    (diagonal weight *
+        selectedEntrySubstitutionMatrix rowPivot colPivot u residual).submatrix
+        (pivotFirstIndexEquiv rowPivot) (pivotFirstIndexEquiv colPivot) =
+      weightedPivotDiagonal (u * weight rowPivot)
+        (fun i : pivotComplement rowPivot ↦ u * weight i.1) *
+        pivotFirstMatrix rowPivot colPivot
+          (selectedEntryNormalizedMatrix rowPivot colPivot residual) := by
+  rw [diagonal_mul_selectedEntrySubstitutionMatrix]
+  rw [weightedPivotDiagonal_eq_pivotFirst_diagonal rowPivot (fun i ↦ u * weight i)]
+  rw [pivotFirstMatrix]
+  rw [Matrix.submatrix_mul_equiv
+    (diagonal (fun i ↦ u * weight i))
+    (selectedEntryNormalizedMatrix rowPivot colPivot residual)
+    (pivotFirstIndexEquiv rowPivot)
+    (pivotFirstIndexEquiv rowPivot)
+    (pivotFirstIndexEquiv colPivot)]
+
 /-- The elementary right column operation that clears the pivot row off the pivot. -/
 def pivotQ (y : Matrix Unit κ R) : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R :=
   fromBlocks 1 (-y) 0 1
@@ -2163,6 +2205,49 @@ def case2DisplayedNormalizedMatrix
     (case2DisplayedPivotRow n hS hcont)
     (case2DisplayedPivotCol n hS hcont) residual
 
+/-- The source-substituted residual block in the displayed Case 2 selected-entry chart. -/
+def case2DisplayedSubstitutionMatrix
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  selectedEntrySubstitutionMatrix
+    (case2DisplayedPivotRow n hS hcont)
+    (case2DisplayedPivotCol n hS hcont) u residual
+
+/-- The displayed Case 2 substituted block is `u` times the normalised residual block. -/
+theorem case2DisplayedSubstitutionMatrix_eq_mul_normalized
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R) :
+    case2DisplayedSubstitutionMatrix n hS hcont u residual =
+      fun i j ↦ u * case2DisplayedNormalizedMatrix n hS hcont residual i j :=
+  rfl
+
+/-- Displayed Case 2 source-variable transport: the selected variable in the
+substituted residual block can be absorbed into the pivot-first row weights. -/
+theorem case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (weight : Case2ResidualRowIndex n S J → R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R) :
+    (diagonal weight * case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+        (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+        (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont)) =
+      weightedPivotDiagonal
+        (u * weight (case2DisplayedPivotRow n hS hcont))
+        (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          u * weight i.1) *
+        pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedNormalizedMatrix n hS hcont residual) := by
+  simpa [case2DisplayedSubstitutionMatrix, case2DisplayedNormalizedMatrix] using
+    pivotFirst_diagonal_mul_selectedEntrySubstitutionMatrix
+      (rowPivot := case2DisplayedPivotRow n hS hcont)
+      (colPivot := case2DisplayedPivotCol n hS hcont)
+      u weight residual
+
 /-- The following factor for displayed Case 2, reindexed into pivot-first column order. -/
 def case2DisplayedFollowingFactor
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
@@ -2186,6 +2271,34 @@ theorem case2DisplayedNormalizedMatrix_mul_followingFactor
       (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont)) id := by
   exact pivotFirstMatrix_mul_pivotFirstFollowingFactor
     (case2DisplayedNormalizedMatrix n hS hcont residual) C
+
+/-- Displayed Case 2 source-variable transport with the following factor included. -/
+theorem case2Displayed_diagonal_mul_substitutionMatrix_mul_followingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (weight : Case2ResidualRowIndex n S J → R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ((diagonal weight * case2DisplayedSubstitutionMatrix n hS hcont u residual) *
+        C).submatrix
+        (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont)) id =
+      (weightedPivotDiagonal
+          (u * weight (case2DisplayedPivotRow n hS hcont))
+          (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+            u * weight i.1) *
+        pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+        case2DisplayedFollowingFactor n hS hcont C := by
+  rw [← Matrix.submatrix_mul_equiv
+    (diagonal weight * case2DisplayedSubstitutionMatrix n hS hcont u residual)
+    C
+    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))
+    id]
+  rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
+  rfl
 
 /-- Source-displayed Case 2 top-left `Q/P` identity with the following factor reindexed
 into pivot-first column coordinates. This is still local finite algebra, not chart coverage. -/
@@ -2239,6 +2352,57 @@ theorem exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
     exists_case2DisplayedQP_mul_of_flat_weights
       n hS hcont u weight residual
       (case2DisplayedFollowingFactor n hS hcont C) hflat
+
+/-- Displayed Case 2 `Q/P` identity with the selected-entry source substitution
+factored into the row weights. This is still local finite algebra for the
+displayed residual block, not a full source-coordinate chart theorem. -/
+theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (weight : Case2ResidualRowIndex n S J → R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R)
+    (hflat : ∀ i, weight i = weight (case2DisplayedPivotRow n hS hcont)) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal weight *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (u * weight (case2DisplayedPivotRow n hS hcont))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * weight i.1) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+            case2DisplayedFollowingFactor n hS hcont C) := by
+  rcases exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
+      n hS hcont u weight residual C hflat with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
+  simpa [Matrix.mul_assoc] using hq
 
 end ColumnOperationBlocks
 

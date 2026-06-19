@@ -415,6 +415,28 @@ This is still local finite algebra for the displayed chart. It does not prove
 the full source-coordinate construction, arbitrary-pivot chart coverage,
 regularity/Jacobian facts, exponent updates, or transition invariants.
 
+## 2026-06-19 Lean Case 2 source-substitution factor
+
+Reproduction: `reproduction-case2-source-substitution-factor-a4.md`.
+Statement card: `statement-card-a4-case2-source-substitution-factor.md`.
+
+Lean now proves the finite source-substitution factoring step for the displayed
+Case 2 selected-entry chart. The generic theorem
+`diagonal_mul_selectedEntrySubstitutionMatrix` proves
+`diag(weight) * sourceSubstitutedBlock = diag(u * weight) * normalisedBlock`.
+The displayed wrappers `case2DisplayedSubstitutionMatrix`,
+`case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst`, and
+`case2Displayed_diagonal_mul_substitutionMatrix_mul_followingFactor` transport
+this equality into the pivot-first/following-factor coordinates used by the
+existing displayed `Q/P` theorem. The wrapper
+`exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights` applies that
+`Q/P` theorem after the source factor has been absorbed into row weights.
+
+This counts the selected variable once, as `newWeight = u * oldWeight`. It
+does not prove the full source blockdiag identity, arbitrary-pivot chart
+coverage, regularity/Jacobian facts, exponent updates, or transition
+invariants.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

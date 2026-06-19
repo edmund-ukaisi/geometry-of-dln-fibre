@@ -724,9 +724,12 @@ ordered lexicographically.  This is not yet checked.  It must prove:
   source-displayed Case 2 top-left pivot `Q/P` product identity is also proved
   under flat displayed row weights, and the following factor's pivot-first
   reindexing, diagonal row-weight reindexing, and the displayed residual
-  following-factor package are proved. The full polynomial-coordinate pivot chart
-  construction, full source-variable coordinate/weight transport, arbitrary
-  selected-entry pivots, and chart-family coverage are not proved.
+  following-factor package are proved. The displayed source-substitution
+  factoring step is also proved: the selected variable can be moved from the
+  source-substituted residual block into updated row weights before applying
+  `Q/P`. The full polynomial-coordinate pivot chart construction, full source
+  blockdiag identity, arbitrary selected-entry pivots, and chart-family
+  coverage are not proved.
 - The printed Case 2 vector update is incompatible with the terminal exponent
   formula for arbitrary widths.  The prefix-minimum vector repairs the
   arithmetic but is a corrected certificate, not source-faithful printed data.

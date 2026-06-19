@@ -488,10 +488,12 @@ No such claim is formalisation-ready until both fields are filled.
   is also proved under flat displayed residual-row weights, and finite
   following-factor and diagonal row-weight reindexing are proved. The displayed
   Case 2 theorem now also accepts a residual following factor before
-  pivot-first reindexing. Missing arbitrary
-  pivot charts, full polynomial-coordinate chart construction,
-  coordinate/weight transport from source variables, the printed `b'_i` versus
-  standalone-`u` ambiguity, termination, and boundary cases remain open.
+  pivot-first reindexing. The first source-substitution factoring bridge is
+  also proved: the selected variable in the displayed residual block is moved
+  into updated row weights before applying `Q/P`. Missing arbitrary pivot
+  charts, the full source blockdiag identity, full polynomial-coordinate chart
+  construction, the printed `b'_i` versus standalone-`u` ambiguity,
+  termination, and boundary cases remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
   genuine source gap with no certificate-level repair compatible with the
@@ -645,6 +647,14 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedNormalizedMatrix`, `case2DisplayedFollowingFactor`,
   `case2DisplayedNormalizedMatrix_mul_followingFactor`, and
   `exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights`.
+  Added the displayed Case 2 source-substitution factorisation:
+  `diagonal_mul_selectedEntrySubstitutionMatrix`,
+  `pivotFirst_diagonal_mul_selectedEntrySubstitutionMatrix`,
+  `case2DisplayedSubstitutionMatrix`,
+  `case2DisplayedSubstitutionMatrix_eq_mul_normalized`,
+  `case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst`,
+  `case2Displayed_diagonal_mul_substitutionMatrix_mul_followingFactor`, and
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
   transport, row-weight hypotheses in pivot-first coordinates, and exponent

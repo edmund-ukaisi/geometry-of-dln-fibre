@@ -280,6 +280,15 @@ interface without surfacing it.
   `case2DisplayedNormalizedMatrix_mul_followingFactor` relates the pivot-first
   product to the product before pivot-first row reindexing. This still does
   not construct the full source coordinates.
+  The displayed Case 2 source-substitution factor is now Lean-proved:
+  `case2DisplayedSubstitutionMatrix` represents the selected-entry chart before
+  factoring out the selected variable, and
+  `case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst` moves that
+  selected variable into updated row weights `u * weight` in pivot-first
+  coordinates. The wrapper
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights` then applies
+  the existing displayed `Q/P` theorem. This still does not prove the full
+  source blockdiag identity, chart regularity, or exponent update.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not
