@@ -751,6 +751,29 @@ card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-source-substituted-local-handoff-a4.md`.
 
+Latest A4 update: the Case 1 selected-old pullback boundary has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`Case1DisplayedRowStripSelectedOldPullbackBoundary`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.factoredBaseFirstJump`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.selectedOld_mem_center`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.sourcePullback_selectedIntroduced`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.selectedLevel`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.source_step_eq_mulStepAt`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.residualRowStripOldWeight_eq_sourceWeight`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.sourceOrder_identity`, and
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.extendExponentDomain`. This
+checkpoint bundles the supplied selected-old source pullback with the supplied
+displayed row-strip local handoff specialized to `factoredBase.level`, so the
+source-facing handoff no longer needs a separate
+`level = factoredBase.level` argument. It does not construct the selected-old
+chart, prove that the `Unit` center token determines `(s0,k0)`, construct the
+raw-coordinate source pullback, prove chart-produced post-data,
+coverage/regularity/Jacobians, normal crossings, or RLCT extraction. Statement
+card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-pullback-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-pullback-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

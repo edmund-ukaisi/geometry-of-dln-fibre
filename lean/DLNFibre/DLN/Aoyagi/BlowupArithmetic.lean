@@ -4685,6 +4685,234 @@ theorem extendExponentDomain
 
 end Case1DisplayedRowStripSuppliedTransitionBoundary
 
+/-- Source-facing supplied boundary for Aoyagi's displayed Case 1(2)
+selected-old pullback.
+
+The local row-strip handoff is specialized to `factoredBase.level`, so using
+the selected old-label source pullback no longer needs a separate level-map
+identification.  This remains an assumption interface: it records the
+selected-old pullback and the supplied local handoff, but does not construct
+the selected-old chart, identify the `Unit` center generator with `(s0,k0)` by
+itself, prove coverage, compute Jacobians, or assert normal crossings/RLCT. -/
+structure Case1DisplayedRowStripSelectedOldPullbackBoundary
+    (R : Type*) [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J J1 s0 k0 : ℕ)
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ)
+    (source factoredBase : IntroducedLabelRecurrenceState L n S J R)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) R)
+    (u : R) : Prop where
+  handoff :
+    Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0
+      factoredBase.level
+      t t' numerator numerator' leastValue leastValue' factoredBase post u
+  sourcePullback :
+    IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData
+      source factoredBase s0 k0 u
+
+namespace Case1DisplayedRowStripSelectedOldPullbackBoundary
+
+/-- The bundled local handoff supplies first-jump data on the recurrence-state
+level map of the factored-base state. -/
+theorem factoredBaseFirstJump
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    Case1FirstJumpHypotheses L n S J J1 s0 k0 factoredBase.level t :=
+  data.handoff.firstJump
+
+/-- The `Unit` branch is the selected old center-generator token.  This is
+finite-center membership only; the source label `(s0,k0)` is supplied
+separately by `sourcePullback` and `factoredBaseFirstJump`. -/
+theorem selectedOld_mem_center
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (_data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    (Sum.inl () : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 :=
+  case1_selectedOld_mem_center n S J J1
+
+/-- The selected old source label is supplied as an introduced label in the
+pullback recurrence data. -/
+theorem sourcePullback_selectedIntroduced
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    introducedLabel L n S J s0 k0 :=
+  data.sourcePullback.selectedIntroduced
+
+/-- The selected old source label has level `J+J1` in the factored-base
+recurrence-state level map. -/
+theorem selectedLevel
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    factoredBase.level s0 k0 = J + J1 :=
+  data.factoredBaseFirstJump.selectedLevel
+
+/-- The supplied selected-old pullback changes the source recurrence by
+inserting one factor `u` at the selected old level `J+J1`. -/
+theorem source_step_eq_mulStepAt
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    source.step = mulStepAt factoredBase.step u (J + J1) :=
+  data.sourcePullback.step_eq_mulStepAt_of_firstJump data.factoredBaseFirstJump
+
+/-- The row-strip old-weight convention is exactly the supplied source
+pullback recurrence weights. -/
+theorem residualRowStripOldWeight_eq_sourceWeight
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    case1RowStripOldWeight (case1ResidualRowStrip n S J J1) u
+        (fun i ↦ factoredBase.case2ResidualRowWeight i) =
+      fun i ↦ source.weight (case2ResidualRowLevel n S J i) :=
+  case1ResidualRowStripOldWeight_eq_sourceWeight_of_selectedOldFactoredBase
+    data.sourcePullback data.factoredBaseFirstJump
+
+/-- The source-facing displayed Case 1(2) source-order identity, with the left
+diagonal already written in the supplied source-pullback weights. -/
+theorem sourceOrder_identity
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (C :
+      Matrix
+        (Unit ⊕ pivotComplement
+          (case2DisplayedPivotCol n data.handoff.stage_pos
+            data.handoff.continuationBound)) τ R)
+    (hpivot :
+      A (case2DisplayedPivotRow n data.handoff.stage_pos data.handoff.continuationBound)
+        (case2DisplayedPivotCol n data.handoff.stage_pos
+          data.handoff.continuationBound) = 1) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.handoff.stage_pos data.handoff.continuationBound) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n data.handoff.stage_pos data.handoff.continuationBound)
+                (case2DisplayedPivotCol n data.handoff.stage_pos
+                  data.handoff.continuationBound)
+                A i ()) *
+          (diagonal
+              (fun i ↦ source.weight (case2ResidualRowLevel n S J i)) *
+            case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A).submatrix
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotRow n data.handoff.stage_pos
+                data.handoff.continuationBound))
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotCol n data.handoff.stage_pos
+                data.handoff.continuationBound))) *
+          C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i :
+                pivotComplement
+                  (case2DisplayedPivotRow n data.handoff.stage_pos
+                    data.handoff.continuationBound) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n data.handoff.stage_pos data.handoff.continuationBound)
+                (case2DisplayedPivotCol n data.handoff.stage_pos
+                  data.handoff.continuationBound)
+                A -
+              pivotFirstX
+                  (case2DisplayedPivotRow n data.handoff.stage_pos
+                    data.handoff.continuationBound)
+                  (case2DisplayedPivotCol n data.handoff.stage_pos
+                    data.handoff.continuationBound)
+                  A *
+                pivotFirstY
+                  (case2DisplayedPivotRow n data.handoff.stage_pos
+                    data.handoff.continuationBound)
+                  (case2DisplayedPivotCol n data.handoff.stage_pos
+                    data.handoff.continuationBound)
+                  A)) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n data.handoff.stage_pos data.handoff.continuationBound)
+              (case2DisplayedPivotCol n data.handoff.stage_pos
+                data.handoff.continuationBound)
+              A) * C) :=
+  data.handoff.sourceOrder_identity_substitutedSourceWeights data.sourcePullback rfl A C hpivot
+
+/-- The bundled local handoff extends the exponent certificate domain by the
+fresh Case 1(2) displayed row-strip label. -/
+theorem extendExponentDomain
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
+  data.handoff.extendExponentDomain
+
+end Case1DisplayedRowStripSelectedOldPullbackBoundary
+
 /-- Supplied-data boundary for Aoyagi's displayed Case 1(2) row-strip pivot.
 It combines the finite first-jump/source-validity facts with an already
 supplied weighted pivot-first source block.  It does not construct the

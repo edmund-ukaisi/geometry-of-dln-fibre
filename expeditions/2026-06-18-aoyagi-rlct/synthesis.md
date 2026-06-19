@@ -987,6 +987,17 @@ values on residual row levels. The explicit hypothesis
 recurrence-state data still live in separately supplied packages. This is still
 a supplied local handoff, not chart production or hidden old-label validity.
 
+The selected-old pullback boundary is now Lean-packaged as
+`Case1DisplayedRowStripSelectedOldPullbackBoundary`. It bundles the supplied
+selected-old source pullback with the supplied displayed row-strip handoff
+specialized to `factoredBase.level`, so downstream source-facing statements no
+longer need a separate level-map equality. The projections expose the selected
+old source step, `Unit` center-token membership, selected-level facts,
+row-strip source-weight rewriting, the source-order identity, and the exponent
+domain extension. This is still an assumption interface: it does not construct
+the selected-old chart, identify the `Unit` token with `(s0,k0)` from first
+principles, or prove chart coverage/regularity/Jacobians.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

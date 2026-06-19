@@ -229,7 +229,11 @@ on the session's original cwd.
    `mulStepAt factoredBase.step u (J+J1)`. The source-substituted local
    handoff now combines these two supplied boundaries and rewrites the
    displayed local handoff's left diagonal to `source.weight` on residual row
-   levels, with `level = factoredBase.level` kept explicit. Next A4 target:
+   levels, with `level = factoredBase.level` kept explicit. The selected-old
+   pullback boundary now packages this same source-facing data with the local
+   handoff specialized to `factoredBase.level`, exposing source-step,
+   center-token, source-order, and exponent-domain projections while still not
+   proving chart production. Next A4 target:
    chart-production/hidden-old-label validity boundary, or a similarly narrow
    source-facing wrapper for another displayed piece; keep arbitrary pivots
    explicit and supplied.

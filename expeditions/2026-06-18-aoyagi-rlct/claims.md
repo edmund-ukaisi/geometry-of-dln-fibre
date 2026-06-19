@@ -522,6 +522,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-successor-source-substitution-a4.md`.
 	  Review of the Case 1 source-substituted local handoff is saved at
 	  `threads/04-blow-up-certificate/review-case1-source-substituted-local-handoff-a4.md`.
+	  Review of the Case 1 selected-old pullback boundary is saved at
+	  `threads/04-blow-up-certificate/review-case1-selected-old-pullback-boundary-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -863,7 +865,15 @@ No such claim is formalisation-ready until both fields are filled.
   which rewrites the displayed Case 1(2) local handoff's left diagonal from the
   explicit recurrence `monomialRec (mulStepAt factoredBase.step u (J+J1))` to
   supplied substituted source weights
-  `source.weight (case2ResidualRowLevel n S J i)`.
+  `source.weight (case2ResidualRowLevel n S J i)`. Added the supplied
+  selected-old pullback package
+  `Case1DisplayedRowStripSelectedOldPullbackBoundary`, with projections
+  `factoredBaseFirstJump`, `selectedOld_mem_center`,
+  `sourcePullback_selectedIntroduced`, `selectedLevel`,
+  `source_step_eq_mulStepAt`,
+  `residualRowStripOldWeight_eq_sourceWeight`, `sourceOrder_identity`, and
+  `extendExponentDomain`. This packages the selected-old source pullback and
+  displayed local handoff with the handoff specialized to `factoredBase.level`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -891,7 +901,9 @@ No such claim is formalisation-ready until both fields are filled.
   source substitution boundary assumes the supplied hidden old label and
   substituted source recurrence; the source-substituted local handoff also
   assumes `level = factoredBase.level` to transport the first-jump data to the
-  recurrence-state level map. It does not identify the `Unit` center generator
+  recurrence-state level map. The selected-old pullback package removes that
+  extra equality only by specializing the supplied handoff to
+  `factoredBase.level`; it still does not identify the `Unit` center generator
   with a source label or construct the selected-old chart.
 - **Cited.** none planned.
 - **Deferred.** none planned.

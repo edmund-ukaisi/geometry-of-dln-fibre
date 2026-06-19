@@ -1174,3 +1174,28 @@ map are still separate supplied data. This is deliberate: the theorem does not
 construct the source pullback, selected-old chart, factored-base state, post
 state, chart-produced post-data, coverage, regularity, Jacobians, normal
 crossings, RLCT extraction, or a transition invariant.
+
+## 2026-06-19 Lean Case 1 selected-old pullback boundary
+
+Statement card:
+`statement-card-a4-case1-selected-old-pullback-boundary.md`.
+
+Lean now packages the supplied selected-old pullback boundary for the displayed
+Case 1(2) row-strip chart. The new structure
+`Case1DisplayedRowStripSelectedOldPullbackBoundary` combines:
+
+- selected-old pullback recurrence data, where `source` is already the
+  recurrence after `old = u*old'`;
+- the displayed row-strip local handoff specialized to `factoredBase.level`.
+
+The specialization removes the separate `level = factoredBase.level`
+hypothesis needed by the previous wrapper. The package exposes projection
+theorems for the selected old step, old-center membership of the `Unit` token,
+selected-label facts, row-strip source-weight rewriting, the source-order
+identity, and exponent-domain extension.
+
+This is still an assumption interface. It does not construct the selected-old
+chart, prove that the `Unit` token determines `(s0,k0)`, construct the raw
+source pullback, produce post-data from coordinates, prove chart coverage or
+regularity, compute Jacobians, assert normal crossings, extract RLCT, or prove
+a transition invariant.
