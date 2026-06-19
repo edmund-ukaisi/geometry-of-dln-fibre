@@ -3,7 +3,7 @@
 Module `lean/DLNFibre/Core/NullstellensatzCodim.lean` (new file, imports `Core.NoetherMonicPositioning`,
 `Core.OrbitCodim`, `Mathlib.RingTheory.Nullstellensatz`, `Mathlib.RingTheory.Spectrum.Prime.Topology`,
 `Mathlib.Algebra.MvPolynomial.Funext`). Import appended to `DLNFibre.lean` (single-writer, no reorder).
-Sorry-free, axiom-clean (`propext, Classical.choice, Quot.sound`). Commit `c5b00e2`.
+Sorry-free, axiom-clean (`propext, Classical.choice, Quot.sound`). Commit `8b240be`.
 
 **Scope (name = content).** Over `[Field k] [IsAlgClosed k]` and a finite coordinate index `σ` (our
 `RepCoord d`), this file links the **geometric** codimension of a Zariski-closed `Z ⊆ (σ → k)` — the
