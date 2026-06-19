@@ -303,6 +303,27 @@ selected-entry charts, coordinate transport for following factors and weights,
 quotient witnesses for arbitrary Aoyagi pivot rows, chart coverage, exponent
 updates, or a transition invariant.
 
+## 2026-06-19 Lean pivot-row quotient witnesses
+
+Reproduction: `reproduction-pivot-row-weight-quotients-a4.md`.
+Statement card: `statement-card-a4-pivot-row-quotient-witnesses.md`.
+
+Lean now proves the generic quotient-witness layer needed by the `P`
+row-operation theorem. The core theorem
+`exists_right_quotients_of_forall_dvd` turns divisibility of every lower-row
+weight by the pivot-row weight into witnesses `q` satisfying
+`weight i = q i * weight_pivot`. Equality, equality-or-divisibility, constant
+row weights, later monomial recurrence terms, equality-or-later recurrence
+terms, and common pivot multiplication all have corresponding witness
+wrappers.
+
+The bridge
+`exists_weightedPivotBlockRowOp_mul_diagonal_mul_of_forall_dvd` packages this
+with the existing normalised `P` matrix identity. This still assumes that row
+weights are already in pivot-first coordinates and does not prove Aoyagi's
+selected-entry charts, coordinate transport, arbitrary-pivot row hypotheses,
+chart coverage, exponent updates, or a transition invariant.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

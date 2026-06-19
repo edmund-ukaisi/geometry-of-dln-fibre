@@ -614,10 +614,13 @@ No such claim is formalisation-ready until both fields are filled.
   generic pivot-first `Q/P` algebra bridge: a matrix with a selected pivot
   entry equal to `1` reindexes to `pivotPreQBlock`, and the existing normalised
   `Q/P` identities apply under explicit quotient witnesses
-  `forall i, b i = q i * b0`.
+  `forall i, b i = q i * b0`. Added generic pivot-row quotient witnesses from
+  divisibility, equality, monomial recurrence tails, equality-or-later
+  recurrence data, and common pivot multiplication.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
-  transport, row-weight quotient witnesses, and exponent updates remain open.
+  transport, row-weight hypotheses in pivot-first coordinates, and exponent
+  updates remain open.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

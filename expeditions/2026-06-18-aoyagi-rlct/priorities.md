@@ -110,10 +110,11 @@ on the session's original cwd.
    this bridge is established/preserved where applicable, prove chart-produced
    post-data for Case 1 selected labels, or continue chart-family scaffolding:
    arbitrary selected-entry finite-center facts and the generic pivot-first
-   `Q/P` algebra bridge are Lean-proved, but Aoyagi-specific arbitrary chart
-   construction, coordinate transport, row-weight quotient witnesses, and
-   indexed non-displayed transition formulas are still missing. Then redo Case
-   1/2 updates, cover pivot charts, repair the
+   `Q/P` algebra bridge are Lean-proved; generic row-weight quotient witnesses
+   are also Lean-proved. Aoyagi-specific arbitrary chart construction,
+   pivot-first coordinate/weight transport, row hypotheses, and indexed
+   non-displayed transition formulas are still missing. Then redo Case 1/2
+   updates, cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

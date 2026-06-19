@@ -270,6 +270,21 @@ normalised top-left block shape and that the existing `Q/P` identities apply
 under explicit quotient witnesses `forall i, b i = q i * b0`, with the
 following factor and weights already in pivot-first coordinates.
 
+Third latest A4 update: generic pivot-row quotient witnesses have landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. Proved Lean names include
+`exists_right_quotients_of_forall_dvd`,
+`exists_right_quotients_of_forall_eq`,
+`exists_right_quotients_of_forall_eq_or_dvd`,
+`monomialRec_tail_eq_right_mul`,
+`exists_right_quotients_monomialRec_of_le`,
+`exists_right_quotients_monomialRec_of_eq_or_le`,
+`exists_right_quotients_pivotMul_monomialRec_of_le`,
+`exists_right_quotients_pivotMul_monomialRec_of_eq_or_le`,
+`exists_right_quotients_const`, and
+`exists_weightedPivotBlockRowOp_mul_diagonal_mul_of_forall_dvd`. These are
+generic algebraic witnesses for the `P` matrix quotient hypothesis, not
+Aoyagi-specific chart construction or transition data.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

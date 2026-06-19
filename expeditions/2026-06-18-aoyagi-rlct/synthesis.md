@@ -248,6 +248,11 @@ interface without surfacing it.
   explicit quotient witnesses. This still leaves the Aoyagi-specific arbitrary
   chart construction, coordinate transport, row-weight quotient witnesses, and
   exponent updates open.
+  The generic pivot-row quotient witness layer is now proved: divisibility,
+  equality, monomial recurrence tails, equality-or-later recurrence data, and
+  common pivot multiplication can all produce witnesses `b_i = q_i*b0` for the
+  `P` theorem. Aoyagi-specific arbitrary chart construction, pivot-first
+  transport, and row hypotheses are still open.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not
