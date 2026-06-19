@@ -128,3 +128,33 @@ elementary algebraic scope. Statement card: `statement-card-a2-entry-ideal.md`.
 Still blocked: the same algebraic ideal does not by itself imply the same RLCT.
 The final route must construct or transport a normal-crossing certificate before
 using the single extraction citation.
+
+## 2026-06-18 A2 through-layer basis reproduction
+
+Opened xhigh pen-and-paper scout `Gibbs` to reproduce the missing
+through-layer basis/open-chart lemma, then xhigh checker `Hooke` to audit it.
+Report saved at `through-layer-basis-reproduction.md`.
+
+Verdict: product rank `r` is enough to choose bases existentially so the true
+layer maps have block form `[I B; 0 D]` and the Aoyagi induction charts contain
+the base point. Product rank is not enough for a preselected fixed chart; the
+report records counterexamples. This is an auxiliary elementary
+linear-algebra repair, not a source-stated Aoyagi lemma and not an analytic
+claim.
+
+Lean-ready now: the field-linear through-subspace existence lemma, and the
+local unitriangular chart-stability block calculation. Full Theorem 3 remains
+blocked until this basis lemma is formalised and connected to the already
+landed chart-local induction identity.
+
+Outcome for the local calculation: landed
+`DLNFibre.DLN.Aoyagi.upperUnitriangular_mul_fromBlocks_one_zero` in
+`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`. It proves
+
+```text
+[I -F; 0 I] [I B; 0 D] = [I B - F D; 0 D].
+```
+
+Controller verified targeted build, full `DLNFibre` build, `scripts/sorries`,
+and `#print axioms`. Statement card:
+`statement-card-a2-unitriangular-chart.md`.

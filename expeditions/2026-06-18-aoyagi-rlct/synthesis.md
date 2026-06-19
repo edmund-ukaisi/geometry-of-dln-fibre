@@ -134,6 +134,18 @@ regular variables must be included in a full normal-crossing certificate so the
 post-Theorem-3 `c/2` shift is finite certificate arithmetic, not a second
 citation.
 
+Through-layer basis repair: xhigh reproduction/check says product rank `r` is
+enough to choose through-layer bases existentially so true layer maps have
+block form `[I B; 0 D]` and induction charts contain the base point. Product
+rank is not enough for a fixed preselected chart; counterexamples are recorded
+in `threads/03-block-product-reduction/through-layer-basis-reproduction.md`.
+This is elementary linear algebra and formalisation-ready, but full Theorem 3
+still waits on a Lean through-subspace theorem.
+
+The local chart-stability block calculation from this repair is Lean-proved as
+`upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
+[I B - F D; 0 D]`. It does not prove the existential basis choice.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
