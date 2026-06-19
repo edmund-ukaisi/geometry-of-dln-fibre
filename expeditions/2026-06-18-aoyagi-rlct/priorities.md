@@ -94,9 +94,11 @@ on the session's original cwd.
    state bookkeeping, and the corrected Case 2 vector minimum certificate are
    Lean-proved; the corrected Case 2 new-label certificate is now packaged for
    `(S,J+1)` only; finite exponent-domain bookkeeping and the Case 2 residual
-   block entry set are also Lean-proved. Next prove the Case 1 tail-lowering
-   terminal-exponent increment or build the selected-entry chart substitution
-   scaffold. Then redo Case 1/2 updates, cover pivot charts, repair the
+   block entry set are also Lean-proved; the Case 1 tail-lowering exponent
+   increment is Lean-proved under explicit flat-tail hypotheses. Next prove the
+   flat-tail invariant needed for Case 1 selected labels or build the
+   selected-entry chart substitution scaffold. Then redo Case 1/2 updates,
+   cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

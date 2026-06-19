@@ -152,6 +152,14 @@ M'_(s,k) = M_(s,k) + J1 * (n_(S+1) - J).
 The increment uses the actual active column count `n_(S+1)-J`, not
 `mu_(S+1)-J`.
 
+Lean status: the pure terminal-exponent arithmetic for this update is proved
+as `lowerTailVector`,
+`terminalExponent_lowerTailVector_of_flatFromPred`, and
+`terminalExponent_lowerTailVector_of_flatFromPred_add`. The theorem assumes the
+old vector is flat from `S-1` through `L` at the level being lowered; proving
+that a Case 1 selected label has this property remains a separate invariant
+obligation.
+
 This branch keeps `(S,J)` and decreases the number of labels at
 `tilde_t = J+J1`.
 

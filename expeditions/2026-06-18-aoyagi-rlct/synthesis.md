@@ -195,6 +195,12 @@ interface without surfacing it.
   set is also recorded as rows `J+1..mu_S` and columns `J+1..n_(S+1)`, with the
   displayed pivot included under continuation; no chart-cover theorem is
   claimed.
+  Case 1 now has the tail-lowering exponent increment in Lean:
+  `terminalExponent_lowerTailVector_of_flatFromPred` and the source-shaped
+  `terminalExponent_lowerTailVector_of_flatFromPred_add` prove that lowering a
+  flat tail from level `J+J1` to `J` adds `J1(n_(S+1)-J)`. The flat-tail
+  hypothesis and boundary conditions `2<=S<=L` remain explicit invariant
+  obligations.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

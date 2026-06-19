@@ -247,3 +247,17 @@ continuation bound `J+1 <= mu_(S+1)`, the displayed source pivot
 This records candidate selected entries in the residual-block center only. It
 does not construct the selected-entry charts or prove coverage of the
 non-displayed charts.
+
+## 2026-06-19 Lean Case 1 tail exponent increment
+
+Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.
+
+Lean now proves the terminal-exponent arithmetic for lowering a flat tail.
+For a vector `T` that is flat at value `h` from `S-1` through `L`, with
+`2 <= S <= L`, `lowerTailVector T S J` changes the terminal exponent by
+`(h-J)(n_(S+1)-J)`. The source-shaped corollary takes `h=J+J1` and gives the
+Case 1 increment `J1(n_(S+1)-J)`.
+
+This is only arithmetic. The flat-tail hypothesis is explicit and must be
+supplied by a later corrected invariant; it is not inferred from the Case 1
+level condition alone. The boundary exclusions `S=1` and `S>L` are real.

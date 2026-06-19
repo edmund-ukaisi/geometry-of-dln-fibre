@@ -565,7 +565,11 @@ No such claim is formalisation-ready until both fields are filled.
   `IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_prefixBound`,
   plus the Case 2 residual-block entry set
   `case2ResidualBlockPivotEntries` and displayed-pivot membership theorem
-  `case2_displayedPivot_mem_residualBlockPivotEntries_of_cont`.
+  `case2_displayedPivot_mem_residualBlockPivotEntries_of_cont`. Also proved
+  the Case 1 tail-lowering terminal-exponent arithmetic
+  `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and
+  `terminalExponent_lowerTailVector_of_flatFromPred_add`, with the required
+  flat-tail and `2 <= S <= L` hypotheses explicit.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.
