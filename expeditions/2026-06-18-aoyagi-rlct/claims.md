@@ -914,7 +914,15 @@ No such claim is formalisation-ready until both fields are filled.
   and `Case1SelectedOldLoweredRecurrenceBoundary.updateExponentCertificates`.
   This ties the recurrence-weight calculation to supplied pre/post recurrence
   states and the same-domain exponent update without constructing those states
-  from coordinates.
+  from coordinates. Added the selected-old `Unit` chart-family boundary:
+  `Case1SelectedOldUnitSuppliedChartFamilyBoundary`, with projections for
+  selected introducedness and level, selected-old finite center membership,
+  supplied chart regularity, supplied transition regularity from/to any finite
+  Case 1 center generator, selected-old finite selected-entry value-set,
+  divisibility, ideal-principalization, pre/post recurrence source identities,
+  and same-domain exponent certificates. This packages the `Sum.inl ()`
+  selected-old chart token separately from the displayed Case 1(2) pivot and
+  keeps the domain `(S,J)`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -954,7 +962,14 @@ No such claim is formalisation-ready until both fields are filled.
   principalization facts for the displayed top-left chart token. It does not
   project selected-old `Unit` principalization with this same displayed pivot
   variable. It still does not construct the selected-old chart, raw source
-  pullback, chart-produced post-data, or a transition invariant.
+  pullback, chart-produced post-data, or a transition invariant. The
+  selected-old `Unit` chart-family boundary now projects finite
+  principalization for the selected-old `Sum.inl ()` token itself, but only as
+  a supplied chart-family/principalization interface over `(S,J)`: it does not
+  identify the hidden source label from the token, construct charts or
+  recurrence states from coordinates, use `(S,J+1)` or the displayed pivot,
+  assert `Q/P`, or prove coverage, regularity from coordinates, Jacobians,
+  normal crossings, RLCT, or transition invariance.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

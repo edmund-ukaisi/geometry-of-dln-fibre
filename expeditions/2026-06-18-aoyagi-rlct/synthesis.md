@@ -1074,6 +1074,22 @@ Case 1(2) pivot, assert `Q/P`, or prove coverage/regularity, Jacobians,
 normal crossings, RLCT, or a transition invariant. Xhigh review passed with no
 findings.
 
+The Case 1(1) selected-old `Unit` chart-family boundary is now Lean-packaged
+as a supplied interface. `Case1SelectedOldUnitSuppliedChartFamilyBoundary`
+combines the selected-old lowered recurrence boundary with the supplied finite
+Case 1 chart-family boundary. The projections keep the old-label facts in the
+carried lowered recurrence data, while the finite center chart token is only
+`Sum.inl ()`. The package exposes supplied chart regularity for this token,
+supplied transition regularity from/to any finite Case 1 center generator,
+finite selected-entry principalization by the selected-old scalar, the
+pre/post recurrence source identities, and the same-domain exponent update.
+It remains over `(S,J)`: no `(S,J+1)`, no displayed Case 1(2) pivot, no raw
+source chart construction, no derivation of `baseStep` or pre/post states from
+coordinates, no `Q/P`, no coverage/regularity proof from coordinates, no
+Jacobian, no normal crossings, no RLCT, and no transition invariant. Xhigh
+reviews passed with no findings; residual risk is the intended one that Lean
+does not derive the coordinate identification `u = u_(s0,k0)` in this wrapper.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

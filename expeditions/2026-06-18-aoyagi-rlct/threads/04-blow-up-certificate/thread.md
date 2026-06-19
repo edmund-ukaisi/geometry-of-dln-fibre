@@ -1371,3 +1371,30 @@ coordinates, produce recurrence post-data from a chart, introduce `(S,J+1)`,
 use the displayed Case 1(2) pivot, assert `Q/P`, prove chart coverage or
 regularity, compute Jacobians, prove normal crossings, extract RLCT, or prove
 a transition invariant.
+
+## 2026-06-19 Lean Case 1 selected-old Unit chart-family boundary
+
+Statement card:
+`statement-card-a4-case1-selected-old-unit-chart-family-boundary.md`.
+
+Lean now packages the supplied chart-family/principalization boundary for the
+Case 1(1) selected-old `Unit` chart. The new structure
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary` combines
+`Case1SelectedOldLoweredRecurrenceBoundary` with
+`Case1CenterChartFamilyBoundary`.
+
+The package projects selected introducedness and selected level from the
+lowered recurrence boundary, while the finite center token itself remains
+`Sum.inl () : Case1CenterGenerator`. It projects supplied chart regularity for
+that token, supplied transition regularity from/to any finite Case 1 center
+generator, finite selected-entry principalization for the selected-old chart
+variable, the pre/post recurrence source identities, and the same-domain
+exponent update.
+
+This remains a supplied interface over `(S,J)`. It does not identify the
+`Unit` token with `(s0,k0)` from raw source coordinates, construct the
+selected-old chart, derive `baseStep` or the pre/post recurrence states from
+source data, produce recurrence post-data from a chart, introduce `(S,J+1)`,
+use the displayed Case 1(2) pivot, assert `Q/P`, prove chart coverage or
+regularity from coordinates, compute Jacobians, prove normal crossings,
+extract RLCT, or prove a transition invariant.

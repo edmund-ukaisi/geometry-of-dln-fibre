@@ -254,13 +254,18 @@ on the session's original cwd.
    boundary now packages this with same-domain pre/post recurrence states:
    `pre.step = mulStepAt baseStep u (J+J1)` and
    `post.step = mulStepAt baseStep u J`, plus the same-domain exponent update.
-   Next A4 target: add the selected-old `Unit` chart-family/principalization
-   boundary, or try a more constructive source-coordinate recurrence model
-   only if the base recurrence can be defined without cancellation or chart
-   overclaim. Keep either explicitly supplied where coordinates are not
-   constructed. Avoid raw Case 1(2) hidden-old
-   pullback construction, arbitrary chart coverage, or non-displayed
-   transition claims.
+   The selected-old `Unit` chart-family/principalization boundary now combines
+   this lowered recurrence boundary with the supplied finite Case 1
+   chart-family boundary. It projects the `Sum.inl ()` selected-old center
+   token, supplied chart/transition regularity, finite selected-entry
+   principalization by the selected-old scalar, the pre/post recurrence source
+   identities, and the same-domain exponent update. It remains over `(S,J)`
+   and does not use the displayed Case 1(2) pivot. Next A4 target: try a more
+   constructive source-coordinate recurrence or chart model only if the base
+   recurrence can be defined without cancellation or chart overclaim. Keep
+   interfaces explicitly supplied where coordinates are not constructed. Avoid
+   raw Case 1(2) hidden-old pullback construction, arbitrary chart coverage, or
+   non-displayed transition claims.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

@@ -896,6 +896,34 @@ invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-lowered-recurrence-boundary-a4.md`.
 
+Latest A4 update: the Case 1(1) selected-old `Unit` chart-family boundary has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are `Case1SelectedOldUnitSuppliedChartFamilyBoundary`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.selectedIntroduced`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.selectedLevel`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.selectedOld_mem_center`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.chart_regular_selectedOld`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.transition_regular_selectedOld_of_mem`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.transition_regular_of_mem_selectedOld`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.selectedOld_selectedEntryChartMap_value_mem`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.selectedOld_center_dvd`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.selectedOld_centerIdeal_eq_span_singleton`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.sourceMatrix_identity_postWeights`,
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.sourceCoordinates_identity_postWeights`,
+and `Case1SelectedOldUnitSuppliedChartFamilyBoundary.updateExponentCertificates`.
+This checkpoint combines the supplied lowered recurrence boundary with the
+supplied finite Case 1 chart-family boundary. It projects finite
+selected-entry principalization for the selected-old `Sum.inl ()` token and
+keeps the recurrence and exponent projections over `(S,J)`. It does not
+identify the hidden old source label from the `Unit` token, construct the
+selected-old chart, derive source recurrence states, introduce `(S,J+1)`, use
+the displayed Case 1(2) pivot, assert `Q/P`, prove
+coverage/regularity/Jacobians, prove normal crossings/RLCT, or prove a
+transition invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-unit-chart-family-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-unit-chart-family-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
