@@ -1006,3 +1006,37 @@ hold at the base parameter.
 Still open: exact-rank neighborhoods, certificate transport, the full
 source-facing Theorem 3 statement, and continuity of `L`, `Ctop`, and `D` if a
 later certificate needs those fields. Exact rank assumptions remain separate.
+
+## 2026-06-19 A2 endpoint block-diagonal neighborhood
+
+Extended `FixedBasepointChart.lean` from chart persistence to the endpoint
+block form controlled by the same recursive suffix state.
+
+New fixed-base reversed-edge coordinate API:
+
+- `paperEndpointFixedBaseChainMapMatrixOfReverseEdges`;
+- `paperEndpointFixedBaseEdgeMatrixOfReverseEdges`;
+- `paperEndpointFixedBaseTotalMatrixOfReverseEdges`;
+- composition and identity lemmas for these matrices.
+
+The pointwise theorem
+`paperEndpointFixedBaseChainMapMatrixOfReverseEdges_recursiveChart_blockDiagonal`
+specializes `ChartLocalSuffixState.suffixState_blockDiagonal` to the endpoint
+`0 ≤ Fin.last N`. It uses only the determinant charts for the actual recursive
+states `suffixState E (Fin.last N) p.succ _`, not the stronger all-`Bprev`
+hypothesis in the older public fixed-base wrapper.
+
+The topology-level predicate
+`paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal` names the
+deterministic endpoint block form for a continuous reversed-edge family. The
+neighborhood theorems
+`paperEndpointFixedBaseContinuousEdges_recursiveBprev_blockDiagonal_mem_nhds`
+and
+`paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_mem_nhds`
+combine recursive chart persistence with the pointwise block theorem. At a base
+family equal to `reverseEdge W B`, the recursive basepoint chart hypotheses are
+proved by the unitriangular endpoint identity-corner theorem with `F = -Bprev`.
+
+Still open: exact-rank neighborhoods, certificate transport, a source-facing
+Theorem 3 statement, and any continuity of `L`, `Ctop`, or `D` if future
+certificate data needs them.

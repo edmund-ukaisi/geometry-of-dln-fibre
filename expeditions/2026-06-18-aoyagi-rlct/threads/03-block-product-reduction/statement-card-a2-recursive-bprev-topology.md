@@ -22,6 +22,9 @@
 >   parameter, then each recursively produced `Bprev` block is continuous at the
 >   base parameter. In fixed endpoint bases, the determinant-chart conditions
 >   then hold on a neighborhood for the actual recursive `Bprev` family.
+>   The endpoint block-diagonal use of this neighborhood is recorded separately
+>   in
+>   `statement-card-a2-recursive-bprev-block-diagonal-neighborhood.md`.
 > - **Assumed.** Normed-field topology, complete spaces for fixed-basis
 >   continuous-linear-map coordinates, finite block index types, continuity of
 >   the edge family, and determinant-chart hypotheses for the basepoint

@@ -191,6 +191,25 @@ neighborhood theorem under supplied basepoint chart hypotheses; exact-rank
 neighborhoods, certificate transport, and the full source Theorem 3 statement
 remain open.
 
+Fourteenth latest A2 update: the endpoint block-diagonal neighborhood handoff
+has landed. `FixedBasepointChart.lean` now includes fixed-base coordinate
+wrappers for arbitrary reversed edge families,
+`paperEndpointFixedBaseChainMapMatrixOfReverseEdges`,
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges`, and
+`paperEndpointFixedBaseTotalMatrixOfReverseEdges`. The theorem
+`paperEndpointFixedBaseChainMapMatrixOfReverseEdges_recursiveChart_blockDiagonal`
+applies `ChartLocalSuffixState.suffixState_blockDiagonal` directly at the
+endpoint, using only the recursive determinant charts actually visited by the
+suffix recursion. The topology wrappers
+`paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal`,
+`paperEndpointFixedBaseContinuousEdges_recursiveBprev_blockDiagonal_mem_nhds`,
+and
+`paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_mem_nhds`
+then say that a continuous reversed-edge family based at `reverseEdge W B` has
+a neighborhood on which the endpoint product has the deterministic block form
+in endpoint bases fixed from `B`. This still does not prove exact-rank
+neighborhoods, certificate transport, or the full source Theorem 3 statement.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

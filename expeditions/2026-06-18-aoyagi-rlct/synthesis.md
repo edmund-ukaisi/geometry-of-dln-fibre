@@ -496,6 +496,24 @@ hold at the base parameter. It still does not prove exact-rank neighborhoods,
 certificate transport, or continuity of the remaining `L`, `Ctop`, and `D`
 state fields.
 
+The endpoint handoff from recursive chart persistence to the actual
+block-diagonal product form is now Lean-proved. `FixedBasepointChart.lean`
+adds fixed-base matrix coordinates for arbitrary reversed edge families, so the
+continuous-edge topology statements no longer need to pass through a
+paper-order variable chain. The theorem
+`paperEndpointFixedBaseChainMapMatrixOfReverseEdges_recursiveChart_blockDiagonal`
+uses `ChartLocalSuffixState.suffixState_blockDiagonal` directly for
+`i = 0`, `j = Fin.last N`; this avoids the older public all-`Bprev` chart
+wrapper and matches the topology theorem, which supplies charts only for the
+actual recursive accumulated upper blocks. The neighborhood wrapper
+`paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_mem_nhds`
+says that if a continuous reversed-edge family is based at `reverseEdge W B`,
+then nearby endpoint products have the deterministic block form in endpoint
+bases fixed from `B`. The pen-and-paper check is the same recurrence:
+`M = [I Bprev; 0 I] * E p`, `Bnext = (topLeftCorner M)^-1 *
+upperRightBlock M`, and the basepoint determinant chart follows from the
+endpoint unitriangular identity-corner theorem with `F = -Bprev`.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

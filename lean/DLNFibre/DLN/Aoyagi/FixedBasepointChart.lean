@@ -88,6 +88,58 @@ def paperEndpointFixedBaseTotalMatrix
     (paperEndpointFixedBaseBasis W B U₀ hU₀ (Fin.last N))
     (paperTotalMap W C)
 
+/-- A reversed variable chain segment expressed in the endpoint bases fixed from `B`. -/
+def paperEndpointFixedBaseChainMapMatrixOfReverseEdges
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ i) K :=
+  LinearMap.toMatrix
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ i)
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ j)
+    (chainMap (reverseVertex W) E i j hij)
+
+/-- One reversed variable edge expressed in the endpoint bases fixed from `B`. -/
+def paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (p : Fin N) :
+    Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+  LinearMap.toMatrix
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+    (E p)
+
+/-- The reversed variable total product expressed in the endpoint bases fixed from `B`. -/
+def paperEndpointFixedBaseTotalMatrixOfReverseEdges
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ) :
+    Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) K :=
+  LinearMap.toMatrix
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ 0)
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ (Fin.last N))
+    (chainMap (reverseVertex W) E 0 (Fin.last N) (Fin.zero_le (Fin.last N)))
+
 set_option linter.unusedDecidableInType false in
 /-- In fixed basepoint bases, an empty variable chain segment has identity matrix. -/
 theorem paperEndpointFixedBaseChainMapMatrix_self
@@ -151,6 +203,74 @@ theorem paperEndpointFixedBaseTotalMatrix_eq_chainMapMatrix
         0 (Fin.last N) (Fin.zero_le (Fin.last N)) := by
   simp [paperEndpointFixedBaseTotalMatrix, paperEndpointFixedBaseChainMapMatrix,
     paperTotalMap, chainMap_reverse_eq_paper]
+
+set_option linter.unusedDecidableInType false in
+/-- In fixed basepoint bases, an empty reversed variable segment has identity matrix. -/
+theorem paperEndpointFixedBaseChainMapMatrixOfReverseEdges_self
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (i : Fin (N + 1)) :
+    paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E i i le_rfl = 1 := by
+  rw [paperEndpointFixedBaseChainMapMatrixOfReverseEdges, chainMap_self, LinearMap.toMatrix_id]
+
+/-- Fixed-base reversed variable chain-segment matrices are independent of the order proof. -/
+theorem paperEndpointFixedBaseChainMapMatrixOfReverseEdges_proof_irrel
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (i j : Fin (N + 1)) (hij hij' : i ≤ j) :
+    paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E i j hij =
+      paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E i j hij' := by
+  congr
+
+/-- In fixed basepoint bases, a one-edge reversed segment is the corresponding edge matrix. -/
+theorem paperEndpointFixedBaseChainMapMatrixOfReverseEdges_edge
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (p : Fin N) :
+    paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E p.castSucc p.succ
+        (Fin.castSucc_le_succ p) =
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p := by
+  rw [paperEndpointFixedBaseChainMapMatrixOfReverseEdges,
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges, chainMap_edge]
+
+set_option linter.unusedDecidableInType false in
+/-- Fixed-base reversed variable chain-segment matrices compose by suffix times edge. -/
+theorem paperEndpointFixedBaseChainMapMatrixOfReverseEdges_succ_right
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j) :
+    paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E p.castSucc j
+        ((Fin.castSucc_le_succ p).trans hpj) =
+      paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E p.succ j hpj *
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E p := by
+  rw [paperEndpointFixedBaseChainMapMatrixOfReverseEdges,
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges,
+    chainMap_trans (reverseVertex W) E p.castSucc (Fin.castSucc_le_succ p) hpj,
+    chainMap_edge (reverseVertex W) E p (Fin.castSucc_le_succ p)]
+  exact LinearMap.toMatrix_comp
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+    (paperEndpointFixedBaseBasis W B U₀ hU₀ j)
+    (chainMap (reverseVertex W) E p.succ j hpj) (E p)
+
+/-- The fixed-base reversed total matrix is the matrix of the full reversed chain. -/
+theorem paperEndpointFixedBaseTotalMatrixOfReverseEdges_eq_chainMapMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ) :
+    paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E =
+      paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E
+        0 (Fin.last N) (Fin.zero_le (Fin.last N)) := by
+  rfl
 
 /-- At `C = B`, the fixed-base edge matrix is the endpoint adapted basepoint edge. -/
 theorem paperEndpointFixedBaseEdgeMatrix_selfBase
@@ -319,6 +439,58 @@ theorem productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDi
     (hself := paperEndpointFixedBaseChainMapMatrix_self W B C U₀ hU₀)
     (hsuccRight := paperEndpointFixedBaseChainMapMatrix_succ_right W B C U₀ hU₀)
     (hchart := hchart) i j hij
+
+/-- Endpoint fixed-base block diagonalisation from the recursive determinant charts actually
+visited by the deterministic suffix-state construction. -/
+theorem paperEndpointFixedBaseChainMapMatrixOfReverseEdges_recursiveChart_blockDiagonal
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    (hchart : ∀ p : Fin N,
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+          p
+          (ChartLocalSuffixState.suffixState
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+            (Fin.last N) p.succ p.succ.le_last))) :
+    let S := ChartLocalSuffixState.suffixState
+      (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+      (Fin.last N) 0 (Fin.zero_le (Fin.last N))
+    IsUnit S.L.det ∧ IsUnit S.Ctop.det ∧
+      S.L * paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E *
+          fromBlocks
+            (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+            (-S.B) 0
+            (1 : Matrix
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0) K) =
+        fromBlocks S.Ctop 0 0 S.D := by
+  let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E
+  let P := paperEndpointFixedBaseChainMapMatrixOfReverseEdges W B U₀ hU₀ E
+  let S := ChartLocalSuffixState.suffixState EMat
+    (Fin.last N) 0 (Fin.zero_le (Fin.last N))
+  have hS : S.BlockDiagonal P (Fin.zero_le (Fin.last N)) := by
+    dsimp [S]
+    exact ChartLocalSuffixState.suffixState_blockDiagonal EMat P
+      (fun {i j} h h' ↦
+        paperEndpointFixedBaseChainMapMatrixOfReverseEdges_proof_irrel
+          W B U₀ hU₀ E i j h h')
+      (paperEndpointFixedBaseChainMapMatrixOfReverseEdges_self W B U₀ hU₀ E)
+      (paperEndpointFixedBaseChainMapMatrixOfReverseEdges_succ_right W B U₀ hU₀ E)
+      (i := 0) (j := Fin.last N) (Fin.zero_le (Fin.last N))
+      (fun p hpj ↦ by
+        have hstate :
+            ChartLocalSuffixState.suffixState EMat (Fin.last N) p.succ hpj =
+              ChartLocalSuffixState.suffixState EMat (Fin.last N) p.succ
+                p.succ.le_last := by
+          congr
+        simpa [EMat, hstate] using hchart p)
+  simpa [ChartLocalSuffixState.BlockDiagonal, S, P,
+    paperEndpointFixedBaseTotalMatrixOfReverseEdges_eq_chainMapMatrix] using hS
 
 end FixedBase
 
@@ -790,6 +962,193 @@ theorem
         intro p
         simpa [E, Bprev, ChartLocalSuffixState.transformedEdge] using hchart₀ p)
   simpa [E, Bprev, ChartLocalSuffixState.transformedEdge] using hnhds
+
+/-- If the base parameter is the fixed paper chain `B`, the recursive transformed determinant
+charts required by the suffix-state topology handoff hold automatically. -/
+theorem
+    paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_detChart
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    ∀ p : Fin N,
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (fun q : Fin N ↦
+            LinearMap.toMatrix
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+              (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+          p
+          (ChartLocalSuffixState.suffixState
+            (fun q : Fin N ↦
+              LinearMap.toMatrix
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+            (Fin.last N) p.succ p.succ.le_last)) := by
+  intro p
+  let EMat : ∀ q : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ q.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ q.castSucc) K :=
+    fun q ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+        (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ)
+  let S := ChartLocalSuffixState.suffixState EMat (Fin.last N) p.succ p.succ.le_last
+  have hunit :
+      identityCornerDetChart
+        (fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          S.B 0
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) *
+          paperEndpointFixedBaseEdgeMatrix W B B U₀ hU₀ p) := by
+    have hunit' :=
+      identityCornerDetChart_unitriangular_paperEndpointAdaptedEdgeMatrix
+        W B U₀ hU₀ p (-S.B)
+    have hunit'' :
+        identityCornerDetChart
+          (fromBlocks
+            (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+            (-(-S.B)) 0
+            (1 : Matrix
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) *
+            paperEndpointAdaptedEdgeMatrix W B U₀ hU₀ p) := by
+      simpa [paperEndpointUnitriangularLeft] using hunit'
+    convert hunit'' using 2
+    rw [show - -S.B = S.B by
+      ext a b
+      simp]
+  simpa [EMat, S, ChartLocalSuffixState.transformedEdge, hbase,
+    paperEndpointFixedBaseEdgeMatrix] using hunit
+
+/-- The deterministic endpoint block form for a continuous reversed edge family in the
+endpoint bases fixed from `B`. -/
+def paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) : Prop :=
+  let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let S := ChartLocalSuffixState.suffixState
+    (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+    (Fin.last N) 0 (Fin.zero_le (Fin.last N))
+  IsUnit S.L.det ∧ IsUnit S.Ctop.det ∧
+    S.L * paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E *
+        fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          (-S.B) 0
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0) K) =
+      fromBlocks S.Ctop 0 0 S.D
+
+/-- Near a parameter where the recursive transformed determinant charts hold, the fixed-base
+endpoint product has the deterministic block diagonal form. -/
+theorem paperEndpointFixedBaseContinuousEdges_recursiveBprev_blockDiagonal_mem_nhds
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hchart₀ : ∀ p : Fin N,
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (fun q : Fin N ↦
+            LinearMap.toMatrix
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+              (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+          p
+          (ChartLocalSuffixState.suffixState
+            (fun q : Fin N ↦
+              LinearMap.toMatrix
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+            (Fin.last N) p.succ p.succ.le_last))) :
+    {x : α |
+      paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal W B U₀ hU₀ Cedge x} ∈
+      nhds x₀ := by
+  classical
+  have hcharts :
+      {x : α |
+        ∀ p : Fin N,
+          identityCornerDetChart
+            (ChartLocalSuffixState.transformedEdge
+              (fun q : Fin N ↦
+                LinearMap.toMatrix
+                  (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                  (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                  (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+              p
+              (ChartLocalSuffixState.suffixState
+                (fun q : Fin N ↦
+                  LinearMap.toMatrix
+                    (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                    (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                    (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+                (Fin.last N) p.succ p.succ.le_last))} ∈
+        nhds x₀ :=
+    paperEndpointFixedBaseContinuousEdges_recursiveBprev_mem_nhds_transformed_identityCornerDetChart
+      W B U₀ hU₀ Cedge hCedge hchart₀
+  exact Filter.mem_of_superset hcharts (by
+    intro x hx
+    let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+      fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    have hxE : ∀ p : Fin N,
+        identityCornerDetChart
+          (ChartLocalSuffixState.transformedEdge
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+            p
+            (ChartLocalSuffixState.suffixState
+              (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E)
+              (Fin.last N) p.succ p.succ.le_last)) := by
+      intro p
+      simpa [E, paperEndpointFixedBaseEdgeMatrixOfReverseEdges] using hx p
+    simpa [paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal, E] using
+      paperEndpointFixedBaseChainMapMatrixOfReverseEdges_recursiveChart_blockDiagonal
+        W B U₀ hU₀ E hxE)
+
+/-- Near a continuous edge family based at the fixed paper chain `B`, the fixed-base
+endpoint product has the deterministic block diagonal form. -/
+theorem paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_blockDiagonal_mem_nhds
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    {x : α |
+      paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal W B U₀ hU₀ Cedge x} ∈
+      nhds x₀ :=
+  paperEndpointFixedBaseContinuousEdges_recursiveBprev_blockDiagonal_mem_nhds
+    W B U₀ hU₀ Cedge hCedge
+    (paperEndpointFixedBaseContinuousEdges_selfBase_recursiveBprev_detChart
+      W B U₀ hU₀ Cedge hbase)
 
 end FixedBaseContinuousEdgeTopology
 

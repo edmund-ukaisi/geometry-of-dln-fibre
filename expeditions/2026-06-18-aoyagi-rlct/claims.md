@@ -126,8 +126,11 @@ No such claim is formalisation-ready until both fields are filled.
   block-diagonal invariant are now also proved at the abstract chart-local
   algebra level. The recursively produced `Bprev` block is proved continuous
   under recursive basepoint chart hypotheses, and the fixed-base chart
-  neighborhood wrapper now uses that actual recursive `Bprev` family. The full
-  source Theorem 3 claim remains blocked.
+  neighborhood wrapper now uses that actual recursive `Bprev` family. A
+  fixed-base endpoint block-diagonal neighborhood theorem is also proved for
+  continuous reversed-edge families: near the base chain, the deterministic
+  suffix state block-diagonalizes the endpoint product in the endpoint bases
+  fixed from `B`. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
