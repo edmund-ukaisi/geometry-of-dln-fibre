@@ -2538,6 +2538,29 @@ theorem monomialRec_mulStepAt_case1_lower_eq
   rw [monomialRec_mulStepAt_eq_mul_of_ge step u hih]
   rw [monomialRec_mulStepAt_eq_mul_of_ge step u (by omega : J + 1 ≤ i)]
 
+/-- Case 1(1) selected-old level lowering as a pure recurrence calculation.
+
+If the selected old factor is moved from level `J+J1` down to level `J`, then
+on active residual rows `i >= J+1` the lowered recurrence is obtained from the
+old recurrence by multiplying exactly the strip rows `i <= J+J1` by the
+selected old factor.  The recurrence `step` is a supplied base recurrence with
+the selected factor kept separate. -/
+theorem monomialRec_mulStepAt_case1_selectedOld_postWeight
+    (step : ℕ → α) (u : α) {J J1 i : ℕ} (hi : J + 1 ≤ i) :
+    (if i ≤ J + J1 then
+        u * monomialRec (mulStepAt step u (J + J1)) i
+      else
+        monomialRec (mulStepAt step u (J + J1)) i) =
+      monomialRec (mulStepAt step u J) i := by
+  by_cases hstrip : i ≤ J + J1
+  · rw [if_pos hstrip]
+    rw [monomialRec_mulStepAt_eq_of_le step u hstrip]
+    rw [monomialRec_mulStepAt_eq_mul_of_ge step u hi]
+  · have hbelow : J + J1 + 1 ≤ i := by omega
+    rw [if_neg hstrip]
+    rw [monomialRec_mulStepAt_eq_mul_of_ge step u hbelow]
+    rw [monomialRec_mulStepAt_eq_mul_of_ge step u hi]
+
 /-- Every later monomial recurrence term is divisible by every earlier one. -/
 theorem monomialRec_dvd_of_le (step : ℕ → α) {a b : ℕ} (h : a ≤ b) :
     monomialRec step a ∣ monomialRec step b := by
@@ -4059,6 +4082,42 @@ theorem case1SelectedOld_diagonal_mul_sourceMatrix
         · simp [case1SelectedOldPostWeight, case1RowStripSourceMatrix, hi]
     _ = (diagonal (case1SelectedOldPostWeight strip u baseWeight) * A) i j := by
         rw [diagonal_mul_apply]
+
+/-- Residual-row form of the Case 1(1) selected-old recurrence-weight update.
+
+Starting from a supplied base recurrence, the piecewise post-weight convention
+on residual rows is exactly the recurrence obtained by lowering the selected
+old factor from level `J+J1` to level `J`. -/
+theorem case1SelectedOldPostWeight_eq_monomialRec_loweredLevel
+    {R : Type*} [CommRing R]
+    (step : ℕ → R) (u : R) (n : ℕ → ℕ) (S J J1 : ℕ) :
+    case1SelectedOldPostWeight (case1ResidualRowStrip n S J J1) u
+        (fun i ↦ monomialRec (mulStepAt step u (J + J1))
+          (case2ResidualRowLevel n S J i)) =
+      fun i ↦ monomialRec (mulStepAt step u J)
+        (case2ResidualRowLevel n S J i) := by
+  funext i
+  simpa [case1SelectedOldPostWeight, case1ResidualRowStrip] using
+    monomialRec_mulStepAt_case1_selectedOld_postWeight
+      (step := step) (u := u) (J := J) (J1 := J1)
+      (i := case2ResidualRowLevel n S J i)
+      (case2ResidualRowLevel_ge n S J i)
+
+/-- Case 1(1) row-strip source identity with the right diagonal written as the
+lowered selected-old recurrence. -/
+theorem case1SelectedOld_diagonal_mul_sourceMatrix_loweredLevel
+    {R : Type*} [CommRing R]
+    (step : ℕ → R) (u : R) (n : ℕ → ℕ) (S J J1 : ℕ)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    diagonal
+        (fun i ↦ monomialRec (mulStepAt step u (J + J1))
+          (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A =
+      diagonal
+        (fun i ↦ monomialRec (mulStepAt step u J)
+          (case2ResidualRowLevel n S J i)) * A := by
+  rw [case1SelectedOld_diagonal_mul_sourceMatrix]
+  rw [case1SelectedOldPostWeight_eq_monomialRec_loweredLevel]
 
 /-- Displayed Case 1(2) source-weight form of the row-strip identity.
 
@@ -6044,6 +6103,24 @@ theorem case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates
   case1SelectedOld_diagonal_mul_sourceMatrix
     (case1ResidualRowStrip n S J J1) u baseWeight
     (case2SourceResidualBlock residual)
+
+/-- Source-coordinate Case 1(1) row-strip identity with the right diagonal
+written as the recurrence obtained by lowering the selected old factor from
+level `J+J1` to level `J`. -/
+theorem case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates_loweredLevel
+    {R : Type*} [CommRing R] {n : ℕ → ℕ} {S J : ℕ} (J1 : ℕ)
+    (step : ℕ → R) (u : R) (residual : ℕ × ℕ → R) :
+    diagonal
+        (fun i ↦ monomialRec (mulStepAt step u (J + J1))
+          (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u
+          (case2SourceResidualBlock residual) =
+      diagonal
+        (fun i ↦ monomialRec (mulStepAt step u J)
+          (case2ResidualRowLevel n S J i)) *
+        case2SourceResidualBlock residual :=
+  case1SelectedOld_diagonal_mul_sourceMatrix_loweredLevel
+    step u n S J J1 (case2SourceResidualBlock residual)
 
 /-- Supplied same-domain boundary for Aoyagi Case 1(1)'s selected-old chart.
 
