@@ -264,18 +264,22 @@ the source complement to be the total kernel and arbitrary complements
 elsewhere, and
 `endpointChartData_edge_and_totalProduct_blocks` packages one edge block and
 the total-product block in the same bases. Paper-order wrappers instantiate
-this on the reversed Aoyagi chain. Remaining work: prove the ordered product
-of edge matrices is the endpoint matrix in this basis family, then iterate the
-product-reduction step.
+this on the reversed Aoyagi chain. The ordered adapted edge-product theorem now
+identifies the endpoint matrix with the recursively ordered product in any
+supplied adapted basis family. Remaining work: iterate the product-reduction
+step.
 
-The first matrix-composition bridge is now Lean-proved:
+The adapted matrix-composition bridge is now Lean-proved:
 `throughSubspaceAdaptedChainMapMatrix` and `throughSubspaceAdaptedEdgeMatrix`
 name chain-segment and one-edge matrices in the supplied adapted bases, and
 `throughSubspaceAdaptedChainMapMatrix_succ` proves the one-step recurrence.
 For the source-to-target Lean chain the order is `edge * prefix`, coming from
-`chainMap_succ` and Mathlib's `LinearMap.toMatrix_comp`. This is composition
-bookkeeping only; it does not yet iterate over all edges or run the
-product-reduction induction.
+`chainMap_succ` and Mathlib's `LinearMap.toMatrix_comp`.
+`throughSubspaceAdaptedEdgeProductMatrix` is a dependent recursive product of
+the adapted edge matrices, and
+`throughSubspaceAdaptedChainMapMatrix_eq_edgeProductMatrix` proves that it is
+the chain-map matrix for any interval. This is composition bookkeeping only; it
+does not yet run the product-reduction induction.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

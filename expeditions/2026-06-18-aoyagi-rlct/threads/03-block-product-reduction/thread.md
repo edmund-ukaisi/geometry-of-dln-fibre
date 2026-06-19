@@ -547,3 +547,28 @@ This is the matrix form of `chainMap_succ`, using Mathlib
 `LinearMap.toMatrix_comp`. The order is edge-on-the-left and prefix-on-the-right
 for the source-to-target Lean chain. This is not yet an all-layer product
 theorem and does not use the endpoint-compatible data specifically.
+
+## 2026-06-19 A2 adapted edge-product theorem
+
+Added a dependent recursive product of adapted edge matrices:
+
+- `throughSubspaceAdaptedEdgeProductMatrix`;
+- `throughSubspaceAdaptedEdgeProductMatrix_self`;
+- `throughSubspaceAdaptedEdgeProductMatrix_succ`.
+
+The recurrence is the same edge-on-left order as the chain-map matrix:
+
+`edge p * edgeProduct i p.castSucc`.
+
+Added `throughSubspaceAdaptedChainMapMatrix_eq_edgeProductMatrix`, proving for
+any interval `i ≤ j` that the adapted matrix of `chainMap i j` equals this
+dependent edge product. Added prefix/endpoint corollaries:
+
+- `throughSubspaceAdaptedChainMapMatrix_zero_eq_edgeProductMatrix`;
+- `toMatrix_chainMap_zero_last_eq_adaptedEdgeProductMatrix`.
+
+This closes the composition-only gap between one-edge adapted matrices and the
+endpoint total-product matrix in a supplied adapted basis family. It still does
+not run Aoyagi's product-reduction induction or assert any analytic/RLCT
+consequence. The next algebraic assembly layer needs right-oriented suffix
+composition and canonical block projections for the one-edge elimination step.

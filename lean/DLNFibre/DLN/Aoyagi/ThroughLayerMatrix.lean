@@ -408,6 +408,124 @@ theorem throughSubspaceAdaptedChainMapMatrix_succ
     (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.succ)
     (A p) (chainMap V A i p.castSucc hip)
 
+/-- The left-multiply step for the dependent product of adapted edge matrices. -/
+private def throughSubspaceAdaptedEdgeProductStep
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (i : Fin (N + 1)) :
+    ⦃m : ℕ⦄ → (i ≤ m) →
+      ((hm : m < N + 1) → Matrix (ι ⊕ κ ⟨m, hm⟩) (ι ⊕ κ i) K) →
+        ((hm : m + 1 < N + 1) → Matrix (ι ⊕ κ ⟨m + 1, hm⟩) (ι ⊕ κ i) K) :=
+  fun {m} _ rec hm ↦
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ hm⟩
+    show Matrix (ι ⊕ κ p.succ) (ι ⊕ κ i) K from
+      throughSubspaceAdaptedEdgeMatrix V A U₀ hU₀ data p *
+        (show Matrix (ι ⊕ κ p.castSucc) (ι ⊕ κ i) K from rec p.castSucc.isLt)
+
+/-- The dependent product of adapted edge matrices from `i` to `j`. -/
+def throughSubspaceAdaptedEdgeProductMatrix
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    Matrix (ι ⊕ κ j) (ι ⊕ κ i) K :=
+  Nat.leRec (motive := fun m _ ↦
+      (hm : m < N + 1) → Matrix (ι ⊕ κ ⟨m, hm⟩) (ι ⊕ κ i) K)
+    (fun _ ↦ 1) (throughSubspaceAdaptedEdgeProductStep V A U₀ hU₀ data i) hij j.isLt
+
+/-- The empty adapted edge product is the identity matrix. -/
+theorem throughSubspaceAdaptedEdgeProductMatrix_self
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (i : Fin (N + 1)) :
+    throughSubspaceAdaptedEdgeProductMatrix V A U₀ hU₀ data i i le_rfl = 1 := by
+  unfold throughSubspaceAdaptedEdgeProductMatrix
+  exact congrFun (Nat.leRec_self (motive := fun m _ ↦ (hm : m < N + 1) →
+    Matrix (ι ⊕ κ ⟨m, hm⟩) (ι ⊕ κ i) K) (fun _ ↦ 1)
+    (throughSubspaceAdaptedEdgeProductStep V A U₀ hU₀ data i)) i.isLt
+
+/-- Extending the adapted edge product prepends the next adapted edge matrix. -/
+theorem throughSubspaceAdaptedEdgeProductMatrix_succ
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (i : Fin (N + 1)) (p : Fin N) (hip : i ≤ p.castSucc) :
+    throughSubspaceAdaptedEdgeProductMatrix V A U₀ hU₀ data i p.succ
+        (hip.trans (Fin.castSucc_le_succ p)) =
+      throughSubspaceAdaptedEdgeMatrix V A U₀ hU₀ data p *
+        throughSubspaceAdaptedEdgeProductMatrix V A U₀ hU₀ data i p.castSucc hip := by
+  unfold throughSubspaceAdaptedEdgeProductMatrix
+  exact congrFun (Nat.leRec_succ (h1 := Fin.val_fin_le.mpr hip)
+    (h2 := Fin.val_fin_le.mpr (hip.trans (Fin.castSucc_le_succ p)))
+    (refl := fun _ ↦ 1)
+    (le_succ_of_le := throughSubspaceAdaptedEdgeProductStep V A U₀ hU₀ data i)) p.succ.isLt
+
+set_option linter.unusedDecidableInType false in
+/-- The adapted edge product is the matrix of the corresponding chain map. -/
+theorem throughSubspaceAdaptedChainMapMatrix_eq_edgeProductMatrix
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data i j hij =
+      throughSubspaceAdaptedEdgeProductMatrix V A U₀ hU₀ data i j hij := by
+  induction j using Fin.induction with
+  | zero =>
+      have hi : i = 0 := Fin.le_zero_iff.mp hij
+      subst i
+      rw [throughSubspaceAdaptedChainMapMatrix, chainMap_self, LinearMap.toMatrix_id,
+        throughSubspaceAdaptedEdgeProductMatrix_self]
+  | succ p ih =>
+      rcases eq_or_lt_of_le hij with hEq | hlt
+      · subst i
+        rw [throughSubspaceAdaptedChainMapMatrix, chainMap_self, LinearMap.toMatrix_id,
+          throughSubspaceAdaptedEdgeProductMatrix_self]
+      · have hip : i ≤ p.castSucc := by
+          rw [Fin.le_castSucc_iff]
+          exact hlt
+        rw [throughSubspaceAdaptedChainMapMatrix_succ V A U₀ hU₀ data i p hip,
+          throughSubspaceAdaptedEdgeProductMatrix_succ V A U₀ hU₀ data i p hip, ih hip]
+
+set_option linter.unusedDecidableInType false in
+/-- The prefix adapted chain-map matrix is the corresponding adapted edge product. -/
+theorem throughSubspaceAdaptedChainMapMatrix_zero_eq_edgeProductMatrix
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (j : Fin (N + 1)) :
+    throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data 0 j (Fin.zero_le j) =
+      throughSubspaceAdaptedEdgeProductMatrix V A U₀ hU₀ data 0 j (Fin.zero_le j) :=
+  throughSubspaceAdaptedChainMapMatrix_eq_edgeProductMatrix V A U₀ hU₀ data 0 j (Fin.zero_le j)
+
+set_option linter.unusedDecidableInType false in
+/-- The total chain-map matrix is the adapted product of all edge matrices. -/
+theorem toMatrix_chainMap_zero_last_eq_adaptedEdgeProductMatrix
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) :
+    LinearMap.toMatrix
+        (throughSubspaceAdaptedBasis V A U₀ hU₀ data 0)
+        (throughSubspaceAdaptedBasis V A U₀ hU₀ data (Fin.last N))
+        (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))) =
+      throughSubspaceAdaptedEdgeProductMatrix V A U₀ hU₀ data
+        0 (Fin.last N) (Fin.zero_le (Fin.last N)) := by
+  simpa [throughSubspaceAdaptedChainMapMatrix] using
+    (throughSubspaceAdaptedChainMapMatrix_zero_eq_edgeProductMatrix
+      V A U₀ hU₀ data (Fin.last N))
+
 /-- A supplied-data edge block form stated using the named adapted basis family. -/
 theorem exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero
     {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]
