@@ -200,7 +200,10 @@ interface without surfacing it.
   `terminalExponent_lowerTailVector_of_flatFromPred_add` prove that lowering a
   flat tail from level `J+J1` to `J` adds `J1(n_(S+1)-J)`. The flat-tail
   hypothesis and boundary conditions `2<=S<=L` remain explicit invariant
-  obligations.
+  obligations. The lower-tail component/minimum facts and the one-label
+  transformer `LabelExponentCertificate.lowerTailVector_of_flatFromPred_add`
+  are also proved; the transformer is conditional on old least value `J+J1`
+  and `J<=J+J1`, and is not an all-label transition.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

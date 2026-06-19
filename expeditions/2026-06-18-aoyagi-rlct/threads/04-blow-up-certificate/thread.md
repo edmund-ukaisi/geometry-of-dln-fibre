@@ -258,6 +258,14 @@ For a vector `T` that is flat at value `h` from `S-1` through `L`, with
 `(h-J)(n_(S+1)-J)`. The source-shaped corollary takes `h=J+J1` and gives the
 Case 1 increment `J1(n_(S+1)-J)`.
 
+The same checkpoint now records component and finite least-value bookkeeping
+for `lowerTailVector`, plus `FlatTailFromPred` and a one-label transformer
+`LabelExponentCertificate.lowerTailVector_of_flatFromPred_add`. The
+transformer re-certifies an already introduced label at the same state; it
+requires the old certificate to have least value `J+J1` and the comparison
+`J <= J+J1`.
+
 This is only arithmetic. The flat-tail hypothesis is explicit and must be
 supplied by a later corrected invariant; it is not inferred from the Case 1
-level condition alone. The boundary exclusions `S=1` and `S>L` are real.
+level condition alone. It is not an all-label/domain transition. The boundary
+exclusions `S=1` and `S>L` are real.

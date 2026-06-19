@@ -158,7 +158,11 @@ as `lowerTailVector`,
 `terminalExponent_lowerTailVector_of_flatFromPred_add`. The theorem assumes the
 old vector is flat from `S-1` through `L` at the level being lowered; proving
 that a Case 1 selected label has this property remains a separate invariant
-obligation.
+obligation. The component/least-value facts for the lowered vector and the
+one-label certificate transformer
+`LabelExponentCertificate.lowerTailVector_of_flatFromPred_add` are also proved,
+but the transformer assumes the old least value is `J+J1` and that
+`J <= J+J1`; it is not a chart transition or all-label invariant update.
 
 This branch keeps `(S,J)` and decreases the number of labels at
 `tilde_t = J+J1`.

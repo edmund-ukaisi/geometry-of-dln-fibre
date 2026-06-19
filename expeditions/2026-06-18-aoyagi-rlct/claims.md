@@ -569,7 +569,10 @@ No such claim is formalisation-ready until both fields are filled.
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and
   `terminalExponent_lowerTailVector_of_flatFromPred_add`, with the required
-  flat-tail and `2 <= S <= L` hypotheses explicit.
+  flat-tail and `2 <= S <= L` hypotheses explicit. Also proved
+  `FlatTailFromPred`, lower-tail component/minimum facts, and the one-label
+  transformer `LabelExponentCertificate.lowerTailVector_of_flatFromPred_add`,
+  which additionally assumes old least value `J+J1` and `J <= J+J1`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.
