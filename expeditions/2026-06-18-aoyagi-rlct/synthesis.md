@@ -1061,6 +1061,19 @@ Case 1(2) pivot, `Q/P`, chart production, coverage/regularity, Jacobians,
 normal crossings, RLCT, and transition invariants. Xhigh review passed with no
 findings.
 
+The Case 1(1) selected-old lowered-recurrence boundary is now Lean-packaged as
+a supplied source-facing interface. It carries pre/post recurrence states over
+the same `(S,J)` domain, a supplied base recurrence, and fields
+`pre.step = mulStepAt baseStep u (J+J1)` and
+`post.step = mulStepAt baseStep u J`. The projections rewrite the
+Case 1(1) source-coordinate identity from `pre.weight` to `post.weight`, and
+re-export the same-domain exponent update. This still does not construct the
+selected-old chart, derive the base recurrence or states from source
+coordinates, produce chart post-data, introduce `(S,J+1)`, use the displayed
+Case 1(2) pivot, assert `Q/P`, or prove coverage/regularity, Jacobians,
+normal crossings, RLCT, or a transition invariant. Xhigh review passed with no
+findings.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

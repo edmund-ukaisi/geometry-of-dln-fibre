@@ -1342,3 +1342,32 @@ recurrence-state post-data theorem, introduce `(S,J+1)`, use the displayed
 Case 1(2) pivot, assert `Q/P`, prove chart coverage or regularity, compute
 Jacobians, prove normal crossings, extract RLCT, or prove a transition
 invariant.
+
+## 2026-06-19 Lean Case 1 selected-old lowered recurrence boundary
+
+Statement card:
+`statement-card-a4-case1-selected-old-lowered-recurrence-boundary.md`.
+
+Lean now packages the supplied recurrence-state boundary for the Case 1(1)
+level lowering. The new structure
+`Case1SelectedOldLoweredRecurrenceBoundary` assumes a supplied base recurrence
+with the selected old factor kept separate:
+
+```text
+pre.step  = mulStepAt baseStep u (J+J1),
+post.step = mulStepAt baseStep u J.
+```
+
+It also carries the previously proved same-domain selected-old exponent
+boundary. The projections identify the piecewise selected-old post-weight
+convention with supplied `post.weight` on residual rows and rewrite the
+source-coordinate row-strip identity with `pre.weight` on the left and
+`post.weight` on the right. The exponent update is re-exported over the same
+domain `(S,J)`.
+
+This is still a supplied interface. It does not construct the selected-old
+chart, derive `baseStep` or the pre/post recurrence states from source
+coordinates, produce recurrence post-data from a chart, introduce `(S,J+1)`,
+use the displayed Case 1(2) pivot, assert `Q/P`, prove chart coverage or
+regularity, compute Jacobians, prove normal crossings, extract RLCT, or prove
+a transition invariant.

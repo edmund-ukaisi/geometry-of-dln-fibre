@@ -906,7 +906,15 @@ No such claim is formalisation-ready until both fields are filled.
   `case1SelectedOld_diagonal_mul_sourceMatrix_loweredLevel`, and
   `case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates_loweredLevel`.
   This proves the strip post weights from a supplied base recurrence, not from
-  constructed source recurrence data.
+  constructed source recurrence data. Added the supplied source-facing lowered
+  recurrence boundary:
+  `Case1SelectedOldLoweredRecurrenceBoundary`,
+  `Case1SelectedOldLoweredRecurrenceBoundary.selectedOldPostWeight_eq_postWeight`,
+  `Case1SelectedOldLoweredRecurrenceBoundary.sourceCoordinates_identity_postWeights`,
+  and `Case1SelectedOldLoweredRecurrenceBoundary.updateExponentCertificates`.
+  This ties the recurrence-weight calculation to supplied pre/post recurrence
+  states and the same-domain exponent update without constructing those states
+  from coordinates.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

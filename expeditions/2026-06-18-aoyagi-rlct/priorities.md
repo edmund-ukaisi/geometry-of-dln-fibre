@@ -250,12 +250,15 @@ on the session's original cwd.
    weights is Lean-proved from a supplied base recurrence: moving the selected
    old factor from level `J+J1` down to level `J` produces exactly the
    piecewise strip post weights and source-coordinate matrix identity with the
-   lowered recurrence on the right diagonal. Next A4 target: either package a
-   source-facing recurrence post-data interface for that level move, or add
-   the selected-old `Unit` chart-family/principalization boundary if the
-   recurrence-state source interpretation is still too immature. Keep either
-   explicitly supplied where coordinates are not constructed. Avoid raw Case
-   1(2) hidden-old
+   lowered recurrence on the right diagonal. The supplied lowered-recurrence
+   boundary now packages this with same-domain pre/post recurrence states:
+   `pre.step = mulStepAt baseStep u (J+J1)` and
+   `post.step = mulStepAt baseStep u J`, plus the same-domain exponent update.
+   Next A4 target: add the selected-old `Unit` chart-family/principalization
+   boundary, or try a more constructive source-coordinate recurrence model
+   only if the base recurrence can be defined without cancellation or chart
+   overclaim. Keep either explicitly supplied where coordinates are not
+   constructed. Avoid raw Case 1(2) hidden-old
    pullback construction, arbitrary chart coverage, or non-displayed
    transition claims.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight

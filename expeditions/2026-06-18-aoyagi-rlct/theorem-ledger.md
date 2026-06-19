@@ -876,6 +876,26 @@ transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-recurrence-postweight-a4.md`.
 
+Latest A4 update: the Case 1(1) selected-old lowered-recurrence boundary has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are `Case1SelectedOldLoweredRecurrenceBoundary`,
+`Case1SelectedOldLoweredRecurrenceBoundary.selectedIntroduced`,
+`Case1SelectedOldLoweredRecurrenceBoundary.selectedLevel`,
+`Case1SelectedOldLoweredRecurrenceBoundary.selectedOldPostWeight_eq_postWeight`,
+`Case1SelectedOldLoweredRecurrenceBoundary.sourceMatrix_identity_postWeights`,
+`Case1SelectedOldLoweredRecurrenceBoundary.sourceCoordinates_identity_postWeights`,
+and `Case1SelectedOldLoweredRecurrenceBoundary.updateExponentCertificates`.
+This checkpoint packages the pure recurrence post-weight calculation with
+supplied pre/post recurrence states and same-domain exponent data. It assumes
+the base-step equalities and does not derive them from a chart or source
+coordinates. It stays at `(S,J)`, does not introduce `(S,J+1)`, does not use
+the displayed Case 1(2) pivot, and does not assert `Q/P`, chart construction,
+coverage/regularity/Jacobians, normal crossings/RLCT, or a transition
+invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-lowered-recurrence-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-lowered-recurrence-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
