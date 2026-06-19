@@ -1403,6 +1403,97 @@ def pivotPreQBlock (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ 
     Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R :=
   fromBlocks 1 y x D
 
+/-- Indices other than a chosen pivot. -/
+abbrev pivotComplement {ι : Type*} (pivot : ι) := {i : ι // i ≠ pivot}
+
+/-- The reindexing equivalence that puts a selected pivot first. -/
+noncomputable def pivotFirstIndexEquiv {ι : Type*} [DecidableEq ι] (pivot : ι) :
+    Unit ⊕ pivotComplement pivot ≃ ι where
+  toFun
+    | Sum.inl _ => pivot
+    | Sum.inr i => i.1
+  invFun i := if h : i = pivot then Sum.inl () else Sum.inr ⟨i, h⟩
+  left_inv := by
+    intro i
+    rcases i with (_ | i)
+    · simp
+    · simp [i.2]
+  right_inv := by
+    intro i
+    by_cases h : i = pivot
+    · simp [h]
+    · simp [h]
+
+/-- Reindex a matrix so a chosen pivot row and column are first. -/
+def pivotFirstMatrix {ι κ R : Type*} [DecidableEq ι] [DecidableEq κ]
+    (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R) :
+    Matrix (Unit ⊕ pivotComplement rowPivot) (Unit ⊕ pivotComplement colPivot) R :=
+  A.submatrix (pivotFirstIndexEquiv rowPivot) (pivotFirstIndexEquiv colPivot)
+
+/-- The lower-left column of a pivot-first block. -/
+def pivotFirstX {ι κ R : Type*} (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R) :
+    Matrix (pivotComplement rowPivot) Unit R :=
+  fun i _ ↦ A i.1 colPivot
+
+/-- The upper-right row of a pivot-first block. -/
+def pivotFirstY {ι κ R : Type*} (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R) :
+    Matrix Unit (pivotComplement colPivot) R :=
+  fun _ j ↦ A rowPivot j.1
+
+/-- The lower-right block of a pivot-first block. -/
+def pivotFirstD {ι κ R : Type*} (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R) :
+    Matrix (pivotComplement rowPivot) (pivotComplement colPivot) R :=
+  fun i j ↦ A i.1 j.1
+
+@[simp] theorem pivotFirstMatrix_inl_inl {ι κ R : Type*}
+    [DecidableEq ι] [DecidableEq κ]
+    (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R) :
+    pivotFirstMatrix rowPivot colPivot A (Sum.inl ()) (Sum.inl ()) =
+      A rowPivot colPivot :=
+  rfl
+
+@[simp] theorem pivotFirstMatrix_inl_inr {ι κ R : Type*}
+    [DecidableEq ι] [DecidableEq κ]
+    (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R)
+    (j : pivotComplement colPivot) :
+    pivotFirstMatrix rowPivot colPivot A (Sum.inl ()) (Sum.inr j) =
+      A rowPivot j.1 :=
+  rfl
+
+@[simp] theorem pivotFirstMatrix_inr_inl {ι κ R : Type*}
+    [DecidableEq ι] [DecidableEq κ]
+    (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R)
+    (i : pivotComplement rowPivot) :
+    pivotFirstMatrix rowPivot colPivot A (Sum.inr i) (Sum.inl ()) =
+      A i.1 colPivot :=
+  rfl
+
+@[simp] theorem pivotFirstMatrix_inr_inr {ι κ R : Type*}
+    [DecidableEq ι] [DecidableEq κ]
+    (rowPivot : ι) (colPivot : κ) (A : Matrix ι κ R)
+    (i : pivotComplement rowPivot) (j : pivotComplement colPivot) :
+    pivotFirstMatrix rowPivot colPivot A (Sum.inr i) (Sum.inr j) =
+      A i.1 j.1 :=
+  rfl
+
+/-- A pivot-first reindexed matrix with pivot entry `1` has the normalised pivot-block shape. -/
+theorem pivotFirstMatrix_eq_pivotPreQBlock
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1) :
+    pivotFirstMatrix rowPivot colPivot A =
+      pivotPreQBlock
+        (pivotFirstX rowPivot colPivot A)
+        (pivotFirstY rowPivot colPivot A)
+        (pivotFirstD rowPivot colPivot A) := by
+  ext i j
+  rcases i with (_ | i)
+  · rcases j with (_ | j)
+    · exact hA
+    · rfl
+  · rcases j with (_ | j)
+    · rfl
+    · rfl
+
 /-- The elementary right column operation that clears the pivot row off the pivot. -/
 def pivotQ (y : Matrix Unit κ R) : Matrix (Unit ⊕ κ) (Unit ⊕ κ) R :=
   fromBlocks 1 (-y) 0 1
@@ -1500,6 +1591,34 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ
   rw [pivotPreQBlock_mul_pivotQ]
   exact weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock b0 b q x y D h
 
+/-- Pure algebra: the normalised `Q/P` identity after pivot-first reindexing.
+This assumes pivot entry `1`, quotient witnesses, and pivot-first coordinates;
+it proves no chart construction, coverage, transition invariant, exponent
+update, or Jacobian fact. -/
+theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul_pivotQ
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    (b0 : R) (b q : pivotComplement rowPivot → R)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (h : ∀ i, b i = q i * b0) :
+    weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+        weightedPivotDiagonal b0 b *
+        (pivotFirstMatrix rowPivot colPivot A *
+          pivotQ (pivotFirstY rowPivot colPivot A)) =
+      weightedPivotDiagonal b0 b *
+        weightedPivotClearedBlock
+          (pivotFirstD rowPivot colPivot A -
+            pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A) := by
+  rw [pivotFirstMatrix_eq_pivotPreQBlock A hA]
+  exact
+    weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ
+      b0 b q
+      (pivotFirstX rowPivot colPivot A)
+      (pivotFirstY rowPivot colPivot A)
+      (pivotFirstD rowPivot colPivot A)
+      h
+
 /-- An algebraic pivot-step corollary with the following factor multiplied by `Q⁻¹`. -/
 theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
     [Fintype ρ] [DecidableEq ρ]
@@ -1529,6 +1648,34 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
           (weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y)) *
             (pivotQinv y * C) := by
             rw [weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock b0 b q x y D h]
+
+/-- Pure algebraic product-preservation form of the pivot-first reindexed `Q/P` identity.
+The following factor and weights are already in pivot-first coordinates; this
+does not prove chart construction, coverage, transition invariants, exponent
+updates, or Jacobian facts. -/
+theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotFirstMatrix_mul
+    {ι κ τ : Type*} [DecidableEq ι] [DecidableEq κ] {rowPivot : ι} {colPivot : κ}
+    [Fintype (pivotComplement rowPivot)] [DecidableEq (pivotComplement rowPivot)]
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    (b0 : R) (b q : pivotComplement rowPivot → R)
+    (A : Matrix ι κ R) (hA : A rowPivot colPivot = 1)
+    (C : Matrix (Unit ⊕ pivotComplement colPivot) τ R)
+    (h : ∀ i, b i = q i * b0) :
+    (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX rowPivot colPivot A i ()) *
+        weightedPivotDiagonal b0 b * pivotFirstMatrix rowPivot colPivot A) * C =
+      (weightedPivotDiagonal b0 b *
+        weightedPivotClearedBlock
+          (pivotFirstD rowPivot colPivot A -
+            pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A)) *
+        (pivotQinv (pivotFirstY rowPivot colPivot A) * C) := by
+  rw [pivotFirstMatrix_eq_pivotPreQBlock A hA]
+  exact
+    weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
+      b0 b q
+      (pivotFirstX rowPivot colPivot A)
+      (pivotFirstY rowPivot colPivot A)
+      (pivotFirstD rowPivot colPivot A)
+      C h
 
 end ColumnOperationBlocks
 
