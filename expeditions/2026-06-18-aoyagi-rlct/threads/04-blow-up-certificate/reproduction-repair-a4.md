@@ -316,6 +316,17 @@ criterion applies: either continue with `(S,J+1)` when
 `J+1 <= mu_(S+1)`, or advance to `(S+1,0)` and absorb the one-dimensional
 remainder into `C'^(S+1)`.
 
+Lean status: the corrected Case 2 new-label certificate is now usable as a
+generic `LabelExponentCertificate`, and
+`IntroducedLabelExponentCertificates` gives a Prop-valued container for
+terminal-exponent/minimum certificates over the introduced-label domain.  Its
+extension lemmas are only domain bookkeeping: old label assignments must be
+supplied as unchanged, and no chart transition is proved.  The Case 2
+residual-block center is also recorded as the finite product set
+`case2ResidualBlockPivotEntries`, with rows `J+1..mu_S` and columns
+`J+1..n_(S+1)`; the displayed source pivot belongs under the continuation
+bound.  This is not a chart-cover theorem.
+
 ## Divisibility obligation for `P`
 
 Both pivot branches define a lower-unitriangular matrix `P` with entries

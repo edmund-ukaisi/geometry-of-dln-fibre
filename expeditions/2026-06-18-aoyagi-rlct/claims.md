@@ -556,7 +556,16 @@ No such claim is formalisation-ready until both fields are filled.
   `correctedCase2NewLabelCertificate_of_actualBound_of_stateBound` and
   `correctedCase2NewLabelCertificate_of_prefixBound`, packaging introducedness,
   corrected terminal exponent, and least-value data for the corrected Case 2
-  new label only.
+  new label only. Also proved finite exponent-domain bookkeeping:
+  `LabelExponentCertificate`, `IntroducedLabelExponentCertificates`,
+  `introducedLabel_succ_cases`, `introducedLabel_succ_iff`,
+  `IntroducedLabelExponentCertificates.extendDomain_succ_current`,
+  `IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_bounds`,
+  and
+  `IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_prefixBound`,
+  plus the Case 2 residual-block entry set
+  `case2ResidualBlockPivotEntries` and displayed-pivot membership theorem
+  `case2_displayedPivot_mem_residualBlockPivotEntries_of_cont`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

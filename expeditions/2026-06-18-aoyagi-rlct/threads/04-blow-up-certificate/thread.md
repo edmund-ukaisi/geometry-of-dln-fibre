@@ -212,3 +212,38 @@ stronger continuation condition `J+1 <= mu_(S+1)`.
 
 This is not a full vector invariant, transition theorem, or claim about the
 PDF's printed Case 2 vector.
+
+## 2026-06-19 Lean finite exponent-domain bookkeeping
+
+Statement card: `statement-card-a4-finite-exponent-domain-bookkeeping.md`.
+
+Lean now has `LabelExponentCertificate` for a single introduced label and
+`IntroducedLabelExponentCertificates` for all labels introduced at a state.
+The package records only finite terminal-exponent and least-value certificates.
+It is not a chart invariant.
+
+The domain-change lemmas `introducedLabel_succ_cases` and
+`introducedLabel_succ_iff` prove that advancing from `(S,J)` to `(S,J+1)`
+changes the introduced-label domain only at the possible new label
+`(S,J+1)`. The extension lemmas then say: if old assignments are supplied as
+unchanged and the new label has a certificate, the certificate package extends
+to the larger introduced domain.
+
+The corrected Case 2 new-label certificate supplies that one new-label input
+under either separate actual/state bounds or the stronger continuation bound.
+This remains domain-extension bookkeeping only; it does not prove old data is
+unchanged by a chart or prove a blow-up transition.
+
+## 2026-06-19 Lean Case 2 residual-block entries
+
+Statement card: `statement-card-a4-case2-residual-block-entries.md`.
+
+Lean now records the finite residual-block entry set for corrected Case 2:
+rows `J+1..mu_S` and columns `J+1..n_(S+1)`. The membership theorem keeps the
+prefix-minimum row bound and actual-width column bound explicit. Under the
+continuation bound `J+1 <= mu_(S+1)`, the displayed source pivot
+`(J+1,J+1)` belongs to this entry set.
+
+This records candidate selected entries in the residual-block center only. It
+does not construct the selected-entry charts or prove coverage of the
+non-displayed charts.

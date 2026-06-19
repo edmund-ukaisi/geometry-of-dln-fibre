@@ -186,6 +186,15 @@ interface without surfacing it.
   `J<=mu_S`; the continuation-bound constructor derives both from
   `J+1<=mu_(S+1)`. This still does not assign vector data to every introduced
   label or prove a Case 2 transition.
+  The finite exponent-domain layer is now explicit:
+  `LabelExponentCertificate` certifies one introduced label, and
+  `IntroducedLabelExponentCertificates` certifies all labels introduced at a
+  state. The extension lemmas only extend the domain from `(S,J)` to
+  `(S,J+1)` when old data is supplied unchanged and the new label is already
+  certified; they are not transition theorems. The Case 2 residual-block entry
+  set is also recorded as rows `J+1..mu_S` and columns `J+1..n_(S+1)`, with the
+  displayed pivot included under continuation; no chart-cover theorem is
+  claimed.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not
