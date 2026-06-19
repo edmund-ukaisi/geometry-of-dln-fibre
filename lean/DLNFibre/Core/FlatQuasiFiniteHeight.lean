@@ -8,6 +8,10 @@ then `Q` and the prime `Q.under R` it lies over have the same height: the fibre 
 This is the height-preservation brick of the étale route to "smooth ⟹ regular": étale ⟹ flat +
 quasi-finite, so heights are preserved along an étale map, reducing `ringKrullDim` of a local ring
 to the dimension of an affine-space base.
+
+`Algebra.QuasiFiniteAt R Q` here is Mathlib's finite-fibre-dimension condition
+(`κ(p) ⊗ S` finite over `κ(p)`), which is *weaker* than the Stacks 00PL "finite type + isolated in
+its fibre" notion — the two coincide for finite-type `S`. The result holds in this weaker generality.
 -/
 import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.RingTheory.QuasiFinite.Basic

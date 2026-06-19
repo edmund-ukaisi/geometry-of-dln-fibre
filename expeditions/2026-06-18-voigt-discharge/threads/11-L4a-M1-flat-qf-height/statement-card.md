@@ -30,6 +30,12 @@
 >   `Algebra.HasGoingDown` by `Algebra.HasGoingDown.of_flat`); `[Algebra.QuasiFiniteAt R Q]`
 >   (= `Algebra.QuasiFinite R (Localization.AtPrime Q)`). These are the minimal hypotheses for the
 >   stated generality; the downstream M2 use (`R = k[x₁..xₙ]`, `S` étale) satisfies all four.
+>   **Caveat on `QuasiFiniteAt`:** Mathlib's `QuasiFinite` is the finite-fibre-dimension condition
+>   (`κ(p) ⊗ S` finite-dimensional over `κ(p)`), *weaker* than the Stacks 00PL "finite type +
+>   isolated in fibre" notion — its own docstring flags the difference. So the Lean hypothesis is
+>   the weaker one (no finite-type bundled); the result is therefore *more general* than the informal
+>   claim, not less. For finite-type `S` the two notions coincide
+>   (`Algebra.QuasiFinite.iff_finite_comap_preimage_singleton`).
 > - **Cited.** none — every step is a named Mathlib lemma reproved/applied here, not an external
 >   analytic interface. Mathlib lemmas used: `Algebra.HasGoingDown.of_flat`,
 >   `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` (00ON),
@@ -39,8 +45,10 @@
 >   `Algebra.Etale`/`Smooth.flat`, `Module.Finite ⟹ QuasiFinite`.
 > - **Deferred.** none. (This module is the M1 brick only; the smooth ⟹ regular assembly that
 >   consumes it lives in M2/M3 and is out of scope here.)
-> - **Status.** sorry-free; axioms `[propext, Classical.choice, Quot.sound]`. Awaiting reviewer
->   fidelity check.
+> - **Status.** sorry-free + reviewed. Axioms `[propext, Classical.choice, Quot.sound]`. Reviewer
+>   verdict (thread 11, decorrelated Codex): FAITHFUL-WITH-CAVEAT — the Lean statement is *more
+>   general* than the informal claim (the `QuasiFiniteAt` caveat above), not less; name = content,
+>   no overclaim, non-vacuity genuine.
 
 ## Kill-condition outcome
 
