@@ -704,6 +704,51 @@ theorem IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_
     (correctedCase2NewLabelCertificate_of_prefixBound
       L n hS hSL hJcont).labelExponentCertificate
 
+namespace IntroducedLabelExponentCertificates
+
+/-- Concrete update-data wrapper for corrected Case 2 exponent-domain
+extension.  It changes only the new label `(S,J+1)` to the corrected
+Case 2 vector, numerator, and least value, leaving all old introduced-label
+exponent data unchanged.  This is domain-extension bookkeeping, not chart
+production or a transition theorem. -/
+theorem extendDomain_correctedCase2NewLabel_updateData_of_prefixBound
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hJcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    IntroducedLabelExponentCertificates L n S (J + 1)
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) := by
+  refine hcert.extendDomain_correctedCase2NewLabel_of_prefixBound
+    hS hSL hJcont ?_ ?_ ?_ ?_ ?_ ?_
+  · intro s k hintro
+    exact funext fun i ↦ updateSelectedLabelVector_of_ne
+      (correctedCase2PivotVector n S J) t i (by
+        rintro ⟨rfl, rfl⟩
+        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  · intro s k hintro
+    exact updateSelectedLabelScalar_of_ne
+      (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+        ((n (S + 1) : ℤ) - (J : ℤ))) numerator (by
+        rintro ⟨rfl, rfl⟩
+        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  · intro s k hintro
+    exact updateSelectedLabelScalar_of_ne (J : ℤ) leastValue (by
+      rintro ⟨rfl, rfl⟩
+      exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  · exact funext fun i ↦ updateSelectedLabelVector_selected S (J + 1)
+      (correctedCase2PivotVector n S J) t i
+  · exact updateSelectedLabelScalar_selected S (J + 1)
+      (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+        ((n (S + 1) : ℤ) - (J : ℤ))) numerator
+  · exact updateSelectedLabelScalar_selected S (J + 1) (J : ℤ) leastValue
+
+end IntroducedLabelExponentCertificates
+
 /-- Row indices in the residual block blown up in corrected Case 2. -/
 def case2ResidualBlockRows (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
   Finset.Icc (J + 1) (prefixMinNat n S)

@@ -159,7 +159,11 @@ on the session's original cwd.
    source-substitution, and displayed `Q/P` handoff. Next A4 target: use this
    cleaner assumption boundary for a corrected Case 2 exponent-domain extension
    wrapper, or begin arbitrary-pivot transport only if the displayed exponent
-   package is still blocked.
+   package is still blocked. The concrete corrected Case 2 exponent update-data
+   wrapper is now Lean-proved, but it is intentionally independent of
+   recurrence post-data. Next A4 target: decide whether to add a separate
+   exponent-post-data package with explicit old/new exponent fields, or move to
+   arbitrary-pivot transport if package abstraction would add no value.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

@@ -820,6 +820,14 @@ source-substitution, and displayed `Q/P` handoff. This reduces hypothesis
 sprawl while preserving the boundary: the supplied post-state is still assumed,
 not produced by a chart.
 
+The corrected Case 2 exponent-domain update now has a concrete selected-label
+update wrapper. It uses `updateSelectedLabelVector` and
+`updateSelectedLabelScalar` to change only `(S,J+1)` to the corrected vector,
+numerator, and least value, then applies the existing corrected new-label
+domain-extension theorem. This checkpoint deliberately does not use
+`Case2SuppliedPostData`: recurrence `level/var` post-data is not evidence that
+old exponent vectors or numerators are unchanged.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

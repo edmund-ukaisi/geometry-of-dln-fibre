@@ -520,6 +520,21 @@ printed Case 2 vector repair. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-supplied-post-data-a4.md`.
 
+Latest A4 update: the corrected Case 2 exponent update-data wrapper has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean name is
+`IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_updateData_of_prefixBound`.
+It applies the existing corrected Case 2 new-label domain-extension theorem to
+concrete selected-label update functions for `t`, `numerator`, and
+`leastValue`, changing only `(S,J+1)`. This is exponent-domain bookkeeping
+only: recurrence post-data does not imply these exponent assignments, and the
+theorem does not prove chart production, exponent transition invariance,
+source comparability, arbitrary-pivot transport, normal crossings, RLCT
+extraction, or that the corrected vector is the PDF's printed vector.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-exponent-update-data.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-exponent-update-data-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

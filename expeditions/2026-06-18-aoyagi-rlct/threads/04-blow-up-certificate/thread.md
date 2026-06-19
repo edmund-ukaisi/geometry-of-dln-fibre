@@ -669,6 +669,27 @@ regularity/Jacobian facts, exponent updates, transition invariants, normal
 crossings, RLCT extraction, source comparability, or the printed Case 2 vector
 repair.
 
+## 2026-06-19 Lean Case 2 exponent update data
+
+Reproduction: `reproduction-case2-exponent-update-data-a4.md`.
+Statement card: `statement-card-a4-case2-exponent-update-data.md`.
+Review artifact: `review-case2-exponent-update-data-a4.md`.
+
+Lean now has a concrete update-data wrapper for corrected Case 2
+exponent-domain extension:
+`IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_updateData_of_prefixBound`.
+It extends an old introduced-label exponent certificate package from `(S,J)` to
+`(S,J+1)` using total assignment overrides that change only the new label
+`(S,J+1)` to the corrected Case 2 vector, numerator, and least value.
+
+This is intentionally independent of `Case2SuppliedPostData`: recurrence
+`level/var` post-data does not imply old exponent vectors, numerators, or least
+values are unchanged. The wrapper is only syntactic exponent-domain
+bookkeeping around the existing corrected new-label certificate. It is not
+chart production, exponent transition invariance, source comparability,
+arbitrary-pivot transport, normal crossing, RLCT extraction, or a claim that
+the corrected vector is the PDF's printed vector.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

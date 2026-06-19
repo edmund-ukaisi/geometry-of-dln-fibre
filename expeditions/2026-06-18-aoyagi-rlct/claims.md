@@ -741,7 +741,12 @@ No such claim is formalisation-ready until both fields are filled.
   `IntroducedLabelRecurrenceState.Case2SuppliedPostData`, its concrete
   `case2Succ` constructor, recurrence update and residual-flatness methods,
   and corrected-certificate `_of_postData` wrappers for the displayed
-  source-substitution and `Q/P` handoff.
+  source-substitution and `Q/P` handoff. Added the corrected Case 2 exponent
+  update-data wrapper
+  `IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_updateData_of_prefixBound`,
+  which changes only `(S,J+1)` to the corrected vector, numerator, and least
+  value by selected-label update functions and extends the exponent certificate
+  package to `(S,J+1)`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -760,7 +765,9 @@ No such claim is formalisation-ready until both fields are filled.
   validity, the old Case 2 gap, and displayed pivot bounds as separate theorem
   hypotheses rather than fields. The Aoyagi-specific arbitrary chart
   construction, coordinate transport, row-weight hypotheses in pivot-first
-  coordinates, and exponent updates remain open.
+  coordinates, and full exponent transition updates remain open. The concrete
+  exponent update-data wrapper does not follow from recurrence post-data and
+  does not prove a chart leaves old exponent assignments unchanged.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
