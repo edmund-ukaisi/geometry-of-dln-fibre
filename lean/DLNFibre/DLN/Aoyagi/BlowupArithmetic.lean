@@ -451,6 +451,169 @@ theorem correctedCase2NewLabelCertificate_of_prefixBound
     (le_trans hJcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))) ?_
   exact le_trans (by omega : J ≤ J + 1) (le_trans hJcont (prefixMinNat_succ_le n hS))
 
+/-- A finite terminal-exponent and minimum certificate for one introduced label. -/
+structure LabelExponentCertificate
+    (L : ℕ) (n : ℕ → ℕ) (S J s k : ℕ)
+    (t : ℕ → ℤ) (numerator leastValue : ℤ) : Prop where
+  introduced : introducedLabel L n S J s k
+  terminalExponent_eq : terminalExponent L (widthZ n) t = numerator
+  least_value :
+    IsLeast {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧ t i = v} leastValue
+
+/-- The corrected Case 2 one-label certificate is a generic label certificate. -/
+theorem CorrectedCase2NewLabelCertificate.labelExponentCertificate
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (h : CorrectedCase2NewLabelCertificate L n S J) :
+    LabelExponentCertificate L n S (J + 1) S (J + 1)
+      (correctedCase2PivotVector n S J)
+      (((prefixMinNat n S : ℤ) - (J : ℤ)) * ((n (S + 1) : ℤ) - (J : ℤ)))
+      (J : ℤ) where
+  introduced := h.introduced
+  terminalExponent_eq := h.terminalExponent_eq
+  least_value := h.least_value
+
+/-- Any label newly present after advancing `J` must have indices `(S,J+1)`. -/
+theorem introducedLabel_succ_cases
+    {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ}
+    (h : introducedLabel L n S (J + 1) s k) :
+    introducedLabel L n S J s k ∨ (s = S ∧ k = J + 1) := by
+  rcases h with ⟨hlabel, hs | ⟨hs, hk⟩⟩
+  · exact Or.inl ⟨hlabel, Or.inl hs⟩
+  · by_cases hkle : k ≤ J
+    · exact Or.inl ⟨hlabel, Or.inr ⟨hs, hkle⟩⟩
+    · exact Or.inr ⟨hs, by omega⟩
+
+/-- One `J`-advance changes the introduced domain only at the next current-layer label. -/
+theorem introducedLabel_succ_iff
+    (L : ℕ) (n : ℕ → ℕ) (S J s k : ℕ) :
+    introducedLabel L n S (J + 1) s k ↔
+      introducedLabel L n S J s k ∨
+        actualWidthLabel L n s k ∧ s = S ∧ k = J + 1 := by
+  constructor
+  · intro h
+    rcases introducedLabel_succ_cases h with hOld | ⟨hs, hk⟩
+    · exact Or.inl hOld
+    · exact Or.inr ⟨h.1, hs, hk⟩
+  · intro h
+    rcases h with hOld | ⟨hlabel, hs, hk⟩
+    · exact introducedLabel_mono_J (by omega : J ≤ J + 1) hOld
+    · exact ⟨hlabel, Or.inr ⟨hs, by omega⟩⟩
+
+/-- Terminal-exponent/minimum certificates for all labels introduced at a state. -/
+structure IntroducedLabelExponentCertificates
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ) (numerator leastValue : ℕ → ℕ → ℤ) : Prop where
+  certificate :
+    ∀ {s k}, introducedLabel L n S J s k →
+      LabelExponentCertificate L n S J s k (t s k) (numerator s k) (leastValue s k)
+
+/-- Domain-extension bookkeeping only: add one current-layer label certificate. -/
+theorem IntroducedLabelExponentCertificates.extendDomain_succ_current
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hnew :
+      LabelExponentCertificate L n S (J + 1) S (J + 1)
+        (t' S (J + 1)) (numerator' S (J + 1)) (leastValue' S (J + 1)))
+    (ht_old : ∀ {s k}, introducedLabel L n S J s k → t' s k = t s k)
+    (hn_old : ∀ {s k}, introducedLabel L n S J s k → numerator' s k = numerator s k)
+    (hl_old : ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' where
+  certificate := by
+    intro s k hintro
+    rcases introducedLabel_succ_cases hintro with hOld | ⟨rfl, rfl⟩
+    · have hc := hcert.certificate hOld
+      refine
+        { introduced := hintro
+          terminalExponent_eq := ?_
+          least_value := ?_ }
+      · rw [ht_old hOld, hn_old hOld]
+        exact hc.terminalExponent_eq
+      · rw [ht_old hOld, hl_old hOld]
+        exact hc.least_value
+    · exact hnew
+
+/-- Domain-extension bookkeeping using the corrected Case 2 new-label certificate. -/
+theorem IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_bounds
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hJactual : J + 1 ≤ n (S + 1))
+    (hJstate : J ≤ prefixMinNat n S)
+    (ht_old : ∀ {s k}, introducedLabel L n S J s k → t' s k = t s k)
+    (hn_old : ∀ {s k}, introducedLabel L n S J s k → numerator' s k = numerator s k)
+    (hl_old : ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k)
+    (ht_new : t' S (J + 1) = correctedCase2PivotVector n S J)
+    (hn_new :
+      numerator' S (J + 1) =
+        ((prefixMinNat n S : ℤ) - (J : ℤ)) * ((n (S + 1) : ℤ) - (J : ℤ)))
+    (hl_new : leastValue' S (J + 1) = (J : ℤ)) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' := by
+  refine hcert.extendDomain_succ_current ?_ ht_old hn_old hl_old
+  rw [ht_new, hn_new, hl_new]
+  exact
+    (correctedCase2NewLabelCertificate_of_actualBound_of_stateBound
+      L n hS hSL hJactual hJstate).labelExponentCertificate
+
+/-- The continuation bound is a sufficient hypothesis for the corrected domain extension. -/
+theorem IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_prefixBound
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hJcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (ht_old : ∀ {s k}, introducedLabel L n S J s k → t' s k = t s k)
+    (hn_old : ∀ {s k}, introducedLabel L n S J s k → numerator' s k = numerator s k)
+    (hl_old : ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k)
+    (ht_new : t' S (J + 1) = correctedCase2PivotVector n S J)
+    (hn_new :
+      numerator' S (J + 1) =
+        ((prefixMinNat n S : ℤ) - (J : ℤ)) * ((n (S + 1) : ℤ) - (J : ℤ)))
+    (hl_new : leastValue' S (J + 1) = (J : ℤ)) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' := by
+  refine hcert.extendDomain_succ_current ?_ ht_old hn_old hl_old
+  rw [ht_new, hn_new, hl_new]
+  exact
+    (correctedCase2NewLabelCertificate_of_prefixBound
+      L n hS hSL hJcont).labelExponentCertificate
+
+/-- Row indices in the residual block blown up in corrected Case 2. -/
+def case2ResidualBlockRows (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
+  Finset.Icc (J + 1) (prefixMinNat n S)
+
+/-- Column indices in the residual block blown up in corrected Case 2. -/
+def case2ResidualBlockCols (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
+  Finset.Icc (J + 1) (n (S + 1))
+
+/-- Candidate selected entries in the Case 2 residual-block center, not a chart cover proof. -/
+def case2ResidualBlockPivotEntries (n : ℕ → ℕ) (S J : ℕ) : Finset (ℕ × ℕ) :=
+  (case2ResidualBlockRows n S J).product (case2ResidualBlockCols n S J)
+
+@[simp] theorem mem_case2ResidualBlockRows (n : ℕ → ℕ) (S J i : ℕ) :
+    i ∈ case2ResidualBlockRows n S J ↔ J + 1 ≤ i ∧ i ≤ prefixMinNat n S := by
+  simp [case2ResidualBlockRows, Finset.mem_Icc]
+
+@[simp] theorem mem_case2ResidualBlockCols (n : ℕ → ℕ) (S J j : ℕ) :
+    j ∈ case2ResidualBlockCols n S J ↔ J + 1 ≤ j ∧ j ≤ n (S + 1) := by
+  simp [case2ResidualBlockCols, Finset.mem_Icc]
+
+/-- Membership in the finite set of Case 2 residual-block candidate pivot entries. -/
+theorem mem_case2ResidualBlockPivotEntries_iff (n : ℕ → ℕ) (S J i j : ℕ) :
+    (i, j) ∈ case2ResidualBlockPivotEntries n S J ↔
+      J + 1 ≤ i ∧ i ≤ prefixMinNat n S ∧ J + 1 ≤ j ∧ j ≤ n (S + 1) := by
+  simp [case2ResidualBlockPivotEntries, and_assoc]
+
+/-- Aoyagi's displayed pivot entry is one candidate selected entry under continuation. -/
+theorem case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    (J + 1, J + 1) ∈ case2ResidualBlockPivotEntries n S J := by
+  rw [mem_case2ResidualBlockPivotEntries_iff]
+  refine ⟨le_rfl, ?_, le_rfl, ?_⟩
+  · exact le_trans hcont (prefixMinNat_succ_le n hS)
+  · exact le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
+
 section MonomialRecurrence
 
 variable {α : Type*} [CommMonoid α]
