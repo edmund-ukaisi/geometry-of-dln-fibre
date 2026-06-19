@@ -102,8 +102,9 @@ No such claim is formalisation-ready until both fields are filled.
   edges is proved. Endpoint-compatible shared adapted bases, finite chart data,
   and paper-order one-edge/total-product block packaging are proved. One-step,
   suffix, and all-layer adapted edge-product composition laws are proved.
-  Deterministic block-projection right-elimination wrappers are proved. The
-  full source Theorem 3 claim remains blocked.
+  Deterministic block-projection right-elimination wrappers and abstract/supplied
+  suffix-chain right-elimination theorems are proved. The full source Theorem 3
+  claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -141,7 +142,11 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_identityCornerForm_rightElim`,
   `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_identityCornerForm_rightElim_submatrix`,
   and
-  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_rightElim`
+  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_rightElim`,
+  `DLNFibre.DLN.Aoyagi.upperUnitriangular_neg_mul_upperUnitriangular`,
+  `DLNFibre.DLN.Aoyagi.upperUnitriangular_neg_mul_upperUnitriangular_neg_neg`,
+  `DLNFibre.DLN.Aoyagi.productReduction_identityCorner_suffixStep_rightElim`, and
+  `DLNFibre.DLN.Aoyagi.productReduction_identityCorner_suffixChain_rightElim`
   in the same file; entry-ideal transport lemmas in
   `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`; through-layer subspace theorem
   `DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces` in
@@ -179,6 +184,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointComplementIndex`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceEndpointChartDataOfFiniteDimensional`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_proof_irrel`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_self`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ_right`,
@@ -188,6 +195,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_eq_edgeProductMatrix`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_zero_eq_edgeProductMatrix`,
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_eq_adaptedEdgeProductMatrix`,
+  `DLNFibre.DLN.Aoyagi.identityCornerForm_throughSubspaceAdaptedEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.productReduction_throughSubspaceAdaptedChainMapMatrix_suffixChain_rightElim`,
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_endpointChartData_eq_fromBlocks_one_zero_zero`,
   `DLNFibre.DLN.Aoyagi.endpointChartData_edge_and_totalProduct_blocks`,
   `DLNFibre.DLN.Aoyagi.nonempty_throughSubspaceChartDataOfFiniteDimensional`,
@@ -257,7 +266,10 @@ No such claim is formalisation-ready until both fields are filled.
   corollary in the reversed Aoyagi order. Also proved deterministic
   right-elimination wrappers using the actual `upperRightBlock` and
   `lowerRightBlock` of an identity-corner matrix, including the version after
-  an accumulated upper-unitriangular left multiplier. Also proved
+  an accumulated upper-unitriangular left multiplier. Also proved abstract
+  suffix-chain right elimination and its supplied through-subspace adapted-basis
+  instantiation: a segment matrix can be right-eliminated to `[I 0; 0 D]`.
+  Also proved
   endpoint-compatible chart data with a shared adapted basis family: edge
   matrices and the total product matrix can now be stated in the same supplied
   basis family, including paper-order wrappers for the reversed Aoyagi chain.
@@ -280,8 +292,9 @@ No such claim is formalisation-ready until both fields are filled.
   layer removes the previous endpoint-basis mismatch, and the all-layer
   composition theorem identifies the adapted total matrix with the recursively
   ordered edge product, and the suffix theorem plus deterministic block
-  projections provide the next induction interface. Still open: run the
-  chart-local product-reduction induction. Any topological open-neighborhood
+  projections provide a supplied-data suffix-chain reduction theorem. Still
+  open: paper-order endpoint packaging, rank/open-neighborhood bridge, and
+  source-faithful Theorem 3 statement. Any topological open-neighborhood
   statement remains separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 

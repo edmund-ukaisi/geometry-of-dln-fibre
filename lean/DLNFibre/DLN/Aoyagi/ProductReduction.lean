@@ -191,6 +191,138 @@ theorem productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_righ
   exact productReduction_blockDiagonal_mul_identityCornerForm_rightElim_submatrix
     C1 Dprev (identityCornerForm_upperUnitriangular_mul F hM)
 
+/-- Opposite upper-unitriangular right multipliers cancel. -/
+theorem upperUnitriangular_neg_mul_upperUnitriangular
+    {ι μ : Type*} [Fintype ι] [DecidableEq ι] [Fintype μ] [DecidableEq μ]
+    (B : Matrix ι μ K) :
+    fromBlocks (1 : Matrix ι ι K) (-B) 0 (1 : Matrix μ μ K) *
+        fromBlocks (1 : Matrix ι ι K) B 0 (1 : Matrix μ μ K) = 1 := by
+  ext (i | i) (j | j) <;>
+    simp [fromBlocks_multiply, Matrix.one_apply]
+
+/-- The double-negated form of the upper-unitriangular cancellation identity. -/
+theorem upperUnitriangular_neg_mul_upperUnitriangular_neg_neg
+    {ι μ : Type*} [Fintype ι] [DecidableEq ι] [Fintype μ] [DecidableEq μ]
+    (B : Matrix ι μ K) :
+    fromBlocks (1 : Matrix ι ι K) (-B) 0 (1 : Matrix μ μ K) *
+        fromBlocks (1 : Matrix ι ι K) (-(-B)) 0 (1 : Matrix μ μ K) = 1 := by
+  ext (i | i) (j | j) <;>
+    simp [fromBlocks_multiply, Matrix.one_apply]
+
+/-- One abstract suffix-induction step for identity-corner right elimination. -/
+theorem productReduction_identityCorner_suffixStep_rightElim
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    [Fintype μ] [DecidableEq μ] [Fintype ν] [DecidableEq ν]
+    (Ptail : Matrix (ρ ⊕ π) (ρ ⊕ μ) K)
+    (Bprev : Matrix ρ μ K) (Dprev : Matrix π μ K)
+    {E : Matrix (ρ ⊕ μ) (ρ ⊕ ν) K}
+    (hE : identityCornerForm E)
+    (hPtail : Ptail *
+        fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0 (1 : Matrix μ μ K) =
+          fromBlocks (1 : Matrix ρ ρ K) 0 0 Dprev) :
+    ∃ B : Matrix ρ ν K, ∃ D : Matrix π ν K,
+      Ptail * E * fromBlocks (1 : Matrix ρ ρ K) (-B) 0 (1 : Matrix ν ν K) =
+        fromBlocks (1 : Matrix ρ ρ K) 0 0 D := by
+  let M' : Matrix (ρ ⊕ μ) (ρ ⊕ ν) K :=
+    fromBlocks (1 : Matrix ρ ρ K) (-(-Bprev)) 0 (1 : Matrix μ μ K) * E
+  have hM' : identityCornerForm M' := by
+    exact identityCornerForm_upperUnitriangular_mul (K := K) (F := -Bprev) hE
+  have hfactor : E =
+      fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0 (1 : Matrix μ μ K) * M' := by
+    calc
+      E = (1 : Matrix (ρ ⊕ μ) (ρ ⊕ μ) K) * E := by rw [Matrix.one_mul]
+      _ = (fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0 (1 : Matrix μ μ K) *
+              fromBlocks (1 : Matrix ρ ρ K) (-(-Bprev)) 0 (1 : Matrix μ μ K)) * E := by
+            rw [upperUnitriangular_neg_mul_upperUnitriangular_neg_neg Bprev]
+      _ = fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0 (1 : Matrix μ μ K) * M' := by
+            rw [Matrix.mul_assoc]
+  refine ⟨upperRightBlock M', Dprev * lowerRightBlock M', ?_⟩
+  calc
+    Ptail * E *
+        fromBlocks (1 : Matrix ρ ρ K) (-(upperRightBlock M')) 0 (1 : Matrix ν ν K)
+        =
+      Ptail *
+          (fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0 (1 : Matrix μ μ K) * M') *
+        fromBlocks (1 : Matrix ρ ρ K) (-(upperRightBlock M')) 0 (1 : Matrix ν ν K) := by
+          rw [hfactor]
+    _ =
+      (Ptail * fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0 (1 : Matrix μ μ K)) * M' *
+        fromBlocks (1 : Matrix ρ ρ K) (-(upperRightBlock M')) 0 (1 : Matrix ν ν K) := by
+          rw [← Matrix.mul_assoc]
+    _ =
+      fromBlocks (1 : Matrix ρ ρ K) 0 0 Dprev * M' *
+        fromBlocks (1 : Matrix ρ ρ K) (-(upperRightBlock M')) 0 (1 : Matrix ν ν K) := by
+          rw [hPtail]
+    _ = fromBlocks (1 : Matrix ρ ρ K) 0 0 (Dprev * lowerRightBlock M') :=
+      productReduction_blockDiagonal_mul_identityCornerForm_rightElim_submatrix
+        (1 : Matrix ρ ρ K) Dprev hM'
+
+/-- Abstract suffix-chain right elimination for identity-corner edge matrices. -/
+theorem productReduction_identityCorner_suffixChain_rightElim
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hPproof : ∀ {i j : Fin (N + 1)} (h h' : i ≤ j), P i j h = P i j h')
+    (hself : ∀ j : Fin (N + 1), P j j le_rfl = 1)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    (hE : ∀ p, identityCornerForm (E p)) :
+    ∀ i j : Fin (N + 1), ∀ hij : i ≤ j,
+      ∃ B : Matrix ρ (κ i) K, ∃ D : Matrix (κ j) (κ i) K,
+        P i j hij * fromBlocks (1 : Matrix ρ ρ K) (-B) 0 (1 : Matrix (κ i) (κ i) K) =
+          fromBlocks (1 : Matrix ρ ρ K) 0 0 D := by
+  intro i j hij
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    ∃ B : Matrix ρ (κ im) K, ∃ D : Matrix (κ j) (κ im) K,
+      P im j (Fin.val_fin_le.mpr hmj) *
+          fromBlocks (1 : Matrix ρ ρ K) (-B) 0 (1 : Matrix (κ im) (κ im) K) =
+        fromBlocks (1 : Matrix ρ ρ K) 0 0 D
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    refine ⟨0, 1, ?_⟩
+    rw [hPproof (Fin.val_fin_le.mpr (le_rfl : j.val ≤ j.val)) le_rfl, hself j,
+      Matrix.one_mul]
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (hms.trans_lt j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        ∃ B : Matrix ρ (κ p.succ) K, ∃ D : Matrix (κ j) (κ p.succ) K,
+          P p.succ j hpj *
+              fromBlocks (1 : Matrix ρ ρ K) (-B) 0 (1 : Matrix (κ p.succ) (κ p.succ) K) =
+            fromBlocks (1 : Matrix ρ ρ K) 0 0 D := by
+      simpa [motive, p, hpj] using ih
+    rcases ih' with ⟨Bprev, Dprev, hprev⟩
+    rcases productReduction_identityCorner_suffixStep_rightElim
+        (K := K) (Ptail := P p.succ j hpj) Bprev Dprev (hE p) hprev with
+      ⟨B, D, hD⟩
+    have hcanon :
+        ∃ B : Matrix ρ (κ p.castSucc) K, ∃ D : Matrix (κ j) (κ p.castSucc) K,
+          P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) *
+              fromBlocks (1 : Matrix ρ ρ K) (-B) 0
+                (1 : Matrix (κ p.castSucc) (κ p.castSucc) K) =
+            fromBlocks (1 : Matrix ρ ρ K) 0 0 D := by
+      refine ⟨B, D, ?_⟩
+      rw [hsuccRight p j hpj]
+      exact hD
+    simpa [motive, p, hpj] using hcanon
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hij)
+  have hcanon' :
+      ∃ B : Matrix ρ (κ i) K, ∃ D : Matrix (κ j) (κ i) K,
+        P i j (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) *
+            fromBlocks (1 : Matrix ρ ρ K) (-B) 0 (1 : Matrix (κ i) (κ i) K) =
+          fromBlocks (1 : Matrix ρ ρ K) 0 0 D := by
+    simpa [motive] using hcanon
+  rcases hcanon' with ⟨B, D, hD⟩
+  refine ⟨B, D, ?_⟩
+  rwa [hPproof hij (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij))]
+
 /-- The inverse of a product corner cancels the already-invertible left factor. -/
 private theorem nonsing_inv_mul_left_factor {r : ℕ}
     (C1 A1 : Matrix (Fin r) (Fin r) K) (hC1 : IsUnit C1.det) (hA1 : IsUnit A1.det) :

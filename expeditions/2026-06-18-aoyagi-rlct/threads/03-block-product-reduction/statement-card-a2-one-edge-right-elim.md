@@ -16,7 +16,13 @@
 >   deterministic wrappers
 >   `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_identityCornerForm_rightElim_submatrix`
 >   and
->   `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_rightElim`
+>   `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_rightElim`,
+>   upper-unitriangular cancellation lemmas
+>   `DLNFibre.DLN.Aoyagi.upperUnitriangular_neg_mul_upperUnitriangular`
+>   and
+>   `DLNFibre.DLN.Aoyagi.upperUnitriangular_neg_mul_upperUnitriangular_neg_neg`,
+>   and suffix-step theorem
+>   `DLNFibre.DLN.Aoyagi.productReduction_identityCorner_suffixStep_rightElim`
 >   (`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`) and paper-order
 >   corollary
 >   `DLNFibre.DLN.Aoyagi.productReduction_paperAdaptedReverseEdgeMatrix_rightElim`
@@ -37,7 +43,7 @@
 >   The deterministic submatrix theorem chooses `B = upperRightBlock M` and
 >   `Dnext = lowerRightBlock M`, avoiding an existential witness in the next
 >   induction step. The unitriangular theorem packages the accumulated
->   upper-left chart transform before applying the same deterministic
+>   upper-unitriangular left multiplier before applying the same deterministic
 >   elimination.
 > - **Proved.** Pure block-matrix multiplication over a commutative ring, with
 >   the explicit indexed identity stated over a `NonAssocRing`; no
@@ -46,10 +52,9 @@
 > - **Assumed.** Matrix dimensions encoded by types; field and
 >   finite-dimensional layer hypotheses only for the paper-order wrapper.
 > - **Cited.** None.
-> - **Deferred.** Iterating this step through all paper layers; suffix-oriented
->   chain-reduction induction; rank-stratum statements; topological
->   open-neighborhood statements; target normalization; and every analytic/RLCT
->   consequence.
+> - **Deferred.** Paper-order endpoint wrapper; rank-stratum statements;
+>   topological open-neighborhood statements; target normalization; and every
+>   analytic/RLCT consequence.
 > - **Kill conditions.** This is not Aoyagi Theorem 3. It does not say that
 >   fixed-coordinate layer blocks are invertible, that a local chart is open, or
 >   that the reduced residual product has the correct RLCT.

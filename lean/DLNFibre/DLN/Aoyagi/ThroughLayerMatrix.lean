@@ -373,6 +373,28 @@ def throughSubspaceAdaptedChainMapMatrix
     (throughSubspaceAdaptedBasis V A U₀ hU₀ data j)
     (chainMap V A i j hij)
 
+/-- The adapted chain-map matrix is independent of the proof of endpoint order. -/
+theorem throughSubspaceAdaptedChainMapMatrix_proof_irrel
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (i j : Fin (N + 1)) (hij hij' : i ≤ j) :
+    throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data i j hij =
+      throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data i j hij' := by
+  congr
+
+/-- The empty adapted chain-map matrix is the identity matrix. -/
+theorem throughSubspaceAdaptedChainMapMatrix_self
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (i : Fin (N + 1)) :
+    throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data i i le_rfl = 1 := by
+  rw [throughSubspaceAdaptedChainMapMatrix, chainMap_self, LinearMap.toMatrix_id]
+
 /-- The matrix of one edge in supplied adapted bases. -/
 def throughSubspaceAdaptedEdgeMatrix
     {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
@@ -567,6 +589,42 @@ theorem exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero
     exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero
       V A U₀ p hU₀ (data.hW p.castSucc) (data.hW p.succ) data.bU₀
       (data.bW p.castSucc) (data.bW p.succ)
+
+/-- A supplied-data edge matrix has identity-corner form. -/
+theorem identityCornerForm_throughSubspaceAdaptedEdgeMatrix
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]
+    [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (p : Fin N) :
+    identityCornerForm (throughSubspaceAdaptedEdgeMatrix V A U₀ hU₀ data p) := by
+  simpa [identityCornerForm, throughSubspaceAdaptedEdgeMatrix] using
+    exists_toMatrix_throughSubspaceEdge_adaptedBasis_eq_fromBlocks_one_zero
+      V A U₀ hU₀ data p
+
+set_option linter.unusedDecidableInType false in
+/-- Any adapted chain segment admits a suffix-chain right elimination. -/
+theorem productReduction_throughSubspaceAdaptedChainMapMatrix_suffixChain_rightElim
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]
+    [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    ∃ B : Matrix ι (κ i) K, ∃ D : Matrix (κ j) (κ i) K,
+      throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data i j hij *
+          fromBlocks (1 : Matrix ι ι K) (-B) 0 (1 : Matrix (κ i) (κ i) K) =
+        fromBlocks (1 : Matrix ι ι K) 0 0 D :=
+  productReduction_identityCorner_suffixChain_rightElim
+    (E := throughSubspaceAdaptedEdgeMatrix V A U₀ hU₀ data)
+    (P := throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data)
+    (hPproof := fun {i j} h h' ↦
+      throughSubspaceAdaptedChainMapMatrix_proof_irrel V A U₀ hU₀ data i j h h')
+    (hself := throughSubspaceAdaptedChainMapMatrix_self V A U₀ hU₀ data)
+    (hsuccRight := throughSubspaceAdaptedChainMapMatrix_succ_right V A U₀ hU₀ data)
+    (hE := identityCornerForm_throughSubspaceAdaptedEdgeMatrix V A U₀ hU₀ data) i j hij
 
 /-- A bundled chart-data version of the prefix-compatible edge block form. -/
 theorem exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero

@@ -293,6 +293,23 @@ eliminates an identity-corner matrix using `upperRightBlock M` and returns
 packages the same step after an accumulated upper-unitriangular left
 multiplier. This removes the existential witness from the next induction step.
 
+The suffix-chain right-elimination theorem is now Lean-proved in two layers.
+`productReduction_identityCorner_suffixStep_rightElim` proves the induction
+step after inserting the inverse of the previous upper-unitriangular right
+multiplier, using the cancellation lemmas
+`upperUnitriangular_neg_mul_upperUnitriangular` and
+`upperUnitriangular_neg_mul_upperUnitriangular_neg_neg`.
+`productReduction_identityCorner_suffixChain_rightElim` iterates this over a
+dependent chain of identity-corner edge matrices, assuming only identity empty
+segments, suffix composition, and proof-irrelevance of the segment matrix in
+the order proof. `productReduction_throughSubspaceAdaptedChainMapMatrix_suffixChain_rightElim`
+instantiates the theorem for supplied through-subspace adapted bases, using
+`throughSubspaceAdaptedChainMapMatrix_proof_irrel`,
+`throughSubspaceAdaptedChainMapMatrix_self`, and
+`identityCornerForm_throughSubspaceAdaptedEdgeMatrix`. This still does not
+provide Aoyagi's paper-order endpoint wrapper, rank/open chart statement, or
+any analytic/RLCT consequence.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

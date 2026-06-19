@@ -601,3 +601,47 @@ throughSubspaceAdaptedEdgeMatrix p`.
 This is the direction needed by right-elimination induction. It is still only
 composition/block algebra; it does not yet prove the abstract suffix-chain
 reduction theorem.
+
+## 2026-06-19 A2 suffix-chain right elimination
+
+Added cancellation and suffix-step algebra in `ProductReduction.lean`:
+
+- `upperUnitriangular_neg_mul_upperUnitriangular`;
+- `upperUnitriangular_neg_mul_upperUnitriangular_neg_neg`;
+- `productReduction_identityCorner_suffixStep_rightElim`.
+
+The suffix-step theorem proves the induction step: from a reduced suffix
+`Ptail * [I -Bprev; 0 I] = [I 0; 0 Dprev]` and an identity-corner edge `E`,
+one gets `Ptail * E * [I -B; 0 I] = [I 0; 0 D]` for suitable `B, D`.
+
+Added the abstract chain theorem
+`productReduction_identityCorner_suffixChain_rightElim`. It assumes:
+
+- identity empty segments;
+- suffix composition `P p.castSucc j = P p.succ j * E p`;
+- identity-corner form for every edge `E p`;
+- proof-irrelevance of `P i j h` in the proof `h : i ≤ j`.
+
+The theorem returns existence of a source-side upper-unitriangular right
+multiplier putting `P i j` in block-diagonal form `[I 0; 0 D]`.
+
+Added supplied adapted-basis wrappers in `ThroughLayerMatrix.lean`:
+
+- `throughSubspaceAdaptedChainMapMatrix_proof_irrel`;
+- `throughSubspaceAdaptedChainMapMatrix_self`;
+- `identityCornerForm_throughSubspaceAdaptedEdgeMatrix`;
+- `productReduction_throughSubspaceAdaptedChainMapMatrix_suffixChain_rightElim`.
+
+This is the first full chain-level product-reduction algebra for supplied
+through-subspace adapted bases. It is still not full Aoyagi Theorem 3: no
+paper-order endpoint wrapper, rank/open chart bridge, target normalization, or
+analytic/RLCT consequence is asserted here.
+
+Xhigh review found no blocking orientation issue. The review confirmed the
+unitriangular signs, the backward suffix induction order, and the supplied
+adapted-basis wrapper. It flagged the key source-fidelity boundary: this is a
+pointwise theorem for an already supplied adapted basis family, with bases
+depending on the actual chain. It does not yet provide fixed coordinate charts
+over a neighborhood, regular `P1`/`P2`, rank/open-chart hypotheses, endpoint
+kernel normalization as a paper-facing statement, or any RLCT/generator
+transport.
