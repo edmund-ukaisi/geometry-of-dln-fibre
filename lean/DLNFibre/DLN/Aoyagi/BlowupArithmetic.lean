@@ -3905,6 +3905,147 @@ theorem exists_case1DisplayedRowStrip_sourceOrder_identity_of_rowIndex_monomialR
   refine ⟨q, ?_⟩
   simpa [case2ResidualRowLevel_displayedPivotRow] using hq
 
+/-- Case 1(2) recurrence post-data boundary from a factored-old base state.
+
+The `factoredBase` state is not the original pre-chart state: its selected old
+variable has already been replaced by the residual old variable.  The supplied
+post-data then adds the fresh label `(S,J+1)` at level `J` with variable `u`.
+This is a naming boundary only, not a chart-production theorem. -/
+abbrev Case1DisplayedRowStripFactoredBasePostData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {R : Type*}
+    (factoredBase : IntroducedLabelRecurrenceState L n S J R)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) R)
+    (u : R) : Prop :=
+  IntroducedLabelRecurrenceState.Case2SuppliedPostData factoredBase post u
+
+namespace IntroducedLabelRecurrenceState.Case2SuppliedPostData
+
+/-- Displayed Case 1(2) row-strip source weights, transported from the
+factored-old base recurrence to the supplied post recurrence weights.
+
+The left side uses `case1RowStripOldWeight`, encoding that the selected old
+variable has already been factored.  The right side uses the post-state
+recurrence weights obtained by adding `(S,J+1)` at level `J`.  This is finite
+recurrence/source-order algebra only; it does not relate the factored base
+state to the original pre-chart state or prove that a chart produces the
+post-state. -/
+theorem case1DisplayedRowStrip_diagonal_mul_sourceMatrix_pivotFirst_succWeights
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {R : Type*} [CommRing R]
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : Case1DisplayedRowStripFactoredBasePostData factoredBase post u)
+    (hnew : actualWidthLabel L n S (J + 1))
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (strip : Case2ResidualRowIndex n S J → Prop) [DecidablePred strip]
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    (diagonal
+        (case1RowStripOldWeight strip u
+          (fun i ↦ factoredBase.case2ResidualRowWeight i)) *
+      case1RowStripSourceMatrix strip u A).submatrix
+        (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+        (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont)) =
+      weightedPivotDiagonal
+        (post.weight (J + 1))
+        (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          post.weight (case2ResidualRowLevel n S J i.1)) *
+        pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          A := by
+  rw [case1RowStrip_diagonal_mul_sourceMatrix_pivotFirst]
+  have hpivot :
+      u * factoredBase.case2ResidualRowWeight (case2DisplayedPivotRow n hS hcont) =
+        post.weight (J + 1) := by
+    simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight,
+      case2ResidualRowLevel_displayedPivotRow] using
+      (hpost.weight_succ_current_eq_new_mul_of_ge (i := J + 1) hnew le_rfl).symm
+  have hrows :
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          u * factoredBase.case2ResidualRowWeight i.1) =
+        fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          post.weight (case2ResidualRowLevel n S J i.1) := by
+    funext i
+    exact (by
+      simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight] using
+        (hpost.weight_succ_current_eq_new_mul_of_ge hnew
+          (case2ResidualRowLevel_ge n S J i.1)).symm)
+  rw [hpivot, hrows]
+
+/-- Displayed Case 1(2) source-order `Q/P` identity with supplied post
+recurrence weights, relative to a factored-old base recurrence.
+
+The quotient witnesses are still chosen from monomial divisibility in the
+factored base recurrence.  The conclusion rewrites the common `u`-multiple
+row weights as the supplied post-state weights. -/
+theorem exists_case1DisplayedRowStrip_sourceOrder_identity_succWeights_of_postData
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : Case1DisplayedRowStripFactoredBasePostData factoredBase post u)
+    (hnew : actualWidthLabel L n S (J + 1))
+    (strip : Case2ResidualRowIndex n S J → Prop) [DecidablePred strip]
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (C : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (hpivot :
+      A (case2DisplayedPivotRow n hS hcont) (case2DisplayedPivotCol n hS hcont) = 1) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) A i ()) *
+          (diagonal
+              (case1RowStripOldWeight strip u
+                (fun i ↦ factoredBase.case2ResidualRowWeight i)) *
+            case1RowStripSourceMatrix strip u A).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) A -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont) A *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont) A)) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont) A) * C) := by
+  rcases exists_case1DisplayedRowStrip_sourceOrder_identity_of_rowIndex_monomialRec
+      factoredBase.step n hS hcont strip u A C hpivot with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hpivotWeight :
+      u * monomialRec factoredBase.step (J + 1) = post.weight (J + 1) := by
+    simpa [IntroducedLabelRecurrenceState.weight] using
+      (hpost.weight_succ_current_eq_new_mul_of_ge (i := J + 1) hnew le_rfl).symm
+  have hrowWeights :
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          u * monomialRec factoredBase.step (case2ResidualRowLevel n S J i.1)) =
+        fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          post.weight (case2ResidualRowLevel n S J i.1) := by
+    funext i
+    exact (by
+      simpa [IntroducedLabelRecurrenceState.weight] using
+        (hpost.weight_succ_current_eq_new_mul_of_ge hnew
+          (case2ResidualRowLevel_ge n S J i.1)).symm)
+  rw [hpivotWeight, hrowWeights] at hq
+  simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight,
+    IntroducedLabelRecurrenceState.weight] using hq
+
+end IntroducedLabelRecurrenceState.Case2SuppliedPostData
+
 /-- Supplied-data boundary for Aoyagi's displayed Case 1(2) row-strip pivot.
 It combines the finite first-jump/source-validity facts with an already
 supplied weighted pivot-first source block.  It does not construct the

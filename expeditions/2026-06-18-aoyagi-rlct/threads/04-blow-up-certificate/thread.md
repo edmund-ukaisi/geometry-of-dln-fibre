@@ -1034,3 +1034,26 @@ This is not a chart-production or transition theorem. The chart-produced
 post-data, level/least-value bridge, flat-tail invariant, recurrence
 bookkeeping, hidden old-label validity, Jacobian formula, normal crossings,
 and RLCT extraction remain outside this checkpoint.
+
+## 2026-06-19 Lean Case 1 displayed row-strip factored-base post-data
+
+Statement card:
+`statement-card-a4-case1-displayed-row-strip-factored-base-postdata.md`.
+
+Lean now names the recurrence boundary needed for the displayed Case 1(2)
+row-strip branch.  The new alias
+`Case1DisplayedRowStripFactoredBasePostData` deliberately uses a factored-old
+base recurrence state, not the original pre-chart state.  The supplied
+post-data then adds the fresh label `(S,J+1)` at level `J` with variable `u`,
+so the existing recurrence update gives `post.weight i = u*base.weight i` for
+all residual rows `J+1 <= i`.
+
+The new displayed source-order wrapper starts from the previously proved
+row-strip source matrix with `case1RowStripOldWeight`, chooses quotient
+witnesses from factored-base monomial recurrence divisibility, and rewrites the
+right-hand diagonal to supplied post weights.
+
+This is still a supplied-data boundary.  It does not relate the original
+pre-state to the factored-base state, prove hidden old-label validity, extract
+complete old-label post assignments from the PDF, construct charts, prove
+coverage/regularity, compute Jacobians, or prove normal crossings/RLCT.
