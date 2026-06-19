@@ -567,6 +567,28 @@ structure IntroducedLabelExponentCertificates
     ∀ {s k}, introducedLabel L n S J s k →
       LabelExponentCertificate L n S J s k (t s k) (numerator s k) (leastValue s k)
 
+/-- Supplied corrected exponent post-data for a Case 2 `J`-advance.
+
+This packages only exponent-map bookkeeping: old introduced labels keep their
+vector, numerator, and least-value data, while the new label `(S,J+1)` receives
+the corrected prefix-minimum Case 2 data.  It does not assert chart production,
+source comparability, or that the corrected vector is the PDF's printed vector. -/
+structure Case2CorrectedExponentPostData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ) : Prop where
+  vector_old :
+    ∀ {s k}, introducedLabel L n S J s k → t' s k = t s k
+  numerator_old :
+    ∀ {s k}, introducedLabel L n S J s k → numerator' s k = numerator s k
+  leastValue_old :
+    ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k
+  vector_new : t' S (J + 1) = correctedCase2PivotVector n S J
+  numerator_new :
+    numerator' S (J + 1) =
+      ((prefixMinNat n S : ℤ) - (J : ℤ)) * ((n (S + 1) : ℤ) - (J : ℤ))
+  leastValue_new : leastValue' S (J + 1) = (J : ℤ)
+
 /-- Same-domain bookkeeping: replace one introduced label certificate and keep all
 other introduced labels unchanged. -/
 theorem IntroducedLabelExponentCertificates.updateSelected
@@ -706,6 +728,73 @@ theorem IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_
 
 namespace IntroducedLabelExponentCertificates
 
+/-- Domain-extension bookkeeping from supplied corrected Case 2 exponent
+post-data.  The corrected new-label certificate supplies only the new label;
+the post-data supplies preservation of the old exponent maps and the explicit
+new corrected exponent values. -/
+theorem extendDomain_correctedCase2NewLabel_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hpost :
+      Case2CorrectedExponentPostData
+        (L := L) (n := n) (S := S) (J := J)
+        t t' numerator numerator' leastValue leastValue') :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' := by
+  refine hcert.extendDomain_succ_current ?_
+    hpost.vector_old hpost.numerator_old hpost.leastValue_old
+  rw [hpost.vector_new, hpost.numerator_new, hpost.leastValue_new]
+  exact hnew.labelExponentCertificate
+
+end IntroducedLabelExponentCertificates
+
+namespace Case2CorrectedExponentPostData
+
+/-- The concrete corrected Case 2 selected-label overrides supply the corrected
+exponent post-data package. -/
+theorem updateSelected
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (t : ℕ → ℕ → ℕ → ℤ) (numerator leastValue : ℕ → ℕ → ℤ) :
+    Case2CorrectedExponentPostData
+      (L := L) (n := n) (S := S) (J := J)
+      t
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      numerator
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      leastValue
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) where
+  vector_old := by
+    intro s k hintro
+    exact funext fun i ↦ updateSelectedLabelVector_of_ne
+      (correctedCase2PivotVector n S J) t i (by
+        rintro ⟨rfl, rfl⟩
+        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  numerator_old := by
+    intro s k hintro
+    exact updateSelectedLabelScalar_of_ne
+      (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+        ((n (S + 1) : ℤ) - (J : ℤ))) numerator (by
+        rintro ⟨rfl, rfl⟩
+        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  leastValue_old := by
+    intro s k hintro
+    exact updateSelectedLabelScalar_of_ne (J : ℤ) leastValue (by
+      rintro ⟨rfl, rfl⟩
+      exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  vector_new := funext fun i ↦ updateSelectedLabelVector_selected S (J + 1)
+    (correctedCase2PivotVector n S J) t i
+  numerator_new := updateSelectedLabelScalar_selected S (J + 1)
+    (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+      ((n (S + 1) : ℤ) - (J : ℤ))) numerator
+  leastValue_new := updateSelectedLabelScalar_selected S (J + 1) (J : ℤ) leastValue
+
+end Case2CorrectedExponentPostData
+
+namespace IntroducedLabelExponentCertificates
+
 /-- Concrete update-data wrapper for corrected Case 2 exponent-domain
 extension.  It changes only the new label `(S,J+1)` to the corrected
 Case 2 vector, numerator, and least value, leaving all old introduced-label
@@ -723,29 +812,9 @@ theorem extendDomain_correctedCase2NewLabel_updateData_of_prefixBound
         (((prefixMinNat n S : ℤ) - (J : ℤ)) *
           ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
       (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) := by
-  refine hcert.extendDomain_correctedCase2NewLabel_of_prefixBound
-    hS hSL hJcont ?_ ?_ ?_ ?_ ?_ ?_
-  · intro s k hintro
-    exact funext fun i ↦ updateSelectedLabelVector_of_ne
-      (correctedCase2PivotVector n S J) t i (by
-        rintro ⟨rfl, rfl⟩
-        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
-  · intro s k hintro
-    exact updateSelectedLabelScalar_of_ne
-      (((prefixMinNat n S : ℤ) - (J : ℤ)) *
-        ((n (S + 1) : ℤ) - (J : ℤ))) numerator (by
-        rintro ⟨rfl, rfl⟩
-        exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
-  · intro s k hintro
-    exact updateSelectedLabelScalar_of_ne (J : ℤ) leastValue (by
-      rintro ⟨rfl, rfl⟩
-      exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
-  · exact funext fun i ↦ updateSelectedLabelVector_selected S (J + 1)
-      (correctedCase2PivotVector n S J) t i
-  · exact updateSelectedLabelScalar_selected S (J + 1)
-      (((prefixMinNat n S : ℤ) - (J : ℤ)) *
-        ((n (S + 1) : ℤ) - (J : ℤ))) numerator
-  · exact updateSelectedLabelScalar_selected S (J + 1) (J : ℤ) leastValue
+  exact hcert.extendDomain_correctedCase2NewLabel_of_postData
+    (correctedCase2NewLabelCertificate_of_prefixBound L n hS hSL hJcont)
+    (Case2CorrectedExponentPostData.updateSelected t numerator leastValue)
 
 end IntroducedLabelExponentCertificates
 
@@ -1720,6 +1789,58 @@ theorem case2Succ_levelInvariants
     · rcases hnew with ⟨rfl, rfl⟩
       rw [hl_new]
       simp
+
+namespace Case2SuppliedPostData
+
+/-- A supplied recurrence post-state and supplied corrected exponent post-data
+preserve the equality bridge `leastValue = level` across a Case 2 `J`-advance.
+This is invariant bookkeeping only; it does not assert chart production. -/
+theorem levelInvariants_of_correctedExponentPostData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    {pre : IntroducedLabelRecurrenceState L n S J α}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) α}
+    {u : α}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hpost : Case2SuppliedPostData pre post u)
+    (hinv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (hexp :
+      Case2CorrectedExponentPostData
+        (L := L) (n := n) (S := S) (J := J)
+        t t' numerator numerator' leastValue leastValue') :
+    IntroducedLabelLevelInvariants L n S (J + 1) post.level leastValue' where
+  leastValue_eq_level := by
+    intro s k hintro
+    rcases introducedLabel_succ_cases hintro with hOld | hnew
+    · rw [hexp.leastValue_old hOld, hpost.level_old hOld,
+        hinv.leastValue_eq_level hOld]
+    · rcases hnew with ⟨rfl, rfl⟩
+      rw [hexp.leastValue_new, hpost.level_new]
+
+/-- Supplied recurrence post-data plus supplied corrected exponent post-data
+convert an old integer least-value Case 2 gap into the successor recurrence
+level gap. -/
+theorem case2Gap_of_leastValueGap_of_correctedExponentPostData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    {pre : IntroducedLabelRecurrenceState L n S J α}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) α}
+    {u : α}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hpost : Case2SuppliedPostData pre post u)
+    (hinv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (hexp :
+      Case2CorrectedExponentPostData
+        (L := L) (n := n) (S := S) (J := J)
+        t t' numerator numerator' leastValue leastValue')
+    (hgap : case2IntroducedLabelLeastValueGap L n S J leastValue) :
+    post.case2Gap :=
+  case2Gap_of_leastValueGap post
+    (hpost.levelInvariants_of_correctedExponentPostData hinv hexp)
+    (case2IntroducedLabelLeastValueGap_succ hgap
+      hexp.leastValue_old hexp.leastValue_new)
+
+end Case2SuppliedPostData
 
 /-- Least-value successor data can also feed the recurrence-state Case 2 gap
 through the equality bridge. -/

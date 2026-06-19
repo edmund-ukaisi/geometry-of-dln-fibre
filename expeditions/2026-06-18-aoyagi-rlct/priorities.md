@@ -161,9 +161,14 @@ on the session's original cwd.
    wrapper, or begin arbitrary-pivot transport only if the displayed exponent
    package is still blocked. The concrete corrected Case 2 exponent update-data
    wrapper is now Lean-proved, but it is intentionally independent of
-   recurrence post-data. Next A4 target: decide whether to add a separate
-   exponent-post-data package with explicit old/new exponent fields, or move to
-   arbitrary-pivot transport if package abstraction would add no value.
+   recurrence post-data. The corrected exponent post-data package is now
+   Lean-proved too: it packages explicit old/new exponent fields, routes the
+   concrete update wrapper through that package, and connects supplied
+   recurrence post-data plus supplied corrected exponent least-value data to
+   the successor recurrence-level gap. Next A4 target: arbitrary selected-entry
+   Case 2 source-substitution transport, with pivot membership, row/column
+   reindexing, diagonal weights, and following factors kept explicit; do not
+   claim arbitrary-pivot chart coverage or source-displayed status.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

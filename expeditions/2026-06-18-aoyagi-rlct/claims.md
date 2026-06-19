@@ -746,7 +746,16 @@ No such claim is formalisation-ready until both fields are filled.
   `IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_updateData_of_prefixBound`,
   which changes only `(S,J+1)` to the corrected vector, numerator, and least
   value by selected-label update functions and extends the exponent certificate
-  package to `(S,J+1)`.
+  package to `(S,J+1)`. Added the corrected Case 2 exponent post-data package
+  `Case2CorrectedExponentPostData`,
+  `IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_postData`,
+  `Case2CorrectedExponentPostData.updateSelected`,
+  `IntroducedLabelRecurrenceState.Case2SuppliedPostData.levelInvariants_of_correctedExponentPostData`,
+  and
+  `IntroducedLabelRecurrenceState.Case2SuppliedPostData.case2Gap_of_leastValueGap_of_correctedExponentPostData`,
+  packaging explicit old/new exponent-map data and connecting supplied
+  recurrence post-data plus supplied corrected exponent least values to the
+  successor recurrence-level Case 2 gap.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

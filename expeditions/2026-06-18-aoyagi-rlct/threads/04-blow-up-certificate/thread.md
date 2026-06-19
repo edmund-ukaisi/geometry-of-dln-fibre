@@ -690,6 +690,34 @@ chart production, exponent transition invariance, source comparability,
 arbitrary-pivot transport, normal crossing, RLCT extraction, or a claim that
 the corrected vector is the PDF's printed vector.
 
+## 2026-06-19 Lean Case 2 corrected exponent post-data
+
+Reproduction: `reproduction-case2-corrected-exponent-post-data-a4.md`.
+Statement card: `statement-card-a4-case2-corrected-exponent-post-data.md`.
+Review artifact: `review-case2-corrected-exponent-post-data-a4.md`.
+
+Lean now packages supplied corrected exponent post-data as
+`Case2CorrectedExponentPostData`: old introduced-label vectors, numerators, and
+least values are unchanged, while the new label `(S,J+1)` receives the
+corrected prefix-minimum vector, numerator `(mu_S-J)(n_(S+1)-J)`, and least
+value `J`.
+
+The all-label extension theorem
+`IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_postData`
+uses this package with a corrected new-label certificate. The concrete update
+wrapper now factors through the package. On the recurrence side,
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.levelInvariants_of_correctedExponentPostData`
+and
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.case2Gap_of_leastValueGap_of_correctedExponentPostData`
+connect supplied recurrence post-data to supplied corrected exponent post-data:
+the equality bridge `leastValue = level` and the integer least-value Case 2 gap
+advance to the successor recurrence-level gap.
+
+This remains corrected certificate and invariant bookkeeping. It is not chart
+production, an exponent transition invariant, arbitrary-pivot transport, source
+comparability, normal crossing, RLCT extraction, or a claim that the corrected
+vector is the PDF's printed Case 2 vector.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

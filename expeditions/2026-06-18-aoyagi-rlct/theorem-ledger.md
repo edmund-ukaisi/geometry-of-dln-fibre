@@ -535,6 +535,26 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-exponent-update-data-a4.md`.
 
+Latest A4 update: the corrected Case 2 exponent post-data package has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`Case2CorrectedExponentPostData`,
+`IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_postData`,
+`Case2CorrectedExponentPostData.updateSelected`,
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.levelInvariants_of_correctedExponentPostData`,
+and
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.case2Gap_of_leastValueGap_of_correctedExponentPostData`.
+The package records explicit old/new corrected exponent-map fields, the
+concrete selected-label update wrapper factors through it, and supplied
+recurrence post-data can now use supplied corrected exponent least-value data
+to advance the recurrence-level Case 2 gap. This is corrected invariant
+bookkeeping only: it does not prove chart production, an exponent transition
+invariant, arbitrary-pivot transport, source comparability, normal crossings,
+RLCT extraction, or that the corrected vector is the PDF's printed Case 2
+vector. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-corrected-exponent-post-data.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-corrected-exponent-post-data-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

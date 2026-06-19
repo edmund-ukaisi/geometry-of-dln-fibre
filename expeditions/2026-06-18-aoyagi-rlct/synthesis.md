@@ -828,6 +828,23 @@ domain-extension theorem. This checkpoint deliberately does not use
 `Case2SuppliedPostData`: recurrence `level/var` post-data is not evidence that
 old exponent vectors or numerators are unchanged.
 
+The corrected Case 2 exponent post-data package is now Lean-proved as
+`Case2CorrectedExponentPostData`. It records the six exponent-map equalities
+needed for an arbitrary supplied exponent post-state: old vector/numerator/
+least-value preservation plus the corrected new vector, numerator, and least
+value at `(S,J+1)`. The all-label extension theorem
+`IntroducedLabelExponentCertificates.extendDomain_correctedCase2NewLabel_of_postData`
+uses the package with a corrected new-label certificate, and the concrete
+selected-label update wrapper now factors through it. The recurrence-side
+bridge
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.case2Gap_of_leastValueGap_of_correctedExponentPostData`
+shows that supplied recurrence post-data plus supplied corrected exponent
+least-value data advances the least-value/level bridge and the Case 2 gap. This
+is corrected invariant bookkeeping only; it does not prove chart production or
+that the corrected vector is the PDF's printed Case 2 vector. Next A4 target:
+arbitrary selected-entry Case 2 source-substitution transport, with coverage,
+Jacobian, recurrence production, and full `Q/P` transition still out of scope.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
