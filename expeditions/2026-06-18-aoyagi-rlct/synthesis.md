@@ -335,6 +335,24 @@ a source-faithful local theorem: exact rank strata are explicit hypotheses, not
 open sets, and the current adapted bases are chosen from the actual chain
 rather than fixed from a basepoint for nearby variable chains.
 
+The endpoint fixed-chain basepoint certificate is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/BasepointCertificate.lean`. It names
+`paperTotalMap`, endpoint chart data, endpoint adapted edge matrices, and the
+endpoint adapted total matrix. The new theorem
+`lowerRightBlock_throughSubspaceEndpointAdaptedEdgeMatrix_rank_eq_sub` repeats
+the Schur-rank bridge in the endpoint chart data, so the paper wrapper
+`lowerRightBlock_paperEndpointAdaptedEdgeMatrix_rank_eq_sub` is aligned with
+the same endpoint basis family used for the total product. The structure
+`PaperEndpointBasepointCertificate`, together with
+`paperEndpointBasepointCertificate_of_isCompl` and
+`exists_paperEndpointBasepointCertificate`, bundles the finrank/range equality,
+edge identity-corner form, determinant-chart neighborhoods for edges and
+unitriangular transforms, residual edge ranks, total `[I 0; 0 0]` block form,
+and suffix-chain right elimination. This is still explicitly basepoint-only:
+no variable-chain fixed-coordinate family, exact rank-stratum neighborhood,
+regular coordinate-change certificate, normal-crossing extraction, or RLCT
+claim is asserted.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

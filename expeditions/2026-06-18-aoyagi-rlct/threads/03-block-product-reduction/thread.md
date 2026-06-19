@@ -700,3 +700,39 @@ an open chart around the adapted base matrices. Exact rank is not claimed to be
 open. The current paper adapted bases still depend on the actual chain `B`, so
 the remaining source-faithful local theorem needs fixed basepoint chart data
 and variable-layer matrices expressed in those fixed bases.
+
+## 2026-06-19 A2 endpoint basepoint certificate
+
+Added `lean/DLNFibre/DLN/Aoyagi/BasepointCertificate.lean` and imported it in
+the aggregator. The module names the endpoint-compatible paper-order objects:
+
+- `paperTotalMap`;
+- `paperEndpointChartData`;
+- `paperEndpointAdaptedEdgeMatrix`;
+- `paperEndpointUnitriangularLeft`;
+- `paperEndpointAdaptedTotalMatrix`.
+
+It proves the endpoint-specific residual rank bridge
+`lowerRightBlock_throughSubspaceEndpointAdaptedEdgeMatrix_rank_eq_sub` and the
+paper wrapper `lowerRightBlock_paperEndpointAdaptedEdgeMatrix_rank_eq_sub`.
+Unlike the earlier ordinary-complement residual-rank theorem, this version uses
+the endpoint chart data whose source complement is the total product kernel.
+
+It also proves endpoint-compatible determinant-chart and block/elimination
+wrappers:
+
+- `identityCornerForm_paperEndpointAdaptedEdgeMatrix`;
+- `identityCornerDetChart_paperEndpointAdaptedEdgeMatrix`;
+- `paperEndpointAdaptedEdgeMatrix_mem_nhds_identityCornerDetChart`;
+- `identityCornerDetChart_unitriangular_paperEndpointAdaptedEdgeMatrix`;
+- `unitriangular_paperEndpointAdaptedEdgeMatrix_mem_nhds_identityCornerDetChart`;
+- `paperEndpointAdaptedTotalMatrix_eq_fromBlocks_one_zero_zero`;
+- `productReduction_paperEndpointAdaptedTotalMatrix_suffixChain_rightElim`.
+
+The package theorem `paperEndpointBasepointCertificate_of_isCompl` bundles
+these facts for a supplied total-kernel complement, and
+`exists_paperEndpointBasepointCertificate` chooses such a complement in finite
+dimension. This is the current bedrock A2 basepoint certificate. It remains a
+fixed-chain, adapted-coordinate statement: it does not prove a fixed coordinate
+family for variable nearby chains, exact rank-stratum openness, regular
+coordinate-change transport, normal-crossing extraction, or any RLCT claim.

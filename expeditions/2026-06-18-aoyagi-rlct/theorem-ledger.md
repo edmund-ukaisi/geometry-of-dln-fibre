@@ -49,6 +49,23 @@ Remaining blocked A2 items are fixed basepoint chart data for nearby variable
 layers, source-faithful exact rank-stratum packaging, the full Theorem 3
 statement, and analytic/certificate transport.
 
+Third latest A2 update: the endpoint fixed-chain basepoint certificate has
+landed in `lean/DLNFibre/DLN/Aoyagi/BasepointCertificate.lean`. Proved Lean
+objects/theorems include `paperTotalMap`, `paperEndpointChartData`,
+`paperEndpointAdaptedEdgeMatrix`, `paperEndpointUnitriangularLeft`,
+`paperEndpointAdaptedTotalMatrix`,
+`lowerRightBlock_throughSubspaceEndpointAdaptedEdgeMatrix_rank_eq_sub`,
+`lowerRightBlock_paperEndpointAdaptedEdgeMatrix_rank_eq_sub`,
+`paperEndpointAdaptedTotalMatrix_eq_fromBlocks_one_zero_zero`,
+`productReduction_paperEndpointAdaptedTotalMatrix_suffixChain_rightElim`,
+`PaperEndpointBasepointCertificate`,
+`paperEndpointBasepointCertificate_of_isCompl`, and
+`exists_paperEndpointBasepointCertificate`. Statement card:
+`threads/03-block-product-reduction/statement-card-a2-basepoint-certificate.md`.
+Remaining blocked A2 items are fixed coordinate families for variable nearby
+chains, source-faithful exact rank-stratum packaging, the full Theorem 3
+statement, and analytic/certificate transport.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

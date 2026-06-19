@@ -40,9 +40,10 @@ on the session's original cwd.
    endpoint suffix-chain wrapper are Lean-proved. The first rank/open split is
    also Lean-proved: matrix rank is transported through adapted bases, residual
    Schur/lower-right ranks are related to source layer ranks, and the selected
-   determinant chart is topologically open. Next build the fixed-basepoint
-   chart-data family for nearby variable layers, keeping exact-rank strata as
-   explicit hypotheses.
+   determinant chart is topologically open. The endpoint-compatible fixed-chain
+   basepoint certificate is Lean-proved in `BasepointCertificate.lean`. Next
+   build the fixed-basepoint chart-data family for nearby variable layers,
+   keeping exact-rank strata as explicit hypotheses.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

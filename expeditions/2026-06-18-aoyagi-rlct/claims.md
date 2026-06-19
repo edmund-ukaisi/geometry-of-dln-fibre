@@ -107,7 +107,10 @@ No such claim is formalisation-ready until both fields are filled.
   suffix-chain wrapper is also proved. The first rank/open split is proved:
   adapted-basis matrix rank equals map range finrank, Schur residual rank is
   the source rank minus the through-rank, and the selected determinant chart is
-  open. The full source Theorem 3 claim remains blocked.
+  open. The endpoint-compatible fixed-chain basepoint certificate is also
+  proved, bundling the endpoint chart data, edge determinant neighborhoods,
+  endpoint residual-rank bridge, total-product block form, and suffix-chain
+  right elimination. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -235,7 +238,17 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`,
   and
   `DLNFibre.DLN.Aoyagi.unitriangular_paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`
-  are in `lean/DLNFibre/DLN/Aoyagi/ChartTopology.lean`.
+  are in `lean/DLNFibre/DLN/Aoyagi/ChartTopology.lean`. Endpoint basepoint
+  certificate names/theorems `DLNFibre.DLN.Aoyagi.paperTotalMap`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointChartData`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointAdaptedEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.paperEndpointAdaptedTotalMatrix`,
+  `DLNFibre.DLN.Aoyagi.lowerRightBlock_throughSubspaceEndpointAdaptedEdgeMatrix_rank_eq_sub`,
+  `DLNFibre.DLN.Aoyagi.lowerRightBlock_paperEndpointAdaptedEdgeMatrix_rank_eq_sub`,
+  `DLNFibre.DLN.Aoyagi.productReduction_paperEndpointAdaptedTotalMatrix_suffixChain_rightElim`,
+  `DLNFibre.DLN.Aoyagi.PaperEndpointBasepointCertificate`, and
+  `DLNFibre.DLN.Aoyagi.exists_paperEndpointBasepointCertificate` are in
+  `lean/DLNFibre/DLN/Aoyagi/BasepointCertificate.lean`.
 - **Proved.** one chart-local algebraic induction-step identity over a
   commutative ring, under explicit determinant-unit hypotheses for the prefix
   corner `C1` and next-layer corner `A1`, plus the same identity over arbitrary
