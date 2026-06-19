@@ -63,8 +63,16 @@
 > - **Deferred.** none for the smooth⟹regular step. (L2 separately identifies the cotangent space
 >   `m/m²` with `range δ⁰` over `k` — the geometric tangent-space content — and may reuse
 >   `finrank_cotangentSpace_eq_of_isSmoothAt`; that identification is L2 work, not M3.)
-> - **Status.** sorry-free. Axioms `[propext, Classical.choice, Quot.sound]` (all five lemmas).
->   `scripts/sorries` = 0. Whole `DLNFibre` library green. Awaiting fidelity review.
+> - **Status.** sorry-free + **reviewed: FAITHFUL**. Axioms `[propext, Classical.choice, Quot.sound]`
+>   (all five lemmas). `scripts/sorries` = 0. Whole `DLNFibre` library green. Reviewer verdict
+>   (thread 13, decorrelated Codex on Q2/Q3): **FAITHFUL** — headline statement genuine and
+>   non-vacuous; the `≤` is the genuinely-smooth (injective conormal) direction, combined with the
+>   universal `dim ≤ spanFinrank` to force equality; non-circular (M2's `ringKrullDim = n` consumed as
+>   a black box, never re-derived from cotangent=dim); `[IsAlgClosed k]` used only for `PerfectField k`;
+>   axioms clean; names = content. **Caveat (transparency, not a defect):**
+>   `finrank_cotangentSpace_eq_of_isSmoothAt` takes `ringKrullDim (AtPrime m) = n` as an explicit
+>   hypothesis (honest given the `_eq_` name and the L2 reuse point) — a downstream consumer supplies
+>   M2's `hdim` (the headline does so internally).
 
 ## Route taken (what fought back, what came in bounded)
 
