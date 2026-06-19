@@ -589,7 +589,12 @@ No such claim is formalisation-ready until both fields are filled.
   `case1StripCols_eq_case2ResidualBlockCols`,
   `case1StripEntries_subset_case2ResidualBlockPivotEntries`, and
   `case1_displayedPivot_mem_residualBlockPivotEntries_of_bounds`, making the
-  explicit row-validity bound `J+J1 <= mu_S` visible.
+  explicit row-validity bound `J+J1 <= mu_S` visible. Also packaged the finite
+  Case 1 first-jump and selected-label hypotheses as
+  `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
+  `J+J1 < mu_S`, selected introduced label, selected level, gap, componentwise
+  minimality, Nat-to-Int selected-level cast, and row-strip containment
+  consequences.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

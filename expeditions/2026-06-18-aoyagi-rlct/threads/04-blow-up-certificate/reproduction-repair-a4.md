@@ -150,6 +150,17 @@ Lean also proves the finite row-strip containment needed for source validity:
 row bound `J+J1 <= mu_S`. This is weaker than the full Case 1 first-jump
 hypothesis and is only an entry-set containment statement.
 
+Lean now also packages the finite first-jump and selected-label assumptions as
+`Case1FirstJumpHypotheses`. This records `1 <= J1`, the strict nonterminal
+boundary `J+J1 < mu_S`, the selected introduced label `(s,k)`, the selected
+level `tilde_t_(s,k)=J+J1`, the empty intermediate level gap, and
+componentwise minimality on `1..L`. The strict boundary is a finite proxy for
+the existence of `b_(J+J1+1)` inside the current recurrence range; it is not a
+proof of the monomial inequality `b_(J+J1+1) != b_(J+J1)`. The source level is
+Nat-valued in Lean, with only the selected-level cast to the integer convention
+proved; identifying it with certificate `leastValue` remains an invariant
+obligation.
+
 ### Case 1(1): selected `u_(s,k)` chart
 
 The whole `J1 x (n_(S+1)-J)` row strip is divided by `u_(s,k)`.

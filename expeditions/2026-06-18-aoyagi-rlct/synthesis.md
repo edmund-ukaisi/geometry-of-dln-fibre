@@ -217,6 +217,13 @@ interface without surfacing it.
   `J+J1<=mu_S`, the Case 1 strip rows and entries lie in the residual-block
   entry set. This is only finite containment, not the full Case 1 first-jump or
   chart transition theorem.
+  The first-jump hypotheses are now separately packaged in Lean as
+  `Case1FirstJumpHypotheses`: strict nonterminal boundary `J+J1<mu_S`,
+  selected introduced label, selected level, empty intermediate gap, and
+  componentwise minimality on `1..L`. The package derives row containment and a
+  Nat-to-Int selected-level cast, but still does not prove the `b` recurrence
+  equality/inequality, `level = leastValue`, flat-tail, chart coverage, or a
+  transition invariant.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

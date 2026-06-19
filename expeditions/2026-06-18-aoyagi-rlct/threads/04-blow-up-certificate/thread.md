@@ -304,6 +304,27 @@ This is finite entry-set containment only. It does not prove the Case 1
 first-jump hypotheses, old-label hypotheses, chart coverage, or transition
 formulas.
 
+## 2026-06-19 Lean Case 1 first-jump hypotheses
+
+Statement card: `statement-card-a4-case1-first-jump-hypotheses.md`.
+
+Lean now packages the finite source hypotheses for a chosen Case 1 old label:
+`1 <= J1`, strict nonterminal boundary `J+J1 < mu_S`, selected introduced
+label `(s,k)`, selected level `J+J1`, no introduced label in the intermediate
+gap `J+1..J+J1-1`, and componentwise minimality on `1..L` among labels at the
+selected level.
+
+The strict boundary derives the row-strip bound `J+J1 <= mu_S`, so the package
+also specializes the existing row-strip containment lemmas. It proves the
+selected level is above `J`, casts the selected-level equality to the integer
+convention, and records the immediate self-minimality specialization.
+
+This is still only finite bookkeeping. It does not prove the recurrence
+equalities or inequality for the `b_i`, construct or prove existence of the
+minimal selected label, relate `level` to certificate `leastValue`, prove the
+flat-tail/old-minimum hypotheses, tie the anonymous center generator to
+`(s,k)`, or give chart coverage or a transition invariant.
+
 ## 2026-06-19 Lean Case 1 tail exponent increment
 
 Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.
