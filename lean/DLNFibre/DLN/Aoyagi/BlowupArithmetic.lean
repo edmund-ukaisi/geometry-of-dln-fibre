@@ -3680,6 +3680,44 @@ def case1RowStripOldWeight
     (baseWeight : ι → R) : ι → R :=
   fun i ↦ if strip i then baseWeight i else u * baseWeight i
 
+/-- Canonical residual-row predicate for the displayed Case 1(2) row strip:
+rows from `J+1` through the old selected level `J+J1`. -/
+def case1ResidualRowStrip (n : ℕ → ℕ) (S J J1 : ℕ)
+    (i : Case2ResidualRowIndex n S J) : Prop :=
+  case2ResidualRowLevel n S J i ≤ J + J1
+
+instance case1ResidualRowStrip_decidablePred
+    (n : ℕ → ℕ) (S J J1 : ℕ) :
+    DecidablePred (case1ResidualRowStrip n S J J1) :=
+  fun i ↦ inferInstanceAs (Decidable (case2ResidualRowLevel n S J i ≤ J + J1))
+
+/-- Source weights with the selected old factor still at level `h` are exactly
+the row-strip convention: unchanged through level `h`, multiplied by `u`
+below that strip. -/
+theorem case1RowStripOldWeight_eq_monomialRec_mulStepAt_of_level
+    {ι R : Type*} [CommRing R]
+    (step : ℕ → R) (u : R) (h : ℕ) (level : ι → ℕ) :
+    case1RowStripOldWeight (fun i ↦ level i ≤ h) u
+        (fun i ↦ monomialRec step (level i)) =
+      fun i ↦ monomialRec (mulStepAt step u h) (level i) := by
+  funext i
+  by_cases hi : level i ≤ h
+  · simp [case1RowStripOldWeight, hi, monomialRec_mulStepAt_eq_of_le step u hi]
+  · have hge : h + 1 ≤ level i := by omega
+    simp [case1RowStripOldWeight, hi, monomialRec_mulStepAt_eq_mul_of_ge step u hge]
+
+/-- Residual-row specialization of the source-weight convention for the
+displayed Case 1(2) row strip. -/
+theorem case1ResidualRowStripOldWeight_eq_sourceMulStepAt
+    {R : Type*} [CommRing R]
+    (step : ℕ → R) (u : R) (n : ℕ → ℕ) (S J J1 : ℕ) :
+    case1RowStripOldWeight (case1ResidualRowStrip n S J J1) u
+        (fun i ↦ monomialRec step (case2ResidualRowLevel n S J i)) =
+      fun i ↦ monomialRec (mulStepAt step u (J + J1))
+        (case2ResidualRowLevel n S J i) :=
+  case1RowStripOldWeight_eq_monomialRec_mulStepAt_of_level
+    step u (J + J1) (case2ResidualRowLevel n S J)
+
 /-- Elementary Case 1(2) row-strip weighting identity.
 
 The selected variable is counted once on the right.  In strip rows it comes
@@ -3706,6 +3744,27 @@ theorem case1RowStrip_diagonal_mul_sourceMatrix
         · simp [case1RowStripOldWeight, case1RowStripSourceMatrix, hi]
     _ = (diagonal (fun i ↦ u * baseWeight i) * A) i j := by
         rw [diagonal_mul_apply]
+
+/-- Displayed Case 1(2) source-weight form of the row-strip identity.
+
+The left diagonal is the original source recurrence after substituting the old
+selected factor `old = u * old'` at level `J+J1`.  The right diagonal is the
+factored-base recurrence with the common selected factor pulled to every
+residual row from `J+1` onward. -/
+theorem case1ResidualRowStrip_diagonal_mul_sourceMatrix_sourceWeights
+    {R : Type*} [CommRing R]
+    (step : ℕ → R) (u : R) (n : ℕ → ℕ) (S J J1 : ℕ)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    diagonal
+        (fun i ↦ monomialRec (mulStepAt step u (J + J1))
+          (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A =
+      diagonal
+        (fun i ↦ u * monomialRec step (case2ResidualRowLevel n S J i)) * A := by
+  rw [← case1ResidualRowStripOldWeight_eq_sourceMulStepAt step u n S J J1]
+  exact case1RowStrip_diagonal_mul_sourceMatrix
+    (case1ResidualRowStrip n S J J1) u
+    (fun i ↦ monomialRec step (case2ResidualRowLevel n S J i)) A
 
 /-- Pivot-first form of the Case 1(2) row-strip weighting identity.  This is
 the source-order input expected by the generic displayed top-left `Q/P`

@@ -1077,3 +1077,25 @@ the row weights agree.
 This is only monomial recurrence algebra.  It does not construct the
 factored-base state, prove chart production, prove hidden old-label validity,
 or assert a transition invariant.
+
+## 2026-06-19 Lean Case 1 source-weight factored boundary
+
+Statement card: `statement-card-a4-case1-source-weight-factored-boundary.md`.
+
+Lean now connects the original source recurrence after the old selected
+substitution `old = u*old'` to the displayed row-strip weight convention. The
+new `case1ResidualRowStrip` predicate is the canonical residual-row version of
+the strip `J+1..J+J1`: a residual row is in the strip exactly when its source
+row level is at most `J+J1`.
+
+The theorem `case1ResidualRowStripOldWeight_eq_sourceMulStepAt` identifies
+`case1RowStripOldWeight` with the recurrence obtained by inserting the factor
+`u` at the old selected level `J+J1`. The matrix theorem
+`case1ResidualRowStrip_diagonal_mul_sourceMatrix_sourceWeights` then rewrites
+the existing row-strip source-matrix identity with the original source
+recurrence on the left diagonal and the common factored-base weight
+`u*baseWeight` on the right.
+
+This remains source-weight algebra only. It does not construct the
+factored-base recurrence, prove hidden old-label validity, produce chart
+post-data, or assert a transition invariant.
