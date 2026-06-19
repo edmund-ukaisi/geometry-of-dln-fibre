@@ -1249,3 +1249,31 @@ This is still not chart production. It does not construct the selected-old
 chart, prove atlas coverage, derive `(s0,k0)` from `Unit`, construct the raw
 source pullback, produce chart post-data, compute Jacobians, prove normal
 crossings, extract RLCT, or prove a transition invariant.
+
+## 2026-06-19 Lean Case 1 selected-old chart source coordinates
+
+Statement card:
+`statement-card-a4-case1-selected-old-chart-source-coordinates.md`.
+
+Lean now proves the elementary Case 1(1) selected-old row-strip
+source-coordinate identity. The new post-weight convention
+`case1SelectedOldPostWeight` absorbs the selected old chart denominator
+exactly on the Case 1 row strip and leaves lower rows unchanged. The theorem
+`case1SelectedOld_diagonal_mul_sourceMatrix` proves
+
+```text
+diag(baseWeight) * case1RowStripSourceMatrix(strip,u,A)
+  = diag(case1SelectedOldPostWeight(strip,u,baseWeight)) * A.
+```
+
+The source-coordinate specialization
+`case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates` applies this
+to `case1ResidualRowStrip n S J J1` and `case2SourceResidualBlock residual`,
+so residual rows still use the prefix-minimum row subtype while residual
+columns still use actual width.
+
+This is the Case 1(1) row-wise calculation only. It does not introduce
+`(S,J+1)`, does not use the displayed Case 1(2) pivot `u_(S,J+1)`, and does
+not assert a `Q/P` transition, chart construction, atlas coverage,
+regularity, Jacobian, normal crossings, RLCT extraction, or a transition
+invariant.

@@ -820,6 +820,22 @@ invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-source-coordinate-wrapper-a4.md`.
 
+Latest A4 update: the Case 1(1) selected-old chart source-coordinate identity
+has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are `case1SelectedOldPostWeight`,
+`case1SelectedOld_diagonal_mul_sourceMatrix`, and
+`case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates`. This checkpoint
+proves the row-wise identity for the selected-old chart denominator:
+`diag(baseWeight) * sourceRowStripMatrix = diag(postWeight) * dividedMatrix`,
+where the post weight absorbs the selected old factor exactly on the Case 1
+row strip. It is independent of the displayed Case 1(2) pivot
+`u_(S,J+1)`, introduces no `(S,J+1)` label, and asserts no `Q/P` transition,
+chart construction, coverage/regularity/Jacobians, normal crossings, RLCT, or
+transition invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-chart-source-coordinates.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-chart-source-coordinates-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -882,7 +882,14 @@ No such claim is formalisation-ready until both fields are filled.
   projections for selected-old/displayed-pivot finite center membership,
   supplied chart regularity, supplied transition regularity in both
   directions, selected-label facts, the source-step update, the source-order
-  identity, and exponent-domain extension.
+  identity, and exponent-domain extension. Added the Case 1(1)
+  selected-old chart source-coordinate identity:
+  `case1SelectedOldPostWeight`,
+  `case1SelectedOld_diagonal_mul_sourceMatrix`, and
+  `case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates`. This proves
+  only the elementary row-wise selected-old denominator algebra for Case 1(1);
+  it does not introduce `(S,J+1)`, use the displayed Case 1(2) pivot, assert
+  `Q/P`, or produce charts/transitions.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

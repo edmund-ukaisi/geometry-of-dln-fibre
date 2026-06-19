@@ -239,10 +239,16 @@ on the session's original cwd.
    charts. The selected-old source-coordinate wrapper now adapts this supplied
    boundary to source residual/following-factor functions under the displayed
    pivot normalization and projects finite center principalization for the
-   displayed top-left chart token only. Next A4 target:
-   raw coordinate construction of the selected-old/source pullback or another
-   source-displayed piece only if it can be stated without claiming atlas
-   coverage; keep arbitrary pivots explicit and supplied.
+   displayed top-left chart token only. The elementary Case 1(1)
+   selected-old source-coordinate row-strip identity is also Lean-proved:
+   source entries on the selected-old divided strip carry the old factor, and
+   the post weights absorb that factor exactly on the strip. Next A4 target:
+   package a supplied Case 1(1) selected-old boundary tying this row-wise
+   identity to the existing same-domain lower-tail exponent update, or only
+   then revisit recurrence-state source overrides if they remain explicitly
+   assumption-level and source-faithful. Avoid raw Case 1(2) hidden-old
+   pullback construction, arbitrary chart coverage, or non-displayed
+   transition claims.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

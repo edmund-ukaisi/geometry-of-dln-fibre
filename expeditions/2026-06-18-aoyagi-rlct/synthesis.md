@@ -1021,6 +1021,20 @@ remains an adapter/projection layer; it does not construct the selected-old
 chart, source pullback, atlas coverage, chart post-data, Jacobian, normal
 crossings, RLCT, or a transition invariant.
 
+The Case 1(1) selected-old chart source-coordinate identity is now Lean-proved
+as elementary row-wise algebra. The new `case1SelectedOldPostWeight` absorbs
+the selected old chart denominator on exactly the Case 1 row strip, and
+`case1SelectedOld_diagonal_mul_sourceMatrix` proves
+`diag(baseWeight) * sourceMatrix = diag(postWeight) * dividedMatrix`. The
+source-coordinate specialization uses `case2SourceResidualBlock residual`,
+with prefix-minimum residual rows and actual-width residual columns kept
+separate. This is separate from displayed Case 1(2): it does not introduce the
+label `(S,J+1)`, does not use the displayed pivot `u_(S,J+1)`, and does not
+assert `Q/P`, chart production, coverage, Jacobians, normal crossings, RLCT, or
+a transition invariant. Xhigh review found only a low docstring hazard in the
+shared row-strip helpers; the helper comments now explicitly distinguish the
+Case 1(1) old denominator from the Case 1(2) displayed pivot.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
