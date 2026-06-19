@@ -70,7 +70,7 @@ progress / ☑ landed (green + AUDIT + hardener).
   Sub-ladder L5.0–L5.8 in `threads/02-dimension-formula-sizing/findings.md`; hardest = L5.6 (`height+coheight=n`
   via going-down induction) and L5.4 (integral-extension `ringKrullDim` invariance). **Kill-condition:** if
   L5.6's induction needs absent instance-propagation it inflates toward "weeks" — first build move (L5.4+L5.1)
-  settles this. ◐ (sized; build pending)
+  settles this. **☑ COMPLETE + bedrock-confirmed + hardened** — headline `height_add_ringKrullDim_quotient_eq` (`Core.NoetherMonicPositioning`): `height p + ringKrullDim (R⧸p) = n` unconditionally (`[Field k]`). Modules IntegralDimension / PolynomialDimension / NoetherMonicPositioning. Kill-condition never fired; monic-positioning brick re-derived. Hardener: BEDROCK CONFIRMED.
 - **L6 — Thm 3.8 at radical-ideal level.** `orbitRankLocus = Ō_M` (the degeneration order; ≤-direction). *Size:
   module.* ☐
 - **L7 — final Voigt assembly.** Combine L0–L6 into `hVoigt`, drop the hypothesis from
@@ -124,3 +124,8 @@ A/B are largely independent and can interleave once L5 is sized; C depends on B+
   inferInstance). Full L5.7 equality NOT yet stated (no overclaim): the catenary `≥` needs a
   **monic-coordinate-positioning lemma** (Noether-normalization degree trick, `private` in Mathlib). Next:
   build that brick + close L5.7 `≥` → full equality. Then L0, then geometry.
+- 2026-06-19: **L5 COMPLETE.** thread 05 closed the catenary `≥` via a re-derived Noether monic-positioning
+  brick → full equality `height_add_ringKrullDim_quotient_eq` (`[Field k]`, axiom-clean). Hardener pass:
+  BEDROCK CONFIRMED (3 low findings applied: dropped decorative `_hinj` + rename `ringKrullDim_le_of_integral`,
+  fixed stale docstring, added height-1 witness). **Phase A's hard half done.** Next: L0 (Nullstellensatz /
+  point-space↔PrimeSpectrum bridge) — connects `codimRep` height to L5's dim formula; `[IsAlgClosed k]` enters here.

@@ -9,7 +9,7 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 | 03 | L5-dim-foundations | formaliser | closed (AUDIT survived) | First build tide — L5.4 (integral-ext `ringKrullDim` invariance) + L5.1 (`dim(R/p)=coheight p`) |
 
 | 04 | L5-poly-dim-formula | formaliser | closed | L5.5 + L5.7-≤ + additive height brick; ≥ gap (monic-positioning) reported |
-| 05 | L5-noether-monic | formaliser | open | Build monic-coordinate-positioning (Noether normalization) → close L5.7 ≥ → full `height+dim=n` |
+| 05 | L5-noether-monic | formaliser | closed | Build monic-coordinate-positioning (Noether normalization) → close L5.7 ≥ → full `height+dim=n` |
 
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
