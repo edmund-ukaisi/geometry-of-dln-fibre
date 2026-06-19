@@ -156,6 +156,16 @@ interface without surfacing it.
   following-factor replacement by `Q^-1`. This is still finite matrix algebra
   only; it does not prove chart coverage, regular coordinate-change/Jacobian
   facts, exponent updates, or the transition invariant.
+  The label-range part of the width repair is now Lean-proved too:
+  `prefixMinNat`, `actualWidthLabel`, `prefixWidthLabel`, and the undercount
+  theorem `actualWidthLabel_not_prefixWidthLabel_of_prefixMinNat_lt_width`
+  separate actual source labels from prefix-minimum bounds. The Case 2 new-label
+  lemmas record that `(S,J+1)` is an actual label under the actual-width bound
+  and a prefix-width label only under the stronger continuation bound. This is
+  bookkeeping for the corrected vector invariant, not the invariant itself.
+  `correctedCase2PivotVector` and
+  `terminalExponent_correctedCase2PivotVector` also package the prefix-minimum
+  Case 2 repair over natural widths.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

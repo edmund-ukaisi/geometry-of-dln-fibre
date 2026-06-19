@@ -53,6 +53,97 @@ theorem prefixMin_succ_eq_min (n : ℕ → ℤ) {j : ℕ} (hj : 1 ≤ j) :
       | zero => rfl
       | succ k => rfl
 
+section LabelRanges
+
+/-- Natural widths viewed as integer widths for terminal-exponent arithmetic. -/
+def widthZ (n : ℕ → ℕ) (i : ℕ) : ℤ := n i
+
+/-- Prefix minima for natural-number actual widths. -/
+def prefixMinNat (n : ℕ → ℕ) : ℕ → ℕ
+  | 0 => n 0
+  | 1 => n 1
+  | k + 2 => min (prefixMinNat n (k + 1)) (n (k + 2))
+
+@[simp] theorem prefixMinNat_one (n : ℕ → ℕ) : prefixMinNat n 1 = n 1 := rfl
+
+@[simp] theorem prefixMinNat_succ_succ (n : ℕ → ℕ) (k : ℕ) :
+    prefixMinNat n (k + 2) = min (prefixMinNat n (k + 1)) (n (k + 2)) := rfl
+
+theorem prefixMinNat_succ_eq_min (n : ℕ → ℕ) {j : ℕ} (hj : 1 ≤ j) :
+    prefixMinNat n (j + 1) = min (prefixMinNat n j) (n (j + 1)) := by
+  cases j with
+  | zero => omega
+  | succ j =>
+      cases j with
+      | zero => rfl
+      | succ k => rfl
+
+/-- Natural prefix minima agree with integer prefix minima after casting widths. -/
+theorem prefixMinNat_cast (n : ℕ → ℕ) (i : ℕ) :
+    (prefixMinNat n i : ℤ) = prefixMin (widthZ n) i := by
+  induction i with
+  | zero => rfl
+  | succ i ih =>
+      cases i with
+      | zero => rfl
+      | succ k =>
+          rw [prefixMinNat_succ_succ, prefixMin_succ_succ, ← ih]
+          exact Nat.cast_min (prefixMinNat n (k + 1)) (n (k + 2))
+
+/-- The prefix minimum at a positive index is bounded by that actual width. -/
+theorem prefixMinNat_le_width (n : ℕ → ℕ) {j : ℕ} (hj : 1 ≤ j) :
+    prefixMinNat n j ≤ n j := by
+  cases j with
+  | zero => omega
+  | succ j =>
+      cases j with
+      | zero => rfl
+      | succ k => simp [prefixMinNat]
+
+/-- A source label range using the actual layer width `n_(s+1)`. -/
+def actualWidthLabel (L : ℕ) (n : ℕ → ℕ) (s k : ℕ) : Prop :=
+  1 ≤ s ∧ s ≤ L ∧ 1 ≤ k ∧ k ≤ n (s + 1)
+
+/-- The narrower label range obtained by incorrectly using the prefix minimum. -/
+def prefixWidthLabel (L : ℕ) (n : ℕ → ℕ) (s k : ℕ) : Prop :=
+  1 ≤ s ∧ s ≤ L ∧ 1 ≤ k ∧ k ≤ prefixMinNat n (s + 1)
+
+/-- Prefix-minimum labels are actual-width labels, but not conversely in general. -/
+theorem actualWidthLabel_of_prefixWidthLabel {L : ℕ} {n : ℕ → ℕ} {s k : ℕ}
+    (h : prefixWidthLabel L n s k) : actualWidthLabel L n s k := by
+  rcases h with ⟨hs0, hsL, hk0, hk⟩
+  exact ⟨hs0, hsL, hk0, le_trans hk (prefixMinNat_le_width n (by omega : 1 ≤ s + 1))⟩
+
+/-- If the actual width is larger than the prefix minimum, prefix labels undercount. -/
+theorem actualWidthLabel_not_prefixWidthLabel_of_prefixMinNat_lt_width
+    (L : ℕ) (n : ℕ → ℕ) {s : ℕ}
+    (hs0 : 1 ≤ s) (hsL : s ≤ L) (h : prefixMinNat n (s + 1) < n (s + 1)) :
+    actualWidthLabel L n s (prefixMinNat n (s + 1) + 1) ∧
+      ¬ prefixWidthLabel L n s (prefixMinNat n (s + 1) + 1) := by
+  constructor
+  · exact ⟨hs0, hsL, by omega, by omega⟩
+  · intro hprefix
+    exact (by omega : ¬ prefixMinNat n (s + 1) + 1 ≤ prefixMinNat n (s + 1))
+      hprefix.2.2.2
+
+/-- The new pivot label `(S,J+1)` is valid against the actual source width. -/
+theorem actualWidthLabel_case2_new (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L) (hJ : J + 1 ≤ n (S + 1)) :
+    actualWidthLabel L n S (J + 1) :=
+  ⟨hS, hSL, by omega, hJ⟩
+
+/-- Under the continuation bound, the new pivot label also lies in the prefix range. -/
+theorem prefixWidthLabel_case2_new (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L) (hJ : J + 1 ≤ prefixMinNat n (S + 1)) :
+    prefixWidthLabel L n S (J + 1) :=
+  ⟨hS, hSL, by omega, hJ⟩
+
+/-- The corrected Case 2 pivot vector, using prefix minima before `S`. -/
+def correctedCase2PivotVector (n : ℕ → ℕ) (S J : ℕ) : ℕ → ℤ :=
+  prefixCase2Vector (widthZ n) S (J : ℤ)
+
+end LabelRanges
+
 /-- The prefix-minimum step kills the corresponding terminal-exponent factor. -/
 theorem prefixMin_step_factor_zero (n : ℕ → ℤ) {j : ℕ} (hj : 1 ≤ j) :
     (prefixMin n j - prefixMin n (j + 1)) *
@@ -196,6 +287,16 @@ theorem terminalExponent_prefixCase2Vector (L S : ℕ) (n : ℕ → ℤ) (J : �
           simp [hS2, prefixCase2Vector, hpred, hm]
     rw [terminalExponent, hbase, hsum]
     ring
+
+/-- The corrected Case 2 vector has the prefix-minimum terminal exponent. -/
+theorem terminalExponent_correctedCase2PivotVector
+    (L S : ℕ) (n : ℕ → ℕ) (J : ℕ) (hS : 1 ≤ S) (hSL : S ≤ L) :
+    terminalExponent L (widthZ n) (correctedCase2PivotVector n S J) =
+      ((prefixMinNat n S : ℤ) - (J : ℤ)) *
+        ((n (S + 1) : ℤ) - (J : ℤ)) := by
+  rw [correctedCase2PivotVector, terminalExponent_prefixCase2Vector L S (widthZ n)
+    (J : ℤ) hS hSL, ← prefixMinNat_cast]
+  rfl
 
 section MonomialRecurrence
 

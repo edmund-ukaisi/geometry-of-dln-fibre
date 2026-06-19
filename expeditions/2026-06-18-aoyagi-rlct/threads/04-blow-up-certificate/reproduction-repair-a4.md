@@ -66,6 +66,15 @@ u_(S,k),  1 <= k <= J.
 Using `mu_(s+1)` for these ranges undercounts labels whenever
 `n_(s+1) > mu_(s+1)`.
 
+Lean status: the actual-width label convention is formalised in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` as `prefixMinNat`,
+`actualWidthLabel`, `prefixWidthLabel`,
+`actualWidthLabel_of_prefixWidthLabel`,
+`actualWidthLabel_not_prefixWidthLabel_of_prefixMinNat_lt_width`,
+`actualWidthLabel_case2_new`, `prefixWidthLabel_case2_new`,
+`correctedCase2PivotVector`, and
+`terminalExponent_correctedCase2PivotVector`.
+
 ## Corrected invariant shape
 
 For `1 <= S <= L` and the displayed step range where `J` lies inside the

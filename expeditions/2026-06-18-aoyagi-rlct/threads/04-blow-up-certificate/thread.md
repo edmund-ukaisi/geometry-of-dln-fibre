@@ -140,3 +140,23 @@ corollary with the following factor multiplied by `Q^-1`. This is still only a
 normalized displayed matrix identity. It does not construct the pivot chart,
 prove polynomial regularity/Jacobian facts, update exponents, cover all pivot
 charts, or prove a transition invariant.
+
+## 2026-06-19 Lean actual-width labels
+
+Statement card: `statement-card-a4-actual-width-labels.md`.
+
+Lean now records the label-range part of the width repair. `actualWidthLabel`
+uses the source's actual range `1 <= k <= n_(s+1)`, while `prefixWidthLabel`
+uses the narrower prefix-minimum range `1 <= k <= mu_(s+1)`.
+`actualWidthLabel_not_prefixWidthLabel_of_prefixMinNat_lt_width` proves that
+prefix-width labels strictly undercount actual labels whenever
+`mu_(s+1) < n_(s+1)`. The Case 2 new-label lemmas then separate the actual
+source-label bound `J+1 <= n_(S+1)` from the stronger continuation bound
+`J+1 <= mu_(S+1)`.
+
+The same checkpoint adds `correctedCase2PivotVector` and
+`terminalExponent_correctedCase2PivotVector`, a natural-width wrapper around
+the existing prefix-minimum terminal-exponent theorem.
+
+This is finite bookkeeping only. It does not yet define the full corrected
+vector invariant or prove any transition.

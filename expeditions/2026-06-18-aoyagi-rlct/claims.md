@@ -530,6 +530,15 @@ No such claim is formalisation-ready until both fields are filled.
   `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul_pivotQ`, and
   `weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul`, which package
   the displayed `Q` and `P` matrix identities into one local product identity.
+  Also proved actual-width label bookkeeping:
+  `prefixMinNat`, `actualWidthLabel`, `prefixWidthLabel`,
+  `actualWidthLabel_of_prefixWidthLabel`,
+  `actualWidthLabel_not_prefixWidthLabel_of_prefixMinNat_lt_width`,
+  `actualWidthLabel_case2_new`, `prefixWidthLabel_case2_new`,
+  `correctedCase2PivotVector`, and
+  `terminalExponent_correctedCase2PivotVector`, separating source label ranges
+  from prefix-minimum continuation bounds and packaging the corrected Case 2
+  vector over natural widths.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

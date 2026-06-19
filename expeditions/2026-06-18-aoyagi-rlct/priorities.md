@@ -89,11 +89,12 @@ on the session's original cwd.
 5. Repair A4 blow-up reproduction. Keep actual layer widths and prefix minima
    separate; the terminal-exponent split, the monomial recurrence divisibility
    needed for `P`, the normalized `P` row-operation algebra, the normalized
-   `Q` column-operation algebra, and the combined local normalized pivot-step
-   identity are Lean-proved. Next build the corrected finite vector invariant
-   around prefix-minimum coordinates or start the pivot-chart coverage
-   argument. Then redo Case 1/2 updates, cover pivot charts, repair the
-   remaining recurrence bookkeeping, and replace the termination measure.
+   `Q` column-operation algebra, the combined local normalized pivot-step
+   identity, and the actual-width label-range bookkeeping are Lean-proved. Next
+   build the corrected finite vector invariant around prefix-minimum coordinates
+   or start the pivot-chart coverage argument. Then redo Case 1/2 updates,
+   cover pivot charts, repair the remaining recurrence bookkeeping, and replace
+   the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's
    chart-family/order-count construction.
