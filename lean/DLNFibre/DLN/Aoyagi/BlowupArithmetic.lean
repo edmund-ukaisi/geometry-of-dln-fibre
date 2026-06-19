@@ -1400,6 +1400,31 @@ theorem case1_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem
       Ideal.span ({u} : Set R) :=
   selectedEntryChartMap_centerIdeal_eq_span_singleton hpivot u residual
 
+/-- The finite Case 1 center is nonempty, witnessed by the externally chosen
+old exceptional generator. This is finite center bookkeeping, not a source
+validity theorem for the hidden old label. -/
+theorem case1CenterGenerators_nonempty
+    (n : ℕ → ℕ) (S J J1 : ℕ) :
+    (case1CenterGenerators n S J J1).Nonempty :=
+  ⟨(Sum.inl () : Case1CenterGenerator), case1_selectedOld_mem_center n S J J1⟩
+
+/-- Under the displayed Case 1 entry bounds, the row-strip part of the center
+is nonempty, witnessed by the top-left strip entry. -/
+theorem case1StripEntries_nonempty_of_bounds
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1)) :
+    (case1StripEntries n S J J1).Nonempty :=
+  ⟨(J + 1, J + 1), by
+    rw [mem_case1StripEntries_iff]
+    exact ⟨le_rfl, by omega, le_rfl, hcol⟩⟩
+
+/-- A right-branch Case 1 center generator is exactly a row-strip entry. -/
+theorem mem_case1CenterGenerators_inr_iff
+    {n : ℕ → ℕ} {S J J1 : ℕ} {p : ℕ × ℕ} :
+    (Sum.inr p : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 ↔
+      p ∈ case1StripEntries n S J J1 := by
+  simp [case1CenterGenerators]
+
 /-- Assumption boundary for a finite selected-entry chart family.  It records
 the chart-regularity and transition-regularity obligations for selected entries
 in a finite center without constructing a blow-up atlas. -/
@@ -1411,6 +1436,84 @@ structure SelectedEntryChartFamilyBoundary
     ∀ {p}, p ∈ center → ChartRegular p
   transition_regular_of_mem :
     ∀ {p}, p ∈ center → ∀ {q}, q ∈ center → TransitionRegular p q
+
+/-- Case 1 instance of the selected-entry chart-family assumption boundary.
+The `Unit` branch is the externally selected old exceptional generator, and
+the right branch is the finite row strip.  This names regularity obligations
+for the finite center; it is not a proof of chart coverage or a source-order
+transition formula. -/
+abbrev Case1CenterChartFamilyBoundary
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    (ChartRegular : Case1CenterGenerator → Prop)
+    (TransitionRegular :
+      Case1CenterGenerator → Case1CenterGenerator → Prop) : Prop :=
+  SelectedEntryChartFamilyBoundary
+    (case1CenterGenerators n S J J1) ChartRegular TransitionRegular
+
+namespace Case1CenterChartFamilyBoundary
+
+/-- A Case 1 center chart-family boundary supplies chart regularity for every
+supplied generator in the finite Case 1 center. -/
+theorem chart_regular_of_mem
+    {n : ℕ → ℕ} {S J J1 : ℕ}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (h : Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular)
+    {g : Case1CenterGenerator} (hg : g ∈ case1CenterGenerators n S J J1) :
+    ChartRegular g :=
+  SelectedEntryChartFamilyBoundary.chart_regular_of_mem h hg
+
+/-- A Case 1 center chart-family boundary supplies transition regularity for
+every pair of supplied generators in the finite Case 1 center. -/
+theorem transition_regular_of_mem
+    {n : ℕ → ℕ} {S J J1 : ℕ}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (h : Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular)
+    {g hgen : Case1CenterGenerator}
+    (hg : g ∈ case1CenterGenerators n S J J1)
+    (hh : hgen ∈ case1CenterGenerators n S J J1) :
+    TransitionRegular g hgen :=
+  SelectedEntryChartFamilyBoundary.transition_regular_of_mem h hg hh
+
+/-- A Case 1 center chart-family boundary supplies chart regularity for the
+selected old-exceptional-variable chart.  The source validity of the hidden
+old label is still external to the `Unit` generator. -/
+theorem chart_regular_selectedOld
+    {n : ℕ → ℕ} {S J J1 : ℕ}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (h : Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular) :
+    ChartRegular (Sum.inl () : Case1CenterGenerator) :=
+  SelectedEntryChartFamilyBoundary.chart_regular_of_mem h
+    (case1_selectedOld_mem_center n S J J1)
+
+/-- Under the displayed Case 1 entry bounds, a Case 1 center chart-family
+boundary supplies chart regularity for Aoyagi's top-left row-strip pivot. -/
+theorem chart_regular_displayedPivot_of_bounds
+    {n : ℕ → ℕ} {S J J1 : ℕ}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (h : Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular)
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1)) :
+    ChartRegular (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) :=
+  SelectedEntryChartFamilyBoundary.chart_regular_of_mem h
+    (case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol)
+
+/-- The first-jump package supplies the displayed Case 1 row-strip pivot
+positivity hypothesis, but the source column bound remains explicit. -/
+theorem chart_regular_displayedPivot_of_firstJump_colBound
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (h : Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s k level vector)
+    (hcol : J + 1 ≤ n (S + 1)) :
+    ChartRegular (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) :=
+  chart_regular_displayedPivot_of_bounds h hfirst.positive hcol
+
+end Case1CenterChartFamilyBoundary
 
 /-- Case 2 residual-block instance of the selected-entry chart-family
 assumption boundary.  This names the remaining chart-family regularity

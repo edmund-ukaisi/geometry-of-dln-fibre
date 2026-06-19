@@ -905,6 +905,18 @@ hypothesis, the displayed top-left pivot belongs to the residual-block center,
 so the finite center is nonempty. The boundary projections deliberately assume,
 rather than prove, chart regularity and transition regularity.
 
+The Case 1 chart-family boundary is now named in Lean too.
+`Case1CenterChartFamilyBoundary` specializes the same generic boundary to the
+finite center consisting of the `Unit` old-exceptional generator and the
+actual-width row-strip entries. Lean proves only finite nonemptiness,
+right-branch membership, and supplied regularity projections for the old chart
+and displayed top-left row-strip pivot. This matches the source-scout verdict:
+Aoyagi displays the old-variable chart and top-left selected-entry charts, but
+does not enumerate arbitrary selected-entry atlas formulas. The `Unit` branch
+still hides an externally chosen old label, so old-label source validity,
+minimality, comparability, and transition production remain separate
+obligations.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

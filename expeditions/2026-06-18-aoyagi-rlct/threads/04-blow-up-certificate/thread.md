@@ -821,6 +821,33 @@ regularity, transition regularity, affine blow-up atlas construction,
 source-order transition formulas, chart-produced post-data, Jacobians, normal
 crossings, or RLCT extraction.
 
+## 2026-06-19 Lean Case 1 chart-family boundary
+
+Reproduction: `reproduction-case1-chart-family-boundary-a4.md`.
+Statement card: `statement-card-a4-case1-chart-family-boundary.md`.
+Review artifact: `review-case1-chart-family-boundary-a4.md`.
+
+Lean now names the analogous Case 1 chart-family boundary. The finite center
+is `case1CenterGenerators n S J J1`: the `Unit` branch is the externally
+chosen old exceptional generator, and the right branch is the row-strip entry
+set. The new helper lemmas prove that this finite center is nonempty, that the
+row-strip part is nonempty under `1 <= J1` and `J+1 <= n_(S+1)`, and that a
+right-branch generator belongs to the center iff its underlying pair belongs
+to the row strip.
+
+`Case1CenterChartFamilyBoundary` packages supplied `ChartRegular` and
+`TransitionRegular` predicates for all generators in this finite center. The
+boundary projections give chart regularity for arbitrary members, transition
+regularity for arbitrary pairs, the old-exceptional-variable chart, and the
+displayed top-left row-strip pivot under the displayed entry bounds or the
+first-jump positivity package plus the column bound.
+
+This is an assumption boundary. It does not prove chart coverage, chart
+regularity, transition regularity, the source validity of the hidden old label
+represented by `Unit`, arbitrary row-strip pivot source-order formulas,
+chart-produced recurrence/exponent post-data, Jacobians, normal crossings, or
+RLCT extraction.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

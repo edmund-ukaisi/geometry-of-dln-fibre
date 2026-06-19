@@ -811,6 +811,20 @@ No such claim is formalisation-ready until both fields are filled.
   making chart regularity and transition regularity explicit supplied
   assumptions while proving only displayed-pivot nonemptiness under
   continuation.
+  Added Case 1 chart-family boundary names:
+  `case1CenterGenerators_nonempty`,
+  `case1StripEntries_nonempty_of_bounds`,
+  `mem_case1CenterGenerators_inr_iff`,
+  `Case1CenterChartFamilyBoundary`,
+  `Case1CenterChartFamilyBoundary.chart_regular_of_mem`,
+  `Case1CenterChartFamilyBoundary.transition_regular_of_mem`,
+  `Case1CenterChartFamilyBoundary.chart_regular_selectedOld`,
+  `Case1CenterChartFamilyBoundary.chart_regular_displayedPivot_of_bounds`, and
+  `Case1CenterChartFamilyBoundary.chart_regular_displayedPivot_of_firstJump_colBound`,
+  making Case 1 chart regularity and transition regularity explicit supplied
+  assumptions while proving only finite center nonemptiness/membership facts
+  and boundary projections. The `Unit` branch still hides an externally chosen
+  old label; its source validity remains outside the finite-center theorem.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

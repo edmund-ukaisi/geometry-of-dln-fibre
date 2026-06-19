@@ -200,7 +200,15 @@ on the session's original cwd.
    and the only proved source fact is nonemptiness under continuation via the
    displayed pivot. Next A4 target: instantiate or refine one of these boundary
    predicates only after a concrete source-order/atlas model is reproduced; do
-   not collapse the boundary package into a theorem of coverage.
+   not collapse the boundary package into a theorem of coverage. The Case 1
+   chart-family boundary package is now also Lean-proved as an assumption
+   interface: chart regularity and transition regularity are supplied
+   predicates over `case1CenterGenerators`; the proved facts are finite
+   nonemptiness, right-branch membership, and regularity projections for
+   supplied boundary packages. Next A4 target: reproduce the source-displayed
+   top-left selected-entry transition interface for Case 1(2)/Case 2 in source
+   order, keeping arbitrary selected-entry atlas coverage and the hidden
+   old-label semantics separate.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
