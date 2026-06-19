@@ -2,7 +2,8 @@
 
 ## Lean artifacts
 
-File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` @ `<pending Lean commit>`.
+File: `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` @
+`9a1c4c086acc7e99ef482a62cf9a061427a6f64a`.
 
 Names:
 
