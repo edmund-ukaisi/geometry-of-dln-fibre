@@ -300,6 +300,27 @@ Extended the matrix/chart layer with indexed and bundled forms:
   combines the bundled edge matrix form with the indexed unitriangular
   chart-preservation lemma.
 
-This is still a supplied-data theorem. It does not construct finite indexed
-complement data from Aoyagi's rank hypotheses, does not run the product-reduction
-induction, and does not state analytic/RLCT consequences.
+This is still a supplied-data theorem. It does not itself construct finite
+indexed complement data, does not run the product-reduction induction, and does
+not state analytic/RLCT consequences.
+
+## 2026-06-19 A2 finite chart-data existence
+
+Extended `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean` with the
+finite-dimensional existence layer:
+
+- `throughSubspaceComplement` and `throughSubspace_isCompl_complement` choose
+  and verify a complement to each transported through-subspace.
+- `throughSubspaceComplementIndex` indexes each chosen complement by
+  `Fin (Module.finrank K ...)`.
+- `throughSubspaceChartDataOfFiniteDimensional` constructs concrete
+  finite-indexed chart data for any chosen initial through-subspace `U₀`, using
+  `Module.finBasis` for the initial subspace and complements.
+- `exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional`
+  additionally chooses `U₀` complementary to the total kernel and preserves the
+  earlier `finrank U₀ = finrank range P` equality.
+
+This proves the elementary finite-dimensional supplied-data construction needed
+by the through-basis repair. It does not prove Aoyagi's fixed-coordinate chart
+claim, the paper-order rank/open-neighborhood bridge, the product-reduction
+induction, or any analytic/RLCT consequence.

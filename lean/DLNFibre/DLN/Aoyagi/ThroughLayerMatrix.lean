@@ -423,6 +423,67 @@ theorem toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_ze
 
 end ThroughSubspaceBlock
 
+section FiniteChartData
+
+universe u v
+
+variable {K : Type u} [Field K] {N : ℕ}
+  (V : Fin (N + 1) → Type v) [∀ i, AddCommGroup (V i)] [∀ i, Module K (V i)]
+  (A : ∀ i : Fin N, V i.castSucc →ₗ[K] V i.succ)
+
+/-- A chosen complement to a through-subspace at one layer. -/
+def throughSubspaceComplement (U₀ : Submodule K (V 0)) (j : Fin (N + 1)) :
+    Submodule K (V j) :=
+  Classical.choose (Submodule.exists_isCompl (throughSubspace V A U₀ j))
+
+/-- The chosen through-subspace complement is complementary to the through-subspace. -/
+theorem throughSubspace_isCompl_complement (U₀ : Submodule K (V 0)) (j : Fin (N + 1)) :
+    IsCompl (throughSubspace V A U₀ j) (throughSubspaceComplement V A U₀ j) :=
+  Classical.choose_spec (Submodule.exists_isCompl (throughSubspace V A U₀ j))
+
+/-- The finite index family for the chosen complements. -/
+abbrev throughSubspaceComplementIndex
+    (A : ∀ i : Fin N, V i.castSucc →ₗ[K] V i.succ)
+    (U₀ : Submodule K (V 0)) : Fin (N + 1) → Type :=
+  fun j ↦ Fin (Module.finrank K (throughSubspaceComplement V A U₀ j))
+
+/-- The chosen finite-dimensional chart data for a through-subspace chain. -/
+def throughSubspaceChartDataOfFiniteDimensional
+    [∀ j, FiniteDimensional K (V j)] (U₀ : Submodule K (V 0)) :
+    ThroughSubspaceChartData V A U₀
+      (Fin (Module.finrank K U₀)) (throughSubspaceComplementIndex V A U₀) :=
+  { W := throughSubspaceComplement V A U₀
+    hW := throughSubspace_isCompl_complement V A U₀
+    bU₀ := Module.finBasis K U₀
+    bW := fun j ↦ Module.finBasis K (throughSubspaceComplement V A U₀ j) }
+
+/-- Finite-dimensional layers supply finite-indexed through-subspace chart data. -/
+theorem nonempty_throughSubspaceChartDataOfFiniteDimensional
+    [∀ j, FiniteDimensional K (V j)] (U₀ : Submodule K (V 0)) :
+    Nonempty (ThroughSubspaceChartData V A U₀
+      (Fin (Module.finrank K U₀)) (throughSubspaceComplementIndex V A U₀)) :=
+  ⟨throughSubspaceChartDataOfFiniteDimensional V A U₀⟩
+
+/-- Finite-dimensional layers supply a kernel complement with finite-indexed chart data. -/
+theorem exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional
+    [∀ j, FiniteDimensional K (V j)] :
+    ∃ U₀ : Submodule K (V 0),
+      IsCompl U₀
+          (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))) ∧
+        Module.finrank K U₀ =
+          Module.finrank K
+            (LinearMap.range
+              (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))) ∧
+          Nonempty (ThroughSubspaceChartData V A U₀
+            (Fin (Module.finrank K U₀)) (throughSubspaceComplementIndex V A U₀)) := by
+  let P : V 0 →ₗ[K] V (Fin.last N) :=
+    chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N))
+  rcases exists_isCompl_ker_and_finrank_eq_range (P := P) with ⟨U₀, hU₀, hfinU₀⟩
+  exact ⟨U₀, by simpa [P] using hU₀, by simpa [P] using hfinU₀,
+    nonempty_throughSubspaceChartDataOfFiniteDimensional V A U₀⟩
+
+end FiniteChartData
+
 end Aoyagi
 end DLN
 end DLNFibre

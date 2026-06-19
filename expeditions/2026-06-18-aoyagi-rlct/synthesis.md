@@ -161,18 +161,27 @@ uses `throughSubspacePrefixEquiv` to transport one initial basis of `U₀` to
 both adjacent through-subspaces, so the top bases are compatible across the
 chain.
 
-Still open for this repair: bundle all local complement choices and complement
-bases across the chain, translate the source-to-target Lean orientation back to
-Aoyagi's paper order, and connect the matrix corollaries to the chart-local
-product-reduction identity. Full Theorem 3 remains blocked until those
-corollaries and the analytic certificate transport are built.
-
 The local complement choices are now packaged when supplied: `ThroughSubspaceChartData`
 stores complements, complement bases, and one initial through-basis, and
 `exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
 states the per-edge transformed matrix remains in identity-corner chart form.
-This still does not construct finite indexed chart data from Aoyagi's rank
-hypotheses, translate orientation, or run the full induction.
+The finite-dimensional existence layer is also Lean-proved:
+`throughSubspaceComplement` chooses per-layer complements,
+`throughSubspaceComplementIndex` indexes them by `Fin (finrank ...)`, and
+`throughSubspaceChartDataOfFiniteDimensional` builds concrete chart data using
+`Module.finBasis`. The theorem
+`exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional` chooses `U₀`
+complementary to the total kernel while preserving the already proved
+`finrank U₀ = finrank range P` equality. This is still an existential
+through-basis coordinate construction, not Aoyagi's printed fixed-coordinate
+chart theorem.
+
+Still open for this repair: translate the source-to-target Lean orientation
+back to Aoyagi's paper order, express the paper-side rank/open-chart hypotheses
+against these finite chart-data statements, and connect the matrix corollaries
+to the chart-local product-reduction identity. Full Theorem 3 remains blocked
+until those corollaries, the induction assembly, and analytic certificate
+transport are built.
 
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with

@@ -27,23 +27,27 @@
 >   `ThroughSubspaceChartData` bundles supplied complements and complement
 >   bases for every layer, and the bundled unitriangular corollary says the
 >   transformed edge matrix remains in some identity-corner chart form.
+>   Finite-dimensional construction of such supplied data is tracked in the
+>   separate chart-data existence card.
 > - **Proved.** The basis-coordinate bookkeeping: transported bases give the
 >   identity top-left block; transported subspace coordinates give the zero
 >   lower-left block. The direct-sum version uses
 >   `Submodule.prodEquivOfIsCompl` to build the ambient adapted bases. The
 >   prefix variant proves the adjacent top bases are compatible with one common
 >   initial through-basis. The chart-data variants remove repeated local
->   arguments but do not construct complements or bases.
+>   arguments; the separate finite chart-data theorem supplies one concrete
+>   choice of complements and bases under finite-dimensional hypotheses.
 > - **Assumed.** Finite/decidable source index types for `LinearMap.toMatrix`,
 >   a finite target quotient/complement index, explicit bases of the source
 >   through-subspace, and either quotient bases or complement bases. In the
 >   bundled version, the complement subspaces and complement bases are still
 >   inputs.
 > - **Cited.** None.
-> - **Deferred.** Constructing finite indexed complement data from only Aoyagi's
->   rank hypotheses; translating the source-to-target Lean orientation back to
->   Aoyagi's paper-order matrices; running the chart-local product-reduction
->   induction; full Aoyagi Theorem 3; and every analytic/RLCT consequence.
+> - **Deferred.** Translating the source-to-target Lean orientation back to
+>   Aoyagi's paper-order matrices; expressing the paper-side rank/open-chart
+>   hypotheses against the finite chart-data construction; running the
+>   chart-local product-reduction induction; full Aoyagi Theorem 3; and every
+>   analytic/RLCT consequence.
 > - **Kill conditions.** Arbitrary adapted bases give `[C B; 0 D]` with
 >   invertible `C`, not necessarily `[I B; 0 D]`. The identity corner requires
 >   transported through-subspace bases. This is still not a fixed-coordinate

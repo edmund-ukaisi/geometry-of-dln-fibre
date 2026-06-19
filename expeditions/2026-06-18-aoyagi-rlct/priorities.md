@@ -25,9 +25,10 @@ on the session's original cwd.
    and per-edge transported `sumQuot` / direct-sum matrix block forms are
    Lean-proved; prefix-transported through-bases and endpoint total-product
    normal form are Lean-proved; the unitriangular chart-form preservation
-   corollary is Lean-proved; supplied local complement data is bundled. Next
-   construct finite indexed chart data from rank hypotheses and assemble the
-   product-reduction induction.
+   corollary is Lean-proved; supplied local complement data is bundled; and
+   finite-dimensional Lean chains now supply finite-indexed chart data and a
+   kernel-complement version. Next bridge this to Aoyagi's paper-order
+   rank/open-chart hypotheses and assemble the product-reduction induction.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

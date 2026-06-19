@@ -85,8 +85,10 @@ No such claim is formalisation-ready until both fields are filled.
   transported-basis matrix block forms are proved; prefix-transported through
   bases, the endpoint total-product block form, and the local unitriangular
   chart-form preservation corollary are also proved. A supplied chart-data
-  bundle now packages local complements and complement bases across the chain.
-  The full source Theorem 3 claim remains blocked.
+  bundle now packages local complements and complement bases across the chain,
+  and finite-dimensional Lean chains now supply finite-indexed chart data,
+  including a version where the initial through-subspace is complementary to
+  the total kernel. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -99,7 +101,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
   `threads/03-block-product-reduction/reproduction-repair-a2.md`. Through-layer
-  basis repair checked by xhigh checker `Hooke`.
+  basis repair checked by xhigh checker `Hooke`; finite chart-data construction
+  rechecked by xhigh explorer `Arendt`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; local chart-stability
@@ -120,6 +123,11 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero`
   plus endpoint total-product theorem
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`
+  plus finite chart-data existence theorems
+  `DLNFibre.DLN.Aoyagi.throughSubspaceChartDataOfFiniteDimensional`,
+  `DLNFibre.DLN.Aoyagi.nonempty_throughSubspaceChartDataOfFiniteDimensional`,
+  and
+  `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional`
   in `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`; full Theorem 3 target
   blocked.
 - **Proved.** one chart-local algebraic induction-step identity over a
@@ -143,21 +151,25 @@ No such claim is formalisation-ready until both fields are filled.
   preserves existence of an identity-corner, zero-lower-left block form,
   including indexed versions for arbitrary finite basis index types. Also
   bundled supplied per-layer complement choices and complement bases in
-  `ThroughSubspaceChartData`.
+  `ThroughSubspaceChartData`. Also proved that finite-dimensional layers
+  supply concrete `Fin (finrank ...)`-indexed `ThroughSubspaceChartData` using
+  chosen complements and `Module.finBasis`, and that one may choose the initial
+  through-subspace complementary to the total kernel while preserving
+  `finrank U₀ = finrank range P`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
-  hypotheses `IsUnit C1.det` and `IsUnit A1.det`. The full product-reduction
-  theorem would additionally need rank/neighborhood, construction of finite
-  indexed chart data from source hypotheses, and product-reduction induction
-  assembly, not yet proved.
+  hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
+  hypotheses for the chart-data existence theorem. The full product-reduction
+  theorem would additionally need the paper-side rank parameter/open-neighborhood
+  bridge and product-reduction induction assembly, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
   as analytic theorems; instead, prove the elementary entry-ideal algebra and
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
-  local analytic/certificate transport remain open. The through-subspace theorem
-  still needs construction of the finite indexed chart data from rank
-  hypotheses and assembly of the chart-local product-reduction induction.
+  local analytic/certificate transport remain open. The through-subspace/chart
+  data layer still needs translation to Aoyagi's paper-order matrices and
+  connection to the chart-local product-reduction induction.
 
 ## Claim A3 - deepest singular point
 
