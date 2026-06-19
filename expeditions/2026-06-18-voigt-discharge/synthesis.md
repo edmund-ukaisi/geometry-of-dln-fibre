@@ -399,3 +399,13 @@ K2 (L2b via dμ_M=δ⁰, not minor pderivs — else re-imports KMS). [Operator c
 this is a reduction — continuing the drive, no re-interrupt for good news.]
 - 2026-06-19: thread 21 CLOSED — route (a), KMS avoided. Next: de-risk L6.2 (the box-move generation, K1) —
   design+stress-test the degeneration induction + the explicit box-move family, then build L6.1/L6.2.
+
+## L6 DEGENERATION sized [2026-06-19, thread 22]
+L6.1 box-move family CERTIFIED (explicit `F(t)`, sympy-verified; rank drop `[a≤i<c]·[b<j≤e]`; perturb one
+recombination arrow by `[t,1]`; `t≠0` upstairs orbit via base-change-to-dirSum, `t=0` downstairs, L6.0 ⟹ closure).
+L6.2 generation: **K1 fires (scoped)** — move-existence = Abeasis–Del Fra **cover-classification** (covers = linked
+box moves), a **2–3 module combinatorial sub-library**, NOT a diff-induction. Within "build it" scope (refinement of
+the known-hard L6, not a new sub-library). Route: maximal `u∈[s,r)` + cover-classification. Full: `threads/22-…/findings.md`.
+**Next: build L6.1** (certified family — concrete progress + de-risks the L6.0+family degeneration in Lean), then
+L6.2 (cover-classification combinatorics on rank patterns), then L6.3/6.4/L1/L2b/L3/assembly/L7.
+- 2026-06-19: thread 22 CLOSED — L6.1 certified, L6.2 = 2–3 module cover-classification. Next: build L6.1.
