@@ -337,6 +337,19 @@ interface without surfacing it.
 	  `J+1..mu_S` separate from actual-width residual columns `J+1..n_(S+1)`, and
 	  counts the selected variable once in the updated weights `u*b_i`. The Case
 	  2 comparability sentence remains outside this bridge.
+  The Case 2 recurrence-weight update is now Lean-proved conditionally:
+  advancing the introduced-label finite domain from `(S,J)` to `(S,J+1)` adds
+  exactly the new label `(S,J+1)` when it is source-valid; inserting a new label
+  at recurrence level `J` multiplies the step factor at `J` by `u` and leaves
+  other step factors unchanged; hence a supplied post-state satisfying those
+  old/new recurrence-data assumptions has `post.weight i = u * pre.weight i`
+  for every `J+1 <= i`. The source-facing wrapper
+  `CorrectedCase2NewLabelCertificate.case2_weight_succ_current_eq_newVar_mul`
+  packages this against the corrected new-label certificate, and the residual
+  flatness consequence preserves displayed Case 2 flat row weights after common
+  multiplication by `u`. This still does not prove chart production, the
+  printed vector repair, comparability, exponent updates, transition
+  invariants, normal crossings, or RLCT extraction.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

@@ -390,6 +390,14 @@ residual-block center is also recorded as the finite product set
 `J+1..n_(S+1)`; the displayed source pivot belongs under the continuation
 bound.  This is not a chart-cover theorem.
 
+Lean also now proves the conditional recurrence-weight update for this
+`J`-advance: if a supplied successor recurrence state preserves old introduced
+label levels and variables, assigns `(S,J+1)` level `J`, and assigns it
+variable `u`, then every post weight from `J+1` onward is `u` times the old
+weight.  Under the old Case 2 gap, the displayed residual-row weights remain
+flat after this common multiplication.  This is still post-data bookkeeping,
+not proof that the chart produces the post-state.
+
 ## Divisibility obligation for `P`
 
 Both pivot branches define a lower-unitriangular matrix `P` with entries

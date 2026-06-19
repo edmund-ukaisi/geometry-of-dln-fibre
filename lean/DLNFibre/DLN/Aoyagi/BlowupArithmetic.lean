@@ -524,6 +524,41 @@ theorem introducedLabel_succ_iff
     · exact introducedLabel_mono_J (by omega : J ≤ J + 1) hOld
     · exact ⟨hlabel, Or.inr ⟨hs, by omega⟩⟩
 
+/-- Advancing `J` adds exactly the next current-layer label to the finite domain,
+provided that label is source-valid. -/
+theorem introducedLabelFinset_succ_eq_insert
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : actualWidthLabel L n S (J + 1)) :
+    introducedLabelFinset L n S (J + 1) =
+      insert (Sigma.mk S (J + 1)) (introducedLabelFinset L n S J) := by
+  ext p
+  constructor
+  · intro hp
+    have hintro : introducedLabel L n S (J + 1) p.1 p.2 :=
+      (mem_introducedLabelFinset.mp hp)
+    rcases introducedLabel_succ_cases hintro with hOld | hnew'
+    · exact Finset.mem_insert_of_mem (mem_introducedLabelFinset.mpr hOld)
+    · rcases hnew' with ⟨hs, hk⟩
+      rcases p with ⟨s, k⟩
+      simp only [Finset.mem_insert, Sigma.mk.injEq, heq_eq_eq] at hs hk ⊢
+      exact Or.inl ⟨hs, hk⟩
+  · intro hp
+    rcases (Finset.mem_insert.mp hp) with hpnew | hpold
+    · subst hpnew
+      exact mem_introducedLabelFinset.mpr
+        ⟨hnew, Or.inr ⟨rfl, le_rfl⟩⟩
+    · exact mem_introducedLabelFinset.mpr
+        (introducedLabel_mono_J (by omega : J ≤ J + 1)
+          (mem_introducedLabelFinset.mp hpold))
+
+/-- The would-be new current-layer label is not already in the previous
+introduced-label finite domain. -/
+theorem not_mem_introducedLabelFinset_case2_new_before
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ) :
+    Sigma.mk S (J + 1) ∉ introducedLabelFinset L n S J := by
+  rw [mem_introducedLabelFinset]
+  exact not_introducedLabel_case2_new_before L n S J
+
 /-- Terminal-exponent/minimum certificates for all labels introduced at a state. -/
 structure IntroducedLabelExponentCertificates
     (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
@@ -1490,6 +1525,135 @@ theorem case2Gap_of_leastValueGap
     rw [hinv.leastValue_eq_level hintro]
     exact_mod_cast hlevel.2⟩
 
+/-- Case 2 successor recurrence state obtained by adding the new label
+`(S,J+1)` at level `J` with selected variable `u`.
+
+This is only a named post-data package; it does not assert that a blow-up chart
+has produced the post-state. -/
+def case2Succ {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α) :
+    IntroducedLabelRecurrenceState L n S (J + 1) α where
+  level s k := if s = S ∧ k = J + 1 then J else state.level s k
+  var s k := if s = S ∧ k = J + 1 then u else state.var s k
+
+@[simp] theorem case2Succ_level_new
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α) :
+    (state.case2Succ u).level S (J + 1) = J := by
+  simp [case2Succ]
+
+@[simp] theorem case2Succ_var_new
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α) :
+    (state.case2Succ u).var S (J + 1) = u := by
+  simp [case2Succ]
+
+theorem case2Succ_level_of_ne
+    {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    (hne : ¬ (s = S ∧ k = J + 1)) :
+    (state.case2Succ u).level s k = state.level s k := by
+  simp [case2Succ, hne]
+
+theorem case2Succ_var_of_ne
+    {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    (hne : ¬ (s = S ∧ k = J + 1)) :
+    (state.case2Succ u).var s k = state.var s k := by
+  simp [case2Succ, hne]
+
+/-- Adding the corrected Case 2 new label at level `J` preserves the Case 2 gap
+for the successor state. -/
+theorem case2Succ_case2Gap
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    (hgap : state.case2Gap) :
+    (state.case2Succ u).case2Gap := by
+  intro s k hintro hbad
+  rcases introducedLabel_succ_cases hintro with hOld | hnew
+  · have hne : ¬ (s = S ∧ k = J + 1) := by
+      rintro ⟨rfl, rfl⟩
+      rcases hOld.2 with hlt | ⟨_hs, hk⟩
+      · omega
+      · omega
+    have hlevel := state.case2Succ_level_of_ne u hne
+    have hbadOld : J + 1 ≤ state.level s k ∧ state.level s k < prefixMinNat n S := by
+      constructor
+      · rw [← hlevel]
+        omega
+      · rw [← hlevel]
+        exact hbad.2
+    exact hgap hOld hbadOld
+  · rcases hnew with ⟨rfl, rfl⟩
+    simpa using hbad.1
+
+/-- Integer least-value form of the Case 2 successor gap.  Old labels keep
+their least values, while the corrected new label has least value `J`. -/
+theorem case2IntroducedLabelLeastValueGap_succ
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hgap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (hl_old :
+      ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k)
+    (hl_new : leastValue' S (J + 1) = (J : ℤ)) :
+    case2IntroducedLabelLeastValueGap L n S (J + 1) leastValue' := by
+  intro s k hintro hbad
+  rcases introducedLabel_succ_cases hintro with hOld | hnew
+  · have hbadOld : (J + 1 : ℤ) ≤ leastValue s k ∧
+        leastValue s k < (prefixMinNat n S : ℤ) := by
+      constructor
+      · have hle : (J + 1 : ℤ) ≤ leastValue' s k := by omega
+        rw [hl_old hOld] at hle
+        exact hle
+      · have hlt := hbad.2
+        rw [hl_old hOld] at hlt
+        exact hlt
+    exact hgap hOld hbadOld
+  · rcases hnew with ⟨rfl, rfl⟩
+    rw [hl_new] at hbad
+    omega
+
+/-- The equality bridge `leastValue = level` is preserved by the corrected Case
+2 successor post-data. -/
+theorem case2Succ_levelInvariants
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    {leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hinv : IntroducedLabelLevelInvariants L n S J state.level leastValue)
+    (hl_old :
+      ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k)
+    (hl_new : leastValue' S (J + 1) = (J : ℤ)) :
+    IntroducedLabelLevelInvariants L n S (J + 1)
+      (state.case2Succ u).level leastValue' where
+  leastValue_eq_level := by
+    intro s k hintro
+    rcases introducedLabel_succ_cases hintro with hOld | hnew
+    · have hne : ¬ (s = S ∧ k = J + 1) := by
+        rintro ⟨rfl, rfl⟩
+        rcases hOld.2 with hlt | ⟨_hs, hk⟩
+        · omega
+        · omega
+      rw [state.case2Succ_level_of_ne u hne, hl_old hOld, hinv.leastValue_eq_level hOld]
+    · rcases hnew with ⟨rfl, rfl⟩
+      rw [hl_new]
+      simp
+
+/-- Least-value successor data can also feed the recurrence-state Case 2 gap
+through the equality bridge. -/
+theorem case2Succ_case2Gap_of_leastValueGap
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    {leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hinv : IntroducedLabelLevelInvariants L n S J state.level leastValue)
+    (hgap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (hl_old :
+      ∀ {s k}, introducedLabel L n S J s k → leastValue' s k = leastValue s k)
+    (hl_new : leastValue' S (J + 1) = (J : ℤ)) :
+    (state.case2Succ u).case2Gap :=
+  case2Gap_of_leastValueGap (state.case2Succ u)
+    (state.case2Succ_levelInvariants u hinv hl_old hl_new)
+    (case2IntroducedLabelLeastValueGap_succ hgap hl_old hl_new)
+
 end IntroducedLabelRecurrenceState
 
 section MonomialRecurrence
@@ -1549,6 +1713,44 @@ theorem monomialRec_eq_of_step_eq_one_on_Ico
   · simp
   · intro r hr
     exact hstep (a + r) (by omega) (by omega)
+
+/-- Two monomial recurrences agree up to level `i` if their step factors agree
+strictly before `i`. -/
+theorem monomialRec_eq_of_step_eq_on_lt
+    (step step' : ℕ → α) {i : ℕ}
+    (hstep : ∀ r, r < i → step' r = step r) :
+    monomialRec step' i = monomialRec step i := by
+  induction i with
+  | zero => simp
+  | succ i ih =>
+      rw [monomialRec_succ, monomialRec_succ, hstep i (Nat.lt_succ_self i)]
+      rw [ih (fun r hr ↦ hstep r (Nat.lt_trans hr (Nat.lt_succ_self i)))]
+
+/-- If one recurrence step at level `J` gains a factor `u` and all other steps
+are unchanged, then all later recurrence weights gain the same factor. -/
+theorem monomialRec_eq_mul_of_step_eq_mul_at
+    (step step' : ℕ → α) (u : α) (J : ℕ)
+    (hstepJ : step' J = u * step J)
+    (hstep_ne : ∀ r, r ≠ J → step' r = step r) :
+    ∀ i, J + 1 ≤ i → monomialRec step' i = u * monomialRec step i := by
+  intro i hi
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hi
+  induction d with
+  | zero =>
+      calc
+        monomialRec step' (J + 1)
+            = step' J * monomialRec step' J := rfl
+        _ = (u * step J) * monomialRec step J := by
+              rw [hstepJ]
+              rw [monomialRec_eq_of_step_eq_on_lt step step'
+                (fun r hr ↦ hstep_ne r (by omega))]
+        _ = u * monomialRec step (J + 1) := by
+              rw [monomialRec_succ]
+              ac_rfl
+  | succ d ih =>
+      rw [Nat.add_succ, monomialRec_succ, ih (by omega)]
+      rw [hstep_ne (J + 1 + d) (by omega), monomialRec_succ]
+      ac_rfl
 
 /-- Every later monomial recurrence term is divisible by every earlier one. -/
 theorem monomialRec_dvd_of_le (step : ℕ → α) {a b : ℕ} (h : a ≤ b) :
@@ -1654,6 +1856,75 @@ def levelProductStep {β : Type*} (labels : Finset β)
     (level : β → ℕ) (var : β → α) (r : ℕ) : α :=
   (labels.filter (fun p ↦ level p = r)).prod var
 
+/-- Inserting a new label at the queried level multiplies that recurrence factor
+by the new variable, provided old labels keep their level and variable data. -/
+theorem levelProductStep_insert_eq_mul_of_new
+    {β : Type*} [DecidableEq β] (labels : Finset β) {a : β}
+    (ha : a ∉ labels) (level level' : β → ℕ) (var var' : β → α)
+    (r : ℕ) (u : α)
+    (hlevel_a : level' a = r) (hvar_a : var' a = u)
+    (hlevel_old : ∀ p, p ∈ labels → level' p = level p)
+    (hvar_old : ∀ p, p ∈ labels → var' p = var p) :
+    levelProductStep (insert a labels) level' var' r =
+      u * levelProductStep labels level var r := by
+  have hfilter_old :
+      labels.filter (fun p ↦ level' p = r) =
+        labels.filter (fun p ↦ level p = r) := by
+    ext p
+    by_cases hp : p ∈ labels
+    · simp [hp, hlevel_old p hp]
+    · simp [hp]
+  have ha_filter : a ∉ labels.filter (fun p ↦ level' p = r) := by
+    intro hp
+    exact ha ((Finset.mem_filter.mp hp).1)
+  calc
+    levelProductStep (insert a labels) level' var' r
+        = (insert a (labels.filter (fun p ↦ level' p = r))).prod var' := by
+          rw [levelProductStep, Finset.filter_insert]
+          simp [hlevel_a]
+    _ = u * (labels.filter (fun p ↦ level' p = r)).prod var' := by
+          rw [Finset.prod_insert ha_filter, hvar_a]
+    _ = u * (labels.filter (fun p ↦ level p = r)).prod var' := by
+          rw [hfilter_old]
+    _ = u * (labels.filter (fun p ↦ level p = r)).prod var := by
+          congr 1
+          apply Finset.prod_congr rfl
+          intro p hp
+          exact hvar_old p ((Finset.mem_filter.mp hp).1)
+
+/-- Inserting a new label at a different level leaves the queried recurrence
+factor unchanged, provided old labels keep their level and variable data. -/
+theorem levelProductStep_insert_eq_of_ne
+    {β : Type*} [DecidableEq β] (labels : Finset β) {a : β}
+    (level level' : β → ℕ) (var var' : β → α)
+    {r newLevel : ℕ}
+    (hlevel_a : level' a = newLevel) (hne : r ≠ newLevel)
+    (hlevel_old : ∀ p, p ∈ labels → level' p = level p)
+    (hvar_old : ∀ p, p ∈ labels → var' p = var p) :
+    levelProductStep (insert a labels) level' var' r =
+      levelProductStep labels level var r := by
+  have ha_ne : level' a ≠ r := by
+    rw [hlevel_a]
+    exact fun h ↦ hne h.symm
+  have hfilter_old :
+      labels.filter (fun p ↦ level' p = r) =
+        labels.filter (fun p ↦ level p = r) := by
+    ext p
+    by_cases hp : p ∈ labels
+    · simp [hp, hlevel_old p hp]
+    · simp [hp]
+  calc
+    levelProductStep (insert a labels) level' var' r
+        = (labels.filter (fun p ↦ level' p = r)).prod var' := by
+          rw [levelProductStep, Finset.filter_insert]
+          simp [ha_ne]
+    _ = (labels.filter (fun p ↦ level p = r)).prod var' := by
+          rw [hfilter_old]
+    _ = (labels.filter (fun p ↦ level p = r)).prod var := by
+          apply Finset.prod_congr rfl
+          intro p hp
+          exact hvar_old p ((Finset.mem_filter.mp hp).1)
+
 namespace IntroducedLabelRecurrenceState
 
 /-- The recurrence factor obtained from the introduced labels of a packaged state. -/
@@ -1674,7 +1945,127 @@ def case2ResidualRowWeight {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
     (i : Case2ResidualRowIndex n S J) : α :=
   state.weight (case2ResidualRowLevel n S J i)
 
+/-- If a supplied Case 2 successor state keeps all old introduced-label data and
+adds `(S,J+1)` at level `J` with variable `u`, then the recurrence factor at
+level `J` gains exactly that factor. -/
+theorem step_succ_current_eq_new_mul
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : actualWidthLabel L n S (J + 1))
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (state' : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (u : α)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.level s k = state.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.var s k = state.var s k)
+    (hlevel_new : state'.level S (J + 1) = J)
+    (hvar_new : state'.var S (J + 1) = u) :
+    state'.step J = u * state.step J := by
+  rw [step, step, introducedLabelFinset_succ_eq_insert hnew]
+  exact levelProductStep_insert_eq_mul_of_new
+    (introducedLabelFinset L n S J)
+    (a := Sigma.mk S (J + 1))
+    (not_mem_introducedLabelFinset_case2_new_before L n S J)
+    (fun p : Σ _ : ℕ, ℕ ↦ state.level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ state'.level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ state.var p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ state'.var p.1 p.2)
+    J u hlevel_new hvar_new
+    (fun p hp ↦ hlevel_old (mem_introducedLabelFinset.mp hp))
+    (fun p hp ↦ hvar_old (mem_introducedLabelFinset.mp hp))
+
+/-- Under the same supplied Case 2 successor post-data, recurrence factors away
+from level `J` are unchanged. -/
+theorem step_succ_current_eq_of_ne
+    {L : ℕ} {n : ℕ → ℕ} {S J r : ℕ}
+    (hnew : actualWidthLabel L n S (J + 1))
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (state' : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.level s k = state.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.var s k = state.var s k)
+    (hlevel_new : state'.level S (J + 1) = J)
+    (hne : r ≠ J) :
+    state'.step r = state.step r := by
+  rw [step, step, introducedLabelFinset_succ_eq_insert hnew]
+  exact levelProductStep_insert_eq_of_ne
+    (introducedLabelFinset L n S J)
+    (a := Sigma.mk S (J + 1))
+    (fun p : Σ _ : ℕ, ℕ ↦ state.level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ state'.level p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ state.var p.1 p.2)
+    (fun p : Σ _ : ℕ, ℕ ↦ state'.var p.1 p.2)
+    hlevel_new hne
+    (fun p hp ↦ hlevel_old (mem_introducedLabelFinset.mp hp))
+    (fun p hp ↦ hvar_old (mem_introducedLabelFinset.mp hp))
+
+/-- A supplied Case 2 successor state agrees with the old recurrence weights
+up to the pivot level. -/
+theorem weight_succ_current_eq_of_le
+    {L : ℕ} {n : ℕ → ℕ} {S J i : ℕ}
+    (hnew : actualWidthLabel L n S (J + 1))
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (state' : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.level s k = state.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.var s k = state.var s k)
+    (hlevel_new : state'.level S (J + 1) = J)
+    (hi : i ≤ J) :
+    state'.weight i = state.weight i := by
+  exact monomialRec_eq_of_step_eq_on_lt state.step state'.step
+    (fun r hr ↦ state.step_succ_current_eq_of_ne hnew state' hlevel_old hvar_old
+      hlevel_new (by omega))
+
+/-- A supplied Case 2 successor state has Aoyagi's displayed row-weight update:
+from row `J+1` onward, every recurrence weight is multiplied by the new selected
+variable. -/
+theorem weight_succ_current_eq_new_mul_of_ge
+    {L : ℕ} {n : ℕ → ℕ} {S J i : ℕ}
+    (hnew : actualWidthLabel L n S (J + 1))
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (state' : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (u : α)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.level s k = state.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.var s k = state.var s k)
+    (hlevel_new : state'.level S (J + 1) = J)
+    (hvar_new : state'.var S (J + 1) = u)
+    (hi : J + 1 ≤ i) :
+    state'.weight i = u * state.weight i :=
+  monomialRec_eq_mul_of_step_eq_mul_at state.step state'.step u J
+    (state.step_succ_current_eq_new_mul hnew state' u hlevel_old hvar_old
+      hlevel_new hvar_new)
+    (fun r hr ↦ state.step_succ_current_eq_of_ne (r := r) hnew state'
+      hlevel_old hvar_old hlevel_new hr)
+    i hi
+
 end IntroducedLabelRecurrenceState
+
+/-- Source-facing Case 2 recurrence-weight update: if a supplied post-state
+keeps old introduced-label recurrence data and assigns the corrected new label
+`(S,J+1)` to level `J` with variable `u`, then Aoyagi's displayed
+`b'_i = u*b_i` recurrence update holds for every row from `J+1` onward.
+
+This is conditional recurrence bookkeeping; it does not prove that a blow-up
+chart produces the post-state. -/
+theorem CorrectedCase2NewLabelCertificate.case2_weight_succ_current_eq_newVar_mul
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (state' : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (u : α)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.level s k = state.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.var s k = state.var s k)
+    (hlevel_new : state'.level S (J + 1) = J)
+    (hvar_new : state'.var S (J + 1) = u) :
+    ∀ i, J + 1 ≤ i → state'.weight i = u * state.weight i :=
+  fun i hi ↦ state.weight_succ_current_eq_new_mul_of_ge hnew.introduced.1
+    (i := i) state' u hlevel_old hvar_old hlevel_new hvar_new hi
 
 /-- If no label in a finite set has level `r`, the level-product factor is `1`. -/
 theorem levelProductStep_eq_one_of_forall_ne
@@ -1820,6 +2211,31 @@ theorem case2ResidualRowWeight_eq_displayedPivot_of_case2Gap
       (case2DisplayedPivotRow n hS hcont)]
 
 end IntroducedLabelRecurrenceState
+
+/-- Source-facing consequence of the Case 2 recurrence-weight update: if the old
+state satisfies the Case 2 gap, then the supplied successor weights are flat
+across the old displayed residual rows after the common multiplication by the
+new selected variable. -/
+theorem CorrectedCase2NewLabelCertificate.case2_weight_succ_current_residual_flat_of_preGap
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (state' : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (u : α)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.level s k = state.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → state'.var s k = state.var s k)
+    (hlevel_new : state'.level S (J + 1) = J)
+    (hvar_new : state'.var S (J + 1) = u)
+    (hgap : state.case2Gap) (i : Case2ResidualRowIndex n S J) :
+    state'.weight (case2ResidualRowLevel n S J i) = state'.weight (J + 1) := by
+  have hupdate :=
+    hnew.case2_weight_succ_current_eq_newVar_mul state state' u
+      hlevel_old hvar_old hlevel_new hvar_new
+  rw [hupdate (case2ResidualRowLevel n S J i) (case2ResidualRowLevel_ge n S J i),
+    hupdate (J + 1) le_rfl,
+    state.case2ResidualRow_weight_eq_pivot_of_case2Gap hgap i]
 
 end MonomialRecurrence
 

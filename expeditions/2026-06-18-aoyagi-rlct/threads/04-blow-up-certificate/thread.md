@@ -590,6 +590,39 @@ comparability sentence follows. It also does not resolve arbitrary pivots,
 regularity/Jacobian facts, exponent updates, transition invariants, termination,
 normal crossings, RLCT extraction, or the printed Case 2 vector repair.
 
+## 2026-06-19 Lean Case 2 recurrence-weight update
+
+Reproduction: `reproduction-case2-recurrence-weight-update-a4.md`.
+Statement card: `statement-card-a4-case2-recurrence-weight-update.md`.
+Review artifact: `review-case2-recurrence-weight-update-a4.md`.
+
+Lean now proves the conditional recurrence-weight update behind Aoyagi's
+displayed Case 2 line `b'_i = u*b_i`. The finite-domain lemma
+`introducedLabelFinset_succ_eq_insert` proves that advancing from `(S,J)` to
+`(S,J+1)` adds exactly `(S,J+1)` to the introduced-label finite set, when that
+label is source-valid. The finite product lemmas
+`levelProductStep_insert_eq_mul_of_new` and `levelProductStep_insert_eq_of_ne`,
+combined with `monomialRec_eq_mul_of_step_eq_mul_at`, show that a supplied
+post-state with the new label at level `J` and variable `u` has
+`post.weight i = u * pre.weight i` for every `J+1 <= i`.
+
+The source-facing theorem
+`CorrectedCase2NewLabelCertificate.case2_weight_succ_current_eq_newVar_mul`
+packages this against the corrected new-label certificate. The residual-flat
+consequence
+`CorrectedCase2NewLabelCertificate.case2_weight_succ_current_residual_flat_of_preGap`
+says that if the old state satisfies the Case 2 gap, then the supplied
+successor weights are flat across the old displayed residual-row range after
+common multiplication by `u`.
+
+This is still recurrence bookkeeping. It assumes the supplied post-state keeps
+old introduced-label recurrence data unchanged and assigns the new label data
+as specified; it does not prove that the blow-up chart produces that post-state.
+It also does not repair the printed Case 2 vector mismatch, prove source
+comparability, justify double-counting the standalone outside `u`, or prove
+chart coverage, regularity/Jacobian facts, exponent updates, transition
+invariants, termination, normal crossings, or RLCT extraction.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

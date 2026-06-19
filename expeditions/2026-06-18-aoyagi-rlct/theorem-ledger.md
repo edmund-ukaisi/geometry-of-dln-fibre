@@ -448,6 +448,38 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-recurrence-state-interface-a4.md`.
 
+Latest A4 update: the conditional Case 2 recurrence-weight update has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. Proved Lean names include
+`introducedLabelFinset_succ_eq_insert`,
+`not_mem_introducedLabelFinset_case2_new_before`,
+`IntroducedLabelRecurrenceState.case2Succ`,
+`IntroducedLabelRecurrenceState.case2Succ_case2Gap`,
+`IntroducedLabelRecurrenceState.case2IntroducedLabelLeastValueGap_succ`,
+`IntroducedLabelRecurrenceState.case2Succ_levelInvariants`,
+`IntroducedLabelRecurrenceState.case2Succ_case2Gap_of_leastValueGap`,
+`monomialRec_eq_of_step_eq_on_lt`,
+`monomialRec_eq_mul_of_step_eq_mul_at`,
+`levelProductStep_insert_eq_mul_of_new`,
+`levelProductStep_insert_eq_of_ne`,
+`IntroducedLabelRecurrenceState.step_succ_current_eq_new_mul`,
+`IntroducedLabelRecurrenceState.step_succ_current_eq_of_ne`,
+`IntroducedLabelRecurrenceState.weight_succ_current_eq_of_le`,
+`IntroducedLabelRecurrenceState.weight_succ_current_eq_new_mul_of_ge`,
+`CorrectedCase2NewLabelCertificate.case2_weight_succ_current_eq_newVar_mul`,
+and
+`CorrectedCase2NewLabelCertificate.case2_weight_succ_current_residual_flat_of_preGap`.
+This proves that if a supplied successor recurrence state keeps old
+introduced-label levels and variables and assigns the new label `(S,J+1)` level
+`J` and variable `u`, then every post weight from `J+1` onward is `u` times the
+old weight. Under the old Case 2 gap, the displayed residual-row weights remain
+flat after this common multiplication. This is not a chart-production theorem,
+does not repair the printed Case 2 vector mismatch, and does not prove source
+comparability, exponent updates, transition invariants, normal crossings, or
+RLCT extraction. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-recurrence-weight-update.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-recurrence-weight-update-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
