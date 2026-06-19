@@ -468,6 +468,191 @@ theorem productReduction_chartLocalInductionStep_fromBlocks_indexed
     _ = fromBlocks (C1 * A1) 0 0 (D * (A4 - A3 * A1⁻¹ * A2)) := by
       rw [hSchur]
 
+/-- One suffix step for chart-local product reduction with a supplied transformed edge. -/
+theorem productReduction_chartLocal_suffixStep_fromBlocks_indexed
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π] [DecidableEq π]
+    [Fintype μ] [Fintype ν] [DecidableEq ν]
+    (Ptail : Matrix (ρ ⊕ π) (ρ ⊕ μ) K)
+    (E M : Matrix (ρ ⊕ μ) (ρ ⊕ ν) K)
+    (Lprev : Matrix (ρ ⊕ π) (ρ ⊕ π) K)
+    (Rprev : Matrix (ρ ⊕ μ) (ρ ⊕ μ) K)
+    (Ctop : Matrix ρ ρ K) (Dprev : Matrix π μ K)
+    (hPtail : Lprev * Ptail * Rprev = fromBlocks Ctop 0 0 Dprev)
+    (hE : E = Rprev * M)
+    (hCtop : IsUnit Ctop.det) (hM : identityCornerDetChart M) :
+    let Lstep : Matrix (ρ ⊕ π) (ρ ⊕ π) K :=
+      fromBlocks (1 : Matrix ρ ρ K) 0
+        (-(Dprev * lowerLeftBlock M * (Ctop * topLeftCorner M)⁻¹)) 1
+    let Rstep : Matrix (ρ ⊕ ν) (ρ ⊕ ν) K :=
+      fromBlocks (1 : Matrix ρ ρ K) (-((topLeftCorner M)⁻¹ * upperRightBlock M)) 0 1
+    Lstep * Lprev * (Ptail * E) * Rstep =
+      fromBlocks (Ctop * topLeftCorner M) 0 0 (Dprev * schurResidualBlock M) := by
+  dsimp
+  have hblocks :
+      fromBlocks (topLeftCorner M) (upperRightBlock M) (lowerLeftBlock M)
+        (lowerRightBlock M) = M :=
+    fromBlocks_corners M
+  have hstep := productReduction_chartLocalInductionStep_fromBlocks_indexed
+    Ctop Dprev (topLeftCorner M) (upperRightBlock M) (lowerLeftBlock M)
+    (lowerRightBlock M) hCtop hM
+  calc
+    fromBlocks (1 : Matrix ρ ρ K) 0
+          (-(Dprev * lowerLeftBlock M * (Ctop * topLeftCorner M)⁻¹)) 1 *
+        Lprev * (Ptail * E) *
+          fromBlocks (1 : Matrix ρ ρ K) (-((topLeftCorner M)⁻¹ * upperRightBlock M)) 0 1
+        =
+      fromBlocks (1 : Matrix ρ ρ K) 0
+          (-(Dprev * lowerLeftBlock M * (Ctop * topLeftCorner M)⁻¹)) 1 *
+        ((Lprev * Ptail * Rprev) * M) *
+          fromBlocks (1 : Matrix ρ ρ K) (-((topLeftCorner M)⁻¹ * upperRightBlock M)) 0 1 := by
+        rw [hE]
+        simp only [Matrix.mul_assoc]
+    _ =
+      fromBlocks (1 : Matrix ρ ρ K) 0
+          (-(Dprev * lowerLeftBlock M * (Ctop * topLeftCorner M)⁻¹)) 1 *
+        (fromBlocks Ctop 0 0 Dprev * M) *
+          fromBlocks (1 : Matrix ρ ρ K) (-((topLeftCorner M)⁻¹ * upperRightBlock M)) 0 1 := by
+        rw [hPtail]
+    _ =
+      fromBlocks (1 : Matrix ρ ρ K) 0
+          (-(Dprev * lowerLeftBlock M * (Ctop * topLeftCorner M)⁻¹)) 1 *
+        (fromBlocks Ctop 0 0 Dprev *
+          fromBlocks (topLeftCorner M) (upperRightBlock M) (lowerLeftBlock M)
+            (lowerRightBlock M)) *
+          fromBlocks (1 : Matrix ρ ρ K) (-((topLeftCorner M)⁻¹ * upperRightBlock M)) 0 1 := by
+        rw [hblocks]
+    _ = fromBlocks (Ctop * topLeftCorner M) 0 0
+          (Dprev * schurResidualBlock M) := by
+        simpa [schurResidualBlock] using hstep
+
+/-- Abstract suffix-chain block diagonalisation on explicit determinant charts. -/
+theorem productReduction_chartLocal_suffixChain_blockDiagonal_indexed
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hPproof : ∀ {i j : Fin (N + 1)} (h h' : i ≤ j), P i j h = P i j h')
+    (hself : ∀ j : Fin (N + 1), P j j le_rfl = 1)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    (hchart : ∀ (p : Fin N) (Bprev : Matrix ρ (κ p.succ) K),
+      identityCornerDetChart
+        (fromBlocks (1 : Matrix ρ ρ K) Bprev 0
+          (1 : Matrix (κ p.succ) (κ p.succ) K) * E p)) :
+    ∀ i j : Fin (N + 1), ∀ hij : i ≤ j,
+      ∃ L : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K,
+        ∃ B : Matrix ρ (κ i) K,
+          ∃ Ctop : Matrix ρ ρ K,
+            ∃ D : Matrix (κ j) (κ i) K,
+              IsUnit L.det ∧ IsUnit Ctop.det ∧
+                L * P i j hij *
+                    fromBlocks (1 : Matrix ρ ρ K) (-B) 0
+                      (1 : Matrix (κ i) (κ i) K) =
+                  fromBlocks Ctop 0 0 D := by
+  intro i j hij
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    ∃ L : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K,
+      ∃ B : Matrix ρ (κ im) K,
+        ∃ Ctop : Matrix ρ ρ K,
+          ∃ D : Matrix (κ j) (κ im) K,
+            IsUnit L.det ∧ IsUnit Ctop.det ∧
+              L * P im j (Fin.val_fin_le.mpr hmj) *
+                  fromBlocks (1 : Matrix ρ ρ K) (-B) 0
+                    (1 : Matrix (κ im) (κ im) K) =
+                fromBlocks Ctop 0 0 D
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    refine ⟨1, 0, 1, 1, ?_, ?_, ?_⟩
+    · simp
+    · simp
+    · rw [hPproof (Fin.val_fin_le.mpr (le_rfl : j.val ≤ j.val)) le_rfl, hself j]
+      simp
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (hms.trans_lt j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        ∃ L : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K,
+          ∃ B : Matrix ρ (κ p.succ) K,
+            ∃ Ctop : Matrix ρ ρ K,
+              ∃ D : Matrix (κ j) (κ p.succ) K,
+                IsUnit L.det ∧ IsUnit Ctop.det ∧
+                  L * P p.succ j hpj *
+                      fromBlocks (1 : Matrix ρ ρ K) (-B) 0
+                        (1 : Matrix (κ p.succ) (κ p.succ) K) =
+                    fromBlocks Ctop 0 0 D := by
+      simpa [motive, p, hpj] using ih
+    rcases ih' with ⟨Lprev, Bprev, Cprev, Dprev, hLprev, hCprev, hprev⟩
+    let Rprev : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K :=
+      fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0
+        (1 : Matrix (κ p.succ) (κ p.succ) K)
+    let M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K :=
+      fromBlocks (1 : Matrix ρ ρ K) Bprev 0
+        (1 : Matrix (κ p.succ) (κ p.succ) K) * E p
+    let Lstep : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K :=
+      fromBlocks (1 : Matrix ρ ρ K) 0
+        (-(Dprev * lowerLeftBlock M * (Cprev * topLeftCorner M)⁻¹)) 1
+    let Bnext : Matrix ρ (κ p.castSucc) K :=
+      (topLeftCorner M)⁻¹ * upperRightBlock M
+    have hfactor : E p = Rprev * M := by
+      calc
+        E p = (1 : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K) * E p := by
+          rw [Matrix.one_mul]
+        _ =
+          (fromBlocks (1 : Matrix ρ ρ K) (-Bprev) 0
+              (1 : Matrix (κ p.succ) (κ p.succ) K) *
+            fromBlocks (1 : Matrix ρ ρ K) Bprev 0
+              (1 : Matrix (κ p.succ) (κ p.succ) K)) * E p := by
+            rw [upperUnitriangular_neg_mul_upperUnitriangular Bprev]
+        _ = Rprev * M := by
+            rw [Matrix.mul_assoc]
+    have hchartM : identityCornerDetChart M := by
+      exact hchart p Bprev
+    have hstepEq := productReduction_chartLocal_suffixStep_fromBlocks_indexed
+      (Ptail := P p.succ j hpj) (E := E p) (M := M) (Lprev := Lprev)
+      (Rprev := Rprev) (Ctop := Cprev) (Dprev := Dprev) hprev hfactor hCprev hchartM
+    have hLstep : IsUnit Lstep.det := by
+      exact (Matrix.isUnit_iff_isUnit_det (A := Lstep)).mp
+        ((Matrix.isUnit_fromBlocks_zero₁₂).2 ⟨isUnit_one, isUnit_one⟩)
+    have hLnext : IsUnit (Lstep * Lprev).det := by
+      simpa [Matrix.det_mul] using hLstep.mul hLprev
+    have hCnext : IsUnit (Cprev * topLeftCorner M).det := by
+      simpa [Matrix.det_mul] using hCprev.mul hchartM
+    have hcanon :
+        ∃ L : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K,
+          ∃ B : Matrix ρ (κ p.castSucc) K,
+            ∃ Ctop : Matrix ρ ρ K,
+              ∃ D : Matrix (κ j) (κ p.castSucc) K,
+                IsUnit L.det ∧ IsUnit Ctop.det ∧
+                  L * P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) *
+                      fromBlocks (1 : Matrix ρ ρ K) (-B) 0
+                        (1 : Matrix (κ p.castSucc) (κ p.castSucc) K) =
+                    fromBlocks Ctop 0 0 D := by
+      refine ⟨Lstep * Lprev, Bnext, Cprev * topLeftCorner M,
+        Dprev * schurResidualBlock M, hLnext, hCnext, ?_⟩
+      rw [hsuccRight p j hpj]
+      exact hstepEq
+    simpa [motive, p, hpj] using hcanon
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hij)
+  have hcanon' :
+      ∃ L : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K,
+        ∃ B : Matrix ρ (κ i) K,
+          ∃ Ctop : Matrix ρ ρ K,
+            ∃ D : Matrix (κ j) (κ i) K,
+              IsUnit L.det ∧ IsUnit Ctop.det ∧
+                L * P i j (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) *
+                    fromBlocks (1 : Matrix ρ ρ K) (-B) 0
+                      (1 : Matrix (κ i) (κ i) K) =
+                  fromBlocks Ctop 0 0 D := by
+    simpa [motive] using hcanon
+  rcases hcanon' with ⟨L, B, Ctop, D, hL, hCtop, hD⟩
+  refine ⟨L, B, Ctop, D, hL, hCtop, ?_⟩
+  rwa [hPproof hij (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij))]
+
 end InductionStep
 
 section SchurResidualRank

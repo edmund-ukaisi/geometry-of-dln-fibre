@@ -44,8 +44,11 @@ on the session's original cwd.
    basepoint certificate is Lean-proved in `BasepointCertificate.lean`. The
    fixed-basepoint variable-chain matrix layer is Lean-proved in
    `FixedBasepointChart.lean`, with determinant-chart and exact-rank hypotheses
-   explicit. Next iterate the chart-local product-reduction induction in those
-   fixed bases, still keeping exact-rank strata as explicit hypotheses.
+   explicit. The first fixed-base chart-local suffix step with a supplied
+   transformed edge is Lean-proved, and the all-layer explicit-chart
+   product-reduction theorem in fixed bases is Lean-proved. Next package the
+   transformed determinant-chart hypotheses over an actual fixed-coordinate
+   neighborhood, still keeping exact-rank strata as explicit hypotheses.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

@@ -98,6 +98,16 @@ theorem paperEndpointFixedBaseChainMapMatrix_self
     paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀ i i le_rfl = 1 := by
   rw [paperEndpointFixedBaseChainMapMatrix, chainMap_self, LinearMap.toMatrix_id]
 
+/-- Fixed-base variable chain-segment matrices are independent of the order proof. -/
+theorem paperEndpointFixedBaseChainMapMatrix_proof_irrel
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (i j : Fin (N + 1)) (hij hij' : i ≤ j) :
+    paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀ i j hij =
+      paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀ i j hij' := by
+  congr
+
 /-- In fixed basepoint bases, a one-edge segment is the corresponding fixed-base edge matrix. -/
 theorem paperEndpointFixedBaseChainMapMatrix_edge
     [∀ j, FiniteDimensional K (W j)]
@@ -161,6 +171,17 @@ theorem paperEndpointFixedBaseTotalMatrix_selfBase
       paperEndpointAdaptedTotalMatrix W B U₀ hU₀ :=
   rfl
 
+/-- A fixed-base variable edge matrix has the rank of the underlying variable edge map. -/
+theorem rank_paperEndpointFixedBaseEdgeMatrix_eq_finrank_range
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (p : Fin N) :
+    (paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p).rank =
+      Module.finrank K (LinearMap.range (reverseEdge W C p)) := by
+  dsimp [paperEndpointFixedBaseEdgeMatrix]
+  exact rank_toMatrix_eq_finrank_range _ _ (reverseEdge W C p)
+
 /-- A fixed-base variable edge has Schur-residual rank `ρ - r` under explicit chart and rank
 hypotheses. -/
 theorem rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub
@@ -176,6 +197,128 @@ theorem rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub
   have h := rank_schurResidualBlock_eq_sub_rank_of_identityCornerDetChart M hdet
   rw [hrank] at h
   exact h
+
+/-- A fixed-base variable edge has Schur-residual rank equal to source rank minus through-rank. -/
+theorem rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_range_sub
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (p : Fin N)
+    (hdet : identityCornerDetChart (paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p)) :
+    (schurResidualBlock (paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p)).rank =
+      Module.finrank K (LinearMap.range (reverseEdge W C p)) - Module.finrank K U₀ := by
+  exact rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub W B C U₀ hU₀ p
+    hdet (rank_paperEndpointFixedBaseEdgeMatrix_eq_finrank_range W B C U₀ hU₀ p)
+
+/-- One fixed-base chart-local suffix step with a supplied transformed variable edge. -/
+theorem paperEndpointFixedBase_chartLocal_suffixStep
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j)
+    (M : Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K)
+    (Lprev : Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j) K)
+    (Rprev : Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K)
+    (Ctop : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+    (Dprev : Matrix
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K)
+    (hPtail : Lprev * paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀ p.succ j hpj *
+        Rprev = fromBlocks Ctop 0 0 Dprev)
+    (hEdge : paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p = Rprev * M)
+    (hCtop : IsUnit Ctop.det) (hM : identityCornerDetChart M) :
+    let Lstep : Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j) K :=
+      fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K) 0
+        (-(Dprev * lowerLeftBlock M * (Ctop * topLeftCorner M)⁻¹)) 1
+    let Rstep : Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+      fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        (-((topLeftCorner M)⁻¹ * upperRightBlock M)) 0 1
+    Lstep * Lprev *
+        paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀ p.castSucc j
+          ((Fin.castSucc_le_succ p).trans hpj) *
+        Rstep =
+      fromBlocks (Ctop * topLeftCorner M) 0 0 (Dprev * schurResidualBlock M) := by
+  dsimp
+  rw [paperEndpointFixedBaseChainMapMatrix_succ_right W B C U₀ hU₀ p j hpj]
+  exact productReduction_chartLocal_suffixStep_fromBlocks_indexed
+    (paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀ p.succ j hpj)
+    (paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p) M Lprev Rprev Ctop Dprev
+    hPtail hEdge hCtop hM
+
+/-- Fixed-base chart-local suffix-chain block diagonalisation under explicit chart hypotheses. -/
+theorem productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDiagonal
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (hchart : ∀ (p : Fin N)
+      (Bprev : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        K),
+      identityCornerDetChart
+        (fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          Bprev 0
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) *
+          paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p))
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    ∃ L : Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j) K,
+      ∃ Bmat : Matrix (Fin (Module.finrank K U₀))
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ i) K,
+        ∃ Ctop : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K,
+          ∃ D : Matrix
+              (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+              (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ i)
+              K,
+            IsUnit L.det ∧ IsUnit Ctop.det ∧
+              L * paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀ i j hij *
+                  fromBlocks
+                    (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                    (-Bmat) 0
+                    (1 : Matrix
+                      (throughSubspaceEndpointComplementIndex
+                        (reverseVertex W) (reverseEdge W B) U₀ i)
+                      (throughSubspaceEndpointComplementIndex
+                        (reverseVertex W) (reverseEdge W B) U₀ i) K) =
+                fromBlocks Ctop 0 0 D := by
+  exact productReduction_chartLocal_suffixChain_blockDiagonal_indexed
+    (E := paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀)
+    (P := paperEndpointFixedBaseChainMapMatrix W B C U₀ hU₀)
+    (hPproof := fun {i j} h h' ↦
+      paperEndpointFixedBaseChainMapMatrix_proof_irrel W B C U₀ hU₀ i j h h')
+    (hself := paperEndpointFixedBaseChainMapMatrix_self W B C U₀ hU₀)
+    (hsuccRight := paperEndpointFixedBaseChainMapMatrix_succ_right W B C U₀ hU₀)
+    (hchart := hchart) i j hij
 
 end FixedBase
 

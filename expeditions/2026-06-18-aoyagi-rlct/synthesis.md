@@ -368,10 +368,39 @@ now includes `lowerLeftBlock`, `schurResidualBlock`, and
 wrapper `rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub` keeps
 both determinant-chart membership and exact rank as explicit hypotheses. A
 two-edge wrapper records the first nontrivial product equality without relying
-on brittle `Fin` definitional equality. Still open: iterate Aoyagi's
-chart-local induction in these fixed bases, prove determinant-chart hypotheses
-from an actual fixed-coordinate neighborhood if needed, and keep exact rank as
-a stratum hypothesis.
+on brittle `Fin` definitional equality. This prepared the fixed-base
+chart-local induction that is recorded next.
+
+The first fixed-base variable-chart suffix step is now Lean-proved.
+`productReduction_chartLocal_suffixStep_fromBlocks_indexed` in
+`ProductReduction.lean` packages one Aoyagi Lemma 2 induction move with a
+supplied transformed edge `M`: a previously reduced suffix
+`Lprev * Ptail * Rprev = [Ctop 0; 0 Dprev]` and a factorisation
+`E = Rprev * M` advance to a reduced form with top block
+`Ctop * topLeftCorner M` and residual block
+`Dprev * schurResidualBlock M`, under explicit determinant-unit hypotheses.
+`paperEndpointFixedBase_chartLocal_suffixStep` instantiates this for fixed-base
+variable-chain segment matrices. The rank bridge
+`rank_paperEndpointFixedBaseEdgeMatrix_eq_finrank_range` lets later exact-rank
+hypotheses be stated as source map rank, and
+`rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_range_sub`
+computes the Schur residual rank from the actual variable edge range rank under
+the determinant-chart hypothesis.
+
+The all-layer explicit-chart induction is now Lean-proved.
+`productReduction_chartLocal_suffixChain_blockDiagonal_indexed` mirrors the
+identity-corner suffix-chain induction but assumes determinant-chart membership
+for each transformed edge `[I Bprev; 0 I] * E p`. It returns a determinant-unit
+left multiplier, a source-side upper-unitriangular right multiplier, a
+determinant-unit top block, and a residual block putting the chain segment in
+block-diagonal form. The fixed-base wrapper
+`productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDiagonal`
+applies the theorem to `paperEndpointFixedBaseChainMapMatrix`. This is the
+first source-faithful fixed-coordinate product-reduction theorem at the
+algebraic/chart level. Still open: proving the transformed determinant-chart
+hypotheses on an actual fixed-coordinate neighborhood, exact rank-stratum
+packaging, regular coordinate-change/certificate transport, and RLCT
+consequences.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

@@ -113,7 +113,10 @@ No such claim is formalisation-ready until both fields are filled.
   right elimination. Fixed-basepoint variable-chain matrices are now defined:
   a variable chain `C` is represented in bases fixed from `B`, with
   composition laws and Schur-residual rank under explicit determinant-chart
-  and exact-rank hypotheses. The full source Theorem 3 claim remains blocked.
+  and exact-rank hypotheses. The first chart-local suffix step in these fixed
+  bases is now proved with a supplied transformed edge, and the all-layer
+  explicit-chart block-diagonal induction is proved. The full source Theorem 3
+  claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -260,7 +263,15 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseTotalMatrix`,
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseChainMapMatrix_succ_right`, and
   `DLNFibre.DLN.Aoyagi.rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_sub`
-  are in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`.
+  are in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`; the one-step
+  suffix theorem
+  `DLNFibre.DLN.Aoyagi.productReduction_chartLocal_suffixStep_fromBlocks_indexed`
+  and
+  `DLNFibre.DLN.Aoyagi.productReduction_chartLocal_suffixChain_blockDiagonal_indexed`
+  are in `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`, with fixed-base
+  wrappers `DLNFibre.DLN.Aoyagi.paperEndpointFixedBase_chartLocal_suffixStep`
+  and
+  `DLNFibre.DLN.Aoyagi.productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDiagonal`.
 - **Proved.** one chart-local algebraic induction-step identity over a
   commutative ring, under explicit determinant-unit hypotheses for the prefix
   corner `C1` and next-layer corner `A1`, plus the same identity over arbitrary

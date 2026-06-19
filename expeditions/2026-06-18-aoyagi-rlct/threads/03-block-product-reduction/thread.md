@@ -771,3 +771,49 @@ The rank theorem keeps both hypotheses explicit:
 `identityCornerDetChart (paperEndpointFixedBaseEdgeMatrix W B C U0 hU0 p)` and
 `rank = rho`. No openness of exact rank strata, no automatic chart membership
 for nearby chains, and no re-adaptation of bases to `C` is claimed.
+
+Added the first variable-chart suffix step. In `ProductReduction.lean`,
+`productReduction_chartLocal_suffixStep_fromBlocks_indexed` abstracts the
+one-step induction move: from a reduced suffix
+
+`Lprev * Ptail * Rprev = [Ctop 0; 0 Dprev]`
+
+and a next edge factored as `E = Rprev * M`, if `Ctop` and the selected
+top-left block of `M` have unit determinant, explicit left and right
+block-triangular multipliers reduce `Ptail * E` to
+
+`[Ctop * topLeft(M) 0; 0 Dprev * schurResidualBlock(M)]`.
+
+In `FixedBasepointChart.lean`,
+`paperEndpointFixedBase_chartLocal_suffixStep` instantiates this for fixed-base
+variable-chain segment matrices. The wrapper
+`rank_paperEndpointFixedBaseEdgeMatrix_eq_finrank_range` identifies fixed-base
+matrix rank with the variable edge's source linear-map range rank, and
+`rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_range_sub`
+states the Schur-residual rank as
+`finrank range(reverseEdge W C p) - finrank U0` under the explicit determinant
+chart hypothesis.
+
+Added the all-layer explicit-chart induction:
+
+- `productReduction_chartLocal_suffixChain_blockDiagonal_indexed` in
+  `ProductReduction.lean`;
+- `paperEndpointFixedBaseChainMapMatrix_proof_irrel` and
+  `productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDiagonal`
+  in `FixedBasepointChart.lean`.
+
+The abstract chain theorem mirrors the older identity-corner suffix-chain
+induction, but its chart hypothesis is on the transformed edge
+
+`[I Bprev; 0 I] * E p`
+
+at every stage. It returns a left multiplier `L`, a right upper-unitriangular
+source multiplier, a determinant-unit top block `Ctop`, and a residual block
+`D` such that
+
+`L * P i j * [I -B; 0 I] = [Ctop 0; 0 D]`.
+
+The fixed-base wrapper applies this to variable paper-order chains expressed
+in endpoint bases fixed from `B`. It still assumes all transformed-edge
+determinant-chart hypotheses explicitly; it does not prove these from
+neighborhood membership or exact rank.

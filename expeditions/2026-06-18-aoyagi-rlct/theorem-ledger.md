@@ -85,6 +85,29 @@ fixed bases, fixed-coordinate determinant-neighborhood packaging for variable
 chains, source-faithful exact rank-stratum packaging, the full Theorem 3
 statement, and analytic/certificate transport.
 
+Fifth latest A2 update: the first fixed-base variable-chart suffix step has
+landed. Generic theorem:
+`productReduction_chartLocal_suffixStep_fromBlocks_indexed` in
+`ProductReduction.lean`; fixed-base wrapper:
+`paperEndpointFixedBase_chartLocal_suffixStep` in
+`FixedBasepointChart.lean`; supporting rank bridge:
+`rank_paperEndpointFixedBaseEdgeMatrix_eq_finrank_range` and
+`rank_schurResidualBlock_paperEndpointFixedBaseEdgeMatrix_eq_range_sub`.
+The statement card
+`threads/03-block-product-reduction/statement-card-a2-fixed-basepoint-chart.md`
+was updated.
+
+Sixth latest A2 update: the all-layer explicit-chart suffix-chain induction has
+landed. Generic theorem:
+`productReduction_chartLocal_suffixChain_blockDiagonal_indexed` in
+`ProductReduction.lean`; fixed-base wrapper:
+`productReduction_paperEndpointFixedBaseChainMapMatrix_chartLocal_blockDiagonal`
+in `FixedBasepointChart.lean`, supported by
+`paperEndpointFixedBaseChainMapMatrix_proof_irrel`. Remaining blocked A2 items
+are fixed-coordinate determinant-neighborhood packaging for variable chains,
+source-faithful exact rank-stratum packaging, the full Theorem 3 statement, and
+analytic/certificate transport.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
