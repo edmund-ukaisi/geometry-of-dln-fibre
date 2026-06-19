@@ -21,26 +21,23 @@ on the session's original cwd.
 
 ## Ranked next
 
-1. A1 rank formula tide. Prove the separate rank formula for the Schur
-   complement chart, starting with a block-diagonal rank lemma over a field if
-   Mathlib has no suitable theorem. Keep it separate from the already-landed
-   algebraic block identities.
-2. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
-   and exact hypotheses from the PDF where the first scout still left TBDs.
-3. Analytic interface shape. Define the cited normal-crossing extraction
+1. Product reduction repair. Re-state A2 with source-faithful rank/open-chart
+   and through-layer basis hypotheses, and isolate algebraic induction from
+   analytic invariance before any Lean tide.
+2. Analytic interface shape. Define the cited normal-crossing extraction
    interface precisely enough that later theorem names cannot overclaim; do not
    smuggle Aoyagi Lemma 1 or Theorem 4 as extra citations.
+3. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
+   and exact hypotheses from the PDF where the first scout still left TBDs.
 4. Repair A4 blow-up reproduction. Separate actual layer widths from prefix
    minima, redo Case 1/2 updates, cover pivot charts, prove `P`
    regularity/divisibility, and replace the termination measure.
 5. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's
    chart-family/order-count construction.
-6. Product reduction repair. Re-state A2 with source-faithful rank/open-chart
-   hypotheses and isolate analytic invariance from algebraic induction.
-7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
+6. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
-8. Review/hardener cadence. Gate every broad theorem name, every universal
+7. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 
 ## Parked but live

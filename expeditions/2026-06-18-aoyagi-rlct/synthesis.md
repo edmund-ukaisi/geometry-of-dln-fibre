@@ -91,11 +91,13 @@ interface without surfacing it.
   `schurComplement_leftBlockElim_fromBlocks` and
   `schurComplement_blockElim_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`, over `[CommRing K]` with
-  explicit chart hypothesis `IsUnit A1.det`. A1 rank formula remains open as a
-  separate tide. A2 is not formalisation-ready as stated: it needs explicit
-  neighborhood/rank/open-chart hypotheses, a through-layer basis/open-chart
-  lemma, and a decision on hidden analytic steps (local coordinate invariance,
-  generator replacement, regular-coordinate additivity).
+  explicit chart hypothesis `IsUnit A1.det`. The A1 rank formula is now proved
+  as `rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det`, using
+  the reusable block-diagonal theorem `rank_fromBlocks_zero_zero`. A2 is not
+  formalisation-ready as stated: it needs explicit neighborhood/rank/open-chart
+  hypotheses, a through-layer basis/open-chart lemma, and a decision on hidden
+  analytic steps (local coordinate invariance, generator replacement,
+  regular-coordinate additivity).
 - A3 Theorem 4: xhigh scout reports this is an analytic RLCT comparison theorem
   cited to Aoyagi [22], not proved in the 2023 paper. Because the user allowed
   only the normal-crossing extraction citation in Lean, this is a scope conflict
@@ -117,11 +119,12 @@ interface without surfacing it.
 
 ## Current next target
 
-The broad A2/A4/A5 targets are blocked by reproduction checks. The first A1
-Lean tide landed the checked algebraic block-elimination identities and avoided
-all RLCT/local-germ consequences. The next A1-sized target is the rank formula:
-prove or reuse a block-diagonal rank theorem over a field, then state the Schur
-complement rank corollary separately from the elimination identities.
+The broad A2/A4/A5 targets are blocked by reproduction checks. The A1 algebraic
+core now has Lean block-elimination identities and rank formula, with no
+RLCT/local-germ consequences. The next useful target is to repair the A2 product
+reduction statement/reproduction: make the through-layer basis/open-chart
+hypotheses explicit and separate algebraic product induction from analytic
+invariance.
 
 ## Drift guard
 

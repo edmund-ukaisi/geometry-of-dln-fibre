@@ -42,8 +42,9 @@ No such claim is formalisation-ready until both fields are filled.
   an explicit full-rank chart into a block diagonal form by triangular
   invertible matrices; broader ideal/loss-germ consequences are separate.
 - **Tier.** Established in Aoyagi; to be proved in Lean if elementary.
-- **Status.** partially formalised: algebraic Schur-complement block identities
-  are proved and reviewed in Lean; rank formula remains a separate A1 target.
+- **Status.** algebraic core formalised: Schur-complement block identities and
+  rank formula are proved and reviewed in Lean; analytic/local-germ
+  consequences remain out of scope.
 - **Kill-condition.** The transformation requires an analytic/local inverse or
   rank-open chart hypothesis not represented in the Lean statement.
 - **Evidence/source.** Aoyagi Lemma 2, PDF pp. 10-11.
@@ -52,15 +53,17 @@ No such claim is formalisation-ready until both fields are filled.
 - **Reproduction check.** partial pass at
   `threads/03-block-product-reduction/reproduction-check.md`.
 - **Lean target.** `DLNFibre.DLN.Aoyagi.schurComplement_leftBlockElim_fromBlocks`
-  and `DLNFibre.DLN.Aoyagi.schurComplement_blockElim_fromBlocks` in
-  `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`.
-- **Proved.** two algebraic block identities over a commutative ring, under
-  explicit determinant-unit chart hypothesis `IsUnit A1.det`.
+  and `DLNFibre.DLN.Aoyagi.schurComplement_blockElim_fromBlocks`,
+  plus `DLNFibre.DLN.Aoyagi.rank_fromBlocks_zero_zero` and
+  `DLNFibre.DLN.Aoyagi.rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det`,
+  in `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`.
+- **Proved.** two algebraic block identities over a commutative ring, and over a
+  field the block-diagonal rank additivity theorem and Schur-complement rank
+  formula under explicit determinant-unit chart hypothesis `IsUnit A1.det`.
 - **Assumed.** determinant-unit chart for the top-left block.
 - **Cited.** none planned.
-- **Deferred.** rank formula `rank(C4)=rank(A)-r` until a separate
-  block-diagonal rank theorem/corollary is proved; RLCT/local-germ invariance
-  consequences until analytic boundary is resolved.
+- **Deferred.** RLCT/local-germ invariance consequences until analytic boundary
+  is resolved; product-level basis/open-chart induction remains A2.
 
 ## Claim A2 - product reduction
 

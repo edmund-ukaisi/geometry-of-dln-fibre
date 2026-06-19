@@ -42,3 +42,16 @@ Remaining A1 target: rank formula as a separate theorem, likely via a
 block-diagonal rank lemma over a field. A2 remains blocked by the checker
 findings: source-faithful basis/open-chart hypotheses and analytic-boundary
 decision.
+
+## 2026-06-18 A1 rank-formula tide
+
+Opened xhigh worker tide `Lovelace` to prove a separate block-diagonal rank
+theorem and then the Schur-complement rank corollary. Scope remains purely
+algebraic: no RLCT/germ/ideal/Theorem 3 claim.
+
+Outcome: landed `rank_fromBlocks_zero_zero` and
+`rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det` in
+`lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`. Controller verified targeted
+build, full `DLNFibre` build, and `scripts/sorries`. Xhigh reviewer `Euclid`
+accepted after minor docstring/name edits. Rank statement card pending after
+commit.
