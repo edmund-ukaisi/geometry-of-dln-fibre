@@ -618,6 +618,45 @@ theorem case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
 def lowerTailVector (T : ℕ → ℤ) (S : ℕ) (J : ℤ) (i : ℕ) : ℤ :=
   if i < S then T i else J
 
+/-- Before `S`, lowering the tail leaves the vector unchanged. -/
+theorem lowerTailVector_eq_of_lt {T : ℕ → ℤ} {S i : ℕ} {J : ℤ} (hi : i < S) :
+    lowerTailVector T S J i = T i := by
+  simp [lowerTailVector, hi]
+
+/-- From `S` onward, the lowered tail is constant `J`. -/
+theorem lowerTailVector_eq_of_le {T : ℕ → ℤ} {S i : ℕ} {J : ℤ} (hi : S ≤ i) :
+    lowerTailVector T S J i = J := by
+  simp [lowerTailVector, not_lt_of_ge hi]
+
+@[simp] theorem lowerTailVector_self (T : ℕ → ℤ) (S : ℕ) (J : ℤ) :
+    lowerTailVector T S J S = J :=
+  lowerTailVector_eq_of_le le_rfl
+
+/-- Lowering the tail preserves a lower bound by the new tail value. -/
+theorem le_lowerTailVector_of_le
+    {T : ℕ → ℤ} {S : ℕ} {J : ℤ} (hT : ∀ i, J ≤ T i) (i : ℕ) :
+    J ≤ lowerTailVector T S J i := by
+  by_cases hi : i < S
+  · rw [lowerTailVector_eq_of_lt hi]
+    exact hT i
+  · rw [lowerTailVector_eq_of_le (le_of_not_gt hi)]
+
+/-- On the finite source range, the lowered tail has least value `J`. -/
+theorem lowerTailVector_isLeast_valueSet_Icc
+    {L S : ℕ} {T : ℕ → ℤ} {J : ℤ}
+    (hS : 1 ≤ S) (hSL : S ≤ L) (hT : ∀ i, J ≤ T i) :
+    IsLeast {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧ lowerTailVector T S J i = v} J := by
+  constructor
+  · exact ⟨S, by simp [Finset.mem_Icc, hS, hSL], lowerTailVector_self T S J⟩
+  · intro v hv
+    rcases hv with ⟨i, hi, rfl⟩
+    exact le_lowerTailVector_of_le hT i
+
+/-- The flat-tail hypothesis needed by the Case 1 tail-lowering arithmetic. -/
+structure FlatTailFromPred (L S : ℕ) (T : ℕ → ℤ) (h : ℤ) : Prop where
+  pred : T (S - 1) = h
+  tail : ∀ i, S ≤ i → i ≤ L → T i = h
+
 /-- Lowering a flat tail gives the Case 1 terminal-exponent increment. -/
 theorem terminalExponent_lowerTailVector_of_flatFromPred
     (L S : ℕ) (n T : ℕ → ℤ) (h J : ℤ)
@@ -688,7 +727,17 @@ theorem terminalExponent_lowerTailVector_of_flatFromPred
   rw [hbase, hsum]
   ring
 
-/-- Case 1 form: if the old flat level is `J + J1`, lowering the tail adds `J1` rows. -/
+/-- Packaged flat-tail form of the Case 1 terminal-exponent increment. -/
+theorem FlatTailFromPred.terminalExponent_lowerTailVector
+    {L S : ℕ} {n T : ℕ → ℤ} {h J : ℤ}
+    (hflat : FlatTailFromPred L S T h)
+    (hS : 2 ≤ S) (hSL : S ≤ L) :
+    terminalExponent L n (lowerTailVector T S J) =
+      terminalExponent L n T + (h - J) * (n (S + 1) - J) :=
+  terminalExponent_lowerTailVector_of_flatFromPred L S n T h J hS hSL
+    hflat.pred hflat.tail
+
+/-- Case 1 algebraic form: a flat level `J + J1` gives the displayed increment term. -/
 theorem terminalExponent_lowerTailVector_of_flatFromPred_add
     (L S : ℕ) (n T : ℕ → ℤ) (J J1 : ℤ)
     (hS : 2 ≤ S) (hSL : S ≤ L)
@@ -699,6 +748,40 @@ theorem terminalExponent_lowerTailVector_of_flatFromPred_add
   rw [terminalExponent_lowerTailVector_of_flatFromPred L S n T (J + J1) J
     hS hSL hpred htail]
   ring
+
+/-- Packaged algebraic form: a flat level `J+J1` gives the source increment term. -/
+theorem FlatTailFromPred.terminalExponent_lowerTailVector_add
+    {L S : ℕ} {n T : ℕ → ℤ} {J J1 : ℤ}
+    (hflat : FlatTailFromPred L S T (J + J1))
+    (hS : 2 ≤ S) (hSL : S ≤ L) :
+    terminalExponent L n (lowerTailVector T S J) =
+      terminalExponent L n T + J1 * (n (S + 1) - J) :=
+  terminalExponent_lowerTailVector_of_flatFromPred_add L S n T J J1 hS hSL
+    hflat.pred hflat.tail
+
+/-- Conditional one-label certificate transformer for tail lowering. -/
+theorem LabelExponentCertificate.lowerTailVector_of_flatFromPred_add
+    {L S Jstate s k : ℕ} {n : ℕ → ℕ} {T : ℕ → ℤ} {numerator J J1 : ℤ}
+    (hcert : LabelExponentCertificate L n S Jstate s k T numerator (J + J1))
+    (hflat : FlatTailFromPred L S T (J + J1))
+    (hS : 2 ≤ S) (hSL : S ≤ L) (hJle : J ≤ J + J1) :
+    LabelExponentCertificate L n S Jstate s k (lowerTailVector T S J)
+      (numerator + J1 * ((n (S + 1) : ℤ) - J)) J where
+  introduced := hcert.introduced
+  terminalExponent_eq := by
+    rw [hflat.terminalExponent_lowerTailVector_add (n := widthZ n) hS hSL,
+      hcert.terminalExponent_eq]
+    simp [widthZ]
+  least_value := by
+    constructor
+    · exact ⟨S, by simp [Finset.mem_Icc, (by omega : 1 ≤ S), hSL], lowerTailVector_self T S J⟩
+    · intro v hv
+      rcases hv with ⟨i, hi, hvi⟩
+      rw [← hvi]
+      by_cases hiS : i < S
+      · rw [lowerTailVector_eq_of_lt hiS]
+        exact le_trans hJle (hcert.least_value.2 ⟨i, hi, rfl⟩)
+      · rw [lowerTailVector_eq_of_le (le_of_not_gt hiS)]
 
 section MonomialRecurrence
 
