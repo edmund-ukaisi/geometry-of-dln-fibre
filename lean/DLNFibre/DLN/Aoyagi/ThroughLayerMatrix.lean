@@ -1,3 +1,4 @@
+import DLNFibre.DLN.Aoyagi.ProductReduction
 import DLNFibre.DLN.Aoyagi.ThroughLayerBasis
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.Matrix.Block
@@ -337,6 +338,58 @@ theorem exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_
   simpa [eSrc, eTgt, eEdge, hbasis] using
     (exists_toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero hW hW' (A p) eEdge he
       (bU₀.map eSrc) bW bW')
+
+/-- Complement and basis choices for every layer around a fixed through-subspace chain. -/
+structure ThroughSubspaceChartData (U₀ : Submodule K (V 0))
+    (ι : Type*) (κ : Fin (N + 1) → Type*) where
+  W : ∀ j : Fin (N + 1), Submodule K (V j)
+  hW : ∀ j : Fin (N + 1), IsCompl (throughSubspace V A U₀ j) (W j)
+  bU₀ : Module.Basis ι K U₀
+  bW : ∀ j : Fin (N + 1), Module.Basis (κ j) K (W j)
+
+/-- A bundled chart-data version of the prefix-compatible edge block form. -/
+theorem exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]
+    [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (p : Fin N) :
+    ∃ B : Matrix ι (κ p.castSucc) K, ∃ D : Matrix (κ p.succ) (κ p.castSucc) K,
+      LinearMap.toMatrix
+          (basisOfIsCompl (data.hW p.castSucc)
+            (data.bU₀.map (throughSubspacePrefixEquiv V A U₀ p.castSucc hU₀))
+            (data.bW p.castSucc))
+          (basisOfIsCompl (data.hW p.succ)
+            (data.bU₀.map (throughSubspacePrefixEquiv V A U₀ p.succ hU₀))
+            (data.bW p.succ))
+          (A p) =
+        fromBlocks (1 : Matrix ι ι K) B 0 D :=
+  exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero V A U₀ p hU₀
+    (data.hW p.castSucc) (data.hW p.succ) data.bU₀ (data.bW p.castSucc) (data.bW p.succ)
+
+/-- Bundled chart data stays in the identity-corner chart after a unitriangular multiplier. -/
+theorem exists_unitriangular_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)]
+    [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ) (p : Fin N)
+    (F : Matrix ι (κ p.succ) K) :
+    ∃ B' : Matrix ι (κ p.castSucc) K, ∃ D' : Matrix (κ p.succ) (κ p.castSucc) K,
+      fromBlocks (1 : Matrix ι ι K) (-F) 0 1 *
+          LinearMap.toMatrix
+            (basisOfIsCompl (data.hW p.castSucc)
+              (data.bU₀.map (throughSubspacePrefixEquiv V A U₀ p.castSucc hU₀))
+              (data.bW p.castSucc))
+            (basisOfIsCompl (data.hW p.succ)
+              (data.bU₀.map (throughSubspacePrefixEquiv V A U₀ p.succ hU₀))
+              (data.bW p.succ))
+            (A p) =
+        fromBlocks (1 : Matrix ι ι K) B' 0 D' :=
+  exists_fromBlocks_one_zero_of_upperUnitriangular_mul_indexed F _
+    (exists_toMatrix_throughSubspaceEdge_chartData_eq_fromBlocks_one_zero V A U₀ hU₀ data p)
 
 /-- The total chain map has block form `[I 0; 0 0]` when the source complement is its kernel. -/
 theorem toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero

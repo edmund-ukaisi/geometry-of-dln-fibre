@@ -33,6 +33,16 @@ theorem upperUnitriangular_mul_fromBlocks_one_zero {r m n : ℕ}
   rw [fromBlocks_multiply]
   simp [sub_eq_add_neg]
 
+/-- An indexed version of `upperUnitriangular_mul_fromBlocks_one_zero`. -/
+theorem upperUnitriangular_mul_fromBlocks_one_zero_indexed
+    {ι μ ν : Type*} [Fintype ι] [Fintype μ] [DecidableEq ι] [DecidableEq μ]
+    (F : Matrix ι μ K) (B : Matrix ι ν K) (D : Matrix μ ν K) :
+    fromBlocks (1 : Matrix ι ι K) (-F) 0 1
+        * fromBlocks (1 : Matrix ι ι K) B 0 D =
+      fromBlocks (1 : Matrix ι ι K) (B - F * D) 0 D := by
+  rw [fromBlocks_multiply]
+  simp [sub_eq_add_neg]
+
 /-- An upper unitriangular left multiplier preserves existence of an identity-corner chart form. -/
 theorem exists_fromBlocks_one_zero_of_upperUnitriangular_mul {r m n : ℕ}
     (F : Matrix (Fin r) (Fin m) K)
@@ -44,6 +54,18 @@ theorem exists_fromBlocks_one_zero_of_upperUnitriangular_mul {r m n : ℕ}
         fromBlocks (1 : Matrix (Fin r) (Fin r) K) B' 0 D' := by
   rcases hM with ⟨B, D, rfl⟩
   exact ⟨B - F * D, D, upperUnitriangular_mul_fromBlocks_one_zero F B D⟩
+
+/-- Indexed chart-form preservation under an upper unitriangular left multiplier. -/
+theorem exists_fromBlocks_one_zero_of_upperUnitriangular_mul_indexed
+    {ι μ ν : Type*} [Fintype ι] [Fintype μ] [DecidableEq ι] [DecidableEq μ]
+    (F : Matrix ι μ K) (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K)
+    (hM : ∃ B : Matrix ι ν K, ∃ D : Matrix μ ν K,
+      M = fromBlocks (1 : Matrix ι ι K) B 0 D) :
+    ∃ B' : Matrix ι ν K, ∃ D' : Matrix μ ν K,
+      fromBlocks (1 : Matrix ι ι K) (-F) 0 1 * M =
+        fromBlocks (1 : Matrix ι ι K) B' 0 D' := by
+  rcases hM with ⟨B, D, rfl⟩
+  exact ⟨B - F * D, D, upperUnitriangular_mul_fromBlocks_one_zero_indexed F B D⟩
 
 /-- The inverse of a product corner cancels the already-invertible left factor. -/
 private theorem nonsing_inv_mul_left_factor {r : ℕ}
