@@ -723,7 +723,8 @@ ordered lexicographically.  This is not yet checked.  It must prove:
   pivot-first wrappers that choose quotient witnesses, are proved narrowly. The
   source-displayed Case 2 top-left pivot `Q/P` product identity is also proved
   under flat displayed row weights, and the following factor's pivot-first
-  reindexing and diagonal row-weight reindexing are proved. The full polynomial-coordinate pivot chart
+  reindexing, diagonal row-weight reindexing, and the displayed residual
+  following-factor package are proved. The full polynomial-coordinate pivot chart
   construction, full source-variable coordinate/weight transport, arbitrary
   selected-entry pivots, and chart-family coverage are not proved.
 - The printed Case 2 vector update is incompatible with the terminal exponent

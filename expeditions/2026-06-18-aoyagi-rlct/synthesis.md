@@ -267,13 +267,19 @@ interface without surfacing it.
   coverage, full source-variable transport, or exponent updates.
   The finite following-factor reindexing transport is also proved:
   `pivotFirstFollowingFactor` is the following factor in pivot-first column
-  coordinates, and multiplying by it commutes with reindexing the original
+  coordinates, and multiplying by it commutes with reindexing the pre-reindexed
   product. This handles only matrix reindexing, not the source coordinate
   construction or regularity of the chart.
   The diagonal row-weight reindexing is also proved:
   `weightedPivotDiagonal_eq_pivotFirst_diagonal` identifies the split pivot
   diagonal with the original supplied diagonal after pivot-first row/column
   reindexing. This does not prove source row-weight assignment or flatness.
+  The displayed Case 2 `Q/P` theorem now accepts a residual following factor
+  before pivot-first reindexing: `case2DisplayedFollowingFactor` reindexes it
+  into pivot-first coordinates, and
+  `case2DisplayedNormalizedMatrix_mul_followingFactor` relates the pivot-first
+  product to the product before pivot-first row reindexing. This still does
+  not construct the full source coordinates.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

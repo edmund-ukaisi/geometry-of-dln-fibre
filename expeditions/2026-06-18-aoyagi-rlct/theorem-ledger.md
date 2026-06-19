@@ -323,7 +323,7 @@ Sixth latest A4 update: pivot-first following-factor transport has landed in
 `pivotFirstFollowingFactor` and
 `pivotFirstMatrix_mul_pivotFirstFollowingFactor`. These prove that the
 following factor reindexed by `pivotFirstIndexEquiv colPivot` multiplies with
-the pivot-first residual block to give the original product reindexed by
+the pivot-first residual block to give the pre-reindexed product reindexed by
 `pivotFirstIndexEquiv rowPivot`. This is finite matrix reindexing only; it
 does not prove source coordinate construction, regularity, chart coverage,
 exponent updates, or transition invariants. Statement card:
@@ -338,6 +338,20 @@ columns. This is finite matrix reindexing only; it does not prove source
 row-weight assignment, recurrence flatness, quotient witnesses, chart coverage,
 exponent updates, or transition invariants. Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-pivot-first-diagonal-weights.md`.
+
+Eighth latest A4 update: the displayed Case 2 pivot-first following-factor
+package has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+Proved Lean names include `case2DisplayedNormalizedMatrix`,
+`case2DisplayedFollowingFactor`,
+`case2DisplayedNormalizedMatrix_mul_followingFactor`, and
+`exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights`.
+These package the displayed normalised residual block and a residual following
+factor supplied before pivot-first reindexing, reindex that factor into
+pivot-first column coordinates, and apply the displayed flat-row-weight `Q/P`
+theorem. This is local finite algebra only; it does not prove source-coordinate
+construction, arbitrary-pivot coverage, regularity, exponent updates, or
+transition invariants. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-pivot-first-following-factor.md`.
 
 ## Ledger rules
 

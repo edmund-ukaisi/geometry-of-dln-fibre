@@ -1710,7 +1710,7 @@ theorem pivotFirstMatrix_eq_pivotPreQBlock
     · rfl
     · rfl
 
-/-- Multiplying by a pivot-first following factor is just the original product
+/-- Multiplying by a pivot-first following factor is just the pre-reindexed product
 reindexed in the pivot-first row order. -/
 theorem pivotFirstMatrix_mul_pivotFirstFollowingFactor
     {ι κ τ : Type*} [DecidableEq ι] [DecidableEq κ] [Fintype κ]
@@ -2152,6 +2152,93 @@ theorem exists_case2DisplayedQP_mul_of_flat_weights
     u * weight (case2DisplayedPivotRow n hS hcont) ∣
       u * weight i.1
   rw [hflat i.1]
+
+/-- The normalised residual block for the source-displayed Case 2 pivot. -/
+def case2DisplayedNormalizedMatrix
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  selectedEntryNormalizedMatrix
+    (case2DisplayedPivotRow n hS hcont)
+    (case2DisplayedPivotCol n hS hcont) residual
+
+/-- The following factor for displayed Case 2, reindexed into pivot-first column order. -/
+def case2DisplayedFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  pivotFirstFollowingFactor (case2DisplayedPivotCol n hS hcont) C
+
+/-- Displayed Case 2 following-factor transport for the normalised residual block. -/
+theorem case2DisplayedNormalizedMatrix_mul_followingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    pivotFirstMatrix
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedNormalizedMatrix n hS hcont residual) *
+      case2DisplayedFollowingFactor n hS hcont C =
+    (case2DisplayedNormalizedMatrix n hS hcont residual * C).submatrix
+      (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont)) id := by
+  exact pivotFirstMatrix_mul_pivotFirstFollowingFactor
+    (case2DisplayedNormalizedMatrix n hS hcont residual) C
+
+/-- Source-displayed Case 2 top-left `Q/P` identity with the following factor reindexed
+into pivot-first column coordinates. This is still local finite algebra, not chart coverage. -/
+theorem exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (weight : Case2ResidualRowIndex n S J → R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R)
+    (hflat : ∀ i, weight i = weight (case2DisplayedPivotRow n hS hcont)) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          weightedPivotDiagonal
+            (u * weight (case2DisplayedPivotRow n hS hcont))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * weight i.1) *
+          pivotFirstMatrix
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (u * weight (case2DisplayedPivotRow n hS hcont))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * weight i.1) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+            case2DisplayedFollowingFactor n hS hcont C) := by
+  simpa [case2DisplayedNormalizedMatrix, case2DisplayedFollowingFactor] using
+    exists_case2DisplayedQP_mul_of_flat_weights
+      n hS hcont u weight residual
+      (case2DisplayedFollowingFactor n hS hcont C) hflat
 
 end ColumnOperationBlocks
 

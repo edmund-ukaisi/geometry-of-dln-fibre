@@ -7,7 +7,7 @@ Status: checked finite matrix reindexing reproduction.
 The displayed `Q/P` calculation replaces the following factor by `Q^{-1} C`.
 All pivot-first `Q/P` theorems already assume that this following factor is
 expressed in pivot-first column coordinates. This note isolates the elementary
-matrix reindexing that transports an original following factor into those
+matrix reindexing that transports a pre-reindexed following factor into those
 coordinates.
 
 This is finite matrix algebra only. It does not construct source coordinates,

@@ -14,7 +14,7 @@ Names:
 
 Lean now names the following factor in pivot-first column coordinates and
 proves that multiplying the pivot-first residual block by this reindexed
-following factor is the same as reindexing the original product in the
+following factor is the same as reindexing the pre-reindexed product in the
 pivot-first row order.
 
 ## Source role

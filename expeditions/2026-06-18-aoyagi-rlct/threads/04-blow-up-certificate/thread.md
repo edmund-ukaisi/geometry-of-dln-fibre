@@ -373,7 +373,7 @@ Lean now names the following factor in pivot-first column coordinates as
 `pivotFirstFollowingFactor` and proves
 `pivotFirstMatrix_mul_pivotFirstFollowingFactor`: multiplying a pivot-first
 residual block by this reindexed following factor is the same as reindexing the
-original product in the pivot-first row order.
+pre-reindexed product in the pivot-first row order.
 
 This is the finite matrix transport behind the displayed replacement
 `C' = Q^{-1} C`, but it remains pure reindexing algebra. It does not construct
@@ -394,6 +394,26 @@ This transports supplied row weights into pivot-first coordinates. It does not
 prove Aoyagi's recurrence flatness, quotient witnesses, selected-entry chart
 construction, coordinate regularity, exponent updates, or transition
 invariants.
+
+## 2026-06-19 Lean Case 2 pivot-first following-factor package
+
+Reproduction: `reproduction-case2-pivot-first-following-factor-a4.md`.
+Statement card: `statement-card-a4-case2-pivot-first-following-factor.md`.
+
+Lean now packages the source-displayed Case 2 top-left `Q/P` theorem with a
+residual following factor supplied before pivot-first reindexing. The aliases
+`case2DisplayedNormalizedMatrix` and `case2DisplayedFollowingFactor` name the
+displayed normalised residual matrix and the following factor reindexed into
+pivot-first column coordinates. The theorem
+`case2DisplayedNormalizedMatrix_mul_followingFactor` proves the finite
+multiplication transport, and
+`exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights` applies
+the displayed flat-row-weight `Q/P` identity with that reindexed following
+factor.
+
+This is still local finite algebra for the displayed chart. It does not prove
+the full source-coordinate construction, arbitrary-pivot chart coverage,
+regularity/Jacobian facts, exponent updates, or transition invariants.
 
 ## 2026-06-19 Lean Case 1 center generators
 
