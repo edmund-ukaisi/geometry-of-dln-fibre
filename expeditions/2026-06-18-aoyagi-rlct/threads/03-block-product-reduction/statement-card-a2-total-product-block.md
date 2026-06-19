@@ -31,10 +31,14 @@
 >   `[∀ j, FiniteDimensional K (V j)]` and `hU₀`; the remaining complement and
 >   basis choices are chosen noncomputably.
 > - **Cited.** None.
-> - **Deferred.** Connecting the per-edge and endpoint block forms to the
->   chart-local product-reduction identity; full Aoyagi Theorem 3; and every
+> - **Deferred.** Building endpoint-compatible supplied chart data whose source
+>   complement is the total kernel and whose edge matrices share the same
+>   adapted basis family; connecting the per-edge and endpoint block forms to
+>   the chart-local product-reduction identity; full Aoyagi Theorem 3; and every
 >   analytic/RLCT consequence.
 > - **Kill conditions.** The theorem is not a fixed-coordinate statement and
 >   does not say arbitrary endpoint bases give `[I 0; 0 0]`. The source
 >   complement must be the total kernel, and the target through-basis must be
->   transported from the source through-basis.
+>   transported from the source through-basis. The current concrete finite
+>   edge wrappers use automatically chosen complements at every vertex, so they
+>   do not yet compose definitionally with this endpoint theorem.

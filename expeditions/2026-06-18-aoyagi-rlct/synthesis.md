@@ -231,6 +231,21 @@ unitriangular transform are proved to satisfy the determinant-chart predicate.
 This is only algebraic `IsUnit` at the adapted base matrix, not a topological
 open-neighborhood theorem.
 
+One-edge right elimination is Lean-proved. The bedrock identity
+`productReduction_blockDiagonal_mul_fromBlocks_one_zero_rightElim_indexed`
+states the explicit block multiplication over a `NonAssocRing`; the equality
+corollary
+`productReduction_blockDiagonal_mul_eq_fromBlocks_one_zero_rightElim_indexed`
+and convenience wrapper
+`productReduction_blockDiagonal_mul_identityCornerForm_rightElim` package it
+for a matrix known to have identity-corner form. If a block-diagonal prefix is
+followed by such an edge, a right upper-unitriangular source-side multiplier
+removes the top-right block and updates the residual prefix by multiplying the
+old residual block with the edge's lower-right block. The paper-order corollary
+`productReduction_paperAdaptedReverseEdgeMatrix_rightElim` applies this to the
+named adapted reversed paper edge. This is still one-edge algebra only; it does
+not iterate the product reduction or prove endpoint compatibility.
+
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
 source basis adapted to `U₀ ⊕ ker P` and target basis adapted to
@@ -238,6 +253,11 @@ source basis adapted to `U₀ ⊕ ker P` and target basis adapted to
 `[I 0; 0 0]`. The zero complement columns use the source complement being
 `ker P`; this is not a fixed-coordinate statement and does not choose all
 intermediate layer bases simultaneously.
+The concrete finite edge wrappers currently use automatically chosen
+`throughSubspaceComplement` data at every vertex, while this endpoint theorem
+uses the total kernel as the source complement. A full product assembly should
+therefore first introduce endpoint-compatible supplied chart data and a shared
+adapted basis family.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

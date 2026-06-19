@@ -457,3 +457,38 @@ determinant-chart membership.
 This is algebraic `IsUnit` at the adapted base matrix. It is not a topological
 open-neighborhood theorem, not a fixed-coordinate chart theorem, and not a
 rank or RLCT statement.
+
+## 2026-06-19 A2 one-edge right elimination
+
+Added the explicit indexed algebraic theorem
+`productReduction_blockDiagonal_mul_fromBlocks_one_zero_rightElim_indexed`:
+
+- a block-diagonal prefix `fromBlocks C1 0 0 Dprev`;
+- followed by the witnessed identity-corner edge `fromBlocks 1 B 0 Dnext`;
+- followed by a right unitriangular source-side multiplier
+  `fromBlocks 1 (-B) 0 1`;
+- equals a new block-diagonal prefix `fromBlocks C1 0 0 (Dprev * Dnext)`.
+
+Also added the equality corollary
+`productReduction_blockDiagonal_mul_eq_fromBlocks_one_zero_rightElim_indexed`
+and the convenience wrapper
+`productReduction_blockDiagonal_mul_identityCornerForm_rightElim`, which
+packages the witness through `identityCornerForm`.
+
+No determinant-unit hypothesis is needed in this identity because the next edge
+has top-left corner exactly `1`; no inverse or Schur complement is used.
+
+Added the paper-order corollary
+`productReduction_paperAdaptedReverseEdgeMatrix_rightElim`. For
+`paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p`, rows are indexed by
+`Fin (finrank U₀) ⊕ κ p.succ` and columns by
+`Fin (finrank U₀) ⊕ κ p.castSucc`, where
+`κ j = throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j`.
+Thus `Dprev` has columns `κ p.succ`, `Dnext` has rows `κ p.succ` and columns
+`κ p.castSucc`, and the right multiplier's lower identity is on `κ p.castSucc`.
+
+This is still one-edge algebra. Full product assembly remains blocked on a
+shared adapted basis family whose endpoint source complement is the total
+kernel; the current concrete finite edge wrappers use automatically chosen
+complements at every vertex, while the endpoint total-product theorem uses
+`ker P` as the source complement.

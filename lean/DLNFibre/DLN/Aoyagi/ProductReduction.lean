@@ -107,6 +107,52 @@ theorem identityCornerForm_upperUnitriangular_mul
       (fromBlocks (1 : Matrix ι ι K) (-F) 0 (1 : Matrix μ μ K) * M) :=
   exists_fromBlocks_one_zero_of_upperUnitriangular_mul_indexed F M hM
 
+/-- Explicit one-edge right elimination for a witnessed identity-corner block matrix. -/
+theorem productReduction_blockDiagonal_mul_fromBlocks_one_zero_rightElim_indexed
+    {R : Type*} [NonAssocRing R]
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [Fintype ν] [DecidableEq ν]
+    (C1 : Matrix ρ ρ R) (Dprev : Matrix π μ R)
+    (B : Matrix ρ ν R) (Dnext : Matrix μ ν R) :
+    fromBlocks C1 0 0 Dprev *
+          fromBlocks (1 : Matrix ρ ρ R) B 0 Dnext *
+          fromBlocks (1 : Matrix ρ ρ R) (-B) 0 (1 : Matrix ν ν R) =
+        fromBlocks C1 0 0 (Dprev * Dnext) := by
+  rw [fromBlocks_multiply, fromBlocks_multiply]
+  simp
+
+/-- One-edge right elimination for a matrix explicitly equal to identity-corner form. -/
+theorem productReduction_blockDiagonal_mul_eq_fromBlocks_one_zero_rightElim_indexed
+    {R : Type*} [NonAssocRing R]
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [Fintype ν] [DecidableEq ν]
+    (C1 : Matrix ρ ρ R) (Dprev : Matrix π μ R)
+    {M : Matrix (ρ ⊕ μ) (ρ ⊕ ν) R}
+    (B : Matrix ρ ν R) (Dnext : Matrix μ ν R)
+    (hM : M = fromBlocks (1 : Matrix ρ ρ R) B 0 Dnext) :
+    fromBlocks C1 0 0 Dprev * M *
+          fromBlocks (1 : Matrix ρ ρ R) (-B) 0 (1 : Matrix ν ν R) =
+        fromBlocks C1 0 0 (Dprev * Dnext) := by
+  rw [hM]
+  exact productReduction_blockDiagonal_mul_fromBlocks_one_zero_rightElim_indexed
+    C1 Dprev B Dnext
+
+/-- A block-diagonal prefix times an identity-corner edge can be right-eliminated. -/
+theorem productReduction_blockDiagonal_mul_identityCornerForm_rightElim
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [Fintype ν] [DecidableEq ν]
+    (C1 : Matrix ρ ρ K) (Dprev : Matrix π μ K)
+    {M : Matrix (ρ ⊕ μ) (ρ ⊕ ν) K}
+    (hM : identityCornerForm M) :
+    ∃ B : Matrix ρ ν K, ∃ Dnext : Matrix μ ν K,
+      fromBlocks C1 0 0 Dprev * M *
+          fromBlocks (1 : Matrix ρ ρ K) (-B) 0 (1 : Matrix ν ν K) =
+        fromBlocks C1 0 0 (Dprev * Dnext) := by
+  rcases hM with ⟨B, Dnext, hM⟩
+  refine ⟨B, Dnext, ?_⟩
+  exact productReduction_blockDiagonal_mul_eq_fromBlocks_one_zero_rightElim_indexed
+    C1 Dprev B Dnext hM
+
 /-- The inverse of a product corner cancels the already-invertible left factor. -/
 private theorem nonsing_inv_mul_left_factor {r : ℕ}
     (C1 A1 : Matrix (Fin r) (Fin r) K) (hC1 : IsUnit C1.det) (hA1 : IsUnit A1.det) :

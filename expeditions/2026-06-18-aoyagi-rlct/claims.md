@@ -98,7 +98,8 @@ No such claim is formalisation-ready until both fields are filled.
   reversed source-to-target `chainMap` is related to `paperChainMap`. Finite
   paper-order edge block, unitriangular, and endpoint wrappers are proved. The
   algebraic determinant-chart predicate layer for adapted paper edge matrices
-  is proved. The full source Theorem 3 claim remains blocked.
+  is proved. A one-edge right-elimination corollary for identity-corner adapted
+  edges is proved. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -127,8 +128,12 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.identityCornerForm`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_of_identityCornerForm`, and
-  `DLNFibre.DLN.Aoyagi.identityCornerForm_upperUnitriangular_mul` in the same
-  file; entry-ideal transport lemmas in
+  `DLNFibre.DLN.Aoyagi.identityCornerForm_upperUnitriangular_mul`, plus
+  one-edge elimination theorems
+  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_fromBlocks_one_zero_rightElim_indexed`,
+  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_eq_fromBlocks_one_zero_rightElim_indexed`, and
+  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_identityCornerForm_rightElim`
+  in the same file; entry-ideal transport lemmas in
   `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`; through-layer subspace theorem
   `DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces` in
   `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`; paper-order composite
@@ -166,6 +171,7 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.identityCornerForm_paperAdaptedReverseEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_paperAdaptedReverseEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_unitriangular_paperAdaptedReverseEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.productReduction_paperAdaptedReverseEdgeMatrix_rightElim`,
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`,
@@ -212,21 +218,29 @@ No such claim is formalisation-ready until both fields are filled.
   Also proved an algebraic identity-corner/determinant-chart predicate layer:
   identity-corner form implies selected determinant-unit chart membership, and
   adapted paper edge matrices plus their unitriangular transforms satisfy it.
+  Also proved one-edge right elimination: the explicit witnessed block identity
+  is proved over a `NonAssocRing`; the equality and identity-corner wrappers
+  give the form used by adapted edge matrices, with the paper adapted-edge
+  corollary in the reversed Aoyagi order.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem. The full product-reduction
   theorem would additionally need the paper-side rank parameter/open-neighborhood
-  bridge and product-reduction induction assembly, not yet proved.
+  bridge, endpoint-compatible shared adapted bases, and product-reduction
+  induction assembly, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
   as analytic theorems; instead, prove the elementary entry-ideal algebra and
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
-  local analytic/certificate transport remain open. The through-subspace/chart
-  data layer still needs connection to the chart-local product-reduction
-  induction, and any topological open-neighborhood statement remains separate;
-  see
+  local analytic/certificate transport remain open. The concrete finite edge
+  wrappers do not yet compose definitionally with the endpoint theorem, because
+  the endpoint theorem uses the total kernel as the source complement while the
+  concrete finite edge wrappers use automatically chosen complements at every
+  vertex. The through-subspace/chart data layer still needs a shared adapted
+  basis family and connection to the chart-local product-reduction induction,
+  and any topological open-neighborhood statement remains separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

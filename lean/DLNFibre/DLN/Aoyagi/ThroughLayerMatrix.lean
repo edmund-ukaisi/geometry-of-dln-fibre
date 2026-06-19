@@ -745,6 +745,37 @@ theorem identityCornerDetChart_paperAdaptedReverseEdgeMatrix
   identityCornerDetChart_of_identityCornerForm
     (identityCornerForm_paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p)
 
+/-- A block-diagonal prefix extends across one adapted paper-order edge by right elimination. -/
+theorem productReduction_paperAdaptedReverseEdgeMatrix_rightElim
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) {π : Type*}
+    (C1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+    (Dprev : Matrix π
+      (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) :
+    ∃ Bmat : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K,
+      ∃ Dmat : Matrix
+          (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K,
+        fromBlocks C1 0 0 Dprev *
+            paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p *
+            fromBlocks
+              (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+              (-Bmat) 0
+              (1 : Matrix
+                (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+                  p.castSucc)
+                (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+                  p.castSucc) K) =
+          fromBlocks C1 0 0 (Dprev * Dmat) :=
+  productReduction_blockDiagonal_mul_identityCornerForm_rightElim C1 Dprev
+    (identityCornerForm_paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p)
+
 /-- A paper-order edge remains in identity-corner block form after a unitriangular multiplier. -/
 theorem exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero
     [∀ j, FiniteDimensional K (W j)]

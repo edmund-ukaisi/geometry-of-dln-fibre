@@ -21,6 +21,9 @@
 >   and
 >   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_of_identityCornerForm`
 >   (`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`).
+>   The one-edge right-elimination wrapper is
+>   `DLNFibre.DLN.Aoyagi.productReduction_paperAdaptedReverseEdgeMatrix_rightElim`
+>   (`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`).
 > - **Gloss.** The theorem applies the finite through-layer block theorem to the
 >   reversed paper chain `reverseVertex W`, `reverseEdge W B`. The hypothesis is
 >   phrased against the paper-order total product `paperChainMap`; the helper
@@ -33,13 +36,17 @@
 >   the reversed chain; endpoint `[I 0; 0 0]` form for the total paper product
 >   when the source complement is the total kernel. Also proved determinant
 >   chart membership for the adapted paper edge matrix and its unitriangular
->   transform.
+>   transform, plus one-edge right elimination for a block-diagonal prefix
+>   followed by one adapted paper edge.
 > - **Assumed.** Field-vector-space hypotheses, finite-dimensional layers, and a
 >   through-subspace disjointness hypothesis for the paper-order total product.
 > - **Cited.** None.
-> - **Deferred.** Product-reduction induction assembly; topological
->   open-neighborhood statements; and every analytic/RLCT consequence.
+> - **Deferred.** Endpoint-compatible shared adapted bases; product-reduction
+>   induction assembly; topological open-neighborhood statements; and every
+>   analytic/RLCT consequence.
 > - **Kill conditions.** This is adapted-coordinate bookkeeping. It does not
 >   state that Aoyagi's fixed coordinate blocks are invertible, prove rank
 >   preservation, or prove Theorem 3. The determinant-chart predicate is
 >   algebraic `IsUnit` at the adapted base matrix, not a topology statement.
+>   The concrete finite edge wrappers are not yet a composable all-layer product
+>   assembly with the endpoint theorem.
