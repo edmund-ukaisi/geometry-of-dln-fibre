@@ -246,10 +246,16 @@ on the session's original cwd.
    supplied Case 1(1) same-domain boundary: selected old exponent post-data,
    same-domain lower-tail certificate update, and source-coordinate row-strip
    identity are projected together without chart production. Next A4 target:
-   decide between a recurrence-weight interpretation of the Case 1(1) strip
-   post weights and a chart-family/regularity assumption boundary for the
-   selected-old branch; keep either source-faithful and explicitly supplied
-   where coordinates are not constructed. Avoid raw Case 1(2) hidden-old
+   the pure recurrence-weight interpretation of the Case 1(1) strip post
+   weights is Lean-proved from a supplied base recurrence: moving the selected
+   old factor from level `J+J1` down to level `J` produces exactly the
+   piecewise strip post weights and source-coordinate matrix identity with the
+   lowered recurrence on the right diagonal. Next A4 target: either package a
+   source-facing recurrence post-data interface for that level move, or add
+   the selected-old `Unit` chart-family/principalization boundary if the
+   recurrence-state source interpretation is still too immature. Keep either
+   explicitly supplied where coordinates are not constructed. Avoid raw Case
+   1(2) hidden-old
    pullback construction, arbitrary chart coverage, or non-displayed
    transition claims.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight

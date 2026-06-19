@@ -899,7 +899,14 @@ No such claim is formalisation-ready until both fields are filled.
   `Case1SelectedOldSuppliedSameDomainBoundary.updateExponentCertificates`.
   This packages supplied selected-old post-data with the row-wise source
   identity and same-domain exponent update, still without chart production or
-  domain advancement.
+  domain advancement. Added the pure Case 1(1) recurrence post-weight
+  calculation:
+  `monomialRec_mulStepAt_case1_selectedOld_postWeight`,
+  `case1SelectedOldPostWeight_eq_monomialRec_loweredLevel`,
+  `case1SelectedOld_diagonal_mul_sourceMatrix_loweredLevel`, and
+  `case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates_loweredLevel`.
+  This proves the strip post weights from a supplied base recurrence, not from
+  constructed source recurrence data.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

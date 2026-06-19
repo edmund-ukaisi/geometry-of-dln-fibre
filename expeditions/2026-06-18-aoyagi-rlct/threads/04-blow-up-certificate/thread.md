@@ -1313,3 +1313,32 @@ chart, prove that coordinates produce the post-data, introduce `(S,J+1)`, use
 the displayed Case 1(2) pivot, assert `Q/P`, prove chart coverage or
 regularity, compute Jacobians, prove normal crossings, extract RLCT, or prove
 a transition invariant.
+
+## 2026-06-19 Lean Case 1 selected-old recurrence post weight
+
+Statement card:
+`statement-card-a4-case1-selected-old-recurrence-postweight.md`.
+
+Lean now proves the pure recurrence calculation behind the Case 1(1) strip
+weights. Starting from a supplied base recurrence with the selected old factor
+kept separate, moving the factor from level `J+J1` down to level `J` gives
+the piecewise post-weight convention on active residual rows:
+
+```text
+b'_i =
+  u * b_i, if i <= J+J1,
+  b_i,     otherwise.
+```
+
+The residual-row theorem
+`case1SelectedOldPostWeight_eq_monomialRec_loweredLevel` identifies this with
+`case1SelectedOldPostWeight`, and the matrix corollaries rewrite the
+Case 1(1) source-coordinate identity with the lowered recurrence on the right
+diagonal.
+
+This is recurrence algebra only. It does not construct the selected-old chart,
+derive the supplied base recurrence from source recurrence data, build a
+recurrence-state post-data theorem, introduce `(S,J+1)`, use the displayed
+Case 1(2) pivot, assert `Q/P`, prove chart coverage or regularity, compute
+Jacobians, prove normal crossings, extract RLCT, or prove a transition
+invariant.

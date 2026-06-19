@@ -857,6 +857,25 @@ transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-same-domain-boundary-a4.md`.
 
+Latest A4 update: the Case 1(1) selected-old recurrence post-weight
+calculation has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+The proved Lean names are
+`monomialRec_mulStepAt_case1_selectedOld_postWeight`,
+`case1SelectedOldPostWeight_eq_monomialRec_loweredLevel`,
+`case1SelectedOld_diagonal_mul_sourceMatrix_loweredLevel`, and
+`case1SelectedOld_diagonal_mul_sourceMatrix_sourceCoordinates_loweredLevel`.
+This checkpoint proves, from a supplied base recurrence, that moving the
+selected old factor from level `J+J1` down to level `J` gives exactly the
+Case 1(1) piecewise strip post weights on active residual rows. It does not
+construct the selected-old chart, derive the base recurrence from source data,
+prove recurrence-state post-data, introduce `(S,J+1)`, use the displayed
+Case 1(2) pivot, assert `Q/P`, construct charts, prove
+coverage/regularity/Jacobians, prove normal crossings/RLCT, or prove a
+transition invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-recurrence-postweight.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-recurrence-postweight-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -1049,6 +1049,18 @@ with no findings; residual risk is the intended one that the scalar `u` is not
 type-level identified with the actual coordinate `u_(s0,k0)` and source
 validity remains future integration work.
 
+The Case 1(1) selected-old recurrence post-weight calculation is now
+Lean-proved as standalone algebra over a supplied base recurrence. Moving the
+selected old factor from level `J+J1` down to level `J` yields exactly the
+piecewise strip post weights on active residual rows; below the strip both old
+and lowered recurrences already contain the factor. The source-coordinate
+matrix corollary writes the right diagonal as the lowered recurrence. This
+does not construct the base recurrence from source data, does not prove a
+recurrence-state post-data theorem, and still avoids `(S,J+1)`, the displayed
+Case 1(2) pivot, `Q/P`, chart production, coverage/regularity, Jacobians,
+normal crossings, RLCT, and transition invariants. Xhigh review passed with no
+findings.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
