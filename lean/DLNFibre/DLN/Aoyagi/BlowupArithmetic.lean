@@ -2416,6 +2416,58 @@ theorem monomialRec_eq_mul_of_step_eq_mul_at
       rw [hstep_ne (J + 1 + d) (by omega), monomialRec_succ]
       ac_rfl
 
+/-- Modify one recurrence factor by multiplying the step at level `J` by `u`.
+With Aoyagi's convention, this affects row weights starting at row `J+1`. -/
+def mulStepAt (step : ℕ → α) (u : α) (J r : ℕ) : α :=
+  if r = J then u * step r else step r
+
+@[simp] theorem mulStepAt_self (step : ℕ → α) (u : α) (J : ℕ) :
+    mulStepAt step u J J = u * step J := by
+  simp [mulStepAt]
+
+theorem mulStepAt_of_ne (step : ℕ → α) (u : α) {J r : ℕ} (hne : r ≠ J) :
+    mulStepAt step u J r = step r := by
+  simp [mulStepAt, hne]
+
+/-- A single factor inserted at level `J` does not affect row weights up to
+row `J`. -/
+theorem monomialRec_mulStepAt_eq_of_le
+    (step : ℕ → α) (u : α) {J i : ℕ} (hi : i ≤ J) :
+    monomialRec (mulStepAt step u J) i = monomialRec step i :=
+  monomialRec_eq_of_step_eq_on_lt step (mulStepAt step u J)
+    (fun r hr ↦ mulStepAt_of_ne step u (by omega : r ≠ J))
+
+/-- A single factor inserted at level `J` multiplies every row weight from
+row `J+1` onward. -/
+theorem monomialRec_mulStepAt_eq_mul_of_ge
+    (step : ℕ → α) (u : α) {J i : ℕ} (hi : J + 1 ≤ i) :
+    monomialRec (mulStepAt step u J) i = u * monomialRec step i :=
+  monomialRec_eq_mul_of_step_eq_mul_at step (mulStepAt step u J) u J
+    (mulStepAt_self step u J)
+    (fun r hne ↦ mulStepAt_of_ne step u (r := r) hne) i hi
+
+/-- Case 1(2) recurrence split on strip rows.  If the old selected factor is
+at level `h` and the new factor is at level `J`, then rows `J+1..h` see the
+new post factor but not the old source factor. -/
+theorem monomialRec_mulStepAt_case1_strip_split
+    (step : ℕ → α) (u : α) {J h i : ℕ}
+    (hJ : J + 1 ≤ i) (hih : i ≤ h) :
+    monomialRec (mulStepAt step u h) i = monomialRec step i ∧
+      monomialRec (mulStepAt step u J) i = u * monomialRec step i :=
+  ⟨monomialRec_mulStepAt_eq_of_le step u hih,
+    monomialRec_mulStepAt_eq_mul_of_ge step u hJ⟩
+
+/-- Below the Case 1(2) strip, moving the same single factor from the old
+selected level `h` down to level `J` gives the same row weight: both are
+`u` times the factored-base recurrence weight. -/
+theorem monomialRec_mulStepAt_case1_lower_eq
+    (step : ℕ → α) (u : α) {J h i : ℕ}
+    (hJh : J < h) (hih : h + 1 ≤ i) :
+    monomialRec (mulStepAt step u h) i =
+      monomialRec (mulStepAt step u J) i := by
+  rw [monomialRec_mulStepAt_eq_mul_of_ge step u hih]
+  rw [monomialRec_mulStepAt_eq_mul_of_ge step u (by omega : J + 1 ≤ i)]
+
 /-- Every later monomial recurrence term is divisible by every earlier one. -/
 theorem monomialRec_dvd_of_le (step : ℕ → α) {a b : ℕ} (h : a ≤ b) :
     monomialRec step a ∣ monomialRec step b := by

@@ -1057,3 +1057,23 @@ This is still a supplied-data boundary.  It does not relate the original
 pre-state to the factored-base state, prove hidden old-label validity, extract
 complete old-label post assignments from the PDF, construct charts, prove
 coverage/regularity, compute Jacobians, or prove normal crossings/RLCT.
+
+## 2026-06-19 Lean Case 1 monomial recurrence split
+
+Statement card: `statement-card-a4-case1-monomial-recurrence-split.md`.
+
+Lean now proves the pure recurrence off-by-one calculation used by the
+factored-base Case 1(2) boundary.  The new `mulStepAt` operation inserts one
+factor at one recurrence level.  Theorems
+`monomialRec_mulStepAt_eq_of_le` and
+`monomialRec_mulStepAt_eq_mul_of_ge` show that a factor inserted at level `r`
+does not affect rows `i <= r` and multiplies all rows `r+1 <= i`.
+
+The Case 1 corollaries then compare an old source factor at level `h` with a
+new post factor at level `J`: on `J+1 <= i <= h`, only the post recurrence has
+picked up the factor; on `h+1 <= i`, both recurrences have picked it up and
+the row weights agree.
+
+This is only monomial recurrence algebra.  It does not construct the
+factored-base state, prove chart production, prove hidden old-label validity,
+or assert a transition invariant.
