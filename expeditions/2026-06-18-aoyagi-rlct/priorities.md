@@ -108,9 +108,10 @@ on the session's original cwd.
    The conditional level/tail bridge is Lean-packaged with `level = leastValue`
    for introduced labels and flat-tail only above the current pivot. Next prove
    this bridge is established/preserved where applicable, prove chart-produced
-   post-data for Case 1 selected labels, or start a row/column permutation
-   scaffold for non-displayed pivot entries. Then redo Case 1/2 updates, cover
-   pivot charts, repair the
+   post-data for Case 1 selected labels, or continue chart-family scaffolding:
+   arbitrary selected-entry finite-center facts are Lean-proved, but row/column
+   permutation or indexed non-displayed `Q/P` transition formulas are still
+   missing. Then redo Case 1/2 updates, cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

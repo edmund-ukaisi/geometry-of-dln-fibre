@@ -608,7 +608,9 @@ No such claim is formalisation-ready until both fields are filled.
   `IntroducedLabelLevelTailInvariants` and
   `case1_selectedLowerTail_of_levelTailInvariants`, assuming
   `leastValue = level` for introduced labels and flat-tail only above the
-  current pivot.
+  current pivot. Added arbitrary selected-entry finite-center facts for Case 1
+  and Case 2 centers: selected value-set membership and divisibility by the
+  selected variable for every transformed finite-center generator.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

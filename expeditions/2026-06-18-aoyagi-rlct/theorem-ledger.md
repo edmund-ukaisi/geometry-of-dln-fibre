@@ -240,6 +240,23 @@ elementary/topological A2 boundary only: no exact-rank openness, no analytic
 ideal-germ transport, no regular-suspension/RLCT additivity, and no
 normal-crossing extraction is included.
 
+## Latest A4 update
+
+The arbitrary selected-entry center facts have landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`:
+`case2_selectedEntryChartMap_value_mem_of_mem`,
+`case2_selectedEntryChartMap_center_dvd_of_mem`,
+`case1_selectedEntryChartMap_value_mem_of_mem`, and
+`case1_selectedEntryChartMap_center_dvd_of_mem`. They specialize the finite
+map `selectedEntryChartMap` to arbitrary selected entries/generators already
+known to belong to the Case 2 residual-block center or Case 1 center. The
+result is only chart-index bookkeeping: `u` occurs in the finite substitution
+value set, witnessed by the selected pivot, and all transformed finite-center
+generators are divisible by `u`. It does not prove an affine blow-up atlas,
+chart coverage, non-displayed transition formulas, row/column permutation
+symmetry, regularity/Jacobian facts, exponent updates, termination,
+normal-crossing certificates, or RLCT extraction.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

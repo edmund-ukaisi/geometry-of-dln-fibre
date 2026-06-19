@@ -237,6 +237,11 @@ interface without surfacing it.
   introduced labels and flat-tail only above the current pivot. This feeds the
   selected Case 1 update via `lt_selectedLevel`, but it is not a proved or
   preserved invariant.
+  Arbitrary selected-entry finite-center facts are now proved for Case 1 and
+  Case 2 centers: `u` occurs in the finite substitution value set, witnessed
+  by the selected pivot, and all transformed center generators are divisible by
+  `u`. This helps chart-family indexing but is not chart coverage or a
+  non-displayed transition theorem.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

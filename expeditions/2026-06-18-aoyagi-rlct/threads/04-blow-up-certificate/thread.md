@@ -267,6 +267,22 @@ This is finite algebra only. It does not construct blow-up charts, prove chart
 coverage, prove non-displayed selected-entry transition formulas, or establish
 regularity/Jacobian facts.
 
+## 2026-06-19 Lean arbitrary selected-entry center facts
+
+Statement card: `statement-card-a4-arbitrary-selected-entry-center-facts.md`.
+
+Lean now specializes the finite map `selectedEntryChartMap` to arbitrary
+selected generators in the Case 1 center and arbitrary selected entries in the
+Case 2 residual-block center, under the hypothesis that the selected pivot
+already belongs to that finite center. The Case-specific facts say that `u`
+occurs in the finite substitution value set, witnessed by the pivot, and that
+every transformed finite-center generator is divisible by `u`.
+
+This is a chart-index bookkeeping step toward a family of selected-entry
+charts. It does not construct an affine blow-up atlas, prove non-displayed
+transition formulas, establish row/column permutation symmetry, or prove chart
+coverage.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

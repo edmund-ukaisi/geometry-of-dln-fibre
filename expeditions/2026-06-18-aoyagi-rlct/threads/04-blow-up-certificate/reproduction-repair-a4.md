@@ -677,6 +677,13 @@ pivot specialization is
 cover theorem and does not prove the non-displayed selected entries satisfy the
 displayed `Q/P` transition formulas.
 
+Lean also records arbitrary selected-entry finite-center facts for the Case 1
+and Case 2 centers. If a chosen pivot belongs to the finite center, `u` occurs
+in the finite substitution value set, witnessed by that pivot, and every
+transformed finite-center generator is divisible by `u`. This is chart-index
+bookkeeping only; it is not an affine blow-up atlas, non-displayed transition
+theorem, or row/column permutation argument.
+
 ## Termination repair target
 
 The previous lexicographic measure is unstable because Case 1(1) can exhaust
