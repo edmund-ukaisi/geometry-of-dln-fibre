@@ -1576,6 +1576,33 @@ theorem exists_right_quotients_const {ι : Type*} (b0 : α) :
     ∃ q : ι → α, ∀ i, b0 = q i * b0 :=
   ⟨fun _ ↦ 1, by intro i; simp⟩
 
+/-- Recurrence factor obtained as the product of variables at a given level. -/
+def levelProductStep {β : Type*} (labels : Finset β)
+    (level : β → ℕ) (var : β → α) (r : ℕ) : α :=
+  (labels.filter (fun p ↦ level p = r)).prod var
+
+/-- If no label in a finite set has level `r`, the level-product factor is `1`. -/
+theorem levelProductStep_eq_one_of_forall_ne
+    {β : Type*} (labels : Finset β) (level : β → ℕ) (var : β → α) (r : ℕ)
+    (h : ∀ p, p ∈ labels → level p ≠ r) :
+    levelProductStep labels level var r = 1 := by
+  rw [levelProductStep]
+  exact Finset.prod_eq_one (fun p hp ↦ by
+    rw [Finset.mem_filter] at hp
+    exact False.elim ((h p hp.1) hp.2))
+
+/-- A finite label gap over an interval makes every corresponding recurrence
+factor `1`. -/
+theorem levelProductStep_eq_one_of_gap
+    {β : Type*} (labels : Finset β) (level : β → ℕ) (var : β → α)
+    {a b r : ℕ}
+    (hgap : ∀ p, p ∈ labels → ¬ (a ≤ level p ∧ level p < b))
+    (har : a ≤ r) (hrb : r < b) :
+    levelProductStep labels level var r = 1 := by
+  refine levelProductStep_eq_one_of_forall_ne labels level var r ?_
+  intro p hp hlevel
+  exact hgap p hp ⟨by simpa [hlevel], by simpa [hlevel]⟩
+
 /-- In displayed Case 2, a gap of trivial recurrence factors over
 `J+1..mu_S-1` makes every residual row weight equal to the pivot row weight. -/
 theorem case2ResidualRow_monomialRec_eq_pivot_of_gap
@@ -1590,6 +1617,22 @@ theorem case2ResidualRow_monomialRec_eq_pivot_of_gap
     ((mem_case2ResidualBlockRows n S J i.1).mp i.2).2
   exact monomialRec_eq_of_step_eq_one_on_Ico step hle
     (fun k hk hkrow ↦ hgap k hk (lt_of_lt_of_le hkrow hupper))
+
+/-- Displayed Case 2 row weights are flat when the monomial recurrence factors
+come from a finite label product with no labels in the Case 2 gap interval. -/
+theorem case2ResidualRow_levelProduct_monomialRec_eq_pivot_of_gap
+    {β : Type*} (labels : Finset β) (level : β → ℕ) (var : β → α)
+    (n : ℕ → ℕ) (S J : ℕ)
+    (hgap : ∀ p, p ∈ labels →
+      ¬ (J + 1 ≤ level p ∧ level p < prefixMinNat n S))
+    (i : Case2ResidualRowIndex n S J) :
+    monomialRec (levelProductStep labels level var)
+        (case2ResidualRowLevel n S J i) =
+      monomialRec (levelProductStep labels level var) (J + 1) := by
+  refine case2ResidualRow_monomialRec_eq_pivot_of_gap
+    (levelProductStep labels level var) n S J ?_ i
+  intro k hk hkS
+  exact levelProductStep_eq_one_of_gap labels level var hgap hk hkS
 
 end MonomialRecurrence
 
@@ -2565,6 +2608,57 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_gap_monomialRec
   refine ⟨q, ?_⟩
   simpa [weight, case2ResidualRowLevel_displayedPivotRow,
     case2DisplayedTransportedFollowingFactor] using hq
+
+/-- Displayed Case 2 source-substitution `Q/P` identity when the monomial
+recurrence factors are finite products over labels and the supplied label set
+has no labels in the Case 2 gap interval. -/
+theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_labelGap
+    {β : Type*} (labels : Finset β) (level : β → ℕ) (var : β → R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hgap : ∀ p, p ∈ labels →
+      ¬ (J + 1 ≤ level p ∧ level p < prefixMinNat n S))
+    (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal
+              (fun i ↦
+                monomialRec (levelProductStep labels level var)
+                  (case2ResidualRowLevel n S J i)) *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (u * monomialRec (levelProductStep labels level var) (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * monomialRec (levelProductStep labels level var)
+                (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          case2DisplayedTransportedFollowingFactor n hS hcont residual C := by
+  exact exists_case2DisplayedQP_mul_sourceSubstitution_of_gap_monomialRec
+    (levelProductStep labels level var) n hS hcont
+    (fun k hk hkS ↦ levelProductStep_eq_one_of_gap labels level var hgap hk hkS)
+    u residual C
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence
 indexed by the residual source row. This supplies quotient witnesses from the

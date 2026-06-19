@@ -129,9 +129,17 @@ on the session's original cwd.
    construction. The displayed Case 2 recurrence-gap row-weight bridge is also
    Lean-proved conditionally: if `step k=1` for `J+1<=k<mu_S`, then displayed
    residual row weights are flat and the source-substitution `Q/P` theorem
-   applies with row weights `monomialRec step rowLevel`. Next A4 target:
-   prove the recursive state establishes this gap, or move to arbitrary-pivot
-   chart transport if that invariant bridge remains blocked.
+   applies with row weights `monomialRec step rowLevel`. The finite
+   label-product source of this gap is also Lean-proved conditionally: if the
+	   recurrence factor is the product over a supplied finite label set and no
+	   supplied label has level in `J+1..mu_S-1`, then those factors are `1` and
+	   the same source-substitution theorem applies. Keep the bridge's row and
+	   column domains separate: residual rows are `J+1..mu_S`, residual columns
+	   are actual-width `J+1..n_(S+1)`, and the selected variable is counted once
+	   in the updated weights `u*b_i`. Next A4 target: identify the supplied
+	   finite labels with the actual introduced-label set used by the recurrence,
+	   or move to arbitrary-pivot chart transport if that invariant bridge remains
+	   blocked.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

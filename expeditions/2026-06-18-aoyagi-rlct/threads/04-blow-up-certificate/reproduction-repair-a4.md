@@ -742,6 +742,16 @@ ordered lexicographically.  This is not yet checked.  It must prove:
   `b_(J+1)`, and after the selected-entry substitution the updated weights are
   flat as `u*b_(J+1)`. This assumes the gap; it does not prove the recursive
   invariant establishes it.
+- The finite label-product source of that gap is now also proved
+  conditionally: if the recurrence factor at level `r` is the product over a
+  supplied finite label set with `level=r`, and no supplied label has level in
+  `J+1..mu_S-1`, then the recurrence factors in that interval are `1`. This
+  assumes the supplied label set is the one used by the recurrence; it does
+  not prove it is the actual introduced-label set of the recursive state.
+  The bridge keeps displayed residual rows `J+1..mu_S` distinct from
+  actual-width residual columns `J+1..n_(S+1)` and counts the selected variable
+  once in `u*b_i`. Review artifact:
+  `review-case2-label-product-gap-a4.md`.
 - The printed Case 2 vector update is incompatible with the terminal exponent
   formula for arbitrary widths.  The prefix-minimum vector repairs the
   arithmetic but is a corrected certificate, not source-faithful printed data.

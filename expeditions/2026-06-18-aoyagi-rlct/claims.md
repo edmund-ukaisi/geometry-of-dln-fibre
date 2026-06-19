@@ -508,10 +508,12 @@ No such claim is formalisation-ready until both fields are filled.
 - **Reproduction check.** failed/blocked at
   `threads/04-blow-up-certificate/reproduction-check.md`; source-image scout
   `Russell the 2nd` and pen-and-paper scout `Hume the 2nd` independently
-  confirmed the Case 2 mismatch and the prefix-minimum repaired vector.
-  Xhigh scouts `McClintock the 2nd`, `Gauss the 2nd`, and `Franklin the 2nd`
-  checked the monomial recurrence divisibility, normalized `P` row operation,
-  and normalized `Q` column operation respectively.
+	  confirmed the Case 2 mismatch and the prefix-minimum repaired vector.
+	  Xhigh scouts `McClintock the 2nd`, `Gauss the 2nd`, and `Franklin the 2nd`
+	  checked the monomial recurrence divisibility, normalized `P` row operation,
+	  and normalized `Q` column operation respectively. Xhigh reviews of the
+	  finite label-product bridge are saved at
+	  `threads/04-blow-up-certificate/review-case2-label-product-gap-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -673,12 +675,23 @@ No such claim is formalisation-ready until both fields are filled.
   `case2ResidualRow_monomialRec_eq_pivot_of_gap`, and
   `exists_case2DisplayedQP_mul_sourceSubstitution_of_gap_monomialRec`, proving
   flat displayed residual row weights from an explicit gap hypothesis.
+  Added the finite label-product gap bridge `levelProductStep`,
+  `levelProductStep_eq_one_of_forall_ne`, `levelProductStep_eq_one_of_gap`,
+  `case2ResidualRow_levelProduct_monomialRec_eq_pivot_of_gap`, and
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_labelGap`, proving that a
+  supplied finite label gap gives the recurrence-factor gap used by the
+  displayed row-weight theorem.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
-  explicit hypothesis of the row-weight bridge, not a proved invariant. The
-  Aoyagi-specific arbitrary chart construction, coordinate transport,
-  row-weight hypotheses in pivot-first coordinates, and exponent updates remain
-  open.
+	  explicit hypothesis of one row-weight bridge, not a proved invariant. The
+	  label-product bridge assumes the supplied finite labels are the labels used
+	  by the recurrence factor; it does not prove they are the actual introduced
+	  labels at the recursive state. This displayed bridge keeps residual rows
+	  `J+1..mu_S` separate from actual-width residual columns
+	  `J+1..n_(S+1)`, and counts the selected variable once in the updated weights
+	  `u*b_i`. The Aoyagi-specific arbitrary chart
+	  construction, coordinate transport, row-weight hypotheses in pivot-first
+	  coordinates, and exponent updates remain open.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
