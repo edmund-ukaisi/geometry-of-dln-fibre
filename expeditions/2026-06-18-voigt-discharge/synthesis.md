@@ -386,3 +386,16 @@ non-circular routes to the core `dim O_M = finrank(range δ⁰)`:
 **NEXT (final scoping): sizing recon comparing (a) vs (b)** — pick the genuinely smaller Lean build, produce its
 build sub-ladder. Then build, layer by layer. Loop re-armed.
 - 2026-06-19: operator BUILD IT. Next: route-sizing recon (determinantal-KMS vs orbit-stabiliser/Chevalley).
+
+## ✅ SCOPE CORRECTED — KMS determinantal sub-library AVOIDED; remaining ~8–10 modules [2026-06-19, thread 21]
+Route (a) smooth-point assembly chosen (route (b) needs absent Chevalley fibre-dim + orbit-dimension, reuses no
+bedrock — dominated). **Thread 20's scope surprise OVER-STATED:** KMS/Lakshmibai–Magyar determinantal primeness is
+NOT needed — take `I = vanishingIdeal(Z_M)` directly (prime from landed `isPrime_vanishingIdeal_orbitSet` + L6),
+and L2b via the orbit-map differential `dμ_M=δ⁰` (non-circular), NOT minor Jacobians. So the remaining campaign is
+~8–10 modules on LANDED bedrock; the ONE genuine sub-library piece is **L6.2** (box-move/lace degeneration,
+Abeasis–Del Fra, 1–2 modules — the paper cites it). NOT a second multi-month sub-library. Full sub-ladder +
+assembly chain: `threads/21-route-sizing/findings.md`. Guards: K1 (L6.2 generation = clean diff-induction?),
+K2 (L2b via dμ_M=δ⁰, not minor pderivs — else re-imports KMS). [Operator chose BUILD IT under the larger scope;
+this is a reduction — continuing the drive, no re-interrupt for good news.]
+- 2026-06-19: thread 21 CLOSED — route (a), KMS avoided. Next: de-risk L6.2 (the box-move generation, K1) —
+  design+stress-test the degeneration induction + the explicit box-move family, then build L6.1/L6.2.
