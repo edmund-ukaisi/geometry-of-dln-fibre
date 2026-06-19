@@ -770,6 +770,15 @@ No such claim is formalisation-ready until both fields are filled.
   `exists_case2SelectedQP_mul_sourceSubstitution_of_flat_weights`, proving
   finite pivot-first transport and conditional `Q/P` for any supplied Case 2
   residual-block pivot under explicit row-weight divisibility or flatness.
+  Added arbitrary selected-entry recurrence handoff:
+  `exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap`,
+  `CorrectedCase2NewLabelCertificate.case2Selected_diagonal_mul_substitutionMatrix_pivotFirst_succWeights`,
+  `CorrectedCase2NewLabelCertificate.case2Selected_diagonal_mul_substitutionMatrix_pivotFirst_succWeights_of_postData`,
+  `CorrectedCase2NewLabelCertificate.exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights`,
+  and
+  `CorrectedCase2NewLabelCertificate.exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData`,
+  proving the same arbitrary selected-pivot handoff under packaged old
+  recurrence gaps and supplied successor post-data.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

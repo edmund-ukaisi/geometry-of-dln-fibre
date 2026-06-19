@@ -861,6 +861,17 @@ regularity/Jacobian facts, recurrence post-state production, exponent updates,
 transition invariants, source comparability, normal crossings, or RLCT
 extraction.
 
+The arbitrary selected-entry recurrence handoff is now Lean-proved. The theorem
+`exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap` feeds an
+old packaged recurrence state and `case2Gap` into the arbitrary selected-pivot
+`Q/P` wrapper. The corrected-certificate namespace now has arbitrary selected
+successor-weight transport and `Q/P` wrappers, including `_of_postData`
+versions using `IntroducedLabelRecurrenceState.Case2SuppliedPostData`. The
+right-side diagonal is rewritten at the actual selected row level
+`case2ResidualRowLevel n S J rowPivot`, not forced back to the displayed
+`J+1` row. This remains supplied-pivot/supplied-post-state finite algebra, not
+chart production or coverage.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

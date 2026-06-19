@@ -576,6 +576,23 @@ normal crossings, or RLCT extraction. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-arbitrary-selected-source-substitution-a4.md`.
 
+Latest A4 update: arbitrary selected-entry Case 2 recurrence handoff has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap`,
+`CorrectedCase2NewLabelCertificate.case2Selected_diagonal_mul_substitutionMatrix_pivotFirst_succWeights`,
+`CorrectedCase2NewLabelCertificate.case2Selected_diagonal_mul_substitutionMatrix_pivotFirst_succWeights_of_postData`,
+`CorrectedCase2NewLabelCertificate.exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights`,
+and
+`CorrectedCase2NewLabelCertificate.exists_case2SelectedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData`.
+The theorem family lifts the arbitrary selected finite-algebra wrapper to
+packaged old recurrence states and supplied successor post-data, while keeping
+the selected pivot and post-state supplied. It does not prove chart production,
+arbitrary-pivot chart coverage, regularity/Jacobian, exponent updates, source
+comparability, normal crossings, or RLCT extraction. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-arbitrary-selected-recurrence-handoff.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-arbitrary-selected-recurrence-handoff-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

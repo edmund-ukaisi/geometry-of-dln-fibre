@@ -744,6 +744,27 @@ affine blow-up atlas, arbitrary-pivot chart coverage, chart regularity/Jacobian
 facts, recurrence post-state production, exponent updates, transition
 invariants, source comparability, normal crossings, or RLCT extraction.
 
+## 2026-06-19 Lean Case 2 arbitrary selected-entry recurrence handoff
+
+Reproduction: `reproduction-case2-arbitrary-selected-recurrence-handoff-a4.md`.
+Statement card: `statement-card-a4-case2-arbitrary-selected-recurrence-handoff.md`.
+Review artifact: `review-case2-arbitrary-selected-recurrence-handoff-a4.md`.
+
+Lean now lifts the arbitrary selected-entry Case 2 source-substitution algebra
+to the packaged recurrence-state boundary. For any supplied residual-block row
+and column pivot, the old recurrence-state Case 2 gap gives the flat old row
+weights needed by the arbitrary selected-pivot `Q/P` theorem. If a supplied
+successor recurrence state preserves old recurrence data and adds `(S,J+1)` at
+level `J` with variable `u`, the right-side diagonal is rewritten from
+`u * pre.weight` to `post.weight` at the corresponding residual row levels.
+
+The `_of_postData` wrappers accept the named
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData` package. This remains
+conditional finite algebra for a supplied pivot and supplied post-state; it is
+not chart production, arbitrary-pivot chart coverage, regularity/Jacobian,
+exponent update, transition invariant, source comparability, normal crossings,
+or RLCT extraction.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

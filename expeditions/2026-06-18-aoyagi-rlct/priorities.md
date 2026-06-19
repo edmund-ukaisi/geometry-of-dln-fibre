@@ -174,7 +174,13 @@ on the session's original cwd.
    or flat row weights. Next A4 target: decide whether to extend this
    arbitrary-pivot wrapper to recurrence-weight/post-data hypotheses, or move
    to the missing chart-family coverage/regularity scaffolding; keep any
-   non-displayed pivot statement conditional.
+   non-displayed pivot statement conditional. The recurrence-weight/post-data
+   extension is now Lean-proved for supplied arbitrary pivots: old `case2Gap`
+   supplies flat weights, and supplied post-data rewrites `u * pre.weight` as
+   `post.weight`. Next A4 target: source-facing wrappers from a source pivot
+   pair `p : Nat × Nat` and residual functions in source coordinates, or begin
+   chart-family coverage/regularity scaffolding; avoid treating either as
+   source-displayed arbitrary-pivot coverage.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
