@@ -729,10 +729,13 @@ ordered lexicographically.  This is not yet checked.  It must prove:
   source-substituted residual block into updated row weights before applying
   `Q/P`. The displayed `Q^{-1}C` transported following factor and a row-index
   monomial-recurrence wrapper are also proved, assuming row weights are already
-  represented as `u * monomialRec step rowLevel`. The full
-  polynomial-coordinate pivot chart construction, full source blockdiag
-  identity, source recurrence-to-row-weight bridge, arbitrary selected-entry
-  pivots, and chart-family coverage are not proved.
+  represented as `u * monomialRec step rowLevel`. The finite source-block
+  tail lift is also proved: already-proved displayed residual-tail identities
+  can be reattached below unchanged top rows by `fromBlocks` and
+  `verticalBlock`. The full polynomial-coordinate pivot chart construction,
+  source blockdiag identity beyond this unchanged-top tail lift,
+  source recurrence-to-row-weight bridge, arbitrary selected-entry pivots, and
+  chart-family coverage are not proved.
 - The printed Case 2 vector update is incompatible with the terminal exponent
   formula for arbitrary widths.  The prefix-minimum vector repairs the
   arithmetic but is a corrected certificate, not source-faithful printed data.

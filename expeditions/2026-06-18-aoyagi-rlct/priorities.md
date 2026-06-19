@@ -122,10 +122,13 @@ on the session's original cwd.
    into updated row weights before the pivot-first `Q/P` theorem is applied.
    The displayed `Q^{-1}C` transported following factor and a row-index
    monomial-recurrence `Q/P` wrapper are Lean-proved, but they assume the row
-   weights have already been represented in that recurrence form. Next A4
-   target: the fuller displayed Case 2 source block identity, including top-row
-   block bookkeeping and following-factor replacement in source coordinates,
-   still without arbitrary-pivot coverage.
+   weights have already been represented in that recurrence form. The finite
+   source-block tail lift is also Lean-proved: displayed residual-tail
+   identities can be reattached below unchanged top rows using `fromBlocks` and
+   `verticalBlock`, still without arbitrary-pivot coverage or full source chart
+   construction. Next A4 target: source recurrence-to-row-weight production in
+   displayed Case 2, or arbitrary-pivot chart transport if that bridge remains
+   blocked.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

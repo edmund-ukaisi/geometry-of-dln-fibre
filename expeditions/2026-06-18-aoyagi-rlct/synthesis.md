@@ -297,6 +297,17 @@ interface without surfacing it.
   divisibility using the residual source-row bound `J+1 <= rowLevel`. It
   assumes the row weights already have the form `u * monomialRec step rowLevel`;
   it does not prove the source recurrence or the full transition.
+  The displayed Case 2 source-block tail lift is now Lean-proved:
+  `verticalBlock`, `fromBlocks_mul_verticalBlock`, and
+  `fromBlocks_mul_verticalBlock_eq_of_tail` lift a residual-tail identity
+  through unchanged top rows, while
+  `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights`
+  and
+  `exists_case2DisplayedQP_verticalBlock_transportedFollowingFactor_of_rowIndex_monomialRec`
+  apply this to the displayed source-substitution and row-index recurrence
+  tail identities. This closes only the finite top-row reattachment
+  bookkeeping; arbitrary pivots, source recurrence production, source chart
+  regularity, exponent updates, and transition invariants remain open.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

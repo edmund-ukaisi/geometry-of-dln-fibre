@@ -490,10 +490,12 @@ No such claim is formalisation-ready until both fields are filled.
   Case 2 theorem now also accepts a residual following factor before
   pivot-first reindexing. The first source-substitution factoring bridge is
   also proved: the selected variable in the displayed residual block is moved
-  into updated row weights before applying `Q/P`. Missing arbitrary pivot
-  charts, the full source blockdiag identity, full polynomial-coordinate chart
-  construction, proof that the source recurrence produces the displayed
-  row-index weights, the printed `b'_i` versus standalone-`u` ambiguity,
+  into updated row weights before applying `Q/P`. The finite source-block
+  tail lift is also proved: already-proved displayed residual-tail identities
+  can be reattached below unchanged top rows. Missing arbitrary pivot charts,
+  the full source blockdiag identity beyond this unchanged-top lift, full
+  polynomial-coordinate chart construction, proof that the source recurrence
+  produces the displayed row-index weights, the printed `b'_i` versus standalone-`u` ambiguity,
   termination, and boundary cases remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
@@ -660,6 +662,11 @@ No such claim is formalisation-ready until both fields are filled.
   `case2ResidualRowLevel_displayedPivotRow`,
   `case2DisplayedTransportedFollowingFactor`, and
   `exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec`.
+  Added the finite source-block tail-lift API `verticalBlock`,
+  `fromBlocks_mul_verticalBlock`, `fromBlocks_mul_verticalBlock_eq_of_tail`,
+  `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights`,
+  and
+  `exists_case2DisplayedQP_verticalBlock_transportedFollowingFactor_of_rowIndex_monomialRec`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The Aoyagi-specific arbitrary chart construction, coordinate
   transport, row-weight hypotheses in pivot-first coordinates, and exponent

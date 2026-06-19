@@ -460,6 +460,33 @@ source recurrence, full source blockdiag identity, arbitrary-pivot chart
 coverage, regularity/Jacobian facts, exponent updates, or transition
 invariants.
 
+## 2026-06-19 Lean Case 2 source-block tail lift
+
+Reproduction: `reproduction-case2-source-block-tail-lift-a4.md`.
+Statement card: `statement-card-a4-case2-source-block-tail-lift.md`.
+
+Lean now proves the finite block-matrix step that lifts an already-proved
+displayed Case 2 residual-tail identity through unchanged top rows. The generic
+helper `verticalBlock` stacks a top following-factor block over a residual-tail
+following-factor block. The theorem `fromBlocks_mul_verticalBlock` proves that
+`fromBlocks A_top 0 0 L_tail` acts as `A_top` on the top rows and `L_tail` on
+the residual rows, and `fromBlocks_mul_verticalBlock_eq_of_tail` lifts any
+tail identity `L_tail*C_tail = R_tail*C_tail'`.
+
+The displayed wrappers
+`exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights`
+and
+`exists_case2DisplayedQP_verticalBlock_transportedFollowingFactor_of_rowIndex_monomialRec`
+apply this to the source-substitution tail theorem and to the row-index
+monomial-recurrence transported-following-factor theorem. The top block is
+unchanged except for the same supplied `A_top` on both sides.
+
+This closes only the finite "reattach unchanged top rows" bookkeeping gap. It
+does not prove arbitrary-pivot charts, source chart regularity/Jacobian facts,
+source recurrence-to-row-weight production, exponent updates, transition
+invariants, termination, normal crossings, RLCT extraction, or the printed
+Case 2 vector repair.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

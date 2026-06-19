@@ -1640,6 +1640,44 @@ theorem exists_weightedPivotBlockRowOp_mul_diagonal_mul_of_forall_dvd
 
 end RowOperationBlocks
 
+/-- Stack two matrices with the same column type as top and bottom row blocks. -/
+def verticalBlock {ι κ τ R : Type*}
+    (top : Matrix ι τ R) (bottom : Matrix κ τ R) : Matrix (ι ⊕ κ) τ R :=
+  Sum.elim top bottom
+
+@[simp] theorem verticalBlock_inl {ι κ τ R : Type*}
+    (top : Matrix ι τ R) (bottom : Matrix κ τ R) (i : ι) (j : τ) :
+    verticalBlock top bottom (Sum.inl i) j = top i j :=
+  rfl
+
+@[simp] theorem verticalBlock_inr {ι κ τ R : Type*}
+    (top : Matrix ι τ R) (bottom : Matrix κ τ R) (i : κ) (j : τ) :
+    verticalBlock top bottom (Sum.inr i) j = bottom i j :=
+  rfl
+
+/-- Multiplying a vertical block by a block-diagonal matrix acts separately on
+the top and bottom blocks. -/
+theorem fromBlocks_mul_verticalBlock
+    {ι κ ρ τ R : Type*} [Semiring R] [Fintype ι] [Fintype κ]
+    (A : Matrix ι ι R) (D : Matrix ρ κ R)
+    (Ctop : Matrix ι τ R) (Ctail : Matrix κ τ R) :
+    fromBlocks A 0 0 D * verticalBlock Ctop Ctail =
+      verticalBlock (A * Ctop) (D * Ctail) := by
+  ext r t
+  rcases r with i | k
+  · simp [verticalBlock, Matrix.mul_apply, Fintype.sum_sum_type]
+  · simp [verticalBlock, Matrix.mul_apply, Fintype.sum_sum_type]
+
+/-- A tail product identity lifts through an unchanged top block. -/
+theorem fromBlocks_mul_verticalBlock_eq_of_tail
+    {ι κ ρ τ R : Type*} [Semiring R] [Fintype ι] [Fintype κ]
+    (A : Matrix ι ι R) (L Rtail : Matrix ρ κ R)
+    (Ctop : Matrix ι τ R) (Ctail Ctail' : Matrix κ τ R)
+    (h : L * Ctail = Rtail * Ctail') :
+    fromBlocks A 0 0 L * verticalBlock Ctop Ctail =
+      fromBlocks A 0 0 Rtail * verticalBlock Ctop Ctail' := by
+  rw [fromBlocks_mul_verticalBlock, fromBlocks_mul_verticalBlock, h]
+
 section ColumnOperationBlocks
 
 variable {R ρ κ τ : Type*} [CommRing R] [Fintype κ] [DecidableEq κ]
@@ -2493,6 +2531,109 @@ theorem exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monom
         (case2DisplayedPivotCol n hS hcont) residual)
       (C := case2DisplayedFollowingFactor n hS hcont C)
       (fun i ↦ Or.inr (case2ResidualRowLevel_ge n S J i.1))
+
+/-- Displayed Case 2 source-substitution tail identity lifted through an
+unchanged top block.  This is block-diagonal bookkeeping for the displayed
+pivot chart, not arbitrary-pivot coverage or a full transition theorem. -/
+theorem exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights
+    {ι : Type*} [Fintype ι]
+    (Atop : Matrix ι ι R) (Ctop : Matrix ι τ R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (weight : Case2ResidualRowIndex n S J → R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R)
+    (hflat : ∀ i, weight i = weight (case2DisplayedPivotRow n hS hcont)) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      fromBlocks Atop 0 0
+          (weightedPivotBlockRowOp q
+              (fun i ↦
+                pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+            (diagonal weight *
+              case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+              (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+              (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          verticalBlock Ctop (case2DisplayedFollowingFactor n hS hcont C) =
+        fromBlocks Atop 0 0
+          (weightedPivotDiagonal
+              (u * weight (case2DisplayedPivotRow n hS hcont))
+              (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+                u * weight i.1) *
+            weightedPivotClearedBlock
+              (pivotFirstD
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) -
+                pivotFirstX
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont)
+                    (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                  pivotFirstY
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont)
+                    (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          verticalBlock Ctop
+            (case2DisplayedTransportedFollowingFactor n hS hcont residual C) := by
+  rcases exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights
+      n hS hcont u weight residual C hflat with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  exact fromBlocks_mul_verticalBlock_eq_of_tail Atop _ _ Ctop _ _
+    (by simpa [case2DisplayedTransportedFollowingFactor] using hq)
+
+/-- Displayed Case 2 row-index recurrence tail identity lifted through an
+unchanged top block.  The row weights are assumed to already have the
+`u * monomialRec step rowLevel` form. -/
+theorem exists_case2DisplayedQP_verticalBlock_transportedFollowingFactor_of_rowIndex_monomialRec
+    {ι : Type*} [Fintype ι]
+    (Atop : Matrix ι ι R) (Ctop : Matrix ι τ R)
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      fromBlocks Atop 0 0
+          (weightedPivotBlockRowOp q
+              (fun i ↦
+                pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+            weightedPivotDiagonal
+              (u * monomialRec step (J + 1))
+              (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+                u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+            pivotFirstMatrix
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+          verticalBlock Ctop (case2DisplayedFollowingFactor n hS hcont C) =
+        fromBlocks Atop 0 0
+          (weightedPivotDiagonal
+              (u * monomialRec step (J + 1))
+              (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+                u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+            weightedPivotClearedBlock
+              (pivotFirstD
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) -
+                pivotFirstX
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont)
+                    (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                  pivotFirstY
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont)
+                    (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          verticalBlock Ctop
+            (case2DisplayedTransportedFollowingFactor n hS hcont residual C) := by
+  rcases exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec
+      step n hS hcont u residual C with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  exact fromBlocks_mul_verticalBlock_eq_of_tail Atop _ _ Ctop _ _ hq
 
 end ColumnOperationBlocks
 
