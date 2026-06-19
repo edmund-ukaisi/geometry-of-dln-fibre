@@ -614,6 +614,68 @@ theorem case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
   · exact le_trans hcont (prefixMinNat_succ_le n hS)
   · exact le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
 
+/-- Case 1 center generator symbols after externally choosing the old exceptional variable.
+The `Unit` branch does not encode the old label, its validity, level, minimality, or
+comparability; the right branch records a row-strip entry. -/
+abbrev Case1CenterGenerator := Unit ⊕ (ℕ × ℕ)
+
+/-- Row indices in the Case 1 row strip. -/
+def case1StripRows (J J1 : ℕ) : Finset ℕ :=
+  Finset.Icc (J + 1) (J + J1)
+
+/-- Column indices in the Case 1 row strip, using actual active width, not prefix minimum. -/
+def case1StripCols (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
+  Finset.Icc (J + 1) (n (S + 1))
+
+/-- Residual block entries appearing in the Case 1 row-strip center. -/
+def case1StripEntries (n : ℕ → ℕ) (S J J1 : ℕ) : Finset (ℕ × ℕ) :=
+  (case1StripRows J J1).product (case1StripCols n S J)
+
+/-- Finite Case 1 center generators after fixing the chosen old exceptional variable.
+This does not encode Case 1 hypotheses, chart coverage, regularity, exponent updates, or
+termination. -/
+def case1CenterGenerators (n : ℕ → ℕ) (S J J1 : ℕ) :
+    Finset Case1CenterGenerator :=
+  {(Sum.inl () : Case1CenterGenerator)} ∪
+    (case1StripEntries n S J J1).image (fun p ↦ (Sum.inr p : Case1CenterGenerator))
+
+@[simp] theorem mem_case1StripRows (J J1 i : ℕ) :
+    i ∈ case1StripRows J J1 ↔ J + 1 ≤ i ∧ i ≤ J + J1 := by
+  simp [case1StripRows, Finset.mem_Icc]
+
+@[simp] theorem mem_case1StripCols (n : ℕ → ℕ) (S J j : ℕ) :
+    j ∈ case1StripCols n S J ↔ J + 1 ≤ j ∧ j ≤ n (S + 1) := by
+  simp [case1StripCols, Finset.mem_Icc]
+
+/-- Membership in the finite Case 1 row-strip entry set. -/
+theorem mem_case1StripEntries_iff (n : ℕ → ℕ) (S J J1 i j : ℕ) :
+    (i, j) ∈ case1StripEntries n S J J1 ↔
+      J + 1 ≤ i ∧ i ≤ J + J1 ∧ J + 1 ≤ j ∧ j ≤ n (S + 1) := by
+  simp [case1StripEntries, and_assoc]
+
+/-- The chosen old exceptional variable is a Case 1 center generator. -/
+theorem case1_selectedOld_mem_center (n : ℕ → ℕ) (S J J1 : ℕ) :
+    (Sum.inl () : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 := by
+  simp [case1CenterGenerators]
+
+/-- Every row-strip entry is a Case 1 center generator. -/
+theorem case1_stripEntry_mem_center
+    {n : ℕ → ℕ} {S J J1 : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case1StripEntries n S J J1) :
+    (Sum.inr p : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 := by
+  simp [case1CenterGenerators, hp]
+
+/-- Aoyagi's displayed Case 1 pivot entry belongs to the finite center under entry bounds.
+This does not assert the row strip is source-valid in the active residual block. -/
+theorem case1_displayedPivot_mem_center_of_bounds
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1)) :
+    (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) ∈
+      case1CenterGenerators n S J J1 :=
+  case1_stripEntry_mem_center (by
+    rw [mem_case1StripEntries_iff]
+    exact ⟨le_rfl, by omega, le_rfl, hcol⟩)
+
 section SelectedEntryChart
 
 variable {ι α : Type*} [DecidableEq ι] [Monoid α]
@@ -661,6 +723,28 @@ theorem case2_displayedPivot_selectedEntryChartMap_value_mem
         selectedEntryChartMap (J + 1, J + 1) u residual p = v} :=
   selectedEntryChartMap_pivot_mem_valueSet
     (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont) u residual
+
+/-- In the Case 1 selected-old-variable chart, the selected generator has value `u`. -/
+theorem case1_selectedOld_selectedEntryChartMap_value_mem
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {α : Type*} [Monoid α] (u : α) (residual : Case1CenterGenerator → α) :
+    u ∈
+      {v : α | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+        selectedEntryChartMap (Sum.inl () : Case1CenterGenerator) u residual g = v} :=
+  selectedEntryChartMap_pivot_mem_valueSet
+    (case1_selectedOld_mem_center n S J J1) u residual
+
+/-- In the displayed Case 1 pivot-entry chart, the displayed strip entry has value `u`. -/
+theorem case1_displayedPivot_selectedEntryChartMap_value_mem
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {α : Type*} [Monoid α] (u : α) (residual : Case1CenterGenerator → α) :
+    u ∈
+      {v : α | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+        selectedEntryChartMap (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)
+          u residual g = v} :=
+  selectedEntryChartMap_pivot_mem_valueSet
+    (case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol) u residual
 
 /-- Lower the vector tail from stage `S` onward to the pivot level `J`. -/
 def lowerTailVector (T : ℕ → ℤ) (S : ℕ) (J : ℤ) (i : ℕ) : ℤ :=
