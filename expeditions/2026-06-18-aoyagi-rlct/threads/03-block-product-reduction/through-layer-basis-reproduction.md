@@ -206,14 +206,15 @@ identifies the last through-subspace with the total range.
 The first matrix chart corollary now exists in Lean as
 `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero`:
 in transported `Module.Basis.sumQuot` bases, each through-subspace edge is
-`fromBlocks 1 B 0 D`.
+`fromBlocks 1 B 0 D`. The complement/direct-sum version also exists as
+`DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zero`:
+with supplied complements and complement bases, the same block form holds for
+ambient bases built using `basisOfIsCompl`.
 
-Next prove the complement/direct-sum packaging matching the current
-`fromBlocks` APIs: choose complements and simultaneous compatible bases, show
-each true layer is `fromBlocks 1 B 0 D` in those adapted bases, show the total
-product is `fromBlocks 1 0 0 0`, and then connect the Aoyagi transformed
-next-layer top-left corner to the already-proved unitriangular chart-stability
-identity.
+Next prove the chain packaging matching the current `fromBlocks` APIs: choose
+simultaneous compatible bases, show the total product is
+`fromBlocks 1 0 0 0`, and then connect the Aoyagi transformed next-layer
+top-left corner to the already-proved unitriangular chart-stability identity.
 
 ## Checker verdict
 
@@ -226,7 +227,6 @@ finite-dimensional rank assertion.
 
 Formalisation-ready now:
 
-- complement/direct-sum packaging from the through-subspace theorem;
 - simultaneous chain-basis and total-product block-form corollaries.
 
 Still not formalisation-ready:

@@ -204,12 +204,18 @@ Main Lean artifacts:
 - `exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero`:
   specialization to an edge `A p : V p.castSucc -> V p.succ` using
   `throughSubspaceEdgeEquiv`.
+- `basisOfIsCompl`: builds an ambient basis from bases of complementary
+  subspaces using `Submodule.prodEquivOfIsCompl`.
+- `exists_toMatrix_basisOfIsCompl_eq_fromBlocks_one_zero`: generic direct-sum
+  adapted-basis block theorem.
+- `exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zero`:
+  through-edge specialization in supplied complement/direct-sum bases.
 
 This checkpoint proves basis-coordinate bookkeeping only: transported
 through-subspace bases give the identity top-left block, and subspace
-membership gives the zero lower-left block. The quotient bases are explicit
-inputs. It is not a fixed-coordinate chart theorem, does not choose complements,
-does not package simultaneous chain bases, and does not prove Aoyagi Theorem 3
-or any analytic/RLCT consequence.
+membership gives the zero lower-left block. Quotient bases, complements, and
+complement bases are explicit inputs. It is not a fixed-coordinate chart
+theorem, does not package simultaneous chain bases, and does not prove Aoyagi
+Theorem 3 or any analytic/RLCT consequence.
 
 Statement card: `statement-card-a2-through-matrix-block.md`.

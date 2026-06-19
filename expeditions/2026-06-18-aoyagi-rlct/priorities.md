@@ -22,10 +22,9 @@ on the session's original cwd.
 ## Ranked next
 
 1. Through-layer basis/open-chart lemma for A2. The through-subspace theorem
-   and per-edge transported `sumQuot` matrix block form are Lean-proved. Next
-   package complements/direct-sum bases, simultaneous transported chain bases,
-   total-product normal form, and the link to the chart-local product-reduction
-   identity.
+   and per-edge transported `sumQuot` / direct-sum matrix block forms are
+   Lean-proved. Next package simultaneous transported chain bases, total-product
+   normal form, and the link to the chart-local product-reduction identity.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now
