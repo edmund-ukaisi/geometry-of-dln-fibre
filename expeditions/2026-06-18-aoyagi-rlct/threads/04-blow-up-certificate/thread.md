@@ -1154,3 +1154,23 @@ chart, identify the hidden old label behind the `Unit` center generator,
 construct the factored-base state, produce post-data, or prove chart coverage,
 regularity, Jacobians, normal crossings, RLCT extraction, or a transition
 invariant.
+
+## 2026-06-19 Lean Case 1 source-substituted local handoff
+
+Statement card:
+`statement-card-a4-case1-source-substituted-local-handoff.md`.
+
+Lean now combines the selected-old source substitution boundary with the
+displayed row-strip local handoff. The new theorem
+`Case1DisplayedRowStripSuppliedTransitionBoundary.sourceOrder_identity_substitutedSourceWeights`
+rewrites the local handoff's left diagonal from
+`monomialRec (mulStepAt factoredBase.step u (J+J1))` to the supplied
+substituted source recurrence weights
+`source.weight (case2ResidualRowLevel n S J i)`.
+
+The theorem requires an explicit equality `level = factoredBase.level`,
+because the local exponent/first-jump level map and the recurrence-state level
+map are still separate supplied data. This is deliberate: the theorem does not
+construct the source pullback, selected-old chart, factored-base state, post
+state, chart-produced post-data, coverage, regularity, Jacobians, normal
+crossings, RLCT extraction, or a transition invariant.

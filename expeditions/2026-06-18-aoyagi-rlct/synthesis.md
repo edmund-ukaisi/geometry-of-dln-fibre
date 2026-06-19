@@ -977,6 +977,16 @@ identifies the old-weight convention with these substituted source weights.
 This still assumes the hidden old label and substituted source recurrence; it
 does not construct the selected-old chart or identify the `Unit` generator.
 
+The Case 1 source-substituted local handoff is now Lean-proved. The theorem
+`Case1DisplayedRowStripSuppliedTransitionBoundary.sourceOrder_identity_substitutedSourceWeights`
+combines the displayed row-strip local handoff with the selected-old source
+substitution boundary, rewriting the left diagonal from the explicit
+`mulStepAt factoredBase.step u (J+J1)` recurrence to supplied `source.weight`
+values on residual row levels. The explicit hypothesis
+`level = factoredBase.level` is required and intentional: first-jump data and
+recurrence-state data still live in separately supplied packages. This is still
+a supplied local handoff, not chart production or hidden old-label validity.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

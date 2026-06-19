@@ -520,6 +520,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-label-product-gap-a4.md`.
 	  Review of the successor source-substitution handoff is saved at
 	  `threads/04-blow-up-certificate/review-case2-successor-source-substitution-a4.md`.
+	  Review of the Case 1 source-substituted local handoff is saved at
+	  `threads/04-blow-up-certificate/review-case1-source-substituted-local-handoff-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -855,7 +857,13 @@ No such claim is formalisation-ready until both fields are filled.
   `case1ResidualRowStripOldWeight_eq_sourceWeight_of_selectedOldFactoredBase`.
   This proves, under supplied same-domain selected-old factorisation data, that
   the pulled-back source recurrence after `old = u*old'` is
-  `mulStepAt factoredBase.step u (J+J1)`.
+  `mulStepAt factoredBase.step u (J+J1)`. Added the source-substituted local
+  handoff
+  `Case1DisplayedRowStripSuppliedTransitionBoundary.sourceOrder_identity_substitutedSourceWeights`,
+  which rewrites the displayed Case 1(2) local handoff's left diagonal from the
+  explicit recurrence `monomialRec (mulStepAt factoredBase.step u (J+J1))` to
+  supplied substituted source weights
+  `source.weight (case2ResidualRowLevel n S J i)`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -881,8 +889,10 @@ No such claim is formalisation-ready until both fields are filled.
   post-data, exponent post-data, and normalized pivot block; it does not prove
   chart production or hidden old-label source validity. The selected-old
   source substitution boundary assumes the supplied hidden old label and
-  substituted source recurrence; it does not identify the `Unit` center
-  generator with a source label or construct the selected-old chart.
+  substituted source recurrence; the source-substituted local handoff also
+  assumes `level = factoredBase.level` to transport the first-jump data to the
+  recurrence-state level map. It does not identify the `Unit` center generator
+  with a source label or construct the selected-old chart.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

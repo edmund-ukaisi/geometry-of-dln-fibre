@@ -226,7 +226,10 @@ on the session's original cwd.
    domain to `(S,J+1)`. The selected-old source substitution boundary now
    proves the recurrence effect of the supplied hidden old-label substitution
    `old = u*old'`: the pulled-back source recurrence is
-   `mulStepAt factoredBase.step u (J+J1)`. Next A4 target:
+   `mulStepAt factoredBase.step u (J+J1)`. The source-substituted local
+   handoff now combines these two supplied boundaries and rewrites the
+   displayed local handoff's left diagonal to `source.weight` on residual row
+   levels, with `level = factoredBase.level` kept explicit. Next A4 target:
    chart-production/hidden-old-label validity boundary, or a similarly narrow
    source-facing wrapper for another displayed piece; keep arbitrary pivots
    explicit and supplied.

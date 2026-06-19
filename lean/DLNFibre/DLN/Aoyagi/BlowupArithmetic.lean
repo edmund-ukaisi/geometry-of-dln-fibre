@@ -4582,6 +4582,87 @@ theorem sourceOrder_identity_sourceWeights
     |>.exists_case1DisplayedRowStrip_sourceOrder_identity_sourceWeights_succWeights_of_postData
       data.stage_pos data.continuationBound data.newLabelActualWidth A C hpivot
 
+/-- Source-facing displayed top-left Case 1(2) source-order identity.
+
+This rewrites the local handoff's left diagonal from the explicit
+`mulStepAt factoredBase.step u (J+J1)` recurrence into the supplied substituted
+source recurrence weights.  The `source` state is still supplied and is
+assumed to be the pullback after `old = u * old'`; this theorem does not
+construct that pullback or the selected-old chart. -/
+theorem sourceOrder_identity_substitutedSourceWeights
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u)
+    (hsource :
+      IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData
+        source factoredBase s0 k0 u)
+    (hlevel : level = factoredBase.level)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (C :
+      Matrix
+        (Unit ⊕ pivotComplement
+          (case2DisplayedPivotCol n data.stage_pos data.continuationBound)) τ R)
+    (hpivot :
+      A (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+        (case2DisplayedPivotCol n data.stage_pos data.continuationBound) = 1) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n data.stage_pos data.continuationBound) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A i ()) *
+          (diagonal
+              (fun i ↦ source.weight (case2ResidualRowLevel n S J i)) *
+            case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A).submatrix
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotRow n data.stage_pos data.continuationBound))
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotCol n data.stage_pos data.continuationBound))) *
+          C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i :
+                pivotComplement
+                  (case2DisplayedPivotRow n data.stage_pos data.continuationBound) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A -
+              pivotFirstX
+                  (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                  (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A *
+                pivotFirstY
+                  (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                  (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A)) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+              (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A) * C) := by
+  rcases data.sourceOrder_identity_sourceWeights A C hpivot with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hfirst :
+      Case1FirstJumpHypotheses L n S J J1 s0 k0 factoredBase.level t := by
+    simpa [hlevel] using data.firstJump
+  have hstep := hsource.step_eq_mulStepAt_of_firstJump hfirst
+  have hweights :
+      (fun i : Case2ResidualRowIndex n S J ↦
+          monomialRec (mulStepAt factoredBase.step u (J + J1))
+            (case2ResidualRowLevel n S J i)) =
+        fun i ↦ source.weight (case2ResidualRowLevel n S J i) := by
+    funext i
+    rw [← hstep]
+    rfl
+  rwa [hweights] at hq
+
 /-- The supplied exponent post-data extends the introduced-label exponent
 certificate domain by the fresh Case 1(2) displayed row-strip label. -/
 theorem extendExponentDomain

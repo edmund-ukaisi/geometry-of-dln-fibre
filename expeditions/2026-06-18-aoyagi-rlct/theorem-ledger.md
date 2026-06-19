@@ -734,6 +734,23 @@ or prove normal crossings/RLCT. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-source-substitution-a4.md`.
 
+Latest A4 update: the Case 1 source-substituted local handoff has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean name is
+`Case1DisplayedRowStripSuppliedTransitionBoundary.sourceOrder_identity_substitutedSourceWeights`.
+It combines the supplied displayed row-strip local handoff with the supplied
+selected-old source substitution boundary, rewriting the left diagonal from
+`monomialRec (mulStepAt factoredBase.step u (J+J1))` to
+`source.weight (case2ResidualRowLevel n S J i)`. The theorem requires the
+explicit level identification `level = factoredBase.level`; this is the bridge
+needed to use the first-jump selected level with the recurrence-state data. It
+does not construct the source pullback, selected-old chart, hidden old-label
+source validity, factored-base or post states, chart-produced post-data,
+coverage/regularity/Jacobians, normal crossings, or RLCT extraction. Statement
+card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-source-substituted-local-handoff.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-source-substituted-local-handoff-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
