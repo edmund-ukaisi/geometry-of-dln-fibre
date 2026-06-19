@@ -1,6 +1,11 @@
 # Statement card — L1: the orbit `O_M` is an irreducible affine variety
 
-- **Status:** sorry-free (pending fidelity review)
+- **Status:** reviewed (FAITHFUL-WITH-NOTES, 2026-06-19) — the headline/proof faithfully match the
+  claim, axioms clean, non-vacuous, both directions honest. The one note (prose-only): "affine
+  variety" connotes Zariski-*closed*, whereas the orbit is only locally closed and a prime vanishing
+  ideal certifies its *closure* is the irreducible variety — the theorems already say "prime" /
+  "Zariski-irreducible" (true of the orbit set itself, no closedness claimed). Header prose tightened
+  accordingly (no signature change).
 - **Module:** `lean/DLNFibre/Core/OrbitVariety.lean` (402 LoC)
 - **Branch:** `expedition/voigt-discharge`
 - **Axioms (headline):** `[propext, Classical.choice, Quot.sound]`

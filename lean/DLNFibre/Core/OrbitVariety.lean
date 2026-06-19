@@ -8,12 +8,16 @@ import Mathlib.RingTheory.Nullstellensatz
 import Mathlib.Algebra.MvPolynomial.Funext
 
 /-!
-# `DLNFibre.Core.OrbitVariety` — the `G_d`-orbit `O_M` as an irreducible affine variety (L1)
+# `DLNFibre.Core.OrbitVariety` — the `G_d`-orbit `O_M` is Zariski-irreducible (L1)
 
-The orbit `O_M = G_d · M` (a point set in `RepCoord d → k`) is **Zariski-irreducible**: it is the
-image of the irreducible group `G_d = ∏_v GL_{d_v}` under the polynomial orbit map, so its vanishing
-ideal is prime (the foundation L1 that the pivot chart L3.0, L6, and the codimension bridge L0 stand
-on).
+The orbit `O_M = G_d · M` (a point set in `RepCoord d → k`) is **Zariski-irreducible**, i.e. its
+vanishing ideal is **prime**: `O_M` is the image of the irreducible group `G_d = ∏_v GL_{d_v}` under
+the polynomial orbit map, so `vanishingIdeal O_M = ker μ_M^*` is a kernel into a domain. The
+headline is about the orbit *itself* (in general only locally closed); a prime vanishing ideal
+certifies that its Zariski *closure* is an irreducible variety. The orbit-closure-equality `closure
+O_M =
+orbitRankLocus` is the separate L6 box-move sub-ladder, not this module. The foundation L1 that the
+pivot chart L3.0, L6, and the codimension bridge L0 stand on.
 -/
 
 namespace DLNFibre.Core
@@ -357,7 +361,7 @@ theorem vanishingIdeal_range_orbitMap_eq_ker [IsAlgClosed k] {d : Fin (N + 1) �
     show MvPolynomial.aeval (orbitMap M P) g = 0
     rw [MvPolynomial.aeval_eq_eval, ← evalGroupRing_orbitPullback M P g, hg', map_zero]
 
-/-! ## The headline: the orbit `O_M` is an irreducible affine variety -/
+/-! ## The headline: the orbit `O_M` is Zariski-irreducible (its vanishing ideal is prime) -/
 
 /-- **The orbit is Zariski-irreducible (L1).** The vanishing ideal of the `G_d`-orbit `O_M ⊆
 RepCoord d → k` is **prime**: `O_M` is the image of the irreducible group `G_d` under the polynomial
