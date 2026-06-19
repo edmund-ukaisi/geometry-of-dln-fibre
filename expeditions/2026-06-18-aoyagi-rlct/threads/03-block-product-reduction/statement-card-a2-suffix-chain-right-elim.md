@@ -26,9 +26,10 @@
 >   supplied adapted matrix wrapper discharges this by
 >   `throughSubspaceAdaptedChainMapMatrix_proof_irrel`.
 > - **Cited.** None.
-> - **Deferred.** Paper-order endpoint wrapper, rank/open-neighborhood bridge,
->   target normalization, identification with Aoyagi's named residual factors,
->   and every analytic/RLCT consequence.
+> - **Deferred.** Rank/open-neighborhood bridge, target normalization,
+>   identification with Aoyagi's named residual factors, and every
+>   analytic/RLCT consequence. The paper-order endpoint packaging is now a
+>   separate proved wrapper, not part of this abstract card.
 > - **Review.** Xhigh review found no orientation blocker and confirmed that
 >   `hPproof` is Lean proof bookkeeping, not a mathematical assumption. It
 >   flagged the source-fidelity boundary that the supplied wrapper is pointwise

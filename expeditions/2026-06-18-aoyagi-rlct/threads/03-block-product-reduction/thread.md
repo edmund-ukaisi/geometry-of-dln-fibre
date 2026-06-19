@@ -645,3 +645,25 @@ depending on the actual chain. It does not yet provide fixed coordinate charts
 over a neighborhood, regular `P1`/`P2`, rank/open-chart hypotheses, endpoint
 kernel normalization as a paper-facing statement, or any RLCT/generator
 transport.
+
+## 2026-06-19 A2 paper endpoint suffix-chain wrapper
+
+Added
+`productReduction_paperChainMap_endpointChartData_suffixChain_rightElim` in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`.
+
+The theorem works in Aoyagi paper order for maps `B p : W p.succ -> W
+p.castSucc`. It reverses the paper chain via `(reverseVertex W) (reverseEdge W
+B)`, uses endpoint-compatible finite chart data from an explicit complement
+`IsCompl U0 (ker totalPaperProduct)`, and states that the adapted matrix of the
+full `paperChainMap` admits a source-side upper-unitriangular right elimination:
+
+`paperTotalMatrix * [I -Bmat; 0 I] = [I 0; 0 Dmat]`.
+
+The proof is a thin wrapper around
+`productReduction_throughSubspaceAdaptedChainMapMatrix_suffixChain_rightElim`
+plus `chainMap_reverse_eq_paper`. This closes the paper-order endpoint
+packaging gap for the supplied-data algebra. It remains pointwise and
+adapted-coordinate only: no fixed coordinate neighborhood, openness/rank chart,
+regular coordinate-change, named residual-factor identification, or RLCT
+consequence is claimed.

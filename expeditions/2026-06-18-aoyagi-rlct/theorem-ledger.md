@@ -22,6 +22,20 @@ holding PDF line numbers only in context.
 | Lemma 5 final order count | A5 | PDF pp. 25-27 | Lemmas 3-4 | draft reproduction + failed check: chart-family admissibility, coverage, exclusions, and exact equal-minimum count not reproduced | order-count theorem TBD; blocked | failed check |
 | Notation translation to repo DLN dimensions | A6 | Aoyagi PDF pp. 8-9 | source inventory | pending | translation theorem TBD; open | pending |
 
+## Latest A2 update
+
+The A2 table row above was originally written before the endpoint packaging
+wrapper landed. As of the current checkpoint,
+`productReduction_paperChainMap_endpointChartData_suffixChain_rightElim` is
+proved in `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`; its statement
+card is
+`threads/03-block-product-reduction/statement-card-a2-paper-endpoint-suffix-chain-right-elim.md`.
+Xhigh statement-shape review confirms the reversal orientation and the
+pointwise adapted-coordinate scope.
+The remaining blocked A2 items are the topological rank/open-neighborhood
+bridge, a source-faithful full Theorem 3 statement, and analytic/certificate
+transport.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

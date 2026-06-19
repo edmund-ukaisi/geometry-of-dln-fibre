@@ -1448,6 +1448,52 @@ theorem toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero
       (reverseVertex W) (reverseEdge W B) U₀
       (isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀))
 
+/-- Endpoint-compatible paper data admits suffix-chain right elimination. -/
+theorem productReduction_paperChainMap_endpointChartData_suffixChain_rightElim
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N)))))) :
+    let hU₀rev := isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀
+    let data := throughSubspaceEndpointChartDataOfFiniteDimensional
+      (reverseVertex W) (reverseEdge W B) U₀ hU₀rev
+    ∃ Bmat : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) K,
+      ∃ Dmat : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0)
+          K,
+        LinearMap.toMatrix
+            (throughSubspaceAdaptedBasis (reverseVertex W) (reverseEdge W B) U₀
+              hU₀rev.disjoint data 0)
+            (throughSubspaceAdaptedBasis (reverseVertex W) (reverseEdge W B) U₀
+              hU₀rev.disjoint data (Fin.last N))
+            (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+              (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N)))) *
+            fromBlocks
+              (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+              (-Bmat) 0
+              (1 : Matrix
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0)
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0) K) =
+          fromBlocks
+            (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+            0 0 Dmat := by
+  dsimp
+  simpa [throughSubspaceAdaptedChainMapMatrix, chainMap_reverse_eq_paper] using
+    (productReduction_throughSubspaceAdaptedChainMapMatrix_suffixChain_rightElim
+      (reverseVertex W) (reverseEdge W B) U₀
+      (isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀).disjoint
+      (throughSubspaceEndpointChartDataOfFiniteDimensional
+        (reverseVertex W) (reverseEdge W B) U₀
+        (isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap W B U₀ hU₀))
+      0 (Fin.last N) (Fin.zero_le (Fin.last N)))
+
 end PaperOrderFiniteChartData
 
 end Aoyagi

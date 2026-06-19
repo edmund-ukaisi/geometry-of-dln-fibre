@@ -36,8 +36,9 @@ on the session's original cwd.
    basis family are also Lean-proved, including paper-order one-edge/total
    product packaging. One-step/suffix adapted matrix composition, an all-layer
    dependent edge-product theorem, deterministic right-elimination wrappers,
-   and abstract/supplied suffix-chain right elimination are Lean-proved. Next
-   build the paper-order endpoint wrapper and the rank/open chart bridge.
+   abstract/supplied suffix-chain right elimination, and the paper-order
+   endpoint suffix-chain wrapper are Lean-proved. Next build the rank/open
+   chart bridge.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

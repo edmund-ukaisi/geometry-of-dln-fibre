@@ -103,8 +103,9 @@ No such claim is formalisation-ready until both fields are filled.
   and paper-order one-edge/total-product block packaging are proved. One-step,
   suffix, and all-layer adapted edge-product composition laws are proved.
   Deterministic block-projection right-elimination wrappers and abstract/supplied
-  suffix-chain right-elimination theorems are proved. The full source Theorem 3
-  claim remains blocked.
+  suffix-chain right-elimination theorems are proved. The paper-order endpoint
+  suffix-chain wrapper is also proved. The full source Theorem 3 claim remains
+  blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -217,6 +218,7 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`,
+  `DLNFibre.DLN.Aoyagi.productReduction_paperChainMap_endpointChartData_suffixChain_rightElim`,
   and
   `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional`
   in `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`; full Theorem 3 target
@@ -277,11 +279,16 @@ No such claim is formalisation-ready until both fields are filled.
   edge gives `edge * prefix`, splitting a segment after one edge gives
   `suffix * edge`, and the recursively defined product of adapted edge
   matrices from `i` to `j` is exactly the adapted matrix of `chainMap i j`.
+  Also proved the paper-order endpoint suffix-chain wrapper: in the reversed
+  Aoyagi chain with endpoint-compatible finite chart data, the adapted matrix
+  of the total `paperChainMap` admits a source-side upper-unitriangular right
+  elimination to `[I 0; 0 D]`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem. The full product-reduction
-  theorem would additionally need the paper-side rank parameter/open-neighborhood
-  bridge and product-reduction induction assembly, not yet proved.
+  theorem would additionally need the paper-side rank/open-neighborhood bridge,
+  source-faithful fixed-chart assembly, and certificate transport, not yet
+  proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
@@ -292,10 +299,10 @@ No such claim is formalisation-ready until both fields are filled.
   layer removes the previous endpoint-basis mismatch, and the all-layer
   composition theorem identifies the adapted total matrix with the recursively
   ordered edge product, and the suffix theorem plus deterministic block
-  projections provide a supplied-data suffix-chain reduction theorem. Still
-  open: paper-order endpoint packaging, rank/open-neighborhood bridge, and
-  source-faithful Theorem 3 statement. Any topological open-neighborhood
-  statement remains separate; see
+  projections provide a supplied-data suffix-chain reduction theorem, now
+  packaged in paper order at the endpoint. Still open:
+  rank/open-neighborhood bridge and source-faithful Theorem 3 statement. Any
+  topological open-neighborhood statement remains separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

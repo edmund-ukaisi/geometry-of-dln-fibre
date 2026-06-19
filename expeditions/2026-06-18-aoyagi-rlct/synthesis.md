@@ -307,8 +307,18 @@ instantiates the theorem for supplied through-subspace adapted bases, using
 `throughSubspaceAdaptedChainMapMatrix_proof_irrel`,
 `throughSubspaceAdaptedChainMapMatrix_self`, and
 `identityCornerForm_throughSubspaceAdaptedEdgeMatrix`. This still does not
-provide Aoyagi's paper-order endpoint wrapper, rank/open chart statement, or
-any analytic/RLCT consequence.
+provide a rank/open chart statement or any analytic/RLCT consequence.
+
+The paper-order endpoint wrapper is now Lean-proved as
+`productReduction_paperChainMap_endpointChartData_suffixChain_rightElim` in
+`ThroughLayerMatrix.lean`. It instantiates the supplied suffix-chain theorem on
+`(reverseVertex W) (reverseEdge W B)` with endpoint-compatible finite chart
+data and rewrites the total reversed chain map as Aoyagi's `paperChainMap` via
+`chainMap_reverse_eq_paper`. This is still pointwise adapted-coordinate
+bookkeeping: the bases depend on the actual chain and the statement does not
+assert fixed coordinate charts, an open rank/determinant neighborhood, regular
+coordinate changes, residual-factor identification, or RLCT/certificate
+transport.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
