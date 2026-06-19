@@ -187,17 +187,23 @@ but after the first Aoyagi right multiplier, `Q_2^(-1) A_2` has top-left entry
 
 ## Lean target suggested by the reproduction
 
-First formalize a field-linear through-subspace lemma, e.g.
+Lean now formalizes the field-linear through-subspace layer in
+`DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces`.
+
+The Lean statement uses source-to-target indexing
 
 ```text
-exists_throughSubspaces_of_rank_comp_eq
+A i : V i.castSucc -> V i.succ
 ```
 
-stating that `rank (A_1 o ... o A_L) = r` gives subspaces `U_s` of finrank `r`
-transported isomorphically by each `A_s`, with `U_1 = range P` and a final
-complement `W_(L+1) = ker P`.
+so it is Aoyagi's chain after reversing the paper-order maps
+`A^(s) : V_(s+1) -> V_s`. The theorem chooses `U0` complementary to the kernel
+of the total composite, defines each `U j` as a prefix image, proves adjacent
+edge transport and restricted-edge equivalences, proves suffix-kernel
+disjointness, proves constant `finrank` equal to the total range `finrank`, and
+identifies the last through-subspace with the total range.
 
-Then prove a matrix chart corollary matching the current `fromBlocks` APIs:
+Next prove a matrix chart corollary matching the current `fromBlocks` APIs:
 in the chosen bases each true layer is `fromBlocks 1 B 0 D`, the total product
 is `fromBlocks 1 0 0 0`, and the Aoyagi transformed next-layer top-left corner
 is `1`.
@@ -213,8 +219,9 @@ finite-dimensional rank assertion.
 
 Formalisation-ready now:
 
-- the field-linear through-subspace existence lemma;
-- the local unitriangular chart-stability block calculation.
+- complement and transported-basis corollaries from the through-subspace
+  theorem;
+- the matrix block-form corollary from transported bases.
 
 Still not formalisation-ready:
 

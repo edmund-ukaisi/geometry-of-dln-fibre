@@ -139,8 +139,18 @@ enough to choose through-layer bases existentially so true layer maps have
 block form `[I B; 0 D]` and induction charts contain the base point. Product
 rank is not enough for a fixed preselected chart; counterexamples are recorded
 in `threads/03-block-product-reduction/through-layer-basis-reproduction.md`.
-This is elementary linear algebra and formalisation-ready, but full Theorem 3
-still waits on a Lean through-subspace theorem.
+The elementary through-subspace layer is Lean-proved as
+`exists_chain_throughSubspaces` in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`, using source-to-target
+indexing opposite to Aoyagi's prose order. It constructs subspaces through the
+chain, proves edge transport and adjacent restricted-edge equivalences, and
+identifies the last subspace with the range of the total composite.
+
+Still open for this repair: choose complements to the through-subspaces, choose
+transported bases, prove the corresponding matrix block form `[I B; 0 D]`, and
+connect that matrix corollary to the chart-local product-reduction identity.
+Full Theorem 3 remains blocked until those corollaries and the analytic
+certificate transport are built.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

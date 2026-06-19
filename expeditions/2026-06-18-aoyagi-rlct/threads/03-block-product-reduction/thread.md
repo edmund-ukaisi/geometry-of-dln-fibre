@@ -158,3 +158,33 @@ Outcome for the local calculation: landed
 Controller verified targeted build, full `DLNFibre` build, `scripts/sorries`,
 and `#print axioms`. Statement card:
 `statement-card-a2-unitriangular-chart.md`.
+
+## 2026-06-19 A2 through-subspace Lean layer
+
+Landed the elementary through-subspace theorem in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`.
+
+Main Lean artifacts:
+
+- `chainMap`, `chainMap_succ`, `chainMap_trans`: source-to-target composites
+  for an upward finite chain `A i : V i.castSucc -> V i.succ`.
+- `exists_chain_throughSubspaces`: chooses `U0` complementary to the total
+  kernel and defines through-subspaces `U j` as prefix images; proves edge
+  transport, suffix-kernel disjointness, constant finrank equal to the total
+  range finrank, and `U last = range total`.
+- `throughSubspaceEdgeEquiv` and `throughSubspaceEdgeEquiv_apply`: each edge
+  restricts to a linear equivalence between adjacent through-subspaces, induced
+  by the original edge map.
+
+Orientation note: this Lean chain runs from `V 0` to `V (Fin.last N)`. It is
+Aoyagi's chain after reversing the paper-order maps
+`A^(s) : V_(s+1) -> V_s`.
+
+Xhigh reviewers `Nietzsche` and `Pascal` accepted the statement scope. Caveats:
+this is not a fixed-coordinate chart theorem, does not choose complements to
+the through-subspaces, and does not yet produce transported bases or matrix
+block form `[I B; 0 D]`. The next target is the complement/basis/matrix corollary
+needed to connect this subspace layer to the already-proved chart-local product
+reduction identity.
+
+Statement card: `statement-card-a2-through-subspaces.md`.
