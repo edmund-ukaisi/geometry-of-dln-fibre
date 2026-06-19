@@ -90,8 +90,9 @@ No such claim is formalisation-ready until both fields are filled.
   including a version where the initial through-subspace is complementary to
   the total kernel. Concrete finite-basis edge, unitriangular, and endpoint
   block corollaries are also proved. The Aoyagi-order descending product
-  `paperChainMap` and its prefix/suffix split laws are proved. The full source
-  Theorem 3 claim remains blocked.
+  `paperChainMap` and its prefix/suffix split laws are proved, and the
+  reversed source-to-target `chainMap` is related to `paperChainMap`. The full
+  source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -122,8 +123,11 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.paperChainMap_succ`,
   `DLNFibre.DLN.Aoyagi.paperChainMap_edge`,
   `DLNFibre.DLN.Aoyagi.paperChainMap_trans`, and
-  `DLNFibre.DLN.Aoyagi.paperChainMap_zero_last_eq_prefix_comp_suffix` in the
-  same file; per-edge transported
+  `DLNFibre.DLN.Aoyagi.paperChainMap_zero_last_eq_prefix_comp_suffix`, plus
+  `DLNFibre.DLN.Aoyagi.reverseVertex`,
+  `DLNFibre.DLN.Aoyagi.reverseEdge`,
+  `DLNFibre.DLN.Aoyagi.reverseEdge_eq_paperChainMap`, and
+  `DLNFibre.DLN.Aoyagi.chainMap_reverse_eq_paper` in the same file; per-edge transported
   quotient-basis matrix theorem
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero`
   and direct-sum adapted-basis matrix theorem
@@ -175,7 +179,8 @@ No such claim is formalisation-ready until both fields are filled.
   chart-preservation, and endpoint `[I 0; 0 0]` block statements. Also proved
   Aoyagi-order product bookkeeping: `paperChainMap` composes maps
   `W_(s+1) -> W_s` in paper order and splits the full product as prefix
-  followed by suffix.
+  followed by suffix, and reversing the vertices turns the source-to-target
+  `chainMap` into the corresponding `paperChainMap`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem. The full product-reduction
@@ -188,10 +193,9 @@ No such claim is formalisation-ready until both fields are filled.
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
   local analytic/certificate transport remain open. The through-subspace/chart
-  data layer still needs translation to Aoyagi's paper-order matrices and
-  connection to the chart-local product-reduction induction. The next bridge
-  step is relating the reversed source-to-target `chainMap` to `paperChainMap`;
-  see
+  data layer still needs transfer of the finite adapted-basis block statements
+  into Aoyagi's paper-order notation and connection to the chart-local
+  product-reduction induction; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

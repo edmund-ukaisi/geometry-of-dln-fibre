@@ -376,7 +376,27 @@ The proved API is:
 - `paperChainMap_zero_last_eq_prefix_comp_suffix`: the full product splits as
   paper prefix followed by paper suffix.
 
-This is only product-order bookkeeping. It does not yet relate the reversed
-source-to-target `chainMap` to `paperChainMap`, transfer adapted block forms to
-paper notation, run the product-reduction induction, or state analytic/RLCT
+This is only product-order bookkeeping. It does not transfer adapted block
+forms to paper notation, run the product-reduction induction, or state
+analytic/RLCT consequences.
+
+## 2026-06-19 A2 reversed-chain bridge
+
+Extended `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean` with the formal
+source-to-paper orientation bridge:
+
+- `rev_succ_eq_rev_castSucc`, `rev_castSucc_eq_rev_succ`, and
+  `rev_succ_le_rev_castSucc`: the `Fin.rev` endpoint bookkeeping for a reversed
+  edge.
+- `reverseVertex`: the paper-order vertex family viewed in source-to-target
+  order.
+- `reverseEdge`: the one-edge paper-order composite viewed as a
+  source-to-target edge.
+- `chainMap_reverse_eq_paper`: the composite `chainMap` on reversed vertices is
+  exactly the corresponding `paperChainMap`.
+
+This removes the orientation mismatch between the Lean through-subspace chain
+and Aoyagi's printed product order. It still does not transfer the finite
+adapted-basis block corollaries into paper notation, prove determinant-open
+chart wrappers, run the product-reduction induction, or state analytic/RLCT
 consequences.

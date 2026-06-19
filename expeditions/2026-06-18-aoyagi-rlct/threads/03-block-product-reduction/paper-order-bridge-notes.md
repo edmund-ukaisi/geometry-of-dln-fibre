@@ -66,9 +66,9 @@ nonvanishing at the base point gives a local open chart is separate.
 
 ## Needed elementary bridge statements
 
-1. A paper-order chain/reindexing lemma: `paperChainMap` has the expected
-   identity, one-edge, transitivity, and prefix/suffix split laws; then relate
-   the reversed Lean chain to `paperChainMap`.
+1. Done in Lean: `paperChainMap` has the expected identity, one-edge,
+   transitivity, and prefix/suffix split laws; `chainMap_reverse_eq_paper`
+   relates the reversed Lean chain to `paperChainMap`.
 2. A finite chart-data-to-paper-block lemma: after reindexing, the concrete
    finite chart data gives paper-layer adapted bases with true layer matrices
    `[I B; 0 D]`, and the endpoint product matrix `[I 0; 0 0]`.

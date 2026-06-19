@@ -28,10 +28,11 @@ on the session's original cwd.
    corollary is Lean-proved; supplied local complement data is bundled; and
    finite-dimensional Lean chains now supply finite-indexed chart data and a
    kernel-complement version, with concrete finite-basis edge/unitriangular and
-   endpoint block corollaries. The first paper-order bridge artifact
-   `paperChainMap` is Lean-proved; next relate it to the reversed
-   source-to-target `chainMap`, bridge to Aoyagi's rank/open-chart hypotheses,
-   and assemble the product-reduction induction.
+   endpoint block corollaries. The paper-order bridge artifacts `paperChainMap`
+   and `chainMap_reverse_eq_paper` are Lean-proved; next transfer the finite
+   adapted-basis block corollaries into paper-order notation, bridge to
+   Aoyagi's rank/open-chart hypotheses, and assemble the product-reduction
+   induction.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

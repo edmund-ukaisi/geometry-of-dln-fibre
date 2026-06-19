@@ -1,6 +1,7 @@
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.LinearAlgebra.Prod
+import Mathlib.Data.Fin.Rev
 
 /-!
 # Through-layer subspaces for Aoyagi product charts
@@ -411,6 +412,65 @@ theorem paperChainMap_zero_last_eq_prefix_comp_suffix (j : Fin (N + 1)) :
   paperChainMap_trans W B 0 (Fin.zero_le j) j.le_last
 
 end PaperChain
+
+section ReversePaperChain
+
+universe u v
+
+variable {K : Type u} [Field K] {N : ℕ}
+  (W : Fin (N + 1) → Type v) [∀ i, AddCommGroup (W i)] [∀ i, Module K (W i)]
+  (B : ∀ i : Fin N, W i.succ →ₗ[K] W i.castSucc)
+
+/-- Reversing a source-to-target successor gives the corresponding paper-order lower vertex. -/
+theorem rev_succ_eq_rev_castSucc (e : Fin N) : e.rev.succ = e.castSucc.rev := by
+  exact (Fin.rev_castSucc e).symm
+
+/-- Reversing a source-to-target lower vertex gives the corresponding paper-order successor. -/
+theorem rev_castSucc_eq_rev_succ (e : Fin N) : e.rev.castSucc = e.succ.rev := by
+  exact (Fin.rev_succ e).symm
+
+/-- The reversed image of an upward edge is a downward paper-order edge. -/
+theorem rev_succ_le_rev_castSucc (e : Fin N) : e.succ.rev ≤ e.castSucc.rev := by
+  exact Fin.rev_le_rev.mpr (Fin.castSucc_le_succ e)
+
+/-- The vertex family obtained by reversing Aoyagi's paper-order chain. -/
+abbrev reverseVertex : Fin (N + 1) → Type v := fun j ↦ W j.rev
+
+/-- The source-to-target edge obtained from one paper-order edge after reversing vertices. -/
+def reverseEdge (e : Fin N) : reverseVertex W e.castSucc →ₗ[K] reverseVertex W e.succ :=
+  paperChainMap W B e.succ.rev e.castSucc.rev
+    (rev_succ_le_rev_castSucc (N := N) e)
+
+/-- The reversed edge is the one-edge paper-order composite. -/
+theorem reverseEdge_eq_paperChainMap (e : Fin N) :
+    reverseEdge W B e =
+      paperChainMap W B e.succ.rev e.castSucc.rev
+        (rev_succ_le_rev_castSucc (N := N) e) :=
+  rfl
+
+/-- A source-to-target composite in reversed vertices is the corresponding paper-order composite. -/
+theorem chainMap_reverse_eq_paper (i j : Fin (N + 1)) (hij : i ≤ j) :
+    chainMap (reverseVertex W) (reverseEdge W B) i j hij =
+      paperChainMap W B j.rev i.rev (Fin.rev_le_rev.mpr hij) := by
+  induction j using Fin.induction with
+  | zero =>
+      obtain rfl : i = 0 := Fin.le_zero_iff.mp hij
+      rw [chainMap_self, paperChainMap_self]
+  | succ p ih =>
+      rcases eq_or_lt_of_le hij with rfl | hlt
+      · rw [chainMap_self, paperChainMap_self]
+      · have hip : i ≤ p.castSucc := by
+          rw [Fin.le_castSucc_iff]
+          exact hlt
+        rw [chainMap_succ (reverseVertex W) (reverseEdge W B) i p hip]
+        rw [ih hip]
+        have hstep : p.succ.rev ≤ p.castSucc.rev :=
+          rev_succ_le_rev_castSucc (N := N) p
+        have htail : p.castSucc.rev ≤ i.rev := Fin.rev_le_rev.mpr hip
+        rw [paperChainMap_trans W B p.succ.rev hstep htail]
+        rfl
+
+end ReversePaperChain
 
 end Aoyagi
 end DLN

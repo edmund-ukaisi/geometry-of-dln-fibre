@@ -190,9 +190,16 @@ The first paper-order bridge artifact is Lean-proved in
 `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`: `paperChainMap` is the
 descending composite for Aoyagi-order maps `W_(s+1) -> W_s`, with identity,
 one-edge, transitivity, and full-product prefix/suffix split lemmas. This is
-product-order bookkeeping only; it does not yet relate the reversed
-source-to-target `chainMap` to `paperChainMap`, transfer finite adapted-basis
-block statements into paper notation, or assemble Theorem 3.
+product-order bookkeeping only.
+
+The reversal bridge is now Lean-proved in the same file: `reverseVertex`
+reverses the paper-order vertex family, `reverseEdge` is the one-edge
+paper-order composite viewed as a source-to-target edge, and
+`chainMap_reverse_eq_paper` proves that the source-to-target `chainMap` on
+these reversed vertices is exactly the corresponding `paperChainMap`. This
+removes the orientation bookkeeping obstruction, but it does not transfer
+finite adapted-basis block statements into paper notation or assemble
+Theorem 3.
 
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
