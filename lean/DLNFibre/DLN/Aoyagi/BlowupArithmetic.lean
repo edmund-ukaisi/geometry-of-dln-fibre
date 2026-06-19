@@ -6387,6 +6387,286 @@ theorem updateExponentCertificates
 
 end Case1SelectedOldLoweredRecurrenceBoundary
 
+/-- Supplied chart-family boundary for Aoyagi Case 1(1)'s selected-old `Unit`
+chart.
+
+This combines the supplied selected-old lowered-recurrence boundary with a
+supplied finite Case 1 chart-family boundary.  The `Unit` token is only the
+finite center generator for the selected old chart; selected-label facts still
+come from the carried first-jump data. -/
+structure Case1SelectedOldUnitSuppliedChartFamilyBoundary
+    (R : Type*) [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J J1 s0 k0 : ℕ)
+    (level : ℕ → ℕ → ℕ)
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ)
+    (pre post : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (baseStep : ℕ → R)
+    (ChartRegular : Case1CenterGenerator → Prop)
+    (TransitionRegular :
+      Case1CenterGenerator → Case1CenterGenerator → Prop) : Prop where
+  lowered :
+    Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 level
+      t t' numerator numerator' leastValue leastValue'
+      pre post u baseStep
+  chartFamily :
+    Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular
+
+namespace Case1SelectedOldUnitSuppliedChartFamilyBoundary
+
+/-- The supplied selected-old `Unit` chart boundary records the selected old
+label as introduced through the carried first-jump data. -/
+theorem selectedIntroduced
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular) :
+    introducedLabel L n S J s0 k0 :=
+  data.lowered.selectedIntroduced
+
+/-- The selected old label has the first-jump level `J+J1`. -/
+theorem selectedLevel
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular) :
+    level s0 k0 = J + J1 :=
+  data.lowered.selectedLevel
+
+/-- The selected old `Unit` token is in the finite Case 1 center.  This is
+finite-center membership only, not a derivation of `(s0,k0)` from the token. -/
+theorem selectedOld_mem_center
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (_data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular) :
+    (Sum.inl () : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 :=
+  case1_selectedOld_mem_center n S J J1
+
+/-- Supplied chart-family regularity for the selected-old `Unit` chart. -/
+theorem chart_regular_selectedOld
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular) :
+    ChartRegular (Sum.inl () : Case1CenterGenerator) :=
+  Case1CenterChartFamilyBoundary.chart_regular_of_mem data.chartFamily
+    data.selectedOld_mem_center
+
+/-- Supplied transition regularity from the selected-old chart token to any
+finite Case 1 center generator. -/
+theorem transition_regular_selectedOld_of_mem
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular)
+    {g : Case1CenterGenerator} (hg : g ∈ case1CenterGenerators n S J J1) :
+    TransitionRegular (Sum.inl () : Case1CenterGenerator) g :=
+  Case1CenterChartFamilyBoundary.transition_regular_of_mem data.chartFamily
+    data.selectedOld_mem_center hg
+
+/-- Supplied transition regularity from any finite Case 1 center generator to
+the selected-old chart token. -/
+theorem transition_regular_of_mem_selectedOld
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular)
+    {g : Case1CenterGenerator} (hg : g ∈ case1CenterGenerators n S J J1) :
+    TransitionRegular g (Sum.inl () : Case1CenterGenerator) :=
+  Case1CenterChartFamilyBoundary.transition_regular_of_mem data.chartFamily
+    hg data.selectedOld_mem_center
+
+/-- In the selected-old `Unit` chart, the selected variable occurs as a value
+of the transformed finite Case 1 center. -/
+theorem selectedOld_selectedEntryChartMap_value_mem
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (_data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular)
+    (residual : Case1CenterGenerator → R) :
+    u ∈
+      {v : R | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+        selectedEntryChartMap (Sum.inl () : Case1CenterGenerator) u residual g = v} :=
+  case1_selectedOld_selectedEntryChartMap_value_mem n S J J1 u residual
+
+/-- In the selected-old `Unit` chart, every transformed finite Case 1 center
+generator is divisible by the selected old chart variable. -/
+theorem selectedOld_center_dvd
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular)
+    (residual : Case1CenterGenerator → R) :
+    ∀ g, g ∈ case1CenterGenerators n S J J1 →
+      u ∣ selectedEntryChartMap
+        (Sum.inl () : Case1CenterGenerator) u residual g :=
+  case1_selectedEntryChartMap_center_dvd_of_mem data.selectedOld_mem_center u residual
+
+/-- In the selected-old `Unit` chart, the transformed finite Case 1 center
+ideal is the principal ideal generated by the selected old chart variable. -/
+theorem selectedOld_centerIdeal_eq_span_singleton
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular)
+    (residual : Case1CenterGenerator → R) :
+    Ideal.span
+        {v : R | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+          selectedEntryChartMap (Sum.inl () : Case1CenterGenerator)
+            u residual g = v} =
+      Ideal.span ({u} : Set R) :=
+  case1_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem
+    data.selectedOld_mem_center u residual
+
+/-- The selected-old `Unit` chart-family boundary preserves the supplied
+pre/post recurrence-weight source identity. -/
+theorem sourceMatrix_identity_postWeights
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    diagonal (fun i ↦ pre.weight (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A =
+      diagonal (fun i ↦ post.weight (case2ResidualRowLevel n S J i)) * A :=
+  data.lowered.sourceMatrix_identity_postWeights A
+
+/-- Source-coordinate form of the selected-old `Unit` chart-family boundary's
+pre/post recurrence-weight identity. -/
+theorem sourceCoordinates_identity_postWeights
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) :
+    diagonal (fun i ↦ pre.weight (case2ResidualRowLevel n S J i)) *
+        case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u
+          (case2SourceResidualBlock residual) =
+      diagonal (fun i ↦ post.weight (case2ResidualRowLevel n S J i)) *
+        case2SourceResidualBlock residual :=
+  data.lowered.sourceCoordinates_identity_postWeights residual
+
+/-- The selected-old `Unit` chart-family boundary carries the same-domain
+exponent certificate update. -/
+theorem updateExponentCertificates
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre post : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {baseStep : ℕ → R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue'
+        pre post u baseStep ChartRegular TransitionRegular) :
+    IntroducedLabelExponentCertificates L n S J t' numerator' leastValue' :=
+  data.lowered.updateExponentCertificates
+
+end Case1SelectedOldUnitSuppliedChartFamilyBoundary
+
 /-- Source-coordinate normalised matrix for a supplied Case 2 residual-block
 pivot pair.  The membership proof only extracts row and column subtype pivots;
 it is not a chart-coverage assertion. -/
