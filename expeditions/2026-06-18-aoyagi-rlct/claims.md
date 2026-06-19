@@ -100,9 +100,10 @@ No such claim is formalisation-ready until both fields are filled.
   algebraic determinant-chart predicate layer for adapted paper edge matrices
   is proved. A one-edge right-elimination corollary for identity-corner adapted
   edges is proved. Endpoint-compatible shared adapted bases, finite chart data,
-  and paper-order one-edge/total-product block packaging are proved. One-step
-  and all-layer adapted edge-product composition laws are proved. The full
-  source Theorem 3 claim remains blocked.
+  and paper-order one-edge/total-product block packaging are proved. One-step,
+  suffix, and all-layer adapted edge-product composition laws are proved.
+  Deterministic block-projection right-elimination wrappers are proved. The
+  full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -128,6 +129,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.exists_fromBlocks_one_zero_of_upperUnitriangular_mul` in
   the same file; determinant-chart predicates
   `DLNFibre.DLN.Aoyagi.topLeftCorner`,
+  `DLNFibre.DLN.Aoyagi.upperRightBlock`,
+  `DLNFibre.DLN.Aoyagi.lowerRightBlock`,
   `DLNFibre.DLN.Aoyagi.identityCornerForm`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_of_identityCornerForm`, and
@@ -135,7 +138,10 @@ No such claim is formalisation-ready until both fields are filled.
   one-edge elimination theorems
   `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_fromBlocks_one_zero_rightElim_indexed`,
   `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_eq_fromBlocks_one_zero_rightElim_indexed`, and
-  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_identityCornerForm_rightElim`
+  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_identityCornerForm_rightElim`,
+  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_identityCornerForm_rightElim_submatrix`,
+  and
+  `DLNFibre.DLN.Aoyagi.productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_rightElim`
   in the same file; entry-ideal transport lemmas in
   `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`; through-layer subspace theorem
   `DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces` in
@@ -175,6 +181,7 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ`,
+  `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ_right`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeProductMatrix`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeProductMatrix_self`,
   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeProductMatrix_succ`,
@@ -247,14 +254,17 @@ No such claim is formalisation-ready until both fields are filled.
   Also proved one-edge right elimination: the explicit witnessed block identity
   is proved over a `NonAssocRing`; the equality and identity-corner wrappers
   give the form used by adapted edge matrices, with the paper adapted-edge
-  corollary in the reversed Aoyagi order. Also proved endpoint-compatible
-  chart data with a shared adapted basis family: edge matrices and the total
-  product matrix can now be stated in the same supplied basis family, including
-  paper-order wrappers for the reversed Aoyagi chain. Also proved a one-step
-  adapted matrix composition law: extending a chain segment by one edge gives
-  the matrix identity `edge * prefix`. Also proved a dependent all-layer
-  product theorem: the recursively defined product of adapted edge matrices
-  from `i` to `j` is exactly the adapted matrix of `chainMap i j`.
+  corollary in the reversed Aoyagi order. Also proved deterministic
+  right-elimination wrappers using the actual `upperRightBlock` and
+  `lowerRightBlock` of an identity-corner matrix, including the version after
+  an accumulated upper-unitriangular left multiplier. Also proved
+  endpoint-compatible chart data with a shared adapted basis family: edge
+  matrices and the total product matrix can now be stated in the same supplied
+  basis family, including paper-order wrappers for the reversed Aoyagi chain.
+  Also proved adapted matrix composition laws: extending a chain segment by one
+  edge gives `edge * prefix`, splitting a segment after one edge gives
+  `suffix * edge`, and the recursively defined product of adapted edge
+  matrices from `i` to `j` is exactly the adapted matrix of `chainMap i j`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem. The full product-reduction
@@ -269,8 +279,10 @@ No such claim is formalisation-ready until both fields are filled.
   local analytic/certificate transport remain open. The shared adapted-basis
   layer removes the previous endpoint-basis mismatch, and the all-layer
   composition theorem identifies the adapted total matrix with the recursively
-  ordered edge product. Still open: run the chart-local product-reduction
-  induction. Any topological open-neighborhood statement remains separate; see
+  ordered edge product, and the suffix theorem plus deterministic block
+  projections provide the next induction interface. Still open: run the
+  chart-local product-reduction induction. Any topological open-neighborhood
+  statement remains separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

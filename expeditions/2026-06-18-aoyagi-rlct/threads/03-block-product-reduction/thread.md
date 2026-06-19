@@ -572,3 +572,32 @@ endpoint total-product matrix in a supplied adapted basis family. It still does
 not run Aoyagi's product-reduction induction or assert any analytic/RLCT
 consequence. The next algebraic assembly layer needs right-oriented suffix
 composition and canonical block projections for the one-edge elimination step.
+
+## 2026-06-19 A2 right-elimination assembly API
+
+Added deterministic block projections in `ProductReduction.lean`:
+
+- `upperRightBlock`;
+- `lowerRightBlock`.
+
+Added deterministic right-elimination wrappers:
+
+- `productReduction_blockDiagonal_mul_identityCornerForm_rightElim_submatrix`;
+- `productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_rightElim`.
+
+These turn an `identityCornerForm M` hypothesis into the concrete elimination
+identity using `upperRightBlock M` as the right multiplier and
+`lowerRightBlock M` as the residual edge block. The unitriangular version first
+left-multiplies by `[I -F; 0 I]`, using the already proved chart-form
+stability theorem.
+
+Added the suffix-oriented adapted matrix composition theorem
+`throughSubspaceAdaptedChainMapMatrix_succ_right` in `ThroughLayerMatrix.lean`:
+for `p.succ ≤ j`, the matrix of `chainMap p.castSucc j` is
+
+`throughSubspaceAdaptedChainMapMatrix p.succ j *
+throughSubspaceAdaptedEdgeMatrix p`.
+
+This is the direction needed by right-elimination induction. It is still only
+composition/block algebra; it does not yet prove the abstract suffix-chain
+reduction theorem.

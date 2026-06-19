@@ -275,11 +275,23 @@ name chain-segment and one-edge matrices in the supplied adapted bases, and
 `throughSubspaceAdaptedChainMapMatrix_succ` proves the one-step recurrence.
 For the source-to-target Lean chain the order is `edge * prefix`, coming from
 `chainMap_succ` and Mathlib's `LinearMap.toMatrix_comp`.
+`throughSubspaceAdaptedChainMapMatrix_succ_right` proves the suffix-oriented
+version `suffix * edge`, using `chainMap_trans`; this is the orientation needed
+for right elimination.
 `throughSubspaceAdaptedEdgeProductMatrix` is a dependent recursive product of
 the adapted edge matrices, and
 `throughSubspaceAdaptedChainMapMatrix_eq_edgeProductMatrix` proves that it is
 the chain-map matrix for any interval. This is composition bookkeeping only; it
 does not yet run the product-reduction induction.
+
+The right-elimination interface now has canonical blocks:
+`upperRightBlock` and `lowerRightBlock` are the actual submatrices of a block
+matrix. `productReduction_blockDiagonal_mul_identityCornerForm_rightElim_submatrix`
+eliminates an identity-corner matrix using `upperRightBlock M` and returns
+`lowerRightBlock M` in the residual product, and
+`productReduction_blockDiagonal_mul_unitriangular_identityCornerForm_rightElim`
+packages the same step after an accumulated upper-unitriangular left
+multiplier. This removes the existential witness from the next induction step.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

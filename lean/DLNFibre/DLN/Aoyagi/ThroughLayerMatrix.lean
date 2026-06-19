@@ -408,6 +408,29 @@ theorem throughSubspaceAdaptedChainMapMatrix_succ
     (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.succ)
     (A p) (chainMap V A i p.castSucc hip)
 
+set_option linter.unusedDecidableInType false in
+/-- Splitting a chain segment after one edge multiplies suffix matrix by edge matrix. -/
+theorem throughSubspaceAdaptedChainMapMatrix_succ_right
+    {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (U₀ : Submodule K (V 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker (chainMap V A 0 (Fin.last N) (Fin.zero_le (Fin.last N)))))
+    (data : ThroughSubspaceChartData V A U₀ ι κ)
+    (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j) :
+    throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data p.castSucc j
+        ((Fin.castSucc_le_succ p).trans hpj) =
+      throughSubspaceAdaptedChainMapMatrix V A U₀ hU₀ data p.succ j hpj *
+        throughSubspaceAdaptedEdgeMatrix V A U₀ hU₀ data p := by
+  classical
+  rw [throughSubspaceAdaptedChainMapMatrix, throughSubspaceAdaptedEdgeMatrix,
+    chainMap_trans V A p.castSucc (Fin.castSucc_le_succ p) hpj,
+    chainMap_edge V A p (Fin.castSucc_le_succ p)]
+  exact LinearMap.toMatrix_comp
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.castSucc)
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data p.succ)
+    (throughSubspaceAdaptedBasis V A U₀ hU₀ data j)
+    (chainMap V A p.succ j hpj) (A p)
+
 /-- The left-multiply step for the dependent product of adapted edge matrices. -/
 private def throughSubspaceAdaptedEdgeProductStep
     {κ : Fin (N + 1) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]

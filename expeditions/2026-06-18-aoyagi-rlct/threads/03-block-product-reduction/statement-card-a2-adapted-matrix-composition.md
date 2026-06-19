@@ -6,9 +6,10 @@
 >
 > - **Lean:**
 >   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix`,
->   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeMatrix`, and
->   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ`
->   plus `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeProductMatrix`,
+>   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeMatrix`,
+>   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ`,
+>   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_succ_right`,
+>   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeProductMatrix`,
 >   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeProductMatrix_self`,
 >   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedEdgeProductMatrix_succ`,
 >   `DLNFibre.DLN.Aoyagi.throughSubspaceAdaptedChainMapMatrix_eq_edgeProductMatrix`,
@@ -18,17 +19,18 @@
 > - **Gloss.** The theorem is the matrix form of
 >   `chainMap_succ : chainMap i p.succ = A p ∘ chainMap i p.castSucc`.
 >   Mathlib's `LinearMap.toMatrix_comp` gives the matrix order
->   `edge * prefix`.
+>   `edge * prefix`. The suffix theorem uses `chainMap_trans` and gives the
+>   right-elimination orientation `suffix * edge`.
 > - **Proved.** A one-step basis-matrix composition identity for arbitrary
 >   supplied `ThroughSubspaceChartData`, plus a dependent all-layer product
 >   theorem identifying the recursively ordered edge product with the adapted
->   matrix of `chainMap i j`.
+>   matrix of `chainMap i j`, and a suffix-composition identity for
+>   right-elimination assembly.
 > - **Assumed.** Finite and decidable matrix index families for the adapted
 >   bases; no rank, chart-open, or endpoint-kernel hypothesis is used.
 > - **Cited.** None.
-> - **Deferred.** Product-reduction induction; right-oriented suffix
->   composition for elimination assembly; rank/open-neighborhood statements;
->   and every analytic/RLCT consequence.
+> - **Deferred.** Product-reduction induction; rank/open-neighborhood
+>   statements; and every analytic/RLCT consequence.
 > - **Kill conditions.** This is functoriality of matrices under composition.
 >   It does not say that a product-reduction step has been run or that the edge
 >   matrices have any special block form unless combined with the separate edge
