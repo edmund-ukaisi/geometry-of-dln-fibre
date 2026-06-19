@@ -801,6 +801,16 @@ No such claim is formalisation-ready until both fields are filled.
   and `case1_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem`,
   proving the finite `P/Q` operation matrices are units and the pulled-back
   finite selected-entry center ideal is `(u)`.
+  Added Case 2 chart-family boundary names:
+  `SelectedEntryChartFamilyBoundary`,
+  `Case2ResidualBlockChartFamilyBoundary`,
+  `case2ResidualBlockPivotEntries_nonempty_of_cont`,
+  `Case2ResidualBlockChartFamilyBoundary.chart_regular_of_mem`,
+  `Case2ResidualBlockChartFamilyBoundary.transition_regular_of_mem`, and
+  `Case2ResidualBlockChartFamilyBoundary.chart_regular_displayedPivot_of_cont`,
+  making chart regularity and transition regularity explicit supplied
+  assumptions while proving only displayed-pivot nonemptiness under
+  continuation.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The

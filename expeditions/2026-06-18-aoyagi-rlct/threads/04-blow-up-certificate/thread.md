@@ -802,6 +802,25 @@ chart. It does not prove chart coverage, an affine blow-up atlas, a
 polynomial-coordinate Jacobian formula, source-order transition formulas, or
 chart-produced recurrence/exponent post-data.
 
+## 2026-06-19 Lean Case 2 chart-family boundary
+
+Reproduction: `reproduction-case2-chart-family-boundary-a4.md`.
+Statement card: `statement-card-a4-case2-chart-family-boundary.md`.
+Review artifact: `review-case2-chart-family-boundary-a4.md`.
+
+Lean now names the remaining Case 2 selected-entry chart-family assumptions.
+The generic `SelectedEntryChartFamilyBoundary` records supplied
+chart-regularity and transition-regularity predicates for every selected entry
+in a finite center. `Case2ResidualBlockChartFamilyBoundary` specializes this
+to the Case 2 residual-block center. The only new proved source fact is
+nonemptiness under continuation: the displayed pivot `(J+1,J+1)` belongs to
+`case2ResidualBlockPivotEntries n S J`.
+
+This is an assumption boundary, not chart coverage. It does not prove chart
+regularity, transition regularity, affine blow-up atlas construction,
+source-order transition formulas, chart-produced post-data, Jacobians, normal
+crossings, or RLCT extraction.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

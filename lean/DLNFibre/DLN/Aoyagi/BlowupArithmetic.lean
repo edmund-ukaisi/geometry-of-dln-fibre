@@ -1400,6 +1400,81 @@ theorem case1_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem
       Ideal.span ({u} : Set R) :=
   selectedEntryChartMap_centerIdeal_eq_span_singleton hpivot u residual
 
+/-- Assumption boundary for a finite selected-entry chart family.  It records
+the chart-regularity and transition-regularity obligations for selected entries
+in a finite center without constructing a blow-up atlas. -/
+structure SelectedEntryChartFamilyBoundary
+    {ι : Type*} (center : Finset ι)
+    (ChartRegular : ι → Prop)
+    (TransitionRegular : ι → ι → Prop) : Prop where
+  chart_regular_of_mem :
+    ∀ {p}, p ∈ center → ChartRegular p
+  transition_regular_of_mem :
+    ∀ {p}, p ∈ center → ∀ {q}, q ∈ center → TransitionRegular p q
+
+/-- Case 2 residual-block instance of the selected-entry chart-family
+assumption boundary.  This names the remaining chart-family regularity
+interface; it is not a proof of an affine blow-up atlas. -/
+abbrev Case2ResidualBlockChartFamilyBoundary
+    (n : ℕ → ℕ) (S J : ℕ)
+    (ChartRegular : ℕ × ℕ → Prop)
+    (TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop) : Prop :=
+  SelectedEntryChartFamilyBoundary
+    (case2ResidualBlockPivotEntries n S J) ChartRegular TransitionRegular
+
+/-- The Case 2 residual-block pivot-entry set is nonempty under the same
+continuation hypothesis that makes the displayed top-left pivot source-valid. -/
+theorem case2ResidualBlockPivotEntries_nonempty_of_cont
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    (case2ResidualBlockPivotEntries n S J).Nonempty :=
+  ⟨(J + 1, J + 1),
+    case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont⟩
+
+namespace Case2ResidualBlockChartFamilyBoundary
+
+/-- A Case 2 residual-block chart-family boundary supplies chart regularity for
+every supplied source pivot pair in the finite residual-block center. -/
+theorem chart_regular_of_mem
+    {n : ℕ → ℕ} {S J : ℕ}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (h :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    {p : ℕ × ℕ} (hp : p ∈ case2ResidualBlockPivotEntries n S J) :
+    ChartRegular p :=
+  SelectedEntryChartFamilyBoundary.chart_regular_of_mem h hp
+
+/-- A Case 2 residual-block chart-family boundary supplies transition
+regularity for every pair of supplied source pivot entries in the finite
+residual-block center. -/
+theorem transition_regular_of_mem
+    {n : ℕ → ℕ} {S J : ℕ}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (h :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    {p q : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (hq : q ∈ case2ResidualBlockPivotEntries n S J) :
+    TransitionRegular p q :=
+  SelectedEntryChartFamilyBoundary.transition_regular_of_mem h hp hq
+
+/-- Under continuation, a Case 2 residual-block chart-family boundary supplies
+regularity for Aoyagi's displayed top-left pivot chart. -/
+theorem chart_regular_displayedPivot_of_cont
+    {n : ℕ → ℕ} {S J : ℕ}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (h :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    ChartRegular (J + 1, J + 1) :=
+  SelectedEntryChartFamilyBoundary.chart_regular_of_mem h
+    (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
+
+end Case2ResidualBlockChartFamilyBoundary
+
 /-- Lower the vector tail from stage `S` onward to the pivot level `J`. -/
 def lowerTailVector (T : ℕ → ℤ) (S : ℕ) (J : ℤ) (i : ℕ) : ℤ :=
   if i < S then T i else J

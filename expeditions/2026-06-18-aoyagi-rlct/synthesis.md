@@ -895,6 +895,16 @@ part of the selected-generator chart story, not affine atlas coverage,
 polynomial-coordinate Jacobian control, source-order transition, or
 chart-produced recurrence/exponent post-data.
 
+The Case 2 chart-family boundary is now named in Lean. The generic
+`SelectedEntryChartFamilyBoundary` packages supplied `ChartRegular` and
+`TransitionRegular` predicates for all members of a finite selected-entry
+center. `Case2ResidualBlockChartFamilyBoundary` specializes this to
+`case2ResidualBlockPivotEntries n S J`. The only new proved source fact is
+`case2ResidualBlockPivotEntries_nonempty_of_cont`: under the continuation
+hypothesis, the displayed top-left pivot belongs to the residual-block center,
+so the finite center is nonempty. The boundary projections deliberately assume,
+rather than prove, chart regularity and transition regularity.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

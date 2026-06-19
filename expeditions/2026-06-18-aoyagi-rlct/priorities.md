@@ -194,7 +194,13 @@ on the session's original cwd.
    Case 1/2 specializations. Next A4 target: a named chart-family boundary
    package for coverage/regularity/source-order transition assumptions, or
    a genuinely elementary source-order interface if it can be stated without
-   claiming atlas coverage.
+   claiming atlas coverage. The Case 2 chart-family boundary package is now
+   Lean-proved as an assumption interface: chart regularity and transition
+   regularity are supplied predicates over `case2ResidualBlockPivotEntries`,
+   and the only proved source fact is nonemptiness under continuation via the
+   displayed pivot. Next A4 target: instantiate or refine one of these boundary
+   predicates only after a concrete source-order/atlas model is reproduced; do
+   not collapse the boundary package into a theorem of coverage.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
