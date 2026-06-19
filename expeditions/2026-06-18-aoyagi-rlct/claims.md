@@ -566,6 +566,11 @@ No such claim is formalisation-ready until both fields are filled.
   plus the Case 2 residual-block entry set
   `case2ResidualBlockPivotEntries` and displayed-pivot membership theorem
   `case2_displayedPivot_mem_residualBlockPivotEntries_of_cont`. Also proved
+  selected-entry substitution algebra `selectedEntryChartMap`,
+  `selectedEntryChartMap_pivot`, `selectedEntryChartMap_of_ne`,
+  `selectedEntryChartMap_pivot_dvd`,
+  `selectedEntryChartMap_pivot_mem_valueSet`, and the Case 2 displayed-pivot
+  specialization `case2_displayedPivot_selectedEntryChartMap_value_mem`. Also proved
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and
   `terminalExponent_lowerTailVector_of_flatFromPred_add`, with the required

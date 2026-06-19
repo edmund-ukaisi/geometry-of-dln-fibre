@@ -97,9 +97,10 @@ on the session's original cwd.
    block entry set are also Lean-proved; the Case 1 tail-lowering exponent
    increment, lower-tail minimum facts, and one-label lower-tail certificate
    transformer are Lean-proved under explicit flat-tail/old-minimum
-   hypotheses. Next prove the flat-tail and old-minimum invariant facts needed
-   for Case 1 selected labels or build the selected-entry chart substitution
-   scaffold. Then redo Case 1/2 updates, cover pivot charts, repair the
+   hypotheses; selected-entry substitution algebra is Lean-proved but not chart
+   coverage. Next prove the flat-tail and old-minimum invariant facts needed
+   for Case 1 selected labels or build the Case 1 center index scaffold. Then
+   redo Case 1/2 updates, cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

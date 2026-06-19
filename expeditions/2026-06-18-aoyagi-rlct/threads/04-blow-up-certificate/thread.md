@@ -248,6 +248,25 @@ This records candidate selected entries in the residual-block center only. It
 does not construct the selected-entry charts or prove coverage of the
 non-displayed charts.
 
+## 2026-06-19 Lean selected-entry substitution scaffold
+
+Statement card: `statement-card-a4-selected-entry-substitution.md`.
+
+Lean now has a generic finite algebra scaffold `selectedEntryChartMap` for a
+selected generator of a center: the selected generator maps to `u`, while every
+other center generator maps to `u` times a residual coordinate. It proves the
+selected value, the non-selected value, divisibility by `u`, and occurrence of
+the pivot value in the finite value set.
+
+The Case 2 specialization combines this generic scaffold with the already
+proved residual-block entry set: under continuation, Aoyagi's displayed pivot
+`(J+1,J+1)` gives the value `u` in the residual-block selected-entry value
+set.
+
+This is finite algebra only. It does not construct blow-up charts, prove chart
+coverage, prove non-displayed selected-entry transition formulas, or establish
+regularity/Jacobian facts.
+
 ## 2026-06-19 Lean Case 1 tail exponent increment
 
 Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.

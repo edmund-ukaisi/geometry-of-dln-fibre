@@ -195,6 +195,11 @@ interface without surfacing it.
   set is also recorded as rows `J+1..mu_S` and columns `J+1..n_(S+1)`, with the
   displayed pivot included under continuation; no chart-cover theorem is
   claimed.
+  The selected-entry substitution scaffold `selectedEntryChartMap` now captures
+  the finite algebraic pattern in the displayed pivot charts: selected generator
+  maps to `u`, other center generators map to `u` times residual coordinates.
+  The Case 2 displayed-pivot specialization is proved, but no chart cover or
+  non-displayed transition formula is claimed.
   Case 1 now has the tail-lowering exponent increment in Lean:
   `terminalExponent_lowerTailVector_of_flatFromPred` and the source-shaped
   `terminalExponent_lowerTailVector_of_flatFromPred_add` prove that lowering a

@@ -618,6 +618,14 @@ The first route is likely shorter, but only if row/column permutations preserve
 the monomial `b_i` order or the proof explicitly permutes the active rows and
 then restores them.
 
+Lean status: the generic selected-entry substitution algebra is now packaged
+as `selectedEntryChartMap`, with pivot/non-pivot value lemmas, divisibility by
+the selected variable, and a finite value-set witness.  The Case 2 displayed
+pivot specialization is
+`case2_displayedPivot_selectedEntryChartMap_value_mem`.  This is not a chart
+cover theorem and does not prove the non-displayed selected entries satisfy the
+displayed `Q/P` transition formulas.
+
 ## Termination repair target
 
 The previous lexicographic measure is unstable because Case 1(1) can exhaust
