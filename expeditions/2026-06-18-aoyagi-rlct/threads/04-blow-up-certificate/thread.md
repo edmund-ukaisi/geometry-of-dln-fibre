@@ -176,3 +176,20 @@ validity as a continuation theorem.
 
 This records the active-label domain for later vector/exponent assignments. It
 does not assign those data or prove a transition.
+
+## 2026-06-19 Lean corrected Case 2 vector minimum
+
+Statement card: `statement-card-a4-corrected-case2-vector-minimum.md`.
+
+Lean now proves the finite `\tilde t=J` fact for the corrected Case 2 vector.
+`prefixMinNat_antitone` records that prefix minima only decrease as the prefix
+grows. The component lemmas state that the corrected vector is `mu_(i+1)` for
+`i<S` and `J` for `i>=S`. Therefore, under the state bound `J<=mu_S`,
+`correctedCase2PivotVector_min_certificate` proves every total component is at
+least `J` and the `S` component is exactly `J`. The theorem
+`correctedCase2PivotVector_isLeast_valueSet_Icc` packages the same fact over
+the source component range `1..L`, assuming `1<=S<=L`.
+
+This uses the corrected prefix-minimum vector. It does not assert pairwise
+comparability, assign vector data to every introduced label, or prove a
+transition.

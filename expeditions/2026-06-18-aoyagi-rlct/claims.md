@@ -544,7 +544,13 @@ No such claim is formalisation-ready until both fields are filled.
   `introducedLabel_case2_new_after`, identifying the active source labels at
   state `(S,J)` and the new pivot label added by advancing `J`; the prefix-bound
   corollary keeps the actual-width label result separate from the stronger
-  source continuation condition.
+  source continuation condition. Also proved the corrected Case 2 vector
+  minimum bookkeeping: `prefixMinNat_antitone`,
+  `correctedCase2PivotVector_eq_prefix_of_lt`,
+  `correctedCase2PivotVector_eq_J_of_le`,
+  `le_correctedCase2PivotVector_of_le_prefixMinNat`, and
+  `correctedCase2PivotVector_min_certificate`, plus the finite source-range
+  least-value theorem `correctedCase2PivotVector_isLeast_valueSet_Icc`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

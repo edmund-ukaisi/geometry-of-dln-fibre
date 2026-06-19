@@ -264,6 +264,18 @@ t_(S,J+1)^i = mu_(i+1) = M(i+1),    i = 1, ..., S-1,
 t_(S,J+1)^q = J,                    q = S, ..., L.
 ```
 
+For this corrected vector, the source line `tilde_t_(S,J+1)=J` follows from
+the state bound `J <= mu_S`: prefix minima are antitone in the prefix index, so
+all earlier entries `mu_(i+1)` for `i<S` are at least `mu_S`, hence at least
+`J`, while every entry from `S` onward is exactly `J`.
+
+Lean status: the finite minimum certificate is formalised as
+`prefixMinNat_antitone`, `correctedCase2PivotVector_eq_prefix_of_lt`,
+`correctedCase2PivotVector_eq_J_of_le`,
+`le_correctedCase2PivotVector_of_le_prefixMinNat`, and
+`correctedCase2PivotVector_min_certificate`. The finite source-range version
+is `correctedCase2PivotVector_isLeast_valueSet_Icc`.
+
 Substitution gives
 
 ```text

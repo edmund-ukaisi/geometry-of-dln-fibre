@@ -78,6 +78,22 @@ theorem prefixMinNat_succ_eq_min (n : ℕ → ℕ) {j : ℕ} (hj : 1 ≤ j) :
       | zero => rfl
       | succ k => rfl
 
+/-- Prefix minima can only decrease as the prefix grows. -/
+theorem prefixMinNat_succ_le (n : ℕ → ℕ) {j : ℕ} (hj : 1 ≤ j) :
+    prefixMinNat n (j + 1) ≤ prefixMinNat n j := by
+  rw [prefixMinNat_succ_eq_min n hj]
+  exact min_le_left _ _
+
+/-- Prefix minima are antitone in the positive prefix index. -/
+theorem prefixMinNat_antitone (n : ℕ → ℕ) {a b : ℕ} (ha : 1 ≤ a) (hab : a ≤ b) :
+    prefixMinNat n b ≤ prefixMinNat n a := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hab
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [Nat.add_succ]
+      exact le_trans (prefixMinNat_succ_le n (by omega : 1 ≤ a + k)) (ih (by omega))
+
 /-- Natural prefix minima agree with integer prefix minima after casting widths. -/
 theorem prefixMinNat_cast (n : ℕ → ℕ) (i : ℕ) :
     (prefixMinNat n i : ℤ) = prefixMin (widthZ n) i := by
@@ -191,6 +207,61 @@ theorem introducedLabel_case2_new_after_of_prefixBound (L : ℕ) (n : ℕ → �
 /-- The corrected Case 2 pivot vector, using prefix minima before `S`. -/
 def correctedCase2PivotVector (n : ℕ → ℕ) (S J : ℕ) : ℕ → ℤ :=
   prefixCase2Vector (widthZ n) S (J : ℤ)
+
+@[simp] theorem correctedCase2PivotVector_apply (n : ℕ → ℕ) (S J i : ℕ) :
+    correctedCase2PivotVector n S J i =
+      if i < S then (prefixMinNat n (i + 1) : ℤ) else (J : ℤ) := by
+  by_cases hi : i < S
+  · simp [correctedCase2PivotVector, prefixCase2Vector, hi, prefixMinNat_cast]
+  · simp [correctedCase2PivotVector, prefixCase2Vector, hi]
+
+/-- Before `S`, the corrected Case 2 vector is the prefix minimum. -/
+theorem correctedCase2PivotVector_eq_prefix_of_lt
+    (n : ℕ → ℕ) {S J i : ℕ} (hi : i < S) :
+    correctedCase2PivotVector n S J i = (prefixMinNat n (i + 1) : ℤ) := by
+  simp [hi]
+
+/-- From `S` onward, the corrected Case 2 vector is `J`. -/
+theorem correctedCase2PivotVector_eq_J_of_le
+    (n : ℕ → ℕ) {S J i : ℕ} (hi : S ≤ i) :
+    correctedCase2PivotVector n S J i = (J : ℤ) := by
+  simp [not_lt_of_ge hi]
+
+@[simp] theorem correctedCase2PivotVector_self (n : ℕ → ℕ) (S J : ℕ) :
+    correctedCase2PivotVector n S J S = (J : ℤ) :=
+  correctedCase2PivotVector_eq_J_of_le n le_rfl
+
+/-- Under the state bound `J ≤ mu_S`, every corrected Case 2 component is at least `J`. -/
+theorem le_correctedCase2PivotVector_of_le_prefixMinNat
+    (n : ℕ → ℕ) {S J : ℕ} (hJ : J ≤ prefixMinNat n S) (i : ℕ) :
+    (J : ℤ) ≤ correctedCase2PivotVector n S J i := by
+  by_cases hi : i < S
+  · rw [correctedCase2PivotVector_eq_prefix_of_lt n hi]
+    have hmono : prefixMinNat n S ≤ prefixMinNat n (i + 1) :=
+      prefixMinNat_antitone n (by omega : 1 ≤ i + 1) (by omega : i + 1 ≤ S)
+    exact_mod_cast le_trans hJ hmono
+  · rw [correctedCase2PivotVector_eq_J_of_le n (le_of_not_gt hi)]
+
+/-- The corrected Case 2 vector has minimum value `J` in the finite bookkeeping sense. -/
+theorem correctedCase2PivotVector_min_certificate
+    (n : ℕ → ℕ) {S J : ℕ} (hJ : J ≤ prefixMinNat n S) :
+    (∀ i, (J : ℤ) ≤ correctedCase2PivotVector n S J i) ∧
+      correctedCase2PivotVector n S J S = (J : ℤ) :=
+  ⟨le_correctedCase2PivotVector_of_le_prefixMinNat n hJ,
+    correctedCase2PivotVector_self n S J⟩
+
+/-- Over the source component range, the corrected Case 2 vector has least value `J`. -/
+theorem correctedCase2PivotVector_isLeast_valueSet_Icc
+    (n : ℕ → ℕ) {L S J : ℕ} (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hJ : J ≤ prefixMinNat n S) :
+    IsLeast
+      {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧ correctedCase2PivotVector n S J i = v}
+      (J : ℤ) := by
+  constructor
+  · exact ⟨S, by simp [Finset.mem_Icc, hS, hSL], correctedCase2PivotVector_self n S J⟩
+  · intro v hv
+    rcases hv with ⟨i, hi, rfl⟩
+    exact le_correctedCase2PivotVector_of_le_prefixMinNat n hJ i
 
 end LabelRanges
 

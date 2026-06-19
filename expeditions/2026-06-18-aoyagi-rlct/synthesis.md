@@ -172,6 +172,13 @@ interface without surfacing it.
   assignments; it does not yet assign or update those data. The prefix-bound
   corollary keeps the actual-width label validity separate from the stronger
   source continuation condition.
+  The corrected Case 2 vector now has a finite minimum certificate in Lean:
+  prefix-minimum antitonicity plus component formulas prove that, under
+  `J<=mu_S`, all components are at least `J` and the `S` component is exactly
+  `J`; `correctedCase2PivotVector_isLeast_valueSet_Icc` packages this over
+  the finite source range `1..L`. This is the repaired `tilde_t=J`
+  bookkeeping for the new Case 2 label, not a transition theorem or
+  comparability result.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not
