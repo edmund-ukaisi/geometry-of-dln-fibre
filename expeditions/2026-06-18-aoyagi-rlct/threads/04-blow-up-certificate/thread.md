@@ -646,6 +646,29 @@ production, arbitrary-pivot coverage, regularity/Jacobian, exponent update,
 transition invariant, normal-crossing, RLCT extraction, source comparability,
 or a repair of the printed Case 2 vector mismatch.
 
+## 2026-06-19 Lean Case 2 supplied post-data package
+
+Reproduction: `reproduction-case2-supplied-post-data-a4.md`.
+Statement card: `statement-card-a4-case2-supplied-post-data.md`.
+Review artifact: `review-case2-supplied-post-data-a4.md`.
+
+Lean now packages the repeated supplied recurrence post-data for a Case 2
+`J`-advance as
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData`. The package records
+only old-label level/variable agreement and the new label `(S,J+1)` having
+level `J` and variable `u`. It deliberately does not contain the old Case 2
+gap, the displayed pivot bounds, or the corrected new-label certificate.
+
+The concrete successor `pre.case2Succ u` satisfies the package. The package
+also has a recurrence-weight method under actual source-validity, a residual
+flatness method under the old Case 2 gap, and corrected-certificate wrappers
+for the recurrence update, residual flatness, displayed pivot-first
+source-substitution, and displayed `Q/P` handoff. This removes repeated
+hypothesis lists without asserting chart production, arbitrary-pivot coverage,
+regularity/Jacobian facts, exponent updates, transition invariants, normal
+crossings, RLCT extraction, source comparability, or the printed Case 2 vector
+repair.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

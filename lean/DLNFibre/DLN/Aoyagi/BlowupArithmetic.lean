@@ -1562,6 +1562,44 @@ theorem case2Succ_var_of_ne
     (state.case2Succ u).var s k = state.var s k := by
   simp [case2Succ, hne]
 
+/-- Supplied recurrence post-data for a Case 2 `J`-advance.
+
+This records only agreement on old introduced labels and the assigned
+level/variable of the new label `(S,J+1)`.  It does not assert that a blow-up
+chart produces `post`. -/
+structure Case2SuppliedPostData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (pre : IntroducedLabelRecurrenceState L n S J α)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (u : α) : Prop where
+  level_old :
+    ∀ {s k}, introducedLabel L n S J s k →
+      post.level s k = pre.level s k
+  var_old :
+    ∀ {s k}, introducedLabel L n S J s k →
+      post.var s k = pre.var s k
+  level_new : post.level S (J + 1) = J
+  var_new : post.var S (J + 1) = u
+
+/-- The concrete `case2Succ` state supplies the recurrence post-data package.
+This remains only recurrence data; no chart production is asserted. -/
+theorem case2Succ_case2SuppliedPostData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (u : α) :
+    Case2SuppliedPostData state (state.case2Succ u) u where
+  level_old := by
+    intro s k hintro
+    exact state.case2Succ_level_of_ne u (by
+      rintro ⟨rfl, rfl⟩
+      exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  var_old := by
+    intro s k hintro
+    exact state.case2Succ_var_of_ne u (by
+      rintro ⟨rfl, rfl⟩
+      exact (not_introducedLabel_case2_new_before _ _ _ _) hintro)
+  level_new := by simp
+  var_new := by simp
+
 /-- Adding the corrected Case 2 new label at level `J` preserves the Case 2 gap
 for the successor state. -/
 theorem case2Succ_case2Gap
@@ -2067,6 +2105,37 @@ theorem CorrectedCase2NewLabelCertificate.case2_weight_succ_current_eq_newVar_mu
   fun i hi ↦ state.weight_succ_current_eq_new_mul_of_ge hnew.introduced.1
     (i := i) state' u hlevel_old hvar_old hlevel_new hvar_new hi
 
+namespace IntroducedLabelRecurrenceState.Case2SuppliedPostData
+
+/-- A supplied Case 2 post-data package gives Aoyagi's recurrence update from
+row `J+1` onward, under the actual source-validity of the new label. -/
+theorem weight_succ_current_eq_new_mul_of_ge
+    {L : ℕ} {n : ℕ → ℕ} {S J i : ℕ}
+    {pre : IntroducedLabelRecurrenceState L n S J α}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u)
+    (hnew : actualWidthLabel L n S (J + 1))
+    (hi : J + 1 ≤ i) :
+    post.weight i = u * pre.weight i :=
+  pre.weight_succ_current_eq_new_mul_of_ge hnew post u
+    hpost.level_old hpost.var_old hpost.level_new hpost.var_new hi
+
+end IntroducedLabelRecurrenceState.Case2SuppliedPostData
+
+/-- Source-facing Case 2 recurrence-weight update from a supplied post-data
+package and the corrected new-label certificate. -/
+theorem CorrectedCase2NewLabelCertificate.case2_weight_succ_current_eq_newVar_mul_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    {state : IntroducedLabelRecurrenceState L n S J α}
+    {state' : IntroducedLabelRecurrenceState L n S (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData state state' u) :
+    ∀ i, J + 1 ≤ i → state'.weight i = u * state.weight i :=
+  fun i hi ↦
+    hpost.weight_succ_current_eq_new_mul_of_ge (i := i) hnew.introduced.1 hi
+
 /-- If no label in a finite set has level `r`, the level-product factor is `1`. -/
 theorem levelProductStep_eq_one_of_forall_ne
     {β : Type*} (labels : Finset β) (level : β → ℕ) (var : β → α) (r : ℕ)
@@ -2212,6 +2281,28 @@ theorem case2ResidualRowWeight_eq_displayedPivot_of_case2Gap
 
 end IntroducedLabelRecurrenceState
 
+namespace IntroducedLabelRecurrenceState.Case2SuppliedPostData
+
+/-- Under the old Case 2 gap, supplied successor weights are flat on the old
+displayed residual rows after the common selected-variable multiplication. -/
+theorem weight_succ_current_residual_flat_of_preGap
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {pre : IntroducedLabelRecurrenceState L n S J α}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u)
+    (hnew : actualWidthLabel L n S (J + 1))
+    (hgap : pre.case2Gap) (i : Case2ResidualRowIndex n S J) :
+    post.weight (case2ResidualRowLevel n S J i) = post.weight (J + 1) := by
+  have hupdate : ∀ i, J + 1 ≤ i → post.weight i = u * pre.weight i := by
+    intro r hr
+    exact hpost.weight_succ_current_eq_new_mul_of_ge (i := r) hnew hr
+  rw [hupdate (case2ResidualRowLevel n S J i) (case2ResidualRowLevel_ge n S J i),
+    hupdate (J + 1) le_rfl,
+    pre.case2ResidualRow_weight_eq_pivot_of_case2Gap hgap i]
+
+end IntroducedLabelRecurrenceState.Case2SuppliedPostData
+
 /-- Source-facing consequence of the Case 2 recurrence-weight update: if the old
 state satisfies the Case 2 gap, then the supplied successor weights are flat
 across the old displayed residual rows after the common multiplication by the
@@ -2236,6 +2327,22 @@ theorem CorrectedCase2NewLabelCertificate.case2_weight_succ_current_residual_fla
   rw [hupdate (case2ResidualRowLevel n S J i) (case2ResidualRowLevel_ge n S J i),
     hupdate (J + 1) le_rfl,
     state.case2ResidualRow_weight_eq_pivot_of_case2Gap hgap i]
+
+namespace CorrectedCase2NewLabelCertificate
+
+/-- Source-facing residual-flat consequence from a supplied post-data package. -/
+theorem case2_weight_succ_current_residual_flat_of_preGap_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    {state : IntroducedLabelRecurrenceState L n S J α}
+    {state' : IntroducedLabelRecurrenceState L n S (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData state state' u)
+    (hgap : state.case2Gap) (i : Case2ResidualRowIndex n S J) :
+    state'.weight (case2ResidualRowLevel n S J i) = state'.weight (J + 1) :=
+  hpost.weight_succ_current_residual_flat_of_preGap hnew.introduced.1 hgap i
+
+end CorrectedCase2NewLabelCertificate
 
 end MonomialRecurrence
 
@@ -3046,6 +3153,33 @@ theorem case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights
   rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
   rw [hpivotResidual, hrows]
 
+/-- Displayed Case 2 source-variable transport from a supplied recurrence
+post-data package. -/
+theorem case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R) :
+    (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+        case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+        (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+        (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont)) =
+      weightedPivotDiagonal
+        (post.weight (J + 1))
+        (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          post.weight (case2ResidualRowLevel n S J i.1)) *
+        pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedNormalizedMatrix n hS hcont residual) :=
+  hnew.case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights
+    hS hcont pre post u
+    hpost.level_old hpost.var_old hpost.level_new hpost.var_new residual
+
 end CorrectedCase2NewLabelCertificate
 
 /-- The following factor for displayed Case 2, reindexed into pivot-first column order. -/
@@ -3500,6 +3634,53 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_suc
         (hupdate (case2ResidualRowLevel n S J i.1)
           (case2ResidualRowLevel_ge n S J i.1)).symm)
   rwa [hpivot, hrows] at hq
+
+/-- Displayed Case 2 source-substitution `Q/P` identity from a supplied
+recurrence post-data package. -/
+theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u)
+    (hgap : pre.case2Gap)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          case2DisplayedTransportedFollowingFactor n hS hcont residual C :=
+  hnew.exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights
+    hS hcont pre post hgap u
+    hpost.level_old hpost.var_old hpost.level_new hpost.var_new residual C
 
 end CorrectedCase2NewLabelCertificate
 

@@ -499,6 +499,27 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-successor-source-substitution-a4.md`.
 
+Latest A4 update: the Case 2 supplied recurrence post-data package has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. Proved Lean names include
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData`,
+`IntroducedLabelRecurrenceState.case2Succ_case2SuppliedPostData`,
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.weight_succ_current_eq_new_mul_of_ge`,
+`CorrectedCase2NewLabelCertificate.case2_weight_succ_current_eq_newVar_mul_of_postData`,
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.weight_succ_current_residual_flat_of_preGap`,
+`CorrectedCase2NewLabelCertificate.case2_weight_succ_current_residual_flat_of_preGap_of_postData`,
+`CorrectedCase2NewLabelCertificate.case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights_of_postData`,
+and
+`CorrectedCase2NewLabelCertificate.exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData`.
+The package is recurrence-local: it records old-label agreement and the new
+label's level/variable assignment, while keeping source validity, the old gap,
+and displayed pivot bounds separate. It is not chart production, chart
+coverage, coordinate regularity/Jacobian, exponent update, transition
+invariant, normal crossing, RLCT extraction, source comparability, or the
+printed Case 2 vector repair. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-supplied-post-data.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-supplied-post-data-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

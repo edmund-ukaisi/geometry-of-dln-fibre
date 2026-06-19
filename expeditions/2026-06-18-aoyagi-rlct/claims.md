@@ -736,7 +736,12 @@ No such claim is formalisation-ready until both fields are filled.
   `CorrectedCase2NewLabelCertificate.exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights`,
   rewriting the pivot-first and displayed `Q/P` right-side diagonals from
   `u * pre.weight` to the supplied successor weights `post.weight`, while the
-  left side remains the old-weighted source substitution.
+  left side remains the old-weighted source substitution. Added the
+  recurrence-local supplied post-data package
+  `IntroducedLabelRecurrenceState.Case2SuppliedPostData`, its concrete
+  `case2Succ` constructor, recurrence update and residual-flatness methods,
+  and corrected-certificate `_of_postData` wrappers for the displayed
+  source-substitution and `Q/P` handoff.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -751,9 +756,11 @@ No such claim is formalisation-ready until both fields are filled.
   counts the selected variable once in the updated weights `u*b_i`. It does not
   prove the source's Case 2 comparability sentence; the label gap alone is
   insufficient. The successor-weight handoff assumes the post-state and does
-  not prove chart production. The Aoyagi-specific arbitrary chart construction,
-  coordinate transport, row-weight hypotheses in pivot-first coordinates, and
-  exponent updates remain open.
+  not prove chart production. The supplied post-data package also keeps source
+  validity, the old Case 2 gap, and displayed pivot bounds as separate theorem
+  hypotheses rather than fields. The Aoyagi-specific arbitrary chart
+  construction, coordinate transport, row-weight hypotheses in pivot-first
+  coordinates, and exponent updates remain open.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

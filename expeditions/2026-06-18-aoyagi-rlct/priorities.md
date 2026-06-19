@@ -153,7 +153,13 @@ on the session's original cwd.
    selected variable is counted once in the updated weights `u*b_i`. Next A4
    target: build a non-overclaiming supplied post-data package for displayed
    Case 2, or move to arbitrary-pivot chart transport if chart production
-   remains blocked.
+   remains blocked. The recurrence-local version of that package is now
+   Lean-proved as `IntroducedLabelRecurrenceState.Case2SuppliedPostData`, with
+   post-data wrappers for the recurrence update, residual flatness, displayed
+   source-substitution, and displayed `Q/P` handoff. Next A4 target: use this
+   cleaner assumption boundary for a corrected Case 2 exponent-domain extension
+   wrapper, or begin arbitrary-pivot transport only if the displayed exponent
+   package is still blocked.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

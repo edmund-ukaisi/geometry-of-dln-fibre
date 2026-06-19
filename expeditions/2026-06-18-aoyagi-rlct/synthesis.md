@@ -809,6 +809,17 @@ successor recurrence state is supplied and does not prove the chart produces
 that state, nor arbitrary-pivot coverage, regularity/Jacobian facts, exponent
 updates, transition invariants, or the printed Case 2 vector repair.
 
+The repeated post-state assumptions in this Case 2 recurrence layer are now
+packaged as `IntroducedLabelRecurrenceState.Case2SuppliedPostData`. This is a
+recurrence-local package: old labels keep levels and variables, and the new
+label `(S,J+1)` has level `J` and variable `u`. The package intentionally does
+not contain the old gap, displayed pivot bounds, or corrected certificate. Lean
+now proves that `case2Succ` supplies the package and adds `_of_postData`
+wrappers for the recurrence update, successor residual flatness, displayed
+source-substitution, and displayed `Q/P` handoff. This reduces hypothesis
+sprawl while preserving the boundary: the supplied post-state is still assumed,
+not produced by a chart.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
