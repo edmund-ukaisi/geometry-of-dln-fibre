@@ -38,7 +38,8 @@
 >   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseTwoEdgeTotalMatrix_eq_edge1_mul_edge0`,
 >   and
 >   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_identityCornerDetChart`,
->   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`,
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`
 >   (`lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`).
 > - **Gloss.** The base chain `B` supplies the endpoint adapted bases. The
 >   variable chain `C` supplies only the linear maps being represented. The
@@ -48,8 +49,10 @@
 > - **Proved.** Fixed-basis matrix definitions, chain composition bookkeeping,
 >   basepoint equality checks, untransformed and transformed determinant-chart
 >   neighborhood membership at `C = B` in ambient matrix space, Schur-residual
->   rank under explicit determinant and rank hypotheses, and a canonical
->   two-edge product wrapper for the first
+>   rank under explicit determinant and rank hypotheses, and the corresponding
+>   transformed determinant-chart neighborhood for a single continuous-linear
+>   edge parameter at the base edge. Also proved a canonical two-edge product
+>   wrapper for the first
 >   nontrivial composition case. The suffix-step theorem advances one already
 >   reduced suffix across a supplied transformed next edge; it is not yet an
 >   iterated all-layer induction theorem. The suffix-chain theorem now iterates
@@ -59,11 +62,12 @@
 > - **Assumed.** Finite-dimensional paper-order layers and a supplied
 >   total-kernel complement for the base chain. The residual-rank theorem
 >   assumes both `identityCornerDetChart` for the variable edge matrix and an
->   exact rank equation for that matrix.
+>   exact rank equation for that matrix. The continuous-edge neighborhood
+>   theorem additionally assumes a nontrivially normed complete field and
+>   topological-vector-space structures on the paper-order layers.
 > - **Cited.** None.
-> - **Deferred.** Pulling determinant-chart hypotheses back to an actual chain
->   neighborhood by formalizing a topology and continuity for fixed-coordinate
->   edge maps, exact rank-stratum packaging, regular coordinate-change
->   certificates, and RLCT consequences.
+> - **Deferred.** Assembling single-edge neighborhoods into a source-faithful
+>   product/chain neighborhood, exact rank-stratum packaging, regular
+>   coordinate-change certificates, and RLCT consequences.
 > - **Kill conditions.** Do not read this as saying rank strata are open or
 >   that bases are re-chosen for the variable chain `C`.

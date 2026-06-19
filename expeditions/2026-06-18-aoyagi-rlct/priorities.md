@@ -48,9 +48,11 @@ on the session's original cwd.
    transformed edge is Lean-proved, and the all-layer explicit-chart
    product-reduction theorem in fixed bases is Lean-proved. The matrix-space
    basepoint neighborhood for each fixed transformed determinant chart is also
-   Lean-proved. Next formalize the topology/continuity bridge that pulls these
-   matrix neighborhoods back along the fixed-coordinate variable edge maps,
-   still keeping exact-rank strata as explicit hypotheses.
+   Lean-proved, and this has been pulled back along the fixed-basis coordinate
+   map for one continuous-linear edge parameter. Next assemble these single-edge
+   neighborhoods into the source-faithful product/chain neighborhood needed by
+   the explicit-chart induction, still keeping exact-rank strata as explicit
+   hypotheses.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

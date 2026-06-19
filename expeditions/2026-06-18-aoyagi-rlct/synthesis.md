@@ -413,9 +413,22 @@ fixed accumulated upper block `Bprev`, the predicate
 `identityCornerDetChart ([I Bprev; 0 I] * M)` is an ambient matrix-space
 neighborhood of the base fixed-base edge matrix. This is pointwise in `Bprev`;
 it is not an infinite-intersection statement over all possible previous blocks,
-and it is not yet a neighborhood theorem for variable chains. The next bridge
-is a topology on the fixed-coordinate chain/edge parameter space and continuity
-of `C ↦ paperEndpointFixedBaseEdgeMatrix W B C U₀ hU₀ p`.
+and it is not yet a neighborhood theorem for variable chains. At this checkpoint
+the missing bridge was a topology on fixed-coordinate edge parameters and
+continuity of the fixed-basis coordinate map; the next paragraph records the
+one-edge version now proved.
+
+The first edge-parameter topology bridge is now Lean-proved. The generic lemma
+`continuous_linearMap_toMatrix` says that for fixed source and target bases,
+the map from a continuous linear map to its coordinate matrix is continuous.
+The fixed-base wrapper
+`paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`
+pulls the transformed determinant-chart neighborhood back to a neighborhood of
+the base edge in the `ContinuousLinearMap` topology. This is still a one-edge
+statement with fixed `p` and fixed `Bprev`, not a product topology theorem for
+all chain variables and not a statement that the induction-produced `Bprev`
+varies continuously. The next A2 topology target is product/chain assembly:
+combine finitely many single-edge neighborhoods and keep rank strata explicit.
 
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =

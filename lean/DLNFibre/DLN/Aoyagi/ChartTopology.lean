@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.ThroughLayerMatrix
+import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Topology.Algebra.IsOpenUnits
 import Mathlib.Topology.Instances.Matrix
 
@@ -84,6 +85,33 @@ theorem identityCornerForm_mem_nhds_identityCornerDetChart
   identityCornerDetChart_mem_nhds (identityCornerDetChart_of_identityCornerForm hM)
 
 end DeterminantChart
+
+section ContinuousLinearMapCoordinates
+
+variable {K : Type*} [NontriviallyNormedField K] [CompleteSpace K]
+variable {ι μ E F : Type*} [Fintype ι] [DecidableEq ι] [Finite μ]
+  [AddCommGroup E] [TopologicalSpace E] [Module K E] [ContinuousSMul K E]
+  [AddCommGroup F] [TopologicalSpace F] [IsTopologicalAddGroup F] [T2Space F]
+  [Module K F] [ContinuousSMul K F]
+
+/-- Fixed bases identify continuous linear maps with matrices continuously. -/
+theorem continuous_linearMap_toMatrix
+    (bE : Module.Basis ι K E) (bF : Module.Basis μ K F) :
+    Continuous (fun f : E →L[K] F ↦ LinearMap.toMatrix bE bF (f : E →ₗ[K] F)) := by
+  classical
+  refine continuous_pi ?_
+  intro i
+  refine continuous_pi ?_
+  intro j
+  change Continuous (fun f : E →L[K] F ↦ LinearMap.toMatrix bE bF (f : E →ₗ[K] F) i j)
+  rw [show (fun f : E →L[K] F ↦ LinearMap.toMatrix bE bF (f : E →ₗ[K] F) i j) =
+      (fun f : E →L[K] F ↦ bF.repr (f (bE j)) i) by
+    funext f
+    simpa using (LinearMap.toMatrix_apply bE bF (f : E →ₗ[K] F) i j)]
+  exact (continuous_apply i).comp
+    ((Module.Basis.continuous_coe_repr bF).comp (continuous_eval_const (bE j)))
+
+end ContinuousLinearMapCoordinates
 
 section PaperOrder
 

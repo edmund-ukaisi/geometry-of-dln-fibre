@@ -841,3 +841,23 @@ there is no formal topology on the variable paper-order chain space here and
 no continuity theorem for
 `C ↦ paperEndpointFixedBaseEdgeMatrix W B C U0 hU0 p`. Exact rank remains an
 explicit hypothesis, not an ambient-open condition.
+
+## 2026-06-19 A2 single-edge topology pullback
+
+Extended `ChartTopology.lean` with
+`continuous_linearMap_toMatrix`: for fixed source and target bases, the map
+from a continuous linear map to its coordinate matrix is continuous. The proof
+is coordinatewise: evaluate the continuous linear map at a fixed source-basis
+vector, then take a fixed coordinate in the target basis.
+
+Extended `FixedBasepointChart.lean` with
+`paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`.
+For each fixed edge `p` and fixed accumulated upper block `Bprev`, the
+transformed determinant-chart predicate pulls back to a neighborhood of the
+base edge `reverseEdge W B p` in the `ContinuousLinearMap` topology.
+
+This is the first honest topology pullback beyond ambient matrix space. It is
+still one edge only. It does not define a topology on the whole dependent
+paper-order chain, does not assemble finite intersections over all edges, does
+not handle continuity of the induction-produced `Bprev`, and does not make
+exact rank strata open.

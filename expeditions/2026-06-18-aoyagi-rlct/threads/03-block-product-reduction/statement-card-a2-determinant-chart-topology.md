@@ -8,6 +8,7 @@
 >   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_mem_nhds`,
 >   `DLNFibre.DLN.Aoyagi.leftMul_identityCornerDetChart_mem_nhds`,
 >   `DLNFibre.DLN.Aoyagi.fromBlocks_leftMul_identityCornerDetChart_mem_nhds`,
+>   `DLNFibre.DLN.Aoyagi.continuous_linearMap_toMatrix`,
 >   `DLNFibre.DLN.Aoyagi.identityCornerForm_mem_nhds_identityCornerDetChart`,
 >   `DLNFibre.DLN.Aoyagi.paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`,
 >   and
@@ -18,13 +19,17 @@
 >   `IsOpenUnits`.
 > - **Proved.** Topological determinant-chart openness, neighborhood
 >   membership for adapted paper edges and their upper-unitriangular transforms,
->   and matrix-space pullback of the chart under fixed left multiplication.
+>   matrix-space pullback of the chart under fixed left multiplication, and
+>   continuity of the fixed-basis matrix-coordinate map on continuous linear
+>   maps.
 > - **Assumed.** `CommRing`, topological ring, and open-units hypotheses for
->   the base ring; finite-dimensional layers for the paper adapted-edge
->   wrappers.
+>   determinant-chart openness; finite-dimensional layers for the paper
+>   adapted-edge wrappers; nontrivially normed complete field and target
+>   topological-vector-space hypotheses for the continuous-linear-map
+>   coordinate theorem.
 > - **Cited.** None.
-> - **Deferred.** Exact rank-stratum topology, pulling these matrix
->   neighborhoods back to a topology on variable chains, analytic coordinate
->   changes, and RLCT consequences.
+> - **Deferred.** Exact rank-stratum topology, product/chain-neighborhood
+>   assembly for variable chains, analytic coordinate changes, and RLCT
+>   consequences.
 > - **Kill conditions.** Do not read this as saying rank strata are open, or
 >   that the adapted bases are fixed across a neighborhood of variable chains.

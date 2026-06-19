@@ -117,7 +117,8 @@ No such claim is formalisation-ready until both fields are filled.
   bases is now proved with a supplied transformed edge, and the all-layer
   explicit-chart block-diagonal induction is proved. Matrix-space
   neighborhoods for transformed fixed-base edge determinant charts at `C = B`
-  are now also proved, pointwise in the fixed accumulated upper block. The full
+  are now also proved, pointwise in the fixed accumulated upper block, and this
+  has been pulled back to a single continuous-linear edge parameter. The full
   source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
@@ -244,6 +245,7 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_mem_nhds`,
   `DLNFibre.DLN.Aoyagi.leftMul_identityCornerDetChart_mem_nhds`,
   `DLNFibre.DLN.Aoyagi.fromBlocks_leftMul_identityCornerDetChart_mem_nhds`,
+  `DLNFibre.DLN.Aoyagi.continuous_linearMap_toMatrix`,
   `DLNFibre.DLN.Aoyagi.identityCornerForm_mem_nhds_identityCornerDetChart`,
   `DLNFibre.DLN.Aoyagi.paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`,
   and
@@ -271,6 +273,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_identityCornerDetChart`
   and
   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart`
+  and
+  `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`
   are in `lean/DLNFibre/DLN/Aoyagi/FixedBasepointChart.lean`; the one-step
   suffix theorem
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocal_suffixStep_fromBlocks_indexed`
@@ -350,11 +354,14 @@ No such claim is formalisation-ready until both fields are filled.
   left multiplication pulls chart neighborhoods back to matrix-space
   neighborhoods, giving transformed fixed-base edge determinant-chart
   neighborhoods at the base chain `C = B`, pointwise in the fixed accumulated
-  upper block.
+  upper block, and the fixed-basis coordinate map pulls this back to a
+  neighborhood of the base edge in the continuous-linear-map topology.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units
-  hypotheses for determinant-chart openness. The full product-reduction theorem
+  hypotheses for determinant-chart openness; nontrivially normed complete field
+  and topological-vector-space hypotheses for the continuous-linear-map edge
+  topology bridge. The full product-reduction theorem
   would additionally need source-faithful fixed-chart assembly for nearby
   variable layers and certificate transport, not yet proved. Exact rank strata
   remain explicit hypotheses, not open-neighborhood conclusions.
@@ -371,10 +378,10 @@ No such claim is formalisation-ready until both fields are filled.
   projections provide a supplied-data suffix-chain reduction theorem, now
   packaged in paper order at the endpoint. The determinant-chart openness,
   transformed basepoint matrix-neighborhood packaging, and residual-rank bridge
-  are proved, but pulling those matrix neighborhoods back to source-faithful
-  variable-chain neighborhoods is still open. Still open: source-faithful
-  Theorem 3 statement and certificate transport. Exact rank-stratum hypotheses
-  remain separate; see
+  are proved, and the one-edge continuous-linear-map pullback is proved, but
+  assembling these into source-faithful product/chain neighborhoods is still
+  open. Still open: source-faithful Theorem 3 statement and certificate
+  transport. Exact rank-stratum hypotheses remain separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

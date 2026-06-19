@@ -463,6 +463,85 @@ theorem paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityC
 
 end FixedBaseTopology
 
+section FixedBaseContinuousEdgeTopology
+
+universe u v
+
+variable {K : Type u} [NontriviallyNormedField K] [CompleteSpace K]
+  {N : ℕ}
+  (W : Fin (N + 1) → Type v) [∀ i, AddCommGroup (W i)] [∀ i, TopologicalSpace (W i)]
+  [∀ i, IsTopologicalAddGroup (W i)] [∀ i, T2Space (W i)]
+  [∀ i, Module K (W i)] [∀ i, ContinuousSMul K (W i)]
+  (B : ∀ i : Fin N, W i.succ →ₗ[K] W i.castSucc)
+
+/-- For a single fixed-base edge parameter, the transformed determinant chart pulls back to a
+neighborhood of the base edge in the continuous-linear-map topology. -/
+theorem paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (p : Fin N)
+    (Bprev : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        K) :
+    {f : reverseVertex W p.castSucc →L[K] reverseVertex W p.succ |
+      identityCornerDetChart
+        (fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          Bprev 0
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) *
+          LinearMap.toMatrix
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+            (f : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))} ∈
+      nhds (LinearMap.toContinuousLinearMap (reverseEdge W B p)) := by
+  let coord :
+      (reverseVertex W p.castSucc →L[K] reverseVertex W p.succ) →
+        Matrix
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun f ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (f : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  have hcoord : Continuous coord :=
+    continuous_linearMap_toMatrix
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+  have hmat :
+      {M : Matrix
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K |
+        identityCornerDetChart
+          (fromBlocks
+            (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+            Bprev 0
+            (1 : Matrix
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) * M)} ∈
+        nhds (coord (LinearMap.toContinuousLinearMap (reverseEdge W B p))) := by
+    simpa [coord, paperEndpointFixedBaseEdgeMatrix] using
+      paperEndpointFixedBaseEdgeMatrix_selfBase_mem_nhds_transformed_identityCornerDetChart
+        W B U₀ hU₀ p Bprev
+  exact hcoord.continuousAt.preimage_mem_nhds hmat
+
+end FixedBaseContinuousEdgeTopology
+
 end Aoyagi
 end DLN
 end DLNFibre

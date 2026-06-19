@@ -121,6 +121,17 @@ matrix-space neighborhoods back along a formal topology/continuity statement
 for fixed-coordinate variable chains, source-faithful exact rank-stratum
 packaging, the full Theorem 3 statement, and analytic/certificate transport.
 
+Eighth latest A2 update: the single-edge continuous-linear-map pullback has
+landed. Generic theorem `continuous_linearMap_toMatrix` in `ChartTopology.lean`
+proves continuity of fixed-basis matrix coordinates on `E →L[K] F`; fixed-base
+wrapper
+`paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart`
+in `FixedBasepointChart.lean` pulls the transformed determinant chart back to a
+neighborhood of the base edge in the continuous-linear-map topology. Remaining
+blocked A2 items are finite product/chain-neighborhood assembly for the full
+variable chain, source-faithful exact rank-stratum packaging, the full Theorem
+3 statement, and analytic/certificate transport.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
