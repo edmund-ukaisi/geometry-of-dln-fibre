@@ -37,8 +37,12 @@ on the session's original cwd.
    product packaging. One-step/suffix adapted matrix composition, an all-layer
    dependent edge-product theorem, deterministic right-elimination wrappers,
    abstract/supplied suffix-chain right elimination, and the paper-order
-   endpoint suffix-chain wrapper are Lean-proved. Next build the rank/open
-   chart bridge.
+   endpoint suffix-chain wrapper are Lean-proved. The first rank/open split is
+   also Lean-proved: matrix rank is transported through adapted bases, residual
+   Schur/lower-right ranks are related to source layer ranks, and the selected
+   determinant chart is topologically open. Next build the fixed-basepoint
+   chart-data family for nearby variable layers, keeping exact-rank strata as
+   explicit hypotheses.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

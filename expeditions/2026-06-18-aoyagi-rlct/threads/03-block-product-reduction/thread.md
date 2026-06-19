@@ -667,3 +667,36 @@ packaging gap for the supplied-data algebra. It remains pointwise and
 adapted-coordinate only: no fixed coordinate neighborhood, openness/rank chart,
 regular coordinate-change, named residual-factor identification, or RLCT
 consequence is claimed.
+
+## 2026-06-19 A2 rank/open split
+
+Added rank bridge helpers in
+`lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`:
+
+- `rank_toMatrix_eq_finrank_range`;
+- `rank_schurComplement_eq_sub_rank_fromBlocks`.
+
+Added the paper adapted-edge residual-rank corollary in
+`lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`:
+
+- `lowerRightBlock_paperAdaptedReverseEdgeMatrix_rank_eq_sub`.
+
+It proves that the lower-right residual block of an adapted paper-order edge
+has rank
+
+`finrank range(reverseEdge W B p) - finrank U0`.
+
+Added `lean/DLNFibre/DLN/Aoyagi/ChartTopology.lean`, imported by the aggregator.
+It proves:
+
+- `isOpen_identityCornerDetChart`;
+- `identityCornerDetChart_mem_nhds`;
+- `identityCornerForm_mem_nhds_identityCornerDetChart`;
+- `paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`;
+- `unitriangular_paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`.
+
+This is the first honest topological bridge: determinant nonvanishing defines
+an open chart around the adapted base matrices. Exact rank is not claimed to be
+open. The current paper adapted bases still depend on the actual chain `B`, so
+the remaining source-faithful local theorem needs fixed basepoint chart data
+and variable-layer matrices expressed in those fixed bases.

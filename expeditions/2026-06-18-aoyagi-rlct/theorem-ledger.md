@@ -36,6 +36,19 @@ The remaining blocked A2 items are the topological rank/open-neighborhood
 bridge, a source-faithful full Theorem 3 statement, and analytic/certificate
 transport.
 
+Second latest A2 update: the first rank/open split has landed. Proved Lean
+theorems are `rank_toMatrix_eq_finrank_range`,
+`rank_schurComplement_eq_sub_rank_fromBlocks`,
+`lowerRightBlock_paperAdaptedReverseEdgeMatrix_rank_eq_sub`, and the
+`ChartTopology.lean` determinant-chart openness/neighborhood theorems. Statement
+cards:
+`threads/03-block-product-reduction/statement-card-a2-residual-rank-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-determinant-chart-topology.md`.
+Remaining blocked A2 items are fixed basepoint chart data for nearby variable
+layers, source-faithful exact rank-stratum packaging, the full Theorem 3
+statement, and analytic/certificate transport.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

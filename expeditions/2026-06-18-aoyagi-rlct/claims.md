@@ -104,8 +104,10 @@ No such claim is formalisation-ready until both fields are filled.
   suffix, and all-layer adapted edge-product composition laws are proved.
   Deterministic block-projection right-elimination wrappers and abstract/supplied
   suffix-chain right-elimination theorems are proved. The paper-order endpoint
-  suffix-chain wrapper is also proved. The full source Theorem 3 claim remains
-  blocked.
+  suffix-chain wrapper is also proved. The first rank/open split is proved:
+  adapted-basis matrix rank equals map range finrank, Schur residual rank is
+  the source rank minus the through-rank, and the selected determinant chart is
+  open. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -148,7 +150,10 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.upperUnitriangular_neg_mul_upperUnitriangular_neg_neg`,
   `DLNFibre.DLN.Aoyagi.productReduction_identityCorner_suffixStep_rightElim`, and
   `DLNFibre.DLN.Aoyagi.productReduction_identityCorner_suffixChain_rightElim`
-  in the same file; entry-ideal transport lemmas in
+  in the same file; rank bridge theorems
+  `DLNFibre.DLN.Aoyagi.rank_toMatrix_eq_finrank_range` and
+  `DLNFibre.DLN.Aoyagi.rank_schurComplement_eq_sub_rank_fromBlocks` in
+  `lean/DLNFibre/DLN/Aoyagi/BlockElimination.lean`; entry-ideal transport lemmas in
   `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`; through-layer subspace theorem
   `DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces` in
   `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`; paper-order composite
@@ -212,6 +217,7 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.identityCornerForm_paperAdaptedReverseEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_paperAdaptedReverseEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.identityCornerDetChart_unitriangular_paperAdaptedReverseEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.lowerRightBlock_paperAdaptedReverseEdgeMatrix_rank_eq_sub`,
   `DLNFibre.DLN.Aoyagi.productReduction_paperAdaptedReverseEdgeMatrix_rightElim`,
   `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_paperEndpointChartDataOfFiniteDimensional`,
   `DLNFibre.DLN.Aoyagi.paperEndpointChartData_edge_and_totalProduct_blocks`,
@@ -222,7 +228,14 @@ No such claim is formalisation-ready until both fields are filled.
   and
   `DLNFibre.DLN.Aoyagi.exists_isCompl_ker_throughSubspaceChartDataOfFiniteDimensional`
   in `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`; full Theorem 3 target
-  blocked.
+  blocked. Topological determinant-chart theorems
+  `DLNFibre.DLN.Aoyagi.isOpen_identityCornerDetChart`,
+  `DLNFibre.DLN.Aoyagi.identityCornerDetChart_mem_nhds`,
+  `DLNFibre.DLN.Aoyagi.identityCornerForm_mem_nhds_identityCornerDetChart`,
+  `DLNFibre.DLN.Aoyagi.paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`,
+  and
+  `DLNFibre.DLN.Aoyagi.unitriangular_paperAdaptedReverseEdgeMatrix_mem_nhds_identityCornerDetChart`
+  are in `lean/DLNFibre/DLN/Aoyagi/ChartTopology.lean`.
 - **Proved.** one chart-local algebraic induction-step identity over a
   commutative ring, under explicit determinant-unit hypotheses for the prefix
   corner `C1` and next-layer corner `A1`, plus the same identity over arbitrary
@@ -282,13 +295,21 @@ No such claim is formalisation-ready until both fields are filled.
   Also proved the paper-order endpoint suffix-chain wrapper: in the reversed
   Aoyagi chain with endpoint-compatible finite chart data, the adapted matrix
   of the total `paperChainMap` admits a source-side upper-unitriangular right
-  elimination to `[I 0; 0 D]`.
+  elimination to `[I 0; 0 D]`. Also proved the rank bridge from adapted
+  matrices back to source maps: matrix rank of a `toMatrix` representation is
+  the finrank of the linear-map range, the Schur-complement rank formula has a
+  subtraction form, and the lower-right residual block of an adapted paper edge
+  has rank `finrank range(reverseEdge) - finrank U0`. Also proved the
+  topological determinant-chart bridge: over a topological ring with open
+  units, the selected determinant chart is open, hence adapted paper edge
+  matrices and their unitriangular transforms have chart neighborhoods.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
-  hypotheses for the chart-data existence theorem. The full product-reduction
-  theorem would additionally need the paper-side rank/open-neighborhood bridge,
-  source-faithful fixed-chart assembly, and certificate transport, not yet
-  proved.
+  hypotheses for the chart-data existence theorem; topological ring/open-units
+  hypotheses for determinant-chart openness. The full product-reduction theorem
+  would additionally need source-faithful fixed-chart assembly for nearby
+  variable layers and certificate transport, not yet proved. Exact rank strata
+  remain explicit hypotheses, not open-neighborhood conclusions.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
@@ -300,9 +321,11 @@ No such claim is formalisation-ready until both fields are filled.
   composition theorem identifies the adapted total matrix with the recursively
   ordered edge product, and the suffix theorem plus deterministic block
   projections provide a supplied-data suffix-chain reduction theorem, now
-  packaged in paper order at the endpoint. Still open:
-  rank/open-neighborhood bridge and source-faithful Theorem 3 statement. Any
-  topological open-neighborhood statement remains separate; see
+  packaged in paper order at the endpoint. The determinant-chart openness and
+  residual-rank bridge are proved, but source-faithful fixed-coordinate
+  variable-layer charts are still open. Still open: source-faithful Theorem 3
+  statement and certificate transport. Exact rank-stratum hypotheses remain
+  separate; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

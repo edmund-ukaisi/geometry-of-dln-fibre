@@ -320,6 +320,21 @@ assert fixed coordinate charts, an open rank/determinant neighborhood, regular
 coordinate changes, residual-factor identification, or RLCT/certificate
 transport.
 
+The first rank/open split is now Lean-proved. In
+`BlockElimination.lean`, `rank_toMatrix_eq_finrank_range` packages Mathlib's
+basis-invariance of matrix rank for `LinearMap.toMatrix`, and
+`rank_schurComplement_eq_sub_rank_fromBlocks` gives the subtraction form of the
+Schur-complement rank formula. In `ThroughLayerMatrix.lean`,
+`lowerRightBlock_paperAdaptedReverseEdgeMatrix_rank_eq_sub` applies these facts
+to a paper adapted edge: the residual lower-right block has rank
+`finrank range(reverseEdge) - finrank U₀`. In `ChartTopology.lean`,
+`isOpen_identityCornerDetChart` proves the selected determinant chart is open
+over a topological ring with open units, and paper adapted edge matrices plus
+unitriangular transforms have that chart as a neighborhood. This is still not
+a source-faithful local theorem: exact rank strata are explicit hypotheses, not
+open sets, and the current adapted bases are chosen from the actual chain
+rather than fixed from a basepoint for nearby variable chains.
+
 The local chart-stability block calculation from this repair is Lean-proved as
 `upperUnitriangular_mul_fromBlocks_one_zero`: `[I -F; 0 I] [I B; 0 D] =
 `[I B - F D; 0 D]`. The corollary

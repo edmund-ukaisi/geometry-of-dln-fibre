@@ -1289,6 +1289,41 @@ theorem identityCornerDetChart_paperAdaptedReverseEdgeMatrix
   identityCornerDetChart_of_identityCornerForm
     (identityCornerForm_paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p)
 
+set_option linter.unusedDecidableInType false in
+/-- The residual block of an adapted paper-order edge has the source rank minus `finrank U₀`. -/
+theorem lowerRightBlock_paperAdaptedReverseEdgeMatrix_rank_eq_sub
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) :
+    (lowerRightBlock (paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p)).rank =
+      Module.finrank K (LinearMap.range (reverseEdge W B p)) - Module.finrank K U₀ := by
+  let M := paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p
+  have hMform : identityCornerForm M :=
+    identityCornerForm_paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p
+  have hMrank : M.rank = Module.finrank K (LinearMap.range (reverseEdge W B p)) := by
+    dsimp [M, paperAdaptedReverseEdgeMatrix]
+    exact rank_toMatrix_eq_finrank_range _ _ (reverseEdge W B p)
+  rcases hMform with ⟨Bmat, Dmat, hM⟩
+  have hD : lowerRightBlock M = Dmat := by
+    rw [hM]
+    rfl
+  have hMrank' :
+      (fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        Bmat 0 Dmat).rank = Module.finrank K (LinearMap.range (reverseEdge W B p)) := by
+    simpa [M, hM] using hMrank
+  have hschur := rank_schurComplement_eq_sub_rank_fromBlocks
+    (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K) Bmat
+    (0 : Matrix
+      (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      (Fin (Module.finrank K U₀)) K) Dmat (by simp) hMrank'
+  change (lowerRightBlock M).rank =
+    Module.finrank K (LinearMap.range (reverseEdge W B p)) - Module.finrank K U₀
+  simpa [hD] using hschur
+
 /-- A block-diagonal prefix extends across one adapted paper-order edge by right elimination. -/
 theorem productReduction_paperAdaptedReverseEdgeMatrix_rightElim
     [∀ j, FiniteDimensional K (W j)]

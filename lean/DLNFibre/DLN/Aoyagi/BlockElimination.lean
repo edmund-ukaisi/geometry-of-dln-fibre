@@ -80,6 +80,16 @@ section Rank
 
 variable {K : Type*} [Field K]
 
+/-- The rank of a matrix of a linear map equals the `finrank` of the map's range. -/
+theorem rank_toMatrix_eq_finrank_range
+    {E F : Type*} [AddCommGroup E] [Module K E] [AddCommGroup F] [Module K F]
+    {ι κ : Type*} [Fintype ι] [Finite κ] [DecidableEq ι]
+    (bE : Module.Basis ι K E) (bF : Module.Basis κ K F) (f : E →ₗ[K] F) :
+    (LinearMap.toMatrix bE bF f).rank = Module.finrank K (LinearMap.range f) := by
+  letI := Fintype.ofFinite κ
+  rw [Matrix.rank_eq_finrank_range_toLin (LinearMap.toMatrix bE bF f) bF bE,
+    Matrix.toLin_toMatrix]
+
 /-- The product submodule is linearly equivalent to the product of the two submodules. -/
 private def submoduleProdLinearEquiv {M N : Type*} [AddCommGroup M] [AddCommGroup N]
     [Module K M] [Module K N] (p : Submodule K M) (q : Submodule K N) :
@@ -158,6 +168,19 @@ theorem rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det {r p q : 
     _ = r + C.rank := by
       rw [Matrix.rank_of_isUnit A1 ((Matrix.isUnit_iff_isUnit_det (A := A1)).mpr hA1),
         Fintype.card_fin]
+
+/-- Subtraction form of the Schur-complement rank formula. -/
+theorem rank_schurComplement_eq_sub_rank_fromBlocks {r p q rs : ℕ}
+    (A1 : Matrix (Fin r) (Fin r) K) (A2 : Matrix (Fin r) (Fin q) K)
+    (A3 : Matrix (Fin p) (Fin r) K) (A4 : Matrix (Fin p) (Fin q) K)
+    (hA1 : IsUnit A1.det)
+    (hrank : (fromBlocks A1 A2 A3 A4).rank = rs) :
+    (A4 - A3 * A1⁻¹ * A2).rank = rs - r := by
+  have hsum :
+      r + (A4 - A3 * A1⁻¹ * A2).rank = rs :=
+    (rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det
+      A1 A2 A3 A4 hA1).symm.trans hrank
+  rw [← hsum, Nat.add_sub_cancel_left]
 
 end Rank
 
