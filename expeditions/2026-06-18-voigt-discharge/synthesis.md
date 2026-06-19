@@ -246,3 +246,10 @@ reduction — continuing the drive, no need to re-surface per the autonomous man
   + `iff_finrank_cotangentSpace` ⟹ `IsRegularLocalRing` (target `smooth_point_isRegularLocalRing`).
 - 2026-06-19: thread 10 (L4a recon) CLOSED — L4a bounded via étale route. Next: build M1 (flat-quasi-finite
   height), then M2, then M3/L2 jointly. After L4a: geometry L1/L2/L3, L4-assembly, L6, L7.
+- 2026-06-19: **M1 LANDED** (thread 11) — `Core.FlatQuasiFiniteHeight.Ideal.height_eq_under_of_flat_quasiFiniteAt`
+  (+`_of_etale`): flat + quasi-finite-at ⟹ `Q.height = (Q.under R).height`. **Kill-condition did NOT fire** (fibre
+  height 0 via `QuasiFiniteAt.eq_of_le_of_under_eq`; no Artinian-fibre route needed). Reviewer FAITHFUL (Lean is
+  more general; QuasiFinite-vs-00PL caveat disclosed, coincide for finite-type). Green (2673 jobs), axiom-clean.
+  The étale route is CONFIRMED viable. **Next: M2** (`Core/SmoothLocalRelativeDimension.lean`) — the dimension
+  bridge `ringKrullDim(AtPrime m) = n = rank Ω` (standard-smooth presentation + `exists_etale_mvPolynomial` +
+  M1's `height_eq_under_of_etale` + our catenary `p.height = n` for the maximal `p` of `k[x₁..xₙ]`). Then M3/L2.
