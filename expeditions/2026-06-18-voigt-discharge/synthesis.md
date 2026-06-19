@@ -416,3 +416,23 @@ L6.2 (cover-classification combinatorics on rank patterns), then L6.3/6.4/L1/L2b
   + arbitrary `rest`) plugs into the engine but needs `foldDim`-transport + `dirSum`-reindex surgery — next piece.
   Then **L6.2 cover-classification** (the 2–3 module combinatorial sub-library: covers = linked box moves, via
   maximal `u∈[s,r)`), then L6.3/6.4 (ideal equality) → L1 → L2b (dμ_M=δ⁰) → L3 (homogeneity) → L4-assembly → L7.
+- 2026-06-19: **L6.3 LANDED** (thread 25, reviewer PASS) — `Core.RankLocusClosed`:
+  `isZariskiClosed_orbitRankLocus` + `orbitSet_subset_orbitRankLocus` + easy ideal inclusion
+  `vanishingIdeal_orbitRankLocus_le_orbitSet`. The missing Mathlib brick `rank_le_iff_forall_submatrix_det_eq_zero`
+  (rank ≤ k ⟺ all (k+1)-minors vanish, over a field) BUILT from scratch. Green (2692 jobs), axiom-clean,
+  `[Field k]` only. Commits 935f114/07f2fd1/a088956. This is the EASY direction `Ō_M ⊆ orbitRankLocus M`.
+- 2026-06-19: **L6.2 DESIGN — K1 FIRES (scoped)** (thread 24, decorrelated Codex convergent). Generation
+  (`s≤r ⟹ O_s⊆Ō_r`, hard dir of Abeasis–Del Fra) reduces to a clean `Φ=Σ(r−s)`-induction GIVEN move-existence.
+  Move-existence = sub-fact 1 (linked applicability `m(r)_{[c,b]}≥1`: **ELEMENTARY**, 2nd-difference identity)
+  + sub-fact 2 (`∃(a,e)` rect⊆supp(g) ∧ `m(r)_{[a,e]}≥1`: **TRUE on >20,000 verified pairs but NOT elementary —
+  logically EQUIVALENT to the AD rank-cover classification**, no closed-form selector). So L6.2 = genuine 2–3
+  module sub-library; the load-bearing input (sub-fact 2) is irreducible content, not a freebie.
+  - **NEXT (two parallel, in-mandate "drive to the end / zero-cited"):**
+    (A) `obstruction`-seat pass on **sub-fact 2** — try the double-extremal induction on supp(g) (peel extremal
+        cell, residual stays a valid difference). KILL: if it doesn't close on paper → sub-fact 2 is a genuine
+        lace-combinatorics sub-expedition → SURFACE to operator with sized roadmap (this is a boundary-move,
+        not a 2–3 module fill). If it closes → build L6.2 at 2–3 modules.
+    (B) **L6.1-general** build — the per-move degeneration over arbitrary `rest` (thread-23 named gap), statement
+        pinned in thread-24 §4, plugs into the landed `BoxMoveDegeneration` engine. INDEPENDENT of L6.2, bank now.
+  - After L6: L6.4 (ideal equality, easy ⊆ done by L6.3) → L1 (primeness) → L2b (dμ_M=δ⁰) → L3 (homogeneity)
+    → L4-assembly → L7 (discharge hVoigt).

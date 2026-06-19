@@ -35,6 +35,9 @@ status ∈ open / in-progress / blocked / review-pending / closed / abandoned
 
 | 23 | L6.1-box-move | formaliser | closed | degeneration engine + (1,2,1) witness; general box-move = named gap; reviewer PASS |
 
+| 24 | L6.2-cover-classification | pen-and-paper | closed | K1 fires (scoped): generation clean given move-existence; sub-fact 2 = irreducible AD content |
+| 25 | L6.3-rank-locus-closed | formaliser | closed | orbitRankLocus Zariski-closed + O_M⊆it + easy ideal incl; minor-vanishing brick built; reviewer PASS |
+
 Planned (created as they open):
 - 0N — L0 Nullstellensatz/PrimeSpectrum bridge (formaliser tide)
 - 0N — L1 GL/orbit/irreducibility (scout recon → formaliser)
