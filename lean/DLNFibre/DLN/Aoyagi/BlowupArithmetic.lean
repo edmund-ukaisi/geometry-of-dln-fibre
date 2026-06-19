@@ -653,6 +653,42 @@ theorem mem_case1StripEntries_iff (n : ℕ → ℕ) (S J J1 i j : ℕ) :
       J + 1 ≤ i ∧ i ≤ J + J1 ∧ J + 1 ≤ j ∧ j ≤ n (S + 1) := by
   simp [case1StripEntries, and_assoc]
 
+/-- Finite row-set containment under `J+J1 <= mu_S`; not a chart or transition theorem. -/
+theorem case1StripRows_subset_case2ResidualBlockRows
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hrow : J + J1 ≤ prefixMinNat n S) :
+    case1StripRows J J1 ⊆ case2ResidualBlockRows n S J := by
+  intro i hi
+  rw [mem_case1StripRows] at hi
+  rw [mem_case2ResidualBlockRows]
+  exact ⟨hi.1, le_trans hi.2 hrow⟩
+
+/-- Case 1 row-strip columns use the same actual-width range as the residual block. -/
+theorem case1StripCols_eq_case2ResidualBlockCols
+    (n : ℕ → ℕ) (S J : ℕ) :
+    case1StripCols n S J = case2ResidualBlockCols n S J :=
+  rfl
+
+/-- Finite entry-set containment under `J+J1 <= mu_S`; not chart coverage. -/
+theorem case1StripEntries_subset_case2ResidualBlockPivotEntries
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hrow : J + J1 ≤ prefixMinNat n S) :
+    case1StripEntries n S J J1 ⊆ case2ResidualBlockPivotEntries n S J := by
+  intro p hp
+  rcases p with ⟨i, j⟩
+  rw [mem_case1StripEntries_iff] at hp
+  rw [mem_case2ResidualBlockPivotEntries_iff]
+  exact ⟨hp.1, le_trans hp.2.1 hrow, hp.2.2.1, hp.2.2.2⟩
+
+/-- Displayed-pivot residual-block membership under entry bounds; not a transition theorem. -/
+theorem case1_displayedPivot_mem_residualBlockPivotEntries_of_bounds
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hrow : J + J1 ≤ prefixMinNat n S)
+    (hcol : J + 1 ≤ n (S + 1)) :
+    (J + 1, J + 1) ∈ case2ResidualBlockPivotEntries n S J := by
+  rw [mem_case2ResidualBlockPivotEntries_iff]
+  exact ⟨le_rfl, le_trans (by omega : J + 1 ≤ J + J1) hrow, le_rfl, hcol⟩
+
 /-- The chosen old exceptional variable is a Case 1 center generator. -/
 theorem case1_selectedOld_mem_center (n : ℕ → ℕ) (S J J1 : ℕ) :
     (Sum.inl () : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 := by
