@@ -52,9 +52,11 @@ the Core discharge.
 Each layer's headline lemma is its **contract** (statement card at landing). Status: ☐ todo / ◐ in
 progress / ☑ landed (green + AUDIT + hardener).
 
-- **L0 — Nullstellensatz / point-space ↔ PrimeSpectrum bridge.** `[IsAlgClosed k]`: `vanishingIdeal` of a
-  point set ↔ radical ideal ↔ closed subscheme; height of `vanishingIdeal(Z)` = codim of the Zariski closure;
-  irreducible closed set ↔ prime. *Size: module. Gates everything.* Status ☐
+- **L0 — Nullstellensatz / point-space ↔ PrimeSpectrum bridge.** **☑ LANDED + fidelity-PASS** (hardener pass
+  pending). `Core.NullstellensatzCodim`: `codimRepCanonical Z = #(RepCoord d) − varietyDim Z` for irreducible
+  closed `Z` (`[IsAlgClosed k]`), via the Nullstellensatz dictionary (`vanishingIdeal` radical;
+  irreducible⟺prime; closure round-trip) + L5 catenary + finite-index transport. Headline (additive, lossless):
+  `height_vanishingIdeal_add_varietyDim_eq_card`. `[IsAlgClosed k]` enters only the dictionary.
 - **L1 — `G_d = ∏ GL` + orbit map + irreducibility.** `G_d` as an (irreducible) variety; the action/orbit
   map; image of irreducible is irreducible; closure irreducible. *Size: sizeable module (no `GL` scheme).* ☐
 - **L2 — affine Zariski tangent space + `T_M = ker Jac = im δ⁰`.** Concrete tangent space of `V(I) ⊆ kⁿ` at a
@@ -129,3 +131,12 @@ A/B are largely independent and can interleave once L5 is sized; C depends on B+
   BEDROCK CONFIRMED (3 low findings applied: dropped decorative `_hinj` + rename `ringKrullDim_le_of_integral`,
   fixed stale docstring, added height-1 witness). **Phase A's hard half done.** Next: L0 (Nullstellensatz /
   point-space↔PrimeSpectrum bridge) — connects `codimRep` height to L5's dim formula; `[IsAlgClosed k]` enters here.
+- 2026-06-19: **PHASE A COMPLETE.** L0 (thread 06) landed + fidelity-PASS — the Nullstellensatz codim bridge
+  `codimRep Z = #σ − varietyDim Z` (irreducible closed Z, [IsAlgClosed k]), `Core.NullstellensatzCodim`. The CA
+  foundations (L5 dim formula + L0 bridge) are bedrock. **Pending:** a hardener bedrock pass on L0 (deferred from
+  this turn's gate; run at Phase-A close / next turn). **Next — Phase B geometry:** the architectural fork
+  (schemes vs concrete-affine for G_d/orbit/tangent/smoothness) — open with an L1 recon to decide it, then build
+  L1 (G_d/orbit/irreducibility) → L2 (tangent = im δ⁰) → L3 (smoothness). The bridge note: discharging hVoigt now
+  needs the orbit-closure variety-dimension identified with orbitLinearCodim (= dim Rep − dim im δ⁰), i.e.
+  varietyDim(Ō_M) = dim(orbit) = dim(im δ⁰) — that's the geometry's job (L1–L4), then L6 (orbitRankLocus = Ō_M),
+  then L7 plugs codimRep = #σ − varietyDim into orbitLinearCodim.
