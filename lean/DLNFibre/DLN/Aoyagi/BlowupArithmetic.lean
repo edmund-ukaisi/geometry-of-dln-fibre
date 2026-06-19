@@ -507,6 +507,40 @@ structure IntroducedLabelExponentCertificates
     ∀ {s k}, introducedLabel L n S J s k →
       LabelExponentCertificate L n S J s k (t s k) (numerator s k) (leastValue s k)
 
+/-- Same-domain bookkeeping: replace one introduced label certificate and keep all
+other introduced labels unchanged. -/
+theorem IntroducedLabelExponentCertificates.updateSelected
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hnew :
+      LabelExponentCertificate L n S J s0 k0 (t' s0 k0)
+        (numerator' s0 k0) (leastValue' s0 k0))
+    (ht_old :
+      ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+        t' s k = t s k)
+    (hn_old :
+      ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+        numerator' s k = numerator s k)
+    (hl_old :
+      ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+        leastValue' s k = leastValue s k) :
+    IntroducedLabelExponentCertificates L n S J t' numerator' leastValue' where
+  certificate := by
+    intro s k hintro
+    by_cases hsame : s = s0 ∧ k = k0
+    · rcases hsame with ⟨rfl, rfl⟩
+      exact hnew
+    · have hc := hcert.certificate hintro
+      refine
+        { introduced := hintro
+          terminalExponent_eq := ?_
+          least_value := ?_ }
+      · rw [ht_old hintro hsame, hn_old hintro hsame]
+        exact hc.terminalExponent_eq
+      · rw [ht_old hintro hsame, hl_old hintro hsame]
+        exact hc.least_value
+
 /-- Domain-extension bookkeeping only: add one current-layer label certificate. -/
 theorem IntroducedLabelExponentCertificates.extendDomain_succ_current
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
@@ -1032,6 +1066,60 @@ theorem LabelExponentCertificate.lowerTailVector_of_flatFromPred_add
       · rw [lowerTailVector_eq_of_lt hiS]
         exact le_trans hJle (hcert.least_value.2 ⟨i, hi, rfl⟩)
       · rw [lowerTailVector_eq_of_le (le_of_not_gt hiS)]
+
+/-- Case 1 selected-label certificate update from source level data, assuming the
+level is already the old certificate least value and the flat-tail invariant is supplied. -/
+theorem Case1FirstJumpHypotheses.lowerTailVector_labelExponentCertificate
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ} {numerator : ℤ}
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s k level vector)
+    (hcert :
+      LabelExponentCertificate L n S J s k (vector s k) numerator (level s k : ℤ))
+    (hflat : FlatTailFromPred L S (vector s k) (level s k : ℤ))
+    (hS : 2 ≤ S) (hSL : S ≤ L) :
+    LabelExponentCertificate L n S J s k
+      (lowerTailVector (vector s k) S (J : ℤ))
+      (numerator + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ))) (J : ℤ) := by
+  have hlevel : (level s k : ℤ) = (J : ℤ) + (J1 : ℤ) := by
+    simpa using hfirst.selectedLevel_int
+  rw [hlevel] at hcert hflat
+  exact hcert.lowerTailVector_of_flatFromPred_add hflat hS hSL (by omega)
+
+/-- Conditional Case 1 same-domain certificate update for the selected old label.
+All non-selected introduced labels are assumed unchanged. -/
+theorem IntroducedLabelExponentCertificates.case1_selectedLowerTail_sameDomain
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ} {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t)
+    (hlevelLeast : leastValue s0 k0 = (level s0 k0 : ℤ))
+    (hflat : FlatTailFromPred L S (t s0 k0) (level s0 k0 : ℤ))
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (ht_selected : t' s0 k0 = lowerTailVector (t s0 k0) S (J : ℤ))
+    (hn_selected :
+      numerator' s0 k0 =
+        numerator s0 k0 + (J1 : ℤ) * ((n (S + 1) : ℤ) - (J : ℤ)))
+    (hl_selected : leastValue' s0 k0 = (J : ℤ))
+    (ht_old :
+      ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+        t' s k = t s k)
+    (hn_old :
+      ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+        numerator' s k = numerator s k)
+    (hl_old :
+      ∀ {s k}, introducedLabel L n S J s k → ¬ (s = s0 ∧ k = k0) →
+        leastValue' s k = leastValue s k) :
+    IntroducedLabelExponentCertificates L n S J t' numerator' leastValue' := by
+  refine hcert.updateSelected ?_ ht_old hn_old hl_old
+  have hselectedCert :
+      LabelExponentCertificate L n S J s0 k0 (t s0 k0) (numerator s0 k0)
+        (level s0 k0 : ℤ) := by
+    simpa [hlevelLeast] using hcert.certificate hfirst.selectedIntroduced
+  have hnew :=
+    hfirst.lowerTailVector_labelExponentCertificate hselectedCert hflat hS hSL
+  rw [ht_selected, hn_selected, hl_selected]
+  exact hnew
 
 section MonomialRecurrence
 
