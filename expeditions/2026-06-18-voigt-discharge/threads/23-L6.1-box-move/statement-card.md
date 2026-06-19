@@ -20,7 +20,12 @@
 >   supplied per degeneration.
 > - **Cited.** none (L6.0 is landed in-repo, not external).
 > - **Deferred.** none for the engine.
-> - **Status.** sorry-free; axioms `[propext, Classical.choice, Quot.sound]`.
+> - **Scope (caveat next to claim).** The closure is relative to **`k`-points** (`zeroLocus k …`):
+>   over an algebraically closed field one reads it at `IsAlgClosed k` (which is `Infinite`). The
+>   conclusion is membership of one point in one orbit's closure — NOT `orbit(D) ⊆ closure(orbit(U))`
+>   nor the rank-locus equality (Thm 3.8).
+> - **Status.** sorry-free + reviewed (fidelity PASS-WITH-NOTES, 2026-06-19, @ `b265e6f`); axioms
+>   `[propext, Classical.choice, Quot.sound]`.
 
 ## Witness (the certified `(1,2,1)` box move `M_{[0,2]} ⊕ M_{[1,1]} ⇝ M_{[0,1]} ⊕ M_{[1,2]}`)
 
@@ -38,7 +43,13 @@
 > - **Assumed.** none beyond `[Field k]`, `[Infinite k]`.
 > - **Cited.** none.
 > - **Deferred.** none for the witness itself.
-> - **Status.** sorry-free; axioms `[propext, Classical.choice, Quot.sound]`.
+> - **Scope (caveat next to claim).** The witness tuples are hand-written explicit matrices; the
+>   reviewer confirmed they coincide with the edge maps of `intervalDirectSum [(0,2),(1,1)]` /
+>   `[(0,1),(1,2)]` under the natural block layout, so the `M_{[0,2]} ⊕ M_{[1,1]}` naming is faithful
+>   — but the module does NOT claim a definitional equality to `intervalDirectSum`. One representative,
+>   one orbit, one dimension vector.
+> - **Status.** sorry-free + reviewed (fidelity PASS-WITH-NOTES, 2026-06-19, @ `b265e6f`); axioms
+>   `[propext, Classical.choice, Quot.sound]`.
 
 ## Gap (named, not formalised)
 
