@@ -228,3 +228,21 @@ tools first, they feed smooth⟹regular):
   Mathlib cotangent/Kähler API to build on — `Ideal.cotangentSpace`, `KaehlerDifferential`, `Extension.Cotangent`,
   `SubmersivePresentation.rank_kaehlerDifferential`), decorrelated Codex; THEN build tides. After L4a: geometry
   L1 (irreducible=prime), L2 (T_M = range δ⁰), L3 (smooth point via homogeneity+density), L4-assembly, L6, L7.
+
+## L4a RE-SIZED: BOUNDED (~3 modules) via the étale route [2026-06-19, thread 10]
+The "multi-week sub-library" verdict (thread 08) was the **complete-intersection framing**; the **étale-over-
+affine-space route** is bounded (~3 modules). Smooth point ⟹ étale over 𝔸ⁿ ⟹ flat+quasi-finite ⟹ prime height
+preserved (0-dim fibre) ⟹ `ringKrullDim(AtPrime m) = n = rank Ω`, INDEPENDENTLY of the cotangent (non-circular).
+Codex independently chose the same route + load-bearing lemma + ~3-module size. **So the whole expedition is
+bounded again** (no multi-week tower). [The operator accepted "build it / multi-week"; this is good-news scope
+reduction — continuing the drive, no need to re-surface per the autonomous mandate.] Full blueprint:
+`threads/10-L4a-recon/findings.md`. Sub-ladder:
+- **M1 `Core/FlatQuasiFiniteHeight.lean`** — `height_eq_under_of_flat_quasiFiniteAt` (+`_of_etale`): flat +
+  quasi-finite ⟹ prime height = contraction's height (going-down additivity + 0-dim fibre). Self-contained
+  general CA, **BUILD FIRST** (de-risks). Kill-condition: fibre-prime-height-0 — judged not to fire.
+- **M2 `Core/SmoothLocalRelativeDimension.lean`** — the dimension bridge `ringKrullDim(AtPrime m) = n = rank Ω`
+  (standard-smooth presentation + `exists_etale_mvPolynomial` + M1 + our catenary `p.height = n`).
+- **M3 `Core/SmoothPointRegular.lean`** — cotangent comparison `finrank(m/m²) = rank Ω` (scope JOINTLY with L2)
+  + `iff_finrank_cotangentSpace` ⟹ `IsRegularLocalRing` (target `smooth_point_isRegularLocalRing`).
+- 2026-06-19: thread 10 (L4a recon) CLOSED — L4a bounded via étale route. Next: build M1 (flat-quasi-finite
+  height), then M2, then M3/L2 jointly. After L4a: geometry L1/L2/L3, L4-assembly, L6, L7.
