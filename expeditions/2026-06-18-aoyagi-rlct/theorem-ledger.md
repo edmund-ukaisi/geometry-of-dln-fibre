@@ -689,6 +689,28 @@ advance, or prove chart coverage/regularity/Jacobians. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-displayed-top-left-source-order-adapter-a4.md`.
 
+Latest A4 update: the displayed Case 1(2) local handoff has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.exists_case1DisplayedRowStrip_sourceOrder_identity_sourceWeights_succWeights_of_postData`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary.stage_pos`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary.continuationBound`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary.newLabelActualWidth`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary.sourceOrder_identity_sourceWeights`,
+and `Case1DisplayedRowStripSuppliedTransitionBoundary.extendExponentDomain`.
+This checkpoint packages first-jump data, actual source bounds, a supplied
+factored-base recurrence post-state, supplied pre-state exponent certificates,
+level-tail invariants, and supplied Case 1 exponent post-data. It proves the
+displayed top-left source-order identity with original source recurrence
+weights on the left and supplied post-state weights on the right, and extends
+the exponent certificate domain to `(S,J+1)`. It does not construct the
+factored-base recurrence from the original pre-state, prove hidden old-label
+source validity, prove chart-produced post-data, chart coverage, regularity,
+Jacobians, normal crossings, or RLCT extraction. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-displayed-row-strip-local-handoff.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-displayed-row-strip-local-handoff-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

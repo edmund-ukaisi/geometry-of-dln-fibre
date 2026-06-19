@@ -217,9 +217,15 @@ on the session's original cwd.
    counted once before applying the generic `Q/P` adapter. The displayed
    top-left Case 1(2) quotient witnesses are now also Lean-proved from
    row-indexed monomial recurrence divisibility and fed into the row-strip
-   source-order wrapper. Next A4 target: package the Case 1(2)
-   exponent/post-data update, or begin the chart-production/hidden-old-label
-   validity boundary; keep arbitrary pivots explicit.
+   source-order wrapper. The displayed Case 1(2) local handoff now packages
+   first-jump data, actual-width fresh-label validity, supplied factored-base
+   recurrence post-data, supplied pre-state exponent certificates, level-tail
+   invariants, and supplied Case 1 exponent post-data; it proves the
+   source-order identity with original source recurrence weights on the left
+   and supplied post weights on the right, and extends the exponent certificate
+   domain to `(S,J+1)`. Next A4 target: chart-production/hidden-old-label
+   validity boundary, or a similarly narrow source-facing wrapper for another
+   displayed piece; keep arbitrary pivots explicit and supplied.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

@@ -4155,7 +4155,248 @@ theorem exists_case1DisplayedRowStrip_sourceOrder_identity_succWeights_of_postDa
   simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight,
     IntroducedLabelRecurrenceState.weight] using hq
 
+/-- Displayed Case 1(2) source-order `Q/P` identity with the original source
+recurrence convention on the left and supplied post recurrence weights on the
+right.
+
+The left diagonal keeps the old selected factor at its source level `J+J1`;
+the row-strip matrix divides exactly the rows `J+1..J+J1`.  The right diagonal
+uses the supplied post-state weights after adding the fresh label `(S,J+1)` at
+level `J`.  This combines the source-weight boundary and the factored-base
+post-data boundary, but still does not construct the factored base or prove
+chart production. -/
+theorem exists_case1DisplayedRowStrip_sourceOrder_identity_sourceWeights_succWeights_of_postData
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 : ℕ}
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : Case1DisplayedRowStripFactoredBasePostData factoredBase post u)
+    (hnew : actualWidthLabel L n S (J + 1))
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (C : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (hpivot :
+      A (case2DisplayedPivotRow n hS hcont) (case2DisplayedPivotCol n hS hcont) = 1) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) A i ()) *
+          (diagonal
+              (fun i ↦
+                monomialRec (mulStepAt factoredBase.step u (J + J1))
+                  (case2ResidualRowLevel n S J i)) *
+            case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont) A -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont) A *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont) A)) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont) A) * C) := by
+  rcases hpost.exists_case1DisplayedRowStrip_sourceOrder_identity_succWeights_of_postData
+      hS hcont hnew (case1ResidualRowStrip n S J J1) A C hpivot with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hweights :
+      case1RowStripOldWeight (case1ResidualRowStrip n S J J1) u
+          (fun i ↦ factoredBase.case2ResidualRowWeight i) =
+        fun i ↦
+          monomialRec (mulStepAt factoredBase.step u (J + J1))
+            (case2ResidualRowLevel n S J i) := by
+    simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight,
+      IntroducedLabelRecurrenceState.weight] using
+      case1ResidualRowStripOldWeight_eq_sourceMulStepAt
+        factoredBase.step u n S J J1
+  rwa [hweights] at hq
+
 end IntroducedLabelRecurrenceState.Case2SuppliedPostData
+
+/-- Supplied transition boundary for Aoyagi's displayed Case 1(2) row-strip
+pivot.
+
+This packages only the data that has already been separated into elementary
+boundaries:
+
+* first-jump arithmetic for the selected old label;
+* actual source bounds for the fresh label `(S,J+1)`;
+* supplied recurrence post-data relative to a factored-old base state;
+* supplied pre-state exponent certificates and level-tail invariants;
+* supplied exponent post-data for the fresh label.
+
+It deliberately does not construct the factored-base state from the original
+pre-chart state, prove hidden old-label validity, construct a chart, prove
+coverage, compute a Jacobian, or assert a transition invariant. -/
+structure Case1DisplayedRowStripSuppliedTransitionBoundary
+    (R : Type*) (L : ℕ) (n : ℕ → ℕ) (S J J1 s0 k0 : ℕ)
+    (level : ℕ → ℕ → ℕ)
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ)
+    (factoredBase : IntroducedLabelRecurrenceState L n S J R)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) R)
+    (u : R) : Prop where
+  firstJump : Case1FirstJumpHypotheses L n S J J1 s0 k0 level t
+  stage_ge_two : 2 ≤ S
+  stage_le : S ≤ L
+  source_col_bound : J + 1 ≤ n (S + 1)
+  exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue
+  levelTail : IntroducedLabelLevelTailInvariants L n S J level t leastValue
+  recurrencePost : Case1DisplayedRowStripFactoredBasePostData factoredBase post u
+  exponentPost :
+    Case1DisplayedRowStripExponentPostData
+      (L := L) (n := n) (S := S) (J := J) (J1 := J1) (s0 := s0) (k0 := k0)
+      t t' numerator numerator' leastValue leastValue'
+
+namespace Case1DisplayedRowStripSuppliedTransitionBoundary
+
+theorem stage_pos
+    {R : Type*} {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u) :
+    1 ≤ S := by
+  exact le_trans (by omega : 1 ≤ 2) data.stage_ge_two
+
+/-- The first-jump row bound and actual source column bound give the displayed
+top-left continuation bound used by the residual pivot indices. -/
+theorem continuationBound
+    {R : Type*} {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u) :
+    J + 1 ≤ prefixMinNat n (S + 1) :=
+  data.firstJump.continuationBound_of_colBound data.stage_pos data.source_col_bound
+
+/-- The same source column bound gives actual-width validity of the fresh
+post-state label `(S,J+1)`. -/
+theorem newLabelActualWidth
+    {R : Type*} {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u) :
+    actualWidthLabel L n S (J + 1) :=
+  actualWidthLabel_case2_new L n data.stage_pos data.stage_le data.source_col_bound
+
+/-- The displayed top-left Case 1(2) source-order identity available from the
+supplied transition boundary.
+
+The left diagonal is the original source recurrence with the old selected
+factor still at level `J+J1`; the right diagonal is the supplied post
+recurrence after the new label `(S,J+1)` has been inserted at level `J`. -/
+theorem sourceOrder_identity_sourceWeights
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u)
+    (A : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (C :
+      Matrix
+        (Unit ⊕ pivotComplement
+          (case2DisplayedPivotCol n data.stage_pos data.continuationBound)) τ R)
+    (hpivot :
+      A (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+        (case2DisplayedPivotCol n data.stage_pos data.continuationBound) = 1) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n data.stage_pos data.continuationBound) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A i ()) *
+          (diagonal
+              (fun i ↦
+                monomialRec (mulStepAt factoredBase.step u (J + J1))
+                  (case2ResidualRowLevel n S J i)) *
+            case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u A).submatrix
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotRow n data.stage_pos data.continuationBound))
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotCol n data.stage_pos data.continuationBound))) *
+          C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i :
+                pivotComplement
+                  (case2DisplayedPivotRow n data.stage_pos data.continuationBound) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A -
+              pivotFirstX
+                  (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                  (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A *
+                pivotFirstY
+                  (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+                  (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A)) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n data.stage_pos data.continuationBound)
+              (case2DisplayedPivotCol n data.stage_pos data.continuationBound) A) * C) :=
+  data.recurrencePost
+    |>.exists_case1DisplayedRowStrip_sourceOrder_identity_sourceWeights_succWeights_of_postData
+      data.stage_pos data.continuationBound data.newLabelActualWidth A C hpivot
+
+/-- The supplied exponent post-data extends the introduced-label exponent
+certificate domain by the fresh Case 1(2) displayed row-strip label. -/
+theorem extendExponentDomain
+    {R : Type*} {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
+  data.exponentPre.extendDomain_case1DisplayedRowStripNewLabel_of_postData data.firstJump
+    (data.levelTail.leastValue_eq_level data.firstJump.selectedIntroduced)
+    (data.levelTail.flatTail_abovePivot data.firstJump.selectedIntroduced
+      data.firstJump.lt_selectedLevel)
+    data.stage_ge_two data.stage_le data.source_col_bound data.exponentPost
+
+end Case1DisplayedRowStripSuppliedTransitionBoundary
 
 /-- Supplied-data boundary for Aoyagi's displayed Case 1(2) row-strip pivot.
 It combines the finite first-jump/source-validity facts with an already

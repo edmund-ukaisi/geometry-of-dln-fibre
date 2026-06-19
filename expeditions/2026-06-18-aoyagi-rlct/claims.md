@@ -832,7 +832,21 @@ No such claim is formalisation-ready until both fields are filled.
   `exists_weightedPivotFirstSubstitution_sourceOrder_identity_of_forall_dvd`.
   These prove only finite width bookkeeping and a supplied weighted
   pivot-first `Q/P` product identity; chart construction, source-coordinate
-  production, and transition post-data remain explicit obligations.
+  production, and transition post-data remain explicit obligations. Added the
+  displayed Case 1(2) local handoff:
+  `IntroducedLabelRecurrenceState.Case2SuppliedPostData.exists_case1DisplayedRowStrip_sourceOrder_identity_sourceWeights_succWeights_of_postData`,
+  `Case1DisplayedRowStripSuppliedTransitionBoundary`,
+  `Case1DisplayedRowStripSuppliedTransitionBoundary.continuationBound`,
+  `Case1DisplayedRowStripSuppliedTransitionBoundary.newLabelActualWidth`,
+  `Case1DisplayedRowStripSuppliedTransitionBoundary.sourceOrder_identity_sourceWeights`,
+  and
+  `Case1DisplayedRowStripSuppliedTransitionBoundary.extendExponentDomain`.
+  This packages first-jump data, actual source column bounds, supplied
+  factored-base recurrence post-data, supplied pre-state exponent certificates,
+  level-tail invariants, and supplied Case 1 exponent post-data. It proves the
+  displayed top-left source-order identity with original source recurrence
+  weights on the left and supplied post weights on the right, and extends the
+  exponent certificate domain to `(S,J+1)`.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -853,7 +867,10 @@ No such claim is formalisation-ready until both fields are filled.
   construction, coordinate transport, row-weight hypotheses in pivot-first
   coordinates, and full exponent transition updates remain open. The concrete
   exponent update-data wrapper does not follow from recurrence post-data and
-  does not prove a chart leaves old exponent assignments unchanged.
+  does not prove a chart leaves old exponent assignments unchanged. The Case
+  1(2) local handoff also assumes the factored-base state, recurrence
+  post-data, exponent post-data, and normalized pivot block; it does not prove
+  chart production or hidden old-label source validity.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

@@ -1099,3 +1099,28 @@ recurrence on the left diagonal and the common factored-base weight
 This remains source-weight algebra only. It does not construct the
 factored-base recurrence, prove hidden old-label validity, produce chart
 post-data, or assert a transition invariant.
+
+## 2026-06-19 Lean Case 1 displayed row-strip local handoff
+
+Statement card:
+`statement-card-a4-case1-displayed-row-strip-local-handoff.md`.
+
+Lean now packages the displayed top-left Case 1(2) local handoff as a supplied
+boundary. The source-order projection rewrites the left diagonal in original
+source-recurrence form,
+`monomialRec (mulStepAt factoredBase.step u (J+J1))`, and rewrites the
+right diagonal using supplied post-state weights. The boundary also stores the
+supplied pre-state exponent certificates, level-tail invariants, and
+Case 1 displayed row-strip exponent post-data, so its exponent projection
+extends the certificate domain to the fresh label `(S,J+1)`.
+
+The proof keeps row and column bounds separate: first-jump data and
+`J+1 <= n(S+1)` give the continuation bound
+`J+1 <= prefixMinNat n (S+1)`, while the exponent increment remains
+`J1*(n(S+1)-J)`.
+
+This is still a supplied local handoff. It does not construct the
+factored-base recurrence from the original pre-state, prove hidden old-label
+source validity, prove that a chart produces the supplied post-data, or assert
+chart coverage, regularity, Jacobians, normal crossings, RLCT extraction, or a
+full transition invariant.

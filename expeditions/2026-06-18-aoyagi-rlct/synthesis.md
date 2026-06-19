@@ -955,6 +955,17 @@ does not use the Case 1 first-jump gap as if it were a full Case 2 gap; it
 also does not prove arbitrary row-strip pivot quotients, chart production,
 hidden old-label factorisation, or exponent/transition post-data.
 
+The displayed Case 1(2) local handoff is now Lean-proved as a supplied
+boundary. The source-order theorem rewrites the left diagonal in original
+source-recurrence form,
+`monomialRec (mulStepAt factoredBase.step u (J+J1))`, while the right diagonal
+uses supplied post-state recurrence weights. The boundary also carries the
+supplied pre-state exponent certificates, level-tail invariants, and Case 1
+displayed row-strip exponent post-data, so `extendExponentDomain` extends the
+certificate package to `(S,J+1)`. This is not chart production: the
+factored-base state, recurrence post-data, exponent post-data, normalized pivot
+block, and hidden old-label source validity remain external.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
