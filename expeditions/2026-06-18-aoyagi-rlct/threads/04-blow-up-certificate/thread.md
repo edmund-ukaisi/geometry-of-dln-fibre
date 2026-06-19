@@ -325,6 +325,27 @@ minimal selected label, relate `level` to certificate `leastValue`, prove the
 flat-tail/old-minimum hypotheses, tie the anonymous center generator to
 `(s,k)`, or give chart coverage or a transition invariant.
 
+## 2026-06-19 Lean Case 1 same-domain lower-tail update
+
+Statement card: `statement-card-a4-case1-same-domain-lower-tail-update.md`.
+
+Lean now proves the conditional package-level bookkeeping for the Case 1(1)
+selected-old-variable branch. First, `updateSelected` replaces one introduced
+label certificate inside `IntroducedLabelExponentCertificates` while carrying
+all other introduced labels by explicit unchanged-data hypotheses. Second,
+`Case1FirstJumpHypotheses.lowerTailVector_labelExponentCertificate` applies the
+one-label lower-tail transformer to the selected label when `leastValue =
+level` and `FlatTailFromPred` are supplied. Finally,
+`case1_selectedLowerTail_sameDomain` combines these into a same-state package
+update at `(S,J)`.
+
+The update assumes the selected post vector, numerator, and least value:
+`lowerTailVector`, numerator increment `J1*(n_(S+1)-J)`, and least value `J`.
+It also assumes non-selected introduced labels are unchanged. This is not a
+chart theorem: it does not prove the chart produces those post assignments,
+does not prove `b'_i` recurrence bookkeeping, does not use minimality for
+comparability or termination, and does not extend the introduced-label domain.
+
 ## 2026-06-19 Lean Case 1 tail exponent increment
 
 Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.

@@ -189,6 +189,16 @@ one-label certificate transformer
 but the transformer assumes the old least value is `J+J1` and that
 `J <= J+J1`; it is not a chart transition or all-label invariant update.
 
+Lean now also proves the conditional same-domain package update
+`IntroducedLabelExponentCertificates.case1_selectedLowerTail_sameDomain`. This
+reassembles an all-introduced-label certificate package at the same state
+`(S,J)` when the selected label is replaced by its lower-tail certificate and
+all non-selected introduced labels are assumed unchanged. It assumes the
+bridges `leastValue = level` and `FlatTailFromPred` for the selected label and
+assumes the post-chart selected vector, numerator, and least value. It does not
+construct the chart, prove row-strip division, prove `b'_i` recurrence
+bookkeeping, or advance the domain.
+
 This branch keeps `(S,J)` and decreases the number of labels at
 `tilde_t = J+J1`.
 

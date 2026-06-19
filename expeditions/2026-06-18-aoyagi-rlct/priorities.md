@@ -101,10 +101,13 @@ on the session's original cwd.
    coverage; Case 1 center generator symbols and row-strip residual-block
    containment are Lean-proved; the finite Case 1 first-jump selected-label
    hypothesis package is Lean-proved with strict boundary, gap, minimality, and
-   row-containment consequences. Next prove the `level = leastValue`,
-   flat-tail, and old-minimum invariant facts needed for Case 1 selected labels
-   or start a row/column permutation scaffold for non-displayed pivot entries.
-   Then redo Case 1/2 updates, cover pivot charts, repair the
+   row-containment consequences; the conditional same-domain Case 1 lower-tail
+   certificate update is Lean-proved assuming `level = leastValue`, flat-tail,
+   selected post-data, and unchanged non-selected labels. Next prove the
+   `level = leastValue`, flat-tail, and post-data invariant facts needed for
+   Case 1 selected labels or start a row/column permutation scaffold for
+   non-displayed pivot entries. Then redo Case 1/2 updates, cover pivot charts,
+   repair the
    remaining recurrence bookkeeping, and replace the termination measure.
 6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's

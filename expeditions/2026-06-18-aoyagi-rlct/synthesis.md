@@ -224,6 +224,13 @@ interface without surfacing it.
   Nat-to-Int selected-level cast, but still does not prove the `b` recurrence
   equality/inequality, `level = leastValue`, flat-tail, chart coverage, or a
   transition invariant.
+  The Case 1(1) same-domain lower-tail update is now packaged conditionally:
+  `case1_selectedLowerTail_sameDomain` reassembles
+  `IntroducedLabelExponentCertificates` at the same `(S,J)` after replacing
+  the selected label by its lower-tail certificate, assuming `leastValue =
+  level`, flat-tail, selected post-data, and unchanged non-selected labels. It
+  is not a chart transition and does not prove `b'_i` bookkeeping or domain
+  advancement.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

@@ -594,7 +594,13 @@ No such claim is formalisation-ready until both fields are filled.
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
   `J+J1 < mu_S`, selected introduced label, selected level, gap, componentwise
   minimality, Nat-to-Int selected-level cast, and row-strip containment
-  consequences.
+  consequences. Also proved same-domain Case 1 lower-tail certificate
+  bookkeeping:
+  `IntroducedLabelExponentCertificates.updateSelected`,
+  `Case1FirstJumpHypotheses.lowerTailVector_labelExponentCertificate`, and
+  `IntroducedLabelExponentCertificates.case1_selectedLowerTail_sameDomain`,
+  conditional on `leastValue = level`, flat-tail, boundary, selected post-data,
+  and unchanged non-selected introduced labels.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.
