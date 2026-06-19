@@ -1,8 +1,27 @@
 # Statement card — L5 dim-foundations (integral-extension dimension invariance)
 
 Module: `lean/DLNFibre/Core/IntegralDimension.lean` @ `4cb0958`.
-Status: **sorry-free** (awaiting fidelity AUDIT + hardener). Axioms on every theorem below:
-`[propext, Classical.choice, Quot.sound]`. Whole `DLNFibre` library builds green.
+Status: **sorry-free; fidelity AUDIT SURVIVED** (2026-06-19, reviewer; awaiting hardener). Axioms on
+every theorem below: `[propext, Classical.choice, Quot.sound]` (re-verified). Whole `DLNFibre` library
+builds green; the target module compiles warning-free; `scripts/sorries` = 0; module is network-free
+(Mathlib-only imports, no `DLNFibre.DLN`).
+
+> **Fidelity AUDIT verdict — SURVIVED.** All five headlines denote their standard theorems with
+> faithful orientation and honest hypotheses. Decorrelated Codex consult
+> (`codex/fidelity-{prompt,answer}.md`) independently confirmed: (i) `dim S = dim A` is the standard
+> integral-injective dimension-invariance theorem; (ii) `≤` needs only integrality, `≥` needs the
+> injectivity (only at the chain base); (iii) `krullDim_le_of_strictComono_and_surj` is genuinely
+> **unsound** for the `≥` direction — its order-reflection hypothesis `comap a < comap b → a < b`
+> fails for integral extensions (Codex counterexample: `A = k[x] ↪ S = k[x]×k[x]` diagonal, primes
+> `(0)×k[x]` and `k[x]×(x)` comap to `(0) < (x)` but are incomparable in `S`). The going-up chain lift
+> (`exists_ltSeries_comap_last_of_isIntegral`) is the correct route; the L5.3 route note is confirmed.
+> Two non-blocking notes: (a) L5.2's `_hinj` is a decorative (genuinely-unused) hypothesis, kept for
+> interface uniformity and honestly underscored — re-verified by rebuilding L5.2 with the hypothesis
+> removed; (b) injectivity is *sufficient* for L5.3, not strictly *minimal* (Codex: `ker ⊆ nilrad`,
+> i.e. `Spec S → Spec A` surjective, would suffice) — but `Function.Injective` is the textbook-standard
+> hypothesis and is what makes the conclusion `dim A` (rather than `dim (A/ker)`) correct, so the card's
+> "genuinely needed" reading is accurate as stated. L5.4 non-vacuity witness is the (degenerate)
+> identity hom; substantive non-triviality is honestly deferred downstream.
 
 All statements are network-free `Core` engine, at `RingHom`/`Algebra` generality over commutative
 rings. The `≤` direction (L5.2) needs only integrality; the `≥` direction (L5.3) and the headline

@@ -110,3 +110,11 @@ A/B are largely independent and can interleave once L5 is sized; C depends on B+
 - 2026-06-19: thread 02 (L5 sizing) CLOSED — **L5 downgraded** to a bounded 2–3 module sub-library via the
   integral-extension route (catenary avoided; key bricks proved in Mathlib, recon 01 misread). Sub-ladder
   L5.0–L5.8 pinned; kill-condition on L5.6. Next: first build tide L5.4 + L5.1.
+- 2026-06-19: thread 03 (L5 dim-foundations) LANDED + fidelity AUDIT SURVIVED. `Core.IntegralDimension`:
+  L5.0 `dim k[x]=n`, L5.1 `dim(R/p)=coheight p`, L5.2/5.3/5.4 integral-extension `ringKrullDim` invariance
+  (`ringKrullDim_eq_of_integral_injective`, the headline). Green, 0 sorry, axiom-clean. **HARD #2 done.**
+  Order-transport + going-up chain-lift machinery proven at our pin; kill-condition did NOT fire for this
+  block (no going-down/IsIntegrallyClosed needed). Decorrelated Codex confirmed the `strictComono`-is-unsound
+  catch with an explicit counterexample. Remaining L5 risk concentrates on **L5.6** (going-DOWN additivity →
+  IsIntegrallyClosed/HasGoingDown propagation still untested). Hardener bedrock pass deferred to L5-phase close.
+  Next: L5.6 (the hard one) and/or L0 (gates the geometry).

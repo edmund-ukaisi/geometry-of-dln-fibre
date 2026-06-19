@@ -16,3 +16,8 @@
   compatibly. The schemes-vs-concrete-affine choice (L1–L3) is a real fork. (recon 01)
 - **Seat discipline (carried from the c-theta sprawl):** bounded named seats reused across layers, stood down
   explicitly at close. Synchronous subagents don't self-terminate; per-task names pile up.
+- **`Order.krullDim_le_of_strictComono_and_surj` is the wrong tool for `dim A ≤ dim S` of an integral
+  extension** — its `comap a < comap b → a < b` order-*reflection* hypothesis is FALSE (counterexample
+  `k[x] ↪ k[x]×k[x]`: incomparable primes over a comparable pair; Codex-confirmed). Correct route: direct
+  going-up chain lift (`RelSeries.inductionOn'` + `exists_ideal_over_prime_of_isIntegral`), injectivity entering
+  only at the chain base (`comap ⊥ = ⊥`). This idiom compiles at our v4.29 pin and is reused for L5.6. (thread 03)
