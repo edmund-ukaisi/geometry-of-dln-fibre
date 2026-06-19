@@ -614,6 +614,54 @@ theorem case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
   · exact le_trans hcont (prefixMinNat_succ_le n hS)
   · exact le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
 
+section SelectedEntryChart
+
+variable {ι α : Type*} [DecidableEq ι] [Monoid α]
+
+/-- Algebraic substitution pattern for one selected generator of a finite center:
+the selected generator is sent to `u`, and every other generator is sent to
+`u * residual i`. This is only finite algebra; it does not construct a blow-up
+chart or prove chart coverage, regularity, transition formulas, or Jacobian facts. -/
+def selectedEntryChartMap (pivot : ι) (u : α) (residual : ι → α) (i : ι) : α :=
+  u * if i = pivot then 1 else residual i
+
+@[simp] theorem selectedEntryChartMap_pivot
+    (pivot : ι) (u : α) (residual : ι → α) :
+    selectedEntryChartMap pivot u residual pivot = u := by
+  simp [selectedEntryChartMap]
+
+theorem selectedEntryChartMap_of_ne
+    {pivot i : ι} (u : α) (residual : ι → α) (hi : i ≠ pivot) :
+    selectedEntryChartMap pivot u residual i = u * residual i := by
+  simp [selectedEntryChartMap, hi]
+
+/-- Every transformed center generator is divisible by the selected pivot variable. -/
+theorem selectedEntryChartMap_pivot_dvd
+    (pivot : ι) (u : α) (residual : ι → α) (i : ι) :
+    u ∣ selectedEntryChartMap pivot u residual i :=
+  ⟨if i = pivot then 1 else residual i, rfl⟩
+
+/-- If the selected entry belongs to a finite center, its pivot value occurs in the value set. -/
+theorem selectedEntryChartMap_pivot_mem_valueSet
+    {center : Finset ι} {pivot : ι} (hpivot : pivot ∈ center)
+    (u : α) (residual : ι → α) :
+    u ∈ {v : α | ∃ i, i ∈ center ∧ selectedEntryChartMap pivot u residual i = v} :=
+  ⟨pivot, hpivot, by simp⟩
+
+end SelectedEntryChart
+
+/-- In the Case 2 residual-block center, the displayed selected-entry chart has value `u`
+at the displayed pivot. This is only finite selected-entry bookkeeping. -/
+theorem case2_displayedPivot_selectedEntryChartMap_value_mem
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {α : Type*} [Monoid α] (u : α) (residual : ℕ × ℕ → α) :
+    u ∈
+      {v : α | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        selectedEntryChartMap (J + 1, J + 1) u residual p = v} :=
+  selectedEntryChartMap_pivot_mem_valueSet
+    (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont) u residual
+
 /-- Lower the vector tail from stage `S` onward to the pivot level `J`. -/
 def lowerTailVector (T : ℕ → ℤ) (S : ℕ) (J : ℤ) (i : ℕ) : ℤ :=
   if i < S then T i else J
