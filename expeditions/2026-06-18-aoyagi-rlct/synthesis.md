@@ -155,10 +155,15 @@ matrix form `[I B; 0 D]`; in complement/direct-sum adapted bases,
 gives the same form using `basisOfIsCompl`. This is basis-coordinate
 bookkeeping only. It uses explicit through-subspace bases plus quotient or
 complement bases as inputs, and it is not a fixed-coordinate chart theorem.
+The stronger per-edge variant
+`exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero`
+uses `throughSubspacePrefixEquiv` to transport one initial basis of `U₀` to
+both adjacent through-subspaces, so the top bases are compatible across the
+chain.
 
-Still open for this repair: choose simultaneous compatible bases across the
-whole chain, translate the source-to-target Lean orientation back to Aoyagi's
-paper order, and connect the matrix corollaries to the chart-local
+Still open for this repair: bundle all local complement choices and complement
+bases across the chain, translate the source-to-target Lean orientation back to
+Aoyagi's paper order, and connect the matrix corollaries to the chart-local
 product-reduction identity. Full Theorem 3 remains blocked until those
 corollaries and the analytic certificate transport are built.
 

@@ -209,13 +209,15 @@ in transported `Module.Basis.sumQuot` bases, each through-subspace edge is
 `fromBlocks 1 B 0 D`. The complement/direct-sum version also exists as
 `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zero`:
 with supplied complements and complement bases, the same block form holds for
-ambient bases built using `basisOfIsCompl`.
+ambient bases built using `basisOfIsCompl`. The prefix-compatible version
+`DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero`
+uses one initial basis of `U0` transported to both adjacent through-subspaces.
 
-Next prove the chain packaging matching the current `fromBlocks` APIs: choose
-simultaneous compatible bases at the intermediate layers and then connect the
-Aoyagi transformed next-layer top-left corner to the already-proved
+Next prove the chain packaging matching the current `fromBlocks` APIs: bundle
+local complements and complement bases across the intermediate layers, then
+connect the Aoyagi transformed next-layer top-left corner to the already-proved
 unitriangular chart-stability identity. The endpoint total-product block form
-`fromBlocks 1 0 0 0` is now Lean-proved as
+`fromBlocks 1 0 0 0` is Lean-proved as
 `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`.
 
 ## Checker verdict
@@ -229,7 +231,7 @@ finite-dimensional rank assertion.
 
 Formalisation-ready now:
 
-- simultaneous intermediate-layer chain-basis corollaries.
+- local complement-data bundling and chart-connection corollaries.
 
 Still not formalisation-ready:
 

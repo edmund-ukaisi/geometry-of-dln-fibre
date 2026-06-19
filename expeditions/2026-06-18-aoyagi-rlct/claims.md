@@ -82,8 +82,9 @@ No such claim is formalisation-ready until both fields are filled.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
   chart-local induction-step block identity, elementary matrix-entry ideal
   transport lemmas, through-subspace transport theorem, and per-edge
-  transported-basis matrix block forms are proved; the endpoint total-product
-  block form is also proved. The full source Theorem 3 claim remains blocked.
+  transported-basis matrix block forms are proved; prefix-transported through
+  bases and the endpoint total-product block form are also proved. The full
+  source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -109,6 +110,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_eq_fromBlocks_one_zero`
   and direct-sum adapted-basis matrix theorem
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_basisOfIsCompl_eq_fromBlocks_one_zero`
+  and prefix-basis matrix theorem
+  `DLNFibre.DLN.Aoyagi.exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero`
   plus endpoint total-product theorem
   `DLNFibre.DLN.Aoyagi.toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`
   in `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean`; full Theorem 3 target
@@ -126,13 +129,15 @@ No such claim is formalisation-ready until both fields are filled.
   adjacent restricted-edge equivalences. Also proved that a through-layer edge
   has matrix form `[I B; 0 D]` in transported `Module.Basis.sumQuot` bases and
   in transported direct-sum bases built from supplied complements. Also proved
-  that the total chain map has endpoint matrix form `[I 0; 0 0]` when the
+  the prefix-transported version where one initial through-basis is transported
+  to adjacent layers by `throughSubspacePrefixEquiv`. Also proved that the
+  total chain map has endpoint matrix form `[I 0; 0 0]` when the
   source complement is the total kernel and the target through-basis is
   transported.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`. The full product-reduction
-  theorem would additionally need rank/neighborhood, simultaneous intermediate
-  chain bases, and product-reduction chart assembly, not yet proved.
+  theorem would additionally need rank/neighborhood, bundled local complement
+  data, and product-reduction chart assembly, not yet proved.
 - **Cited.** none for the chart-local algebraic theorem. Analytic invariance
   may only enter through the allowed analytic interface after it is fixed.
 - **Deferred.** post-Theorem-3 RLCT reduction and regular-coordinate additivity
@@ -140,8 +145,8 @@ No such claim is formalisation-ready until both fields are filled.
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
   local analytic/certificate transport remain open. The through-subspace theorem
-  still needs simultaneous compatible bases across all intermediate layers and
-  connection to the chart-local product-reduction identity.
+  still needs bundled complement choices/bases across all intermediate layers
+  and connection to the chart-local product-reduction identity.
 
 ## Claim A3 - deepest singular point
 

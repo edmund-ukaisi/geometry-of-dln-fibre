@@ -241,3 +241,26 @@ orientation back to Aoyagi paper order, and does not yet connect the endpoint
 and per-edge block forms to the chart-local product-reduction identity.
 
 Statement card: `statement-card-a2-total-product-block.md`.
+
+## 2026-06-19 A2 prefix-compatible edge bases
+
+Extended `lean/DLNFibre/DLN/Aoyagi/ThroughLayerMatrix.lean` with the prefix
+transport package:
+
+- `disjoint_ker_chainMap_prefix_of_disjoint_ker_total`: a subspace disjoint
+  from the total kernel is disjoint from every prefix kernel.
+- `throughSubspacePrefixEquiv` and `throughSubspacePrefixEquiv_apply`:
+  transport from the initial through-subspace `U₀` to `throughSubspace ... j`
+  by the prefix chain map.
+- `throughSubspacePrefixEquiv_succ_apply`: adjacent prefix transports are
+  related by the edge map.
+- `exists_toMatrix_throughSubspaceEdge_prefix_basisOfIsCompl_eq_fromBlocks_one_zero`:
+  a through-layer edge has matrix form `fromBlocks 1 B 0 D` when the top bases
+  at both endpoints are obtained by transporting one common initial basis of
+  `U₀`.
+
+This proves compatibility of the top/through bases across layers. It still
+takes local complements and complement bases as inputs for the source and target
+of a single edge. It does not yet bundle complement data across all layers, run
+the chart-local product-reduction induction, or state any analytic/RLCT
+consequence.
