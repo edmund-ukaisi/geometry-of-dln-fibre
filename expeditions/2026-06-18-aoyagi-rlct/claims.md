@@ -604,7 +604,11 @@ No such claim is formalisation-ready until both fields are filled.
   update-data helpers `updateSelectedLabelVector` and
   `updateSelectedLabelScalar` plus
   `case1_selectedLowerTail_updateData` to instantiate the same theorem with
-  total assignment overrides.
+  total assignment overrides. Added the conditional bridge package
+  `IntroducedLabelLevelTailInvariants` and
+  `case1_selectedLowerTail_of_levelTailInvariants`, assuming
+  `leastValue = level` for introduced labels and flat-tail only above the
+  current pivot.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet.
 - **Cited.** none planned.

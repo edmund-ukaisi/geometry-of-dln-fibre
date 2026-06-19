@@ -232,6 +232,11 @@ interface without surfacing it.
   is not a chart transition and does not prove `b'_i` bookkeeping or domain
   advancement. The selected-label update-data helpers instantiate this theorem
   with total assignment overrides; they add no source geometry.
+  The level/tail invariant bridge is now isolated as
+  `IntroducedLabelLevelTailInvariants`: it assumes `leastValue=level` for
+  introduced labels and flat-tail only above the current pivot. This feeds the
+  selected Case 1 update via `lt_selectedLevel`, but it is not a proved or
+  preserved invariant.
 - A5 arithmetic tail: draft reproduction landed at
   `threads/05-arithmetic-tail/reproduction-draft.md`; independent check landed
   at `threads/05-arithmetic-tail/reproduction-check.md`. Verdict: blocked, not

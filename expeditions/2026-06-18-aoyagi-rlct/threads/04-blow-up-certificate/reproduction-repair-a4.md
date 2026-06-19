@@ -205,6 +205,16 @@ same-domain update using total assignment overrides
 syntactic post-data functions only; values outside the introduced-label domain
 are formal and irrelevant.
 
+Lean also packages the conditional level/tail bridge
+`IntroducedLabelLevelTailInvariants`: `leastValue=level` is assumed for every
+introduced label, while `FlatTailFromPred` is assumed only for labels above the
+current pivot, `J < level`. The selected Case 1 label is above the pivot by
+`Case1FirstJumpHypotheses.lt_selectedLevel`, so
+`case1_selectedLowerTail_of_levelTailInvariants` feeds the same-domain
+lower-tail update. This is an assumed bridge, not a proof that the recursion
+establishes or preserves the bridge, and it deliberately does not claim
+flat-tail for all introduced labels.
+
 This branch keeps `(S,J)` and decreases the number of labels at
 `tilde_t = J+J1`.
 

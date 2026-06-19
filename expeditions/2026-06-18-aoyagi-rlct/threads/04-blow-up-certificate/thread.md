@@ -361,6 +361,27 @@ This removes six mechanical post-data equality hypotheses. It is still only
 bookkeeping: values outside the introduced-label domain are formal, and the
 helpers do not prove that a chart produces the overrides.
 
+## 2026-06-19 Lean level/tail invariant bridge
+
+Statement card: `statement-card-a4-level-tail-invariant-bridge.md`.
+
+Lean now packages the conditional bridge obligations needed by the selected
+Case 1 lower-tail update. `IntroducedLabelLevelTailInvariants` assumes
+`leastValue=level` for every introduced label and assumes `FlatTailFromPred`
+only for introduced labels above the current pivot, `J < level`. This avoids
+the false stronger claim that all introduced labels have flat predecessor
+tails.
+
+The corollary `case1_selectedLowerTail_of_levelTailInvariants` applies the
+selected-label update-data theorem using this bridge. The selected label is
+introduced by `Case1FirstJumpHypotheses`, and it is above the pivot by
+`lt_selectedLevel`.
+
+This is not a proved invariant or a preservation theorem. The bridge remains
+an assumption package, excludes the `S=1` boundary in the downstream update,
+and does not prove chart-produced post-data, `b'_i` bookkeeping, or transition
+coverage.
+
 ## 2026-06-19 Lean Case 1 tail exponent increment
 
 Statement card: `statement-card-a4-case1-tail-exponent-increment.md`.
