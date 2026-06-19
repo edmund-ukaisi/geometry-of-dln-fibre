@@ -689,6 +689,88 @@ theorem case1_displayedPivot_mem_residualBlockPivotEntries_of_bounds
   rw [mem_case2ResidualBlockPivotEntries_iff]
   exact ⟨le_rfl, le_trans (by omega : J + 1 ≤ J + J1) hrow, le_rfl, hcol⟩
 
+/-- Componentwise comparison on the finite source component range `1..L`. -/
+def componentwiseLEOn (L : ℕ) (t u : ℕ → ℤ) : Prop :=
+  ∀ i, i ∈ Finset.Icc 1 L → t i ≤ u i
+
+/-- Case 1 first-jump and selected-label hypotheses, as finite bookkeeping only.
+
+The `level` field is a natural-number source index.  Bridging it to the
+integer-valued `leastValue` fields in exponent certificates is a separate
+integration obligation.  This structure does not construct a blow-up chart,
+prove chart coverage, update exponents, or prove a transition invariant. -/
+structure Case1FirstJumpHypotheses
+    (L : ℕ) (n : ℕ → ℕ) (S J J1 s k : ℕ)
+    (level : ℕ → ℕ → ℕ) (vector : ℕ → ℕ → ℕ → ℤ) : Prop where
+  positive : 1 ≤ J1
+  jumpBeforeEnd : J + J1 < prefixMinNat n S
+  selectedIntroduced : introducedLabel L n S J s k
+  selectedLevel : level s k = J + J1
+  gap :
+    ∀ {s' k'}, introducedLabel L n S J s' k' →
+      ¬ (J + 1 ≤ level s' k' ∧ level s' k' < J + J1)
+  minimal :
+    ∀ {s' k'}, introducedLabel L n S J s' k' → level s' k' = J + J1 →
+      componentwiseLEOn L (vector s k) (vector s' k')
+
+/-- The strict Case 1 first-jump bound implies the row-strip bound. -/
+theorem Case1FirstJumpHypotheses.rowBound
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector) :
+    J + J1 ≤ prefixMinNat n S :=
+  le_of_lt h.jumpBeforeEnd
+
+/-- The selected Case 1 level is strictly after the current pivot level. -/
+theorem Case1FirstJumpHypotheses.lt_selectedLevel
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector) :
+    J < level s k := by
+  rw [h.selectedLevel]
+  have hpos : 0 < J1 := h.positive
+  omega
+
+/-- The selected Case 1 source level, cast to the integer convention used by certificates. -/
+theorem Case1FirstJumpHypotheses.selectedLevel_int
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector) :
+    (level s k : ℤ) = (J + J1 : ℤ) := by
+  exact_mod_cast h.selectedLevel
+
+/-- The selected Case 1 label is not in the forbidden first-jump gap. -/
+theorem Case1FirstJumpHypotheses.not_selected_in_gap
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector) :
+    ¬ (J + 1 ≤ level s k ∧ level s k < J + J1) :=
+  h.gap h.selectedIntroduced
+
+/-- The selected label is componentwise minimal among labels at its own level. -/
+theorem Case1FirstJumpHypotheses.selected_componentwiseLE_self
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector) :
+    componentwiseLEOn L (vector s k) (vector s k) :=
+  h.minimal h.selectedIntroduced h.selectedLevel
+
+/-- The Case 1 first-jump row bound gives row-strip containment. -/
+theorem Case1FirstJumpHypotheses.stripRows_subset_residualBlockRows
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector) :
+    case1StripRows J J1 ⊆ case2ResidualBlockRows n S J :=
+  case1StripRows_subset_case2ResidualBlockRows n S h.rowBound
+
+/-- The Case 1 first-jump row bound gives row-strip entry containment. -/
+theorem Case1FirstJumpHypotheses.stripEntries_subset_residualBlockEntries
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s k : ℕ}
+    {level : ℕ → ℕ → ℕ} {vector : ℕ → ℕ → ℕ → ℤ}
+    (h : Case1FirstJumpHypotheses L n S J J1 s k level vector) :
+    case1StripEntries n S J J1 ⊆ case2ResidualBlockPivotEntries n S J :=
+  case1StripEntries_subset_case2ResidualBlockPivotEntries n S h.rowBound
+
 /-- The chosen old exceptional variable is a Case 1 center generator. -/
 theorem case1_selectedOld_mem_center (n : ℕ → ℕ) (S J J1 : ℕ) :
     (Sum.inl () : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 := by
