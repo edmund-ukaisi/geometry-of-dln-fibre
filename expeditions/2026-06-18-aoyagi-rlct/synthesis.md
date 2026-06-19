@@ -221,6 +221,16 @@ finite-index generalisations of the existing `Fin`-indexed block identities and
 the chart-local induction step. They do not add a new mathematical claim; they
 remove index-conversion friction for future chart-data assembly.
 
+The algebraic determinant-chart predicate layer is Lean-proved in
+`ProductReduction.lean`: `identityCornerForm` implies the selected
+`topLeftCorner` is `1` and hence `identityCornerDetChart`; upper-unitriangular
+multiplication preserves `identityCornerForm`. In `ThroughLayerMatrix.lean`,
+`paperAdaptedReverseEdgeMatrix` and `paperUnitriangularLeft` name the adapted
+paper-order edge matrix and left multiplier. The adapted edge matrix and its
+unitriangular transform are proved to satisfy the determinant-chart predicate.
+This is only algebraic `IsUnit` at the adapted base matrix, not a topological
+open-neighborhood theorem.
+
 The endpoint total-product normal form is Lean-proved as
 `toMatrix_chainMap_zero_last_ker_basisOfIsCompl_eq_fromBlocks_one_zero_zero`: with
 source basis adapted to `U₀ ⊕ ker P` and target basis adapted to

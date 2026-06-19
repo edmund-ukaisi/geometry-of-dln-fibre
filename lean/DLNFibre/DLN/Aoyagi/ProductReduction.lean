@@ -67,6 +67,46 @@ theorem exists_fromBlocks_one_zero_of_upperUnitriangular_mul_indexed
   rcases hM with ⟨B, D, rfl⟩
   exact ⟨B - F * D, D, upperUnitriangular_mul_fromBlocks_one_zero_indexed F B D⟩
 
+/-- The selected top-left corner of a block matrix. -/
+def topLeftCorner {ι μ ν : Type*} (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Matrix ι ι K :=
+  M.submatrix Sum.inl Sum.inl
+
+/-- A block matrix with identity top-left corner and zero lower-left block. -/
+def identityCornerForm {ι μ ν : Type*} [DecidableEq ι]
+    (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Prop :=
+  ∃ B : Matrix ι ν K, ∃ D : Matrix μ ν K,
+    M = fromBlocks (1 : Matrix ι ι K) B 0 D
+
+/-- Algebraic determinant-chart membership for the selected top-left corner. -/
+def identityCornerDetChart {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
+    (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Prop :=
+  IsUnit (topLeftCorner M).det
+
+/-- In identity-corner form, the selected top-left corner is exactly `1`. -/
+theorem topLeftCorner_eq_one_of_identityCornerForm
+    {ι μ ν : Type*} [DecidableEq ι] {M : Matrix (ι ⊕ μ) (ι ⊕ ν) K}
+    (hM : identityCornerForm M) :
+    topLeftCorner M = (1 : Matrix ι ι K) := by
+  rcases hM with ⟨B, D, rfl⟩
+  rfl
+
+/-- Identity-corner form lies in the determinant chart of the selected top-left block. -/
+theorem identityCornerDetChart_of_identityCornerForm
+    {ι μ ν : Type*} [Fintype ι] [DecidableEq ι] {M : Matrix (ι ⊕ μ) (ι ⊕ ν) K}
+    (hM : identityCornerForm M) :
+    identityCornerDetChart M := by
+  rw [identityCornerDetChart, topLeftCorner_eq_one_of_identityCornerForm hM]
+  simp
+
+/-- Upper-unitriangular multiplication preserves identity-corner form. -/
+theorem identityCornerForm_upperUnitriangular_mul
+    {ι μ ν : Type*} [Fintype ι] [Fintype μ] [DecidableEq ι] [DecidableEq μ]
+    (F : Matrix ι μ K) {M : Matrix (ι ⊕ μ) (ι ⊕ ν) K}
+    (hM : identityCornerForm M) :
+    identityCornerForm
+      (fromBlocks (1 : Matrix ι ι K) (-F) 0 (1 : Matrix μ μ K) * M) :=
+  exists_fromBlocks_one_zero_of_upperUnitriangular_mul_indexed F M hM
+
 /-- The inverse of a product corner cancels the already-invertible left factor. -/
 private theorem nonsing_inv_mul_left_factor {r : ℕ}
     (C1 A1 : Matrix (Fin r) (Fin r) K) (hC1 : IsUnit C1.det) (hA1 : IsUnit A1.det) :

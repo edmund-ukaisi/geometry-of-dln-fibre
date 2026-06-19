@@ -613,6 +613,57 @@ theorem isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap
           (Fin.zero_le (Fin.last N)))) := by
   simpa [chainMap_reverse_eq_paper] using hU₀
 
+/-- The adapted matrix of one paper-order edge in the reversed finite chart data. -/
+def paperAdaptedReverseEdgeMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) :
+    Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+  LinearMap.toMatrix
+    (basisOfIsCompl
+      (throughSubspace_isCompl_complement
+        (reverseVertex W) (reverseEdge W B) U₀ p.castSucc)
+      ((Module.finBasis K U₀).map
+        (throughSubspacePrefixEquiv (reverseVertex W) (reverseEdge W B) U₀
+          p.castSucc
+          (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀)))
+      (Module.finBasis K
+        (throughSubspaceComplement
+          (reverseVertex W) (reverseEdge W B) U₀ p.castSucc)))
+    (basisOfIsCompl
+      (throughSubspace_isCompl_complement
+        (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      ((Module.finBasis K U₀).map
+        (throughSubspacePrefixEquiv (reverseVertex W) (reverseEdge W B) U₀
+          p.succ
+          (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀)))
+      (Module.finBasis K
+        (throughSubspaceComplement
+          (reverseVertex W) (reverseEdge W B) U₀ p.succ)))
+    (reverseEdge W B p)
+
+/-- The upper-unitriangular multiplier used on an adapted paper-order edge matrix. -/
+def paperUnitriangularLeft
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0)) (p : Fin N)
+    (F : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) :
+    Matrix
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+      (Fin (Module.finrank K U₀) ⊕
+        throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K :=
+  fromBlocks (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+    (-F) 0 1
+
 /-- A paper-order edge has concrete adapted-basis block form `[I B; 0 D]`. -/
 theorem exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero
     [∀ j, FiniteDimensional K (W j)]
@@ -654,6 +705,45 @@ theorem exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero
   exact exists_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero
     (reverseVertex W) (reverseEdge W B) U₀
     (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀) p
+
+/-- The adapted paper-order edge matrix has identity top-left corner form. -/
+theorem identityCornerForm_paperAdaptedReverseEdgeMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) :
+    identityCornerForm (paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p) :=
+  exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero W B U₀ hU₀ p
+
+/-- The adapted paper-order edge matrix has selected top-left corner equal to `1`. -/
+theorem topLeftCorner_paperAdaptedReverseEdgeMatrix_eq_one
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) :
+    topLeftCorner (paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p) =
+      (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K) :=
+  topLeftCorner_eq_one_of_identityCornerForm
+    (identityCornerForm_paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p)
+
+/-- The adapted paper-order edge matrix lies in the selected determinant chart. -/
+theorem identityCornerDetChart_paperAdaptedReverseEdgeMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N) :
+    identityCornerDetChart (paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p) :=
+  identityCornerDetChart_of_identityCornerForm
+    (identityCornerForm_paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p)
 
 /-- A paper-order edge remains in identity-corner block form after a unitriangular multiplier. -/
 theorem exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero
@@ -700,6 +790,38 @@ theorem exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlock
   exact exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero
     (reverseVertex W) (reverseEdge W B) U₀
     (disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap W B U₀ hU₀) p F
+
+/-- The unitriangularly transformed paper-order edge remains in identity-corner form. -/
+theorem identityCornerForm_unitriangular_paperAdaptedReverseEdgeMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N)
+    (F : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) :
+    identityCornerForm
+      (paperUnitriangularLeft W B U₀ p F * paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p) :=
+  exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero
+    W B U₀ hU₀ p F
+
+/-- The unitriangularly transformed paper-order edge lies in the selected determinant chart. -/
+theorem identityCornerDetChart_unitriangular_paperAdaptedReverseEdgeMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : Disjoint U₀
+      (LinearMap.ker
+        (paperChainMap W B (Fin.last N).rev (0 : Fin (N + 1)).rev
+          (Fin.rev_le_rev.mpr (Fin.zero_le (Fin.last N))))))
+    (p : Fin N)
+    (F : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ) K) :
+    identityCornerDetChart
+      (paperUnitriangularLeft W B U₀ p F * paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p) :=
+  identityCornerDetChart_of_identityCornerForm
+    (identityCornerForm_unitriangular_paperAdaptedReverseEdgeMatrix W B U₀ hU₀ p F)
 
 /-- The paper-order total product has endpoint adapted-basis form `[I 0; 0 0]`. -/
 theorem toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero

@@ -97,7 +97,8 @@ No such claim is formalisation-ready until both fields are filled.
   `paperChainMap` and its prefix/suffix split laws are proved, and the
   reversed source-to-target `chainMap` is related to `paperChainMap`. Finite
   paper-order edge block, unitriangular, and endpoint wrappers are proved. The
-  full source Theorem 3 claim remains blocked.
+  algebraic determinant-chart predicate layer for adapted paper edge matrices
+  is proved. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -121,7 +122,13 @@ No such claim is formalisation-ready until both fields are filled.
   theorem `DLNFibre.DLN.Aoyagi.upperUnitriangular_mul_fromBlocks_one_zero` in
   the same file; chart-form preservation corollary
   `DLNFibre.DLN.Aoyagi.exists_fromBlocks_one_zero_of_upperUnitriangular_mul` in
-  the same file; entry-ideal transport lemmas in
+  the same file; determinant-chart predicates
+  `DLNFibre.DLN.Aoyagi.topLeftCorner`,
+  `DLNFibre.DLN.Aoyagi.identityCornerForm`,
+  `DLNFibre.DLN.Aoyagi.identityCornerDetChart`,
+  `DLNFibre.DLN.Aoyagi.identityCornerDetChart_of_identityCornerForm`, and
+  `DLNFibre.DLN.Aoyagi.identityCornerForm_upperUnitriangular_mul` in the same
+  file; entry-ideal transport lemmas in
   `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`; through-layer subspace theorem
   `DLNFibre.DLN.Aoyagi.exists_chain_throughSubspaces` in
   `lean/DLNFibre/DLN/Aoyagi/ThroughLayerBasis.lean`; paper-order composite
@@ -154,6 +161,11 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_throughSubspaceEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.disjoint_ker_reverse_total_of_disjoint_ker_paperChainMap`,
   `DLNFibre.DLN.Aoyagi.isCompl_ker_reverse_total_of_isCompl_ker_paperChainMap`,
+  `DLNFibre.DLN.Aoyagi.paperAdaptedReverseEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.paperUnitriangularLeft`,
+  `DLNFibre.DLN.Aoyagi.identityCornerForm_paperAdaptedReverseEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.identityCornerDetChart_paperAdaptedReverseEdgeMatrix`,
+  `DLNFibre.DLN.Aoyagi.identityCornerDetChart_unitriangular_paperAdaptedReverseEdgeMatrix`,
   `DLNFibre.DLN.Aoyagi.exists_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.exists_unitriangular_toMatrix_reverseEdge_finiteDimensional_eq_fromBlocks_one_zero`,
   `DLNFibre.DLN.Aoyagi.toMatrix_paperChainMap_ker_finiteDimensional_eq_fromBlocks_one_zero_zero`,
@@ -197,6 +209,9 @@ No such claim is formalisation-ready until both fields are filled.
   paper-order edge wrappers for the concrete adapted-basis `[I B; 0 D]` block
   statement, its unitriangular chart-form preservation corollary, and the
   endpoint `[I 0; 0 0]` block form for the total paper product.
+  Also proved an algebraic identity-corner/determinant-chart predicate layer:
+  identity-corner form implies selected determinant-unit chart membership, and
+  adapted paper edge matrices plus their unitriangular transforms satisfy it.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem. The full product-reduction
@@ -209,8 +224,9 @@ No such claim is formalisation-ready until both fields are filled.
   later build a full regular-suspension normal-crossing certificate. Full
   Theorem 3 assembly from source hypotheses, target-product normalization, and
   local analytic/certificate transport remain open. The through-subspace/chart
-  data layer still needs determinant/open chart wrappers and connection to the
-  chart-local product-reduction induction; see
+  data layer still needs connection to the chart-local product-reduction
+  induction, and any topological open-neighborhood statement remains separate;
+  see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
 
 ## Claim A3 - deepest singular point

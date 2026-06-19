@@ -29,9 +29,11 @@ on the session's original cwd.
    finite-dimensional Lean chains now supply finite-indexed chart data and a
    kernel-complement version, with concrete finite-basis edge/unitriangular and
    endpoint block corollaries. The paper-order bridge artifacts `paperChainMap`
-   and `chainMap_reverse_eq_paper` are Lean-proved, and finite paper-order
-   edge/endpoint block wrappers are Lean-proved; next bridge to Aoyagi's
-   rank/open-chart hypotheses and assemble the product-reduction induction.
+   and `chainMap_reverse_eq_paper` are Lean-proved, finite paper-order
+   edge/endpoint block wrappers are Lean-proved, and algebraic determinant-chart
+   membership for adapted paper edge matrices is Lean-proved; next assemble the
+   product-reduction induction from these adapted-coordinate ingredients and
+   explicit determinant-unit hypotheses.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

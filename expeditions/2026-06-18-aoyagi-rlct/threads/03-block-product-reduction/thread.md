@@ -435,3 +435,25 @@ These are the same identities as the existing `Fin`-indexed A1/A2 block
 theorems, but stated for arbitrary finite block index types. This is
 infrastructure for chart-data assembly only; it does not prove the
 product-reduction induction or any analytic consequence.
+
+## 2026-06-19 A2 determinant chart predicates
+
+Added a non-topological determinant-chart predicate layer:
+
+- `topLeftCorner`;
+- `identityCornerForm`;
+- `identityCornerDetChart`;
+- `topLeftCorner_eq_one_of_identityCornerForm`;
+- `identityCornerDetChart_of_identityCornerForm`;
+- `identityCornerForm_upperUnitriangular_mul`.
+
+Then named the adapted paper edge matrix as `paperAdaptedReverseEdgeMatrix` and
+the corresponding upper-unitriangular multiplier as `paperUnitriangularLeft`.
+Theorems now state that the adapted paper edge matrix has identity-corner form,
+selected top-left corner `1`, and determinant-chart membership; the
+unitriangularly transformed matrix also has identity-corner form and
+determinant-chart membership.
+
+This is algebraic `IsUnit` at the adapted base matrix. It is not a topological
+open-neighborhood theorem, not a fixed-coordinate chart theorem, and not a
+rank or RLCT statement.
