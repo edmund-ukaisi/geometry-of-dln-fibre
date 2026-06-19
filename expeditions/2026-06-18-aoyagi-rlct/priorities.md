@@ -21,24 +21,28 @@ on the session's original cwd.
 
 ## Ranked next
 
-1. Analytic interface shape. Define the cited normal-crossing extraction
-   interface precisely enough that later theorem names cannot overclaim; do not
-   smuggle Aoyagi Lemma 1 or Theorem 4 as extra citations.
-2. Product reduction repair beyond the landed chart-local step. Re-state A2
-   with source-faithful rank/open-chart and through-layer basis hypotheses, and
-   keep analytic invariance separate from the algebraic induction identity now
+1. Through-layer basis/open-chart lemma for A2. Reproduce and prove the
+   elementary linear-algebra statement that the true rank-`r` product admits
+   bases through the layers so the required top-left `r x r` charts contain the
+   base point.
+2. Product reduction repair beyond the landed chart-local and entry-ideal
+   steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
+   certificate transport separate from the algebraic induction identity now
    proved in Lean.
-3. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
+3. Analytic interface shape after A4 data. Keep A0 extraction-only; do not
+   smuggle Aoyagi Lemma 1, Theorem 4, or regular-coordinate additivity as extra
+   citations.
+4. Source inventory completion. Fill remaining `theorem-ledger.md` source refs
    and exact hypotheses from the PDF where the first scout still left TBDs.
-4. Repair A4 blow-up reproduction. Separate actual layer widths from prefix
+5. Repair A4 blow-up reproduction. Separate actual layer widths from prefix
    minima, redo Case 1/2 updates, cover pivot charts, prove `P`
    regularity/divisibility, and replace the termination measure.
-5. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
+6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
    `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's
    chart-family/order-count construction.
-6. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
+7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
-7. Review/hardener cadence. Gate every broad theorem name, every universal
+8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 
 ## Parked but live

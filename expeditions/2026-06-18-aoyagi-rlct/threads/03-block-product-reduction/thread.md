@@ -95,3 +95,36 @@ Still blocked: full Aoyagi Theorem 3 from source rank/neighborhood hypotheses,
 through-layer basis/open-chart existence, target-product normalization via
 Aoyagi Lemma 1, local analytic/ideal-germ invariance, regular-coordinate RLCT
 additivity, and every final RLCT consequence.
+
+## 2026-06-18 A2 matrix-entry ideal tide
+
+After the analytic-interface repair, opened the next elementary transport
+target: matrix-entry ideal algebra for the post-Theorem-3 block generators.
+Scope is algebraic ideals over a commutative ring only. Explicitly out of
+scope: analytic germs, local coordinate invariance, normal-crossing
+certificates, RLCT equality, and pole-order consequences.
+
+Outcome: landed `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`, imported by the
+single-writer aggregator. Main theorems:
+
+- `matrixEntryIdeal_mul_left_eq_of_isUnit_det`;
+- `matrixEntryIdeal_mul_right_eq_of_isUnit_det`;
+- `matrixEntryIdeal_mul_le_sup`;
+- `fourMatrixEntryIdeal_sub_mul_eq`.
+
+The last theorem proves the elementary cleanup
+
+```text
+<entries X, entries F2, entries F3, entries (D - F3 F2)>
+  = <entries X, entries F2, entries F3, entries D>.
+```
+
+The file includes identity-multiplier examples witnessing the determinant-unit
+hypotheses. Controller verified targeted build, full `DLNFibre` build,
+`scripts/sorries`, and `#print axioms` for the main theorems. Xhigh fidelity
+reviewer `Dalton` and xhigh hardener `Linnaeus` passed the artifact at the
+elementary algebraic scope. Statement card: `statement-card-a2-entry-ideal.md`.
+
+Still blocked: the same algebraic ideal does not by itself imply the same RLCT.
+The final route must construct or transport a normal-crossing certificate before
+using the single extraction citation.
