@@ -2989,6 +2989,65 @@ theorem case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst
       (colPivot := case2DisplayedPivotCol n hS hcont)
       u weight residual
 
+namespace CorrectedCase2NewLabelCertificate
+
+/-- Displayed Case 2 source-variable transport with supplied successor
+recurrence weights.  The source-substituted block is still formed with the old
+row weights, but the selected variable has been absorbed into the supplied
+post-state recurrence weights on the old residual rows.  This is conditional
+recurrence bookkeeping, not chart production. -/
+theorem case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) R)
+    (u : R)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → post.level s k = pre.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → post.var s k = pre.var s k)
+    (hlevel_new : post.level S (J + 1) = J)
+    (hvar_new : post.var S (J + 1) = u)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R) :
+    (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+        case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+        (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+        (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont)) =
+      weightedPivotDiagonal
+        (post.weight (J + 1))
+        (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          post.weight (case2ResidualRowLevel n S J i.1)) *
+        pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedNormalizedMatrix n hS hcont residual) := by
+  have hupdate :=
+    hnew.case2_weight_succ_current_eq_newVar_mul pre post u
+      hlevel_old hvar_old hlevel_new hvar_new
+  have hpivot :
+      u * pre.weight (J + 1) = post.weight (J + 1) :=
+    (hupdate (J + 1) le_rfl).symm
+  have hpivotResidual :
+      u * pre.case2ResidualRowWeight (case2DisplayedPivotRow n hS hcont) =
+        post.weight (J + 1) := by
+    simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight,
+      case2ResidualRowLevel_displayedPivotRow] using hpivot
+  have hrows :
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        u * pre.case2ResidualRowWeight i.1) =
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        post.weight (case2ResidualRowLevel n S J i.1)) := by
+    funext i
+    exact (by
+      simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight] using
+        (hupdate (case2ResidualRowLevel n S J i.1)
+          (case2ResidualRowLevel_ge n S J i.1)).symm)
+  rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
+  rw [hpivotResidual, hrows]
+
+end CorrectedCase2NewLabelCertificate
+
 /-- The following factor for displayed Case 2, reindexed into pivot-first column order. -/
 def case2DisplayedFollowingFactor
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
@@ -3367,6 +3426,82 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap
     IntroducedLabelRecurrenceState.step, IntroducedLabelRecurrenceState.weight] using
     exists_case2DisplayedQP_mul_sourceSubstitution_of_introducedLabelGap
       L n hS hcont state.level state.var hgap u residual C
+
+namespace CorrectedCase2NewLabelCertificate
+
+/-- Displayed Case 2 source-substitution `Q/P` identity with supplied successor
+recurrence weights.  The left side remains the source substitution with old
+row weights; the right-side diagonal is rewritten using a supplied successor
+state satisfying the Case 2 recurrence update `b'_i = u * b_i` on the displayed
+residual rows.  This is not a proof that the blow-up chart produces the
+successor state. -/
+theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) R)
+    (hgap : pre.case2Gap) (u : R)
+    (hlevel_old :
+      ∀ {s k}, introducedLabel L n S J s k → post.level s k = pre.level s k)
+    (hvar_old :
+      ∀ {s k}, introducedLabel L n S J s k → post.var s k = pre.var s k)
+    (hlevel_new : post.level S (J + 1) = J)
+    (hvar_new : post.var S (J + 1) = u)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          case2DisplayedTransportedFollowingFactor n hS hcont residual C := by
+  rcases exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap
+      L n hS hcont pre hgap u residual C with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hupdate :=
+    hnew.case2_weight_succ_current_eq_newVar_mul pre post u
+      hlevel_old hvar_old hlevel_new hvar_new
+  have hpivot :
+      u * pre.weight (J + 1) = post.weight (J + 1) :=
+    (hupdate (J + 1) le_rfl).symm
+  have hrows :
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        u * pre.case2ResidualRowWeight i.1) =
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        post.weight (case2ResidualRowLevel n S J i.1)) := by
+    funext i
+    exact (by
+      simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight] using
+        (hupdate (case2ResidualRowLevel n S J i.1)
+          (case2ResidualRowLevel_ge n S J i.1)).symm)
+  rwa [hpivot, hrows] at hq
+
+end CorrectedCase2NewLabelCertificate
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence
 indexed by the residual source row. This supplies quotient witnesses from the

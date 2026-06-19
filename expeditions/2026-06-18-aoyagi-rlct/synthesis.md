@@ -797,6 +797,18 @@ transition theorem. Narrow Lean work may proceed only where independent of this
 issue, such as finite bookkeeping or monomial divisibility for regularity of
 the `P` matrices.
 
+The A4 displayed Case 2 source-substitution line is now connected to supplied
+successor recurrence weights. The earlier local algebra proved
+`diag(weight) * D_J = diag(u*weight) * D'_J`, and the recurrence update proved
+`post.weight_i = u * pre.weight_i` for `i >= J+1`. Lean now combines these:
+the pivot-first source-substituted block and the displayed `Q/P` wrapper can
+write the cleared-side diagonal using `post.weight (J+1)` and
+`post.weight rowLevel`. This is the intended single-count normalization of the
+source's `D_J = uD'_J` and `b'_i = u b_i` displays. It still assumes the
+successor recurrence state is supplied and does not prove the chart produces
+that state, nor arbitrary-pivot coverage, regularity/Jacobian facts, exponent
+updates, transition invariants, or the printed Case 2 vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

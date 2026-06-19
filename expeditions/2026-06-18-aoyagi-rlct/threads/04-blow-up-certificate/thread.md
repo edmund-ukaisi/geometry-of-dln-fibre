@@ -623,6 +623,29 @@ comparability, justify double-counting the standalone outside `u`, or prove
 chart coverage, regularity/Jacobian facts, exponent updates, transition
 invariants, termination, normal crossings, or RLCT extraction.
 
+## 2026-06-19 Lean Case 2 successor source substitution
+
+Reproduction: `reproduction-case2-successor-source-substitution-a4.md`.
+Statement card: `statement-card-a4-case2-successor-source-substitution.md`.
+Review artifact: `review-case2-successor-source-substitution-a4.md`.
+
+Lean now connects the displayed Case 2 source-substitution algebra to supplied
+successor recurrence weights. The new theorem
+`CorrectedCase2NewLabelCertificate.case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights`
+rewrites the pivot-first equality
+`diag(pre row weights) * D_J = diag(u*pre row weights) * D'_J` using a supplied
+post-state satisfying the recurrence update, so the right-side diagonal is
+written as `post.weight (J+1)` and `post.weight rowLevel`.
+
+The `Q/P` wrapper
+`CorrectedCase2NewLabelCertificate.exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights`
+does the same rewrite inside the existing displayed source-substitution `Q/P`
+identity under the old Case 2 gap. This is a source-facing handoff between
+Aoyagi's displayed `D_J = uD'_J` and `b'_i=u b_i` lines; it is not chart
+production, arbitrary-pivot coverage, regularity/Jacobian, exponent update,
+transition invariant, normal-crossing, RLCT extraction, source comparability,
+or a repair of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean Case 1 center generators
 
 Statement card: `statement-card-a4-case1-center-generators.md`.

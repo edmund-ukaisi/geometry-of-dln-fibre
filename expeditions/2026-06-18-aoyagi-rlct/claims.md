@@ -495,9 +495,12 @@ No such claim is formalisation-ready until both fields are filled.
   tail lift is also proved: already-proved displayed residual-tail identities
   can be reattached below unchanged top rows. Missing arbitrary pivot charts,
   the full source blockdiag identity beyond this unchanged-top lift, full
-  polynomial-coordinate chart construction, proof that the source recurrence
-  produces the displayed row-index weights, the printed `b'_i` versus standalone-`u` ambiguity,
-  termination, and boundary cases remain open.
+  polynomial-coordinate chart construction, and proof that the chart produces
+  the supplied recurrence post-state remain open. The printed `b'_i` versus
+  standalone-`u` ambiguity is now handled only by the single-count
+  normalization: the selected variable is absorbed into successor weights, not
+  counted a second time outside them. Termination and boundary cases remain
+  open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
   genuine source gap with no certificate-level repair compatible with the
@@ -515,6 +518,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  and normalized `Q` column operation respectively. Xhigh reviews of the
 	  finite label-product bridge are saved at
 	  `threads/04-blow-up-certificate/review-case2-label-product-gap-a4.md`.
+	  Review of the successor source-substitution handoff is saved at
+	  `threads/04-blow-up-certificate/review-case2-successor-source-substitution-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -724,7 +729,14 @@ No such claim is formalisation-ready until both fields are filled.
   `CorrectedCase2NewLabelCertificate.case2_weight_succ_current_residual_flat_of_preGap`,
   proving that a supplied successor state with old recurrence data preserved
   and new label `(S,J+1)` at level `J` with variable `u` satisfies
-  `post.weight i = u * pre.weight i` for every `J+1<=i`.
+  `post.weight i = u * pre.weight i` for every `J+1<=i`. Added the displayed
+  Case 2 successor source-substitution handoff
+  `CorrectedCase2NewLabelCertificate.case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights`
+  and
+  `CorrectedCase2NewLabelCertificate.exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights`,
+  rewriting the pivot-first and displayed `Q/P` right-side diagonals from
+  `u * pre.weight` to the supplied successor weights `post.weight`, while the
+  left side remains the old-weighted source substitution.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -738,9 +750,10 @@ No such claim is formalisation-ready until both fields are filled.
   `J+1..mu_S` separate from actual-width residual columns `J+1..n_(S+1)`, and
   counts the selected variable once in the updated weights `u*b_i`. It does not
   prove the source's Case 2 comparability sentence; the label gap alone is
-  insufficient. The Aoyagi-specific arbitrary chart construction, coordinate
-  transport, row-weight hypotheses in pivot-first coordinates, and exponent
-  updates remain open.
+  insufficient. The successor-weight handoff assumes the post-state and does
+  not prove chart production. The Aoyagi-specific arbitrary chart construction,
+  coordinate transport, row-weight hypotheses in pivot-first coordinates, and
+  exponent updates remain open.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

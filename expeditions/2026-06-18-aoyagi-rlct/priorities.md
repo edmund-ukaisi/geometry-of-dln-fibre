@@ -142,13 +142,18 @@ on the session's original cwd.
    preserves old introduced-label data and adds `(S,J+1)` at level `J` with
    variable `u`, then `post.weight i = u * pre.weight i` for every
    `J+1<=i`, and old residual flatness remains flat after this common
-   multiplication. These bridges still assume the level and variable maps are
-   the source recurrence data and do not prove chart production. Keep row and
-   column domains separate: residual rows are `J+1..mu_S`, residual columns are
-   actual-width `J+1..n_(S+1)`, and the selected variable is counted once in
-   the updated weights `u*b_i`. Next A4 target: connect this recurrence
-   post-data to a source chart package, or move to arbitrary-pivot chart
-   transport if chart production remains blocked.
+   multiplication. The displayed Case 2 successor source-substitution handoff
+   is also Lean-proved: the source-substituted block weighted by the old state
+   can be rewritten, after pivot-first reindexing and in the displayed `Q/P`
+   wrapper, with the supplied successor weights `post.weight` in place of
+   ad hoc `u * pre.weight` factors. These bridges still assume the level and
+   variable maps are the source recurrence data and do not prove chart
+   production. Keep row and column domains separate: residual rows are
+   `J+1..mu_S`, residual columns are actual-width `J+1..n_(S+1)`, and the
+   selected variable is counted once in the updated weights `u*b_i`. Next A4
+   target: build a non-overclaiming supplied post-data package for displayed
+   Case 2, or move to arbitrary-pivot chart transport if chart production
+   remains blocked.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

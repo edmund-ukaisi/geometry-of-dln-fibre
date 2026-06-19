@@ -480,6 +480,25 @@ RLCT extraction. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-recurrence-weight-update-a4.md`.
 
+Latest A4 update: the displayed Case 2 successor source-substitution handoff
+has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. Proved Lean
+names are
+`CorrectedCase2NewLabelCertificate.case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst_succWeights`
+and
+`CorrectedCase2NewLabelCertificate.exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights`.
+These theorems combine the previous displayed selected-entry substitution
+factorisation with the conditional recurrence-weight update, rewriting the
+right-side diagonal in the displayed pivot-first and `Q/P` identities with a
+supplied successor state's weights. The left side remains the old-weighted
+source substitution. This is still conditional post-state bookkeeping, not a
+proof of chart production, arbitrary-pivot chart coverage, coordinate
+regularity/Jacobian, exponent updates, transition invariants, normal crossings,
+RLCT extraction, source comparability, or the printed Case 2 vector repair.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-successor-source-substitution.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-successor-source-substitution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
