@@ -614,6 +614,92 @@ theorem case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
   · exact le_trans hcont (prefixMinNat_succ_le n hS)
   · exact le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
 
+/-- Lower the vector tail from stage `S` onward to the pivot level `J`. -/
+def lowerTailVector (T : ℕ → ℤ) (S : ℕ) (J : ℤ) (i : ℕ) : ℤ :=
+  if i < S then T i else J
+
+/-- Lowering a flat tail gives the Case 1 terminal-exponent increment. -/
+theorem terminalExponent_lowerTailVector_of_flatFromPred
+    (L S : ℕ) (n T : ℕ → ℤ) (h J : ℤ)
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hpred : T (S - 1) = h)
+    (htail : ∀ i, S ≤ i → i ≤ L → T i = h) :
+    terminalExponent L n (lowerTailVector T S J) =
+      terminalExponent L n T + (h - J) * (n (S + 1) - J) := by
+  let f : ℕ → ℤ :=
+    fun j ↦
+      if 2 ≤ j then (T (j - 1) - T j) * (n (j + 1) - T j) else 0
+  let g : ℕ → ℤ :=
+    fun j ↦
+      if 2 ≤ j then
+        (lowerTailVector T S J (j - 1) - lowerTailVector T S J j) *
+          (n (j + 1) - lowerTailVector T S J j)
+      else 0
+  have hbase :
+      (n 1 - lowerTailVector T S J 1) * (n 2 - lowerTailVector T S J 1) =
+        (n 1 - T 1) * (n 2 - T 1) := by
+    simp [lowerTailVector, (by omega : 1 < S)]
+  have hdiff :
+      (∑ j ∈ Finset.range (L + 1), (g j - f j)) =
+        g S - f S := by
+    refine Finset.sum_eq_single
+      (s := Finset.range (L + 1)) (a := S) (f := fun j : ℕ ↦ g j - f j) ?_ ?_
+    · intro j hjmem hjne
+      by_cases h2 : 2 ≤ j
+      · by_cases hjS : j < S
+        · have hpredlt : j - 1 < S := by omega
+          simp [f, g, h2, lowerTailVector, hjS, hpredlt]
+        · have hSj : S < j := by omega
+          have hprednot : ¬ j - 1 < S := by omega
+          have hjnot : ¬ j < S := by omega
+          have hjLt : j < L + 1 := Finset.mem_range.mp hjmem
+          have hjL : j ≤ L := by omega
+          have hpredTail : T (j - 1) = h := htail (j - 1) (by omega) (by omega)
+          have hjTail : T j = h := htail j (by omega) hjL
+          simp [f, g, h2, lowerTailVector, hjnot, hprednot, hpredTail, hjTail]
+      · simp [f, g, h2]
+    · intro hnot
+      exact absurd (by simp [hSL]) hnot
+  have hSdiff :
+      g S - f S = (h - J) * (n (S + 1) - J) := by
+    have hpredlt : S - 1 < S := by omega
+    have hSTail : T S = h := htail S le_rfl hSL
+    simp [f, g, hS, lowerTailVector, hpredlt, hpred, hSTail]
+  have hdiff' :
+      (∑ j ∈ Finset.range (L + 1), (g j - f j)) =
+        (h - J) * (n (S + 1) - J) := by
+    simpa [hSdiff] using hdiff
+  have hsum :
+      (∑ j ∈ Finset.range (L + 1), g j) =
+        (∑ j ∈ Finset.range (L + 1), f j) + (h - J) * (n (S + 1) - J) := by
+    calc
+      (∑ j ∈ Finset.range (L + 1), g j)
+          = ∑ j ∈ Finset.range (L + 1), (f j + (g j - f j)) := by
+              refine Finset.sum_congr rfl ?_
+              intro j hj
+              ring
+      _ = (∑ j ∈ Finset.range (L + 1), f j) +
+            ∑ j ∈ Finset.range (L + 1), (g j - f j) := by
+              rw [Finset.sum_add_distrib]
+      _ = (∑ j ∈ Finset.range (L + 1), f j) +
+            (h - J) * (n (S + 1) - J) := by
+              rw [hdiff']
+  unfold terminalExponent
+  rw [hbase, hsum]
+  ring
+
+/-- Case 1 form: if the old flat level is `J + J1`, lowering the tail adds `J1` rows. -/
+theorem terminalExponent_lowerTailVector_of_flatFromPred_add
+    (L S : ℕ) (n T : ℕ → ℤ) (J J1 : ℤ)
+    (hS : 2 ≤ S) (hSL : S ≤ L)
+    (hpred : T (S - 1) = J + J1)
+    (htail : ∀ i, S ≤ i → i ≤ L → T i = J + J1) :
+    terminalExponent L n (lowerTailVector T S J) =
+      terminalExponent L n T + J1 * (n (S + 1) - J) := by
+  rw [terminalExponent_lowerTailVector_of_flatFromPred L S n T (J + J1) J
+    hS hSL hpred htail]
+  ring
+
 section MonomialRecurrence
 
 variable {α : Type*} [CommMonoid α]
