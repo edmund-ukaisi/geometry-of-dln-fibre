@@ -54,9 +54,14 @@ on the session's original cwd.
    upper blocks `Bprev p`, and a variable-parameter continuity handoff is
    Lean-proved: if the edge family and `Bprev` family vary continuously and the
    transformed charts hold at the base parameter, then they hold nearby. Next
-   construct the deterministic recursive `Bprev` family from the suffix-chain
-   induction and prove its chart-local reduction/continuity under recursive
-   chart hypotheses, without pretending that exact-rank strata are open.
+   deterministic state layer is partly Lean-proved:
+   `ChartLocalSuffixState.step` is the one-step update
+   `Bnext = (topLeftCorner ([I Bprev; 0 I] * E p))^-1 * upperRightBlock ...`,
+   and `ChartLocalSuffixState.step_blockDiagonal` proves it preserves the
+   block-diagonal invariant under the recursive chart hypothesis. Next assemble
+   this step into a full deterministic recursive suffix-chain theorem and then
+   prove continuity of that recursive data, without pretending that exact-rank
+   strata are open.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

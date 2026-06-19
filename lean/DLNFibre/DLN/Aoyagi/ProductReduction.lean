@@ -15,6 +15,15 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+/-- Deterministic data carried by one suffix state in chart-local product reduction. -/
+structure ChartLocalSuffixState {N : ℕ}
+    (ρ : Type*) (κ : Fin (N + 1) → Type*) (K : Type*)
+    (j i : Fin (N + 1)) where
+  L : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K
+  B : Matrix ρ (κ i) K
+  Ctop : Matrix ρ ρ K
+  D : Matrix (κ j) (κ i) K
+
 section InductionStep
 
 variable {K : Type*} [CommRing K]
@@ -524,6 +533,97 @@ theorem productReduction_chartLocal_suffixStep_fromBlocks_indexed
     _ = fromBlocks (Ctop * topLeftCorner M) 0 0
           (Dprev * schurResidualBlock M) := by
         simpa [schurResidualBlock] using hstep
+
+namespace ChartLocalSuffixState
+
+/-- The block-diagonal invariant carried by a deterministic chart-local suffix state. -/
+def BlockDiagonal
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    {j i : Fin (N + 1)}
+    (S : ChartLocalSuffixState ρ κ K j i)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hij : i ≤ j) : Prop :=
+  IsUnit S.L.det ∧ IsUnit S.Ctop.det ∧
+    S.L * P i j hij *
+        fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0 (1 : Matrix (κ i) (κ i) K) =
+      fromBlocks S.Ctop 0 0 S.D
+
+/-- The next transformed edge determined by the current accumulated right block. -/
+def transformedEdge
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ) :
+    Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K :=
+  fromBlocks (1 : Matrix ρ ρ K) S.B 0 (1 : Matrix (κ p.succ) (κ p.succ) K) *
+    E p
+
+/-- The deterministic suffix-state update hidden in the chart-local induction proof. -/
+def step
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ) :
+    ChartLocalSuffixState ρ κ K j p.castSucc :=
+  let M := transformedEdge E p S
+  { L := fromBlocks (1 : Matrix ρ ρ K) 0
+        (-(S.D * lowerLeftBlock M * (S.Ctop * topLeftCorner M)⁻¹)) 1 * S.L
+    B := (topLeftCorner M)⁻¹ * upperRightBlock M
+    Ctop := S.Ctop * topLeftCorner M
+    D := S.D * schurResidualBlock M }
+
+/-- One deterministic suffix-state update preserves the block-diagonal invariant. -/
+theorem step_blockDiagonal
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (hS : S.BlockDiagonal P hpj)
+    (hchart : identityCornerDetChart (transformedEdge E p S)) :
+    (step E p S).BlockDiagonal P ((Fin.castSucc_le_succ p).trans hpj) := by
+  rcases hS with ⟨hL, hCtop, hprev⟩
+  let Rprev : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K :=
+    fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0 (1 : Matrix (κ p.succ) (κ p.succ) K)
+  let M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K :=
+    transformedEdge E p S
+  have hfactor : E p = Rprev * M := by
+    calc
+      E p = (1 : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K) * E p := by
+        rw [Matrix.one_mul]
+      _ =
+        (fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0
+            (1 : Matrix (κ p.succ) (κ p.succ) K) *
+          fromBlocks (1 : Matrix ρ ρ K) S.B 0
+            (1 : Matrix (κ p.succ) (κ p.succ) K)) * E p := by
+          rw [upperUnitriangular_neg_mul_upperUnitriangular S.B]
+      _ = Rprev * M := by
+          simp [Rprev, M, transformedEdge, Matrix.mul_assoc]
+  have hstep := productReduction_chartLocal_suffixStep_fromBlocks_indexed
+    (Ptail := P p.succ j hpj) (E := E p) (M := M) (Lprev := S.L)
+    (Rprev := Rprev) (Ctop := S.Ctop) (Dprev := S.D) hprev hfactor hCtop hchart
+  have hLstep : IsUnit
+      (fromBlocks (1 : Matrix ρ ρ K) 0
+        (-(S.D * lowerLeftBlock M * (S.Ctop * topLeftCorner M)⁻¹)) 1).det := by
+    exact (Matrix.isUnit_iff_isUnit_det
+        (A := fromBlocks (1 : Matrix ρ ρ K) 0
+          (-(S.D * lowerLeftBlock M * (S.Ctop * topLeftCorner M)⁻¹)) 1)).mp
+      ((Matrix.isUnit_fromBlocks_zero₁₂).2 ⟨isUnit_one, isUnit_one⟩)
+  refine ⟨?_, ?_, ?_⟩
+  · simpa [step, M, Matrix.det_mul] using hLstep.mul hL
+  · simpa [step, M, Matrix.det_mul] using hCtop.mul hchart
+  · dsimp [BlockDiagonal, step, M]
+    rw [hsuccRight p j hpj]
+    exact hstep
+
+end ChartLocalSuffixState
 
 /-- Abstract suffix-chain block diagonalisation on explicit determinant charts. -/
 theorem productReduction_chartLocal_suffixChain_blockDiagonal_indexed

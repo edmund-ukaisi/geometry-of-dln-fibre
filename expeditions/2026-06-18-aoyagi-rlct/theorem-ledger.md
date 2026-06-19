@@ -155,6 +155,15 @@ target as the deterministic update
 `Bnext = (topLeftCorner ([I Bprev; 0 I] * E p))⁻¹ *
 upperRightBlock ([I Bprev; 0 I] * E p)` under recursive chart hypotheses.
 
+Eleventh latest A2 update: the deterministic one-step suffix state has landed.
+`ChartLocalSuffixState` packages the current chart-local suffix data, while
+`ChartLocalSuffixState.transformedEdge`, `ChartLocalSuffixState.step`, and
+`ChartLocalSuffixState.step_blockDiagonal` in `ProductReduction.lean` formalize
+the recurrence that was hidden inside the existential suffix-chain proof. The
+step theorem proves preservation of the block-diagonal invariant under the
+recursive determinant-chart hypothesis for the transformed edge. It does not
+yet define or prove the full recursive suffix-chain state from `j` down to `i`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

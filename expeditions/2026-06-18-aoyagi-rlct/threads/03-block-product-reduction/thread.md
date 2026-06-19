@@ -912,3 +912,33 @@ The next Lean target is a deterministic recursive suffix-chain reduction using
 this update under recursive determinant-chart hypotheses, followed by a
 continuity theorem for that recursive data. Exact rank assumptions remain
 separate.
+
+## 2026-06-19 A2 deterministic suffix-state step
+
+Extended `ProductReduction.lean` with a deterministic one-step state layer:
+
+- `ChartLocalSuffixState`;
+- `ChartLocalSuffixState.BlockDiagonal`;
+- `ChartLocalSuffixState.transformedEdge`;
+- `ChartLocalSuffixState.step`;
+- `ChartLocalSuffixState.step_blockDiagonal`.
+
+The state records the left multiplier `L`, right-elimination block `B`, top
+block `Ctop`, and residual block `D`. The transformed edge is
+
+`M = [I B; 0 I] * E p`,
+
+and the deterministic step sets
+
+`Bnext = (topLeftCorner M)⁻¹ * upperRightBlock M`.
+
+The theorem `step_blockDiagonal` proves that this one-step update preserves the
+block-diagonal invariant, assuming the previous suffix state satisfies the
+invariant and the transformed edge lies in the determinant chart. This is the
+algebraic one-step recurrence hidden inside the older existential suffix-chain
+proof.
+
+Still open: define the full recursive state from endpoint `j` down to `i`,
+prove its block-diagonal invariant by iterating this step, and then prove
+continuity of that recursive state on a chart neighborhood. Exact rank
+assumptions remain separate.
