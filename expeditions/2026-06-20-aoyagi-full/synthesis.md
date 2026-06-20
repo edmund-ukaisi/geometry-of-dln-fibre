@@ -46,11 +46,20 @@ proofs) we'd need real isolation → the operator-relaunch-from-MAIN option, def
 Minor crossing risk (controller docs + formaliser Lean both commit to the branch in MAIN) — mitigated by
 serial cadence + green-gate each integration.
 
+## OPPORTUNITY — λ may be axiom-FREE (beyond the one-citation target)
+
+Closing the (1,1,1) bridge = proving `rlctAt(monomial) = monomialThreshold` directly (Fubini + Mathlib
+`|x|^a` integrability). If this GENERALIZES, the **threshold-half of `monomial_rlct` is provable** ⇒ the
+λ-citation is eliminated ⇒ λ becomes fully axiom-free (the θ order-half stays seamed). fm-2 probing while
+closing (1,1,1). If it hits a genuine analytic wall, keep `monomial_rlct` as the cited axiom (the brief's
+one citation) + re-engage pp for a blueprint. This is "prove what you can prove, don't cite it" (bedrock).
+
 ## In flight
 
-- `rv-2` — thread 09: AUDIT the (1,1,1) gate (non-skippable; its rebuild = the green-gate). Background.
-- `pp` — on-demand (design complete). Next re-engage: S1.1 detailed proof blueprint if fm hits friction.
-- `fm-2` — idle (gate done, awaiting audit).
+- `fm-2` — thread 10: prove the (1,1,1) rlctAt bridge directly (closes first full end-to-end, 10→9 sorry)
+  + the axiom-elimination probe. The base case of S1. Background, in MAIN.
+- `pp` — on-demand (design complete). Re-engage for the general S1.1/S1.5 blueprint or R1 construction.
+- `rv-2` — idle ((1,1,1) audit PASS, 5/5). `fm` — idle (stale seat).
 
 ## Next tick
 
