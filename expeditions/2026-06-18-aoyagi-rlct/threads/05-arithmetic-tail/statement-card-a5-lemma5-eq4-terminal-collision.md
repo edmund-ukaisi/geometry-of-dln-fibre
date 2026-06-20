@@ -47,8 +47,9 @@ W_(ell+1) = M - p + 1.
 
 ## Assumed
 
-- A supplied equation `(4)` piecewise branch certificate.
-- `a<=ell`, `1<=a`, and `p+1=a`.
+- A supplied equation `(4)` piecewise branch certificate, including
+  `a<=ell` and `p+1<=a`.
+- The terminal-collision equality `p+1=a`, which also gives `1<=a`.
 - Definition 3's selected-sum identity.
 
 ## Cited

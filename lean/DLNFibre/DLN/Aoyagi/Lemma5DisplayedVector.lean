@@ -195,6 +195,8 @@ no terminal or chart-coverage claim. -/
 structure AoyagiLemma5Eq4PiecewiseSourceVector
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
     (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) : Prop where
+  a_le_ell : a ≤ ell
+  indexGuard : p + 1 ≤ a
   first :
     ∀ S, S < C.point 1 - 1 → T S = layerWidth (S + 1)
   prefixBranch :
@@ -210,6 +212,17 @@ structure AoyagiLemma5Eq4PiecewiseSourceVector
     ∀ b S, p + (ell - a) + 1 ≤ b → C.block b S →
       C.point (p + (ell - a) + 1) - 1 < S →
         T S = aoyagiHtildeUpperNat ell a M m b
+
+/-- The repaired equation `(4)` selected-index guard makes the displayed
+boundary `S_(p+ell-a+2)-1` a selected cutpoint index. -/
+theorem aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    p + (ell - a) + 1 ≤ ell := by
+  have ha : a ≤ ell := hT.a_le_ell
+  have hp : p + 1 ≤ a := hT.indexGuard
+  omega
 
 /-- Branch-value alternatives for Aoyagi Lemma 5 equation `(4)` on the selected
 span.
@@ -348,19 +361,20 @@ constructs a terminal vector or that the value is zero. -/
 theorem aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
     (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
-    (ha : a ≤ ell) (hp : p + 1 = a)
+    (hp : p + 1 = a)
     (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
     (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
     T (C.point ell - 1) =
       M - aoyagiSelectedWidthNat ell m ell - (p : ℤ) + 1 := by
   have ha_pos : 1 ≤ a := by omega
+  have ha : a ≤ ell := hT.a_le_ell
   have hboundary_index : p + (ell - a) + 1 = ell := by omega
   have hupper_index : p + (ell - a) = ell - 1 := by omega
   have hboundary := hT.boundary
   rw [hboundary_index, hupper_index] at hboundary
   have hpred :=
     aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum
-      ell a M m ha_pos ha hselected
+      ell a M m ha_pos hT.a_le_ell hselected
   rw [hpred] at hboundary
   simpa using hboundary
 
@@ -372,13 +386,13 @@ would have to satisfy to be zero. -/
 theorem aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
     (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
-    (ha : a ≤ ell) (hp : p + 1 = a)
+    (hp : p + 1 = a)
     (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
     (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
     T (C.point ell - 1) = 0 ↔
       aoyagiSelectedWidthNat ell m ell = M - (p : ℤ) + 1 := by
   rw [aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary
-    ell a p M m C layerWidth T ha hp hselected hT]
+    ell a p M m C layerWidth T hp hselected hT]
   constructor <;> intro h <;> linarith
 
 /-- A supplied equation `(4)` piecewise vector has the correct own-coordinate
@@ -389,8 +403,7 @@ piecewise branch certificate. -/
 theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
     (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
-    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp0 : 1 ≤ p)
-    (hp_tail : p + 1 ≤ a) (hp_c : p ≤ ell - a)
+    (hell : 1 ≤ ell) (hp0 : 1 ≤ p) (hp_c : p ≤ ell - a)
     (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
     (hsource : ∀ i : Fin (ell + 1),
       (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
@@ -401,7 +414,7 @@ theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
         aoyagiHtildeLowerNat ell a M m p + 1 ≤
           aoyagiSelectedWidthNat ell m p) := by
   have hlocal := aoyagiLemma5Eq4_localData_of_sourceSelectedInequality
-    ell a p M m hell ha hp0 hp_tail hp_c hselected hsource
+    ell a p M m hell hT.a_le_ell hp0 hT.indexGuard hp_c hselected hsource
   rcases hlocal with ⟨hcutoff, hown, hlabel⟩
   have hp_lt_ell : p < ell := by omega
   have hblock : C.block p (C.point p - 1) :=

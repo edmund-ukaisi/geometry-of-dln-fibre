@@ -24,6 +24,7 @@ Names:
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.exists_block_iff_mem_selectedSpan`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.not_block_terminalEndpoint`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5Eq4PiecewiseSourceVector`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5Eq4SelectedSpanBranchValue`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_branchValue_of_block`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_selectedSpan_branchValue`
@@ -38,10 +39,16 @@ Names:
 Lean now has a conditional source-vector-facing certificate for Aoyagi Lemma 5
 equation `(4)`.  If selected cutpoints are supplied and a function `T` is
 certified to satisfy the displayed equation `(4)` branch values on selected
-blocks, then under the repaired guards
+blocks, then the certificate itself carries the source-boundary guards
 
 ```text
-1<=p,     p+1<=a,     p<=ell-a,
+a<=ell,     p+1<=a.
+```
+
+Under the additional own-coordinate guards
+
+```text
+1<=p,     p<=ell-a,
 ```
 
 and Definition 3's selected-width hypotheses, Lean proves:
@@ -64,6 +71,9 @@ T(S_(p+1)-1) = Htilde_p,
   branch values for every point in the selected span.
 - The terminal selected endpoint is not in a selected block, and a supplied
   terminal endpoint extension to `Htilde'_ell` has value zero.
+- The equation `(4)` certificate's source-boundary guards imply
+  `p+(ell-a)+1<=ell`, so the displayed boundary is an in-range selected
+  cutpoint.
 - A supplied equation `(4)` piecewise certificate gives the correct own
   coordinate.
 - The same theorem carries forward the repaired selected-index and legal-label
@@ -73,7 +83,8 @@ T(S_(p+1)-1) = Htilde_p,
 
 - The selected cutpoints and their strict order.
 - The supplied equation `(4)` branch certificate.
-- `1<=ell`, `a<=ell`, `1<=p`, `p+1<=a`, and `p<=ell-a`.
+- `a<=ell` and `p+1<=a` as fields of the supplied equation `(4)` certificate.
+- `1<=ell`, `1<=p`, and `p<=ell-a` for the own-coordinate theorem.
 - The selected-width sum `sum W = ell*(M-1)+a`.
 - The strict source selected inequality `ell*W_i < sum W`.
 
@@ -109,6 +120,8 @@ T(S_(p+1)-1) = Htilde_p,
 - Terminal endpoint source/API review passed by xhigh `Kuhn` and xhigh
   `Hilbert`:
   `review-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
+- Source-guard API hardening review passed by xhigh `Lovelace`:
+  `review-lemma5-eq4-source-guarded-piecewise-a5.md`.
 
 ## Verification
 

@@ -581,17 +581,18 @@ on the session's original cwd.
    realisation.
    A first audit of those families is now recorded. Full source-family
    realisation is blocked by legal-label bounds, terminal/tail conventions for
-   `\tilde t=0`, missing equation `(4)` index guards, and the unspecified Case
-   1(2) chart sequence. The safe Lean progress is the equation `(4)`
+   `\tilde t=0`, the then-missing equation `(4)` index guards, and the
+   unspecified Case 1(2) chart sequence. The source-boundary guard gap has now
+   been addressed at the supplied-certificate level, but full family
+   realisation remains blocked. The safe Lean progress is the equation `(4)`
    own-coordinate sanity check: under `j0<=a` and `j0<=ell-a`,
    `Htilde'_{j0}-j0=Htilde_{j0}`. Next target: resolve the terminal/tail
    convention or legal-label bounds before claiming a displayed source vector.
    A follow-up guard-arithmetic checkpoint records that equation `(4)` also
    needs the sharper selected-index guard `j0+1<=a`, and that
    `k=Htilde_{j0}+1` is label-bounded exactly under a prefix-crossing
-   condition. Next target: decide whether to build a conditional displayed
-   vector record with these guard fields, or first resolve the terminal/tail
-   `tilde t=0` convention.
+   condition. This guard-field decision has since been addressed at the
+   supplied-certificate level; terminal/tail `tilde t=0` remains separate.
    Equation `(3)` guard arithmetic now records the companion one-unit slack
    obstruction: `k=Htilde'_1+1` is label-bounded exactly when
    `M-1<=W_1+W_2` and `W_1+2<=M`. This should be a field of any future
@@ -613,7 +614,10 @@ on the session's original cwd.
    label handoff.  Selected-block coverage and selected-span branch-value
    classification are now Lean-proved for that supplied certificate, including
    the half-open boundary split that keeps `S_(p+ell-a+2)-1` out of the strict
-   tail.  A source audit reconfirms that terminal `tilde t=0`/Case 1(2)
+   tail.  The certificate now also carries the source-boundary guards
+   `a<=ell` and `p+1<=a`, with Lean proving `p+(ell-a)+1<=ell`; the
+   own-coordinate guard `1<=p` remains theorem-local.  A source audit
+   reconfirms that terminal `tilde t=0`/Case 1(2)
    realisation is still blocked; Lean now has only a supplied terminal-endpoint
    boundary showing that an explicitly supplied assignment
    `T(S_(ell+1)-1)=Htilde'_ell` has value zero.  Next target: either build a

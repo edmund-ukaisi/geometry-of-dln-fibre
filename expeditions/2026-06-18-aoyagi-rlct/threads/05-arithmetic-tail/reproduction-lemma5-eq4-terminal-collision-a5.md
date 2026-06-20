@@ -47,6 +47,9 @@ p + 1 = a.
 ```
 
 This is the equality case of the repaired selected-index guard `p+1<=a`.
+The supplied equation `(4)` certificate now carries both `a<=ell` and
+`p+1<=a`, so the boundary index is source-valid before this terminal
+specialisation is applied.
 
 Under this equality,
 

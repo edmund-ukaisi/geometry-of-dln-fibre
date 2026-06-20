@@ -80,6 +80,18 @@ The branch classifier applies to that block.  Therefore a supplied equation
 `(4)` piecewise certificate gives one of the advertised branch values for every
 source index in the selected span.
 
+The certificate now carries `a<=ell` and `p+1<=a`, so the special boundary
+index is source-valid:
+
+```text
+p + (ell-a) + 1 <= ell.
+```
+
+The classifier still does not claim that the boundary point lies in the
+selected span.  In the equality case `p+1=a`, the boundary is the terminal
+endpoint `S_(ell+1)-1`, which is deliberately outside the half-open selected
+span.
+
 ## Lean Targets
 
 ```text
@@ -98,6 +110,5 @@ aoyagiLemma5Eq4_selectedSpan_branchValue
 - No terminal `tilde t=0`, vector admissibility, source vector-to-chain
   correspondence, Case 1(2) chart sequence, Lemma 5 order count, pole order,
   normal crossings, or RLCT extraction.
-- The repaired selected-index guard `p+1<=a` remains necessary when connecting
-  the displayed source formula to Definition 3's selected list, even though the
-  pure conditional classifier uses the total `point` accessor.
+- The own-coordinate theorem still needs `1<=p`; the source-boundary guard
+  `p+1<=a` by itself does not put `S_(p+1)-1` in the prefix block.

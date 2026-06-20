@@ -246,6 +246,7 @@ objects are `AoyagiSelectedCutpoints`, `AoyagiSelectedCutpoints.point`,
 `AoyagiSelectedCutpoints.exists_block_iff_mem_selectedSpan`,
 `AoyagiSelectedCutpoints.not_block_terminalEndpoint`,
 `AoyagiLemma5Eq4PiecewiseSourceVector`,
+`aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector`,
 `AoyagiLemma5Eq4SelectedSpanBranchValue`,
 `aoyagiLemma5Eq4_branchValue_of_block`,
 `aoyagiLemma5Eq4_selectedSpan_branchValue`,
@@ -260,7 +261,10 @@ guards and Definition 3 hypotheses; the selected-span classifier says that
 the same supplied certificate gives one of the advertised branch values for
 every source index in the selected span only; and the terminal-endpoint
 boundary says a supplied endpoint extension to `Htilde'_ell` is zero, without
-proving terminal-vector realisation.  Reproduction:
+proving terminal-vector realisation.  The supplied certificate now carries
+the source-boundary guards `a<=ell` and `p+1<=a`, and Lean records the
+consequence `p+(ell-a)+1<=ell` so the displayed boundary is not accepted only
+through the totalized `point` fallback.  Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-piecewise-certificate-a5.md`.
 Selected-block bookkeeping reproduction:
 `threads/05-arithmetic-tail/reproduction-selected-block-bookkeeping-a5.md`.

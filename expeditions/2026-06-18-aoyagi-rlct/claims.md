@@ -2007,10 +2007,15 @@ No such claim is formalisation-ready until both fields are filled.
   Also proved `AoyagiSelectedCutpoints.block_leftEndpoint_lt_of_ne`,
   `AoyagiSelectedCutpoints.leftEndpoint_lt_of_lt_block`,
   `AoyagiLemma5Eq4SelectedSpanBranchValue`,
+  `aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector`,
   `aoyagiLemma5Eq4_branchValue_of_block`, and
   `aoyagiLemma5Eq4_selectedSpan_branchValue`, which classify selected-span
-  points into the supplied equation `(4)` branch values without constructing
-  the displayed vector or proving terminal/chart/order-count claims.
+  points into the supplied equation `(4)` branch values.  The supplied
+  equation `(4)` certificate now carries the source-boundary guards `a<=ell`
+  and `p+1<=a`, and Lean records `p+(ell-a)+1<=ell`; this prevents the
+  displayed boundary from being treated as source-valid only through the
+  totalized `point` fallback.  This still does not construct the displayed
+  vector or prove terminal/chart/order-count claims.
   Also proved `aoyagiHtildeLowerNat_last_eq_zero_of_selectedSum`,
   `aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum`,
   `AoyagiSelectedCutpoints.not_block_terminalEndpoint`,

@@ -65,6 +65,9 @@ The Lean structure `AoyagiLemma5Eq4PiecewiseSourceVector` records a function
 `T : Nat -> Int` with the displayed branch values from equation `(4)`:
 
 ```text
+a <= ell,
+p+1 <= a,
+
 S < S_2-1:
   T(S) = layerWidth(S+1),
 
@@ -82,6 +85,18 @@ tail selected blocks after S_(p+c+2)-1:
 ```
 
 This is a certificate shape, not an existence theorem.
+
+The two guard fields are source-index guards for the displayed boundary
+`S_(p+c+2)-1`.  Since `c=ell-a`, they give
+
+```text
+p + (ell-a) + 1 <= ell,
+```
+
+so the Lean boundary `point C (p+(ell-a)+1)-1` is an in-range selected
+cutpoint.  They do not assert that the own source layer `S_(p+1)-1` is a
+positive selected block.  The own-coordinate theorem still separately assumes
+`1<=p`, because that is what makes the prefix branch apply at block `p`.
 
 ## Own Coordinate
 
@@ -129,6 +144,7 @@ AoyagiSelectedCutpoints.point
 AoyagiSelectedCutpoints.block
 AoyagiSelectedCutpoints.leftEndpoint_mem_block
 AoyagiLemma5Eq4PiecewiseSourceVector
+aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector
 aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
 ```
 

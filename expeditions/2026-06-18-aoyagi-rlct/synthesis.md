@@ -1959,7 +1959,11 @@ and that every point in a later block is strictly after an earlier left
 endpoint.  The inductive `AoyagiLemma5Eq4SelectedSpanBranchValue` records the
 five advertised branch alternatives, and
 `aoyagiLemma5Eq4_branchValue_of_block` classifies any selected-block point
-from a supplied equation `(4)` piecewise certificate.  Combining this with the
+from a supplied equation `(4)` piecewise certificate.  The certificate now
+carries `a<=ell` and `p+1<=a`, and
+`aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector` records
+`p+(ell-a)+1<=ell`, so the displayed boundary is an in-range selected
+cutpoint rather than only a totalized accessor value.  Combining this with the
 selected-span coverage theorem gives
 `aoyagiLemma5Eq4_selectedSpan_branchValue`: every
 `S_1-1 <= S < S_(ell+1)-1` has one of the advertised supplied branch values.

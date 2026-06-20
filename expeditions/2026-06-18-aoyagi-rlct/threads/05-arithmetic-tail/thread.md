@@ -714,6 +714,7 @@ AoyagiSelectedCutpoints.point
 AoyagiSelectedCutpoints.block
 AoyagiSelectedCutpoints.leftEndpoint_mem_block
 AoyagiLemma5Eq4PiecewiseSourceVector
+aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector
 aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
 ```
 
@@ -727,6 +728,11 @@ T(S_(p+1)-1) = Htilde_p
 ```
 
 and the legal label bounds for `k=Htilde_p+1`.
+
+The supplied certificate carries the source-boundary guards `a<=ell` and
+`p+1<=a`.  Lean records their finite consequence
+`p+(ell-a)+1<=ell`, so the special boundary is an in-range selected cutpoint,
+not only a value of the totalized `point` accessor.
 
 This remains conditional.  It does not construct the displayed vector, prove
 total source-layer coverage, terminal `tilde t=0`, vector admissibility,

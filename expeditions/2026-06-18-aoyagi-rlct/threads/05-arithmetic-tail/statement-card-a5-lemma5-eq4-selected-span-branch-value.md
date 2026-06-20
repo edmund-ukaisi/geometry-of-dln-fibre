@@ -17,8 +17,10 @@ Names:
 ## Statement
 
 Given selected cutpoints and a supplied Aoyagi Lemma 5 equation `(4)`
-piecewise certificate for a function `T`, Lean classifies every source index in
-the selected span
+piecewise certificate for a function `T`.  The certificate carries the
+source-boundary guards `a<=ell` and `p+1<=a`, so its displayed boundary index
+is an in-range selected cutpoint.  Lean classifies every source index in the
+selected span
 
 ```text
 S_1-1 <= S < S_(ell+1)-1
@@ -37,7 +39,8 @@ tail.
 ## Assumed
 
 - Selected cutpoints and their strict order.
-- The supplied equation `(4)` piecewise branch certificate.
+- The supplied equation `(4)` piecewise branch certificate, including
+  `a<=ell` and `p+1<=a`.
 
 ## Cited
 
