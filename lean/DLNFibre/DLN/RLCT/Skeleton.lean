@@ -513,14 +513,285 @@ private theorem rank_zero_eq_zero {m n : ℕ} (B : Matrix (Fin m) (Fin n) ℝ) (
   have := LinearMap.congr_fun hr0 (Pi.single j 1)
   simpa [Matrix.mulVecLin_apply, Matrix.mulVec_single] using congrFun this i
 
-/-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin / all-zero tuple, PROVEN
-below; general `r > 0` ⟹ a block-normal rank-`r` chain whose product is `B`). The hypotheses
-`hr : ∀ s, r ≤ H s` and `hL : 1 ≤ L` are the well-definedness + nonemptiness domain: `hr` rules out
-the middle-width bottleneck (`H=(3,1,3), r=2` caps product rank at `1 < 2` ⇒ empty fibre) and makes
-`M⁽ˢ⁾ = H⁽ˢ⁾ − r` non-truncating; `hL` rules out the zero-layer corner (`L = 0` ⇒ `prod = id` ⇒
-fibre needs `B = I`). The `r = 0` branch is closed; the `r > 0` branch is the named `sorry` (the
-rank-factorization `B = U·V` distributed as rank-exactly-`r` layers — verified 484/484; needs the
-rank-of-block lemma + the dependent-`Fin` `prodAux` telescoping). -/
+/-! ### Helpers for the `r > 0` case of `deepestPoint_exists` (the rank-`r` layer chain). -/
+
+/-- `[I_r|0]_{r→N}` (projection): `r × N`, ones on the diagonal `(k,k)`. -/
+private def projM (r N : ℕ) : Matrix (Fin r) (Fin N) ℝ :=
+  Matrix.of (fun (k : Fin r) (j : Fin N) => if (k : ℕ) = (j : ℕ) then (1 : ℝ) else 0)
+
+/-- `[I_r;0]_{N→r}` (embedding): `N × r`, ones on the diagonal `(k,k)`. -/
+private def embM (N r : ℕ) : Matrix (Fin N) (Fin r) ℝ :=
+  Matrix.of (fun (j : Fin N) (k : Fin r) => if (j : ℕ) = (k : ℕ) then (1 : ℝ) else 0)
+
+/-- The `r×r`-identity-corner block `diag(E_r, 0)`: `m × n`. -/
+private def corM (r m n : ℕ) : Matrix (Fin m) (Fin n) ℝ :=
+  Matrix.of (fun (i : Fin m) (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
+
+/-- `projM r N * embM N r = I_r` (projection ∘ embedding is the identity on `Fin r`). -/
+private theorem projM_embM (N r : ℕ) (hrN : r ≤ N) :
+    projM r N * embM N r = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  ext k k'; simp only [projM, embM, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]
+  rw [Finset.sum_eq_single (⟨k, by omega⟩ : Fin N)]
+  · simp only [if_true, one_mul]
+    by_cases h : (k : ℕ) = (k' : ℕ)
+    · rw [if_pos h, if_pos (Fin.ext h)]
+    · rw [if_neg h, if_neg (fun he => h (by rw [he]))]
+  · intro b _ hb; rw [if_neg (fun he => hb (Fin.ext (by simpa using he.symm))), zero_mul]
+  · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- The telescoping step: `projM r M * corM r M N = projM r N` (a corner block absorbs into a
+projection). -/
+private theorem projM_corM (r M N : ℕ) (hrM : r ≤ M) : projM r M * corM r M N = projM r N := by
+  ext k j; simp only [projM, corM, Matrix.mul_apply, Matrix.of_apply]
+  rw [Finset.sum_eq_single (⟨k, by omega⟩ : Fin M)]
+  · simp only [if_true, one_mul]
+    have hk : (k : ℕ) < r := k.isLt
+    by_cases h : (k : ℕ) = (j : ℕ)
+    · rw [if_pos ⟨h, hk⟩, if_pos h]
+    · rw [if_neg (fun hc => h hc.1), if_neg h]
+  · intro b _ hb; rw [if_neg (fun he => hb (Fin.ext (by simpa using he.symm))), zero_mul]
+  · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- `rank (U * projM r N) = rank U` (`projM` is right-invertible by `embM`). -/
+private theorem rank_mul_projM {a : ℕ} (r N : ℕ) (hrN : r ≤ N) (U : Matrix (Fin a) (Fin r) ℝ) :
+    (U * projM r N).rank = U.rank := by
+  apply le_antisymm (Matrix.rank_mul_le_left _ _)
+  calc U.rank = (U * projM r N * embM N r).rank := by
+        rw [Matrix.mul_assoc, projM_embM N r hrN, Matrix.mul_one]
+    _ ≤ (U * projM r N).rank := Matrix.rank_mul_le_left _ _
+
+/-- `rank (embM N r * V) = rank V` (`embM` is left-invertible by `projM`). -/
+private theorem rank_embM_mul {c : ℕ} (N r : ℕ) (hrN : r ≤ N) (V : Matrix (Fin r) (Fin c) ℝ) :
+    (embM N r * V).rank = V.rank := by
+  apply le_antisymm (Matrix.rank_mul_le_right _ _)
+  calc V.rank = (projM r N * (embM N r * V)).rank := by
+        rw [← Matrix.mul_assoc, projM_embM N r hrN, Matrix.one_mul]
+    _ ≤ (embM N r * V).rank := Matrix.rank_mul_le_right _ _
+
+/-- The corner block has rank exactly `r` (when `r ≤ m, n`). -/
+private theorem corM_rank {m n r : ℕ} (hrm : r ≤ m) (hrn : r ≤ n) : (corM r m n).rank = r := by
+  have hfac : corM r m n = embM m r * projM r n := by
+    ext i j; simp only [corM, embM, projM, Matrix.mul_apply, Matrix.of_apply]
+    by_cases hi : (i : ℕ) < r
+    · rw [Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]
+      · simp only [if_true, one_mul]
+        by_cases hij : (i : ℕ) = (j : ℕ)
+        · rw [if_pos hij, if_pos ⟨hij, hi⟩]
+        · rw [if_neg hij, if_neg (fun hc => hij hc.1)]
+      · intro b _ hb
+        rw [if_neg (by simpa [Fin.ext_iff] using fun h => hb (Fin.ext h.symm)), zero_mul]
+      · intro h; exact absurd (Finset.mem_univ _) h
+    · rw [if_neg (by tauto)]; symm
+      apply Finset.sum_eq_zero; intro k _; rw [if_neg (by intro h; omega), zero_mul]
+  rw [hfac]
+  apply le_antisymm
+  · exact le_trans (Matrix.rank_mul_le_right _ _) (Matrix.rank_le_height _)
+  · calc r = (1 : Matrix (Fin r) (Fin r) ℝ).rank := by rw [Matrix.rank_one, Fintype.card_fin]
+      _ = (projM r m * embM m r).rank := by rw [projM_embM m r hrm]
+      _ ≤ (embM m r).rank := Matrix.rank_mul_le_right _ _
+      _ = (embM m r * (projM r n * embM n r)).rank := by rw [projM_embM n r hrn, Matrix.mul_one]
+      _ = (embM m r * projM r n * embM n r).rank := by rw [Matrix.mul_assoc]
+      _ ≤ (embM m r * projM r n).rank := Matrix.rank_mul_le_left _ _
+
+/-- From `B = U * V` with `B.rank = r` (`U : a×r`): `U.rank = r`. -/
+private theorem rank_factor_left {a c r : ℕ} (U : Matrix (Fin a) (Fin r) ℝ)
+    (V : Matrix (Fin r) (Fin c) ℝ) (B : Matrix (Fin a) (Fin c) ℝ) (hB : B = U * V)
+    (hr : B.rank = r) : U.rank = r := by
+  have hle : U.rank ≤ r := le_trans (Matrix.rank_le_card_width _) (by rw [Fintype.card_fin])
+  have hge : r ≤ U.rank := by
+    have : B.rank ≤ U.rank := by rw [hB]; exact Matrix.rank_mul_le_left _ _
+    omega
+  omega
+
+/-- From `B = U * V` with `B.rank = r` (`V : r×c`): `V.rank = r`. -/
+private theorem rank_factor_right {a c r : ℕ} (U : Matrix (Fin a) (Fin r) ℝ)
+    (V : Matrix (Fin r) (Fin c) ℝ) (B : Matrix (Fin a) (Fin c) ℝ) (hB : B = U * V)
+    (hr : B.rank = r) : V.rank = r := by
+  have hle : V.rank ≤ r := Matrix.rank_le_height V
+  have hge : r ≤ V.rank := by
+    have : B.rank ≤ V.rank := by rw [hB]; exact Matrix.rank_mul_le_right _ _
+    omega
+  omega
+
+/-- `B = (P⁻¹ · embM) · (projM · Q⁻¹)` from the block-elimination normal form `P·B·Q = corner`. -/
+private theorem factor_from_blockElim {a c r : ℕ} (B : Matrix (Fin a) (Fin c) ℝ)
+    (P : Matrix (Fin a) (Fin a) ℝ) (Q : Matrix (Fin c) (Fin c) ℝ) (hP : IsUnit P) (hQ : IsUnit Q)
+    (hPBQ : P * B * Q = Matrix.of (fun (i : Fin a) (j : Fin c) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) :
+    B = (P⁻¹ * embM a r) * (projM r c * Q⁻¹) := by
+  have hPd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hQd : IsUnit Q.det := (Matrix.isUnit_iff_isUnit_det Q).mp hQ
+  have hcorner : Matrix.of (fun (i : Fin a) (j : Fin c) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) = embM a r * projM r c := by
+    ext i j; simp only [embM, projM, Matrix.mul_apply, Matrix.of_apply]
+    by_cases hi : (i : ℕ) < r
+    · rw [Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]
+      · simp only [if_true, one_mul]
+        by_cases hij : (i : ℕ) = (j : ℕ)
+        · rw [if_pos hij, if_pos ⟨hij, hi⟩]
+        · rw [if_neg hij, if_neg (fun hc => hij hc.1)]
+      · intro b _ hb
+        rw [if_neg (by simpa [Fin.ext_iff] using fun h => hb (Fin.ext h.symm)), zero_mul]
+      · intro h; exact absurd (Finset.mem_univ _) h
+    · rw [if_neg (by tauto)]; symm
+      apply Finset.sum_eq_zero; intro k _; rw [if_neg (by intro h; omega), zero_mul]
+  have key : P⁻¹ * (P * B * Q) * Q⁻¹ = B := by
+    rw [Matrix.mul_assoc P B Q, ← Matrix.mul_assoc P⁻¹ P (B * Q),
+      Matrix.nonsing_inv_mul P hPd, Matrix.one_mul, Matrix.mul_assoc B Q Q⁻¹,
+      Matrix.mul_nonsing_inv Q hQd, Matrix.mul_one]
+  calc B = P⁻¹ * (P * B * Q) * Q⁻¹ := key.symm
+    _ = P⁻¹ * (embM a r * projM r c) * Q⁻¹ := by rw [hPBQ, hcorner]
+    _ = (P⁻¹ * embM a r) * (projM r c * Q⁻¹) := by
+          rw [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]
+
+/-- Casting a layer matrix along value-equal `Fin (L+1)` index changes is entry-wise transparent. -/
+private theorem mpr_heq {α β : Sort _} (h : α = β) (x : β) : HEq (Eq.mpr h x) x := by subst h; rfl
+
+/-- HEq with row index fixed: a column-index change of value-equal `Fin (L+1)` indices. -/
+private theorem heq_mkCol {T : Type} (H : Fin (L + 1) → ℕ)
+    (mk : (q : Fin (L + 1)) → Matrix T (Fin (H q)) ℝ) {b d : Fin (L + 1)} (e : b = d) :
+    HEq (mk b) (mk d) := by subst e; rfl
+
+/-- HEq with column index fixed: a row-index change of value-equal `Fin (L+1)` indices. -/
+private theorem heq_mkRow {T : Type} (H : Fin (L + 1) → ℕ)
+    (mk : (p : Fin (L + 1)) → Matrix (Fin (H p)) T ℝ) {a c : Fin (L + 1)} (e : a = c) :
+    HEq (mk a) (mk c) := by subst e; rfl
+
+/-- HEq for both indices changing across value-equal `Fin (L+1)` indices. -/
+private theorem heq_mk2 (H : Fin (L + 1) → ℕ)
+    (mk : (p q : Fin (L + 1)) → Matrix (Fin (H p)) (Fin (H q)) ℝ)
+    {a b c d : Fin (L + 1)} (e1 : a = c) (e2 : b = d) : HEq (mk a b) (mk c d) := by
+  subst e1; subst e2; rfl
+
+/-- The `prodAux` recursion-step, with the dependent-`Fin` cast discharged by HEq: if `A ⟨k,_⟩` is
+HEq to `Mstep` (typed at the `prodAux` dims), then `prodAux (k+1) = prodAux k * Mstep`. -/
+private theorem prodAux_step (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+    (Mstep : Matrix (Fin (H ⟨k, Nat.lt_of_succ_lt hk⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)
+    (hheq : HEq (A ⟨k, Nat.lt_of_succ_lt_succ hk⟩) Mstep) :
+    prodAux H A (k + 1) hk = prodAux H A k (Nat.lt_of_succ_lt hk) * Mstep := by
+  rw [prodAux]; congr 1; rw [eq_comm]; apply eq_of_heq
+  exact hheq.symm.trans (heq_of_eqRec_eq rfl rfl)
+
+/-- The deep rank-`r` layer chain for `L ≥ 2`: layer `0 = U·[I_r|0]`, middle layers the corner
+block, last layer `[I_r;0]·V`. -/
+private noncomputable def wLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (U : Matrix (Fin (H 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (H (Fin.last L))) ℝ) :
+    Params H := fun s =>
+  if h0 : (s : ℕ) = 0 then
+    (by rw [show s.castSucc = (0 : Fin (L + 1)) from Fin.ext (by simp [Fin.castSucc, h0])]
+        exact U * projM r (H s.succ))
+  else if hL : (s : ℕ) = L - 1 then
+    (by rw [show s.succ = Fin.last L from Fin.ext (by simp [Fin.succ, hL]; omega)]
+        exact embM (H s.castSucc) r * V)
+  else
+    corM r (H s.castSucc) (H s.succ)
+
+section WLayers
+variable (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (U : Matrix (Fin (H 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (H (Fin.last L))) ℝ)
+
+private theorem heq_layer0 (hk : 0 + 1 < L + 1) :
+    HEq (wLayers H r U V ⟨0, Nat.lt_of_succ_lt_succ hk⟩) (U * projM r (H ⟨0 + 1, hk⟩)) := by
+  unfold wLayers; rw [dif_pos (by simp)]
+  refine HEq.trans ?_ (heq_mkCol H (fun q => U * projM r (H q))
+    (b := (⟨0, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ) (d := ⟨0 + 1, hk⟩) (Fin.ext rfl))
+  exact mpr_heq _ _
+
+private theorem heq_layerMid (k : ℕ) (hk : k + 1 < L + 1) (hpos : 0 < k) (hlt : k < L - 1) :
+    HEq (wLayers H r U V ⟨k, Nat.lt_of_succ_lt_succ hk⟩)
+        (corM r (H ⟨k, Nat.lt_of_succ_lt hk⟩) (H ⟨k + 1, hk⟩)) := by
+  unfold wLayers
+  rw [dif_neg (show ¬ (k = 0) by omega), dif_neg (show ¬ (k = L - 1) by omega)]
+  exact heq_mk2 H (fun p q => corM r (H p) (H q))
+    (a := (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc) (c := ⟨k, Nat.lt_of_succ_lt hk⟩)
+    (b := (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ) (d := ⟨k + 1, hk⟩)
+    (Fin.ext rfl) (Fin.ext rfl)
+
+private theorem heq_layerLast (k : ℕ) (hk : k + 1 < L + 1) (hkL : k = L - 1) (hpos : 0 < k) :
+    HEq (wLayers H r U V ⟨k, Nat.lt_of_succ_lt_succ hk⟩)
+        (embM (H ⟨k, Nat.lt_of_succ_lt hk⟩) r * V) := by
+  unfold wLayers
+  rw [dif_neg (show ¬ (k = 0) by omega), dif_pos (show k = L - 1 from hkL)]
+  refine HEq.trans ?_ (heq_mkRow H (fun p => embM (H p) r * V)
+    (a := (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc) (c := ⟨k, Nat.lt_of_succ_lt hk⟩)
+    (Fin.ext rfl))
+  exact mpr_heq _ _
+
+/-- The partial product up to (but excluding) the last layer: `prodAux m = U · [I_r|0]_{r→H⟨m⟩}`. -/
+private theorem prodAux_closed (hrH : ∀ s : Fin (L + 1), r ≤ H s)
+    (m : ℕ) (hm1 : 1 ≤ m) (hmL : m ≤ L - 1) (hmlt : m < L + 1) :
+    prodAux H (wLayers H r U V) m hmlt = U * projM r (H ⟨m, hmlt⟩) := by
+  induction m with
+  | zero => omega
+  | succ n ih =>
+    rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+    · subst hn0
+      rw [prodAux_step H (wLayers H r U V) 0 hmlt (U * projM r (H ⟨0 + 1, hmlt⟩))
+        (heq_layer0 H r U V hmlt)]
+      exact Matrix.one_mul _
+    · have hn1 : 1 ≤ n := hnpos
+      have hnL : n ≤ L - 1 := by omega
+      have hnmid : n < L - 1 := by omega
+      rw [prodAux_step H (wLayers H r U V) n hmlt
+        (corM r (H ⟨n, Nat.lt_of_succ_lt hmlt⟩) (H ⟨n + 1, hmlt⟩))
+        (heq_layerMid H r U V n hmlt hnpos hnmid)]
+      rw [ih hn1 hnL (by omega)]
+      rw [Matrix.mul_assoc, projM_corM r (H ⟨n, Nat.lt_of_succ_lt hmlt⟩) (H ⟨n + 1, hmlt⟩) (hrH _)]
+
+/-- The full product for `L ≥ 2`: `prod (wLayers) = U · V = B`. -/
+private theorem prod_wLayers_ge2 (hrH : ∀ s : Fin (L + 1), r ≤ H s) (hL2 : 2 ≤ L)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hUV : B = U * V) :
+    prod H (wLayers H r U V) = B := by
+  unfold prod
+  obtain ⟨n, hn⟩ : ∃ n, L = n + 1 := ⟨L - 1, by omega⟩
+  subst hn
+  rw [prodAux_step H (wLayers H r U V) n (Nat.lt_succ_self (n + 1))
+    (embM (H ⟨n, Nat.lt_of_succ_lt (Nat.lt_succ_self (n + 1))⟩) r * V)
+    (heq_layerLast H r U V n (Nat.lt_succ_self (n + 1)) (by omega) (by omega))]
+  rw [prodAux_closed H r U V hrH n (by omega) (by omega)
+    (Nat.lt_of_succ_lt (Nat.lt_succ_self (n + 1)))]
+  rw [hUV]
+  refine Eq.trans (Matrix.mul_assoc U _ _) ?_
+  have hPEV : projM r (H ⟨n, Nat.lt_of_succ_lt (Nat.lt_succ_self (n + 1))⟩)
+      * (embM (H ⟨n, Nat.lt_of_succ_lt (Nat.lt_succ_self (n + 1))⟩) r * V) = V := by
+    rw [← Matrix.mul_assoc,
+      projM_embM (H ⟨n, Nat.lt_of_succ_lt (Nat.lt_succ_self (n + 1))⟩) r (hrH _), Matrix.one_mul]
+  rw [hPEV]
+
+end WLayers
+
+/-- The single-layer witness for `L = 1`: the sole layer equals `B`. -/
+private noncomputable def wSingle (H : Fin (1 + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 1))) ℝ) : Params (L := 1) H := fun s =>
+  if h0 : (s : ℕ) = 0 then
+    (by rw [show s.castSucc = (0 : Fin (1 + 1)) from Fin.ext (by simp [Fin.castSucc]),
+          show s.succ = Fin.last 1 from Fin.ext (by simp [Fin.succ])]
+        exact B)
+  else 0
+
+private theorem prod_wSingle (H : Fin (1 + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 1))) ℝ) : prod H (wSingle H B) = B := by
+  unfold prod
+  rw [prodAux_step H (wSingle H B) 0 (Nat.lt_succ_self 1) B (by
+    unfold wSingle; rw [dif_pos (by simp)]; exact mpr_heq _ _)]
+  exact Matrix.one_mul _
+
+/-- HEq ⟹ equal rank (rank is transported across the value-equal dimension iso). -/
+private theorem rank_heq {m1 n1 m2 n2 : ℕ} (A : Matrix (Fin m1) (Fin n1) ℝ)
+    (B : Matrix (Fin m2) (Fin n2) ℝ) (hm : m1 = m2) (hn : n1 = n2) (h : HEq A B) :
+    A.rank = B.rank := by subst hm; subst hn; rw [eq_of_heq h]
+
+
+
+/-- The deepest layers exist for a rank-`r` target (PROVEN). `r = 0` ⟹ the origin / all-zero
+tuple; `r > 0` ⟹ factor `B = U·V` (`U, V` rank `r`) via `block_elimination`, then distribute as a
+rank-exactly-`r` layer chain — layer `0 = U·[I_r|0]`, the middle layers the `r×r`-identity-corner
+block, the last layer `[I_r;0]·V` (single layer `= B` when `L = 1`). The product telescopes to
+`U·V = B` (`projM·corM = projM` absorbs the corners, `projM·embM = I_r` at the seam) and each layer
+has rank exactly `r`. The hypotheses `hr : ∀ s, r ≤ H s` and `hL : 1 ≤ L` are the well-definedness +
+nonemptiness domain: `hr` rules out the middle-width bottleneck (`H=(3,1,3), r=2` caps product rank
+at `1 < 2` ⇒ empty fibre) and makes `M⁽ˢ⁾ = H⁽ˢ⁾ − r` non-truncating; `hL` rules out the zero-layer
+corner (`L = 0` ⇒ `prod = id` ⇒ fibre needs `B = I`). Verified numerically 484/484, `L ∈ {1,2,3}`. -/
 theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
@@ -533,7 +804,48 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
       rw [prod_zero H hL, rank_zero_eq_zero B hB]
     · intro s; show ((0 : Matrix _ _ ℝ)).rank = 0; exact Matrix.rank_zero
   · -- r > 0: rank factorization B = U·V distributed as rank-exactly-r layers (verified 484/484).
-    sorry
+    obtain ⟨P, Q, hP, hQ, hPBQ⟩ := block_elimination H r B hB
+    set U : Matrix (Fin (H 0)) (Fin r) ℝ := P⁻¹ * embM (H 0) r with hU
+    set V : Matrix (Fin r) (Fin (H (Fin.last L))) ℝ := projM r (H (Fin.last L)) * Q⁻¹ with hV
+    have hUV : B = U * V := factor_from_blockElim B P Q hP hQ hPBQ
+    have hUr : U.rank = r := rank_factor_left U V B hUV hB
+    have hVr : V.rank = r := rank_factor_right U V B hUV hB
+    rcases Nat.lt_or_ge L 2 with hL1 | hL2
+    · -- L = 1: the sole layer is B itself.
+      obtain rfl : L = 1 := by omega
+      refine ⟨⟨wSingle H B, prod_wSingle H B, ?_⟩⟩
+      rintro ⟨sv, hsvlt⟩
+      obtain rfl : sv = 0 := by omega
+      have hcast : (⟨0, hsvlt⟩ : Fin 1).castSucc = (0 : Fin (1 + 1)) :=
+        Fin.ext (by simp [Fin.castSucc])
+      have hsucc : (⟨0, hsvlt⟩ : Fin 1).succ = Fin.last 1 := Fin.ext (by simp [Fin.succ])
+      rw [rank_heq (wSingle H B ⟨0, hsvlt⟩) B (congrArg H hcast) (congrArg H hsucc)
+        (by unfold wSingle; rw [dif_pos (show ((⟨0, hsvlt⟩ : Fin 1) : ℕ) = 0 from rfl)]
+            exact mpr_heq _ _)]
+      exact hB
+    · -- L ≥ 2: boundary layers (0 and L-1) plus the corner middle chain.
+      refine ⟨⟨wLayers H r U V, prod_wLayers_ge2 H r U V hr hL2 B hUV, ?_⟩⟩
+      rintro ⟨sv, hsvlt⟩
+      have hk : sv + 1 < L + 1 := by omega
+      rcases Nat.eq_zero_or_pos sv with hs0 | hspos
+      · -- layer 0: rank (U · [I_r|0]) = rank U = r.
+        subst hs0
+        rw [rank_heq (wLayers H r U V ⟨0, hsvlt⟩) (U * projM r (H ⟨0 + 1, hk⟩))
+          rfl rfl (heq_layer0 H r U V hk)]
+        rw [rank_mul_projM r (H ⟨0 + 1, hk⟩) (hr _), hUr]
+      · rcases Nat.lt_or_ge sv (L - 1) with hslt | hsge
+        · -- middle layer: corner block, rank r.
+          rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩)
+            (corM r (H ⟨sv, Nat.lt_of_succ_lt hk⟩) (H ⟨sv + 1, hk⟩))
+            rfl rfl (heq_layerMid H r U V sv hk hspos hslt)]
+          exact corM_rank (hr _) (hr _)
+        · -- last layer (sv = L-1): rank ([I_r;0] · V) = rank V = r.
+          have hsL : sv = L - 1 := by omega
+          rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩) (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
+            rfl (congrArg H (show (⟨sv, hsvlt⟩ : Fin L).succ = Fin.last L from
+              Fin.ext (by simp [Fin.succ]; omega)))
+            (heq_layerLast H r U V sv hk hsL hspos)]
+          rw [rank_embM_mul (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r (hr _), hVr]
 
 /-- **The deepest singular point** of the fibre `mult⁻¹(B)` (Rung-0c FLAG, load-bearing — pp + Codex
 adjudicated). A **single constructed** witness: every layer at the minimal rank `r` (the
