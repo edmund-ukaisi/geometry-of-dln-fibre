@@ -46,3 +46,24 @@ clean form). The genuine statement + Step 1 are banked. The keystone is a hard, 
 multi-hundred-line proof. Per bedrock "roadmap it if not within reach, don't thrash": deliver this clean
 stuck-statement; the controller decides whether to invest (fm continues / hand to a dedicated tide / pp
 reframes the card route first so the proof targets the corrected route).
+
+## Route options re-confirmed (numeric, before committing to the ~250-line build)
+
+The #19 value-claim is rock-solid: `∃ c∈{1..L}, ½·minMval(M) = cleanCore(sortedSmallest M c)` holds
+3900/3900 (L≤4, widths 1..5). Two routes to it in Lean, both substantial:
+
+- **(A) Full perm-invariance** `lambdaCore M = lambdaCore (M∘σ)` then sorted-M analysis. Hard: min-level
+  fact, no Mval-preserving bijection (proven above). The σ-transport of the minimiser is the bulk.
+- **(B) Symmetry-of-cleanCore route** (avoids global perm-invariance): `cleanCore` depends only on the
+  *multiset* of widths (it's `Σm²`, `Σm`). So it suffices to show the achiever's witness `T*` has
+  breakpoint-width-multiset = `{sortedSmallest M c*}`, and `Mval(M,T*) = 2·cleanCore(those widths)`, plus
+  the per-T lower bound `Mval(M,T) ≥ 2·cleanCore(T's breakpoint widths)` via `balancedSplit_min`. This
+  is LOCAL to the achiever (no σ-transport of the whole cone) — likely the cleaner route. Still needs:
+  the Adm-T → breakpoint-widths reparametrisation (the `Mval` completed-square identity, design §4.3) and
+  showing the global min's breakpoint widths are the sorted smallest. ~200 lines, but no perm-invariance.
+
+RECOMMENDATION: route (B). The hard sub-piece is the `Mval`-to-breakpoint completed-square identity
+(design-spec §4.3) + that the minimiser's breakpoint widths are the c+1 smallest (the achiever is where
+the balanced split on the smallest is Adm-realisable). `balancedSplit_min` (Step 1, DONE) is the lower-
+bound engine. A dedicated tide with this route + the verified facts is the efficient path if fm stays
+on critical-path work.
