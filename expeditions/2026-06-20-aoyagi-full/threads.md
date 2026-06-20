@@ -13,7 +13,8 @@ Durable thread-status index. Status ∈ open / in-progress / blocked / review-pe
 | 07 | design (parallel) | pp | closed | L1/L2 scope: block elim + product reduction + additivity; new S1.5; reg-term=½·stratum-dim fix |
 | 08 | formalisation | fm-2 | closed | (1,1,1) gate: arithmetic+coercion sorry-free thru monomial_rlct; rlctAt bridge = 1 named sorry. S2 hygiene fix done. @6e4d505 |
 | 09 | review | rv-2 | closed | AUDIT (1,1,1) gate → **PASS 5/5** + green-gate green (2659 jobs). Axiom-use load-bearing, coercion correct, bridge-sorry honest. 3 non-blocking style-lint notes |
-| 10 | formalisation | fm-2 | in-progress | S1 base case: prove the (1,1,1) rlctAt bridge directly (Mathlib monomial integrability) → closes first full end-to-end; PROBE: is the monomial_rlct threshold-half provable in general (→ λ-axiom-free)? |
+| 10 | formalisation | fm-2 | closed | PROBE **ANSWERED YES**: monomial threshold-half provable from Mathlib (Fubini + rpow-iff). `Case111Bridge.lean` axiom-free; (1,1,1) headline dropped monomial_rlct. λ-citation ELIMINABLE (general = labour, no wall). @22f5dfe |
+| 11 | formalisation | fm-2 | in-progress | Close the (1,1,1) rlctAt bridge (baby-S1.1: measure-preserving chart + two-sided \|x\|^a integrability + ∃-nbhd) → first FULLY axiom-free+sorry-free end-to-end. Bounded (report if it sprawls) |
 
 ## Seats (reuse across tides; stand down at close)
 

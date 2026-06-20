@@ -46,13 +46,27 @@ proofs) we'd need real isolation → the operator-relaunch-from-MAIN option, def
 Minor crossing risk (controller docs + formaliser Lean both commit to the branch in MAIN) — mitigated by
 serial cadence + green-gate each integration.
 
-## OPPORTUNITY — λ may be axiom-FREE (beyond the one-citation target)
+## WIN — the λ-citation is ELIMINABLE (probe answered YES, @22f5dfe)
 
-Closing the (1,1,1) bridge = proving `rlctAt(monomial) = monomialThreshold` directly (Fubini + Mathlib
-`|x|^a` integrability). If this GENERALIZES, the **threshold-half of `monomial_rlct` is provable** ⇒ the
-λ-citation is eliminated ⇒ λ becomes fully axiom-free (the θ order-half stays seamed). fm-2 probing while
-closing (1,1,1). If it hits a genuine analytic wall, keep `monomial_rlct` as the cited axiom (the brief's
-one citation) + re-engage pp for a blueprint. This is "prove what you can prove, don't cite it" (bedrock).
+The threshold-half of `monomial_rlct` is **directly provable from Mathlib** (Fubini +
+`intervalIntegral.integrableOn_Ioo_rpow_iff`): demonstrated axiom-free for (1,1,1)
+(`Validate/Case111Bridge.lean`: `monomialThreshold 2 (1,1)(0,0)=1/2`, `#print axioms` standard only), and
+the (1,1,1) headline's trace DROPPED monomial_rlct. The general (d,k,h) case is the SAME recipe (per-axis
+rpow-iff + n-ary Fubini; binding axis sets ⨅; kⱼ=0 axes are units) — **no analytic wall, just Fin-d Lean
+labour**. ⇒ we can make λ fully **axiom-free** (exceeding the brief's one-citation target); the θ
+order-half stays seamed. Plan: (i) close the (1,1,1) gate now [validate-small-first completion], (ii) the
+general threshold-half + general S1.1 transport = the S1 rung (re-engage pp for the n-ary blueprint).
+The brief's closing criterion (one citation) will be UPGRADED to zero-λ-citations once the general
+threshold-half lands; keep the conservative wording until then.
+
+## In flight
+
+- `fm-2` — thread 11: close the (1,1,1) `rlctAt` bridge (baby-S1.1: measure-preserving chart + two-sided
+  `|x|^a` integrability + ∃-nbhd) → first FULLY axiom-free + sorry-free end-to-end. BOUNDED (report if a
+  piece — esp. the `Params(1,1,1)≃ᵐℝ²` equiv — sprawls; don't thrash). Background, in MAIN.
+- `pp` — on-demand. Next: the general S1 blueprint (n-ary monomial integrability for the axiom
+  elimination + the general S1.1 transport) when (1,1,1) is closed.
+- `rv-2`, `fm` — idle.
 
 ## In flight
 
