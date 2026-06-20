@@ -10905,6 +10905,180 @@ theorem displayedPivot_sourceChartMap_centerIdeal_eq_span_singleton
 
 end Case2DisplayedSuppliedChartFamilyBoundary
 
+/-- Supplied source-order data for the actual-width-exhausted displayed Case 2
+terminal branch.
+
+This packages the old top multiplier/block and remaining suffix used to read
+the stopped displayed terminal product in source order.  The actual-width
+exhaustion hypothesis is part of the model; without it, old `(S,J+1)` labels
+need not relabel to `(S+1,0)`.  The fields remain supplied data, not
+chart-produced source coordinates. -/
+structure Case2DisplayedSuppliedActualWidthTerminalSourceModel
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R) where
+  Atop : Matrix ι ι R
+  Ctop : Matrix ι τ R
+  F : Matrix τ υ R
+  actualWidth_exhausted : n (S + 1) = J + 1
+
+namespace Case2DisplayedSuppliedActualWidthTerminalSourceModel
+
+variable {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+variable {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+variable {hS : 1 ≤ S} {hSL : S ≤ L}
+variable {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+variable {b0 : R} {residual : ℕ × ℕ → R} {C : ℕ → τ → R}
+
+/-- The supplied source-order terminal weight candidate `blockdiag(Atop,[b0])`. -/
+def terminalWeightCandidate
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 := b0) (residual := residual) (C := C)) :
+    Matrix (ι ⊕ Unit) (ι ⊕ Unit) R :=
+  Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperTerminalWeight
+    model.Atop b0
+
+/-- The supplied source-order terminal next-factor candidate `[Ctop;C0]`. -/
+def terminalCnextCandidate
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 := b0) (residual := residual) (C := C)) :
+    Matrix (ι ⊕ Unit) τ R :=
+  Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperTerminalCnext
+    model.Ctop n hS hcont residual C
+
+/-- The supplied source-order terminal product
+`(blockdiag(Atop,[b0]) * [Ctop;C0]) * F`. -/
+def terminalProductCandidate
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 := b0) (residual := residual) (C := C)) :
+    Matrix (ι ⊕ Unit) υ R :=
+  (model.terminalWeightCandidate * model.terminalCnextCandidate) * model.F
+
+/-- Actual-width exhaustion forces the displayed Case 2 next-continuation
+bound to fail. -/
+theorem not_next_cont_of_actualWidth_exhausted
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 := b0) (residual := residual) (C := C)) :
+    ¬ J + 2 ≤ prefixMinNat n (S + 1) := by
+  intro hnext
+  have hwidth : prefixMinNat n (S + 1) ≤ J + 1 := by
+    simpa [model.actualWidth_exhausted] using
+      (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
+  omega
+
+/-- Under actual-width exhaustion, old `(S,J+1)` introduced labels match the
+stage-relabelled `(S+1,0)` introduced labels. -/
+theorem introducedLabel_terminal_iff_succStage_zero
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 := b0) (residual := residual) (C := C))
+    (s k : ℕ) :
+    introducedLabel L n S (J + 1) s k ↔
+      introducedLabel L n (S + 1) 0 s k :=
+  introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq
+    L n model.actualWidth_exhausted
+
+/-- Finite-set form of
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.
+introducedLabel_terminal_iff_succStage_zero`. -/
+theorem introducedLabelFinset_terminal_eq_succStage_zero
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 := b0) (residual := residual) (C := C)) :
+    introducedLabelFinset L n S (J + 1) =
+      introducedLabelFinset L n (S + 1) 0 :=
+  introducedLabelFinset_currentSucc_eq_succStage_zero_of_nextWidth_eq
+    L n model.actualWidth_exhausted
+
+end Case2DisplayedSuppliedActualWidthTerminalSourceModel
+
+namespace Case2DisplayedSuppliedChartFamilyBoundary
+
+/-- Actual-width-exhausted source-model wrapper for the displayed Case 2
+terminal product.
+
+The model supplies the old top multiplier/block, suffix, and the actual-width
+exhaustion that lets the terminal stopped branch be read at `(S+1,0)`.  The
+theorem is still a supplied-boundary entry-ideal statement: it does not prove
+that the supplied fields are chart-produced source data, nor does it prove
+chart coverage, Jacobian arithmetic, normal crossings, RLCT extraction,
+termination, or a transition invariant. -/
+theorem exists_weightedTerminalProduct_entryIdeal_eq_terminalProductCandidate_of_actualWidth
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := data.stage_pos) (hSL := data.stage_le) (hcont := data.continuation)
+        (b0 := post.weight (J + 1)) (residual := residual) (C := C)) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks model.Atop 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock model.Ctop
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * model.F) =
+      matrixEntryIdeal model.terminalProductCandidate := by
+  simpa [Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalProductCandidate,
+    Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalWeightCandidate,
+    Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalCnextCandidate,
+    case2DisplayedPaperTerminalCprimeCandidate] using
+    (data.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont
+      model.Atop model.Ctop model.not_next_cont_of_actualWidth_exhausted residual C model.F)
+
+end Case2DisplayedSuppliedChartFamilyBoundary
+
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence
 indexed by the residual source row. This supplies quotient witnesses from the
 row-index lower bound; it is still only local finite algebra. -/

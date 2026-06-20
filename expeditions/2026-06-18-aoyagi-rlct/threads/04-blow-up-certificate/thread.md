@@ -666,6 +666,63 @@ chart production or coverage, compute Jacobians, prove normal crossings/RLCT
 extraction, prove termination or transition invariance, or repair the printed
 Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed terminal source model
+
+Reproduction:
+`reproduction-case2-displayed-terminal-source-model-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-terminal-source-model.md`.
+Review artifact:
+`review-case2-displayed-terminal-source-model-a4.md`.
+
+Lean now packages the actual-width-exhausted displayed terminal branch as
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel`.  The structure carries
+supplied old top data and suffix:
+
+```text
+Atop : Matrix old old R
+Ctop : Matrix old tau R
+F    : Matrix tau suffix R
+```
+
+together with the branch hypothesis
+
+```text
+n(S+1) = J+1.
+```
+
+The projections `terminalWeightCandidate`, `terminalCnextCandidate`, and
+`terminalProductCandidate` name the supplied candidate
+
+```text
+(blockdiag(Atop,[b0]) * [Ctop; C0]) * F,
+```
+
+where `C0` is the top pivot row of `C' = Q^-1 C`.
+
+The model proves two branch facts.  First, actual-width exhaustion implies
+failed next continuation
+
+```text
+not (J+2 <= prefixMinNat n (S+1)).
+```
+
+Second, the introduced-label domain after the old pivot `(S,J+1)` equals the
+stage-relabelled domain `(S+1,0)`.  This is only finite-domain bookkeeping:
+Lean does not construct a recurrence state or exponent state over `(S+1,0)`.
+
+The wrapper
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_weightedTerminalProduct_entryIdeal_eq_terminalProductCandidate_of_actualWidth`
+calls the existing supplied-boundary terminal theorem with
+`model.not_next_cont_of_actualWidth_exhausted`.
+It keeps `Atop`, `Ctop`, and `F` supplied and keeps the pivot weight
+`post.weight (J+1)` outside the unweighted candidate matrix.  It does not
+prove that `[Ctop;C0]` is source-produced `C'^(S+1)`, prove chart production
+or coverage, compute Jacobians, prove normal crossings/RLCT extraction, prove
+termination or transition invariance, or repair the printed Case 2 vector
+mismatch.  Prefix exhaustion alone remains outside this positive model because
+if `n(S+1) >= J+2`, then `(S,J+2)` is an extra label at `(S+1,0)`.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

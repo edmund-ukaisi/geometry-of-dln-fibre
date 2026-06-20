@@ -13,11 +13,11 @@ Files:
 
 Lean names:
 
-- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalWeight`
-- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCnext`
-- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate`
-- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul`
-- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperTerminalWeight`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperTerminalCnext`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperTerminalCprimeCandidate`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`
 
 ## Verdict

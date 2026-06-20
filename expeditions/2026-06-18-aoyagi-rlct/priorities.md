@@ -90,11 +90,16 @@ on the session's original cwd.
    <entries([(Wold*Cold)*F;(b0*C0)*F])>`. The source-order candidate version
    is also Lean-proved as `(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, with
    `b0` sourced from `post.weight (J+1)` in a supplied displayed boundary.
+   The actual-width-exhausted terminal source-model wrapper is now Lean-proved
+   too: supplied `Atop`, `Ctop`, and `F` are packaged with
+   `n(S+1)=J+1`, yielding failed next continuation, the finite
+   introduced-label-domain equality between `(S,J+1)` and `(S+1,0)`, and the
+   supplied-boundary entry-ideal equality to the model's terminal product.
    Next A4 target:
-   identify/source-model the old top block, source diagonal weights, remaining
-   following product, and actual `S+1` following matrix, or construct
-   chart-produced recurrence/exponent post-data; do not identify `[Cold;C0]`
-   with Aoyagi's full `C'^(S+1)` without that source-order analysis.
+   construct chart-produced recurrence/exponent post-data or source-produced
+   old top/suffix data; do not promote the finite label-domain equality to an
+   `(S+1,0)` recurrence/exponent state, and do not identify `[Ctop;C0]` with
+   Aoyagi's full `C'^(S+1)` without that source-order construction.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

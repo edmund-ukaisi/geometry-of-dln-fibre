@@ -582,6 +582,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 displayed cleared-block following-factor absorption
 	  scaffold is saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-cleared-block-following-factor-a4.md`.
+	  Review of the Case 2 displayed terminal source model is saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-terminal-source-model-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1284,6 +1286,13 @@ No such claim is formalisation-ready until both fields are filled.
   and `F` are still supplied. This still does not prove those supplied objects
   are Aoyagi's actual old weights, old top rows, or remaining product, and it
   does not prove `[Ctop;C0]` is source-produced `C'^(S+1)`.
+  The displayed terminal source-model layer packages supplied `Atop`, `Ctop`,
+  and `F` with actual next-width exhaustion `n(S+1)=J+1`.  It proves failed
+  next continuation, the finite introduced-label-domain equality between old
+  `(S,J+1)` and stage-relabelled `(S+1,0)`, and the supplied-boundary
+  entry-ideal equality to the model's terminal product.  This is not
+  recurrence or exponent post-data over `(S+1,0)`, and it still does not prove
+  `[Ctop;C0]` is source-produced `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

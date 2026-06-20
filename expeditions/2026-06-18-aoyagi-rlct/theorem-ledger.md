@@ -1437,6 +1437,31 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-source-terminal-candidate-a4.md`.
 
+Latest A4 update: the Case 2 displayed terminal source-model layer has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel`,
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalWeightCandidate`,
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalCnextCandidate`,
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalProductCandidate`,
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.not_next_cont_of_actualWidth_exhausted`,
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.introducedLabel_terminal_iff_succStage_zero`,
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.introducedLabelFinset_terminal_eq_succStage_zero`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_weightedTerminalProduct_entryIdeal_eq_terminalProductCandidate_of_actualWidth`.
+This checkpoint packages supplied `Atop`, `Ctop`, and `F` with actual
+next-width exhaustion `n(S+1)=J+1`.  It derives failed next continuation and
+the finite introduced-label-domain equality between `(S,J+1)` and `(S+1,0)`,
+then reuses the supplied displayed-boundary terminal theorem.  It does not
+construct recurrence/exponent post-data over `(S+1,0)`, does not prove
+`[Ctop;C0]` is source-produced `C'^(S+1)`, and does not prove chart production,
+coverage, Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-terminal-source-model-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-terminal-source-model.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-terminal-source-model-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

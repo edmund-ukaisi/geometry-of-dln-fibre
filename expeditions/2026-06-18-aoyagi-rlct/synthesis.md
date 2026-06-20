@@ -1424,6 +1424,21 @@ leaving `Atop`, `Ctop`, and `F` supplied.  This still does not identify those
 supplied objects with Aoyagi's actual old weights, old top rows, or remaining
 product, and does not prove `[Ctop;C0]` is source-produced `C'^(S+1)`.
 
+The Case 2 displayed terminal source-model layer is now Lean-proved.  The new
+structure `Case2DisplayedSuppliedActualWidthTerminalSourceModel` packages
+supplied `Atop`, `Ctop`, and `F` together with actual next-width exhaustion
+`n(S+1)=J+1`.  Its projections name the supplied source-order terminal
+candidate `(blockdiag(Atop,[b0]) * [Ctop;C0]) * F`.  The model derives failed
+next continuation and the finite introduced-label-domain equality
+`introducedLabelFinset L n S (J+1) = introducedLabelFinset L n (S+1) 0`.
+The supplied-boundary wrapper
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_weightedTerminalProduct_entryIdeal_eq_terminalProductCandidate_of_actualWidth`
+then applies the previous terminal theorem using
+`model.not_next_cont_of_actualWidth_exhausted`.  This is only a supplied
+candidate source model: the label-domain equality is not recurrence/exponent
+post-data over `(S+1,0)`, and the result does not prove that `Atop`, `Ctop`,
+`F`, or `[Ctop;C0]` are source-produced.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
