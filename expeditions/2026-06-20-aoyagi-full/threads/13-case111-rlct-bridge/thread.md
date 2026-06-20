@@ -68,17 +68,28 @@ concrete width vector with the instance paths reconciled — which is a Core/Fou
 above a leaf executor. Hand to `pp` for the blueprint or have the controller add the helper to
 `Foundations`. The bridge is then a short assembly (banked piece 2 + `Case111Bridge`'s box machinery).
 
-### The neg-invariance snag (piece 2, two-sided)
+### The neg-invariance snag (piece 2, two-sided) — RESOLVED
 
 The two-sided `[-ε,ε]` abs-rpow lemma needs `(volume : Measure ℝ).IsNegInvariant` for the reflected
-negative half (`Measure.measurePreserving_neg`). That instance was **not found** under
-`Mathlib.MeasureTheory.{Integral.Prod, Constructions.Pi, SpecialFunctions.Integrability.Basic}` nor a
-couple of Haar/Lebesgue imports tried — find the providing import (the Gaussian-integral file has it) or
-reflect via an explicit `MeasurableEquiv.neg`. Minor; the right-half lemma is banked.
+negative half (`Measure.measurePreserving_neg`). The providing import is
+**`Mathlib.MeasureTheory.Measure.Haar.Unique`** (bisected). With it, the full two-sided lemma
+`abs_rpow_integrableOn_Icc_symm_iff` is banked (sorry-free): forward by restricting to the right half,
+reverse by gluing the two halves with the negative half reflected through `x ↦ -x`
+(`MeasurePreserving.integrableOn_comp_preimage`, `|·|` even). Piece 2 COMPLETE.
+
+## Decision (controller): PARK the full bridge; piece 1 deferred to the general equiv
+
+Per the controller: **park the `(1,1,1)` full bridge** — don't take escape #1 (the `finTwoArrow`
+split is `(1,1,1)`-throwaway plumbing). The real obstacle, a **general `Params H ≃ᵐ ℝ^N`
+measure-preserving equiv**, is needed at the S1.1 use-site and for R1; it will be built once there
+(symbolic-`s`/Matrix-fiber handled properly — `MeasurableEquiv.piCongr` per layer +
+`Matrix ≃ᵐ (Fin (a·b) → ℝ)`), and `(1,1,1)` closes as a byproduct. Recorded as a known S1.1 sub-task.
 
 ## Status
 
 Full `lake build` green; `scripts/sorries`: **12 sorry, 0 #exit, 0 native_decide, 1 axiom** —
-UNCHANGED (the bridge `sorry` stands; the two banked lemmas are sorry-free additions). Banked lemmas
-axiom-clean. The probe win (`monomialThreshold_case111` axiom-free) remains the banked headline; the
-`rlctAt` bridge needs one of the escapes above (recommend escape 1, the `finTwoArrow` split).
+UNCHANGED (the bridge `sorry` stands by decision; the banked lemmas are sorry-free additions). Banked,
+sorry-free + axiom-clean: `abs_rpow_integrableOn_Ioo_iff`, **`abs_rpow_integrableOn_Icc_symm_iff`**
+(piece 2 complete), `measurePreserving_matrixEntry₁₁` (toward piece 1). The probe win
+(`monomialThreshold_case111` axiom-free) remains the banked headline. Bridge waits on the general
+`Params ≃ᵐ ℝ^N` equiv (comes with S1.1).

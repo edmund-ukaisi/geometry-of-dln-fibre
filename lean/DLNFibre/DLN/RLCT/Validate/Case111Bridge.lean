@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Skeleton
 import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Constructions.Pi
+import Mathlib.MeasureTheory.Measure.Haar.Unique
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case111Bridge` — `monomialThreshold (1,1,1) = 1/2`, axiom-free
@@ -145,16 +146,52 @@ the `(1,1,1)` monomial). They are **reusable S1.1 infra**, not `(1,1,1)`-throwaw
 obstruction documented in thread 13 — so the bridge `sorry` in `Case111.lean` stands. -/
 
 /-- **One-sided `rpow` integrability via `|·|`** (the bridge's piece 2, half): `|x|^s` is integrable
-on `Ioo 0 ε` **iff** `-1 < s` (on the positive half `|x| = x`, so this is the single-axis rpow iff).
-The two-sided version on `[-ε, ε]` (the `𝓝 0`-shaped chart the `rlctAt` side needs, crossing `0`)
-glues this right half with the reflected negative half — a short addendum once a `volume`
-neg-invariance lemma is in scope (see thread 13). -/
+on `Ioo 0 ε` **iff** `-1 < s` (on the positive half `|x| = x`, so this is the single-axis rpow
+iff). -/
 theorem abs_rpow_integrableOn_Ioo_iff (s ε : ℝ) (hε : 0 < ε) :
     IntegrableOn (fun x : ℝ => |x| ^ s) (Ioo (0 : ℝ) ε) volume ↔ -1 < s := by
   have hposEq : EqOn (fun x : ℝ => |x| ^ s) (fun x : ℝ => x ^ s) (Ioo (0 : ℝ) ε) :=
     fun x hx => by simp only; rw [abs_of_pos hx.1]
   rw [integrableOn_congr_fun hposEq measurableSet_Ioo,
     intervalIntegral.integrableOn_Ioo_rpow_iff hε]
+
+/-- **Two-sided `rpow` integrability** (the bridge's piece 2, full): `|x|^s` is integrable on the
+symmetric interval `[-ε, ε]` (the `𝓝 0`-shaped chart the `rlctAt` side needs — crossing `0`, unlike
+the one-sided box `[0,1]`) **iff** `-1 < s`. Forward: restrict to the right half. Reverse: glue the
+two halves (`Icc_union_Icc_eq_Icc`), the negative half by reflection through `x ↦ -x`
+(`Measure.measurePreserving_neg` + `MeasurePreserving.integrableOn_comp_preimage`, with `|·|` even).
+Reusable for any neighbourhood-of-`0` RLCT computation. -/
+theorem abs_rpow_integrableOn_Icc_symm_iff (s ε : ℝ) (hε : 0 < ε) :
+    IntegrableOn (fun x : ℝ => |x| ^ s) (Icc (-ε) ε) volume ↔ -1 < s := by
+  have hposEq : EqOn (fun x : ℝ => |x| ^ s) (fun x : ℝ => x ^ s) (Ioo (0 : ℝ) ε) :=
+    fun x hx => by simp only; rw [abs_of_pos hx.1]
+  constructor
+  · intro h
+    have hsub : Ioo (0 : ℝ) ε ⊆ Icc (-ε) ε := fun x hx => ⟨by linarith [hx.1], le_of_lt hx.2⟩
+    have hr := h.mono_set hsub
+    rw [integrableOn_congr_fun hposEq measurableSet_Ioo,
+      intervalIntegral.integrableOn_Ioo_rpow_iff hε] at hr
+    exact hr
+  · intro hs
+    have hpos : IntegrableOn (fun x : ℝ => |x| ^ s) (Icc (0 : ℝ) ε) volume := by
+      rw [integrableOn_Icc_iff_integrableOn_Ioo, integrableOn_congr_fun hposEq measurableSet_Ioo,
+        intervalIntegral.integrableOn_Ioo_rpow_iff hε]
+      exact hs
+    have hneg : IntegrableOn (fun x : ℝ => |x| ^ s) (Icc (-ε) 0) volume := by
+      have hmp := (Measure.measurePreserving_neg (volume : Measure ℝ)).integrableOn_comp_preimage
+        (measurableEmbedding_neg (α := ℝ)) (f := fun x : ℝ => |x| ^ s) (s := Icc (0 : ℝ) ε)
+      have hpre : (fun x : ℝ => -x) ⁻¹' Icc (0 : ℝ) ε = Icc (-ε) 0 := by
+        ext x; simp only [mem_preimage, mem_Icc, neg_nonneg]
+        constructor
+        · rintro ⟨h1, h2⟩; exact ⟨by linarith, by linarith⟩
+        · rintro ⟨h1, h2⟩; exact ⟨by linarith, by linarith⟩
+      have hfun : ((fun x : ℝ => |x| ^ s) ∘ fun x : ℝ => -x) = (fun x : ℝ => |x| ^ s) := by
+        funext x; simp [abs_neg]
+      rw [hpre, hfun] at hmp
+      exact hmp.2 hpos
+    have hunion : Icc (-ε) ε = Icc (-ε) 0 ∪ Icc (0 : ℝ) ε :=
+      (Icc_union_Icc_eq_Icc (by linarith) (le_of_lt hε)).symm
+    rw [hunion]; exact hneg.union hpos
 
 /-- **Per-layer measure-preserving entry equiv** (toward the bridge's piece 1): the unique scalar
 entry of a `1×1` real matrix, `(Fin 1 → Fin 1 → ℝ) ≃ᵐ ℝ`, is volume-preserving (twice-`funUnique`).
