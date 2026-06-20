@@ -455,4 +455,110 @@ theorem dirDeriv_smul (M : Tuple (k := k) d) (c : k) (φ : cochain0 (k := k) d d
     simp only [smul_eq_mul]
     ring
 
+/-! ## R4–R5 — the injection `range δ⁰ ↪ Dual k (m_M.Cotangent)` and the finrank bound -/
+
+/-- The coordinate test polynomial `X x − C (a_x)` lies in `m_M` (it evaluates to `0` at `M`). -/
+theorem coordTest_mem_normalFormIdeal (M : Tuple (k := k) d) (x : RepCoord d) :
+    Ideal.Quotient.mk (orbitIdeal M)
+        (MvPolynomial.X x - MvPolynomial.C (canonicalCoord d M x)) ∈ normalFormIdeal M := by
+  rw [normalFormIdeal, orbitPointIdeal, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
+    orbitEval_mk, map_sub, MvPolynomial.eval_X, MvPolynomial.eval_C, one_smul, sub_self]
+
+/-- `Ψ : C⁰ →ₗ[k] Dual k (m_M.Cotangent)`, `φ ↦ cotFunctional M φ`, the cotangent-functional pairing
+of the orbit tangent direction `δ⁰ φ`. Linear in `φ` by `dirDeriv_add`/`dirDeriv_smul`. -/
+noncomputable def cotPairing (M : Tuple (k := k) d) :
+    cochain0 (k := k) d d →ₗ[k] Module.Dual k (normalFormIdeal M).Cotangent where
+  toFun φ := cotFunctional M φ
+  map_add' φ φ' := by
+    refine LinearMap.ext fun z ↦ ?_
+    obtain ⟨z, rfl⟩ := (normalFormIdeal M).toCotangent_surjective z
+    obtain ⟨g, hg⟩ := Ideal.Quotient.mk_surjective (z : orbitRing M)
+    simp only [LinearMap.add_apply, cotFunctional_toCotangent, ← hg, dirDerivQuot_mk,
+      dirDeriv_add]
+  map_smul' c φ := by
+    refine LinearMap.ext fun z ↦ ?_
+    obtain ⟨z, rfl⟩ := (normalFormIdeal M).toCotangent_surjective z
+    obtain ⟨g, hg⟩ := Ideal.Quotient.mk_surjective (z : orbitRing M)
+    simp only [LinearMap.smul_apply, RingHom.id_apply, cotFunctional_toCotangent, ← hg,
+      dirDerivQuot_mk, dirDeriv_smul, smul_eq_mul]
+
+/-- `cotPairing M φ` evaluated on the cotangent class of the coordinate test `X x − C a_x` is the
+component `v x = (δ⁰ φ)_x`: the directional derivative of a coordinate is its `v`-component. -/
+theorem cotPairing_coordTest (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (x : RepCoord d) :
+    cotPairing M φ
+        ((normalFormIdeal M).toCotangent
+          ⟨Ideal.Quotient.mk (orbitIdeal M)
+              (MvPolynomial.X x - MvPolynomial.C (canonicalCoord d M x)),
+            coordTest_mem_normalFormIdeal M x⟩)
+      = canonicalCoord d (deformationδ M M φ) x := by
+  show cotFunctional M φ _ = _
+  rw [cotFunctional_toCotangent, dirDerivQuot_mk, map_sub, dirDeriv_X, dirDeriv_C, sub_zero]
+
+/-- **R4 — `ker (cotPairing M) ⊆ ker (deformationδ M M)`.** If the cotangent functional of `φ`
+vanishes, then so does `δ⁰ φ`: testing on the coordinate classes recovers each component
+`(δ⁰ φ)_x = cotPairing M φ (…) = 0`. -/
+theorem ker_cotPairing_le_ker_deformationδ (M : Tuple (k := k) d) :
+    LinearMap.ker (cotPairing M) ≤ LinearMap.ker (deformationδ M M) := by
+  intro φ hφ
+  rw [LinearMap.mem_ker] at hφ ⊢
+  -- every coordinate of `δ⁰ φ` is `0`, so `δ⁰ φ = 0`
+  have hv : ∀ x : RepCoord d, canonicalCoord d (deformationδ M M φ) x = 0 := by
+    intro x
+    rw [← cotPairing_coordTest M φ x, hφ, LinearMap.zero_apply]
+  have hz : canonicalCoord d (deformationδ M M φ) = canonicalCoord d 0 := by
+    funext x; rw [hv x]; simp [canonicalCoord_apply]
+  exact (canonicalCoord d).injective hz
+
+/-- The orbit-point cotangent space `m_M.Cotangent` is finite-dimensional over `k`. It is a
+finitely-generated `A`-module (`A = orbitRing M` noetherian, `m_M` f.g.), torsion by `m_M`, hence a
+finite-dimensional `κ = A/m_M`-vector space; and `κ ≃ₐ[k] k` (the orbit point is `k`-rational), so it
+is finite over `k`. -/
+instance finiteDimensional_cotangent_normalFormIdeal [IsAlgClosed k] (M : Tuple (k := k) d) :
+    FiniteDimensional k ((normalFormIdeal M).Cotangent) := by
+  haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
+  -- `m_M.Cotangent` is a finite `A`-module (`A` noetherian, `m_M` f.g., cotangent a quotient)
+  haveI : Module.Finite (orbitRing M) ((normalFormIdeal M).Cotangent) :=
+    Module.Finite.of_surjective (normalFormIdeal M).toCotangent
+      (normalFormIdeal M).toCotangent_surjective
+  -- torsion by `m_M` ⟹ the `κ = A/m_M`-module structure, and it is `Module.Finite κ`
+  letI : Module (orbitRing M ⧸ normalFormIdeal M) ((normalFormIdeal M).Cotangent) :=
+    Module.IsTorsionBySet.module (Ideal.isTorsionBySet_cotangent (normalFormIdeal M))
+  haveI : IsScalarTower (orbitRing M) (orbitRing M ⧸ normalFormIdeal M)
+      ((normalFormIdeal M).Cotangent) :=
+    Module.IsTorsionBySet.isScalarTower (Ideal.isTorsionBySet_cotangent (normalFormIdeal M))
+  haveI : Module.Finite (orbitRing M ⧸ normalFormIdeal M) ((normalFormIdeal M).Cotangent) :=
+    Module.Finite.of_restrictScalars_finite (orbitRing M) _ _
+  -- `κ = A/m_M` is finite over `k` (`κ ≃ₐ[k] k`), so the cotangent is finite over `k`
+  haveI : FiniteDimensional k (orbitRing M ⧸ normalFormIdeal M) :=
+    Module.Finite.of_surjective (residueFieldNormalFormEquiv M).symm.toLinearMap
+      (residueFieldNormalFormEquiv M).symm.surjective
+  haveI : IsScalarTower k (orbitRing M ⧸ normalFormIdeal M) ((normalFormIdeal M).Cotangent) :=
+    Module.IsTorsionBySet.isScalarTower (Ideal.isTorsionBySet_cotangent (normalFormIdeal M))
+  exact Module.Finite.trans (orbitRing M ⧸ normalFormIdeal M) ((normalFormIdeal M).Cotangent)
+
+/-- **R5 — `finrank (range δ⁰) ≤ finrank (m_M.Cotangent)`.** The injection of the orbit tangent
+image into the Zariski cotangent space, in finrank form: `ker (cotPairing) ⊆ ker δ⁰` (R4) gives
+`finrank (range δ⁰) ≤ finrank (range cotPairing)`, and `range cotPairing ⊆ Dual k (m_M.Cotangent)`
+has `finrank ≤ finrank (m_M.Cotangent)` (`Subspace.dual_finrank_eq`). -/
+theorem finrank_range_deformationδ_le_finrank_cotangent [IsAlgClosed k] (M : Tuple (k := k) d) :
+    finrank k (LinearMap.range (deformationδ M M))
+      ≤ finrank k ((normalFormIdeal M).Cotangent) := by
+  -- rank–nullity for `δ⁰` and `cotPairing` (same domain `C⁰`), with `ker cotPairing ⊆ ker δ⁰`
+  have hδ : finrank k (LinearMap.range (deformationδ M M))
+      + finrank k (LinearMap.ker (deformationδ M M)) = finrank k (cochain0 (k := k) d d) :=
+    (deformationδ M M).finrank_range_add_finrank_ker
+  have hΨ : finrank k (LinearMap.range (cotPairing M))
+      + finrank k (LinearMap.ker (cotPairing M)) = finrank k (cochain0 (k := k) d d) :=
+    (cotPairing M).finrank_range_add_finrank_ker
+  have hker : finrank k (LinearMap.ker (cotPairing M))
+      ≤ finrank k (LinearMap.ker (deformationδ M M)) :=
+    Submodule.finrank_mono (ker_cotPairing_le_ker_deformationδ M)
+  have hdual : finrank k (LinearMap.range (cotPairing M))
+      ≤ finrank k ((normalFormIdeal M).Cotangent) := by
+    calc finrank k (LinearMap.range (cotPairing M))
+        ≤ finrank k (Module.Dual k (normalFormIdeal M).Cotangent) :=
+          Submodule.finrank_le _
+      _ = finrank k ((normalFormIdeal M).Cotangent) := Subspace.dual_finrank_eq
+  omega
+
 end DLNFibre.Core
