@@ -2,7 +2,7 @@
 
 **Thread:** 43-ctheta-geometric (voigt-discharge expedition; wiring the discharged `hVoigt` into the
 combinatorial `(C,θ)` so the per-orbit geometric reading is formal + unconditional).
-**Pinned commit:** `<SHA>` (branch `expedition/voigt-discharge`).
+**Pinned commit:** `bb23e70` (branch `expedition/voigt-discharge`).
 **Module:** `lean/DLNFibre/Core/CThetaGeometric.lean` (new; imported at the END of `lean/DLNFibre.lean`).
 **Build:** whole `DLNFibre` library green (3012 jobs); `scripts/sorries` = 0; all five new headlines
 `#print axioms` = `[propext, Classical.choice, Quot.sound]`.
@@ -20,7 +20,7 @@ payoff is a separate, `DLN`-side, Cited reading).
 > equals the combinatorial Cor 3.5 form `codimForm N (multiplicityArray L)`.
 >
 > - **Lean:** `DLNFibre.Core.codimRepCanonical_orbitRankLocus_eq_codimForm`
->   (`lean/DLNFibre/Core/CThetaGeometric.lean` @ `<SHA>`)
+>   (`lean/DLNFibre/Core/CThetaGeometric.lean` @ `bb23e70`)
 > - **Signature.** `[IsAlgClosed k] [CharZero k] (L) : ((codimRepCanonical (orbitRankLocus
 >   (intervalDirectSum (k := k) L))).toNat : ℤ) = codimForm N (multiplicityArray L)`
 > - **Gloss.** The `Ideal.height` of the vanishing ideal of the orbit closure (read at the canonical
@@ -50,7 +50,7 @@ Companion ℕ∞ form: `codimRepCanonical_orbitRankLocus_eq_orbitLinearCodim` �
 > `⊕_{(a,b)} M_{ab}^{m}`.
 >
 > - **Lean:** `DLNFibre.Core.cCodim_eq_inf_geomCodim`
->   (`lean/DLNFibre/Core/CThetaGeometric.lean` @ `<SHA>`)
+>   (`lean/DLNFibre/Core/CThetaGeometric.lean` @ `bb23e70`)
 > - **Signature.** `[IsAlgClosed k] [CharZero k] (d) (r) (h : (kostantPartitions d r).Nonempty) :
 >   cCodim d r h = (kostantPartitions d r).inf' h (fun m ↦ ((codimRepCanonical (orbitRankLocus
 >   (intervalDirectSum (k := k) (listOfPartition m)))).toNat : ℤ))`
