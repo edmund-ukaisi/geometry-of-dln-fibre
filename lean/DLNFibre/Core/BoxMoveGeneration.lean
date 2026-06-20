@@ -305,6 +305,163 @@ theorem sum_secondDiff_coveringRect_ge (N : ℤ) (g : ℤ → ℤ → ℤ)
   have hrem := sum_Icc_colDiff_qcol_nonpos N g hsupp hpos hI0 hIJ hJN
   linarith
 
+/-! ## L6.2b — move existence (the covering interval carrying positive multiplicity)
+
+Substituting the dictionary `diff g = diff r − diff s` (`diff` is additive) into (★): if `s` is
+achievable (`diff s ≥ 0`, the multiplicities of `s` are nonnegative) and `s ≤ r` with `g = r − s`
+positive at `(I,J)`, then some covering interval `[a,e]` carries a positive `r`-multiplicity
+`diff r a e ≥ 1` and has its rectangle in `supp g`. This is the interval the linked box move
+recombines. -/
+
+/-- `diff` is additive on the pointwise difference: `diff (r − s) = diff r − diff s`. -/
+theorem diff_sub (r s : ℤ → ℤ → ℤ) (i j : ℤ) :
+    diff (fun i j ↦ r i j - s i j) i j = diff r i j - diff s i j := by
+  simp only [diff_apply]; ring
+
+/-- **L6.2b (move existence).** With `g = r − s` nonnegative and supported, `s` achievable
+(`diff s ≥ 0`), at any positive cell `(I,J)` of `g` there is a covering interval `[a,e]` (rectangle
+`[a,I]×[J,e] ⊆ supp g`) carrying positive `r`-multiplicity `diff r a e ≥ 1`. -/
+theorem exists_coveringInterval_diff_pos (N : ℤ) (r s : ℤ → ℤ → ℤ)
+    (hsupp : Supported N (fun i j ↦ r i j - s i j)) (hpos : ∀ i j, 0 ≤ r i j - s i j)
+    (hms : ∀ i j, 0 ≤ diff s i j) {I J : ℤ}
+    (hIJ : I < J) (hJN : J ≤ N) (hgIJ : 0 < r I J - s I J) :
+    ∃ p ∈ coveringRect (fun i j ↦ r i j - s i j) N I J, 1 ≤ diff r p.1 p.2 := by
+  set g : ℤ → ℤ → ℤ := fun i j ↦ r i j - s i j with hg
+  by_contra hcon
+  push Not at hcon
+  -- assuming `diff r < 1`, i.e. `diff r ≤ 0`, on every covering interval, `diff g ≤ 0` there
+  have hle : ∀ p ∈ coveringRect g N I J, diff g p.1 p.2 ≤ 0 := by
+    intro p hp
+    have hr0 : diff r p.1 p.2 ≤ 0 := by have := hcon p hp; omega
+    have : diff g p.1 p.2 = diff r p.1 p.2 - diff s p.1 p.2 := diff_sub r s p.1 p.2
+    have hs0 := hms p.1 p.2
+    omega
+  -- contradicts (★): `g I J ≤ ∑ diff g ≤ 0 < g I J`
+  have hgIJ' : 0 < g I J := hgIJ
+  have hstar := sum_secondDiff_coveringRect_ge N g hsupp hpos hIJ hJN hgIJ'
+  have hsum : ∑ p ∈ coveringRect g N I J, diff g p.1 p.2 ≤ 0 := Finset.sum_nonpos hle
+  omega
+
+/-! ## L6.2a — the box move on rank patterns (drop the rectangle `D`)
+
+The box move sends a rank pattern `r` to `r' = r − 1_D` over the **drop rectangle**
+`D = [a,c−1]×[b+1,e]` (`a < c ≤ b+1 ≤ e`). The second difference of the indicator `1_D` is a
+four-corner pattern (`boxIndicator_diff`): `m' = m(r) + 1_{(a,b)} − 1_{(a,e)} − 1_{(c,b)} +
+1_{(c,e)}`. So `r'` stays **achievable** (`diff r' ≥ 0`) once the move is applicable —
+`m(r)_{[a,e]} ≥ 1` and (linked case `c ≤ b`) `m(r)_{[c,b]} ≥ 1`; the other two multiplicities rise.
+`D` lies strictly above the diagonal, so the **dimension vector is preserved** (`r'_{tt} = r_{tt}`),
+and `r' ≤ r` with strict drop on `D` (so `Φ = Σ_{i<j}(r−s)` strictly decreases under the move). -/
+
+/-- The **drop-rectangle indicator** `1_D` for `D = [a,c−1]×[b+1,e]`. -/
+def boxIndicator (a c b e : ℤ) (i j : ℤ) : ℤ :=
+  if a ≤ i ∧ i ≤ c - 1 ∧ b + 1 ≤ j ∧ j ≤ e then 1 else 0
+
+/-- **Four-corner identity.** `diff (1_D)` is `−1` at `(a,b)` and `(c,e)`, `+1` at `(a,e)` and
+`(c,b)`: the box-move multiplicity delta. (Stated as the pointwise value at `(i,j)`.) -/
+theorem boxIndicator_diff (a c b e i j : ℤ) (hac : a < c) (hcb : c ≤ b + 1) (hbe : b + 1 ≤ e) :
+    diff (boxIndicator a c b e) i j
+      = (if i = a ∧ j = b then -1 else 0) + (if i = c ∧ j = e then -1 else 0)
+        + (if i = a ∧ j = e then 1 else 0) + (if i = c ∧ j = b then 1 else 0) := by
+  rw [diff_apply, boxIndicator, boxIndicator, boxIndicator, boxIndicator]
+  split_ifs <;> omega
+
+/-- The **box move on a rank pattern**: `boxDrop r = r − 1_D`, `D = [a,c−1]×[b+1,e]`. -/
+def boxDrop (r : ℤ → ℤ → ℤ) (a c b e : ℤ) (i j : ℤ) : ℤ := r i j - boxIndicator a c b e i j
+
+/-- **The box move preserves achievability (on the upper triangle).** For a cell `(i,j)` with
+`i ≤ j` — the meaningful domain of a rank pattern's multiplicities — when the move is applicable
+(`m(r)_{[a,e]} ≥ 1`, and in the linked case `c ≤ b` also `m(r)_{[c,b]} ≥ 1`) the dropped pattern is
+still achievable there: `diff (boxDrop r) i j ≥ 0`. (Below the diagonal the `(c,b)` corner of the
+split case `c = b+1` would be negative, but `(c,b)` is then below the diagonal — off the rank
+pattern's domain — so achievability as a rank pattern is unaffected.) -/
+theorem diff_boxDrop_nonneg (r : ℤ → ℤ → ℤ) {a c b e i j : ℤ} (hac : a < c) (hcb : c ≤ b + 1)
+    (hbe : b + 1 ≤ e) (hij : i ≤ j) (hmr : ∀ i j, 0 ≤ diff r i j) (hae : 1 ≤ diff r a e)
+    (hcbm : c ≤ b → 1 ≤ diff r c b) : 0 ≤ diff (boxDrop r a c b e) i j := by
+  have hdiff : diff (boxDrop r a c b e) i j = diff r i j - diff (boxIndicator a c b e) i j := by
+    simp only [boxDrop, diff_apply]; ring
+  rw [hdiff, boxIndicator_diff a c b e i j hac hcb hbe]
+  have h0 := hmr i j
+  -- the two dropping corners are `(a,e)` and (linked) `(c,b)`; the other two rise
+  by_cases hae' : i = a ∧ j = e
+  · obtain ⟨hi, hj⟩ := hae'
+    rw [hi, hj] at h0 ⊢
+    rw [if_neg (by rintro ⟨_, h⟩; omega), if_neg (by rintro ⟨h, _⟩; omega),
+      if_pos ⟨rfl, rfl⟩, if_neg (by rintro ⟨h, _⟩; omega)]
+    omega
+  · by_cases hcb' : i = c ∧ j = b
+    · obtain ⟨hi, hj⟩ := hcb'
+      have hcle : c ≤ b := by rw [hi, hj] at hij; omega
+      have hcbm' := hcbm hcle
+      rw [hi, hj] at h0 ⊢
+      rw [if_neg (by rintro ⟨h, _⟩; omega), if_neg (by rintro ⟨_, h⟩; omega),
+        if_neg (by rintro ⟨h, _⟩; omega), if_pos ⟨rfl, rfl⟩]
+      omega
+    · rw [if_neg fun h ↦ hae' h, if_neg fun h ↦ hcb' h]
+      split_ifs <;> omega
+
+/-- **Dimension preservation.** The drop rectangle is strictly above the diagonal, so the box move
+fixes the diagonal: `boxDrop r t t = r t t`. -/
+theorem boxDrop_diag (r : ℤ → ℤ → ℤ) {a c b e : ℤ} (hac : a < c) (hcb : c ≤ b + 1)
+    (hbe : b + 1 ≤ e) (t : ℤ) : boxDrop r a c b e t t = r t t := by
+  rw [boxDrop, boxIndicator, if_neg (by omega), sub_zero]
+
+/-- **The move drops the pattern.** `boxDrop r ≤ r` everywhere, strictly on `D` (e.g. at `(a,b+1)`,
+which is in `D`). -/
+theorem boxDrop_le (r : ℤ → ℤ → ℤ) (a c b e i j : ℤ) : boxDrop r a c b e i j ≤ r i j := by
+  rw [boxDrop, boxIndicator]; split_ifs <;> omega
+
+/-- **The drop is strict on `D`.** At `(a, b+1) ∈ D` the move strictly lowers the pattern:
+`boxDrop r a c b e a (b+1) = r a (b+1) − 1`. So `Φ = Σ_{i≤j}(r − s)` strictly decreases under the
+move (the witness cell for termination). -/
+theorem boxDrop_strict (r : ℤ → ℤ → ℤ) {a c b e : ℤ} (hac : a < c) (hbe : b + 1 ≤ e) :
+    boxDrop r a c b e a (b + 1) = r a (b + 1) - 1 := by
+  rw [boxDrop, boxIndicator, if_pos ⟨le_refl a, by omega, le_refl (b + 1), hbe⟩]
+
+/-! ## The box-move step relation (reusable interface for L6.2c and L6.4)
+
+A single applicable box move, packaged as a relation on rank patterns. `BoxMoveStep r r'` holds
+when `r' = boxDrop r a c b e` for a valid linked move `a < c ≤ b+1 ≤ e` whose applicability
+conditions hold on `r` (`m(r)_{[a,e]} ≥ 1`, and `m(r)_{[c,b]} ≥ 1` in the linked case). The
+reflexive-transitive closure `Relation.ReflTransGen BoxMoveStep` is the **box-move chain**; L6.2c
+(the `Φ`-induction) establishes `s ≤ r → BoxMoveChain r s`, and L6.4 composes each step with the
+per-move degeneration `Core.BoxMoveGeneral`. -/
+
+/-- **Sub-fact 1 (the linked applicability, elementary).** At an extremal deficient cell `(i0,j0)`
+of `g = r − s` (its three neighbours `g (i0+1)(j0−1)`, `g (i0+1) j0`, `g i0 (j0−1)` vanish, as the
+extremal choice's minimality/maximality provides) with `g i0 j0 ≥ 1`, the linked multiplicity is
+positive: `diff r (i0+1) (j0−1) ≥ 1`. (The second difference of `g` collapses to `g i0 j0`, and
+`diff r = diff g + diff s ≥ diff g` since `diff s ≥ 0`.) -/
+theorem one_le_diff_linked (r s : ℤ → ℤ → ℤ) {i0 j0 : ℤ}
+    (hms : ∀ i j, 0 ≤ diff s i j)
+    (hv1 : r (i0 + 1) (j0 - 1) - s (i0 + 1) (j0 - 1) = 0)
+    (hv2 : r (i0 + 1) j0 - s (i0 + 1) j0 = 0)
+    (hv3 : r i0 (j0 - 1) - s i0 (j0 - 1) = 0)
+    (hgIJ : 1 ≤ r i0 j0 - s i0 j0) :
+    1 ≤ diff r (i0 + 1) (j0 - 1) := by
+  -- `diff g (i0+1)(j0−1) = g i0 j0` (the three neighbours vanish); `diff r ≥ diff g`
+  have hg : diff (fun i j ↦ r i j - s i j) (i0 + 1) (j0 - 1) = r i0 j0 - s i0 j0 := by
+    rw [diff_apply]
+    have e1 : (j0 - 1) + 1 = j0 := by ring
+    have e2 : (i0 + 1) - 1 = i0 := by ring
+    rw [e1, e2]
+    simp only [hv1, hv2, hv3]
+    ring
+  have hsub := diff_sub r s (i0 + 1) (j0 - 1)
+  have hs0 := hms (i0 + 1) (j0 - 1)
+  -- `diff r = diff g + diff s ≥ g i0 j0 + 0 ≥ 1`
+  have : diff (fun i j ↦ r i j - s i j) (i0 + 1) (j0 - 1) = diff r (i0 + 1) (j0 - 1)
+      - diff s (i0 + 1) (j0 - 1) := hsub
+  rw [hg] at this
+  omega
+
+/-- A single applicable linked box move from `r` to `r'`. -/
+def BoxMoveStep (r r' : ℤ → ℤ → ℤ) : Prop :=
+  ∃ a c b e : ℤ, a < c ∧ c ≤ b + 1 ∧ b + 1 ≤ e ∧
+    (1 ≤ diff r a e) ∧ (c ≤ b → 1 ≤ diff r c b) ∧ r' = boxDrop r a c b e
+
+/-- The **box-move chain**: a finite sequence of applicable box moves. -/
+def BoxMoveChain (r s : ℤ → ℤ → ℤ) : Prop := Relation.ReflTransGen BoxMoveStep r s
+
 section Witness
 
 /-! ## Non-vacuity witness
