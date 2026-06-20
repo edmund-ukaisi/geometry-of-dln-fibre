@@ -939,3 +939,37 @@ This records a concrete obstruction to a uniform terminal-zero theorem from
 the printed equation `(3)` display.  It is not a construction of the displayed
 vector and does not prove terminal `tilde t=0`, introduced-label status,
 chart coverage, or Lemma 5 order count.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` terminal collision
+
+Reproduction:
+`reproduction-lemma5-eq4-terminal-collision-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-terminal-collision.md`.
+Review artifact:
+`review-lemma5-eq4-terminal-collision-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum
+aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary
+aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary
+```
+
+If the equation `(4)` boundary reaches the terminal selected endpoint, i.e.
+`p+1=a`, then the supplied branch value is
+
+```text
+M - W_(ell+1) - p + 1.
+```
+
+Thus terminal zero at that supplied boundary is equivalent to the extra
+compatibility condition `W_(ell+1)=M-p+1`.  Definition 3 does not force this;
+for instance `ell=3`, `a=2`, `p=1`, `M=3`, and all selected widths equal to
+`2` satisfy the selected-sum and strict selected-width inequalities, but the
+displayed terminal-collision value is `1`.
+
+This is finite endpoint arithmetic only.  It does not construct equation
+`(4)`'s displayed vector, prove terminal `tilde t=0`, or prove Lemma 5's
+chart-family/order-count theorem.

@@ -340,6 +340,47 @@ theorem aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension
   rw [hterminal]
   exact aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum ell a M m ha hselected
 
+/-- If equation `(4)`'s special boundary is the terminal selected endpoint,
+then its supplied branch value is `M-W_(ell+1)-p+1`.
+
+This is a finite obstruction record.  It does not say that equation `(4)`
+constructs a terminal vector or that the value is zero. -/
+theorem aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (ha : a ≤ ell) (hp : p + 1 = a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    T (C.point ell - 1) =
+      M - aoyagiSelectedWidthNat ell m ell - (p : ℤ) + 1 := by
+  have ha_pos : 1 ≤ a := by omega
+  have hboundary_index : p + (ell - a) + 1 = ell := by omega
+  have hupper_index : p + (ell - a) = ell - 1 := by omega
+  have hboundary := hT.boundary
+  rw [hboundary_index, hupper_index] at hboundary
+  have hpred :=
+    aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum
+      ell a M m ha_pos ha hselected
+  rw [hpred] at hboundary
+  simpa using hboundary
+
+/-- Exact compatibility condition for terminal zero in equation `(4)`'s
+terminal-boundary case.
+
+This does not prove terminality; it states what the supplied boundary value
+would have to satisfy to be zero. -/
+theorem aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (ha : a ≤ ell) (hp : p + 1 = a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    T (C.point ell - 1) = 0 ↔
+      aoyagiSelectedWidthNat ell m ell = M - (p : ℤ) + 1 := by
+  rw [aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary
+    ell a p M m C layerWidth T ha hp hselected hT]
+  constructor <;> intro h <;> linarith
+
 /-- A supplied equation `(4)` piecewise vector has the correct own-coordinate
 value and legal source label under the repaired guards.
 

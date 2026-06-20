@@ -479,6 +479,51 @@ theorem aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum (ell a : ℕ) (M : ℤ)
   simpa [aoyagiHtildeUpperChain] using
     aoyagiHtildeUpperChain_last_eq_zero_of_selectedSum ell a M m ha hselected
 
+/-- Under the selected-width sum, the penultimate upper-chain value is
+`M-W_(ell+1)`.
+
+This is only endpoint arithmetic for the displayed upper `Htilde'` chain. -/
+theorem aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha_pos : 1 ≤ a) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiHtildeUpperNat ell a M m (ell - 1) =
+      M - aoyagiSelectedWidthNat ell m ell := by
+  let w := aoyagiSelectedWidthNat ell m
+  let P := aoyagiPrefixSum w
+  have hell_pos : 1 ≤ ell := le_trans ha_pos ha
+  have hpred_succ : ell - 1 + 1 = ell := by omega
+  have hprefix_succ := aoyagiPrefixSum_succ w (ell - 1)
+  have hprefix :
+      P (ell - 1) = P ell - w ell := by
+    dsimp [P]
+    rw [hpred_succ] at hprefix_succ
+    linarith
+  have htotal : P ell = (ell : ℤ) * (M - 1) + a := by
+    dsimp [P, w]
+    rw [aoyagiPrefixSum_selectedWidthNat_last, hselected]
+  have hsub : (ell - 1) - (ell - a) = a - 1 := by omega
+  have hmin : min a ((ell - 1) - (ell - a)) = a - 1 := by
+    rw [hsub]
+    exact Nat.min_eq_right (by omega)
+  unfold aoyagiHtildeUpperNat aoyagiHtildeUpperIncrementPrefix
+    aoyagiHtildeUpperHighCount
+  change aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) (ell - 1) -
+      (((ell - 1 : ℕ) : ℤ) * (M - 1) +
+        (((min a ((ell - 1) - (ell - a))) : ℕ) : ℤ)) =
+    M - aoyagiSelectedWidthNat ell m ell
+  change P (ell - 1) -
+      (((ell - 1 : ℕ) : ℤ) * (M - 1) +
+        (((min a ((ell - 1) - (ell - a))) : ℕ) : ℤ)) =
+    M - w ell
+  rw [hprefix, htotal, hmin]
+  have hell_pred_cast : ((ell - 1 : ℕ) : ℤ) = (ell : ℤ) - 1 := by
+    exact_mod_cast (Nat.sub_eq_iff_eq_add hell_pos).2 hpred_succ.symm
+  have ha_pred_cast : ((a - 1 : ℕ) : ℤ) = (a : ℤ) - 1 := by
+    exact_mod_cast (Nat.sub_eq_iff_eq_add ha_pos).2 (by omega)
+  rw [hell_pred_cast, ha_pred_cast]
+  ring
+
 /-- The displayed lower chain is pointwise below the displayed upper chain.
 
 This is a same-coordinate statement about the finite `H`-chains.  It is not a

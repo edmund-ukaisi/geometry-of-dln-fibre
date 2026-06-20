@@ -638,6 +638,12 @@ on the session's original cwd.
    a supplied equation `(3)` branch certificate assigns the terminal selected
    endpoint value `1`, not `0`.  This strengthens the blocker against a
    terminal-zero theorem from the printed display alone.
+   Equation `(4)` now has its terminal-collision arithmetic Lean-proved too:
+   when `p+1=a`, the supplied branch value at `S_(ell+1)-1` is
+   `M-W_(ell+1)-p+1`, so zero requires the extra last-width condition
+   `W_(ell+1)=M-p+1`.  The next A5 move should either build a richer supplied
+   Case 1(2) terminal convention explicitly, or move to another finite
+   consequence below the displayed-family realisation boundary.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

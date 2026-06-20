@@ -2385,6 +2385,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-terminal-obstruction-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` terminal-collision arithmetic has
+landed in `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names
+are `aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum`,
+`aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary`, and
+`aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary`.  They
+say that when `p+1=a`, the supplied equation `(4)` special boundary is the
+terminal selected endpoint and its displayed branch value is
+`M-W_(ell+1)-p+1`; zero at this endpoint is equivalent to the extra condition
+`W_(ell+1)=M-p+1`.  This is not forced by Definition 3.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-collision-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-collision.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-terminal-collision-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

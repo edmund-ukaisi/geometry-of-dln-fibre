@@ -2027,6 +2027,15 @@ identity gives `Htilde'_ell=0`, the supplied branch assignment gives
 uniform terminal-zero theorem without additional chart-sequence or endpoint
 data.
 
+The analogous terminal-collision arithmetic for equation `(4)` is now
+Lean-proved.  When `p+1=a`, the special boundary
+`S_(p+ell-a+2)-1` is the terminal selected endpoint.  Definition 3's
+selected-sum identity gives `Htilde'_(ell-1)=M-W_(ell+1)`, so the supplied
+equation `(4)` boundary value is `M-W_(ell+1)-p+1`.  It is zero exactly when
+`W_(ell+1)=M-p+1`, an extra compatibility condition not forced by Definition
+3.  This further reinforces the boundary that equations `(3)` and `(4)` are
+not terminal-vector theorems from the printed display alone.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

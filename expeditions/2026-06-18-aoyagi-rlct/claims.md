@@ -2041,6 +2041,11 @@ No such claim is formalisation-ready until both fields are filled.
   Also proved `aoyagiLemma5Eq3_terminalEndpoint_one_of_one`, which records
   that the supplied equation `(3)` boundary assignment gives terminal endpoint
   value `1` when `a=1`, rather than terminal endpoint zero.
+  Also proved `aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum`,
+  `aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary`, and
+  `aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary`, which
+  record the supplied equation `(4)` terminal-collision boundary value and the
+  exact extra last-width condition for it to be zero.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
