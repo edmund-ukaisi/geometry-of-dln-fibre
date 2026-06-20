@@ -2732,3 +2732,31 @@ not apply to row-exhausted wide-next cases and does not prove chart coverage,
 source-produced `C'^(S+1)`, chart-produced following product, Jacobian
 arithmetic, normal crossings/RLCT, termination, transition invariance, or
 printed-vector repair.
+
+## 2026-06-20 Lean Case 2 principalized source-chart actual-width boundary
+
+Reproduction:
+`reproduction-case2-principalized-source-chart-actual-width-a4.md`.
+Statement card:
+`statement-card-a4-principalized-source-chart-actual-width.md`.
+Review artifact:
+`review-case2-principalized-source-chart-actual-width-a4.md`.
+
+Lean now packages the concrete displayed source-chart actual-width terminal
+boundary with finite residual-block center principalization:
+
+```text
+sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal
+```
+
+This theorem combines the arbitrary-`F` actual-width original-row terminal
+boundary with the finite center facts that the displayed selected variable
+`u` occurs among the transformed center values, divides every transformed
+finite center value, and generates the transformed finite center ideal.  The
+following matrix `F` and the residual-block `chartFamily` remain supplied, and
+the original-row branch still requires `n(S+1)=J+1`.
+
+This does not principalize the terminal product ideal and does not prove chart
+coverage, source-produced `C'^(S+1)`, chart-produced following product,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair.

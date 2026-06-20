@@ -1505,6 +1505,14 @@ No such claim is formalisation-ready until both fields are filled.
   and `sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary`:
   the post recurrence/exponent data are fixed by the displayed source chart,
   while the following matrix `F` remains supplied.
+  The displayed source-chart actual-width terminal boundary is now also
+  bundled with finite residual-block center principalization as
+  `sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal`.
+  This adds that the selected variable `u` occurs among the transformed finite
+  center values, divides every transformed finite center value, and generates
+  the transformed finite center ideal.  It does not principalize the terminal
+  product ideal; `F`, `chartFamily`, and actual-width exhaustion remain
+  explicit boundaries.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

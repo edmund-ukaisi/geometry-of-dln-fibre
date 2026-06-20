@@ -166,10 +166,16 @@ on the session's original cwd.
    specialization without source-suffix endpoint casts. The concrete displayed
    source-chart actual-width boundary now also has this arbitrary-`F` form,
    with post recurrence/exponent data fixed by the chart map, but it still does
-   not produce `F` or `C'^(S+1)`. Next A4 target: chart-production boundary
-   for the following product/terminal data, or a terminal-last `F := 1`
-   specialization if needed. Do not transport Case 2 gap/tail invariants
-   without separately checking their shifted thresholds.
+   not produce `F` or `C'^(S+1)`. The same boundary is now also packaged with
+   displayed finite residual-block center principalization:
+   `sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal`.
+   This principalizes only the finite center ideal, not the terminal product
+   ideal or analytic loss ideal. Next A4 target: either chart-production
+   boundary data for the following product/terminal data, or the elementary
+   terminal-last endpoint identity `sourceSuffixProduct = 1` under `S+1=L`
+   followed by terminal-last wrappers. Do not set `F := 1` away from the
+   empty-suffix case, and do not transport Case 2 gap/tail invariants without
+   separately checking their shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

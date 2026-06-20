@@ -1609,6 +1609,20 @@ actual-width original-row wrapper.  This fixes the post state to the chart-map
 successor and carries the actual-width relabelled level/exponent certificates,
 but `F` remains supplied.
 
+The displayed source-chart actual-width boundary now also has a finite-center
+principalization package:
+`sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal`.
+It conjoins the arbitrary-`F` actual-width terminal boundary with the finite
+residual-block center facts that `u` is a transformed center value, all
+transformed center values are divisible by `u`, and the transformed finite
+center ideal is `Ideal.span {u}`.  This is not terminal-product
+principalization, chart coverage, source production of `C'^(S+1)`, production
+of the following product, or an analytic theorem.  The source scout identified
+the next elementary suffix target as the terminal-last endpoint identity
+`sourceSuffixProduct = 1` under `S+1=L`, followed by branch-specific
+terminal-last wrappers; this should not be generalized to `F=1` away from the
+empty-suffix case.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -1835,6 +1835,24 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-chart-arbitrary-suffix-actual-width-a4.md`.
 
+Latest A4 update: the displayed source-chart actual-width terminal boundary is
+now packaged together with finite residual-block center principalization in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean name is
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal`.
+It conjoins the arbitrary-`F` actual-width original-row terminal boundary with
+the finite center facts that `u` is a transformed center value, every
+transformed center value is divisible by `u`, and the transformed finite center
+ideal is `Ideal.span {u}`.  The following matrix `F` and the residual-block
+`chartFamily` remain supplied, and actual-width exhaustion `n(S+1)=J+1` remains
+the original-row/relabel side condition.  This does not principalize the
+terminal product ideal, construct chart coverage, produce `C'^(S+1)` or the
+following product, or prove any analytic result. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-principalized-source-chart-actual-width-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-principalized-source-chart-actual-width.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-principalized-source-chart-actual-width-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

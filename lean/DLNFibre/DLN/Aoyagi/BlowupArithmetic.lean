@@ -13647,6 +13647,89 @@ theorem sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary
   · simpa [data] using
       (data.terminalRelabelExponentDomain_of_actualWidth hwidth)
 
+/-- Actual-width displayed source-chart terminal boundary together with finite
+center principalization.
+
+This packages the actual-width original-row terminal entry-ideal statement and
+the relabelled `(S+1,0)` certificates with the elementary fact that the
+displayed source-coordinate chart principalizes the finite residual-block
+center ideal to `Ideal.span {u}`.  The chart-family regularity interface and
+the following matrix `F` remain supplied. -/
+theorem sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n hS hcont)
+                        (case2DisplayedPivotCol n hS hcont)
+                        (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n hS hcont
+                      (case2DisplayedSourceChartMap n hS hcont u residual
+                        (J + 1, J + 1)) residual).submatrix
+                    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n hS hcont C)) * F) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeight
+              (case2DisplayedSourceOldTopWeight pre)
+              ((pre.case2Succ
+                (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+                |>.stageRelabelSuccZero
+                |>.weight (J + 1)) *
+            case2DisplayedSourceTerminalOriginalRows C) * F)) ∧
+    IntroducedLabelLevelInvariants L n (S + 1) 0
+      ((pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+        |>.stageRelabelSuccZero
+        |>.level)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    IntroducedLabelExponentCertificates L n (S + 1) 0
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    u ∈
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+    (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+      u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+    Ideal.span
+        {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+          case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+      Ideal.span ({u} : Set R) := by
+  rcases
+      sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary
+        pre u residual hS hSL hcont hwidth exponentPre levelInv leastValueGap
+        chartFamily C F with
+    ⟨hentry, hlevel, hexponent⟩
+  exact
+    ⟨hentry, hlevel, hexponent,
+      case2DisplayedSourceChartMap_value_mem n hS hcont u residual,
+      case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
+      case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
+
 end Case2DisplayedSuppliedChartFamilyBoundary
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence
