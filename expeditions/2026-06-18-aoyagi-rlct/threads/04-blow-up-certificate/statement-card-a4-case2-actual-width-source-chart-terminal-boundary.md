@@ -17,6 +17,10 @@ boundary theorem.  It combines the original-row terminal source-suffix
 entry-ideal equality with the actual-width relabelled level and exponent-domain
 certificates for `(S+1,0)`.
 
+The underlying original-row terminal equality now also has an arbitrary
+supplied-following-matrix form; this boundary theorem still uses the
+source-suffix specialization.
+
 ## Proved
 
 - Under `n(S+1)=J+1`, the source-chart terminal product uses original source
@@ -30,6 +34,7 @@ certificates for `(S+1,0)`.
 
 - No source-produced `C'^(S+1)`.
 - No row-exhausted wide-next original-row theorem.
+- No production of the supplied following matrix or source suffix.
 - No chart coverage or atlas construction.
 - No chart-produced post-data, Jacobian, normal-crossing/RLCT, termination, or
   transition-invariance theorem.

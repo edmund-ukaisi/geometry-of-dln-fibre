@@ -1490,6 +1490,15 @@ No such claim is formalisation-ready until both fields are filled.
   `sourceSuffixFirstEdge`, and `sourceSuffixProduct_peel`: under `S+2<=L`,
   the suffix rewrites as the first source edge `C^(S+2)`, reindexed to
   adjacent source-suffix endpoints, times the tail suffix from `S+3`.
+  The stopped terminal source-row wrappers are also now available with an
+  arbitrary supplied following matrix `F`, via
+  `exists_sourceOldTopSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
+  `exists_sourceOldTopSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`,
+  `exists_oldTopSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth`,
+  and
+  `exists_oldTopSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth`.
+  These wrappers consume supplied suffix/bridge data and keep actual-width
+  original-row specialization separate from row-exhausted wide-next cases.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

@@ -18,6 +18,11 @@ with the terminal source-suffix wrappers.  The post recurrence state is
 `pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))`, and the exponent
 post-data are the corrected selected-label overrides.
 
+The source-suffix theorem is now understood as a specialization of the
+arbitrary supplied-following-matrix wrapper from
+`statement-card-a4-case2-arbitrary-suffix-terminal-wrapper.md`, with
+`F = sourceSuffixProduct κ Ctail S hSuffix`.
+
 ## Proved
 
 - In the actual-width branch `n(S+1)=J+1`, the source-chart terminal
@@ -32,6 +37,8 @@ post-data are the corrected selected-label overrides.
 - No chart coverage or atlas construction.
 - No global source-produced `C'^(S+1)`.
 - No proof that `C` or `Ctail` are chart-produced.
+- No proof that the arbitrary following matrix `F` in the lower-level wrapper
+  is chart-produced.
 - No Jacobian, normal-crossing, RLCT, termination, or transition-invariance
   theorem.
 - No `(S+1,0)` recurrence relabel in the row-exhausted branch.

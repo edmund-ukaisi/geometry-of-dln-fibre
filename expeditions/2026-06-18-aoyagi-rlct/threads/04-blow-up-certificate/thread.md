@@ -2677,3 +2677,31 @@ raw matrix-chain algebra.  It does not prove the empty-suffix identity,
 source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
 Jacobian arithmetic, normal crossings/RLCT, termination, transition
 invariance, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 arbitrary-suffix terminal wrapper
+
+Reproduction:
+`reproduction-case2-arbitrary-suffix-terminal-wrapper-a4.md`.
+Statement card:
+`statement-card-a4-case2-arbitrary-suffix-terminal-wrapper.md`.
+Review artifact:
+`review-case2-arbitrary-suffix-terminal-wrapper-a4.md`.
+
+Lean now adds arbitrary supplied-suffix companions to the stopped source-row
+terminal wrappers:
+
+```text
+exists_sourceOldTopSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont
+exists_sourceOldTopSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont
+exists_oldTopSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth
+exists_oldTopSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth
+```
+
+These theorems keep the following product as an arbitrary supplied matrix `F`
+instead of immediately specializing to `sourceSuffixProduct`.  The actual-width
+original-row specialization still requires `n(S+1)=J+1`; it does not apply to
+the row-exhausted wide-next branch.  This is terminal-product packaging and
+source-row reindexing only.  It does not prove that `F` is produced by the
+chart, source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair.

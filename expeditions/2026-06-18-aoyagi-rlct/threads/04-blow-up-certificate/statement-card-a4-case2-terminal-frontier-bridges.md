@@ -32,9 +32,13 @@ Names:
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalProductPrefixCandidate`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.matrixEntryIdeal_sourceTerminalProductPrefixCandidate_eq_sourceTerminalProduct`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_oldTopSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_oldTopSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_oldTopSourceSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth`
 
 ## Statement
@@ -72,12 +76,19 @@ frontier:
 - The supplied bridge rewrites the terminal-prefix product and the stopped
   source old-top/source suffix theorem through the supplied terminal `Cterm`,
   including the prefix-row source-suffix theorem.
+- The same stopped source-row terminal wrapper is available with an arbitrary
+  supplied following matrix `F`; the source-suffix theorem is its specialization
+  to `F = sourceSuffixProduct κ Ctail S hSuffix`.
 - The actual-width old-top/source-suffix terminal theorem can be specialized
   to the original source rows `1..J+1`.
+- The actual-width original-row terminal theorem is also available with an
+  arbitrary supplied following matrix `F`, supporting later `F := 1`
+  endpoint use without source-suffix endpoint casts.
 
 ## Not Proved
 
 - No chart production of the supplied terminal matrix.
+- No production of the arbitrary following matrix `F`.
 - No construction of actual rows beyond the terminal prefix object.
 - No recurrence/exponent relabel beyond the already separate actual-width
   theorem.

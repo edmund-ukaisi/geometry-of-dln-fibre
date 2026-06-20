@@ -1592,6 +1592,15 @@ edge `sourceSuffixFirstEdge(S)` times `sourceSuffixProduct(S+1)`.  This is a
 dependent-endpoint wrapper around the supplied edge `C^(S+2)`, not a
 chart-production theorem or source-produced terminal matrix.
 
+The arbitrary supplied-suffix terminal wrapper layer is now Lean-proved in
+`BlowupArithmetic.lean`.  The new stopped wrappers keep the following product
+as an arbitrary matrix `F`, reindex the paper terminal candidate into source
+rows, and optionally rewrite through a supplied `SuppliedTerminalCprimeBridge`.
+The actual-width variants only use `n(S+1)=J+1` to force stopped continuation,
+identify the relabelled pivot weight with the displayed post-state weight, and
+specialize the terminal bridge to original rows `1..J+1`.  They do not apply to
+row-exhausted wide-next cases and do not produce the suffix or terminal matrix.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -1799,6 +1799,25 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-source-suffix-peel-a4.md`.
 
+Latest A4 update: arbitrary supplied-suffix terminal wrappers have landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`exists_sourceOldTopSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
+`exists_sourceOldTopSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`,
+`exists_oldTopSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth`,
+and
+`exists_oldTopSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth`.
+They keep the following product as an arbitrary supplied matrix `F`, then
+reindex the stopped paper terminal candidate into source rows and optionally
+rewrite through a supplied terminal `C'` bridge.  The actual-width original-row
+specialization still requires `n(S+1)=J+1` and does not cover row-exhausted
+wide-next cases.  These are packaging/reindexing theorems only; they do not
+prove chart production or any analytic result. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-arbitrary-suffix-terminal-wrapper-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-arbitrary-suffix-terminal-wrapper.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-arbitrary-suffix-terminal-wrapper-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

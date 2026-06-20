@@ -159,8 +159,13 @@ on the session's original cwd.
    `sourceSuffixProduct_peel`, so the remaining suffix API gap is the
    empty/endpoint identity wrappers if they become useful. Next A4 target:
    build fuller chart-production boundary data beyond terminal-prefix
-   wrappers. Do not transport Case 2 gap/tail invariants without separately
-   checking their shifted thresholds.
+   wrappers. A small intermediate terminal-wrapper layer is now Lean-proved:
+   stopped source-row terminal products can keep the following product as an
+   arbitrary supplied matrix `F`, and the actual-width original-row branch has
+   an arbitrary-`F` wrapper. This supports later `F := 1` terminal-last
+   specialization without source-suffix endpoint casts, but still does not
+   produce `F` or `C'^(S+1)`. Do not transport Case 2 gap/tail invariants
+   without separately checking their shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now
