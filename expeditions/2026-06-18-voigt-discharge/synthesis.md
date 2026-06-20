@@ -673,3 +673,25 @@ shared with A4) · (3) `Nat.card(RepCoord d) = finrank C¹ = ∑ d_{i+1}d_i`.
 + A6.2 `Core/VoigtDischarge.lean` (squeeze + L7, `[IsAlgClosed k] [CharZero k]`, discharges `hVoigt` ⟹
 `codimRepCanonical_orbitRankLocus_eq_multSum` unconditional) + the 3 gap-lemmas. Hardest = R2★ (rides A4.3).
 **Waiting on A4 background tide (2 obligations) before dispatching A6.**
+
+## 2026-06-21 — A4 Obligation 1 DISCHARGED; A4 down to ONE char-free residual
+
+**A4 (route c) — Obligation 1 (`DiffIndepCriterion`) DISCHARGED** (commit 8d3a205, green/axiom-clean). The
+char-0 Kähler criterion proved via: base case `linearIndependent_D_X_fractionRing` (char-free;
+`isLocalizedModule_map` + `LinearIndependent.of_isLocalizedModule` on `mvPolynomialBasis`) → `FormallySmooth Pf K`
+(`of_perfectField`) ⟹ `mapBaseChange` injective → flat base change `Module.Flat.linearIndependent_one_tmul`. The
+A4.2 obligation is GONE. `[CharZero k]` enters only at the PerfectField step.
+
+**A4.4 now conditional on a SINGLE char-free residual** `hA43_le`:
+`genericDifferentialRank k (groupRing d) (genericOrbitCoord M) ≤ finrank k (LinearMap.range (deformationδ M M))`.
+Codex Q3 simplification: only `≤` needed (chain `varietyDim = trdeg ≤ genericDifferentialRank ≤ finrank δ⁰`).
+This is the concrete matrix-Kähler-calculus piece (the `dμ_e=δ⁰` / homogeneity content; `dim Stab = ker δ⁰`, so
+no bound cheaper than the tangent factorization). Route (documented in thread-37 card, bricks CONFIRMED present
+`Module.finrank_baseChange`/`Subspace.dual_finrank_eq`/`finrank_range_dualMap_eq_finrank_range`): orbit Jacobian
+factors `orbitJacobianK = ρ ∘ δK ∘ τ` (ρ linear iso, δK = base-changed δ⁰, τ) ⟹ rank ≤ rank(δK) = finrank(range
+δ⁰); uses the `d(P⁻¹) = −P⁻¹ dP P⁻¹` Kähler identity + cotangent duality. ~6–8 lemmas, char-free.
+
+**Path to hVoigt (3 pieces left):** A4.3 `hA43_le` (resume A4 agent — owns the orbitJacobian machinery) ⟹ A4.4
+unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`. Then A6.1 (intrinsic reverse R1–R6, R2★ rides A4.3's
+`dμ_e=δ⁰`) ⟹ `finrank(range δ⁰) ≤ varietyDim`. Then A6.2 (squeeze + additive L7) + 3 gap-lemmas (κ/k finrank,
+L4d Fintype-reindex, card=finrank C¹) ⟹ discharge hVoigt. **A4.3 dispatched (resume).**
