@@ -21,6 +21,12 @@ structure AoyagiSelectedCutpoints (ell : ℕ) where
 
 namespace AoyagiSelectedCutpoints
 
+/-- The supplied adjacent inequalities make the selected cutpoints strictly
+monotone on their finite index type. -/
+theorem cut_strictMono {ell : ℕ} (C : AoyagiSelectedCutpoints ell) :
+    StrictMono C.cut := by
+  exact (Fin.strictMono_iff_lt_succ).2 C.strict
+
 /-- Total accessor: `C.point i` is source `S_(i+1)` when `i<=ell`, and `0`
 outside the selected range. -/
 def point {ell : ℕ} (C : AoyagiSelectedCutpoints ell) (i : ℕ) : ℕ :=
@@ -43,6 +49,20 @@ theorem point_strict_succ {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
   rw [C.point_of_lt (by omega), C.point_of_lt (by omega)]
   simpa using C.strict ⟨i, hi⟩
 
+theorem point_strict_of_lt {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {i j : ℕ} (hij : i < j) (hj : j < ell + 1) :
+    C.point i < C.point j := by
+  have hi : i < ell + 1 := by omega
+  rw [C.point_of_lt hi, C.point_of_lt hj]
+  exact C.cut_strictMono (by simpa using hij)
+
+theorem point_le_of_le {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {i j : ℕ} (hij : i ≤ j) (hj : j < ell + 1) :
+    C.point i ≤ C.point j := by
+  rcases lt_or_eq_of_le hij with hlt | rfl
+  · exact le_of_lt (C.point_strict_of_lt hlt hj)
+  · exact le_rfl
+
 /-- Zero-based selected block:
 `block C b S` means `S_(b+1)-1 <= S < S_(b+2)-1`. -/
 def block {ell : ℕ} (C : AoyagiSelectedCutpoints ell) (b S : ℕ) : Prop :=
@@ -60,6 +80,36 @@ theorem leftEndpoint_mem_block {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
   constructor
   · rfl
   · omega
+
+/-- Selected blocks are pairwise disjoint. -/
+theorem block_index_unique {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {b c S : ℕ} (hb : C.block b S) (hc : C.block c S) :
+    b = c := by
+  rcases hb with ⟨hb_lt, hb_lo, hb_hi⟩
+  rcases hc with ⟨hc_lt, hc_lo, hc_hi⟩
+  by_contra hne
+  rcases lt_or_gt_of_ne hne with hbc | hcb
+  · have hle : C.point (b + 1) ≤ C.point c := by
+      exact C.point_le_of_le (by omega) (by omega)
+    have hsub_le : C.point (b + 1) - 1 ≤ C.point c - 1 := by
+      omega
+    omega
+  · have hle : C.point (c + 1) ≤ C.point b := by
+      exact C.point_le_of_le (by omega) (by omega)
+    have hsub_le : C.point (c + 1) - 1 ≤ C.point b - 1 := by
+      omega
+    omega
+
+/-- A selected block's left endpoint belongs only to that block. -/
+theorem block_leftEndpoint_iff {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {b c : ℕ} (hb : b < ell) :
+    C.block c (C.point b - 1) ↔ c = b := by
+  constructor
+  · intro h
+    exact (C.block_index_unique (C.leftEndpoint_mem_block hb) h).symm
+  · intro h
+    subst h
+    exact C.leftEndpoint_mem_block hb
 
 end AoyagiSelectedCutpoints
 

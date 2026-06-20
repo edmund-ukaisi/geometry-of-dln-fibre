@@ -732,3 +732,23 @@ This remains conditional.  It does not construct the displayed vector, prove
 total source-layer coverage, terminal `tilde t=0`, vector admissibility,
 source vector-to-chain correspondence, the Case 1(2) chart sequence, or Lemma
 5 order count.
+
+The selected-block bookkeeping support for this certificate has also landed.
+Reproduction:
+`reproduction-selected-block-bookkeeping-a5.md`.
+Review artifact:
+`review-selected-block-bookkeeping-a5.md`.
+Lean proves selected cutpoint monotonicity, selected-block uniqueness, and
+uniqueness of a selected block's left endpoint:
+
+```text
+AoyagiSelectedCutpoints.cut_strictMono
+AoyagiSelectedCutpoints.point_strict_of_lt
+AoyagiSelectedCutpoints.point_le_of_le
+AoyagiSelectedCutpoints.block_index_unique
+AoyagiSelectedCutpoints.block_leftEndpoint_iff
+```
+
+These lemmas support branch disambiguation for equations `(3)` and `(4)`.
+They do not claim total source-layer coverage or put the terminal selected
+cutpoint into a block.

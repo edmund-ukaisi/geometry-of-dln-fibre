@@ -12,6 +12,11 @@ Names:
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.point`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.leftEndpoint_mem_block`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.cut_strictMono`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.point_strict_of_lt`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.point_le_of_le`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block_index_unique`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block_leftEndpoint_iff`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5Eq4PiecewiseSourceVector`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`
 
@@ -38,6 +43,8 @@ T(S_(p+1)-1) = Htilde_p,
 
 - Basic selected-cutpoint and selected-block vocabulary.
 - The left endpoint of a selected block belongs to that block.
+- Selected cutpoint monotonicity, selected-block uniqueness, and uniqueness
+  of a selected block's left endpoint.
 - A supplied equation `(4)` piecewise certificate gives the correct own
   coordinate.
 - The same theorem carries forward the repaired selected-index and legal-label
