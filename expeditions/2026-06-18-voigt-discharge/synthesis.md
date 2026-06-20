@@ -627,3 +627,20 @@ Kähler package) · A4.4 assemble + chain A0 ⟹ `varietyDim(Z_M) ≤ finrank(ra
 **Remaining after A4:** A5 §WRINKLE (may be avoidable if A6 handles the Zariski tangent intrinsically vs via
 minors' Jacobian — decide in A6) + A6 (L4-assembly + L7: the squeeze `finrank(range δ⁰)=varietyDim` via A4 +
 [`range δ⁰ ⊆ ker Jac`/Zariski tangent + chain L2a✓·M3✓·L4d✓ using A3] ⟹ discharge hVoigt, `[CharZero k]`).
+
+## 2026-06-20 — AG half W3 (A4 PARTIAL — headline proven mod 2 named obligations)
+
+**A4 (route c) — structurally COMPLETE, conditional.** `Core.{AffineNoetherRank,JacobianTrdeg,OrbitImageDim}`:
+- A4.1 `ringKrullDim(range)=trdeg` ✓ char-free. A4.2 `trdeg_adjoin_le_genericDifferentialRank` ✓ (cond. on
+  `DiffIndepCriterion`). A4.4 `varietyDim_orbitRankLocus_le_finrank_range_deformationδ` ✓ (cond. on both below).
+- **Jacobi–Zariski injectivity LANDED** `mapBaseChange_injective_of_formallySmooth` — KEY API resolved: K/E NOT
+  algebraic ⟹ use **`FormallySmooth`** (not Etale) + `H1Cotangent.exact_δ_mapBaseChange` + `Subsingleton
+  (H1Cotangent E K)` from `FormallySmooth E K` (`FormallySmooth.of_perfectField` + `EssFiniteType` — both
+  discharged: `essFiniteType_groupRing`/`_fractionRing`). Zero sorry, axiom-clean. Head b3aa10e.
+- **2 NAMED OPEN OBLIGATIONS (explicit hyps, not sorries):**
+  1. `DiffIndepCriterion k (groupRing d)` — CLOSEST: only `{D_E x_i}` E-independent in `Ω[E/k]` for
+     purely-transcendental x (localized `mvPolynomialBasis` via `Basis.ofIsLocalizedModule`). `[CharZero k]` here only.
+  2. `hA43`: `genericDifferentialRank = finrank(range (deformationδ M M))` (A4.3, char-free, NOT started — the
+     `dμ_e=δ⁰` + constant-rank bridge; thread-36 §2 has the math).
+- **W4 dispatched:** resume A4 agent (richest context) to discharge BOTH obligations ⟹ A4.4 unconditional ⟹
+  `varietyDim(Z_M) ≤ finrank(range δ⁰)`. Then A6 (final assembly: squeeze + hVoigt discharge).
