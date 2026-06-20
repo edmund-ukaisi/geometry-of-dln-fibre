@@ -54,3 +54,32 @@ The full A5 claim remains blocked.  This sub-slice does not prove the
 terminal candidate set, the `\tilde t_{s,k}=0` restriction, feasibility of
 minimising exponent chains, Lemma 4, Lemma 5, pole order, normal crossings, or
 RLCT extraction.
+
+## 2026-06-20 Lean Lemma 3 equality cases
+
+Reproduction:
+`reproduction-lemma3-equality-cases-a5.md`.
+Statement card:
+`statement-card-a5-lemma3-equality-cases.md`.
+Review artifact:
+`review-lemma3-equality-cases-a5.md`.
+
+Lean now also proves the exact equality cases for the same isolated integer
+numerator.  If `ell != 0`, then
+
+```text
+A(b) = a ell (ell-a) iff b = a or b = a-1.
+```
+
+After intersecting with the source interval `0 <= b <= ell-1`, equality is
+equivalent to
+
+```text
+(b = a and a <= ell-1) or (b = a-1 and 1 <= a).
+```
+
+Endpoint corollaries name the remaining candidates at `a=0` and `a=ell`.
+This is still only integer polynomial arithmetic and source-interval
+bookkeeping.  The full A5 claim remains blocked by the terminal candidate set,
+the `\tilde t_{s,k}=0` restriction, exponent-chain feasibility, Lemmas 4-5,
+pole order, normal crossings, and RLCT extraction.

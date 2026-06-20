@@ -1567,8 +1567,9 @@ No such claim is formalisation-ready until both fields are filled.
 - **Tier.** Established in Aoyagi; to be proved in Lean.
 - **Status.** blocked after independent reproduction check; interior quadratic
   algebra is promising, and the isolated endpoint-corrected Lemma 3 integer
-  numerator minimisation is now Lean-proved and reviewed.  The full A5 claim
-  remains blocked: terminal-variable restriction, minimiser feasibility, the
+  numerator minimisation and equality-case classification are now Lean-proved
+  and reviewed.  The full A5 claim remains blocked: terminal-variable
+  restriction, minimiser feasibility, the
   quadratic rewrite from terminal exponents, and Lemma 5 order-count
   construction are not checked.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
@@ -1578,21 +1579,29 @@ No such claim is formalisation-ready until both fields are filled.
 - **Pen-and-paper reproduction.** draft at
   `threads/05-arithmetic-tail/reproduction-draft.md`; isolated Lemma 3
   endpoint arithmetic at
-  `threads/05-arithmetic-tail/reproduction-lemma3-endpoint-arithmetic-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma3-endpoint-arithmetic-a5.md`;
+  equality cases at
+  `threads/05-arithmetic-tail/reproduction-lemma3-equality-cases-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
-  `threads/05-arithmetic-tail/review-lemma3-endpoint-arithmetic-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma3-endpoint-arithmetic-a5.md`;
+  equality cases checked by xhigh `Epicurus the 5th` and xhigh Lean scout
+  `Dalton the 5th` at
+  `threads/05-arithmetic-tail/review-lemma3-equality-cases-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; broader A5 targets TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
   `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
+  `aoyagiLemma3A_eq_min_iff`, `aoyagiLemma3A_eq_min_iff_source_Icc`,
+  `aoyagiLemma3A_eq_min_iff_source_Icc_zero`,
+  `aoyagiLemma3A_eq_min_iff_source_Icc_top`,
   `aoyagiLemma3A_isLeast_image_Icc`,
   `aoyagiLemma3A_isLeast_image_Icc_zero`, and
   `aoyagiLemma3A_isLeast_image_Icc_top`.  These prove only the cleared
   integer numerator identity and endpoint-corrected constrained minimum over
-  integer `b`.
+  integer `b`, plus exact equality cases for that isolated lower bound.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

@@ -488,7 +488,10 @@ on the session's original cwd.
    integer numerator arithmetic is now Lean-proved in `ArithmeticTail.lean`:
    the cleared numerator is
    `a*ell*(ell-a) + ell^2*(b-a)*(b-a+1)`, and its constrained integer minimum
-   over `0<=b<=ell-1` is proved under `1<=ell` and `0<=a<=ell`.  The remaining
+   over `0<=b<=ell-1` is proved under `1<=ell` and `0<=a<=ell`.  The exact
+   equality cases for this isolated lower bound are also proved: for
+   `ell!=0`, equality occurs iff `b=a` or `b=a-1`, with endpoint truncation in
+   the source interval.  The remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, reproduce the terminal quadratic rewrite,
    and reproduce Lemma 5's chart-family/order-count construction.

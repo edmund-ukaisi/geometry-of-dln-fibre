@@ -69,6 +69,100 @@ theorem aoyagiLemma3A_at_left (ell a : ℤ) :
   rw [aoyagiLemma3A_eq_min_add]
   ring
 
+/-- The two adjacent integers `b=a` and `b=a-1` are the only equality cases
+for the isolated Lemma 3 integer lower bound when `ell` is nonzero. -/
+theorem aoyagiLemma3A_eq_min_iff (ell a b : ℤ) (hell : ell ≠ 0) :
+    aoyagiLemma3A ell a b = a * ell * (ell - a) ↔ b = a ∨ b = a - 1 := by
+  constructor
+  · intro h
+    rw [aoyagiLemma3A_eq_min_add] at h
+    have hterm : ell ^ 2 * (b - a) * (b - a + 1) = 0 := by
+      nlinarith
+    have hterm_assoc : ell ^ 2 * ((b - a) * (b - a + 1)) = 0 := by
+      nlinarith [hterm]
+    have hellsq : ell ^ 2 ≠ 0 := pow_ne_zero 2 hell
+    rcases mul_eq_zero.mp hterm_assoc with hsquare | hconsecutive
+    · exact False.elim (hellsq hsquare)
+    · rcases mul_eq_zero.mp hconsecutive with hright | hleft
+      · left
+        omega
+      · right
+        omega
+  · intro h
+    rcases h with hb | hb
+    · rw [hb]
+      exact aoyagiLemma3A_at_right ell a
+    · rw [hb]
+      exact aoyagiLemma3A_at_left ell a
+
+/-- Equality cases for the isolated Lemma 3 lower bound after intersecting
+with the source integer interval `0 <= b <= ell-1`.
+
+This is only interval bookkeeping for the integer numerator.  It does not
+prove that either equality case is realised by an admissible exponent chain in
+Aoyagi's construction. -/
+theorem aoyagiLemma3A_eq_min_iff_source_Icc (ell a b : ℤ)
+    (hell : 1 ≤ ell) (hb0 : 0 ≤ b) (hbtop : b ≤ ell - 1) :
+    aoyagiLemma3A ell a b = a * ell * (ell - a) ↔
+      (b = a ∧ a ≤ ell - 1) ∨ (b = a - 1 ∧ 1 ≤ a) := by
+  have hellne : ell ≠ 0 := by omega
+  rw [aoyagiLemma3A_eq_min_iff ell a b hellne]
+  constructor
+  · intro h
+    rcases h with hright | hleft
+    · left
+      constructor
+      · exact hright
+      · omega
+    · right
+      constructor
+      · exact hleft
+      · omega
+  · intro h
+    rcases h with hright | hleft
+    · left
+      exact hright.1
+    · right
+      exact hleft.1
+
+/-- At the lower endpoint `a=0`, the source interval removes the formal
+candidate `b=-1`, leaving only `b=0`. -/
+theorem aoyagiLemma3A_eq_min_iff_source_Icc_zero (ell b : ℤ)
+    (hell : 1 ≤ ell) (hb0 : 0 ≤ b) :
+    aoyagiLemma3A ell 0 b = 0 ↔ b = 0 := by
+  have hellne : ell ≠ 0 := by omega
+  constructor
+  · intro h
+    have hmin : aoyagiLemma3A ell 0 b = 0 * ell * (ell - 0) := by
+      simpa using h
+    rcases (aoyagiLemma3A_eq_min_iff ell 0 b hellne).mp hmin with hright | hleft
+    · exact hright
+    · omega
+  · intro hb
+    have hmin :
+        aoyagiLemma3A ell 0 b = 0 * ell * (ell - 0) :=
+      (aoyagiLemma3A_eq_min_iff ell 0 b hellne).mpr (Or.inl hb)
+    simpa using hmin
+
+/-- At the upper endpoint `a=ell`, the source interval removes the formal
+candidate `b=ell`, leaving only `b=ell-1`. -/
+theorem aoyagiLemma3A_eq_min_iff_source_Icc_top (ell b : ℤ)
+    (hell : 1 ≤ ell) (hbtop : b ≤ ell - 1) :
+    aoyagiLemma3A ell ell b = 0 ↔ b = ell - 1 := by
+  have hellne : ell ≠ 0 := by omega
+  constructor
+  · intro h
+    have hmin : aoyagiLemma3A ell ell b = ell * ell * (ell - ell) := by
+      simpa using h
+    rcases (aoyagiLemma3A_eq_min_iff ell ell b hellne).mp hmin with hright | hleft
+    · omega
+    · exact hleft
+  · intro hb
+    have hmin :
+        aoyagiLemma3A ell ell b = ell * ell * (ell - ell) :=
+      (aoyagiLemma3A_eq_min_iff ell ell b hellne).mpr (Or.inr hb)
+    simpa using hmin
+
 /-- If `0 <= a <= ell-1`, the candidate `b=a` is in Aoyagi's Lemma 3
 integer range. -/
 theorem aoyagiLemma3A_minimizer_right_mem {ell a : ℤ}
