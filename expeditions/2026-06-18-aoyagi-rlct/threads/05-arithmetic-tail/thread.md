@@ -434,3 +434,34 @@ exponent vectors imply binary prefix deltas, that chain bounds imply binary
 prefix deltas, vector-coordinate correspondence, vector admissibility,
 correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
 count, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Htilde value-set count
+
+Reproduction:
+`reproduction-htilde-value-set-count-a5.md`.
+Statement card:
+`statement-card-a5-htilde-value-set-count.md`.
+Review artifact:
+`review-htilde-value-set-count-a5.md`.
+
+Lean now proves the finite source-facing count for same-coordinate value sets
+between the displayed `Htilde` and `Htilde'` chains:
+
+```text
+aoyagiHtildeIntervalValueSetNat
+aoyagiHtildeIntervalValueSetNat_card_of_lt
+aoyagiHtildeIntervalValueSetNat_card
+aoyagiHtildeIntervalValueSetNat_excess_sum_Icc
+```
+
+The Nat-indexed wrapper is explicitly empty outside the source coordinate
+range, and the source interval sum proves
+
+```text
+1 + sum_{j=1}^{ell-1} (|I_j|-1) = a(ell-a)+1.
+```
+
+This is still only finite value-set arithmetic.  It does not prove Aoyagi
+Lemma 5's chart-family admissibility, coverage, displayed vector
+constructions, pole-order interpretation, normal crossings, or RLCT
+extraction.

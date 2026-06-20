@@ -1805,6 +1805,21 @@ already-proved `H_ell=0` consequence, but binary-ness remains an explicit
 hypothesis.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
+The same-coordinate `Htilde` value-set count is now also Lean-proved in
+`HtildeChainArithmetic.lean`.  The Nat-indexed wrapper is empty outside the
+source coordinate range, has Aoyagi's interval size in range, and proves
+`1 + sum_{j=1}^{ell-1}(|I_j|-1)=a(ell-a)+1` under `1<=ell` and `a<=ell`.
+This remains finite arithmetic only; it does not prove Lemma 5's displayed
+vector constructions, chart-family admissibility/coverage, pole-order
+interpretation, normal crossings, or RLCT extraction.
+
+Latest A4 scout recommendation: the next source-faithful chart-production
+slice should be the finite post-pivot domain handoff
+`case2PostPivotRows/Cols/Entries = case2ResidualBlock... (J+1)` plus a
+nonemptiness iff for next continuation.  This aligns the displayed Case 2
+lower-right block with the next residual center without claiming chart
+coverage, transition invariance, or source production of `C'^(S+1)`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

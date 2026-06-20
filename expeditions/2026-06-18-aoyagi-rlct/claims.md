@@ -1591,6 +1591,10 @@ No such claim is formalisation-ready until both fields are filled.
   between them have Aoyagi's interval sizes, supplied same-coordinate chain
   bounds imply `H_ell=0`, and the existing count wrappers apply under the
   still-explicit two-value increment hypothesis.
+  The same-coordinate value-set count behind Lemma 5 is now Lean-proved as a
+  finite wrapper: the Nat-indexed interval value sets are empty outside range,
+  have Aoyagi's interval sizes in range, and satisfy
+  `1 + sum_{j=1}^{ell-1}(|I_j|-1)=a(ell-a)+1`.
   A binary prefix-delta bridge is now Lean-proved as a conditional interface
   for the two-value increment blocker: for
   `D_j=P(j)-H_j-j*(M-1)`, the identity
@@ -1630,7 +1634,9 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 4 prefix-delta endpoint count at
   `threads/05-arithmetic-tail/reproduction-lemma4-prefix-delta-endpoint-count-a5.md`;
   Lemma 5 interval-excess arithmetic at
-  `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`;
+  `Htilde` value-set count at
+  `threads/05-arithmetic-tail/reproduction-htilde-value-set-count-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1672,7 +1678,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma4-prefix-delta-endpoint-count-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
-  `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`;
+  `Htilde` value-set count checked by xhigh `Plato the 5th` and final landed
+  xhigh reviewer `Goodall the 5th` at
+  `threads/05-arithmetic-tail/review-htilde-value-set-count-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1692,6 +1701,8 @@ No such claim is formalisation-ready until both fields are filled.
   binary prefix-delta bridge for the two-value increment hypothesis in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   endpoint and binary-delta count bookkeeping for the prefix-delta interface in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  same-coordinate `Htilde` value-set count in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1802,6 +1813,13 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma4_binaryIncrementPrefix_count_eq_of_HtildeChainBounds`, which
   count supplied binary prefix deltas under terminal source hypotheses or
   same-coordinate chain-bound hypotheses.
+  Also proved `aoyagiHtildeIntervalValueSetNat`,
+  `aoyagiHtildeIntervalValueSetNat_card_of_lt`,
+  `aoyagiHtildeIntervalValueSetNat_card`, and
+  `aoyagiHtildeIntervalValueSetNat_excess_sum_Icc`, which package the
+  same-coordinate interval value sets into a Nat-indexed source-facing count
+  and recover `1 + sum_{j=1}^{ell-1}(|I_j|-1)=a(ell-a)+1` without proving
+  Lemma 5's chart-family/order-count theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

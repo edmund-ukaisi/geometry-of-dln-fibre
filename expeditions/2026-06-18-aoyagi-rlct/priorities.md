@@ -482,8 +482,13 @@ on the session's original cwd.
    bookkeeping, not chart production.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
-   non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
-   remaining recurrence bookkeeping, and replace the termination measure.
+   non-displayed transition formulas are still missing. The next small
+   source-faithful chart-production-adjacent target is to prove that the
+   displayed Case 2 post-pivot row/column/entry domains are exactly the next
+   `(S,J+1)` residual-center domains, with nonemptiness equivalent to
+   `J+2<=prefixMinNat n (S+1)`. Then redo Case 1/2 updates, cover pivot
+   charts, repair the remaining recurrence bookkeeping, and replace the
+   termination measure.
 6. Repair A5 arithmetic reproduction. The isolated endpoint-corrected Lemma 3
    integer numerator arithmetic is now Lean-proved in `ArithmeticTail.lean`:
    the cleared numerator is
@@ -530,7 +535,11 @@ on the session's original cwd.
    not prove source vectors or chain bounds supply binary deltas.  Endpoint
    bookkeeping for this interface is now Lean-proved too: `D_0=0`, `D_ell=a`,
    the deltas telescope, and supplied binary deltas have exactly `a` ones and
-   `ell-a` zeroes.  The
+   `ell-a` zeroes.  The same-coordinate `Htilde` value-set count is also
+   Lean-proved as a finite wrapper:
+   `1 + sum_{j=1}^{ell-1}(|I_j|-1)=a(ell-a)+1`, with the Nat-indexed wrapper
+   explicitly empty outside range.  This is still not Lemma 5's
+   chart-family/order-count theorem.  The
    remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis

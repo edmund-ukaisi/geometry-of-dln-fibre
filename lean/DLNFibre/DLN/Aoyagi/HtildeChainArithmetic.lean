@@ -408,6 +408,60 @@ theorem aoyagiHtildeIntervalValueSet_card
       exact add_left_cancel hxy
     exact_mod_cast hcast
 
+/-- Nat-indexed same-coordinate value set between the two displayed chains.
+
+The wrapper is empty outside the source coordinate range.  This lets source
+statements sum over ordinary natural-number intervals while keeping the
+range guard explicit in cardinality lemmas. -/
+def aoyagiHtildeIntervalValueSetNat (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (j : ℕ) : Finset ℤ :=
+  if h : j < ell + 1 then
+    aoyagiHtildeIntervalValueSet ell a M m ⟨j, h⟩
+  else
+    ∅
+
+/-- In range, the Nat-indexed same-coordinate value set has Aoyagi's displayed
+interval size. -/
+theorem aoyagiHtildeIntervalValueSetNat_card_of_lt
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) (j : ℕ)
+    (hj : j < ell + 1) :
+    (aoyagiHtildeIntervalValueSetNat ell a M m j).card =
+      aoyagiLemma5IntervalSize ell a j := by
+  simp [aoyagiHtildeIntervalValueSetNat, hj,
+    aoyagiHtildeIntervalValueSet_card]
+
+/-- Cardinality of the Nat-indexed same-coordinate value set, with the
+out-of-range case made explicit. -/
+theorem aoyagiHtildeIntervalValueSetNat_card
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) (j : ℕ) :
+    (aoyagiHtildeIntervalValueSetNat ell a M m j).card =
+      if j < ell + 1 then aoyagiLemma5IntervalSize ell a j else 0 := by
+  by_cases hj : j < ell + 1
+  · simp [aoyagiHtildeIntervalValueSetNat, hj,
+      aoyagiHtildeIntervalValueSet_card]
+  · simp [aoyagiHtildeIntervalValueSetNat, hj]
+
+/-- Source-facing finite value-set count behind Aoyagi's Lemma 5 interval
+arithmetic.
+
+This counts only the same-coordinate `H`-values between the two displayed
+`Htilde` chains.  It is not the chart-family admissibility, coverage, pole
+order, normal-crossing, or RLCT statement of Lemma 5. -/
+theorem aoyagiHtildeIntervalValueSetNat_excess_sum_Icc
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) :
+    1 + (∑ j ∈ Finset.Icc 1 (ell - 1),
+        ((aoyagiHtildeIntervalValueSetNat ell a M m j).card - 1)) =
+      a * (ell - a) + 1 := by
+  rw [← aoyagiLemma5IntervalSize_excess_sum_Icc ell a hell ha]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro j hj
+  have hjlt : j < ell + 1 := by
+    have hjle : j ≤ ell - 1 := (Finset.mem_Icc.mp hj).2
+    omega
+  rw [aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m j hjlt]
+
 /-- Same-coordinate chain bounds put every intermediate `H_j` in the finite
 interval value set. -/
 theorem aoyagiHtildeChainBounds_mem_intervalValueSet
