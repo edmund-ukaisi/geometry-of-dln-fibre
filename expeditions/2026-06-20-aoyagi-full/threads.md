@@ -8,8 +8,9 @@ Durable thread-status index. Status ∈ open / in-progress / blocked / review-pe
 | 02 | formalisation | fm | review-pending | Rung 0b: encoded `DLNFibre.DLN.RLCT.*` + skeleton + 1 S2 axiom; green; merged `58bc1c3` |
 | 03 | design (parallel) | pp | closed | Spine probe: `codim S(t)=Mval` proven general L; θ=a(ℓ−a)+1; stratification R1 architecture |
 | 04 | design (parallel) | pp | closed | D1 scope: cite Aoyagi 2013 **Thm 2**; light rung; depends on L2; reuses S1 |
-| 05 | design (parallel) | pp | in-progress | S1 scope: RLCT change-of-variables/invariance linchpin (D1/R1/S2 all consume it) |
-| 06 | review | hd + rv | open | Rung 0c: fidelity + bedrock audit of the encoded foundations (gate before dependent rungs) |
+| 05 | design (parallel) | pp | closed | S1 scope: θ-transport linchpin (S1.1 heavy core + 4 corollaries); Jacobian-weight correction; properness amends D1 |
+| 06 | review | rv | in-progress | Rung 0c: fidelity + bedrock audit of the encoded foundations (gate before dependent rungs) |
+| 07 | design (parallel) | pp | in-progress | L1/L2 scope: block elimination + product reduction + RLCT additivity (last unscoped rung; gates D1) |
 
 ## Seats (reuse across tides; stand down at close)
 
