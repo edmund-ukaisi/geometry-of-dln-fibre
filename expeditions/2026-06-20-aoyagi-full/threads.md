@@ -11,7 +11,8 @@ Durable thread-status index. Status ∈ open / in-progress / blocked / review-pe
 | 05 | design (parallel) | pp | closed | S1 scope: θ-transport linchpin (S1.1 heavy core + 4 corollaries); Jacobian-weight correction; properness amends D1 |
 | 06 | review | rv | closed | Rung 0c: fidelity+bedrock audit → **PASS** (5/5 dims; 2 non-blocking flags); foundations are bedrock |
 | 07 | design (parallel) | pp | closed | L1/L2 scope: block elim + product reduction + additivity; new S1.5; reg-term=½·stratum-dim fix |
-| 08 | formalisation | fm-2 | in-progress | Validate (1,1,1) end-to-end (gate) + FLAG-1 S2 order-half hygiene fix |
+| 08 | formalisation | fm-2 | review-pending | (1,1,1) gate: arithmetic+coercion sorry-free thru monomial_rlct; rlctAt bridge = 1 named sorry (baby S1.1). S2 hygiene fix done. Committed direct to expedition/aoyagi-full @6e4d505 |
+| 09 | review | rv-2 | in-progress | AUDIT the (1,1,1) gate: non-vacuity, axiom-use legitimacy, coercion correctness, bridge-sorry honesty + green-gate |
 
 ## Seats (reuse across tides; stand down at close)
 

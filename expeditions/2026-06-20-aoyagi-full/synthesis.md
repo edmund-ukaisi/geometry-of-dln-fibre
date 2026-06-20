@@ -28,12 +28,29 @@ encoded as value-match (correct).
 **Two genuinely hard Lean builds remain: S1.1 (analytic transport) and R1 (resolution construction).**
 Everything else: linear algebra (L1/L2), a light reduction (D1), finite arithmetic (A1/A2).
 
+## (1,1,1) gate finding — even the trivial case needs baby-S1.1
+
+`fm-2` landed: dlnLoss→monomial coercion (sorry-free) + monomialThreshold=aoyagiLambda=1/2 (sorry-free
+THROUGH monomial_rlct), but the `rlctAt = monomialThreshold` bridge is a named sorry — genuine S1 content
+(germ-locality + nbhd↔box matching) even for an already-monomial F, because the narrowed S2 axiom is the
+bare threshold fact, not "rlctAt = threshold". So the next Lean rung IS S1 (the bridge = baby S1.1, then
+general). The (1,1,1) result validates the APPROACH (assembles to the right number via the one citation);
+full end-to-end awaits the bridge. + S2 order-half hygiene fix done.
+
+## Topology — CONSOLIDATED (cwd-collapse keeps landing teammates in MAIN)
+
+Adopt: the active formaliser/reviewer work in the MAIN checkout on `expedition/aoyagi-full` directly
+(their cwd resets there); the **controller green-gates + pushes**. `worktree-rung0-defs` is stale/retired
+(no longer synced). Serial single-editor (one formaliser at a time). For PARALLEL formalisers (R1 sub-
+proofs) we'd need real isolation → the operator-relaunch-from-MAIN option, deferred until R1 needs it.
+Minor crossing risk (controller docs + formaliser Lean both commit to the branch in MAIN) — mitigated by
+serial cadence + green-gate each integration.
+
 ## In flight
 
-- `fm-2` — thread 08: validate `(1,1,1)` end-to-end (the anti-treadmill gate; trivial — no resolution) +
-  the FLAG-1 S2 hygiene fix. Background, in the shared worktree.
-- `pp` — stood down to on-demand (design complete). Re-engage for R1 construction / S1.5 blueprint / blockers.
-- `rv`, `fm` — idle.
+- `rv-2` — thread 09: AUDIT the (1,1,1) gate (non-skippable; its rebuild = the green-gate). Background.
+- `pp` — on-demand (design complete). Next re-engage: S1.1 detailed proof blueprint if fm hits friction.
+- `fm-2` — idle (gate done, awaiting audit).
 
 ## Next tick
 
