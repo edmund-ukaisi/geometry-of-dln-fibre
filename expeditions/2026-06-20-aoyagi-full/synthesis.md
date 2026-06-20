@@ -2,11 +2,25 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-20): structural phase ACTIVE — keystone in, A1 in, 7th bug found+fixing
+## Current read (2026-06-20): ★ CONTRACT IS BEDROCK @296d3e4 — structural-proof phase OPEN ★
 
-The contract was certified "bedrock" by rv-2, but the **proof attempt surfaced a 7th statement bug** the
-audit missed (see below) — so the contract is being RE-corrected (hr-fix) and will be re-audited. Meanwhile
-two structural rungs have landed. Honest status:
+**rv-2 FINAL re-audit @`296d3e4` CLEAN → BEDROCK DECLARED.** The 9-issue fidelity arc is CLOSED. The contract
+is genuine bedrock: domain PROVABLY complete (hr middle-width + hL L=0, systematic corner sweep proved no
+10th hole), keystone clean, A1-clean + L1 genuinely proven (no sorryAx, not vacuous), headline assembles
+axiom-clean through D1▸L2, S2 the ONLY citation (no leak), every rung name=content/non-vacuous. `git diff
+2ee02b2 296d3e4` is hL-ONLY (zero drift). The rock the structural proofs now stand on.
+
+The 9 issues (all caught by proof-attempts/decorrelated checks BEFORE anything built on them, all fixed):
+6 in the original adversarial pass (L1 vacuous, L2 over-claim, D1 under-claim, S1.1 measure, R1 analyticity,
+S1.5 analyticity); 7th deepestPoint false (middle-width) → hr; 8th lambdaCore weak existential → strengthen
+(#19, sequenced); 9th deepestPoint false (L=0) → hL. Two sweeps closed the vacuity + domain classes wholesale.
+
+Two honest residuals (NOT bedrock defects — off the criterion): deepestPoint_exists is a `sorry` (fm
+mid-proof — a PROOF obligation, not a statement defect); A1 lambdaCore (#19) + A2 weak existentials (flagged,
+off the headline path, strengthen sequenced).
+
+### Earlier status (pre-bedrock, retained for the arc):
+Two structural rungs landed during the contract phase. Honest status:
 
 **Landed / green:**
 - **Keystone `paramsEquivFlat`** (`Params H ≃ᵐ (Fin N → ℝ)`, measure-preserving) — fm-2 @`d7b1ba3`
