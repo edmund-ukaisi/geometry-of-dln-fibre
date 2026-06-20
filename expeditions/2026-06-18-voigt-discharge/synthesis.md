@@ -508,3 +508,27 @@ sub-library, not "small holes"; + a CharZero scope refinement on the geometric-c
    sub-expedition (L2b★ ~4–7 [new Jacobian-rank⟹trdeg theorem] + L3 ~5–7 [homogeneous-space smoothness via
    Spec detour] + assembly), `[CharZero k]` scope refinement. Recommend driving it to completion (in-mandate),
    flag the scope-surprise + CharZero for ratification, offer scope options.
+
+## 2026-06-20 (cont.) — ★ L6 FULLY CLOSED ★ (first half of the hero task delivered)
+
+**`orbitRankLocus M = Ō_M` (Abeasis–Del Fra) PROVEN, zero-cited, char-free.** `Core.OrbitClosure`
+(thread 31, reviewer PASS-WITH-NOTES): `vanishingIdeal_orbitRankLocus_eq_orbitSet` (ideal-level),
+`image_orbitRankLocus_eq_repClosure_orbitSet` (set-level k-points, any infinite field, NO IsAlgClosed),
+`isPrime_vanishingIdeal_orbitRankLocus` (primeness, `[IsAlgClosed k]`, = L1). The per-step crux dissolved
+via the rank-pattern bridge (geometric per-move lemmas invoked in their own shapes, reconciled by "same
+rankPattern ⟹ same orbit ⟹ same repClosure" — no defeq list-matching). New infra: `repClosure` algebra,
+`baseChangePullback` (change-of-vars hom for G_d-stability). Green (2695 jobs), all headlines axiom-clean.
+Head `733cf56`.
+
+**This completes the ENTIRE combinatorial/degeneration content the paper only CITES** (Abeasis–Del Fra
+Thm 3.8 hard direction): L6.0 limit · L6.1 engine+witness · L6.1-general (split+nonsplit per-move
+degeneration) · L6.2 (telescope ★ + move-existence + generation chain) · L6.3 (rank locus closed) · L6.4
+(orbit closure = rank locus) · L1 (primeness). Proved zero-cited, char-free.
+
+**Geometric foundation now in hand for the AG half:** `Z_M = orbitRankLocus M` is the orbit closure Ō_M,
+irreducible, with prime vanishing ideal — exactly what L0 (Nullstellensatz codim) consumes.
+
+**→ SURFACING to operator** (per plan): L6 half complete; AG half (L2b★ ~4–7 [new Jacobian-rank⟹trdeg
+theorem Mathlib lacks] + L3 ~5–7 [homogeneous-space smoothness via Spec detour] + assembly + L7) is a
+bounded but substantial sub-expedition, with a `[CharZero k]` scope refinement on the geometric-codim
+headline. Awaiting scope decision: full zero-cited grind / scoped-CITE the one trdeg step / bank L6 + defer.
