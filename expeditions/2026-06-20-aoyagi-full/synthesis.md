@@ -31,11 +31,28 @@ fm-2 on it after the deepestPoint fix.
 monotonicity) · R1 (the mountain; codim=Mval stratification proven gen-L) · A1/A2 (spine proven). Two hard
 Lean builds: S1.1 + R1. Hard analytic question (is the cited fact provable?) → answered YES (λ axiom-free).
 
+## Contract FINAL @a4d00e1 (rv-2 re-auditing — the bedrock gate)
+deepestPoint done: `deepestPoint := Classical.choice (deepestPoint_exists)` over the deepest-layers fibre
+(`IsDeepLayers`); D1 `⨅ = rlctAt(deepestPoint)`, L2 `rlctAt(deepestPoint)=aoyagiLambda`; IsDeepest dropped.
+Choice-route deliberate (explicit block-normal term ≠ general B ⇒ would make D1 false). sorries 13 (12 +
+`deepestPoint_exists`, an honest provable existence obligation); 1 axiom; headline assembles;
+`#print axioms` = [propext, sorryAx, Classical.choice, Quot.sound] (Classical.choice clean/expected).
+
+## Measure-side architecture — UNDER RE-DECISION (#15)
+piCurry banked (sorry-free). paramsEquivFlat ASSEMBLY hit the systemic Matrix-as-def instance wall
+(MeasurableSpace(Matrix) won't synthesize symbolically; recurs in (1,1,1) bridge + assembly + will hit
+S1.1-use-site + R1). → pp re-scoping: tame Route A (inferInstanceAs / Params.volume=nested-pi) vs pivot
+to Route B (ParamsFlat := Fin N → ℝ, no Matrix in measure context — kills the wall, re-keys foundations).
+
 ## In flight
-- `fm-2` — implementing the deepestPoint D1/L2 fix (contract finalization) → hands FINAL contract to rv-2;
-  then resumes #15 (paramsEquivFlat).
-- `pp` — on-demand (IsDeepest done). Next: R1 construction, or piCurry MP friction.
-- `rv-2` — idle; re-audits the FINAL contract (post-deepestPoint).
+- `rv-2` — final contract re-audit (bedrock gate). Background.
+- `pp` — re-scoping the #15 Matrix-wall A-vs-B (decorrelated + Codex). 
+- `fm-2` — standby (deepestPoint done); after rv-2 clears + pp's A/B verdict → #15 assembly + structural proofs.
+
+## Next tick
+On rv-2 clean → BEDROCK CONTRACT → structural-proof phase. On pp's A/B verdict → fm builds the measure
+infra (Route A taming lemma OR Route B re-key) → unblocks (1,1,1) bridge + S1.1 use-site. Then S1
+corollaries → S1.1 → L1/L2 → D1 (incl. deepestPoint_exists) → R1 (re-engage pp) → A1/A2 → T.
 
 ## Next tick
 On fm-2's deepestPoint fix → rv-2 final re-audit. On rv-2 clean → **bedrock contract → structural-proof
