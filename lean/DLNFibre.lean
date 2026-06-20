@@ -44,3 +44,4 @@ import DLNFibre.Core.AffineNoetherRank
 import DLNFibre.Core.JacobianTrdeg
 import DLNFibre.Core.OrbitImageDim
 import DLNFibre.Core.OrbitDifferential
+import DLNFibre.Core.MatrixKaehler
