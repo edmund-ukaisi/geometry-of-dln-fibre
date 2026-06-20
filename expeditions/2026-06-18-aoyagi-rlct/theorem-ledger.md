@@ -2107,6 +2107,26 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-chart-post-pivot-boundary-a4.md`.
 
+Latest A4 update: the Case 2 post-pivot following-factor tail has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`pivotQinv_mul_tail_apply`, `case2DisplayedPaperCprimeTail_apply`, and
+`case2DisplayedPostPivotFollowingFactor_eq_sourceFollowingFactor_succ`,
+together with raw-value simp lemmas for the displayed pivot-complement
+equivalences to the next same-stage row/column domains.  This checkpoint
+records that `Q^-1 = [1 y; 0 I]` changes only the pivot row of the following
+factor.  Therefore the post-pivot following-factor candidate, reindexed to
+`(S,J+1)` columns, is exactly the source following factor restricted to those
+next same-stage columns.  It does not identify this with Aoyagi's full next
+`C'^(S+1)`, prove chart-produced recurrence/exponent data, construct a
+successor chart-family boundary, prove coverage, coordinate regularity,
+transition invariance, Jacobian arithmetic, normal crossings/RLCT, arbitrary
+pivot coverage, terminal relabeling, or printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-following-factor-tail-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-post-pivot-following-factor-tail.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-post-pivot-following-factor-tail-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

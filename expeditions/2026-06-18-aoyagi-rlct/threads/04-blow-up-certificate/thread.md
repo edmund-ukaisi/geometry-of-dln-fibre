@@ -3013,3 +3013,35 @@ of recurrence or exponent data, construct a successor chart-family boundary,
 prove chart coverage, coordinate regularity, transition invariance, Jacobian
 arithmetic, normal crossings/RLCT, arbitrary pivot coverage, terminal
 relabeling, or repair the printed Case 2 vector mismatch.
+
+## 2026-06-20 Lean Case 2 post-pivot following-factor tail
+
+Reproduction:
+`reproduction-case2-post-pivot-following-factor-tail-a4.md`.
+Statement card:
+`statement-card-a4-case2-post-pivot-following-factor-tail.md`.
+Review artifact:
+`review-case2-post-pivot-following-factor-tail-a4.md`.
+
+Lean now records the elementary tail consequence of Aoyagi's displayed
+following-factor update `C' = Q^-1 C`:
+
+```text
+pivotQinv_mul_tail_apply
+case2DisplayedPaperCprimeTail_apply
+case2DisplayedPostPivotFollowingFactor_eq_sourceFollowingFactor_succ
+```
+
+Because `Q^-1 = [1 y; 0 I]`, only the pivot row of the following factor
+changes.  The lower tail of `C'`, after the displayed pivot-column complement
+is reindexed to the next same-stage residual-column domain, is exactly the
+source following factor restricted to `(S,J+1)` columns.  The checkpoint also
+adds raw-value simp lemmas for the displayed pivot-complement equivalences to
+the next same-stage row and column domains.
+
+This is still finite following-factor algebra and reindexing.  It does not
+identify the tail with Aoyagi's full next `C'^(S+1)`, prove chart production
+of recurrence or exponent data, construct a successor chart-family boundary,
+prove chart coverage, coordinate regularity, transition invariance, Jacobian
+arithmetic, normal crossings/RLCT, arbitrary pivot coverage, terminal
+relabeling, or repair the printed Case 2 vector mismatch.

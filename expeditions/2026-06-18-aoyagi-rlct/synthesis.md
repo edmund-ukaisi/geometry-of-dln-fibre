@@ -1853,6 +1853,19 @@ printed-vector repair.  Next A4 target: chart-produced recurrence/exponent or
 following-product boundary data, if it can be reproduced from Aoyagi's
 displayed source coordinates without smuggling in the full transition theorem.
 
+The following-factor part of that boundary has one more elementary closure:
+Lean now proves that the lower tail of `C' = Q^-1 C` is unchanged.  After
+reindexing the displayed pivot-column complement to the next same-stage
+residual-column domain, `case2DisplayedPostPivotFollowingFactor` is exactly
+`case2SourceFollowingFactor` at `(S,J+1)`.  This is finite block algebra for
+`Q^-1 = [1 y; 0 I]` and actual-width column reindexing only.  It is not a
+source production theorem for the full next `C'^(S+1)`, recurrence/exponent
+post-data, chart-family boundary, transition invariant, Jacobian, normal
+crossing, RLCT extraction, arbitrary pivot coverage, terminal relabeling, or
+printed-vector repair.  The remaining A4 pressure is therefore on genuinely
+chart-produced recurrence/exponent data, successor chart-family/transition
+structure, or a proof that those stronger targets are source-blocked.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

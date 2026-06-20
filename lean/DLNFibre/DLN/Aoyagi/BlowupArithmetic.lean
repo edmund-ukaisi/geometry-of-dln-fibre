@@ -4404,6 +4404,38 @@ noncomputable def case2DisplayedPivotColComplementEquivResidualColSucc
       j.1) :=
   rfl
 
+@[simp] theorem case2DisplayedPivotRowComplementEquivResidualRowSucc_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (i : pivotComplement (case2DisplayedPivotRow n hS hcont)) :
+    ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont i : ℕ) =
+      i.1.1) :=
+  rfl
+
+@[simp] theorem case2DisplayedPivotRowComplementEquivResidualRowSucc_symm_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (i : Case2ResidualRowIndex n S (J + 1)) :
+    (((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i).1.1 =
+      i.1) :=
+  rfl
+
+@[simp] theorem case2DisplayedPivotColComplementEquivResidualColSucc_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (j : pivotComplement (case2DisplayedPivotCol n hS hcont)) :
+    ((case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont j : ℕ) =
+      j.1.1) :=
+  rfl
+
+@[simp] theorem case2DisplayedPivotColComplementEquivResidualColSucc_symm_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (j : Case2ResidualColIndex n S (J + 1)) :
+    (((case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm j).1.1 =
+      j.1) :=
+  rfl
+
 theorem case2DisplayedPivotRowComplement_isEmpty_iff_postPivotRows_isEmpty
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
@@ -4719,6 +4751,17 @@ theorem pivotQinv_mul_top_apply
     (pivotQinv y * C) (Sum.inl ()) a =
       C (Sum.inl ()) a + ∑ j : κ, y () j * C (Sum.inr j) a := by
   simp [pivotQinv, Matrix.mul_apply, Fintype.sum_sum_type]
+
+/-- Lower rows of the inverse pivot column operation are unchanged. -/
+theorem pivotQinv_mul_tail_apply
+    {κ τ R : Type*} [CommRing R] [Fintype κ] [DecidableEq κ]
+    (y : Matrix Unit κ R) (C : Matrix (Unit ⊕ κ) τ R) (i : κ) (a : τ) :
+    (pivotQinv y * C) (Sum.inr i) a = C (Sum.inr i) a := by
+  let Ctail : Matrix κ τ R := fun i a ↦ C (Sum.inr i) a
+  suffices (∑ x, (1 : Matrix κ κ R) i x * Ctail x a) = Ctail i a by
+    simpa [pivotQinv, Matrix.mul_apply, Fintype.sum_sum_type, Ctail] using this
+  simpa [Ctail, Matrix.mul_apply] using
+    congrArg (fun M : Matrix κ τ R ↦ M i a) (Matrix.one_mul Ctail)
 
 /-- The `Q`-normalised pivot block. -/
 def pivotPostQBlock (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R) :
@@ -10243,6 +10286,19 @@ def case2DisplayedPaperCprimeTail
     Matrix (pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
   fun i t ↦ case2DisplayedPaperCprime n hS hcont residual C (Sum.inr i) t
 
+/-- The lower rows of Aoyagi's transported following factor `C' = Q⁻¹ C`
+are the corresponding lower rows of the original following factor. -/
+theorem case2DisplayedPaperCprimeTail_apply
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (j : pivotComplement (case2DisplayedPivotCol n hS hcont)) (a : τ) :
+    case2DisplayedPaperCprimeTail n hS hcont residual C j a = C j.1.1 a := by
+  rw [case2DisplayedPaperCprimeTail, case2DisplayedPaperCprime,
+    case2DisplayedPaperQinv]
+  rw [pivotQinv_mul_tail_apply]
+  rfl
+
 theorem case2DisplayedPaperCprime_eq_verticalBlock
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
@@ -10293,6 +10349,24 @@ noncomputable def case2DisplayedPostPivotFollowingFactor
     Matrix (Case2ResidualColIndex n S (J + 1)) τ R :=
   (case2DisplayedPaperCprimeTail n hS hcont residual C).submatrix
     (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm id
+
+/-- The reindexed post-pivot following-factor candidate is the original source
+following factor restricted to the next same-stage residual columns.  This is
+only the lower-row identity for `Q⁻¹ C`, not a full transition theorem. -/
+theorem case2DisplayedPostPivotFollowingFactor_eq_sourceFollowingFactor_succ
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedPostPivotFollowingFactor n hS hcont residual C =
+      case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C := by
+  ext j a
+  rw [case2DisplayedPostPivotFollowingFactor]
+  change
+    case2DisplayedPaperCprimeTail n hS hcont residual C
+        ((case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm j) a =
+      case2SourceFollowingFactor C j a
+  rw [case2DisplayedPaperCprimeTail_apply]
+  simp [case2SourceFollowingFactor]
 
 /-- The next same-stage residual center is nonempty under the continuing
 Case 2 bound.  This only records the branch condition for the supplied

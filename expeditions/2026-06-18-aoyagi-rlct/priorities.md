@@ -193,6 +193,12 @@ on the session's original cwd.
    post-data projections. This removes the immediate adapter/post-data
    compatibility target while still leaving chart production of recurrence,
    exponent, and following-product data open.
+   The lower-tail following-factor part is now also Lean-proved:
+   `Q^-1 = [1 y; 0 I]` leaves lower rows unchanged, so
+   `case2DisplayedPostPivotFollowingFactor` is exactly the source following
+   factor restricted to the next same-stage columns. This removes a narrow
+   following-product candidate without producing Aoyagi's full next
+   `C'^(S+1)`.
    Do not set `F := 1` away from the empty-suffix case, do not replace the
    transported row by original rows without actual-width exhaustion, and do not
    transport Case 2 gap/tail invariants without separately checking their

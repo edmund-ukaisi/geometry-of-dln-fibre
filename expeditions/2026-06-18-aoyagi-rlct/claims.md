@@ -555,6 +555,11 @@ No such claim is formalisation-ready until both fields are filled.
   with corrected supplied exponent/level/gap projections at `(S,J+1)`. This
   is still supplied-data compatibility, not chart production or transition
   invariance.
+  The post-pivot following-factor tail is now also identified: `Q^-1` changes
+  only the pivot row, so the reindexed post-pivot following-factor candidate
+  is exactly the source following factor restricted to the next same-stage
+  columns `(S,J+1)`. This is not a proof that the chart produces Aoyagi's full
+  next `C'^(S+1)`.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -632,6 +637,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-source-chart-post-pivot-boundary-a4.md`;
 	  landed-patch review is saved at
 	  `threads/04-blow-up-certificate/review-case2-source-chart-post-pivot-boundary-a4.md`.
+	  Reproduction of the Case 2 post-pivot following-factor tail is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-post-pivot-following-factor-tail-a4.md`;
+	  landed-patch review is saved at
+	  `threads/04-blow-up-certificate/review-case2-post-pivot-following-factor-tail-a4.md`.
 	  Review of the Case 2 stage-relabel domain audit is saved at
 	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 	  Review of the Case 2 displayed cleared-block vacuity corollary is saved
@@ -1329,6 +1338,10 @@ No such claim is formalisation-ready until both fields are filled.
   construction, transition invariance, Jacobian arithmetic, normal crossings,
   RLCT extraction, arbitrary pivot coverage, terminal relabeling, or repair of
   the printed vector mismatch.
+  The post-pivot following-factor tail theorem proves the lower rows of
+  `Q^-1 C` are unchanged and reindexes them to the next same-stage residual
+  columns. This closes a narrow following-product candidate while explicitly
+  not proving source production of the full next `C'^(S+1)`.
   The stage-relabel domain audit proves the finite side split
   `prefixMinNat n S = J+1 ∨ n(S+1)=J+1`, the old `(S,J+1)` to `(S+1,0)`
   introduced-label equality under actual-width exhaustion `n(S+1)=J+1`, and
