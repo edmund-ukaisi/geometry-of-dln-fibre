@@ -1856,6 +1856,15 @@ and that the label bounds for `k=Htilde'_1+1` are equivalent to the two width
 guards `M-1<=W_1+W_2` and `W_1+2<=M`.  This identifies the one-unit slack
 condition missing from the displayed Htilde formulas alone.
 
+One Definition 3 source inequality is now Lean-used rather than merely
+recorded as a blocker.  If every selected width satisfies Aoyagi's strict
+selected inequality `ell*W_i < sum W`, then under
+`sum W=ell*(M-1)+a` and `a<=ell`, each selected width is at most `M-1`.
+Consequently the previous prefix satisfies `P_p+1<=pM`, and equation `(4)`'s
+upper label bound `Htilde_p+1<=W_(p+1)` follows for `1<=p`, `p<=a`.  This
+does not prove the lower label bound `pM<=P_(p+1)` or any terminal/vector
+realisation.
+
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
 definitionally the next same-stage residual domains at `(S,J+1)`, and the

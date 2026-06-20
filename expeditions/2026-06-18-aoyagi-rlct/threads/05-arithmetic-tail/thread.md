@@ -598,3 +598,34 @@ the two width guards `M-1<=W_1+W_2` and `W_1+2<=M`.
 This remains only finite guard arithmetic.  It does not construct the
 displayed equation `(3)` vector, prove source-label legality from Definition
 3 alone, prove `tilde t=0`, or prove Lemma 5.
+
+## 2026-06-20 Lean Definition 3 selected-width upper label bound
+
+Reproduction:
+`reproduction-definition3-selected-width-upper-label-a5.md`.
+Statement card:
+`statement-card-a5-definition3-selected-width-upper-label.md`.
+Review artifact:
+`review-definition3-selected-width-upper-label-a5.md`.
+
+Lean now proves that Definition 3's strict selected-width inequality forces
+each selected width to satisfy `W_i<=M-1`:
+
+```text
+aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+```
+
+From this, Lean proves the previous-prefix inequality `P_p+1<=pM` for
+`1<=p`, and therefore the upper equation `(4)` label bound
+`Htilde_p+1<=W_(p+1)` under `p<=a`:
+
+```text
+aoyagiPrefixSum_sub_current_add_one_le_mul_of_selectedWidth_le_pred
+aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_selectedWidth_le_pred
+aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
+```
+
+This discharges only the upper half of equation `(4)` label legality from
+Definition 3.  The lower half `1<=Htilde_p+1`, equation `(3)`'s one-unit slack
+guard, terminal `tilde t=0`, and full displayed-family realisation remain
+open.

@@ -1703,6 +1703,10 @@ No such claim is formalisation-ready until both fields are filled.
   needs `1<=a`, the first upper/lower Htilde gap is `1` only in the interior
   case, and `k=Htilde'_1+1` is label-bounded exactly under the width guards
   `M-1<=W_1+W_2` and `W_1+2<=M`.
+  Definition 3's strict selected-width inequality is now used to prove
+  `W_i<=M-1` for selected widths, which discharges the upper equation `(4)`
+  label bound `Htilde_p+1<=W_(p+1)` under `1<=p`, `p<=a`. The lower bound
+  `1<=Htilde_p+1` remains open.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1743,6 +1747,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma5-eq4-guard-arithmetic-a5.md`;
   Lemma 5 equation `(3)` guard arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq3-guard-arithmetic-a5.md`;
+  Definition 3 selected-width upper label bound at
+  `threads/05-arithmetic-tail/reproduction-definition3-selected-width-upper-label-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`;
   `Htilde` value-set count at
@@ -1825,6 +1831,8 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   Lemma 5 equation `(3)` guard arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean` and
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  Definition 3 selected-width upper label bound in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets

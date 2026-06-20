@@ -183,6 +183,21 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-guard-arithmetic-a5.md`.
 
+The first Definition 3 source-inequality consequence for Lemma 5 labels has
+landed.  The proved Lean names are
+`aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality`,
+`aoyagiPrefixSum_sub_current_add_one_le_mul_of_selectedWidth_le_pred`,
+`aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_selectedWidth_le_pred`, and
+`aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality`.
+They prove that selected widths are at most `M-1`, hence equation `(4)`'s
+upper label bound follows from Definition 3's strict selected-width
+inequality.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-definition3-selected-width-upper-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-definition3-selected-width-upper-label.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-definition3-selected-width-upper-label-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

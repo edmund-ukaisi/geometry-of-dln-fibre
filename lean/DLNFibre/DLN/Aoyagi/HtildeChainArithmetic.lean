@@ -61,6 +61,73 @@ theorem aoyagiPrefixSum_selectedWidthNat_last (ell : ℕ) (m : Fin (ell + 1) →
   intro i hi
   exact aoyagiSelectedWidthNat_of_lt i.isLt
 
+/-- Source-selected widths are bounded above by `M-1`.
+
+This is the finite arithmetic content of Definition 3's strict selected
+inequality: for every selected width `W_i`, the selected sum is strictly
+larger than `ell*W_i`.  Together with
+`sum W = ell*(M-1)+a` and `a<=ell`, this forces `W_i < M`, hence
+`W_i <= M-1`. -/
+theorem aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (i : Fin (ell + 1)) :
+    m i ≤ M - 1 := by
+  by_contra hnot
+  have hMi : M ≤ m i := by omega
+  have hell_pos : (0 : ℤ) < (ell : ℤ) := by exact_mod_cast hell
+  have ha_int : (a : ℤ) ≤ (ell : ℤ) := by exact_mod_cast ha
+  have hstrict := hsource i
+  rw [hselected] at hstrict
+  nlinarith
+
+/-- If every selected width is at most `M-1`, then the previous selected-width
+prefix before coordinate `p` is at most `p*M-1`.
+
+This is the upper half of the equation `(4)` label-bound calculation. -/
+theorem aoyagiPrefixSum_sub_current_add_one_le_mul_of_selectedWidth_le_pred
+    (ell p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hp0 : 1 ≤ p) (hpell : p ≤ ell)
+    (hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1) :
+    aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p -
+        aoyagiSelectedWidthNat ell m p + 1 ≤
+      (p : ℤ) * M := by
+  have hprefix :
+      aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p -
+          aoyagiSelectedWidthNat ell m p =
+        ∑ i ∈ Finset.range p, aoyagiSelectedWidthNat ell m i := by
+    unfold aoyagiPrefixSum
+    rw [Finset.sum_range_succ]
+    ring
+  have hterm :
+      ∀ i ∈ Finset.range p, aoyagiSelectedWidthNat ell m i ≤ M - 1 := by
+    intro i hi
+    rw [Finset.mem_range] at hi
+    have hi_lt : i < ell + 1 := by omega
+    rw [aoyagiSelectedWidthNat_of_lt hi_lt]
+    exact hbound ⟨i, hi_lt⟩
+  have hsum_le :
+      (∑ i ∈ Finset.range p, aoyagiSelectedWidthNat ell m i) ≤
+        (∑ _i ∈ Finset.range p, (M - 1 : ℤ)) := by
+    exact Finset.sum_le_sum hterm
+  have hsum_const :
+      (∑ _i ∈ Finset.range p, (M - 1 : ℤ)) = (p : ℤ) * (M - 1) := by
+    simp
+    ring
+  have hprev_le :
+      (∑ i ∈ Finset.range p, aoyagiSelectedWidthNat ell m i) ≤
+        (p : ℤ) * (M - 1) := by
+    rw [hsum_const] at hsum_le
+    exact hsum_le
+  have hslack : (p : ℤ) * (M - 1) + 1 ≤ (p : ℤ) * M := by
+    have hp0_int : (1 : ℤ) ≤ (p : ℤ) := by exact_mod_cast hp0
+    nlinarith
+  rw [hprefix]
+  linarith
+
 /-- Prefix count of high increments for the lower `Htilde` chain. -/
 def aoyagiHtildeLowerHighCount (a j : ℕ) : ℕ :=
   min j a
@@ -399,6 +466,49 @@ theorem aoyagiHtildeLowerNat_add_one_labelBounds_iff_prefixCrossing
     constructor <;> omega
   · intro h
     constructor <;> omega
+
+/-- The selected-width upper bound proves the upper half of equation `(4)`'s
+label bound.
+
+This proves only `Htilde_p+1 <= W_(p+1)`.  The lower bound
+`1 <= Htilde_p+1`, equivalently `p*M <= P_(p+1)`, remains a separate
+nonnegativity/admissibility hypothesis. -/
+theorem aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_selectedWidth_le_pred
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hp0 : 1 ≤ p) (hp_a : p ≤ a) (hpell : p ≤ ell)
+    (hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1) :
+    aoyagiHtildeLowerNat ell a M m p + 1 ≤
+      aoyagiSelectedWidthNat ell m p := by
+  have hprefix :=
+    aoyagiPrefixSum_sub_current_add_one_le_mul_of_selectedWidth_le_pred
+      ell p M m hp0 hpell hbound
+  unfold aoyagiHtildeLowerNat aoyagiHtildeLowerIncrementPrefix
+    aoyagiHtildeLowerHighCount
+  rw [Nat.min_eq_left hp_a]
+  have hprefixM :
+      (p : ℤ) * (M - 1) + (p : ℤ) = (p : ℤ) * M := by
+    ring
+  rw [hprefixM]
+  omega
+
+/-- Source-shaped form: Definition 3's strict selected-width inequalities
+prove the upper half of equation `(4)`'s label bound.
+
+This still does not prove the lower label bound `1 <= Htilde_p+1`, terminal
+`tilde t=0`, or the displayed-family construction. -/
+theorem aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp0 : 1 ≤ p) (hp_a : p ≤ a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    aoyagiHtildeLowerNat ell a M m p + 1 ≤
+      aoyagiSelectedWidthNat ell m p := by
+  have hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1 :=
+    aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell ha hselected hsource
+  exact aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_selectedWidth_le_pred
+    ell a p M m hp0 hp_a (le_trans hp_a ha) hbound
 
 /-- In the interior case of equation `(3)`, the first upper/lower Htilde gap
 is exactly one.
