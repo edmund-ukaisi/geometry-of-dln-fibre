@@ -44,12 +44,29 @@ obstruction is Lean's dependent-fiber + `Matrix`-`def` plumbing.
 1. **`Fin 2`-split via `finTwoArrow`/`piFinTwo`** (`measurePreserving_piFinTwo`): split the outer pi into
    the two **concrete** layers `0,1` (where the widths reduce), build a MP `Params (1,1,1) ≃ᵐ ℝ × ℝ`
    per-concrete-layer, then `≃ᵐ (Fin 2 → ℝ)` via `finTwoArrow.symm`. Avoids the symbolic-`s` fiber.
+   **ATTEMPTED — hits the SAME wall + a diamond risk.** `MeasurableEquiv.piFinTwo`'s implicit
+   `{m : ∀ i, MeasurableSpace (α i)}` cannot be synthesised for the symbolic `Params` fiber (same
+   non-reduction), and `fin_cases`/`Fin.cases` cannot build a `MeasurableSpace` (data, not `Prop`) into
+   that implicit slot. Supplying the `∀ i, MeasureSpace (pfib i)` by a `match i with | 0 | 1` term DOES
+   typecheck, but it is a **separate instance path** from the one `Params`'s own `volume` (via
+   `inferInstanceAs`) was built from — so the `piFinTwo` MP would not compose with `Params`'s `volume`
+   without proving the two instance paths agree (instance-diamond reconciliation). Not a focused close.
 2. **Define `Params` reductions up front**: a `simp`-lemma `Params (![1,1,1]) = (Fin 2 → Fin 1 → Fin 1 → ℝ)`
    (provable by `Params`-unfold + `Matrix`-unfold + width `decide`), then work on the uniform Pi and
    transport `rlctAt`/`dlnLoss` across the (now syntactic) equality. Cleanest if it holds as `rfl`-after-`simp`.
-3. **Skip the equiv**: compute `rlctAt = 1/2` by a bespoke `IntegrableOn`-on-`Params` argument that uses
-   `Fin.sum_univ_two`/`fin_cases` to reduce the 2-layer integral to two 1-D integrals without a named
-   global equiv (heavier per-use, but no `Params ≃ᵐ ℝ²` object).
+   UNTRIED — but `Params (![1,1,1]) = (∀ _ : Fin 2, Fin 1 → Fin 1 → ℝ)` failed by `rfl` (the type
+   equality is NOT definitional for the same symbolic-`s` reason), so this needs a genuine type-`Eq`
+   + `MeasurableEquiv.cast`/transport, not a `simp` rewrite — likely as fiddly as #1.
+3. **Skip the equiv**: bespoke `IntegrableOn`-on-`Params`. `dlnLoss_case111` already gives the loss as a
+   function of the two concrete entries `A 0 0 0, A 1 0 0` (no symbolic `s`!), so the *integrand* is
+   expressible. BUT relating its `Params`-`volume` integral over a box-nbhd to the 2-D box integral still
+   needs a measure-transport — i.e. it does NOT actually sidestep the equiv, only defers it.
+
+**Recommendation:** the clean fix is a small reusable Mathlib-style helper —
+`Params (![…]) ≃ᵐ EuclideanSpace ℝ (Fin N)` (or the flat pi) **measure-preserving**, built once for the
+concrete width vector with the instance paths reconciled — which is a Core/Foundations design decision
+above a leaf executor. Hand to `pp` for the blueprint or have the controller add the helper to
+`Foundations`. The bridge is then a short assembly (banked piece 2 + `Case111Bridge`'s box machinery).
 
 ### The neg-invariance snag (piece 2, two-sided)
 
