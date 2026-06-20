@@ -1099,6 +1099,158 @@ def case2DisplayedPivotCol
     exact ⟨le_rfl,
       le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))⟩⟩
 
+/-- Residual Case 2 rows left after the displayed pivot at `(J+1,J+1)` is
+removed.  This is only a finite lower-right domain, not an advance
+transition. -/
+def case2PostPivotRows (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
+  Finset.Icc (J + 2) (prefixMinNat n S)
+
+/-- Residual Case 2 columns left after the displayed pivot at `(J+1,J+1)` is
+removed.  Columns still use the actual next width. -/
+def case2PostPivotCols (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
+  Finset.Icc (J + 2) (n (S + 1))
+
+/-- Lower-right residual block entries left after the displayed Case 2 pivot.
+This records the finite domain for the next possible `J`-advance. -/
+def case2PostPivotEntries (n : ℕ → ℕ) (S J : ℕ) : Finset (ℕ × ℕ) :=
+  (case2PostPivotRows n S J).product (case2PostPivotCols n S J)
+
+@[simp] theorem mem_case2PostPivotRows (n : ℕ → ℕ) (S J i : ℕ) :
+    i ∈ case2PostPivotRows n S J ↔ J + 2 ≤ i ∧ i ≤ prefixMinNat n S := by
+  simp [case2PostPivotRows, Finset.mem_Icc]
+
+@[simp] theorem mem_case2PostPivotCols (n : ℕ → ℕ) (S J j : ℕ) :
+    j ∈ case2PostPivotCols n S J ↔ J + 2 ≤ j ∧ j ≤ n (S + 1) := by
+  simp [case2PostPivotCols, Finset.mem_Icc]
+
+@[simp] theorem mem_case2PostPivotEntries_iff (n : ℕ → ℕ) (S J i j : ℕ) :
+    (i, j) ∈ case2PostPivotEntries n S J ↔
+      J + 2 ≤ i ∧ i ≤ prefixMinNat n S ∧ J + 2 ≤ j ∧ j ≤ n (S + 1) := by
+  simp [case2PostPivotEntries, and_assoc]
+
+theorem case2PostPivotRows_card (n : ℕ → ℕ) (S J : ℕ) :
+    (case2PostPivotRows n S J).card = prefixMinNat n S - (J + 1) := by
+  rw [case2PostPivotRows, Nat.card_Icc]
+  omega
+
+theorem case2PostPivotCols_card (n : ℕ → ℕ) (S J : ℕ) :
+    (case2PostPivotCols n S J).card = n (S + 1) - (J + 1) := by
+  rw [case2PostPivotCols, Nat.card_Icc]
+  omega
+
+theorem case2PostPivotEntries_card (n : ℕ → ℕ) (S J : ℕ) :
+    (case2PostPivotEntries n S J).card =
+      (prefixMinNat n S - (J + 1)) * (n (S + 1) - (J + 1)) := by
+  simp [case2PostPivotEntries, case2PostPivotRows_card,
+    case2PostPivotCols_card]
+
+theorem case2PostPivotRows_nonempty_iff (n : ℕ → ℕ) (S J : ℕ) :
+    (case2PostPivotRows n S J).Nonempty ↔ J + 2 ≤ prefixMinNat n S := by
+  constructor
+  · rintro ⟨i, hi⟩
+    rw [mem_case2PostPivotRows] at hi
+    omega
+  · intro h
+    exact ⟨J + 2, by rw [mem_case2PostPivotRows]; omega⟩
+
+theorem case2PostPivotCols_nonempty_iff (n : ℕ → ℕ) (S J : ℕ) :
+    (case2PostPivotCols n S J).Nonempty ↔ J + 2 ≤ n (S + 1) := by
+  constructor
+  · rintro ⟨j, hj⟩
+    rw [mem_case2PostPivotCols] at hj
+    omega
+  · intro h
+    exact ⟨J + 2, by rw [mem_case2PostPivotCols]; omega⟩
+
+/-- The lower-right post-pivot Case 2 block is nonempty exactly when the next
+Case 2 continuation bound holds, in the old `(S,J)` notation. -/
+theorem case2PostPivotEntries_nonempty_iff_next_cont
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S) :
+    (case2PostPivotEntries n S J).Nonempty ↔
+      J + 2 ≤ prefixMinNat n (S + 1) := by
+  constructor
+  · rintro ⟨p, hp⟩
+    rcases p with ⟨i, j⟩
+    rw [mem_case2PostPivotEntries_iff] at hp
+    rw [prefixMinNat_succ_eq_min n hS]
+    exact le_min (le_trans hp.1 hp.2.1) (le_trans hp.2.2.1 hp.2.2.2)
+  · intro hnext
+    have hrow : J + 2 ≤ prefixMinNat n S :=
+      le_trans hnext (prefixMinNat_succ_le n hS)
+    have hcol : J + 2 ≤ n (S + 1) :=
+      le_trans hnext (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
+    refine ⟨(J + 2, J + 2), ?_⟩
+    rw [mem_case2PostPivotEntries_iff]
+    exact ⟨le_rfl, hrow, le_rfl, hcol⟩
+
+theorem case2PostPivotRows_eq_empty_of_le
+    {n : ℕ → ℕ} {S J : ℕ} (h : prefixMinNat n S ≤ J + 1) :
+    case2PostPivotRows n S J = ∅ := by
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro i hi
+  rw [mem_case2PostPivotRows] at hi
+  omega
+
+theorem case2PostPivotCols_eq_empty_of_le
+    {n : ℕ → ℕ} {S J : ℕ} (h : n (S + 1) ≤ J + 1) :
+    case2PostPivotCols n S J = ∅ := by
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro j hj
+  rw [mem_case2PostPivotCols] at hj
+  omega
+
+theorem case2PostPivotRows_eq_empty_of_prefixMin_current_eq
+    {n : ℕ → ℕ} {S J : ℕ} (h : prefixMinNat n S = J + 1) :
+    case2PostPivotRows n S J = ∅ :=
+  case2PostPivotRows_eq_empty_of_le (by omega)
+
+theorem case2PostPivotCols_eq_empty_of_width_next_eq
+    {n : ℕ → ℕ} {S J : ℕ} (h : n (S + 1) = J + 1) :
+    case2PostPivotCols n S J = ∅ :=
+  case2PostPivotCols_eq_empty_of_le (by omega)
+
+/-- If the displayed pivot was valid but the next pivot is not, then the
+frontier prefix minimum is exactly `J+1`.  This is off-by-one bookkeeping for
+the post-pivot domain, not a termination theorem. -/
+theorem case2_next_frontier_eq_of_cont_of_not_next
+    {n : ℕ → ℕ} {S J : ℕ}
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1)) :
+    prefixMinNat n (S + 1) = J + 1 := by
+  omega
+
+/-- If the next Case 2 continuation bound fails after the displayed pivot, then
+at least one lower-right post-pivot side is empty.  This is only a finite
+domain-exhaustion statement. -/
+theorem case2PostPivotRows_empty_or_cols_empty_of_not_next_cont
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1)) :
+    case2PostPivotRows n S J = ∅ ∨ case2PostPivotCols n S J = ∅ := by
+  have hlt : prefixMinNat n (S + 1) < J + 2 := Nat.lt_of_not_ge hstop
+  have hmin_le_raw : prefixMinNat n (S + 1) ≤ J + 1 := by omega
+  have hmin_le : min (prefixMinNat n S) (n (S + 1)) ≤ J + 1 := by
+    simpa [prefixMinNat_succ_eq_min n hS] using hmin_le_raw
+  by_cases hrow : prefixMinNat n S ≤ J + 1
+  · exact Or.inl (case2PostPivotRows_eq_empty_of_le hrow)
+  · have hcol : n (S + 1) ≤ J + 1 := by
+      by_cases hle : prefixMinNat n S ≤ n (S + 1)
+      · have hmu : prefixMinNat n S ≤ J + 1 := by
+          simpa [Nat.min_eq_left hle] using hmin_le
+        exact False.elim (hrow hmu)
+      · have hle' : n (S + 1) ≤ prefixMinNat n S := by omega
+        simpa [Nat.min_eq_right hle'] using hmin_le
+    exact Or.inr (case2PostPivotCols_eq_empty_of_le hcol)
+
+/-- Failure of the next Case 2 continuation bound empties the lower-right
+post-pivot residual entry set. -/
+theorem case2PostPivotEntries_eq_empty_of_not_next_cont
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1)) :
+    case2PostPivotEntries n S J = ∅ := by
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro p hp
+  exact hstop ((case2PostPivotEntries_nonempty_iff_next_cont n hS).1 ⟨p, hp⟩)
+
 /-- Case 1 center generator symbols after externally choosing the old exceptional variable.
 The `Unit` branch does not encode the old label, its validity, level, minimality, or
 comparability; the right branch records a row-strip entry. -/

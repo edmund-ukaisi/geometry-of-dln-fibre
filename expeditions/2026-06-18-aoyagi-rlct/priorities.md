@@ -316,6 +316,14 @@ on the session's original cwd.
    scaffold or another genuinely source-produced post-data component. Do not
    treat this constructor as chart production, coverage, Jacobian arithmetic,
    or transition invariance.
+   The post-pivot exhaustion boundary is now Lean-proved too:
+   `case2PostPivotEntries_nonempty_iff_next_cont` says the lower-right domain
+   after the displayed pivot is nonempty exactly when the next continuation
+   bound `J+2 <= M(S+1)` holds, and
+   `case2PostPivotEntries_eq_empty_of_not_next_cont` empties that domain when
+   the bound fails. Next A4 target: build the `S+1` advance scaffold only
+   after reproducing the new recurrence/exponent data; do not treat this
+   finite exhaustion result as the advance transition.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

@@ -1241,6 +1241,28 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-source-chart-boundary-constructor-a4.md`.
 
+Latest A4 update: the Case 2 post-pivot exhaustion boundary has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`case2PostPivotRows`, `case2PostPivotCols`, `case2PostPivotEntries`,
+`case2PostPivotRows_card`, `case2PostPivotCols_card`,
+`case2PostPivotEntries_card`,
+`case2PostPivotEntries_nonempty_iff_next_cont`,
+`case2_next_frontier_eq_of_cont_of_not_next`,
+`case2PostPivotRows_empty_or_cols_empty_of_not_next_cont`, and
+`case2PostPivotEntries_eq_empty_of_not_next_cont`, together with membership
+and row/column nonemptiness lemmas. This checkpoint proves that the finite
+lower-right domain after the displayed pivot is nonempty exactly under the
+next continuation bound `J+2 <= M(S+1)`, and is empty when that bound fails.
+It does not construct the `S+1` advance, produce chart recurrence/exponent
+post-data, compute Jacobians, prove coverage or coordinate regularity, prove
+normal crossings/RLCT, prove termination or transition invariance, or repair
+the printed vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-exhaustion-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-post-pivot-exhaustion.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-post-pivot-exhaustion-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

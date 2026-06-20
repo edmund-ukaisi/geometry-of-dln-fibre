@@ -368,6 +368,42 @@ coverage, coordinate regularity, Jacobian/volume arithmetic, normal crossings,
 RLCT extraction, termination, transition invariance, or repair of the printed
 Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 post-pivot exhaustion boundary
+
+Reproduction:
+`reproduction-case2-post-pivot-exhaustion-a4.md`.
+Statement card:
+`statement-card-a4-case2-post-pivot-exhaustion.md`.
+Review artifact:
+`review-case2-post-pivot-exhaustion-a4.md`.
+
+Lean now names the finite lower-right domain left after the displayed Case 2
+pivot at `(J+1,J+1)`.  The new definitions are:
+
+- `case2PostPivotRows`;
+- `case2PostPivotCols`;
+- `case2PostPivotEntries`.
+
+In old `(S,J)` notation these are the row range `J+2..M(S)`, the column range
+`J+2..M^(S+1)`, and their product.  Lean proves membership, cardinality,
+row/column nonemptiness, and the key boundary:
+
+```text
+case2PostPivotEntries n S J is nonempty
+  iff J+2 <= prefixMinNat n (S+1).
+```
+
+Consequently, if the next Case 2 continuation bound fails then at least one
+post-pivot side is empty and the lower-right entry set is empty.  If the
+current pivot was valid but the next pivot is not, then the frontier prefix
+minimum is exactly `J+1`.
+
+This checkpoint is only finite domain exhaustion.  It does not construct
+`D'''_J`, the `S+1` advance state, chart-produced recurrence or exponent
+post-data, atlas coverage, coordinate regularity, Jacobian/volume arithmetic,
+normal crossings, RLCT extraction, termination, transition invariance, or
+repair of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

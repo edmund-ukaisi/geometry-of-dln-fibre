@@ -569,6 +569,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 displayed source-chart boundary constructor is saved
 	  at
 	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-boundary-constructor-a4.md`.
+	  Review of the Case 2 post-pivot exhaustion boundary is saved at
+	  `threads/04-blow-up-certificate/review-case2-post-pivot-exhaustion-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1183,6 +1185,12 @@ No such claim is formalisation-ready until both fields are filled.
   wrapper over supplied corrected exponent post-data and supplied chart-family
   predicates, not chart production, coverage, Jacobian arithmetic, or a
   transition invariant.
+  The post-pivot exhaustion boundary proves the finite lower-right domain
+  after the displayed Case 2 pivot: rows `J+2..M(S)`, columns
+  `J+2..M^(S+1)`, cardinalities, nonemptiness iff
+  `J+2 <= M(S+1)`, and emptiness when the next continuation bound fails. This
+  is only domain bookkeeping and does not construct the `S+1` advance,
+  post-data, Jacobians, termination, or transition invariance.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

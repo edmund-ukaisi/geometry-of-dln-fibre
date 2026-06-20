@@ -1296,6 +1296,18 @@ It does not prove chart-produced post-data, non-top-left displayed charts,
 coverage, coordinate regularity, Jacobian/volume arithmetic, normal crossings,
 RLCT extraction, termination, transition invariance, or printed-vector repair.
 
+The Case 2 post-pivot exhaustion boundary is now Lean-proved. The new finite
+domains `case2PostPivotRows`, `case2PostPivotCols`, and
+`case2PostPivotEntries` record the lower-right row range `J+2..M(S)`, column
+range `J+2..M^(S+1)`, and product domain after the displayed pivot. Lean proves
+their cardinals and shows that `case2PostPivotEntries` is nonempty iff the
+next continuation bound `J+2 <= prefixMinNat n (S+1)` holds. If that next
+bound fails, at least one side is empty and the lower-right entry set is
+empty; if the current pivot was valid but the next is not, then the frontier
+prefix minimum is exactly `J+1`. This is finite domain bookkeeping only, not
+the `S+1` advance transition, chart production, Jacobian arithmetic,
+termination, transition invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
