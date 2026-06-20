@@ -32,6 +32,13 @@ This closes step (ii) of the aggregate-reading roadmap recorded in `Core.CThetaG
 2 there) feeds the downstream component / `θ` count (Phase G3 / θ), which consumes the union form
 and the rank-pattern collapse lemma below.
 
+**What is proved vs. labelled.** Throughout, `orbitRankLocus M` is the **determinantal set**
+`{A | rankPattern A ≤ rankPattern M}` — the object the theorem statements quantify over. Its
+identification with the genuine orbit closure `Ō_M` (Abeasis–Del Fra Thm 3.8) is proved separately
+in `Core.OrbitClosure` over `[Infinite k]`; the `Ō_M` label here is that forward reference, not a
+claim re-established in this module. So the headline asserts the determinantal-set equality it
+proves, no more.
+
 **Typeclass.** `Field k` (the Gabriel normal-form existence `baseChange_normalForm` needs it; the
 union equality and the per-orbit inclusion themselves use only the rank-pattern order, but the
 module's headline keeps the uniform `Field` for the normal-form brick). No `IsAlgClosed`/`CharZero`:

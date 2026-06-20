@@ -31,7 +31,12 @@ Axioms (all six headlines, via `#print axioms`): `[propext, Classical.choice, Qu
 > - **Deferred.** The TOPOLOGY (irreducible components = maximal `Ō_M`) and the count `θ` — Phase G3 / θ,
 >   which consume this set equality + the collapse lemma below. The aggregate-codimension reading
 >   (`cCodim` = geometric codim of `Σ̄^r`) is also downstream.
-> - **Status.** sorry-free (pending reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (fidelity AUDIT: PASS, reviewer 2026-06-20; decorrelated Codex
+>   converged. The set equality faithfully states the paper's `Σ̄^r = ⋃ Ō_M`; `⊆` via `M := A` is a
+>   genuine proof of the same set, not a trivialisation; no overclaim — `orbitRankLocus` is used as the
+>   determinantal set, the `= Ō_M` identity is the separate `Core.OrbitClosure` result over `[Infinite
+>   k]`. Reviewer's one non-blocking polish — a docstring clause separating "determinantal set used
+>   here" from "= orbit closure proved elsewhere" — applied.).
 
 ### Index form (handed to G3)
 
