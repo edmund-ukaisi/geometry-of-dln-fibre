@@ -8,6 +8,11 @@ dimension of the image of the orbit-map pullback `μ_M^*`, a finitely-generated 
 fidelity review flagged the earlier `[IsAlgClosed k]` as inherited from an over-strong brick
 signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[Infinite k]`).
 
+**Fidelity-reviewed** (independent + Codex-corroborated): SURVIVED — statement matches the claimed
+route-c first link, `[Infinite k]` is the honest weakest hypothesis, no overclaim. Verified against
+fresh oleans (an earlier `[IsAlgClosed k]` signature reading was a stale-olean artifact in the
+reviewer's tooling, not a defect).
+
 ---
 
 > **Claim (A0 headline).** For a composable matrix tuple `M : Tuple d` over an **infinite** field, the
@@ -41,7 +46,7 @@ signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[In
 >   and `ringKrullDim_eq_of_ringEquiv` are Mathlib.
 > - **Deferred.** the *value* of `ringKrullDim (μ_M^*).range` as a transcendence degree — A4's job
 >   (this card asserts only the dimension *identification*, hands A4 the f.g. domain).
-> - **Status.** sorry-free
+> - **Status.** sorry-free + reviewed
 
 ---
 
@@ -58,7 +63,7 @@ signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[In
 > - **Assumed.** `[Infinite k]` only.
 > - **Cited.** none.
 > - **Deferred.** none.
-> - **Status.** sorry-free
+> - **Status.** sorry-free + reviewed
 
 ---
 
@@ -74,7 +79,7 @@ signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[In
 > - **Assumed.** none beyond `[Field k]`.
 > - **Cited.** none.
 > - **Deferred.** none.
-> - **Status.** sorry-free
+> - **Status.** sorry-free + reviewed
 
 ---
 
