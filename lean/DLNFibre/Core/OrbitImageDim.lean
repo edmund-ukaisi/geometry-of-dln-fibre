@@ -81,4 +81,39 @@ theorem varietyDim_orbitRankLocus_le_finrank_range_deformationδ
   rw [varietyDim_eq_ringKrullDim_range_orbitPullback M]
   exact ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ M hA42 hA43
 
+/-! ## Reducing `hA42` to the clean char-0 criterion `DiffIndepCriterion`
+
+`hA42` (the image-form A4.2 bound) follows from the field-theory criterion `DiffIndepCriterion k
+(groupRing d)` via the trdeg wrapper, since `(orbitPullback M).range = adjoin k (range
+(genericOrbitCoord M))`. This pins the genuine open obligation of A4.2 to `DiffIndepCriterion` —
+the char-0 "algebraically-independent ⟹ differentials linearly independent" fact — separated from
+all the orbit-specific bookkeeping. -/
+
+set_option maxHeartbeats 800000 in
+/-- **A4.2 image-form from the criterion.** `(Algebra.trdeg k (orbitPullback M).range).toNat ≤
+genericDifferentialRank …` from `DiffIndepCriterion k (groupRing d)`: the trdeg wrapper applied to
+`f = genericOrbitCoord M`, with `(orbitPullback M).range = adjoin k (range (genericOrbitCoord M))`
+(`range_orbitPullback_eq_adjoin`). -/
+theorem trdeg_range_orbitPullback_le_genericDifferentialRank {d : Fin (N + 1) → ℕ}
+    [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+    (hcrit : DiffIndepCriterion k (groupRing (k := k) d)) :
+    (Algebra.trdeg k (orbitPullback M).range).toNat
+      ≤ genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M) := by
+  have h := trdeg_adjoin_le_genericDifferentialRank k (groupRing (k := k) d)
+    (genericOrbitCoord M) hcrit
+  rwa [← range_orbitPullback_eq_adjoin M] at h
+
+/-- **A4.4 from the criterion + A4.3.** The route-c submersion bound with the A4.2 obligation
+discharged down to the clean char-0 criterion `DiffIndepCriterion k (groupRing d)`; `hA43` remains
+the char-free differential-rank identity (the A4.3 obligation). -/
+theorem ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_of_criterion
+    {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+    (hcrit : DiffIndepCriterion k (groupRing (k := k) d))
+    (hA43 : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      = finrank k (LinearMap.range (deformationδ M M))) :
+    (ringKrullDim (orbitPullback M).range).unbotD 0
+      ≤ finrank k (LinearMap.range (deformationδ M M)) :=
+  ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ M
+    (trdeg_range_orbitPullback_le_genericDifferentialRank M hcrit) hA43
+
 end DLNFibre.Core
