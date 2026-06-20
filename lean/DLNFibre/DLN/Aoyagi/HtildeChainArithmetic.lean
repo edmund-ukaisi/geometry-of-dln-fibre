@@ -832,6 +832,70 @@ theorem aoyagiHtildeUpperNat_one_add_one_labelBounds_iff_widthGuards
   · intro h
     constructor <;> omega
 
+/-- A concrete Definition 3-shaped selected-width tuple where equation `(3)`'s
+one-unit slack, and hence its upper selected-label bound, fails.
+
+For `ell=3`, `a=2`, `M=3`, and all selected widths equal to `2`, the
+selected-sum identity and strict selected-width inequalities hold.  The lower
+width guard `M-1<=W_1+W_2` holds, but the one-unit slack `W_1+2<=M` fails, and
+so the displayed label `Htilde'_1+1` is not bounded by `W_2`. -/
+theorem aoyagiLemma5Eq3_slack_not_forced_by_selectedWidthHypotheses_example :
+    let ell : ℕ := 3
+    let a : ℕ := 2
+    let M : ℤ := 3
+    let m : Fin (ell + 1) → ℤ := fun _ => 2
+    1 ≤ ell ∧ a ≤ ell ∧ 1 ≤ a ∧ a < ell ∧
+      (ell - a) + 2 ≤ ell + 1 ∧
+      (∀ i : Fin (ell + 1), 1 ≤ m i) ∧
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a ∧
+      (∀ i : Fin (ell + 1), (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      M - 1 ≤ aoyagiSelectedWidthNat ell m 0 +
+        aoyagiSelectedWidthNat ell m 1 ∧
+      ¬ aoyagiSelectedWidthNat ell m 0 + 2 ≤ M ∧
+      aoyagiHtildeUpperNat ell a M m 1 + 1 = 3 ∧
+      aoyagiSelectedWidthNat ell m 1 = 2 ∧
+      ¬ aoyagiHtildeUpperNat ell a M m 1 + 1 ≤
+          aoyagiSelectedWidthNat ell m 1 ∧
+      ¬ (1 ≤ aoyagiHtildeUpperNat ell a M m 1 + 1 ∧
+        aoyagiHtildeUpperNat ell a M m 1 + 1 ≤
+          aoyagiSelectedWidthNat ell m 1) := by
+  dsimp
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · intro i
+    fin_cases i <;> norm_num
+  constructor
+  · norm_num
+  constructor
+  · intro i
+    fin_cases i <;> norm_num
+  constructor
+  · norm_num [aoyagiSelectedWidthNat]
+  constructor
+  · norm_num [aoyagiSelectedWidthNat]
+  constructor
+  · norm_num [Finset.sum_range_succ, aoyagiHtildeUpperNat,
+      aoyagiHtildeUpperIncrementPrefix, aoyagiHtildeUpperHighCount,
+      aoyagiPrefixSum, aoyagiSelectedWidthNat]
+  constructor
+  · norm_num [aoyagiSelectedWidthNat]
+  constructor
+  · norm_num [Finset.sum_range_succ, aoyagiHtildeUpperNat,
+      aoyagiHtildeUpperIncrementPrefix, aoyagiHtildeUpperHighCount,
+      aoyagiPrefixSum, aoyagiSelectedWidthNat]
+  · norm_num [Finset.sum_range_succ, aoyagiHtildeUpperNat,
+      aoyagiHtildeUpperIncrementPrefix, aoyagiHtildeUpperHighCount,
+      aoyagiPrefixSum, aoyagiSelectedWidthNat]
+
 /-- Corrected local arithmetic data for Aoyagi Lemma 5 equation `(3)`.
 
 Under the selected-index guard `1<=a`, the interior guard `a<ell`, and the

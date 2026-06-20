@@ -863,6 +863,7 @@ Lean now proves:
 ```text
 aoyagiLemma5Eq3_localData_of_widthGuards
 aoyagiHtildeUpperNat_one_add_one_labelBounds_of_sourceSelectedInequality_and_slack
+aoyagiLemma5Eq3_slack_not_forced_by_selectedWidthHypotheses_example
 aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack
 aoyagiLemma5Eq3_actualWidthLabel_of_widthCompatibility
 aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack
@@ -877,11 +878,16 @@ hypothesis.
 
 The actual-width bridge converts this selected label into `actualWidthLabel`
 only under source-layer range, selected-width/actual-width compatibility, and
-Nat/Int label compatibility.  The xhigh source audit found a genuine
-Definition 3 counterexample to label legality without the slack, so this is
-not a missing Lean lemma.  This still does not construct the displayed
+Nat/Int label compatibility.  Lean now records a closed Definition 3
+counterexample to label legality without the slack, so this is not a missing
+Lean lemma.  This still does not construct the displayed
 equation `(3)` vector, prove introduced-label status, terminal `tilde t=0`,
 chart-family coverage, or Lemma 5 order count.
+
+Counterexample reproduction:
+`reproduction-lemma5-eq3-slack-counterexample-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-slack-counterexample.md`.
 
 ## 2026-06-20 Lean Lemma 5 equation `(3)` piecewise certificate
 

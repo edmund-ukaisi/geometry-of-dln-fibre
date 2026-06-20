@@ -626,9 +626,9 @@ on the session's original cwd.
    first actual-source-label bridge is also Lean-proved, but it keeps the
    selected-width/actual-width compatibility as an explicit hypothesis.
    Equation `(3)` now has the analogous local-data and actual-label bridge,
-   but only with the missing slack `W_1+2<=M` explicit.  The source audit
-   found a concrete Definition 3 counterexample to label legality without
-   that slack, and an endpoint obstruction when `a=1`.  Next target: either
+   but only with the missing slack `W_1+2<=M` explicit.  Lean now has a closed
+   Definition 3 counterexample to label legality without that slack, and an
+   endpoint obstruction when `a=1`.  Next target: either
    define a supplied equation `(3)` piecewise certificate below this boundary
    or move to another finite consequence; do not claim equation `(3)` label
    legality or terminality from Definition 3 alone.

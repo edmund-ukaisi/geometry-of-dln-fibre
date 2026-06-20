@@ -2048,11 +2048,15 @@ No such claim is formalisation-ready until both fields are filled.
   and Nat/Int label compatibility hypotheses.
   Also proved `aoyagiLemma5Eq3_localData_of_widthGuards`,
   `aoyagiHtildeUpperNat_one_add_one_labelBounds_of_sourceSelectedInequality_and_slack`,
+  `aoyagiLemma5Eq3_slack_not_forced_by_selectedWidthHypotheses_example`,
   `aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack`,
   `aoyagiLemma5Eq3_actualWidthLabel_of_widthCompatibility`, and
   `aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack`,
   which package equation `(3)`'s local selected-index/gap/label arithmetic and
   actual-label bridge while keeping the missing slack `W_1+2<=M` explicit.
+  The closed example `ell=3`, `a=2`, `M=3`, all selected widths `2`, satisfies
+  the selected-sum and strict selected-width inequalities while failing both
+  that slack and the upper selected-label bound.
   Also proved `AoyagiLemma5Eq3PiecewiseSourceVector`,
   `AoyagiLemma5Eq3SelectedSpanBranchValue`,
   `aoyagiLemma5Eq3_branchValue_of_block`,

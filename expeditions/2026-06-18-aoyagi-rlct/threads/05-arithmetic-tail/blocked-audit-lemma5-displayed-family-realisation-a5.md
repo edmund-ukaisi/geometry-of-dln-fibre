@@ -118,8 +118,10 @@ realisation blocker.
 
 ## 2026-06-20 equation (3) source audit update
 
-An xhigh source audit found that equation `(3)`'s label legality is false from
-Definition 3 alone.  Under `a<ell`,
+An xhigh source audit found, and Lean now records as
+`aoyagiLemma5Eq3_slack_not_forced_by_selectedWidthHypotheses_example`, that
+equation `(3)`'s label legality is false from Definition 3 alone.  Under
+`a<ell`,
 
 ```text
 Htilde'_1+1 = W_1+W_2-M+2,

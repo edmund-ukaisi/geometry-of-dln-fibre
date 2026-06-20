@@ -2369,19 +2369,28 @@ bridge has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The proved Lean names are
 `aoyagiLemma5Eq3_localData_of_widthGuards`,
 `aoyagiHtildeUpperNat_one_add_one_labelBounds_of_sourceSelectedInequality_and_slack`,
+`aoyagiLemma5Eq3_slack_not_forced_by_selectedWidthHypotheses_example`,
 `aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack`,
 `aoyagiLemma5Eq3_actualWidthLabel_of_widthCompatibility`, and
 `aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack`.
 They prove equation `(3)`'s selected cutoff, first Htilde gap, selected-label
 bounds, and actual-label bridge only under the explicit one-unit slack
-`W_1+2<=M`.  Source audit found a genuine Definition 3 counterexample without
-that slack, so label legality from Definition 3 alone remains blocked.
+`W_1+2<=M`.  Lean now records a closed Definition 3-shaped counterexample
+`ell=3`, `a=2`, `M=3`, all selected widths `2`, where the selected-sum and
+strict selected-width inequalities hold but the slack and selected-label upper
+bound fail.  Thus label legality from Definition 3 alone remains blocked.
 Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq3-local-data-and-label-a5.md`.
+Slack counterexample reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-slack-counterexample-a5.md`.
 Statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-local-data-and-label.md`.
+Slack counterexample statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-slack-counterexample.md`.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-local-data-and-piecewise-a5.md`.
+Slack counterexample review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-slack-counterexample-a5.md`.
 
 Latest A5 update: the Lemma 5 equation `(3)` supplied piecewise certificate
 has landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The
