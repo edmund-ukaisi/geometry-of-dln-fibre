@@ -12,8 +12,13 @@ two structural rungs have landed. Honest status:
 - **Keystone `paramsEquivFlat`** (`Params H ≃ᵐ (Fin N → ℝ)`, measure-preserving) — fm-2, committed to
   expedition/aoyagi-full @`d7b1ba3` (Route A++). rv-2 green-gating + auditing it in an isolated checkout
   (axiom/leak check). Unblocks the (1,1,1) bridge, S1.1's use-site, R1's measure facts.
-- **A1 `clean_eq_printed`** — fm, committed @`c234651` on branch `worktree-rung0-defs` (helpers
-  `balancedSplit_sq` + `sum_sq_eq`; `field_simp; ring`). To be merged into expedition.
+- **A1 `clean_eq_printed`** — fm, committed @`c234651` (genuine ℚ identity, rv-2 9324-case verified). KEEP.
+- **A1 `lambdaCore_eq_clean`** — fm, committed @`f8233f2` (worktree-rung0-defs, sorry 13→11) — but it's the
+  **WEAK existential (8th fidelity issue)**: closed by FREE CHOICE (ℓ=1, m=![1,(min Mval).toNat], needs only
+  min≥0) — proves NOTHING about M, NOT Aoyagi Lemma 3. fm flagged it (good). DECISION: strengthen to genuine
+  Lemma 3 (lambdaCore M = clean form at Def-3-selected widths, m BOUND to M; ~200-line balanced-split
+  exchange). OFF the headline critical path (headline uses aoyagiLambda directly) ⇒ SEQUENCED after L1; weak
+  proof KEPT with loud docstring flag as honest interim; pp designs the strengthened statement just-in-time.
 
 **The 7th bug (caught by fm's proof attempt, MISSED by the bedrock audit):** `deepestPoint_exists`
 (`Nonempty {w // IsDeepLayers H r B w}` under `hB : B.rank = r` ALONE) is FALSE — H=(3,1,3), r=2,
@@ -55,6 +60,17 @@ the shared-tree build race.
   L1-reuse, cheap]; (iv) cover/exhaustiveness inequality over strata [LOWER bound, the residual real work].
   Full normal-crossing atlas DEFERRED (only to strengthen the statement beyond value-level). R1's "mountain"
   status partly downgraded.
+- **Residual-block claim NAILED (pp §8, general-L; verified L=2,3,4 + decorrelated Codex):** after the
+  pivot split, the residual cutting S(t) is a REGULAR SEQUENCE of length EXACTLY Mval(t) — not
+  over-determined (the full interval rank-pattern r_{ab}, a≥2, adds NO independent generators; inner
+  constraints are CONSEQUENCES), not coarser. So {residual=0} is a clean smooth codim-Mval(t) coordinate
+  subspace ⇒ binding divisor (k,h)=(1,Mval−1), ratio ½·Mval(t), rigorous at general L. STRUCTURE: the
+  residual is NESTED Schur-blocks R₁..R_L (R_j = D_j−C_jA_j⁻¹B_j per layer), `S(t)∩chart = {R₁=…=R_L=0}`,
+  Σ|R_j|=Mval — jointly coordinates ⇒ one smooth center. CAUTION: a final-PRODUCT residual alone cuts the
+  COARSER {∏=0} (union over profiles), NOT S(t) — must use ALL R_j. CAVEAT (Codex): ratio ½·Mval holds at a
+  GENERIC point of the minimizing stratum (nongeneric suffix-vanishing points need more blow-ups but don't
+  affect the value-match). pp self-caught + dropped a wrong "inner intervals stay generic" sub-claim (what
+  holds is codim=Mval exactly, which is all the mechanism needs).
 - **Codex correction adopted:** prefix-stratum partition right for the VALUE but too coarse for a literal
   atlas (charts refine by full rank-pattern); R1↔Adm is VALUE-level, NOT a chart bijection.
 - **DECISION R3b** (self-contained, one-citation). R3a (cite LR `rlct=codim/2`, arXiv:2411.19920) OUT:

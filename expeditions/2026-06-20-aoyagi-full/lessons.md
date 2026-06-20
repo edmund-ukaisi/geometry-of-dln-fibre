@@ -114,3 +114,19 @@ type-level chain + the individual MP lemmas applying, but the composed MP body w
   WHICH. A measure-/proof-body that is `sorry`'d type-checks but is not done. Discount remembered "compiles"
   to the artifact actually built.
 - The unprompted self-correction is the disposition working — reward it; it keeps the design honest.
+
+## 2026-06-20 — weak existential statements: provable by free choice ≠ the intended result
+
+A1 `lambdaCore_eq_clean` was `∃ ℓ m, lambdaCore M = cleanCore ℓ m`. fm closed it by FREE CHOICE (ℓ=1,
+m=![1,(min Mval).toNat], needing only min≥0). It type-checks green but proves almost nothing: the existential
+does not bind (ℓ,m) to M, so it does NOT capture Aoyagi Lemma 3 (`lambdaCore` = the clean closed form at the
+Def-3 widths). "Fully full" demands the genuine result, so the STATEMENT must be strengthened to bind the
+witnesses to the data (m to M's Def-3 selection), turning it into the real minimisation proof.
+- **Audit test (extends the satisfiability check):** for any `∃ x, P(M, x)` rung, ask "can x be chosen
+  FREELY of M?" If yes, the statement is weak/vacuous — it must bind x to M to carry content. A green proof
+  of a free-choice existential is the visible-progress trap (a checkmark proving nothing).
+- Dual of the deepestPoint bug: there the existential was FALSE (unsatisfiable); here TRUE-but-vacuous
+  (over-satisfiable). Both are statement-fidelity holes a green build hides.
+- Pattern across this contract: L1 (vacuous rank), L2 (over-claim), deepestPoint (false), lambdaCore (weak
+  existential), A2 (weak existential, known seam). **Statement design is where the bedrock work is** — the
+  proofs, once the statement is right, are labour.
