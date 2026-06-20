@@ -1,7 +1,7 @@
 # Statement card — A4 (route-c submersion bound), module A4.1–A4.4
 
 **Thread:** 37-A4-orbit-image-dim (voigt-discharge, AG half, L2b★ route c).
-**Pinned commit:** `43730b7` (branch `expedition/voigt-discharge`).
+**Pinned commit:** `80444a5` (branch `expedition/voigt-discharge`).
 **Build:** whole `DLNFibre` library green; `scripts/sorries` = 0; all landed theorems
 `#print axioms` = `[propext, Classical.choice, Quot.sound]`.
 

@@ -110,6 +110,9 @@ theorem varietyDim_orbitRankLocus_le_finrank_range_deformationδ
 the char-0 "algebraically-independent ⟹ differentials linearly independent" fact — separated from
 all the orbit-specific bookkeeping. -/
 
+-- `genericDifferentialRank` over the localization `groupRing d` is costly to unfold during
+-- unification; the default heartbeat budget is exceeded by the `range_orbitPullback_eq_adjoin`
+-- rewrite, so bump it for this single bridging lemma.
 set_option maxHeartbeats 800000 in
 /-- **A4.2 image-form from the criterion.** `(Algebra.trdeg k (orbitPullback M).range).toNat ≤
 genericDifferentialRank …` from `DiffIndepCriterion k (groupRing d)`: the trdeg wrapper applied to
