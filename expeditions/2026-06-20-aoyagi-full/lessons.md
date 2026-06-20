@@ -136,3 +136,9 @@ witnesses to the data (m to M's Def-3 selection), turning it into the real minim
 - Pattern across this contract: L1 (vacuous rank), L2 (over-claim), deepestPoint (false), lambdaCore (weak
   existential), A2 (weak existential, known seam). **Statement design is where the bedrock work is** — the
   proofs, once the statement is right, are labour.
+- **The discriminator (rv-2, reusable):** `∃ x, LHS(data) = f(x)` is WEAK iff `f`'s range free-covers the
+  LHS via a witness `x` choosable FREE of the data — i.e. the LHS is a CONCRETE value the witness reads off
+  (A1: `lambdaCore M` is a computable ℚ, so pick `n = 2·lambdaCore M`). GENUINE iff the LHS is PINNED/OPAQUE
+  so the witness must ENCODE the data (R1: `rlctAt(dlnLoss)` is an opaque `sSup` with no statement-level
+  value — same `∃ d k h` shape as A1 but you CAN'T pick the exponents without the resolution lemma, so it's
+  genuine). Opaque-vs-concrete LHS is the whole difference. Sweep run on the full contract: only A1 + A2 weak.

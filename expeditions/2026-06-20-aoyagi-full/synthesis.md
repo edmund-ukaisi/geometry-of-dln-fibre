@@ -21,7 +21,15 @@ two structural rungs have landed. Honest status:
   min≥0) — proves NOTHING about M, NOT Aoyagi Lemma 3. fm flagged it (good). DECISION: strengthen to genuine
   Lemma 3 (lambdaCore M = clean form at Def-3-selected widths, m BOUND to M; ~200-line balanced-split
   exchange). OFF the headline critical path (headline uses aoyagiLambda directly) ⇒ SEQUENCED after L1; weak
-  proof KEPT with loud docstring flag as honest interim; pp designs the strengthened statement just-in-time.
+  proof KEPT with loud docstring flag as honest interim; pp designing the strengthened statement now (#19).
+- **L1 `block_elimination`** — fm @`fb65243` (worktree-rung0-defs), GENUINE explicit block-normal form (not
+  the vacuous rank claim), ~220 lines via adapted-basis (`Basis.sumQuot` + `basis_toMatrix_…`). sorry 10→9.
+
+**Weak-existential sweep (rv-2, complete):** exactly 2 weak rungs — A1 `lambdaCore_eq_clean` + A2
+`aoyagiTheta_eq` (both on the fix list). L1, deepestPoint_exists, R1 GENUINE. Discriminator banked (lessons):
+`∃ x, LHS(data)=f(x)` is WEAK iff f free-covers a CONCRETE LHS (x choosable free of data), GENUINE iff the
+LHS is OPAQUE/pinned (witness must encode data). R1 genuine despite A1-shape (rlctAt = opaque sSup). No
+surprises lurking — fidelity class fully catalogued.
 
 **The 7th bug (caught by fm's proof attempt, MISSED by the bedrock audit):** `deepestPoint_exists`
 (`Nonempty {w // IsDeepLayers H r B w}` under `hB : B.rank = r` ALONE) is FALSE — H=(3,1,3), r=2,
@@ -36,9 +44,10 @@ the well-definedness domain of `aoyagiLambda` (M⁽ˢ⁾=H⁽ˢ⁾−r needs r�
 
 - **fm-2 (measure track)** — keystone done @d7b1ba3; now on UNIT 2 (the (1,1,1) bridge, Case111*.lean).
   Commits directly to expedition/aoyagi-full (module-green each; pings per commit; rv-2 green-gates behind).
-- **fm (algebra track)** — branch `worktree-rung0-defs` (Skeleton-only), based @1bb9e31 (I merge forward).
-  A1 clean_eq_printed DONE; IMMEDIATE = the hr statement-fix; THEN lambdaCore_eq_clean (A1 hard) + L1 +
-  deepestPoint_exists proof. Codex consults running on lambdaCore-min + L1-construction.
+- **fm (algebra track)** — branch `worktree-rung0-defs` (Skeleton-only), based @1bb9e31 (I merge forward;
+  no rebase needed — Skeleton independent of keystone). A1-clean + A1-lambdaCore(weak) + L1 DONE. QUEUE:
+  #18 hr statement-fix (NOW) → I merge (A1+L1+hr) → deepestPoint_exists PROOF (reuses L1) → I merge → #19
+  lambdaCore-strengthen (waits for pp's genuine statement).
 - **pp (design)** — R1 design DELIVERED + 2 increments (binding-divisor correction; value-match downgrade).
   Standing down on-demand; re-engage for R1 value-match execution when fm's L1 lands.
 - **rv-2 (review)** — green-gating keystone d7b1ba3; queued: re-audit the hr-corrected contract. Decorrelated.
