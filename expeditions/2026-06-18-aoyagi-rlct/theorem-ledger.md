@@ -980,6 +980,24 @@ crossings/RLCT, Case 1(2), `Q/P`, or a transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-unit-concrete-level-move-a4.md`.
 
+Latest A4 update: the Case 2 printed mismatch boundary has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`terminalExponent_printedCase2Vector_sub_prefixFormula`,
+`terminalExponent_printedCase2Vector_eq_prefixFormula_iff`, and
+`terminalExponent_case2Printed_ne_corrected_of_prefixDrop_of_cont`.
+This checkpoint isolates the exact arithmetic boundary between the PDF's
+printed actual-width Case 2 vector and the prefix-minimum numerator increment:
+the difference is `(M^(S)-M(S))*(M^(S+1)-J)`, equality occurs only in the
+equal-row-width or zero-column-factor cases, and under the continuation bound
+`J+1<=M(S+1)` a genuine prefix-width drop `M(S)<M^(S)` gives unequal printed
+and corrected terminal exponents. It does not prove a Case 2 transition
+theorem, erratum, reachable-state
+equal-width invariant, chart coverage, Jacobians, normal crossings/RLCT, or
+termination. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-printed-mismatch-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-printed-mismatch-boundary-a4.md`.
+
 Latest A4 update: the displayed Case 1(2) paper `Q/P` adapter has landed in
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
 `case1DisplayedPaperDchart`, `case1DisplayedPaperDchart_pivot`,

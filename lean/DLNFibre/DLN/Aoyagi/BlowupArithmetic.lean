@@ -444,6 +444,67 @@ theorem terminalExponent_correctedCase2PivotVector
     (J : ℤ) hS hSL, ← prefixMinNat_cast]
   rfl
 
+/-- The printed Case 2 vector differs from the prefix-minimum formula by the
+row-width discrepancy times the remaining column factor. -/
+theorem terminalExponent_printedCase2Vector_sub_prefixFormula
+    (L S : ℕ) (n : ℕ → ℤ) (J : ℤ) (hS : 1 ≤ S) (hSL : S ≤ L) :
+    terminalExponent L n (printedCase2Vector n S J) -
+      (prefixMin n S - J) * (n (S + 1) - J) =
+      (n S - prefixMin n S) * (n (S + 1) - J) := by
+  rw [terminalExponent_printedCase2Vector L S n J hS hSL]
+  ring
+
+/-- The printed Case 2 vector has the prefix-minimum exponent exactly in the
+equal-row-width or zero-column-factor cases. -/
+theorem terminalExponent_printedCase2Vector_eq_prefixFormula_iff
+    (L S : ℕ) (n : ℕ → ℕ) (J : ℕ) (hS : 1 ≤ S) (hSL : S ≤ L) :
+    terminalExponent L (widthZ n) (printedCase2Vector (widthZ n) S (J : ℤ)) =
+        ((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ)) ↔
+      n S = prefixMinNat n S ∨ n (S + 1) = J := by
+  rw [terminalExponent_printedCase2Vector L S (widthZ n) (J : ℤ) hS hSL]
+  simp only [widthZ]
+  constructor
+  · intro h
+    by_cases hfactor : ((n (S + 1) : ℤ) - (J : ℤ)) = 0
+    · right
+      omega
+    · left
+      have hleft :
+          ((n S : ℤ) - (J : ℤ)) =
+            ((prefixMinNat n S : ℤ) - (J : ℤ)) :=
+        mul_right_cancel₀ hfactor h
+      omega
+  · intro h
+    rcases h with hwidth | hcol
+    · rw [hwidth]
+    · rw [hcol]
+      ring
+
+/-- Under a genuine prefix-width drop and the Case 2 continuation bound, the
+printed vector cannot have the corrected terminal exponent. -/
+theorem terminalExponent_case2Printed_ne_corrected_of_prefixDrop_of_cont
+    (L S : ℕ) (n : ℕ → ℕ) (J : ℕ)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hwidth : prefixMinNat n S < n S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    terminalExponent L (widthZ n) (printedCase2Vector (widthZ n) S (J : ℤ)) ≠
+      terminalExponent L (widthZ n) (correctedCase2PivotVector n S J) := by
+  rw [terminalExponent_printedCase2Vector L S (widthZ n) (J : ℤ) hS hSL,
+    terminalExponent_correctedCase2PivotVector L S n J hS hSL]
+  simp only [widthZ]
+  intro h
+  have hfactor : ((n (S + 1) : ℤ) - (J : ℤ)) ≠ 0 := by
+    have hcol : J < n (S + 1) := by
+      exact lt_of_lt_of_le (Nat.lt_succ_self J)
+        (le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1)))
+    omega
+  have hleft :
+      ((n S : ℤ) - (J : ℤ)) =
+        ((prefixMinNat n S : ℤ) - (J : ℤ)) :=
+    mul_right_cancel₀ hfactor h
+  omega
+
 /-- Finite certificate assigned only to the corrected Case 2 new pivot label. -/
 structure CorrectedCase2NewLabelCertificate (L : ℕ) (n : ℕ → ℕ) (S J : ℕ) : Prop where
   introduced : introducedLabel L n S (J + 1) S (J + 1)

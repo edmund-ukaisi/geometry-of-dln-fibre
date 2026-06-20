@@ -1129,6 +1129,20 @@ still supplied, and no raw coordinate chart, coverage theorem, Jacobian,
 normal-crossing certificate, RLCT extraction, or transition invariant is
 proved.
 
+The Case 2 printed mismatch boundary is now Lean-proved as arithmetic
+source-gap isolation. `terminalExponent_printedCase2Vector_sub_prefixFormula`
+states that the printed vector's terminal exponent differs from the
+prefix-minimum Case 2 increment by
+`(M^(S)-M(S))*(M^(S+1)-J)`. The equality theorem
+`terminalExponent_printedCase2Vector_eq_prefixFormula_iff` keeps the degenerate
+zero-column-factor case explicit: equality holds iff `M^(S)=M(S)` or
+`M^(S+1)=J`. The continuation corollary
+`terminalExponent_case2Printed_ne_corrected_of_prefixDrop_of_cont`
+then proves genuine mismatch under `J+1<=M(S+1)`, with `M(S+1)` the prefix
+minimum, and `M(S)<M^(S)`. This does not prove a Case 2 transition, erratum,
+reachable-state equal-width invariant, chart coverage, Jacobian, normal
+crossings, RLCT, or termination.
+
 The displayed Case 1(2) paper `Q/P` adapter is now Lean-packaged as a
 paper-facing notation layer over the already supplied source-coordinate
 identity. It names the normalized source-coordinate block, the source

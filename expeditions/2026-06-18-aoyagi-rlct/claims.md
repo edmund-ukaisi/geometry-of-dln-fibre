@@ -537,7 +537,14 @@ No such claim is formalisation-ready until both fields are filled.
   `terminalExponent_printedCase2Vector`, and
   `terminalExponent_prefixCase2Vector`. These prove that the printed Case 2
   vector evaluates to the actual-width expression, while the prefix-minimum
-  repaired vector evaluates to the printed update. Also proved the monomial
+  repaired vector evaluates to the printed update. Added the exact printed
+  mismatch boundary:
+  `terminalExponent_printedCase2Vector_sub_prefixFormula`,
+  `terminalExponent_printedCase2Vector_eq_prefixFormula_iff`, and
+  `terminalExponent_case2Printed_ne_corrected_of_prefixDrop_of_cont`,
+  which characterize equality by equal row width or the degenerate
+  zero-column-factor case and prove genuine mismatch under continuation plus a
+  prefix-width drop. Also proved the monomial
   recurrence divisibility API `monomialRec`, `monomialTail`,
   `monomialRec_add_eq_tail_mul`, `monomialRec_dvd_of_le`,
   `monomialRec_pivot_dvd`, `mul_left_dvd_mul_left_of_dvd`, and

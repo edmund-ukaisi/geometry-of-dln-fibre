@@ -68,6 +68,34 @@ both the printed Case 2 vector and the prefix-minimum repaired vector:
 This is deliberately not a blow-up transition theorem. It isolates the source
 gap and gives a clean arithmetic target for any corrected certificate.
 
+## 2026-06-20 Lean Case 2 printed mismatch boundary
+
+Reproduction:
+`reproduction-case2-printed-mismatch-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-printed-mismatch-boundary.md`.
+
+Lean now records the exact boundary where the PDF's printed Case 2 vector can
+match the prefix-minimum exponent formula. The new theorem
+`terminalExponent_printedCase2Vector_sub_prefixFormula` proves the difference
+
+```text
+E(T_print) - (M(S)-J)(M^(S+1)-J)
+  = (M^(S)-M(S))(M^(S+1)-J).
+```
+
+The theorem `terminalExponent_printedCase2Vector_eq_prefixFormula_iff`
+characterizes equality by the two cases `M^(S)=M(S)` or `M^(S+1)=J`.
+The continuation-bound corollary
+`terminalExponent_case2Printed_ne_corrected_of_prefixDrop_of_cont`
+then says that under `J+1 <= M(S+1)`, where `M(S+1)` is the prefix minimum,
+and a genuine prefix-width drop `M(S)<M^(S)`, the printed vector and
+corrected prefix-minimum vector have different terminal exponents.
+
+This is still not a Case 2 transition theorem. It does not prove an erratum,
+reachable-state equal-width invariant, chart construction, pivot coverage,
+regularity, Jacobians, normal crossings, RLCT extraction, or termination.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.
