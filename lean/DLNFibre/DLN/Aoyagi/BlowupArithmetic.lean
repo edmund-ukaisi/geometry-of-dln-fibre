@@ -7258,6 +7258,311 @@ theorem exists_case2SourceSelectedQP_of_recurrenceStateGap_succWeights_of_postDa
 
 end CorrectedCase2NewLabelCertificate
 
+/-- Supplied boundary for a Case 2 source-selected residual-block pivot.
+
+The pivot `p` is supplied as an entry of the finite residual-block center.
+This package glues together the already separated finite obligations:
+
+* the source continuation bounds that give the corrected new-label certificate;
+* the pre-state exponent certificates, level/least-value bridge, and Case 2 gap;
+* the supplied recurrence and corrected exponent post-data for the `J`-advance;
+* the supplied finite chart-family regularity boundary for the chosen center.
+
+It deliberately does not construct an affine blow-up atlas, prove coverage,
+claim that Aoyagi displays non-top-left Case 2 charts, produce post-data from
+coordinates, compute Jacobians, prove normal crossings, or perform RLCT
+extraction. -/
+structure Case2SourceSelectedSuppliedChartFamilyBoundary
+    (R : Type*) [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ) (p : ℕ × ℕ)
+    (t t' : ℕ → ℕ → ℕ → ℤ)
+    (numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ)
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (post : IntroducedLabelRecurrenceState L n S (J + 1) R)
+    (u : R)
+    (ChartRegular : ℕ × ℕ → Prop)
+    (TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop) : Prop where
+  stage_pos : 1 ≤ S
+  stage_le : S ≤ L
+  continuation : J + 1 ≤ prefixMinNat n (S + 1)
+  pivot_mem : p ∈ case2ResidualBlockPivotEntries n S J
+  exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue
+  levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue
+  leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue
+  recurrencePost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u
+  exponentPost :
+    Case2CorrectedExponentPostData
+      (L := L) (n := n) (S := S) (J := J)
+      t t' numerator numerator' leastValue leastValue'
+  chartFamily :
+    Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular
+
+namespace Case2SourceSelectedSuppliedChartFamilyBoundary
+
+/-- The source continuation bounds produce the corrected Case 2 new-label
+certificate used by the finite exponent and recurrence APIs. -/
+theorem correctedNewLabel
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    CorrectedCase2NewLabelCertificate L n S J :=
+  correctedCase2NewLabelCertificate_of_prefixBound
+    L n data.stage_pos data.stage_le data.continuation
+
+/-- The supplied level/least-value bridge turns the integer Case 2 gap into the
+recurrence-state gap needed by the source-selected matrix identity. -/
+theorem preCase2Gap
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    pre.case2Gap :=
+  IntroducedLabelRecurrenceState.case2Gap_of_leastValueGap
+    pre data.levelInv data.leastValueGap
+
+/-- Corrected exponent post-data extends the finite exponent certificate domain
+from `(S,J)` to `(S,J+1)`. -/
+theorem extendExponentDomain
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
+  data.exponentPre.extendDomain_correctedCase2NewLabel_of_postData
+    data.correctedNewLabel data.exponentPost
+
+/-- Supplied recurrence post-data and corrected exponent post-data preserve the
+level/least-value bridge after the `J`-advance. -/
+theorem postLevelInvariants
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    IntroducedLabelLevelInvariants L n S (J + 1) post.level leastValue' :=
+  data.recurrencePost.levelInvariants_of_correctedExponentPostData
+    data.levelInv data.exponentPost
+
+/-- The corrected least-value successor data preserve the integer Case 2 gap. -/
+theorem successorLeastValueGap
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    case2IntroducedLabelLeastValueGap L n S (J + 1) leastValue' :=
+  IntroducedLabelRecurrenceState.case2IntroducedLabelLeastValueGap_succ data.leastValueGap
+    data.exponentPost.leastValue_old data.exponentPost.leastValue_new
+
+/-- The successor supplied recurrence state has the Case 2 recurrence gap. -/
+theorem postCase2Gap
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    post.case2Gap :=
+  data.recurrencePost.case2Gap_of_leastValueGap_of_correctedExponentPostData
+    data.levelInv data.exponentPost data.leastValueGap
+
+/-- The supplied chart-family boundary gives regularity of the selected pivot
+chart. -/
+theorem chart_regular_selectedPivot
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    ChartRegular p :=
+  data.chartFamily.chart_regular_of_mem data.pivot_mem
+
+/-- The supplied chart-family boundary gives regularity for any residual-block
+pivot entry. -/
+theorem chart_regular_of_mem
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p q : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hq : q ∈ case2ResidualBlockPivotEntries n S J) :
+    ChartRegular q :=
+  data.chartFamily.chart_regular_of_mem hq
+
+/-- The supplied chart-family boundary gives transition regularity from the
+selected pivot to any other supplied residual-block pivot. -/
+theorem transition_regular_selectedPivot_of_mem
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p q : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hq : q ∈ case2ResidualBlockPivotEntries n S J) :
+    TransitionRegular p q :=
+  data.chartFamily.transition_regular_of_mem data.pivot_mem hq
+
+/-- In the selected-entry chart for the supplied pivot, the finite residual
+center ideal pulls back to the principal ideal generated by the selected
+variable. -/
+theorem selectedPivot_centerIdeal_eq_span_singleton
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) :
+    Ideal.span
+        {v : R | ∃ q, q ∈ case2ResidualBlockPivotEntries n S J ∧
+          selectedEntryChartMap p u residual q = v} =
+      Ideal.span ({u} : Set R) :=
+  case2_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem
+    data.pivot_mem u residual
+
+/-- The source-selected arbitrary-pivot `Q/P` identity available from the
+supplied boundary.
+
+This is the existing finite source-selected matrix identity, with the corrected
+new-label certificate and pre-state recurrence gap derived from the supplied
+source continuation and least-value gap data.  It remains conditional on the
+supplied pivot and supplied post-data; it is not chart coverage or a
+source-order theorem for non-displayed pivots. -/
+theorem sourceSelectedQP
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    ∃ q : pivotComplement (case2ResidualBlockPivotRowOfMem data.pivot_mem) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2ResidualBlockPivotRowOfMem data.pivot_mem)
+              (case2ResidualBlockPivotColOfMem data.pivot_mem)
+              (case2SourceSelectedNormalizedMatrixOfMem data.pivot_mem residual) i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionMatrixOfMem data.pivot_mem u residual).submatrix
+            (pivotFirstIndexEquiv (case2ResidualBlockPivotRowOfMem data.pivot_mem))
+            (pivotFirstIndexEquiv (case2ResidualBlockPivotColOfMem data.pivot_mem))) *
+          case2SourceSelectedFollowingFactorOfMem data.pivot_mem C =
+        (weightedPivotDiagonal
+            (post.weight
+              (case2ResidualRowLevel n S J
+                (case2ResidualBlockPivotRowOfMem data.pivot_mem)))
+            (fun i : pivotComplement (case2ResidualBlockPivotRowOfMem data.pivot_mem) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2ResidualBlockPivotRowOfMem data.pivot_mem)
+                (case2ResidualBlockPivotColOfMem data.pivot_mem)
+                (case2SourceSelectedNormalizedMatrixOfMem data.pivot_mem residual) -
+              pivotFirstX
+                  (case2ResidualBlockPivotRowOfMem data.pivot_mem)
+                  (case2ResidualBlockPivotColOfMem data.pivot_mem)
+                  (case2SourceSelectedNormalizedMatrixOfMem data.pivot_mem residual) *
+                pivotFirstY
+                  (case2ResidualBlockPivotRowOfMem data.pivot_mem)
+                  (case2ResidualBlockPivotColOfMem data.pivot_mem)
+                  (case2SourceSelectedNormalizedMatrixOfMem data.pivot_mem residual))) *
+          case2SourceSelectedTransportedFollowingFactorOfMem data.pivot_mem residual C := by
+  exact
+    data.correctedNewLabel
+      |>.exists_case2SourceSelectedQP_of_recurrenceStateGap_succWeights_of_postData
+        data.pivot_mem data.recurrencePost data.preCase2Gap residual C
+
+end Case2SourceSelectedSuppliedChartFamilyBoundary
+
 /-- Source-displayed Case 2 top-left selected-entry substitution instantiates the
 pivot-first product `Q/P` identity under flat residual-row weights.  The selected
 variable has already been factored into the row weights as `u * weight`; this is

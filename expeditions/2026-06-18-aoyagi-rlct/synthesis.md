@@ -1156,6 +1156,18 @@ chart coverage, regularity from coordinates, Jacobian, normal crossings,
 RLCT, or a transition invariant. Xhigh Lean/API review passed; source review
 confirmed the no-double-counting `u` convention after the local proof repair.
 
+The Case 2 supplied source-selected pivot boundary is now Lean-proved.
+`Case2SourceSelectedSuppliedChartFamilyBoundary` packages a supplied source
+pivot membership proof, source-coordinate residual/following-factor
+restriction, supplied chart-family regularity predicates, corrected exponent
+post-data, recurrence post-data, finite selected-entry principalization, and
+the source-selected arbitrary-pivot `Q/P` identity. It derives the corrected
+new-label certificate and old/successor Case 2 gap bookkeeping from
+prefix-bound and least-value hypotheses. It remains a supplied boundary, not
+chart production or coverage; non-top-left source-order transition formulas,
+chart-produced post-data, Jacobians, normal crossings, RLCT extraction,
+termination, and the printed-vector mismatch remain open.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

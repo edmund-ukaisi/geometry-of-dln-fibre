@@ -96,6 +96,29 @@ This is still not a Case 2 transition theorem. It does not prove an erratum,
 reachable-state equal-width invariant, chart construction, pivot coverage,
 regularity, Jacobians, normal crossings, RLCT extraction, or termination.
 
+## 2026-06-20 Lean Case 2 supplied source-selected pivot boundary
+
+Reproduction:
+`reproduction-case2-supplied-source-selected-pivot-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-supplied-source-selected-pivot-boundary.md`.
+Review artifact:
+`review-case2-supplied-source-selected-pivot-boundary-a4.md`.
+
+Lean now packages a supplied boundary for a source-selected Case 2
+residual-block pivot. A supplied source pair
+`p in case2ResidualBlockPivotEntries n S J` is combined with the
+source-coordinate selected-pair wrapper, the supplied Case 2 chart-family
+boundary, corrected exponent post-data, recurrence post-data, finite
+selected-entry principalization, and source-selected arbitrary-pivot `Q/P`
+transport.
+
+This is a supplied source-selected pivot boundary. It does not prove chart
+coverage, source-displayed non-top-left charts, chart production, regularity or
+transition regularity from coordinates, chart-produced post-data, a Case 2
+transition invariant, normal crossings, RLCT extraction, termination, or repair
+of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

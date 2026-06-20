@@ -527,6 +527,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 1 selected-old supplied chart-family boundary is
 	  saved at
 	  `threads/04-blow-up-certificate/review-case1-selected-old-supplied-chart-family-boundary-a4.md`.
+	  Review of the Case 2 supplied source-selected pivot boundary is saved at
+	  `threads/04-blow-up-certificate/review-case2-supplied-source-selected-pivot-boundary-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -806,6 +808,24 @@ No such claim is formalisation-ready until both fields are filled.
   instantiating the arbitrary selected-pivot recurrence/post-data theorems
   from a supplied source pivot pair in `case2ResidualBlockPivotEntries` and
   source-coordinate residual/following data.
+  Added the supplied source-selected pivot boundary:
+  `Case2SourceSelectedSuppliedChartFamilyBoundary`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.correctedNewLabel`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.preCase2Gap`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.extendExponentDomain`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.postLevelInvariants`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.successorLeastValueGap`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.postCase2Gap`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.chart_regular_selectedPivot`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.chart_regular_of_mem`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.transition_regular_selectedPivot_of_mem`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.selectedPivot_centerIdeal_eq_span_singleton`,
+  and
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.sourceSelectedQP`,
+  packaging supplied pivot membership, corrected exponent post-data, recurrence
+  post-data, chart-family predicates, finite selected-entry principalization,
+  and source-selected arbitrary-pivot transport without claiming chart
+  production or coverage.
   Added selected-entry principalization/unit facts:
   `weightedPivotBlockRowOp_isUnit`,
   `weightedPivotBlockRowOp_det_isUnit`, `pivotQ_isUnit`,
@@ -1013,6 +1033,13 @@ No such claim is formalisation-ready until both fields are filled.
   orientation, but still assumes the normalized chart block,
   recurrence/exponent post-data, quotient witnesses, regularity, and
   transition data rather than constructing them.
+  The Case 2 supplied source-selected pivot boundary assumes the pivot pair,
+  recurrence post-data, corrected exponent post-data, chart regularity, and
+  transition regularity. It derives bookkeeping projections from these fields,
+  but does not prove atlas coverage, source-displayed non-top-left charts,
+  chart-produced post-data, regularity from coordinates, Jacobians, normal
+  crossings, RLCT extraction, termination, a full transition invariant, or a
+  repair of the printed Case 2 vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
