@@ -10706,7 +10706,7 @@ theorem matrixEntryIdeal_case2DisplayedPaperWeightedTerminalProduct_eq_topStack_
 
 /-- Source-displayed Case 2 top-left `Q/P` identity with the following factor reindexed
 into pivot-first column coordinates. This is still local finite algebra, not chart coverage. -/
-theorem exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
+theorem exists_case2DisplayedQP_mul_arbitraryPivotFirstFollowingFactor_of_flat_weights
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (u : R) (weight : Case2ResidualRowIndex n S J → R)
@@ -10802,11 +10802,66 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_flat_weights
               (case2DisplayedPivotCol n hS hcont)
               (case2DisplayedNormalizedMatrix n hS hcont residual)) *
             case2DisplayedFollowingFactor n hS hcont C) := by
-  rcases exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
+  rcases exists_case2DisplayedQP_mul_arbitraryPivotFirstFollowingFactor_of_flat_weights
       n hS hcont u weight residual C hflat with ⟨q, hq⟩
   refine ⟨q, ?_⟩
   rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
   simpa [Matrix.mul_assoc] using hq
+
+/-- Displayed Case 2 source-substitution `Q/P` identity with an arbitrary
+pivot-first following factor.
+
+This is the same finite row/column operation as the source-following-factor
+version, but the following matrix is already in pivot-first coordinates.  It
+does not construct a source-coordinate following function or a chart
+transition. -/
+theorem exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (weight : Case2ResidualRowIndex n S J → R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (hflat : ∀ i, weight i = weight (case2DisplayedPivotRow n hS hcont)) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal weight *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          C =
+        (weightedPivotDiagonal
+            (u * weight (case2DisplayedPivotRow n hS hcont))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * weight i.1) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+            C) := by
+  rcases exists_case2DisplayedQP_mul_of_flat_weights
+      n hS hcont u weight residual C hflat with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
+  simpa [case2DisplayedNormalizedMatrix, Matrix.mul_assoc] using hq
 
 /-- Displayed Case 2 source-substitution `Q/P` identity when the recurrence
 factors are trivial over the displayed residual row range.  This proves the
@@ -11138,6 +11193,83 @@ theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_suc
     hS hcont pre post hgap u
     hpost.level_old hpost.var_old hpost.level_new hpost.var_new residual C
 
+/-- Displayed Case 2 source-substitution `Q/P` identity with an arbitrary
+pivot-first following factor, from supplied recurrence post-data.
+
+The following factor is not assumed to be source-produced.  This theorem only
+uses the supplied recurrence post-data to rewrite the row weights on the
+right-hand side. -/
+theorem exists_case2DisplayedQP_mul_freeFollowingFactor_of_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : CorrectedCase2NewLabelCertificate L n S J)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u)
+    (hgap : pre.case2Gap)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          (pivotQinv
+            (pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual)) *
+            C) := by
+  let weight : Case2ResidualRowIndex n S J → R := fun i ↦ pre.case2ResidualRowWeight i
+  have hflat : ∀ i, weight i = weight (case2DisplayedPivotRow n hS hcont) := by
+    intro i
+    exact pre.case2ResidualRowWeight_eq_displayedPivot_of_case2Gap hS hcont hgap i
+  rcases exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
+      n hS hcont u weight residual C hflat with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hupdate :=
+    hnew.case2_weight_succ_current_eq_newVar_mul_of_postData hpost
+  have hpivot :
+      u * pre.weight (J + 1) = post.weight (J + 1) :=
+    (hupdate (J + 1) le_rfl).symm
+  have hrows :
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        u * pre.weight (case2ResidualRowLevel n S J i.1)) =
+      (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+        post.weight (case2ResidualRowLevel n S J i.1)) := by
+    funext i
+    exact (by
+      simpa using
+        (hupdate (case2ResidualRowLevel n S J i.1)
+          (case2ResidualRowLevel_ge n S J i.1)).symm)
+  simpa [weight, IntroducedLabelRecurrenceState.case2ResidualRowWeight,
+    case2ResidualRowLevel_displayedPivotRow, hpivot, hrows] using hq
+
 end CorrectedCase2NewLabelCertificate
 
 namespace Case2DisplayedSuppliedChartFamilyBoundary
@@ -11321,6 +11453,75 @@ theorem sourceDisplayedQP_sourceChartMap_paperQP
   simpa [case2DisplayedPaperDchart, case2DisplayedPaperDppp,
     case2DisplayedPaperCprime, case2DisplayedPaperQinv]
     using data.sourceDisplayedQP_sourceChartMap residual C
+
+/-- Paper-named displayed Case 2 `Q/P` identity with a free chart-coordinate
+following factor `Cprime`.
+
+The old pivot-first following factor is constructed as `Q*Cprime`, so the
+displayed inverse operation recovers `Cprime` on the right.  This is finite
+pivot-first matrix algebra below the supplied-boundary interface; it does not
+construct a total source-coordinate following function or chart-produced
+post-data. -/
+theorem sourceDisplayedQP_constructedCprime_paperQP
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R)
+    (Cprime : Matrix
+      (Unit ⊕ pivotComplement
+        (case2DisplayedPivotCol n data.stage_pos data.continuation)) τ R) :
+    let row := case2DisplayedPivotRow n data.stage_pos data.continuation
+    let col := case2DisplayedPivotCol n data.stage_pos data.continuation
+    let A := case2DisplayedPaperDchart n data.stage_pos data.continuation residual
+    ∃ q : pivotComplement row → R,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSourceSubstitutionBlock n data.stage_pos data.continuation u
+              residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          case2DisplayedPaperConstructedFollowingFactor n data.stage_pos
+            data.continuation residual Cprime =
+        (weightedPivotDiagonal (post.weight (J + 1))
+            (fun i : pivotComplement row ↦ post.weight (case2ResidualRowLevel n S J i.1)) *
+          case2DisplayedPaperDppp n data.stage_pos data.continuation residual) *
+          Cprime := by
+  let row := case2DisplayedPivotRow n data.stage_pos data.continuation
+  let col := case2DisplayedPivotCol n data.stage_pos data.continuation
+  let A := case2DisplayedPaperDchart n data.stage_pos data.continuation residual
+  let Csrc :=
+    case2DisplayedPaperConstructedFollowingFactor n data.stage_pos data.continuation
+      residual Cprime
+  let hnew := data.correctedNewLabel
+  rcases
+      exists_case2DisplayedQP_mul_freeFollowingFactor_of_postData
+        hnew data.stage_pos data.continuation data.recurrencePost data.preCase2Gap
+        (case2SourceResidualBlock residual) Csrc with
+    ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hC :
+      pivotQinv
+          (pivotFirstY row col
+            (case2DisplayedNormalizedMatrix n data.stage_pos data.continuation
+              (case2SourceResidualBlock residual))) *
+          Csrc =
+        Cprime := by
+    simpa [row, col, Csrc, case2DisplayedPaperQinv, case2DisplayedPaperDchart,
+      case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix] using
+      case2DisplayedPaperCprime_of_constructedFollowingFactor
+        n data.stage_pos data.continuation residual Cprime
+  simpa [row, col, A, Csrc, case2DisplayedPaperDchart, case2DisplayedPaperDppp,
+    case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix,
+    case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix, hC] using hq
 
 /-- The displayed supplied boundary exposes the continuing-branch lower-row
 product of Aoyagi's paper `D''' * C'` as the supplied next same-stage block

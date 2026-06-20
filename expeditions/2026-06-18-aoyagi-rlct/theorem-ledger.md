@@ -2383,6 +2383,27 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-constructed-cprime-a4.md`.
 
+Latest A4 update: the displayed Case 2 constructed-`Cprime` `Q/P` product
+identity has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+The proved Lean names are
+`exists_case2DisplayedQP_mul_arbitraryPivotFirstFollowingFactor_of_flat_weights`,
+`CorrectedCase2NewLabelCertificate.exists_case2DisplayedQP_mul_freeFollowingFactor_of_postData`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_constructedCprime_paperQP`.
+Given a free pivot-first chart-coordinate following matrix `Cprime`, Lean uses
+the constructed old factor `Q*Cprime` in the displayed `Q/P` row-operation
+identity and rewrites the right side to `(weighted D''')*Cprime`.  This is
+finite product algebra only.  It does not construct a total source-coordinate
+following function, source-produce next `C'^(S+1)`, produce
+recurrence/exponent post-data, build a successor chart family, prove chart
+coverage, Jacobian arithmetic, normal crossings/RLCT, arbitrary pivot
+coverage, terminal relabeling, or the printed-vector repair.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-cprime-qp-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-cprime-qp.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-constructed-cprime-qp-a4.md`.
+
 Latest A5 update: the Lemma 5 equation `(3)` local-data and actual-label
 bridge has landed in
 `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and

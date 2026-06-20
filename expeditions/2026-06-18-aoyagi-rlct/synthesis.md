@@ -1954,6 +1954,19 @@ successor chart family, recurrence/exponent post-data, transition invariant,
 Jacobian, normal crossing, RLCT extraction, arbitrary pivot coverage,
 terminal relabeling, or printed-vector repair.
 
+That reverse coordinate direction is now connected to the displayed Case 2
+`Q/P` product identity.  For a free pivot-first chart-coordinate matrix
+`Cprime`, Lean constructs the old following factor as `Q*Cprime`, applies the
+existing row-operation theorem, and rewrites `Q^-1*(Q*Cprime)` back to
+`Cprime`.  The supplied-boundary conclusion is
+`(P * weighted source-substituted block) * (Q*Cprime) =
+(weighted D''') * Cprime`.  This is still finite product algebra below the
+supplied-boundary interface: no total source-coordinate following function,
+source-produced next `C'^(S+1)`, recurrence/exponent post-data production,
+successor chart family, transition invariant, Jacobian, normal crossing, RLCT
+extraction, arbitrary pivot coverage, terminal relabeling, or printed-vector
+repair is claimed.
+
 The stronger A4 chart-production route has now been explicitly audited and
 blocked at the current source/API boundary.  Aoyagi pp. 19-22 support the
 displayed local Case 2 algebra and the continuation/terminal slogans, but do

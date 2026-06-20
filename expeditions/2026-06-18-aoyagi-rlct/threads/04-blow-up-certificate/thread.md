@@ -3116,3 +3116,42 @@ total source-coordinate function from `Cprime`, produce recurrence or exponent
 post-data, construct the successor chart family, prove chart coverage or
 regularity, compute Jacobians, prove normal crossings/RLCT, handle arbitrary
 pivots, terminal relabeling, or repair the printed Case 2 vector.
+
+## 2026-06-20 Lean Case 2 constructed `Cprime` `Q/P`
+
+Reproduction:
+`reproduction-case2-constructed-cprime-qp-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-cprime-qp.md`.
+Review artifact:
+`review-case2-constructed-cprime-qp-a4.md`.
+
+Lean now combines the constructed-`Cprime` coordinate direction with the
+displayed Case 2 `Q/P` row operation:
+
+```text
+exists_case2DisplayedQP_mul_arbitraryPivotFirstFollowingFactor_of_flat_weights
+CorrectedCase2NewLabelCertificate.exists_case2DisplayedQP_mul_freeFollowingFactor_of_postData
+Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_constructedCprime_paperQP
+```
+
+Given a free pivot-first chart-coordinate following factor `Cprime`, the old
+pivot-first following factor is `Q*Cprime`.  The supplied-boundary theorem
+rewrites
+
+```text
+(P * weighted source-substituted block) * (Q*Cprime)
+```
+
+as
+
+```text
+(weighted D''') * Cprime.
+```
+
+This is finite pivot-first product algebra only.  It does not construct a
+total source-coordinate following function from `Cprime`, source-produce next
+`C'^(S+1)`, produce recurrence or exponent post-data, construct the successor
+chart family, prove chart coverage or regularity, compute Jacobians, prove
+normal crossings/RLCT, handle arbitrary pivots, terminal relabeling, or repair
+the printed Case 2 vector.

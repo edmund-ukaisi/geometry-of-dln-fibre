@@ -1280,6 +1280,12 @@ No such claim is formalisation-ready until both fields are filled.
   following function, chart-produced post-data, a successor chart family,
   coverage, regularity, Jacobians, normal crossings/RLCT, or a transition
   invariant.
+  The constructed-`Cprime` `Q/P` wrapper proves only the finite product
+  identity `(P*weighted source-substituted block)*(Q*Cprime) =
+  (weighted D''')*Cprime` under supplied displayed-boundary data. It does not
+  source-produce `Cprime`, construct next `C'^(S+1)`, produce recurrence or
+  exponent post-data, or prove chart coverage, regularity, Jacobians, normal
+  crossings/RLCT, or a transition invariant.
   The displayed center count is only a selected coordinate-equation count. It
   is not a center-dimension theorem, Jacobian exponent, chart-produced exponent
   update, chart coverage theorem, normal-crossing certificate, RLCT extraction,
