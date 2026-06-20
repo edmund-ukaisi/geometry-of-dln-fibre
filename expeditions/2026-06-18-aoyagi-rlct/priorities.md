@@ -309,6 +309,13 @@ on the session's original cwd.
    source-chart-to-supplied-boundary constructor is useful, or move to a
    source-order/atlas scaffold. Keep chart-produced exponent data, Jacobians,
    coverage, and transition invariance out of this recurrence boundary.
+   That source-chart-to-supplied-boundary constructor is now Lean-proved:
+   `Case2DisplayedSuppliedChartFamilyBoundary.of_sourceChartMap_case2Succ_updateSelected`
+   packages the displayed supplied boundary with scalar equal to the displayed
+   source chart pivot value. Next A4 target: move toward a source-order/atlas
+   scaffold or another genuinely source-produced post-data component. Do not
+   treat this constructor as chart production, coverage, Jacobian arithmetic,
+   or transition invariance.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

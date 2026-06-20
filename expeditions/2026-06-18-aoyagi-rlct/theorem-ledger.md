@@ -1223,6 +1223,24 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-source-chart-recurrence-boundary-a4.md`.
 
+Latest A4 update: the Case 2 displayed source-chart boundary constructor has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+name is
+`Case2DisplayedSuppliedChartFamilyBoundary.of_sourceChartMap_case2Succ_updateSelected`.
+This checkpoint packages the displayed supplied boundary with scalar equal to
+the displayed source chart pivot value and with post recurrence state
+`pre.case2Succ` of that same pivot value. The corrected exponent post-data and
+chart-family predicates are still supplied by the existing corrected
+selected-label update and chart-family boundary. It does not prove
+chart-produced recurrence/exponent post-data, atlas coverage, coordinate
+regularity, Jacobian/volume arithmetic, normal crossings/RLCT, termination, a
+transition invariant, or repair of the printed vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-source-chart-boundary-constructor-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-source-chart-boundary-constructor.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-source-chart-boundary-constructor-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

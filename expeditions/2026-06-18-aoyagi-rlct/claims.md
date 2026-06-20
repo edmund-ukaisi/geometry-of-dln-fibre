@@ -566,6 +566,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 displayed source-chart recurrence boundary is saved
 	  at
 	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-recurrence-boundary-a4.md`.
+	  Review of the Case 2 displayed source-chart boundary constructor is saved
+	  at
+	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-boundary-constructor-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1174,6 +1177,12 @@ No such claim is formalisation-ready until both fields are filled.
   chart-produced exponent post-data, compute Jacobians, prove coverage or
   coordinate regularity, prove normal crossings, extract RLCT, prove
   termination/transition invariance, or repair the printed vector mismatch.
+  The displayed source-chart boundary constructor packages the displayed
+  supplied boundary with scalar equal to the displayed source chart pivot value
+  and post state `pre.case2Succ` of that pivot. It is only a source-facing
+  wrapper over supplied corrected exponent post-data and supplied chart-family
+  predicates, not chart production, coverage, Jacobian arithmetic, or a
+  transition invariant.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

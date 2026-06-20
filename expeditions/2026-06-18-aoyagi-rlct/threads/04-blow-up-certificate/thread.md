@@ -338,6 +338,36 @@ prove chart coverage, coordinate regularity, normal crossings, RLCT
 extraction, termination, transition invariance, or repair of the printed Case
 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed source-chart boundary constructor
+
+Reproduction:
+`reproduction-case2-displayed-source-chart-boundary-constructor-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-source-chart-boundary-constructor.md`.
+Review artifact:
+`review-case2-displayed-source-chart-boundary-constructor-a4.md`.
+
+Lean now packages the displayed supplied Case 2 boundary with scalar equal to
+the displayed source chart pivot value. The new theorem is
+
+- `Case2DisplayedSuppliedChartFamilyBoundary.of_sourceChartMap_case2Succ_updateSelected`.
+
+It constructs the same corrected displayed supplied boundary as the concrete
+constructor, but the scalar and successor are written as
+
+```text
+case2DisplayedSourceChartMap(...)(J+1,J+1)
+pre.case2Succ (case2DisplayedSourceChartMap(...)(J+1,J+1)).
+```
+
+This is source-facing packaging only. The displayed chart map is still used
+only through its pivot value, and chart regularity/transition regularity still
+come from the supplied chart-family boundary. It does not prove chart-produced
+recurrence or exponent post-data, non-top-left displayed charts, atlas
+coverage, coordinate regularity, Jacobian/volume arithmetic, normal crossings,
+RLCT extraction, termination, transition invariance, or repair of the printed
+Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

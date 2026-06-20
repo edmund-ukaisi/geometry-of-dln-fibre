@@ -9686,6 +9686,49 @@ namespace Case2DisplayedSuppliedChartFamilyBoundary
 
 open CorrectedCase2NewLabelCertificate
 
+/-- Source-chart-pivot version of the concrete displayed Case 2 supplied
+boundary.
+
+The scalar parameter is the displayed source chart value at `(J+1,J+1)`.
+The post recurrence state is still the concrete successor for that pivot
+value, and the exponent post-data are the corrected selected-label overrides.
+This is only supplied-boundary packaging tied to the displayed pivot value; it
+does not prove chart coverage, chart-produced exponent data, Jacobian/volume
+arithmetic, coordinate regularity, normal crossings, or a full transition. -/
+theorem of_sourceChartMap_case2Succ_updateSelected
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular) :
+    Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+      t
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      numerator
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      leastValue
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue)
+      pre
+      (pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))
+      ChartRegular TransitionRegular :=
+  of_case2Succ_updateSelected pre
+    (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))
+    hS hSL hcont exponentPre levelInv leastValueGap chartFamily
+
 /-- Source-coordinate displayed top-left Case 2 `Q/P` identity from the
 displayed supplied boundary.
 

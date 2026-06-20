@@ -1285,6 +1285,17 @@ post-data, Jacobian/volume arithmetic, coverage, coordinate regularity, normal
 crossings, RLCT extraction, termination, transition invariance, or printed
 vector repair.
 
+The Case 2 displayed source-chart boundary constructor is now Lean-proved.
+`Case2DisplayedSuppliedChartFamilyBoundary.of_sourceChartMap_case2Succ_updateSelected`
+packages the displayed supplied boundary with scalar equal to
+`case2DisplayedSourceChartMap(...)(J+1,J+1)` and post state
+`pre.case2Succ` of that same pivot value. This is a source-facing wrapper over
+the concrete displayed boundary and the recurrence pivot theorem; the corrected
+exponent post-data and chart-family regularity predicates are still supplied.
+It does not prove chart-produced post-data, non-top-left displayed charts,
+coverage, coordinate regularity, Jacobian/volume arithmetic, normal crossings,
+RLCT extraction, termination, transition invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
