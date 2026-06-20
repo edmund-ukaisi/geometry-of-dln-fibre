@@ -644,3 +644,32 @@ minors' Jacobian — decide in A6) + A6 (L4-assembly + L7: the squeeze `finrank(
      `dμ_e=δ⁰` + constant-rank bridge; thread-36 §2 has the math).
 - **W4 dispatched:** resume A4 agent (richest context) to discharge BOTH obligations ⟹ A4.4 unconditional ⟹
   `varietyDim(Z_M) ≤ finrank(range δ⁰)`. Then A6 (final assembly: squeeze + hVoigt discharge).
+
+## 2026-06-20 — A6 final-assembly design (thread 38): INTRINSIC route, A5 DROPPED
+
+**Decision: INTRINSIC reverse-inequality route; A5 §WRINKLE NOT needed (and is UNSOUND as a route** —
+`span(rankMinorSet) = vanishingIdeal Z_M` only up to RADICAL, and radical-eq + smooth-reduced does NOT force
+same cotangent: `J=m²` counterexample. Drop A5, drop L2a from the A6 chain.) Codex convergent + supplied the
+counterexample.
+
+**Reverse `finrank(range δ⁰) ≤ varietyDim` (char-free), chain R1–R6:** R1 directional-deriv functional
+`Dv f = eval_M(∑ v_x·pderiv_x f)` → **R2★** (the ONLY new content) `D_{δ⁰φ} f = 0` for `f ∈ vanishingIdeal Z_M`
+(first-order orbit-tangent inclusion, dual of A4.3; via a `Polynomial` curve `c(t)=(1+tφ)•M` chain rule — RIDES
+on A4.3's `dμ_e=δ⁰`, build once) → R3 factor through `m_M.Cotangent` (`Ideal.Cotangent.lift`) → R4 inject
+`range δ⁰ ↪ Dual k (m_M.Cotangent)` (test on `X_x − a_x`) → R5 `finrank_le_finrank_of_injective` +
+`Dual.dual_finrank_eq` → R6 chain via landed `finrank_cotangentSpace_localization_eq_cotangent` ✓ + κ/k bridge
++ M3 ✓ + L4d ✓ ⟹ varietyDim. Squeeze with A4 ⟹ equality.
+
+**L7 arithmetic:** additive (cancel finite `r=finrank(range δ⁰)`): LHS+r=card [L0], RHS+r=c1 [rank-nullity]=card.
+Same `AddLECancellable` discipline as `NullstellensatzCodim`. `[CharZero k]` enters hVoigt ONLY via A4; reverse+L7
+char-free.
+
+**3 small gap-lemmas (any route hits them):** (1) κ/k finrank bridge `finrank k = finrank κ(m_M)` (κ≃ₐ[k]k ⟹
+`finrank k κ=1`; ABSENT, ~15–30 lines) · (2) L4d `Fintype`-reindex (L4d over `MvPolynomial (Fin n) k`; our ring
+over `Fintype RepCoord d` — `renameEquiv` + maximal-ideal/localization transport; prefer a `Fintype`-indexed L4d
+shared with A4) · (3) `Nat.card(RepCoord d) = finrank C¹ = ∑ d_{i+1}d_i`.
+
+**A6 build plan (FINAL wave, after A4 closes):** A6.1 `Core/OrbitTangentCotangent.lean` (R1–R6, `[IsAlgClosed k]`)
++ A6.2 `Core/VoigtDischarge.lean` (squeeze + L7, `[IsAlgClosed k] [CharZero k]`, discharges `hVoigt` ⟹
+`codimRepCanonical_orbitRankLocus_eq_multSum` unconditional) + the 3 gap-lemmas. Hardest = R2★ (rides A4.3).
+**Waiting on A4 background tide (2 obligations) before dispatching A6.**
