@@ -107,6 +107,14 @@ Skeleton-LOCAL (verified: no refs to deepestPoint/headline/L2/D1 outside Skeleto
 working tree has no Lean WIP between fm-2 commits. Controller green-gates via rv-2 (isolated builds) to avoid
 the shared-tree build race.
 
+## PROOF-MODULE PATTERN (S1.1+) — eliminates Skeleton contention
+Heavy rungs that are Skeleton sorries are proven STANDALONE in Foundations modules, then I WIRE each into
+Skeleton single-writer (`exact <lemma> …`, verbatim statement). S1.1 `weightedThreshold_transport` →
+`Foundations/S1Transport.lean` (fm-2, option B approved); S1.3/4/5 likewise if fm-2 takes them. Result: fm
+owns Skeleton's INLINE rungs (deepestPoint, #19 lambdaCore); fm-2 owns Foundations PROOF-modules; I do the
+1-line Skeleton wires at integration. Zero fm↔fm-2 Skeleton collision + it's the per-rung modular split
+(build-time), done as-needed rather than big-bang. The wired lemma's statement must match Skeleton's verbatim.
+
 ## R1 design BANKED (pp, thread 14) + R3b DECISION + value-match DOWNGRADE
 - **Value/atlas split.** VALUE `rlctAt(‖∏C‖²)=½·min_t Mval(t)` (pinned by codim S(t)=Mval, thread-03) vs
   explicit CHART ATLAS (Aoyagi affine blow-ups).
