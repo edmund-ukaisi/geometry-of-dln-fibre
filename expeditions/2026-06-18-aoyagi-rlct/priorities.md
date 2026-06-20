@@ -293,11 +293,15 @@ on the session's original cwd.
    as an adapter layer: the displayed source map sends `(J+1,J+1)` to `u`,
    off-pivot residual entries to `u` times residual coordinates, restricts to
    the existing displayed selected-entry block API, and rewrites the supplied
-   displayed `Q/P` theorem in source-chart block names. Next A4 target: either
-   prove chart-produced recurrence/exponent post-data for this displayed chart,
-   or build the next honest source-order/atlas scaffold. Do not claim
-   non-top-left source-order formulas, atlas coverage, or full transition
-   invariance from this adapter.
+   displayed `Q/P` theorem in source-chart block names. The source-selected
+   chart-map adapter for arbitrary supplied Case 2 pivots is now also
+   Lean-proved: source-coordinate selected-entry maps restrict to the existing
+   source-selected matrices, and the supplied source-selected `Q/P` theorem is
+   rewritten in those source-chart names. Next A4 target: either prove
+   recurrence post-data production for the displayed chart in a narrow source
+   sense, or build the next honest source-order/atlas scaffold. Do not claim
+   non-top-left source-order formulas, atlas coverage, chart-produced exponent
+   post-data, or full transition invariance from these adapters.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

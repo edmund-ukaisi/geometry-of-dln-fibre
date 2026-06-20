@@ -1177,6 +1177,34 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-successor-gap-projections-a4.md`.
 
+Latest A4 update: the Case 2 source-selected chart-map adapter has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`case2SourceSelectedChartMapOfMem`,
+`case2SourceSelectedNormalizedMapOfMem`,
+`case2SourceSelectedChartMapOfMem_pivot`,
+`case2SourceSelectedNormalizedMapOfMem_pivot`,
+`case2SourceSelectedChartMapOfMem_of_ne`,
+`case2SourceSelectedChartMapOfMem_eq_mul_normalized`,
+`case2SourceSelected_source_pair_eq_pivot_iff`,
+`case2SourceSelectedSubstitutionBlockOfMem`,
+`case2SourceSelectedNormalizedBlockOfMem`,
+`case2SourceSelectedNormalizedBlockOfMem_eq_selectedNormalizedMatrixOfMem`,
+`case2SourceSelectedSubstitutionBlockOfMem_eq_selectedSubstitutionMatrixOfMem`,
+and
+`Case2SourceSelectedSuppliedChartFamilyBoundary.sourceSelectedQP_sourceChartMap`.
+This checkpoint names the selected-entry source chart map for any supplied
+Case 2 residual-block pivot and rewrites the already proved source-selected
+`Q/P` identity in those source-chart names. It does not prove atlas coverage,
+non-top-left displayed source formulas, chart-produced recurrence/exponent
+post-data, coordinate regularity, Jacobian/volume arithmetic, normal
+crossings/RLCT, termination, a transition invariant, or repair of the printed
+vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-chart-map-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-chart-map.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-source-selected-chart-map-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -277,6 +277,38 @@ prove chart coverage, coordinate regularity, Jacobian/volume arithmetic,
 normal crossings, RLCT extraction, termination, transition invariance, or
 repair of the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 source-selected chart-map adapter
+
+Reproduction:
+`reproduction-case2-source-selected-chart-map-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-selected-chart-map.md`.
+Review artifact:
+`review-case2-source-selected-chart-map-a4.md`.
+
+Lean now names the source-coordinate selected-entry chart map for any supplied
+Case 2 residual-block pivot
+`p in case2ResidualBlockPivotEntries n S J`. The new source map sends the
+supplied pivot to `u`, sends every other source pair to `u` times its residual
+coordinate, and factors pointwise through the corresponding normalized source
+map. The residual-block restriction lemmas identify these source-coordinate
+blocks with the already proved subtype-indexed source-selected substitution
+and normalized matrices.
+
+The supplied source-selected boundary now exports
+`sourceSelectedQP_sourceChartMap`, which is the existing arbitrary-pivot
+source-selected `Q/P` identity rewritten in these source-chart names. The
+pivot row weight remains
+`post.weight (case2ResidualRowLevel n S J row)`, where `row` is extracted from
+the supplied pivot membership proof; it is not specialized to
+`post.weight (J+1)`.
+
+This is a finite source-selected adapter only. It does not prove atlas
+coverage, does not claim Aoyagi displays non-top-left source charts, and does
+not prove chart-produced recurrence/exponent post-data, coordinate regularity,
+Jacobian/volume arithmetic, normal crossings, RLCT extraction, termination,
+transition invariance, or repair of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

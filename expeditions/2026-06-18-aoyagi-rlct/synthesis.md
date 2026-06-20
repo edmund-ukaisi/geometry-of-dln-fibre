@@ -1255,6 +1255,22 @@ post-data and supplied corrected exponent post-data still provide the
 successor invariants, and the displayed chart is not proved to produce those
 post-data.
 
+The Case 2 source-selected chart-map adapter is now Lean-proved. The new
+source-coordinate maps
+`case2SourceSelectedChartMapOfMem` and
+`case2SourceSelectedNormalizedMapOfMem` are defined for a supplied
+residual-block pivot `p in case2ResidualBlockPivotEntries n S J`; their
+residual-block restrictions agree with the existing source-selected
+substitution and normalized matrices. The source-selected supplied boundary
+exports the existing arbitrary-pivot `Q/P` theorem as
+`Case2SourceSelectedSuppliedChartFamilyBoundary.sourceSelectedQP_sourceChartMap`.
+This is only finite source-coordinate adapter algebra for a supplied pivot. It
+does not prove atlas coverage, does not claim Aoyagi displays non-top-left
+source charts, and does not prove chart-produced recurrence/exponent
+post-data, coordinate regularity, Jacobian/volume arithmetic, normal
+crossings, RLCT extraction, termination, transition invariance, or printed
+vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

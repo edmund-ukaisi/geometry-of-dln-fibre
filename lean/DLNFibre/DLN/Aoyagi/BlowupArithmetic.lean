@@ -7191,6 +7191,150 @@ def case2SourceSelectedTransportedFollowingFactorOfMem
     (case2SourceResidualBlock residual)
     (case2SourceFollowingFactor C)
 
+/-- Source-coordinate selected-entry chart map for a supplied Case 2
+residual-block pivot.  The pivot is supplied as a member of the finite center;
+the membership proof certifies only the selected pivot, while the map remains
+total on source coordinate pairs.  This is not chart coverage or a
+source-displayed arbitrary-pivot formula. -/
+def case2SourceSelectedChartMapOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (_hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) (q : ℕ × ℕ) : R :=
+  selectedEntryChartMap p u residual q
+
+/-- Source-coordinate normalised map for a supplied Case 2 residual-block
+pivot.  The membership proof certifies only the selected pivot; the map remains
+total on source coordinate pairs. -/
+def case2SourceSelectedNormalizedMapOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (_hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) (q : ℕ × ℕ) : R :=
+  selectedEntryNormalizedMap p residual q
+
+@[simp] theorem case2SourceSelectedChartMapOfMem_pivot
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2SourceSelectedChartMapOfMem hp u residual p = u := by
+  simp [case2SourceSelectedChartMapOfMem]
+
+@[simp] theorem case2SourceSelectedNormalizedMapOfMem_pivot
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) :
+    case2SourceSelectedNormalizedMapOfMem hp residual p = 1 := by
+  simp [case2SourceSelectedNormalizedMapOfMem]
+
+theorem case2SourceSelectedChartMapOfMem_of_ne
+    {n : ℕ → ℕ} {S J : ℕ} {p q : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) (hq : q ≠ p) :
+    case2SourceSelectedChartMapOfMem hp u residual q = u * residual q := by
+  exact selectedEntryChartMap_of_ne u residual hq
+
+theorem case2SourceSelectedChartMapOfMem_eq_mul_normalized
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) (q : ℕ × ℕ) :
+    case2SourceSelectedChartMapOfMem hp u residual q =
+      u * case2SourceSelectedNormalizedMapOfMem hp residual q :=
+  rfl
+
+omit [CommRing R] [Fintype κ] [DecidableEq κ] in
+/-- Equality with the supplied source pair is the same as equality with the
+extracted residual-block row and column pivot. -/
+theorem case2SourceSelected_source_pair_eq_pivot_iff
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (i : Case2ResidualRowIndex n S J)
+    (j : Case2ResidualColIndex n S J) :
+    (i.1, j.1) = p ↔
+      (i, j) =
+        (case2ResidualBlockPivotRowOfMem hp,
+         case2ResidualBlockPivotColOfMem hp) := by
+  constructor
+  · intro h
+    rcases Prod.ext_iff.mp h with ⟨hi, hj⟩
+    apply Prod.ext
+    · exact Subtype.ext hi
+    · exact Subtype.ext hj
+  · intro h
+    cases h
+    exact case2ResidualBlockPivotOfMem_pair hp
+
+/-- Source-coordinate selected-entry substitution block for a supplied Case 2
+pivot, restricted to residual rows and columns. -/
+def case2SourceSelectedSubstitutionBlockOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  fun i j ↦ case2SourceSelectedChartMapOfMem hp u residual (i.1, j.1)
+
+/-- Source-coordinate normalised selected-entry block for a supplied Case 2
+pivot, restricted to residual rows and columns. -/
+def case2SourceSelectedNormalizedBlockOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  fun i j ↦ case2SourceSelectedNormalizedMapOfMem hp residual (i.1, j.1)
+
+/-- The source-coordinate normalised block agrees with the existing
+source-selected normalised matrix after restricting source residuals. -/
+theorem case2SourceSelectedNormalizedBlockOfMem_eq_selectedNormalizedMatrixOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) :
+    case2SourceSelectedNormalizedBlockOfMem hp residual =
+      case2SourceSelectedNormalizedMatrixOfMem hp residual := by
+  ext i j
+  by_cases hsrc : (i.1, j.1) = p
+  · have hsub := (case2SourceSelected_source_pair_eq_pivot_iff hp i j).1 hsrc
+    cases hsub
+    simp [case2SourceSelectedNormalizedBlockOfMem,
+      case2SourceSelectedNormalizedMapOfMem,
+      case2SourceSelectedNormalizedMatrixOfMem, case2SelectedNormalizedMatrix]
+  · have hsub :
+        (i, j) ≠
+          (case2ResidualBlockPivotRowOfMem hp,
+           case2ResidualBlockPivotColOfMem hp) := by
+      intro h
+      exact hsrc ((case2SourceSelected_source_pair_eq_pivot_iff hp i j).2 h)
+    rw [case2SourceSelectedNormalizedBlockOfMem,
+      case2SourceSelectedNormalizedMapOfMem,
+      case2SourceSelectedNormalizedMatrixOfMem, case2SelectedNormalizedMatrix]
+    rw [selectedEntryNormalizedMap_of_ne residual hsrc]
+    rw [selectedEntryNormalizedMatrix_of_ne (case2SourceResidualBlock residual) hsub]
+    rfl
+
+/-- The source-coordinate substituted block agrees with the existing
+source-selected substitution matrix after restricting source residuals. -/
+theorem case2SourceSelectedSubstitutionBlockOfMem_eq_selectedSubstitutionMatrixOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2SourceSelectedSubstitutionBlockOfMem hp u residual =
+      case2SourceSelectedSubstitutionMatrixOfMem hp u residual := by
+  ext i j
+  by_cases hsrc : (i.1, j.1) = p
+  · have hsub := (case2SourceSelected_source_pair_eq_pivot_iff hp i j).1 hsrc
+    cases hsub
+    simp [case2SourceSelectedSubstitutionBlockOfMem,
+      case2SourceSelectedChartMapOfMem,
+      case2SourceSelectedSubstitutionMatrixOfMem, case2SelectedSubstitutionMatrix]
+  · have hsub :
+        (i, j) ≠
+          (case2ResidualBlockPivotRowOfMem hp,
+           case2ResidualBlockPivotColOfMem hp) := by
+      intro h
+      exact hsrc ((case2SourceSelected_source_pair_eq_pivot_iff hp i j).2 h)
+    simp [case2SourceSelectedSubstitutionBlockOfMem,
+      case2SourceSelectedChartMapOfMem,
+      case2SourceSelectedSubstitutionMatrixOfMem, case2SelectedSubstitutionMatrix,
+      selectedEntrySubstitutionMatrix,
+      selectedEntryChartMap, case2SourceResidualBlock, hsrc, hsub]
+
 @[simp] theorem case2SourceSelectedNormalizedMatrixOfMem_pivot
     {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
     (hp : p ∈ case2ResidualBlockPivotEntries n S J)
@@ -7695,6 +7839,50 @@ theorem sourceSelectedQP
     data.correctedNewLabel
       |>.exists_case2SourceSelectedQP_of_recurrenceStateGap_succWeights_of_postData
         data.pivot_mem data.recurrencePost data.preCase2Gap residual C
+
+/-- Source-coordinate selected-pivot Case 2 `Q/P` identity, rewritten in the
+source-selected chart-map names.
+
+This is the same finite algebra as `sourceSelectedQP`, with the substituted
+and normalised blocks now expressed through the source-coordinate selected
+chart map for the supplied pivot.  The pivot is still supplied; this proves no
+atlas coverage, non-displayed source formula, or chart-produced post-data. -/
+theorem sourceSelectedQP_sourceChartMap
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    let row := case2ResidualBlockPivotRowOfMem data.pivot_mem
+    let col := case2ResidualBlockPivotColOfMem data.pivot_mem
+    let A := case2SourceSelectedNormalizedBlockOfMem data.pivot_mem residual
+    let Csrc := case2SourceSelectedFollowingFactorOfMem data.pivot_mem C
+    let Ctr :=
+      case2SourceSelectedTransportedFollowingFactorOfMem data.pivot_mem residual C
+    ∃ q : pivotComplement row → R,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionBlockOfMem data.pivot_mem u residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          Csrc =
+        (weightedPivotDiagonal
+            (post.weight (case2ResidualRowLevel n S J row))
+            (fun i : pivotComplement row ↦ post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A)) *
+          Ctr := by
+  simpa [case2SourceSelectedNormalizedBlockOfMem_eq_selectedNormalizedMatrixOfMem,
+    case2SourceSelectedSubstitutionBlockOfMem_eq_selectedSubstitutionMatrixOfMem]
+    using data.sourceSelectedQP residual C
 
 /-- The displayed top-left Case 2 pivot belongs to the finite residual-block
 center under the continuation hypotheses carried by the supplied boundary. -/

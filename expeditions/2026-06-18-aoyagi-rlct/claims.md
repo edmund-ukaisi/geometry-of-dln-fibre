@@ -561,6 +561,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-principalization-a4.md`.
 	  Review of the Case 2 displayed successor gap projections is saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-successor-gap-projections-a4.md`.
+	  Review of the Case 2 source-selected chart-map adapter is saved at
+	  `threads/04-blow-up-certificate/review-case2-source-selected-chart-map-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1154,6 +1156,14 @@ No such claim is formalisation-ready until both fields are filled.
   The displayed successor gap projections only forward source-selected
   successor bookkeeping through the displayed boundary; recurrence and exponent
   post-data remain supplied fields, not chart-produced data.
+  The source-selected chart-map adapter names the selected-entry source chart
+  map for any supplied Case 2 residual-block pivot and rewrites the existing
+  arbitrary-pivot source-selected `Q/P` identity in those source-chart names.
+  The pivot remains supplied, and this does not prove atlas coverage,
+  non-top-left displayed source formulas, chart-produced recurrence/exponent
+  post-data, coordinate regularity, Jacobian/volume arithmetic, normal
+  crossings, RLCT extraction, termination, transition invariance, or printed
+  vector repair.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
