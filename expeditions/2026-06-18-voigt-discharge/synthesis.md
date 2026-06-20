@@ -786,3 +786,40 @@ with NO hVoigt hyp). `[CharZero k] [IsAlgClosed k]`.
 audits — (R) fidelity: Lean faithfully encodes Voigt's lemma + whole chain sound + ZERO cited interfaces;
 (H) hardener bedrock/precision: name=content (codim NOT rlct), non-vacuity, honest hypotheses/CharZero caveat,
 no overclaim. On PASS → delete cron, stand seats down, signal operator for close PR. On findings → address first.
+
+## 2026-06-21 — ★★★ EXPEDITION COMPLETE — hVoigt DISCHARGED, AUDITED, POLISHED ★★★
+
+**GOAL ACHIEVED.** `hVoigt` is proved (no longer assumed); the whole DLNFibre library is green (3011 jobs),
+0-sorry, axiom-clean `[propext, Classical.choice, Quot.sound]`. HEAD = 1096c68.
+
+**The result (zero cited interfaces, `[IsAlgClosed k] [CharZero k]`):**
+- `Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim` — **Voigt's lemma**: the geometric
+  codimension of the orbit closure `Ō_M` equals the tangent/`Ext¹(M,M)` codimension.
+- `Core.VoigtDischarge.codimRepCanonical_orbitRankLocus_eq_multSum_unconditional` — **Cor 3.5** quadratic
+  form, UNCONDITIONAL.
+- In-file non-vacuity: `voigtDischarge_witness_222` over `AlgebraicClosure ℚ` (Ex 4.3, codim 3).
+
+**What was BUILT zero-cited (the two interfaces the paper only CITES):**
+- **Abeasis–Del Fra Thm 3.8** (`orbitRankLocus M = Ō_M`): the full L6 ladder — limit lemma, per-move box
+  degeneration (split + non-split), the telescope ★ + cover-generation chain, rank-locus closedness,
+  orbit-closure = rank-locus + primeness. Char-free.
+- **The AG bridge** (geometric codim = tangent codim): A0 (route-c setup), A3 (`IsSmoothAt` via homogeneity +
+  Spec detour), A4 (route-c submersion `varietyDim ≤ finrank δ⁰` via the char-0 Jacobian criterion + the
+  matrix-Kähler `D(U⁻¹)` gate — the irreducible nugget), A6 (intrinsic reverse `≥` via R2★ dual-number
+  `dμ_e=δ⁰` + cotangent pairing; squeeze; additive L7). Plus the foundational L5/L0/L4★/L2a (dim theory,
+  Nullstellensatz, smooth⟹regular, cotangent=Jacobian-kernel) built earlier.
+
+**AUDITS (both PASS-WITH-NOTES, decorrelated Codex convergent):**
+- Fidelity (thread 41): faithful encoding of Voigt's lemma + Cor 3.5; non-circular squeeze; genuinely
+  zero-cited; non-vacuous (2,2,2 = codim 3, paper Ex 4.3).
+- Bedrock/precision (thread 42): name=content (NO rlct/½ overclaim — the RLCT payoff is correctly OUT);
+  honest co-located `[CharZero k]` caveat; ℕ∞ L7 cancellation + `.toNat` lossless; wording clean.
+
+**ROADMAP (deferred, non-blocking — for a future pass / the close PR):**
+- Weaken `[IsAlgClosed k]` → perfect+infinite+closed-point where M3/L1/residue-field allow (honest as-is;
+  alg-closed is exactly the DLN/RLCT-over-ℂ setting).
+- Optional naming clarity on the `_unconditional` suffix (means "no hVoigt hyp"; docstrings disambiguate).
+- The RLCT payoff `rlct = ½·codim` (Cited Aoyagi/Watanabe) lives in `DLNFibre.DLN`, NOT this expedition —
+  this engine supplies the codimension input it consumes.
+
+**Cron f8231d70 deleted. Seats at rest. Signalling operator for the close PR (operator-gated).**
