@@ -158,3 +158,17 @@ proofs build on them — again, statement design is where the bedrock work is.
   so the witness must ENCODE the data (R1: `rlctAt(dlnLoss)` is an opaque `sSup` with no statement-level
   value — same `∃ d k h` shape as A1 but you CAN'T pick the exponents without the resolution lemma, so it's
   genuine). Opaque-vs-concrete LHS is the whole difference. Sweep run on the full contract: only A1 + A2 weak.
+
+## 2026-06-20 — full-trunk build catches what module builds hide (orphans + FQN collisions)
+
+`lake build DLNFibre.DLN.RLCT.<M>` builds only M's closure; the default `lake build DLNFibre` builds only the
+root `DLNFibre.lean` import closure. A NEW Foundations proof-module not yet imported anywhere (e.g.
+`S1Transport`, in the proof-module pattern) is ORPHANED — BOTH builds skip it, so a regression/sorry there
+passes CI silently; only `scripts/sorries` (globs all files) sees it (hence a sorry-count higher than the
+root build actually compiles). And a proof-module lemma sharing the contract decl's FULLY-QUALIFIED name is a
+latent duplicate-declaration landmine that bites at wire-in (when both come into scope). FIX (proof-module
+pattern refinements): (a) proof-module lemmas get DISTINCT names (`_aux`/`_impl`); wire = `Skeleton.<rung> :=
+<rung>_aux …`. (b) wire the module into the root closure (Skeleton imports it) to be CI-covered; gate WIP via
+explicit module-builds until then. (c) run the FULL-trunk `lake build DLNFibre` (not module-scoped) at
+integration — it's the gate that surfaces orphans + collisions a module build can't. (Caught by rv-2's
+full-trunk green-gate during an idle window — the right use of idle reviewer time.)

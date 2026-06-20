@@ -114,6 +114,13 @@ Skeleton single-writer (`exact <lemma> …`, verbatim statement). S1.1 `weighted
 owns Skeleton's INLINE rungs (deepestPoint, #19 lambdaCore); fm-2 owns Foundations PROOF-modules; I do the
 1-line Skeleton wires at integration. Zero fm↔fm-2 Skeleton collision + it's the per-rung modular split
 (build-time), done as-needed rather than big-bang. The wired lemma's statement must match Skeleton's verbatim.
+**Refinements (rv-2 full-trunk catch @92a1101):** (1) the proof-module lemma gets a DISTINCT name (`_aux`/
+`_impl`) — same FQN as the Skeleton contract decl = duplicate-declaration landmine at wire-in; wire =
+`Skeleton.<rung> := <rung>_aux …` (verbatim statement still unifies). (2) a Foundations proof-module is
+ORPHANED from the root `DLNFibre.lean` closure until wired (Skeleton imports it) — so the DEFAULT
+`lake build DLNFibre` SKIPS it (gate WIP via explicit module-builds; `scripts/sorries` globs so counts it,
+but the root build doesn't compile it). The FULL-trunk `lake build DLNFibre` (not module-scoped) is the gate
+that catches orphans + collisions — run it at integration, not just the module build.
 
 ## R1 design BANKED (pp, thread 14) + R3b DECISION + value-match DOWNGRADE
 - **Value/atlas split.** VALUE `rlctAt(‖∏C‖²)=½·min_t Mval(t)` (pinned by codim S(t)=Mval, thread-03) vs
