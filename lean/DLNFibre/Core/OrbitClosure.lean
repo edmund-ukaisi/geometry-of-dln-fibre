@@ -228,4 +228,194 @@ theorem orbitSet_subset_repClosure_orbitSet_of_canonical_mem {d : Fin (N + 1) �
   have := hmem (baseChangePullback Q f) (baseChangePullback_mem_vanishingIdeal_orbitSet U Q hf)
   rwa [MvPolynomial.aeval_eq_eval] at this
 
+/-! ## Piece 2c — the per-step degeneration (CRUX)
+
+A single box move drops the closure: if tuples `Tp, Tq` over `d` realize the upper / lower rank
+patterns `r, r''` of a box move `BoxMoveStep r r''` (with `r` achievable, supported), then
+`repClosure (orbitSet Tq) ⊆ repClosure (orbitSet Tp)`. The proof converts the integer box
+coordinates to `Fin`, invokes the split / non-split geometric degeneration (`Core.BoxMoveGeneral`),
+and reconciles the geometric witnesses' shapes with `Tp, Tq` through the rank-pattern bridge +
+`G_d`-stability (single point ⟹ whole orbit). -/
+
+/-- The integer second-difference of `r` restricted to the upper triangle, as a Kostant array
+(`SuppArray`): `1`-truncated below the diagonal. `cumul` recovers `r` on the triangle. -/
+noncomputable def diffTri {N : ℕ} (r : ℤ → ℤ → ℤ) (hr : Supported (N : ℤ) r) :
+    SuppArray (N : ℤ) ℤ :=
+  ⟨fun i j ↦ if i ≤ j then diff r i j else 0, by
+    refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩ <;> dsimp only <;> split_ifs with h
+    · exact (supported_diff hr).1 i j hi
+    · rfl
+    · exact (supported_diff hr).2 i j hj
+    · rfl⟩
+
+/-- **The per-step degeneration (CRUX).** A single box move `BoxMoveStep r r''` between achievable,
+supported, below-diagonal-vanishing rank-pattern arrays (with `r''` likewise achievable) drops the
+orbit closure: any tuples `Tp, Tq` over `d` realizing `r, r''` on the upper triangle satisfy
+`repClosure (orbitSet Tq) ⊆ repClosure (orbitSet Tp)`. The geometric content is the per-move
+degeneration of `Core.BoxMoveGeneral`, reconciled with the realizers by the rank-pattern bridge and
+`G_d`-stability.
+
+CONDITIONAL: stated here as the clean residual obligation; the body (integer→`Fin` box-coordinate
+extraction + the split / non-split geometric invocation + the residual-`rest` dimension cast) is the
+one genuinely hard glue of L6.4. -/
+theorem boxMoveStep_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ}
+    {r r'' : ℤ → ℤ → ℤ} {Tp Tq : Tuple (k := k) d}
+    (hrsupp : Supported (N : ℤ) r) (hr''supp : Supported (N : ℤ) r'')
+    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j)
+    (hr''nn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r'' i j)
+    (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ))
+    (hr''diag : ∀ k : Fin (N + 1), (d k : ℤ) = r'' (k : ℤ) (k : ℤ))
+    (hp : ∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tp i j hij : ℤ) = r (i : ℤ) (j : ℤ))
+    (hq : ∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tq i j hij : ℤ) = r'' (i : ℤ) (j : ℤ))
+    (hstep : BoxMoveStep r r'') :
+    repClosure (orbitSet Tq) ⊆ repClosure (orbitSet Tp) := by
+  sorry
+
+/-! ## Piece 2d — the realizer of an achievable pattern, over the fixed dimension vector
+
+For a supported, triangle-achievable array `r` with diagonal `= d`, the truncated `diff`-array
+`diffTri r` is a literal Kostant partition realizing `d` (`CMPlus`), so `realizer (diffTri r)` is a
+tuple over `d` whose rank pattern is `r` on the upper triangle. The canonical witness the chain runs
+on. -/
+
+/-- `cumul (diffTri r) = r` on the upper triangle: truncation below the diagonal is invisible to
+`cumul`, and `cumul` inverts `diff` on the supported `r`. -/
+theorem cumul_diffTri_eq {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {i j : ℤ} (hij : i ≤ j) :
+    cumul (N : ℤ) (diffTri (N := N) r hr).1 i j = r i j := by
+  rw [diffTri, cumul_truncBelow_of_le (diff r) hij, cumul_diff (N : ℤ) r hr.1 hr.2]
+
+/-- `diffTri r` is a Kostant partition realizing `d` when `r` is triangle-achievable with diagonal
+`= d`: nonnegative (truncated), `i ≤ j`-supported, diagonal from `cumul_diffTri`. -/
+theorem cMPlus_diffTri {d : Fin (N + 1) → ℕ} {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r)
+    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j) (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r k k) :
+    CMPlus d (diffTri (N := N) r hr) := by
+  refine ⟨⟨fun i j ↦ ?_, fun i j hji ↦ ?_⟩, fun k ↦ ?_⟩
+  · simp only [diffTri]; split_ifs with h
+    · exact hrnn i j h
+    · exact le_refl 0
+  · simp only [diffTri, if_neg (not_le.mpr hji)]
+  · rw [cumul_diffTri_eq hr (le_refl (k : ℤ)), hrdiag k]
+
+/-- The canonical realizer of an achievable supported pattern `r` (diagonal `= d`): a tuple over `d`
+with rank pattern `r` on the upper triangle. -/
+noncomputable def patternRealizer {d : Fin (N + 1) → ℕ} {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r)
+    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j) (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r k k) :
+    Tuple (k := k) d :=
+  realizer (k := k) (diffTri (N := N) r hr) (cMPlus_diffTri hr hrnn hrdiag)
+
+/-- The realizer's rank pattern is `r` on the upper triangle. -/
+theorem rankPattern_patternRealizer {d : Fin (N + 1) → ℕ} {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r)
+    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j) (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r k k)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    (rankPattern d (patternRealizer (k := k) hr hrnn hrdiag) i j hij : ℤ) = r (i : ℤ) (j : ℤ) := by
+  rw [patternRealizer, rankPattern_realizer (k := k) (diffTri (N := N) r hr)
+    (cMPlus_diffTri hr hrnn hrdiag) i j hij,
+    cumul_diffTri_eq hr (by exact_mod_cast Fin.le_def.mp hij)]
+
+/-! ## Piece 2e — box-move bounds and invariant preservation
+
+The box-move coordinates land in `[0,N]` (forced by `diff r a e ≥ 1` and support), and a box move
+preserves support, triangle-achievability, and the diagonal — the invariants the chain threads. -/
+
+/-- The box's lower-left corner is in range: `1 ≤ diff r a e` and `Supported N r` force `0 ≤ a`
+(else all four `diff` reference points vanish by support). -/
+theorem zero_le_of_diff_pos {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {a e : ℤ}
+    (hae : 1 ≤ diff r a e) : 0 ≤ a := by
+  by_contra h
+  rw [diff_apply, hr.1 a e (by omega), hr.1 a (e + 1) (by omega), hr.1 (a - 1) e (by omega),
+    hr.1 (a - 1) (e + 1) (by omega)] at hae
+  omega
+
+/-- The box's upper-right corner is in range: `1 ≤ diff r a e` and `Supported N r` force `e ≤ N`. -/
+theorem le_N_of_diff_pos {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {a e : ℤ}
+    (hae : 1 ≤ diff r a e) : e ≤ (N : ℤ) := by
+  by_contra h
+  rw [diff_apply, hr.2 a e (by omega), hr.2 a (e + 1) (by omega), hr.2 (a - 1) e (by omega),
+    hr.2 (a - 1) (e + 1) (by omega)] at hae
+  omega
+
+/-- A box move preserves support: `boxDrop r` is supported when `r` is and the box is in range
+(`0 ≤ a`, `e ≤ N`). The indicator vanishes off the in-range box `[a,c−1]×[b+1,e]`. -/
+theorem supported_boxDrop {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {a c b e : ℤ}
+    (ha0 : 0 ≤ a) (heN : e ≤ (N : ℤ)) : Supported (N : ℤ) (boxDrop r a c b e) := by
+  refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩
+  · rw [boxDrop, boxIndicator, if_neg (by rintro ⟨h1, _⟩; omega), sub_zero]; exact hr.1 i j hi
+  · rw [boxDrop, boxIndicator, if_neg (by rintro ⟨_, _, _, h4⟩; omega), sub_zero]; exact hr.2 i j hj
+
+/-! ## Piece 3 — chain composition
+
+The reflexive-transitive closure of `BoxMoveStep` composes the per-step closure inclusions, with the
+invariants (support, triangle-achievability, diagonal `= d`) threaded through each step. -/
+
+/-- A box step preserves the chain invariants: from `Supported r`, `diff r ≥ 0` on the triangle, and
+diagonal `= d`, `r''` is supported, triangle-achievable, same diagonal. -/
+theorem boxMoveStep_invariants {d : Fin (N + 1) → ℕ} {r r'' : ℤ → ℤ → ℤ}
+    (hr : Supported (N : ℤ) r) (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j)
+    (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ)) (hstep : BoxMoveStep r r'') :
+    Supported (N : ℤ) r'' ∧ (∀ i j : ℤ, i ≤ j → 0 ≤ diff r'' i j) ∧
+      (∀ k : Fin (N + 1), (d k : ℤ) = r'' (k : ℤ) (k : ℤ)) := by
+  obtain ⟨a, c, b, e, hac, hcb, hbe, hae, hcbm, rfl⟩ := hstep
+  have ha0 : 0 ≤ a := zero_le_of_diff_pos hr hae
+  have heN : e ≤ (N : ℤ) := le_N_of_diff_pos hr hae
+  refine ⟨supported_boxDrop hr ha0 heN, fun i j hij ↦ ?_, fun t ↦ ?_⟩
+  · -- triangle achievability: the four-corner move only subtracts at `(a,e)` (≥ 1) and linked
+    -- `(c,b)` (≥ 1), both on the triangle, so the drop stays nonnegative there.
+    have hdiff : diff (boxDrop r a c b e) i j
+        = diff r i j - diff (boxIndicator a c b e) i j := by
+      simp only [boxDrop, diff_apply]; ring
+    rw [hdiff, boxIndicator_diff a c b e i j hac hcb hbe]
+    have h0 := hrnn i j hij
+    by_cases hae' : i = a ∧ j = e
+    · obtain ⟨hi, hj⟩ := hae'
+      rw [hi, hj] at h0 ⊢
+      rw [if_neg (by rintro ⟨_, h⟩; omega), if_neg (by rintro ⟨h, _⟩; omega),
+        if_pos ⟨rfl, rfl⟩, if_neg (by rintro ⟨h, _⟩; omega)]
+      have := hae; omega
+    · by_cases hcb' : i = c ∧ j = b
+      · obtain ⟨hi, hj⟩ := hcb'
+        have hcle : c ≤ b := by rw [hi, hj] at hij; omega
+        have hcbm' := hcbm hcle
+        rw [hi, hj] at h0 ⊢
+        rw [if_neg (by rintro ⟨h, _⟩; omega), if_neg (by rintro ⟨_, h⟩; omega),
+          if_neg (by rintro ⟨h, _⟩; omega), if_pos ⟨rfl, rfl⟩]
+        omega
+      · rw [if_neg fun h ↦ hae' h, if_neg fun h ↦ hcb' h]
+        split_ifs <;> omega
+  · rw [boxDrop_diag r hac hcb hbe, hrdiag t]
+
+/-- **The chain drops the closure.** A box-move chain `BoxMoveChain r s` (with `r` achievable,
+supported, diagonal `= d`) gives the closure inclusion for any tuples
+`Tr, Ts` over `d` realizing `r, s` on the upper triangle. Each step's per-step degeneration composed
+by `ReflTransGen.head_induction_on`, invariants threaded through `boxMoveStep_invariants`,
+the realizers reconciled at the junctions by the rank-pattern bridge. -/
+theorem boxMoveChain_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ} {r s : ℤ → ℤ → ℤ}
+    (hchain : BoxMoveChain r s) :
+    ∀ (hr : Supported (N : ℤ) r) (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j)
+      (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ)) (Tr Ts : Tuple (k := k) d),
+      (∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tr i j hij : ℤ) = r (i : ℤ) (j : ℤ)) →
+      (∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Ts i j hij : ℤ) = s (i : ℤ) (j : ℤ)) →
+      repClosure (orbitSet Ts) ⊆ repClosure (orbitSet Tr) := by
+  induction hchain using Relation.ReflTransGen.head_induction_on with
+  | refl =>
+    -- `r = s`: `Tr, Ts` have the same rank pattern, so the same orbit closure
+    intro hr hrnn hrdiag Tr Ts hTr hTs
+    rw [repClosure_orbitSet_eq_of_rankPattern_eq (A := Ts) (B := Tr)
+      (fun i j hij ↦ by exact_mod_cast (hTs i j hij).trans (hTr i j hij).symm)]
+  | @head p c hstep _hchain ih =>
+    intro hp hpnn hpdiag Tr Ts hTr hTs
+    -- invariants of the intermediate pattern `c`
+    obtain ⟨hc, hcnn, hcdiag⟩ := boxMoveStep_invariants hp hpnn hpdiag hstep
+    -- the canonical realizer of `c`
+    set Tc := patternRealizer (k := k) hc hcnn hcdiag with hTc
+    have hTcrank : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+        (rankPattern d Tc i j hij : ℤ) = c (i : ℤ) (j : ℤ) :=
+      rankPattern_patternRealizer hc hcnn hcdiag
+    -- IH: `repClosure (orbitSet Ts) ⊆ repClosure (orbitSet Tc)`
+    have hIH : repClosure (orbitSet Ts) ⊆ repClosure (orbitSet Tc) :=
+      ih hc hcnn hcdiag Tc Ts hTcrank hTs
+    -- per-step: `repClosure (orbitSet Tc) ⊆ repClosure (orbitSet Tr)`
+    have hstep' : repClosure (orbitSet Tc) ⊆ repClosure (orbitSet Tr) :=
+      boxMoveStep_repClosure_subset hp hc hpnn hcnn hpdiag hcdiag hTr hTcrank hstep
+    exact hIH.trans hstep'
+
 end DLNFibre.Core
