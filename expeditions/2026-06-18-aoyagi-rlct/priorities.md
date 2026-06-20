@@ -81,11 +81,12 @@ on the session's original cwd.
    reproduced. The displayed Case 2 paper terminal absorption layer is now
    Lean-proved as finite algebra and matrix-entry ideal zero-row dropping:
    `D''' * C'` has the same matrix-entry ideal as the top row of `C'` under
-   failed next continuation. Next A4 target: add source-order old-top-row
-   stacking/entry-ideal packaging for the terminal branch, or construct
-   chart-produced recurrence/exponent post-data; do not identify the current
-   pivot-row object with Aoyagi's full `C'^(S+1)` without source-order
-   stacking and row/column branch analysis.
+   failed next continuation, and this has been lifted through an arbitrary
+   supplied old top block `Cold`. Next A4 target: identify/source-model the
+   old top block and row/column terminal branch, or construct chart-produced
+   recurrence/exponent post-data; do not identify `[Cold;C0]` with Aoyagi's
+   full `C'^(S+1)` or the diagonal-weighted full terminal product without
+   that source-order analysis.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

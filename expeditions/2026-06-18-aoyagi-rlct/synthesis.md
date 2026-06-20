@@ -1378,6 +1378,21 @@ is not a construction or identification of Aoyagi's next-stage
 chart production, Jacobian arithmetic, normal crossings/RLCT, termination,
 transition invariance, or printed-vector repair.
 
+The Case 2 displayed terminal stack layer is now Lean-proved.  The generic
+entry-ideal facts `matrixEntryIdeal_sumElim_eq_sup` and
+`matrixEntryIdeal_sumElim_congr_bottom` say that stacking row blocks gives
+the supremum of entry ideals and permits replacement of the bottom block by
+one with the same entry ideal.  The displayed specialization
+`matrixEntryIdeal_case2DisplayedPaperTerminalStack_eq_topStack_of_not_next_cont`
+stacks an arbitrary supplied old top block `Cold` over the stopped terminal
+bottom block and proves
+`<entries([Cold; D''' * C'])> = <entries([Cold; C0])>`, where `C0` is the top
+pivot row of `C'`.  This still does not identify `Cold` with the source old
+top rows or `[Cold;C0]` with Aoyagi's full `C'^(S+1)`, and it remains outside
+the diagonal-weighted full terminal product ideal, chart production, Jacobian
+arithmetic, normal crossings/RLCT, termination, transition invariance, and
+printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

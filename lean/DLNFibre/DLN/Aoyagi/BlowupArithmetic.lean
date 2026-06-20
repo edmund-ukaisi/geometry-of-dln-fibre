@@ -9935,6 +9935,31 @@ theorem matrixEntryIdeal_case2DisplayedPaperDppp_mul_Cprime_eq_top_of_not_next_c
     (matrixEntryIdeal_sumElim_zero_bottom
       (case2DisplayedPaperCprimeTop n hS hcont residual C))
 
+/-- Stacking unchanged old top rows over the stopped displayed Case 2 terminal
+block preserves the zero-row absorption entry ideal.
+
+This is the source-order-shaped finite algebra behind keeping old top rows and
+dropping the zero lower rows after `D''' * C'`.  It does not identify the right
+hand side with Aoyagi's complete next-stage `C'^(S+1)` data, and it is not the
+diagonal-weighted full terminal product ideal. -/
+theorem matrixEntryIdeal_case2DisplayedPaperTerminalStack_eq_topStack_of_not_next_cont
+    {ι : Type*} (Cold : Matrix ι τ R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    matrixEntryIdeal
+        (verticalBlock Cold
+          (case2DisplayedPaperDppp n hS hcont residual *
+            case2DisplayedPaperCprime n hS hcont residual C)) =
+      matrixEntryIdeal
+        (verticalBlock Cold
+          (case2DisplayedPaperCprimeTop n hS hcont residual C)) := by
+  simpa [verticalBlock] using
+    matrixEntryIdeal_sumElim_congr_bottom Cold
+      (matrixEntryIdeal_case2DisplayedPaperDppp_mul_Cprime_eq_top_of_not_next_cont
+        n hS hcont hstop residual C)
+
 /-- Source-displayed Case 2 top-left `Q/P` identity with the following factor reindexed
 into pivot-first column coordinates. This is still local finite algebra, not chart coverage. -/
 theorem exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights

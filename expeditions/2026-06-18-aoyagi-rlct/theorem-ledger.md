@@ -1373,6 +1373,27 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-paper-terminal-absorption-a4.md`.
 
+Latest A4 update: the Case 2 displayed terminal stack layer has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` and
+`lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`.  The proved Lean names are
+`matrixEntryIdeal_sumElim_eq_sup`,
+`matrixEntryIdeal_sumElim_congr_bottom`, and
+`matrixEntryIdeal_case2DisplayedPaperTerminalStack_eq_topStack_of_not_next_cont`.
+This checkpoint stacks an arbitrary supplied old top block over the stopped
+displayed terminal bottom block and proves the matrix-entry ideal equality
+`<entries([Cold; D''' * C'])> = <entries([Cold; C0])>`.  It does not identify
+`Cold` with the source old top rows or `[Cold;C0]` with Aoyagi's full
+`C'^(S+1)`, prove the diagonal-weighted full terminal product ideal, choose
+the source-order row/column terminal presentation, build `S+1` post-data,
+prove chart coverage or regularity, compute Jacobians, prove normal
+crossings/RLCT, prove termination or transition invariance, or repair the
+printed vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-terminal-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-terminal-stack.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-terminal-stack-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

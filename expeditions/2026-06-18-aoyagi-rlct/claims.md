@@ -1251,6 +1251,17 @@ No such claim is formalisation-ready until both fields are filled.
   post-data, prove chart coverage or regularity, compute Jacobians, prove
   normal crossings, extract RLCT, prove termination or transition invariance,
   or repair the printed vector mismatch.
+  The displayed terminal stack layer proves that stacking a fixed old top
+  block over two bottom blocks respects matrix-entry ideal equality. Applied
+  to the stopped displayed Case 2 terminal block, it proves
+  `<entries([Cold; D''' * C'])> = <entries([Cold; C0])>` for arbitrary
+  supplied `Cold`, where `C0` is the top pivot row of `C'`. This does not
+  identify `Cold` with the source old top rows or `[Cold;C0]` with
+  Aoyagi's full `C'^(S+1)`, prove the diagonal-weighted full terminal product
+  ideal, choose the row/column terminal presentation, build `S+1` post-data,
+  prove chart coverage or regularity, compute
+  Jacobians, prove normal crossings, extract RLCT, prove termination or
+  transition invariance, or repair the printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

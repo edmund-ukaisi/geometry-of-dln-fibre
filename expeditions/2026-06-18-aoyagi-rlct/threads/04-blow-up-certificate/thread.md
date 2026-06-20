@@ -549,6 +549,41 @@ state, prove chart production or coverage, compute Jacobians, prove normal
 crossings/RLCT extraction, prove termination or transition invariance, or
 repair the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed terminal stack
+
+Reproduction:
+`reproduction-case2-displayed-terminal-stack-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-terminal-stack.md`.
+Review artifact:
+`review-case2-displayed-terminal-stack-a4.md`.
+
+Lean now proves the generic entry-ideal facts
+`matrixEntryIdeal_sumElim_eq_sup` and
+`matrixEntryIdeal_sumElim_congr_bottom`: a stacked row block has entry ideal
+equal to the supremum of the two row-block entry ideals, and replacing the
+bottom block by another matrix with the same entry ideal preserves the
+stacked entry ideal.
+
+The displayed Case 2 specialization
+`matrixEntryIdeal_case2DisplayedPaperTerminalStack_eq_topStack_of_not_next_cont`
+applies this to an arbitrary supplied old top block `Cold`. Under displayed
+pivot validity and failed next continuation,
+
+```text
+< entries([Cold; D''' * C']) > = < entries([Cold; C0]) >,
+```
+
+where `C0` is the top pivot row of `C' = Q^-1 C`.
+
+This is source-order-shaped finite entry-ideal algebra only. It does not
+identify `Cold` with Aoyagi's actual old top rows, construct or identify
+`[Cold; C0]` with `C'^(S+1)`, choose the row-vs-column terminal presentation,
+prove the diagonal-weighted full terminal product ideal, build `S+1` post-data,
+prove chart production or coverage, compute Jacobians, prove normal
+crossings/RLCT extraction, prove termination or transition invariance, or
+repair the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

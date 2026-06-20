@@ -29,6 +29,34 @@ theorem matrixEntry_mem {m n : Type*} (A : Matrix m n R) (i : m) (j : n) :
     A i j ∈ matrixEntryIdeal A :=
   Ideal.subset_span ⟨(i, j), rfl⟩
 
+/-- Stacking two row blocks generates the supremum of their matrix-entry ideals. -/
+theorem matrixEntryIdeal_sumElim_eq_sup {m m' n : Type*}
+    (A : Matrix m n R) (B : Matrix m' n R) :
+    matrixEntryIdeal (Sum.elim A B) = matrixEntryIdeal A ⊔ matrixEntryIdeal B := by
+  refine le_antisymm ?_ ?_
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    rcases i with i | i
+    · exact (show matrixEntryIdeal A ≤ matrixEntryIdeal A ⊔ matrixEntryIdeal B from
+        le_sup_left) (matrixEntry_mem A i j)
+    · exact (show matrixEntryIdeal B ≤ matrixEntryIdeal A ⊔ matrixEntryIdeal B from
+        le_sup_right) (matrixEntry_mem B i j)
+  · refine sup_le ?_ ?_
+    · rw [matrixEntryIdeal, Ideal.span_le]
+      rintro _ ⟨⟨i, j⟩, rfl⟩
+      exact matrixEntry_mem (Sum.elim A B) (Sum.inl i) j
+    · rw [matrixEntryIdeal, Ideal.span_le]
+      rintro _ ⟨⟨i, j⟩, rfl⟩
+      exact matrixEntry_mem (Sum.elim A B) (Sum.inr i) j
+
+/-- Replacing the lower row block by another matrix with the same entry ideal
+preserves the entry ideal after stacking over a fixed top block. -/
+theorem matrixEntryIdeal_sumElim_congr_bottom {m m' m'' n : Type*}
+    (Top : Matrix m n R) {A : Matrix m' n R} {B : Matrix m'' n R}
+    (h : matrixEntryIdeal A = matrixEntryIdeal B) :
+    matrixEntryIdeal (Sum.elim Top A) = matrixEntryIdeal (Sum.elim Top B) := by
+  rw [matrixEntryIdeal_sumElim_eq_sup, matrixEntryIdeal_sumElim_eq_sup, h]
+
 /-- Adding a bottom block of zero rows does not change the matrix-entry ideal. -/
 theorem matrixEntryIdeal_sumElim_zero_bottom {m m' n : Type*}
     (A : Matrix m n R) :
