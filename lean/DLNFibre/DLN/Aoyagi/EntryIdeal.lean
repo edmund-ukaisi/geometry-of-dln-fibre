@@ -29,6 +29,20 @@ theorem matrixEntry_mem {m n : Type*} (A : Matrix m n R) (i : m) (j : n) :
     A i j ∈ matrixEntryIdeal A :=
   Ideal.subset_span ⟨(i, j), rfl⟩
 
+/-- Adding a bottom block of zero rows does not change the matrix-entry ideal. -/
+theorem matrixEntryIdeal_sumElim_zero_bottom {m m' n : Type*}
+    (A : Matrix m n R) :
+    matrixEntryIdeal (Sum.elim A (0 : Matrix m' n R)) = matrixEntryIdeal A := by
+  refine le_antisymm ?_ ?_
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    rcases i with i | i
+    · exact matrixEntry_mem A i j
+    · simp
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    exact matrixEntry_mem (Sum.elim A (0 : Matrix m' n R)) (Sum.inl i) j
+
 /-- Left multiplication can only decrease the matrix-entry ideal. -/
 theorem matrixEntryIdeal_mul_left_le {l m n : Type*} [Fintype m]
     (P : Matrix l m R) (A : Matrix m n R) :

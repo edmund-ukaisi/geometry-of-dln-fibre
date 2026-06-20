@@ -520,6 +520,35 @@ state, prove chart production or coverage, compute Jacobians, prove normal
 crossings/RLCT extraction, prove termination or transition invariance, or
 repair the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed paper terminal absorption
+
+Reproduction:
+`reproduction-case2-displayed-paper-terminal-absorption-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-paper-terminal-absorption.md`.
+Review artifact:
+`review-case2-displayed-paper-terminal-absorption-a4.md`.
+
+Lean now exposes paper-facing names for the displayed Case 2 top-left `Q/P`
+calculation: `D_chart`, `Q`, `Q^-1`, `D''`, `C' = Q^-1 C`, and `D'''`.
+The supplied displayed source-chart identity is restated in this notation.
+
+The generic entry-ideal lemma `matrixEntryIdeal_sumElim_zero_bottom` proves
+that adding zero bottom rows to a matrix does not change its matrix-entry
+ideal.  Using the existing failed-continuation cleared-block theorem, Lean
+then proves
+`matrixEntryIdeal_case2DisplayedPaperDppp_mul_Cprime_eq_top_of_not_next_cont`:
+under displayed pivot validity and failed next continuation, the
+matrix-entry ideal of `D''' * C'` equals the matrix-entry ideal of the top
+pivot row of `C'`.
+
+This is only zero-row absorption in pivot-first paper notation.  It does not
+construct or identify Aoyagi's next-stage `C'^(S+1)`, choose the source-order
+row-vs-column terminal presentation, build the `S+1` recurrence/exponent
+state, prove chart production or coverage, compute Jacobians, prove normal
+crossings/RLCT extraction, prove termination or transition invariance, or
+repair the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

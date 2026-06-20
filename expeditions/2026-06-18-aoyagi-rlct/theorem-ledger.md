@@ -1345,6 +1345,34 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-cleared-block-following-factor-a4.md`.
 
+Latest A4 update: the Case 2 displayed paper terminal absorption layer has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` and
+`lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`.  The proved Lean names include
+`matrixEntryIdeal_sumElim_zero_bottom`,
+`case2DisplayedPaperDchart`, `case2DisplayedPaperQ`,
+`case2DisplayedPaperQinv`, `case2DisplayedPaperDpp`,
+`case2DisplayedPaperCprime`, `case2DisplayedPaperCprimeTop`,
+`case2DisplayedPaperCprimeTail`,
+`case2DisplayedPaperCprime_eq_verticalBlock`,
+`case2DisplayedPaperDppp`, `case2DisplayedPaperDpp_eq_pivotPostQBlock`,
+`case2DisplayedPaperDpp_mul_Cprime`,
+`matrixEntryIdeal_case2DisplayedPaperDppp_mul_Cprime_eq_top_of_not_next_cont`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_sourceChartMap_paperQP`.
+This checkpoint exposes Aoyagi's displayed Case 2 paper notation and proves
+that, under displayed pivot validity and failed next continuation, `D''' * C'`
+has the same matrix-entry ideal as the top pivot row of `C'`.  It does not
+construct or identify Aoyagi's next-stage `C'^(S+1)`, choose the source-order
+row/column terminal presentation, build `S+1` post-data, prove chart coverage
+or regularity, compute Jacobians, prove normal crossings/RLCT, prove
+termination or transition invariance, or repair the printed vector mismatch.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-paper-terminal-absorption-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-paper-terminal-absorption.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-paper-terminal-absorption-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

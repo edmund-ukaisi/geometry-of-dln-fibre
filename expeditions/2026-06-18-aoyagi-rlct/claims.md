@@ -1239,6 +1239,18 @@ No such claim is formalisation-ready until both fields are filled.
   prove chart coverage or regularity, compute Jacobians, prove normal
   crossings, extract RLCT, prove termination or transition invariance, or
   repair the printed vector mismatch.
+  The displayed paper terminal absorption layer names the displayed Case 2
+  paper blocks `D_chart`, `Q`, `Q^-1`, `D''`, `C' = Q^-1 C`, and `D'''`.
+  It restates the supplied displayed source-chart `Q/P` identity in this
+  notation and proves that, under failed next continuation,
+  `matrixEntryIdeal (D''' * C')` equals the matrix-entry ideal of the top
+  pivot row of `C'`. The supporting generic lemma says zero bottom rows do
+  not change a matrix-entry ideal. This is paper notation and zero-row
+  absorption only; it does not construct or identify Aoyagi's next-stage
+  `C'^(S+1)`, choose the row/column terminal presentation, build `S+1`
+  post-data, prove chart coverage or regularity, compute Jacobians, prove
+  normal crossings, extract RLCT, prove termination or transition invariance,
+  or repair the printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

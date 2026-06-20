@@ -1360,6 +1360,24 @@ presentation, build `S+1` post-data, prove chart production or coverage,
 Jacobians, normal crossings/RLCT, termination, transition invariance, or
 printed-vector repair.
 
+The Case 2 displayed paper terminal absorption layer is now Lean-proved.  The
+new paper-facing names `case2DisplayedPaperDchart`,
+`case2DisplayedPaperQ`, `case2DisplayedPaperQinv`,
+`case2DisplayedPaperDpp`, `case2DisplayedPaperCprime`, and
+`case2DisplayedPaperDppp` mirror Aoyagi's displayed Case 2 `Q/P` notation.
+The supplied displayed source-chart `Q/P` identity is re-exported in that
+notation as
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_sourceChartMap_paperQP`.
+The generic ideal lemma `matrixEntryIdeal_sumElim_zero_bottom` proves that
+zero bottom rows do not affect a matrix-entry ideal, and
+`matrixEntryIdeal_case2DisplayedPaperDppp_mul_Cprime_eq_top_of_not_next_cont`
+applies the failed-continuation cleared-block theorem to show that
+`D''' * C'` has the same matrix-entry ideal as the pivot row of `C'`.  This
+is not a construction or identification of Aoyagi's next-stage
+`C'^(S+1)`, not a source-order row/column terminal presentation, and not
+chart production, Jacobian arithmetic, normal crossings/RLCT, termination,
+transition invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
