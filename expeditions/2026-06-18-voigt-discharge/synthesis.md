@@ -566,3 +566,35 @@ engine + L6 + RLCT-over-ℝ/ℂ stay char-free.
 **Build waves:** W1 = A0 (build) ∥ A1 (scout) ∥ A2 (scout). W2 = A3 ∥ A4 (from A1/A2). W3 = A5, A6.
 **Surface to operator** only at completion (hVoigt discharged → close PR) or if A4's Kähler API / A3's IsOpen-O_M
 inflates beyond the sizing (genuine new blocker).
+
+## 2026-06-20 — AG half W1 results (A0 built, A1/A2 recon) → refined A3/A4 plans
+
+**A0 LANDED** `Core.OrbitPullbackDim.varietyDim_eq_ringKrullDim_range_orbitPullback`:
+`varietyDim(Z_M) = (ringKrullDim (orbitPullback M).range).unbotD 0`, `image μ_M^*` a DOMAIN. Char-free
+(`[Infinite k]`; a brick honestly weakened from `[IsAlgClosed k]`). Reviewer PASS. The route-c first link.
+
+**A1 recon (thread 33) — route-c = 4 modules (cheap branch).** `ringKrullDim = trdeg` (f.g. domain) ABSENT
+as named but CHEAP via landed `ringKrullDim_quotient_eq_noetherRank` + the present `trdeg` API. Hardest =
+the **char-0 Jacobian criterion** `trdeg_k(image) ≤ generic-rank(Jac μ_M^*)` (genuinely absent, char-0).
+**SOUNDNESS FLAG (Codex):** naive "identity differential rank ≥ image dim" is FALSE (`t↦t²`); rescued ONLY
+by **constant rank under the G-action** (homogeneity) ⟹ identity-rank = generic-rank. A4 plan (4 mod):
+A4.1 `ringKrullDim(range)=trdeg(range)` · A4.2 char-0 Jacobian criterion (HARDEST, de-risk gate) · A4.3
+`dμ_M@e = deformationδ M M` + constant-rank-under-G (holds soundness) · A4.4 assemble + chain A0.
+Target: `(ringKrullDim (orbitPullback M).range).unbotD 0 ≤ finrank k (LinearMap.range (deformationδ M M))`.
+
+**A2 recon (thread 34) — L3 = ~6 modules; thread-29 break-point DISSOLVES.** `IsOpen O_M` was the WRONG
+target (orbitSet M = closed points, not open). **Route DENSE:** orbit closed points DENSE
+(`vanishingIdeal {orbit closed pts} = ⊥`, cheap L6 rewrite) ∩ dense-open smooth locus ⟹ smooth pt is an
+orbit pt. All bricks (i)–(iv) PRESENT (`dense_smoothLocus_of_perfectField`, `pointEquivClosedPoint`,
+`StructureSheaf.stalkIso`, `FormallySmooth.of_equiv`, `baseChangePullback` landed, `residueFieldIsoBase`).
+A3 plan (6 mod): L3.0 G-action α_P ≃ₐ (mostly landed) · L3.1 iff_of_equiv transfer · L3.2 Spec model +
+generic smoothness (TIME SINK = instance plumbing, not deep math; de-risk: stand up instance skeleton as a
+sorry-free `example` first) · L3.3 dense orbit closed pts (cheap) · L3.4 assemble (smooth_of_grpObj template).
+`[IsAlgClosed k]` (perfect field).
+
+**L2b final equality structure (for A6):** `finrank(range δ⁰) = varietyDim(Z_M)` by SQUEEZE:
+(≤) `range δ⁰ ⊆ ker Jac` [easy] + chain `finrank(ker Jac)=varietyDim` [L2a✓+M3✓(needs L3=A3)+L4d✓];
+(≥) route c [A4]. The easy `range δ⁰ ⊆ ker Jac` is a small piece for A6.
+
+**W2 dispatched:** A3 (L3 build, Route DENSE, 6-mod, land-what-closes) ∥ A4.2 de-risk (pen-and-paper: char-0
+Jacobian-criterion certificate + the constant-rank-under-G soundness handling, before the A4 build).
