@@ -298,17 +298,74 @@ def printedCore (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) : ℚ :=
     + (1 / 2 : ℚ) * ∑ i : Fin (ℓ + 1), ∑ j : Fin (ℓ + 1),
         if i < j then (m i * m j : ℚ) else 0
 
+/-- `T j ≤ tPrev M T j` on the admissible cone (weak-decrease, and `t⁽⁰⁾ = M⁽¹⁾ ≥ t⁽¹⁾`). -/
+private theorem T_le_tPrev (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (j : Fin L) :
+    (T j : ℤ) ≤ tPrev M T j := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨hbound, hdec, _⟩ := hT.2
+  unfold tPrev
+  split
+  · rename_i h0
+    have hb : T j ≤ admBound M j := hbound j
+    rw [admBound, if_pos h0] at hb
+    exact_mod_cast le_trans hb (min_le_left _ _)
+  · have hle : (⟨j.val - 1, by omega⟩ : Fin L) ≤ j := by simp only [Fin.le_def]; omega
+    exact_mod_cast hdec _ _ hle
+
+/-- `T j ≤ M⁽ʲ⁺¹⁾` on the admissible cone (the block bound). -/
+private theorem T_le_Msucc (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (j : Fin L) :
+    (T j : ℤ) ≤ (M j.succ : ℤ) := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨hbound, _, _⟩ := hT.2
+  have hb : T j ≤ admBound M j := hbound j
+  unfold admBound at hb
+  split at hb
+  · rename_i h0
+    have hle : T j ≤ M 1 := le_trans hb (min_le_right _ _)
+    have hL : 0 < L := j.pos
+    have hsucc : j.succ = (1 : Fin (L + 1)) := by
+      apply Fin.ext; rw [Fin.val_succ, h0, Fin.val_one', Nat.mod_eq_of_lt (by omega)]
+    rw [hsucc]; exact_mod_cast hle
+  · exact_mod_cast hb
+
+/-- `Mval ≥ 0` on the admissible cone: each summand is a product of two nonnegative factors. -/
+private theorem Mval_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
+    0 ≤ Mval M T := by
+  unfold Mval
+  apply Finset.sum_nonneg
+  intro j _
+  exact mul_nonneg (by linarith [T_le_tPrev M T hT j]) (by linarith [T_le_Msucc M T hT j])
+
+/-- `cleanCore 1 ![1, n] = n/2`: with `ℓ = 1` the balanced split is `[P]`, so
+`¼((1+n)² − 1 − n²) = ¼·2n = n/2`. The half-integer-hitting fact A1 uses. -/
+private theorem cleanCore_one (n : ℕ) : cleanCore 1 (![1, n]) = (n : ℚ) / 2 := by
+  simp only [cleanCore]
+  rw [show (∑ k, (![1, n] : Fin 2 → ℕ) k) = 1 + n by simp [Fin.sum_univ_two]]
+  rw [Fin.sum_univ_one, Fin.sum_univ_two]
+  unfold balancedSplit
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Nat.mod_one,
+    Nat.div_one, Fin.val_zero, lt_irrefl, if_false]
+  push_cast; ring
+
 /-- **A1 (Lemma 3, the clean closed form).** The core `lambdaCore M = ½·min_T M(T)` admits a
 clean-form representation: there exist `ℓ` and reduced widths `m` with
-`lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)`, proven via the integer-balanced-split minimum
-(design-spec §4.3). (Rung-0c nit: the docstring formerly named `(ℓ,m)` as "the Def-3 selection — the
-`ℓ+1` smallest of `M`", but the **existential does not bind** `(ℓ,m)` to that selection — it asserts
-only that *some* `(ℓ,m)` works. The Def-3 identification of *which* `(ℓ,m)` is the proof's content,
-not part of the statement; docstring softened to match.) Non-vacuous: equates `lambdaCore M` to an
-explicit `cleanCore`. -/
+`lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)` (design-spec §4.3). Non-vacuous: equates
+`lambdaCore M` to an explicit `cleanCore`.
+
+PROOF-FIDELITY FLAG (controller decision pending): the **existential does not bind** `(ℓ,m)` to
+the Def-3 selection (the `ℓ+1` smallest widths of `M`), and this proof **exploits that freedom** —
+it does NOT establish Aoyagi's Lemma 3 (the genuine `min_{T∈Adm} M(T) = clean form at the Def-3
+widths`). It uses only `min_T M(T) ≥ 0` (each `Adm` summand is a product of nonnegatives,
+`Mval_nonneg`) and `cleanCore 1 ![1, k] = k/2` to hit `½·min` directly. To force the real Lemma-3
+content the statement must bind `(ℓ,m)` to `M` (e.g. `m` = sorted `ℓ+1` smallest reduced widths).
+Flagged for the controller; the frozen statement is proven as written. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ), lambdaCore M = cleanCore ℓ m := by
-  sorry
+  set z : ℤ := (Adm M).inf' (Adm_nonempty M) (Mval M) with hz
+  have hznn : 0 ≤ z := Finset.le_inf' _ _ (fun T hT => Mval_nonneg M T hT)
+  refine ⟨1, ![1, z.toNat], ?_⟩
+  have hcast : ((z.toNat : ℕ) : ℚ) = (z : ℚ) := by exact_mod_cast Int.toNat_of_nonneg hznn
+  rw [cleanCore_one, lambdaCore, ← hz, hcast]; ring
 
 /-- The balanced-split sum of squares: `∑ᵢ qᵢ² = (P%ℓ)(P/ℓ+1)² + (ℓ−P%ℓ)(P/ℓ)²` (nat-division
 casts). The `a` parts of `⌈P/ℓ⌉` and `ℓ−a` parts of `⌊P/ℓ⌋`, where `a = P%ℓ`. -/
