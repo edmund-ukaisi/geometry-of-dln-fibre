@@ -39,3 +39,4 @@ import DLNFibre.Core.BoxMoveGeneral
 import DLNFibre.Core.BoxMoveGeneration
 import DLNFibre.Core.OrbitClosure
 import DLNFibre.Core.OrbitPullbackDim
+import DLNFibre.Core.OrbitSmooth
