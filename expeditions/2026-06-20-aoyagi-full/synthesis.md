@@ -2,60 +2,47 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-20, after Rung 0 design)
+## Current read (2026-06-20, spine fully de-risked at general L)
 
-Rung 0 design landed (`threads/01-…/design-spec.md`, 479 lines, merged to expedition/aoyagi-full).
-Controller-reviewed + Codex-decorrelated-audited as **bedrock-quality and faithful**. The foundation:
+Rung 0 design landed + reviewed (bedrock-quality, Codex-faithful). The foundation (see
+`threads/01-.../design-spec.md`): `dlnLoss=‖prod·−B‖²_F`; `rlctAt` = Aoyagi Def 1 integral-sup in ℝ≥0∞;
+`aoyagiλ = reg + ½·min over the admissible cone Adm of Mval`, TOTAL + Def-3-free; S2 = the one cited
+axiom (chart normal-crossing → (λ,θ)); goal skeleton with named sorries.
 
-- `dlnLoss = ‖prod·−B‖²_F`; `optimalSet = fibre`; Σ_X drops out via S1.
-- `rlctAt = sSup{ c | ∃U∈𝓝w*, IntegrableOn |F|^(−c) U }` in ℝ≥0∞ — faithful Aoyagi Def 1 (bump removed
-  via existential-nbhd sandwich = φ-independence). Precondition: F real-analytic, ≢0 near w* (dlnLoss is
-  polynomial ⇒ OK). Pole-sign: largest pole at z=−λ.
-- `aoyagiλ = reg + ½·min_{T∈Adm} M(T)` — TOTAL (Finset.inf' over finite Adm, T=0 always admissible),
-  Def-3-free. Clean form `¼(Σqᵢ²−Σmₖ²)` (q=balanced ℓ-split) is its *value* at the minimiser (A1);
-  printed Theorem-2 = clean where Def 3 applies (verified symbolically). NOT an ℓ-extremisation (both
-  naive readings wrong: max-over-ℓ ≠ Def-3; min-over-ℓ negative).
-- `rlctOrderAt` (θ): analytic pole order; combinatorial `aoyagiθ=a(ℓ−a)+1` is the deliverable; the
-  analytic=chart-count equality rides inside S2. Secondary.
-- **S2 (the one axiom):** chart-level normal-crossing→(λ,θ); minimal hypotheses pinned (cover, proper
-  charts, monomial pullback + monomial Jacobian with |·|, units bounded away from 0). Irreducible cited
-  fact = `∫₀^ε u^{h−2kc} < ∞ ⟺ c<(h+1)/(2k)`. Cover + change-of-variables + properness stay on our side.
-- Goal skeleton (§8): every named statement S1/L1/L2/D1/R1/A1/A2/T as a named sorry + the one axiom.
-
-## The spine risk — RESOLVED into a weaker, cleaner obligation (thread 03)
-
-pp's small-case probe (+ decorrelated Codex) settled it: the set-equality "R1's chart exponents = Adm"
-is **FALSE** (charts outnumber T-vectors), but the **value-match** holds on (1,1,1)/(2,1,2)/(2,2,2):
-resolution's min chart-ratio `= ½·min_{T∈Adm} Mval(T) = λ_core`. Interpretation: `T` ↔ rank-incidence
-stratum, `Mval(T) = codim` (proven L=2) ⇒ `λ_core = ½·min_strata codim`. So `Adm` is the right
-*definition* substrate; the R1 obligation shrinks from a set bijection to the **value-match**
-(Theorem 3 + resolution existence) — far cleaner, and possibly a cleaner R1 architecture
-(`½·min_strata codim`) than chart enumeration. The spine is SOUND. (design-spec §9.3 amended.)
-
-**New top-open item:** the general-L `Mval = codim(nested-rank stratum)` (L=2 verified; L≥3 = the
-nested-rank version, not yet proven). pp is on `(2,2,2,2)` to pin it + the divisor-type↔T count (θ).
+**Spine SOUND, fully de-risked at general L (thread 03, pp + decorrelated Codex):**
+- The set-equality "R1 charts = Adm" is FALSE; the **value-match** holds: `min chart-ratio = ½·min_{T∈Adm} Mval(T) = λ`.
+- **`codim S(t) = Mval(t)` PROVEN at general L** (telescoping fibration; hand + numeric differential-rank
+  L=3,L=4 + decorrelated Codex). `T` ↔ nested-rank stratum `{rank(C¹···Cʲ)=tⱼ}`. So
+  `λ_core = ½·min over strata of codim`. Established pen-and-paper; Lean proof = the A1/R1 obligation.
+- **θ pinned:** `θ=a(ℓ−a)+1` always (deepest-point divisor multiplicity, Lemma 4/5); `|argmin Adm|` only
+  equals it for L+1≤4 and over-counts for ≥5. θ rides inside S2.
+- **R1 obligation + architecture:** value-match via stratum codim; organize the resolution BY nested-rank
+  strata (each → a divisor of ratio ½·codim; cover = strata partition of {F=0}), NOT chart enumeration.
+  Differential-rank=codim is the transversality input. Codex subtlety: use EXACT strata, not naive
+  `{rank ≤ t}` (a union whose codim is a min). design-spec §9.3 amended; thread-03 has the full record.
 
 ## Topology note
 
-Controller session is in worktree `rung0-defs` (branch worktree-rung0-defs); main checkout holds the
-canonical `expedition/aoyagi-full`; both at same HEAD. Teammate isolation-worktrees collapse onto
-rung0-defs ⇒ serial teammates. Editing happens in rung0-defs; controller merges →expedition/aoyagi-full
-in main + pushes. For the parallel middle phase, recommend operator relaunch controller from main
-checkout (non-blocking; re-ground from docs).
+Controller session is in worktree `rung0-defs`; canonical `expedition/aoyagi-full` in the main checkout;
+teammate isolation-worktrees collapse onto rung0-defs ⇒ **serial editing teammates**. Editing in
+rung0-defs; controller merges →expedition/aoyagi-full in main + pushes. pp runs read-only (no collision).
+For the parallel middle phase, operator may relaunch controller from main (non-blocking; re-ground via docs).
+
+## In flight
+
+- `fm` — Rung 0b encode (shared worktree). Awaiting report.
+- `pp` — next: D1 scope (read Aoyagi 2013 `entropy-15-03714.pdf`, Theorem 4 / deepest-point reduction).
+  Read-only/scratch.
 
 ## What's done / banked
 
-- Setup + Rung 0 design (this + prior tick). Design merged (25b825b), pushed.
-
-## In flight (parallel)
-
-- `fm` — Rung 0b encode (shared worktree). Awaiting report.
-- `pp` — thread 03 round 2: L=3 `(2,2,2,2)` nested-rank `Mval=codim` + θ divisor-type count. Read-only.
+- Setup; Rung 0 design (bedrock-reviewed); spine fully de-risked at general L (codim=Mval proven 3 ways,
+  θ characterized, R1 stratification architecture). All pushed.
 
 ## Next tick
 
-On `fm`'s report: precision/bedrock review of the encoded Foundations + skeleton (Rung 0c, hardener+rv);
-ensure the R1 skeleton statement is the **value-match** form (not the superseded set-bijection). On
-`pp`'s L=3 report: if `Mval=codim` generalizes, the spine is fully understood → the validate-small-first
-Lean gate can start at (1,1,1) (cleanest: no blow-up), then L1/L2/A1. Consider the `½·min_strata codim`
-reframing as the R1 architecture.
+On `fm`'s report: precision/bedrock review of encoded Foundations + skeleton (Rung 0c, hardener+rv);
+restate the R1 skeleton statement as the **stratum value-match** (`λ_core=½·min_strata codim`, resolution
+achieves it), not the superseded set-bijection. Then the validate-small-first Lean gate at (1,1,1)
+[no blow-up], then L1/L2. On `pp`'s D1 report: scope/queue the D1 rung. Carry the stratification R1
+architecture as the mountain's target.

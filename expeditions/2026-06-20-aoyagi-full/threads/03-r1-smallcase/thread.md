@@ -1,58 +1,68 @@
-# Thread 03 — R1 small-case blueprint + spine-risk probe (pp, parallel/read-only)
+# Thread 03 — R1 blueprint + spine-risk probe (pp, parallel/read-only)
 
-- **Seat:** `pp` (pen-and-paper). **Read-only on repo + /tmp scratch** (`/tmp/r1_*.py`,
-  `/tmp/codex-r1-*.md`); controller integrates (this doc). **Reports to:** controller.
-- **Status:** round 1 (L=2) done; round 2 (L=3) in-progress.
+- **Seat:** `pp` (pen-and-paper). **Read-only on repo + /tmp scratch**; controller integrates (this doc).
+- **Status:** rounds 1 (L=2) + 2 (L=3 / general L) done. Spine fully de-risked. Lean-pending.
 
-## Verdict (round 1): the spine is SOUND; design-spec §9.3 was mis-stated
+## Verdict: the spine is SOUND; design-spec §9.3 (set-bijection) was mis-stated
 
-**The strong claim "R1's chart exponents = Adm" is FALSE** — the counts forbid a bijection:
-(1,1,1) 2 T's ↔ 1 chart; (2,1,2) 2 T's ↔ 4 charts; (2,2,2) 3 T's ↔ 24 charts. Confirmed by `pp`
-**and** a decorrelated Codex consult (xhigh), independently.
+The strong claim "R1's chart exponents = Adm" is **FALSE** — charts vastly outnumber T-vectors
+((2,2,2): 24 charts vs 3 T's). The **value-match** holds: resolution's min chart-ratio
+`= ½·min_{T∈Adm} Mval(T) = λ_core` = ground truth. Confirmed by pp + decorrelated Codex, independently.
 
-**The weak (value-match) claim HOLDS on all three cases:** the resolution's minimum chart-ratio
-`= ½·min_{T∈Adm} Mval(T) = λ_core =` ground truth. This is the only thing the headline needs.
+## What `T` indexes (the structural finding, now proven at general L)
 
-**What `T` actually indexes (the useful finding).** For L=2, `T=(t,0)` indexes the **rank-incidence
-stratum** `{rank C¹ = t, C¹C² = 0}`, and
-> `Mval(T) = (M¹−t)(M²−t) + t·M³ = codim` of that stratum
-(the `(M¹−t)(M²−t)` = codim{rank C¹ ≤ t}; the `t·M³` = columns of C² forced into ker C¹). Hence
-`λ_core = ½·min over strata of codim` — the `rlct = ½·codim` structure made concrete on the singular
-core. The resolution's minimizing **divisor types** (not charts) correspond to the minimizing T's, with
-ratio `½·Mval(T)`; chart multiplicity is just affine-chart duplication of one exceptional divisor. The
-order θ = #{minimizing divisor types} = `a(ℓ−a)+1` — NOT the chart count and NOT |argmin Adm|
-(verified earlier: (2,2,2,2,2) has 6 admissible minimisers but θ=5).
+`T = (t_1,…,t_{L-1},0)` (weakly-decreasing) indexes the **nested-rank-incidence stratum**
+`S(t) = { (C^1,…,C^L) : rank(C^1···C^j) = t_j for all j }`, and
+> `codim S(t) = (M^1 − t_1)(M^2 − t_1) + Σ_{j=2}^L (t_{j-1} − t_j)(M^{j+1} − t_j) = Mval(t)`  EXACTLY.
 
-## Per-case chart blueprint (all exponents symbolically verified)
+So `λ_core = ½ · min over admissible t of codim S(t)` — the `rlct = ½·codim` structure made concrete on
+the singular core.
 
-- **(1,1,1)** `F=(c₁c₂)²` — already normal-crossing, **no blow-up**. Identity chart: k=(1,1), h=(0,0),
-  ratios (½,½), min=½=λ ✔. → the cleanest end-to-end **first** validation case.
-- **(2,1,2)** `F=(a₁²+a₂²)(b₁²+b₂²)` — blow up the a-cone and b-cone (4 product charts); every chart
-  `F=x²z²(1+y²)(1+w²)`, `|det|=|xz|` ⇒ k=h=1 on x,z, ratios (1,1), min=1=λ ✔, θ=2 (two exc. divisors).
-- **(2,2,2)** `F=‖AB‖²` — 24 affine charts: blow up A-origin (Jac x³) → after a det-1 B-change,
-  `AB = x·[…]`, `F=x²Q` → blow up smooth center {E=F₀=δ=0} (3 charts) → δ-pivot residual cone needs one
-  more blow-up (4 charts). Minimizing chart: `F=x²s²·unit`, `|det|=|x|³|s|²` ⇒ (k_x,h_x)=(1,3)→ratio 2,
-  (k_s,h_s)=(1,2)→ratio 3/2. min=3/2=λ ✔, attained only by s ⇒ θ=1 ✔. 24 charts cover.
+**Proof (general L), 3-way confirmed (pp hand + numeric + decorrelated Codex):** telescoping fibration —
+at layer j, `P_{j-1} = U V` with V full row rank, so `C ↦ V C` is surjective and the residual `D = V C^j`
+ranges freely; imposing `rank D = t_j` is a determinantal codim `(t_{j-1} − t_j)(M^{j+1} − t_j)`; the last
+layer `t_L = 0` forces `C^L`'s columns into `ker P_{L-1}`, codim `t_{L-1} M^{L+1}`; telescopes to Mval.
+Numeric check: the product-map differential rank = Mval at generic stratum points, all strata of L=3
+(2,2,2,2) and L=4 (2,2,2,2,2). The "free D" step (the worry) is real (V surjective). **Established
+pen-and-paper; the Lean proof is the A1/R1 obligation.**
 
-## The corrected R1 obligation (supersedes design-spec §9.3 flag 3)
+## θ pinned exactly
 
-Hand the R1 rung the **value-match**, not a set bijection:
-- **(i) [λ]** resolution's min chart-ratio `= ½·min_{T∈Adm} Mval(T)`. (What A1's minimisation computes;
-  Theorem 3 + resolution existence give it.)
-- **(ii) [meaning]** `Adm`'s T ↔ rank-incidence strata; `Mval(T) = codim` (proven L=2; general-L is the
-  nested-rank version — the new top open item, round 2).
-- **(iii) [θ]** per-chart tie-count at the min = #{minimizing divisor types} = `a(ℓ−a)+1` (rides inside
-  S2 as divisor-type multiplicity; consistent with the §3 θ-seam).
+`θ = a(ℓ−a)+1` always (the **deepest-point divisor multiplicity**, Aoyagi Lemma 4/5). `|argmin Adm| = θ`
+only for `n = L+1 ≤ 4`; for `n ≥ 5` it **over-counts** (e.g. (2,2,2,2,2): |argmin|=6 but θ=5;
+(2,2,2,2,2,2): 10 vs 7) — shallow strata can tie the minimal codim yet not be deepest-point divisor
+types. ⇒ θ is NOT |argmin Adm| and NOT the chart count; it is the Lemma-4/5 multiplicity that rides
+inside the S2 citation. (Sharpens the §3 θ-seam; confirms the earlier (2,2,2,2,2) 6-vs-5 catch.)
 
-`Adm` remains the correct **definition** substrate for `aoyagiλ` (its min gives λ); R1's obligation is
-the value-match (i) — far weaker/cleaner than the exponent-set-equality. The spine is sound.
+## The corrected R1 obligation + recommended architecture (supersedes design-spec §9.3 flag 3)
+
+Hand the R1 rung the **value-match via stratum codimension**, not a set bijection:
+> `λ_core = ½ · min_{t admissible} codim S(t)`, with `codim S(t) = Mval(t)` [proven, general L], and R1
+> ACHIEVES the min.
+
+**Recommended R1 architecture (cleaner than chart enumeration):** organize the resolution **by the
+nested-rank strata**. Each stratum `S(t)` ⇒ an exceptional divisor with candidate ratio `½·codim S(t)`;
+the cover is "the strata partition `{F=0}`"; min over divisor types = `λ_core`; deepest-point divisor
+multiplicity = θ. The differential-rank = codim fact is the normal-bundle/transversality input R1 needs.
+This replaces a false set-equality with a structural stratification statement — far more Lean-tractable.
+
+**Codex subtlety to carry:** the naive `{rank P_j ≤ t_j ∀j}` is a *union* of strata; its codim = MIN over
+admissible lower rank-vectors (can be < the exact-stratum codim). Phrase R1/A1 via the **exact** strata
+(or min over closure), never the naive ≤-conditions.
+
+## Per-case chart blueprint (round 1, all symbolically verified)
+
+- **(1,1,1)** `F=(c₁c₂)²` — already normal-crossing, NO blow-up. Identity chart k=(1,1), h=(0,0),
+  min ratio = 1/2 = λ. → cleanest first end-to-end Lean validation.
+- **(2,1,2)** `F=(a₁²+a₂²)(b₁²+b₂²)` — 4 product charts; each `F=x²z²(1+y²)(1+w²)`, `|det|=|xz|` ⇒ ratios
+  (1,1), min=1=λ, θ=2.
+- **(2,2,2)** `F=‖AB‖²` — 24 charts; minimizing chart `F=x²s²·unit`, `|det|=|x|³|s|²` ⇒ ratios (2, 3/2),
+  min=3/2=λ, θ=1.
 
 ## Validate-small-first ordering (recommended)
-`(1,1,1)` [no blow-up; normal-crossing in original coords] → `(2,1,2)` [cone blow-ups, θ>1] →
-`(2,2,2)` [real recursive resolution]. `(1,1,1)` is the cleanest first full top-to-bottom Lean case.
+`(1,1,1)` [no blow-up] → `(2,1,2)` [cone blow-ups, θ>1] → `(2,2,2)` [recursive resolution].
 
-## Open (round 2, in-progress): general-L `Mval = codim(nested-rank stratum)`
-L=2 verified; L≥3 nested-rank version (t¹≥t²≥… as ranks at successive partial products) is the natural
-generalization, NOT yet proven. `pp` is on `(2,2,2,2)` (λ=3/2, θ=3) to pin it + the divisor-type↔T
-count + assess whether `λ_core = ½·min_strata codim` is the cleanest R1 obligation (possibly a cleaner
-R1 architecture than chart enumeration).
+## Status
+Arithmetic/geometry bridge fully de-risked at general L. Only R1's own *construction* (the mountain)
+remains — with the clean stratification target above. Scratch: `/tmp/r1_*.py`, `/tmp/l3_*.py`,
+`/tmp/l4_tangent.py`, `/tmp/theta_*.py`, `/tmp/codex-r1-*.md`, `/tmp/codex-l3-*.md`.
