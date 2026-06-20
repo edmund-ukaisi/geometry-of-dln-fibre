@@ -2272,3 +2272,28 @@ data supplied.  It does not construct source-produced `C'^(S+1)`, prove chart
 coverage or regularity from coordinates, prove Jacobian arithmetic, normal
 crossings, RLCT extraction, termination, transition invariance, automatic
 gap/tail transport, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 actual-width column exhaustion
+
+Reproduction:
+`reproduction-case2-actual-width-column-exhaustion-a4.md`.
+Statement card:
+`statement-card-a4-case2-actual-width-column-exhaustion.md`.
+Review artifact:
+`review-case2-actual-width-column-exhaustion-a4.md`.
+
+Lean now records the exhausted side of the displayed terminal branch under
+actual next-width exhaustion.  If
+
+```text
+n(S+1)=J+1,
+```
+
+then the post-pivot residual column range `J+2..n(S+1)` is empty, and hence
+the displayed pivot's column complement is empty.  The actual-width terminal
+source model exports the same fact.
+
+This is finite-domain bookkeeping only.  It does not construct
+`C'^(S+1)`, source-produced following-factor data, chart production, chart
+coverage, Jacobian arithmetic, normal crossings, RLCT extraction, termination,
+transition invariance, automatic gap/tail transport, or printed-vector repair.

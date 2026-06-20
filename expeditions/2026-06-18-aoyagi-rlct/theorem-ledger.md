@@ -1526,6 +1526,22 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-chart-terminal-model-constructor-a4.md`.
 
+Latest A4 update: the Case 2 actual-width column-exhaustion fact has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
+are `case2DisplayedPivotColComplement_isEmpty_of_width_next_eq` and
+`Case2DisplayedSuppliedActualWidthTerminalSourceModel.displayedPivotColComplement_isEmpty`.
+This checkpoint says that, under `n(S+1)=J+1`, the displayed pivot's column
+complement is empty.  It identifies the exhausted side of the stopped terminal
+branch only; it does not construct source-produced `C'^(S+1)`, following
+data, chart production, coverage, Jacobians, normal crossings/RLCT,
+termination, transition invariance, automatic Case 2 gap/tail transport, or
+printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-actual-width-column-exhaustion-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-actual-width-column-exhaustion.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-actual-width-column-exhaustion-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

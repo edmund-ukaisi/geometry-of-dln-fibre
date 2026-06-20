@@ -104,8 +104,10 @@ on the session's original cwd.
    scalar. The displayed source-chart terminal model constructor now removes
    arbitrary recurrence/exponent post-data from this terminal wrapper by using
    `case2Succ` and corrected selected-label overrides, while keeping
-   chart-family predicates and terminal old-top/suffix data supplied. Next A4
-   target:
+   chart-family predicates and terminal old-top/suffix data supplied. The
+   actual-width terminal source model now also exports the precise finite
+   column-exhaustion fact: the displayed pivot column complement is empty when
+   `n(S+1)=J+1`. Next A4 target:
    construct chart-produced recurrence/exponent post-data or source-produced
    old top/suffix data; do not identify `[Ctop;C0]` with Aoyagi's full
    `C'^(S+1)` without that source-order construction, and do not transport

@@ -4321,6 +4321,20 @@ theorem case2DisplayedPivotColComplement_isEmpty_of_postPivotCols_eq_empty
     simpa [hcols] using (e j).2
   exact (Finset.notMem_empty (e j).1) hempty
 
+/-- Actual next-width exhaustion empties the displayed pivot's column
+complement.
+
+This identifies the exhausted side of the stopped displayed Case 2 terminal
+branch.  It is finite-domain bookkeeping, not construction of the next
+following matrix. -/
+theorem case2DisplayedPivotColComplement_isEmpty_of_width_next_eq
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1) :
+    IsEmpty (pivotComplement (case2DisplayedPivotCol n hS hcont)) :=
+  case2DisplayedPivotColComplement_isEmpty_of_postPivotCols_eq_empty hS hcont
+    (case2PostPivotCols_eq_empty_of_width_next_eq hwidth)
+
 /-- When the next Case 2 continuation bound fails, one of the displayed
 pivot-complement index types is empty.  This is the finite-index content
 behind the terminal one-row/one-column shape, not the `S+1` advance
@@ -11066,6 +11080,20 @@ theorem not_next_cont_of_actualWidth_exhausted
     simpa [model.actualWidth_exhausted] using
       (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
   omega
+
+/-- In the actual-width-exhausted terminal source model, the displayed pivot's
+column complement is empty.  This is only the column-exhausted side; the row
+complement may still be nonempty. -/
+theorem displayedPivotColComplement_isEmpty
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 := b0) (residual := residual) (C := C)) :
+    IsEmpty (pivotComplement (case2DisplayedPivotCol n hS hcont)) :=
+  case2DisplayedPivotColComplement_isEmpty_of_width_next_eq hS hcont
+    model.actualWidth_exhausted
 
 /-- Under actual-width exhaustion, old `(S,J+1)` introduced labels match the
 stage-relabelled `(S+1,0)` introduced labels. -/

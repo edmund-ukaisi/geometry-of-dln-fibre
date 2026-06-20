@@ -523,6 +523,8 @@ No such claim is formalisation-ready until both fields are filled.
   source-chart boundary constructor with this terminal wrapper, so arbitrary
   recurrence/exponent post-data are removed from that wrapper while
   chart-family predicates and terminal old-top/suffix data remain supplied.
+  The actual-width column-exhaustion fact now records that the displayed pivot
+  column complement is empty when `n(S+1)=J+1`.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -603,6 +605,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-terminal-relabel-weight-candidate-a4.md`.
 	  Review of the Case 2 source-chart terminal model constructor is saved at
 	  `threads/04-blow-up-certificate/review-case2-source-chart-terminal-model-constructor-a4.md`.
+	  Review of the Case 2 actual-width column exhaustion is saved at
+	  `threads/04-blow-up-certificate/review-case2-actual-width-column-exhaustion-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1331,6 +1335,11 @@ No such claim is formalisation-ready until both fields are filled.
   `post = pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))` and the
   corrected selected-label exponent post-data, but still leaves chart-family
   predicates and terminal `Atop`, `Ctop`, `F` supplied.
+  The actual-width column-exhaustion fact proves
+  `case2DisplayedPivotColComplement_isEmpty_of_width_next_eq` and the
+  terminal source-model projection
+  `displayedPivotColComplement_isEmpty`; this only identifies the exhausted
+  finite side.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

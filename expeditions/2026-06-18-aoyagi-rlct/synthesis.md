@@ -1467,6 +1467,12 @@ indexed by the concrete relabelled post-state weight.  This removes arbitrary
 post-data from this wrapper, but chart-family predicates plus `Atop`, `Ctop`,
 and `F` remain supplied; no source-produced `C'^(S+1)` is proved.
 
+The actual-width column-exhaustion fact is now Lean-proved.  Under
+`n(S+1)=J+1`, the post-pivot residual columns `J+2..n(S+1)` are empty, so the
+displayed pivot's column complement is empty.  The actual-width terminal
+source model exports this fact.  This identifies the exhausted side only; it
+does not construct source-produced terminal following data.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
