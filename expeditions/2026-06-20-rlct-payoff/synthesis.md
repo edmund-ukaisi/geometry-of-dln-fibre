@@ -46,3 +46,36 @@ LANDED (dev): Voigt codim C (per-orbit codimRep=orbitLinearCodim) · CTheta comb
 ## Next action
 Dispatch the sizing recon (thread 01 scout Mathlib-coverage ∥ thread 02 pen-and-paper math-sizing) →
 re-scope the ladder → surface only if a scope-surprise (Phase R sub-library) fires.
+
+## 2026-06-20 — SIZING RECON CLOSED (threads 01+02, Codex-convergent) → re-scoped
+
+**Phases G/θ/D BOUNDED (build, zero-cited, ~5–6 modules); Phase R = Cited interface.**
+- G1 mostly LANDED (`Core.Setup`: `productRankLocus`/`productRankLocusLE`=`Σ̄^r`={rk≤r}/`mult`/`fibre`).
+  Link lemma `mult = submult` corner (~10 LoC).
+- G2 `Σ̄^r = ⋃_{corner≤r} Ō_M` — the hard structural piece (~300–500 LoC); both inclusions from LANDED
+  Gabriel + `orbitRankLocus`. Gating piece (pen-and-paper): the set-level membership `A ∈ Ō_{rankPattern A}`.
+- G3 components = maximal `Ō_M` — Mathlib `irreducibleComponents` / `Ideal.minimalPrimes.equivIrreducibleComponents`
+  / `mem_of_subset_sUnion_irreducibleComponents`; `height = ⨅ minimalPrimes` by `rfl`. (~250–400 LoC.)
+- θ: `numTop = θ` via min-codim ⟹ component (consumes LANDED Voigt/CThetaGeometric). Needs strict-mono of
+  `codimRep`/`Ideal.height` under proper irreducible inclusion (check `Core.AffineDomainDimension`).
+- D: D1 LANDED; D2 loss ~100–200; D3 codim identity ~200–400 (scope to codim, avoid k=ℂ bundle).
+- **R: Mathlib has ZERO rlct/SLT/lct/zeta/Watanabe. INTERFACE `rlct = C/2` against a `Cited` `RlctInterface`
+  (~50–150 LoC). NOT a from-scratch build (multi-month).**
+
+**TWO CORRECTIONS (recon, vs source — Codex-convergent):**
+1. **`θ` ≠ rlct multiplicity** (paper line 1934: no simple relation between rlcm `m²{S̃/m}(1−{S̃/m})` and θ=k).
+   DROPPED the "(C/2,θ) = complete learning coefficient" framing. θ = geometric invariant; payoff = `rlct=C/2`
+   (Cited) + θ (geometric), two results. Brief re-scoped.
+2. `Σ̄^r = {rk ≤ r}` (engine's `productRankLocusLE`; paper's `≥` at line 758 is a typo).
+
+**Architecture risk (flagged both seats):** the point↔`PrimeSpectrum` transport of `codimRep`=`Ideal.height`
+under the coordinate change — the voigt-flagged no-Mathlib-lemma. Spike it FIRST in the G build.
+
+**(2,2,2) r=0 (exact, cross-checked):** 6 corner-0 orbits, codimForm {4,3,5,4,5,8}; **3 irreducible
+components** (codim 4,3,4); **C=3, θ=1** — matches `cCodim_d222_zero=3` / `numTop_d222_zero=1` + paper Ex 4.3.
+((2,3,2): C=4, θ=2.)
+
+**Next:** dispatch Phase G build (thread 03): G1 link + set-level Gabriel membership + G2 stratification,
+starting with the spec-transport/`minimalPrimes(⨅)` spike. Then G3 + θ, then D, then R-interface.
+Surface to operator only at completion or a genuine blocker; the Phase-R Cited-interface framing (given the
+θ-correction) is the natural mid-point to re-confirm with the operator.
