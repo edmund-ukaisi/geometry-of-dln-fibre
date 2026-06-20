@@ -146,7 +146,9 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
 - **S1.4** `rlct_germ_local_aux` (S1Local.lean) — PROVEN, bare statement SOUND (no gap). fm wiring (`exact` + import).
 - **S1.3** `rlct_unit_invariant` — **11th fidelity issue:** bare statement FALSE without `Measurable u`
   (non-measurable u → u·F non-measurable → not Integrable → rlctAt=sSup∅=0 ≠ rlctAt F). Fix `Measurable u`
-  APPROVED (pending rv-2 confirm); fm-2 delivering `rlct_unit_invariant_aux` under it; fm wires later.
+  **rv-2 CONFIRMED** (decorrelated + Codex; Vitali-set counterexample, `IntegrableOn⟹AEStronglyMeasurable`
+  crux Lean-verified). `AEMeasurable u` is the minimal hyp but `Measurable u` is the contract choice (cleaner,
+  use-site-safe — analytic unit continuous). fm-2 delivering `rlct_unit_invariant_aux` under it; fm wires later.
 - **S1.5** `rlct_additive_smooth_block` — DISPATCHED (fm-2 → a lean-formaliser, S1Additive.lean; gap-class flagged).
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
