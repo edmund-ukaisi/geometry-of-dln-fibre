@@ -624,6 +624,44 @@ production or coverage, compute Jacobians, prove normal crossings/RLCT
 extraction, prove termination or transition invariance, or repair the printed
 Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed source-terminal candidate
+
+Reproduction:
+`reproduction-case2-displayed-source-terminal-candidate-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-source-terminal-candidate.md`.
+Review artifact:
+`review-case2-displayed-source-terminal-candidate-a4.md`.
+
+Lean now names the source-order stopped terminal candidate
+`case2DisplayedPaperTerminalCprimeCandidate`:
+
+```text
+(blockdiag(Wold,[b0]) * [Cold; C0]) * F,
+```
+
+where `C0` is the top pivot row of `C' = Q^-1 C`.  The expansion theorem
+`case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul` identifies
+this product with the previously proved expanded stack
+`[(Wold*Cold)*F ; (b0*C0)*F]`.
+
+The supplied displayed-boundary theorem
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`
+combines the supplied source-chart `Q/P` identity with failed-continuation
+terminal absorption.  The residual terminal weight is sourced from the supplied
+successor recurrence state as `post.weight (J+1)`, while the old top multiplier
+`Atop`, old top block `Ctop`, and suffix `F` remain supplied.
+
+This advances the terminal display to the paper-shaped "diagonal outside the
+candidate following matrix" form.  It still does not prove that `Atop`, `Ctop`,
+or `F` are Aoyagi's actual old diagonal weights, old top rows, or remaining
+product, and it does not prove that `[Ctop;C0]` is the source-produced
+`C'^(S+1)`.  It also does not choose the row-vs-column terminal presentation
+beyond the displayed pivot-first stopped block, build `S+1` post-data, prove
+chart production or coverage, compute Jacobians, prove normal crossings/RLCT
+extraction, prove termination or transition invariance, or repair the printed
+Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

@@ -1417,6 +1417,23 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-weighted-terminal-product-a4.md`.
 
+Latest A4 update: the Case 2 displayed source-terminal candidate layer has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are `case2DisplayedPaperTerminalCprimeCandidate`,
+`case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`.
+This checkpoint rewrites the expanded weighted stack into Aoyagi's
+source-order product shape `(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, with
+`b0` sourced as `post.weight (J+1)` in the supplied displayed boundary.  It
+keeps `Atop`, `Ctop`, and `F` supplied; it does not identify them with the
+source old diagonal weights, source old top rows, or source remaining product,
+and it does not prove `[Ctop;C0]` is source-produced `C'^(S+1)`. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-source-terminal-candidate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-source-terminal-candidate.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-source-terminal-candidate-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

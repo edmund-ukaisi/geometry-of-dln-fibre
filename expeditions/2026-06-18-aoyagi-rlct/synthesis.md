@@ -1410,6 +1410,19 @@ side with Aoyagi's `C'^(S+1)`, and remains outside source-order terminal
 presentation, chart production, Jacobian arithmetic, normal crossings/RLCT,
 termination, transition invariance, and printed-vector repair.
 
+The Case 2 displayed source-terminal candidate layer is now Lean-proved.  The
+new definition `case2DisplayedPaperTerminalCprimeCandidate` names the
+source-order product `(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, keeping the
+weight `b0` outside the unweighted stack.  The expansion theorem identifies it
+with the expanded stack from the previous checkpoint.  The supplied-boundary
+wrapper
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`
+then combines the supplied displayed source-chart `Q/P` identity with the
+stopped terminal absorption, sourcing `b0` from `post.weight (J+1)` while
+leaving `Atop`, `Ctop`, and `F` supplied.  This still does not identify those
+supplied objects with Aoyagi's actual old weights, old top rows, or remaining
+product, and does not prove `[Ctop;C0]` is source-produced `C'^(S+1)`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

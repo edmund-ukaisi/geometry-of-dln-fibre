@@ -10645,6 +10645,158 @@ theorem sourceDisplayedQP_sourceChartMap_paperQP
     case2DisplayedPaperCprime, case2DisplayedPaperQinv]
     using data.sourceDisplayedQP_sourceChartMap residual C
 
+/-- Source-order candidate for the stopped displayed Case 2 terminal product.
+
+This is the product of the supplied old top multiplier and pivot scalar
+against the unweighted stack `[Cold; C0]`, followed by the remaining suffix
+`F`.  It names the finite matrix shape suggested by Aoyagi's terminal display,
+but it does not prove that `[Cold; C0]` is the source-produced
+`C'^(S+1)`. -/
+def case2DisplayedPaperTerminalCprimeCandidate
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    (Wold : Matrix ι ι R) (Cold : Matrix ι τ R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) : Matrix (ι ⊕ Unit) υ R :=
+  (fromBlocks Wold 0 0 (show Matrix Unit Unit R from fun _ _ ↦ b0) *
+      verticalBlock Cold (case2DisplayedPaperCprimeTop n hS hcont residual C)) * F
+
+/-- Expand the stopped displayed Case 2 source-order candidate into the
+weighted old-top row block and weighted surviving pivot row. -/
+theorem case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    (Wold : Matrix ι ι R) (Cold : Matrix ι τ R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) :
+    case2DisplayedPaperTerminalCprimeCandidate Wold Cold n hS hcont b0 residual C F =
+      verticalBlock ((Wold * Cold) * F)
+        (((show Matrix Unit Unit R from fun _ _ ↦ b0) *
+          case2DisplayedPaperCprimeTop n hS hcont residual C) * F) := by
+  rw [case2DisplayedPaperTerminalCprimeCandidate, fromBlocks_mul_verticalBlock]
+  change
+    ((show Matrix (ι ⊕ Unit) τ R from Sum.elim (Wold * Cold)
+      ((show Matrix Unit Unit R from fun _ _ ↦ b0) *
+        case2DisplayedPaperCprimeTop n hS hcont residual C)) * F) =
+      verticalBlock ((Wold * Cold) * F)
+        (((show Matrix Unit Unit R from fun _ _ ↦ b0) *
+          case2DisplayedPaperCprimeTop n hS hcont residual C) * F)
+  rw [sumElim_mul]
+  rfl
+
+/-- Source-chart displayed Case 2 terminal product after the supplied `Q/P`
+identity and failed next continuation.
+
+The old top block `Ctop`, old top multiplier `Atop`, and remaining following
+product `F` are still supplied.  The residual row weights are the successor
+recurrence weights carried by the supplied displayed boundary.  This theorem
+combines the source-chart `Q/P` identity with the weighted stopped-terminal
+zero-row absorption; it does not identify the right hand side with Aoyagi's
+full `C'^(S+1)` or prove chart production. -/
+theorem exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (Atop : Matrix ι ι R) (Ctop : Matrix ι τ R)
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks Atop 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock Ctop
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * F) =
+      matrixEntryIdeal
+          (case2DisplayedPaperTerminalCprimeCandidate Atop Ctop n data.stage_pos
+            data.continuation (post.weight (J + 1)) residual C F) := by
+  rcases data.sourceDisplayedQP_sourceChartMap_paperQP residual C with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  let row := case2DisplayedPivotRow n data.stage_pos data.continuation
+  let col := case2DisplayedPivotCol n data.stage_pos data.continuation
+  let A := case2DisplayedPaperDchart n data.stage_pos data.continuation residual
+  let Ltail : Matrix (Unit ⊕ pivotComplement row) (Unit ⊕ pivotComplement col) R :=
+    weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+      (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+        case2DisplayedSourceSubstitutionBlock n data.stage_pos data.continuation u
+          residual).submatrix (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)
+  let Wtail : Matrix (Unit ⊕ pivotComplement row) (Unit ⊕ pivotComplement row) R :=
+    weightedPivotDiagonal (post.weight (J + 1))
+      (fun i : pivotComplement row ↦ post.weight (case2ResidualRowLevel n S J i.1))
+  let Dppp : Matrix (Unit ⊕ pivotComplement row) (Unit ⊕ pivotComplement col) R :=
+    case2DisplayedPaperDppp n data.stage_pos data.continuation residual
+  let Csrc : Matrix (Unit ⊕ pivotComplement col) τ R :=
+    case2DisplayedSourceFollowingFactor n data.stage_pos data.continuation C
+  let Cprime : Matrix (Unit ⊕ pivotComplement col) τ R :=
+    case2DisplayedPaperCprime n data.stage_pos data.continuation residual C
+  have hq' : Ltail * Csrc = (Wtail * Dppp) * Cprime := by
+    simpa [row, col, A, Ltail, Wtail, Dppp, Csrc, Cprime] using hq
+  have hlift :
+      fromBlocks Atop 0 0 Ltail * verticalBlock Ctop Csrc =
+        fromBlocks Atop 0 0 (Wtail * Dppp) * verticalBlock Ctop Cprime := by
+    exact fromBlocks_mul_verticalBlock_eq_of_tail Atop Ltail (Wtail * Dppp)
+      Ctop Csrc Cprime hq'
+  have hassoc :
+      fromBlocks Atop 0 0 (Wtail * Dppp) * verticalBlock Ctop Cprime =
+        fromBlocks Atop 0 0 Wtail * verticalBlock Ctop (Dppp * Cprime) := by
+    rw [fromBlocks_mul_verticalBlock, fromBlocks_mul_verticalBlock, Matrix.mul_assoc]
+  change
+    matrixEntryIdeal ((fromBlocks Atop 0 0 Ltail * verticalBlock Ctop Csrc) * F) =
+      matrixEntryIdeal
+        (case2DisplayedPaperTerminalCprimeCandidate Atop Ctop n data.stage_pos
+          data.continuation (post.weight (J + 1)) residual C F)
+  calc
+    matrixEntryIdeal ((fromBlocks Atop 0 0 Ltail * verticalBlock Ctop Csrc) * F)
+        = matrixEntryIdeal
+            ((fromBlocks Atop 0 0 (Wtail * Dppp) * verticalBlock Ctop Cprime) * F) := by
+          rw [hlift]
+    _ = matrixEntryIdeal
+            ((fromBlocks Atop 0 0 Wtail * verticalBlock Ctop (Dppp * Cprime)) * F) := by
+          rw [hassoc]
+    _ = matrixEntryIdeal
+          (verticalBlock ((Atop * Ctop) * F)
+            (((show Matrix Unit Unit R from fun _ _ ↦ post.weight (J + 1)) *
+              case2DisplayedPaperCprimeTop n data.stage_pos data.continuation residual C) *
+              F)) := by
+          simpa [row, Wtail, Dppp, Cprime] using
+            matrixEntryIdeal_case2DisplayedPaperWeightedTerminalProduct_eq_topStack_of_not_next_cont
+              (Wold := Atop) (Cold := Ctop) n data.stage_pos data.continuation
+              hstop (post.weight (J + 1))
+              (fun i : pivotComplement (case2DisplayedPivotRow n data.stage_pos
+                    data.continuation) ↦
+                post.weight (case2ResidualRowLevel n S J i.1))
+              residual C F
+    _ = matrixEntryIdeal
+          (case2DisplayedPaperTerminalCprimeCandidate Atop Ctop n data.stage_pos
+            data.continuation (post.weight (J + 1)) residual C F) := by
+          rw [case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul]
+
 /-- The displayed source-coordinate chart map has the selected variable as a
 transformed finite-center value. -/
 theorem displayedPivot_sourceChartMap_value_mem

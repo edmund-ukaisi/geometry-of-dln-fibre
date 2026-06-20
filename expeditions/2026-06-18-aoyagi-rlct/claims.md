@@ -1275,6 +1275,14 @@ No such claim is formalisation-ready until both fields are filled.
   presentation, build `S+1` post-data, prove chart coverage or regularity,
   compute Jacobians, prove normal crossings, extract RLCT, prove termination or
   transition invariance, or repair the printed vector mismatch.
+  The displayed source-terminal candidate layer names the source-order product
+  `(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, proves that it expands to
+  `[(Wold*Cold)*F;(b0*C0)*F]`, and combines the supplied displayed source-chart
+  `Q/P` identity with stopped terminal absorption under a supplied displayed
+  boundary.  In the wrapper, `b0` is `post.weight (J+1)`, but `Atop`, `Ctop`,
+  and `F` are still supplied. This still does not prove those supplied objects
+  are Aoyagi's actual old weights, old top rows, or remaining product, and it
+  does not prove `[Ctop;C0]` is source-produced `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
