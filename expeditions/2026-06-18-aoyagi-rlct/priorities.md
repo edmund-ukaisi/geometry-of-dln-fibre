@@ -107,7 +107,9 @@ on the session's original cwd.
    chart-family predicates and terminal old-top/suffix data supplied. The
    actual-width terminal source model now also exports the precise finite
    column-exhaustion fact: the displayed pivot column complement is empty when
-   `n(S+1)=J+1`. Next A4 target:
+   `n(S+1)=J+1`. The companion current-prefix row-exhaustion bridge now
+   records the separate row-side fact under `prefixMinNat n S=J+1`, without
+   attaching it to actual-width relabeling. Next A4 target:
    construct chart-produced recurrence/exponent post-data or source-produced
    old top/suffix data; do not identify `[Ctop;C0]` with Aoyagi's full
    `C'^(S+1)` without that source-order construction, and do not transport

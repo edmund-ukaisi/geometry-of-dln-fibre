@@ -1542,6 +1542,21 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-actual-width-column-exhaustion-a4.md`.
 
+Latest A4 update: the Case 2 current-prefix row-exhaustion fact has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean name is
+`case2DisplayedPivotRowComplement_isEmpty_of_prefixMin_current_eq`.  This
+checkpoint says that, under `prefixMinNat n S=J+1`, the displayed pivot's row
+complement is empty.  It identifies the row-exhausted side only; it does not
+assert actual-width exhaustion, column-complement emptiness, source-produced
+`C'^(S+1)`, following data, chart production, coverage, Jacobians, normal
+crossings/RLCT, termination, transition invariance, automatic Case 2 gap/tail
+transport, or printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-current-prefix-row-exhaustion-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-current-prefix-row-exhaustion.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-current-prefix-row-exhaustion-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

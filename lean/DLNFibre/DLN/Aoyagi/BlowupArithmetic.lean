@@ -4310,6 +4310,20 @@ theorem case2DisplayedPivotRowComplement_isEmpty_of_postPivotRows_eq_empty
     simpa [hrows] using (e i).2
   exact (Finset.notMem_empty (e i).1) hempty
 
+/-- Current-prefix row exhaustion empties the displayed pivot's row
+complement.
+
+This identifies the row-exhausted side of the stopped displayed Case 2
+terminal branch.  It is independent of actual-width column exhaustion and is
+finite-domain bookkeeping, not construction of the next following matrix. -/
+theorem case2DisplayedPivotRowComplement_isEmpty_of_prefixMin_current_eq
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hrow : prefixMinNat n S = J + 1) :
+    IsEmpty (pivotComplement (case2DisplayedPivotRow n hS hcont)) :=
+  case2DisplayedPivotRowComplement_isEmpty_of_postPivotRows_eq_empty hS hcont
+    (case2PostPivotRows_eq_empty_of_prefixMin_current_eq hrow)
+
 theorem case2DisplayedPivotColComplement_isEmpty_of_postPivotCols_eq_empty
     {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))

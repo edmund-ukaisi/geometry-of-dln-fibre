@@ -2297,3 +2297,29 @@ This is finite-domain bookkeeping only.  It does not construct
 `C'^(S+1)`, source-produced following-factor data, chart production, chart
 coverage, Jacobian arithmetic, normal crossings, RLCT extraction, termination,
 transition invariance, automatic gap/tail transport, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 current-prefix row exhaustion
+
+Reproduction:
+`reproduction-case2-current-prefix-row-exhaustion-a4.md`.
+Statement card:
+`statement-card-a4-case2-current-prefix-row-exhaustion.md`.
+Review artifact:
+`review-case2-current-prefix-row-exhaustion-a4.md`.
+
+Lean now records the row-exhausted side of the displayed terminal branch under
+current-prefix exhaustion.  If
+
+```text
+prefixMinNat n S=J+1,
+```
+
+then the post-pivot residual row range `J+2..prefixMinNat n S` is empty, and
+hence the displayed pivot's row complement is empty.
+
+This is finite-domain bookkeeping only.  It is independent of actual-width
+exhaustion and is not a projection from the actual-width terminal source
+model.  It does not construct `C'^(S+1)`, source-produced following-factor
+data, chart production, chart coverage, Jacobian arithmetic, normal crossings,
+RLCT extraction, termination, transition invariance, automatic gap/tail
+transport, or printed-vector repair.

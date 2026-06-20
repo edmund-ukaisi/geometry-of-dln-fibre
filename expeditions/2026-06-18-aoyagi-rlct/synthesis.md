@@ -1473,6 +1473,12 @@ displayed pivot's column complement is empty.  The actual-width terminal
 source model exports this fact.  This identifies the exhausted side only; it
 does not construct source-produced terminal following data.
 
+The current-prefix row-exhaustion companion is now Lean-proved.  Under
+`prefixMinNat n S=J+1`, the post-pivot residual rows
+`J+2..prefixMinNat n S` are empty, so the displayed pivot's row complement is
+empty.  This is independent of actual-width exhaustion and is not projected
+from the actual-width terminal source model.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

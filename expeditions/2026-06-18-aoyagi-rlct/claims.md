@@ -525,6 +525,9 @@ No such claim is formalisation-ready until both fields are filled.
   chart-family predicates and terminal old-top/suffix data remain supplied.
   The actual-width column-exhaustion fact now records that the displayed pivot
   column complement is empty when `n(S+1)=J+1`.
+  The companion current-prefix row-exhaustion fact records that the displayed
+  pivot row complement is empty when `prefixMinNat n S=J+1`, independently of
+  actual-width exhaustion.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -607,6 +610,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-source-chart-terminal-model-constructor-a4.md`.
 	  Review of the Case 2 actual-width column exhaustion is saved at
 	  `threads/04-blow-up-certificate/review-case2-actual-width-column-exhaustion-a4.md`.
+	  Review of the Case 2 current-prefix row exhaustion is saved at
+	  `threads/04-blow-up-certificate/review-case2-current-prefix-row-exhaustion-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1340,6 +1345,9 @@ No such claim is formalisation-ready until both fields are filled.
   terminal source-model projection
   `displayedPivotColComplement_isEmpty`; this only identifies the exhausted
   finite side.
+  The current-prefix row-exhaustion fact proves
+  `case2DisplayedPivotRowComplement_isEmpty_of_prefixMin_current_eq`; this
+  only identifies the row side under `prefixMinNat n S=J+1`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
