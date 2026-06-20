@@ -196,19 +196,6 @@ theorem abs_rpow_integrableOn_Icc_symm_iff (s ε : ℝ) (hε : 0 < ε) :
       (Icc_union_Icc_eq_Icc (by linarith) (le_of_lt hε)).symm
     rw [hunion]; exact hneg.union hpos
 
-/-- **Per-layer measure-preserving entry equiv** (toward the bridge's piece 1): the unique scalar
-entry of a `1×1` real matrix, `(Fin 1 → Fin 1 → ℝ) ≃ᵐ ℝ`, is volume-preserving (twice-`funUnique`).
-The remaining step — assembling these per-layer maps into a measure-preserving
-`Params (1,1,1) ≃ᵐ (Fin 2 → ℝ)` — is BLOCKED: `Params H`'s fiber
-`Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ` does not reduce to `Fin 1 → Fin 1 → ℝ` *uniformly*
-in symbolic `s` (only per concrete `s` via `fin_cases`), and `Matrix`-as-`def` blocks the
-`MeasurableSpace`/Pi-fiber instances `volume_preserving_pi` needs. See thread 13. -/
-theorem measurePreserving_matrixEntry₁₁ :
-    MeasurePreserving
-      ((MeasurableEquiv.funUnique (Fin 1) (Fin 1 → ℝ)).trans (MeasurableEquiv.funUnique (Fin 1) ℝ))
-      (volume : Measure (Fin 1 → Fin 1 → ℝ)) volume :=
-  (volume_preserving_funUnique (Fin 1) ℝ).comp (volume_preserving_funUnique (Fin 1) (Fin 1 → ℝ))
-
 /-! ## `paramsEquivFlat` is a homeomorphism, and preserves the coordinate product (S1.1 infra)
 
 Three reusable facts that unblock the `(1,1,1)` `rlctAt`-bridge (and any neighbourhood-of-`w*` RLCT

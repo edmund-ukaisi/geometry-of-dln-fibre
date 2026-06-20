@@ -8,7 +8,11 @@ The baby-S1.1 bridge `case111_rlct_eq_monomialThreshold` is now **proven sorry-f
 - **Files:** `lean/DLNFibre/DLN/RLCT/Validate/Case111.lean`,
   `lean/DLNFibre/DLN/RLCT/Validate/Case111Bridge.lean` (@ commit `b159ead`, branch
   `expedition/aoyagi-full`).
-- **Status.** sorry-free. **Awaiting fidelity review.**
+- **Status.** sorry-free + **reviewed** (fidelity confirmed by an independent reviewer @ `ed302a1`:
+  statement faithful to Aoyagi Def 1, build green, `#print axioms` clean, no vacuous direction in the
+  set-equality, box-iff used in the correct direction each branch). Three report-only cosmetic findings
+  (two stale section headers, one unused dead lemma `measurePreserving_matrixEntry₁₁`) addressed in the
+  follow-up commit.
 
 ## The bridge (the result this thread closed)
 

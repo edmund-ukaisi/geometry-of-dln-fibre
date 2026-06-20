@@ -81,7 +81,7 @@ theorem dlnLoss_case111 (A : Params (![1, 1, 1] : Fin 3 → ℕ)) :
   erw [Matrix.sub_apply, Matrix.zero_apply, sub_zero, Matrix.mul_apply, Fin.sum_univ_one,
     Matrix.mul_apply, Fin.sum_univ_one, Matrix.one_apply_eq, one_mul]
 
-/-! ## The end-to-end through the one citation (sorry-free) -/
+/-! ## The monomial-threshold end-to-end (sorry-free, axiom-free) -/
 
 /-- The per-axis ratios for the `(1,1,1)` monomial data `k = (1,1)`, `h = (0,0)` all equal `1/2`, so
 their infimum — the S2 threshold — is `1/2`. -/
@@ -115,7 +115,7 @@ theorem case111_monomialThreshold :
       = ENNReal.ofReal (aoyagiLambda (![1, 1, 1] : Fin 3 → ℕ) 0) := by
   rw [monomialThreshold_case111, ofReal_aoyagiLambda_case111]
 
-/-! ## The `rlctAt`-headline (one named bridge `sorry`) -/
+/-! ## The `rlctAt`-headline (bridge proven; sorry-free, axiom-free) -/
 
 /-- The deepest point `deepest111` lies in `optimalSet` (`prod 0 = 0`, so the loss vanishes). -/
 theorem deepest111_mem_optimalSet :
