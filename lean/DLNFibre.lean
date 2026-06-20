@@ -38,3 +38,4 @@ import DLNFibre.Core.RankLocusClosed
 import DLNFibre.Core.BoxMoveGeneral
 import DLNFibre.Core.BoxMoveGeneration
 import DLNFibre.Core.OrbitClosure
+import DLNFibre.Core.OrbitPullbackDim
