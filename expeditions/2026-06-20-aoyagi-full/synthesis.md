@@ -37,17 +37,18 @@ B=diag(1,1,0): the MIDDLE width H 1=1 bottlenecks the product to rank ≤1<2 ⇒
 The HEADLINE is then false too (⨅ over ∅ = ⊤ ≠ finite). Root cause: "rank B=r ⟹ r≤H s" holds only for the
 OUTER widths. **Fix (decided): add `(hr : ∀ s : Fin (L+1), r ≤ H s)`** to deepestPoint_exists + deepestPoint
 + deepestPoint_isDeep + product_reduction + deepest_point_reduction + aoyagi_learning_coefficient. It is also
-the well-definedness domain of `aoyagiLambda` (M⁽ˢ⁾=H⁽ˢ⁾−r needs r≤H⁽ˢ⁾). fm doing the STATEMENT fix first
-(deepestPoint_exists stays a sorry under the new sig) → I merge → rv-2 re-audits the corrected contract.
+the well-definedness domain of `aoyagiLambda` (M⁽ˢ⁾=H⁽ˢ⁾−r needs r≤H⁽ˢ⁾). **FIXED + MERGED @`2ee02b2`** (hr
+threaded through all 6 decls, headline assembles, deepestPoint_exists kept as sorry under new sig; contract
+now TRUE, no empty-fibre ⊤). rv-2 re-auditing the corrected contract (isolated green-gate). 7th bug closed.
 
 ## Live status (per-track)
 
 - **fm-2 (measure track)** — keystone done @d7b1ba3; now on UNIT 2 (the (1,1,1) bridge, Case111*.lean).
   Commits directly to expedition/aoyagi-full (module-green each; pings per commit; rv-2 green-gates behind).
 - **fm (algebra track)** — branch `worktree-rung0-defs` (Skeleton-only), based @1bb9e31 (I merge forward;
-  no rebase needed — Skeleton independent of keystone). A1-clean + A1-lambdaCore(weak) + L1 DONE. QUEUE:
-  #18 hr statement-fix (NOW) → I merge (A1+L1+hr) → deepestPoint_exists PROOF (reuses L1) → I merge → #19
-  lambdaCore-strengthen (waits for pp's genuine statement).
+  no rebase needed — Skeleton independent of keystone). A1-clean + A1-lambdaCore(weak) + L1 + hr-fix DONE +
+  MERGED @`2ee02b2`. NOW on `deepestPoint_exists` PROOF (reuses L1 adapted-basis) → then #19 lambdaCore-
+  strengthen (waits for pp's genuine statement). Trunk @`2ee02b2`: keystone + A1 + L1 + hr; Skeleton sorry 9.
 - **pp (design)** — R1 design DELIVERED + 2 increments (binding-divisor correction; value-match downgrade).
   Standing down on-demand; re-engage for R1 value-match execution when fm's L1 lands.
 - **rv-2 (review)** — green-gating keystone d7b1ba3; queued: re-audit the hr-corrected contract. Decorrelated.
