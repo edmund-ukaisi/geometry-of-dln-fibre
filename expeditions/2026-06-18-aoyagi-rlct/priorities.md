@@ -506,10 +506,15 @@ on the session's original cwd.
    arithmetic, not as pole-order admissibility.  The finite bridge from Lemma
    4's all-increment count to Lemma 3's free-count equality cases is now also
    Lean-proved: the first `ell-1` high-count is `a` or `a-1`, so the isolated
-   Lemma 3 numerator attains its lower-bound value at that free count.  The remaining
+   Lemma 3 numerator attains its lower-bound value at that free count.  The
+   endpoint squeeze in Lemma 4 is now also Lean-proved: the displayed terminal
+   endpoint expression for `Htilde_ell` and `Htilde'_ell` is zero under
+   Definition 3's selected-width sum, so a supplied endpoint sandwich implies
+   `H_ell=0`.  The remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis
-   from source vector inequalities, connect the source terminal exponent
+   from source vector inequalities, prove the vector-inequality-to-endpoint
+   sandwich bridge, connect the source terminal exponent
    expression to the isolated Lemma 3 free-count quadratic, prove
    correspondence-to-`lambda`, reproduce the terminal
    quadratic rewrite, and reproduce Lemma 5's chart-family/order-count

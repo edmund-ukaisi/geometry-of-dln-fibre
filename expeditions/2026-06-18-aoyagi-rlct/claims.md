@@ -1577,6 +1577,10 @@ No such claim is formalisation-ready until both fields are filled.
   The finite bridge from Lemma 4's all-increment count to the Lemma 3
   free-count equality cases is now Lean-proved and reviewed at the same narrow
   arithmetic scope.
+  The terminal endpoint squeeze used in Lemma 4 is also Lean-proved at the
+  finite arithmetic level: the common endpoint for `Htilde_ell` and
+  `Htilde'_ell` is zero under Definition 3's selected-width sum, so supplied
+  endpoint inequalities imply `H_ell=0`.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1595,6 +1599,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma4-sum-bridge-a5.md`;
   Lemma 4 free-count bridge at
   `threads/05-arithmetic-tail/reproduction-lemma4-free-count-bridge-a5.md`;
+  Lemma 4 endpoint squeeze at
+  `threads/05-arithmetic-tail/reproduction-lemma4-endpoint-squeeze-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1615,6 +1621,10 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 4 free-count bridge checked by xhigh `Arendt the 5th` and xhigh Lean
   scout `Banach the 5th` at
   `threads/05-arithmetic-tail/review-lemma4-free-count-bridge-a5.md`;
+  Lemma 4 endpoint squeeze checked by xhigh `Parfit the 5th`, xhigh Lean
+  scout `Galileo the 5th`, and final xhigh landed-patch reviewer
+  `Ramanujan the 5th` at
+  `threads/05-arithmetic-tail/review-lemma4-endpoint-squeeze-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
@@ -1624,6 +1634,8 @@ No such claim is formalisation-ready until both fields are filled.
   source `H`-bookkeeping sum bridge in
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   finite Lemma 4 free-count bridge to Lemma 3 equality cases in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
+  terminal endpoint squeeze wrappers in
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1674,16 +1686,24 @@ No such claim is formalisation-ready until both fields are filled.
   all-increment count into a free first-`ell-1` count plus the last increment
   and feed the resulting integer equality case into the isolated Lemma 3
   numerator theorem.
+  Also proved `aoyagiLemma4TerminalEndpoint`,
+  `aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum`,
+  `aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds`,
+  `aoyagiLemma4_twoValueCount_of_terminalEndpointBounds`, and
+  `aoyagiLemma4_terminalEndpointBounds_freeHighCount_lemma3A_eq_min`, which
+  replace an explicit terminal condition `H_ell=0` by supplied endpoint
+  inequalities around the displayed terminal endpoints.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
 - **Cited.** none planned.
 - **Deferred.** terminal candidate set with `\tilde t_{s,k}=0`, feasibility of
   the minimizing exponent chains, the Lemma 4 two-value hypothesis from source
-  vector inequalities, the terminal exponent rewrite into the isolated Lemma
-  3 free-count quadratic, Lemma 4's correspondence-to-`lambda` conclusion,
-  Lemma 5 chart-family admissibility and coverage, pole-order count, and
-  analytic extraction.
+  vector inequalities, the bridge from `Ttilde <= T <= Ttilde'` to the
+  terminal endpoint sandwich, the terminal exponent rewrite into the isolated
+  Lemma 3 free-count quadratic, Lemma 4's correspondence-to-`lambda`
+  conclusion, Lemma 5 chart-family admissibility and coverage, pole-order
+  count, and analytic extraction.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 

@@ -1736,6 +1736,19 @@ source sum bridge and the two-value increment hypothesis.  This removes the
 finite count-to-Lemma-3 equality-case gap, but it does not prove the two-value
 hypothesis, terminal exponent rewriting, vector admissibility, or
 correspondence to `lambda`.
+
+The endpoint squeeze in Aoyagi Lemma 4 is now Lean-proved at the terminal
+arithmetic level.  `aoyagiLemma4TerminalEndpoint` names the common displayed
+endpoint expression for `Htilde_ell` and `Htilde'_ell`; under `a<=ell` and
+Definition 3's selected-width sum,
+`aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum` proves this endpoint is
+zero.  `aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds` turns supplied
+endpoint inequalities into `H_ell=0`, and the wrappers
+`aoyagiLemma4_twoValueCount_of_terminalEndpointBounds` and
+`aoyagiLemma4_terminalEndpointBounds_freeHighCount_lemma3A_eq_min` feed that
+into the existing count and Lemma 3 free-count bridge.  This still assumes the
+endpoint sandwich; the formal bridge from `Ttilde <= T <= Ttilde'` to endpoint
+inequalities remains open.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

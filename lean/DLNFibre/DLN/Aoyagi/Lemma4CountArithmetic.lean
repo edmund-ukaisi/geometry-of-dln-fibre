@@ -267,6 +267,88 @@ theorem aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min (n a : ℕ) (M : ℤ
   exact aoyagiLemma4_freeHighCount_lemma3A_eq_min_of_totalCount n a M
     (aoyagiLemma4F (n + 1) m H) hcount
 
+/-- Common endpoint expression for Aoyagi's displayed `Htilde_ell` and
+`Htilde'_ell`.
+
+This is only the terminal value.  It does not define the full `Htilde` or
+`Htilde'` chains. -/
+def aoyagiLemma4TerminalEndpoint (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) : ℤ :=
+  (∑ j : Fin (ell + 1), m j) -
+    ((a : ℤ) * M + ((ell - a : ℕ) : ℤ) * (M - 1))
+
+/-- The displayed terminal endpoints `Htilde_ell` and `Htilde'_ell` vanish
+under Definition 3's selected-width sum. -/
+theorem aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiLemma4TerminalEndpoint ell a M m = 0 := by
+  unfold aoyagiLemma4TerminalEndpoint
+  rw [hselected]
+  rw [Nat.cast_sub ha]
+  ring
+
+/-- If a terminal `H_ell` is squeezed between Aoyagi's two displayed terminal
+endpoints, then it is zero once those endpoints have been identified with
+zero. -/
+theorem aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds
+    {ell a : ℕ} {M : ℤ} {m H : Fin (ell + 1) → ℤ}
+    (hend : aoyagiLemma4TerminalEndpoint ell a M m = 0)
+    (hlower : aoyagiLemma4TerminalEndpoint ell a M m ≤ H (Fin.last ell))
+    (hupper : H (Fin.last ell) ≤ aoyagiLemma4TerminalEndpoint ell a M m) :
+    H (Fin.last ell) = 0 := by
+  omega
+
+/-- Lemma 4's count with the source endpoint sandwich replacing the explicit
+terminal condition `H_ell = 0`.
+
+This is still finite arithmetic only.  It assumes the endpoint sandwich and the
+two-value increment hypothesis; it does not prove either from vector
+admissibility. -/
+theorem aoyagiLemma4_twoValueCount_of_terminalEndpointBounds (ell a : ℕ) (M : ℤ)
+    (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlower : aoyagiLemma4TerminalEndpoint ell a M m ≤ H (Fin.last ell))
+    (hupper : H (Fin.last ell) ≤ aoyagiLemma4TerminalEndpoint ell a M m)
+    (hvals : ∀ j : Fin ell,
+      aoyagiLemma4F ell m H j = M - 1 ∨ aoyagiLemma4F ell m H j = M) :
+    ((Finset.univ.filter fun j : Fin ell ↦ aoyagiLemma4F ell m H j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = M - 1).card = ell - a) := by
+  have hend := aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum ell a M m ha hselected
+  have hHlast :=
+    aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds hend hlower hupper
+  exact aoyagiLemma4_twoValueCount_of_terminalH ell a M m H hH0 hHlast hselected hvals
+
+/-- Source-shaped endpoint-sandwich wrapper for the finite Lemma 4-to-Lemma 3
+free-count bridge. -/
+theorem aoyagiLemma4_terminalEndpointBounds_freeHighCount_lemma3A_eq_min
+    (n a : ℕ) (M : ℤ) (m H : Fin (n + 2) → ℤ)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ n + 1)
+    (hselected : (∑ j : Fin (n + 2), m j) =
+      ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hlower :
+      aoyagiLemma4TerminalEndpoint (n + 1) a M m ≤ H (Fin.last (n + 1)))
+    (hupper :
+      H (Fin.last (n + 1)) ≤ aoyagiLemma4TerminalEndpoint (n + 1) a M m)
+    (hvals : ∀ j : Fin (n + 1),
+      aoyagiLemma4F (n + 1) m H j = M - 1 ∨
+        aoyagiLemma4F (n + 1) m H j = M) :
+    aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+        ((Finset.univ.filter fun j : Fin n ↦
+          aoyagiLemma4F (n + 1) m H j.castSucc = M).card : ℤ) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) * (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  have hend :=
+    aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum (n + 1) a M m ha hselected
+  have hHlast :=
+    aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds hend hlower hupper
+  exact aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min n a M m H hH0
+    hHlast hselected hvals
+
 end Aoyagi
 end DLN
 end DLNFibre

@@ -239,3 +239,34 @@ This is still finite arithmetic only.  It does not prove the two-value
 increment hypothesis from `Ttilde <= T <= Ttilde'`, vector admissibility,
 terminal exponent rewriting into the Lemma 3 quadratic, correspondence to
 `lambda`, Lemma 5, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Lemma 4 endpoint squeeze
+
+Reproduction:
+`reproduction-lemma4-endpoint-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-endpoint-squeeze.md`.
+Review artifact:
+`review-lemma4-endpoint-squeeze-a5.md`.
+
+Lean now proves the terminal endpoint arithmetic used in Aoyagi's Lemma 4
+proof.  The common endpoint expression for the displayed `Htilde_ell` and
+`Htilde'_ell` is
+
+```text
+sum_j M(S_j) - (a*M + (ell-a)*(M-1)).
+```
+
+Under `a <= ell` and Definition 3's selected-width sum, this endpoint is zero.
+The theorem `aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds` then says
+that a terminal `H_ell` squeezed between the two endpoint values is zero.
+Wrappers `aoyagiLemma4_twoValueCount_of_terminalEndpointBounds` and
+`aoyagiLemma4_terminalEndpointBounds_freeHighCount_lemma3A_eq_min` replace the
+previous explicit `H_ell=0` hypothesis by supplied endpoint inequalities.
+
+This is still finite arithmetic only.  It does not prove the full `Htilde` or
+`Htilde'` chains, the vector inequality `Ttilde <= T <= Ttilde'`, that vector
+inequality implies the endpoint sandwich, the two-value increment hypothesis,
+vector admissibility, terminal exponent rewriting into the Lemma 3 quadratic,
+correspondence to `lambda`, Lemma 5, pole order, normal crossings, or RLCT
+extraction.
