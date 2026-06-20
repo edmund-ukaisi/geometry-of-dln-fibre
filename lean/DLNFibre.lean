@@ -41,3 +41,5 @@ import DLNFibre.Core.OrbitClosure
 import DLNFibre.Core.OrbitPullbackDim
 import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.AffineNoetherRank
+import DLNFibre.Core.JacobianTrdeg
+import DLNFibre.Core.OrbitImageDim
