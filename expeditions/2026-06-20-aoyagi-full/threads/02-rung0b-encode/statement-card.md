@@ -5,7 +5,7 @@ The foundational definitions (`Params`, `prod`, `dlnLoss`, `optimalSet`, `rlctAt
 (S1 / L1 / L2 / D1 / R1 / A1 / A2) culminating in the headline `aoyagi_learning_coefficient`.
 
 - **Files:** `lean/DLNFibre/DLN/RLCT/Foundations/{Loss,Rlct,Lambda}.lean`,
-  `lean/DLNFibre/DLN/RLCT/Skeleton.lean` (@ commit `<SHA-after-commit>`, branch `worktree-rung0-defs`).
+  `lean/DLNFibre/DLN/RLCT/Skeleton.lean` (@ commit `556bddf`, branch `worktree-rung0-defs`).
 - **Status.** sorry-free for all `def`s and the two proven lemmas (`optimalSet_eq_loss_zero`,
   `Adm_nonempty`/`zero_mem_Adm`); the 7 rung statements are named `sorry`s by design (statements-first);
   the single S2 `axiom` is the permitted citation. Awaiting fidelity review (Rung 0c).
