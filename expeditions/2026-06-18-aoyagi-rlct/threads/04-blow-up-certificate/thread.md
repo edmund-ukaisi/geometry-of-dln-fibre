@@ -251,6 +251,32 @@ coverage, coordinate regularity, Jacobian/volume arithmetic, normal crossings,
 RLCT extraction, termination, a transition invariant, or repair of the printed
 Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed successor gap projections
+
+Reproduction:
+`reproduction-case2-displayed-successor-gap-projections-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-successor-gap-projections.md`.
+Review artifact:
+`review-case2-displayed-successor-gap-projections-a4.md`.
+
+Lean now exposes successor invariant facts directly from the displayed
+top-left Case 2 supplied boundary. The source-selected supplied boundary had
+already proved, from supplied recurrence post-data and corrected exponent
+post-data, the post-state level/least-value bridge, the successor least-value
+Case 2 gap, and the successor recurrence Case 2 gap. The displayed boundary is
+the source-selected boundary at `(J+1,J+1)`, so it now exports:
+
+- `Case2DisplayedSuppliedChartFamilyBoundary.postLevelInvariants`;
+- `Case2DisplayedSuppliedChartFamilyBoundary.successorLeastValueGap`;
+- `Case2DisplayedSuppliedChartFamilyBoundary.postCase2Gap`.
+
+This is projection bookkeeping only. It does not prove that the displayed
+affine chart produces the recurrence or exponent post-data, and it does not
+prove chart coverage, coordinate regularity, Jacobian/volume arithmetic,
+normal crossings, RLCT extraction, termination, transition invariance, or
+repair of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

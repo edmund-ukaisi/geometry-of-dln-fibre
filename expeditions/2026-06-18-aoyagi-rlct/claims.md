@@ -507,7 +507,10 @@ No such claim is formalisation-ready until both fields are filled.
   source-coordinate chart map now also principalizes the finite residual-block
   center ideal to `Ideal.span {u}` in source-chart names, with value and
   divisibility projections exported by the displayed boundary package. Missing
-  arbitrary pivot
+  direct displayed-boundary projections for the successor level/least-value
+  bridge, successor least-value gap, and successor recurrence gap are now also
+  filled by forwarding the already proved source-selected boundary facts.
+  Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
   beyond the unchanged-top lift, full polynomial-coordinate chart construction,
@@ -556,6 +559,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-corrected-postdata-center-count-a4.md`.
 	  Review of the Case 2 displayed source-chart principalization is saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-principalization-a4.md`.
+	  Review of the Case 2 displayed successor gap projections is saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-successor-gap-projections-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -864,6 +869,9 @@ No such claim is formalisation-ready until both fields are filled.
   `Case2DisplayedSuppliedChartFamilyBoundary.correctedNewLabel`,
   `Case2DisplayedSuppliedChartFamilyBoundary.preCase2Gap`,
   `Case2DisplayedSuppliedChartFamilyBoundary.extendExponentDomain`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.postLevelInvariants`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.successorLeastValueGap`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.postCase2Gap`,
   `Case2DisplayedSuppliedChartFamilyBoundary.chart_regular_displayedPivot`,
   `Case2DisplayedSuppliedChartFamilyBoundary.displayedPivot_centerIdeal_eq_span_singleton`,
   `Case2DisplayedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`,
@@ -1143,6 +1151,9 @@ No such claim is formalisation-ready until both fields are filled.
   Jacobian/volume calculation. It also does not prove normal crossings, RLCT
   extraction, termination, a transition invariant, or repair of the printed
   Case 2 vector mismatch.
+  The displayed successor gap projections only forward source-selected
+  successor bookkeeping through the displayed boundary; recurrence and exponent
+  post-data remain supplied fields, not chart-produced data.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

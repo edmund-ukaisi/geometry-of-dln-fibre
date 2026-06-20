@@ -314,7 +314,11 @@ on the session's original cwd.
    `Ideal.span {u}`. This still is not arbitrary-pivot source chart data,
    chart production, coverage, coordinate regularity, or Jacobian/volume
    arithmetic, and it does not prove normal crossings/RLCT, termination, a
-   transition invariant, or printed-vector repair.
+   transition invariant, or printed-vector repair. The displayed supplied
+   boundary now also directly exposes the post-state level/least-value bridge,
+   successor least-value gap, and successor recurrence gap by forwarding the
+   source-selected supplied-boundary facts. This remains supplied post-data
+   bookkeeping, not chart production.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

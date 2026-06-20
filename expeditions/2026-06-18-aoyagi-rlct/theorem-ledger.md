@@ -1159,6 +1159,24 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-source-chart-principalization-a4.md`.
 
+Latest A4 update: the Case 2 displayed successor gap projections have landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`Case2DisplayedSuppliedChartFamilyBoundary.postLevelInvariants`,
+`Case2DisplayedSuppliedChartFamilyBoundary.successorLeastValueGap`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.postCase2Gap`. This checkpoint
+forwards the already proved source-selected supplied-boundary successor facts
+through the displayed boundary: the post-state level/least-value bridge, the
+successor least-value Case 2 gap, and the successor recurrence Case 2 gap. It
+does not prove chart-produced recurrence/exponent post-data, chart coverage,
+coordinate regularity, Jacobian/volume arithmetic, normal crossings/RLCT,
+termination, a transition invariant, or repair of the printed vector mismatch.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-successor-gap-projections-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-successor-gap-projections.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-successor-gap-projections-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

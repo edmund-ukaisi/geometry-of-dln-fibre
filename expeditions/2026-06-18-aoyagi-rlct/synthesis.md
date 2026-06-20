@@ -1244,6 +1244,17 @@ statement, and not chart production, atlas coverage, coordinate regularity,
 Jacobian/volume arithmetic, normal crossings, RLCT extraction, termination,
 transition invariance, or printed-vector repair.
 
+The Case 2 displayed successor gap projections are now Lean-proved. The new
+displayed-boundary projections
+`Case2DisplayedSuppliedChartFamilyBoundary.postLevelInvariants`,
+`Case2DisplayedSuppliedChartFamilyBoundary.successorLeastValueGap`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.postCase2Gap` forward the
+corresponding source-selected supplied-boundary successor facts through
+`sourceSelectedBoundary`. This is only API bookkeeping: supplied recurrence
+post-data and supplied corrected exponent post-data still provide the
+successor invariants, and the displayed chart is not proved to produce those
+post-data.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

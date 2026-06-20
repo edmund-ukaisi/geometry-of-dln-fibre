@@ -7974,6 +7974,63 @@ theorem extendExponentDomain
     IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
   data.sourceSelectedBoundary.extendExponentDomain
 
+/-- The displayed boundary preserves the supplied level/least-value bridge
+after the Case 2 `J`-advance. -/
+theorem postLevelInvariants
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    IntroducedLabelLevelInvariants L n S (J + 1) post.level leastValue' :=
+  data.sourceSelectedBoundary.postLevelInvariants
+
+/-- The displayed boundary's corrected least-value successor data preserve the
+integer Case 2 gap. -/
+theorem successorLeastValueGap
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    case2IntroducedLabelLeastValueGap L n S (J + 1) leastValue' :=
+  data.sourceSelectedBoundary.successorLeastValueGap
+
+/-- The displayed boundary's supplied successor recurrence state has the
+Case 2 recurrence gap. -/
+theorem postCase2Gap
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    post.case2Gap :=
+  data.sourceSelectedBoundary.postCase2Gap
+
 /-- The displayed boundary gives supplied chart regularity for the displayed
 top-left pivot. -/
 theorem chart_regular_displayedPivot
