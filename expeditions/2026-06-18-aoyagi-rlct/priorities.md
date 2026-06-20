@@ -482,13 +482,17 @@ on the session's original cwd.
    bookkeeping, not chart production.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
-   non-displayed transition formulas are still missing. The next small
-   source-faithful chart-production-adjacent target is to prove that the
-   displayed Case 2 post-pivot row/column/entry domains are exactly the next
-   `(S,J+1)` residual-center domains, with nonemptiness equivalent to
-   `J+2<=prefixMinNat n (S+1)`. Then redo Case 1/2 updates, cover pivot
-   charts, repair the remaining recurrence bookkeeping, and replace the
-   termination measure.
+   non-displayed transition formulas are still missing. The displayed Case 2
+   post-pivot domain handoff is now Lean-proved: the lower-right
+   row/column/entry domains after deleting `(J+1,J+1)` are exactly the next
+   `(S,J+1)` residual-center domains, and nonemptiness is equivalent to
+   `J+2<=prefixMinNat n (S+1)`. Next A4 target: reproduce and formalise a
+   narrow continuing-branch source-coordinate wrapper that packages the
+   displayed post-pivot lower-right block as supplied next residual/following
+   product data. Keep recurrence/exponent post-data, chart coverage,
+   coordinate regularity, Jacobian arithmetic, transition invariance,
+   terminal relabeling, and arbitrary pivot coverage out of that wrapper until
+   each is separately reproduced and proved.
 6. Repair A5 arithmetic reproduction. The isolated endpoint-corrected Lemma 3
    integer numerator arithmetic is now Lean-proved in `ArithmeticTail.lean`:
    the cleared numerator is

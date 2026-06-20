@@ -1205,6 +1205,27 @@ This records the finite domain for the next possible `J`-advance. -/
 def case2PostPivotEntries (n : ℕ → ℕ) (S J : ℕ) : Finset (ℕ × ℕ) :=
   (case2PostPivotRows n S J).product (case2PostPivotCols n S J)
 
+/-- The post-pivot row domain is exactly the next same-stage Case 2 residual
+row domain.  This is finite-domain bookkeeping, not a transition theorem. -/
+theorem case2PostPivotRows_eq_case2ResidualBlockRows_succ
+    (n : ℕ → ℕ) (S J : ℕ) :
+    case2PostPivotRows n S J = case2ResidualBlockRows n S (J + 1) :=
+  rfl
+
+/-- The post-pivot column domain is exactly the next same-stage Case 2 residual
+column domain.  This is finite-domain bookkeeping, not a transition theorem. -/
+theorem case2PostPivotCols_eq_case2ResidualBlockCols_succ
+    (n : ℕ → ℕ) (S J : ℕ) :
+    case2PostPivotCols n S J = case2ResidualBlockCols n S (J + 1) :=
+  rfl
+
+/-- The post-pivot entry domain is exactly the next same-stage Case 2 residual
+center domain.  This is finite-domain bookkeeping, not chart production. -/
+theorem case2PostPivotEntries_eq_case2ResidualBlockPivotEntries_succ
+    (n : ℕ → ℕ) (S J : ℕ) :
+    case2PostPivotEntries n S J = case2ResidualBlockPivotEntries n S (J + 1) :=
+  rfl
+
 @[simp] theorem mem_case2PostPivotRows (n : ℕ → ℕ) (S J i : ℕ) :
     i ∈ case2PostPivotRows n S J ↔ J + 2 ≤ i ∧ i ≤ prefixMinNat n S := by
   simp [case2PostPivotRows, Finset.mem_Icc]
@@ -1272,6 +1293,19 @@ theorem case2PostPivotEntries_nonempty_iff_next_cont
     refine ⟨(J + 2, J + 2), ?_⟩
     rw [mem_case2PostPivotEntries_iff]
     exact ⟨le_rfl, hrow, le_rfl, hcol⟩
+
+/-- The next same-stage Case 2 residual center is nonempty exactly under the
+next continuation bound.
+
+This is the same finite-domain fact as
+`case2PostPivotEntries_nonempty_iff_next_cont`, rewritten after the
+post-pivot/next-residual handoff. -/
+theorem case2ResidualBlockPivotEntries_succ_nonempty_iff_next_cont
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S) :
+    (case2ResidualBlockPivotEntries n S (J + 1)).Nonempty ↔
+      J + 2 ≤ prefixMinNat n (S + 1) := by
+  rw [← case2PostPivotEntries_eq_case2ResidualBlockPivotEntries_succ n S J]
+  exact case2PostPivotEntries_nonempty_iff_next_cont n hS
 
 theorem case2PostPivotRows_eq_empty_of_le
     {n : ℕ → ℕ} {S J : ℕ} (h : prefixMinNat n S ≤ J + 1) :
@@ -4225,6 +4259,39 @@ noncomputable def case2DisplayedPivotRowComplementEquivPostPivotRows
     apply Subtype.ext
     rfl
 
+/-- Deleting the displayed pivot row from the old residual-row subtype is the
+same finite type as the next same-stage residual-row index type. -/
+noncomputable def case2DisplayedPivotRowComplementEquivResidualRowSucc
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    pivotComplement (case2DisplayedPivotRow n hS hcont) ≃
+      Case2ResidualRowIndex n S (J + 1) where
+  toFun i :=
+    ⟨i.1.1, by
+      rw [mem_case2ResidualBlockRows]
+      have hi := (mem_case2ResidualBlockRows n S J i.1.1).mp i.1.2
+      have hne : i.1.1 ≠ J + 1 := by
+        intro h
+        exact i.2 (Subtype.ext h)
+      omega⟩
+  invFun i :=
+    ⟨⟨i.1, by
+        rw [mem_case2ResidualBlockRows]
+        have hi := (mem_case2ResidualBlockRows n S (J + 1) i.1).mp i.2
+        exact ⟨by omega, hi.2⟩⟩, by
+      intro h
+      have hval : i.1 = J + 1 := by
+        exact congrArg Subtype.val h
+      have hi := (mem_case2ResidualBlockRows n S (J + 1) i.1).mp i.2
+      omega⟩
+  left_inv i := by
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
+  right_inv i := by
+    apply Subtype.ext
+    rfl
+
 @[simp] theorem case2DisplayedPivotRowComplementEquivPostPivotRows_apply_coe
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
@@ -4265,6 +4332,39 @@ noncomputable def case2DisplayedPivotColComplementEquivPostPivotCols
       have hval : j.1 = J + 1 := by
         exact congrArg Subtype.val h
       have hj := (mem_case2PostPivotCols n S J j.1).mp j.2
+      omega⟩
+  left_inv j := by
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
+  right_inv j := by
+    apply Subtype.ext
+    rfl
+
+/-- Deleting the displayed pivot column from the old residual-column subtype is
+the same finite type as the next same-stage residual-column index type. -/
+noncomputable def case2DisplayedPivotColComplementEquivResidualColSucc
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    pivotComplement (case2DisplayedPivotCol n hS hcont) ≃
+      Case2ResidualColIndex n S (J + 1) where
+  toFun j :=
+    ⟨j.1.1, by
+      rw [mem_case2ResidualBlockCols]
+      have hj := (mem_case2ResidualBlockCols n S J j.1.1).mp j.1.2
+      have hne : j.1.1 ≠ J + 1 := by
+        intro h
+        exact j.2 (Subtype.ext h)
+      omega⟩
+  invFun j :=
+    ⟨⟨j.1, by
+        rw [mem_case2ResidualBlockCols]
+        have hj := (mem_case2ResidualBlockCols n S (J + 1) j.1).mp j.2
+        exact ⟨by omega, hj.2⟩⟩, by
+      intro h
+      have hval : j.1 = J + 1 := by
+        exact congrArg Subtype.val h
+      have hj := (mem_case2ResidualBlockCols n S (J + 1) j.1).mp j.2
       omega⟩
   left_inv j := by
     apply Subtype.ext

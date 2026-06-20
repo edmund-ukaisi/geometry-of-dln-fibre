@@ -1386,6 +1386,27 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-pivot-complement-exhaustion-a4.md`.
 
+Latest A4 update: the Case 2 post-pivot domain handoff has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`case2PostPivotRows_eq_case2ResidualBlockRows_succ`,
+`case2PostPivotCols_eq_case2ResidualBlockCols_succ`,
+`case2PostPivotEntries_eq_case2ResidualBlockPivotEntries_succ`,
+`case2ResidualBlockPivotEntries_succ_nonempty_iff_next_cont`,
+`case2DisplayedPivotRowComplementEquivResidualRowSucc`, and
+`case2DisplayedPivotColComplementEquivResidualColSucc`. This checkpoint proves
+that deleting the displayed pivot row/column leaves exactly the next
+same-stage residual row/column/entry domains for `(S,J+1)`, with nonemptiness
+equivalent to `J+2 <= prefixMinNat n (S+1)`. It does not produce the next
+residual matrix or following product, prove chart coverage or coordinate
+regularity, compute Jacobians, prove normal crossings/RLCT, prove termination
+or transition invariance, or handle the terminal `(S+1,0)` relabel branch.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-domain-handoff-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-post-pivot-domain-handoff.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-post-pivot-domain-handoff-a4.md`.
+
 Latest A4 update: the Case 2 stage-relabel domain audit has landed in
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
 `introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq`,

@@ -608,6 +608,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 displayed pivot-complement exhaustion boundary is
 	  saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-pivot-complement-exhaustion-a4.md`.
+	  Reproduction/check of the Case 2 post-pivot domain handoff is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-post-pivot-domain-handoff-a4.md`
+	  and
+	  `threads/04-blow-up-certificate/review-case2-post-pivot-domain-handoff-a4.md`.
 	  Review of the Case 2 stage-relabel domain audit is saved at
 	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 	  Review of the Case 2 displayed cleared-block vacuity corollary is saved
@@ -1276,6 +1280,16 @@ No such claim is formalisation-ready until both fields are filled.
   chart coverage or regularity, compute Jacobians, prove normal crossings,
   extract RLCT, prove termination/transition invariance, or repair the
   printed vector mismatch.
+  The post-pivot domain handoff now proves that the displayed Case 2
+  lower-right row, column, and entry domains after deleting pivot `(J+1,J+1)`
+  are exactly the next same-stage residual domains at `(S,J+1)`. It also
+  restates next residual-center nonemptiness as
+  `J+2 <= prefixMinNat n (S+1)` and gives row/column subtype equivalences from
+  displayed pivot complements directly to the next residual row/column index
+  types. This is finite domain bookkeeping only; it does not produce the next
+  residual matrix, chart coverage, transition regularity or invariance,
+  Jacobian arithmetic, terminal-product principalization, normal crossings,
+  RLCT extraction, or the terminal `(S+1,0)` relabel branch.
   The stage-relabel domain audit proves the finite side split
   `prefixMinNat n S = J+1 ∨ n(S+1)=J+1`, the old `(S,J+1)` to `(S+1,0)`
   introduced-label equality under actual-width exhaustion `n(S+1)=J+1`, and

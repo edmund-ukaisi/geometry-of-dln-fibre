@@ -1813,12 +1813,21 @@ This remains finite arithmetic only; it does not prove Lemma 5's displayed
 vector constructions, chart-family admissibility/coverage, pole-order
 interpretation, normal crossings, or RLCT extraction.
 
-Latest A4 scout recommendation: the next source-faithful chart-production
-slice should be the finite post-pivot domain handoff
-`case2PostPivotRows/Cols/Entries = case2ResidualBlock... (J+1)` plus a
-nonemptiness iff for next continuation.  This aligns the displayed Case 2
-lower-right block with the next residual center without claiming chart
-coverage, transition invariance, or source production of `C'^(S+1)`.
+The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
+lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
+definitionally the next same-stage residual domains at `(S,J+1)`, and the
+next residual center is nonempty iff `J+2 <= prefixMinNat n (S+1)`.  Lean also
+has direct equivalences from the displayed pivot row/column complements to the
+next residual row/column index types.  This is only finite domain bookkeeping:
+it does not produce the next residual matrix or following product, prove chart
+coverage or coordinate regularity, compute Jacobians, prove normal
+crossings/RLCT, prove termination or transition invariance, or handle the
+terminal `(S+1,0)` relabel branch.  The next A4 target should be
+chart-production-adjacent data for the continuing branch: reproduce and then
+formalise a narrow source-coordinate wrapper that turns the displayed
+post-pivot lower-right block into supplied `(S,J+1)` residual/following-product
+data, with recurrence/exponent post-data and coverage still explicit until
+they are separately proved.
 
 ## Drift guard
 

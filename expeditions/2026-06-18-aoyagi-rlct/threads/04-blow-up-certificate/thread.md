@@ -2914,3 +2914,34 @@ These are finite-center packages only.  They do not principalize the terminal
 product ideal and do not prove chart coverage, source production of
 `C'^(S+1)`, chart-produced following products, Jacobian arithmetic, normal
 crossings/RLCT, termination, transition invariance, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 post-pivot domain handoff
+
+Reproduction:
+`reproduction-case2-post-pivot-domain-handoff-a4.md`.
+Statement card:
+`statement-card-a4-case2-post-pivot-domain-handoff.md`.
+Review artifact:
+`review-case2-post-pivot-domain-handoff-a4.md`.
+
+Lean now records that the lower-right finite domain after deleting the
+displayed Case 2 pivot `(J+1,J+1)` is exactly the next same-stage residual
+center at `(S,J+1)`:
+
+```text
+case2PostPivotRows_eq_case2ResidualBlockRows_succ
+case2PostPivotCols_eq_case2ResidualBlockCols_succ
+case2PostPivotEntries_eq_case2ResidualBlockPivotEntries_succ
+case2ResidualBlockPivotEntries_succ_nonempty_iff_next_cont
+case2DisplayedPivotRowComplementEquivResidualRowSucc
+case2DisplayedPivotColComplementEquivResidualColSucc
+```
+
+The nonemptiness wrapper keeps the required `1<=S` hypothesis for the
+prefix-minimum recurrence and says the next residual center is nonempty iff
+`J+2<=prefixMinNat n (S+1)`.
+
+This is finite domain bookkeeping only.  It does not produce the next residual
+matrix, chart coverage, transition invariance, transition regularity, Jacobian
+arithmetic, terminal-product principalization, normal crossings, RLCT
+extraction, or the terminal `(S+1,0)` relabel branch.
