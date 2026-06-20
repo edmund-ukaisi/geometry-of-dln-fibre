@@ -429,17 +429,110 @@ def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
   w ∈ optimalSet H B ∧ ∀ s : Fin L, (w s).rank = r
 
-/-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin; general `r` ⟹ a
-block-normal rank-`r` chain whose product is `B`). The existence obligation behind the constructed
-`deepestPoint`; named `sorry` (statements-first, like the rung lemmas). The hypothesis
-`hr : ∀ s, r ≤ H s` is the well-definedness + nonemptiness domain: without it the fibre can be empty
-(e.g. `H=(3,1,3), r=2`: a width-1 middle layer caps the product rank at `1 < 2`), making this
-`Nonempty` FALSE; it is also what makes `M⁽ˢ⁾ = H⁽ˢ⁾ − r` (in `aoyagiLambda`) non-truncating. -/
+/-- `[I_r|0] · [I_r;0] = I_r`: projection ∘ embedding (a left inverse) on `Fin r`. -/
+private theorem proj_emb_eq_one {N r : ℕ} (hrN : r ≤ N) :
+    (Matrix.of (fun (k : Fin r) (j : Fin N) => if (k : ℕ) = (j : ℕ) then (1 : ℝ) else 0))
+      * (Matrix.of (fun (j : Fin N) (k : Fin r) => if (j : ℕ) = (k : ℕ) then (1 : ℝ) else 0))
+    = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  ext k k'; simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]
+  rw [Finset.sum_eq_single (⟨k, by omega⟩ : Fin N)]
+  · show (if (k : ℕ) = ((⟨k, _⟩ : Fin N) : ℕ) then (1 : ℝ) else 0)
+        * (if ((⟨k, _⟩ : Fin N) : ℕ) = (k' : ℕ) then (1 : ℝ) else 0) = _
+    rw [Fin.val_mk, if_pos rfl, one_mul]
+    by_cases h : (k : ℕ) = (k' : ℕ)
+    · rw [if_pos h, if_pos (Fin.ext h)]
+    · rw [if_neg h, if_neg (fun he => h (by rw [he]))]
+  · intro b _ hb; rw [if_neg (fun he => hb (Fin.ext (by simpa using he.symm))), zero_mul]
+  · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- The `r×r`-identity-corner block `diag(E_r, 0)` factors as `[I_r;0] · [I_r|0]`. -/
+private theorem Dblock_factor {m n r : ℕ} :
+    (Matrix.of (fun (i:Fin m) (j:Fin n) => if (i:ℕ) = (j:ℕ) ∧ (i:ℕ) < r then (1:ℝ) else 0))
+      = (Matrix.of (fun (i : Fin m) (k : Fin r) => if (i : ℕ) = (k : ℕ) then (1 : ℝ) else 0))
+        * (Matrix.of (fun (k:Fin r) (j:Fin n) => if (k:ℕ) = (j:ℕ) then (1:ℝ) else 0)) := by
+  ext i j; simp only [Matrix.mul_apply, Matrix.of_apply]
+  by_cases hi : (i : ℕ) < r
+  · rw [Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]
+    · show (if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
+        = (if (i : ℕ) = ((⟨i, hi⟩ : Fin r) : ℕ) then (1 : ℝ) else 0)
+          * (if ((⟨i, hi⟩ : Fin r) : ℕ) = (j : ℕ) then (1 : ℝ) else 0)
+      rw [Fin.val_mk, if_pos rfl, one_mul]
+      by_cases hij : (i : ℕ) = (j : ℕ)
+      · rw [if_pos hij, if_pos ⟨hij, hi⟩]
+      · rw [if_neg hij, if_neg (fun h => hij h.1)]
+    · intro k _ hk
+      rw [if_neg (by simpa [Fin.ext_iff] using fun h => hk (Fin.ext h.symm)), zero_mul]
+    · intro h; exact absurd (Finset.mem_univ _) h
+  · rw [if_neg (by tauto), Finset.sum_eq_zero]; intro k _; rw [if_neg (by intro h; omega), zero_mul]
+
+/-- The `r×r`-identity-corner block has rank exactly `r` (when `r ≤ m, n`): `≤ r` from the
+`Dc · Dr` factorisation (`Dc` has `r` columns); `≥ r` because `Dc` has both a left inverse
+(`[I_r|0]·Dc = I_r`) and `Dc = (Dc·Dr)·[I_r;0]`, so `r = rank I_r ≤ rank Dc ≤ rank (Dc·Dr)`. -/
+private theorem Dblock_rank {m n r : ℕ} (hrm : r ≤ m) (hrn : r ≤ n) :
+    (Matrix.of (fun (i : Fin m) (j : Fin n) =>
+      if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)).rank = r := by
+  set Dc : Matrix (Fin m) (Fin r) ℝ := Matrix.of (fun i k => if (i:ℕ) = (k:ℕ) then (1:ℝ) else 0)
+  set Dr : Matrix (Fin r) (Fin n) ℝ := Matrix.of (fun k j => if (k:ℕ) = (j:ℕ) then (1:ℝ) else 0)
+  set Sec : Matrix (Fin n) (Fin r) ℝ := Matrix.of (fun j k => if (j:ℕ) = (k:ℕ) then (1:ℝ) else 0)
+  set DrM : Matrix (Fin r) (Fin m) ℝ := Matrix.of (fun k i => if (k:ℕ) = (i:ℕ) then (1:ℝ) else 0)
+  have hfac : (Matrix.of (fun (i : Fin m) (j : Fin n) =>
+      if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) = Dc * Dr := Dblock_factor
+  rw [hfac]
+  have hle : (Dc * Dr).rank ≤ r := le_trans (Matrix.rank_mul_le_left _ _)
+    (le_trans (Matrix.rank_le_card_width _) (by rw [Fintype.card_fin]))
+  have hDceq : (Dc * Dr) * Sec = Dc := by
+    rw [Matrix.mul_assoc, (proj_emb_eq_one hrn : Dr * Sec = 1), Matrix.mul_one]
+  have hge : r ≤ (Dc * Dr).rank := by
+    calc r = (1 : Matrix (Fin r) (Fin r) ℝ).rank := by rw [Matrix.rank_one, Fintype.card_fin]
+      _ = (DrM * Dc).rank := by rw [(proj_emb_eq_one hrm : DrM * Dc = 1)]
+      _ ≤ Dc.rank := Matrix.rank_mul_le_right _ _
+      _ = ((Dc * Dr) * Sec).rank := by rw [hDceq]
+      _ ≤ (Dc * Dr).rank := Matrix.rank_mul_le_left _ _
+  exact le_antisymm hle hge
+
+/-- The product of the all-zero parameter tuple is the zero matrix (for `L ≥ 1`, the recursion has a
+last layer `= 0` that zeroes the fold). -/
+private theorem prodAux_zero (H : Fin (L + 1) → ℕ) (k : ℕ) (hk : k + 1 < L + 1) :
+    prodAux H (fun _ => 0) (k + 1) hk = 0 := by
+  rw [prodAux]; convert Matrix.mul_zero _
+
+private theorem prod_zero (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) : prod H (fun _ => 0) = 0 := by
+  unfold prod
+  obtain ⟨k, hk⟩ : ∃ k, L = k + 1 := ⟨L - 1, by omega⟩
+  subst hk
+  exact prodAux_zero H k (Nat.lt_succ_self _)
+
+/-- A rank-0 matrix over ℝ is the zero matrix. -/
+private theorem rank_zero_eq_zero {m n : ℕ} (B : Matrix (Fin m) (Fin n) ℝ) (hB : B.rank = 0) :
+    B = 0 := by
+  have hr0 : LinearMap.range B.mulVecLin = ⊥ := by
+    rw [← Submodule.finrank_eq_zero (R := ℝ)]; exact hB
+  rw [LinearMap.range_eq_bot] at hr0
+  ext i j
+  have := LinearMap.congr_fun hr0 (Pi.single j 1)
+  simpa [Matrix.mulVecLin_apply, Matrix.mulVec_single] using congrFun this i
+
+/-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin / all-zero tuple, PROVEN
+below; general `r > 0` ⟹ a block-normal rank-`r` chain whose product is `B`). The hypotheses
+`hr : ∀ s, r ≤ H s` and `hL : 1 ≤ L` are the well-definedness + nonemptiness domain: `hr` rules out
+the middle-width bottleneck (`H=(3,1,3), r=2` caps product rank at `1 < 2` ⇒ empty fibre) and makes
+`M⁽ˢ⁾ = H⁽ˢ⁾ − r` non-truncating; `hL` rules out the zero-layer corner (`L = 0` ⇒ `prod = id` ⇒
+fibre needs `B = I`). The `r = 0` branch is closed; the `r > 0` branch is the named `sorry` (the
+rank-factorization `B = U·V` distributed as rank-exactly-`r` layers — verified 484/484; needs the
+rank-of-block lemma + the dependent-`Fin` `prodAux` telescoping). -/
 theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     Nonempty {w : Params H // IsDeepLayers H r B w} := by
-  sorry
+  rcases Nat.eq_zero_or_pos r with hr0 | hrpos
+  · -- r = 0: the all-zero tuple is deep (prod = 0 = B since B.rank = 0).
+    subst hr0
+    refine ⟨⟨fun _ => 0, ?_, ?_⟩⟩
+    · show prod H (fun _ => 0) = B
+      rw [prod_zero H hL, rank_zero_eq_zero B hB]
+    · intro s; show ((0 : Matrix _ _ ℝ)).rank = 0; exact Matrix.rank_zero
+  · -- r > 0: rank factorization B = U·V distributed as rank-exactly-r layers (verified 484/484).
+    sorry
 
 /-- **The deepest singular point** of the fibre `mult⁻¹(B)` (Rung-0c FLAG, load-bearing — pp + Codex
 adjudicated). A **single constructed** witness: every layer at the minimal rank `r` (the
