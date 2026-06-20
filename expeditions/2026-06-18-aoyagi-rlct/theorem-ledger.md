@@ -121,6 +121,25 @@ This does not prove source exponent vectors or chain bounds provide binary
 deltas, vector-coordinate correspondence, vector admissibility, Lemma 5
 chart-family/order count, pole order, normal crossings, or RLCT extraction.
 
+The Lemma 4 same-coordinate binary-delta free-count wrapper has landed in the
+same module.  The proved Lean names are
+`aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta` and
+`aoyagiLemma4_sameCoordinateChain_binaryIncrementPrefixDelta_freeHighCount_lemma3A_eq_min`.
+They combine supplied same-coordinate vector bounds with supplied binary
+prefix deltas to reach the existing free-count Lemma 3 numerator equality.
+Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-lemma4-same-coordinate-binary-delta-free-count-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma4-same-coordinate-binary-delta-free-count.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma4-same-coordinate-binary-delta-free-count-a5.md`.
+This does not prove the source `T -> (H_j),(S_j)` correspondence,
+binary deltas from source vectors, vector admissibility, terminal exponent
+rewriting, correspondence to `lambda`, Lemma 5 chart-family/order count, pole
+order, normal crossings, or RLCT extraction.  The next source-facing target is
+Aoyagi's Lemma 5 displayed-family realisation, especially equations `(3)` and
+`(4)` on pp. 26-27.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

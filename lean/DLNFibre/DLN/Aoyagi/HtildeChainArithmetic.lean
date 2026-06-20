@@ -659,6 +659,28 @@ theorem aoyagiLemma4F_eq_pred_add_incrementPrefixDelta_def
   rw [aoyagiLemma4F_eq_pred_add_incrementPrefixDelta]
   rfl
 
+/-- Binary named prefix deltas imply the two-value increment hypothesis in
+Aoyagi's Lemma 4.
+
+This is the `aoyagiLemma4IncrementPrefixDelta`-named form of the binary bridge.
+It remains conditional: no source vector, chain bound, or admissibility
+statement is proved here. -/
+theorem aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta
+    (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H j = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1) :
+    ∀ j : Fin ell,
+      aoyagiLemma4F ell m H j = M - 1 ∨
+        aoyagiLemma4F ell m H j = M := by
+  intro j
+  rw [aoyagiLemma4F_eq_pred_add_incrementPrefixDelta_def ell M m H j]
+  rcases hbin j with hzero | hone
+  · left
+    omega
+  · right
+    omega
+
 /-- Binary prefix deltas imply the two-value increment hypothesis in
 Aoyagi's Lemma 4.
 
@@ -823,6 +845,44 @@ theorem aoyagiLemma4_binaryIncrementPrefix_count_eq_of_HtildeChainBounds
       hlower hupper
   exact aoyagiLemma4_binaryIncrementPrefix_count_eq ell a M m H hH0 hHlast
     hselected hbin
+
+/-- Same-coordinate vector-bound and binary-delta wrapper for the finite
+Lemma 4-to-Lemma 3 free-count bridge.
+
+The coordinate map is supplied.  This theorem does not prove Aoyagi's missing
+source correspondence from a vector `T` to the chain `(H_j)`, nor does it prove
+that source vectors have binary prefix deltas. -/
+theorem aoyagiLemma4_sameCoordinateChain_binaryIncrementPrefixDelta_freeHighCount_lemma3A_eq_min
+    (n a : ℕ) (M : ℤ) {ι : Type*}
+    (m H : Fin (n + 2) → ℤ) (coord : Fin (n + 2) → ι)
+    {Tlo T Thi : ι → ℤ}
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ n + 1)
+    (hselected : (∑ j : Fin (n + 2), m j) =
+      ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hlo : Tlo ≤ T) (hhi : T ≤ Thi)
+    (hlo_coord : ∀ j, Tlo (coord j) = aoyagiHtildeLowerChain (n + 1) a M m j)
+    (hH_coord : ∀ j, T (coord j) = H j)
+    (hhi_coord : ∀ j, Thi (coord j) = aoyagiHtildeUpperChain (n + 1) a M m j)
+    (hbin : ∀ j : Fin (n + 1),
+      aoyagiLemma4IncrementPrefixDelta (n + 1) M m H j = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta (n + 1) M m H j = 1) :
+    aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+        ((Finset.univ.filter fun j : Fin n ↦
+          aoyagiLemma4F (n + 1) m H j.castSucc = M).card : ℤ) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) * (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  have hlower : aoyagiHtildeLowerChain (n + 1) a M m ≤ H := by
+    intro j
+    rw [← hlo_coord j, ← hH_coord j]
+    exact hlo (coord j)
+  have hupper : H ≤ aoyagiHtildeUpperChain (n + 1) a M m := by
+    intro j
+    rw [← hH_coord j, ← hhi_coord j]
+    exact hhi (coord j)
+  exact
+    aoyagiLemma4_HtildeChainBounds_freeHighCount_lemma3A_eq_min
+      n a M m H hH0 ha hselected hlower hupper
+      (aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta (n + 1) M m H hbin)
 
 end Aoyagi
 end DLN

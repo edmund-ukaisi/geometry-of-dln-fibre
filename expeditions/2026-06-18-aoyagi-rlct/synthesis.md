@@ -1813,6 +1813,21 @@ This remains finite arithmetic only; it does not prove Lemma 5's displayed
 vector constructions, chart-family admissibility/coverage, pole-order
 interpretation, normal crossings, or RLCT extraction.
 
+The same module now also packages the same-coordinate vector-bound interface
+with named binary prefix deltas through to the free-count Lemma 3 minimum.  A
+supplied coordinate map reads `Tlo`, `T`, and `Thi` as the lower `Htilde`
+chain, the intermediate `H` chain, and the upper `Htilde'` chain.
+Componentwise bounds supply the chain bounds, binary prefix deltas supply the
+two-valued increments, and the existing Lemma 4-to-Lemma 3 bridge proves the
+isolated numerator equality for the free high count.  This removes an API
+awkwardness for future source-vector realisation, but it remains conditional:
+it does not prove the source `T -> (H_j),(S_j)` correspondence, binary deltas
+from source vectors, vector admissibility, terminal exponent rewriting,
+correspondence to `lambda`, Lemma 5 chart-family/order count, normal
+crossings, or RLCT extraction.  The next source-facing A5 target is still
+Aoyagi's displayed Lemma 5 families, especially equations `(3)` and `(4)` on
+pp. 26-27.
+
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
 definitionally the next same-stage residual domains at `(S,J+1)`, and the

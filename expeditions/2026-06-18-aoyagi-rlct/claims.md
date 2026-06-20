@@ -1684,6 +1684,12 @@ No such claim is formalisation-ready until both fields are filled.
   The endpoint/count bookkeeping for the same prefix-delta interface is now
   Lean-proved too: `D_0=0`, `D_ell=a`, the deltas telescope, and supplied
   binary deltas have exactly `a` ones and `ell-a` zeroes.
+  The same-coordinate vector-bound interface and named binary prefix deltas
+  are now also packaged through to the free-count Lemma 3 numerator equality:
+  a supplied coordinate map reads `Tlo`, `T`, and `Thi` as the lower chain,
+  intermediate chain, and upper chain, while supplied binary deltas provide
+  the two-valued increments. This remains conditional and does not prove the
+  source vector-to-chain correspondence or Lemma 5.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1714,6 +1720,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma4-binary-prefix-delta-a5.md`;
   Lemma 4 prefix-delta endpoint count at
   `threads/05-arithmetic-tail/reproduction-lemma4-prefix-delta-endpoint-count-a5.md`;
+  Lemma 4 same-coordinate binary-delta free count at
+  `threads/05-arithmetic-tail/reproduction-lemma4-same-coordinate-binary-delta-free-count-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`;
   `Htilde` value-set count at
@@ -1757,6 +1765,8 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 4 prefix-delta endpoint count checked by xhigh `Linnaeus the 5th`;
   final landed review pending at
   `threads/05-arithmetic-tail/review-lemma4-prefix-delta-endpoint-count-a5.md`;
+  Lemma 4 same-coordinate binary-delta free count checked by xhigh `Raman` at
+  `threads/05-arithmetic-tail/review-lemma4-same-coordinate-binary-delta-free-count-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`;
@@ -1784,6 +1794,8 @@ No such claim is formalisation-ready until both fields are filled.
   endpoint and binary-delta count bookkeeping for the prefix-delta interface in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   same-coordinate `Htilde` value-set count in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  same-coordinate vector-bound and binary-delta free-count wrapper in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1894,6 +1906,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma4_binaryIncrementPrefix_count_eq_of_HtildeChainBounds`, which
   count supplied binary prefix deltas under terminal source hypotheses or
   same-coordinate chain-bound hypotheses.
+  Also proved `aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta` and
+  `aoyagiLemma4_sameCoordinateChain_binaryIncrementPrefixDelta_freeHighCount_lemma3A_eq_min`,
+  which package supplied same-coordinate vector bounds and supplied binary
+  prefix deltas into the free-count Lemma 3 numerator equality.
   Also proved `aoyagiHtildeIntervalValueSetNat`,
   `aoyagiHtildeIntervalValueSetNat_card_of_lt`,
   `aoyagiHtildeIntervalValueSetNat_card`, and

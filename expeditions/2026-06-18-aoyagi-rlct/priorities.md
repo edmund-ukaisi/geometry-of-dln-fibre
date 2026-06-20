@@ -562,8 +562,11 @@ on the session's original cwd.
    `ell-a` zeroes.  The same-coordinate `Htilde` value-set count is also
    Lean-proved as a finite wrapper:
    `1 + sum_{j=1}^{ell-1}(|I_j|-1)=a(ell-a)+1`, with the Nat-indexed wrapper
-   explicitly empty outside range.  This is still not Lemma 5's
-   chart-family/order-count theorem.  The
+   explicitly empty outside range.  The same-coordinate vector-bound and
+   binary-delta interfaces are now packaged through to the free-count Lemma 3
+   numerator equality, but this still keeps the coordinate map and binary
+   deltas supplied.  This is still not Lemma 5's chart-family/order-count
+   theorem.  The
    remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis
@@ -572,7 +575,10 @@ on the session's original cwd.
    expression to the isolated Lemma 3 free-count quadratic, prove
    correspondence-to-`lambda`, reproduce the terminal
    quadratic rewrite, and reproduce Lemma 5's chart-family/order-count
-   construction.
+   construction.  Next source-facing target: reproduce Aoyagi's displayed
+   Lemma 5 families in equations `(3)` and `(4)` on pp. 26-27 as valid
+   terminal variables with `\tilde t_{s,k}=0` and same-coordinate interval
+   realisation.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

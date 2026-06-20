@@ -465,3 +465,39 @@ This is still only finite value-set arithmetic.  It does not prove Aoyagi
 Lemma 5's chart-family admissibility, coverage, displayed vector
 constructions, pole-order interpretation, normal crossings, or RLCT
 extraction.
+
+## 2026-06-20 Lean Lemma 4 same-coordinate binary-delta free count
+
+Reproduction:
+`reproduction-lemma4-same-coordinate-binary-delta-free-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-same-coordinate-binary-delta-free-count.md`.
+Review artifact:
+`review-lemma4-same-coordinate-binary-delta-free-count-a5.md`.
+
+Lean now packages two existing conditional interfaces into the finite
+Lemma 4-to-Lemma 3 free-count bridge:
+
+```text
+aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta
+aoyagiLemma4_sameCoordinateChain_binaryIncrementPrefixDelta_freeHighCount_lemma3A_eq_min
+```
+
+The first theorem is the named-delta form of the binary prefix-delta bridge:
+if `Delta_j = D_(j+1)-D_j` is `0` or `1`, then
+`F_j = (M-1)+Delta_j` is `M-1` or `M`.
+
+The second theorem takes a supplied coordinate map from vector entries to the
+`H`-chain, componentwise bounds `Tlo <= T <= Thi`, and coordinate identities
+with the displayed `Htilde` chains.  These hypotheses give the same-coordinate
+chain bounds, while the binary deltas give the two-value increment hypothesis;
+the existing free-count bridge then proves that the first `ell-1` high count
+attains the isolated Lemma 3 numerator minimum.
+
+This remains conditional finite arithmetic.  It does not prove Aoyagi's
+source `T -> (H_j),(S_j)` correspondence, binary prefix deltas from source
+vectors, vector admissibility, terminal exponent rewriting, correspondence to
+`lambda`, Lemma 5 chart-family admissibility/coverage/order count, pole order,
+normal crossings, or RLCT extraction.  The source-facing next target is the
+displayed-family realisation in Aoyagi Lemma 5, especially equations `(3)` and
+`(4)` on pp. 26-27.
