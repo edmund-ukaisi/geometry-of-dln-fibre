@@ -1419,7 +1419,10 @@ Review artifact:
 
 Latest A4 update: the Case 2 displayed source-terminal candidate layer has
 landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
-names are `case2DisplayedPaperTerminalCprimeCandidate`,
+names are `case2DisplayedPaperTerminalWeight`,
+`case2DisplayedPaperTerminalCnext`,
+`case2DisplayedPaperTerminalCprimeCandidate`,
+`case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul`,
 `case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul`, and
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`.
 This checkpoint rewrites the expanded weighted stack into Aoyagi's

@@ -13,7 +13,10 @@ Files:
 
 Lean names:
 
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalWeight`
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCnext`
 - `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate`
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul`
 - `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`
 
@@ -43,6 +46,8 @@ supplied suffix, and failed next continuation.
 - Extracted
   `case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul` so the main
   theorem no longer relies on a fragile final local `change` block.
+- Split the source-order candidate into separately named terminal weight and
+  unweighted terminal `Cnext` components.
 - Added this review artifact, which the statement card references.
 - Updated the statement card verification command to say it is run from
   `lean/`.

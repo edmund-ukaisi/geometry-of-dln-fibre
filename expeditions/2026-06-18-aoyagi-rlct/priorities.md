@@ -87,10 +87,10 @@ on the session's original cwd.
    residual weights `b0`, `b`, and a supplied following product `F`, the
    entry-ideal equality is
    `<entries((blockdiag(Wold,diag(b0,b))*[Cold;D'''*C'])*F)> =
-   <entries([(Wold*Cold)*F;(b0*C0)*F])>`. Next A4 target:
-   The source-order candidate version is also Lean-proved as
-   `(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, with `b0` sourced from
-   `post.weight (J+1)` in a supplied displayed boundary. Next A4 target:
+   <entries([(Wold*Cold)*F;(b0*C0)*F])>`. The source-order candidate version
+   is also Lean-proved as `(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, with
+   `b0` sourced from `post.weight (J+1)` in a supplied displayed boundary.
+   Next A4 target:
    identify/source-model the old top block, source diagonal weights, remaining
    following product, and actual `S+1` following matrix, or construct
    chart-produced recurrence/exponent post-data; do not identify `[Cold;C0]`

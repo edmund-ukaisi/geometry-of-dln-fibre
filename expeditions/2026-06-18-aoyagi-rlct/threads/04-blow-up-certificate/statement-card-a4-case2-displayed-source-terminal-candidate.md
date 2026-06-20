@@ -8,7 +8,10 @@ File:
 
 Names:
 
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalWeight`
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCnext`
 - `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate`
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul`
 - `DLNFibre.DLN.Aoyagi.case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`
 
@@ -31,6 +34,8 @@ with `b0 = post.weight (J+1)`.
 
 - The candidate terminal product is named with weights outside the unweighted
   stack `[Cold; C0]`.
+- The terminal weight matrix and unweighted `Cnext` stack are named
+  separately.
 - The displayed supplied source-chart `Q/P` identity can be lifted through an
   unchanged supplied old top block and suffix.
 - After failed next continuation, the weighted stopped terminal absorption

@@ -1411,11 +1411,12 @@ presentation, chart production, Jacobian arithmetic, normal crossings/RLCT,
 termination, transition invariance, and printed-vector repair.
 
 The Case 2 displayed source-terminal candidate layer is now Lean-proved.  The
-new definition `case2DisplayedPaperTerminalCprimeCandidate` names the
-source-order product `(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, keeping the
-weight `b0` outside the unweighted stack.  The expansion theorem identifies it
-with the expanded stack from the previous checkpoint.  The supplied-boundary
-wrapper
+definitions `case2DisplayedPaperTerminalWeight` and
+`case2DisplayedPaperTerminalCnext` name the source-order pieces, and
+`case2DisplayedPaperTerminalCprimeCandidate` names their product
+`(blockdiag(Wold,[b0]) * [Cold;C0]) * F`, keeping the weight `b0` outside the
+unweighted stack.  The expansion theorem identifies it with the expanded stack
+from the previous checkpoint.  The supplied-boundary wrapper
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont`
 then combines the supplied displayed source-chart `Q/P` identity with the
 stopped terminal absorption, sourcing `b0` from `post.weight (J+1)` while

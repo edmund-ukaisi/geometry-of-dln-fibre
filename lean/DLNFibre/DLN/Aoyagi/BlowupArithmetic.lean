@@ -10645,12 +10645,34 @@ theorem sourceDisplayedQP_sourceChartMap_paperQP
     case2DisplayedPaperCprime, case2DisplayedPaperQinv]
     using data.sourceDisplayedQP_sourceChartMap residual C
 
+/-- Source-order terminal weight matrix for the stopped displayed Case 2
+candidate.
+
+The old top multiplier is supplied, and the surviving pivot weight is a scalar
+`b0`.  This does not prove these are Aoyagi's source-produced next weights. -/
+def case2DisplayedPaperTerminalWeight
+    {ι R : Type*} [CommRing R] (Wold : Matrix ι ι R) (b0 : R) :
+    Matrix (ι ⊕ Unit) (ι ⊕ Unit) R :=
+  fromBlocks Wold 0 0 (show Matrix Unit Unit R from fun _ _ ↦ b0)
+
+/-- Source-order next-following-matrix candidate for the stopped displayed
+Case 2 terminal product.
+
+This is the unweighted stack `[Cold; C0]`.  It names the finite matrix shape
+suggested by Aoyagi's terminal display, but it does not prove the stack is the
+source-produced `C'^(S+1)`. -/
+def case2DisplayedPaperTerminalCnext
+    {ι τ R : Type*} [CommRing R] (Cold : Matrix ι τ R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) : Matrix (ι ⊕ Unit) τ R :=
+  verticalBlock Cold (case2DisplayedPaperCprimeTop n hS hcont residual C)
+
 /-- Source-order candidate for the stopped displayed Case 2 terminal product.
 
-This is the product of the supplied old top multiplier and pivot scalar
-against the unweighted stack `[Cold; C0]`, followed by the remaining suffix
-`F`.  It names the finite matrix shape suggested by Aoyagi's terminal display,
-but it does not prove that `[Cold; C0]` is the source-produced
+This is `(terminalWeight * terminalCnext) * F`.  It names the finite matrix
+shape suggested by Aoyagi's terminal display, but it does not prove that
+`terminalCnext` is the source-produced
 `C'^(S+1)`. -/
 def case2DisplayedPaperTerminalCprimeCandidate
     {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
@@ -10659,8 +10681,20 @@ def case2DisplayedPaperTerminalCprimeCandidate
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
     (F : Matrix τ υ R) : Matrix (ι ⊕ Unit) υ R :=
-  (fromBlocks Wold 0 0 (show Matrix Unit Unit R from fun _ _ ↦ b0) *
-      verticalBlock Cold (case2DisplayedPaperCprimeTop n hS hcont residual C)) * F
+  (case2DisplayedPaperTerminalWeight Wold b0 *
+      case2DisplayedPaperTerminalCnext Cold n hS hcont residual C) * F
+
+theorem case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    (Wold : Matrix ι ι R) (Cold : Matrix ι τ R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) :
+    case2DisplayedPaperTerminalCprimeCandidate Wold Cold n hS hcont b0 residual C F =
+      (case2DisplayedPaperTerminalWeight Wold b0 *
+        case2DisplayedPaperTerminalCnext Cold n hS hcont residual C) * F :=
+  rfl
 
 /-- Expand the stopped displayed Case 2 source-order candidate into the
 weighted old-top row block and weighted surviving pivot row. -/
@@ -10675,7 +10709,9 @@ theorem case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul
       verticalBlock ((Wold * Cold) * F)
         (((show Matrix Unit Unit R from fun _ _ ↦ b0) *
           case2DisplayedPaperCprimeTop n hS hcont residual C) * F) := by
-  rw [case2DisplayedPaperTerminalCprimeCandidate, fromBlocks_mul_verticalBlock]
+  rw [case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul,
+    case2DisplayedPaperTerminalWeight, case2DisplayedPaperTerminalCnext,
+    fromBlocks_mul_verticalBlock]
   change
     ((show Matrix (ι ⊕ Unit) τ R from Sum.elim (Wold * Cold)
       ((show Matrix Unit Unit R from fun _ _ ↦ b0) *

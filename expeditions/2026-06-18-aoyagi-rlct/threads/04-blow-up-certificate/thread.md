@@ -633,14 +633,18 @@ Statement card:
 Review artifact:
 `review-case2-displayed-source-terminal-candidate-a4.md`.
 
-Lean now names the source-order stopped terminal candidate
+Lean now names the source-order stopped terminal pieces
+`case2DisplayedPaperTerminalWeight` and
+`case2DisplayedPaperTerminalCnext`, and their product
 `case2DisplayedPaperTerminalCprimeCandidate`:
 
 ```text
 (blockdiag(Wold,[b0]) * [Cold; C0]) * F,
 ```
 
-where `C0` is the top pivot row of `C' = Q^-1 C`.  The expansion theorem
+where `C0` is the top pivot row of `C' = Q^-1 C`.  The product theorem
+`case2DisplayedPaperTerminalCprimeCandidate_eq_weight_mul_cnext_mul` records
+this factorisation, and the expansion theorem
 `case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul` identifies
 this product with the previously proved expanded stack
 `[(Wold*Cold)*F ; (b0*C0)*F]`.
