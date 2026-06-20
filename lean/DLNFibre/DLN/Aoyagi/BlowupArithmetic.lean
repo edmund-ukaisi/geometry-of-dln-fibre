@@ -7114,6 +7114,178 @@ def case2DisplayedSourceFollowingFactor
     Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
   case2DisplayedFollowingFactor n hS hcont (case2SourceFollowingFactor C)
 
+/-- Aoyagi Case 1(2)'s displayed normalised source-coordinate block `D_chart`,
+restricted to residual rows and actual-width residual columns.  This names the
+already normalised block; it is not a chart-construction theorem. -/
+def case1DisplayedPaperDchart
+    (n : ℕ → ℕ) {S J : ℕ} (_hS : 1 ≤ S)
+    (_hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  case2SourceResidualBlock residual
+
+omit [CommRing R] in
+/-- The source-coordinate value at Aoyagi's displayed top-left pivot. -/
+theorem case1DisplayedPaperDchart_pivot
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    case1DisplayedPaperDchart n hS hcont residual
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont) =
+      residual (J + 1, J + 1) := by
+  rfl
+
+/-- Aoyagi Case 1(2)'s source block before the displayed `Q/P` operations:
+the row strip is reconstructed as `u * D_chart`, while lower residual rows are
+left unchanged. -/
+def case1DisplayedPaperSourceBlock
+    (n : ℕ → ℕ) {S J : ℕ} (J1 : ℕ) (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  case1RowStripSourceMatrix (case1ResidualRowStrip n S J J1) u
+    (case1DisplayedPaperDchart n hS hcont residual)
+
+/-- Aoyagi's displayed Case 1(2) column operation `Q = [1 -y; 0 I]` in
+pivot-first source-coordinate form. -/
+def case1DisplayedPaperQ
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont))
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) R :=
+  pivotQ
+    (pivotFirstY
+      (case2DisplayedPivotRow n hS hcont)
+      (case2DisplayedPivotCol n hS hcont)
+      (case1DisplayedPaperDchart n hS hcont residual))
+
+/-- Aoyagi's displayed Case 1(2) inverse column operation `Q⁻¹ = [1 y; 0 I]`
+in pivot-first source-coordinate form. -/
+def case1DisplayedPaperQinv
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont))
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) R :=
+  pivotQinv
+    (pivotFirstY
+      (case2DisplayedPivotRow n hS hcont)
+      (case2DisplayedPivotCol n hS hcont)
+      (case1DisplayedPaperDchart n hS hcont residual))
+
+/-- Aoyagi's displayed Case 1(2) block `D'' = D_chart * Q`, after putting the
+displayed pivot row and column first. -/
+def case1DisplayedPaperDpp
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotRow n hS hcont))
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) R :=
+  pivotFirstMatrix
+      (case2DisplayedPivotRow n hS hcont)
+      (case2DisplayedPivotCol n hS hcont)
+      (case1DisplayedPaperDchart n hS hcont residual) *
+    case1DisplayedPaperQ n hS hcont residual
+
+/-- Aoyagi's displayed Case 1(2) transported following factor `C' = Q⁻¹ C`,
+where `C` is supplied in source-coordinate column form. -/
+def case1DisplayedPaperCprime
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  case1DisplayedPaperQinv n hS hcont residual *
+    case2DisplayedSourceFollowingFactor n hS hcont C
+
+/-- Aoyagi's displayed Case 1(2) cleared block
+`D''' = blockdiag(1, D - x*y)` in pivot-first coordinates. -/
+def case1DisplayedPaperDppp
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotRow n hS hcont))
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) R :=
+  weightedPivotClearedBlock
+    (pivotFirstD
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case1DisplayedPaperDchart n hS hcont residual) -
+      pivotFirstX
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case1DisplayedPaperDchart n hS hcont residual) *
+        pivotFirstY
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case1DisplayedPaperDchart n hS hcont residual))
+
+/-- If the displayed source-coordinate pivot is normalised to `1`, then the
+paper block `D''` is exactly the post-`Q` pivot block. -/
+theorem case1DisplayedPaperDpp_eq_pivotPostQBlock
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (hpivot : residual (J + 1, J + 1) = 1) :
+    case1DisplayedPaperDpp n hS hcont residual =
+      pivotPostQBlock
+        (pivotFirstX
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case1DisplayedPaperDchart n hS hcont residual))
+        (pivotFirstY
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case1DisplayedPaperDchart n hS hcont residual))
+        (pivotFirstD
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case1DisplayedPaperDchart n hS hcont residual)) := by
+  have hpivot' :
+      case1DisplayedPaperDchart n hS hcont residual
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont) = 1 := by
+    simpa [case1DisplayedPaperDchart_pivot] using hpivot
+  rw [case1DisplayedPaperDpp, case1DisplayedPaperQ]
+  rw [pivotFirstMatrix_eq_pivotPreQBlock _ hpivot']
+  rw [pivotPreQBlock_mul_pivotQ]
+
+/-- The paper orientation `C' = Q⁻¹ C`: multiplying `D'' = D_chart * Q` by
+`C'` gives the original normalised block times the source following factor. -/
+theorem case1DisplayedPaperDpp_mul_Cprime
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case1DisplayedPaperDpp n hS hcont residual *
+        case1DisplayedPaperCprime n hS hcont residual C =
+      pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case1DisplayedPaperDchart n hS hcont residual) *
+        case2DisplayedSourceFollowingFactor n hS hcont C := by
+  rw [case1DisplayedPaperDpp, case1DisplayedPaperCprime,
+    case1DisplayedPaperQ, case1DisplayedPaperQinv]
+  rw [Matrix.mul_assoc]
+  rw [← Matrix.mul_assoc
+    (pivotQ
+      (pivotFirstY
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case1DisplayedPaperDchart n hS hcont residual)))
+    (pivotQinv
+      (pivotFirstY
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case1DisplayedPaperDchart n hS hcont residual)))
+    (case2DisplayedSourceFollowingFactor n hS hcont C)]
+  rw [pivotQ_mul_pivotQinv]
+  simp
+
 namespace Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
 
 /-- Source-coordinate form of the displayed Case 1(2) source-order identity.
@@ -7211,6 +7383,68 @@ theorem sourceOrder_identity_sourceCoordinates
       (case2DisplayedFollowingFactor n data.pullback.handoff.stage_pos
         data.pullback.handoff.continuationBound (case2SourceFollowingFactor C))
       hpivot'
+
+/-- Paper-named source-coordinate form of Aoyagi's displayed Case 1(2) `Q/P`
+calculation.
+
+The theorem is only a notation/adapter layer over the supplied displayed
+source-order identity.  It exposes the paper blocks `D_chart`, `C'`, and
+`D'''`; it does not construct the chart, prove coverage or regularity, derive
+post-data, compute a Jacobian, prove normal crossings, or extract an RLCT. -/
+theorem sourceOrder_identity_sourceCoordinates_paperQP
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (hpivot : residual (J + 1, J + 1) = 1) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+          data.pullback.handoff.continuationBound) → R,
+      (weightedPivotBlockRowOp q
+            (fun i ↦
+              pivotFirstX
+                (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                  data.pullback.handoff.continuationBound)
+                (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                  data.pullback.handoff.continuationBound)
+                (case1DisplayedPaperDchart n data.pullback.handoff.stage_pos
+                  data.pullback.handoff.continuationBound residual) i ()) *
+          (diagonal
+              (fun i ↦ source.weight (case2ResidualRowLevel n S J i)) *
+            case1DisplayedPaperSourceBlock n J1 data.pullback.handoff.stage_pos
+              data.pullback.handoff.continuationBound u residual).submatrix
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                data.pullback.handoff.continuationBound))
+            (pivotFirstIndexEquiv
+              (case2DisplayedPivotCol n data.pullback.handoff.stage_pos
+                data.pullback.handoff.continuationBound))) *
+          case2DisplayedSourceFollowingFactor n data.pullback.handoff.stage_pos
+            data.pullback.handoff.continuationBound C =
+        (weightedPivotDiagonal
+            (post.weight (J + 1))
+            (fun i :
+                pivotComplement
+                  (case2DisplayedPivotRow n data.pullback.handoff.stage_pos
+                    data.pullback.handoff.continuationBound) ↦
+              post.weight (case2ResidualRowLevel n S J i.1)) *
+          case1DisplayedPaperDppp n data.pullback.handoff.stage_pos
+            data.pullback.handoff.continuationBound residual) *
+          case1DisplayedPaperCprime n data.pullback.handoff.stage_pos
+            data.pullback.handoff.continuationBound residual C := by
+  simpa [case1DisplayedPaperDchart, case1DisplayedPaperSourceBlock,
+    case1DisplayedPaperDppp, case1DisplayedPaperCprime, case1DisplayedPaperQinv]
+    using data.sourceOrder_identity_sourceCoordinates residual C hpivot
 
 end Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
 
