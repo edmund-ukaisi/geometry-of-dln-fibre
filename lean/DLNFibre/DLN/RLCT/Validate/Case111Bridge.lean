@@ -137,4 +137,36 @@ theorem monomialThreshold_case111 :
       simpa using this
     exact hqt
 
+/-! ## Reusable infra for the `rlctAt`-bridge (baby S1.1; thread 13)
+
+Two self-contained, sorry-free pieces toward `case111_rlct_eq_monomialThreshold` (`rlctAt = θ` for
+the `(1,1,1)` monomial). They are **reusable S1.1 infra**, not `(1,1,1)`-throwaway. The third piece
+(the measure-preserving `Params (1,1,1) ≃ᵐ (Fin 2 → ℝ)`) is **blocked** by a `Params`-as-`def` type
+obstruction documented in thread 13 — so the bridge `sorry` in `Case111.lean` stands. -/
+
+/-- **One-sided `rpow` integrability via `|·|`** (the bridge's piece 2, half): `|x|^s` is integrable
+on `Ioo 0 ε` **iff** `-1 < s` (on the positive half `|x| = x`, so this is the single-axis rpow iff).
+The two-sided version on `[-ε, ε]` (the `𝓝 0`-shaped chart the `rlctAt` side needs, crossing `0`)
+glues this right half with the reflected negative half — a short addendum once a `volume`
+neg-invariance lemma is in scope (see thread 13). -/
+theorem abs_rpow_integrableOn_Ioo_iff (s ε : ℝ) (hε : 0 < ε) :
+    IntegrableOn (fun x : ℝ => |x| ^ s) (Ioo (0 : ℝ) ε) volume ↔ -1 < s := by
+  have hposEq : EqOn (fun x : ℝ => |x| ^ s) (fun x : ℝ => x ^ s) (Ioo (0 : ℝ) ε) :=
+    fun x hx => by simp only; rw [abs_of_pos hx.1]
+  rw [integrableOn_congr_fun hposEq measurableSet_Ioo,
+    intervalIntegral.integrableOn_Ioo_rpow_iff hε]
+
+/-- **Per-layer measure-preserving entry equiv** (toward the bridge's piece 1): the unique scalar
+entry of a `1×1` real matrix, `(Fin 1 → Fin 1 → ℝ) ≃ᵐ ℝ`, is volume-preserving (twice-`funUnique`).
+The remaining step — assembling these per-layer maps into a measure-preserving
+`Params (1,1,1) ≃ᵐ (Fin 2 → ℝ)` — is BLOCKED: `Params H`'s fiber
+`Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ` does not reduce to `Fin 1 → Fin 1 → ℝ` *uniformly*
+in symbolic `s` (only per concrete `s` via `fin_cases`), and `Matrix`-as-`def` blocks the
+`MeasurableSpace`/Pi-fiber instances `volume_preserving_pi` needs. See thread 13. -/
+theorem measurePreserving_matrixEntry₁₁ :
+    MeasurePreserving
+      ((MeasurableEquiv.funUnique (Fin 1) (Fin 1 → ℝ)).trans (MeasurableEquiv.funUnique (Fin 1) ℝ))
+      (volume : Measure (Fin 1 → Fin 1 → ℝ)) volume :=
+  (volume_preserving_funUnique (Fin 1) ℝ).comp (volume_preserving_funUnique (Fin 1) (Fin 1 → ℝ))
+
 end DLNFibre.DLN.RLCT
