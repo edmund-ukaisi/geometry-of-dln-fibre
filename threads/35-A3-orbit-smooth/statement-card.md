@@ -11,6 +11,13 @@ point. Module: `lean/DLNFibre/Core/OrbitSmooth.lean`. `[Field k] [IsAlgClosed k]
 **Consumers:** A6 (assembly) and M3/L2a (cotangent at the `k`-rational point) consume `isSmoothAt_normalFormIdeal`
 and `residueFieldNormalFormEquiv` (κ(m_M)=k).
 
+**Fidelity-reviewed** (independent + Codex-corroborated, @ `633766c`): SURVIVED — the Lean statement
+faithfully means "Z_M smooth at M"; `Algebra.IsSmoothAt` is the honest Mathlib abbrev; `[IsAlgClosed k]`
+is the honest minimum for the route (no hidden `CharZero`, of any characteristic); the `omit [IsAlgClosed k]`
+annotations are correct; the G-action transport, the scheme↔ring bridge, the residue-field equiv, and
+non-vacuity (`m_M ≠ ⊤` ⟹ `A` nontrivial ⟹ headline not vacuous) all check out. The orbit-vs-rank-locus
+identity is an imported proved equality (L6.4), reconciled in-module — not a silent mismatch.
+
 ---
 
 > **Claim (A3 headline, L3).** Over an algebraically closed field, the orbit-closure coordinate ring
@@ -40,7 +47,7 @@ and `residueFieldNormalFormEquiv` (κ(m_M)=k).
 >   (`Scheme.arrowStalkMapSpecIso`), `Algebra.FormallySmooth.iff_of_equiv`,
 >   `IsLocalization.ringEquivOfRingEquiv`/`atUnits` are Mathlib v4.29.
 > - **Deferred.** none for L3 itself.
-> - **Status.** sorry-free (pending fidelity review)
+> - **Status.** sorry-free + reviewed
 
 ---
 
@@ -54,7 +61,7 @@ and `residueFieldNormalFormEquiv` (κ(m_M)=k).
 >   (`Ideal.quotientKerAlgEquivOfSurjective`) gives the equiv. `M` is a `k`-rational point.
 > - **Assumed.** `[IsAlgClosed k]` (inherited from the section; the equiv itself needs only `[Field k]`).
 > - **Cited.** none.
-> - **Status.** sorry-free (pending fidelity review)
+> - **Status.** sorry-free + reviewed
 
 ---
 
@@ -71,7 +78,7 @@ and `residueFieldNormalFormEquiv` (κ(m_M)=k).
 >   (`IsLocalization.atUnits`), so `localRingHom = algebraMap k (AtPrime p)` up to a source iso
 >   (`localRingHom_formallySmooth_iff`), whose `FormallySmooth` is `Algebra.IsSmoothAt`
 >   (`RingHom.formallySmooth_algebraMap`). No `primeIdealOf`/`isoSpec` hand-rolling.
-> - **Status.** sorry-free (pending fidelity review)
+> - **Status.** sorry-free + reviewed
 
 ---
 
