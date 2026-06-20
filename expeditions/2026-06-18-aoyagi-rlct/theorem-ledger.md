@@ -1596,27 +1596,35 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-suffix-chain-a4.md`.
 
-Latest A4 update: the Case 2 source terminal product candidate has landed in
-`lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean` and
+Latest A4 update: the Case 2 source terminal product candidate and product
+form have landed in `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean` and
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
 include `matrixEntryIdeal_submatrix_equiv`,
 `case2SourceTerminalRowIndex`, `case2SourceTerminalRowEquiv`,
 `case2DisplayedSourceTerminalCprimeCandidate`,
 `case2DisplayedSourceTerminalProductReindexedCandidate`,
+`case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul`,
 `matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`,
 and
-`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalReindexedProduct_of_not_next_cont`.
-This checkpoint reindexes the already proved stopped terminal candidate into
-one-based source rows `1..J+1`.  It does not prove the product-form equality
-from source terminal weight times source terminal `C'`, source-produced
-`C'^(S+1)`, chart production, coverage, Jacobians, normal crossings/RLCT,
-termination, transition invariance, automatic Case 2 gap/tail transport, or
-printed-vector repair. Reproduction:
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`.
+These checkpoints reindex the already proved stopped terminal candidate into
+one-based source rows `1..J+1` and prove that the reindexed candidate is
+`(case2DisplayedSourceTerminalWeight *
+case2DisplayedSourceTerminalCprimeCandidate) * F`. They do not prove
+source-produced `C'^(S+1)`, chart production, coverage, Jacobians, normal
+crossings/RLCT, termination, transition invariance, automatic Case 2 gap/tail
+transport, or printed-vector repair. Reproduction:
 `threads/04-blow-up-certificate/reproduction-case2-source-terminal-product-candidate-a4.md`.
+Product-form reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-terminal-product-form-a4.md`.
 Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-source-terminal-product-candidate.md`.
+Product-form statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-terminal-product-form.md`.
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-terminal-product-candidate-a4.md`.
+Product-form review artifact:
+`threads/04-blow-up-certificate/review-case2-source-terminal-product-form-a4.md`.
 
 ## Ledger rules
 

@@ -82,7 +82,7 @@ The final wrapper is:
 
 ```text
 Case2DisplayedSuppliedChartFamilyBoundary.
-  exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalReindexedProduct_of_not_next_cont
+  exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont
 ```
 
 ## Boundaries

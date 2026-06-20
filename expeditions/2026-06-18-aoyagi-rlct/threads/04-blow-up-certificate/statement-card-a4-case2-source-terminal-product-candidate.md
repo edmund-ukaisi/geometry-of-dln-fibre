@@ -21,7 +21,7 @@ Names:
 - `DLNFibre.DLN.Aoyagi.case2DisplayedSourceTerminalProductReindexedCandidate`
 - `DLNFibre.DLN.Aoyagi.case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate_submatrix`
 - `DLNFibre.DLN.Aoyagi.matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`
-- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalReindexedProduct_of_not_next_cont`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`
 
 ## Statement
 

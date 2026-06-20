@@ -2397,8 +2397,35 @@ case2DisplayedSourceTerminalProductReindexedCandidate
 
 The stopped source old-top/source suffix theorem is restated with the
 source-row reindexed terminal product candidate on the right hand side.  This
-is still a reindexing of supplied terminal data.  It does not prove the
-product-form equality from the separately named source-row factors, does not
-prove source-produced `C'^(S+1)`, and does not prove chart production,
-coverage, Jacobians, normal crossings/RLCT, termination, transition
-invariance, automatic Case 2 gap/tail transport, or printed-vector repair.
+is still a reindexing of supplied terminal data.  It does not prove
+source-produced `C'^(S+1)`, and does not prove chart production, coverage,
+Jacobians, normal crossings/RLCT, termination, transition invariance,
+automatic Case 2 gap/tail transport, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 source terminal product form
+
+Reproduction:
+`reproduction-case2-source-terminal-product-form-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-terminal-product-form.md`.
+Review artifact:
+`review-case2-source-terminal-product-form-a4.md`.
+
+Lean now proves that the source-row terminal product candidate is exactly the
+product of the separately named source-row terminal weight and source-row
+terminal next-factor candidate, followed by the supplied suffix:
+
+```text
+case2DisplayedSourceTerminalProductReindexedCandidate
+  =
+(case2DisplayedSourceTerminalWeight *
+  case2DisplayedSourceTerminalCprimeCandidate) * F.
+```
+
+The proof is pure matrix reindexing: `Matrix.submatrix_mul_equiv` is applied
+to the final multiplication by `F`, then to the terminal weight times terminal
+next-factor product.  This closes the product-form packaging gap for the
+existing reindexed candidate.  It still does not prove source-produced
+`C'^(S+1)`, chart production, coverage, Jacobians, normal crossings/RLCT,
+termination, transition invariance, automatic Case 2 gap/tail transport, or
+printed-vector repair.

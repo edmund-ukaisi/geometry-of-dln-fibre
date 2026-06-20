@@ -120,14 +120,15 @@ on the session's original cwd.
    Lean-proved as a reindexing presentation: old rows `1..J` plus the
    surviving pivot row are equivalent to source rows `1..J+1`, and the stopped
    source old-top/source suffix theorem is restated with
-   `case2DisplayedSourceTerminalProductReindexedCandidate` on the right. Next
-   A4 target: prove the product-form equality for the separately named source
-   terminal weight and source terminal `C'` if needed, then construct the
-   source-produced terminal stack `C'^(S+1)` or the bridge from this current
-   reindexed candidate to that source object. Do not transport Case 2 gap/tail
-   invariants without separately checking their shifted thresholds. If
-   downstream suffix rewrites become noisy, add source-level empty/peel lemmas
-   for `sourceSuffixProduct`.
+   `case2DisplayedSourceTerminalProductReindexedCandidate` on the right. The
+   product-form equality is now also Lean-proved: the reindexed candidate is
+   `(case2DisplayedSourceTerminalWeight *
+   case2DisplayedSourceTerminalCprimeCandidate) * F`. Next A4 target:
+   construct the source-produced terminal stack `C'^(S+1)` or the bridge from
+   this current reindexed candidate to that source object. Do not transport
+   Case 2 gap/tail invariants without separately checking their shifted
+   thresholds. If downstream suffix rewrites become noisy, add source-level
+   empty/peel lemmas for `sourceSuffixProduct`.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

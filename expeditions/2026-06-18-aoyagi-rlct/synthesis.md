@@ -1505,9 +1505,14 @@ the product explicitly named
 `case2DisplayedSourceTerminalProductReindexedCandidate` because it is defined
 by row-reindexing the existing stacked candidate.  The stopped source
 old-top/source suffix theorem is restated with this reindexed source-row
-candidate on the right.  The product-form equality from source terminal weight
-times source terminal `C'` is not proved here, and source production of
-Aoyagi's full `C'^(S+1)` remains open.
+candidate on the right.
+
+The source terminal product-form bridge is now Lean-proved as
+`case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul`.
+It proves that the reindexed candidate is the product of the separately named
+source terminal weight and source terminal `C'` candidate, followed by the
+supplied suffix.  This closes the product packaging gap, but source production
+of Aoyagi's full `C'^(S+1)` remains open.
 
 ## Drift guard
 

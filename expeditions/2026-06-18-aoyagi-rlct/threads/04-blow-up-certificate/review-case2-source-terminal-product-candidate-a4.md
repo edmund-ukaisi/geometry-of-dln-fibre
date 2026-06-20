@@ -31,17 +31,24 @@ name was therefore hardened to
 case2DisplayedSourceTerminalProductReindexedCandidate
 ```
 
-and the final wrapper name now says `sourceTerminalReindexedProduct`.
+The final source old-top/source suffix wrapper keeps the compiled name
+`exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
+while its right hand side is the reindexed candidate above.
 
 ## Residual Risk
 
-The product-form equality
+The follow-up checkpoint
+
+```text
+case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul
+```
+
+now proves the product-form equality
 
 ```text
 (source terminal weight * source terminal Cprime candidate) * F
 ```
 
-is not proved.  This is acceptable for the current entry-ideal wrapper, whose
-purpose is only to expose the one-based source-row presentation of the already
-proved stopped terminal candidate.  Downstream work should prove that equality
-before using the separately named source-row factors computationally.
+for the existing reindexed candidate.  The remaining risk is source
+production: this does not prove that the separately named source-row factors
+are produced by Aoyagi's chart.

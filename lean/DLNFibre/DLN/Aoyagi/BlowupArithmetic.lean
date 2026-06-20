@@ -10990,6 +10990,41 @@ theorem case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeC
         (case2SourceTerminalRowEquiv J).symm id :=
   rfl
 
+/-- The source-row terminal product candidate is the product of the separately
+named source-row terminal weight and source-row terminal next-factor candidate,
+followed by the supplied suffix. -/
+theorem case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (n : ℕ → ℕ) {S : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) :
+    case2DisplayedSourceTerminalProductReindexedCandidate Wold n hS hcont b0 residual C F =
+      (case2DisplayedSourceTerminalWeight Wold b0 *
+        case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C) * F := by
+  rw [case2DisplayedSourceTerminalProductReindexedCandidate,
+    case2DisplayedPaperTerminalCprimeCandidate, case2DisplayedSourceTerminalWeight,
+    case2DisplayedSourceTerminalCprimeCandidate]
+  rw [← Matrix.submatrix_mul_equiv
+    (case2DisplayedPaperTerminalWeight Wold b0 *
+      case2DisplayedPaperTerminalCnext (case2DisplayedSourceOldTopBlock (J := J) C)
+        n hS hcont residual C)
+    F
+    (case2SourceTerminalRowEquiv J).symm
+    (Equiv.refl τ)
+    (id : υ → υ)]
+  rw [← Matrix.submatrix_mul_equiv
+    (case2DisplayedPaperTerminalWeight Wold b0)
+    (case2DisplayedPaperTerminalCnext (case2DisplayedSourceOldTopBlock (J := J) C)
+      n hS hcont residual C)
+    (case2SourceTerminalRowEquiv J).symm
+    (case2SourceTerminalRowEquiv J).symm
+    (Equiv.refl τ)]
+  simp
+
 /-- Reindexing the source-row terminal product candidate preserves the
 matrix-entry ideal of the stacked stopped terminal candidate. -/
 theorem matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate

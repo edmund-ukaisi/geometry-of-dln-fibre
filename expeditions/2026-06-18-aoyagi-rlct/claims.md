@@ -536,8 +536,11 @@ No such claim is formalisation-ready until both fields are filled.
   chain and instantiates the stopped source old-top theorem with that named
   suffix product. The source terminal product candidate checkpoint now
   reindexes the stopped terminal candidate into source rows `1..J+1`, with the
-  surviving pivot row placed at `J+1`. This still does not construct
-  source-produced `C'^(S+1)`.
+  surviving pivot row placed at `J+1`. The product-form bridge now proves that
+  this reindexed candidate is
+  `(case2DisplayedSourceTerminalWeight *
+  case2DisplayedSourceTerminalCprimeCandidate) * F`. This still does not
+  construct source-produced `C'^(S+1)`.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -628,6 +631,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-source-suffix-chain-a4.md`.
 	  Review of the Case 2 source terminal product candidate is saved at
 	  `threads/04-blow-up-certificate/review-case2-source-terminal-product-candidate-a4.md`.
+	  Review of the Case 2 source terminal product form is saved at
+	  `threads/04-blow-up-certificate/review-case2-source-terminal-product-form-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1390,10 +1395,13 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedSourceTerminalWeight`,
   `case2DisplayedSourceTerminalProductReindexedCandidate`,
   `case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate_submatrix`,
+  `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul`,
   `matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`,
   and
-  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalReindexedProduct_of_not_next_cont`.
-  This only reindexes the stopped terminal candidate into one-based source rows.
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`.
+  This reindexes the stopped terminal candidate into one-based source rows and
+  proves its product form, but it does not construct source-produced
+  `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
