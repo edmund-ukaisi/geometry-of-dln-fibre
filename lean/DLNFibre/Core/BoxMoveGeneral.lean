@@ -1053,6 +1053,119 @@ theorem rankPattern_splice_zero_eq_down (a c e : Fin (N + 1)) (b : Fin N)
     simp only [Fin.le_def, hbc, Nat.cast_id] at *
     split_ifs <;> omega
 
+/-! ## The recombination polynomial family and the non-split §4 list headline
+
+The degeneration family `splicePoly` carries the recombination parameter `X` on the long strand of
+edge `b` (`splice` with `λ = X`); its `eval`-at-`t` is `splice t`. For `t ≠ 0` that lies in the orbit
+of the upstairs `U₂` (full recombination row, `splice_mem_orbit_U2`); at `t = 0` it is `splice 0`,
+`G_d`-equivalent to the genuine downstairs (`splice_zero_orbit_down`). The engine + downstairs-transport
++ common-summand wrappers then land the §4 headline. -/
+
+/-- The recombination polynomial family: `splice` with the edge-`b` long strand carrying `X`. -/
+noncomputable def splicePoly (a c e : Fin (N + 1)) (b : Fin N) :
+    Tuple (k := Polynomial k) (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) :=
+  fun p r s ↦ if p = b
+    then (match finSumFinEquiv.symm s with | Sum.inl _ => Polynomial.X | Sum.inr _ => 1)
+    else Polynomial.C (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc) p r s)
+
+/-- `tupleEval (splicePoly a c e b) t = splice a c e b t`: the family evaluates to the recombination
+tuple (`X ↦ t`, `C ∘ eval = id`). -/
+theorem tupleEval_splicePoly (a c e : Fin (N + 1)) (b : Fin N) (t : k) :
+    tupleEval (splicePoly a c e b) t = splice (k := k) a c e b t := by
+  funext p r s
+  simp only [tupleEval, splicePoly, splice, Matrix.map_apply]
+  by_cases hp : p = b
+  · subst hp
+    rw [if_pos rfl, if_pos rfl]
+    rcases finSumFinEquiv.symm s with sl | sr
+    · simp
+    · simp
+  · rw [if_neg hp, if_neg hp, Polynomial.eval_C]
+
+/-- For `λ ≠ 0`, `splice λ` lies in the orbit of `U₂ = M_{[a,e]} ⊕ M_{[c,b]}` (equal rank patterns
+via `rankPattern_splice_eq_U2_of_ne_zero`, then the complete invariant `orbit_of_rankPattern_eq`). -/
+theorem splice_mem_orbit_U2 (a c e : Fin (N + 1)) (b : Fin N) (lam : k)
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e) (hlam : lam ≠ 0) :
+    ∃ P : BaseChangeGroup (k := k) (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l),
+      P • dirSum (intervalModule a e) (intervalModule c b.castSucc) = splice a c e b lam := by
+  refine orbit_of_rankPattern_eq _ _ (fun i j hij ↦ ?_)
+  exact (rankPattern_splice_eq_U2_of_ne_zero a c e b lam hac hcb hbe hlam hij).symm
+
+/-- For `λ = 0`, `splice 0` is `G_d`-equivalent to the genuine downstairs `M_{[a,b]} ⊕ M_{[c,e]}`
+(transported onto the upstairs dimension vector, which the move preserves). -/
+theorem splice_zero_orbit_down (a c e : Fin (N + 1)) (b : Fin N)
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    ∃ Q : BaseChangeGroup (k := k) (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l),
+      Q • splice a c e b 0
+        = (foldDim_nonsplit_eq a c e b hac hcb hbe) ▸
+            intervalDirectSum (k := k) [(a, b.castSucc), (c, e)] := by
+  refine orbit_of_rankPattern_eq _ _ (fun i j hij ↦ ?_)
+  exact rankPattern_splice_zero_eq_down a c e b hac hcb hbe hij
+
+/-- `foldDim` of the non-split downstairs list equals `(splice dim) + foldDim rest`. -/
+theorem foldDim_nonsplitCons_eq (a c e : Fin (N + 1)) (b : Fin N)
+    (rest : List (Fin (N + 1) × Fin (N + 1)))
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    foldDim ((a, b.castSucc) :: (c, e) :: rest)
+      = (fun l ↦ (intervalDim a e l + intervalDim c b.castSucc l) + foldDim rest l) := by
+  funext l
+  have := congrFun (foldDim_nonsplit_eq (N := N) a c e b hac hcb hbe) l
+  simp only [foldDim, add_zero] at this ⊢
+  omega
+
+/-- The non-split downstairs sum `M_{[a,b]} ⊕ M_{[c,e]} ⊕ rest` is `G_d`-equivalent to
+`dirSum (splice 0) (intervalDirectSum rest)` (transported onto the upstairs dimension vector): equal
+rank patterns (`rankPattern_splice_zero_eq_down` + block additivity), then the complete invariant. -/
+theorem orbit_dirSum_splice_intervalDirectSum (a c e : Fin (N + 1)) (b : Fin N)
+    (rest : List (Fin (N + 1) × Fin (N + 1)))
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    ∃ Q : BaseChangeGroup (k := k)
+        (fun l ↦ (intervalDim a e l + intervalDim c b.castSucc l) + foldDim rest l),
+      Q • dirSum (splice (k := k) a c e b 0) (intervalDirectSum rest)
+        = (foldDim_nonsplitCons_eq a c e b rest hac hcb hbe) ▸
+            intervalDirectSum (k := k) ((a, b.castSucc) :: (c, e) :: rest) := by
+  refine orbit_of_rankPattern_eq _ _ (fun i j hij ↦ ?_)
+  rw [rankPattern_dirSum, rankPattern_splice_zero_eq_down a c e b hac hcb hbe hij,
+    rankPattern_transport (foldDim_nonsplit_eq a c e b hac hcb hbe),
+    rankPattern_transport (foldDim_nonsplitCons_eq a c e b rest hac hcb hbe),
+    rankPattern_intervalDirectSum (K := k) ((a, b.castSucc) :: (c, e) :: rest),
+    rankPattern_intervalDirectSum (K := k) [(a, b.castSucc), (c, e)],
+    List.map_cons, List.map_cons, List.map_cons, List.map_cons, List.map_nil,
+    List.sum_cons, List.sum_cons, List.sum_cons, List.sum_cons, List.sum_nil, add_zero,
+    ← rankPattern_intervalDirectSum (K := k) rest]
+  ring
+
+/-- **The non-split box move, full §4 list headline (`a < c ≤ b < e`).** Over an infinite field, for
+`a < c ≤ b.castSucc`, `b.succ ≤ e` and arbitrary `rest`, the flattening of the downstairs
+`intervalDirectSum ((a,b) :: (c,e) :: rest)` (transported onto the upstairs dimension vector, which the
+move preserves) lies in the Zariski closure of the orbit of the upstairs
+`(M_{[a,e]} ⊕ M_{[c,b]}) ⊕ rest`. The recombination family `splicePoly` degenerates the upstairs to
+`splice 0` at `t = 0`, every `t ≠ 0` point in the orbit of `M_{[a,e]} ⊕ M_{[c,b]}`
+(`splice_mem_orbit_U2`); the base change `orbit_dirSum_splice_intervalDirectSum` carries the limit onto
+the genuine downstairs interval direct sum; `rest` rides as the common summand. (The orbit base is the
+upstairs `Lup = (a,e) :: (c,b) :: rest` with the two-interval move part left-associated.) -/
+theorem nonsplitMove_intervalDirectSum_mem_closure [Infinite k] (a c e : Fin (N + 1)) (b : Fin N)
+    (rest : List (Fin (N + 1) × Fin (N + 1)))
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    canonicalCoord (fun l ↦ (intervalDim a e l + intervalDim c b.castSucc l) + foldDim rest l)
+        ((foldDim_nonsplitCons_eq a c e b rest hac hcb hbe) ▸
+          intervalDirectSum (k := k) ((a, b.castSucc) :: (c, e) :: rest))
+      ∈ MvPolynomial.zeroLocus
+          (σ := RepCoord (fun l ↦ (intervalDim a e l + intervalDim c b.castSucc l) + foldDim rest l))
+          (k := k) k
+          (MvPolynomial.vanishingIdeal
+            (σ := RepCoord
+              (fun l ↦ (intervalDim a e l + intervalDim c b.castSucc l) + foldDim rest l)) (K := k) k
+            (orbitSet (dirSum (dirSum (intervalModule a e) (intervalModule c b.castSucc))
+              (intervalDirectSum rest)))) := by
+  obtain ⟨Q, hQ⟩ := orbit_dirSum_splice_intervalDirectSum (k := k) a c e b rest hac hcb hbe
+  refine mem_closure_dirSum_of_mem_closure_orbitEquiv
+    (dirSum (intervalModule a e) (intervalModule c b.castSucc)) (splice a c e b 0)
+    (intervalDirectSum rest) (splicePoly a c e b) Q _
+    (tupleEval_splicePoly a c e b 0) hQ (fun t ht ↦ ?_)
+  obtain ⟨P, hP⟩ := splice_mem_orbit_U2 a c e b t hac hcb hbe ht
+  exact ⟨P, by rw [hP, tupleEval_splicePoly]⟩
+
 section Witness
 
 /-! ## Non-vacuity witnesses
@@ -1111,12 +1224,11 @@ example :
           (orbitSet (dirSum (intervalModule 0 1) (intervalDirectSum [((1 : Fin 3), (2 : Fin 3))])))) :=
   splitMove_intervalDirectSum_mem_closure 0 1 0 [((1 : Fin 3), (2 : Fin 3))] (by decide) (by decide)
 
-/-! ### Non-split scaffolding sanity (orientation against the certified `(1,2,1)` witness)
+/-! ### Non-split move witnesses (the certified `(1,2,1)` recombination)
 
 The non-split `splice` for `a = 0, c = 1, b = 1, e = 2` (`[c,b] = [1,1]`, the smallest genuine overlap)
 has the witness dimension vector `(1,2,1)` and the recombination row `[λ, 1]` — matching the certified
-`boxMoveWitnessFamily` edge `[t, 1]`. Confirms the scaffolding is the right object; the residual is the
-crossing-rank computation. -/
+`boxMoveWitnessFamily` edge `[t, 1]`. The full non-split headline fires here. -/
 
 /-- The non-split `splice` over `Fin 3` (`a=0, c=1, b=1, e=2`) has the `(1,2,1)` dimension vector. -/
 example : (fun l ↦ intervalDim (0 : Fin 3) 2 l + intervalDim 1 (1 : Fin 3) l) = ![1, 2, 1] := by
@@ -1129,6 +1241,35 @@ example (lam : ℚ)
     (s' : Fin (intervalDim (0 : Fin 3) 2 (1 : Fin 2).castSucc)) :
     splice (k := ℚ) 0 1 2 1 lam 1 r (finSumFinEquiv (Sum.inl s')) = lam := by
   rw [splice, if_pos rfl, Equiv.symm_apply_apply]
+
+/-- For `λ ≠ 0`, `splice 0 1 2 1 λ` lies in the orbit of `M_{[0,2]} ⊕ M_{[1,1]}` over `ℚ` — the
+recombination tuple is non-vacuously `G_d`-equivalent to the upstairs. -/
+example (lam : ℚ) (hlam : lam ≠ 0) :
+    ∃ P : BaseChangeGroup (k := ℚ) (fun l ↦ intervalDim (0 : Fin 3) 2 l + intervalDim 1 1 l),
+      P • dirSum (intervalModule (0 : Fin 3) 2) (intervalModule 1 1)
+        = splice (0 : Fin 3) 1 2 1 lam :=
+  splice_mem_orbit_U2 (0 : Fin 3) 1 2 1 lam (by decide) (by decide) (by decide) hlam
+
+/-- The non-split move's **full §4 list headline** fires over `ℚ` with empty `rest`: the downstairs
+`M_{[0,1]} ⊕ M_{[1,2]}` (the `Ldn = (0,1) :: (1,2) :: []`, transported) lies in the closure of the
+orbit of the upstairs `M_{[0,2]} ⊕ M_{[1,1]}` (the `Lup = (0,2) :: (1,1) :: []`), the genuine
+dim-`(1,2,1)` recombination. -/
+example :
+    canonicalCoord
+        (fun l ↦ (intervalDim (0 : Fin 3) 2 l + intervalDim 1 1 l) + foldDim ([] : List _) l)
+        ((foldDim_nonsplitCons_eq (0 : Fin 3) 1 2 1 [] (by decide) (by decide) (by decide)) ▸
+          intervalDirectSum (k := ℚ) [((0 : Fin 3), (1 : Fin 3)), (1, 2)])
+      ∈ MvPolynomial.zeroLocus
+          (σ := RepCoord
+            (fun l ↦ (intervalDim (0 : Fin 3) 2 l + intervalDim 1 1 l) + foldDim ([] : List _) l))
+          (k := ℚ) ℚ
+          (MvPolynomial.vanishingIdeal
+            (σ := RepCoord
+              (fun l ↦ (intervalDim (0 : Fin 3) 2 l + intervalDim 1 1 l) + foldDim ([] : List _) l))
+            (K := ℚ) ℚ
+            (orbitSet (dirSum (dirSum (intervalModule 0 2) (intervalModule 1 1))
+              (intervalDirectSum [])))) :=
+  nonsplitMove_intervalDirectSum_mem_closure 0 1 2 1 [] (by decide) (by decide) (by decide)
 
 end Witness
 
