@@ -20,11 +20,11 @@ Everything else for the `paramsEquivFlat` assembly (`arrowCongr'` + `measurePres
 ## Assembly status (the gap lemma is banked; the final `paramsEquivFlat` assembly is held)
 
 `measurePreserving_piCurry` (below) is the banked gap. The remaining `paramsEquivFlat` assembly hits
-the recurring **`Matrix`-as-`def` instance wall**: `MeasurableSpace (Matrix (Fin (H s.castSucc)) … ℝ)`
-does **not** synthesise uniformly in symbolic `s` (same cause as the parked `(1,1,1)` bridge), so the
-type-level chain `Params H ≃ᵐ (∀ s, (Fin aₛ × Fin bₛ) → ℝ)` via `MeasurableEquiv.piCongrRight`
+the recurring **`Matrix`-as-`def` instance wall**: `MeasurableSpace (Matrix (Fin (H s.castSucc)) ..)`
+does **not** synthesise uniformly in symbolic `s` (same cause as the parked `(1,1,1)` bridge), so
+the type-level chain `Params H ≃ᵐ (∀ s, (Fin aₛ × Fin bₛ) → ℝ)` via `MeasurableEquiv.piCongrRight`
 (`curry.symm` per layer) **fails instance synthesis**, and `Params`'s `volume` is not `rfl`-equal to
-the nested `Measure.pi` (the `Matrix`-fiber instances resolve only per *concrete* `s`). Route options
+the nested `Measure.pi` (the `Matrix`-fiber instances resolve only per *concrete* `s`). Routes
 (pp on-demand): supply the `Matrix` fiber instances explicitly via `inferInstanceAs` at each
 `piCongrRight`/`piCurry` use; or route per-layer through `funUnique`/`measurePreserving_pi` with
 `fin_cases`-discharged fibers (as in the `(1,1,1)` proof); or a `Measure.pi`-shape helper equating
