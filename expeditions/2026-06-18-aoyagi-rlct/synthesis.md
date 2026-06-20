@@ -1199,6 +1199,19 @@ chart-produced recurrence/exponent post-data, coordinate regularity, Jacobian,
 normal crossings, RLCT extraction, termination, transition invariant, or
 printed-vector repair is proved.
 
+The Case 2 displayed center count is now Lean-proved. The new lemmas
+`case2ResidualBlockRows_card`, `case2ResidualBlockCols_card`, and
+`case2ResidualBlockPivotEntries_card` prove that the displayed Case 2
+residual-block coordinate set has cardinality
+`(prefixMinNat n S - J) * (n (S+1) - J)`, keeping prefix-minimum residual rows
+separate from actual-width residual columns. The named integer expression
+`correctedCase2NewLabelNumerator` is proved equal to this coordinate count
+under explicit bounds and under displayed continuation. This supports the
+corrected scalar update as a selected-coordinate count only: it is not a
+Jacobian exponent, chart-produced post-data, chart coverage, normal-crossing
+certificate, RLCT extraction, termination, transition invariant, or
+printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

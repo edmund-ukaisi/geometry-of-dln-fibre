@@ -173,6 +173,34 @@ exponent post-data, coordinate regularity, Jacobians, normal crossings, RLCT
 extraction, termination, a full transition invariant, or repair of the printed
 Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed center count
+
+Reproduction:
+`reproduction-case2-displayed-center-count-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-center-count.md`.
+Review artifact:
+`review-case2-displayed-center-count-a4.md`.
+
+Lean now proves the finite coordinate count for Aoyagi's displayed Case 2
+residual-block center. The residual rows `J+1..M(S)` have cardinality
+`M(S)-J`, the actual-width residual columns `J+1..M^(S+1)` have cardinality
+`M^(S+1)-J`, and the selected residual-block coordinate set has cardinality
+
+```text
+(M(S)-J)(M^(S+1)-J).
+```
+
+The named integer expression `correctedCase2NewLabelNumerator` is proved equal
+to this coordinate count under explicit row/column bounds and under the
+displayed continuation bound. This supports the corrected prefix-minimum Case
+2 scalar update as an elementary selected-coordinate count.
+
+This is not a center-dimension theorem, Jacobian exponent, chart-produced
+exponent update, or transition theorem. It does not prove chart coverage,
+coordinate regularity, normal crossings, RLCT extraction, termination, or
+repair of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

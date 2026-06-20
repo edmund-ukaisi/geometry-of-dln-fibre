@@ -496,7 +496,11 @@ No such claim is formalisation-ready until both fields are filled.
   can be reattached below unchanged top rows. The displayed top-left
   source-coordinate chart map is now named and proved to restrict to the
   existing displayed selected-entry block API, with a source-chart version of
-  the supplied displayed `Q/P` identity. Missing arbitrary pivot charts,
+  the supplied displayed `Q/P` identity. The displayed residual-block
+  coordinate count is also proved:
+  `(M(S)-J)(M^{(S+1)}-J)`, with prefix-minimum rows and actual-width columns
+  kept separate, and the corrected numerator expression is identified with
+  that count under continuation. Missing arbitrary pivot charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
   beyond the unchanged-top lift, full polynomial-coordinate chart construction,
   and proof that the chart produces the supplied recurrence post-state remain
@@ -537,6 +541,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-concrete-update-boundary-a4.md`.
 	  Review of the Case 2 displayed source-chart map is saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-map-a4.md`.
+	  Review of the Case 2 displayed center count is saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-center-count-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -875,6 +881,15 @@ No such claim is formalisation-ready until both fields are filled.
   proving the source-coordinate displayed chart map, its residual-block
   restriction to the existing displayed block API, its `u * normalised` form,
   and the supplied displayed `Q/P` identity in source-chart names.
+  Added the displayed Case 2 residual-block coordinate count:
+  `case2_continuation_le_prefixMinNat_current`,
+  `case2_continuation_le_width_next`, `case2ResidualBlockRows_card`,
+  `case2ResidualBlockCols_card`, `case2ResidualBlockPivotEntries_card`,
+  `correctedCase2NewLabelNumerator`,
+  `correctedCase2NewLabelNumerator_eq_card_of_bounds`, and
+  `correctedCase2NewLabelNumerator_eq_card_of_cont`, proving that the
+  corrected Case 2 numerator expression equals the selected residual-block
+  coordinate count under continuation.
   Added selected-entry principalization/unit facts:
   `weightedPivotBlockRowOp_isUnit`,
   `weightedPivotBlockRowOp_det_isUnit`, `pivotQ_isUnit`,
@@ -1100,6 +1115,10 @@ No such claim is formalisation-ready until both fields are filled.
   prove non-top-left formulas, chart coverage, chart-produced recurrence or
   exponent post-data, coordinate regularity, Jacobians, normal crossings, RLCT,
   termination, or a full transition invariant.
+  The displayed center count is only a selected coordinate-equation count. It
+  is not a center-dimension theorem, Jacobian exponent, chart-produced exponent
+  update, chart coverage theorem, normal-crossing certificate, RLCT extraction,
+  termination theorem, transition invariant, or printed-vector repair.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

@@ -298,6 +298,12 @@ on the session's original cwd.
    or build the next honest source-order/atlas scaffold. Do not claim
    non-top-left source-order formulas, atlas coverage, or full transition
    invariance from this adapter.
+   The displayed Case 2 center count is now also Lean-proved: the finite
+   residual-block selected-coordinate count is
+   `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from
+   prefix-minimum rows, and the corrected numerator expression is proved equal
+   to that count under continuation. This is not a Jacobian exponent or
+   chart-produced post-data.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

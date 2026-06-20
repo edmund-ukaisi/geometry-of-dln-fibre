@@ -904,6 +904,70 @@ def case2ResidualRowLevel
 def case2ResidualBlockPivotEntries (n : ℕ → ℕ) (S J : ℕ) : Finset (ℕ × ℕ) :=
   (case2ResidualBlockRows n S J).product (case2ResidualBlockCols n S J)
 
+/-- The displayed Case 2 continuation bound implies the current prefix-minimum bound. -/
+theorem case2_continuation_le_prefixMinNat_current
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    J ≤ prefixMinNat n S := by
+  exact le_trans (by omega : J ≤ J + 1)
+    (le_trans hcont (prefixMinNat_succ_le n hS))
+
+/-- The displayed Case 2 continuation bound implies the next actual-width bound. -/
+theorem case2_continuation_le_width_next
+    (n : ℕ → ℕ) {S J : ℕ}
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    J ≤ n (S + 1) := by
+  exact le_trans (by omega : J ≤ J + 1)
+    (le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1)))
+
+/-- Cardinality of the Case 2 residual-block row range `J+1..M(S)`. -/
+theorem case2ResidualBlockRows_card (n : ℕ → ℕ) (S J : ℕ) :
+    (case2ResidualBlockRows n S J).card = prefixMinNat n S - J := by
+  rw [case2ResidualBlockRows, Nat.card_Icc]
+  omega
+
+/-- Cardinality of the Case 2 residual-block column range `J+1..M^(S+1)`. -/
+theorem case2ResidualBlockCols_card (n : ℕ → ℕ) (S J : ℕ) :
+    (case2ResidualBlockCols n S J).card = n (S + 1) - J := by
+  rw [case2ResidualBlockCols, Nat.card_Icc]
+  omega
+
+/-- Cardinality of the finite Case 2 residual-block selected-entry set.
+This is the coordinate-equation count, not a chart coverage or Jacobian theorem. -/
+theorem case2ResidualBlockPivotEntries_card (n : ℕ → ℕ) (S J : ℕ) :
+    (case2ResidualBlockPivotEntries n S J).card =
+      (prefixMinNat n S - J) * (n (S + 1) - J) := by
+  simp [case2ResidualBlockPivotEntries, case2ResidualBlockRows_card,
+    case2ResidualBlockCols_card]
+
+/-- Corrected Case 2 new-label numerator expression as integer arithmetic data.
+It is the selected coordinate-equation count under the displayed continuation
+bounds; it is not a chart-produced exponent update or a Jacobian exponent. -/
+def correctedCase2NewLabelNumerator (n : ℕ → ℕ) (S J : ℕ) : ℤ :=
+  ((prefixMinNat n S : ℤ) - (J : ℤ)) * ((n (S + 1) : ℤ) - (J : ℤ))
+
+/-- Under explicit interval bounds, the corrected Case 2 numerator is the
+integer cardinality of the residual-block selected-entry set. -/
+theorem correctedCase2NewLabelNumerator_eq_card_of_bounds
+    (n : ℕ → ℕ) {S J : ℕ}
+    (hrow : J ≤ prefixMinNat n S) (hcol : J ≤ n (S + 1)) :
+    correctedCase2NewLabelNumerator n S J =
+      ((case2ResidualBlockPivotEntries n S J).card : ℤ) := by
+  rw [correctedCase2NewLabelNumerator,
+    case2ResidualBlockPivotEntries_card, Nat.cast_mul,
+    Nat.cast_sub hrow, Nat.cast_sub hcol]
+
+/-- Under displayed Case 2 continuation, the corrected numerator is the
+integer count of selected residual-block coordinates. -/
+theorem correctedCase2NewLabelNumerator_eq_card_of_cont
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    correctedCase2NewLabelNumerator n S J =
+      ((case2ResidualBlockPivotEntries n S J).card : ℤ) := by
+  exact correctedCase2NewLabelNumerator_eq_card_of_bounds n
+    (case2_continuation_le_prefixMinNat_current n hS hcont)
+    (case2_continuation_le_width_next n hcont)
+
 @[simp] theorem mem_case2ResidualBlockRows (n : ℕ → ℕ) (S J i : ℕ) :
     i ∈ case2ResidualBlockRows n S J ↔ J + 1 ≤ i ∧ i ≤ prefixMinNat n S := by
   simp [case2ResidualBlockRows, Finset.mem_Icc]

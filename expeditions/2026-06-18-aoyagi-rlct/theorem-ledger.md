@@ -1098,6 +1098,23 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-source-chart-map-a4.md`.
 
+Latest A4 update: the Case 2 displayed center count has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`case2_continuation_le_prefixMinNat_current`,
+`case2_continuation_le_width_next`, `case2ResidualBlockRows_card`,
+`case2ResidualBlockCols_card`, `case2ResidualBlockPivotEntries_card`,
+`correctedCase2NewLabelNumerator`,
+`correctedCase2NewLabelNumerator_eq_card_of_bounds`, and
+`correctedCase2NewLabelNumerator_eq_card_of_cont`. This checkpoint proves that
+the displayed Case 2 residual-block coordinate count is
+`(M(S)-J)(M^(S+1)-J)`, with prefix-minimum rows and actual-width columns kept
+separate. It is not a Jacobian exponent, chart-produced post-data, chart
+coverage, normal-crossing/RLCT theorem, termination theorem, transition
+invariant, or printed-vector repair. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-center-count.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-center-count-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
