@@ -377,6 +377,23 @@ theorem repClosure_realizer_subset_of_geom [Infinite k] {d dg : Fin (N + 1) → 
   exact repClosure_subset_of_subset_repClosure
     (orbitSet_subset_repClosure_orbitSet_of_canonical_mem hmemd)
 
+/-- The box's lower-left corner is in range: `1 ≤ diff r a e` and `Supported N r` force `0 ≤ a`
+(else all four `diff` reference points vanish by support). -/
+theorem zero_le_of_diff_pos {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {a e : ℤ}
+    (hae : 1 ≤ diff r a e) : 0 ≤ a := by
+  by_contra h
+  rw [diff_apply, hr.1 a e (by omega), hr.1 a (e + 1) (by omega), hr.1 (a - 1) e (by omega),
+    hr.1 (a - 1) (e + 1) (by omega)] at hae
+  omega
+
+/-- The box's upper-right corner is in range: `1 ≤ diff r a e` and `Supported N r` force `e ≤ N`. -/
+theorem le_N_of_diff_pos {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {a e : ℤ}
+    (hae : 1 ≤ diff r a e) : e ≤ (N : ℤ) := by
+  by_contra h
+  rw [diff_apply, hr.2 a e (by omega), hr.2 a (e + 1) (by omega), hr.2 (a - 1) e (by omega),
+    hr.2 (a - 1) (e + 1) (by omega)] at hae
+  omega
+
 /-- The realizer-to-realizer per-step degeneration. Splits on `c ≤ b` (linked / non-split) vs
 `c = b + 1` (split) and invokes the corresponding geometric lemma through
 `repClosure_realizer_subset_of_geom`. -/
@@ -388,7 +405,156 @@ theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) →
     (hstep : BoxMoveStep r r'') :
     repClosure (orbitSet (patternRealizer (k := k) hr''supp hr''nn hr''diag))
       ⊆ repClosure (orbitSet (patternRealizer (k := k) hrsupp hrnn hrdiag)) := by
-  sorry
+  classical
+  obtain ⟨a, c, b, e, hac, hcb, hbe, hae, hcbm, hr''eq⟩ := hstep
+  -- box bounds in `[0,N]`, then `Fin` coordinates
+  have ha0 : 0 ≤ a := zero_le_of_diff_pos hrsupp hae
+  have heN : e ≤ (N : ℤ) := le_N_of_diff_pos hrsupp hae
+  have haF : InFinRange N a := ⟨ha0, by omega⟩
+  have hcF : InFinRange N c := ⟨by omega, by omega⟩
+  have heF : InFinRange N e := ⟨by omega, heN⟩
+  set aF : Fin (N + 1) := finOfInt a haF with haFdef
+  set cF : Fin (N + 1) := finOfInt c hcF with hcFdef
+  set eF : Fin (N + 1) := finOfInt e heF with heFdef
+  have haFval : (aF : ℤ) = a := by
+    rw [haFdef, finOfInt]; simp [Int.toNat_of_nonneg ha0]
+  have hcFval : (cF : ℤ) = c := by
+    rw [hcFdef, finOfInt]; simp [Int.toNat_of_nonneg (by omega : (0:ℤ) ≤ c)]
+  have heFval : (eF : ℤ) = e := by
+    rw [heFdef, finOfInt]; simp [Int.toNat_of_nonneg (by omega : (0:ℤ) ≤ e)]
+  -- the bottom vertex `b` of the box, as `Fin N` (`0 ≤ b < N` from `a < c ≤ b+1 ≤ e ≤ N`)
+  have hb0 : 0 ≤ b := by omega
+  have hbN : b < (N : ℤ) := by omega
+  set bF : Fin N := ⟨b.toNat, by omega⟩ with hbFdef
+  have hbFcast : (bF.castSucc : ℤ) = b := by
+    rw [Fin.val_castSucc, hbFdef]; simp [Int.toNat_of_nonneg hb0]
+  have hbFsucc : (bF.succ : ℤ) = b + 1 := by
+    rw [Fin.val_succ, hbFdef]; simp [Int.toNat_of_nonneg hb0]
+  -- the singleDelta of the Fin coordinates equals the box's ℤ-delta
+  have hδae : singleDelta aF eF = fun i j ↦ if i = a ∧ j = e then (1 : ℤ) else 0 := by
+    funext i j; rw [singleDelta, haFval, heFval]
+  have hδab : singleDelta aF bF.castSucc = fun i j ↦ if i = a ∧ j = b then (1 : ℤ) else 0 := by
+    funext i j; rw [singleDelta, haFval, hbFcast]
+  have hδce : singleDelta cF eF = fun i j ↦ if i = c ∧ j = e then (1 : ℤ) else 0 := by
+    funext i j; rw [singleDelta, hcFval, heFval]
+  have hδcb : singleDelta cF bF.castSucc = fun i j ↦ if i = c ∧ j = b then (1 : ℤ) else 0 := by
+    funext i j; rw [singleDelta, hcFval, hbFcast]
+  -- the box-drop second-difference (the four-corner identity, on/below diagonal)
+  have hr''diffEq : ∀ i j : ℤ, diff r'' i j
+      = diff r i j - singleDelta aF eF i j - singleDelta cF bF.castSucc i j
+        + singleDelta aF bF.castSucc i j + singleDelta cF eF i j := by
+    intro i j
+    rw [hr''eq, show diff (boxDrop r a c b e) i j
+        = diff r i j - diff (boxIndicator a c b e) i j from by simp only [boxDrop, diff_apply]; ring,
+      boxIndicator_diff a c b e i j hac hcb hbe]
+    simp only [hδae, hδce, hδab, hδcb]
+    split_ifs <;> ring
+  by_cases hcble : c ≤ b
+  · -- ============ non-split case `c ≤ b` (the genuine 2-strand recombination) ============
+    -- the residual Kostant array `mRest = diffTri r − δ(a,e) − δ(c,b)`, truncated
+    set mRest : SuppArray (N : ℤ) ℤ :=
+      ⟨fun i j ↦ if i ≤ j then
+          diff r i j - singleDelta aF eF i j - singleDelta cF bF.castSucc i j else 0, by
+        refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩ <;> simp only <;> split_ifs with h
+        · rw [(supported_diff hrsupp).1 i j hi]; simp only [hδae, hδcb]
+          rw [if_neg (by omega), if_neg (by omega)]; ring
+        · rfl
+        · rw [(supported_diff hrsupp).2 i j hj]; simp only [hδae, hδcb]
+          rw [if_neg (by omega), if_neg (by omega)]; ring
+        · rfl⟩ with hmRestdef
+    -- `mRest` is a Kostant array (nonneg on the triangle, `1`-truncated below)
+    have hmRestK : IsKostantArray mRest := by
+      refine ⟨fun i j ↦ ?_, fun i j hji ↦ by simp only [hmRestdef]; rw [if_neg (by omega)]⟩
+      simp only [hmRestdef]
+      split_ifs with hij
+      · -- on the triangle: `diff r − δ(a,e) − δ(c,b) ≥ 0` (the two corners are `≥ 1`)
+        simp only [hδae, hδcb]
+        by_cases h1 : i = a ∧ j = e
+        · obtain ⟨rfl, rfl⟩ := h1
+          have := hae
+          rw [if_pos ⟨rfl, rfl⟩, if_neg (by rintro ⟨_, h⟩; omega)]; omega
+        · by_cases h2 : i = c ∧ j = b
+          · obtain ⟨rfl, rfl⟩ := h2
+            have := hcbm hcble
+            rw [if_neg (by rintro ⟨_, h⟩; omega), if_pos ⟨rfl, rfl⟩]; omega
+          · rw [if_neg h1, if_neg h2, sub_zero, sub_zero]; exact hrnn i j hij
+      · exact le_refl 0
+    -- the bar list realizing `mRest`, and its multiplicity array
+    set rest : List (Fin (N + 1) × Fin (N + 1)) := listOfArray mRest with hrestdef
+    have hmult_rest : multiplicityArray rest = mRest.1 :=
+      multiplicityArray_listOfArray_of_isKostant hmRestK
+    -- `Fin` inequalities for the geometric lemma (transport the ℤ-coordinate inequalities)
+    have hacF : aF < cF := by
+      rw [Fin.lt_def, ← Nat.cast_lt (α := ℤ)]; rw [show ((aF.val : ℤ)) = a from haFval,
+        show ((cF.val : ℤ)) = c from hcFval]; omega
+    have hcbF : cF ≤ bF.castSucc := by
+      rw [Fin.le_def, ← Nat.cast_le (α := ℤ), show ((cF.val : ℤ)) = c from hcFval,
+        show ((bF.castSucc.val : ℤ)) = b from hbFcast]; omega
+    have hbeF : bF.succ ≤ eF := by
+      rw [Fin.le_def, ← Nat.cast_le (α := ℤ), show ((bF.succ.val : ℤ)) = b + 1 from hbFsucc,
+        show ((eF.val : ℤ)) = e from heFval]; omega
+    -- `δ(a,e) + δ(c,b) + mRest = diffTri r` as full arrays (both sides truncate below the diagonal)
+    have hUpArr : (fun i j ↦ singleDelta aF eF i j + singleDelta cF bF.castSucc i j + mRest.1 i j)
+        = (diffTri (N := N) r hrsupp).1 := by
+      funext i j
+      simp only [hmRestdef, diffTri]
+      by_cases hij : i ≤ j
+      · rw [if_pos hij, if_pos hij]; ring
+      · rw [if_neg hij, if_neg hij, add_zero]
+        simp only [hδae, hδcb]
+        rw [if_neg (by rintro ⟨rfl, rfl⟩; omega), if_neg (by rintro ⟨rfl, rfl⟩; omega), add_zero]
+    -- `δ(a,b) + δ(c,e) + mRest = diffTri r''` as full arrays
+    have hDnArr : (fun i j ↦ singleDelta aF bF.castSucc i j + singleDelta cF eF i j + mRest.1 i j)
+        = (diffTri (N := N) r'' hr''supp).1 := by
+      funext i j
+      simp only [hmRestdef, diffTri]
+      by_cases hij : i ≤ j
+      · rw [if_pos hij, if_pos hij, hr''diffEq i j]; ring
+      · rw [if_neg hij, if_neg hij, add_zero]
+        simp only [hδab, hδce]
+        rw [if_neg (by rintro ⟨rfl, rfl⟩; omega), if_neg (by rintro ⟨rfl, rfl⟩; omega), add_zero]
+    -- rank pattern of the geometric upstairs `= cumul (δae + δcb + mRest) = r` on the triangle
+    have hUgrank : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+        (rankPattern (fun l ↦ intervalDim aF eF l + intervalDim cF bF.castSucc l + foldDim rest l)
+          (dirSum (dirSum (intervalModule (k := k) aF eF) (intervalModule (k := k) cF bF.castSucc))
+            (intervalDirectSum (k := k) rest)) i j hij : ℤ) = r (i : ℤ) (j : ℤ) := by
+      intro i j hij
+      have hijZ : (i : ℤ) ≤ (j : ℤ) := by exact_mod_cast Fin.le_def.mp hij
+      rw [rankPattern_dirSum, rankPattern_dirSum, Nat.cast_add, Nat.cast_add,
+        rankPattern_intervalModule_eq_cumul (k := k) aF eF hij,
+        rankPattern_intervalModule_eq_cumul (k := k) cF bF.castSucc hij,
+        rankPattern_intervalDirectSum_eq_cumul (K := k) rest i j hij, hmult_rest,
+        ← cumul_add, ← cumul_add, hUpArr, cumul_diffTri_eq hrsupp hijZ]
+    -- `dgN = d` (the diagonal of `hUgrank`)
+    have hgd : (fun l ↦ intervalDim aF eF l + intervalDim cF bF.castSucc l + foldDim rest l) = d := by
+      funext t
+      have hZ : ((intervalDim aF eF t + intervalDim cF bF.castSucc t + foldDim rest t : ℕ) : ℤ)
+          = (d t : ℤ) := by
+        have := hUgrank t t le_rfl
+        rw [rankPattern_self] at this
+        rw [this, hrdiag t]
+      exact_mod_cast hZ
+    -- downstairs rank pattern `= r''`
+    have hDgrank : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+        (rankPattern (fun l ↦ intervalDim aF eF l + intervalDim cF bF.castSucc l + foldDim rest l)
+          ((foldDim_nonsplitCons_eq aF cF eF bF rest hacF hcbF hbeF) ▸
+            intervalDirectSum (k := k) ((aF, bF.castSucc) :: (cF, eF) :: rest))
+            i j hij : ℤ) = r'' (i : ℤ) (j : ℤ) := by
+      intro i j hij
+      have hijZ : (i : ℤ) ≤ (j : ℤ) := by exact_mod_cast Fin.le_def.mp hij
+      rw [rankPattern_transport (foldDim_nonsplitCons_eq aF cF eF bF rest hacF hcbF hbeF),
+        rankPattern_intervalDirectSum_eq_cumul (K := k)
+          ((aF, bF.castSucc) :: (cF, eF) :: rest) i j hij,
+        show multiplicityArray ((aF, bF.castSucc) :: (cF, eF) :: rest)
+          = (fun a b ↦ singleDelta aF bF.castSucc a b + singleDelta cF eF a b + mRest.1 a b) from by
+            rw [multiplicityArray_cons, multiplicityArray_cons, hmult_rest]; funext a b; ring,
+        hDnArr, cumul_diffTri_eq hr''supp hijZ]
+    -- the geometric membership, then the common glue
+    exact repClosure_realizer_subset_of_geom hrsupp hr''supp hrnn hr''nn hrdiag hr''diag
+      hgd _ _ hUgrank hDgrank
+      (nonsplitMove_intervalDirectSum_mem_closure aF cF eF bF rest hacF hcbF hbeF)
+  · -- ============ split case `c = b+1` ============
+    sorry
 
 /-- **The per-step degeneration (CRUX).** A single box move `BoxMoveStep r r''` between achievable,
 supported, below-diagonal-vanishing rank-pattern arrays (with `r''` likewise achievable) drops the
@@ -429,23 +595,6 @@ theorem boxMoveStep_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ}
 
 The box-move coordinates land in `[0,N]` (forced by `diff r a e ≥ 1` and support), and a box move
 preserves support, triangle-achievability, and the diagonal — the invariants the chain threads. -/
-
-/-- The box's lower-left corner is in range: `1 ≤ diff r a e` and `Supported N r` force `0 ≤ a`
-(else all four `diff` reference points vanish by support). -/
-theorem zero_le_of_diff_pos {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {a e : ℤ}
-    (hae : 1 ≤ diff r a e) : 0 ≤ a := by
-  by_contra h
-  rw [diff_apply, hr.1 a e (by omega), hr.1 a (e + 1) (by omega), hr.1 (a - 1) e (by omega),
-    hr.1 (a - 1) (e + 1) (by omega)] at hae
-  omega
-
-/-- The box's upper-right corner is in range: `1 ≤ diff r a e` and `Supported N r` force `e ≤ N`. -/
-theorem le_N_of_diff_pos {r : ℤ → ℤ → ℤ} (hr : Supported (N : ℤ) r) {a e : ℤ}
-    (hae : 1 ≤ diff r a e) : e ≤ (N : ℤ) := by
-  by_contra h
-  rw [diff_apply, hr.2 a e (by omega), hr.2 a (e + 1) (by omega), hr.2 (a - 1) e (by omega),
-    hr.2 (a - 1) (e + 1) (by omega)] at hae
-  omega
 
 /-- A box move preserves support: `boxDrop r` is supported when `r` is and the box is in range
 (`0 ≤ a`, `e ≤ N`). The indicator vanishes off the in-range box `[a,c−1]×[b+1,e]`. -/
