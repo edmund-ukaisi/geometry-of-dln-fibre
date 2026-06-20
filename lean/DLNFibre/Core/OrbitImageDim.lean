@@ -140,4 +140,23 @@ theorem ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_of_crite
   ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ M
     (trdeg_range_orbitPullback_le_genericDifferentialRank M hcrit) hA43
 
+/-- **A4.2 criterion discharged for `groupRing d`** (char 0). `DiffIndepCriterion k (groupRing d)`
+holds by `diffIndepCriterion_proof`, using the landed `essFiniteType_fractionRing_groupRing` instance
+for the `EssFiniteType k (FractionRing (groupRing d))` side-condition. -/
+theorem diffIndepCriterion_groupRing [CharZero k] {d : Fin (N + 1) → ℕ} :
+    DiffIndepCriterion k (groupRing (k := k) d) :=
+  diffIndepCriterion_proof k (groupRing (k := k) d)
+
+/-- **A4.4 in char 0, A4.2 fully discharged.** The route-c submersion bound with NO criterion
+hypothesis — `DiffIndepCriterion` is now `diffIndepCriterion_groupRing`; only `hA43` (the char-free
+A4.3 differential-rank identity) remains. -/
+theorem ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_charZero
+    [CharZero k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+    (hA43 : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      = finrank k (LinearMap.range (deformationδ M M))) :
+    (ringKrullDim (orbitPullback M).range).unbotD 0
+      ≤ finrank k (LinearMap.range (deformationδ M M)) :=
+  ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_of_criterion M
+    diffIndepCriterion_groupRing hA43
+
 end DLNFibre.Core
