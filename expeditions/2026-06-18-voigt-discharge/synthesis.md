@@ -695,3 +695,23 @@ factors `orbitJacobianK = ρ ∘ δK ∘ τ` (ρ linear iso, δK = base-changed 
 unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`. Then A6.1 (intrinsic reverse R1–R6, R2★ rides A4.3's
 `dμ_e=δ⁰`) ⟹ `finrank(range δ⁰) ≤ varietyDim`. Then A6.2 (squeeze + additive L7) + 3 gap-lemmas (κ/k finrank,
 L4d Fintype-reindex, card=finrank C¹) ⟹ discharge hVoigt. **A4.3 dispatched (resume).**
+
+## 2026-06-21 — dμ_e=δ⁰ core LANDED; hA43_le = the matrix-Kähler nugget (decisive build dispatched)
+
+**`dμ_e = δ⁰` LANDED** `Core.OrbitDifferential.orbitAction_eps_eq_deformationδ` (dual-number form
+`(1+εφ_{i+1})·M_i·(1−εφ_i) = M_i + ε·(deformationδ M M φ)_i`, char-free, axiom-clean) + `one_add_eps_mul_one_sub_eps`
+(`(1+εφ)⁻¹=1−εφ`). **This satisfies A6.1's R2★ dependency.** Commit e38d635, green (3007 jobs).
+
+**`hA43_le` (the sole A4 residual) = the irreducible matrix-Kähler nugget** — deferred TWICE by the A4 agent
+(caution re its own in-progress state, NOT a route/math gap). NOT a scope surprise: it's route-c's expected
+hardest piece (flagged since thread-30), bounded ~6–8 lemmas, route documented + certified. Decision: **BUILD
+decisively** (operator zero-cited mandate) via a FRESH tide on the committed clean state (no destabilization
+risk — builds on top). Target `genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`
+(char-free). Gating sub-lemma = entrywise matrix-Kähler `D(U⁻¹) = −U⁻¹(DU)U⁻¹` over the localization (no
+Mathlib matrix-Derivation API — build minimal: `D((A·B)_{ij}) = ((DA)B+A(DB))_{ij}` via `Derivation.leibniz` +
+`map_sum`, then `D(U⁻¹)` from `D(U·U⁻¹)=0`). Route: orbit Jacobian factors `orbitJacobianK = ρ∘δK∘τ` ⟹ rank ≤
+rank(δK) = finrank(range δ⁰) (`Module.finrank_baseChange`); cotangent duality bricks confirmed present.
+
+**Path to hVoigt (after hA43_le):** A4.4 unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`; then A6.1
+(intrinsic reverse R1–R6, R2★ consumes the landed `orbitAction_eps_eq_deformationδ`) ⟹ `≥`; A6.2 squeeze +
+additive L7 + 3 gap-lemmas (κ/k finrank, L4d Fintype-reindex, card=finrank C¹) ⟹ **hVoigt discharged**.
