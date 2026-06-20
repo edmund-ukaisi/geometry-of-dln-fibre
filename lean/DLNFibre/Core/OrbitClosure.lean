@@ -248,8 +248,8 @@ noncomputable def diffTri {N : ℕ} (r : ℤ → ℤ → ℤ) (hr : Supported (N
     · exact (supported_diff hr).2 i j hj
     · rfl⟩
 
-/-- The diagonal of an interval module's dimension vector is `cumul` of its single delta: `intervalDim
-i j t = cumul N (singleDelta i j) t t` (as `ℤ`). The diagonal of `rankPattern_intervalModule`. -/
+/-- The diagonal of an interval module's dimension vector is `cumul` of its delta (as `ℤ`). The
+diagonal of `rankPattern_intervalModule`. -/
 theorem intervalDim_eq_cumul_singleDelta_diag (i j : Fin (N + 1)) (t : Fin (N + 1)) :
     (intervalDim i j t : ℤ) = cumul (N : ℤ) (singleDelta i j) (t : ℤ) (t : ℤ) := by
   rw [← rankPattern_intervalModule_eq_cumul (k := ℚ) i j (le_refl t),
@@ -335,9 +335,9 @@ theorem multiplicityArray_listOfArray_of_isKostant {m : SuppArray (N : ℤ) ℤ}
 
 /-- **The geometric-witness glue.** If `Ug, Dg` are tuples over a dimension vector `dg = d` whose
 transports realize the box patterns `r, r''` on the triangle, and the geometric per-move lemma lands
-`canonicalCoord dg Dg` in the closure of `orbitSet Ug`, then the realizers of `r''` and `r` are in the
-closure relation. This isolates the dimension-cast + bridge + `G_d`-stability plumbing common to the
-split and non-split branches. -/
+`canonicalCoord dg Dg` in the closure of `orbitSet Ug`, then the realizers of `r''` and `r` are in
+the closure relation. This isolates the dimension-cast + bridge + `G_d`-stability plumbing common to
+the split and non-split branches. -/
 theorem repClosure_realizer_subset_of_geom [Infinite k] {d dg : Fin (N + 1) → ℕ}
     {r r'' : ℤ → ℤ → ℤ} (hrsupp : Supported (N : ℤ) r) (hr''supp : Supported (N : ℤ) r'')
     (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j) (hr''nn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r'' i j)
@@ -362,12 +362,14 @@ theorem repClosure_realizer_subset_of_geom [Infinite k] {d dg : Fin (N + 1) → 
   have hUclos : repClosure (orbitSet (hgd ▸ Ug))
       = repClosure (orbitSet (patternRealizer (k := k) hrsupp hrnn hrdiag)) := by
     refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
-    have := (hUd i j hij).trans (rankPattern_patternRealizer (k := k) hrsupp hrnn hrdiag i j hij).symm
+    have := (hUd i j hij).trans
+      (rankPattern_patternRealizer (k := k) hrsupp hrnn hrdiag i j hij).symm
     exact_mod_cast this
   have hDclos : repClosure (orbitSet (hgd ▸ Dg))
       = repClosure (orbitSet (patternRealizer (k := k) hr''supp hr''nn hr''diag)) := by
     refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
-    have := (hDd i j hij).trans (rankPattern_patternRealizer (k := k) hr''supp hr''nn hr''diag i j hij).symm
+    have := (hDd i j hij).trans
+      (rankPattern_patternRealizer (k := k) hr''supp hr''nn hr''diag i j hij).symm
     exact_mod_cast this
   -- transport the geometric membership to `d`
   have hmemd : canonicalCoord d (hgd ▸ Dg) ∈ repClosure (orbitSet (hgd ▸ Ug)) :=
@@ -445,7 +447,8 @@ theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) →
         + singleDelta aF bF.castSucc i j + singleDelta cF eF i j := by
     intro i j
     rw [hr''eq, show diff (boxDrop r a c b e) i j
-        = diff r i j - diff (boxIndicator a c b e) i j from by simp only [boxDrop, diff_apply]; ring,
+          = diff r i j - diff (boxIndicator a c b e) i j from by
+        simp only [boxDrop, diff_apply]; ring,
       boxIndicator_diff a c b e i j hac hcb hbe]
     simp only [hδae, hδce, hδab, hδcb]
     split_ifs <;> ring
@@ -526,7 +529,8 @@ theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) →
         rankPattern_intervalDirectSum_eq_cumul (K := k) rest i j hij, hmult_rest,
         ← cumul_add, ← cumul_add, hUpArr, cumul_diffTri_eq hrsupp hijZ]
     -- `dgN = d` (the diagonal of `hUgrank`)
-    have hgd : (fun l ↦ intervalDim aF eF l + intervalDim cF bF.castSucc l + foldDim rest l) = d := by
+    have hgd :
+        (fun l ↦ intervalDim aF eF l + intervalDim cF bF.castSucc l + foldDim rest l) = d := by
       funext t
       have hZ : ((intervalDim aF eF t + intervalDim cF bF.castSucc t + foldDim rest t : ℕ) : ℤ)
           = (d t : ℤ) := by
@@ -583,15 +587,17 @@ theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) →
       rw [Fin.le_def, ← Nat.cast_le (α := ℤ), show ((bF.succ.val : ℤ)) = b + 1 from hbFsucc,
         show ((eF.val : ℤ)) = e from heFval]; omega
     -- `δ(a,e) + mRest = diffTri r` as full arrays
-    have hUpArr : (fun i j ↦ singleDelta aF eF i j + mRest.1 i j) = (diffTri (N := N) r hrsupp).1 := by
+    have hUpArr : (fun i j ↦ singleDelta aF eF i j + mRest.1 i j)
+        = (diffTri (N := N) r hrsupp).1 := by
       funext i j; simp only [hmRestdef, diffTri]
       by_cases hij : i ≤ j
       · rw [if_pos hij, if_pos hij]; ring
       · rw [if_neg hij, if_neg hij]
         simp only [hδae]; rw [if_neg (by rintro ⟨rfl, rfl⟩; omega), add_zero]
     -- `δ(a,b) + δ(b+1,e) + mRest = diffTri r''` as full arrays (split: the `(c,b)` corner is below)
-    have hDnArr : (fun i j ↦ singleDelta aF bF.castSucc i j + singleDelta bF.succ eF i j + mRest.1 i j)
-        = (diffTri (N := N) r'' hr''supp).1 := by
+    have hDnArr :
+        (fun i j ↦ singleDelta aF bF.castSucc i j + singleDelta bF.succ eF i j + mRest.1 i j)
+          = (diffTri (N := N) r'' hr''supp).1 := by
       funext i j; simp only [hmRestdef, diffTri]
       by_cases hij : i ≤ j
       · rw [if_pos hij, if_pos hij, hr''diffEq i j]
@@ -603,7 +609,7 @@ theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) →
           rw [singleDelta, singleDelta, hcFval, hbFsucc, heFval, hceb]
         rw [hcbzero, hcebe]; ring
       · rw [if_neg hij, if_neg hij, add_zero]
-        simp only [hδab, singleDelta, hbFsucc, heFval]
+        simp only [singleDelta, hbFcast, hbFsucc, heFval, haFval]
         rw [if_neg (by rintro ⟨rfl, rfl⟩; omega), if_neg (by rintro ⟨rfl, _⟩; omega), add_zero]
     -- rank pattern of the geometric upstairs `= cumul (δae + mRest) = r` on the triangle
     have hUgrank : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
@@ -634,7 +640,8 @@ theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) →
         rankPattern_intervalDirectSum_eq_cumul (K := k)
           ((aF, bF.castSucc) :: (bF.succ, eF) :: rest) i j hij,
         show multiplicityArray ((aF, bF.castSucc) :: (bF.succ, eF) :: rest)
-          = (fun a b ↦ singleDelta aF bF.castSucc a b + singleDelta bF.succ eF a b + mRest.1 a b) from by
+            = (fun a b ↦ singleDelta aF bF.castSucc a b + singleDelta bF.succ eF a b
+              + mRest.1 a b) from by
             rw [multiplicityArray_cons, multiplicityArray_cons, hmult_rest]; funext a b; ring,
         hDnArr, cumul_diffTri_eq hr''supp hijZ]
     exact repClosure_realizer_subset_of_geom hrsupp hr''supp hrnn hr''nn hrdiag hr''diag
@@ -666,12 +673,14 @@ theorem boxMoveStep_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ}
   have hTp : repClosure (orbitSet Tp)
       = repClosure (orbitSet (patternRealizer (k := k) hrsupp hrnn hrdiag)) := by
     refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
-    have := (hp i j hij).trans (rankPattern_patternRealizer (k := k) hrsupp hrnn hrdiag i j hij).symm
+    have := (hp i j hij).trans
+      (rankPattern_patternRealizer (k := k) hrsupp hrnn hrdiag i j hij).symm
     exact_mod_cast this
   have hTq : repClosure (orbitSet Tq)
       = repClosure (orbitSet (patternRealizer (k := k) hr''supp hr''nn hr''diag)) := by
     refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
-    have := (hq i j hij).trans (rankPattern_patternRealizer (k := k) hr''supp hr''nn hr''diag i j hij).symm
+    have := (hq i j hij).trans
+      (rankPattern_patternRealizer (k := k) hr''supp hr''nn hr''diag i j hij).symm
     exact_mod_cast this
   rw [hTp, hTq]
   exact boxMoveStep_repClosure_realizer_subset hrsupp hr''supp hrnn hr''nn hrdiag hr''diag hstep
@@ -737,15 +746,15 @@ by `ReflTransGen.head_induction_on`, invariants threaded through `boxMoveStep_in
 the realizers reconciled at the junctions by the rank-pattern bridge. -/
 theorem boxMoveChain_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ} {r s : ℤ → ℤ → ℤ}
     (hchain : BoxMoveChain r s) :
-    ∀ (hr : Supported (N : ℤ) r) (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j)
-      (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ)) (Tr Ts : Tuple (k := k) d),
+    ∀ (_hr : Supported (N : ℤ) r) (_hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j)
+      (_hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ)) (Tr Ts : Tuple (k := k) d),
       (∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tr i j hij : ℤ) = r (i : ℤ) (j : ℤ)) →
       (∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Ts i j hij : ℤ) = s (i : ℤ) (j : ℤ)) →
       repClosure (orbitSet Ts) ⊆ repClosure (orbitSet Tr) := by
   induction hchain using Relation.ReflTransGen.head_induction_on with
   | refl =>
     -- `r = s`: `Tr, Ts` have the same rank pattern, so the same orbit closure
-    intro hr hrnn hrdiag Tr Ts hTr hTs
+    intro _hr _hrnn _hrdiag Tr Ts hTr hTs
     rw [repClosure_orbitSet_eq_of_rankPattern_eq (A := Ts) (B := Tr)
       (fun i j hij ↦ by exact_mod_cast (hTs i j hij).trans (hTr i j hij).symm)]
   | @head p c hstep _hchain ih =>
