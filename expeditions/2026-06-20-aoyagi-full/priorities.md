@@ -5,28 +5,37 @@ Nothing unranked; "unclear-but-keep-going" is first-class.
 
 ## Now (ranked)
 
-1. **[pursue] Rung 0 — pin the goal skeleton + foundational definitions.** Highest VOI: every later
-   rung stands on `rlctAt`/`rlctOrderAt`/`dlnLoss`/`aoyagiλ`. Get the *math* of the definitions exactly
-   right (controller architects in `synthesis.md`/brief), delegate Lean encoding, then **independent
-   fidelity review against numerical ground truth** before building upward. Conceptual slop here poisons
-   everything (green build proving the wrong thing).
-2. **[pursue] Def-3 well-definedness.** Decide & prove: `aoyagiλ` via the minimisation (total); printed
-   Theorem-2 form equal where Def 3 applies. Pin whether Def 3 selects a unique set always, or only on a
-   characterised regime. (Known trap — see `lessons.md`.)
-3. **[pursue] Choose the smallest end-to-end validation case.** Candidate: single matrix (L=1) for the
-   pure RLCT-from-resolution machinery, then L=2 reduced-rank r=0 (2,1,2)/(2,2,2). The whole ladder must
-   close top-to-bottom on it before generalising.
-4. **[park-unclear] D1 / Theorem 4 scope.** Read Aoyagi 2013 (`entropy-15-03714.pdf`); scope exactly what
-   the deepest-singular-point reduction needs. Don't over-formalise the 2013 paper — only the lemma D1 uses.
-5. **[park-unclear] R1 cost.** The resolution is the mountain; the small-case validation (item 3) is the
-   probe that tells us its true cost. Hold detailed R1 planning until one case's charts are built by hand.
+1. **[pursue] Rung 0b — encode the foundations + goal skeleton in Lean.** Design landed & reviewed
+   (`threads/01-…/design-spec.md`, bedrock-quality, Codex-audited faithful). Encode
+   `DLNFibre.DLN.RLCT.Foundations.*` (`dlnLoss`/`optimalSet`/`rlctAt`/`rlctOrderAt`/`aoyagiλ` via
+   `½·min over Adm`) + the named-`sorry` skeleton (§8 of the spec) + the single S2 axiom. Small modular
+   files; build-once Foundations layer.
+2. **[pursue · SPINE RISK] `Adm = R1's chart exponents`.** `aoyagiλ` is `½·min over the reconstructed
+   admissible cone Adm`; the headline is honest only once R1's resolution is proven to produce exponents
+   ranging over **exactly** `Adm`. Verified numerically (437/437), not proved. This is the single
+   most-likely break-point (pp's flag 3). It is settled by item 3.
+3. **[pursue · GATE] Validate the smallest case end-to-end.** Build R1's charts for the smallest case
+   (single matrix; then L=2, r=0), read off the literal exponents, confirm `= Adm`, run the chain to λ.
+   This is both the anti-treadmill gate and the probe for the spine risk (item 2). Do before generalising.
+4. **[pursue] Rung 0c — hardener + reviewer fidelity pass on the ENCODED Lean.** Gate before S1/L1/…
+   build on the definitions: name=content; `aoyagiλ` is the min-over-Adm (no smuggled ℓ-form); the S2
+   axiom is exactly the minimal cited monomial fact; `#print axioms` shows only S2. (Folds the bedrock
+   check; Codex already did the decorrelated faithfulness audit of the design.)
+5. **[park-unclear] θ analytic seam.** `rlctOrderAt` (pole order) needs meromorphic continuation Mathlib
+   lacks; plan: combinatorial `aoyagiθ=a(ℓ−a)+1` (A2) + the analytic=chart-count equality riding inside
+   S2. λ unaffected. At-risk per standing decision 6.
+6. **[park-unclear] D1 scope.** Read `entropy-15-03714.pdf`; scope exactly the deepest-point reduction
+   (Thm 4) the headline infimum needs.
 
 ## Watching (suspicion / risks)
 
-- Treadmill recurrence (the prior expedition's mode) — guardrail: sorry-count must trend down; every file
-  on the critical path to a named sorry.
-- Definitional infidelity — guardrail: review defs against ground truth before building up.
-- Build-time blow-up — guardrail: small modules, background builds, tactic hygiene.
+- **Topology:** controller session is inside a worktree (`rung0-defs`) → spawned isolation-worktrees
+  collapse onto it ⇒ **teammates run serially** (one editor at a time). Fine for the sequential early
+  rungs. For the parallel middle phase (L1/L2/A1/D1/R1) the operator may relaunch the controller from
+  the main checkout to unlock true isolation-parallelism (surfaced; non-blocking).
+- Treadmill recurrence — every file on the critical path to a named sorry; sorry-count trends down.
+- Definitional infidelity — guarded by Rung 0c (encoded-Lean review) + the ground-truth cross-check.
+- Build-time — small modules, shared `.lake/packages`, background builds, tactic hygiene.
 
 ## Operator notes
 

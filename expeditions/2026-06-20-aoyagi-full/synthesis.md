@@ -2,51 +2,47 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-20, setup)
+## Current read (2026-06-20, after Rung 0 design)
 
-Expedition launched. Branch `expedition/aoyagi-full` off `dev`, controller in main checkout,
-namespace `DLNFibre.DLN.RLCT.*`. The quest: prove `aoyagi_learning_coefficient` (global RLCT of the
-DLN square-Frobenius loss = Aoyagi's closed form), citing only the normal-crossing→RLCT extraction.
+Rung 0 design landed (`threads/01-…/design-spec.md`, 479 lines, merged to expedition/aoyagi-full).
+Controller-reviewed + Codex-decorrelated-audited as **bedrock-quality and faithful**. The foundation:
 
-**Architecture is settled** (see `brief.md`): the layered skeleton (S0 defs → S1 ideal-invariance →
-[S2 cited] → L1/L2 linear algebra → D1 deepest point → R1 resolution → A1/A2 arithmetic → T assemble).
-The trusted spine is our own verified results: the clean closed form `2λ_core = ½(Σqᵢ²−Σmₖ²)`, the
-Case-2 non-binding lemma, and ground-truth λ/θ for small cases.
+- `dlnLoss = ‖prod·−B‖²_F`; `optimalSet = fibre`; Σ_X drops out via S1.
+- `rlctAt = sSup{ c | ∃U∈𝓝w*, IntegrableOn |F|^(−c) U }` in ℝ≥0∞ — faithful Aoyagi Def 1 (bump removed
+  via existential-nbhd sandwich = φ-independence). Precondition: F real-analytic, ≢0 near w* (dlnLoss is
+  polynomial ⇒ OK). Pole-sign: largest pole at z=−λ.
+- `aoyagiλ = reg + ½·min_{T∈Adm} M(T)` — TOTAL (Finset.inf' over finite Adm, T=0 always admissible),
+  Def-3-free. Clean form `¼(Σqᵢ²−Σmₖ²)` (q=balanced ℓ-split) is its *value* at the minimiser (A1);
+  printed Theorem-2 = clean where Def 3 applies (verified symbolically). NOT an ℓ-extremisation (both
+  naive readings wrong: max-over-ℓ ≠ Def-3; min-over-ℓ negative).
+- `rlctOrderAt` (θ): analytic pole order; combinatorial `aoyagiθ=a(ℓ−a)+1` is the deliverable; the
+  analytic=chart-count equality rides inside S2. Secondary.
+- **S2 (the one axiom):** chart-level normal-crossing→(λ,θ); minimal hypotheses pinned (cover, proper
+  charts, monomial pullback + monomial Jacobian with |·|, units bounded away from 0). Irreducible cited
+  fact = `∫₀^ε u^{h−2kc} < ∞ ⟺ c<(h+1)/(2k)`. Cover + change-of-variables + properness stay on our side.
+- Goal skeleton (§8): every named statement S1/L1/L2/D1/R1/A1/A2/T as a named sorry + the one axiom.
 
-**The shape of the work.** Tractable: definitions(plumbing)/L1/L2/A1/A2. Hard/novel:
-- the **rlct definition** itself (analytic, build from scratch on Mathlib measure theory);
-- **D1** (Theorem 4, second paper — analytic RLCT comparison);
-- **R1** the resolution (the mountain — explicit coordinate charts, pullback/Jacobian/coverage).
-The cited line is at S2 only.
+## The spine risk (top watch)
 
-**First move (Rung 0):** controller architects the precise mathematical content of the four
-definitions here + in the brief, then delegates Lean encoding of the skeleton; independent fidelity
-review against ground truth before anything stands on them.
+`aoyagiλ` is `min over Adm`, a cone reconstructed from p.22 and verified numerically (437/437) but NOT
+proved to equal the exponents R1's resolution literally produces. `Adm = R1-exponents` is the
+load-bearing equality; the headline is honest only once it's proved. Settled by the validate-small-first
+gate (build R1's smallest charts, read literal exponents, confirm =Adm). pp's flag 3.
 
-## Open questions / drift-guard
+## Topology note
 
-- Is `rlctAt` best as `sup{c | ∫|F|^{-c}φ<∞}` (Def 1) or via the zeta function's largest pole? Both in
-  Aoyagi Def 1; pick the one that (a) is faithful and (b) feeds the S2 citation cleanly. Likely: define
-  via the integral-convergence sup; state S2 as "monomial chart cover ⇒ this sup = min(h+1)/2k".
-- θ analytic definition (pole order) — secondary; may land combinatorial θ + flag the seam.
-- Does the global infimum over `optimalSet` reduce to the single deepest point? That reduction IS D1
-  (Theorem 4). The headline `⨅ w ∈ optimalSet` is faithful *because* D1 is in scope.
+Controller session is in worktree `rung0-defs` (branch worktree-rung0-defs); main checkout holds the
+canonical `expedition/aoyagi-full`; both at same HEAD. Teammate isolation-worktrees collapse onto
+rung0-defs ⇒ serial teammates. Editing happens in rung0-defs; controller merges →expedition/aoyagi-full
+in main + pushes. For the parallel middle phase, recommend operator relaunch controller from main
+checkout (non-blocking; re-ground from docs).
 
 ## What's done / banked
 
-- Setup: branch `expedition/aoyagi-full` off dev, controller in main checkout, baseRef=head, namespace
-  `DLNFibre.DLN.RLCT.*`. Brief + priorities + threads + lessons + loop-prompt written, committed, pushed
-  (HEAD 227511c). Task ladder created (#1–#10). Aoyagi 2013 PDF added (D1 source).
-- Thread 01 (Rung 0, seat `pp`) **spawned and running in background** (worktree, off HEAD): designing
-  the foundational definitions (`rlctAt`/`rlctOrderAt`/`dlnLoss`/`aoyagiλ`), the S2 cited interface, and
-  the named-sorry goal skeleton; cross-checking `aoyagiλ` vs ground truth; pinning the Def-3 regime;
-  decorrelated Codex on definitional faithfulness. Output: `threads/01-…/design-spec.md` (it commits to
-  its worktree branch; controller merges).
+- Setup + Rung 0 design (this + prior tick). Design merged (25b825b), pushed.
 
-## Next tick (on pp's report)
+## Next tick
 
-Review the design-spec for fidelity (name=content; faithful to Aoyagi Def 1; ground-truth table holds;
-Def-3 regime pinned). If solid → merge it, then spawn Rung 0b (formaliser: encode `Foundations.*` +
-goal skeleton, small modular files). If the rlct/θ definition has an infidelity flag, spawn a hardener
-decorrelated pass before any encoding. Then begin the small-case validation thread (the anti-treadmill
-gate) in parallel with L1/L2 (tractable linear algebra).
+Spawn Rung 0b (formaliser, serial, in rung0-defs with symlinked .lake/packages): encode Foundations +
+skeleton. Then Rung 0c (hardener+reviewer on encoded Lean) gates before S1/L1/… On 0b+0c clear, open the
+small-case validation thread (the gate + spine-risk probe) and the tractable L1/L2/A1 in sequence.
