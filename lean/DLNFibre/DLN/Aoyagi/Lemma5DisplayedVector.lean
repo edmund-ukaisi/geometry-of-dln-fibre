@@ -111,6 +111,53 @@ theorem block_leftEndpoint_iff {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
     subst h
     exact C.leftEndpoint_mem_block hb
 
+/-- Every selected block lies in the selected span from `S_1-1` to
+`S_(ell+1)-1`. -/
+theorem block_mem_selectedSpan {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {b S : ℕ} (h : C.block b S) :
+    C.point 0 - 1 ≤ S ∧ S < C.point ell - 1 := by
+  rcases h with ⟨hb_lt, hb_lo, hb_hi⟩
+  have hleft : C.point 0 ≤ C.point b := by
+    exact C.point_le_of_le (by omega) (by omega)
+  have hright : C.point (b + 1) ≤ C.point ell := by
+    exact C.point_le_of_le (by omega) (by omega)
+  constructor <;> omega
+
+/-- Every source index in the selected span lies in some selected block. -/
+theorem exists_block_of_mem_selectedSpan {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {S : ℕ} (hlo : C.point 0 - 1 ≤ S) (hhi : S < C.point ell - 1) :
+    ∃ b, C.block b S := by
+  let P : ℕ → Prop := fun j ↦ j ≤ ell ∧ S < C.point j - 1
+  have hP : ∃ j, P j := ⟨ell, le_rfl, hhi⟩
+  let j := Nat.find hP
+  have hj : P j := Nat.find_spec hP
+  rcases hj with ⟨hj_le, hj_hi⟩
+  have hj_pos : 0 < j := by
+    by_contra hnot
+    have hj0 : j = 0 := by omega
+    rw [hj0] at hj_hi
+    omega
+  have hpred_not : ¬ P (j - 1) := Nat.find_min hP (by omega)
+  have hb_lo : C.point (j - 1) - 1 ≤ S := by
+    by_contra hnot
+    have hlt : S < C.point (j - 1) - 1 := by omega
+    exact hpred_not ⟨by omega, hlt⟩
+  have hb_lt : j - 1 < ell := by omega
+  have hsucc : (j - 1) + 1 = j := by omega
+  refine ⟨j - 1, hb_lt, hb_lo, ?_⟩
+  simpa [hsucc] using hj_hi
+
+/-- Selected blocks cover exactly the selected span
+`S_1-1 <= S < S_(ell+1)-1`. -/
+theorem exists_block_iff_mem_selectedSpan {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {S : ℕ} :
+    (∃ b, C.block b S) ↔ C.point 0 - 1 ≤ S ∧ S < C.point ell - 1 := by
+  constructor
+  · rintro ⟨b, hb⟩
+    exact C.block_mem_selectedSpan hb
+  · intro h
+    exact C.exists_block_of_mem_selectedSpan h.1 h.2
+
 end AoyagiSelectedCutpoints
 
 /-- Supplied source-layer piecewise data for Aoyagi Lemma 5 equation `(4)`.

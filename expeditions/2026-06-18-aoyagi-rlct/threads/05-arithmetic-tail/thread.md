@@ -752,3 +752,22 @@ AoyagiSelectedCutpoints.block_leftEndpoint_iff
 These lemmas support branch disambiguation for equations `(3)` and `(4)`.
 They do not claim total source-layer coverage or put the terminal selected
 cutpoint into a block.
+
+The selected-span coverage support has also landed.  Reproduction:
+`reproduction-selected-block-coverage-a5.md`.  Review artifact:
+`review-selected-block-coverage-a5.md`.  Lean proves:
+
+```text
+AoyagiSelectedCutpoints.block_mem_selectedSpan
+AoyagiSelectedCutpoints.exists_block_of_mem_selectedSpan
+AoyagiSelectedCutpoints.exists_block_iff_mem_selectedSpan
+```
+
+These theorems say that the selected blocks cover exactly the half-open span
+
+```text
+S_1-1 <= S < S_(ell+1)-1.
+```
+
+They deliberately do not cover source layers before `S_1-1`, at
+`S_(ell+1)-1`, or after it.
