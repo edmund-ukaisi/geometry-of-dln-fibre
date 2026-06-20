@@ -361,4 +361,98 @@ theorem dirDeriv_orbitIdeal_eq_zero [Infinite k] (M : Tuple (k := k) d) (φ : co
     rw [← evalGroupRingε_comp_orbitPullback M φ f, hker, map_zero]
   rw [dirDeriv_apply, h0, TrivSqZeroExt.snd_zero]
 
+/-! ## R3 — descend `D_v` to `A`, restrict to `m_M`, factor through the cotangent
+
+`D_v` kills `orbitIdeal M` (R2★), so it descends to `Ā_v : A →ₗ[k] k`; restricting to `m_M` and using
+the Leibniz vanishing on products gives a functional on the cotangent space `m_M.Cotangent`. -/
+
+variable [Infinite k]
+
+/-- The descended functional `Ā_v : A →ₗ[k] k` (with `A = orbitRing M`): `D_v` factors through the
+quotient `R ↠ A` since it kills `orbitIdeal M` (R2★). On a residue class `mk g` it is `D_v g`. -/
+noncomputable def dirDerivQuot (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) :
+    orbitRing M →ₗ[k] k :=
+  Submodule.liftQ ((orbitIdeal M).restrictScalars k) (dirDeriv M φ)
+    (fun x hx ↦ dirDeriv_orbitIdeal_eq_zero M φ hx)
+
+@[simp] theorem dirDerivQuot_mk (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d)
+    (g : MvPolynomial (RepCoord d) k) :
+    dirDerivQuot M φ (Ideal.Quotient.mk (orbitIdeal M) g) = dirDeriv M φ g := rfl
+
+/-- `Ā_v` is a derivation at the orbit point: `Ā_v(a b) = a_M(a)·Ā_v(b) + a_M(b)·Ā_v(a)`, where
+`a_M(·) = orbitEval M 1`. From `dirDeriv_mul` pushed through the quotient. -/
+theorem dirDerivQuot_mul (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (a b : orbitRing M) :
+    dirDerivQuot M φ (a * b)
+      = orbitEval M 1 a * dirDerivQuot M φ b + orbitEval M 1 b * dirDerivQuot M φ a := by
+  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
+  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
+  rw [← map_mul, dirDerivQuot_mk, dirDerivQuot_mk, dirDerivQuot_mk, dirDeriv_mul,
+    orbitEval_mk, orbitEval_mk, one_smul, MvPolynomial.aeval_eq_eval]
+
+/-- The cotangent functional `cot_v : m_M.Cotangent →ₗ[k] k` of the tangent direction `v = δ⁰ φ`:
+`Ā_v` restricted to `m_M ⊆ A` (`k`-linearly) factors through `m_M ⧸ m_M²` because it vanishes on
+products (`x, y ∈ m_M ⟹ a_M(x) = a_M(y) = 0`, so the Leibniz terms drop). -/
+noncomputable def cotFunctional (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) :
+    (normalFormIdeal M).Cotangent →ₗ[k] k :=
+  Ideal.Cotangent.lift
+    ((dirDerivQuot M φ).comp ((normalFormIdeal M).subtype.restrictScalars k))
+    (fun x y ↦ by
+      -- `x, y ∈ m_M` evaluate to `0` at `M`, killing both Leibniz terms
+      have hx : orbitEval M 1 (x : orbitRing M) = 0 := x.2
+      have hy : orbitEval M 1 (y : orbitRing M) = 0 := y.2
+      have hxy : ((x * y : normalFormIdeal M) : orbitRing M)
+          = (x : orbitRing M) * (y : orbitRing M) := rfl
+      simp only [LinearMap.comp_apply, LinearMap.coe_restrictScalars, Submodule.coe_subtype, hxy,
+        dirDerivQuot_mul, hx, hy, zero_mul, add_zero])
+
+@[simp] theorem cotFunctional_toCotangent (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d)
+    (x : normalFormIdeal M) :
+    cotFunctional M φ ((normalFormIdeal M).toCotangent x) = dirDerivQuot M φ (x : orbitRing M) :=
+  rfl
+
+/-! ## R4 — `cotFunctional` is `k`-linear in `φ`; the coordinate test for injectivity -/
+
+/-- `D_v (C r) = 0` (the directional derivative kills constants). -/
+@[simp] theorem dirDeriv_C (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (r : k) :
+    dirDeriv M φ (MvPolynomial.C r) = 0 := by
+  rw [dirDeriv_apply, MvPolynomial.aeval_C, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]
+
+/-- `canonicalCoord` of a sum of edge maps is the sum of `canonicalCoord`s (entrywise). -/
+private theorem canonicalCoord_add (A B : Tuple (k := k) d) (x : RepCoord d) :
+    canonicalCoord d (A + B) x = canonicalCoord d A x + canonicalCoord d B x := by
+  simp only [canonicalCoord_apply, Pi.add_apply, Matrix.add_apply]
+
+/-- `canonicalCoord` of a scalar multiple of an edge map is the scalar multiple (entrywise). -/
+private theorem canonicalCoord_smul (c : k) (A : Tuple (k := k) d) (x : RepCoord d) :
+    canonicalCoord d (c • A) x = c • canonicalCoord d A x := by
+  simp only [canonicalCoord_apply, Pi.smul_apply, Matrix.smul_apply]
+
+/-- `D_v` is additive in the direction `φ` (induction on `f`: constants vanish, `X x` gives
+`(δ⁰(φ+φ'))_x = (δ⁰φ)_x + (δ⁰φ')_x` by linearity of `δ⁰`, products by Leibniz `dirDeriv_mul`). -/
+theorem dirDeriv_add (M : Tuple (k := k) d) (φ φ' : cochain0 (k := k) d d)
+    (f : MvPolynomial (RepCoord d) k) :
+    dirDeriv M (φ + φ') f = dirDeriv M φ f + dirDeriv M φ' f := by
+  induction f using MvPolynomial.induction_on with
+  | C r => simp only [dirDeriv_C, add_zero]
+  | add p q hp hq => rw [map_add, map_add, map_add, hp, hq]; ring
+  | mul_X p x hp =>
+    rw [dirDeriv_mul, dirDeriv_mul, dirDeriv_mul, hp, dirDeriv_X, dirDeriv_X, dirDeriv_X,
+      show deformationδ M M (φ + φ') = deformationδ M M φ + deformationδ M M φ' from map_add _ _ _,
+      canonicalCoord_add]
+    ring
+
+/-- `D_v` is homogeneous in the direction `φ`. -/
+theorem dirDeriv_smul (M : Tuple (k := k) d) (c : k) (φ : cochain0 (k := k) d d)
+    (f : MvPolynomial (RepCoord d) k) :
+    dirDeriv M (c • φ) f = c • dirDeriv M φ f := by
+  induction f using MvPolynomial.induction_on with
+  | C r => simp only [dirDeriv_C, smul_zero]
+  | add p q hp hq => rw [map_add, map_add, hp, hq, smul_add]
+  | mul_X p x hp =>
+    rw [dirDeriv_mul, dirDeriv_mul, hp, dirDeriv_X, dirDeriv_X,
+      show deformationδ M M (c • φ) = c • deformationδ M M φ from map_smul _ _ _,
+      canonicalCoord_smul]
+    simp only [smul_eq_mul]
+    ring
+
 end DLNFibre.Core
