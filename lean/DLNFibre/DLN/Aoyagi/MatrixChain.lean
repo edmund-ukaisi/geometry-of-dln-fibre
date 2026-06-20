@@ -219,6 +219,33 @@ theorem sourceSuffixProduct_peel {L : ℕ}
     paperMatrixChain_succ_left κ C
       (sourceEdgeIndex L (S + 2) (by omega) hS) (Fin.last L) (Fin.le_last _)
 
+/-- At a terminal-last source suffix, the lower source layer is the final
+source layer. -/
+theorem sourceLayerIndex_terminalLast {L S : ℕ} (hLast : S + 1 = L) :
+    sourceLayerIndex L (S + 2) (by omega) (by omega) = Fin.last L := by
+  ext
+  simp [sourceLayerIndex]
+  omega
+
+/-- At the terminal-last stage, Aoyagi's raw source suffix is the empty
+paper-order chain and hence the identity, transported along the endpoint
+equality `sourceLayerIndex L (S+2) = Fin.last L`. -/
+theorem sourceSuffixProduct_terminalLast_eq_cast_one {L : ℕ}
+    (κ : Fin (L + 1) → Type v) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (C : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (S : ℕ) (hS : S + 1 ≤ L) (hLast : S + 1 = L) :
+    let i : Fin (L + 1) := sourceLayerIndex L (S + 2) (by omega) (by omega)
+    sourceSuffixProduct κ C S hS =
+      Eq.ndrec
+        (motive := fun j : Fin (L + 1) ↦ Matrix (κ i) (κ j) R)
+        (1 : Matrix (κ i) (κ i) R)
+        (sourceLayerIndex_terminalLast (L := L) (S := S) hLast) := by
+  subst L
+  dsimp only
+  rw [sourceSuffixProduct_eq_paperMatrixChain]
+  change paperMatrixChain κ C (Fin.last (S + 1)) (Fin.last (S + 1)) le_rfl = 1
+  exact paperMatrixChain_self κ C (Fin.last (S + 1))
+
 end SourceSuffix
 
 end Aoyagi

@@ -1853,6 +1853,23 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-principalized-source-chart-actual-width-a4.md`.
 
+Latest A4 update: the terminal-last source suffix identity has landed in
+`lean/DLNFibre/DLN/Aoyagi/MatrixChain.lean`.  The proved Lean names are
+`sourceLayerIndex_terminalLast` and
+`sourceSuffixProduct_terminalLast_eq_cast_one`.  Under `S+1=L`, the lower
+source-suffix endpoint `S+2` is the final source layer, so
+`sourceSuffixProduct` is the empty raw paper-order chain; the identity matrix
+is stated with the required dependent endpoint transport.  This is raw
+matrix-chain algebra only.  It supplies an identity for terminal-last wrappers
+whose following factor is exactly this source suffix, but it does not justify
+setting an arbitrary supplied matrix `F` to `1` away from the empty-suffix
+case. Reproduction:
+`threads/04-blow-up-certificate/reproduction-source-suffix-terminal-last-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-source-suffix-terminal-last.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-source-suffix-terminal-last-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

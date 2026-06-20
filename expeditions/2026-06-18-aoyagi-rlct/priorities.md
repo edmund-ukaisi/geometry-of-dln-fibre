@@ -173,9 +173,13 @@ on the session's original cwd.
    ideal or analytic loss ideal. Next A4 target: either chart-production
    boundary data for the following product/terminal data, or the elementary
    terminal-last endpoint identity `sourceSuffixProduct = 1` under `S+1=L`
-   followed by terminal-last wrappers. Do not set `F := 1` away from the
-   empty-suffix case, and do not transport Case 2 gap/tail invariants without
-   separately checking their shifted thresholds.
+   followed by terminal-last wrappers. The terminal-last endpoint identity is
+   now Lean-proved in casted endpoint form as
+   `sourceSuffixProduct_terminalLast_eq_cast_one`; next target is the actual
+   terminal-last wrapper layer, still only for following factors that are
+   exactly this source suffix. Do not set `F := 1` away from the empty-suffix
+   case, and do not transport Case 2 gap/tail invariants without separately
+   checking their shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

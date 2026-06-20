@@ -2760,3 +2760,32 @@ This does not principalize the terminal product ideal and does not prove chart
 coverage, source-produced `C'^(S+1)`, chart-produced following product,
 Jacobian arithmetic, normal crossings/RLCT, termination, transition
 invariance, or printed-vector repair.
+
+## 2026-06-20 Lean source suffix terminal-last identity
+
+Reproduction:
+`reproduction-source-suffix-terminal-last-a4.md`.
+Statement card:
+`statement-card-a4-source-suffix-terminal-last.md`.
+Review artifact:
+`review-source-suffix-terminal-last-a4.md`.
+
+Lean now proves the terminal-last empty source suffix identity:
+
+```text
+sourceLayerIndex_terminalLast
+sourceSuffixProduct_terminalLast_eq_cast_one
+```
+
+Under `S+1=L`, the lower source-suffix endpoint `S+2` is the final source
+layer.  The raw suffix is therefore the empty paper-order chain.  Since Lean
+sees the lower endpoint and final endpoint as propositionally equal rather
+than definitionally identical, the theorem states the identity matrix
+transported along `sourceLayerIndex L (S+2)=Fin.last L`.
+
+This is raw matrix-chain algebra only.  It supplies the identity needed by
+terminal-last wrappers whose following factor is exactly this source suffix;
+it does not justify setting an arbitrary following matrix to `1` away from the
+empty-suffix case, and it does not prove chart production, source-produced
+`C'^(S+1)`, Jacobian arithmetic, normal crossings/RLCT, termination,
+transition invariance, or printed-vector repair.

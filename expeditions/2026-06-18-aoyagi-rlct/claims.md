@@ -1513,6 +1513,12 @@ No such claim is formalisation-ready until both fields are filled.
   the transformed finite center ideal.  It does not principalize the terminal
   product ideal; `F`, `chartFamily`, and actual-width exhaustion remain
   explicit boundaries.
+  The raw terminal-last source suffix identity is now proved as
+  `sourceLayerIndex_terminalLast` and
+  `sourceSuffixProduct_terminalLast_eq_cast_one`: under `S+1=L`, the suffix is
+  the empty paper-order chain, with the identity matrix transported along the
+  endpoint equality.  This is raw chain algebra and only supports later
+  wrappers whose following factor is exactly this source suffix.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

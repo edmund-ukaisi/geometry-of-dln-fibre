@@ -1623,6 +1623,15 @@ the next elementary suffix target as the terminal-last endpoint identity
 terminal-last wrappers; this should not be generalized to `F=1` away from the
 empty-suffix case.
 
+The terminal-last source suffix identity is now Lean-proved in
+`MatrixChain.lean` as `sourceLayerIndex_terminalLast` and
+`sourceSuffixProduct_terminalLast_eq_cast_one`.  The theorem keeps the
+dependent endpoint transport explicit: under `S+1=L`, the lower suffix
+endpoint is propositionally equal to the final endpoint, so the empty-chain
+identity is an identity matrix transported along that equality.  This is raw
+matrix-chain algebra only; terminal-last blow-up wrappers remain the next
+separate slice.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
