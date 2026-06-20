@@ -3,7 +3,7 @@ import DLNFibre.Core.BoxMoveDegeneration
 /-!
 # `DLNFibre.Core.BoxMoveGeneral` — the general box-move degeneration (L6.1-general)
 
-Two building blocks above the landed degeneration engine
+Building blocks above the landed degeneration engine
 `mem_zeroLocus_vanishingIdeal_orbitSet_of_polynomialFamily`, generalising the certified `(1,2,1)`
 witness of `DLNFibre.Core.BoxMoveDegeneration` towards the full box move (`a < c ≤ b+1 ≤ e`,
 arbitrary `rest`):
@@ -15,11 +15,32 @@ arbitrary `rest`):
   `P₀ ⊕ 1_R` (`liftDirSumBaseChange`: `P₀` on the first block, identity on the common `R`). This
   isolates `rest` from the symbolic two-interval move.
 
-* **Split box move** (`splitCut_mem_closure`, `splitCut_orbit_intervalDirectSum`): the split case
-  `c = b+1` with no `rest` — `M_{[a,e]} ⇝ M_{[a,b]} ⊕ M_{[b+1,e]}` for arbitrary intervals, via the
-  cut chain `splitCut a e b` and the explicit diagonal base change `splitBaseChange`. The
-  **non-split** case (`c ≤ b`, dim-2 overlap) and the list-gluing to `intervalDirectSum
-  (Lmove ++ rest)` are the remaining gap above these two blocks (see the thread report).
+* **Downstairs transport** (`mem_closure_of_polynomialFamily_orbitEquiv`,
+  `mem_closure_dirSum_of_mem_closure_orbitEquiv`): a constant base change `Q` carries the family
+  (`smulPoly Q F`), letting the engine land an *orbit-equivalent* downstairs `D' = Q • D₀` — the
+  bridge from a recombination limit (only `G_d`-equivalent to the genuine interval sum) to the list
+  form.
+
+* **Split box move, full §4 list headline** (`splitMove_intervalDirectSum_mem_closure`): the split
+  case `c = b+1` with **arbitrary `rest`** — for `Lup = (a,e) :: rest`, `Ldn = (a,b) :: (b+1,e) :: rest`,
+  `canonicalCoord (intervalDirectSum Ldn) ∈ closure (orbit (intervalDirectSum Lup))` (the two lists
+  share a dimension vector; `Ldn` is transported onto it). The bare split-move pieces
+  (`splitCut_mem_closure`, `splitCut_orbit_intervalDirectSum`) use the cut chain `splitCut a e b` and
+  the explicit diagonal base change `splitBaseChange`.
+
+* **Non-split box move (`a < c ≤ b < e`, dim-2 overlap on `[c,b]`) — SCAFFOLDING ONLY.** The
+  recombination family `splice a c e b λ` (the upstairs `M_{[a,e]} ⊕ M_{[c,b]}` with the single edge
+  `b` overwritten by the recombination row `[λ, 1]`, defined entrywise so it is dimension-agnostic),
+  its off-edge agreement (`splice_apply_ne`), the sub-product concatenation (`submult_concat`), the
+  two segment lemmas (`submult_splice_below` / `submult_splice_above`), and the **crossing
+  factorization** `submult_splice_cross` (`submult (splice λ) i j = submult U₂ (b+1) j · (splice λ b)
+  · submult U₂ i b` for `i ≤ b < j`) are landed. The **remaining gap** is the crossing-rank
+  computation `rankPattern (splice λ) = rankPattern (upstairs)` (`λ ≠ 0`) / `= rankPattern
+  (downstairs)` (`λ = 0`) — the rank of the crossing 3-fold product (`≤ 1` by the target dimension,
+  `1`/`0` by the nonzero recombination entry) — and the engine application + list-gluing on top of
+  it. The math is settled (the rank is `[a≤i∧j≤e]+[c≤i∧j≤b]` upstairs, `[a≤i∧j≤b]+[c≤i∧j≤e]`
+  downstairs; sympy-certified, thread 22/24) and the route is verified; the residual is the heavy
+  symbolic `Fin`-index entry computation (see the thread-27 card).
 
 The mechanism reuses the block-diagonal levers of `Core.IntervalModule` (`reindex_fromBlocks_mul`,
 `reindex_fromBlocks_one`).
@@ -720,6 +741,42 @@ example : canonicalCoord (fun l ↦ boxDim l + intervalDim (0 : Fin 3) 0 l)
     boxMoveWitnessFamilyPoly
     (by rw [tupleEval_boxMoveWitnessFamilyPoly, boxMoveWitnessFamily_zero])
     (fun t ht ↦ by rw [tupleEval_boxMoveWitnessFamilyPoly]; exact boxMoveWitnessFamily_mem_orbit ht)
+
+/-- The split move's **full §4 list headline** fires over `ℚ` with a `1`-dimensional `rest`
+(`M_{[1,2]}`): `M_{[0,0]} ⊕ M_{[1,1]} ⊕ M_{[1,2]}` (the downstairs `Ldn = (0,0) :: (1,1) :: [(1,2)]`)
+lies in the closure of the orbit of `M_{[0,1]} ⊕ M_{[1,2]}` (the upstairs `Lup = (0,1) :: [(1,2)]`),
+cut at edge `b = 0`. -/
+example :
+    canonicalCoord (fun l ↦ intervalDim (0 : Fin 3) 1 l + foldDim [((1 : Fin 3), (2 : Fin 3))] l)
+      ((foldDim_splitCons_eq (0 : Fin 3) 1 0 [((1 : Fin 3), (2 : Fin 3))] (by decide) (by decide)) ▸
+        intervalDirectSum (k := ℚ) [((0 : Fin 3), (0 : Fin 3)), (1, 1), (1, 2)])
+    ∈ MvPolynomial.zeroLocus
+        (σ := RepCoord (fun l ↦ intervalDim (0 : Fin 3) 1 l + foldDim [((1 : Fin 3), (2 : Fin 3))] l))
+        (k := ℚ) ℚ
+        (MvPolynomial.vanishingIdeal
+          (σ := RepCoord (fun l ↦ intervalDim (0 : Fin 3) 1 l + foldDim [((1 : Fin 3), (2 : Fin 3))] l))
+          (K := ℚ) ℚ
+          (orbitSet (dirSum (intervalModule 0 1) (intervalDirectSum [((1 : Fin 3), (2 : Fin 3))])))) :=
+  splitMove_intervalDirectSum_mem_closure 0 1 0 [((1 : Fin 3), (2 : Fin 3))] (by decide) (by decide)
+
+/-! ### Non-split scaffolding sanity (orientation against the certified `(1,2,1)` witness)
+
+The non-split `splice` for `a = 0, c = 1, b = 1, e = 2` (`[c,b] = [1,1]`, the smallest genuine overlap)
+has the witness dimension vector `(1,2,1)` and the recombination row `[λ, 1]` — matching the certified
+`boxMoveWitnessFamily` edge `[t, 1]`. Confirms the scaffolding is the right object; the residual is the
+crossing-rank computation. -/
+
+/-- The non-split `splice` over `Fin 3` (`a=0, c=1, b=1, e=2`) has the `(1,2,1)` dimension vector. -/
+example : (fun l ↦ intervalDim (0 : Fin 3) 2 l + intervalDim 1 (1 : Fin 3) l) = ![1, 2, 1] := by
+  funext l; fin_cases l <;> decide
+
+/-- The recombination edge of `splice 0 1 2 1 λ` reads the long strand (`inl`) as `λ` — the `[λ, 1]`
+row that matches the certified witness's `[t, 1]` cut arrow. -/
+example (lam : ℚ)
+    (r : Fin ((fun l ↦ intervalDim (0 : Fin 3) 2 l + intervalDim 1 1 l) (1 : Fin 2).succ))
+    (s' : Fin (intervalDim (0 : Fin 3) 2 (1 : Fin 2).castSucc)) :
+    splice (k := ℚ) 0 1 2 1 lam 1 r (finSumFinEquiv (Sum.inl s')) = lam := by
+  rw [splice, if_pos rfl, Equiv.symm_apply_apply]
 
 end Witness
 
