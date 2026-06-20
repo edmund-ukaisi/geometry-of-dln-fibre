@@ -185,51 +185,71 @@ theorem block_elimination (H : Fin (L + 1) → ℕ) (r : ℕ)
           if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
   sorry
 
-/-- **The deepest singular point** (Aoyagi 2013, the inf-achiever; Rung-0c FLAG, load-bearing).
-`w` is *deepest* when it lies in the fibre **and** every **partial product**
-`∏_{s<k} A⁽ˢ⁾ = prodAux H w k` sits at the **minimal rank consistent with the fibre** —
-`rank (prodAux H w k) = min r (min_{i ≤ k} H⁽ⁱ⁾)` — i.e. each prefix is collapsed as far as the path
-widths and the rank-`r` target allow (Aoyagi's "all layers at the minimal rank `r`", expressed on
-the partial products so it pins the *whole* product chain, not just per-layer ranks). This is the
-point whose local RLCT is **maximal** over the fibre — so the global infimum of the *learning
-coefficient* `λ` is attained there (smaller `λ` ⇔ more singular ⇔ deeper). The local RLCT genuinely
-varies over the fibre (rv-2's witness: for `(2,2,2)` a milder optimal point gives `2 ≠ 3/2`), so L2
-must be keyed to *this* point, not every optimal one — that is exactly why D1 exists. This
-partial-product
-characterization is the one under which **both** D1 (deepest attains the inf) and L2 (`rlctAt =
-aoyagiLambda`) hold. -/
-def IsDeepest (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- **Deepest layers** (the SUFFICIENT characterization; pp + Codex, lessons 2026-06-20):
+`w` lies in the fibre **and** every layer `A⁽ˢ⁾ = w s` is at rank exactly `r` (capped by its
+dimensions), `rank (w s) = min r (min H⁽ˢ⁾ H⁽ˢ⁺¹⁾)`. This is **sufficient** for the deepest
+(maximal-local-RLCT) point — it implies all partial products are rank-`r` by submultiplicativity,
+and the local RLCT is constant over it (a single GL gauge orbit). It is *not exhaustive* of the
+λ-attaining set (the full set is larger — residual freedom), which is why we key D1/L2 to ONE
+constructed `deepestPoint` rather than this `∀`-predicate. (The discarded per-partial-product form
+was *too weak* — `(2,2,2)`, `(A¹=0, A² invertible)` has all partial products rank `0` but local RLCT
+`2 ≠ 3/2`.) Used only to characterize the witness `deepestPoint_exists` produces. -/
+def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
   w ∈ optimalSet H B ∧
-    ∀ (k : ℕ) (hk : k < L + 1),
-      (prodAux H w k hk).rank = min r ((Finset.Iic (⟨k, hk⟩ : Fin (L + 1))).inf'
-        ⟨⟨k, hk⟩, Finset.mem_Iic.2 le_rfl⟩ H)
+    ∀ s : Fin L, (w s).rank = min r (min (H s.castSucc) (H s.succ))
 
-/-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at a deepest point** splits
+/-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin; general `r` ⟹ a
+block-normal rank-`r` chain whose product is `B`). The existence obligation behind the constructed
+`deepestPoint`; named `sorry` (statements-first, like the rung lemmas). -/
+theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
+    Nonempty {w : Params H // IsDeepLayers H r B w} := by
+  sorry
+
+/-- **The deepest singular point** of the fibre `mult⁻¹(B)` (Rung-0c FLAG, load-bearing — pp + Codex
+adjudicated). A **single constructed** witness: every layer at the minimal rank `r` (the
+block-normal rank-`r` chain; `r = 0` ⟹ the origin), residual core `0`. Aoyagi's point. **Why a
+constructed point, not a `∀`-predicate** (lessons 2026-06-20): per-partial-product rank-`r` is *too
+weak* (reintroduces L2's over-claim — `(2,2,2)`, `(A¹=0, A² invertible)` has all partial products
+rank `0` but local RLCT `2 ≠ 3/2`); per-layer rank-exactly-`r` (`IsDeepLayers`) is *sufficient* (a
+single GL gauge orbit, RLCT constant) but *not exhaustive* of the λ-attaining set. Keying D1/L2 to
+ONE constructed witness gives the lowest proof surface with zero over-claim and no gauge/orbit
+lemma. -/
+noncomputable def deepestPoint (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) : Params H :=
+  (Classical.choice (deepestPoint_exists H r B hB)).1
+
+/-- The constructed `deepestPoint` is a deepest-layers point (in particular, in the fibre). -/
+theorem deepestPoint_isDeep (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
+    IsDeepLayers H r B (deepestPoint H r B hB) :=
+  (Classical.choice (deepestPoint_exists H r B hB)).2
+
+/-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at the deepest point**
 as the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
-widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r`: it equals `aoyagiLambda H r` (cast to `ℝ≥0∞`). (Rung-0c FLAG: the old
-statement quantified over *every* optimal `wstar` — an **over-claim**; the local RLCT varies over
-the fibre, equalling the closed form only at the deepest point. Re-keyed to `IsDeepest`.)
-Non-vacuous: it equates the local RLCT at a deepest point to the closed form. -/
+widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r`: it equals `aoyagiLambda H r` (cast to `ℝ≥0∞`). (Rung-0c FLAG: keyed to the
+single constructed `deepestPoint`, **not** `∀ optimal w` — an over-claim — nor a
+`∀`-deepest-predicate — the per-partial-product form was too weak. The local RLCT varies over the
+fibre, equalling the closed form at the deepest point.) Non-vacuous: equates the local RLCT at
+`deepestPoint` to the closed form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H)
-    (hw : IsDeepest H r B w) :
-    rlctAt H (dlnLoss H B) w = ENNReal.ofReal (aoyagiLambda H r) := by
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB) = ENNReal.ofReal (aoyagiLambda H r) := by
   sorry
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
-/-- **D1 (Theorem 4).** The global infimum of the local RLCT over the optimal set is **attained at a
-deepest singular point** (`IsDeepest`): there exists a deepest `w` that is optimal and whose local
-RLCT realises the infimum. This turns the headline's `⨅ w ∈ optimalSet, rlctAt` into the local RLCT
-at one identified point. (Rung-0c FLAG: the old statement asserted only `∃ wstar ∈ optimalSet`
-attaining the inf — an **under-claim** that did not identify the attainer as *deepest*, so it could
-not feed the re-keyed L2; now it certifies `IsDeepest`.) Non-vacuous: it both exhibits a deepest
-attainer and equates the inf to its local RLCT. -/
+/-- **D1 (Theorem 4).** The global infimum of the local RLCT over the optimal set is **attained at
+the deepest singular point** `deepestPoint H r B` (Aoyagi 2013 Thm 2, the monotonicity of the local
+RLCT over the fibre). This turns `⨅ w ∈ optimalSet, rlctAt` into the local RLCT at the
+one constructed point that L2 evaluates. (Rung-0c FLAG: keyed to the constructed `deepestPoint`,
+replacing the under-claiming `∃ wstar ∈ optimalSet` that did not name the attainer.) Non-vacuous:
+equates the inf to the local RLCT at `deepestPoint`. -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
-    ∃ w, IsDeepest H r B w ∧
-      (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v) = rlctAt H (dlnLoss H B) w := by
+    (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v)
+      = rlctAt H (dlnLoss H B) (deepestPoint H r B hB) := by
   sorry
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
@@ -319,9 +339,8 @@ target `B` of rank `r`. Assembled: D1 (→ deepest point) ▸ L2 (→ reg + core
 theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
-  -- assemble: D1 (→ a deepest point attaining the inf) ▸ L2 (→ closed form at the deepest point).
-  obtain ⟨w, hdeep, hinf⟩ := deepest_point_reduction H r B hB
-  rw [hinf]
-  exact product_reduction H r B w hdeep
+  -- assemble: D1 (⨅ = rlctAt at the constructed deepestPoint) ▸ L2 (= closed form there).
+  rw [deepest_point_reduction H r B hB]
+  exact product_reduction H r B hB
 
 end DLNFibre.DLN.RLCT
