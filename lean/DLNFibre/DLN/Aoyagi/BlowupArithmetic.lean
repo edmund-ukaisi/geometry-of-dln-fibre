@@ -10963,6 +10963,43 @@ theorem case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
   · cases u
     simp [e, case2DisplayedSourceTerminalCprimeCandidate_pivotRow, hpiv a]
 
+/-- Supplied bridge data identifying a terminal source matrix with the
+source-row terminal `C'` candidate.
+
+The bridge records the row equations that a later chart-production theorem
+should prove: old rows are unchanged, and the surviving pivot row is the top
+row of `Q⁻¹ C`. -/
+structure SuppliedTerminalCprimeBridge
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) where
+  Cterm : Matrix (case2SourceTerminalRowIndex J) τ R
+  oldRow :
+    ∀ i a, Cterm (case2SourceTerminalRowEquiv J (Sum.inl i)) a = C i.1 a
+  pivotRow :
+    ∀ a, Cterm (case2SourceTerminalRowEquiv J (Sum.inr ())) a =
+      case2DisplayedPaperCprimeTop n hS hcont residual C () a
+
+namespace SuppliedTerminalCprimeBridge
+
+variable {τ R : Type*} [CommRing R]
+variable {n : ℕ → ℕ} {S J : ℕ} {hS : 1 ≤ S}
+variable {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+variable {residual : ℕ × ℕ → R} {C : ℕ → τ → R}
+
+/-- A supplied terminal `C'` bridge identifies its matrix with the existing
+source-row candidate. -/
+theorem cprimeCandidate_eq
+    (bridge :
+      SuppliedTerminalCprimeBridge n hS hcont residual C) :
+    case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C =
+      bridge.Cterm :=
+  case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
+    n hS hcont residual C bridge.Cterm bridge.oldRow bridge.pivotRow
+
+end SuppliedTerminalCprimeBridge
+
 /-- The source-row terminal `C'^(S+1)` reindexes back to the stacked
 old-top-plus-pivot-row candidate. -/
 theorem case2DisplayedSourceTerminalCprimeCandidate_submatrix_terminalRowEquiv
@@ -11154,6 +11191,28 @@ theorem case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_supp
   rw [case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul]
   rw [case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
     n hS hcont residual C Cterm hold hpiv]
+
+namespace SuppliedTerminalCprimeBridge
+
+variable {τ υ R : Type*} [CommRing R] [Fintype τ]
+variable {n : ℕ → ℕ} {S J : ℕ} {hS : 1 ≤ S}
+variable {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+variable {residual : ℕ × ℕ → R} {C : ℕ → τ → R}
+
+/-- Product rewrite supplied by a terminal `C'` bridge. -/
+theorem terminalProduct_eq_weight_mul_Cterm_mul
+    (bridge :
+      SuppliedTerminalCprimeBridge n hS hcont residual C)
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (b0 : R) (F : Matrix τ υ R) :
+    case2DisplayedSourceTerminalProductReindexedCandidate Wold n hS hcont
+        b0 residual C F =
+      (case2DisplayedSourceTerminalWeight Wold b0 * bridge.Cterm) * F :=
+  case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul
+    Wold n hS hcont b0 residual C F bridge.Cterm bridge.oldRow bridge.pivotRow
+
+end SuppliedTerminalCprimeBridge
 
 /-- Terminal-prefix-row version of the stopped displayed Case 2 source terminal
 weight candidate.  This only reindexes the already named source-row terminal

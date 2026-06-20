@@ -14,6 +14,8 @@ No blocking source/math fidelity issues were found.
 - The supplied terminal matrix bridge is the correct handoff shape: it records
   old-row and pivot-row equations as assumptions rather than claiming chart
   production.
+- The named `SuppliedTerminalCprimeBridge` structure is appropriate boundary
+  data for a future chart-production theorem.
 
 ## Lean/API Review
 
@@ -24,6 +26,8 @@ No blocking Lean/API issues were found.
   `Matrix.submatrix_mul_equiv`, and `matrixEntryIdeal_submatrix_equiv`.
 - The supplied terminal matrix bridge is extensional on terminal rows and then
   reuses the already proved product-form theorem.
+- The bridge structure projections are thin wrappers around the row-equation
+  equality and product rewrite.
 
 ## Residual Risk
 

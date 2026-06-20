@@ -543,7 +543,7 @@ No such claim is formalisation-ready until both fields are filled.
   construct source-produced `C'^(S+1)`. The terminal-frontier bridges now
   reindex this candidate onto terminal prefix rows `1..M(S+1)` under stopped
   continuation and prove a supplied-terminal-matrix handoff from explicit
-  old-row and pivot-row equations.
+  old-row and pivot-row equations, packaged as `SuppliedTerminalCprimeBridge`.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -1406,8 +1406,11 @@ No such claim is formalisation-ready until both fields are filled.
   `case2SourceTerminalRowEquivPrefixOfNotNext`,
   `case2DisplayedSourceTerminalCprimeCandidate_oldRow`,
   `case2DisplayedSourceTerminalCprimeCandidate_pivotRow`,
+  `SuppliedTerminalCprimeBridge`,
   `case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow`,
   `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`,
+  `SuppliedTerminalCprimeBridge.cprimeCandidate_eq`,
+  `SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul`,
   `case2DisplayedSourceTerminalWeightPrefixCandidate`,
   `case2DisplayedSourceTerminalCprimePrefixCandidate`,
   `case2DisplayedSourceTerminalProductPrefixCandidate`,

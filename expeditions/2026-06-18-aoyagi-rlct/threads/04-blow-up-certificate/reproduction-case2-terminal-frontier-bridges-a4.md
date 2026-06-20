@@ -75,8 +75,9 @@ the terminal product candidate rewrites as
 (source terminal weight * Cterm) * F.
 ```
 
-The row equations are assumptions in this bridge.  A later chart-production
-theorem must prove them from source coordinates.
+Lean packages these assumptions in `SuppliedTerminalCprimeBridge`.  The row
+equations are assumptions in this bridge.  A later chart-production theorem
+must prove them from source coordinates.
 
 ## Lean Shape
 
@@ -108,8 +109,11 @@ The supplied terminal matrix handoff is:
 ```text
 case2DisplayedSourceTerminalCprimeCandidate_oldRow
 case2DisplayedSourceTerminalCprimeCandidate_pivotRow
+SuppliedTerminalCprimeBridge
 case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
 case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul
+SuppliedTerminalCprimeBridge.cprimeCandidate_eq
+SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul
 ```
 
 ## Boundaries

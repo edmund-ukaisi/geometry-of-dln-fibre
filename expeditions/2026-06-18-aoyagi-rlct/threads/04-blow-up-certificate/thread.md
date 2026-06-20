@@ -2456,7 +2456,9 @@ prefix-row product candidate on the right.
 The same checkpoint adds a supplied terminal matrix handoff: if a supplied
 matrix has old rows `C(i,-)` for `i=1..J` and pivot row equal to the top row
 of `Q^-1 C`, then the existing source-row terminal product candidate rewrites
-to `(source terminal weight * supplied Cterm) * F`.
+to `(source terminal weight * supplied Cterm) * F`.  The row equations are
+also packaged as `SuppliedTerminalCprimeBridge`, with projections to the
+candidate equality and product rewrite.
 
 This is still not chart production.  In the row-exhausted wide-next case,
 actual rows beyond `M(S+1)` belong to the transported following factor but not

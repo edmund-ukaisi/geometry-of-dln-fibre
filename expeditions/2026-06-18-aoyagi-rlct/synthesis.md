@@ -1523,8 +1523,9 @@ prefix row type, and the stopped source old-top/source suffix theorem is
 restated with the prefix-row product candidate.  A supplied terminal-matrix
 handoff is also proved: any `Cterm` with the old source rows and the surviving
 pivot row equal to the top row of `Q^-1 C` can replace the candidate in the
-terminal product.  This defines the next proof obligation exactly: construct
-those row equations from the displayed source chart.
+terminal product.  These row equations are also packaged as the supplied
+boundary `SuppliedTerminalCprimeBridge`.  This defines the next proof
+obligation exactly: construct that bridge from the displayed source chart.
 
 ## Drift guard
 
