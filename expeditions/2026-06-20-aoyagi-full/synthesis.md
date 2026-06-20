@@ -41,10 +41,21 @@ A1/A2 arithmetic (spine proven). Two genuinely hard Lean builds: S1.1 + R1.
 Formaliser/reviewer work in MAIN on `expedition/aoyagi-full` (cwd-collapse); controller green-gates +
 pushes; `worktree-rung0-defs` retired; serial editing. Crossing mitigated by serial cadence (held so far).
 
+## (1,1,1) bridge — PARKED (Lean-plumbing wall, not math)
+
+fm-2 hit the predicted wall: the `Params ![1,1,1] ≃ᵐ ℝ²` measure-preserving equiv (symbolic-`s` Matrix
+fiber doesn't reduce; `volume_preserving_pi` can't apply). Stopped per the bound (good). Banked reusable
+S1.1 infra: `abs_rpow_integrableOn_Ioo_iff`, `measurePreserving_matrixEntry₁₁`. PARKED escape #1
+(finTwoArrow split is (1,1,1)-throwaway). **Known S1.1 sub-task: the general `Params H ≃ᵐ ℝ^N`
+measure-preserving equiv** (needed at S1.1's use-site + R1; build once, closes (1,1,1) free). Approach is
+validated (gate + probe); full sorry-free (1,1,1) waits on this infra. Not difficulty-avoidance — a
+throwaway-shortcut-vs-build-once scope call; the contract fix + structural proofs outrank the demo.
+
 ## In flight
 - `rv-2` — deep decorrelated statement-fidelity audit of the full skeleton (read-only; withholding my
   findings to test independently). Should corroborate L1/L2 + maybe find more.
-- `fm-2` — the (1,1,1) rlctAt bridge (Case111; independent of the L1/L2 bugs). Told to stay out of Skeleton.
+- `fm-2` — finishing the two-sided `|x|^s` integrability lemma (reusable S1.1 infra, non-colliding), then
+  STANDBY for the Skeleton restatement pass.
 - `pp` — on-demand (design complete).
 
 ## Next tick
