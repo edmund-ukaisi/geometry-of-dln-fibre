@@ -136,6 +136,22 @@ witnesses to the data (m to M's Def-3 selection), turning it into the real minim
 - Pattern across this contract: L1 (vacuous rank), L2 (over-claim), deepestPoint (false), lambdaCore (weak
   existential), A2 (weak existential, known seam). **Statement design is where the bedrock work is** — the
   proofs, once the statement is right, are labour.
+
+## 2026-06-20 — domain under-specification: check the DEGENERATE CORNERS
+
+Two contract statements were FALSE not from vacuity but from MISSING DOMAIN HYPOTHESES, found one-at-a-time by
+proof attempts:
+- **7th:** deepestPoint_exists/headline false when r > a MIDDLE width (`rank B = r` bounds only the OUTER
+  widths) → needs `hr : ∀ s, r ≤ H s`.
+- **9th:** deepestPoint_exists/headline false for **L=0** (empty product = identity ⟹ fibre needs B=I;
+  `L=0, H=![2], r=0` has hr ✓ but empty fibre) → needs `hL : 1 ≤ L` (L=0 = no network = out-of-model).
+Both are DEGENERATE CORNERS (empty index type `Fin 0`; rank-vs-width extremes) the `∀`/headline silently
+admitted. **Audit-discipline addition:** for every quantified statement, enumerate the degenerate corners —
+empty index types (L=0, `Fin 0`), zero/extremal ranks, single/zero widths — and check it is TRUE or EXCLUDED
+by a hypothesis there. Domain hypotheses are easy to under-specify; degenerate corners are where
+false-on-the-boundary hides. Commissioned a systematic domain-corner SWEEP (rv-2) to catch the class
+wholesale, mirroring the weak-existential sweep. Healthy, not alarming: STATEMENT-domain holes caught before
+proofs build on them — again, statement design is where the bedrock work is.
 - **The discriminator (rv-2, reusable):** `∃ x, LHS(data) = f(x)` is WEAK iff `f`'s range free-covers the
   LHS via a witness `x` choosable FREE of the data — i.e. the LHS is a CONCRETE value the witness reads off
   (A1: `lambdaCore M` is a computable ℚ, so pick `n = 2·lambdaCore M`). GENUINE iff the LHS is PINNED/OPAQUE
