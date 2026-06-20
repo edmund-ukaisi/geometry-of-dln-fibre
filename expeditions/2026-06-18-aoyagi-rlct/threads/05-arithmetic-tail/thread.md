@@ -374,3 +374,35 @@ This remains conditional finite arithmetic.  It does not prove the source
 increment hypothesis for arbitrary vectors, vector admissibility,
 correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
 count, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Lemma 4 binary prefix delta
+
+Reproduction:
+`reproduction-lemma4-binary-prefix-delta-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-binary-prefix-delta.md`.
+Review artifact:
+`review-lemma4-binary-prefix-delta-a5.md`.
+
+Lean now proves a conditional bridge for Lemma 4's two-value increment
+hypothesis.  For an arbitrary chain, define
+
+```text
+D_j = P(j) - H_j - j*(M-1).
+```
+
+Then
+
+```text
+F_j = (M-1) + (D_(j+1)-D_j).
+```
+
+Thus a supplied binary-delta hypothesis `D_(j+1)-D_j in {0,1}` gives
+`F_j in {M-1,M}`.  The bridge feeds the existing terminal-`H` and
+same-coordinate `Htilde`-chain-bound count wrappers.
+
+This is still conditional finite arithmetic.  It does not prove that source
+exponent vectors imply binary prefix deltas, that chain bounds imply binary
+prefix deltas, vector-coordinate correspondence, vector admissibility,
+correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
+count, pole order, normal crossings, or RLCT extraction.

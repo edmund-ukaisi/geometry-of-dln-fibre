@@ -1784,6 +1784,16 @@ displayed chains, then `H_ell=0`, and the existing Lemma 4 count wrappers apply
 under the still-explicit two-value increment hypothesis.  A supplied vector
 coordinate map can feed componentwise vector bounds into interval membership,
 but no source theorem produces that coordinate map.
+
+The binary prefix-delta bridge for the two-value increment blocker is now
+Lean-proved in the same module.  For an arbitrary `H`-chain, define
+`D_j=P(j)-H_j-j*(M-1)` using the zero-based inclusive selected-width prefix.
+Then `aoyagiLemma4F_eq_pred_add_incrementPrefixDelta` proves
+`F_j=(M-1)+(D_(j+1)-D_j)`.  Consequently a supplied hypothesis that all
+successive deltas are `0` or `1` gives the two-value increment hypothesis, and
+the existing terminal-`H` and chain-bound count wrappers can use that binary
+interface.  This does not prove that source exponent vectors or chain bounds
+provide binary deltas.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

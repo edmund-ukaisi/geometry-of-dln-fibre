@@ -561,6 +561,96 @@ theorem aoyagiHtildeUpperChain_twoValueCount (ell a : ℕ) (M : ℤ)
     hselected
     (aoyagiHtildeUpperChain_F_twoValue ell a M m ha)
 
+/-- Prefix-delta normal form for an arbitrary `H` chain.
+
+This is a finite bookkeeping device for the two-value increment blocker.  It
+does not assert that the prefix deltas are binary for source exponent vectors. -/
+def aoyagiLemma4IncrementPrefix (ell : ℕ) (M : ℤ)
+    (m H : Fin (ell + 1) → ℤ) (j : Fin (ell + 1)) : ℤ :=
+  aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) j.val -
+    H j - (j.val : ℤ) * (M - 1)
+
+/-- The increment `F_j` is `M-1` plus the successive prefix-delta change. -/
+theorem aoyagiLemma4F_eq_pred_add_incrementPrefixDelta
+    (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ) (j : Fin ell) :
+    aoyagiLemma4F ell m H j =
+      (M - 1) +
+        (aoyagiLemma4IncrementPrefix ell M m H j.succ -
+          aoyagiLemma4IncrementPrefix ell M m H j.castSucc) := by
+  unfold aoyagiLemma4F aoyagiLemma4IncrementPrefix
+  have hprefix :
+      aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) (j.val + 1) =
+        aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) j.val + m j.succ := by
+    rw [aoyagiPrefixSum_succ]
+    rw [aoyagiSelectedWidthNat_succ_fin m j]
+  simp only [Fin.val_succ, Fin.val_castSucc]
+  rw [hprefix]
+  have hcast : ((j.val + 1 : ℕ) : ℤ) = (j.val : ℤ) + 1 := by
+    norm_num
+  rw [hcast]
+  ring_nf
+
+/-- Binary prefix deltas imply the two-value increment hypothesis in
+Aoyagi's Lemma 4.
+
+This is only a conditional finite bridge.  It does not prove that source vector
+bounds or exponent admissibility provide the binary prefix-delta hypothesis. -/
+theorem aoyagiLemma4F_twoValue_of_binaryIncrementPrefix
+    (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefix ell M m H j.succ -
+          aoyagiLemma4IncrementPrefix ell M m H j.castSucc = 0 ∨
+        aoyagiLemma4IncrementPrefix ell M m H j.succ -
+          aoyagiLemma4IncrementPrefix ell M m H j.castSucc = 1) :
+    ∀ j : Fin ell,
+      aoyagiLemma4F ell m H j = M - 1 ∨
+        aoyagiLemma4F ell m H j = M := by
+  intro j
+  rw [aoyagiLemma4F_eq_pred_add_incrementPrefixDelta ell M m H j]
+  rcases hbin j with hzero | hone
+  · left
+    omega
+  · right
+    omega
+
+/-- Lemma 4's finite count with the two-value hypothesis supplied by binary
+prefix deltas. -/
+theorem aoyagiLemma4_twoValueCount_of_terminalH_binaryIncrementPrefix
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0) (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefix ell M m H j.succ -
+          aoyagiLemma4IncrementPrefix ell M m H j.castSucc = 0 ∨
+        aoyagiLemma4IncrementPrefix ell M m H j.succ -
+          aoyagiLemma4IncrementPrefix ell M m H j.castSucc = 1) :
+    ((Finset.univ.filter fun j : Fin ell ↦ aoyagiLemma4F ell m H j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = M - 1).card = ell - a) := by
+  exact aoyagiLemma4_twoValueCount_of_terminalH ell a M m H hH0 hHlast hselected
+    (aoyagiLemma4F_twoValue_of_binaryIncrementPrefix ell M m H hbin)
+
+/-- Same-coordinate `Htilde`-chain-bound count wrapper with the two-value
+hypothesis supplied by binary prefix deltas. -/
+theorem aoyagiLemma4_twoValueCount_of_HtildeChainBounds_binaryIncrementPrefix
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlower : aoyagiHtildeLowerChain ell a M m ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperChain ell a M m)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefix ell M m H j.succ -
+          aoyagiLemma4IncrementPrefix ell M m H j.castSucc = 0 ∨
+        aoyagiLemma4IncrementPrefix ell M m H j.succ -
+          aoyagiLemma4IncrementPrefix ell M m H j.castSucc = 1) :
+    ((Finset.univ.filter fun j : Fin ell ↦ aoyagiLemma4F ell m H j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = M - 1).card = ell - a) := by
+  exact aoyagiLemma4_twoValueCount_of_HtildeChainBounds ell a M m H hH0 ha
+    hselected hlower hupper
+    (aoyagiLemma4F_twoValue_of_binaryIncrementPrefix ell M m H hbin)
+
 end Aoyagi
 end DLN
 end DLNFibre

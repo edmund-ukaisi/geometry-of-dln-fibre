@@ -524,7 +524,10 @@ on the session's original cwd.
    sets of size `aoyagiLemma5IntervalSize`, componentwise vector bounds can
    feed interval membership only through an explicitly supplied coordinate
    map, and chain bounds give `H_ell=0` but not arbitrary two-valued
-   increments.  The
+   increments.  The binary prefix-delta bridge is also Lean-proved as a
+   conditional interface: if `D_j=P(j)-H_j-j*(M-1)` has successive deltas
+   `0` or `1`, then the Lemma 4 increments are `M-1` or `M`; this still does
+   not prove source vectors or chain bounds supply binary deltas.  The
    remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis

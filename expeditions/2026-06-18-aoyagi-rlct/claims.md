@@ -1591,6 +1591,11 @@ No such claim is formalisation-ready until both fields are filled.
   between them have Aoyagi's interval sizes, supplied same-coordinate chain
   bounds imply `H_ell=0`, and the existing count wrappers apply under the
   still-explicit two-value increment hypothesis.
+  A binary prefix-delta bridge is now Lean-proved as a conditional interface
+  for the two-value increment blocker: for
+  `D_j=P(j)-H_j-j*(M-1)`, the identity
+  `F_j=(M-1)+(D_(j+1)-D_j)` holds, so supplied binary deltas imply the
+  two-value increment hypothesis.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1617,6 +1622,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-htilde-chain-arithmetic-a5.md`;
   `Htilde` interval bounds at
   `threads/05-arithmetic-tail/reproduction-htilde-interval-bounds-a5.md`;
+  Lemma 4 binary prefix delta at
+  `threads/05-arithmetic-tail/reproduction-lemma4-binary-prefix-delta-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1652,6 +1659,9 @@ No such claim is formalisation-ready until both fields are filled.
   `Nietzsche the 5th` and xhigh Lean scout `McClintock the 5th`; final landed
   review pending at
   `threads/05-arithmetic-tail/review-htilde-interval-bounds-a5.md`;
+  Lemma 4 binary prefix delta checked by xhigh `Einstein the 5th`; final
+  landed review pending at
+  `threads/05-arithmetic-tail/review-lemma4-binary-prefix-delta-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
@@ -1670,6 +1680,8 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   same-coordinate `Htilde` interval bounds, interval value sets, and
   chain-bound count wrappers in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  binary prefix-delta bridge for the two-value increment hypothesis in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1763,6 +1775,13 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiHtildeUpperChain_twoValueCount`, which provide finite
   same-coordinate interval membership and conditional count wrappers without
   deriving arbitrary-vector two-valued increments.
+  Also proved `aoyagiLemma4IncrementPrefix`,
+  `aoyagiLemma4F_eq_pred_add_incrementPrefixDelta`,
+  `aoyagiLemma4F_twoValue_of_binaryIncrementPrefix`,
+  `aoyagiLemma4_twoValueCount_of_terminalH_binaryIncrementPrefix`, and
+  `aoyagiLemma4_twoValueCount_of_HtildeChainBounds_binaryIncrementPrefix`,
+  which turn supplied binary prefix deltas into the Lemma 4 two-value
+  increment hypothesis and count wrappers.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

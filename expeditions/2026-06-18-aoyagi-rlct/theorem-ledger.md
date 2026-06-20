@@ -78,6 +78,21 @@ hypotheses for Aoyagi's displayed extremal vectors, arbitrary-vector
 two-valued increments, vector admissibility, Lemma 5 chart-family/order count,
 pole order, normal crossings, or RLCT extraction.
 
+The Lemma 4 binary prefix-delta bridge has landed in
+`lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`.  It defines
+`aoyagiLemma4IncrementPrefix` as `D_j=P(j)-H_j-j*(M-1)`, proves
+`aoyagiLemma4F_eq_pred_add_incrementPrefixDelta`, and derives the two-value
+increment hypothesis and count wrappers from a supplied binary-delta
+hypothesis.  Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-lemma4-binary-prefix-delta-a5.md` and
+`threads/05-arithmetic-tail/statement-card-a5-lemma4-binary-prefix-delta.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma4-binary-prefix-delta-a5.md`.  This
+does not prove source exponent vectors imply binary prefix deltas,
+same-coordinate chain bounds imply binary prefix deltas, vector-coordinate
+correspondence, vector admissibility, Lemma 5 chart-family/order count, pole
+order, normal crossings, or RLCT extraction.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging
