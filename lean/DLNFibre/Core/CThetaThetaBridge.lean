@@ -29,9 +29,11 @@ The two sides have **equal cardinality** by `Finset.card_bij'`:
 Composing the count equality with `qipNumMinimisers_eq_cTheta` gives `numTop d 0 = cTheta d`.
 
 **Scope (name = content).** This is the **combinatorial** `θ`: a minimiser count of a ℤ-quadratic
-form over Kostant partitions. The geometric reading ("`θ` top-dimensional components of `Σ⁰`") rides
-on the deferred Voigt hypothesis, exactly as in `Core.CTheta` and the QIP tide; nothing here asserts
-it. The nonemptiness bridge `kostant_nonempty_iff_qipFeasible_nonempty` lets the two `Nonempty`
+form over Kostant partitions. The **aggregate** geometric reading ("`θ` top-dimensional GEOMETRIC
+components of `Σ⁰`") stays open per the `Core.CThetaGeometric` roadmap — it needs `Σ⁰`-as-variety,
+its orbit stratification, and a top-component count — and nothing here asserts it; the per-orbit
+codimension reading is PROVED in `Core.CThetaGeometric` (the discharged Voigt lemma). The
+nonemptiness bridge `kostant_nonempty_iff_qipFeasible_nonempty` lets the two `Nonempty`
 hypotheses pass between layers.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
@@ -139,8 +141,8 @@ theorem numTop_zero_card_eq_qipNumMinimisers (d : Fin (N + 1) → ℕ) (hd : Mon
 /-- **The paper's `θ` is the closed form (Thm 7.10, `r = 0`, Kostant layer).** For weakly-increasing
 `d`, the Kostant-side component count `numTop d 0` equals `θ = C(m, |δ|)` (`cTheta d`). Routes
 through the minimiser-count bridge `numTop_zero_card_eq_qipNumMinimisers` and the QIP-layer count
-`qipNumMinimisers_eq_cTheta`. The geometric reading rides on the deferred Voigt hypothesis (as
-upstream). -/
+`qipNumMinimisers_eq_cTheta`. The aggregate geometric reading (top components of `Σ⁰`) stays open
+per the `Core.CThetaGeometric` roadmap. -/
 theorem numTop_zero_eq_cTheta (d : Fin (N + 1) → ℕ) (hd : Monotone d)
     (hk : (kostantPartitions d 0).Nonempty) : numTop d 0 hk = cTheta d := by
   have hne : (qipFeasible d).Nonempty :=

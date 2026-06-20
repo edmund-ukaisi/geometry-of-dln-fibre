@@ -674,7 +674,7 @@ shared with A4) · (3) `Nat.card(RepCoord d) = finrank C¹ = ∑ d_{i+1}d_i`.
 `codimRepCanonical_orbitRankLocus_eq_multSum` unconditional) + the 3 gap-lemmas. Hardest = R2★ (rides A4.3).
 **Waiting on A4 background tide (2 obligations) before dispatching A6.**
 
-## 2026-06-21 — A4 Obligation 1 DISCHARGED; A4 down to ONE char-free residual
+## 2026-06-20 — A4 Obligation 1 DISCHARGED; A4 down to ONE char-free residual
 
 **A4 (route c) — Obligation 1 (`DiffIndepCriterion`) DISCHARGED** (commit 8d3a205, green/axiom-clean). The
 char-0 Kähler criterion proved via: base case `linearIndependent_D_X_fractionRing` (char-free;
@@ -696,7 +696,7 @@ unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`. Then A6.1 (intrins
 `dμ_e=δ⁰`) ⟹ `finrank(range δ⁰) ≤ varietyDim`. Then A6.2 (squeeze + additive L7) + 3 gap-lemmas (κ/k finrank,
 L4d Fintype-reindex, card=finrank C¹) ⟹ discharge hVoigt. **A4.3 dispatched (resume).**
 
-## 2026-06-21 — dμ_e=δ⁰ core LANDED; hA43_le = the matrix-Kähler nugget (decisive build dispatched)
+## 2026-06-20 — dμ_e=δ⁰ core LANDED; hA43_le = the matrix-Kähler nugget (decisive build dispatched)
 
 **`dμ_e = δ⁰` LANDED** `Core.OrbitDifferential.orbitAction_eps_eq_deformationδ` (dual-number form
 `(1+εφ_{i+1})·M_i·(1−εφ_i) = M_i + ε·(deformationδ M M φ)_i`, char-free, axiom-clean) + `one_add_eps_mul_one_sub_eps`
@@ -716,7 +716,7 @@ rank(δK) = finrank(range δ⁰) (`Module.finrank_baseChange`); cotangent dualit
 (intrinsic reverse R1–R6, R2★ consumes the landed `orbitAction_eps_eq_deformationδ`) ⟹ `≥`; A6.2 squeeze +
 additive L7 + 3 gap-lemmas (κ/k finrank, L4d Fintype-reindex, card=finrank C¹) ⟹ **hVoigt discharged**.
 
-## 2026-06-21 — matrix-Kähler GATE landed; hA43_le residual = mechanical assembly only
+## 2026-06-20 — matrix-Kähler GATE landed; hA43_le residual = mechanical assembly only
 
 **The matrix-Kähler nugget LANDED** `Core.MatrixKaehler`: `derivMatrix_inv_apply` (`D(U⁻¹)=−U⁻¹(DU)U⁻¹`
 entrywise, the irreducible gate) + `derivMatrix_mul_apply` (entrywise Leibniz) + `finrank_range_baseChange`
@@ -731,7 +731,7 @@ conjugation-preserves-K-span; (4) T2 adjoint half (SYMMETRIC to proved T1); (5) 
 (gate; T1 adjoint) are DONE. **Resume the tide to finish the assembly** (build-on-clean-state, decisive close).
 Then A4.4 unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`; then A6 (reverse + L7 + gaps) ⟹ hVoigt.
 
-## 2026-06-21 — hA UNBLOCKED (decorrelated Codex verified tactic); scaffold banked 0-sorry
+## 2026-06-20 — hA UNBLOCKED (decorrelated Codex verified tactic); scaffold banked 0-sorry
 
 **A4.3 scaffold banked 0-sorry** (commits c6513a8/d302f0e, green 3009 jobs): `deltaT` + `pair_deltaT_eq_pair_deformationδ`
 (adjoint, both halves), `traceEquiv` + `finrank_range_deltaT` (transpose-rank = finrank(range δ⁰)),
@@ -750,7 +750,7 @@ came from reaching for hB's collapse where none exists. Fix = two-sided normal-f
 (hsplit + hB + hA-via-Codex) + termA + finrank chain ⟹ close `hA43_le` ⟹ A4.4 + `varietyDim(Z_M) ≤
 finrank(range δ⁰)` UNCONDITIONAL. Then A6 (intrinsic reverse + L7 + gaps) ⟹ hVoigt.
 
-## 2026-06-21 — ★ A4 COMPLETE ★ varietyDim(Z_M) ≤ finrank(range δ⁰) UNCONDITIONAL
+## 2026-06-20 — ★ A4 COMPLETE ★ varietyDim(Z_M) ≤ finrank(range δ⁰) UNCONDITIONAL
 
 **A4 (route-c submersion bound) DONE** (commits fd1701a/1861593, green 3009 jobs, axiom-clean
 `[propext, Classical.choice, Quot.sound]`). `hA43_le` (`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`)
@@ -769,7 +769,7 @@ route) + A6.2 squeeze (A4 ≤ + A6.1 ≥ ⟹ `varietyDim = finrank(range δ⁰)`
 (κ/k finrank, L4d Fintype-reindex, card=finrank C¹) ⟹ **discharge hVoigt** (`codimRepCanonical_orbitRankLocus_eq_multSum`
 with NO hVoigt hyp). `[CharZero k] [IsAlgClosed k]`.
 
-## 2026-06-21 — ★★ hVoigt DISCHARGED ★★ (green/axiom-clean) — fidelity+bedrock AUDIT before operator signal
+## 2026-06-20 — ★★ hVoigt DISCHARGED ★★ (green/axiom-clean) — fidelity+bedrock AUDIT before operator signal
 
 **A6 CAPSTONE LANDED** (commits 7028752/83fd865/54955f0, green 3011 jobs, 0-sorry, axiom-clean
 `[propext, Classical.choice, Quot.sound]`):
@@ -787,7 +787,7 @@ audits — (R) fidelity: Lean faithfully encodes Voigt's lemma + whole chain sou
 (H) hardener bedrock/precision: name=content (codim NOT rlct), non-vacuity, honest hypotheses/CharZero caveat,
 no overclaim. On PASS → delete cron, stand seats down, signal operator for close PR. On findings → address first.
 
-## 2026-06-21 — ★★★ EXPEDITION COMPLETE — hVoigt DISCHARGED, AUDITED, POLISHED ★★★
+## 2026-06-20 — ★★★ EXPEDITION COMPLETE — hVoigt DISCHARGED, AUDITED, POLISHED ★★★
 
 **GOAL ACHIEVED.** `hVoigt` is proved (no longer assumed); the whole DLNFibre library is green (3011 jobs),
 0-sorry, axiom-clean `[propext, Classical.choice, Quot.sound]`. HEAD = 1096c68.
@@ -824,7 +824,7 @@ no overclaim. On PASS → delete cron, stand seats down, signal operator for clo
 
 **Cron f8231d70 deleted. Seats at rest. Signalling operator for the close PR (operator-gated).**
 
-## 2026-06-21 — geometric reading WIRED + PR opened
+## 2026-06-20 — geometric reading WIRED + PR opened
 
 **hVoigt wired through** (`Core.CThetaGeometric`, thread 43, reviewer PASS, green 3012 jobs, axiom-clean):
 the geometric reading of the combinatorial `(C,θ)` — previously a docstring deferral — is now FORMAL +

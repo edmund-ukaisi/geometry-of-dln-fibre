@@ -8,9 +8,9 @@ Route-c chain (from thread 30):
 
 > `varietyDim(Z_M) = ringKrullDim(image μ_M^*) = trdeg(image) ≤ finrank(range δ⁰)`.
 
-Every PRESENT row below compiles in `lean/DLNFibre/Scratch/{KahlerTrdegProbe,RingKrullTrdegProbe}.lean`
-(scratch only, not in the library aggregator). Every ABSENT row was checked by exhaustive grep over
-`Mathlib/`.
+Every PRESENT row below was checked against the recon probes `probes/{KahlerTrdegProbe,RingKrullTrdegProbe}.lean`
+in this thread dir (recon scratch — `#check`s against the Mathlib + `Core.PolynomialDimension` API; never in
+the library aggregator). Every ABSENT row was checked by exhaustive grep over `Mathlib/`.
 
 ---
 
@@ -194,8 +194,8 @@ A0 are char-free apart from the `IsAlgClosed` the L1/L6.4 bricks force). It ente
 
 ---
 
-## Scratch artefacts (not in the aggregator)
-- `lean/DLNFibre/Scratch/KahlerTrdegProbe.lean` — compiles the PRESENT §2/§3/§5 rows (`#check`s).
-- `lean/DLNFibre/Scratch/RingKrullTrdegProbe.lean` — compiles the trdeg-bridge pieces for A4.1.
+## Recon probes (not in the aggregator)
+- `probes/KahlerTrdegProbe.lean` — `#check`s the PRESENT §2/§3/§5 rows against the Mathlib API.
+- `probes/RingKrullTrdegProbe.lean` — `#check`s the trdeg-bridge pieces for A4.1 (imports `Core.PolynomialDimension`).
 - `threads/33-A1-kahler-trdeg-api/codex/route-c-sizing-{prompt,answer}.md` — decorrelated Codex
   sizing (independently lands "route-c, 4 remaining modules"; supplied the `t↦t²` red-team caveat).

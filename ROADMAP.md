@@ -75,9 +75,12 @@ $(2,2,2)\!\to\!(3,1)$, Ex 6.3 $\to\!(55,4)$, matching the paper. All axiom-clean
 **Remaining in Bundle 1 (future):** **permutation invariance (Cor 5.10) — a genuine lift, NOT free.**
 `cValue`/`cTheta` read $\underline d$ through order-sensitive prefix sums and the closed form requires
 `Monotone d`; relating $\underline d$ to its sorted form needs either a sort-normalisation bridge or the
-paper's **Poincaré-series route (Bundle 3)**. Also the §4 fibre-codim reduction (Lemma 4.6). The geometric
-reading "$C=\operatorname{codim}\Sigma^r$" rides on `hVoigt` (Bundle 2); the combinatorial $(C,\theta)$ does
-not.
+paper's **Poincaré-series route (Bundle 3)**. Also the §4 fibre-codim reduction (Lemma 4.6). The
+**per-orbit** geometric reading (`codimForm` = geometric codimension of the orbit closure $\bar O_M$) is now
+**Proved** (Bundle 2 / expedition `voigt-discharge`); the **aggregate** reading
+"$C=\operatorname{codim}\Sigma^r$" (over the whole rank-$r$ locus $\Sigma^r$) stays open — it needs
+$\Sigma^r$-as-variety and its orbit stratification, not `hVoigt`. The combinatorial $(C,\theta)$ does not
+depend on either.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
@@ -97,13 +100,23 @@ $\dim\operatorname{Ext}^1(M,M)=\sum_{1\le i\le u\le j\le v\le N} m_{i-1,j-1}m_{u
 2-term deformation/Ringel complex (`Core.DeformationExt`); the tangent codimension
 $\operatorname{orbitLinearCodim}=\dim\operatorname{Ext}^1$ **Proved** (`Core.OrbitLinearCodim`); and the
 geometric codimension $\operatorname{codim}(\operatorname{orbitRankLocus} M)=\sum m_{i-1,j-1}m_{uv}$
-**Proved modulo one named hypothesis `hVoigt`** (Voigt's lemma) (`Core.OrbitCodim`).
-**Remaining (future): the `voigt` discharge** — an AG dimension-theory library (affine-variety codimension
-via `Ideal.height`; orbit smoothness; $\dim\mathcal O=\dim G-\dim\operatorname{Aut}$, i.e. tangent =
-$\operatorname{im}\delta$) that proves `hVoigt` to full unconditional bedrock. Mathlib has no algebraic
-groups / variety dimension / catenary; this is a **multi-expedition sub-build**, a drop-in against the
-`Core.OrbitCodim` interface (nothing rebuilt). The orbit-closure order (Thm 3.8) is **Cited** there
-(orbitRankLocus = orbit closure; engine-verifiable, numerically checked on $(2,2,2)$).
+stated **conditional on one named hypothesis `hVoigt`** (Voigt's lemma) (`Core.OrbitCodim`) — at that
+expedition's close `hVoigt` was the sole remaining input; it is now discharged (see below).
+**Landed (expedition `voigt-discharge`, reviewed + bedrock; an AG dimension-theory library built from scratch
+— affine-variety codimension via `Ideal.height`; orbit smoothness; $\dim\mathcal O=\dim G-\dim\operatorname{Aut}$,
+i.e. tangent $=\operatorname{im}\delta$):** `hVoigt` is **Proved** unconditionally
+(`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[IsAlgClosed k] [CharZero k]`) — the A4
+submersion bound and the A6.1 reverse inequality squeeze to $\operatorname{varietyDim}\bar O_M=\operatorname{finrank}(\operatorname{range}\delta^0)$,
+and the additive L7 cancellation yields Voigt's lemma — so `Core.OrbitCodim`'s conditional geometric headline
+becomes **unconditional** (`codimRepCanonical_orbitRankLocus_eq_multSum_unconditional`). The orbit-closure
+order (**Thm 3.8**, $\operatorname{orbitRankLocus} M=\bar O_M$) is **Proved in-engine**
+(`Core.OrbitClosure.vanishingIdeal_orbitRankLocus_eq_orbitSet`, the Abeasis–Del Fra theorem at the
+ideal/closure level). The **per-orbit** geometric reading (combinatorial codimension form $=$ geometric
+orbit-closure codimension) is then **Proved** (`Core.CThetaGeometric.codimRepCanonical_orbitRankLocus_eq_codimForm`,
+and `cCodim_eq_inf_geomCodim`: $C=\min$ over Kostant partitions of the genuine geometric codim).
+**Remaining (future): the $\Sigma^r$-aggregate reading** — `numTop` as the number of top-dimensional
+**geometric** components of the *whole* rank-$r$ locus $\Sigma^r$ — needs a geometric definition of $\Sigma^r$,
+its orbit stratification, and a component-count, none of which depend on `hVoigt`.
 
 ### Bundle 3 — the topology  ·  `DLNFibre.Core` (Poincaré)
 **Plainly.** The Poincaré series in equivariant cohomology (Thm 5.5) and the permutation invariance it yields

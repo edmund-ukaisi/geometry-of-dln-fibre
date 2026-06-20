@@ -224,27 +224,27 @@ exec
 ../codex/arch-prompt.md:69:5. Any THIRD route I'm missing that gets `varietyDim = finrank(range delta)` more cheaply (e.g. an
 ../codex/arch-prompt.md:70:   orbit-map fibre-dimension / `dim O = dim G - dim Stab` argument, or computing `ringKrullDim(R/I)` directly
 
-web search: 
+web search:
 web search: site:leanprover-community.github.io/mathlib4_docs "IsRegularLocalRing.iff_finrank_cotangentSpace"
-web search: 
+web search:
 web search: github mathlib4 IsRegularLocalRing.iff_finrank_cotangentSpace
-web search: 
+web search:
 web search: "IsRegularLocalRing.iff_finrank_cotangentSpace"
-web search: 
+web search:
 web search: Mathlib IsLocalRing CotangentSpace Lean
-web search: 
+web search:
 web search: https://github.com/leanprover-community/mathlib4/search?q=IsRegularLocalRing.iff_finrank_cotangentSpace&type=code
-web search: 
+web search:
 web search: https://leanprover-community.github.io/mathlib4_docs/find/?pattern=IsRegularLocalRing.iff_finrank_cotangentSpace
-web search: 
+web search:
 web search: leanprover-community mathlib4_docs find pattern IsRegularLocalRing.iff_finrank_cotangentSpace
-web search: 
+web search:
 web search: https://leanprover-community.github.io/mathlib4_docs/
-web search: 
+web search:
 web search: https://leanprover-community.github.io/mathlib4_docs/
-web search: 
+web search:
 web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0/Mathlib
-web search: 
+web search:
 web search: leanprover-community mathlib4 v4.29.0 Mathlib AlgebraicGeometry SmoothLocus
 codex
 1. **A avoids the new scheme-to-`ringKrullDim` dimension bridge.**

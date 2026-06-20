@@ -9,7 +9,7 @@
 both sides have dimensions `1,2,1` across the regions `[a,c)`, `[c,b]`, `(b,e]`.
 
 3. **Left association.** Faithful, but with a Lean-level caution. Mathematically,
-`(M_[a,e] ⊕ M_[c,b]) ⊕ rest` is the same direct sum as the unparenthesized upstairs object, up to canonical block reindexing/base change. So this does not understate or misstate the informal orbit-closure claim.  
+`(M_[a,e] ⊕ M_[c,b]) ⊕ rest` is the same direct sum as the unparenthesized upstairs object, up to canonical block reindexing/base change. So this does not understate or misstate the informal orbit-closure claim.
 The caution is that in raw Lean this is not definitionally the same as the right-nested
 `intervalDirectSum ((a,e)::(c,b)::rest)`: the ambient dimension expression and `Fin` block indices differ. Thus the theorem names the left-associated orbit literally. Any later use requiring the right-nested list orbit needs an explicit associativity/reindexing/orbit-equivalence bridge.
 
@@ -17,7 +17,7 @@ The caution is that in raw Lean this is not definitionally the same as the right
 `canonicalCoord downstairs ∈ zeroLocus(vanishingIdeal(orbitSet upstairs))`. This is the `k`-point Zariski closure of the orbit point-set, in the polynomial-zero-set sense. It does not claim rank-locus equality, fibre equality, or Theorem 3.8 as a global closure/rank-locus statement.
 
 5. **Crossing-rank indicator.** The boolean is correct:
-`j ≤ e ∧ ((λ ≠ 0 ∧ a ≤ i) ∨ c ≤ i)`.  
+`j ≤ e ∧ ((λ ≠ 0 ∧ a ≤ i) ∨ c ≤ i)`.
 In the crossing regime, the short target is dead past `b`, so there is at most one live target row, namely the long strand, and only if `j ≤ e`. The source reaches the recombination row through the short strand iff `c ≤ i`, with entry `1`; through the long strand iff `a ≤ i`, with entry `λ`.
 
 At `λ ≠ 0`, the condition becomes

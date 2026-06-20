@@ -258,10 +258,10 @@ lean/DLNFibre/Core/PolynomialCurveLimit.lean
 ./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:25:- `ringKrullDim_mvPolynomial_fin_field k n : ringKrullDim (MvPolynomial (Fin n) k) = (n:WithBot ℕ∞)`
 ./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:27:- `ringKrullDim_quotient_eq_coheight (p : PrimeSpectrum R) : ringKrullDim (R ⧸ p.asIdeal) = (coheight p : WithBot ℕ∞)`
 ./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:52:3. **The induction invariant.** Codex (prior thread) suggested inducting on `m` with invariant `∀ p prime, ∀ s ≤ m, dim(R/p) = s → (m - s : ℕ∞) ≤ p.height`. But `dim(R/p)` is `WithBot ℕ∞` and `height` is `ℕ∞`; subtraction in `ℕ∞` truncates. Is it cleaner to state the invariant as `(n : ℕ∞) ≤ p.height + dim(R/p)` (no subtraction, with dim coerced to ℕ∞ — but dim is WithBot ℕ∞)? What's the cleanest target type to avoid WithBot/ℕ∞/ℕ coercion hell? Note dim(R/p) is finite (= coheight, ≤ n) so it's `(c : ℕ)` for some c; the equality I ultimately want is in `WithBot ℕ∞`.
-./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:77:- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.  
-./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:90:- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.  
-./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:119:- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.  
-./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:132:- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.  
+./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:77:- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.
+./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:90:- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.
+./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:119:- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.
+./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/route-answer.md:132:- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.
 ./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/fidelity-review-prompt.md:14:  (p.height : WithBot ℕ∞) + ringKrullDim (R ⧸ p) = (n : WithBot ℕ∞).
 ./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/fidelity-review-prompt.md:29:   height + dim = n with no hidden vacuity in WithBot ℕ∞ arithmetic?
 ./expeditions/2026-06-18-voigt-discharge/threads/05-L5-noether-monic/codex/fidelity-review-prompt.md:30:   (In WithBot ℕ∞: ⊥ + x = ⊥, ⊤ absorbs +.) Could it be trivially/vacuously
@@ -506,7 +506,7 @@ lean/DLNFibre/Core/PolynomialCurveLimit.lean
 ./expeditions/2026-06-18-voigt-discharge/threads/09-L4d-affine-domain-dim/codex/route-prompt.md:14:       for a prime point p of Spec R',  ringKrullDim (R' ⧸ p.asIdeal) = (coheight p : WithBot ℕ∞).
 ./expeditions/2026-06-18-voigt-discharge/threads/09-L4d-affine-domain-dim/codex/route-prompt.md:27:       (Ideal.height p : WithBot ℕ∞) + ringKrullDim (A ⧸ p) = ringKrullDim A.
 ./expeditions/2026-06-18-voigt-discharge/threads/09-L4d-affine-domain-dim/codex/route-prompt.md:46:KEY ADDITIVE REFRAMING I intend to use (please verify it is valid and lossless in WithBot ℕ∞ /
-./expeditions/2026-06-18-voigt-discharge/threads/09-L4d-affine-domain-dim/codex/audit-answer.md:4:Using `WithBot ℕ∞` with ordinary addition is appropriate; since affine `k`-algebras are Noetherian of finite Krull dimension, this should not be a vacuous `⊤ = ⊤`.  
+./expeditions/2026-06-18-voigt-discharge/threads/09-L4d-affine-domain-dim/codex/audit-answer.md:4:Using `WithBot ℕ∞` with ordinary addition is appropriate; since affine `k`-algebras are Noetherian of finite Krull dimension, this should not be a vacuous `⊤ = ⊤`.
 ./expeditions/2026-06-18-voigt-discharge/threads/10-L4a-recon/codex/route-answer.md:41:   `(p.height : WithBot ℕ∞) = n`.
 ./expeditions/2026-06-18-voigt-discharge/threads/10-L4a-recon/codex/route-answer.md:57:ringKrullDim (Localization.AtPrime m) = (n : WithBot ℕ∞)
 ./expeditions/2026-06-18-voigt-discharge/threads/09-L4d-affine-domain-dim/codex/audit-prompt.md:10:p of A, we have  height(p) + dim(A/p) = dim(A)  (Krull dimensions, with the arithmetic in WithBot ℕ∞,
@@ -811,14 +811,14 @@ Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • br
  succeeded in 138ms:
    380	/-- Abbreviation: the universal `k`-derivation into `Ω[K⁄k]`, `K = FractionRing (groupRing d)`. -/
    381	local notation "Dk" => KaehlerDifferential.D k (FractionRing (groupRing (k := k) d))
-   382	
+   382
    383	/-- The Ω-valued **Maurer–Cartan** matrix `Θ_v = V_v⁻¹ · D(V_v)` at vertex `v` (entrywise:
    384	`Θ_{v,p,q} = Σ_c (genUnitInvK_v)_{pc} • D((genUnitK_v)_{cq})`). The infinitesimal generator the
    385	generic Jacobian factors through. -/
    386	private noncomputable def mcΘ (M : Tuple (k := k) d) (v : Fin (N + 1)) :
    387	    Matrix (Fin (d v)) (Fin (d v)) (KaehlerDifferential k (FractionRing (groupRing (k := k) d))) :=
    388	  fun p q => ∑ c, (genUnitInvK M v) p c • Dk ((genUnitK M v) c q)
-   389	
+   389
    390	/-- **The gate expansion of `D(f_x)`.** Applying the matrix-Kähler gate (`derivMatrix_mul_apply` once
    391	on the outer product, `derivMatrix_inv_apply` for `D(V₁⁻¹)`, and `D(genFactorK) = 0`):
    392	`D((V₂ F V₁⁻¹)_{st}) = (Σ_w (V₂F)_{sw} • D(V₁⁻¹)_{wt}) + (Σ_w (V₁⁻¹)_{wt} • Σ_a F_{aw} • D(V₂)_{sa})`. -/
@@ -840,7 +840,7 @@ Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • br
    408	    congr 1
    409	    refine Finset.sum_congr rfl fun a _ => ?_
    410	    rw [D_genFactorK M i a w, smul_zero, zero_add]
-   411	
+   411
    412	/-- **Left-collapse.** `Σ_a (V_v)_{sa} • Θ_{v,a,u} = D((V_v)_{su})`: left-multiplying the Maurer–Cartan
    413	`Θ_v = V_v⁻¹ DV_v` by `V_v` recovers `D V_v` (uses `genUnitK_mul_inv`, `V_v V_v⁻¹ = 1`). -/
    414	private theorem genUnitK_smul_mcΘ (M : Tuple (k := k) d) (v : Fin (N + 1)) (s u : Fin (d v)) :
@@ -854,7 +854,7 @@ Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • br
    422	  · rw [Matrix.one_apply_eq, one_smul]
    423	  · exact fun b _ hb => by rw [Matrix.one_apply_ne (Ne.symm hb), zero_smul]
    424	  · exact fun h => absurd (Finset.mem_univ _) h
-   425	
+   425
    426	/-- **Right-collapse.** `Σ_b Θ_{v,p,b} • (V_v)_{bq}`-style: `Σ_e (V_v⁻¹)_{be} D(V_v)_{e?}`… the right
    427	analogue used for the `M Θ_cast` term. Specifically `Σ_b (V_v⁻¹)_{wb} • (Σ_a (V_v)_{ba} • x a) = x w`
    428	is the matrix-inverse collapse, here packaged as: left-multiplying `Σ_a (V_v)_{ba} • x a` by `V_v⁻¹`
@@ -871,20 +871,20 @@ Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • br
    439	  · rw [Matrix.one_apply_eq, one_smul]
    440	  · exact fun b _ hb => by rw [Matrix.one_apply_ne (Ne.symm hb), zero_smul]
    441	  · exact fun h => absurd (Finset.mem_univ _) h
-   442	
+   442
    443	/-- `genFactorK M i a w = algebraMap k K (M i a w)` (the constant `M`-entry over `K`). -/
    444	private theorem genFactorK_apply (M : Tuple (k := k) d) (i : Fin N)
    445	    (a : Fin (d i.succ)) (w : Fin (d i.castSucc)) :
    446	    (genFactorK M i) a w = algebraMap k (FractionRing (groupRing (k := k) d)) (M i a w) := by
    447	  rw [genFactorK, Matrix.map_apply, genericFactor, Matrix.map_apply,
    448	    ← IsScalarTower.algebraMap_apply k (groupRing (k := k) d) (FractionRing _)]
-   449	
+   449
    450	/-- **TermA of the conjugation identity (the inverse / `D(V₁⁻¹)`-side bracket half).** The gate's
    451	`D(V₁⁻¹) = −V₁⁻¹ (DV₁) V₁⁻¹` group equals `−` the `M Θ_cast` half of the conjugated Maurer–Cartan
    452	bracket. Both sides normalise to `− Σ_c Σ_e (Σ_w (V₂M)_{sw} V₁⁻¹_{wc}) • V₁⁻¹_{et} • D(V₁_{ce})`; the
    453	RHS routes through `mcΘ M i.castSucc` (its own `V₁⁻¹_{uc}` factor) and `Σ_u M_{au}` reindexes against
    454	`(V₂M)_{sw} = Σ_a V₂_{sa} M_{aw}`. The mirror of the (proved) direct-side `hB` in `D_orbit_conj`.
-   455	
+   455
    456	ISOLATED `sorry` (the sole one in this module): the inverse-side `Finset`-sum reindex over `(w,c,e)`
    457	plus the `mcΘ`-expansion does not collapse via the same `Finset.sum_comm`/`smul_comm` script that
    458	closes the direct side — the four-index bookkeeping (the bound `c,e` of `D(V₁_{ce})` get reordered by
@@ -1191,7 +1191,7 @@ exec
    506	    refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_
    507	    rw [Matrix.mul_apply, smul_comm (W₁ b t)]]
    508	  rfl
-   509	
+   509
    510	set_option maxHeartbeats 1000000 in
    511	/-- **The conjugation identity (step 2).** `D(f_x)` is the `(s,t)` entry of the conjugated
    512	Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M)_{i,a,b}`, where
@@ -1369,14 +1369,14 @@ exec
  succeeded in 0ms:
    440	  · exact fun b _ hb => by rw [Matrix.one_apply_ne (Ne.symm hb), zero_smul]
    441	  · exact fun h => absurd (Finset.mem_univ _) h
-   442	
+   442
    443	/-- `genFactorK M i a w = algebraMap k K (M i a w)` (the constant `M`-entry over `K`). -/
    444	private theorem genFactorK_apply (M : Tuple (k := k) d) (i : Fin N)
    445	    (a : Fin (d i.succ)) (w : Fin (d i.castSucc)) :
    446	    (genFactorK M i) a w = algebraMap k (FractionRing (groupRing (k := k) d)) (M i a w) := by
    447	  rw [genFactorK, Matrix.map_apply, genericFactor, Matrix.map_apply,
    448	    ← IsScalarTower.algebraMap_apply k (groupRing (k := k) d) (FractionRing _)]
-   449	
+   449
    450	/-- **TermA of the conjugation identity (the inverse / `D(V₁⁻¹)`-side bracket half).** The gate's
    451	`D(V₁⁻¹) = −V₁⁻¹ (DV₁) V₁⁻¹` group equals `−` the `M Θ_cast` half of the conjugated Maurer–Cartan
    452	bracket. Both sides normalise to `− Σ_w Σ_c Σ_e (V₂F)_{sw} • (V₁⁻¹_{wc} • (V₁⁻¹_{et} • D(V₁_{ce})))`:
@@ -1429,7 +1429,7 @@ exec
    499	    refine Finset.sum_congr rfl fun e _ => ?_
    500	    rw [Matrix.mul_apply, smul_comm (W₁ e t) (W₁ w c)]]
    501	  rfl
-   502	
+   502
    503	set_option maxHeartbeats 1000000 in
    504	/-- **The conjugation identity (step 2).** `D(f_x)` is the `(s,t)` entry of the conjugated
    505	Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M)_{i,a,b}`, where
@@ -1461,8 +1461,8 @@ codex
 The script is logically complete under a higher heartbeat; the last `rfl` is unnecessary because the final `rw [show ...]` already closes the goal. I’m checking whether removing that dead final step also brings it under the default heartbeat.
 exec
 /bin/bash -lc "awk 'NR==463 {print \"  classical\"; print \"  set V₂ := genUnitK M i.succ with hV₂\"; print \"  set W₁ := genUnitInvK M i.castSucc with hW₁\"; print \"  set V₁ := genUnitK M i.castSucc with hV₁\"; print \"  have hLHS : (∑ w, (V₂ * genFactorK M i) s w •\"; print \"        (- ∑ c, ∑ e, W₁ w c • W₁ e t • Dk (V₁ c e)))\"; print \"      = - ∑ w, ∑ c, ∑ e, (V₂ * genFactorK M i) s w • (W₁ w c • (W₁ e t • Dk (V₁ c e))) := by\"; print \"    simp only [smul_neg, Finset.smul_sum]\"; print \"    rw [Finset.sum_neg_distrib]\"; print \"  rw [hLHS]\"; print \"  refine congrArg Neg.neg ?_\"; print \"  rw [show (∑ a, ∑ b, (V₂ s a * W₁ b t) • (∑ u, (M i a u) • mcΘ M i.castSucc u b))\"; print \"      = ∑ b, ∑ u, ∑ c, (∑ a, V₂ s a * genFactorK M i a u) • (W₁ b t • (W₁ u c • Dk (V₁ c b))) from by\"; print \"    rw [Finset.sum_comm]\"; print \"    refine Finset.sum_congr rfl fun b _ => ?_\"; print \"    rw [show (∑ a, (V₂ s a * W₁ b t) • (∑ u, (M i a u) • mcΘ M i.castSucc u b))\"; print \"        = ∑ a, ∑ u, ∑ c, (V₂ s a * genFactorK M i a u) • (W₁ b t • (W₁ u c • Dk (V₁ c b))) from by\"; print \"      refine Finset.sum_congr rfl fun a _ => ?_\"; print \"      rw [Finset.smul_sum]\"; print \"      refine Finset.sum_congr rfl fun u _ => ?_\"; print \"      rw [mcΘ, ← hW₁, ← hV₁, Finset.smul_sum, Finset.smul_sum]\"; print \"      refine Finset.sum_congr rfl fun c _ => ?_\"; print \"      rw [genFactorK_apply, ← algebraMap_smul (FractionRing (groupRing (k := k) d)) (M i a u)]\"; print \"      simp only [smul_smul]\"; print \"      conv_lhs => rw [mul_mul_mul_comm]]\"; print \"    rw [Finset.sum_comm]\"; print \"    refine Finset.sum_congr rfl fun u _ => ?_\"; print \"    rw [Finset.sum_comm]\"; print \"    refine Finset.sum_congr rfl fun c _ => ?_\"; print \"    rw [← Finset.sum_smul]]\"; print \"  rw [show (∑ b, ∑ u, ∑ c, (∑ a, V₂ s a * genFactorK M i a u) • (W₁ b t • (W₁ u c • Dk (V₁ c b))))\"; print \"      = ∑ w, ∑ c, ∑ e, (V₂ * genFactorK M i) s w • (W₁ w c • (W₁ e t • Dk (V₁ c e))) from by\"; print \"    rw [Finset.sum_comm]\"; print \"    refine Finset.sum_congr rfl fun w _ => ?_\"; print \"    rw [Finset.sum_comm]\"; print \"    refine Finset.sum_congr rfl fun c _ => ?_\"; print \"    refine Finset.sum_congr rfl fun e _ => ?_\"; print \"    rw [Matrix.mul_apply, smul_comm (W₁ e t) (W₁ w c)]]\"; skip=1; next} NR==510 {skip=0} "'!skip {print}'"' DLNFibre/Core/OrbitDifferentialRank.lean | lake env lean --stdin" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/lean
-web search: 
-web search: 
+web search:
+web search:
 codex
 The default-heartbeat check is still running, so removing `rfl` was not enough by itself. I’m going to let this one finish, then I’ll either simplify the proof structure or report the heartbeat risk explicitly.
  exited 1 in 111843ms:
@@ -1602,7 +1602,7 @@ exec
    519	    rw [genFactorK_apply, ← algebraMap_smul (FractionRing (groupRing (k := k) d)) (M i u w),
    520	      smul_comm]
    521	  rw [hsplit, sub_eq_add_neg, ← hB, ← D_orbit_conj_termA M i s t, add_comm]
-   522	
+   522
    523	end DLNFibre.Core
 
 exec
@@ -1641,7 +1641,7 @@ exec
    453	the RHS flattens `mcΘ M i.castSucc` (its own `V₁⁻¹_{uc}` factor), the `M_{au}` k-scalar folds into
    454	`genFactorK` (`algebraMap_smul`), and `Σ_a V₂_{sa} genFactorK_{au} = (V₂ * genFactorK)_{su}`
    455	(`Matrix.mul_apply`). The mirror of the direct-side `hB` in `D_orbit_conj`.
-   456	
+   456
    457	ISOLATED `sorry` (the sole one in this module). The four-index (`a,b,u,c`) `Finset`-sum reindex +
    458	`mcΘ`/`genFactorK` scalar normalisation is mathematically routine (each piece — `algebraMap_smul`
    459	for the `M_{au}` k→K bridge, the `Σ_a` collapse via `Matrix.mul_apply`, the `Finset.sum_comm`
@@ -1661,7 +1661,7 @@ exec
    473	      = - ∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
    474	          (∑ u, (M i a u) • mcΘ M i.castSucc u b) := by
    475	  sorry
-   476	
+   476
    477	set_option maxHeartbeats 1000000 in
    478	/-- **The conjugation identity (step 2).** `D(f_x)` is the `(s,t)` entry of the conjugated
    479	Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M)_{i,a,b}`, where
@@ -1734,7 +1734,7 @@ Note: This linter can be disabled with `set_option linter.unusedVariables false`
 Possible interpretations:
   Matrix.mul_smul : ∀ (M : Matrix ?m.121 ?m.122 ?m.124) (a : ?m.123) (N : Matrix ?m.122 ?m.120 ?m.124),
     M * a • N = a • (M * N)
-  
+
   SemigroupAction.mul_smul : ∀ (x y : ?m.120) (b : ?m.121), (x * y) • b = x • y • b
 <stdin>:584:19: error: unsolved goals
 k : Type u
@@ -1756,7 +1756,7 @@ Hint: Type class instance resolution failures can be inspected with the `set_opt
   id
 Possible interpretations:
   _root_.id : Fin (d i.succ) → Fin (d i.succ)
-  
+
   ⇑LinearMap.id : Fin (d i.succ) → Fin (d i.succ)
 <stdin>:591:86: error(lean.synthInstanceFailed): failed to synthesize instance of type class
   AddCommMonoid (Fin (d i.castSucc))
@@ -1766,7 +1766,7 @@ Hint: Type class instance resolution failures can be inspected with the `set_opt
   id
 Possible interpretations:
   _root_.id : Fin (d i.castSucc) → Fin (d i.castSucc)
-  
+
   ⇑LinearMap.id : Fin (d i.castSucc) → Fin (d i.castSucc)
 <stdin>:599:8: warning: declaration uses `sorry`
 
@@ -1780,7 +1780,7 @@ exec
    453	the RHS flattens `mcΘ M i.castSucc` (its own `V₁⁻¹_{uc}` factor), the `M_{au}` k-scalar folds into
    454	`genFactorK` (`algebraMap_smul`), and `Σ_a V₂_{sa} genFactorK_{au} = (V₂ * genFactorK)_{su}`
    455	(`Matrix.mul_apply`). The mirror of the direct-side `hB` in `D_orbit_conj`.
-   456	
+   456
    457	ISOLATED `sorry` (the sole one in this module). The four-index (`a,b,u,c`) `Finset`-sum reindex +
    458	`mcΘ`/`genFactorK` scalar normalisation is mathematically routine (each piece — `algebraMap_smul`
    459	for the `M_{au}` k→K bridge, the `Σ_a` collapse via `Matrix.mul_apply`, the `Finset.sum_comm`
@@ -1800,7 +1800,7 @@ exec
    473	      = - ∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
    474	          (∑ u, (M i a u) • mcΘ M i.castSucc u b) := by
    475	  sorry
-   476	
+   476
    477	set_option maxHeartbeats 1000000 in
    478	/-- **The conjugation identity (step 2).** `D(f_x)` is the `(s,t)` entry of the conjugated
    479	Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M)_{i,a,b}`, where
@@ -1854,7 +1854,7 @@ exec
    527	    rw [genFactorK_apply, ← algebraMap_smul (FractionRing (groupRing (k := k) d)) (M i u w),
    528	      smul_comm]
    529	  rw [hsplit, sub_eq_add_neg, ← hB, ← D_orbit_conj_termA M i s t, add_comm]
-   530	
+   530
    531	end DLNFibre.Core
 
 codex

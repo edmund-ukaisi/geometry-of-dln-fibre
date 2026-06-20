@@ -460,11 +460,11 @@ case 4 (1, 3, 3, 3, 1) #m 165 pairs 35 fails 1
 case 5 (1, 2, 3, 3, 2, 1) #m 522 pairs 6 fails 1
  ex (5, (1, 2, 3, 3, 2, 1), {(0, 5): 1, (1, 4): 1, (2, 3): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 1, (0, 4): 1, (0, 5): 1, (1, 1): 2, (1, 2): 2, (1, 3): 1, (1, 4): 1, (1, 5): 1, (2, 2): 3, (2, 3): 2, (2, 4): 2, (2, 5): 1, (3, 3): 3, (3, 4): 2, (3, 5): 1, (4, 4): 2, (4, 5): 1, (5, 5): 1}, 1, 4, None)
 
-web search: 
+web search:
 web search: Abeasis Del Fra degeneration order quiver type A cover classification lace diagrams box moves
-web search: 
+web search:
 web search: multisegments degeneration order elementary box moves Zelevinsky rank order
-web search: 
+web search:
 web search: Zelevinsky multisegment partial order elementary operations linked segments rank matrix proof
 codex
 **Verdict**
@@ -486,8 +486,8 @@ Conversely, the usual “choose maximal `u` with `s <= u < r`” argument derive
 A natural direct rule is:
 
 1. Let `g = r - s`.
-2. Choose the north-east defect corner  
-   `a = min { i | exists j, g(i,j) > 0 }`,  
+2. Choose the north-east defect corner
+   `a = min { i | exists j, g(i,j) > 0 }`,
    `e = max { j | g(a,j) > 0 }`.
 3. Then
    `m_r(a,e) - m_s(a,e) = g(a,e) > 0`,
@@ -526,7 +526,7 @@ Its drop rectangle is `D = {(0,3)}`, so `D subset supp(g)`, and the result is ex
 
 **Status**
 
-Proven: the descent lemma is equivalent in strength to rank-cover classification.  
+Proven: the descent lemma is equivalent in strength to rank-cover classification.
 Heuristic only: the north-east-corner finite search is a good constructive implementation strategy. Its total-correctness proof is not a lightweight substitute for cover classification.
 tokens used
 50,347
@@ -549,8 +549,8 @@ Conversely, the usual “choose maximal `u` with `s <= u < r`” argument derive
 A natural direct rule is:
 
 1. Let `g = r - s`.
-2. Choose the north-east defect corner  
-   `a = min { i | exists j, g(i,j) > 0 }`,  
+2. Choose the north-east defect corner
+   `a = min { i | exists j, g(i,j) > 0 }`,
    `e = max { j | g(a,j) > 0 }`.
 3. Then
    `m_r(a,e) - m_s(a,e) = g(a,e) > 0`,
@@ -589,5 +589,5 @@ Its drop rectangle is `D = {(0,3)}`, so `D subset supp(g)`, and the result is ex
 
 **Status**
 
-Proven: the descent lemma is equivalent in strength to rank-cover classification.  
+Proven: the descent lemma is equivalent in strength to rank-cover classification.
 Heuristic only: the north-east-corner finite search is a good constructive implementation strategy. Its total-correctness proof is not a lightweight substitute for cover classification.

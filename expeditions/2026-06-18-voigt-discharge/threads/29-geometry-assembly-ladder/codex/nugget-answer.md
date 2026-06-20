@@ -39,16 +39,16 @@ It can be a good final packaging, especially since your cotangent/Jacobian brick
 
 ## 4. Ranking A/B/C
 
-1. **A: Jacobian route + explicit stabilizer smoothness**  
+1. **A: Jacobian route + explicit stabilizer smoothness**
    Cleanest. Keep the landed Jacobian/smooth-local-dimension stack. Prove `Stab(M)` is `D(det)` in `Hom(M,M)`, then add the smallest orbit-submersion/dimension bridge needed.
 
-2. **B: fibre-dimension theorem for `μ_M`**  
+2. **B: fibre-dimension theorem for `μ_M`**
    Mathematically standard, but Mathlib support looks thin. You would need a serious generic/all-fibres dimension theorem.
 
-3. **C: scheme quotient `G/Stab`**  
+3. **C: scheme quotient `G/Stab`**
    Cleanest on paper, worst in Lean v4.29. Quotient/group-action scheme infrastructure is not there at the needed level.
 
-**Single cleanest:** A.  
+**Single cleanest:** A.
 **Hardest sub-lemma:** not stabilizer smoothness; it is the local orbit theorem: smooth stabilizer implies the orbit map is separable/submersive and `dim O_M = dim G - dim Stab(M)`.
 
 ## 5. Suspicious Assumption

@@ -59,83 +59,83 @@ warning: Model metadata for `gpt-5.1-codex-max` not found. Defaulting to fallbac
 codex
 **Monic Packaging**
 
-- Aim for a lemma: `∃ φ : MvPolynomial (Fin (n+1)) k ≃ₐ[k] MvPolynomial (Fin (n+1)) k, IsUnit (Polynomial.leadingCoeff (finSuccEquiv k n (φ f)))`. This is enough; from `IsUnit lc` get `hmonic : (finSuccEquiv k n (φ f)).leadingCoeff⁻¹ • finSuccEquiv k n (φ f)`.monic via `monic_of_isUnit_leadingCoeff_inv_smul`.  
-- Then `hmonic` lies in `(p.map φ).map (finSuccEquiv k n)` provided `f ∈ p`; scaling by a unit keeps membership. The ideal-level bridge:  
+- Aim for a lemma: `∃ φ : MvPolynomial (Fin (n+1)) k ≃ₐ[k] MvPolynomial (Fin (n+1)) k, IsUnit (Polynomial.leadingCoeff (finSuccEquiv k n (φ f)))`. This is enough; from `IsUnit lc` get `hmonic : (finSuccEquiv k n (φ f)).leadingCoeff⁻¹ • finSuccEquiv k n (φ f)`.monic via `monic_of_isUnit_leadingCoeff_inv_smul`.
+- Then `hmonic` lies in `(p.map φ).map (finSuccEquiv k n)` provided `f ∈ p`; scaling by a unit keeps membership. The ideal-level bridge:
   `lemma ideal_has_monic_of_unit_lc {I : Ideal A[X]} {g} (hg : g ∈ I) (h : IsUnit g.leadingCoeff) : ∃ g' ∈ I, g'.Monic := ⟨_, I.smul_mem _ hg, monic_of_isUnit_leadingCoeff_inv_smul h⟩`.
 
 **Dimension Bridge**
 
-- Use `Polynomial.Monic.quotient_isIntegral` to get integrality of `A → A[X]/P` once `P` contains a monic.  
-- Convert to the map from `A ⧸ P.under A` via  
-  `have h₁ : ((Ideal.Quotient.mkₐ A P).comp (Algebra.ofId A A[X])).IsIntegral := ...`  
-  `have h₂ : (Ideal.quotientMap (P.under A) (algebraMap A A[X]) le_rfl).IsIntegral` by `h₁` and `isIntegral_quotientMap_iff`.  
-- `Ideal.quotientMap_injective` applies because `algebraMap A A[X]` is injective; hence `ringKrullDim_eq_of_integral_injective h₂ (Ideal.quotientMap_injective _ _ _)` yields `dim (A[X]/P) = dim (A/(P.under A))`.  
+- Use `Polynomial.Monic.quotient_isIntegral` to get integrality of `A → A[X]/P` once `P` contains a monic.
+- Convert to the map from `A ⧸ P.under A` via
+  `have h₁ : ((Ideal.Quotient.mkₐ A P).comp (Algebra.ofId A A[X])).IsIntegral := ...`
+  `have h₂ : (Ideal.quotientMap (P.under A) (algebraMap A A[X]) le_rfl).IsIntegral` by `h₁` and `isIntegral_quotientMap_iff`.
+- `Ideal.quotientMap_injective` applies because `algebraMap A A[X]` is injective; hence `ringKrullDim_eq_of_integral_injective h₂ (Ideal.quotientMap_injective _ _ _)` yields `dim (A[X]/P) = dim (A/(P.under A))`.
 - In v4.29, `under_def` rewrites `P.under A` to `Ideal.comap (algebraMap A A[X]) P`; `quotientMap` with `le_rfl` is definitionally the needed map.
 
 **Induction Invariant**
 
-- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.  
+- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.
 - Induction on `n` with step: if `P ⊆ A[X]` prime and contains a monic, `P.height ≥ P.under.height + 1`, and `dim(A[X]/P) = dim(A/(P.under A))`, then `(n+1) ≤ P.height + dim(A[X]/P)` follows from the inductive hypothesis applied to `P.under`.
 
 **Transfer Back Across Equivalences**
 
-- Height: `RingEquiv.height_map` gives `(p.map φ).height = p.height`; likewise for `finSuccEquiv`.  
-- Primehood: `Ideal.isPrime_iff_isPrime_map` for equivalences; `IsPrime.map` on `Ideal` works directly.  
+- Height: `RingEquiv.height_map` gives `(p.map φ).height = p.height`; likewise for `finSuccEquiv`.
+- Primehood: `Ideal.isPrime_iff_isPrime_map` for equivalences; `IsPrime.map` on `Ideal` works directly.
 - Dimension: `ringKrullDim_eq_of_ringEquiv` after transporting the quotient along the induced quotient equivalence `(Quotient.map _ _ ...).trans (Ideal.quotient_equiv _ _)`. So `ringKrullDim (R ⧸ p) = ringKrullDim (R ⧸ p.map φ)` and similarly through `finSuccEquiv`.
 
 **v4.29 Quirks**
 
-- `monic_of_isUnit_leadingCoeff_inv_smul` lives in `Polynomial`; need to `open scoped Polynomial` or qualify.  
-- Ensure `finSuccEquiv` target is `(MvPolynomial (Fin n) k)[X]`; coercions to `Polynomial` require `rename`.  
-- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.  
+- `monic_of_isUnit_leadingCoeff_inv_smul` lives in `Polynomial`; need to `open scoped Polynomial` or qualify.
+- Ensure `finSuccEquiv` target is `(MvPolynomial (Fin n) k)[X]`; coercions to `Polynomial` require `rename`.
+- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.
 - When rewriting `P.under A`, `simp [Ideal.under, Ideal.map]` may unfold unexpectedly; prefer `simp [Ideal.under_def]`.
 
 **Suggested Lemma Names**
 
-- `exists_equiv_with_unit_leadingCoeff (f ≠ 0) : ∃ φ, IsUnit (finSuccEquiv k n (φ f)).leadingCoeff`.  
-- `Ideal.monic_in_of_unit_lc (hg : g ∈ I) (h : IsUnit g.leadingCoeff) : ∃ g' ∈ I, g'.Monic`.  
-- `ringKrullDim_quot_eq_under_of_monic (P : Ideal A[X]) [P.IsPrime] (hmonic : ∃ g ∈ P, g.Monic) : ringKrullDim (A[X] ⧸ P) = ringKrullDim (A ⧸ P.under A)`.  
+- `exists_equiv_with_unit_leadingCoeff (f ≠ 0) : ∃ φ, IsUnit (finSuccEquiv k n (φ f)).leadingCoeff`.
+- `Ideal.monic_in_of_unit_lc (hg : g ∈ I) (h : IsUnit g.leadingCoeff) : ∃ g' ∈ I, g'.Monic`.
+- `ringKrullDim_quot_eq_under_of_monic (P : Ideal A[X]) [P.IsPrime] (hmonic : ∃ g ∈ P, g.Monic) : ringKrullDim (A[X] ⧸ P) = ringKrullDim (A ⧸ P.under A)`.
 
 These pieces should let the ≥ direction go through with minimal coercion pain.
 tokens used
 17,226
 **Monic Packaging**
 
-- Aim for a lemma: `∃ φ : MvPolynomial (Fin (n+1)) k ≃ₐ[k] MvPolynomial (Fin (n+1)) k, IsUnit (Polynomial.leadingCoeff (finSuccEquiv k n (φ f)))`. This is enough; from `IsUnit lc` get `hmonic : (finSuccEquiv k n (φ f)).leadingCoeff⁻¹ • finSuccEquiv k n (φ f)`.monic via `monic_of_isUnit_leadingCoeff_inv_smul`.  
-- Then `hmonic` lies in `(p.map φ).map (finSuccEquiv k n)` provided `f ∈ p`; scaling by a unit keeps membership. The ideal-level bridge:  
+- Aim for a lemma: `∃ φ : MvPolynomial (Fin (n+1)) k ≃ₐ[k] MvPolynomial (Fin (n+1)) k, IsUnit (Polynomial.leadingCoeff (finSuccEquiv k n (φ f)))`. This is enough; from `IsUnit lc` get `hmonic : (finSuccEquiv k n (φ f)).leadingCoeff⁻¹ • finSuccEquiv k n (φ f)`.monic via `monic_of_isUnit_leadingCoeff_inv_smul`.
+- Then `hmonic` lies in `(p.map φ).map (finSuccEquiv k n)` provided `f ∈ p`; scaling by a unit keeps membership. The ideal-level bridge:
   `lemma ideal_has_monic_of_unit_lc {I : Ideal A[X]} {g} (hg : g ∈ I) (h : IsUnit g.leadingCoeff) : ∃ g' ∈ I, g'.Monic := ⟨_, I.smul_mem _ hg, monic_of_isUnit_leadingCoeff_inv_smul h⟩`.
 
 **Dimension Bridge**
 
-- Use `Polynomial.Monic.quotient_isIntegral` to get integrality of `A → A[X]/P` once `P` contains a monic.  
-- Convert to the map from `A ⧸ P.under A` via  
-  `have h₁ : ((Ideal.Quotient.mkₐ A P).comp (Algebra.ofId A A[X])).IsIntegral := ...`  
-  `have h₂ : (Ideal.quotientMap (P.under A) (algebraMap A A[X]) le_rfl).IsIntegral` by `h₁` and `isIntegral_quotientMap_iff`.  
-- `Ideal.quotientMap_injective` applies because `algebraMap A A[X]` is injective; hence `ringKrullDim_eq_of_integral_injective h₂ (Ideal.quotientMap_injective _ _ _)` yields `dim (A[X]/P) = dim (A/(P.under A))`.  
+- Use `Polynomial.Monic.quotient_isIntegral` to get integrality of `A → A[X]/P` once `P` contains a monic.
+- Convert to the map from `A ⧸ P.under A` via
+  `have h₁ : ((Ideal.Quotient.mkₐ A P).comp (Algebra.ofId A A[X])).IsIntegral := ...`
+  `have h₂ : (Ideal.quotientMap (P.under A) (algebraMap A A[X]) le_rfl).IsIntegral` by `h₁` and `isIntegral_quotientMap_iff`.
+- `Ideal.quotientMap_injective` applies because `algebraMap A A[X]` is injective; hence `ringKrullDim_eq_of_integral_injective h₂ (Ideal.quotientMap_injective _ _ _)` yields `dim (A[X]/P) = dim (A/(P.under A))`.
 - In v4.29, `under_def` rewrites `P.under A` to `Ideal.comap (algebraMap A A[X]) P`; `quotientMap` with `le_rfl` is definitionally the needed map.
 
 **Induction Invariant**
 
-- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.  
+- Use a statement avoiding subtraction: `(n : ℕ∞) ≤ p.height + coe (ringKrullDim (R ⧸ p))`. Since `ringKrullDim (R ⧸ p)` is `WithBot ℕ∞`, coerce to `ℕ∞` via `Option.some`. For primes in `MvPolynomial (Fin n) k`, the dimension is finite, so `ringKrullDim (R ⧸ p) = (d : WithBot ℕ∞)` with `d : ℕ`.
 - Induction on `n` with step: if `P ⊆ A[X]` prime and contains a monic, `P.height ≥ P.under.height + 1`, and `dim(A[X]/P) = dim(A/(P.under A))`, then `(n+1) ≤ P.height + dim(A[X]/P)` follows from the inductive hypothesis applied to `P.under`.
 
 **Transfer Back Across Equivalences**
 
-- Height: `RingEquiv.height_map` gives `(p.map φ).height = p.height`; likewise for `finSuccEquiv`.  
-- Primehood: `Ideal.isPrime_iff_isPrime_map` for equivalences; `IsPrime.map` on `Ideal` works directly.  
+- Height: `RingEquiv.height_map` gives `(p.map φ).height = p.height`; likewise for `finSuccEquiv`.
+- Primehood: `Ideal.isPrime_iff_isPrime_map` for equivalences; `IsPrime.map` on `Ideal` works directly.
 - Dimension: `ringKrullDim_eq_of_ringEquiv` after transporting the quotient along the induced quotient equivalence `(Quotient.map _ _ ...).trans (Ideal.quotient_equiv _ _)`. So `ringKrullDim (R ⧸ p) = ringKrullDim (R ⧸ p.map φ)` and similarly through `finSuccEquiv`.
 
 **v4.29 Quirks**
 
-- `monic_of_isUnit_leadingCoeff_inv_smul` lives in `Polynomial`; need to `open scoped Polynomial` or qualify.  
-- Ensure `finSuccEquiv` target is `(MvPolynomial (Fin n) k)[X]`; coercions to `Polynomial` require `rename`.  
-- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.  
+- `monic_of_isUnit_leadingCoeff_inv_smul` lives in `Polynomial`; need to `open scoped Polynomial` or qualify.
+- Ensure `finSuccEquiv` target is `(MvPolynomial (Fin n) k)[X]`; coercions to `Polynomial` require `rename`.
+- `coheight` is `WithBot`; `height` is `ℕ∞`. Use `Ideal.height_eq_primeHeight` to jump between them; then `ringKrullDim_quotient_eq_coheight` aligns with `WithBot`.
 - When rewriting `P.under A`, `simp [Ideal.under, Ideal.map]` may unfold unexpectedly; prefer `simp [Ideal.under_def]`.
 
 **Suggested Lemma Names**
 
-- `exists_equiv_with_unit_leadingCoeff (f ≠ 0) : ∃ φ, IsUnit (finSuccEquiv k n (φ f)).leadingCoeff`.  
-- `Ideal.monic_in_of_unit_lc (hg : g ∈ I) (h : IsUnit g.leadingCoeff) : ∃ g' ∈ I, g'.Monic`.  
-- `ringKrullDim_quot_eq_under_of_monic (P : Ideal A[X]) [P.IsPrime] (hmonic : ∃ g ∈ P, g.Monic) : ringKrullDim (A[X] ⧸ P) = ringKrullDim (A ⧸ P.under A)`.  
+- `exists_equiv_with_unit_leadingCoeff (f ≠ 0) : ∃ φ, IsUnit (finSuccEquiv k n (φ f)).leadingCoeff`.
+- `Ideal.monic_in_of_unit_lc (hg : g ∈ I) (h : IsUnit g.leadingCoeff) : ∃ g' ∈ I, g'.Monic`.
+- `ringKrullDim_quot_eq_under_of_monic (P : Ideal A[X]) [P.IsPrime] (hmonic : ∃ g ∈ P, g.Monic) : ringKrullDim (A[X] ⧸ P) = ringKrullDim (A ⧸ P.under A)`.
 
 These pieces should let the ≥ direction go through with minimal coercion pain.

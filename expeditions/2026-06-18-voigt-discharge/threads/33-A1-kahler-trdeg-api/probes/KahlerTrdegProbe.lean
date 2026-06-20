@@ -57,4 +57,3 @@ end FirstIso
 -- ===== Item 1 / 4: the ABSENT bricks — these SHOULD fail to typecheck =====
 -- ringKrullDim A = trdeg k A  : no such lemma name exists (probe by guessing)
 -- (Left commented; confirmed absent by grep — no file mentions both krullDim and trdeg.)
-

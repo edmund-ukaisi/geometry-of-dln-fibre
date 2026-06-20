@@ -128,23 +128,23 @@ Why:
 - If you weaken to merely perfect, generic smoothness survives, but your concrete `MvPolynomial.zeroLocus`/`vanishingIdeal` closure story becomes harder.
 
 **D. Build Ladder**
-1. **Affine coordinate wrappers** — one PR/tide.  
+1. **Affine coordinate wrappers** — one PR/tide.
    Package `Rep_d` as `MvPolynomial` variables, coordinate evaluation, polynomial maps, vanishing ideals, closure as radical/prime ideal where possible.
 
-2. **GL and orbit map geometry** — module to sizeable module.  
+2. **GL and orbit map geometry** — module to sizeable module.
    Model each `GL_n` as the principal open `D(det)` in affine matrix space; product as a principal open/localization. Prove irreducible/reduced/finite presentation. Define the orbit morphism and prove its image closure is irreducible.
 
-3. **Concrete tangent spaces** — sizeable module.  
+3. **Concrete tangent spaces** — sizeable module.
    Define affine Zariski tangent at a `k`-point, prove tangent to zero locus is the kernel of linearized equations, prove tangent functoriality for polynomial maps, and identify the orbit-map differential with your `δ⁰`.
 
-4. **Smooth point on the orbit** — module to sizeable module.  
+4. **Smooth point on the orbit** — module to sizeable module.
    Use `Scheme.Hom.dense_smoothLocus_of_perfectField`; prove smooth locus is stable under the group action; prove the orbit is locally closed/open in its closure; translate a smooth orbit point to `M`.
 
-5. **Height/dimension bridge** — sizeable sub-library.  
+5. **Height/dimension bridge** — sizeable sub-library.
    Prove the needed affine dimension formula, preferably the tailored form:
    for prime `I ≤ k[x₁,…,xₙ]`, if a closed point of `V(I)` is smooth with tangent dimension `t`, then `I.height = n - t`. This is the largest missing piece.
 
-6. **Final Voigt assembly** — one PR/tide.  
+6. **Final Voigt assembly** — one PR/tide.
    Combine `height = n - tangentDim`, `tangentDim = dim im δ⁰`, and your existing linear algebra `dim C¹ - dim im δ⁰ = dim Ext¹`.
 
 Biggest must-build pieces:

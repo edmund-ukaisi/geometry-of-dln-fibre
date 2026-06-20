@@ -17,8 +17,8 @@ Conversely, the usual “choose maximal `u` with `s <= u < r`” argument derive
 A natural direct rule is:
 
 1. Let `g = r - s`.
-2. Choose the north-east defect corner  
-   `a = min { i | exists j, g(i,j) > 0 }`,  
+2. Choose the north-east defect corner
+   `a = min { i | exists j, g(i,j) > 0 }`,
    `e = max { j | g(a,j) > 0 }`.
 3. Then
    `m_r(a,e) - m_s(a,e) = g(a,e) > 0`,
@@ -57,5 +57,5 @@ Its drop rectangle is `D = {(0,3)}`, so `D subset supp(g)`, and the result is ex
 
 **Status**
 
-Proven: the descent lemma is equivalent in strength to rank-cover classification.  
+Proven: the descent lemma is equivalent in strength to rank-cover classification.
 Heuristic only: the north-east-corner finite search is a good constructive implementation strategy. Its total-correctness proof is not a lightweight substitute for cover classification.

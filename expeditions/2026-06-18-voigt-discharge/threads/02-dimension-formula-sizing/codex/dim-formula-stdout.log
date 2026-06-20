@@ -13118,9 +13118,9 @@ Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean:531:theorem isTr
 Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean:545:  rw [← hs.cardinalMk_eq_trdeg, ← ht.cardinalMk_eq_trdeg, ← lift_umax.{w}, add_comm,
 Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean:546:    ← (hs.sumElim_comp ht).lift_cardinalMk_eq_trdeg, mk_sum, lift_add, lift_lift, lift_lift]
 
-web search: 
+web search:
 web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/8a178386ffc0f5fef0b77738bb5449d50efeea95/Mathlib/RingTheory/NoetherNormalization.lean
-web search: 
+web search:
 web search: site:github.com/leanprover-community/mathlib4 NoetherNormalization exists_finite_inj_algHom_of_fg
 codex
 ## Route — which of (a)/(b), and why it is cheaper in Lean

@@ -1,7 +1,7 @@
 Lean 4 + Mathlib v4.29 formalisation sizing. I have VERIFIED the following Mathlib v4.29 status by grep + compiling #check probes. I want you to red-team the cleanest proof route + the honest module count for ONE missing theorem.
 
 CONTEXT (all landed sorry-free in our `DLNFibre.Core`):
-- k a field, CharZero k, [IsAlgClosed k]. R = MvPolynomial (RepCoord d) k (a polynomial ring over k in finitely many vars). 
+- k a field, CharZero k, [IsAlgClosed k]. R = MvPolynomial (RepCoord d) k (a polynomial ring over k in finitely many vars).
 - μ_M^* : R →ₐ[k] 𝒪(G), where 𝒪(G) = Localization.Away (∏ det) (a domain, finite type over k). image(μ_M^*) is a finite-type k-subalgebra of 𝒪(G), and is a DOMAIN.
 - van(Z_M) = ker(μ_M^*), PRIME (landed). By first-iso R/ker ≃ₐ image(μ_M^*).
 - We have a LANDED engine theorem: for any prime p of R = k[x_1..x_n], ringKrullDim(R/p) = s where s is the Noether-normalization rank (an injective integral k-algebra map k[y_1..y_s] →ₐ R/p exists). [Module: Core.PolynomialDimension `ringKrullDim_quotient_eq_noetherRank`; + Core.AffineDomainDimension `affine_domain_height_add_ringKrullDim_quotient_eq`.]

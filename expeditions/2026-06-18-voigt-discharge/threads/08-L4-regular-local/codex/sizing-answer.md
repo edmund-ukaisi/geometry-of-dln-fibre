@@ -1,17 +1,17 @@
-**L4(a) Smooth ⇒ Regular Local**  
-- Size: Sub-library. Missing bridge: a clean dimension comparison that couples `FormallySmooth k (Localization.AtPrime m)` to `IsRegularLocalRing (Localization.AtPrime m)` via the cotangent space. Mathlib lacks any pathway from smoothness data (`Ω`, cotangent, Jacobian) to `ringKrullDim`, so you would need to build a mini-theory exporting ranks/dimensions of `Ω` to Krull dimension.  
-- Minimal route today:  
-  - (Present) use smoothness to get that `Ω[A/k]` localizes to a finite free module of constant rank near `m`.  
-  - (Missing) prove a new lemma: for a Noetherian local domain `S`, if `Module.Free (CotangentSpace S)` with rank `d`, then `(maximalIdeal S).height = d`. This needs: (i) an integral-control statement relating `height` to Krull dimension for the localization; (ii) a comparison lemma `finrank (CotangentSpace S) = height (maximalIdeal S)`—none exists.  
-  - (Missing) express the rank of `Ω` in terms of transcendence degree: a “dimension formula” for smooth finite type algebras over a field, transporting the Jacobian rank bound into `ringKrullDim`.  
-- Traps: smoothness only ensures projective cotangent modules; without proving they are free with rank equal to Krull dimension, the regularity criterion fails. Beware nonreduced fibres: smooth ⇒ reduced, but Mathlib’s smoothness theorems often live in `AlgebraicGeometry`. Localizing those to `AtPrime` requires careful transport of finite presentation hypotheses.  
+**L4(a) Smooth ⇒ Regular Local**
+- Size: Sub-library. Missing bridge: a clean dimension comparison that couples `FormallySmooth k (Localization.AtPrime m)` to `IsRegularLocalRing (Localization.AtPrime m)` via the cotangent space. Mathlib lacks any pathway from smoothness data (`Ω`, cotangent, Jacobian) to `ringKrullDim`, so you would need to build a mini-theory exporting ranks/dimensions of `Ω` to Krull dimension.
+- Minimal route today:
+  - (Present) use smoothness to get that `Ω[A/k]` localizes to a finite free module of constant rank near `m`.
+  - (Missing) prove a new lemma: for a Noetherian local domain `S`, if `Module.Free (CotangentSpace S)` with rank `d`, then `(maximalIdeal S).height = d`. This needs: (i) an integral-control statement relating `height` to Krull dimension for the localization; (ii) a comparison lemma `finrank (CotangentSpace S) = height (maximalIdeal S)`—none exists.
+  - (Missing) express the rank of `Ω` in terms of transcendence degree: a “dimension formula” for smooth finite type algebras over a field, transporting the Jacobian rank bound into `ringKrullDim`.
+- Traps: smoothness only ensures projective cotangent modules; without proving they are free with rank equal to Krull dimension, the regularity criterion fails. Beware nonreduced fibres: smooth ⇒ reduced, but Mathlib’s smoothness theorems often live in `AlgebraicGeometry`. Localizing those to `AtPrime` requires careful transport of finite presentation hypotheses.
 
-**L4(d) Local–Global Dimension Equality**  
-- Size: Sub-library. Core obstruction is establishing equidimensionality for arbitrary finitely generated domains. Current Mathlib has no general dimension theory for affine domains beyond polynomial rings, so proving `m.height = ringKrullDim A` for every maximal `m` forces development of:  
-  - Noether normalization at the `ringKrullDim` level, including the dimension formula `dim A = trdeg_k Frac(A)` and behaviour of heights under integral, finite type maps.  
-  - A going-up/going-down package tailored to maximal ideals in affine domains, plus a “height transport’’ lemma that carries heights of maximal ideals through integral extensions (currently absent).  
-- Potential workaround via integral injection (using your `ringKrullDim_eq_of_integral_injective`): a map `MvPolynomial → A` is integral but not injective; the induced map `MvPolynomial ⧸ I → A` is surjective but seldom integral. Any attempt to compare `ringKrullDim` through these maps runs into the missing theory of dimension for quotients and behaviour under integral extensions.  
+**L4(d) Local–Global Dimension Equality**
+- Size: Sub-library. Core obstruction is establishing equidimensionality for arbitrary finitely generated domains. Current Mathlib has no general dimension theory for affine domains beyond polynomial rings, so proving `m.height = ringKrullDim A` for every maximal `m` forces development of:
+  - Noether normalization at the `ringKrullDim` level, including the dimension formula `dim A = trdeg_k Frac(A)` and behaviour of heights under integral, finite type maps.
+  - A going-up/going-down package tailored to maximal ideals in affine domains, plus a “height transport’’ lemma that carries heights of maximal ideals through integral extensions (currently absent).
+- Potential workaround via integral injection (using your `ringKrullDim_eq_of_integral_injective`): a map `MvPolynomial → A` is integral but not injective; the induced map `MvPolynomial ⧸ I → A` is surjective but seldom integral. Any attempt to compare `ringKrullDim` through these maps runs into the missing theory of dimension for quotients and behaviour under integral extensions.
 - Traps: Non-normal, non-CM domains can have maximal ideals of smaller height; without proving equidimensionality you cannot rely on `height = dim`. Localization can drop Krull dimension if hidden embedded primes appear; you must control nilpotents (using reducedness of domains) and exclude embedded components, which Mathlib does not automatically manage.
 
-**Shared Cautions**  
+**Shared Cautions**
 - Both targets ultimately require a coherent “dimension for finite type algebras” toolkit (Noether normalization, dimension formula, equidimensionality, and cotangent-to-dimension comparison). Without it, any proof sketched from classical algebraic geometry risks unsoundness in pathological (non-normal or non-equidimensional) cases. If you proceed, budget for building that foundational layer first; neither goal reduces to a handful of localized lemmas at the current Mathlib pin.

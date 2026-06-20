@@ -89,7 +89,8 @@ theorem codimRepCanonical_orbitRankLocus_eq_finrank_deformationExt1_unconditiona
 
 /-- **The geometric-codimension headline (Lehalleur–Rimányi Cor 3.5), UNCONDITIONAL.** For
 `M = ⊕_{(a,b)∈L} M_{ab}` the geometric codimension of the orbit closure `Ō_M` (the rank locus, Thm 3.8
-cited) equals the paper's quadratic form `Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}` — no longer modulo
+PROVED in-engine, `Core.OrbitClosure.vanishingIdeal_orbitRankLocus_eq_orbitSet`) equals the paper's
+quadratic form `Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}` — no longer modulo
 `hVoigt`. `hVoigt` is discharged by `codimRep_orbitRankLocus_eq_orbitLinearCodim` (the squeeze + L7),
 so the expedition's deliverable holds with hypotheses `[IsAlgClosed k] [CharZero k]` only. -/
 theorem codimRepCanonical_orbitRankLocus_eq_multSum_unconditional

@@ -1,16 +1,16 @@
 **Ranked Verdict**
 
-1. **Best route: monic-coordinate reduction + flat going-down additivity.**  
+1. **Best route: monic-coordinate reduction + flat going-down additivity.**
    Do not peel an arbitrary coordinate tower directly. First use a Noether-normalization-style coordinate change so a nonzero element of `p` becomes monic in one variable. Then apply
    `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`
    to the polynomial extension
    `A = MvPolynomial (Fin m) k → S = A[X]`.
    This is the clean Lean route.
 
-2. **Normalization `A = k[y₁..y_s] ↪ R ⧸ p`: not useful for height.**  
+2. **Normalization `A = k[y₁..y_s] ↪ R ⧸ p`: not useful for height.**
    It builds/lifts chains in `R ⧸ p`, hence chains **above** `p` in `R`, i.e. coheight data. To convert that into height you need catenarity between `p` and primes above it, which is exactly the missing content.
 
-3. **Krull height theorem / localization routes: not competitive.**  
+3. **Krull height theorem / localization routes: not competitive.**
    `Ideal.height_le_spanFinrank` is the wrong direction. Localization gives `dim R_p = height p`, but comparing `dim R_p + dim R/p` to `n` is again the catenary/dimension formula.
 
 **Top Route Skeleton**
@@ -100,18 +100,18 @@ Inductive step `m+1`.
 
 **New Sub-Lemmas Needed**
 
-- `exists_monic_mem_after_algEquiv`  
-  Nonzero prime in `MvPolynomial (Fin (m+1)) k` can be moved by a `k`-algebra equivalence so its image in `(MvPolynomial (Fin m) k)[X]` contains a monic polynomial.  
+- `exists_monic_mem_after_algEquiv`
+  Nonzero prime in `MvPolynomial (Fin (m+1)) k` can be moved by a `k`-algebra equivalence so its image in `(MvPolynomial (Fin m) k)[X]` contains a monic polynomial.
   **Buildable**, but not from your listed bricks alone; expose/copy Mathlib’s private Noether-normalization `T`/`T_leadingcoeff_isUnit` argument.
 
-- `polynomial_quotient_dim_eq_under_of_monic`  
-  If `P : Ideal A[X]` is prime and contains a monic polynomial, then  
-  `ringKrullDim (A[X] ⧸ P) = ringKrullDim (A ⧸ P.under A)`.  
+- `polynomial_quotient_dim_eq_under_of_monic`
+  If `P : Ideal A[X]` is prime and contains a monic polynomial, then
+  `ringKrullDim (A[X] ⧸ P) = ringKrullDim (A ⧸ P.under A)`.
   **Buildable from bricks** via L5.4 plus `Polynomial.Monic.quotient_isIntegral`.
 
-- `one_le_fiber_height_of_monic`  
-  With `q = P.under A`, if `P` contains a monic polynomial, then  
-  `1 ≤ (P.map (Ideal.Quotient.mk (q.map (algebraMap A A[X])))).height`.  
+- `one_le_fiber_height_of_monic`
+  With `q = P.under A`, if `P` contains a monic polynomial, then
+  `1 ≤ (P.map (Ideal.Quotient.mk (q.map (algebraMap A A[X])))).height`.
   **Buildable from bricks** plus `Ideal.polynomialQuotientEquivQuotientPolynomial` and `Polynomial.map_monic_ne_zero`.
 
 Bottom line: the lower bound is buildable without importing catenarity, but not from the listed bricks alone. The biggest missing lemma is the **monic-coordinate reduction for a nonzero prime**.
