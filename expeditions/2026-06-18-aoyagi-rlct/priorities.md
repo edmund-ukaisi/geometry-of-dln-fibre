@@ -495,14 +495,21 @@ on the session's original cwd.
    cardinality `1 + indicator(0<a<ell)` under `1<=ell` and `0<=a<=ell`.
    The elementary Lemma 4 two-value count is now Lean-proved: assuming every
    `F_j` is either `M-1` or `M` and the sum is `ell*(M-1)+a`, exactly `a`
-   entries are `M` and `ell-a` are `M-1`.  This assumes the sum identity
-   rather than deriving it from `H_ell=0`.
+   entries are `M` and `ell-a` are `M-1`.  The source sum bridge is now also
+   Lean-proved: with the explicit convention `H_0=M(S_1)` and terminal
+   condition `H_ell=0`, the increments
+   `F_j=H_(j-1)-H_j+M(S_(j+1))` telescope to
+   `sum_j F_j=sum_j M(S_j)`, hence to `ell*(M-1)+a` once Definition 3's
+   selected-width sum is supplied.
    The elementary Lemma 5 interval-excess sum is also Lean-proved:
    `1 + sum_{j=1}^{ell-1}(intervalSize-1)=a(ell-a)+1`, but only as finite
    arithmetic, not as pole-order admissibility.  The remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
-   feasibility as exponent chains, reproduce the terminal quadratic rewrite,
-   and reproduce Lemma 5's chart-family/order-count construction.
+   feasibility as exponent chains, prove the two-value increment hypothesis
+   from source vector inequalities, bridge the count to the endpoint-corrected
+   Lemma 3 minimisers/correspondence-to-`lambda`, reproduce the terminal
+   quadratic rewrite, and reproduce Lemma 5's chart-family/order-count
+   construction.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

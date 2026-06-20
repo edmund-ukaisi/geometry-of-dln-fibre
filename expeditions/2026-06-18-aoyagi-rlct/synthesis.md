@@ -1707,10 +1707,22 @@ The first Lemma 4 arithmetic sub-slice is now Lean-proved in
 prove that an `ell`-indexed integer family with values only `M-1` or `M` and
 sum `ell*(M-1)+a` has exactly `a` high entries and `ell-a` low entries.  The
 corollary `aoyagiLemma4_twoValueCount_le_ell` records that the same hypotheses
-force `a<=ell`.  This assumes the sum identity; the source bridge from
-`H_ell=0`, the `H_0` convention for `F_1`, vector admissibility, correspondence
-to `lambda`, Lemma 5, pole order, normal crossings, and RLCT extraction remain
-open.
+force `a<=ell`.
+
+The source sum bridge for Lemma 4 is now also Lean-proved in the same module.
+`aoyagiLemma4F` names the increment
+`F_j=H_(j-1)-H_j+M(S_(j+1))` using zero-indexed `Fin` arrays; the source's
+separate definition of `F_1` is encoded by the explicit convention
+`H 0 = m 0`.  Under this convention and `H (Fin.last ell)=0`,
+`aoyagiLemma4F_sum_eq_selectedSum` proves `sum F_j=sum m`; with Definition 3's
+selected-width sum, `aoyagiLemma4F_sum_eq_of_selectedSum_eq_pred_add_a` gives
+`sum F_j=ell*(M-1)+a`.  The wrapper
+`aoyagiLemma4_twoValueCount_of_terminalH` combines this with the two-value
+hypothesis, so the sum identity is no longer a separate assumption for that
+finite count.  This still assumes the selected-width sum and the two-value
+increment hypothesis; vector admissibility, the proof of the two-value
+hypothesis from `Ttilde <= T <= Ttilde'`, correspondence to `lambda`, Lemma 5,
+pole order, normal crossings, and RLCT extraction remain open.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

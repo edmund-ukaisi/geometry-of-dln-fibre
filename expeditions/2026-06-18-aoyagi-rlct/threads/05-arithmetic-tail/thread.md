@@ -164,3 +164,36 @@ This is only finite count arithmetic.  The source bridge from `H_ell=0` to the
 sum identity, the `H_0` convention for `F_1`, vector inequalities,
 correspondence to `lambda`, Lemma 5, pole order, normal crossings, and RLCT
 extraction remain open.
+
+## 2026-06-20 Lean Lemma 4 source sum bridge
+
+Reproduction:
+`reproduction-lemma4-sum-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-sum-bridge.md`.
+Review artifact:
+`review-lemma4-sum-bridge-a5.md`.
+
+Lean now proves the finite telescoping bridge that was left open in the
+previous Lemma 4 count slice.  With selected widths
+`m : Fin (ell+1) -> Z`, extended `H : Fin (ell+1) -> Z`, the convention
+`H 0 = m 0` for Aoyagi's hidden `H_0 := M(S_1)`, and terminal condition
+`H (Fin.last ell) = 0`, the theorem
+`aoyagiLemma4F_sum_eq_selectedSum` proves
+
+```text
+sum_j F_j = sum_j m_j,
+```
+
+where `F_j = H_(j-1) - H_j + M(S_(j+1))` in zero-indexed Lean form.  The
+wrapper `aoyagiLemma4F_sum_eq_of_selectedSum_eq_pred_add_a` combines this with
+Definition 3's selected-width sum `sum m = ell*(M-1)+a`.  The source-shaped
+count wrapper `aoyagiLemma4_twoValueCount_of_terminalH` then proves the
+two-value count without assuming `sum F_j = ell*(M-1)+a` directly.
+
+This is still not Aoyagi Lemma 4.  It assumes the selected-width sum, terminal
+`H` convention, and the two-value increment hypothesis.  It does not prove
+the vector inequalities `Ttilde <= T <= Ttilde'`, the two-value hypothesis from
+those inequalities, the endpoint-corrected Lemma 3 minimisation bridge,
+correspondence to `lambda`, Lemma 5, pole order, normal crossings, or RLCT
+extraction.

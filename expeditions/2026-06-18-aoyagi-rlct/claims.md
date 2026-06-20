@@ -1571,9 +1571,9 @@ No such claim is formalisation-ready until both fields are filled.
   over the source interval are now Lean-proved and reviewed.  The elementary
   Lemma 5 interval-excess sum is also Lean-proved and reviewed.  The full A5
   claim remains blocked: terminal-variable restriction, minimiser feasibility,
-  the Lemma 4 source-to-sum bridge and vector admissibility,
-  quadratic rewrite from terminal exponents, and Lemma 5 order-count
-  construction are not checked.
+  the Lemma 4 two-value hypothesis from source vector inequalities,
+  vector admissibility/correspondence to `lambda`, quadratic rewrite from
+  terminal exponents, and Lemma 5 order-count construction are not checked.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1588,6 +1588,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma3-equality-count-a5.md`;
   Lemma 4 two-value count at
   `threads/05-arithmetic-tail/reproduction-lemma4-two-value-count-a5.md`;
+  Lemma 4 source sum bridge at
+  `threads/05-arithmetic-tail/reproduction-lemma4-sum-bridge-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1603,12 +1605,16 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 4 two-value count checked by xhigh `Hume the 5th` and xhigh Lean scout
   `Chandrasekhar the 5th` at
   `threads/05-arithmetic-tail/review-lemma4-two-value-count-a5.md`;
+  Lemma 4 source sum bridge checked by xhigh `Dewey the 5th` at
+  `threads/05-arithmetic-tail/review-lemma4-sum-bridge-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
+  source `H`-bookkeeping sum bridge in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
   TBD.
@@ -1642,15 +1648,24 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5IntervalSize_excess_sum_Icc`.  These prove only finite
   interval-excess arithmetic, not Lemma 5's chart-family/order-count theorem.
   Also proved `twoStepInt_count_eq`, `aoyagiLemma4_twoValueCount_int`, and
-  `aoyagiLemma4_twoValueCount_le_ell`, which prove only finite two-value count
-  arithmetic under an assumed sum identity.
+  `aoyagiLemma4_twoValueCount_le_ell`, which prove finite two-value count
+  arithmetic under a sum identity.  The source sum bridge is now proved as
+  `aoyagiLemma4F`, `aoyagiLemma4F_sum_eq_selectedSum`,
+  `aoyagiLemma4F_sum_eq_of_selectedSum_eq_pred_add_a`,
+  `aoyagiLemma4_twoValueCount_of_terminalH`, and
+  `aoyagiLemma4_twoValueCount_of_terminalH_le_ell`: with the convention
+  `H_0=M(S_1)` and terminal condition `H_ell=0`, the increments telescope to
+  the selected-width sum, and the two-value count follows without assuming
+  `sum F_j=ell*(M-1)+a` directly.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
 - **Cited.** none planned.
 - **Deferred.** terminal candidate set with `\tilde t_{s,k}=0`, feasibility of
-  the minimizing exponent chains, Lemma 4, Lemma 5 chart-family admissibility
-  and coverage, pole-order count, and analytic extraction.
+  the minimizing exponent chains, the Lemma 4 two-value hypothesis from source
+  vector inequalities, Lemma 4's correspondence-to-`lambda` conclusion, Lemma
+  5 chart-family admissibility and coverage, pole-order count, and analytic
+  extraction.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 
