@@ -239,6 +239,32 @@ machinery `fm` is *already* building for L1 / `deepestPoint_exists`. Concretely:
 > ONE blow-up of it → binding divisor `(k,h) = (1, Mval(t)−1)`, ratio `½·Mval(t)`. (2,2,2): the
 > `{δ=u=v=0}` residual, 3 coords, codim 3 = Mval(t=1) — exactly the verified chart.)
 
+> **NOT over-determined — the residual is a REGULAR SEQUENCE of length `Mval(t)`** (the controller's
+> flagged worry, adjudicated — me + decorrelated Codex agree). Verified: `/tmp/residual_check2.py`,
+> `/tmp/residual_sweep.py` (sweep L=2,3,4, all admissible strata, product-map diff-rank = Mval
+> EXACTLY, zero mismatches). The full interval rank-pattern `r_{ab}` (a≥2) adds NO equations: a prefix
+> stratum `S(t)` cuts only the prefix ranks; inner intervals MAY be constrained but only as
+> **consequences** (e.g. on `S(t=(1,0,0))` of (2,2,2,2), `rank C² ≤ 1` is forced by `C¹C²=0 ∧ rank C¹=1`
+> — derived, NOT an independent generator). (This drops an earlier wrong "inner intervals stay generic"
+> sub-claim of mine — they need not be generic; what holds is codim = Mval exactly.)
+>
+> **The residual is NESTED Schur-blocks `R_1,…,R_L`, not a single matrix (Codex refinement, adopted).**
+> The pivot split gives, per layer, `R_j = D_j − C_j A_j⁻¹ B_j` (Schur complement of the chosen
+> `t_j×t_j` pivot `A_j` in the active `t_{j−1}×M^{j+1}` block), of size `(t_{j−1}−t_j)×(M^{j+1}−t_j)`;
+> for `j=1` it's `(M¹−t₁)×(M²−t₁)`. Then `S(t)∩chart = {R_1=…=R_L=0}` (+ open `det A_j ≠ 0`), and the
+> total scalar count is `Σ |R_j| = (M¹−t₁)(M²−t₁) + Σ_{j≥2}(t_{j−1}−t_j)(M^{j+1}−t_j) = Mval(t)`. The
+> `R_j` entries are JOINTLY coordinate functions ⟹ their joint zero-locus IS a single smooth
+> codim-`Mval(t)` coordinate subspace — so the "single smooth center" picture holds, but the center is
+> the CONCATENATION of all `R_j`, not one final-product residual. (CAUTION, Codex: a *final-product*
+> residual alone would cut the COARSER product-zero locus = union over rank profiles — the naive
+> `{∏=0}`, not `S(t)`. Must use all the `R_j`.) Codex's explicit L=3 (1,1,0) chart: `{s=u=v=0}`, 3
+> residual coords, binding divisor `(k,h)=(1,2)`, ratio 3/2 — matches my thread-03/binding-check.
+>
+> **Generic-point caveat (Codex):** the binding divisor `(1, Mval−1)` ratio `½Mval` holds at a GENERIC
+> point of the minimizing stratum (where the product map has full normal rank `Mval`, so `F = u²·unit`).
+> At nongeneric points a suffix factor can vanish and `F/u²` may not be a unit — more blow-ups there,
+> but those do not invalidate the generic binding divisor, which is what the value-match consumes.
+
 So R3b's step 4 is NOT "build the whole 24-chart atlas + bookkeeping" — it is:
 1. iterated L1 to the deepest residual block (REUSES fm's L1);
 2. the residual block is a codim-`Mval(t)` coordinate subspace (codim S(t) = Mval, thread-03);
