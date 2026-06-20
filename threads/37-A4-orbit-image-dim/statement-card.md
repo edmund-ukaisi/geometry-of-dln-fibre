@@ -65,6 +65,21 @@ which chains with the landed A0 (`varietyDim_eq_ringKrullDim_range_orbitPullback
    `[EssFiniteType k (FractionRing B)]` to `DiffIndepCriterion` and discharge it for `groupRing d`,
    or (b) prove `FormallySmooth k (FractionRing B)` directly for our localized B without `of_perfectField`.
 
+   **VERIFIED-BUILDABLE (this thread, scratch):** with `[CharZero k]` + `[EssFiniteType k K]`
+   (K = FractionRing B; the latter LANDED for `B = groupRing d` as the instance
+   `essFiniteType_fractionRing_groupRing`), the FULL injectivity chain compiles:
+   `E := IntermediateField.adjoin k (Set.range x)`; `CharZero E` (from `charZero_of_injective_algebraMap`);
+   `PerfectField E` (`PerfectField.ofCharZero`); `EssFiniteType E K` (`EssFiniteType.of_comp`);
+   `FormallySmooth E K` (`FormallySmooth.of_perfectField`); hence `mapBaseChange k E K` INJECTIVE
+   (`mapBaseChange_injective_of_formallySmooth`, LANDED). So the criterion reduces to the SINGLE
+   remaining sub-lemma: **`{D_E x_i}` are `E`-linearly independent in `Ω[E⁄k]`** for the
+   purely-transcendental `x` (then base-change to `{1 ⊗ D_E x_i}` K-independent, and `mapBaseChange`
+   carries them to `{D_K x_i}` via `mapBaseChange_tmul` + `map_D`). That sub-lemma is the localized
+   `mvPolynomialBasis`: `E ≅ FractionRing (MvPolynomial (Fin n) k)` (`aevalEquivField`), `Ω[E⁄k]`
+   localizes `Ω[MvPolynomial⁄k]` (`KaehlerDifferential.isLocalizedModule_of_isLocalizedModule`), and
+   `mvPolynomialBasis` localizes to a basis via `Basis.ofIsLocalizedModule` /
+   `LinearIndependent.of_isLocalizedModule`. This is the one self-contained piece left for A4.2.
+
 2. **`hA43`** : `genericDifferentialRank k (groupRing d) (genericOrbitCoord M)
    = finrank k (LinearMap.range (deformationδ M M))` (the A4.3 differential-rank identity, char-free).
    The orbit-map-differential = δ⁰ bridge (`dμ_e = δ⁰`, verified symbolically in thread 36). Codex Q3
