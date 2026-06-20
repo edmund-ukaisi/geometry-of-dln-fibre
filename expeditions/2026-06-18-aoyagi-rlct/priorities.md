@@ -135,9 +135,14 @@ on the session's original cwd.
    old-top/source suffix theorem in both source-row and prefix-row form. The
    top row of Aoyagi's `Q^-1 C` is also expanded entrywise as
    `C(J+1,-)` plus the displayed pivot-row weighted post-pivot column sum.
-   Next A4 target: construct this bridge from the displayed source chart, or
-   build a named supplied chart-production boundary carrying it. Do not transport
-   Case 2 gap/tail invariants without separately checking their shifted
+   Under actual-width exhaustion `n(S+1)=J+1`, this sum is empty: Lean now
+   identifies the terminal `C'` candidate with the original source rows
+   `1..J+1`, constructs `SuppliedTerminalCprimeBridge` from those rows, and
+   specializes the relabelled old-top/source-suffix theorem to them. Next A4
+   target: handle the remaining non-column-exhausted stopped frontier, or
+   build fuller chart-production boundary data beyond this actual-width
+   subcase. Do not transport Case 2 gap/tail invariants without separately
+   checking their shifted
    thresholds. If downstream suffix rewrites become noisy, add source-level
    empty/peel lemmas for `sourceSuffixProduct`.
 2. Product reduction repair beyond the landed chart-local and entry-ideal

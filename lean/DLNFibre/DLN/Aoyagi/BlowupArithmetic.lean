@@ -10074,6 +10074,38 @@ theorem case2DisplayedPaperCprimeTop_apply
             C j.1.1 a
   simp [case2DisplayedPivotCol]
 
+/-- Under actual next-width exhaustion, the transported top row `Q⁻¹ C` is
+the original source row `J+1`.
+
+This is only the column-exhausted subcase: the post-pivot column complement is
+empty, so the finite correction sum in `case2DisplayedPaperCprimeTop_apply`
+vanishes. -/
+theorem case2DisplayedPaperCprimeTop_apply_of_width_next_eq
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) (a : τ) :
+    case2DisplayedPaperCprimeTop n hS hcont residual C () a =
+      C (J + 1) a := by
+  rw [case2DisplayedPaperCprimeTop_apply]
+  haveI : IsEmpty (pivotComplement (case2DisplayedPivotCol n hS hcont)) :=
+    case2DisplayedPivotColComplement_isEmpty_of_width_next_eq hS hcont hwidth
+  simp
+
+/-- Matrix-valued form of
+`case2DisplayedPaperCprimeTop_apply_of_width_next_eq`. -/
+theorem case2DisplayedPaperCprimeTop_eq_sourceRow_of_width_next_eq
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedPaperCprimeTop n hS hcont residual C =
+      fun _ a ↦ C (J + 1) a := by
+  ext i a
+  cases i
+  exact case2DisplayedPaperCprimeTop_apply_of_width_next_eq
+    n hS hcont hwidth residual C a
+
 /-- The lower rows of Aoyagi's displayed Case 2 transported following factor
 `C' = Q⁻¹ C`, in pivot-first coordinates. -/
 def case2DisplayedPaperCprimeTail
@@ -10972,6 +11004,17 @@ theorem case2DisplayedSourceTerminalCprimeCandidate_pivotRow
   simp [case2DisplayedSourceTerminalCprimeCandidate,
     case2DisplayedPaperTerminalCnext]
 
+/-- Original source following rows `1,...,J+1`, indexed by the terminal source
+row type.
+
+This matrix is chart-independent.  It becomes the stopped terminal `C'`
+candidate only in the actual-width column-exhausted subcase, where the
+transported pivot row has no post-pivot column correction. -/
+def case2DisplayedSourceTerminalOriginalRows
+    {τ R : Type*} {J : ℕ} (C : ℕ → τ → R) :
+    Matrix (case2SourceTerminalRowIndex J) τ R :=
+  fun i a ↦ C i.1 a
+
 /-- A supplied terminal matrix equal to the old source rows and surviving
 pivot row is exactly the source-row terminal `C'` candidate.
 
@@ -10999,6 +11042,27 @@ theorem case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
       hold iold a]
   · cases u
     simp [e, case2DisplayedSourceTerminalCprimeCandidate_pivotRow, hpiv a]
+
+/-- In the actual-width column-exhausted subcase, the source-row terminal `C'`
+candidate is just the original source following rows `1,...,J+1`. -/
+theorem case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_of_width_next_eq
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C =
+      case2DisplayedSourceTerminalOriginalRows (J := J) C := by
+  refine
+    case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
+      n hS hcont residual C
+      (case2DisplayedSourceTerminalOriginalRows (J := J) C) ?_ ?_
+  · intro i a
+    simp [case2DisplayedSourceTerminalOriginalRows]
+  · intro a
+    simpa [case2DisplayedSourceTerminalOriginalRows] using
+      (case2DisplayedPaperCprimeTop_apply_of_width_next_eq
+        n hS hcont hwidth residual C a).symm
 
 /-- Supplied bridge data identifying a terminal source matrix with the
 source-row terminal `C'` candidate.
@@ -11034,6 +11098,27 @@ theorem cprimeCandidate_eq
       bridge.Cterm :=
   case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
     n hS hcont residual C bridge.Cterm bridge.oldRow bridge.pivotRow
+
+/-- Actual-width column exhaustion supplies a terminal `C'` bridge whose
+terminal matrix is the original source following rows `1,...,J+1`.
+
+This is not a general chart-production theorem.  It uses exactly
+`n(S+1)=J+1`, so the top row of `Q⁻¹ C` has no post-pivot column correction. -/
+def of_originalRows_width_next_eq
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    SuppliedTerminalCprimeBridge n hS hcont residual C where
+  Cterm := case2DisplayedSourceTerminalOriginalRows (J := J) C
+  oldRow := by
+    intro i a
+    simp [case2DisplayedSourceTerminalOriginalRows]
+  pivotRow := by
+    intro a
+    simpa [case2DisplayedSourceTerminalOriginalRows] using
+      (case2DisplayedPaperCprimeTop_apply_of_width_next_eq
+        n hS hcont hwidth residual C a).symm
 
 end SuppliedTerminalCprimeBridge
 
@@ -12511,6 +12596,66 @@ theorem exists_oldTopSourceSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_o
   exact
     exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont
       data κ hSuffix hstop residual C Ctail bridge
+
+/-- Source old-top/source suffix theorem in the actual-width terminal branch,
+with terminal `C'` specialized to the original source rows `1,...,J+1`.
+
+This consumes only the column-exhaustion bridge
+`SuppliedTerminalCprimeBridge.of_originalRows_width_next_eq`.  It still does
+not construct the old top multiplier, suffix product, chart coverage,
+Jacobian arithmetic, normal crossings, or RLCT extraction. -/
+theorem exists_oldTopSourceSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeight
+              (case2DisplayedSourceOldTopWeight pre)
+              (data.terminalRelabelPost.weight (J + 1)) *
+            case2DisplayedSourceTerminalOriginalRows C) *
+              sourceSuffixProduct κ Ctail S hSuffix) :=
+  data.exists_oldTopSourceSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth
+    κ hSuffix hwidth residual C Ctail
+    (SuppliedTerminalCprimeBridge.of_originalRows_width_next_eq
+      n data.stage_pos data.continuation hwidth residual C)
 
 /-- Actual-width source-model wrapper for the terminal product whose surviving
 pivot weight is read from the relabelled `(S+1,0)` post-state.

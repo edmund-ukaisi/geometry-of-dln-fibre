@@ -2480,3 +2480,27 @@ This is still not chart production.  In the row-exhausted wide-next case,
 actual rows beyond `M(S+1)` belong to the transported following factor but not
 to the terminal prefix object.  No recurrence/exponent relabel is inferred
 from prefix exhaustion.
+
+## 2026-06-20 Lean Case 2 actual-width original-row terminal bridge
+
+Reproduction:
+`reproduction-case2-terminal-frontier-bridges-a4.md`.
+Statement card:
+`statement-card-a4-case2-terminal-frontier-bridges.md`.
+Review artifact:
+`review-case2-terminal-frontier-bridges-a4.md`.
+
+Lean now specializes the supplied terminal bridge in the actual next-width
+exhausted subcase `n(S+1)=J+1`.  The displayed pivot-column complement is
+empty, so the top row of `Q^-1 C` is exactly the original source row
+`C(J+1,-)`.  Therefore the source-row terminal `C'` candidate is the original
+source following rows `1..J+1`, and
+`SuppliedTerminalCprimeBridge.of_originalRows_width_next_eq` supplies the
+bridge with that concrete terminal matrix.
+
+The relabelled source old-top/source suffix theorem is also specialized to
+this original-row terminal matrix.  This is only the actual-width
+column-exhausted branch; it is not a theorem for failed next-continuation
+alone, prefix exhaustion, or the row-exhausted wide-next case, and it does not
+prove chart coverage, Jacobian arithmetic, normal crossings/RLCT, termination,
+transition invariance, or automatic Case 2 gap/tail transport.

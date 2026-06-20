@@ -1531,8 +1531,14 @@ terminal-prefix product and the stopped source old-top/source suffix theorem
 through the supplied terminal `Cterm`, including the prefix-row form.  Lean now
 also expands the top row of Aoyagi's transported following factor `Q^-1 C`
 entrywise as `C(J+1,-)` plus the displayed pivot-row sum over the post-pivot
-columns.  This defines the next proof obligation exactly: construct that
-bridge from the displayed source chart.
+columns.  Under actual-width exhaustion `n(S+1)=J+1`, that post-pivot column
+sum is empty, so the terminal `C'` candidate is the original source rows
+`1..J+1`; Lean packages this as
+`SuppliedTerminalCprimeBridge.of_originalRows_width_next_eq` and specializes
+the relabelled old-top/source-suffix theorem to those rows.  The remaining
+bridge-construction obligation is therefore for the non-column-exhausted
+stopped frontier or for fuller chart-production data beyond this actual-width
+subcase.
 
 ## Drift guard
 

@@ -80,6 +80,32 @@ The top row of `Q^-1 C_J^(S+1)` is elementary.  Since
 Lean records this as `case2DisplayedPaperCprimeTop_apply`, with the finite
 sum indexed by the displayed pivot-column complement.
 
+In the actual next-width exhausted subcase
+
+```text
+M^(S+1) = J+1,
+```
+
+the post-pivot column set is empty.  The correction sum therefore vanishes:
+
+```text
+(Q^-1 C)_J+1,a = C_J+1,a.
+```
+
+This is stronger than the general supplied handoff, but only on the
+actual-width side.  The terminal matrix indexed by `{1,...,J+1}` may then be
+taken to be the original source rows
+
+```text
+Cterm(i,-) = C(i,-)                         for i=1,...,J+1.
+```
+
+This is the finite calculation behind
+`SuppliedTerminalCprimeBridge.of_originalRows_width_next_eq`.  It must not be
+weakened to failed next-continuation alone: a row-exhausted stopped branch can
+still have post-pivot actual columns, and then the displayed sum above is
+genuine.
+
 Then `Cterm` is exactly the existing terminal `C'` candidate.  Consequently
 the terminal product candidate rewrites as
 
@@ -121,15 +147,21 @@ The supplied terminal matrix handoff is:
 ```text
 case2DisplayedSourceTerminalCprimeCandidate_oldRow
 case2DisplayedSourceTerminalCprimeCandidate_pivotRow
+case2DisplayedPaperCprimeTop_apply_of_width_next_eq
+case2DisplayedPaperCprimeTop_eq_sourceRow_of_width_next_eq
+case2DisplayedSourceTerminalOriginalRows
+case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_of_width_next_eq
 SuppliedTerminalCprimeBridge
 case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
 case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul
 SuppliedTerminalCprimeBridge.cprimeCandidate_eq
+SuppliedTerminalCprimeBridge.of_originalRows_width_next_eq
 SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul
 SuppliedTerminalCprimeBridge.cprimePrefixCandidate_eq
 SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul
 exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont
 exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont
+exists_oldTopSourceSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth
 ```
 
 ## Boundaries
@@ -137,6 +169,8 @@ exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_n
 - These are row-index and row-equation bridges only.
 - They do not prove chart production of `C'^(S+1)`.
 - They do not identify actual rows beyond `M(S+1)` with terminal prefix rows.
+- The original-row bridge requires actual next-width exhaustion
+  `M^(S+1)=J+1`; failed continuation or prefix exhaustion alone is not enough.
 - They do not relabel recurrence/exponent domains except under the separate
   actual-width exhaustion theorem already proved.
 - They do not prove chart coverage, coordinate regularity, Jacobian

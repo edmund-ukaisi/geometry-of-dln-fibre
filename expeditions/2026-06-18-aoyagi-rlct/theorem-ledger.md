@@ -1512,6 +1512,32 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-terminal-relabel-weight-candidate-a4.md`.
 
+Latest A4 update: the Case 2 actual-width original-row terminal bridge has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are
+`Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperCprimeTop_apply_of_width_next_eq`,
+`Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperCprimeTop_eq_sourceRow_of_width_next_eq`,
+`Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalOriginalRows`,
+`Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_of_width_next_eq`,
+`Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.of_originalRows_width_next_eq`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_oldTopSourceSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth`.
+This checkpoint uses actual next-width exhaustion `n(S+1)=J+1` to empty the
+displayed pivot-column complement, so the top row of `Q^-1 C` is the original
+source row `C(J+1,-)`.  Consequently the terminal `C'` bridge can be
+instantiated with the original source rows `1..J+1`, and the relabelled
+old-top/source-suffix terminal theorem can be stated with those rows directly.
+It does not generalize to failed next-continuation, prefix exhaustion, or the
+row-exhausted wide-next branch, and it does not prove chart coverage,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, automatic Case 2 gap/tail transport, or printed-vector repair.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-terminal-frontier-bridges-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-terminal-frontier-bridges.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-terminal-frontier-bridges-a4.md`.
+
 Latest A4 update: the Case 2 source-chart terminal model constructor has
 landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
 name is

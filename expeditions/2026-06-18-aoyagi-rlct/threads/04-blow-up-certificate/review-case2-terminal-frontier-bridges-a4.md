@@ -43,3 +43,21 @@ No blocking Lean/API issues were found.
 The bridges move the formal frontier but do not produce Aoyagi's chart
 coordinates.  A future theorem must construct the supplied terminal matrix
 and prove the old-row and pivot-row equations from the displayed source chart.
+
+## 2026-06-20 Actual-Width Original-Row Addendum
+
+No blocking source/math or Lean/API issues were found in the actual-width
+original-row specialization.
+
+- The specialization is scoped to `n(S+1)=J+1`.
+- It uses only the empty displayed pivot-column complement to kill the
+  correction sum in the top row of `Q^-1 C`.
+- It correctly identifies that top row with the original source row
+  `C(J+1,-)`.
+- The downstream original-row terminal theorem remains a bridge consumer and
+  does not claim chart production, suffix construction, Jacobian arithmetic,
+  normal crossings, or RLCT extraction.
+
+Residual caveat: this addendum reviews the local actual-width exhausted Case 2
+bridge and its immediate consumer.  It does not certify the broader chart
+coverage or RLCT pipeline.

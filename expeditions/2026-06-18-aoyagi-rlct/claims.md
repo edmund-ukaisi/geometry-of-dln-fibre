@@ -1432,7 +1432,13 @@ No such claim is formalisation-ready until both fields are filled.
   terminal prefix rows, proves its product form, expands the top row of
   `Q^-1 C` as `C(J+1,-)` plus the displayed pivot-row sum over post-pivot
   columns, and records the row-equation handoff for a supplied terminal
-  matrix. The bridge is now consumed by both
+  matrix. Under actual-width exhaustion `n(S+1)=J+1`, the pivot-column
+  complement is empty, so the top row is exactly the original source row
+  `C(J+1,-)`. Lean now instantiates `SuppliedTerminalCprimeBridge` with the
+  original source rows `1..J+1` and specializes the relabelled
+  old-top/source-suffix theorem to those rows. This actual-width specialization
+  does not apply to failed continuation, prefix exhaustion, or row-exhausted
+  wide-next cases. The bridge is now consumed by both
   the source-row terminal product and the terminal-prefix product, and by the
   stopped source old-top/source suffix theorem in source-row and prefix-row
   form. It does not construct
