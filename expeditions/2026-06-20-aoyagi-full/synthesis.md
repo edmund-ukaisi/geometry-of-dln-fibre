@@ -49,6 +49,36 @@ just-certified contract; the import-ordering around deepestPoint deserves care, 
   normal-crossing form gives the RLCT statement" boundary depends on reading "RLCT statement" as Watanabe's
   full (λ AND multiplicity) theorem vs λ-only. Flag, don't block.
 
+## R1 design BANKED (pp, thread 14) + R3b DECISION
+
+pp mapped the mountain (`threads/14-r1-design/r1-design.md`; decorrelated Codex, one correction adopted).
+- **Value/atlas split.** Separate the RLCT VALUE from the explicit CHART ATLAS the statement names.
+  - VALUE: `rlctAt(‖∏C‖²) = ½·min_t Mval(t)`, pinned by codim S(t)=Mval (thread-03, proven gen-L) +
+    {∏C=0}=⋃S(t) + divisor-ratio telescoping. No chart enumeration needed for the value.
+  - ATLAS (ι,φᵢ,k,h): Aoyagi's iterated affine blow-ups (coordinate-subspace; explicit substitutions).
+- **Codex correction (adopted, bedrock-sharpening):** prefix-stratum partition is right for the VALUE but
+  TOO COARSE for a literal atlas — center {rank≤t} is singular along {rank≤t−1}; the smooth resolution
+  refines strata by the FULL rank-pattern r_{ab}=rank(C^a···C^b), not just prefix ranks. ⇒ "each minimizing
+  chart ↔ one prefix stratum" is TOO STRONG; the R1↔Adm match is VALUE-level only (min-chart-ratio = ½ min
+  Mval). Corrects design-spec §9.3 + thread-03 (pp patching as wind-down).
+- **Lean-tractability reversal (adopted):** Aoyagi's affine recursion is the MOST tractable atlas (vs
+  flag/quiver determinantal-resolution + SNC — far heavier). Anti-treadmill-safe: value from §3-codim, NOT
+  the bookkeeping.
+- **Per-chart exponents (reusable core, verified):** each pivot blow-up = single-rank-drop smooth center ⇒
+  F order exactly 2 ⇒ k=1; smooth codim-c ⇒ Jacobian u^{c−1} ⇒ h=c−1; ratio c/2. Single-step codims
+  TELESCOPE to codim S(t)=Mval. (2,2,2) δ-chart (k,h)=(1,2)→3/2 matches thread-03.
+- **No hidden hypotheses** (Codex §4): char-0 auto, positive widths, r≤min M⁽ˢ⁾ from hB; no genericity, no
+  width inequality. Frobenius → any PD form. Toric/Newton route DEAD (Codex torus-zero counterexample).
+
+**DECISION (controller, within standing authority): R3b — self-contained, one-citation.** R3a (cite
+Lehalleur–Rimányi `rlct=codim/2`, arXiv:2411.19920) is OUT: violates (1) the one-citation scope (codim is
+THE new content, must be PROVEN) AND (2) the Aoyagi-independence constraint. No operator gate (R3b is the
+default); surfaced to operator as informational, override-able. R1's value PROVEN via atlas + telescoping + S2.
+
+**R1 formalisation ladder (pp):** 1. (1,1,1) [=fm-2 bridge #12]. 2. divisor-ratio lemma (reusable core).
+3. codim S(t)=Mval (thread-03). 4. atlas (Aoyagi affine branches) + assembly [THE mountain, general-L].
+5. cover. Steps 1–3 tractable+reusable; step 4 is the heavy lift; small cases = validation gate.
+
 ## WIN — λ-citation ELIMINABLE (banked @22f5dfe)
 Monomial threshold-half directly provable from Mathlib (Fubini + `intervalIntegral.integrableOn_Ioo_rpow_iff`);
 demonstrated axiom-free for (1,1,1). General = labour, no wall. So λ can beat the one-citation target; only

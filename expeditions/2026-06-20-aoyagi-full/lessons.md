@@ -66,3 +66,23 @@ identification (pp + decorrelated Codex, exact-algebra):
   monotonicity), L2 `rlctAt(deepestPoint) = aoyagiLambda`. Lowest proof surface, zero over-claim, no
   gauge/orbit lemma needed. General lesson: when a "the special point(s)" set is subtle/non-unique, key the
   statement to ONE constructed witness, not a ∀-over-the-set predicate.
+
+## 2026-06-20 — R1: don't conflate the codim-minimisation stratification with the chart atlas
+
+The prefix-rank stratification `{rank(∏_{≤j}C)=tⱼ}` computes the RLCT VALUE (codim S(t)=Mval, min over t),
+but it is NOT the chart atlas: a determinantal center `{rank≤t}` is singular along `{rank≤t−1}`, so a smooth
+log-resolution refines the strata by the FULL interval rank-pattern `r_{ab}=rank(C^a···C^b)` — each
+minimizing chart does NOT correspond to a single prefix stratum (charts are strictly finer). So:
+- VALUE (`½ min_t Mval`) and ATLAS (explicit normal-crossing charts) are SEPARATE deliverables: pin the
+  value via codim (chart-free), build the atlas only to witness the statement's `∃`.
+- "each minimizing chart ↔ one prefix stratum" / "R1↔Adm is a chart bijection" are OVER-STRONG; the R1↔Adm
+  match is VALUE-level (min-chart-ratio = ½ min Mval). (Caught by decorrelated Codex BEFORE any formalisation
+  built on it — corrects design-spec §9.3 + thread-03.)
+- Anti-treadmill corollary: Aoyagi's recursive affine blow-ups ARE the tractable Lean atlas, BUT the value
+  must come from the codim stratification, not the blow-up bookkeeping — never make the bookkeeping the
+  content (that was the prior expedition's treadmill).
+- Dead ends recorded: toric/Newton-polytope route (nondegeneracy fails — Codex torus-zero counterexample);
+  flag/quiver determinantal resolution (correct but far heavier to formalise than Aoyagi's recursion).
+- **Citation discipline reaffirmed:** citing `rlct = codim/2` (R3a, Lehalleur–Rimányi arXiv:2411.19920) was
+  rejected — it would cite away THE new content (codim) and breach the Aoyagi-independence constraint. The
+  geometric codim must be PROVEN (R3b). A tempting one-line shortcut that violates scope is still out.
