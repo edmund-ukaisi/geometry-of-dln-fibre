@@ -247,6 +247,12 @@ objects are `AoyagiSelectedCutpoints`, `AoyagiSelectedCutpoints.point`,
 `AoyagiSelectedCutpoints.not_block_terminalEndpoint`,
 `AoyagiLemma5Eq4PiecewiseSourceVector`,
 `aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector`,
+`aoyagiLemma5Eq4_boundaryIndex_lt_ell_iff`,
+`aoyagiLemma5Eq4_boundaryIndex_eq_ell_iff`,
+`aoyagiLemma5Eq4_boundaryEndpoint_mem_block_of_strictGuard`,
+`aoyagiLemma5Eq4_boundaryEndpoint_mem_selectedSpan_of_strictGuard`,
+`aoyagiLemma5Eq4_boundaryEndpoint_eq_terminal_of_predBoundary`,
+`aoyagiLemma5Eq4_boundaryEndpoint_not_block_of_predBoundary`,
 `AoyagiLemma5Eq4SelectedSpanBranchValue`,
 `aoyagiLemma5Eq4_branchValue_of_block`,
 `aoyagiLemma5Eq4_selectedSpan_branchValue`,
@@ -264,8 +270,14 @@ boundary says a supplied endpoint extension to `Htilde'_ell` is zero, without
 proving terminal-vector realisation.  The supplied certificate now carries
 the source-boundary guards `a<=ell` and `p+1<=a`, and Lean records the
 consequence `p+(ell-a)+1<=ell` so the displayed boundary is not accepted only
-through the totalized `point` fallback.  Reproduction:
+through the totalized `point` fallback.  Lean also records the strict versus
+terminal split: `p+1<a` puts the boundary in the next selected block and
+inside the half-open selected span, while `p+1=a` identifies it with the
+terminal endpoint and excludes it from every half-open selected block.
+Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-piecewise-certificate-a5.md`.
+Boundary-split reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-boundary-split-a5.md`.
 Selected-block bookkeeping reproduction:
 `threads/05-arithmetic-tail/reproduction-selected-block-bookkeeping-a5.md`.
 Selected-block coverage reproduction:
@@ -280,6 +292,8 @@ Selected-span statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-selected-span-branch-value.md`.
 Terminal endpoint statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-endpoint-boundary.md`.
+Boundary-split statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-boundary-split.md`.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-piecewise-certificate-a5.md`.
 Selected-block review:

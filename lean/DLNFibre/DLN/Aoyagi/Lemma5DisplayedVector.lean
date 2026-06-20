@@ -1,3 +1,4 @@
+import DLNFibre.DLN.Aoyagi.Lemma5IntervalArithmetic
 import DLNFibre.DLN.Aoyagi.HtildeChainArithmetic
 
 /-!
@@ -223,6 +224,57 @@ theorem aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector
   have ha : a ≤ ell := hT.a_le_ell
   have hp : p + 1 ≤ a := hT.indexGuard
   omega
+
+/-- In the strict equation `(4)` boundary case, the displayed boundary point is
+the left endpoint of the next selected block. -/
+theorem aoyagiLemma5Eq4_boundaryEndpoint_mem_block_of_strictGuard
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp_strict : p + 1 < a) :
+    C.block (p + (ell - a) + 1) (C.point (p + (ell - a) + 1) - 1) := by
+  have hlt :
+      p + (ell - a) + 1 < ell :=
+    (aoyagiLemma5Eq4_boundaryIndex_lt_ell_iff ell a p hT.a_le_ell).2 hp_strict
+  exact C.leftEndpoint_mem_block hlt
+
+/-- In the strict equation `(4)` boundary case, the displayed boundary point
+lies in the half-open selected span. -/
+theorem aoyagiLemma5Eq4_boundaryEndpoint_mem_selectedSpan_of_strictGuard
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp_strict : p + 1 < a) :
+    C.point 0 - 1 ≤ C.point (p + (ell - a) + 1) - 1 ∧
+      C.point (p + (ell - a) + 1) - 1 < C.point ell - 1 := by
+  exact C.block_mem_selectedSpan
+    (aoyagiLemma5Eq4_boundaryEndpoint_mem_block_of_strictGuard
+      ell a p M m C layerWidth T hT hp_strict)
+
+/-- In the terminal equation `(4)` boundary case, the displayed boundary point
+is the terminal selected endpoint. -/
+theorem aoyagiLemma5Eq4_boundaryEndpoint_eq_terminal_of_predBoundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp : p + 1 = a) :
+    C.point (p + (ell - a) + 1) - 1 = C.point ell - 1 := by
+  have hidx :
+      p + (ell - a) + 1 = ell :=
+    (aoyagiLemma5Eq4_boundaryIndex_eq_ell_iff ell a p hT.a_le_ell).2 hp
+  rw [hidx]
+
+/-- In the terminal equation `(4)` boundary case, the displayed boundary point
+is not in any half-open selected block. -/
+theorem aoyagiLemma5Eq4_boundaryEndpoint_not_block_of_predBoundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp : p + 1 = a) {b : ℕ} :
+    ¬ C.block b (C.point (p + (ell - a) + 1) - 1) := by
+  rw [aoyagiLemma5Eq4_boundaryEndpoint_eq_terminal_of_predBoundary
+    ell a p M m C layerWidth T hT hp]
+  exact C.not_block_terminalEndpoint
 
 /-- Branch-value alternatives for Aoyagi Lemma 5 equation `(4)` on the selected
 span.

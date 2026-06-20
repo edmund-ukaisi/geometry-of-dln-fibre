@@ -51,6 +51,24 @@ theorem aoyagiLemma5Eq4_selectedIndexGuard_iff
     p + (ell - a) + 2 ≤ ell + 1 ↔ p + 1 ≤ a := by
   omega
 
+/-- Strict form of the equation `(4)` selected-boundary guard.
+
+Under `a<=ell`, the boundary index `p+(ell-a)+1` is strictly before the
+terminal selected index `ell` exactly when `p+1<a`. -/
+theorem aoyagiLemma5Eq4_boundaryIndex_lt_ell_iff
+    (ell a p : ℕ) (ha : a ≤ ell) :
+    p + (ell - a) + 1 < ell ↔ p + 1 < a := by
+  omega
+
+/-- Terminal form of the equation `(4)` selected-boundary guard.
+
+Under `a<=ell`, the boundary index `p+(ell-a)+1` is the terminal selected
+index `ell` exactly when `p+1=a`. -/
+theorem aoyagiLemma5Eq4_boundaryIndex_eq_ell_iff
+    (ell a p : ℕ) (ha : a ≤ ell) :
+    p + (ell - a) + 1 = ell ↔ p + 1 = a := by
+  omega
+
 /-- The selected-index guard needed by Aoyagi Lemma 5 equation `(3)`.
 
 With `c = ell-a`, the displayed special cutoff `S_(c+2)` lies in the selected

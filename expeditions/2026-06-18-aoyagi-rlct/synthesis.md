@@ -1963,8 +1963,11 @@ from a supplied equation `(4)` piecewise certificate.  The certificate now
 carries `a<=ell` and `p+1<=a`, and
 `aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector` records
 `p+(ell-a)+1<=ell`, so the displayed boundary is an in-range selected
-cutpoint rather than only a totalized accessor value.  Combining this with the
-selected-span coverage theorem gives
+cutpoint rather than only a totalized accessor value.  The boundary split is
+also Lean-proved: `p+1<a` puts the boundary at the left endpoint of the next
+selected block and inside the half-open selected span, while `p+1=a` makes it
+the terminal selected endpoint and excludes it from every selected block.
+Combining this with the selected-span coverage theorem gives
 `aoyagiLemma5Eq4_selectedSpan_branchValue`: every
 `S_1-1 <= S < S_(ell+1)-1` has one of the advertised supplied branch values.
 The boundary singleton `S_(p+ell-a+2)-1` remains separate from the strict tail

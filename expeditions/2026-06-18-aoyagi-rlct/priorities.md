@@ -645,9 +645,12 @@ on the session's original cwd.
    Equation `(4)` now has its terminal-collision arithmetic Lean-proved too:
    when `p+1=a`, the supplied branch value at `S_(ell+1)-1` is
    `M-W_(ell+1)-p+1`, so zero requires the extra last-width condition
-   `W_(ell+1)=M-p+1`.  The next A5 move should either build a richer supplied
-   Case 1(2) terminal convention explicitly, or move to another finite
-   consequence below the displayed-family realisation boundary.
+   `W_(ell+1)=M-p+1`.  The strict-versus-terminal boundary split is also
+   Lean-proved: `p+1<a` puts the boundary in the next selected block and
+   selected span, while `p+1=a` makes it terminal and outside all selected
+   blocks.  The next A5 move should either build a richer supplied Case 1(2)
+   terminal convention explicitly, or move to another finite consequence below
+   the displayed-family realisation boundary.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

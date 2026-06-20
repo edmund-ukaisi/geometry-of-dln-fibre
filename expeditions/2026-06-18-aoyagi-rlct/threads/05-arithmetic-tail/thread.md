@@ -979,3 +979,35 @@ displayed terminal-collision value is `1`.
 This is finite endpoint arithmetic only.  It does not construct equation
 `(4)`'s displayed vector, prove terminal `tilde t=0`, or prove Lemma 5's
 chart-family/order-count theorem.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` boundary split
+
+Reproduction:
+`reproduction-lemma5-eq4-boundary-split-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-boundary-split.md`.
+Review artifact:
+`review-lemma5-eq4-boundary-split-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_boundaryIndex_lt_ell_iff
+aoyagiLemma5Eq4_boundaryIndex_eq_ell_iff
+aoyagiLemma5Eq4_boundaryEndpoint_mem_block_of_strictGuard
+aoyagiLemma5Eq4_boundaryEndpoint_mem_selectedSpan_of_strictGuard
+aoyagiLemma5Eq4_boundaryEndpoint_eq_terminal_of_predBoundary
+aoyagiLemma5Eq4_boundaryEndpoint_not_block_of_predBoundary
+```
+
+Under `a<=ell`, the equation `(4)` boundary index
+`p+(ell-a)+1` is strictly before the terminal selected index exactly when
+`p+1<a`, and it is terminal exactly when `p+1=a`.  For a supplied equation
+`(4)` certificate, the strict case puts the boundary point in selected block
+`p+(ell-a)+1` and hence inside the half-open selected span.  The terminal case
+identifies the boundary with `S_(ell+1)-1` and excludes it from all selected
+blocks.
+
+This is finite boundary bookkeeping only.  It does not construct equation
+`(4)`'s displayed vector, prove terminal `tilde t=0`, or prove Lemma 5's
+chart-family/order-count theorem.
