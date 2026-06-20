@@ -90,39 +90,55 @@ All headlines axiom-clean `[propext, Classical.choice, Quot.sound]`; whole libra
 > - **Status.** sorry-free; non-vacuity witness in-file (`M_{[0,1]} ⇝ M_{[0,0]} ⊕ M_{[1,1]}` riding
 >   `M_{[1,2]}` as `rest`, over `ℚ`). Axiom-clean.
 
-## Gap (named, partly scaffolded — thread 109): the NON-SPLIT move
+## 4. The NON-SPLIT move `M_{[a,e]} ⊕ M_{[c,b]} ⇝ M_{[a,b]} ⊕ M_{[c,e]}` (`a < c ≤ b < e`) — CLOSED (thread 109, @ `3dcdc23`)
 
-The **non-split** move (`a < c ≤ b < e`, `M_{[a,e]} ⊕ M_{[c,b]} ⇝ M_{[a,b]} ⊕ M_{[c,e]}`, dim-2
-overlap on `[c,b]`) is the 2-strand recombination. **Scaffolding LANDED** (@ `b61c5a3`, sorry-free):
+> **Claim (non-split §4 list headline).** Over an infinite field, for `a < c ≤ b.castSucc`,
+> `b.succ ≤ e` and arbitrary `rest`: the flattening of the downstairs
+> `intervalDirectSum ((a,b) :: (c,e) :: rest)` (transported onto the upstairs dimension vector, which
+> the move preserves) lies in the Zariski closure of the orbit of the upstairs
+> `(M_{[a,e]} ⊕ M_{[c,b]}) ⊕ rest`.
+>
+> - **Lean:** `DLNFibre.Core.nonsplitMove_intervalDirectSum_mem_closure` (@ `3dcdc23`).
+> - **Proved.** The full §4 headline for the non-split case, arbitrary `rest`. Axiom-clean
+>   `[propext, Classical.choice, Quot.sound]`.
+> - **Scope (caveat next to claim).** The orbit base is written `dirSum (dirSum M_{[a,e]} M_{[c,b]})
+>   (intervalDirectSum rest)` — the upstairs `Lup = (a,e) :: (c,b) :: rest` with the two-interval move
+>   part **left-associated** (the §4 `Lup` up to a `dirSum` re-association / dim-vector `+0`, not
+>   yet reassociated to the right-nested `intervalDirectSum Lup`).
+> - **Status.** sorry-free; non-vacuity witnesses in-file (the `(1,2,1)` recombination over `ℚ`:
+>   `splice_mem_orbit_U2` for `λ ≠ 0`, and the headline with empty `rest`).
 
-- `splice a c e b λ : Tuple (intervalDim a e + intervalDim c b.castSucc)` — the upstairs `M_{[a,e]} ⊕
-  M_{[c,b]}` with the single edge `b` overwritten by the recombination row `[λ, 1]` (long strand
-  `finSumFinEquiv inl` ↦ `λ`, short `inr` ↦ `1`). **Defined entrywise** (scalar-level branch on the
-  edge) so it is dimension-agnostic — no `fromBlocks`/`▸` at the edge, sidestepping the worst
-  `finSumFinEquiv` trap. Verified-in-file: `splice 0 1 2 1` has the `(1,2,1)` witness dim vector and the
-  `[λ,1]` row matching `boxMoveWitnessFamily`'s `[t,1]`.
-- `submult_concat` (general sub-product splitter `submult i j = submult m j · submult i m`),
-  `splice_apply_ne` (off-edge agreement with `U₂ = dirSum M_{[a,e]} M_{[c,b]}`),
-  `submult_splice_below` / `submult_splice_above` (segments off edge `b` = upstairs), and the **crossing
-  factorization** `submult_splice_cross` (`submult (splice λ) i j = submult U₂ (b+1) j · (splice λ b) ·
-  submult U₂ i b` for `i ≤ b < j`).
+The recombination family is `splice a c e b λ` (the upstairs `U₂ = M_{[a,e]} ⊕ M_{[c,b]}` with the
+single edge `b` overwritten by the row `[λ, 1]`, defined **entrywise** — dimension-agnostic, no
+`fromBlocks`/`▸` at the edge). The crux was the **crossing rank** `rankPattern (splice λ) i j` for
+`i ≤ b.castSucc < b.succ ≤ j`:
 
-**Residual gap (the crux):** the crossing-rank computation `rankPattern (splice λ) i j` for `i ≤ b < j`
-— rank `≤ 1` (target dim, proven-in-scratch) and `1`/`0` by the nonzero recombination entry. The math is
-settled (sympy-certified, thread 22/24): `rankPattern (splice λ) = [a≤i∧j≤e] + [c≤i∧j≤b]` (upstairs) for
-`λ ≠ 0`, `= [a≤i∧j≤b] + [c≤i∧j≤e]` (downstairs) for `λ = 0`. The crossing product is `above · recomb ·
-below` with `above = const 1` (1×1, for `j ≤ e`), so it reduces to `recomb · below`; the nonzero-entry
-characterization is `(λ≠0 ∧ a≤i) ∨ c≤i` (modulo `j≤e`). Verified-in-scratch: `rank ≤ 1`, `above = const
-1`, the two recomb/`below` column-entry values — the route is confirmed, the residual is the **heavy
-symbolic `Fin`-index entry computation** (~150–250 lines: per-column entry lemmas + the rank-0 cases +
-assembly into `rankPattern_splice` + `orbit_of_rankPattern_eq` + the list headline via the §3 transport
-wrapper). Reachable; NOT sorry-patched. The L6.4 assembly needs this for the generation chain L6.2
-(which uses both split and non-split covers); the split half is fully covered above.
+- **`rankPattern_splice_cross`** (the crux, @ `7f77134`): `= if j ≤ e ∧ ((λ ≠ 0 ∧ a ≤ i) ∨ c ≤ i)
+  then 1 else 0`. Upper bound `rank ≤ [j ≤ e]` via `rank_mul_le_left` + `rankPattern_dirSum` (no entry
+  work); the nonzero/zero split is four entry-level cases (`splice_cross_ne_zero_short/_long`,
+  `splice_recomb_below_zero_of_lam_zero/_no_long`). The reusable rank bricks
+  `matrix_eq_zero_of_rank_eq_zero` / `one_le_rank_of_ne_zero` and the four `reindex_fromBlocks_*` block
+  entry lemmas + `splice_edge_inl/inr` support it; entry sums reduced via
+  `← Equiv.sum_comp finSumFinEquiv` + `Fintype.sum_sum_type` (the Mathlib-idiomatic block-sum split).
+- **Full rank pattern** (@ `0a74527`): `rankPattern_splice_eq_U2_of_ne_zero` (λ≠0 ⟹ splice has U₂'s
+  rank pattern), `foldDim_nonsplit_eq` (the move preserves the dimension vector),
+  `rankPattern_splice_zero_eq_down` (λ=0 ⟹ splice 0 has the downstairs rank pattern). Range-by-range
+  (below/above off-edge via `submult_splice_below/_above`; crossing via the crux), closed by
+  `split_ifs <;> omega` on `Fin.val` order facts.
+- **Orbit + engine + headline** (@ `3dcdc23`): `splicePoly` (family carrying `X`),
+  `tupleEval_splicePoly`, `splice_mem_orbit_U2` / `splice_zero_orbit_down` (complete invariant
+  `orbit_of_rankPattern_eq`), `orbit_dirSum_splice_intervalDirectSum` (rest rides), then the
+  downstairs-transport + common-summand wrapper `mem_closure_dirSum_of_mem_closure_orbitEquiv` (§3).
 
-**Decorrelated design (Codex `gpt-5` xhigh, `codex/nonsplit-{prompt,answer}.md`):** confirmed the
-rank-pattern route (vs an explicit entrywise `P(t)`) is the lighter one and has no hidden bad `(i,j)`;
-recommended the entrywise `splice` (not `fromBlocks`) and the three-lemma sub-product split
-(below/above/crossing) — adopted.
+**Mathlib brick used for the rank-1 split:** not a single "`rank_le_one`" lemma — the upper bound is
+`Matrix.rank_mul_le_left` against the computable `rankPattern U₂` (≤ `[j≤e]`), and the lower bound is
+the nonzero-entry route `one_le_rank_of_ne_zero` (rank-0 ⟹ matrix-0 via `rank_eq_finrank_span_cols` +
+`Submodule.finrank_eq_zero` + `span_eq_bot`).
+
+**Decorrelated design (Codex `gpt-5-codex` high, `codex/crossing-rank-{prompt,answer}.md`; earlier
+`gpt-5` xhigh `codex/nonsplit-*`):** confirmed the rank-pattern route over an explicit `P(t)`, and the
+"`rank ≤ 1` (height) + nonzero-entry / matrix-is-zero" split with the landed block-entry lemmas —
+adopted.
 
 ## Design notes
 
