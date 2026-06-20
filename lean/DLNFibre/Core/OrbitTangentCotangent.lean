@@ -595,4 +595,53 @@ theorem exists_ringKrullDim_orbitRing_eq [IsAlgClosed k] (M : Tuple (k := k) d) 
   refine ⟨m.toNat, hmcast.symm, ?_⟩
   rw [hvar, ← hmcast, WithBot.unbotD_coe]
 
+/-- **R6 — `finrank k (m_M.Cotangent) = varietyDim Z_M`.** The cotangent finrank equals the variety
+dimension: L2a localization collapse (`m_M.Cotangent ≃ CotangentSpace (AtPrime m_M)` in `k`-finrank),
+the κ/k bridge (GAP2), M3 (smooth point: `finrank κ (CotangentSpace) = ringKrullDim (AtPrime m_M)`),
+GAP3 (`ringKrullDim (AtPrime m_M) = ringKrullDim (orbitRing M)`), and `varietyDim Z_M =
+ringKrullDim (orbitRing M)` (L6.4). -/
+theorem finrank_cotangent_eq_varietyDim [IsAlgClosed k] (M : Tuple (k := k) d) :
+    (finrank k ((normalFormIdeal M).Cotangent) : ℕ∞)
+      = varietyDim (canonicalCoord d '' orbitRankLocus M) := by
+  haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
+  haveI : (orbitIdeal M).IsPrime := isPrime_vanishingIdeal_orbitSet M
+  haveI : Algebra.IsSmoothAt k (normalFormIdeal M) := isSmoothAt_normalFormIdeal (k := k) M
+  obtain ⟨n, hdimA, hvar⟩ := exists_ringKrullDim_orbitRing_eq M
+  -- GAP3: `ringKrullDim (AtPrime m_M) = ringKrullDim (orbitRing M) = n`
+  have hdimLoc : ringKrullDim (Localization.AtPrime (normalFormIdeal M)) = (n : WithBot ℕ∞) := by
+    rw [ringKrullDim_localizationAtPrime_isMaximal_eq_fintype (orbitIdeal M) (normalFormIdeal M),
+      hdimA]
+  -- M3: `finrank κ (CotangentSpace (AtPrime m_M)) = n`
+  have hM3 : finrank (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M)))
+      (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) = n :=
+    finrank_cotangentSpace_eq_of_isSmoothAt (k := k) (A := orbitRing M) (normalFormIdeal M) hdimLoc
+  -- κ/k bridge (GAP2): `finrank k (CotangentSpace) = finrank κ (CotangentSpace)`
+  haveI : IsScalarTower k (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M)))
+      (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) := by
+    refine IsScalarTower.of_algebraMap_smul fun r x ↦ ?_
+    rw [IsScalarTower.algebraMap_apply k (Localization.AtPrime (normalFormIdeal M))
+        (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M))) r,
+      algebraMap_smul, algebraMap_smul]
+  have hbridge : finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M)))
+      = finrank (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M)))
+        (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) :=
+    finrank_eq_finrank_of_residueField_equiv (residueFieldAtPrimeNormalFormEquiv M)
+  -- L2a collapse: `finrank k (m_M.Cotangent) = finrank k (CotangentSpace (AtPrime m_M))`
+  have hcollapse : finrank k ((normalFormIdeal M).Cotangent)
+      = finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) :=
+    (finrank_cotangentSpace_localization_eq_cotangent (k := k) (normalFormIdeal M)).symm
+  rw [hcollapse, hbridge, hM3, hvar]
+
+/-! ## The A6.1 headline — `finrank (range δ⁰) ≤ varietyDim Z_M` -/
+
+/-- **A6.1 (the reverse inequality).** `finrank k (range δ⁰) ≤ varietyDim Z_M`: the orbit tangent
+image `range (deformationδ M M)` injects into the Zariski cotangent space at `M` (R2–R5), whose
+`k`-dimension is the variety dimension of the orbit closure `Z_M = canonicalCoord '' orbitRankLocus M`
+(R6). The char-free reverse of the A4 submersion bound; `[IsAlgClosed k]` from M3/L1. -/
+theorem finrank_range_deformationδ_le_varietyDim [IsAlgClosed k] (M : Tuple (k := k) d) :
+    (finrank k (LinearMap.range (deformationδ M M)) : ℕ∞)
+      ≤ varietyDim (canonicalCoord d '' orbitRankLocus M) := by
+  rw [← finrank_cotangent_eq_varietyDim M]
+  exact_mod_cast finrank_range_deformationδ_le_finrank_cotangent M
+
 end DLNFibre.Core
