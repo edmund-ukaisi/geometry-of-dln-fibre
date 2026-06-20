@@ -66,7 +66,9 @@ is PROVABLY complete (no 10th domain hole lurking) = BEDROCK. The domain-bug cla
 - **fm (algebra track)** — branch `worktree-rung0-defs` (Skeleton-only), based @1bb9e31 (I merge forward;
   no rebase needed — Skeleton independent of keystone). A1-clean + A1-lambdaCore(weak) + L1 + hr-fix DONE +
   MERGED @`2ee02b2`. NOW on `deepestPoint_exists` PROOF (reuses L1 adapted-basis) → then #19 lambdaCore-
-  strengthen (waits for pp's genuine statement). Trunk @`2ee02b2`: keystone + A1 + L1 + hr; Skeleton sorry 9.
+  strengthen (waits for pp's genuine statement). **Trunk @`296d3e4`: keystone + A1 + L1 + hr + hL; Skeleton
+  sorry 9.** hL MERGED; rv-2 running the FINAL bedrock re-audit (domain now provably complete → closes the
+  9-issue fidelity arc). fm now executing `deepestPoint_exists` PROOF (r=0 done; r>0 in progress).
 - **pp (design)** — R1 design DELIVERED + 2 increments (binding-divisor correction; value-match downgrade).
   Standing down on-demand; re-engage for R1 value-match execution when fm's L1 lands.
 - **rv-2 (review)** — green-gating keystone d7b1ba3; queued: re-audit the hr-corrected contract. Decorrelated.
