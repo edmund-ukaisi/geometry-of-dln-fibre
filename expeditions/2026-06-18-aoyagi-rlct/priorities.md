@@ -603,6 +603,11 @@ on the session's original cwd.
    selected-index guard `p+1<=a`, the own-coordinate guard `p<=ell-a`, and a
    terminal/tail convention before it can be claimed as a displayed source
    vector.
+   The selected-index guard, own-coordinate guard, and legal label bounds are
+   now packaged together as local equation `(4)` arithmetic.  The remaining
+   target is no longer local label/index arithmetic but the displayed vector:
+   terminal `tilde t=0`, branch coverage, and source vector-to-chain
+   correspondence.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

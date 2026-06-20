@@ -663,3 +663,33 @@ needs the selected-index guard `p+1<=a`, the own-coordinate guard
 `p<=ell-a`, terminal `tilde t=0`, and full displayed-family realisation.
 Equation `(3)`'s one-unit slack guard and full Lemma 5 order count remain
 open.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` local data
+
+Reproduction:
+`reproduction-lemma5-eq4-local-data-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-local-data.md`.
+Review artifact:
+`review-lemma5-eq4-local-data-a5.md`.
+
+Lean now packages the corrected local arithmetic data for equation `(4)`:
+
+```text
+aoyagiLemma5Eq4_localData_of_sourceSelectedInequality
+```
+
+Under Definition 3's selected-width hypotheses and guards
+`1<=p`, `p+1<=a`, and `p<=ell-a`, it proves:
+
+```text
+p + (ell-a) + 2 <= ell+1,
+Htilde'_p - p = Htilde_p,
+1 <= Htilde_p+1 <= W_(p+1).
+```
+
+This combines the selected-index repair, own-coordinate repair, and full
+label legality into one handoff theorem.  It is deliberately still not a
+displayed-vector theorem: terminal `tilde t=0`, vector admissibility,
+source vector-to-chain correspondence, chart-family coverage, and the Lemma 5
+order count remain open.

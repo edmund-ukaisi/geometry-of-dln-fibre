@@ -1866,6 +1866,13 @@ Consequently the previous prefix satisfies `P_p+1<=pM`, and the tail after
 bound `1<=Htilde_p+1<=W_(p+1)` follows for `1<=p`, `p<=a`.  This does not
 prove any terminal/vector realisation.
 
+The corrected local equation `(4)` arithmetic package is now Lean-proved:
+under Definition 3's selected-width hypotheses plus `1<=p`, `p+1<=a`, and
+`p<=ell-a`, the selected cutoff is in range, the own-coordinate value is
+`Htilde_p`, and the label `Htilde_p+1` is legal.  This is the strongest
+source-faithful local equation `(4)` arithmetic currently available; it still
+does not construct the displayed source vector or prove terminal `tilde t=0`.
+
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
 definitionally the next same-stage residual domains at `(S,J+1)`, and the

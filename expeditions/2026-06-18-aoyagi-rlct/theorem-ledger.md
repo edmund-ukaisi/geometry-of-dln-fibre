@@ -216,6 +216,19 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-definition3-selected-width-label-bounds-a5.md`.
 
+The corrected local equation `(4)` arithmetic package has also landed.  The
+proved Lean name is
+`aoyagiLemma5Eq4_localData_of_sourceSelectedInequality`.  Under Definition 3's
+selected-width hypotheses and guards `1<=p`, `p+1<=a`, and `p<=ell-a`, it
+packages the selected-index bound `p+(ell-a)+2<=ell+1`, the own-coordinate
+identity `Htilde'_p-p=Htilde_p`, and the legal label bounds
+`1<=Htilde_p+1<=W_(p+1)`.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-data-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-local-data.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-local-data-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

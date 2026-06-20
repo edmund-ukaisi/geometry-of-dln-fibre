@@ -1709,6 +1709,10 @@ No such claim is formalisation-ready until both fields are filled.
   `W_i<=M-1` for selected widths. Applying this bound to both the previous
   prefix and the tail after `P_(p+1)` discharges both equation `(4)` label
   bounds `1<=Htilde_p+1<=W_(p+1)` under `1<=p`, `p<=a`.
+  The corrected local equation `(4)` package now combines the selected-index
+  guard `p+1<=a`, own-coordinate guard `p<=ell-a`, and legal label bounds.
+  It remains a local arithmetic package, not a displayed-vector or terminal
+  `tilde t=0` theorem.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,

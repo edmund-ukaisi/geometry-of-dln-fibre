@@ -638,6 +638,38 @@ theorem aoyagiHtildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
   · exact aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
       ell a p M m hell ha hp0 hp_a hselected hsource
 
+/-- Corrected local arithmetic data for Aoyagi Lemma 5 equation `(4)`.
+
+Under the selected-index guard `p+1<=a` and the own-coordinate guard
+`p<=ell-a`, the displayed tail cutoff is in the selected list, the
+own-coordinate value is `Htilde_p`, and the source label
+`k=Htilde_p+1` is legal.
+
+This is only the local equation `(4)` arithmetic package.  It does not
+construct the displayed source vector, prove terminal `tilde t=0`, prove
+vector admissibility, or prove the Lemma 5 chart-family/order count. -/
+theorem aoyagiLemma5Eq4_localData_of_sourceSelectedInequality
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp0 : 1 ≤ p)
+    (hp_tail : p + 1 ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    p + (ell - a) + 2 ≤ ell + 1 ∧
+      aoyagiHtildeUpperNat ell a M m p - (p : ℤ) =
+        aoyagiHtildeLowerNat ell a M m p ∧
+      (1 ≤ aoyagiHtildeLowerNat ell a M m p + 1 ∧
+        aoyagiHtildeLowerNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p) := by
+  have hp_a : p ≤ a := by omega
+  constructor
+  · exact (aoyagiLemma5Eq4_selectedIndexGuard_iff ell a p ha).2 hp_tail
+  constructor
+  · exact aoyagiHtildeUpperNat_sub_index_eq_lowerNat_of_le_min
+      ell a p M m ha hp_a hp_c
+  · exact aoyagiHtildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
+      ell a p M m hell ha hp0 hp_a hselected hsource
+
 /-- In the interior case of equation `(3)`, the first upper/lower Htilde gap
 is exactly one.
 
