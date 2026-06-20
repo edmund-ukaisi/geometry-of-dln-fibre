@@ -11,6 +11,9 @@ No blocking source/math fidelity issues were found.
 - The current source terminal candidate does not miss terminal prefix rows.
   It can miss actual next-layer rows in the row-exhausted wide-next case, but
   those are not part of the advanced terminal prefix object.
+- The top row of `Q^-1 C` is the original pivot-column row plus the
+  displayed pivot-row weighted sum over the post-pivot actual columns. This
+  is exactly the first-row multiplication by `[1 y]`.
 - The supplied terminal matrix bridge is the correct handoff shape: it records
   old-row and pivot-row equations as assumptions rather than claiming chart
   production.
@@ -31,6 +34,9 @@ No blocking Lean/API issues were found.
 - The bridge-consuming prefix and source-suffix wrappers only rewrite through
   `SuppliedTerminalCprimeBridge`; they do not construct a bridge or add hidden
   source-production assumptions.
+- The new prefix-row source-suffix wrapper is a direct composition of the
+  existing terminal-prefix product theorem with
+  `SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul`.
 
 ## Residual Risk
 

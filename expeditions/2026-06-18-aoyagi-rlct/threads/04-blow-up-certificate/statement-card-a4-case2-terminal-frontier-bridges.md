@@ -8,6 +8,8 @@ Files:
 
 Names:
 
+- `DLNFibre.DLN.Aoyagi.pivotQinv_mul_top_apply`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperCprimeTop_apply`
 - `DLNFibre.DLN.Aoyagi.case2SourceTerminalPrefixRowIndex`
 - `DLNFibre.DLN.Aoyagi.case2SourceTerminalRowEquivPrefix`
 - `DLNFibre.DLN.Aoyagi.case2SourceTerminalRowEquivPrefixOfNotNext`
@@ -18,6 +20,7 @@ Names:
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.cprimeCandidate_eq`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.cprimePrefixCandidate_eq`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalWeightPrefixCandidate`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalCprimePrefixCandidate`
@@ -25,6 +28,7 @@ Names:
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.matrixEntryIdeal_sourceTerminalProductPrefixCandidate_eq_sourceTerminalProduct`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`
 
 ## Statement
@@ -44,6 +48,8 @@ frontier:
   row equivalence.
 - The source terminal weight, `C'` candidate, and product candidate can be
   reindexed onto terminal prefix rows `1..M(S+1)`.
+- The top row of `Q^-1 C` expands as the old pivot-column row plus the
+  displayed pivot-row weighted post-pivot column sum.
 - The prefix-row product candidate has the expected product form.
 - The stopped source old-top/source suffix theorem can be restated with the
   prefix-row product candidate on the right.
@@ -52,7 +58,8 @@ frontier:
 - The same row equations are packaged as a named supplied bridge for later
   chart-production work.
 - The supplied bridge rewrites the terminal-prefix product and the stopped
-  source old-top/source suffix theorem through the supplied terminal `Cterm`.
+  source old-top/source suffix theorem through the supplied terminal `Cterm`,
+  including the prefix-row source-suffix theorem.
 
 ## Not Proved
 

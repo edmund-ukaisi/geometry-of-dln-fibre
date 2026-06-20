@@ -1601,6 +1601,8 @@ and terminal-frontier bridges have landed in
 `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean` and
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
 include `matrixEntryIdeal_submatrix_equiv`,
+`pivotQinv_mul_top_apply`,
+`case2DisplayedPaperCprimeTop_apply`,
 `case2SourceTerminalRowIndex`, `case2SourceTerminalRowEquiv`,
 `case2DisplayedSourceTerminalCprimeCandidate`,
 `case2DisplayedSourceTerminalProductReindexedCandidate`,
@@ -1612,6 +1614,7 @@ include `matrixEntryIdeal_submatrix_equiv`,
 `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`,
 `SuppliedTerminalCprimeBridge.cprimeCandidate_eq`,
 `SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul`,
+`SuppliedTerminalCprimeBridge.cprimePrefixCandidate_eq`,
 `SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul`,
 `case2DisplayedSourceTerminalProductPrefixCandidate`,
 `case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul`,
@@ -1620,14 +1623,18 @@ include `matrixEntryIdeal_submatrix_equiv`,
 and
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`,
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont`,
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`.
 These checkpoints reindex the already proved stopped terminal candidate into
 one-based source rows `1..J+1`, reindex it again onto terminal prefix rows
 `1..M(S+1)` under stopped continuation, and prove that the reindexed candidate is
 `(case2DisplayedSourceTerminalWeight *
-case2DisplayedSourceTerminalCprimeCandidate) * F`. The supplied bridge is now
+case2DisplayedSourceTerminalCprimeCandidate) * F`. The surviving top row of
+`Q^-1 C` is now expanded entrywise as the old pivot-column row plus the
+displayed pivot-row weighted post-pivot column sum. The supplied bridge is now
 usable in the source-row product, the terminal-prefix product, and the stopped
-source old-top/source suffix theorem. They do not prove
+source old-top/source suffix theorem in both source-row and prefix-row form.
+They do not prove
 source-produced `C'^(S+1)`, chart production, coverage, Jacobians, normal
 crossings/RLCT, termination, transition invariance, automatic Case 2 gap/tail
 transport, or printed-vector repair. Reproduction:

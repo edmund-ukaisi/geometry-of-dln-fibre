@@ -68,6 +68,18 @@ Cterm(i,-) = C(i,-)                         for i=1,...,J,
 Cterm(J+1,-) = top row of Q^-1 C_J^(S+1).
 ```
 
+The top row of `Q^-1 C_J^(S+1)` is elementary.  Since
+`Q^-1 = [1 y; 0 I]`, where
+`y_r = d'_(J+1,r)` for post-pivot columns `r`, its first row is
+
+```text
+(Q^-1 C)_J+1,a =
+  C_J+1,a + sum_{r=J+2}^{M^(S+1)} d'_(J+1,r) C_r,a.
+```
+
+Lean records this as `case2DisplayedPaperCprimeTop_apply`, with the finite
+sum indexed by the displayed pivot-column complement.
+
 Then `Cterm` is exactly the existing terminal `C'` candidate.  Consequently
 the terminal product candidate rewrites as
 
@@ -114,8 +126,10 @@ case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
 case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul
 SuppliedTerminalCprimeBridge.cprimeCandidate_eq
 SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul
+SuppliedTerminalCprimeBridge.cprimePrefixCandidate_eq
 SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul
 exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont
+exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont
 ```
 
 ## Boundaries

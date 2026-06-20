@@ -130,9 +130,11 @@ on the session's original cwd.
    equations rewrites the candidate product. These equations are packaged as
    `SuppliedTerminalCprimeBridge`, and the bridge now rewrites the source-row
    terminal product, the terminal-prefix product, and the stopped source
-   old-top/source suffix theorem. Next A4 target: construct this bridge from
-   the displayed source chart, or build a named supplied chart-production
-   boundary carrying it. Do not transport
+   old-top/source suffix theorem in both source-row and prefix-row form. The
+   top row of Aoyagi's `Q^-1 C` is also expanded entrywise as
+   `C(J+1,-)` plus the displayed pivot-row weighted post-pivot column sum.
+   Next A4 target: construct this bridge from the displayed source chart, or
+   build a named supplied chart-production boundary carrying it. Do not transport
    Case 2 gap/tail invariants without separately checking their shifted
    thresholds. If downstream suffix rewrites become noisy, add source-level
    empty/peel lemmas for `sourceSuffixProduct`.

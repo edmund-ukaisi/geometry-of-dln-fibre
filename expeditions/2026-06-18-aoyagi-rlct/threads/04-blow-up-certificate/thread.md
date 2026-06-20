@@ -2464,6 +2464,13 @@ old-top/source suffix theorem, so downstream statements can mention the
 supplied terminal `Cterm` directly without constructing it from chart
 coordinates.
 
+The latest Lean checkpoint also expands the surviving top row of the
+transported following factor `Q^-1 C`: it is `C(J+1,-)` plus the displayed
+pivot-row weighted sum over post-pivot actual columns.  The same checkpoint
+adds the prefix-row source-suffix consumer, so the stopped source old-top/source
+suffix theorem can be rewritten through a supplied terminal `Cterm` after
+reindexing to terminal prefix rows.
+
 This is still not chart production.  In the row-exhausted wide-next case,
 actual rows beyond `M(S+1)` belong to the transported following factor but not
 to the terminal prefix object.  No recurrence/exponent relabel is inferred

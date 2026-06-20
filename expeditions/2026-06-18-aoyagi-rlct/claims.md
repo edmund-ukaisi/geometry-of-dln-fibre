@@ -1397,6 +1397,8 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedSourceTerminalCprimeCandidate`,
   `case2DisplayedSourceTerminalCprimeCandidate_submatrix_terminalRowEquiv`,
   `matrixEntryIdeal_case2DisplayedSourceTerminalCprimeCandidate_eq_terminalCnext`,
+  `pivotQinv_mul_top_apply`,
+  `case2DisplayedPaperCprimeTop_apply`,
   `case2DisplayedSourceTerminalWeight`,
   `case2DisplayedSourceTerminalProductReindexedCandidate`,
   `case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate_submatrix`,
@@ -1411,6 +1413,7 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`,
   `SuppliedTerminalCprimeBridge.cprimeCandidate_eq`,
   `SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul`,
+  `SuppliedTerminalCprimeBridge.cprimePrefixCandidate_eq`,
   `SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul`,
   `case2DisplayedSourceTerminalWeightPrefixCandidate`,
   `case2DisplayedSourceTerminalCprimePrefixCandidate`,
@@ -1421,12 +1424,16 @@ No such claim is formalisation-ready until both fields are filled.
   and
   `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
   `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont`,
   `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`.
   This reindexes the stopped terminal candidate into one-based source rows and
-  terminal prefix rows, proves its product form, and records the row-equation
-  handoff for a supplied terminal matrix. The bridge is now consumed by both
+  terminal prefix rows, proves its product form, expands the top row of
+  `Q^-1 C` as `C(J+1,-)` plus the displayed pivot-row sum over post-pivot
+  columns, and records the row-equation handoff for a supplied terminal
+  matrix. The bridge is now consumed by both
   the source-row terminal product and the terminal-prefix product, and by the
-  stopped source old-top/source suffix theorem. It does not construct
+  stopped source old-top/source suffix theorem in source-row and prefix-row
+  form. It does not construct
   source-produced `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.

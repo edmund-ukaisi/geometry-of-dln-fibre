@@ -1526,8 +1526,11 @@ pivot row equal to the top row of `Q^-1 C` can replace the candidate in the
 terminal product.  These row equations are also packaged as the supplied
 boundary `SuppliedTerminalCprimeBridge`; the bridge now also rewrites the
 terminal-prefix product and the stopped source old-top/source suffix theorem
-through the supplied terminal `Cterm`.  This defines the next proof obligation
-exactly: construct that bridge from the displayed source chart.
+through the supplied terminal `Cterm`, including the prefix-row form.  Lean now
+also expands the top row of Aoyagi's transported following factor `Q^-1 C`
+entrywise as `C(J+1,-)` plus the displayed pivot-row sum over the post-pivot
+columns.  This defines the next proof obligation exactly: construct that
+bridge from the displayed source chart.
 
 ## Drift guard
 
