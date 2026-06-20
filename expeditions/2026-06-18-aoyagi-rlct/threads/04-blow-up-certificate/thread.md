@@ -2526,3 +2526,39 @@ source old-top/source suffix theorem is rewritten through its terminal-prefix
 submatrix.  In wide-next row-exhausted cases, this last row may include the
 post-pivot column correction sum; no original-row equality or `(S+1,0)`
 recurrence relabel is claimed.
+
+## 2026-06-20 Lean Case 2 source-chart terminal source-suffix
+
+Reproduction:
+`reproduction-case2-source-chart-terminal-source-suffix-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-chart-terminal-source-suffix.md`.
+Review artifact:
+`review-case2-source-chart-terminal-source-suffix-a4.md`.
+
+Lean now composes the concrete displayed source-chart boundary constructor
+with the two stopped terminal source-suffix branches.  The actual-width theorem
+
+```text
+exists_sourceChart_oldTopSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth
+```
+
+uses `n(S+1)=J+1` to specialize the terminal rows to the original source rows
+`1..J+1` and the relabelled successor weight.  The row-exhausted theorem
+
+```text
+exists_sourceChart_oldTopSuffix_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+```
+
+uses `prefixMinNat n S=J+1` and keeps row `J+1` as the transported top row of
+`Q^-1 C`.
+
+Both wrappers fix the post recurrence state to
+`pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))` and use the
+corrected selected-label exponent overrides from
+`of_sourceChartMap_case2Succ_updateSelected`.  They still leave the
+chart-family predicates, source following rows, and suffix matrix chain
+supplied.  They do not prove source-produced `C'^(S+1)`, chart coverage,
+chart-produced post-data, Jacobian arithmetic, normal crossings/RLCT,
+termination, transition invariance, automatic gap/tail transport, or printed
+vector repair.

@@ -1546,6 +1546,19 @@ row `J+1` equal to the transported top row of `Q^-1 C`, not generally the
 original source row.  This keeps the post-pivot column correction visible in
 wide-next cases and prevents importing the actual-width recurrence relabel.
 
+The source-chart terminal source-suffix wrappers are now Lean-proved.  They
+compose the concrete displayed source-chart constructor
+`of_sourceChartMap_case2Succ_updateSelected` with the two stopped terminal
+source-suffix theorems.  In the actual-width branch, the terminal product is
+rewritten with original source rows `1..J+1` and the relabelled successor
+weight.  In the row-exhausted branch, the terminal prefix product is rewritten
+with transported rows, keeping row `J+1` as the top row of `Q^-1 C`.  These
+wrappers remove arbitrary recurrence/exponent post-data from this narrow
+terminal source-suffix API, but `chartFamily`, `C`, and `Ctail` remain supplied;
+they are not chart coverage, chart-produced post-data, source-produced
+`C'^(S+1)`, Jacobian, normal-crossing/RLCT, termination, or transition
+invariance theorems.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

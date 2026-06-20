@@ -1711,6 +1711,30 @@ Product-form review artifact:
 Terminal-frontier review artifact:
 `threads/04-blow-up-certificate/review-case2-terminal-frontier-bridges-a4.md`.
 
+Latest A4 update: the Case 2 source-chart terminal source-suffix wrappers have
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceChart_oldTopSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceChart_oldTopSuffix_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`.
+This checkpoint composes
+`of_sourceChartMap_case2Succ_updateSelected` with the actual-width original-row
+terminal theorem and the row-exhausted transported-row terminal theorem.  The
+post recurrence state is now the displayed source-chart successor
+`pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))`, and the exponent
+post-data are the corrected selected-label overrides.  It keeps the two
+terminal sides separate: actual-width exhaustion gives original terminal rows
+`1..J+1`, while current-prefix row exhaustion keeps row `J+1` transported as
+the top row of `Q^-1 C`.  It does not prove chart coverage, chart-produced
+post-data, source-produced `C'^(S+1)`, Jacobian arithmetic, normal
+crossings/RLCT, termination, transition invariance, automatic Case 2 gap/tail
+transport, or printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-terminal-source-suffix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-chart-terminal-source-suffix.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-source-chart-terminal-source-suffix-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

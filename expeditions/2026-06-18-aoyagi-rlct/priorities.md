@@ -143,10 +143,15 @@ on the session's original cwd.
    terminal-prefix wrappers. The row-exhausted branch is now separated:
    `prefixMinNat n S=J+1` supplies stopped continuation and an explicit
    transported-row terminal matrix, whose pivot row remains the top row of
-   `Q^-1 C` with possible column corrections. Do not transport Case 2
-   gap/tail invariants without separately checking their shifted
-   thresholds. If downstream suffix rewrites become noisy, add source-level
-   empty/peel lemmas for `sourceSuffixProduct`.
+   `Q^-1 C` with possible column corrections. The source-chart terminal
+   source-suffix wrappers now compose these two terminal branches with the
+   concrete displayed source-chart constructor and corrected selected-label
+   exponent overrides, so arbitrary post-data are removed from this narrow
+   source-suffix API. Next A4 target: fuller chart-production boundary data
+   beyond terminal-prefix wrappers, or source-level empty/peel lemmas for
+   `sourceSuffixProduct` if downstream suffix rewrites become noisy. Do not
+   transport Case 2 gap/tail invariants without separately checking their
+   shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

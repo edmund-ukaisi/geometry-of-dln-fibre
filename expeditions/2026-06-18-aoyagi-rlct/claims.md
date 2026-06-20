@@ -638,6 +638,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-source-terminal-product-form-a4.md`.
 	  Review of the Case 2 terminal frontier bridges is saved at
 	  `threads/04-blow-up-certificate/review-case2-terminal-frontier-bridges-a4.md`.
+	  Review of the Case 2 source-chart terminal source-suffix wrappers is
+	  saved at
+	  `threads/04-blow-up-certificate/review-case2-source-chart-terminal-source-suffix-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1450,6 +1453,19 @@ No such claim is formalisation-ready until both fields are filled.
   the top row of `Q^-1 C`, including possible post-pivot column corrections;
   this row is not identified with the original source row unless the separate
   actual-width hypothesis `n(S+1)=J+1` is available.
+  The source-chart terminal source-suffix wrappers now compose the concrete
+  displayed source-chart constructor with both stopped branches:
+  `exists_sourceChart_oldTopSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth`
+  for actual-width original rows and
+  `exists_sourceChart_oldTopSuffix_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`
+  for row-exhausted transported rows.  These wrappers fix the post recurrence
+  state to `pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))` and
+  use corrected selected-label exponent overrides, but still leave
+  `chartFamily`, the source following matrix, and the suffix chain supplied.
+  They do not prove source-produced `C'^(S+1)`, chart coverage,
+  chart-produced post-data, Jacobian arithmetic, normal crossings/RLCT,
+  termination, transition invariance, automatic Case 2 gap/tail transport, or
+  printed-vector repair.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
