@@ -633,6 +633,68 @@ theorem aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_iff_two_le
     exact aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_of_two_le
       ell a M m C layerWidth T hT ha_two
 
+/-- Equation `(3)` assigns its special boundary one unit above the upper
+same-coordinate `Htilde` value.
+
+This is only supplied branch arithmetic.  It does not construct the displayed
+source vector, prove terminality, chart coverage, or order counting. -/
+theorem aoyagiLemma5Eq3_boundaryValue_gt_upperNat
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    aoyagiHtildeUpperNat ell a M m (ell - a + 1) <
+      T (C.point (ell - a + 1) - 1) := by
+  rw [hT.boundary]
+  omega
+
+/-- Equation `(3)`'s special boundary value is not one of the same-coordinate
+interval values at the boundary coordinate.
+
+The point is the finite obstruction `Htilde'_j + 1 > Htilde'_j`.  This does
+not disprove Aoyagi's Lemma 5; it only records that the special boundary is
+not counted by the same-coordinate interval family. -/
+theorem aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    T (C.point (ell - a + 1) - 1) ∉
+      aoyagiHtildeIntervalValueSetNat ell a M m (ell - a + 1) := by
+  intro hmem
+  have hj : ell - a + 1 < ell + 1 := by
+    have ha : a ≤ ell := hT.a_le_ell
+    have ha_pos : 1 ≤ a := hT.indexGuard
+    omega
+  have hmem_fin :
+      T (C.point (ell - a + 1) - 1) ∈
+        aoyagiHtildeIntervalValueSet ell a M m ⟨ell - a + 1, hj⟩ := by
+    simpa [aoyagiHtildeIntervalValueSetNat, hj] using hmem
+  have hbounds :=
+    (aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m hT.a_le_ell
+      ⟨ell - a + 1, hj⟩ (T (C.point (ell - a + 1) - 1))).1 hmem_fin
+  have hle :
+      T (C.point (ell - a + 1) - 1) ≤
+        aoyagiHtildeUpperNat ell a M m (ell - a + 1) := by
+    simpa [aoyagiHtildeUpperChain] using hbounds.2
+  have hgt :=
+    aoyagiLemma5Eq3_boundaryValue_gt_upperNat ell a M m C layerWidth T hT
+  omega
+
+/-- In the strict equation `(3)` boundary case, the special boundary lies in
+the selected span but its value is still outside the same-coordinate interval
+at that boundary coordinate. -/
+theorem aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat_of_two_le
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    (ha_two : 2 ≤ a) :
+    T (C.point (ell - a + 1) - 1) ∉
+      aoyagiHtildeIntervalValueSetNat ell a M m (ell - a + 1) := by
+  have _hspan :=
+    aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_of_two_le
+      ell a M m C layerWidth T hT ha_two
+  exact aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat
+    ell a M m C layerWidth T hT
+
 /-- Branch-value alternatives for Aoyagi Lemma 5 equation `(3)` on the
 selected span.
 

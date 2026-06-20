@@ -2060,6 +2060,17 @@ endpoint value `0`.  This is finite boundary bookkeeping only, not a
 displayed-vector construction, terminal `tilde t=0`, chart sequence,
 introduced-label theorem, or order count.
 
+The equation `(3)` special boundary value is now also separated from the
+same-coordinate interval count.  A supplied equation `(3)` certificate assigns
+`T(C.point (ell-a+1)-1)=Htilde'_(ell-a+1)+1`, so Lean proves this value is
+strictly greater than the upper endpoint of the same-coordinate interval and
+is not in `aoyagiHtildeIntervalValueSetNat` at coordinate `ell-a+1`.  In the
+strict case `2<=a`, the previous boundary split puts the same point inside the
+half-open selected span; the new theorem says this selected-span singleton is
+not part of the already-counted same-coordinate interval family.  This is
+still not a displayed-vector construction, terminal `tilde t=0`, chart
+sequence, introduced-label theorem, or Lemma 5 order count.
+
 The analogous terminal-collision arithmetic for equation `(4)` is now
 Lean-proved.  When `p+1=a`, the special boundary
 `S_(p+ell-a+2)-1` is the terminal selected endpoint.  Definition 3's

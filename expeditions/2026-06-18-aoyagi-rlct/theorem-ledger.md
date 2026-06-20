@@ -2465,6 +2465,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-boundary-split-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(3)` interval obstruction has landed
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean
+names are `aoyagiLemma5Eq3_boundaryValue_gt_upperNat`,
+`aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat`, and
+`aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat_of_two_le`.  They
+say that for a supplied equation `(3)` certificate, the special boundary value
+is `Htilde'_(ell-a+1)+1`, hence is strictly above the upper endpoint of the
+same-coordinate interval and is not in
+`aoyagiHtildeIntervalValueSetNat ell a M m (ell-a+1)`.  Under `2<=a`, the
+previous boundary split places that same point in the half-open selected span,
+so this records that the selected-span singleton is outside the interval-value
+family counted by the `Htilde` arithmetic layer.  This is interval
+bookkeeping only, not displayed-vector construction, terminal `tilde t=0`, or
+order count.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-interval-obstruction-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-interval-obstruction.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-interval-obstruction-a5.md`.
+
 Latest A5 update: the Lemma 5 equation `(4)` terminal-collision arithmetic has
 landed in `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names

@@ -1103,3 +1103,32 @@ compatibility `W_(ell+1)=M-p+1` fails, since `W_4=2` and `M-p+1=3`.
 This is a closed finite counterexample to that compatibility being a
 Definition 3 consequence.  It does not construct a supplied equation `(4)`
 branch certificate or a terminal extension.
+
+## 2026-06-20 Lean Lemma 5 equation `(3)` interval obstruction
+
+Reproduction:
+`reproduction-lemma5-eq3-interval-obstruction-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-interval-obstruction.md`.
+Review artifact:
+`review-lemma5-eq3-interval-obstruction-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq3_boundaryValue_gt_upperNat
+aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat
+aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat_of_two_le
+```
+
+For a supplied equation `(3)` certificate, the special boundary value is
+`Htilde'_(ell-a+1)+1`, hence strictly above the upper endpoint of the
+same-coordinate interval at coordinate `ell-a+1`.  Therefore it is not in the
+Nat-indexed same-coordinate interval value set.  In the strict boundary case
+`2<=a`, this says the selected-span boundary singleton is outside the interval
+family counted by the `Htilde` value-set layer.
+
+This is finite interval bookkeeping only.  It does not construct equation
+`(3)`'s displayed vector, prove terminal `tilde t=0`, introduced-label
+status, vector admissibility, Case 1(2) chart sequence, Lemma 5 order count,
+normal crossings, or RLCT extraction.

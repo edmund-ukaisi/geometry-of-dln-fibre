@@ -2088,6 +2088,13 @@ No such claim is formalisation-ready until both fields are filled.
   `(3)`'s special boundary into the ordinary selected-span case `2<=a` and
   the terminal endpoint case `a=1`; in the terminal case the supplied branch
   assignment gives value `1` and rules out a simultaneous endpoint value zero.
+  Also proved `aoyagiLemma5Eq3_boundaryValue_gt_upperNat`,
+  `aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat`, and
+  `aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat_of_two_le`, which
+  show that the supplied equation `(3)` boundary value is one unit above the
+  same-coordinate interval at coordinate `ell-a+1`; in the strict case `2<=a`,
+  this selected-span singleton is outside the interval-value family counted by
+  the `Htilde` arithmetic layer.
   Also proved `aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum`,
   `aoyagiLemma5Eq4_lastWidthCompatibility_not_forced_by_selectedWidthHypotheses_example`,
   `aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary`, and

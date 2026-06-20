@@ -650,6 +650,12 @@ on the session's original cwd.
    left endpoint of selected block `ell-a+1`, while `a=1` makes it terminal,
    outside every selected block, and incompatible with an added endpoint-zero
    assignment under the selected-sum identity.
+   The equation `(3)` special boundary value is now also Lean-proved to sit
+   one unit above the same-coordinate interval at coordinate `ell-a+1`; in
+   the strict case `2<=a`, this selected-span singleton is therefore outside
+   the `Htilde` interval-value family already counted in the Lemma 5 arithmetic
+   layer.  This remains an interval-count exclusion, not a displayed-vector or
+   order-count theorem.
    Equation `(4)` now has its terminal-collision arithmetic Lean-proved too:
    when `p+1=a`, the supplied branch value at `S_(ell+1)-1` is
    `M-W_(ell+1)-p+1`, so zero requires the extra last-width condition
