@@ -1870,6 +1870,43 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-source-suffix-terminal-last-a4.md`.
 
+Latest A4 update: the Case 2 actual-width identity-following boundary has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+name is
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_actualWidth_terminalOriginalRowsIdentityFollowingBoundary`.
+It specializes the arbitrary-following displayed source-chart actual-width
+boundary to `F = 1`, removes the rightmost following factor by unit
+simplification, and keeps actual-width exhaustion `n(S+1)=J+1` visible.  This
+does not prove that a source suffix is empty; applying it to the source suffix
+requires the separate raw terminal-last identity
+`sourceSuffixProduct_terminalLast_eq_cast_one`.  It does not apply to
+row-exhausted wide-next cases, source-produce `C'^(S+1)`, or prove chart
+coverage/Jacobian/analytic results. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-identity-following-actual-width-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-identity-following-actual-width.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-identity-following-actual-width-a4.md`.
+
+Latest A4 update: the Case 2 actual-width terminal-last boundary has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`Case2DisplayedSuppliedChartFamilyBoundary.matrixEntryIdeal_mul_ndrec_one`,
+`Case2DisplayedSuppliedChartFamilyBoundary.matrixEntryIdeal_mul_sourceSuffixProduct_terminalLast`,
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_originalRowsProduct_of_actualWidth`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_actualWidth_terminalLastOriginalRowsBoundary`.
+It consumes Aoyagi's raw source suffix under `S+1=L`, removes it by the
+terminal-last empty-chain identity, and packages the resulting actual-width
+original-row boundary with the relabelled level/exponent certificates.  This
+still requires `n(S+1)=J+1` and does not cover row-exhausted wide-next cases,
+source-produce `C'^(S+1)`, or prove chart coverage/Jacobian/analytic results.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-terminal-last-actual-width-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-terminal-last-actual-width.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-terminal-last-actual-width-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

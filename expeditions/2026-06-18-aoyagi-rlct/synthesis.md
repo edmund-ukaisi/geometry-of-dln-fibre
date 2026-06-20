@@ -1580,9 +1580,10 @@ The source suffix utilities are now Lean-proved in `MatrixChain.lean`:
 `sourceSuffixProduct_eq_paperMatrixChain`, and
 `sourceSuffixProduct_split_at`.  The split theorem states the cast-light form
 `sourceSuffixProduct(S)=chain(S+2,T)*chain(T,L+1)` under `S+2<=T<=L+1`.  The
-split layer may be an endpoint, but the endpoint identity simplifications and
-the empty-suffix identity remain unproved dependent-endpoint wrappers, not
-current claims.
+split layer may be an endpoint, but endpoint split identity simplifications
+remain unproved.  The terminal-last empty-suffix identity is now the separate
+dependent-endpoint theorem `sourceSuffixProduct_terminalLast_eq_cast_one`, not
+part of this split utility layer.
 
 The source suffix one-edge peel is now Lean-proved in `MatrixChain.lean`.
 The raw theorem `paperMatrixChain_succ_left` peels the first edge from a
@@ -1617,11 +1618,11 @@ residual-block center facts that `u` is a transformed center value, all
 transformed center values are divisible by `u`, and the transformed finite
 center ideal is `Ideal.span {u}`.  This is not terminal-product
 principalization, chart coverage, source production of `C'^(S+1)`, production
-of the following product, or an analytic theorem.  The source scout identified
-the next elementary suffix target as the terminal-last endpoint identity
-`sourceSuffixProduct = 1` under `S+1=L`, followed by branch-specific
-terminal-last wrappers; this should not be generalized to `F=1` away from the
-empty-suffix case.
+of the following product, or an analytic theorem.  That source-scout target
+has now been discharged for the actual-width branch by the terminal-last
+identity and wrapper recorded below; it should not be generalized to `F=1`
+away from the empty-suffix case, and the row-exhausted wide-next branch remains
+separate.
 
 The terminal-last source suffix identity is now Lean-proved in
 `MatrixChain.lean` as `sourceLayerIndex_terminalLast` and
@@ -1629,8 +1630,26 @@ The terminal-last source suffix identity is now Lean-proved in
 dependent endpoint transport explicit: under `S+1=L`, the lower suffix
 endpoint is propositionally equal to the final endpoint, so the empty-chain
 identity is an identity matrix transported along that equality.  This is raw
-matrix-chain algebra only; terminal-last blow-up wrappers remain the next
-separate slice.
+matrix-chain algebra only.
+
+The actual-width identity-following boundary is now Lean-proved as
+`sourceChart_actualWidth_terminalOriginalRowsIdentityFollowingBoundary`.  It
+is the `F=1` specialization of the arbitrary-following displayed source-chart
+actual-width terminal boundary and does not itself prove source suffix
+emptiness.  The theorem keeps `n(S+1)=J+1`, the pre-state certificates,
+least-value gap, and chart-family interface visible, and leaves row-exhausted
+wide-next cases separate.
+
+The actual-width terminal-last boundary is now Lean-proved as
+`sourceChart_actualWidth_terminalLastOriginalRowsBoundary`, with helper
+entry-ideal lemmas removing the transported terminal-last source suffix.  It
+uses both `n(S+1)=J+1` and `S+1=L`, consumes the raw source suffix rather than
+an arbitrary supplied following matrix, and packages the same relabelled
+level/exponent certificates as the identity-following boundary.  The
+row-exhausted wide-next terminal-last branch remains separate, and no chart
+coverage, source-produced `C'^(S+1)`, chart-produced following product,
+Jacobian arithmetic, normal-crossing/RLCT extraction, termination, transition
+invariance, or printed-vector repair is claimed.
 
 ## Drift guard
 

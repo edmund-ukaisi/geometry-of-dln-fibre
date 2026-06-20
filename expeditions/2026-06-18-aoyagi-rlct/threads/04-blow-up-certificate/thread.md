@@ -2789,3 +2789,65 @@ it does not justify setting an arbitrary following matrix to `1` away from the
 empty-suffix case, and it does not prove chart production, source-produced
 `C'^(S+1)`, Jacobian arithmetic, normal crossings/RLCT, termination,
 transition invariance, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 identity-following actual-width boundary
+
+Reproduction:
+`reproduction-case2-identity-following-actual-width-a4.md`.
+Statement card:
+`statement-card-a4-case2-identity-following-actual-width.md`.
+Review artifact:
+`review-case2-identity-following-actual-width-a4.md`.
+
+Lean now proves the identity-following specialization of the displayed
+source-chart actual-width terminal boundary:
+
+```text
+sourceChart_actualWidth_terminalOriginalRowsIdentityFollowingBoundary
+```
+
+This is the `F = 1` specialization of
+`sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary`.  It
+removes the rightmost following factor and keeps the actual-width original-row
+condition `n(S+1)=J+1`, the pre-state certificates, the least-value gap, and
+the supplied chart-family interface explicit.
+
+This theorem does not prove that a source suffix is empty; the raw suffix
+identity is the separate theorem `sourceSuffixProduct_terminalLast_eq_cast_one`.
+It does not apply to row-exhausted wide-next cases and does not prove chart
+coverage, source production of `C'^(S+1)`, chart-produced following products,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 terminal-last actual-width boundary
+
+Reproduction:
+`reproduction-case2-terminal-last-actual-width-a4.md`.
+Statement card:
+`statement-card-a4-case2-terminal-last-actual-width.md`.
+Review artifact:
+`review-case2-terminal-last-actual-width-a4.md`.
+
+Lean now proves the actual-width source-chart terminal boundary in the
+terminal-last case:
+
+```text
+matrixEntryIdeal_mul_ndrec_one
+matrixEntryIdeal_mul_sourceSuffixProduct_terminalLast
+exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_originalRowsProduct_of_actualWidth
+sourceChart_actualWidth_terminalLastOriginalRowsBoundary
+```
+
+The theorem consumes the raw source suffix
+`sourceSuffixProduct κ Ctail S hSuffix` and the terminal-last condition
+`S+1=L`.  The suffix is removed only through the transported empty-chain
+identity `sourceSuffixProduct_terminalLast_eq_cast_one`, then at the
+matrix-entry-ideal level.  The boundary still requires actual-width exhaustion
+`n(S+1)=J+1` to identify the terminal row stack with original source rows
+`1..J+1`.
+
+This is the actual-width terminal-last branch only.  The row-exhausted
+wide-next branch remains separate, and the theorem does not prove chart
+coverage, source production of `C'^(S+1)`, chart-produced following products,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair.

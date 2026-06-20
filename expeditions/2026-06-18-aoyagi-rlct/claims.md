@@ -1485,7 +1485,9 @@ No such claim is formalisation-ready until both fields are filled.
   `sourceSuffixProduct_eq_paperMatrixChain`, and
   `sourceSuffixProduct_split_at`, exposing the raw suffix as a
   proof-irrelevant paper-order chain that splits at a source layer.  Endpoint
-  identity simplifications and the empty-suffix identity remain unproved.  The
+  split identity simplifications remain unproved; the terminal-last
+  empty-suffix identity is now the separate
+  `sourceSuffixProduct_terminalLast_eq_cast_one` theorem recorded below.  The
   one-edge peel is now Lean-proved as `paperMatrixChain_succ_left`,
   `sourceSuffixFirstEdge`, and `sourceSuffixProduct_peel`: under `S+2<=L`,
   the suffix rewrites as the first source edge `C^(S+2)`, reindexed to
@@ -1517,8 +1519,23 @@ No such claim is formalisation-ready until both fields are filled.
   `sourceLayerIndex_terminalLast` and
   `sourceSuffixProduct_terminalLast_eq_cast_one`: under `S+1=L`, the suffix is
   the empty paper-order chain, with the identity matrix transported along the
-  endpoint equality.  This is raw chain algebra and only supports later
-  wrappers whose following factor is exactly this source suffix.
+  endpoint equality.  This is raw chain algebra and only supports wrappers
+  whose following factor is exactly this source suffix.
+  The actual-width identity-following boundary is now proved as
+  `sourceChart_actualWidth_terminalOriginalRowsIdentityFollowingBoundary`,
+  specializing the arbitrary following matrix to `1` while retaining the
+  actual-width original-row side condition and relabelled level/exponent
+  certificates.  It does not prove source suffix emptiness or row-exhausted
+  wide-next terminal data.
+  The actual-width terminal-last boundary is now proved as
+  `sourceChart_actualWidth_terminalLastOriginalRowsBoundary`, with the entry
+  equality factored through `matrixEntryIdeal_mul_sourceSuffixProduct_terminalLast`
+  and the raw empty-suffix identity.  It requires both `n(S+1)=J+1` and
+  `S+1=L`, consumes the actual source suffix, and packages the relabelled
+  level/exponent certificates.  It still does not cover the row-exhausted
+  wide-next branch or prove source production, chart coverage, chart-produced
+  following products, Jacobian arithmetic, normal crossings/RLCT, termination,
+  transition invariance, or printed-vector repair.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
