@@ -1,14 +1,15 @@
 # Statement card — A4 (route-c submersion bound), module A4.1–A4.4
 
 **Thread:** 37-A4-orbit-image-dim (voigt-discharge, AG half, L2b★ route c).
-**Pinned commit:** `fbc743c` (branch `expedition/voigt-discharge`).
+**Pinned commit:** `fd1701a` (branch `expedition/voigt-discharge`).
 **Build:** whole `DLNFibre` library green; `scripts/sorries` = 0; all landed theorems
 `#print axioms` = `[propext, Classical.choice, Quot.sound]`.
 
-Goal of the module: the route-c submersion bound
+**STATUS: A4.3 / `hA43_le` DISCHARGED.** The route-c submersion bound
 `(ringKrullDim (orbitPullback M).range).unbotD 0 ≤ finrank k (LinearMap.range (deformationδ M M))`,
-which chains with the landed A0 (`varietyDim_eq_ringKrullDim_range_orbitPullback`) to give
-`varietyDim Z_M ≤ finrank(range δ⁰)` (the AG-half submersion inequality of `hVoigt`).
+chained with the landed A0 (`varietyDim_eq_ringKrullDim_range_orbitPullback`), gives
+`varietyDim Z_M ≤ finrank(range δ⁰)` (the AG-half submersion inequality of `hVoigt`) — now
+**UNCONDITIONAL** (char 0), axiom-clean.
 
 ## Landed (PROVED, sorry-free, axiom-clean)
 
@@ -108,43 +109,34 @@ The transpose / trace-pairing factorization of the generic Jacobian, all char-fr
 
 The base-change rank tool `finrank_range_baseChange` is in `Core/MatrixKaehler.lean` (above).
 
-## Residual — the conjugation identity + final `hA43_le` (kept OUT of the committed file)
+## DISCHARGED — the conjugation identity + `hA43_le` + unconditional A4.4 (commit `fd1701a`)
 
-To respect the project sorry-gate, two declarations are **NOT** committed (their proofs are written
-and validated piece-by-piece but `D_orbit_conj` rests on one inverse-side reindex lemma that did not
-elaborate cleanly):
+All landed 0-sorry, axiom-clean `[propext, Classical.choice, Quot.sound]`:
 
+- **`D_orbit_conj_termA`** (the inverse / `D(V₁⁻¹)`-side bracket half) — CLOSED via the decorrelated,
+  reviewer-verified Codex tactic block (thread 39). The diagnosis was correct: there is **no
+  inverse-collapse** (`Σ_u M_{au} V₁⁻¹_{uc}` is irreducible since `M` is not invertible), so it is a
+  **two-sided normal-form match**, not a collapse. The Codex block (`set V₂/W₁/V₁/F` + `smul_neg`/
+  `Finset.sum_neg_distrib`/`congrArg Neg.neg` + two `rw [show … from by …]` normal-form rewrites +
+  `Matrix.mul_apply`/`smul_comm`) **compiled in-repo with no fallback needed**.
 - **`D_orbit_conj`** : `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M) i a b` — the
-  conjugation identity. **Direct-side half `hB` is PROVED** (in the written proof); it rests on:
-- **`D_orbit_conj_termA`** (the **inverse / `D(V₁⁻¹)`-side** bracket half) — the sole open lemma.
-  Both sides normalise to `− Σ_w Σ_c Σ_e (V₂*genFactorK)_{sw} • (V₁⁻¹_{wc} • (V₁⁻¹_{et} • D(V₁_{ce})))`;
-  the RHS flattens `mcΘ`, folds `M_{au}` (k→K via `algebraMap_smul`), and collapses
-  `Σ_a V₂_{sa} genFactorK_{au} = (V₂*genFactorK)_{su}` (`Matrix.mul_apply`). The **mirror of the proved
-  direct-side `hB`** — mathematically routine.
+  conjugation identity (`hsplit` + the proved direct-side `hB` + `D_orbit_conj_termA`).
+- **`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`** (`hA43_le`):
+  `span_K{D(f_x)} ≤ range ((pairMC ∘ deltaT).liftBaseChange K)` (each `bracketG (mcΘ)` is hit by the
+  single-entry cochain1 `Pi.single i (Matrix.single a' b' 1)` via the adjoint
+  `pair_deltaT_eq_pair_deformationδ`), then `finrank_K ≤ finrank_K (range (deltaT.baseChange K)) =
+  finrank_k (range deltaT) = finrank_k (range δ⁰)` (`finrank_range_baseChange` + `finrank_range_deltaT`).
 
-**Precise obstruction (for the focused follow-up / Codex).** Every PIECE of `termA` was validated in
-isolation (`algebraMap_smul` bridge; `Matrix.mul_apply` collapse; `Finset.sum_comm` swaps; per-term
-`smul_smul`/`smul_comm`/`module`). The ASSEMBLED proof fails to elaborate three ways: (i) deep
-`rw [show … from by …]` nesting hits a parser `expected ']'` ambiguity (the inner `by` block's
-extent); (ii) the un-nested `have e1/e2` variant hits per-term `smul`-coefficient `Application type
-mismatch` (the bound indices `a : Fin (d i.succ)` vs `b,u,c : Fin (d i.castSucc)` across
-`mcΘ`/`V₁ = genUnitK i.castSucc`/`genFactorK`); (iii) a `whnf`/`isDefEq` heartbeat blow-up on the
-localized `K = FractionRing (groupRing d)`. **Recommended close:** a single common normal form (a
-`Finset.sum` over `Fin (d i.succ) × Fin (d i.castSucc) × Fin (d i.castSucc)` of `coeff • Dk (V₁ c e)`)
-on BOTH sides, then ONE `Finset.sum_bij`/`sum_nbij'` reindex — NOT the term-by-term `rw`/`congr`
-script attempted (which is what fought the elaborator). Once `termA` closes, `D_orbit_conj` is
-immediate (`hsplit` + `hB` + `termA`), and the final `hA43_le` is: `span_K{D(f_x)} = range(Φ.bc)`
-for `Φ = (pair-with-mcΘ) ∘ deltaT` (conjugation preserves span; `Φ(e_x) = bracketG(mcΘ)_x` by the
-adjoint), then `finrank ≤ finrank(range deltaT.bc) = finrank_k(range deltaT) = finrank_k(range δ⁰)`
-(`finrank_range_baseChange` + `finrank_range_deltaT`).
-
-Validated Mathlib bricks (all `#check`ed present): `Module.finrank_baseChange`,
-`Submodule.finrank_map_le`, `LinearMap.range_comp`, `LinearMap.finrank_range_dualMap_eq_finrank_range`,
-`Finset.sum_dite_eq'`, `Module.Flat.lTensor_preserves_injective_linearMap`, `lTensor_surjective`,
-`algebraMap_smul`, `Matrix.single_apply_*`.
+**A4.4 now UNCONDITIONAL (char 0):**
+- `ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_unconditional` — the Krull-dim bound,
+  no open hypothesis (A4.2 = `diffIndepCriterion_groupRing`, A4.3 = the proved `hA43_le`).
+- **`varietyDim_orbitRankLocus_le_finrank_range_deformationδ_unconditional`** (`[CharZero k] [Infinite k]`)
+  — `varietyDim (canonicalCoord d '' orbitRankLocus M) ≤ finrank k (range (deformationδ M M))`, the
+  AG-half submersion inequality of `hVoigt`, chained with A0. `#print axioms` =
+  `[propext, Classical.choice, Quot.sound]`.
 
 The landed dual-number `orbitAction_eps_eq_deformationδ` is a *different* representation (pointwise at
-e) and does not shorten this Kähler build; it is the right object for A6.1's R2★.
+e); it is the right object for A6.1's R2★, not for this Kähler span-rank bound.
 
 ## Fidelity note (for the reviewer)
 The headline `(ringKrullDim …).unbotD 0 ≤ finrank …` is in `ℕ∞` (the `unbotD 0` is `ℕ∞`-valued, RHS
