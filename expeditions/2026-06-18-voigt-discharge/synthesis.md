@@ -730,3 +730,22 @@ conjugation-preserves-K-span; (4) T2 adjoint half (SYMMETRIC to proved T1); (5) 
 `finrank_mono`/`finrank_range_baseChange`/`finrank_range_dualMap_eq_finrank_range` chain. The two hardest pieces
 (gate; T1 adjoint) are DONE. **Resume the tide to finish the assembly** (build-on-clean-state, decisive close).
 Then A4.4 unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`; then A6 (reverse + L7 + gaps) ⟹ hVoigt.
+
+## 2026-06-21 — hA UNBLOCKED (decorrelated Codex verified tactic); scaffold banked 0-sorry
+
+**A4.3 scaffold banked 0-sorry** (commits c6513a8/d302f0e, green 3009 jobs): `deltaT` + `pair_deltaT_eq_pair_deformationδ`
+(adjoint, both halves), `traceEquiv` + `finrank_range_deltaT` (transpose-rank = finrank(range δ⁰)),
+`finrank_range_baseChange`, `genUnitK/InvK/FactorK` + `D_genericOrbitCoord_eq`, `mcΘ` + `D_orbit_expand` +
+collapse lemmas. RESIDUAL (uncommitted): `D_orbit_conj` (hsplit + proved hB + hA) → `D_orbit_conj_termA` →
+finrank chain → `hA43_le`.
+
+**hA UNBLOCKED** (thread 39, reviewer + decorrelated Codex, commit e2306f0): Codex produced a SELF-COMPILED
+(iterated against `lake env lean`), reviewer-verified tactic block for the stuck `hA` (inverse-side bracket).
+**Diagnosis:** `hA` has NO inverse-collapse (`∑_u M_au·W₁_uc` irreducible since M not invertible) — the grind
+came from reaching for hB's collapse where none exists. Fix = two-sided normal-form match (expand `(V₂*F)` via
+`Matrix.mul_apply`, bridge `F a w` via `genFactorK_apply`+`←algebraMap_smul`, match `(a,w,c,e)` sums by
+`Finset.sum_comm`+`smul_smul`/`smul_comm`/`mul_comm`). Block in `threads/39-hA-codex/codex/hA-answer.md`.
+
+**→ Resume the hA43_le tide** (holds hB/D_orbit_conj context) with Codex's block: re-introduce D_orbit_conj
+(hsplit + hB + hA-via-Codex) + termA + finrank chain ⟹ close `hA43_le` ⟹ A4.4 + `varietyDim(Z_M) ≤
+finrank(range δ⁰)` UNCONDITIONAL. Then A6 (intrinsic reverse + L7 + gaps) ⟹ hVoigt.
