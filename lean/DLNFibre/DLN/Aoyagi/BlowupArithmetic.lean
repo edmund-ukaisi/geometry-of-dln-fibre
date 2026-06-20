@@ -7034,6 +7034,29 @@ def case2SourceFollowingFactor
     Matrix (Case2ResidualColIndex n S J) τ R :=
   fun j t ↦ C j.1 t
 
+/-- Source row indices already above the displayed Case 2 residual block.
+
+These correspond to the old top rows `1,...,J` in Aoyagi's stopped Case 2
+terminal display. -/
+abbrev case2SourceOldTopRowIndex (J : ℕ) : Type :=
+  (Finset.Icc 1 J : Type)
+
+/-- Source old-top diagonal weights `diag(b_1,...,b_J)`.
+
+This is a source-shaped specialization of the previously supplied old top
+multiplier; it does not construct the remaining suffix product. -/
+def case2DisplayedSourceOldTopWeight
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) :
+    Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R :=
+  diagonal (fun i ↦ pre.weight i.1)
+
+/-- Source old-top rows `1,...,J` of the following matrix. -/
+def case2DisplayedSourceOldTopBlock
+    {J : ℕ} (C : ℕ → τ → R) :
+    Matrix (case2SourceOldTopRowIndex J) τ R :=
+  fun i t ↦ C i.1 t
+
 /-- Source-coordinate specialization of the elementary Case 1(1) selected-old
 row-strip identity.
 
@@ -10943,6 +10966,60 @@ theorem exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_
           (case2DisplayedPaperTerminalCprimeCandidate Atop Ctop n data.stage_pos
             data.continuation (post.weight (J + 1)) residual C F) := by
           rw [case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul]
+
+/-- Source old-top/suffix specialization of the stopped displayed Case 2
+terminal product.
+
+The old top multiplier is now the source-shaped diagonal
+`diag(pre.weight 1,...,pre.weight J)`, and the old top block is the source row
+restriction of the supplied following matrix to rows `1,...,J`.  The suffix
+`F` remains supplied, representing Aoyagi's remaining right product.  This is
+still not a proof that the resulting stack is source-produced `C'^(S+1)`. -/
+theorem exists_sourceDisplayedOldTopSuffixTerminalProduct_entryIdeal_eq_of_not_next_cont
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * F) =
+      matrixEntryIdeal
+          (case2DisplayedPaperTerminalCprimeCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            (case2DisplayedSourceOldTopBlock C)
+            n data.stage_pos data.continuation (post.weight (J + 1)) residual C F) :=
+  data.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont
+    (case2DisplayedSourceOldTopWeight pre)
+    (case2DisplayedSourceOldTopBlock C) hstop residual C F
 
 /-- The displayed source-coordinate chart map has the selected variable as a
 transformed finite-center value. -/

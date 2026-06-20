@@ -1479,6 +1479,13 @@ The current-prefix row-exhaustion companion is now Lean-proved.  Under
 empty.  This is independent of actual-width exhaustion and is not projected
 from the actual-width terminal source model.
 
+The source old-top/suffix specialization is now Lean-proved.  It defines the
+old top row type `1..J`, the old top diagonal `diag(pre.weight i)`, and the old
+top source block `C(i,t)` for `i=1..J`, then specializes the stopped terminal
+entry-ideal theorem to these source-shaped old top data.  The suffix `F`
+remains supplied; no source-produced `C'^(S+1)` or suffix matrix chain is
+constructed.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

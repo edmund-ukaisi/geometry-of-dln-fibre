@@ -2323,3 +2323,25 @@ model.  It does not construct `C'^(S+1)`, source-produced following-factor
 data, chart production, chart coverage, Jacobian arithmetic, normal crossings,
 RLCT extraction, termination, transition invariance, automatic gap/tail
 transport, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 source old-top/suffix specialization
+
+Reproduction:
+`reproduction-case2-source-old-top-suffix-specialization-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-old-top-suffix-specialization.md`.
+Review artifact:
+`review-case2-source-old-top-suffix-specialization-a4.md`.
+
+Lean now specializes the stopped displayed Case 2 terminal theorem to source
+old-top data.  The old top row type is `1..J`; the old top multiplier is
+`diag(pre.weight i)` on these rows; and the old top block is the restriction
+`C(i,t)` of the supplied source-coordinate following matrix to rows `1..J`.
+The theorem applies the already proved stopped terminal entry-ideal equality
+with these old-top choices.
+
+The suffix `F` remains supplied, representing Aoyagi's remaining right product
+but not yet constructed as a matrix chain.  This checkpoint does not construct
+source-produced `C'^(S+1)`, chart-produced recurrence or exponent data, chart
+coverage, Jacobian arithmetic, normal crossings, RLCT extraction, termination,
+transition invariance, automatic gap/tail transport, or printed-vector repair.

@@ -109,10 +109,13 @@ on the session's original cwd.
    column-exhaustion fact: the displayed pivot column complement is empty when
    `n(S+1)=J+1`. The companion current-prefix row-exhaustion bridge now
    records the separate row-side fact under `prefixMinNat n S=J+1`, without
-   attaching it to actual-width relabeling. Next A4 target:
-   construct chart-produced recurrence/exponent post-data or source-produced
-   old top/suffix data; do not identify `[Ctop;C0]` with Aoyagi's full
-   `C'^(S+1)` without that source-order construction, and do not transport
+   attaching it to actual-width relabeling. The source old-top/suffix
+   specialization now replaces arbitrary old top data in one terminal theorem
+   by source rows `1..J`, `diag(pre.weight i)`, and the corresponding source
+   row restriction of the following matrix; the suffix `F` remains supplied.
+   Next A4 target: construct the suffix matrix-chain product or the
+   source-produced terminal stack, but do not identify `[Ctop;C0]` with
+   Aoyagi's full `C'^(S+1)` without that construction, and do not transport
    Case 2 gap/tail invariants without separately checking their shifted
    thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal

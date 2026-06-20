@@ -1557,6 +1557,25 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-current-prefix-row-exhaustion-a4.md`.
 
+Latest A4 update: the Case 2 source old-top/suffix specialization has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
+are `case2SourceOldTopRowIndex`, `case2DisplayedSourceOldTopWeight`,
+`case2DisplayedSourceOldTopBlock`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedOldTopSuffixTerminalProduct_entryIdeal_eq_of_not_next_cont`.
+This checkpoint specializes the stopped displayed terminal theorem by taking
+the old top rows to be source rows `1..J`, the old top multiplier to be
+`diag(pre.weight i)`, and the old top block to be the source row restriction
+of the supplied following matrix.  The suffix `F` remains supplied; this does
+not construct `prod_{s=S+2}^L C^(s)`, source-produced `C'^(S+1)`, chart
+production, coverage, Jacobians, normal crossings/RLCT, termination,
+transition invariance, automatic Case 2 gap/tail transport, or printed-vector
+repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-old-top-suffix-specialization-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-old-top-suffix-specialization.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-source-old-top-suffix-specialization-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -528,6 +528,10 @@ No such claim is formalisation-ready until both fields are filled.
   The companion current-prefix row-exhaustion fact records that the displayed
   pivot row complement is empty when `prefixMinNat n S=J+1`, independently of
   actual-width exhaustion.
+  The source old-top/suffix specialization now constructs the old top row
+  index `1..J`, the old top diagonal from `pre.weight`, and the old top block
+  by restricting the supplied source following matrix, while keeping the
+  suffix `F` supplied.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -612,6 +616,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-actual-width-column-exhaustion-a4.md`.
 	  Review of the Case 2 current-prefix row exhaustion is saved at
 	  `threads/04-blow-up-certificate/review-case2-current-prefix-row-exhaustion-a4.md`.
+	  Review of the Case 2 source old-top/suffix specialization is saved at
+	  `threads/04-blow-up-certificate/review-case2-source-old-top-suffix-specialization-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1348,6 +1354,13 @@ No such claim is formalisation-ready until both fields are filled.
   The current-prefix row-exhaustion fact proves
   `case2DisplayedPivotRowComplement_isEmpty_of_prefixMin_current_eq`; this
   only identifies the row side under `prefixMinNat n S=J+1`.
+  The source old-top/suffix specialization proves
+  `case2SourceOldTopRowIndex`, `case2DisplayedSourceOldTopWeight`,
+  `case2DisplayedSourceOldTopBlock`, and
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedOldTopSuffixTerminalProduct_entryIdeal_eq_of_not_next_cont`.
+  It removes arbitrary old-top data from one stopped terminal theorem, but
+  keeps the suffix `F` supplied and does not construct source-produced
+  `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
