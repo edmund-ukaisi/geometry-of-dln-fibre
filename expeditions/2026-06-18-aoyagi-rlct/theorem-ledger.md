@@ -157,6 +157,19 @@ Blocked audit:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-own-coordinate-a5.md`.
 
+The equation `(4)` guard arithmetic has also landed.  The proved Lean names
+are `aoyagiLemma5IntervalExcess_eq_self_of_le_min`,
+`aoyagiLemma5Eq4_selectedIndexGuard_iff`, and
+`aoyagiHtildeLowerNat_add_one_labelBounds_iff_prefixCrossing`.  They expose
+the exact selected-index guard `p+1<=a` for `S_(p+ell-a+2)` and rephrase
+`1<=Htilde_p+1<=W_(p+1)` as the prefix-crossing condition
+`P_p < pM <= P_(p+1)`.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-guard-arithmetic-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-guard-arithmetic.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-guard-arithmetic-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

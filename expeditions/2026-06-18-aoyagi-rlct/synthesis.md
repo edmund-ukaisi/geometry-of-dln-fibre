@@ -1840,6 +1840,15 @@ under `p<=a` and `p<=ell-a`, the displayed chain gap at `p` is `p`, hence
 `tilde t=0`, vector admissibility, Lemma 5 order count, normal crossings, or
 RLCT extraction.
 
+The next equation `(4)` guard layer is now isolated.  Lean exposes the
+interval-excess specialization used by the own-coordinate theorem, proves that
+the displayed cutoff `S_(p+ell-a+2)` is in the selected list exactly when
+`p+1<=a`, and rewrites the label bounds for `k=Htilde_p+1` as a
+prefix-crossing condition `P_p < pM <= P_(p+1)`.  This makes the source gap
+sharper: Definition 3 does not by itself supply the nonnegativity inequality
+`pM <= P_(p+1)`, and the printed `p<=a` guard does not prevent the boundary
+case `S_(ell+2)`.
+
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
 definitionally the next same-stage residual domains at `(S,J+1)`, and the

@@ -586,6 +586,12 @@ on the session's original cwd.
    own-coordinate sanity check: under `j0<=a` and `j0<=ell-a`,
    `Htilde'_{j0}-j0=Htilde_{j0}`. Next target: resolve the terminal/tail
    convention or legal-label bounds before claiming a displayed source vector.
+   A follow-up guard-arithmetic checkpoint records that equation `(4)` also
+   needs the sharper selected-index guard `j0+1<=a`, and that
+   `k=Htilde_{j0}+1` is label-bounded exactly under a prefix-crossing
+   condition. Next target: decide whether to build a conditional displayed
+   vector record with these guard fields, or first resolve the terminal/tail
+   `tilde t=0` convention.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

@@ -354,9 +354,7 @@ theorem aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min
       aoyagiHtildeLowerChain ell a M m j := by
   have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m ha j
   have hexcess : aoyagiLemma5IntervalExcess ell a j.val = j.val := by
-    unfold aoyagiLemma5IntervalExcess
-    apply Nat.min_eq_left
-    exact Nat.le_min.mpr ⟨by omega, Nat.le_min.mpr ⟨hj_a, hj_c⟩⟩
+    exact aoyagiLemma5IntervalExcess_eq_self_of_le_min ell a j.val ha hj_a hj_c
   rw [hexcess] at hgap
   omega
 
@@ -371,6 +369,36 @@ theorem aoyagiHtildeUpperNat_sub_index_eq_lowerNat_of_le_min
   simpa [aoyagiHtildeUpperChain, aoyagiHtildeLowerChain] using
     aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min
       ell a M m ha ⟨p, hp_lt⟩ hp_a hp_c
+
+/-- Equation `(4)` lower-label bounds are exactly a prefix-crossing condition.
+
+For the source label `k = Htilde_p+1`, the lower and upper label inequalities
+`1 <= k <= W_(p+1)` are equivalent to saying that the threshold `p*M` lies
+between the previous selected-width prefix and the current selected-width
+prefix.  This is a conditional arithmetic reformulation only; it does not
+prove that Aoyagi's displayed vector is a legal source-family member. -/
+theorem aoyagiHtildeLowerNat_add_one_labelBounds_iff_prefixCrossing
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hp_a : p ≤ a) :
+    (1 ≤ aoyagiHtildeLowerNat ell a M m p + 1 ∧
+        aoyagiHtildeLowerNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p) ↔
+      (aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p -
+          aoyagiSelectedWidthNat ell m p + 1 ≤ (p : ℤ) * M ∧
+        (p : ℤ) * M ≤
+          aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p) := by
+  unfold aoyagiHtildeLowerNat aoyagiHtildeLowerIncrementPrefix
+    aoyagiHtildeLowerHighCount
+  rw [Nat.min_eq_left hp_a]
+  have hprefix :
+      (p : ℤ) * (M - 1) + (p : ℤ) = (p : ℤ) * M := by
+    ring
+  rw [hprefix]
+  constructor
+  · intro h
+    constructor <;> omega
+  · intro h
+    constructor <;> omega
 
 /-- Offsets from the lower displayed chain to the upper displayed chain at
 the `j`th chain coordinate. -/

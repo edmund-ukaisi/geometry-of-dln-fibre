@@ -538,3 +538,35 @@ The companion blocker audit records that the full displayed-family
 realisation is not yet formalisation-ready: legal source-label bounds,
 terminal/tail conventions for `tilde t=0`, the missing equation `(4)` index
 guards, and the Case 1(2) chart sequence remain open.
+
+## 2026-06-20 Lean Lemma 5 equation (4) guard arithmetic
+
+Reproduction:
+`reproduction-lemma5-eq4-guard-arithmetic-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-guard-arithmetic.md`.
+Blocked audit:
+`blocked-audit-lemma5-displayed-family-realisation-a5.md`.
+Review artifact:
+`review-lemma5-eq4-guard-arithmetic-a5.md`.
+
+Lean now records three guard facts for equation `(4)`:
+
+```text
+aoyagiLemma5IntervalExcess_eq_self_of_le_min
+aoyagiLemma5Eq4_selectedIndexGuard_iff
+aoyagiHtildeLowerNat_add_one_labelBounds_iff_prefixCrossing
+```
+
+The selected-index cutoff `S_(p+ell-a+2)` lies in the Definition 3 selected
+list exactly when `p+1<=a`, so the printed `p<=a` guard is one unit too weak
+at the boundary `p=a`.
+
+The label bounds for `k=Htilde_p+1` are exactly a prefix-crossing condition:
+the threshold `pM` must lie after the previous selected-width prefix and no
+later than the current prefix.  This isolates the real missing
+nonnegativity/admissibility datum for `Htilde_p`.
+
+This remains only finite guard arithmetic.  It does not construct the
+displayed equation `(4)` vector, prove source-label legality from Definition
+3 alone, prove `tilde t=0`, or prove Lemma 5.

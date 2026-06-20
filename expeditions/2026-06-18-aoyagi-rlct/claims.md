@@ -1695,6 +1695,10 @@ No such claim is formalisation-ready until both fields are filled.
   own-coordinate guard `j0<=ell-a`, and terminal-zero/legal-label data remain
   missing. Lean proves only the conditional chain arithmetic
   `Htilde'_p-p=Htilde_p` under `p<=a` and `p<=ell-a`.
+  A follow-up guard-arithmetic layer now proves that the equation `(4)` tail
+  cutoff needs `p+1<=a`, and that `k=Htilde_p+1` label bounds are exactly a
+  prefix-crossing condition. This sharpens the blocker; it does not discharge
+  legal-label or terminal-zero data.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1731,6 +1735,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/blocked-audit-lemma5-displayed-family-realisation-a5.md`;
   Lemma 5 equation `(4)` own-coordinate sanity at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq4-own-coordinate-a5.md`;
+  Lemma 5 equation `(4)` guard arithmetic at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-guard-arithmetic-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`;
   `Htilde` value-set count at
@@ -1807,6 +1813,9 @@ No such claim is formalisation-ready until both fields are filled.
   same-coordinate vector-bound and binary-delta free-count wrapper in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   Lemma 5 equation `(4)` own-coordinate sanity in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  Lemma 5 equation `(4)` guard arithmetic in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean` and
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets

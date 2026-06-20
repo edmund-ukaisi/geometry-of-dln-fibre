@@ -28,6 +28,29 @@ def aoyagiLemma5IntervalExcess (ell a j : ℕ) : ℕ :=
 def aoyagiLemma5IntervalSize (ell a j : ℕ) : ℕ :=
   1 + aoyagiLemma5IntervalExcess ell a j
 
+/-- In the initial overlap of the two Lemma 5 arms, the interval excess is
+the coordinate index itself.
+
+This is only the finite minimum calculation.  It does not assert that any
+displayed source vector is legal or terminal. -/
+theorem aoyagiLemma5IntervalExcess_eq_self_of_le_min
+    (ell a p : ℕ) (ha : a ≤ ell)
+    (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    aoyagiLemma5IntervalExcess ell a p = p := by
+  unfold aoyagiLemma5IntervalExcess
+  apply Nat.min_eq_left
+  exact Nat.le_min.mpr ⟨by omega, Nat.le_min.mpr ⟨hp_a, hp_c⟩⟩
+
+/-- The selected-index guard needed by Aoyagi Lemma 5 equation `(4)`.
+
+With `c = ell-a`, the printed tail cutoff `S_(p+c+2)` lies in the selected
+list `S_1,...,S_(ell+1)` exactly when `p+1 <= a`.  Thus the printed guard
+`p <= a` is one unit too weak at the boundary `p=a`. -/
+theorem aoyagiLemma5Eq4_selectedIndexGuard_iff
+    (ell a p : ℕ) (ha : a ≤ ell) :
+    p + (ell - a) + 2 ≤ ell + 1 ↔ p + 1 ≤ a := by
+  omega
+
 /-- A fiber-count model for the same interval excess.  The rectangle has
 `a * (ell-a)` points, and the level map is `(p,q) ↦ p+q+1`. -/
 def aoyagiLemma5IntervalExcessFiber (ell a j : ℕ) : ℕ :=
