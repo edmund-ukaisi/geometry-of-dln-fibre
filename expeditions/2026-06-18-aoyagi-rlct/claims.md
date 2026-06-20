@@ -534,7 +534,10 @@ No such claim is formalisation-ready until both fields are filled.
   suffix `F` supplied. The source suffix-chain checkpoint now names Aoyagi's
   remaining right product `prod_{s=S+2}^L C^(s)` as a raw paper-order matrix
   chain and instantiates the stopped source old-top theorem with that named
-  suffix product. This still does not construct source-produced `C'^(S+1)`.
+  suffix product. The source terminal product candidate checkpoint now
+  reindexes the stopped terminal candidate into source rows `1..J+1`, with the
+  surviving pivot row placed at `J+1`. This still does not construct
+  source-produced `C'^(S+1)`.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -623,6 +626,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-source-old-top-suffix-specialization-a4.md`.
 	  Review of the Case 2 source suffix chain is saved at
 	  `threads/04-blow-up-certificate/review-case2-source-suffix-chain-a4.md`.
+	  Review of the Case 2 source terminal product candidate is saved at
+	  `threads/04-blow-up-certificate/review-case2-source-terminal-product-candidate-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1375,6 +1380,20 @@ No such claim is formalisation-ready until both fields are filled.
   `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_next_cont`
   in `BlowupArithmetic.lean`.  It replaces the abstract supplied suffix in
   the stopped source old-top theorem by Aoyagi's raw right suffix product.
+  The source terminal product candidate checkpoint proves
+  `matrixEntryIdeal_submatrix_equiv`,
+  `case2SourceTerminalRowIndex`, `case2SourceTerminalRowEquiv`,
+  `case2SourceTerminalRowEquiv_inl`, `case2SourceTerminalRowEquiv_inr`,
+  `case2DisplayedSourceTerminalCprimeCandidate`,
+  `case2DisplayedSourceTerminalCprimeCandidate_submatrix_terminalRowEquiv`,
+  `matrixEntryIdeal_case2DisplayedSourceTerminalCprimeCandidate_eq_terminalCnext`,
+  `case2DisplayedSourceTerminalWeight`,
+  `case2DisplayedSourceTerminalProductReindexedCandidate`,
+  `case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate_submatrix`,
+  `matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`,
+  and
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalReindexedProduct_of_not_next_cont`.
+  This only reindexes the stopped terminal candidate into one-based source rows.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

@@ -2369,3 +2369,36 @@ wrapper only by naming the matrix chain. It still does not prove that
 chart coverage, coordinate regularity, Jacobian arithmetic, normal crossings,
 RLCT extraction, termination, transition invariance, automatic Case 2
 gap/tail transport, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 source terminal product candidate
+
+Reproduction:
+`reproduction-case2-source-terminal-product-candidate-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-terminal-product-candidate.md`.
+Review artifact:
+`review-case2-source-terminal-product-candidate-a4.md`.
+
+Lean now packages the stopped displayed Case 2 terminal candidate in one-based
+source-row order.  The row equivalence
+
+```text
+case2SourceOldTopRowIndex J ⊕ Unit ≃ case2SourceTerminalRowIndex J
+```
+
+maps old source rows `1..J` to themselves and the surviving pivot row to
+`J+1`.  The new source-row objects are explicitly candidates/reindexed
+presentations:
+
+```text
+case2DisplayedSourceTerminalCprimeCandidate
+case2DisplayedSourceTerminalProductReindexedCandidate
+```
+
+The stopped source old-top/source suffix theorem is restated with the
+source-row reindexed terminal product candidate on the right hand side.  This
+is still a reindexing of supplied terminal data.  It does not prove the
+product-form equality from the separately named source-row factors, does not
+prove source-produced `C'^(S+1)`, and does not prove chart production,
+coverage, Jacobians, normal crossings/RLCT, termination, transition
+invariance, automatic Case 2 gap/tail transport, or printed-vector repair.

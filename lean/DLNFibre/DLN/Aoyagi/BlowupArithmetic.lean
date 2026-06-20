@@ -7058,6 +7058,48 @@ def case2DisplayedSourceOldTopBlock
     Matrix (case2SourceOldTopRowIndex J) τ R :=
   fun i t ↦ C i.1 t
 
+/-- Source terminal rows `1,...,J+1` after the stopped displayed Case 2
+pivot row survives. -/
+abbrev case2SourceTerminalRowIndex (J : ℕ) : Type :=
+  (Finset.Icc 1 (J + 1) : Type)
+
+/-- Reindex the stacked old rows plus surviving pivot row by source rows
+`1,...,J+1`. -/
+def case2SourceTerminalRowEquiv (J : ℕ) :
+    case2SourceOldTopRowIndex J ⊕ Unit ≃ case2SourceTerminalRowIndex J where
+  toFun
+    | Sum.inl i => ⟨i.1, Finset.mem_Icc.mpr
+        ⟨(Finset.mem_Icc.mp i.2).1,
+          le_trans (Finset.mem_Icc.mp i.2).2 (by omega : J ≤ J + 1)⟩⟩
+    | Sum.inr _ => ⟨J + 1, Finset.mem_Icc.mpr ⟨by omega, by omega⟩⟩
+  invFun i :=
+    if h : i.1 ≤ J then
+      Sum.inl ⟨i.1, Finset.mem_Icc.mpr ⟨(Finset.mem_Icc.mp i.2).1, h⟩⟩
+    else Sum.inr ()
+  left_inv := by
+    intro i
+    rcases i with i | u
+    · simp [show i.1 ≤ J from (Finset.mem_Icc.mp i.2).2]
+    · simp
+  right_inv := by
+    intro i
+    by_cases h : i.1 ≤ J
+    · simp [h]
+    · have hi : i.1 = J + 1 := by
+        have hle := (Finset.mem_Icc.mp i.2).2
+        omega
+      ext
+      simp [hi]
+
+@[simp] theorem case2SourceTerminalRowEquiv_inl (J : ℕ)
+    (i : case2SourceOldTopRowIndex J) :
+    (case2SourceTerminalRowEquiv J (Sum.inl i) : ℕ) = i.1 :=
+  rfl
+
+@[simp] theorem case2SourceTerminalRowEquiv_inr (J : ℕ) (u : Unit) :
+    (case2SourceTerminalRowEquiv J (Sum.inr u) : ℕ) = J + 1 :=
+  rfl
+
 /-- Source-coordinate specialization of the elementary Case 1(1) selected-old
 row-strip identity.
 
@@ -10803,6 +10845,62 @@ def case2DisplayedPaperTerminalCnext
     (residual : ℕ × ℕ → R) (C : ℕ → τ → R) : Matrix (ι ⊕ Unit) τ R :=
   verticalBlock Cold (case2DisplayedPaperCprimeTop n hS hcont residual C)
 
+/-- Source-row version of the stopped displayed Case 2 terminal next matrix
+`C'^(S+1)`.
+
+Rows are indexed by `1,...,J+1`: rows `1,...,J` are the old source rows of the
+following matrix, and row `J+1` is the surviving transformed pivot row.  This
+is a row packaging of the already defined terminal candidate, not a proof that
+the blow-up chart produces the coordinates. -/
+def case2DisplayedSourceTerminalCprimeCandidate
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    Matrix (case2SourceTerminalRowIndex J) τ R :=
+  (case2DisplayedPaperTerminalCnext (case2DisplayedSourceOldTopBlock (J := J) C)
+    n hS hcont residual C).submatrix (case2SourceTerminalRowEquiv J).symm id
+
+/-- The source-row terminal `C'^(S+1)` reindexes back to the stacked
+old-top-plus-pivot-row candidate. -/
+theorem case2DisplayedSourceTerminalCprimeCandidate_submatrix_terminalRowEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    (case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C).submatrix
+        (case2SourceTerminalRowEquiv J) id =
+      case2DisplayedPaperTerminalCnext (case2DisplayedSourceOldTopBlock (J := J) C)
+        n hS hcont residual C := by
+  ext i t
+  simp [case2DisplayedSourceTerminalCprimeCandidate]
+
+/-- Reindexing the source-row terminal `C'^(S+1)` preserves the matrix-entry
+ideal of the stacked old-top-plus-pivot-row candidate. -/
+theorem matrixEntryIdeal_case2DisplayedSourceTerminalCprimeCandidate_eq_terminalCnext
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    matrixEntryIdeal (case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C) =
+      matrixEntryIdeal
+        (case2DisplayedPaperTerminalCnext (case2DisplayedSourceOldTopBlock (J := J) C)
+          n hS hcont residual C) := by
+  exact matrixEntryIdeal_submatrix_equiv
+    (case2DisplayedPaperTerminalCnext (case2DisplayedSourceOldTopBlock (J := J) C)
+      n hS hcont residual C)
+    (case2SourceTerminalRowEquiv J).symm (Equiv.refl τ)
+
+/-- Source-row version of the stopped displayed Case 2 terminal weight. -/
+def case2DisplayedSourceTerminalWeight
+    {R : Type*} [CommRing R] {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (b0 : R) :
+    Matrix (case2SourceTerminalRowIndex J) (case2SourceTerminalRowIndex J) R :=
+  (case2DisplayedPaperTerminalWeight Wold b0).submatrix
+    (case2SourceTerminalRowEquiv J).symm (case2SourceTerminalRowEquiv J).symm
+
 /-- Source-order candidate for the stopped displayed Case 2 terminal product.
 
 This is `(terminalWeight * terminalCnext) * F`.  It names the finite matrix
@@ -10856,6 +10954,65 @@ theorem case2DisplayedPaperTerminalCprimeCandidate_eq_verticalBlock_mul
           case2DisplayedPaperCprimeTop n hS hcont residual C) * F)
   rw [sumElim_mul]
   rfl
+
+/-- Source-row version of the stopped displayed Case 2 terminal product
+candidate, obtained by row-reindexing the already defined stacked candidate. -/
+def case2DisplayedSourceTerminalProductReindexedCandidate
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (n : ℕ → ℕ) {S : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) :
+    Matrix (case2SourceTerminalRowIndex J) υ R :=
+  (case2DisplayedPaperTerminalCprimeCandidate Wold
+    (case2DisplayedSourceOldTopBlock (J := J) C)
+    n hS hcont b0 residual C F).submatrix
+    (case2SourceTerminalRowEquiv J).symm id
+
+/-- The source-row terminal product candidate unfolds to the row reindexing of
+the stacked stopped terminal candidate. -/
+theorem case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate_submatrix
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (n : ℕ → ℕ) {S : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) :
+    case2DisplayedSourceTerminalProductReindexedCandidate Wold n hS hcont b0 residual C F =
+      (case2DisplayedPaperTerminalCprimeCandidate Wold
+        (case2DisplayedSourceOldTopBlock (J := J) C)
+        n hS hcont b0 residual C F).submatrix
+        (case2SourceTerminalRowEquiv J).symm id :=
+  rfl
+
+/-- Reindexing the source-row terminal product candidate preserves the
+matrix-entry ideal of the stacked stopped terminal candidate. -/
+theorem matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (n : ℕ → ℕ) {S : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) :
+    matrixEntryIdeal
+        (case2DisplayedSourceTerminalProductReindexedCandidate Wold n hS hcont b0 residual C F) =
+      matrixEntryIdeal
+        (case2DisplayedPaperTerminalCprimeCandidate Wold
+          (case2DisplayedSourceOldTopBlock (J := J) C)
+          n hS hcont b0 residual C F) := by
+  rw [case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate_submatrix]
+  exact matrixEntryIdeal_submatrix_equiv
+    (case2DisplayedPaperTerminalCprimeCandidate Wold
+      (case2DisplayedSourceOldTopBlock (J := J) C)
+      n hS hcont b0 residual C F)
+    (case2SourceTerminalRowEquiv J).symm (Equiv.refl υ)
 
 /-- Source-chart displayed Case 2 terminal product after the supplied `Q/P`
 identity and failed next continuation.
@@ -11078,6 +11235,98 @@ theorem exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_nex
             (sourceSuffixProduct κ Ctail S hSuffix)) :=
   data.exists_sourceDisplayedOldTopSuffixTerminalProduct_entryIdeal_eq_of_not_next_cont
     hstop residual C (sourceSuffixProduct κ Ctail S hSuffix)
+
+/-- Source-row terminal-product version of the stopped displayed Case 2
+source old-top/suffix theorem.
+
+The right hand side is the one-based source-row presentation of the same
+terminal candidate.  This is still only a reindexing of supplied terminal data;
+it does not prove that the chart produces Aoyagi's full `C'^(S+1)`. -/
+theorem exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          (case2DisplayedSourceTerminalProductReindexedCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            n data.stage_pos data.continuation (post.weight (J + 1)) residual C
+            (sourceSuffixProduct κ Ctail S hSuffix)) := by
+  rcases data.exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_next_cont
+      κ hSuffix hstop residual C Ctail with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  calc
+    matrixEntryIdeal
+        ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+            (weightedPivotBlockRowOp q
+                  (fun i ↦
+                    pivotFirstX
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                      (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                        residual) i ()) *
+                (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                  case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                    data.continuation u residual).submatrix
+                  (pivotFirstIndexEquiv
+                    (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                  (pivotFirstIndexEquiv
+                    (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+            verticalBlock (case2DisplayedSourceOldTopBlock C)
+              (case2DisplayedSourceFollowingFactor n data.stage_pos
+                data.continuation C)) * sourceSuffixProduct κ Ctail S hSuffix)
+        =
+      matrixEntryIdeal
+          (case2DisplayedPaperTerminalCprimeCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            (case2DisplayedSourceOldTopBlock C)
+            n data.stage_pos data.continuation (post.weight (J + 1)) residual C
+            (sourceSuffixProduct κ Ctail S hSuffix)) := hq
+    _ =
+      matrixEntryIdeal
+          (case2DisplayedSourceTerminalProductReindexedCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            n data.stage_pos data.continuation (post.weight (J + 1)) residual C
+            (sourceSuffixProduct κ Ctail S hSuffix)) := by
+        rw [
+          ← matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate]
 
 /-- The displayed source-coordinate chart map has the selected variable as a
 transformed finite-center value. -/

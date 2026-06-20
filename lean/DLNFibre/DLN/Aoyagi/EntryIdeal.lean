@@ -29,6 +29,21 @@ theorem matrixEntry_mem {m n : Type*} (A : Matrix m n R) (i : m) (j : n) :
     A i j ∈ matrixEntryIdeal A :=
   Ideal.subset_span ⟨(i, j), rfl⟩
 
+/-- Reindexing rows and columns by equivalences preserves the matrix-entry
+ideal. -/
+theorem matrixEntryIdeal_submatrix_equiv {m n m' n' : Type*}
+    (A : Matrix m n R) (erow : m' ≃ m) (ecol : n' ≃ n) :
+    matrixEntryIdeal (A.submatrix erow ecol) = matrixEntryIdeal A := by
+  refine le_antisymm ?_ ?_
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    exact matrixEntry_mem A (erow i) (ecol j)
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    change A i j ∈ matrixEntryIdeal (A.submatrix erow ecol)
+    rw [show A i j = A.submatrix erow ecol (erow.symm i) (ecol.symm j) by simp]
+    exact matrixEntry_mem (A.submatrix erow ecol) (erow.symm i) (ecol.symm j)
+
 /-- Stacking two row blocks generates the supremum of their matrix-entry ideals. -/
 theorem matrixEntryIdeal_sumElim_eq_sup {m m' n : Type*}
     (A : Matrix m n R) (B : Matrix m' n R) :

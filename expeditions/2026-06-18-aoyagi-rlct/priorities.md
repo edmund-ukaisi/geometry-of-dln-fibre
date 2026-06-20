@@ -116,9 +116,15 @@ on the session's original cwd.
    also Lean-proved in raw paper order: `paperMatrixChain` extends by right
    multiplication, `sourceSuffixProduct` names `prod_{s=S+2}^L C^(s)`, and
    the stopped source old-top terminal theorem is instantiated with that
-   named suffix product. Next A4 target: construct the source-produced
-   terminal stack `C'^(S+1)` or the bridge from the current `[Ctop;C0]`
-   candidate to that source object. Do not transport Case 2 gap/tail
+   named suffix product. The source-row terminal product candidate is now also
+   Lean-proved as a reindexing presentation: old rows `1..J` plus the
+   surviving pivot row are equivalent to source rows `1..J+1`, and the stopped
+   source old-top/source suffix theorem is restated with
+   `case2DisplayedSourceTerminalProductReindexedCandidate` on the right. Next
+   A4 target: prove the product-form equality for the separately named source
+   terminal weight and source terminal `C'` if needed, then construct the
+   source-produced terminal stack `C'^(S+1)` or the bridge from this current
+   reindexed candidate to that source object. Do not transport Case 2 gap/tail
    invariants without separately checking their shifted thresholds. If
    downstream suffix rewrites become noisy, add source-level empty/peel lemmas
    for `sourceSuffixProduct`.

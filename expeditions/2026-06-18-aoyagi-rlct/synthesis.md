@@ -1497,6 +1497,18 @@ This still does not construct the source-produced terminal stack
 `C'^(S+1)`; it only replaces the abstract suffix matrix by the raw right
 matrix-chain product.
 
+The source terminal product candidate checkpoint is now Lean-proved.  It adds
+`matrixEntryIdeal_submatrix_equiv`, the source terminal row type `1..J+1`, and
+the equivalence from old rows plus the surviving pivot row to that source row
+type.  The source-row `C'` and terminal product are named as candidates, with
+the product explicitly named
+`case2DisplayedSourceTerminalProductReindexedCandidate` because it is defined
+by row-reindexing the existing stacked candidate.  The stopped source
+old-top/source suffix theorem is restated with this reindexed source-row
+candidate on the right.  The product-form equality from source terminal weight
+times source terminal `C'` is not proved here, and source production of
+Aoyagi's full `C'^(S+1)` remains open.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
