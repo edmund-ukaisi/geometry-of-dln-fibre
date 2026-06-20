@@ -123,6 +123,79 @@ theorem mem_closure_dirSum_of_mem_closure [Infinite k] {d d' : Fin (N + 1) → �
     refine ⟨liftDirSumBaseChange (d' := d') P, ?_⟩
     rw [liftDirSumBaseChange_smul, hP, tupleEval_dirSumPoly, tupleEval_constPoly]
 
+/-! ## Base change of a polynomial family and the downstairs-transport wrapper
+
+A constant `k`-base change `Q` conjugates a polynomial-coefficient family entrywise (the unit matrices
+mapped into `Polynomial k` by `C`), commuting with `eval`-at-`t`: `tupleEval (smulPoly Q F) t = Q •
+tupleEval F t`. This lets the engine land an **orbit-equivalent** downstairs `D' = Q • D₀` (rather than
+`D₀` itself) in the same closure — the bridge the list form needs (the genuine split sum is `G_d`-equivalent
+to the cut chain via `splitCut_orbit_intervalDirectSum`, not equal to it). -/
+
+/-- The base change `Q • F` of a polynomial-coefficient family `F`: the unit matrices `Q` mapped into
+`Polynomial k` by `C` and conjugating each edge `F i = Q_{i+1} · F i · Q_i⁻¹`. -/
+noncomputable def smulPoly {d : Fin (N + 1) → ℕ} (Q : BaseChangeGroup (k := k) d)
+    (F : Tuple (k := Polynomial k) d) : Tuple (k := Polynomial k) d :=
+  fun i ↦ (Units.val (Q i.succ)).map Polynomial.C * F i
+    * (Units.val (Q i.castSucc)⁻¹).map Polynomial.C
+
+/-- `tupleEval (smulPoly Q F) t = Q • tupleEval F t`: evaluation commutes with the constant base
+change (`eval ∘ C = id`, `eval` a ring hom). -/
+theorem tupleEval_smulPoly {d : Fin (N + 1) → ℕ} (Q : BaseChangeGroup (k := k) d)
+    (F : Tuple (k := Polynomial k) d) (t : k) :
+    tupleEval (smulPoly Q F) t = Q • tupleEval F t := by
+  funext i
+  rw [smul_eq_baseChange, baseChange_apply, tupleEval, smulPoly,
+    show (Polynomial.eval t) = (Polynomial.evalRingHom t : Polynomial k → k) from
+      (Polynomial.coe_evalRingHom t).symm,
+    Matrix.map_mul, Matrix.map_mul]
+  congr 1
+  · congr 1
+    funext r c
+    simp only [Matrix.map_apply, Polynomial.coe_evalRingHom, Polynomial.eval_C]
+  · funext r c
+    simp only [Matrix.map_apply, Polynomial.coe_evalRingHom, Polynomial.eval_C]
+
+/-- **The degeneration engine with downstairs transport.** Over an infinite field, if `F` has limit
+`tupleEval F 0 = D₀`, every `t ≠ 0` point lies in the orbit of `U`, and `Q • D₀ = D'`, then the
+flattening of the orbit-equivalent downstairs `D'` lies in the Zariski closure of the orbit of `U`.
+The transported family is `smulPoly Q F` (limit `Q • D₀ = D'`; at `t ≠ 0`, `Q • (P • U) = (Q·P) • U`
+still in the orbit of `U`). Lets a move whose limit is only `G_d`-equivalent to the target sum land
+the target itself. -/
+theorem mem_closure_of_polynomialFamily_orbitEquiv [Infinite k] {d : Fin (N + 1) → ℕ}
+    (U D₀ D' : Tuple (k := k) d) (F : Tuple (k := Polynomial k) d) (Q : BaseChangeGroup (k := k) d)
+    (h0 : tupleEval F 0 = D₀) (hQ : Q • D₀ = D')
+    (horb : ∀ t : k, t ≠ 0 → ∃ P : BaseChangeGroup (k := k) d, P • U = tupleEval F t) :
+    canonicalCoord d D'
+      ∈ MvPolynomial.zeroLocus (σ := RepCoord d) (k := k) k
+          (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet U)) := by
+  refine mem_zeroLocus_vanishingIdeal_orbitSet_of_polynomialFamily U D' (smulPoly Q F) ?_
+    (fun t ht ↦ ?_)
+  · rw [tupleEval_smulPoly, h0, hQ]
+  · obtain ⟨P, hP⟩ := horb t ht
+    refine ⟨Q * P, ?_⟩
+    rw [mul_smul Q P U, hP, tupleEval_smulPoly]
+
+/-- **Common-summand lemma with downstairs transport.** Combines the `rest` reduction with the
+downstairs orbit-equivalence: if `F₀` degenerates `U₀ ⇝ D₀` and `Q • (dirSum D₀ R) = D'`, then the
+flattening of the orbit-equivalent `D'` lies in the closure of the orbit of `dirSum U₀ R`. The
+two-interval move lives in `D₀`, the appended `rest` rides as `R`, and `Q` carries the (cut-chain)
+limit `dirSum D₀ R` onto the genuine interval direct sum `D'` — the form the list headline lands. -/
+theorem mem_closure_dirSum_of_mem_closure_orbitEquiv [Infinite k] {d d' : Fin (N + 1) → ℕ}
+    (U₀ D₀ : Tuple (k := k) d) (R : Tuple (k := k) d') (F₀ : Tuple (k := Polynomial k) d)
+    (Q : BaseChangeGroup (k := k) (fun l ↦ d l + d' l)) (D' : Tuple (k := k) (fun l ↦ d l + d' l))
+    (h0 : tupleEval F₀ 0 = D₀) (hQ : Q • dirSum D₀ R = D')
+    (horb : ∀ t : k, t ≠ 0 → ∃ P : BaseChangeGroup (k := k) d, P • U₀ = tupleEval F₀ t) :
+    canonicalCoord (fun l ↦ d l + d' l) D'
+      ∈ MvPolynomial.zeroLocus (σ := RepCoord (fun l ↦ d l + d' l)) (k := k) k
+          (MvPolynomial.vanishingIdeal (σ := RepCoord (fun l ↦ d l + d' l)) (K := k) k
+            (orbitSet (dirSum U₀ R))) := by
+  refine mem_closure_of_polynomialFamily_orbitEquiv (dirSum U₀ R) (dirSum D₀ R) D'
+    (dirSumPoly F₀ (constPoly R)) Q ?_ hQ (fun t ht ↦ ?_)
+  · rw [tupleEval_dirSumPoly, tupleEval_constPoly, h0]
+  · obtain ⟨P, hP⟩ := horb t ht
+    refine ⟨liftDirSumBaseChange (d' := d') P, ?_⟩
+    rw [liftDirSumBaseChange_smul, hP, tupleEval_dirSumPoly, tupleEval_constPoly]
+
 /-! ## The split box move `M_{[a,e]} ⇝ M_{[a,b]} ⊕ M_{[b+1,e]}` (`c = b+1`, no rest)
 
 The split case `c = b+1` of the box move with no common summand: the single interval module
@@ -429,6 +502,183 @@ theorem splitCut_orbit_intervalDirectSum (a e : Fin (N + 1)) (b : Fin N) (hae : 
       List.sum_cons, List.sum_nil, add_zero, rankPattern_intervalModule, rankPattern_intervalModule,
       Nat.cast_add, Nat.cast_ite, Nat.cast_ite, Nat.cast_one, Nat.cast_zero]
   exact_mod_cast hcast.symm
+
+/-! ## The split box move, glued into the §4 list headline (`Lup`/`Ldn`, arbitrary `rest`)
+
+The full §4 statement for the split case `c = b+1`: with `Lup = (a,e) :: rest` and
+`Ldn = (a, b.castSucc) :: (b.succ, e) :: rest`, the flattening of `intervalDirectSum Ldn`
+(transported onto the common dimension vector `foldDim Lup`, since `foldDim Ldn = foldDim Lup`) lies
+in the Zariski closure of the orbit of `intervalDirectSum Lup`. The two-interval move is `splitCut a
+e b ⇝ M_{[a,b]} ⊕ M_{[b+1,e]}` (no `(c,b)` summand in the split case); `rest` rides as the common
+summand `R = intervalDirectSum rest`; the downstairs `dirSum (splitCut a e b) R` is carried by a base
+change onto `intervalDirectSum Ldn`. -/
+
+/-- `foldDim` of the split-down list equals `foldDim` of the up list: `[a,b] ⊔ [b+1,e]` partitions
+`[a,e]`, so `(a,bc) :: (bs,e) :: rest` and `(a,e) :: rest` have the same dimension vector. -/
+theorem foldDim_splitCons_eq (a e : Fin (N + 1)) (b : Fin N) (rest : List (Fin (N + 1) × Fin (N + 1)))
+    (hae : a ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    foldDim ((a, b.castSucc) :: (b.succ, e) :: rest)
+      = (fun l ↦ intervalDim a e l + foldDim rest l) := by
+  funext l
+  have := congrFun (foldDim_split_eq (N := N) a e b hae hbe) l
+  simp only [foldDim, add_zero] at this ⊢
+  omega
+
+/-- **The split downstairs sum is `G_d`-equivalent to `dirSum (splitCut a e b) rest`.** For a genuine
+split (`a ≤ b`, `b+1 ≤ e`) the cut chain riding `rest` is carried by a base change onto the genuine
+interval direct sum `M_{[a,b]} ⊕ M_{[b+1,e]} ⊕ rest` (transported onto the up dimension vector): equal
+rank patterns (`rankPattern_splitCut` + block additivity = the `Ldn` cumul), then the complete
+invariant `orbit_of_rankPattern_eq`. -/
+theorem orbit_dirSum_splitCut_intervalDirectSum (a e : Fin (N + 1)) (b : Fin N)
+    (rest : List (Fin (N + 1) × Fin (N + 1))) (hae : a ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    ∃ Q : BaseChangeGroup (k := k) (fun l ↦ intervalDim a e l + foldDim rest l),
+      Q • dirSum (splitCut (k := k) a e b) (intervalDirectSum rest)
+        = (foldDim_splitCons_eq a e b rest hae hbe) ▸
+            intervalDirectSum (k := k) ((a, b.castSucc) :: (b.succ, e) :: rest) := by
+  refine orbit_of_rankPattern_eq _ _ (fun i j hij ↦ ?_)
+  rw [rankPattern_dirSum, rankPattern_splitCut a e b hae hbe hij,
+    rankPattern_transport (foldDim_splitCons_eq a e b rest hae hbe),
+    rankPattern_intervalDirectSum (K := k) ((a, b.castSucc) :: (b.succ, e) :: rest),
+    List.map_cons, List.map_cons, List.sum_cons, List.sum_cons,
+    rankPattern_intervalModule, rankPattern_intervalModule,
+    ← rankPattern_intervalDirectSum (K := k) rest]
+  ring
+
+/-- **The split box move, full §4 list headline (split case `c = b+1`).** Over an infinite field, for
+a genuine split (`a ≤ b.castSucc`, `b.succ ≤ e`) and arbitrary `rest`, the flattening of
+`intervalDirectSum ((a, b.castSucc) :: (b.succ, e) :: rest)` — the downstairs `Ldn`, transported onto
+the common dimension vector `foldDim ((a,e) :: rest)` (the lists share a dimension vector) — lies in
+the Zariski closure of the orbit of `intervalDirectSum ((a, e) :: rest)`, the upstairs `Lup`. This is
+the §4 headline for the split case: `Lup = (a,e) :: rest`, `Ldn = (a,b) :: (b+1,e) :: rest`. The
+common-summand lemma rides `rest` as `R`; the split family `splitFamilyPoly` degenerates `M_{[a,e]}`
+to the cut chain; the base change `orbit_dirSum_splitCut_intervalDirectSum` carries the cut-chain limit
+onto the genuine interval direct sum. -/
+theorem splitMove_intervalDirectSum_mem_closure [Infinite k] (a e : Fin (N + 1)) (b : Fin N)
+    (rest : List (Fin (N + 1) × Fin (N + 1))) (hae : a ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    canonicalCoord (fun l ↦ intervalDim a e l + foldDim rest l)
+        ((foldDim_splitCons_eq a e b rest hae hbe) ▸
+          intervalDirectSum (k := k) ((a, b.castSucc) :: (b.succ, e) :: rest))
+      ∈ MvPolynomial.zeroLocus (σ := RepCoord (fun l ↦ intervalDim a e l + foldDim rest l))
+          (k := k) k
+          (MvPolynomial.vanishingIdeal
+            (σ := RepCoord (fun l ↦ intervalDim a e l + foldDim rest l)) (K := k) k
+            (orbitSet (dirSum (intervalModule a e) (intervalDirectSum rest)))) := by
+  obtain ⟨Q, hQ⟩ := orbit_dirSum_splitCut_intervalDirectSum (k := k) a e b rest hae hbe
+  exact mem_closure_dirSum_of_mem_closure_orbitEquiv (intervalModule a e) (splitCut a e b)
+    (intervalDirectSum rest) (splitFamilyPoly a e b) Q _
+    (tupleEval_splitFamilyPoly_zero a e b) hQ
+    (fun t ht ↦ tupleEval_splitFamilyPoly_mem_orbit a e b ht)
+
+/-! ## The non-split box move `M_{[a,e]} ⊕ M_{[c,b]} ⇝ M_{[a,b]} ⊕ M_{[c,e]}` (`a < c ≤ b < e`)
+
+The genuine two-strand recombination, dim-2 overlap on `[c,b]`. Over the **upstairs** dimension vector
+`d₂ = intervalDim a e + intervalDim c b` (`b` here the vertex `b.castSucc`), the upstairs is `U₂ =
+M_{[a,e]} ⊕ M_{[c,b]}` (block-diagonal). The family `splice a c e b λ` edits `U₂` at the single
+recombination edge `b → b+1`: there the source vertex carries both strands (long `[a,e]`, short
+`[c,b]`) and the target only the long, so the edge is the `1×2` row `[λ, 1]` in (long, short) source
+coordinates (`finSumFinEquiv` reads the strand). At `λ = 0` the row is `[0, 1]` — the downstairs
+recombination (kill the long strand, route the short through); at `λ ≠ 0` it has the upstairs rank
+pattern. Off edge `b` it is `U₂` (block-diagonal). The `t ≠ 0` orbit membership uses the **complete
+invariant** `orbit_of_rankPattern_eq` (the lighter route at symbolic indices): we show `rankPattern
+(splice … t) = rankPattern U₂` for `t ≠ 0`, no explicit `P(t)` entrywise. -/
+
+/-- General sub-product concatenation: `submult i j = submult m j · submult i m` for `i ≤ m ≤ j`.
+Telescopes the product at any interior vertex `m`; the matrix-side splitter for crossing arguments. -/
+theorem submult_concat (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i m j : Fin (N + 1))
+    (him : i ≤ m) (hmj : m ≤ j) :
+    submult d A i j (him.trans hmj) = submult d A m j hmj * submult d A i m him := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : m = 0 := Fin.le_zero_iff.mp hmj
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp him
+    rw [submult_self, Matrix.mul_one]
+  | succ p ih =>
+    rcases eq_or_lt_of_le hmj with heq | hlt
+    · subst heq; rw [submult_self, Matrix.one_mul]
+    · have hmp : m ≤ p.castSucc := Fin.le_castSucc_iff.mpr hlt
+      have hip : i ≤ p.castSucc := him.trans hmp
+      rw [submult_succ d A i p hip, submult_succ d A m p hmp, ih hmp, Matrix.mul_assoc]
+
+/-- The **recombination family** `splice a c e b λ : Tuple (intervalDim a e + intervalDim c b)`: the
+upstairs `M_{[a,e]} ⊕ M_{[c,b]}` with the single edge `b` overwritten by the recombination row — the
+long strand (`finSumFinEquiv inl`) carries `λ`, the short strand (`inr`) carries `1`. Defined entrywise
+(scalar-level branch on the edge), so it is dimension-agnostic: no `fromBlocks`/`▸` at the edge. -/
+noncomputable def splice (a c e : Fin (N + 1)) (b : Fin N) (lam : k) :
+    Tuple (k := k) (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) :=
+  fun p r s ↦ if p = b
+    then (match finSumFinEquiv.symm s with | Sum.inl _ => lam | Sum.inr _ => 1)
+    else dirSum (intervalModule a e) (intervalModule c b.castSucc) p r s
+
+/-- `splice` agrees with the upstairs `U₂ = M_{[a,e]} ⊕ M_{[c,b]}` off the recombination edge `b`. -/
+theorem splice_apply_ne (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {p : Fin N} (hp : p ≠ b) :
+    splice (k := k) a c e b lam p
+      = dirSum (intervalModule a e) (intervalModule c b.castSucc) p := by
+  funext r s; rw [splice, if_neg hp]
+
+/-- Below the recombination edge (`j ≤ b`), the splice sub-product equals the upstairs `U₂`'s — the
+path stays off edge `b` (every top factor is at `p < b`). -/
+theorem submult_splice_below (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i j : Fin (N + 1)}
+    (hij : i ≤ j) (hjb : j ≤ b.castSucc) :
+    submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (splice (k := k) a c e b lam) i j hij
+      = submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule a e) (intervalModule c b.castSucc)) i j hij := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp hij
+    rw [submult_self, submult_self]
+  | succ p ih =>
+    rcases eq_or_lt_of_le hij with heq | hlt
+    · obtain rfl := heq; rw [submult_self, submult_self]
+    · have hip : i ≤ p.castSucc := Fin.le_castSucc_iff.mpr hlt
+      have hjbv : (p : ℕ) + 1 ≤ (b : ℕ) := by
+        have := Fin.le_def.mp hjb; rw [Fin.val_succ, Fin.val_castSucc] at this; exact this
+      have hpb : p ≠ b := fun h ↦ by rw [h] at hjbv; omega
+      have hpbcs : p.castSucc ≤ b.castSucc := by
+        rw [Fin.le_def, Fin.val_castSucc, Fin.val_castSucc]; omega
+      rw [submult_succ _ (splice a c e b lam) i p hip, submult_succ _ (dirSum _ _) i p hip,
+          ih hip hpbcs, splice_apply_ne a c e b lam hpb]
+
+/-- Above the recombination edge (`b+1 ≤ i`), the splice sub-product equals the upstairs `U₂`'s — the
+path stays off edge `b` (every top factor is at `p > b`). -/
+theorem submult_splice_above (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i j : Fin (N + 1)}
+    (hij : i ≤ j) (hbi : b.succ ≤ i) :
+    submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (splice (k := k) a c e b lam) i j hij
+      = submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule a e) (intervalModule c b.castSucc)) i j hij := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp hij
+    rw [submult_self, submult_self]
+  | succ p ih =>
+    rcases eq_or_lt_of_le hij with heq | hlt
+    · obtain rfl := heq; rw [submult_self, submult_self]
+    · have hip : i ≤ p.castSucc := Fin.le_castSucc_iff.mpr hlt
+      have hbiv : (b : ℕ) + 1 ≤ (i : ℕ) := by
+        have := Fin.le_def.mp hbi; rw [Fin.val_succ] at this; exact this
+      have hipv : (i : ℕ) ≤ (p : ℕ) := by
+        have := Fin.le_def.mp hip; rw [Fin.val_castSucc] at this; exact this
+      have hpb : p ≠ b := fun h ↦ by rw [h] at hipv; omega
+      rw [submult_succ _ (splice a c e b lam) i p hip, submult_succ _ (dirSum _ _) i p hip,
+          ih hip, splice_apply_ne a c e b lam hpb]
+
+/-- **Crossing factorization.** For `i ≤ b` and `b+1 ≤ j` the splice sub-product factors through the
+single recombination edge: `submult (splice λ) i j = submult U₂ (b+1) j · (splice λ b) · submult U₂ i
+b`, the two segments being upstairs sub-products (off edge `b`). -/
+theorem submult_splice_cross (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i j : Fin (N + 1)}
+    (hib : i ≤ b.castSucc) (hbj : b.succ ≤ j) :
+    submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (splice (k := k) a c e b lam) i j ((hib.trans (Fin.castSucc_le_succ b)).trans hbj)
+      = submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule a e) (intervalModule c b.castSucc)) b.succ j hbj
+        * splice a c e b lam b
+        * submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+            (dirSum (intervalModule a e) (intervalModule c b.castSucc)) i b.castSucc hib := by
+  rw [submult_concat _ _ i b.succ j (hib.trans (Fin.castSucc_le_succ b)) hbj,
+    submult_splice_above a c e b lam (i := b.succ) (j := j) hbj le_rfl,
+    submult_succ _ (splice a c e b lam) i b hib,
+    submult_splice_below a c e b lam (i := i) (j := b.castSucc) hib le_rfl, Matrix.mul_assoc]
 
 section Witness
 

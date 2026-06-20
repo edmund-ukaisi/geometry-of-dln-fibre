@@ -1,0 +1,435 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ee24b-ecdb-7220-89fa-b218638a00ae
+--------
+user
+<task>
+Lean 4 + Mathlib v4.29 formalisation. I am building the NON-SPLIT box-move degeneration for type-A
+quiver representations. I have a landed engine and want the cleanest construction to avoid a heavy
+symbolic dead-end. Diagnose the route, do NOT write full Lean.
+
+SETUP (all already in Lean, working):
+- A type-A representation is `Tuple d : ∀ i:Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k`
+  over a dim vector `d : Fin (N+1) → ℕ`. Edge `i` is a matrix from vertex `i` to vertex `i+1`.
+- `intervalModule a e : Tuple (intervalDim a e)` is the interval (lace) module: dim 1 on [a,e], else 0,
+  identity edge maps inside [a,e].
+- `dirSum A B : Tuple (fun l ↦ d l + d' l)` = block-diagonal `reindex finSumFinEquiv (fromBlocks A 0 0 B)`.
+- `intervalDirectSum L` folds `dirSum` over a list of interval endpoints; `foldDim L` its dim vector.
+- `submult d A i j : Matrix (Fin (d j)) (Fin (d i)) k` = the sub-product `A_j…A_{i+1}` (identity at i=j),
+  with `submult_succ : submult i (p+1) = A_p * submult i p.castSucc`.
+- `rankPattern d A i j = (submult d A i j).rank`. `rankPattern_intervalModule : = [a≤i ∧ j≤e]`.
+  `rankPattern_dirSum : rankPattern (dirSum A B) = rankPattern A + rankPattern B` (over a field).
+- COMPLETE INVARIANT (landed): `orbit_of_rankPattern_eq A B : (∀ i j, rankPattern A i j = rankPattern B i j)
+  → ∃ P : BaseChangeGroup d, P • A = B`.  And `rankPattern_eq_iff_orbit` (iff version).
+- ENGINE (landed): `mem_zeroLocus_..._of_polynomialFamily U D (Fpoly : Tuple (Polynomial k) d)`:
+  given `tupleEval Fpoly 0 = D` and `∀ t≠0, ∃ P, P • U = tupleEval Fpoly t`, concludes
+  `canonicalCoord D ∈ zeroLocus(vanishingIdeal(orbitSet U))` (the Zariski closure). Over `[Infinite k]`.
+
+ALREADY DONE (split case `c=b+1`): I realized the split downstairs `M_{[a,b]} ⊕ M_{[b+1,e]}` as a
+"cut chain" `splitCut a e b : Tuple (intervalDim a e)` = `intervalModule a e` with the single edge `b`
+zeroed. Family `splitFamilyPoly` carries parameter X on edge b (scalar). At t=0 → cut chain; at t≠0 I
+used an EXPLICIT diagonal base change (scalar t at vertices > b). Computed `rankPattern_splitCut` by
+induction (`submult_splitCut_eq_of_not_cross` / `_eq_zero_of_cross`). It works and lands the full §4
+list headline with arbitrary `rest` (via a common-summand lemma + downstairs transport).
+
+THE NON-SPLIT MOVE I now need (`a < c ≤ b < e`, genuine dim-2 overlap on [c,b]):
+- Upstairs `U = M_{[a,e]} ⊕ M_{[c,b]}`, downstairs `D = M_{[a,b]} ⊕ M_{[c,e]}`. Same dim vector
+  (move preserves dims): `intervalDim a e + intervalDim c b = intervalDim a b + intervalDim c e` (pointwise).
+- Rank drop `r(U) - r(D) = 1` on the rectangle `D_rect = [a, c-1] × [b+1, e]`, else 0.
+  i.e. `rankPattern U i j = [a≤i∧j≤e] + [c≤i∧j≤b]`, `rankPattern D i j = [a≤i∧j≤b] + [c≤i∧j≤e]`.
+- The certified (1,2,1) witness (a=0,c=1,b=1,e=2): edge 1 (vertex1 dim2 → vertex2 dim1) is the
+  recombination arrow. Upstairs edge1 = [1,0], downstairs edge1 = [0,1], family edge1 = [t,1].
+  At t≠0 the family `[t,1]` has the SAME RANK PATTERN as upstairs (NOT equal to upstairs as a tuple).
+  Off the recombination arrow, U = D (they agree).
+
+MY PLAN (mirror the split case but use the rank-pattern route for t≠0, the lighter one):
+1. Define the downstairs realized over the UPSTAIRS dim vector `d_up = foldDim [(a,e),(c,b)]` as a
+   "recombined chain" `R` (constant tuple, agreeing with U off the recombination edge b, with edge b
+   set to the downstairs recombination matrix [0,1]-pattern).
+2. Define `Fpoly : Tuple (Polynomial k) d_up` = constant `R` with edge b's first-strand slot carrying X.
+3. Prove `rankPattern (tupleEval Fpoly t) i j = rankPattern U i j` for ALL t≠0 (rank-pattern computation
+   by induction on the sub-product, analogous to `submult_splitCut`), then `orbit_of_rankPattern_eq`
+   gives the t≠0 base change WITHOUT building P(t) entrywise.
+4. Prove `rankPattern R = rankPattern (intervalDirectSum [(a,b),(c,e)])` (block additivity), so R is
+   G_d-equivalent to the genuine downstairs (transport).
+5. Feed engine; glue rest via the common-summand wrapper (already built).
+
+KEY DIFFICULTY: defining the matrices over `d_up = intervalDim a e + intervalDim c b` (values in {0,1,2})
+through the `finSumFinEquiv`/`fromBlocks` reindexing of `dirSum`, and the rank-pattern induction with a
+2-strand recombination arrow. The vertex dims VARY (0,1,2) along the chain.
+</task>
+
+<output_contract>
+Answer in <= 5 sections, terse:
+1. ROUTE VERDICT: is the rank-pattern route (step 3, prove `rankPattern(Fpoly t)=rankPattern(U)` for
+   t≠0 via the complete invariant) sound and the lightest? Or is there a trap (e.g. the family at t≠0
+   might NOT have the upstairs rank pattern for some i,j — give the discriminating i,j if so)?
+2. THE RECOMBINED CHAIN: the single cleanest way to DEFINE `R` and `Fpoly` over `d_up`. Should I
+   (a) define them as explicit `dirSum`-of-edited-interval-modules, (b) edit `intervalDirectSum [(a,e),(c,b)]`
+   at edge b only, or (c) something else? Which minimizes `finSumFinEquiv` pain? Be concrete about what
+   edge b's matrix is in each of the {2→1, 2→2, 1→1, ...} dim cases that arise as i ranges.
+3. THE RANK-PATTERN INDUCTION: the cleanest formulation of the sub-product lemma(s) analogous to
+   `submult_splitCut_eq_{of_not_cross, zero_of_cross}`. What is the right case split for the 2-strand
+   arrow? Does the sub-product of `Fpoly t` factor as block-diagonal off the recombination, and how does
+   the rank stay = upstairs across it (the t≠0 entry keeps the rank full)?
+4. PITFALL CHECK: the WORST symbolic-indexing trap likely to eat 3+ build cycles, and how to sidestep it.
+5. FALLBACK: if the general construction is genuinely a multi-module effort, what is the LARGEST clean
+   sub-case I can bank now (e.g. the non-split move with NO rest, or only the rank-pattern equality, or
+   a fixed small N)? Rank by value/effort.
+</output_contract>
+
+<grounding_rules>
+Flag clearly which claims are (i) standard Lean/Mathlib facts you're confident about vs (ii) your
+inference about my specific encoding that I must verify by building. Do not invent Mathlib lemma names;
+if you reference one, mark it "verify name". The rank-drop formula and (1,2,1) witness numbers above are
+exact (sympy-certified) — treat as ground truth.
+</grounding_rules>
+
+codex
+I’ll inspect the local Lean definitions around `dirSum`, `intervalModule`, and the split construction so the route advice matches the encoding rather than an abstract model.
+exec
+/bin/bash -lc "rg --files . | rg '(Voigt|Discharge|Quiver|Rank|Interval|Split|Box|Move|Degeneration|lean|lakefile|CLAUDE|README|AGENTS)'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ exited 1 in 0ms:
+exec
+/bin/bash -lc 'rg -n "def (intervalModule|dirSum|intervalDirectSum|splitCut|splitFamilyPoly|submult|rankPattern|orbit_of_rankPattern_eq|rankPattern_dirSum)|theorem (intervalModule|dirSum|intervalDirectSum|splitCut|splitFamilyPoly|submult|rankPattern|orbit_of_rankPattern_eq|rankPattern_dirSum)|lemma (intervalModule|dirSum|intervalDirectSum|splitCut|splitFamilyPoly|submult|rankPattern|orbit_of_rankPattern_eq|rankPattern_dirSum)" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ exited 1 in 0ms:
+codex
+The first search returned no matches, so I’m checking the tree shape and then I’ll narrow by filenames/terms that are actually present.
+exec
+/bin/bash -lc "find . -maxdepth 3 -type f | sed 's#"'^./##'"' | sort | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ succeeded in 0ms:
+nonsplit-prompt.md
+nonsplit-stderr.log
+
+exec
+/bin/bash -lc 'pwd && ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ succeeded in 121ms:
+total 28
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jun 19 23:51 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun 19 23:50 ..
+-rw-rw-r-- 1 ubuntu ubuntu 6367 Jun 19 23:51 nonsplit-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 8666 Jun 19 23:51 nonsplit-stderr.log
+
+codex
+This thread directory only has the prompt plus a Lean error log, not the full source tree. I’m reading the log because it may reveal where the current construction is getting stuck.
+exec
+/bin/bash -lc "sed -n '1,220p' nonsplit-stderr.log" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ succeeded in 0ms:
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ee24b-ecdb-7220-89fa-b218638a00ae
+--------
+user
+<task>
+Lean 4 + Mathlib v4.29 formalisation. I am building the NON-SPLIT box-move degeneration for type-A
+quiver representations. I have a landed engine and want the cleanest construction to avoid a heavy
+symbolic dead-end. Diagnose the route, do NOT write full Lean.
+
+SETUP (all already in Lean, working):
+- A type-A representation is `Tuple d : ∀ i:Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k`
+  over a dim vector `d : Fin (N+1) → ℕ`. Edge `i` is a matrix from vertex `i` to vertex `i+1`.
+- `intervalModule a e : Tuple (intervalDim a e)` is the interval (lace) module: dim 1 on [a,e], else 0,
+  identity edge maps inside [a,e].
+- `dirSum A B : Tuple (fun l ↦ d l + d' l)` = block-diagonal `reindex finSumFinEquiv (fromBlocks A 0 0 B)`.
+- `intervalDirectSum L` folds `dirSum` over a list of interval endpoints; `foldDim L` its dim vector.
+- `submult d A i j : Matrix (Fin (d j)) (Fin (d i)) k` = the sub-product `A_j…A_{i+1}` (identity at i=j),
+  with `submult_succ : submult i (p+1) = A_p * submult i p.castSucc`.
+- `rankPattern d A i j = (submult d A i j).rank`. `rankPattern_intervalModule : = [a≤i ∧ j≤e]`.
+  `rankPattern_dirSum : rankPattern (dirSum A B) = rankPattern A + rankPattern B` (over a field).
+- COMPLETE INVARIANT (landed): `orbit_of_rankPattern_eq A B : (∀ i j, rankPattern A i j = rankPattern B i j)
+  → ∃ P : BaseChangeGroup d, P • A = B`.  And `rankPattern_eq_iff_orbit` (iff version).
+- ENGINE (landed): `mem_zeroLocus_..._of_polynomialFamily U D (Fpoly : Tuple (Polynomial k) d)`:
+  given `tupleEval Fpoly 0 = D` and `∀ t≠0, ∃ P, P • U = tupleEval Fpoly t`, concludes
+  `canonicalCoord D ∈ zeroLocus(vanishingIdeal(orbitSet U))` (the Zariski closure). Over `[Infinite k]`.
+
+ALREADY DONE (split case `c=b+1`): I realized the split downstairs `M_{[a,b]} ⊕ M_{[b+1,e]}` as a
+"cut chain" `splitCut a e b : Tuple (intervalDim a e)` = `intervalModule a e` with the single edge `b`
+zeroed. Family `splitFamilyPoly` carries parameter X on edge b (scalar). At t=0 → cut chain; at t≠0 I
+used an EXPLICIT diagonal base change (scalar t at vertices > b). Computed `rankPattern_splitCut` by
+induction (`submult_splitCut_eq_of_not_cross` / `_eq_zero_of_cross`). It works and lands the full §4
+list headline with arbitrary `rest` (via a common-summand lemma + downstairs transport).
+
+THE NON-SPLIT MOVE I now need (`a < c ≤ b < e`, genuine dim-2 overlap on [c,b]):
+- Upstairs `U = M_{[a,e]} ⊕ M_{[c,b]}`, downstairs `D = M_{[a,b]} ⊕ M_{[c,e]}`. Same dim vector
+  (move preserves dims): `intervalDim a e + intervalDim c b = intervalDim a b + intervalDim c e` (pointwise).
+- Rank drop `r(U) - r(D) = 1` on the rectangle `D_rect = [a, c-1] × [b+1, e]`, else 0.
+  i.e. `rankPattern U i j = [a≤i∧j≤e] + [c≤i∧j≤b]`, `rankPattern D i j = [a≤i∧j≤b] + [c≤i∧j≤e]`.
+- The certified (1,2,1) witness (a=0,c=1,b=1,e=2): edge 1 (vertex1 dim2 → vertex2 dim1) is the
+  recombination arrow. Upstairs edge1 = [1,0], downstairs edge1 = [0,1], family edge1 = [t,1].
+  At t≠0 the family `[t,1]` has the SAME RANK PATTERN as upstairs (NOT equal to upstairs as a tuple).
+  Off the recombination arrow, U = D (they agree).
+
+MY PLAN (mirror the split case but use the rank-pattern route for t≠0, the lighter one):
+1. Define the downstairs realized over the UPSTAIRS dim vector `d_up = foldDim [(a,e),(c,b)]` as a
+   "recombined chain" `R` (constant tuple, agreeing with U off the recombination edge b, with edge b
+   set to the downstairs recombination matrix [0,1]-pattern).
+2. Define `Fpoly : Tuple (Polynomial k) d_up` = constant `R` with edge b's first-strand slot carrying X.
+3. Prove `rankPattern (tupleEval Fpoly t) i j = rankPattern U i j` for ALL t≠0 (rank-pattern computation
+   by induction on the sub-product, analogous to `submult_splitCut`), then `orbit_of_rankPattern_eq`
+   gives the t≠0 base change WITHOUT building P(t) entrywise.
+4. Prove `rankPattern R = rankPattern (intervalDirectSum [(a,b),(c,e)])` (block additivity), so R is
+   G_d-equivalent to the genuine downstairs (transport).
+5. Feed engine; glue rest via the common-summand wrapper (already built).
+
+KEY DIFFICULTY: defining the matrices over `d_up = intervalDim a e + intervalDim c b` (values in {0,1,2})
+through the `finSumFinEquiv`/`fromBlocks` reindexing of `dirSum`, and the rank-pattern induction with a
+2-strand recombination arrow. The vertex dims VARY (0,1,2) along the chain.
+</task>
+
+<output_contract>
+Answer in <= 5 sections, terse:
+1. ROUTE VERDICT: is the rank-pattern route (step 3, prove `rankPattern(Fpoly t)=rankPattern(U)` for
+   t≠0 via the complete invariant) sound and the lightest? Or is there a trap (e.g. the family at t≠0
+   might NOT have the upstairs rank pattern for some i,j — give the discriminating i,j if so)?
+2. THE RECOMBINED CHAIN: the single cleanest way to DEFINE `R` and `Fpoly` over `d_up`. Should I
+   (a) define them as explicit `dirSum`-of-edited-interval-modules, (b) edit `intervalDirectSum [(a,e),(c,b)]`
+   at edge b only, or (c) something else? Which minimizes `finSumFinEquiv` pain? Be concrete about what
+   edge b's matrix is in each of the {2→1, 2→2, 1→1, ...} dim cases that arise as i ranges.
+3. THE RANK-PATTERN INDUCTION: the cleanest formulation of the sub-product lemma(s) analogous to
+   `submult_splitCut_eq_{of_not_cross, zero_of_cross}`. What is the right case split for the 2-strand
+   arrow? Does the sub-product of `Fpoly t` factor as block-diagonal off the recombination, and how does
+   the rank stay = upstairs across it (the t≠0 entry keeps the rank full)?
+4. PITFALL CHECK: the WORST symbolic-indexing trap likely to eat 3+ build cycles, and how to sidestep it.
+5. FALLBACK: if the general construction is genuinely a multi-module effort, what is the LARGEST clean
+   sub-case I can bank now (e.g. the non-split move with NO rest, or only the rank-pattern equality, or
+   a fixed small N)? Rank by value/effort.
+</output_contract>
+
+<grounding_rules>
+Flag clearly which claims are (i) standard Lean/Mathlib facts you're confident about vs (ii) your
+inference about my specific encoding that I must verify by building. Do not invent Mathlib lemma names;
+if you reference one, mark it "verify name". The rank-drop formula and (1,2,1) witness numbers above are
+exact (sympy-certified) — treat as ground truth.
+</grounding_rules>
+
+codex
+I’ll inspect the local Lean definitions around `dirSum`, `intervalModule`, and the split construction so the route advice matches the encoding rather than an abstract model.
+exec
+/bin/bash -lc "rg --files . | rg '(Voigt|Discharge|Quiver|Rank|Interval|Split|Box|Move|Degeneration|lean|lakefile|CLAUDE|README|AGENTS)'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ exited 1 in 0ms:
+exec
+/bin/bash -lc 'rg -n "def (intervalModule|dirSum|intervalDirectSum|splitCut|splitFamilyPoly|submult|rankPattern|orbit_of_rankPattern_eq|rankPattern_dirSum)|theorem (intervalModule|dirSum|intervalDirectSum|splitCut|splitFamilyPoly|submult|rankPattern|orbit_of_rankPattern_eq|rankPattern_dirSum)|lemma (intervalModule|dirSum|intervalDirectSum|splitCut|splitFamilyPoly|submult|rankPattern|orbit_of_rankPattern_eq|rankPattern_dirSum)" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ exited 1 in 0ms:
+codex
+The first search returned no matches, so I’m checking the tree shape and then I’ll narrow by filenames/terms that are actually present.
+exec
+/bin/bash -lc "find . -maxdepth 3 -type f | sed 's#"'^./##'"' | sort | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ succeeded in 0ms:
+nonsplit-prompt.md
+nonsplit-stderr.log
+
+exec
+/bin/bash -lc 'pwd && ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ succeeded in 121ms:
+total 28
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jun 19 23:51 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun 19 23:50 ..
+-rw-rw-r-- 1 ubuntu ubuntu 6367 Jun 19 23:51 nonsplit-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 8666 Jun 19 23:51 nonsplit-stderr.log
+
+codex
+This thread directory only has the prompt plus a Lean error log, not the full source tree. I’m reading the log because it may reveal where the current construction is getting stuck.
+
+exec
+/bin/bash -lc "sed -n '1,220p' nonsplit-prompt.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/27-L6.1-general/codex
+ succeeded in 110ms:
+<task>
+Lean 4 + Mathlib v4.29 formalisation. I am building the NON-SPLIT box-move degeneration for type-A
+quiver representations. I have a landed engine and want the cleanest construction to avoid a heavy
+symbolic dead-end. Diagnose the route, do NOT write full Lean.
+
+SETUP (all already in Lean, working):
+- A type-A representation is `Tuple d : ∀ i:Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k`
+  over a dim vector `d : Fin (N+1) → ℕ`. Edge `i` is a matrix from vertex `i` to vertex `i+1`.
+- `intervalModule a e : Tuple (intervalDim a e)` is the interval (lace) module: dim 1 on [a,e], else 0,
+  identity edge maps inside [a,e].
+- `dirSum A B : Tuple (fun l ↦ d l + d' l)` = block-diagonal `reindex finSumFinEquiv (fromBlocks A 0 0 B)`.
+- `intervalDirectSum L` folds `dirSum` over a list of interval endpoints; `foldDim L` its dim vector.
+- `submult d A i j : Matrix (Fin (d j)) (Fin (d i)) k` = the sub-product `A_j…A_{i+1}` (identity at i=j),
+  with `submult_succ : submult i (p+1) = A_p * submult i p.castSucc`.
+- `rankPattern d A i j = (submult d A i j).rank`. `rankPattern_intervalModule : = [a≤i ∧ j≤e]`.
+  `rankPattern_dirSum : rankPattern (dirSum A B) = rankPattern A + rankPattern B` (over a field).
+- COMPLETE INVARIANT (landed): `orbit_of_rankPattern_eq A B : (∀ i j, rankPattern A i j = rankPattern B i j)
+  → ∃ P : BaseChangeGroup d, P • A = B`.  And `rankPattern_eq_iff_orbit` (iff version).
+- ENGINE (landed): `mem_zeroLocus_..._of_polynomialFamily U D (Fpoly : Tuple (Polynomial k) d)`:
+  given `tupleEval Fpoly 0 = D` and `∀ t≠0, ∃ P, P • U = tupleEval Fpoly t`, concludes
+  `canonicalCoord D ∈ zeroLocus(vanishingIdeal(orbitSet U))` (the Zariski closure). Over `[Infinite k]`.
+
+ALREADY DONE (split case `c=b+1`): I realized the split downstairs `M_{[a,b]} ⊕ M_{[b+1,e]}` as a
+"cut chain" `splitCut a e b : Tuple (intervalDim a e)` = `intervalModule a e` with the single edge `b`
+zeroed. Family `splitFamilyPoly` carries parameter X on edge b (scalar). At t=0 → cut chain; at t≠0 I
+used an EXPLICIT diagonal base change (scalar t at vertices > b). Computed `rankPattern_splitCut` by
+induction (`submult_splitCut_eq_of_not_cross` / `_eq_zero_of_cross`). It works and lands the full §4
+list headline with arbitrary `rest` (via a common-summand lemma + downstairs transport).
+
+THE NON-SPLIT MOVE I now need (`a < c ≤ b < e`, genuine dim-2 overlap on [c,b]):
+- Upstairs `U = M_{[a,e]} ⊕ M_{[c,b]}`, downstairs `D = M_{[a,b]} ⊕ M_{[c,e]}`. Same dim vector
+  (move preserves dims): `intervalDim a e + intervalDim c b = intervalDim a b + intervalDim c e` (pointwise).
+- Rank drop `r(U) - r(D) = 1` on the rectangle `D_rect = [a, c-1] × [b+1, e]`, else 0.
+  i.e. `rankPattern U i j = [a≤i∧j≤e] + [c≤i∧j≤b]`, `rankPattern D i j = [a≤i∧j≤b] + [c≤i∧j≤e]`.
+- The certified (1,2,1) witness (a=0,c=1,b=1,e=2): edge 1 (vertex1 dim2 → vertex2 dim1) is the
+  recombination arrow. Upstairs edge1 = [1,0], downstairs edge1 = [0,1], family edge1 = [t,1].
+  At t≠0 the family `[t,1]` has the SAME RANK PATTERN as upstairs (NOT equal to upstairs as a tuple).
+  Off the recombination arrow, U = D (they agree).
+
+MY PLAN (mirror the split case but use the rank-pattern route for t≠0, the lighter one):
+1. Define the downstairs realized over the UPSTAIRS dim vector `d_up = foldDim [(a,e),(c,b)]` as a
+   "recombined chain" `R` (constant tuple, agreeing with U off the recombination edge b, with edge b
+   set to the downstairs recombination matrix [0,1]-pattern).
+2. Define `Fpoly : Tuple (Polynomial k) d_up` = constant `R` with edge b's first-strand slot carrying X.
+3. Prove `rankPattern (tupleEval Fpoly t) i j = rankPattern U i j` for ALL t≠0 (rank-pattern computation
+   by induction on the sub-product, analogous to `submult_splitCut`), then `orbit_of_rankPattern_eq`
+   gives the t≠0 base change WITHOUT building P(t) entrywise.
+4. Prove `rankPattern R = rankPattern (intervalDirectSum [(a,b),(c,e)])` (block additivity), so R is
+   G_d-equivalent to the genuine downstairs (transport).
+5. Feed engine; glue rest via the common-summand wrapper (already built).
+
+KEY DIFFICULTY: defining the matrices over `d_up = intervalDim a e + intervalDim c b` (values in {0,1,2})
+through the `finSumFinEquiv`/`fromBlocks` reindexing of `dirSum`, and the rank-pattern induction with a
+2-strand recombination arrow. The vertex dims VARY (0,1,2) along the chain.
+</task>
+
+<output_contract>
+Answer in <= 5 sections, terse:
+1. ROUTE VERDICT: is the rank-pattern route (step 3, prove `rankPattern(Fpoly t)=rankPattern(U)` for
+   t≠0 via the complete invariant) sound and the lightest? Or is there a trap (e.g. the family at t≠0
+   might NOT have the upstairs rank pattern for some i,j — give the discriminating i,j if so)?
+2. THE RECOMBINED CHAIN: the single cleanest way to DEFINE `R` and `Fpoly` over `d_up`. Should I
+   (a) define them as explicit `dirSum`-of-edited-interval-modules, (b) edit `intervalDirectSum [(a,e),(c,b)]`
+   at edge b only, or (c) something else? Which minimizes `finSumFinEquiv` pain? Be concrete about what
+   edge b's matrix is in each of the {2→1, 2→2, 1→1, ...} dim cases that arise as i ranges.
+3. THE RANK-PATTERN INDUCTION: the cleanest formulation of the sub-product lemma(s) analogous to
+   `submult_splitCut_eq_{of_not_cross, zero_of_cross}`. What is the right case split for the 2-strand
+   arrow? Does the sub-product of `Fpoly t` factor as block-diagonal off the recombination, and how does
+   the rank stay = upstairs across it (the t≠0 entry keeps the rank full)?
+4. PITFALL CHECK: the WORST symbolic-indexing trap likely to eat 3+ build cycles, and how to sidestep it.
+5. FALLBACK: if the general construction is genuinely a multi-module effort, what is the LARGEST clean
+   sub-case I can bank now (e.g. the non-split move with NO rest, or only the rank-pattern equality, or
+   a fixed small N)? Rank by value/effort.
+</output_contract>
+
+<grounding_rules>
+Flag clearly which claims are (i) standard Lean/Mathlib facts you're confident about vs (ii) your
+inference about my specific encoding that I must verify by building. Do not invent Mathlib lemma names;
+if you reference one, mark it "verify name". The rank-drop formula and (1,2,1) witness numbers above are
+exact (sympy-certified) — treat as ground truth.
+</grounding_rules>
+
+codex
+**1. Route Verdict**
+Sound, and likely the lightest. For `t ≠ 0`, the family with recombination row `[t, 1]` has the upstairs rank pattern.
+
+No hidden bad `(i,j)`: the only sensitive products are those crossing edge `b`, i.e. `i ≤ b < j`. There:
+- if `a ≤ i < c` and `b < j ≤ e`, the product is `[t]`, rank `1` for `t ≠ 0`, rank `0` at `t = 0`;
+- if `c ≤ i ≤ b` and `b < j ≤ e`, the product is `[t, 1]`, rank `1` for all `t`.
+
+That is exactly upstairs for `t ≠ 0` and downstairs at `t = 0`. `[Std]` rank of nonzero `1×1` scalar and nonzero row into a `1`-dimensional target is `1`. `[Verify]` exact matrix orientation/signature in your encoding.
+
+**2. The Recombined Chain**
+Use option **(b')**: define a scalar-parametric one-edge edit of the two-summand upstairs tuple, not a downstairs `dirSum`.
+
+Concretely:
+- set `d₂ l := intervalDim a e l + intervalDim c b l`;
+- set `U₂ := dirSum (intervalModule a e) (intervalModule c b)`;
+- define `splice λ : Tuple d₂` to equal `U₂` on every edge except `b`;
+- at edge `b`, define the block matrix in long/short coordinates:
+  ```text
+  source at b:     long ⊕ short = 1 ⊕ 1
+  target at b+1:   long ⊕ short = 1 ⊕ 0
+
+  recomb(λ) = [ λ  1 ]
+  ```
+  preferably as one `fromBlocks`/`reindex finSumFinEquiv` matrix:
+  ```text
+  top-left:  λ : long_b → long_{b+1}
+  top-right: 1 : short_b → long_{b+1}
+  bottom blocks: zero, because short_{b+1}=0
+  ```
+
+Then `R := splice 0`, and `Fpoly` is the same construction with `λ = Polynomial.X`. This localizes `finSumFinEquiv` pain to one arrow.
+
+Edge matrices by region, in coordinates `(long, short)` on `[c,b]`:
+```text
+a ≤ p < c-1      1→1   [1]
+p = c-1          1→2   [1; 0]
+c ≤ p < b        2→2   [[1,0],[0,1]]
+p = b            2→1   U=[1,0], R=[0,1], F(t)=[t,1]
+b < p < e        1→1   [1]
+start/end/outside        unique zero-sized maps
+```
+
+**3. Rank-Pattern Induction**
+Use three lemmas, not one large symbolic calculation.
+
+1. `edge_ne_b`: `splice λ p = U₂ p` for `p ≠ b`.
+
+2. `submult_avoid_b`: if the product does not cross `b`, i.e. `j ≤ b` or `b < i`, then
+   ```text
+   submult (splice λ) i j = submult U₂ i j.
+   ```
+   Then use your existing `rankPattern_dirSum`.
+
+3. `submult_cross_b`: if `i ≤ b < j`, factor the product as
+   ```text
+   submult (b+1,j) using U₂
+   * recomb(λ)
+   * submult (i,b) using U₂
+   ```
+   using a local `submult` concatenation lemma, name to verify/prove locally.
+
+Do not try to prove crossing products are block diagonal. They are not. They are “block-diagonal segment, recombination row, block-diagonal segment.” The rank stays upstairs for `λ ≠ 0` because:
+- first-strand-only inputs cross as scalar `[λ]`, rank `1`;
+- overlap inputs cross through `[λ,1]`, rank `1`;
+- target after `b` is only one-dimensional anyway.
+
+**4. Pitfall Check**
+Worst trap: transporting too early between
+```text
+foldDim [(a,e),(c,b)]
+foldDim [(a,b),(c,e)]
+intervalDim a e + intervalDim c b
+intervalDim a b + intervalDim c e
+```
+while also unfolding `finSumFinEquiv`.
+
+Sidestep: prove the no-rest construction over the explicit local dimension
+```text
+d₂ l := intervalDim a e l + intervalDim c b l
+```
+first. Only after closure for `R` is proved, transport the genuine downstairs tuple using the pointwise dimension equality and your existing downstream transport/common-summand wrapper. Also avoid hardcoding `Fin 2`/`Fin 1`; define the special arrow in block coordinates and let `fromBlocks` carry the indexing.
+
+**5. Fallback**
+Best value/effort order:
+
+1. **General no-rest non-split move over `d₂`**: prove `splice 0` is in the closure of `U₂`. Highest value; rest should glue via your existing wrapper.
+
+2. **Bank the two rank-pattern lemmas only**:
+   ```text
+   λ ≠ 0 → rankPattern (splice λ) = rankPattern U₂
+   rankPattern (splice 0) = downstairs formula
+   ```
+   The engine application is then mechanical.
+
+3. **Bank only the crossing lemma** for `i ≤ b < j`; no-cross follows from edge equality with `U₂`.
+
+4. Fixed small `N` / `(1,2,1)` witness is lowest value; useful only as a sanity test, not as infrastructure.
+tokens used
+30,726
