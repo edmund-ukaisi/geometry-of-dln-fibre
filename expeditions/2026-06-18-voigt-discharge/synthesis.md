@@ -823,3 +823,17 @@ no overclaim. On PASS → delete cron, stand seats down, signal operator for clo
   this engine supplies the codimension input it consumes.
 
 **Cron f8231d70 deleted. Seats at rest. Signalling operator for the close PR (operator-gated).**
+
+## 2026-06-21 — geometric reading WIRED + PR opened
+
+**hVoigt wired through** (`Core.CThetaGeometric`, thread 43, reviewer PASS, green 3012 jobs, axiom-clean):
+the geometric reading of the combinatorial `(C,θ)` — previously a docstring deferral — is now FORMAL +
+UNCONDITIONAL:
+- `codimRepCanonical_orbitRankLocus_eq_codimForm` — combinatorial codimension form = geometric orbit-closure codim.
+- `cCodim_eq_inf_geomCodim` — combinatorial `C` = min over Kostant partitions of the GEOMETRIC codim.
+Docstrings (`CTheta`/`CThetaQIPConverse`/`OrbitLinearCodim`) repointed from "deferred hVoigt" → proved
+`Core.CThetaGeometric`. ONE roadmap remains: the `Σ^r`-aggregate `numTop` = #top-dimensional GEOMETRIC
+components (needs `Σ^r`-as-variety + orbit-stratification — future tide).
+
+**PR OPENED:** #4 `expedition/voigt-discharge → dev` — https://github.com/edmund-ukaisi/geometry-of-dln-fibre/pull/4
+(operator instructed). Expedition closed.
