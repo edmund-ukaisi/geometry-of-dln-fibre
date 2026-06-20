@@ -49,10 +49,19 @@ piCurry friction).
 ## Rung map (scoped): S1.1 transport + S1.2/3/4 + S1.5 · L1/L2 · D1 (light) · R1 (mountain;
 `codim=Mval` proven gen L) · A1/A2. Hard Lean builds: S1.1 + R1 + the Params↔ℝ^N equiv infra.
 
+## Contract restatement status (@9441384)
+DONE + correct: L1 (block-normal form), R1 (specialized to dlnLoss → TRUE), S1.1 (IsAddHaarMeasure pin),
+S1.5 (smooth-block), 2 nits. **OPEN — the load-bearing one:** `IsDeepest`. fm-2 switched it per-layer →
+per-PARTIAL-PRODUCT, which I believe is **too weak** (reintroduces L2's over-claim): (2,2,2) r=0, the
+point (A¹=0, A² generic) is per-partial-product-deepest but rlctAt=2≠3/2=λ. → `pp` adjudicating the
+tightest correct characterization (per-layer / a CONSTRUCTED `deepestPoint` / minimizing stratum) + whether
+rlctAt is constant-over-a-set (∀-form) or attained-at-one-point (constructed-point form, likely cleanest),
+verified r=0 + r>0. fm-2 holding IsDeepest + the rv-2 handoff until pp reports. Paramsequiv #15 still queued.
+
 ## In flight
-- `fm-2` — Skeleton restatement pass (6 fixes + 2 nits; corrected statements supplied). Priority.
-- `pp` — researching the `Params H ≃ᵐ ℝ^N` measure-preserving equiv route (Mathlib precedent + diamond fix).
-- `rv-2` — idle (audit done); next: re-audit the restated statements.
+- `pp` — adjudicating the `IsDeepest` characterization (load-bearing for L2/D1). Decorrelated.
+- `fm-2` — standby (R1/S1.1/S1.5/L1/nits done @9441384; holding IsDeepest for pp's verdict).
+- `rv-2` — idle; re-audits the FINAL contract once IsDeepest is fixed.
 
 ## Next tick
 On fm-2's restatement: green-gate + verify the headline assembles from re-keyed D1/L2 → rv-2 re-audits the
