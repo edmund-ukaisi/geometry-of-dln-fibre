@@ -72,35 +72,36 @@ image is at most the dimension of the image of the deformation differential `δ�
 > `(ringKrullDim (orbitPullback M).range).unbotD 0 ≤ finrank k (LinearMap.range (deformationδ M M))`.
 
 Proved from A4.1 (`= trdeg`, landed) and the two named obligations: `hA42`, the char-0 differential
-criterion in image-form (`trdeg ≤ genericDifferentialRank`), and `hA43`, the char-free
-differential-rank identity (`genericDifferentialRank = finrank (range δ⁰)`). `[CharZero k]` is the
-hypothesis under which `hA42` holds; the assembly here uses only `[Field k]`. -/
+criterion in image-form (`trdeg ≤ genericDifferentialRank`), and `hA43_le`, the char-free
+differential-rank bound (`genericDifferentialRank ≤ finrank (range δ⁰)`). Only the `≤` direction of
+the A4.3 identity is needed (the chain is `varietyDim = trdeg ≤ genericDifferentialRank ≤ finrank δ⁰`);
+the assembly here uses only `[Field k]`. -/
 theorem ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ
     {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
     (hA42 : (Algebra.trdeg k (orbitPullback M).range).toNat
       ≤ genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M))
-    (hA43 : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
-      = finrank k (LinearMap.range (deformationδ M M))) :
+    (hA43_le : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      ≤ finrank k (LinearMap.range (deformationδ M M))) :
     (ringKrullDim (orbitPullback M).range).unbotD 0
       ≤ finrank k (LinearMap.range (deformationδ M M)) := by
   rw [ringKrullDim_range_orbitPullback_unbotD_eq_trdeg_toNat M]
-  exact_mod_cast hA42.trans (le_of_eq hA43)
+  exact_mod_cast hA42.trans hA43_le
 
 /-- **A4.4 chained with A0: `varietyDim Z_M ≤ finrank (range δ⁰)`.** Combining the landed A0 link
 (`varietyDim_eq_ringKrullDim_range_orbitPullback`, needs `[Infinite k]`) with the submersion bound,
 the variety dimension of the determinantal rank locus `Z_M` is at most the dimension of the orbit
-tangent image — the AG-half submersion inequality of `hVoigt`. Conditional on the same two named
-obligations `hA42`, `hA43`. -/
+tangent image — the AG-half submersion inequality of `hVoigt`. Conditional on `hA42` and the `≤`-form
+A4.3 bound `hA43_le`. -/
 theorem varietyDim_orbitRankLocus_le_finrank_range_deformationδ
     [Infinite k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
     (hA42 : (Algebra.trdeg k (orbitPullback M).range).toNat
       ≤ genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M))
-    (hA43 : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
-      = finrank k (LinearMap.range (deformationδ M M))) :
+    (hA43_le : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      ≤ finrank k (LinearMap.range (deformationδ M M))) :
     varietyDim (canonicalCoord d '' orbitRankLocus M)
       ≤ finrank k (LinearMap.range (deformationδ M M)) := by
   rw [varietyDim_eq_ringKrullDim_range_orbitPullback M]
-  exact ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ M hA42 hA43
+  exact ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ M hA42 hA43_le
 
 /-! ## Reducing `hA42` to the clean char-0 criterion `DiffIndepCriterion`
 
@@ -128,17 +129,17 @@ theorem trdeg_range_orbitPullback_le_genericDifferentialRank {d : Fin (N + 1) �
   rwa [← range_orbitPullback_eq_adjoin M] at h
 
 /-- **A4.4 from the criterion + A4.3.** The route-c submersion bound with the A4.2 obligation
-discharged down to the clean char-0 criterion `DiffIndepCriterion k (groupRing d)`; `hA43` remains
-the char-free differential-rank identity (the A4.3 obligation). -/
+discharged down to the clean char-0 criterion `DiffIndepCriterion k (groupRing d)`; `hA43_le` remains
+the char-free differential-rank bound (the A4.3 `≤`-obligation). -/
 theorem ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_of_criterion
     {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
     (hcrit : DiffIndepCriterion k (groupRing (k := k) d))
-    (hA43 : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
-      = finrank k (LinearMap.range (deformationδ M M))) :
+    (hA43_le : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      ≤ finrank k (LinearMap.range (deformationδ M M))) :
     (ringKrullDim (orbitPullback M).range).unbotD 0
       ≤ finrank k (LinearMap.range (deformationδ M M)) :=
   ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ M
-    (trdeg_range_orbitPullback_le_genericDifferentialRank M hcrit) hA43
+    (trdeg_range_orbitPullback_le_genericDifferentialRank M hcrit) hA43_le
 
 /-- **A4.2 criterion discharged for `groupRing d`** (char 0). `DiffIndepCriterion k (groupRing d)`
 holds by `diffIndepCriterion_proof`, using the landed `essFiniteType_fractionRing_groupRing` instance
@@ -148,15 +149,15 @@ theorem diffIndepCriterion_groupRing [CharZero k] {d : Fin (N + 1) → ℕ} :
   diffIndepCriterion_proof k (groupRing (k := k) d)
 
 /-- **A4.4 in char 0, A4.2 fully discharged.** The route-c submersion bound with NO criterion
-hypothesis — `DiffIndepCriterion` is now `diffIndepCriterion_groupRing`; only `hA43` (the char-free
-A4.3 differential-rank identity) remains. -/
+hypothesis — `DiffIndepCriterion` is now `diffIndepCriterion_groupRing`; only `hA43_le` (the char-free
+A4.3 differential-rank `≤`-bound) remains. -/
 theorem ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_charZero
     [CharZero k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
-    (hA43 : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
-      = finrank k (LinearMap.range (deformationδ M M))) :
+    (hA43_le : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      ≤ finrank k (LinearMap.range (deformationδ M M))) :
     (ringKrullDim (orbitPullback M).range).unbotD 0
       ≤ finrank k (LinearMap.range (deformationδ M M)) :=
   ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_of_criterion M
-    diffIndepCriterion_groupRing hA43
+    diffIndepCriterion_groupRing hA43_le
 
 end DLNFibre.Core
