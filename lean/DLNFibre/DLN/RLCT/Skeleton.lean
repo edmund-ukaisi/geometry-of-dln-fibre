@@ -791,7 +791,7 @@ block, the last layer `[I_r;0]·V` (single layer `= B` when `L = 1`). The produc
 has rank exactly `r`. The hypotheses `hr : ∀ s, r ≤ H s` and `hL : 1 ≤ L` are the well-definedness +
 nonemptiness domain: `hr` rules out the middle-width bottleneck (`H=(3,1,3), r=2` caps product rank
 at `1 < 2` ⇒ empty fibre) and makes `M⁽ˢ⁾ = H⁽ˢ⁾ − r` non-truncating; `hL` rules out the zero-layer
-corner (`L = 0` ⇒ `prod = id` ⇒ fibre needs `B = I`). Verified numerically 484/484, `L ∈ {1,2,3}`. -/
+corner (`L = 0` ⇒ `prod = id` ⇒ fibre needs `B = I`). Verified 484/484, `L ∈ {1,2,3}`. -/
 theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
@@ -986,6 +986,19 @@ function `Fin (c+1) → ℕ`, via the ascending sort `Tuple.sort` and the first 
 argument of `cleanCore` is **pinned** to this (a function of `M`), making A1 the genuine Lemma 3. -/
 def sortedSmallest (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) (k : Fin (c + 1)) : ℕ :=
   M (Tuple.sort M (Fin.castLE (by omega) k))
+
+/-- `cleanCore` depends only on the **multiset** of `m`: permuting `m` leaves it fixed
+(it is built from `∑ m` and `∑ m²`, both permutation-invariant). The crux that lets the genuine A1
+proof stay local to the achiever — matching `cleanCore` at the minimiser's breakpoint widths to
+`cleanCore (sortedSmallest …)` needs only that the two are the same *multiset*, not a global
+permutation-transport of the admissible cone. -/
+theorem cleanCore_perm (c : ℕ) (m : Fin (c + 1) → ℕ) (σ : Equiv.Perm (Fin (c + 1))) :
+    cleanCore c (m ∘ σ) = cleanCore c m := by
+  simp only [cleanCore]
+  have hsum : (∑ k, (m ∘ σ) k) = ∑ k, m k := Equiv.sum_comp σ m
+  have hsq : (∑ k, ((m ∘ σ) k : ℚ) ^ 2) = ∑ k, (m k : ℚ) ^ 2 := by
+    have := Equiv.sum_comp σ (fun k => (m k : ℚ) ^ 2); simpa using this
+  rw [hsum, hsq]
 
 /-- **A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
 `lambdaCore M = ½·min_T M(T)` equals `cleanCore c (sortedSmallest M c)` for an **achiever**
