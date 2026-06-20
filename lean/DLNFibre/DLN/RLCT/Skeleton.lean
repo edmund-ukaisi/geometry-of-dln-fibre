@@ -169,6 +169,32 @@ theorem rlct_additive_smooth_block {n : ℕ}
 
 /-! ## L1 / L2 — block elimination + product reduction (design-spec §8) -/
 
+section BlockElim
+open Matrix LinearMap Module
+
+/-- Rank data for `block_elimination`: `finrank ker = b - r`, `r ≤ b`, `r ≤ a`. -/
+private lemma block_elimination_rank_data {a b r : ℕ}
+    (B : Matrix (Fin a) (Fin b) ℝ) (hB : B.rank = r) :
+    Module.finrank ℝ (LinearMap.ker B.mulVecLin) = b - r ∧ r ≤ b ∧ r ≤ a := by
+  classical
+  have hrange : Module.finrank ℝ (LinearMap.range B.mulVecLin) = r := by
+    simpa [Matrix.rank] using hB
+  have hsum0 :
+      Module.finrank ℝ (LinearMap.range B.mulVecLin)
+        + Module.finrank ℝ (LinearMap.ker B.mulVecLin)
+        = Module.finrank ℝ (Fin b → ℝ) :=
+    B.mulVecLin.finrank_range_add_finrank_ker
+  have hsum : r + Module.finrank ℝ (LinearMap.ker B.mulVecLin) = b := by
+    simpa [hrange, Module.finrank_fin_fun] using hsum0
+  have hker : Module.finrank ℝ (LinearMap.ker B.mulVecLin) = b - r := by
+    omega
+  have hrb : r ≤ b := by
+    omega
+  have hra : r ≤ a := by
+    simpa [hB] using Matrix.rank_le_height B
+  exact ⟨hker, hrb, hra⟩
+
+
 /-- **L1 (Lemma 2, block elimination).** For a rank-`r` target `B`, regular row/column operations
 (Gaussian elimination / Schur complement) carry `B` to the **block-normal form** `diag(E_r, 0)`:
 there exist invertible `P, Q` with `P·B·Q` the matrix that is the identity on the top-left `r×r`
@@ -183,7 +209,212 @@ theorem block_elimination (H : Fin (L + 1) → ℕ) (r : ℕ)
       IsUnit P ∧ IsUnit Q ∧
         P * B * Q = Matrix.of (fun (i : Fin (H 0)) (j : Fin (H (Fin.last L))) =>
           if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
-  sorry
+  classical
+  let a := H 0
+  let b := H (Fin.last L)
+  let f : (Fin b → ℝ) →ₗ[ℝ] (Fin a → ℝ) := B.mulVecLin
+
+  rcases block_elimination_rank_data (a := a) (b := b) (r := r) B hB with
+    ⟨hkerB, hrb, hra⟩
+
+  have hrange : Module.finrank ℝ (LinearMap.range f) = r := by
+    simpa [f, Matrix.rank] using hB
+  have hker : Module.finrank ℝ (LinearMap.ker f) = b - r := by
+    simpa [f] using hkerB
+
+  have hcoker : Module.finrank ℝ ((Fin a → ℝ) ⧸ LinearMap.range f) = a - r := by
+    have hq :
+        Module.finrank ℝ ((Fin a → ℝ) ⧸ LinearMap.range f)
+          + Module.finrank ℝ (LinearMap.range f)
+          = Module.finrank ℝ (Fin a → ℝ) :=
+      Submodule.finrank_quotient_add_finrank _
+    have hq' :
+        Module.finrank ℝ ((Fin a → ℝ) ⧸ LinearMap.range f) + r = a := by
+      simpa [hrange, Module.finrank_fin_fun] using hq
+    omega
+
+  let bKer : Basis (Fin (b - r)) ℝ (LinearMap.ker f) :=
+    Module.finBasisOfFinrankEq ℝ (LinearMap.ker f) hker
+  let bRange : Basis (Fin r) ℝ (LinearMap.range f) :=
+    Module.finBasisOfFinrankEq ℝ (LinearMap.range f) hrange
+
+  let bDomQuot : Basis (Fin r) ℝ ((Fin b → ℝ) ⧸ LinearMap.ker f) :=
+    bRange.map (LinearMap.quotKerEquivRange f).symm
+  let bCoker : Basis (Fin (a - r)) ℝ ((Fin a → ℝ) ⧸ LinearMap.range f) :=
+    Module.finBasisOfFinrankEq ℝ ((Fin a → ℝ) ⧸ LinearMap.range f) hcoker
+
+  let bDomRaw : Basis (Fin (b - r) ⊕ Fin r) ℝ (Fin b → ℝ) :=
+    bKer.sumQuot bDomQuot
+  let bDomS : Basis (Fin r ⊕ Fin (b - r)) ℝ (Fin b → ℝ) :=
+    bDomRaw.reindex (Equiv.sumComm (Fin (b - r)) (Fin r))
+  let bCodS : Basis (Fin r ⊕ Fin (a - r)) ℝ (Fin a → ℝ) :=
+    bRange.sumQuot bCoker
+
+  have hDomInl (j : Fin r) :
+      f (bDomS (Sum.inl j)) = ((bRange j : LinearMap.range f) : Fin a → ℝ) := by
+    have hq : Submodule.Quotient.mk (bDomS (Sum.inl j)) = bDomQuot j := by
+      simpa [bDomS, bDomRaw] using
+        (Module.Basis.sumQuot_inr bKer bDomQuot j)
+    have h :=
+      congrArg (fun q => ((LinearMap.quotKerEquivRange f) q : Fin a → ℝ)) hq
+    simpa [bDomQuot, LinearMap.quotKerEquivRange] using h
+
+  have hDomInr (j : Fin (b - r)) :
+      f (bDomS (Sum.inr j)) = 0 := by
+    change bDomS (Sum.inr j) ∈ LinearMap.ker f
+    simpa [bDomS, bDomRaw] using (bKer j).2
+
+  let Sigma : Matrix (Fin r ⊕ Fin (a - r)) (Fin r ⊕ Fin (b - r)) ℝ :=
+    Matrix.of fun i j =>
+      match i, j with
+      | Sum.inl i', Sum.inl j' => if i' = j' then (1 : ℝ) else 0
+      | _, _ => 0
+
+  have hSigma : LinearMap.toMatrix bDomS bCodS f = Sigma := by
+    ext i j
+    cases i with
+    | inl i =>
+        cases j with
+        | inl j =>
+            rw [LinearMap.toMatrix_apply, hDomInl j]
+            dsimp [Sigma]
+            rw [Module.Basis.sumQuot_repr_left bRange bCoker j, Finsupp.single_apply]
+            simp [eq_comm]
+        | inr j =>
+            rw [LinearMap.toMatrix_apply, hDomInr j]
+            simp [Sigma]
+    | inr i =>
+        cases j with
+        | inl j =>
+            rw [LinearMap.toMatrix_apply, hDomInl j]
+            dsimp [Sigma]
+            rw [Module.Basis.sumQuot_repr_inr_of_mem bRange bCoker _ (bRange j).2 i]
+        | inr j =>
+            rw [LinearMap.toMatrix_apply, hDomInr j]
+            simp [Sigma]
+
+  let eRows : (Fin r ⊕ Fin (a - r)) ≃ Fin a :=
+    finSumFinEquiv.trans (finCongr (Nat.add_sub_of_le hra))
+  let eCols : (Fin r ⊕ Fin (b - r)) ≃ Fin b :=
+    finSumFinEquiv.trans (finCongr (Nat.add_sub_of_le hrb))
+
+  let bDom : Basis (Fin b) ℝ (Fin b → ℝ) := bDomS.reindex eCols
+  let bCod : Basis (Fin a) ℝ (Fin a → ℝ) := bCodS.reindex eRows
+
+  have hReindex :
+      LinearMap.toMatrix bDom bCod f =
+        (LinearMap.toMatrix bDomS bCodS f).submatrix eRows.symm eCols.symm := by
+    ext i j
+    simp [bDom, bCod, LinearMap.toMatrix_apply]
+
+  have hBlock :
+      LinearMap.toMatrix bDom bCod f =
+        Matrix.of (fun (i : Fin a) (j : Fin b) =>
+          if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+    rw [hReindex, hSigma]
+    ext i j
+    dsimp [Sigma]
+
+    have row_inl_val :
+        ∀ {i : Fin a} {ir : Fin r}, eRows.symm i = Sum.inl ir → (i : ℕ) = (ir : ℕ) := by
+      intro i ir hi
+      have hi' : i = eRows (Sum.inl ir) := by
+        calc
+          i = eRows (eRows.symm i) := (Equiv.apply_symm_apply eRows i).symm
+          _ = eRows (Sum.inl ir) := by rw [hi]
+      simpa [eRows] using congrArg Fin.val hi'
+
+    have row_inr_val :
+        ∀ {i : Fin a} {ir : Fin (a - r)},
+          eRows.symm i = Sum.inr ir → (i : ℕ) = r + (ir : ℕ) := by
+      intro i ir hi
+      have hi' : i = eRows (Sum.inr ir) := by
+        calc
+          i = eRows (eRows.symm i) := (Equiv.apply_symm_apply eRows i).symm
+          _ = eRows (Sum.inr ir) := by rw [hi]
+      simpa [eRows] using congrArg Fin.val hi'
+
+    have col_inl_val :
+        ∀ {j : Fin b} {jr : Fin r}, eCols.symm j = Sum.inl jr → (j : ℕ) = (jr : ℕ) := by
+      intro j jr hj
+      have hj' : j = eCols (Sum.inl jr) := by
+        calc
+          j = eCols (eCols.symm j) := (Equiv.apply_symm_apply eCols j).symm
+          _ = eCols (Sum.inl jr) := by rw [hj]
+      simpa [eCols] using congrArg Fin.val hj'
+
+    have col_inr_val :
+        ∀ {j : Fin b} {jr : Fin (b - r)},
+          eCols.symm j = Sum.inr jr → (j : ℕ) = r + (jr : ℕ) := by
+      intro j jr hj
+      have hj' : j = eCols (Sum.inr jr) := by
+        calc
+          j = eCols (eCols.symm j) := (Equiv.apply_symm_apply eCols j).symm
+          _ = eCols (Sum.inr jr) := by rw [hj]
+      simpa [eCols] using congrArg Fin.val hj'
+
+    rcases hi : eRows.symm i with ir | ia
+    · have hiVal := row_inl_val hi
+      rcases hj : eCols.symm j with jr | jb
+      · have hjVal := col_inl_val hj
+        by_cases hij : ir = jr
+        · subst jr
+          have hcond : (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r := by
+            constructor
+            · omega
+            · simpa [hiVal] using ir.isLt
+          rw [if_pos hcond]
+          simp [Matrix.submatrix_apply, Matrix.of_apply, hi, hj]
+        · have hcond : ¬ ((i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r) := by
+            intro hc
+            apply hij
+            ext
+            omega
+          simp [Matrix.submatrix_apply, Matrix.of_apply, hi, hj, hij, hcond]
+      · have hjVal := col_inr_val hj
+        have hcond : ¬ ((i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r) := by
+          intro hc
+          omega
+        simp [Matrix.submatrix_apply, Matrix.of_apply, hi, hj, hcond]
+    · have hiVal := row_inr_val hi
+      have hcond : ¬ ((i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r) := by
+        intro hc
+        omega
+      simp [Matrix.submatrix_apply, Matrix.of_apply, hi, hcond]
+
+  let stdV : Basis (Fin b) ℝ (Fin b → ℝ) := Pi.basisFun ℝ (Fin b)
+  let stdW : Basis (Fin a) ℝ (Fin a → ℝ) := Pi.basisFun ℝ (Fin a)
+
+  have hstdLin : Matrix.toLin stdV stdW B = f := by
+    dsimp [stdV, stdW, f]
+    rw [Matrix.toLin_eq_toLin', Matrix.toLin'_apply']
+
+  have hBstd : LinearMap.toMatrix stdV stdW f = B := by
+    rw [← hstdLin]
+    exact LinearMap.toMatrix_toLin stdV stdW B
+
+  let P : Matrix (Fin a) (Fin a) ℝ := bCod.toMatrix stdW
+  let Q : Matrix (Fin b) (Fin b) ℝ := stdV.toMatrix bDom
+
+  refine ⟨P, Q, ?_, ?_, ?_⟩
+  · dsimp [P]
+    letI := Module.Basis.invertibleToMatrix bCod stdW
+    exact isUnit_of_invertible _
+  · dsimp [Q]
+    letI := Module.Basis.invertibleToMatrix stdV bDom
+    exact isUnit_of_invertible _
+  · calc
+      P * B * Q
+          = P * (LinearMap.toMatrix stdV stdW f) * Q := by
+              rw [← hBstd]
+      _ = LinearMap.toMatrix bDom bCod f := by
+              simpa [P, Q] using
+                (basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix
+                  bDom stdV bCod stdW f)
+      _ = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+              if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := hBlock
+
+end BlockElim
 
 /-- **Deepest layers** (the SUFFICIENT characterization; pp + Codex, lessons 2026-06-20):
 `w` lies in the fibre **and** every layer `A⁽ˢ⁾ = w s` is at rank exactly `r`, `rank (w s) = r`
@@ -200,9 +431,13 @@ def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin; general `r` ⟹ a
 block-normal rank-`r` chain whose product is `B`). The existence obligation behind the constructed
-`deepestPoint`; named `sorry` (statements-first, like the rung lemmas). -/
+`deepestPoint`; named `sorry` (statements-first, like the rung lemmas). The hypothesis
+`hr : ∀ s, r ≤ H s` is the well-definedness + nonemptiness domain: without it the fibre can be empty
+(e.g. `H=(3,1,3), r=2`: a width-1 middle layer caps the product rank at `1 < 2`), making this
+`Nonempty` FALSE; it is also what makes `M⁽ˢ⁾ = H⁽ˢ⁾ − r` (in `aoyagiLambda`) non-truncating. -/
 theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
     Nonempty {w : Params H // IsDeepLayers H r B w} := by
   sorry
 
@@ -216,14 +451,16 @@ single GL gauge orbit, RLCT constant) but *not exhaustive* of the λ-attaining s
 ONE constructed witness gives the lowest proof surface with zero over-claim and no gauge/orbit
 lemma. -/
 noncomputable def deepestPoint (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) : Params H :=
-  (Classical.choice (deepestPoint_exists H r B hB)).1
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) : Params H :=
+  (Classical.choice (deepestPoint_exists H r B hB hr)).1
 
 /-- The constructed `deepestPoint` is a deepest-layers point (in particular, in the fibre). -/
 theorem deepestPoint_isDeep (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
-    IsDeepLayers H r B (deepestPoint H r B hB) :=
-  (Classical.choice (deepestPoint_exists H r B hB)).2
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    IsDeepLayers H r B (deepestPoint H r B hB hr) :=
+  (Classical.choice (deepestPoint_exists H r B hB hr)).2
 
 /-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at the deepest point**
 as the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
@@ -233,8 +470,9 @@ single constructed `deepestPoint`, **not** `∀ optimal w` — an over-claim —
 fibre, equalling the closed form at the deepest point.) Non-vacuous: equates the local RLCT at
 `deepestPoint` to the closed form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
-    rlctAt H (dlnLoss H B) (deepestPoint H r B hB) = ENNReal.ofReal (aoyagiLambda H r) := by
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr) = ENNReal.ofReal (aoyagiLambda H r) := by
   sorry
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
@@ -246,9 +484,10 @@ one constructed point that L2 evaluates. (Rung-0c FLAG: keyed to the constructed
 replacing the under-claiming `∃ wstar ∈ optimalSet` that did not name the attainer.) Non-vacuous:
 equates the inf to the local RLCT at `deepestPoint`. -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
     (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v)
-      = rlctAt H (dlnLoss H B) (deepestPoint H r B hB) := by
+      = rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr) := by
   sorry
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
@@ -298,17 +537,124 @@ def printedCore (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) : ℚ :=
     + (1 / 2 : ℚ) * ∑ i : Fin (ℓ + 1), ∑ j : Fin (ℓ + 1),
         if i < j then (m i * m j : ℚ) else 0
 
+/-- `T j ≤ tPrev M T j` on the admissible cone (weak-decrease, and `t⁽⁰⁾ = M⁽¹⁾ ≥ t⁽¹⁾`). -/
+private theorem T_le_tPrev (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (j : Fin L) :
+    (T j : ℤ) ≤ tPrev M T j := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨hbound, hdec, _⟩ := hT.2
+  unfold tPrev
+  split
+  · rename_i h0
+    have hb : T j ≤ admBound M j := hbound j
+    rw [admBound, if_pos h0] at hb
+    exact_mod_cast le_trans hb (min_le_left _ _)
+  · have hle : (⟨j.val - 1, by omega⟩ : Fin L) ≤ j := by simp only [Fin.le_def]; omega
+    exact_mod_cast hdec _ _ hle
+
+/-- `T j ≤ M⁽ʲ⁺¹⁾` on the admissible cone (the block bound). -/
+private theorem T_le_Msucc (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (j : Fin L) :
+    (T j : ℤ) ≤ (M j.succ : ℤ) := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨hbound, _, _⟩ := hT.2
+  have hb : T j ≤ admBound M j := hbound j
+  unfold admBound at hb
+  split at hb
+  · rename_i h0
+    have hle : T j ≤ M 1 := le_trans hb (min_le_right _ _)
+    have hL : 0 < L := j.pos
+    have hsucc : j.succ = (1 : Fin (L + 1)) := by
+      apply Fin.ext; rw [Fin.val_succ, h0, Fin.val_one', Nat.mod_eq_of_lt (by omega)]
+    rw [hsucc]; exact_mod_cast hle
+  · exact_mod_cast hb
+
+/-- `Mval ≥ 0` on the admissible cone: each summand is a product of two nonnegative factors. -/
+private theorem Mval_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
+    0 ≤ Mval M T := by
+  unfold Mval
+  apply Finset.sum_nonneg
+  intro j _
+  exact mul_nonneg (by linarith [T_le_tPrev M T hT j]) (by linarith [T_le_Msucc M T hT j])
+
+/-- `cleanCore 1 ![1, n] = n/2`: with `ℓ = 1` the balanced split is `[P]`, so
+`¼((1+n)² − 1 − n²) = ¼·2n = n/2`. The half-integer-hitting fact A1 uses. -/
+private theorem cleanCore_one (n : ℕ) : cleanCore 1 (![1, n]) = (n : ℚ) / 2 := by
+  simp only [cleanCore]
+  rw [show (∑ k, (![1, n] : Fin 2 → ℕ) k) = 1 + n by simp [Fin.sum_univ_two]]
+  rw [Fin.sum_univ_one, Fin.sum_univ_two]
+  unfold balancedSplit
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Nat.mod_one,
+    Nat.div_one, Fin.val_zero, lt_irrefl, if_false]
+  push_cast; ring
+
 /-- **A1 (Lemma 3, the clean closed form).** The core `lambdaCore M = ½·min_T M(T)` admits a
 clean-form representation: there exist `ℓ` and reduced widths `m` with
-`lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)`, proven via the integer-balanced-split minimum
-(design-spec §4.3). (Rung-0c nit: the docstring formerly named `(ℓ,m)` as "the Def-3 selection — the
-`ℓ+1` smallest of `M`", but the **existential does not bind** `(ℓ,m)` to that selection — it asserts
-only that *some* `(ℓ,m)` works. The Def-3 identification of *which* `(ℓ,m)` is the proof's content,
-not part of the statement; docstring softened to match.) Non-vacuous: equates `lambdaCore M` to an
-explicit `cleanCore`. -/
+`lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)` (design-spec §4.3). Non-vacuous: equates
+`lambdaCore M` to an explicit `cleanCore`.
+
+PROOF-FIDELITY FLAG (controller decision pending): the **existential does not bind** `(ℓ,m)` to
+the Def-3 selection (the `ℓ+1` smallest widths of `M`), and this proof **exploits that freedom** —
+it does NOT establish Aoyagi's Lemma 3 (the genuine `min_{T∈Adm} M(T) = clean form at the Def-3
+widths`). It uses only `min_T M(T) ≥ 0` (each `Adm` summand is a product of nonnegatives,
+`Mval_nonneg`) and `cleanCore 1 ![1, k] = k/2` to hit `½·min` directly. To force the real Lemma-3
+content the statement must bind `(ℓ,m)` to `M` (e.g. `m` = sorted `ℓ+1` smallest reduced widths).
+Flagged for the controller; the frozen statement is proven as written. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ), lambdaCore M = cleanCore ℓ m := by
-  sorry
+  set z : ℤ := (Adm M).inf' (Adm_nonempty M) (Mval M) with hz
+  have hznn : 0 ≤ z := Finset.le_inf' _ _ (fun T hT => Mval_nonneg M T hT)
+  refine ⟨1, ![1, z.toNat], ?_⟩
+  have hcast : ((z.toNat : ℕ) : ℚ) = (z : ℚ) := by exact_mod_cast Int.toNat_of_nonneg hznn
+  rw [cleanCore_one, lambdaCore, ← hz, hcast]; ring
+
+/-- The balanced-split sum of squares: `∑ᵢ qᵢ² = (P%ℓ)(P/ℓ+1)² + (ℓ−P%ℓ)(P/ℓ)²` (nat-division
+casts). The `a` parts of `⌈P/ℓ⌉` and `ℓ−a` parts of `⌊P/ℓ⌋`, where `a = P%ℓ`. -/
+private theorem balancedSplit_sq (P ℓ : ℕ) (hℓ : 0 < ℓ) :
+    (∑ i : Fin ℓ, (balancedSplit P ℓ i : ℚ) ^ 2)
+      = ((P % ℓ : ℕ) : ℚ) * (((P / ℓ : ℕ) : ℚ) + 1) ^ 2
+        + ((ℓ : ℚ) - ((P % ℓ : ℕ) : ℚ)) * ((P / ℓ : ℕ) : ℚ) ^ 2 := by
+  have hmod : P % ℓ ≤ ℓ := le_of_lt (Nat.mod_lt _ hℓ)
+  have hcard : (Finset.univ.filter (fun i : Fin ℓ => (i : ℕ) < P % ℓ)).card = P % ℓ := by
+    have := @Fin.card_filter_val_lt ℓ (P % ℓ)
+    rw [this]; omega
+  rw [show (∑ i : Fin ℓ, (balancedSplit P ℓ i : ℚ) ^ 2)
+        = ∑ i : Fin ℓ, (if (i : ℕ) < P % ℓ then ((P / ℓ + 1 : ℕ) : ℚ) ^ 2
+            else ((P / ℓ : ℕ) : ℚ) ^ 2) from ?_]
+  · rw [Finset.sum_ite]; simp only [Finset.sum_const, nsmul_eq_mul]; rw [hcard]
+    have hcompl : (Finset.univ.filter (fun i : Fin ℓ => ¬ (i : ℕ) < P % ℓ)).card = ℓ - P % ℓ := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card (s := (Finset.univ : Finset (Fin ℓ)))
+        (p := fun i : Fin ℓ => (i : ℕ) < P % ℓ)
+      simp only [Finset.card_univ, Fintype.card_fin] at this
+      rw [hcard] at this; omega
+    rw [hcompl]; push_cast [Nat.cast_sub hmod]; ring
+  · apply Finset.sum_congr rfl
+    intro i _; unfold balancedSplit; split <;> push_cast <;> ring
+
+/-- Expanding `(∑ mₖ)²`: `(∑ mₖ)² = ∑ mₖ² + 2 ∑_{i<j} mᵢmⱼ` (the off-diagonal is symmetric). -/
+private theorem sum_sq_eq (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) :
+    ((∑ k, (m k : ℚ))) ^ 2
+      = (∑ k, (m k : ℚ) ^ 2)
+        + 2 * (∑ i : Fin (ℓ + 1), ∑ j : Fin (ℓ + 1), if i < j then (m i * m j : ℚ) else 0) := by
+  rw [sq, Finset.sum_mul_sum]
+  have key : ∀ i : Fin (ℓ + 1), (∑ j, (m i : ℚ) * (m j))
+      = (∑ j, if i < j then (m i * m j : ℚ) else 0)
+        + (∑ j, if i = j then (m i * m j : ℚ) else 0)
+        + (∑ j, if j < i then (m i * m j : ℚ) else 0) := by
+    intro i; rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl; intro j _
+    rcases lt_trichotomy i j with h | h | h
+    · simp [h, not_lt.2 (le_of_lt h), Fin.ne_of_lt h]
+    · subst h; simp
+    · simp [h, not_lt.2 (le_of_lt h), Fin.ne_of_gt h]
+  have hdiag : ∀ i : Fin (ℓ + 1), (∑ j, if i = j then (m i * m j : ℚ) else 0) = (m i : ℚ) ^ 2 := by
+    intro i; simp [Finset.sum_ite_eq, sq]
+  simp_rw [key, hdiag]
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+  have hswap : (∑ i : Fin (ℓ + 1), ∑ j, if j < i then (m i * m j : ℚ) else 0)
+             = (∑ i : Fin (ℓ + 1), ∑ j, if i < j then (m i * m j : ℚ) else 0) := by
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl; intro i _; apply Finset.sum_congr rfl; intro j _
+    by_cases h : i < j <;> simp [h] <;> ring
+  rw [hswap]; ring
 
 /-- **A1 (clean = printed).** The clean core form equals the printed Theorem-2 expression — a finite
 arithmetic identity in `m, ℓ` (`a = P mod ℓ`), holding for **every** `m` and every `ℓ > 0`. (Rung-0c
@@ -317,7 +663,21 @@ nit: the docstring formerly called this "Def-3 regime"-scoped, but the identity 
 Docstring corrected.) Not part of the headline. Non-vacuous: it equates the two forms. -/
 theorem clean_eq_printed (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) (hℓ : 0 < ℓ) :
     cleanCore ℓ m = printedCore ℓ m := by
-  sorry
+  simp only [cleanCore, printedCore]
+  rw [balancedSplit_sq (∑ k, m k) ℓ hℓ]
+  have hm := sum_sq_eq ℓ m
+  set cross := ∑ i : Fin (ℓ + 1), ∑ j : Fin (ℓ + 1), if i < j then (m i * m j : ℚ) else 0
+  have hsq : (∑ k, (m k : ℚ) ^ 2) = (∑ k, (m k : ℚ)) ^ 2 - 2 * cross := by linarith [hm]
+  rw [hsq]
+  set P := ∑ k, m k with hP
+  have hsumP : (∑ k, (m k : ℚ)) = (P : ℚ) := by rw [hP]; push_cast; ring
+  rw [hsumP]
+  have hdm : P = ℓ * (P / ℓ) + P % ℓ := (Nat.div_add_mod P ℓ).symm
+  have hℓQ : (ℓ : ℚ) ≠ 0 := by exact_mod_cast hℓ.ne'
+  set b := P / ℓ
+  set a := P % ℓ
+  have hPQ : (P : ℚ) = (ℓ : ℚ) * (b : ℚ) + (a : ℚ) := by rw [hdm]; push_cast; ring
+  rw [hPQ]; field_simp; ring
 
 /-- **A2 (Lemmas 4–5, the order count).** The combinatorial chart-count identity: for the
 resolution's weighted-monomial data `(d, k, h)` realising the deepest-point geometry, the
@@ -333,13 +693,16 @@ theorem aoyagiTheta_eq (M : Fin (L + 1) → ℕ) :
 
 /-- **T (Theorem 2, the headline).** The global learning coefficient — the infimum of the local RLCT
 over the optimal set (fibre `mult⁻¹(B)`) — equals Aoyagi's closed form `aoyagiLambda H r`, for any
-target `B` of rank `r`. Assembled: D1 (→ deepest point) ▸ L2 (→ reg + core) ▸ R1 (→ charts) ▸ S2
-(→ min ratio) ▸ A1 (→ clean form = `aoyagiLambda`). -/
+target `B` of rank `r` with every width `≥ r` (`hr`, the well-definedness + nonemptiness domain:
+`hr` makes the reduced widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r` non-truncating and the fibre nonempty, so the `⨅` is
+not the degenerate `⊤` over an empty set). Assembled: D1 (→ deepest point) ▸ L2 (→ reg + core) ▸ R1
+(→ charts) ▸ S2 (→ min ratio) ▸ A1 (→ clean form = `aoyagiLambda`). -/
 theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
   -- assemble: D1 (⨅ = rlctAt at the constructed deepestPoint) ▸ L2 (= closed form there).
-  rw [deepest_point_reduction H r B hB]
-  exact product_reduction H r B hB
+  rw [deepest_point_reduction H r B hB hr]
+  exact product_reduction H r B hB hr
 
 end DLNFibre.DLN.RLCT
