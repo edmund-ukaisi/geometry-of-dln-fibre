@@ -48,3 +48,4 @@ import DLNFibre.Core.MatrixKaehler
 import DLNFibre.Core.OrbitDifferentialRank
 import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.VoigtDischarge
+import DLNFibre.Core.CThetaGeometric
