@@ -621,6 +621,19 @@ on the session's original cwd.
    supplied, or move to another finite consequence below that boundary.  The
    first actual-source-label bridge is also Lean-proved, but it keeps the
    selected-width/actual-width compatibility as an explicit hypothesis.
+   Equation `(3)` now has the analogous local-data and actual-label bridge,
+   but only with the missing slack `W_1+2<=M` explicit.  The source audit
+   found a concrete Definition 3 counterexample to label legality without
+   that slack, and an endpoint obstruction when `a=1`.  Next target: either
+   define a supplied equation `(3)` piecewise certificate below this boundary
+   or move to another finite consequence; do not claim equation `(3)` label
+   legality or terminality from Definition 3 alone.
+   The supplied equation `(3)` piecewise certificate has now landed too:
+   selected-span branch classification and the own-coordinate selected-label
+   handoff are Lean-proved under the explicit slack.  The next target is no
+   longer branch bookkeeping, but the harder displayed-family realisation
+   boundary: terminal convention, Case 1(2) chart sequence, or another finite
+   consequence that stays below that boundary.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

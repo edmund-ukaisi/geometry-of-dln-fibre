@@ -1993,6 +1993,32 @@ label compatibility hypotheses.  This keeps the selected-data layer separate
 from actual source dimensions and still makes no introduced-label,
 terminal-exponent, vector-construction, chart-sequence, or order-count claim.
 
+The A5 equation `(3)` local-data and actual-label bridge is now Lean-proved.
+The new Htilde arithmetic packages the selected cutoff, first upper/lower gap,
+and selected-label bounds under `1<=a`, `a<ell`, and explicit width guards.
+The source-shaped theorem uses Definition 3 only for the lower guard
+`M-1<=W_1+W_2`; the one-unit slack `W_1+2<=M` remains explicit.  This is
+essential: an xhigh source audit found the counterexample
+`ell=3`, `a=2`, `M=3`, all selected widths `2`, where Definition 3 holds but
+`Htilde'_1+1=3>W_2=2`.  `Lemma5SourceLabel.lean` also converts the selected
+label to `actualWidthLabel` under explicit source-layer range and
+actual-width compatibility.  No equation `(3)` displayed vector, terminal
+`tilde t=0`, introduced-label status, chart sequence, or order count is
+claimed.
+
+The A5 equation `(3)` supplied piecewise certificate is also now Lean-proved
+in `Lemma5DisplayedVector.lean`.  The record
+`AoyagiLemma5Eq3PiecewiseSourceVector` stores the four displayed branches as
+data; `aoyagiLemma5Eq3_branchValue_of_block` and
+`aoyagiLemma5Eq3_selectedSpan_branchValue` classify points in the half-open
+selected span into those supplied branches, keeping
+`S_(ell-a+2)-1` separate from the strict tail.  The source-shaped
+own-coordinate theorem combines this supplied certificate with the local-data
+and slack theorem to get `T(S_2-1)=Htilde'_1` and the selected label bounds.
+This is still below the blocked displayed-family realisation boundary: no
+vector construction, terminal endpoint coverage, terminal `tilde t=0`,
+introduced-label status, chart sequence, or order count is claimed.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

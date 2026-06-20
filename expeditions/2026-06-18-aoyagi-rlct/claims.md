@@ -2024,6 +2024,20 @@ No such claim is formalisation-ready until both fields are filled.
   turns equation `(4)`'s selected-width label bounds into `actualWidthLabel`
   under explicit source-layer range, selected-width/actual-width compatibility,
   and Nat/Int label compatibility hypotheses.
+  Also proved `aoyagiLemma5Eq3_localData_of_widthGuards`,
+  `aoyagiHtildeUpperNat_one_add_one_labelBounds_of_sourceSelectedInequality_and_slack`,
+  `aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack`,
+  `aoyagiLemma5Eq3_actualWidthLabel_of_widthCompatibility`, and
+  `aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack`,
+  which package equation `(3)`'s local selected-index/gap/label arithmetic and
+  actual-label bridge while keeping the missing slack `W_1+2<=M` explicit.
+  Also proved `AoyagiLemma5Eq3PiecewiseSourceVector`,
+  `AoyagiLemma5Eq3SelectedSpanBranchValue`,
+  `aoyagiLemma5Eq3_branchValue_of_block`,
+  `aoyagiLemma5Eq3_selectedSpan_branchValue`, and
+  `aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack`,
+  which classify supplied equation `(3)` branch data on the selected span and
+  recover the own-coordinate selected-label handoff under explicit slack.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

@@ -3,10 +3,10 @@ import DLNFibre.DLN.Aoyagi.HtildeChainArithmetic
 /-!
 # Conditional displayed-vector data for Aoyagi's Lemma 5
 
-This file introduces source-layer cutpoints and a supplied piecewise certificate
-for Aoyagi Lemma 5 equation `(4)`.  It does not construct the displayed vector,
-prove terminal `tilde t=0`, chart coverage, pole order, normal crossings, or
-RLCT extraction.
+This file introduces source-layer cutpoints and supplied piecewise certificates
+for Aoyagi Lemma 5 equations `(3)` and `(4)`.  It does not construct the
+displayed vector, prove terminal `tilde t=0`, chart coverage, pole order,
+normal crossings, or RLCT extraction.
 -/
 
 namespace DLNFibre
@@ -371,6 +371,131 @@ theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
   constructor
   · rw [hvalue]
     exact hown
+  · exact hlabel
+
+/-- Supplied source-layer piecewise data for Aoyagi Lemma 5 equation `(3)`.
+
+This is a certificate that a function `T` has the displayed branch values on
+the selected blocks.  It is not a construction of such a function and carries
+no terminal or chart-coverage claim. -/
+structure AoyagiLemma5Eq3PiecewiseSourceVector
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) : Prop where
+  a_le_ell : a ≤ ell
+  indexGuard : 1 ≤ a
+  first :
+    ∀ S, S < C.point 1 - 1 → T S = layerWidth (S + 1)
+  upper :
+    ∀ b S, 1 ≤ b → b ≤ ell - a → C.block b S →
+      T S = aoyagiHtildeUpperNat ell a M m b
+  boundary :
+    T (C.point (ell - a + 1) - 1) =
+      aoyagiHtildeUpperNat ell a M m (ell - a + 1) + 1
+  tail :
+    ∀ b S, ell - a + 1 ≤ b → C.block b S →
+      C.point (ell - a + 1) - 1 < S →
+        T S = aoyagiHtildeUpperNat ell a M m b
+
+/-- Branch-value alternatives for Aoyagi Lemma 5 equation `(3)` on the
+selected span.
+
+This is only a domain/value classification for a supplied piecewise
+certificate.  It does not construct the displayed source vector and makes no
+terminality, admissibility, chart-coverage, pole-order, normal-crossing, or
+RLCT claim. -/
+inductive AoyagiLemma5Eq3SelectedSpanBranchValue
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) (S : ℕ) : Prop where
+  | first
+      (hS : S < C.point 1 - 1)
+      (hvalue : T S = layerWidth (S + 1))
+  | upper
+      (b : ℕ) (hb_pos : 1 ≤ b) (hb_le : b ≤ ell - a) (hb : C.block b S)
+      (hvalue : T S = aoyagiHtildeUpperNat ell a M m b)
+  | boundary
+      (hS : S = C.point (ell - a + 1) - 1)
+      (hvalue :
+        T S = aoyagiHtildeUpperNat ell a M m (ell - a + 1) + 1)
+  | tail
+      (b : ℕ) (hb_tail : ell - a + 1 ≤ b) (hb : C.block b S)
+      (hS : C.point (ell - a + 1) - 1 < S)
+      (hvalue : T S = aoyagiHtildeUpperNat ell a M m b)
+
+/-- A supplied equation `(3)` piecewise certificate classifies any selected
+block point by one of its advertised branches.
+
+This is half-open block bookkeeping plus the supplied branch equalities. -/
+theorem aoyagiLemma5Eq3_branchValue_of_block
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {b S : ℕ} (hb : C.block b S) :
+    AoyagiLemma5Eq3SelectedSpanBranchValue ell a M m C layerWidth T S := by
+  by_cases hb0 : b = 0
+  · subst b
+    exact AoyagiLemma5Eq3SelectedSpanBranchValue.first
+      hb.2.2 (hT.first S hb.2.2)
+  have hb_pos : 1 ≤ b := by omega
+  by_cases hb_upper : b ≤ ell - a
+  · exact AoyagiLemma5Eq3SelectedSpanBranchValue.upper b hb_pos hb_upper hb
+      (hT.upper b S hb_pos hb_upper hb)
+  have hb_tail : ell - a + 1 ≤ b := by omega
+  by_cases hboundary : S = C.point (ell - a + 1) - 1
+  · exact AoyagiLemma5Eq3SelectedSpanBranchValue.boundary hboundary
+      (by simpa [hboundary] using hT.boundary)
+  have hafter : C.point (ell - a + 1) - 1 < S := by
+    by_cases hb_eq : b = ell - a + 1
+    · subst b
+      exact C.block_leftEndpoint_lt_of_ne hb hboundary
+    · have hlt : ell - a + 1 < b := by omega
+      exact C.leftEndpoint_lt_of_lt_block hlt hb
+  exact AoyagiLemma5Eq3SelectedSpanBranchValue.tail b hb_tail hb hafter
+    (hT.tail b S hb_tail hb hafter)
+
+/-- A supplied equation `(3)` piecewise certificate covers every source index in
+the selected span by one of its advertised branches.
+
+This is only a selected-span consequence of the block classifier.  It does not
+claim coverage before `S_1-1`, at `S_(ell+1)-1`, or after it. -/
+theorem aoyagiLemma5Eq3_selectedSpan_branchValue
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {S : ℕ} (hlo : C.point 0 - 1 ≤ S) (hhi : S < C.point ell - 1) :
+    AoyagiLemma5Eq3SelectedSpanBranchValue ell a M m C layerWidth T S := by
+  rcases C.exists_block_of_mem_selectedSpan hlo hhi with ⟨b, hb⟩
+  exact aoyagiLemma5Eq3_branchValue_of_block ell a M m C layerWidth T hT hb
+
+/-- A supplied equation `(3)` piecewise vector has the correct own-coordinate
+value and legal source label under the explicit slack hypothesis.
+
+This theorem is source-vector-facing but still conditional: it assumes the
+piecewise branch certificate and does not prove terminality or chart coverage. -/
+theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    (ell - a) + 2 ≤ ell + 1 ∧
+      T (C.point 1 - 1) = aoyagiHtildeUpperNat ell a M m 1 ∧
+      (1 ≤ aoyagiHtildeUpperNat ell a M m 1 + 1 ∧
+        aoyagiHtildeUpperNat ell a M m 1 + 1 ≤
+          aoyagiSelectedWidthNat ell m 1) := by
+  have hlocal :=
+    aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack
+      ell a M m hell hT.a_le_ell hT.indexGuard ha_lt hselected hsource hslack
+  rcases hlocal with ⟨hcutoff, _hgap, hlabel⟩
+  have hblock : C.block 1 (C.point 1 - 1) :=
+    C.leftEndpoint_mem_block (by omega)
+  have hvalue := hT.upper 1 (C.point 1 - 1) le_rfl (by omega) hblock
+  constructor
+  · exact hcutoff
+  constructor
+  · exact hvalue
   · exact hlabel
 
 end Aoyagi

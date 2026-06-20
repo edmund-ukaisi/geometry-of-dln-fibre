@@ -744,6 +744,111 @@ theorem aoyagiHtildeUpperNat_one_add_one_labelBounds_iff_widthGuards
   · intro h
     constructor <;> omega
 
+/-- Corrected local arithmetic data for Aoyagi Lemma 5 equation `(3)`.
+
+Under the selected-index guard `1<=a`, the interior guard `a<ell`, and the
+explicit one-unit width guards, the displayed special cutoff is in the
+selected list, the first upper/lower gap is one, and the source label
+`k=Htilde'_1+1` is legal.
+
+This is only the local equation `(3)` arithmetic package.  It does not
+construct the displayed source vector, prove terminal `tilde t=0`, prove
+vector admissibility, or prove the Lemma 5 chart-family/order count. -/
+theorem aoyagiLemma5Eq3_localData_of_widthGuards
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha_pos : 1 ≤ a) (ha_lt : a < ell)
+    (hwidth :
+      M - 1 ≤ aoyagiSelectedWidthNat ell m 0 +
+          aoyagiSelectedWidthNat ell m 1 ∧
+        aoyagiSelectedWidthNat ell m 0 + 2 ≤ M) :
+    (ell - a) + 2 ≤ ell + 1 ∧
+      aoyagiHtildeUpperNat ell a M m 1 -
+          aoyagiHtildeLowerNat ell a M m 1 =
+        1 ∧
+      (1 ≤ aoyagiHtildeUpperNat ell a M m 1 + 1 ∧
+        aoyagiHtildeUpperNat ell a M m 1 + 1 ≤
+          aoyagiSelectedWidthNat ell m 1) := by
+  have ha : a ≤ ell := by omega
+  constructor
+  · exact (aoyagiLemma5Eq3_selectedIndexGuard_iff ell a ha).2 ha_pos
+  constructor
+  · exact aoyagiHtildeUpperNat_one_sub_lowerNat_one_of_pos_of_lt
+      ell a M m ha_pos ha_lt
+  · exact
+      (aoyagiHtildeUpperNat_one_add_one_labelBounds_iff_widthGuards
+        ell a M m ha_lt).2 hwidth
+
+/-- Definition 3's selected-width inequalities prove equation `(3)`'s first
+label guard; the remaining one-unit slack is kept explicit.
+
+The counterexamples with `W_1=W_2=M-1` show that the slack
+`W_1+2<=M` is not a consequence of Definition 3 alone. -/
+theorem aoyagiHtildeUpperNat_one_add_one_labelBounds_of_sourceSelectedInequality_and_slack
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (ha_pos : 1 ≤ a) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M) :
+    1 ≤ aoyagiHtildeUpperNat ell a M m 1 + 1 ∧
+      aoyagiHtildeUpperNat ell a M m 1 + 1 ≤
+        aoyagiSelectedWidthNat ell m 1 := by
+  have hprefix :
+      aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) 1 =
+        aoyagiSelectedWidthNat ell m 0 + aoyagiSelectedWidthNat ell m 1 := by
+    simpa using aoyagiPrefixSum_succ (aoyagiSelectedWidthNat ell m) 0
+  have hM_le_prefix :
+      M ≤ aoyagiSelectedWidthNat ell m 0 +
+          aoyagiSelectedWidthNat ell m 1 := by
+    have h :=
+      aoyagiPrefixSum_mul_le_of_sourceSelectedInequality
+        ell a 1 M m hell ha ha_pos hselected hsource
+    rw [hprefix] at h
+    simpa using h
+  have hwidth :
+      M - 1 ≤ aoyagiSelectedWidthNat ell m 0 +
+          aoyagiSelectedWidthNat ell m 1 ∧
+        aoyagiSelectedWidthNat ell m 0 + 2 ≤ M := by
+    constructor
+    · linarith
+    · exact hslack
+  exact
+    (aoyagiHtildeUpperNat_one_add_one_labelBounds_iff_widthGuards
+      ell a M m ha_lt).2 hwidth
+
+/-- Source-shaped equation `(3)` local data: Definition 3 supplies the first
+label guard, while the missing one-unit slack is explicit. -/
+theorem aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (ha_pos : 1 ≤ a) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M) :
+    (ell - a) + 2 ≤ ell + 1 ∧
+      aoyagiHtildeUpperNat ell a M m 1 -
+      aoyagiHtildeLowerNat ell a M m 1 =
+        1 ∧
+      (1 ≤ aoyagiHtildeUpperNat ell a M m 1 + 1 ∧
+        aoyagiHtildeUpperNat ell a M m 1 + 1 ≤
+          aoyagiSelectedWidthNat ell m 1) := by
+  exact aoyagiLemma5Eq3_localData_of_widthGuards ell a M m ha_pos ha_lt
+    ⟨by
+      have hprefix :
+          aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) 1 =
+            aoyagiSelectedWidthNat ell m 0 + aoyagiSelectedWidthNat ell m 1 := by
+        simpa using aoyagiPrefixSum_succ (aoyagiSelectedWidthNat ell m) 0
+      have h :=
+        aoyagiPrefixSum_mul_le_of_sourceSelectedInequality
+          ell a 1 M m hell ha ha_pos hselected hsource
+      rw [hprefix] at h
+      have hM_le :
+          M ≤ aoyagiSelectedWidthNat ell m 0 +
+              aoyagiSelectedWidthNat ell m 1 := by
+        simpa using h
+      linarith,
+    hslack⟩
+
 /-- Offsets from the lower displayed chain to the upper displayed chain at
 the `j`th chain coordinate. -/
 def aoyagiHtildeIntervalOffsets (ell a j : ℕ) : Finset ℕ :=

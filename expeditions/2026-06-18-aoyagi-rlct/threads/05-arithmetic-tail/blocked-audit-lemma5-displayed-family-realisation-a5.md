@@ -116,6 +116,35 @@ record supplies the terminal endpoint assignment
 that endpoint value is zero.  This does not remove the displayed-vector
 realisation blocker.
 
+## 2026-06-20 equation (3) source audit update
+
+An xhigh source audit found that equation `(3)`'s label legality is false from
+Definition 3 alone.  Under `a<ell`,
+
+```text
+Htilde'_1+1 = W_1+W_2-M+2,
+```
+
+so `1<=Htilde'_1+1<=W_2` is equivalent to
+
+```text
+M-1<=W_1+W_2,
+W_1+2<=M.
+```
+
+Definition 3 supplies the first inequality but not the second.  For example,
+`ell=3`, `a=2`, `M=3`, and all four selected widths equal to `2` satisfy the
+selected-sum and strict selected-width inequality, but give
+`Htilde'_1+1=3>W_2=2`.
+
+The same audit also records a terminal-endpoint obstruction: if `a=1`, the
+special cutoff in equation `(3)` is `S_(ell+1)-1`, and the displayed special
+assignment is `Htilde'_ell+1=1`, while Definition 3 gives `Htilde'_ell=0`.
+Thus literal endpoint-zero terminality is incompatible with the printed
+special assignment in that boundary case.  For `2<=a`, any terminal endpoint
+zero theorem must remain conditional on an explicitly supplied terminal
+endpoint assignment.
+
 ## Safe First Lean Target
 
 The source-faithful finite arithmetic target is only the equation `(4)`

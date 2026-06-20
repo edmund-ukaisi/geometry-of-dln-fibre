@@ -842,3 +842,75 @@ supplying source-layer range, width compatibility
 `n(S_(p+1))=W_(p+1)`, and Nat/Int label compatibility.  It does not construct
 the displayed vector, prove introduced-label status, terminal exponent data,
 or `tilde t=0`.
+
+## 2026-06-20 Lean Lemma 5 equation `(3)` local data and label bridge
+
+Reproduction:
+`reproduction-lemma5-eq3-local-data-and-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-local-data-and-label.md`.
+Review artifact:
+`review-lemma5-eq3-local-data-and-piecewise-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq3_localData_of_widthGuards
+aoyagiHtildeUpperNat_one_add_one_labelBounds_of_sourceSelectedInequality_and_slack
+aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack
+aoyagiLemma5Eq3_actualWidthLabel_of_widthCompatibility
+aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack
+```
+
+This packages the safe equation `(3)` local arithmetic.  Under `1<=a`,
+`a<ell`, and explicit width guards, Lean proves the selected-index cutoff,
+the first Htilde gap `Htilde'_1-Htilde_1=1`, and the selected label bounds for
+`k=Htilde'_1+1`.  In the source-shaped version, Definition 3 supplies
+`M-1<=W_1+W_2`, but the one-unit slack `W_1+2<=M` remains an explicit
+hypothesis.
+
+The actual-width bridge converts this selected label into `actualWidthLabel`
+only under source-layer range, selected-width/actual-width compatibility, and
+Nat/Int label compatibility.  The xhigh source audit found a genuine
+Definition 3 counterexample to label legality without the slack, so this is
+not a missing Lean lemma.  This still does not construct the displayed
+equation `(3)` vector, prove introduced-label status, terminal `tilde t=0`,
+chart-family coverage, or Lemma 5 order count.
+
+## 2026-06-20 Lean Lemma 5 equation `(3)` piecewise certificate
+
+Reproduction:
+`reproduction-lemma5-eq3-piecewise-certificate-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-piecewise-certificate.md`.
+Review artifact:
+`review-lemma5-eq3-local-data-and-piecewise-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5Eq3PiecewiseSourceVector
+AoyagiLemma5Eq3SelectedSpanBranchValue
+aoyagiLemma5Eq3_branchValue_of_block
+aoyagiLemma5Eq3_selectedSpan_branchValue
+aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack
+```
+
+This is the equation `(3)` analogue of the supplied equation `(4)` branch
+certificate.  The classifier covers only the half-open selected span
+`S_1-1 <= S < S_(ell+1)-1`, separates the special boundary
+`S_(ell-a+2)-1` from the strict tail, and keeps the branch data supplied.
+Under `1<=a`, `a<ell`, Definition 3 selected-width hypotheses, and the slack
+`W_1+2<=M`, the supplied certificate gives
+`T(S_2-1)=Htilde'_1` plus the selected label bounds for
+`k=Htilde'_1+1`.
+
+This still does not construct the displayed vector, cover the terminal
+selected endpoint, prove terminal `tilde t=0`, prove introduced-label status,
+or prove Lemma 5's chart-family/order-count theorem.
+
+Landed-patch review:
+`review-lemma5-eq3-local-data-and-piecewise-a5.md`.
+The reviewer found that the supplied piecewise record should carry the source
+guards for the boundary cutpoint.  This was addressed by adding `a<=ell` and
+`1<=a` fields to `AoyagiLemma5Eq3PiecewiseSourceVector`.

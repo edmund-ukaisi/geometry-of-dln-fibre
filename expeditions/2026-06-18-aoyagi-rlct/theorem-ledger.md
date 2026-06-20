@@ -2335,6 +2335,43 @@ Blocked audit:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-post-pivot-source-following-product-a4.md`.
 
+Latest A5 update: the Lemma 5 equation `(3)` local-data and actual-label
+bridge has landed in
+`lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The proved Lean names are
+`aoyagiLemma5Eq3_localData_of_widthGuards`,
+`aoyagiHtildeUpperNat_one_add_one_labelBounds_of_sourceSelectedInequality_and_slack`,
+`aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack`,
+`aoyagiLemma5Eq3_actualWidthLabel_of_widthCompatibility`, and
+`aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack`.
+They prove equation `(3)`'s selected cutoff, first Htilde gap, selected-label
+bounds, and actual-label bridge only under the explicit one-unit slack
+`W_1+2<=M`.  Source audit found a genuine Definition 3 counterexample without
+that slack, so label legality from Definition 3 alone remains blocked.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-local-data-and-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-local-data-and-label.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-local-data-and-piecewise-a5.md`.
+
+Latest A5 update: the Lemma 5 equation `(3)` supplied piecewise certificate
+has landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The
+proved Lean names are `AoyagiLemma5Eq3PiecewiseSourceVector`,
+`AoyagiLemma5Eq3SelectedSpanBranchValue`,
+`aoyagiLemma5Eq3_branchValue_of_block`,
+`aoyagiLemma5Eq3_selectedSpan_branchValue`, and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack`.
+They classify supplied equation `(3)` branch data on the half-open selected
+span and recover the own-coordinate selected-label handoff under Definition 3
+plus the explicit slack `W_1+2<=M`.  This is not a displayed-vector
+construction, terminal endpoint theorem, or order-count theorem.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-piecewise-certificate-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-piecewise-certificate.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-local-data-and-piecewise-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
