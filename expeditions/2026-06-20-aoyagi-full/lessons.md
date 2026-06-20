@@ -201,3 +201,17 @@ hyps didn't encode it.
   `rlct_germ_local` was the exception (bare statement sound). The fixes are always LOCALIZED + use-site-
   satisfiable (the resolution data is proper/surjective/analytic/measurable) — small contract changes, big
   fidelity gain.
+- **WHY it recurs — the universal lever (rv-2):** the RLCT is defined as `sSup` over the *integrable*
+  exponents, so EVERY transport/additivity lemma silently requires (i) the transformed integrand be
+  (a.e.-)MEASURABLE — `Integrable ⟹ AEStronglyMeasurable`, so a non-measurable transform ⟹ admissible set
+  `{0}` ⟹ `rlctAt=0`; and (ii) the integrand be NON-TRIVIAL near the point — `≡0 ⟹ rlctAt=⊤` (the 0^neg=0
+  convention). Those two facts are the levers behind the 10th (Luzin-N/surjectivity), 11th (Measurable u),
+  and 12th (Measurable G + G≢0) findings. PREDICTION (use it): every future analytic rung (R1's per-chart
+  transport, L2's Fubini lemma, D1's monotonicity) will need measurability + non-triviality of its
+  transformed integrand stated — check it at statement-design time, not just at proof time.
+- **12th resolution (S1.5, pp+Codex):** when the bare additivity is false AND heavy (Laplace) AND uncitable,
+  the fix can be a STATEMENT PIVOT, not a hyp-add: restate to the smooth-block FUBINI lemma (`rlctAt(Σxᵢ² +
+  monomial-core) = n/2 + min ratio`), proven by the explicit radial integral `∫(|x|²+s)^{-c}=C·s^{n/2-c}` +
+  Fubini — light, one-citation-clean, and the chart-form (core=monomial, nonzero-a.e.+measurable) dodges both
+  levers by construction. Lesson: pick the statement the proof can actually reach cheaply, matched to the
+  use-site (per-chart in R1), rather than the most general abstract form.

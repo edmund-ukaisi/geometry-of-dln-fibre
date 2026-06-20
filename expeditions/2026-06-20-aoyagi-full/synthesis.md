@@ -157,6 +157,14 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   routed to pp** (additivity-with-hyps vs R1-on-full-loss-subsumed vs smooth-block-alone restatement — how L2
   combines regular ⊕ core). fm-2 proving the smooth-block VALUE `rlctAtOn(Σxᵢ²)=n/2` (general n, needed
   regardless; Mathlib-gap radial integrability). This is a design node, not just a hyp-gap.
+  **RESOLVED (pp + Codex, l2-architecture-card):** DROP additivity AND R1-on-full-loss (the latter needs mixed
+  principalization of (x,m) — heavier; F=Σx²+core is a SUM not monomial×unit). **Restate S1.5 to the
+  smooth-block FUBINI LEMMA:** `rlctAt(Σxᵢ² + core)` in a core normal-crossing chart `= n/2 + min_j(h_j+1)/(2k_j)`.
+  PROOF LIGHT (no Laplace): `∫(|x|²+s)^{-c}dx = C·s^{n/2-c}` (radial x=√s·ρ, Beta, finite iff c>n/2) + Fubini
+  (s=core≥0) ⟹ core RLCT at shifted exponent ⟹ n/2 + λ_core. Chart-form core=monomial is nonzero-a.e. +
+  measurable ⟹ dodges BOTH gaps by construction. APPLIED PER-CHART in R1: λ_full = min_chart(n/2 + λ_core) =
+  n/2 + ½ min_t Mval. So L2's regular⊕core = Fubini-lemma + R1-core-resolution + min-over-charts (NOT a
+  standalone additivity). fm-2 proving the Fubini lemma; fm restates+wires Skeleton S1.5.
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
