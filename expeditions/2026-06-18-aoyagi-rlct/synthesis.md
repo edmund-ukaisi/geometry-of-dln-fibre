@@ -1580,9 +1580,17 @@ The source suffix utilities are now Lean-proved in `MatrixChain.lean`:
 `sourceSuffixProduct_eq_paperMatrixChain`, and
 `sourceSuffixProduct_split_at`.  The split theorem states the cast-light form
 `sourceSuffixProduct(S)=chain(S+2,T)*chain(T,L+1)` under `S+2<=T<=L+1`.  The
-split layer may be an endpoint, but the endpoint identity simplifications, the
-one-edge peel, and the empty-suffix identity remain unproved dependent-endpoint
-wrappers, not current claims.
+split layer may be an endpoint, but the endpoint identity simplifications and
+the empty-suffix identity remain unproved dependent-endpoint wrappers, not
+current claims.
+
+The source suffix one-edge peel is now Lean-proved in `MatrixChain.lean`.
+The raw theorem `paperMatrixChain_succ_left` peels the first edge from a
+nonempty raw chain, and the source wrapper `sourceSuffixProduct_peel` states
+that under `S+2<=L`, `sourceSuffixProduct(S)` is the reindexed first source
+edge `sourceSuffixFirstEdge(S)` times `sourceSuffixProduct(S+1)`.  This is a
+dependent-endpoint wrapper around the supplied edge `C^(S+2)`, not a
+chart-production theorem or source-produced terminal matrix.
 
 ## Drift guard
 

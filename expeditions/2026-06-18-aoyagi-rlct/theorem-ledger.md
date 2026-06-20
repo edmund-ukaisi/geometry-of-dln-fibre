@@ -1785,6 +1785,20 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-source-suffix-utilities-a4.md`.
 
+Latest A4 update: the source-suffix one-edge peel has landed in
+`lean/DLNFibre/DLN/Aoyagi/MatrixChain.lean`.  The proved Lean names are
+`paperMatrixChain_succ_left`, `sourceSuffixFirstEdge`, and
+`sourceSuffixProduct_peel`.  Under `S+2<=L`, Aoyagi's raw suffix
+`prod_{s=S+2}^L C^(s)` rewrites as the first source edge times the next
+suffix, with the first edge reindexed to the adjacent source-suffix endpoints.
+This is raw matrix-chain algebra only; it does not prove the empty-suffix
+identity, chart production, or any analytic result. Reproduction:
+`threads/04-blow-up-certificate/reproduction-source-suffix-peel-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-source-suffix-peel.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-source-suffix-peel-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

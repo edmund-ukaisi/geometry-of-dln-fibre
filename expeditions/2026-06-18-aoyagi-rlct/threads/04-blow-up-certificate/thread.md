@@ -2642,3 +2642,38 @@ This is still raw chain API.  It does not prove the one-edge source-suffix
 peel, the empty-suffix identity, source-produced `C'^(S+1)`, chart coverage,
 chart-produced post-data, Jacobian arithmetic, normal crossings/RLCT,
 termination, transition invariance, or printed-vector repair.
+
+## 2026-06-20 Lean source suffix one-edge peel
+
+Reproduction:
+`reproduction-source-suffix-peel-a4.md`.
+Statement card:
+`statement-card-a4-source-suffix-peel.md`.
+Review artifact:
+`review-source-suffix-peel-a4.md`.
+
+Lean now proves the raw first-edge peel
+
+```text
+paperMatrixChain_succ_left
+```
+
+and the source-suffix wrapper
+
+```text
+sourceSuffixProduct_peel.
+```
+
+Under `S+2 <= L`, the source suffix rewrites as
+
+```text
+sourceSuffixProduct(S)
+  = sourceSuffixFirstEdge(S) * sourceSuffixProduct(S+1).
+```
+
+The factor `sourceSuffixFirstEdge(S)` is the supplied source edge `C^(S+2)`
+with endpoints reindexed as the adjacent source-suffix layers.  This is still
+raw matrix-chain algebra.  It does not prove the empty-suffix identity,
+source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair.

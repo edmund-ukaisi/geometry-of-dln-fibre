@@ -1485,8 +1485,11 @@ No such claim is formalisation-ready until both fields are filled.
   `sourceSuffixProduct_eq_paperMatrixChain`, and
   `sourceSuffixProduct_split_at`, exposing the raw suffix as a
   proof-irrelevant paper-order chain that splits at a source layer.  Endpoint
-  identity simplifications, the one-edge peel, and the empty-suffix identity
-  remain unproved.
+  identity simplifications and the empty-suffix identity remain unproved.  The
+  one-edge peel is now Lean-proved as `paperMatrixChain_succ_left`,
+  `sourceSuffixFirstEdge`, and `sourceSuffixProduct_peel`: under `S+2<=L`,
+  the suffix rewrites as the first source edge `C^(S+2)`, reindexed to
+  adjacent source-suffix endpoints, times the tail suffix from `S+3`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

@@ -96,6 +96,13 @@ theorem paperMatrixChain_edge (p : Fin N) (h : p.castSucc ≤ p.succ) :
     _ = C p := by
       simpa using paperMatrixChain_succ_right κ C p.castSucc p le_rfl
 
+/-- Peel the first edge from a nonempty raw paper-order matrix chain. -/
+theorem paperMatrixChain_succ_left (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j) :
+    paperMatrixChain κ C p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+      C p * paperMatrixChain κ C p.succ j hpj := by
+  rw [paperMatrixChain_trans κ C p.castSucc (m := p.succ) (j := j)
+    (Fin.castSucc_le_succ p) hpj, paperMatrixChain_edge]
+
 end RawPaperMatrixChain
 
 section SourceSuffix
@@ -188,6 +195,29 @@ theorem sourceSuffixProduct_split_at {L : ℕ}
     (by
       change T - 1 ≤ L
       omega)
+
+/-- The first edge of a nonempty source suffix, with source-suffix endpoint names. -/
+def sourceSuffixFirstEdge {L : ℕ}
+    (κ : Fin (L + 1) → Type v) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (C : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    {S : ℕ} (hS : S + 2 ≤ L) :
+    Matrix (κ (sourceLayerIndex L (S + 2) (by omega) (by omega)))
+      (κ (sourceLayerIndex L ((S + 1) + 2) (by omega) (by omega))) R := by
+  let p := sourceEdgeIndex L (S + 2) (by omega) hS
+  simpa [p, sourceEdgeIndex, sourceLayerIndex] using C p
+
+/-- Peel the first source edge from a nonempty Aoyagi source suffix. -/
+theorem sourceSuffixProduct_peel {L : ℕ}
+    (κ : Fin (L + 1) → Type v) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (C : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    {S : ℕ} (hS : S + 2 ≤ L) :
+    sourceSuffixProduct κ C S (by omega) =
+      sourceSuffixFirstEdge κ C hS *
+        sourceSuffixProduct κ C (S + 1) (by omega) := by
+  unfold sourceSuffixProduct sourceSuffixFirstEdge
+  simpa [sourceEdgeIndex, sourceLayerIndex] using
+    paperMatrixChain_succ_left κ C
+      (sourceEdgeIndex L (S + 2) (by omega) hS) (Fin.last L) (Fin.le_last _)
 
 end SourceSuffix
 

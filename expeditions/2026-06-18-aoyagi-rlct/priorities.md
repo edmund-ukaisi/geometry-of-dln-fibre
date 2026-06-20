@@ -154,11 +154,13 @@ on the session's original cwd.
    exponent data. The source suffix utility layer now adds proof irrelevance,
    definitional expansion, and the cast-light split
    `sourceSuffixProduct(S)=chain(S+2,T)*chain(T,L+1)`, with endpoint split
-   identity simplifications still unproved. Next A4 target: either the
-   dependent-endpoint one-edge `sourceSuffixProduct` peel wrapper if suffix
-   rewrites become noisy, or fuller chart-production boundary data beyond
-   terminal-prefix wrappers. Do not transport Case 2 gap/tail invariants
-   without separately checking their shifted thresholds.
+   identity simplifications still unproved. The nonempty one-edge peel is now
+   Lean-proved as `paperMatrixChain_succ_left`, `sourceSuffixFirstEdge`, and
+   `sourceSuffixProduct_peel`, so the remaining suffix API gap is the
+   empty/endpoint identity wrappers if they become useful. Next A4 target:
+   build fuller chart-production boundary data beyond terminal-prefix
+   wrappers. Do not transport Case 2 gap/tail invariants without separately
+   checking their shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now
