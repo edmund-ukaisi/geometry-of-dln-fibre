@@ -10,9 +10,10 @@ reusable artifact the `(1,1,1)` bridge, the S1.1 use-site, and the general R1 al
 
 The one Mathlib gap (pp's thread-11 research): `measurePreserving_piCurry` — the measure-preserving
 statement for the existing `MeasurableEquiv.piCurry` (a `Σ`-indexed `Measure.pi` equals the nested
-`Measure.pi`-of-`Measure.pi` under currying). Mirrors `measurePreserving_arrowProdEquivProdArrow`, but
-the clean route is via the **symmetric** map (`Sigma.uncurry`): its preimage of a `Σ`-box is a nested
-box, so `Measure.pi_eq` + `pi_pi` + `Fintype.prod_sigma` close it, then `MeasurePreserving.symm`.
+`Measure.pi`-of-`Measure.pi` under currying). Mirrors `measurePreserving_arrowProdEquivProdArrow`,
+but the clean route is via the **symmetric** map (`Sigma.uncurry`): its preimage of a `Σ`-box is a
+nested box, so `Measure.pi_eq` + `pi_pi` + `Fintype.prod_sigma` close it, then
+`MeasurePreserving.symm`.
 Everything else for the `paramsEquivFlat` assembly (`arrowCongr'` + `measurePreserving_arrowCongr'`,
 `Fintype.equivFin`, the `card (Idx H) = N` count) is confirmed-present in Mathlib v4.29.
 -/
