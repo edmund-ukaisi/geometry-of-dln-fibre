@@ -1493,12 +1493,16 @@ landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
 names are
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth`
 and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_oldTopSourceSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth`,
+and
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth`.
 This checkpoint restates the stopped supplied terminal product candidate using
 the relabelled `(S+1,0)` post-state pivot weight
 `terminalRelabelPost.weight(J+1)`; actual-width exhaustion derives failed next
-continuation and the equality with the old `post.weight(J+1)`.  It is only a
-presentational bridge.  It does not construct source-produced `C'^(S+1)`,
+continuation and the equality with the old `post.weight(J+1)`.  The same
+scalar rewrite is now available for the source old-top/source suffix theorem
+through a supplied terminal `Cterm`.  It is only a presentational bridge.  It
+does not construct source-produced `C'^(S+1)`,
 chart production, automatic Case 2 gap/tail transport, coverage, Jacobians,
 normal crossings/RLCT, termination, transition invariance, or printed-vector
 repair. Reproduction:

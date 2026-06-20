@@ -62,11 +62,25 @@ b0 = terminalRelabelPost.weight(J+1)
 
 instead of `post.weight(J+1)`.
 
+If a supplied terminal matrix bridge identifies a terminal `Cterm` with the
+old source rows and the transported pivot row, then the source old-top/source
+suffix theorem can be restated in the same relabelled vocabulary:
+
+```text
+(sourceTerminalWeight(terminalRelabelPost.weight(J+1)) * Cterm)
+  * sourceSuffixProduct.
+```
+
+The proof uses only the displayed post-state weight equality above and the
+already proved supplied-terminal source-suffix theorem.
+
 ## Boundaries
 
 - This only rewrites a scalar in an already supplied terminal-product
   candidate.
 - `Atop`, `Ctop`, and `F` remain supplied.
+- In the source-suffix form, the terminal matrix `Cterm` remains supplied by
+  `SuppliedTerminalCprimeBridge`.
 - The source-model wrapper is specialized to a model whose `b0` parameter is
   `terminalRelabelPost.weight(J+1)`.
 - The theorem does not prove `[Ctop;C0]` is source-produced `C'^(S+1)`.

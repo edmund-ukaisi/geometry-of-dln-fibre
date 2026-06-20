@@ -9,6 +9,7 @@ File:
 Names:
 
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_oldTopSourceSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth`
 
 ## Statement
@@ -23,6 +24,8 @@ post-state pivot weight `post.weight (J+1)`.
 
 - The source-displayed weighted terminal-product entry-ideal theorem with
   pivot scalar `data.terminalRelabelPost.weight (J+1)`.
+- The source old-top/source suffix theorem through a supplied terminal
+  `Cterm`, again with pivot scalar `data.terminalRelabelPost.weight (J+1)`.
 - A source-model wrapper specialized to
   `b0 = data.terminalRelabelPost.weight (J+1)`.
 
@@ -31,6 +34,7 @@ post-state pivot weight `post.weight (J+1)`.
 - Actual next-width exhaustion `n(S+1)=J+1`.
 - A supplied displayed Case 2 boundary.
 - Supplied old top multiplier/block and suffix data.
+- A supplied terminal `C'` bridge for the source-suffix theorem.
 
 ## Not Proved
 

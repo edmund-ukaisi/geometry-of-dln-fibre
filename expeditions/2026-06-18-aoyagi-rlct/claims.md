@@ -1359,8 +1359,10 @@ No such claim is formalisation-ready until both fields are filled.
   supplied terminal product with surviving pivot scalar
   `data.terminalRelabelPost.weight(J+1)`, using actual-width exhaustion to
   recover failed next continuation and the equality with `post.weight(J+1)`.
-  A source-model wrapper is specialized to that relabelled scalar.  This is
-  only presentational API and does not construct source-produced `C'^(S+1)`.
+  A source-model wrapper is specialized to that relabelled scalar, and the
+  same scalar rewrite is available for the source old-top/source suffix theorem
+  through a supplied terminal `Cterm`.  This is only presentational API and
+  does not construct source-produced `C'^(S+1)`.
   The source-chart terminal model constructor composes the concrete displayed
   source-chart boundary with that terminal wrapper.  It fixes
   `post = pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))` and the

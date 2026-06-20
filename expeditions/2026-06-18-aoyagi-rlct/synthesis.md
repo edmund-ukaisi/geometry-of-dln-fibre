@@ -1455,8 +1455,10 @@ the stopped supplied terminal entry-ideal theorem with surviving scalar
 actual-width exhaustion to derive both failed next continuation and weight
 equality.  The source-model wrapper is intentionally specialized to
 `b0 = terminalRelabelPost.weight(J+1)` to avoid dependent transport between
-model types.  This is presentational API only; `Atop`, `Ctop`, and `F` remain
-supplied, and no source-produced `C'^(S+1)` or transition invariant is proved.
+model types.  The source old-top/source suffix theorem also has the same
+relabelled scalar form when a terminal `Cterm` bridge is supplied.  This is
+presentational API only; `Atop`, `Ctop`, `F`, and `Cterm` remain supplied, and
+no source-produced `C'^(S+1)` or transition invariant is proved.
 
 The displayed source-chart terminal model constructor is now Lean-proved.  It
 instantiates `of_sourceChartMap_case2Succ_updateSelected`, so recurrence

@@ -12444,6 +12444,74 @@ theorem exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth
     data.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont
       Atop Ctop hstop residual C F
 
+/-- Source old-top/source suffix theorem with a supplied terminal `C'`, with
+the surviving pivot weight read from the relabelled `(S+1,0)` post-state.
+
+This uses actual-width exhaustion only to identify the relabelled pivot weight
+with the displayed post-state pivot weight and to force the stopped branch. -/
+theorem exists_oldTopSourceSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (bridge :
+      SuppliedTerminalCprimeBridge n data.stage_pos data.continuation residual C) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeight
+              (case2DisplayedSourceOldTopWeight pre)
+              (data.terminalRelabelPost.weight (J + 1)) *
+            bridge.Cterm) * sourceSuffixProduct κ Ctail S hSuffix) := by
+  have hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1) := by
+    intro hnext
+    have hwidth_le : prefixMinNat n (S + 1) ≤ J + 1 := by
+      simpa [hwidth] using
+        (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
+    omega
+  have hweight :
+      data.terminalRelabelPost.weight (J + 1) = post.weight (J + 1) :=
+    data.terminalRelabelPost_weight_eq_of_actualWidth hwidth
+  rw [hweight]
+  exact
+    exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont
+      data κ hSuffix hstop residual C Ctail bridge
+
 /-- Actual-width source-model wrapper for the terminal product whose surviving
 pivot weight is read from the relabelled `(S+1,0)` post-state.
 

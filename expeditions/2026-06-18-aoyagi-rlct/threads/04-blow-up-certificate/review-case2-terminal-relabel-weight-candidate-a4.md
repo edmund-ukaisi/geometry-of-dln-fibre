@@ -14,6 +14,7 @@ Files:
 Lean names:
 
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_oldTopSourceSuffix_entryIdeal_eq_relabelSuppliedTerminalProduct_of_actualWidth`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth`
 
 ## Verdict
@@ -32,6 +33,9 @@ transporting a model whose `b0` is definitionally `post.weight (J+1)`.
 - The theorem requires actual-width exhaustion.
 - The result is presentational API, not new chart production.
 - `Atop`, `Ctop`, and `F` remain supplied.
+- The source-suffix supplied-terminal wrapper still assumes
+  `SuppliedTerminalCprimeBridge`; actual-width only changes the scalar
+  vocabulary.
 - No source-produced `C'^(S+1)`, gap/tail transport, coverage, Jacobian,
   normal-crossing/RLCT, termination, transition invariant, or printed-vector
   repair is claimed.

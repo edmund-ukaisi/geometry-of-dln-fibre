@@ -2237,6 +2237,11 @@ terminal source model to
 b0 = terminalRelabelPost.weight(J+1).
 ```
 
+The latest bridge-consumer checkpoint also applies the same relabelled scalar
+to the source old-top/source suffix theorem through a supplied terminal
+`Cterm`.  This still assumes `SuppliedTerminalCprimeBridge`; it does not
+construct the terminal next matrix.
+
 This is only a presentational bridge from the terminal candidate to relabelled
 recurrence vocabulary.  It does not construct source-produced `C'^(S+1)`,
 does not prove chart production, does not transport Case 2 gap/tail packages,

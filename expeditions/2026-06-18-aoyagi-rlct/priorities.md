@@ -101,7 +101,9 @@ on the session's original cwd.
    the same actual-width equality. The stopped terminal candidate is now also
    rewritten with surviving scalar `terminalRelabelPost.weight(J+1)` instead
    of `post.weight(J+1)`, with the source model specialized to that relabelled
-   scalar. The displayed source-chart terminal model constructor now removes
+   scalar and the source old-top/source suffix theorem rewritten through a
+   supplied terminal `Cterm` at the same scalar. The displayed source-chart
+   terminal model constructor now removes
    arbitrary recurrence/exponent post-data from this terminal wrapper by using
    `case2Succ` and corrected selected-label overrides, while keeping
    chart-family predicates and terminal old-top/suffix data supplied. The
