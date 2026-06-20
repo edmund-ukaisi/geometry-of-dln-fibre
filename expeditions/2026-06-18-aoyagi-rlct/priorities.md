@@ -506,7 +506,10 @@ on the session's original cwd.
    product. The adapter is now connected to the existing corrected
    recurrence/exponent post-data boundary for the displayed source chart, and
    the following-factor tail has been rewritten as the next same-stage source
-   following factor. A source/API audit blocks stronger chart-production
+   following factor. The reverse pivot-first coordinate direction for an
+   arbitrary supplied chart matrix `Cprime` is also Lean-proved:
+   `C=Q*Cprime`, `Q^-1*C=Cprime`, and
+   `D''*Cprime=D_chart*C`. A source/API audit blocks stronger chart-production
    claims at the current boundary: do not state chart-produced recurrence or
    exponent data, successor chart-family construction, full source-produced
    `C'^(S+1)`, or transition invariance unless an independent atlas/transition

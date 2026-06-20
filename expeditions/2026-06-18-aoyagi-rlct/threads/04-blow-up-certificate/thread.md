@@ -3087,3 +3087,32 @@ not prove chart production, successor chart-family construction, full
 source-produced next `C'^(S+1)`, transition invariance, chart coverage,
 Jacobian arithmetic, normal crossings/RLCT, terminal relabeling, arbitrary
 pivot coverage, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 constructed `Cprime`
+
+Reproduction:
+`reproduction-case2-constructed-cprime-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-cprime.md`.
+Review artifact:
+`review-case2-constructed-cprime-a4.md`.
+
+Lean now proves the reverse coordinate direction for the displayed Case 2
+following-factor operation:
+
+```text
+case2DisplayedPaperConstructedFollowingFactor
+case2DisplayedPaperCprime_of_constructedFollowingFactor
+case2DisplayedPaperDpp_mul_constructedCprime
+```
+
+Given an arbitrary pivot-first chart-coordinate following factor `Cprime`,
+the constructed old pivot-first following factor is `Q*Cprime`.  Applying
+`Q^-1` recovers `Cprime`, and the product identity becomes
+`D''*Cprime = D_chart*(Q*Cprime)`.
+
+This is finite pivot-first matrix algebra only.  It does not construct a
+total source-coordinate function from `Cprime`, produce recurrence or exponent
+post-data, construct the successor chart family, prove chart coverage or
+regularity, compute Jacobians, prove normal crossings/RLCT, handle arbitrary
+pivots, terminal relabeling, or repair the printed Case 2 vector.

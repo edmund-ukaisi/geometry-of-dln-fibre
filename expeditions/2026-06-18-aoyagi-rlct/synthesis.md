@@ -1943,6 +1943,17 @@ source-produced `C'^(S+1)`, transition invariant, chart coverage, Jacobian,
 normal crossing, RLCT extraction, terminal relabeling, arbitrary pivot
 coverage, or printed-vector repair is claimed.
 
+The reverse pivot-first coordinate direction for the displayed Case 2
+following factor is now Lean-proved as finite matrix algebra.  Given an
+arbitrary chart-coordinate following matrix `Cprime`, Lean defines the
+constructed old pivot-first following factor as `Q*Cprime`, proves
+`Q^-1*(Q*Cprime)=Cprime`, and rewrites `D''*Cprime` as
+`D_chart*(Q*Cprime)`.  This moves one step from adapter to coordinate algebra
+without constructing a total source-coordinate function `N -> tau -> R`,
+successor chart family, recurrence/exponent post-data, transition invariant,
+Jacobian, normal crossing, RLCT extraction, arbitrary pivot coverage,
+terminal relabeling, or printed-vector repair.
+
 The stronger A4 chart-production route has now been explicitly audited and
 blocked at the current source/API boundary.  Aoyagi pp. 19-22 support the
 displayed local Case 2 algebra and the continuation/terminal slogans, but do

@@ -10208,6 +10208,58 @@ def case2DisplayedPaperCprime
   case2DisplayedPaperQinv n hS hcont residual *
     case2DisplayedSourceFollowingFactor n hS hcont C
 
+/-- Construct the old pivot-first following factor from a displayed Case 2
+chart-coordinate following factor `C'`.
+
+This is only the finite coordinate direction `C = Q * C'` in pivot-first
+coordinates.  It does not construct a total source-coordinate function
+`ℕ → τ → R`, a successor chart family, or a transition invariant. -/
+def case2DisplayedPaperConstructedFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  case2DisplayedPaperQ n hS hcont residual * Cprime
+
+/-- If the old following factor is constructed as `Q * C'`, then Aoyagi's
+displayed inverse operation recovers the chart coordinate `C'`. -/
+theorem case2DisplayedPaperCprime_of_constructedFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedPaperQinv n hS hcont residual *
+        case2DisplayedPaperConstructedFollowingFactor n hS hcont residual Cprime =
+      Cprime := by
+  rw [case2DisplayedPaperConstructedFollowingFactor, case2DisplayedPaperQ,
+    case2DisplayedPaperQinv]
+  rw [← Matrix.mul_assoc]
+  rw [pivotQinv_mul_pivotQ]
+  simp
+
+/-- Reverse-coordinate form of Aoyagi's displayed Case 2 `Q` operation:
+with `C = Q * C'`, multiplying `D'' = D_chart * Q` by `C'` is the same as
+multiplying the original normalised block by the constructed old following
+factor.
+
+This is finite matrix algebra only.  It is not chart coverage, chart
+regularity, post-data production, Jacobian arithmetic, normal crossings, or
+RLCT extraction. -/
+theorem case2DisplayedPaperDpp_mul_constructedCprime
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedPaperDpp n hS hcont residual * Cprime =
+      pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual) *
+        case2DisplayedPaperConstructedFollowingFactor n hS hcont residual Cprime := by
+  rw [case2DisplayedPaperDpp, case2DisplayedPaperConstructedFollowingFactor]
+  rw [Matrix.mul_assoc]
+
 /-- The top row of Aoyagi's displayed Case 2 transported following factor
 `C' = Q⁻¹ C`, in pivot-first coordinates. -/
 def case2DisplayedPaperCprimeTop

@@ -656,6 +656,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/blocked-audit-case2-chart-production-next-following-a4.md`;
 	  landed-patch review is saved at
 	  `threads/04-blow-up-certificate/review-case2-post-pivot-source-following-product-a4.md`.
+	  Reproduction of the Case 2 constructed-`Cprime` coordinate direction is
+	  saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-constructed-cprime-a4.md`;
+	  landed-patch review is saved at
+	  `threads/04-blow-up-certificate/review-case2-constructed-cprime-a4.md`.
 	  Review of the Case 2 stage-relabel domain audit is saved at
 	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 	  Review of the Case 2 displayed cleared-block vacuity corollary is saved
@@ -1269,6 +1274,12 @@ No such claim is formalisation-ready until both fields are filled.
   prove non-top-left formulas, chart coverage, chart-produced recurrence or
   exponent post-data, coordinate regularity, Jacobians, normal crossings, RLCT,
   termination, or a full transition invariant.
+  The constructed-`Cprime` coordinate direction proves only pivot-first matrix
+  algebra: `C=Q*Cprime`, `Q^-1*C=Cprime`, and
+  `D''*Cprime=D_chart*C`.  It does not construct a total source-coordinate
+  following function, chart-produced post-data, a successor chart family,
+  coverage, regularity, Jacobians, normal crossings/RLCT, or a transition
+  invariant.
   The displayed center count is only a selected coordinate-equation count. It
   is not a center-dimension theorem, Jacobian exponent, chart-produced exponent
   update, chart coverage theorem, normal-crossing certificate, RLCT extraction,

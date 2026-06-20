@@ -2363,6 +2363,26 @@ Blocked audit:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-post-pivot-source-following-product-a4.md`.
 
+Latest A4 update: the displayed Case 2 constructed-`Cprime` coordinate
+direction has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+The proved Lean names are
+`case2DisplayedPaperConstructedFollowingFactor`,
+`case2DisplayedPaperCprime_of_constructedFollowingFactor`, and
+`case2DisplayedPaperDpp_mul_constructedCprime`.  Given an arbitrary
+pivot-first chart-coordinate following matrix `Cprime`, Lean constructs the
+old pivot-first following factor as `Q*Cprime`, proves
+`Q^-1*(Q*Cprime)=Cprime`, and rewrites `D''*Cprime` as
+`D_chart*(Q*Cprime)`.  This is finite matrix algebra only.  It does not
+construct a total source-coordinate following function, recurrence/exponent
+post-data, a successor chart family, chart coverage, Jacobian arithmetic,
+normal crossings/RLCT, arbitrary pivot coverage, terminal relabeling, or the
+printed-vector repair.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-cprime-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-cprime.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-constructed-cprime-a4.md`.
+
 Latest A5 update: the Lemma 5 equation `(3)` local-data and actual-label
 bridge has landed in
 `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
