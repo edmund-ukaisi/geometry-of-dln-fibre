@@ -1,0 +1,619 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/26-subfact2-cover-nonemptiness/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ee20c-d02d-75b3-b9c9-258477b59718
+--------
+user
+<task>
+A combinatorial existence claim about integer "rank patterns" of type A_n. I want you to
+independently attempt a PROOF, or find a counterexample, or give a firm verdict that it
+requires heavy machinery. Attack it from scratch; do not assume my framing is the right one.
+
+SETUP (all indices integer; vertices 0..n).
+- An interval multiplicity array m assigns m_{[a,b]} >= 0 to each interval [a,b], 0<=a<=b<=n.
+- Its "rank pattern" is the cumulative sum r_{ij} = sum over intervals [a,b] with a<=i and j<=b
+  of m_{[a,b]}, defined for 0<=i<=j<=n. (So r is a "south-west to north-east" cumulant of m.)
+- The dimension vector is d_t = sum_{a<=t<=b} m_{[a,b]} = r_{tt}.
+- Inversion (second finite difference): m_{[a,b]} = r_{a,b} - r_{a,b+1} - r_{a-1,b} + r_{a-1,b+1},
+  with r treated as 0 when index out of range (a<0, b>n, or a>b).
+- Two rank patterns are comparable s <= r iff s_{ij} <= r_{ij} for all i<=j.
+
+GIVEN. Two rank patterns s < r arising from multiplicity arrays m(s), m(r) >= 0 with the SAME
+dimension vector d (so r_{tt} = s_{tt} = d_t for all t). Define the residual g = r - s >= 0
+(componentwise, with g_{ii} = 0 for all i since the diagonals agree). Let supp(g) = {(i,j): i<j, g_{ij}>0}.
+
+Note m(r) - m(s) = diff(g) where diff is the second-difference operator above (linearity), but
+m(r) and m(s) are each >= 0 individually.
+
+EXTREMAL CELL. Among cells (i,j) with g_{ij}>0, pick j0 = the minimal such column index j; then
+among cells in column j0 with g>0 pick i0 = the maximal such row index i. So:
+  - g_{i0,j0} > 0;
+  - every column j < j0 is entirely zero in g (g_{i,j}=0 for all i, all j<j0);  [j0-minimality]
+  - in column j0, g_{i,j0}=0 for all i > i0.                                     [i0-maximality]
+
+CLAIM TO SETTLE. There exists an interval [a,e] with a <= i0, e >= j0, such that
+  (1) m(r)_{[a,e]} >= 1, AND
+  (2) the rectangle [a,i0] x [j0,e] = {(i,j): a<=i<=i0, j0<=j<=e} is entirely inside supp(g)
+      (i.e. g_{ij} > 0 for every cell in that rectangle).
+
+A SHARPENING I am confident of (please verify, then it is the difficulty isolator):
+Because r_{i0,j0} = sum over [a,e] with a<=i0, e>=j0 of m(r)_{[a,e]}, and
+g_{i0,j0} = r_{i0,j0} - s_{i0,j0} > 0 with s_{i0,j0} = sum over the same index set of m(s)_{[a,e]} >= 0,
+there MUST exist a covering interval [a,e] (a<=i0, e>=j0) with m(r)_{[a,e]} >= 1. So requirement (1)
+alone is free. The entire difficulty is whether some such covering interval ALSO satisfies (2)
+(rectangle inside supp(g)).
+
+KNOWN NEGATIVE FACTS (verified on >300 instances each), so a naive selector will not work:
+  - Taking the maximal axis-aligned rectangle inside supp(g) anchored at (i0,j0): its far corner
+    [a,e] can have m(r)_{[a,e]} = 0.
+  - Single-row (a=i0) and single-column (e=j0) covering intervals jointly FAIL on some instances.
+So the proof cannot be a monotone/greedy selector; it must be a genuine existence argument.
+
+CANDIDATE ROUTES (try whichever you find most promising; invent your own):
+  R1. Induction on |supp(g)| or on n: peel the extremal cell; show the residual stays a valid
+      difference of two same-d nonneg multiplicity arrays.
+  R2. Structural: g is a difference of two cumulant matrices of nonnegative arrays. Does total
+      nonnegativity / monotone-staircase structure force the covering rectangle at the extremal corner?
+  R3. Contradiction: suppose EVERY covering interval [a,e] (a<=i0,e>=j0, m(r)_{[a,e]}>=1) has a zero
+      cell in its rectangle [a,i0]x[j0,e]. Derive a contradiction with nonnegativity of m(s), or with
+      i0/j0 extremality.
+</task>
+
+<output_contract>
+Respond in these sections, terse:
+1. VERDICT: one of {PROVED (elementary), COUNTEREXAMPLE, REQUIRES-HEAVY-MACHINERY}, one line.
+2. PROOF or COUNTEREXAMPLE or OBSTRUCTION: the actual argument / explicit instance / why it resists.
+   If PROVED, give the argument in full with each inequality justified. If you use the inversion
+   identity, show the second-difference manipulation explicitly.
+3. KEY LEMMA: if proved, the one load-bearing sub-statement, phrased so it could be formalised.
+4. CONFIDENCE + what would change your mind.
+Distinguish clearly: what you PROVED vs what you CONJECTURE vs what you checked on examples.
+</output_contract>
+
+<grounding_rules>
+- Do not claim a step is "clear" without the inequality. The setup is small; be concrete.
+- If you give a counterexample, give explicit m(s), m(r) as interval lists and I will check it.
+- If you reach for Abeasis-Del Fra / lace diagrams / quiver-rep machinery, say so explicitly and
+  name the cleanest known proof to port.
+- Do not rubber-stamp my sharpening; verify the "(1) is free" claim yourself.
+</grounding_rules>
+
+codex
+I’ll attack this as a standalone combinatorial statement first. I’ll use small brute-force searches only as a sanity check while trying to isolate the actual inequality, not as evidence for the final verdict.
+codex
+I’m reducing the claim to a finite poset question over interval weights. The useful object seems to be the set of covering intervals for the extremal cell, partitioned by whether their whole anchored rectangle stays in positive residual.
+exec
+/bin/bash -lc "python3 - <<'PY'
+from itertools import product
+
+def intervals(n):
+    return [(a,b) for a in range(n+1) for b in range(a,n+1)]
+
+def rank(n,m,ints):
+    r={}
+    for i in range(n+1):
+        for j in range(i,n+1):
+            r[i,j]=sum(w for (a,b),w in zip(ints,m) if a<=i and j<=b)
+    return r
+
+def check_claim(n, mr, ms, ints, verbose=False):
+    r=rank(n,mr,ints); s=rank(n,ms,ints)
+    # same diag
+    if any(r[t,t]"'!=s[t,t] for t in range(n+1)): return True, None
+    if not all(s[k]<=r[k] for k in r): return True, None
+    if all(s[k]==r[k] for k in r): return True, None
+    g={k:r[k]-s[k] for k in r}
+    # ext
+    supp=[(i,j) for i in range(n+1) for j in range(i+1,n+1) if g[i,j]>0]
+    if not supp: return True, None
+    j0=min(j for i,j in supp)
+    i0=max(i for i,j in supp if j==j0)
+    # check claim
+    for idx,(a,e) in enumerate(ints):
+        if a<=i0 and e>=j0 and mr[idx]>=1:
+            ok=True
+            for i in range(a,i0+1):
+                for j in range(j0,e+1):
+                    if not (i<=j):
+                        print('"'invalid?')
+                    if g[i,j]<=0:
+                        ok=False; break
+                if not ok: break
+            if ok:
+                return True, None
+    return False, (r,s,g,i0,j0)
+
+def enum_ms_for_d(n,Dmax):
+    ints=intervals(n); L=len(ints)
+    # brute all m entries 0..Dmax with vertex sums <=Dmax maybe too big
+
+# enumerate by dimension vector via all m with total small
+def gen_m(n,totalmax):
+    ints=intervals(n); L=len(ints)
+    arr=[0]*L
+    def rec(k,rem):
+        if k==L:
+            yield tuple(arr); return
+        for v in range(rem+1):
+            arr[k]=v
+            yield from rec(k+1, rem-v)
+        arr[k]=0
+    for T in range(totalmax+1):
+        yield from rec(0,T)
+
+def dvec(n,m,ints):
+    return tuple(sum(w for (a,b),w in zip(ints,m) if a<=t<=b) for t in range(n+1))
+
+for n in range(1,6):
+    ints=intervals(n)
+    arrs=list(gen_m(n,4))
+    by_d={}
+    for m in arrs:
+        by_d.setdefault(dvec(n,m,ints),[]).append(m)
+    pairs=0
+    for d, mslist in by_d.items():
+        for mr in mslist:
+            rr=rank(n,mr,ints)
+            for ms in mslist:
+                pairs+=1
+                ok, data=check_claim(n,mr,ms,ints)
+                if not ok:
+                    print('COUNTER n',n,'d',d)
+                    print('ints',ints)
+                    print('mr',mr)
+                    print('ms',ms)
+                    r,s,g,i0,j0=data
+                    print('i0,j0',i0,j0)
+                    print('g')
+                    for i in range(n+1):
+                        print([g.get((i,j),'') for j in range(n+1)])
+                    raise SystemExit
+    print('n',n,'checked arrs',len(arrs),'pairs',pairs)
+print('none')
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/26-subfact2-cover-nonemptiness/codex
+codex
+The first exhaustive pass is slow because pairs are grouped by equal dimension vectors. I’m letting it run briefly for small total multiplicity; if it drags, I’ll switch to a targeted search around the extremal constraints.
+ succeeded in 44049ms:
+n 1 checked arrs 70 pairs 272
+n 2 checked arrs 330 pairs 1772
+n 3 checked arrs 1365 pairs 10495
+n 4 checked arrs 4845 pairs 51029
+n 5 checked arrs 14950 pairs 203792
+none
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+from itertools import product
+
+def intervals(n): return [(a,b) for a in range(n+1) for b in range(a,n+1)]
+def rank(n,m,ints): return {(i,j):sum(w for (a,b),w in zip(ints,m) if a<=i and j<=b) for i in range(n+1) for j in range(i,n+1)}
+def dvec(n,m,ints): return tuple(sum(w for (a,b),w in zip(ints,m) if a<=t<=b) for t in range(n+1))
+def gen_m(n,totalmax):
+    ints=intervals(n); L=len(ints); arr=[0]*L
+    def rec(k,rem):
+        if k==L: yield tuple(arr); return
+        for v in range(rem+1):
+            arr[k]=v; yield from rec(k+1,rem-v)
+        arr[k]=0
+    for T in range(totalmax+1): yield from rec(0,T)
+def diff(n,g,a,b):
+    def G(i,j):
+        if i<0 or j>n or i>j: return 0
+        return g.get((i,j),0)
+    return G(a,b)-G(a,b+1)-G(a-1,b)+G(a-1,b+1)
+def allowed(n,g,I,J):
+    A=[]
+    for a in range(I+1):
+        for e in range(J,n+1):
+            if all(g.get((i,j),0)>0 for i in range(a,I+1) for j in range(J,e+1)):
+                A.append((a,e))
+    return A
+for n in range(1,6):
+  ints=intervals(n); arrs=list(gen_m(n,4)); by_d={}
+  for m in arrs: by_d.setdefault(dvec(n,m,ints),[]).append(m)
+  minS=999; bad=0; count=0
+  for mslist in by_d.values():
+    ranks=[rank(n,m,ints) for m in mslist]
+    for idxr,mr in enumerate(mslist):
+      r=ranks[idxr]
+      for idxs,ms in enumerate(mslist):
+        s=ranks[idxs]
+        if not all(s[k]<=r[k] for k in r) or all(s[k]==r[k] for k in r): continue
+        g={k:r[k]-s[k] for k in r}
+        supp=[(i,j) for i,j in g if i<j and g[i,j]>0]
+        J=min(j for i,j in supp); I=max(i for i,j in supp if j==J)
+        A=allowed(n,g,I,J)
+        S=sum(diff(n,g,a,e) for a,e in A)
+        count+=1
+        if S<minS:
+            minS=S; ex=(n,mr,ms,I,J,g,A,S)
+        if S<=0:
+            bad+=1
+            print('Sbad',S,'n',n,'I,J',I,J,'A',A)
+            print('g')
+            for i in range(n+1): print([g.get((i,j),'') for j in range(n+1)])
+            raise SystemExit
+  print('n',n,'valid',count,'minS',minS)
+print('all S positive')
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/26-subfact2-cover-nonemptiness/codex
+ succeeded in 5093ms:
+n 1 valid 45 minS 1
+n 2 valid 469 minS 1
+n 3 valid 2880 minS 1
+n 4 valid 12876 minS 1
+n 5 valid 45952 minS 1
+all S positive
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+# sample random valid pairs and print S,gIJ maybe
+import random
+
+def intervals(n): return [(a,b) for a in range(n+1) for b in range(a,n+1)]
+def rank(n,m,ints): return {(i,j):sum(w for (a,b),w in zip(ints,m) if a<=i and j<=b) for i in range(n+1) for j in range(i,n+1)}
+def dvec(n,m,ints): return tuple(sum(w for (a,b),w in zip(ints,m) if a<=t<=b) for t in range(n+1))
+def diff(n,g,a,b):
+ def G(i,j): return 0 if i<0 or j>n or i>j else g.get((i,j),0)
+ return G(a,b)-G(a,b+1)-G(a-1,b)+G(a-1,b+1)
+def allowed(n,g,I,J):
+ return [(a,e) for a in range(I+1) for e in range(J,n+1) if all(g.get((i,j),0)>0 for i in range(a,I+1) for j in range(J,e+1))]
+for trial in range(100000):
+ n=5; ints=intervals(n)
+ # generate random d by random intervals total 8, then random split? Need same d arrays random via endpoint matching hard.
+ # take random ms, random signed move preserving d? skip enumerate total small
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/26-subfact2-cover-nonemptiness/codex
+ succeeded in 523ms:
+exec
+/bin/bash -lc "python3 - <<'PY'
+from collections import Counter
+
+def intervals(n): return [(a,b) for a in range(n+1) for b in range(a,n+1)]
+def rank(n,m,ints): return {(i,j):sum(w for (a,b),w in zip(ints,m) if a<=i and j<=b) for i in range(n+1) for j in range(i,n+1)}
+def dvec(n,m,ints): return tuple(sum(w for (a,b),w in zip(ints,m) if a<=t<=b) for t in range(n+1))
+def gen_m(n,totalmax):
+ L=len(intervals(n)); arr=[0]*L
+ def rec(k,rem):
+  if k==L: yield tuple(arr); return
+  for v in range(rem+1): arr[k]=v; yield from rec(k+1,rem-v)
+  arr[k]=0
+ for T in range(totalmax+1): yield from rec(0,T)
+def diff(n,g,a,b):
+ def G(i,j): return 0 if i<0 or j>n or i>j else g.get((i,j),0)
+ return G(a,b)-G(a,b+1)-G(a-1,b)+G(a-1,b+1)
+def allowed(n,g,I,J): return [(a,e) for a in range(I+1) for e in range(J,n+1) if all(g.get((i,j),0)>0 for i in range(a,I+1) for j in range(J,e+1))]
+n=4; ints=intervals(n); arrs=list(gen_m(n,5)); by_d={}
+for m in arrs: by_d.setdefault(dvec(n,m,ints),[]).append(m)
+C=Counter(); examples={}
+for mslist in by_d.values():
+ ranks=[rank(n,m,ints) for m in mslist]
+ for ir,mr in enumerate(mslist):
+  r=ranks[ir]
+  for is_,ms in enumerate(mslist):
+   s=ranks[is_]
+   if not all(s[k]<=r[k] for k in r) or all(s[k]==r[k] for k in r): continue
+   g={k:r[k]-s[k] for k in r}; supp=[(i,j) for i,j in g if i<j and g[i,j]>0]
+   J=min(j for i,j in supp); I=max(i for i,j in supp if j==J)
+   A=allowed(n,g,I,J); S=sum(diff(n,g,a,e) for a,e in A)
+   C[(g[I,J],S)]+=1
+   examples.setdefault((g[I,J],S),(mr,ms,I,J,g,A))
+print(C.most_common()[:20])
+print('keys', sorted(C)[:20], '...', sorted(C)[-10:])
+for key in sorted(C):
+ if key[1]"'!=key[0]:
+  print('"'diff key',key,'count',C[key])
+  mr,ms,I,J,g,A=examples[key]
+  print('I,J',I,J,'A',A)
+  for i in range(n+1): print([g.get((i,j),'') for j in range(n+1)])
+  break
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/26-subfact2-cover-nonemptiness/codex
+ succeeded in 8560ms:
+[((1, 1), 103134), ((2, 2), 4520), ((1, 2), 337)]
+keys [(1, 1), (1, 2), (2, 2)] ... [(1, 1), (1, 2), (2, 2)]
+diff key (1, 2) count 337
+I,J 2 3 A [(2, 3)]
+[0, 0, 0, 0, 0]
+['', 0, 0, 0, 1]
+['', '', 0, 1, 0]
+['', '', '', 0, 0]
+['', '', '', '', 0]
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+import random
+
+def diff(n,g,a,b):
+ def G(i,j): return 0 if i<0 or j>n or i>j else g.get((i,j),0)
+ return G(a,b)-G(a,b+1)-G(a-1,b)+G(a-1,b+1)
+def allowed(n,g,I,J): return [(a,e) for a in range(I+1) for e in range(J,n+1) if all(g.get((i,j),0)>0 for i in range(a,I+1) for j in range(J,e+1))]
+for n in [4,5]:
+ for J in range(1,n+1):
+  for I in range(J):
+   for trial in range(10000):
+    g={(i,j):0 for i in range(n+1) for j in range(i,n+1)}
+    # enforce columns <J zero; col J rows >I zero; gIJ positive; random elsewhere
+    for i in range(n+1):
+     for j in range(i+1,n+1):
+      if j<J: val=0
+      elif j==J and i>I: val=0
+      elif (i,j)==(I,J): val=random.randint(1,3)
+      else: val=random.randint(0,3)
+      g[i,j]=val
+    A=allowed(n,g,I,J); S=sum(diff(n,g,a,e) for a,e in A)
+    if S<=0:
+     print('arbitrary bad n I J S A',n,I,J,S,A,'gIJ',g[I,J])
+     for i in range(n+1): print([g.get((i,j),'') for j in range(n+1)])
+     raise SystemExit
+print('no arbitrary bad?')
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/26-subfact2-cover-nonemptiness/codex
+ succeeded in 9613ms:
+no arbitrary bad?
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+# Check stronger claim for every positive cell, small examples
+from itertools import product
+
+def intervals(n): return [(a,b) for a in range(n+1) for b in range(a,n+1)]
+def rank(n,m,ints): return {(i,j):sum(w for (a,b),w in zip(ints,m) if a<=i and j<=b) for i in range(n+1) for j in range(i,n+1)}
+def dvec(n,m,ints): return tuple(sum(w for (a,b),w in zip(ints,m) if a<=t<=b) for t in range(n+1))
+def gen_m(n,totalmax):
+ L=len(intervals(n)); arr=[0]*L
+ def rec(k,rem):
+  if k==L: yield tuple(arr); return
+  for v in range(rem+1): arr[k]=v; yield from rec(k+1,rem-v)
+  arr[k]=0
+ for T in range(totalmax+1): yield from rec(0,T)
+for n in range(1,5):
+ ints=intervals(n); arrs=list(gen_m(n,4)); by_d={}
+ for m in arrs: by_d.setdefault(dvec(n,m,ints),[]).append(m)
+ for mslist in by_d.values():
+  ranks=[rank(n,m,ints) for m in mslist]
+  for ir,mr in enumerate(mslist):
+   r=ranks[ir]
+   for is_,ms in enumerate(mslist):
+    s=ranks[is_]
+    if not all(s[k]<=r[k] for k in r) or all(s[k]==r[k] for k in r): continue
+    g={k:r[k]-s[k] for k in r}
+    for I,J in [(i,j) for i,j in g if i<j and g[i,j]>0]:
+     found=False
+     for idx,(a,e) in enumerate(ints):
+      if a<=I and e>=J and mr[idx]>0 and all(g.get((ii,jj),0)>0 for ii in range(a,I+1) for jj in range(J,e+1)):
+       found=True;break
+     if not found:
+      print('strong counter n',n,'cell',I,J)
+      for i in range(n+1): print([g.get((i,j),'') for j in range(n+1)])
+      print('mr',mr,'ms',ms,'ints',ints)
+      raise SystemExit
+ print('n',n,'ok')
+print('strong all ok')
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/26-subfact2-cover-nonemptiness/codex
+ succeeded in 1004ms:
+n 1 ok
+n 2 ok
+n 3 ok
+n 4 ok
+strong all ok
+
+codex
+1. **VERDICT:** PROVED (elementary).
+
+2. **PROOF:**
+
+Write \(I=i_0,\ J=j_0\), and extend \(g\) by \(0\) when an index is out of range. First, your sharpening is correct:
+\[
+g_{I,J}=r_{I,J}-s_{I,J}
+=\sum_{a\le I,\ e\ge J}(m(r)_{[a,e]}-m(s)_{[a,e]})>0.
+\]
+Since every \(m(s)_{[a,e]}\ge 0\),
+\[
+\sum_{a\le I,\ e\ge J}m(r)_{[a,e]}
+=
+g_{I,J}+\sum_{a\le I,\ e\ge J}m(s)_{[a,e]}>0,
+\]
+so some covering interval has \(m(r)_{[a,e]}\ge 1\).
+
+Now define
+\[
+h_{a,e}:=m(r)_{[a,e]}-m(s)_{[a,e]}.
+\]
+By inversion and linearity,
+\[
+h_{a,e}
+=
+g_{a,e}-g_{a,e+1}-g_{a-1,e}+g_{a-1,e+1}.
+\]
+
+Let \(A\) be the set of intervals \([a,e]\) with \(a\le I,\ e\ge J\) whose rectangle
+\([a,I]\times[J,e]\) lies in \(\operatorname{supp}(g)\). I claim
+\[
+\sum_{[a,e]\in A} h_{a,e}>0. \tag{*}
+\]
+Then the theorem follows: if every interval in \(A\) had \(m(r)_{[a,e]}=0\), then
+\[
+h_{a,e}=-m(s)_{[a,e]}\le 0
+\]
+termwise, contradicting \((*)\).
+
+It remains to prove \((*)\). Let \(\alpha\) be the least row such that
+\[
+g_{p,J}>0 \quad\text{for every } \alpha\le p\le I.
+\]
+This exists because \(g_{I,J}>0\). Also \(g_{\alpha-1,J}=0\), either by minimality of \(\alpha\), or by the out-of-range convention if \(\alpha=0\).
+
+For each \(p\in[\alpha,I]\), let
+\[
+z_p:=\min\{q\in\{J,\dots,n+1\}: g_{p,q}=0\},
+\]
+with \(g_{p,n+1}=0\). Then define
+\[
+q_a:=\min_{p\in[a,I]} z_p,\qquad E(a):=q_a-1.
+\]
+The allowed intervals are exactly
+\[
+A=\{[a,e]: \alpha\le a\le I,\ J\le e\le E(a)\}.
+\]
+
+Now telescope:
+\[
+\begin{aligned}
+\sum_{[a,e]\in A}h_{a,e}
+&=\sum_{a=\alpha}^{I}\sum_{e=J}^{q_a-1}
+(g_{a,e}-g_{a,e+1}-g_{a-1,e}+g_{a-1,e+1})\\
+&=\sum_{a=\alpha}^{I}
+\bigl(g_{a,J}-g_{a,q_a}-g_{a-1,J}+g_{a-1,q_a}\bigr)\\
+&=g_{I,J}-g_{\alpha-1,J}
++\sum_{a=\alpha}^{I}(g_{a-1,q_a}-g_{a,q_a})\\
+&=g_{I,J}+\sum_{a=\alpha}^{I}(g_{a-1,q_a}-g_{a,q_a}).
+\end{aligned}
+\]
+
+The sequence \(q_a\) is nondecreasing in \(a\). Split \([\alpha,I]\) into maximal constant blocks \([u,v]\) where \(q_a=q\). On such a block,
+\[
+\sum_{a=u}^{v}(g_{a-1,q}-g_{a,q})=g_{u-1,q}-g_{v,q}.
+\]
+If \(v<I\), maximality gives \(q_v=q<q_{v+1}\), and since
+\[
+q_v=\min(z_v,q_{v+1}),
+\]
+we get \(z_v=q\), hence \(g_{v,q}=0\). If \(v=I\), then \(q_I=z_I\), again \(g_{I,q}=0\). Thus every block contributes
+\[
+g_{u-1,q}-g_{v,q}=g_{u-1,q}\ge 0.
+\]
+Therefore
+\[
+\sum_{[a,e]\in A}h_{a,e}\ge g_{I,J}>0.
+\]
+So some \([a,e]\in A\) has \(m(r)_{[a,e]}>0\), hence \(m(r)_{[a,e]}\ge 1\), and by definition of \(A\), its rectangle lies entirely in \(\operatorname{supp}(g)\).
+
+3. **KEY LEMMA:**
+
+For any nonnegative triangular array \(g\), any \(I<J\) with \(g_{I,J}>0\), and
+\[
+A=\{[a,e]:a\le I,\ e\ge J,\ g_{i,j}>0\ \forall a\le i\le I,\ J\le j\le e\},
+\]
+one has
+\[
+\sum_{[a,e]\in A}
+(g_{a,e}-g_{a,e+1}-g_{a-1,e}+g_{a-1,e+1})
+\ge g_{I,J}>0.
+\]
+
+4. **CONFIDENCE + what would change my mind:**
+
+High. The proof is just second-difference telescoping plus nonnegativity of \(m(s)\). I also sanity-checked small exhaustive cases, but the verdict rests on the displayed argument. A counterexample would have to exploit a different convention for out-of-range \(g\) or for which cells belong to the rectangle; under the conventions in the prompt, the argument applies.
+tokens used
+31,783
+1. **VERDICT:** PROVED (elementary).
+
+2. **PROOF:**
+
+Write \(I=i_0,\ J=j_0\), and extend \(g\) by \(0\) when an index is out of range. First, your sharpening is correct:
+\[
+g_{I,J}=r_{I,J}-s_{I,J}
+=\sum_{a\le I,\ e\ge J}(m(r)_{[a,e]}-m(s)_{[a,e]})>0.
+\]
+Since every \(m(s)_{[a,e]}\ge 0\),
+\[
+\sum_{a\le I,\ e\ge J}m(r)_{[a,e]}
+=
+g_{I,J}+\sum_{a\le I,\ e\ge J}m(s)_{[a,e]}>0,
+\]
+so some covering interval has \(m(r)_{[a,e]}\ge 1\).
+
+Now define
+\[
+h_{a,e}:=m(r)_{[a,e]}-m(s)_{[a,e]}.
+\]
+By inversion and linearity,
+\[
+h_{a,e}
+=
+g_{a,e}-g_{a,e+1}-g_{a-1,e}+g_{a-1,e+1}.
+\]
+
+Let \(A\) be the set of intervals \([a,e]\) with \(a\le I,\ e\ge J\) whose rectangle
+\([a,I]\times[J,e]\) lies in \(\operatorname{supp}(g)\). I claim
+\[
+\sum_{[a,e]\in A} h_{a,e}>0. \tag{*}
+\]
+Then the theorem follows: if every interval in \(A\) had \(m(r)_{[a,e]}=0\), then
+\[
+h_{a,e}=-m(s)_{[a,e]}\le 0
+\]
+termwise, contradicting \((*)\).
+
+It remains to prove \((*)\). Let \(\alpha\) be the least row such that
+\[
+g_{p,J}>0 \quad\text{for every } \alpha\le p\le I.
+\]
+This exists because \(g_{I,J}>0\). Also \(g_{\alpha-1,J}=0\), either by minimality of \(\alpha\), or by the out-of-range convention if \(\alpha=0\).
+
+For each \(p\in[\alpha,I]\), let
+\[
+z_p:=\min\{q\in\{J,\dots,n+1\}: g_{p,q}=0\},
+\]
+with \(g_{p,n+1}=0\). Then define
+\[
+q_a:=\min_{p\in[a,I]} z_p,\qquad E(a):=q_a-1.
+\]
+The allowed intervals are exactly
+\[
+A=\{[a,e]: \alpha\le a\le I,\ J\le e\le E(a)\}.
+\]
+
+Now telescope:
+\[
+\begin{aligned}
+\sum_{[a,e]\in A}h_{a,e}
+&=\sum_{a=\alpha}^{I}\sum_{e=J}^{q_a-1}
+(g_{a,e}-g_{a,e+1}-g_{a-1,e}+g_{a-1,e+1})\\
+&=\sum_{a=\alpha}^{I}
+\bigl(g_{a,J}-g_{a,q_a}-g_{a-1,J}+g_{a-1,q_a}\bigr)\\
+&=g_{I,J}-g_{\alpha-1,J}
++\sum_{a=\alpha}^{I}(g_{a-1,q_a}-g_{a,q_a})\\
+&=g_{I,J}+\sum_{a=\alpha}^{I}(g_{a-1,q_a}-g_{a,q_a}).
+\end{aligned}
+\]
+
+The sequence \(q_a\) is nondecreasing in \(a\). Split \([\alpha,I]\) into maximal constant blocks \([u,v]\) where \(q_a=q\). On such a block,
+\[
+\sum_{a=u}^{v}(g_{a-1,q}-g_{a,q})=g_{u-1,q}-g_{v,q}.
+\]
+If \(v<I\), maximality gives \(q_v=q<q_{v+1}\), and since
+\[
+q_v=\min(z_v,q_{v+1}),
+\]
+we get \(z_v=q\), hence \(g_{v,q}=0\). If \(v=I\), then \(q_I=z_I\), again \(g_{I,q}=0\). Thus every block contributes
+\[
+g_{u-1,q}-g_{v,q}=g_{u-1,q}\ge 0.
+\]
+Therefore
+\[
+\sum_{[a,e]\in A}h_{a,e}\ge g_{I,J}>0.
+\]
+So some \([a,e]\in A\) has \(m(r)_{[a,e]}>0\), hence \(m(r)_{[a,e]}\ge 1\), and by definition of \(A\), its rectangle lies entirely in \(\operatorname{supp}(g)\).
+
+3. **KEY LEMMA:**
+
+For any nonnegative triangular array \(g\), any \(I<J\) with \(g_{I,J}>0\), and
+\[
+A=\{[a,e]:a\le I,\ e\ge J,\ g_{i,j}>0\ \forall a\le i\le I,\ J\le j\le e\},
+\]
+one has
+\[
+\sum_{[a,e]\in A}
+(g_{a,e}-g_{a,e+1}-g_{a-1,e}+g_{a-1,e+1})
+\ge g_{I,J}>0.
+\]
+
+4. **CONFIDENCE + what would change my mind:**
+
+High. The proof is just second-difference telescoping plus nonnegativity of \(m(s)\). I also sanity-checked small exhaustive cases, but the verdict rests on the displayed argument. A counterexample would have to exploit a different convention for out-of-range \(g\) or for which cells belong to the rectangle; under the conventions in the prompt, the argument applies.
