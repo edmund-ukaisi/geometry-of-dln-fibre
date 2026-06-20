@@ -63,16 +63,66 @@ All headlines axiom-clean `[propext, Classical.choice, Quot.sound]`; whole libra
 >   `foldDim_split_eq`.
 > - **Status.** sorry-free; non-vacuity witness in-file (`M_{[0,2]} ⇝ M_{[0,0]} ⊕ M_{[1,2]}` over `ℚ`).
 
-## Gap (named, not formalised — thread 109)
+## 3. Downstairs-transport wrapper + split-case full §4 list headline (thread 27 continuation, @ `b61c5a3`)
 
-The **non-split** general move (`c ≤ b`, `M_{[a,e]} ⊕ M_{[c,b]} ⇝ M_{[a,b]} ⊕ M_{[c,e]}` with a
-dim-2 overlap on `[c,b]`) and the **list-gluing** of any move into `intervalDirectSum (Lmove ++ rest)`
-are NOT formalised. The non-split case is the 2-strand cut-arrow recombination over `Fin (foldDim …)`
-through nested `finSumFinEquiv` at the cut — heavier symbolic `Fin` indexing than the 1-dim split
-chain. The common-summand lemma (§1) handles `rest` as a `dirSum` block but the move-list re-association
-(`dirSum (intervalModule …) (intervalDirectSum …) = intervalDirectSum (… :: …)`, definitional, and the
-`dirSum`-associativity to peel the 2-interval head) is the remaining bridge to the §4 `intervalDirectSum
-Lup`/`Ldn` headline. Reachable; not sorry-patched.
+> **Claim (downstairs transport).** The engine lands an *orbit-equivalent* downstairs `D' = Q • D₀`:
+> given `F` with limit `D₀` and `t ≠ 0` orbit membership in `U`, and `Q • D₀ = D'`, then
+> `canonicalCoord D' ∈ closure (orbit U)`. The family is base-changed (`smulPoly Q F`), `Q • (P • U) =
+> (Q·P) • U` stays in the orbit.
+>
+> - **Lean:** `mem_closure_of_polynomialFamily_orbitEquiv` (single `d`); `smulPoly` /
+>   `tupleEval_smulPoly` (the constant base change on a polynomial family, `eval ∘ C = id`);
+>   `mem_closure_dirSum_of_mem_closure_orbitEquiv` (the combined `rest`-rider + transport).
+> - **Proved.** Fully general. Bridges a recombination *limit* (only `G_d`-equivalent to the genuine
+>   interval sum) to the genuine interval sum itself — the form the list headline needs.
+
+> **Claim (split §4 list headline, arbitrary `rest`).** For a genuine split (`a ≤ b.castSucc`,
+> `b.succ ≤ e`) and arbitrary `rest`, with `Lup = (a,e) :: rest`, `Ldn = (a,b) :: (b+1,e) :: rest`:
+> `canonicalCoord (intervalDirectSum Ldn) ∈ closure (orbit (intervalDirectSum Lup))` (the lists share a
+> dimension vector `foldDim Lup`; `Ldn` is transported onto it).
+>
+> - **Lean:** `splitMove_intervalDirectSum_mem_closure` (@ `b61c5a3`). Supporting:
+>   `foldDim_splitCons_eq` (the transport), `orbit_dirSum_splitCut_intervalDirectSum` (the `Q` via the
+>   complete invariant on rank patterns: `splitCut` riding `rest` is `G_d`-equivalent to `intervalDirectSum
+>   Ldn`).
+> - **Proved.** The full §4 headline for the **split case** with arbitrary `rest`. The orbit base
+>   `dirSum (intervalModule a e) (intervalDirectSum rest)` is `intervalDirectSum Lup` definitionally.
+> - **Status.** sorry-free; non-vacuity witness in-file (`M_{[0,1]} ⇝ M_{[0,0]} ⊕ M_{[1,1]}` riding
+>   `M_{[1,2]}` as `rest`, over `ℚ`). Axiom-clean.
+
+## Gap (named, partly scaffolded — thread 109): the NON-SPLIT move
+
+The **non-split** move (`a < c ≤ b < e`, `M_{[a,e]} ⊕ M_{[c,b]} ⇝ M_{[a,b]} ⊕ M_{[c,e]}`, dim-2
+overlap on `[c,b]`) is the 2-strand recombination. **Scaffolding LANDED** (@ `b61c5a3`, sorry-free):
+
+- `splice a c e b λ : Tuple (intervalDim a e + intervalDim c b.castSucc)` — the upstairs `M_{[a,e]} ⊕
+  M_{[c,b]}` with the single edge `b` overwritten by the recombination row `[λ, 1]` (long strand
+  `finSumFinEquiv inl` ↦ `λ`, short `inr` ↦ `1`). **Defined entrywise** (scalar-level branch on the
+  edge) so it is dimension-agnostic — no `fromBlocks`/`▸` at the edge, sidestepping the worst
+  `finSumFinEquiv` trap. Verified-in-file: `splice 0 1 2 1` has the `(1,2,1)` witness dim vector and the
+  `[λ,1]` row matching `boxMoveWitnessFamily`'s `[t,1]`.
+- `submult_concat` (general sub-product splitter `submult i j = submult m j · submult i m`),
+  `splice_apply_ne` (off-edge agreement with `U₂ = dirSum M_{[a,e]} M_{[c,b]}`),
+  `submult_splice_below` / `submult_splice_above` (segments off edge `b` = upstairs), and the **crossing
+  factorization** `submult_splice_cross` (`submult (splice λ) i j = submult U₂ (b+1) j · (splice λ b) ·
+  submult U₂ i b` for `i ≤ b < j`).
+
+**Residual gap (the crux):** the crossing-rank computation `rankPattern (splice λ) i j` for `i ≤ b < j`
+— rank `≤ 1` (target dim, proven-in-scratch) and `1`/`0` by the nonzero recombination entry. The math is
+settled (sympy-certified, thread 22/24): `rankPattern (splice λ) = [a≤i∧j≤e] + [c≤i∧j≤b]` (upstairs) for
+`λ ≠ 0`, `= [a≤i∧j≤b] + [c≤i∧j≤e]` (downstairs) for `λ = 0`. The crossing product is `above · recomb ·
+below` with `above = const 1` (1×1, for `j ≤ e`), so it reduces to `recomb · below`; the nonzero-entry
+characterization is `(λ≠0 ∧ a≤i) ∨ c≤i` (modulo `j≤e`). Verified-in-scratch: `rank ≤ 1`, `above = const
+1`, the two recomb/`below` column-entry values — the route is confirmed, the residual is the **heavy
+symbolic `Fin`-index entry computation** (~150–250 lines: per-column entry lemmas + the rank-0 cases +
+assembly into `rankPattern_splice` + `orbit_of_rankPattern_eq` + the list headline via the §3 transport
+wrapper). Reachable; NOT sorry-patched. The L6.4 assembly needs this for the generation chain L6.2
+(which uses both split and non-split covers); the split half is fully covered above.
+
+**Decorrelated design (Codex `gpt-5` xhigh, `codex/nonsplit-{prompt,answer}.md`):** confirmed the
+rank-pattern route (vs an explicit entrywise `P(t)`) is the lighter one and has no hidden bad `(i,j)`;
+recommended the entrywise `splice` (not `fromBlocks`) and the three-lemma sub-product split
+(below/above/crossing) — adopted.
 
 ## Design notes
 
