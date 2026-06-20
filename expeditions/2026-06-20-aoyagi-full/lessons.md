@@ -50,3 +50,19 @@ the skeleton rungs — caught only by a later controller precision-read of the f
   special points?". Tell-tale: if the rung makes a sibling rung (D1) redundant, it's over-claiming.
 Takeaway: a green build + a broad audit is necessary, not sufficient; statement-fidelity needs a sharp,
 per-rung, adversarial pass (vacuity + over/under-claim + name=content) — now standard for skeleton audits.
+
+## 2026-06-20 — the "deepest point" of a fibre: prefer a CONSTRUCTED point over a ∀-predicate
+
+For the DLN fibre {∏A = B} (rank B = r), the local RLCT is minimized at the "deepest" point. Pinning the
+identification (pp + decorrelated Codex, exact-algebra):
+- **per-partial-product rank-r is WRONG** (too weak): a layer can be high-rank while the partial products
+  stay rank r, giving a milder singularity. Counterexamples both r=0 ((2,2,2): (A¹=0,A² inv)→rlct 2≠3/2)
+  and r>0 ((3,3,3) r=1: A¹=diag(1,0,0),A²=diag(1,Q)→9/2≠4).
+- **per-layer rank-exactly-r is SUFFICIENT** (⟹ all-partial-rank-r by submultiplicativity; rlct constant
+  over it = a single GL gauge orbit) **but NOT EXHAUSTIVE** — the full set attaining λ is larger (residual
+  core in the closure of an Aoyagi-minimizing nested-rank stratum; multiple orbits attain λ).
+- ⇒ **a ∀-predicate form (even per-layer) under-describes the attaining set.** Use a SINGLE CONSTRUCTED
+  `deepestPoint` (block-normal rank-r chain, residual core = 0): D1 `⨅ = rlctAt(deepestPoint)` (Thm-2
+  monotonicity), L2 `rlctAt(deepestPoint) = aoyagiLambda`. Lowest proof surface, zero over-claim, no
+  gauge/orbit lemma needed. General lesson: when a "the special point(s)" set is subtle/non-unique, key the
+  statement to ONE constructed witness, not a ∀-over-the-set predicate.
