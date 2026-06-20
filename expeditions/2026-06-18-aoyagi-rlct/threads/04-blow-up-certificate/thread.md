@@ -1435,6 +1435,34 @@ the `Unit` token, introduce `(S,J+1)`, use Case 1(2), assert `Q/P`, prove chart
 coverage or regularity from coordinates, compute Jacobians, prove normal
 crossings, extract RLCT, or prove a transition invariant.
 
+## 2026-06-20 Lean Case 1 selected-old concrete level move
+
+Reproduction:
+`reproduction-case1-selected-old-concrete-level-move-a4.md`.
+Statement card:
+`statement-card-a4-case1-selected-old-concrete-level-move.md`.
+
+Lean now defines the concrete same-domain recurrence post-state
+`case1SelectedOldLevelMove`.  For a pre-state over `(S,J)`, the post-state
+changes only the selected old label's recurrence level to `J`; all
+recurrence-label variables are unchanged, and all non-selected levels are
+unchanged.  This is only recurrence-label bookkeeping; raw residual matrix
+coordinates are still governed by the separate selected-old row-strip
+source-coordinate identity.
+
+If `(s0,k0)` is introduced and `pre.level s0 k0 = J+J1`, Lean proves the
+concrete post-state supplies `Case1SelectedOldLevelMoveData` with selected
+scalar `pre.var s0 k0`.  The thin constructor
+`Case1SelectedOldLoweredRecurrenceBoundary.of_sameDomain_case1SelectedOldLevelMove`
+then instantiates the erased-base lowered boundary directly from a same-domain
+package stated over `pre.level`.
+
+This removes the need to hand-supply a separate post recurrence state for this
+checkpoint, but it still does not construct the selected-old chart, infer
+`(s0,k0)` from the `Unit` token, introduce `(S,J+1)`, use Case 1(2), assert
+`Q/P`, prove chart coverage or regularity from coordinates, compute Jacobians,
+prove normal crossings, extract RLCT, or prove a transition invariant.
+
 ## 2026-06-19 Lean Case 1 displayed paper Q/P adapter
 
 Statement card:

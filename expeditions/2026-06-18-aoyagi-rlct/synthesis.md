@@ -1105,6 +1105,19 @@ chart-produced moved-level data, introduce `(S,J+1)`, use Case 1(2), assert
 `Q/P`, or prove coverage/regularity, Jacobians, normal crossings, RLCT, or a
 transition invariant.
 
+The Case 1(1) selected-old concrete level move is now Lean-proved. The
+same-domain post-state `case1SelectedOldLevelMove` lowers only the selected
+old label's recurrence level to `J`; recurrence-label variables are unchanged,
+and non-selected levels are unchanged. Under selected introducedness and
+`pre.level s0 k0 = J+J1`, it supplies the existing
+`Case1SelectedOldLevelMoveData`, and
+`Case1SelectedOldLoweredRecurrenceBoundary.of_sameDomain_case1SelectedOldLevelMove`
+instantiates the erased-base boundary with the concrete post-state. This is a
+canonical recurrence-state witness, not raw chart production: source residual
+matrix coordinates are still handled by the row-strip identity, and chart
+coverage/regularity/Jacobians/normal crossings/RLCT/full transition invariance
+remain open.
+
 The displayed Case 1(2) paper `Q/P` adapter is now Lean-packaged as a
 paper-facing notation layer over the already supplied source-coordinate
 identity. It names the normalized source-coordinate block, the source

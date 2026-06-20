@@ -265,8 +265,11 @@ on the session's original cwd.
    `pre.erasedStep s0 k0`, the selected-old level move from `J+J1` to `J`
    derives the pre/post `mulStepAt` equalities and instantiates the lowered
    boundary without an arbitrary base recurrence. This remains supplied
-   moved-level recurrence bookkeeping, not chart production. Keep interfaces
-   explicitly supplied where coordinates are not constructed. Avoid raw
+   moved-level recurrence bookkeeping, not chart production. The concrete
+   level-move checkpoint is also Lean-proved: `case1SelectedOldLevelMove`
+   supplies the moved-level data by overriding only the selected old
+   recurrence level in the same-domain pre-state. Keep interfaces explicitly
+   supplied where raw coordinates are not constructed. Avoid raw
    Case 1(2) hidden-old pullback construction, arbitrary chart coverage, or
    non-displayed transition claims. The displayed Case 1(2) paper `Q/P`
    adapter now exposes the source's `Q`, `Q^-1`, `D''`, `C'`, and `D'''`

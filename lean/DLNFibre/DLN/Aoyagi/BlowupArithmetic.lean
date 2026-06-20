@@ -2388,6 +2388,83 @@ theorem case2Succ_case2Gap_of_leastValueGap
     (state.case2Succ_levelInvariants u hinv hl_old hl_new)
     (case2IntroducedLabelLeastValueGap_succ hgap hl_old hl_new)
 
+/-- Case 1(1) same-domain recurrence state obtained by lowering the selected
+old label's level to the current pivot level `J`.
+
+Only the recurrence level assigned to `(s0,k0)` changes.  The recurrence-label
+variables are left unchanged; this is not a statement about raw residual matrix
+coordinates, whose row strip is separately rescaled in the selected-old chart.
+-/
+def case1SelectedOldLevelMove {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (s0 k0 : ℕ) :
+    IntroducedLabelRecurrenceState L n S J α where
+  level s k := if (s, k) = (s0, k0) then J else state.level s k
+  var s k := state.var s k
+
+@[simp] theorem case1SelectedOldLevelMove_level_selected
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) :
+    (state.case1SelectedOldLevelMove s0 k0).level s0 k0 = J := by
+  simp [case1SelectedOldLevelMove]
+
+theorem case1SelectedOldLevelMove_level_of_ne
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 s k : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (hne : (s, k) ≠ (s0, k0)) :
+    (state.case1SelectedOldLevelMove s0 k0).level s k = state.level s k := by
+  change (if (s, k) = (s0, k0) then J else state.level s k) = state.level s k
+  simp [hne]
+
+@[simp] theorem case1SelectedOldLevelMove_var
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 s k : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) :
+    (state.case1SelectedOldLevelMove s0 k0).var s k = state.var s k := rfl
+
+/-- Supplied recurrence post-data for Case 1(1)'s selected-old level move.
+
+The selected old label is already in the `(S,J)` introduced-label domain.  The
+`pre` state has that label at level `J+J1`; the `post` state has the same
+selected recurrence-label variable at level `J`; all other introduced labels
+keep their level and recurrence-label variable data.  This is recurrence
+bookkeeping for the source's Case 1(1) assignment of `b'_i`; it does not
+construct a chart or make a claim about raw residual matrix coordinates. -/
+structure Case1SelectedOldLevelMoveData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 : ℕ} {α : Type*}
+    (pre post : IntroducedLabelRecurrenceState L n S J α)
+    (s0 k0 : ℕ) (u : α) : Prop where
+  selectedIntroduced : introducedLabel L n S J s0 k0
+  pre_level_selected : pre.level s0 k0 = J + J1
+  post_level_selected : post.level s0 k0 = J
+  pre_var_selected : pre.var s0 k0 = u
+  post_var_selected : post.var s0 k0 = u
+  level_old :
+    ∀ {s k}, introducedLabel L n S J s k → (s, k) ≠ (s0, k0) →
+      post.level s k = pre.level s k
+  var_old :
+    ∀ {s k}, introducedLabel L n S J s k → (s, k) ≠ (s0, k0) →
+      post.var s k = pre.var s k
+
+/-- The concrete same-domain Case 1(1) level override supplies the abstract
+moved-level recurrence data. -/
+theorem case1SelectedOldLevelMove_levelMoveData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ} {α : Type*}
+    (pre : IntroducedLabelRecurrenceState L n S J α)
+    (hsel : introducedLabel L n S J s0 k0)
+    (hlevel : pre.level s0 k0 = J + J1) :
+    Case1SelectedOldLevelMoveData (J1 := J1)
+      pre (pre.case1SelectedOldLevelMove s0 k0) s0 k0 (pre.var s0 k0) where
+  selectedIntroduced := hsel
+  pre_level_selected := hlevel
+  post_level_selected := by simp
+  pre_var_selected := rfl
+  post_var_selected := by simp
+  level_old := by
+    intro s k _hintro hne
+    exact pre.case1SelectedOldLevelMove_level_of_ne hne
+  var_old := by
+    intro s k _hintro _hne
+    simp
+
 end IntroducedLabelRecurrenceState
 
 section MonomialRecurrence
@@ -3036,29 +3113,6 @@ theorem step_eq_mulStepAt_of_firstJump
   rw [data.step_eq_mulStepAt_selectedLevel, hfirst.selectedLevel]
 
 end Case1SelectedOldFactoredBaseData
-
-/-- Supplied recurrence post-data for Case 1(1)'s selected-old level move.
-
-The selected old label is already in the `(S,J)` introduced-label domain.  The
-`pre` state has that label at level `J+J1`; the `post` state has the same
-selected variable at level `J`; all other introduced labels keep their level
-and variable data.  This is recurrence bookkeeping for the source's Case 1(1)
-assignment of `b'_i`; it does not construct a chart or prove coverage. -/
-structure Case1SelectedOldLevelMoveData
-    {L : ℕ} {n : ℕ → ℕ} {S J J1 : ℕ}
-    (pre post : IntroducedLabelRecurrenceState L n S J α)
-    (s0 k0 : ℕ) (u : α) : Prop where
-  selectedIntroduced : introducedLabel L n S J s0 k0
-  pre_level_selected : pre.level s0 k0 = J + J1
-  post_level_selected : post.level s0 k0 = J
-  pre_var_selected : pre.var s0 k0 = u
-  post_var_selected : post.var s0 k0 = u
-  level_old :
-    ∀ {s k}, introducedLabel L n S J s k → (s, k) ≠ (s0, k0) →
-      post.level s k = pre.level s k
-  var_old :
-    ∀ {s k}, introducedLabel L n S J s k → (s, k) ≠ (s0, k0) →
-      post.var s k = pre.var s k
 
 namespace Case1SelectedOldLevelMoveData
 
@@ -6471,6 +6525,30 @@ theorem of_levelMoveData
   sameDomain := sameDomain
   pre_step_eq := moved.pre_step_eq_mulStepAt
   post_step_eq := moved.post_step_eq_mulStepAt
+
+/-- Concrete same-domain Case 1(1) lowered boundary obtained by lowering only
+the selected old label's recurrence level in the pre-state.
+
+This is a canonical recurrence-state witness for the already supplied
+same-domain exponent boundary.  It uses `sameDomain` stated with `pre.level`;
+no chart construction or separate level-map transport is hidden here.
+-/
+theorem of_sameDomain_case1SelectedOldLevelMove
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (sameDomain :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 pre.level
+        t t' numerator numerator' leastValue leastValue') :
+    Case1SelectedOldLoweredRecurrenceBoundary R L n S J J1 s0 k0 pre.level
+      t t' numerator numerator' leastValue leastValue'
+      pre (pre.case1SelectedOldLevelMove s0 k0) (pre.var s0 k0)
+      (pre.erasedStep s0 k0) :=
+  of_levelMoveData sameDomain
+    (pre.case1SelectedOldLevelMove_levelMoveData sameDomain.selectedIntroduced
+      sameDomain.selectedLevel)
 
 /-- The supplied lowered-recurrence boundary records the selected old label as
 already introduced at the current state. -/
