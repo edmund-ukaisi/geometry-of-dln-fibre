@@ -149,7 +149,14 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   **rv-2 CONFIRMED** (decorrelated + Codex; Vitali-set counterexample, `IntegrableOn⟹AEStronglyMeasurable`
   crux Lean-verified). `AEMeasurable u` is the minimal hyp but `Measurable u` is the contract choice (cleaner,
   use-site-safe — analytic unit continuous). fm-2 delivering `rlct_unit_invariant_aux` under it; fm wires later.
-- **S1.5** `rlct_additive_smooth_block` — DISPATCHED (fm-2 → a lean-formaliser, S1Additive.lean; gap-class flagged).
+- **S1.5** `rlct_additive_smooth_block` — **12th fidelity issue (DEEPER):** the disjoint-block additivity is
+  FALSE two ways (non-measurable G [gap-class]; G≡0 ⟹ rlctAtOn(0²)=⊤ ⟹ RHS=n/2+⊤=⊤≠LHS [≡0-convention]) AND,
+  even fixed, needs heavy Laplace-asymptotic machinery (Mathlib-gap); can't be cited. fm-2 delivered the honest
+  substrate @`2cb79cc` (sorry-free: `rlctAtOn_zero_eq_top` [also discharges #24 docstring], `smoothBlock1D_rlct`
+  n=1; the false aux NOT carried as a sorry). rv-2 confirming the counterexamples. **L2-ARCHITECTURE STRATEGY
+  routed to pp** (additivity-with-hyps vs R1-on-full-loss-subsumed vs smooth-block-alone restatement — how L2
+  combines regular ⊕ core). fm-2 proving the smooth-block VALUE `rlctAtOn(Σxᵢ²)=n/2` (general n, needed
+  regardless; Mathlib-gap radial integrability). This is a design node, not just a hyp-gap.
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
