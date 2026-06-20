@@ -300,6 +300,46 @@ theorem aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds
     H (Fin.last ell) = 0 := by
   omega
 
+/-- Componentwise bounds on Aoyagi-style `T` vectors give terminal endpoint
+bounds when the three `H_ell` values are read from the same coordinate.
+
+This is a conservative bridge.  It assumes the same-coordinate correspondence;
+it does not prove that correspondence from Aoyagi's vector construction. -/
+theorem aoyagiLemma4_terminalEndpointBounds_of_sameCoordinate
+    {ι : Type*} {ell a : ℕ} {M : ℤ} {m H : Fin (ell + 1) → ℤ}
+    {Tlo T Thi : ι → ℤ} (p : ι)
+    (hlo : Tlo ≤ T) (hhi : T ≤ Thi)
+    (hlo_endpoint : Tlo p = aoyagiLemma4TerminalEndpoint ell a M m)
+    (hH : H (Fin.last ell) = T p)
+    (hhi_endpoint : Thi p = aoyagiLemma4TerminalEndpoint ell a M m) :
+    aoyagiLemma4TerminalEndpoint ell a M m ≤ H (Fin.last ell) ∧
+      H (Fin.last ell) ≤ aoyagiLemma4TerminalEndpoint ell a M m := by
+  constructor
+  · rw [← hlo_endpoint, hH]
+    exact hlo p
+  · rw [hH, ← hhi_endpoint]
+    exact hhi p
+
+/-- Same-coordinate vector squeeze version of the terminal endpoint zero step.
+
+The source bridge from Aoyagi's `Ttilde <= T <= Ttilde'` to this
+same-coordinate hypothesis is not proved here. -/
+theorem aoyagiLemma4_Hlast_eq_zero_of_sameCoordinate
+    {ι : Type*} {ell a : ℕ} {M : ℤ} {m H : Fin (ell + 1) → ℤ}
+    {Tlo T Thi : ι → ℤ} (p : ι)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlo : Tlo ≤ T) (hhi : T ≤ Thi)
+    (hlo_endpoint : Tlo p = aoyagiLemma4TerminalEndpoint ell a M m)
+    (hH : H (Fin.last ell) = T p)
+    (hhi_endpoint : Thi p = aoyagiLemma4TerminalEndpoint ell a M m) :
+    H (Fin.last ell) = 0 := by
+  have hbounds :=
+    aoyagiLemma4_terminalEndpointBounds_of_sameCoordinate (ell := ell) (a := a)
+      (M := M) (m := m) (H := H) p hlo hhi hlo_endpoint hH hhi_endpoint
+  have hend := aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum ell a M m ha hselected
+  exact aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds hend hbounds.1 hbounds.2
+
 /-- Lemma 4's count with the source endpoint sandwich replacing the explicit
 terminal condition `H_ell = 0`.
 
@@ -348,6 +388,61 @@ theorem aoyagiLemma4_terminalEndpointBounds_freeHighCount_lemma3A_eq_min
     aoyagiLemma4_Hlast_eq_zero_of_terminalEndpoint_bounds hend hlower hupper
   exact aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min n a M m H hH0
     hHlast hselected hvals
+
+/-- Lemma 4's count with same-coordinate vector bounds replacing the explicit
+terminal condition `H_ell = 0`.
+
+This assumes the source correspondence that the endpoint is read from the same
+coordinate of all three vectors.  It does not prove that correspondence, the
+two-value increment hypothesis, or vector admissibility. -/
+theorem aoyagiLemma4_twoValueCount_of_sameCoordinate (ell a : ℕ) (M : ℤ)
+    {ι : Type*} (m H : Fin (ell + 1) → ℤ)
+    {Tlo T Thi : ι → ℤ} (p : ι)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlo : Tlo ≤ T) (hhi : T ≤ Thi)
+    (hlo_endpoint : Tlo p = aoyagiLemma4TerminalEndpoint ell a M m)
+    (hH : H (Fin.last ell) = T p)
+    (hhi_endpoint : Thi p = aoyagiLemma4TerminalEndpoint ell a M m)
+    (hvals : ∀ j : Fin ell,
+      aoyagiLemma4F ell m H j = M - 1 ∨ aoyagiLemma4F ell m H j = M) :
+    ((Finset.univ.filter fun j : Fin ell ↦ aoyagiLemma4F ell m H j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = M - 1).card = ell - a) := by
+  have hbounds :=
+    aoyagiLemma4_terminalEndpointBounds_of_sameCoordinate (ell := ell) (a := a)
+      (M := M) (m := m) (H := H) p hlo hhi hlo_endpoint hH hhi_endpoint
+  exact aoyagiLemma4_twoValueCount_of_terminalEndpointBounds ell a M m H hH0 ha
+    hselected hbounds.1 hbounds.2 hvals
+
+/-- Same-coordinate vector-squeeze wrapper for the finite Lemma 4-to-Lemma 3
+free-count bridge. -/
+theorem aoyagiLemma4_sameCoordinate_freeHighCount_lemma3A_eq_min
+    (n a : ℕ) (M : ℤ) {ι : Type*} (m H : Fin (n + 2) → ℤ)
+    {Tlo T Thi : ι → ℤ} (p : ι)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ n + 1)
+    (hselected : (∑ j : Fin (n + 2), m j) =
+      ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hlo : Tlo ≤ T) (hhi : T ≤ Thi)
+    (hlo_endpoint :
+      Tlo p = aoyagiLemma4TerminalEndpoint (n + 1) a M m)
+    (hH : H (Fin.last (n + 1)) = T p)
+    (hhi_endpoint :
+      Thi p = aoyagiLemma4TerminalEndpoint (n + 1) a M m)
+    (hvals : ∀ j : Fin (n + 1),
+      aoyagiLemma4F (n + 1) m H j = M - 1 ∨
+        aoyagiLemma4F (n + 1) m H j = M) :
+    aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+        ((Finset.univ.filter fun j : Fin n ↦
+          aoyagiLemma4F (n + 1) m H j.castSucc = M).card : ℤ) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) * (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  have hbounds :=
+    aoyagiLemma4_terminalEndpointBounds_of_sameCoordinate (ell := n + 1) (a := a)
+      (M := M) (m := m) (H := H) p hlo hhi hlo_endpoint hH hhi_endpoint
+  exact aoyagiLemma4_terminalEndpointBounds_freeHighCount_lemma3A_eq_min n a M
+    m H hH0 ha hselected hbounds.1 hbounds.2 hvals
 
 end Aoyagi
 end DLN

@@ -1601,6 +1601,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma4-free-count-bridge-a5.md`;
   Lemma 4 endpoint squeeze at
   `threads/05-arithmetic-tail/reproduction-lemma4-endpoint-squeeze-a5.md`;
+  Lemma 4 same-coordinate bridge at
+  `threads/05-arithmetic-tail/reproduction-lemma4-same-coordinate-bridge-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1625,6 +1627,9 @@ No such claim is formalisation-ready until both fields are filled.
   scout `Galileo the 5th`, and final xhigh landed-patch reviewer
   `Ramanujan the 5th` at
   `threads/05-arithmetic-tail/review-lemma4-endpoint-squeeze-a5.md`;
+  Lemma 4 same-coordinate bridge checked by xhigh `Cicero the 5th` and xhigh
+  Lean scout `Jason the 5th` at
+  `threads/05-arithmetic-tail/review-lemma4-same-coordinate-bridge-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
@@ -1636,6 +1641,8 @@ No such claim is formalisation-ready until both fields are filled.
   finite Lemma 4 free-count bridge to Lemma 3 equality cases in
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   terminal endpoint squeeze wrappers in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
+  same-coordinate vector-squeeze wrappers in
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1693,14 +1700,22 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma4_terminalEndpointBounds_freeHighCount_lemma3A_eq_min`, which
   replace an explicit terminal condition `H_ell=0` by supplied endpoint
   inequalities around the displayed terminal endpoints.
+  Also proved `aoyagiLemma4_terminalEndpointBounds_of_sameCoordinate`,
+  `aoyagiLemma4_Hlast_eq_zero_of_sameCoordinate`,
+  `aoyagiLemma4_twoValueCount_of_sameCoordinate`, and
+  `aoyagiLemma4_sameCoordinate_freeHighCount_lemma3A_eq_min`, which replace
+  supplied endpoint inequalities by explicit same-coordinate componentwise
+  vector bounds.  A source-gap check shows that Aoyagi's Definition 4 alone
+  does not supply this same-coordinate correspondence.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
 - **Cited.** none planned.
 - **Deferred.** terminal candidate set with `\tilde t_{s,k}=0`, feasibility of
   the minimizing exponent chains, the Lemma 4 two-value hypothesis from source
-  vector inequalities, the bridge from `Ttilde <= T <= Ttilde'` to the
-  terminal endpoint sandwich, the terminal exponent rewrite into the isolated
+  vector inequalities, the source `T -> (H_j),(S_j)` correspondence and proof
+  that Aoyagi's displayed `Ttilde <= T <= Ttilde'` supplies the
+  same-coordinate hypotheses, the terminal exponent rewrite into the isolated
   Lemma 3 free-count quadratic, Lemma 4's correspondence-to-`lambda`
   conclusion, Lemma 5 chart-family admissibility and coverage, pole-order
   count, and analytic extraction.

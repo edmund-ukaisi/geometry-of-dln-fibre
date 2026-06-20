@@ -22,6 +22,29 @@ holding PDF line numbers only in context.
 | Lemma 5 final order count | A5 | PDF pp. 25-27 | Lemmas 3-4 | draft reproduction + failed check: chart-family admissibility, coverage, exclusions, and exact equal-minimum count not reproduced; isolated interval-excess arithmetic reproduced at `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md` | elementary interval-excess sum proved in `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean` as `aoyagiLemma5IntervalSize_excess_sum_Icc`; full order-count theorem still blocked | interval-excess arithmetic checked by xhigh `Confucius the 5th` and Lean-scouted by xhigh `Maxwell the 5th`, review `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`; full Lemma 5 review still blocked |
 | Notation translation to repo DLN dimensions | A6 | Aoyagi PDF pp. 8-9 | source inventory | pending | translation theorem TBD; open | pending |
 
+## Latest A5 Update
+
+The Lemma 4 same-coordinate bridge has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`.  Source check:
+Aoyagi's Definition 4 defines componentwise vector order, but not a unique
+endpoint-selection map from a vector `T` to `(H_j),(S_j)`.  Thus
+`Ttilde <= T <= Ttilde'` alone is not accepted as a proof of the terminal
+endpoint sandwich.  Lean proves only the conservative wrapper with explicit
+same-coordinate hypotheses:
+`aoyagiLemma4_terminalEndpointBounds_of_sameCoordinate`,
+`aoyagiLemma4_Hlast_eq_zero_of_sameCoordinate`,
+`aoyagiLemma4_twoValueCount_of_sameCoordinate`, and
+`aoyagiLemma4_sameCoordinate_freeHighCount_lemma3A_eq_min`.  Reproduction and
+review artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma4-same-coordinate-bridge-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma4-same-coordinate-bridge.md`,
+and
+`threads/05-arithmetic-tail/review-lemma4-same-coordinate-bridge-a5.md`.
+The full Lemma 4 theorem remains blocked by the source `T -> (H_j),(S_j)`
+correspondence, the same-coordinate hypotheses for Aoyagi's displayed
+extremal vectors, the two-value hypothesis, vector admissibility, terminal
+exponent rewrite, and correspondence to `lambda`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

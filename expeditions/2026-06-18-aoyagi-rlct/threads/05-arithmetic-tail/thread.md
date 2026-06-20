@@ -270,3 +270,35 @@ inequality implies the endpoint sandwich, the two-value increment hypothesis,
 vector admissibility, terminal exponent rewriting into the Lemma 3 quadratic,
 correspondence to `lambda`, Lemma 5, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-20 Lean Lemma 4 same-coordinate bridge
+
+Reproduction:
+`reproduction-lemma4-same-coordinate-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-same-coordinate-bridge.md`.
+Review artifact:
+`review-lemma4-same-coordinate-bridge-a5.md`.
+
+Source check: Aoyagi's Definition 4 defines componentwise order on vectors but
+does not define a unique endpoint-selection map from a vector `T` to the
+sequence `(H_j),(S_j)`.  Therefore the source sentence
+`Ttilde <= T <= Ttilde'` and `Htilde_ell=Htilde'_ell=0` imply `H_ell=0` is not
+formalised from Definition 4 alone.
+
+Lean now proves the conservative same-coordinate replacement.  If the lower
+vector, middle vector, and upper vector all read their terminal endpoint from
+the same coordinate `p`, and `Tlo <= T <= Thi` componentwise, then
+`H_ell` is squeezed between the lower and upper terminal endpoint values.
+Combined with the endpoint-zero calculation, this gives `H_ell=0`, and the
+wrappers `aoyagiLemma4_twoValueCount_of_sameCoordinate` and
+`aoyagiLemma4_sameCoordinate_freeHighCount_lemma3A_eq_min` feed the result into
+the finite Lemma 4 count and Lemma 3 bridge.
+
+This is still finite order arithmetic only.  It does not prove the source
+`T -> (H_j),(S_j)` correspondence, that Aoyagi's displayed
+`Ttilde <= T <= Ttilde'` supplies the same-coordinate hypotheses, the full
+`Htilde` or `Htilde'` chains, the two-value increment hypothesis, vector
+admissibility, terminal exponent rewriting into the Lemma 3 quadratic,
+correspondence to `lambda`, Lemma 5, pole order, normal crossings, or RLCT
+extraction.

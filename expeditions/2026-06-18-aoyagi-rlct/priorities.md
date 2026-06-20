@@ -510,11 +510,16 @@ on the session's original cwd.
    endpoint squeeze in Lemma 4 is now also Lean-proved: the displayed terminal
    endpoint expression for `Htilde_ell` and `Htilde'_ell` is zero under
    Definition 3's selected-width sum, so a supplied endpoint sandwich implies
-   `H_ell=0`.  The remaining
+   `H_ell=0`.  A source check found that Definition 4 alone does not define
+   the endpoint-selection map from `T` to `(H_j),(S_j)`, so Lean now also has
+   only a conservative same-coordinate vector-squeeze wrapper: if the lower,
+   middle, and upper endpoint values are read from the same coordinate, then
+   componentwise `Tlo <= T <= Thi` supplies the endpoint sandwich.  The
+   remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis
-   from source vector inequalities, prove the vector-inequality-to-endpoint
-   sandwich bridge, connect the source terminal exponent
+   from source vector inequalities, prove the source `T -> (H_j),(S_j)`
+   correspondence and same-coordinate hypotheses, connect the source terminal exponent
    expression to the isolated Lemma 3 free-count quadratic, prove
    correspondence-to-`lambda`, reproduce the terminal
    quadratic rewrite, and reproduce Lemma 5's chart-family/order-count

@@ -1749,6 +1749,17 @@ endpoint inequalities into `H_ell=0`, and the wrappers
 into the existing count and Lemma 3 free-count bridge.  This still assumes the
 endpoint sandwich; the formal bridge from `Ttilde <= T <= Ttilde'` to endpoint
 inequalities remains open.
+
+A follow-up source check found that the source bridge cannot be taken from
+Definition 4 alone.  Definition 4 defines componentwise order on vectors, but
+not a unique endpoint-selection map from `T` to `(H_j),(S_j)`.  The nearest
+source-facing coordinate relation appears in the Lemma 5 discussion, where
+`t^(S_(j+1)-1)=H_j`.  Lean therefore now proves only the conservative
+same-coordinate bridge: if lower, middle, and upper endpoint values are all
+read from the same coordinate `p`, then componentwise `Tlo <= T <= Thi`
+supplies the endpoint sandwich, and the existing endpoint-zero/count wrappers
+apply.  Proving that Aoyagi's displayed `Ttilde <= T <= Ttilde'` supplies that
+same-coordinate correspondence remains open.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard
