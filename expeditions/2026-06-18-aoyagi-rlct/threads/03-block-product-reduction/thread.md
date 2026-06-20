@@ -423,6 +423,34 @@ This transfers the finite adapted-basis edge and endpoint statements into the
 paper-order orientation. It still does not provide determinant/open chart
 wrappers, the product-reduction induction, or analytic/RLCT consequences.
 
+## 2026-06-20 A2 triangular endpoint multiplier wrapper
+
+Returned to A2 to expose the triangular multipliers appearing explicitly in
+Aoyagi Theorem 3.  Pen-and-paper reproduction saved at
+`reproduction-a2-triangular-block-diagonal.md`; statement card saved at
+`statement-card-a2-triangular-block-diagonal.md`.
+
+Lean changes:
+
+- `lowerUnitriangular_mul_fromBlocks_one_zero_indexed` proves
+  `[I 0; F I] [I 0; G I] = [I 0; F + G I]`.
+- `ChartLocalSuffixState.step_L_eq_lowerUnitriangular` and
+  `ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular` prove the
+  deterministic suffix state's accumulated left multiplier has shape
+  `[I 0; F3 I]`.
+- `ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal`
+  and `productReduction_chartLocal_suffixChain_triangularBlockDiagonal_indexed`
+  restate the abstract block-diagonal invariant with regular triangular
+  multipliers.
+- `PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal`
+  extracts fixed-endpoint Aoyagi-style multipliers from the existing
+  source-facing certificate, with right multiplier `F2 = -S.B`.
+
+This is still elementary finite block algebra and certificate repackaging.  It
+does not prove chart coverage, exact-rank openness, Aoyagi Lemma 1, analytic
+ideal transport, regular-coordinate RLCT additivity, normal crossings, or an
+RLCT consequence.
+
 ## 2026-06-19 A2 indexed block algebra
 
 Extended the pure block algebra layer with indexed variants:

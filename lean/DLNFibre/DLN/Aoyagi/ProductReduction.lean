@@ -52,6 +52,16 @@ theorem upperUnitriangular_mul_fromBlocks_one_zero_indexed
   rw [fromBlocks_multiply]
   simp [sub_eq_add_neg]
 
+/-- Indexed multiplication of lower unitriangular block matrices. -/
+theorem lowerUnitriangular_mul_fromBlocks_one_zero_indexed
+    {ι μ : Type*} [Fintype ι] [Fintype μ] [DecidableEq ι] [DecidableEq μ]
+    (F G : Matrix μ ι K) :
+    fromBlocks (1 : Matrix ι ι K) 0 F (1 : Matrix μ μ K) *
+        fromBlocks (1 : Matrix ι ι K) 0 G (1 : Matrix μ μ K) =
+      fromBlocks (1 : Matrix ι ι K) 0 (F + G) (1 : Matrix μ μ K) := by
+  rw [fromBlocks_multiply]
+  simp
+
 /-- An upper unitriangular left multiplier preserves existence of an identity-corner chart form. -/
 theorem exists_fromBlocks_one_zero_of_upperUnitriangular_mul {r m n : ℕ}
     (F : Matrix (Fin r) (Fin m) K)
@@ -671,6 +681,71 @@ theorem suffixState_D_castSucc
   rw [suffixState_castSucc]
   rfl
 
+/-- One deterministic suffix-state update preserves lower-unitriangularity of `L`. -/
+theorem step_L_eq_lowerUnitriangular
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (hS : ∃ F3 : Matrix (κ j) ρ K,
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3 (1 : Matrix (κ j) (κ j) K)) :
+    ∃ F3 : Matrix (κ j) ρ K,
+      (step E p S).L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3 (1 : Matrix (κ j) (κ j) K) := by
+  rcases hS with ⟨F3, hF3⟩
+  let M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K := transformedEdge E p S
+  let X : Matrix (κ j) ρ K := -(S.D * lowerLeftBlock M * (S.Ctop * topLeftCorner M)⁻¹)
+  refine ⟨X + F3, ?_⟩
+  dsimp [step, M]
+  rw [hF3]
+  simpa [X, M] using
+    lowerUnitriangular_mul_fromBlocks_one_zero_indexed (K := K) X F3
+
+/-- The deterministic suffix state's accumulated left multiplier is lower unitriangular. -/
+theorem suffixState_L_eq_lowerUnitriangular
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {i j : Fin (N + 1)} (hij : i ≤ j) :
+    ∃ F3 : Matrix (κ j) ρ K,
+      (suffixState E j i hij).L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3 (1 : Matrix (κ j) (κ j) K) := by
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    ∃ F3 : Matrix (κ j) ρ K,
+      (suffixState E j im (Fin.val_fin_le.mpr hmj)).L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3 (1 : Matrix (κ j) (κ j) K)
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    refine ⟨0, ?_⟩
+    simp [suffixState_self, terminal]
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (hms.trans_lt j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        ∃ F3 : Matrix (κ j) ρ K,
+          (suffixState E j p.succ hpj).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K) := by
+      simpa [motive, p, hpj] using ih
+    have hnext := step_L_eq_lowerUnitriangular E p
+      (suffixState E j p.succ hpj) ih'
+    have hstate :
+        suffixState E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
+          step E p (suffixState E j p.succ hpj) :=
+      suffixState_castSucc E p hpj
+    rw [← hstate] at hnext
+    simpa [motive, p, hpj] using hnext
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hij)
+  have hcanon' :
+      ∃ F3 : Matrix (κ j) ρ K,
+        (suffixState E j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij))).L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3 (1 : Matrix (κ j) (κ j) K) := by
+    simpa [motive] using hcanon
+  simpa using hcanon'
+
 /-- One deterministic suffix-state update preserves the block-diagonal invariant. -/
 theorem step_blockDiagonal
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
@@ -763,6 +838,49 @@ theorem suffixState_blockDiagonal
     simpa [motive] using hcanon
   simpa [BlockDiagonal, hPproof hij (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij))] using hcanon'
 
+/-- A deterministic block-diagonal suffix state gives Aoyagi-style triangular multipliers. -/
+theorem suffixState_blockDiagonal_exists_triangularBlockDiagonal
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    {i j : Fin (N + 1)} (hij : i ≤ j)
+    (hS : (suffixState E j i hij).BlockDiagonal P hij) :
+    ∃ F2 : Matrix ρ (κ i) K, ∃ F3 : Matrix (κ j) ρ K,
+      ∃ Ctop : Matrix ρ ρ K, ∃ D : Matrix (κ j) (κ i) K,
+          IsUnit
+            (fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)).det ∧
+          IsUnit
+            (fromBlocks (1 : Matrix ρ ρ K) F2 0
+              (1 : Matrix (κ i) (κ i) K)).det ∧
+          IsUnit Ctop.det ∧
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K) *
+            P i j hij *
+            fromBlocks (1 : Matrix ρ ρ K) F2 0
+              (1 : Matrix (κ i) (κ i) K) =
+          fromBlocks Ctop 0 0 D := by
+  let S : ChartLocalSuffixState ρ κ K j i := suffixState E j i hij
+  rcases hS with ⟨_, hCtop, hdiag⟩
+  rcases suffixState_L_eq_lowerUnitriangular E hij with ⟨F3, hF3⟩
+  have hLeft : IsUnit
+      (fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ j) (κ j) K)).det := by
+    exact (Matrix.isUnit_iff_isUnit_det
+        (A := fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ j) (κ j) K))).mp
+      ((Matrix.isUnit_fromBlocks_zero₁₂).2 ⟨isUnit_one, isUnit_one⟩)
+  have hRight : IsUnit
+      (fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0
+        (1 : Matrix (κ i) (κ i) K)).det := by
+    exact (Matrix.isUnit_iff_isUnit_det
+        (A := fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0
+          (1 : Matrix (κ i) (κ i) K))).mp
+      ((Matrix.isUnit_fromBlocks_zero₂₁).2 ⟨isUnit_one, isUnit_one⟩)
+  refine ⟨-S.B, F3, S.Ctop, S.D, hLeft, hRight, hCtop, ?_⟩
+  simpa [S, hF3] using hdiag
+
 end ChartLocalSuffixState
 
 /-- Abstract suffix-chain block diagonalisation on explicit determinant charts. -/
@@ -801,6 +919,49 @@ theorem productReduction_chartLocal_suffixChain_blockDiagonal_indexed
           hchart p (ChartLocalSuffixState.suffixState E j p.succ hpj).B)
   rcases hS with ⟨hL, hCtop, hdiag⟩
   exact ⟨S.L, S.B, S.Ctop, S.D, hL, hCtop, hdiag⟩
+
+/-- Abstract suffix-chain block diagonalisation with Aoyagi-style triangular multipliers. -/
+theorem productReduction_chartLocal_suffixChain_triangularBlockDiagonal_indexed
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hPproof : ∀ {i j : Fin (N + 1)} (h h' : i ≤ j), P i j h = P i j h')
+    (hself : ∀ j : Fin (N + 1), P j j le_rfl = 1)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    (hchart : ∀ (p : Fin N) (Bprev : Matrix ρ (κ p.succ) K),
+      identityCornerDetChart
+        (fromBlocks (1 : Matrix ρ ρ K) Bprev 0
+          (1 : Matrix (κ p.succ) (κ p.succ) K) * E p)) :
+    ∀ i j : Fin (N + 1), ∀ hij : i ≤ j,
+      ∃ F2 : Matrix ρ (κ i) K, ∃ F3 : Matrix (κ j) ρ K,
+        ∃ Ctop : Matrix ρ ρ K, ∃ D : Matrix (κ j) (κ i) K,
+          IsUnit
+              (fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K)).det ∧
+            IsUnit
+              (fromBlocks (1 : Matrix ρ ρ K) F2 0
+                (1 : Matrix (κ i) (κ i) K)).det ∧
+            IsUnit Ctop.det ∧
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K) *
+              P i j hij *
+              fromBlocks (1 : Matrix ρ ρ K) F2 0
+                (1 : Matrix (κ i) (κ i) K) =
+            fromBlocks Ctop 0 0 D := by
+  intro i j hij
+  let S : ChartLocalSuffixState ρ κ K j i := ChartLocalSuffixState.suffixState E j i hij
+  have hS : S.BlockDiagonal P hij := by
+    dsimp [S]
+    exact ChartLocalSuffixState.suffixState_blockDiagonal E P hPproof hself hsuccRight hij
+      (fun p hpj ↦ by
+        simpa [ChartLocalSuffixState.transformedEdge] using
+          hchart p (ChartLocalSuffixState.suffixState E j p.succ hpj).B)
+  exact ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal
+    E P hij hS
 
 end InductionStep
 

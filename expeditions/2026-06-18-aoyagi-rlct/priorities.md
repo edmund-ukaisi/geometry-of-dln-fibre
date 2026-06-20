@@ -71,7 +71,11 @@ on the session's original cwd.
    implications from pointwise exact ranks. The source-facing elementary
    product-reduction boundary is now packaged in `ProductReductionBoundary.lean` as
    fixed-base, local fixed-base, and existential local certificates, without
-   pretending that exact-rank strata are open. The A4 blow-up repair has now
+   pretending that exact-rank strata are open. The Aoyagi-style triangular
+   endpoint multipliers are now also Lean-proved from this certificate:
+   `S.L` is lower unitriangular, the right multiplier is `[I -S.B; 0 I]`, and
+   the fixed-base certificate exposes regular `[I 0; F3 I]` and
+   `[I F2; 0 I]` factors. The A4 blow-up repair has now
    isolated the printed Case 2 vector mismatch, added supplied source-selected
    pivot boundary packaging, and specialized the displayed top-left Case 2
    boundary with concrete recurrence/exponent assignment functions. Next return

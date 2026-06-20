@@ -98,6 +98,134 @@ theorem paperEndpointFixedBaseProductReductionCertificate_of_recursiveDetCharts
     simpa [paperEndpointFixedBaseContinuousEdgesRecursiveResidualRankImplications,
       ChartLocalSuffixState.residualBlock, E, hrank] using hres
 
+set_option linter.unusedSectionVars false in
+/-- The fixed-base product-reduction certificate exposes Aoyagi's triangular
+left and right multipliers. -/
+theorem PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {rEdge : Fin N → ℕ} {x : α}
+    (cert : PaperEndpointFixedBaseProductReductionCertificate W B U₀ hU₀ Cedge rEdge x) :
+    let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+      fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    ∃ F2 : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) K,
+      ∃ F3 : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (Fin (Module.finrank K U₀)) K,
+        ∃ Ctop : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K,
+          ∃ D : Matrix
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0) K,
+            IsUnit
+                (fromBlocks
+                  (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                  0 F3
+                  (1 : Matrix
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)) K)).det ∧
+              IsUnit
+                (fromBlocks
+                  (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                  F2 0
+                  (1 : Matrix
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ 0)
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ 0) K)).det ∧
+              IsUnit Ctop.det ∧
+              fromBlocks
+                  (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                  0 F3
+                  (1 : Matrix
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)) K) *
+                paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E *
+                fromBlocks
+                  (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                  F2 0
+                  (1 : Matrix
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ 0)
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ 0) K) =
+                fromBlocks Ctop 0 0 D := by
+  classical
+  dsimp
+  let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E
+  let S := ChartLocalSuffixState.suffixState EMat
+    (Fin.last N) 0 (Fin.zero_le (Fin.last N))
+  rcases ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular
+      (K := K) EMat (i := 0) (j := Fin.last N) (Fin.zero_le (Fin.last N)) with
+    ⟨F3, hF3⟩
+  have hblock :
+      IsUnit S.L.det ∧ IsUnit S.Ctop.det ∧
+        S.L * paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E *
+            fromBlocks
+              (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+              (-S.B) 0
+              (1 : Matrix
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0)
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0) K) =
+          fromBlocks S.Ctop 0 0 S.D := by
+    simpa [paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal, E, EMat, S] using
+      cert.blockDiagonal
+  rcases hblock with ⟨_, hCtop, hdiag⟩
+  have hLeft : IsUnit
+      (fromBlocks
+        (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        0 F3
+        (1 : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)) K)).det := by
+    exact (Matrix.isUnit_iff_isUnit_det
+        (A := fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          0 F3
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)) K))).mp
+      ((Matrix.isUnit_fromBlocks_zero₁₂).2 ⟨isUnit_one, isUnit_one⟩)
+  have hRight : IsUnit
+      (fromBlocks
+        (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        (-S.B) 0
+        (1 : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0) K)).det := by
+    exact (Matrix.isUnit_iff_isUnit_det
+        (A := fromBlocks
+          (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+          (-S.B) 0
+          (1 : Matrix
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0) K))).mp
+      ((Matrix.isUnit_fromBlocks_zero₂₁).2 ⟨isUnit_one, isUnit_one⟩)
+  refine ⟨-S.B, F3, S.Ctop, S.D, hLeft, hRight, hCtop, ?_⟩
+  simpa [E, S, hF3] using hdiag
+
 /-- Near a continuous reversed-edge family based at the fixed paper chain `B`, the
 proved fixed-base product-reduction certificate holds. -/
 theorem paperEndpointFixedBaseProductReductionCertificate_selfBase_mem_nhds

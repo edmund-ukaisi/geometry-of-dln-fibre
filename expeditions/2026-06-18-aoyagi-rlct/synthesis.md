@@ -82,6 +82,33 @@ lemma. The user's allowed cited boundary is only the normal-crossing-to-RLCT
 extraction theorem, so do not introduce that lemma as a second cited Lean
 interface without surfacing it.
 
+## Latest A2 Update
+
+The triangular endpoint-multiplier wrapper for Aoyagi Theorem 3 has landed.
+Pen-and-paper reproduction:
+`threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-triangular-block-diagonal.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-triangular-block-diagonal.md`.
+
+Lean names:
+`lowerUnitriangular_mul_fromBlocks_one_zero_indexed`,
+`ChartLocalSuffixState.step_L_eq_lowerUnitriangular`,
+`ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular`,
+`ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal`,
+`productReduction_chartLocal_suffixChain_triangularBlockDiagonal_indexed`, and
+`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal`.
+The fixed-base endpoint theorem extracts regular triangular multipliers
+`[I 0; F3 I]` and `[I F2; 0 I]` from the existing source-facing certificate,
+with the proof witness `F2 = -S.B`.  This closes the narrow "triangular
+multiplier shape" gap in the certificate.
+
+Nonclaims remain: no chart coverage from only source rank hypotheses, no
+exact-rank openness, no Aoyagi Lemma 1/analytic ideal transport, no
+regular-coordinate RLCT additivity, no normal crossings, and no RLCT
+consequence.
+
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at

@@ -140,7 +140,11 @@ No such claim is formalisation-ready until both fields are filled.
   `ProductReductionBoundary.lean`, including a fixed-base certificate, a local
   fixed-base certificate carrying the basepoint certificate plus neighborhood
   membership, and an existential local certificate choosing a total-kernel
-  complement. The full source Theorem 3 claim remains blocked.
+  complement. The Aoyagi-style triangular endpoint multiplier wrapper is also
+  proved: the deterministic suffix state's `L` is lower unitriangular, and the
+  fixed-base certificate exposes regular `[I 0; F3 I]` and `[I F2; 0 I]`
+  factors with proof witness `F2 = -S.B`. The full source Theorem 3 claim
+  remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -148,14 +152,17 @@ No such claim is formalisation-ready until both fields are filled.
 - **Pen-and-paper reproduction.** draft at
   `threads/03-block-product-reduction/reproduction-draft.md`; through-layer
   basis repair at
-  `threads/03-block-product-reduction/through-layer-basis-reproduction.md`.
+  `threads/03-block-product-reduction/through-layer-basis-reproduction.md`;
+  triangular endpoint wrapper at
+  `threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
   `threads/03-block-product-reduction/reproduction-repair-a2.md`. Through-layer
   basis repair checked by xhigh checker `Hooke`; finite chart-data construction
   rechecked by xhigh explorer `Arendt`; paper-order bridge inventory at
-  `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
+  `threads/03-block-product-reduction/paper-order-bridge-notes.md`; triangular
+  endpoint wrapper checked by xhigh reviewer `Kepler`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant

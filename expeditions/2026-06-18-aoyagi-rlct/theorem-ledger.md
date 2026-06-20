@@ -22,6 +22,34 @@ holding PDF line numbers only in context.
 | Lemma 5 final order count | A5 | PDF pp. 25-27 | Lemmas 3-4 | draft reproduction + failed check: chart-family admissibility, coverage, exclusions, and exact equal-minimum count not reproduced; isolated interval-excess arithmetic reproduced at `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`; same-coordinate value-set count reproduced at `threads/05-arithmetic-tail/reproduction-htilde-value-set-count-a5.md` | elementary interval-excess sum proved in `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean` as `aoyagiLemma5IntervalSize_excess_sum_Icc`; same-coordinate value-set wrapper/count proved in `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` as `aoyagiHtildeIntervalValueSetNat_card_of_lt`, `aoyagiHtildeIntervalValueSetNat_card`, and `aoyagiHtildeIntervalValueSetNat_excess_sum_Icc`; full order-count theorem still blocked | interval-excess arithmetic checked by xhigh `Confucius the 5th` and Lean-scouted by xhigh `Maxwell the 5th`, review `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`; value-set count checked by xhigh `Plato the 5th`, final landed review pending; full Lemma 5 review still blocked |
 | Notation translation to repo DLN dimensions | A6 | Aoyagi PDF pp. 8-9 | source inventory | pending | translation theorem TBD; open | pending |
 
+## Latest A2 Update
+
+The Aoyagi Theorem 3 triangular endpoint-multiplier wrapper has landed.  The
+new Lean names are `lowerUnitriangular_mul_fromBlocks_one_zero_indexed`,
+`ChartLocalSuffixState.step_L_eq_lowerUnitriangular`,
+`ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular`,
+`ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal`,
+`productReduction_chartLocal_suffixChain_triangularBlockDiagonal_indexed`, and
+`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-triangular-block-diagonal.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-triangular-block-diagonal.md`.
+
+This proves the existing fixed-base product-reduction certificate can be read
+in the Aoyagi form
+
+```text
+[I 0; F3 I] * total * [I F2; 0 I] = [Ctop 0; 0 D],
+```
+
+with determinant-unit triangular factors and proof witness `F2 = -S.B`.  It is
+still not chart coverage from source rank hypotheses, exact-rank openness,
+Aoyagi Lemma 1, analytic ideal transport, regular-coordinate RLCT bookkeeping,
+normal crossings, or an RLCT consequence.
+
 ## Latest A5 Update
 
 The Lemma 4 same-coordinate bridge has landed in
