@@ -1294,6 +1294,20 @@ theorem case2PostPivotRows_eq_empty_of_prefixMin_current_eq
     case2PostPivotRows n S J = ∅ :=
   case2PostPivotRows_eq_empty_of_le (by omega)
 
+/-- Current-prefix row exhaustion forces the next displayed Case 2
+continuation bound to fail.
+
+This is the row-exhausted terminal side.  It does not assert actual next-width
+exhaustion, so it does not empty the post-pivot column range. -/
+theorem case2_not_next_cont_of_prefixMin_current_eq
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hrow : prefixMinNat n S = J + 1) :
+    ¬ J + 2 ≤ prefixMinNat n (S + 1) := by
+  intro hnext
+  have hle : prefixMinNat n (S + 1) ≤ J + 1 := by
+    exact le_trans (prefixMinNat_succ_le n hS) (by omega)
+  omega
+
 theorem case2PostPivotCols_eq_empty_of_width_next_eq
     {n : ℕ → ℕ} {S J : ℕ} (h : n (S + 1) = J + 1) :
     case2PostPivotCols n S J = ∅ :=
@@ -11015,6 +11029,24 @@ def case2DisplayedSourceTerminalOriginalRows
     Matrix (case2SourceTerminalRowIndex J) τ R :=
   fun i a ↦ C i.1 a
 
+/-- Source terminal rows with the transported pivot row written explicitly.
+
+Rows `1,...,J` are original source rows.  Row `J+1` is the top row of the
+transported following factor `Q⁻¹ C`, including any post-pivot column
+correction.  This is formula-level terminal data, not source chart
+production. -/
+def case2DisplayedSourceTerminalTransportedRows
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    Matrix (case2SourceTerminalRowIndex J) τ R :=
+  fun i a ↦
+    if i.1 = J + 1 then
+      case2DisplayedPaperCprimeTop n hS hcont residual C () a
+    else
+      C i.1 a
+
 /-- A supplied terminal matrix equal to the old source rows and surviving
 pivot row is exactly the source-row terminal `C'` candidate.
 
@@ -11064,6 +11096,27 @@ theorem case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_of_width_nex
       (case2DisplayedPaperCprimeTop_apply_of_width_next_eq
         n hS hcont hwidth residual C a).symm
 
+/-- The source-row terminal `C'` candidate is the explicit transported-row
+terminal matrix. -/
+theorem case2DisplayedSourceTerminalCprimeCandidate_eq_transportedRows
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C =
+      case2DisplayedSourceTerminalTransportedRows n hS hcont residual C := by
+  refine
+    case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
+      n hS hcont residual C
+      (case2DisplayedSourceTerminalTransportedRows n hS hcont residual C) ?_ ?_
+  · intro i a
+    have hne : i.1 ≠ J + 1 := by
+      have hi_le : i.1 ≤ J := (Finset.mem_Icc.mp i.2).2
+      omega
+    simp [case2DisplayedSourceTerminalTransportedRows, hne]
+  · intro a
+    simp [case2DisplayedSourceTerminalTransportedRows]
+
 /-- Supplied bridge data identifying a terminal source matrix with the
 source-row terminal `C'` candidate.
 
@@ -11098,6 +11151,28 @@ theorem cprimeCandidate_eq
       bridge.Cterm :=
   case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow
     n hS hcont residual C bridge.Cterm bridge.oldRow bridge.pivotRow
+
+/-- The explicit transported-row terminal matrix supplies a terminal `C'`
+bridge.
+
+This constructor records the formula-level matrix whose last row is the top
+row of `Q⁻¹ C`.  It does not identify that row with the original source row
+unless a separate actual-width column-exhaustion theorem is available. -/
+def of_transportedRows
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    SuppliedTerminalCprimeBridge n hS hcont residual C where
+  Cterm := case2DisplayedSourceTerminalTransportedRows n hS hcont residual C
+  oldRow := by
+    intro i a
+    have hne : i.1 ≠ J + 1 := by
+      have hi_le : i.1 ≤ J := (Finset.mem_Icc.mp i.2).2
+      omega
+    simp [case2DisplayedSourceTerminalTransportedRows, hne]
+  pivotRow := by
+    intro a
+    simp [case2DisplayedSourceTerminalTransportedRows]
 
 /-- Actual-width column exhaustion supplies a terminal `C'` bridge whose
 terminal matrix is the original source following rows `1,...,J+1`.
@@ -12111,6 +12186,134 @@ theorem exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProd
         rw [bridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul
           (case2DisplayedSourceOldTopWeight pre) hstop (post.weight (J + 1))
           (sourceSuffixProduct κ Ctail S hSuffix)]
+
+/-- Terminal-prefix-row stopped source old-top/source suffix theorem in the
+current-prefix row-exhausted branch.
+
+The row-exhaustion hypothesis supplies the stopped-continuation proof used to
+index terminal prefix rows.  It does not assert actual next-width exhaustion
+and does not simplify the transported pivot row to the original source row. -/
+theorem exists_sourceOldTopSuffix_entryIdeal_eq_prefixProduct_of_rowExhausted
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (hrow : prefixMinNat n S = J + 1)
+    (residual : ℕ × ℕ → R)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          (case2DisplayedSourceTerminalProductPrefixCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            n data.stage_pos data.continuation
+            (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)
+            (post.weight (J + 1)) residual C
+            (sourceSuffixProduct κ Ctail S hSuffix)) :=
+  data.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont
+    κ hSuffix
+    (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)
+    residual C Ctail
+
+/-- Current-prefix row-exhausted source old-top/source suffix theorem,
+rewritten through the explicit transported-row terminal matrix.
+
+The last row of the terminal matrix is the top row of `Q⁻¹ C`; in a
+wide-next row-exhausted branch this row may include genuine post-pivot column
+correction terms. -/
+theorem exists_sourceOldTopSuffix_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (hrow : prefixMinNat n S = J + 1)
+    (residual : ℕ × ℕ → R)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeightPrefixCandidate
+              (case2DisplayedSourceOldTopWeight pre)
+              n data.continuation
+              (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)
+              (post.weight (J + 1)) *
+            (case2DisplayedSourceTerminalTransportedRows n data.stage_pos
+              data.continuation residual C).submatrix
+              (case2SourceTerminalRowEquivPrefixOfNotNext n data.continuation
+                (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)).symm
+              id) * sourceSuffixProduct κ Ctail S hSuffix) :=
+  data.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont
+    κ hSuffix
+    (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)
+    residual C Ctail
+    (SuppliedTerminalCprimeBridge.of_transportedRows
+      (n := n) (S := S) (J := J)
+      (hS := data.stage_pos) (hcont := data.continuation)
+      (residual := residual) (C := C))
 
 /-- The displayed source-coordinate chart map has the selected variable as a
 transformed finite-center value. -/

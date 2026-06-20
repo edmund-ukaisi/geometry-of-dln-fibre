@@ -139,10 +139,12 @@ on the session's original cwd.
    identifies the terminal `C'` candidate with the original source rows
    `1..J+1`, constructs `SuppliedTerminalCprimeBridge` from those rows, and
    specializes the relabelled old-top/source-suffix theorem to them. Next A4
-   target: handle the remaining non-column-exhausted stopped frontier, or
-   build fuller chart-production boundary data beyond this actual-width
-   subcase. Do not transport Case 2 gap/tail invariants without separately
-   checking their shifted
+   target: build fuller chart-production boundary data beyond these
+   terminal-prefix wrappers. The row-exhausted branch is now separated:
+   `prefixMinNat n S=J+1` supplies stopped continuation and an explicit
+   transported-row terminal matrix, whose pivot row remains the top row of
+   `Q^-1 C` with possible column corrections. Do not transport Case 2
+   gap/tail invariants without separately checking their shifted
    thresholds. If downstream suffix rewrites become noisy, add source-level
    empty/peel lemmas for `sourceSuffixProduct`.
 2. Product reduction repair beyond the landed chart-local and entry-ideal

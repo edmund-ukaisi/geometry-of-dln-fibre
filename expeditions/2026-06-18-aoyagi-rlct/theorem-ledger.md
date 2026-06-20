@@ -1587,6 +1587,31 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-current-prefix-row-exhaustion-a4.md`.
 
+Latest A4 update: the Case 2 row-exhausted transported terminal bridge has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are `case2_not_next_cont_of_prefixMin_current_eq`,
+`Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalTransportedRows`,
+`Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalCprimeCandidate_eq_transportedRows`,
+`Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.of_transportedRows`,
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSuffix_entryIdeal_eq_prefixProduct_of_rowExhausted`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSuffix_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`.
+This checkpoint uses current-prefix row exhaustion `prefixMinNat n S=J+1` to
+derive failed next continuation and restates the stopped source old-top/source
+suffix theorem with the terminal-prefix product.  It also names the explicit
+transported-row terminal matrix: rows `1..J` are original source rows, while
+row `J+1` is the top row of `Q^-1 C`, including any post-pivot column
+correction.  It does not assert actual next-width exhaustion, original-row
+equality for the pivot row, `(S+1,0)` recurrence/exponent relabel, chart
+production, coverage, Jacobian arithmetic, normal crossings/RLCT,
+termination, transition invariance, automatic Case 2 gap/tail transport, or
+printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-row-exhausted-transported-terminal-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-row-exhausted-transported-terminal.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-row-exhausted-transported-terminal-a4.md`.
+
 Latest A4 update: the Case 2 source old-top/suffix specialization has landed
 in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
 are `case2SourceOldTopRowIndex`, `case2DisplayedSourceOldTopWeight`,

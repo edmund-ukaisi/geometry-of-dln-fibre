@@ -1443,6 +1443,13 @@ No such claim is formalisation-ready until both fields are filled.
   stopped source old-top/source suffix theorem in source-row and prefix-row
   form. It does not construct
   source-produced `C'^(S+1)`.
+  The row-exhausted branch now has a separate Lean wrapper:
+  `prefixMinNat n S=J+1` forces failed next continuation, and the source
+  old-top/source suffix theorem is restated with terminal-prefix rows and with
+  an explicit transported-row terminal matrix.  In that matrix, row `J+1` is
+  the top row of `Q^-1 C`, including possible post-pivot column corrections;
+  this row is not identified with the original source row unless the separate
+  actual-width hypothesis `n(S+1)=J+1` is available.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

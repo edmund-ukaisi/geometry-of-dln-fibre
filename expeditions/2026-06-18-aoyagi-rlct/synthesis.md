@@ -1539,6 +1539,12 @@ the relabelled old-top/source-suffix theorem to those rows.  The remaining
 bridge-construction obligation is therefore for the non-column-exhausted
 stopped frontier or for fuller chart-production data beyond this actual-width
 subcase.
+The row-exhausted side is now also separated.  Current-prefix exhaustion
+`prefixMinNat n S=J+1` proves stopped continuation and gives terminal-prefix
+source old-top/source suffix wrappers, but its explicit terminal matrix has
+row `J+1` equal to the transported top row of `Q^-1 C`, not generally the
+original source row.  This keeps the post-pivot column correction visible in
+wide-next cases and prevents importing the actual-width recurrence relabel.
 
 ## Drift guard
 

@@ -2504,3 +2504,25 @@ column-exhausted branch; it is not a theorem for failed next-continuation
 alone, prefix exhaustion, or the row-exhausted wide-next case, and it does not
 prove chart coverage, Jacobian arithmetic, normal crossings/RLCT, termination,
 transition invariance, or automatic Case 2 gap/tail transport.
+
+## 2026-06-20 Lean Case 2 row-exhausted transported terminal
+
+Reproduction:
+`reproduction-case2-row-exhausted-transported-terminal-a4.md`.
+Statement card:
+`statement-card-a4-case2-row-exhausted-transported-terminal.md`.
+Review artifact:
+`review-case2-row-exhausted-transported-terminal-a4.md`.
+
+Lean now records the other stopped side without collapsing it to the
+actual-width case.  Current-prefix row exhaustion
+`prefixMinNat n S=J+1` forces failed next continuation, so the existing
+terminal-prefix product theorem can be consumed directly in that branch.
+
+The checkpoint also names an explicit transported-row terminal matrix.  Rows
+`1..J` are original source rows, while row `J+1` is the top row of `Q^-1 C`.
+This matrix supplies `SuppliedTerminalCprimeBridge`, and the row-exhausted
+source old-top/source suffix theorem is rewritten through its terminal-prefix
+submatrix.  In wide-next row-exhausted cases, this last row may include the
+post-pivot column correction sum; no original-row equality or `(S+1,0)`
+recurrence relabel is claimed.
