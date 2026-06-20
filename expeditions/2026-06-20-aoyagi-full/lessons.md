@@ -215,3 +215,18 @@ hyps didn't encode it.
   Fubini — light, one-citation-clean, and the chart-form (core=monomial, nonzero-a.e.+measurable) dodges both
   levers by construction. Lesson: pick the statement the proof can actually reach cheaply, matched to the
   use-site (per-chart in R1), rather than the most general abstract form.
+
+## 2026-06-20 — RLCT lower bound needs MULTIPLICITY control, not codimension (R1, pre-execution catch)
+
+The RLCT-from-resolution UPPER bound (`rlctAt ≤ ½ min codim`) comes from one chart (the binding divisor on
+the min stratum) — cheap. The LOWER bound (`≥`) is where the work concentrates, and the tempting "every
+divisor ratio = ½·codim" shortcut is FALSE: the divisor ratio is `(h_E+1)/(2k_E)` and depends on F's VANISHING
+ORDER k_E, NOT the center's codim. Two decorrelated counterexamples: `rlctAt(x^{2k}) = 1/(2k) < ½·codim=1/2`;
+`(x²+y²)²` (sum of squares, Z={0} codim 2) has `rlctAt=1/2 ≠ ½·codim=1` (squaring doubles the order). So the
+real lower-bound obligation is **multiplicity control** — prove `h_E+1 ≥ k_E·(min codim)` for EVERY divisor of
+a COMPLETE resolution. For a regular-sequence center (multiplicity 1 ⟹ k_E=1) it reduces to `½·codim`, but
+that must be PROVEN per-divisor, not shortcut. Plus the cover/exhaustiveness (the resolution must be complete —
+an incomplete chart family overestimates the RLCT by missing a worse divisor). Lesson: for any "RLCT =
+½·codim"-style claim, the codim gives the UPPER bound cheaply; the LOWER bound needs vanishing-order
+(multiplicity) control over a complete resolution — never shortcut the lower bound from codim. (Caught by pp +
+Codex BEFORE R1 execution — the same "surface it early" discipline as the additivity finding.)

@@ -200,6 +200,17 @@ gap-class is RECURRING across the analytic rungs — caught reliably by the proo
   holds is codim=Mval exactly, which is all the mechanism needs).
 - **Codex correction adopted:** prefix-stratum partition right for the VALUE but too coarse for a literal
   atlas (charts refine by full rank-pattern); R1↔Adm is VALUE-level, NOT a chart bijection.
+- **R1 LOWER BOUND + complete decomposition (pp, done) — MULTIPLICITY-CONTROL finding (pre-execution catch):**
+  UPPER (≤ ½ min Mval) = ONE binding-divisor chart (cheap, L1-reuse). LOWER (≥ ½ min Mval) needs the FULL
+  cover + a sharp finding: **the lower bound CANNOT come from codim alone** — the divisor ratio `(h_E+1)/(2k_E)`
+  depends on F's VANISHING ORDER k_E, not codim (counterexamples: `rlctAt(x^{2k})=1/(2k)<½·codim`; `(x²+y²)²`:
+  1/2≠1). So **R1.2 = MULTIPLICITY CONTROL** (`h_E+1 ≥ k_E·min Mval` per divisor), HOLDS for our core via
+  regular-sequences⟹k_E=1 but PROVEN per-divisor, NOT a codim shortcut. DECOMPOSITION (execution-ready): R1.1
+  chart family[L1] + R1.2 multiplicity[NEW] + R1.3 codim=Mval[thread-03] + R1.4 Fubini-per-chart + R1.5
+  S1.1-min-over-cover + R1.6 cover/exhaustiveness[NEW] + R1.7 S2. NEW lifts = R1.2 + R1.6 (the real lower-bound
+  work). Route: complete explicit resolution + per-divisor monomial check (one-citation-clean); SoS+codim DEAD.
+  Subtleties: strata-not-components (Z=⋃S(t)); local-vs-global codim (origin sees min Mval); properness (w/ S1.1).
+  pp+fm EXECUTE when S1.1+Fubini land (close); R1.2 first.
 - **DECISION R3b** (self-contained, one-citation). R3a (cite LR `rlct=codim/2`, arXiv:2411.19920) OUT:
   violates one-citation scope (codim = THE new content) + Aoyagi-independence. Surfaced to operator as
   informational/override-able.
@@ -229,8 +240,13 @@ ROUTE-GAP found (proof attempt, again): card step-3 "per-c lower bound" was the 
 (cleanCore NOT monotone in widths — `[1,2,4]`vs`[1,2,7]`: 2 vs −2; min_c/max_c refuted) — STATEMENT still
 correct+total, only the ROUTE needs reframing to: per-T bound on T's OWN breakpoint widths (via balancedSplit_min)
 + **PERM-INVARIANCE of lambdaCore** (`lambdaCore M = lambdaCore M∘σ`, ~200-line Adm-cone exchange) + sorted-M.
-pp reframing the card + VALIDATING the perm-invariance route before fm sinks ~250-350 lines. #19 OFF the
-headline path — fm doing the S1 WIRES (S1.1/S1.3/S1.4, critical-path) FIRST, then the #19 keystone.
+#19 OFF the headline path — fm doing the S1 WIRES (S1.1/S1.3/S1.4, critical-path) FIRST.
+**#19 keystone PARKED (decision d):** fm probed it — perm-invariance of lambdaCore is a MIN-LEVEL no-bijection
+wall (Adm cones + Mval-multisets genuinely DIFFER under σ — 560/1700 & 1140/1700; holds only AT the min ⟹
+multi-hundred-line explicit minimizer characterization, no slick transport). OFF-headline-path (headline uses
+aoyagiLambda's min-def, closes sorry-free WITHOUT #19's proof). So: genuine STATEMENT = the bedrock win; the
+proof is a ROADMAPPED documented sorry (dedicated tide later if spare capacity). fm → critical-path (S1 wires
+→ R1 execution + L2/D1) instead.
 
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
