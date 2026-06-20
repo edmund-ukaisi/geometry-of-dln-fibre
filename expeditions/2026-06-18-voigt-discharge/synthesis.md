@@ -478,3 +478,33 @@ scratch-verified). **= FRONT A (in progress).**
 2. **Geometry half:** Front B de-risks L2b★. If bounded → build L3 (5–7) + L2b + assembly + L7 (all with
    `[CharZero k]`). If L2b★ is a genuine multi-week fibre-dimension sub-library → SURFACE to operator with
    a decision-grade roadmap (grind-it vs scoped-CITE for that one submersion step).
+
+## 2026-06-20 (cont.) — L6.1-general CLOSED; L2b★ de-risked → AG half is a sub-expedition
+
+**L6.1-general (thread 27) — FULLY CLOSED.** `nonsplitMove_intervalDirectSum_mem_closure` (non-split §4
+headline) + `rankPattern_splice_cross` (crossing-rank crux) landed (reviewer PASS). Both split AND non-split
+covers now have the per-move degeneration headline ⟹ **L6.4 is unblocked.** Caveat carried: the headline's
+orbit base is left-associated `dirSum (dirSum M_{[a,e]} M_{[c,b]}) (idS rest)` (= `Lup` up to a `dirSum`
+re-association, not defeq to right-nested `intervalDirectSum Lup`) — L6.4 needs an explicit assoc/reindex
+bridge.
+
+**L2b★ de-risk (thread 30) — VERDICT: bounded SUB-EXPEDITION (~4 modules, route c).** The "explicit
+stabilizer collapses it" hunch REFUTED. Both routes reduce to ONE theorem Mathlib v4.29 lacks: **Jacobian
+rank ⟹ transcendence-degree bound** (`affine_image_dim_le_const_jacobianRank`, via Kähler differentials of
+the image function field, char-0-essential). Target `orbitPullback_dim_le_finrank_range_delta`. Mathlib has
+NEITHER fibre-dim NOR `ringKrullDim=trdeg`. (2,2,2) identity `dim O_M = dimG − dim Stab = finrank(range δ⁰)`
+checks exactly (codims 3,4 match landed witnesses). **`[CharZero k]` enters ONLY at L2b★/L7** (char-p
+counterexample `𝔾ₐ↷𝔸¹` `t·x=x+tᵖ`) — must be added to `OrbitCodim.lean`'s L7/L2b theorems; everything else
+(L6, L0, L4d, L2a, M3, the `(C,θ)` engine) stays char-free. Swing risk 4→7 if the Kähler API is thin.
+
+**DECISION (controller):** the de-risk fires the operator-surface kill-condition (AG half = genuine new AG
+sub-library, not "small holes"; + a CharZero scope refinement on the geometric-codim headline). **Plan:**
+1. **CLOSE the L6 layer first** (in-mandate, unambiguous, completes the first half): L6.2c (chain assembly:
+   extremal-cell existence + descent step + `Φ`-induction ⟹ `s≤r → BoxMoveChain r s`) → L6.4 (compose chain
+   + per-move degeneration ⟹ `orbitRankLocus M ⊆ Ō_M`, combine with L6.3 easy ⊆ ⟹ `vanishingIdeal Z_M =
+   vanishingIdeal O_M`; handle the assoc bridge) → L1 (primeness from O_M irreducible). Deliverable:
+   **Abeasis–Del Fra `orbitRankLocus M = Ō_M` + its primeness, ZERO-CITED, char-free** — the first half done.
+2. **THEN SURFACE** a consolidated checkpoint to the operator: L6 half complete; AG half = bounded
+   sub-expedition (L2b★ ~4–7 [new Jacobian-rank⟹trdeg theorem] + L3 ~5–7 [homogeneous-space smoothness via
+   Spec detour] + assembly), `[CharZero k]` scope refinement. Recommend driving it to completion (in-mandate),
+   flag the scope-surprise + CharZero for ratification, offer scope options.
