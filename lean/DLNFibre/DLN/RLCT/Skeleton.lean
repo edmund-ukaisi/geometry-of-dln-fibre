@@ -437,7 +437,7 @@ block-normal rank-`r` chain whose product is `B`). The existence obligation behi
 `Nonempty` FALSE; it is also what makes `M⁽ˢ⁾ = H⁽ˢ⁾ − r` (in `aoyagiLambda`) non-truncating. -/
 theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     Nonempty {w : Params H // IsDeepLayers H r B w} := by
   sorry
 
@@ -452,15 +452,15 @@ ONE constructed witness gives the lowest proof surface with zero over-claim and 
 lemma. -/
 noncomputable def deepestPoint (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) : Params H :=
-  (Classical.choice (deepestPoint_exists H r B hB hr)).1
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : Params H :=
+  (Classical.choice (deepestPoint_exists H r B hB hr hL)).1
 
 /-- The constructed `deepestPoint` is a deepest-layers point (in particular, in the fibre). -/
 theorem deepestPoint_isDeep (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
-    IsDeepLayers H r B (deepestPoint H r B hB hr) :=
-  (Classical.choice (deepestPoint_exists H r B hB hr)).2
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    IsDeepLayers H r B (deepestPoint H r B hB hr hL) :=
+  (Classical.choice (deepestPoint_exists H r B hB hr hL)).2
 
 /-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at the deepest point**
 as the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
@@ -471,8 +471,8 @@ fibre, equalling the closed form at the deepest point.) Non-vacuous: equates the
 `deepestPoint` to the closed form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
-    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr) = ENNReal.ofReal (aoyagiLambda H r) := by
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) = ENNReal.ofReal (aoyagiLambda H r) := by
   sorry
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
@@ -485,9 +485,9 @@ replacing the under-claiming `∃ wstar ∈ optimalSet` that did not name the at
 equates the inf to the local RLCT at `deepestPoint`. -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v)
-      = rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr) := by
+      = rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) := by
   sorry
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
@@ -699,10 +699,10 @@ not the degenerate `⊤` over an empty set). Assembled: D1 (→ deepest point) �
 (→ charts) ▸ S2 (→ min ratio) ▸ A1 (→ clean form = `aoyagiLambda`). -/
 theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
   -- assemble: D1 (⨅ = rlctAt at the constructed deepestPoint) ▸ L2 (= closed form there).
-  rw [deepest_point_reduction H r B hB hr]
-  exact product_reduction H r B hB hr
+  rw [deepest_point_reduction H r B hB hr hL]
+  exact product_reduction H r B hB hr hL
 
 end DLNFibre.DLN.RLCT
