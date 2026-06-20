@@ -248,7 +248,13 @@ aoyagiLambda's min-def, closes sorry-free WITHOUT #19's proof). **THEN UN-PARKED
 cleanCore depends only on the width MULTISET (Σm², Σm symmetric), so #19 needs NO global perm-invariance — a
 LOCAL achiever analysis (T* breakpoint-multiset = sortedSmallest, via multiset-symmetry) + the per-T lower
 bound (balancedSplit_min, DONE) suffices. ~200 lines, perm-invariance-FREE (avoids the wall, not solves it),
-3900/3900. So #19 is now a clean bounded build. fm sequence: wire S1.1+S1.4 → #19 route B → R1/L2/D1
+3900/3900. **pp VALIDATED + reframed (a1-route-reframe.md):** perm-inv = COROLLARY of the sorted-form
+characterization (`lambdaCore M = lambdaCore (sort M)`), NOT proven via the Adm-cone bijection (saves the
+beast). Residual hardness = the SMALLEST-WIDTHS-FORCING sub-lemma (on sorted M the minimizer's breakpoint
+widths = the ℓ*+1 smallest, FORCED over every T via the `(M^S−H)` factors) — MUST be per-T-over-Adm-cone, NOT
+a widths-extremum (exactly where the false min_c lived; the trap). UPPER (achiever) + LOWER (per-T
+balanced-split + forcing). fm executing route B. So #19 is now a clean bounded build. fm sequence: wire
+S1.1+S1.4 → #19 route B → R1/L2/D1
 (critical-path beats off-path as Fubini lands for R1). S1 STATE (trunk @b6eaa80): S1Transport 0-sorry (S1.1
 ready), S1Local 1-sorry (S1.4 ready; S1.3 pending fm-2's push of its proof), S1Additive 0 (Fubini pending).
 
