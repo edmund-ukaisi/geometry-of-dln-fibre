@@ -4214,6 +4214,20 @@ theorem weightedPivotClearedBlock_zero_mul_verticalBlock
   · simp [verticalBlock]
   · simp [verticalBlock]
 
+/-- Multiplying a cleared pivot block by a split following factor keeps the
+pivot row and multiplies the lower-right block by the following tail.  This is
+finite block algebra only, not a transition theorem. -/
+theorem weightedPivotClearedBlock_mul_verticalBlock
+    {ρ κ τ R : Type*} [CommRing R] [Fintype κ]
+    (D : Matrix ρ κ R) (Ctop : Matrix Unit τ R) (Ctail : Matrix κ τ R) :
+    weightedPivotClearedBlock D * verticalBlock Ctop Ctail =
+      verticalBlock Ctop (D * Ctail) := by
+  rw [weightedPivotClearedBlock, fromBlocks_mul_verticalBlock]
+  ext i j
+  rcases i with (_ | i)
+  · simp [verticalBlock]
+  · simp [verticalBlock]
+
 section ColumnOperationBlocks
 
 variable {R ρ κ τ : Type*} [CommRing R] [Fintype κ] [DecidableEq κ]
@@ -10240,6 +10254,55 @@ theorem case2DisplayedPaperCprime_eq_verticalBlock
   ext i t
   rcases i with i | i <;> rfl
 
+/-- The displayed Case 2 lower-right cleared block, reindexed onto the next
+same-stage residual row/column domains `(S,J+1)`.
+
+This is the candidate lower-right residual block for the continuing branch as
+supplied finite data.  It does not assert chart production, recurrence
+post-data, or a transition invariant. -/
+noncomputable def case2DisplayedPostPivotResidualBlock
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) R :=
+  (pivotFirstD
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedPaperDchart n hS hcont residual) -
+      pivotFirstX
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual) *
+        pivotFirstY
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual)).submatrix
+    (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm
+    (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm
+
+/-- The displayed Case 2 transported following-factor tail, reindexed onto the
+next same-stage residual column domain `(S,J+1)`.
+
+This is supplied following-product data for the continuing branch; it is the
+tail of `C' = Q^-1 C`, not the original following factor. -/
+noncomputable def case2DisplayedPostPivotFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    Matrix (Case2ResidualColIndex n S (J + 1)) τ R :=
+  (case2DisplayedPaperCprimeTail n hS hcont residual C).submatrix
+    (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm id
+
+/-- The next same-stage residual center is nonempty under the continuing
+Case 2 bound.  This only records the branch condition for the supplied
+post-pivot data. -/
+theorem case2DisplayedPostPivotResidualBlock_nonempty_of_next
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1)) :
+    (case2ResidualBlockPivotEntries n S (J + 1)).Nonempty :=
+  (case2ResidualBlockPivotEntries_succ_nonempty_iff_next_cont n hS).2 hnext
+
 /-- Aoyagi's displayed Case 2 cleared block
 `D''' = blockdiag(1, D - x*y)` in pivot-first coordinates. -/
 def case2DisplayedPaperDppp
@@ -10262,6 +10325,65 @@ def case2DisplayedPaperDppp
           (case2DisplayedPivotRow n hS hcont)
           (case2DisplayedPivotCol n hS hcont)
           (case2DisplayedPaperDchart n hS hcont residual))
+
+/-- The lower rows of `D''' * C'`, reindexed to the next same-stage residual
+row domain, are the supplied post-pivot residual block times the supplied
+post-pivot following-factor tail.
+
+This is finite matrix reindexing and block multiplication only.  It does not
+produce chart recurrence/exponent post-data, chart coverage, transition
+invariance, Jacobian arithmetic, normal crossings, RLCT extraction, arbitrary
+pivot coverage, or the terminal `(S+1,0)` relabel. -/
+theorem case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    (case2DisplayedPaperDppp n hS hcont residual *
+        case2DisplayedPaperCprime n hS hcont residual C).submatrix
+        (fun i ↦
+          Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2DisplayedPostPivotFollowingFactor n hS hcont residual C := by
+  rw [case2DisplayedPaperCprime_eq_verticalBlock]
+  rw [case2DisplayedPaperDppp]
+  rw [weightedPivotClearedBlock_mul_verticalBlock]
+  change
+    (((pivotFirstD
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedPaperDchart n hS hcont residual) -
+          pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedPaperDchart n hS hcont residual) *
+            pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedPaperDchart n hS hcont residual)) *
+        case2DisplayedPaperCprimeTail n hS hcont residual C).submatrix
+        (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2DisplayedPostPivotFollowingFactor n hS hcont residual C)
+  rw [case2DisplayedPostPivotResidualBlock, case2DisplayedPostPivotFollowingFactor]
+  exact
+    (Matrix.submatrix_mul_equiv
+      (pivotFirstD
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual) -
+        pivotFirstX
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedPaperDchart n hS hcont residual) *
+          pivotFirstY
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedPaperDchart n hS hcont residual))
+      (case2DisplayedPaperCprimeTail n hS hcont residual C)
+      (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm
+      (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm
+      (Equiv.refl τ)).symm
 
 /-- The paper block `D''` is exactly the post-`Q` pivot block for the
 displayed Case 2 source-coordinate chart. -/

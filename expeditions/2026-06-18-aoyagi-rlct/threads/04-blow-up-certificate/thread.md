@@ -2945,3 +2945,37 @@ This is finite domain bookkeeping only.  It does not produce the next residual
 matrix, chart coverage, transition invariance, transition regularity, Jacobian
 arithmetic, terminal-product principalization, normal crossings, RLCT
 extraction, or the terminal `(S+1,0)` relabel branch.
+
+## 2026-06-20 Lean Case 2 post-pivot next-block adapter
+
+Reproduction:
+`reproduction-case2-post-pivot-next-block-a4.md`.
+Statement card:
+`statement-card-a4-case2-post-pivot-next-block.md`.
+Review artifact:
+`review-case2-post-pivot-next-block-a4.md`.
+
+Lean now names the continuing displayed Case 2 post-pivot lower-right block
+and transported following-factor tail over the next same-stage residual
+domains:
+
+```text
+weightedPivotClearedBlock_mul_verticalBlock
+case2DisplayedPostPivotResidualBlock
+case2DisplayedPostPivotFollowingFactor
+case2DisplayedPostPivotResidualBlock_nonempty_of_next
+case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct
+```
+
+The residual block is the cleared lower-right expression `D - x*y`, reindexed
+from displayed pivot complements to `Case2ResidualRowIndex n S (J+1)` and
+`Case2ResidualColIndex n S (J+1)`.  The following factor is the tail of
+`C' = Q^-1 C`, reindexed to the same next column domain.  The product theorem
+says that the lower rows of `D''' * C'`, under the same row reindexing, are
+exactly the product of these two supplied next-block objects.
+
+This is a continuing-branch supplied-data adapter only.  It does not prove
+chart production, recurrence/exponent post-data from coordinates, chart
+coverage, coordinate regularity, transition invariance, Jacobian arithmetic,
+normal crossings, RLCT extraction, arbitrary pivot coverage, the terminal
+`(S+1,0)` relabel branch, or repair of the printed Case 2 vector mismatch.

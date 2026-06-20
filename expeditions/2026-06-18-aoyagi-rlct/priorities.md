@@ -486,12 +486,15 @@ on the session's original cwd.
    post-pivot domain handoff is now Lean-proved: the lower-right
    row/column/entry domains after deleting `(J+1,J+1)` are exactly the next
    `(S,J+1)` residual-center domains, and nonemptiness is equivalent to
-   `J+2<=prefixMinNat n (S+1)`. Next A4 target: reproduce and formalise a
-   narrow continuing-branch source-coordinate wrapper that packages the
-   displayed post-pivot lower-right block as supplied next residual/following
-   product data. Keep recurrence/exponent post-data, chart coverage,
-   coordinate regularity, Jacobian arithmetic, transition invariance,
-   terminal relabeling, and arbitrary pivot coverage out of that wrapper until
+   `J+2<=prefixMinNat n (S+1)`. The displayed Case 2 post-pivot next-block
+   adapter is now also Lean-proved: the cleared lower-right block `D - x*y`
+   and tail of `C' = Q^-1 C` are reindexed as supplied next same-stage
+   residual/following-factor data, and the lower rows of `D''' * C'` are their
+   product. Next A4 target: connect this adapter to the existing corrected
+   recurrence/exponent post-data boundary for the displayed source chart, but
+   keep chart production, automatic post-data from coordinates, chart
+   coverage, coordinate regularity, Jacobian arithmetic, transition
+   invariance, terminal relabeling, and arbitrary pivot coverage out until
    each is separately reproduced and proved.
 6. Repair A5 arithmetic reproduction. The isolated endpoint-corrected Lemma 3
    integer numerator arithmetic is now Lean-proved in `ArithmeticTail.lean`:

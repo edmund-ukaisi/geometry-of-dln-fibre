@@ -1822,12 +1822,22 @@ next residual row/column index types.  This is only finite domain bookkeeping:
 it does not produce the next residual matrix or following product, prove chart
 coverage or coordinate regularity, compute Jacobians, prove normal
 crossings/RLCT, prove termination or transition invariance, or handle the
-terminal `(S+1,0)` relabel branch.  The next A4 target should be
-chart-production-adjacent data for the continuing branch: reproduce and then
-formalise a narrow source-coordinate wrapper that turns the displayed
-post-pivot lower-right block into supplied `(S,J+1)` residual/following-product
-data, with recurrence/exponent post-data and coverage still explicit until
-they are separately proved.
+terminal `(S+1,0)` relabel branch.
+
+The continuing-branch next-block adapter is now also Lean-proved.  It names
+the displayed cleared lower-right block `D - x*y` over the next same-stage
+residual row/column types, names the tail of `C' = Q^-1 C` over the next
+same-stage column type, and proves that the lower rows of `D''' * C'` are the
+product of these two supplied objects.  The only continuing-branch
+nonemptiness claim uses the explicit bound
+`J+2 <= prefixMinNat n (S+1)`.  This is still supplied finite matrix algebra
+and reindexing: it does not prove chart production, recurrence/exponent
+post-data from coordinates, coverage, coordinate regularity, Jacobian
+arithmetic, transition invariance, arbitrary pivot coverage, terminal
+relabeling, normal crossings/RLCT, or printed-vector repair.  Next A4 target:
+connect this supplied next-block adapter to the existing corrected
+recurrence/exponent post-data boundary for the displayed source chart, still
+without claiming atlas coverage or automatic post-data for arbitrary pivots.
 
 ## Drift guard
 

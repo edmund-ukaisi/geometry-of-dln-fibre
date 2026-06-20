@@ -612,6 +612,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-post-pivot-domain-handoff-a4.md`
 	  and
 	  `threads/04-blow-up-certificate/review-case2-post-pivot-domain-handoff-a4.md`.
+	  Reproduction/check of the Case 2 post-pivot next-block adapter is saved
+	  at
+	  `threads/04-blow-up-certificate/reproduction-case2-post-pivot-next-block-a4.md`
+	  and
+	  `threads/04-blow-up-certificate/review-case2-post-pivot-next-block-a4.md`.
 	  Review of the Case 2 stage-relabel domain audit is saved at
 	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 	  Review of the Case 2 displayed cleared-block vacuity corollary is saved
@@ -1290,6 +1295,17 @@ No such claim is formalisation-ready until both fields are filled.
   residual matrix, chart coverage, transition regularity or invariance,
   Jacobian arithmetic, terminal-product principalization, normal crossings,
   RLCT extraction, or the terminal `(S+1,0)` relabel branch.
+  The post-pivot next-block adapter now packages the displayed continuing
+  branch as supplied same-stage data: the lower-right cleared block `D - x*y`
+  is reindexed to the next `(S,J+1)` residual row/column types, the tail of
+  `C' = Q^-1 C` is reindexed to the next column type, and the lower rows of
+  `D''' * C'` are proved equal to their product. The nonemptiness theorem
+  exposes the continuing bound `J+2 <= prefixMinNat n (S+1)`. This is finite
+  block algebra and reindexing only; it does not prove chart production,
+  recurrence/exponent post-data from coordinates, chart coverage, coordinate
+  regularity, transition invariance, Jacobian arithmetic, normal crossings,
+  RLCT extraction, arbitrary pivot coverage, terminal relabeling, or repair of
+  the printed vector mismatch.
   The stage-relabel domain audit proves the finite side split
   `prefixMinNat n S = J+1 ∨ n(S+1)=J+1`, the old `(S,J+1)` to `(S+1,0)`
   introduced-label equality under actual-width exhaustion `n(S+1)=J+1`, and

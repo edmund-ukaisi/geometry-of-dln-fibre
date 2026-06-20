@@ -1407,6 +1407,27 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-post-pivot-domain-handoff-a4.md`.
 
+Latest A4 update: the Case 2 post-pivot next-block adapter has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`weightedPivotClearedBlock_mul_verticalBlock`,
+`case2DisplayedPostPivotResidualBlock`,
+`case2DisplayedPostPivotFollowingFactor`,
+`case2DisplayedPostPivotResidualBlock_nonempty_of_next`, and
+`case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct`. This
+checkpoint reindexes the displayed cleared lower-right block `D - x*y` and
+the transported following-factor tail of `C' = Q^-1 C` onto the next
+same-stage `(S,J+1)` residual row/column domains, and proves the lower rows of
+`D''' * C'` equal the product of those supplied next-block objects. It does
+not prove chart production, recurrence/exponent post-data from coordinates,
+chart coverage or coordinate regularity, Jacobians, normal crossings/RLCT,
+termination or transition invariance, arbitrary pivot coverage, terminal
+`(S+1,0)` relabeling, or printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-next-block-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-post-pivot-next-block.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-post-pivot-next-block-a4.md`.
+
 Latest A4 update: the Case 2 stage-relabel domain audit has landed in
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
 `introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq`,
