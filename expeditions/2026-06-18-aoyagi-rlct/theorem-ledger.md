@@ -1067,6 +1067,37 @@ transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-concrete-update-boundary-a4.md`.
 
+Latest A4 update: the Case 2 displayed source-chart map has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`case2DisplayedSourceChartMap`, `case2DisplayedSourceNormalizedMap`,
+`case2DisplayedSourceChartMap_pivot`,
+`case2DisplayedSourceNormalizedMap_pivot`,
+`case2DisplayedSourceChartMap_of_ne`,
+`case2DisplayedSourceChartMap_eq_mul_normalized`,
+`case2Displayed_source_pair_eq_pivot_iff`,
+`case2DisplayedSourceSubstitutionBlock`,
+`case2DisplayedSourceNormalizedBlock`,
+`case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix`,
+`case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix`,
+`case2DisplayedSourceSubstitutionBlock_eq_mul_normalized`,
+`case2DisplayedSource_diagonal_mul_substitutionBlock_pivotFirst`,
+`case2DisplayedSourceNormalizedBlock_mul_sourceFollowingFactor`,
+`case2DisplayedSourceTransportedFollowingFactor`,
+`case2DisplayedSourceTransportedFollowingFactor_eq_displayedTransportedFollowingFactor`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_sourceChartMap`.
+This checkpoint names Aoyagi's displayed top-left source substitution and
+proves that its residual-block restriction is the already-proved displayed
+selected-entry block API. It also rewrites the supplied displayed `Q/P`
+identity in source-chart block names. It does not prove chart coverage,
+non-top-left source-displayed formulas, chart-produced recurrence/exponent
+post-data, coordinate regularity, Jacobians, normal crossings/RLCT,
+termination, a transition invariant, or repair of the printed vector mismatch.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-source-chart-map.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-source-chart-map-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

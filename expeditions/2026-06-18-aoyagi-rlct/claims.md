@@ -493,10 +493,14 @@ No such claim is formalisation-ready until both fields are filled.
   also proved: the selected variable in the displayed residual block is moved
   into updated row weights before applying `Q/P`. The finite source-block
   tail lift is also proved: already-proved displayed residual-tail identities
-  can be reattached below unchanged top rows. Missing arbitrary pivot charts,
-  the full source blockdiag identity beyond this unchanged-top lift, full
-  polynomial-coordinate chart construction, and proof that the chart produces
-  the supplied recurrence post-state remain open. The printed `b'_i` versus
+  can be reattached below unchanged top rows. The displayed top-left
+  source-coordinate chart map is now named and proved to restrict to the
+  existing displayed selected-entry block API, with a source-chart version of
+  the supplied displayed `Q/P` identity. Missing arbitrary pivot charts,
+  non-top-left source-displayed formulas, the full source blockdiag identity
+  beyond the unchanged-top lift, full polynomial-coordinate chart construction,
+  and proof that the chart produces the supplied recurrence post-state remain
+  open. The printed `b'_i` versus
   standalone-`u` ambiguity is now handled only by the single-count
   normalization: the selected variable is absorbed into successor weights, not
   counted a second time outside them. Termination and boundary cases remain
@@ -531,6 +535,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-supplied-source-selected-pivot-boundary-a4.md`.
 	  Review of the Case 2 displayed concrete-update boundary is saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-concrete-update-boundary-a4.md`.
+	  Review of the Case 2 displayed source-chart map is saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-map-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -848,6 +854,27 @@ No such claim is formalisation-ready until both fields are filled.
   `(J+1,J+1)`, makes pivot membership follow from continuation, and chooses the
   concrete recurrence successor `pre.case2Succ u` and corrected selected-label
   exponent post-data.
+  Added the displayed top-left Case 2 source-chart map:
+  `case2DisplayedSourceChartMap`, `case2DisplayedSourceNormalizedMap`,
+  `case2DisplayedSourceChartMap_pivot`,
+  `case2DisplayedSourceNormalizedMap_pivot`,
+  `case2DisplayedSourceChartMap_of_ne`,
+  `case2DisplayedSourceChartMap_eq_mul_normalized`,
+  `case2Displayed_source_pair_eq_pivot_iff`,
+  `case2DisplayedSourceSubstitutionBlock`,
+  `case2DisplayedSourceNormalizedBlock`,
+  `case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix`,
+  `case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix`,
+  `case2DisplayedSourceSubstitutionBlock_eq_mul_normalized`,
+  `case2DisplayedSource_diagonal_mul_substitutionBlock_pivotFirst`,
+  `case2DisplayedSourceNormalizedBlock_mul_sourceFollowingFactor`,
+  `case2DisplayedSourceTransportedFollowingFactor`,
+  `case2DisplayedSourceTransportedFollowingFactor_eq_displayedTransportedFollowingFactor`,
+  and
+  `Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_sourceChartMap`,
+  proving the source-coordinate displayed chart map, its residual-block
+  restriction to the existing displayed block API, its `u * normalised` form,
+  and the supplied displayed `Q/P` identity in source-chart names.
   Added selected-entry principalization/unit facts:
   `weightedPivotBlockRowOp_isUnit`,
   `weightedPivotBlockRowOp_det_isUnit`, `pivotQ_isUnit`,
@@ -1068,6 +1095,11 @@ No such claim is formalisation-ready until both fields are filled.
   keeps chart regularity, transition regularity, coordinate regularity,
   Jacobians, normal crossings, RLCT extraction, termination, and the full
   transition invariant open.
+  The displayed source-chart map proves only source-coordinate substitution
+  and residual-block restriction for the top-left displayed pivot. It does not
+  prove non-top-left formulas, chart coverage, chart-produced recurrence or
+  exponent post-data, coordinate regularity, Jacobians, normal crossings, RLCT,
+  termination, or a full transition invariant.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

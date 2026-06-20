@@ -289,10 +289,15 @@ on the session's original cwd.
    The displayed top-left boundary is now also Lean-proved, with continuation
    supplying `(J+1,J+1)` pivot membership and a concrete constructor choosing
    `post = pre.case2Succ u` and the corrected selected-label exponent update.
-   Next A4 target: prove chart-produced recurrence/exponent post-data for the
-   displayed chart, or formalize the source-coordinate displayed chart
-   construction. Do not claim non-top-left source-order formulas, atlas
-   coverage, or full transition invariance from the supplied boundary.
+   The source-coordinate displayed chart construction is now also Lean-proved
+   as an adapter layer: the displayed source map sends `(J+1,J+1)` to `u`,
+   off-pivot residual entries to `u` times residual coordinates, restricts to
+   the existing displayed selected-entry block API, and rewrites the supplied
+   displayed `Q/P` theorem in source-chart block names. Next A4 target: either
+   prove chart-produced recurrence/exponent post-data for this displayed chart,
+   or build the next honest source-order/atlas scaffold. Do not claim
+   non-top-left source-order formulas, atlas coverage, or full transition
+   invariance from this adapter.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

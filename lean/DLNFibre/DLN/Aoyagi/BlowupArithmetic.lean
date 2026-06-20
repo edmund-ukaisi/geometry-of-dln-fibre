@@ -8512,6 +8512,222 @@ theorem case2Displayed_diagonal_mul_substitutionMatrix_mul_followingFactor
   rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
   rfl
 
+/-- Source-coordinate selected-entry chart for Aoyagi's displayed top-left
+Case 2 pivot.  It names the elementary substitution
+`d_(J+1,J+1) = u` and `d_ij = u * residual_ij` off the pivot; the
+`n`, `hS`, and `hcont` arguments keep the source chart aligned with the
+residual-block domain used below. -/
+def case2DisplayedSourceChartMap
+    (n : ℕ → ℕ) {S J : ℕ} (_hS : 1 ≤ S)
+    (_hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) (p : ℕ × ℕ) : R :=
+  selectedEntryChartMap (J + 1, J + 1) u residual p
+
+/-- Source-coordinate normalised residual map for the displayed top-left
+Case 2 pivot. -/
+def case2DisplayedSourceNormalizedMap
+    (n : ℕ → ℕ) {S J : ℕ} (_hS : 1 ≤ S)
+    (_hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (p : ℕ × ℕ) : R :=
+  selectedEntryNormalizedMap (J + 1, J + 1) residual p
+
+@[simp] theorem case2DisplayedSourceChartMap_pivot
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1) = u := by
+  simp [case2DisplayedSourceChartMap]
+
+@[simp] theorem case2DisplayedSourceNormalizedMap_pivot
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    case2DisplayedSourceNormalizedMap n hS hcont residual (J + 1, J + 1) = 1 := by
+  simp [case2DisplayedSourceNormalizedMap]
+
+theorem case2DisplayedSourceChartMap_of_ne
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) {p : ℕ × ℕ}
+    (hp : p ≠ (J + 1, J + 1)) :
+    case2DisplayedSourceChartMap n hS hcont u residual p = u * residual p := by
+  exact selectedEntryChartMap_of_ne u residual hp
+
+/-- The source chart map is the selected variable times the normalised source map. -/
+theorem case2DisplayedSourceChartMap_eq_mul_normalized
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) (p : ℕ × ℕ) :
+    case2DisplayedSourceChartMap n hS hcont u residual p =
+      u * case2DisplayedSourceNormalizedMap n hS hcont residual p :=
+  rfl
+
+omit [CommRing R] in
+/-- Equality with the source pair `(J+1,J+1)` is the same as equality with
+the displayed pivot in the residual-block subtype product. -/
+theorem case2Displayed_source_pair_eq_pivot_iff
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (i : Case2ResidualRowIndex n S J)
+    (j : Case2ResidualColIndex n S J) :
+    (i.1, j.1) = (J + 1, J + 1) ↔
+      (i, j) =
+        (case2DisplayedPivotRow n hS hcont,
+         case2DisplayedPivotCol n hS hcont) := by
+  constructor
+  · intro h
+    rcases Prod.ext_iff.mp h with ⟨hi, hj⟩
+    apply Prod.ext
+    · exact Subtype.ext hi
+    · exact Subtype.ext hj
+  · intro h
+    cases h
+    rfl
+
+/-- Source-coordinate displayed Case 2 substituted block, restricted to
+residual rows and columns. -/
+def case2DisplayedSourceSubstitutionBlock
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  fun i j ↦ case2DisplayedSourceChartMap n hS hcont u residual (i.1, j.1)
+
+/-- Source-coordinate displayed Case 2 normalised block, restricted to
+residual rows and columns. -/
+def case2DisplayedSourceNormalizedBlock
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
+  fun i j ↦ case2DisplayedSourceNormalizedMap n hS hcont residual (i.1, j.1)
+
+/-- The source-coordinate normalised block agrees with the displayed
+block-indexed normalised matrix after restricting source residuals. -/
+theorem case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    case2DisplayedSourceNormalizedBlock n hS hcont residual =
+      case2DisplayedNormalizedMatrix n hS hcont (case2SourceResidualBlock residual) := by
+  ext i j
+  by_cases hsrc : (i.1, j.1) = (J + 1, J + 1)
+  · have hsub := (case2Displayed_source_pair_eq_pivot_iff n hS hcont i j).1 hsrc
+    simp [case2DisplayedSourceNormalizedBlock, case2DisplayedSourceNormalizedMap,
+      case2DisplayedNormalizedMatrix, selectedEntryNormalizedMatrix,
+      selectedEntryNormalizedMap, hsrc, hsub]
+  · have hsub :
+        (i, j) ≠
+          (case2DisplayedPivotRow n hS hcont,
+           case2DisplayedPivotCol n hS hcont) := by
+      intro h
+      exact hsrc ((case2Displayed_source_pair_eq_pivot_iff n hS hcont i j).2 h)
+    simp [case2DisplayedSourceNormalizedBlock, case2DisplayedSourceNormalizedMap,
+      case2DisplayedNormalizedMatrix, selectedEntryNormalizedMatrix,
+      selectedEntryNormalizedMap, case2SourceResidualBlock, hsrc, hsub]
+
+/-- The source-coordinate substituted block agrees with the displayed
+block-indexed selected-entry substitution after restricting source residuals. -/
+theorem case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2DisplayedSourceSubstitutionBlock n hS hcont u residual =
+      case2DisplayedSubstitutionMatrix n hS hcont u (case2SourceResidualBlock residual) := by
+  ext i j
+  by_cases hsrc : (i.1, j.1) = (J + 1, J + 1)
+  · have hsub := (case2Displayed_source_pair_eq_pivot_iff n hS hcont i j).1 hsrc
+    simp [case2DisplayedSourceSubstitutionBlock, case2DisplayedSourceChartMap,
+      case2DisplayedSubstitutionMatrix, selectedEntrySubstitutionMatrix, selectedEntryChartMap,
+      hsrc, hsub]
+  · have hsub :
+        (i, j) ≠
+          (case2DisplayedPivotRow n hS hcont,
+           case2DisplayedPivotCol n hS hcont) := by
+      intro h
+      exact hsrc ((case2Displayed_source_pair_eq_pivot_iff n hS hcont i j).2 h)
+    simp [case2DisplayedSourceSubstitutionBlock, case2DisplayedSourceChartMap,
+      case2DisplayedSubstitutionMatrix, selectedEntrySubstitutionMatrix, selectedEntryChartMap,
+      case2SourceResidualBlock, hsrc, hsub]
+
+/-- The source-coordinate substituted block is the selected variable times
+the source-coordinate normalised block. -/
+theorem case2DisplayedSourceSubstitutionBlock_eq_mul_normalized
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2DisplayedSourceSubstitutionBlock n hS hcont u residual =
+      fun i j ↦ u * case2DisplayedSourceNormalizedBlock n hS hcont residual i j :=
+  rfl
+
+/-- Source-coordinate displayed Case 2 source-variable transport after
+putting the displayed pivot row and column first. -/
+theorem case2DisplayedSource_diagonal_mul_substitutionBlock_pivotFirst
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (weight : Case2ResidualRowIndex n S J → R)
+    (residual : ℕ × ℕ → R) :
+    (diagonal weight * case2DisplayedSourceSubstitutionBlock n hS hcont u residual).submatrix
+        (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+        (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont)) =
+      weightedPivotDiagonal
+        (u * weight (case2DisplayedPivotRow n hS hcont))
+        (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          u * weight i.1) *
+        pivotFirstMatrix
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedSourceNormalizedBlock n hS hcont residual) := by
+  rw [case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix]
+  rw [case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix]
+  exact case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst n hS hcont u weight
+    (case2SourceResidualBlock residual)
+
+/-- Multiplying the source-coordinate normalised block by a source following
+factor is the existing pivot-first following-factor identity after restriction. -/
+theorem case2DisplayedSourceNormalizedBlock_mul_sourceFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    pivotFirstMatrix
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedSourceNormalizedBlock n hS hcont residual) *
+      case2DisplayedSourceFollowingFactor n hS hcont C =
+    (case2DisplayedSourceNormalizedBlock n hS hcont residual *
+      case2SourceFollowingFactor C).submatrix
+      (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont)) id := by
+  rw [case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix]
+  exact case2DisplayedNormalizedMatrix_mul_followingFactor n hS hcont
+    (case2SourceResidualBlock residual) (case2SourceFollowingFactor C)
+
+/-- Source-coordinate displayed Case 2 transported following factor
+`Q⁻¹ C`, written using the source-coordinate normalised block. -/
+def case2DisplayedSourceTransportedFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  pivotQinv
+      (pivotFirstY
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedSourceNormalizedBlock n hS hcont residual)) *
+    case2DisplayedSourceFollowingFactor n hS hcont C
+
+/-- The source-coordinate transported following factor is the existing
+displayed transported following factor after source restriction. -/
+theorem case2DisplayedSourceTransportedFollowingFactor_eq_displayedTransportedFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedSourceTransportedFollowingFactor n hS hcont residual C =
+      case2DisplayedTransportedFollowingFactor n hS hcont
+        (case2SourceResidualBlock residual) (case2SourceFollowingFactor C) := by
+  rw [case2DisplayedSourceTransportedFollowingFactor, case2DisplayedTransportedFollowingFactor,
+    case2DisplayedSourceFollowingFactor]
+  rw [case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix]
+
 /-- Source-displayed Case 2 top-left `Q/P` identity with the following factor reindexed
 into pivot-first column coordinates. This is still local finite algebra, not chart coverage. -/
 theorem exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights
@@ -9000,6 +9216,52 @@ theorem sourceDisplayedQP_sourceCoordinates
     exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData
         hnew data.stage_pos data.continuation data.recurrencePost data.preCase2Gap
         (case2SourceResidualBlock residual) (case2SourceFollowingFactor C)
+
+/-- Source-coordinate displayed top-left Case 2 `Q/P` identity, rewritten in
+the source-chart block names.
+
+This is the same finite algebra as `sourceDisplayedQP_sourceCoordinates`;
+the substituted block, normalised block, and transported following factor are
+now the source-coordinate chart objects.  It still does not prove that the
+recurrence or exponent post-data are produced by an affine chart. -/
+theorem sourceDisplayedQP_sourceChartMap
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    let row := case2DisplayedPivotRow n data.stage_pos data.continuation
+    let col := case2DisplayedPivotCol n data.stage_pos data.continuation
+    let A :=
+      case2DisplayedSourceNormalizedBlock n data.stage_pos data.continuation residual
+    let Csrc := case2DisplayedSourceFollowingFactor n data.stage_pos data.continuation C
+    let Ctr :=
+      case2DisplayedSourceTransportedFollowingFactor n data.stage_pos data.continuation residual C
+    ∃ q : pivotComplement row → R,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSourceSubstitutionBlock n data.stage_pos data.continuation u
+              residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          Csrc =
+        (weightedPivotDiagonal (post.weight (J + 1))
+            (fun i : pivotComplement row ↦ post.weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A)) *
+          Ctr := by
+  simpa [case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix,
+    case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix,
+    case2DisplayedSourceTransportedFollowingFactor_eq_displayedTransportedFollowingFactor]
+    using data.sourceDisplayedQP_sourceCoordinates residual C
 
 end Case2DisplayedSuppliedChartFamilyBoundary
 

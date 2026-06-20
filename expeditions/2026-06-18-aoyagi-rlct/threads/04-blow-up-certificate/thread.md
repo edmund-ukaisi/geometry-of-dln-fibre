@@ -143,6 +143,36 @@ non-top-left source-displayed charts, coordinate regularity, Jacobians, normal
 crossings, RLCT extraction, termination, a full Case 2 transition invariant,
 or repair of the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed source-chart map
+
+Reproduction:
+`reproduction-case2-displayed-source-chart-map-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-source-chart-map.md`.
+Review artifact:
+`review-case2-displayed-source-chart-map-a4.md`.
+
+Lean now names the source-coordinate displayed top-left Case 2 chart map. The
+map sends `(J+1,J+1)` to the selected variable `u` and sends every other
+source residual-block entry to `u` times its residual coordinate. Restricting
+this source map to residual rows `J+1..M(S)` and actual-width residual columns
+`J+1..M^(S+1)` recovers the existing displayed selected-entry substitution
+matrix. The bridge theorem
+`case2Displayed_source_pair_eq_pivot_iff` handles the only dependent-index
+bookkeeping: equality of raw source pairs is equivalent to equality with the
+displayed pivot in residual-row/column subtype coordinates.
+
+The same checkpoint names the source normalised block, the source substituted
+block, and the source transported following factor `Q^-1 C`, then rewrites the
+displayed supplied boundary's `Q/P` identity in these source-chart block
+names.
+
+This is source-coordinate chart-map algebra only. It does not prove chart
+coverage, non-top-left source-displayed formulas, chart-produced recurrence or
+exponent post-data, coordinate regularity, Jacobians, normal crossings, RLCT
+extraction, termination, a full transition invariant, or repair of the printed
+Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

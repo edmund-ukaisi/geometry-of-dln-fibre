@@ -1180,6 +1180,25 @@ chart-family predicates remain supplied, and chart-produced post-data,
 coverage, coordinate regularity, Jacobians, normal crossings, RLCT extraction,
 termination, and the printed-vector mismatch remain open.
 
+The Case 2 displayed source-chart map is now Lean-proved. The new
+`case2DisplayedSourceChartMap` and `case2DisplayedSourceNormalizedMap` name
+Aoyagi's displayed top-left substitution in source coordinates:
+`(J+1,J+1)` maps to `u`, off-pivot residual entries map to `u` times their
+residual coordinate, and the normalised pivot is `1`. The restricted source
+blocks `case2DisplayedSourceSubstitutionBlock` and
+`case2DisplayedSourceNormalizedBlock` are proved equal to the existing
+displayed block-indexed substitution and normalised matrices after
+`case2SourceResidualBlock` restriction; the dependent bridge is
+`case2Displayed_source_pair_eq_pivot_iff`. The transported following factor
+`case2DisplayedSourceTransportedFollowingFactor` is proved to be the existing
+displayed `Q^-1 C` after source restriction, and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_sourceChartMap`
+rewrites the displayed supplied `Q/P` theorem in these source-chart names.
+This is a chart-map adapter only: no chart coverage, non-top-left formula,
+chart-produced recurrence/exponent post-data, coordinate regularity, Jacobian,
+normal crossings, RLCT extraction, termination, transition invariant, or
+printed-vector repair is proved.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
