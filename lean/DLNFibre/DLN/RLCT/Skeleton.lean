@@ -429,6 +429,67 @@ def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
   w ∈ optimalSet H B ∧ ∀ s : Fin L, (w s).rank = r
 
+/-- `[I_r|0] · [I_r;0] = I_r`: projection ∘ embedding (a left inverse) on `Fin r`. -/
+private theorem proj_emb_eq_one {N r : ℕ} (hrN : r ≤ N) :
+    (Matrix.of (fun (k : Fin r) (j : Fin N) => if (k : ℕ) = (j : ℕ) then (1 : ℝ) else 0))
+      * (Matrix.of (fun (j : Fin N) (k : Fin r) => if (j : ℕ) = (k : ℕ) then (1 : ℝ) else 0))
+    = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  ext k k'; simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]
+  rw [Finset.sum_eq_single (⟨k, by omega⟩ : Fin N)]
+  · show (if (k : ℕ) = ((⟨k, _⟩ : Fin N) : ℕ) then (1 : ℝ) else 0)
+        * (if ((⟨k, _⟩ : Fin N) : ℕ) = (k' : ℕ) then (1 : ℝ) else 0) = _
+    rw [Fin.val_mk, if_pos rfl, one_mul]
+    by_cases h : (k : ℕ) = (k' : ℕ)
+    · rw [if_pos h, if_pos (Fin.ext h)]
+    · rw [if_neg h, if_neg (fun he => h (by rw [he]))]
+  · intro b _ hb; rw [if_neg (fun he => hb (Fin.ext (by simpa using he.symm))), zero_mul]
+  · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- The `r×r`-identity-corner block `diag(E_r, 0)` factors as `[I_r;0] · [I_r|0]`. -/
+private theorem Dblock_factor {m n r : ℕ} :
+    (Matrix.of (fun (i:Fin m) (j:Fin n) => if (i:ℕ) = (j:ℕ) ∧ (i:ℕ) < r then (1:ℝ) else 0))
+      = (Matrix.of (fun (i : Fin m) (k : Fin r) => if (i : ℕ) = (k : ℕ) then (1 : ℝ) else 0))
+        * (Matrix.of (fun (k:Fin r) (j:Fin n) => if (k:ℕ) = (j:ℕ) then (1:ℝ) else 0)) := by
+  ext i j; simp only [Matrix.mul_apply, Matrix.of_apply]
+  by_cases hi : (i : ℕ) < r
+  · rw [Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]
+    · show (if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
+        = (if (i : ℕ) = ((⟨i, hi⟩ : Fin r) : ℕ) then (1 : ℝ) else 0)
+          * (if ((⟨i, hi⟩ : Fin r) : ℕ) = (j : ℕ) then (1 : ℝ) else 0)
+      rw [Fin.val_mk, if_pos rfl, one_mul]
+      by_cases hij : (i : ℕ) = (j : ℕ)
+      · rw [if_pos hij, if_pos ⟨hij, hi⟩]
+      · rw [if_neg hij, if_neg (fun h => hij h.1)]
+    · intro k _ hk
+      rw [if_neg (by simpa [Fin.ext_iff] using fun h => hk (Fin.ext h.symm)), zero_mul]
+    · intro h; exact absurd (Finset.mem_univ _) h
+  · rw [if_neg (by tauto), Finset.sum_eq_zero]; intro k _; rw [if_neg (by intro h; omega), zero_mul]
+
+/-- The `r×r`-identity-corner block has rank exactly `r` (when `r ≤ m, n`): `≤ r` from the
+`Dc · Dr` factorisation (`Dc` has `r` columns); `≥ r` because `Dc` has both a left inverse
+(`[I_r|0]·Dc = I_r`) and `Dc = (Dc·Dr)·[I_r;0]`, so `r = rank I_r ≤ rank Dc ≤ rank (Dc·Dr)`. -/
+private theorem Dblock_rank {m n r : ℕ} (hrm : r ≤ m) (hrn : r ≤ n) :
+    (Matrix.of (fun (i : Fin m) (j : Fin n) =>
+      if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)).rank = r := by
+  set Dc : Matrix (Fin m) (Fin r) ℝ := Matrix.of (fun i k => if (i:ℕ) = (k:ℕ) then (1:ℝ) else 0)
+  set Dr : Matrix (Fin r) (Fin n) ℝ := Matrix.of (fun k j => if (k:ℕ) = (j:ℕ) then (1:ℝ) else 0)
+  set Sec : Matrix (Fin n) (Fin r) ℝ := Matrix.of (fun j k => if (j:ℕ) = (k:ℕ) then (1:ℝ) else 0)
+  set DrM : Matrix (Fin r) (Fin m) ℝ := Matrix.of (fun k i => if (k:ℕ) = (i:ℕ) then (1:ℝ) else 0)
+  have hfac : (Matrix.of (fun (i : Fin m) (j : Fin n) =>
+      if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) = Dc * Dr := Dblock_factor
+  rw [hfac]
+  have hle : (Dc * Dr).rank ≤ r := le_trans (Matrix.rank_mul_le_left _ _)
+    (le_trans (Matrix.rank_le_card_width _) (by rw [Fintype.card_fin]))
+  have hDceq : (Dc * Dr) * Sec = Dc := by
+    rw [Matrix.mul_assoc, (proj_emb_eq_one hrn : Dr * Sec = 1), Matrix.mul_one]
+  have hge : r ≤ (Dc * Dr).rank := by
+    calc r = (1 : Matrix (Fin r) (Fin r) ℝ).rank := by rw [Matrix.rank_one, Fintype.card_fin]
+      _ = (DrM * Dc).rank := by rw [(proj_emb_eq_one hrm : DrM * Dc = 1)]
+      _ ≤ Dc.rank := Matrix.rank_mul_le_right _ _
+      _ = ((Dc * Dr) * Sec).rank := by rw [hDceq]
+      _ ≤ (Dc * Dr).rank := Matrix.rank_mul_le_left _ _
+  exact le_antisymm hle hge
+
 /-- The product of the all-zero parameter tuple is the zero matrix (for `L ≥ 1`, the recursion has a
 last layer `= 0` that zeroes the fold). -/
 private theorem prodAux_zero (H : Fin (L + 1) → ℕ) (k : ℕ) (hk : k + 1 < L + 1) :
