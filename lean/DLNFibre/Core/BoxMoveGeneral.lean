@@ -701,6 +701,249 @@ theorem submult_splice_cross (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i j : 
     submult_succ _ (splice a c e b lam) i b hib,
     submult_splice_below a c e b lam (i := i) (j := b.castSucc) hib le_rfl, Matrix.mul_assoc]
 
+/-! ## Rank brick lemmas (over a field) and block-matrix entry access -/
+
+/-- Over a field, a matrix of rank `0` is the zero matrix (its column span is `⊥`). -/
+theorem matrix_eq_zero_of_rank_eq_zero {m n : Type*} [Fintype m] [Fintype n]
+    (A : Matrix m n k) (h : A.rank = 0) : A = 0 := by
+  rw [Matrix.rank_eq_finrank_span_cols] at h
+  have hbot : Submodule.span k (Set.range A.col) = ⊥ := by
+    rw [Submodule.finrank_eq_zero] at h; exact h
+  rw [Submodule.span_eq_bot] at hbot
+  funext i j
+  have := congrFun (hbot _ ⟨j, rfl⟩) i
+  simpa [Matrix.col] using this
+
+/-- Over a field, a nonzero matrix has rank `≥ 1` (contrapositive of
+`matrix_eq_zero_of_rank_eq_zero`). -/
+theorem one_le_rank_of_ne_zero {m n : Type*} [Fintype m] [Fintype n]
+    (A : Matrix m n k) (h : A ≠ 0) : 1 ≤ A.rank := by
+  rcases Nat.eq_zero_or_pos A.rank with hr | hr
+  · exact absurd (matrix_eq_zero_of_rank_eq_zero A hr) h
+  · exact hr
+
+/-- Long–long entry of a reindexed block-diagonal: `(bd A B)(inl r)(inl s) = A r s`. -/
+theorem reindex_fromBlocks_inl_inl {a₁ a₂ b₁ b₂ : ℕ} (A : Matrix (Fin a₁) (Fin b₁) k)
+    (B : Matrix (Fin a₂) (Fin b₂) k) (r : Fin a₁) (s : Fin b₁) :
+    (Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks A 0 0 B))
+      (finSumFinEquiv (Sum.inl r)) (finSumFinEquiv (Sum.inl s)) = A r s := by
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+    Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]
+
+/-- Short–short entry of a reindexed block-diagonal: `(bd A B)(inr r)(inr s) = B r s`. -/
+theorem reindex_fromBlocks_inr_inr {a₁ a₂ b₁ b₂ : ℕ} (A : Matrix (Fin a₁) (Fin b₁) k)
+    (B : Matrix (Fin a₂) (Fin b₂) k) (r : Fin a₂) (s : Fin b₂) :
+    (Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks A 0 0 B))
+      (finSumFinEquiv (Sum.inr r)) (finSumFinEquiv (Sum.inr s)) = B r s := by
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+    Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]
+
+/-- Long–short (off-diagonal) entry of a reindexed block-diagonal is `0`. -/
+theorem reindex_fromBlocks_inl_inr {a₁ a₂ b₁ b₂ : ℕ} (A : Matrix (Fin a₁) (Fin b₁) k)
+    (B : Matrix (Fin a₂) (Fin b₂) k) (r : Fin a₁) (s : Fin b₂) :
+    (Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks A 0 0 B))
+      (finSumFinEquiv (Sum.inl r)) (finSumFinEquiv (Sum.inr s)) = 0 := by
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+    Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]
+
+/-- Short–long (off-diagonal) entry of a reindexed block-diagonal is `0`. -/
+theorem reindex_fromBlocks_inr_inl {a₁ a₂ b₁ b₂ : ℕ} (A : Matrix (Fin a₁) (Fin b₁) k)
+    (B : Matrix (Fin a₂) (Fin b₂) k) (r : Fin a₂) (s : Fin b₁) :
+    (Matrix.reindex finSumFinEquiv finSumFinEquiv (fromBlocks A 0 0 B))
+      (finSumFinEquiv (Sum.inr r)) (finSumFinEquiv (Sum.inl s)) = 0 := by
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+    Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]
+
+/-- The recombination edge on the long source strand carries `λ` (depends only on the column). -/
+theorem splice_edge_inl (a c e : Fin (N + 1)) (b : Fin N) (lam : k)
+    (r : Fin ((fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) b.succ))
+    (s : Fin (intervalDim a e b.castSucc)) :
+    splice (k := k) a c e b lam b r (finSumFinEquiv (Sum.inl s)) = lam := by
+  rw [splice, if_pos rfl, Equiv.symm_apply_apply]
+
+/-- The recombination edge on the short source strand carries `1` (depends only on the column). -/
+theorem splice_edge_inr (a c e : Fin (N + 1)) (b : Fin N) (lam : k)
+    (r : Fin ((fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) b.succ))
+    (s : Fin (intervalDim c b.castSucc b.castSucc)) :
+    splice (k := k) a c e b lam b r (finSumFinEquiv (Sum.inr s)) = 1 := by
+  rw [splice, if_pos rfl, Equiv.symm_apply_apply]
+
+/-! ## The crossing rank: the four entry/zero cases and the master `if`-formula
+
+For `i ≤ b.castSucc < b.succ ≤ j` the crossing product `above · recomb · below` (`submult_splice_cross`)
+has at most one row (the long target at `j`, since the short strand is `0`-dimensional past
+`b.castSucc`), so its rank is `≤ 1`. It is nonzero exactly when `j ≤ e` (the long target survives) and
+the recombination row reaches a nonzero column — the short strand (`c ≤ i`, value `1`) or the long
+strand (`a ≤ i` with `λ ≠ 0`). The two nonzero cases exhibit a witness entry; the two zero cases show
+`recomb · below = 0`. -/
+
+/-- Crossing nonzero, short strand (`c ≤ i`, `j ≤ e`): the witness entry `(long j, short i)` is `1`. -/
+theorem splice_cross_ne_zero_short (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i j : Fin (N + 1)}
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e)
+    (hib : i ≤ b.castSucc) (hbj : b.succ ≤ j)
+    (hci : c ≤ i) (hje : j ≤ e) :
+    (submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) b.succ j hbj
+      * splice (k := k) a c e b lam b
+      * submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) i b.castSucc hib)
+        ≠ 0 := by
+  have hae_bs : a ≤ b.succ := le_trans (le_of_lt (lt_of_lt_of_le hac hcb)) (Fin.castSucc_le_succ b)
+  have hdimj : intervalDim a e j = 1 := intervalDim_eq_one ⟨le_trans hae_bs hbj, hje⟩
+  have hdimi_short : intervalDim c b.castSucc i = 1 := intervalDim_eq_one ⟨hci, hib⟩
+  have hdimbs_long : intervalDim a e b.succ = 1 := intervalDim_eq_one ⟨hae_bs, le_trans hbj hje⟩
+  have hdimbc_short : intervalDim c b.castSucc b.castSucc = 1 := intervalDim_eq_one ⟨hcb, le_rfl⟩
+  set r₀ : Fin ((fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) j) :=
+    finSumFinEquiv (Sum.inl (Fin.cast hdimj.symm 0)) with hr₀
+  set s₀ : Fin ((fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) i) :=
+    finSumFinEquiv (Sum.inr (Fin.cast hdimi_short.symm 0)) with hs₀
+  intro hzero
+  have hentry := congrFun (congrFun hzero r₀) s₀
+  rw [Matrix.zero_apply, submult_dirSum, submult_dirSum,
+    submult_intervalModule_subset a e hbj hae_bs hje,
+    submult_intervalModule_subset c b.castSucc hib hci le_rfl] at hentry
+  rw [Matrix.mul_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type] at hentry
+  simp only [hr₀, hs₀, Matrix.mul_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type,
+    reindex_fromBlocks_inl_inl, reindex_fromBlocks_inl_inr, reindex_fromBlocks_inr_inl,
+    reindex_fromBlocks_inr_inr, splice_edge_inl, splice_edge_inr,
+    Matrix.zero_apply, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add,
+    Finset.sum_const, Finset.card_univ, Fintype.card_fin] at hentry
+  rw [hdimbc_short, hdimbs_long] at hentry
+  simp at hentry
+
+/-- Crossing nonzero, long strand (`λ ≠ 0`, `a ≤ i`, `j ≤ e`): the entry `(long j, long i)` is `λ`. -/
+theorem splice_cross_ne_zero_long (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i j : Fin (N + 1)}
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e)
+    (hib : i ≤ b.castSucc) (hbj : b.succ ≤ j)
+    (hlam : lam ≠ 0) (hai : a ≤ i) (hje : j ≤ e) :
+    (submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) b.succ j hbj
+      * splice (k := k) a c e b lam b
+      * submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) i b.castSucc hib)
+        ≠ 0 := by
+  have hae_bs : a ≤ b.succ := le_trans (le_of_lt (lt_of_lt_of_le hac hcb)) (Fin.castSucc_le_succ b)
+  have hdimj : intervalDim a e j = 1 := intervalDim_eq_one ⟨le_trans hae_bs hbj, hje⟩
+  have hbce : b.castSucc ≤ e := le_trans (Fin.castSucc_le_succ b) hbe
+  have hdimi_long : intervalDim a e i = 1 := intervalDim_eq_one ⟨hai, le_trans hib hbce⟩
+  have hdimbs_long : intervalDim a e b.succ = 1 := intervalDim_eq_one ⟨hae_bs, le_trans hbj hje⟩
+  have hdimbc_long : intervalDim a e b.castSucc = 1 := intervalDim_eq_one ⟨le_trans hai hib, hbce⟩
+  set r₀ : Fin ((fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) j) :=
+    finSumFinEquiv (Sum.inl (Fin.cast hdimj.symm 0)) with hr₀
+  set s₀ : Fin ((fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) i) :=
+    finSumFinEquiv (Sum.inl (Fin.cast hdimi_long.symm 0)) with hs₀
+  intro hzero
+  have hentry := congrFun (congrFun hzero r₀) s₀
+  rw [Matrix.zero_apply, submult_dirSum, submult_dirSum,
+    submult_intervalModule_subset a e hbj hae_bs hje,
+    submult_intervalModule_subset a e hib hai hbce] at hentry
+  rw [Matrix.mul_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type] at hentry
+  simp only [hr₀, hs₀, Matrix.mul_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type,
+    reindex_fromBlocks_inl_inl, reindex_fromBlocks_inl_inr, reindex_fromBlocks_inr_inl,
+    reindex_fromBlocks_inr_inr, splice_edge_inl, splice_edge_inr,
+    Matrix.zero_apply, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add,
+    Finset.sum_const, Finset.card_univ, Fintype.card_fin] at hentry
+  rw [hdimbs_long, hdimbc_long] at hentry
+  simp at hentry
+  exact hlam hentry
+
+/-- Crossing zero, `λ = 0` strand killed and `¬ c ≤ i` (short column absent): `recomb · below = 0`. -/
+theorem splice_recomb_below_zero_of_lam_zero (a c e : Fin (N + 1)) (b : Fin N)
+    {i j : Fin (N + 1)} (hib : i ≤ b.castSucc) (hbj : b.succ ≤ j) (hnc : ¬ c ≤ i) :
+    splice (k := k) a c e b 0 b
+      * submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) i b.castSucc hib
+        = 0 := by
+  have hdimi_short : intervalDim c b.castSucc i = 0 := intervalDim_eq_zero (fun h ↦ hnc h.1)
+  rw [submult_dirSum]
+  funext r s
+  rw [Matrix.zero_apply, Matrix.mul_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type]
+  haveI : IsEmpty (Fin (intervalDim c b.castSucc i)) := by rw [hdimi_short]; infer_instance
+  simp only [splice_edge_inl, splice_edge_inr, zero_mul, one_mul,
+    reindex_fromBlocks_inl_inl, reindex_fromBlocks_inl_inr, reindex_fromBlocks_inr_inl,
+    reindex_fromBlocks_inr_inr, Finset.sum_const_zero, add_zero, zero_add]
+  refine Finset.sum_eq_zero (fun x _ ↦ ?_)
+  obtain ⟨s', rfl⟩ := finSumFinEquiv.surjective s
+  rcases s' with sl | sr
+  · rw [reindex_fromBlocks_inr_inl]
+  · exact (‹IsEmpty (Fin (intervalDim c b.castSucc i))›.elim sr)
+
+/-- Crossing zero, both columns absent (`¬ a ≤ i`, `¬ c ≤ i`): the source dimension at `i` is `0`. -/
+theorem splice_recomb_below_zero_of_no_long (a c e : Fin (N + 1)) (b : Fin N) (lam : k)
+    {i j : Fin (N + 1)} (hib : i ≤ b.castSucc) (hbj : b.succ ≤ j) (hnc : ¬ c ≤ i) (hna : ¬ a ≤ i) :
+    splice (k := k) a c e b lam b
+      * submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) i b.castSucc hib
+        = 0 := by
+  have hdimi_short : intervalDim c b.castSucc i = 0 := intervalDim_eq_zero (fun h ↦ hnc h.1)
+  have hdimi_long : intervalDim a e i = 0 := intervalDim_eq_zero (fun h ↦ hna h.1)
+  funext r s
+  have hd0 : (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) i = 0 := by
+    simp only [hdimi_long, hdimi_short]
+  haveI : IsEmpty (Fin ((fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) i)) := by
+    rw [hd0]; infer_instance
+  exact this.elim s
+
+open scoped Classical in
+/-- **The crossing rank pattern.** For `i ≤ b.castSucc < b.succ ≤ j` (non-split regime
+`a < c ≤ b.castSucc`, `b.succ ≤ e`): `r_{ij}(splice λ) = 1` iff `j ≤ e` and the recombination row
+reaches a nonzero column (`(λ ≠ 0 ∧ a ≤ i) ∨ c ≤ i`), else `0`. The crossing block has `≤ 1` row, so
+rank `≤ [j ≤ e]` (upper bound via `rankPattern_dirSum`); the nonzero/zero split is the four cases. -/
+theorem rankPattern_splice_cross (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i j : Fin (N + 1)}
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e)
+    (hib : i ≤ b.castSucc) (hbj : b.succ ≤ j) :
+    rankPattern (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (splice (k := k) a c e b lam) i j ((hib.trans (Fin.castSucc_le_succ b)).trans hbj)
+      = if j ≤ e ∧ ((lam ≠ 0 ∧ a ≤ i) ∨ c ≤ i) then 1 else 0 := by
+  classical
+  rw [rankPattern, submult_splice_cross a c e b lam hib hbj]
+  set M := submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+      (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) b.succ j hbj
+    * splice a c e b lam b
+    * submult (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) i b.castSucc hib with hM
+  have hae_bs : a ≤ b.succ := le_trans (le_of_lt (lt_of_lt_of_le hac hcb)) (Fin.castSucc_le_succ b)
+  have hbcj : b.castSucc < j := lt_of_lt_of_le b.castSucc_lt_succ hbj
+  have hub : M.rank ≤ (if j ≤ e then 1 else 0) := by
+    have hle : M.rank ≤ rankPattern (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) b.succ j hbj := by
+      rw [hM, rankPattern, Matrix.mul_assoc]
+      apply Matrix.rank_mul_le_left
+    rw [rankPattern_dirSum, rankPattern_intervalModule, rankPattern_intervalModule] at hle
+    have hsnd : ¬ (c ≤ b.succ ∧ j ≤ b.castSucc) := fun h ↦ absurd (lt_of_lt_of_le hbcj h.2)
+      (lt_irrefl (b.castSucc : Fin (N + 1)))
+    rw [if_neg hsnd, add_zero] at hle
+    by_cases hje : j ≤ e
+    · rw [if_pos ⟨hae_bs, hje⟩] at hle; rw [if_pos hje]; exact hle
+    · rw [if_neg (fun h ↦ hje h.2)] at hle; rw [if_neg hje]; exact hle
+  by_cases hcond : j ≤ e ∧ ((lam ≠ 0 ∧ a ≤ i) ∨ c ≤ i)
+  · rw [if_pos hcond]
+    obtain ⟨hje, hor⟩ := hcond
+    refine le_antisymm (by rw [if_pos hje] at hub; exact hub) ?_
+    rcases hor with ⟨hlam, hai⟩ | hci
+    · refine one_le_rank_of_ne_zero M ?_
+      rw [hM]
+      exact splice_cross_ne_zero_long a c e b lam hac hcb hbe hib hbj hlam hai hje
+    · refine one_le_rank_of_ne_zero M ?_
+      rw [hM]
+      exact splice_cross_ne_zero_short a c e b lam hac hcb hbe hib hbj hci hje
+  · rw [if_neg hcond]
+    by_cases hje : j ≤ e
+    · have hcond' : ¬ ((lam ≠ 0 ∧ a ≤ i) ∨ c ≤ i) := fun h ↦ hcond ⟨hje, h⟩
+      have hnc : ¬ c ≤ i := fun h ↦ hcond' (Or.inr h)
+      have hla : lam = 0 ∨ ¬ a ≤ i := by
+        by_cases hlam : lam = 0
+        · exact Or.inl hlam
+        · exact Or.inr (fun hai ↦ hcond' (Or.inl ⟨hlam, hai⟩))
+      have hMzero : M = 0 := by
+        rw [hM, Matrix.mul_assoc]
+        rcases hla with rfl | hna
+        · rw [splice_recomb_below_zero_of_lam_zero a c e b hib hbj hnc, Matrix.mul_zero]
+        · rw [splice_recomb_below_zero_of_no_long a c e b lam hib hbj hnc hna, Matrix.mul_zero]
+      rw [hMzero, Matrix.rank_zero]
+    · rw [if_neg hje] at hub
+      exact Nat.le_zero.mp hub
+
 section Witness
 
 /-! ## Non-vacuity witnesses
