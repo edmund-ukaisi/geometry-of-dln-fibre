@@ -23,11 +23,11 @@ the linked box move recombines.
 
 **Proof (the telescope, Codex-cleaned over the thread-26 block argument).** For row-start `a`, the
 `e`-fibre of `A` is the half-open interval `[J, q_a)` where `q_a` is the **first bad column** (least
-`q ≥ J` with `g i q = 0` for some `i ∈ [a,I]`); `q_a` is nondecreasing in `a`, and the `a`-fibre is
-nonempty exactly on `[α, I]` (`α` the least `a ≤ I` with column `J` positive on `[a,I]`). The inner
-telescope over `[J,q_a)` collapses `diff g` to a column difference `D_a(J) − D_a(q_a)`; the outer
-row telescope of `D_a(J)` gives `g I J` (`g (α−1) J = 0`), and the `D_a(q_a)` remainder is `≥ 0` by
-an adjacent Abel shift (`g I q_I = 0`; at each step either `q_a = q_{a+1}` or `g a q_a = 0`).
+`q ≥ J` with `g i q = 0` for some `i ∈ [a,I]`); `q_a` is nondecreasing in `a`. The inner telescope
+over `[J,q_a)` collapses `diff g` to a column difference `D_a(J) − D_a(q_a)` (empty-fibre rows,
+`q_a = J`, contribute `0`), summed over **all** `a ∈ [0,I]`. The outer row telescope of `D_a(J)`
+gives `g I J` (`g (−1) J = 0`), and the `D_a(q_a)` remainder is `≤ 0` by an adjacent Abel shift
+(boundary `g (−1)(q_0) = 0`, `g I q_I = 0`; at each step either `q_a = q_{a+1}` or `g a q_a = 0`).
 
 **Typeclass.** Pure `ℤ`-combinatorics; no field, no representation theory. **Dependency rule:**
 `Core` only (imports `RankPattern` for `diff` / `Supported`).
