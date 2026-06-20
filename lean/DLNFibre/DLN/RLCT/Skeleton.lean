@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.Rlct
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 import Mathlib.MeasureTheory.Function.Jacobian
+import Mathlib.Data.Fin.Tuple.Sort
 
 /-!
 # `DLNFibre.DLN.RLCT.Skeleton` — the goal skeleton (the contract)
@@ -429,17 +430,110 @@ def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
   w ∈ optimalSet H B ∧ ∀ s : Fin L, (w s).rank = r
 
-/-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin; general `r` ⟹ a
-block-normal rank-`r` chain whose product is `B`). The existence obligation behind the constructed
-`deepestPoint`; named `sorry` (statements-first, like the rung lemmas). The hypothesis
-`hr : ∀ s, r ≤ H s` is the well-definedness + nonemptiness domain: without it the fibre can be empty
-(e.g. `H=(3,1,3), r=2`: a width-1 middle layer caps the product rank at `1 < 2`), making this
-`Nonempty` FALSE; it is also what makes `M⁽ˢ⁾ = H⁽ˢ⁾ − r` (in `aoyagiLambda`) non-truncating. -/
+/-- `[I_r|0] · [I_r;0] = I_r`: projection ∘ embedding (a left inverse) on `Fin r`. -/
+private theorem proj_emb_eq_one {N r : ℕ} (hrN : r ≤ N) :
+    (Matrix.of (fun (k : Fin r) (j : Fin N) => if (k : ℕ) = (j : ℕ) then (1 : ℝ) else 0))
+      * (Matrix.of (fun (j : Fin N) (k : Fin r) => if (j : ℕ) = (k : ℕ) then (1 : ℝ) else 0))
+    = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  ext k k'; simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]
+  rw [Finset.sum_eq_single (⟨k, by omega⟩ : Fin N)]
+  · show (if (k : ℕ) = ((⟨k, _⟩ : Fin N) : ℕ) then (1 : ℝ) else 0)
+        * (if ((⟨k, _⟩ : Fin N) : ℕ) = (k' : ℕ) then (1 : ℝ) else 0) = _
+    rw [Fin.val_mk, if_pos rfl, one_mul]
+    by_cases h : (k : ℕ) = (k' : ℕ)
+    · rw [if_pos h, if_pos (Fin.ext h)]
+    · rw [if_neg h, if_neg (fun he => h (by rw [he]))]
+  · intro b _ hb; rw [if_neg (fun he => hb (Fin.ext (by simpa using he.symm))), zero_mul]
+  · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- The `r×r`-identity-corner block `diag(E_r, 0)` factors as `[I_r;0] · [I_r|0]`. -/
+private theorem Dblock_factor {m n r : ℕ} :
+    (Matrix.of (fun (i:Fin m) (j:Fin n) => if (i:ℕ) = (j:ℕ) ∧ (i:ℕ) < r then (1:ℝ) else 0))
+      = (Matrix.of (fun (i : Fin m) (k : Fin r) => if (i : ℕ) = (k : ℕ) then (1 : ℝ) else 0))
+        * (Matrix.of (fun (k:Fin r) (j:Fin n) => if (k:ℕ) = (j:ℕ) then (1:ℝ) else 0)) := by
+  ext i j; simp only [Matrix.mul_apply, Matrix.of_apply]
+  by_cases hi : (i : ℕ) < r
+  · rw [Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]
+    · show (if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
+        = (if (i : ℕ) = ((⟨i, hi⟩ : Fin r) : ℕ) then (1 : ℝ) else 0)
+          * (if ((⟨i, hi⟩ : Fin r) : ℕ) = (j : ℕ) then (1 : ℝ) else 0)
+      rw [Fin.val_mk, if_pos rfl, one_mul]
+      by_cases hij : (i : ℕ) = (j : ℕ)
+      · rw [if_pos hij, if_pos ⟨hij, hi⟩]
+      · rw [if_neg hij, if_neg (fun h => hij h.1)]
+    · intro k _ hk
+      rw [if_neg (by simpa [Fin.ext_iff] using fun h => hk (Fin.ext h.symm)), zero_mul]
+    · intro h; exact absurd (Finset.mem_univ _) h
+  · rw [if_neg (by tauto), Finset.sum_eq_zero]; intro k _; rw [if_neg (by intro h; omega), zero_mul]
+
+/-- The `r×r`-identity-corner block has rank exactly `r` (when `r ≤ m, n`): `≤ r` from the
+`Dc · Dr` factorisation (`Dc` has `r` columns); `≥ r` because `Dc` has both a left inverse
+(`[I_r|0]·Dc = I_r`) and `Dc = (Dc·Dr)·[I_r;0]`, so `r = rank I_r ≤ rank Dc ≤ rank (Dc·Dr)`. -/
+private theorem Dblock_rank {m n r : ℕ} (hrm : r ≤ m) (hrn : r ≤ n) :
+    (Matrix.of (fun (i : Fin m) (j : Fin n) =>
+      if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)).rank = r := by
+  set Dc : Matrix (Fin m) (Fin r) ℝ := Matrix.of (fun i k => if (i:ℕ) = (k:ℕ) then (1:ℝ) else 0)
+  set Dr : Matrix (Fin r) (Fin n) ℝ := Matrix.of (fun k j => if (k:ℕ) = (j:ℕ) then (1:ℝ) else 0)
+  set Sec : Matrix (Fin n) (Fin r) ℝ := Matrix.of (fun j k => if (j:ℕ) = (k:ℕ) then (1:ℝ) else 0)
+  set DrM : Matrix (Fin r) (Fin m) ℝ := Matrix.of (fun k i => if (k:ℕ) = (i:ℕ) then (1:ℝ) else 0)
+  have hfac : (Matrix.of (fun (i : Fin m) (j : Fin n) =>
+      if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) = Dc * Dr := Dblock_factor
+  rw [hfac]
+  have hle : (Dc * Dr).rank ≤ r := le_trans (Matrix.rank_mul_le_left _ _)
+    (le_trans (Matrix.rank_le_card_width _) (by rw [Fintype.card_fin]))
+  have hDceq : (Dc * Dr) * Sec = Dc := by
+    rw [Matrix.mul_assoc, (proj_emb_eq_one hrn : Dr * Sec = 1), Matrix.mul_one]
+  have hge : r ≤ (Dc * Dr).rank := by
+    calc r = (1 : Matrix (Fin r) (Fin r) ℝ).rank := by rw [Matrix.rank_one, Fintype.card_fin]
+      _ = (DrM * Dc).rank := by rw [(proj_emb_eq_one hrm : DrM * Dc = 1)]
+      _ ≤ Dc.rank := Matrix.rank_mul_le_right _ _
+      _ = ((Dc * Dr) * Sec).rank := by rw [hDceq]
+      _ ≤ (Dc * Dr).rank := Matrix.rank_mul_le_left _ _
+  exact le_antisymm hle hge
+
+/-- The product of the all-zero parameter tuple is the zero matrix (for `L ≥ 1`, the recursion has a
+last layer `= 0` that zeroes the fold). -/
+private theorem prodAux_zero (H : Fin (L + 1) → ℕ) (k : ℕ) (hk : k + 1 < L + 1) :
+    prodAux H (fun _ => 0) (k + 1) hk = 0 := by
+  rw [prodAux]; convert Matrix.mul_zero _
+
+private theorem prod_zero (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) : prod H (fun _ => 0) = 0 := by
+  unfold prod
+  obtain ⟨k, hk⟩ : ∃ k, L = k + 1 := ⟨L - 1, by omega⟩
+  subst hk
+  exact prodAux_zero H k (Nat.lt_succ_self _)
+
+/-- A rank-0 matrix over ℝ is the zero matrix. -/
+private theorem rank_zero_eq_zero {m n : ℕ} (B : Matrix (Fin m) (Fin n) ℝ) (hB : B.rank = 0) :
+    B = 0 := by
+  have hr0 : LinearMap.range B.mulVecLin = ⊥ := by
+    rw [← Submodule.finrank_eq_zero (R := ℝ)]; exact hB
+  rw [LinearMap.range_eq_bot] at hr0
+  ext i j
+  have := LinearMap.congr_fun hr0 (Pi.single j 1)
+  simpa [Matrix.mulVecLin_apply, Matrix.mulVec_single] using congrFun this i
+
+/-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin / all-zero tuple, PROVEN
+below; general `r > 0` ⟹ a block-normal rank-`r` chain whose product is `B`). The hypotheses
+`hr : ∀ s, r ≤ H s` and `hL : 1 ≤ L` are the well-definedness + nonemptiness domain: `hr` rules out
+the middle-width bottleneck (`H=(3,1,3), r=2` caps product rank at `1 < 2` ⇒ empty fibre) and makes
+`M⁽ˢ⁾ = H⁽ˢ⁾ − r` non-truncating; `hL` rules out the zero-layer corner (`L = 0` ⇒ `prod = id` ⇒
+fibre needs `B = I`). The `r = 0` branch is closed; the `r > 0` branch is the named `sorry` (the
+rank-factorization `B = U·V` distributed as rank-exactly-`r` layers — verified 484/484; needs the
+rank-of-block lemma + the dependent-`Fin` `prodAux` telescoping). -/
 theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     Nonempty {w : Params H // IsDeepLayers H r B w} := by
-  sorry
+  rcases Nat.eq_zero_or_pos r with hr0 | hrpos
+  · -- r = 0: the all-zero tuple is deep (prod = 0 = B since B.rank = 0).
+    subst hr0
+    refine ⟨⟨fun _ => 0, ?_, ?_⟩⟩
+    · show prod H (fun _ => 0) = B
+      rw [prod_zero H hL, rank_zero_eq_zero B hB]
+    · intro s; show ((0 : Matrix _ _ ℝ)).rank = 0; exact Matrix.rank_zero
+  · -- r > 0: rank factorization B = U·V distributed as rank-exactly-r layers (verified 484/484).
+    sorry
 
 /-- **The deepest singular point** of the fibre `mult⁻¹(B)` (Rung-0c FLAG, load-bearing — pp + Codex
 adjudicated). A **single constructed** witness: every layer at the minimal rank `r` (the
@@ -575,36 +669,24 @@ private theorem Mval_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : 
   intro j _
   exact mul_nonneg (by linarith [T_le_tPrev M T hT j]) (by linarith [T_le_Msucc M T hT j])
 
-/-- `cleanCore 1 ![1, n] = n/2`: with `ℓ = 1` the balanced split is `[P]`, so
-`¼((1+n)² − 1 − n²) = ¼·2n = n/2`. The half-integer-hitting fact A1 uses. -/
-private theorem cleanCore_one (n : ℕ) : cleanCore 1 (![1, n]) = (n : ℚ) / 2 := by
-  simp only [cleanCore]
-  rw [show (∑ k, (![1, n] : Fin 2 → ℕ) k) = 1 + n by simp [Fin.sum_univ_two]]
-  rw [Fin.sum_univ_one, Fin.sum_univ_two]
-  unfold balancedSplit
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Nat.mod_one,
-    Nat.div_one, Fin.val_zero, lt_irrefl, if_false]
-  push_cast; ring
+/-- `sortedSmallest M c` (for `c ≤ L`): the `c+1` smallest entries of `M : Fin (L+1) → ℕ`, as a
+function `Fin (c+1) → ℕ`, via the ascending sort `Tuple.sort` and the first `c+1` indices. The `m`
+argument of `cleanCore` is **pinned** to this (a function of `M`), making A1 the genuine Lemma 3. -/
+def sortedSmallest (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) (k : Fin (c + 1)) : ℕ :=
+  M (Tuple.sort M (Fin.castLE (by omega) k))
 
-/-- **A1 (Lemma 3, the clean closed form).** The core `lambdaCore M = ½·min_T M(T)` admits a
-clean-form representation: there exist `ℓ` and reduced widths `m` with
-`lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)` (design-spec §4.3). Non-vacuous: equates
-`lambdaCore M` to an explicit `cleanCore`.
-
-PROOF-FIDELITY FLAG (controller decision pending): the **existential does not bind** `(ℓ,m)` to
-the Def-3 selection (the `ℓ+1` smallest widths of `M`), and this proof **exploits that freedom** —
-it does NOT establish Aoyagi's Lemma 3 (the genuine `min_{T∈Adm} M(T) = clean form at the Def-3
-widths`). It uses only `min_T M(T) ≥ 0` (each `Adm` summand is a product of nonnegatives,
-`Mval_nonneg`) and `cleanCore 1 ![1, k] = k/2` to hit `½·min` directly. To force the real Lemma-3
-content the statement must bind `(ℓ,m)` to `M` (e.g. `m` = sorted `ℓ+1` smallest reduced widths).
-Flagged for the controller; the frozen statement is proven as written. -/
+/-- **A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
+`lambdaCore M = ½·min_T M(T)` equals `cleanCore c (sortedSmallest M c)` for an **achiever**
+`c ∈ {1,…,L}` — the `m` argument is **pinned** to `M`'s `c+1` smallest reduced widths (a function of
+`M`, not a free choice), so this is the faithful Aoyagi Lemma 3 (`min_{T∈Adm} M(T) = clean form at
+the smallest widths), NOT the weak existential. Verified total 1360/1360 (pp). It is **NOT** an
+extremum over `c` — both `min_c` and `max_c` are refuted (`M=[1,1,4]`, `[2,2,2]`); the `∃ c` is the
+achiever (the `c` whose balanced split on the smallest widths is `Adm`-admissible). Proof route
+(Aoyagi Lemma 3): balanced-split-minimises-`Σq²` (exchange) + `Adm` reparametrisation + per-`c`
+lower bound + constructed achiever. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
-    ∃ (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ), lambdaCore M = cleanCore ℓ m := by
-  set z : ℤ := (Adm M).inf' (Adm_nonempty M) (Mval M) with hz
-  have hznn : 0 ≤ z := Finset.le_inf' _ _ (fun T hT => Mval_nonneg M T hT)
-  refine ⟨1, ![1, z.toNat], ?_⟩
-  have hcast : ((z.toNat : ℕ) : ℚ) = (z : ℚ) := by exact_mod_cast Int.toNat_of_nonneg hznn
-  rw [cleanCore_one, lambdaCore, ← hz, hcast]; ring
+    ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
+  sorry
 
 /-- The balanced-split sum of squares: `∑ᵢ qᵢ² = (P%ℓ)(P/ℓ+1)² + (ℓ−P%ℓ)(P/ℓ)²` (nat-division
 casts). The `a` parts of `⌈P/ℓ⌉` and `ℓ−a` parts of `⌊P/ℓ⌋`, where `a = P%ℓ`. -/
