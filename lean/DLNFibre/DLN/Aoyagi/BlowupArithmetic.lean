@@ -874,6 +874,29 @@ theorem extendDomain_correctedCase2NewLabel_of_postData
   rw [hpost.vector_new, hpost.numerator_new, hpost.leastValue_new]
   exact hnew.labelExponentCertificate
 
+/-- Actual-width stage relabel for exponent certificates.
+
+If the old `(S,J+1)` introduced-label domain agrees with the relabelled
+`(S+1,0)` domain, then the same exponent maps certify the relabelled domain.
+This changes only the introduced-label proof in each one-label certificate. -/
+theorem relabel_currentSucc_succStage_zero_of_nextWidth_eq
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (hcert :
+      IntroducedLabelExponentCertificates L n S (J + 1) t numerator leastValue)
+    (hwidth : n (S + 1) = J + 1) :
+    IntroducedLabelExponentCertificates L n (S + 1) 0 t numerator leastValue where
+  certificate := by
+    intro s k hnew
+    have hold : introducedLabel L n S (J + 1) s k :=
+      (introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq
+        L n hwidth).2 hnew
+    have hc := hcert.certificate hold
+    exact
+      { introduced := hnew
+        terminalExponent_eq := hc.terminalExponent_eq
+        least_value := hc.least_value }
+
 end IntroducedLabelExponentCertificates
 
 namespace Case2CorrectedExponentPostData
@@ -2248,6 +2271,23 @@ structure IntroducedLabelLevelInvariants
   leastValue_eq_level :
     ∀ {s k}, introducedLabel L n S J s k → leastValue s k = (level s k : ℤ)
 
+namespace IntroducedLabelLevelInvariants
+
+/-- Actual-width stage relabel for the `leastValue = level` bridge. -/
+theorem relabel_currentSucc_succStage_zero_of_nextWidth_eq
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {level : ℕ → ℕ → ℕ} {leastValue : ℕ → ℕ → ℤ}
+    (hinv : IntroducedLabelLevelInvariants L n S (J + 1) level leastValue)
+    (hwidth : n (S + 1) = J + 1) :
+    IntroducedLabelLevelInvariants L n (S + 1) 0 level leastValue where
+  leastValue_eq_level := by
+    intro s k hnew
+    exact hinv.leastValue_eq_level
+      ((introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq
+        L n hwidth).2 hnew)
+
+end IntroducedLabelLevelInvariants
+
 /-- Conditional level and above-pivot flat-tail bridges for labels introduced at a state. -/
 structure IntroducedLabelLevelTailInvariants
     (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
@@ -2598,6 +2638,28 @@ theorem case2Succ_var_of_ne
     (hne : ¬ (s = S ∧ k = J + 1)) :
     (state.case2Succ u).var s k = state.var s k := by
   simp [case2Succ, hne]
+
+/-- Candidate recurrence state obtained by relabelling old `(S,J+1)` data as
+stage `(S+1,0)`.
+
+The level and variable maps are copied verbatim.  This is only relabel
+bookkeeping; the actual-width hypothesis is needed separately to prove that
+the introduced-label finite products agree. -/
+def stageRelabelSuccZero {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S (J + 1) α) :
+    IntroducedLabelRecurrenceState L n (S + 1) 0 α where
+  level := state.level
+  var := state.var
+
+@[simp] theorem stageRelabelSuccZero_level
+    {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S (J + 1) α) :
+    (state.stageRelabelSuccZero).level s k = state.level s k := rfl
+
+@[simp] theorem stageRelabelSuccZero_var
+    {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S (J + 1) α) :
+    (state.stageRelabelSuccZero).var s k = state.var s k := rfl
 
 /-- Supplied recurrence post-data for a Case 2 `J`-advance.
 
@@ -3390,6 +3452,27 @@ theorem step_eq_mulStepAt_erasedStep
 def weight {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
     (state : IntroducedLabelRecurrenceState L n S J α) (i : ℕ) : α :=
   monomialRec state.step i
+
+/-- Under actual-width exhaustion, the stage-relabelled recurrence factors are
+the old post-state recurrence factors. -/
+theorem stageRelabelSuccZero_step_eq
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (state : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (hwidth : n (S + 1) = J + 1) :
+    (state.stageRelabelSuccZero).step = state.step := by
+  funext r
+  simp [step, stageRelabelSuccZero,
+    ← introducedLabelFinset_currentSucc_eq_succStage_zero_of_nextWidth_eq
+      L n hwidth]
+
+/-- Under actual-width exhaustion, the stage-relabelled recurrence weights are
+the old post-state weights. -/
+theorem stageRelabelSuccZero_weight_eq
+    {L : ℕ} {n : ℕ → ℕ} {S J i : ℕ}
+    (state : IntroducedLabelRecurrenceState L n S (J + 1) α)
+    (hwidth : n (S + 1) = J + 1) :
+    (state.stageRelabelSuccZero).weight i = state.weight i := by
+  simp [weight, stageRelabelSuccZero_step_eq state hwidth]
 
 /-- The packaged recurrence weight attached to a displayed Case 2 residual row. -/
 def case2ResidualRowWeight {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
@@ -11076,6 +11159,145 @@ theorem exists_weightedTerminalProduct_entryIdeal_eq_terminalProductCandidate_of
     case2DisplayedPaperTerminalCprimeCandidate] using
     (data.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont
       model.Atop model.Ctop model.not_next_cont_of_actualWidth_exhausted residual C model.F)
+
+/-- Candidate `(S+1,0)` recurrence state obtained by relabelling the supplied
+displayed Case 2 post-state.
+
+This copies the supplied post-state's level and variable maps.  Actual-width
+exhaustion is used only in the accompanying projection lemmas to show that the
+introduced-label products and certificate domains agree. -/
+def terminalRelabelPost
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (_data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    IntroducedLabelRecurrenceState L n (S + 1) 0 R :=
+  post.stageRelabelSuccZero
+
+theorem terminalRelabelPost_level
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    (data.terminalRelabelPost).level s k = post.level s k :=
+  rfl
+
+theorem terminalRelabelPost_var
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J s k : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    (data.terminalRelabelPost).var s k = post.var s k :=
+  rfl
+
+/-- Under actual-width exhaustion, the relabelled post-state has the same
+finite-product recurrence factors as the old displayed post-state. -/
+theorem terminalRelabelPost_step_eq_of_actualWidth
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hwidth : n (S + 1) = J + 1) :
+    data.terminalRelabelPost.step = post.step :=
+  post.stageRelabelSuccZero_step_eq hwidth
+
+/-- Under actual-width exhaustion, the relabelled post-state has the same row
+weights as the old displayed post-state. -/
+theorem terminalRelabelPost_weight_eq_of_actualWidth
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J i : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hwidth : n (S + 1) = J + 1) :
+    data.terminalRelabelPost.weight i = post.weight i :=
+  post.stageRelabelSuccZero_weight_eq hwidth
+
+/-- Actual-width relabel of the displayed Case 2 post-state's level invariant. -/
+theorem terminalRelabelPostLevelInvariants_of_actualWidth
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hwidth : n (S + 1) = J + 1) :
+    IntroducedLabelLevelInvariants L n (S + 1) 0
+      data.terminalRelabelPost.level leastValue' := by
+  simpa [terminalRelabelPost] using
+    data.postLevelInvariants.relabel_currentSucc_succStage_zero_of_nextWidth_eq
+      hwidth
+
+/-- Actual-width relabel of the displayed Case 2 exponent certificate domain. -/
+theorem terminalRelabelExponentDomain_of_actualWidth
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hwidth : n (S + 1) = J + 1) :
+    IntroducedLabelExponentCertificates L n (S + 1) 0 t' numerator' leastValue' :=
+  data.extendExponentDomain.relabel_currentSucc_succStage_zero_of_nextWidth_eq
+    hwidth
 
 end Case2DisplayedSuppliedChartFamilyBoundary
 

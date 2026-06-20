@@ -1439,6 +1439,16 @@ candidate source model: the label-domain equality is not recurrence/exponent
 post-data over `(S+1,0)`, and the result does not prove that `Atop`, `Ctop`,
 `F`, or `[Ctop;C0]` are source-produced.
 
+The actual-width terminal relabel is now Lean-proved as supplied-data
+bookkeeping.  Generic lemmas relabel all-label exponent certificates and
+`leastValue = level` invariants from old `(S,J+1)` to `(S+1,0)` under
+`n(S+1)=J+1`.  The copied recurrence state keeps the old post-state `level`
+and `var`, and the finite-product `step` and row `weight` agree under the
+same domain equality.  Displayed-boundary projections expose the relabelled
+post-state, level invariant, and exponent-domain certificate.  This is not
+chart production, not source-produced `C'^(S+1)`, not automatic transport of
+Case 2 gap/tail data, and not normal-crossing/RLCT extraction.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

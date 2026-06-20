@@ -2179,3 +2179,34 @@ displayed chart, derive selected-old pullback data, build recurrence or
 exponent post-data from coordinates, prove chart coverage or regularity from
 coordinates, compute Jacobians, prove normal crossings, extract RLCT, or prove
 a transition invariant.
+
+## 2026-06-20 Lean Case 2 actual-width terminal relabel
+
+Reproduction:
+`reproduction-case2-actual-width-terminal-relabel-a4.md`.
+Statement card:
+`statement-card-a4-case2-actual-width-terminal-relabel.md`.
+Review artifact:
+`review-case2-actual-width-terminal-relabel-a4.md`.
+
+Lean now proves the elementary relabel of supplied Case 2 post-pivot
+recurrence and exponent data from old `(S,J+1)` to stage `(S+1,0)` under
+actual next-width exhaustion:
+
+```text
+n(S+1) = J+1.
+```
+
+The generic relabel lemmas transport `IntroducedLabelLevelInvariants` and
+`IntroducedLabelExponentCertificates` across the introduced-label domain
+equality.  The copied recurrence state `stageRelabelSuccZero` keeps the same
+`level` and `var` maps, and under the same actual-width hypothesis its finite
+product `step` and row `weight` agree with the old post-state.  The displayed
+boundary projections expose this as `terminalRelabelPost`, together with
+level-invariant and exponent-domain transport.
+
+This is supplied-data bookkeeping only.  It does not prove chart production,
+does not identify `[Ctop;C0]` with source-produced `C'^(S+1)`, does not
+transport Case 2 gap or flat-tail packages automatically, and does not prove
+chart coverage, transition regularity, Jacobian arithmetic, normal crossings,
+RLCT extraction, termination, transition invariance, or printed-vector repair.

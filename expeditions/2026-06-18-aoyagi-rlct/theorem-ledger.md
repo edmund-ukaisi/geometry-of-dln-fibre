@@ -1462,6 +1462,32 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-terminal-source-model-a4.md`.
 
+Latest A4 update: the Case 2 actual-width terminal relabel layer has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
+include
+`IntroducedLabelExponentCertificates.relabel_currentSucc_succStage_zero_of_nextWidth_eq`,
+`IntroducedLabelLevelInvariants.relabel_currentSucc_succStage_zero_of_nextWidth_eq`,
+`IntroducedLabelRecurrenceState.stageRelabelSuccZero`,
+`IntroducedLabelRecurrenceState.stageRelabelSuccZero_step_eq`,
+`IntroducedLabelRecurrenceState.stageRelabelSuccZero_weight_eq`,
+`Case2DisplayedSuppliedChartFamilyBoundary.terminalRelabelPost`,
+`Case2DisplayedSuppliedChartFamilyBoundary.terminalRelabelPost_step_eq_of_actualWidth`,
+`Case2DisplayedSuppliedChartFamilyBoundary.terminalRelabelPost_weight_eq_of_actualWidth`,
+`Case2DisplayedSuppliedChartFamilyBoundary.terminalRelabelPostLevelInvariants_of_actualWidth`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.terminalRelabelExponentDomain_of_actualWidth`.
+This checkpoint copies supplied old post-state recurrence maps from
+`(S,J+1)` to `(S+1,0)` and transports level/exponent certificate packages
+only under actual next-width exhaustion `n(S+1)=J+1`.  It does not prove chart
+production, source-produced `C'^(S+1)`, automatic Case 2 gap/tail transport,
+coverage, Jacobians, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-actual-width-terminal-relabel-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-actual-width-terminal-relabel.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-actual-width-terminal-relabel-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

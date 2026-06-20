@@ -95,11 +95,15 @@ on the session's original cwd.
    `n(S+1)=J+1`, yielding failed next continuation, the finite
    introduced-label-domain equality between `(S,J+1)` and `(S+1,0)`, and the
    supplied-boundary entry-ideal equality to the model's terminal product.
-   Next A4 target:
+   The actual-width terminal relabel is now Lean-proved as supplied-data
+   bookkeeping: copied old post-state recurrence maps give a candidate
+   `(S+1,0)` state, and level/exponent certificate packages transport under
+   the same actual-width equality. Next A4 target:
    construct chart-produced recurrence/exponent post-data or source-produced
-   old top/suffix data; do not promote the finite label-domain equality to an
-   `(S+1,0)` recurrence/exponent state, and do not identify `[Ctop;C0]` with
-   Aoyagi's full `C'^(S+1)` without that source-order construction.
+   old top/suffix data; do not identify `[Ctop;C0]` with Aoyagi's full
+   `C'^(S+1)` without that source-order construction, and do not transport
+   Case 2 gap/tail invariants without separately checking their shifted
+   thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

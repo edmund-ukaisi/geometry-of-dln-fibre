@@ -509,7 +509,13 @@ No such claim is formalisation-ready until both fields are filled.
   divisibility projections exported by the displayed boundary package. Missing
   direct displayed-boundary projections for the successor level/least-value
   bridge, successor least-value gap, and successor recurrence gap are now also
-  filled by forwarding the already proved source-selected boundary facts.
+  filled by forwarding the already proved source-selected boundary facts. The
+  terminal source-model and actual-width relabel layers now package supplied
+  `Atop`, `Ctop`, and `F` under `n(S+1)=J+1`, derive the stopped terminal
+  entry-ideal candidate, and copy supplied old `(S,J+1)` recurrence/exponent
+  data to a candidate `(S+1,0)` state. This remains supplied-data
+  bookkeeping: it does not prove source-produced `C'^(S+1)`, chart production,
+  automatic Case 2 gap/tail transport, or terminal transition invariance.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -584,6 +590,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-cleared-block-following-factor-a4.md`.
 	  Review of the Case 2 displayed terminal source model is saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-terminal-source-model-a4.md`.
+	  Review of the Case 2 actual-width terminal relabel is saved at
+	  `threads/04-blow-up-certificate/review-case2-actual-width-terminal-relabel-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1293,6 +1301,14 @@ No such claim is formalisation-ready until both fields are filled.
   entry-ideal equality to the model's terminal product.  This is not
   recurrence or exponent post-data over `(S+1,0)`, and it still does not prove
   `[Ctop;C0]` is source-produced `C'^(S+1)`.
+  The actual-width terminal relabel layer now copies supplied old post-state
+  recurrence maps from `(S,J+1)` to `(S+1,0)` and proves `step` and `weight`
+  equality under `n(S+1)=J+1`.  It also transports the supplied
+  `leastValue = level` invariant and all-label exponent certificates across
+  the introduced-label domain equality.  This does not prove chart production,
+  source-produced `C'^(S+1)`, automatic Case 2 gap/tail transport, normal
+  crossings/RLCT, termination, transition invariance, or printed-vector
+  repair.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 
