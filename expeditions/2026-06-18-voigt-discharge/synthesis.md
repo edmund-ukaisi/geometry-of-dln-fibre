@@ -768,3 +768,21 @@ R2★ `D_{δ⁰φ}f=0` rides on `orbitAction_eps_eq_deformationδ`; A5/minors DR
 route) + A6.2 squeeze (A4 ≤ + A6.1 ≥ ⟹ `varietyDim = finrank(range δ⁰)`) + additive L7 + 3 gap-lemmas
 (κ/k finrank, L4d Fintype-reindex, card=finrank C¹) ⟹ **discharge hVoigt** (`codimRepCanonical_orbitRankLocus_eq_multSum`
 with NO hVoigt hyp). `[CharZero k] [IsAlgClosed k]`.
+
+## 2026-06-21 — ★★ hVoigt DISCHARGED ★★ (green/axiom-clean) — fidelity+bedrock AUDIT before operator signal
+
+**A6 CAPSTONE LANDED** (commits 7028752/83fd865/54955f0, green 3011 jobs, 0-sorry, axiom-clean
+`[propext, Classical.choice, Quot.sound]`):
+- `dirDeriv_orbitIdeal_eq_zero` (R2★, dual-number route; Codex caught the Polynomial-curve alt as SECRETLY
+  FALSE `(1+tφ)⁻¹≠1−tφ` over k[t]) → `finrank_range_deformationδ_le_varietyDim` (A6.1 reverse) →
+  `varietyDim_orbitRankLocus_eq_finrank_range_deformationδ` (squeeze) →
+  **`codimRep_orbitRankLocus_eq_orbitLinearCodim` = hVoigt PROVED** →
+  **`codimRepCanonical_orbitRankLocus_eq_multSum_unconditional`** (Cor 3.5 quadratic form, NO hVoigt hyp).
+- 3 gap-lemmas closed: `card_repCoord_eq_finrank_cochain1`, κ/k bridge (`finrank_eq_finrank_of_residueField_equiv`
+  + `residueFieldAtPrimeNormalFormEquiv`), Fintype-L4d (`ringKrullDim_localizationAtPrime_isMaximal_eq_fintype`).
+- Hypotheses `[IsAlgClosed k] [CharZero k]` (CharZero = honest geometric-codim scope; the engine + L6 stay char-free).
+
+**GATE BEFORE OPERATOR SIGNAL (a green build is the floor, not sufficient):** dispatched 2 independent read-only
+audits — (R) fidelity: Lean faithfully encodes Voigt's lemma + whole chain sound + ZERO cited interfaces;
+(H) hardener bedrock/precision: name=content (codim NOT rlct), non-vacuity, honest hypotheses/CharZero caveat,
+no overclaim. On PASS → delete cron, stand seats down, signal operator for close PR. On findings → address first.
