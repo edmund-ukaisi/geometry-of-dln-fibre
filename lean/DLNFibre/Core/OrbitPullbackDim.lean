@@ -10,7 +10,8 @@ dimension of the determinantal rank locus `Z_M = canonicalCoord '' orbitRankLocu
 with the Krull dimension of the **image** of the orbit-map pullback `μ_M^*`, a finitely-generated
 **domain** (subalgebra of the domain `𝒪(G_d) = groupRing d`).
 
-Two moves, both char-free except for the algebraically-closed hypothesis the landed bricks force:
+Two moves, both over an infinite field — no algebraic closure (the orbit↔kernel `⊆` rests on
+`MvPolynomial.funext` over an infinite integral domain):
 
 1. **Ideal identification.** `varietyDim Z_M = ringKrullDim (MvPolynomial (RepCoord d) k ⧸
    ker μ_M^*)`, immediate from the `varietyDim` definition, the Abeasis–Del Fra ideal equality L6.4
@@ -47,8 +48,8 @@ canonicalCoord '' orbitRankLocus M` equals the Krull dimension of the coordinate
 `MvPolynomial (RepCoord d) k ⧸ ker μ_M^*`. `varietyDim` definition, then L6.4
 (`vanishingIdeal_orbitRankLocus_eq_orbitSet`) and the orbit↔kernel identity
 (`range_orbitMap` + `vanishingIdeal_range_orbitMap_eq_ker`) rewrite the vanishing ideal to
-`ker μ_M^*`. -/
-theorem varietyDim_orbitRankLocus_eq_ringKrullDim_quotient_ker [IsAlgClosed k]
+`ker μ_M^*`. Needs only `[Infinite k]` — both bricks (L6.4, the orbit↔kernel identity) do. -/
+theorem varietyDim_orbitRankLocus_eq_ringKrullDim_quotient_ker [Infinite k]
     {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     varietyDim (canonicalCoord d '' orbitRankLocus M)
       = (ringKrullDim (MvPolynomial (RepCoord d) k ⧸
@@ -68,8 +69,9 @@ canonicalCoord '' orbitRankLocus M` equals the Krull dimension of the pullback i
 — a finitely-generated **domain** (`isDomain_range_orbitPullback`), the object A4 computes as a
 transcendence degree. Combines `varietyDim_orbitRankLocus_eq_ringKrullDim_quotient_ker` with the
 first isomorphism theorem (`quotientKerEquivRangeOrbitPullback`) transported through
-`ringKrullDim_eq_of_ringEquiv`. -/
-theorem varietyDim_eq_ringKrullDim_range_orbitPullback [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+`ringKrullDim_eq_of_ringEquiv`. Needs only `[Infinite k]` (the link uses no algebraic closure: the
+orbit↔kernel `⊆` rests on `MvPolynomial.funext` over an infinite integral domain). -/
+theorem varietyDim_eq_ringKrullDim_range_orbitPullback [Infinite k] {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     varietyDim (canonicalCoord d '' orbitRankLocus M)
       = (ringKrullDim (orbitPullback M).range).unbotD 0 := by
@@ -80,22 +82,22 @@ section Witness
 
 /-! ## Non-vacuity witness
 
-The headline carries `[IsAlgClosed k]` (forced by the L1/L6.4 bricks), and `ℚ` is not algebraically
-closed; the chain's objects, which do not need it, are exercised on the `(2,2,2)/ℚ` tuple
-`tupleWitnessQ`. -/
+The headline holds over any infinite field, so it applies directly to the `(2,2,2)/ℚ` tuple
+`tupleWitnessQ` (`ℚ` is infinite) — the dimension equality is exhibited concretely, not merely the
+objects' inhabitance. -/
+
+/-- The headline at the concrete `(2,2,2)/ℚ` tuple: `varietyDim (canonicalCoord '' orbitRankLocus
+tupleWitnessQ) = (ringKrullDim (orbitPullback tupleWitnessQ).range).unbotD 0`. The dimension equality
+is satisfiable on a real matrix tuple over `ℚ`. -/
+example :
+    varietyDim (canonicalCoord dWitness '' orbitRankLocus tupleWitnessQ)
+      = (ringKrullDim (orbitPullback tupleWitnessQ).range).unbotD 0 :=
+  varietyDim_eq_ringKrullDim_range_orbitPullback tupleWitnessQ
 
 /-- The pullback image `(μ_M^*).range` is a domain on the concrete `(2,2,2)/ℚ` tuple: the
-`isDomain_range_orbitPullback` instance fires without algebraic closedness, the range objects being
-non-vacuous on a real matrix tuple. -/
+`isDomain_range_orbitPullback` instance fires on a real matrix tuple. -/
 example : IsDomain (orbitPullback tupleWitnessQ).range :=
   isDomain_range_orbitPullback tupleWitnessQ
-
-/-- The first isomorphism `MvPolynomial (RepCoord dWitness) ℚ ⧸ ker μ_M^* ≃ₐ[ℚ] (μ_M^*).range`
-is inhabited on the concrete tuple (its source and target are the chain's ingredients). -/
-noncomputable example :
-    (MvPolynomial (RepCoord dWitness) ℚ ⧸ RingHom.ker (orbitPullback tupleWitnessQ).toRingHom)
-      ≃ₐ[ℚ] (orbitPullback tupleWitnessQ).range :=
-  quotientKerEquivRangeOrbitPullback tupleWitnessQ
 
 end Witness
 

@@ -4,24 +4,26 @@ The first link of the L2b★ route-c chain (`varietyDim(Z_M) = ringKrullDim(imag
 ≤ finrank(range δ⁰)`) that discharges `hVoigt` on the AG half. The variety dimension of the
 determinantal rank locus `Z_M = canonicalCoord '' orbitRankLocus M` is identified with the Krull
 dimension of the image of the orbit-map pullback `μ_M^*`, a finitely-generated **domain**. Module:
-`lean/DLNFibre/Core/OrbitPullbackDim.lean`.
+`lean/DLNFibre/Core/OrbitPullbackDim.lean`. Over an **infinite** field — no algebraic closure (the
+fidelity review flagged the earlier `[IsAlgClosed k]` as inherited from an over-strong brick
+signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[Infinite k]`).
 
 ---
 
-> **Claim (A0 headline).** For a composable matrix tuple `M : Tuple d` over an algebraically closed
-> field, the variety dimension of the flattened determinantal rank locus
-> `canonicalCoord '' orbitRankLocus M` equals the Krull dimension of the image of the orbit-map
-> pullback `(orbitPullback M).range`, which is a domain.
+> **Claim (A0 headline).** For a composable matrix tuple `M : Tuple d` over an **infinite** field, the
+> variety dimension of the flattened determinantal rank locus `canonicalCoord '' orbitRankLocus M`
+> equals the Krull dimension of the image of the orbit-map pullback `(orbitPullback M).range`, which
+> is a domain.
 >
 > - **Lean:** `DLNFibre.Core.varietyDim_eq_ringKrullDim_range_orbitPullback`
->   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `1ef1544`)
-> - **Gloss.** `[Field k] [IsAlgClosed k]`; `M : Tuple d`. Then
+>   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `<this commit>`)
+> - **Gloss.** `[Field k] [Infinite k]`; `M : Tuple d`. Then
 >   `varietyDim (canonicalCoord d '' orbitRankLocus M)
 >     = (ringKrullDim (orbitPullback M).range).unbotD 0` in `ℕ∞`, where `varietyDim Z =
 >   (ringKrullDim (MvPolynomial (RepCoord d) k ⧸ vanishingIdeal k Z)).unbotD 0` and
 >   `orbitPullback M : MvPolynomial (RepCoord d) k →ₐ[k] groupRing d` is the orbit-map pullback
 >   (`X ⟨i,r,c⟩ ↦ (r,c) entry of Pgen_{i+1} · M_i · Pgen_i⁻¹` in `𝒪(G_d) = groupRing d`).
-> - **Proved.** The dimension equality, unconditionally over any algebraically closed field. Two
+> - **Proved.** The dimension equality, unconditionally over any infinite field. Two
 >   moves: (i) `varietyDim_orbitRankLocus_eq_ringKrullDim_quotient_ker` rewrites the coordinate ring's
 >   vanishing ideal to `ker μ_M^*` via the `varietyDim` definition, L6.4
 >   (`vanishingIdeal_orbitRankLocus_eq_orbitSet`), and the orbit↔kernel identity (`range_orbitMap` +
@@ -29,8 +31,11 @@ dimension of the image of the orbit-map pullback `μ_M^*`, a finitely-generated 
 >   `quotientKerEquivRangeOrbitPullback` (`Ideal.quotientKerEquivRange (orbitPullback M)`) gives
 >   `(MvPolynomial (RepCoord d) k ⧸ ker μ_M^*) ≃ₐ[k] (μ_M^*).range`, transported through
 >   `ringKrullDim_eq_of_ringEquiv` on the underlying `RingEquiv`.
-> - **Assumed.** `[IsAlgClosed k]` (inherited: `vanishingIdeal_range_orbitMap_eq_ker` needs it for the
->   `⊆` localization-vanishing argument; `IsAlgClosed → Infinite` supplies the L6.4 hypothesis).
+> - **Assumed.** `[Infinite k]` only. The orbit↔kernel `⊆` rests on `MvPolynomial.funext`, whose
+>   Mathlib hypothesis is "infinite integral domain" (`[CommRing] [IsDomain] [Infinite]`) — not
+>   algebraic closure; L6.4 also needs only `[Infinite k]`. (The fidelity review demonstrated the whole
+>   headline compiles under `[Infinite k]`; the over-strong `[IsAlgClosed k]` was inherited purely from
+>   the *as-stated* signature of `vanishingIdeal_range_orbitMap_eq_ker`, since corrected.)
 > - **Cited.** none — L6.4 (Abeasis–Del Fra) and L1 (`vanishingIdeal_range_orbitMap_eq_ker`,
 >   `groupRing_isDomain`) are proved in-repo and consumed here as lemmas; `Ideal.quotientKerEquivRange`
 >   and `ringKrullDim_eq_of_ringEquiv` are Mathlib.
@@ -44,13 +49,13 @@ dimension of the image of the orbit-map pullback `μ_M^*`, a finitely-generated 
 > Krull dimension of the coordinate ring `MvPolynomial (RepCoord d) k ⧸ ker μ_M^*`.
 >
 > - **Lean:** `DLNFibre.Core.varietyDim_orbitRankLocus_eq_ringKrullDim_quotient_ker`
->   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `1ef1544`)
-> - **Gloss.** `[Field k] [IsAlgClosed k]`; `M : Tuple d`. Then
+>   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `<this commit>`)
+> - **Gloss.** `[Field k] [Infinite k]`; `M : Tuple d`. Then
 >   `varietyDim (canonicalCoord d '' orbitRankLocus M)
 >     = (ringKrullDim (MvPolynomial (RepCoord d) k ⧸ RingHom.ker (orbitPullback M).toRingHom)).unbotD 0`.
 > - **Proved.** The `varietyDim` def then two ideal rewrites (L6.4, orbit↔kernel). Pure ideal-level
 >   identification, no first-iso theorem yet.
-> - **Assumed.** `[IsAlgClosed k]`.
+> - **Assumed.** `[Infinite k]` only.
 > - **Cited.** none.
 > - **Deferred.** none.
 > - **Status.** sorry-free
@@ -60,11 +65,11 @@ dimension of the image of the orbit-map pullback `μ_M^*`, a finitely-generated 
 > **Claim (A0 brick, image is a domain).** `(orbitPullback M).range` is a domain.
 >
 > - **Lean:** `DLNFibre.Core.isDomain_range_orbitPullback`
->   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `1ef1544`) — an `instance`.
+>   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `<this commit>`) — an `instance`.
 > - **Gloss.** `[Field k]`; `M : Tuple d`. Then `IsDomain (orbitPullback M).range`. The range is a
 >   subalgebra of the domain `𝒪(G_d) = groupRing d` (`groupRing_isDomain` from `OrbitVariety`), and a
 >   subring of a domain is a domain (Mathlib `Subring`/`SubringClass` instance) — fires by
->   `inferInstance`. Char-free: no `IsAlgClosed` needed.
+>   `inferInstance`. Char-free: no `Infinite`/`IsAlgClosed` needed.
 > - **Proved.** The domain instance, unconditionally over any field.
 > - **Assumed.** none beyond `[Field k]`.
 > - **Cited.** none.
@@ -75,17 +80,28 @@ dimension of the image of the orbit-map pullback `μ_M^*`, a finitely-generated 
 
 ## Non-vacuity
 
-The headline carries `[IsAlgClosed k]`, and `ℚ` is not algebraically closed; the chain's objects
-(`orbitPullback`, `.range`, the first-iso AlgEquiv) — which do not need algebraic closedness — are
-exercised on the `(2,2,2)/ℚ` tuple `tupleWitnessQ` by two in-file `example`s: `IsDomain
-(orbitPullback tupleWitnessQ).range` and the first-iso `MvPolynomial (RepCoord dWitness) ℚ ⧸ ker μ_M^*
-≃ₐ[ℚ] (μ_M^*).range`.
+The headline holds over any infinite field, so it applies directly to the `(2,2,2)/ℚ` tuple
+`tupleWitnessQ` (`ℚ` is infinite) — the dimension *equality* is exhibited concretely, not merely the
+objects' inhabitance. Two in-file `example`s: `varietyDim (canonicalCoord dWitness '' orbitRankLocus
+tupleWitnessQ) = (ringKrullDim (orbitPullback tupleWitnessQ).range).unbotD 0` (the headline itself at
+the ℚ witness) and `IsDomain (orbitPullback tupleWitnessQ).range`.
 
 ## Axiom footprint
 
 `#print axioms` on the headline and the ideal-form helper: `[propext, Classical.choice, Quot.sound]`
 only — no `sorryAx`, no custom axioms. `scripts/sorries` = 0 across the whole library; `lake build`
 green (2696 jobs).
+
+## Hypothesis-weakening note (carried out)
+
+The earlier draft of this card said `[IsAlgClosed k]` was *forced* by the `⊆` localization-vanishing
+argument. The fidelity review (independent, Codex-corroborated) showed this is false: the `⊆`
+direction uses `MvPolynomial.funext`, which needs only an infinite integral domain, and re-proved the
+entire headline under `[Infinite k]`. The brick `vanishingIdeal_range_orbitMap_eq_ker`
+(`lean/DLNFibre/Core/OrbitVariety.lean`) was therefore weakened `[IsAlgClosed k] → [Infinite k]`
+(proof body unchanged); its downstream `[IsAlgClosed k]` consumer `isPrime_vanishingIdeal_orbitSet`
+(which genuinely needs algebraic closure for primeness) is unaffected. A0 now carries the honest
+weakest hypothesis `[Infinite k]`.
 
 ## Confirmed: `image μ_M^*` is a domain
 

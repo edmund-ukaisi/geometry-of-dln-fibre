@@ -315,8 +315,9 @@ theorem exists_baseChange_of_eval_ne_zero {d : Fin (N + 1) → ℕ} {x : GroupCo
 /-- **The key identity.** A polynomial vanishes on the orbit `O_M = range μ_M` iff its pullback
 `μ_M^* g` is zero in the domain `𝒪(G_d)`: `vanishingIdeal (range μ_M) = ker μ_M^*`. The `⊇` is
 point-evaluation; the `⊆` is the localization-vanishing-on-the-dense-open argument
-(`Away.surj` + `MvPolynomial.funext`). -/
-theorem vanishingIdeal_range_orbitMap_eq_ker [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+(`Away.surj` + `MvPolynomial.funext`, which needs only an infinite integral domain — no algebraic
+closure). -/
+theorem vanishingIdeal_range_orbitMap_eq_ker [Infinite k] {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     MvPolynomial.vanishingIdeal k (Set.range (orbitMap M))
       = RingHom.ker (orbitPullback M).toRingHom := by
