@@ -1514,6 +1514,18 @@ source terminal weight and source terminal `C'` candidate, followed by the
 supplied suffix.  This closes the product packaging gap, but source production
 of Aoyagi's full `C'^(S+1)` remains open.
 
+The terminal-frontier bridges are now Lean-proved.  The new terminal prefix
+row type `case2SourceTerminalPrefixRowIndex n S` is `1..M(S+1)`, and under
+displayed continuation plus failed next continuation it is equivalent to
+`case2SourceTerminalRowIndex J = 1..J+1`.  The source terminal weight,
+source terminal `C'`, and terminal product candidates are reindexed onto this
+prefix row type, and the stopped source old-top/source suffix theorem is
+restated with the prefix-row product candidate.  A supplied terminal-matrix
+handoff is also proved: any `Cterm` with the old source rows and the surviving
+pivot row equal to the top row of `Q^-1 C` can replace the candidate in the
+terminal product.  This defines the next proof obligation exactly: construct
+those row equations from the displayed source chart.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

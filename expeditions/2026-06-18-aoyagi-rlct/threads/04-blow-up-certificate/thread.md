@@ -2429,3 +2429,36 @@ existing reindexed candidate.  It still does not prove source-produced
 `C'^(S+1)`, chart production, coverage, Jacobians, normal crossings/RLCT,
 termination, transition invariance, automatic Case 2 gap/tail transport, or
 printed-vector repair.
+
+## 2026-06-20 Lean Case 2 terminal frontier bridges
+
+Reproduction:
+`reproduction-case2-terminal-frontier-bridges-a4.md`.
+Statement card:
+`statement-card-a4-case2-terminal-frontier-bridges.md`.
+Review artifact:
+`review-case2-terminal-frontier-bridges-a4.md`.
+
+Lean now bridges the stopped source-row terminal candidate to Aoyagi's
+terminal prefix row range.  Under
+
+```text
+J+1 <= prefixMinNat n (S+1)
+not (J+2 <= prefixMinNat n (S+1)),
+```
+
+the terminal prefix row type `1..M(S+1)` is equivalent to the already used
+source-row type `1..J+1`.  The source terminal weight, `C'` candidate, and
+terminal product candidate are reindexed onto this terminal prefix row type,
+and the stopped source old-top/source suffix theorem is restated with that
+prefix-row product candidate on the right.
+
+The same checkpoint adds a supplied terminal matrix handoff: if a supplied
+matrix has old rows `C(i,-)` for `i=1..J` and pivot row equal to the top row
+of `Q^-1 C`, then the existing source-row terminal product candidate rewrites
+to `(source terminal weight * supplied Cterm) * F`.
+
+This is still not chart production.  In the row-exhausted wide-next case,
+actual rows beyond `M(S+1)` belong to the transported following factor but not
+to the terminal prefix object.  No recurrence/exponent relabel is inferred
+from prefix exhaustion.

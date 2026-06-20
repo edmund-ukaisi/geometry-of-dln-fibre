@@ -540,7 +540,10 @@ No such claim is formalisation-ready until both fields are filled.
   this reindexed candidate is
   `(case2DisplayedSourceTerminalWeight *
   case2DisplayedSourceTerminalCprimeCandidate) * F`. This still does not
-  construct source-produced `C'^(S+1)`.
+  construct source-produced `C'^(S+1)`. The terminal-frontier bridges now
+  reindex this candidate onto terminal prefix rows `1..M(S+1)` under stopped
+  continuation and prove a supplied-terminal-matrix handoff from explicit
+  old-row and pivot-row equations.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -633,6 +636,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-source-terminal-product-candidate-a4.md`.
 	  Review of the Case 2 source terminal product form is saved at
 	  `threads/04-blow-up-certificate/review-case2-source-terminal-product-form-a4.md`.
+	  Review of the Case 2 terminal frontier bridges is saved at
+	  `threads/04-blow-up-certificate/review-case2-terminal-frontier-bridges-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1396,12 +1401,26 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedSourceTerminalProductReindexedCandidate`,
   `case2DisplayedSourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate_submatrix`,
   `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul`,
+  `case2SourceTerminalPrefixRowIndex`,
+  `case2SourceTerminalRowEquivPrefix`,
+  `case2SourceTerminalRowEquivPrefixOfNotNext`,
+  `case2DisplayedSourceTerminalCprimeCandidate_oldRow`,
+  `case2DisplayedSourceTerminalCprimeCandidate_pivotRow`,
+  `case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow`,
+  `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`,
+  `case2DisplayedSourceTerminalWeightPrefixCandidate`,
+  `case2DisplayedSourceTerminalCprimePrefixCandidate`,
+  `case2DisplayedSourceTerminalProductPrefixCandidate`,
+  `case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul`,
+  `matrixEntryIdeal_sourceTerminalProductPrefixCandidate_eq_sourceTerminalProduct`,
   `matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`,
   and
-  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`.
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`.
   This reindexes the stopped terminal candidate into one-based source rows and
-  proves its product form, but it does not construct source-produced
-  `C'^(S+1)`.
+  terminal prefix rows, proves its product form, and records the row-equation
+  handoff for a supplied terminal matrix, but it does not construct
+  source-produced `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

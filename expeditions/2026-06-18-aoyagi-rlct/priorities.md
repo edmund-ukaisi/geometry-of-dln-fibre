@@ -123,9 +123,13 @@ on the session's original cwd.
    `case2DisplayedSourceTerminalProductReindexedCandidate` on the right. The
    product-form equality is now also Lean-proved: the reindexed candidate is
    `(case2DisplayedSourceTerminalWeight *
-   case2DisplayedSourceTerminalCprimeCandidate) * F`. Next A4 target:
-   construct the source-produced terminal stack `C'^(S+1)` or the bridge from
-   this current reindexed candidate to that source object. Do not transport
+   case2DisplayedSourceTerminalCprimeCandidate) * F`. The terminal-frontier
+   bridges are now Lean-proved too: `1..J+1` is reindexed as
+   `1..M(S+1)` under stopped continuation, the prefix-row product candidate is
+   named, and any supplied terminal matrix satisfying old-row and pivot-row
+   equations rewrites the candidate product. Next A4 target: construct those
+   source terminal row equations from the displayed source chart, or build a
+   named supplied chart-production boundary carrying them. Do not transport
    Case 2 gap/tail invariants without separately checking their shifted
    thresholds. If downstream suffix rewrites become noisy, add source-level
    empty/peel lemmas for `sourceSuffixProduct`.

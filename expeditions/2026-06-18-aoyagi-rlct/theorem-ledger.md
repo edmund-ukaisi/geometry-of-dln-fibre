@@ -1596,19 +1596,29 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-suffix-chain-a4.md`.
 
-Latest A4 update: the Case 2 source terminal product candidate and product
-form have landed in `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean` and
+Latest A4 update: the Case 2 source terminal product candidate, product form,
+and terminal-frontier bridges have landed in
+`lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean` and
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
 include `matrixEntryIdeal_submatrix_equiv`,
 `case2SourceTerminalRowIndex`, `case2SourceTerminalRowEquiv`,
 `case2DisplayedSourceTerminalCprimeCandidate`,
 `case2DisplayedSourceTerminalProductReindexedCandidate`,
 `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_cprimeCandidate_mul`,
+`case2SourceTerminalPrefixRowIndex`,
+`case2SourceTerminalRowEquivPrefixOfNotNext`,
+`case2DisplayedSourceTerminalCprimeCandidate_eq_of_oldRows_pivotRow`,
+`case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`,
+`case2DisplayedSourceTerminalProductPrefixCandidate`,
+`case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul`,
+`matrixEntryIdeal_sourceTerminalProductPrefixCandidate_eq_sourceTerminalProduct`,
 `matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`,
 and
-`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`.
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`.
 These checkpoints reindex the already proved stopped terminal candidate into
-one-based source rows `1..J+1` and prove that the reindexed candidate is
+one-based source rows `1..J+1`, reindex it again onto terminal prefix rows
+`1..M(S+1)` under stopped continuation, and prove that the reindexed candidate is
 `(case2DisplayedSourceTerminalWeight *
 case2DisplayedSourceTerminalCprimeCandidate) * F`. They do not prove
 source-produced `C'^(S+1)`, chart production, coverage, Jacobians, normal
@@ -1617,14 +1627,20 @@ transport, or printed-vector repair. Reproduction:
 `threads/04-blow-up-certificate/reproduction-case2-source-terminal-product-candidate-a4.md`.
 Product-form reproduction:
 `threads/04-blow-up-certificate/reproduction-case2-source-terminal-product-form-a4.md`.
+Terminal-frontier reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-terminal-frontier-bridges-a4.md`.
 Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-source-terminal-product-candidate.md`.
 Product-form statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-source-terminal-product-form.md`.
+Terminal-frontier statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-terminal-frontier-bridges.md`.
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-terminal-product-candidate-a4.md`.
 Product-form review artifact:
 `threads/04-blow-up-certificate/review-case2-source-terminal-product-form-a4.md`.
+Terminal-frontier review artifact:
+`threads/04-blow-up-certificate/review-case2-terminal-frontier-bridges-a4.md`.
 
 ## Ledger rules
 
