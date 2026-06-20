@@ -1090,6 +1090,21 @@ Jacobian, no normal crossings, no RLCT, and no transition invariant. Xhigh
 reviews passed with no findings; residual risk is the intended one that Lean
 does not derive the coordinate identification `u = u_(s0,k0)` in this wrapper.
 
+The Case 1(1) selected-old erased-base source model is now Lean-proved as
+finite-product recurrence bookkeeping. `IntroducedLabelRecurrenceState.erasedStep`
+defines the recurrence factor with `(s0,k0)` removed from the introduced-label
+product. `Case1SelectedOldLevelMoveData` records the source-shaped level move:
+the selected old label moves from `J+J1` to `J`, keeps the same variable `u`,
+and all non-selected introduced labels keep their level and variable data.
+Lean proves the erased base recurrence is unchanged and derives both step
+equalities previously supplied to the lowered boundary. The constructor
+`Case1SelectedOldLoweredRecurrenceBoundary.of_levelMoveData` instantiates the
+existing boundary with `baseStep = pre.erasedStep s0 k0`. This still does not
+construct the selected-old chart, infer `(s0,k0)` from the `Unit` token, prove
+chart-produced moved-level data, introduce `(S,J+1)`, use Case 1(2), assert
+`Q/P`, or prove coverage/regularity, Jacobians, normal crossings, RLCT, or a
+transition invariant.
+
 The displayed Case 1(2) paper `Q/P` adapter is now Lean-packaged as a
 paper-facing notation layer over the already supplied source-coordinate
 identity. It names the normalized source-coordinate block, the source

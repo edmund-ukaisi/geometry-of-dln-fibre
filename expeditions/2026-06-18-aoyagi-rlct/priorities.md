@@ -260,11 +260,14 @@ on the session's original cwd.
    token, supplied chart/transition regularity, finite selected-entry
    principalization by the selected-old scalar, the pre/post recurrence source
    identities, and the same-domain exponent update. It remains over `(S,J)`
-   and does not use the displayed Case 1(2) pivot. Next A4 target: try a more
-   constructive source-coordinate recurrence or chart model only if the base
-   recurrence can be defined without cancellation or chart overclaim. Keep
-   interfaces explicitly supplied where coordinates are not constructed. Avoid
-   raw Case 1(2) hidden-old pullback construction, arbitrary chart coverage, or
+   and does not use the displayed Case 1(2) pivot. The erased-base
+   source-model checkpoint is now Lean-proved: defining `baseStep` as
+   `pre.erasedStep s0 k0`, the selected-old level move from `J+J1` to `J`
+   derives the pre/post `mulStepAt` equalities and instantiates the lowered
+   boundary without an arbitrary base recurrence. This remains supplied
+   moved-level recurrence bookkeeping, not chart production. Keep interfaces
+   explicitly supplied where coordinates are not constructed. Avoid raw
+   Case 1(2) hidden-old pullback construction, arbitrary chart coverage, or
    non-displayed transition claims. The displayed Case 1(2) paper `Q/P`
    adapter now exposes the source's `Q`, `Q^-1`, `D''`, `C'`, and `D'''`
    notation over the already supplied source-coordinate identity, including

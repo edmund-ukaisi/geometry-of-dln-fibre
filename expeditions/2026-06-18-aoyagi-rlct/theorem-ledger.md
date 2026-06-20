@@ -924,6 +924,28 @@ transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-unit-chart-family-boundary-a4.md`.
 
+Latest A4 update: the Case 1(1) selected-old erased-base source model has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are `levelProductStep_eq_mulStepAt_erase`,
+`levelProductStep_erase_eq_of_eq_on_erase`,
+`IntroducedLabelRecurrenceState.erasedStep`,
+`IntroducedLabelRecurrenceState.step_eq_mulStepAt_erasedStep`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldLevelMoveData`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldLevelMoveData.post_erasedStep_eq_pre_erasedStep`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldLevelMoveData.pre_step_eq_mulStepAt`,
+`IntroducedLabelRecurrenceState.Case1SelectedOldLevelMoveData.post_step_eq_mulStepAt`,
+and `Case1SelectedOldLoweredRecurrenceBoundary.of_levelMoveData`. This
+checkpoint defines the base recurrence as the introduced-label product with
+the selected old label erased, proves pre/post `mulStepAt` equalities from a
+supplied same-domain level move, and instantiates the existing lowered
+boundary with that erased base. It does not construct the selected-old chart,
+infer `(s0,k0)` from the `Unit` token, produce chart data, introduce
+`(S,J+1)`, use Case 1(2), assert `Q/P`, prove coverage/regularity/Jacobians,
+prove normal crossings/RLCT, or prove a transition invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-erased-base-source-model.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-erased-base-source-model-a4.md`.
+
 Latest A4 update: the displayed Case 1(2) paper `Q/P` adapter has landed in
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
 `case1DisplayedPaperDchart`, `case1DisplayedPaperDchart_pivot`,

@@ -923,6 +923,17 @@ No such claim is formalisation-ready until both fields are filled.
   and same-domain exponent certificates. This packages the `Sum.inl ()`
   selected-old chart token separately from the displayed Case 1(2) pivot and
   keeps the domain `(S,J)`.
+  Added the erased-base source model:
+  `levelProductStep_eq_mulStepAt_erase`,
+  `levelProductStep_erase_eq_of_eq_on_erase`,
+  `IntroducedLabelRecurrenceState.erasedStep`,
+  `IntroducedLabelRecurrenceState.step_eq_mulStepAt_erasedStep`,
+  `IntroducedLabelRecurrenceState.Case1SelectedOldLevelMoveData`, and
+  `Case1SelectedOldLoweredRecurrenceBoundary.of_levelMoveData`. This defines
+  the Case 1(1) base recurrence by erasing the selected old label, proves that
+  the pre-state reinserts it at `J+J1` and the post-state reinserts it at `J`,
+  and instantiates the lowered recurrence boundary without treating
+  `baseStep` as arbitrary.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -969,7 +980,10 @@ No such claim is formalisation-ready until both fields are filled.
   identify the hidden source label from the token, construct charts or
   recurrence states from coordinates, use `(S,J+1)` or the displayed pivot,
   assert `Q/P`, or prove coverage, regularity from coordinates, Jacobians,
-  normal crossings, RLCT, or transition invariance. The displayed Case 1(2)
+  normal crossings, RLCT, or transition invariance. The erased-base source
+  model removes only the arbitrary base-step field for the recurrence
+  checkpoint; it still assumes the moved-level recurrence data and does not
+  construct that data from a chart or raw source coordinates. The displayed Case 1(2)
   paper `Q/P` adapter now exposes the source's local notation
   `Q`, `Q^-1`, `D''`, `C'`, and `D'''` over the supplied source-coordinate
   identity. It proves the post-`Q` block identification and `C' = Q^-1 C`

@@ -1399,6 +1399,42 @@ use the displayed Case 1(2) pivot, assert `Q/P`, prove chart coverage or
 regularity from coordinates, compute Jacobians, prove normal crossings,
 extract RLCT, or prove a transition invariant.
 
+## 2026-06-20 Lean Case 1 selected-old erased-base source model
+
+Reproduction:
+`reproduction-case1-selected-old-erased-base-source-model-a4.md`.
+Statement card:
+`statement-card-a4-case1-selected-old-erased-base-source-model.md`.
+
+Lean now derives the lowered-recurrence boundary's two step equalities from a
+finite-product source model. The erased base recurrence is the product over the
+introduced-label set with the selected old label `(s0,k0)` removed:
+
+```text
+baseStep = pre.erasedStep s0 k0.
+```
+
+The package `Case1SelectedOldLevelMoveData` records that the selected old label
+is introduced, has pre-level `J+J1`, post-level `J`, and the same selected
+variable `u` in both states, while all non-selected introduced labels keep
+their level and variable data. Lean proves that the erased base is unchanged
+and therefore:
+
+```text
+pre.step  = mulStepAt (pre.erasedStep s0 k0) u (J+J1),
+post.step = mulStepAt (pre.erasedStep s0 k0) u J.
+```
+
+The constructor `Case1SelectedOldLoweredRecurrenceBoundary.of_levelMoveData`
+instantiates the existing lowered boundary with this erased base recurrence.
+
+This removes the arbitrary `baseStep` assumption for this recurrence
+checkpoint, but the moved-level data itself is still supplied recurrence
+bookkeeping. It does not construct the selected-old chart, infer `(s0,k0)` from
+the `Unit` token, introduce `(S,J+1)`, use Case 1(2), assert `Q/P`, prove chart
+coverage or regularity from coordinates, compute Jacobians, prove normal
+crossings, extract RLCT, or prove a transition invariant.
+
 ## 2026-06-19 Lean Case 1 displayed paper Q/P adapter
 
 Statement card:
