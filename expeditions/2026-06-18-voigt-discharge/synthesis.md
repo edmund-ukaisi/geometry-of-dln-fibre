@@ -715,3 +715,18 @@ rank(δK) = finrank(range δ⁰) (`Module.finrank_baseChange`); cotangent dualit
 **Path to hVoigt (after hA43_le):** A4.4 unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`; then A6.1
 (intrinsic reverse R1–R6, R2★ consumes the landed `orbitAction_eps_eq_deformationδ`) ⟹ `≥`; A6.2 squeeze +
 additive L7 + 3 gap-lemmas (κ/k finrank, L4d Fintype-reindex, card=finrank C¹) ⟹ **hVoigt discharged**.
+
+## 2026-06-21 — matrix-Kähler GATE landed; hA43_le residual = mechanical assembly only
+
+**The matrix-Kähler nugget LANDED** `Core.MatrixKaehler`: `derivMatrix_inv_apply` (`D(U⁻¹)=−U⁻¹(DU)U⁻¹`
+entrywise, the irreducible gate) + `derivMatrix_mul_apply` (entrywise Leibniz) + `finrank_range_baseChange`
+(base change preserves rank). Char-free, axiom-clean. Plus the T1 adjoint-with-casts half of the factorization
+(the feared dependent-`Fin.succ/castSucc` step — collapses via `Finset.sum_dite_eq'`+`sum_eq_single`). Commits
+7f22b0a/264f2bb, green.
+
+**`hA43_le` residual = MECHANICAL ASSEMBLY, no conceptual gap (~150–200 lines, all bricks present):** (2)
+gate-expansion → conjugated Maurer–Cartan bracket `D(V₂FV₁⁻¹)_{st}=(V₂(Θ₂F−FΘ₁)V₁⁻¹)_{st}`; (3)
+conjugation-preserves-K-span; (4) T2 adjoint half (SYMMETRIC to proved T1); (5) final
+`finrank_mono`/`finrank_range_baseChange`/`finrank_range_dualMap_eq_finrank_range` chain. The two hardest pieces
+(gate; T1 adjoint) are DONE. **Resume the tide to finish the assembly** (build-on-clean-state, decisive close).
+Then A4.4 unconditional ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`; then A6 (reverse + L7 + gaps) ⟹ hVoigt.
