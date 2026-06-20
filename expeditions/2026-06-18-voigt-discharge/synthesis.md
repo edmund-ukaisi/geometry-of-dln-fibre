@@ -436,3 +436,45 @@ L6.2 (cover-classification combinatorics on rank patterns), then L6.3/6.4/L1/L2b
         pinned in thread-24 §4, plugs into the landed `BoxMoveDegeneration` engine. INDEPENDENT of L6.2, bank now.
   - After L6: L6.4 (ideal equality, easy ⊆ done by L6.3) → L1 (primeness) → L2b (dμ_M=δ⁰) → L3 (homogeneity)
     → L4-assembly → L7 (discharge hVoigt).
+
+## 2026-06-20 — L6 nearly closed; geometry half sized (3-front wave)
+
+**L6.2 generation (thread 28) — LANDED** `Core.BoxMoveGeneration`: telescope crux ★
+`sum_secondDiff_coveringRect_ge`, move-existence `exists_coveringInterval_diff_pos`, the box move +
+rank-drop `r'=r−1_D` + `Φ`-strict-descent, sub-fact 1, and the reusable interface `BoxMoveStep` /
+`BoxMoveChain := Relation.ReflTransGen BoxMoveStep`. Green, axiom-clean. Subtlety (caveat in card):
+split `c=b+1` puts the corner below-diagonal, so achievability is scoped to `i≤j` (rank pattern's real
+domain). **DEFERRED L6.2c** (extremal-cell existence + descent step assembling one `BoxMoveStep` with
+`s≤r'<r` + the `Φ`-induction `s≤r → BoxMoveChain r s`) — route clear, verified 198k pairs.
+
+**L6.1-general (thread 27) — split DONE, non-split residual.** `splitMove_intervalDirectSum_mem_closure`:
+full §4 list headline for the **split** move × arbitrary `rest` (reviewer PASS). Non-split (`a<c≤b<e`):
+scaffolding landed (`splice`, crossing factorization), residual = the **crossing-rank computation**
+`rankPattern (splice λ) i j` for `i≤b<j` (~150–250 LoC heavy `Fin`-index, route sympy-certified +
+scratch-verified). **= FRONT A (in progress).**
+
+**Geometry assembly ladder (thread 29) — the second-half map.** Build-order DAG in
+`threads/29-geometry-assembly-ladder/findings.md`. Key findings:
+- **L2b entanglement resolved:** NO standalone `ker Jac = range δ⁰`. Easy: `range δ⁰ ⊆ ker Jac` (orbit
+  tangent ⊆ Zariski tangent; guard `dμ_M = δ⁰` = Lie linearization `φ↦φ_{i+1}M_i−M_iφ_i`, NOT minor-pderiv).
+  **Hard nugget = L2b★:** `finrank(range δ⁰) ≥ dim O_M`, the **orbit-map submersion**
+  `dim O_M = dim G − dim Stab(M)`. **Mathlib v4.29 has NO fibre-dimension theorem, NO G/Stab quotient**
+  (grep-confirmed) ⟹ multi-module, possibly a sub-expedition. **= FRONT B (de-risk: is the fibre-dim
+  bridge 1–2 modules or a sub-expedition? stabilizer `(End M)ˣ=D(det)` is cheap).**
+- **L3 homogeneity = 5–7 modules.** Hardest single lemma `exists_closed_smooth_point_mem_openOrbit`
+  (needs `IsOpen O_M`, not just dense; thread-18's caution holds). Spec-detour necessary at v4.29.
+- **NEW CORRECTNESS GUARD: `[CharZero k]`** for the geometric reading `orbitLinearCodim = codim Ō`
+  (Codex char-p counterexample `𝔾ₐ↷𝔸¹` by `t·x=x+tᵖ`). Fold into L7/L2b + `OrbitCodim.lean`. The L6 half
+  (degeneration/generation/closure) stays char-free.
+- **WRINKLE:** L2a is fed `g = rankMinorSet M`, but those minors generate an ideal whose **radical** (not
+  the ideal) is `vanishingIdeal Z_M` — need a ~1-module "local ideals agree at the smooth point M" lemma
+  (guarded by L3 reducedness; de-risk on (2,2,2)).
+
+**SEQUENCING (the discipline: close the first layer hole-free before the next stands on it):**
+1. **Close L6 → L1** (first complete, char-free layer = Abeasis–Del Fra `orbitRankLocus M = Ō_M` + its
+   primeness, proved ZERO-CITED): Front A (non-split crossing-rank) → L6.2c → L6.4 (ideal equality;
+   easy ⊆ landed via L6.3, hard ⊇ = compose `BoxMoveChain` + per-move degeneration) → L1 (primeness,
+   1 module given L6.4 + O_M irreducible).
+2. **Geometry half:** Front B de-risks L2b★. If bounded → build L3 (5–7) + L2b + assembly + L7 (all with
+   `[CharZero k]`). If L2b★ is a genuine multi-week fibre-dimension sub-library → SURFACE to operator with
+   a decision-grade roadmap (grind-it vs scoped-CITE for that one submersion step).
