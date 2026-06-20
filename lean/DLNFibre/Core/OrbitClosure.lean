@@ -285,36 +285,6 @@ theorem cMPlus_selfDim {m : SuppArray (N : ℤ) ℤ} (hm : IsKostantArray m) :
     CMPlus (selfDim m) m :=
   ⟨hm, fun t ↦ by rw [selfDim, Int.toNat_of_nonneg (cumul_diag_nonneg hm t)]⟩
 
-/-- **The realizer's multiplicity array is `m`, needing only `IsKostantArray`.** Repackages
-`multiplicityArray_listOfArray` through the self-realized dimension `CMPlus` witness (the proof uses
-only the Kostant-array part). -/
-theorem multiplicityArray_listOfArray_of_isKostant {m : SuppArray (N : ℤ) ℤ}
-    (hm : IsKostantArray m) : multiplicityArray (listOfArray m) = m.1 :=
-  multiplicityArray_listOfArray (d := selfDim m) m (cMPlus_selfDim hm)
-
-/-- **The per-step degeneration (CRUX).** A single box move `BoxMoveStep r r''` between achievable,
-supported, below-diagonal-vanishing rank-pattern arrays (with `r''` likewise achievable) drops the
-orbit closure: any tuples `Tp, Tq` over `d` realizing `r, r''` on the upper triangle satisfy
-`repClosure (orbitSet Tq) ⊆ repClosure (orbitSet Tp)`. The geometric content is the per-move
-degeneration of `Core.BoxMoveGeneral`, reconciled with the realizers by the rank-pattern bridge and
-`G_d`-stability.
-
-CONDITIONAL: stated here as the clean residual obligation; the body (integer→`Fin` box-coordinate
-extraction + the split / non-split geometric invocation + the residual-`rest` dimension cast) is the
-one genuinely hard glue of L6.4. -/
-theorem boxMoveStep_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ}
-    {r r'' : ℤ → ℤ → ℤ} {Tp Tq : Tuple (k := k) d}
-    (hrsupp : Supported (N : ℤ) r) (hr''supp : Supported (N : ℤ) r'')
-    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j)
-    (hr''nn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r'' i j)
-    (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ))
-    (hr''diag : ∀ k : Fin (N + 1), (d k : ℤ) = r'' (k : ℤ) (k : ℤ))
-    (hp : ∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tp i j hij : ℤ) = r (i : ℤ) (j : ℤ))
-    (hq : ∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tq i j hij : ℤ) = r'' (i : ℤ) (j : ℤ))
-    (hstep : BoxMoveStep r r'') :
-    repClosure (orbitSet Tq) ⊆ repClosure (orbitSet Tp) := by
-  sorry
-
 /-! ## Piece 2d — the realizer of an achievable pattern, over the fixed dimension vector
 
 For a supported, triangle-achievable array `r` with diagonal `= d`, the truncated `diff`-array
@@ -355,6 +325,105 @@ theorem rankPattern_patternRealizer {d : Fin (N + 1) → ℕ} {r : ℤ → ℤ �
   rw [patternRealizer, rankPattern_realizer (k := k) (diffTri (N := N) r hr)
     (cMPlus_diffTri hr hrnn hrdiag) i j hij,
     cumul_diffTri_eq hr (by exact_mod_cast Fin.le_def.mp hij)]
+
+/-- **The realizer's multiplicity array is `m`, needing only `IsKostantArray`.** Repackages
+`multiplicityArray_listOfArray` through the self-realized dimension `CMPlus` witness (the proof uses
+only the Kostant-array part). -/
+theorem multiplicityArray_listOfArray_of_isKostant {m : SuppArray (N : ℤ) ℤ}
+    (hm : IsKostantArray m) : multiplicityArray (listOfArray m) = m.1 :=
+  multiplicityArray_listOfArray (d := selfDim m) m (cMPlus_selfDim hm)
+
+/-- **The geometric-witness glue.** If `Ug, Dg` are tuples over a dimension vector `dg = d` whose
+transports realize the box patterns `r, r''` on the triangle, and the geometric per-move lemma lands
+`canonicalCoord dg Dg` in the closure of `orbitSet Ug`, then the realizers of `r''` and `r` are in the
+closure relation. This isolates the dimension-cast + bridge + `G_d`-stability plumbing common to the
+split and non-split branches. -/
+theorem repClosure_realizer_subset_of_geom [Infinite k] {d dg : Fin (N + 1) → ℕ}
+    {r r'' : ℤ → ℤ → ℤ} (hrsupp : Supported (N : ℤ) r) (hr''supp : Supported (N : ℤ) r'')
+    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j) (hr''nn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r'' i j)
+    (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ))
+    (hr''diag : ∀ k : Fin (N + 1), (d k : ℤ) = r'' (k : ℤ) (k : ℤ))
+    (hgd : dg = d) (Ug Dg : Tuple (k := k) dg)
+    (hUg : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+      (rankPattern dg Ug i j hij : ℤ) = r (i : ℤ) (j : ℤ))
+    (hDg : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+      (rankPattern dg Dg i j hij : ℤ) = r'' (i : ℤ) (j : ℤ))
+    (hmem : canonicalCoord dg Dg ∈ repClosure (orbitSet Ug)) :
+    repClosure (orbitSet (patternRealizer (k := k) hr''supp hr''nn hr''diag))
+      ⊆ repClosure (orbitSet (patternRealizer (k := k) hrsupp hrnn hrdiag)) := by
+  -- transport `Ug, Dg` to `d`; rank patterns survive (`rankPattern_transport`)
+  have hUd : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+      (rankPattern d (hgd ▸ Ug) i j hij : ℤ) = r (i : ℤ) (j : ℤ) := by
+    intro i j hij; rw [rankPattern_transport hgd Ug i j hij]; exact hUg i j hij
+  have hDd : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+      (rankPattern d (hgd ▸ Dg) i j hij : ℤ) = r'' (i : ℤ) (j : ℤ) := by
+    intro i j hij; rw [rankPattern_transport hgd Dg i j hij]; exact hDg i j hij
+  -- the realizer of `r` has the same rank pattern as `hgd ▸ Ug` ⟹ same orbit closure
+  have hUclos : repClosure (orbitSet (hgd ▸ Ug))
+      = repClosure (orbitSet (patternRealizer (k := k) hrsupp hrnn hrdiag)) := by
+    refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
+    have := (hUd i j hij).trans (rankPattern_patternRealizer (k := k) hrsupp hrnn hrdiag i j hij).symm
+    exact_mod_cast this
+  have hDclos : repClosure (orbitSet (hgd ▸ Dg))
+      = repClosure (orbitSet (patternRealizer (k := k) hr''supp hr''nn hr''diag)) := by
+    refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
+    have := (hDd i j hij).trans (rankPattern_patternRealizer (k := k) hr''supp hr''nn hr''diag i j hij).symm
+    exact_mod_cast this
+  -- transport the geometric membership to `d`
+  have hmemd : canonicalCoord d (hgd ▸ Dg) ∈ repClosure (orbitSet (hgd ▸ Ug)) :=
+    mem_repClosure_orbitSet_transport hgd hmem
+  -- single point ⟹ whole orbit, then chase the closure equalities
+  rw [← hDclos, ← hUclos]
+  exact repClosure_subset_of_subset_repClosure
+    (orbitSet_subset_repClosure_orbitSet_of_canonical_mem hmemd)
+
+/-- The realizer-to-realizer per-step degeneration. Splits on `c ≤ b` (linked / non-split) vs
+`c = b + 1` (split) and invokes the corresponding geometric lemma through
+`repClosure_realizer_subset_of_geom`. -/
+theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) → ℕ}
+    {r r'' : ℤ → ℤ → ℤ} (hrsupp : Supported (N : ℤ) r) (hr''supp : Supported (N : ℤ) r'')
+    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j) (hr''nn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r'' i j)
+    (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ))
+    (hr''diag : ∀ k : Fin (N + 1), (d k : ℤ) = r'' (k : ℤ) (k : ℤ))
+    (hstep : BoxMoveStep r r'') :
+    repClosure (orbitSet (patternRealizer (k := k) hr''supp hr''nn hr''diag))
+      ⊆ repClosure (orbitSet (patternRealizer (k := k) hrsupp hrnn hrdiag)) := by
+  sorry
+
+/-- **The per-step degeneration (CRUX).** A single box move `BoxMoveStep r r''` between achievable,
+supported, below-diagonal-vanishing rank-pattern arrays (with `r''` likewise achievable) drops the
+orbit closure: any tuples `Tp, Tq` over `d` realizing `r, r''` on the upper triangle satisfy
+`repClosure (orbitSet Tq) ⊆ repClosure (orbitSet Tp)`. The geometric content is the per-move
+degeneration of `Core.BoxMoveGeneral`, reconciled with the realizers by the rank-pattern bridge and
+`G_d`-stability.
+
+CONDITIONAL: stated here as the clean residual obligation; the body (integer→`Fin` box-coordinate
+extraction + the split / non-split geometric invocation + the residual-`rest` dimension cast) is the
+one genuinely hard glue of L6.4. -/
+theorem boxMoveStep_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ}
+    {r r'' : ℤ → ℤ → ℤ} {Tp Tq : Tuple (k := k) d}
+    (hrsupp : Supported (N : ℤ) r) (hr''supp : Supported (N : ℤ) r'')
+    (hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j)
+    (hr''nn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r'' i j)
+    (hrdiag : ∀ k : Fin (N + 1), (d k : ℤ) = r (k : ℤ) (k : ℤ))
+    (hr''diag : ∀ k : Fin (N + 1), (d k : ℤ) = r'' (k : ℤ) (k : ℤ))
+    (hp : ∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tp i j hij : ℤ) = r (i : ℤ) (j : ℤ))
+    (hq : ∀ (i j : Fin (N + 1)) (hij : i ≤ j), (rankPattern d Tq i j hij : ℤ) = r'' (i : ℤ) (j : ℤ))
+    (hstep : BoxMoveStep r r'') :
+    repClosure (orbitSet Tq) ⊆ repClosure (orbitSet Tp) := by
+  -- reduce `Tp, Tq` to the canonical realizers of `r, r''` (rank-pattern bridge)
+  have hTp : repClosure (orbitSet Tp)
+      = repClosure (orbitSet (patternRealizer (k := k) hrsupp hrnn hrdiag)) := by
+    refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
+    have := (hp i j hij).trans (rankPattern_patternRealizer (k := k) hrsupp hrnn hrdiag i j hij).symm
+    exact_mod_cast this
+  have hTq : repClosure (orbitSet Tq)
+      = repClosure (orbitSet (patternRealizer (k := k) hr''supp hr''nn hr''diag)) := by
+    refine repClosure_orbitSet_eq_of_rankPattern_eq (fun i j hij ↦ ?_)
+    have := (hq i j hij).trans (rankPattern_patternRealizer (k := k) hr''supp hr''nn hr''diag i j hij).symm
+    exact_mod_cast this
+  rw [hTp, hTq]
+  exact boxMoveStep_repClosure_realizer_subset hrsupp hr''supp hrnn hr''nn hrdiag hr''diag hstep
 
 /-! ## Piece 2e — box-move bounds and invariant preservation
 
