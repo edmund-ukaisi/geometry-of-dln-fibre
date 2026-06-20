@@ -13263,6 +13263,62 @@ theorem exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_sourceChart
     (data.exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth
       residual C model)
 
+/-- Actual-width source-chart Case 2 terminal theorem with an arbitrary supplied
+following product and terminal `C'` specialized to original source rows.
+
+This composes the concrete displayed source-chart boundary with the
+actual-width original-row terminal bridge.  It removes arbitrary recurrence
+post-data and arbitrary terminal `Cterm`, but `F` remains supplied. -/
+theorem exists_sourceChart_oldTopSuppliedSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n hS hcont)
+                        (case2DisplayedPivotCol n hS hcont)
+                        (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n hS hcont
+                      (case2DisplayedSourceChartMap n hS hcont u residual
+                        (J + 1, J + 1)) residual).submatrix
+                    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n hS hcont C)) * F) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeight
+              (case2DisplayedSourceOldTopWeight pre)
+              ((pre.case2Succ
+                (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+                |>.stageRelabelSuccZero
+                |>.weight (J + 1)) *
+            case2DisplayedSourceTerminalOriginalRows C) * F) := by
+  let data :=
+    of_sourceChartMap_case2Succ_updateSelected pre u residual hS hSL hcont
+      exponentPre levelInv leastValueGap chartFamily
+  simpa [data] using
+    (data.exists_oldTopSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth
+      hwidth residual C F)
+
 /-- Actual-width source-chart Case 2 terminal source-suffix theorem with the
 terminal `C'` specialized to original source rows.
 
@@ -13510,6 +13566,82 @@ theorem sourceChart_actualWidth_terminalOriginalRowsBoundary
       exists_sourceChart_oldTopSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth
         pre u residual hS hSL hcont hwidth exponentPre levelInv leastValueGap
         chartFamily κ hSuffix C Ctail
+  · simpa [data, terminalRelabelPost] using
+      (data.terminalRelabelPostLevelInvariants_of_actualWidth hwidth)
+  · simpa [data] using
+      (data.terminalRelabelExponentDomain_of_actualWidth hwidth)
+
+/-- Actual-width displayed source-chart terminal boundary with an arbitrary
+supplied following matrix.
+
+This packages the terminal entry-ideal statement with the actual-width
+relabelled level and exponent-domain data.  The following matrix `F` is still
+supplied: this theorem does not construct the remaining right product, chart
+coverage, source production of `C'^(S+1)`, Jacobian arithmetic, normal
+crossings, RLCT extraction, termination, or transition invariance. -/
+theorem sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n hS hcont)
+                        (case2DisplayedPivotCol n hS hcont)
+                        (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n hS hcont
+                      (case2DisplayedSourceChartMap n hS hcont u residual
+                        (J + 1, J + 1)) residual).submatrix
+                    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n hS hcont C)) * F) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeight
+              (case2DisplayedSourceOldTopWeight pre)
+              ((pre.case2Succ
+                (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+                |>.stageRelabelSuccZero
+                |>.weight (J + 1)) *
+            case2DisplayedSourceTerminalOriginalRows C) * F)) ∧
+    IntroducedLabelLevelInvariants L n (S + 1) 0
+      ((pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+        |>.stageRelabelSuccZero
+        |>.level)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    IntroducedLabelExponentCertificates L n (S + 1) 0
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) := by
+  let data :=
+    of_sourceChartMap_case2Succ_updateSelected pre u residual hS hSL hcont
+      exponentPre levelInv leastValueGap chartFamily
+  refine ⟨?_, ?_, ?_⟩
+  · exact
+      exists_sourceChart_oldTopSuppliedSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth
+        pre u residual hS hSL hcont hwidth exponentPre levelInv leastValueGap
+        chartFamily C F
   · simpa [data, terminalRelabelPost] using
       (data.terminalRelabelPostLevelInvariants_of_actualWidth hwidth)
   · simpa [data] using

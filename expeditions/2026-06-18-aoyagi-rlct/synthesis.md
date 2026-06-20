@@ -1601,6 +1601,14 @@ identify the relabelled pivot weight with the displayed post-state weight, and
 specialize the terminal bridge to original rows `1..J+1`.  They do not apply to
 row-exhausted wide-next cases and do not produce the suffix or terminal matrix.
 
+The concrete displayed source-chart actual-width boundary now also has an
+arbitrary-`F` form.  `exists_sourceChart_oldTopSuppliedSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth`
+and `sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary`
+compose the displayed source-chart constructor with the arbitrary-`F`
+actual-width original-row wrapper.  This fixes the post state to the chart-map
+successor and carries the actual-width relabelled level/exponent certificates,
+but `F` remains supplied.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

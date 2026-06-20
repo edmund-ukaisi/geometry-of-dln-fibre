@@ -1499,6 +1499,12 @@ No such claim is formalisation-ready until both fields are filled.
   `exists_oldTopSuffix_entryIdeal_eq_relabelOriginalRowsTerminalProduct_of_actualWidth`.
   These wrappers consume supplied suffix/bridge data and keep actual-width
   original-row specialization separate from row-exhausted wide-next cases.
+  The concrete displayed source-chart actual-width boundary now has the same
+  arbitrary-`F` form as
+  `exists_sourceChart_oldTopSuppliedSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth`
+  and `sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary`:
+  the post recurrence/exponent data are fixed by the displayed source chart,
+  while the following matrix `F` remains supplied.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

@@ -1818,6 +1818,23 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-arbitrary-suffix-terminal-wrapper-a4.md`.
 
+Latest A4 update: the concrete source-chart actual-width terminal boundary now
+also has an arbitrary supplied-suffix form in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`exists_sourceChart_oldTopSuppliedSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth`
+and `sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary`.
+They compose the displayed source-chart constructor with the arbitrary-`F`
+actual-width original-row wrapper, keeping `F : Matrix τ υ R` supplied while
+fixing the post recurrence state and relabelled level/exponent certificates.
+This does not apply to row-exhausted wide-next cases and does not prove chart
+coverage, source-produced `C'^(S+1)`, chart-produced following product, or any
+analytic result. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-arbitrary-suffix-actual-width-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-chart-arbitrary-suffix-actual-width.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-source-chart-arbitrary-suffix-actual-width-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -2705,3 +2705,30 @@ source-row reindexing only.  It does not prove that `F` is produced by the
 chart, source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
 Jacobian arithmetic, normal crossings/RLCT, termination, transition
 invariance, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 source-chart arbitrary-suffix actual-width boundary
+
+Reproduction:
+`reproduction-case2-source-chart-arbitrary-suffix-actual-width-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-chart-arbitrary-suffix-actual-width.md`.
+Review artifact:
+`review-case2-source-chart-arbitrary-suffix-actual-width-a4.md`.
+
+Lean now adds a concrete displayed source-chart actual-width terminal boundary
+with the following product kept as an arbitrary supplied matrix:
+
+```text
+exists_sourceChart_oldTopSuppliedSuffix_entryIdeal_eq_originalRowsProduct_of_actualWidth
+sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary
+```
+
+This composes the displayed source-chart constructor with the arbitrary-`F`
+actual-width original-row wrapper.  It fixes the successor recurrence state to
+`pre.case2Succ(chartMap(J+1,J+1))`, uses corrected selected-label exponent
+overrides, and packages the actual-width relabelled `(S+1,0)` level/exponent
+certificates.  The following matrix `F` remains supplied.  The theorem does
+not apply to row-exhausted wide-next cases and does not prove chart coverage,
+source-produced `C'^(S+1)`, chart-produced following product, Jacobian
+arithmetic, normal crossings/RLCT, termination, transition invariance, or
+printed-vector repair.

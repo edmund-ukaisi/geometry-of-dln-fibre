@@ -163,8 +163,12 @@ on the session's original cwd.
    stopped source-row terminal products can keep the following product as an
    arbitrary supplied matrix `F`, and the actual-width original-row branch has
    an arbitrary-`F` wrapper. This supports later `F := 1` terminal-last
-   specialization without source-suffix endpoint casts, but still does not
-   produce `F` or `C'^(S+1)`. Do not transport Case 2 gap/tail invariants
+   specialization without source-suffix endpoint casts. The concrete displayed
+   source-chart actual-width boundary now also has this arbitrary-`F` form,
+   with post recurrence/exponent data fixed by the chart map, but it still does
+   not produce `F` or `C'^(S+1)`. Next A4 target: chart-production boundary
+   for the following product/terminal data, or a terminal-last `F := 1`
+   specialization if needed. Do not transport Case 2 gap/tail invariants
    without separately checking their shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
