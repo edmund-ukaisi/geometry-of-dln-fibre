@@ -1458,6 +1458,15 @@ equality.  The source-model wrapper is intentionally specialized to
 model types.  This is presentational API only; `Atop`, `Ctop`, and `F` remain
 supplied, and no source-produced `C'^(S+1)` or transition invariant is proved.
 
+The displayed source-chart terminal model constructor is now Lean-proved.  It
+instantiates `of_sourceChartMap_case2Succ_updateSelected`, so recurrence
+post-data are the concrete `case2Succ` state for the displayed pivot value and
+exponent post-data are the corrected selected-label overrides, then applies
+the actual-width terminal relabel-model wrapper.  The terminal model is
+indexed by the concrete relabelled post-state weight.  This removes arbitrary
+post-data from this wrapper, but chart-family predicates plus `Atop`, `Ctop`,
+and `F` remain supplied; no source-produced `C'^(S+1)` is proved.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

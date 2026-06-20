@@ -11376,6 +11376,65 @@ theorem exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth
     (data.exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth
       model.Atop model.Ctop model.actualWidth_exhausted residual C model.F)
 
+/-- Actual-width terminal source-model theorem for the concrete displayed
+source-chart Case 2 boundary.
+
+This constructor uses the displayed source chart's pivot value for the concrete
+successor recurrence state and the corrected selected-label exponent update.
+The chart-family regularity predicates and the terminal old-top/suffix model
+are still supplied. -/
+theorem exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_sourceChartMap_actualWidth
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := hS) (hSL := hSL) (hcont := hcont)
+        (b0 :=
+          (pre.case2Succ
+            (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+            |>.stageRelabelSuccZero
+            |>.weight (J + 1))
+        (residual := residual) (C := C)) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      matrixEntryIdeal
+          ((fromBlocks model.Atop 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n hS hcont)
+                        (case2DisplayedPivotCol n hS hcont)
+                        (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n hS hcont
+                      (case2DisplayedSourceChartMap n hS hcont u residual
+                        (J + 1, J + 1)) residual).submatrix
+                    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+              verticalBlock model.Ctop
+                (case2DisplayedSourceFollowingFactor n hS hcont C)) * model.F) =
+      matrixEntryIdeal model.terminalProductCandidate := by
+  let data :=
+    of_sourceChartMap_case2Succ_updateSelected pre u residual hS hSL hcont
+      exponentPre levelInv leastValueGap chartFamily
+  simpa [data] using
+    (data.exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth
+      residual C model)
+
 /-- Actual-width relabel of the displayed Case 2 post-state's level invariant. -/
 theorem terminalRelabelPostLevelInvariants_of_actualWidth
     {R : Type*} [CommRing R]

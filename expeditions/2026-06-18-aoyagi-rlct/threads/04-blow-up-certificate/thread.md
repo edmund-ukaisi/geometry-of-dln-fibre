@@ -2243,3 +2243,32 @@ does not prove chart production, does not transport Case 2 gap/tail packages,
 and does not prove chart coverage, transition regularity, Jacobian arithmetic,
 normal crossings, RLCT extraction, termination, transition invariance, or
 printed-vector repair.
+
+## 2026-06-20 Lean Case 2 source-chart terminal model constructor
+
+Reproduction:
+`reproduction-case2-source-chart-terminal-model-constructor-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-chart-terminal-model-constructor.md`.
+Review artifact:
+`review-case2-source-chart-terminal-model-constructor-a4.md`.
+
+Lean now combines the displayed source-chart constructor with the actual-width
+terminal relabel-model wrapper.  The theorem starts from the concrete boundary
+produced by `of_sourceChartMap_case2Succ_updateSelected`, so the successor
+state is
+
+```text
+pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))
+```
+
+and the exponent post-data are the corrected selected-label overrides.  It
+then applies the terminal source-model entry-ideal theorem to a model indexed
+by the concrete relabelled post-state pivot weight.
+
+This removes arbitrary recurrence/exponent post-data from this terminal
+wrapper but still keeps the chart-family predicates and terminal old-top/suffix
+data supplied.  It does not construct source-produced `C'^(S+1)`, prove chart
+coverage or regularity from coordinates, prove Jacobian arithmetic, normal
+crossings, RLCT extraction, termination, transition invariance, automatic
+gap/tail transport, or printed-vector repair.

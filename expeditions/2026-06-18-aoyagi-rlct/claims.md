@@ -518,7 +518,11 @@ No such claim is formalisation-ready until both fields are filled.
   automatic Case 2 gap/tail transport, or terminal transition invariance. The
   terminal relabel-weight bridge now restates that candidate using
   `terminalRelabelPost.weight(J+1)` as the surviving scalar, with the terminal
-  source model specialized to that relabelled weight.
+  source model specialized to that relabelled weight. The displayed
+  source-chart terminal model constructor now composes the concrete
+  source-chart boundary constructor with this terminal wrapper, so arbitrary
+  recurrence/exponent post-data are removed from that wrapper while
+  chart-family predicates and terminal old-top/suffix data remain supplied.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -597,6 +601,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-actual-width-terminal-relabel-a4.md`.
 	  Review of the Case 2 terminal relabel-weight candidate is saved at
 	  `threads/04-blow-up-certificate/review-case2-terminal-relabel-weight-candidate-a4.md`.
+	  Review of the Case 2 source-chart terminal model constructor is saved at
+	  `threads/04-blow-up-certificate/review-case2-source-chart-terminal-model-constructor-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1320,6 +1326,11 @@ No such claim is formalisation-ready until both fields are filled.
   recover failed next continuation and the equality with `post.weight(J+1)`.
   A source-model wrapper is specialized to that relabelled scalar.  This is
   only presentational API and does not construct source-produced `C'^(S+1)`.
+  The source-chart terminal model constructor composes the concrete displayed
+  source-chart boundary with that terminal wrapper.  It fixes
+  `post = pre.case2Succ(case2DisplayedSourceChartMap(...)(J+1,J+1))` and the
+  corrected selected-label exponent post-data, but still leaves chart-family
+  predicates and terminal `Atop`, `Ctop`, `F` supplied.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

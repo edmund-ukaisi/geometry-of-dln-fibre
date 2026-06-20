@@ -1508,6 +1508,24 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-terminal-relabel-weight-candidate-a4.md`.
 
+Latest A4 update: the Case 2 source-chart terminal model constructor has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+name is
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_sourceChartMap_actualWidth`.
+This checkpoint combines
+`of_sourceChartMap_case2Succ_updateSelected` with the actual-width terminal
+relabel-model theorem.  It fixes the concrete successor recurrence state and
+corrected selected-label exponent update, while the chart-family predicates
+and terminal old-top/suffix model remain supplied.  It does not construct
+source-produced `C'^(S+1)`, coverage, Jacobians, normal crossings/RLCT,
+termination, transition invariance, automatic Case 2 gap/tail transport, or
+printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-terminal-model-constructor-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-chart-terminal-model-constructor.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-source-chart-terminal-model-constructor-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
