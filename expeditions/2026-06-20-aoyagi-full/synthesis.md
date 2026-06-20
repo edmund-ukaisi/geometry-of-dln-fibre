@@ -224,6 +224,13 @@ green (2534 jobs). Proof = sorry (~200-line balanced-split exchange, off-critica
 (gate OPEN). **Skeleton sorry 9→10 — correct + honest: a genuine sorry replaced the vacuous weak PROOF.**
 Also merged: deepestPoint r=0 + Dblock_rank (r>0 telescoping still sorry, fm's). Cosmetic lints in fm's code
 (show→change @534, deprecated Finset lemma @706, <;> @738) — non-blocking, fm cleans on next touch.
+**#19 PROOF progress:** Step 1 `balancedSplit_min` PROVEN (balanced split minimises Σq²; e9e251d, reusable).
+ROUTE-GAP found (proof attempt, again): card step-3 "per-c lower bound" was the FALSE `min_c` reading
+(cleanCore NOT monotone in widths — `[1,2,4]`vs`[1,2,7]`: 2 vs −2; min_c/max_c refuted) — STATEMENT still
+correct+total, only the ROUTE needs reframing to: per-T bound on T's OWN breakpoint widths (via balancedSplit_min)
++ **PERM-INVARIANCE of lambdaCore** (`lambdaCore M = lambdaCore M∘σ`, ~200-line Adm-cone exchange) + sorted-M.
+pp reframing the card + VALIDATING the perm-invariance route before fm sinks ~250-350 lines. #19 OFF the
+headline path — fm doing the S1 WIRES (S1.1/S1.3/S1.4, critical-path) FIRST, then the #19 keystone.
 
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
