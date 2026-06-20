@@ -34,7 +34,17 @@ just hygiene; my single read missed S1.1/S1.5 — decorrelated rv+Codex caught t
 ## WIN — λ-citation ELIMINABLE (banked @22f5dfe)
 Monomial threshold-half directly provable from Mathlib (demonstrated axiom-free (1,1,1)). General = labour.
 
-## (1,1,1) bridge — PARKED on the `Params ≃ᵐ ℝ^N` Lean wall (not math); pp researching the equiv route.
+## Params↔ℝ^N equiv — RESOLVED to ONE bounded lemma (Route A; pp research done)
+
+The recurring "linchpin wall" is now de-risked: route via `Idx H := Σ s, Fin a_s × Fin b_s` (uniform ℝ
+fiber + `card=N` by simp ⇒ dodges symbolic-`s`; use Params's own `Measure.pi` ⇒ dodges the diamond).
+Everything confirmed-present in v4.29 (`arrowCongr'`+`measurePreserving_arrowCongr'`, `piCurry`,
+`Fintype.equivFin`, `card_sigma/card_prod/card_fin`) EXCEPT one gap. **Route A (decided):** keep `Params`
+(foundations are audited bedrock; don't re-open for Route B's flat redefinition). Build the ONE gap —
+`measurePreserving_piCurry` (~15-30 lines, mirror `arrowProdEquivProdArrow`) → `paramsEquivFlat : Params H
+≃ᵐ (Fin N → ℝ)` MP (task #15). The single reusable bridge S1.1-use-site + R1 + the (1,1,1) bridge all
+transport through. (1,1,1) bridge (task #12) unblocks once #15 lands. pp stood down (on-demand for R1 /
+piCurry friction).
 
 ## Rung map (scoped): S1.1 transport + S1.2/3/4 + S1.5 · L1/L2 · D1 (light) · R1 (mountain;
 `codim=Mval` proven gen L) · A1/A2. Hard Lean builds: S1.1 + R1 + the Params↔ℝ^N equiv infra.
