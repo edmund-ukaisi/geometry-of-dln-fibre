@@ -310,6 +310,56 @@ theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ), lambdaCore M = cleanCore ℓ m := by
   sorry
 
+/-- The balanced-split sum of squares: `∑ᵢ qᵢ² = (P%ℓ)(P/ℓ+1)² + (ℓ−P%ℓ)(P/ℓ)²` (nat-division
+casts). The `a` parts of `⌈P/ℓ⌉` and `ℓ−a` parts of `⌊P/ℓ⌋`, where `a = P%ℓ`. -/
+private theorem balancedSplit_sq (P ℓ : ℕ) (hℓ : 0 < ℓ) :
+    (∑ i : Fin ℓ, (balancedSplit P ℓ i : ℚ) ^ 2)
+      = ((P % ℓ : ℕ) : ℚ) * (((P / ℓ : ℕ) : ℚ) + 1) ^ 2
+        + ((ℓ : ℚ) - ((P % ℓ : ℕ) : ℚ)) * ((P / ℓ : ℕ) : ℚ) ^ 2 := by
+  have hmod : P % ℓ ≤ ℓ := le_of_lt (Nat.mod_lt _ hℓ)
+  have hcard : (Finset.univ.filter (fun i : Fin ℓ => (i : ℕ) < P % ℓ)).card = P % ℓ := by
+    have := @Fin.card_filter_val_lt ℓ (P % ℓ)
+    rw [this]; omega
+  rw [show (∑ i : Fin ℓ, (balancedSplit P ℓ i : ℚ) ^ 2)
+        = ∑ i : Fin ℓ, (if (i : ℕ) < P % ℓ then ((P / ℓ + 1 : ℕ) : ℚ) ^ 2
+            else ((P / ℓ : ℕ) : ℚ) ^ 2) from ?_]
+  · rw [Finset.sum_ite]; simp only [Finset.sum_const, nsmul_eq_mul]; rw [hcard]
+    have hcompl : (Finset.univ.filter (fun i : Fin ℓ => ¬ (i : ℕ) < P % ℓ)).card = ℓ - P % ℓ := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card (s := (Finset.univ : Finset (Fin ℓ)))
+        (p := fun i : Fin ℓ => (i : ℕ) < P % ℓ)
+      simp only [Finset.card_univ, Fintype.card_fin] at this
+      rw [hcard] at this; omega
+    rw [hcompl]; push_cast [Nat.cast_sub hmod]; ring
+  · apply Finset.sum_congr rfl
+    intro i _; unfold balancedSplit; split <;> push_cast <;> ring
+
+/-- Expanding `(∑ mₖ)²`: `(∑ mₖ)² = ∑ mₖ² + 2 ∑_{i<j} mᵢmⱼ` (the off-diagonal is symmetric). -/
+private theorem sum_sq_eq (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) :
+    ((∑ k, (m k : ℚ))) ^ 2
+      = (∑ k, (m k : ℚ) ^ 2)
+        + 2 * (∑ i : Fin (ℓ + 1), ∑ j : Fin (ℓ + 1), if i < j then (m i * m j : ℚ) else 0) := by
+  rw [sq, Finset.sum_mul_sum]
+  have key : ∀ i : Fin (ℓ + 1), (∑ j, (m i : ℚ) * (m j))
+      = (∑ j, if i < j then (m i * m j : ℚ) else 0)
+        + (∑ j, if i = j then (m i * m j : ℚ) else 0)
+        + (∑ j, if j < i then (m i * m j : ℚ) else 0) := by
+    intro i; rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl; intro j _
+    rcases lt_trichotomy i j with h | h | h
+    · simp [h, not_lt.2 (le_of_lt h), Fin.ne_of_lt h]
+    · subst h; simp
+    · simp [h, not_lt.2 (le_of_lt h), Fin.ne_of_gt h]
+  have hdiag : ∀ i : Fin (ℓ + 1), (∑ j, if i = j then (m i * m j : ℚ) else 0) = (m i : ℚ) ^ 2 := by
+    intro i; simp [Finset.sum_ite_eq, sq]
+  simp_rw [key, hdiag]
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+  have hswap : (∑ i : Fin (ℓ + 1), ∑ j, if j < i then (m i * m j : ℚ) else 0)
+             = (∑ i : Fin (ℓ + 1), ∑ j, if i < j then (m i * m j : ℚ) else 0) := by
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl; intro i _; apply Finset.sum_congr rfl; intro j _
+    by_cases h : i < j <;> simp [h] <;> ring
+  rw [hswap]; ring
+
 /-- **A1 (clean = printed).** The clean core form equals the printed Theorem-2 expression — a finite
 arithmetic identity in `m, ℓ` (`a = P mod ℓ`), holding for **every** `m` and every `ℓ > 0`. (Rung-0c
 nit: the docstring formerly called this "Def-3 regime"-scoped, but the identity is **universal** in
@@ -317,7 +367,21 @@ nit: the docstring formerly called this "Def-3 regime"-scoped, but the identity 
 Docstring corrected.) Not part of the headline. Non-vacuous: it equates the two forms. -/
 theorem clean_eq_printed (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) (hℓ : 0 < ℓ) :
     cleanCore ℓ m = printedCore ℓ m := by
-  sorry
+  simp only [cleanCore, printedCore]
+  rw [balancedSplit_sq (∑ k, m k) ℓ hℓ]
+  have hm := sum_sq_eq ℓ m
+  set cross := ∑ i : Fin (ℓ + 1), ∑ j : Fin (ℓ + 1), if i < j then (m i * m j : ℚ) else 0
+  have hsq : (∑ k, (m k : ℚ) ^ 2) = (∑ k, (m k : ℚ)) ^ 2 - 2 * cross := by linarith [hm]
+  rw [hsq]
+  set P := ∑ k, m k with hP
+  have hsumP : (∑ k, (m k : ℚ)) = (P : ℚ) := by rw [hP]; push_cast; ring
+  rw [hsumP]
+  have hdm : P = ℓ * (P / ℓ) + P % ℓ := (Nat.div_add_mod P ℓ).symm
+  have hℓQ : (ℓ : ℚ) ≠ 0 := by exact_mod_cast hℓ.ne'
+  set b := P / ℓ
+  set a := P % ℓ
+  have hPQ : (P : ℚ) = (ℓ : ℚ) * (b : ℚ) + (a : ℚ) := by rw [hdm]; push_cast; ring
+  rw [hPQ]; field_simp; ring
 
 /-- **A2 (Lemmas 4–5, the order count).** The combinatorial chart-count identity: for the
 resolution's weighted-monomial data `(d, k, h)` realising the deepest-point geometry, the
