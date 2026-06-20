@@ -1090,6 +1090,19 @@ Jacobian, no normal crossings, no RLCT, and no transition invariant. Xhigh
 reviews passed with no findings; residual risk is the intended one that Lean
 does not derive the coordinate identification `u = u_(s0,k0)` in this wrapper.
 
+The displayed Case 1(2) paper `Q/P` adapter is now Lean-packaged as a
+paper-facing notation layer over the already supplied source-coordinate
+identity. It names the normalized source-coordinate block, the source
+row-strip block, `Q`, `Q^-1`, `D''`, `C'`, and `D'''`, proves that `D''` is the
+generic post-`Q` block under `residual (J+1,J+1)=1`, and pins the orientation
+`D'' * C' = D_chart^pivot * C`. The main theorem
+`sourceOrder_identity_sourceCoordinates_paperQP` restates the supplied
+source-order identity in this notation. This still does not construct the
+displayed chart, raw selected-old pullback, recurrence/exponent post-data,
+chart coverage, regularity from coordinates, Jacobian, normal crossings,
+RLCT, or a transition invariant. Xhigh Lean/API review passed; source review
+confirmed the no-double-counting `u` convention after the local proof repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -969,7 +969,13 @@ No such claim is formalisation-ready until both fields are filled.
   identify the hidden source label from the token, construct charts or
   recurrence states from coordinates, use `(S,J+1)` or the displayed pivot,
   assert `Q/P`, or prove coverage, regularity from coordinates, Jacobians,
-  normal crossings, RLCT, or transition invariance.
+  normal crossings, RLCT, or transition invariance. The displayed Case 1(2)
+  paper `Q/P` adapter now exposes the source's local notation
+  `Q`, `Q^-1`, `D''`, `C'`, and `D'''` over the supplied source-coordinate
+  identity. It proves the post-`Q` block identification and `C' = Q^-1 C`
+  orientation, but still assumes the normalized chart block,
+  recurrence/exponent post-data, quotient witnesses, regularity, and
+  transition data rather than constructing them.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

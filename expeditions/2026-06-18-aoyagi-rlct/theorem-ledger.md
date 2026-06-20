@@ -924,6 +924,25 @@ transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-unit-chart-family-boundary-a4.md`.
 
+Latest A4 update: the displayed Case 1(2) paper `Q/P` adapter has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`case1DisplayedPaperDchart`, `case1DisplayedPaperDchart_pivot`,
+`case1DisplayedPaperSourceBlock`, `case1DisplayedPaperQ`,
+`case1DisplayedPaperQinv`, `case1DisplayedPaperDpp`,
+`case1DisplayedPaperCprime`, `case1DisplayedPaperDppp`,
+`case1DisplayedPaperDpp_eq_pivotPostQBlock`,
+`case1DisplayedPaperDpp_mul_Cprime`, and
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.sourceOrder_identity_sourceCoordinates_paperQP`.
+This checkpoint exposes Aoyagi's printed `Q`, `Q^-1`, `D''`, `C'`, and `D'''`
+notation over the already supplied displayed source-order identity. It proves
+the `D''` post-`Q` block identification and the orientation
+`D'' * C' = D_chart^pivot * C`, but remains a local adapter: normalized chart
+data, recurrence/exponent post-data, quotient witnesses, regularity, and
+transition data are still supplied. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-displayed-paper-qp-adapter.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-displayed-paper-qp-adapter-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

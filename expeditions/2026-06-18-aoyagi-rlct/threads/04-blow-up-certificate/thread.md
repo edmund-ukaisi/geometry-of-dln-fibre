@@ -1398,3 +1398,34 @@ source data, produce recurrence post-data from a chart, introduce `(S,J+1)`,
 use the displayed Case 1(2) pivot, assert `Q/P`, prove chart coverage or
 regularity from coordinates, compute Jacobians, prove normal crossings,
 extract RLCT, or prove a transition invariant.
+
+## 2026-06-19 Lean Case 1 displayed paper Q/P adapter
+
+Statement card:
+`statement-card-a4-case1-displayed-paper-qp-adapter.md`.
+
+Lean now exposes paper-facing names for Aoyagi Case 1(2)'s displayed top-left
+`Q/P` calculation. The new names identify:
+
+- `case1DisplayedPaperDchart`, the already normalized source-coordinate block;
+- `case1DisplayedPaperSourceBlock`, the source row-strip block before `Q/P`;
+- `case1DisplayedPaperQ` and `case1DisplayedPaperQinv`;
+- `case1DisplayedPaperDpp`, corresponding to `D'' = D_chart * Q`;
+- `case1DisplayedPaperCprime`, corresponding to `C' = Q^-1 C`;
+- `case1DisplayedPaperDppp`, corresponding to the cleared block `D'''`.
+
+The theorem `case1DisplayedPaperDpp_eq_pivotPostQBlock` identifies `D''` with
+the generic post-`Q` block under the supplied pivot normalization
+`residual (J+1,J+1)=1`. The theorem `case1DisplayedPaperDpp_mul_Cprime` pins
+the orientation of Aoyagi's following-factor update by proving
+`D'' * C' = D_chart^pivot * C`.
+
+Finally,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.sourceOrder_identity_sourceCoordinates_paperQP`
+restates the existing supplied source-order identity in this paper notation.
+
+This checkpoint is only a notation/adapter layer. It does not construct the
+displayed chart, derive selected-old pullback data, build recurrence or
+exponent post-data from coordinates, prove chart coverage or regularity from
+coordinates, compute Jacobians, prove normal crossings, extract RLCT, or prove
+a transition invariant.

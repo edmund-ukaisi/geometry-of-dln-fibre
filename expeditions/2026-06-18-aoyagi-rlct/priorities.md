@@ -265,7 +265,13 @@ on the session's original cwd.
    recurrence can be defined without cancellation or chart overclaim. Keep
    interfaces explicitly supplied where coordinates are not constructed. Avoid
    raw Case 1(2) hidden-old pullback construction, arbitrary chart coverage, or
-   non-displayed transition claims.
+   non-displayed transition claims. The displayed Case 1(2) paper `Q/P`
+   adapter now exposes the source's `Q`, `Q^-1`, `D''`, `C'`, and `D'''`
+   notation over the already supplied source-coordinate identity, including
+   the orientation check `D'' * C' = D_chart^pivot * C`. It is still only a
+   local paper-facing adapter: the normalized block, recurrence/exponent
+   post-data, quotient witnesses, chart regularity, and transition regularity
+   remain supplied.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
