@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.Rlct
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 import Mathlib.MeasureTheory.Function.Jacobian
+import Mathlib.Analysis.Analytic.Basic
 
 /-!
 # `DLNFibre.DLN.RLCT.Skeleton` — the goal skeleton (the contract)
@@ -105,13 +106,20 @@ route (the heaviest analytic lemma below R1): delete `E`, apply Mathlib's Jacobi
 change-of-variables on the diffeo part (`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul`),
 restore the null set, then properness gives that every nbhd of `w*` pulls back to one of `π⁻¹{w*}`
 (fixed-set ↔ local-nbhd integrability). D1 takes the single-map form; R1 per-chart + finite `min`.
-Non-vacuous: equates two weighted thresholds. -/
+
+Rung-0c FLAG (measure pin): the unconstrained `[MeasureSpace M]` made the bare statement **FALSE**
+(Codex: on `ℝ` with weight `|x| dx`, `π = x³` gives `2 ≠ 4/3`) — the Jacobian-change-of-variables
+the proof route needs holds for the **additive Haar / Lebesgue** measure, not an arbitrary one.
+Pinned via `[(volume : Measure M).IsAddHaarMeasure]`; `MeasurableSet E` added (with `volume E = 0`,
+the proof's null-set deletion + the Luzin-N image `π(E)` null are then available). The
+Jacobian-weight placement was already correct, kept. Non-vacuous: equates two thresholds. -/
 theorem weightedThreshold_transport
     {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
-    [FiniteDimensional ℝ M]
+    [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
     (F φ : M → ℝ) (wstar : M)
     (π : M → M) (Dπ : M → (M →L[ℝ] M)) (E : Set M)
     (hproper : IsProperMap π)
+    (hE_meas : MeasurableSet E)
     (hE_null : volume E = 0)
     (hinj : Set.InjOn π Eᶜ)
     (hderiv : ∀ m ∈ Eᶜ, HasFDerivAt π (Dπ m) m) :
@@ -147,10 +155,18 @@ so their ½-contributions add to `λ_core`). Proof (Laplace/Mellin): `(F+G)^{−
 e^{−tF}e^{−tG} dt`, and `L_F(t) ~ t^{−λ(F)}(log t)^{m_F−1}` ⇒ the product
 `~ t^{−(λ_F+λ_G)}(log)^{…}` converges iff `c < λ_F + λ_G` (orders add too: `m_F + m_G − 1`). The L2
 use needs only the light smooth-block case. Stated on `rlctAtOn` (general product `X × Y`, factors
-need not be `Params`). Non-vacuous: equates the joint RLCT to the sum of the block RLCTs. -/
+need not be `Params`).
+
+Rung-0c FLAG (analyticity): the bare-measurable statement is **FALSE** (Codex: alternating step
+functions give `⊤ ≠ 2`). The Laplace-asymptotic proof needs `F, G` **real-analytic** near the base
+points — added as `AnalyticAt ℝ F x0`, `AnalyticAt ℝ G y0` (so `X, Y` are real normed spaces; the
+product-measure substrate is unaffected). The L2 use (smooth blocks) is a special case. Non-vacuous:
+equates the joint RLCT to the sum of the block RLCTs. -/
 theorem rlct_additive_disjoint
-    {X Y : Type*} [MeasureSpace X] [TopologicalSpace X] [MeasureSpace Y] [TopologicalSpace Y]
-    (F : X → ℝ) (G : Y → ℝ) (x0 : X) (y0 : Y) :
+    {X Y : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] [MeasureSpace X]
+    [NormedAddCommGroup Y] [NormedSpace ℝ Y] [MeasureSpace Y]
+    (F : X → ℝ) (G : Y → ℝ) (x0 : X) (y0 : Y)
+    (hF : AnalyticAt ℝ F x0) (hG : AnalyticAt ℝ G y0) :
     rlctAtOn (fun p : X × Y => F p.1 ^ 2 + G p.2 ^ 2) (x0, y0)
       = rlctAtOn (fun x => F x ^ 2) x0 + rlctAtOn (fun y => G y ^ 2) y0 := by
   sorry
@@ -158,36 +174,59 @@ theorem rlct_additive_disjoint
 /-! ## L1 / L2 — block elimination + product reduction (design-spec §8) -/
 
 /-- **L1 (Lemma 2, block elimination).** For a rank-`r` target `B`, regular row/column operations
-(Gaussian elimination / Schur complement) carry `B` to block-normal form `diag(E_r, 0)`: there exist
-invertible `P, Q` with `(P·B·Q).rank = r`. The reduction realising the regular/singular block split.
-Non-vacuous: it asserts the existence of an invertible reduction. -/
+(Gaussian elimination / Schur complement) carry `B` to the **block-normal form** `diag(E_r, 0)`:
+there exist invertible `P, Q` with `P·B·Q` the matrix that is the identity on the top-left `r×r`
+block and `0` elsewhere. The reduction realising the regular/singular block split. (Rung-0c FLAG:
+the old conclusion `(P·B·Q).rank = r` was **vacuous** — rank is unit-invariant, so it holds for any
+units; the real content is the *explicit normal form*, which pins the block structure L2 needs.)
+Non-vacuous: it asserts `P·B·Q` equals a specific matrix, not merely its rank. -/
 theorem block_elimination (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
     ∃ (P : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (Q : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
-      IsUnit P ∧ IsUnit Q ∧ (P * B * Q).rank = r := by
+      IsUnit P ∧ IsUnit Q ∧
+        P * B * Q = Matrix.of (fun (i : Fin (H 0)) (j : Fin (H (Fin.last L))) =>
+          if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
   sorry
 
-/-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss at the deepest point splits as
-the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
-widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r`: the local RLCT equals `aoyagiLambda H r` (cast to `ℝ≥0∞`).
-Non-vacuous: it equates the local RLCT at the deepest point to the closed form. -/
+/-- **The deepest singular point** (Aoyagi 2013, the inf-achiever; Rung-0c FLAG, load-bearing).
+`w` is *deepest* when it lies in the fibre **and** every layer matrix `A⁽ˢ⁾ = w s` sits at the
+minimal rank `r` (capped by the layer's dimensions): `rank (w s) = min r (min H⁽ˢ⁾ H⁽ˢ⁺¹⁾)`.
+This is the "all layers at rank `r`" point whose local RLCT is **maximal** over the fibre — so the
+global infimum of the *learning coefficient* `λ = ½·(codim/…)` is attained there (smaller `λ` ⇔ more
+singular ⇔ deeper). The local RLCT genuinely varies over the fibre (rv-2's witness: for `(2,2,2)` a
+milder optimal point gives `2 ≠ 3/2`), so L2 must be keyed to *this* point, not every optimal one —
+that is exactly why D1 exists. -/
+def IsDeepest (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
+  w ∈ optimalSet H B ∧
+    ∀ s : Fin L, (w s).rank = min r (min (H s.castSucc) (H s.succ))
+
+/-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at a deepest point** splits
+as the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
+widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r`: it equals `aoyagiLambda H r` (cast to `ℝ≥0∞`). (Rung-0c FLAG: the old
+statement quantified over *every* optimal `wstar` — an **over-claim**; the local RLCT varies over
+the fibre, equalling the closed form only at the deepest point. Re-keyed to `IsDeepest`.)
+Non-vacuous: it equates the local RLCT at a deepest point to the closed form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) (wstar : Params H)
-    (hwstar : wstar ∈ optimalSet H B) :
-    rlctAt H (dlnLoss H B) wstar = ENNReal.ofReal (aoyagiLambda H r) := by
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H)
+    (hw : IsDeepest H r B w) :
+    rlctAt H (dlnLoss H B) w = ENNReal.ofReal (aoyagiLambda H r) := by
   sorry
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
-/-- **D1 (Theorem 4).** The global infimum of the local RLCT over the optimal set is **attained at
-the deepest singular point** (all layers at the minimal rank `r`). This turns the headline's
-`⨅ w ∈ optimalSet, rlctAt` into the local RLCT at one point. `wstar` is the deepest fibre point;
-existence/identification of `wstar` is part of D1's proof obligation. -/
+/-- **D1 (Theorem 4).** The global infimum of the local RLCT over the optimal set is **attained at a
+deepest singular point** (`IsDeepest`): there exists a deepest `w` that is optimal and whose local
+RLCT realises the infimum. This turns the headline's `⨅ w ∈ optimalSet, rlctAt` into the local RLCT
+at one identified point. (Rung-0c FLAG: the old statement asserted only `∃ wstar ∈ optimalSet`
+attaining the inf — an **under-claim** that did not identify the attainer as *deepest*, so it could
+not feed the re-keyed L2; now it certifies `IsDeepest`.) Non-vacuous: it both exhibits a deepest
+attainer and equates the inf to its local RLCT. -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
-    ∃ wstar ∈ optimalSet H B,
-      (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = rlctAt H (dlnLoss H B) wstar := by
+    ∃ w, IsDeepest H r B w ∧
+      (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v) = rlctAt H (dlnLoss H B) w := by
   sorry
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
@@ -198,8 +237,18 @@ chart family with monomial pullback `F∘φᵢ = unitᵢ·∏|uⱼ|^{2k_{i,j}}` 
 exponents `(k_{i,j}, h_{i,j})` range over exactly the admissible cone `Adm` (so the chart minima
 realise `min_T M(T)`). Stated as the existence of chart-exponent data whose monomial thresholds
 reconstruct `rlctAt F`; the explicit charts are R1's obligation (design-spec §9 item 3: the R1↔Adm
-match). -/
-theorem resolution_charts (H : Fin (L + 1) → ℕ) (F : Params H → ℝ) (wstar : Params H) :
+match).
+
+Rung-0c FLAG (precondition): the value-match `rlctAt F = ⨅ monomialThreshold` is the **standard
+RLCT** only for `F` real-analytic and `≢ 0` near `w*` (design-spec §2); without it the
+`⨅`-existential fails for pathological `F`. We add the stateable, load-bearing `≢ 0 near w*` half
+(`hFne`). The real-analyticity half is **automatic for every instantiation** — R1 is applied only to
+`dlnLoss H B`, a polynomial — and is *not* added as an `AnalyticAt` hypothesis because `Params H`
+carries no `NormedSpace ℝ` instance (a `def` over `Matrix`, which has no canonical norm), so
+`AnalyticAt ℝ F` is not Mathlib-stateable here; pinning it as an unsatisfiable instance hypothesis
+would re-vacuate the theorem. Flagged for the controller (see report). -/
+theorem resolution_charts (H : Fin (L + 1) → ℕ) (F : Params H → ℝ) (wstar : Params H)
+    (hFne : ∀ U ∈ 𝓝 wstar, ∃ w ∈ U, F w ≠ 0) :
     ∃ (ι : Type) (_ : Fintype ι) (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ),
       rlctAt H F wstar = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) := by
   sorry
@@ -228,18 +277,22 @@ def printedCore (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) : ℚ :=
         if i < j then (m i * m j : ℚ) else 0
 
 /-- **A1 (Lemma 3, the clean closed form).** The core `lambdaCore M = ½·min_T M(T)` admits a
-clean-form representation: there exist `ℓ` and reduced widths `m` (the Def-3 selection — the `ℓ+1`
-smallest of `M`) with `lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)`, proven via the
-integer-balanced-split minimum (design-spec §4.3). Stated existentially over the selection (true on
-all widths; the *which* `ℓ,m` is the proof's content). Non-vacuous: it equates `lambdaCore M` to an
+clean-form representation: there exist `ℓ` and reduced widths `m` with
+`lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)`, proven via the integer-balanced-split minimum
+(design-spec §4.3). (Rung-0c nit: the docstring formerly named `(ℓ,m)` as "the Def-3 selection — the
+`ℓ+1` smallest of `M`", but the **existential does not bind** `(ℓ,m)` to that selection — it asserts
+only that *some* `(ℓ,m)` works. The Def-3 identification of *which* `(ℓ,m)` is the proof's content,
+not part of the statement; docstring softened to match.) Non-vacuous: equates `lambdaCore M` to an
 explicit `cleanCore`. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ), lambdaCore M = cleanCore ℓ m := by
   sorry
 
-/-- **A1 (clean = printed, Def-3 regime).** The clean core form equals the printed Theorem-2
-expression — a finite arithmetic identity in `m, ℓ` (`a = P mod ℓ`), independent of any selection.
-Scoped to the Def-3 regime; not part of the headline. Non-vacuous: it equates the two forms. -/
+/-- **A1 (clean = printed).** The clean core form equals the printed Theorem-2 expression — a finite
+arithmetic identity in `m, ℓ` (`a = P mod ℓ`), holding for **every** `m` and every `ℓ > 0`. (Rung-0c
+nit: the docstring formerly called this "Def-3 regime"-scoped, but the identity is **universal** in
+`(m, ℓ)` with `0 < ℓ` — it does not depend on any Def-3 selection; rv-2 verified 9324 cases.
+Docstring corrected.) Not part of the headline. Non-vacuous: it equates the two forms. -/
 theorem clean_eq_printed (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) (hℓ : 0 < ℓ) :
     cleanCore ℓ m = printedCore ℓ m := by
   sorry
@@ -263,9 +316,9 @@ target `B` of rank `r`. Assembled: D1 (→ deepest point) ▸ L2 (→ reg + core
 theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
-  -- assemble: D1 (deepest point) ▸ L2 (reg + core = closed form).
-  obtain ⟨wstar, hwstar, hinf⟩ := deepest_point_reduction H r B hB
+  -- assemble: D1 (→ a deepest point attaining the inf) ▸ L2 (→ closed form at the deepest point).
+  obtain ⟨w, hdeep, hinf⟩ := deepest_point_reduction H r B hB
   rw [hinf]
-  exact product_reduction H r B hB wstar hwstar
+  exact product_reduction H r B w hdeep
 
 end DLNFibre.DLN.RLCT
