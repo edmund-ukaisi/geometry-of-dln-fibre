@@ -1574,6 +1574,9 @@ No such claim is formalisation-ready until both fields are filled.
   the Lemma 4 two-value hypothesis from source vector inequalities,
   vector admissibility/correspondence to `lambda`, quadratic rewrite from
   terminal exponents, and Lemma 5 order-count construction are not checked.
+  The finite bridge from Lemma 4's all-increment count to the Lemma 3
+  free-count equality cases is now Lean-proved and reviewed at the same narrow
+  arithmetic scope.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1590,6 +1593,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma4-two-value-count-a5.md`;
   Lemma 4 source sum bridge at
   `threads/05-arithmetic-tail/reproduction-lemma4-sum-bridge-a5.md`;
+  Lemma 4 free-count bridge at
+  `threads/05-arithmetic-tail/reproduction-lemma4-free-count-bridge-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1607,6 +1612,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma4-two-value-count-a5.md`;
   Lemma 4 source sum bridge checked by xhigh `Dewey the 5th` at
   `threads/05-arithmetic-tail/review-lemma4-sum-bridge-a5.md`;
+  Lemma 4 free-count bridge checked by xhigh `Arendt the 5th` and xhigh Lean
+  scout `Banach the 5th` at
+  `threads/05-arithmetic-tail/review-lemma4-free-count-bridge-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
@@ -1614,6 +1622,8 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   source `H`-bookkeeping sum bridge in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
+  finite Lemma 4 free-count bridge to Lemma 3 equality cases in
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1657,15 +1667,23 @@ No such claim is formalisation-ready until both fields are filled.
   `H_0=M(S_1)` and terminal condition `H_ell=0`, the increments telescope to
   the selected-width sum, and the two-value count follows without assuming
   `sum F_j=ell*(M-1)+a` directly.
+  Also proved `highCount_castSucc_add_last_eq_total`,
+  `highCount_castSucc_int_eq_or_eq_pred_of_total`,
+  `aoyagiLemma4_freeHighCount_lemma3A_eq_min_of_totalCount`, and
+  `aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min`, which split the
+  all-increment count into a free first-`ell-1` count plus the last increment
+  and feed the resulting integer equality case into the isolated Lemma 3
+  numerator theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
 - **Cited.** none planned.
 - **Deferred.** terminal candidate set with `\tilde t_{s,k}=0`, feasibility of
   the minimizing exponent chains, the Lemma 4 two-value hypothesis from source
-  vector inequalities, Lemma 4's correspondence-to-`lambda` conclusion, Lemma
-  5 chart-family admissibility and coverage, pole-order count, and analytic
-  extraction.
+  vector inequalities, the terminal exponent rewrite into the isolated Lemma
+  3 free-count quadratic, Lemma 4's correspondence-to-`lambda` conclusion,
+  Lemma 5 chart-family admissibility and coverage, pole-order count, and
+  analytic extraction.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 

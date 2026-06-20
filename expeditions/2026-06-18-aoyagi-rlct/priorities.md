@@ -503,11 +503,15 @@ on the session's original cwd.
    selected-width sum is supplied.
    The elementary Lemma 5 interval-excess sum is also Lean-proved:
    `1 + sum_{j=1}^{ell-1}(intervalSize-1)=a(ell-a)+1`, but only as finite
-   arithmetic, not as pole-order admissibility.  The remaining
+   arithmetic, not as pole-order admissibility.  The finite bridge from Lemma
+   4's all-increment count to Lemma 3's free-count equality cases is now also
+   Lean-proved: the first `ell-1` high-count is `a` or `a-1`, so the isolated
+   Lemma 3 numerator attains its lower-bound value at that free count.  The remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis
-   from source vector inequalities, bridge the count to the endpoint-corrected
-   Lemma 3 minimisers/correspondence-to-`lambda`, reproduce the terminal
+   from source vector inequalities, connect the source terminal exponent
+   expression to the isolated Lemma 3 free-count quadratic, prove
+   correspondence-to-`lambda`, reproduce the terminal
    quadratic rewrite, and reproduce Lemma 5's chart-family/order-count
    construction.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo

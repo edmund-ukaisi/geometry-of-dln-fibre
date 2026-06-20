@@ -1723,6 +1723,19 @@ finite count.  This still assumes the selected-width sum and the two-value
 increment hypothesis; vector admissibility, the proof of the two-value
 hypothesis from `Ttilde <= T <= Ttilde'`, correspondence to `lambda`, Lemma 5,
 pole order, normal crossings, and RLCT extraction remain open.
+
+The next Lemma 4 bridge is now Lean-proved too.  `highCount_castSucc_add_last_eq_total`
+splits a high-count over `Fin (n+1)` into the initial `Fin n` count plus the
+last-coordinate indicator.  Therefore
+`highCount_castSucc_int_eq_or_eq_pred_of_total` proves that if `a` of all
+`n+1` increments are high, the free high-count over the first `n` positions is
+`a` or `a-1` over integers.  `aoyagiLemma4_freeHighCount_lemma3A_eq_min_of_totalCount`
+feeds this into `aoyagiLemma3A_eq_min_iff`, and the terminal-`H` wrapper
+`aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min` combines it with the
+source sum bridge and the two-value increment hypothesis.  This removes the
+finite count-to-Lemma-3 equality-case gap, but it does not prove the two-value
+hypothesis, terminal exponent rewriting, vector admissibility, or
+correspondence to `lambda`.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

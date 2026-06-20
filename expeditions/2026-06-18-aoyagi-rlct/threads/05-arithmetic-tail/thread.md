@@ -197,3 +197,45 @@ the vector inequalities `Ttilde <= T <= Ttilde'`, the two-value hypothesis from
 those inequalities, the endpoint-corrected Lemma 3 minimisation bridge,
 correspondence to `lambda`, Lemma 5, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-20 Lean Lemma 4 free-count bridge
+
+Reproduction:
+`reproduction-lemma4-free-count-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-free-count-bridge.md`.
+Review artifact:
+`review-lemma4-free-count-bridge-a5.md`.
+
+Lean now proves the finite bridge from Lemma 4's all-increment count to the
+free count used in Lemma 3.  For a family indexed by `Fin (n+1)`, the theorem
+`highCount_castSucc_add_last_eq_total` splits the total high count into the
+first `n` positions plus the last-position indicator.  Consequently, if the
+total high count is `a`, then
+
+```text
+b = #{j : Fin n | v(j.castSucc)=M}
+```
+
+satisfies, over integers,
+
+```text
+b = a or b = a-1.
+```
+
+The theorem `aoyagiLemma4_freeHighCount_lemma3A_eq_min_of_totalCount` feeds
+this alternative into the already-proved Lemma 3 equality-case theorem, proving
+the isolated numerator equality
+
+```text
+A(b) = a*ell*(ell-a)
+```
+
+for `ell=n+1`.  The source-shaped wrapper
+`aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min` combines this with the
+terminal-`H` sum bridge and two-value increment hypothesis.
+
+This is still finite arithmetic only.  It does not prove the two-value
+increment hypothesis from `Ttilde <= T <= Ttilde'`, vector admissibility,
+terminal exponent rewriting into the Lemma 3 quadratic, correspondence to
+`lambda`, Lemma 5, pole order, normal crossings, or RLCT extraction.

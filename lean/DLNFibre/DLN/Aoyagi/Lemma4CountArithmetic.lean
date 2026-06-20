@@ -1,3 +1,4 @@
+import DLNFibre.DLN.Aoyagi.ArithmeticTail
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
@@ -195,6 +196,76 @@ theorem aoyagiLemma4_twoValueCount_of_terminalH_le_ell (ell a : ℕ) (M : ℤ)
   exact aoyagiLemma4_twoValueCount_le_ell ell a M (aoyagiLemma4F ell m H) hvals
     (aoyagiLemma4F_sum_eq_of_selectedSum_eq_pred_add_a ell a M m H hH0 hHlast
       hselected)
+
+/-- Split a high-value count on `Fin (n+1)` into the first `n` positions and
+the last position. -/
+theorem highCount_castSucc_add_last_eq_total (n : ℕ) (M : ℤ)
+    (v : Fin (n + 1) → ℤ) :
+    ((Finset.univ.filter fun j : Fin n ↦ v j.castSucc = M).card) +
+        (if v (Fin.last n) = M then 1 else 0) =
+      (Finset.univ.filter fun j : Fin (n + 1) ↦ v j = M).card := by
+  rw [Finset.card_filter, Finset.card_filter]
+  rw [Fin.sum_univ_castSucc]
+
+/-- If exactly `a` of `n+1` positions are high, then the high-count on the
+first `n` positions is either `a` or `a-1`, depending on the last position. -/
+theorem highCount_castSucc_int_eq_or_eq_pred_of_total (n a : ℕ) (M : ℤ)
+    (v : Fin (n + 1) → ℤ)
+    (hcount : (Finset.univ.filter fun j : Fin (n + 1) ↦ v j = M).card = a) :
+    (((Finset.univ.filter fun j : Fin n ↦ v j.castSucc = M).card : ℤ) =
+        (a : ℤ)) ∨
+      (((Finset.univ.filter fun j : Fin n ↦ v j.castSucc = M).card : ℤ) =
+        (a : ℤ) - 1) := by
+  have hsplit := highCount_castSucc_add_last_eq_total n M v
+  rw [hcount] at hsplit
+  by_cases hlast : v (Fin.last n) = M
+  · right
+    simp [hlast] at hsplit
+    omega
+  · left
+    simp [hlast] at hsplit
+    omega
+
+/-- The free high-count used in the Lemma 3 quadratic is one of Lemma 3's
+two equality cases, once Lemma 4 has counted `a` high increments among all
+`n+1` increments.
+
+This is only the finite count-to-Lemma-3 bridge.  It does not prove that the
+increments come from admissible exponent vectors, or that the quadratic is the
+source terminal exponent expression. -/
+theorem aoyagiLemma4_freeHighCount_lemma3A_eq_min_of_totalCount (n a : ℕ) (M : ℤ)
+    (v : Fin (n + 1) → ℤ)
+    (hcount : (Finset.univ.filter fun j : Fin (n + 1) ↦ v j = M).card = a) :
+    aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+        ((Finset.univ.filter fun j : Fin n ↦ v j.castSucc = M).card : ℤ) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) * (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  have hcases := highCount_castSucc_int_eq_or_eq_pred_of_total n a M v hcount
+  exact (aoyagiLemma3A_eq_min_iff ((n + 1 : ℕ) : ℤ) (a : ℤ)
+    ((Finset.univ.filter fun j : Fin n ↦ v j.castSucc = M).card : ℤ)
+    (by omega)).mpr hcases
+
+/-- Source-shaped version of the finite Lemma 4-to-Lemma 3 bridge.
+
+With the terminal-`H` sum bridge and the two-value increment hypothesis,
+the number of high increments among the first `n` free positions attains the
+isolated Lemma 3 numerator minimum for `ell = n+1`.  This remains finite
+arithmetic only: it does not prove the two-value hypothesis, vector
+admissibility, terminal exponent rewriting, or correspondence to `lambda`. -/
+theorem aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min (n a : ℕ) (M : ℤ)
+    (m H : Fin (n + 2) → ℤ)
+    (hH0 : H 0 = m 0) (hHlast : H (Fin.last (n + 1)) = 0)
+    (hselected : (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hvals : ∀ j : Fin (n + 1),
+      aoyagiLemma4F (n + 1) m H j = M - 1 ∨ aoyagiLemma4F (n + 1) m H j = M) :
+    aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+        ((Finset.univ.filter fun j : Fin n ↦
+          aoyagiLemma4F (n + 1) m H j.castSucc = M).card : ℤ) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) * (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  have hcount :=
+    (aoyagiLemma4_twoValueCount_of_terminalH (n + 1) a M m H hH0 hHlast
+      hselected hvals).1
+  exact aoyagiLemma4_freeHighCount_lemma3A_eq_min_of_totalCount n a M
+    (aoyagiLemma4F (n + 1) m H) hcount
 
 end Aoyagi
 end DLN
