@@ -67,27 +67,65 @@ certificate (thread 36 §2). Plus `liftMat` algebra (`liftMat_mul`/`_sub`/`_one`
 `one_add_eps_mul_one_sub_eps` (`(1+εφ)⁻¹ = 1−εφ`). The geometric heart of A4.3, and the **reusable lemma
 for the A6.1 R2★ tide** (`D_{δ⁰φ} f = 0`, the dual-number `1 + εφ` curve). Axiom-clean.
 
-## Residual — ONE obligation (A4.3, the `≤` direction only)
+## Matrix-Kähler gate + rank brick — LANDED (`Core/MatrixKaehler.lean`, commit `7f22b0a`)
 
-**`genericDifferentialRank k (groupRing d) (genericOrbitCoord M) ≤ finrank k (LinearMap.range
-(deformationδ M M))`** — char-free. The headline needs only this `≤` (Codex Q3: the chain is
-`varietyDim = trdeg ≤ genericDifferentialRank ≤ finrank δ⁰`, so the equality `hA43` is NOT needed; the
-A4.4 assembly now takes `hA43_le`). The char-0 `_charZero` headline depends on this single residual.
+The irreducible matrix-Kähler nugget of route c, built from scratch (Mathlib v4.29 has no
+matrix-`Derivation` API). Char-free, axiom-clean (`[propext, Classical.choice, Quot.sound]`):
 
-Codex route (`codex/a43-answer.md`, VERDICT "PROVABLE, ~6-8 lemmas; scope to the `≤`-bound"): a generic
-tangent factorization `orbitJacobianK M = ρ(Pgen) ∘ δK ∘ τ(Pgen)` (`δK` = base change of `deformationδ
-M M` to `K`; `ρ`, `τ` the target/domain trivialization isos), then `genericDifferentialRank` = range
-rank of `orbitJacobianK` via cotangent duality (`LinearMap.finrank_range_dualMap_eq_finrank_range`,
-`Subspace.dual_finrank_eq`), bounded by `finrank K (K ⊗ range δ⁰) = finrank k (range δ⁰)`
-(`Module.finrank_baseChange`). **NOTE (this run):** this route is in the **Kähler/fraction-field**
-framework — it differentiates `genericUnit v * genericUnitInv v = 1` for the matrix-Kähler identity
-`D(U⁻¹) = -U⁻¹ (DU) U⁻¹` over the localization, which is from-scratch (Mathlib v4.29 has **no**
-matrix-`Derivation` API; `D(A·B)` is an entrywise `Finset`-sum of per-entry Leibniz terms). The landed
-dual-number `orbitAction_eps_eq_deformationδ` is a *different representation* (pointwise at the identity)
-and does not shorten this Kähler build; it is the right object for A6.1's R2★, not for the
-`genericDifferentialRank` span-rank bound. Not started — the genuine concrete matrix-Kähler-calculus
-piece. Recommended scoped residual name:
-`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`.
+- `derivMatrix_mul_apply` (PROVED) — entrywise matrix-product Leibniz over `D : Derivation R A M`:
+  `D((P*Q) r c) = Σ_s (P r s • D(Q s c) + Q s c • D(P r s))` (`Matrix.mul_apply` + `map_sum` +
+  per-term `Derivation.leibniz`).
+- **`derivMatrix_inv_apply`** (PROVED) — the matrix-Kähler inverse identity (entrywise):
+  `U*W = 1 ⟹ D(W r c) = − Σ_{s,t} W r s • W t c • D(U s t)` (= `D(U⁻¹) = −U⁻¹(DU)U⁻¹`), via
+  `D(U·W) = D 1 = 0` (`derivMatrix_inv_aux`) + left-multiply by `W` + `W*U = 1` collapse.
+- **`finrank_range_baseChange`** (PROVED) — base change preserves rank:
+  `finrank K (range (f.baseChange K)) = finrank k (range f)` (subtype∘rangeRestrict factorization;
+  `lTensor_surjective` for the surjection, `Flat.lTensor_preserves_injective_linearMap` for the
+  injection, then `Module.finrank_baseChange`). The rank-side tool for the bound.
+
+Products are kept **entrywise** (`Matrix _ _ M`, M a module, has no `Mul`, so a `Matrix _ _ M` cannot
+multiply a `Matrix _ _ K`). Instantiate at `R=k, A=K, M=Ω[K⁄k], D=KaehlerDifferential.D k K`.
+
+## Residual — `hA43_le`, route FULLY VALIDATED, mechanical assembly remaining
+
+**`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`** :
+`genericDifferentialRank k (groupRing d) (genericOrbitCoord M) ≤ finrank k (range (deformationδ M M))`
+— char-free. Headline needs only `≤` (chain `varietyDim = trdeg ≤ genericDifferentialRank ≤
+finrank δ⁰`); the A4.4 assembly already takes `hA43_le`. The `_charZero` headline depends on this.
+
+**THE CORRECT ROUTE (established this run; the lossy alternatives ruled out).** The naive "span of
+the conjugated entries" bound gives `dim cochain0`, NOT `finrank(range δ⁰)` — entry-extraction
+collapses the `K`-structure, so the rank reduction is lost. The correct device is the **transpose
+(trace-pairing) factorization**, all pieces individually validated in probes this run:
+
+1. **Per-coordinate connection** (probe-validated): `D(algebraMap B K (f ⟨i,s,t⟩)) = D((V₂ F V₁⁻¹) s t)`
+   over `K`, with `V₂ = (genericUnit i.succ).map(alg)`, `V₁⁻¹ = (genericUnitInv i.castSucc).map(alg)`,
+   `F = (genericFactor M i).map(alg)` (= `M_i` constant, `D F = 0` via `Derivation.map_algebraMap` +
+   `IsScalarTower.algebraMap_apply`). `V₂ * V₁⁻¹`-style `= 1` over `K` via `genericUnit_mul_genericUnitInv`
+   + `Matrix.map_mul`/`map_one`.
+2. **Gate expansion → conjugated bracket** (paper-derived, NOT yet in Lean): applying the gate twice,
+   `D(V₂ F V₁⁻¹)_{st} = (V₂ · (Θ₂ F − F Θ₁) · V₁⁻¹)_{st}` with `Θ_v := V_v⁻¹ · D(V_v)` the Ω-valued
+   Maurer-Cartan (entrywise, ~60-100 lines of `Finset.sum`/`•` juggling — the next concrete piece).
+3. **Conjugation preserves K-span** (NOT yet in Lean): `span_K{D(f_x)} = span_K{(Θ₂F − FΘ₁)_{st}}`
+   (V₂, V₁⁻¹ invertible over K ⟹ each entry is a K-combo of the bracket's entries, and vice versa).
+4. **Adjoint pairing** (PROVED in probe, the riskiest sub-step — dependent `Fin.succ/castSucc` casts
+   collapse via `Finset.sum_dite_eq'` + `Finset.sum_eq_single`): with the explicit transpose
+   `deltaT M ψ : cochain0` and `evΘ(φ) = Σ_v Σ_{pq}(φ_v)_{pq} • (Θ_v)_{pq}`,
+   `Σ_v Σ_{pq}(deltaT M ψ)_{vpq} • Θ_{vpq} = Σ_i Σ_{st}(ψ_i)_{st} • (Θ₂F − FΘ₁)_{i,st}` (the T1 half
+   fully closed; T2 half symmetric). So `span_K{bracket entries} = evΘ_K(range(deltaT.baseChange K))`.
+5. **Final chain**: `finrank_K S ≤ finrank_K(range(deltaT.baseChange K))` (`Submodule.finrank_map_le`
+   via `LinearMap.range_comp`) `= finrank_k(range deltaT)` (`finrank_range_baseChange`, LANDED)
+   `= finrank_k(range δ⁰)` (transpose-rank: `deltaT = (trace-iso)⁻¹ ∘ δ⁰.dualMap ∘ (trace-iso)`, so
+   `finrank_range_dualMap_eq_finrank_range`, VERIFIED present; or by hand from the adjoint relation).
+
+Validated Mathlib bricks (all `#check`ed present): `Module.finrank_baseChange`,
+`Submodule.finrank_map_le`, `LinearMap.range_comp`, `LinearMap.finrank_range_dualMap_eq_finrank_range`,
+`Finset.sum_dite_eq'`, `Module.Flat.lTensor_preserves_injective_linearMap`, `lTensor_surjective`.
+
+**Remaining Lean work: steps 2, 3, the final wiring of 4-5 (~150-200 lines, no conceptual gap).** The
+two hardest sub-pieces (the gate, step 1; the adjoint-with-casts, step 4-T1) are DONE. The landed dual-
+number `orbitAction_eps_eq_deformationδ` is a *different* representation (pointwise at e) and does not
+shorten this Kähler build; it is the right object for A6.1's R2★.
 
 ## Fidelity note (for the reviewer)
 The headline `(ringKrullDim …).unbotD 0 ≤ finrank …` is in `ℕ∞` (the `unbotD 0` is `ℕ∞`-valued, RHS
