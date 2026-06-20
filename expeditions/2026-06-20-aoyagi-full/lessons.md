@@ -35,3 +35,18 @@ pen-and-paper rounds that preceded this expedition. Directed-suspicion fuel for 
 
 - **Build-time anti-pattern: one giant file.** A 13.7K-line module recompiles wholesale on any edit.
   Many small modules + a build-once Foundations layer + background builds.
+
+## 2026-06-20 — statement-fidelity audits must be per-rung and adversarial
+
+The Rung-0c audit (broad: defs, S2-minimality, θ-seam, hygiene) PASSED but MISSED two statement bugs in
+the skeleton rungs — caught only by a later controller precision-read of the full `Skeleton.lean`:
+- `block_elimination` (L1) was **vacuous**: `∃ invertible P,Q, (P·B·Q).rank = r` is trivially true
+  (rank invariant under invertible mult). A non-X=X statement can still be vacuous — "rank preserved"
+  reads like content but is a triviality. **Audit test:** for each rung, ask "could this be discharged by
+  identity witnesses / an invariant that holds for ALL inputs?".
+- `product_reduction` (L2) **over-claimed**: `rlctAt = aoyagiLambda` `∀ wstar ∈ optimalSet` — but the local
+  RLCT varies over the fibre (min at the deepest point; that's why D1 exists), so it's false at milder
+  points. **Audit test:** for each `∀`-over-a-set conclusion, ask "true on ALL admitted inputs, or only at
+  special points?". Tell-tale: if the rung makes a sibling rung (D1) redundant, it's over-claiming.
+Takeaway: a green build + a broad audit is necessary, not sufficient; statement-fidelity needs a sharp,
+per-rung, adversarial pass (vacuity + over/under-claim + name=content) — now standard for skeleton audits.
