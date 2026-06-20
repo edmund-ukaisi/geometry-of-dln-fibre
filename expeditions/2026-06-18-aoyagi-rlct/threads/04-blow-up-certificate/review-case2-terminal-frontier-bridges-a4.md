@@ -28,6 +28,9 @@ No blocking Lean/API issues were found.
   reuses the already proved product-form theorem.
 - The bridge structure projections are thin wrappers around the row-equation
   equality and product rewrite.
+- The bridge-consuming prefix and source-suffix wrappers only rewrite through
+  `SuppliedTerminalCprimeBridge`; they do not construct a bridge or add hidden
+  source-production assumptions.
 
 ## Residual Risk
 

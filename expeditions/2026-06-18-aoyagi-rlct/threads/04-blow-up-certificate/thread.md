@@ -2458,7 +2458,11 @@ matrix has old rows `C(i,-)` for `i=1..J` and pivot row equal to the top row
 of `Q^-1 C`, then the existing source-row terminal product candidate rewrites
 to `(source terminal weight * supplied Cterm) * F`.  The row equations are
 also packaged as `SuppliedTerminalCprimeBridge`, with projections to the
-candidate equality and product rewrite.
+candidate equality and product rewrite.  A follow-up Lean checkpoint consumes
+the same bridge in the terminal-prefix product and in the stopped source
+old-top/source suffix theorem, so downstream statements can mention the
+supplied terminal `Cterm` directly without constructing it from chart
+coordinates.
 
 This is still not chart production.  In the row-exhausted wide-next case,
 actual rows beyond `M(S+1)` belong to the transported following factor but not

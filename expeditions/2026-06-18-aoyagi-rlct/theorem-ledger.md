@@ -1612,18 +1612,22 @@ include `matrixEntryIdeal_submatrix_equiv`,
 `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`,
 `SuppliedTerminalCprimeBridge.cprimeCandidate_eq`,
 `SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul`,
+`SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul`,
 `case2DisplayedSourceTerminalProductPrefixCandidate`,
 `case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul`,
 `matrixEntryIdeal_sourceTerminalProductPrefixCandidate_eq_sourceTerminalProduct`,
 `matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`,
 and
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`,
 `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`.
 These checkpoints reindex the already proved stopped terminal candidate into
 one-based source rows `1..J+1`, reindex it again onto terminal prefix rows
 `1..M(S+1)` under stopped continuation, and prove that the reindexed candidate is
 `(case2DisplayedSourceTerminalWeight *
-case2DisplayedSourceTerminalCprimeCandidate) * F`. They do not prove
+case2DisplayedSourceTerminalCprimeCandidate) * F`. The supplied bridge is now
+usable in the source-row product, the terminal-prefix product, and the stopped
+source old-top/source suffix theorem. They do not prove
 source-produced `C'^(S+1)`, chart production, coverage, Jacobians, normal
 crossings/RLCT, termination, transition invariance, automatic Case 2 gap/tail
 transport, or printed-vector repair. Reproduction:

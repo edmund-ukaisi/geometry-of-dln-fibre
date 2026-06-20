@@ -1411,6 +1411,7 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`,
   `SuppliedTerminalCprimeBridge.cprimeCandidate_eq`,
   `SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul`,
+  `SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul`,
   `case2DisplayedSourceTerminalWeightPrefixCandidate`,
   `case2DisplayedSourceTerminalCprimePrefixCandidate`,
   `case2DisplayedSourceTerminalProductPrefixCandidate`,
@@ -1419,10 +1420,13 @@ No such claim is formalisation-ready until both fields are filled.
   `matrixEntryIdeal_sourceTerminalProductReindexedCandidate_eq_terminalCprimeCandidate`,
   and
   `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalProduct_of_not_next_cont`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`,
   `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`.
   This reindexes the stopped terminal candidate into one-based source rows and
   terminal prefix rows, proves its product form, and records the row-equation
-  handoff for a supplied terminal matrix, but it does not construct
+  handoff for a supplied terminal matrix. The bridge is now consumed by both
+  the source-row terminal product and the terminal-prefix product, and by the
+  stopped source old-top/source suffix theorem. It does not construct
   source-produced `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.

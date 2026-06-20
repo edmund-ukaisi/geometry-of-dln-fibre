@@ -18,11 +18,13 @@ Names:
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalProductReindexedCandidate_eq_weight_mul_suppliedCterm_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.cprimeCandidate_eq`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalWeightPrefixCandidate`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalCprimePrefixCandidate`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalProductPrefixCandidate`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.matrixEntryIdeal_sourceTerminalProductPrefixCandidate_eq_sourceTerminalProduct`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalCprimeProduct_of_not_next_cont`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopSourceSuffix_entryIdeal_eq_sourceTerminalPrefixProduct_of_not_next_cont`
 
 ## Statement
@@ -49,6 +51,8 @@ frontier:
   equations can replace the candidate in the terminal product.
 - The same row equations are packaged as a named supplied bridge for later
   chart-production work.
+- The supplied bridge rewrites the terminal-prefix product and the stopped
+  source old-top/source suffix theorem through the supplied terminal `Cterm`.
 
 ## Not Proved
 

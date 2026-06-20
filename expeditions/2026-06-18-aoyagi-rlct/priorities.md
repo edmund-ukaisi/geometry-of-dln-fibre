@@ -128,7 +128,9 @@ on the session's original cwd.
    `1..M(S+1)` under stopped continuation, the prefix-row product candidate is
    named, and any supplied terminal matrix satisfying old-row and pivot-row
    equations rewrites the candidate product. These equations are packaged as
-   `SuppliedTerminalCprimeBridge`. Next A4 target: construct this bridge from
+   `SuppliedTerminalCprimeBridge`, and the bridge now rewrites the source-row
+   terminal product, the terminal-prefix product, and the stopped source
+   old-top/source suffix theorem. Next A4 target: construct this bridge from
    the displayed source chart, or build a named supplied chart-production
    boundary carrying it. Do not transport
    Case 2 gap/tail invariants without separately checking their shifted
