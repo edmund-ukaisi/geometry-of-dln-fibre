@@ -1,6 +1,7 @@
 import DLNFibre.Core.OrbitVariety
 import DLNFibre.Core.MatrixKaehler
 import DLNFibre.Core.JacobianTrdeg
+import DLNFibre.Core.OrbitImageDim
 import Mathlib.RingTheory.Kaehler.Basic
 import Mathlib.RingTheory.Localization.FractionRing
 import Mathlib.LinearAlgebra.Dual.Lemmas
@@ -29,6 +30,11 @@ deformation coboundary `δ⁰ = deformationδ M M` via the **matrix-Kähler iden
 4. **Transpose rank** (`finrank_range_deltaT`): `finrank (range deltaT) = finrank (range δ⁰)` via the
    trace self-dualities and `LinearMap.finrank_range_dualMap_eq_finrank_range`.
 5. **Base-change rank** (`finrank_range_baseChange`, landed) + `Submodule.finrank_mono` close the bound.
+
+Discharging `hA43_le` makes A4.4 unconditional: `…le_finrank_range_deformationδ_unconditional` (the
+Krull-dimension bound) and `varietyDim_orbitRankLocus_le_finrank_range_deformationδ_unconditional`
+(chained with A0, char 0 + `Infinite k`) — the AG-half submersion inequality of `hVoigt`, with no
+remaining open hypothesis. All axiom-clean (`[propext, Classical.choice, Quot.sound]`).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -447,18 +453,220 @@ private theorem genFactorK_apply (M : Tuple (k := k) d) (i : Fin N)
   rw [genFactorK, Matrix.map_apply, genericFactor, Matrix.map_apply,
     ← IsScalarTower.algebraMap_apply k (groupRing (k := k) d) (FractionRing _)]
 
-/-! ## Remaining (not yet committed): the conjugation identity + final `hA43_le`
+/-! ## The conjugation identity `D_orbit_conj` and the final bound `hA43_le` -/
 
-The conjugation identity `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M) i a b`
-(`D_orbit_conj`) and the final bound `genericDifferentialRank ≤ finrank (range δ⁰)` are proved on
-paper and validated in Lean piece-by-piece, but `D_orbit_conj` rests on one inverse-side reindex
-lemma (`D_orbit_conj_termA`, the `D(V₁⁻¹)`-bracket half) whose assembled `Finset`-sum proof did not
-elaborate cleanly (parse/heartbeat/index-type friction; see thread-37 card for the precise
-obstruction). To respect the project sorry-gate, those two declarations are kept out of the committed
-file until `D_orbit_conj_termA` closes. The landed pieces above (`deltaT`, the adjoint pairing
-`pair_deltaT_eq_pair_deformationδ`, the trace self-duality `traceEquiv`, the transpose-rank identity
-`finrank_range_deltaT`, the gate expansion `D_orbit_expand`, the Maurer–Cartan collapses, and the
-per-coordinate `D_genericOrbitCoord_eq`) are the full 0-sorry scaffold; the direct-side half `hB`
-of `D_orbit_conj` is also proved (it is the mirror of `D_orbit_conj_termA`). -/
+set_option maxHeartbeats 1000000 in
+/-- **TermA of the conjugation identity (the inverse / `D(V₁⁻¹)`-side bracket half).** The gate's
+`D(V₁⁻¹) = −V₁⁻¹ (DV₁) V₁⁻¹` group equals `−` the `M Θ_cast` half of the conjugated Maurer–Cartan
+bracket. Both sides normalise to `− Σ_w Σ_c Σ_e (V₂F)_{sw} • (V₁⁻¹_{wc} • (V₁⁻¹_{et} • D(V₁_{ce})))`;
+the RHS flattens `mcΘ M i.castSucc`, folds the `M_{au}` k-scalar into `genFactorK` (`algebraMap_smul`),
+and `Σ_a V₂_{sa} genFactorK_{au} = (V₂ * genFactorK)_{su}` (`Matrix.mul_apply`). Unlike the direct
+side, there is **no inverse-collapse** — `Σ_u M_{au} V₁⁻¹_{uc}` is irreducible (`M` is not invertible) —
+so this is a two-sided normal-form match, not a collapse. -/
+private theorem D_orbit_conj_termA (M : Tuple (k := k) d) (i : Fin N)
+    (s : Fin (d i.succ)) (t : Fin (d i.castSucc)) :
+    (∑ w, (genUnitK M i.succ * genFactorK M i) s w •
+        (- ∑ c, ∑ e, (genUnitInvK M i.castSucc) w c • (genUnitInvK M i.castSucc) e t •
+          Dk ((genUnitK M i.castSucc) c e)))
+      = - ∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+          (∑ u, (M i a u) • mcΘ M i.castSucc u b) := by
+  classical
+  set V₂ := genUnitK M i.succ with hV₂
+  set W₁ := genUnitInvK M i.castSucc with hW₁
+  set V₁ := genUnitK M i.castSucc with hV₁
+  set F := genFactorK M i with hF
+  simp only [smul_neg, Finset.smul_sum]
+  rw [Finset.sum_neg_distrib]
+  refine congrArg Neg.neg ?_
+  rw [show (∑ a, ∑ b, ∑ u, (V₂ s a * W₁ b t) • (M i a u) • mcΘ M i.castSucc u b)
+      = ∑ b, ∑ u, ∑ c, (∑ a, V₂ s a * F a u) • (W₁ b t • (W₁ u c • Dk (V₁ c b))) from by
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun b _ => ?_
+    rw [show (∑ a, ∑ u, (V₂ s a * W₁ b t) • (M i a u) • mcΘ M i.castSucc u b)
+        = ∑ a, ∑ u, ∑ c, (V₂ s a * F a u) • (W₁ b t • (W₁ u c • Dk (V₁ c b))) from by
+      refine Finset.sum_congr rfl fun a _ => ?_
+      refine Finset.sum_congr rfl fun u _ => ?_
+      rw [mcΘ, ← hW₁, ← hV₁, Finset.smul_sum, Finset.smul_sum]
+      refine Finset.sum_congr rfl fun c _ => ?_
+      rw [hF, genFactorK_apply, ← algebraMap_smul (FractionRing (groupRing (k := k) d)) (M i a u)]
+      rw [smul_smul]
+      conv_lhs => rw [mul_assoc, mul_comm (W₁ b t), ← mul_assoc]
+      conv_rhs => rw [smul_smul]]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun u _ => ?_
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun c _ => ?_
+    rw [← Finset.sum_smul]]
+  rw [show (∑ b, ∑ u, ∑ c, (∑ a, V₂ s a * F a u) • (W₁ b t • (W₁ u c • Dk (V₁ c b))))
+      = ∑ w, ∑ c, ∑ e, (V₂ * F) s w • (W₁ w c • (W₁ e t • Dk (V₁ c e))) from by
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun w _ => ?_
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun c _ => ?_
+    refine Finset.sum_congr rfl fun e _ => ?_
+    rw [Matrix.mul_apply, smul_comm (W₁ e t) (W₁ w c)]]
+
+set_option maxHeartbeats 1000000 in
+/-- **The conjugation identity (step 2).** `D(f_x)` is the `(s,t)` entry of the conjugated
+Maurer–Cartan bracket: `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M) i a b`, where
+`bracketG (mcΘ M)` is the `δ⁰`-bracket of the Maurer–Cartan. From the gate expansion `D_orbit_expand`
+(split via `hsplit`), the direct-side half `hB` (the `D(V₂)` group, via the left-collapse
+`genUnitK_smul_mcΘ`), and the inverse-side half `D_orbit_conj_termA`. -/
+private theorem D_orbit_conj (M : Tuple (k := k) d) (i : Fin N)
+    (s : Fin (d i.succ)) (t : Fin (d i.castSucc)) :
+    Dk ((genUnitK M i.succ * genFactorK M i * genUnitInvK M i.castSucc) s t)
+      = ∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+          bracketG M (mcΘ M) i a b := by
+  rw [D_orbit_expand M i s t]
+  -- `bracketG (mcΘ) = (Σ_u M_ub • Θ_succ) − (Σ_u M_au • Θ_cast)`; conjugate and split
+  have hsplit : (∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+        bracketG M (mcΘ M) i a b)
+      = (∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+          (∑ u, (M i u b) • mcΘ M i.succ a u))
+        - (∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+          (∑ u, (M i a u) • mcΘ M i.castSucc u b)) := by
+    rw [← Finset.sum_sub_distrib]
+    refine Finset.sum_congr rfl fun a _ => ?_
+    rw [← Finset.sum_sub_distrib]
+    refine Finset.sum_congr rfl fun b _ => ?_
+    rw [bracketG, smul_sub]
+  -- TermB (the `D(V₂)` group) = the `Σ_u M_ub • Θ_succ` half
+  have hB : (∑ w, (genUnitInvK M i.castSucc) w t •
+        (∑ a, (genFactorK M i) a w • Dk ((genUnitK M i.succ) s a)))
+      = ∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+          (∑ u, (M i u b) • mcΘ M i.succ a u) := by
+    rw [show (∑ a, ∑ b, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+          (∑ u, (M i u b) • mcΘ M i.succ a u))
+        = ∑ b, ∑ u, (genUnitInvK M i.castSucc) b t • (M i u b) •
+            (∑ a, (genUnitK M i.succ) s a • mcΘ M i.succ a u) from by
+      rw [Finset.sum_comm]
+      refine Finset.sum_congr rfl fun b _ => ?_
+      rw [show (∑ a, ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+            (∑ u, (M i u b) • mcΘ M i.succ a u))
+          = ∑ a, ∑ u, (M i u b) • ((genUnitK M i.succ) s a * (genUnitInvK M i.castSucc) b t) •
+              mcΘ M i.succ a u from
+        Finset.sum_congr rfl fun a _ => by
+          rw [Finset.smul_sum]; exact Finset.sum_congr rfl fun u _ => by rw [smul_comm]]
+      rw [Finset.sum_comm]
+      refine Finset.sum_congr rfl fun u _ => ?_
+      rw [Finset.smul_sum, Finset.smul_sum]
+      refine Finset.sum_congr rfl fun a _ => ?_
+      rw [smul_comm ((genUnitInvK M i.castSucc) b t) (M i u b), smul_smul, mul_comm]]
+    simp only [genUnitK_smul_mcΘ]
+    refine Finset.sum_congr rfl fun w _ => ?_
+    rw [Finset.smul_sum]
+    refine Finset.sum_congr rfl fun u _ => ?_
+    rw [genFactorK_apply, ← algebraMap_smul (FractionRing (groupRing (k := k) d)) (M i u w),
+      smul_comm]
+  rw [hsplit, sub_eq_add_neg, ← hB, ← D_orbit_conj_termA M i s t, add_comm]
+
+set_option maxHeartbeats 800000 in
+/-- **A4.3 (`hA43_le`): the generic-Jacobian rank bound.** `genericDifferentialRank ≤ finrank (range
+δ⁰)`, char-free. The differential span `S = span_K {D(f_x)}` is generated by the conjugated
+Maurer–Cartan brackets `bracketG (mcΘ M) i a b = evΘδ M (single i a b)` (`D_orbit_conj` +
+`D_genericOrbitCoord_eq`), so `S ≤ range (evΘδ.liftBaseChange K)`; since `evΘδ = (pair-mcΘ) ∘ deltaT`,
+its lift factors through `(deltaT M).baseChange K`, so `finrank_K S ≤ finrank_K (range (deltaT.bc)) =
+finrank_k (range deltaT) = finrank_k (range δ⁰)` (`finrank_range_baseChange` + `finrank_range_deltaT`). -/
+theorem genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ
+    {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d) :
+    genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      ≤ finrank k (LinearMap.range (deformationδ M M)) := by
+  classical
+  set K := FractionRing (groupRing (k := k) d)
+  set pairMC : cochain0 (k := k) d d →ₗ[k] KaehlerDifferential k K :=
+    { toFun := fun φ => ∑ v, ∑ p, ∑ q, φ v p q • mcΘ M v p q
+      map_add' := fun φ φ' => by
+        simp only [Pi.add_apply, Matrix.add_apply, add_smul]
+        rw [← Finset.sum_add_distrib]
+        refine Finset.sum_congr rfl fun v _ => ?_
+        rw [← Finset.sum_add_distrib]
+        refine Finset.sum_congr rfl fun p _ => ?_
+        rw [← Finset.sum_add_distrib]
+      map_smul' := fun c φ => by
+        simp only [Pi.smul_apply, Matrix.smul_apply, smul_assoc, RingHom.id_apply,
+          Finset.smul_sum] } with hpairMC
+  -- the target submodule: `range ((pairMC ∘ deltaT).liftBaseChange K) = span_K (range (pairMC∘deltaT))`
+  set L := (pairMC.comp (deltaT M)).liftBaseChange K with hL
+  set W : Submodule K (KaehlerDifferential k K) := LinearMap.range L with hW
+  have hWspan : W = Submodule.span K ↑(LinearMap.range (pairMC.comp (deltaT M))) := by
+    rw [hW, hL, LinearMap.range_liftBaseChange]
+  -- each Maurer–Cartan bracket is hit by `pairMC ∘ deltaT` at the single-entry cochain1 (adjoint)
+  have hbr : ∀ (i : Fin N) (a' : Fin (d i.succ)) (b' : Fin (d i.castSucc)),
+      bracketG M (mcΘ M) i a' b' ∈ LinearMap.range (pairMC.comp (deltaT M)) := by
+    intro i a' b'
+    refine ⟨Pi.single i (Matrix.single a' b' (1 : k)), ?_⟩
+    rw [LinearMap.comp_apply, hpairMC]
+    show (∑ v, ∑ p, ∑ q,
+        (deltaT M (Pi.single i (Matrix.single a' b' (1 : k)))) v p q • mcΘ M v p q)
+      = bracketG M (mcΘ M) i a' b'
+    rw [pair_deltaT_eq_pair_deformationδ M (Pi.single i (Matrix.single a' b' (1 : k))) (mcΘ M)]
+    -- collapse the triple sum: the single-entry indicator picks out `(i, a', b')`
+    rw [Finset.sum_eq_single i (fun i₁ _ hi₁ => ?_) (fun h => absurd (Finset.mem_univ _) h)]
+    · rw [Pi.single_eq_same]
+      rw [Finset.sum_eq_single a' (fun s _ hs => ?_) (fun h => absurd (Finset.mem_univ _) h)]
+      · rw [Finset.sum_eq_single b' (fun t _ ht => ?_) (fun h => absurd (Finset.mem_univ _) h)]
+        · rw [Matrix.single_apply_same, one_smul]
+        · rw [Matrix.single_apply_of_col_ne a' a' (Ne.symm ht) 1, zero_smul]
+      · refine Finset.sum_eq_zero fun t _ => ?_
+        rw [Matrix.single_apply_of_row_ne (Ne.symm hs) b' t 1, zero_smul]
+    · refine Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun t _ => ?_
+      rw [Pi.single_eq_of_ne hi₁, Matrix.zero_apply, zero_smul]
+  -- (1) every generator `D(f_x)` lies in `W`
+  have hgen : ∀ x : RepCoord d,
+      KaehlerDifferential.D k K (algebraMap (groupRing (k := k) d) K (genericOrbitCoord M x)) ∈ W := by
+    rintro ⟨i, a, b⟩
+    rw [D_genericOrbitCoord_eq M i a b, D_orbit_conj M i a b, hWspan]
+    refine Submodule.sum_mem _ fun a' _ => Submodule.sum_mem _ fun b' _ => ?_
+    exact Submodule.smul_mem _ _ (Submodule.subset_span (hbr i a' b'))
+  -- (2) `S ≤ W`, so `finrank_K S ≤ finrank_K W`
+  have hSW : Submodule.span K (Set.range fun x : RepCoord d =>
+        KaehlerDifferential.D k K (algebraMap (groupRing (k := k) d) K (genericOrbitCoord M x))) ≤ W :=
+    Submodule.span_le.mpr (by rintro _ ⟨x, rfl⟩; exact hgen x)
+  haveI : Module.Finite K W := by
+    rw [hW]; exact LinearMap.finiteDimensional_range L
+  have h1 : genericDifferentialRank k (groupRing (k := k) d) (genericOrbitCoord M)
+      ≤ finrank K W := Submodule.finrank_mono hSW
+  -- (3) `finrank_K W ≤ finrank_K (range (deltaT.baseChange K)) = finrank_k (range δ⁰)`
+  have h2 : finrank K W ≤ finrank K (LinearMap.range ((deltaT M).baseChange K)) := by
+    rw [hW, hL]
+    have hcomp : (pairMC.comp (deltaT M)).liftBaseChange K
+        = (pairMC.liftBaseChange K).comp ((deltaT M).baseChange K) := by
+      ext x; simp [LinearMap.liftBaseChange_tmul, LinearMap.baseChange_tmul]
+    rw [hcomp, LinearMap.range_comp]
+    exact Submodule.finrank_map_le _ _
+  have h3 : finrank K (LinearMap.range ((deltaT M).baseChange K))
+      = finrank k (LinearMap.range (deformationδ M M)) := by
+    rw [finrank_range_baseChange, finrank_range_deltaT]
+  exact h1.trans (h2.trans_eq h3)
+
+/-! ## A4.4 and the AG-half submersion bound, now UNCONDITIONAL (char 0)
+
+`hA43_le` is discharged (`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`),
+so the route-c submersion bound and its A0-chained variety-dimension form carry no remaining
+hypothesis beyond `[CharZero k]` (for the A4.2 criterion `diffIndepCriterion_groupRing`). -/
+
+/-- **A4.4, unconditional (char 0).** `(ringKrullDim (orbitPullback M).range).unbotD 0 ≤
+finrank k (range δ⁰)` with NO open hypothesis: the A4.2 criterion is `diffIndepCriterion_groupRing`
+and the A4.3 bound `hA43_le` is now the proved
+`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`. -/
+theorem ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_unconditional
+    [CharZero k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d) :
+    (ringKrullDim (orbitPullback M).range).unbotD 0
+      ≤ finrank k (LinearMap.range (deformationδ M M)) :=
+  ringKrullDim_range_orbitPullback_le_finrank_range_deformationδ_charZero M
+    (genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ M)
+
+/-- **The AG-half submersion bound `varietyDim Z_M ≤ finrank (range δ⁰)`, UNCONDITIONAL (char 0).**
+Chaining the unconditional A4.4 with the landed A0 link `varietyDim_eq_ringKrullDim_range_orbitPullback`
+(`[Infinite k]`): the variety dimension of the determinantal rank locus `Z_M = canonicalCoord d ''
+orbitRankLocus M` is at most the dimension of the orbit tangent image `range (deformationδ M M) = δ⁰`.
+No open hypothesis (`hA43_le` discharged). The AG-half submersion inequality of `hVoigt`. -/
+theorem varietyDim_orbitRankLocus_le_finrank_range_deformationδ_unconditional
+    [CharZero k] [Infinite k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d) :
+    varietyDim (canonicalCoord d '' orbitRankLocus M)
+      ≤ finrank k (LinearMap.range (deformationδ M M)) :=
+  varietyDim_orbitRankLocus_le_finrank_range_deformationδ M
+    (trdeg_range_orbitPullback_le_genericDifferentialRank M diffIndepCriterion_groupRing)
+    (genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ M)
 
 end DLNFibre.Core
