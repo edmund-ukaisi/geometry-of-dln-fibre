@@ -302,6 +302,13 @@ on the session's original cwd.
    sense, or build the next honest source-order/atlas scaffold. Do not claim
    non-top-left source-order formulas, atlas coverage, chart-produced exponent
    post-data, or full transition invariance from these adapters.
+   The displayed source-chart recurrence boundary is now Lean-proved in that
+   narrow sense: `pre.case2Succ u` uses the displayed pivot value as its new
+   recurrence variable, and row weights from `J+1` onward are multiplied by
+   that pivot value. Next A4 target: decide whether a similarly narrow
+   source-chart-to-supplied-boundary constructor is useful, or move to a
+   source-order/atlas scaffold. Keep chart-produced exponent data, Jacobians,
+   coverage, and transition invariance out of this recurrence boundary.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

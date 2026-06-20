@@ -563,6 +563,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-successor-gap-projections-a4.md`.
 	  Review of the Case 2 source-selected chart-map adapter is saved at
 	  `threads/04-blow-up-certificate/review-case2-source-selected-chart-map-a4.md`.
+	  Review of the Case 2 displayed source-chart recurrence boundary is saved
+	  at
+	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-recurrence-boundary-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1164,6 +1167,13 @@ No such claim is formalisation-ready until both fields are filled.
   post-data, coordinate regularity, Jacobian/volume arithmetic, normal
   crossings, RLCT extraction, termination, transition invariance, or printed
   vector repair.
+  The displayed source-chart recurrence boundary ties the concrete recurrence
+  successor `pre.case2Succ u` to the displayed source chart's pivot value and
+  proves the row-weight update from `J+1` onward. This is still recurrence
+  bookkeeping only; it does not construct the affine chart, prove
+  chart-produced exponent post-data, compute Jacobians, prove coverage or
+  coordinate regularity, prove normal crossings, extract RLCT, prove
+  termination/transition invariance, or repair the printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

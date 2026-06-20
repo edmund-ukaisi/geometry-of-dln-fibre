@@ -1205,6 +1205,24 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-selected-chart-map-a4.md`.
 
+Latest A4 update: the Case 2 displayed source-chart recurrence boundary has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are `case2DisplayedSourceChartMap_case2Succ_postData`,
+`case2DisplayedSourceChartMap_case2Succ_weight_update`, and
+`case2DisplayedSourceChartMap_case2Succ_residualRowWeight_update`. This
+checkpoint ties the concrete recurrence successor `pre.case2Succ u` to the
+displayed source chart pivot value and proves the recurrence row-weight update
+from `J+1` onward, including the residual-row specialization. It does not
+prove affine chart construction, chart-produced exponent post-data,
+Jacobian/volume arithmetic, chart coverage, coordinate regularity, normal
+crossings/RLCT, termination, a transition invariant, or repair of the printed
+vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-source-chart-recurrence-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-source-chart-recurrence-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-source-chart-recurrence-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

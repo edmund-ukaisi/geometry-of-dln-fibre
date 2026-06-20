@@ -1271,6 +1271,20 @@ post-data, coordinate regularity, Jacobian/volume arithmetic, normal
 crossings, RLCT extraction, termination, transition invariance, or printed
 vector repair.
 
+The Case 2 displayed source-chart recurrence boundary is now Lean-proved. The
+new theorems
+`case2DisplayedSourceChartMap_case2Succ_postData`,
+`case2DisplayedSourceChartMap_case2Succ_weight_update`, and
+`case2DisplayedSourceChartMap_case2Succ_residualRowWeight_update` say that the
+concrete successor recurrence state `pre.case2Succ u` can be read as using the
+displayed source chart pivot value as its new variable, and that all weights
+from row `J+1` onward are multiplied by that pivot value. This is recurrence
+bookkeeping only: it uses the displayed chart map only through its pivot value
+and does not prove affine chart construction, chart-produced exponent
+post-data, Jacobian/volume arithmetic, coverage, coordinate regularity, normal
+crossings, RLCT extraction, termination, transition invariance, or printed
+vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

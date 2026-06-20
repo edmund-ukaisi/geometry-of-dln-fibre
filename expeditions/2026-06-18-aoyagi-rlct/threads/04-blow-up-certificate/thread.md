@@ -309,6 +309,35 @@ not prove chart-produced recurrence/exponent post-data, coordinate regularity,
 Jacobian/volume arithmetic, normal crossings, RLCT extraction, termination,
 transition invariance, or repair of the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed source-chart recurrence boundary
+
+Reproduction:
+`reproduction-case2-displayed-source-chart-recurrence-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-source-chart-recurrence-boundary.md`.
+Review artifact:
+`review-case2-displayed-source-chart-recurrence-boundary-a4.md`.
+
+Lean now records the recurrence-only boundary connecting Aoyagi's displayed
+top-left source chart variable to the concrete successor recurrence state. The
+new theorems are:
+
+- `case2DisplayedSourceChartMap_case2Succ_postData`;
+- `case2DisplayedSourceChartMap_case2Succ_weight_update`;
+- `case2DisplayedSourceChartMap_case2Succ_residualRowWeight_update`.
+
+They state that `pre.case2Succ u` uses the displayed source chart's pivot value
+as the new recurrence variable, and that all recurrence weights from `J+1`
+onward are multiplied by that pivot value. The residual-row specialization
+applies this update to every row in the Case 2 residual block.
+
+This checkpoint uses the displayed chart only through the pivot value
+`case2DisplayedSourceChartMap(...)(J+1,J+1) = u`. It does not construct an
+affine chart, prove chart-produced exponent post-data, compute Jacobians,
+prove chart coverage, coordinate regularity, normal crossings, RLCT
+extraction, termination, transition invariance, or repair of the printed Case
+2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

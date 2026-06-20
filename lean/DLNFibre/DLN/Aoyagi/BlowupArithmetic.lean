@@ -8980,6 +8980,63 @@ theorem case2DisplayedSourceChartMap_eq_mul_normalized
       u * case2DisplayedSourceNormalizedMap n hS hcont residual p :=
   rfl
 
+/-- The concrete Case 2 recurrence successor uses the displayed source chart's
+pivot coordinate as its new recurrence variable.
+
+This is recurrence bookkeeping tied to the displayed pivot value only; it does
+not assert chart-produced exponent data, chart coverage, coordinate regularity,
+or a full Case 2 transition. -/
+theorem case2DisplayedSourceChartMap_case2Succ_postData
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    IntroducedLabelRecurrenceState.Case2SuppliedPostData pre (pre.case2Succ u)
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)) := by
+  simpa using pre.case2Succ_case2SuppliedPostData
+    (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))
+
+/-- For the concrete Case 2 recurrence successor, Aoyagi's displayed pivot
+chart coordinate multiplies every recurrence weight from row `J+1` onward.
+
+The displayed source chart contributes only its pivot value here; no exponent
+post-data, Jacobian arithmetic, chart coverage, or transition invariant is
+claimed. -/
+theorem case2DisplayedSourceChartMap_case2Succ_weight_update
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    ∀ i, J + 1 ≤ i →
+      (pre.case2Succ u).weight i =
+        case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1) *
+          pre.weight i := by
+  intro i hi
+  have hnew : actualWidthLabel L n S (J + 1) :=
+    actualWidthLabel_case2_new L n hS hSL
+      (le_trans hcont (prefixMinNat_le_width n (by omega : 1 ≤ S + 1)))
+  simpa using
+    (pre.case2Succ_case2SuppliedPostData u).weight_succ_current_eq_new_mul_of_ge
+      (i := i) hnew hi
+
+/-- Residual-row form of the displayed Case 2 recurrence-weight update. -/
+theorem case2DisplayedSourceChartMap_case2Succ_residualRowWeight_update
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R)
+    (i : Case2ResidualRowIndex n S J) :
+    (pre.case2Succ u).weight (case2ResidualRowLevel n S J i) =
+      case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1) *
+        pre.case2ResidualRowWeight i := by
+  simpa [IntroducedLabelRecurrenceState.case2ResidualRowWeight] using
+    case2DisplayedSourceChartMap_case2Succ_weight_update
+      pre hS hSL hcont u residual (case2ResidualRowLevel n S J i)
+      (case2ResidualRowLevel_ge n S J i)
+
 /-- In the displayed source-coordinate Case 2 chart, the selected variable
 occurs as a transformed value of the finite residual-block center.  This is
 finite chart-map bookkeeping, not chart coverage. -/
