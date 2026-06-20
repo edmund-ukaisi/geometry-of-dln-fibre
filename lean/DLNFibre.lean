@@ -95,3 +95,4 @@ import DLNFibre.DLN.Aoyagi.ArithmeticTail
 import DLNFibre.DLN.Aoyagi.Lemma5IntervalArithmetic
 import DLNFibre.DLN.Aoyagi.Lemma4CountArithmetic
 import DLNFibre.DLN.Aoyagi.HtildeChainArithmetic
+import DLNFibre.DLN.Aoyagi.Lemma5DisplayedVector

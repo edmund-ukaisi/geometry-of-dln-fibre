@@ -693,3 +693,42 @@ label legality into one handoff theorem.  It is deliberately still not a
 displayed-vector theorem: terminal `tilde t=0`, vector admissibility,
 source vector-to-chain correspondence, chart-family coverage, and the Lemma 5
 order count remain open.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` piecewise certificate
+
+Reproduction:
+`reproduction-lemma5-eq4-piecewise-certificate-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-piecewise-certificate.md`.
+Review artifact:
+`review-lemma5-eq4-piecewise-certificate-a5.md`.
+
+Lean now has a conditional source-vector-facing file
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.
+
+The new objects are:
+
+```text
+AoyagiSelectedCutpoints
+AoyagiSelectedCutpoints.point
+AoyagiSelectedCutpoints.block
+AoyagiSelectedCutpoints.leftEndpoint_mem_block
+AoyagiLemma5Eq4PiecewiseSourceVector
+aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
+```
+
+This introduces supplied selected cutpoints and a supplied equation `(4)`
+piecewise branch certificate.  If a function `T` satisfies that certificate,
+then under the repaired guards and Definition 3 selected-width hypotheses,
+Lean proves the own-coordinate value
+
+```text
+T(S_(p+1)-1) = Htilde_p
+```
+
+and the legal label bounds for `k=Htilde_p+1`.
+
+This remains conditional.  It does not construct the displayed vector, prove
+total source-layer coverage, terminal `tilde t=0`, vector admissibility,
+source vector-to-chain correspondence, the Case 1(2) chart sequence, or Lemma
+5 order count.

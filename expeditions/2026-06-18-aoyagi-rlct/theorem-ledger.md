@@ -229,6 +229,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-local-data-a5.md`.
 
+The first conditional source-vector-facing equation `(4)` certificate has
+landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved
+objects are `AoyagiSelectedCutpoints`, `AoyagiSelectedCutpoints.point`,
+`AoyagiSelectedCutpoints.block`,
+`AoyagiSelectedCutpoints.leftEndpoint_mem_block`,
+`AoyagiLemma5Eq4PiecewiseSourceVector`, and
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`.  The
+theorem says that a supplied equation `(4)` piecewise branch certificate gives
+the correct own-coordinate value and legal label bounds under the repaired
+guards and Definition 3 hypotheses.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-piecewise-certificate-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-piecewise-certificate.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-piecewise-certificate-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

@@ -1713,6 +1713,11 @@ No such claim is formalisation-ready until both fields are filled.
   guard `p+1<=a`, own-coordinate guard `p<=ell-a`, and legal label bounds.
   It remains a local arithmetic package, not a displayed-vector or terminal
   `tilde t=0` theorem.
+  A conditional source-vector-facing equation `(4)` certificate now exists:
+  supplied selected cutpoints plus supplied branch equations imply the
+  own-coordinate value and legal label bounds.  This does not construct the
+  vector or prove terminality, coverage, admissibility, or the Case 1(2)
+  chart sequence.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,

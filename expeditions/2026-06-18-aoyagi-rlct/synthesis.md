@@ -1873,6 +1873,15 @@ under Definition 3's selected-width hypotheses plus `1<=p`, `p+1<=a`, and
 source-faithful local equation `(4)` arithmetic currently available; it still
 does not construct the displayed source vector or prove terminal `tilde t=0`.
 
+A conditional source-vector-facing equation `(4)` certificate is now also
+Lean-proved.  It introduces selected cutpoints, selected blocks, and a
+supplied piecewise branch record matching the displayed equation `(4)` values.
+From that supplied record, the theorem derives the own-coordinate value
+`T(S_(p+1)-1)=Htilde_p` and the legal label bounds.  The result deliberately
+does not assert vector existence, total source-layer coverage, terminal
+`tilde t=0`, vector admissibility, the Case 1(2) chart sequence, or Lemma 5
+order count.
+
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
 definitionally the next same-stage residual domains at `(S,J+1)`, and the

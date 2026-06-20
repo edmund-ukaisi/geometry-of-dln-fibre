@@ -608,6 +608,11 @@ on the session's original cwd.
    target is no longer local label/index arithmetic but the displayed vector:
    terminal `tilde t=0`, branch coverage, and source vector-to-chain
    correspondence.
+   A conditional equation `(4)` piecewise certificate now supplies selected
+   cutpoints and branch values as data and proves the own-coordinate/legal
+   label handoff.  Next target: either add selected-block coverage lemmas for
+   that certificate, or audit the terminal `tilde t=0`/Case 1(2) sequence
+   obstruction before attempting any existence theorem.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
