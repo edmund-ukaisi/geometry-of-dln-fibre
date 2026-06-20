@@ -1566,22 +1566,40 @@ No such claim is formalisation-ready until both fields are filled.
   ratio and multiplicity/order equal to Aoyagi's closed formula.
 - **Tier.** Established in Aoyagi; to be proved in Lean.
 - **Status.** blocked after independent reproduction check; interior quadratic
-  algebra is promising, but endpoint cases, terminal-variable restriction,
-  minimiser feasibility, and Lemma 5 order-count construction are not checked.
+  algebra is promising, and the isolated endpoint-corrected Lemma 3 integer
+  numerator minimisation is now Lean-proved and reviewed.  The full A5 claim
+  remains blocked: terminal-variable restriction, minimiser feasibility, the
+  quadratic rewrite from terminal exponents, and Lemma 5 order-count
+  construction are not checked.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
   PDF pp. 22-27.
 - **Pen-and-paper reproduction.** draft at
-  `threads/05-arithmetic-tail/reproduction-draft.md`.
+  `threads/05-arithmetic-tail/reproduction-draft.md`; isolated Lemma 3
+  endpoint arithmetic at
+  `threads/05-arithmetic-tail/reproduction-lemma3-endpoint-arithmetic-a5.md`.
 - **Reproduction check.** failed/blocked at
-  `threads/05-arithmetic-tail/reproduction-check.md`.
-- **Lean target.** TBD by thread 05.
-- **Proved.** pending.
-- **Assumed.** exact integer hypotheses from Aoyagi; no RLCT/arithmetic final
-  theorem is accepted yet.
+  `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
+  endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
+  `threads/05-arithmetic-tail/review-lemma3-endpoint-arithmetic-a5.md`.
+- **Lean target.** isolated Lemma 3 endpoint arithmetic in
+  `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; broader A5 targets TBD.
+- **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
+  `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
+  `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
+  `aoyagiLemma3A_isLeast_image_Icc`,
+  `aoyagiLemma3A_isLeast_image_Icc_zero`, and
+  `aoyagiLemma3A_isLeast_image_Icc_top`.  These prove only the cleared
+  integer numerator identity and endpoint-corrected constrained minimum over
+  integer `b`.
+- **Assumed.** for the proved endpoint minimum: integer hypotheses
+  `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
+  pole-order, or RLCT theorem is accepted yet.
 - **Cited.** none planned.
-- **Deferred.** none planned.
+- **Deferred.** terminal candidate set with `\tilde t_{s,k}=0`, feasibility of
+  the minimizing exponent chains, Lemma 4, Lemma 5, pole-order count, and
+  analytic extraction.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 

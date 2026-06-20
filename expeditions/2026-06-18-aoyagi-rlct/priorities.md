@@ -484,9 +484,14 @@ on the session's original cwd.
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
    remaining recurrence bookkeeping, and replace the termination measure.
-6. Repair A5 arithmetic reproduction. Split Lemma 3 endpoints, preserve
-   `\tilde t_{s,k}=0`, prove minimiser feasibility, and reproduce Lemma 5's
-   chart-family/order-count construction.
+6. Repair A5 arithmetic reproduction. The isolated endpoint-corrected Lemma 3
+   integer numerator arithmetic is now Lean-proved in `ArithmeticTail.lean`:
+   the cleared numerator is
+   `a*ell*(ell-a) + ell^2*(b-a)*(b-a+1)`, and its constrained integer minimum
+   over `0<=b<=ell-1` is proved under `1<=ell` and `0<=a<=ell`.  The remaining
+   A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
+   feasibility as exponent chains, reproduce the terminal quadratic rewrite,
+   and reproduce Lemma 5's chart-family/order-count construction.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
