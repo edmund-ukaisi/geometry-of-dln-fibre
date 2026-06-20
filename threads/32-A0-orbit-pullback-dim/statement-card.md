@@ -16,7 +16,7 @@ signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[In
 > is a domain.
 >
 > - **Lean:** `DLNFibre.Core.varietyDim_eq_ringKrullDim_range_orbitPullback`
->   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `<this commit>`)
+>   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `c854f5f`)
 > - **Gloss.** `[Field k] [Infinite k]`; `M : Tuple d`. Then
 >   `varietyDim (canonicalCoord d '' orbitRankLocus M)
 >     = (ringKrullDim (orbitPullback M).range).unbotD 0` in `ℕ∞`, where `varietyDim Z =
@@ -49,7 +49,7 @@ signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[In
 > Krull dimension of the coordinate ring `MvPolynomial (RepCoord d) k ⧸ ker μ_M^*`.
 >
 > - **Lean:** `DLNFibre.Core.varietyDim_orbitRankLocus_eq_ringKrullDim_quotient_ker`
->   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `<this commit>`)
+>   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `c854f5f`)
 > - **Gloss.** `[Field k] [Infinite k]`; `M : Tuple d`. Then
 >   `varietyDim (canonicalCoord d '' orbitRankLocus M)
 >     = (ringKrullDim (MvPolynomial (RepCoord d) k ⧸ RingHom.ker (orbitPullback M).toRingHom)).unbotD 0`.
@@ -65,7 +65,7 @@ signature; the brick `vanishingIdeal_range_orbitMap_eq_ker` was weakened to `[In
 > **Claim (A0 brick, image is a domain).** `(orbitPullback M).range` is a domain.
 >
 > - **Lean:** `DLNFibre.Core.isDomain_range_orbitPullback`
->   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `<this commit>`) — an `instance`.
+>   (`lean/DLNFibre/Core/OrbitPullbackDim.lean` @ `c854f5f`) — an `instance`.
 > - **Gloss.** `[Field k]`; `M : Tuple d`. Then `IsDomain (orbitPullback M).range`. The range is a
 >   subalgebra of the domain `𝒪(G_d) = groupRing d` (`groupRing_isDomain` from `OrbitVariety`), and a
 >   subring of a domain is a domain (Mathlib `Subring`/`SubringClass` instance) — fires by
