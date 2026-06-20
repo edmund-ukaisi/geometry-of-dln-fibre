@@ -19,10 +19,11 @@ The analytic heart is `intervalIntegral.integrableOn_Ioo_rpow_iff : IntegrableOn
 -1 < s` (for `s = -2c`: integrable ⟺ `c < 1/2`), lifted to the 2-D box. The admissible-exponent set
 is then `{c' : NNReal | c' < 1/2}`, whose `sSup` in `ℝ≥0∞` is `1/2`.
 
-See `Case111.lean` for the cited (`monomial_rlct`) version `case111_monomialThreshold` and the
-`rlctAt`-headline. The general threshold-half (`d` axes, arbitrary `k,h`) follows the same recipe
-(`Fin d` pi↔iterated-prod, per-axis ratio binding the min); the obstruction is Lean labour, not
-mathematics — see the thread feasibility note.
+See `Case111.lean` for `case111_monomialThreshold` (this value ▸ `aoyagiLambda`, axiom-free) and the
+now-proven `rlctAt`-headline `case111_rlct` (this file's homeomorphism + coordinate-product infra,
+below, transports the threshold to `rlctAt`). The general threshold-half (`d` axes, arbitrary `k,h`)
+follows the same recipe (`Fin d` pi↔iterated-prod, per-axis ratio binding the min); the obstruction
+is Lean labour, not mathematics — see the thread feasibility note.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -141,10 +142,11 @@ theorem monomialThreshold_case111 :
 
 /-! ## Reusable infra for the `rlctAt`-bridge (baby S1.1; thread 13)
 
-Two self-contained, sorry-free pieces toward `case111_rlct_eq_monomialThreshold` (`rlctAt = θ` for
-the `(1,1,1)` monomial). They are **reusable S1.1 infra**, not `(1,1,1)`-throwaway. The third piece
-(the measure-preserving `Params (1,1,1) ≃ᵐ (Fin 2 → ℝ)`) is **blocked** by a `Params`-as-`def` type
-obstruction documented in thread 13 — so the bridge `sorry` in `Case111.lean` stands. -/
+Sorry-free pieces that **closed** `case111_rlct_eq_monomialThreshold` (`rlctAt = θ` for the
+`(1,1,1)` monomial; see `Case111.lean`). They are **reusable S1.1 infra**, not `(1,1,1)`-throwaway.
+The transport channel is the existing measure-preserving `paramsEquivFlat` (the earlier "blocked"
+note was about a *per-fiber* `Params (1,1,1) ≃ᵐ (Fin 2 → ℝ)`; the product-only dependence of the
+integrand sidesteps it — see `prod_paramsEquivFlat` and the homeomorphism lemmas below). -/
 
 /-- **One-sided `rpow` integrability via `|·|`** (the bridge's piece 2, half): `|x|^s` is integrable
 on `Ioo 0 ε` **iff** `-1 < s` (on the positive half `|x| = x`, so this is the single-axis rpow

@@ -10,43 +10,60 @@ The first real end-to-end Lean result, for the trivial network `H = (1,1,1)`, `r
 The loss is the weighted monomial `(∏|uⱼ|^{2·1})^{−c}` with density `∏|uⱼ|^0 = 1`, i.e. the monomial
 data `k = (1,1)`, `h = (0,0)`, `d = 2`.
 
-This is the anti-treadmill checkpoint: a sorry-free assembly that threads the monomial model the
-resolution feeds (`monomialThreshold`) through the **one** permitted external citation
-(`monomial_rlct`, S2) and lands on the closed form `aoyagiLambda (1,1,1) 0`. Both sides are `1/2`:
+This is the anti-treadmill checkpoint, now **fully closed and axiom-free**: a sorry-free assembly
+that threads the monomial model the resolution feeds (`monomialThreshold`) and lands on the closed
+form `aoyagiLambda (1,1,1) 0`, with `#print axioms case111_rlct = [propext, Classical.choice,
+Quot.sound]` — no `sorryAx`, no `monomial_rlct`, no `native_decide`. Both sides are `1/2`:
 
-* the monomial threshold `min_j (0+1)/(2·1) = 1/2` (S2's threshold-half), and
+* the monomial threshold `min_j (0+1)/(2·1) = 1/2` (proven directly from Mathlib in `Case111Bridge`,
+  `monomialThreshold_case111`), and
 * `aoyagiLambda (1,1,1) 0 = [−0²+0·(1+1)]/2 + ½·(Adm).inf' Mval = 0 + ½·1 = 1/2`.
 
-## What is proven sorry-free, and where the line is drawn
-* `dlnLoss_case111` — the **monomial-form coercion** of the loss (pure polynomial algebra; no
-  citation).
+## What is proven sorry-free
+* `dlnLoss_case111` — the **monomial-form coercion** of the loss (pure polynomial algebra).
 * `case111_monomialThreshold` — `monomialThreshold 2 (1,1) (0,0) = ofReal (aoyagiLambda (1,1,1) 0)`,
-  via the threshold-half of `monomial_rlct`. The honest end-to-end through the citation:
-  `#print axioms` shows it depends on `monomial_rlct` (+ `propext`, `Classical.choice`,
-  `Quot.sound`).
+  axiom-free (the threshold value is `monomialThreshold_case111`, Fubini + the Mathlib rpow
+  integrability iff in `Case111Bridge`).
+* `case111_rlct_eq_monomialThreshold` — the **baby-S1.1 bridge**, now proven (see below).
 
-## The `rlctAt`-headline: stated, with one named bridge `sorry`
-`rlctAt (dlnLoss (1,1,1) 0) deepest111 = ofReal (aoyagiLambda (1,1,1) 0)` is the headline shape
-(`deepest111 = fun _ ↦ 0`, the deepest fibre point). It needs one bridge
-`rlctAt H (dlnLoss …) wstar = monomialThreshold …`, which is **not** free even in this trivial case:
-`rlctAt` integrates `|F|^{−c}` over a neighbourhood of `wstar` in `Params`, whereas
-`monomialThreshold` integrates over the unit box `[0,1]^d` against `|uⱼ|`-symmetrised monomials.
-Equating the two admissible-exponent down-sets is germ-locality + a box change-of-variables — the
-**S1** content (`rlct_germ_local`, `rlct_unit_invariant`), not yet proven. We carry that single step
-as the named `sorry` `case111_rlct_eq_monomialThreshold` rather than fold an unproven analytic
-bridge silently into a sorry-free `rlctAt`-claim (precision: name a result for what it proves). The
-headline `case111_rlct` is assembled from the bridge `sorry` + the sorry-free
-`case111_monomialThreshold`.
+## The `rlctAt`-headline (proven)
+`rlctAt (dlnLoss (1,1,1) 0) deepest111 = ofReal (aoyagiLambda (1,1,1) 0)` (`deepest111 = fun _ ↦ 0`,
+the deepest fibre point). The bridge `rlctAt H (dlnLoss …) wstar = monomialThreshold …` — `rlctAt`
+integrates `|F|^{−c}` over a `Params`-neighbourhood of `wstar`, the box machinery over `[0,1]^d` —
+is closed here directly, *not* via the general S1 lemmas: the loss `|F|^{−c'} = |c₁·c₂|^{−2c'}`
+depends only on the *product* of the two scalar entries, which the flattening `paramsEquivFlat`
+preserves (`prod_paramsEquivFlat`, re-index-invariant), so it transports along the
+measure-preserving homeomorphism `entryME : Params (1,1,1) ≃ᵐ ℝ²` to `|x·y|^{−2c'}` on `ℝ²`. The
+admissible-exponent set
+is then the coerced `{c' < 1/2}` by the two-sided 2-D box iff (`prodBoxSymm_rpow_integrableOn_iff`):
+forward exhibits the open box `entryME⁻¹((-1,1)²)`; reverse pushes any neighbourhood of `0` forward
+(homeomorphism) to a box `[-ε,ε]²` where divergence forces `c' < 1/2`. Its `sSup` is `1/2`. The
+headline `case111_rlct` is `case111_rlct_eq_monomialThreshold ▸ case111_monomialThreshold`.
 -/
 
 namespace DLNFibre.DLN.RLCT
 
-open Matrix
-open scoped ENNReal
+open Matrix MeasureTheory Set Filter
+open scoped ENNReal Topology BigOperators
 
 /-- The deepest singular point of the `(1,1,1)`, `B = 0` fibre: both scalar layers `0`. (`Params` is
 a `def`, so the Pi `Zero` is not synthesised under the bare `0` numeral; the witness is shown.) -/
 def deepest111 : Params (![1, 1, 1] : Fin 3 → ℕ) := fun _ => 0
+
+/-- The product over the two-element flat index `FlatIdx (1,1,1)` of a parameter's entries is the
+product of its two scalar layer entries `A 0 0 0 · A 1 0 0` (two nested `Fintype.prod_sigma`, then
+the `Fin 1`-width per-layer products collapse). -/
+theorem prod_entries_case111 (A : Params (![1, 1, 1] : Fin 3 → ℕ)) :
+    (∏ q : FlatIdx (![1, 1, 1] : Fin 3 → ℕ), A q.1.1 q.1.2 q.2)
+      = A 0 (0 : Fin 1) (0 : Fin 1) * A 1 (0 : Fin 1) (0 : Fin 1) := by
+  rw [show (∏ q : FlatIdx (![1, 1, 1] : Fin 3 → ℕ), A q.1.1 q.1.2 q.2)
+        = ∏ q : FlatRowIdx (![1, 1, 1] : Fin 3 → ℕ), ∏ j, A q.1 q.2 j from Fintype.prod_sigma _,
+      show (∏ q : FlatRowIdx (![1, 1, 1] : Fin 3 → ℕ), ∏ j, A q.1 q.2 j)
+        = ∏ s : Fin 2, ∏ i, ∏ j, A s i j from Fintype.prod_sigma _,
+      Fin.prod_univ_two,
+      show (∏ i, ∏ j, A (0 : Fin 2) i j) = ∏ i : Fin 1, ∏ j : Fin 1, A (0 : Fin 2) i j from rfl,
+      show (∏ i, ∏ j, A (1 : Fin 2) i j) = ∏ i : Fin 1, ∏ j : Fin 1, A (1 : Fin 2) i j from rfl,
+      Fin.prod_univ_one, Fin.prod_univ_one, Fin.prod_univ_one, Fin.prod_univ_one]
 
 /-! ## The monomial-form coercion of the loss -/
 
@@ -107,27 +124,161 @@ theorem deepest111_mem_optimalSet :
     rw [dlnLoss_case111]; change ((0 : ℝ) * 0) ^ 2 = 0; ring
   rw [optimalSet_eq_loss_zero]; exact hz
 
-/-- **Bridge `sorry` (the one remaining gap in the `(1,1,1)` headline — baby S1.1).** The local RLCT
-of the already-normal-crossing loss at the deepest point equals the monomial-model threshold of its
-`(k,h) = ((1,1),(0,0))` data. The RHS is now `1/2` **axiom-free** (`monomialThreshold_case111`,
-`Case111Bridge`), so closing this `sorry` makes the whole headline axiom-free. The remaining content
-is `rlctAt = 1/2` directly: `rlctAt` integrates `|F|^{−c'} = |c₁|^{−2c'}|c₂|^{−2c'}` over a
-`Params`-neighbourhood of `0`, and its admissible-exponent set is again `{c' < 1/2}`. Three pieces
-remain (all verified reachable, none an analytic wall — see thread 10):
-(i) a measurable equiv `Params (1,1,1) ≃ᵐ (Fin 2 → ℝ)` (each `1×1` layer `≃ᵐ ℝ`) to transport the
-volume to the box machinery; (ii) **two-sided** `|x|^{−2c'}` integrability on `[-ε,ε]` (the
-neighbourhood crosses `0`, unlike the box `[0,1]`); (iii) the `∃ U ∈ 𝓝 0` quantifier — a box for
-`c' < 1/2`, divergence over every neighbourhood for `c' ≥ 1/2`. This is the genuine baby-S1.1 build,
-left as a named `sorry` rather than forced. -/
+/-! ### The baby-S1.1 transport (the bridge, now proven)
+
+The local RLCT of the `(1,1,1)` loss at the deepest point is computed directly via the
+measure-preserving homeomorphism `entryME : Params (1,1,1) ≃ᵐ ℝ²` (`paramsEquivFlat ≫ finTwoArrow`,
+`Case111Bridge`). The integrand `|dlnLoss A|^{−c'} = |c₁·c₂|^{−2c'}` depends only on the *product*
+of the two scalar entries `c₁ = A 0 0 0`, `c₂ = A 1 0 0`, which `paramsEquivFlat` preserves
+(`prod_paramsEquivFlat` — re-index-invariant), so it transports to `|x·y|^{−2c'}` on `ℝ²` regardless
+of the opaque flat re-index. The admissible-exponent set is then `{c' : NNReal | c' < 1/2}` by the
+two-sided 2-D box iff (`prodBoxSymm_rpow_integrableOn_iff`): forward exhibits the open box
+`entryME⁻¹((-1,1)²)`; reverse pushes any neighbourhood of `0` forward (homeomorphism) to a box
+`[-ε,ε]²` on which divergence forces `c' < 1/2`. Its `sSup` in `ℝ≥0∞` is `1/2`. -/
+
+/-- The two scalar entries of `A`, packaged as `ℝ²`, via `paramsEquivFlat`: a measure-preserving
+homeomorphism `Params (1,1,1) ≃ᵐ ℝ × ℝ`. The transport channel for the `(1,1,1)` RLCT. -/
+noncomputable def entryME : Params (![1, 1, 1] : Fin 3 → ℕ) ≃ᵐ (ℝ × ℝ) :=
+  (paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)).trans MeasurableEquiv.finTwoArrow
+
+/-- `entryME` is measure-preserving (`paramsEquivFlat` is, and `finTwoArrow` is). -/
+theorem measurePreserving_entryME : MeasurePreserving entryME
+    (volume : Measure (Params (![1, 1, 1] : Fin 3 → ℕ))) (volume : Measure (ℝ × ℝ)) :=
+  (measurePreserving_paramsEquivFlat _).trans (measurePreserving_finTwoArrow volume)
+
+/-- `entryME v = (v 0, v 1)`-style continuity (`finTwoArrow ∘ paramsEquivFlat`, both continuous). -/
+theorem continuous_entryME : Continuous entryME := by
+  have hft : Continuous (MeasurableEquiv.finTwoArrow (α := ℝ)) := by
+    rw [show (⇑(MeasurableEquiv.finTwoArrow (α := ℝ))) = fun v : Fin 2 → ℝ => (v 0, v 1) from rfl]
+    exact (continuous_apply 0).prodMk (continuous_apply 1)
+  exact hft.comp (continuous_paramsEquivFlat _)
+
+/-- `entryME.symm` is continuous, so `entryME` is a homeomorphism (forward image of a neighbourhood
+is a neighbourhood). -/
+theorem continuous_entryME_symm : Continuous entryME.symm := by
+  have hft : Continuous (MeasurableEquiv.finTwoArrow (α := ℝ)).symm := by
+    rw [show (⇑(MeasurableEquiv.finTwoArrow (α := ℝ)).symm) = fun p : ℝ × ℝ => ![p.1, p.2] from rfl]
+    apply continuous_pi; intro i
+    fin_cases i
+    · exact continuous_fst
+    · exact continuous_snd
+  exact (continuous_paramsEquivFlat_symm _).comp hft
+
+/-- `entryME` sends the deepest point (the origin) to `(0,0)`. -/
+theorem entryME_deepest111 : entryME deepest111 = (0, 0) := by
+  change (MeasurableEquiv.finTwoArrow ((paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)) deepest111))
+    = (0, 0)
+  rw [show (⇑(MeasurableEquiv.finTwoArrow (α := ℝ))) = fun v : Fin 2 → ℝ => (v 0, v 1) from rfl]
+  have h0 : (paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)) deepest111 (0 : Fin 2) = 0 := rfl
+  have h1 : (paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)) deepest111 (1 : Fin 2) = 0 := rfl
+  simp only [h0, h1]
+
+/-- The product of the two scalar entries equals the product of the two `ℝ²`-coordinates of
+`entryME` (`paramsEquivFlat` preserves the full coordinate product). -/
+theorem entryME_prod (A : Params (![1, 1, 1] : Fin 3 → ℕ)) :
+    A 0 (0 : Fin 1) (0 : Fin 1) * A 1 (0 : Fin 1) (0 : Fin 1) = (entryME A).1 * (entryME A).2 := by
+  have h2 : (entryME A).1 * (entryME A).2
+      = ∏ i, (paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)) A i := by
+    rw [show (∏ i, (paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)) A i)
+          = (paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)) A (0 : Fin 2)
+            * (paramsEquivFlat (![1, 1, 1] : Fin 3 → ℕ)) A (1 : Fin 2) from Fin.prod_univ_two _]
+    rfl
+  rw [h2, prod_paramsEquivFlat, prod_entries_case111]
+
+/-- The `(1,1,1)` integrand `|dlnLoss A|^{−c'}` is the pullback of `|x·y|^{−2c'}` along
+`entryME`. -/
+theorem integrand_eq_comp (c' : NNReal) :
+    (fun A : Params (![1, 1, 1] : Fin 3 → ℕ) =>
+        |dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0 A| ^ (-(c' : ℝ)))
+      = (fun p : ℝ × ℝ => |p.1 * p.2| ^ (-2 * (c' : ℝ))) ∘ entryME := by
+  funext A
+  simp only [Function.comp_apply]
+  rw [dlnLoss_case111, entryME_prod]
+  set t := (entryME A).1 * (entryME A).2 with ht
+  rw [show |t ^ 2| = |t| ^ 2 by rw [abs_pow], ← Real.rpow_natCast (|t|) 2,
+    ← Real.rpow_mul (abs_nonneg _)]
+  norm_num
+
+/-- From a neighbourhood of `(0,0)` in `ℝ²`, extract a symmetric box `[-ε,ε]²` (ε>0) inside it
+(`ℝ²` has the sup metric, so a metric ball contains such a box). -/
+theorem box_subset_of_mem_nhds (s : Set (ℝ × ℝ)) (hs : s ∈ 𝓝 ((0, 0) : ℝ × ℝ)) :
+    ∃ ε > 0, Set.Icc (-ε) ε ×ˢ Set.Icc (-ε) ε ⊆ s := by
+  rw [Metric.mem_nhds_iff] at hs
+  obtain ⟨δ, hδ, hball⟩ := hs
+  refine ⟨δ / 2, by positivity, fun p hp => hball ?_⟩
+  simp only [Set.mem_prod, Set.mem_Icc] at hp
+  rw [Metric.mem_ball, Prod.dist_eq]
+  simp only [dist_zero_right]
+  have h1 : |p.1| ≤ δ / 2 := abs_le.mpr ⟨hp.1.1, hp.1.2⟩
+  have h2 : |p.2| ≤ δ / 2 := abs_le.mpr ⟨hp.2.1, hp.2.2⟩
+  have hmax : max ‖p.1‖ ‖p.2‖ ≤ δ / 2 := by
+    simp only [Real.norm_eq_abs]; exact max_le h1 h2
+  calc max ‖p.1‖ ‖p.2‖ ≤ δ / 2 := hmax
+    _ < δ := by linarith
+
+/-- **The baby-S1.1 bridge (now proven, axiom-free).** The local RLCT of the already-normal-crossing
+`(1,1,1)` loss at the deepest point equals the monomial-model threshold `1/2` of its
+`(k,h) = ((1,1),(0,0))` data. Proven directly: `rlctAt = 1/2` via the measure-preserving
+homeomorphism `entryME : Params (1,1,1) ≃ᵐ ℝ²` (`Case111Bridge`) — the admissible-exponent set is
+the coerced `{c' < 1/2}` (`prodBoxSymm_rpow_integrableOn_iff`), whose `sSup` is `1/2`. The RHS is
+`1/2`
+axiom-free (`monomialThreshold_case111`), so the whole headline is now axiom-free. -/
 theorem case111_rlct_eq_monomialThreshold :
     rlctAt (![1, 1, 1] : Fin 3 → ℕ) (dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0) deepest111
       = monomialThreshold 2 (![1, 1] : Fin 2 → ℕ) (![0, 0] : Fin 2 → ℕ) := by
-  sorry
+  rw [monomialThreshold_case111]
+  unfold rlctAt
+  have hemb : MeasurableEmbedding entryME := entryME.measurableEmbedding
+  have hset : { c : ℝ≥0∞ | ∃ c' : NNReal, c = (c' : ℝ≥0∞) ∧
+        ∃ U ∈ 𝓝 deepest111,
+          IntegrableOn (fun w => |dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0 w| ^ (-(c' : ℝ))) U volume }
+      = { c : ℝ≥0∞ | ∃ c' : NNReal, c = (c' : ℝ≥0∞) ∧ (c' : ℝ) < 1 / 2 } := by
+    ext c; constructor
+    · rintro ⟨c', rfl, U, hU, hint⟩
+      refine ⟨c', rfl, ?_⟩
+      have hUeq : U = entryME ⁻¹' (entryME '' U) := (Set.preimage_image_eq _ hemb.injective).symm
+      rw [integrand_eq_comp c', hUeq,
+        (measurePreserving_entryME).integrableOn_comp_preimage hemb] at hint
+      have himg : entryME '' U ∈ 𝓝 ((0, 0) : ℝ × ℝ) := by
+        rw [MeasurableEquiv.image_eq_preimage_symm, ← entryME_deepest111]
+        exact continuous_entryME_symm.continuousAt.preimage_mem_nhds
+          (by rwa [entryME.symm_apply_apply])
+      obtain ⟨ε, hε, hsub⟩ := box_subset_of_mem_nhds _ himg
+      have hbox : IntegrableOn (fun p : ℝ × ℝ => |p.1 * p.2| ^ (-2 * (c' : ℝ)))
+          (Set.Icc (-ε) ε ×ˢ Set.Icc (-ε) ε) (volume.prod volume) := by
+        rw [← Measure.volume_eq_prod]; exact hint.mono_set hsub
+      exact (prodBoxSymm_rpow_integrableOn_iff _ ε hε).1 hbox
+    · rintro ⟨c', rfl, hc⟩
+      refine ⟨c', rfl, entryME ⁻¹' (Set.Ioo (-1 : ℝ) 1 ×ˢ Set.Ioo (-1 : ℝ) 1), ?_, ?_⟩
+      · apply continuous_entryME.continuousAt.preimage_mem_nhds
+        rw [entryME_deepest111]
+        exact (isOpen_Ioo.prod isOpen_Ioo).mem_nhds (by constructor <;> constructor <;> norm_num)
+      · rw [integrand_eq_comp c', (measurePreserving_entryME).integrableOn_comp_preimage hemb]
+        have hbox : IntegrableOn (fun p : ℝ × ℝ => |p.1 * p.2| ^ (-2 * (c' : ℝ)))
+            (Set.Icc (-1) 1 ×ˢ Set.Icc (-1) 1) (volume.prod volume) :=
+          (prodBoxSymm_rpow_integrableOn_iff _ 1 (by norm_num)).2 hc
+        rw [← Measure.volume_eq_prod] at hbox
+        exact hbox.mono_set (Set.prod_mono Set.Ioo_subset_Icc_self Set.Ioo_subset_Icc_self)
+  rw [hset]
+  apply le_antisymm
+  · apply sSup_le; rintro c ⟨c', rfl, hc⟩
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp]
+    rw [ENNReal.coe_le_coe, ← NNReal.coe_le_coe]; push_cast; linarith
+  · apply le_of_forall_lt_imp_le_of_dense
+    intro q hq
+    have hqfin : q ≠ ⊤ := by intro h; rw [h] at hq; simp at hq
+    apply le_sSup
+    refine ⟨q.toNNReal, (ENNReal.coe_toNNReal hqfin).symm, ?_⟩
+    have hqt : q.toReal < (1 / 2 : ℝ) := by
+      have := (ENNReal.toReal_lt_toReal hqfin (by simp : (1 / 2 : ℝ≥0∞) ≠ ⊤)).2 hq
+      simpa using this
+    exact hqt
 
-/-- **The `(1,1,1)` headline.** The local RLCT of the deep-linear loss at the deepest point of the
-`B = 0` fibre equals Aoyagi's closed form `aoyagiLambda (1,1,1) 0 = 1/2`. Assembled from the S1
-bridge `case111_rlct_eq_monomialThreshold` (the one named `sorry`) and the sorry-free
-`case111_monomialThreshold` (the S2 end-to-end). -/
+/-- **The `(1,1,1)` headline (sorry-free, AXIOM-FREE).** The local RLCT of the deep-linear loss at
+the deepest point of the `B = 0` fibre equals Aoyagi's closed form `aoyagiLambda (1,1,1) 0 = 1/2`.
+The first fully end-to-end `(1,1,1)` result: `#print axioms = [propext, Classical.choice,
+Quot.sound]` (no `sorryAx`, no `monomial_rlct`). Assembled from the now-proven baby-S1.1 bridge
+`case111_rlct_eq_monomialThreshold` and the sorry-free `case111_monomialThreshold`. -/
 theorem case111_rlct :
     rlctAt (![1, 1, 1] : Fin 3 → ℕ) (dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0) deepest111
       = ENNReal.ofReal (aoyagiLambda (![1, 1, 1] : Fin 3 → ℕ) 0) := by
