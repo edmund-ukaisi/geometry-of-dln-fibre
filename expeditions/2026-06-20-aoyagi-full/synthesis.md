@@ -92,10 +92,10 @@ so the convention never taints the headline). Docstring note on `rlctAt` queued 
   MERGED @`2ee02b2`. NOW on `deepestPoint_exists` PROOF (reuses L1 adapted-basis) → then #19 lambdaCore-
   strengthen (waits for pp's genuine statement). **Trunk @`296d3e4`: keystone + A1 + L1 + hr + hL; Skeleton
   sorry 9.** hL MERGED; rv-2 running the FINAL bedrock re-audit (domain now provably complete → closes the
-  9-issue fidelity arc). **deepestPoint_exists PROOF: r=0 PROVEN + `Dblock_rank` PROVEN** (worktree-rung0-defs
-  @`ef6d301`, pushed to origin = protected); r>0 `prodAux` telescoping = the STUCK piece (dependent-Fin casts;
-  2 broad Codex consults timed out @590s — PARKED for a tighter inductive-step-only retry; not blocking other
-  rungs). **fm switched to #19** (genuine lambdaCore, pp's statement ready). Telescoping resumes after #19.
+  9-issue fidelity arc). **deepestPoint_exists FULLY PROVEN + MERGED @`9402bba`** (axiom-clean, no sorryAx;
+  the r>0 prodAux telescoping CLOSED — fm de-risked the algebra + delegated the HEq cast-wrangling to a
+  formaliser + reviewer subagent; statement byte-identical; rv-2 re-auditing). Critical-path rung DONE (feeds
+  D1). Skeleton sorry 10→9. **fm now on #19 proof** (genuine lambdaCore, ~200-line balanced-split exchange).
 - **pp (design)** — R1 design DELIVERED + 2 increments (binding-divisor correction; value-match downgrade).
   Standing down on-demand; re-engage for R1 value-match execution when fm's L1 lands.
 - **rv-2 (review)** — green-gating keystone d7b1ba3; queued: re-audit the hr-corrected contract. Decorrelated.
