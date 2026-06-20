@@ -15,19 +15,30 @@ Durable thread-status index. Status ∈ open / in-progress / blocked / review-pe
 | 09 | review | rv-2 | closed | AUDIT (1,1,1) gate → **PASS 5/5** + green-gate green (2659 jobs). Axiom-use load-bearing, coercion correct, bridge-sorry honest. 3 non-blocking style-lint notes |
 | 10 | formalisation | fm-2 | closed | PROBE **ANSWERED YES**: monomial threshold-half provable from Mathlib (Fubini + rpow-iff). `Case111Bridge.lean` axiom-free; (1,1,1) headline dropped monomial_rlct. λ-citation ELIMINABLE (general = labour, no wall). @22f5dfe |
 | 11 | formalisation | fm-2 | in-progress | Close the (1,1,1) rlctAt bridge (baby-S1.1: measure-preserving chart + two-sided \|x\|^a integrability + ∃-nbhd) → first FULLY axiom-free+sorry-free end-to-end. Bounded (report if it sprawls) |
+| 12 | formalisation | fm-2 | folded | S1 skeleton-refactor probe → folded into the Route A++ measure-architecture decision |
+| 13 | formalisation | fm-2 | in-progress | (1,1,1) rlctAt bridge — obstruction was paramsEquivFlat-shaped; resumes as measure-track Unit 2 |
+| 14 | formalisation | fm | in-progress | **ALGEBRA track** (Skeleton.lean): A1 `lambdaCore_eq_clean`+`clean_eq_printed` → L1 `block_elimination` → `deepestPoint_exists` |
+| 15 | formalisation | fm-2 | in-progress | **MEASURE track**: `paramsEquivFlat` (Route A++ keystone, ParamsFlat.lean) → (1,1,1) bridge close (#13) |
+| 16 | design | pp | in-progress | **R1 design** (the mountain): explicit blow-up charts + monomial exponents + cover + R1↔Adm match; decorrelated Codex |
 
 ## Seats (reuse across tides; stand down at close)
 
-- `pp` — pen-and-paper (design / fidelity-math / decorrelated Codex). No Lean. On thread 05 (S1 scope).
-- `fm` — formaliser (Lean). Idle (Rung 0b done). Works in shared worktree `rung0-defs` (serial; controller merges).
-- `rv` — reviewer (fidelity / soundness; Codex). [thread 06]
-- `hd` — hardener (precision / bedrock / taste; decorrelated). [thread 06]
+- `pp` — pen-and-paper (design / fidelity-math / decorrelated Codex). No Lean. On thread 16 (R1 design, the mountain).
+- `fm` — formaliser (Lean). ALGEBRA track [thread 14]: A1 → L1 → deepestPoint_exists, in Skeleton.lean.
+- `fm-2` — formaliser (Lean). MEASURE track [thread 15]: paramsEquivFlat → (1,1,1) bridge, in ParamsFlat.lean + Case111*.lean.
+- `rv-2` — reviewer (fidelity / soundness; decorrelated Codex). Standby; per-rung audit as each closes [delivered the bedrock verdict, thread 16-pre].
+- `rv` / `hd` — reviewer / hardener (earlier tides, thread 06). Idle.
 
-## Merge flow (controller-in-worktree fallback)
+## Merge flow (STRUCTURAL PHASE — all in MAIN checkout)
 
-Editing in shared worktree `rung0-defs` (branch `worktree-rung0-defs`); controller merges →
-`expedition/aoyagi-full` (main checkout) + pushes. Serial editing teammates. `pp` runs read-only (no
-collision). Green-gate (`lake build DLNFibre`) every merge. `.lake/packages` symlinked.
+Everyone edits the MAIN checkout (`/home/ubuntu/workspace/geometry-of-dln-fibre`) on `expedition/aoyagi-full`.
+**Collision-free by file ownership**, NOT serial-on-everything: `fm` owns Skeleton.lean (algebra rungs);
+`fm-2` owns ParamsFlat.lean + Case111*.lean (Skeleton does not import these, so the two tracks' incremental
+builds are independent). Teammates iterate with **module-scoped** builds (`lake build DLNFibre.DLN.RLCT.<Module>`)
+so an in-flight broken file on one track doesn't fail the other's build. The **controller is the sole committer**:
+runs the full `lake build DLNFibre` green-gate, commits + pushes, then pings `rv-2` to audit the closed rung.
+Serial only *within* a single file. `pp` runs read-only (no collision). The per-rung modular split of
+Skeleton (build-time lesson) is done **opportunistically when a proof gets heavy**, not big-bang.
 
 ## Encoded foundations (merged 58bc1c3)
 `Foundations/{Loss,Rlct,Lambda}.lean` + `Skeleton.lean`. 9 named-sorry rungs (S1×2, L1, L2, D1, R1,
