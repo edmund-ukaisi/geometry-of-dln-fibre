@@ -1,7 +1,6 @@
 import DLNFibre.DLN.RLCT.Foundations.Rlct
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 import Mathlib.MeasureTheory.Function.Jacobian
-import Mathlib.Analysis.Analytic.Basic
 
 /-!
 # `DLNFibre.DLN.RLCT.Skeleton` — the goal skeleton (the contract)
@@ -147,28 +146,25 @@ theorem rlct_germ_local (H : Fin (L + 1) → ℕ) (F G : Params H → ℝ) (wsta
     rlctAt H F wstar = rlctAt H G wstar := by
   sorry
 
-/-- **S1.5 (RLCT additivity over disjoint variable blocks; thread 07, Aoyagi 2013 App. C Lemma 2).**
-For **disjoint** variable blocks `x ∈ X`, `y ∈ Y`, the RLCT of the sum of squares
-adds: `λ(F(x)² + G(y)²) = λ(F²) + λ(G²)`. NOT derivable from S1.1–S1.4 — it is the **engine of the
-L2 regular/core split** (the regular generators live in coordinates disjoint from the singular core,
-so their ½-contributions add to `λ_core`). Proof (Laplace/Mellin): `(F+G)^{−c} = Γ(c)⁻¹∫ t^{c−1}
-e^{−tF}e^{−tG} dt`, and `L_F(t) ~ t^{−λ(F)}(log t)^{m_F−1}` ⇒ the product
-`~ t^{−(λ_F+λ_G)}(log)^{…}` converges iff `c < λ_F + λ_G` (orders add too: `m_F + m_G − 1`). The L2
-use needs only the light smooth-block case. Stated on `rlctAtOn` (general product `X × Y`, factors
-need not be `Params`).
+/-- **S1.5 (RLCT additivity — the smooth/regular block; thread 07, the L2-use form).** Splitting off
+a **nondegenerate-quadratic** (regular) block from a disjoint singular block: for `Σᵢ xᵢ²` in the
+fresh coordinates `x : Fin n → ℝ` and any `G(y)` on a disjoint block `Y`,
+`λ(Σᵢ xᵢ² + G(y)²) = n/2 + λ(G(y)²)`. This is **exactly what L2 consumes** — the regular generators
+of the block-reduced loss form a sum of squared coordinates (RLCT `= dim/2`), disjoint from the
+singular core, so their ½-contributions add to `λ_core` to give the `[−r²+r(H¹+Hᴸ⁺¹)]/2` regular
+shift.
 
-Rung-0c FLAG (analyticity): the bare-measurable statement is **FALSE** (Codex: alternating step
-functions give `⊤ ≠ 2`). The Laplace-asymptotic proof needs `F, G` **real-analytic** near the base
-points — added as `AnalyticAt ℝ F x0`, `AnalyticAt ℝ G y0` (so `X, Y` are real normed spaces; the
-product-measure substrate is unaffected). The L2 use (smooth blocks) is a special case. Non-vacuous:
-equates the joint RLCT to the sum of the block RLCTs. -/
-theorem rlct_additive_disjoint
-    {X Y : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] [MeasureSpace X]
-    [NormedAddCommGroup Y] [NormedSpace ℝ Y] [MeasureSpace Y]
-    (F : X → ℝ) (G : Y → ℝ) (x0 : X) (y0 : Y)
-    (hF : AnalyticAt ℝ F x0) (hG : AnalyticAt ℝ G y0) :
-    rlctAtOn (fun p : X × Y => F p.1 ^ 2 + G p.2 ^ 2) (x0, y0)
-      = rlctAtOn (fun x => F x ^ 2) x0 + rlctAtOn (fun y => G y ^ 2) y0 := by
+Scope note (controller decision): stated at the **smooth-block specificity the claim needs**, NOT
+the fully general real-analytic disjoint additivity (Aoyagi App. C Lemma 2). The bare-measurable
+general form is FALSE (Codex: alternating step functions give `⊤ ≠ 2`) and the general real-analytic
+version needs heavy Laplace/Tauberian machinery — a **roadmap** lemma off the critical path, not
+carried here. The smooth block (`Σ xᵢ²`, RLCT `n/2`) is analytic-clean and closes the rung. Stated
+on `rlctAtOn` (general singular block `Y`; the regular block is `Fin n → ℝ` at the origin).
+Non-vacuous: equates the joint RLCT to `n/2` plus the block RLCT. -/
+theorem rlct_additive_smooth_block {n : ℕ}
+    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] (G : Y → ℝ) (y0 : Y) :
+    rlctAtOn (fun p : (Fin n → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) (0, y0)
+      = (n : ENNReal) / 2 + rlctAtOn (fun y => G y ^ 2) y0 := by
   sorry
 
 /-! ## L1 / L2 — block elimination + product reduction (design-spec §8) -/
@@ -190,17 +186,24 @@ theorem block_elimination (H : Fin (L + 1) → ℕ) (r : ℕ)
   sorry
 
 /-- **The deepest singular point** (Aoyagi 2013, the inf-achiever; Rung-0c FLAG, load-bearing).
-`w` is *deepest* when it lies in the fibre **and** every layer matrix `A⁽ˢ⁾ = w s` sits at the
-minimal rank `r` (capped by the layer's dimensions): `rank (w s) = min r (min H⁽ˢ⁾ H⁽ˢ⁺¹⁾)`.
-This is the "all layers at rank `r`" point whose local RLCT is **maximal** over the fibre — so the
-global infimum of the *learning coefficient* `λ = ½·(codim/…)` is attained there (smaller `λ` ⇔ more
-singular ⇔ deeper). The local RLCT genuinely varies over the fibre (rv-2's witness: for `(2,2,2)` a
-milder optimal point gives `2 ≠ 3/2`), so L2 must be keyed to *this* point, not every optimal one —
-that is exactly why D1 exists. -/
+`w` is *deepest* when it lies in the fibre **and** every **partial product**
+`∏_{s<k} A⁽ˢ⁾ = prodAux H w k` sits at the **minimal rank consistent with the fibre** —
+`rank (prodAux H w k) = min r (min_{i ≤ k} H⁽ⁱ⁾)` — i.e. each prefix is collapsed as far as the path
+widths and the rank-`r` target allow (Aoyagi's "all layers at the minimal rank `r`", expressed on
+the partial products so it pins the *whole* product chain, not just per-layer ranks). This is the
+point whose local RLCT is **maximal** over the fibre — so the global infimum of the *learning
+coefficient* `λ` is attained there (smaller `λ` ⇔ more singular ⇔ deeper). The local RLCT genuinely
+varies over the fibre (rv-2's witness: for `(2,2,2)` a milder optimal point gives `2 ≠ 3/2`), so L2
+must be keyed to *this* point, not every optimal one — that is exactly why D1 exists. This
+partial-product
+characterization is the one under which **both** D1 (deepest attains the inf) and L2 (`rlctAt =
+aoyagiLambda`) hold. -/
 def IsDeepest (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
   w ∈ optimalSet H B ∧
-    ∀ s : Fin L, (w s).rank = min r (min (H s.castSucc) (H s.succ))
+    ∀ (k : ℕ) (hk : k < L + 1),
+      (prodAux H w k hk).rank = min r ((Finset.Iic (⟨k, hk⟩ : Fin (L + 1))).inf'
+        ⟨⟨k, hk⟩, Finset.mem_Iic.2 le_rfl⟩ H)
 
 /-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at a deepest point** splits
 as the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
