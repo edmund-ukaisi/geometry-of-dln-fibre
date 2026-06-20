@@ -1,4 +1,7 @@
-# Thread 13 — close the (1,1,1) `rlctAt` bridge (baby-S1.1) — STOPPED on a precise obstruction
+# Thread 13 — close the (1,1,1) `rlctAt` bridge (baby-S1.1) — CLOSED (axiom-free) @`b159ead`
+
+> First STOPPED on a precise obstruction (per the controller's anti-thrash bound); RESUMED and CLOSED
+> once the general `paramsEquivFlat` keystone landed. See "RESUMED & CLOSED" at the bottom.
 
 - **Seat:** `fm-2` (formaliser). MAIN, `expedition/aoyagi-full`. Work confined to `Case111Bridge.lean`
   (told to stay out of `Skeleton.lean` — the L1/L2 fix-loop runs there).
@@ -93,3 +96,40 @@ sorry-free + axiom-clean: `abs_rpow_integrableOn_Ioo_iff`, **`abs_rpow_integrabl
 (piece 2 complete), `measurePreserving_matrixEntry₁₁` (toward piece 1). The probe win
 (`monomialThreshold_case111` axiom-free) remains the banked headline. Bridge waits on the general
 `Params ≃ᵐ ℝ^N` equiv (comes with S1.1).
+
+## RESUMED & CLOSED (fm-2, @`b159ead`) — the bridge is proven, axiom-free
+
+The "recommendation" landed: the general measure-preserving `paramsEquivFlat : Params H ≃ᵐ
+(Fin (flatDim H) → ℝ)` was built (keystone `measurePreserving_paramsEquivFlat`, `ParamsFlat.lean`).
+With it the bridge closes **without** any per-fiber equiv — the parked obstruction (escape #1's
+`finTwoArrow` per-layer split, blocked by the symbolic-`s` Matrix fiber) is sidestepped entirely.
+
+**The key move that dissolved the obstruction:** the integrand `|F|^{−c'} = |c₁·c₂|^{−2c'}` depends
+only on the **product** `c₁·c₂` of the two scalar entries — and `paramsEquivFlat` preserves the *full
+product of coordinates* (`prod_paramsEquivFlat`, via `Equiv.prod_comp` over the re-index — re-index
+*invariant*, so the opaque `Fintype.equivFin` never needs computing). So the integrand transports to
+`|x·y|^{−2c'}` on `ℝ²` regardless of which flat coordinate is which entry. No need to identify the
+bijection or build a bespoke entry-equiv.
+
+**What was added (all sorry-free, axiom-clean):**
+- In `Case111Bridge.lean` (reusable S1.1 infra): `continuous_sigmaUncurry`, `continuous_sigmaCurry`,
+  `continuous_paramsEquivFlat`, `continuous_paramsEquivFlat_symm` (the flattening is a
+  **homeomorphism**), `prod_paramsEquivFlat` (full-product preservation), and
+  `prodBoxSymm_rpow_integrableOn_iff` (`|x·y|^{−2c}` on `[-ε,ε]²` integrable ⟺ `c < 1/2`, both
+  directions — the `𝓝 0`-shaped analogue of the one-sided `prodBox_rpow_integrableOn_iff`).
+- In `Case111.lean`: `entryME := paramsEquivFlat ≫ finTwoArrow : Params (1,1,1) ≃ᵐ ℝ²` (MP +
+  continuous both ways), `entryME_prod`, `integrand_eq_comp`, `box_subset_of_mem_nhds`,
+  `prod_entries_case111`, and the **closed** `case111_rlct_eq_monomialThreshold`.
+
+**Proof shape (set equality + sSup):** the admissible set `{c' | ∃ U ∈ 𝓝 0, IntegrableOn |F|^{−c'} U}`
+= coerced `{c' < 1/2}`. Forward: `U = entryME⁻¹((-1,1)²)` (open by continuity, ∋ `deepest111` since
+`entryME deepest111 = (0,0)`), transport via `MeasurePreserving.integrableOn_comp_preimage` to the box
+iff. Reverse: any `U ∈ 𝓝 0` pushes forward (homeomorphism, `image_eq_preimage_symm` + `ContinuousAt`)
+to a `𝓝 (0,0)`, contains a box `[-ε,ε]²` (`box_subset_of_mem_nhds`), `mono_set` + the box iff reverse
+forces `c' < 1/2`. `sSup` of the coerced half-open `{<1/2}` is `1/2` (copied from
+`monomialThreshold_case111`). RHS `= 1/2` by `monomialThreshold_case111` (axiom-free).
+
+**Result:** `#print axioms case111_rlct = [propext, Classical.choice, Quot.sound]` — first fully
+sorry-free **and** axiom-free end-to-end `(1,1,1)` RLCT. `scripts/sorries` for `Case111.lean` /
+`Case111Bridge.lean`: zero (the 9 remaining are all in `Skeleton.lean`, owned elsewhere). Statement
+card: `statement-card.md` (this thread), status sorry-free, awaiting fidelity review.
