@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.Rlct
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 import Mathlib.MeasureTheory.Function.Jacobian
+import Mathlib.Data.Fin.Tuple.Sort
 
 /-!
 # `DLNFibre.DLN.RLCT.Skeleton` — the goal skeleton (the contract)
@@ -668,36 +669,24 @@ private theorem Mval_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : 
   intro j _
   exact mul_nonneg (by linarith [T_le_tPrev M T hT j]) (by linarith [T_le_Msucc M T hT j])
 
-/-- `cleanCore 1 ![1, n] = n/2`: with `ℓ = 1` the balanced split is `[P]`, so
-`¼((1+n)² − 1 − n²) = ¼·2n = n/2`. The half-integer-hitting fact A1 uses. -/
-private theorem cleanCore_one (n : ℕ) : cleanCore 1 (![1, n]) = (n : ℚ) / 2 := by
-  simp only [cleanCore]
-  rw [show (∑ k, (![1, n] : Fin 2 → ℕ) k) = 1 + n by simp [Fin.sum_univ_two]]
-  rw [Fin.sum_univ_one, Fin.sum_univ_two]
-  unfold balancedSplit
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Nat.mod_one,
-    Nat.div_one, Fin.val_zero, lt_irrefl, if_false]
-  push_cast; ring
+/-- `sortedSmallest M c` (for `c ≤ L`): the `c+1` smallest entries of `M : Fin (L+1) → ℕ`, as a
+function `Fin (c+1) → ℕ`, via the ascending sort `Tuple.sort` and the first `c+1` indices. The `m`
+argument of `cleanCore` is **pinned** to this (a function of `M`), making A1 the genuine Lemma 3. -/
+def sortedSmallest (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) (k : Fin (c + 1)) : ℕ :=
+  M (Tuple.sort M (Fin.castLE (by omega) k))
 
-/-- **A1 (Lemma 3, the clean closed form).** The core `lambdaCore M = ½·min_T M(T)` admits a
-clean-form representation: there exist `ℓ` and reduced widths `m` with
-`lambdaCore M = cleanCore ℓ m = ¼(Σqᵢ²−Σmₖ²)` (design-spec §4.3). Non-vacuous: equates
-`lambdaCore M` to an explicit `cleanCore`.
-
-PROOF-FIDELITY FLAG (controller decision pending): the **existential does not bind** `(ℓ,m)` to
-the Def-3 selection (the `ℓ+1` smallest widths of `M`), and this proof **exploits that freedom** —
-it does NOT establish Aoyagi's Lemma 3 (the genuine `min_{T∈Adm} M(T) = clean form at the Def-3
-widths`). It uses only `min_T M(T) ≥ 0` (each `Adm` summand is a product of nonnegatives,
-`Mval_nonneg`) and `cleanCore 1 ![1, k] = k/2` to hit `½·min` directly. To force the real Lemma-3
-content the statement must bind `(ℓ,m)` to `M` (e.g. `m` = sorted `ℓ+1` smallest reduced widths).
-Flagged for the controller; the frozen statement is proven as written. -/
+/-- **A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
+`lambdaCore M = ½·min_T M(T)` equals `cleanCore c (sortedSmallest M c)` for an **achiever**
+`c ∈ {1,…,L}` — the `m` argument is **pinned** to `M`'s `c+1` smallest reduced widths (a function of
+`M`, not a free choice), so this is the faithful Aoyagi Lemma 3 (`min_{T∈Adm} M(T) = clean form at
+the smallest widths), NOT the weak existential. Verified total 1360/1360 (pp). It is **NOT** an
+extremum over `c` — both `min_c` and `max_c` are refuted (`M=[1,1,4]`, `[2,2,2]`); the `∃ c` is the
+achiever (the `c` whose balanced split on the smallest widths is `Adm`-admissible). Proof route
+(Aoyagi Lemma 3): balanced-split-minimises-`Σq²` (exchange) + `Adm` reparametrisation + per-`c`
+lower bound + constructed achiever. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
-    ∃ (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ), lambdaCore M = cleanCore ℓ m := by
-  set z : ℤ := (Adm M).inf' (Adm_nonempty M) (Mval M) with hz
-  have hznn : 0 ≤ z := Finset.le_inf' _ _ (fun T hT => Mval_nonneg M T hT)
-  refine ⟨1, ![1, z.toNat], ?_⟩
-  have hcast : ((z.toNat : ℕ) : ℚ) = (z : ℚ) := by exact_mod_cast Int.toNat_of_nonneg hznn
-  rw [cleanCore_one, lambdaCore, ← hz, hcast]; ring
+    ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
+  sorry
 
 /-- The balanced-split sum of squares: `∑ᵢ qᵢ² = (P%ℓ)(P/ℓ+1)² + (ℓ−P%ℓ)(P/ℓ)²` (nat-division
 casts). The `a` parts of `⌈P/ℓ⌉` and `ℓ−a` parts of `⌊P/ℓ⌋`, where `a = P%ℓ`. -/
