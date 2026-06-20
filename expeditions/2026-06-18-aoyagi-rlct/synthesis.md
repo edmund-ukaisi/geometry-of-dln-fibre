@@ -1449,6 +1449,15 @@ post-state, level invariant, and exponent-domain certificate.  This is not
 chart production, not source-produced `C'^(S+1)`, not automatic transport of
 Case 2 gap/tail data, and not normal-crossing/RLCT extraction.
 
+The terminal relabel-weight candidate bridge is also Lean-proved.  It restates
+the stopped supplied terminal entry-ideal theorem with surviving scalar
+`terminalRelabelPost.weight(J+1)` instead of `post.weight(J+1)`, using
+actual-width exhaustion to derive both failed next continuation and weight
+equality.  The source-model wrapper is intentionally specialized to
+`b0 = terminalRelabelPost.weight(J+1)` to avoid dependent transport between
+model types.  This is presentational API only; `Atop`, `Ctop`, and `F` remain
+supplied, and no source-produced `C'^(S+1)` or transition invariant is proved.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

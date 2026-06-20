@@ -2210,3 +2210,36 @@ does not identify `[Ctop;C0]` with source-produced `C'^(S+1)`, does not
 transport Case 2 gap or flat-tail packages automatically, and does not prove
 chart coverage, transition regularity, Jacobian arithmetic, normal crossings,
 RLCT extraction, termination, transition invariance, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 terminal relabel-weight candidate
+
+Reproduction:
+`reproduction-case2-terminal-relabel-weight-candidate-a4.md`.
+Statement card:
+`statement-card-a4-case2-terminal-relabel-weight-candidate.md`.
+Review artifact:
+`review-case2-terminal-relabel-weight-candidate-a4.md`.
+
+Lean now rewrites the stopped displayed Case 2 terminal product using the
+relabelled `(S+1,0)` post-state pivot weight.  Under actual next-width
+exhaustion, the old supplied post-state weight and the relabelled post-state
+weight agree:
+
+```text
+terminalRelabelPost.weight(J+1) = post.weight(J+1).
+```
+
+The direct wrapper combines this equality with the stopped terminal
+entry-ideal theorem.  A second source-model wrapper specializes the supplied
+terminal source model to
+
+```text
+b0 = terminalRelabelPost.weight(J+1).
+```
+
+This is only a presentational bridge from the terminal candidate to relabelled
+recurrence vocabulary.  It does not construct source-produced `C'^(S+1)`,
+does not prove chart production, does not transport Case 2 gap/tail packages,
+and does not prove chart coverage, transition regularity, Jacobian arithmetic,
+normal crossings, RLCT extraction, termination, transition invariance, or
+printed-vector repair.

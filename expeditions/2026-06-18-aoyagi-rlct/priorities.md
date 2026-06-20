@@ -98,7 +98,10 @@ on the session's original cwd.
    The actual-width terminal relabel is now Lean-proved as supplied-data
    bookkeeping: copied old post-state recurrence maps give a candidate
    `(S+1,0)` state, and level/exponent certificate packages transport under
-   the same actual-width equality. Next A4 target:
+   the same actual-width equality. The stopped terminal candidate is now also
+   rewritten with surviving scalar `terminalRelabelPost.weight(J+1)` instead
+   of `post.weight(J+1)`, with the source model specialized to that relabelled
+   scalar. Next A4 target:
    construct chart-produced recurrence/exponent post-data or source-produced
    old top/suffix data; do not identify `[Ctop;C0]` with Aoyagi's full
    `C'^(S+1)` without that source-order construction, and do not transport

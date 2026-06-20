@@ -1488,6 +1488,26 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-actual-width-terminal-relabel-a4.md`.
 
+Latest A4 update: the Case 2 terminal relabel-weight candidate bridge has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth`.
+This checkpoint restates the stopped supplied terminal product candidate using
+the relabelled `(S+1,0)` post-state pivot weight
+`terminalRelabelPost.weight(J+1)`; actual-width exhaustion derives failed next
+continuation and the equality with the old `post.weight(J+1)`.  It is only a
+presentational bridge.  It does not construct source-produced `C'^(S+1)`,
+chart production, automatic Case 2 gap/tail transport, coverage, Jacobians,
+normal crossings/RLCT, termination, transition invariance, or printed-vector
+repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-terminal-relabel-weight-candidate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-terminal-relabel-weight-candidate.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-terminal-relabel-weight-candidate-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

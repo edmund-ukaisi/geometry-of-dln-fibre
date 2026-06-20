@@ -515,7 +515,10 @@ No such claim is formalisation-ready until both fields are filled.
   entry-ideal candidate, and copy supplied old `(S,J+1)` recurrence/exponent
   data to a candidate `(S+1,0)` state. This remains supplied-data
   bookkeeping: it does not prove source-produced `C'^(S+1)`, chart production,
-  automatic Case 2 gap/tail transport, or terminal transition invariance.
+  automatic Case 2 gap/tail transport, or terminal transition invariance. The
+  terminal relabel-weight bridge now restates that candidate using
+  `terminalRelabelPost.weight(J+1)` as the surviving scalar, with the terminal
+  source model specialized to that relabelled weight.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -592,6 +595,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-terminal-source-model-a4.md`.
 	  Review of the Case 2 actual-width terminal relabel is saved at
 	  `threads/04-blow-up-certificate/review-case2-actual-width-terminal-relabel-a4.md`.
+	  Review of the Case 2 terminal relabel-weight candidate is saved at
+	  `threads/04-blow-up-certificate/review-case2-terminal-relabel-weight-candidate-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1309,6 +1314,12 @@ No such claim is formalisation-ready until both fields are filled.
   source-produced `C'^(S+1)`, automatic Case 2 gap/tail transport, normal
   crossings/RLCT, termination, transition invariance, or printed-vector
   repair.
+  The terminal relabel-weight candidate bridge now rewrites the stopped
+  supplied terminal product with surviving pivot scalar
+  `data.terminalRelabelPost.weight(J+1)`, using actual-width exhaustion to
+  recover failed next continuation and the equality with `post.weight(J+1)`.
+  A source-model wrapper is specialized to that relabelled scalar.  This is
+  only presentational API and does not construct source-produced `C'^(S+1)`.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

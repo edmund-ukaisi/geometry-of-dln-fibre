@@ -11257,6 +11257,125 @@ theorem terminalRelabelPost_weight_eq_of_actualWidth
     data.terminalRelabelPost.weight i = post.weight i :=
   post.stageRelabelSuccZero_weight_eq hwidth
 
+/-- Source-chart displayed Case 2 terminal product with the surviving pivot
+weight read from the relabelled `(S+1,0)` post-state.
+
+This is a supplied-boundary terminal-product statement.  Actual-width
+exhaustion supplies both failed next continuation and the equality between the
+old post-state weight and the relabelled post-state weight. -/
+theorem exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (Atop : Matrix ι ι R) (Ctop : Matrix ι τ R)
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks Atop 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock Ctop
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * F) =
+      matrixEntryIdeal
+          (case2DisplayedPaperTerminalCprimeCandidate Atop Ctop n data.stage_pos
+            data.continuation (data.terminalRelabelPost.weight (J + 1))
+            residual C F) := by
+  have hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1) := by
+    intro hnext
+    have hwidth_le : prefixMinNat n (S + 1) ≤ J + 1 := by
+      simpa [hwidth] using
+        (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))
+    omega
+  have hweight :
+      data.terminalRelabelPost.weight (J + 1) = post.weight (J + 1) :=
+    data.terminalRelabelPost_weight_eq_of_actualWidth hwidth
+  rw [hweight]
+  exact
+    data.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont
+      Atop Ctop hstop residual C F
+
+/-- Actual-width source-model wrapper for the terminal product whose surviving
+pivot weight is read from the relabelled `(S+1,0)` post-state.
+
+The model still supplies the old top multiplier/block and suffix.  This only
+replaces the old post-state pivot weight by the equal relabelled post-state
+weight; it does not construct Aoyagi's next following matrix. -/
+theorem exists_terminalModelEntryIdeal_eq_relabelProductCandidate_of_actualWidth
+    {ι υ τ R : Type*} [CommRing R] [Fintype ι] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (model :
+      Case2DisplayedSuppliedActualWidthTerminalSourceModel
+        (ι := ι) (υ := υ) (τ := τ) (R := R)
+        (L := L) (n := n) (S := S) (J := J)
+        (hS := data.stage_pos) (hSL := data.stage_le) (hcont := data.continuation)
+        (b0 := data.terminalRelabelPost.weight (J + 1)) (residual := residual)
+        (C := C)) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks model.Atop 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock model.Ctop
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * model.F) =
+      matrixEntryIdeal model.terminalProductCandidate := by
+  simpa [Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalProductCandidate,
+    Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalWeightCandidate,
+    Case2DisplayedSuppliedActualWidthTerminalSourceModel.terminalCnextCandidate,
+    case2DisplayedPaperTerminalCprimeCandidate] using
+    (data.exists_sourceTerminalEntryIdeal_eq_relabelCandidate_of_actualWidth
+      model.Atop model.Ctop model.actualWidth_exhausted residual C model.F)
+
 /-- Actual-width relabel of the displayed Case 2 post-state's level invariant. -/
 theorem terminalRelabelPostLevelInvariants_of_actualWidth
     {R : Type*} [CommRing R]
