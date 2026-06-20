@@ -2345,3 +2345,27 @@ but not yet constructed as a matrix chain.  This checkpoint does not construct
 source-produced `C'^(S+1)`, chart-produced recurrence or exponent data, chart
 coverage, Jacobian arithmetic, normal crossings, RLCT extraction, termination,
 transition invariance, automatic gap/tail transport, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 source suffix chain
+
+Reproduction:
+`reproduction-case2-source-suffix-chain-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-suffix-chain.md`.
+Review artifact:
+`review-case2-source-suffix-chain-a4.md`.
+
+Lean now names a raw paper-order matrix-chain product and the remaining Case 2
+terminal suffix `prod_{s=S+2}^L C^(s)`. The raw chain extends the upper
+endpoint by right multiplication, matching Aoyagi's paper-order product. The
+source suffix wrapper starts at one-based source layer `S+2` and ends at layer
+`L+1`, with the empty suffix represented by the raw chain identity when
+`S+1=L`.
+
+The stopped source old-top terminal theorem is also instantiated with
+`F = sourceSuffixProduct`. This removes the previous supplied suffix from that
+wrapper only by naming the matrix chain. It still does not prove that
+`[Ctop;C0]` is source-produced `C'^(S+1)`, nor does it prove chart production,
+chart coverage, coordinate regularity, Jacobian arithmetic, normal crossings,
+RLCT extraction, termination, transition invariance, automatic Case 2
+gap/tail transport, or printed-vector repair.

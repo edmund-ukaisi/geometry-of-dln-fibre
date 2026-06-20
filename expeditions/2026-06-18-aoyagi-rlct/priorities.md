@@ -112,12 +112,16 @@ on the session's original cwd.
    attaching it to actual-width relabeling. The source old-top/suffix
    specialization now replaces arbitrary old top data in one terminal theorem
    by source rows `1..J`, `diag(pre.weight i)`, and the corresponding source
-   row restriction of the following matrix; the suffix `F` remains supplied.
-   Next A4 target: construct the suffix matrix-chain product or the
-   source-produced terminal stack, but do not identify `[Ctop;C0]` with
-   Aoyagi's full `C'^(S+1)` without that construction, and do not transport
-   Case 2 gap/tail invariants without separately checking their shifted
-   thresholds.
+   row restriction of the following matrix. The suffix matrix chain is now
+   also Lean-proved in raw paper order: `paperMatrixChain` extends by right
+   multiplication, `sourceSuffixProduct` names `prod_{s=S+2}^L C^(s)`, and
+   the stopped source old-top terminal theorem is instantiated with that
+   named suffix product. Next A4 target: construct the source-produced
+   terminal stack `C'^(S+1)` or the bridge from the current `[Ctop;C0]`
+   candidate to that source object. Do not transport Case 2 gap/tail
+   invariants without separately checking their shifted thresholds. If
+   downstream suffix rewrites become noisy, add source-level empty/peel lemmas
+   for `sourceSuffixProduct`.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

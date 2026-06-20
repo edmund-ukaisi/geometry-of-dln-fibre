@@ -1576,6 +1576,26 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-old-top-suffix-specialization-a4.md`.
 
+Latest A4 update: the Case 2 source suffix-chain checkpoint has landed in
+`lean/DLNFibre/DLN/Aoyagi/MatrixChain.lean` and
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names
+include `paperMatrixChain`, `paperMatrixChain_self`,
+`paperMatrixChain_proof_irrel`, `paperMatrixChain_succ_right`,
+`paperMatrixChain_edge`, `sourceLayerIndex`, `sourceEdgeIndex`,
+`sourceEdgeIndex_castSucc`, `sourceEdgeIndex_succ`, `sourceSuffixProduct`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_next_cont`.
+This checkpoint names Aoyagi's remaining right product
+`prod_{s=S+2}^L C^(s)` and instantiates the stopped source old-top terminal
+theorem with that named suffix. It does not construct source-produced
+`C'^(S+1)`, chart production, coverage, Jacobians, normal crossings/RLCT,
+termination, transition invariance, automatic Case 2 gap/tail transport, or
+printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-suffix-chain-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-suffix-chain.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-source-suffix-chain-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

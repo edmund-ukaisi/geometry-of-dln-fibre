@@ -1486,6 +1486,17 @@ entry-ideal theorem to these source-shaped old top data.  The suffix `F`
 remains supplied; no source-produced `C'^(S+1)` or suffix matrix chain is
 constructed.
 
+The source suffix-chain checkpoint is now Lean-proved.  The new
+`MatrixChain.lean` module defines `paperMatrixChain`, with right-extension
+recursion `chain(i,p+1)=chain(i,p)*C(p)`, plus source-layer/source-edge index
+wrappers and `sourceSuffixProduct` for Aoyagi's
+`prod_{s=S+2}^L C^(s)`.  The stopped source old-top theorem is instantiated
+with this named suffix product as
+`exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_next_cont`.
+This still does not construct the source-produced terminal stack
+`C'^(S+1)`; it only replaces the abstract suffix matrix by the raw right
+matrix-chain product.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

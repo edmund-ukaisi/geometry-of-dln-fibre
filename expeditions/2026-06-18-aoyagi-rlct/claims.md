@@ -531,7 +531,10 @@ No such claim is formalisation-ready until both fields are filled.
   The source old-top/suffix specialization now constructs the old top row
   index `1..J`, the old top diagonal from `pre.weight`, and the old top block
   by restricting the supplied source following matrix, while keeping the
-  suffix `F` supplied.
+  suffix `F` supplied. The source suffix-chain checkpoint now names Aoyagi's
+  remaining right product `prod_{s=S+2}^L C^(s)` as a raw paper-order matrix
+  chain and instantiates the stopped source old-top theorem with that named
+  suffix product. This still does not construct source-produced `C'^(S+1)`.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -618,6 +621,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-current-prefix-row-exhaustion-a4.md`.
 	  Review of the Case 2 source old-top/suffix specialization is saved at
 	  `threads/04-blow-up-certificate/review-case2-source-old-top-suffix-specialization-a4.md`.
+	  Review of the Case 2 source suffix chain is saved at
+	  `threads/04-blow-up-certificate/review-case2-source-suffix-chain-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1361,6 +1366,15 @@ No such claim is formalisation-ready until both fields are filled.
   It removes arbitrary old-top data from one stopped terminal theorem, but
   keeps the suffix `F` supplied and does not construct source-produced
   `C'^(S+1)`.
+  The source suffix-chain checkpoint proves `paperMatrixChainStep`,
+  `paperMatrixChain`, `paperMatrixChain_self`,
+  `paperMatrixChain_proof_irrel`, `paperMatrixChain_succ_right`,
+  `paperMatrixChain_edge`, `sourceLayerIndex`, `sourceEdgeIndex`,
+  `sourceEdgeIndex_castSucc`, `sourceEdgeIndex_succ`, and
+  `sourceSuffixProduct` in `MatrixChain.lean`, and
+  `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_next_cont`
+  in `BlowupArithmetic.lean`.  It replaces the abstract supplied suffix in
+  the stopped source old-top theorem by Aoyagi's raw right suffix product.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

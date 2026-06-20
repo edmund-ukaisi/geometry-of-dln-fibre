@@ -3,6 +3,7 @@ import Mathlib.Data.Matrix.Block
 import Mathlib.Data.Int.Order.Basic
 import Mathlib.Tactic
 import DLNFibre.DLN.Aoyagi.EntryIdeal
+import DLNFibre.DLN.Aoyagi.MatrixChain
 
 /-!
 # Arithmetic checks for Aoyagi's blow-up exponents
@@ -11020,6 +11021,63 @@ theorem exists_sourceDisplayedOldTopSuffixTerminalProduct_entryIdeal_eq_of_not_n
   data.exists_sourceDisplayedWeightedTerminalProduct_entryIdeal_eq_topStack_of_not_next_cont
     (case2DisplayedSourceOldTopWeight pre)
     (case2DisplayedSourceOldTopBlock C) hstop residual C F
+
+/-- Source old-top specialization with the remaining right suffix named as
+Aoyagi's raw paper-order matrix chain.
+
+This only instantiates the already supplied suffix `F` with
+`sourceSuffixProduct`; it does not construct Aoyagi's full source-produced
+`C'^(S+1)`. -/
+theorem exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_next_cont
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) * sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          (case2DisplayedPaperTerminalCprimeCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            (case2DisplayedSourceOldTopBlock C)
+            n data.stage_pos data.continuation (post.weight (J + 1)) residual C
+            (sourceSuffixProduct κ Ctail S hSuffix)) :=
+  data.exists_sourceDisplayedOldTopSuffixTerminalProduct_entryIdeal_eq_of_not_next_cont
+    hstop residual C (sourceSuffixProduct κ Ctail S hSuffix)
 
 /-- The displayed source-coordinate chart map has the selected variable as a
 transformed finite-center value. -/
