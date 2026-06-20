@@ -1690,6 +1690,11 @@ No such claim is formalisation-ready until both fields are filled.
   intermediate chain, and upper chain, while supplied binary deltas provide
   the two-valued increments. This remains conditional and does not prove the
   source vector-to-chain correspondence or Lemma 5.
+  The first Lemma 5 displayed-family audit is now recorded. Equations `(3)` and
+  `(4)` are not yet source-family theorems; equation `(4)` needs the extra
+  own-coordinate guard `j0<=ell-a`, and terminal-zero/legal-label data remain
+  missing. Lean proves only the conditional chain arithmetic
+  `Htilde'_p-p=Htilde_p` under `p<=a` and `p<=ell-a`.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1722,6 +1727,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma4-prefix-delta-endpoint-count-a5.md`;
   Lemma 4 same-coordinate binary-delta free count at
   `threads/05-arithmetic-tail/reproduction-lemma4-same-coordinate-binary-delta-free-count-a5.md`;
+  Lemma 5 displayed-family blocker audit at
+  `threads/05-arithmetic-tail/blocked-audit-lemma5-displayed-family-realisation-a5.md`;
+  Lemma 5 equation `(4)` own-coordinate sanity at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-own-coordinate-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`;
   `Htilde` value-set count at
@@ -1796,6 +1805,8 @@ No such claim is formalisation-ready until both fields are filled.
   same-coordinate `Htilde` value-set count in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   same-coordinate vector-bound and binary-delta free-count wrapper in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  Lemma 5 equation `(4)` own-coordinate sanity in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1910,6 +1921,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma4_sameCoordinateChain_binaryIncrementPrefixDelta_freeHighCount_lemma3A_eq_min`,
   which package supplied same-coordinate vector bounds and supplied binary
   prefix deltas into the free-count Lemma 3 numerator equality.
+  Also proved `aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min` and
+  `aoyagiHtildeUpperNat_sub_index_eq_lowerNat_of_le_min`, which prove the
+  equation `(4)` own-coordinate arithmetic sanity under the extra overlap
+  guard `p<=ell-a`.
   Also proved `aoyagiHtildeIntervalValueSetNat`,
   `aoyagiHtildeIntervalValueSetNat_card_of_lt`,
   `aoyagiHtildeIntervalValueSetNat_card`, and

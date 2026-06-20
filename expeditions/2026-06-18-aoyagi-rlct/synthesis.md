@@ -1828,6 +1828,18 @@ crossings, or RLCT extraction.  The next source-facing A5 target is still
 Aoyagi's displayed Lemma 5 families, especially equations `(3)` and `(4)` on
 pp. 26-27.
 
+The first source-facing Lemma 5 audit is now recorded.  Equations `(3)` and
+`(4)` on pp. 26-27 are not ready as full source-family theorems: equation
+`(3)` needs legal-label and terminal-zero guards, equation `(4)` prints only
+`j0<=a` while own-coordinate consistency also needs `j0<=ell-a`, and the
+paper does not specify the Case 1(2) chart sequence that turns the displayed
+one-step-above values into terminal variables with `tilde t=0`.  Lean now
+proves only the equation `(4)` own-coordinate arithmetic sanity check:
+under `p<=a` and `p<=ell-a`, the displayed chain gap at `p` is `p`, hence
+`Htilde'_p-p=Htilde_p`.  This does not prove legal source labels,
+`tilde t=0`, vector admissibility, Lemma 5 order count, normal crossings, or
+RLCT extraction.
+
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
 definitionally the next same-stage residual domains at `(S,J+1)`, and the

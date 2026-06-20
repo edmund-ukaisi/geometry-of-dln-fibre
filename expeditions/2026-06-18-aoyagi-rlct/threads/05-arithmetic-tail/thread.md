@@ -501,3 +501,40 @@ vectors, vector admissibility, terminal exponent rewriting, correspondence to
 normal crossings, or RLCT extraction.  The source-facing next target is the
 displayed-family realisation in Aoyagi Lemma 5, especially equations `(3)` and
 `(4)` on pp. 26-27.
+
+## 2026-06-20 Lean Lemma 5 equation (4) own-coordinate sanity
+
+Reproduction:
+`reproduction-lemma5-eq4-own-coordinate-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-own-coordinate.md`.
+Blocked audit:
+`blocked-audit-lemma5-displayed-family-realisation-a5.md`.
+Review artifact:
+`review-lemma5-eq4-own-coordinate-a5.md`.
+
+Lean now proves the finite chain arithmetic needed for Aoyagi Lemma 5 equation
+`(4)` at its own source label:
+
+```text
+aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min
+aoyagiHtildeUpperNat_sub_index_eq_lowerNat_of_le_min
+```
+
+If `p <= a` and `p <= ell-a`, then the interval excess at `p` is exactly `p`.
+Since the gap between the displayed upper and lower `Htilde` chains is that
+interval excess, the printed own-coordinate value satisfies
+
+```text
+Htilde'_p - p = Htilde_p.
+```
+
+This is only an own-coordinate arithmetic sanity check.  It records that the
+source's printed guard `j0 <= a` is not enough by itself; the additional guard
+`j0 <= ell-a` is needed for equation `(4)` to match `t^(s)=k-1` at
+`s=S_(j0+1)-1`.
+
+The companion blocker audit records that the full displayed-family
+realisation is not yet formalisation-ready: legal source-label bounds,
+terminal/tail conventions for `tilde t=0`, the missing equation `(4)` index
+guards, and the Case 1(2) chart sequence remain open.

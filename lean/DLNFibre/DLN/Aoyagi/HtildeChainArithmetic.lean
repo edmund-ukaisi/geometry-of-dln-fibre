@@ -339,6 +339,39 @@ theorem aoyagiHtildeLowerChain_le_upperChain (ell a : ℕ) (M : ℤ)
     exact hnonneg
   exact sub_nonneg.mp hdiff
 
+/-- In the rising part of Aoyagi's displayed interval, the upper chain minus
+the coordinate index is the lower chain.
+
+For Lemma 5 equation `(4)`, this is the finite arithmetic behind the extra
+guard `j0 <= ell-a`: the printed own-coordinate value `Htilde'_j0 - j0`
+equals `Htilde_j0`.  It does not assert that the displayed source vector is
+legal, terminal, or admissible. -/
+theorem aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (j : Fin (ell + 1))
+    (hj_a : j.val ≤ a) (hj_c : j.val ≤ ell - a) :
+    aoyagiHtildeUpperChain ell a M m j - (j.val : ℤ) =
+      aoyagiHtildeLowerChain ell a M m j := by
+  have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m ha j
+  have hexcess : aoyagiLemma5IntervalExcess ell a j.val = j.val := by
+    unfold aoyagiLemma5IntervalExcess
+    apply Nat.min_eq_left
+    exact Nat.le_min.mpr ⟨by omega, Nat.le_min.mpr ⟨hj_a, hj_c⟩⟩
+  rw [hexcess] at hgap
+  omega
+
+/-- Nat-indexed form of
+`aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min`. -/
+theorem aoyagiHtildeUpperNat_sub_index_eq_lowerNat_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    aoyagiHtildeUpperNat ell a M m p - (p : ℤ) =
+      aoyagiHtildeLowerNat ell a M m p := by
+  have hp_lt : p < ell + 1 := by omega
+  simpa [aoyagiHtildeUpperChain, aoyagiHtildeLowerChain] using
+    aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min
+      ell a M m ha ⟨p, hp_lt⟩ hp_a hp_c
+
 /-- Offsets from the lower displayed chain to the upper displayed chain at
 the `j`th chain coordinate. -/
 def aoyagiHtildeIntervalOffsets (ell a j : ℕ) : Finset ℕ :=

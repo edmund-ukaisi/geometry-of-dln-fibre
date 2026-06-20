@@ -579,6 +579,13 @@ on the session's original cwd.
    Lemma 5 families in equations `(3)` and `(4)` on pp. 26-27 as valid
    terminal variables with `\tilde t_{s,k}=0` and same-coordinate interval
    realisation.
+   A first audit of those families is now recorded. Full source-family
+   realisation is blocked by legal-label bounds, terminal/tail conventions for
+   `\tilde t=0`, missing equation `(4)` index guards, and the unspecified Case
+   1(2) chart sequence. The safe Lean progress is the equation `(4)`
+   own-coordinate sanity check: under `j0<=a` and `j0<=ell-a`,
+   `Htilde'_{j0}-j0=Htilde_{j0}`. Next target: resolve the terminal/tail
+   convention or legal-label bounds before claiming a displayed source vector.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

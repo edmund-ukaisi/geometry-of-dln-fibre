@@ -140,6 +140,23 @@ order, normal crossings, or RLCT extraction.  The next source-facing target is
 Aoyagi's Lemma 5 displayed-family realisation, especially equations `(3)` and
 `(4)` on pp. 26-27.
 
+The Lemma 5 displayed-family audit and equation `(4)` own-coordinate sanity
+check have landed in the same module.  The proved Lean names are
+`aoyagiHtildeUpperChain_sub_index_eq_lowerChain_of_le_min` and
+`aoyagiHtildeUpperNat_sub_index_eq_lowerNat_of_le_min`.  They prove only that
+under `p<=a` and `p<=ell-a`, the printed equation `(4)` own-coordinate value
+`Htilde'_p-p` equals `Htilde_p`.  The companion blocked audit records that
+full equations `(3)`/`(4)` source-family realisation still lacks legal-label
+bounds, terminal/tail conventions for `tilde t=0`, complete index guards, and
+the Case 1(2) chart-sequence bridge. Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-own-coordinate-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-own-coordinate.md`.
+Blocked audit:
+`threads/05-arithmetic-tail/blocked-audit-lemma5-displayed-family-realisation-a5.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-own-coordinate-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging
