@@ -151,11 +151,14 @@ on the session's original cwd.
    is now proved, giving a cast-free base for future `sourceSuffixProduct`
    empty/peel wrappers. The actual-width source-chart terminal boundary now
    packages original-row terminal equality with relabelled `(S+1,0)` level and
-   exponent data. Next A4 target: either the dependent-endpoint
-   `sourceSuffixProduct` peel wrapper if suffix rewrites become noisy, or
-   fuller chart-production boundary data beyond terminal-prefix wrappers. Do
-   not transport Case 2 gap/tail invariants without separately checking their
-   shifted thresholds.
+   exponent data. The source suffix utility layer now adds proof irrelevance,
+   definitional expansion, and the cast-light split
+   `sourceSuffixProduct(S)=chain(S+2,T)*chain(T,L+1)`, with endpoint split
+   identity simplifications still unproved. Next A4 target: either the
+   dependent-endpoint one-edge `sourceSuffixProduct` peel wrapper if suffix
+   rewrites become noisy, or fuller chart-production boundary data beyond
+   terminal-prefix wrappers. Do not transport Case 2 gap/tail invariants
+   without separately checking their shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

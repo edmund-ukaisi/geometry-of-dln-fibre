@@ -644,6 +644,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the source suffix split and actual-width terminal boundary is
 	  saved at
 	  `threads/04-blow-up-certificate/review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
+	  Review of the source suffix utilities is saved at
+	  `threads/04-blow-up-certificate/review-source-suffix-utilities-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1478,6 +1480,13 @@ No such claim is formalisation-ready until both fields are filled.
   actual-width relabelled level invariant and exponent-domain certificate for
   `(S+1,0)`.  This boundary requires `n(S+1)=J+1` and does not apply to
   row-exhausted wide-next cases.
+  The source suffix utility layer now proves
+  `sourceSuffixProduct_proof_irrel`,
+  `sourceSuffixProduct_eq_paperMatrixChain`, and
+  `sourceSuffixProduct_split_at`, exposing the raw suffix as a
+  proof-irrelevant paper-order chain that splits at a source layer.  Endpoint
+  identity simplifications, the one-edge peel, and the empty-suffix identity
+  remain unproved.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

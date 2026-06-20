@@ -2615,3 +2615,30 @@ This is a boundary package, not a source-production theorem.  It does not
 prove source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
 Jacobian arithmetic, normal crossings/RLCT, termination, transition
 invariance, automatic gap/tail transport, or printed-vector repair.
+
+## 2026-06-20 Lean source suffix utilities
+
+Reproduction:
+`reproduction-source-suffix-utilities-a4.md`.
+Statement card:
+`statement-card-a4-source-suffix-utilities.md`.
+Review artifact:
+`review-source-suffix-utilities-a4.md`.
+
+Lean now adds three source-suffix utilities in `MatrixChain.lean`:
+
+```text
+sourceSuffixProduct_proof_irrel
+sourceSuffixProduct_eq_paperMatrixChain
+sourceSuffixProduct_split_at
+```
+
+They expose the raw suffix `prod_{s=S+2}^L C^(s)` as a proof-irrelevant
+paper-order chain and split it at a one-based source layer `T`, under
+`S+2 <= T <= L+1`.  Endpoint splits are allowed, but the endpoint identity
+simplifications are not proved here.
+
+This is still raw chain API.  It does not prove the one-edge source-suffix
+peel, the empty-suffix identity, source-produced `C'^(S+1)`, chart coverage,
+chart-produced post-data, Jacobian arithmetic, normal crossings/RLCT,
+termination, transition invariance, or printed-vector repair.

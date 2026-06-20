@@ -1575,6 +1575,15 @@ not prove source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
 Jacobian arithmetic, normal crossings/RLCT, termination, or transition
 invariance.
 
+The source suffix utilities are now Lean-proved in `MatrixChain.lean`:
+`sourceSuffixProduct_proof_irrel`,
+`sourceSuffixProduct_eq_paperMatrixChain`, and
+`sourceSuffixProduct_split_at`.  The split theorem states the cast-light form
+`sourceSuffixProduct(S)=chain(S+2,T)*chain(T,L+1)` under `S+2<=T<=L+1`.  The
+split layer may be an endpoint, but the endpoint identity simplifications, the
+one-edge peel, and the empty-suffix identity remain unproved dependent-endpoint
+wrappers, not current claims.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

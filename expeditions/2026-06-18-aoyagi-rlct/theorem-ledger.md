@@ -1768,6 +1768,23 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
 
+Latest A4 update: source-suffix utility wrappers have landed in
+`lean/DLNFibre/DLN/Aoyagi/MatrixChain.lean`.  The proved Lean names are
+`sourceSuffixProduct_proof_irrel`,
+`sourceSuffixProduct_eq_paperMatrixChain`, and
+`sourceSuffixProduct_split_at`.  They show that Aoyagi's raw suffix
+`prod_{s=S+2}^L C^(s)` is proof-irrelevant in the endpoint bound, is the raw
+paper-order chain from source layer `S+2` to the final source layer, and splits
+at a source layer `T` under `S+2<=T<=L+1`.  Endpoint splits are allowed, but
+endpoint identity simplifications are not proved.  They do not prove the
+one-edge source-suffix peel, empty suffix identity, chart production, or any
+analytic result. Reproduction:
+`threads/04-blow-up-certificate/reproduction-source-suffix-utilities-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-source-suffix-utilities.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-source-suffix-utilities-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

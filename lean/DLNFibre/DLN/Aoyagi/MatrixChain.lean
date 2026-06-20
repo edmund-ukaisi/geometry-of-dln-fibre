@@ -138,6 +138,57 @@ def sourceSuffixProduct {L : ℕ}
       change S + 2 - 1 ≤ L
       omega)
 
+/-- The raw source suffix is independent of the proof of the endpoint bound. -/
+theorem sourceSuffixProduct_proof_irrel {L : ℕ}
+    (κ : Fin (L + 1) → Type v) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (C : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (S : ℕ) (hS hS' : S + 1 ≤ L) :
+    sourceSuffixProduct κ C S hS = sourceSuffixProduct κ C S hS' := by
+  unfold sourceSuffixProduct
+  apply paperMatrixChain_proof_irrel
+
+/-- The source suffix is definitionally the raw chain from source layer `S+2`
+to the final source layer. -/
+theorem sourceSuffixProduct_eq_paperMatrixChain {L : ℕ}
+    (κ : Fin (L + 1) → Type v) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (C : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (S : ℕ) (hS : S + 1 ≤ L) :
+    sourceSuffixProduct κ C S hS =
+      paperMatrixChain κ C
+        (sourceLayerIndex L (S + 2) (by omega) (by omega))
+        (Fin.last L)
+        (by
+          change S + 2 - 1 ≤ L
+          omega) :=
+  rfl
+
+/-- Split Aoyagi's source suffix at a one-based source layer. -/
+theorem sourceSuffixProduct_split_at {L : ℕ}
+    (κ : Fin (L + 1) → Type v) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (C : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    {S T : ℕ} (hS : S + 1 ≤ L) (hST : S + 2 ≤ T) (hTL : T ≤ L + 1) :
+    let i := sourceLayerIndex L (S + 2) (by omega) (by omega)
+    let m := sourceLayerIndex L T (by omega) hTL
+    sourceSuffixProduct κ C S hS =
+      paperMatrixChain κ C i m (by
+        change S + 2 - 1 ≤ T - 1
+        omega) *
+      paperMatrixChain κ C m (Fin.last L) (by
+        change T - 1 ≤ L
+        omega) := by
+  dsimp only
+  unfold sourceSuffixProduct
+  exact paperMatrixChain_trans κ C
+    (sourceLayerIndex L (S + 2) (by omega) (by omega))
+    (m := sourceLayerIndex L T (by omega) hTL)
+    (j := Fin.last L)
+    (by
+      change S + 2 - 1 ≤ T - 1
+      omega)
+    (by
+      change T - 1 ≤ L
+      omega)
+
 end SourceSuffix
 
 end Aoyagi
