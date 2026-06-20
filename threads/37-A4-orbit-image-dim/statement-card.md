@@ -1,7 +1,7 @@
 # Statement card — A4 (route-c submersion bound), module A4.1–A4.4
 
 **Thread:** 37-A4-orbit-image-dim (voigt-discharge, AG half, L2b★ route c).
-**Pinned commit:** `c0e4569` (branch `expedition/voigt-discharge`).
+**Pinned commit:** `fbc743c` (branch `expedition/voigt-discharge`).
 **Build:** whole `DLNFibre` library green; `scripts/sorries` = 0; all landed theorems
 `#print axioms` = `[propext, Classical.choice, Quot.sound]`.
 
@@ -59,6 +59,14 @@ A4.2 obligation is gone. The proof (`diffIndepCriterion_proof`, `[CharZero k] [E
 `EssFiniteType k (FractionRing (groupRing d))` is the landed instance `essFiniteType_fractionRing_groupRing`.
 All axiom-clean.
 
+## `dμ_e = δ⁰` core — LANDED (`Core/OrbitDifferential.lean`)
+
+`orbitAction_eps_eq_deformationδ` (PROVED, char-free): over `DualNumber k = k[ε]/(ε²)`,
+`(1 + ε φ_{i+1}) · M_i · (1 − ε φ_i) = M_i + ε · (deformationδ M M φ)_i` — the structural `dμ_e = δ⁰`
+certificate (thread 36 §2). Plus `liftMat` algebra (`liftMat_mul`/`_sub`/`_one`, `eps_smul_*`) and
+`one_add_eps_mul_one_sub_eps` (`(1+εφ)⁻¹ = 1−εφ`). The geometric heart of A4.3, and the **reusable lemma
+for the A6.1 R2★ tide** (`D_{δ⁰φ} f = 0`, the dual-number `1 + εφ` curve). Axiom-clean.
+
 ## Residual — ONE obligation (A4.3, the `≤` direction only)
 
 **`genericDifferentialRank k (groupRing d) (genericOrbitCoord M) ≤ finrank k (LinearMap.range
@@ -71,10 +79,15 @@ tangent factorization `orbitJacobianK M = ρ(Pgen) ∘ δK ∘ τ(Pgen)` (`δK` 
 M M` to `K`; `ρ`, `τ` the target/domain trivialization isos), then `genericDifferentialRank` = range
 rank of `orbitJacobianK` via cotangent duality (`LinearMap.finrank_range_dualMap_eq_finrank_range`,
 `Subspace.dual_finrank_eq`), bounded by `finrank K (K ⊗ range δ⁰) = finrank k (range δ⁰)`
-(`Module.finrank_baseChange`). Differentiate `genericUnit v * genericUnitInv v = 1` for
-`d(P⁻¹) = -P⁻¹ dP P⁻¹` rather than expanding the adjugate. Soundness-load-bearing (the homogeneity /
-`dμ_e = δ⁰` content); not started — the genuine concrete matrix-Kähler-calculus piece. Recommended
-scoped residual name: `genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`.
+(`Module.finrank_baseChange`). **NOTE (this run):** this route is in the **Kähler/fraction-field**
+framework — it differentiates `genericUnit v * genericUnitInv v = 1` for the matrix-Kähler identity
+`D(U⁻¹) = -U⁻¹ (DU) U⁻¹` over the localization, which is from-scratch (Mathlib v4.29 has **no**
+matrix-`Derivation` API; `D(A·B)` is an entrywise `Finset`-sum of per-entry Leibniz terms). The landed
+dual-number `orbitAction_eps_eq_deformationδ` is a *different representation* (pointwise at the identity)
+and does not shorten this Kähler build; it is the right object for A6.1's R2★, not for the
+`genericDifferentialRank` span-rank bound. Not started — the genuine concrete matrix-Kähler-calculus
+piece. Recommended scoped residual name:
+`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`.
 
 ## Fidelity note (for the reviewer)
 The headline `(ringKrullDim …).unbotD 0 ≤ finrank …` is in `ℕ∞` (the `unbotD 0` is `ℕ∞`-valued, RHS
