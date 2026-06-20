@@ -30,3 +30,21 @@ coords, so `prod w = (U padded)·(I_r blocks)·(V padded) = U·V = B`. Each laye
 
 The telescoping (step 4) is the fiddly part (dependent Fin dims, like `prod` itself). The rank-of-block
 facts (step 3) reuse the L1 `LinearMap`/basis machinery or a direct `Matrix.rank` of a block-identity.
+
+## SECOND bug found (2026-06-20, before proving): L=0 corner — needs `1 ≤ L`
+Even WITH `hr`, `deepestPoint_exists` (and the headline) are FALSE for `L=0` (zero layers): `prod` is
+the empty product `= (1 : identity)` by `rfl`, so the fibre is nonempty only if `B = I` (rank `H 0`);
+`L=0, H=![2], r=0` gives `hr` ✓ but `prod ≡ I₂ ≠ 0 = B`, empty fibre. Fix: add `(hL : 1 ≤ L)`.
+EXHAUSTIVELY verified `1 ≤ L ∧ hr` SUFFICES (484/484, L∈{1,2,3}). Reported to controller; HELD pending.
+
+## Confirmed reusable sub-lemma (form-independent): `rank = 0 ⟹ B = 0`
+```lean
+example {m n : ℕ} (B : Matrix (Fin m) (Fin n) ℝ) (hB : B.rank = 0) : B = 0 := by
+  have hr0 : LinearMap.range B.mulVecLin = ⊥ := by
+    rw [← Submodule.finrank_eq_zero (R := ℝ)]; exact hB
+  rw [LinearMap.range_eq_bot] at hr0
+  ext i j
+  have := LinearMap.congr_fun hr0 (Pi.single j 1)
+  simpa [Matrix.mulVecLin_apply, Matrix.mulVec_single] using congrFun this i
+```
+This closes the `r=0` case (all-zero tuple witness, once `1 ≤ L` lands so a layer exists to be zero).
