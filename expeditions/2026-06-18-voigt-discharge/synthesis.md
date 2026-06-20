@@ -598,3 +598,32 @@ sorry-free `example` first) · L3.3 dense orbit closed pts (cheap) · L3.4 assem
 
 **W2 dispatched:** A3 (L3 build, Route DENSE, 6-mod, land-what-closes) ∥ A4.2 de-risk (pen-and-paper: char-0
 Jacobian-criterion certificate + the constant-rank-under-G soundness handling, before the A4 build).
+
+## 2026-06-20 — AG half W2 results (A3 L3 CLOSED; A4.2 certified) → A4 build dispatched
+
+**A3 (L3) FULLY CLOSED** `Core.OrbitSmooth`: `isSmoothAt_normalFormIdeal` (Z_M smooth at M) +
+`residueFieldNormalFormEquiv` (κ(m_M)=k). All L3.0–L3.4; L3.2 plumbing clean via `Scheme.arrowStalkMapSpecIso`
++ `IsLocalization.atUnits` (cleaner than `primeIdealOf`/`isoSpec`). Reviewer SURVIVED. Green (3000 jobs),
+axiom-clean, `[IsAlgClosed k]`. The homogeneous-space smoothness DONE. Head d5b7fdc.
+
+**A4.2 certified (thread 36).** Char-0 Jacobian criterion `trdeg_k(image) ≤ generic-rank(Jac)`: proof via
+Kähler `Ω_{K/k}=⊕K·dx_j` + separable-base-change INJECTIVITY (`K⊗_E Ω_E ↪ Ω_K`, char-0 step, Frobenius
+breaks char p). Only `≤` needed (banked). SOUNDNESS: constant-rank-under-G (homogeneity, char-free) ⟹
+generic rank = rank at e = `finrank(range δ⁰)` = `finrank(range (deformationδ M M))`; `dμ_e=δ⁰`. (2,2,2) all
+four agree (5,4). Hardest sub-lemma = the separable-base-change iso.
+
+**Mathlib API CONFIRMED present (controller grep)** for A4.2: `RingTheory/Kaehler/JacobiZariski.lean`
+(Jacobi–Zariski exact seq), `FormallyUnramified.iff_isSeparable`/`of_isSeparable` (Ω_{L/E}=0 for separable),
+`KaehlerDifferential.mvPolynomialBasis`, `Kaehler/TensorProduct.lean` (base change). `trdeg` API in
+`RingTheory/AlgebraicIndependent/`. So A4.2 builds on existing scaffolding; the `trdeg↔diff-rank` bridge is
+the new content. NOT a from-scratch iso.
+
+**A4 build plan (route c, 4 files, [CharZero k] on A4.2/A4.4):** A4.3 `dμ_e=δ⁰` + constant-rank-under-G
+(char-free, concrete — build FIRST as warm-up) · A4.1 `ringKrullDim(range)=trdeg(range)` (cheap, via landed
+`ringKrullDim_quotient_eq_noetherRank` + trdeg API) · A4.2 char-0 Jacobian criterion (the nugget, ~4-sublemma
+Kähler package) · A4.4 assemble + chain A0 ⟹ `varietyDim(Z_M) ≤ finrank(range δ⁰)`. **Dispatched solo
+(only Lean-writer); expect possibly-partial — land what closes, report residual.**
+
+**Remaining after A4:** A5 §WRINKLE (may be avoidable if A6 handles the Zariski tangent intrinsically vs via
+minors' Jacobian — decide in A6) + A6 (L4-assembly + L7: the squeeze `finrank(range δ⁰)=varietyDim` via A4 +
+[`range δ⁰ ⊆ ker Jac`/Zariski tangent + chain L2a✓·M3✓·L4d✓ using A3] ⟹ discharge hVoigt, `[CharZero k]`).
