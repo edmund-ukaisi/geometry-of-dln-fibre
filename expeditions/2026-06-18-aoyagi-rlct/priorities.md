@@ -186,6 +186,13 @@ on the session's original cwd.
    `sourceChart_actualWidth_terminalLastOriginalRowsBoundary_withFiniteCenterIdeal`
    and
    `sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal`.
+   The continuing-branch source-chart post-pivot boundary is now also
+   Lean-proved: the displayed supplied boundary projects the lower-row
+   `D''' * C'` next-block product over `(S,J+1)`, and the concrete
+   source-chart package conjoins that product with the corrected supplied
+   post-data projections. This removes the immediate adapter/post-data
+   compatibility target while still leaving chart production of recurrence,
+   exponent, and following-product data open.
    Do not set `F := 1` away from the empty-suffix case, do not replace the
    transported row by original rows without actual-width exhaustion, and do not
    transport Case 2 gap/tail invariants without separately checking their

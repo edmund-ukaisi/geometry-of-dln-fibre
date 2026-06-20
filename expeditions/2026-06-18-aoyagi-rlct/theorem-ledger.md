@@ -2085,6 +2085,28 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-principalized-terminal-last-boundaries-a4.md`.
 
+Latest A4 update: the Case 2 source-chart post-pivot boundary has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`Case2DisplayedSuppliedChartFamilyBoundary.postPivotNextSameStageProduct`,
+`Case2DisplayedSuppliedChartFamilyBoundary.postPivotResidualBlock_nonempty_of_next`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_postPivotNextSameStageProduct_withCorrectedPostData`.
+They project the continuing-branch post-pivot next-block adapter from the
+displayed supplied boundary, keep the nonempty next-center condition as the
+explicit bound `J+2 <= prefixMinNat n (S+1)`, and instantiate the concrete
+displayed source-chart constructor with corrected supplied post-data
+projections.  This connects the lower-row `D''' * C'` product to the same
+`(S,J+1)` successor slot as the corrected recurrence/exponent boundary.  It
+does not claim chart production, successor chart-family construction,
+coverage, coordinate regularity, transition invariance, Jacobian arithmetic,
+normal crossings/RLCT, arbitrary pivot coverage, terminal relabeling, or
+printed-vector repair. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-post-pivot-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-chart-post-pivot-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-source-chart-post-pivot-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

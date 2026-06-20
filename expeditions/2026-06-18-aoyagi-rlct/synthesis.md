@@ -1835,9 +1835,23 @@ and reindexing: it does not prove chart production, recurrence/exponent
 post-data from coordinates, coverage, coordinate regularity, Jacobian
 arithmetic, transition invariance, arbitrary pivot coverage, terminal
 relabeling, normal crossings/RLCT, or printed-vector repair.  Next A4 target:
-connect this supplied next-block adapter to the existing corrected
-recurrence/exponent post-data boundary for the displayed source chart, still
-without claiming atlas coverage or automatic post-data for arbitrary pivots.
+build fuller chart-production boundary data beyond this supplied adapter.
+
+The displayed source-chart post-pivot boundary now connects that supplied
+next-block adapter to the corrected displayed source-chart post-data boundary.
+From any supplied displayed boundary, Lean projects the lower-row
+`D''' * C'` identity over the same `(S,J+1)` successor domains and preserves
+the explicit next-center nonempty bound.  The concrete source-chart package
+instantiates the boundary constructor with post state `pre.case2Succ` at the
+displayed source-chart pivot value and conjoins the product identity with
+corrected post-data projections: exponent-domain extension, post
+level/least-value invariants, successor least-value gap, and successor
+recurrence gap.  This is still supplied-data compatibility, not chart
+production, atlas coverage, transition invariance, Jacobian arithmetic,
+normal crossings/RLCT, arbitrary pivot coverage, terminal relabeling, or
+printed-vector repair.  Next A4 target: chart-produced recurrence/exponent or
+following-product boundary data, if it can be reproduced from Aoyagi's
+displayed source coordinates without smuggling in the full transition theorem.
 
 ## Drift guard
 

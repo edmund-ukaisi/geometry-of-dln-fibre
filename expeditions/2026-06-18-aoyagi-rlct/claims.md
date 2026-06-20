@@ -544,6 +544,17 @@ No such claim is formalisation-ready until both fields are filled.
   reindex this candidate onto terminal prefix rows `1..M(S+1)` under stopped
   continuation and prove a supplied-terminal-matrix handoff from explicit
   old-row and pivot-row equations, packaged as `SuppliedTerminalCprimeBridge`.
+  The continuing-branch post-pivot domain and next-block adapter are now also
+  proved: after deleting the displayed pivot `(J+1,J+1)`, the lower-right row
+  and column domains are the next same-stage residual domains `(S,J+1)`, the
+  lower-right cleared block `D - x*y` and tail of `C' = Q^-1 C` are reindexed
+  over those domains, and the lower rows of `D''' * C'` equal their product.
+  This adapter is now connected to the displayed source-chart corrected
+  post-data boundary: the concrete source-chart package uses `pre.case2Succ`
+  at the displayed pivot value and conjoins the lower-row product identity
+  with corrected supplied exponent/level/gap projections at `(S,J+1)`. This
+  is still supplied-data compatibility, not chart production or transition
+  invariance.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -617,6 +628,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-post-pivot-next-block-a4.md`
 	  and
 	  `threads/04-blow-up-certificate/review-case2-post-pivot-next-block-a4.md`.
+	  Reproduction of the Case 2 source-chart post-pivot boundary is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-source-chart-post-pivot-boundary-a4.md`;
+	  landed-patch review is saved at
+	  `threads/04-blow-up-certificate/review-case2-source-chart-post-pivot-boundary-a4.md`.
 	  Review of the Case 2 stage-relabel domain audit is saved at
 	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 	  Review of the Case 2 displayed cleared-block vacuity corollary is saved
@@ -1304,6 +1319,14 @@ No such claim is formalisation-ready until both fields are filled.
   block algebra and reindexing only; it does not prove chart production,
   recurrence/exponent post-data from coordinates, chart coverage, coordinate
   regularity, transition invariance, Jacobian arithmetic, normal crossings,
+  RLCT extraction, arbitrary pivot coverage, terminal relabeling, or repair of
+  the printed vector mismatch.
+  The displayed source-chart post-pivot boundary projects that adapter through
+  the supplied displayed boundary and packages the concrete source-chart
+  constructor with corrected post-data projections at `(S,J+1)`. This proves
+  compatibility of the supplied next-block product with the corrected
+  recurrence/exponent boundary, not chart production, successor chart-family
+  construction, transition invariance, Jacobian arithmetic, normal crossings,
   RLCT extraction, arbitrary pivot coverage, terminal relabeling, or repair of
   the printed vector mismatch.
   The stage-relabel domain audit proves the finite side split

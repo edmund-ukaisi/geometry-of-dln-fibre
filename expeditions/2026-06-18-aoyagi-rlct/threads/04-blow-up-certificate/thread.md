@@ -2979,3 +2979,37 @@ chart production, recurrence/exponent post-data from coordinates, chart
 coverage, coordinate regularity, transition invariance, Jacobian arithmetic,
 normal crossings, RLCT extraction, arbitrary pivot coverage, the terminal
 `(S+1,0)` relabel branch, or repair of the printed Case 2 vector mismatch.
+
+## 2026-06-20 Lean Case 2 source-chart post-pivot boundary
+
+Reproduction:
+`reproduction-case2-source-chart-post-pivot-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-chart-post-pivot-boundary.md`.
+Review artifact:
+`review-case2-source-chart-post-pivot-boundary-a4.md`.
+
+Lean now connects the corrected displayed source-chart boundary to the
+continuing-branch post-pivot next-block adapter:
+
+```text
+Case2DisplayedSuppliedChartFamilyBoundary.postPivotNextSameStageProduct
+Case2DisplayedSuppliedChartFamilyBoundary.postPivotResidualBlock_nonempty_of_next
+Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_postPivotNextSameStageProduct_withCorrectedPostData
+```
+
+The first projection says that any supplied displayed Case 2 boundary exposes
+the lower rows of the paper product `D''' * C'` as the supplied
+`(S,J+1)` next-block product.  The nonemptiness projection keeps the explicit
+continuing bound `J+2 <= prefixMinNat n (S+1)`.  The source-chart package
+instantiates the concrete boundary constructor with post state `pre.case2Succ`
+at the displayed source-chart pivot value and conjoins the product identity
+with the corrected post-data projections: exponent-domain extension, post
+level/least-value invariants, successor least-value Case 2 gap, and successor
+recurrence Case 2 gap.
+
+This is still supplied-data compatibility.  It does not prove chart production
+of recurrence or exponent data, construct a successor chart-family boundary,
+prove chart coverage, coordinate regularity, transition invariance, Jacobian
+arithmetic, normal crossings/RLCT, arbitrary pivot coverage, terminal
+relabeling, or repair the printed Case 2 vector mismatch.

@@ -11175,6 +11175,116 @@ theorem sourceDisplayedQP_sourceChartMap_paperQP
     case2DisplayedPaperCprime, case2DisplayedPaperQinv]
     using data.sourceDisplayedQP_sourceChartMap residual C
 
+/-- The displayed supplied boundary exposes the continuing-branch lower-row
+product of Aoyagi's paper `D''' * C'` as the supplied next same-stage block
+product.  This is only a projection to the `(S,J+1)` matrix domains. -/
+theorem postPivotNextSameStageProduct
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    (case2DisplayedPaperDppp n data.stage_pos data.continuation residual *
+        case2DisplayedPaperCprime n data.stage_pos data.continuation residual C).submatrix
+        (fun i ↦
+          Sum.inr
+            ((case2DisplayedPivotRowComplementEquivResidualRowSucc
+              n data.stage_pos data.continuation).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock
+          n data.stage_pos data.continuation residual *
+        case2DisplayedPostPivotFollowingFactor
+          n data.stage_pos data.continuation residual C := by
+  simpa using
+    case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct
+      n data.stage_pos data.continuation residual C
+
+/-- The displayed supplied boundary's continuing-branch next residual center
+is nonempty under the explicit next-continuation bound. -/
+theorem postPivotResidualBlock_nonempty_of_next
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1)) :
+    (case2ResidualBlockPivotEntries n S (J + 1)).Nonempty :=
+  case2DisplayedPostPivotResidualBlock_nonempty_of_next n data.stage_pos hnext
+
+/-- Concrete displayed source-chart package for the continuing Case 2 branch.
+
+The source-chart constructor fixes the recurrence successor to the displayed
+pivot chart value and fixes the exponent data to the corrected selected-label
+overrides.  The post-pivot lower-row product is supplied matrix data over the
+same `(S,J+1)` domains; no chart production or transition invariant is
+asserted. -/
+theorem sourceChartMap_postPivotNextSameStageProduct_withCorrectedPostData
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) :
+    (case2DisplayedPaperDppp n hS hcont residual *
+        case2DisplayedPaperCprime n hS hcont residual C).submatrix
+        (fun i ↦
+          Sum.inr
+            ((case2DisplayedPivotRowComplementEquivResidualRowSucc
+              n hS hcont).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2DisplayedPostPivotFollowingFactor n hS hcont residual C ∧
+    IntroducedLabelExponentCertificates L n S (J + 1)
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    IntroducedLabelLevelInvariants L n S (J + 1)
+      ((pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).level)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    case2IntroducedLabelLeastValueGap L n S (J + 1)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    (pre.case2Succ
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).case2Gap := by
+  let data :=
+    of_sourceChartMap_case2Succ_updateSelected pre u residual hS hSL hcont
+      exponentPre levelInv leastValueGap chartFamily
+  exact
+    ⟨data.postPivotNextSameStageProduct residual C,
+      data.extendExponentDomain,
+      data.postLevelInvariants,
+      data.successorLeastValueGap,
+      data.postCase2Gap⟩
+
 /-- Source-order terminal weight matrix for the stopped displayed Case 2
 candidate.
 
