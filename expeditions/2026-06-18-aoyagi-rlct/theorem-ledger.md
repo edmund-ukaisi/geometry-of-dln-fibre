@@ -45,6 +45,22 @@ correspondence, the same-coordinate hypotheses for Aoyagi's displayed
 extremal vectors, the two-value hypothesis, vector admissibility, terminal
 exponent rewrite, and correspondence to `lambda`.
 
+The `Htilde` chain arithmetic slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`.  It formalises the
+finite displayed lower and upper chains from Aoyagi's Lemma 4/Lemma 5
+discussion: selected-width prefix helpers, `H_0=M(S_1)`, high-first and
+low-first increment patterns, terminal equality with
+`aoyagiLemma4TerminalEndpoint`, and pointwise gap equal to
+`aoyagiLemma5IntervalExcess`.  Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-htilde-chain-arithmetic-a5.md` and
+`threads/05-arithmetic-tail/statement-card-a5-htilde-chain-arithmetic.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-htilde-chain-arithmetic-a5.md`.  This does
+not prove the source `T -> (H_j),(S_j)` correspondence, same-coordinate
+hypotheses for the displayed extremal vectors, arbitrary-vector two-value
+increments, vector admissibility, Lemma 5 chart-family/order count, pole
+order, normal crossings, or RLCT extraction.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

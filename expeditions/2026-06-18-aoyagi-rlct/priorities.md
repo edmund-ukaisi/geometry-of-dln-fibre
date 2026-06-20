@@ -515,6 +515,11 @@ on the session's original cwd.
    only a conservative same-coordinate vector-squeeze wrapper: if the lower,
    middle, and upper endpoint values are read from the same coordinate, then
    componentwise `Tlo <= T <= Thi` supplies the endpoint sandwich.  The
+   displayed `Htilde`/`Htilde'` chains are now Lean-proved at the finite
+   arithmetic level too: the high-first and low-first chains start at
+   `H_0=M(S_1)`, share the common terminal endpoint, realise the ordered
+   increment blocks, and have pointwise gap equal to the Lemma 5
+   interval-excess formula.  The
    remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis

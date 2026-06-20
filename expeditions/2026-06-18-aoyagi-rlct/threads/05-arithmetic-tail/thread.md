@@ -302,3 +302,38 @@ This is still finite order arithmetic only.  It does not prove the source
 admissibility, terminal exponent rewriting into the Lemma 3 quadratic,
 correspondence to `lambda`, Lemma 5, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-20 Lean Htilde chain arithmetic
+
+Reproduction:
+`reproduction-htilde-chain-arithmetic-a5.md`.
+Statement card:
+`statement-card-a5-htilde-chain-arithmetic.md`.
+Review artifact:
+`review-htilde-chain-arithmetic-a5.md`.
+
+Lean now formalises the finite arithmetic of Aoyagi's displayed extremal
+`Htilde` and `Htilde'` chains in
+`lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`.  The lower chain
+subtracts
+
+```text
+j*(M-1) + min(j,a)
+```
+
+from the selected-width prefix, so its increments are `M` first and then
+`M-1`.  The upper chain subtracts the low-first high-count prefix, so its
+increments are `M-1` first and then `M`.  Both chains start at the source
+convention `H_0=M(S_1)`, and both terminal values equal the previously named
+common endpoint `aoyagiLemma4TerminalEndpoint`.  The pointwise gap
+`Htilde'_j-Htilde_j` is the Lemma 5 interval-excess formula
+`aoyagiLemma5IntervalExcess`.
+
+This removes the narrow "full displayed chain arithmetic" gap left by the
+endpoint-squeeze slice, but it is still finite arithmetic only.  It does not
+prove the source `T -> (H_j),(S_j)` correspondence, that Aoyagi's displayed
+`Ttilde <= T <= Ttilde'` supplies the same-coordinate hypotheses, the
+two-value increment hypothesis for arbitrary intermediate vectors, vector
+admissibility, terminal exponent rewriting into the Lemma 3 quadratic,
+correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
+count, pole order, normal crossings, or RLCT extraction.

@@ -1760,6 +1760,18 @@ read from the same coordinate `p`, then componentwise `Tlo <= T <= Thi`
 supplies the endpoint sandwich, and the existing endpoint-zero/count wrappers
 apply.  Proving that Aoyagi's displayed `Ttilde <= T <= Ttilde'` supplies that
 same-coordinate correspondence remains open.
+
+The displayed `Htilde`/`Htilde'` chain arithmetic is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`.  This module defines
+total selected-width/prefix helpers and finite lower/upper chain wrappers,
+proves the `H_0=M(S_1)` convention, proves the high-first and low-first
+increment patterns, identifies both terminal values with
+`aoyagiLemma4TerminalEndpoint`, and identifies the pointwise chain gap with
+`aoyagiLemma5IntervalExcess`.  This is only the finite displayed-chain
+arithmetic around Lemmas 4-5; it does not prove vector admissibility, the
+source `T -> (H_j),(S_j)` correspondence, same-coordinate hypotheses for the
+displayed extremal vectors, arbitrary-vector two-value increments,
+chart-family coverage, pole order, normal crossings, or RLCT extraction.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

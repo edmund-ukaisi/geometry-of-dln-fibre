@@ -1581,6 +1581,11 @@ No such claim is formalisation-ready until both fields are filled.
   finite arithmetic level: the common endpoint for `Htilde_ell` and
   `Htilde'_ell` is zero under Definition 3's selected-width sum, so supplied
   endpoint inequalities imply `H_ell=0`.
+  The displayed `Htilde`/`Htilde'` chain arithmetic is now Lean-proved at the
+  same finite scope: the high-first and low-first chains start at
+  `H_0=M(S_1)`, realise the two ordered increment patterns, share the common
+  terminal endpoint, and differ pointwise by the Lemma 5 interval-excess
+  formula.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1603,6 +1608,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma4-endpoint-squeeze-a5.md`;
   Lemma 4 same-coordinate bridge at
   `threads/05-arithmetic-tail/reproduction-lemma4-same-coordinate-bridge-a5.md`;
+  `Htilde` chain arithmetic at
+  `threads/05-arithmetic-tail/reproduction-htilde-chain-arithmetic-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1630,6 +1637,10 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 4 same-coordinate bridge checked by xhigh `Cicero the 5th` and xhigh
   Lean scout `Jason the 5th` at
   `threads/05-arithmetic-tail/review-lemma4-same-coordinate-bridge-a5.md`;
+  `Htilde` chain arithmetic checked by xhigh source checker
+  `Schrodinger the 5th` and xhigh Lean scout `Halley the 5th`; final landed
+  review pending at
+  `threads/05-arithmetic-tail/review-htilde-chain-arithmetic-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
@@ -1644,6 +1655,8 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   same-coordinate vector-squeeze wrappers in
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
+  displayed `Htilde`/`Htilde'` chain arithmetic in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
   TBD.
@@ -1707,6 +1720,18 @@ No such claim is formalisation-ready until both fields are filled.
   supplied endpoint inequalities by explicit same-coordinate componentwise
   vector bounds.  A source-gap check shows that Aoyagi's Definition 4 alone
   does not supply this same-coordinate correspondence.
+  Also proved `aoyagiSelectedWidthNat`, `aoyagiPrefixSum`,
+  `aoyagiHtildeLowerChain`, `aoyagiHtildeUpperChain`,
+  `aoyagiHtildeLowerChain_zero`, `aoyagiHtildeUpperChain_zero`,
+  `aoyagiHtildeLowerIncrementPrefix_succ_sub`,
+  `aoyagiHtildeUpperIncrementPrefix_succ_sub`,
+  `aoyagiHtildeLowerChain_last_eq_terminalEndpoint`,
+  `aoyagiHtildeUpperChain_last_eq_terminalEndpoint`,
+  `aoyagiHtildeLowerChain_F_eq`, `aoyagiHtildeUpperChain_F_eq`,
+  `aoyagiHtildeHighCount_diff_eq_intervalExcess`, and
+  `aoyagiHtildeUpper_sub_lower_eq_intervalExcess`, which formalise the
+  displayed high-first and low-first `Htilde` chains and their pointwise
+  interval-excess gap.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
