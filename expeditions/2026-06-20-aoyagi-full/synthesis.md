@@ -156,11 +156,15 @@ survived; rv-2 green-gating decorrelated. **Banked REUSABLE S1.1 infra (general 
 preserved), `prodBoxSymm_rpow_integrableOn_iff` (2D 𝓝0 box-iff) — feeds the real S1.1 + R1. Only θ-order
 stays the genuine analytic seam (S2 order-half).
 
-## #19 genuine A1 statement LANDED (@`9e454ee`, fm branch — pending rv-2 fidelity-check + merge)
+## #19 genuine A1 statement — MERGED to trunk @`7986597`, rv-2 PASS, GREEN
 Weak free-choice existential REPLACED by pp's candidate-d: `∃ c ≤ L, 1 ≤ c ∧ lambdaCore M = cleanCore c
-(sortedSmallest M c)` (m PINNED via new `sortedSmallest` = M's c+1 smallest reduced widths). 8th issue resolved
-at the STATEMENT level (proof = sorry, ~200-line balanced-split exchange, off-critical-path, fm next). rv-2
-fidelity-checking the statement (genuine vs weak; NOT an extremum) BEFORE the proof goes in; merge after.
+(sortedSmallest M c)` (m PINNED via `sortedSmallest` = M's c+1 smallest reduced widths). **rv-2 PASS** (genuine
+per discriminator; matches pp's ACHIEVER, NOT an extremum — verified 19600 cases, min_c/max_c refutations
+reproduced; sortedSmallest faithful). 8th issue resolved at the STATEMENT level on trunk. Skeleton compiles
+green (2534 jobs). Proof = sorry (~200-line balanced-split exchange, off-critical-path) — fm sinking it next
+(gate OPEN). **Skeleton sorry 9→10 — correct + honest: a genuine sorry replaced the vacuous weak PROOF.**
+Also merged: deepestPoint r=0 + Dblock_rank (r>0 telescoping still sorry, fm's). Cosmetic lints in fm's code
+(show→change @534, deprecated Finset lemma @706, <;> @738) — non-blocking, fm cleans on next touch.
 
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
