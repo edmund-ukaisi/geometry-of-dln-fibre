@@ -72,4 +72,55 @@ chart-count. Mathlib lacks the meromorphic continuation a direct analytic defini
 (design-spec §3 seam). -/
 opaque rlctOrderAt (H : Fin (L + 1) → ℕ) (F : Params H → ℝ) (wstar : Params H) : ℕ
 
+/-! ## The weighted compact-set threshold `θ(G, ρ; K)` (S1 substrate; thread 05)
+
+The clean abstraction unifying S1 and matching the narrowed S2: the supremum of exponents `c'` for
+which the **weighted** density `|G|^{−c'}·ρ` is integrable on some open set containing the compact
+fibre `K`. `rlctAt F w* = θ(F, 1, {w*})` (`rlctAt_eq_weightedThreshold`). After a resolution chart
+the Jacobian becomes the weight `ρ`; the S1.1 transport (`Skeleton.lean`) is stated in this object.
+Carried on a general `MeasureSpace`/`TopologicalSpace` source so it can host a resolution domain
+`M`, not only `Params`. -/
+
+/-- The weighted compact-set RLCT threshold `θ(G, ρ; K)` (thread 05): the `sSup` of exponents
+`c' ≥ 0` for which `|G|^{−c'}·ρ` is integrable on some open set `Ω ⊇ K`. General source type
+(hosts a resolution domain). -/
+noncomputable def weightedThreshold {M : Type*} [MeasureSpace M] [TopologicalSpace M]
+    (G ρ : M → ℝ) (K : Set M) : ENNReal :=
+  sSup { c : ENNReal | ∃ c' : NNReal, c = (c' : ENNReal) ∧
+          ∃ Ω : Set M, IsOpen Ω ∧ K ⊆ Ω ∧
+            IntegrableOn (fun w => |G w| ^ (-(c' : ℝ)) * ρ w) Ω volume }
+
+/-- `rlctAt F w*` is the weighted threshold with trivial weight at the singleton fibre:
+`θ(F, 1, {w*})`. The connector letting all of S1 (stated on `weightedThreshold`) specialise to
+`rlctAt`. The
+`∃ U ∈ 𝓝 w*` of `rlctAt` and the `∃ Ω open ⊇ {w*}` of `weightedThreshold` are interchangeable
+(`mem_nhds_iff` + `IsOpen.mem_nhds`), and the weight `1` is dropped by `mul_one`. -/
+theorem rlctAt_eq_weightedThreshold (H : Fin (L + 1) → ℕ) (F : Params H → ℝ) (wstar : Params H) :
+    rlctAt H F wstar = weightedThreshold F (fun _ => 1) {wstar} := by
+  unfold rlctAt weightedThreshold
+  have hfun : ∀ c' : NNReal, (fun w : Params H => |F w| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w)
+      = (fun w => |F w| ^ (-(c' : ℝ))) := fun c' => by funext w; rw [mul_one]
+  congr 1
+  ext c
+  constructor
+  · rintro ⟨c', rfl, U, hU, hint⟩
+    obtain ⟨Ω, hΩU, hΩopen, hwΩ⟩ := mem_nhds_iff.1 hU
+    exact ⟨c', rfl, Ω, hΩopen, by simpa using hwΩ, by rw [hfun]; exact hint.mono_set hΩU⟩
+  · rintro ⟨c', rfl, Ω, hΩopen, hKΩ, hint⟩
+    rw [hfun] at hint
+    exact ⟨c', rfl, Ω, hΩopen.mem_nhds (hKΩ rfl), hint⟩
+
+/-- `rlctAt` on a general `MeasureSpace`/`TopologicalSpace` source: `θ(F, 1, {w*})`. The
+network-agnostic RLCT, used to state S1.5 (disjoint-block additivity) on a product domain `X × Y`
+whose factors need not be `Params`. On `Params` it agrees with `rlctAt` (both unfold to
+`weightedThreshold F 1 {w*}` via `rlctAt_eq_weightedThreshold`). -/
+noncomputable def rlctAtOn {M : Type*} [MeasureSpace M] [TopologicalSpace M]
+    (F : M → ℝ) (wstar : M) : ENNReal :=
+  weightedThreshold F (fun _ => 1) {wstar}
+
+/-- On `Params`, `rlctAtOn` is `rlctAt` (both are `θ(F, 1, {w*})`). -/
+theorem rlctAtOn_eq_rlctAt (H : Fin (L + 1) → ℕ) (F : Params H → ℝ) (wstar : Params H) :
+    rlctAtOn F wstar = rlctAt H F wstar :=
+  (rlctAt_eq_weightedThreshold H F wstar).symm
+
 end DLNFibre.DLN.RLCT

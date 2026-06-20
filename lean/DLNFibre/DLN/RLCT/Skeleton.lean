@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Foundations.Rlct
 import DLNFibre.DLN.RLCT.Foundations.Lambda
+import Mathlib.MeasureTheory.Function.Jacobian
 
 /-!
 # `DLNFibre.DLN.RLCT.Skeleton` — the goal skeleton (the contract)
@@ -86,9 +87,39 @@ axiom monomial_rlct (d : ℕ) (k h : Fin d → ℕ) :
     monomialThreshold d k h = (⨅ j : Fin d, axisRatio (h j) (k j))
     ∧ ((∃ j : Fin d, k j ≠ 0) → monomialOrderAnalytic d k h = monomialOrder d k h)
 
-/-! ## S1 — RLCT depends only on the ideal; change of variables; φ-independence (design-spec §8) -/
+/-! ## S1 — RLCT invariance substrate (thread 05; design-spec §8)
 
-/-- **S1 (Lemma 1, ideal invariance core).** The RLCT is invariant under multiplying `F` by a unit
+The shared analytic linchpin, in the `weightedThreshold` abstraction (`Foundations/Rlct.lean`):
+**S1.1** weighted-threshold TRANSPORT (the heavy core), then the corollaries **S1.2** monotonicity,
+**S1.3** ideal-invariance / germ-locality (the encoded `rlct_unit_invariant` + `rlct_germ_local`),
+**S1.4** Σ_X-elimination + φ-independence, and **S1.5** disjoint-block additivity (the engine of the
+L2 regular/core split). -/
+
+/-- **S1.1 (the linchpin — weighted-threshold transport; thread 05).** Transport of the weighted
+RLCT threshold along a **proper, a.e.-analytic diffeo** `π` on a finite-dim real space: off a null
+set `E`, `π` is injective and differentiable with derivative `Dπ`, and `π` is proper. Then
+`θ(F, φ; {w*})` equals `θ(F∘π, (φ∘π)·|det Dπ|; π⁻¹{w*})` — the **Jacobian weight `|det Dπ|` is
+MANDATORY** (Codex-caught, pp-verified: the *unweighted* `rlctAt(F∘π)=rlctAt(F)` is FALSE — e.g.
+`F=x²+y²`, chart `(u,uv)` gives `1/2 ≠ 1`, the missing factor being exactly `|det Dπ|=|u|`). Proof
+route (the heaviest analytic lemma below R1): delete `E`, apply Mathlib's Jacobian
+change-of-variables on the diffeo part (`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul`),
+restore the null set, then properness gives that every nbhd of `w*` pulls back to one of `π⁻¹{w*}`
+(fixed-set ↔ local-nbhd integrability). D1 takes the single-map form; R1 per-chart + finite `min`.
+Non-vacuous: equates two weighted thresholds. -/
+theorem weightedThreshold_transport
+    {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
+    [FiniteDimensional ℝ M]
+    (F φ : M → ℝ) (wstar : M)
+    (π : M → M) (Dπ : M → (M →L[ℝ] M)) (E : Set M)
+    (hproper : IsProperMap π)
+    (hE_null : volume E = 0)
+    (hinj : Set.InjOn π Eᶜ)
+    (hderiv : ∀ m ∈ Eᶜ, HasFDerivAt π (Dπ m) m) :
+    weightedThreshold F φ {wstar}
+      = weightedThreshold (F ∘ π) (fun m => φ (π m) * |(Dπ m).det|) (π ⁻¹' {wstar}) := by
+  sorry
+
+/-- **S1.3 (Lemma 1, ideal invariance core).** The RLCT is invariant under multiplying `F` by a unit
 `u` bounded away from `0` near `w*` (`0 < a ≤ |u| ≤ b` on a neighbourhood) — the operative content
 of "depends only on the ideal" (and what reduces `λ(⟨Fᵢ⟩)` to `λ(∑Fᵢ²)`, and removes the bump and
 `Σ_X`). Non-vacuous: it equates the RLCT of `u·F` to that of `F`. -/
@@ -98,7 +129,7 @@ theorem rlct_unit_invariant (H : Fin (L + 1) → ℕ) (F u : Params H → ℝ) (
     rlctAt H (fun w => u w * F w) wstar = rlctAt H F wstar := by
   sorry
 
-/-- **S1 (germ-locality / φ-independence).** The RLCT depends only on the germ of `F` at `w*`: if
+/-- **S1.4 (germ-locality / φ-independence).** The RLCT depends only on the germ of `F` at `w*`: if
 `F` and `G` agree on a neighbourhood of `w*`, their RLCTs are equal. This is the bump-independence
 content (the threshold is determined by the local behaviour near `w*`) and is what lets S2's
 bump-free monomial conclusion connect to the bumped resolution. Non-vacuous: it equates `rlctAt F`
@@ -106,6 +137,22 @@ and `rlctAt G` from a local-agreement hypothesis. -/
 theorem rlct_germ_local (H : Fin (L + 1) → ℕ) (F G : Params H → ℝ) (wstar : Params H)
     (hFG : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, F w = G w) :
     rlctAt H F wstar = rlctAt H G wstar := by
+  sorry
+
+/-- **S1.5 (RLCT additivity over disjoint variable blocks; thread 07, Aoyagi 2013 App. C Lemma 2).**
+For **disjoint** variable blocks `x ∈ X`, `y ∈ Y`, the RLCT of the sum of squares
+adds: `λ(F(x)² + G(y)²) = λ(F²) + λ(G²)`. NOT derivable from S1.1–S1.4 — it is the **engine of the
+L2 regular/core split** (the regular generators live in coordinates disjoint from the singular core,
+so their ½-contributions add to `λ_core`). Proof (Laplace/Mellin): `(F+G)^{−c} = Γ(c)⁻¹∫ t^{c−1}
+e^{−tF}e^{−tG} dt`, and `L_F(t) ~ t^{−λ(F)}(log t)^{m_F−1}` ⇒ the product
+`~ t^{−(λ_F+λ_G)}(log)^{…}` converges iff `c < λ_F + λ_G` (orders add too: `m_F + m_G − 1`). The L2
+use needs only the light smooth-block case. Stated on `rlctAtOn` (general product `X × Y`, factors
+need not be `Params`). Non-vacuous: equates the joint RLCT to the sum of the block RLCTs. -/
+theorem rlct_additive_disjoint
+    {X Y : Type*} [MeasureSpace X] [TopologicalSpace X] [MeasureSpace Y] [TopologicalSpace Y]
+    (F : X → ℝ) (G : Y → ℝ) (x0 : X) (y0 : Y) :
+    rlctAtOn (fun p : X × Y => F p.1 ^ 2 + G p.2 ^ 2) (x0, y0)
+      = rlctAtOn (fun x => F x ^ 2) x0 + rlctAtOn (fun y => G y ^ 2) y0 := by
   sorry
 
 /-! ## L1 / L2 — block elimination + product reduction (design-spec §8) -/
