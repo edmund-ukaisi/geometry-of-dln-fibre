@@ -101,4 +101,54 @@ theorem measurePreserving_paramsEquivFlat (H : Fin (L + 1) → ℕ) :
     (MeasurePreserving.id (volume : Measure ℝ))
   exact (h1.symm _).trans ((h2.symm _).trans ha)
 
+/-! ## `paramsEquivFlat` is a homeomorphism (continuity, both directions)
+
+`paramsEquivFlat` is a `MeasurableEquiv`; these upgrade it to continuous in both directions (it is a
+homeomorphism). Needed wherever a neighbourhood (not just a measurable set) must transport across
+the flattening — the `rlctAt`/`weightedThreshold` `∃ U ∈ 𝓝` quantifier in the S1.1 transport rung
+and R1. Each `piCurry`/`piCurry.symm` is `Sigma.curry`/`Sigma.uncurry` (continuous: every output
+coordinate is an evaluation); `arrowCongr'` is a coordinate re-index (continuous). -/
+
+/-- `Sigma.uncurry` on a `Pi`-type is continuous (each output coordinate is an evaluation). -/
+theorem continuous_sigmaUncurry {ι : Type*} {κ : ι → Type*} (X : (i : ι) → κ i → Type*)
+    [∀ i j, TopologicalSpace (X i j)] :
+    Continuous (Sigma.uncurry : (∀ i j, X i j) → (∀ q : (i : ι) × κ i, X q.1 q.2)) := by
+  apply continuous_pi; intro q
+  exact (continuous_apply q.2).comp (continuous_apply q.1)
+
+/-- `Sigma.curry` on a `Pi`-type is continuous (each output coordinate is an evaluation). -/
+theorem continuous_sigmaCurry {ι : Type*} {κ : ι → Type*} (X : (i : ι) → κ i → Type*)
+    [∀ i j, TopologicalSpace (X i j)] :
+    Continuous (Sigma.curry : (∀ q : (i : ι) × κ i, X q.1 q.2) → (∀ i j, X i j)) := by
+  apply continuous_pi; intro i; apply continuous_pi; intro j
+  exact continuous_apply (⟨i, j⟩ : (i : ι) × κ i)
+
+/-- `paramsEquivFlat` is continuous (two `Sigma.uncurry` steps + an evaluation re-index). -/
+theorem continuous_paramsEquivFlat (H : Fin (L + 1) → ℕ) :
+    Continuous (paramsEquivFlat H) := by
+  have e1 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (s : Fin L) (_ : Fin (H s.castSucc)) => Fin (H s.succ) → ℝ)).symm) := by
+    rw [MeasurableEquiv.coe_piCurry_symm]; exact continuous_sigmaUncurry _
+  have e2 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (q : FlatRowIdx H) (_ : Fin (H q.1.succ)) => ℝ)).symm) := by
+    rw [MeasurableEquiv.coe_piCurry_symm]; exact continuous_sigmaUncurry _
+  have e3 : Continuous (⇑(MeasurableEquiv.arrowCongr'
+      (Fintype.equivFin (FlatIdx H)) (MeasurableEquiv.refl ℝ))) := by
+    apply continuous_pi; intro i; exact continuous_apply ((Fintype.equivFin (FlatIdx H)).symm i)
+  exact e3.comp (e2.comp e1)
+
+/-- `paramsEquivFlat.symm` is continuous (two `Sigma.curry` steps + an evaluation re-index). -/
+theorem continuous_paramsEquivFlat_symm (H : Fin (L + 1) → ℕ) :
+    Continuous (paramsEquivFlat H).symm := by
+  have e1 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (s : Fin L) (_ : Fin (H s.castSucc)) => Fin (H s.succ) → ℝ))) := by
+    rw [MeasurableEquiv.coe_piCurry]; exact continuous_sigmaCurry _
+  have e2 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (q : FlatRowIdx H) (_ : Fin (H q.1.succ)) => ℝ))) := by
+    rw [MeasurableEquiv.coe_piCurry]; exact continuous_sigmaCurry _
+  have e3 : Continuous (⇑(MeasurableEquiv.arrowCongr'
+      (Fintype.equivFin (FlatIdx H)) (MeasurableEquiv.refl ℝ)).symm) := by
+    apply continuous_pi; intro i; exact continuous_apply ((Fintype.equivFin (FlatIdx H)) i)
+  exact e1.comp (e2.comp e3)
+
 end DLNFibre.DLN.RLCT

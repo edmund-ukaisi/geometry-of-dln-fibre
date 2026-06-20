@@ -196,57 +196,14 @@ theorem abs_rpow_integrableOn_Icc_symm_iff (s ε : ℝ) (hε : 0 < ε) :
       (Icc_union_Icc_eq_Icc (by linarith) (le_of_lt hε)).symm
     rw [hunion]; exact hneg.union hpos
 
-/-! ## `paramsEquivFlat` is a homeomorphism, and preserves the coordinate product (S1.1 infra)
+/-! ## `paramsEquivFlat` preserves the coordinate product (S1.1 infra)
 
-Three reusable facts that unblock the `(1,1,1)` `rlctAt`-bridge (and any neighbourhood-of-`w*` RLCT
-transport): `paramsEquivFlat` is continuous both ways (so `entryME⁻¹'(box)` is a `Params`
-neighbourhood, and a `Params` neighbourhood pushes to an `ℝ^N` neighbourhood), and it preserves the
-full product of coordinates (so a monomial integrand in the entries transports to a monomial in the
-flat coordinates regardless of the opaque `Fintype.equivFin` re-index — the integrand depends only
-on the product, which is re-index-invariant). The earlier `Params`-fiber wall (thread 13) was about
-a *per-fiber* equiv; these go through the already-built `paramsEquivFlat` and never re-touch it. -/
-
-/-- `Sigma.uncurry` on a `Pi`-type is continuous (each output coordinate is an evaluation). -/
-theorem continuous_sigmaUncurry {ι : Type*} {κ : ι → Type*} (X : (i : ι) → κ i → Type*)
-    [∀ i j, TopologicalSpace (X i j)] :
-    Continuous (Sigma.uncurry : (∀ i j, X i j) → (∀ q : (i : ι) × κ i, X q.1 q.2)) := by
-  apply continuous_pi; intro q
-  exact (continuous_apply q.2).comp (continuous_apply q.1)
-
-/-- `Sigma.curry` on a `Pi`-type is continuous (each output coordinate is an evaluation). -/
-theorem continuous_sigmaCurry {ι : Type*} {κ : ι → Type*} (X : (i : ι) → κ i → Type*)
-    [∀ i j, TopologicalSpace (X i j)] :
-    Continuous (Sigma.curry : (∀ q : (i : ι) × κ i, X q.1 q.2) → (∀ i j, X i j)) := by
-  apply continuous_pi; intro i; apply continuous_pi; intro j
-  exact continuous_apply (⟨i, j⟩ : (i : ι) × κ i)
-
-/-- `paramsEquivFlat` is continuous (two `Sigma.uncurry` steps + an evaluation re-index). -/
-theorem continuous_paramsEquivFlat {L : ℕ} (H : Fin (L + 1) → ℕ) :
-    Continuous (paramsEquivFlat H) := by
-  have e1 : Continuous (⇑(MeasurableEquiv.piCurry
-      (fun (s : Fin L) (_ : Fin (H s.castSucc)) => Fin (H s.succ) → ℝ)).symm) := by
-    rw [MeasurableEquiv.coe_piCurry_symm]; exact continuous_sigmaUncurry _
-  have e2 : Continuous (⇑(MeasurableEquiv.piCurry
-      (fun (q : FlatRowIdx H) (_ : Fin (H q.1.succ)) => ℝ)).symm) := by
-    rw [MeasurableEquiv.coe_piCurry_symm]; exact continuous_sigmaUncurry _
-  have e3 : Continuous (⇑(MeasurableEquiv.arrowCongr'
-      (Fintype.equivFin (FlatIdx H)) (MeasurableEquiv.refl ℝ))) := by
-    apply continuous_pi; intro i; exact continuous_apply ((Fintype.equivFin (FlatIdx H)).symm i)
-  exact e3.comp (e2.comp e1)
-
-/-- `paramsEquivFlat.symm` is continuous (two `Sigma.curry` steps + an evaluation re-index). -/
-theorem continuous_paramsEquivFlat_symm {L : ℕ} (H : Fin (L + 1) → ℕ) :
-    Continuous (paramsEquivFlat H).symm := by
-  have e1 : Continuous (⇑(MeasurableEquiv.piCurry
-      (fun (s : Fin L) (_ : Fin (H s.castSucc)) => Fin (H s.succ) → ℝ))) := by
-    rw [MeasurableEquiv.coe_piCurry]; exact continuous_sigmaCurry _
-  have e2 : Continuous (⇑(MeasurableEquiv.piCurry
-      (fun (q : FlatRowIdx H) (_ : Fin (H q.1.succ)) => ℝ))) := by
-    rw [MeasurableEquiv.coe_piCurry]; exact continuous_sigmaCurry _
-  have e3 : Continuous (⇑(MeasurableEquiv.arrowCongr'
-      (Fintype.equivFin (FlatIdx H)) (MeasurableEquiv.refl ℝ)).symm) := by
-    apply continuous_pi; intro i; exact continuous_apply ((Fintype.equivFin (FlatIdx H)) i)
-  exact e1.comp (e2.comp e3)
+`paramsEquivFlat` is continuous both ways — `continuous_paramsEquivFlat` / `_symm` — now banked next
+to `paramsEquivFlat` in `Foundations.ParamsFlat` (reusable for S1.1 / R1 neighbourhood transport).
+Here: it preserves the full product of coordinates (so a monomial integrand in the entries
+transports to a monomial in the flat coordinates regardless of the opaque `Fintype.equivFin`
+re-index — the integrand depends only on the product, re-index-invariant), and the two-sided box
+iff. -/
 
 /-- `paramsEquivFlat` preserves the full product of coordinates: the product over the flat index
 equals the product of all matrix entries (the re-index `Fintype.equivFin` is a bijection, so
