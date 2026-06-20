@@ -1683,9 +1683,12 @@ endpoint-corrected least value over integer `0<=b<=ell-1` under `1<=ell` and
 The equality cases are now also Lean-proved: `aoyagiLemma3A_eq_min_iff` shows
 that for `ell!=0`, equality with the lower bound occurs exactly at `b=a` or
 `b=a-1`, and `aoyagiLemma3A_eq_min_iff_source_Icc` records the source-interval
-truncation.  This does not prove the terminal candidate set, the
-`\tilde t_{s,k}=0` restriction, feasibility of minimizing exponent chains,
-Lemma 4, Lemma 5, pole order, normal crossings, or RLCT extraction.
+truncation.  The finite equality set is now also Lean-proved and counted via
+`aoyagiLemma3AMinimizerSet_card`: under `1<=ell` and `0<=a<=ell`, its
+cardinality is `1 + if 0<a<ell then 1 else 0`.  This does not prove the
+terminal candidate set, the `\tilde t_{s,k}=0` restriction, feasibility of
+minimizing exponent chains, Lemma 4, Lemma 5, pole order, normal crossings, or
+RLCT extraction.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

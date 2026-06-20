@@ -491,7 +491,8 @@ on the session's original cwd.
    over `0<=b<=ell-1` is proved under `1<=ell` and `0<=a<=ell`.  The exact
    equality cases for this isolated lower bound are also proved: for
    `ell!=0`, equality occurs iff `b=a` or `b=a-1`, with endpoint truncation in
-   the source interval.  The remaining
+   the source interval.  The finite equality set is now also counted:
+   cardinality `1 + indicator(0<a<ell)` under `1<=ell` and `0<=a<=ell`.  The remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, reproduce the terminal quadratic rewrite,
    and reproduce Lemma 5's chart-family/order-count construction.

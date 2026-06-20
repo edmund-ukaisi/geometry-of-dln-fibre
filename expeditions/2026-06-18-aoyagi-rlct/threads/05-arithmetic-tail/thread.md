@@ -83,3 +83,28 @@ This is still only integer polynomial arithmetic and source-interval
 bookkeeping.  The full A5 claim remains blocked by the terminal candidate set,
 the `\tilde t_{s,k}=0` restriction, exponent-chain feasibility, Lemmas 4-5,
 pole order, normal crossings, and RLCT extraction.
+
+## 2026-06-20 Lean Lemma 3 equality count
+
+Reproduction:
+`reproduction-lemma3-equality-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma3-equality-count.md`.
+Review artifact:
+`review-lemma3-equality-count-a5.md`.
+
+Lean now defines the finite equality set
+`aoyagiLemma3AMinimizerSet ell a` as the integer source interval
+`0 <= b <= ell-1` filtered by equality with the isolated lower bound.  It proves
+the set is `{0}` at `a=0`, `{ell-1}` at `a=ell`, and `{a-1,a}` in the strict
+interior `0<a<ell`.  The combined cardinality theorem is
+
+```text
+card = 1 + if 0 < a and a < ell then 1 else 0
+```
+
+under `1 <= ell` and `0 <= a <= ell`.
+
+This is not Lemma 5's pole-order count.  It counts only integer `b` values for
+the isolated Lemma 3 numerator equality, not terminal variables, exponent-chain
+feasibility, chart-family coordinates, or RLCT data.

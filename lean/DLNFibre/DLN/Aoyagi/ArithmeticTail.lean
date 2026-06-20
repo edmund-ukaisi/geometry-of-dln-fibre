@@ -163,6 +163,111 @@ theorem aoyagiLemma3A_eq_min_iff_source_Icc_top (ell b : ℤ)
       (aoyagiLemma3A_eq_min_iff ell ell b hellne).mpr (Or.inr hb)
     simpa using hmin
 
+/-- The finite set of integer `b` in Aoyagi's Lemma 3 source interval that
+attain the isolated numerator lower bound. -/
+noncomputable def aoyagiLemma3AMinimizerSet (ell a : ℤ) : Finset ℤ :=
+  (Finset.Icc (0 : ℤ) (ell - 1)).filter
+    (fun b ↦ aoyagiLemma3A ell a b = a * ell * (ell - a))
+
+/-- At `a=0`, the isolated equality set is the singleton `{0}`. -/
+theorem aoyagiLemma3AMinimizerSet_eq_zero (ell : ℤ) (hell : 1 ≤ ell) :
+    aoyagiLemma3AMinimizerSet ell 0 = {0} := by
+  ext b
+  simp only [aoyagiLemma3AMinimizerSet, Finset.mem_filter, Finset.mem_Icc,
+    Finset.mem_singleton]
+  constructor
+  · intro h
+    have hzero : aoyagiLemma3A ell 0 b = 0 := by
+      simpa using h.2
+    exact (aoyagiLemma3A_eq_min_iff_source_Icc_zero ell b hell h.1.1).mp hzero
+  · intro hb
+    constructor
+    · constructor <;> omega
+    · have hzero : aoyagiLemma3A ell 0 b = 0 :=
+        (aoyagiLemma3A_eq_min_iff_source_Icc_zero ell b hell (by omega)).mpr hb
+      simpa using hzero
+
+/-- At `a=ell`, the isolated equality set is the singleton `{ell-1}`. -/
+theorem aoyagiLemma3AMinimizerSet_eq_top (ell : ℤ) (hell : 1 ≤ ell) :
+    aoyagiLemma3AMinimizerSet ell ell = {ell - 1} := by
+  ext b
+  simp only [aoyagiLemma3AMinimizerSet, Finset.mem_filter, Finset.mem_Icc,
+    Finset.mem_singleton]
+  constructor
+  · intro h
+    have hzero : aoyagiLemma3A ell ell b = 0 := by
+      simpa using h.2
+    exact (aoyagiLemma3A_eq_min_iff_source_Icc_top ell b hell h.1.2).mp hzero
+  · intro hb
+    constructor
+    · constructor <;> omega
+    · have hzero : aoyagiLemma3A ell ell b = 0 :=
+        (aoyagiLemma3A_eq_min_iff_source_Icc_top ell b hell (by omega)).mpr hb
+      simpa using hzero
+
+/-- In the strict interior `0 < a < ell`, the isolated equality set has the
+two adjacent candidates `{a-1,a}`. -/
+theorem aoyagiLemma3AMinimizerSet_eq_interior (ell a : ℤ)
+    (hell : 1 ≤ ell) (ha0 : 0 < a) (haell : a < ell) :
+    aoyagiLemma3AMinimizerSet ell a = {a - 1, a} := by
+  ext b
+  simp only [aoyagiLemma3AMinimizerSet, Finset.mem_filter, Finset.mem_Icc,
+    Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · intro h
+    rcases (aoyagiLemma3A_eq_min_iff_source_Icc ell a b hell h.1.1 h.1.2).mp h.2
+      with hright | hleft
+    · right
+      exact hright.1
+    · left
+      exact hleft.1
+  · intro h
+    rcases h with hb | hb
+    · rw [hb]
+      constructor
+      · constructor <;> omega
+      · exact aoyagiLemma3A_at_left ell a
+    · rw [hb]
+      constructor
+      · constructor <;> omega
+      · exact aoyagiLemma3A_at_right ell a
+
+/-- At the lower endpoint, the isolated equality set has cardinality one. -/
+theorem aoyagiLemma3AMinimizerSet_card_zero (ell : ℤ) (hell : 1 ≤ ell) :
+    (aoyagiLemma3AMinimizerSet ell 0).card = 1 := by
+  rw [aoyagiLemma3AMinimizerSet_eq_zero ell hell, Finset.card_singleton]
+
+/-- At the upper endpoint, the isolated equality set has cardinality one. -/
+theorem aoyagiLemma3AMinimizerSet_card_top (ell : ℤ) (hell : 1 ≤ ell) :
+    (aoyagiLemma3AMinimizerSet ell ell).card = 1 := by
+  rw [aoyagiLemma3AMinimizerSet_eq_top ell hell, Finset.card_singleton]
+
+/-- In the strict interior, the isolated equality set has cardinality two. -/
+theorem aoyagiLemma3AMinimizerSet_card_interior (ell a : ℤ)
+    (hell : 1 ≤ ell) (ha0 : 0 < a) (haell : a < ell) :
+    (aoyagiLemma3AMinimizerSet ell a).card = 2 := by
+  rw [aoyagiLemma3AMinimizerSet_eq_interior ell a hell ha0 haell, Finset.card_pair]
+  omega
+
+/-- Endpoint-corrected cardinality of the isolated equality set in Aoyagi's
+Lemma 3 integer arithmetic.
+
+This counts only the integer parameter `b` in the source interval.  It does not
+count admissible exponent chains or prove the Lemma 5 pole-order count. -/
+theorem aoyagiLemma3AMinimizerSet_card (ell a : ℤ)
+    (hell : 1 ≤ ell) (ha0 : 0 ≤ a) (haell : a ≤ ell) :
+    (aoyagiLemma3AMinimizerSet ell a).card =
+      1 + if 0 < a ∧ a < ell then 1 else 0 := by
+  by_cases hinterior : 0 < a ∧ a < ell
+  · rw [aoyagiLemma3AMinimizerSet_card_interior ell a hell hinterior.1 hinterior.2]
+    simp [hinterior]
+  · have hend : a = 0 ∨ a = ell := by omega
+    rcases hend with hzero | htop
+    · subst a
+      simp [aoyagiLemma3AMinimizerSet_card_zero ell hell]
+    · subst a
+      simp [aoyagiLemma3AMinimizerSet_card_top ell hell]
+
 /-- If `0 <= a <= ell-1`, the candidate `b=a` is in Aoyagi's Lemma 3
 integer range. -/
 theorem aoyagiLemma3A_minimizer_right_mem {ell a : ℤ}
