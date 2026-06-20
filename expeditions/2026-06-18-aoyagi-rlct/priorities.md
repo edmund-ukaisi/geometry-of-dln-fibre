@@ -650,7 +650,9 @@ on the session's original cwd.
    selected span, while `p+1=a` makes it terminal and outside all selected
    blocks.  Adding a supplied terminal extension to `Htilde'_ell` in the
    terminal-collision case is now Lean-proved to force that same last-width
-   condition, and its failure rules out the extension.  The next A5 move
+   condition, and its failure rules out the extension.  A closed Lean
+   counterexample now shows Definition 3 does not force that compatibility:
+   `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths `2`.  The next A5 move
    should either build a richer supplied Case 1(2) terminal convention
    explicitly, or move to another finite consequence below the
    displayed-family realisation boundary.

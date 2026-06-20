@@ -2417,17 +2417,27 @@ Latest A5 update: the Lemma 5 equation `(4)` terminal-collision arithmetic has
 landed in `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names
 are `aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum`,
+`aoyagiLemma5Eq4_lastWidthCompatibility_not_forced_by_selectedWidthHypotheses_example`,
 `aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary`, and
 `aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary`.  They
 say that when `p+1=a`, the supplied equation `(4)` special boundary is the
 terminal selected endpoint and its displayed branch value is
 `M-W_(ell+1)-p+1`; zero at this endpoint is equivalent to the extra condition
-`W_(ell+1)=M-p+1`.  This is not forced by Definition 3.  Reproduction:
+`W_(ell+1)=M-p+1`.  The concrete Lean example
+`ell=3`, `a=2`, `p=1`, `M=3`, all selected widths `2`, satisfies the
+selected-sum and strict selected-width inequalities but fails this
+compatibility, so Definition 3 does not force it.  Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-collision-a5.md`.
+Counterexample reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-compatibility-counterexample-a5.md`.
 Statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-collision.md`.
+Counterexample statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-compatibility-counterexample.md`.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-collision-a5.md`.
+Counterexample review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-terminal-compatibility-counterexample-a5.md`.
 
 ## Ledger rules
 

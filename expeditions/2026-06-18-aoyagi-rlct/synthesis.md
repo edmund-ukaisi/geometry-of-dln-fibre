@@ -2044,8 +2044,12 @@ Lean-proved.  When `p+1=a`, the special boundary
 selected-sum identity gives `Htilde'_(ell-1)=M-W_(ell+1)`, so the supplied
 equation `(4)` boundary value is `M-W_(ell+1)-p+1`.  It is zero exactly when
 `W_(ell+1)=M-p+1`, an extra compatibility condition not forced by Definition
-3.  This further reinforces the boundary that equations `(3)` and `(4)` are
-not terminal-vector theorems from the printed display alone.
+3.  This is now Lean-certified by the concrete tuple
+`ell=3`, `a=2`, `p=1`, `M=3`, with all selected widths equal to `2`: the
+selected-sum and strict selected-width inequalities hold, while
+`W_(ell+1)=M-p+1` fails.  This further reinforces the boundary that equations
+`(3)` and `(4)` are not terminal-vector theorems from the printed display
+alone.
 
 ## Drift guard
 

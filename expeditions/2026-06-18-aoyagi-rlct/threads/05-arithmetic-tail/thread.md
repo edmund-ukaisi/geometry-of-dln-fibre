@@ -1039,3 +1039,27 @@ terminal extension.
 This is finite compatibility arithmetic only.  It does not construct equation
 `(4)`'s displayed vector, prove the terminal convention, or prove Lemma 5's
 chart-family/order-count theorem.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` terminal compatibility counterexample
+
+Reproduction:
+`reproduction-lemma5-eq4-terminal-compatibility-counterexample-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-terminal-compatibility-counterexample.md`.
+Review artifact:
+`review-lemma5-eq4-terminal-compatibility-counterexample-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_lastWidthCompatibility_not_forced_by_selectedWidthHypotheses_example
+```
+
+For `ell=3`, `a=2`, `p=1`, `M=3`, and all selected widths equal to `2`, the
+range guards, terminal-collision guard `p+1=a`, selected-sum identity, and
+strict selected-width inequalities all hold.  But the terminal-collision
+compatibility `W_(ell+1)=M-p+1` fails, since `W_4=2` and `M-p+1=3`.
+
+This is a closed finite counterexample to that compatibility being a
+Definition 3 consequence.  It does not construct a supplied equation `(4)`
+branch certificate or a terminal extension.

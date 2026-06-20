@@ -524,6 +524,49 @@ theorem aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum
   rw [hell_pred_cast, ha_pred_cast]
   ring
 
+/-- A concrete Definition 3-shaped selected-width tuple where equation `(4)`'s
+terminal last-width compatibility fails.
+
+For `ell=3`, `a=2`, `p=1`, `M=3`, and all selected widths equal to `2`, the
+selected-sum identity and strict selected-width inequalities hold, but the
+terminal-collision compatibility `W_(ell+1)=M-p+1` fails. -/
+theorem aoyagiLemma5Eq4_lastWidthCompatibility_not_forced_by_selectedWidthHypotheses_example :
+    let ell : ℕ := 3
+    let a : ℕ := 2
+    let p : ℕ := 1
+    let M : ℤ := 3
+    let m : Fin (ell + 1) → ℤ := fun _ => 2
+    1 ≤ ell ∧ a ≤ ell ∧ 1 ≤ p ∧ p ≤ ell - a ∧ p + 1 = a ∧
+      p + (ell - a) + 2 ≤ ell + 1 ∧ p + (ell - a) + 1 = ell ∧
+      (∀ i : Fin (ell + 1), 1 ≤ m i) ∧
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a ∧
+      (∀ i : Fin (ell + 1), (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      aoyagiSelectedWidthNat ell m ell ≠ M - (p : ℤ) + 1 := by
+  dsimp
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · intro i
+    fin_cases i <;> norm_num
+  constructor
+  · norm_num
+  constructor
+  · intro i
+    fin_cases i <;> norm_num
+  · norm_num [aoyagiSelectedWidthNat]
+
 /-- The displayed lower chain is pointwise below the displayed upper chain.
 
 This is a same-coordinate statement about the finite `H`-chains.  It is not a

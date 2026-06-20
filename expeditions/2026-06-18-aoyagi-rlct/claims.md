@@ -2064,10 +2064,14 @@ No such claim is formalisation-ready until both fields are filled.
   that the supplied equation `(3)` boundary assignment gives terminal endpoint
   value `1` when `a=1`, rather than terminal endpoint zero.
   Also proved `aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum`,
+  `aoyagiLemma5Eq4_lastWidthCompatibility_not_forced_by_selectedWidthHypotheses_example`,
   `aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary`, and
   `aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary`, which
   record the supplied equation `(4)` terminal-collision boundary value and the
-  exact extra last-width condition for it to be zero.
+  exact extra last-width condition for it to be zero.  The concrete example
+  `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths `2`, satisfies the
+  selected-sum and strict selected-width inequalities while failing that
+  condition.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
