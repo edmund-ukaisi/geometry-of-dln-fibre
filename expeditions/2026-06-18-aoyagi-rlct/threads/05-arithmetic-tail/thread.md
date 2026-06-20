@@ -337,3 +337,40 @@ two-value increment hypothesis for arbitrary intermediate vectors, vector
 admissibility, terminal exponent rewriting into the Lemma 3 quadratic,
 correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
 count, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Htilde interval bounds
+
+Reproduction:
+`reproduction-htilde-interval-bounds-a5.md`.
+Statement card:
+`statement-card-a5-htilde-interval-bounds.md`.
+Review artifact:
+`review-htilde-interval-bounds-a5.md`.
+
+Lean now proves the same-coordinate interval consequences of the displayed
+`Htilde` chains.  Since
+
+```text
+Htilde'_j - Htilde_j = aoyagiLemma5IntervalExcess ell a j,
+```
+
+the lower chain is pointwise below the upper chain, and the finite value set
+
+```text
+{Htilde_j + r | 0 <= r <= aoyagiLemma5IntervalExcess ell a j}
+```
+
+has cardinality `aoyagiLemma5IntervalSize ell a j`.  Membership in this set is
+equivalent to the same-coordinate bounds `Htilde_j <= H_j <= Htilde'_j`.
+
+Under the selected-width sum, both displayed chains have terminal value zero.
+Thus an intermediate `H`-chain squeezed between them in the same coordinates
+has `H_ell=0`; the existing Lemma 4 count and Lemma 3 free-count bridge can
+then be applied under the still-explicit two-value increment hypothesis.
+
+This remains conditional finite arithmetic.  It does not prove the source
+`T -> (H_j),(S_j)` correspondence, that Aoyagi's displayed
+`Ttilde <= T <= Ttilde'` supplies the same chain coordinates, the two-value
+increment hypothesis for arbitrary vectors, vector admissibility,
+correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
+count, pole order, normal crossings, or RLCT extraction.

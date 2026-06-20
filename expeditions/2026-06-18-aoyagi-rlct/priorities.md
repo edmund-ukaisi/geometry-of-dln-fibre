@@ -519,7 +519,12 @@ on the session's original cwd.
    arithmetic level too: the high-first and low-first chains start at
    `H_0=M(S_1)`, share the common terminal endpoint, realise the ordered
    increment blocks, and have pointwise gap equal to the Lemma 5
-   interval-excess formula.  The
+   interval-excess formula.  The same-coordinate interval-bound layer is also
+   Lean-proved: values between the displayed chains are packaged in finite
+   sets of size `aoyagiLemma5IntervalSize`, componentwise vector bounds can
+   feed interval membership only through an explicitly supplied coordinate
+   map, and chain bounds give `H_ell=0` but not arbitrary two-valued
+   increments.  The
    remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis

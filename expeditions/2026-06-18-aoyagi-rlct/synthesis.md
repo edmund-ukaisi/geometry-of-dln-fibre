@@ -1772,6 +1772,18 @@ arithmetic around Lemmas 4-5; it does not prove vector admissibility, the
 source `T -> (H_j),(S_j)` correspondence, same-coordinate hypotheses for the
 displayed extremal vectors, arbitrary-vector two-value increments,
 chart-family coverage, pole order, normal crossings, or RLCT extraction.
+
+The same module now also proves the finite interval-bound layer recommended by
+the follow-up A5 checks.  The lower displayed chain is pointwise below the
+upper displayed chain because their gap is the nonnegative Lemma 5
+interval-excess.  `aoyagiHtildeIntervalValueSet` packages the integer values
+between the two same-coordinate chain entries and proves its cardinality is
+`aoyagiLemma5IntervalSize`; membership is equivalent to the same-coordinate
+inequalities.  If an intermediate `H`-chain is squeezed between the two
+displayed chains, then `H_ell=0`, and the existing Lemma 4 count wrappers apply
+under the still-explicit two-value increment hypothesis.  A supplied vector
+coordinate map can feed componentwise vector bounds into interval membership,
+but no source theorem produces that coordinate map.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

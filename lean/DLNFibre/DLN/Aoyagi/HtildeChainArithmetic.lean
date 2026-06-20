@@ -302,6 +302,265 @@ theorem aoyagiHtildeUpper_sub_lower_eq_intervalExcess
     aoyagiHtildeUpperIncrementPrefix aoyagiHtildeLowerIncrementPrefix
   omega
 
+/-- The displayed lower chain has zero terminal value under Definition 3's
+selected-width sum. -/
+theorem aoyagiHtildeLowerChain_last_eq_zero_of_selectedSum (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiHtildeLowerChain ell a M m (Fin.last ell) = 0 := by
+  rw [aoyagiHtildeLowerChain_last_eq_terminalEndpoint ell a M m ha]
+  exact aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum ell a M m ha hselected
+
+/-- The displayed upper chain has zero terminal value under Definition 3's
+selected-width sum. -/
+theorem aoyagiHtildeUpperChain_last_eq_zero_of_selectedSum (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiHtildeUpperChain ell a M m (Fin.last ell) = 0 := by
+  rw [aoyagiHtildeUpperChain_last_eq_terminalEndpoint ell a M m ha]
+  exact aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum ell a M m ha hselected
+
+/-- The displayed lower chain is pointwise below the displayed upper chain.
+
+This is a same-coordinate statement about the finite `H`-chains.  It is not a
+proof that Aoyagi's componentwise order on exponent vectors induces these
+chain-coordinate inequalities. -/
+theorem aoyagiHtildeLowerChain_le_upperChain (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell) :
+    aoyagiHtildeLowerChain ell a M m ≤ aoyagiHtildeUpperChain ell a M m := by
+  intro j
+  have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m ha j
+  have hnonneg : 0 ≤ (aoyagiLemma5IntervalExcess ell a j.val : ℤ) := by
+    exact_mod_cast Nat.zero_le (aoyagiLemma5IntervalExcess ell a j.val)
+  have hdiff :
+      0 ≤ aoyagiHtildeUpperChain ell a M m j -
+        aoyagiHtildeLowerChain ell a M m j := by
+    rw [hgap]
+    exact hnonneg
+  exact sub_nonneg.mp hdiff
+
+/-- Offsets from the lower displayed chain to the upper displayed chain at
+the `j`th chain coordinate. -/
+def aoyagiHtildeIntervalOffsets (ell a j : ℕ) : Finset ℕ :=
+  Finset.Icc 0 (aoyagiLemma5IntervalExcess ell a j)
+
+/-- The offset interval has Aoyagi's displayed Lemma 5 interval size. -/
+theorem aoyagiHtildeIntervalOffsets_card (ell a j : ℕ) :
+    (aoyagiHtildeIntervalOffsets ell a j).card =
+      aoyagiLemma5IntervalSize ell a j := by
+  unfold aoyagiHtildeIntervalOffsets aoyagiLemma5IntervalSize
+  rw [Nat.card_Icc]
+  omega
+
+/-- The finite set of same-coordinate integer values between the two
+displayed `Htilde` chains at coordinate `j`. -/
+def aoyagiHtildeIntervalValueSet (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (j : Fin (ell + 1)) : Finset ℤ :=
+  (aoyagiHtildeIntervalOffsets ell a j.val).image
+    (fun r : ℕ ↦ aoyagiHtildeLowerChain ell a M m j + (r : ℤ))
+
+/-- Membership in the same-coordinate value set is exactly being between the
+two displayed `Htilde` chain values. -/
+theorem aoyagiHtilde_mem_intervalValueSet_iff_bounds
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (j : Fin (ell + 1)) (Hj : ℤ) :
+    Hj ∈ aoyagiHtildeIntervalValueSet ell a M m j ↔
+      aoyagiHtildeLowerChain ell a M m j ≤ Hj ∧
+        Hj ≤ aoyagiHtildeUpperChain ell a M m j := by
+  constructor
+  · intro hmem
+    rw [aoyagiHtildeIntervalValueSet, Finset.mem_image] at hmem
+    rcases hmem with ⟨r, hr, rfl⟩
+    rw [aoyagiHtildeIntervalOffsets, Finset.mem_Icc] at hr
+    have hgap :=
+      aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m ha j
+    constructor
+    · omega
+    · omega
+  · intro hbounds
+    rw [aoyagiHtildeIntervalValueSet, Finset.mem_image]
+    let r : ℕ := Int.toNat (Hj - aoyagiHtildeLowerChain ell a M m j)
+    have hr_cast : (r : ℤ) =
+        Hj - aoyagiHtildeLowerChain ell a M m j := by
+      exact Int.toNat_of_nonneg (sub_nonneg.mpr hbounds.1)
+    have hgap :=
+      aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m ha j
+    have hr_le_int : (r : ℤ) ≤ (aoyagiLemma5IntervalExcess ell a j.val : ℤ) := by
+      omega
+    have hr_le_nat : r ≤ aoyagiLemma5IntervalExcess ell a j.val := by
+      exact_mod_cast hr_le_int
+    refine ⟨r, ?_, ?_⟩
+    · rw [aoyagiHtildeIntervalOffsets, Finset.mem_Icc]
+      exact ⟨Nat.zero_le r, hr_le_nat⟩
+    · omega
+
+/-- The same-coordinate value set has Aoyagi's displayed Lemma 5 interval
+size. -/
+theorem aoyagiHtildeIntervalValueSet_card
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) (j : Fin (ell + 1)) :
+    (aoyagiHtildeIntervalValueSet ell a M m j).card =
+      aoyagiLemma5IntervalSize ell a j.val := by
+  unfold aoyagiHtildeIntervalValueSet
+  rw [Finset.card_image_of_injOn]
+  · exact aoyagiHtildeIntervalOffsets_card ell a j.val
+  · intro x _ y _ hxy
+    have hcast : (x : ℤ) = (y : ℤ) := by
+      exact add_left_cancel hxy
+    exact_mod_cast hcast
+
+/-- Same-coordinate chain bounds put every intermediate `H_j` in the finite
+interval value set. -/
+theorem aoyagiHtildeChainBounds_mem_intervalValueSet
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hlower : aoyagiHtildeLowerChain ell a M m ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperChain ell a M m) :
+    ∀ j, H j ∈ aoyagiHtildeIntervalValueSet ell a M m j := by
+  intro j
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m ha j (H j)]
+  exact ⟨hlower j, hupper j⟩
+
+/-- Componentwise vector bounds imply finite interval membership once a
+same-coordinate chain map is supplied.
+
+This is a conservative API.  It assumes the coordinate map from chain positions
+to vector coordinates; it does not derive that map from Aoyagi's Definition 4. -/
+theorem aoyagiHtilde_interval_mem_of_sameCoordinateChain
+    {ι : Type*} (ell a : ℕ) (M : ℤ)
+    (m H : Fin (ell + 1) → ℤ) (coord : Fin (ell + 1) → ι)
+    {Tlo T Thi : ι → ℤ}
+    (ha : a ≤ ell) (hlo : Tlo ≤ T) (hhi : T ≤ Thi)
+    (hlo_coord : ∀ j, Tlo (coord j) = aoyagiHtildeLowerChain ell a M m j)
+    (hH_coord : ∀ j, T (coord j) = H j)
+    (hhi_coord : ∀ j, Thi (coord j) = aoyagiHtildeUpperChain ell a M m j) :
+    ∀ j, H j ∈ aoyagiHtildeIntervalValueSet ell a M m j := by
+  intro j
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m ha j (H j)]
+  constructor
+  · rw [← hlo_coord j, ← hH_coord j]
+    exact hlo (coord j)
+  · rw [← hH_coord j, ← hhi_coord j]
+    exact hhi (coord j)
+
+/-- If an intermediate `H`-chain is squeezed between the two displayed
+`Htilde` chains in the same coordinates, then its terminal value is zero.
+
+This is the honest chain-coordinate replacement for the source sentence using
+`Ttilde <= T <= Ttilde'`.  The vector-to-chain coordinate correspondence is
+not proved here. -/
+theorem aoyagiLemma4_Hlast_eq_zero_of_HtildeChainBounds (ell a : ℕ) (M : ℤ)
+    (m H : Fin (ell + 1) → ℤ) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlower : aoyagiHtildeLowerChain ell a M m ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperChain ell a M m) :
+    H (Fin.last ell) = 0 := by
+  have hlo0 := aoyagiHtildeLowerChain_last_eq_zero_of_selectedSum ell a M m ha hselected
+  have hhi0 := aoyagiHtildeUpperChain_last_eq_zero_of_selectedSum ell a M m ha hselected
+  have hlo := hlower (Fin.last ell)
+  have hhi := hupper (Fin.last ell)
+  have hlo' : (0 : ℤ) ≤ H (Fin.last ell) := by
+    simpa [hlo0] using hlo
+  have hhi' : H (Fin.last ell) ≤ 0 := by
+    simpa [hhi0] using hhi
+  exact le_antisymm hhi' hlo'
+
+/-- The lower displayed chain has only the two increment values `M-1` and
+`M`. -/
+theorem aoyagiHtildeLowerChain_F_twoValue (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (j : Fin ell) :
+    aoyagiLemma4F ell m (aoyagiHtildeLowerChain ell a M m) j = M - 1 ∨
+      aoyagiLemma4F ell m (aoyagiHtildeLowerChain ell a M m) j = M := by
+  rw [aoyagiHtildeLowerChain_F_eq]
+  by_cases hj : (j : ℕ) < a <;> simp [hj]
+
+/-- The upper displayed chain has only the two increment values `M-1` and
+`M`. -/
+theorem aoyagiHtildeUpperChain_F_twoValue (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell) (j : Fin ell) :
+    aoyagiLemma4F ell m (aoyagiHtildeUpperChain ell a M m) j = M - 1 ∨
+      aoyagiLemma4F ell m (aoyagiHtildeUpperChain ell a M m) j = M := by
+  rw [aoyagiHtildeUpperChain_F_eq ell a M m ha]
+  by_cases hj : (j : ℕ) < ell - a <;> simp [hj]
+
+/-- Lemma 4's two-value count with same-coordinate `Htilde`-chain bounds
+replacing an explicit terminal condition.
+
+This still assumes the two-value increment hypothesis for the intermediate
+chain. -/
+theorem aoyagiLemma4_twoValueCount_of_HtildeChainBounds (ell a : ℕ) (M : ℤ)
+    (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlower : aoyagiHtildeLowerChain ell a M m ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperChain ell a M m)
+    (hvals : ∀ j : Fin ell,
+      aoyagiLemma4F ell m H j = M - 1 ∨ aoyagiLemma4F ell m H j = M) :
+    ((Finset.univ.filter fun j : Fin ell ↦ aoyagiLemma4F ell m H j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = M - 1).card = ell - a) := by
+  have hHlast :=
+    aoyagiLemma4_Hlast_eq_zero_of_HtildeChainBounds ell a M m H ha hselected
+      hlower hupper
+  exact aoyagiLemma4_twoValueCount_of_terminalH ell a M m H hH0 hHlast hselected hvals
+
+/-- Same-coordinate `Htilde`-chain bound wrapper for the finite
+Lemma 4-to-Lemma 3 free-count bridge. -/
+theorem aoyagiLemma4_HtildeChainBounds_freeHighCount_lemma3A_eq_min
+    (n a : ℕ) (M : ℤ) (m H : Fin (n + 2) → ℤ)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ n + 1)
+    (hselected : (∑ j : Fin (n + 2), m j) =
+      ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hlower : aoyagiHtildeLowerChain (n + 1) a M m ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperChain (n + 1) a M m)
+    (hvals : ∀ j : Fin (n + 1),
+      aoyagiLemma4F (n + 1) m H j = M - 1 ∨
+        aoyagiLemma4F (n + 1) m H j = M) :
+    aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+        ((Finset.univ.filter fun j : Fin n ↦
+          aoyagiLemma4F (n + 1) m H j.castSucc = M).card : ℤ) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) * (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  have hHlast :=
+    aoyagiLemma4_Hlast_eq_zero_of_HtildeChainBounds (n + 1) a M m H ha hselected
+      hlower hupper
+  exact aoyagiLemma4_terminalH_freeHighCount_lemma3A_eq_min n a M m H hH0
+    hHlast hselected hvals
+
+/-- The lower displayed chain satisfies Lemma 4's finite two-value count. -/
+theorem aoyagiHtildeLowerChain_twoValueCount (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m (aoyagiHtildeLowerChain ell a M m) j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m (aoyagiHtildeLowerChain ell a M m) j = M - 1).card =
+          ell - a) := by
+  exact aoyagiLemma4_twoValueCount_of_terminalH ell a M m
+    (aoyagiHtildeLowerChain ell a M m)
+    (aoyagiHtildeLowerChain_zero ell a M m)
+    (aoyagiHtildeLowerChain_last_eq_zero_of_selectedSum ell a M m ha hselected)
+    hselected
+    (aoyagiHtildeLowerChain_F_twoValue ell a M m)
+
+/-- The upper displayed chain satisfies Lemma 4's finite two-value count. -/
+theorem aoyagiHtildeUpperChain_twoValueCount (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m (aoyagiHtildeUpperChain ell a M m) j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m (aoyagiHtildeUpperChain ell a M m) j = M - 1).card =
+          ell - a) := by
+  exact aoyagiLemma4_twoValueCount_of_terminalH ell a M m
+    (aoyagiHtildeUpperChain ell a M m)
+    (aoyagiHtildeUpperChain_zero ell a M m)
+    (aoyagiHtildeUpperChain_last_eq_zero_of_selectedSum ell a M m ha hselected)
+    hselected
+    (aoyagiHtildeUpperChain_F_twoValue ell a M m ha)
+
 end Aoyagi
 end DLN
 end DLNFibre

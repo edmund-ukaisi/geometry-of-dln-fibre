@@ -1586,6 +1586,11 @@ No such claim is formalisation-ready until both fields are filled.
   `H_0=M(S_1)`, realise the two ordered increment patterns, share the common
   terminal endpoint, and differ pointwise by the Lemma 5 interval-excess
   formula.
+  A same-coordinate interval-bound layer is also Lean-proved: the displayed
+  lower chain is pointwise below the upper chain, finite integer value sets
+  between them have Aoyagi's interval sizes, supplied same-coordinate chain
+  bounds imply `H_ell=0`, and the existing count wrappers apply under the
+  still-explicit two-value increment hypothesis.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1610,6 +1615,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma4-same-coordinate-bridge-a5.md`;
   `Htilde` chain arithmetic at
   `threads/05-arithmetic-tail/reproduction-htilde-chain-arithmetic-a5.md`;
+  `Htilde` interval bounds at
+  `threads/05-arithmetic-tail/reproduction-htilde-interval-bounds-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1641,6 +1648,10 @@ No such claim is formalisation-ready until both fields are filled.
   `Schrodinger the 5th` and xhigh Lean scout `Halley the 5th`; final landed
   review pending at
   `threads/05-arithmetic-tail/review-htilde-chain-arithmetic-a5.md`;
+  `Htilde` interval bounds checked by xhigh source checker
+  `Nietzsche the 5th` and xhigh Lean scout `McClintock the 5th`; final landed
+  review pending at
+  `threads/05-arithmetic-tail/review-htilde-interval-bounds-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
@@ -1656,6 +1667,9 @@ No such claim is formalisation-ready until both fields are filled.
   same-coordinate vector-squeeze wrappers in
   `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
   displayed `Htilde`/`Htilde'` chain arithmetic in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  same-coordinate `Htilde` interval bounds, interval value sets, and
+  chain-bound count wrappers in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1732,6 +1746,23 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiHtildeUpper_sub_lower_eq_intervalExcess`, which formalise the
   displayed high-first and low-first `Htilde` chains and their pointwise
   interval-excess gap.
+  Also proved `aoyagiHtildeLowerChain_last_eq_zero_of_selectedSum`,
+  `aoyagiHtildeUpperChain_last_eq_zero_of_selectedSum`,
+  `aoyagiHtildeLowerChain_le_upperChain`, `aoyagiHtildeIntervalOffsets`,
+  `aoyagiHtildeIntervalOffsets_card`, `aoyagiHtildeIntervalValueSet`,
+  `aoyagiHtilde_mem_intervalValueSet_iff_bounds`,
+  `aoyagiHtildeIntervalValueSet_card`,
+  `aoyagiHtildeChainBounds_mem_intervalValueSet`,
+  `aoyagiHtilde_interval_mem_of_sameCoordinateChain`,
+  `aoyagiLemma4_Hlast_eq_zero_of_HtildeChainBounds`,
+  `aoyagiHtildeLowerChain_F_twoValue`,
+  `aoyagiHtildeUpperChain_F_twoValue`,
+  `aoyagiLemma4_twoValueCount_of_HtildeChainBounds`,
+  `aoyagiLemma4_HtildeChainBounds_freeHighCount_lemma3A_eq_min`,
+  `aoyagiHtildeLowerChain_twoValueCount`, and
+  `aoyagiHtildeUpperChain_twoValueCount`, which provide finite
+  same-coordinate interval membership and conditional count wrappers without
+  deriving arbitrary-vector two-valued increments.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

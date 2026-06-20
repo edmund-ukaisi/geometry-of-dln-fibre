@@ -61,6 +61,23 @@ hypotheses for the displayed extremal vectors, arbitrary-vector two-value
 increments, vector admissibility, Lemma 5 chart-family/order count, pole
 order, normal crossings, or RLCT extraction.
 
+The `Htilde` interval-bound slice has landed in the same Lean module.
+It proves terminal zero for the displayed chains under the selected-width sum,
+pointwise lower-to-upper chain order, finite interval offset/value sets with
+cardinality `aoyagiLemma5IntervalSize`, equivalence between interval-value
+membership and same-coordinate chain bounds, a supplied-coordinate vector
+membership wrapper, chain-bound `H_ell=0`, displayed-chain two-value counts,
+and conditional Lemma 4/Lemma 3 wrappers under the still-explicit arbitrary
+chain two-value hypothesis.  Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-htilde-interval-bounds-a5.md` and
+`threads/05-arithmetic-tail/statement-card-a5-htilde-interval-bounds.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-htilde-interval-bounds-a5.md`.  This still
+does not prove the source `T -> (H_j),(S_j)` correspondence, same-coordinate
+hypotheses for Aoyagi's displayed extremal vectors, arbitrary-vector
+two-valued increments, vector admissibility, Lemma 5 chart-family/order count,
+pole order, normal crossings, or RLCT extraction.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging
