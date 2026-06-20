@@ -317,4 +317,148 @@ theorem finrank_range_deltaT {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     rw [LinearMap.range_comp, LinearMap.range_eq_top.mpr eW.surjective, Submodule.map_top]
   rw [← h1, hadj, h2, LinearMap.finrank_range_dualMap_eq_finrank_range]
 
+/-! ## The generic units over `K = FractionRing (groupRing d)` and the per-coordinate identity -/
+
+variable {d : Fin (N + 1) → ℕ}
+
+/-- `genericUnit v` pushed into `K = FractionRing (groupRing d)`. -/
+private noncomputable def genUnitK (M : Tuple (k := k) d) (v : Fin (N + 1)) :
+    Matrix (Fin (d v)) (Fin (d v)) (FractionRing (groupRing (k := k) d)) :=
+  (genericUnit (k := k) d v).map (algebraMap (groupRing (k := k) d) (FractionRing _))
+
+/-- `genericUnitInv v` pushed into `K`. -/
+private noncomputable def genUnitInvK (M : Tuple (k := k) d) (v : Fin (N + 1)) :
+    Matrix (Fin (d v)) (Fin (d v)) (FractionRing (groupRing (k := k) d)) :=
+  (genericUnitInv (k := k) d v).map (algebraMap (groupRing (k := k) d) (FractionRing _))
+
+/-- `genUnitK v * genUnitInvK v = 1` over `K` (push `genericUnit_mul_genericUnitInv` through `map`). -/
+private theorem genUnitK_mul_inv (M : Tuple (k := k) d) (v : Fin (N + 1)) :
+    genUnitK M v * genUnitInvK M v = 1 := by
+  rw [genUnitK, genUnitInvK, ← Matrix.map_mul, genericUnit_mul_genericUnitInv,
+    Matrix.map_one _ (map_zero _) (map_one _)]
+
+/-- `genUnitInvK v * genUnitK v = 1` over `K`. -/
+private theorem genUnitInvK_mul (M : Tuple (k := k) d) (v : Fin (N + 1)) :
+    genUnitInvK M v * genUnitK M v = 1 := mul_eq_one_comm.mp (genUnitK_mul_inv M v)
+
+/-- `genericFactor M i` pushed into `K` (`= M i` as a constant matrix, killed by `D`). -/
+private noncomputable def genFactorK (M : Tuple (k := k) d) (i : Fin N) :
+    Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) (FractionRing (groupRing (k := k) d)) :=
+  (genericFactor M i).map (algebraMap (groupRing (k := k) d) (FractionRing _))
+
+/-- `D` kills the constant factor `genFactorK` entrywise (`M i` over `k`, via `map_algebraMap`). -/
+private theorem D_genFactorK (M : Tuple (k := k) d) (i : Fin N)
+    (s : Fin (d i.succ)) (t : Fin (d i.castSucc)) :
+    KaehlerDifferential.D k (FractionRing (groupRing (k := k) d)) (genFactorK M i s t) = 0 := by
+  rw [genFactorK, Matrix.map_apply, genericFactor, Matrix.map_apply,
+    ← IsScalarTower.algebraMap_apply k (groupRing (k := k) d) (FractionRing _)]
+  exact (KaehlerDifferential.D k (FractionRing (groupRing (k := k) d))).map_algebraMap _
+
+/-- **Per-coordinate identity.** Over `K`, `D(f_x)` is `D` of the `(s,t)` entry of the matrix product
+`genUnitK i.succ * genFactorK i * genUnitInvK i.castSucc`. -/
+private theorem D_genericOrbitCoord_eq (M : Tuple (k := k) d) (i : Fin N)
+    (s : Fin (d i.succ)) (t : Fin (d i.castSucc)) :
+    KaehlerDifferential.D k (FractionRing (groupRing (k := k) d))
+        (algebraMap (groupRing (k := k) d) (FractionRing _) (genericOrbitCoord M ⟨i, s, t⟩))
+      = KaehlerDifferential.D k (FractionRing (groupRing (k := k) d))
+        ((genUnitK M i.succ * genFactorK M i * genUnitInvK M i.castSucc) s t) := by
+  congr 1
+  rw [genericOrbitCoord]
+  rw [show (algebraMap (groupRing (k := k) d) (FractionRing _))
+        ((genericUnit (k := k) d (⟨i, s, t⟩ : RepCoord d).1.succ
+          * genericFactor M (⟨i, s, t⟩ : RepCoord d).1
+          * genericUnitInv (k := k) d (⟨i, s, t⟩ : RepCoord d).1.castSucc)
+        (⟨i, s, t⟩ : RepCoord d).2.1 (⟨i, s, t⟩ : RepCoord d).2.2)
+      = ((genericUnit (k := k) d i.succ * genericFactor M i
+        * genericUnitInv (k := k) d i.castSucc).map
+        (algebraMap (groupRing (k := k) d) (FractionRing _))) s t from (Matrix.map_apply ..).symm]
+  rw [Matrix.map_mul, Matrix.map_mul]
+  rfl
+
+/-! ## The gate expansion of `D(f_x)` and the conjugated Maurer–Cartan bracket -/
+
+/-- Abbreviation: the universal `k`-derivation into `Ω[K⁄k]`, `K = FractionRing (groupRing d)`. -/
+local notation "Dk" => KaehlerDifferential.D k (FractionRing (groupRing (k := k) d))
+
+/-- The Ω-valued **Maurer–Cartan** matrix `Θ_v = V_v⁻¹ · D(V_v)` at vertex `v` (entrywise:
+`Θ_{v,p,q} = Σ_c (genUnitInvK_v)_{pc} • D((genUnitK_v)_{cq})`). The infinitesimal generator the
+generic Jacobian factors through. -/
+private noncomputable def mcΘ (M : Tuple (k := k) d) (v : Fin (N + 1)) :
+    Matrix (Fin (d v)) (Fin (d v)) (KaehlerDifferential k (FractionRing (groupRing (k := k) d))) :=
+  fun p q => ∑ c, (genUnitInvK M v) p c • Dk ((genUnitK M v) c q)
+
+/-- **The gate expansion of `D(f_x)`.** Applying the matrix-Kähler gate (`derivMatrix_mul_apply` once
+on the outer product, `derivMatrix_inv_apply` for `D(V₁⁻¹)`, and `D(genFactorK) = 0`):
+`D((V₂ F V₁⁻¹)_{st}) = (Σ_w (V₂F)_{sw} • D(V₁⁻¹)_{wt}) + (Σ_w (V₁⁻¹)_{wt} • Σ_a F_{aw} • D(V₂)_{sa})`. -/
+private theorem D_orbit_expand (M : Tuple (k := k) d) (i : Fin N)
+    (s : Fin (d i.succ)) (t : Fin (d i.castSucc)) :
+    Dk ((genUnitK M i.succ * genFactorK M i * genUnitInvK M i.castSucc) s t)
+      = (∑ w, (genUnitK M i.succ * genFactorK M i) s w •
+          (- ∑ c, ∑ e, (genUnitInvK M i.castSucc) w c • (genUnitInvK M i.castSucc) e t •
+            Dk ((genUnitK M i.castSucc) c e)))
+        + (∑ w, (genUnitInvK M i.castSucc) w t •
+          (∑ a, (genFactorK M i) a w • Dk ((genUnitK M i.succ) s a))) := by
+  rw [derivMatrix_mul_apply Dk (genUnitK M i.succ * genFactorK M i) (genUnitInvK M i.castSucc) s t,
+    Finset.sum_add_distrib]
+  congr 1
+  · refine Finset.sum_congr rfl fun w _ => ?_
+    rw [derivMatrix_inv_apply Dk (genUnitK_mul_inv M i.castSucc) w t]
+  · refine Finset.sum_congr rfl fun w _ => ?_
+    rw [derivMatrix_mul_apply Dk (genUnitK M i.succ) (genFactorK M i) s w]
+    congr 1
+    refine Finset.sum_congr rfl fun a _ => ?_
+    rw [D_genFactorK M i a w, smul_zero, zero_add]
+
+/-- **Left-collapse.** `Σ_a (V_v)_{sa} • Θ_{v,a,u} = D((V_v)_{su})`: left-multiplying the Maurer–Cartan
+`Θ_v = V_v⁻¹ DV_v` by `V_v` recovers `D V_v` (uses `genUnitK_mul_inv`, `V_v V_v⁻¹ = 1`). -/
+private theorem genUnitK_smul_mcΘ (M : Tuple (k := k) d) (v : Fin (N + 1)) (s u : Fin (d v)) :
+    (∑ a, (genUnitK M v) s a • mcΘ M v a u) = Dk ((genUnitK M v) s u) := by
+  simp only [mcΘ, Finset.smul_sum, smul_smul]
+  rw [Finset.sum_comm]
+  rw [show (∑ c, ∑ a, ((genUnitK M v) s a * (genUnitInvK M v) a c) • Dk ((genUnitK M v) c u))
+      = ∑ c, ((genUnitK M v * genUnitInvK M v) s c) • Dk ((genUnitK M v) c u) from
+    Finset.sum_congr rfl fun c _ => by rw [← Finset.sum_smul, Matrix.mul_apply]]
+  rw [genUnitK_mul_inv, Finset.sum_eq_single s]
+  · rw [Matrix.one_apply_eq, one_smul]
+  · exact fun b _ hb => by rw [Matrix.one_apply_ne (Ne.symm hb), zero_smul]
+  · exact fun h => absurd (Finset.mem_univ _) h
+
+/-- **Right-collapse.** `Σ_b Θ_{v,p,b} • (V_v)_{bq}`-style: `Σ_e (V_v⁻¹)_{be} D(V_v)_{e?}`… the right
+analogue used for the `M Θ_cast` term. Specifically `Σ_b (V_v⁻¹)_{wb} • (Σ_a (V_v)_{ba} • x a) = x w`
+is the matrix-inverse collapse, here packaged as: left-multiplying `Σ_a (V_v)_{ba} • x a` by `V_v⁻¹`
+and summing recovers `x`. -/
+private theorem genUnitInvK_smul_genUnitK_smul (M : Tuple (k := k) d) (v : Fin (N + 1))
+    (w : Fin (d v)) (x : Fin (d v) → KaehlerDifferential k (FractionRing (groupRing (k := k) d))) :
+    (∑ b, (genUnitInvK M v) w b • (∑ a, (genUnitK M v) b a • x a)) = x w := by
+  simp only [Finset.smul_sum, smul_smul]
+  rw [Finset.sum_comm]
+  rw [show (∑ a, ∑ b, ((genUnitInvK M v) w b * (genUnitK M v) b a) • x a)
+      = ∑ a, ((genUnitInvK M v * genUnitK M v) w a) • x a from
+    Finset.sum_congr rfl fun a _ => by rw [← Finset.sum_smul, Matrix.mul_apply]]
+  rw [genUnitInvK_mul, Finset.sum_eq_single w]
+  · rw [Matrix.one_apply_eq, one_smul]
+  · exact fun b _ hb => by rw [Matrix.one_apply_ne (Ne.symm hb), zero_smul]
+  · exact fun h => absurd (Finset.mem_univ _) h
+
+/-- `genFactorK M i a w = algebraMap k K (M i a w)` (the constant `M`-entry over `K`). -/
+private theorem genFactorK_apply (M : Tuple (k := k) d) (i : Fin N)
+    (a : Fin (d i.succ)) (w : Fin (d i.castSucc)) :
+    (genFactorK M i) a w = algebraMap k (FractionRing (groupRing (k := k) d)) (M i a w) := by
+  rw [genFactorK, Matrix.map_apply, genericFactor, Matrix.map_apply,
+    ← IsScalarTower.algebraMap_apply k (groupRing (k := k) d) (FractionRing _)]
+
+/-! ## Remaining (not yet committed): the conjugation identity + final `hA43_le`
+
+The conjugation identity `D(f_x) = Σ_a Σ_b (V₂)_{sa} (V₁⁻¹)_{bt} • bracketG (mcΘ M) i a b`
+(`D_orbit_conj`) and the final bound `genericDifferentialRank ≤ finrank (range δ⁰)` are proved on
+paper and validated in Lean piece-by-piece, but `D_orbit_conj` rests on one inverse-side reindex
+lemma (`D_orbit_conj_termA`, the `D(V₁⁻¹)`-bracket half) whose assembled `Finset`-sum proof did not
+elaborate cleanly (parse/heartbeat/index-type friction; see thread-37 card for the precise
+obstruction). To respect the project sorry-gate, those two declarations are kept out of the committed
+file until `D_orbit_conj_termA` closes. The landed pieces above (`deltaT`, the adjoint pairing
+`pair_deltaT_eq_pair_deformationδ`, the trace self-duality `traceEquiv`, the transpose-rank identity
+`finrank_range_deltaT`, the gate expansion `D_orbit_expand`, the Maurer–Cartan collapses, and the
+per-coordinate `D_genericOrbitCoord_eq`) are the full 0-sorry scaffold; the direct-side half `hB`
+of `D_orbit_conj` is also proved (it is the mirror of `D_orbit_conj_termA`). -/
+
 end DLNFibre.Core
