@@ -9,9 +9,12 @@ audit missed (see below) — so the contract is being RE-corrected (hr-fix) and 
 two structural rungs have landed. Honest status:
 
 **Landed / green:**
-- **Keystone `paramsEquivFlat`** (`Params H ≃ᵐ (Fin N → ℝ)`, measure-preserving) — fm-2, committed to
-  expedition/aoyagi-full @`d7b1ba3` (Route A++). rv-2 green-gating + auditing it in an isolated checkout
-  (axiom/leak check). Unblocks the (1,1,1) bridge, S1.1's use-site, R1's measure facts.
+- **Keystone `paramsEquivFlat`** (`Params H ≃ᵐ (Fin N → ℝ)`, measure-preserving) — fm-2 @`d7b1ba3`
+  (Route A++). **rv-2 PASS (bedrock-clean):** isolated `/tmp` green-gate (2851 jobs, no shared-tree race),
+  ParamsFlat ZERO sorries, axioms `[propext, Classical.choice, Quot.sound]` (no sorryAx/stray), NO leaked
+  global instance (threads by `rfl`; bare `Matrix` still has no MeasurableSpace), flatDim correct by decide.
+  Unblocks the (1,1,1) bridge, S1.1's use-site, R1's measure facts. (Nit: unused `forall_true_left` in
+  `measurePreserving_piCurry` — fm-2 cleans on next touch.)
 - **A1 `clean_eq_printed`** — fm, committed @`c234651` (genuine ℚ identity, rv-2 9324-case verified). KEEP.
 - **A1 `lambdaCore_eq_clean`** — fm, committed @`f8233f2` (worktree-rung0-defs, sorry 13→11) — but it's the
   **WEAK existential (8th fidelity issue)**: closed by FREE CHOICE (ℓ=1, m=![1,(min Mval).toNat], needs only

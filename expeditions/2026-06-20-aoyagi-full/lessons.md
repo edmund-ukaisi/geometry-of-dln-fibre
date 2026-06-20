@@ -102,6 +102,12 @@ unconstrained.
 - **Build-to-bedrock corollary:** a green build defeats technical slop and a sharp audit defeats much
   conceptual slop, but the PROOF ATTEMPT is the ultimate audit — it surfaces false statements review misses.
   Statement-fidelity audits are necessary, not sufficient; do not over-trust "bedrock" before the proof runs.
+- **Heed the decorrelated flag (the sharpest part of this post-mortem).** Decorrelated Codex had FLAGGED this
+  exact gap in the bedrock consult (its Q3: "under-hypothesized unless r≤H s for all layers") — and rv-2
+  OVERRODE it with the wrong bottleneck argument. The decorrelation WORKED; the failure was dismissing it.
+  STANDING RULE: when a decorrelated check (Codex or a teammate) flags a hypothesis/soundness gap, CONSTRUCT
+  or REFUTE the witness before dismissing — never override a flag with an unverified argument. (Binds the
+  controller too — neither rv-2 nor I caught it independently; only fm's proof attempt forced it.)
 - **Fix:** `hr : ∀ s, r ≤ H s` is the right WHOLE-theorem hypothesis (also the well-definedness domain of
   `aoyagiLambda`, since M⁽ˢ⁾=H⁽ˢ⁾−r). Threaded through the headline + deepestPoint chain.
 
