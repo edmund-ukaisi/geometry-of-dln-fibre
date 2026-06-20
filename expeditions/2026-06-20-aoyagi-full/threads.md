@@ -5,7 +5,8 @@ Durable thread-status index. Status ∈ open / in-progress / blocked / review-pe
 | NN | type | seat | status | subject |
 |----|------|------|--------|---------|
 | 01 | design | pp | closed | Rung 0a: foundational defs + goal skeleton → `design-spec.md` (bedrock-quality; merged 25b825b) |
-| 02 | formalisation | fm | open | Rung 0b: encode `DLNFibre.DLN.RLCT.Foundations.*` + named-sorry skeleton + the one S2 axiom |
+| 02 | formalisation | fm | in-progress | Rung 0b: encode `DLNFibre.DLN.RLCT.Foundations.*` + named-sorry skeleton + the one S2 axiom |
+| 03 | design (parallel) | pp | in-progress | Spine-risk probe: resolution charts for (1,1,1)/(2,1,2)/(2,2,2); confirm chart exponents = Adm. Read-only + /tmp; reports to controller |
 
 ## Seats (reuse across tides; stand down at close)
 
