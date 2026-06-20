@@ -92,3 +92,4 @@ import DLNFibre.DLN.Aoyagi.ProductReductionBoundary
 import DLNFibre.DLN.Aoyagi.BlowupArithmetic
 import DLNFibre.DLN.Aoyagi.MatrixChain
 import DLNFibre.DLN.Aoyagi.ArithmeticTail
+import DLNFibre.DLN.Aoyagi.Lemma5IntervalArithmetic

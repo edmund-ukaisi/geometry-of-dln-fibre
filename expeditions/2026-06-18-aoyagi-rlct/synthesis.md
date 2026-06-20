@@ -1689,6 +1689,17 @@ cardinality is `1 + if 0<a<ell then 1 else 0`.  This does not prove the
 terminal candidate set, the `\tilde t_{s,k}=0` restriction, feasibility of
 minimizing exponent chains, Lemma 4, Lemma 5, pole order, normal crossings, or
 RLCT extraction.
+
+The first Lemma 5 arithmetic sub-slice is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`.  It isolates only the
+finite interval-excess sum: `aoyagiLemma5IntervalExcess` is the closed formula
+`min(j, ell-j, a, ell-a)`, `aoyagiLemma5IntervalExcessFiber_eq_excess`
+identifies it with a rectangle fiber count, and
+`aoyagiLemma5IntervalSize_excess_sum_Icc` proves
+`1 + sum_{j=1}^{ell-1}(intervalSize-1)=a*(ell-a)+1` under `1<=ell` and
+`a<=ell`.  This is not Lemma 5's chart-family/order-count theorem; the
+admissibility, coverage, displayed vector constructions, pole-order
+interpretation, normal crossings, and RLCT extraction remain open.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

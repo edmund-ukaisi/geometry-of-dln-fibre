@@ -108,3 +108,34 @@ under `1 <= ell` and `0 <= a <= ell`.
 This is not Lemma 5's pole-order count.  It counts only integer `b` values for
 the isolated Lemma 3 numerator equality, not terminal variables, exponent-chain
 feasibility, chart-family coordinates, or RLCT data.
+
+## 2026-06-20 Lean Lemma 5 interval-excess arithmetic
+
+Reproduction:
+`reproduction-lemma5-interval-excess-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-interval-excess.md`.
+Review artifact:
+`review-lemma5-interval-excess-a5.md`.
+
+Lean now proves the elementary interval-size sum used in Aoyagi's Lemma 5 in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`.  The closed excess
+formula is
+
+```text
+min(j, ell-j, a, ell-a),
+```
+
+encoded as nested `min`s.  It is identified with fibers of the rectangle
+`range a x range (ell-a)` under the level map `(p,q) |-> p+q+1`, and summing
+these fibers proves
+
+```text
+1 + sum_{j=1}^{ell-1} (intervalSize(ell,a,j)-1) = a(ell-a)+1
+```
+
+under `1 <= ell` and `a <= ell`.
+
+This is still not Lemma 5.  It proves only finite interval-excess arithmetic,
+not the chart-family constructions, admissibility, coverage, pole-order
+interpretation, normal crossings, or RLCT extraction.

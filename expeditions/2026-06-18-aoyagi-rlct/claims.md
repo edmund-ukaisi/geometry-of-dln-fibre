@@ -1568,7 +1568,8 @@ No such claim is formalisation-ready until both fields are filled.
 - **Status.** blocked after independent reproduction check; interior quadratic
   algebra is promising, and the isolated endpoint-corrected Lemma 3 integer
   numerator minimisation, equality-case classification, and equality-count
-  over the source interval are now Lean-proved and reviewed.  The full A5
+  over the source interval are now Lean-proved and reviewed.  The elementary
+  Lemma 5 interval-excess sum is also Lean-proved and reviewed.  The full A5
   claim remains blocked: terminal-variable restriction, minimiser feasibility,
   the
   quadratic rewrite from terminal exponents, and Lemma 5 order-count
@@ -1584,7 +1585,9 @@ No such claim is formalisation-ready until both fields are filled.
   equality cases at
   `threads/05-arithmetic-tail/reproduction-lemma3-equality-cases-a5.md`;
   equality count at
-  `threads/05-arithmetic-tail/reproduction-lemma3-equality-count-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma3-equality-count-a5.md`;
+  Lemma 5 interval-excess arithmetic at
+  `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1594,9 +1597,15 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma3-equality-cases-a5.md`;
   equality count checked by xhigh `Lagrange the 5th` and xhigh Lean scout
   `Leibniz the 5th` at
-  `threads/05-arithmetic-tail/review-lemma3-equality-count-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma3-equality-count-a5.md`;
+  Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
+  and xhigh Lean scout `Maxwell the 5th` at
+  `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
-  `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; broader A5 targets TBD.
+  `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 5
+  interval-excess arithmetic in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
+  TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
   `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
@@ -1615,14 +1624,24 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma3A_isLeast_image_Icc_top`.  These prove only the cleared
   integer numerator identity and endpoint-corrected constrained minimum over
   integer `b`, plus exact equality cases and the endpoint-corrected count for
-  that isolated lower bound.
+  that isolated lower bound.  Also proved
+  `aoyagiLemma5IntervalExcess`, `aoyagiLemma5IntervalSize`,
+  `aoyagiLemma5IntervalExcessFiber`,
+  `aoyagiLemma5IntervalExcessFiber_eq_Ico_card`,
+  `aoyagiLemma5IntervalExcessFiber_eq_excess`,
+  `aoyagiLemma5IntervalExcessFiber_sum_range`,
+  `aoyagiLemma5IntervalExcess_sum_range`,
+  `aoyagiLemma5IntervalExcess_zero`, `aoyagiLemma5IntervalExcess_top`,
+  `aoyagiLemma5IntervalExcess_sum_Icc`, and
+  `aoyagiLemma5IntervalSize_excess_sum_Icc`.  These prove only finite
+  interval-excess arithmetic, not Lemma 5's chart-family/order-count theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
 - **Cited.** none planned.
 - **Deferred.** terminal candidate set with `\tilde t_{s,k}=0`, feasibility of
-  the minimizing exponent chains, Lemma 4, Lemma 5, pole-order count, and
-  analytic extraction.
+  the minimizing exponent chains, Lemma 4, Lemma 5 chart-family admissibility
+  and coverage, pole-order count, and analytic extraction.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 
