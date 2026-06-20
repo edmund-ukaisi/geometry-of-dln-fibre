@@ -34,8 +34,19 @@ review against ground truth before anything stands on them.
 
 ## What's done / banked
 
-- Setup: branch, dir, baseRef=head, brief + ledger written. (this tick)
+- Setup: branch `expedition/aoyagi-full` off dev, controller in main checkout, baseRef=head, namespace
+  `DLNFibre.DLN.RLCT.*`. Brief + priorities + threads + lessons + loop-prompt written, committed, pushed
+  (HEAD 227511c). Task ladder created (#1–#10). Aoyagi 2013 PDF added (D1 source).
+- Thread 01 (Rung 0, seat `pp`) **spawned and running in background** (worktree, off HEAD): designing
+  the foundational definitions (`rlctAt`/`rlctOrderAt`/`dlnLoss`/`aoyagiλ`), the S2 cited interface, and
+  the named-sorry goal skeleton; cross-checking `aoyagiλ` vs ground truth; pinning the Def-3 regime;
+  decorrelated Codex on definitional faithfulness. Output: `threads/01-…/design-spec.md` (it commits to
+  its worktree branch; controller merges).
 
-## Next tick
+## Next tick (on pp's report)
 
-Spawn Rung-0 design thread (goal skeleton + foundational defs). Architect the def math here first.
+Review the design-spec for fidelity (name=content; faithful to Aoyagi Def 1; ground-truth table holds;
+Def-3 regime pinned). If solid → merge it, then spawn Rung 0b (formaliser: encode `Foundations.*` +
+goal skeleton, small modular files). If the rlct/θ definition has an infidelity flag, spawn a hardener
+decorrelated pass before any encoding. Then begin the small-case validation thread (the anti-treadmill
+gate) in parallel with L1/L2 (tractable linear algebra).
