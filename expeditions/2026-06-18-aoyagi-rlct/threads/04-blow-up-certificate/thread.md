@@ -467,6 +467,35 @@ construct `C'^(S+1)`, prove chart coverage or regularity, compute Jacobians,
 prove normal crossings/RLCT extraction, prove termination or transition
 invariance, or repair the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed cleared-block vacuity
+
+Reproduction:
+`reproduction-case2-displayed-cleared-block-vacuity-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-cleared-block-vacuity.md`.
+Review artifact:
+`review-case2-displayed-cleared-block-vacuity-a4.md`.
+
+Lean now applies the displayed pivot-complement vacuity theorem to the
+already-cleared displayed Case 2 pivot block.  The theorem
+`case2DisplayedClearedBlock_eq_pivotOnly_of_not_next_cont` says that if the
+displayed pivot is valid and the next continuation bound fails, then the
+pivot-first cleared block
+
+```text
+weightedPivotClearedBlock (D - x*y)
+```
+
+is equal to `weightedPivotClearedBlock 0`.
+
+This is only the lower-right vacuity part of the terminal block shape, in
+pivot-first coordinates and for the displayed normalized residual block.  It
+does not construct Aoyagi's full `D'''_J` branch, choose the row-vs-column
+presentation, construct `C'^(S+1)`, build the `S+1` recurrence/exponent state,
+prove chart coverage or regularity, compute Jacobians, prove normal
+crossings/RLCT extraction, prove termination or transition invariance, or
+repair the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

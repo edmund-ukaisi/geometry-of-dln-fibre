@@ -576,6 +576,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-pivot-complement-exhaustion-a4.md`.
 	  Review of the Case 2 stage-relabel domain audit is saved at
 	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
+	  Review of the Case 2 displayed cleared-block vacuity corollary is saved
+	  at
+	  `threads/04-blow-up-certificate/review-case2-displayed-cleared-block-vacuity-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1215,6 +1218,15 @@ No such claim is formalisation-ready until both fields are filled.
   construct `C'^(S+1)`, prove chart coverage or regularity, compute Jacobians,
   prove normal crossings, extract RLCT, prove termination/transition
   invariance, or repair the printed vector mismatch.
+  The displayed cleared-block vacuity corollary applies the complement
+  matrix-vacuity theorem to the already-cleared displayed pivot-first block,
+  proving `weightedPivotClearedBlock (D - x*y) = weightedPivotClearedBlock 0`
+  under failed next continuation. This is only lower-right vacuity in
+  pivot-first coordinates; it does not construct the full `D'''_J` terminal
+  branch, choose the row/column presentation, construct `C'^(S+1)`, build the
+  `S+1` recurrence/exponent state, prove chart coverage or regularity,
+  compute Jacobians, prove normal crossings, extract RLCT, prove termination
+  or transition invariance, or repair the printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

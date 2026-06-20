@@ -1308,6 +1308,24 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 
+Latest A4 update: the Case 2 displayed cleared-block vacuity corollary has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+name is `case2DisplayedClearedBlock_eq_pivotOnly_of_not_next_cont`. This
+checkpoint applies displayed pivot-complement matrix vacuity to the
+already-cleared pivot-first block and proves
+`weightedPivotClearedBlock (D - x*y) = weightedPivotClearedBlock 0` under
+displayed pivot validity and failed next continuation. It does not construct
+Aoyagi's full terminal `D'''_J` branch, choose the row/column presentation,
+construct `C'^(S+1)`, build the `S+1` recurrence/exponent state, prove chart
+coverage or regularity, compute Jacobians, prove normal crossings/RLCT, prove
+termination or transition invariance, or repair the printed vector mismatch.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-cleared-block-vacuity-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-cleared-block-vacuity.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-cleared-block-vacuity-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

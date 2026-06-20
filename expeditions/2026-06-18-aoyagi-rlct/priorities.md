@@ -337,6 +337,12 @@ on the session's original cwd.
    factor statement may use the complement-vacuity theorem, but it must still
    separately construct or identify the relevant `D'''`/`C'^(S+1)` data and
    must not claim an unconditional `S+1` transition.
+   The displayed cleared-block vacuity corollary is now Lean-proved, applying
+   the complement-vacuity theorem to the already-cleared displayed pivot-first
+   block. Next A4 target: if continuing the terminal branch, prove a
+   conditional following-factor absorption statement or a source-order
+   `D'''` notation wrapper, with row/column branch and `S+1` post-data still
+   explicit assumptions.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

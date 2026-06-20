@@ -8822,6 +8822,29 @@ def case2DisplayedNormalizedMatrix
     (case2DisplayedPivotRow n hS hcont)
     (case2DisplayedPivotCol n hS hcont) residual
 
+/-- Under failed next continuation, the displayed Case 2 cleared pivot block has
+zero lower-right complement block in pivot-first coordinates.
+
+This is a lower-right vacuity corollary for the already-cleared block.  It is
+not a construction of Aoyagi's terminal `D'''_J` branch, the following factor
+`C'^(S+1)`, or the `S+1` transition. -/
+theorem case2DisplayedClearedBlock_eq_pivotOnly_of_not_next_cont
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let col := case2DisplayedPivotCol n hS hcont
+    let A := case2DisplayedNormalizedMatrix n hS hcont residual
+    weightedPivotClearedBlock
+        (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A) =
+      weightedPivotClearedBlock
+        (0 : Matrix (pivotComplement row) (pivotComplement col) R) := by
+  dsimp
+  apply congrArg weightedPivotClearedBlock
+  exact case2DisplayedPivotComplement_matrix_eq_zero_of_not_next_cont
+    (K := R) hS hcont hstop _
+
 /-- The source-substituted residual block in the displayed Case 2 selected-entry chart. -/
 def case2DisplayedSubstitutionMatrix
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)

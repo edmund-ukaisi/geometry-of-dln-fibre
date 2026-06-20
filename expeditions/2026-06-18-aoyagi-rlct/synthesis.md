@@ -1335,6 +1335,19 @@ following-factor construction, chart-production result, Jacobian calculation,
 normal-crossing/RLCT result, termination theorem, transition invariant, or
 printed-vector repair.
 
+The Case 2 displayed cleared-block vacuity corollary is now Lean-proved.
+`case2DisplayedClearedBlock_eq_pivotOnly_of_not_next_cont` applies the
+displayed pivot-complement matrix-vacuity theorem to the already-cleared
+pivot-first block, proving
+`weightedPivotClearedBlock (D - x*y) = weightedPivotClearedBlock 0` under
+displayed pivot validity and failed next continuation. This is only the
+lower-right vacuity part of the terminal block shape in pivot-first
+coordinates. It does not construct Aoyagi's full `D'''_J` terminal branch,
+choose the row-vs-column presentation, construct `C'^(S+1)`, build the
+`S+1` recurrence/exponent state, prove chart production or coverage,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
