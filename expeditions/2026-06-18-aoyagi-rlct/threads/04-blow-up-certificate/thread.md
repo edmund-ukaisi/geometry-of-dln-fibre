@@ -2847,7 +2847,40 @@ matrix-entry-ideal level.  The boundary still requires actual-width exhaustion
 `1..J+1`.
 
 This is the actual-width terminal-last branch only.  The row-exhausted
-wide-next branch remains separate, and the theorem does not prove chart
+wide-next branch uses transported prefix rows and remains separate from
+original-row equality.  The theorem does not prove chart coverage, source
+production of `C'^(S+1)`, chart-produced following products, Jacobian
+arithmetic, normal crossings/RLCT, termination, transition invariance, or
+printed-vector repair.
+
+## 2026-06-20 Lean Case 2 terminal-last row-exhausted boundary
+
+Reproduction:
+`reproduction-case2-terminal-last-row-exhausted-a4.md`.
+Statement card:
+`statement-card-a4-case2-terminal-last-row-exhausted.md`.
+Review artifact:
+`review-case2-terminal-last-row-exhausted-a4.md`.
+
+Lean now proves the row-exhausted transported-prefix terminal boundary in the
+terminal-last case:
+
+```text
+exists_sourceOldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+```
+
+The theorem consumes the raw source suffix
+`sourceSuffixProduct κ Ctail S hSuffix` and the terminal-last condition
+`S+1=L`.  The suffix is removed only through the transported empty-chain
+identity `sourceSuffixProduct_terminalLast_eq_cast_one`, then at the
+matrix-entry-ideal level.  The stopped branch uses current-prefix row
+exhaustion `prefixMinNat n S=J+1`.
+
+This is not an original-row theorem.  The terminal side remains the transported
+prefix-row matrix, whose row `J+1` is the top row of `Q^-1 C`; in wide-next
+cases it may include post-pivot column corrections.  The theorem does not
+relabel recurrence/exponent data to `(S+1,0)` and does not prove chart
 coverage, source production of `C'^(S+1)`, chart-produced following products,
 Jacobian arithmetic, normal crossings/RLCT, termination, transition
 invariance, or printed-vector repair.

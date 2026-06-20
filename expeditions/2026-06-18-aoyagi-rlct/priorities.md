@@ -171,16 +171,19 @@ on the session's original cwd.
    `sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal`.
    This principalizes only the finite center ideal, not the terminal product
    ideal or analytic loss ideal. Next A4 target: chart-production boundary data
-   for the following product/terminal data, or the separate row-exhausted
-   wide-next terminal-last branch. The terminal-last endpoint identity
+   for the following product/terminal data, beyond these terminal-last
+   source-suffix removals. The terminal-last endpoint identity
    `sourceSuffixProduct_terminalLast_eq_cast_one`, the identity-following
    actual-width boundary
    `sourceChart_actualWidth_terminalOriginalRowsIdentityFollowingBoundary`,
    and the actual-width terminal-last wrapper
    `sourceChart_actualWidth_terminalLastOriginalRowsBoundary` are now
-   Lean-proved. Do not set `F := 1` away from the empty-suffix case, and do not
-   transport Case 2 gap/tail invariants without separately checking their
-   shifted thresholds.
+   Lean-proved; the row-exhausted transported-prefix terminal-last wrapper
+   `exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`
+   is now Lean-proved too. Do not set `F := 1` away from the empty-suffix case,
+   do not replace the transported row by original rows without actual-width
+   exhaustion, and do not transport Case 2 gap/tail invariants without
+   separately checking their shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

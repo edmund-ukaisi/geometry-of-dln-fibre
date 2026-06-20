@@ -1536,6 +1536,16 @@ No such claim is formalisation-ready until both fields are filled.
   wide-next branch or prove source production, chart coverage, chart-produced
   following products, Jacobian arithmetic, normal crossings/RLCT, termination,
   transition invariance, or printed-vector repair.
+  The row-exhausted terminal-last source-suffix removal is now proved as
+  `exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`,
+  with the supplied-boundary companion
+  `exists_sourceOldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`.
+  It requires `prefixMinNat n S=J+1` and `S+1=L`, consumes the actual source
+  suffix, and keeps the terminal side as transported prefix rows.  It still
+  does not identify row `J+1` with the original source row, relabel recurrence
+  or exponent data to `(S+1,0)`, or prove source production, chart coverage,
+  chart-produced following products, Jacobian arithmetic, normal crossings/RLCT,
+  termination, transition invariance, or printed-vector repair.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

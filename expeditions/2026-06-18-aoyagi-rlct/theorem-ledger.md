@@ -1907,6 +1907,24 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-terminal-last-actual-width-a4.md`.
 
+Latest A4 update: the Case 2 row-exhausted terminal-last boundary has landed
+in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names
+are
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceOldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`.
+It consumes Aoyagi's raw source suffix under `S+1=L`, removes it by the
+terminal-last empty-chain identity at the matrix-entry-ideal level, and keeps
+the terminal side as transported prefix rows under `prefixMinNat n S=J+1`.
+It does not identify row `J+1` with original source rows, does not relabel to
+`(S+1,0)`, and does not prove chart coverage/source-production/Jacobian or
+analytic results. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-terminal-last-row-exhausted-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-terminal-last-row-exhausted.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-terminal-last-row-exhausted-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

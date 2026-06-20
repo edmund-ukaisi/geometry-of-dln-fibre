@@ -13933,6 +13933,179 @@ theorem sourceChart_actualWidth_terminalLastOriginalRowsBoundary
   · simpa [data] using
       (data.terminalRelabelExponentDomain_of_actualWidth hwidth)
 
+/-- Row-exhausted terminal-last theorem with transported terminal prefix rows.
+
+This consumes Aoyagi's raw source suffix under `S+1=L`, but keeps the
+row-exhausted terminal matrix as transported prefix rows.  It does not assert
+actual next-width exhaustion, original-row equality for row `J+1`, relabelled
+`(S+1,0)` recurrence data, chart coverage, source production, Jacobian
+arithmetic, normal crossings/RLCT, termination, transition invariance, or
+printed-vector repair. -/
+theorem exists_sourceOldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Finite (κ i)]
+    (hSuffix : S + 1 ≤ L) (hLast : S + 1 = L)
+    (hrow : prefixMinNat n S = J + 1)
+    (residual : ℕ × ℕ → R)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          (fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n data.stage_pos
+                  data.continuation C)) =
+      matrixEntryIdeal
+          (case2DisplayedSourceTerminalWeightPrefixCandidate
+              (case2DisplayedSourceOldTopWeight pre)
+              n data.continuation
+              (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)
+              (post.weight (J + 1)) *
+            (case2DisplayedSourceTerminalTransportedRows n data.stage_pos
+              data.continuation residual C).submatrix
+              (case2SourceTerminalRowEquivPrefixOfNotNext n data.continuation
+                (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)).symm
+              id) := by
+  classical
+  letI : ∀ i : Fin (L + 1), Fintype (κ i) := fun i ↦ Fintype.ofFinite (κ i)
+  rcases
+      data.exists_sourceOldTopSuffix_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+        κ hSuffix hrow residual C Ctail with
+    ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  let Mq :=
+    fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+        (weightedPivotBlockRowOp q
+              (fun i ↦
+                pivotFirstX
+                  (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                  (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                  (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                    residual) i ()) *
+            (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+              case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                data.continuation u residual).submatrix
+              (pivotFirstIndexEquiv
+                (case2DisplayedPivotRow n data.stage_pos data.continuation))
+              (pivotFirstIndexEquiv
+                (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+        verticalBlock (case2DisplayedSourceOldTopBlock C)
+          (case2DisplayedSourceFollowingFactor n data.stage_pos
+            data.continuation C)
+  let T :=
+    case2DisplayedSourceTerminalWeightPrefixCandidate
+        (case2DisplayedSourceOldTopWeight pre)
+        n data.continuation
+        (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)
+        (post.weight (J + 1)) *
+      (case2DisplayedSourceTerminalTransportedRows n data.stage_pos
+        data.continuation residual C).submatrix
+        (case2SourceTerminalRowEquivPrefixOfNotNext n data.continuation
+          (case2_not_next_cont_of_prefixMin_current_eq data.stage_pos hrow)).symm
+        id
+  change matrixEntryIdeal Mq = matrixEntryIdeal T
+  calc
+    matrixEntryIdeal Mq =
+        matrixEntryIdeal (Mq * sourceSuffixProduct κ Ctail S hSuffix) := by
+      exact (matrixEntryIdeal_mul_sourceSuffixProduct_terminalLast
+        κ Ctail hSuffix hLast Mq).symm
+    _ = matrixEntryIdeal (T * sourceSuffixProduct κ Ctail S hSuffix) := by
+      simpa [Mq, T] using hq
+    _ = matrixEntryIdeal T := by
+      exact matrixEntryIdeal_mul_sourceSuffixProduct_terminalLast
+        κ Ctail hSuffix hLast T
+
+/-- Source-chart row-exhausted terminal-last theorem with transported terminal
+prefix rows.
+
+This specializes the supplied row-exhausted terminal-last theorem to the
+displayed source chart map.  The row `J+1` remains the top row of `Q⁻¹ C`; the
+theorem does not identify it with the original source row or relabel the state
+to `(S+1,0)`. -/
+theorem exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hrow : prefixMinNat n S = J + 1)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Finite (κ i)]
+    (hSuffix : S + 1 ≤ L) (hLast : S + 1 = L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      matrixEntryIdeal
+          (fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n hS hcont)
+                        (case2DisplayedPivotCol n hS hcont)
+                        (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n hS hcont
+                      (case2DisplayedSourceChartMap n hS hcont u residual
+                        (J + 1, J + 1)) residual).submatrix
+                    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n hS hcont C)) =
+      matrixEntryIdeal
+          (case2DisplayedSourceTerminalWeightPrefixCandidate
+              (case2DisplayedSourceOldTopWeight pre)
+              n hcont (case2_not_next_cont_of_prefixMin_current_eq hS hrow)
+              ((pre.case2Succ
+                (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+                |>.weight (J + 1)) *
+            (case2DisplayedSourceTerminalTransportedRows n hS hcont residual C).submatrix
+              (case2SourceTerminalRowEquivPrefixOfNotNext n hcont
+                (case2_not_next_cont_of_prefixMin_current_eq hS hrow)).symm id) := by
+  let data :=
+    of_sourceChartMap_case2Succ_updateSelected pre u residual hS hSL hcont
+      exponentPre levelInv leastValueGap chartFamily
+  simpa [data] using
+    (data.exists_sourceOldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted
+      κ hSuffix hLast hrow residual C Ctail)
+
 /-- Actual-width displayed source-chart terminal boundary together with finite
 center principalization.
 

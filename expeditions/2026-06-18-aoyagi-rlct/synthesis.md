@@ -1645,11 +1645,21 @@ The actual-width terminal-last boundary is now Lean-proved as
 entry-ideal lemmas removing the transported terminal-last source suffix.  It
 uses both `n(S+1)=J+1` and `S+1=L`, consumes the raw source suffix rather than
 an arbitrary supplied following matrix, and packages the same relabelled
-level/exponent certificates as the identity-following boundary.  The
-row-exhausted wide-next terminal-last branch remains separate, and no chart
-coverage, source-produced `C'^(S+1)`, chart-produced following product,
-Jacobian arithmetic, normal-crossing/RLCT extraction, termination, transition
-invariance, or printed-vector repair is claimed.
+level/exponent certificates as the identity-following boundary.  It remains
+separate from row-exhausted wide-next behavior because it uses original source
+rows.
+
+The row-exhausted terminal-last source-suffix removal is now Lean-proved as
+`exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`,
+with the supplied-boundary companion
+`exists_sourceOldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`.
+It uses `prefixMinNat n S=J+1` and `S+1=L`, consumes the raw source suffix, and
+keeps the terminal side as transported prefix rows.  It does not identify the
+transported pivot row with the original source row, and it does not relabel
+recurrence/exponent data to `(S+1,0)`.  No chart coverage, source-produced
+`C'^(S+1)`, chart-produced following product, Jacobian arithmetic,
+normal-crossing/RLCT extraction, termination, transition invariance, or
+printed-vector repair is claimed.
 
 ## Drift guard
 
