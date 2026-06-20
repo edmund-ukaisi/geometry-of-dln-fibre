@@ -418,4 +418,227 @@ theorem boxMoveChain_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ} {r
       boxMoveStep_repClosure_subset hp hc hpnn hcnn hpdiag hcdiag hTr hTcrank hstep
     exact hIH.trans hstep'
 
+/-! ## Piece 4 — assembly: `orbitRankLocus M ⊆ Ō_M` and the headline ideal equality
+
+For `A ∈ orbitRankLocus M`, the lower pattern `s = cumul (Kostant A)` and the upper hybrid `r = s +
+g` (`g` the strict-upper rank deficit `rankPattern M − rankPattern A`) feed `box_move_chain_of_le`
+(they agree on / below the diagonal, differ nonnegatively on the strict upper triangle, `diff s ≥ 0`
+is the Kostant array). The chain drops `repClosure (orbitSet A) ⊆ repClosure (orbitSet M)`, so
+`canonicalCoord A` lands in `Ō_M`. -/
+
+/-- The lower Kostant array of `A`: `kostantArrayOfRank (rankFn d A)`, the literal Kostant partition
+of `A`'s rank pattern. -/
+noncomputable def kostantArr {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) : SuppArray (N : ℤ) ℤ :=
+  kostantArrayOfRank (rankFn d A)
+
+/-- The strict-upper rank deficit `g = embedRank (rankFn M) − embedRank (rankFn A)`: nonnegative on
+the strict upper triangle, zero on / below the diagonal, supported. -/
+noncomputable def rankDeficit {d : Fin (N + 1) → ℕ} (M A : Tuple (k := k) d) : ℤ → ℤ → ℤ :=
+  fun i j ↦ (embedRank (rankFn d M)).1 i j - (embedRank (rankFn d A)).1 i j
+
+/-- `embedRank (rankFn d A)` agrees on the upper triangle with the rank pattern (as `ℤ`). -/
+theorem embedRank_rankFn_eq {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (i j : Fin (N + 1))
+    (hij : i ≤ j) : (embedRank (rankFn d A)).1 (i : ℤ) (j : ℤ) = (rankPattern d A i j hij : ℤ) := by
+  rw [embedRank_apply_fin, rankFn, dif_pos hij]
+
+/-- `cumul (kostantArr A)` agrees on the upper triangle with the rank pattern (as `ℤ`). -/
+theorem cumul_kostantArr_eq {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) {i j : Fin (N + 1)}
+    (hij : i ≤ j) :
+    cumul (N : ℤ) (kostantArr A).1 (i : ℤ) (j : ℤ) = (rankPattern d A i j hij : ℤ) := by
+  rw [kostantArr, cumul_kostantArrayOfRank_of_le (rankFn d A) (by exact_mod_cast Fin.le_def.mp hij),
+    embedRank_rankFn_eq A i j hij]
+
+/-- **The hard inclusion (L6.4), flattened form.** For `A ∈ orbitRankLocus M`, `canonicalCoord A`
+lies in the Zariski closure of the orbit `O_M`: the box-move chain from `rankPattern M` down to
+`rankPattern A` (`box_move_chain_of_le`) degenerates `O_A` into `Ō_M`. -/
+theorem canonicalCoord_mem_repClosure_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
+    (M : Tuple (k := k) d) {A : Tuple (k := k) d} (hA : A ∈ orbitRankLocus M) :
+    canonicalCoord d A ∈ repClosure (orbitSet M) := by
+  classical
+  -- the lower array `s` and the upper hybrid `r = s + g`
+  set s : ℤ → ℤ → ℤ := fun i j ↦ cumul (N : ℤ) (kostantArr A).1 i j with hs
+  set g : ℤ → ℤ → ℤ := rankDeficit M A with hg
+  set r : ℤ → ℤ → ℤ := fun i j ↦ s i j + g i j with hr
+  -- `g = 0` on / below the diagonal (both `rankFn` agree there: `d` on diagonal, `0` below)
+  have hg_below : ∀ i j : ℤ, j ≤ i → g i j = 0 := by
+    intro i j hji
+    rw [hg, rankDeficit]
+    -- both embedRank entries equal (rankFn is 0 below the diagonal, d on it) — sub to zero
+    rcases lt_or_ge i 0 with hi | hi
+    · rw [(embedRank (rankFn d M)).2.1 i j hi, (embedRank (rankFn d A)).2.1 i j hi, sub_zero]
+    rcases lt_or_ge j 0 with hj0 | hj0
+    · rw [show (embedRank (rankFn d M)).1 i j = 0 from by
+          simp [embedRank, InFinRange, not_le_of_gt hj0],
+        show (embedRank (rankFn d A)).1 i j = 0 from by
+          simp [embedRank, InFinRange, not_le_of_gt hj0], sub_zero]
+    rcases lt_or_ge (N : ℤ) j with hj | hj
+    · rw [(embedRank (rankFn d M)).2.2 i j hj, (embedRank (rankFn d A)).2.2 i j hj, sub_zero]
+    rcases lt_or_ge (N : ℤ) i with hiN | hiN
+    · -- `i > N`: out of `embedRank`'s in-range box, both read `0`
+      rw [show (embedRank (rankFn d M)).1 i j = 0 from by
+          simp [embedRank, InFinRange, not_le_of_gt hiN],
+        show (embedRank (rankFn d A)).1 i j = 0 from by
+          simp [embedRank, InFinRange, not_le_of_gt hiN], sub_zero]
+    -- in range with `j ≤ i`: name Fin indices; `rankFn _ x y = 0` unless `x ≤ y`
+    obtain ⟨x, hx⟩ : ∃ x : Fin (N + 1), (x : ℤ) = i :=
+      ⟨⟨i.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hi]⟩
+    obtain ⟨y, hy⟩ : ∃ y : Fin (N + 1), (y : ℤ) = j :=
+      ⟨⟨j.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hj0]⟩
+    subst hx hy
+    rw [embedRank_apply_fin, embedRank_apply_fin]
+    by_cases hxy : x ≤ y
+    · -- `j ≤ i` and `i ≤ j` ⟹ `i = j`; both rankFn read `d`
+      have hyx : y ≤ x := by rw [Fin.le_def]; exact_mod_cast hji
+      obtain rfl : x = y := le_antisymm hxy hyx
+      rw [show rankFn d M x x = d x from by rw [rankFn, dif_pos le_rfl, rankPattern_self],
+        show rankFn d A x x = d x from by rw [rankFn, dif_pos le_rfl, rankPattern_self], sub_self]
+    · rw [rankFn, rankFn, dif_neg hxy, dif_neg hxy, sub_self]
+  -- `g ≥ 0`: zero off the strict upper triangle, `rankPattern M − rankPattern A ≥ 0` on it
+  have hg_nonneg : ∀ i j : ℤ, 0 ≤ g i j := by
+    intro i j
+    rcases le_or_gt j i with hji | hij
+    · rw [hg_below i j hji]
+    -- strict upper triangle in range
+    rcases lt_or_ge i 0 with hi | hi
+    · rw [hg, rankDeficit, (embedRank (rankFn d M)).2.1 i j hi,
+        (embedRank (rankFn d A)).2.1 i j hi, sub_zero]
+    rcases lt_or_ge (N : ℤ) j with hj | hj
+    · rw [hg, rankDeficit, (embedRank (rankFn d M)).2.2 i j hj,
+        (embedRank (rankFn d A)).2.2 i j hj, sub_zero]
+    rcases lt_or_ge (N : ℤ) i with hiN | hiN
+    · rw [hg, rankDeficit, show (embedRank (rankFn d M)).1 i j = 0 from by
+          simp [embedRank, InFinRange, not_le_of_gt hiN],
+        show (embedRank (rankFn d A)).1 i j = 0 from by
+          simp [embedRank, InFinRange, not_le_of_gt hiN], sub_zero]
+    obtain ⟨x, hx⟩ : ∃ x : Fin (N + 1), (x : ℤ) = i :=
+      ⟨⟨i.toNat, by omega⟩, by simp [Int.toNat_of_nonneg hi]⟩
+    obtain ⟨y, hy⟩ : ∃ y : Fin (N + 1), (y : ℤ) = j :=
+      ⟨⟨j.toNat, by omega⟩, by simp [Int.toNat_of_nonneg (by omega : (0:ℤ) ≤ j)]⟩
+    subst hx hy
+    have hxy : x ≤ y := by rw [Fin.le_def]; exact_mod_cast le_of_lt hij
+    have hM := embedRank_rankFn_eq M x y hxy
+    have hAe := embedRank_rankFn_eq A x y hxy
+    rw [hg, rankDeficit, hM, hAe, sub_nonneg]
+    exact_mod_cast hA x y hxy
+  -- `s` is supported and `diff s = kostantArr A ≥ 0` (the Kostant array)
+  have hs_supp : Supported (N : ℤ) s := supported_cumul (N : ℤ) (kostantArr A).1
+  have hdiff_s : diff s = (kostantArr A).1 :=
+    diff_cumul (N : ℤ) (kostantArr A).1 (kostantArr A).2.1 (kostantArr A).2.2
+  have hms : ∀ i j : ℤ, 0 ≤ diff s i j := by
+    rw [hdiff_s]; exact (kostantArrayOfRank_isKostant A).1
+  -- `g` is supported
+  have hg_supp : Supported (N : ℤ) g := by
+    refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩
+    · rw [hg, rankDeficit, (embedRank (rankFn d M)).2.1 i j hi,
+        (embedRank (rankFn d A)).2.1 i j hi, sub_zero]
+    · rw [hg, rankDeficit, (embedRank (rankFn d M)).2.2 i j hj,
+        (embedRank (rankFn d A)).2.2 i j hj, sub_zero]
+  -- the box-move chain `r ↠ s` (`r − s = g`, the strict-upper deficit)
+  have hrs_eq : ∀ i j : ℤ, r i j - s i j = g i j := fun i j ↦ by rw [hr]; ring
+  have hchain : BoxMoveChain r s := by
+    refine box_move_chain_of_le (N : ℤ) r s ?_ ?_ ?_ hms
+    · refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩
+      · show r i j - s i j = 0; rw [hrs_eq]; exact hg_supp.1 i j hi
+      · show r i j - s i j = 0; rw [hrs_eq]; exact hg_supp.2 i j hj
+    · intro i j; show 0 ≤ r i j - s i j; rw [hrs_eq]; exact hg_nonneg i j
+    · intro i j hji; show r i j - s i j = 0; rw [hrs_eq]; exact hg_below i j hji
+  -- `r`'s chain-output invariants
+  have hr_supp : Supported (N : ℤ) r := by
+    refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩
+    · show s i j + g i j = 0; rw [hs_supp.1 i j hi, hg_supp.1 i j hi, add_zero]
+    · show s i j + g i j = 0; rw [hs_supp.2 i j hj, hg_supp.2 i j hj, add_zero]
+  have hrdiag : ∀ t : Fin (N + 1), (d t : ℤ) = r (t : ℤ) (t : ℤ) := by
+    intro t
+    show (d t : ℤ) = s (t : ℤ) (t : ℤ) + g (t : ℤ) (t : ℤ)
+    rw [hg_below t t le_rfl, add_zero]
+    show (d t : ℤ) = cumul (N : ℤ) (kostantArr A).1 (t : ℤ) (t : ℤ)
+    rw [cumul_kostantArr_eq A (le_refl t), rankPattern_self]
+  -- `r = rankPattern M` on the upper triangle (the hybrid restores M's pattern there)
+  have hr_eq_M : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+      (rankPattern d M i j hij : ℤ) = r (i : ℤ) (j : ℤ) := by
+    intro i j hij
+    show (rankPattern d M i j hij : ℤ) = s (i : ℤ) (j : ℤ) + g (i : ℤ) (j : ℤ)
+    rw [show s (i : ℤ) (j : ℤ) = cumul (N : ℤ) (kostantArr A).1 (i : ℤ) (j : ℤ) from rfl,
+      cumul_kostantArr_eq A hij, hg, rankDeficit,
+      embedRank_rankFn_eq M i j hij, embedRank_rankFn_eq A i j hij]
+    ring
+  -- `s = rankPattern A` on the upper triangle
+  have hs_eq_A : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+      (rankPattern d A i j hij : ℤ) = s (i : ℤ) (j : ℤ) := fun i j hij ↦
+    (cumul_kostantArr_eq A hij).symm
+  -- `diff r ≥ 0` on the upper triangle: on the stencil `r = embedRank (rankFn M)`, so
+  -- `diff r = kostantArr M ≥ 0` there
+  have hrnn : ∀ i j : ℤ, i ≤ j → 0 ≤ diff r i j := by
+    intro i j hij
+    -- `diff r = diff s + diff g`; on the triangle this is `kostantArr M ≥ 0`
+    have hdr : diff r i j = diff s i j + diff g i j := by
+      simp only [hr, diff_apply]; ring
+    have hdg : diff g i j
+        = (diffArrayOfRank (rankFn d M)).1 i j - (diffArrayOfRank (rankFn d A)).1 i j := by
+      have : diff g i j
+          = diff (embedRank (rankFn d M)).1 i j - diff (embedRank (rankFn d A)).1 i j := by
+        simp only [hg, rankDeficit, diff_apply]; ring
+      rw [this, ← diffArrayOfRank_val, ← diffArrayOfRank_val]
+    rw [hdr, hdiff_s, hdg]
+    -- on `i ≤ j`: `kostantArr A = diffArrayOfRank (rankFn A)`, so the `A` terms cancel,
+    -- leaving `diffArrayOfRank (rankFn M) = kostantArr M ≥ 0`
+    rw [kostantArr, kostantArrayOfRank_of_le (rankFn d A) hij]
+    have hMnn := (kostantArrayOfRank_isKostant M).1 i j
+    rw [kostantArrayOfRank_of_le (rankFn d M) hij] at hMnn
+    linarith
+  -- the chain drops the closure: `repClosure (orbitSet A) ⊆ repClosure (orbitSet M)`
+  have hdrop : repClosure (orbitSet A) ⊆ repClosure (orbitSet M) :=
+    boxMoveChain_repClosure_subset hchain hr_supp hrnn hrdiag M A hr_eq_M hs_eq_A
+  -- `canonicalCoord A` is in `orbitSet A`, hence in the closure of `orbitSet M`
+  exact hdrop (subset_repClosure (orbitSet A) ⟨A, ⟨1, one_smul _ _⟩, rfl⟩)
+
+/-- `vanishingIdeal` is invisible to `repClosure`: closure has the same vanishing ideal as `S`
+(the `u_l_u_eq_u` law of the Galois connection — no algebraic-closedness needed). -/
+theorem vanishingIdeal_repClosure {d : Fin (N + 1) → ℕ} (S : Set (RepCoord d → k)) :
+    MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (repClosure S)
+      = MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k S :=
+  (MvPolynomial.zeroLocus_vanishingIdeal_galoisConnection
+    (σ := RepCoord d) (k := k) (K := k)).u_l_u_eq_u S
+
+/-- **The flattened hard inclusion (L6.4).** `canonicalCoord '' orbitRankLocus M ⊆ Ō_M`: every point
+of the determinantal rank locus lies in the Zariski closure of the orbit. -/
+theorem image_orbitRankLocus_subset_repClosure_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
+    (M : Tuple (k := k) d) :
+    canonicalCoord d '' orbitRankLocus M ⊆ repClosure (orbitSet M) := by
+  rintro y ⟨A, hA, rfl⟩
+  exact canonicalCoord_mem_repClosure_orbitSet M hA
+
+/-- **The orbit-closure equality at the ideal level (L6.4 headline, Abeasis–Del Fra).** The
+ideal of the determinantal rank locus `orbitRankLocus M` equals the vanishing ideal of the orbit
+`O_M`. Equivalently, the rank locus and the orbit have the same Zariski closure: `Ō_M =
+orbitRankLocus M` as closed sets. The easy `≤` is `vanishingIdeal_orbitRankLocus_le_orbitSet`; the
+hard `≥` is the box-move degeneration `image_orbitRankLocus_subset_repClosure_orbitSet`, pushed
+`vanishingIdeal` (order-reversing) with `vanishingIdeal_repClosure`. -/
+theorem vanishingIdeal_orbitRankLocus_eq_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
+    (M : Tuple (k := k) d) :
+    MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+        (canonicalCoord d '' orbitRankLocus M)
+      = MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet M) := by
+  refine le_antisymm (vanishingIdeal_orbitRankLocus_le_orbitSet M) ?_
+  calc MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet M)
+      = MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (repClosure (orbitSet M)) :=
+        (vanishingIdeal_repClosure (orbitSet M)).symm
+    _ ≤ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+          (canonicalCoord d '' orbitRankLocus M) :=
+        MvPolynomial.vanishingIdeal_anti_mono (image_orbitRankLocus_subset_repClosure_orbitSet M)
+
+/-! ## Piece 5 — the rank locus is irreducible (L1★) -/
+
+/-- **The rank locus has a prime vanishing ideal (L1★, irreducibility).** `vanishingIdeal
+(canonicalCoord '' orbitRankLocus M)` is prime: it equals `vanishingIdeal (orbitSet M)`
+(`vanishingIdeal_orbitRankLocus_eq_orbitSet`), which is prime because `O_M` is irreducible
+(`isPrime_vanishingIdeal_orbitSet`, L1). So the determinantal rank locus `Ō_M = orbitRankLocus M` is
+an irreducible variety. Needs `[IsAlgClosed k]` (inherited from L1). -/
+theorem isPrime_vanishingIdeal_orbitRankLocus [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+    (M : Tuple (k := k) d) :
+    (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+      (canonicalCoord d '' orbitRankLocus M)).IsPrime := by
+  rw [vanishingIdeal_orbitRankLocus_eq_orbitSet M]
+  exact isPrime_vanishingIdeal_orbitSet M
+
 end DLNFibre.Core
