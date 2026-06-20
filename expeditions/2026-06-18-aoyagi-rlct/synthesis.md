@@ -1661,6 +1661,18 @@ recurrence/exponent data to `(S+1,0)`.  No chart coverage, source-produced
 normal-crossing/RLCT extraction, termination, transition invariance, or
 printed-vector repair is claimed.
 
+The terminal-last source-chart branches are now also packaged with finite
+residual-block center principalization.  The actual-width theorem
+`sourceChart_actualWidth_terminalLastOriginalRowsBoundary_withFiniteCenterIdeal`
+adds the finite center facts to the terminal-last original-row boundary and
+its relabelled certificates.  The row-exhausted theorem
+`sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal`
+adds the same center facts to the transported-prefix boundary, without
+original-row equality or `(S+1,0)` relabelled certificates.  These are still
+finite-center packages only, not terminal-product principalization, chart
+coverage, source production, Jacobian arithmetic, normal-crossing/RLCT
+extraction, termination, transition invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

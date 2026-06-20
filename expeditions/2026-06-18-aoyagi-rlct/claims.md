@@ -1546,6 +1546,17 @@ No such claim is formalisation-ready until both fields are filled.
   or exponent data to `(S+1,0)`, or prove source production, chart coverage,
   chart-produced following products, Jacobian arithmetic, normal crossings/RLCT,
   termination, transition invariance, or printed-vector repair.
+  The terminal-last actual-width and row-exhausted terminal boundaries are now
+  also packaged with finite residual-block center principalization as
+  `sourceChart_actualWidth_terminalLastOriginalRowsBoundary_withFiniteCenterIdeal`
+  and
+  `sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal`.
+  These conjoin the terminal product boundary with the facts that `u` is a
+  transformed finite center value, divides all transformed finite center values,
+  and generates the transformed finite center ideal.  They do not principalize
+  the terminal product ideal or add chart coverage, source production,
+  Jacobian arithmetic, normal crossings/RLCT, termination, transition
+  invariance, or printed-vector repair.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

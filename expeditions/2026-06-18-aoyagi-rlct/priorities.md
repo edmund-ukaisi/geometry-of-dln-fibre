@@ -180,10 +180,16 @@ on the session's original cwd.
    `sourceChart_actualWidth_terminalLastOriginalRowsBoundary` are now
    Lean-proved; the row-exhausted transported-prefix terminal-last wrapper
    `exists_sourceChart_oldTopTerminalLast_entryIdeal_eq_transportedPrefixProduct_of_rowExhausted`
-   is now Lean-proved too. Do not set `F := 1` away from the empty-suffix case,
-   do not replace the transported row by original rows without actual-width
-   exhaustion, and do not transport Case 2 gap/tail invariants without
-   separately checking their shifted thresholds.
+   is now Lean-proved too. The terminal-last actual-width and row-exhausted
+   branches are now also packaged with finite residual-block center
+   principalization as
+   `sourceChart_actualWidth_terminalLastOriginalRowsBoundary_withFiniteCenterIdeal`
+   and
+   `sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal`.
+   Do not set `F := 1` away from the empty-suffix case, do not replace the
+   transported row by original rows without actual-width exhaustion, and do not
+   transport Case 2 gap/tail invariants without separately checking their
+   shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

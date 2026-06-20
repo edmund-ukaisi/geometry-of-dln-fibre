@@ -1925,6 +1925,25 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-terminal-last-row-exhausted-a4.md`.
 
+Latest A4 update: the terminal-last source-chart boundaries are now packaged
+with finite residual-block center principalization in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_actualWidth_terminalLastOriginalRowsBoundary_withFiniteCenterIdeal`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal`.
+They conjoin the terminal-last product boundary with the finite center facts
+that `u` is a transformed center value, all transformed center values are
+divisible by `u`, and the transformed finite center ideal is `Ideal.span {u}`.
+The row-exhausted package keeps transported prefix rows and no `(S+1,0)`
+relabelled certificates.  These do not principalize the terminal product ideal
+or prove chart coverage/source-production/Jacobian or analytic results.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-principalized-terminal-last-boundaries-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-principalized-terminal-last-boundaries.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-principalized-terminal-last-boundaries-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -2884,3 +2884,33 @@ relabel recurrence/exponent data to `(S+1,0)` and does not prove chart
 coverage, source production of `C'^(S+1)`, chart-produced following products,
 Jacobian arithmetic, normal crossings/RLCT, termination, transition
 invariance, or printed-vector repair.
+
+## 2026-06-20 Lean Case 2 principalized terminal-last boundaries
+
+Reproduction:
+`reproduction-case2-principalized-terminal-last-boundaries-a4.md`.
+Statement card:
+`statement-card-a4-principalized-terminal-last-boundaries.md`.
+Review artifact:
+`review-case2-principalized-terminal-last-boundaries-a4.md`.
+
+Lean now packages both terminal-last source-chart branches with finite
+residual-block center principalization:
+
+```text
+sourceChart_actualWidth_terminalLastOriginalRowsBoundary_withFiniteCenterIdeal
+sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal
+```
+
+Both packages record that the selected variable `u` is a transformed finite
+center value, divides every transformed finite center value, and generates the
+transformed finite center ideal.  The actual-width package conjoins these facts
+with the terminal-last original-row boundary and relabelled `(S+1,0)`
+certificates.  The row-exhausted package conjoins them with the terminal-last
+transported-prefix boundary and keeps the row `J+1` as the top row of
+`Q^-1 C`.
+
+These are finite-center packages only.  They do not principalize the terminal
+product ideal and do not prove chart coverage, source production of
+`C'^(S+1)`, chart-produced following products, Jacobian arithmetic, normal
+crossings/RLCT, termination, transition invariance, or printed-vector repair.
