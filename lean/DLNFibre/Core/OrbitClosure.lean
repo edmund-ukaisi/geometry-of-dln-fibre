@@ -983,6 +983,21 @@ theorem vanishingIdeal_orbitRankLocus_eq_orbitSet [Infinite k] {d : Fin (N + 1) 
           (canonicalCoord d '' orbitRankLocus M) :=
         MvPolynomial.vanishingIdeal_anti_mono (image_orbitRankLocus_subset_repClosure_orbitSet M)
 
+/-- **The orbit closure equals the rank locus, at the `k`-point set level (L6.4, set form).** Over
+an infinite field, the flattened determinantal rank locus `canonicalCoord '' orbitRankLocus M`
+equals the Zariski closure `Ō_M = repClosure (orbitSet M)` as point sets (`Ō_M = orbitRankLocus M`).
+The rank locus is closed (L6.3 `isZariskiClosed_orbitRankLocus`), so it is its own closure, which
+the ideal headline identifies with the closure of the orbit. No algebraic-closedness is needed at
+this `k`-point level (the *raw* `Set`-level identification with the geometric orbit closure over a
+non-closed field is a strictly stronger statement, not claimed here). -/
+theorem image_orbitRankLocus_eq_repClosure_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
+    (M : Tuple (k := k) d) :
+    canonicalCoord d '' orbitRankLocus M = repClosure (orbitSet M) := by
+  -- the rank locus is closed: it is `repClosure` of itself (L6.3)
+  have hclosed : canonicalCoord d '' orbitRankLocus M
+      = repClosure (canonicalCoord d '' orbitRankLocus M) := isZariskiClosed_orbitRankLocus M
+  rw [hclosed, repClosure, repClosure, vanishingIdeal_orbitRankLocus_eq_orbitSet M]
+
 /-! ## Piece 5 — the rank locus is irreducible (L1★) -/
 
 /-- **The rank locus has a prime vanishing ideal (L1★, irreducibility).** `vanishingIdeal

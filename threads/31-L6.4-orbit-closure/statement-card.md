@@ -25,8 +25,26 @@ the rank locus is an irreducible variety. Module: `lean/DLNFibre/Core/OrbitClosu
 > - **Assumed.** `[Infinite k]` (the polynomial-curve degeneration engine needs an infinite field).
 > - **Cited.** none — the box-move generation (L6.2c), per-move degeneration (L6.1), complete invariant
 >   (Cor 2.9), and Gabriel normal form are all proved in-repo and consumed here as lemmas.
-> - **Deferred.** none for the ideal-level statement. (A `Set`-level `orbitRankLocus M = Ō_M` over an
->   algebraically closed field would follow from this + the Nullstellensatz; not stated here.)
+> - **Deferred.** none for the ideal-level statement.
+> - **Status.** sorry-free
+
+---
+
+> **Claim (L6.4, set form — the `k`-point closed-set equality).** Over an infinite field the
+> flattened rank locus equals the Zariski closure `Ō_M` as point sets: `Ō_M = orbitRankLocus M`.
+>
+> - **Lean:** `DLNFibre.Core.image_orbitRankLocus_eq_repClosure_orbitSet`
+>   (`lean/DLNFibre/Core/OrbitClosure.lean` @ `<this commit>`)
+> - **Gloss.** `[Field k] [Infinite k]`; `canonicalCoord d '' orbitRankLocus M = repClosure (orbitSet
+>   M)`, where `repClosure S = zeroLocus (vanishingIdeal S)` is the `k`-point Zariski-closure operator.
+> - **Proved.** The set equality over any infinite field — the rank locus is closed (L6.3
+>   `isZariskiClosed_orbitRankLocus`, so it is its own `repClosure`), and the ideal headline identifies
+>   its closure with `repClosure (orbitSet M)`. **No `IsAlgClosed`, no Nullstellensatz.**
+> - **Assumed.** `[Infinite k]`.
+> - **Cited.** none.
+> - **Deferred.** the *raw* `Set`-level identification of `orbitRankLocus M` with the **geometric**
+>   orbit closure over a *non-closed* field — strictly stronger than this `k`-point equality (it would
+>   need the Nullstellensatz + `IsAlgClosed`); not claimed here.
 > - **Status.** sorry-free
 
 ---
