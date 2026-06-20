@@ -22,12 +22,18 @@ Controller-reviewed + Codex-decorrelated-audited as **bedrock-quality and faithf
   fact = `∫₀^ε u^{h−2kc} < ∞ ⟺ c<(h+1)/(2k)`. Cover + change-of-variables + properness stay on our side.
 - Goal skeleton (§8): every named statement S1/L1/L2/D1/R1/A1/A2/T as a named sorry + the one axiom.
 
-## The spine risk (top watch)
+## The spine risk — RESOLVED into a weaker, cleaner obligation (thread 03)
 
-`aoyagiλ` is `min over Adm`, a cone reconstructed from p.22 and verified numerically (437/437) but NOT
-proved to equal the exponents R1's resolution literally produces. `Adm = R1-exponents` is the
-load-bearing equality; the headline is honest only once it's proved. Settled by the validate-small-first
-gate (build R1's smallest charts, read literal exponents, confirm =Adm). pp's flag 3.
+pp's small-case probe (+ decorrelated Codex) settled it: the set-equality "R1's chart exponents = Adm"
+is **FALSE** (charts outnumber T-vectors), but the **value-match** holds on (1,1,1)/(2,1,2)/(2,2,2):
+resolution's min chart-ratio `= ½·min_{T∈Adm} Mval(T) = λ_core`. Interpretation: `T` ↔ rank-incidence
+stratum, `Mval(T) = codim` (proven L=2) ⇒ `λ_core = ½·min_strata codim`. So `Adm` is the right
+*definition* substrate; the R1 obligation shrinks from a set bijection to the **value-match**
+(Theorem 3 + resolution existence) — far cleaner, and possibly a cleaner R1 architecture
+(`½·min_strata codim`) than chart enumeration. The spine is SOUND. (design-spec §9.3 amended.)
+
+**New top-open item:** the general-L `Mval = codim(nested-rank stratum)` (L=2 verified; L≥3 = the
+nested-rank version, not yet proven). pp is on `(2,2,2,2)` to pin it + the divisor-type↔T count (θ).
 
 ## Topology note
 
@@ -41,8 +47,15 @@ checkout (non-blocking; re-ground from docs).
 
 - Setup + Rung 0 design (this + prior tick). Design merged (25b825b), pushed.
 
+## In flight (parallel)
+
+- `fm` — Rung 0b encode (shared worktree). Awaiting report.
+- `pp` — thread 03 round 2: L=3 `(2,2,2,2)` nested-rank `Mval=codim` + θ divisor-type count. Read-only.
+
 ## Next tick
 
-Spawn Rung 0b (formaliser, serial, in rung0-defs with symlinked .lake/packages): encode Foundations +
-skeleton. Then Rung 0c (hardener+reviewer on encoded Lean) gates before S1/L1/… On 0b+0c clear, open the
-small-case validation thread (the gate + spine-risk probe) and the tractable L1/L2/A1 in sequence.
+On `fm`'s report: precision/bedrock review of the encoded Foundations + skeleton (Rung 0c, hardener+rv);
+ensure the R1 skeleton statement is the **value-match** form (not the superseded set-bijection). On
+`pp`'s L=3 report: if `Mval=codim` generalizes, the spine is fully understood → the validate-small-first
+Lean gate can start at (1,1,1) (cleanest: no blow-up), then L1/L2/A1. Consider the `½·min_strata codim`
+reframing as the R1 architecture.

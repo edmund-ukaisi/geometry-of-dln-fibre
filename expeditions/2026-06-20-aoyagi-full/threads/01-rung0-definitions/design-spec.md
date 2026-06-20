@@ -434,6 +434,14 @@ each rung closes. No free-floating scaffolding.
    R1 is built (R1's output exponents must be shown to range over exactly `Adm`). Until then, `Adm` is
    the faithful-by-construction definition; the R1↔Adm match is an R1-side obligation, flagged.
 
+   > **AMENDED 2026-06-20 (thread 03, controller-integrated).** The set-equality "chart exponents = Adm"
+   > is **FALSE** (charts outnumber T-vectors: 24 vs 3 for (2,2,2)) — confirmed by pp + decorrelated
+   > Codex. The correct R1 obligation is the **value-match**: resolution's min chart-ratio
+   > `= ½·min_{T∈Adm} Mval(T)`. The interpretation: `T` ↔ rank-incidence stratum, `Mval(T) = codim`
+   > (proven L=2), so `λ_core = ½·min_strata codim`. `Adm` stays the right *definition* substrate; the
+   > R1 obligation shrinks to the value-match (Theorem 3 + resolution existence). See
+   > `threads/03-r1-smallcase/thread.md`.
+
 4. **`rlctAt = Def-1 value` (bump removal).** The existential-neighbourhood form is *argued* equal to
    the bumped Def-1 value (sandwich); this is an S1 theorem, not yet proven. The `def` is faithful by
    the standard sandwich argument; submitted to Codex for an independent faithfulness audit (§ below).

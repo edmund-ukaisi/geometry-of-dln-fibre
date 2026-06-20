@@ -10,10 +10,12 @@ Nothing unranked; "unclear-but-keep-going" is first-class.
    `DLNFibre.DLN.RLCT.Foundations.*` (`dlnLoss`/`optimalSet`/`rlctAt`/`rlctOrderAt`/`aoyagiλ` via
    `½·min over Adm`) + the named-`sorry` skeleton (§8 of the spec) + the single S2 axiom. Small modular
    files; build-once Foundations layer.
-2. **[pursue · SPINE RISK] `Adm = R1's chart exponents`.** `aoyagiλ` is `½·min over the reconstructed
-   admissible cone Adm`; the headline is honest only once R1's resolution is proven to produce exponents
-   ranging over **exactly** `Adm`. Verified numerically (437/437), not proved. This is the single
-   most-likely break-point (pp's flag 3). It is settled by item 3.
+2. **[de-risked → reframed] Spine obligation.** thread 03 (pp + decorrelated Codex) found the set-equality
+   "R1 charts = Adm" is FALSE but the **value-match** `min chart-ratio = ½·min_{T∈Adm} Mval(T)` holds
+   (L=2). `T` ↔ rank-incidence stratum, `Mval = codim` ⇒ `λ_core = ½·min_strata codim`. The R1 obligation
+   is now the value-match (Theorem 3 + resolution existence), not a bijection. **New top-open:** general-L
+   `Mval = codim(nested-rank stratum)` (L=2 done; pp on L=3 `(2,2,2,2)`). Possibly a cleaner R1
+   architecture (`½·min_strata codim`) than chart enumeration — assess on pp's L=3 report.
 3. **[pursue · GATE] Validate the smallest case end-to-end.** Build R1's charts for the smallest case
    (single matrix; then L=2, r=0), read off the literal exponents, confirm `= Adm`, run the chain to λ.
    This is both the anti-treadmill gate and the probe for the spine risk (item 2). Do before generalising.
