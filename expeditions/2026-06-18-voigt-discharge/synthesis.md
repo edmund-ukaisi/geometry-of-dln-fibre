@@ -749,3 +749,22 @@ came from reaching for hB's collapse where none exists. Fix = two-sided normal-f
 **→ Resume the hA43_le tide** (holds hB/D_orbit_conj context) with Codex's block: re-introduce D_orbit_conj
 (hsplit + hB + hA-via-Codex) + termA + finrank chain ⟹ close `hA43_le` ⟹ A4.4 + `varietyDim(Z_M) ≤
 finrank(range δ⁰)` UNCONDITIONAL. Then A6 (intrinsic reverse + L7 + gaps) ⟹ hVoigt.
+
+## 2026-06-21 — ★ A4 COMPLETE ★ varietyDim(Z_M) ≤ finrank(range δ⁰) UNCONDITIONAL
+
+**A4 (route-c submersion bound) DONE** (commits fd1701a/1861593, green 3009 jobs, axiom-clean
+`[propext, Classical.choice, Quot.sound]`). `hA43_le` (`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`)
+proved via the Codex-verified `D_orbit_conj_termA` block (no fallback; the "no inverse-collapse" diagnosis was
+the unblock). `varietyDim_orbitRankLocus_le_finrank_range_deformationδ_unconditional` (`[CharZero k] [Infinite k]`):
+`varietyDim(Z_M) ≤ finrank(range δ⁰)`, NO open hypothesis (discharged via landed `diffIndepCriterion_groupRing`
++ proved `hA43_le`, chained with A0). The irreducible matrix-Kähler nugget — the hardest piece of the AG half —
+is CLOSED.
+
+**ALL A4/L2b★ dependencies for hVoigt now landed:** A0 ✓, A3 (`isSmoothAt_normalFormIdeal` + κ(m_M)=k) ✓,
+A4 (varietyDim ≤ finrank δ⁰) ✓, `orbitAction_eps_eq_deformationδ` (dμ_e=δ⁰) ✓, L0/L1/L2a/M3/L4d ✓.
+
+**→ A6 FINAL WAVE dispatched (the capstone):** A6.1 intrinsic reverse `finrank(range δ⁰) ≤ varietyDim` (R1–R6,
+R2★ `D_{δ⁰φ}f=0` rides on `orbitAction_eps_eq_deformationδ`; A5/minors DROPPED — intrinsic Zariski-tangent
+route) + A6.2 squeeze (A4 ≤ + A6.1 ≥ ⟹ `varietyDim = finrank(range δ⁰)`) + additive L7 + 3 gap-lemmas
+(κ/k finrank, L4d Fintype-reindex, card=finrank C¹) ⟹ **discharge hVoigt** (`codimRepCanonical_orbitRankLocus_eq_multSum`
+with NO hVoigt hyp). `[CharZero k] [IsAlgClosed k]`.
