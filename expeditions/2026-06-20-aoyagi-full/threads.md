@@ -4,20 +4,28 @@ Durable thread-status index. Status ∈ open / in-progress / blocked / review-pe
 
 | NN | type | seat | status | subject |
 |----|------|------|--------|---------|
-| 01 | design | pp | closed | Rung 0a: foundational defs + goal skeleton → `design-spec.md` (bedrock-quality; merged 25b825b) |
-| 02 | formalisation | fm | in-progress | Rung 0b: encode `DLNFibre.DLN.RLCT.Foundations.*` + named-sorry skeleton + the one S2 axiom |
-| 03 | design (parallel) | pp | in-progress | Spine-risk probe: resolution charts for (1,1,1)/(2,1,2)/(2,2,2); confirm chart exponents = Adm. Read-only + /tmp; reports to controller |
+| 01 | design | pp | closed | Rung 0a: foundational defs + goal skeleton → `design-spec.md` |
+| 02 | formalisation | fm | review-pending | Rung 0b: encoded `DLNFibre.DLN.RLCT.*` + skeleton + 1 S2 axiom; green; merged `58bc1c3` |
+| 03 | design (parallel) | pp | closed | Spine probe: `codim S(t)=Mval` proven general L; θ=a(ℓ−a)+1; stratification R1 architecture |
+| 04 | design (parallel) | pp | closed | D1 scope: cite Aoyagi 2013 **Thm 2**; light rung; depends on L2; reuses S1 |
+| 05 | design (parallel) | pp | in-progress | S1 scope: RLCT change-of-variables/invariance linchpin (D1/R1/S2 all consume it) |
+| 06 | review | hd + rv | open | Rung 0c: fidelity + bedrock audit of the encoded foundations (gate before dependent rungs) |
 
 ## Seats (reuse across tides; stand down at close)
 
-- `pp` — pen-and-paper (design / definitional fidelity / decorrelated Codex). No Lean. [idle after 01]
-- `fm` — formaliser (Lean encoding). Works in the shared worktree `rung0-defs` (serial; controller merges).
-- `rv` — reviewer (fidelity / soundness; Codex second opinion). [for 0c]
-- `hd` — hardener (precision / bedrock / taste; decorrelated). [for 0c, on encoded Lean]
+- `pp` — pen-and-paper (design / fidelity-math / decorrelated Codex). No Lean. On thread 05 (S1 scope).
+- `fm` — formaliser (Lean). Idle (Rung 0b done). Works in shared worktree `rung0-defs` (serial; controller merges).
+- `rv` — reviewer (fidelity / soundness; Codex). [thread 06]
+- `hd` — hardener (precision / bedrock / taste; decorrelated). [thread 06]
 
-## Topology / merge flow (controller-in-worktree fallback)
+## Merge flow (controller-in-worktree fallback)
 
-Editing happens in the shared worktree `.claude/worktrees/rung0-defs` (branch `worktree-rung0-defs`);
-controller merges `worktree-rung0-defs → expedition/aoyagi-full` in the main checkout + pushes to origin.
-Serial teammates (isolation collapses onto the controller's worktree). `.lake/packages` symlinked from
-the main checkout so lake builds in the worktree without rebuilding Mathlib.
+Editing in shared worktree `rung0-defs` (branch `worktree-rung0-defs`); controller merges →
+`expedition/aoyagi-full` (main checkout) + pushes. Serial editing teammates. `pp` runs read-only (no
+collision). Green-gate (`lake build DLNFibre`) every merge. `.lake/packages` symlinked.
+
+## Encoded foundations (merged 58bc1c3)
+`Foundations/{Loss,Rlct,Lambda}.lean` + `Skeleton.lean`. 9 named-sorry rungs (S1×2, L1, L2, D1, R1,
+A1×2, A2) + 1 axiom `monomial_rlct` (S2, narrowed to the bare weighted-monomial-integral fact). Defs
+axiom-clean. `aoyagiLambda` = min-over-Adm (ground truth enforced at build). `rlctOrderAt` = honest
+`opaque` placeholder (θ-seam). Statement card: `threads/02-rung0b-encode/statement-card.md`.
