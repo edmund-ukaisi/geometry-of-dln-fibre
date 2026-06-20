@@ -1596,6 +1596,9 @@ No such claim is formalisation-ready until both fields are filled.
   `D_j=P(j)-H_j-j*(M-1)`, the identity
   `F_j=(M-1)+(D_(j+1)-D_j)` holds, so supplied binary deltas imply the
   two-value increment hypothesis.
+  The endpoint/count bookkeeping for the same prefix-delta interface is now
+  Lean-proved too: `D_0=0`, `D_ell=a`, the deltas telescope, and supplied
+  binary deltas have exactly `a` ones and `ell-a` zeroes.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1624,6 +1627,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-htilde-interval-bounds-a5.md`;
   Lemma 4 binary prefix delta at
   `threads/05-arithmetic-tail/reproduction-lemma4-binary-prefix-delta-a5.md`;
+  Lemma 4 prefix-delta endpoint count at
+  `threads/05-arithmetic-tail/reproduction-lemma4-prefix-delta-endpoint-count-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1662,6 +1667,9 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 4 binary prefix delta checked by xhigh `Einstein the 5th`; final
   landed review pending at
   `threads/05-arithmetic-tail/review-lemma4-binary-prefix-delta-a5.md`;
+  Lemma 4 prefix-delta endpoint count checked by xhigh `Linnaeus the 5th`;
+  final landed review pending at
+  `threads/05-arithmetic-tail/review-lemma4-prefix-delta-endpoint-count-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
@@ -1682,6 +1690,8 @@ No such claim is formalisation-ready until both fields are filled.
   chain-bound count wrappers in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   binary prefix-delta bridge for the two-value increment hypothesis in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
+  endpoint and binary-delta count bookkeeping for the prefix-delta interface in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
@@ -1782,6 +1792,16 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma4_twoValueCount_of_HtildeChainBounds_binaryIncrementPrefix`,
   which turn supplied binary prefix deltas into the Lemma 4 two-value
   increment hypothesis and count wrappers.
+  Also proved `aoyagiLemma4IncrementPrefixDelta`,
+  `aoyagiLemma4F_eq_pred_add_incrementPrefixDelta_def`,
+  `aoyagiLemma4IncrementPrefix_zero_of_H0`,
+  `aoyagiLemma4IncrementPrefix_last_eq_a_of_terminalH`,
+  `aoyagiLemma4IncrementPrefixDelta_sum_eq_last_sub_zero`,
+  `aoyagiLemma4IncrementPrefixDelta_sum_eq_a_of_terminalH`,
+  `aoyagiLemma4_binaryIncrementPrefix_count_eq`, and
+  `aoyagiLemma4_binaryIncrementPrefix_count_eq_of_HtildeChainBounds`, which
+  count supplied binary prefix deltas under terminal source hypotheses or
+  same-coordinate chain-bound hypotheses.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

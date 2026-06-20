@@ -570,6 +570,12 @@ def aoyagiLemma4IncrementPrefix (ell : ℕ) (M : ℤ)
   aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) j.val -
     H j - (j.val : ℤ) * (M - 1)
 
+/-- Successive change in the Lemma 4 prefix-delta normal form. -/
+def aoyagiLemma4IncrementPrefixDelta (ell : ℕ) (M : ℤ)
+    (m H : Fin (ell + 1) → ℤ) (j : Fin ell) : ℤ :=
+  aoyagiLemma4IncrementPrefix ell M m H j.succ -
+    aoyagiLemma4IncrementPrefix ell M m H j.castSucc
+
 /-- The increment `F_j` is `M-1` plus the successive prefix-delta change. -/
 theorem aoyagiLemma4F_eq_pred_add_incrementPrefixDelta
     (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ) (j : Fin ell) :
@@ -589,6 +595,15 @@ theorem aoyagiLemma4F_eq_pred_add_incrementPrefixDelta
     norm_num
   rw [hcast]
   ring_nf
+
+/-- Definitional wrapper for the prefix-delta version of the increment
+identity. -/
+theorem aoyagiLemma4F_eq_pred_add_incrementPrefixDelta_def
+    (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ) (j : Fin ell) :
+    aoyagiLemma4F ell m H j =
+      (M - 1) + aoyagiLemma4IncrementPrefixDelta ell M m H j := by
+  rw [aoyagiLemma4F_eq_pred_add_incrementPrefixDelta]
+  rfl
 
 /-- Binary prefix deltas imply the two-value increment hypothesis in
 Aoyagi's Lemma 4.
@@ -650,6 +665,110 @@ theorem aoyagiLemma4_twoValueCount_of_HtildeChainBounds_binaryIncrementPrefix
   exact aoyagiLemma4_twoValueCount_of_HtildeChainBounds ell a M m H hH0 ha
     hselected hlower hupper
     (aoyagiLemma4F_twoValue_of_binaryIncrementPrefix ell M m H hbin)
+
+/-- With the source convention `H_0=m_0`, the first prefix delta is zero. -/
+theorem aoyagiLemma4IncrementPrefix_zero_of_H0
+    (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0) :
+    aoyagiLemma4IncrementPrefix ell M m H 0 = 0 := by
+  simp [aoyagiLemma4IncrementPrefix, hH0]
+
+/-- With terminal `H_ell=0` and the selected-width sum, the last prefix
+delta is `a`. -/
+theorem aoyagiLemma4IncrementPrefix_last_eq_a_of_terminalH
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiLemma4IncrementPrefix ell M m H (Fin.last ell) = a := by
+  unfold aoyagiLemma4IncrementPrefix
+  simp only [Fin.val_last]
+  rw [aoyagiPrefixSum_selectedWidthNat_last ell m, hselected, hHlast]
+  ring
+
+/-- The sum of successive prefix deltas telescopes to the endpoint
+difference. -/
+theorem aoyagiLemma4IncrementPrefixDelta_sum_eq_last_sub_zero
+    (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ) :
+    (∑ j : Fin ell, aoyagiLemma4IncrementPrefixDelta ell M m H j) =
+      aoyagiLemma4IncrementPrefix ell M m H (Fin.last ell) -
+        aoyagiLemma4IncrementPrefix ell M m H 0 := by
+  let D : Fin (ell + 1) → ℤ := fun j ↦ aoyagiLemma4IncrementPrefix ell M m H j
+  change (∑ j : Fin ell, (D j.succ - D j.castSucc)) =
+    D (Fin.last ell) - D 0
+  rw [Finset.sum_sub_distrib]
+  have hsucc :
+      (∑ j : Fin ell, D j.succ) =
+        (∑ j : Fin (ell + 1), D j) - D 0 := by
+    have h := Fin.sum_univ_succ D
+    omega
+  have hcast :
+      (∑ j : Fin ell, D j.castSucc) =
+        (∑ j : Fin (ell + 1), D j) - D (Fin.last ell) := by
+    have h := Fin.sum_univ_castSucc D
+    omega
+  rw [hsucc, hcast]
+  omega
+
+/-- Under the terminal source hypotheses, the sum of prefix deltas is `a`. -/
+theorem aoyagiLemma4IncrementPrefixDelta_sum_eq_a_of_terminalH
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0) (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    (∑ j : Fin ell, aoyagiLemma4IncrementPrefixDelta ell M m H j) = a := by
+  rw [aoyagiLemma4IncrementPrefixDelta_sum_eq_last_sub_zero]
+  rw [aoyagiLemma4IncrementPrefix_zero_of_H0 ell M m H hH0]
+  rw [aoyagiLemma4IncrementPrefix_last_eq_a_of_terminalH ell a M m H hHlast hselected]
+  omega
+
+/-- Binary prefix deltas are counted by the endpoint excess `a` under the
+terminal source hypotheses. -/
+theorem aoyagiLemma4_binaryIncrementPrefix_count_eq
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0) (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H j = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1) :
+    ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 0).card = ell - a) := by
+  let δ : Fin ell → ℤ := fun j ↦ aoyagiLemma4IncrementPrefixDelta ell M m H j
+  have hvals : ∀ j, δ j = 0 ∨ δ j = 0 + 1 := by
+    intro j
+    rcases hbin j with hzero | hone
+    · exact Or.inl hzero
+    · right
+      simpa using hone
+  have hsum : (∑ j : Fin ell, δ j) = (ell : ℤ) * 0 + a := by
+    dsimp [δ]
+    rw [aoyagiLemma4IncrementPrefixDelta_sum_eq_a_of_terminalH ell a M m H
+      hH0 hHlast hselected]
+    omega
+  have h := twoStepInt_count_eq ell a 0 δ hvals hsum
+  simpa [δ] using h
+
+/-- Same-coordinate `Htilde`-chain-bound version of the binary prefix-delta
+count.  The binary-delta hypothesis remains explicit. -/
+theorem aoyagiLemma4_binaryIncrementPrefix_count_eq_of_HtildeChainBounds
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlower : aoyagiHtildeLowerChain ell a M m ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperChain ell a M m)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H j = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1) :
+    ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 0).card = ell - a) := by
+  have hHlast :=
+    aoyagiLemma4_Hlast_eq_zero_of_HtildeChainBounds ell a M m H ha hselected
+      hlower hupper
+  exact aoyagiLemma4_binaryIncrementPrefix_count_eq ell a M m H hH0 hHlast
+    hselected hbin
 
 end Aoyagi
 end DLN

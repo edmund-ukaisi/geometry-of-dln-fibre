@@ -93,6 +93,20 @@ same-coordinate chain bounds imply binary prefix deltas, vector-coordinate
 correspondence, vector admissibility, Lemma 5 chart-family/order count, pole
 order, normal crossings, or RLCT extraction.
 
+The Lemma 4 prefix-delta endpoint/count bridge has landed in the same
+module.  It names `aoyagiLemma4IncrementPrefixDelta`, proves `D_0=0`,
+`D_ell=a`, telescoping of successive deltas, sum of deltas `=a`, and exact
+counts of supplied binary deltas, with a same-coordinate `Htilde`-chain-bound
+wrapper.  Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-lemma4-prefix-delta-endpoint-count-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma4-prefix-delta-endpoint-count.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma4-prefix-delta-endpoint-count-a5.md`.
+This does not prove source exponent vectors or chain bounds provide binary
+deltas, vector-coordinate correspondence, vector admissibility, Lemma 5
+chart-family/order count, pole order, normal crossings, or RLCT extraction.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

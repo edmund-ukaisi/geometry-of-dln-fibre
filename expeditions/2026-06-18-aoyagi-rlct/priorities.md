@@ -527,7 +527,10 @@ on the session's original cwd.
    increments.  The binary prefix-delta bridge is also Lean-proved as a
    conditional interface: if `D_j=P(j)-H_j-j*(M-1)` has successive deltas
    `0` or `1`, then the Lemma 4 increments are `M-1` or `M`; this still does
-   not prove source vectors or chain bounds supply binary deltas.  The
+   not prove source vectors or chain bounds supply binary deltas.  Endpoint
+   bookkeeping for this interface is now Lean-proved too: `D_0=0`, `D_ell=a`,
+   the deltas telescope, and supplied binary deltas have exactly `a` ones and
+   `ell-a` zeroes.  The
    remaining
    A5 work is still substantial: preserve `\tilde t_{s,k}=0`, prove minimiser
    feasibility as exponent chains, prove the two-value increment hypothesis

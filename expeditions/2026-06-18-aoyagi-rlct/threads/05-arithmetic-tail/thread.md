@@ -406,3 +406,31 @@ exponent vectors imply binary prefix deltas, that chain bounds imply binary
 prefix deltas, vector-coordinate correspondence, vector admissibility,
 correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
 count, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Lemma 4 prefix-delta endpoint count
+
+Reproduction:
+`reproduction-lemma4-prefix-delta-endpoint-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-prefix-delta-endpoint-count.md`.
+Review artifact:
+`review-lemma4-prefix-delta-endpoint-count-a5.md`.
+
+Lean now names the endpoint bookkeeping for the prefix-delta interface.
+With
+
+```text
+D_j = P(j)-H_j-j*(M-1),
+Delta_j = D_(j+1)-D_j,
+```
+
+the source convention `H_0=m_0` gives `D_0=0`, while terminal `H_ell=0`
+and the selected-width sum give `D_ell=a`.  The delta sum telescopes to
+`D_ell-D_0`, hence `sum_j Delta_j=a`.  If the deltas are binary, then exactly
+`a` deltas are `1` and exactly `ell-a` are `0`.
+
+This is still conditional finite arithmetic.  It does not prove that source
+exponent vectors imply binary prefix deltas, that chain bounds imply binary
+prefix deltas, vector-coordinate correspondence, vector admissibility,
+correspondence to `lambda`, Lemma 5 chart-family admissibility/coverage/order
+count, pole order, normal crossings, or RLCT extraction.

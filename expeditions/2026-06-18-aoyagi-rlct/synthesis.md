@@ -1794,6 +1794,15 @@ successive deltas are `0` or `1` gives the two-value increment hypothesis, and
 the existing terminal-`H` and chain-bound count wrappers can use that binary
 interface.  This does not prove that source exponent vectors or chain bounds
 provide binary deltas.
+
+The endpoint/count bookkeeping for the same prefix-delta interface is also
+Lean-proved.  With `D_j=P(j)-H_j-j*(M-1)`, the source convention gives
+`D_0=0`, terminal `H_ell=0` plus the selected-width sum gives `D_ell=a`, and
+the successive deltas telescope to `D_ell-D_0`.  Thus terminal source
+hypotheses plus supplied binary deltas give exactly `a` ones and `ell-a`
+zeroes among the deltas.  The same count has a chain-bound wrapper using the
+already-proved `H_ell=0` consequence, but binary-ness remains an explicit
+hypothesis.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard
