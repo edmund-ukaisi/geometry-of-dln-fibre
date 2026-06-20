@@ -122,6 +122,22 @@ ORPHANED from the root `DLNFibre.lean` closure until wired (Skeleton imports it)
 but the root build doesn't compile it). The FULL-trunk `lake build DLNFibre` (not module-scoped) is the gate
 that catches orphans + collisions — run it at integration, not just the module build.
 
+## 10th fidelity issue — S1.1 bare equality FALSE (analytic-implication gap; fm-2 caught @6dbc880)
+The bare-hypothesis Skeleton `weightedThreshold_transport` EQUALITY is FALSE — the reverse `≥` fails two ways:
+(1) **surjectivity gap** (w*∉range π ⟹ π⁻¹{w*}=∅ ⟹ RHS=⊤≠finite LHS) → needs `hsurj : Surjective π`;
+(2) **Luzin-N gap** (hderiv off-E doesn't make π(E) null; a Cantor-staircase π sends null E→positive π(E), an
+F-singularity there adds LHS mass the off-E CoV misses) → needs `hImE : volume (π''E)=0`. The Skeleton
+docstring ASSUMED "π(E) null via Luzin-N" but the hyps don't encode it (Mathlib Luzin-N needs DifferentiableOn
+ℝ π E). **NEW CLASS** — not a domain-corner (the sweep cleared S1.1's corners) but an analytic-IMPLICATION gap
+(hyps don't imply the conclusion), only the proof attempt surfaces it — even on the IsAddHaarMeasure-pinned
+statement. fm-2 ESCALATED (didn't silently fix) + delivered both sorry-free: `weightedThreshold_le_transport`
+(unconditional ≤) + `weightedThreshold_transport_of_surjective_image_null` (full = under hsurj+hImE, conclusion
+defeq Skeleton). FIX: add hsurj+hImE to Skeleton S1.1 (LOCALIZED — doesn't ripple to D1/L2/R1 statements, which
+don't expose π; their PROOFS supply the hyps, both hold at the R1 resolution use-site: chart surjective +
+exceptional divisor null). Pending rv-2 decorrelated confirm (7th/9th protocol) → fm wires
+(`exact …_of_surjective_image_null` + import + the 2 hyps, Skeleton single-writer). R1 design note: R1's
+per-chart S1.1-transport invocation must supply hsurj (chart onto nbhd) + hImE (exceptional divisor null).
+
 ## R1 design BANKED (pp, thread 14) + R3b DECISION + value-match DOWNGRADE
 - **Value/atlas split.** VALUE `rlctAt(‖∏C‖²)=½·min_t Mval(t)` (pinned by codim S(t)=Mval, thread-03) vs
   explicit CHART ATLAS (Aoyagi affine blow-ups).

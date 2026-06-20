@@ -172,3 +172,24 @@ pattern refinements): (a) proof-module lemmas get DISTINCT names (`_aux`/`_impl`
 explicit module-builds until then. (c) run the FULL-trunk `lake build DLNFibre` (not module-scoped) at
 integration — it's the gate that surfaces orphans + collisions a module build can't. (Caught by rv-2's
 full-trunk green-gate during an idle window — the right use of idle reviewer time.)
+
+## 2026-06-20 — analytic-IMPLICATION gaps: the hyps don't imply the conclusion (10th issue, S1.1)
+
+S1.1 `weightedThreshold_transport` had been statement-audited AND measure-pinned (IsAddHaarMeasure, from the
+original bedrock pass) AND domain-corner-swept — yet the bare equality was still FALSE: the stated hypotheses
+(proper π, inj/diff OFF a null E) do NOT IMPLY the conclusion. Two gaps, surfaced only when fm-2 tried to
+PROVE the reverse `≥`: (1) surjectivity (w*∉range π ⟹ RHS=⊤); (2) Luzin-N (off-E differentiability doesn't
+make π(E) null — a Cantor-staircase π is the counterexample; needs `volume (π''E)=0` stated). The Skeleton
+DOCSTRING had ASSUMED "π(E) null via Luzin-N" — but a docstring assumption is NOT a stated hypothesis, and the
+hyps didn't encode it.
+- **New gap-class (distinct from vacuity + domain-corner):** the statement's HYPOTHESES are too weak to IMPLY
+  its conclusion (a soundness gap), even when non-vacuous, domain-complete, and measure-pinned. Neither the
+  weak-existential sweep nor the domain-corner sweep targets this — **only the proof attempt surfaces it.**
+  Reinforces (yet again): the proof attempt is the ultimate audit; a green-statement build + every
+  statement-level sweep is necessary, not sufficient.
+- **Docstring assumptions ≠ stated hypotheses.** If a proof leg relies on "X holds here" (e.g. Luzin-N), X
+  must be a HYPOTHESIS, not a docstring aside — else the statement is false and the proof can't close.
+- **Right handling (fm-2, exemplary):** ESCALATE the contract finding (don't silently strengthen hyps);
+  deliver the honest UNCONDITIONAL direction (`≤`) + the full result under the SUFFICIENT added hyps; let the
+  controller adjudicate the statement change (decorrelated-confirmed, 7th/9th protocol). The added hyps were
+  LOCALIZED (S1.1 only; consumers supply them at use-sites where they hold), so the contract change was small.
