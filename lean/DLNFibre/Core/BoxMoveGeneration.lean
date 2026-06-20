@@ -462,6 +462,319 @@ def BoxMoveStep (r r' : ℤ → ℤ → ℤ) : Prop :=
 /-- The **box-move chain**: a finite sequence of applicable box moves. -/
 def BoxMoveChain (r s : ℤ → ℤ → ℤ) : Prop := Relation.ReflTransGen BoxMoveStep r s
 
+/-! ## L6.2c, piece 1 — the extremal deficient cell
+
+For `g = r − s` nonnegative, supported, and vanishing on/below the diagonal (`j ≤ i ⟹ g i j = 0`,
+forced because box moves only touch the strict upper triangle), with *some* positive cell: choose
+`(i0,j0)` with `j0` the minimal column carrying a positive cell, then `i0` the maximal row positive
+in column `j0`. This gives the three neighbour vanishings `one_le_diff_linked` needs:
+`g i0 (j0−1) = 0` and `g (i0+1)(j0−1) = 0` by `j0`-minimality (column `j0−1` is empty), and
+`g (i0+1) j0 = 0` by `i0`-maximality in column `j0`. -/
+
+/-- **The extremal deficient cell.** For nonnegative supported `g` vanishing on/below the diagonal,
+with a positive cell `(I,J)` (`I < J ≤ N`, `0 < g I J`), there is an extremal cell `(i0,j0)` —
+`0 ≤ i0 < j0 ≤ N`, `1 ≤ g i0 j0` — with the three neighbour vanishings: `g i0 (j0−1) = 0`,
+`g (i0+1)(j0−1) = 0`, `g (i0+1) j0 = 0`. -/
+theorem exists_extremalCell (N : ℤ) (g : ℤ → ℤ → ℤ) (hsupp : Supported N g)
+    (hpos : ∀ i j, 0 ≤ g i j) (hbelow : ∀ i j, j ≤ i → g i j = 0)
+    {I J : ℤ} (hIJ : I < J) (hJN : J ≤ N) (hgIJ : 0 < g I J) :
+    ∃ i0 j0 : ℤ, 0 ≤ i0 ∧ i0 < j0 ∧ j0 ≤ N ∧ 1 ≤ g i0 j0 ∧
+      g i0 (j0 - 1) = 0 ∧ g (i0 + 1) (j0 - 1) = 0 ∧ g (i0 + 1) j0 = 0 := by
+  -- `I ≥ 0` (else `g I J = 0` by support)
+  have hI0 : 0 ≤ I := by
+    by_contra hlt; rw [hsupp.1 I J (by omega)] at hgIJ; exact absurd hgIJ (lt_irrefl 0)
+  -- the finite positive-cell set inside the box `[0,N]²`; the cell `(I,J)` witnesses nonemptiness.
+  set S : Finset (ℤ × ℤ) :=
+    (Finset.Icc 0 N ×ˢ Finset.Icc 0 N).filter (fun p ↦ 0 < g p.1 p.2) with hS
+  have hmemS : ∀ {i j : ℤ}, (i, j) ∈ S ↔ (0 ≤ i ∧ i ≤ N ∧ 0 ≤ j ∧ j ≤ N) ∧ 0 < g i j := by
+    intro i j
+    rw [hS, Finset.mem_filter, Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc]
+    constructor
+    · rintro ⟨⟨⟨h1, h2⟩, h3, h4⟩, h5⟩; exact ⟨⟨h1, h2, h3, h4⟩, h5⟩
+    · rintro ⟨⟨h1, h2, h3, h4⟩, h5⟩; exact ⟨⟨⟨h1, h2⟩, h3, h4⟩, h5⟩
+  have hIJS : (I, J) ∈ S := hmemS.mpr ⟨⟨hI0, by omega, by omega, hJN⟩, hgIJ⟩
+  -- column projection: minimal column with a positive cell.
+  set cols : Finset ℤ := S.image Prod.snd with hcols
+  have hne : cols.Nonempty := ⟨J, by rw [hcols, Finset.mem_image]; exact ⟨(I, J), hIJS, rfl⟩⟩
+  set j0 : ℤ := cols.min' hne with hj0
+  have hj0mem : j0 ∈ cols := Finset.min'_mem cols hne
+  rw [hcols, Finset.mem_image] at hj0mem
+  obtain ⟨⟨i', j'⟩, hpS, hproj⟩ := hj0mem
+  simp only at hproj; subst hproj
+  have hi'props := hmemS.mp hpS
+  have hj0N : j0 ≤ N := hi'props.1.2.2.2
+  have hi'pos : 0 < g i' j0 := hi'props.2
+  have hi'range : 0 ≤ i' ∧ i' ≤ N := ⟨hi'props.1.1, hi'props.1.2.1⟩
+  have hi'lt : i' < j0 := by
+    by_contra hge; rw [hbelow i' j0 (by omega)] at hi'pos; exact absurd hi'pos (lt_irrefl 0)
+  -- every positive cell sits at column `≥ j0`; column `j0 − 1` is empty.
+  have hcolmin : ∀ {i j : ℤ}, 0 < g i j → 0 ≤ i → i ≤ N → 0 ≤ j → j ≤ N → j0 ≤ j := by
+    intro i j hg hi0 hiN hj0' hjN
+    have : j ∈ cols := by
+      rw [hcols, Finset.mem_image]
+      exact ⟨(i, j), hmemS.mpr ⟨⟨hi0, hiN, hj0', hjN⟩, hg⟩, rfl⟩
+    exact hj0 ▸ Finset.min'_le cols j this
+  -- row projection within column `j0`: maximal row.
+  set rows : Finset ℤ := (S.filter (fun p ↦ p.2 = j0)).image Prod.fst with hrows
+  have hrne : rows.Nonempty :=
+    ⟨i', by rw [hrows, Finset.mem_image]; exact ⟨(i', j0), Finset.mem_filter.mpr ⟨hpS, rfl⟩, rfl⟩⟩
+  set i0 : ℤ := rows.max' hrne with hi0
+  have hi0mem : i0 ∈ rows := Finset.max'_mem rows hrne
+  rw [hrows, Finset.mem_image] at hi0mem
+  obtain ⟨⟨i'', j''⟩, hp2, hproj2⟩ := hi0mem
+  simp only at hproj2; subst hproj2
+  obtain ⟨hp2S, hp2col⟩ := Finset.mem_filter.mp hp2
+  simp only at hp2col; subst hp2col
+  have hi0props := hmemS.mp hp2S
+  have hi00 : 0 ≤ i0 := hi0props.1.1
+  have hi0N : i0 ≤ N := hi0props.1.2.1
+  have hi0pos : 0 < g i0 j0 := hi0props.2
+  have hi0lt : i0 < j0 := by
+    by_contra hge; rw [hbelow i0 j0 (by omega)] at hi0pos; exact absurd hi0pos (lt_irrefl 0)
+  refine ⟨i0, j0, hi00, hi0lt, hj0N, hi0pos, ?_, ?_, ?_⟩
+  · -- `g i0 (j0−1) = 0`: column `j0−1 < j0` carries no positive cell (minimality of `j0`)
+    by_contra hne0
+    have hgt : 0 < g i0 (j0 - 1) := lt_of_le_of_ne (hpos _ _) (Ne.symm hne0)
+    have := hcolmin hgt hi00 hi0N (by omega) (by omega); omega
+  · -- `g (i0+1)(j0−1) = 0`: same column `j0−1` empty
+    by_contra hne0
+    have hgt : 0 < g (i0 + 1) (j0 - 1) := lt_of_le_of_ne (hpos _ _) (Ne.symm hne0)
+    -- `i0+1 ≤ N` (else off support); then column-minimality forces `j0 ≤ j0−1`
+    have hi1N : i0 + 1 ≤ N := by
+      by_contra hgtN
+      rw [hbelow (i0 + 1) (j0 - 1) (by omega)] at hgt; exact absurd hgt (lt_irrefl 0)
+    have := hcolmin hgt (by omega) hi1N (by omega) (by omega); omega
+  · -- `g (i0+1) j0 = 0`: `i0` is the max row positive in column `j0`
+    by_contra hne0
+    have hgt : 0 < g (i0 + 1) j0 := lt_of_le_of_ne (hpos _ _) (Ne.symm hne0)
+    have hi1N : i0 + 1 ≤ N := by
+      by_contra hgtN
+      rw [hbelow (i0 + 1) j0 (by omega)] at hgt; exact absurd hgt (lt_irrefl 0)
+    have hmem : (i0 + 1) ∈ rows := by
+      rw [hrows, Finset.mem_image]
+      exact ⟨(i0 + 1, j0),
+        Finset.mem_filter.mpr ⟨hmemS.mpr ⟨⟨by omega, hi1N, by omega, hj0N⟩, hgt⟩, rfl⟩, rfl⟩
+    have hcontra : i0 + 1 ≤ i0 := hi0 ▸ Finset.le_max' rows (i0 + 1) hmem
+    omega
+
+/-! ## L6.2c, piece 2 — the descent step
+
+Combine the extremal cell (piece 1) with the linked applicability (`one_le_diff_linked`) and
+move-existence (`exists_coveringInterval_diff_pos`) into a single `BoxMoveStep r r'` whose drop
+rectangle lies in `supp(r − s)`, so the dropped pattern `r'` still dominates `s` on the upper
+triangle, and strictly lowers `r` at `(a, j0)` (so the deficiency `Φ` decreases). -/
+
+open scoped Classical in
+/-- A covering interval's rectangle lies in `supp g`: `g > 0` on `[a,I]×[J,e]`. -/
+theorem coveringRect_pos (g : ℤ → ℤ → ℤ) {N I J a e i j : ℤ}
+    (hp : (a, e) ∈ coveringRect g N I J) (hi : a ≤ i ∧ i ≤ I) (hj : J ≤ j ∧ j ≤ e) :
+    0 < g i j := by
+  rw [coveringRect, Finset.mem_filter] at hp
+  exact hp.2 j (Finset.mem_Icc.mpr hj) i (Finset.mem_Icc.mpr hi)
+
+/-- **The descent step.** With `g = r − s` nonnegative, supported, vanishing on/below the diagonal,
+`s` and `r` achievable (`diff s, diff r ≥ 0`), and a positive cell `(I,J)`: there is a single box
+move `r' = boxDrop r a c b e` (a `BoxMoveStep r r'`) whose drop rectangle is in `supp g`, so `r'`
+still dominates `s` on the upper triangle, drops `r` everywhere, and strictly at `(a, b+1)`. -/
+theorem exists_boxMoveStep_descent (N : ℤ) (r s : ℤ → ℤ → ℤ)
+    (hsupp : Supported N (fun i j ↦ r i j - s i j)) (hpos : ∀ i j, 0 ≤ r i j - s i j)
+    (hbelow : ∀ i j, j ≤ i → r i j - s i j = 0)
+    (hms : ∀ i j, 0 ≤ diff s i j)
+    {I J : ℤ} (hIJ : I < J) (hJN : J ≤ N) (hgIJ : 0 < r I J - s I J) :
+    ∃ a c b e : ℤ, BoxMoveStep r (boxDrop r a c b e) ∧
+      (∀ i j, i ≤ j → s i j ≤ boxDrop r a c b e i j) ∧
+      0 ≤ a ∧ a < c ∧ c ≤ b + 1 ∧ a < b + 1 ∧ b + 1 ≤ e ∧ e ≤ N := by
+  classical
+  set g : ℤ → ℤ → ℤ := fun i j ↦ r i j - s i j with hg
+  -- piece 1: the extremal cell `(i0,j0)` and its three neighbour vanishings
+  obtain ⟨i0, j0, hi00, hi0lt, hj0N, hg0pos, hv3, hv1, hv2⟩ :=
+    exists_extremalCell N g hsupp hpos (fun i j h ↦ hbelow i j h) hIJ hJN hgIJ
+  -- piece 2a: move-existence at `(i0,j0)` gives the covering interval `(a,e)`
+  obtain ⟨⟨a, e⟩, hpmem, hae⟩ :=
+    exists_coveringInterval_diff_pos N r s hsupp hpos hms hi0lt (by omega) hg0pos
+  -- read off `a ≤ i0`, `j0 ≤ e` from covering-rect membership (keep `hpmem` for the rectangle fact)
+  have hbounds := hpmem
+  rw [coveringRect, Finset.mem_filter, Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc]
+    at hbounds
+  obtain ⟨⟨⟨ha0, hai0⟩, hj0e, heN⟩, _⟩ := hbounds
+  -- the move anchor `c = i0+1, b = j0−1`
+  refine ⟨a, i0 + 1, j0 - 1, e, ?_, ?_, by omega, by omega, by omega, by omega, by omega, by omega⟩
+  · -- the `BoxMoveStep`
+    refine ⟨a, i0 + 1, j0 - 1, e, by omega, by omega, by omega, hae, ?_, rfl⟩
+    -- linked: `i0+1 ≤ j0−1 → 1 ≤ diff r (i0+1)(j0−1)` from sub-fact 1
+    intro _
+    exact one_le_diff_linked r s hms (by simpa [hg] using hv1)
+      (by simpa [hg] using hv2) (by simpa [hg] using hv3) (by simpa [hg] using hg0pos)
+  · -- domination `s ≤ boxDrop r` on the triangle
+    intro i j hij
+    rw [boxDrop, boxIndicator]
+    split_ifs with hin
+    · -- `(i,j) ∈ D = [a,i0]×[j0,e]`: rectangle in `supp g`, so `g i j ≥ 1`
+      obtain ⟨ha, hci, hbj, hje⟩ := hin
+      have hgpos : 0 < g i j :=
+        coveringRect_pos g hpmem ⟨ha, by omega⟩ ⟨by omega, hje⟩
+      simp only [hg] at hgpos; omega
+    · -- off `D`: `boxDrop = r`, dominates `s` by `hpos`
+      have := hpos i j; omega
+
+/-! ## L6.2c, piece 3 — the deficiency `Φ` and the generation induction
+
+`deficiency N r s = ∑_{0 ≤ i ≤ j ≤ N} (r_{ij} − s_{ij})` (the upper-triangle box `triBox N`) is a
+nonnegative `ℤ`-valued potential that the descent step strictly lowers. Strong induction on its
+`toNat` value drives `s ≤ r → BoxMoveChain r s`: at `Φ = 0` the patterns coincide
+(`ReflTransGen.refl`); otherwise a positive triangle cell feeds the descent step, lowering `Φ`. -/
+
+/-- The upper-triangle box `{(i,j) : 0 ≤ i ≤ j ≤ N}` — the index set of the deficiency. -/
+def triBox (N : ℤ) : Finset (ℤ × ℤ) :=
+  (Finset.Icc 0 N ×ˢ Finset.Icc 0 N).filter (fun p ↦ p.1 ≤ p.2)
+
+/-- Membership in `triBox`: `0 ≤ i ≤ j ≤ N` and `i ≤ N`. -/
+theorem mem_triBox {N i j : ℤ} :
+    (i, j) ∈ triBox N ↔ (0 ≤ i ∧ i ≤ N) ∧ (0 ≤ j ∧ j ≤ N) ∧ i ≤ j := by
+  rw [triBox, Finset.mem_filter, Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc]
+  tauto
+
+/-- The **deficiency** `Φ r s = ∑_{0 ≤ i ≤ j ≤ N} (r_{ij} − s_{ij})`. -/
+def deficiency (N : ℤ) (r s : ℤ → ℤ → ℤ) : ℤ :=
+  ∑ p ∈ triBox N, (r p.1 p.2 - s p.1 p.2)
+
+/-- The deficiency is nonnegative when `s ≤ r` on the triangle. -/
+theorem deficiency_nonneg (N : ℤ) (r s : ℤ → ℤ → ℤ)
+    (hle : ∀ i j, i ≤ j → s i j ≤ r i j) : 0 ≤ deficiency N r s := by
+  apply Finset.sum_nonneg
+  rintro ⟨i, j⟩ hp
+  exact sub_nonneg.mpr (hle i j (mem_triBox.mp hp).2.2)
+
+/-- `Φ = 0` forces equality on the triangle box: each summand vanishes. -/
+theorem eq_of_deficiency_eq_zero (N : ℤ) (r s : ℤ → ℤ → ℤ)
+    (hle : ∀ i j, i ≤ j → s i j ≤ r i j) (h0 : deficiency N r s = 0)
+    {i j : ℤ} (hp : (i, j) ∈ triBox N) : r i j = s i j := by
+  have hnn : ∀ p ∈ triBox N, 0 ≤ (r p.1 p.2 - s p.1 p.2) := by
+    rintro ⟨a, b⟩ hp; exact sub_nonneg.mpr (hle a b (mem_triBox.mp hp).2.2)
+  have := (Finset.sum_eq_zero_iff_of_nonneg hnn).mp h0 (i, j) hp
+  simpa [sub_eq_zero] using this
+
+/-- The full function equality `r = s` from `Φ = 0`, using support and below-diagonal agreement. -/
+theorem funext_of_deficiency_eq_zero (N : ℤ) (r s : ℤ → ℤ → ℤ)
+    (hsupp : Supported N (fun i j ↦ r i j - s i j))
+    (hle : ∀ i j, i ≤ j → s i j ≤ r i j) (hbelow : ∀ i j, j ≤ i → r i j - s i j = 0)
+    (h0 : deficiency N r s = 0) : r = s := by
+  funext i j
+  rcases lt_or_ge i 0 with hi | hi
+  · have := hsupp.1 i j hi; simpa [sub_eq_zero] using this
+  rcases lt_or_ge N j with hj | hj
+  · have := hsupp.2 i j hj; simpa [sub_eq_zero] using this
+  rcases le_or_gt j i with hji | hij
+  · have := hbelow i j hji; simpa [sub_eq_zero] using this
+  · exact eq_of_deficiency_eq_zero N r s hle h0
+      (mem_triBox.mpr ⟨⟨hi, by omega⟩, ⟨by omega, hj⟩, by omega⟩)
+
+/-- The descent strictly lowers the deficiency: `Φ (boxDrop r a c b e) s < Φ r s` when the strict
+drop cell `(a, b+1)` is in the triangle box (`0 ≤ a < b+1 ≤ N`). -/
+theorem deficiency_boxDrop_lt (N : ℤ) (r s : ℤ → ℤ → ℤ) {a c b e : ℤ}
+    (hac : a < c) (hbe : b + 1 ≤ e) (ha0 : 0 ≤ a) (hab : a < b + 1) (hbN : b + 1 ≤ N) :
+    deficiency N (boxDrop r a c b e) s < deficiency N r s := by
+  have hsub : deficiency N r s - deficiency N (boxDrop r a c b e) s
+      = ∑ p ∈ triBox N, (r p.1 p.2 - boxDrop r a c b e p.1 p.2) := by
+    rw [deficiency, deficiency, ← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun p _ ↦ by ring
+  -- each term `≥ 0` (boxDrop_le), and `= 1` at `(a,b+1)` (boxDrop_strict)
+  have hcell : (a, b + 1) ∈ triBox N :=
+    mem_triBox.mpr ⟨⟨ha0, by omega⟩, ⟨by omega, hbN⟩, by omega⟩
+  have hnn : ∀ p ∈ triBox N, 0 ≤ (r p.1 p.2 - boxDrop r a c b e p.1 p.2) := fun p _ ↦
+    sub_nonneg.mpr (boxDrop_le r a c b e p.1 p.2)
+  have hpos1 : (1 : ℤ) ≤ ∑ p ∈ triBox N, (r p.1 p.2 - boxDrop r a c b e p.1 p.2) := by
+    calc (1 : ℤ) = r a (b + 1) - boxDrop r a c b e a (b + 1) := by
+            rw [boxDrop_strict r hac hbe]; ring
+      _ ≤ _ := Finset.single_le_sum hnn hcell
+  omega
+
+/-- Strong-induction core: `Φ ≤ n` and the invariants give a box-move chain `r ↠ s`. -/
+theorem box_move_chain_aux (N : ℤ) (s : ℤ → ℤ → ℤ) (hms : ∀ i j, 0 ≤ diff s i j) :
+    ∀ (n : ℕ) (r : ℤ → ℤ → ℤ), Supported N (fun i j ↦ r i j - s i j) →
+      (∀ i j, 0 ≤ r i j - s i j) → (∀ i j, j ≤ i → r i j - s i j = 0) →
+      (deficiency N r s).toNat ≤ n → BoxMoveChain r s := by
+  intro n
+  induction n with
+  | zero =>
+    intro r hsupp hpos hbelow hΦ
+    -- `Φ ≤ 0` and `Φ ≥ 0` ⟹ `Φ = 0` ⟹ `r = s`
+    have hle : ∀ i j, i ≤ j → s i j ≤ r i j := fun i j _ ↦ by have := hpos i j; omega
+    have hnn := deficiency_nonneg N r s hle
+    have hΦ0 : deficiency N r s = 0 := by omega
+    rw [funext_of_deficiency_eq_zero N r s hsupp hle hbelow hΦ0]
+    exact Relation.ReflTransGen.refl
+  | succ n ih =>
+    intro r hsupp hpos hbelow hΦ
+    have hle : ∀ i j, i ≤ j → s i j ≤ r i j := fun i j _ ↦ by have := hpos i j; omega
+    have hnn := deficiency_nonneg N r s hle
+    rcases eq_or_lt_of_le hnn with hΦ0 | hΦpos
+    · -- `Φ = 0`: done by refl
+      rw [funext_of_deficiency_eq_zero N r s hsupp hle hbelow hΦ0.symm]
+      exact Relation.ReflTransGen.refl
+    · -- `Φ > 0`: a positive triangle cell exists; run the descent
+      have hexists : ∃ p ∈ triBox N, 0 < r p.1 p.2 - s p.1 p.2 := by
+        by_contra hcon
+        push Not at hcon
+        have : deficiency N r s = 0 := by
+          apply Finset.sum_eq_zero
+          rintro ⟨i, j⟩ hp
+          have h1 := hcon (i, j) hp
+          have h2 := hpos i j
+          simp only at h1 ⊢
+          omega
+        omega
+      obtain ⟨⟨I, J⟩, hpmem, hcellpos⟩ := hexists
+      obtain ⟨hI, hJ, hIJ⟩ := mem_triBox.mp hpmem
+      -- positive triangle cell ⟹ strict upper (`I < J`) by below-diagonal vanishing
+      have hIlt : I < J := by
+        rcases eq_or_lt_of_le hIJ with heq | hlt
+        · rw [← heq] at hcellpos; rw [hbelow I I (le_refl I)] at hcellpos
+          exact absurd hcellpos (lt_irrefl 0)
+        · exact hlt
+      -- descent step
+      obtain ⟨a, c, b, e, hstep, hdom, ha0, hac, hcb, hab, hbe, heN⟩ :=
+        exists_boxMoveStep_descent N r s hsupp hpos hbelow hms hIlt hJ.2 hcellpos
+      set r' : ℤ → ℤ → ℤ := boxDrop r a c b e with hr'
+      -- invariants for `r'`
+      have hbelow' : ∀ i j, j ≤ i → r' i j - s i j = 0 := by
+        intro i j hji
+        have hind : boxIndicator a c b e i j = 0 := by
+          rw [boxIndicator, if_neg (by rintro ⟨_, h2, h3, _⟩; omega)]
+        have := hbelow i j hji
+        rw [hr', boxDrop, hind]; omega
+      have hpos' : ∀ i j, 0 ≤ r' i j - s i j := by
+        intro i j
+        rcases le_or_gt j i with hji | hij
+        · rw [hbelow' i j hji]
+        · exact sub_nonneg.mpr (hdom i j (le_of_lt hij))
+      have hsupp' : Supported N (fun i j ↦ r' i j - s i j) := by
+        refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩
+        · have hind : boxIndicator a c b e i j = 0 := by
+            rw [boxIndicator, if_neg (by rintro ⟨h1, _⟩; omega)]
+          have := hsupp.1 i j hi
+          simp only at this ⊢; rw [hr', boxDrop, hind]; omega
+        · have hind : boxIndicator a c b e i j = 0 := by
+            rw [boxIndicator, if_neg (by rintro ⟨_, _, _, h4⟩; omega)]
+          have := hsupp.2 i j hj
+          simp only at this ⊢; rw [hr', boxDrop, hind]; omega
+      -- `Φ` strictly drops
+      have hdrop : deficiency N r' s < deficiency N r s :=
+        deficiency_boxDrop_lt N r s hac hbe ha0 hab (by omega)
+      have hΦ' : (deficiency N r' s).toNat ≤ n := by
+        have hnn' := deficiency_nonneg N r' s (fun i j _ ↦ by have := hpos' i j; omega)
+        omega
+      exact Relation.ReflTransGen.head hstep (ih r' hsupp' hpos' hbelow' hΦ')
+
+/-- **L6.2c (box-move generation).** Achievable rank patterns `s ≤ r` over the same dimension
+vector (`s` dominated by `r` on the upper triangle, agreeing on/below the diagonal, both supported,
+`s` achievable) are connected by a finite chain of applicable box moves: `BoxMoveChain r s`. -/
+theorem box_move_chain_of_le (N : ℤ) (r s : ℤ → ℤ → ℤ)
+    (hsupp : Supported N (fun i j ↦ r i j - s i j)) (hpos : ∀ i j, 0 ≤ r i j - s i j)
+    (hbelow : ∀ i j, j ≤ i → r i j - s i j = 0) (hms : ∀ i j, 0 ≤ diff s i j) :
+    BoxMoveChain r s :=
+  box_move_chain_aux N s hms (deficiency N r s).toNat r hsupp hpos hbelow (le_refl _)
+
 section Witness
 
 /-! ## Non-vacuity witness
@@ -488,6 +801,59 @@ at least `gWitness 0 1 = 1`. -/
 example : gWitness 0 1 ≤ ∑ p ∈ coveringRect gWitness 2 0 1, diff gWitness p.1 p.2 :=
   sum_secondDiff_coveringRect_ge 2 gWitness supported_gWitness nonneg_gWitness
     (by norm_num) (by norm_num) (by norm_num [gWitness])
+
+/-! ### A non-trivial generation witness (`box_move_chain_of_le`)
+
+`N = 2`, dimension vector `(1,2,2)`. The achievable pattern `s = cumul 2 msWitness` for the Kostant
+partition `msWitness = {[0,1], [1,2], [2,2]}` and the pattern `r = s + 1_{(0,2)}` (achievable, the
+partition `{[0,2], [1,1], [2,2]}`) differ only at the single strict-upper cell `(0,2)`. Their
+residual `r − s` is the single-cell array (`1` at `(0,2)`, else `0`), which is nonnegative,
+supported, and vanishes on/below the diagonal; `s` is achievable (`diff s = msWitness ≥ 0`). So
+`box_move_chain_of_le` fires and `BoxMoveChain r s` holds — the chain is **non-trivial** (`r ≠ s`,
+the single split box move `[0,2] + [1,1] ↦ [0,1] + [1,2]`). -/
+
+/-- Witness Kostant partition for `(1,2,2)`: `m₀₁ = m₁₂ = m₂₂ = 1`, else `0`. -/
+def bmcPartition : ℤ → ℤ → ℤ := fun i j ↦
+  if i = 0 ∧ j = 1 then 1 else if i = 1 ∧ j = 2 then 1 else if i = 2 ∧ j = 2 then 1 else 0
+
+/-- The witness partition is supported (vanishes for `i < 0` and for `j > 2`). -/
+theorem supported_bmcPartition : Supported 2 bmcPartition := by
+  refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩ <;>
+    · unfold bmcPartition; split_ifs <;> omega
+
+/-- The witness partition is nonnegative. -/
+theorem nonneg_bmcPartition : ∀ i j, 0 ≤ bmcPartition i j := by
+  intro i j; unfold bmcPartition; split_ifs <;> norm_num
+
+/-- The single dropped cell `(0,2)` (the residual `r − s`). -/
+def bmcCell : ℤ → ℤ → ℤ := fun i j ↦ if i = 0 ∧ j = 2 then 1 else 0
+
+/-- The achievable lower pattern `s = cumul 2 bmcPartition`. -/
+noncomputable def bmcLower : ℤ → ℤ → ℤ := cumul 2 bmcPartition
+
+/-- The upper pattern `r = s + 1_{(0,2)}`. -/
+noncomputable def bmcUpper : ℤ → ℤ → ℤ := fun i j ↦ bmcLower i j + bmcCell i j
+
+/-- `box_move_chain_of_le` fires: `BoxMoveChain bmcUpper bmcLower` holds, and the patterns differ
+(`r 0 2 = s 0 2 + 1`), so the chain is non-trivial. -/
+example : BoxMoveChain bmcUpper bmcLower := by
+  have hrs : ∀ i j, bmcUpper i j - bmcLower i j = bmcCell i j := fun i j ↦ by
+    rw [bmcUpper]; ring
+  refine box_move_chain_of_le 2 bmcUpper bmcLower ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩
+    (fun i j ↦ ?_) (fun i j hji ↦ ?_) (fun i j ↦ ?_)
+  · simp only; rw [hrs]; unfold bmcCell; split_ifs <;> omega
+  · simp only; rw [hrs]; unfold bmcCell; split_ifs <;> omega
+  · rw [hrs]; unfold bmcCell; split_ifs <;> norm_num
+  · rw [hrs]; unfold bmcCell; split_ifs <;> omega
+  · -- `diff bmcLower = bmcPartition ≥ 0`
+    rw [bmcLower, diff_cumul 2 bmcPartition supported_bmcPartition.1 supported_bmcPartition.2]
+    exact nonneg_bmcPartition i j
+
+/-- The witness chain is non-trivial: `bmcUpper ≠ bmcLower` (they differ at `(0,2)`). -/
+example : bmcUpper 0 2 ≠ bmcLower 0 2 := by
+  have : bmcUpper 0 2 - bmcLower 0 2 = 1 := by
+    rw [bmcUpper]; unfold bmcCell; norm_num
+  omega
 
 end Witness
 
