@@ -2,112 +2,89 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-20): CONTRACT IS BEDROCK — structural-proof phase OPEN
+## Current read (2026-06-20): structural phase ACTIVE — keystone in, A1 in, 7th bug found+fixing
 
-`rv-2` delivered the **BEDROCK** verdict on the contract (`Skeleton.lean` @86eb0a9, headline @a4d00e1):
-green-gate green (`lake build DLNFibre`, 2851 jobs), 13 sorry / 1 axiom, headline assembles, `#print axioms`
-= `[propext, sorryAx, Classical.choice, Quot.sound]`, **S2 (`monomial_rlct`) the only cited line and it does
-NOT leak into the headline**. All 6 statement bugs the green build had hidden are fixed; `deepestPoint` is
-honest (geometric `IsDeepLayers` choice — never mentions `rlctAt`, so D1 is a genuine claim; real provable
-existence obligation; sound `Classical.choice` route). The one residual is A2's weak existential (accepted
-**secondary θ-seam**, see below) — not a regression.
+The contract was certified "bedrock" by rv-2, but the **proof attempt surfaced a 7th statement bug** the
+audit missed (see below) — so the contract is being RE-corrected (hr-fix) and will be re-audited. Meanwhile
+two structural rungs have landed. Honest status:
 
-→ The bedrock gate is cleared. The structural-proof phase is dispatched (below).
+**Landed / green:**
+- **Keystone `paramsEquivFlat`** (`Params H ≃ᵐ (Fin N → ℝ)`, measure-preserving) — fm-2, committed to
+  expedition/aoyagi-full @`d7b1ba3` (Route A++). rv-2 green-gating + auditing it in an isolated checkout
+  (axiom/leak check). Unblocks the (1,1,1) bridge, S1.1's use-site, R1's measure facts.
+- **A1 `clean_eq_printed`** — fm, committed @`c234651` on branch `worktree-rung0-defs` (helpers
+  `balancedSplit_sq` + `sum_sq_eq`; `field_simp; ring`). To be merged into expedition.
 
-## Structural-phase dispatch (2026-06-20) — 3 tracks, collision-free by file ownership
+**The 7th bug (caught by fm's proof attempt, MISSED by the bedrock audit):** `deepestPoint_exists`
+(`Nonempty {w // IsDeepLayers H r B w}` under `hB : B.rank = r` ALONE) is FALSE — H=(3,1,3), r=2,
+B=diag(1,1,0): the MIDDLE width H 1=1 bottlenecks the product to rank ≤1<2 ⇒ empty fibre ⇒ Nonempty FALSE.
+The HEADLINE is then false too (⨅ over ∅ = ⊤ ≠ finite). Root cause: "rank B=r ⟹ r≤H s" holds only for the
+OUTER widths. **Fix (decided): add `(hr : ∀ s : Fin (L+1), r ≤ H s)`** to deepestPoint_exists + deepestPoint
++ deepestPoint_isDeep + product_reduction + deepest_point_reduction + aoyagi_learning_coefficient. It is also
+the well-definedness domain of `aoyagiLambda` (M⁽ˢ⁾=H⁽ˢ⁾−r needs r≤H⁽ˢ⁾). fm doing the STATEMENT fix first
+(deepestPoint_exists stays a sorry under the new sig) → I merge → rv-2 re-audits the corrected contract.
 
-The 10 rung sorries all live in **Skeleton.lean**; only the measure infra (`ParamsFlat.lean`) and the
-(1,1,1) bridge (`Case111*.lean`) are split out — and Skeleton does NOT import those. So:
+## Live status (per-track)
 
-- **MEASURE track — `fm-2` [thread 15]**, owns `ParamsFlat.lean` + `Case111*.lean`:
-  - U1 (keystone): `paramsEquivFlat : Params H ≃ᵐ (Fin N → ℝ)` (Route A++: banked `measurePreserving_piCurry`
-    + scoped `letI` fiber instance + `.comp`; correct the stale "not rfl-equal" docstring — it IS `rfl`).
-  - U2: close the (1,1,1) bridge `case111_rlct_eq_monomialThreshold` (#13) → first fully axiom-free+sorry-free
-    end-to-end. Unblocks S1.1's use-site.
-- **ALGEBRA track — `fm` [thread 14]**, owns `Skeleton.lean` (measure-free rungs only):
-  - A1 `lambdaCore_eq_clean` + `clean_eq_printed` (pure arithmetic; balanced-split min + finite ℚ identity,
-    rv-2-verified 9324 cases) → L1 `block_elimination` (block/Schur normal form) → `deepestPoint_exists`
-    (r=0 origin; general r consumes L1's factorization; feasible under hB:B.rank=r alone).
-- **DESIGN track — `pp` [thread 16]** (read-only): design R1 (the mountain) — explicit blow-up charts,
-  monomial exponents (k,h), cover, R1↔Adm match (via the proven `codim S(t)=Mval`), decorrelated Codex —
-  so R1 is formalise-ready when paramsEquivFlat lands.
-- **`rv-2`** decorrelated standby: per-rung honesty audit as each closes green (statement unchanged, no
-  cheat/vacuity, axioms clean). I green-gate + commit + push, THEN ping rv-2 with target + SHA.
+- **fm-2 (measure track)** — keystone done @d7b1ba3; now on UNIT 2 (the (1,1,1) bridge, Case111*.lean).
+  Commits directly to expedition/aoyagi-full (module-green each; pings per commit; rv-2 green-gates behind).
+- **fm (algebra track)** — branch `worktree-rung0-defs` (Skeleton-only), based @1bb9e31 (I merge forward).
+  A1 clean_eq_printed DONE; IMMEDIATE = the hr statement-fix; THEN lambdaCore_eq_clean (A1 hard) + L1 +
+  deepestPoint_exists proof. Codex consults running on lambdaCore-min + L1-construction.
+- **pp (design)** — R1 design DELIVERED + 2 increments (binding-divisor correction; value-match downgrade).
+  Standing down on-demand; re-engage for R1 value-match execution when fm's L1 lands.
+- **rv-2 (review)** — green-gating keystone d7b1ba3; queued: re-audit the hr-corrected contract. Decorrelated.
 
-Build discipline: module-scoped builds during iteration (`lake build DLNFibre.DLN.RLCT.<Module>`); controller
-runs full `lake build DLNFibre` at commit; controller is sole committer. Per-rung Skeleton split done
-opportunistically when a proof gets heavy (the build-time lesson), not big-bang now (avoids disturbing the
-just-certified contract; the import-ordering around deepestPoint deserves care, not a phase-boundary scramble).
+## Integration topology (current)
+expedition/aoyagi-full = integration trunk (fm-2 commits here directly). worktree-rung0-defs = fm's Skeleton
+branch (I merge → expedition). Files DISJOINT (fm-2: ParamsFlat/Case111; fm: Skeleton) — contract change is
+Skeleton-LOCAL (verified: no refs to deepestPoint/headline/L2/D1 outside Skeleton). Merges are clean. MAIN
+working tree has no Lean WIP between fm-2 commits. Controller green-gates via rv-2 (isolated builds) to avoid
+the shared-tree build race.
 
-## Tracked obligations / open scope decisions
-
-- **A2 / θ-order — deferred tightening, NOT dropped.** `aoyagiTheta_eq` is still the weak existential
-  (dischargeable by d=1,ℓ=0,a=0). Tighten to bedrock by binding its `(d,k,h)` data to R1's resolution
-  geometry — downstream of R1. λ (the headline) does not depend on A2.
-- **θ-scope question (resolve when tightening A2):** the order routes through S2's order-half (the
-  meromorphic pole-order, scoped to `∃j kⱼ≠0`). Whether that sits inside the operator's "only cite that the
-  normal-crossing form gives the RLCT statement" boundary depends on reading "RLCT statement" as Watanabe's
-  full (λ AND multiplicity) theorem vs λ-only. Flag, don't block.
-
-## R1 design BANKED (pp, thread 14) + R3b DECISION
-
-pp mapped the mountain (`threads/14-r1-design/r1-design.md`; decorrelated Codex, one correction adopted).
-- **Value/atlas split.** Separate the RLCT VALUE from the explicit CHART ATLAS the statement names.
-  - VALUE: `rlctAt(‖∏C‖²) = ½·min_t Mval(t)`, pinned by codim S(t)=Mval (thread-03, proven gen-L) +
-    {∏C=0}=⋃S(t) + the per-branch binding divisor (residual-block center, codim Mval). No chart enumeration
-    needed for the value.
-  - ATLAS (ι,φᵢ,k,h): Aoyagi's iterated affine blow-ups (coordinate-subspace; explicit substitutions).
-- **Codex correction (adopted, bedrock-sharpening):** prefix-stratum partition is right for the VALUE but
-  TOO COARSE for a literal atlas — center {rank≤t} is singular along {rank≤t−1}; the smooth resolution
-  refines strata by the FULL rank-pattern r_{ab}=rank(C^a···C^b), not just prefix ranks. ⇒ "each minimizing
-  chart ↔ one prefix stratum" is TOO STRONG; the R1↔Adm match is VALUE-level only (min-chart-ratio = ½ min
-  Mval). Corrects design-spec §9.3 + thread-03 (pp patching as wind-down).
-- **Lean-tractability reversal (adopted):** Aoyagi's affine recursion is the MOST tractable atlas (vs
-  flag/quiver determinantal-resolution + SNC — far heavier). Anti-treadmill-safe: value from §3-codim, NOT
-  the bookkeeping.
-- **Binding-divisor mechanism (reusable core, verified; pp self-corrected its own "telescoping" framing):**
-  the divisor-ratio lemma — smooth codim-c center ⇒ F (sum of squares) vanishes to order 2 ⇒ k=1, Jacobian
-  u^{c−1} ⇒ h=c−1, ratio c/2 — applies to the BINDING divisor per branch: after the regular pivot split
-  exposes the RESIDUAL BLOCK (whose vanishing IS the stratum S(t)), ONE blow-up of that residual-block-zero
-  center (codim EXACTLY Mval(t)) gives the binding divisor (k,h)=(1, Mval(t)−1), ratio ½·Mval(t). NOT
-  per-rank-drop telescoping — that gives ½·min(cᵢ) = TOO SMALL ((2,2,2) t=1: min(1,2)/2=1/2≠λ=3/2). The
-  `Mval = Σ rank-drop codims` is the codim ARITHMETIC; geometrically it is ONE codim-Mval binding center per
-  branch. min over branches = ½·min_t Mval = λ. (2,2,2) verified: binding divisor ρ (residual {δ=u=v=0})
-  codim-3-in-one-step, (k,h)=(1,2)→3/2=λ.
-- **No hidden hypotheses** (Codex §4): char-0 auto, positive widths, r≤min M⁽ˢ⁾ from hB; no genericity, no
-  width inequality. Frobenius → any PD form. Toric/Newton route DEAD (Codex torus-zero counterexample).
-
-**DECISION (controller, within standing authority): R3b — self-contained, one-citation.** R3a (cite
-Lehalleur–Rimányi `rlct=codim/2`, arXiv:2411.19920) is OUT: violates (1) the one-citation scope (codim is
-THE new content, must be PROVEN) AND (2) the Aoyagi-independence constraint. No operator gate (R3b is the
-default); surfaced to operator as informational, override-able. R1's value PROVEN via atlas + telescoping + S2.
-
-**R1 formalisation ladder (pp):** 1. (1,1,1) [=fm-2 bridge #12]. 2. divisor-ratio lemma (reusable core).
-3. codim S(t)=Mval (thread-03). 4. atlas (Aoyagi affine branches) + assembly [THE mountain, general-L].
-5. cover. Steps 1–3 tractable+reusable; step 4 is the heavy lift; small cases = validation gate.
+## R1 design BANKED (pp, thread 14) + R3b DECISION + value-match DOWNGRADE
+- **Value/atlas split.** VALUE `rlctAt(‖∏C‖²)=½·min_t Mval(t)` (pinned by codim S(t)=Mval, thread-03) vs
+  explicit CHART ATLAS (Aoyagi affine blow-ups).
+- **Binding-divisor mechanism** (pp self-corrected the wrong "telescoping" framing): per branch, ONE blow-up
+  of the residual-block-zero center (codim EXACTLY Mval(t)) is the binding divisor (k,h)=(1,Mval−1), ratio
+  ½·Mval; min over branches = ½ min_t Mval = λ. (Telescoping per-rank-drop would give ½·min(cᵢ) = TOO SMALL.)
+- **VALUE-MATCH DOWNGRADE (pp §8, verified L=3):** the headline's value-match does NOT need the full atlas —
+  only the minimizing branch's binding divisor, produced by **iterated L1 to the residual block (REUSES fm's
+  L1 + deepestPoint_exists machinery)**. Route: (i) iterate L1 → codim-Mval residual block; (ii) residual =
+  codim-Mval coord subspace (thread-03); (iii) blow up → divisor-ratio lemma → ratio ½·Mval [UPPER bound,
+  L1-reuse, cheap]; (iv) cover/exhaustiveness inequality over strata [LOWER bound, the residual real work].
+  Full normal-crossing atlas DEFERRED (only to strengthen the statement beyond value-level). R1's "mountain"
+  status partly downgraded.
+- **Codex correction adopted:** prefix-stratum partition right for the VALUE but too coarse for a literal
+  atlas (charts refine by full rank-pattern); R1↔Adm is VALUE-level, NOT a chart bijection.
+- **DECISION R3b** (self-contained, one-citation). R3a (cite LR `rlct=codim/2`, arXiv:2411.19920) OUT:
+  violates one-citation scope (codim = THE new content) + Aoyagi-independence. Surfaced to operator as
+  informational/override-able.
+- **No hidden hypotheses** (Codex §4): char-0, positive widths, r≤H s (=the hr fix). Toric/Newton route DEAD.
 
 ## WIN — λ-citation ELIMINABLE (banked @22f5dfe)
-Monomial threshold-half directly provable from Mathlib (Fubini + `intervalIntegral.integrableOn_Ioo_rpow_iff`);
-demonstrated axiom-free for (1,1,1). General = labour, no wall. So λ can beat the one-citation target; only
-the θ-order-half stays the genuine analytic seam.
+Monomial threshold-half directly provable from Mathlib (Fubini + rpow-iff); axiom-free for (1,1,1). General =
+labour, no wall. λ can beat the one-citation target; only θ-order stays the genuine analytic seam (S2 order-half).
 
-## Measure-side architecture — DECIDED: ROUTE A++ (pp, 10 compiled probes + Codex)
-Matrix-instance wall is NOT systemic — paid ONCE + contained by interface discipline. `Params.volume` = nested
-`Measure.pi` is **rfl**; fiber instance = scoped one-line `letI` inside `paramsEquivFlat` (not a global Matrix
-instance); banked `piCurry` covers per-layer + across-layers (no 2nd gap); downstream (S1.1, bridge, R1) state
-measure facts on `Fin N → ℝ` and pull back via `integrableOn_comp_preimage` — never re-touch Matrix.
+## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
+Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
+instance = section-local `instance` (NOT a global Matrix instance, NOT a goal-type `letI` — elaboration order).
+**Σ-form throughout via `piCurry.symm`, never `curry`/`×`** (`MeasurableEquiv.curry` has NO measurePreserving
+companion in Mathlib; `piCurry` does); final reindex `Σ…≃Fin N` via `equivFin`; `measurePreserving_pi` =
+piCongrRight MP, pass μ,ν explicitly. (pp corrected an earlier overclaim — it had verified type-level +
+individual lemmas but the MP body was sorry'd; now the FULL body compiles EXIT=0 v4.29. Decision unaffected,
+firmer.) These gotchas are REUSABLE for S1.1 + R1 measure facts. Downstream states facts on `Fin N → ℝ`, pulls
+back via `integrableOn_comp_preimage` — never re-touch Matrix.
 
-## Rung map (scoped, post-bedrock)
-- Measure-free, ready now: **A1, L1, deepestPoint_exists** (fm, thread 14).
-- Keystone infra: **paramsEquivFlat** (fm-2) → unblocks (1,1,1) bridge (#13/#12), S1.1 use-site, R1 measure facts.
-- Measure-dependent (after paramsEquivFlat): **S1.1** transport (heavy) + S1.3/S1.4 + **S1.5** smooth-block;
-  **L2** (needs L1+S1.5); **D1** `deepest_point_reduction` (needs S1 monotonicity); **R1** (the mountain;
-  pp designing now, thread 16).
-- Assembly: **T** `aoyagi_learning_coefficient` already assembles from D1+L2 (headline proven modulo those two).
-- Two hard Lean builds remain: S1.1 + R1.
+## Rung map (scoped)
+- DONE: keystone paramsEquivFlat (d7b1ba3); A1 clean_eq_printed (c234651, to merge).
+- NEXT (fm): hr statement-fix [contract-critical] → lambdaCore_eq_clean → L1 → deepestPoint_exists proof.
+- NEXT (fm-2): (1,1,1) bridge (#12) → then S1.1 (heavy) + S1.3/4/5.
+- THEN: L2 (needs L1+S1.5) · D1 (needs S1) · R1 value-match (needs L1 + S1.1; pp re-engaged) · A2 (θ-seam, post-R1).
+- Assembly T: assembles from D1+L2 (+ hr threaded).
+- Two hard builds remain: S1.1 + R1's cover-inequality (lower bound).
 
 ## Next tick
-Process whichever lands first: a "module green" from `fm` (A1) or `fm-2` (paramsEquivFlat). On each: pull,
-full green-gate, commit+push, ping `rv-2` to audit, update synthesis. On `pp`'s R1 design: read it, decide the
-R1 formalisation plan (and whether to extract R1 into its own file). Watch for collision reports (shouldn't
-happen — disjoint files). Keep rv-2 decorrelated. Don't stop in a blocked state (hero-task autonomy).
+Process: fm's hr-fix green (→ merge worktree-rung0-defs→expedition, green-gate via rv-2, rv-2 re-audit); rv-2's
+keystone verdict; fm-2's bridge. Merge fm's Skeleton commits forward as they land (clean, disjoint). Keep rv-2
+decorrelated. fm-liveness: CONFIRMED live (reported A1 + the bug). Don't stop in a blocked state.

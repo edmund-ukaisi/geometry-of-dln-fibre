@@ -86,3 +86,31 @@ minimizing chart does NOT correspond to a single prefix stratum (charts are stri
 - **Citation discipline reaffirmed:** citing `rlct = codim/2` (R3a, Lehalleur–Rimányi arXiv:2411.19920) was
   rejected — it would cite away THE new content (codim) and breach the Aoyagi-independence constraint. The
   geometric codim must be PROVEN (R3b). A tempting one-line shortcut that violates scope is still out.
+
+## 2026-06-20 — the proof attempt is the ultimate audit (the 7th bug); audit hypothesis-satisfiability
+
+The contract passed a sharp, per-rung, adversarial "bedrock" audit (non-vacuity + over/under-claim +
+name=content) AND a re-audit — yet `deepestPoint_exists` (`Nonempty {w // IsDeepLayers H r B w}` under
+`hB : B.rank = r` alone) was FALSE, and with it the headline (⨅ over an empty fibre = ⊤ ≠ finite). It was
+caught only when fm tried to PROVE it: counterexample H=(3,1,3), r=2, B=diag(1,1,0) — the middle width H 1=1
+bottlenecks the product to rank ≤1<2, so the fibre is empty. The audit (and the controller note) had reasoned
+"rank B=r ⟹ r≤H s", true only for the OUTER widths (B : Fin(H 0)×Fin(H last)); middle widths are
+unconstrained.
+- **Audit-discipline addition (now standard):** beyond non-vacuity/over-claim/name=content, check
+  hypothesis SATISFIABILITY + conclusion-reachability. For an existence/`Nonempty S` rung, CONSTRUCT or
+  REFUTE a witness under the stated hyps — a `Nonempty S` where S can be empty is FALSE, not vacuous.
+- **Build-to-bedrock corollary:** a green build defeats technical slop and a sharp audit defeats much
+  conceptual slop, but the PROOF ATTEMPT is the ultimate audit — it surfaces false statements review misses.
+  Statement-fidelity audits are necessary, not sufficient; do not over-trust "bedrock" before the proof runs.
+- **Fix:** `hr : ∀ s, r ≤ H s` is the right WHOLE-theorem hypothesis (also the well-definedness domain of
+  `aoyagiLambda`, since M⁽ˢ⁾=H⁽ˢ⁾−r). Threaded through the headline + deepestPoint chain.
+
+## 2026-06-20 — calibrate "verified compiles": full-body vs type-level/partial
+
+pp self-corrected (unprompted) an earlier "the ~30-50 line assembly compiles" — it had verified the
+type-level chain + the individual MP lemmas applying, but the composed MP body was still `sorry`'d; fm-2's
+"reindex friction" was the real, under-stated gap. pp then actually compiled the full body (EXIT=0).
+- **Lesson:** "verified it compiles" can mean type-checks / individual-lemmas / full-body-green — confirm
+  WHICH. A measure-/proof-body that is `sorry`'d type-checks but is not done. Discount remembered "compiles"
+  to the artifact actually built.
+- The unprompted self-correction is the disposition working — reward it; it keeps the design honest.
