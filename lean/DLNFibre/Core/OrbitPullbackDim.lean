@@ -87,8 +87,8 @@ The headline holds over any infinite field, so it applies directly to the `(2,2,
 objects' inhabitance. -/
 
 /-- The headline at the concrete `(2,2,2)/ℚ` tuple: `varietyDim (canonicalCoord '' orbitRankLocus
-tupleWitnessQ) = (ringKrullDim (orbitPullback tupleWitnessQ).range).unbotD 0`. The dimension equality
-is satisfiable on a real matrix tuple over `ℚ`. -/
+tupleWitnessQ) = (ringKrullDim (orbitPullback tupleWitnessQ).range).unbotD 0`. The dimension
+equality is satisfiable on a real matrix tuple over `ℚ`. -/
 example :
     varietyDim (canonicalCoord dWitness '' orbitRankLocus tupleWitnessQ)
       = (ringKrullDim (orbitPullback tupleWitnessQ).range).unbotD 0 :=
