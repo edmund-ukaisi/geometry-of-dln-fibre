@@ -324,6 +324,15 @@ on the session's original cwd.
    the bound fails. Next A4 target: build the `S+1` advance scaffold only
    after reproducing the new recurrence/exponent data; do not treat this
    finite exhaustion result as the advance transition.
+   The displayed pivot-complement exhaustion boundary is now Lean-proved too:
+   the displayed pivot row/column complements are equivalent to the old
+   post-pivot domains `J+2..M(S)` and `J+2..M^(S+1)`, failure of the next
+   continuation bound empties one complement type, and the lower-right
+   complement matrix is subsingleton/zero. This still is not the full
+   terminal `D'''` shape theorem or the `S+1` advance. Next A4 target:
+   perform the stage-relabel/domain audit for `(S+1,0)` versus `(S,J+1)` and
+   record the row-side obstruction before attempting any `S+1` transition
+   package.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

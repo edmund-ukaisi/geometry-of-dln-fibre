@@ -3998,6 +3998,202 @@ def pivotPreQBlock (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ 
 /-- Indices other than a chosen pivot. -/
 abbrev pivotComplement {ι : Type*} (pivot : ι) := {i : ι // i ≠ pivot}
 
+/-- Deleting the displayed pivot row from the old residual-row subtype is the
+same finite type as the post-pivot row range `J+2..M(S)`. -/
+noncomputable def case2DisplayedPivotRowComplementEquivPostPivotRows
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    pivotComplement (case2DisplayedPivotRow n hS hcont) ≃
+      (case2PostPivotRows n S J : Type) where
+  toFun i :=
+    ⟨i.1.1, by
+      rw [mem_case2PostPivotRows]
+      have hi := (mem_case2ResidualBlockRows n S J i.1.1).mp i.1.2
+      have hne : i.1.1 ≠ J + 1 := by
+        intro h
+        exact i.2 (Subtype.ext h)
+      omega⟩
+  invFun i :=
+    ⟨⟨i.1, by
+        rw [mem_case2ResidualBlockRows]
+        have hi := (mem_case2PostPivotRows n S J i.1).mp i.2
+        exact ⟨by omega, hi.2⟩⟩, by
+      intro h
+      have hval : i.1 = J + 1 := by
+        exact congrArg Subtype.val h
+      have hi := (mem_case2PostPivotRows n S J i.1).mp i.2
+      omega⟩
+  left_inv i := by
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
+  right_inv i := by
+    apply Subtype.ext
+    rfl
+
+@[simp] theorem case2DisplayedPivotRowComplementEquivPostPivotRows_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (i : pivotComplement (case2DisplayedPivotRow n hS hcont)) :
+    ((case2DisplayedPivotRowComplementEquivPostPivotRows n hS hcont i : ℕ) =
+      i.1.1) :=
+  rfl
+
+@[simp] theorem case2DisplayedPivotRowComplementEquivPostPivotRows_symm_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (i : (case2PostPivotRows n S J : Type)) :
+    (((case2DisplayedPivotRowComplementEquivPostPivotRows n hS hcont).symm i).1.1 =
+      i.1) :=
+  rfl
+
+/-- Deleting the displayed pivot column from the old residual-column subtype is
+the same finite type as the post-pivot column range `J+2..M^(S+1)`. -/
+noncomputable def case2DisplayedPivotColComplementEquivPostPivotCols
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    pivotComplement (case2DisplayedPivotCol n hS hcont) ≃
+      (case2PostPivotCols n S J : Type) where
+  toFun j :=
+    ⟨j.1.1, by
+      rw [mem_case2PostPivotCols]
+      have hj := (mem_case2ResidualBlockCols n S J j.1.1).mp j.1.2
+      have hne : j.1.1 ≠ J + 1 := by
+        intro h
+        exact j.2 (Subtype.ext h)
+      omega⟩
+  invFun j :=
+    ⟨⟨j.1, by
+        rw [mem_case2ResidualBlockCols]
+        have hj := (mem_case2PostPivotCols n S J j.1).mp j.2
+        exact ⟨by omega, hj.2⟩⟩, by
+      intro h
+      have hval : j.1 = J + 1 := by
+        exact congrArg Subtype.val h
+      have hj := (mem_case2PostPivotCols n S J j.1).mp j.2
+      omega⟩
+  left_inv j := by
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
+  right_inv j := by
+    apply Subtype.ext
+    rfl
+
+@[simp] theorem case2DisplayedPivotColComplementEquivPostPivotCols_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (j : pivotComplement (case2DisplayedPivotCol n hS hcont)) :
+    ((case2DisplayedPivotColComplementEquivPostPivotCols n hS hcont j : ℕ) =
+      j.1.1) :=
+  rfl
+
+@[simp] theorem case2DisplayedPivotColComplementEquivPostPivotCols_symm_apply_coe
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (j : (case2PostPivotCols n S J : Type)) :
+    (((case2DisplayedPivotColComplementEquivPostPivotCols n hS hcont).symm j).1.1 =
+      j.1) :=
+  rfl
+
+theorem case2DisplayedPivotRowComplement_isEmpty_iff_postPivotRows_isEmpty
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    IsEmpty (pivotComplement (case2DisplayedPivotRow n hS hcont)) ↔
+      IsEmpty (case2PostPivotRows n S J : Type) := by
+  let e := case2DisplayedPivotRowComplementEquivPostPivotRows n hS hcont
+  constructor
+  · intro h
+    exact ⟨fun i ↦ h.false (e.symm i)⟩
+  · intro h
+    exact ⟨fun i ↦ h.false (e i)⟩
+
+theorem case2DisplayedPivotColComplement_isEmpty_iff_postPivotCols_isEmpty
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    IsEmpty (pivotComplement (case2DisplayedPivotCol n hS hcont)) ↔
+      IsEmpty (case2PostPivotCols n S J : Type) := by
+  let e := case2DisplayedPivotColComplementEquivPostPivotCols n hS hcont
+  constructor
+  · intro h
+    exact ⟨fun j ↦ h.false (e.symm j)⟩
+  · intro h
+    exact ⟨fun j ↦ h.false (e j)⟩
+
+theorem case2DisplayedPivotRowComplement_isEmpty_of_postPivotRows_eq_empty
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hrows : case2PostPivotRows n S J = ∅) :
+    IsEmpty (pivotComplement (case2DisplayedPivotRow n hS hcont)) := by
+  let e := case2DisplayedPivotRowComplementEquivPostPivotRows n hS hcont
+  refine ⟨fun i ↦ ?_⟩
+  have hempty : (e i).1 ∈ (∅ : Finset ℕ) := by
+    simpa [hrows] using (e i).2
+  exact (Finset.notMem_empty (e i).1) hempty
+
+theorem case2DisplayedPivotColComplement_isEmpty_of_postPivotCols_eq_empty
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hcols : case2PostPivotCols n S J = ∅) :
+    IsEmpty (pivotComplement (case2DisplayedPivotCol n hS hcont)) := by
+  let e := case2DisplayedPivotColComplementEquivPostPivotCols n hS hcont
+  refine ⟨fun j ↦ ?_⟩
+  have hempty : (e j).1 ∈ (∅ : Finset ℕ) := by
+    simpa [hcols] using (e j).2
+  exact (Finset.notMem_empty (e j).1) hempty
+
+/-- When the next Case 2 continuation bound fails, one of the displayed
+pivot-complement index types is empty.  This is the finite-index content
+behind the terminal one-row/one-column shape, not the `S+1` advance
+transition. -/
+theorem case2DisplayedPivotComplement_isEmpty_or_isEmpty_of_not_next_cont
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1)) :
+    IsEmpty (pivotComplement (case2DisplayedPivotRow n hS hcont)) ∨
+      IsEmpty (pivotComplement (case2DisplayedPivotCol n hS hcont)) := by
+  rcases case2PostPivotRows_empty_or_cols_empty_of_not_next_cont hS hstop with
+    hrows | hcols
+  · exact Or.inl
+      (case2DisplayedPivotRowComplement_isEmpty_of_postPivotRows_eq_empty
+        hS hcont hrows)
+  · exact Or.inr
+      (case2DisplayedPivotColComplement_isEmpty_of_postPivotCols_eq_empty
+        hS hcont hcols)
+
+/-- If the next Case 2 continuation bound fails, then every lower-right matrix
+on the displayed pivot-complement row and column types is equal to every other.
+This is only domain-vacuity bookkeeping for the lower-right complement block,
+not the full `D'''_J = (1,0,...)` terminal block statement. -/
+theorem case2DisplayedPivotComplement_matrix_subsingleton_of_not_next_cont
+    {K : Type*} {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1)) :
+    Subsingleton
+      (Matrix (pivotComplement (case2DisplayedPivotRow n hS hcont))
+        (pivotComplement (case2DisplayedPivotCol n hS hcont)) K) := by
+  rcases case2DisplayedPivotComplement_isEmpty_or_isEmpty_of_not_next_cont
+      hS hcont hstop with hrow | hcol
+  · refine ⟨fun A B ↦ ?_⟩
+    ext i j
+    exact False.elim (hrow.false i)
+  · refine ⟨fun A B ↦ ?_⟩
+    ext i j
+    exact False.elim (hcol.false j)
+
+/-- Under failed next continuation, the lower-right displayed pivot-complement
+matrix is the zero matrix.  This is a consequence of empty row or column
+complement type, not a proof of Aoyagi's full terminal `D'''` shape. -/
+theorem case2DisplayedPivotComplement_matrix_eq_zero_of_not_next_cont
+    {K : Type*} [Zero K] {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (D : Matrix (pivotComplement (case2DisplayedPivotRow n hS hcont))
+      (pivotComplement (case2DisplayedPivotCol n hS hcont)) K) :
+    D = 0 :=
+  (case2DisplayedPivotComplement_matrix_subsingleton_of_not_next_cont
+    (K := K) hS hcont hstop).elim D 0
+
 /-- The reindexing equivalence that puts a selected pivot first. -/
 noncomputable def pivotFirstIndexEquiv {ι : Type*} [DecidableEq ι] (pivot : ι) :
     Unit ⊕ pivotComplement pivot ≃ ι where

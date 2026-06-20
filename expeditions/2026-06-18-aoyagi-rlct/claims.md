@@ -571,6 +571,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-boundary-constructor-a4.md`.
 	  Review of the Case 2 post-pivot exhaustion boundary is saved at
 	  `threads/04-blow-up-certificate/review-case2-post-pivot-exhaustion-a4.md`.
+	  Review of the Case 2 displayed pivot-complement exhaustion boundary is
+	  saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-pivot-complement-exhaustion-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1191,6 +1194,16 @@ No such claim is formalisation-ready until both fields are filled.
   `J+2 <= M(S+1)`, and emptiness when the next continuation bound fails. This
   is only domain bookkeeping and does not construct the `S+1` advance,
   post-data, Jacobians, termination, or transition invariance.
+  The displayed pivot-complement exhaustion boundary identifies the displayed
+  pivot row/column complements with those post-pivot domains and proves that
+  failure of the next continuation bound empties one complement type. The
+  lower-right complement matrix is therefore subsingleton, and zero over a
+  codomain with zero. This is lower-right domain-vacuity bookkeeping only; it
+  does not construct `D'''_J`, prove `D'''_J = (1,0,...,0)` or its transpose,
+  construct `C'^(S+1)`, build the `S+1` recurrence/exponent state, prove
+  chart coverage or regularity, compute Jacobians, prove normal crossings,
+  extract RLCT, prove termination/transition invariance, or repair the
+  printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

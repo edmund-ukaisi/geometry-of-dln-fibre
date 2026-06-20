@@ -404,6 +404,38 @@ post-data, atlas coverage, coordinate regularity, Jacobian/volume arithmetic,
 normal crossings, RLCT extraction, termination, transition invariance, or
 repair of the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed pivot-complement exhaustion
+
+Reproduction:
+`reproduction-case2-displayed-pivot-complement-exhaustion-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-pivot-complement-exhaustion.md`.
+Review artifact:
+`review-case2-displayed-pivot-complement-exhaustion-a4.md`.
+
+Lean now identifies the displayed pivot-complement row/column types with the
+old post-pivot lower-right domains:
+
+```text
+row complement ~= J+2..M(S),
+col complement ~= J+2..M^(S+1).
+```
+
+The key theorem
+`case2DisplayedPivotComplement_isEmpty_or_isEmpty_of_not_next_cont` says that
+if the displayed pivot is valid and the next continuation bound fails, then
+one of those complement types is empty.  The matrix-level corollaries
+`case2DisplayedPivotComplement_matrix_subsingleton_of_not_next_cont` and
+`case2DisplayedPivotComplement_matrix_eq_zero_of_not_next_cont` package the
+lower-right complement block's vacuity for later terminal-block work.
+
+This is still not Aoyagi's terminal matrix-shape theorem.  It does not
+construct `D'''_J`, prove `D'''_J = (1,0,...,0)` or its transpose, prove the
+whole post-`Q/P` zero pattern, construct `C'^(S+1)`, build the `S+1`
+recurrence/exponent state, prove chart coverage or regularity, compute
+Jacobians, prove normal crossings/RLCT extraction, prove termination or
+transition invariance, or repair the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

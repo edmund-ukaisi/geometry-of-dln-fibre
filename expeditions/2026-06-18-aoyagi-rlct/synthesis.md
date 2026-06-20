@@ -1308,6 +1308,19 @@ prefix minimum is exactly `J+1`. This is finite domain bookkeeping only, not
 the `S+1` advance transition, chart production, Jacobian arithmetic,
 termination, transition invariance, or printed-vector repair.
 
+The Case 2 displayed pivot-complement exhaustion boundary is now Lean-proved.
+The new equivalences identify the displayed pivot row and column complements
+with the old post-pivot domains `J+2..M(S)` and `J+2..M^(S+1)`. If the
+displayed pivot is valid and the next continuation bound fails, Lean proves
+that one complement type is empty. Matrix-level corollaries then show the
+lower-right complement matrix type is subsingleton, and any such matrix is
+zero over a type with zero. This is only lower-right domain-vacuity
+bookkeeping. It is not Aoyagi's full terminal statement
+`D'''_J = (1,0,...,0)` or its transpose, and it does not construct `D'''_J`,
+the whole post-`Q/P` zero pattern, `C'^(S+1)`, the `S+1` recurrence/exponent
+state, chart production, coverage, Jacobians, normal crossings/RLCT,
+termination, transition invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

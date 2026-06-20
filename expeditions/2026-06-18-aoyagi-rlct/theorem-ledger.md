@@ -1263,6 +1263,30 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-post-pivot-exhaustion-a4.md`.
 
+Latest A4 update: the Case 2 displayed pivot-complement exhaustion boundary
+has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved
+Lean names include
+`case2DisplayedPivotRowComplementEquivPostPivotRows`,
+`case2DisplayedPivotColComplementEquivPostPivotCols`,
+`case2DisplayedPivotRowComplement_isEmpty_iff_postPivotRows_isEmpty`,
+`case2DisplayedPivotColComplement_isEmpty_iff_postPivotCols_isEmpty`,
+`case2DisplayedPivotComplement_isEmpty_or_isEmpty_of_not_next_cont`,
+`case2DisplayedPivotComplement_matrix_subsingleton_of_not_next_cont`, and
+`case2DisplayedPivotComplement_matrix_eq_zero_of_not_next_cont`, together with
+raw-value simp lemmas for the two equivalences. This checkpoint identifies the
+displayed pivot complements with the old post-pivot domains and packages the
+lower-right complement matrix vacuity when the next continuation bound fails.
+It does not prove the full terminal `D'''_J = (1,0,...,0)` or transpose
+statement, construct `D'''_J`, produce the `S+1` recurrence/exponent state,
+prove chart coverage or regularity, compute Jacobians, prove normal
+crossings/RLCT, prove termination or transition invariance, or repair the
+printed vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-pivot-complement-exhaustion-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-pivot-complement-exhaustion.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-pivot-complement-exhaustion-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
