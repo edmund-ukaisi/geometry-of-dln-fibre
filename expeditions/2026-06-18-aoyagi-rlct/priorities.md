@@ -613,9 +613,12 @@ on the session's original cwd.
    label handoff.  Selected-block coverage and selected-span branch-value
    classification are now Lean-proved for that supplied certificate, including
    the half-open boundary split that keeps `S_(p+ell-a+2)-1` out of the strict
-   tail.  Next target: audit the terminal `tilde t=0`/Case 1(2) sequence
-   obstruction or build a richer conditional displayed-vector record before
-   attempting any existence theorem.
+   tail.  A source audit reconfirms that terminal `tilde t=0`/Case 1(2)
+   realisation is still blocked; Lean now has only a supplied terminal-endpoint
+   boundary showing that an explicitly supplied assignment
+   `T(S_(ell+1)-1)=Htilde'_ell` has value zero.  Next target: either build a
+   richer conditional displayed-vector record with terminal/Case 1(2) fields
+   supplied, or move to another finite consequence below that boundary.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

@@ -797,3 +797,29 @@ the terminal endpoint `S_(ell+1)-1` lies in a selected block.  It still does
 not construct the displayed vector, prove total source coverage, terminal
 `tilde t=0`, vector admissibility, source vector-to-chain correspondence, the
 Case 1(2) chart sequence, or Lemma 5 order count.
+
+The terminal endpoint boundary audit has now landed.  Reproduction:
+`reproduction-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-terminal-endpoint-boundary.md`.
+Review artifact:
+`review-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
+Lean proves:
+
+```text
+aoyagiHtildeLowerNat_last_eq_zero_of_selectedSum
+aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum
+AoyagiSelectedCutpoints.not_block_terminalEndpoint
+aoyagiLemma5Eq4_prefix_leftEndpoint
+aoyagiLemma5Eq4_middle_leftEndpoint
+aoyagiLemma5Eq4_tail_leftEndpoint_of_cutoff_lt
+aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension
+```
+
+The source audit still blocks a terminal displayed-vector theorem: Aoyagi's
+compressed Case 1(2) sentence does not specify the chart sequence, repeated
+gap checks, terminal endpoint convention, or proof of `tilde t=0`.  The new
+endpoint theorem is therefore conditional: if a future record supplies
+`T(S_(ell+1)-1)=Htilde'_ell`, then the selected-sum identity gives
+`T(S_(ell+1)-1)=0`.  It is not vector construction or Lemma 5 order-count
+coverage.

@@ -1723,6 +1723,12 @@ No such claim is formalisation-ready until both fields are filled.
   of the advertised branch values, with the boundary singleton kept separate
   from the strict tail.  This is still conditional branch bookkeeping, not
   vector construction or Lemma 5 order-count coverage.
+  A source audit reconfirms that equation `(4)` still cannot be promoted to a
+  terminal displayed-vector theorem from the printed text: the Case 1(2) chart
+  sequence, repeated gap checks, terminal endpoint convention, and `tilde t=0`
+  proof are absent.  Lean now proves only a supplied terminal-endpoint
+  boundary: if a future record supplies `T(S_(ell+1)-1)=Htilde'_ell`, then
+  that endpoint value is zero.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1770,7 +1776,9 @@ No such claim is formalisation-ready until both fields are filled.
   `Htilde` value-set count at
   `threads/05-arithmetic-tail/reproduction-htilde-value-set-count-a5.md`;
   selected-span equation `(4)` branch values at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-selected-span-branch-value-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-selected-span-branch-value-a5.md`;
+  terminal endpoint boundary at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1820,7 +1828,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-htilde-value-set-count-a5.md`;
   selected-span equation `(4)` branch values checked by xhigh source/indexing
   scout `Copernicus` and xhigh Lean/API scout `Beauvoir` at
-  `threads/05-arithmetic-tail/review-lemma5-eq4-selected-span-branch-value-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq4-selected-span-branch-value-a5.md`;
+  terminal endpoint boundary/source gap checked by xhigh source audit `Kuhn`
+  and xhigh Lean/API audit `Hilbert` at
+  `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1858,6 +1869,9 @@ No such claim is formalisation-ready until both fields are filled.
   isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`;
   conditional equation `(4)` selected-span branch classification in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`;
+  conditional equation `(4)` terminal endpoint boundary in
+  `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
   `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`; broader A5 targets
   TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
@@ -1988,6 +2002,15 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq4_selectedSpan_branchValue`, which classify selected-span
   points into the supplied equation `(4)` branch values without constructing
   the displayed vector or proving terminal/chart/order-count claims.
+  Also proved `aoyagiHtildeLowerNat_last_eq_zero_of_selectedSum`,
+  `aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum`,
+  `AoyagiSelectedCutpoints.not_block_terminalEndpoint`,
+  `aoyagiLemma5Eq4_prefix_leftEndpoint`,
+  `aoyagiLemma5Eq4_middle_leftEndpoint`,
+  `aoyagiLemma5Eq4_tail_leftEndpoint_of_cutoff_lt`, and
+  `aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension`, which package
+  terminal endpoint and branch-left-endpoint consequences under supplied data,
+  without proving a terminal displayed vector.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

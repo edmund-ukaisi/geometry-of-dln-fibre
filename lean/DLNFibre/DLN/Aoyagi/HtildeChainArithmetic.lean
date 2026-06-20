@@ -463,6 +463,22 @@ theorem aoyagiHtildeUpperChain_last_eq_zero_of_selectedSum (ell a : ℕ) (M : �
   rw [aoyagiHtildeUpperChain_last_eq_terminalEndpoint ell a M m ha]
   exact aoyagiLemma4TerminalEndpoint_eq_zero_of_selectedSum ell a M m ha hselected
 
+/-- Nat-indexed form of the lower displayed chain's terminal zero. -/
+theorem aoyagiHtildeLowerNat_last_eq_zero_of_selectedSum (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiHtildeLowerNat ell a M m ell = 0 := by
+  simpa [aoyagiHtildeLowerChain] using
+    aoyagiHtildeLowerChain_last_eq_zero_of_selectedSum ell a M m ha hselected
+
+/-- Nat-indexed form of the upper displayed chain's terminal zero. -/
+theorem aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiHtildeUpperNat ell a M m ell = 0 := by
+  simpa [aoyagiHtildeUpperChain] using
+    aoyagiHtildeUpperChain_last_eq_zero_of_selectedSum ell a M m ha hselected
+
 /-- The displayed lower chain is pointwise below the displayed upper chain.
 
 This is a same-coordinate statement about the finite `H`-chains.  It is not a

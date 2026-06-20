@@ -101,6 +101,21 @@ Extra guards found by reproduction:
 - The final Case 1(2) sentence does not specify the chart sequence turning the
   one-step-above displayed values into terminal variables.
 
+## 2026-06-20 source audit update
+
+An xhigh source audit reconfirmed that equation `(4)` is not
+formalisation-ready as a terminal source-vector theorem.  The paper's final
+Lemma 5 sentence says that equations `(3)` and `(4)` are used in Case 1(2),
+but it does not give the finite sequence of charts, verify the Case 1 gap
+hypothesis at each step, assign the terminal selected endpoint
+`S_(ell+1)-1`, or prove `tilde t_{s,k}=0`.
+
+The safe boundary is therefore supplied-data bookkeeping only: if a future
+record supplies the terminal endpoint assignment
+`T(S_(ell+1)-1)=Htilde'_ell`, then Definition 3's selected-sum identity proves
+that endpoint value is zero.  This does not remove the displayed-vector
+realisation blocker.
+
 ## Safe First Lean Target
 
 The source-faithful finite arithmetic target is only the equation `(4)`

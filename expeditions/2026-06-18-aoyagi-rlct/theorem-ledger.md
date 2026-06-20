@@ -244,16 +244,23 @@ objects are `AoyagiSelectedCutpoints`, `AoyagiSelectedCutpoints.point`,
 `AoyagiSelectedCutpoints.block_mem_selectedSpan`,
 `AoyagiSelectedCutpoints.exists_block_of_mem_selectedSpan`,
 `AoyagiSelectedCutpoints.exists_block_iff_mem_selectedSpan`,
+`AoyagiSelectedCutpoints.not_block_terminalEndpoint`,
 `AoyagiLemma5Eq4PiecewiseSourceVector`,
 `AoyagiLemma5Eq4SelectedSpanBranchValue`,
 `aoyagiLemma5Eq4_branchValue_of_block`,
-`aoyagiLemma5Eq4_selectedSpan_branchValue`, and
+`aoyagiLemma5Eq4_selectedSpan_branchValue`,
+`aoyagiLemma5Eq4_prefix_leftEndpoint`,
+`aoyagiLemma5Eq4_middle_leftEndpoint`,
+`aoyagiLemma5Eq4_tail_leftEndpoint_of_cutoff_lt`,
+`aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension`, and
 `aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`.  The
 theorem says that a supplied equation `(4)` piecewise branch certificate gives
 the correct own-coordinate value and legal label bounds under the repaired
 guards and Definition 3 hypotheses; the selected-span classifier says that
 the same supplied certificate gives one of the advertised branch values for
-every source index in the selected span only.  Reproduction:
+every source index in the selected span only; and the terminal-endpoint
+boundary says a supplied endpoint extension to `Htilde'_ell` is zero, without
+proving terminal-vector realisation.  Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-piecewise-certificate-a5.md`.
 Selected-block bookkeeping reproduction:
 `threads/05-arithmetic-tail/reproduction-selected-block-bookkeeping-a5.md`.
@@ -261,10 +268,14 @@ Selected-block coverage reproduction:
 `threads/05-arithmetic-tail/reproduction-selected-block-coverage-a5.md`.
 Selected-span branch-value reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-selected-span-branch-value-a5.md`.
+Terminal endpoint reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
 Statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-piecewise-certificate.md`.
 Selected-span statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-selected-span-branch-value.md`.
+Terminal endpoint statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-endpoint-boundary.md`.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-piecewise-certificate-a5.md`.
 Selected-block review:
@@ -273,6 +284,8 @@ Selected-block coverage review:
 `threads/05-arithmetic-tail/review-selected-block-coverage-a5.md`.
 Selected-span branch-value review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-selected-span-branch-value-a5.md`.
+Terminal endpoint review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
 
 ## Latest A2 update
 

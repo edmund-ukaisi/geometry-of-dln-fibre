@@ -177,6 +177,14 @@ theorem exists_block_iff_mem_selectedSpan {ell : ℕ}
   · intro h
     exact C.exists_block_of_mem_selectedSpan h.1 h.2
 
+/-- The terminal selected endpoint `S_(ell+1)-1` is not in any half-open
+selected block. -/
+theorem not_block_terminalEndpoint {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {b : ℕ} :
+    ¬ C.block b (C.point ell - 1) := by
+  intro hb
+  exact (lt_irrefl (C.point ell - 1)) (C.block_mem_selectedSpan hb).2
+
 end AoyagiSelectedCutpoints
 
 /-- Supplied source-layer piecewise data for Aoyagi Lemma 5 equation `(4)`.
@@ -280,6 +288,57 @@ theorem aoyagiLemma5Eq4_selectedSpan_branchValue
     AoyagiLemma5Eq4SelectedSpanBranchValue ell a p M m C layerWidth T S := by
   rcases C.exists_block_of_mem_selectedSpan hlo hhi with ⟨b, hb⟩
   exact aoyagiLemma5Eq4_branchValue_of_block ell a p M m C layerWidth T hT hb
+
+/-- Prefix-branch value at a selected block's left endpoint. -/
+theorem aoyagiLemma5Eq4_prefix_leftEndpoint
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {b : ℕ} (hb_pos : 1 ≤ b) (hb_le : b ≤ p) (hb_lt : b < ell) :
+    T (C.point b - 1) = aoyagiHtildeUpperNat ell a M m b - (b : ℤ) := by
+  exact hT.prefixBranch b (C.point b - 1) hb_pos hb_le
+    (C.leftEndpoint_mem_block hb_lt)
+
+/-- Middle-branch value at a selected block's left endpoint. -/
+theorem aoyagiLemma5Eq4_middle_leftEndpoint
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {b : ℕ} (hp_lt : p < b) (hb_le : b ≤ p + (ell - a)) (hb_lt : b < ell) :
+    T (C.point b - 1) = aoyagiHtildeUpperNat ell a M m b - (p : ℤ) := by
+  exact hT.middle b (C.point b - 1) hp_lt hb_le
+    (C.leftEndpoint_mem_block hb_lt)
+
+/-- Tail-branch value at a selected block's left endpoint strictly after the
+special boundary block. -/
+theorem aoyagiLemma5Eq4_tail_leftEndpoint_of_cutoff_lt
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {b : ℕ} (hcut_lt : p + (ell - a) + 1 < b) (hb_lt : b < ell) :
+    T (C.point b - 1) = aoyagiHtildeUpperNat ell a M m b := by
+  have hb : C.block b (C.point b - 1) := C.leftEndpoint_mem_block hb_lt
+  have hafter :
+      C.point (p + (ell - a) + 1) - 1 < C.point b - 1 :=
+    C.leftEndpoint_lt_of_lt_block hcut_lt hb
+  exact hT.tail b (C.point b - 1) (by omega) hb hafter
+
+/-- If a supplied equation `(4)` endpoint extension gives the terminal selected
+endpoint the upper-chain terminal value, then that endpoint value is zero.
+
+This is only a conditional endpoint fact.  It does not prove that the displayed
+source vector is constructed, admissible, terminal as a whole, or usable in the
+Case 1(2) chart sequence. -/
+theorem aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hterminal :
+      T (C.point ell - 1) = aoyagiHtildeUpperNat ell a M m ell) :
+    T (C.point ell - 1) = 0 := by
+  rw [hterminal]
+  exact aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum ell a M m ha hselected
 
 /-- A supplied equation `(4)` piecewise vector has the correct own-coordinate
 value and legal source label under the repaired guards.

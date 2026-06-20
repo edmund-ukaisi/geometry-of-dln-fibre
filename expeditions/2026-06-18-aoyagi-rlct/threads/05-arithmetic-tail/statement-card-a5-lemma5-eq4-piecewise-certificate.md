@@ -22,10 +22,15 @@ Names:
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block_mem_selectedSpan`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.exists_block_of_mem_selectedSpan`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.exists_block_iff_mem_selectedSpan`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.not_block_terminalEndpoint`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5Eq4PiecewiseSourceVector`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5Eq4SelectedSpanBranchValue`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_branchValue_of_block`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_selectedSpan_branchValue`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_prefix_leftEndpoint`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_middle_leftEndpoint`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_tail_leftEndpoint_of_cutoff_lt`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`
 
 ## Statement
@@ -57,6 +62,8 @@ T(S_(p+1)-1) = Htilde_p,
   `S_1-1 <= S < S_(ell+1)-1`.
 - A supplied equation `(4)` piecewise certificate gives one of the advertised
   branch values for every point in the selected span.
+- The terminal selected endpoint is not in a selected block, and a supplied
+  terminal endpoint extension to `Htilde'_ell` has value zero.
 - A supplied equation `(4)` piecewise certificate gives the correct own
   coordinate.
 - The same theorem carries forward the repaired selected-index and legal-label
@@ -99,6 +106,9 @@ T(S_(p+1)-1) = Htilde_p,
 - Selected-span branch-value source/API review passed by xhigh `Copernicus`
   and xhigh `Beauvoir`:
   `review-lemma5-eq4-selected-span-branch-value-a5.md`.
+- Terminal endpoint source/API review passed by xhigh `Kuhn` and xhigh
+  `Hilbert`:
+  `review-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
 
 ## Verification
 

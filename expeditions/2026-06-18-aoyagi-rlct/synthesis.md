@@ -1970,6 +1970,20 @@ admissibility, total source-layer coverage, source vector-to-chain
 correspondence, the Case 1(2) chart sequence, Lemma 5 order count, normal
 crossings, or RLCT extraction.
 
+The A5 equation `(4)` terminal endpoint boundary is also now Lean-proved at a
+strictly supplied-data level.  Nat-indexed wrappers expose the already-proved
+terminal zero values `Htilde_ell=0` and `Htilde'_ell=0` under Definition 3's
+selected-sum identity.  `AoyagiSelectedCutpoints.not_block_terminalEndpoint`
+records that the terminal selected endpoint `S_(ell+1)-1` is not in any
+half-open selected block.  The supplied piecewise certificate now also exports
+left-endpoint values for the prefix, middle, and strict-tail branches.  Finally,
+`aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension` says that if a
+future record supplies `T(S_(ell+1)-1)=Htilde'_ell`, then
+`T(S_(ell+1)-1)=0`.  A fresh source audit reconfirms that the printed paper
+does not supply the Case 1(2) chart sequence, repeated gap checks, terminal
+endpoint convention, or proof of `tilde t=0`; therefore this is not a
+displayed-vector realisation theorem.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
