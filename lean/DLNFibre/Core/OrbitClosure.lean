@@ -553,8 +553,93 @@ theorem boxMoveStep_repClosure_realizer_subset [Infinite k] {d : Fin (N + 1) →
     exact repClosure_realizer_subset_of_geom hrsupp hr''supp hrnn hr''nn hrdiag hr''diag
       hgd _ _ hUgrank hDgrank
       (nonsplitMove_intervalDirectSum_mem_closure aF cF eF bF rest hacF hcbF hbeF)
-  · -- ============ split case `c = b+1` ============
-    sorry
+  · -- ============ split case `c = b+1` (no `(c,b)` summand) ============
+    have hceb : c = b + 1 := by omega
+    -- the residual Kostant array `mRest = diffTri r − δ(a,e)`, truncated
+    set mRest : SuppArray (N : ℤ) ℤ :=
+      ⟨fun i j ↦ if i ≤ j then diff r i j - singleDelta aF eF i j else 0, by
+        refine ⟨fun i j hi ↦ ?_, fun i j hj ↦ ?_⟩ <;> simp only <;> split_ifs with h
+        · rw [(supported_diff hrsupp).1 i j hi]; simp only [hδae]; rw [if_neg (by omega)]; ring
+        · rfl
+        · rw [(supported_diff hrsupp).2 i j hj]; simp only [hδae]; rw [if_neg (by omega)]; ring
+        · rfl⟩ with hmRestdef
+    have hmRestK : IsKostantArray mRest := by
+      refine ⟨fun i j ↦ ?_, fun i j hji ↦ by simp only [hmRestdef]; rw [if_neg (by omega)]⟩
+      simp only [hmRestdef]
+      split_ifs with hij
+      · simp only [hδae]
+        by_cases h1 : i = a ∧ j = e
+        · obtain ⟨rfl, rfl⟩ := h1; have := hae; rw [if_pos ⟨rfl, rfl⟩]; omega
+        · rw [if_neg h1, sub_zero]; exact hrnn i j hij
+      · exact le_refl 0
+    set rest : List (Fin (N + 1) × Fin (N + 1)) := listOfArray mRest with hrestdef
+    have hmult_rest : multiplicityArray rest = mRest.1 :=
+      multiplicityArray_listOfArray_of_isKostant hmRestK
+    -- `Fin` inequalities for the split lemma
+    have haeF : aF ≤ bF.castSucc := by
+      rw [Fin.le_def, ← Nat.cast_le (α := ℤ), show ((aF.val : ℤ)) = a from haFval,
+        show ((bF.castSucc.val : ℤ)) = b from hbFcast]; omega
+    have hbeF : bF.succ ≤ eF := by
+      rw [Fin.le_def, ← Nat.cast_le (α := ℤ), show ((bF.succ.val : ℤ)) = b + 1 from hbFsucc,
+        show ((eF.val : ℤ)) = e from heFval]; omega
+    -- `δ(a,e) + mRest = diffTri r` as full arrays
+    have hUpArr : (fun i j ↦ singleDelta aF eF i j + mRest.1 i j) = (diffTri (N := N) r hrsupp).1 := by
+      funext i j; simp only [hmRestdef, diffTri]
+      by_cases hij : i ≤ j
+      · rw [if_pos hij, if_pos hij]; ring
+      · rw [if_neg hij, if_neg hij]
+        simp only [hδae]; rw [if_neg (by rintro ⟨rfl, rfl⟩; omega), add_zero]
+    -- `δ(a,b) + δ(b+1,e) + mRest = diffTri r''` as full arrays (split: the `(c,b)` corner is below)
+    have hDnArr : (fun i j ↦ singleDelta aF bF.castSucc i j + singleDelta bF.succ eF i j + mRest.1 i j)
+        = (diffTri (N := N) r'' hr''supp).1 := by
+      funext i j; simp only [hmRestdef, diffTri]
+      by_cases hij : i ≤ j
+      · rw [if_pos hij, if_pos hij, hr''diffEq i j]
+        -- the `δ(c,b)` term vanishes on the triangle (`c = b+1 > b ≥ i` would force `j = b < i`)
+        have hcbzero : singleDelta cF bF.castSucc i j = 0 := by
+          simp only [hδcb]; rw [if_neg (by rintro ⟨rfl, rfl⟩; omega)]
+        -- `δ(c,e) = δ(b+1,e)` since `c = b+1` (i.e. `cF = bF.succ` as `ℤ`-coords agree)
+        have hcebe : singleDelta cF eF i j = singleDelta bF.succ eF i j := by
+          rw [singleDelta, singleDelta, hcFval, hbFsucc, heFval, hceb]
+        rw [hcbzero, hcebe]; ring
+      · rw [if_neg hij, if_neg hij, add_zero]
+        simp only [hδab, singleDelta, hbFsucc, heFval]
+        rw [if_neg (by rintro ⟨rfl, rfl⟩; omega), if_neg (by rintro ⟨rfl, _⟩; omega), add_zero]
+    -- rank pattern of the geometric upstairs `= cumul (δae + mRest) = r` on the triangle
+    have hUgrank : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+        (rankPattern (fun l ↦ intervalDim aF eF l + foldDim rest l)
+          (dirSum (intervalModule (k := k) aF eF) (intervalDirectSum (k := k) rest))
+            i j hij : ℤ) = r (i : ℤ) (j : ℤ) := by
+      intro i j hij
+      have hijZ : (i : ℤ) ≤ (j : ℤ) := by exact_mod_cast Fin.le_def.mp hij
+      rw [rankPattern_dirSum, Nat.cast_add,
+        rankPattern_intervalModule_eq_cumul (k := k) aF eF hij,
+        rankPattern_intervalDirectSum_eq_cumul (K := k) rest i j hij, hmult_rest,
+        ← cumul_add, hUpArr, cumul_diffTri_eq hrsupp hijZ]
+    have hgd : (fun l ↦ intervalDim aF eF l + foldDim rest l) = d := by
+      funext t
+      have hZ : ((intervalDim aF eF t + foldDim rest t : ℕ) : ℤ) = (d t : ℤ) := by
+        have := hUgrank t t le_rfl
+        rw [rankPattern_self] at this
+        rw [this, hrdiag t]
+      exact_mod_cast hZ
+    have hDgrank : ∀ (i j : Fin (N + 1)) (hij : i ≤ j),
+        (rankPattern (fun l ↦ intervalDim aF eF l + foldDim rest l)
+          ((foldDim_splitCons_eq aF eF bF rest haeF hbeF) ▸
+            intervalDirectSum (k := k) ((aF, bF.castSucc) :: (bF.succ, eF) :: rest))
+            i j hij : ℤ) = r'' (i : ℤ) (j : ℤ) := by
+      intro i j hij
+      have hijZ : (i : ℤ) ≤ (j : ℤ) := by exact_mod_cast Fin.le_def.mp hij
+      rw [rankPattern_transport (foldDim_splitCons_eq aF eF bF rest haeF hbeF),
+        rankPattern_intervalDirectSum_eq_cumul (K := k)
+          ((aF, bF.castSucc) :: (bF.succ, eF) :: rest) i j hij,
+        show multiplicityArray ((aF, bF.castSucc) :: (bF.succ, eF) :: rest)
+          = (fun a b ↦ singleDelta aF bF.castSucc a b + singleDelta bF.succ eF a b + mRest.1 a b) from by
+            rw [multiplicityArray_cons, multiplicityArray_cons, hmult_rest]; funext a b; ring,
+        hDnArr, cumul_diffTri_eq hr''supp hijZ]
+    exact repClosure_realizer_subset_of_geom hrsupp hr''supp hrnn hr''nn hrdiag hr''diag
+      hgd _ _ hUgrank hDgrank
+      (splitMove_intervalDirectSum_mem_closure aF eF bF rest haeF hbeF)
 
 /-- **The per-step degeneration (CRUX).** A single box move `BoxMoveStep r r''` between achievable,
 supported, below-diagonal-vanishing rank-pattern arrays (with `r''` likewise achievable) drops the
