@@ -1394,6 +1394,29 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-terminal-stack-a4.md`.
 
+Latest A4 update: the Case 2 displayed weighted terminal-product layer has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` and
+`lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`.  The proved Lean names are
+`sumElim_mul`, `matrixEntryIdeal_sumElim_zero_bottom_mul`,
+`matrixEntryIdeal_sumElim_congr_bottom_mul`, and
+`matrixEntryIdeal_case2DisplayedPaperWeightedTerminalProduct_eq_topStack_of_not_next_cont`.
+This checkpoint keeps the supplied following suffix `F` inside the matrix
+product before deleting zero residual rows and proves
+`<entries((blockdiag(Wold,diag(b0,b))*[Cold;D'''*C'])*F)> =
+<entries([(Wold*Cold)*F;(b0*C0)*F])>`.  It keeps the pivot-row weight `b0`;
+there is no unit cancellation.  It does not identify `Cold`, `Wold`, or `F`
+with the source old top rows, source diagonal weights, or source remaining
+product, identify the right hand side with Aoyagi's full `C'^(S+1)`, choose
+the source-order row/column terminal presentation, build `S+1` post-data,
+prove chart coverage or regularity, compute Jacobians, prove normal
+crossings/RLCT, prove termination or transition invariance, or repair the
+printed vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-weighted-terminal-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-weighted-terminal-product.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-weighted-terminal-product-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

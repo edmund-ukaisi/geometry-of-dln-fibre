@@ -1262,6 +1262,19 @@ No such claim is formalisation-ready until both fields are filled.
   prove chart coverage or regularity, compute
   Jacobians, prove normal crossings, extract RLCT, prove termination or
   transition invariance, or repair the printed vector mismatch.
+  The displayed weighted terminal-product layer adds supplied old top weights
+  `Wold`, supplied old top block `Cold`, residual weights `b0`, `b`, and a
+  supplied following suffix `F`. It proves the stopped terminal entry-ideal
+  equality
+  `<entries((blockdiag(Wold,diag(b0,b))*[Cold;D'''*C'])*F)> =
+  <entries([(Wold*Cold)*F;(b0*C0)*F])>`. The suffix `F` is included before
+  zero-row deletion, and the pivot-row weight `b0` is retained without a unit
+  assumption. This still does not identify `Cold`, `Wold`, or `F` with the
+  source old top rows, source diagonal weights, or source remaining product,
+  identify the right hand side with `C'^(S+1)`, choose the row/column terminal
+  presentation, build `S+1` post-data, prove chart coverage or regularity,
+  compute Jacobians, prove normal crossings, extract RLCT, prove termination or
+  transition invariance, or repair the printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

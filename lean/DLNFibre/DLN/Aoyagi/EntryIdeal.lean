@@ -57,6 +57,14 @@ theorem matrixEntryIdeal_sumElim_congr_bottom {m m' m'' n : Type*}
     matrixEntryIdeal (Sum.elim Top A) = matrixEntryIdeal (Sum.elim Top B) := by
   rw [matrixEntryIdeal_sumElim_eq_sup, matrixEntryIdeal_sumElim_eq_sup, h]
 
+/-- Right multiplication distributes over a stacked row block. -/
+theorem sumElim_mul {m m' n p : Type*} [Fintype n]
+    (A : Matrix m n R) (B : Matrix m' n R) (Q : Matrix n p R) :
+    (show Matrix (m ⊕ m') n R from Sum.elim A B) * Q =
+      (show Matrix (m ⊕ m') p R from Sum.elim (A * Q) (B * Q)) := by
+  ext i j
+  rcases i with i | i <;> simp [Matrix.mul_apply]
+
 /-- Adding a bottom block of zero rows does not change the matrix-entry ideal. -/
 theorem matrixEntryIdeal_sumElim_zero_bottom {m m' n : Type*}
     (A : Matrix m n R) :
@@ -70,6 +78,30 @@ theorem matrixEntryIdeal_sumElim_zero_bottom {m m' n : Type*}
   · rw [matrixEntryIdeal, Ideal.span_le]
     rintro _ ⟨⟨i, j⟩, rfl⟩
     exact matrixEntry_mem (Sum.elim A (0 : Matrix m' n R)) (Sum.inl i) j
+
+/-- Adding a bottom block of zero rows remains entry-ideal invisible after
+right multiplication. -/
+theorem matrixEntryIdeal_sumElim_zero_bottom_mul {m m' n p : Type*} [Fintype n]
+    (A : Matrix m n R) (Q : Matrix n p R) :
+    matrixEntryIdeal ((show Matrix (m ⊕ m') n R from
+      Sum.elim A (0 : Matrix m' n R)) * Q) =
+      matrixEntryIdeal (A * Q) := by
+  rw [sumElim_mul]
+  have hzero : (0 : Matrix m' n R) * Q = (0 : Matrix m' p R) := by
+    ext i j
+    simp [Matrix.mul_apply]
+  rw [hzero, matrixEntryIdeal_sumElim_zero_bottom]
+
+/-- Replacing the lower row block by another matrix whose product with the
+same right factor has the same entry ideal preserves the stacked product
+entry ideal. -/
+theorem matrixEntryIdeal_sumElim_congr_bottom_mul {m m' m'' n p : Type*}
+    [Fintype n] (Top : Matrix m n R) {A : Matrix m' n R} {B : Matrix m'' n R}
+    (Q : Matrix n p R) (h : matrixEntryIdeal (A * Q) = matrixEntryIdeal (B * Q)) :
+    matrixEntryIdeal ((show Matrix (m ⊕ m') n R from Sum.elim Top A) * Q) =
+      matrixEntryIdeal ((show Matrix (m ⊕ m'') n R from Sum.elim Top B) * Q) := by
+  rw [sumElim_mul, sumElim_mul]
+  exact matrixEntryIdeal_sumElim_congr_bottom (Top * Q) h
 
 /-- Left multiplication can only decrease the matrix-entry ideal. -/
 theorem matrixEntryIdeal_mul_left_le {l m n : Type*} [Fintype m]

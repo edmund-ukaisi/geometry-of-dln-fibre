@@ -9960,6 +9960,73 @@ theorem matrixEntryIdeal_case2DisplayedPaperTerminalStack_eq_topStack_of_not_nex
       (matrixEntryIdeal_case2DisplayedPaperDppp_mul_Cprime_eq_top_of_not_next_cont
         n hS hcont hstop residual C)
 
+/-- Diagonal-weighted version of the stopped displayed Case 2 terminal stack,
+with the remaining following product included.
+
+The old top block, old row weights, pivot-row weight, lower residual weights,
+and remaining following product are all supplied.  The theorem only proves
+that the zero lower residual rows may be dropped from the resulting
+matrix-entry ideal; it does not identify the right hand side with Aoyagi's
+full terminal product or `C'^(S+1)`. -/
+theorem matrixEntryIdeal_case2DisplayedPaperWeightedTerminalProduct_eq_topStack_of_not_next_cont
+    {ι υ : Type*} [Fintype ι] [Fintype τ]
+    (Wold : Matrix ι ι R) (Cold : Matrix ι τ R)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (b0 : R)
+    (b : pivotComplement (case2DisplayedPivotRow n hS hcont) → R)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    matrixEntryIdeal
+        ((fromBlocks Wold 0 0 (weightedPivotDiagonal b0 b) *
+            verticalBlock Cold
+              (case2DisplayedPaperDppp n hS hcont residual *
+                case2DisplayedPaperCprime n hS hcont residual C)) * F) =
+      matrixEntryIdeal
+        (verticalBlock ((Wold * Cold) * F)
+          (((show Matrix Unit Unit R from fun _ _ ↦ b0) *
+            case2DisplayedPaperCprimeTop n hS hcont residual C) * F)) := by
+  have hbottom :
+      case2DisplayedPaperDppp n hS hcont residual *
+          case2DisplayedPaperCprime n hS hcont residual C =
+        verticalBlock
+          (case2DisplayedPaperCprimeTop n hS hcont residual C)
+          (0 : Matrix (pivotComplement (case2DisplayedPivotRow n hS hcont)) τ R) := by
+    rw [case2DisplayedPaperCprime_eq_verticalBlock]
+    rw [case2DisplayedPaperDppp, case2DisplayedPaperDchart]
+    rw [case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix]
+    exact case2DisplayedClearedBlock_mul_verticalBlock_eq_pivotOnly_of_not_next_cont
+      n hS hcont hstop (case2SourceResidualBlock residual)
+      (case2DisplayedPaperCprimeTop n hS hcont residual C)
+      (case2DisplayedPaperCprimeTail n hS hcont residual C)
+  rw [hbottom]
+  rw [fromBlocks_mul_verticalBlock]
+  let C0w : Matrix Unit τ R :=
+    (show Matrix Unit Unit R from fun _ _ ↦ b0) *
+      case2DisplayedPaperCprimeTop n hS hcont residual C
+  have hweighted :
+      weightedPivotDiagonal b0 b *
+          verticalBlock
+            (case2DisplayedPaperCprimeTop n hS hcont residual C)
+            (0 : Matrix (pivotComplement (case2DisplayedPivotRow n hS hcont)) τ R) =
+        verticalBlock C0w
+          (0 : Matrix (pivotComplement (case2DisplayedPivotRow n hS hcont)) τ R) := by
+    rw [weightedPivotDiagonal, fromBlocks_mul_verticalBlock]
+    simp [C0w]
+  rw [hweighted]
+  calc
+    matrixEntryIdeal ((verticalBlock (Wold * Cold)
+          (verticalBlock C0w
+            (0 : Matrix (pivotComplement (case2DisplayedPivotRow n hS hcont)) τ R))) * F)
+        = matrixEntryIdeal
+            ((show Matrix (ι ⊕ Unit) τ R from Sum.elim (Wold * Cold) C0w) * F) := by
+          simpa [verticalBlock] using
+            matrixEntryIdeal_sumElim_congr_bottom_mul (Wold * Cold) F
+              (matrixEntryIdeal_sumElim_zero_bottom_mul C0w F)
+    _ = matrixEntryIdeal (verticalBlock ((Wold * Cold) * F) (C0w * F)) := by
+          rw [sumElim_mul]
+          rfl
+
 /-- Source-displayed Case 2 top-left `Q/P` identity with the following factor reindexed
 into pivot-first column coordinates. This is still local finite algebra, not chart coverage. -/
 theorem exists_case2DisplayedQP_mul_pivotFirstFollowingFactor_of_flat_weights

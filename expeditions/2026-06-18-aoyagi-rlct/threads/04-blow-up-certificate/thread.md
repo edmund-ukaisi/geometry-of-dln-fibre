@@ -584,6 +584,46 @@ prove chart production or coverage, compute Jacobians, prove normal
 crossings/RLCT extraction, prove termination or transition invariance, or
 repair the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed weighted terminal product
+
+Reproduction:
+`reproduction-case2-displayed-weighted-terminal-product-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-weighted-terminal-product.md`.
+Review artifact:
+`review-case2-displayed-weighted-terminal-product-a4.md`.
+
+Lean now proves the suffix-aware entry-ideal facts `sumElim_mul`,
+`matrixEntryIdeal_sumElim_zero_bottom_mul`, and
+`matrixEntryIdeal_sumElim_congr_bottom_mul`: stacked row blocks can be
+right-multiplied by a common following factor before zero bottom rows are
+removed at the matrix-entry ideal level.
+
+The displayed Case 2 specialization
+`matrixEntryIdeal_case2DisplayedPaperWeightedTerminalProduct_eq_topStack_of_not_next_cont`
+adds supplied old top weights `Wold`, supplied old top block `Cold`, residual
+weights `b0`, `b`, and a supplied following suffix `F`. Under displayed pivot
+validity and failed next continuation,
+
+```text
+< entries((blockdiag(Wold, diag(b0,b)) * [Cold; D''' * C']) * F) >
+  =
+< entries([ (Wold * Cold) * F ; (b0 * C0) * F ]) >,
+```
+
+where `C0` is the top pivot row of `C' = Q^-1 C`.
+
+This checkpoint incorporates `F` before deleting zero rows, so it does not use
+the invalid principle that entry-ideal equality is preserved by arbitrary right
+multiplication.  It also retains the pivot weight `b0`; no unit hypothesis or
+cancellation is assumed.  It still does not identify `Cold`, `Wold`, or `F`
+with the source old top rows, source diagonal weights, or source remaining
+product, identify the right hand side with Aoyagi's full `C'^(S+1)`, choose
+the row-vs-column terminal presentation, build `S+1` post-data, prove chart
+production or coverage, compute Jacobians, prove normal crossings/RLCT
+extraction, prove termination or transition invariance, or repair the printed
+Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

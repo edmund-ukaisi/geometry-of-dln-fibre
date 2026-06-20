@@ -82,11 +82,17 @@ on the session's original cwd.
    Lean-proved as finite algebra and matrix-entry ideal zero-row dropping:
    `D''' * C'` has the same matrix-entry ideal as the top row of `C'` under
    failed next continuation, and this has been lifted through an arbitrary
-   supplied old top block `Cold`. Next A4 target: identify/source-model the
-   old top block and row/column terminal branch, or construct chart-produced
-   recurrence/exponent post-data; do not identify `[Cold;C0]` with Aoyagi's
-   full `C'^(S+1)` or the diagonal-weighted full terminal product without
-   that source-order analysis.
+   supplied old top block `Cold`. The diagonal-weighted supplied suffix version
+   is now also Lean-proved: after multiplying by supplied old weights `Wold`,
+   residual weights `b0`, `b`, and a supplied following product `F`, the
+   entry-ideal equality is
+   `<entries((blockdiag(Wold,diag(b0,b))*[Cold;D'''*C'])*F)> =
+   <entries([(Wold*Cold)*F;(b0*C0)*F])>`. Next A4 target:
+   identify/source-model the old top block, source diagonal weights, remaining
+   following product, and row/column terminal branch, or construct
+   chart-produced recurrence/exponent post-data; do not identify the weighted
+   right hand side with Aoyagi's full `C'^(S+1)` without that source-order
+   analysis.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

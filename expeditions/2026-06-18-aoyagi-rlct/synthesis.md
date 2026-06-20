@@ -1393,6 +1393,23 @@ the diagonal-weighted full terminal product ideal, chart production, Jacobian
 arithmetic, normal crossings/RLCT, termination, transition invariance, and
 printed-vector repair.
 
+The Case 2 displayed weighted terminal-product layer is now Lean-proved.  The
+suffix-aware entry-ideal facts `sumElim_mul`,
+`matrixEntryIdeal_sumElim_zero_bottom_mul`, and
+`matrixEntryIdeal_sumElim_congr_bottom_mul` let the supplied following product
+`F` be multiplied before deleting zero lower rows.  The displayed
+specialization
+`matrixEntryIdeal_case2DisplayedPaperWeightedTerminalProduct_eq_topStack_of_not_next_cont`
+proves
+`<entries((blockdiag(Wold,diag(b0,b))*[Cold;D'''*C'])*F)> =
+<entries([(Wold*Cold)*F;(b0*C0)*F])>` under failed next continuation.  This
+keeps the pivot weight `b0` and does not assume it is a unit. It still does
+not identify `Cold`, `Wold`, or `F` with source old top rows, source diagonal
+weights, or the source remaining product, does not identify the right hand
+side with Aoyagi's `C'^(S+1)`, and remains outside source-order terminal
+presentation, chart production, Jacobian arithmetic, normal crossings/RLCT,
+termination, transition invariance, and printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
