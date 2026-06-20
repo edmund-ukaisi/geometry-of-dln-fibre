@@ -771,3 +771,29 @@ S_1-1 <= S < S_(ell+1)-1.
 
 They deliberately do not cover source layers before `S_1-1`, at
 `S_(ell+1)-1`, or after it.
+
+The selected-span branch-value classifier for equation `(4)` has now landed.
+Reproduction:
+`reproduction-lemma5-eq4-selected-span-branch-value-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-selected-span-branch-value.md`.
+Review artifact:
+`review-lemma5-eq4-selected-span-branch-value-a5.md`.
+Lean proves:
+
+```text
+AoyagiSelectedCutpoints.block_leftEndpoint_lt_of_ne
+AoyagiSelectedCutpoints.leftEndpoint_lt_of_lt_block
+AoyagiLemma5Eq4SelectedSpanBranchValue
+aoyagiLemma5Eq4_branchValue_of_block
+aoyagiLemma5Eq4_selectedSpan_branchValue
+```
+
+This says only that a supplied equation `(4)` branch certificate gives one of
+the advertised branch values for each source index in the selected span
+`S_1-1 <= S < S_(ell+1)-1`.  It keeps the boundary singleton
+`S_(p+ell-a+2)-1` separate from the tail branch, and it does not claim that
+the terminal endpoint `S_(ell+1)-1` lies in a selected block.  It still does
+not construct the displayed vector, prove total source coverage, terminal
+`tilde t=0`, vector admissibility, source vector-to-chain correspondence, the
+Case 1(2) chart sequence, or Lemma 5 order count.

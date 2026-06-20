@@ -111,6 +111,25 @@ theorem block_leftEndpoint_iff {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
     subst h
     exact C.leftEndpoint_mem_block hb
 
+/-- A non-left-endpoint member of a selected block is strictly after the block's
+left endpoint. -/
+theorem block_leftEndpoint_lt_of_ne {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {b S : ℕ} (hb : C.block b S) (hne : S ≠ C.point b - 1) :
+    C.point b - 1 < S := by
+  rcases hb with ⟨_, hb_lo, _⟩
+  omega
+
+/-- Every member of a later selected block is strictly after an earlier block's
+left endpoint. -/
+theorem leftEndpoint_lt_of_lt_block {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    {q b S : ℕ} (hqb : q < b) (hb : C.block b S) :
+    C.point q - 1 < S := by
+  rcases hb with ⟨hb_lt, hb_lo, _⟩
+  have hstrict : C.point q < C.point b :=
+    C.point_strict_of_lt hqb (by omega)
+  have hpos : 1 ≤ C.point q := C.point_pos_of_lt (by omega)
+  omega
+
 /-- Every selected block lies in the selected span from `S_1-1` to
 `S_(ell+1)-1`. -/
 theorem block_mem_selectedSpan {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
@@ -183,6 +202,84 @@ structure AoyagiLemma5Eq4PiecewiseSourceVector
     ∀ b S, p + (ell - a) + 1 ≤ b → C.block b S →
       C.point (p + (ell - a) + 1) - 1 < S →
         T S = aoyagiHtildeUpperNat ell a M m b
+
+/-- Branch-value alternatives for Aoyagi Lemma 5 equation `(4)` on the selected
+span.
+
+This is only a domain/value classification for a supplied piecewise
+certificate.  It does not construct the displayed source vector and makes no
+terminality, admissibility, chart-coverage, pole-order, normal-crossing, or
+RLCT claim. -/
+inductive AoyagiLemma5Eq4SelectedSpanBranchValue
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) (S : ℕ) : Prop where
+  | first
+      (hS : S < C.point 1 - 1)
+      (hvalue : T S = layerWidth (S + 1))
+  | prefix
+      (b : ℕ) (hb_pos : 1 ≤ b) (hb_le : b ≤ p) (hb : C.block b S)
+      (hvalue : T S = aoyagiHtildeUpperNat ell a M m b - (b : ℤ))
+  | middle
+      (b : ℕ) (hp_lt : p < b) (hb_le : b ≤ p + (ell - a)) (hb : C.block b S)
+      (hvalue : T S = aoyagiHtildeUpperNat ell a M m b - (p : ℤ))
+  | boundary
+      (hS : S = C.point (p + (ell - a) + 1) - 1)
+      (hvalue :
+        T S =
+          aoyagiHtildeUpperNat ell a M m (p + (ell - a)) - (p : ℤ) + 1)
+  | tail
+      (b : ℕ) (hb_tail : p + (ell - a) + 1 ≤ b) (hb : C.block b S)
+      (hS : C.point (p + (ell - a) + 1) - 1 < S)
+      (hvalue : T S = aoyagiHtildeUpperNat ell a M m b)
+
+/-- A supplied equation `(4)` piecewise certificate classifies any selected
+block point by one of its advertised branches.
+
+This is half-open block bookkeeping plus the supplied branch equalities. -/
+theorem aoyagiLemma5Eq4_branchValue_of_block
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {b S : ℕ} (hb : C.block b S) :
+    AoyagiLemma5Eq4SelectedSpanBranchValue ell a p M m C layerWidth T S := by
+  by_cases hb0 : b = 0
+  · subst b
+    exact AoyagiLemma5Eq4SelectedSpanBranchValue.first
+      hb.2.2 (hT.first S hb.2.2)
+  have hb_pos : 1 ≤ b := by omega
+  by_cases hb_le_p : b ≤ p
+  · exact AoyagiLemma5Eq4SelectedSpanBranchValue.prefix b hb_pos hb_le_p hb
+      (hT.prefixBranch b S hb_pos hb_le_p hb)
+  have hp_lt_b : p < b := by omega
+  by_cases hb_le_middle : b ≤ p + (ell - a)
+  · exact AoyagiLemma5Eq4SelectedSpanBranchValue.middle b hp_lt_b hb_le_middle hb
+      (hT.middle b S hp_lt_b hb_le_middle hb)
+  have hb_tail : p + (ell - a) + 1 ≤ b := by omega
+  by_cases hboundary : S = C.point (p + (ell - a) + 1) - 1
+  · exact AoyagiLemma5Eq4SelectedSpanBranchValue.boundary hboundary
+      (by simpa [hboundary] using hT.boundary)
+  have hafter : C.point (p + (ell - a) + 1) - 1 < S := by
+    by_cases hb_eq : b = p + (ell - a) + 1
+    · subst b
+      exact C.block_leftEndpoint_lt_of_ne hb hboundary
+    · have hlt : p + (ell - a) + 1 < b := by omega
+      exact C.leftEndpoint_lt_of_lt_block hlt hb
+  exact AoyagiLemma5Eq4SelectedSpanBranchValue.tail b hb_tail hb hafter
+    (hT.tail b S hb_tail hb hafter)
+
+/-- A supplied equation `(4)` piecewise certificate covers every source index in
+the selected span by one of its advertised branches.
+
+This is only a selected-span consequence of the block classifier.  It does not
+claim coverage before `S_1-1`, at `S_(ell+1)-1`, or after it. -/
+theorem aoyagiLemma5Eq4_selectedSpan_branchValue
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {S : ℕ} (hlo : C.point 0 - 1 ≤ S) (hhi : S < C.point ell - 1) :
+    AoyagiLemma5Eq4SelectedSpanBranchValue ell a p M m C layerWidth T S := by
+  rcases C.exists_block_of_mem_selectedSpan hlo hhi with ⟨b, hb⟩
+  exact aoyagiLemma5Eq4_branchValue_of_block ell a p M m C layerWidth T hT hb
 
 /-- A supplied equation `(4)` piecewise vector has the correct own-coordinate
 value and legal source label under the repaired guards.

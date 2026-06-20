@@ -239,27 +239,40 @@ objects are `AoyagiSelectedCutpoints`, `AoyagiSelectedCutpoints.point`,
 `AoyagiSelectedCutpoints.point_le_of_le`,
 `AoyagiSelectedCutpoints.block_index_unique`,
 `AoyagiSelectedCutpoints.block_leftEndpoint_iff`,
+`AoyagiSelectedCutpoints.block_leftEndpoint_lt_of_ne`,
+`AoyagiSelectedCutpoints.leftEndpoint_lt_of_lt_block`,
 `AoyagiSelectedCutpoints.block_mem_selectedSpan`,
 `AoyagiSelectedCutpoints.exists_block_of_mem_selectedSpan`,
 `AoyagiSelectedCutpoints.exists_block_iff_mem_selectedSpan`,
-`AoyagiLemma5Eq4PiecewiseSourceVector`, and
+`AoyagiLemma5Eq4PiecewiseSourceVector`,
+`AoyagiLemma5Eq4SelectedSpanBranchValue`,
+`aoyagiLemma5Eq4_branchValue_of_block`,
+`aoyagiLemma5Eq4_selectedSpan_branchValue`, and
 `aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`.  The
 theorem says that a supplied equation `(4)` piecewise branch certificate gives
 the correct own-coordinate value and legal label bounds under the repaired
-guards and Definition 3 hypotheses.  Reproduction:
+guards and Definition 3 hypotheses; the selected-span classifier says that
+the same supplied certificate gives one of the advertised branch values for
+every source index in the selected span only.  Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-piecewise-certificate-a5.md`.
 Selected-block bookkeeping reproduction:
 `threads/05-arithmetic-tail/reproduction-selected-block-bookkeeping-a5.md`.
 Selected-block coverage reproduction:
 `threads/05-arithmetic-tail/reproduction-selected-block-coverage-a5.md`.
+Selected-span branch-value reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-selected-span-branch-value-a5.md`.
 Statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-piecewise-certificate.md`.
+Selected-span statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-selected-span-branch-value.md`.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-piecewise-certificate-a5.md`.
 Selected-block review:
 `threads/05-arithmetic-tail/review-selected-block-bookkeeping-a5.md`.
 Selected-block coverage review:
 `threads/05-arithmetic-tail/review-selected-block-coverage-a5.md`.
+Selected-span branch-value review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-selected-span-branch-value-a5.md`.
 
 ## Latest A2 update
 

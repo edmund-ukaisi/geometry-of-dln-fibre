@@ -1718,6 +1718,11 @@ No such claim is formalisation-ready until both fields are filled.
   own-coordinate value and legal label bounds.  This does not construct the
   vector or prove terminality, coverage, admissibility, or the Case 1(2)
   chart sequence.
+  The same supplied equation `(4)` certificate now also has selected-span
+  branch-value coverage: every `S_1-1<=S<S_(ell+1)-1` is classified into one
+  of the advertised branch values, with the boundary singleton kept separate
+  from the strict tail.  This is still conditional branch bookkeeping, not
+  vector construction or Lemma 5 order-count coverage.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1763,7 +1768,9 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`;
   `Htilde` value-set count at
-  `threads/05-arithmetic-tail/reproduction-htilde-value-set-count-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-htilde-value-set-count-a5.md`;
+  selected-span equation `(4)` branch values at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-selected-span-branch-value-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1810,7 +1817,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`;
   `Htilde` value-set count checked by xhigh `Plato the 5th` and final landed
   xhigh reviewer `Goodall the 5th` at
-  `threads/05-arithmetic-tail/review-htilde-value-set-count-a5.md`.
+  `threads/05-arithmetic-tail/review-htilde-value-set-count-a5.md`;
+  selected-span equation `(4)` branch values checked by xhigh source/indexing
+  scout `Copernicus` and xhigh Lean/API scout `Beauvoir` at
+  `threads/05-arithmetic-tail/review-lemma5-eq4-selected-span-branch-value-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1846,7 +1856,9 @@ No such claim is formalisation-ready until both fields are filled.
   Definition 3 selected-width upper label bound in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`;
   isolated Lemma 5 interval-excess arithmetic in
-  `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`;
+  conditional equation `(4)` selected-span branch classification in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`; broader A5 targets
   TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
@@ -1969,6 +1981,13 @@ No such claim is formalisation-ready until both fields are filled.
   same-coordinate interval value sets into a Nat-indexed source-facing count
   and recover `1 + sum_{j=1}^{ell-1}(|I_j|-1)=a(ell-a)+1` without proving
   Lemma 5's chart-family/order-count theorem.
+  Also proved `AoyagiSelectedCutpoints.block_leftEndpoint_lt_of_ne`,
+  `AoyagiSelectedCutpoints.leftEndpoint_lt_of_lt_block`,
+  `AoyagiLemma5Eq4SelectedSpanBranchValue`,
+  `aoyagiLemma5Eq4_branchValue_of_block`, and
+  `aoyagiLemma5Eq4_selectedSpan_branchValue`, which classify selected-span
+  points into the supplied equation `(4)` branch values without constructing
+  the displayed vector or proving terminal/chart/order-count claims.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

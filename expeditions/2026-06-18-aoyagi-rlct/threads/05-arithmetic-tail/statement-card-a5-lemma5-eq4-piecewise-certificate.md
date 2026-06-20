@@ -17,10 +17,15 @@ Names:
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.point_le_of_le`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block_index_unique`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block_leftEndpoint_iff`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block_leftEndpoint_lt_of_ne`
+- `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.leftEndpoint_lt_of_lt_block`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.block_mem_selectedSpan`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.exists_block_of_mem_selectedSpan`
 - `DLNFibre.DLN.Aoyagi.AoyagiSelectedCutpoints.exists_block_iff_mem_selectedSpan`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5Eq4PiecewiseSourceVector`
+- `DLNFibre.DLN.Aoyagi.AoyagiLemma5Eq4SelectedSpanBranchValue`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_branchValue_of_block`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_selectedSpan_branchValue`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`
 
 ## Statement
@@ -50,6 +55,8 @@ T(S_(p+1)-1) = Htilde_p,
   of a selected block's left endpoint.
 - Selected-block coverage of exactly the selected span
   `S_1-1 <= S < S_(ell+1)-1`.
+- A supplied equation `(4)` piecewise certificate gives one of the advertised
+  branch values for every point in the selected span.
 - A supplied equation `(4)` piecewise certificate gives the correct own
   coordinate.
 - The same theorem carries forward the repaired selected-index and legal-label
@@ -89,6 +96,9 @@ T(S_(p+1)-1) = Htilde_p,
   `review-lemma5-eq4-piecewise-certificate-a5.md`.
 - Selected-block coverage review passed by xhigh `Pauli`:
   `review-selected-block-coverage-a5.md`.
+- Selected-span branch-value source/API review passed by xhigh `Copernicus`
+  and xhigh `Beauvoir`:
+  `review-lemma5-eq4-selected-span-branch-value-a5.md`.
 
 ## Verification
 

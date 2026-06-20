@@ -1952,6 +1952,24 @@ invariant.  Future work must either build an independent selected-entry
 atlas/transition construction or keep proving finite consequences below the
 supplied-boundary interface.
 
+The A5 equation `(4)` selected-span branch-value classifier is now
+Lean-proved.  In `Lemma5DisplayedVector.lean`, selected-block endpoint helpers
+show that a non-left-endpoint point is strictly after its block's left endpoint
+and that every point in a later block is strictly after an earlier left
+endpoint.  The inductive `AoyagiLemma5Eq4SelectedSpanBranchValue` records the
+five advertised branch alternatives, and
+`aoyagiLemma5Eq4_branchValue_of_block` classifies any selected-block point
+from a supplied equation `(4)` piecewise certificate.  Combining this with the
+selected-span coverage theorem gives
+`aoyagiLemma5Eq4_selectedSpan_branchValue`: every
+`S_1-1 <= S < S_(ell+1)-1` has one of the advertised supplied branch values.
+The boundary singleton `S_(p+ell-a+2)-1` remains separate from the strict tail
+branch.  This is still conditional branch bookkeeping only; it does not
+construct the displayed vector, prove terminal `tilde t=0`, vector
+admissibility, total source-layer coverage, source vector-to-chain
+correspondence, the Case 1(2) chart sequence, Lemma 5 order count, normal
+crossings, or RLCT extraction.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
