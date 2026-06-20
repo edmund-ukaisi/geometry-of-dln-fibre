@@ -532,3 +532,37 @@ irreducible, with prime vanishing ideal — exactly what L0 (Nullstellensatz cod
 theorem Mathlib lacks] + L3 ~5–7 [homogeneous-space smoothness via Spec detour] + assembly + L7) is a
 bounded but substantial sub-expedition, with a `[CharZero k]` scope refinement on the geometric-codim
 headline. Awaiting scope decision: full zero-cited grind / scoped-CITE the one trdeg step / bank L6 + defer.
+
+## 2026-06-20 — AG HALF sub-campaign (operator: FULL ZERO-CITED) — scaffold
+
+Discharge `hVoigt`: `codimRep (canonicalCoord d) (orbitRankLocus M) = orbitLinearCodim M`, via
+`varietyDim(Z_M) =[L0,L1✓] #σ−codimRep`, `varietyDim =[L4d✓] ringKrullDim(AtPrime m_M) =[M3✓,needs L3]
+finrank(cotangent) =[L2a✓] finrank(ker Jac) =[L2b] finrank(range δ⁰) = #σ−orbitLinearCodim✓`.
+LANDED bricks: L0 (`NullstellensatzCodim`), L1 (`isPrime_vanishingIdeal_orbitRankLocus`), L4d, M2, M3, L2a.
+`Z_M = Ō_M` irreducible/prime ✓ (L6). All AG-half headlines carry **`[CharZero k]`** (char-p counterexample);
+engine + L6 + RLCT-over-ℝ/ℂ stay char-free.
+
+**Ladder + build-order DAG:**
+- **A0** [build, short, char-free] `dμ_M = δ⁰` (orbit-map differential = coboundary `φ↦φ_{i+1}M_i−M_iφ_i`) +
+  **L2b-easy** `range δ⁰ ⊆ ker Jac` (μ_M lands in Z_M=orbitRankLocus ✓ ⟹ orbit directions ⊆ Zariski tangent).
+  Independent. Bank first. (δ⁰ + tangent side live in `Core.OrbitCodim`.)
+- **A1** [scout, quick] pin Mathlib v4.29 Kähler/trdeg API for L2b★ (`Algebra.trdeg`, `KaehlerDifferential`,
+  `rank Ω`, `trdeg ≤ rank Ω`) — the thread-30 **4-vs-7-module swing factor**.
+- **A2** [scout, quick] pin L3 Spec-detour API (`Scheme.Hom.dense_smoothLocus_of_perfectField`,
+  `StructureSheaf.stalkIso`/`AtPrime ≃ stalk`, `IsSmoothAt` unfold) + whether **`IsOpen O_M`** (open orbit)
+  is reachable (L3.3, thread-29's most-likely-to-break).
+- **A3** [build, ~5–7 mod, needs A2] **L3** `IsSmoothAt k m_M` via homogeneity: L3.0 G-action ring autos ·
+  L3.1 G-stable smooth locus (`FormallySmooth.of_equiv`) · L3.2 smooth closed point (Spec detour, hardest) ·
+  L3.3 smooth pt ∈ open orbit · L3.4 assemble.
+- **A4** [build, ~4–7 mod, needs A1, `[CharZero k]`] **L2b★** target `orbitPullback_dim_le_finrank_range_delta`
+  via the NEW theorem `affine_image_dim_le_const_jacobianRank` (Jacobian rank ⟹ trdeg, Kähler diff of image
+  function field). Route c (thread 30). The irreducible nugget.
+- **A5** [build, ~1 mod, needs A3] **§WRINKLE** — L2a is fed `rankMinorSet M` but those minors generate an
+  ideal whose RADICAL is `vanishingIdeal Z_M`: "local ideals agree at the smooth point M" (guarded by L3
+  reducedness; de-risk on (2,2,2)).
+- **A6** [build, ~1–2 mod, needs A3,A4,A5] **L4-assembly + L7** — compose ⟹ discharge `hVoigt`, add `[CharZero k]`
+  to L7/L2b in `OrbitCodim.lean`.
+
+**Build waves:** W1 = A0 (build) ∥ A1 (scout) ∥ A2 (scout). W2 = A3 ∥ A4 (from A1/A2). W3 = A5, A6.
+**Surface to operator** only at completion (hVoigt discharged → close PR) or if A4's Kähler API / A3's IsOpen-O_M
+inflates beyond the sizing (genuine new blocker).
