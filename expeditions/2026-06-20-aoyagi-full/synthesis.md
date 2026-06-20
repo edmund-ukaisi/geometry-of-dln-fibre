@@ -244,9 +244,13 @@ correct+total, only the ROUTE needs reframing to: per-T bound on T's OWN breakpo
 **#19 keystone PARKED (decision d):** fm probed it — perm-invariance of lambdaCore is a MIN-LEVEL no-bijection
 wall (Adm cones + Mval-multisets genuinely DIFFER under σ — 560/1700 & 1140/1700; holds only AT the min ⟹
 multi-hundred-line explicit minimizer characterization, no slick transport). OFF-headline-path (headline uses
-aoyagiLambda's min-def, closes sorry-free WITHOUT #19's proof). So: genuine STATEMENT = the bedrock win; the
-proof is a ROADMAPPED documented sorry (dedicated tide later if spare capacity). fm → critical-path (S1 wires
-→ R1 execution + L2/D1) instead.
+aoyagiLambda's min-def, closes sorry-free WITHOUT #19's proof). **THEN UN-PARKED via ROUTE B (fm, 2df8bf4):**
+cleanCore depends only on the width MULTISET (Σm², Σm symmetric), so #19 needs NO global perm-invariance — a
+LOCAL achiever analysis (T* breakpoint-multiset = sortedSmallest, via multiset-symmetry) + the per-T lower
+bound (balancedSplit_min, DONE) suffices. ~200 lines, perm-invariance-FREE (avoids the wall, not solves it),
+3900/3900. So #19 is now a clean bounded build. fm sequence: wire S1.1+S1.4 → #19 route B → R1/L2/D1
+(critical-path beats off-path as Fubini lands for R1). S1 STATE (trunk @b6eaa80): S1Transport 0-sorry (S1.1
+ready), S1Local 1-sorry (S1.4 ready; S1.3 pending fm-2's push of its proof), S1Additive 0 (Fubini pending).
 
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
