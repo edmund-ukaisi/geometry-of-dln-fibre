@@ -31,18 +31,23 @@ fm-2 on it after the deepestPoint fix.
 monotonicity) · R1 (the mountain; codim=Mval stratification proven gen-L) · A1/A2 (spine proven). Two hard
 Lean builds: S1.1 + R1. Hard analytic question (is the cited fact provable?) → answered YES (λ axiom-free).
 
-## Contract FINAL @a4d00e1 (rv-2 re-auditing — the bedrock gate)
+## Contract FINAL @86eb0a9 (rv-2 re-auditing — the bedrock gate; Skeleton FROZEN)
 deepestPoint done: `deepestPoint := Classical.choice (deepestPoint_exists)` over the deepest-layers fibre
-(`IsDeepLayers`); D1 `⨅ = rlctAt(deepestPoint)`, L2 `rlctAt(deepestPoint)=aoyagiLambda`; IsDeepest dropped.
+(`IsDeepLayers w := w∈optimalSet ∧ ∀ s, rank(w s) = r` — pp's per-layer spec, refined @86eb0a9 from
+capped-min); D1 `⨅ = rlctAt(deepestPoint)`, L2 `rlctAt(deepestPoint)=aoyagiLambda`; IsDeepest dropped.
 Choice-route deliberate (explicit block-normal term ≠ general B ⇒ would make D1 false). sorries 13 (12 +
 `deepestPoint_exists`, an honest provable existence obligation); 1 axiom; headline assembles;
 `#print axioms` = [propext, sorryAx, Classical.choice, Quot.sound] (Classical.choice clean/expected).
 
-## Measure-side architecture — UNDER RE-DECISION (#15)
-piCurry banked (sorry-free). paramsEquivFlat ASSEMBLY hit the systemic Matrix-as-def instance wall
-(MeasurableSpace(Matrix) won't synthesize symbolically; recurs in (1,1,1) bridge + assembly + will hit
-S1.1-use-site + R1). → pp re-scoping: tame Route A (inferInstanceAs / Params.volume=nested-pi) vs pivot
-to Route B (ParamsFlat := Fin N → ℝ, no Matrix in measure context — kills the wall, re-keys foundations).
+## Measure-side architecture — DECIDED: ROUTE A++ (pp, 10 compiled probes + Codex)
+The Matrix-wall is NOT systemic — it's PAID ONCE + contained by interface discipline. Compiled facts:
+`Params.volume = nested Measure.pi` is **rfl** (no helper needed); the fiber instance is a scoped one-line
+`letI` inside the `paramsEquivFlat` construction (NOT a global Matrix instance — collision-prone); banked
+`piCurry` covers both per-layer + across-layers (no 2nd gap); downstream (S1.1, bridge, R1) state measure
+facts on `Fin N → ℝ` and pull back via `integrableOn_comp_preimage` — never re-touch Matrix. So: `Params` =
+algebraic model, `Fin N → ℝ` = measure model, bridged by the single `paramsEquivFlat` MP (~30-50 lines, all
+pieces compile-verified). Route B (re-key/re-audit) buys nothing A doesn't already contain. fm-2 builds
+paramsEquivFlat after rv-2 clears the contract.
 
 ## In flight
 - `rv-2` — final contract re-audit (bedrock gate). Background.
