@@ -58,6 +58,13 @@ vacuous). 9th bug (L=0) INDEPENDENTLY confirmed (decorrelated counterexample). *
 hidden corner beyond L=0 — `hr ∧ hL` CLOSE the existence/headline domain COMPLETELY** (r=0→origin OK;
 hr-equality boundary OK; only L=0 uncovered). ⇒ once hL lands + the final re-audit runs, the contract domain
 is PROVABLY complete (no 10th domain hole lurking) = BEDROCK. The domain-bug class is closed.
+Full rung×corner matrix (rv-2): R1 `resolution_charts` is SAFE at L=0 with NO hr/hL (the ONE unguarded
+rung — at L=0 dlnLoss is constant ⇒ `rlctAt=⊤` either way, R1's ∃ discharges via `ι=Empty`, ⨅∅=⊤); all
+other rungs (S2/S1.x/L1/A1/A2) clean at every corner (L=0, r=0, r-extremal, zero-width, d=0). So R1 needs
+NO domain hypothesis — good for its formalisation. **Convention noted:** `rlctAt(≡0 loss)=⊤` in this dev
+(rv-2 proved it; literature leaves F≢0's RLCT undefined) — BENIGN (the ≡0 case only at hL/analyticity-
+excluded corners; the headline's rlctAt is for a non-≡0 loss, vanishing AT the deepest point not identically,
+so the convention never taints the headline). Docstring note on `rlctAt` queued for convention-honesty.
 
 ## Live status (per-track)
 
