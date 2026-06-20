@@ -2038,6 +2038,9 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack`,
   which classify supplied equation `(3)` branch data on the selected span and
   recover the own-coordinate selected-label handoff under explicit slack.
+  Also proved `aoyagiLemma5Eq3_terminalEndpoint_one_of_one`, which records
+  that the supplied equation `(3)` boundary assignment gives terminal endpoint
+  value `1` when `a=1`, rather than terminal endpoint zero.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

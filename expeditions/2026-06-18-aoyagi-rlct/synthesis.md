@@ -2019,6 +2019,14 @@ This is still below the blocked displayed-family realisation boundary: no
 vector construction, terminal endpoint coverage, terminal `tilde t=0`,
 introduced-label status, chart sequence, or order count is claimed.
 
+The equation `(3)` terminal obstruction at `a=1` is now Lean-proved.  For a
+supplied equation `(3)` branch certificate, the special boundary becomes the
+terminal selected endpoint `S_(ell+1)-1` when `a=1`.  Since the selected-sum
+identity gives `Htilde'_ell=0`, the supplied branch assignment gives
+`T(S_(ell+1)-1)=1`.  This records why equation `(3)` cannot be promoted to a
+uniform terminal-zero theorem without additional chart-sequence or endpoint
+data.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

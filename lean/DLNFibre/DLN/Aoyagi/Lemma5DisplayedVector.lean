@@ -498,6 +498,26 @@ theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_
   · exact hvalue
   · exact hlabel
 
+/-- In the boundary case `a=1`, a supplied equation `(3)` certificate assigns
+the terminal selected endpoint the value `1`.
+
+This is an obstruction record: it shows that equation `(3)` cannot by itself
+give terminal endpoint zero uniformly. -/
+theorem aoyagiLemma5Eq3_terminalEndpoint_one_of_one
+    (ell : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell 1 M m C layerWidth T) :
+    T (C.point ell - 1) = 1 := by
+  have hell_pos : 1 ≤ ell := hT.a_le_ell
+  have hidx : ell - 1 + 1 = ell := by omega
+  have hboundary := hT.boundary
+  rw [hidx] at hboundary
+  have hzero := aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum
+    ell 1 M m hT.a_le_ell hselected
+  rw [hzero] at hboundary
+  simpa using hboundary
+
 end Aoyagi
 end DLN
 end DLNFibre

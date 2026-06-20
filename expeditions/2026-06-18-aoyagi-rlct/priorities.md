@@ -634,6 +634,10 @@ on the session's original cwd.
    longer branch bookkeeping, but the harder displayed-family realisation
    boundary: terminal convention, Case 1(2) chart sequence, or another finite
    consequence that stays below that boundary.
+   The `a=1` terminal obstruction is now Lean-proved as a finite consequence:
+   a supplied equation `(3)` branch certificate assigns the terminal selected
+   endpoint value `1`, not `0`.  This strengthens the blocker against a
+   terminal-zero theorem from the printed display alone.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

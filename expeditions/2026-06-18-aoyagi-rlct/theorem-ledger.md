@@ -2372,6 +2372,19 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-local-data-and-piecewise-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(3)` terminal obstruction has landed
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean
+name is `aoyagiLemma5Eq3_terminalEndpoint_one_of_one`.  It says that for a
+supplied equation `(3)` certificate with `a=1`, the special boundary is the
+terminal selected endpoint and the selected-sum identity forces the supplied
+boundary value to be `1`.  Thus terminal endpoint zero cannot follow from the
+printed equation `(3)` branch assignment in that boundary case.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-terminal-obstruction-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-terminal-obstruction.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-terminal-obstruction-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

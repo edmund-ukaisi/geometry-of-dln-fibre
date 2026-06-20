@@ -914,3 +914,28 @@ Landed-patch review:
 The reviewer found that the supplied piecewise record should carry the source
 guards for the boundary cutpoint.  This was addressed by adding `a<=ell` and
 `1<=a` fields to `AoyagiLemma5Eq3PiecewiseSourceVector`.
+
+## 2026-06-20 Lean Lemma 5 equation `(3)` terminal obstruction
+
+Reproduction:
+`reproduction-lemma5-eq3-terminal-obstruction-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-terminal-obstruction.md`.
+Review artifact:
+`review-lemma5-eq3-terminal-obstruction-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq3_terminalEndpoint_one_of_one
+```
+
+For a supplied equation `(3)` branch certificate with `a=1`, the special
+boundary is the terminal selected endpoint `S_(ell+1)-1`, and Definition 3's
+selected-sum identity gives `Htilde'_ell=0`.  Therefore the supplied equation
+`(3)` boundary assignment gives `T(S_(ell+1)-1)=1`.
+
+This records a concrete obstruction to a uniform terminal-zero theorem from
+the printed equation `(3)` display.  It is not a construction of the displayed
+vector and does not prove terminal `tilde t=0`, introduced-label status,
+chart coverage, or Lemma 5 order count.
