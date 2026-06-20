@@ -944,6 +944,115 @@ theorem rankPattern_splice_cross (a c e : Fin (N + 1)) (b : Fin N) (lam : k) {i 
     · rw [if_neg hje] at hub
       exact Nat.le_zero.mp hub
 
+/-! ## The full rank pattern of `splice λ` and orbit membership
+
+For `λ ≠ 0` the recombination row is full and `splice λ` shares the rank pattern (hence the
+`G_d`-orbit) of the upstairs `U₂ = M_{[a,e]} ⊕ M_{[c,b]}`; for `λ = 0` it shares the rank pattern of
+the downstairs `M_{[a,b]} ⊕ M_{[c,e]}` (transported onto the upstairs dimension vector, which the move
+preserves). Both follow range-by-range (below/above off the edge, the crossing via
+`rankPattern_splice_cross`) and the complete invariant `orbit_of_rankPattern_eq`. -/
+
+/-- For `λ ≠ 0` the rank pattern of `splice λ` equals that of `U₂ = M_{[a,e]} ⊕ M_{[c,b]}`
+(below/above are off-edge; the crossing collapses to `[a≤i ∧ j≤e]`, exactly `U₂`'s crossing rank). -/
+theorem rankPattern_splice_eq_U2_of_ne_zero (a c e : Fin (N + 1)) (b : Fin N) (lam : k)
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e) (hlam : lam ≠ 0)
+    {i j : Fin (N + 1)} (hij : i ≤ j) :
+    rankPattern (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (splice (k := k) a c e b lam) i j hij
+      = rankPattern (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          (dirSum (intervalModule (k := k) a e) (intervalModule c b.castSucc)) i j hij := by
+  classical
+  rcases lt_or_ge b.castSucc j with hjb | hjb
+  swap
+  · rw [rankPattern, submult_splice_below a c e b lam hij hjb, ← rankPattern]
+  rcases lt_or_ge b.castSucc i with hbi' | hib
+  · have hbi : b.succ ≤ i := by
+      rw [Fin.le_def, Fin.val_succ]; rw [Fin.lt_def, Fin.val_castSucc] at hbi'; omega
+    rw [rankPattern, submult_splice_above a c e b lam hij hbi, ← rankPattern]
+  · have hbj : b.succ ≤ j := by
+      rw [Fin.le_def, Fin.val_succ]; rw [Fin.lt_def, Fin.val_castSucc] at hjb; omega
+    rw [show hij = (hib.trans (Fin.castSucc_le_succ b)).trans hbj from rfl,
+      rankPattern_splice_cross a c e b lam hac hcb hbe hib hbj,
+      rankPattern_dirSum, rankPattern_intervalModule, rankPattern_intervalModule]
+    have hsnd : ¬ (c ≤ i ∧ j ≤ b.castSucc) := fun h ↦ absurd (lt_of_lt_of_le hjb h.2) (lt_irrefl _)
+    rw [if_neg hsnd, add_zero]
+    by_cases hcond : j ≤ e ∧ ((lam ≠ 0 ∧ a ≤ i) ∨ c ≤ i)
+    · have hai : a ≤ i := by
+        rcases hcond.2 with ⟨_, hai⟩ | hci
+        · exact hai
+        · exact le_trans (le_of_lt hac) hci
+      rw [if_pos hcond, if_pos ⟨hai, hcond.1⟩]
+    · rw [if_neg hcond, if_neg ?_]
+      rintro ⟨hai, hje⟩
+      exact hcond ⟨hje, Or.inl ⟨hlam, hai⟩⟩
+
+/-- The non-split move preserves the dimension vector: `[a,e] ⊔ [c,b]` and `[a,b] ⊔ [c,e]` have equal
+pointwise dimensions (for `a < c ≤ b.castSucc`, `b.succ ≤ e`). -/
+theorem foldDim_nonsplit_eq (a c e : Fin (N + 1)) (b : Fin N)
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e) :
+    foldDim [(a, b.castSucc), (c, e)]
+      = (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l) := by
+  have hbce : b.castSucc ≤ e := le_trans (Fin.castSucc_le_succ b) hbe
+  funext l
+  simp only [foldDim, add_zero]
+  by_cases hae : a ≤ l ∧ l ≤ e
+  · by_cases hlbc : l ≤ b.castSucc
+    · rw [intervalDim_eq_one ⟨hae.1, hlbc⟩, intervalDim_eq_one hae]
+      by_cases hcl : c ≤ l
+      · rw [intervalDim_eq_one ⟨hcl, hae.2⟩, intervalDim_eq_one ⟨hcl, hlbc⟩]
+      · rw [intervalDim_eq_zero (fun h ↦ hcl h.1), intervalDim_eq_zero (fun h ↦ hcl h.1)]
+    · rw [intervalDim_eq_zero (fun h ↦ hlbc h.2), intervalDim_eq_one hae]
+      have hcl : c ≤ l := le_trans hcb (le_of_lt (not_le.mp hlbc))
+      rw [intervalDim_eq_one ⟨hcl, hae.2⟩, intervalDim_eq_zero (fun h ↦ hlbc h.2)]
+  · rw [intervalDim_eq_zero hae,
+      intervalDim_eq_zero (fun h ↦ hae ⟨h.1, le_trans h.2 hbce⟩),
+      intervalDim_eq_zero (fun h ↦ hae ⟨le_trans (le_of_lt hac) h.1, le_trans h.2 hbce⟩),
+      intervalDim_eq_zero (fun h ↦ hae ⟨le_trans (le_of_lt hac) h.1, h.2⟩)]
+
+/-- For `λ = 0` the rank pattern of `splice 0` equals that of the downstairs
+`M_{[a,b]} ⊕ M_{[c,e]}` (transported onto the upstairs dimension vector via `foldDim_nonsplit_eq`). -/
+theorem rankPattern_splice_zero_eq_down (a c e : Fin (N + 1)) (b : Fin N)
+    (hac : a < c) (hcb : c ≤ b.castSucc) (hbe : b.succ ≤ e)
+    {i j : Fin (N + 1)} (hij : i ≤ j) :
+    rankPattern (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+        (splice (k := k) a c e b 0) i j hij
+      = rankPattern (fun l ↦ intervalDim a e l + intervalDim c b.castSucc l)
+          ((foldDim_nonsplit_eq a c e b hac hcb hbe) ▸
+            intervalDirectSum (k := k) [(a, b.castSucc), (c, e)]) i j hij := by
+  classical
+  rw [rankPattern_transport (foldDim_nonsplit_eq a c e b hac hcb hbe),
+    rankPattern_intervalDirectSum, List.map_cons, List.map_cons, List.map_nil, List.sum_cons,
+    List.sum_cons, List.sum_nil, add_zero, rankPattern_intervalModule, rankPattern_intervalModule]
+  have hbc : (b.castSucc : Fin (N + 1)).val = (b : ℕ) := Fin.val_castSucc b
+  have hbs : (b.succ : Fin (N + 1)).val = (b : ℕ) + 1 := Fin.val_succ b
+  have hacv : (a : ℕ) < (c : ℕ) := hac
+  have hcbv : (c : ℕ) ≤ (b : ℕ) := by have := Fin.le_def.mp hcb; rwa [hbc] at this
+  have hbev : (b : ℕ) + 1 ≤ (e : ℕ) := by have := Fin.le_def.mp hbe; rwa [hbs] at this
+  have hijv : (i : ℕ) ≤ (j : ℕ) := Fin.le_def.mp hij
+  rcases lt_or_ge b.castSucc j with hjb | hjb
+  · rcases lt_or_ge b.castSucc i with hbi' | hib
+    · have hbi : b.succ ≤ i := by
+        rw [Fin.le_def, Fin.val_succ]; rw [Fin.lt_def, Fin.val_castSucc] at hbi'; omega
+      rw [rankPattern, submult_splice_above a c e b 0 hij hbi, ← rankPattern,
+        rankPattern_dirSum, rankPattern_intervalModule, rankPattern_intervalModule]
+      have hbjv : (b : ℕ) < (j : ℕ) := by rw [Fin.lt_def, hbc] at hjb; exact hjb
+      have hbiv : (b : ℕ) < (i : ℕ) := by rw [Fin.lt_def, hbc] at hbi'; exact hbi'
+      simp only [Fin.le_def, hbc, Nat.cast_id] at *
+      split_ifs <;> omega
+    · have hbj : b.succ ≤ j := by
+        rw [Fin.le_def, Fin.val_succ]; rw [Fin.lt_def, Fin.val_castSucc] at hjb; omega
+      rw [show hij = (hib.trans (Fin.castSucc_le_succ b)).trans hbj from rfl,
+        rankPattern_splice_cross a c e b 0 hac hcb hbe hib hbj]
+      have hbjv : (b : ℕ) < (j : ℕ) := by rw [Fin.lt_def, hbc] at hjb; exact hjb
+      have hibv : (i : ℕ) ≤ (b : ℕ) := by have := Fin.le_def.mp hib; rwa [hbc] at this
+      simp only [ne_eq, not_true_eq_false, false_and, false_or, Fin.le_def, hbc, Nat.cast_id] at *
+      split_ifs <;> omega
+  · rw [rankPattern, submult_splice_below a c e b 0 hij hjb, ← rankPattern,
+      rankPattern_dirSum, rankPattern_intervalModule, rankPattern_intervalModule]
+    have hjbv : (j : ℕ) ≤ (b : ℕ) := by have := Fin.le_def.mp hjb; rwa [hbc] at this
+    simp only [Fin.le_def, hbc, Nat.cast_id] at *
+    split_ifs <;> omega
+
 section Witness
 
 /-! ## Non-vacuity witnesses
