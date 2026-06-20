@@ -101,4 +101,35 @@ theorem codimRepCanonical_orbitRankLocus_eq_multSum_unconditional
   codimRepCanonical_orbitRankLocus_eq_multSum L
     (codimRep_orbitRankLocus_eq_orbitLinearCodim (intervalDirectSum (k := k) L))
 
+/-! ## Capstone non-vacuity witness — the hypotheses fire on a genuine orbit
+
+The capstone carries `[IsAlgClosed k] [CharZero k]`. The committed `(2,2,2)` examples in
+`OrbitLinearCodim`/`OrbitVariety` are over `ℚ`, where neither instance holds, so they do not exhibit
+the capstone firing over its actual hypotheses. `AlgebraicClosure ℚ` carries both (`IsAlgClosed` from
+`AlgebraicClosure.isAlgClosed`, `CharZero` from `ℚ`'s), so instantiating the capstone there shows the
+antecedents are satisfiable on the genuine `(2,2,2)` `(1,1)`-orbit normal form
+`M = M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}` (`L = [(0,0),(0,1),(1,2),(2,2)]`, Le Halleur–Rimányi Ex 4.3).
+-/
+
+/-- The algebraic closure of `ℚ`: an `[IsAlgClosed] [CharZero]` field — the capstone's witness. -/
+noncomputable abbrev VoigtWitnessField : Type := AlgebraicClosure ℚ
+
+/-- The `(2,2,2)` `(1,1)`-orbit normal form as an interval direct-sum list,
+`M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}` (Le Halleur–Rimányi Ex 4.3). -/
+def voigtWitnessList222 : List (Fin 3 × Fin 3) :=
+  [((0 : Fin 3), (0 : Fin 3)), (0, 1), (1, 2), (2, 2)]
+
+/-- **Capstone non-vacuity (`(2,2,2)` over `AlgebraicClosure ℚ`).** The discharged Voigt lemma
+`codimRep_orbitRankLocus_eq_orbitLinearCodim` fires over its actual hypotheses
+`[IsAlgClosed k] [CharZero k]` — instantiated at `k = AlgebraicClosure ℚ` on the genuine `(2,2,2)`
+`(1,1)`-orbit `M = ⊕_{(a,b)∈L} M_{ab}`, `L = [(0,0),(0,1),(1,2),(2,2)]`: the geometric codimension of
+the orbit closure equals the expected codimension `orbitLinearCodim M`. An in-file witness that the
+antecedents are satisfiable (the committed `(2,2,2)` examples are over `ℚ`, where they are not). -/
+theorem voigtDischarge_witness_222 :
+    codimRep (canonicalCoord (foldDim voigtWitnessList222))
+        (orbitRankLocus (intervalDirectSum (k := VoigtWitnessField) voigtWitnessList222))
+      = (orbitLinearCodim (intervalDirectSum (k := VoigtWitnessField) voigtWitnessList222) : ℕ∞) :=
+  codimRep_orbitRankLocus_eq_orbitLinearCodim
+    (intervalDirectSum (k := VoigtWitnessField) voigtWitnessList222)
+
 end DLNFibre.Core
