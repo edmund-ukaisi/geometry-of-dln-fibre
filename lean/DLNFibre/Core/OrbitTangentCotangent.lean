@@ -561,4 +561,38 @@ theorem finrank_range_deformationδ_le_finrank_cotangent [IsAlgClosed k] (M : Tu
       _ = finrank k ((normalFormIdeal M).Cotangent) := Subspace.dual_finrank_eq
   omega
 
+/-! ## R6 — chain `finrank (m_M.Cotangent)` to `varietyDim Z_M` -/
+
+/-- `ringKrullDim (orbitRing M)` is a finite natural number `n`, equal to `varietyDim Z_M`:
+`A = orbitRing M` is a nontrivial finite-type domain over `k`, with `ringKrullDim` bounded by the
+ambient `ringKrullDim (MvPolynomial (RepCoord d) k) = card < ⊤` and `≥ 0` (nontrivial). -/
+theorem exists_ringKrullDim_orbitRing_eq [IsAlgClosed k] (M : Tuple (k := k) d) :
+    ∃ n : ℕ, ringKrullDim (orbitRing M) = (n : WithBot ℕ∞)
+      ∧ varietyDim (canonicalCoord d '' orbitRankLocus M) = (n : ℕ∞) := by
+  haveI : Nontrivial (orbitRing M) := inferInstance
+  -- `0 ≤ dim A ≤ card` so `dim A` is a finite nat
+  have hge : (0 : WithBot ℕ∞) ≤ ringKrullDim (orbitRing M) :=
+    ringKrullDim_nonneg_of_nontrivial
+  have hle : ringKrullDim (orbitRing M) ≤ (Nat.card (RepCoord d) : WithBot ℕ∞) := by
+    refine le_trans (ringKrullDim_quotient_le (orbitIdeal M)) ?_
+    rw [ringKrullDim_mvPolynomial_finite]
+  -- `varietyDim Z_M = (ringKrullDim (orbitRing M)).unbotD 0` (L6.4 + `varietyDim` def)
+  have hvar : varietyDim (canonicalCoord d '' orbitRankLocus M)
+      = (ringKrullDim (orbitRing M)).unbotD 0 := by
+    rw [varietyDim, vanishingIdeal_orbitRankLocus_eq_orbitSet M]; rfl
+  -- extract the nat value `n` of `dim A` (finite: `0 ≤ dim A ≤ card`)
+  have hbot : ringKrullDim (orbitRing M) ≠ ⊥ := by
+    intro h; rw [h] at hge; simp at hge
+  have hcardlt : (Nat.card (RepCoord d) : WithBot ℕ∞) < (⊤ : WithBot ℕ∞) :=
+    compareOfLessAndEq_eq_lt.mp rfl
+  have htop : ringKrullDim (orbitRing M) ≠ (⊤ : WithBot ℕ∞) :=
+    ne_of_lt (lt_of_le_of_lt hle hcardlt)
+  -- a `WithBot ℕ∞` that is neither `⊥` nor `⊤` is a finite nat
+  obtain ⟨m, hm⟩ := WithBot.ne_bot_iff_exists.mp hbot
+  have hmtop : m ≠ ⊤ := fun h ↦ htop (by rw [← hm, h]; rfl)
+  have hmcast : ((m.toNat : ℕ∞) : WithBot ℕ∞) = ringKrullDim (orbitRing M) := by
+    rw [ENat.coe_toNat hmtop, hm]
+  refine ⟨m.toNat, hmcast.symm, ?_⟩
+  rw [hvar, ← hmcast, WithBot.unbotD_coe]
+
 end DLNFibre.Core
