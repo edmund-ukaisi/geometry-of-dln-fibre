@@ -193,3 +193,11 @@ hyps didn't encode it.
   deliver the honest UNCONDITIONAL direction (`≤`) + the full result under the SUFFICIENT added hyps; let the
   controller adjudicate the statement change (decorrelated-confirmed, 7th/9th protocol). The added hyps were
   LOCALIZED (S1.1 only; consumers supply them at use-sites where they hold), so the contract change was small.
+- **RECURRING across the analytic rungs** (confirmed): S1.1 needed hsurj+hImE (surjectivity + Luzin-N);
+  S1.3 `rlct_unit_invariant` (11th issue) needs `Measurable u` (non-measurable u → u·F non-measurable → not
+  Integrable → rlctAt=sSup∅=0). The bare statements of analytic rungs SYSTEMATICALLY omit the
+  measurability/properness/surjectivity side-conditions the proof needs — EXPECT a hyp-gap in every analytic
+  rung; the formaliser checks hypothesis-sufficiency + escalates (don't silently strengthen). S1.4
+  `rlct_germ_local` was the exception (bare statement sound). The fixes are always LOCALIZED + use-site-
+  satisfiable (the resolution data is proper/surjective/analytic/measurable) — small contract changes, big
+  fidelity gain.

@@ -137,6 +137,20 @@ don't expose π; their PROOFS supply the hyps, both hold at the R1 resolution us
 exceptional divisor null). Pending rv-2 decorrelated confirm (7th/9th protocol) → fm wires
 (`exact …_of_surjective_image_null` + import + the 2 hyps, Skeleton single-writer). R1 design note: R1's
 per-chart S1.1-transport invocation must supply hsurj (chart onto nbhd) + hImE (exceptional divisor null).
+**rv-2 CONFIRMED (decorrelated + Codex)** both gaps (π=exp surjectivity; π=id+Cantor-staircase Luzin-N) +
+fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Executing: fm wires S1.1 (+ S1.4).
+
+## S1 batch status (proof-module pattern, fm-2 owned modules → fm wires)
+- **S1.1** `weightedThreshold_transport_aux` (S1Transport.lean @20ab62a) — PROVEN under hsurj+hImE (10th issue,
+  CONFIRMED). fm wiring (add 2 hyps + `exact` + import; also resolves orphan FLAG 1).
+- **S1.4** `rlct_germ_local_aux` (S1Local.lean) — PROVEN, bare statement SOUND (no gap). fm wiring (`exact` + import).
+- **S1.3** `rlct_unit_invariant` — **11th fidelity issue:** bare statement FALSE without `Measurable u`
+  (non-measurable u → u·F non-measurable → not Integrable → rlctAt=sSup∅=0 ≠ rlctAt F). Fix `Measurable u`
+  APPROVED (pending rv-2 confirm); fm-2 delivering `rlct_unit_invariant_aux` under it; fm wires later.
+- **S1.5** `rlct_additive_smooth_block` — DISPATCHED (fm-2 → a lean-formaliser, S1Additive.lean; gap-class flagged).
+**Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
+charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
+gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
 
 ## R1 design BANKED (pp, thread 14) + R3b DECISION + value-match DOWNGRADE
 - **Value/atlas split.** VALUE `rlctAt(‖∏C‖²)=½·min_t Mval(t)` (pinned by codim S(t)=Mval, thread-03) vs
