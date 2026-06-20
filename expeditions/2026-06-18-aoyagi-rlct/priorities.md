@@ -596,10 +596,13 @@ on the session's original cwd.
    obstruction: `k=Htilde'_1+1` is label-bounded exactly when
    `M-1<=W_1+W_2` and `W_1+2<=M`. This should be a field of any future
    conditional displayed-vector record, not an implicit consequence.
-   Definition 3's strict selected-width inequality now discharges the upper
-   equation `(4)` label bound, but not the lower positivity
-   `pM<=P_(p+1)`.  Next target: isolate that lower positivity as either a
-   source-derived prefix-crossing lemma or an explicit supplied field.
+   Definition 3's strict selected-width inequality now discharges both
+   equation `(4)` label bounds: the previous prefix gives the upper label
+   bound, and the tail after `P_(p+1)` gives the lower positivity
+   `pM<=P_(p+1)` under `p<=a`.  Next target: equation `(4)` still needs the
+   selected-index guard `p+1<=a`, the own-coordinate guard `p<=ell-a`, and a
+   terminal/tail convention before it can be claimed as a displayed source
+   vector.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

@@ -1844,10 +1844,9 @@ The next equation `(4)` guard layer is now isolated.  Lean exposes the
 interval-excess specialization used by the own-coordinate theorem, proves that
 the displayed cutoff `S_(p+ell-a+2)` is in the selected list exactly when
 `p+1<=a`, and rewrites the label bounds for `k=Htilde_p+1` as a
-prefix-crossing condition `P_p < pM <= P_(p+1)`.  This makes the source gap
-sharper: Definition 3 does not by itself supply the nonnegativity inequality
-`pM <= P_(p+1)`, and the printed `p<=a` guard does not prevent the boundary
-case `S_(ell+2)`.
+prefix-crossing condition `P_p < pM <= P_(p+1)`.  A later Definition 3
+tail estimate discharges this label condition; the printed `p<=a` guard still
+does not prevent the boundary case `S_(ell+2)`.
 
 The analogous equation `(3)` guard layer is now isolated.  Lean proves that
 the special cutoff `S_(ell-a+2)` is selected exactly when `1<=a`, that the
@@ -1860,10 +1859,12 @@ One Definition 3 source inequality is now Lean-used rather than merely
 recorded as a blocker.  If every selected width satisfies Aoyagi's strict
 selected inequality `ell*W_i < sum W`, then under
 `sum W=ell*(M-1)+a` and `a<=ell`, each selected width is at most `M-1`.
-Consequently the previous prefix satisfies `P_p+1<=pM`, and equation `(4)`'s
-upper label bound `Htilde_p+1<=W_(p+1)` follows for `1<=p`, `p<=a`.  This
-does not prove the lower label bound `pM<=P_(p+1)` or any terminal/vector
-realisation.
+Consequently the previous prefix satisfies `P_p+1<=pM`, and the tail after
+`P_(p+1)` satisfies
+`sum_tail <= (ell-p)(M-1)`.  The tail estimate gives
+`P_(p+1) >= p*(M-1)+a >= pM` under `p<=a`, so equation `(4)`'s full label
+bound `1<=Htilde_p+1<=W_(p+1)` follows for `1<=p`, `p<=a`.  This does not
+prove any terminal/vector realisation.
 
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are

@@ -2,10 +2,14 @@
 
 Status: checked conditional source arithmetic.
 
-This note isolates the part of Definition 3 that helps with Aoyagi Lemma 5
-equation `(4)` label legality.  It proves only the upper label bound
-`Htilde_p+1 <= W_(p+1)` under explicit Definition 3 inequalities.  It does
-not prove the lower label bound, terminality, or a displayed-family theorem.
+This note isolates the first part of Definition 3 that helps with Aoyagi
+Lemma 5 equation `(4)` label legality.  It proves the upper label bound
+`Htilde_p+1 <= W_(p+1)` under explicit Definition 3 inequalities.
+
+Follow-up note `reproduction-definition3-selected-width-label-bounds-a5.md`
+uses the same selected-width bound on the tail after `P_(p+1)` to prove the
+lower label bound too.  This note is therefore only the upper-bound slice, not
+the current endpoint of the label-bound analysis.
 
 ## Source
 
@@ -101,7 +105,7 @@ P_p + 1 <= p(M-1)+1 <= pM.
 Thus Definition 3's strict selected inequality proves the upper label bound
 for equation `(4)`.
 
-The lower label bound remains
+The lower label bound is
 
 ```text
 1 <= Htilde_p + 1,
@@ -113,7 +117,8 @@ equivalently
 pM <= P_(p+1).
 ```
 
-This is not discharged by the selected-width upper bound.
+The follow-up note discharges this by applying `W_i<=M-1` to the tail after
+`P_(p+1)`.
 
 ## Lean Targets
 
@@ -126,7 +131,8 @@ aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
 
 ## Nonclaims
 
-- This does not prove `1 <= Htilde_p+1`.
+- This note does not prove `1 <= Htilde_p+1`; the follow-up tail calculation
+  does.
 - This does not prove equation `(3)`'s one-unit slack guard `W_1+2<=M`.
 - This does not construct equations `(3)` or `(4)` displayed source vectors.
 - This does not prove `tilde t=0`, vector admissibility, Lemma 5 order count,

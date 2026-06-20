@@ -45,7 +45,9 @@ holds under `1<=p`, `p<=a`, and the Definition 3 selected-width hypotheses.
 
 ## Deferred
 
-- The lower label bound `1<=Htilde_p+1`, equivalently `pM<=P_(p+1)`.
+- This card proves only the upper label bound.  The later statement card
+  `statement-card-a5-definition3-selected-width-label-bounds.md` proves the
+  lower label bound `1<=Htilde_p+1` by a tail estimate.
 - Equation `(3)`'s one-unit slack guard `W_1+2<=M`.
 - Full equations `(3)` and `(4)` displayed-family realisation.
 - `tilde t=0`, vector admissibility, Lemma 5 order count, pole order, normal

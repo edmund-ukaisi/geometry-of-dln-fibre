@@ -198,6 +198,24 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-definition3-selected-width-upper-label-a5.md`.
 
+The tail half of the same Definition 3 label calculation has also landed.
+The proved Lean names are
+`aoyagiPrefixSum_mul_le_of_selectedWidth_le_pred`,
+`aoyagiPrefixSum_mul_le_of_sourceSelectedInequality`,
+`aoyagiHtildeLowerNat_add_one_pos_of_selectedWidth_le_pred`,
+`aoyagiHtildeLowerNat_add_one_pos_of_sourceSelectedInequality`, and
+`aoyagiHtildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality`.
+They prove `pM<=P_(p+1)` by bounding the tail after `P_(p+1)`, hence combine
+with the previous-prefix estimate to prove
+`1<=Htilde_p+1<=W_(p+1)` under `1<=ell`, `a<=ell`, `1<=p`, `p<=a`, and
+Definition 3's selected-width hypotheses.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-definition3-selected-width-label-bounds-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-definition3-selected-width-label-bounds.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-definition3-selected-width-label-bounds-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

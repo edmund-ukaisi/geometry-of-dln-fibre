@@ -1697,16 +1697,18 @@ No such claim is formalisation-ready until both fields are filled.
   `Htilde'_p-p=Htilde_p` under `p<=a` and `p<=ell-a`.
   A follow-up guard-arithmetic layer now proves that the equation `(4)` tail
   cutoff needs `p+1<=a`, and that `k=Htilde_p+1` label bounds are exactly a
-  prefix-crossing condition. This sharpens the blocker; it does not discharge
-  legal-label or terminal-zero data.
+  prefix-crossing condition. Definition 3's selected-width arithmetic now
+  discharges that label condition: the previous-prefix estimate gives the
+  upper bound, while the tail estimate gives `pM<=P_(p+1)` under `p<=a`.
+  Terminal-zero data and full displayed-vector realisation remain open.
   Equation `(3)` guard arithmetic now likewise shows that the special cutoff
   needs `1<=a`, the first upper/lower Htilde gap is `1` only in the interior
   case, and `k=Htilde'_1+1` is label-bounded exactly under the width guards
   `M-1<=W_1+W_2` and `W_1+2<=M`.
   Definition 3's strict selected-width inequality is now used to prove
-  `W_i<=M-1` for selected widths, which discharges the upper equation `(4)`
-  label bound `Htilde_p+1<=W_(p+1)` under `1<=p`, `p<=a`. The lower bound
-  `1<=Htilde_p+1` remains open.
+  `W_i<=M-1` for selected widths. Applying this bound to both the previous
+  prefix and the tail after `P_(p+1)` discharges both equation `(4)` label
+  bounds `1<=Htilde_p+1<=W_(p+1)` under `1<=p`, `p<=a`.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,

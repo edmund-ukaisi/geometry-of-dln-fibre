@@ -128,6 +128,82 @@ theorem aoyagiPrefixSum_sub_current_add_one_le_mul_of_selectedWidth_le_pred
   rw [hprefix]
   linarith
 
+/-- If every selected width is at most `M-1`, then the selected-width prefix
+through coordinate `p` is at least `p*M`.
+
+The proof uses the tail after `p`: under the selected-sum identity, the tail
+has `ell-p` terms and each is at most `M-1`, so the prefix is at least
+`p*(M-1)+a`, hence at least `p*M` when `p<=a`. -/
+theorem aoyagiPrefixSum_mul_le_of_selectedWidth_le_pred
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hp_a : p ≤ a) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1) :
+    (p : ℤ) * M ≤ aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p := by
+  let w := aoyagiSelectedWidthNat ell m
+  let P := aoyagiPrefixSum w
+  let tail := ∑ i ∈ Finset.Ico (p + 1) (ell + 1), w i
+  have hpell : p ≤ ell := le_trans hp_a ha
+  have hsplit : P p + tail = P ell := by
+    dsimp [P, tail, aoyagiPrefixSum]
+    exact Finset.sum_range_add_sum_Ico w (by omega)
+  have htotal : P p + tail = (ell : ℤ) * (M - 1) + a := by
+    rw [hsplit]
+    dsimp [P, w]
+    rw [aoyagiPrefixSum_selectedWidthNat_last, hselected]
+  have htail_terms :
+      ∀ i ∈ Finset.Ico (p + 1) (ell + 1), w i ≤ M - 1 := by
+    intro i hi
+    rw [Finset.mem_Ico] at hi
+    dsimp [w]
+    rw [aoyagiSelectedWidthNat_of_lt hi.2]
+    exact hbound ⟨i, hi.2⟩
+  have htail_le_sum :
+      tail ≤ ∑ _i ∈ Finset.Ico (p + 1) (ell + 1), (M - 1 : ℤ) := by
+    exact Finset.sum_le_sum htail_terms
+  have htail_const :
+      (∑ _i ∈ Finset.Ico (p + 1) (ell + 1), (M - 1 : ℤ)) =
+        ((ell - p : ℕ) : ℤ) * (M - 1) := by
+    have hcard : (Finset.Ico (p + 1) (ell + 1)).card = ell - p := by
+      rw [Nat.card_Ico]
+      omega
+    simp [hcard]
+    ring
+  have htail_le :
+      tail ≤ ((ell - p : ℕ) : ℤ) * (M - 1) := by
+    rw [htail_const] at htail_le_sum
+    exact htail_le_sum
+  have hprefix_from_tail :
+      (ell : ℤ) * (M - 1) + (a : ℤ) -
+          ((ell - p : ℕ) : ℤ) * (M - 1) ≤ P p := by
+    linarith
+  have hprefix_floor :
+      (ell : ℤ) * (M - 1) + (a : ℤ) -
+          ((ell - p : ℕ) : ℤ) * (M - 1) =
+        (p : ℤ) * (M - 1) + (a : ℤ) := by
+    rw [Nat.cast_sub hpell]
+    ring
+  have hp_le_a_int : (p : ℤ) ≤ (a : ℤ) := by exact_mod_cast hp_a
+  have hpM_le_floor : (p : ℤ) * M ≤ (p : ℤ) * (M - 1) + (a : ℤ) := by
+    nlinarith
+  rw [hprefix_floor] at hprefix_from_tail
+  exact le_trans hpM_le_floor hprefix_from_tail
+
+/-- Source-shaped form: Definition 3's strict selected-width inequalities
+prove the lower half of equation `(4)`'s prefix-crossing condition. -/
+theorem aoyagiPrefixSum_mul_le_of_sourceSelectedInequality
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp_a : p ≤ a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    (p : ℤ) * M ≤ aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p := by
+  have hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1 :=
+    aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell ha hselected hsource
+  exact aoyagiPrefixSum_mul_le_of_selectedWidth_le_pred
+    ell a p M m hp_a ha hselected hbound
+
 /-- Prefix count of high increments for the lower `Htilde` chain. -/
 def aoyagiHtildeLowerHighCount (a j : ℕ) : ℕ :=
   min j a
@@ -468,11 +544,7 @@ theorem aoyagiHtildeLowerNat_add_one_labelBounds_iff_prefixCrossing
     constructor <;> omega
 
 /-- The selected-width upper bound proves the upper half of equation `(4)`'s
-label bound.
-
-This proves only `Htilde_p+1 <= W_(p+1)`.  The lower bound
-`1 <= Htilde_p+1`, equivalently `p*M <= P_(p+1)`, remains a separate
-nonnegativity/admissibility hypothesis. -/
+label bound. -/
 theorem aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_selectedWidth_le_pred
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
     (hp0 : 1 ≤ p) (hp_a : p ≤ a) (hpell : p ≤ ell)
@@ -494,8 +566,9 @@ theorem aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_selectedWidth_le_pred
 /-- Source-shaped form: Definition 3's strict selected-width inequalities
 prove the upper half of equation `(4)`'s label bound.
 
-This still does not prove the lower label bound `1 <= Htilde_p+1`, terminal
-`tilde t=0`, or the displayed-family construction. -/
+The companion lower-bound theorem below proves the other label inequality from
+the same source hypotheses.  Neither theorem constructs the displayed vector,
+terminal `tilde t=0`, or the chart family. -/
 theorem aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
     (hell : 1 ≤ ell) (ha : a ≤ ell) (hp0 : 1 ≤ p) (hp_a : p ≤ a)
@@ -509,6 +582,61 @@ theorem aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequalit
       ell a M m hell ha hselected hsource
   exact aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_selectedWidth_le_pred
     ell a p M m hp0 hp_a (le_trans hp_a ha) hbound
+
+/-- The selected-width upper bound and selected-sum identity prove the lower
+half of equation `(4)`'s label bound. -/
+theorem aoyagiHtildeLowerNat_add_one_pos_of_selectedWidth_le_pred
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hp_a : p ≤ a) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1) :
+    1 ≤ aoyagiHtildeLowerNat ell a M m p + 1 := by
+  have hprefix := aoyagiPrefixSum_mul_le_of_selectedWidth_le_pred
+    ell a p M m hp_a ha hselected hbound
+  unfold aoyagiHtildeLowerNat aoyagiHtildeLowerIncrementPrefix
+    aoyagiHtildeLowerHighCount
+  rw [Nat.min_eq_left hp_a]
+  have hprefixM :
+      (p : ℤ) * (M - 1) + (p : ℤ) = (p : ℤ) * M := by
+    ring
+  rw [hprefixM]
+  omega
+
+/-- Source-shaped form: Definition 3's strict selected-width inequalities
+prove the lower half of equation `(4)`'s label bound. -/
+theorem aoyagiHtildeLowerNat_add_one_pos_of_sourceSelectedInequality
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp_a : p ≤ a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    1 ≤ aoyagiHtildeLowerNat ell a M m p + 1 := by
+  have hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1 :=
+    aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell ha hselected hsource
+  exact aoyagiHtildeLowerNat_add_one_pos_of_selectedWidth_le_pred
+    ell a p M m hp_a ha hselected hbound
+
+/-- Definition 3's selected-width arithmetic proves both label bounds for
+Aoyagi Lemma 5 equation `(4)`'s `k=Htilde_p+1`.
+
+This is still only label arithmetic.  It does not prove the displayed source
+vector, terminal `tilde t=0`, vector admissibility, chart coverage, pole
+order, normal crossings, or RLCT extraction. -/
+theorem aoyagiHtildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp0 : 1 ≤ p) (hp_a : p ≤ a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    1 ≤ aoyagiHtildeLowerNat ell a M m p + 1 ∧
+      aoyagiHtildeLowerNat ell a M m p + 1 ≤
+        aoyagiSelectedWidthNat ell m p := by
+  constructor
+  · exact aoyagiHtildeLowerNat_add_one_pos_of_sourceSelectedInequality
+      ell a p M m hell ha hp_a hselected hsource
+  · exact aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
+      ell a p M m hell ha hp0 hp_a hselected hsource
 
 /-- In the interior case of equation `(3)`, the first upper/lower Htilde gap
 is exactly one.

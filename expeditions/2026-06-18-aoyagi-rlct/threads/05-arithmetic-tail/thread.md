@@ -626,6 +626,40 @@ aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
 ```
 
 This discharges only the upper half of equation `(4)` label legality from
-Definition 3.  The lower half `1<=Htilde_p+1`, equation `(3)`'s one-unit slack
-guard, terminal `tilde t=0`, and full displayed-family realisation remain
+Definition 3.  A later checkpoint below discharges the lower half by applying
+the same selected-width bound to the tail after `P_(p+1)`.
+
+## 2026-06-20 Lean Definition 3 selected-width full label bounds
+
+Reproduction:
+`reproduction-definition3-selected-width-label-bounds-a5.md`.
+Statement card:
+`statement-card-a5-definition3-selected-width-label-bounds.md`.
+
+Lean now proves the lower equation `(4)` label bound from Definition 3 as
+well:
+
+```text
+aoyagiPrefixSum_mul_le_of_selectedWidth_le_pred
+aoyagiPrefixSum_mul_le_of_sourceSelectedInequality
+aoyagiHtildeLowerNat_add_one_pos_of_selectedWidth_le_pred
+aoyagiHtildeLowerNat_add_one_pos_of_sourceSelectedInequality
+aoyagiHtildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
+```
+
+The missing arithmetic move was to use `W_i<=M-1` on the tail after
+`P_(p+1)`.  Since the tail has `ell-p` terms,
+
+```text
+P_(p+1) >= ell*(M-1)+a - (ell-p)(M-1) = p*(M-1)+a >= pM,
+```
+
+using `p<=a`.  Together with the previous-prefix estimate, this proves
+`1<=Htilde_p+1<=W_(p+1)` under `1<=p`, `p<=a`, and Definition 3's
+selected-width hypotheses.
+
+This is still only equation `(4)` label arithmetic.  Equation `(4)` still
+needs the selected-index guard `p+1<=a`, the own-coordinate guard
+`p<=ell-a`, terminal `tilde t=0`, and full displayed-family realisation.
+Equation `(3)`'s one-unit slack guard and full Lemma 5 order count remain
 open.
