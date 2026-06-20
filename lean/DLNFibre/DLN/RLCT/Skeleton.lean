@@ -186,8 +186,8 @@ theorem block_elimination (H : Fin (L + 1) → ℕ) (r : ℕ)
   sorry
 
 /-- **Deepest layers** (the SUFFICIENT characterization; pp + Codex, lessons 2026-06-20):
-`w` lies in the fibre **and** every layer `A⁽ˢ⁾ = w s` is at rank exactly `r` (capped by its
-dimensions), `rank (w s) = min r (min H⁽ˢ⁾ H⁽ˢ⁺¹⁾)`. This is **sufficient** for the deepest
+`w` lies in the fibre **and** every layer `A⁽ˢ⁾ = w s` is at rank exactly `r`, `rank (w s) = r`
+(achievable since `r ≤ H⁽ˢ⁾` along a rank-`r` fibre's path). This is **sufficient** for the deepest
 (maximal-local-RLCT) point — it implies all partial products are rank-`r` by submultiplicativity,
 and the local RLCT is constant over it (a single GL gauge orbit). It is *not exhaustive* of the
 λ-attaining set (the full set is larger — residual freedom), which is why we key D1/L2 to ONE
@@ -196,8 +196,7 @@ was *too weak* — `(2,2,2)`, `(A¹=0, A² invertible)` has all partial products
 `2 ≠ 3/2`.) Used only to characterize the witness `deepestPoint_exists` produces. -/
 def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
-  w ∈ optimalSet H B ∧
-    ∀ s : Fin L, (w s).rank = min r (min (H s.castSucc) (H s.succ))
+  w ∈ optimalSet H B ∧ ∀ s : Fin L, (w s).rank = r
 
 /-- The deepest layers exist for a rank-`r` target (`r = 0` ⟹ the origin; general `r` ⟹ a
 block-normal rank-`r` chain whose product is `B`). The existence obligation behind the constructed
