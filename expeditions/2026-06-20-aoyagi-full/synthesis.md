@@ -2,65 +2,50 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-20): execution phase; CONTRACT FIX-LOOP open
+## Current read (2026-06-20): CONTRACT FIX-LOOP — full audit done, fm-2 restating
 
-Design complete; foundations defs bedrock (0c PASS). BUT a controller precision-read of the full
-`Skeleton.lean` (@c2b23e1) caught **2 statement-fidelity bugs the green build + 0c audit missed** — the
-"green is necessary, not sufficient" discipline in action. Fix-loop open.
+The decorrelated bedrock gate paid off: my precision-read caught L1/L2; rv-2's deep per-rung audit
+(+Codex counterexamples) CORROBORATED those and found 3 MORE (D1, S1.1, S1.5) — including two I had
+wrongly judged "faithful." The contract has a clear, bounded fix list. fm-2 is restating (statements-first).
 
-### CONTRACT FIX-LOOP (the 2 bugs + corrected statements; fix BEFORE proving — precision policy)
+### THE 6 FLAGS + corrected statements (fix BEFORE proving — precision policy)
 
-1. **L1 `block_elimination` — VACUOUS.** `∃ invertible P,Q, (P·B·Q).rank = r` is trivially true (invertible
-   mult preserves rank; P=Q=1). Name promises Lemma-2 block-normal form; statement delivers nothing.
-   **FIX:** state the actual normal form, `∃ invertible P,Q, P·B·Q = <rank-r normal form diag(E_r,0)>`.
-2. **L2 `product_reduction` — OVER-CLAIM.** `rlctAt(dlnLoss) wstar = aoyagiLambda` for EVERY
-   `wstar ∈ optimalSet` is FALSE — the local RLCT varies over the fibre, minimized at the deepest point
-   (that's why D1/Thm 4 exists; if L2 were true D1 is redundant). At milder optimal points rlctAt is
-   strictly larger. **FIX:** introduce `deepestPoint H r B` (minimal-rank optimal point); state L2 as
-   `rlctAt(deepestPoint) = aoyagiLambda` and re-key D1 as `⨅ = rlctAt(deepestPoint)`; re-thread the
-   headline (currently type-checks only because L2 over-claims).
-   Minor: R1 `resolution_charts` lacks an analyticity hypothesis on F (false for non-analytic F); A2
-   `aoyagiTheta_eq` existential is weak (the secondary, seamed). Fix R1's hyp; A2 lower priority.
-   S1.1/S1.5 (just added) look faithful (Jacobian weight present; single-space M + Z-omission both OK).
+1. **L1 `block_elimination` — VACUOUS** (`(P·B·Q).rank=r` trivial under units). → `∃ inv P Q, P·B·Q = diag(E_r,0)` (block-normal form).
+2. **L2 `product_reduction` — OVER-CLAIM** (`rlctAt=aoyagiLambda` ∀ optimal pt is FALSE; rv-2 witness:
+   (2,2,2) milder pt → rlctAt=2≠3/2). → scope to the deepest point.
+3. **D1 `deepest_point_reduction` — UNDER-CLAIM (NEW, rv-2)** (only "inf attained at SOME optimal pt";
+   drops the deepest-point identification). **Co-fix with L2:** introduce `IsDeepest H r B w`;
+   D1 = `∃ w, IsDeepest w ∧ ⨅ = rlctAt w`; L2 = `∀ w, IsDeepest w → rlctAt w = ofReal(aoyagiLambda)`;
+   headline assembles `D1 ▸ L2`. (Fixing L2 alone breaks the headline — must re-key D1 in lockstep.)
+4. **R1 `resolution_charts` — too-weak** (no analyticity → existential false for pathological F). → add
+   `F` real-analytic + ≢0 near wstar. (Value-match conclusion is correct.)
+5. **S1.1 `weightedThreshold_transport` — general-measure DEFECT (NEW, rv-2+Codex: ℝ with |x|dx, π=x³ →
+   2≠4/3).** → pin the measure to Lebesgue/additive-Haar `volume` (or state on EuclideanSpace) + add
+   `MeasurableSet E` / π(E)-null. (Jacobian-weight placement already correct.)
+6. **S1.5 `rlct_additive_disjoint` — FALSE bare-measurable (NEW, rv-2+Codex: alternating step fns → ⊤≠2).**
+   → add real-analytic hyps on F,G (or scope to the smooth-block/monomial case L2 needs).
+   Nits: A1 `lambdaCore_eq_clean` existential weaker than docstring (soften/bind); `clean_eq_printed`
+   docstring over-narrows (it's UNIVERSAL in (m,ℓ), verified 9324 cases). PASS: S2, S1.3, S1.4,
+   clean_eq_printed-arithmetic, T-as-derivation (valid once D1/L2 re-keyed; ofReal clamp safe under hB).
 
-### WIN — λ-citation ELIMINABLE (banked, @22f5dfe)
+**Lesson banked:** statement audits must be sharp + per-rung (vacuity/over-claim/measure-generality), not
+just hygiene; my single read missed S1.1/S1.5 — decorrelated rv+Codex caught them. Multi-check works.
 
-The monomial threshold-half is directly provable from Mathlib (Fubini + rpow-iff); demonstrated axiom-free
-for (1,1,1) (`Case111Bridge.lean`); the (1,1,1) headline dropped monomial_rlct. General = same recipe, no
-wall, just Fin-d labour ⇒ λ can be made fully **axiom-free** (θ order-half stays seamed). Brief's
-one-citation closing criterion → upgrade to zero-λ-citations once the general threshold-half lands.
+## WIN — λ-citation ELIMINABLE (banked @22f5dfe)
+Monomial threshold-half directly provable from Mathlib (demonstrated axiom-free (1,1,1)). General = labour.
 
-## Rung map (all scoped; pen-and-paper established, Lean-pending)
+## (1,1,1) bridge — PARKED on the `Params ≃ᵐ ℝ^N` Lean wall (not math); pp researching the equiv route.
 
-S1 = S1.1 transport (heavy core) + S1.2/1.3/1.4 + S1.5 disjoint-additivity (Laplace) · L1/L2 product
-reduction (statements being fixed) · D1 light (Aoyagi 2013 Thm 2; depends on L2; re-key to deepestPoint) ·
-R1 the mountain (stratification: `codim S(t)=Mval` proven general L; `λ_core=½·min_strata codim`) ·
-A1/A2 arithmetic (spine proven). Two genuinely hard Lean builds: S1.1 + R1.
-
-## Topology — CONSOLIDATED
-Formaliser/reviewer work in MAIN on `expedition/aoyagi-full` (cwd-collapse); controller green-gates +
-pushes; `worktree-rung0-defs` retired; serial editing. Crossing mitigated by serial cadence (held so far).
-
-## (1,1,1) bridge — PARKED (Lean-plumbing wall, not math)
-
-fm-2 hit the predicted wall: the `Params ![1,1,1] ≃ᵐ ℝ²` measure-preserving equiv (symbolic-`s` Matrix
-fiber doesn't reduce; `volume_preserving_pi` can't apply). Stopped per the bound (good). Banked reusable
-S1.1 infra: `abs_rpow_integrableOn_Ioo_iff`, `measurePreserving_matrixEntry₁₁`. PARKED escape #1
-(finTwoArrow split is (1,1,1)-throwaway). **Known S1.1 sub-task: the general `Params H ≃ᵐ ℝ^N`
-measure-preserving equiv** (needed at S1.1's use-site + R1; build once, closes (1,1,1) free). Approach is
-validated (gate + probe); full sorry-free (1,1,1) waits on this infra. Not difficulty-avoidance — a
-throwaway-shortcut-vs-build-once scope call; the contract fix + structural proofs outrank the demo.
+## Rung map (scoped): S1.1 transport + S1.2/3/4 + S1.5 · L1/L2 · D1 (light) · R1 (mountain;
+`codim=Mval` proven gen L) · A1/A2. Hard Lean builds: S1.1 + R1 + the Params↔ℝ^N equiv infra.
 
 ## In flight
-- `rv-2` — deep decorrelated statement-fidelity audit of the full skeleton (read-only; withholding my
-  findings to test independently). Should corroborate L1/L2 + maybe find more.
-- `fm-2` — finishing the two-sided `|x|^s` integrability lemma (reusable S1.1 infra, non-colliding), then
-  STANDBY for the Skeleton restatement pass.
-- `pp` — on-demand (design complete).
+- `fm-2` — Skeleton restatement pass (6 fixes + 2 nits; corrected statements supplied). Priority.
+- `pp` — researching the `Params H ≃ᵐ ℝ^N` measure-preserving equiv route (Mathlib precedent + diamond fix).
+- `rv-2` — idle (audit done); next: re-audit the restated statements.
 
 ## Next tick
-On rv-2's report: reconcile its findings with mine (L1/L2 + R1); hand `fm-2` the focused **Skeleton
-restatement pass** (corrected L1/L2/R1 statements above) — fix wrong statements first. On fm-2's bridge:
-green-gate + (if it closes) first full axiom-free end-to-end. Then the S1/L1/L2/D1 PROOFS in dependency
-order; R1 (re-engage pp) is the mountain. Decision pending: whether to also prove the general
-threshold-half now (eliminate the λ-axiom) or after the structural rungs.
+On fm-2's restatement: green-gate + verify the headline assembles from re-keyed D1/L2 → rv-2 re-audits the
+new statements. On pp's equiv research: hand fm the equiv-build at the S1 phase. THEN the structural
+PROOFS in dependency order (S1 corollaries first — S1.3/S1.4 light; then S1.1 needs the equiv; L1/L2; D1;
+R1 = re-engage pp). Topology: serial editing in MAIN; controller green-gates.
