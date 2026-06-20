@@ -1835,7 +1835,8 @@ and reindexing: it does not prove chart production, recurrence/exponent
 post-data from coordinates, coverage, coordinate regularity, Jacobian
 arithmetic, transition invariance, arbitrary pivot coverage, terminal
 relabeling, normal crossings/RLCT, or printed-vector repair.  Next A4 target:
-build fuller chart-production boundary data beyond this supplied adapter.
+connect this adapter to the corrected supplied source-chart boundary and keep
+stronger chart-production claims behind an explicit source/API audit.
 
 The displayed source-chart post-pivot boundary now connects that supplied
 next-block adapter to the corrected displayed source-chart post-data boundary.
@@ -1849,9 +1850,7 @@ level/least-value invariants, successor least-value gap, and successor
 recurrence gap.  This is still supplied-data compatibility, not chart
 production, atlas coverage, transition invariance, Jacobian arithmetic,
 normal crossings/RLCT, arbitrary pivot coverage, terminal relabeling, or
-printed-vector repair.  Next A4 target: chart-produced recurrence/exponent or
-following-product boundary data, if it can be reproduced from Aoyagi's
-displayed source coordinates without smuggling in the full transition theorem.
+printed-vector repair.
 
 The following-factor part of that boundary has one more elementary closure:
 Lean now proves that the lower tail of `C' = Q^-1 C` is unchanged.  After
@@ -1862,9 +1861,27 @@ residual-column domain, `case2DisplayedPostPivotFollowingFactor` is exactly
 source production theorem for the full next `C'^(S+1)`, recurrence/exponent
 post-data, chart-family boundary, transition invariant, Jacobian, normal
 crossing, RLCT extraction, arbitrary pivot coverage, terminal relabeling, or
-printed-vector repair.  The remaining A4 pressure is therefore on genuinely
-chart-produced recurrence/exponent data, successor chart-family/transition
-structure, or a proof that those stronger targets are source-blocked.
+printed-vector repair.
+
+Combining those two facts is now also Lean-proved.  The lower-row product
+`D''' * C'`, reindexed to the next same-stage row domain, is rewritten as
+`case2DisplayedPostPivotResidualBlock` times
+`case2SourceFollowingFactor (J := J+1) C`; the supplied-boundary projection
+and concrete corrected-post-data package expose the same identity.  This
+removes the transported-tail nuisance adapter but keeps the same boundary:
+no chart production, successor chart-family construction, full
+source-produced `C'^(S+1)`, transition invariant, chart coverage, Jacobian,
+normal crossing, RLCT extraction, terminal relabeling, arbitrary pivot
+coverage, or printed-vector repair is claimed.
+
+The stronger A4 chart-production route has now been explicitly audited and
+blocked at the current source/API boundary.  Aoyagi pp. 19-22 support the
+displayed local Case 2 algebra and the continuation/terminal slogans, but do
+not supply coordinate production of recurrence data, corrected exponent data,
+the successor chart family, a full next following matrix, or a transition
+invariant.  Future work must either build an independent selected-entry
+atlas/transition construction or keep proving finite consequences below the
+supplied-boundary interface.
 
 ## Drift guard
 

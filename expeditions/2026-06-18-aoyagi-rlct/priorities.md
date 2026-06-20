@@ -503,12 +503,16 @@ on the session's original cwd.
    adapter is now also Lean-proved: the cleared lower-right block `D - x*y`
    and tail of `C' = Q^-1 C` are reindexed as supplied next same-stage
    residual/following-factor data, and the lower rows of `D''' * C'` are their
-   product. Next A4 target: connect this adapter to the existing corrected
-   recurrence/exponent post-data boundary for the displayed source chart, but
-   keep chart production, automatic post-data from coordinates, chart
-   coverage, coordinate regularity, Jacobian arithmetic, transition
-   invariance, terminal relabeling, and arbitrary pivot coverage out until
-   each is separately reproduced and proved.
+   product. The adapter is now connected to the existing corrected
+   recurrence/exponent post-data boundary for the displayed source chart, and
+   the following-factor tail has been rewritten as the next same-stage source
+   following factor. A source/API audit blocks stronger chart-production
+   claims at the current boundary: do not state chart-produced recurrence or
+   exponent data, successor chart-family construction, full source-produced
+   `C'^(S+1)`, or transition invariance unless an independent atlas/transition
+   construction is built. Next A4 target: either build that independent
+   selected-entry atlas/transition construction, or keep proving finite
+   algebraic consequences beneath the supplied-boundary interface.
 6. Repair A5 arithmetic reproduction. The isolated endpoint-corrected Lemma 3
    integer numerator arithmetic is now Lean-proved in `ArithmeticTail.lean`:
    the cleared numerator is

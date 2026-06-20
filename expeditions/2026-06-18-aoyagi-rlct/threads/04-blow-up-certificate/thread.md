@@ -3045,3 +3045,45 @@ of recurrence or exponent data, construct a successor chart-family boundary,
 prove chart coverage, coordinate regularity, transition invariance, Jacobian
 arithmetic, normal crossings/RLCT, arbitrary pivot coverage, terminal
 relabeling, or repair the printed Case 2 vector mismatch.
+
+## 2026-06-20 Lean Case 2 post-pivot source-following product
+
+Reproduction:
+`reproduction-case2-post-pivot-source-following-product-a4.md`.
+Statement card:
+`statement-card-a4-case2-post-pivot-source-following-product.md`.
+Blocked audit:
+`blocked-audit-case2-chart-production-next-following-a4.md`.
+Review artifact:
+`review-case2-post-pivot-source-following-product-a4.md`.
+
+Lean now combines the continuing post-pivot next-block adapter with the
+following-factor tail identity:
+
+```text
+case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct_sourceFollowingFactor
+Case2DisplayedSuppliedChartFamilyBoundary.postPivotNextSameStageProduct_sourceFollowingFactor
+Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData
+```
+
+The raw theorem rewrites the lower rows of Aoyagi's displayed product
+`D''' * C'`, after reindexing to the next same-stage row domain, as the
+post-pivot residual block times the original source following factor
+restricted to `(S,J+1)` columns.  The boundary theorem exports the same
+identity from a supplied displayed boundary.  The concrete source-chart
+package conjoins the source-following product identity with the corrected
+supplied post-data projections.
+
+The xhigh source/API audit found no honest stronger theorem, from the current
+PDF evidence and Lean API, that would prove chart-produced recurrence data,
+chart-produced corrected exponent data, a successor chart-family boundary,
+full source-produced `C'^(S+1)`, or a transition invariant.  Future work must
+either build an independent selected-entry atlas/transition construction or
+continue proving finite algebraic consequences beneath the supplied-boundary
+interface.
+
+This checkpoint is still a continuing-branch supplied-data adapter.  It does
+not prove chart production, successor chart-family construction, full
+source-produced next `C'^(S+1)`, transition invariance, chart coverage,
+Jacobian arithmetic, normal crossings/RLCT, terminal relabeling, arbitrary
+pivot coverage, or printed-vector repair.

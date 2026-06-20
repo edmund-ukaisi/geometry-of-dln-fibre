@@ -560,6 +560,14 @@ No such claim is formalisation-ready until both fields are filled.
   is exactly the source following factor restricted to the next same-stage
   columns `(S,J+1)`. This is not a proof that the chart produces Aoyagi's full
   next `C'^(S+1)`.
+  Combining these facts, Lean now rewrites the continuing lower-row product
+  directly as the post-pivot residual block times
+  `case2SourceFollowingFactor (J := J+1) C`, with supplied-boundary and
+  concrete corrected-post-data projections.  The xhigh source/API audit also
+  records that stronger chart-production claims are blocked at the present
+  boundary: Aoyagi pp. 19-22 do not provide coordinate production of
+  recurrence data, corrected exponent data, a successor chart family, full
+  source-produced `C'^(S+1)`, or a transition invariant.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -641,6 +649,13 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-post-pivot-following-factor-tail-a4.md`;
 	  landed-patch review is saved at
 	  `threads/04-blow-up-certificate/review-case2-post-pivot-following-factor-tail-a4.md`.
+	  Reproduction of the Case 2 post-pivot source-following product adapter
+	  is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-following-product-a4.md`;
+	  the stronger chart-production blocker audit is saved at
+	  `threads/04-blow-up-certificate/blocked-audit-case2-chart-production-next-following-a4.md`;
+	  landed-patch review is saved at
+	  `threads/04-blow-up-certificate/review-case2-post-pivot-source-following-product-a4.md`.
 	  Review of the Case 2 stage-relabel domain audit is saved at
 	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 	  Review of the Case 2 displayed cleared-block vacuity corollary is saved

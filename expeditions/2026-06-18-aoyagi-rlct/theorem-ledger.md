@@ -2127,6 +2127,32 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-post-pivot-following-factor-tail-a4.md`.
 
+Latest A4 update: the Case 2 post-pivot source-following product adapter has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are
+`case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct_sourceFollowingFactor`,
+`Case2DisplayedSuppliedChartFamilyBoundary.postPivotNextSameStageProduct_sourceFollowingFactor`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData`.
+They combine the post-pivot next-block product with the tail identity for
+`C' = Q^-1 C`, so the lower rows of `D''' * C'` are written directly as the
+post-pivot residual block times
+`case2SourceFollowingFactor (J := J+1) C`.  The concrete package keeps the
+corrected supplied post-data projections.  This is still a supplied-data
+continuing-branch adapter; it does not prove chart production, successor
+chart-family construction, full source-produced `C'^(S+1)`, transition
+invariance, chart coverage, Jacobian arithmetic, normal crossings/RLCT,
+terminal relabeling, arbitrary pivot coverage, or printed-vector repair.
+The companion blocker audit records that these stronger chart-production
+claims are not source-faithful from the present PDF/API boundary. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-following-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-post-pivot-source-following-product.md`.
+Blocked audit:
+`threads/04-blow-up-certificate/blocked-audit-case2-chart-production-next-following-a4.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-post-pivot-source-following-product-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
