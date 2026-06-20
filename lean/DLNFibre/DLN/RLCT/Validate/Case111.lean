@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Validate.Case111Bridge
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case111` — smallest case end-to-end (validate-small-first GATE)
@@ -58,7 +59,7 @@ theorem dlnLoss_case111 (A : Params (![1, 1, 1] : Fin 3 → ℕ)) :
   -- `simp` reduces the layer product `prodAux` (clearing its recursive casts) to `1 * A 0 * A 1`;
   -- `erw` finishes the single-entry read, rewriting up to the defeq `Fin (H s) = Fin 1` widths.
   simp only [dlnLoss, prod]
-  simp [prodAux, Matrix.mul_apply, Fin.sum_univ_one]
+  simp [prodAux]
   congr 1
   erw [Matrix.sub_apply, Matrix.zero_apply, sub_zero, Matrix.mul_apply, Fin.sum_univ_one,
     Matrix.mul_apply, Fin.sum_univ_one, Matrix.one_apply_eq, one_mul]
@@ -87,16 +88,15 @@ theorem ofReal_aoyagiLambda_case111 :
     ENNReal.ofReal_div_of_pos (by norm_num)]
   simp
 
-/-- **The gate (sorry-free).** The monomial-model threshold the resolution feeds for the trivial
-network equals the closed form, through the **one** permitted citation `monomial_rlct` (S2): both
-are `1/2`. `#print axioms` confirms the dependence on `monomial_rlct` (+ standard). The real
-end-to-end assembly: monomial data `(k,h) = ((1,1),(0,0))` ▸ S2 threshold-half ▸ `⨅ axisRatio = 1/2`
-▸ `aoyagiLambda (1,1,1) 0 = 1/2`. -/
+/-- **The gate (sorry-free, AXIOM-FREE).** The monomial-model threshold the resolution feeds for the
+trivial network equals the closed form: both are `1/2`. Now proven **without `monomial_rlct`** — the
+threshold value comes from `monomialThreshold_case111` (Fubini + the Mathlib rpow integrability iff,
+`Case111Bridge`), so `#print axioms` shows only standard axioms. The end-to-end assembly: monomial
+data `(k,h) = ((1,1),(0,0))` ▸ `monomialThreshold = 1/2` (Mathlib) ▸ `aoyagiLambda = 1/2`. -/
 theorem case111_monomialThreshold :
     monomialThreshold 2 (![1, 1] : Fin 2 → ℕ) (![0, 0] : Fin 2 → ℕ)
       = ENNReal.ofReal (aoyagiLambda (![1, 1, 1] : Fin 3 → ℕ) 0) := by
-  rw [(monomial_rlct 2 (![1, 1] : Fin 2 → ℕ) (![0, 0] : Fin 2 → ℕ)).1,
-    case111_axisRatio_inf, ofReal_aoyagiLambda_case111]
+  rw [monomialThreshold_case111, ofReal_aoyagiLambda_case111]
 
 /-! ## The `rlctAt`-headline (one named bridge `sorry`) -/
 
@@ -104,17 +104,21 @@ theorem case111_monomialThreshold :
 theorem deepest111_mem_optimalSet :
     deepest111 ∈ optimalSet (![1, 1, 1] : Fin 3 → ℕ) 0 := by
   have hz : dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0 deepest111 = 0 := by
-    rw [dlnLoss_case111]; show ((0 : ℝ) * 0) ^ 2 = 0; ring
+    rw [dlnLoss_case111]; change ((0 : ℝ) * 0) ^ 2 = 0; ring
   rw [optimalSet_eq_loss_zero]; exact hz
 
-/-- **Bridge `sorry` (S1 content — the only gap in the `(1,1,1)` headline).** The local RLCT of the
-already-normal-crossing loss at the deepest point equals the monomial-model threshold of its
-`(k,h) = ((1,1),(0,0))` data. Not free: `rlctAt` integrates `|F|^{−c}` over a `Params`-neighbourhood
-of `0`, `monomialThreshold` over the unit box against `|uⱼ|`-symmetrised monomials; equating the
-admissible-exponent down-sets is germ-locality + a box change-of-variables — the `S1` substrate
-(`rlct_germ_local` / `rlct_unit_invariant`), not yet proven. Carried as a named `sorry` so the
-`rlctAt`-claim is honest about its one-cited-and-one-unproven dependency, rather than overclaiming a
-sorry-free integral identity. -/
+/-- **Bridge `sorry` (the one remaining gap in the `(1,1,1)` headline — baby S1.1).** The local RLCT
+of the already-normal-crossing loss at the deepest point equals the monomial-model threshold of its
+`(k,h) = ((1,1),(0,0))` data. The RHS is now `1/2` **axiom-free** (`monomialThreshold_case111`,
+`Case111Bridge`), so closing this `sorry` makes the whole headline axiom-free. The remaining content
+is `rlctAt = 1/2` directly: `rlctAt` integrates `|F|^{−c'} = |c₁|^{−2c'}|c₂|^{−2c'}` over a
+`Params`-neighbourhood of `0`, and its admissible-exponent set is again `{c' < 1/2}`. Three pieces
+remain (all verified reachable, none an analytic wall — see thread 10):
+(i) a measurable equiv `Params (1,1,1) ≃ᵐ (Fin 2 → ℝ)` (each `1×1` layer `≃ᵐ ℝ`) to transport the
+volume to the box machinery; (ii) **two-sided** `|x|^{−2c'}` integrability on `[-ε,ε]` (the
+neighbourhood crosses `0`, unlike the box `[0,1]`); (iii) the `∃ U ∈ 𝓝 0` quantifier — a box for
+`c' < 1/2`, divergence over every neighbourhood for `c' ≥ 1/2`. This is the genuine baby-S1.1 build,
+left as a named `sorry` rather than forced. -/
 theorem case111_rlct_eq_monomialThreshold :
     rlctAt (![1, 1, 1] : Fin 3 → ℕ) (dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0) deepest111
       = monomialThreshold 2 (![1, 1] : Fin 2 → ℕ) (![0, 0] : Fin 2 → ℕ) := by
