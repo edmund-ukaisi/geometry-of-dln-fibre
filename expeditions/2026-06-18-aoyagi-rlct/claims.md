@@ -529,6 +529,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case1-selected-old-supplied-chart-family-boundary-a4.md`.
 	  Review of the Case 2 supplied source-selected pivot boundary is saved at
 	  `threads/04-blow-up-certificate/review-case2-supplied-source-selected-pivot-boundary-a4.md`.
+	  Review of the Case 2 displayed concrete-update boundary is saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-concrete-update-boundary-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -826,6 +828,26 @@ No such claim is formalisation-ready until both fields are filled.
   post-data, chart-family predicates, finite selected-entry principalization,
   and source-selected arbitrary-pivot transport without claiming chart
   production or coverage.
+  Added the displayed top-left Case 2 concrete-update boundary:
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.displayedPivot_mem`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.chart_regular_displayedPivot`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.transition_regular_selectedPivot_displayedPivot`,
+  `Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`,
+  `Case2DisplayedSuppliedChartFamilyBoundary`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.displayedPivot_mem`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.sourceSelectedBoundary`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.correctedNewLabel`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.preCase2Gap`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.extendExponentDomain`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.chart_regular_displayedPivot`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.displayedPivot_centerIdeal_eq_span_singleton`,
+  `Case2DisplayedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`,
+  and
+  `Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_sourceCoordinates`.
+  This specializes the supplied source-selected boundary to the displayed pivot
+  `(J+1,J+1)`, makes pivot membership follow from continuation, and chooses the
+  concrete recurrence successor `pre.case2Succ u` and corrected selected-label
+  exponent post-data.
   Added selected-entry principalization/unit facts:
   `weightedPivotBlockRowOp_isUnit`,
   `weightedPivotBlockRowOp_det_isUnit`, `pivotQ_isUnit`,
@@ -1040,6 +1062,12 @@ No such claim is formalisation-ready until both fields are filled.
   chart-produced post-data, regularity from coordinates, Jacobians, normal
   crossings, RLCT extraction, termination, a full transition invariant, or a
   repair of the printed Case 2 vector mismatch.
+  The displayed concrete-update boundary removes supplied recurrence/exponent
+  post-data only by choosing concrete assignment functions. It still does not
+  prove that the displayed affine chart produces those assignments, and it
+  keeps chart regularity, transition regularity, coordinate regularity,
+  Jacobians, normal crossings, RLCT extraction, termination, and the full
+  transition invariant open.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

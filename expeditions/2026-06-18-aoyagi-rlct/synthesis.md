@@ -1168,6 +1168,18 @@ chart production or coverage; non-top-left source-order transition formulas,
 chart-produced post-data, Jacobians, normal crossings, RLCT extraction,
 termination, and the printed-vector mismatch remain open.
 
+The Case 2 displayed concrete-update boundary is now Lean-proved.
+`Case2DisplayedSuppliedChartFamilyBoundary` specializes the supplied
+source-selected boundary to Aoyagi's displayed top-left pivot `(J+1,J+1)`;
+the continuation bound supplies the finite residual-block membership.
+`of_case2Succ_updateSelected` chooses the concrete recurrence successor
+`pre.case2Succ u` and the corrected selected-label exponent update package,
+and the displayed boundary projects the source-coordinate displayed `Q/P`
+identity. This is still assignment bookkeeping, not chart production:
+chart-family predicates remain supplied, and chart-produced post-data,
+coverage, coordinate regularity, Jacobians, normal crossings, RLCT extraction,
+termination, and the printed-vector mismatch remain open.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

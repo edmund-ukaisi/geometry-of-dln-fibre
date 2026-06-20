@@ -119,6 +119,30 @@ transition regularity from coordinates, chart-produced post-data, a Case 2
 transition invariant, normal crossings, RLCT extraction, termination, or repair
 of the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed concrete-update boundary
+
+Reproduction:
+`reproduction-case2-displayed-concrete-update-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-concrete-update-boundary.md`.
+Review artifact:
+`review-case2-displayed-concrete-update-boundary-a4.md`.
+
+Lean now names the displayed top-left Case 2 supplied boundary. The
+continuation bound supplies membership of Aoyagi's displayed pivot
+`(J+1,J+1)` in the residual-block center, and the boundary projects to the
+source-selected boundary at that pivot. A concrete constructor chooses
+`post = pre.case2Succ u` for recurrence data and
+`Case2CorrectedExponentPostData.updateSelected` for the corrected exponent
+post-data.
+
+This removes arbitrary recurrence/exponent post-data fields only by choosing
+concrete assignment functions. It still does not prove the affine chart
+produces those assignments, and it does not prove chart coverage,
+non-top-left source-displayed charts, coordinate regularity, Jacobians, normal
+crossings, RLCT extraction, termination, a full Case 2 transition invariant,
+or repair of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

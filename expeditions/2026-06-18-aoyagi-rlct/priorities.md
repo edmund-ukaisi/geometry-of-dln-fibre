@@ -72,10 +72,11 @@ on the session's original cwd.
    product-reduction boundary is now packaged in `ProductReductionBoundary.lean` as
    fixed-base, local fixed-base, and existential local certificates, without
    pretending that exact-rank strata are open. The A4 blow-up repair has now
-   isolated the printed Case 2 vector mismatch and added supplied
-   source-selected pivot boundary packaging. Next return to A4 by specializing
-   safe supplied boundaries to the source-displayed top-left Case 2 chart or by
-   attacking chart-produced recurrence/exponent post-data; keep full pivot
+   isolated the printed Case 2 vector mismatch, added supplied source-selected
+   pivot boundary packaging, and specialized the displayed top-left Case 2
+   boundary with concrete recurrence/exponent assignment functions. Next return
+   to A4 by attacking chart-produced recurrence/exponent post-data or the
+   source-coordinate construction of the displayed chart; keep full pivot
    coverage and transition invariance blocked until chart production is
    reproduced.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
@@ -285,10 +286,13 @@ on the session's original cwd.
    `p in case2ResidualBlockPivotEntries n S J` packages corrected exponent
    post-data, recurrence post-data, supplied chart-family predicates, finite
    center principalization, and source-selected arbitrary-pivot `Q/P` transport.
-   Next A4 target: specialize the supplied machinery to the source-displayed
-   top-left Case 2 pivot, or prove chart-produced recurrence/exponent post-data
-   for the displayed chart. Do not claim non-top-left source-order formulas,
-   atlas coverage, or full transition invariance from the supplied boundary.
+   The displayed top-left boundary is now also Lean-proved, with continuation
+   supplying `(J+1,J+1)` pivot membership and a concrete constructor choosing
+   `post = pre.case2Succ u` and the corrected selected-label exponent update.
+   Next A4 target: prove chart-produced recurrence/exponent post-data for the
+   displayed chart, or formalize the source-coordinate displayed chart
+   construction. Do not claim non-top-left source-order formulas, atlas
+   coverage, or full transition invariance from the supplied boundary.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the
