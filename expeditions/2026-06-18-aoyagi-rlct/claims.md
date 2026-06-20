@@ -579,6 +579,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 displayed cleared-block vacuity corollary is saved
 	  at
 	  `threads/04-blow-up-certificate/review-case2-displayed-cleared-block-vacuity-a4.md`.
+	  Review of the Case 2 displayed cleared-block following-factor absorption
+	  scaffold is saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-cleared-block-following-factor-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1227,6 +1230,15 @@ No such claim is formalisation-ready until both fields are filled.
   `S+1` recurrence/exponent state, prove chart coverage or regularity,
   compute Jacobians, prove normal crossings, extract RLCT, prove termination
   or transition invariance, or repair the printed vector mismatch.
+  The displayed cleared-block following-factor absorption scaffold proves
+  that `weightedPivotClearedBlock 0 * verticalBlock Ctop Ctail =
+  verticalBlock Ctop 0`, plus the displayed failed-continuation specialization
+  after lower-right vacuity. This is pivot-first block multiplication only; it
+  does not construct or identify `C'^(S+1)`, construct the full `D'''_J`
+  terminal branch, choose the row/column presentation, build `S+1` post-data,
+  prove chart coverage or regularity, compute Jacobians, prove normal
+  crossings, extract RLCT, prove termination or transition invariance, or
+  repair the printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

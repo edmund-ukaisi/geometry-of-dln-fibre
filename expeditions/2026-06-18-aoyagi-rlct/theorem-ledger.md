@@ -1326,6 +1326,25 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-cleared-block-vacuity-a4.md`.
 
+Latest A4 update: the Case 2 displayed cleared-block following-factor
+absorption scaffold has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`weightedPivotClearedBlock_zero_mul_verticalBlock` and
+`case2DisplayedClearedBlock_mul_verticalBlock_eq_pivotOnly_of_not_next_cont`.
+This checkpoint proves that a pivot-only cleared block keeps the top row of a
+pivot-first following factor and kills the lower block, with a displayed
+Case 2 specialization under failed next continuation. It does not construct
+or identify Aoyagi's `C'^(S+1)`, construct the full terminal `D'''_J` branch,
+choose the row/column presentation, build `S+1` post-data, prove chart
+coverage or regularity, compute Jacobians, prove normal crossings/RLCT, prove
+termination or transition invariance, or repair the printed vector mismatch.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-cleared-block-following-factor-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-cleared-block-following-factor.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-cleared-block-following-factor-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

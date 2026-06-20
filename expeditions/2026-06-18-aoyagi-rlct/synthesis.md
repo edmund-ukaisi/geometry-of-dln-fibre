@@ -1348,6 +1348,18 @@ choose the row-vs-column presentation, construct `C'^(S+1)`, build the
 Jacobian arithmetic, normal crossings/RLCT, termination, transition
 invariance, or printed-vector repair.
 
+The Case 2 displayed cleared-block following-factor absorption scaffold is
+now Lean-proved. The generic identity
+`weightedPivotClearedBlock_zero_mul_verticalBlock` says that a pivot-only
+cleared block multiplied by a pivot-first following factor keeps only the top
+row. The displayed specialization combines this with the failed-continuation
+cleared-block vacuity theorem. This is only block multiplication in
+pivot-first coordinates; it does not construct or identify `C'^(S+1)`,
+construct the full terminal `D'''_J` branch, choose the row-vs-column
+presentation, build `S+1` post-data, prove chart production or coverage,
+Jacobians, normal crossings/RLCT, termination, transition invariance, or
+printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

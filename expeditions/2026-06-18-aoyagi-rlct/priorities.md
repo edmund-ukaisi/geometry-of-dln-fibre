@@ -343,6 +343,11 @@ on the session's original cwd.
    conditional following-factor absorption statement or a source-order
    `D'''` notation wrapper, with row/column branch and `S+1` post-data still
    explicit assumptions.
+   The following-factor absorption scaffold is now Lean-proved: a pivot-only
+   cleared block keeps only the top row of a pivot-first following factor, and
+   the displayed Case 2 failed-continuation block has this behavior. Next A4
+   target: source-order `D'''` notation or conditional `C'^(S+1)` data, but
+   only with the row/column branch and post-data assumptions explicit.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

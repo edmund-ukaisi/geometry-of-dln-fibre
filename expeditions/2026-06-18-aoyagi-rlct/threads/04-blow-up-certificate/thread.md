@@ -496,6 +496,30 @@ prove chart coverage or regularity, compute Jacobians, prove normal
 crossings/RLCT extraction, prove termination or transition invariance, or
 repair the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed cleared-block following-factor absorption
+
+Reproduction:
+`reproduction-case2-displayed-cleared-block-following-factor-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-cleared-block-following-factor.md`.
+Review artifact:
+`review-case2-displayed-cleared-block-following-factor-a4.md`.
+
+Lean now proves the generic multiplication identity
+`weightedPivotClearedBlock_zero_mul_verticalBlock`: a pivot-only cleared block
+keeps the top row of a pivot-first following factor and kills the lower block.
+The displayed specialization
+`case2DisplayedClearedBlock_mul_verticalBlock_eq_pivotOnly_of_not_next_cont`
+combines this with displayed Case 2 lower-right vacuity under failed next
+continuation.
+
+This is only pivot-first block multiplication.  It does not construct or
+identify Aoyagi's `C'^(S+1)`, construct the full `D'''_J` terminal branch,
+choose the row-vs-column presentation, build the `S+1` recurrence/exponent
+state, prove chart production or coverage, compute Jacobians, prove normal
+crossings/RLCT extraction, prove termination or transition invariance, or
+repair the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

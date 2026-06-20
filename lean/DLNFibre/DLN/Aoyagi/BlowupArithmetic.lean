@@ -4068,6 +4068,19 @@ theorem fromBlocks_mul_verticalBlock_eq_of_tail
       fromBlocks A 0 0 Rtail * verticalBlock Ctop Ctail' := by
   rw [fromBlocks_mul_verticalBlock, fromBlocks_mul_verticalBlock, h]
 
+/-- A pivot-only cleared block keeps the top following-factor row and kills
+the lower following-factor block.  This is block multiplication only. -/
+theorem weightedPivotClearedBlock_zero_mul_verticalBlock
+    {ρ κ τ R : Type*} [CommRing R] [Fintype κ]
+    (Ctop : Matrix Unit τ R) (Ctail : Matrix κ τ R) :
+    weightedPivotClearedBlock (0 : Matrix ρ κ R) * verticalBlock Ctop Ctail =
+      verticalBlock Ctop (0 : Matrix ρ τ R) := by
+  rw [weightedPivotClearedBlock, fromBlocks_mul_verticalBlock]
+  ext i j
+  rcases i with (_ | i)
+  · simp [verticalBlock]
+  · simp [verticalBlock]
+
 section ColumnOperationBlocks
 
 variable {R ρ κ τ : Type*} [CommRing R] [Fintype κ] [DecidableEq κ]
@@ -8844,6 +8857,31 @@ theorem case2DisplayedClearedBlock_eq_pivotOnly_of_not_next_cont
   apply congrArg weightedPivotClearedBlock
   exact case2DisplayedPivotComplement_matrix_eq_zero_of_not_next_cont
     (K := R) hS hcont hstop _
+
+/-- Under failed next continuation, multiplying the displayed cleared Case 2
+block by a pivot-first following factor keeps only the top row.
+
+This is the algebraic following-factor consequence of lower-right vacuity.  It
+does not construct Aoyagi's `C'^(S+1)` or the `S+1` transition. -/
+theorem case2DisplayedClearedBlock_mul_verticalBlock_eq_pivotOnly_of_not_next_cont
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (Ctop : Matrix Unit τ R)
+    (Ctail : Matrix (pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let col := case2DisplayedPivotCol n hS hcont
+    let A := case2DisplayedNormalizedMatrix n hS hcont residual
+    weightedPivotClearedBlock
+        (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A) *
+        verticalBlock Ctop Ctail =
+      verticalBlock Ctop
+        (0 : Matrix (pivotComplement row) τ R) := by
+  dsimp
+  rw [case2DisplayedClearedBlock_eq_pivotOnly_of_not_next_cont
+    n hS hcont hstop residual]
+  exact weightedPivotClearedBlock_zero_mul_verticalBlock Ctop Ctail
 
 /-- The source-substituted residual block in the displayed Case 2 selected-entry chart. -/
 def case2DisplayedSubstitutionMatrix
