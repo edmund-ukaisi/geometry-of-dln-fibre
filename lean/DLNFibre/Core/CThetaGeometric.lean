@@ -12,8 +12,8 @@ so this module records the geometric reading **without any deferral**:
 
 1. **Per-orbit geometric reading (UNCONDITIONAL).** For a Kostant partition / interval list `L`, the
    geometric codimension of the orbit closure `Ō_M` of `M = ⊕_{(a,b)∈L} M_{ab}` (the rank locus,
-   Thm 3.8 cited), read at the canonical flattening, equals the combinatorial form
-   `codimForm N (multiplicityArray L)`:
+   Thm 3.8 proved in `Core.OrbitClosure`), read at the canonical flattening, equals the
+   combinatorial form `codimForm N (multiplicityArray L)`:
    `codimRepCanonical (orbitRankLocus (intervalDirectSum L)) = codimForm N (multiplicityArray L)`
    (`codimRepCanonical_orbitRankLocus_eq_codimForm`, ℕ∞/ℤ/ℕ forms). This is the formal statement
    "the combinatorial codimension form IS the geometric codimension of the orbit closure", no longer
@@ -59,8 +59,9 @@ Feed the discharged `hVoigt` (`codimRep_orbitRankLocus_eq_orbitLinearCodim` at `
 `rfl`-bridge `codimForm_multiplicityArray`. -/
 
 /-- **Per-orbit geometric reading (ℤ form), UNCONDITIONAL.** For `M = ⊕_{(a,b)∈L} M_{ab}` the
-geometric codimension of the orbit closure `Ō_M` (the rank locus, Thm 3.8 cited), read at the
-canonical flattening, equals the combinatorial Cor 3.5 form `codimForm N (multiplicityArray L)`:
+geometric codimension of the orbit closure `Ō_M` (the rank locus, Thm 3.8 proved in
+`Core.OrbitClosure`), read at the canonical flattening, equals the combinatorial Cor 3.5 form
+`codimForm N (multiplicityArray L)`:
 the combinatorial codimension form IS the geometric orbit-closure codimension, no longer modulo
 `hVoigt`. From the discharged Voigt lemma + `codimRepCanonical_orbitRankLocus_eq_multSum` +
 `codimForm_multiplicityArray`. -/
@@ -157,7 +158,8 @@ theorem codimForm_extendℤ_eq_geomCodim
 /-- **`C` is the minimum of GEOMETRIC codimensions, UNCONDITIONAL.** The combinatorial codimension
 `cCodim d r` equals the minimum over the Kostant partitions `m` of `d` (corner `r`) of the genuine
 **geometric** codimension of the orbit closure of `⊕_{(a,b)} M_{ab}^{m}` (the rank locus, Thm 3.8
-cited), read at the canonical flattening. The combinatorial `C` is the smallest orbit-closure
+proved in `Core.OrbitClosure`), read at the canonical flattening. The combinatorial `C` is the
+smallest orbit-closure
 codimension among the rank-`r` orbits — no longer modulo `hVoigt`. From `cCodim`'s definition +
 `codimForm_extendℤ_eq_geomCodim` by `Finset.inf'_congr`. -/
 theorem cCodim_eq_inf_geomCodim

@@ -16,7 +16,7 @@ payoff is a separate, `DLN`-side, Cited reading).
 ## Deliverable 1 — per-orbit geometric reading (UNCONDITIONAL)
 
 > **Claim.** For an interval list `L`, the genuine geometric codimension of the orbit closure `Ō_M`
-> of `M = ⊕_{(a,b)∈L} M_{ab}` (the rank locus, Thm 3.8 cited), read at the canonical flattening,
+> of `M = ⊕_{(a,b)∈L} M_{ab}` (the rank locus, Thm 3.8 proved in-engine), read at the canonical flattening,
 > equals the combinatorial Cor 3.5 form `codimForm N (multiplicityArray L)`.
 >
 > - **Lean:** `DLNFibre.Core.codimRepCanonical_orbitRankLocus_eq_codimForm`
@@ -32,9 +32,10 @@ payoff is a separate, `DLN`-side, Cited reading).
 >   `Core.OrbitCodim.codimRepCanonical_orbitRankLocus_eq_multSum`, then folds the RHS into `codimForm`
 >   via the `rfl`-bridge `codimForm_multiplicityArray`.
 > - **Assumed.** `[IsAlgClosed k] [CharZero k]` (named instance hypotheses).
-> - **Cited.** Thm 3.8 — orbit closure = rank locus `orbitRankLocus` (built into the *definition* of
->   the geometric object; cited in `Core.OrbitCodim`, not reproved). Voigt's lemma is no longer cited
->   — it is **Proved** in `Core.VoigtDischarge`.
+> - **Cited.** none. Thm 3.8 (orbit closure = rank locus `orbitRankLocus`, the ideal-level identity
+>   `Core.OrbitClosure.vanishingIdeal_orbitRankLocus_eq_orbitSet`) is **Proved in the engine**, not
+>   merely cited; Voigt's lemma is **Proved** in `Core.VoigtDischarge`. The paper attributions
+>   (Lehalleur–Rimányi Thm 3.8, Cor 3.5, Voigt) name the *source* of the results, all reproved here.
 > - **Deferred.** none (for the per-orbit reading).
 > - **Status.** sorry-free, axiom-clean.
 
@@ -64,7 +65,7 @@ Companion ℕ∞ form: `codimRepCanonical_orbitRankLocus_eq_orbitLinearCodim` �
 >   `Finset.inf'_congr`.
 > - **Assumed.** `[IsAlgClosed k] [CharZero k]`; `h : (kostantPartitions d r).Nonempty` (carried by
 >   `cCodim` itself).
-> - **Cited.** Thm 3.8 (as in deliverable 1).
+> - **Cited.** none (Thm 3.8 proved in-engine, as in deliverable 1).
 > - **Deferred.** none (for this per-orbit-aggregated-over-partitions reading).
 > - **Status.** sorry-free, axiom-clean.
 
