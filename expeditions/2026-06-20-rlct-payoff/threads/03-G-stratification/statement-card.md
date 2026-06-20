@@ -14,7 +14,7 @@ Axioms (all six headlines, via `#print axioms`): `[propext, Classical.choice, Qu
 > closure convention — the genuine Zariski closure of `Σ^r`).
 >
 > - **Lean:** `DLNFibre.Core.productRankLocusLE_eq_iUnion_orbitRankLocus`
->   (`lean/DLNFibre/Core/SigmaStratification.lean` @ `c0cae1a`)
+>   (`lean/DLNFibre/Core/SigmaStratification.lean` @ `517d8e8`)
 > - **Gloss.** For a fixed dimension vector `d : Fin (N+1) → ℕ` over a field `k`, as sets of tuples,
 >   `productRankLocusLE d r = ⋃ (M : Tuple d) (_ : (mult d M).rank ≤ r), orbitRankLocus M`.
 >   `orbitRankLocus M = {A | ∀ i j (h:i≤j), rankPattern d A i j h ≤ rankPattern d M i j h}` is the
