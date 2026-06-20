@@ -248,6 +248,50 @@ noncomputable def diffTri {N : ℕ} (r : ℤ → ℤ → ℤ) (hr : Supported (N
     · exact (supported_diff hr).2 i j hj
     · rfl⟩
 
+/-- The diagonal of an interval module's dimension vector is `cumul` of its single delta: `intervalDim
+i j t = cumul N (singleDelta i j) t t` (as `ℤ`). The diagonal of `rankPattern_intervalModule`. -/
+theorem intervalDim_eq_cumul_singleDelta_diag (i j : Fin (N + 1)) (t : Fin (N + 1)) :
+    (intervalDim i j t : ℤ) = cumul (N : ℤ) (singleDelta i j) (t : ℤ) (t : ℤ) := by
+  rw [← rankPattern_intervalModule_eq_cumul (k := ℚ) i j (le_refl t),
+    rankPattern_self (k := ℚ)]
+
+/-- The diagonal of `foldDim L` is `cumul` of the list multiplicity array: `foldDim L t = cumul N
+(multiplicityArray L) t t` (as `ℤ`). The diagonal of `rankPattern_intervalDirectSum_eq_cumul`. -/
+theorem foldDim_eq_cumul_multiplicityArray_diag (L : List (Fin (N + 1) × Fin (N + 1)))
+    (t : Fin (N + 1)) :
+    (foldDim L t : ℤ) = cumul (N : ℤ) (multiplicityArray L) (t : ℤ) (t : ℤ) := by
+  rw [← rankPattern_intervalDirectSum_eq_cumul (K := ℚ) L t t (le_refl t),
+    rankPattern_self (k := ℚ)]
+
+/-- Transport a closure membership along a dimension-vector equality. -/
+theorem mem_repClosure_orbitSet_transport {d₀ d : Fin (N + 1) → ℕ} (h : d₀ = d)
+    {D U : Tuple (k := k) d₀} (hm : canonicalCoord d₀ D ∈ repClosure (orbitSet U)) :
+    canonicalCoord d (h ▸ D) ∈ repClosure (orbitSet (h ▸ U)) := by
+  subst h; simpa using hm
+
+/-- `cumul N m` is nonnegative on the diagonal for a nonnegative array (a sum of nonnegatives). -/
+theorem cumul_diag_nonneg {m : SuppArray (N : ℤ) ℤ} (hm : IsKostantArray m) (t : Fin (N + 1)) :
+    0 ≤ cumul (N : ℤ) m.1 (t : ℤ) (t : ℤ) := by
+  rw [cumul_apply]
+  exact Finset.sum_nonneg fun a _ ↦ Finset.sum_nonneg fun b _ ↦ hm.1 a b
+
+/-- The **self-realized dimension vector** of a Kostant array: its diagonal cumulative count
+`(cumul N m k k).toNat`. A `CMPlus` witness with this dimension vector. -/
+noncomputable def selfDim (m : SuppArray (N : ℤ) ℤ) : Fin (N + 1) → ℕ :=
+  fun t ↦ (cumul (N : ℤ) m.1 (t : ℤ) (t : ℤ)).toNat
+
+/-- A Kostant array is `CMPlus` over its self-realized dimension vector. -/
+theorem cMPlus_selfDim {m : SuppArray (N : ℤ) ℤ} (hm : IsKostantArray m) :
+    CMPlus (selfDim m) m :=
+  ⟨hm, fun t ↦ by rw [selfDim, Int.toNat_of_nonneg (cumul_diag_nonneg hm t)]⟩
+
+/-- **The realizer's multiplicity array is `m`, needing only `IsKostantArray`.** Repackages
+`multiplicityArray_listOfArray` through the self-realized dimension `CMPlus` witness (the proof uses
+only the Kostant-array part). -/
+theorem multiplicityArray_listOfArray_of_isKostant {m : SuppArray (N : ℤ) ℤ}
+    (hm : IsKostantArray m) : multiplicityArray (listOfArray m) = m.1 :=
+  multiplicityArray_listOfArray (d := selfDim m) m (cMPlus_selfDim hm)
+
 /-- **The per-step degeneration (CRUX).** A single box move `BoxMoveStep r r''` between achievable,
 supported, below-diagonal-vanishing rank-pattern arrays (with `r''` likewise achievable) drops the
 orbit closure: any tuples `Tp, Tq` over `d` realizing `r, r''` on the upper triangle satisfy
