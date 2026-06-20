@@ -570,3 +570,31 @@ nonnegativity/admissibility datum for `Htilde_p`.
 This remains only finite guard arithmetic.  It does not construct the
 displayed equation `(4)` vector, prove source-label legality from Definition
 3 alone, prove `tilde t=0`, or prove Lemma 5.
+
+## 2026-06-20 Lean Lemma 5 equation (3) guard arithmetic
+
+Reproduction:
+`reproduction-lemma5-eq3-guard-arithmetic-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-guard-arithmetic.md`.
+Blocked audit:
+`blocked-audit-lemma5-displayed-family-realisation-a5.md`.
+Review artifact:
+`review-lemma5-eq3-guard-arithmetic-a5.md`.
+
+Lean now records three guard facts for equation `(3)`:
+
+```text
+aoyagiLemma5Eq3_selectedIndexGuard_iff
+aoyagiHtildeUpperNat_one_sub_lowerNat_one_of_pos_of_lt
+aoyagiHtildeUpperNat_one_add_one_labelBounds_iff_widthGuards
+```
+
+The special cutoff `S_(ell-a+2)` lies in Definition 3's selected list exactly
+when `1<=a`.  In the interior case `1<=a` and `a<ell`, the first Htilde gap
+`Htilde'_1-Htilde_1` is `1`.  The label bounds for `k=Htilde'_1+1` are exactly
+the two width guards `M-1<=W_1+W_2` and `W_1+2<=M`.
+
+This remains only finite guard arithmetic.  It does not construct the
+displayed equation `(3)` vector, prove source-label legality from Definition
+3 alone, prove `tilde t=0`, or prove Lemma 5.

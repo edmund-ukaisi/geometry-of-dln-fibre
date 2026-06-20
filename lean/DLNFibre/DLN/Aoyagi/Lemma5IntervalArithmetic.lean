@@ -51,6 +51,15 @@ theorem aoyagiLemma5Eq4_selectedIndexGuard_iff
     p + (ell - a) + 2 ≤ ell + 1 ↔ p + 1 ≤ a := by
   omega
 
+/-- The selected-index guard needed by Aoyagi Lemma 5 equation `(3)`.
+
+With `c = ell-a`, the displayed special cutoff `S_(c+2)` lies in the selected
+list `S_1,...,S_(ell+1)` exactly when `1 <= a`. -/
+theorem aoyagiLemma5Eq3_selectedIndexGuard_iff
+    (ell a : ℕ) (ha : a ≤ ell) :
+    (ell - a) + 2 ≤ ell + 1 ↔ 1 ≤ a := by
+  omega
+
 /-- A fiber-count model for the same interval excess.  The rectangle has
 `a * (ell-a)` points, and the level map is `(p,q) ↦ p+q+1`. -/
 def aoyagiLemma5IntervalExcessFiber (ell a j : ℕ) : ℕ :=

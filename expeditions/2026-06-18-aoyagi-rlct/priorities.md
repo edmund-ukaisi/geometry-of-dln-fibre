@@ -592,6 +592,10 @@ on the session's original cwd.
    condition. Next target: decide whether to build a conditional displayed
    vector record with these guard fields, or first resolve the terminal/tail
    `tilde t=0` convention.
+   Equation `(3)` guard arithmetic now records the companion one-unit slack
+   obstruction: `k=Htilde'_1+1` is label-bounded exactly when
+   `M-1<=W_1+W_2` and `W_1+2<=M`. This should be a field of any future
+   conditional displayed-vector record, not an implicit consequence.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

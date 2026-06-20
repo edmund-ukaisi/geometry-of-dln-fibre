@@ -400,6 +400,64 @@ theorem aoyagiHtildeLowerNat_add_one_labelBounds_iff_prefixCrossing
   · intro h
     constructor <;> omega
 
+/-- In the interior case of equation `(3)`, the first upper/lower Htilde gap
+is exactly one.
+
+This is the arithmetic behind the fact that the source's exceptional label
+`k=Htilde'_1+1` is one step above the lower endpoint.  It does not prove that
+the label is legal or terminal. -/
+theorem aoyagiHtildeUpperNat_one_sub_lowerNat_one_of_pos_of_lt
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha_pos : 1 ≤ a) (ha_lt : a < ell) :
+    aoyagiHtildeUpperNat ell a M m 1 -
+        aoyagiHtildeLowerNat ell a M m 1 =
+      1 := by
+  have ha : a ≤ ell := by omega
+  have h1_lt : 1 < ell + 1 := by omega
+  have hgap :=
+    aoyagiHtildeUpper_sub_lower_eq_intervalExcess
+      ell a M m ha ⟨1, h1_lt⟩
+  have hexcess : aoyagiLemma5IntervalExcess ell a 1 = 1 := by
+    exact aoyagiLemma5IntervalExcess_eq_self_of_le_min
+      ell a 1 ha ha_pos (by omega)
+  simpa [aoyagiHtildeUpperChain, aoyagiHtildeLowerChain, hexcess] using hgap
+
+/-- Equation `(3)` first-upper label bounds are exactly two explicit selected
+width inequalities when the first upper arm is active.
+
+When `a<ell`, `Htilde'_1 = W_1+W_2-(M-1)`, so the bounds for
+`k=Htilde'_1+1` are equivalent to `M-1 <= W_1+W_2` and `W_1+2 <= M`.
+This is only a finite arithmetic reformulation, not a proof that Aoyagi's
+displayed exceptional label is source-legal. -/
+theorem aoyagiHtildeUpperNat_one_add_one_labelBounds_iff_widthGuards
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha_lt : a < ell) :
+    (1 ≤ aoyagiHtildeUpperNat ell a M m 1 + 1 ∧
+        aoyagiHtildeUpperNat ell a M m 1 + 1 ≤
+          aoyagiSelectedWidthNat ell m 1) ↔
+      (M - 1 ≤ aoyagiSelectedWidthNat ell m 0 +
+          aoyagiSelectedWidthNat ell m 1 ∧
+        aoyagiSelectedWidthNat ell m 0 + 2 ≤ M) := by
+  have hupper :
+      aoyagiHtildeUpperNat ell a M m 1 =
+        aoyagiSelectedWidthNat ell m 0 +
+            aoyagiSelectedWidthNat ell m 1 - (M - 1) := by
+    unfold aoyagiHtildeUpperNat aoyagiHtildeUpperIncrementPrefix
+      aoyagiHtildeUpperHighCount
+    have hprefix :
+        aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) 1 =
+          aoyagiSelectedWidthNat ell m 0 + aoyagiSelectedWidthNat ell m 1 := by
+      simpa using aoyagiPrefixSum_succ (aoyagiSelectedWidthNat ell m) 0
+    have hsub : 1 - (ell - a) = 0 := by omega
+    rw [hsub, hprefix]
+    simp
+  rw [hupper]
+  constructor
+  · intro h
+    constructor <;> omega
+  · intro h
+    constructor <;> omega
+
 /-- Offsets from the lower displayed chain to the upper displayed chain at
 the `j`th chain coordinate. -/
 def aoyagiHtildeIntervalOffsets (ell a j : ℕ) : Finset ℕ :=

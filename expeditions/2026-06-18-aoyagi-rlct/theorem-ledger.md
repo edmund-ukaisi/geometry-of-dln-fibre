@@ -170,6 +170,19 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-guard-arithmetic-a5.md`.
 
+The equation `(3)` guard arithmetic has also landed.  The proved Lean names
+are `aoyagiLemma5Eq3_selectedIndexGuard_iff`,
+`aoyagiHtildeUpperNat_one_sub_lowerNat_one_of_pos_of_lt`, and
+`aoyagiHtildeUpperNat_one_add_one_labelBounds_iff_widthGuards`.  They expose
+the exact selected-index guard `1<=a` for `S_(ell-a+2)`, prove the first
+Htilde gap is `1` in the interior case, and rephrase the bounds for
+`k=Htilde'_1+1` as `M-1<=W_1+W_2` and `W_1+2<=M`.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-guard-arithmetic-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-guard-arithmetic.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-guard-arithmetic-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

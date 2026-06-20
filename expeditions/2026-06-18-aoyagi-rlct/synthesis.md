@@ -1849,6 +1849,13 @@ sharper: Definition 3 does not by itself supply the nonnegativity inequality
 `pM <= P_(p+1)`, and the printed `p<=a` guard does not prevent the boundary
 case `S_(ell+2)`.
 
+The analogous equation `(3)` guard layer is now isolated.  Lean proves that
+the special cutoff `S_(ell-a+2)` is selected exactly when `1<=a`, that the
+first upper/lower Htilde gap is `1` in the interior case `1<=a` and `a<ell`,
+and that the label bounds for `k=Htilde'_1+1` are equivalent to the two width
+guards `M-1<=W_1+W_2` and `W_1+2<=M`.  This identifies the one-unit slack
+condition missing from the displayed Htilde formulas alone.
+
 The Case 2 post-pivot domain handoff is now Lean-proved.  The finite
 lower-right domains after deleting the displayed pivot `(J+1,J+1)` are
 definitionally the next same-stage residual domains at `(S,J+1)`, and the
