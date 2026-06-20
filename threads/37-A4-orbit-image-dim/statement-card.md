@@ -1,7 +1,7 @@
 # Statement card — A4 (route-c submersion bound), module A4.1–A4.4
 
 **Thread:** 37-A4-orbit-image-dim (voigt-discharge, AG half, L2b★ route c).
-**Pinned commit:** `80444a5` (branch `expedition/voigt-discharge`).
+**Pinned commit:** `c0e4569` (branch `expedition/voigt-discharge`).
 **Build:** whole `DLNFibre` library green; `scripts/sorries` = 0; all landed theorems
 `#print axioms` = `[propext, Classical.choice, Quot.sound]`.
 
@@ -43,50 +43,38 @@ which chains with the landed A0 (`varietyDim_eq_ringKrullDim_range_orbitPullback
 - **`varietyDim_orbitRankLocus_le_finrank_range_deformationδ`** — chained with A0:
   `varietyDim Z_M ≤ finrank(range δ⁰)`, conditional on `hA42` + `hA43`.
 
-## Residual open obligations (precise)
+## Obligation 1 — DISCHARGED (A4.2 `DiffIndepCriterion`, char 0)
 
-1. **`DiffIndepCriterion k (groupRing d)`** (the char-0 differential criterion — A4.2 core). Provable
-   per the decorrelated Codex consult (`codex/a42-core-answer.md`), VERDICT "PROVABLE via formal-smooth
-   mapBaseChange injectivity": for `x : Fin n → K` alg-indep over char-0 `k`, the differentials
-   `{D_k x_i}` are K-independent. Route: `E = IntermediateField.adjoin k (range x)` (or the
-   `P = MvPolynomial`-route with `mvPolynomialBasis`), `FormallySmooth E K` from
-   `Algebra.FormallySmooth.of_perfectField` (`[PerfectField k]` via `PerfectField.ofCharZero`,
-   `[EssFiniteType E K]` via `EssFiniteType.of_comp` from `EssFiniteType k K`), then
-   `mapBaseChange_injective_of_formallySmooth` (LANDED here) carries the purely-transcendental basis
-   `{D_E x_i}` to `{D_K x_i}`. The single not-packaged-in-Mathlib brick: the `E`-freeness of `Ω[E⁄k]`
-   on `{D_E x_i}` for `E` purely transcendental (a localized `mvPolynomialBasis`; or use the P-route
-   where `Ω[P⁄k]` IS free via `mvPolynomialBasis` and base-change it). `[CharZero k]` enters ONLY here.
-   **CAVEAT (verified, affects the statement):** `Algebra.FormallySmooth.of_perfectField` requires
-   `[EssFiniteType E K]`, so the criterion proof needs `[EssFiniteType k (FractionRing B)]` (then
-   `EssFiniteType E K` follows by `EssFiniteType.of_comp`). For our application `B = groupRing d`
-   (a localization of `MvPolynomial (GroupCoord d) k`, finite type) `EssFiniteType k (FractionRing B)`
-   holds (FiniteType → isLocalization → isLocalization, by `EssFiniteType.comp`); but the clean
-   `DiffIndepCriterion` as stated does not carry it. The follow-up should either (a) add
-   `[EssFiniteType k (FractionRing B)]` to `DiffIndepCriterion` and discharge it for `groupRing d`,
-   or (b) prove `FormallySmooth k (FractionRing B)` directly for our localized B without `of_perfectField`.
+`DiffIndepCriterion k (groupRing d)` is now **PROVED** (`diffIndepCriterion_groupRing`, char 0), so the
+A4.2 obligation is gone. The proof (`diffIndepCriterion_proof`, `[CharZero k] [EssFiniteType k
+(FractionRing B)]`):
+- **base case** `linearIndependent_D_X_fractionRing` (char-free): in `Frac(MvPolynomial (Fin n) k)`,
+  `{D(algebraMap X_i)}` independent, via `KaehlerDifferential.isLocalizedModule_map` (`Ω` of a
+  localization is the localized `Ω`) + `LinearIndependent.of_isLocalizedModule` on `mvPolynomialBasis`;
+- embed `Pf = Frac(MvPoly)` in `K = FractionRing B` by `IsFractionRing.liftAlgHom` of the injective
+  `aeval x`; `FormallySmooth Pf K` (`of_perfectField`, `EssFiniteType Pf K` by `of_comp`) ⟹
+  `mapBaseChange k Pf K` injective (landed helper);
+- flat base change (`Module.Flat.linearIndependent_one_tmul`) of the base case + `mapBaseChange_tmul`
+  / `map_D` / `lift_algebraMap` carry `{1 ⊗ D_Pf X_i}` to `{D_K x_i}`.
+`EssFiniteType k (FractionRing (groupRing d))` is the landed instance `essFiniteType_fractionRing_groupRing`.
+All axiom-clean.
 
-   **VERIFIED-BUILDABLE (this thread, scratch):** with `[CharZero k]` + `[EssFiniteType k K]`
-   (K = FractionRing B; the latter LANDED for `B = groupRing d` as the instance
-   `essFiniteType_fractionRing_groupRing`), the FULL injectivity chain compiles:
-   `E := IntermediateField.adjoin k (Set.range x)`; `CharZero E` (from `charZero_of_injective_algebraMap`);
-   `PerfectField E` (`PerfectField.ofCharZero`); `EssFiniteType E K` (`EssFiniteType.of_comp`);
-   `FormallySmooth E K` (`FormallySmooth.of_perfectField`); hence `mapBaseChange k E K` INJECTIVE
-   (`mapBaseChange_injective_of_formallySmooth`, LANDED). So the criterion reduces to the SINGLE
-   remaining sub-lemma: **`{D_E x_i}` are `E`-linearly independent in `Ω[E⁄k]`** for the
-   purely-transcendental `x` (then base-change to `{1 ⊗ D_E x_i}` K-independent, and `mapBaseChange`
-   carries them to `{D_K x_i}` via `mapBaseChange_tmul` + `map_D`). That sub-lemma is the localized
-   `mvPolynomialBasis`: `E ≅ FractionRing (MvPolynomial (Fin n) k)` (`aevalEquivField`), `Ω[E⁄k]`
-   localizes `Ω[MvPolynomial⁄k]` (`KaehlerDifferential.isLocalizedModule_of_isLocalizedModule`), and
-   `mvPolynomialBasis` localizes to a basis via `Basis.ofIsLocalizedModule` /
-   `LinearIndependent.of_isLocalizedModule`. This is the one self-contained piece left for A4.2.
+## Residual — ONE obligation (A4.3, the `≤` direction only)
 
-2. **`hA43`** : `genericDifferentialRank k (groupRing d) (genericOrbitCoord M)
-   = finrank k (LinearMap.range (deformationδ M M))` (the A4.3 differential-rank identity, char-free).
-   The orbit-map-differential = δ⁰ bridge (`dμ_e = δ⁰`, verified symbolically in thread 36). Codex Q3
-   route: a rank-preserving base-change factorization of the cotangent family map through `deformationδ`,
-   replacing the pointwise constant-rank argument with one generic K-linear-equivalence calculation
-   (`KaehlerDifferential.linearMapEquivDerivation`, `Derivation.liftKaehlerDifferential_comp_D`,
-   `map_D`). Not started — the genuine concrete-calculus piece, soundness-load-bearing.
+**`genericDifferentialRank k (groupRing d) (genericOrbitCoord M) ≤ finrank k (LinearMap.range
+(deformationδ M M))`** — char-free. The headline needs only this `≤` (Codex Q3: the chain is
+`varietyDim = trdeg ≤ genericDifferentialRank ≤ finrank δ⁰`, so the equality `hA43` is NOT needed; the
+A4.4 assembly now takes `hA43_le`). The char-0 `_charZero` headline depends on this single residual.
+
+Codex route (`codex/a43-answer.md`, VERDICT "PROVABLE, ~6-8 lemmas; scope to the `≤`-bound"): a generic
+tangent factorization `orbitJacobianK M = ρ(Pgen) ∘ δK ∘ τ(Pgen)` (`δK` = base change of `deformationδ
+M M` to `K`; `ρ`, `τ` the target/domain trivialization isos), then `genericDifferentialRank` = range
+rank of `orbitJacobianK` via cotangent duality (`LinearMap.finrank_range_dualMap_eq_finrank_range`,
+`Subspace.dual_finrank_eq`), bounded by `finrank K (K ⊗ range δ⁰) = finrank k (range δ⁰)`
+(`Module.finrank_baseChange`). Differentiate `genericUnit v * genericUnitInv v = 1` for
+`d(P⁻¹) = -P⁻¹ dP P⁻¹` rather than expanding the adjugate. Soundness-load-bearing (the homogeneity /
+`dμ_e = δ⁰` content); not started — the genuine concrete matrix-Kähler-calculus piece. Recommended
+scoped residual name: `genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`.
 
 ## Fidelity note (for the reviewer)
 The headline `(ringKrullDim …).unbotD 0 ≤ finrank …` is in `ℕ∞` (the `unbotD 0` is `ℕ∞`-valued, RHS
