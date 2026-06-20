@@ -46,6 +46,18 @@ the cover is "the strata partition `{F=0}`"; min over divisor types = `λ_core`;
 multiplicity = θ. The differential-rank = codim fact is the normal-bundle/transversality input R1 needs.
 This replaces a false set-equality with a structural stratification statement — far more Lean-tractable.
 
+> **CORRECTION 2026-06-20 (thread 14 R1-design, controller-integrated).** The phrasing above —
+> "each stratum `S(t)` ⇒ AN exceptional divisor", read as a chart/divisor ↔ prefix-stratum
+> correspondence — is **too strong** (Codex R1-design consult). A literal smooth-center normal-crossing
+> atlas refines strata by the FULL rank-pattern `r_{ab} = rank(C^a···C^b)` + affine-minor (pivot)
+> choices, NOT the prefix ranks `t_j`; the prefix `S(t)` partition is right for the codim-MINIMISATION
+> (the value) but too coarse for the atlas. The R1↔Adm relationship is **VALUE-level only**:
+> `min over charts of the ratios = ½·min_t Mval(t)`, with NO chart↔stratum bijection. Realisation: the
+> minimizing branch's BINDING divisor (after iterated L1 exposes the residual block, codim = Mval(t))
+> gives ratio `½·Mval(t)` — NOT a "telescoping" of single-rank-drop divisors (also corrected). Full
+> architecture (value/atlas split; value via codim not bookkeeping; R3b one-citation route; the
+> L1-reuse that shrinks the heavy lift): `threads/14-r1-design/r1-design.md`.
+
 **Codex subtlety to carry:** the naive `{rank P_j ≤ t_j ∀j}` is a *union* of strata; its codim = MIN over
 admissible lower rank-vectors (can be < the exact-stratum codim). Phrase R1/A1 via the **exact** strata
 (or min over closure), never the naive ≤-conditions.

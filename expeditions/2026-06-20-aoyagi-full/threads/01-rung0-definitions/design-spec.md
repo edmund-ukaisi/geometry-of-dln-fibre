@@ -442,6 +442,15 @@ each rung closes. No free-floating scaffolding.
    > R1 obligation shrinks to the value-match (Theorem 3 + resolution existence). See
    > `threads/03-r1-smallcase/thread.md`.
 
+   > **FURTHER AMENDED 2026-06-20 (thread 14 R1-design, controller-integrated).** Even "each minimizing
+   > chart ↔ one prefix-stratum `S(t)`" is **too strong** (Codex R1-design consult): charts refine
+   > strata by the FULL rank-pattern `r_{ab} = rank(C^a···C^b)` + affine-minor (pivot) choices, not the
+   > prefix ranks `t_j`. The R1↔Adm relationship is **VALUE-level only** — `min over charts of the
+   > ratios = ½·min_t Mval(t)` — with **no chart↔stratum bijection** of any kind. No formaliser should
+   > expect one. The prefix `S(t)` partition is right for the codim-MINIMISATION (the value), too
+   > coarse for a literal chart atlas. The full architecture (value/atlas split; the value via codim,
+   > NOT via chart bookkeeping; R3b self-contained one-citation route): `threads/14-r1-design/r1-design.md`.
+
 4. **`rlctAt = Def-1 value` (bump removal).** The existential-neighbourhood form is *argued* equal to
    the bumped Def-1 value (sandwich); this is an S1 theorem, not yet proven. The `def` is faithful by
    the standard sandwich argument; submitted to Codex for an independent faithfulness audit (§ below).
