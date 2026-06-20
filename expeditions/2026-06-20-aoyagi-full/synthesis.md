@@ -135,9 +135,21 @@ the shared-tree build race.
   informational/override-able.
 - **No hidden hypotheses** (Codex §4): char-0, positive widths, r≤H s (=the hr fix). Toric/Newton route DEAD.
 
-## WIN — λ-citation ELIMINABLE (banked @22f5dfe)
-Monomial threshold-half directly provable from Mathlib (Fubini + rpow-iff); axiom-free for (1,1,1). General =
-labour, no wall. λ can beat the one-citation target; only θ-order stays the genuine analytic seam (S2 order-half).
+## WIN — λ-citation ELIMINABLE — now DEMONSTRATED END-TO-END (bridge @`b342cd2`)
+The (1,1,1) bridge `case111_rlct_eq_monomialThreshold` is CLOSED sorry-free (fm-2) ⇒ **`case111_rlct` is the
+FIRST fully sorry-free + axiom-free end-to-end RLCT result** (`#print axioms = [propext, Classical.choice,
+Quot.sound]`, NO sorryAx, NO monomial_rlct, NO native_decide). So λ is PROVABLY axiom-free for (1,1,1) — the
+WIN is no longer just probed, it's demonstrated. General case = labour (no wall). Reviewer-agent fidelity
+survived; rv-2 green-gating decorrelated. **Banked REUSABLE S1.1 infra (general in H):**
+`continuous_paramsEquivFlat`/`_symm` (flattening is a HOMEOMORPHISM), `prod_paramsEquivFlat` (coord-product
+preserved), `prodBoxSymm_rpow_integrableOn_iff` (2D 𝓝0 box-iff) — feeds the real S1.1 + R1. Only θ-order
+stays the genuine analytic seam (S2 order-half).
+
+## #19 genuine A1 statement LANDED (@`9e454ee`, fm branch — pending rv-2 fidelity-check + merge)
+Weak free-choice existential REPLACED by pp's candidate-d: `∃ c ≤ L, 1 ≤ c ∧ lambdaCore M = cleanCore c
+(sortedSmallest M c)` (m PINNED via new `sortedSmallest` = M's c+1 smallest reduced widths). 8th issue resolved
+at the STATEMENT level (proof = sorry, ~200-line balanced-split exchange, off-critical-path, fm next). rv-2
+fidelity-checking the statement (genuine vs weak; NOT an extremum) BEFORE the proof goes in; merge after.
 
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
