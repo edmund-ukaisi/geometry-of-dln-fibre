@@ -52,6 +52,13 @@ DOMAIN-CORNER SWEEP (catch the domain-hole class wholesale, like the weak-existe
 final contract PASS until hr+hL merges + sweep clean. (Fidelity-issue tally: 9 — all caught before proofs
 build on them; the contract is converging to genuine bedrock.)
 
+**rv-2 re-audit @2ee02b2 + DOMAIN-CORNER SWEEP (done):** hr-fix PASS (build green 2851, 10 sorry, axioms
+clean, witness CONSTRUCTED for (1,1,1)/r=0 per the standing rule; A1/L1 genuinely proven, no sorryAx; L1 not
+vacuous). 9th bug (L=0) INDEPENDENTLY confirmed (decorrelated counterexample). **Sweep result: NO further
+hidden corner beyond L=0 — `hr ∧ hL` CLOSE the existence/headline domain COMPLETELY** (r=0→origin OK;
+hr-equality boundary OK; only L=0 uncovered). ⇒ once hL lands + the final re-audit runs, the contract domain
+is PROVABLY complete (no 10th domain hole lurking) = BEDROCK. The domain-bug class is closed.
+
 ## Live status (per-track)
 
 - **fm-2 (measure track)** — keystone done @d7b1ba3; now on UNIT 2 (the (1,1,1) bridge, Case111*.lean).
