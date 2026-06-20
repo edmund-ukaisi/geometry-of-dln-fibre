@@ -823,3 +823,22 @@ endpoint theorem is therefore conditional: if a future record supplies
 `T(S_(ell+1)-1)=Htilde'_ell`, then the selected-sum identity gives
 `T(S_(ell+1)-1)=0`.  It is not vector construction or Lemma 5 order-count
 coverage.
+
+The equation `(4)` actual-width label bridge has now landed.  Reproduction:
+`reproduction-lemma5-eq4-actual-width-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-actual-width-label.md`.
+Review artifact:
+`review-lemma5-eq4-actual-width-label-a5.md`.
+Lean proves:
+
+```text
+aoyagiLemma5Eq4_actualWidthLabel_of_widthCompatibility
+```
+
+This theorem converts the already-proved selected-width label bounds
+`1<=Htilde_p+1<=W_(p+1)` into `actualWidthLabel` only after explicitly
+supplying source-layer range, width compatibility
+`n(S_(p+1))=W_(p+1)`, and Nat/Int label compatibility.  It does not construct
+the displayed vector, prove introduced-label status, terminal exponent data,
+or `tilde t=0`.

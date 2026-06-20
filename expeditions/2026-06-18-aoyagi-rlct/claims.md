@@ -1729,6 +1729,10 @@ No such claim is formalisation-ready until both fields are filled.
   proof are absent.  Lean now proves only a supplied terminal-endpoint
   boundary: if a future record supplies `T(S_(ell+1)-1)=Htilde'_ell`, then
   that endpoint value is zero.
+  The first actual-source-label bridge is also Lean-proved: selected-width
+  label bounds for `k=Htilde_p+1` imply `actualWidthLabel` only after explicit
+  source-layer range, selected-width/actual-width compatibility, and Nat/Int
+  label compatibility are supplied.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1778,7 +1782,9 @@ No such claim is formalisation-ready until both fields are filled.
   selected-span equation `(4)` branch values at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq4-selected-span-branch-value-a5.md`;
   terminal endpoint boundary at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-endpoint-boundary-a5.md`;
+  actual-width label bridge at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-actual-width-label-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1831,7 +1837,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma5-eq4-selected-span-branch-value-a5.md`;
   terminal endpoint boundary/source gap checked by xhigh source audit `Kuhn`
   and xhigh Lean/API audit `Hilbert` at
-  `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-endpoint-boundary-a5.md`;
+  actual-width label bridge checked by xhigh `Ohm` at
+  `threads/05-arithmetic-tail/review-lemma5-eq4-actual-width-label-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1872,8 +1880,9 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`;
   conditional equation `(4)` terminal endpoint boundary in
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
-  `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`; broader A5 targets
-  TBD.
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`;
+  actual-width source-label bridge in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`; broader A5 targets TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
   `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
@@ -2011,6 +2020,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension`, which package
   terminal endpoint and branch-left-endpoint consequences under supplied data,
   without proving a terminal displayed vector.
+  Also proved `aoyagiLemma5Eq4_actualWidthLabel_of_widthCompatibility`, which
+  turns equation `(4)`'s selected-width label bounds into `actualWidthLabel`
+  under explicit source-layer range, selected-width/actual-width compatibility,
+  and Nat/Int label compatibility hypotheses.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

@@ -287,6 +287,22 @@ Selected-span branch-value review:
 Terminal endpoint review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-endpoint-boundary-a5.md`.
 
+The equation `(4)` actual-width label bridge has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`, imported by
+`lean/DLNFibre.lean`.  The proved theorem is
+`aoyagiLemma5Eq4_actualWidthLabel_of_widthCompatibility`.  It turns the
+selected-width label bounds for `k=Htilde_p+1` into the blow-up predicate
+`actualWidthLabel` only under explicit source-layer range, selected-width /
+actual-width compatibility, and Nat/Int label compatibility hypotheses.  It
+does not prove selected widths are actual widths, introduced-label status,
+displayed-vector construction, terminality, chart coverage, or Lemma 5 order
+count.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-actual-width-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-actual-width-label.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-actual-width-label-a5.md`.
+
 ## Latest A2 update
 
 The A2 table row above was originally written before the endpoint packaging

@@ -1984,6 +1984,15 @@ does not supply the Case 1(2) chart sequence, repeated gap checks, terminal
 endpoint convention, or proof of `tilde t=0`; therefore this is not a
 displayed-vector realisation theorem.
 
+The first A5 source-label bridge for equation `(4)` is now Lean-proved in
+`Lemma5SourceLabel.lean`.  The theorem
+`aoyagiLemma5Eq4_actualWidthLabel_of_widthCompatibility` converts the selected
+label bounds for `k=Htilde_p+1` into `actualWidthLabel` only under explicit
+source-layer range, selected-width/actual-width compatibility, and Nat/Int
+label compatibility hypotheses.  This keeps the selected-data layer separate
+from actual source dimensions and still makes no introduced-label,
+terminal-exponent, vector-construction, chart-sequence, or order-count claim.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

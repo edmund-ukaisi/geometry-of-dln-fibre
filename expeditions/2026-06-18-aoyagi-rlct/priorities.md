@@ -618,7 +618,9 @@ on the session's original cwd.
    boundary showing that an explicitly supplied assignment
    `T(S_(ell+1)-1)=Htilde'_ell` has value zero.  Next target: either build a
    richer conditional displayed-vector record with terminal/Case 1(2) fields
-   supplied, or move to another finite consequence below that boundary.
+   supplied, or move to another finite consequence below that boundary.  The
+   first actual-source-label bridge is also Lean-proved, but it keeps the
+   selected-width/actual-width compatibility as an explicit hypothesis.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
