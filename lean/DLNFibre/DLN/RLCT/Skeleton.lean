@@ -239,21 +239,21 @@ chart family with monomial pullback `F∘φᵢ = unitᵢ·∏|uⱼ|^{2k_{i,j}}` 
 `|det Dφᵢ|·(bump∘φᵢ) = posᵢ·∏|uⱼ|^{h_{i,j}}`, whose images cover a nbhd of `w* ∩ {F=0}`, and whose
 exponents `(k_{i,j}, h_{i,j})` range over exactly the admissible cone `Adm` (so the chart minima
 realise `min_T M(T)`). Stated as the existence of chart-exponent data whose monomial thresholds
-reconstruct `rlctAt F`; the explicit charts are R1's obligation (design-spec §9 item 3: the R1↔Adm
+reconstruct the RLCT; the explicit charts are R1's obligation (design-spec §9 item 3: the R1↔Adm
 match).
 
-Rung-0c FLAG (precondition): the value-match `rlctAt F = ⨅ monomialThreshold` is the **standard
-RLCT** only for `F` real-analytic and `≢ 0` near `w*` (design-spec §2); without it the
-`⨅`-existential fails for pathological `F`. We add the stateable, load-bearing `≢ 0 near w*` half
-(`hFne`). The real-analyticity half is **automatic for every instantiation** — R1 is applied only to
-`dlnLoss H B`, a polynomial — and is *not* added as an `AnalyticAt` hypothesis because `Params H`
-carries no `NormedSpace ℝ` instance (a `def` over `Matrix`, which has no canonical norm), so
-`AnalyticAt ℝ F` is not Mathlib-stateable here; pinning it as an unsatisfiable instance hypothesis
-would re-vacuate the theorem. Flagged for the controller (see report). -/
-theorem resolution_charts (H : Fin (L + 1) → ℕ) (F : Params H → ℝ) (wstar : Params H)
-    (hFne : ∀ U ∈ 𝓝 wstar, ∃ w ∈ U, F w ≠ 0) :
+Rung-0c FLAG (specialisation): the value-match `rlctAt F = ⨅ monomialThreshold` is **FALSE for a
+generic `F`** — even one `≢ 0` near `w*` (rv-2: a non-analytic such `F` breaks the existential); it
+holds only for `F` real-analytic, and analyticity is not Mathlib-stateable on `Params` (a `def` over
+`Matrix`, no canonical norm, so no `NormedSpace ℝ` — an `AnalyticAt` hypothesis would be
+unsatisfiable and re-vacuate). So R1 is **specialised to the loss `dlnLoss H B`**, the polynomial
+it is actually applied to: the resolution genuinely holds there (analyticity automatic), and the
+statement is TRUE and `Params`-norm-free. The fully-general analytic-`F` form is a roadmap lemma for
+after the `Params ≃ᵐ ℝ^N` flattening (then `AnalyticOn (F ∘ paramsEquivFlat.symm)` is stateable). -/
+theorem resolution_charts (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (wstar : Params H) :
     ∃ (ι : Type) (_ : Fintype ι) (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ),
-      rlctAt H F wstar = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) := by
+      rlctAt H (dlnLoss H B) wstar = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) := by
   sorry
 
 /-! ## A1 / A2 — the arithmetic minimisation + the order count (design-spec §8) -/
