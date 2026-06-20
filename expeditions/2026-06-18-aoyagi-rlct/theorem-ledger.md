@@ -1735,6 +1735,39 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-source-chart-terminal-source-suffix-a4.md`.
 
+Latest A4 update: the raw source suffix chain split has landed in
+`lean/DLNFibre/DLN/Aoyagi/MatrixChain.lean`.  The proved Lean name is
+`paperMatrixChain_trans`.  It states that the raw paper-order chain splits at
+an intermediate layer as
+`paperMatrixChain(i,j)=paperMatrixChain(i,m)*paperMatrixChain(m,j)`, with the
+orientation matching the existing right-extension theorem
+`paperMatrixChain_succ_right`.  This is only raw matrix-chain algebra; it does
+not yet prove source-suffix empty/peel wrappers, chart production, or any
+analytic result. Reproduction:
+`threads/04-blow-up-certificate/reproduction-source-suffix-chain-split-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-source-suffix-chain-split.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
+
+Latest A4 update: the Case 2 actual-width source-chart terminal boundary has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+name is
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_actualWidth_terminalOriginalRowsBoundary`.
+This checkpoint packages the actual-width original-row terminal source-suffix
+entry-ideal equality with the actual-width relabelled level invariant and
+exponent-domain certificate for `(S+1,0)`.  It uses
+`n(S+1)=J+1`; it does not apply to the row-exhausted wide-next branch and does
+not prove source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, automatic Case 2 gap/tail transport, or printed-vector repair.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-actual-width-source-chart-terminal-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-actual-width-source-chart-terminal-boundary.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -2562,3 +2562,56 @@ supplied.  They do not prove source-produced `C'^(S+1)`, chart coverage,
 chart-produced post-data, Jacobian arithmetic, normal crossings/RLCT,
 termination, transition invariance, automatic gap/tail transport, or printed
 vector repair.
+
+## 2026-06-20 Lean source suffix raw chain split
+
+Reproduction:
+`reproduction-source-suffix-chain-split-a4.md`.
+Statement card:
+`statement-card-a4-source-suffix-chain-split.md`.
+Review artifact:
+`review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
+
+Lean now proves the raw paper-order chain split
+
+```text
+paperMatrixChain_trans
+```
+
+in `MatrixChain.lean`.  If `i <= m <= j`, then
+
+```text
+paperMatrixChain(i,j) = paperMatrixChain(i,m) * paperMatrixChain(m,j).
+```
+
+The orientation matches the existing raw chain convention: extending the upper
+endpoint multiplies by the new paper edge on the right.  This is only raw
+matrix-chain algebra.  It does not yet state the dependent-endpoint
+`sourceSuffixProduct` empty or peel wrappers, and it does not prove chart
+production or any analytic result.
+
+## 2026-06-20 Lean Case 2 actual-width source-chart terminal boundary
+
+Reproduction:
+`reproduction-case2-actual-width-source-chart-terminal-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-actual-width-source-chart-terminal-boundary.md`.
+Review artifact:
+`review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
+
+Lean now packages the actual-width displayed source-chart terminal branch as
+
+```text
+sourceChart_actualWidth_terminalOriginalRowsBoundary.
+```
+
+The theorem composes three already proved facts: the source-chart terminal
+source-suffix equality with original rows, the actual-width relabelled
+level/least-value invariant, and the actual-width relabelled exponent-domain
+certificate.  It is restricted to `n(S+1)=J+1`, where the transported pivot row
+is the original source row and the `(S+1,0)` relabel is valid.
+
+This is a boundary package, not a source-production theorem.  It does not
+prove source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
+Jacobian arithmetic, normal crossings/RLCT, termination, transition
+invariance, automatic gap/tail transport, or printed-vector repair.

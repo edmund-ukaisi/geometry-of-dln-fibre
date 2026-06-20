@@ -147,10 +147,14 @@ on the session's original cwd.
    source-suffix wrappers now compose these two terminal branches with the
    concrete displayed source-chart constructor and corrected selected-label
    exponent overrides, so arbitrary post-data are removed from this narrow
-   source-suffix API. Next A4 target: fuller chart-production boundary data
-   beyond terminal-prefix wrappers, or source-level empty/peel lemmas for
-   `sourceSuffixProduct` if downstream suffix rewrites become noisy. Do not
-   transport Case 2 gap/tail invariants without separately checking their
+   source-suffix API. The raw paper-order chain split `paperMatrixChain_trans`
+   is now proved, giving a cast-free base for future `sourceSuffixProduct`
+   empty/peel wrappers. The actual-width source-chart terminal boundary now
+   packages original-row terminal equality with relabelled `(S+1,0)` level and
+   exponent data. Next A4 target: either the dependent-endpoint
+   `sourceSuffixProduct` peel wrapper if suffix rewrites become noisy, or
+   fuller chart-production boundary data beyond terminal-prefix wrappers. Do
+   not transport Case 2 gap/tail invariants without separately checking their
    shifted thresholds.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep

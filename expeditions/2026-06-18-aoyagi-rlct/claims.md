@@ -641,6 +641,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 source-chart terminal source-suffix wrappers is
 	  saved at
 	  `threads/04-blow-up-certificate/review-case2-source-chart-terminal-source-suffix-a4.md`.
+	  Review of the source suffix split and actual-width terminal boundary is
+	  saved at
+	  `threads/04-blow-up-certificate/review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1466,6 +1469,15 @@ No such claim is formalisation-ready until both fields are filled.
   chart-produced post-data, Jacobian arithmetic, normal crossings/RLCT,
   termination, transition invariance, automatic Case 2 gap/tail transport, or
   printed-vector repair.
+  The raw paper-order source suffix chain split `paperMatrixChain_trans` is
+  now proved in `MatrixChain.lean`; it is raw matrix-chain algebra only and
+  does not yet state source-suffix empty or peel wrappers.  The actual-width
+  source-chart terminal boundary
+  `sourceChart_actualWidth_terminalOriginalRowsBoundary` now packages the
+  original-row terminal source-suffix entry-ideal equality with the
+  actual-width relabelled level invariant and exponent-domain certificate for
+  `(S+1,0)`.  This boundary requires `n(S+1)=J+1` and does not apply to
+  row-exhausted wide-next cases.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

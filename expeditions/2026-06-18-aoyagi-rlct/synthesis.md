@@ -1559,6 +1559,22 @@ they are not chart coverage, chart-produced post-data, source-produced
 `C'^(S+1)`, Jacobian, normal-crossing/RLCT, termination, or transition
 invariance theorems.
 
+The raw source suffix chain split is now Lean-proved as `paperMatrixChain_trans`
+in `MatrixChain.lean`: a raw paper-order chain from `i` to `j` splits as the
+chain from `i` to `m` times the chain from `m` to `j`.  This gives a stable
+cast-free algebraic base for later source-suffix empty/peel wrappers, but it
+does not itself state those wrappers.
+
+The actual-width source-chart terminal boundary is now Lean-proved as
+`sourceChart_actualWidth_terminalOriginalRowsBoundary`.  It packages the
+source-chart terminal source-suffix equality with original rows, the
+actual-width relabelled level invariant, and the actual-width relabelled
+exponent-domain certificate for `(S+1,0)`.  The theorem is restricted to
+`n(S+1)=J+1`; it does not apply to row-exhausted wide-next cases and still does
+not prove source-produced `C'^(S+1)`, chart coverage, chart-produced post-data,
+Jacobian arithmetic, normal crossings/RLCT, termination, or transition
+invariance.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

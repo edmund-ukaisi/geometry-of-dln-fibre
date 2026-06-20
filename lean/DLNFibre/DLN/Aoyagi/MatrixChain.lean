@@ -64,6 +64,26 @@ theorem paperMatrixChain_succ_right (i : Fin (N + 1)) (p : Fin N)
     (h2 := Fin.val_fin_le.mpr (hip.trans (Fin.castSucc_le_succ p)))
     (refl := fun _ ↦ 1) (le_succ_of_le := paperMatrixChainStep κ C i)) p.succ.isLt
 
+/-- The raw paper-order matrix chain splits at an intermediate source layer. -/
+theorem paperMatrixChain_trans (i : Fin (N + 1)) {m j : Fin (N + 1)}
+    (him : i ≤ m) (hmj : m ≤ j) :
+    paperMatrixChain κ C i j (him.trans hmj) =
+      paperMatrixChain κ C i m him * paperMatrixChain κ C m j hmj := by
+  induction j using Fin.induction with
+  | zero =>
+    obtain rfl : m = 0 := Fin.le_zero_iff.mp hmj
+    obtain rfl : i = 0 := Fin.le_zero_iff.mp him
+    rw [paperMatrixChain_self, Matrix.mul_one]
+  | succ p ih =>
+    rcases eq_or_lt_of_le hmj with rfl | hlt
+    · rw [paperMatrixChain_self, Matrix.mul_one]
+    · have hmp : m ≤ p.castSucc := by
+        rw [Fin.le_castSucc_iff]
+        exact hlt
+      have himp : i ≤ p.castSucc := him.trans hmp
+      rw [paperMatrixChain_succ_right κ C i p himp,
+        paperMatrixChain_succ_right κ C m p hmp, ih hmp, Matrix.mul_assoc]
+
 /-- The one-edge raw paper-order matrix chain is that edge. -/
 @[simp]
 theorem paperMatrixChain_edge (p : Fin N) (h : p.castSucc ≤ p.succ) :
