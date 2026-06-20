@@ -80,8 +80,8 @@ noncomputable def baseChangeAlgEquiv [Infinite k] {d : Fin (N + 1) → ℕ}
 
 `A = MvPolynomial (RepCoord d) k ⧸ I` with `I = vanishingIdeal (orbitSet M)`. By L6.4
 (`vanishingIdeal_orbitRankLocus_eq_orbitSet`) this is the coordinate ring of the rank locus
-`Z_M = canonicalCoord '' orbitRankLocus M`; by L1 (`isPrime_vanishingIdeal_orbitSet`) it is a domain.
-The `G_d`-automorphism `baseChangeAlgEquiv P` stabilises `I`, so it descends to `A ≃ₐ[k] A`. -/
+`Z_M = canonicalCoord '' orbitRankLocus M`; by L1 (`isPrime_vanishingIdeal_orbitSet`) it is a
+domain. The `G_d`-automorphism `baseChangeAlgEquiv P` stabilises `I`, descending to `A ≃ₐ[k] A`. -/
 
 /-- The vanishing ideal `I = vanishingIdeal (orbitSet M)` we quotient by — the defining ideal of the
 orbit closure `Z_M` (L6.4 identifies it with the rank-locus ideal). -/
@@ -103,7 +103,8 @@ instance orbitRing_isDomain [IsAlgClosed k] {d : Fin (N + 1) → ℕ} (M : Tuple
 (`baseChangePullback_mem_vanishingIdeal_orbitSet`). -/
 theorem orbitIdeal_map_le [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
     (P : BaseChangeGroup (k := k) d) :
-    (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _) ≤ orbitIdeal M := by
+    (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _)
+      ≤ orbitIdeal M := by
   rw [Ideal.map_le_iff_le_comap]
   intro f hf
   rw [Ideal.mem_comap]
@@ -113,7 +114,8 @@ theorem orbitIdeal_map_le [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k :
 its inverse `α_{P⁻¹}` map `I` into `I`, and `map` of an equiv is monotone with a `map`-inverse. -/
 theorem orbitIdeal_map_eq [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
     (P : BaseChangeGroup (k := k) d) :
-    (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _) = orbitIdeal M := by
+    (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _)
+      = orbitIdeal M := by
   refine le_antisymm (orbitIdeal_map_le M P) ?_
   -- `I ≤ I.map α_P` ⟸ `I.map α_{P⁻¹} ≤ I` pushed through `α_P` (an equiv)
   have hinv : (orbitIdeal M).map
@@ -128,7 +130,7 @@ theorem orbitIdeal_map_eq [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k :
         congr 1
         refine RingHom.ext (fun f ↦ ?_)
         rw [RingHom.id_apply, RingHom.comp_apply]
-        show f = baseChangePullback P (baseChangePullback P⁻¹ f)
+        change f = baseChangePullback P (baseChangePullback P⁻¹ f)
         rw [baseChangePullback_comp, inv_mul_cancel, baseChangePullback_one]
     _ ≤ (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _) :=
         Ideal.map_mono hinv
@@ -171,8 +173,8 @@ theorem eval_orbitPoint_mem_orbitIdeal {d : Fin (N + 1) → ℕ} (M : Tuple (k :
   have := hf _ (canonicalCoord_smul_mem_orbitSet M P)
   rwa [MvPolynomial.aeval_eq_eval] at this
 
-/-- The descended **evaluation** `A → k` at the orbit point `canonicalCoord (P • M)`: the `k`-algebra
-hom factoring `eval (canonicalCoord (P • M))` through `A = R ⧸ I` (which kills `I`). -/
+/-- The descended **evaluation** `A → k` at the orbit point `canonicalCoord (P • M)`: the
+`k`-algebra hom factoring `eval (canonicalCoord (P • M))` through `A = R ⧸ I` (which kills `I`). -/
 noncomputable def orbitEval {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
     (P : BaseChangeGroup (k := k) d) : orbitRing M →ₐ[k] k :=
   Ideal.Quotient.liftₐ (orbitIdeal M)
@@ -187,8 +189,8 @@ noncomputable def orbitEval {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
   rw [orbitEval, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk]
   exact congrFun (MvPolynomial.aeval_eq_eval (canonicalCoord d (P • M))) f
 
-/-- The **point ideal** `m_{P•M} = ker (orbitEval M P)` of the orbit `k`-point `canonicalCoord (P•M)`
-in `A`. The normal-form point ideal is `m_M = orbitPointIdeal M 1`. -/
+/-- The **point ideal** `m_{P•M} = ker (orbitEval M P)` of the orbit `k`-point
+`canonicalCoord (P•M)` in `A`. The normal-form point ideal is `m_M = orbitPointIdeal M 1`. -/
 noncomputable def orbitPointIdeal {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
     (P : BaseChangeGroup (k := k) d) : Ideal (orbitRing M) :=
   RingHom.ker (orbitEval M P).toRingHom
@@ -198,8 +200,8 @@ noncomputable abbrev normalFormIdeal {d : Fin (N + 1) → ℕ} (M : Tuple (k := 
     Ideal (orbitRing M) :=
   orbitPointIdeal M 1
 
-/-- `m_{P•M}` is **maximal**: it is the kernel of the surjective `k`-algebra hom `orbitEval M P : A →
-k` onto a field (`orbitEval` is split by `algebraMap k A`). -/
+/-- `m_{P•M}` is **maximal**: the kernel of the surjective `k`-algebra hom `orbitEval M P : A → k`
+onto a field (`orbitEval` is split by `algebraMap k A`). -/
 instance orbitPointIdeal_isMaximal {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
     (P : BaseChangeGroup (k := k) d) : (orbitPointIdeal M P).IsMaximal := by
   have hsurj : Function.Surjective (orbitEval M P).toRingHom := fun y ↦
@@ -211,16 +213,16 @@ instance orbitPointIdeal_isPrime {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d
     (P : BaseChangeGroup (k := k) d) : (orbitPointIdeal M P).IsPrime :=
   (orbitPointIdeal_isMaximal M P).isPrime
 
-/-- **L3.0 transport — `orbitEval M 1 ∘ α_P = orbitEval M P`.** The normal-form evaluation precomposed
-with the `G_d`-automorphism `α_P` is evaluation at the orbit point `P • M`: chasing the
-`baseChangePullback` shift `eval (canonicalCoord M) ∘ pullback P = eval (canonicalCoord (P • M))`. -/
+/-- **L3.0 transport — `orbitEval M 1 ∘ α_P = orbitEval M P`.** The normal-form evaluation
+precomposed with the `G_d`-automorphism `α_P` is evaluation at the orbit point `P • M`: chasing
+the shift `eval (canonicalCoord M) ∘ pullback P = eval (canonicalCoord (P•M))`. -/
 theorem orbitEval_comp_orbitRingAlgEquiv [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
     (P : BaseChangeGroup (k := k) d) :
     (orbitEval M 1).comp (orbitRingAlgEquiv M P).toAlgHom = orbitEval M P := by
   refine AlgHom.ext (fun a ↦ ?_)
   obtain ⟨f, rfl⟩ := Ideal.Quotient.mk_surjective a
   rw [AlgHom.comp_apply]
-  show orbitEval M 1 (orbitRingAlgEquiv M P (Ideal.Quotient.mk (orbitIdeal M) f))
+  change orbitEval M 1 (orbitRingAlgEquiv M P (Ideal.Quotient.mk (orbitIdeal M) f))
     = orbitEval M P (Ideal.Quotient.mk (orbitIdeal M) f)
   rw [orbitRingAlgEquiv_mk, orbitEval_mk, orbitEval_mk, one_smul,
     show MvPolynomial.eval (canonicalCoord d M) (baseChangePullback P f)
@@ -256,7 +258,8 @@ theorem map_orbitPointIdeal_primeCompl [Infinite k] {d : Fin (N + 1) → ℕ} (M
       = (normalFormIdeal M).primeCompl := by
   have hcomap := orbitPointIdeal_eq_comap M P
   -- membership in `m_{P•M}` is membership of the `α_P`-image in `m_M`
-  have hmem : ∀ x : orbitRing M, x ∈ orbitPointIdeal M P ↔ orbitRingAlgEquiv M P x ∈ normalFormIdeal M := by
+  have hmem : ∀ x : orbitRing M,
+      x ∈ orbitPointIdeal M P ↔ orbitRingAlgEquiv M P x ∈ normalFormIdeal M := by
     intro x; rw [hcomap, Ideal.mem_comap]; rfl
   ext y
   constructor
@@ -318,7 +321,8 @@ theorem vanishingIdeal_orbitSpecSet_eq_bot [Infinite k] {d : Fin (N + 1) → ℕ
   rw [PrimeSpectrum.mem_vanishingIdeal] at ha
   obtain ⟨g, rfl⟩ := Ideal.Quotient.mk_surjective a
   -- `mk g ∈ orbitPointIdeal M P` for all `P`, i.e. `eval (canonicalCoord (P•M)) g = 0` for all `P`
-  have hg : ∀ P : BaseChangeGroup (k := k) d, MvPolynomial.eval (canonicalCoord d (P • M)) g = 0 := by
+  have hg : ∀ P : BaseChangeGroup (k := k) d,
+      MvPolynomial.eval (canonicalCoord d (P • M)) g = 0 := by
     intro P
     have hmem := ha ⟨orbitPointIdeal M P, inferInstance⟩ ⟨P, rfl⟩
     have : orbitEval M P (Ideal.Quotient.mk (orbitIdeal M) g) = 0 := hmem
@@ -378,14 +382,14 @@ noncomputable abbrev orbitSchemeHom : orbitScheme M ⟶ Spec (.of k) :=
 instance orbitSchemeHom_locallyOfFinitePresentation :
     LocallyOfFinitePresentation (orbitSchemeHom M) := by
   rw [HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)]
-  show (algebraMap k (orbitRing M)).FinitePresentation
+  change (algebraMap k (orbitRing M)).FinitePresentation
   rw [RingHom.finitePresentation_algebraMap]
   infer_instance
 
 /-- The structure morphism is **locally of finite type** (from finite presentation). -/
 instance orbitSchemeHom_locallyOfFiniteType : LocallyOfFiniteType (orbitSchemeHom M) := by
   rw [HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]
-  show (algebraMap k (orbitRing M)).FiniteType
+  change (algebraMap k (orbitRing M)).FiniteType
   rw [RingHom.finiteType_algebraMap]
   infer_instance
 
@@ -397,6 +401,142 @@ example : IsReduced (orbitScheme M) ∧ JacobsonSpace (orbitScheme M)
     ∧ LocallyOfFiniteType (orbitSchemeHom M) :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
 
+/-! ## L3.4 — assembly: a smooth orbit point exists, transported to the normal-form point
+
+The scheme smooth locus is dense (`dense_smoothLocus_of_perfectField`, perfect `k` + reduced `X`)
+and open; the orbit closed points are dense (`dense_orbitSpecSet`); their intersection is nonempty
+(`Dense.inter_open_nonempty`) — a smooth orbit `k`-point. The scheme↔ring smooth-point dictionary
+(`orbitScheme_mem_smoothLocus_iff_isSmoothAt`) makes it `IsSmoothAt k (orbitPointIdeal M P)`;
+the `G_d`-transport (`isSmoothAt_orbitPointIdeal_iff`) carries it to `m_M`. -/
+
+omit [IsAlgClosed k] in
+/-- The prime of `k` under the structure map is `⊥` (`k` is a field). -/
+theorem comap_algebraMap_eq_bot (p : PrimeSpectrum (orbitRing M)) :
+    (PrimeSpectrum.comap (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal = ⊥ := by
+  rcases Ideal.eq_bot_or_top (PrimeSpectrum.comap
+      (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal with h | h
+  · exact h
+  · exact absurd h
+      (PrimeSpectrum.comap (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).2.ne_top
+
+omit [IsAlgClosed k] in
+/-- The localized structure map `localRingHom (comap p) p (algebraMap k A)` is formally smooth iff
+`A` is formally smooth at `p`. Its source `AtPrime (comap p)` is `k` (the prime is `⊥`, `k` a field;
+`IsLocalization.atUnits`), so the localized map is `algebraMap k (AtPrime p)` up to a source iso,
+whose `FormallySmooth` is `Algebra.IsSmoothAt k p` (`formallySmooth_algebraMap`). -/
+theorem localRingHom_formallySmooth_iff (p : PrimeSpectrum (orbitRing M)) :
+    (Localization.localRingHom
+        (PrimeSpectrum.comap (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal
+        p.asIdeal (algebraMap k (orbitRing M)) rfl).FormallySmooth ↔
+      Algebra.IsSmoothAt k p.asIdeal := by
+  haveI hqp : (PrimeSpectrum.comap
+      (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal.IsPrime :=
+    (PrimeSpectrum.comap _ p).2
+  -- `q = comap p = ⊥`; every nonzero element of the field `k` is a unit, so `k ≃ₐ[k] AtPrime q`
+  have hunits : (PrimeSpectrum.comap
+      (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal.primeCompl
+        ≤ IsUnit.submonoid k := by
+    intro x hx
+    rw [Ideal.primeCompl, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_compl_iff,
+      SetLike.mem_coe, comap_algebraMap_eq_bot M p, Ideal.mem_bot] at hx
+    simp only [IsUnit.mem_submonoid_iff]
+    exact isUnit_iff_ne_zero.mpr hx
+  let e : k ≃ₐ[k] Localization.AtPrime (PrimeSpectrum.comap
+      (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal :=
+    IsLocalization.atUnits k _ hunits
+  -- the arrow iso: source iso `e.symm`, target identity; square commutes by `localRingHom_to_map`
+  have harrow : Arrow.mk (CommRingCat.ofHom (Localization.localRingHom (PrimeSpectrum.comap
+        (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal p.asIdeal
+        (algebraMap k (orbitRing M)) rfl))
+      ≅ Arrow.mk (CommRingCat.ofHom (algebraMap k (Localization.AtPrime p.asIdeal))) :=
+    Arrow.isoMk (e.symm.toRingEquiv.toCommRingCatIso) (Iso.refl _) (by
+      refine CommRingCat.hom_ext (RingHom.ext (fun z ↦ ?_))
+      -- square at `z = e y` : `algebraMap k (AtPrime p) (e.symm (e y)) = localRingHom (e y)`
+      obtain ⟨y, rfl⟩ : ∃ y : k, e y = z := ⟨e.symm z, e.apply_symm_apply z⟩
+      change (algebraMap k (Localization.AtPrime p.asIdeal)) (e.symm (e y))
+        = Localization.localRingHom _ p.asIdeal (algebraMap k (orbitRing M)) rfl (e y)
+      rw [AlgEquiv.symm_apply_apply]
+      have hey : e y = algebraMap k (Localization.AtPrime
+          (Ideal.comap (algebraMap k (orbitRing M)) p.asIdeal)) y := rfl
+      rw [hey, Localization.localRingHom_to_map,
+        ← IsScalarTower.algebraMap_apply k (orbitRing M) (Localization.AtPrime p.asIdeal) y])
+  have hbridge := RingHom.FormallySmooth.respectsIso.arrow_mk_iso_iff harrow
+  simp only [CommRingCat.hom_ofHom] at hbridge ⊢
+  rw [hbridge, RingHom.formallySmooth_algebraMap]
+
+omit [IsAlgClosed k] in
+/-- **The scheme↔ring smooth-point dictionary** (affine bridge via the stalk-map ↔ localized-map
+iso). A point `p` of `Spec A` is in the scheme smooth locus of the structure morphism iff `A` is
+formally smooth at `p` over `k`. The stalk map of `Spec.map (algebraMap k A)` at `p` is arrow-iso
+to `Localization.localRingHom ⊥ p (algebraMap k A)` (`Scheme.arrowStalkMapSpecIso`); since `k` is
+a field, the source `AtPrime ⊥` is `k`, so the map is `algebraMap k (AtPrime p)`, whose formal
+smoothness is `Algebra.IsSmoothAt k p`. -/
+theorem orbitScheme_mem_smoothLocus_iff_isSmoothAt (p : PrimeSpectrum (orbitRing M)) :
+    (p : orbitScheme M) ∈ (orbitSchemeHom M).smoothLocus ↔
+      Algebra.IsSmoothAt k p.asIdeal := by
+  rw [show ((p : orbitScheme M) ∈ (orbitSchemeHom M).smoothLocus)
+      = ((orbitSchemeHom M).stalkMap (p : orbitScheme M)).hom.FormallySmooth from
+        propext Scheme.Hom.mem_smoothLocus]
+  -- the stalk map is arrow-iso to `localRingHom ⊥ p (algebraMap k A)`
+  rw [RingHom.FormallySmooth.respectsIso.arrow_mk_iso_iff
+    (Scheme.arrowStalkMapSpecIso (CommRingCat.ofHom (algebraMap k (orbitRing M))) p)]
+  exact localRingHom_formallySmooth_iff M p
+
+/-- **A smooth orbit `k`-point exists.** The (dense, open) scheme smooth locus meets the dense orbit
+closed points, giving a smooth point that is an orbit point `orbitPointIdeal M P`. -/
+theorem exists_orbitPointIdeal_isSmoothAt :
+    ∃ P : BaseChangeGroup (k := k) d, Algebra.IsSmoothAt k (orbitPointIdeal M P) := by
+  have hSmDense : Dense ((orbitSchemeHom M).smoothLocus : Set (orbitScheme M)) :=
+    Scheme.Hom.dense_smoothLocus_of_perfectField (orbitSchemeHom M)
+  obtain ⟨x, hxSmooth, P, hxP⟩ :=
+    (dense_orbitSpecSet M).inter_open_nonempty _ (orbitSchemeHom M).smoothLocus.2 hSmDense.nonempty
+  refine ⟨P, ?_⟩
+  have hring : Algebra.IsSmoothAt k x.asIdeal :=
+    (orbitScheme_mem_smoothLocus_iff_isSmoothAt M x).mp hxSmooth
+  -- transport `IsSmoothAt` along `x.asIdeal = orbitPointIdeal M P` (`AtPrime` depends only on the
+  -- ideal), avoiding the prime-instance motive obstruction
+  obtain ⟨x, hxprime⟩ := x
+  subst hxP
+  exact hring
+
+/-- **L3 headline — `Z_M` is smooth at the orbit normal-form point `M`.** `IsSmoothAt k m_M`: there
+is a smooth orbit `k`-point (`exists_orbitPointIdeal_isSmoothAt`), and the `G_d`-action transports
+its smoothness to the normal-form point ideal `m_M = orbitPointIdeal M 1`
+(`isSmoothAt_orbitPointIdeal_iff`). -/
+theorem isSmoothAt_normalFormIdeal : Algebra.IsSmoothAt k (normalFormIdeal M) := by
+  obtain ⟨P, hP⟩ := exists_orbitPointIdeal_isSmoothAt M
+  exact (isSmoothAt_orbitPointIdeal_iff M P).mp hP
+
+/-- **The residue field at `m_M` is `k`** (`κ(m_M) = k`). The normal-form point `M` is a
+`k`-rational point: the evaluation `orbitEval M 1 : A → k` is a surjective `k`-algebra hom with
+kernel `m_M`, so the first isomorphism theorem gives `A ⧸ m_M ≃ₐ[k] k`. Consumed by M3/L2a
+(cotangent at a `k`-rational point). -/
+noncomputable def residueFieldNormalFormEquiv : (orbitRing M ⧸ normalFormIdeal M) ≃ₐ[k] k :=
+  Ideal.quotientKerAlgEquivOfSurjective
+    (f := orbitEval M 1) (fun y ↦ ⟨algebraMap k (orbitRing M) y, (orbitEval M 1).commutes y⟩)
+
 end SpecModel
+
+section Witness
+
+/-! ## Non-vacuity witness
+
+The `G_d`-action objects (L3.0/L3.1, needing only `[Infinite k]`) are exercised on the concrete
+`(2,2,2)/ℚ` tuple `tupleWitnessQ` (`ℚ` is infinite). The smoothness headline itself needs
+`[IsAlgClosed k]`, not instantiable at `ℚ`; the algebraic objects it transports along are. -/
+
+/-- The `G_d`-automorphism `α_1 = id` on the orbit ring of the `(2,2,2)/ℚ` witness: the normal-form
+evaluation is `G_d`-invariant under the identity base change (`orbitEval_comp_orbitRingAlgEquiv` at
+`P = 1`). The L3.0 transport objects are non-vacuous on a real matrix tuple. -/
+example : (orbitEval (k := ℚ) tupleWitnessQ 1).comp
+    (orbitRingAlgEquiv (k := ℚ) tupleWitnessQ 1).toAlgHom = orbitEval tupleWitnessQ 1 :=
+  orbitEval_comp_orbitRingAlgEquiv tupleWitnessQ 1
+
+/-- The normal-form point ideal of the `(2,2,2)/ℚ` witness is maximal: the orbit-ring point ideal
+construction is non-vacuous on a concrete tuple. -/
+example : (normalFormIdeal (k := ℚ) tupleWitnessQ).IsMaximal :=
+  orbitPointIdeal_isMaximal tupleWitnessQ 1
+
+end Witness
 
 end DLNFibre.Core
