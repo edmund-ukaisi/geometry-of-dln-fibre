@@ -54,7 +54,8 @@ just-certified contract; the import-ordering around deepestPoint deserves care, 
 pp mapped the mountain (`threads/14-r1-design/r1-design.md`; decorrelated Codex, one correction adopted).
 - **Value/atlas split.** Separate the RLCT VALUE from the explicit CHART ATLAS the statement names.
   - VALUE: `rlctAt(‖∏C‖²) = ½·min_t Mval(t)`, pinned by codim S(t)=Mval (thread-03, proven gen-L) +
-    {∏C=0}=⋃S(t) + divisor-ratio telescoping. No chart enumeration needed for the value.
+    {∏C=0}=⋃S(t) + the per-branch binding divisor (residual-block center, codim Mval). No chart enumeration
+    needed for the value.
   - ATLAS (ι,φᵢ,k,h): Aoyagi's iterated affine blow-ups (coordinate-subspace; explicit substitutions).
 - **Codex correction (adopted, bedrock-sharpening):** prefix-stratum partition is right for the VALUE but
   TOO COARSE for a literal atlas — center {rank≤t} is singular along {rank≤t−1}; the smooth resolution
@@ -64,9 +65,15 @@ pp mapped the mountain (`threads/14-r1-design/r1-design.md`; decorrelated Codex,
 - **Lean-tractability reversal (adopted):** Aoyagi's affine recursion is the MOST tractable atlas (vs
   flag/quiver determinantal-resolution + SNC — far heavier). Anti-treadmill-safe: value from §3-codim, NOT
   the bookkeeping.
-- **Per-chart exponents (reusable core, verified):** each pivot blow-up = single-rank-drop smooth center ⇒
-  F order exactly 2 ⇒ k=1; smooth codim-c ⇒ Jacobian u^{c−1} ⇒ h=c−1; ratio c/2. Single-step codims
-  TELESCOPE to codim S(t)=Mval. (2,2,2) δ-chart (k,h)=(1,2)→3/2 matches thread-03.
+- **Binding-divisor mechanism (reusable core, verified; pp self-corrected its own "telescoping" framing):**
+  the divisor-ratio lemma — smooth codim-c center ⇒ F (sum of squares) vanishes to order 2 ⇒ k=1, Jacobian
+  u^{c−1} ⇒ h=c−1, ratio c/2 — applies to the BINDING divisor per branch: after the regular pivot split
+  exposes the RESIDUAL BLOCK (whose vanishing IS the stratum S(t)), ONE blow-up of that residual-block-zero
+  center (codim EXACTLY Mval(t)) gives the binding divisor (k,h)=(1, Mval(t)−1), ratio ½·Mval(t). NOT
+  per-rank-drop telescoping — that gives ½·min(cᵢ) = TOO SMALL ((2,2,2) t=1: min(1,2)/2=1/2≠λ=3/2). The
+  `Mval = Σ rank-drop codims` is the codim ARITHMETIC; geometrically it is ONE codim-Mval binding center per
+  branch. min over branches = ½·min_t Mval = λ. (2,2,2) verified: binding divisor ρ (residual {δ=u=v=0})
+  codim-3-in-one-step, (k,h)=(1,2)→3/2=λ.
 - **No hidden hypotheses** (Codex §4): char-0 auto, positive widths, r≤min M⁽ˢ⁾ from hB; no genericity, no
   width inequality. Frobenius → any PD form. Toric/Newton route DEAD (Codex torus-zero counterexample).
 
