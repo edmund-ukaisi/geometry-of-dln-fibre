@@ -329,10 +329,14 @@ on the session's original cwd.
    post-pivot domains `J+2..M(S)` and `J+2..M^(S+1)`, failure of the next
    continuation bound empties one complement type, and the lower-right
    complement matrix is subsingleton/zero. This still is not the full
-   terminal `D'''` shape theorem or the `S+1` advance. Next A4 target:
-   perform the stage-relabel/domain audit for `(S+1,0)` versus `(S,J+1)` and
-   record the row-side obstruction before attempting any `S+1` transition
-   package.
+   terminal `D'''` shape theorem or the `S+1` advance.
+   The stage-relabel/domain audit is now Lean-proved: old `(S,J+1)` and
+   `(S+1,0)` introduced-label domains agree under actual-width exhaustion
+   `n(S+1)=J+1`, and `(S,J+2)` is an explicit extra-label witness when
+   `J+2 <= n(S+1)`. Next A4 target: a conditional terminal-block/following-
+   factor statement may use the complement-vacuity theorem, but it must still
+   separately construct or identify the relevant `D'''`/`C'^(S+1)` data and
+   must not claim an unconditional `S+1` transition.
    The displayed Case 2 center count is now also Lean-proved: the finite
    residual-block selected-coordinate count is
    `(M(S)-J)(M^(S+1)-J)`, with actual-width columns kept distinct from

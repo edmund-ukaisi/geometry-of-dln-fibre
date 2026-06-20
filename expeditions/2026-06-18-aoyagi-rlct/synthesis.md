@@ -1321,6 +1321,20 @@ the whole post-`Q/P` zero pattern, `C'^(S+1)`, the `S+1` recurrence/exponent
 state, chart production, coverage, Jacobians, normal crossings/RLCT,
 termination, transition invariance, or printed-vector repair.
 
+The Case 2 stage-relabel domain audit is now Lean-proved. The frontier split
+`case2_next_frontier_currentPrefixMin_or_nextWidth_eq_of_cont_of_not_next`
+says that, when the displayed pivot is valid and the next continuation bound
+fails, the terminal frontier comes from either `prefixMinNat n S = J+1` or
+`n(S+1)=J+1`. The introduced-label domains at old `(S,J+1)` and `(S+1,0)` are
+proved equal under the actual-width side condition `n(S+1)=J+1`. The theorem
+`introducedLabel_succStage_zero_extra_witness_of_nextWidth_ge` records the
+row-side obstruction: if `J+2 <= n(S+1)`, then `(S,J+2)` is introduced at
+`(S+1,0)` but not at old `(S,J+1)`. This is only finite label-domain
+bookkeeping, not an `S+1` transition theorem, terminal `D'''` theorem,
+following-factor construction, chart-production result, Jacobian calculation,
+normal-crossing/RLCT result, termination theorem, transition invariant, or
+printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

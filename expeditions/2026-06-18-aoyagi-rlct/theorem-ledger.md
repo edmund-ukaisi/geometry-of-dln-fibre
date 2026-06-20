@@ -1287,6 +1287,27 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-pivot-complement-exhaustion-a4.md`.
 
+Latest A4 update: the Case 2 stage-relabel domain audit has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
+`introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq`,
+`introducedLabelFinset_currentSucc_eq_succStage_zero_of_nextWidth_eq`,
+`not_introducedLabel_current_of_lt_index`,
+`introducedLabel_succStage_zero_extra_witness_of_nextWidth_ge`, and
+`case2_next_frontier_currentPrefixMin_or_nextWidth_eq_of_cont_of_not_next`.
+This checkpoint proves that the terminal frontier side split is row-prefix
+exhaustion or actual next-width exhaustion, proves the old `(S,J+1)` to
+`(S+1,0)` introduced-label equality under the actual-width side condition
+`n(S+1)=J+1`, and records the explicit extra-label obstruction `(S,J+2)` when
+actual width has not been exhausted. It does not prove the `S+1` transition,
+terminal `D'''` block shape, chart production, Jacobian arithmetic, normal
+crossings/RLCT, termination, transition invariance, or printed-vector repair.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-stage-relabel-domain-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-stage-relabel-domain.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

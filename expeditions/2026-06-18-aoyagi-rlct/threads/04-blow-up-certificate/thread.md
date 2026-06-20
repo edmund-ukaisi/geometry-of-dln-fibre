@@ -436,6 +436,37 @@ recurrence/exponent state, prove chart coverage or regularity, compute
 Jacobians, prove normal crossings/RLCT extraction, prove termination or
 transition invariance, or repair the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 stage-relabel domain audit
+
+Reproduction:
+`reproduction-case2-stage-relabel-domain-a4.md`.
+Statement card:
+`statement-card-a4-case2-stage-relabel-domain.md`.
+Review artifact:
+`review-case2-stage-relabel-domain-a4.md`.
+
+Lean now records the finite introduced-label domain side condition behind
+advancing from old `(S,J+1)` to `(S+1,0)`.  The frontier theorem
+`case2_next_frontier_currentPrefixMin_or_nextWidth_eq_of_cont_of_not_next`
+says that if the displayed pivot is valid and the next continuation bound
+fails, then either the current prefix minimum is exhausted,
+`prefixMinNat n S = J+1`, or the actual next width is exhausted,
+`n(S+1)=J+1`.
+
+The introduced-label domains at old `(S,J+1)` and `(S+1,0)` are equal only
+under the actual-width side condition `n(S+1)=J+1`, as recorded by
+`introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq` and
+`introducedLabelFinset_currentSucc_eq_succStage_zero_of_nextWidth_eq`.
+Conversely, `introducedLabel_succStage_zero_extra_witness_of_nextWidth_ge`
+shows that if `J+2 <= n(S+1)`, then `(S,J+2)` is introduced at `(S+1,0)` but
+not at old `(S,J+1)`.
+
+This is only finite label-domain bookkeeping.  It does not construct the
+`S+1` recurrence/exponent state, prove the terminal `D'''` block shape,
+construct `C'^(S+1)`, prove chart coverage or regularity, compute Jacobians,
+prove normal crossings/RLCT extraction, prove termination or transition
+invariance, or repair the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

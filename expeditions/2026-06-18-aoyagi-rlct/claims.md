@@ -574,6 +574,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 displayed pivot-complement exhaustion boundary is
 	  saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-pivot-complement-exhaustion-a4.md`.
+	  Review of the Case 2 stage-relabel domain audit is saved at
+	  `threads/04-blow-up-certificate/review-case2-stage-relabel-domain-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1204,6 +1206,15 @@ No such claim is formalisation-ready until both fields are filled.
   chart coverage or regularity, compute Jacobians, prove normal crossings,
   extract RLCT, prove termination/transition invariance, or repair the
   printed vector mismatch.
+  The stage-relabel domain audit proves the finite side split
+  `prefixMinNat n S = J+1 ∨ n(S+1)=J+1`, the old `(S,J+1)` to `(S+1,0)`
+  introduced-label equality under actual-width exhaustion `n(S+1)=J+1`, and
+  the explicit row-side extra-label witness `(S,J+2)` when
+  `J+2 <= n(S+1)`. This is finite domain bookkeeping only; it does not
+  construct the `S+1` recurrence/exponent state, prove terminal `D'''` shape,
+  construct `C'^(S+1)`, prove chart coverage or regularity, compute Jacobians,
+  prove normal crossings, extract RLCT, prove termination/transition
+  invariance, or repair the printed vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

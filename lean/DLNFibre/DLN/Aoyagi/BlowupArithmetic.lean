@@ -620,6 +620,71 @@ theorem not_mem_introducedLabelFinset_case2_new_before
   rw [mem_introducedLabelFinset]
   exact not_introducedLabel_case2_new_before L n S J
 
+/-- If the actual next width is exhausted at `J+1`, then old `(S,J+1)`
+introduced labels are exactly the labels at `(S+1,0)`.
+
+This is finite domain bookkeeping only.  Without the actual-width side
+condition `n(S+1)=J+1`, the row-exhausted terminal side can add labels in
+layer `S` when moving to `(S+1,0)`. -/
+theorem introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq
+    (L : ℕ) (n : ℕ → ℕ) {S J s k : ℕ}
+    (hwidth : n (S + 1) = J + 1) :
+    introducedLabel L n S (J + 1) s k ↔
+      introducedLabel L n (S + 1) 0 s k := by
+  constructor
+  · intro h
+    rcases h with ⟨hlabel, hs | ⟨hs, _hk⟩⟩
+    · exact ⟨hlabel, Or.inl (by omega)⟩
+    · exact ⟨hlabel, Or.inl (by omega)⟩
+  · intro h
+    rcases h with ⟨hlabel, hs | ⟨hs, hk⟩⟩
+    · refine ⟨hlabel, ?_⟩
+      by_cases hsS : s < S
+      · exact Or.inl hsS
+      · have hseq : s = S := by omega
+        subst hseq
+        exact Or.inr ⟨rfl, by simpa [hwidth] using hlabel.2.2.2⟩
+    · have hkpos : 1 ≤ k := hlabel.2.2.1
+      omega
+
+/-- Finite-set version of
+`introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq`. -/
+theorem introducedLabelFinset_currentSucc_eq_succStage_zero_of_nextWidth_eq
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hwidth : n (S + 1) = J + 1) :
+    introducedLabelFinset L n S (J + 1) =
+      introducedLabelFinset L n (S + 1) 0 := by
+  ext p
+  rw [mem_introducedLabelFinset, mem_introducedLabelFinset]
+  exact introducedLabel_currentSucc_iff_succStage_zero_of_nextWidth_eq
+    L n hwidth
+
+/-- A current-layer label above the processed index is not introduced at the
+current state. -/
+theorem not_introducedLabel_current_of_lt_index
+    (L : ℕ) (n : ℕ → ℕ) {S J k : ℕ} (hk : J < k) :
+    ¬ introducedLabel L n S J S k := by
+  intro h
+  rcases h.2 with hslt | ⟨_hs, hkJ⟩
+  · omega
+  · omega
+
+/-- If the actual next width still contains `J+2`, advancing from old
+`(S,J+1)` to `(S+1,0)` introduces an extra actual-width label.
+
+This is the row-side obstruction to treating the terminal frontier equality
+`M(S+1)=J+1` as an unconditional domain relabel. -/
+theorem introducedLabel_succStage_zero_extra_witness_of_nextWidth_ge
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L) (hwidth : J + 2 ≤ n (S + 1)) :
+    introducedLabel L n (S + 1) 0 S (J + 2) ∧
+      ¬ introducedLabel L n S (J + 1) S (J + 2) := by
+  constructor
+  · exact introducedLabel_of_lt_stage
+      ⟨hS, hSL, by omega, hwidth⟩
+      (by omega : S < S + 1)
+  · exact not_introducedLabel_current_of_lt_index L n (by omega : J + 1 < J + 2)
+
 /-- Terminal-exponent/minimum certificates for all labels introduced at a state. -/
 structure IntroducedLabelExponentCertificates
     (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
@@ -1218,6 +1283,23 @@ theorem case2_next_frontier_eq_of_cont_of_not_next
     (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1)) :
     prefixMinNat n (S + 1) = J + 1 := by
   omega
+
+/-- If the current displayed Case 2 pivot is valid but the next one is not,
+then the exhausted frontier comes from the current prefix row side or from the
+actual next-width column side.  The disjunction need not be exclusive. -/
+theorem case2_next_frontier_currentPrefixMin_or_nextWidth_eq_of_cont_of_not_next
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1)) :
+    prefixMinNat n S = J + 1 ∨ n (S + 1) = J + 1 := by
+  have hfront : prefixMinNat n (S + 1) = J + 1 :=
+    case2_next_frontier_eq_of_cont_of_not_next hcont hstop
+  have hfront_min : min (prefixMinNat n S) (n (S + 1)) = J + 1 := by
+    simpa [prefixMinNat_succ_eq_min n hS] using hfront
+  by_cases hle : prefixMinNat n S ≤ n (S + 1)
+  · exact Or.inl (by simpa [Nat.min_eq_left hle] using hfront_min)
+  · have hle' : n (S + 1) ≤ prefixMinNat n S := by omega
+    exact Or.inr (by simpa [Nat.min_eq_right hle'] using hfront_min)
 
 /-- If the next Case 2 continuation bound fails after the displayed pivot, then
 at least one lower-right post-pivot side is empty.  This is only a finite
