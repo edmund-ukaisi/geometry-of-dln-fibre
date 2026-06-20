@@ -20,7 +20,7 @@ Everything else for the `paramsEquivFlat` assembly (`arrowCongr'` + `measurePres
 ## Assembly status (the gap lemma is banked; the final `paramsEquivFlat` assembly is held)
 
 `measurePreserving_piCurry` (below) is the banked gap. The remaining `paramsEquivFlat` assembly hits
-the recurring **`Matrix`-as-`def` instance wall**: `MeasurableSpace (Matrix (Fin (H s.castSucc)) ..)`
+the recurring **`Matrix`-as-`def` instance wall**: `MeasurableSpace (Matrix (Fin ..) ..)`
 does **not** synthesise uniformly in symbolic `s` (same cause as the parked `(1,1,1)` bridge), so
 the type-level chain `Params H ≃ᵐ (∀ s, (Fin aₛ × Fin bₛ) → ℝ)` via `MeasurableEquiv.piCongrRight`
 (`curry.symm` per layer) **fails instance synthesis**, and `Params`'s `volume` is not `rfl`-equal to
