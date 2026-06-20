@@ -79,3 +79,12 @@ components** (codim 4,3,4); **C=3, θ=1** — matches `cCodim_d222_zero=3` / `nu
 starting with the spec-transport/`minimalPrimes(⨅)` spike. Then G3 + θ, then D, then R-interface.
 Surface to operator only at completion or a genuine blocker; the Phase-R Cited-interface framing (given the
 θ-correction) is the natural mid-point to re-confirm with the operator.
+
+## 2026-06-20 — G2 LANDED (the Σ̄^r stratification — structural foundation)
+`Core.SigmaStratification.productRankLocusLE_eq_iUnion_orbitRankLocus`: `Σ̄^r = ⋃_{(mult M).rank ≤ r} orbitRankLocus M`.
+Green (3013 jobs), 0-sorry, axiom-clean, `[Field k]` only, reviewer PASS. Bricks for G3: `corner_rankPattern_eq_rank`
+(G1), `exists_orbitRankLocus_mem_rankPattern_eq` (Gabriel membership), `orbitRankLocus_eq_of_rankPattern_eq`
+(rank-pattern collapse → the finite distinct orbit-closure family). Commits c0cae1a/517d8e8/63c3568.
+**Next: G3** (thread 04) — irreducible components of `Σ̄^r` = maximal `Ō_M` (Mathlib `irreducibleComponents` +
+`mem_of_subset_sUnion_irreducibleComponents`, consuming G2's union + collapse), then top-dim = min-codim ⟹
+`θ = numTop` (consumes LANDED Voigt codim). START with the spec-transport/`minimalPrimes(⨅)` spike (flagged risk).
