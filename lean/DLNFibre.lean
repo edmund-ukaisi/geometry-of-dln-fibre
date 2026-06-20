@@ -46,3 +46,5 @@ import DLNFibre.Core.OrbitImageDim
 import DLNFibre.Core.OrbitDifferential
 import DLNFibre.Core.MatrixKaehler
 import DLNFibre.Core.OrbitDifferentialRank
+import DLNFibre.Core.OrbitTangentCotangent
+import DLNFibre.Core.VoigtDischarge
