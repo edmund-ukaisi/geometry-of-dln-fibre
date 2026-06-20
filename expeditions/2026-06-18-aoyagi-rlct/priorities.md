@@ -493,6 +493,10 @@ on the session's original cwd.
    `ell!=0`, equality occurs iff `b=a` or `b=a-1`, with endpoint truncation in
    the source interval.  The finite equality set is now also counted:
    cardinality `1 + indicator(0<a<ell)` under `1<=ell` and `0<=a<=ell`.
+   The elementary Lemma 4 two-value count is now Lean-proved: assuming every
+   `F_j` is either `M-1` or `M` and the sum is `ell*(M-1)+a`, exactly `a`
+   entries are `M` and `ell-a` are `M-1`.  This assumes the sum identity
+   rather than deriving it from `H_ell=0`.
    The elementary Lemma 5 interval-excess sum is also Lean-proved:
    `1 + sum_{j=1}^{ell-1}(intervalSize-1)=a(ell-a)+1`, but only as finite
    arithmetic, not as pole-order admissibility.  The remaining

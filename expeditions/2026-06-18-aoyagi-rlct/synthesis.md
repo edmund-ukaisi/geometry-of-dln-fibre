@@ -1700,6 +1700,17 @@ identifies it with a rectangle fiber count, and
 `a<=ell`.  This is not Lemma 5's chart-family/order-count theorem; the
 admissibility, coverage, displayed vector constructions, pole-order
 interpretation, normal crossings, and RLCT extraction remain open.
+
+The first Lemma 4 arithmetic sub-slice is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`.  The reusable theorem
+`twoStepInt_count_eq` and source-shaped wrapper `aoyagiLemma4_twoValueCount_int`
+prove that an `ell`-indexed integer family with values only `M-1` or `M` and
+sum `ell*(M-1)+a` has exactly `a` high entries and `ell-a` low entries.  The
+corollary `aoyagiLemma4_twoValueCount_le_ell` records that the same hypotheses
+force `a<=ell`.  This assumes the sum identity; the source bridge from
+`H_ell=0`, the `H_0` convention for `F_1`, vector admissibility, correspondence
+to `lambda`, Lemma 5, pole order, normal crossings, and RLCT extraction remain
+open.
 Reproduction, statement cards, and reviews are in `threads/05-arithmetic-tail/`.
 
 ## Drift guard

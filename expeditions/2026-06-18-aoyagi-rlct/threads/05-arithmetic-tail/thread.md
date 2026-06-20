@@ -139,3 +139,28 @@ under `1 <= ell` and `a <= ell`.
 This is still not Lemma 5.  It proves only finite interval-excess arithmetic,
 not the chart-family constructions, admissibility, coverage, pole-order
 interpretation, normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Lemma 4 two-value count
+
+Reproduction:
+`reproduction-lemma4-two-value-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-two-value-count.md`.
+Review artifact:
+`review-lemma4-two-value-count-a5.md`.
+
+Lean now proves the finite count used in Aoyagi's Lemma 4 in
+`lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`.  If an `ell`-indexed
+integer family takes only values `M-1` and `M`, and its sum is
+
+```text
+ell*(M-1)+a,
+```
+
+then exactly `a` entries are `M` and exactly `ell-a` entries are `M-1`.
+The theorem also records that these hypotheses force `a <= ell`.
+
+This is only finite count arithmetic.  The source bridge from `H_ell=0` to the
+sum identity, the `H_0` convention for `F_1`, vector inequalities,
+correspondence to `lambda`, Lemma 5, pole order, normal crossings, and RLCT
+extraction remain open.

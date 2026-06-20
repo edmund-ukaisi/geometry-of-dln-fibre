@@ -1571,7 +1571,7 @@ No such claim is formalisation-ready until both fields are filled.
   over the source interval are now Lean-proved and reviewed.  The elementary
   Lemma 5 interval-excess sum is also Lean-proved and reviewed.  The full A5
   claim remains blocked: terminal-variable restriction, minimiser feasibility,
-  the
+  the Lemma 4 source-to-sum bridge and vector admissibility,
   quadratic rewrite from terminal exponents, and Lemma 5 order-count
   construction are not checked.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
@@ -1586,6 +1586,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma3-equality-cases-a5.md`;
   equality count at
   `threads/05-arithmetic-tail/reproduction-lemma3-equality-count-a5.md`;
+  Lemma 4 two-value count at
+  `threads/05-arithmetic-tail/reproduction-lemma4-two-value-count-a5.md`;
   Lemma 5 interval-excess arithmetic at
   `threads/05-arithmetic-tail/reproduction-lemma5-interval-excess-a5.md`.
 - **Reproduction check.** failed/blocked at
@@ -1598,12 +1600,16 @@ No such claim is formalisation-ready until both fields are filled.
   equality count checked by xhigh `Lagrange the 5th` and xhigh Lean scout
   `Leibniz the 5th` at
   `threads/05-arithmetic-tail/review-lemma3-equality-count-a5.md`;
+  Lemma 4 two-value count checked by xhigh `Hume the 5th` and xhigh Lean scout
+  `Chandrasekhar the 5th` at
+  `threads/05-arithmetic-tail/review-lemma4-two-value-count-a5.md`;
   Lemma 5 interval-excess arithmetic checked by xhigh `Confucius the 5th`
   and xhigh Lean scout `Maxwell the 5th` at
   `threads/05-arithmetic-tail/review-lemma5-interval-excess-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
-  `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 5
-  interval-excess arithmetic in
+  `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
+  count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
+  isolated Lemma 5 interval-excess arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`; broader A5 targets
   TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
@@ -1635,6 +1641,9 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5IntervalExcess_sum_Icc`, and
   `aoyagiLemma5IntervalSize_excess_sum_Icc`.  These prove only finite
   interval-excess arithmetic, not Lemma 5's chart-family/order-count theorem.
+  Also proved `twoStepInt_count_eq`, `aoyagiLemma4_twoValueCount_int`, and
+  `aoyagiLemma4_twoValueCount_le_ell`, which prove only finite two-value count
+  arithmetic under an assumed sum identity.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
