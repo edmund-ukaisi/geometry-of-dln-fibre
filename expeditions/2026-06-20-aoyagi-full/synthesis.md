@@ -148,7 +148,8 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   (non-measurable u → u·F non-measurable → not Integrable → rlctAt=sSup∅=0 ≠ rlctAt F). Fix `Measurable u`
   **rv-2 CONFIRMED** (decorrelated + Codex; Vitali-set counterexample, `IntegrableOn⟹AEStronglyMeasurable`
   crux Lean-verified). `AEMeasurable u` is the minimal hyp but `Measurable u` is the contract choice (cleaner,
-  use-site-safe — analytic unit continuous). fm-2 delivering `rlct_unit_invariant_aux` under it; fm wires later.
+  use-site-safe — analytic unit continuous). fm-2 PROVEN `rlct_unit_invariant_aux` under it (S1Local.lean,
+  axiom-clean); fm wires (add Measurable u + exact). **All 3 S1 _aux ready to wire: S1.1/S1.4/S1.3** (fm batch).
 - **S1.5** `rlct_additive_smooth_block` — **12th fidelity issue (DEEPER):** the disjoint-block additivity is
   FALSE two ways (non-measurable G [gap-class]; G≡0 ⟹ rlctAtOn(0²)=⊤ ⟹ RHS=n/2+⊤=⊤≠LHS [≡0-convention]) AND,
   even fixed, needs heavy Laplace-asymptotic machinery (Mathlib-gap); can't be cited. fm-2 delivered the honest
@@ -165,6 +166,10 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   measurable ⟹ dodges BOTH gaps by construction. APPLIED PER-CHART in R1: λ_full = min_chart(n/2 + λ_core) =
   n/2 + ½ min_t Mval. So L2's regular⊕core = Fubini-lemma + R1-core-resolution + min-over-charts (NOT a
   standalone additivity). fm-2 proving the Fubini lemma; fm restates+wires Skeleton S1.5.
+  **Fubini ROUTE (fm-2's call):** the smooth-block case is genuinely CLOSED-FORM (NOT Laplace — Laplace only
+  for general both-arbitrary additivity, not ours). Route B (iterated-1D: n=1 Fubini `∫(x²+s)^{-c}=C·s^{1/2-c}`
+  iterated, stays on Params-flat product measure) likely cleaner than Route A (radial via
+  `integrable_fun_norm_addHaar` [Mathlib HAS it, corrects the earlier gap-flag] + EuclideanSpace-Haar bridge).
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
