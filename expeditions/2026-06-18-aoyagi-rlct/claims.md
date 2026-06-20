@@ -941,6 +941,10 @@ No such claim is formalisation-ready until both fields are filled.
   This canonical post-state lowers only the selected old label's recurrence
   level to `J`, keeps recurrence-label variables unchanged, and instantiates
   the erased-base boundary from `sameDomain` over `pre.level`.
+  Added the concrete Unit boundary wrapper
+  `Case1SelectedOldUnitSuppliedChartFamilyBoundary.of_sameDomain_case1SelectedOldLevelMove`,
+  which combines this concrete lowered recurrence boundary with a supplied
+  finite Case 1 chart-family boundary.
 - **Assumed.** finite dimension/rank hypotheses; no transition invariant is
   accepted yet. The displayed Case 2 gap `step k=1` over `J+1<=k<mu_S` is an
   explicit hypothesis of one row-weight bridge, not a proved invariant. The
@@ -993,7 +997,9 @@ No such claim is formalisation-ready until both fields are filled.
   construct that data from a chart or raw source coordinates. The concrete
   level-move state supplies that recurrence data from a pre-state by overriding
   the selected recurrence level only; it still does not prove that raw chart
-  coordinates produce this state. The displayed Case 1(2)
+  coordinates produce this state. The concrete Unit wrapper still assumes the
+  finite chart-family boundary and does not prove regularity or transitions
+  from coordinates. The displayed Case 1(2)
   paper `Q/P` adapter now exposes the source's local notation
   `Q`, `Q^-1`, `D''`, `C'`, and `D'''` over the supplied source-coordinate
   identity. It proves the post-`Q` block identification and `C' = Q^-1 C`

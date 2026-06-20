@@ -6706,6 +6706,31 @@ structure Case1SelectedOldUnitSuppliedChartFamilyBoundary
 
 namespace Case1SelectedOldUnitSuppliedChartFamilyBoundary
 
+/-- Concrete same-domain selected-old `Unit` chart-family boundary obtained by
+lowering only the selected old label's recurrence level and carrying a supplied
+finite chart family. -/
+theorem of_sameDomain_case1SelectedOldLevelMove
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (sameDomain :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 pre.level
+        t t' numerator numerator' leastValue leastValue')
+    (chartFamily :
+      Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular) :
+    Case1SelectedOldUnitSuppliedChartFamilyBoundary R L n S J J1 s0 k0 pre.level
+      t t' numerator numerator' leastValue leastValue'
+      pre (pre.case1SelectedOldLevelMove s0 k0) (pre.var s0 k0)
+      (pre.erasedStep s0 k0) ChartRegular TransitionRegular where
+  lowered :=
+    Case1SelectedOldLoweredRecurrenceBoundary.of_sameDomain_case1SelectedOldLevelMove
+      pre sameDomain
+  chartFamily := chartFamily
+
 /-- The supplied selected-old `Unit` chart boundary records the selected old
 label as introduced through the carried first-jump data. -/
 theorem selectedIntroduced

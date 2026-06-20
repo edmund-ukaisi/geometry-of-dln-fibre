@@ -269,7 +269,9 @@ on the session's original cwd.
    level-move checkpoint is also Lean-proved: `case1SelectedOldLevelMove`
    supplies the moved-level data by overriding only the selected old
    recurrence level in the same-domain pre-state. Keep interfaces explicitly
-   supplied where raw coordinates are not constructed. Avoid raw
+   supplied where raw coordinates are not constructed. The concrete Unit
+   wrapper is also Lean-proved, packaging this lowered recurrence witness with
+   the supplied finite Case 1 chart-family boundary. Avoid raw
    Case 1(2) hidden-old pullback construction, arbitrary chart coverage, or
    non-displayed transition claims. The displayed Case 1(2) paper `Q/P`
    adapter now exposes the source's `Q`, `Q^-1`, `D''`, `C'`, and `D'''`

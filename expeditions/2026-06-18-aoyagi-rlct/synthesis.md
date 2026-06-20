@@ -1118,6 +1118,17 @@ matrix coordinates are still handled by the row-strip identity, and chart
 coverage/regularity/Jacobians/normal crossings/RLCT/full transition invariance
 remain open.
 
+The Case 1(1) selected-old Unit concrete level-move wrapper is now Lean-proved.
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.of_sameDomain_case1SelectedOldLevelMove`
+packages the concrete lowered recurrence boundary with a supplied
+`Case1CenterChartFamilyBoundary`, using
+`post = pre.case1SelectedOldLevelMove s0 k0`,
+`u = pre.var s0 k0`, and `baseStep = pre.erasedStep s0 k0`. This is only a
+boundary-instantiation theorem: chart regularity and transition regularity are
+still supplied, and no raw coordinate chart, coverage theorem, Jacobian,
+normal-crossing certificate, RLCT extraction, or transition invariant is
+proved.
+
 The displayed Case 1(2) paper `Q/P` adapter is now Lean-packaged as a
 paper-facing notation layer over the already supplied source-coordinate
 identity. It names the normalized source-coordinate block, the source

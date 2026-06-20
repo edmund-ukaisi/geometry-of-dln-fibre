@@ -1463,6 +1463,37 @@ checkpoint, but it still does not construct the selected-old chart, infer
 `Q/P`, prove chart coverage or regularity from coordinates, compute Jacobians,
 prove normal crossings, extract RLCT, or prove a transition invariant.
 
+## 2026-06-20 Lean Case 1 selected-old Unit concrete level move
+
+Reproduction:
+`reproduction-case1-selected-old-unit-concrete-level-move-a4.md`.
+Statement card:
+`statement-card-a4-case1-selected-old-unit-concrete-level-move.md`.
+
+Lean now instantiates the selected-old `Unit` chart-family boundary directly
+from the concrete same-domain recurrence post-state.  The theorem
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.of_sameDomain_case1SelectedOldLevelMove`
+takes:
+
+- a pre-state over `(S,J)`;
+- a same-domain Case 1(1) selected-old boundary stated over `pre.level`;
+- a supplied finite Case 1 chart-family boundary.
+
+It returns the Unit chart-family boundary with:
+
+```text
+post = pre.case1SelectedOldLevelMove s0 k0,
+u = pre.var s0 k0,
+baseStep = pre.erasedStep s0 k0.
+```
+
+This is only a packaging constructor. Chart regularity and transition
+regularity still come from the supplied `Case1CenterChartFamilyBoundary`; the
+theorem does not construct the selected-old chart, infer `(s0,k0)` from the
+`Unit` token, introduce `(S,J+1)`, use Case 1(2), assert `Q/P`, prove chart
+coverage or regularity from coordinates, compute Jacobians, prove normal
+crossings, extract RLCT, or prove a transition invariant.
+
 ## 2026-06-19 Lean Case 1 displayed paper Q/P adapter
 
 Statement card:

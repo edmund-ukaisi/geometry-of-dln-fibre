@@ -966,6 +966,20 @@ crossings/RLCT, or prove a transition invariant. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case1-selected-old-concrete-level-move-a4.md`.
 
+Latest A4 update: the Case 1(1) selected-old Unit boundary from the concrete
+level move has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+The proved Lean name is
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary.of_sameDomain_case1SelectedOldLevelMove`.
+This checkpoint packages the concrete lowered recurrence boundary with a
+supplied finite Case 1 chart-family boundary, yielding a Unit chart-family
+boundary with `post = pre.case1SelectedOldLevelMove s0 k0`,
+`u = pre.var s0 k0`, and `baseStep = pre.erasedStep s0 k0`. It does not
+construct chart regularity, transitions, coverage, Jacobians, normal
+crossings/RLCT, Case 1(2), `Q/P`, or a transition invariant. Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-old-unit-concrete-level-move.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case1-selected-old-unit-concrete-level-move-a4.md`.
+
 Latest A4 update: the displayed Case 1(2) paper `Q/P` adapter has landed in
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean names are
 `case1DisplayedPaperDchart`, `case1DisplayedPaperDchart_pivot`,
