@@ -2422,6 +2422,29 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-terminal-obstruction-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(3)` boundary split has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names
+are
+`aoyagiLemma5Eq3_boundaryIndex_le_ell_of_piecewiseSourceVector`,
+`aoyagiLemma5Eq3_boundaryIndex_lt_ell_iff`,
+`aoyagiLemma5Eq3_boundaryEndpoint_mem_block_of_two_le`,
+`aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_of_two_le`,
+`aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_iff_two_le`,
+`aoyagiLemma5Eq3_boundaryEndpoint_eq_terminal_of_one`,
+`aoyagiLemma5Eq3_boundaryEndpoint_not_block_of_one`, and
+`aoyagiLemma5Eq3_no_terminalEndpointZero_of_one`.  They say that under the
+supplied equation `(3)` guards, the special boundary `S_(ell-a+2)-1` is in
+the half-open selected span exactly in the case `2<=a`; when `a=1` it is the
+terminal selected endpoint, belongs to no selected block, and cannot also be
+assigned value zero under the selected-sum identity.  This is boundary
+bookkeeping only, not displayed-vector construction, terminal `tilde t=0`, or
+order count.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-boundary-split-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-boundary-split.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-boundary-split-a5.md`.
+
 Latest A5 update: the Lemma 5 equation `(4)` terminal-collision arithmetic has
 landed in `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names

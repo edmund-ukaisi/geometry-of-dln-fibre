@@ -2064,9 +2064,19 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack`,
   which classify supplied equation `(3)` branch data on the selected span and
   recover the own-coordinate selected-label handoff under explicit slack.
-  Also proved `aoyagiLemma5Eq3_terminalEndpoint_one_of_one`, which records
-  that the supplied equation `(3)` boundary assignment gives terminal endpoint
-  value `1` when `a=1`, rather than terminal endpoint zero.
+  Also proved
+  `aoyagiLemma5Eq3_boundaryIndex_le_ell_of_piecewiseSourceVector`,
+  `aoyagiLemma5Eq3_boundaryIndex_lt_ell_iff`,
+  `aoyagiLemma5Eq3_boundaryEndpoint_mem_block_of_two_le`,
+  `aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_of_two_le`,
+  `aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_iff_two_le`,
+  `aoyagiLemma5Eq3_boundaryEndpoint_eq_terminal_of_one`,
+  `aoyagiLemma5Eq3_boundaryEndpoint_not_block_of_one`,
+  `aoyagiLemma5Eq3_terminalEndpoint_one_of_one`, and
+  `aoyagiLemma5Eq3_no_terminalEndpointZero_of_one`, which split equation
+  `(3)`'s special boundary into the ordinary selected-span case `2<=a` and
+  the terminal endpoint case `a=1`; in the terminal case the supplied branch
+  assignment gives value `1` and rules out a simultaneous endpoint value zero.
   Also proved `aoyagiHtildeUpperNat_pred_eq_sub_lastWidth_of_selectedSum`,
   `aoyagiLemma5Eq4_lastWidthCompatibility_not_forced_by_selectedWidthHypotheses_example`,
   `aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary`, and

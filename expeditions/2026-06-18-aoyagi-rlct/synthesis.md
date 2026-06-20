@@ -2038,6 +2038,17 @@ identity gives `Htilde'_ell=0`, the supplied branch assignment gives
 uniform terminal-zero theorem without additional chart-sequence or endpoint
 data.
 
+The complementary equation `(3)` boundary split is also Lean-proved.  The
+boundary index `ell-a+1` is in range under the supplied guards, and
+`ell-a+1<ell` is equivalent to `2<=a`.  Thus for `2<=a` the displayed special
+point is the left endpoint of an ordinary selected block and lies in the
+half-open selected span; for `a=1` it is the terminal selected endpoint and is
+in no selected block.  Lean also records the no-zero corollary in the terminal
+case: the existing value-one theorem rules out a simultaneous terminal
+endpoint value `0`.  This is finite boundary bookkeeping only, not a
+displayed-vector construction, terminal `tilde t=0`, chart sequence,
+introduced-label theorem, or order count.
+
 The analogous terminal-collision arithmetic for equation `(4)` is now
 Lean-proved.  When `p+1=a`, the special boundary
 `S_(p+ell-a+2)-1` is the terminal selected endpoint.  Definition 3's

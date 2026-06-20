@@ -952,6 +952,40 @@ the printed equation `(3)` display.  It is not a construction of the displayed
 vector and does not prove terminal `tilde t=0`, introduced-label status,
 chart coverage, or Lemma 5 order count.
 
+## 2026-06-20 Lean Lemma 5 equation `(3)` boundary split
+
+Reproduction:
+`reproduction-lemma5-eq3-boundary-split-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-boundary-split.md`.
+Review artifact:
+`review-lemma5-eq3-boundary-split-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq3_boundaryIndex_le_ell_of_piecewiseSourceVector
+aoyagiLemma5Eq3_boundaryIndex_lt_ell_iff
+aoyagiLemma5Eq3_boundaryEndpoint_mem_block_of_two_le
+aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_of_two_le
+aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_iff_two_le
+aoyagiLemma5Eq3_boundaryEndpoint_eq_terminal_of_one
+aoyagiLemma5Eq3_boundaryEndpoint_not_block_of_one
+aoyagiLemma5Eq3_no_terminalEndpointZero_of_one
+```
+
+Under the supplied guards `a<=ell` and `1<=a`, the equation `(3)` boundary
+index `ell-a+1` is in range.  It is strictly before the terminal selected
+index exactly when `2<=a`; in that case the special boundary lies at the left
+endpoint of selected block `ell-a+1` and is inside the half-open selected
+span.  In the boundary case `a=1`, the special boundary is the terminal
+selected endpoint, lies in no half-open selected block, and cannot also be
+assigned value zero under the selected-sum identity.
+
+This is finite boundary bookkeeping only.  It does not construct equation
+`(3)`'s displayed vector, prove terminal `tilde t=0`, introduced-label status,
+Case 1(2) chart sequence, or Lemma 5's chart-family/order-count theorem.
+
 ## 2026-06-20 Lean Lemma 5 equation `(4)` terminal collision
 
 Reproduction:

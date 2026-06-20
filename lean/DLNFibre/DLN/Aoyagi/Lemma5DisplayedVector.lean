@@ -540,6 +540,99 @@ structure AoyagiLemma5Eq3PiecewiseSourceVector
       C.point (ell - a + 1) - 1 < S →
         T S = aoyagiHtildeUpperNat ell a M m b
 
+/-- The equation `(3)` boundary index `ell-a+1` is a selected cutpoint index
+under the supplied source guard. -/
+theorem aoyagiLemma5Eq3_boundaryIndex_le_ell_of_piecewiseSourceVector
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    ell - a + 1 ≤ ell := by
+  have ha : a ≤ ell := hT.a_le_ell
+  have ha_pos : 1 ≤ a := hT.indexGuard
+  omega
+
+/-- The equation `(3)` boundary is inside the half-open selected blocks
+exactly when `2<=a`; for `a=1` it is the terminal selected endpoint. -/
+theorem aoyagiLemma5Eq3_boundaryIndex_lt_ell_iff
+    (ell a : ℕ) (ha : a ≤ ell) (ha_pos : 1 ≤ a) :
+    ell - a + 1 < ell ↔ 2 ≤ a := by
+  constructor <;> intro h <;> omega
+
+/-- In the strict equation `(3)` boundary case `2<=a`, the displayed boundary
+point is the left endpoint of an ordinary selected block. -/
+theorem aoyagiLemma5Eq3_boundaryEndpoint_mem_block_of_two_le
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    (ha_two : 2 ≤ a) :
+    C.block (ell - a + 1) (C.point (ell - a + 1) - 1) := by
+  have hlt :
+      ell - a + 1 < ell :=
+    (aoyagiLemma5Eq3_boundaryIndex_lt_ell_iff
+      ell a hT.a_le_ell hT.indexGuard).2 ha_two
+  exact C.leftEndpoint_mem_block hlt
+
+/-- In the strict equation `(3)` boundary case `2<=a`, the displayed boundary
+point lies in the half-open selected span. -/
+theorem aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_of_two_le
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    (ha_two : 2 ≤ a) :
+    C.point 0 - 1 ≤ C.point (ell - a + 1) - 1 ∧
+      C.point (ell - a + 1) - 1 < C.point ell - 1 := by
+  exact C.block_mem_selectedSpan
+    (aoyagiLemma5Eq3_boundaryEndpoint_mem_block_of_two_le
+      ell a M m C layerWidth T hT ha_two)
+
+/-- In the terminal equation `(3)` boundary case `a=1`, the displayed boundary
+point is the terminal selected endpoint. -/
+theorem aoyagiLemma5Eq3_boundaryEndpoint_eq_terminal_of_one
+    (ell : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell 1 M m C layerWidth T) :
+    C.point (ell - 1 + 1) - 1 = C.point ell - 1 := by
+  have hidx : ell - 1 + 1 = ell := by
+    have hell_pos : 1 ≤ ell := hT.a_le_ell
+    omega
+  rw [hidx]
+
+/-- In the terminal equation `(3)` boundary case `a=1`, the displayed boundary
+point is not in any half-open selected block. -/
+theorem aoyagiLemma5Eq3_boundaryEndpoint_not_block_of_one
+    (ell : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell 1 M m C layerWidth T)
+    {b : ℕ} :
+    ¬ C.block b (C.point (ell - 1 + 1) - 1) := by
+  rw [aoyagiLemma5Eq3_boundaryEndpoint_eq_terminal_of_one
+    ell M m C layerWidth T hT]
+  exact C.not_block_terminalEndpoint
+
+/-- Equation `(3)`'s special boundary lies in the half-open selected span
+exactly in the strict case `2<=a`. -/
+theorem aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_iff_two_le
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    (C.point 0 - 1 ≤ C.point (ell - a + 1) - 1 ∧
+        C.point (ell - a + 1) - 1 < C.point ell - 1) ↔
+      2 ≤ a := by
+  constructor
+  · intro hspan
+    by_contra hnot
+    have ha_pos : 1 ≤ a := hT.indexGuard
+    have ha_one : a = 1 := by omega
+    subst a
+    have hterm :=
+      aoyagiLemma5Eq3_boundaryEndpoint_eq_terminal_of_one
+        ell M m C layerWidth T hT
+    rw [hterm] at hspan
+    exact (lt_irrefl (C.point ell - 1)) hspan.2
+  · intro ha_two
+    exact aoyagiLemma5Eq3_boundaryEndpoint_mem_selectedSpan_of_two_le
+      ell a M m C layerWidth T hT ha_two
+
 /-- Branch-value alternatives for Aoyagi Lemma 5 equation `(3)` on the
 selected span.
 
@@ -661,6 +754,20 @@ theorem aoyagiLemma5Eq3_terminalEndpoint_one_of_one
     ell 1 M m hT.a_le_ell hselected
   rw [hzero] at hboundary
   simpa using hboundary
+
+/-- In the boundary case `a=1`, a supplied equation `(3)` certificate cannot
+also assign terminal endpoint zero. -/
+theorem aoyagiLemma5Eq3_no_terminalEndpointZero_of_one
+    (ell : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell 1 M m C layerWidth T) :
+    ¬ T (C.point ell - 1) = 0 := by
+  intro hzero
+  have hone :=
+    aoyagiLemma5Eq3_terminalEndpoint_one_of_one
+      ell M m C layerWidth T hselected hT
+  omega
 
 end Aoyagi
 end DLN

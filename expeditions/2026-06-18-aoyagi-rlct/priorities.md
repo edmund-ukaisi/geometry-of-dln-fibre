@@ -642,6 +642,11 @@ on the session's original cwd.
    a supplied equation `(3)` branch certificate assigns the terminal selected
    endpoint value `1`, not `0`.  This strengthens the blocker against a
    terminal-zero theorem from the printed display alone.
+   The complementary equation `(3)` boundary split is now Lean-proved:
+   `2<=a` puts the special boundary in the half-open selected span as the
+   left endpoint of selected block `ell-a+1`, while `a=1` makes it terminal,
+   outside every selected block, and incompatible with an added endpoint-zero
+   assignment under the selected-sum identity.
    Equation `(4)` now has its terminal-collision arithmetic Lean-proved too:
    when `p+1=a`, the supplied branch value at `S_(ell+1)-1` is
    `M-W_(ell+1)-p+1`, so zero requires the extra last-width condition
@@ -656,6 +661,11 @@ on the session's original cwd.
    should either build a richer supplied Case 1(2) terminal convention
    explicitly, or move to another finite consequence below the
    displayed-family realisation boundary.
+   Latest A2 scout pass recommends leaving A2 at the current elementary
+   `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
+   certificate data.  Optional future A2 work should be thin source-rank or
+   residual-rank wrappers only, not exact-rank openness, full Theorem 3
+   packaging, or regular-suspension/RLCT transport.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
