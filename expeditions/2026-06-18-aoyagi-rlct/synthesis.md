@@ -1212,6 +1212,20 @@ Jacobian exponent, chart-produced post-data, chart coverage, normal-crossing
 certificate, RLCT extraction, termination, transition invariant, or
 printed-vector repair.
 
+The Case 2 corrected post-data center-count projection is now Lean-proved. The
+new generic projections
+`Case2CorrectedExponentPostData.numerator_new_eq_correctedNumerator` and
+`Case2CorrectedExponentPostData.numerator_new_eq_card_of_cont` say that the
+supplied corrected exponent post-data assigns the new label `(S,J+1)` the
+corrected numerator, and under displayed continuation that numerator is the
+cardinality of `case2ResidualBlockPivotEntries n S J`. The source-selected and
+displayed supplied boundary packages export the same facts as
+`numerator_new_eq_correctedNumerator` and `numerator_new_eq_card`. This is
+only a projection from supplied corrected post-data to the selected-coordinate
+count; it does not prove chart-produced post-data, a Jacobian/volume exponent,
+coverage, coordinate regularity, normal crossings, RLCT extraction,
+termination, transition invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -500,7 +500,11 @@ No such claim is formalisation-ready until both fields are filled.
   coordinate count is also proved:
   `(M(S)-J)(M^{(S+1)}-J)`, with prefix-minimum rows and actual-width columns
   kept separate, and the corrected numerator expression is identified with
-  that count under continuation. Missing arbitrary pivot charts,
+  that count under continuation. The supplied corrected exponent post-data
+  now also projects its new-label numerator to exactly this selected-coordinate
+  count through the source-selected and displayed boundary packages; this is
+  supplied bookkeeping, not chart-produced post-data. Missing arbitrary pivot
+  charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
   beyond the unchanged-top lift, full polynomial-coordinate chart construction,
   and proof that the chart produces the supplied recurrence post-state remain
@@ -543,6 +547,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-map-a4.md`.
 	  Review of the Case 2 displayed center count is saved at
 	  `threads/04-blow-up-certificate/review-case2-displayed-center-count-a4.md`.
+	  Review of the Case 2 corrected post-data center-count projection is saved
+	  at
+	  `threads/04-blow-up-certificate/review-case2-corrected-postdata-center-count-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1119,6 +1126,10 @@ No such claim is formalisation-ready until both fields are filled.
   is not a center-dimension theorem, Jacobian exponent, chart-produced exponent
   update, chart coverage theorem, normal-crossing certificate, RLCT extraction,
   termination theorem, transition invariant, or printed-vector repair.
+  The corrected post-data center-count projection only reads supplied corrected
+  exponent post-data and exposes the same count through the source-selected and
+  displayed supplied boundary packages; it still does not construct exponent
+  post-data from the chart or compute a Jacobian/volume exponent.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

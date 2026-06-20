@@ -968,6 +968,39 @@ theorem correctedCase2NewLabelNumerator_eq_card_of_cont
     (case2_continuation_le_prefixMinNat_current n hS hcont)
     (case2_continuation_le_width_next n hcont)
 
+namespace Case2CorrectedExponentPostData
+
+/-- Supplied corrected Case 2 exponent post-data assigns the new label the
+corrected numerator expression.  This is bookkeeping, not chart production. -/
+theorem numerator_new_eq_correctedNumerator
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hpost :
+      Case2CorrectedExponentPostData
+        (L := L) (n := n) (S := S) (J := J)
+        t t' numerator numerator' leastValue leastValue') :
+    numerator' S (J + 1) = correctedCase2NewLabelNumerator n S J := by
+  simpa [correctedCase2NewLabelNumerator] using hpost.numerator_new
+
+/-- Under displayed continuation, supplied corrected Case 2 exponent post-data
+assigns the new label the selected residual-block coordinate count. -/
+theorem numerator_new_eq_card_of_cont
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hpost :
+      Case2CorrectedExponentPostData
+        (L := L) (n := n) (S := S) (J := J)
+        t t' numerator numerator' leastValue leastValue') :
+    numerator' S (J + 1) = ((case2ResidualBlockPivotEntries n S J).card : ℤ) := by
+  exact hpost.numerator_new_eq_correctedNumerator.trans
+    (correctedCase2NewLabelNumerator_eq_card_of_cont n hS hcont)
+
+end Case2CorrectedExponentPostData
+
 @[simp] theorem mem_case2ResidualBlockRows (n : ℕ → ℕ) (S J i : ℕ) :
     i ∈ case2ResidualBlockRows n S J ↔ J + 1 ≤ i ∧ i ≤ prefixMinNat n S := by
   simp [case2ResidualBlockRows, Finset.mem_Icc]
@@ -7383,6 +7416,44 @@ theorem correctedNewLabel
   correctedCase2NewLabelCertificate_of_prefixBound
     L n data.stage_pos data.stage_le data.continuation
 
+/-- The supplied corrected exponent post-data assigns the new label the
+corrected numerator expression. -/
+theorem numerator_new_eq_correctedNumerator
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    numerator' S (J + 1) = correctedCase2NewLabelNumerator n S J :=
+  data.exponentPost.numerator_new_eq_correctedNumerator
+
+/-- Under the source continuation bound, the supplied corrected exponent
+post-data assigns the new label the selected residual-block coordinate count. -/
+theorem numerator_new_eq_card
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2SourceSelectedSuppliedChartFamilyBoundary R L n S J p
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    numerator' S (J + 1) = ((case2ResidualBlockPivotEntries n S J).card : ℤ) :=
+  data.exponentPost.numerator_new_eq_card_of_cont data.stage_pos data.continuation
+
 /-- The supplied level/least-value bridge turns the integer Case 2 gap into the
 recurrence-state gap needed by the source-selected matrix identity. -/
 theorem preCase2Gap
@@ -7828,6 +7899,44 @@ theorem correctedNewLabel
         pre post u ChartRegular TransitionRegular) :
     CorrectedCase2NewLabelCertificate L n S J :=
   data.sourceSelectedBoundary.correctedNewLabel
+
+/-- The displayed boundary's corrected exponent post-data assigns the new
+label the corrected numerator expression. -/
+theorem numerator_new_eq_correctedNumerator
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    numerator' S (J + 1) = correctedCase2NewLabelNumerator n S J :=
+  data.exponentPost.numerator_new_eq_correctedNumerator
+
+/-- Under displayed continuation, the displayed boundary's corrected exponent
+post-data assigns the new label the selected residual-block coordinate count. -/
+theorem numerator_new_eq_card
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    numerator' S (J + 1) = ((case2ResidualBlockPivotEntries n S J).card : ℤ) :=
+  data.exponentPost.numerator_new_eq_card_of_cont data.stage_pos data.continuation
 
 /-- The displayed boundary gives the pre-state recurrence Case 2 gap. -/
 theorem preCase2Gap

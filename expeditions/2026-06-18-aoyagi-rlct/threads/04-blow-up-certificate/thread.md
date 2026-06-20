@@ -201,6 +201,32 @@ exponent update, or transition theorem. It does not prove chart coverage,
 coordinate regularity, normal crossings, RLCT extraction, termination, or
 repair of the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 corrected post-data center-count projection
+
+Reproduction:
+`reproduction-case2-corrected-postdata-center-count-a4.md`.
+Statement card:
+`statement-card-a4-case2-corrected-postdata-center-count.md`.
+Review artifact:
+`review-case2-corrected-postdata-center-count-a4.md`.
+
+Lean now projects the supplied corrected Case 2 exponent post-data to the
+displayed residual-block coordinate count. The generic post-data projection
+`Case2CorrectedExponentPostData.numerator_new_eq_correctedNumerator` says the
+new label `(S,J+1)` receives the corrected numerator
+`correctedCase2NewLabelNumerator n S J`; under displayed continuation,
+`Case2CorrectedExponentPostData.numerator_new_eq_card_of_cont` identifies that
+integer with the cardinality of `case2ResidualBlockPivotEntries n S J`.
+The source-selected and displayed supplied boundary packages export the same
+projection as `numerator_new_eq_correctedNumerator` and
+`numerator_new_eq_card`.
+
+This is supplied corrected exponent bookkeeping only. It does not prove that
+the affine chart produces the post-data, and it is not a Jacobian exponent,
+volume-form calculation, chart coverage theorem, coordinate-regularity theorem,
+normal-crossing certificate, RLCT extraction, termination theorem, transition
+invariant, or repair of the printed Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

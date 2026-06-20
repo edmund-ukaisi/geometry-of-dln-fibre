@@ -1115,6 +1115,27 @@ invariant, or printed-vector repair. Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-displayed-center-count-a4.md`.
 
+Latest A4 update: the Case 2 corrected post-data center-count projection has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are
+`Case2CorrectedExponentPostData.numerator_new_eq_correctedNumerator`,
+`Case2CorrectedExponentPostData.numerator_new_eq_card_of_cont`,
+`Case2SourceSelectedSuppliedChartFamilyBoundary.numerator_new_eq_correctedNumerator`,
+`Case2SourceSelectedSuppliedChartFamilyBoundary.numerator_new_eq_card`,
+`Case2DisplayedSuppliedChartFamilyBoundary.numerator_new_eq_correctedNumerator`,
+and `Case2DisplayedSuppliedChartFamilyBoundary.numerator_new_eq_card`. This
+checkpoint reads the supplied corrected Case 2 exponent post-data and projects
+the new-label numerator to the already-proved displayed residual-block
+coordinate count under continuation. It does not prove chart-produced
+post-data, a Jacobian or volume exponent, chart coverage, coordinate
+regularity, normal crossings/RLCT, termination, a transition invariant, or
+repair of the printed vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-corrected-postdata-center-count-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-corrected-postdata-center-count.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-corrected-postdata-center-count-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
