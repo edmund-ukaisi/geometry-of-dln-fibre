@@ -2034,6 +2034,14 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension`, which package
   terminal endpoint and branch-left-endpoint consequences under supplied data,
   without proving a terminal displayed vector.
+  Also proved
+  `aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary` and
+  `aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary`, which
+  show that in the terminal-collision case `p+1=a`, adding a supplied
+  terminal extension `T(S_(ell+1)-1)=Htilde'_ell` forces the extra last-width
+  compatibility `W_(ell+1)=M-p+1`, and failure of that compatibility rules
+  out the supplied extension.  This still does not prove the terminal
+  convention from Aoyagi's printed display.
   Also proved `aoyagiLemma5Eq4_actualWidthLabel_of_widthCompatibility`, which
   turns equation `(4)`'s selected-width label bounds into `actualWidthLabel`
   under explicit source-layer range, selected-width/actual-width compatibility,

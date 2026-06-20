@@ -259,7 +259,9 @@ objects are `AoyagiSelectedCutpoints`, `AoyagiSelectedCutpoints.point`,
 `aoyagiLemma5Eq4_prefix_leftEndpoint`,
 `aoyagiLemma5Eq4_middle_leftEndpoint`,
 `aoyagiLemma5Eq4_tail_leftEndpoint_of_cutoff_lt`,
-`aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension`, and
+`aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension`,
+`aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary`,
+`aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary`, and
 `aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`.  The
 theorem says that a supplied equation `(4)` piecewise branch certificate gives
 the correct own-coordinate value and legal label bounds under the repaired
@@ -274,6 +276,10 @@ through the totalized `point` fallback.  Lean also records the strict versus
 terminal split: `p+1<a` puts the boundary in the next selected block and
 inside the half-open selected span, while `p+1=a` identifies it with the
 terminal endpoint and excludes it from every half-open selected block.
+Combining the terminal-collision branch with a separately supplied terminal
+extension to `Htilde'_ell` forces the last-width compatibility
+`W_(ell+1)=M-p+1`; if that compatibility fails, the supplied branch
+certificate cannot also satisfy that terminal extension.
 Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-piecewise-certificate-a5.md`.
 Boundary-split reproduction:
@@ -294,6 +300,10 @@ Terminal endpoint statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-endpoint-boundary.md`.
 Boundary-split statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-boundary-split.md`.
+Terminal-extension obstruction reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-extension-obstruction-a5.md`.
+Terminal-extension obstruction statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-extension-obstruction.md`.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-piecewise-certificate-a5.md`.
 Selected-block review:

@@ -1986,10 +1986,14 @@ half-open selected block.  The supplied piecewise certificate now also exports
 left-endpoint values for the prefix, middle, and strict-tail branches.  Finally,
 `aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension` says that if a
 future record supplies `T(S_(ell+1)-1)=Htilde'_ell`, then
-`T(S_(ell+1)-1)=0`.  A fresh source audit reconfirms that the printed paper
-does not supply the Case 1(2) chart sequence, repeated gap checks, terminal
-endpoint convention, or proof of `tilde t=0`; therefore this is not a
-displayed-vector realisation theorem.
+`T(S_(ell+1)-1)=0`.  The terminal-extension obstruction now combines this
+with the terminal-collision branch: when `p+1=a`, a supplied equation `(4)`
+certificate plus such a terminal extension forces
+`W_(ell+1)=M-p+1`, and failure of that compatibility rules out the extension.
+A fresh source audit reconfirms that the printed paper does not supply the
+Case 1(2) chart sequence, repeated gap checks, terminal endpoint convention,
+or proof of `tilde t=0`; therefore this is not a displayed-vector realisation
+theorem.
 
 The first A5 source-label bridge for equation `(4)` is now Lean-proved in
 `Lemma5SourceLabel.lean`.  The theorem

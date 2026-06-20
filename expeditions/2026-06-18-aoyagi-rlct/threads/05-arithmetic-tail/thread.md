@@ -1011,3 +1011,31 @@ blocks.
 This is finite boundary bookkeeping only.  It does not construct equation
 `(4)`'s displayed vector, prove terminal `tilde t=0`, or prove Lemma 5's
 chart-family/order-count theorem.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` terminal extension obstruction
+
+Reproduction:
+`reproduction-lemma5-eq4-terminal-extension-obstruction-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-terminal-extension-obstruction.md`.
+Review artifact:
+`review-lemma5-eq4-terminal-extension-obstruction-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
+aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
+```
+
+In the terminal-collision case `p+1=a`, a supplied equation `(4)` certificate
+assigns the terminal selected endpoint the value
+`M-W_(ell+1)-p+1`.  If a separate terminal extension also supplies
+`T(S_(ell+1)-1)=Htilde'_ell`, then Definition 3's selected-sum identity gives
+`Htilde'_ell=0`, so Lean proves `W_(ell+1)=M-p+1`.  If that compatibility
+fails, the supplied equation `(4)` branch certificate cannot also satisfy the
+terminal extension.
+
+This is finite compatibility arithmetic only.  It does not construct equation
+`(4)`'s displayed vector, prove the terminal convention, or prove Lemma 5's
+chart-family/order-count theorem.

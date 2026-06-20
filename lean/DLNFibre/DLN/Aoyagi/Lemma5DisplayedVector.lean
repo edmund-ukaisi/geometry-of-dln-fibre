@@ -447,6 +447,44 @@ theorem aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary
     ell a p M m C layerWidth T hp hselected hT]
   constructor <;> intro h <;> linarith
 
+/-- A supplied equation `(4)` terminal endpoint extension is compatible with
+the terminal-collision boundary only under the last-width condition.
+
+This records an obstruction to adding the terminal convention silently: in the
+case `p+1=a`, the supplied singleton boundary already assigns the terminal
+endpoint, so a terminal extension to `Htilde'_ell` forces
+`W_(ell+1)=M-p+1`. -/
+theorem aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp : p + 1 = a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hterminal :
+      T (C.point ell - 1) = aoyagiHtildeUpperNat ell a M m ell) :
+    aoyagiSelectedWidthNat ell m ell = M - (p : ℤ) + 1 := by
+  have hzero :=
+    aoyagiLemma5Eq4_terminalEndpoint_zero_of_upperNatExtension
+      ell a M m C T hT.a_le_ell hselected hterminal
+  exact (aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary
+    ell a p M m C layerWidth T hp hselected hT).1 hzero
+
+/-- If the last-width compatibility fails in the terminal-collision case, the
+supplied equation `(4)` certificate cannot also satisfy the terminal endpoint
+extension to `Htilde'_ell`. -/
+theorem aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp : p + 1 = a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hne : aoyagiSelectedWidthNat ell m ell ≠ M - (p : ℤ) + 1) :
+    ¬ T (C.point ell - 1) = aoyagiHtildeUpperNat ell a M m ell := by
+  intro hterminal
+  exact hne
+    (aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
+      ell a p M m C layerWidth T hp hselected hT hterminal)
+
 /-- A supplied equation `(4)` piecewise vector has the correct own-coordinate
 value and legal source label under the repaired guards.
 
