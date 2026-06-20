@@ -28,19 +28,22 @@ arbitrary `rest`):
   (`splitCut_mem_closure`, `splitCut_orbit_intervalDirectSum`) use the cut chain `splitCut a e b` and
   the explicit diagonal base change `splitBaseChange`.
 
-* **Non-split box move (`a < c ≤ b < e`, dim-2 overlap on `[c,b]`) — SCAFFOLDING ONLY.** The
-  recombination family `splice a c e b λ` (the upstairs `M_{[a,e]} ⊕ M_{[c,b]}` with the single edge
-  `b` overwritten by the recombination row `[λ, 1]`, defined entrywise so it is dimension-agnostic),
-  its off-edge agreement (`splice_apply_ne`), the sub-product concatenation (`submult_concat`), the
-  two segment lemmas (`submult_splice_below` / `submult_splice_above`), and the **crossing
-  factorization** `submult_splice_cross` (`submult (splice λ) i j = submult U₂ (b+1) j · (splice λ b)
-  · submult U₂ i b` for `i ≤ b < j`) are landed. The **remaining gap** is the crossing-rank
-  computation `rankPattern (splice λ) = rankPattern (upstairs)` (`λ ≠ 0`) / `= rankPattern
-  (downstairs)` (`λ = 0`) — the rank of the crossing 3-fold product (`≤ 1` by the target dimension,
-  `1`/`0` by the nonzero recombination entry) — and the engine application + list-gluing on top of
-  it. The math is settled (the rank is `[a≤i∧j≤e]+[c≤i∧j≤b]` upstairs, `[a≤i∧j≤b]+[c≤i∧j≤e]`
-  downstairs; sympy-certified, thread 22/24) and the route is verified; the residual is the heavy
-  symbolic `Fin`-index entry computation (see the thread-27 card).
+* **Non-split box move, full §4 list headline (`a < c ≤ b < e`, dim-2 overlap on `[c,b]`)**
+  (`nonsplitMove_intervalDirectSum_mem_closure`): the genuine 2-strand recombination. The family
+  `splice a c e b λ` edits the upstairs `U₂ = M_{[a,e]} ⊕ M_{[c,b]}` at the single edge `b` by the
+  recombination row `[λ, 1]` (entrywise, dimension-agnostic). Its sub-products factor through that edge
+  (`submult_splice_below` / `_above` off-edge = `U₂`; the crossing factorization `submult_splice_cross`
+  for `i ≤ b < j`). The crux is the **crossing rank** `rankPattern_splice_cross`
+  (`= [j ≤ e ∧ ((λ ≠ 0 ∧ a ≤ i) ∨ c ≤ i)]`: rank `≤ 1` by `rank_mul_le_left` against the computable
+  `rankPattern U₂`, the nonzero/zero split by a witness entry / `recomb · below = 0`). From it the full
+  rank pattern: `rankPattern_splice_eq_U2_of_ne_zero` (`λ ≠ 0` ⟹ `U₂`'s pattern) and
+  `rankPattern_splice_zero_eq_down` (`λ = 0` ⟹ the downstairs `M_{[a,b]} ⊕ M_{[c,e]}` pattern,
+  transported by `foldDim_nonsplit_eq` onto the dim-preserved vector). The complete invariant gives the
+  `t ≠ 0` orbit membership (`splice_mem_orbit_U2`) and the downstairs equivalence; `splicePoly` (the
+  family carrying `X`) + the §3 downstairs-transport + common-summand wrappers land the headline: the
+  downstairs `M_{[a,b]} ⊕ M_{[c,e]} ⊕ rest` lies in the closure of the orbit of the upstairs
+  `(M_{[a,e]} ⊕ M_{[c,b]}) ⊕ rest` (the orbit base is left-associated — the §4 `Lup` up to a `dirSum`
+  re-association). Non-vacuity on the `(1,2,1)` recombination over `ℚ`.
 
 The mechanism reuses the block-diagonal levers of `Core.IntervalModule` (`reindex_fromBlocks_mul`,
 `reindex_fromBlocks_one`).
