@@ -15,7 +15,7 @@ direction** (`weightedThreshold_le_transport`, proven sorry-free here): the chan
 `Eᶜ` plus monotonicity gives `θ(F, φ; {w*}) ≤ θ(F∘π, (φ∘π)·|det Dπ|; π⁻¹{w*})` unconditionally.
 
 The reverse `≥` is **false** under the bare hypotheses; two extra hypotheses are needed and are
-**sufficient** (full equality: `weightedThreshold_transport_of_surjective_image_null`, sorry-free):
+**sufficient** (full equality: `weightedThreshold_transport_aux`, sorry-free):
 * `Function.Surjective π` — else, with `w* ∉ range π`, the fibre `π⁻¹{w*}` is empty, the RHS
   open-cover constraint is vacuous, and the RHS threshold jumps to `⊤` while the LHS is finite.
 * `volume (π '' E) = 0` (Luzin-N for the null set `E`) — else a singular monotone `π` (e.g.
@@ -95,12 +95,14 @@ theorem weightedThreshold_le_transport
   exact sSup_le_sSup
     (admissible_subset_transport F φ wstar π Dπ E hproper hE_meas hE_null hinj hderiv)
 
-/-- **S1.1 (weighted-threshold transport, full equality).** With the two extra hypotheses the bare
-statement lacks — `π` surjective and `volume (π '' E) = 0` (Luzin-N) — the weighted threshold
+/-- **S1.1 (weighted-threshold transport, full equality).** The **wire-in target** for Skeleton's
+`weightedThreshold_transport` (distinct `_aux` name to avoid the shared-FQN collision; conclusion
+verbatim, so the wire-in is `exact`). With the two extra hypotheses the bare statement lacks — `π`
+surjective and `volume (π '' E) = 0` (Luzin-N) — the weighted threshold
 transports with the Jacobian weight: `θ(F, φ; {w*}) = θ(F∘π, (φ∘π)·|det Dπ|; π⁻¹{w*})`. Forward via
 `admissible_subset_transport`; reverse via the proper-map tube `Ω = (π '' Ω'ᶜ)ᶜ` and CoV on
 `π⁻¹Ω \ E`, with `Ω =ᵐ π '' (π⁻¹Ω \ E)` (the difference lies in the null `π '' E`). -/
-theorem weightedThreshold_transport_of_surjective_image_null
+theorem weightedThreshold_transport_aux
     (F φ : M → ℝ) (wstar : M) (π : M → M) (Dπ : M → (M →L[ℝ] M)) (E : Set M)
     (hproper : IsProperMap π) (hE_meas : MeasurableSet E) (hE_null : volume E = 0)
     (hinj : Set.InjOn π Eᶜ) (hderiv : ∀ m ∈ Eᶜ, HasFDerivAt π (Dπ m) m)
