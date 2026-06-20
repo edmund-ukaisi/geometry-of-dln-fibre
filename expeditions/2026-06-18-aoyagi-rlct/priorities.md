@@ -307,7 +307,14 @@ on the session's original cwd.
    projects its new-label numerator to that same selected-coordinate count
    through the source-selected and displayed boundary packages. This remains a
    supplied bookkeeping projection, not chart production, Jacobian/volume
-   arithmetic, coverage, or a transition invariant.
+   arithmetic, coverage, or a transition invariant. The displayed
+   source-coordinate chart map now also has source-chart named finite-center
+   principalization: `u` occurs, every transformed finite center value is
+   divisible by `u`, and the finite residual-block center ideal is
+   `Ideal.span {u}`. This still is not arbitrary-pivot source chart data,
+   chart production, coverage, coordinate regularity, or Jacobian/volume
+   arithmetic, and it does not prove normal crossings/RLCT, termination, a
+   transition invariant, or printed-vector repair.
    Aoyagi-specific arbitrary chart construction, pivot-first coordinate/weight
    transport for non-displayed pivots, row hypotheses, and indexed
    non-displayed transition formulas are still missing. Then redo Case 1/2 updates, cover pivot charts, repair the

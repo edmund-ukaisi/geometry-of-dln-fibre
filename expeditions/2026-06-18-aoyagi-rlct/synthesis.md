@@ -1226,6 +1226,24 @@ count; it does not prove chart-produced post-data, a Jacobian/volume exponent,
 coverage, coordinate regularity, normal crossings, RLCT extraction,
 termination, transition invariance, or printed-vector repair.
 
+The Case 2 displayed source-chart principalization is now Lean-proved in
+source-chart names. The new global lemmas
+`case2DisplayedSourceChartMap_value_mem`,
+`case2DisplayedSourceChartMap_center_dvd`, and
+`case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton` say that, for the
+displayed top-left source-coordinate chart map, `u` occurs as the transformed
+value at `(J+1,J+1)`, every transformed finite residual-block center value is
+divisible by `u`, and the generated finite center ideal is `Ideal.span {u}`.
+The displayed supplied boundary package exports the same facts as
+`displayedPivot_sourceChartMap_value_mem`,
+`displayedPivot_sourceChartMap_center_dvd`, and
+`displayedPivot_sourceChartMap_centerIdeal_eq_span_singleton`. This is only
+finite residual-block center ideal algebra for the displayed pivot; it is not
+arbitrary-pivot source chart data, not a loss/Kullback ideal or analytic germ
+statement, and not chart production, atlas coverage, coordinate regularity,
+Jacobian/volume arithmetic, normal crossings, RLCT extraction, termination,
+transition invariance, or printed-vector repair.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

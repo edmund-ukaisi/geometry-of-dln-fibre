@@ -503,7 +503,11 @@ No such claim is formalisation-ready until both fields are filled.
   that count under continuation. The supplied corrected exponent post-data
   now also projects its new-label numerator to exactly this selected-coordinate
   count through the source-selected and displayed boundary packages; this is
-  supplied bookkeeping, not chart-produced post-data. Missing arbitrary pivot
+  supplied bookkeeping, not chart-produced post-data. The displayed
+  source-coordinate chart map now also principalizes the finite residual-block
+  center ideal to `Ideal.span {u}` in source-chart names, with value and
+  divisibility projections exported by the displayed boundary package. Missing
+  arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
   beyond the unchanged-top lift, full polynomial-coordinate chart construction,
@@ -550,6 +554,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 corrected post-data center-count projection is saved
 	  at
 	  `threads/04-blow-up-certificate/review-case2-corrected-postdata-center-count-a4.md`.
+	  Review of the Case 2 displayed source-chart principalization is saved at
+	  `threads/04-blow-up-certificate/review-case2-displayed-source-chart-principalization-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1130,6 +1136,13 @@ No such claim is formalisation-ready until both fields are filled.
   exponent post-data and exposes the same count through the source-selected and
   displayed supplied boundary packages; it still does not construct exponent
   post-data from the chart or compute a Jacobian/volume exponent.
+  The displayed source-chart principalization is only finite residual-block
+  center ideal algebra in the names of Aoyagi's displayed top-left source
+  chart; it is not an arbitrary-pivot chart, loss/Kullback ideal statement,
+  analytic germ statement, chart-production theorem, coverage theorem, or
+  Jacobian/volume calculation. It also does not prove normal crossings, RLCT
+  extraction, termination, a transition invariant, or repair of the printed
+  Case 2 vector mismatch.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

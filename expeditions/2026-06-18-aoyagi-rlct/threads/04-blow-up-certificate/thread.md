@@ -227,6 +227,30 @@ volume-form calculation, chart coverage theorem, coordinate-regularity theorem,
 normal-crossing certificate, RLCT extraction, termination theorem, transition
 invariant, or repair of the printed Case 2 vector mismatch.
 
+## 2026-06-20 Lean Case 2 displayed source-chart principalization
+
+Reproduction:
+`reproduction-case2-displayed-source-chart-principalization-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-source-chart-principalization.md`.
+Review artifact:
+`review-case2-displayed-source-chart-principalization-a4.md`.
+
+Lean now exposes finite-center principalization in the names of the displayed
+Case 2 source-coordinate chart map. The source-chart map has `u` as a
+transformed value at the displayed pivot `(J+1,J+1)`, every transformed
+finite residual-block center value is divisible by `u`, and the transformed
+finite center values generate `Ideal.span {u}`. The displayed supplied
+boundary package exports the same value, divisibility, and finite ideal
+principalization projections.
+
+This principalizes only the finite residual-block center ideal for Aoyagi's
+displayed top-left pivot. It is not arbitrary-pivot source chart data, not the
+loss/Kullback ideal or an analytic germ, and not chart production, atlas
+coverage, coordinate regularity, Jacobian/volume arithmetic, normal crossings,
+RLCT extraction, termination, a transition invariant, or repair of the printed
+Case 2 vector mismatch.
+
 ## 2026-06-19 Lean monomial divisibility
 
 Statement card: `statement-card-a4-monomial-recurrence-divisibility.md`.

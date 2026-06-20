@@ -1136,6 +1136,29 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-corrected-postdata-center-count-a4.md`.
 
+Latest A4 update: the Case 2 displayed source-chart principalization has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`. The proved Lean
+names are `case2DisplayedSourceChartMap_value_mem`,
+`case2DisplayedSourceChartMap_center_dvd`,
+`case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton`,
+`Case2DisplayedSuppliedChartFamilyBoundary.displayedPivot_sourceChartMap_value_mem`,
+`Case2DisplayedSuppliedChartFamilyBoundary.displayedPivot_sourceChartMap_center_dvd`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.displayedPivot_sourceChartMap_centerIdeal_eq_span_singleton`.
+This checkpoint re-expresses the existing selected-entry finite center
+principalization in Aoyagi's displayed source-coordinate chart-map names: the
+selected variable occurs, every transformed finite center value is divisible by
+it, and the transformed finite residual-block center ideal is `Ideal.span {u}`.
+It does not prove arbitrary-pivot source chart data, chart production, atlas
+coverage, coordinate regularity, Jacobian/volume arithmetic, normal
+crossings/RLCT, termination, a transition invariant, or repair of the printed
+vector mismatch. Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-source-chart-principalization-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-source-chart-principalization.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-displayed-source-chart-principalization-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
