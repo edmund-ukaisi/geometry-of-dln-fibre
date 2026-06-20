@@ -69,16 +69,22 @@ opaque monomialOrderAnalytic (d : ℕ) (k h : Fin d → ℕ) : ℕ
 
 /-- **S2 (cited).** The normal-crossing extraction of the RLCT value and pole order for a weighted
 monomial integral. The threshold of `∫ (∏ uⱼ^{hⱼ}) (∏ uⱼ^{2kⱼ})^{−c}` is `min_j (h_j+1)/(2k_j)`,
-and the analytic pole order equals the number of axes attaining that minimum (per axis:
-`∫₀^ε u^{h−2kc} du < ∞ ⟺ c < (h+1)/(2k)`; the order is the binding-factor multiplicity). This is the
-**single permitted external citation** (Watanabe; Hironaka resolution). The cover,
-change-of-variables, properness, and bump-independence are **not** cited — they are proven on our
-side (S1, R1). The order half is the genuine analytic content (the meromorphic pole-order
-computation for a product of one-variable factors; Codex audit §4), which is why it equates the
-opaque `monomialOrderAnalytic` to the combinatorial `monomialOrder`. -/
+and — **in the singular case `∃ j, kⱼ ≠ 0`** — the analytic pole order equals the number of axes
+attaining that minimum (per axis: `∫₀^ε u^{h−2kc} du < ∞ ⟺ c < (h+1)/(2k)`; the order is the
+binding-factor multiplicity). This is the **single permitted external citation** (Watanabe; Hironaka
+resolution). The cover, change-of-variables, properness, and bump-independence are **not** cited —
+they are proven on our side (S1, R1). The order half is the genuine analytic content (the
+meromorphic pole-order computation for a product of one-variable factors; Codex audit §4), which is
+why it equates the opaque `monomialOrderAnalytic` to the combinatorial `monomialOrder`.
+
+The order-half is **scoped to `∃ j, kⱼ ≠ 0`** (Rung-0c FLAG 1): when all `kⱼ = 0` the integrand is a
+unit (`F ≢ 0` at the point — the non-singular `F(w*)≠0` chart), every `axisRatio = ⊤` ties, and the
+unconditional `monomialOrder = d` would be a stray claim about a regular point's pole order. The
+threshold-half is correct in that degenerate case too (`⨅ ⊤ = ⊤`, the locally-nonvanishing RLCT),
+so it stays unconditional; only the order-conjunct carries the singularity hypothesis. -/
 axiom monomial_rlct (d : ℕ) (k h : Fin d → ℕ) :
     monomialThreshold d k h = (⨅ j : Fin d, axisRatio (h j) (k j))
-    ∧ monomialOrderAnalytic d k h = monomialOrder d k h
+    ∧ ((∃ j : Fin d, k j ≠ 0) → monomialOrderAnalytic d k h = monomialOrder d k h)
 
 /-! ## S1 — RLCT depends only on the ideal; change of variables; φ-independence (design-spec §8) -/
 
