@@ -1115,6 +1115,35 @@ theorem aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound
       exact le_trans hlabel.2 hwidth_le
     exact_mod_cast hk_le_int
 
+/-- Equation `(5)` strict-alpha-domain source-label bridge.
+
+Membership in the strict alpha domain packages exactly the two label-arithmetic
+guards used by `aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound`: `1<=alpha`
+and `alpha<=Htilde'_p-Htilde_p`.  The additional strict guard `alpha<p`
+remains visible in the domain but is not needed for label legality itself. -/
+theorem aoyagiLemma5Eq5_alphaFamily_actualWidthLabel_at_of_widthBound
+    (L ell a p alpha S : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha :
+      alpha ∈ Finset.Icc 1
+        (min (aoyagiLemma5IntervalExcess ell a p) (p - 1)))
+    (hselected : (∑ j : Fin (ell + 1), m j) =
+      (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : 1 ≤ S) (hs_le : S ≤ L)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    {k : ℕ} (hk :
+      (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    actualWidthLabel L n S k := by
+  rcases
+    (aoyagiLemma5Eq5_alphaFamily_mem_iff_guards ell a p alpha).mp halpha with
+    ⟨halpha_pos, halpha_le_excess, _halpha_lt_p⟩
+  exact aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound
+    L ell a p alpha S n M m hell ha hpell halpha_pos halpha_le_excess
+    hselected hsource hs_pos hs_le hwidth_le hk
+
 /-- The terminal selected coordinate `C.point ell - 1` is a positive source
 index when the selected list has positive length.
 

@@ -2093,6 +2093,28 @@ theorem aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet
         aoyagiLemma5Eq5OffsetValueSet ell a p M m := by
   rfl
 
+/-- Membership in equation `(5)`'s strict alpha domain is exactly the source
+guard `1<=alpha`, the same-coordinate interval guard, and `alpha<p`. -/
+theorem aoyagiLemma5Eq5_alphaFamily_mem_iff_guards
+    (ell a p alpha : ℕ) :
+    alpha ∈ Finset.Icc 1
+      (min (aoyagiLemma5IntervalExcess ell a p) (p - 1)) ↔
+    1 ≤ alpha ∧ alpha ≤ aoyagiLemma5IntervalExcess ell a p ∧ alpha < p := by
+  rw [Finset.mem_Icc]
+  constructor
+  · intro h
+    constructor
+    · exact h.1
+    constructor
+    · exact le_trans h.2 (Nat.min_le_left _ _)
+    · have hle_pred : alpha ≤ p - 1 :=
+        le_trans h.2 (Nat.min_le_right _ _)
+      omega
+  · rintro ⟨halpha_pos, halpha_le_excess, halpha_lt_p⟩
+    constructor
+    · exact halpha_pos
+    · exact le_min halpha_le_excess (by omega)
+
 /-- Offsets below a fixed upper endpoint give distinct integer values. -/
 theorem aoyagiLemma5Eq5_offsetValue_injective
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :

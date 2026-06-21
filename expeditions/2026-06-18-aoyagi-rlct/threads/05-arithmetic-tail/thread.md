@@ -3882,3 +3882,32 @@ This is finite-set API naming only.  It does not construct equation `(5)`'s
 displayed vector, prove source-label legality for `k`, prove selected-span
 coverage, terminal `tilde t=0`, chart sequence, Lemma 5 order count, pole
 order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 alpha-family source label
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-family-source-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-family-source-label.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-family-source-label-a5.md`.
+
+Lean now proves the strict alpha-domain guard equivalence and label adapter:
+
+```text
+aoyagiLemma5Eq5_alphaFamily_mem_iff_guards
+aoyagiLemma5Eq5_alphaFamily_actualWidthLabel_at_of_widthBound
+```
+
+The first theorem rewrites membership in
+`1<=alpha<=min(excess(ell,a,p),p-1)` as the three guards
+`1<=alpha`, `alpha<=excess(ell,a,p)`, and `alpha<p`.  The second theorem uses
+that membership to feed the existing Eq5 actual-label theorem under explicit
+source-index bounds, actual-width dominance, selected-width hypotheses, and
+the supplied label relation `k=Htilde'_p+1-alpha`.
+
+This is source-label API cleanup only.  It does not construct an Eq5 vector,
+prove branch existence, derive the cutoff guard, prove selected-span coverage,
+terminal `tilde t=0`, chart sequence, classifier/injection/back-to-label
+coverage, Lemma 5 order count, pole order, normal crossings, or RLCT
+extraction.

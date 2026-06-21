@@ -3671,6 +3671,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-alpha-family-value-image-a5.md`.
 
+The Eq5 alpha-family source-label adapter has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` and
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  New Lean names:
+`aoyagiLemma5Eq5_alphaFamily_mem_iff_guards` and
+`aoyagiLemma5Eq5_alphaFamily_actualWidthLabel_at_of_widthBound`.  Membership
+in the strict alpha domain now rewrites to `1<=alpha`,
+`alpha<=excess(ell,a,p)`, and `alpha<p`; the source-label wrapper uses the
+first two guards to feed the existing Eq5 actual-label theorem under explicit
+source-index bounds, actual-width dominance, selected-width hypotheses, and
+the supplied label relation.  This is not Eq5 vector construction, branch
+existence, cutoff coverage, selected-span coverage, terminal `tilde t=0`,
+chart sequence, classifier/injection/back-to-label coverage, order count, pole
+order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-family-source-label-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-family-source-label.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-family-source-label-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in
