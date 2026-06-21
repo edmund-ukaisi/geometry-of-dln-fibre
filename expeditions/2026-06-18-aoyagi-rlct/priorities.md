@@ -50,6 +50,8 @@ Current counted-codomain slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-set-a5.md`.
 Current source-facing classifier-boundary slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-a5.md`.
+Current counted-datum maps-to adapter slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-maps-to-adapters-a5.md`.
 Current prefix-delta chain-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-prefix-delta-chain-bounds-a5.md`.
 Current binary-prefix-delta bound slice:

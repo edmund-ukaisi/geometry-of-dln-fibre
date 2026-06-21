@@ -4093,6 +4093,23 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-post-pivot-source-residual-a4.md`.
 
+Latest A5 counted-datum maps-to adapter update:
+`Lemma5SuppliedFamily.lean` now exposes
+`aoyagiLemma5CountDatumSet_mem_of_intervalValueSetNat` and
+`aoyagiLemma5CountDatumSet_mem_of_HtildeBounds`.  At an interior coordinate,
+same-coordinate interval membership plus a supplied non-base-value inequality
+puts `some (j,H)` in the counted-datum set; explicit Htilde bounds imply the
+same conclusion after unwrapping the interval-membership theorem.  This is
+finite codomain bookkeeping only, not branch construction, classifier
+construction, injection, back-to-label coverage, terminal-minimum exactness,
+order count, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-maps-to-adapters-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-maps-to-adapters.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-maps-to-adapters-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

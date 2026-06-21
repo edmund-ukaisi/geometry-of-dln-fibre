@@ -4326,3 +4326,28 @@ vectors, prove source-label legality, produce the post-`p` guard from source
 hypotheses, prove terminality, selected-span exactness,
 classifier/injection/back-to-label coverage, Lemma 5 order count, pole order,
 normal crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 5 counted-datum maps-to adapters
+
+Reproduction:
+`reproduction-lemma5-counted-datum-maps-to-adapters-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-maps-to-adapters.md`.
+Review artifact:
+`review-lemma5-counted-datum-maps-to-adapters-a5.md`.
+
+Lean now exposes the primitive counted-datum maps-to step in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`:
+
+```text
+aoyagiLemma5CountDatumSet_mem_of_intervalValueSetNat
+aoyagiLemma5CountDatumSet_mem_of_HtildeBounds
+```
+
+At an interior coordinate, interval membership plus a supplied non-base-value
+inequality gives `some (j,H)` membership in the counted-datum codomain.  The
+bounds variant first converts explicit Htilde lower/upper bounds into interval
+membership.  This is finite codomain bookkeeping only.  It does not construct
+a source branch, Eq3/Eq4/Eq5 vector, classifier, injection, back-to-label map,
+terminal-minimum exactness, order count, pole order, normal crossings, or
+RLCT.

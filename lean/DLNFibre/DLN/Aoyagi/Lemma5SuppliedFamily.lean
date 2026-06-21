@@ -81,6 +81,48 @@ theorem some_mem_aoyagiLemma5CountDatumSet_iff
     rw [Finset.mem_biUnion]
     exact ⟨j, hj, Finset.mem_image.mpr ⟨H, hH, rfl⟩⟩
 
+/-- Interval membership and non-base-value inequality give one nonbase counted
+datum. -/
+theorem aoyagiLemma5CountDatumSet_mem_of_intervalValueSetNat
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) {j : ℕ} {H : ℤ}
+    (hj : j ∈ Finset.Icc 1 (ell - 1))
+    (hmem : H ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (hne_base : H ≠ baseValue j) :
+    some (Sigma.mk j H) ∈
+      aoyagiLemma5CountDatumSet ell a M m baseValue := by
+  rw [some_mem_aoyagiLemma5CountDatumSet_iff]
+  constructor
+  · exact hj
+  · rw [Finset.mem_erase]
+    exact ⟨hne_base, hmem⟩
+
+/-- Explicit same-coordinate Htilde bounds and non-base-value inequality give
+one nonbase counted datum. -/
+theorem aoyagiLemma5CountDatumSet_mem_of_HtildeBounds
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) {j : ℕ} {H : ℤ}
+    (ha : a ≤ ell)
+    (hj : j ∈ Finset.Icc 1 (ell - 1))
+    (hlower : aoyagiHtildeLowerNat ell a M m j ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperNat ell a M m j)
+    (hne_base : H ≠ baseValue j) :
+    some (Sigma.mk j H) ∈
+      aoyagiLemma5CountDatumSet ell a M m baseValue := by
+  have hj_lt : j < ell + 1 := by
+    have hj_le : j ≤ ell - 1 := (Finset.mem_Icc.mp hj).2
+    omega
+  have hmemFin :
+      H ∈ aoyagiHtildeIntervalValueSet ell a M m ⟨j, hj_lt⟩ := by
+    rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds
+      ell a M m ha ⟨j, hj_lt⟩ H]
+    exact ⟨hlower, hupper⟩
+  have hmemNat :
+      H ∈ aoyagiHtildeIntervalValueSetNat ell a M m j := by
+    simpa [aoyagiHtildeIntervalValueSetNat, hj_lt] using hmemFin
+  exact aoyagiLemma5CountDatumSet_mem_of_intervalValueSetNat
+    ell a M m baseValue hj hmemNat hne_base
+
 /-- One coordinate of nonbase counted data has interval cardinality minus the
 supplied base value. -/
 theorem aoyagiLemma5CountDatumNonbaseSet_card

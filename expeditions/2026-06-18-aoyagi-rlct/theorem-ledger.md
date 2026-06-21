@@ -4012,6 +4012,21 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-a5.md`.
 
+Latest A5 counted-datum maps-to adapter update: `Lemma5SuppliedFamily.lean`
+now also exposes `aoyagiLemma5CountDatumSet_mem_of_intervalValueSetNat` and
+`aoyagiLemma5CountDatumSet_mem_of_HtildeBounds`.  At an interior coordinate,
+interval membership plus non-base-value inequality, or explicit Htilde bounds
+plus non-base-value inequality, gives membership of `some (j,H)` in the
+counted-datum codomain.  This is only the maps-to/codomain-membership adapter;
+it does not construct source branches, classifiers, injections, back-to-label
+maps, terminal exactness, order counts, pole order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-maps-to-adapters-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-maps-to-adapters.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-maps-to-adapters-a5.md`.
+
 Latest A5 prefix-delta-chain-bound update: `HtildeChainArithmetic.lean` now
 proves the algebraic translation from supplied prefix-delta bounds to displayed
 chain bounds.  Names:
