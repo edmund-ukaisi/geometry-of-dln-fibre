@@ -3,8 +3,10 @@ import DLNFibre.DLN.RLCT.Foundations.Lambda
 import DLNFibre.DLN.RLCT.Foundations.S1Transport
 import DLNFibre.DLN.RLCT.Foundations.S1Local
 import DLNFibre.DLN.RLCT.Foundations.S1Fubini
+import DLNFibre.DLN.RLCT.BGEngine
 import Mathlib.MeasureTheory.Function.Jacobian
 import Mathlib.Data.Fin.Tuple.Sort
+import Mathlib.Data.List.GetD
 
 /-!
 # `DLNFibre.DLN.RLCT.Skeleton` — the goal skeleton (the contract)
@@ -954,16 +956,35 @@ theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
+/-- **D1 per-point obligation (Aoyagi 2013 Thm 2, the fibre monotonicity).** The local RLCT of the
+loss at the deepest point is `≤` that at every other fibre point `v`. This is the `≥` leg of D1 (after
+`le_iInf₂`), isolated as a building block under its correct statement.
+
+**Dependency (named, not vague):** the engine is `rlctAt_mono` (`Rlct.lean`), which compares two
+functions at ONE point via `|G| ≤ |F|` near `w*`. Here we have the SAME loss `dlnLoss H B` at TWO
+points (`deepestPoint` vs `v`), so `rlctAt_mono` does not apply directly. Bridging the two points
+needs the loss in its **homogeneous normal form** — the L2 decomposition (`product_reduction`:
+regular shift + singular core `lambdaCore` on reduced widths `M = H − r`, via `S1Fubini`), under
+which the deepest point's core pointwise-dominates the core at any other fibre point. With `B ≠ 0`
+the raw `dlnLoss B` is not homogeneous, so this domination is **L2-downstream**. Open: whether the
+homogeneous domination is provable from L1 `block_elimination` (green) + the deepest-point structure
+ALONE (R1-separable, value-independent) or genuinely needs the resolution value — a scoping question
+for the controller / pp-hall. -/
+theorem rlctAt_deepest_le_of_optimal (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (v : Params H) (hv : v ∈ optimalSet H B) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) ≤ rlctAt H (dlnLoss H B) v := by
+  sorry
+
 /-- **D1 (Theorem 4).** The global infimum of the local RLCT over the optimal set is **attained at
 the deepest singular point** `deepestPoint H r B` (Aoyagi 2013 Thm 2, the monotonicity of the local
 RLCT over the fibre). This turns `⨅ w ∈ optimalSet, rlctAt` into the local RLCT at the
 one constructed point that L2 evaluates. (Rung-0c FLAG: keyed to the constructed `deepestPoint`,
 replacing the under-claiming `∃ wstar ∈ optimalSet` that did not name the attainer.) Non-vacuous:
 equates the inf to the local RLCT at `deepestPoint`. **Proof state:** the `≤` direction is PROVEN
-(`deepestPoint ∈ optimalSet` ⟹ `iInf₂_le`); the `≥` direction is reduced to the per-point obligation
-`rlctAt deepest ≤ rlctAt v` for every optimal `v` (Aoyagi 2013 Thm 2) — the `sorry`. That residual
-is L2-gated: its engine is `rlctAt_mono`, but applying it needs the loss-domination of the
-HOMOGENEOUS core (the raw `dlnLoss B`, `B≠0`, is not homogeneous), available after the L2 form. -/
+(`deepestPoint ∈ optimalSet` ⟹ `iInf₂_le`); the `≥` direction reduces (via `le_iInf₂`) to the named
+per-point building block `rlctAt_deepest_le_of_optimal` (Aoyagi 2013 Thm 2, L2-gated). -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
@@ -972,13 +993,9 @@ theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `deepestPoint` is in the fibre (`IsDeepLayers.1`), so the `≤` direction is `iInf₂_le` — PROVEN.
   have hmem : deepestPoint H r B hB hr hL ∈ optimalSet H B :=
     (deepestPoint_isDeep H r B hB hr hL).1
-  refine le_antisymm (iInf₂_le (deepestPoint H r B hB hr hL) hmem) ?_
-  -- `≥` direction = Aoyagi 2013 Thm 2: the local RLCT at the deepest point is ≤ that at every other
-  -- fibre point. The engine is `rlctAt_mono`, but applying it needs the loss-domination near the
-  -- deepest point of the HOMOGENEOUS core (raw `dlnLoss B`, `B≠0`, is not homogeneous — thread-04):
-  -- that domination is L2-downstream (the homogeneous normal form). Residual obligation, L2-gated.
-  refine le_iInf₂ (fun v _ => ?_)
-  sorry
+  -- `≥` direction: `le_iInf₂` of the named per-point obligation (Aoyagi 2013 Thm 2).
+  exact le_antisymm (iInf₂_le (deepestPoint H r B hB hr hL) hmem)
+    (le_iInf₂ (fun v hv => rlctAt_deepest_le_of_optimal H r B hB hr hL v hv))
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
 
@@ -1596,28 +1613,2423 @@ private theorem smallestK_le_subset (n k : ℕ) (hk : k ≤ n) (q : Fin n → �
   refine mono_prefix_le_subset (q ∘ Tuple.sort q) (Tuple.monotone_sort q) k hk A' ?_
   rw [hA', Finset.card_image_of_injective _ (Tuple.sort q).symm.injective, hA]
 
-/-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
+/-- The sum of the `k` smallest entries of `q : Fin n → ℤ` (the sorted prefix `∑_{i<k} srt q i`). -/
+noncomputable def smallestK (n k : ℕ) (q : Fin n → ℤ) : ℤ := ∑ i ∈ Finset.range k, srt n q i
+
+/-- The index set of the `k` smallest entries of `w` (image of the first `k` sorted slots). Its
+cardinality is `k` (for `k ≤ n`) and its `w`-sum is `smallestK n k w`. -/
+noncomputable def leastSet (n k : ℕ) (w : Fin n → ℤ) : Finset (Fin n) :=
+  (Finset.univ.filter (fun i : Fin n => (i : ℕ) < k)).image (Tuple.sort w)
+
+/-- `leastSet n k w` has cardinality `min k n` and `w`-sum `smallestK n k w` (for `k ≤ n`). -/
+private theorem leastSet_card_sum (n k : ℕ) (hk : k ≤ n) (w : Fin n → ℤ) :
+    (leastSet n k w).card = k ∧ ∑ j ∈ leastSet n k w, w j = smallestK n k w := by
+  have hcard : (leastSet n k w).card = k := by
+    rw [leastSet, Finset.card_image_of_injective _ (Tuple.sort w).injective,
+      Fin.card_filter_val_lt]; omega
+  refine ⟨hcard, ?_⟩
+  rw [smallestK, srt_prefix_eq_filter n k hk w, leastSet,
+    Finset.sum_image (fun a _ b _ h => (Tuple.sort w).injective h)]
+  exact Finset.sum_congr rfl (fun a _ => rfl)
+
+/-- **Elementary transfer ⟹ `smallestK` weakly decreases.** If `w'` is `w` with the value at `lo`
+pushed down (below both `w lo` and `w hi`) and `hi` pushed up by the same amount (total preserved),
+all other entries fixed, then every `k`-smallest sum of `w'` is `≤` that of `w`. The single Karamata
+elementary-transfer step (proved via the `k`-smallest-subset engine, no induction). -/
+private theorem smallestK_pair_spread {n k : ℕ} (hk : k ≤ n) {w w' : Fin n → ℤ}
+    {lo hi : Fin n} (hne : lo ≠ hi) (hlo₁ : w' lo ≤ w lo) (hlo₂ : w' lo ≤ w hi)
+    (hsum : w' lo + w' hi = w lo + w hi) (hfixed : ∀ r, r ≠ lo → r ≠ hi → w' r = w r) :
+    smallestK n k w' ≤ smallestK n k w := by
+  obtain ⟨hScard, hSsum⟩ := leastSet_card_sum n k hk w
+  set S := leastSet n k w with hSdef
+  by_cases hcase : hi ∈ S ∧ lo ∉ S
+  · -- swap hi for lo in S; the lifted lo is bounded by the (now-gone) hi
+    obtain ⟨hhiS, hloS⟩ := hcase
+    set A := insert lo (S.erase hi) with hAdef
+    have hloErase : lo ∉ S.erase hi := fun h => hloS (Finset.mem_of_mem_erase h)
+    have hkpos : 1 ≤ k := by
+      rw [← hScard]; exact Finset.card_pos.mpr ⟨hi, hhiS⟩
+    have hAcard : A.card = k := by
+      rw [hAdef, Finset.card_insert_of_notMem hloErase, Finset.card_erase_of_mem hhiS, hScard]
+      omega
+    have hstep : smallestK n k w' ≤ ∑ j ∈ A, w' j := by
+      rw [smallestK]; exact smallestK_le_subset n k hk w' A hAcard
+    refine le_trans hstep ?_
+    -- ∑_A w' = ∑_{S.erase hi} w + w' lo ≤ ∑_{S.erase hi} w + w hi = ∑_S w
+    rw [hAdef, Finset.sum_insert hloErase]
+    have heq : ∑ j ∈ S.erase hi, w' j = ∑ j ∈ S.erase hi, w j := by
+      apply Finset.sum_congr rfl
+      intro r hr
+      have hrhi : r ≠ hi := Finset.ne_of_mem_erase hr
+      have hrlo : r ≠ lo := fun h => hloErase (h ▸ hr)
+      exact hfixed r hrlo hrhi
+    rw [heq]
+    have hSsplit : ∑ j ∈ S.erase hi, w j + w hi = ∑ j ∈ S, w j := Finset.sum_erase_add S w hhiS
+    rw [← hSsum]; linarith [hSsplit]
+  · -- A = S works: the changed indices' sum over S only drops (or is fixed)
+    have hstep : smallestK n k w' ≤ ∑ j ∈ S, w' j := by
+      rw [smallestK]; exact smallestK_le_subset n k hk w' S hScard
+    refine le_trans hstep ?_
+    rw [← hSsum]
+    -- compare ∑_S w' to ∑_S w pointwise-after-isolating lo,hi
+    push_neg at hcase
+    by_cases hloS : lo ∈ S
+    · by_cases hhiS : hi ∈ S
+      · -- both in S: sums equal by hsum
+        have hsplit' : ∑ j ∈ S, w' j
+            = ∑ j ∈ (S.erase lo).erase hi, w' j + w' lo + w' hi := by
+          rw [add_right_comm, Finset.sum_erase_add _ _ (Finset.mem_erase.mpr ⟨(Ne.symm hne), hhiS⟩),
+            Finset.sum_erase_add _ _ hloS]
+        have hsplit : ∑ j ∈ S, w j
+            = ∑ j ∈ (S.erase lo).erase hi, w j + w lo + w hi := by
+          rw [add_right_comm, Finset.sum_erase_add _ _ (Finset.mem_erase.mpr ⟨(Ne.symm hne), hhiS⟩),
+            Finset.sum_erase_add _ _ hloS]
+        have hmid : ∑ j ∈ (S.erase lo).erase hi, w' j = ∑ j ∈ (S.erase lo).erase hi, w j := by
+          apply Finset.sum_congr rfl
+          intro r hr
+          have hrhi : r ≠ hi := Finset.ne_of_mem_erase hr
+          have hrlo : r ≠ lo := Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hr)
+          exact hfixed r hrlo hrhi
+        rw [hsplit', hsplit, hmid]; linarith
+      · -- lo in S, hi not: drop at lo by hlo₁
+        have hsplit' : ∑ j ∈ S, w' j = ∑ j ∈ S.erase lo, w' j + w' lo :=
+          (Finset.sum_erase_add _ _ hloS).symm
+        have hsplit : ∑ j ∈ S, w j = ∑ j ∈ S.erase lo, w j + w lo :=
+          (Finset.sum_erase_add _ _ hloS).symm
+        have hmid : ∑ j ∈ S.erase lo, w' j = ∑ j ∈ S.erase lo, w j := by
+          apply Finset.sum_congr rfl
+          intro r hr
+          have hrlo : r ≠ lo := Finset.ne_of_mem_erase hr
+          have hrhi : r ≠ hi := fun h => hhiS (h ▸ Finset.mem_of_mem_erase hr)
+          exact hfixed r hrlo hrhi
+        rw [hsplit', hsplit, hmid]; linarith
+    · -- lo not in S: then hi not in S either (else the by_cases branch); all fixed
+      have hhiS : hi ∉ S := fun h => hloS (hcase h)
+      apply le_of_eq
+      apply Finset.sum_congr rfl
+      intro r hr
+      have hrlo : r ≠ lo := fun h => hloS (h ▸ hr)
+      have hrhi : r ≠ hi := fun h => hhiS (h ▸ hr)
+      exact hfixed r hrlo hrhi
+
+/-- `Mvec M : Fin (L+1) → ℤ`, the width sequence as a `Fin (L+1)` vector (for `smallestK`). -/
+noncomputable def Mvec (M : Fin (L + 1) → ℕ) (i : Fin (L + 1)) : ℤ := (M i : ℤ)
+
+/-- `eqPad M T : Fin (L+1) → ℤ`, the edge vector padded with `0` at the last index (so it and `Mvec`
+are both `Fin (L+1)` vectors, for the corridor majorization). -/
+noncomputable def eqPad (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : Fin (L + 1)) : ℤ :=
+  if h : (i : ℕ) < L then edgeQ M T (i : ℕ) else 0
+
+/-- The interpolating sequence `Vseq M T t`: edges on `[0,t)`, the level `u_t` at index `t`, and
+widths past `t`. `Vseq M T 0 = Mvec`, `Vseq M T L = eqPad`; each step is
+one Karamata elementary transfer (pushing `u_t` down to `u_{t+1}`, `M⁽ᵗ⁺¹⁾` up to `edgeQ_t`). -/
+noncomputable def Vseq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (t : ℕ) (i : Fin (L + 1)) : ℤ :=
+  if (i : ℕ) < t then eqPad M T i
+  else if (i : ℕ) = t then Useq M T t
+  else Mvec M i
+
+private theorem Vseq_zero (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Vseq M T 0 = Mvec M := by
+  funext i; unfold Vseq
+  rw [if_neg (by omega)]
+  by_cases h : (i : ℕ) = 0
+  · rw [if_pos h]
+    have : i = (0 : Fin (L + 1)) := Fin.ext (by rw [h]; rfl)
+    rw [this, Useq_zero]; unfold Mvec; rfl
+  · rw [if_neg h]
+
+private theorem Vseq_last (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
+    (hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0) : Vseq M T L = eqPad M T := by
+  funext i; unfold Vseq
+  by_cases h : (i : ℕ) < L
+  · rw [if_pos h]
+  · have hiL : (i : ℕ) = L := by omega
+    rw [if_neg h, if_pos hiL]
+    unfold eqPad; rw [dif_neg h]
+    exact Useq_last M T hL hlast
+
+/-- One step of the interpolation `Vseq M T t → Vseq M T (t+1)` weakly decreases every `smallestK`
+(the Karamata elementary transfer `(u_t, M⁽ᵗ⁺¹⁾) ↦ (u_{t+1}, edgeQ_t)`). -/
+private theorem Vseq_step (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (t : ℕ)
+    (ht : t < L) (k : ℕ) (hk : k ≤ L + 1) :
+    smallestK (L + 1) k (Vseq M T (t + 1)) ≤ smallestK (L + 1) k (Vseq M T t) := by
+  let lo : Fin (L + 1) := ⟨t + 1, by omega⟩
+  let hi : Fin (L + 1) := ⟨t, by omega⟩
+  have hloval : (lo : ℕ) = t + 1 := rfl
+  have hhival : (hi : ℕ) = t := rfl
+  have hne : lo ≠ hi := fun h => absurd (congrArg Fin.val h) (by rw [hloval, hhival]; omega)
+  -- values of Vseq (t+1) and Vseq t at lo, hi
+  have hwlo : Vseq M T t lo = Mvec M lo := by
+    unfold Vseq
+    rw [if_neg (show ¬((lo : ℕ) < t) by rw [hloval]; omega),
+        if_neg (show ¬((lo : ℕ) = t) by rw [hloval]; omega)]
+  have hwhi : Vseq M T t hi = Useq M T t := by
+    unfold Vseq
+    rw [if_neg (show ¬((hi : ℕ) < t) by rw [hhival]; omega), if_pos hhival]
+  have hw'lo : Vseq M T (t + 1) lo = Useq M T (t + 1) := by
+    unfold Vseq
+    rw [if_neg (show ¬((lo : ℕ) < t + 1) by rw [hloval]; omega), if_pos hloval]
+  have hw'hi : Vseq M T (t + 1) hi = eqPad M T hi := by
+    unfold Vseq; rw [if_pos (show (hi : ℕ) < t + 1 by rw [hhival]; omega)]
+  have heqhi : eqPad M T hi = edgeQ M T t := by
+    unfold eqPad; rw [dif_pos (show (hi : ℕ) < L by rw [hhival]; omega), hhival]
+  have hMlo : Mvec M lo = Mseq M (t + 1) := by
+    unfold Mvec Mseq; rw [dif_pos (show t + 1 < L + 1 by omega)]
+  -- corridor facts
+  have hu_anti : Useq M T (t + 1) ≤ Useq M T t := Useq_antitone M T hT t (by omega)
+  have hu_le_M : Useq M T (t + 1) ≤ Mseq M (t + 1) := by
+    have := Useq_le_M M T hT (t + 1) (by omega); exact this
+  have hedge : edgeQ M T t = Mseq M (t + 1) + Useq M T t - Useq M T (t + 1) := by
+    unfold edgeQ; ring
+  refine smallestK_pair_spread (n := L + 1) (k := k) hk hne ?_ ?_ ?_ ?_
+  · -- w' lo ≤ w lo : Useq (t+1) ≤ Mvec lo = Mseq (t+1)
+    rw [hw'lo, hwlo, hMlo]; exact hu_le_M
+  · -- w' lo ≤ w hi : Useq (t+1) ≤ Useq t
+    rw [hw'lo, hwhi]; exact hu_anti
+  · -- w' lo + w' hi = w lo + w hi
+    rw [hw'lo, hw'hi, hwlo, hwhi, heqhi, hMlo, hedge]; ring
+  · -- fixed elsewhere
+    intro r hrlo hrhi
+    have hrne1 : (r : ℕ) ≠ t + 1 := fun h => hrlo (Fin.ext (by rw [hloval]; exact h))
+    have hrne0 : (r : ℕ) ≠ t := fun h => hrhi (Fin.ext (by rw [hhival]; exact h))
+    unfold Vseq
+    by_cases h1 : (r : ℕ) < t
+    · rw [if_pos h1, if_pos (by omega)]
+    · rw [if_neg (by omega), if_neg hrne1, if_neg (by omega), if_neg hrne0]
+
+/-- **Corridor majorization (the key A1 lower-bound bridge).** For `T ∈ Adm M`, the `0`-padded edge
+vector `eqPad` is majorized by the widths `Mvec`: every `k`-smallest sum of `eqPad` is `≤` that of
+`Mvec`. Proved by folding `L` Karamata elementary transfers (`Vseq` interpolation). -/
+private theorem smallestK_eqPad_le (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M)
+    (hL : 1 ≤ L) (k : ℕ) (hk : k ≤ L + 1) :
+    smallestK (L + 1) k (eqPad M T) ≤ smallestK (L + 1) k (Mvec M) := by
+  have hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0 := by
+    rw [Adm, Finset.mem_filter] at hT; exact hT.2.2.2
+  have hchain : ∀ t, t ≤ L → smallestK (L + 1) k (Vseq M T t) ≤ smallestK (L + 1) k (Mvec M) := by
+    intro t ht
+    induction t with
+    | zero => rw [Vseq_zero]
+    | succ s ih =>
+      refine le_trans (Vseq_step M T hT s (by omega) k hk) (ih (by omega))
+  have := hchain L (le_refl L)
+  rwa [Vseq_last M T hL hlast] at this
+
+/-- The bridge: the `k` smallest edges sum equals the `(k+1)` smallest of the `0`-padded edge vector
+(the appended `0` is the minimum, so it joins the smallest slot for free). Lets the corridor
+majorization (`Fin (L+1)`) feed the `Fin L` edge majorization. -/
+private theorem edgeQ_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (j : Fin L) :
+    0 ≤ edgeQ M T (j : ℕ) := by
+  unfold edgeQ
+  have h1 : (0 : ℤ) ≤ Mseq M ((j : ℕ) + 1) := by
+    unfold Mseq; split
+    · positivity
+    · exact le_refl 0
+  have h2 : Useq M T ((j : ℕ) + 1) ≤ Useq M T (j : ℕ) := Useq_antitone M T hT (j : ℕ) (by omega)
+  linarith
+
+private theorem smallestK_edge_eq_pad (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M)
+    (k : ℕ) (hk : k ≤ L) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ))
+      ≤ smallestK (L + 1) (k + 1) (eqPad M T) := by
+  -- B = the (k+1) smallest positions of eqPad; A = its members that lie in Fin L (drop index L)
+  obtain ⟨hBcard, hBsum⟩ := leastSet_card_sum (L + 1) (k + 1) (by omega) (eqPad M T)
+  set B := leastSet (L + 1) (k + 1) (eqPad M T) with hBdef
+  set lastI : Fin (L + 1) := ⟨L, by omega⟩ with hlastdef
+  set A : Finset (Fin L) :=
+    Finset.univ.filter (fun j : Fin L => (⟨(j : ℕ), by omega⟩ : Fin (L + 1)) ∈ B) with hAdef
+  have hinjOn : Set.InjOn (fun j : Fin L => (⟨(j : ℕ), by omega⟩ : Fin (L + 1))) A :=
+    fun a _ b _ h => Fin.ext (Fin.mk.inj h)
+  have himg : A.image (fun j : Fin L => (⟨(j : ℕ), by omega⟩ : Fin (L + 1))) = B.erase lastI := by
+    apply Finset.ext; intro i
+    simp only [Finset.mem_image, hAdef, Finset.mem_filter, Finset.mem_univ, true_and,
+      Finset.mem_erase, hlastdef]
+    constructor
+    · rintro ⟨j, hjB, rfl⟩
+      exact ⟨fun h => absurd (Fin.mk.inj h) (by omega), hjB⟩
+    · rintro ⟨hine, hiB⟩
+      have hiL : (i : ℕ) < L := by
+        rcases Nat.lt_or_ge (i : ℕ) L with h | h
+        · exact h
+        · exact absurd (Fin.ext (show (i : ℕ) = L by omega)) hine
+      exact ⟨⟨(i : ℕ), hiL⟩, by simpa using hiB, Fin.ext rfl⟩
+  -- ∑_A edgeQ = ∑_{B.erase lastI} eqPad  (eqPad = edgeQ on indices < L)
+  have hAsum : ∑ j ∈ A, edgeQ M T (j : ℕ) = ∑ i ∈ B.erase lastI, eqPad M T i := by
+    rw [← himg, Finset.sum_image hinjOn]
+    apply Finset.sum_congr rfl; intro j _
+    unfold eqPad
+    rw [dif_pos (show ((⟨(j : ℕ), by omega⟩ : Fin (L + 1)) : ℕ) < L by simpa using j.isLt)]
+  -- ∑_{B.erase lastI} eqPad ≤ ∑_B eqPad  (drop the nonneg entry at lastI)
+  have heqPad_nonneg : ∀ i, 0 ≤ eqPad M T i := by
+    intro i; unfold eqPad; split
+    · rename_i h
+      exact edgeQ_nonneg M T hT ⟨(i : ℕ), h⟩
+    · exact le_refl 0
+  have hdrop : ∑ i ∈ B.erase lastI, eqPad M T i ≤ ∑ i ∈ B, eqPad M T i := by
+    by_cases h : lastI ∈ B
+    · rw [← Finset.sum_erase_add B _ h]; linarith [heqPad_nonneg lastI]
+    · rw [Finset.erase_eq_of_notMem h]
+  have hAcard : k ≤ A.card := by
+    have hcardeq : A.card = (B.erase lastI).card := by
+      rw [← himg, Finset.card_image_of_injOn hinjOn]
+    rw [hcardeq]
+    have hple : B.card ≤ (B.erase lastI).card + 1 := by
+      rw [Finset.card_erase_eq_ite]; split <;> omega
+    omega
+  -- extract a k-subset A'' ⊆ A; smallestK ≤ its sum ≤ ∑_A edgeQ ≤ ∑_{B.erase} eqPad ≤ ∑_B eqPad
+  obtain ⟨A'', hA''sub, hA''card⟩ := Finset.le_card_iff_exists_subset_card.mp hAcard
+  have hstep1 : smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) ≤ ∑ j ∈ A'', edgeQ M T (j : ℕ) :=
+    smallestK_le_subset L k hk _ A'' hA''card
+  have hstep2 : ∑ j ∈ A'', edgeQ M T (j : ℕ) ≤ ∑ j ∈ A, edgeQ M T (j : ℕ) := by
+    apply Finset.sum_le_sum_of_subset_of_nonneg hA''sub
+    intro j _ _; exact edgeQ_nonneg M T hT j
+  rw [← hBsum]
+  calc smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ))
+      ≤ ∑ j ∈ A'', edgeQ M T (j : ℕ) := hstep1
+    _ ≤ ∑ j ∈ A, edgeQ M T (j : ℕ) := hstep2
+    _ = ∑ i ∈ B.erase lastI, eqPad M T i := hAsum
+    _ ≤ ∑ i ∈ B, eqPad M T i := hdrop
+
+/-- The `k`-smallest of the edges is `≤` the `(k+1)`-smallest of the widths (`H4`/`F1` unified, via
+corridor majorization + the padding bridge). -/
+private theorem smallestK_edge_le_width (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M)
+    (hL : 1 ≤ L) (k : ℕ) (hk : k ≤ L) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) ≤ smallestK (L + 1) (k + 1) (Mvec M) := by
+  refine le_trans (smallestK_edge_eq_pad M T hT k hk) ?_
+  exact smallestK_eqPad_le M T hT hL (k + 1) (by omega)
+
+/-- `srt`-prefix sum equals `smallestK` (unfolding). -/
+private theorem smallestK_eq_srt (n k : ℕ) (q : Fin n → ℤ) :
+    smallestK n k q = ∑ i ∈ Finset.range k, srt n q i := rfl
+
+/-- The total of `srt n q` over `range n` equals `∑ q` (sorting is a permutation). -/
+private theorem sum_srt_range (n : ℕ) (q : Fin n → ℤ) :
+    ∑ i ∈ Finset.range n, srt n q i = ∑ i, q i := by
+  rw [← Fin.sum_univ_eq_sum_range (fun i => srt n q i) n]
+  rw [show (∑ i : Fin n, srt n q (i : ℕ)) = ∑ i : Fin n, q (Tuple.sort q i) from
+    Finset.sum_congr rfl (fun i _ => by simp only [srt, dif_pos i.isLt])]
+  exact Equiv.sum_comp (Tuple.sort q) q
+
+/-- `srt n q` is monotone in the `ℕ` index (within range). -/
+private theorem srt_mono (n : ℕ) (q : Fin n → ℤ) {i j : ℕ} (hij : i ≤ j) (hj : j < n) :
+    srt n q i ≤ srt n q j := by
+  simp only [srt, dif_pos (show i < n by omega), dif_pos hj]
+  exact Tuple.monotone_sort q (by simp only [Fin.le_def]; omega)
+
+/-- `srt n q` is nonnegative when `q` is. -/
+private theorem srt_nonneg (n : ℕ) (q : Fin n → ℤ) (hq : ∀ i, 0 ≤ q i) (i : ℕ) : 0 ≤ srt n q i := by
+  unfold srt; split
+  · exact hq _
+  · exact le_refl 0
+
+/-- **A1 Step B (the one novel arithmetic sub-lemma; verified 0/11219).** The balanced split of `P`
+into `c` parts maximises every `k`-smallest sum among nonneg integer `c`-vectors of total `≤ P`. The
+convexity-irreducible piece: the average bound `m·smallestK ≤ k·∑` undershoots, balanced is needed
+exactly. Proven by the water-filling contradiction: a too-big `k`-smallest forces a too-big tail. -/
+private theorem stepB (P c k : ℕ) (hc : 0 < c) (hk : k ≤ c) (q : Fin c → ℤ)
+    (hq : ∀ i, 0 ≤ q i) (hsum : (∑ i, q i) ≤ (P : ℤ)) :
+    smallestK c k q ≤ (k : ℤ) * ((P / c : ℕ) : ℤ)
+      + (max 0 ((k : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ))) := by
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set r : ℤ := ((P % c : ℕ) : ℤ) with hr
+  set e : ℤ := max 0 ((k : ℤ) + r - (c : ℤ)) with he
+  have hPeq : (P : ℤ) = (c : ℤ) * b + r := by
+    rw [hb, hr, ← Nat.cast_mul, ← Nat.cast_add]
+    exact_mod_cast (Nat.div_add_mod P c).symm
+  by_contra hcon
+  push_neg at hcon
+  -- hcon : k*b + e < smallestK c k q
+  set x : ℕ → ℤ := srt c q with hx
+  have hsmall : smallestK c k q = ∑ i ∈ Finset.range k, x i := rfl
+  rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+  · have hz : smallestK c k q = 0 := by rw [hsmall, hk0, Finset.range_zero, Finset.sum_empty]
+    have he0 : (0 : ℤ) ≤ e := le_max_left _ _
+    rw [hz, hk0] at hcon; push_cast at hcon; linarith
+  -- k ≥ 1: x(k-1) is the largest of the first k; ∑_{<k} x ≤ k·x(k-1)
+  have hxmono : ∀ i j, i ≤ j → j < c → x i ≤ x j := fun i j hij hj => srt_mono c q hij hj
+  have hkm1 : k - 1 < c := by omega
+  have hprefix_le : (∑ i ∈ Finset.range k, x i) ≤ (k : ℤ) * x (k - 1) := by
+    calc (∑ i ∈ Finset.range k, x i) ≤ ∑ i ∈ Finset.range k, x (k - 1) := by
+          apply Finset.sum_le_sum; intro i hi; rw [Finset.mem_range] at hi
+          exact hxmono i (k - 1) (by omega) hkm1
+      _ = (k : ℤ) * x (k - 1) := by rw [Finset.sum_const, Finset.card_range]; ring
+  -- x(k-1) ≥ b+1 (else prefix ≤ k·b contradicts hcon, since e ≥ 0)
+  have hxk_ge : b + 1 ≤ x (k - 1) := by
+    by_contra hlt; push_neg at hlt
+    have : x (k - 1) ≤ b := by omega
+    have hpre : (∑ i ∈ Finset.range k, x i) ≤ (k : ℤ) * b := by
+      refine le_trans hprefix_le ?_; nlinarith [Nat.cast_nonneg (α := ℤ) k]
+    have : (0 : ℤ) ≤ e := le_max_left _ _
+    rw [hsmall] at hcon; linarith
+  -- tail ∑_{k≤i<c} x ≥ (c-k)·x(k-1) ≥ (c-k)(b+1); total ∑x ≥ (kb+e+1)+(c-k)(b+1) > P
+  have htail : ((c : ℤ) - (k : ℤ)) * x (k - 1) ≤ ∑ i ∈ Finset.Ico k c, x i := by
+    calc ((c : ℤ) - (k : ℤ)) * x (k - 1)
+        = ∑ _i ∈ Finset.Ico k c, x (k - 1) := by
+          rw [Finset.sum_const, Nat.card_Ico, nsmul_eq_mul, Nat.cast_sub hk]
+      _ ≤ ∑ i ∈ Finset.Ico k c, x i := by
+          apply Finset.sum_le_sum; intro i hi; rw [Finset.mem_Ico] at hi
+          exact hxmono (k - 1) i (by omega) (by omega)
+  have hsplit : (∑ i, q i) = (∑ i ∈ Finset.range k, x i) + ∑ i ∈ Finset.Ico k c, x i := by
+    rw [← sum_srt_range c q, ← hx, ← Finset.sum_range_add_sum_Ico x hk]
+  -- combine
+  have hcon' : (k : ℤ) * b + e + 1 ≤ ∑ i ∈ Finset.range k, x i := by rw [hsmall] at hcon; omega
+  have htail' : ((c : ℤ) - (k : ℤ)) * (b + 1) ≤ ∑ i ∈ Finset.Ico k c, x i := by
+    refine le_trans ?_ htail
+    apply mul_le_mul_of_nonneg_left hxk_ge (by push_cast; omega)
+  have he_ge : (k : ℤ) + r - (c : ℤ) ≤ e := le_max_right _ _
+  have : (P : ℤ) + 1 ≤ ∑ i, q i := by
+    rw [hsplit, hPeq]; nlinarith [hcon', htail', he_ge]
+  linarith
+
+/-- The `k`-smallest sum of the balanced split (closed form `k·b + max(0, k+r−c)`, `b = P/c`,
+`r = P%c`). Proved by the same `srt`-monotone water-filling argument bounding it both ways. -/
+private theorem smallestK_balancedSplit (P c k : ℕ) (hc : 0 < c) (hk : k ≤ c) :
+    smallestK c k (fun i => ((balancedSplit P c i : ℕ) : ℤ))
+      = (k : ℤ) * ((P / c : ℕ) : ℤ) + max 0 ((k : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ)) := by
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set r : ℤ := ((P % c : ℕ) : ℤ) with hr
+  have hrlt : P % c < c := Nat.mod_lt _ hc
+  have hrnn : (0 : ℤ) ≤ r := by rw [hr]; positivity
+  -- ∑ balancedSplit = P (closed-form sum)
+  have hmod : P % c ≤ c := le_of_lt hrlt
+  have hcard : (Finset.univ.filter (fun i : Fin c => (i : ℕ) < P % c)).card = P % c := by
+    rw [Fin.card_filter_val_lt]; omega
+  have hcompl : (Finset.univ.filter (fun i : Fin c => ¬ (i : ℕ) < P % c)).card = c - P % c := by
+    have := Finset.filter_card_add_filter_neg_card_eq_card (s := (Finset.univ : Finset (Fin c)))
+      (p := fun i : Fin c => (i : ℕ) < P % c)
+    simp only [Finset.card_univ, Fintype.card_fin] at this; rw [hcard] at this; omega
+  have hbsterm : ∀ i : Fin c, ((balancedSplit P c i : ℕ) : ℤ)
+      = if (i : ℕ) < P % c then ((P / c + 1 : ℕ) : ℤ) else ((P / c : ℕ) : ℤ) := by
+    intro i; unfold balancedSplit; split_ifs <;> rfl
+  have hP : (P : ℤ) = (c : ℤ) * ((P / c : ℕ) : ℤ) + ((P % c : ℕ) : ℤ) := by
+    rw [← Nat.cast_mul, ← Nat.cast_add]; exact_mod_cast (Nat.div_add_mod P c).symm
+  have hbsumeq : (∑ i, ((balancedSplit P c i : ℕ) : ℤ)) = (P : ℤ) := by
+    rw [Finset.sum_congr rfl (fun i _ => hbsterm i)]
+    rw [Finset.sum_ite]; simp only [Finset.sum_const, nsmul_eq_mul]; rw [hcard, hcompl]
+    rw [Nat.cast_sub hmod, Nat.cast_add, Nat.cast_one]
+    rw [hP]; ring
+  -- ≤ : stepB applied to balancedSplit itself (total = P)
+  have hle := stepB P c k hc hk (fun i => ((balancedSplit P c i : ℕ) : ℤ))
+    (fun i => by positivity) (le_of_eq hbsumeq)
+  -- ≥ : smallestK = ∑ over leastSet S (|S|=k); ∑_S balancedSplit = k·b + bcount(S), bcount ≥ max
+  obtain ⟨hScard, hSsum⟩ := leastSet_card_sum c k hk (fun i => ((balancedSplit P c i : ℕ) : ℤ))
+  set S := leastSet c k (fun i => ((balancedSplit P c i : ℕ) : ℤ)) with hSdef
+  -- ∑_S balancedSplit = ∑_S (if i<r then b+1 else b) = k·b + (count of i<r in S)
+  set Sb1 := S.filter (fun i : Fin c => (i : ℕ) < P % c) with hSb1
+  have hsumS : ∑ i ∈ S, ((balancedSplit P c i : ℕ) : ℤ)
+      = (k : ℤ) * b + (Sb1.card : ℤ) := by
+    have hterm2 : ∀ i : Fin c, ((balancedSplit P c i : ℕ) : ℤ)
+        = if (i : ℕ) < P % c then b + 1 else b := by
+      intro i; unfold balancedSplit; rw [hb]; split_ifs <;> push_cast <;> ring
+    rw [Finset.sum_congr rfl (fun i _ => hterm2 i)]
+    rw [Finset.sum_ite, Finset.sum_const, Finset.sum_const]
+    simp only [nsmul_eq_mul, ← hSb1]
+    have hcompl : (S.filter (fun i : Fin c => ¬ (i : ℕ) < P % c)).card = k - Sb1.card := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card (s := S)
+        (p := fun i : Fin c => (i : ℕ) < P % c)
+      rw [hScard] at this; rw [hSb1]; omega
+    have hle' : Sb1.card ≤ k := by rw [hSb1, ← hScard]; exact Finset.card_filter_le _ _
+    rw [hcompl, Nat.cast_sub hle']; ring
+  -- bcount(S) ≥ max(0, k+r-c): S has k elements; non-(<r) ones live in {i ≥ r}, only c-r of them
+  have hScompl : (S.filter (fun i : Fin c => ¬ (i : ℕ) < P % c)).card ≤ c - P % c := by
+    rw [← hcompl]
+    exact Finset.card_le_card
+      (Finset.filter_subset_filter (fun i : Fin c => ¬ (i : ℕ) < P % c) (Finset.subset_univ S))
+  have hsumcard := Finset.filter_card_add_filter_neg_card_eq_card (s := S)
+    (p := fun i : Fin c => (i : ℕ) < P % c)
+  rw [hScard, ← hSb1] at hsumcard
+  -- ℕ fact: Sb1.card ≥ k + P%c - c (and ≥ 0)
+  have hbcount_nat : (max 0 (k + P % c - c) : ℕ) ≤ Sb1.card := by omega
+  have hbcount_ge : max 0 ((k : ℤ) + r - (c : ℤ)) ≤ (Sb1.card : ℤ) := by
+    rw [hr]
+    have hcast : ((max 0 (k + P % c - c) : ℕ) : ℤ) ≤ (Sb1.card : ℤ) := by exact_mod_cast hbcount_nat
+    have : max 0 ((k : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ)) ≤ ((max 0 (k + P % c - c) : ℕ) : ℤ) := by
+      rw [Nat.cast_max]; push_cast; omega
+    linarith
+  have hge : (k : ℤ) * b + max 0 ((k : ℤ) + r - (c : ℤ))
+      ≤ smallestK c k (fun i => ((balancedSplit P c i : ℕ) : ℤ)) := by
+    rw [← hSsum, hsumS]; linarith [hbcount_ge]
+  exact le_antisymm hle hge
+
+/-- `aSort M : Fin (L+1) → ℕ`, the widths of `M` sorted ascending (`i`-th value = `i`-smallest). -/
+noncomputable def aSort (M : Fin (L + 1) → ℕ) (i : Fin (L + 1)) : ℕ := M (Tuple.sort M i)
+
+/-- `aSort` is monotone (ascending). -/
+private theorem aSort_mono (M : Fin (L + 1) → ℕ) : Monotone (aSort M) := Tuple.monotone_sort M
+
+/-- Total `n`-th smallest width `aS M n` (`= aₙ` for `n < L+1`, else `0`). -/
+noncomputable def aS (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
+  if h : n < L + 1 then aSort M ⟨n, h⟩ else 0
+
+/-- The sorted-prefix sum `Sprefix M n = a₀+⋯+a_{n-1}` (`n` smallest widths), as `ℕ`. -/
+noncomputable def Sprefix (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ := ∑ i ∈ Finset.range n, aS M i
+
+/-- The achiever predicate `good M c`: the cumulative ceiling test `∀ 1 ≤ i ≤ c, i·aᵢ ≤ Sᵢ + i − 1`
+(`Sᵢ = a₀+⋯+aᵢ`). `c = 1` always holds, and the achiever is the largest good `c ≤ L`. -/
+def goodAch (M : Fin (L + 1) → ℕ) (c : ℕ) : Prop :=
+  ∀ i : ℕ, i < c + 1 → 1 ≤ i → i * aS M i ≤ Sprefix M (i + 1) + i - 1
+
+noncomputable instance (M : Fin (L + 1) → ℕ) (c : ℕ) : Decidable (goodAch M c) :=
+  Classical.dec _
+
+/-- `Sprefix M (n+1) = Sprefix M n + aₙ`. -/
+private theorem Sprefix_succ (M : Fin (L + 1) → ℕ) (n : ℕ) :
+    Sprefix M (n + 1) = Sprefix M n + aS M n := by
+  unfold Sprefix; rw [Finset.sum_range_succ]
+
+/-- `goodAch M 1` always holds (the base case making the achiever well-defined). -/
+private theorem goodAch_one (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) : goodAch M 1 := by
+  intro i hi1 hi
+  interval_cases i
+  · rw [Sprefix_succ M 1, Sprefix_succ M 0]
+    simp only [Sprefix, Finset.range_zero, Finset.sum_empty, one_mul, zero_add]
+    have h0 : (0 : ℕ) < L + 1 := by omega
+    have h1 : (1 : ℕ) < L + 1 := by omega
+    have : aS M 0 ≤ aS M 1 := by
+      unfold aS; rw [dif_pos h0, dif_pos h1]; exact aSort_mono M (by simp [Fin.le_def])
+    omega
+
+/-- The achiever `cAch M`: the largest `c ≤ L` with `goodAch M c` (`goodAch 1` holds, so `≥ 1`). -/
+noncomputable def cAch (M : Fin (L + 1) → ℕ) : ℕ := Nat.findGreatest (goodAch M) L
+
+/-- The achiever lies in `{1,…,L}` and is `goodAch` (given `1 ≤ L`). -/
+private theorem cAch_spec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    1 ≤ cAch M ∧ cAch M ≤ L ∧ goodAch M (cAch M) :=
+  ⟨Nat.le_findGreatest hL (goodAch_one M hL), Nat.findGreatest_le L,
+    Nat.findGreatest_spec hL (goodAch_one M hL)⟩
+
+/-- For a monotone `q`, `srt n q` is `q` (read at the `ℕ` index); sorting fixes a sorted tuple. -/
+private theorem srt_of_monotone (n : ℕ) (q : Fin n → ℤ) (hq : Monotone q) (i : ℕ) (hi : i < n) :
+    srt n q i = q ⟨i, hi⟩ := by
+  simp only [srt, dif_pos hi]
+  rw [(Tuple.sort_eq_refl_iff_monotone).mpr hq, Equiv.refl_apply]
+
+/-- For monotone `q`, `smallestK n k q` is the direct prefix sum `∑_{i<k} q i`. -/
+private theorem smallestK_of_monotone (n k : ℕ) (q : Fin n → ℤ) (hq : Monotone q) (hk : k ≤ n) :
+    smallestK n k q = ∑ i ∈ Finset.range k, (if h : i < n then q ⟨i, h⟩ else 0) := by
+  rw [smallestK]
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  rw [srt_of_monotone n q hq i (by omega), dif_pos (by omega)]
+
+/-- `Mvec`'s sorted value at `j` equals `aSort M j` (both the `j`-th smallest width; the two sort
+permutations may differ on ties but their value-sequences — the unique monotone form — agree). -/
+private theorem Mvec_sort_eq_aSort (M : Fin (L + 1) → ℕ) (j : Fin (L + 1)) :
+    Mvec M (Tuple.sort (Mvec M) j) = (aSort M j : ℤ) := by
+  -- `Mvec M ∘ sort M` is monotone, so by uniqueness it equals `Mvec M ∘ sort (Mvec M)`
+  have hmono : Monotone (Mvec M ∘ Tuple.sort M) := by
+    intro a b hab
+    simp only [Function.comp_apply, Mvec]
+    exact_mod_cast Tuple.monotone_sort M hab
+  have h1 : Mvec M ∘ Tuple.sort M = Mvec M ∘ Tuple.sort (Mvec M) :=
+    Tuple.comp_sort_eq_comp_iff_monotone.mpr hmono
+  have := congrArg (fun f => f j) h1
+  simp only [Function.comp_apply] at this
+  rw [← this]; rfl
+
+/-- `smallestK (L+1) n (Mvec M) = Sprefix M n`: the `n`-smallest widths sum to the sorted prefix. -/
+private theorem smallestK_Mvec (M : Fin (L + 1) → ℕ) (n : ℕ) (hn : n ≤ L + 1) :
+    smallestK (L + 1) n (Mvec M) = (Sprefix M n : ℤ) := by
+  rw [smallestK, Sprefix, Nat.cast_sum]
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  have hi' : i < L + 1 := by omega
+  rw [srt, dif_pos hi', aS, dif_pos hi']
+  exact Mvec_sort_eq_aSort M ⟨i, hi'⟩
+
+/-- `aS` is monotone in the `ℕ` index (the sorted widths ascend). -/
+private theorem aS_mono (M : Fin (L + 1) → ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < L + 1) :
+    aS M i ≤ aS M j := by
+  unfold aS; rw [dif_pos (show i < L + 1 by omega), dif_pos hj]
+  exact aSort_mono M (by simp only [Fin.le_def]; omega)
+
+/-- When the achiever `c = cAch M < L`, `c+1` is not `goodAch` (`c` is the largest good index). -/
+private theorem not_goodAch_cAch_succ (M : Fin (L + 1) → ℕ) (hcL : cAch M < L) :
+    ¬ goodAch M (cAch M + 1) := by
+  have h : Nat.findGreatest (goodAch M) L < cAch M + 1 := by rw [← cAch]; omega
+  exact Nat.findGreatest_is_greatest h (by omega)
+
+/-- **Junction bound** `⌊P/c⌋ + 1 ≤ a_{c+1}` (`P = Sprefix M (c+1)`, `c = cAch M < L`): the smallest
+tail width dominates the balanced split's max. From `¬goodAch (c+1)` (violation lands at `c+1`). -/
+private theorem junction_bound (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (hcL : cAch M < L) :
+    (Sprefix M (cAch M + 1)) / (cAch M) + 1 ≤ aS M (cAch M + 1) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  have hng := not_goodAch_cAch_succ M hcL
+  -- ¬goodAch (c+1): the violating index is c+1 (all i≤c are good)
+  rw [goodAch] at hng; push_neg at hng
+  obtain ⟨i, hilt, hi1, hviol⟩ := hng
+  -- i ≤ c is good (goodAch c), so the violation forces i = c+1
+  have hic : i = c + 1 := by
+    by_contra hne
+    have hic : i ≤ c := by omega
+    have := (cAch_spec M hL).2.2 i (by omega) hi1
+    omega
+  subst hic
+  -- (c+1)·a_{c+1} > Sprefix(c+2) + (c+1) − 1 = Sprefix(c+1) + a_{c+1} + c
+  rw [Sprefix_succ M (c + 1)] at hviol
+  -- Sprefix(c+2) = Sprefix(c+1) + aS(c+1); goal arithmetic
+  have hPc : c * aS M (c + 1) > Sprefix M (c + 1) + c := by
+    have : (c + 1) * aS M (c + 1) > Sprefix M (c + 1) + aS M (c + 1) + c := by omega
+    nlinarith [this]
+  -- c·a_{c+1} > P + c ≥ P ⟹ a_{c+1} > P/c ⟹ a_{c+1} ≥ P/c + 1
+  have hdiv : Sprefix M (c + 1) / c * c ≤ Sprefix M (c + 1) := Nat.div_mul_le_self _ _
+  -- P/c * c ≤ P < c·A ⟹ P/c * c < c·A ⟹ P/c < A
+  have hlt : Sprefix M (c + 1) / c * c < c * aS M (c + 1) := by omega
+  have : Sprefix M (c + 1) / c < aS M (c + 1) := by
+    rw [mul_comm] at hlt; exact lt_of_mul_lt_mul_left hlt (Nat.zero_le c)
+  omega
+
+/-- The target edge multiset `Yvec`, arranged **monotone** (so its `srt` is itself): the sorted
+balanced split of `P = Sprefix M (c+1)` into `c` parts on positions `[0,c)`, then the tail widths
+`a_{c+1},…,a_L` on `[c,L)`. The lower bound's comparison vector and the achiever's edge image. -/
+noncomputable def Yvec (M : Fin (L + 1) → ℕ) (c : ℕ) (j : Fin L) : ℤ :=
+  if (j : ℕ) < c then
+    (if (j : ℕ) < c - (Sprefix M (c + 1)) % c then ((Sprefix M (c + 1) / c : ℕ) : ℤ)
+      else ((Sprefix M (c + 1) / c : ℕ) : ℤ) + 1)
+  else (aS M (j + 1) : ℤ)
+
+/-- `Yvec M (cAch M)` is monotone: balanced block `b ≤ b+1`, then the tail `aS` ascends, and at the
+junction `b+1 ≤ a_{c+1}` (`junction_bound`). -/
+private theorem Yvec_monotone (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    Monotone (Yvec M (cAch M)) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set b : ℤ := ((Sprefix M (c + 1) / c : ℕ) : ℤ) with hb
+  -- the value of Yvec as a function of the nat index, monotone in it
+  have hval : ∀ j : Fin L, Yvec M c j =
+      (if (j : ℕ) < c then (if (j : ℕ) < c - Sprefix M (c + 1) % c then b else b + 1)
+        else (aS M ((j : ℕ) + 1) : ℤ)) := fun j => rfl
+  intro x y hxy
+  rw [hval, hval]
+  have hxyN : (x : ℕ) ≤ (y : ℕ) := hxy
+  by_cases hxc : (x : ℕ) < c
+  · by_cases hyc : (y : ℕ) < c
+    · -- both in balanced block
+      split_ifs with h1 h2 h2 <;> first | rfl | (try omega) | linarith
+    · -- x in balanced, y in tail: b or b+1 ≤ aS(y+1); use junction b+1 ≤ aS(c+1) ≤ aS(y+1)
+      rw [if_pos hxc, if_neg hyc]
+      have hcL : c < L := by
+        rcases lt_or_eq_of_le hcleL with h | h
+        · exact h
+        · exact absurd (by omega : (y : ℕ) < c) (by omega)
+      have hj := junction_bound M hL hcL
+      have hmono : aS M (c + 1) ≤ aS M ((y : ℕ) + 1) :=
+        aS_mono M (by omega) (by omega)
+      have hbb : (if (x : ℕ) < c - Sprefix M (c + 1) % c then b else b + 1) ≤ b + 1 := by
+        split_ifs <;> [linarith; rfl]
+      have : b + 1 ≤ (aS M (c + 1) : ℤ) := by rw [hb]; exact_mod_cast hj
+      calc (if (x : ℕ) < c - Sprefix M (c + 1) % c then b else b + 1) ≤ b + 1 := hbb
+        _ ≤ (aS M (c + 1) : ℤ) := this
+        _ ≤ (aS M ((y : ℕ) + 1) : ℤ) := by exact_mod_cast hmono
+  · -- x in tail ⟹ y in tail
+    rw [if_neg hxc, if_neg (by omega : ¬ (y : ℕ) < c)]
+    exact_mod_cast aS_mono M (by omega) (by omega)
+
+/-- `(range c).filter (· < m) = range m` for `m ≤ c`. -/
+private theorem filter_range_lt (c m : ℕ) (hm : m ≤ c) :
+    (Finset.range c).filter (fun j => j < m) = Finset.range m := by
+  ext j; simp only [Finset.mem_filter, Finset.mem_range]; omega
+
+/-- The balanced block of `Yvec` (sorted form `b…b,b+1…b+1`) has the same sum-of-squares as
+`balancedSplit P c` (same multiset: `c−r` copies of `b`, `r` of `b+1`). -/
+private theorem Yvec_balanced_sq (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : 0 < c) :
+    ∑ j ∈ Finset.range c,
+        (if j < c - Sprefix M (c + 1) % c then ((Sprefix M (c + 1) / c : ℕ) : ℤ)
+          else ((Sprefix M (c + 1) / c : ℕ) : ℤ) + 1) ^ 2
+      = ∑ i : Fin c, ((balancedSplit (Sprefix M (c + 1)) c i : ℕ) : ℤ) ^ 2 := by
+  set P := Sprefix M (c + 1) with hP
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set rr : ℤ := ((P % c : ℕ) : ℤ) with hrr
+  rw [balancedSplit_sq_int P c hc]
+  have hr : P % c ≤ c := le_of_lt (Nat.mod_lt _ hc)
+  -- push the square inside the if, then split the sum
+  have hterm : ∀ j, ((if j < c - P % c then b else b + 1) ^ 2)
+      = (if j < c - P % c then b ^ 2 else (b + 1) ^ 2) := fun j => by split_ifs <;> rfl
+  simp only [hterm]
+  rw [Finset.sum_ite, Finset.sum_const, Finset.sum_const]
+  have hcard1 : (Finset.range c |>.filter (fun j => j < c - P % c)).card = c - P % c := by
+    rw [filter_range_lt c (c - P % c) (by omega), Finset.card_range]
+  have hcard2 : (Finset.range c |>.filter (fun j => ¬ j < c - P % c)).card = P % c := by
+    have := Finset.filter_card_add_filter_neg_card_eq_card (s := Finset.range c)
+      (p := fun j => j < c - P % c)
+    rw [hcard1, Finset.card_range] at this; omega
+  rw [hcard1, hcard2, nsmul_eq_mul, nsmul_eq_mul, Nat.cast_sub hr]
+  ring
+
+/-- `∑ (M i)² = ∑ (aS M i)²` (sum of squares is invariant under the sorting permutation). -/
+private theorem sum_sq_M_eq_aS (M : Fin (L + 1) → ℕ) :
+    ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 = ∑ i ∈ Finset.range (L + 1), (aS M i : ℤ) ^ 2 := by
+  rw [← Fin.sum_univ_eq_sum_range (fun i => (aS M i : ℤ) ^ 2) (L + 1)]
+  rw [show (∑ i : Fin (L + 1), (aS M (i : ℕ) : ℤ) ^ 2)
+        = ∑ i : Fin (L + 1), ((M (Tuple.sort M i) : ℤ)) ^ 2 from
+      Finset.sum_congr rfl (fun i _ => by rw [aS, dif_pos i.isLt]; rfl)]
+  exact (Equiv.sum_comp (Tuple.sort M) (fun i => ((M i : ℤ)) ^ 2)).symm
+
+/-- `∑ Yvec²` over `Fin L`, written as a `range L` sum (for splitting at `c`). -/
+private theorem sum_Yvec_sq_range (M : Fin (L + 1) → ℕ) (c : ℕ) :
+    (∑ j : Fin L, (Yvec M c j) ^ 2)
+      = ∑ j ∈ Finset.range L,
+          (if j < c then (if j < c - Sprefix M (c + 1) % c then ((Sprefix M (c + 1) / c : ℕ) : ℤ)
+              else ((Sprefix M (c + 1) / c : ℕ) : ℤ) + 1)
+            else (aS M (j + 1) : ℤ)) ^ 2 := by
+  rw [← Fin.sum_univ_eq_sum_range (fun j => _) L]
+  apply Finset.sum_congr rfl
+  intro j _
+  rfl
+
+/-- **A1 value identity (E).** `∑ Yvec² − ∑ M² = ∑(balancedSplit P c)² − ∑(sortedSmallest)²`: the
+tail (the `L−c` largest widths) appears in both `∑Yvec²` and `∑M²` and cancels. -/
+private theorem Yvec_value (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) (hc1 : 1 ≤ c) :
+    (∑ j : Fin L, (Yvec M c j) ^ 2) - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2
+      = (∑ i : Fin c, ((balancedSplit (Sprefix M (c + 1)) c i : ℕ) : ℤ) ^ 2)
+        - ∑ k : Fin (c + 1), ((sortedSmallest M c hc k : ℕ) : ℤ) ^ 2 := by
+  set P := Sprefix M (c + 1) with hP
+  set bform := fun j => (if j < c - P % c then ((P / c : ℕ) : ℤ) else ((P / c : ℕ) : ℤ) + 1)
+    with hbf
+  -- ∑ Yvec² = balanced-block² + tail²  (split range L at c)
+  have hYsplit : (∑ j : Fin L, (Yvec M c j) ^ 2)
+      = (∑ j ∈ Finset.range c, (bform j) ^ 2)
+        + ∑ j ∈ Finset.Ico c L, (aS M (j + 1) : ℤ) ^ 2 := by
+    rw [sum_Yvec_sq_range M c, ← Finset.sum_range_add_sum_Ico _ hc]
+    congr 1
+    · exact Finset.sum_congr rfl (fun j hj => by
+        rw [Finset.mem_range] at hj; rw [if_pos hj])
+    · exact Finset.sum_congr rfl (fun j hj => by
+        rw [Finset.mem_Ico] at hj; rw [if_neg (by omega)])
+  -- ∑ M² = ∑ aS² = sortedSmallest² + tail²  (split range (L+1) at c+1)
+  have hMsplit : ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2
+      = (∑ k : Fin (c + 1), ((sortedSmallest M c hc k : ℕ) : ℤ) ^ 2)
+        + ∑ i ∈ Finset.Ico (c + 1) (L + 1), (aS M i : ℤ) ^ 2 := by
+    rw [sum_sq_M_eq_aS M, ← Finset.sum_range_add_sum_Ico _ (by omega : c + 1 ≤ L + 1)]
+    congr 1
+    rw [← Fin.sum_univ_eq_sum_range (fun i => (aS M i : ℤ) ^ 2) (c + 1)]
+    exact Finset.sum_congr rfl (fun k _ => by
+      rw [aS, dif_pos (by omega), sortedSmallest]; rfl)
+  -- the two tails are equal (reindex Ico c L by +1 ↦ Ico (c+1) (L+1))
+  have htail : ∑ j ∈ Finset.Ico c L, (aS M (j + 1) : ℤ) ^ 2
+      = ∑ i ∈ Finset.Ico (c + 1) (L + 1), (aS M i : ℤ) ^ 2 := by
+    rw [Finset.sum_Ico_eq_sum_range, Finset.sum_Ico_eq_sum_range]
+    apply Finset.sum_congr (by congr 1; omega)
+    intro k _
+    have : c + k + 1 = c + 1 + k := by omega
+    rw [this]
+  rw [hYsplit, hMsplit, htail, Yvec_balanced_sq M c hc1]
+  ring
+
+/-- The `k`-smallest of `edgeQ` restricted to its `c` smallest equals the `k`-smallest of `edgeQ`
+(`k ≤ c`); the first `c` sorted values, re-sorted, are unchanged. -/
+private theorem smallestK_restrict (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (c k : ℕ) (hk : k ≤ c)
+    (hcL : c ≤ L) :
+    smallestK c k (fun i : Fin c => srt L (fun j : Fin L => edgeQ M T (j : ℕ)) (i : ℕ))
+      = smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) := by
+  set q := fun j : Fin L => edgeQ M T (j : ℕ) with hq
+  set xc := fun i : Fin c => srt L q (i : ℕ) with hxc
+  have hxcmono : Monotone xc := by
+    intro a b hab; rw [hxc]; exact srt_mono L q hab (by omega)
+  rw [smallestK, smallestK]
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  rw [srt_of_monotone c xc hxcmono i (by omega)]
+
+/-- **k ≤ c regime.** `smallestK L k edgeQ ≤ smallestK c k (balancedSplit P c)` for `T ∈ Adm M`,
+`k ≤ c = cAch M`: F1 (`smallestK_edge_le_width` at `c`, giving `∑(c smallest) ≤ P`) + Step B. -/
+private theorem edge_le_balanced (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L)
+    (k : ℕ) (hkc : k ≤ cAch M) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ))
+      ≤ smallestK (cAch M) k
+          (fun i => ((balancedSplit (Sprefix M (cAch M + 1)) (cAch M) i : ℕ) : ℤ)) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set q := fun j : Fin L => edgeQ M T (j : ℕ) with hq
+  set xc := fun i : Fin c => srt L q (i : ℕ) with hxc
+  -- F1: ∑ xc = smallestK L c edgeQ ≤ smallestK (L+1)(c+1) Mvec = Sprefix M (c+1)
+  have hF1 : (∑ i, xc i) ≤ (Sprefix M (c + 1) : ℤ) := by
+    have hle := smallestK_edge_le_width M T hT hL c hcleL
+    rw [smallestK_Mvec M (c + 1) (by omega)] at hle
+    have hsum : (∑ i, xc i) = smallestK L c q := by
+      rw [smallestK, hxc, ← Fin.sum_univ_eq_sum_range (fun i => srt L q i) c]
+    rw [hsum]; exact hle
+  -- xc nonneg
+  have hxcnn : ∀ i, 0 ≤ xc i := fun i => srt_nonneg L q (fun j => edgeQ_nonneg M T hT j) (i : ℕ)
+  -- Step B on xc
+  have hstepB := stepB (Sprefix M (c + 1)) c k hc1 hkc xc hxcnn hF1
+  rw [smallestK_balancedSplit (Sprefix M (c + 1)) c k hc1 hkc]
+  rw [smallestK_restrict M T c k hkc hcleL] at hstepB
+  exact hstepB
+
+/-- The monotone-`Yvec` prefix sum `∑_{i<k} Yvec`, in two regimes: `k·b + max(0,k+r−c)` for `k≤c`
+(the balanced block), `Sprefix M (k+1)` for `c<k≤L` (balanced total + the `k−c` smallest tail). -/
+private theorem Yvec_prefix (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (k : ℕ) (hk : k ≤ L) :
+    ∑ i ∈ Finset.range k, (if h : i < L then Yvec M (cAch M) ⟨i, h⟩ else 0)
+      = if k ≤ cAch M then
+          (k : ℤ) * ((Sprefix M (cAch M + 1) / cAch M : ℕ) : ℤ)
+            + max 0 ((k : ℤ) + ((Sprefix M (cAch M + 1) % cAch M : ℕ) : ℤ) - (cAch M : ℤ))
+        else (Sprefix M (k + 1) : ℤ) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set r : ℤ := ((P % c : ℕ) : ℤ) with hr
+  have hrlt : P % c < c := Nat.mod_lt _ hc1
+  -- the balanced-block prefix sum `∑_{i<m} bform = m·b + max(0, m+r−c)` for `m ≤ c`
+  have hbalpre : ∀ m, m ≤ c →
+      ∑ i ∈ Finset.range m, (if i < c - P % c then b else b + 1)
+        = (m : ℤ) * b + max 0 ((m : ℤ) + r - (c : ℤ)) := by
+    intro m hm
+    rw [Finset.sum_ite, Finset.sum_const, Finset.sum_const]
+    have hcard1 : ((Finset.range m).filter (fun i => i < c - P % c)).card = min m (c - P % c) := by
+      rw [show ((Finset.range m).filter (fun i => i < c - P % c))
+            = Finset.range (min m (c - P % c)) from by
+          ext i; simp only [Finset.mem_filter, Finset.mem_range, lt_min_iff]]
+      rw [Finset.card_range]
+    have hcard2 : ((Finset.range m).filter (fun i => ¬ i < c - P % c)).card = m - (c - P % c) := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card (s := Finset.range m)
+        (p := fun i => i < c - P % c)
+      rw [hcard1, Finset.card_range] at this; omega
+    rw [hcard1, hcard2, nsmul_eq_mul, nsmul_eq_mul, hr]
+    -- ↑(m-(c-r')) = max 0 (m+r'-c); ↑(min m (c-r')) = m - that
+    have hmaxcast : ((m - (c - P % c) : ℕ) : ℤ)
+        = max 0 ((m : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ)) := by
+      rcases Nat.lt_or_ge (m + P % c) c with h | h
+      · rw [show m - (c - P % c) = 0 by omega, max_eq_left (by push_cast; omega)]; rfl
+      · rw [max_eq_right (by push_cast; omega), Nat.cast_sub (by omega), Nat.cast_sub (by omega)]
+        push_cast; ring
+    have hmincast : ((min m (c - P % c) : ℕ) : ℤ) = (m : ℤ) - ((m - (c - P % c) : ℕ) : ℤ) := by
+      rw [← Nat.cast_sub (by omega)]; congr 1; omega
+    rw [hmincast, hmaxcast]; ring
+  by_cases hkc : k ≤ c
+  · rw [if_pos hkc]
+    rw [show (∑ i ∈ Finset.range k, (if h : i < L then Yvec M c ⟨i, h⟩ else 0))
+          = ∑ i ∈ Finset.range k, (if i < c - P % c then b else b + 1) from ?_]
+    · exact hbalpre k hkc
+    · apply Finset.sum_congr rfl; intro i hi
+      rw [Finset.mem_range] at hi
+      rw [dif_pos (show i < L by omega), Yvec, if_pos (show ((⟨i, by omega⟩ : Fin L) : ℕ) < c by
+        simp only [Fin.val_mk]; omega)]
+  · rw [if_neg hkc]
+    -- split range k = range c ⊎ Ico c k; balanced total P + tail = Sprefix(k+1)
+    rw [← Finset.sum_range_add_sum_Ico _ (not_le.mp hkc).le]
+    have hbal : ∑ i ∈ Finset.range c, (if h : i < L then Yvec M c ⟨i, h⟩ else 0)
+        = (P : ℤ) := by
+      rw [show (∑ i ∈ Finset.range c, (if h : i < L then Yvec M c ⟨i, h⟩ else 0))
+            = ∑ i ∈ Finset.range c, (if i < c - P % c then b else b + 1) from ?_]
+      · rw [hbalpre c (le_refl c)]
+        have hrnn : (0 : ℤ) ≤ ((P % c : ℕ) : ℤ) := by positivity
+        rw [max_eq_right (show (0 : ℤ) ≤ (c : ℤ) + r - (c : ℤ) by rw [hr]; linarith)]
+        have hPeq : (P : ℤ) = (c : ℤ) * b + r := by
+          rw [hb, hr, ← Nat.cast_mul, ← Nat.cast_add]; exact_mod_cast (Nat.div_add_mod P c).symm
+        rw [hPeq]; ring
+      · apply Finset.sum_congr rfl; intro i hi
+        rw [Finset.mem_range] at hi
+        rw [dif_pos (show i < L by omega), Yvec, if_pos (show ((⟨i, by omega⟩ : Fin L) : ℕ) < c by
+          simp only [Fin.val_mk]; omega)]
+    have htail : ∑ i ∈ Finset.Ico c k, (if h : i < L then Yvec M c ⟨i, h⟩ else 0)
+        = ∑ i ∈ Finset.Ico c k, (aS M (i + 1) : ℤ) := by
+      apply Finset.sum_congr rfl; intro i hi
+      rw [Finset.mem_Ico] at hi
+      rw [dif_pos (show i < L by omega), Yvec, if_neg (show ¬ ((⟨i, by omega⟩ : Fin L) : ℕ) < c by
+        simp only [Fin.val_mk]; omega)]
+    rw [hbal, htail]
+    -- P + ∑_{Ico c k} aS(i+1) = Sprefix(k+1) = ∑_{i<k+1} aS i
+    have hPeq : (P : ℤ) = ∑ i ∈ Finset.range (c + 1), (aS M i : ℤ) := by
+      rw [hP, Sprefix, Nat.cast_sum]
+    have hSk : (Sprefix M (k + 1) : ℤ) = ∑ i ∈ Finset.range (k + 1), (aS M i : ℤ) := by
+      rw [Sprefix, Nat.cast_sum]
+    rw [hPeq, hSk, ← Finset.sum_range_add_sum_Ico _ (by omega : c + 1 ≤ k + 1)]
+    congr 1
+    -- ∑_{Ico c k} aS(i+1) = ∑_{Ico (c+1) (k+1)} aS i  (reindex i ↦ i+1)
+    rw [Finset.sum_Ico_eq_sum_range, Finset.sum_Ico_eq_sum_range]
+    apply Finset.sum_congr (by congr 1; omega)
+    intro i _
+    have : c + i + 1 = c + 1 + i := by omega
+    rw [this]
+
+/-- **The per-`T` domination** `∀k, smallestK L k edgeQ ≤ smallestK L k (Yvec M cAch)`, `T ∈ Adm M`
+— the input to `sq_sum_le_of_sorted_prefix`. `k ≤ c`: `edge_le_balanced` + balanced closed form;
+`k > c`: `smallestK_edge_le_width` (`≤ Sprefix`). -/
+private theorem edge_le_Yvec (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L)
+    (k : ℕ) (hk : k ≤ L) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) ≤ smallestK L k (Yvec M (cAch M)) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  rw [smallestK_of_monotone L k (Yvec M c) (Yvec_monotone M hL) hk, Yvec_prefix M hL k hk]
+  by_cases hkc : k ≤ c
+  · rw [if_pos hkc]
+    have := edge_le_balanced M T hT hL k hkc
+    rwa [smallestK_balancedSplit (Sprefix M (c + 1)) c k hc1 hkc] at this
+  · rw [if_neg hkc]
+    have := smallestK_edge_le_width M T hT hL k hk
+    rwa [smallestK_Mvec M (k + 1) (by omega)] at this
+
+/-- `∑ edgeQ = ∑ M` (the edge total telescopes to the full width sum, using `u_L = 0`). -/
+private theorem sum_edgeQ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L) :
+    ∑ j : Fin L, edgeQ M T (j : ℕ) = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  have hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0 := by
+    rw [Adm, Finset.mem_filter] at hT; exact hT.2.2.2
+  rw [Fin.sum_univ_eq_sum_range (fun j => edgeQ M T j) L]
+  rw [prefix_edgeQ M T L, Useq_zero, Useq_last M T hL hlast]
+  have hM0 : Mseq M 0 = (M 0 : ℤ) := by unfold Mseq; rw [dif_pos (by omega)]; rfl
+  have hMseqsum : ∑ i ∈ Finset.range (L + 1), Mseq M i = ∑ i : Fin (L + 1), (M i : ℤ) := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => Mseq M i) (L + 1)]
+    exact Finset.sum_congr rfl (fun i _ => by unfold Mseq; rw [dif_pos i.isLt])
+  rw [hM0, hMseqsum]
+  ring
+
+/-- `Sprefix M (L+1) = ∑ M i` (the full sorted prefix equals the total). -/
+private theorem Sprefix_total (M : Fin (L + 1) → ℕ) :
+    (Sprefix M (L + 1) : ℤ) = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  rw [Sprefix, Nat.cast_sum, ← Fin.sum_univ_eq_sum_range (fun i => (aS M i : ℤ)) (L + 1)]
+  rw [show (∑ i : Fin (L + 1), (aS M (i : ℕ) : ℤ)) = ∑ i : Fin (L + 1), ((M (Tuple.sort M i)) : ℤ)
+      from Finset.sum_congr rfl (fun i _ => by rw [aS, dif_pos i.isLt]; rfl)]
+  exact Equiv.sum_comp (Tuple.sort M) (fun i => (M i : ℤ))
+
+/-- `∑ Yvec = ∑ M` (total preserved). -/
+private theorem sum_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    ∑ j : Fin L, Yvec M (cAch M) j = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  have hpre := Yvec_prefix M hL L (le_refl L)
+  rw [← hc] at hpre
+  rw [← Fin.sum_univ_eq_sum_range (fun i => (if h : i < L then Yvec M c ⟨i, h⟩ else 0)) L] at hpre
+  rw [show (∑ i : Fin L, (if h : (i : ℕ) < L then Yvec M c ⟨i, h⟩ else 0))
+        = ∑ i : Fin L, Yvec M c i from
+      Finset.sum_congr rfl (fun i _ => by rw [dif_pos i.isLt])] at hpre
+  rw [hpre, ← Sprefix_total M]
+  by_cases hcL : L ≤ c
+  · have hcLeq : c = L := le_antisymm hcleL hcL
+    rw [if_pos hcL, hcLeq]
+    have hrnn : (0 : ℤ) ≤ ((Sprefix M (L + 1) % L : ℕ) : ℤ) := by positivity
+    rw [max_eq_right (show (0:ℤ) ≤ (L:ℤ) + ((Sprefix M (L+1) % L : ℕ):ℤ) - (L:ℤ) by linarith)]
+    have hLpos : 0 < L := by omega
+    have hPeq : (Sprefix M (L + 1) : ℤ)
+        = (L : ℤ) * ((Sprefix M (L + 1) / L : ℕ) : ℤ) + ((Sprefix M (L + 1) % L : ℕ) : ℤ) := by
+      rw [← Nat.cast_mul, ← Nat.cast_add]; exact_mod_cast (Nat.div_add_mod _ L).symm
+    rw [hPeq]; ring
+  · rw [if_neg hcL]
+
+/-- **A1 lower bound (C).** For `T ∈ Adm M`, `∑Yvec² − ∑M² ≤ 2·Mval M T` — the convexity bound from
+the `Yvec`-domination via `sq_sum_le_of_sorted_prefix` + `edge_identity`. -/
+private theorem two_Mval_ge (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L) :
+    (∑ j : Fin L, (Yvec M (cAch M) j) ^ 2) - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2
+      ≤ 2 * Mval M T := by
+  set c := cAch M with hc
+  set q := fun j : Fin L => edgeQ M T (j : ℕ) with hq
+  have hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0 := by
+    rw [Adm, Finset.mem_filter] at hT; exact hT.2.2.2
+  -- ∑ Yvec² ≤ ∑ q²  via sq_sum_le_of_sorted_prefix (total + domination)
+  have htot : ∑ j, q j = ∑ j, Yvec M c j := by
+    rw [sum_edgeQ M T hT hL, sum_Yvec M hL]
+  have hdom : ∀ k, k ≤ L → ∑ i ∈ Finset.range k, srt L q i
+      ≤ ∑ i ∈ Finset.range k, srt L (Yvec M c) i := fun k hk => edge_le_Yvec M T hT hL k hk
+  have hsq : ∑ j, (Yvec M c j) ^ 2 ≤ ∑ j, (q j) ^ 2 :=
+    sq_sum_le_of_sorted_prefix L q (Yvec M c) htot hdom
+  -- edge_identity: 2·Mval = ∑ q² − ∑ Mseq²; relate the two sums to the Fin-univ forms
+  have hedge := edge_identity M T hL hlast
+  have hqsq : ∑ j ∈ Finset.range L, edgeQ M T j ^ 2 = ∑ j : Fin L, (q j) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun j => edgeQ M T j ^ 2) L]
+  have hMsq : ∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2 = ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => Mseq M i ^ 2) (L + 1)]
+    exact Finset.sum_congr rfl (fun i _ => by unfold Mseq; rw [dif_pos i.isLt])
+  rw [hqsq, hMsq] at hedge
+  linarith [hsq, hedge]
+
+/-- The telescoped level sequence `uTel M q : ℕ → ℤ` for a target edge sequence `q`: `u₀ = M⁰`,
+`u_{j+1} = M⁽ʲ⁺¹⁾ + u_j − q_j`. Inverse to `edgeQ` (D1). -/
+noncomputable def uTel (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) : ℕ → ℤ
+  | 0 => (M 0 : ℤ)
+  | (j + 1) => Mseq M (j + 1) + uTel M q j - q j
+
+/-- **(D1) telescope is `edgeQ`-inverse.** If the telescoped `uTel` stays nonneg and ends at `0`,
+the admissible `T*_j := (uTel M q (j+1)).toNat` has `edgeQ M T* j = q j` identically (the clamps are
+inactive). The achiever's edge image equals its target by construction. -/
+private theorem edgeQ_telescope (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
+    (hnn : ∀ j, 0 ≤ uTel M q j) (hlast : uTel M q L = 0)
+    (T : Fin L → ℕ) (hT : ∀ j : Fin L, (T j : ℤ) = uTel M q (j.val + 1)) (j : Fin L) :
+    edgeQ M T (j : ℕ) = q (j : ℕ) := by
+  unfold edgeQ
+  have hu0 : Useq M T (j : ℕ) = uTel M q (j : ℕ) := by
+    rcases Nat.eq_zero_or_pos (j : ℕ) with h | h
+    · rw [h, Useq_zero, uTel]
+    · rw [Useq_pos M T (j : ℕ) (by omega) (by omega)]
+      have hh := hT ⟨(j : ℕ) - 1, by omega⟩
+      rw [show ((j : ℕ) - 1) + 1 = (j : ℕ) by omega] at hh
+      exact hh
+  have hu1 : Useq M T ((j : ℕ) + 1) = uTel M q ((j : ℕ) + 1) := by
+    rw [Useq_pos M T ((j : ℕ) + 1) (by omega) (by omega)]
+    have hh := hT ⟨(j : ℕ), by omega⟩
+    simp only [Nat.add_sub_cancel]
+    exact hh
+  rw [hu0, hu1]
+  show Mseq M ((j : ℕ) + 1) + uTel M q (j : ℕ) - uTel M q ((j : ℕ) + 1) = q (j : ℕ)
+  rw [uTel]; ring
+
+/-- `aS M i ≤ b+1` for `1 ≤ i ≤ c` (`b = ⌊Sprefix(c+1)/c⌋`), from `good c` at `i=c` + sortedness. -/
+private theorem aS_le_bp1 (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {i : ℕ} (hi1 : 1 ≤ i)
+    (hic : i ≤ cAch M) :
+    aS M i ≤ Sprefix M (cAch M + 1) / cAch M + 1 := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  -- good c at i=c: c·a_c ≤ Sprefix(c+1) + c − 1 = P + c − 1
+  have hgc := hgood c (by omega) hc1
+  rw [← hP] at hgc
+  -- a_c ≤ b+1: c·a_c ≤ P+c−1 = c·b+r+c−1 < c(b+2), so a_c < b+2
+  have hPdm : P = c * (P / c) + P % c := (Nat.div_add_mod P c).symm
+  have hrlt : P % c < c := Nat.mod_lt _ hc1
+  -- c·a_c ≤ P+c−1 = c·(P/c) + (P%c + c − 1) < c·(P/c+2), so a_c ≤ P/c+1
+  have hac : aS M c ≤ P / c + 1 := by
+    by_contra hgt; push_neg at hgt
+    have hge2 : P / c + 2 ≤ aS M c := by omega
+    have hbig : c * (P / c + 2) ≤ c * aS M c := Nat.mul_le_mul_left c hge2
+    have hexp : c * (P / c + 2) = c * (P / c) + 2 * c := by ring
+    omega
+  exact le_trans (aS_mono M hic (by omega)) hac
+
+/-- **Count bound (the achiever Hall content).** At most `r = P%c` of `aS 1,…,aS c` equal `b+1`
+(`b = ⌊P/c⌋`): from `good i₀` at the least such index (sortedness ⟹ they form a suffix). -/
+private theorem count_bp1_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    ((Finset.Icc 1 (cAch M)).filter
+        (fun i => aS M i = Sprefix M (cAch M + 1) / cAch M + 1)).card
+      ≤ Sprefix M (cAch M + 1) % cAch M := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b := P / c with hb
+  set S := (Finset.Icc 1 c).filter (fun i => aS M i = b + 1) with hSdef
+  rcases S.eq_empty_or_nonempty with hemp | hne
+  · rw [hemp]; simp
+  · -- least element i0 of S
+    set i0 := S.min' hne with hi0def
+    have hi0S : i0 ∈ S := S.min'_mem hne
+    have hi0mem : 1 ≤ i0 ∧ i0 ≤ c := by
+      have := Finset.mem_filter.mp hi0S; exact Finset.mem_Icc.mp this.1
+    have hi0val : aS M i0 = b + 1 := (Finset.mem_filter.mp hi0S).2
+    -- sortedness: every i in [i0, c] is in S (aS i = b+1)
+    have hsuffix : ∀ i, i0 ≤ i → i ≤ c → aS M i = b + 1 := by
+      intro i hi0i hic
+      have hge : aS M i0 ≤ aS M i := aS_mono M hi0i (by omega)
+      rw [hi0val] at hge
+      have hle : aS M i ≤ b + 1 := aS_le_bp1 M hL (by omega) hic
+      omega
+    -- so S = Icc i0 c, card = c − i0 + 1
+    have hScard : S.card = c - i0 + 1 := by
+      rw [show S = Finset.Icc i0 c from ?_, Nat.card_Icc]
+      · omega
+      · apply Finset.ext; intro i
+        simp only [hSdef, Finset.mem_filter, Finset.mem_Icc]
+        constructor
+        · rintro ⟨⟨hi1, hic⟩, hival⟩
+          refine ⟨S.min'_le i ?_, hic⟩
+          rw [hSdef]; exact Finset.mem_filter.mpr ⟨Finset.mem_Icc.mpr ⟨hi1, hic⟩, hival⟩
+        · rintro ⟨hi0i, hic⟩
+          exact ⟨⟨by omega, hic⟩, hsuffix i hi0i hic⟩
+    -- good i0: i0·(b+1) ≤ Sprefix(i0+1) + i0 − 1 ⟹ Sprefix(i0+1) ≥ i0·b + 1
+    have hgi0 := hgood i0 (by omega) hi0mem.1
+    rw [hi0val] at hgi0
+    have hexpi0 : i0 * (b + 1) = i0 * b + i0 := by ring
+    have hSi0 : i0 * b + 1 ≤ Sprefix M (i0 + 1) := by omega
+    -- Sprefix(i0+1) = P − ∑_{i0+1}^c aS = P − (c−i0)(b+1) [suffix all b+1]
+    have htailsum : ∑ i ∈ Finset.Ico (i0 + 1) (c + 1), aS M i = (c - i0) * (b + 1) := by
+      rw [show (∑ i ∈ Finset.Ico (i0 + 1) (c + 1), aS M i)
+            = ∑ _i ∈ Finset.Ico (i0 + 1) (c + 1), (b + 1) from
+          Finset.sum_congr rfl (fun i hi => by
+            rw [Finset.mem_Ico] at hi; exact hsuffix i (by omega) (by omega))]
+      rw [Finset.sum_const, Nat.card_Ico, smul_eq_mul, show c + 1 - (i0 + 1) = c - i0 by omega]
+    have hPsplit : P = Sprefix M (i0 + 1) + (c - i0) * (b + 1) := by
+      rw [← htailsum, hP, Sprefix, Sprefix,
+        ← Finset.sum_range_add_sum_Ico (fun i => aS M i) (by omega : i0 + 1 ≤ c + 1)]
+    -- combine: P ≥ i0·b+1 + (c−i0)(b+1); P = cb + r ⟹ r ≥ c−i0+1 = card
+    have hPdm : P = c * b + P % c := (Nat.div_add_mod P c).symm
+    rw [hScard]
+    -- (c−i0)(b+1) = (c−i0)·b + (c−i0); i0·b + (c−i0)·b = c·b (i0 ≤ c)
+    have hexp : (c - i0) * (b + 1) = (c - i0) * b + (c - i0) := by ring
+    have hcb : i0 * b + (c - i0) * b = c * b := by
+      rw [← Nat.add_mul]; congr 1; omega
+    omega
+
+/-- `Sprefix M (c+1) ≥ Sprefix M (i+1) + (c−i)·aS M i` for `i ≤ c ≤ L`: the tail widths `a_{i+1..c}`
+each dominate `a_i` (aS monotone). -/
+private theorem Sprefix_tail_ge (M : Fin (L + 1) → ℕ) (i c : ℕ) (hic : i ≤ c) (hcL : c ≤ L) :
+    Sprefix M (i + 1) + (c - i) * aS M i ≤ Sprefix M (c + 1) := by
+  have hsplit : Sprefix M (c + 1)
+      = Sprefix M (i + 1) + ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
+    rw [Sprefix, Sprefix,
+      ← Finset.sum_range_add_sum_Ico (fun k => aS M k) (by omega : i + 1 ≤ c + 1)]
+  have htail : (c - i) * aS M i ≤ ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
+    rw [show (c - i) * aS M i = ∑ _k ∈ Finset.Ico (i + 1) (c + 1), aS M i from by
+      rw [Finset.sum_const, Nat.card_Ico]; ring_nf; rw [Nat.mul_comm]; congr 1; omega]
+    apply Finset.sum_le_sum; intro k hk; rw [Finset.mem_Ico] at hk
+    exact aS_mono M (by omega) (by omega)
+  omega
+
+/-- **Shared good-`c` core** (used by both the band `qFM_band` and the Dom precondition's `B2`):
+`c·aS M i ≤ Sprefix M (c+1) + (i−1)` for `1 ≤ i ≤ c = cAch M`. From `goodAch i` + `Sprefix_tail_ge`;
+the same `goodAch`-family as `count_bp1_le`. -/
+private theorem good_floor_core (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {i : ℕ} (hi1 : 1 ≤ i)
+    (hic : i ≤ cAch M) :
+    cAch M * aS M i ≤ Sprefix M (cAch M + 1) + (i - 1) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  -- goodAch i: i·aS_i ≤ Sprefix(i+1) + i − 1
+  have hgi := hgood i (by omega) hi1
+  -- tail: Sprefix(c+1) ≥ Sprefix(i+1) + (c−i)·aS_i
+  have htail := Sprefix_tail_ge M i c hic hcleL
+  -- combine: c·aS_i = i·aS_i + (c−i)·aS_i ≤ [Sprefix(i+1)+i−1] + [Sprefix(c+1)−Sprefix(i+1)]
+  have hexp : c * aS M i = i * aS M i + (c - i) * aS M i := by
+    rw [← Nat.add_mul]; congr 1; omega
+  omega
+
+/-- **Lower-fit guard** `smallestK m (Yvec) ≤ Sprefix M (m+1)` (`m ≤ L`). `m > c`: equality
+(`Yvec_prefix`); `m ≤ c`: the complement `∑ tail ≤ (c−m)b +
+min(r,c−m)` from `aS_le_bp1` + `count_bp1_le`. The greedy non-emptiness' lower-fit. -/
+private theorem Yvec_lowerfit (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (m : ℕ) (hm : m ≤ L) :
+    smallestK L m (Yvec M (cAch M)) ≤ (Sprefix M (m + 1) : ℤ) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b := P / c with hb
+  set r := P % c with hr
+  rw [smallestK_of_monotone L m (Yvec M c) (Yvec_monotone M hL) hm]
+  have hpre := Yvec_prefix M hL m hm
+  rw [← hc] at hpre
+  rw [hpre]
+  by_cases hmc : m ≤ c
+  · rw [if_pos hmc]
+    -- complement: tail = ∑_{i=m+1}^c aS i ≤ (c−m)b + min(r,c−m); Sprefix(m+1) = P − tail
+    have hrlt : r < c := Nat.mod_lt _ hc1
+    -- count of b+1 in [m+1,c] ≤ min(r, c−m)
+    set cnt := ((Finset.Icc (m + 1) c).filter (fun i => aS M i = b + 1)).card with hcnt
+    have hcnt_le_cm : cnt ≤ c - m := by
+      rw [hcnt]
+      refine le_trans (Finset.card_filter_le _ _) ?_
+      rw [Nat.card_Icc]; omega
+    have hcnt_le_r : cnt ≤ r := by
+      refine le_trans ?_ (count_bp1_le M hL)
+      rw [hcnt]
+      apply Finset.card_le_card
+      apply Finset.filter_subset_filter
+      intro i hi; rw [Finset.mem_Icc] at hi ⊢; omega
+    -- tail ≤ (c−m)·b + cnt  (each aS i ≤ b+1 = b + [aS i = b+1])
+    have htail_le : ∑ i ∈ Finset.Icc (m + 1) c, aS M i ≤ (c - m) * b + cnt := by
+      have hpoint : ∀ i ∈ Finset.Icc (m + 1) c, aS M i ≤ b + (if aS M i = b + 1 then 1 else 0) := by
+        intro i hi; rw [Finset.mem_Icc] at hi
+        have hb1 : aS M i ≤ b + 1 := by
+          have := aS_le_bp1 M hL (show 1 ≤ i by omega) hi.2; rw [← hP, ← hb] at this; exact this
+        split_ifs with h <;> omega
+      refine le_trans (Finset.sum_le_sum hpoint) ?_
+      rw [Finset.sum_add_distrib, Finset.sum_const, Nat.card_Icc, smul_eq_mul,
+        show c + 1 - (m + 1) = c - m by omega]
+      have hboole : ∑ i ∈ Finset.Icc (m + 1) c, (if aS M i = b + 1 then 1 else 0) = cnt := by
+        rw [hcnt, Finset.card_filter]
+      omega
+    -- Sprefix(m+1) = P − tail
+    have hSpre : Sprefix M (m + 1) + ∑ i ∈ Finset.Icc (m + 1) c, aS M i = P := by
+      rw [hP, Sprefix, Sprefix]
+      rw [show Finset.Icc (m + 1) c = Finset.Ico (m + 1) (c + 1) from by
+        ext i; rw [Finset.mem_Icc, Finset.mem_Ico]; omega]
+      rw [← Finset.sum_range_add_sum_Ico (fun i => aS M i) (by omega : m + 1 ≤ c + 1)]
+    -- assemble: target balanced-prefix ≤ Sprefix(m+1), as ℤ
+    have hPdm : P = c * b + r := (Nat.div_add_mod P c).symm
+    have hmb : m * b + (c - m) * b = c * b := by rw [← Nat.add_mul]; congr 1; omega
+    have hcast : (m : ℤ) * (b : ℤ) + max 0 ((m : ℤ) + (r : ℤ) - (c : ℤ))
+        ≤ ((Sprefix M (m + 1) : ℕ) : ℤ) := by
+      rcases Nat.lt_or_ge (m + r) c with hlt | hge
+      · -- m+r<c ⟹ max=0; mb ≤ Sprefix(m+1) (cnt ≤ r)
+        rw [max_eq_left (by push_cast; omega)]
+        have hnat : m * b ≤ Sprefix M (m + 1) := by omega
+        have : ((m * b : ℕ) : ℤ) ≤ ((Sprefix M (m + 1) : ℕ) : ℤ) := by exact_mod_cast hnat
+        push_cast at this; linarith
+      · -- m+r≥c ⟹ max=m+r−c; cnt ≤ c−m; mb+(m+r−c) ≤ Sprefix(m+1)
+        rw [max_eq_right (by push_cast; omega)]
+        have hnat : m * b + (m + r - c) ≤ Sprefix M (m + 1) := by omega
+        have hgec : c ≤ m + r := by omega
+        have : ((m * b + (m + r - c) : ℕ) : ℤ) ≤ ((Sprefix M (m + 1) : ℕ) : ℤ) := by
+          exact_mod_cast hnat
+        rw [Nat.cast_add, Nat.cast_sub hgec] at this; push_cast at this; linarith
+    exact hcast
+  · rw [if_neg hmc]
+
+/-- Corridor-feasibility of an ordering `q : ℕ → ℤ`: the telescoped `uTel` is nonneg, ends at `0`,
+weakly-decreasing, and within `admBound`. Exactly `telescope M q ∈ Adm M` (D2). -/
+def QFeas (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) : Prop :=
+  (∀ j, 0 ≤ uTel M q j) ∧ uTel M q L = 0 ∧
+    (∀ j : Fin L, uTel M q ((j : ℕ) + 1) ≤ uTel M q (j : ℕ)) ∧
+    (∀ j : Fin L, uTel M q ((j : ℕ) + 1) ≤ (admBound M j : ℤ))
+
+/-- `Tstar M q : Fin L → ℕ`, the admissible point telescoped from a feasible ordering `q`
+(`Tstar j = uTel(j+1)`, faithful since `uTel ≥ 0`). -/
+noncomputable def Tstar (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (j : Fin L) : ℕ :=
+  (uTel M q ((j : ℕ) + 1)).toNat
+
+/-- A feasible ordering's `Tstar` is admissible. -/
+private theorem Tstar_mem_Adm (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (hL : 1 ≤ L) (hq : QFeas M q) :
+    Tstar M q ∈ Adm M := by
+  obtain ⟨hnn, hlast, hanti, hbound⟩ := hq
+  have hTval : ∀ j : Fin L, (Tstar M q j : ℤ) = uTel M q ((j : ℕ) + 1) := fun j => by
+    rw [Tstar, Int.toNat_of_nonneg (hnn _)]
+  rw [Adm, Finset.mem_filter]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [Fintype.mem_piFinset]; intro j; rw [Finset.mem_range]
+    have := hbound j; rw [← hTval j] at this
+    have : (Tstar M q j : ℤ) ≤ (admBound M j : ℤ) := this
+    have h2 : Tstar M q j ≤ admBound M j := by exact_mod_cast this
+    omega
+  · intro j; have := hbound j; rw [← hTval j] at this; exact_mod_cast this
+  · intro i j hij
+    -- weakly decreasing T_j ≤ T_i : uTel is antitone (from hanti, chained)
+    have key : ∀ a b : ℕ, a ≤ b → b < L + 1 → uTel M q b ≤ uTel M q a := by
+      intro a b hab hbL
+      induction b with
+      | zero => rw [show a = 0 by omega]
+      | succ n ih =>
+        rcases Nat.lt_or_ge a (n + 1) with h | h
+        · have hstep : uTel M q (n + 1) ≤ uTel M q n := hanti ⟨n, by omega⟩
+          exact le_trans hstep (ih (by omega) (by omega))
+        · rw [show a = n + 1 by omega]
+    have hle : uTel M q ((j : ℕ) + 1) ≤ uTel M q ((i : ℕ) + 1) :=
+      key ((i : ℕ) + 1) ((j : ℕ) + 1) (by exact Nat.add_le_add_right hij 1) (by omega)
+    rw [← hTval i, ← hTval j] at hle; exact_mod_cast hle
+  · intro j hj
+    have : (Tstar M q j : ℤ) = uTel M q ((j : ℕ) + 1) := hTval j
+    rw [show ((j : ℕ) + 1) = L by omega] at this
+    rw [hlast] at this
+    have : Tstar M q j = 0 := by exact_mod_cast this
+    exact this
+
+/-- **A1 upper bound (D, value at achiever).** Given a feasible ordering `q` whose `Fin L` values
+permute `Yvec`, `2·Mval M (Tstar M q) = ∑Yvec² − ∑M²` (via D1 `edgeQ_telescope` +
+`edge_identity` + multiset-symmetry of `∑·²`). The upper-bound witness value. -/
+private theorem Mval_Tstar (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (hL : 1 ≤ L) (hq : QFeas M q)
+    (σ : Equiv.Perm (Fin L)) (hperm : ∀ j : Fin L, q (j : ℕ) = Yvec M (cAch M) (σ j)) :
+    2 * Mval M (Tstar M q) = (∑ j : Fin L, (Yvec M (cAch M) j) ^ 2)
+      - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 := by
+  obtain ⟨hnn, hlast, hanti, hbd⟩ := hq
+  have hTmem := Tstar_mem_Adm M q hL ⟨hnn, hlast, hanti, hbd⟩
+  have hlastT : ∀ j : Fin L, j.val = L - 1 → Tstar M q j = 0 := by
+    rw [Adm, Finset.mem_filter] at hTmem; exact hTmem.2.2.2
+  have hTval : ∀ j : Fin L, (Tstar M q j : ℤ) = uTel M q ((j : ℕ) + 1) := fun j => by
+    rw [Tstar, Int.toNat_of_nonneg (hnn _)]
+  have hedgeQ : ∀ j : Fin L, edgeQ M (Tstar M q) (j : ℕ) = q (j : ℕ) :=
+    fun j => edgeQ_telescope M q hnn hlast (Tstar M q) hTval j
+  have hid := edge_identity M (Tstar M q) hL hlastT
+  have hqsq : ∑ j ∈ Finset.range L, edgeQ M (Tstar M q) j ^ 2
+      = ∑ j : Fin L, (q (j : ℕ)) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun j => edgeQ M (Tstar M q) j ^ 2) L]
+    exact Finset.sum_congr rfl (fun j _ => by rw [hedgeQ j])
+  have hMsq : ∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2 = ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => Mseq M i ^ 2) (L + 1)]
+    exact Finset.sum_congr rfl (fun i _ => by unfold Mseq; rw [dif_pos i.isLt])
+  -- ∑ q² = ∑ (Yvec ∘ σ)² = ∑ Yvec²  (Equiv.sum_comp)
+  have hpermsq : ∑ j : Fin L, (q (j : ℕ)) ^ 2 = ∑ j : Fin L, (Yvec M (cAch M) j) ^ 2 := by
+    rw [Finset.sum_congr rfl (fun j _ => by rw [hperm j])]
+    exact Equiv.sum_comp σ (fun j => (Yvec M (cAch M) j) ^ 2)
+  rw [hid, hqsq, hMsq, hpermsq]
+
+/-! ## A1 closing machinery (Route B: Rado–Gale achiever) + `lambdaCore_eq_clean`
+
+**A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
 
-**Remaining gate (the from-scratch Karamata lower bound).** Reusable engines banked above (green,
-axiom-clean): `sq_sum_le_of_sorted_prefix` (sorted-prefix domination ⟹ `∑Y² ≤ ∑q²`, the convexity
-LB via `karamata_sq`); `smallestK_le_subset` (`k`-smallest sum `≤` any `k`-subset sum);
-`mono_prefix_le_subset`; `sum_le_sum_of_compl_ge`. With `a = M` sorted ascending, `Sₙ = a₀+⋯+aₙ`,
-achiever `c`, target `Y = balancedSplit(S_c, c) ∷ (a_{c+1}…a_L)`, the verified reduction (Python,
-0-fail L≤4): `4·cleanCore c (sortedSmallest M c) = ∑Y² − ∑M²` (CERTAIN, via `balancedSplit_sq_int`
-+ `cleanCore_perm`), so `lambdaCore M = ¼(∑Y² − ∑M²)`. The LB then needs
-`∀ T ∈ Adm M, ∀ k, smallestK k (edgeQ M T) ≤ smallestK k Y`, fed to `sq_sum_le_of_sorted_prefix`
-+ `edge_identity`. That domination splits by regime at the witness `m = (if k ≤ c then c else k)`:
-- `k > c`: `smallestK k Y = S_k`, and `smallestK k edgeQ ≤ S_k` (`k`-smallest `≤` first `k`
-  positions; their sum `≤ S_k` by the QFeasible corridor `prefix_k ≤ S_k`).
-- `k ≤ c`: `smallestK k Y = smallestK k (balancedSplit S_c c)`, and `smallestK k edgeQ ≤` it via
-  `smallestK_le_subset` (subset = first `c` positions) + corridor (`prefix_c ≤ S_c`) + **Step B**
-  (`balancedSplit P m` maximises every `k`-smallest among `m` nonneg ints of sum `≤ P` — the one
-  remaining novel sub-lemma; the avg bound `m·smallestK ≤ k·∑` undershoots, balanced is needed
-  exactly). UPPER bound: explicit achiever `T*∈Adm M` with `Mval M T* = ½(∑Y²−∑M²)`. -/
-theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
+**Banked machinery (green, axiom-clean, above).** The two novel lower-bound pieces are proven:
+`smallestK_eqPad_le` (the corridor majorization, via `L` Karamata elementary transfers
+`smallestK_pair_spread` + `Vseq`) and `stepB` (the balanced split maximises every `k`-smallest;
+`smallestK_balancedSplit` gives its closed form `k·b + max(0,k+r−c)`). The padding bridge
+`smallestK_edge_le_width` turns the majorization into the `Fin L` edge bound. The achiever
+`cAch M` (largest `goodAch` index, `cAch_spec`) is banked. Engines: `sq_sum_le_of_sorted_prefix`,
+`edge_identity`, `balancedSplit_sq_int`, `cleanCore_perm`.
+
+**Remaining assembly (routed; expedition card `a1-achiever-design.md`).** `a = aSort M`,
+`Sₙ = Sprefix M n`, `c = cAch M`, target `Y = balancedSplit(S_c,c) ⊕ (a_{c+1}…a_L)`:
+- LOWER `lambdaCore ≥ cleanCore`: feed the per-`k` edge bound (`smallestK_edge_le_width` for `k>c`;
+  F1 + `stepB` for `k≤c`) to `sq_sum_le_of_sorted_prefix` + `edge_identity`. Needs `Y`-sort facts.
+- UPPER `lambdaCore ≤ cleanCore`: telescope `T*` for a corridor-feasible ordering `q*` of `Y` — then
+  `edgeQ(M,T*) = q*` by construction, `T*∈Adm` by corridor↔Adm, and `2·Mval(T*) = ∑Y² − ∑M²`.
+- VALUE `4·cleanCore c (sortedSmallest M c) = ∑Y² − ∑M²` closes the equality with both bounds. -/
+/-- `uTel` as a telescoped prefix sum: `u_n = M⁰ + ∑_{j<n}(M⁽ʲ⁺¹⁾ − q_j)`. -/
+private theorem uTel_eq_prefix (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (n : ℕ) :
+    uTel M q n = (M 0 : ℤ) + ∑ j ∈ Finset.range n, (Mseq M (j + 1) - q j) := by
+  induction n with
+  | zero => simp [uTel]
+  | succ k ih => rw [uTel, ih, Finset.sum_range_succ]; ring
+
+/-- `∑_{i<n+1} Mseq = M⁰ + ∑_{j<n} Mseq(j+1)` (split off the `0` term). -/
+private theorem Mseq_prefix_succ (M : Fin (L + 1) → ℕ) (n : ℕ) :
+    ∑ i ∈ Finset.range (n + 1), Mseq M i = (M 0 : ℤ) + ∑ j ∈ Finset.range n, Mseq M (j + 1) := by
+  rw [Finset.sum_range_succ' (fun i => Mseq M i) n]
+  have hM0 : Mseq M 0 = (M 0 : ℤ) := by unfold Mseq; rw [dif_pos (by omega)]; rfl
+  rw [hM0]; ring
+
+/-- **QFeasible from a corridor-feasible assignment (the clause-algebra bridge).** A bijection
+`q` of `Y` (extended by `0` past `L`) with the polymatroid prefix/per-position/suffix bounds yields
+`QFeas M q`: prefix `⟹ uⁿ≥0`, total `⟹ uᴸ=0`, per-position `qⁿ≥M⁽ⁿ⁺¹⁾ ⟹ antitone`, suffix `⟹
+uⁿ⁺¹≤admBound`. (All pp-verified 0/1360.) -/
+private theorem QFeas_of_assignment (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
+    (hext : ∀ j, L ≤ j → q j = 0)
+    (htot : ∑ j ∈ Finset.range L, q j = ∑ i ∈ Finset.range (L + 1), Mseq M i)
+    (hpre : ∀ n, n ≤ L → ∑ j ∈ Finset.range n, q j ≤ ∑ i ∈ Finset.range (n + 1), Mseq M i)
+    (hge : ∀ j : Fin L, Mseq M ((j : ℕ) + 1) ≤ q (j : ℕ))
+    (hadm : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+        ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), q i) :
+    QFeas M q := by
+  have hpast : ∀ i, L + 1 ≤ i → Mseq M i = 0 := by
+    intro i hi; unfold Mseq; rw [dif_neg (by omega)]
+  -- u_L = 0 first (used by the n>L nonneg case)
+  have huL : uTel M q L = 0 := by
+    rw [uTel_eq_prefix, Finset.sum_sub_distrib]
+    have h := htot; rw [Mseq_prefix_succ] at h; linarith
+  refine ⟨?_, huL, ?_, ?_⟩
+  · -- u_n ≥ 0
+    intro n
+    rcases Nat.lt_or_ge n (L + 1) with hn | hn
+    · rw [uTel_eq_prefix, Finset.sum_sub_distrib]
+      have hp := hpre n (by omega); rw [Mseq_prefix_succ] at hp; linarith
+    · -- n ≥ L+1: uTel n = uTel L = 0 (Mseq and q both 0 on [L, n))
+      rw [uTel_eq_prefix]
+      have hsplit : ∑ j ∈ Finset.range n, (Mseq M (j + 1) - q j)
+          = ∑ j ∈ Finset.range L, (Mseq M (j + 1) - q j) := by
+        rw [← Finset.sum_range_add_sum_Ico _ (show L ≤ n by omega)]
+        have hz : ∑ j ∈ Finset.Ico L n, (Mseq M (j + 1) - q j) = 0 := by
+          apply Finset.sum_eq_zero; intro j hj; rw [Finset.mem_Ico] at hj
+          rw [hpast (j + 1) (by omega), hext j (by omega)]; ring
+        rw [hz, add_zero]
+      rw [hsplit]
+      have h := huL; rw [uTel_eq_prefix] at h; linarith
+  · -- antitone: u_{j+1} ≤ u_j ⟺ q_j ≥ M^{j+1}
+    intro j
+    rw [uTel_eq_prefix, uTel_eq_prefix, Finset.sum_range_succ]
+    have := hge j; linarith
+  · -- Ladm: u_{j+1} ≤ admBound j
+    intro j
+    rw [uTel_eq_prefix, Finset.sum_sub_distrib]
+    have hp := hadm j
+    rw [show (j : ℕ) + 2 = ((j : ℕ) + 1) + 1 by omega, Mseq_prefix_succ] at hp
+    linarith
+
+/-- `∑ sortedSmallest M c = Sprefix M (c+1)` (the `c+1` smallest widths sum to the prefix). -/
+private theorem sum_sortedSmallest (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) :
+    ∑ k : Fin (c + 1), sortedSmallest M c hc k = Sprefix M (c + 1) := by
+  rw [Sprefix, ← Fin.sum_univ_eq_sum_range (fun i => aS M i) (c + 1)]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [aS, dif_pos (by omega), sortedSmallest]
+  congr 1
+
+/-- **A1 close, given a corridor-feasible achiever ordering.** With `c = cAch M`, a `QFeas` ordering
+`q` permuting `Yvec` closes the equality: upper bound via `Tstar`/`Mval_Tstar` + `Finset.inf'_le`,
+lower bound via `two_Mval_ge` + `Finset.le_inf'`, value via `Yvec_value`. The engine (∃ such `q`)
+is the only remaining piece. -/
+private theorem close_of_feasible (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (q : ℕ → ℤ) (hq : QFeas M q)
+    (σ : Equiv.Perm (Fin L)) (hperm : ∀ j : Fin L, q (j : ℕ) = Yvec M (cAch M) (σ j)) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
-  sorry
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set c := cAch M with hc
+  refine ⟨c, hcleL, hc1, ?_⟩
+  set D : ℤ := (∑ j : Fin L, (Yvec M c j) ^ 2) - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 with hD
+  set I : ℤ := (Adm M).inf' (Adm_nonempty M) (Mval M) with hI
+  -- T* achieves the value 2·Mval = D; the inf' is achieved at some T₀
+  have hTadm : Tstar M q ∈ Adm M := Tstar_mem_Adm M q hL hq
+  have hTval : 2 * Mval M (Tstar M q) = D := Mval_Tstar M q hL hq σ hperm
+  obtain ⟨T₀, hT₀mem, hT₀eq⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+  -- upper: I ≤ Mval(Tstar) ⟹ 2I ≤ D ; lower: D ≤ 2·Mval T₀ = 2I
+  have hub : 2 * I ≤ D := by
+    have : I ≤ Mval M (Tstar M q) := Finset.inf'_le _ hTadm
+    nlinarith [this, hTval]
+  have hlb : D ≤ 2 * I := by
+    have h0 := two_Mval_ge M T₀ hT₀mem hL
+    rw [← hT₀eq] at h0; linarith [h0]
+  have hID : 2 * I = D := le_antisymm hub hlb
+  -- lambdaCore = ½·I ; cleanCore = ¼·D ; with 2I = D ⟹ equal
+  have hlam : lambdaCore M = (1 / 2 : ℚ) * (I : ℤ) := by rw [lambdaCore, hI]
+  -- cleanCore c (sortedSmallest) = ¼·D
+  have hclean : cleanCore c (sortedSmallest M c hcleL) = (1 / 4 : ℚ) * (D : ℚ) := by
+    rw [cleanCore]
+    have hsum : ∑ k, sortedSmallest M c hcleL k = Sprefix M (c + 1) := sum_sortedSmallest M c hcleL
+    simp only [hsum]
+    rw [Yvec_value M c hcleL hc1] at hD
+    rw [hD]; push_cast; ring
+  rw [hlam, hclean]
+  have : (2 : ℚ) * (I : ℚ) = (D : ℚ) := by exact_mod_cast hID
+  rw [hc] at *
+  linarith [this]
+
+/-! ### The forward-max front-loader (abstract BG-engine extension).
+
+The band needs a *feasible competitor* whose prefix the greedy dominates. `forwardMax` places, left to
+right, the **largest** pool element `≥` each width that keeps `Dom` on the rest (the lookahead-max
+pick). It is a feasible permutation of the pool, and the backward greedy's prefix sums dominate it
+(`forwardMax_prefix_le_backwardGreedy`). All abstract — no achiever content. (Engine family; a
+post-close cleanup lifts these into `BGEngine.lean` proper.) -/
+
+namespace BGEngine
+
+open Multiset
+
+/-- Under `Dom (w :: ws) R`, some pool element is `≥ w`. -/
+theorem head_pick_exists {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    ∃ y ∈ R, w ≤ y := by
+  by_contra hcon
+  have hall : ∀ y ∈ R, y < w := by
+    intro y hy; by_contra hge; exact hcon ⟨y, hy, not_lt.mp hge⟩
+  have hfull : cLt R w = R.card := by
+    rw [cLt_eq_countP]; exact countP_eq_card.mpr hall
+  have hdom := hD.2 w
+  have hwmem : w ∈ ((w :: ws : List ℤ) : Multiset ℤ) := by
+    rw [← Multiset.cons_coe]; exact Multiset.mem_cons_self _ _
+  have hsplit := cLt_erase ((w :: ws : List ℤ) : Multiset ℤ) w w hwmem
+  rw [if_neg (lt_irrefl _)] at hsplit
+  have herase : ((w :: ws : List ℤ) : Multiset ℤ).erase w = (ws : Multiset ℤ) := by
+    rw [← Multiset.cons_coe, Multiset.erase_cons_head]
+  rw [herase] at hsplit
+  have hle : cLt (ws : Multiset ℤ) w ≤ ws.length := by
+    rw [cLt_eq_countP]; rw [← Multiset.coe_card (ws)]; exact countP_le_card _ _
+  rw [hfull, hD.1] at hdom
+  simp only [List.length_cons] at hdom
+  omega
+
+/-- HEAD-PEEL Hall lemma: the minimal pool elt `≥ w` keeps `Dom ws` on the erase. -/
+theorem dom_head_pick {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    w ≤ pick w R ∧ Dom ws (R.erase (pick w R)) := by
+  have hex : ∃ y ∈ R, w ≤ y := head_pick_exists hD
+  set v := pick w R with hv
+  have hvmem : v ∈ R := pick_mem hex
+  have htv : w ≤ v := le_pick hex
+  have hvmin : ∀ y ∈ R, w ≤ y → v ≤ y := fun y hy hwy => pick_le hex hy hwy
+  refine ⟨htv, ?_, ?_⟩
+  · have hcard : R.card = ws.length + 1 := by rw [hD.1, List.length_cons]
+    rw [card_erase_of_mem hvmem, hcard]; simp
+  · intro τ
+    have hwmem : w ∈ ((w :: ws : List ℤ) : Multiset ℤ) := by
+      rw [← Multiset.cons_coe]; exact Multiset.mem_cons_self _ _
+    have hbsplit := cLt_erase ((w :: ws : List ℤ) : Multiset ℤ) w τ hwmem
+    have herase : ((w :: ws : List ℤ) : Multiset ℤ).erase w = (ws : Multiset ℤ) := by
+      rw [← Multiset.cons_coe, Multiset.erase_cons_head]
+    rw [herase] at hbsplit
+    have hRsplit := cLt_erase R v τ hvmem
+    have hdom := hD.2 τ
+    by_cases hτw : τ ≤ w
+    · rw [if_neg (by omega : ¬ v < τ)] at hRsplit
+      rw [if_neg (by omega : ¬ w < τ)] at hbsplit
+      omega
+    · rw [not_le] at hτw
+      by_cases hτv : τ ≤ v
+      · rw [if_neg (by omega : ¬ v < τ)] at hRsplit
+        rw [if_pos (by omega : w < τ)] at hbsplit
+        have hRtt : cLt R τ = cLt R w := by
+          simp only [cLt]
+          refine congrArg card (filter_congr ?_)
+          intro y hy
+          constructor
+          · intro hyτ; by_contra hyw
+            have : w ≤ y := not_lt.mp hyw
+            have := hvmin y hy this; omega
+          · intro hyw; omega
+        have hdomw := hD.2 w
+        have hbsplitw := cLt_erase ((w :: ws : List ℤ) : Multiset ℤ) w w hwmem
+        rw [if_neg (lt_irrefl _), herase] at hbsplitw
+        have hmono := cLt_mono (ws : Multiset ℤ) (le_of_lt hτw)
+        omega
+      · rw [not_le] at hτv
+        rw [if_pos (by omega : v < τ)] at hRsplit
+        rw [if_pos (by omega : w < τ)] at hbsplit
+        omega
+
+open Classical in
+/-- The set of Dom-preserving feasible head-picks for `Dom (w :: ws) R`. -/
+noncomputable def headPickSet (w : ℤ) (ws : List ℤ) (R : Multiset ℤ) : Finset ℤ :=
+  R.toFinset.filter (fun y => w ≤ y ∧ Dom ws (R.erase y))
+
+open Classical in
+/-- Nonempty: `pick w R` (the minimal feasible) is Dom-preserving by `dom_head_pick`. -/
+theorem headPickSet_nonempty {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    (headPickSet w ws R).Nonempty := by
+  have hex : ∃ y ∈ R, w ≤ y := head_pick_exists hD
+  obtain ⟨hwv, hdv⟩ := dom_head_pick hD
+  refine ⟨pick w R, ?_⟩
+  simp only [headPickSet, Finset.mem_filter, Multiset.mem_toFinset]
+  exact ⟨pick_mem hex, hwv, hdv⟩
+
+open Classical in
+/-- The lookahead-max head-pick: largest pool elt `≥ w` keeping `Dom ws` on the erase (junk `w` if
+the set is empty — never under `Dom`). Total, so the recursion need not thread the proof. -/
+noncomputable def maxPick (w : ℤ) (ws : List ℤ) (R : Multiset ℤ) : ℤ :=
+  if h : (headPickSet w ws R).Nonempty then (headPickSet w ws R).max' h else w
+
+open Classical in
+/-- `maxPick` is in the pool, `≥ w`, and Dom-preserving (under `Dom (w :: ws) R`). -/
+theorem maxPick_spec {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    maxPick w ws R ∈ R ∧ w ≤ maxPick w ws R ∧ Dom ws (R.erase (maxPick w ws R)) := by
+  have hne := headPickSet_nonempty hD
+  rw [maxPick, dif_pos hne]
+  have hm := (headPickSet w ws R).max'_mem hne
+  simp only [headPickSet, Finset.mem_filter, Multiset.mem_toFinset] at hm
+  exact ⟨hm.1, hm.2.1, hm.2.2⟩
+
+open Classical in
+/-- `maxPick` is `≥` every Dom-preserving feasible pick (the maximality lever for the band). -/
+theorem le_maxPick {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R)
+    {y : ℤ} (hyR : y ∈ R) (hwy : w ≤ y) (hdy : Dom ws (R.erase y)) : y ≤ maxPick w ws R := by
+  have hne := headPickSet_nonempty hD
+  rw [maxPick, dif_pos hne]
+  refine (headPickSet w ws R).le_max' y ?_
+  simp only [headPickSet, Finset.mem_filter, Multiset.mem_toFinset]
+  exact ⟨hyR, hwy, hdy⟩
+
+/-- **The forward-max front-loader.** Place, left to right, the lookahead-max pool element `≥` each
+width. Output in position order `p₀, …, p_{n-1}`. -/
+noncomputable def forwardMax (b : List ℤ) (R : Multiset ℤ) : List ℤ :=
+  match b with
+  | [] => []
+  | w :: ws => maxPick w ws R :: forwardMax ws (R.erase (maxPick w ws R))
+
+/-- Unfolding lemma for `forwardMax` on a cons. -/
+theorem forwardMax_cons (w : ℤ) (ws : List ℤ) (R : Multiset ℤ) :
+    forwardMax (w :: ws) R = maxPick w ws R :: forwardMax ws (R.erase (maxPick w ws R)) := rfl
+
+/-- **forwardMax is a permutation of the pool.** -/
+theorem forwardMax_perm {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) :
+    (forwardMax b R : Multiset ℤ) = R := by
+  match b with
+  | [] =>
+    have : R.card = 0 := by simpa using hD.1
+    simp [forwardMax, (card_eq_zero.mp this).symm]
+  | w :: ws =>
+    obtain ⟨hvmem, _, hdom2⟩ := maxPick_spec hD
+    rw [forwardMax_cons, ← Multiset.cons_coe]
+    rw [forwardMax_perm hdom2, cons_erase hvmem]
+
+/-- **forwardMax has the same length as `b`.** -/
+theorem forwardMax_length {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) :
+    (forwardMax b R).length = b.length := by
+  have h := forwardMax_perm hD
+  have : card (forwardMax b R : Multiset ℤ) = card R := by rw [h]
+  rw [coe_card] at this; rw [this, hD.1]
+
+/-- **forwardMax is feasible:** each entry dominates its width. -/
+theorem forwardMax_feasible {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) :
+    Feasible b (forwardMax b R) := by
+  match b with
+  | [] => intro i hb hp; simp at hb
+  | w :: ws =>
+    obtain ⟨hvmem, hwv, hdom2⟩ := maxPick_spec hD
+    intro i hb hp
+    match i with
+    | 0 =>
+      simp only [forwardMax_cons, List.getElem_cons_zero]
+      exact hwv
+    | (k + 1) =>
+      have hib : k < ws.length := by simpa using hb
+      have hip : k < (forwardMax ws (R.erase (maxPick w ws R))).length := by
+        rw [forwardMax_length hdom2]; exact hib
+      have hgoal := forwardMax_feasible hdom2 k hib hip
+      simpa only [forwardMax_cons, List.getElem_cons_succ] using hgoal
+
+/-- **Prefix transport.** The backward greedy's prefix sums dominate the forward-max front-loader's
+(greedy minimises suffix ⟹ maximises prefix; the front-loader is a feasible competitor). -/
+theorem forwardMax_prefix_le_backwardGreedy {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (k : ℕ) :
+    ((forwardMax b R).take k).sum ≤ ((backwardGreedy b R).take k).sum := by
+  have hpf : (forwardMax b R : Multiset ℤ) = R := forwardMax_perm hD
+  have hpb : (backwardGreedy b R : Multiset ℤ) = R := backwardGreedy_perm hD
+  have htotf : (forwardMax b R).sum = (backwardGreedy b R).sum := by
+    have e1 : (forwardMax b R).sum = R.sum := by rw [← Multiset.sum_coe, hpf]
+    have e2 : (backwardGreedy b R).sum = R.sum := by rw [← Multiset.sum_coe, hpb]
+    rw [e1, e2]
+  have hsuf := backwardGreedy_suffix_le hD (forwardMax b R) hpf (forwardMax_feasible hD) k
+  have hsplit_f : (forwardMax b R).sum = ((forwardMax b R).take k).sum
+      + ((forwardMax b R).drop k).sum := by
+    rw [← List.sum_append, List.take_append_drop]
+  have hsplit_b : (backwardGreedy b R).sum = ((backwardGreedy b R).take k).sum
+      + ((backwardGreedy b R).drop k).sum := by
+    rw [← List.sum_append, List.take_append_drop]
+  linarith
+
+/-- `∑_{i<k} l.getD i 0 = (l.take k).sum` (the range-sum of `getD` is the prefix sum). -/
+theorem sum_range_getD_eq_take_sum (l : List ℤ) (k : ℕ) :
+    ∑ i ∈ Finset.range k, l.getD i 0 = (l.take k).sum := by
+  induction l generalizing k with
+  | nil => simp
+  | cons a t ih =>
+    match k with
+    | 0 => simp
+    | (m + 1) =>
+      rw [Finset.sum_range_succ', List.take_succ_cons, List.sum_cons]
+      have hshift : ∑ i ∈ Finset.range m, (a :: t).getD (i + 1) 0
+          = ∑ i ∈ Finset.range m, t.getD i 0 := by
+        apply Finset.sum_congr rfl; intro i _; rw [List.getD_cons_succ]
+      rw [hshift, ih m]
+      simp only [List.getD_cons_zero]
+      ring
+
+/-- Iterated erasure: the residual pool after the first `i` forwardMax picks. -/
+noncomputable def eraseIter : ℕ → List ℤ → Multiset ℤ → Multiset ℤ
+  | 0,     _,       R => R
+  | (_+1), [],      R => R
+  | (i+1), (w::ws), R => eraseIter i ws (R.erase (maxPick w ws R))
+
+/-- **forwardMax suffix locality** — the global list's `drop i` equals the local recursion on the
+suffix widths from the residual pool. Abstract; induction on `i` + `forwardMax_cons`. -/
+theorem forwardMax_drop_eq (b : List ℤ) (R : Multiset ℤ) (i : ℕ) :
+    (forwardMax b R).drop i = forwardMax (b.drop i) (eraseIter i b R) := by
+  induction i generalizing b R with
+  | zero => simp [eraseIter]
+  | succ k ih =>
+    match b with
+    | [] => simp [forwardMax, eraseIter]
+    | w :: ws =>
+      rw [forwardMax_cons, List.drop_succ_cons, eraseIter, List.drop_succ_cons]
+      exact ih ws (R.erase (maxPick w ws R))
+
+/-- Corollary: the global `i`-th pick = the `maxPick` at the head of the depth-`i` local recursion
+(when the suffix width-list is nonempty, i.e. `i < b.length`). -/
+theorem forwardMax_getD_eq (b : List ℤ) (R : Multiset ℤ) (i : ℕ) (w : ℤ) (ws : List ℤ)
+    (hdrop : b.drop i = w :: ws) :
+    (forwardMax b R).getD i 0 = maxPick w ws (eraseIter i b R) := by
+  have hd : (forwardMax b R).drop i = forwardMax (b.drop i) (eraseIter i b R) :=
+    forwardMax_drop_eq b R i
+  rw [hdrop, forwardMax_cons] at hd
+  -- (forwardMax b R).getD i 0 = ((forwardMax b R).drop i).getD 0 0
+  have hgetD : (forwardMax b R).getD i 0 = ((forwardMax b R).drop i).getD 0 0 := by
+    rw [List.getD_eq_getElem?_getD, List.getD_eq_getElem?_getD, List.getElem?_drop, Nat.add_zero]
+  rw [hgetD, hd, List.getD_cons_zero]
+
+/-- **Head-lowering preserves `Dom`** (the SOUND direction): replacing the head width by a smaller
+one keeps domination. (Raising the head is FALSE — it makes covering harder.) -/
+theorem dom_head_lower {a a' : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (a :: ws) R)
+    (h : a' ≤ a) : Dom (a' :: ws) R := by
+  refine ⟨by simpa using hD.1, fun τ => ?_⟩
+  have hd := hD.2 τ
+  have hsa : cLt ((a :: ws : List ℤ) : Multiset ℤ) τ
+      = cLt (ws : Multiset ℤ) τ + (if a < τ then 1 else 0) := by
+    rw [← Multiset.cons_coe, cLt_erase _ a τ (mem_cons_self _ _), erase_cons_head]
+  have hsa' : cLt ((a' :: ws : List ℤ) : Multiset ℤ) τ
+      = cLt (ws : Multiset ℤ) τ + (if a' < τ then 1 else 0) := by
+    rw [← Multiset.cons_coe, cLt_erase _ a' τ (mem_cons_self _ _), erase_cons_head]
+  rw [hsa] at hd; rw [hsa']
+  split_ifs at hd ⊢ <;> omega
+
+/-- `cLt` is monotone under multiset `≤` (fewer elements ⟹ fewer below `τ`). -/
+theorem cLt_le_of_le {A B : Multiset ℤ} (h : A ≤ B) (τ : ℤ) : cLt A τ ≤ cLt B τ :=
+  card_le_card (filter_le_filter _ h)
+
+/-- **Order statistic.** For a monotone `A : Fin L → ℤ`, if at least `m ≥ 1` indices have `A k < τ`, then
+the `m`-th smallest value `A ⟨m-1,_⟩ < τ`. (The predicate `A · < τ` is downward-closed under monotonicity;
+`Fin.lt_card_filter_univ_iff_apply_of_imp`.) -/
+theorem fin_monotone_lt_of_card_ge {L m : ℕ} {A : Fin L → ℤ} {τ : ℤ}
+    (hm0 : 1 ≤ m) (hmL : m ≤ L) (hmono : Monotone A)
+    (hcount : m ≤ (Finset.univ.filter (fun k : Fin L => A k < τ)).card) :
+    A ⟨m - 1, by omega⟩ < τ := by
+  classical
+  have hdown : ∀ a b : Fin L, b ≤ a → A a < τ → A b < τ :=
+    fun a b hba ha => lt_of_le_of_lt (hmono hba) ha
+  have hlt : (⟨m - 1, by omega⟩ : Fin L)
+      < (Finset.univ.filter (fun k : Fin L => A k < τ)).card := by
+    show m - 1 < _; omega
+  exact (Fin.lt_card_filter_univ_iff_apply_of_imp (p := fun k => A k < τ) hdown).mp hlt
+
+/-- **Converse order statistic.** For monotone `A : Fin L → ℤ`, if `A ⟨j,_⟩ < τ` then at least `j+1`
+indices have `A k < τ`. -/
+theorem card_ge_of_fin_monotone_lt {L j : ℕ} {A : Fin L → ℤ} {τ : ℤ} (hj : j < L)
+    (hmono : Monotone A) (hval : A ⟨j, hj⟩ < τ) :
+    j + 1 ≤ (Finset.univ.filter (fun k : Fin L => A k < τ)).card := by
+  classical
+  have hdown : ∀ a b : Fin L, b ≤ a → A a < τ → A b < τ :=
+    fun a b hba ha => lt_of_le_of_lt (hmono hba) ha
+  have h := (Fin.lt_card_filter_univ_iff_apply_of_imp (p := fun k => A k < τ) hdown
+    (j := ⟨j, hj⟩)).mpr hval
+  -- h : (⟨j,hj⟩ : Fin L) < card, i.e. j < card
+  have hj' : j < (Finset.univ.filter (fun k : Fin L => A k < τ)).card := h
+  omega
+
+/-- The residual pool is `≤` the original (eraseIter only removes elements). -/
+theorem eraseIter_le (i : ℕ) (b : List ℤ) (R : Multiset ℤ) : eraseIter i b R ≤ R := by
+  induction i generalizing b R with
+  | zero => simp [eraseIter]
+  | succ k ih =>
+    match b with
+    | [] => simp [eraseIter]
+    | w :: ws =>
+      rw [eraseIter]
+      exact le_trans (ih ws (R.erase (maxPick w ws R))) (Multiset.erase_le _ _)
+
+/-- The residual pool stays `Dom`-dominated by the suffix widths. -/
+theorem eraseIter_dom {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
+    Dom (b.drop i) (eraseIter i b R) := by
+  induction i generalizing b R with
+  | zero => simpa [eraseIter] using hD
+  | succ k ih =>
+    match b with
+    | [] => simpa [eraseIter] using hD
+    | w :: ws =>
+      obtain ⟨_, _, hdom2⟩ := maxPick_spec hD
+      rw [List.drop_succ_cons, eraseIter]
+      exact ih hdom2
+
+/-- The residual pool is a permutation of the forwardMax suffix (same multiset). -/
+theorem eraseIter_perm {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
+    ((forwardMax b R).drop i : Multiset ℤ) = eraseIter i b R := by
+  rw [forwardMax_drop_eq]
+  exact forwardMax_perm (eraseIter_dom hD i)
+
+/-- Conservation of mass: `∑ R_i = ∑ R − ∑(first i forwardMax picks)`. -/
+theorem eraseIter_sum {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
+    (eraseIter i b R).sum = R.sum - ((forwardMax b R).take i).sum := by
+  have hperm : ((forwardMax b R).drop i : Multiset ℤ) = eraseIter i b R := eraseIter_perm hD i
+  have hdropsum : (eraseIter i b R).sum = ((forwardMax b R).drop i).sum := by
+    rw [← hperm, Multiset.sum_coe]
+  have hsplit : (forwardMax b R).sum = ((forwardMax b R).take i).sum
+      + ((forwardMax b R).drop i).sum := by
+    rw [← List.sum_append, List.take_append_drop]
+  have hRsum : (forwardMax b R).sum = R.sum := by
+    rw [← Multiset.sum_coe, forwardMax_perm hD]
+  rw [hdropsum]; linarith
+
+end BGEngine
+
+/-- The achiever-width list `[M¹,…,Mᴸ]` and pool `Y`-multiset feeding the BG engine. -/
+noncomputable def Mwidths (M : Fin (L + 1) → ℕ) : List ℤ :=
+  List.ofFn (fun j : Fin L => (M j.succ : ℤ))
+
+/-- The achiever target multiset `Yvec` as a `Multiset ℤ` (the engine's pool). -/
+noncomputable def Ymulti (M : Fin (L + 1) → ℕ) : Multiset ℤ :=
+  (List.ofFn (Yvec M (cAch M)) : Multiset ℤ)
+
+/-- The achiever ordering `q* = backwardGreedy Mwidths Y`, extended by junk `0` past `L`. -/
+noncomputable def qStar (M : Fin (L + 1) → ℕ) : ℕ → ℤ :=
+  fun i ↦ (BGEngine.backwardGreedy (Mwidths M) (Ymulti M)).getD i 0
+
+/-- `Mwidths` has length `L`. -/
+private theorem Mwidths_len (M : Fin (L + 1) → ℕ) : (Mwidths M).length = L := by
+  rw [Mwidths, List.length_ofFn]
+
+/-- `Mwidths[j] = M⁽ʲ⁺¹⁾ = Mseq M (j+1)`. -/
+private theorem Mwidths_get (M : Fin (L + 1) → ℕ) (j : ℕ) (hj : j < L) :
+    (Mwidths M)[j]'(by rw [Mwidths_len]; exact hj) = Mseq M (j + 1) := by
+  simp only [Mwidths, List.getElem_ofFn]; unfold Mseq; rw [dif_pos (by omega)]; rfl
+
+/-- The pool `Ymulti` has card `L`. -/
+private theorem Ymulti_card (M : Fin (L + 1) → ℕ) : (Ymulti M).card = L := by
+  rw [Ymulti, Multiset.coe_card, List.length_ofFn]
+
+/-- **The achiever ordering is QFeasible + permutes `Yvec`** — given the engine precondition `Dom`
+and the band. The easy clauses (`hext`/`htot`/`hpre`/`hge`) are discharged from the engine's perm +
+`_ge`; the band `hadm` is the supplied achiever-structural input. -/
+private theorem QFeas_qStar (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
+    (hDom : BGEngine.Dom (Mwidths M) (Ymulti M))
+    (hband : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+        ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i) :
+    QFeas M (qStar M) ∧
+      ∃ σ : Equiv.Perm (Fin L), ∀ j : Fin L, qStar M (j : ℕ) = Yvec M (cAch M) (σ j) := by
+  set c := cAch M with hc
+  set qList := BGEngine.backwardGreedy (Mwidths M) (Ymulti M) with hqL
+  have hqlen : qList.length = L := by
+    rw [hqL, BGEngine.backwardGreedy_length hDom, Mwidths_len]
+  have hperm : (qList : Multiset ℤ) = Ymulti M := BGEngine.backwardGreedy_perm hDom
+  -- qStar at j<L is the list element
+  have hqget : ∀ j (hj : j < L), qStar M j = qList[j]'(by rw [hqlen]; exact hj) := by
+    intro j hj; rw [qStar, ← hqL, List.getD_eq_getElem _ _ (by rw [hqlen]; exact hj)]
+  -- hge: Mseq M (j+1) ≤ qStar M j  (engine _ge + Mwidths_get)
+  have hge : ∀ j : Fin L, Mseq M ((j : ℕ) + 1) ≤ qStar M (j : ℕ) := by
+    intro j
+    have hjL : (j : ℕ) < L := j.isLt
+    have hg := BGEngine.backwardGreedy_ge hDom (j : ℕ) (by rw [Mwidths_len]; exact hjL)
+    rw [Mwidths_get M (j : ℕ) hjL] at hg
+    rw [hqget (j : ℕ) hjL]; exact hg
+  -- hext: qStar = 0 past L
+  have hext : ∀ j, L ≤ j → qStar M j = 0 := by
+    intro j hj; rw [qStar, ← hqL, List.getD_eq_default _ _ (by rw [hqlen]; exact hj)]
+  -- htot: ∑_{j<L} qStar = ∑ M  (perm: ∑qList = ∑Ymulti = ∑Yvec = ∑M)
+  have hYsum : (Ymulti M).sum = ∑ i : Fin (L + 1), (M i : ℤ) := by
+    rw [Ymulti, Multiset.sum_coe, ← hc, List.sum_ofFn]
+    exact sum_Yvec M hL
+  have htot : ∑ j ∈ Finset.range L, qStar M j = ∑ i ∈ Finset.range (L + 1), Mseq M i := by
+    have hqsum : ∑ j ∈ Finset.range L, qStar M j = qList.sum := by
+      rw [← Fin.sum_univ_eq_sum_range (fun j ↦ qStar M j) L]
+      rw [show (∑ j : Fin L, qStar M (j : ℕ))
+            = ∑ j : Fin L, qList[(j : ℕ)]'(by rw [hqlen]; exact j.isLt) from
+          Finset.sum_congr rfl (fun j _ ↦ hqget (j : ℕ) j.isLt)]
+      rw [← List.sum_ofFn]; congr 1
+      apply List.ext_getElem (by rw [List.length_ofFn]; exact hqlen.symm)
+      intro n h1 h2; rw [List.getElem_ofFn]
+    rw [hqsum, ← Multiset.sum_coe, hperm, hYsum]
+    rw [← Fin.sum_univ_eq_sum_range (fun i ↦ Mseq M i) (L + 1)]
+    exact (Finset.sum_congr rfl (fun i _ ↦ by unfold Mseq; rw [dif_pos i.isLt])).symm
+  -- hpre: prefix_n ≤ S'_n  via suffix-complement (hge + htot)
+  have hpre : ∀ n, n ≤ L → ∑ j ∈ Finset.range n, qStar M j
+      ≤ ∑ i ∈ Finset.range (n + 1), Mseq M i := by
+    intro n hn
+    -- ∑_{j<n} q = ∑M − ∑_{n≤j<L} q ≤ ∑M − ∑_{n≤j<L} Mseq(j+1) = ∑_{i<n+1} Mseq
+    have hsplit : ∑ j ∈ Finset.range L, qStar M j
+        = (∑ j ∈ Finset.range n, qStar M j) + ∑ j ∈ Finset.Ico n L, qStar M j :=
+      (Finset.sum_range_add_sum_Ico _ hn).symm
+    have htail : ∑ j ∈ Finset.Ico n L, Mseq M (j + 1) ≤ ∑ j ∈ Finset.Ico n L, qStar M j := by
+      apply Finset.sum_le_sum; intro j hj; rw [Finset.mem_Ico] at hj
+      exact hge ⟨j, by omega⟩
+    have hMtail : ∑ i ∈ Finset.range (L + 1), Mseq M i
+        = (∑ i ∈ Finset.range (n + 1), Mseq M i) + ∑ j ∈ Finset.Ico n L, Mseq M (j + 1) := by
+      rw [← Finset.sum_range_add_sum_Ico _ (show n + 1 ≤ L + 1 by omega)]
+      congr 1
+      rw [Finset.sum_Ico_eq_sum_range, Finset.sum_Ico_eq_sum_range]
+      apply Finset.sum_congr (by congr 1; omega)
+      intro i _; congr 1; omega
+    rw [htot] at hsplit
+    linarith [hsplit, htail, hMtail]
+  -- σ: qF and Yvec are perms of the same multiset ⟹ related by a permutation
+  set qF : Fin L → ℤ := fun j ↦ qStar M (j : ℕ) with hqF
+  have hqFmulti : (List.ofFn qF : Multiset ℤ) = (List.ofFn (Yvec M c) : Multiset ℤ) := by
+    have hqFlist : List.ofFn qF = qList := by
+      apply List.ext_getElem (by rw [List.length_ofFn]; exact hqlen.symm)
+      intro n h1 h2
+      rw [List.getElem_ofFn]
+      exact hqget n (by rw [List.length_ofFn] at h1; exact h1)
+    rw [hqFlist, hperm, Ymulti]
+  -- equal multisets ⟹ equal sorted forms (the monotone arrangement is multiset-determined)
+  have hmulti_sort : ∀ (f : Fin L → ℤ),
+      (List.ofFn (f ∘ Tuple.sort f) : Multiset ℤ) = (List.ofFn f : Multiset ℤ) := by
+    intro f
+    rw [← Fin.univ_val_map, ← Fin.univ_val_map]
+    conv_rhs => rw [← Multiset.map_univ_val_equiv (Tuple.sort f), Multiset.map_map]
+  have hmono_eq : qF ∘ Tuple.sort qF = Yvec M c ∘ Tuple.sort (Yvec M c) := by
+    rw [← List.ofFn_inj]
+    have hs1 : (List.ofFn (qF ∘ Tuple.sort qF)).SortedLE :=
+      List.sortedLE_ofFn_iff.mpr (Tuple.monotone_sort qF)
+    have hs2 : (List.ofFn (Yvec M c ∘ Tuple.sort (Yvec M c))).SortedLE :=
+      List.sortedLE_ofFn_iff.mpr (Tuple.monotone_sort (Yvec M c))
+    have hp : List.Perm (List.ofFn (qF ∘ Tuple.sort qF))
+        (List.ofFn (Yvec M c ∘ Tuple.sort (Yvec M c))) := by
+      rw [← Multiset.coe_eq_coe, hmulti_sort qF, hmulti_sort (Yvec M c), hqFmulti]
+    exact List.Perm.eq_of_sortedLE hs1 hs2 hp
+  set σ : Equiv.Perm (Fin L) := (Tuple.sort qF).symm.trans (Tuple.sort (Yvec M c)) with hσ
+  have hqFσ : ∀ j : Fin L, qF j = Yvec M c (σ j) := by
+    intro j
+    have := congrArg (fun f ↦ f ((Tuple.sort qF).symm j)) hmono_eq
+    simp only [Function.comp_apply, Equiv.apply_symm_apply] at this
+    rw [hσ]; simp only [Equiv.trans_apply]; rw [← this]
+  exact ⟨QFeas_of_assignment M (qStar M) hext htot hpre hge hband, σ,
+    fun j ↦ by rw [hqF] at hqFσ; exact hqFσ j⟩
+
+/-! ### The BG-engine `Dom` precondition (`dom_Mtail_Yvec`).
+
+`Dom (Mwidths M) (Ymulti M)` is the head-count `cLt(Ymulti,τ) ≤ cLt(Mwidths,τ)` (plus equal card).
+The achiever content is the pointwise `aS M (i+1) ≤ Yvec M c i` (the `i`-th sorted target dominates
+the `(i+1)`-th smallest width), proven from `good_floor_core` / `aS_le_bp1`. The head-count then
+reduces by two `cLt_erase` steps (drop `M⁰` from `Mwidths`, drop the smallest `aS M 0` from the
+target side) plus `aS M 0 ≤ M⁰`. -/
+
+/-- The head-count of an `ofFn` multiset is the count of indices whose value is `< τ`. -/
+private theorem cLt_ofFn (n : ℕ) (f : Fin n → ℤ) (τ : ℤ) :
+    BGEngine.cLt (↑(List.ofFn f) : Multiset ℤ) τ
+      = (Finset.univ.filter (fun i : Fin n => f i < τ)).card := by
+  rw [BGEngine.cLt_eq_countP, ← Fin.univ_val_map, Multiset.countP_map]; rfl
+
+/-- Pointwise domination `A i ≤ B i` gives the reversed head-count `cLt(B) ≤ cLt(A)`. -/
+private theorem cLt_le_of_pointwise (n : ℕ) (A B : Fin n → ℤ) (hAB : ∀ i, A i ≤ B i) (τ : ℤ) :
+    BGEngine.cLt (↑(List.ofFn B) : Multiset ℤ) τ
+      ≤ BGEngine.cLt (↑(List.ofFn A) : Multiset ℤ) τ := by
+  rw [cLt_ofFn, cLt_ofFn]
+  apply Finset.card_le_card
+  intro i hi
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+  exact lt_of_le_of_lt (hAB i) hi
+
+/-- **Achiever pointwise domination** `aS M (i+1) ≤ Yvec M (cAch M) i`: the `i`-th smallest target
+value dominates the `(i+1)`-th smallest reduced width. Balanced block (`i < c`) from
+`good_floor_core` / `aS_le_bp1`; tail (`i ≥ c`) by equality `Yvec i = aS M (i+1)`. -/
+private theorem aS_succ_le_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : Fin L) :
+    (aS M ((i : ℕ) + 1) : ℤ) ≤ Yvec M (cAch M) i := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b := P / c with hb
+  set r := P % c with hr
+  have hrlt : r < c := Nat.mod_lt _ hc1
+  have hval : Yvec M c i = (if (i : ℕ) < c then (if (i : ℕ) < c - r then (b : ℤ) else (b : ℤ) + 1)
+      else (aS M ((i : ℕ) + 1) : ℤ)) := rfl
+  rw [hval]
+  by_cases hic : (i : ℕ) < c
+  · rw [if_pos hic]
+    have hgf := good_floor_core M hL (show 1 ≤ (i : ℕ) + 1 by omega) (show (i : ℕ) + 1 ≤ c by omega)
+    rw [← hc, ← hP, show (i : ℕ) + 1 - 1 = (i : ℕ) by omega] at hgf
+    have hPdm : P = c * b + r := (Nat.div_add_mod P c).symm
+    by_cases hir : (i : ℕ) < c - r
+    · rw [if_pos hir]
+      have hle : aS M ((i : ℕ) + 1) ≤ b := by
+        by_contra hgt; push_neg at hgt
+        have hbig : c * (b + 1) ≤ c * aS M ((i : ℕ) + 1) := Nat.mul_le_mul_left c hgt
+        have hexp : c * (b + 1) = c * b + c := by ring
+        omega
+      exact_mod_cast hle
+    · rw [if_neg hir]
+      have hle := aS_le_bp1 M hL (show 1 ≤ (i : ℕ) + 1 by omega) (show (i : ℕ) + 1 ≤ c by omega)
+      rw [← hc, ← hP, ← hb] at hle
+      exact_mod_cast hle
+  · rw [if_neg hic]
+
+/-- `aS M 0 ≤ M 0`: the smallest width is `≤` the first width. -/
+private theorem aS_zero_le (M : Fin (L + 1) → ℕ) : aS M 0 ≤ M 0 := by
+  have h0 : (0 : ℕ) < L + 1 := by omega
+  -- aS M 0 = aSort M ⟨0⟩ = (M ∘ sort M) ⟨0⟩, the minimum of the sorted tuple
+  rw [aS, dif_pos h0, aSort]
+  -- there is a sorted slot `j0` with `sort M j0 = 0`; monotonicity gives the min ≤ M 0
+  set j0 : Fin (L + 1) := (Tuple.sort M).symm 0 with hj0
+  have hsj0 : Tuple.sort M j0 = 0 := by rw [hj0, Equiv.apply_symm_apply]
+  have hmono : (M ∘ Tuple.sort M) (⟨0, h0⟩ : Fin (L + 1)) ≤ (M ∘ Tuple.sort M) j0 :=
+    Tuple.monotone_sort M (by simp [Fin.le_def])
+  simp only [Function.comp_apply, hsj0] at hmono
+  exact hmono
+
+/-- **The BG-engine `Dom` precondition.** `Dom (Mwidths M) (Ymulti M)`: equal card `L`, and the
+head-count `cLt(Ymulti,τ) ≤ cLt(Mwidths,τ)` from the achiever pointwise domination
+`aS_succ_le_Yvec` plus two `cLt_erase` steps (drop `M⁰`, drop the smallest `aS M 0`). -/
+private theorem dom_Mtail_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    BGEngine.Dom (Mwidths M) (Ymulti M) := by
+  refine ⟨by rw [Ymulti_card, Mwidths_len], ?_⟩
+  intro τ
+  -- the three multisets, all as coe-ofFn
+  set Mfull : Multiset ℤ := (↑(List.ofFn (fun i : Fin (L + 1) => (M i : ℤ))) : Multiset ℤ) with hMf
+  set Ytail : Multiset ℤ := (↑(List.ofFn (fun i : Fin L => (aS M ((i : ℕ) + 1) : ℤ))) : Multiset ℤ)
+    with hYt
+  -- STEP 1: cLt(Ymulti) ≤ cLt(Ytail)  via the pointwise domination
+  have hstep1 : BGEngine.cLt (Ymulti M) τ ≤ BGEngine.cLt Ytail τ := by
+    rw [Ymulti, hYt]
+    exact cLt_le_of_pointwise L (fun i => (aS M ((i : ℕ) + 1) : ℤ)) (Yvec M (cAch M))
+      (fun i => aS_succ_le_Yvec M hL i) τ
+  -- STEP 2: Mfull = (M 0) ::ₘ Mwidths, so cLt(Mwidths) = cLt(Mfull) − [M⁰<τ]
+  have hMfcons : Mfull = (M 0 : ℤ) ::ₘ (↑(Mwidths M) : Multiset ℤ) := by
+    rw [hMf, Mwidths, List.ofFn_succ, ← Multiset.cons_coe]
+  have hM0mem : (M 0 : ℤ) ∈ Mfull := by rw [hMfcons]; exact Multiset.mem_cons_self _ _
+  have hMwerase : Mfull.erase (M 0 : ℤ) = (↑(Mwidths M) : Multiset ℤ) := by
+    rw [hMfcons, Multiset.erase_cons_head]
+  have hcMw : BGEngine.cLt Mfull τ
+      = BGEngine.cLt (↑(Mwidths M) : Multiset ℤ) τ + (if (M 0 : ℤ) < τ then 1 else 0) := by
+    rw [BGEngine.cLt_erase Mfull (M 0 : ℤ) τ hM0mem, hMwerase]
+  -- STEP 3: ASfull (sorted M) = Mfull as multisets, and Mfull = (aS M 0) ::ₘ Ytail
+  have hASfull : (↑(List.ofFn (fun i : Fin (L + 1) => (aS M (i : ℕ) : ℤ))) : Multiset ℤ)
+      = Mfull := by
+    rw [hMf, ← Fin.univ_val_map, ← Fin.univ_val_map]
+    -- aS M i = M (sort M i) on Fin (L+1); reindex by the perm sort M
+    have hpt : (fun i : Fin (L + 1) => (aS M (i : ℕ) : ℤ))
+        = (fun i : Fin (L + 1) => (M i : ℤ)) ∘ Tuple.sort M := by
+      funext i
+      simp only [Function.comp_apply, aS, dif_pos i.isLt, aSort]
+    rw [hpt, ← Multiset.map_map]
+    congr 1
+    exact Multiset.map_univ_val_equiv (Tuple.sort M)
+  have hAScons : (↑(List.ofFn (fun i : Fin (L + 1) => (aS M (i : ℕ) : ℤ))) : Multiset ℤ)
+      = (aS M 0 : ℤ) ::ₘ Ytail := by
+    rw [List.ofFn_succ, ← Multiset.cons_coe, hYt]
+    rfl
+  have haS0mem : (aS M 0 : ℤ) ∈ Mfull := by
+    rw [← hASfull, hAScons]; exact Multiset.mem_cons_self _ _
+  have hYterase : Mfull.erase (aS M 0 : ℤ) = Ytail := by
+    rw [← hASfull, hAScons, Multiset.erase_cons_head]
+  have hcYt : BGEngine.cLt Mfull τ
+      = BGEngine.cLt Ytail τ + (if (aS M 0 : ℤ) < τ then 1 else 0) := by
+    rw [BGEngine.cLt_erase Mfull (aS M 0 : ℤ) τ haS0mem, hYterase]
+  -- STEP 4: [M⁰<τ] ≤ [aS M 0 < τ]  since aS M 0 ≤ M 0
+  have hind : (if (M 0 : ℤ) < τ then 1 else 0) ≤ (if (aS M 0 : ℤ) < τ then 1 else 0) := by
+    have haS0 : (aS M 0 : ℤ) ≤ (M 0 : ℤ) := by exact_mod_cast aS_zero_le M
+    split_ifs with h1 h2
+    · exact le_refl 1
+    · exact absurd (lt_of_le_of_lt haS0 h1) h2
+    · exact Nat.zero_le _
+    · exact le_refl 0
+  -- combine: cLt(Ymulti) ≤ cLt(Ytail) = cLt(Mfull)−[aS0<τ] ≤ cLt(Mfull)−[M⁰<τ] = cLt(Mwidths)
+  omega
+
+/-! ### The forward-max ordering `qFM` and the band.
+
+`qFM = forwardMax (Mwidths M) (Ymulti M)` is the front-loader competitor. The backward greedy `qStar`
+prefix-dominates it (`forwardMax_prefix_le_backwardGreedy`), so the band on `qStar` follows from the
+band on `qFM` — and the latter is the achiever content (the per-step `qFM_i ≥ uTel i`, via the
+maximality lever `le_maxPick` + a Dom-preserving feasible witness whose existence is `good_floor_core`).
+-/
+
+/-- The forward-max front-loader ordering, extended by junk `0` past `L`. -/
+noncomputable def qFM (M : Fin (L + 1) → ℕ) : ℕ → ℤ :=
+  fun i ↦ (BGEngine.forwardMax (Mwidths M) (Ymulti M)).getD i 0
+
+/-- `Ymulti.sum = ∑ M` (the achiever target conserves total mass). -/
+private theorem Ymulti_sum (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    (Ymulti M).sum = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  rw [Ymulti, Multiset.sum_coe, List.sum_ofFn]
+  exact sum_Yvec M hL
+
+/-- `(Mwidths M).getD k 0 = Mseq M (k+1)` (the list value as the shifted width sequence). -/
+private theorem Mwidths_getD (M : Fin (L + 1) → ℕ) (k : ℕ) :
+    (Mwidths M).getD k 0 = Mseq M (k + 1) := by
+  by_cases hk : k < L
+  · rw [List.getD_eq_getElem _ _ (by rw [Mwidths_len]; exact hk), Mwidths_get M k hk]
+  · rw [List.getD_eq_default _ _ (by rw [Mwidths_len]; omega)]
+    unfold Mseq; rw [dif_neg (by omega)]
+
+/-- The full `Mwidths` sum is `∑_{k<L} Mseq (k+1)`. -/
+private theorem Mwidths_sum (M : Fin (L + 1) → ℕ) :
+    (Mwidths M).sum = ∑ k ∈ Finset.range L, Mseq M (k + 1) := by
+  have h := BGEngine.sum_range_getD_eq_take_sum (Mwidths M) L
+  rw [List.take_of_length_le (by rw [Mwidths_len])] at h
+  rw [← h]
+  exact Finset.sum_congr rfl (fun k _ => Mwidths_getD M k)
+
+/-- `(Mwidths M).take i` sums to `∑_{k<i} Mseq (k+1)`. -/
+private theorem Mwidths_take_sum (M : Fin (L + 1) → ℕ) (i : ℕ) :
+    ((Mwidths M).take i).sum = ∑ k ∈ Finset.range i, Mseq M (k + 1) := by
+  rw [← BGEngine.sum_range_getD_eq_take_sum (Mwidths M) i]
+  exact Finset.sum_congr rfl (fun k _ => Mwidths_getD M k)
+
+/-- `∑_{k<i} qFM_k = (forwardMax …).take i .sum` (prefix-sum of the front-loader). -/
+private theorem qFM_prefix_sum (M : Fin (L + 1) → ℕ) (i : ℕ) :
+    ∑ k ∈ Finset.range i, qFM M k = ((BGEngine.forwardMax (Mwidths M) (Ymulti M)).take i).sum :=
+  BGEngine.sum_range_getD_eq_take_sum _ i
+
+/-- **Conservation bridge:** the global telescope = local residual minus suffix-width mass. -/
+private theorem uTel_conservation (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) :
+    uTel M (qFM M) i
+      = (BGEngine.eraseIter i (Mwidths M) (Ymulti M)).sum - ((Mwidths M).drop i).sum := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  -- residual sum = Ymulti.sum − prefix_i(qFM)
+  have hres : (BGEngine.eraseIter i (Mwidths M) (Ymulti M)).sum
+      = (Ymulti M).sum - ∑ k ∈ Finset.range i, qFM M k := by
+    rw [BGEngine.eraseIter_sum hDom i, qFM_prefix_sum]
+  -- Ymulti.sum = M⁰ + ∑_{k<L} Mseq(k+1)
+  have hYsum : (Ymulti M).sum = (M 0 : ℤ) + ∑ k ∈ Finset.range L, Mseq M (k + 1) := by
+    rw [Ymulti_sum M hL, Fin.sum_univ_succ]
+    congr 1
+    rw [← Fin.sum_univ_eq_sum_range (fun k => Mseq M (k + 1)) L]
+    refine Finset.sum_congr rfl (fun k _ => ?_)
+    unfold Mseq; rw [dif_pos (by omega)]; rfl
+  -- drop sum = ∑_{k<L} − ∑_{k<i}
+  have hdrop : ((Mwidths M).drop i).sum
+      = (∑ k ∈ Finset.range L, Mseq M (k + 1)) - ∑ k ∈ Finset.range i, Mseq M (k + 1) := by
+    have hsplit : (Mwidths M).sum = ((Mwidths M).take i).sum + ((Mwidths M).drop i).sum := by
+      rw [← List.sum_append, List.take_append_drop]
+    rw [Mwidths_sum, Mwidths_take_sum] at hsplit
+    linarith
+  rw [hres, hYsum, hdrop, uTel_eq_prefix, Finset.sum_sub_distrib]
+  ring
+
+/-- **Prefix transport: `qStar` prefix-dominates `qFM`.** -/
+private theorem qStar_prefix_ge_qFM (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (k : ℕ) :
+    ∑ i ∈ Finset.range k, qFM M i ≤ ∑ i ∈ Finset.range k, qStar M i := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  have hF : ∑ i ∈ Finset.range k, qFM M i
+      = ((BGEngine.forwardMax (Mwidths M) (Ymulti M)).take k).sum :=
+    BGEngine.sum_range_getD_eq_take_sum _ k
+  have hS : ∑ i ∈ Finset.range k, qStar M i
+      = ((BGEngine.backwardGreedy (Mwidths M) (Ymulti M)).take k).sum :=
+    BGEngine.sum_range_getD_eq_take_sum _ k
+  rw [hF, hS]
+  exact BGEngine.forwardMax_prefix_le_backwardGreedy hDom k
+
+/-- **u-space band ⟹ prefix band.** `uTel (j+1) ≤ admBound_j` gives the prefix band on any `q`. -/
+private theorem band_of_uTel (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (j : Fin L)
+    (hu : uTel M q ((j : ℕ) + 1) ≤ (admBound M j : ℤ)) :
+    (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), q i := by
+  rw [uTel_eq_prefix, Finset.sum_sub_distrib] at hu
+  rw [show (j : ℕ) + 2 = ((j : ℕ) + 1) + 1 by omega, Mseq_prefix_succ] at *
+  linarith
+
+/-- The augmented head `head'_i`: `max(M⁰,M¹)` at `i=0`, else `max(uTel_i, M^{i+1})`. Carries BOTH
+the band (`uTel`) and the feasibility (the width `M^{i+1}`). -/
+noncomputable def headP (M : Fin (L + 1) → ℕ) (i : ℕ) : ℤ :=
+  if i = 0 then max (M 0 : ℤ) (M 1 : ℤ) else max (uTel M (qFM M) i) (Mseq M (i + 1))
+
+/-- `R_i`, the residual pool after the first `i` forwardMax picks. -/
+noncomputable def Rpool (M : Fin (L + 1) → ℕ) (i : ℕ) : Multiset ℤ :=
+  BGEngine.eraseIter i (Mwidths M) (Ymulti M)
+
+/-- The carried Dom-invariant: `R_i` dominates the `head'_i`-augmented suffix widths. -/
+def FMDom (M : Fin (L + 1) → ℕ) (i : ℕ) : Prop :=
+  BGEngine.Dom (headP M i :: (Mwidths M).drop (i + 1)) (Rpool M i)
+
+/-- `head'_i ≥ M^{i+1}` (the augmented head dominates the current width — feasibility). -/
+private theorem headP_ge_width (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < L) :
+    Mseq M (i + 1) ≤ headP M i := by
+  unfold headP
+  by_cases hi0 : i = 0
+  · subst hi0
+    rw [if_pos rfl, show (0 : ℕ) + 1 = 1 from rfl]
+    have hfin : (⟨1, by omega⟩ : Fin (L + 1)) = (1 : Fin (L + 1)) := by
+      apply Fin.ext; simp [Fin.val_one, Nat.mod_eq_of_lt (by omega : 1 < L + 1)]
+    have heq : Mseq M 1 = (M 1 : ℤ) := by
+      unfold Mseq; rw [dif_pos (by omega), hfin]
+    rw [heq]; exact le_max_right _ _
+  · rw [if_neg hi0]; exact le_max_right _ _
+
+/-- `head'_i ≥ uTel_i` (the augmented head dominates the level — the band carrier). -/
+private theorem headP_ge_uTel (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+    uTel M (qFM M) i ≤ headP M i := by
+  unfold headP
+  by_cases hi0 : i = 0
+  · subst hi0
+    rw [if_pos rfl]
+    have huz : uTel M (qFM M) 0 = (M 0 : ℤ) := rfl
+    rw [huz]; exact le_max_left _ _
+  · rw [if_neg hi0]; exact le_max_left _ _
+
+/-- **`qFM` is feasible:** `Mseq M (i+1) ≤ qFM_i` for `i < L` (from `forwardMax_feasible`). The
+band-free feasibility fact (NO `good_floor_core`, NO band). -/
+private theorem qFM_feasible (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+    Mseq M (i + 1) ≤ qFM M i := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  have hflen : (BGEngine.forwardMax (Mwidths M) (Ymulti M)).length = L := by
+    rw [BGEngine.forwardMax_length hDom, Mwidths_len]
+  have hib : i < (Mwidths M).length := by rw [Mwidths_len]; exact hi
+  have hip : i < (BGEngine.forwardMax (Mwidths M) (Ymulti M)).length := by rw [hflen]; exact hi
+  have hfeas := BGEngine.forwardMax_feasible hDom i hib hip
+  rw [Mwidths_get M i hi] at hfeas
+  rw [qFM, List.getD_eq_getElem _ _ hip]
+  exact hfeas
+
+/-- **`uTel ∘ qFM` is antitone:** `uTel_{i+1} ≤ uTel_i` for `i < L` (⟺ `qFM_i ≥ M^{i+1}`, feasibility).
+Band-free. -/
+private theorem uTel_antitone (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+    uTel M (qFM M) (i + 1) ≤ uTel M (qFM M) i := by
+  have hrec : uTel M (qFM M) (i + 1) = Mseq M (i + 1) + uTel M (qFM M) i - qFM M i := rfl
+  have hfeas := qFM_feasible M hL i hi
+  rw [hrec]; linarith
+
+/-- **`uTel ∘ qFM` is antitone (general):** `uTel_j ≤ uTel_i` for `i ≤ j ≤ L`. -/
+private theorem uTel_antitone_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {i j : ℕ}
+    (hij : i ≤ j) (hj : j ≤ L) : uTel M (qFM M) j ≤ uTel M (qFM M) i := by
+  induction j with
+  | zero => have : i = 0 := by omega
+            rw [this]
+  | succ k ih =>
+    rcases Nat.lt_or_ge i (k + 1) with hlt | hge
+    · have hk : uTel M (qFM M) (k + 1) ≤ uTel M (qFM M) k :=
+        uTel_antitone M hL k (by omega)
+      exact le_trans hk (ih (by omega) (by omega))
+    · have : i = k + 1 := by omega
+      rw [this]
+
+/-- **Consumer: the per-step bound from `FMDom`.** Given the Dom-invariant at `j`, the forward-max
+pick `qFM_j ≥ head'_j` (via `le_maxPick` + the minimal feasible witness). Since `head'_j ≥ uTel_j`
+this gives the band; since `head'_0 = max(M⁰,M¹)` it gives the `j=0` corner. -/
+private theorem qFM_ge_headP (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : ℕ) (hj : j < L)
+    (hInv : FMDom M j) : headP M j ≤ qFM M j := by
+  set R := Rpool M j with hR
+  set ws := (Mwidths M).drop (j + 1) with hws
+  -- the global j-th pick is the maxPick at depth j
+  have hdrop : (Mwidths M).drop j = (Mseq M (j + 1)) :: ws := by
+    have hlt : j < (Mwidths M).length := by rw [Mwidths_len]; exact hj
+    rw [hws, List.drop_eq_getElem_cons hlt, Mwidths_get M j hj]
+  have hqj : qFM M j = BGEngine.maxPick (Mseq M (j + 1)) ws R := by
+    rw [qFM, hR, Rpool]
+    exact BGEngine.forwardMax_getD_eq (Mwidths M) (Ymulti M) j (Mseq M (j + 1)) ws hdrop
+  -- witness: pick(head'_j, R) — feasible (≥ head'_j ≥ M^{j+1}) and Dom-preserving (dom_head_pick)
+  -- hInv : Dom (head'_j :: ws) R, so dom_head_pick applies with head head'_j
+  have hInv' : BGEngine.Dom (headP M j :: ws) R := hInv
+  obtain ⟨hpge, hpdom⟩ := BGEngine.dom_head_pick hInv'
+  have hpmem : BGEngine.pick (headP M j) R ∈ R := by
+    apply BGEngine.pick_mem
+    exact BGEngine.head_pick_exists hInv'
+  -- pick(head'_j) ≥ head'_j ≥ M^{j+1}, so it is a feasible (≥ width) Dom-preserving witness
+  have hpw : Mseq M (j + 1) ≤ BGEngine.pick (headP M j) R :=
+    le_trans (headP_ge_width M j hj) hpge
+  -- le_maxPick: maxPick (width) ws R ≥ this witness. Need Dom (M^{j+1} :: ws) R:
+  -- from hInv' (Dom (head'_j :: ws) R) by head-LOWERING (head'_j ≥ M^{j+1}, the SOUND direction).
+  have hwidthDom : BGEngine.Dom (Mseq M (j + 1) :: ws) R :=
+    BGEngine.dom_head_lower hInv' (headP_ge_width M j hj)
+  have hle : BGEngine.pick (headP M j) R ≤ BGEngine.maxPick (Mseq M (j + 1)) ws R :=
+    BGEngine.le_maxPick hwidthDom hpmem hpw hpdom
+  -- chain: head'_j ≤ pick(head'_j) ≤ maxPick = qFM_j
+  rw [hqj]
+  exact le_trans hpge hle
+
+/-- The list `Mwidths.drop i` is `M^{i+1} :: ws_i` (head = the `i`-th width). -/
+private theorem Mwidths_drop_cons (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < L) :
+    (Mwidths M).drop i = Mseq M (i + 1) :: (Mwidths M).drop (i + 1) := by
+  have hlt : i < (Mwidths M).length := by rw [Mwidths_len]; exact hi
+  rw [List.drop_eq_getElem_cons hlt, Mwidths_get M i hi]
+
+/-- **`static_count`** (the ONE achiever-tied lemma, region A): for `M^{i+1} < τ ≤ uTel_i`, the FIXED
+achiever pool `Ymulti` has no more elements below `τ` than the suffix `ws_i = Mwidths.drop(i+1)`.
+Steps 1–2 are one-shot `good_floor_core` on the FIXED `Ymulti`; Step 3 (the positional-suffix drop count
+`#{M⁰..M^{i+1} < τ} = 1`) needs the band `uTel_k ≤ qFM_k` at the EARLIER steps `k < i` (`hband`),
+supplied by the `FMDom_all` strong induction. -/
+private theorem static_count (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
+    (hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k)
+    {τ : ℤ} (hlo : Mseq M (i + 1) < τ) (hhi : τ ≤ uTel M (qFM M) i) :
+    BGEngine.cLt (Ymulti M) τ ≤ BGEngine.cLt (((Mwidths M).drop (i + 1) : Multiset ℤ)) τ := by
+  classical
+  set m := BGEngine.cLt (Ymulti M) τ with hm
+  rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+  · -- m = 0: trivial
+    rw [hm0]; exact Nat.zero_le _
+  -- m ≥ 1. KERNEL: aS M m < τ.
+  -- m = #{k:Fin L | Yvec_k < τ} ≤ #{k:Fin L | aS_{k+1} < τ}
+  have hmval : m = (Finset.univ.filter (fun k : Fin L => Yvec M (cAch M) k < τ)).card := by
+    rw [hm, Ymulti, cLt_ofFn]
+  have hmle : m ≤ (Finset.univ.filter (fun k : Fin L => (aS M ((k : ℕ) + 1) : ℤ) < τ)).card := by
+    have hpt := cLt_le_of_pointwise L (fun k => (aS M ((k : ℕ) + 1) : ℤ)) (Yvec M (cAch M))
+      (fun k => aS_succ_le_Yvec M hL k) τ
+    rw [cLt_ofFn, cLt_ofFn] at hpt
+    rw [hmval]; exact hpt
+  -- mono of A k = aS M (k+1) on Fin L
+  have hAmono : Monotone (fun k : Fin L => (aS M ((k : ℕ) + 1) : ℤ)) := by
+    intro a b hab
+    have hle : (a : ℕ) + 1 ≤ (b : ℕ) + 1 := by simpa using Fin.le_def.mp hab
+    simp only
+    exact_mod_cast aS_mono M hle (by omega)
+  have hmL : m ≤ L := by
+    rw [hmval]; exact le_trans (Finset.card_filter_le _ _) (by simp)
+  have hkern : (aS M (((m - 1) : ℕ) + 1) : ℤ) < τ :=
+    BGEngine.fin_monotone_lt_of_card_ge hmpos hmL hAmono hmle
+  have haSm : (aS M m : ℤ) < τ := by
+    rwa [show (m - 1) + 1 = m by omega] at hkern
+  -- STEP 1: cLt(Mfull, τ) ≥ m+1.  Mfull = ofFn (aS M ·) (sorted, monotone); aS_0..aS_m < τ.
+  set Mfull : Multiset ℤ := (↑(List.ofFn (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ))) : Multiset ℤ)
+    with hMfdef
+  have hASmono : Monotone (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ)) := by
+    intro a b hab
+    have hle : (a : ℕ) ≤ (b : ℕ) := Fin.le_def.mp hab
+    simp only
+    exact_mod_cast aS_mono M hle b.isLt
+  have hMfull_ge : m + 1 ≤ BGEngine.cLt Mfull τ := by
+    rw [hMfdef, cLt_ofFn]
+    have hmval2 : (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ)) ⟨m, by omega⟩ < τ := by
+      show (aS M m : ℤ) < τ; exact haSm
+    exact BGEngine.card_ge_of_fin_monotone_lt (by omega) hASmono hmval2
+  -- relate Mfull to Mwidths: Mfull = ofFn(M ·) (= sorted M), and as MULTISET = M⁰ ::ₘ Mwidths
+  have hMfull_eq : Mfull = (↑(List.ofFn (fun k : Fin (L + 1) => (M k : ℤ))) : Multiset ℤ) := by
+    rw [hMfdef, ← Fin.univ_val_map, ← Fin.univ_val_map]
+    have hpt : (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ))
+        = (fun k : Fin (L + 1) => (M k : ℤ)) ∘ Tuple.sort M := by
+      funext k; simp only [Function.comp_apply, aS, dif_pos k.isLt, aSort]
+    rw [hpt, ← Multiset.map_map]
+    congr 1
+    exact Multiset.map_univ_val_equiv (Tuple.sort M)
+  -- STEP 2 + 3: cLt(ws_i, τ) = cLt(Mfull, τ) − #{dropped M⁰..M^{i+1} < τ}, and that count = 1.
+  -- Mfull = M⁰ ::ₘ Mwidths;  Mwidths = take(i+1) ++ ws_i.
+  set ws := (Mwidths M).drop (i + 1) with hws
+  -- M⁰ ≥ τ (band-free: uTel antitone ⟹ uTel_i ≤ uTel_0 = M⁰; τ ≤ uTel_i)
+  have hM0 : τ ≤ (M 0 : ℤ) := by
+    have hanti : uTel M (qFM M) i ≤ uTel M (qFM M) 0 := uTel_antitone_le M hL (Nat.zero_le i) (le_of_lt hi)
+    have hu0 : uTel M (qFM M) 0 = (M 0 : ℤ) := rfl
+    rw [hu0] at hanti; linarith
+  -- Mwidths = take(i+1) ++ ws  (list split); cLt additive over append-as-multiset
+  have hsplit : (Mwidths M : Multiset ℤ)
+      = ((Mwidths M).take (i + 1) : Multiset ℤ) + (ws : Multiset ℤ) := by
+    conv_lhs => rw [← List.take_append_drop (i + 1) (Mwidths M)]
+    rw [hws, Multiset.coe_add]
+  have hcMw : BGEngine.cLt (Mwidths M : Multiset ℤ) τ
+      = BGEngine.cLt ((Mwidths M).take (i + 1) : Multiset ℤ) τ + BGEngine.cLt (ws : Multiset ℤ) τ := by
+    rw [BGEngine.cLt, BGEngine.cLt, BGEngine.cLt, hsplit, Multiset.filter_add, Multiset.card_add]
+  -- #{take(i+1) < τ} = 1: take(i+1) = [M¹,…,M^{i+1}], only M^{i+1} < τ.
+  have htakeval : ∀ k, k < i + 1 → ((Mwidths M).take (i + 1)).getD k 0 = Mseq M (k + 1) := by
+    intro k hk
+    rw [List.getD_eq_getElem _ _ (by rw [List.length_take, Mwidths_len]; omega)]
+    rw [List.getElem_take]
+    exact Mwidths_get M k (by omega)
+  -- POSITIONAL CLOSER: Mseq M k ≥ τ for 1 ≤ k ≤ i (via hband + uTel-recurrence + antitone).
+  have hclose : ∀ k, 1 ≤ k → k ≤ i → τ ≤ Mseq M k := by
+    intro k hk1 hki
+    -- M^k ≥ uTel_k ⟺ qFM_{k-1} ≥ uTel_{k-1} (uTel recurrence); k-1 < i so hband applies
+    obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+    have hrec : uTel M (qFM M) (k' + 1) = Mseq M (k' + 1) + uTel M (qFM M) k' - qFM M k' := rfl
+    have hbk : uTel M (qFM M) k' ≤ qFM M k' := hband k' (by omega)
+    have hMk : uTel M (qFM M) (k' + 1) ≤ Mseq M (k' + 1) := by rw [hrec]; linarith
+    have hanti : uTel M (qFM M) i ≤ uTel M (qFM M) (k' + 1) :=
+      uTel_antitone_le M hL hki (le_of_lt hi)
+    linarith
+  -- take(i+1) = ofFn (k : Fin (i+1) ↦ Mseq M (k+1)); then count exactly-one-index.
+  have htakeofFn : (Mwidths M).take (i + 1)
+      = List.ofFn (fun k : Fin (i + 1) => Mseq M ((k : ℕ) + 1)) := by
+    apply List.ext_getElem
+    · rw [List.length_take, Mwidths_len, List.length_ofFn]; omega
+    · intro k h1 h2
+      rw [List.getElem_ofFn]
+      have hk : k < i + 1 := by rw [List.length_ofFn] at h2; exact h2
+      rw [List.getElem_take]
+      exact Mwidths_get M k (by omega)
+  -- #{take(i+1) < τ} = 1: M¹..M^i ≥ τ (hclose), M^{i+1} < τ (hlo).
+  have htakecount : BGEngine.cLt ((Mwidths M).take (i + 1) : Multiset ℤ) τ = 1 := by
+    rw [htakeofFn, cLt_ofFn]
+    -- filter set = {⟨i, _⟩}: only k=i has Mseq(k+1) < τ
+    have hset : (Finset.univ.filter (fun k : Fin (i + 1) => Mseq M ((k : ℕ) + 1) < τ))
+        = {(⟨i, by omega⟩ : Fin (i + 1))} := by
+      ext k
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+      constructor
+      · intro hkτ
+        by_contra hne
+        have hki : (k : ℕ) < i := by
+          rcases Nat.lt_or_ge (k : ℕ) i with h | h
+          · exact h
+          · exact absurd (Fin.ext (by omega : (k : ℕ) = i)) hne
+        exact absurd hkτ (by have := hclose ((k : ℕ) + 1) (by omega) (by omega); linarith)
+      · intro hk; subst hk
+        show Mseq M (i + 1) < τ; exact hlo
+    rw [hset, Finset.card_singleton]
+  -- Mfull = M⁰ ::ₘ Mwidths ; cLt(Mfull) = [M⁰<τ] + cLt(Mwidths) = 0 + 1 + cLt(ws)
+  have hMfcons : Mfull = (M 0 : ℤ) ::ₘ (↑(Mwidths M) : Multiset ℤ) := by
+    rw [hMfull_eq, Mwidths, List.ofFn_succ, ← Multiset.cons_coe]
+  have hcMfull : BGEngine.cLt Mfull τ
+      = (if (M 0 : ℤ) < τ then 1 else 0) + BGEngine.cLt (↑(Mwidths M) : Multiset ℤ) τ := by
+    rw [hMfcons, BGEngine.cLt_erase _ (M 0 : ℤ) τ (Multiset.mem_cons_self _ _),
+      Multiset.erase_cons_head]; ring
+  rw [if_neg (by omega : ¬ (M 0 : ℤ) < τ)] at hcMfull
+  -- combine: cLt(Mfull) = 0 + (1 + cLt(ws)) ; cLt(Mfull) ≥ m+1 ⟹ cLt(ws) ≥ m
+  rw [hcMw, htakecount] at hcMfull
+  rw [← hws] at *
+  omega
+
+/-- **The STRONG INV** (the achiever band-value invariant): for `τ ≤ head'_i`, the residual pool `R_i`
+has no more elements below `τ` than the post-head suffix widths `ws_i = Mwidths.drop (i+1)`. Proven
+DIRECTLY (no recursion-threaded maintenance) by the `M^{i+1}` τ-split:
+`Region T (τ ≤ M^{i+1})` via the GREEN tight chain (`eraseIter_dom`; head indicator 0);
+`Region A (M^{i+1} < τ ≤ head'_i = uTel_i)` via `static_count` (one-shot gfc) + submultiset. -/
+private theorem strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
+    (hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k)
+    {τ : ℤ} (hτ : τ ≤ headP M i) :
+    BGEngine.cLt (Rpool M i) τ ≤ BGEngine.cLt (((Mwidths M).drop (i + 1) : Multiset ℤ)) τ := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  set ws := (Mwidths M).drop (i + 1) with hws
+  -- the green tight chain Dom (Mwidths.drop i) R_i, split at M^{i+1}
+  have htight : BGEngine.Dom ((Mwidths M).drop i) (Rpool M i) := BGEngine.eraseIter_dom hDom i
+  have htd := htight.2 τ
+  rw [Mwidths_drop_cons M i hi, ← Multiset.cons_coe,
+    BGEngine.cLt_erase _ (Mseq M (i + 1)) τ (Multiset.mem_cons_self _ _),
+    Multiset.erase_cons_head] at htd
+  by_cases hT : τ ≤ Mseq M (i + 1)
+  · -- Region T: [M^{i+1}<τ]=0, the tight chain gives it directly
+    rw [if_neg (by omega : ¬ Mseq M (i + 1) < τ)] at htd
+    simpa using htd
+  · -- Region A: M^{i+1} < τ; τ ≤ head'_i forces τ ≤ uTel_i (since head'_i = max(uTel_i, M^{i+1}))
+    push_neg at hT
+    have hτu : τ ≤ uTel M (qFM M) i := by
+      have hhead : headP M i = max (uTel M (qFM M) i) (Mseq M (i + 1)) := by
+        unfold headP
+        by_cases hi0 : i = 0
+        · subst hi0
+          have huz : uTel M (qFM M) 0 = (M 0 : ℤ) := rfl
+          have hfin : (⟨1, by omega⟩ : Fin (L + 1)) = (1 : Fin (L + 1)) := by
+            apply Fin.ext; simp [Fin.val_one, Nat.mod_eq_of_lt (by omega : 1 < L + 1)]
+          have hms1 : Mseq M (0 + 1) = (M 1 : ℤ) := by
+            unfold Mseq; rw [dif_pos (by omega), hfin]
+          rw [if_pos rfl, huz, hms1]
+        · rw [if_neg hi0]
+      rw [hhead] at hτ
+      rcases le_total (uTel M (qFM M) i) (Mseq M (i + 1)) with h | h
+      · rw [max_eq_right h] at hτ; omega
+      · rwa [max_eq_left h] at hτ
+    -- achiever core + submultiset
+    have hsub : BGEngine.cLt (Rpool M i) τ ≤ BGEngine.cLt (Ymulti M) τ :=
+      BGEngine.cLt_le_of_le (BGEngine.eraseIter_le i (Mwidths M) (Ymulti M)) τ
+    exact le_trans hsub (static_count M hL i hi hband hT hτu)
+
+/-- **The carrier `FMDom` from the STRONG INV.** Head-count split at `head'_i`: `τ ≤ head'_i` from
+`strongCount`; `τ > head'_i` from the tight `Dom (Mwidths.drop i) R_i` (`eraseIter_dom`). Needs the
+band at earlier steps (`hband`, `k < i`), supplied by `FMDom_all`'s strong-induction IH. -/
+private theorem FMDom_of_strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
+    (hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k) :
+    FMDom M i := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  -- tight Dom on the residual: Dom (Mwidths.drop i) R_i
+  have htight : BGEngine.Dom ((Mwidths M).drop i) (Rpool M i) :=
+    BGEngine.eraseIter_dom hDom i
+  refine ⟨?_, fun τ => ?_⟩
+  · -- card: R_i has card L − i; headP :: ws has length (L − (i+1)) + 1 = L − i
+    rw [htight.1, Mwidths_drop_cons M i hi]
+    simp
+  · -- head-count at τ
+    set ws := (Mwidths M).drop (i + 1) with hws
+    have hheadsplit : BGEngine.cLt ((headP M i :: ws : List ℤ) : Multiset ℤ) τ
+        = BGEngine.cLt (ws : Multiset ℤ) τ + (if headP M i < τ then 1 else 0) := by
+      rw [← Multiset.cons_coe, BGEngine.cLt_erase _ (headP M i) τ (Multiset.mem_cons_self _ _),
+        Multiset.erase_cons_head]
+    rw [hheadsplit]
+    by_cases hcase : τ ≤ headP M i
+    · -- τ ≤ head'_i: from strongCount, [head'_i<τ]=0
+      rw [if_neg (by omega)]
+      simpa using strongCount M hL i hi hband hcase
+    · -- τ > head'_i: from tight Dom, the +1 absorbs M^{i+1}
+      rw [if_pos (by omega)]
+      have htd := htight.2 τ
+      rw [Mwidths_drop_cons M i hi, ← Multiset.cons_coe,
+        BGEngine.cLt_erase _ (Mseq M (i + 1)) τ (Multiset.mem_cons_self _ _),
+        Multiset.erase_cons_head] at htd
+      have hwle : Mseq M (i + 1) ≤ headP M i := headP_ge_width M i hi
+      split_ifs at htd with hM
+      · omega
+      · omega
+
+/-- **`FMDom` holds at every depth** — by STRONG INDUCTION on `i`. The step at `i` derives the band at
+earlier steps `k < i` (`uTel_k ≤ qFM_k`, from the IH `FMDom k` via `qFM_ge_headP ∘ headP_ge_uTel`) and
+feeds it to `FMDom_of_strongCount`. Well-founded (the achiever step consumes only band-at-`<i`); the
+declaration cycle is resolved by this single induction (`qFM_uTel_band`'s statement is unchanged). -/
+private theorem FMDom_all (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    ∀ i, i < L → FMDom M i := by
+  intro i
+  induction i using Nat.strong_induction_on with
+  | _ i ih =>
+    intro hi
+    -- IH gives FMDom k for k < i; convert to the band uTel_k ≤ qFM_k for k < i
+    have hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k := by
+      intro k hk
+      have hkL : k < L := by omega
+      have hFMk : FMDom M k := ih k hk hkL
+      exact le_trans (headP_ge_uTel M hL k hkL) (qFM_ge_headP M hL k hkL hFMk)
+    exact FMDom_of_strongCount M hL i hi hband
+
+/-- **The per-step band** `qFM_j ≥ uTel j` (j≥1) and `qFM_0 ≥ max(M⁰,M¹)`, in the unified u-space
+form `uTel (j+1) ≤ admBound_j`. The achiever content (`strongCount` + `good_floor_core`). -/
+private theorem qFM_uTel_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin L) :
+    uTel M (qFM M) ((j : ℕ) + 1) ≤ (admBound M j : ℤ) := by
+  -- per-step bound qFM_j ≥ headP_j from the carrier, then u-space algebra to admBound_j.
+  have hj : (j : ℕ) < L := j.isLt
+  have hgeH : headP M (j : ℕ) ≤ qFM M (j : ℕ) :=
+    qFM_ge_headP M hL (j : ℕ) hj (FMDom_all M hL (j : ℕ) hj)
+  have hge : uTel M (qFM M) (j : ℕ) ≤ qFM M (j : ℕ) :=
+    le_trans (headP_ge_uTel M hL (j : ℕ) hj) hgeH
+  -- uTel(j+1) = Mseq(j+1) + uTel j − qFM_j
+  have hurec : uTel M (qFM M) ((j : ℕ) + 1)
+      = Mseq M ((j : ℕ) + 1) + uTel M (qFM M) (j : ℕ) - qFM M (j : ℕ) := rfl
+  by_cases hj0 : (j : ℕ) = 0
+  · -- admBound_0 = min(M⁰,M¹); qFM_0 ≥ headP_0 = max(M⁰,M¹)
+    have hadm : admBound M j = min (M 0) (M 1) := by unfold admBound; rw [if_pos hj0]
+    have hq0 : max (M 0 : ℤ) (M 1 : ℤ) ≤ qFM M (j : ℕ) := by
+      have hhead0 : headP M (j : ℕ) = max (M 0 : ℤ) (M 1 : ℤ) := by
+        unfold headP; rw [if_pos hj0]
+      rw [← hhead0]; exact hgeH
+    have hfin : (⟨1, by omega⟩ : Fin (L + 1)) = (1 : Fin (L + 1)) := by
+      apply Fin.ext; simp [Fin.val_one, Nat.mod_eq_of_lt (by omega : 1 < L + 1)]
+    have hms1 : Mseq M ((j : ℕ) + 1) = (M 1 : ℤ) := by
+      rw [hj0]; unfold Mseq; rw [dif_pos (by omega), hfin]
+    have hu0 : uTel M (qFM M) (j : ℕ) = (M 0 : ℤ) := by rw [hj0]; rfl
+    rw [hurec, hadm, hms1, hu0]
+    push_cast
+    rcases le_total (M 0 : ℤ) (M 1 : ℤ) with h | h
+    · rw [max_eq_right h, min_eq_left h] at *; linarith
+    · rw [max_eq_left h, min_eq_right h] at *; linarith
+  · -- j ≥ 1: admBound_j = M^{j+1} = Mseq(j+1); uTel(j+1) = Mseq(j+1) + uTel_j − qFM_j ≤ Mseq(j+1)
+    have hadm : (admBound M j : ℤ) = Mseq M ((j : ℕ) + 1) := by
+      unfold admBound; rw [if_neg hj0]
+      unfold Mseq; rw [dif_pos (by omega)]; rfl
+    rw [hurec, hadm]; linarith
+
+/-- **The band on `qFM`** (the achiever content; the forward-max prefix meets the corridor bound). -/
+private theorem qFM_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin L) :
+    (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qFM M i :=
+  band_of_uTel M (qFM M) j (qFM_uTel_band M hL j)
+
+/-- **A1 (Lemma 3, the headline arithmetic).** `lambdaCore M = cleanCore` at the achiever `cAch M`
+(needs `hL : 1 ≤ L`; the conclusion is unsatisfiable at `L = 0`). Assembled: the achiever ordering
+`qStar` is corridor-feasible and permutes `Yvec` (via `QFeas_qStar`) → `close_of_feasible`. `hDom`
+is proven (`dom_Mtail_Yvec`); the band `hband` is the forward-max competitor band (`qFM_band`)
+transported to `qStar` by `qStar_prefix_ge_qFM`. -/
+theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  -- the band on qStar: the qFM band transported by qStar's prefix-dominance.
+  have hband : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i := fun j =>
+    le_trans (qFM_band M hL j) (qStar_prefix_ge_qFM M hL ((j : ℕ) + 1))
+  obtain ⟨hq, σ, hperm⟩ := QFeas_qStar M hL hDom hband
+  exact close_of_feasible M hL (qStar M) hq σ hperm
 
 end DLNFibre.DLN.RLCT
