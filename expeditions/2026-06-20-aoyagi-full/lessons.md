@@ -215,3 +215,44 @@ hyps didn't encode it.
   Fubini — light, one-citation-clean, and the chart-form (core=monomial, nonzero-a.e.+measurable) dodges both
   levers by construction. Lesson: pick the statement the proof can actually reach cheaply, matched to the
   use-site (per-chart in R1), rather than the most general abstract form.
+
+## 2026-06-20 — RLCT lower bound needs MULTIPLICITY control, not codimension (R1, pre-execution catch)
+
+The RLCT-from-resolution UPPER bound (`rlctAt ≤ ½ min codim`) comes from one chart (the binding divisor on
+the min stratum) — cheap. The LOWER bound (`≥`) is where the work concentrates, and the tempting "every
+divisor ratio = ½·codim" shortcut is FALSE: the divisor ratio is `(h_E+1)/(2k_E)` and depends on F's VANISHING
+ORDER k_E, NOT the center's codim. Two decorrelated counterexamples: `rlctAt(x^{2k}) = 1/(2k) < ½·codim=1/2`;
+`(x²+y²)²` (sum of squares, Z={0} codim 2) has `rlctAt=1/2 ≠ ½·codim=1` (squaring doubles the order). So the
+real lower-bound obligation is **multiplicity control** — prove `h_E+1 ≥ k_E·(min codim)` for EVERY divisor of
+a COMPLETE resolution. For a regular-sequence center (multiplicity 1 ⟹ k_E=1) it reduces to `½·codim`, but
+that must be PROVEN per-divisor, not shortcut. Plus the cover/exhaustiveness (the resolution must be complete —
+an incomplete chart family overestimates the RLCT by missing a worse divisor). Lesson: for any "RLCT =
+½·codim"-style claim, the codim gives the UPPER bound cheaply; the LOWER bound needs vanishing-order
+(multiplicity) control over a complete resolution — never shortcut the lower bound from codim. (Caught by pp +
+Codex BEFORE R1 execution — the same "surface it early" discipline as the additivity finding.)
+
+## 2026-06-21 — a combinatorial RULE survives many wrong guesses; only EXHAUSTIVE check certifies it (#19 route)
+
+The #19 lower-bound minimiser characterisation went through THREE successive "obvious" rules, each refuted by a
+small explicit witness, before the correct one: (1) the per-c / `min_c` reading (cleanCore monotone in widths)
+— FALSE (`[1,2,4]` vs `[1,2,7]`: 2 vs −2); (2) route-B's "per-c lower bound" restatement — FALSE (`M=[1,1,4]`);
+(3) Codex's "single-c achiever rule `aᵢ ≤ ⌈Sᵢ/i⌉`" — FALSE (278/3900 fail). The CORRECT rule is the CUMULATIVE
+predicate: `c* = largest c with ∀1≤i≤c, aᵢ ≤ ⌈Sᵢ/i⌉` on sorted M (0 failures, exhaustive widths 0..3 L≤4 +
+3900/3900 widths 1..5). LESSON: for a combinatorial selection rule feeding a Lean lower bound, neither a clean
+derivation sketch nor a decorrelated-Codex proposal is evidence — only an EXHAUSTIVE small-case sweep is. Run
+the sweep BEFORE committing the route to a formalisation thread; a plausible-but-false rule costs a whole
+bounded thread. (The discriminator that finally held was found by brute enumeration, not by argument.)
+
+## 2026-06-21 — call "dedicated multi-session lift" honestly; don't shave a keystone into bounded threads forever
+
+#19's keystone proper (~250-350 lines: per-T lower bound via descent-set DEPENDENT-Fin reparametrisation +
+achiever construction + Adm-membership) resisted being landed in any bounded sub-thread — three threads each
+banked a reusable engine (`balancedSplit_min`, `cleanCore_perm`, the corrected route) but correctly STOPPED
+short of the reparametrisation bulk rather than thrash. The genuine hard core is the dependent-Fin descent
+reindexing (the minimiser's breakpoint widths coincide with `sortedSmallest` only AT `c*`, so the
+"perm-invariance wall" persists at the min level). DECISION: when an OFF-critical-path result is genuinely a
+dedicated multi-session lift, ROADMAP it (statement + engines + corrected route all banked = well-set-up for a
+later dedicated tide) and PIVOT the formaliser to the critical path — do NOT keep peeling bounded sub-threads
+off an off-path keystone while the headline path has open rungs. The bedrock "Just Do It if within reach, else
+roadmap it" applies at the THREAD-budget granularity: "within reach" means a bounded thread, not an unbounded
+sequence of them.

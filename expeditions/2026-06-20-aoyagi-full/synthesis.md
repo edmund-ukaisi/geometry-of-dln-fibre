@@ -170,6 +170,22 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   for general both-arbitrary additivity, not ours). Route B (iterated-1D: n=1 Fubini `∫(x²+s)^{-c}=C·s^{1/2-c}`
   iterated, stays on Params-flat product measure) likely cleaner than Route A (radial via
   `integrable_fun_norm_addHaar` [Mathlib HAS it, corrects the earlier gap-flag] + EuclideanSpace-Haar bridge).
+  **UPDATE: general-n single-block n/2 PROVEN** (`smoothBlockND_rlct` rlctAtOn(Σxᵢ²)=n/2 on EuclideanSpace,
+  S1SmoothBlock.lean @505e0a2, axiom-clean, 201 LoC — the Mathlib-gap was NOT real, radial `integrable_fun_norm_addHaar`
+  + ball-truncation + rpow-iff). The FUBINI lemma (the +core combination = n/2+λ_core) is the s>0 EXTENSION of
+  that radial machinery (`∫(‖x‖²+s)^{-c}=C·s^{n/2-c}`, Fubini, + monomial-core threshold) — CLOSED-FORM (NOT
+  Laplace), in flight (fm-2). S1.3 also PROVEN + ON TRUNK now (S1Local 0-sorry @505e0a2).
+  **FUBINI DE-RISK (fm-2 SPECIFY + Codex):** the exact radial identity holds ONLY at ε=∞; finite-ε (RLCT nbhd)
+  is asymptotic-only + Mathlib has NO parametric radial integral. So directions SPLIT: ">=/integrability LIGHT"
+  (a.e. comparison + Integrable.mul_prod + radial_ball_iff, ~4-6 sublemmas — fm-2 building now, L2-consumable
+  regular-block >= contribution); "<=/non-integrability" (the CUSP lower bound — pp re-adjudication SHAVED to ~5-7 sublemmas via EXACT
+  ball-volume `vol{‖x‖²≤s}=V_n·s^{n/2}` [measure_ball/addHaar_ball — NOT a parametric radial integral, dodges
+  the gap] + S2-REUSE for the monomial divergence [cusp-volume yields exactly S2's pure-monomial input]; no
+  Fubini shortcut for divergence). The <= IS NEEDED (R1 UPPER = binding-chart divergence = Fubini <=; S2 does
+  NOT cover it — binding chart is Sum-x^2 + monomial, a SUM, and +Sum-x^2 shrinks the integrand so divergence
+  is non-trivial). pp finding the lightest <= route. HYGIENE: explicit monomial core (abstract G>=0,!=0 FALSE
+  via germ-local =0, same as 12th); Jacobian in weightedThreshold. So R1 is heavier than first scoped (the
+  Fubini <= + multiplicity-control R1.2 + cover R1.6) but all designed + tractable.
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
@@ -200,6 +216,17 @@ gap-class is RECURRING across the analytic rungs — caught reliably by the proo
   holds is codim=Mval exactly, which is all the mechanism needs).
 - **Codex correction adopted:** prefix-stratum partition right for the VALUE but too coarse for a literal
   atlas (charts refine by full rank-pattern); R1↔Adm is VALUE-level, NOT a chart bijection.
+- **R1 LOWER BOUND + complete decomposition (pp, done) — MULTIPLICITY-CONTROL finding (pre-execution catch):**
+  UPPER (≤ ½ min Mval) = ONE binding-divisor chart (cheap, L1-reuse). LOWER (≥ ½ min Mval) needs the FULL
+  cover + a sharp finding: **the lower bound CANNOT come from codim alone** — the divisor ratio `(h_E+1)/(2k_E)`
+  depends on F's VANISHING ORDER k_E, not codim (counterexamples: `rlctAt(x^{2k})=1/(2k)<½·codim`; `(x²+y²)²`:
+  1/2≠1). So **R1.2 = MULTIPLICITY CONTROL** (`h_E+1 ≥ k_E·min Mval` per divisor), HOLDS for our core via
+  regular-sequences⟹k_E=1 but PROVEN per-divisor, NOT a codim shortcut. DECOMPOSITION (execution-ready): R1.1
+  chart family[L1] + R1.2 multiplicity[NEW] + R1.3 codim=Mval[thread-03] + R1.4 Fubini-per-chart + R1.5
+  S1.1-min-over-cover + R1.6 cover/exhaustiveness[NEW] + R1.7 S2. NEW lifts = R1.2 + R1.6 (the real lower-bound
+  work). Route: complete explicit resolution + per-divisor monomial check (one-citation-clean); SoS+codim DEAD.
+  Subtleties: strata-not-components (Z=⋃S(t)); local-vs-global codim (origin sees min Mval); properness (w/ S1.1).
+  pp+fm EXECUTE when S1.1+Fubini land (close); R1.2 first.
 - **DECISION R3b** (self-contained, one-citation). R3a (cite LR `rlct=codim/2`, arXiv:2411.19920) OUT:
   violates one-citation scope (codim = THE new content) + Aoyagi-independence. Surfaced to operator as
   informational/override-able.
@@ -229,8 +256,42 @@ ROUTE-GAP found (proof attempt, again): card step-3 "per-c lower bound" was the 
 (cleanCore NOT monotone in widths — `[1,2,4]`vs`[1,2,7]`: 2 vs −2; min_c/max_c refuted) — STATEMENT still
 correct+total, only the ROUTE needs reframing to: per-T bound on T's OWN breakpoint widths (via balancedSplit_min)
 + **PERM-INVARIANCE of lambdaCore** (`lambdaCore M = lambdaCore M∘σ`, ~200-line Adm-cone exchange) + sorted-M.
-pp reframing the card + VALIDATING the perm-invariance route before fm sinks ~250-350 lines. #19 OFF the
-headline path — fm doing the S1 WIRES (S1.1/S1.3/S1.4, critical-path) FIRST, then the #19 keystone.
+#19 OFF the headline path — fm doing the S1 WIRES (S1.1/S1.3/S1.4, critical-path) FIRST.
+**#19 keystone PARKED (decision d):** fm probed it — perm-invariance of lambdaCore is a MIN-LEVEL no-bijection
+wall (Adm cones + Mval-multisets genuinely DIFFER under σ — 560/1700 & 1140/1700; holds only AT the min ⟹
+multi-hundred-line explicit minimizer characterization, no slick transport). OFF-headline-path (headline uses
+aoyagiLambda's min-def, closes sorry-free WITHOUT #19's proof). **THEN UN-PARKED via ROUTE B (fm, 2df8bf4):**
+cleanCore depends only on the width MULTISET (Σm², Σm symmetric), so #19 needs NO global perm-invariance — a
+LOCAL achiever analysis (T* breakpoint-multiset = sortedSmallest, via multiset-symmetry) + the per-T lower
+bound (balancedSplit_min, DONE) suffices. ~200 lines, perm-invariance-FREE (avoids the wall, not solves it),
+3900/3900. **pp VALIDATED + reframed (a1-route-reframe.md):** perm-inv = COROLLARY of the sorted-form
+characterization (`lambdaCore M = lambdaCore (sort M)`), NOT proven via the Adm-cone bijection (saves the
+beast). Residual hardness = the SMALLEST-WIDTHS-FORCING sub-lemma (on sorted M the minimizer's breakpoint
+widths = the ℓ*+1 smallest, FORCED over every T via the `(M^S−H)` factors) — MUST be per-T-over-Adm-cone, NOT
+a widths-extremum (exactly where the false min_c lived; the trap). UPPER (achiever) + LOWER (per-T
+balanced-split + forcing). fm executing route B. So #19 is now a clean bounded build. fm sequence: wire
+S1.1+S1.4 → #19 route B → R1/L2/D1
+(critical-path beats off-path as Fubini lands for R1). S1 STATE (trunk @b6eaa80): S1Transport 0-sorry (S1.1
+ready), S1Local 1-sorry (S1.4 ready; S1.3 pending fm-2's push of its proof), S1Additive 0 (Fubini pending).
+
+**#19 CHECKPOINT (fm @`88cf38e`, worktree-rung0-defs) — ENGINES PROVEN + ROUTE CORRECTED + KEYSTONE PARKED (decision b).**
+Two engines axiom-clean: `balancedSplit_min` (lower-bound engine `Σ balancedSplit² ≤ Σqᵢ²` at fixed sum;
+re-derived solid after trunk syncs, `43b443e`) + `cleanCore_perm` (cleanCore multiset-symmetry, route-B crux,
+`cfeec6f`). **ROUTE CORRECTED AGAIN (fidelity catch, now in the lambdaCore_eq_clean docstring):** the route-B
+"per-c lower bound / min_c" framing is FALSE (M=[1,1,4]); AND Codex's first "single-c achiever rule
+(aᵢ ≤ ⌈Sᵢ/i⌉)" is ALSO FALSE (278/3900 fail). The CORRECT rule (0 failures exhaustive widths 0..3 L≤4 +
+3900/3900 widths 1..5): `c* = largest c with the CUMULATIVE predicate ∀1≤i≤c, aᵢ ≤ ⌈Sᵢ/i⌉` on sorted M, plus
+the exact per-T identity `Mval = Σₖ gapₖ·(wₖ−Hₖ)` over strict-descent positions. **KEYSTONE PROPER = a dedicated
+multi-session lift (~250-350 lines), NOT a bounded sub-thread:** two sub-lemmas on unsorted M — (1) per-T lower
+bound (descent-set **dependent-Fin reparametrisation** of each T + complete-square + balancedSplit_min) +
+(2) achiever construction + Adm-membership. The dependent-Fin descent reindexing is the genuine hard bulk (the
+minimizer's breakpoint widths aren't literally sortedSmallest — they coincide only at c*; the "perm-invariance
+wall" persists at this level). **DECISION (b): PARK the keystone, ROADMAP it** — it is WELL-SET-UP (genuine
+statement + 2 engines + corrected cumulative-predicate route all banked → a dedicated tide later, after the
+headline / when capacity); #19 is OFF the headline path (headline uses aoyagiLambda's min-def directly). **fm
+PIVOTED to CRITICAL-PATH:** S1 wires (S1.1/S1.3/S1.4) → D1 `deepest_point_reduction` → R1 EXECUTION (with pp,
+when Fubini lands) → L2 → T. Bounded #19 engine-nibbling (e.g. the per-T Mval identity) is FILL only, never over
+the critical path.
 
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
