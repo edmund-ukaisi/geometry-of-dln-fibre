@@ -3380,6 +3380,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-equivalence-a5.md`.
 
+The counted-datum back-to-branch-label boundary is now packaged in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchCountDatumOfCoord`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumBackToBranchLabel`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_countDatumBackToBranchLabel`.
+The supplied bridge matches each terminal-minimum label's classified counted
+datum to a supplied branch with the same branch label, and the theorem derives
+the existing `UpperBoundClassifier`.  The counted-datum equality is retained
+as route data; the finite consequence uses only the branch-label witness.
+This does not construct the counted-datum classifier, branch-coordinate map,
+back-to-label bridge, source-label legality, injection, pole order, normal
+crossings, or RLCT extraction from the source.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-back-to-branch-label.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

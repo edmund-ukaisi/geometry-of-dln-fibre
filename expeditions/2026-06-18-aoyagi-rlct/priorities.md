@@ -27,7 +27,10 @@ fills the terminal Eq5 singleton only under an explicit source-coordinate
 equality `T(C.point ell-1)=fullH x (Fin.last ell)`.  Terminal binary chain data
 now gives a single nonbase counted datum under an explicit non-base-value
 hypothesis, and a supplied counted-datum classifier on `terminalMinimumLabels`
-gives the upper count.  The meaningful source frontier is still the
+gives the upper count.  A further supplied back-to-label boundary records that
+if a terminal-minimum counted datum is matched by a supplied branch carrying
+the same terminal label, then the existing `UpperBoundClassifier` follows.
+The meaningful source frontier is still the
 upper-bound/no-extra side of Aoyagi Lemma 5: the renewed source probe confirms
 that PDF p. 26's interval count plus the Case 1(2) sentence that `J` increases
 by one does not by itself prove a classifier, injection, or back-to-label map.
@@ -85,13 +88,16 @@ Current terminal binary counted-datum maps-to slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`.
 Current terminal-minimum counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-a5.md`.
+Current counted-datum back-to-branch-label boundary slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-a5.md`.
 
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch
    construction, source-label legality, injection, and back-to-label coverage
    remain unproved.  Do not infer any of these from the conditional terminal
-   source-realisation bridge.
+   source-realisation bridge or from the supplied counted-datum back-to-label
+   boundary.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
 3. Next source-facing target: continue the endpoint inventory around the

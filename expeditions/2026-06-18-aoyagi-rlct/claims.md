@@ -2578,6 +2578,16 @@ No such claim is formalisation-ready until both fields are filled.
   `AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage`
   prove that `UpperBoundClassifier` is equivalent to the supplied no-extra
   inclusion `terminalMinimumLabels ⊆ branchLabelImage`.
+  Also packaged the supplied counted-datum back-to-branch-label boundary:
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchCountDatumOfCoord`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumBackToBranchLabel`,
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_countDatumBackToBranchLabel`.
+  The bridge says that the counted datum assigned to each terminal-minimum
+  label is realised by a supplied full branch with the same branch label; this
+  derives the existing `UpperBoundClassifier`.  It does not construct the
+  classifier, branch-coordinate map, or back-to-label bridge from Aoyagi's
+  source.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

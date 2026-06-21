@@ -4027,6 +4027,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-equivalence-a5.md`.
 
+Latest A5 counted-datum back-to-branch-label boundary update:
+`Lemma5TerminalBridge.lean` now has
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchCountDatumOfCoord`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumBackToBranchLabel`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_countDatumBackToBranchLabel`.
+These package a supplied bridge from the terminal-minimum counted-datum
+classifier back to supplied branch labels, and derive the existing
+`UpperBoundClassifier` from the supplied branch-label witness.  This is not a
+source-backed proof of the classifier, branch-coordinate construction,
+injection, back-to-label coverage, pole order, normal crossings, or RLCT
+extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-back-to-branch-label.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

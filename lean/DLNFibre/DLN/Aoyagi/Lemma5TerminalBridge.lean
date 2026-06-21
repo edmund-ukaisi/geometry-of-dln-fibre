@@ -207,6 +207,43 @@ theorem terminalMinimumLabels_card_le_of_countDatumClassifier {β : Type*}
     (n + 1) a M m C.family.baseValue C.terminalMinimumLabels classifier
     (Nat.succ_pos n) ha C.family.baseValue_mem
 
+/-- The counted datum attached to a supplied branch, once a coordinate is
+supplied for each nonbase branch.
+
+This is bookkeeping for the back-to-label boundary.  It does not construct the
+coordinate map or prove it agrees with Aoyagi's displayed branch families. -/
+def branchCountDatumOfCoord {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (branchCoord : β → ℕ) :
+    Option β → AoyagiLemma5CountDatum :=
+  C.family.toAoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord
+    branchCoord
+
+/-- Supplied bridge from terminal-minimum counted data back to supplied branch
+labels.
+
+For each terminal-minimum label, the bridge supplies a branch with the same
+branch label and with counted datum equal to the datum assigned by the supplied
+terminal-minimum counted-datum classifier.  This is a supplied boundary; it is
+not proved from Aoyagi's equations `(3)`, `(4)`, and `(5)`. -/
+structure TerminalMinimumCountDatumBackToBranchLabel {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (branchCoord : β → ℕ)
+    (classifier : C.TerminalMinimumCountDatumClassifier) : Prop where
+  lift :
+    ∀ {label : Σ _ : ℕ, ℕ}, label ∈ C.terminalMinimumLabels →
+      ∃ x ∈ C.fullBranches,
+        C.branchLabel x = label ∧
+          C.branchCountDatumOfCoord branchCoord x = classifier.classify label
+
 /-- The supplied terminal-candidate branch set has Aoyagi's Lemma 5 supplied
 finite count. -/
 theorem fullBranches_card {β : Type*} [DecidableEq β]
@@ -352,6 +389,29 @@ theorem upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage
   · intro hsubset
     exact C.upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage
       hsubset
+
+/-- A supplied counted-datum back-to-label bridge gives the supplied
+upper-bound classifier.
+
+The counted-datum equality records the intended route through the interval
+classifier, but the resulting upper-bound classifier uses only the supplied
+branch-label witness. -/
+theorem upperBoundClassifier_of_countDatumBackToBranchLabel {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (branchCoord : β → ℕ)
+    (classifier : C.TerminalMinimumCountDatumClassifier)
+    (backToLabel :
+      C.TerminalMinimumCountDatumBackToBranchLabel branchCoord classifier) :
+    C.UpperBoundClassifier where
+  classify := by
+    intro label hlabel
+    rcases backToLabel.lift hlabel with ⟨x, hx, hbranch, _hdatum⟩
+    exact ⟨x, hx, hbranch⟩
 
 /-- A supplied upper-bound classifier gives a cardinal upper bound by the
 branch-label image. -/

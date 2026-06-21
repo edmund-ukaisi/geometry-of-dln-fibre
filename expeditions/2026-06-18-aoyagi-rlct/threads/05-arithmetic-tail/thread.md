@@ -3571,3 +3571,34 @@ inclusion `terminalMinimumLabels ⊆ branchLabelImage`.  This is finite
 bookkeeping for the supplied boundary only.  It does not prove that inclusion
 from Aoyagi's source, nor source-label legality, injection, back-to-label
 coverage, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 counted-datum back-to-branch-label boundary
+
+Reproduction:
+`reproduction-lemma5-counted-datum-back-to-branch-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-back-to-branch-label.md`.
+Review artifact:
+`review-lemma5-counted-datum-back-to-branch-label-a5.md`.
+
+Lean now records the next supplied boundary between the counted-datum
+classifier and the branch-label no-extra classifier:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchCountDatumOfCoord
+AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumBackToBranchLabel
+AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_countDatumBackToBranchLabel
+```
+
+The bridge says that, for every terminal-minimum label, the datum assigned by
+the supplied counted-datum classifier is realised by a supplied full branch
+with the same `branchLabel`.  The resulting theorem derives the existing
+`UpperBoundClassifier`; the proof uses only the supplied branch-label witness,
+while retaining the counted-datum equality as the intended route through
+Aoyagi's interval-count paragraph.
+
+This is supplied finite data, not a source reconstruction.  It does not
+construct the counted-datum classifier, branch-coordinate map, or
+back-to-label bridge from Aoyagi's displayed equations, and it does not prove
+source-label legality, injection, pole order, normal crossings, or RLCT
+extraction.
