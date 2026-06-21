@@ -153,6 +153,25 @@ the successor row-weight diagonal; the lower-row post-pivot equality is stated
 for bare `D'''*Cprime`.  This prevents a false identification of successor row
 weights with the post-pivot residual block.
 
+The weighted lower-row projection has also landed.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-weighted-free-cprime-lower-row-projection-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-weighted-free-cprime-lower-row-projection.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-weighted-free-cprime-lower-row-projection-a4.md`.
+
+Lean names:
+`weightedPivotDiagonal_mul_lowerRows`,
+`weightedPivotDiagonal_mul_lowerRows_reindex`,
+`case2DisplayedWeightedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.postPivotWeightedFreeCprimeNextSameStageProduct`.
+This fills the weighted projection gap left by the local product package:
+lower rows of the weighted right side `diag(b') D''' Cprime` are the lower-row
+successor-weight diagonal times the bare post-pivot product.  It still says
+nothing about the pivot row, full successor products, chart production, or
+analytic/RLCT content.
+
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at

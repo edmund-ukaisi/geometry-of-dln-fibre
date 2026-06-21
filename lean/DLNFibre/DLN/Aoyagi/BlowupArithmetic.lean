@@ -4181,6 +4181,32 @@ def weightedPivotClearedBlock (D : Matrix ρ κ R) : Matrix (Unit ⊕ ρ) (Unit 
 def weightedPivotDiagonal (b0 : R) (b : ρ → R) : Matrix (Unit ⊕ ρ) (Unit ⊕ ρ) R :=
   fromBlocks (fun _ _ ↦ b0) 0 0 (diagonal b)
 
+/-- The lower rows of a weighted pivot product are the lower-row diagonal
+weights times the unweighted lower rows. -/
+theorem weightedPivotDiagonal_mul_lowerRows
+    {τ : Type*} [Fintype κ]
+    (b0 : R) (b : ρ → R)
+    (M : Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R)
+    (C : Matrix (Unit ⊕ κ) τ R) :
+    (((weightedPivotDiagonal b0 b * M) * C).submatrix Sum.inr id) =
+      diagonal b * ((M * C).submatrix Sum.inr id) := by
+  ext i t
+  simp [weightedPivotDiagonal, Matrix.mul_assoc, Matrix.mul_apply, Fintype.sum_sum_type]
+
+/-- Reindexed form of `weightedPivotDiagonal_mul_lowerRows`. -/
+theorem weightedPivotDiagonal_mul_lowerRows_reindex
+    {ρ' τ : Type*} [Fintype ρ'] [DecidableEq ρ'] [Fintype κ]
+    (e : ρ' ≃ ρ) (b0 : R) (b : ρ → R)
+    (M : Matrix (Unit ⊕ ρ) (Unit ⊕ κ) R)
+    (C : Matrix (Unit ⊕ κ) τ R) :
+    (((weightedPivotDiagonal b0 b * M) * C).submatrix (fun i : ρ' ↦ Sum.inr (e i)) id) =
+      diagonal (fun i : ρ' ↦ b (e i)) *
+        ((M * C).submatrix (fun i : ρ' ↦ Sum.inr (e i)) id) := by
+  have h := weightedPivotDiagonal_mul_lowerRows b0 b M C
+  ext i t
+  have hentry := congrFun (congrFun h (e i)) t
+  simpa [Matrix.diagonal_mul] using hentry
+
 set_option linter.flexible false in
 /-- The normalised `P` row operation clears the first column below the pivot. -/
 theorem weightedPivotBlockRowOp_mul_diagonal_mul
@@ -10754,6 +10780,39 @@ theorem case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
       (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm
       (Equiv.refl τ)).symm
 
+/-- Lower rows of the weighted displayed Case 2 product
+`weightedPivotDiagonal * D''' * C'` reindex to the lower-row weight diagonal
+times the post-pivot free-`C'` product.
+
+This is only the weighted lower-row projection of Aoyagi's displayed right
+side.  It does not identify the pivot row, construct a successor following
+matrix, produce recurrence/exponent post-data, or prove a transition
+invariant. -/
+theorem case2DisplayedWeightedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R)
+    (b : pivotComplement (case2DisplayedPivotRow n hS hcont) → R)
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    ((weightedPivotDiagonal b0 b *
+        case2DisplayedPaperDppp n hS hcont residual) * Cprime).submatrix
+        (fun i ↦
+          Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+        id =
+      diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            b ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i)) *
+        (case2DisplayedPostPivotResidualBlock n hS hcont residual *
+          case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime) := by
+  rw [weightedPivotDiagonal_mul_lowerRows_reindex
+    ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm)
+    b0 b
+    (case2DisplayedPaperDppp n hS hcont residual)
+    Cprime]
+  rw [case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct]
+
 /-- The continuing displayed Case 2 lower-row product can be written with the
 next same-stage source following factor directly.
 
@@ -11934,6 +11993,57 @@ theorem postPivotFreeCprimeNextSameStageProduct
   simpa using
     case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
       n data.stage_pos data.continuation residual Cprime
+
+/-- The weighted right side of Aoyagi's displayed Case 2 `Q/P` identity,
+projected to lower rows and reindexed to `(S,J+1)`.
+
+The result keeps the successor lower-row diagonal explicit.  It is not an
+unweighted lower-row theorem and not a full successor product including the
+pivot row. -/
+theorem postPivotWeightedFreeCprimeNextSameStageProduct
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement
+        (case2DisplayedPivotCol n data.stage_pos data.continuation)) τ R) :
+    ((weightedPivotDiagonal (post.weight (J + 1))
+        (fun i : pivotComplement
+            (case2DisplayedPivotRow n data.stage_pos data.continuation) ↦
+          post.weight (case2ResidualRowLevel n S J i.1)) *
+      case2DisplayedPaperDppp n data.stage_pos data.continuation residual) *
+      Cprime).submatrix
+        (fun i ↦
+          Sum.inr
+            ((case2DisplayedPivotRowComplementEquivResidualRowSucc
+              n data.stage_pos data.continuation).symm i))
+        id =
+      diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+        (case2DisplayedPostPivotResidualBlock
+            n data.stage_pos data.continuation residual *
+          case2DisplayedPostPivotFreeFollowingFactor
+            n data.stage_pos data.continuation Cprime) := by
+  simpa [case2ResidualRowLevel] using
+    case2DisplayedWeightedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+      n data.stage_pos data.continuation
+      (post.weight (J + 1))
+      (fun i : pivotComplement
+          (case2DisplayedPivotRow n data.stage_pos data.continuation) ↦
+        post.weight (case2ResidualRowLevel n S J i.1))
+      residual Cprime
 
 /-- The displayed supplied boundary's continuing-branch next residual center
 is nonempty under the explicit next-continuation bound. -/

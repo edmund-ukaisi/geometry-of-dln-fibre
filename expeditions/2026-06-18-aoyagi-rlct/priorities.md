@@ -150,6 +150,17 @@ Keep the weighted `Q/P` equality and bare `D''' * Cprime` lower-row equality
 as separate conjuncts; do not absorb successor row weights into the
 post-pivot residual block.
 
+Weighted lower-row projection checkpoint:
+`threads/04-blow-up-certificate/reproduction-case2-weighted-free-cprime-lower-row-projection-a4.md`.
+Lean now proves the lower-row projection of
+`weightedPivotDiagonal * D''' * Cprime`, reindexed to `(S,J+1)`, as the
+successor lower-row diagonal times the bare post-pivot product:
+`case2DisplayedWeightedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.postPivotWeightedFreeCprimeNextSameStageProduct`.
+Keep this as a lower-row weighted projection only; it is not a full successor
+product or chart-production theorem.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch

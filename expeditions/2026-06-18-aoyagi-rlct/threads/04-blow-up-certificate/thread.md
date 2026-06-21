@@ -3322,3 +3322,36 @@ coverage, arbitrary-pivot coverage, source production of all `Cprime`,
 successor chart-family construction, source-produced recurrence/exponent
 post-data, transition invariance, terminal relabeling, Jacobian arithmetic,
 normal crossings/RLCT, or repair the printed Case 2 vector mismatch.
+
+## 2026-06-21 Lean Case 2 weighted free Cprime lower-row projection
+
+Reproduction:
+`reproduction-case2-weighted-free-cprime-lower-row-projection-a4.md`.
+Statement card:
+`statement-card-a4-case2-weighted-free-cprime-lower-row-projection.md`.
+Review artifact:
+`review-case2-weighted-free-cprime-lower-row-projection-a4.md`.
+
+Lean now proves the lower-row projection of Aoyagi's weighted displayed right
+side `diag(b') D''' C'`:
+
+```text
+weightedPivotDiagonal_mul_lowerRows
+weightedPivotDiagonal_mul_lowerRows_reindex
+case2DisplayedWeightedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+Case2DisplayedSuppliedChartFamilyBoundary.postPivotWeightedFreeCprimeNextSameStageProduct
+```
+
+The generic row-scaling lemmas say lower rows of
+`weightedPivotDiagonal * B` are the lower-row diagonal times lower rows of
+`B`, also after reindexing.  The Case 2 theorem specializes this to
+`D''' * Cprime`, then rewrites the bare lower rows using the existing
+free-`Cprime` post-pivot product.  The supplied-boundary wrapper uses the
+successor state's row weights and states the diagonal over the next
+same-stage row domain `(S,J+1)`.
+
+This is still finite lower-row algebra only.  It does not identify the pivot
+row, prove a full successor product, construct chart coverage or arbitrary
+pivot coverage, source-produce `Cprime`, derive recurrence/exponent post-data,
+prove transition invariance, terminal relabeling, Jacobian arithmetic, normal
+crossings/RLCT, or repair the printed Case 2 vector mismatch.
