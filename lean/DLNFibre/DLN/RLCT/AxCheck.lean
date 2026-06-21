@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
+import DLNFibre.DLN.RLCT.Validate.Case222Algebra
 
 /-!
 # Axiom-hygiene check
@@ -30,6 +31,10 @@ open DLNFibre.DLN.RLCT
 #print axioms rlct_additive_smooth_block
 #print axioms product_min_rlct
 #print axioms product_min_rlct_of_ne
+
+-- (2,2,2) loss-identity seam (#83) — pure matrix algebra (`prod_two_layer` + flat coords + `ring`).
+-- Must stay clean: NO `monomial_rlct` (the seam's S2-dependence is downstream in the cover), NO `sorryAx`.
+#print axioms dlnLoss222_eq_myF222
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
