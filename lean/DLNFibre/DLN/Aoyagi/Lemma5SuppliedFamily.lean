@@ -206,6 +206,34 @@ theorem candidates_card_le {α : Type*} [DecidableEq α]
 
 end AoyagiLemma5CountDatumClassifier
 
+/-- Filtering out elements with value `y` maps to erasing `y` from the image.
+
+This is finite-set bookkeeping for turning full coordinate-value coverage into
+coverage with the supplied base value removed. -/
+theorem finset_image_filter_value_ne_eq_erase_image
+    {β γ : Type*} [DecidableEq γ] (s : Finset β) (f : β → γ) (y : γ) :
+    (s.filter fun b ↦ f b ≠ y).image f = (s.image f).erase y := by
+  ext z
+  constructor
+  · intro hz
+    rw [Finset.mem_image] at hz
+    rcases hz with ⟨b, hb, hfb⟩
+    rw [Finset.mem_filter] at hb
+    rw [Finset.mem_erase, Finset.mem_image]
+    constructor
+    · intro hzy
+      exact hb.2 (hfb.trans hzy)
+    · exact ⟨b, hb.1, hfb⟩
+  · intro hz
+    rw [Finset.mem_erase] at hz
+    rcases hz with ⟨hz_ne, hz_image⟩
+    rw [Finset.mem_image] at hz_image
+    rcases hz_image with ⟨b, hb, hfb⟩
+    rw [Finset.mem_image]
+    refine ⟨b, ?_, hfb⟩
+    rw [Finset.mem_filter]
+    exact ⟨hb, fun hfy ↦ hz_ne (hfb.symm.trans hfy)⟩
+
 /-- Supplied nonbase branch values for Aoyagi Lemma 5.
 
 For each interior coordinate `j`, the branch values are required to biject
@@ -231,6 +259,57 @@ structure AoyagiLemma5SuppliedNonbaseFamily (β : Type*) [DecidableEq β]
     ∀ {i j : ℕ}, (hi : i ∈ Finset.Icc 1 (ell - 1)) →
       (hj : j ∈ Finset.Icc 1 (ell - 1)) → i ≠ j →
         Disjoint (branches i) (branches j)
+
+namespace AoyagiLemma5SuppliedNonbaseFamily
+
+/-- Build a supplied nonbase family from coordinate-wise full value coverage
+by filtering out the supplied base value at each coordinate.
+
+This is still supplied-data assembly: it assumes coordinate coverage,
+injectivity, base-value membership, and cross-coordinate disjointness. -/
+def ofCoordinateValueCoverage {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (rawBranches : ℕ → Finset β) (value : β → ℤ) (baseValue : ℕ → ℤ)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (value_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (rawBranches j).image value =
+          aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (value_injective :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        Set.InjOn value ↑(rawBranches j))
+    (branches_pairwiseDisjoint :
+      ∀ {i j : ℕ}, i ∈ Finset.Icc 1 (ell - 1) →
+        j ∈ Finset.Icc 1 (ell - 1) → i ≠ j →
+          Disjoint (rawBranches i) (rawBranches j)) :
+    AoyagiLemma5SuppliedNonbaseFamily β ell a M m where
+  branches := fun j ↦ (rawBranches j).filter fun b ↦ value b ≠ baseValue j
+  value := value
+  baseValue := baseValue
+  baseValue_mem := baseValue_mem
+  value_image := by
+    intro j hj
+    rw [finset_image_filter_value_ne_eq_erase_image, value_image hj]
+  value_injective := by
+    intro j hj x hx y hy hxy
+    have hx' :
+        x ∈ (rawBranches j).filter (fun b ↦ value b ≠ baseValue j) := by
+      simpa using hx
+    have hy' :
+        y ∈ (rawBranches j).filter (fun b ↦ value b ≠ baseValue j) := by
+      simpa using hy
+    exact value_injective hj (Finset.mem_filter.mp hx').1
+      (Finset.mem_filter.mp hy').1 hxy
+  branches_pairwiseDisjoint := by
+    intro i j hi hj hij
+    exact Finset.disjoint_left.mpr (by
+      intro b hbi hbj
+      rw [Finset.mem_filter] at hbi hbj
+      exact Finset.disjoint_left.mp
+        (branches_pairwiseDisjoint hi hj hij) hbi.1 hbj.1)
+end AoyagiLemma5SuppliedNonbaseFamily
 
 /-- One supplied nonbase branch family has the expected cardinality at a fixed
 interior coordinate: the interval cardinality with one supplied base value
@@ -347,6 +426,59 @@ theorem some_mem_fullBranches_iff {β : Type*} [DecidableEq β]
       exact ⟨j, hj, hb'⟩
   · rintro ⟨j, hj, hb⟩
     exact F.some_mem_fullBranches_of_mem hj hb
+
+/-- The counted datum attached to a full supplied branch once a coordinate
+function on nonbase branches is supplied. -/
+def countDatumOfBranchCoord {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedNonbaseFamily β ell a M m)
+    (branchCoord : β → ℕ) :
+    Option β → AoyagiLemma5CountDatum
+  | none => none
+  | some b => some ((Sigma.mk (branchCoord b) (F.value b)) : Σ _ : ℕ, ℤ)
+
+/-- Build a counted-datum classifier from a supplied nonbase family, a supplied
+coordinate for every nonbase branch, and supplied injectivity of the tagged
+classifier.
+
+This proves only the `mapsTo` part from the supplied family fields.  The
+injectivity is kept as a hypothesis because Aoyagi's printed paragraph does
+not prove the Case 1(2) nonduplication statement needed to derive it. -/
+def countDatumClassifierOfBranchCoord {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedNonbaseFamily β ell a M m)
+    (branchCoord : β → ℕ)
+    (branchCoord_eq :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ {b : β}, b ∈ F.branches j → branchCoord b = j)
+    (hinj :
+      Set.InjOn (F.countDatumOfBranchCoord branchCoord) ↑F.fullBranches) :
+    AoyagiLemma5CountDatumClassifier
+      (Option β) ell a M m F.baseValue F.fullBranches where
+  classify := F.countDatumOfBranchCoord branchCoord
+  mapsTo := by
+    intro x hx
+    cases x with
+    | none =>
+        simpa [countDatumOfBranchCoord] using
+          none_mem_aoyagiLemma5CountDatumSet ell a M m F.baseValue
+    | some b =>
+        rcases (some_mem_fullBranches_iff F).mp hx with ⟨j, hj, hb⟩
+        have hcoord : branchCoord b = j := branchCoord_eq hj hb
+        have hvalue :
+            F.value b ∈
+              (aoyagiHtildeIntervalValueSetNat ell a M m j).erase
+                (F.baseValue j) := by
+          rw [← F.value_image hj]
+          exact Finset.mem_image.mpr ⟨b, hb, rfl⟩
+        change
+          some ((Sigma.mk (branchCoord b) (F.value b)) : Σ _ : ℕ, ℤ) ∈
+            aoyagiLemma5CountDatumSet ell a M m F.baseValue
+        rw [some_mem_aoyagiLemma5CountDatumSet_iff]
+        constructor
+        · simpa [hcoord] using hj
+        · simpa [hcoord] using hvalue
+  injOn := hinj
 
 /-- The full supplied branch set has Aoyagi's Lemma 5 count, once the branch
 family and its base branch are supplied.

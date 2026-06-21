@@ -3103,3 +3103,34 @@ source vectors, prove binary deltas from source, prove source-label legality,
 prove terminal `tilde t=0`, prove chart coverage, construct the Lemma 5
 upper-bound classifier, prove pole order, prove normal crossings, or extract
 RLCT data.
+
+## 2026-06-21 Lean Lemma 5 coordinate coverage classifier
+
+Reproduction:
+`reproduction-lemma5-coordinate-coverage-classifier-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-coordinate-coverage-classifier.md`.
+Review artifact:
+`review-lemma5-coordinate-coverage-classifier-a5.md`.
+
+Lean now packages the next coordinate-coverage boundary in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`:
+
+```text
+finset_image_filter_value_ne_eq_erase_image
+AoyagiLemma5SuppliedNonbaseFamily.ofCoordinateValueCoverage
+AoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord
+AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfBranchCoord
+```
+
+The constructor turns coordinate-wise raw value coverage into
+`AoyagiLemma5SuppliedNonbaseFamily` by filtering out branches whose value is
+the supplied base value.  The classifier bridge then maps `none` to the base
+datum and a nonbase branch `b` to `(branchCoord b, F.value b)`, proving the
+`mapsTo` field of `AoyagiLemma5CountDatumClassifier`.
+
+This proves only finite supplied-data assembly.  Coordinate-wise coverage,
+branch-coordinate correctness, and tagged-classifier injectivity remain
+explicit hypotheses.  The source construction of Aoyagi's displayed family,
+Case 1(2) nonduplication, back-to-label coverage, pole order, normal
+crossings, and RLCT extraction remain open.

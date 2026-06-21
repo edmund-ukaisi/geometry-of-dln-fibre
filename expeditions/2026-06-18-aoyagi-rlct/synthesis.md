@@ -3090,6 +3090,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-binary-supplied-family-a5.md`.
 
+The coordinate-coverage classifier boundary now also exists in
+`Lemma5SuppliedFamily.lean`.  `finset_image_filter_value_ne_eq_erase_image`
+proves the elementary finite-set identity for filtering one value from an
+image.  `AoyagiLemma5SuppliedNonbaseFamily.ofCoordinateValueCoverage` uses it
+to build a nonbase family from supplied coordinate-wise raw value coverage,
+injectivity, base-value membership, and disjointness.  Finally,
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord` names the tagged
+classifier map, and
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfBranchCoord` builds
+an `AoyagiLemma5CountDatumClassifier` from a supplied branch-coordinate map
+and supplied injectivity of that named classifier.  This proves the `mapsTo`
+field only; source coverage and Case 1(2) nonduplication remain supplied.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-coordinate-coverage-classifier-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-coordinate-coverage-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-coordinate-coverage-classifier-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

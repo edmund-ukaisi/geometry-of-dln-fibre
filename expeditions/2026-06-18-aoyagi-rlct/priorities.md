@@ -49,20 +49,26 @@ Current coordinate-coverage API probe:
 `threads/05-arithmetic-tail/api-probe-lemma5-coordinate-coverage-classifier-a5.md`.
 Current binary supplied-family slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-binary-supplied-family-a5.md`.
+Current coordinate-coverage classifier slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-coordinate-coverage-classifier-a5.md`.
 
 Immediate order:
 
-1. Build the next conditional interval `mapsTo` layer: coordinate-wise raw
-   value coverage -> `AoyagiLemma5SuppliedNonbaseFamily`, then supplied branch
-   coordinate -> `AoyagiLemma5CountDatumClassifier`.
+1. Review and commit the conditional interval `mapsTo` layer:
+   coordinate-wise raw value coverage ->
+   `AoyagiLemma5SuppliedNonbaseFamily`, then supplied branch coordinate ->
+   `AoyagiLemma5CountDatumClassifier`.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
+3. Next Lean target: connect this counted-datum classifier boundary to the
+   binary supplied-family boundary only as supplied data, or return to source
+   reproduction for missing plateau/falling-coordinate coverage.
+4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
-4. Low-risk Lean API may package the supplied boundary using standard finite
+5. Low-risk Lean API may package the supplied boundary using standard finite
    classifier or bijection language, but it must not be described as source
    exactness.
-5. Do not start a Lean normal-crossing/RLCT extraction interface before actual
+6. Do not start a Lean normal-crossing/RLCT extraction interface before actual
    finite chart/certificate data exist.
 
 ## Ranked next

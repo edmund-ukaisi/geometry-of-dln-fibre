@@ -3734,6 +3734,27 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-binary-supplied-family-a5.md`.
 
+Latest A5 coordinate-coverage classifier update: `Lemma5SuppliedFamily.lean`
+now contains the coordinate-coverage assembly recommended by the API probe.
+Names:
+`finset_image_filter_value_ne_eq_erase_image`,
+`AoyagiLemma5SuppliedNonbaseFamily.ofCoordinateValueCoverage`,
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord`, and
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfBranchCoord`.
+The constructor filters a raw coordinate family by removing branches whose
+value is the supplied base value, inheriting image coverage, injectivity, and
+cross-coordinate disjointness.  The classifier bridge maps full branches into
+the counted datum set and proves `mapsTo`; injectivity of the tagged classifier
+is still an explicit supplied hypothesis.  This does not prove Aoyagi's
+printed source family, Case 1(2) nonduplication, back-to-label coverage,
+terminal-label exactness, pole order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-coordinate-coverage-classifier-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-coordinate-coverage-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-coordinate-coverage-classifier-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
