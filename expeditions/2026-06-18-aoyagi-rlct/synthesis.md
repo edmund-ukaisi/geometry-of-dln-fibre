@@ -2840,6 +2840,25 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-full-supplied-family-free-count-minimum-a5.md`.
 
+The supplied branch minimum is now connected to the generic terminal-exponent
+certificate API in a new bridge file
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  The file defines the
+named free count `aoyagiLemma4FreeHighCount`, restates the supplied branch
+minimum as
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCountMin`, and proves
+`IntroducedLabelExponentCertificates.terminalExponent_eq_suppliedLemma5MinNumerator`.
+The last theorem assumes a supplied numerator normalisation
+`numerator s k = A(n+1,a,b_x)` and then derives
+`terminalExponent = a*(n+1)*((n+1)-a)` from the exponent certificate and the
+supplied branch minimum.  It does not prove terminal `tilde t=0`, derive the
+quadratic rewrite from the PDF, construct source labels or displayed vectors,
+identify `lambda`, prove chart coverage, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-numerator-bridge-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-numerator-bridge.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-numerator-bridge-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

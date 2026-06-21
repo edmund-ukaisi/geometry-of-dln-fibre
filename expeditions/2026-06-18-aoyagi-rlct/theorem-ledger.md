@@ -3480,6 +3480,25 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-full-supplied-family-free-count-minimum-a5.md`.
 
+Latest A5 terminal-numerator bridge update: the supplied branch minimum now
+connects to the generic terminal-exponent certificate API in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  Names:
+`aoyagiLemma4FreeHighCount`,
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCountMin`, and
+`IntroducedLabelExponentCertificates.terminalExponent_eq_suppliedLemma5MinNumerator`.
+The bridge assumes the introduced-label numerator has been supplied to equal
+the Lemma 3 free-count expression for a tagged supplied Lemma 5 branch, and
+then proves the corresponding `terminalExponent` equals the isolated Lemma 3
+minimum numerator.  This keeps source-label realisation, terminal
+`tilde t=0`, and terminal-exponent normalisation supplied; it does not prove
+`lambda`, pole order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-numerator-bridge-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-numerator-bridge.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-numerator-bridge-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

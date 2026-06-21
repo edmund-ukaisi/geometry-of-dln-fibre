@@ -2632,3 +2632,41 @@ This is still a supplied-data theorem only.  It does not identify the numerator
 with a terminal exponent or `lambda`, prove terminal `tilde t=0`, construct
 source labels or displayed vectors, prove chart coverage, normal crossings, or
 RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal minimum numerator bridge
+
+Reproduction:
+`reproduction-lemma5-terminal-minimum-numerator-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-minimum-numerator-bridge.md`.
+Review artifact:
+`review-lemma5-terminal-minimum-numerator-bridge-a5.md`.
+
+Lean now connects the supplied Lemma 5 branch minimum to the generic
+terminal-exponent certificate API in a new bridge file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean
+```
+
+The new Lean names are:
+
+```text
+aoyagiLemma4FreeHighCount
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCountMin
+IntroducedLabelExponentCertificates.terminalExponent_eq_suppliedLemma5MinNumerator
+```
+
+The theorem remains conditional on a supplied numerator normalisation
+`numerator s k = A(n+1,a,b_x)`.  It then combines the exponent certificate
+equality `terminalExponent = numerator` with the supplied-branch Lemma 3
+minimum theorem to prove
+
+```text
+terminalExponent L (widthZ width) (t s k)
+  = a*(n+1)*((n+1)-a).
+```
+
+This does not prove terminal `tilde t=0`, derive the terminal-exponent
+quadratic rewrite from the PDF, construct source labels or displayed vectors,
+identify `lambda`, prove chart coverage, normal crossings, or RLCT extraction.
