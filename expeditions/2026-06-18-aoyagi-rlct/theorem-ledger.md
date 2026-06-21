@@ -4132,6 +4132,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-source-realisation-iff-zero-a5.md`.
 
+Latest A5 counted-datum back-to-branch-label exactness update:
+`Lemma5TerminalBridge.lean` now has
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_countDatumBackToBranchLabel`.
+Together with supplied branch-label injectivity, the supplied counted-datum
+back-to-label bridge gives `TerminalMinimumLabelExactness`; together with the
+selected-width sum, this gives exact terminal-minimum label cardinality.  This
+does not construct the classifier, branch-coordinate map, back-to-label bridge,
+or injectivity from source and is not pole order, normal crossings, or RLCT
+extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-back-to-branch-label-exactness.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -100,6 +100,8 @@ Current counted-datum back-to-branch-label boundary slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-a5.md`.
 Current counted-datum back-to-branch-label card-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
+Current counted-datum back-to-branch-label exactness slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
 
 Immediate order:
 

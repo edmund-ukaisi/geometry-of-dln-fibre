@@ -3762,3 +3762,32 @@ This is only a reduction of supplied hypotheses.  It does not prove terminal
 source zero, construct the terminal source branch, prove terminal-label
 exactness, classifier coverage, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 counted-datum back-to-branch-label exactness
+
+Reproduction:
+`reproduction-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-back-to-branch-label-exactness.md`.
+Review artifact:
+`review-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
+
+Lean now proves the exactness wrappers:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_countDatumBackToBranchLabel
+```
+
+The first theorem packages a supplied counted-datum back-to-label bridge with
+supplied branch-label injectivity to produce `TerminalMinimumLabelExactness`.
+The second theorem combines that exactness with the selected-width sum to get
+
+```text
+C.terminalMinimumLabels.card = a * (n + 1 - a) + 1.
+```
+
+This is supplied finite exactness only.  It does not construct the
+counted-datum classifier, branch-coordinate map, back-to-label bridge, or
+branch-label injectivity from Aoyagi's source; it is not a pole-order,
+normal-crossing, or RLCT theorem.

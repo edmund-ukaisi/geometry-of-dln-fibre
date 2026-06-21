@@ -3488,6 +3488,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-source-realisation-iff-zero-a5.md`.
 
+The counted-datum back-to-branch-label exactness slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_countDatumBackToBranchLabel`.
+The first packages a supplied counted-datum back-to-label bridge with supplied
+branch-label injectivity to produce `TerminalMinimumLabelExactness`; the second
+adds the selected-width sum and obtains exact cardinality
+`C.terminalMinimumLabels.card = a * (n+1-a) + 1`.  This remains supplied
+finite exactness, not a source construction of the classifier, back-to-label
+bridge, or branch-label injectivity, and not pole order/RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-back-to-branch-label-exactness.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

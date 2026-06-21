@@ -2626,6 +2626,13 @@ No such claim is formalisation-ready until both fields are filled.
   These use branch-chain terminal zero to rewrite
   `T(C.point ell-1)=fullH x (Fin.last ell)` as `T(C.point ell-1)=0`.  They do
   not prove terminal source zero or construct a terminal source branch.
+  Also proved the counted-datum back-to-branch-label exactness wrappers
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_countDatumBackToBranchLabel`.
+  These combine supplied back-to-label data with supplied branch-label
+  injectivity, and with the selected-width sum for exact cardinality.  They do
+  not construct those supplied fields from source.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

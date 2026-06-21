@@ -651,6 +651,28 @@ theorem terminalMinimumLabelExactness_of_upperBoundClassifier {β : Type*}
     C.terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier
       classifier
 
+/-- A supplied counted-datum back-to-label bridge and supplied branch-label
+injectivity package the terminal-minimum exactness boundary.
+
+This is still supplied finite data: it does not construct the counted-datum
+classifier, the back-to-label bridge, or branch-label injectivity. -/
+theorem terminalMinimumLabelExactness_of_countDatumBackToBranchLabel {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (branchCoord : β → ℕ)
+    (classifier : C.TerminalMinimumCountDatumClassifier)
+    (backToLabel :
+      C.TerminalMinimumCountDatumBackToBranchLabel branchCoord classifier) :
+    C.TerminalMinimumLabelExactness :=
+  C.terminalMinimumLabelExactness_of_upperBoundClassifier hinj
+    (C.upperBoundClassifier_of_countDatumBackToBranchLabel
+      branchCoord classifier backToLabel)
+
 /-- Packaged exactness identifies the finite terminal-minimum label set with
 the supplied branch-label image.
 
@@ -696,6 +718,32 @@ theorem terminalMinimumLabels_card_of_exactness {β : Type*} [DecidableEq β]
     C.terminalMinimumLabels.card = a * (n + 1 - a) + 1 := by
   rw [C.terminalMinimumLabels_eq_branchLabelImage_of_exactness ha hselected exactness]
   exact C.branchLabelImage_card n a M m ha exactness.branchLabel_injOn
+
+/-- Exact finite count from a supplied counted-datum back-to-label bridge and
+supplied branch-label injectivity.
+
+The supplied selected-width sum gives the easy inclusion from branch labels to
+terminal-minimum labels; the supplied back-to-label bridge gives the no-extra
+direction.  No source construction of either supplied field is proved here. -/
+theorem terminalMinimumLabels_card_of_countDatumBackToBranchLabel {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (branchCoord : β → ℕ)
+    (classifier : C.TerminalMinimumCountDatumClassifier)
+    (backToLabel :
+      C.TerminalMinimumCountDatumBackToBranchLabel branchCoord classifier) :
+    C.terminalMinimumLabels.card = a * (n + 1 - a) + 1 := by
+  exact C.terminalMinimumLabels_card_of_exactness n a M m ha hselected
+    (C.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel
+      hinj branchCoord classifier backToLabel)
 
 /-- Packaged exactness gives a bijection from supplied branches to terminal
 minimum labels.
