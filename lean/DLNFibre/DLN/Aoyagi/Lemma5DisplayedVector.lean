@@ -1441,6 +1441,23 @@ theorem aoyagiLemma5Eq3_boundaryValue_gt_upperNat
   rw [hT.boundary]
   omega
 
+/-- Equation `(3)`'s special boundary value is not the upper endpoint at the
+same coordinate.
+
+This is the value-level obstruction behind the boundary gap in the endpoint
+coverage inventory. -/
+theorem aoyagiLemma5Eq3_boundaryValue_ne_upperEndpoint
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    T (C.point (ell - a + 1) - 1) ≠
+      aoyagiHtildeUpperNat ell a M m (ell - a + 1) := by
+  intro h
+  have hgt :=
+    aoyagiLemma5Eq3_boundaryValue_gt_upperNat ell a M m C layerWidth T hT
+  rw [h] at hgt
+  exact (lt_irrefl _) hgt
+
 /-- In the nonterminal equation `(3)` special-boundary case, raising the
 boundary chain value by one forces the next Lemma 4 increment to be `M+1`.
 
@@ -2209,6 +2226,72 @@ theorem aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
       aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ≤
       aoyagiHtildeUpperNat ell a M m p
   constructor <;> omega
+
+/-- Inserting equation `(3)`'s special boundary value into the strict equation
+`(5)` offset set cannot fill the same-coordinate interval.
+
+The inserted value lies one above the upper endpoint, hence outside the
+interval.  This records that the special boundary cannot be used as the
+supplied upper endpoint in the generic Eq5 endpoint-coverage wrapper. -/
+theorem aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    insert (T (C.point (ell - a + 1) - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a (ell - a + 1) M m) ≠
+      aoyagiHtildeIntervalValueSetNat ell a M m (ell - a + 1) := by
+  intro hEq
+  have hmem :
+      T (C.point (ell - a + 1) - 1) ∈
+        insert (T (C.point (ell - a + 1) - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a (ell - a + 1) M m) :=
+    Finset.mem_insert_self _ _
+  rw [hEq] at hmem
+  exact
+    aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat
+      ell a M m C layerWidth T hT hmem
+
+/-- Equation `(3)`'s special boundary value is not one of the strict equation
+`(5)` offset values at the same coordinate.
+
+The offset values are contained in the same-coordinate interval, while the
+special boundary value is one above the interval's upper endpoint. -/
+theorem aoyagiLemma5Eq3_boundaryValue_not_mem_Eq5_offsets
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    T (C.point (ell - a + 1) - 1) ∉
+      aoyagiLemma5Eq5OffsetValueSet ell a (ell - a + 1) M m := by
+  intro hmem
+  have hp : ell - a + 1 < ell + 1 := by
+    have ha : a ≤ ell := hT.a_le_ell
+    have ha_pos : 1 ≤ a := hT.indexGuard
+    omega
+  have hinterval :
+      T (C.point (ell - a + 1) - 1) ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m (ell - a + 1) :=
+    aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
+      ell a (ell - a + 1) M m hT.a_le_ell hp hmem
+  exact
+    aoyagiLemma5Eq3_boundaryValue_not_mem_intervalValueSetNat
+      ell a M m C layerWidth T hT hinterval
+
+/-- Version of
+`aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat`
+with the boundary coordinate named as an external parameter `p`. -/
+theorem
+aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat_of_eq_boundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_boundary : p = ell - a + 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    insert (T (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) ≠
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  subst p
+  exact
+    aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat
+      ell a M m C layerWidth T hT
 
 /-- The Eq5 strict offset set never contains the upper endpoint.
 

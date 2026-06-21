@@ -3218,6 +3218,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq3-upper-away-from-boundary-a5.md`.
 
+The Eq3 special boundary obstruction is now packaged against Eq5 endpoint
+coverage.  `aoyagiLemma5Eq3_boundaryValue_ne_upperEndpoint` records that the
+supplied Eq3 boundary value is `Htilde'_(ell-a+1)+1`, not the upper endpoint.
+`aoyagiLemma5Eq3_boundaryValue_not_mem_Eq5_offsets` then uses the existing
+Eq5 offset-set containment in the same-coordinate interval, and
+`aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat`
+shows that inserting this boundary value into the Eq5 offsets cannot fill the
+interval.  The `..._of_eq_boundary` wrapper restates this for an external
+coordinate `p` satisfying `p=ell-a+1`.  This is an obstruction record only:
+there is still no endpoint coverage at the special boundary, source-label
+legality, own-source-label status, all-coordinate endpoint realisation,
+injection, back-to-label coverage, or Lemma 5 order count.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-boundary-eq5-obstruction-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-boundary-eq5-obstruction.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

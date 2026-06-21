@@ -3870,6 +3870,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq3-upper-away-from-boundary-a5.md`.
 
+Latest A5 Eq3 boundary Eq5 obstruction update:
+`Lemma5DisplayedVector.lean` now has
+`aoyagiLemma5Eq3_boundaryValue_ne_upperEndpoint`,
+`aoyagiLemma5Eq3_boundaryValue_not_mem_Eq5_offsets`,
+`aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat`, and
+`aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat_of_eq_boundary`.
+At the special boundary `p=ell-a+1`, the supplied Eq3 value is
+`Htilde'_p+1`, so it is outside the same-coordinate interval.  The Eq5 strict
+offsets are contained in that interval, and inserting the boundary value into
+those offsets cannot fill the interval.  This is a boundary obstruction, not an
+endpoint-realisation theorem.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-boundary-eq5-obstruction.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

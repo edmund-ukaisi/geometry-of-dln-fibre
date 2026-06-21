@@ -2506,6 +2506,16 @@ No such claim is formalisation-ready until both fields are filled.
   This is only an equivalent finite packaging of supplied exactness as
   `Set.BijOn branchLabel fullBranches terminalMinimumLabels`; it does not
   construct the bijection from the source.
+  Also proved the Eq3 special-boundary Eq5 obstruction:
+  `aoyagiLemma5Eq3_boundaryValue_ne_upperEndpoint`,
+  `aoyagiLemma5Eq3_boundaryValue_not_mem_Eq5_offsets`,
+  `aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat`,
+  and
+  `aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat_of_eq_boundary`.
+  At `p=ell-a+1`, the supplied Eq3 boundary value is `Htilde'_p+1`, hence it
+  is outside the same-coordinate interval and cannot fill that interval when
+  inserted into the Eq5 strict offsets.  This is an obstruction record, not an
+  endpoint-coverage theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

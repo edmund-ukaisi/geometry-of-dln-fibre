@@ -3312,3 +3312,32 @@ This is a source-inventory/finite-set wrapper only.  The special boundary
 own-source-label status, all-coordinate endpoint realisation, injection,
 back-to-label coverage, pole order, normal crossings, and RLCT extraction
 remain outside this claim.
+
+## 2026-06-21 Lean Lemma 5 Eq3 boundary Eq5 obstruction
+
+Reproduction:
+`reproduction-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-boundary-eq5-obstruction.md`.
+Review artifact:
+`review-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
+
+Lean now packages the obstruction at Eq3's special boundary:
+
+```text
+aoyagiLemma5Eq3_boundaryValue_ne_upperEndpoint
+aoyagiLemma5Eq3_boundaryValue_not_mem_Eq5_offsets
+aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat
+aoyagiLemma5Eq3_boundaryValue_insert_Eq5_offsets_ne_intervalValueSetNat_of_eq_boundary
+```
+
+At `p=ell-a+1`, the supplied Eq3 boundary clause gives
+`T(C.point p-1)=Htilde'_p+1`, so the component is not the same-coordinate upper
+endpoint and lies outside the interval.  Since Eq5 strict offsets are contained
+in that interval, the boundary value is not an Eq5 offset; inserting it into
+the Eq5 offset set cannot produce the interval.
+
+This is an endpoint-inventory obstruction, not coverage.  It does not prove
+source-label legality, own-source-label status, all-coordinate endpoint
+realisation, injection, back-to-label coverage, pole order, normal crossings,
+or RLCT extraction.
