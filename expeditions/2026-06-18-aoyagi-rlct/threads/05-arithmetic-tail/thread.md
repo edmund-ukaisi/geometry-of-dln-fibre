@@ -3196,3 +3196,33 @@ that upper endpoint value.
 This is still finite set bookkeeping.  It does not prove Eq3/Eq5 source-label
 legality, terminal `tilde t=0`, chart coverage, an all-coordinate branch
 family, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 endpoint deficit
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-deficit-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-deficit.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-deficit-a5.md`.
+
+Lean now packages the finite endpoint deficit of Eq5 strict offsets:
+
+```text
+aoyagiLemma5IntervalExcess_eq_self_iff_le_min
+aoyagiLemma5IntervalExcess_le_pred_of_not_le_min
+aoyagiLemma5Eq5_intervalCard_eq_offsetCard_add_endpointDeficit
+aoyagiLemma5Eq5_offsets_endpointDeficit_split
+```
+
+The interval excess equals the coordinate index exactly in the rising region
+`p<=a` and `p<=ell-a`; outside that region, for `1<=p`, the excess is at most
+`p-1`.  Consequently the interval cardinality is the Eq5 offset cardinality
+plus one upper-endpoint deficit, plus one additional lower-endpoint deficit
+exactly in the rising region.  The set-level split packages this as either
+`Eq5Offsets = Interval.erase upper` or, in the rising region,
+`Eq5Offsets = (Interval.erase upper).erase lower`.
+
+This is an obligation split for endpoint realisation.  It does not construct
+any source branch, prove source-label legality, prove terminality, prove chart
+coverage, or prove the Lemma 5 order count.

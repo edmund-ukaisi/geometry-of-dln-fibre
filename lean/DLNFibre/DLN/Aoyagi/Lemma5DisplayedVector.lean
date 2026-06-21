@@ -1981,6 +1981,77 @@ theorem aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator
     rw [Nat.min_eq_left hle]
     omega
 
+/-- The interval excess equals the coordinate index exactly in the rising
+region `p<=a` and `p<=ell-a`.
+
+This is finite arithmetic only. -/
+theorem aoyagiLemma5IntervalExcess_eq_self_iff_le_min
+    (ell a p : ℕ) (ha : a ≤ ell) :
+    aoyagiLemma5IntervalExcess ell a p = p ↔
+      p ≤ a ∧ p ≤ ell - a := by
+  constructor
+  · intro h
+    have hle_a : aoyagiLemma5IntervalExcess ell a p ≤ a := by
+      unfold aoyagiLemma5IntervalExcess
+      exact le_trans
+        (Nat.min_le_right p (min (ell - p) (min a (ell - a))))
+        (le_trans (Nat.min_le_right (ell - p) (min a (ell - a)))
+          (Nat.min_le_left a (ell - a)))
+    have hle_c : aoyagiLemma5IntervalExcess ell a p ≤ ell - a := by
+      unfold aoyagiLemma5IntervalExcess
+      exact le_trans
+        (Nat.min_le_right p (min (ell - p) (min a (ell - a))))
+        (le_trans (Nat.min_le_right (ell - p) (min a (ell - a)))
+          (Nat.min_le_right a (ell - a)))
+    omega
+  · rintro ⟨hp_a, hp_c⟩
+    exact aoyagiLemma5IntervalExcess_eq_self_of_le_min ell a p ha hp_a hp_c
+
+/-- Outside the rising region, the interval excess is at most `p-1`.
+
+This is the arithmetic condition under which Eq5 strict offsets already reach
+the lower endpoint. -/
+theorem aoyagiLemma5IntervalExcess_le_pred_of_not_le_min
+    (ell a p : ℕ) (ha : a ≤ ell) (hp_pos : 1 ≤ p)
+    (hnot : ¬ (p ≤ a ∧ p ≤ ell - a)) :
+    aoyagiLemma5IntervalExcess ell a p ≤ p - 1 := by
+  have hle_p : aoyagiLemma5IntervalExcess ell a p ≤ p := by
+    unfold aoyagiLemma5IntervalExcess
+    exact Nat.min_le_left p (min (ell - p) (min a (ell - a)))
+  have hne : aoyagiLemma5IntervalExcess ell a p ≠ p := by
+    intro h
+    exact hnot ((aoyagiLemma5IntervalExcess_eq_self_iff_le_min ell a p ha).mp h)
+  omega
+
+/-- The same-coordinate interval size is the Eq5 strict-offset count plus the
+endpoint deficit.
+
+Eq5 always has an upper-endpoint deficit.  It has one additional
+lower-endpoint deficit in the rising region `1<=p`, `p<=a`, `p<=ell-a`.
+This is only finite count bookkeeping, not a source branch-family count. -/
+theorem aoyagiLemma5Eq5_intervalCard_eq_offsetCard_add_endpointDeficit
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp : p < ell + 1) :
+    (aoyagiHtildeIntervalValueSetNat ell a M m p).card =
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card + 1 +
+        if 1 ≤ p ∧ p ≤ a ∧ p ≤ ell - a then 1 else 0 := by
+  have h :=
+    aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator
+      ell a p M m ha
+  rw [aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m p hp]
+  simp [aoyagiLemma5IntervalSize]
+  omega
+
+/-- Alias with the older `endpointDefect` spelling. -/
+theorem aoyagiLemma5Eq5_intervalCard_eq_offsetCard_add_endpointDefect
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp : p < ell + 1) :
+    (aoyagiHtildeIntervalValueSetNat ell a M m p).card =
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card + 1 +
+        if 1 ≤ p ∧ p ≤ a ∧ p ≤ ell - a then 1 else 0 :=
+  aoyagiLemma5Eq5_intervalCard_eq_offsetCard_add_endpointDeficit
+    ell a p M m ha hp
+
 /-- In the rising part of the interval, the lower endpoint is not one of the
 strict Eq5 offset values.
 
@@ -2367,6 +2438,36 @@ theorem aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
     rcases hz.2 with hz_lower | hz_offset
     · exact False.elim (hz.1 hz_lower)
     · exact hz_offset
+
+/-- Every positive coordinate falls into one of the two Eq5 endpoint-deficit
+set cases.
+
+Outside the rising region, Eq5 offsets are the interval with only the upper
+endpoint erased.  In the rising region, Eq5 offsets are the interval with both
+upper and lower endpoints erased.  This is an obligation split for later
+supplied endpoint realisation; it is not a source coverage theorem. -/
+theorem aoyagiLemma5Eq5_offsets_endpointDeficit_split
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp : p < ell + 1) :
+    aoyagiLemma5Eq5OffsetValueSet ell a p M m =
+        (aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+          (aoyagiHtildeUpperNat ell a M m p) ∨
+      (p ≤ a ∧ p ≤ ell - a ∧
+        aoyagiLemma5Eq5OffsetValueSet ell a p M m =
+          ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+            (aoyagiHtildeUpperNat ell a M m p)).erase
+              (aoyagiHtildeLowerNat ell a M m p)) := by
+  by_cases hrising : p ≤ a ∧ p ≤ ell - a
+  · right
+    exact ⟨hrising.1, hrising.2,
+      aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
+        ell a p M m ha hp_pos hrising.1 hrising.2⟩
+  · left
+    have hexcess_le :=
+      aoyagiLemma5IntervalExcess_le_pred_of_not_le_min
+        ell a p ha hp_pos hrising
+    exact aoyagiLemma5Eq5_offsets_eq_interval_erase_upper_of_excess_le_pred
+      ell a p M m ha hp hexcess_le
 
 /-- A supplied equation `(4)` own-coordinate value supplies the lower endpoint
 in the Eq5 lower-plus-strict-offset finite set.

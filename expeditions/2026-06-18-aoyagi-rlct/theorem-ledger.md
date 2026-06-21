@@ -3798,6 +3798,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-nonrising-coverage-a5.md`.
 
+Latest A5 Eq5 endpoint-deficit update: `Lemma5DisplayedVector.lean` now
+packages the rising/non-rising offset deficit as arithmetic and set
+bookkeeping.  Names:
+`aoyagiLemma5IntervalExcess_eq_self_iff_le_min`,
+`aoyagiLemma5IntervalExcess_le_pred_of_not_le_min`,
+`aoyagiLemma5Eq5_intervalCard_eq_offsetCard_add_endpointDeficit`, and
+`aoyagiLemma5Eq5_offsets_endpointDeficit_split`.  Eq5 always has an
+upper-endpoint deficit and has an additional lower-endpoint deficit exactly in
+the rising region.  This does not realise endpoints by source branches or
+prove source-label legality, terminality, chart coverage, an all-coordinate
+branch family, pole order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-deficit-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-deficit.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-deficit-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

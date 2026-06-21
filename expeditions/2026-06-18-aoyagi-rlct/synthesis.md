@@ -3146,6 +3146,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-nonrising-coverage-a5.md`.
 
+The Eq5 endpoint-deficit split is now Lean-proved in
+`Lemma5DisplayedVector.lean`.  The arithmetic theorem
+`aoyagiLemma5IntervalExcess_eq_self_iff_le_min` identifies the rising region
+as exactly `p<=a` and `p<=ell-a`, and
+`aoyagiLemma5IntervalExcess_le_pred_of_not_le_min` gives the non-rising
+complement for `1<=p`.  The cardinal theorem
+`aoyagiLemma5Eq5_intervalCard_eq_offsetCard_add_endpointDeficit` states that
+the interval size is the Eq5 offset count plus one upper-endpoint deficit, and
+plus one additional lower-endpoint deficit precisely in the rising region.  The
+set-level theorem `aoyagiLemma5Eq5_offsets_endpointDeficit_split` packages the
+two finite-set equalities already proved.  This is an obligation split for
+endpoint realisation, not source coverage.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-deficit-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-deficit.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-deficit-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
