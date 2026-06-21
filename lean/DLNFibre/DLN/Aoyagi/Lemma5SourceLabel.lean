@@ -452,6 +452,124 @@ theorem aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBo
     L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS
     (C.block_sourceIndex_le_of_lastPoint_le hS hlast) hwidth_le hk
 
+/-- Source-shaped arbitrary-own-block equation `(5)` label legality from a
+block-local actual-width lower-bound hypothesis.
+
+The hypothesis `hactual` says that throughout each selected block, the
+corresponding selected width is bounded by the actual width.  This is the
+direct bridge needed by the width-bound wrapper; it is intentionally explicit
+and does not claim to follow from Definition 3 alone. -/
+theorem aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_blockWidth
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hactual :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          aoyagiSelectedWidthNat ell m i.val ≤ (n r : ℤ))
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  exact aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+    L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+    (C.selectedWidthNat_le_actualWidth_of_block n m hactual hS) hk
+
+/-- Source-shaped arbitrary-own-block equation `(5)` label legality from
+selected left-endpoint widths and a block-local minimum condition. -/
+theorem aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_leftMin
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hleft :
+      ∀ i : Fin ell,
+        (n (C.point i.val) : ℤ) = aoyagiSelectedWidthNat ell m i.val)
+    (hmin :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          n (C.point i.val) ≤ n r)
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  exact aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+    L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+    (C.selectedWidthNat_le_actualWidth_of_block_of_leftEndpoint_min
+      n m hleft hmin hS)
+    hk
+
+/-- Source-shaped arbitrary-own-block equation `(5)` label legality from
+selected-cutpoint actual widths and off-selected-layer dominance.
+
+This removes the explicit width-bound argument from
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound`,
+replacing it by two source-facing data hypotheses: selected cutpoints have
+widths `m`, and every off-selected layer is at least as wide as every selected
+width.  These hypotheses are explicit because Definition 3's set-valued
+selection language should not be read as a no-duplicate layer-position
+statement. -/
+theorem aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hselectedWidth : ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i ≤ (n t : ℤ))
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  exact aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+    L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+    (C.selectedWidthNat_le_actualWidth_of_block_of_offSelected
+      n m hS hselectedWidth hoffSelected)
+    hk
+
+/-- Strict off-selected-layer dominance version of
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected`. -/
+theorem aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected_lt
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hselectedWidth : ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i < (n t : ℤ))
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  exact aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected
+    L ell a p alpha n M m C layerWidth T hell hselected hsource hT
+    hselectedWidth
+    (fun t ht i ↦ le_of_lt (hoffSelected t ht i))
+    hS hlast hk
+
 end Aoyagi
 end DLN
 end DLNFibre

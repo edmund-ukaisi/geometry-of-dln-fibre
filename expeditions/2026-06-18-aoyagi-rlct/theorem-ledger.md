@@ -2846,6 +2846,36 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-source-range-width-bound-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(5)` width-bound hypothesis now has a
+conditional block-width dominance bridge.  The selected-cutpoint helpers
+`AoyagiSelectedCutpoints.block_sourceLayer_mem_Ico`,
+`AoyagiSelectedCutpoints.block_sourceLayer_eq_left_or_between`,
+`AoyagiSelectedCutpoints.point_ne_of_between_adjacent`,
+`AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block`,
+`AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_leftEndpoint_min`,
+`AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_offSelected`,
+and
+`AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_offSelected_lt`
+derive `W_p<=n(S+1)` from explicit block-local width dominance, left-endpoint
+minimum data, or index-level off-selected-layer dominance.  The Eq5 wrappers
+`aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_blockWidth`,
+`aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_leftMin`,
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected`,
+and
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected_lt`
+combine this with the previous source-range wrapper.  This is not a
+Definition 3 consequence: the source review records that Definition 3's
+non-selected condition is value-level and does not control unselected layers
+with duplicate selected width values.  It also does not construct the
+displayed vector, prove terminal `tilde t=0`, vector admissibility, chart
+sequence, Lemma 5 order count, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-block-width-dominance-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-block-width-dominance.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-block-width-dominance-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

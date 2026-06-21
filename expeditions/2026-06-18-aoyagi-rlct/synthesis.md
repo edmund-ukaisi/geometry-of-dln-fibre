@@ -2274,6 +2274,22 @@ vector, prove terminal `tilde t=0`, build the chart sequence, or prove Lemma
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-source-range-width-bound-a5.md`.
 
+Eq5 now has a conditional block-width dominance bridge.  From `C.block p S`,
+Lean proves the source-layer interval `C.point p<=S+1<C.point(p+1)`.  A
+block-local actual-width lower-bound hypothesis therefore supplies
+`W_p<=n(S+1)`, and the Eq5 wrappers combine this with the last-cutpoint range
+theorem to prove `T(S)=k-1` and `actualWidthLabel L n S k`.  Derived wrappers
+also cover a left-endpoint-width-plus-block-minimum interface and an
+index-level off-selected-layer dominance interface.  The source review found a
+real obstruction to deriving this from Definition 3 alone: Definition 3's
+non-selected condition is phrased by width-value membership, so an unselected
+layer with a duplicate selected width value is not controlled.  Reproduction,
+statement card, and review are saved at
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-block-width-dominance-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-block-width-dominance.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-block-width-dominance-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

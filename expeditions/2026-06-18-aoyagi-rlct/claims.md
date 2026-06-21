@@ -2250,6 +2250,22 @@ No such claim is formalisation-ready until both fields are filled.
   the arbitrary-block width side from equality `n(S+1)=W_p` to the sufficient
   bound `W_p<=n(S+1)`.  They still do not prove that width bound from
   Definition 3 or construct the displayed Eq5 vector.
+  Also proved `AoyagiSelectedCutpoints.block_sourceLayer_mem_Ico`,
+  `AoyagiSelectedCutpoints.block_sourceLayer_eq_left_or_between`,
+  `AoyagiSelectedCutpoints.point_ne_of_between_adjacent`,
+  `AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block`,
+  `AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_leftEndpoint_min`,
+  `AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_offSelected`,
+  `AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_offSelected_lt`,
+  `aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_blockWidth`,
+  `aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_leftMin`,
+  `aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected`,
+  and
+  `aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected_lt`.
+  These derive the width bound from explicit block-local width dominance,
+  left-endpoint-minimum data, or index-level off-selected dominance.  They do
+  not derive it from Definition 3 alone; the source check records a
+  duplicate-width obstruction to that stronger claim.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

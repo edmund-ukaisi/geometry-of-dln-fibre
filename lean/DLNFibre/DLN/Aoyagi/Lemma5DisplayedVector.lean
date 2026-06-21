@@ -180,6 +180,127 @@ theorem block_sourceIndex_le_of_lastPoint_le {ell : ℕ}
   exact C.selectedSpan_sourceIndex_le_of_lastPoint_le
     (C.block_mem_selectedSpan hblock).2 hlast
 
+/-- A selected-block member `S` has source layer `S+1` between the two
+adjacent selected cutpoints. -/
+theorem block_sourceLayer_mem_Ico {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {b S : ℕ}
+    (hblock : C.block b S) :
+    C.point b ≤ S + 1 ∧ S + 1 < C.point (b + 1) := by
+  rcases hblock with ⟨hb_lt, hlo, hhi⟩
+  have hpos : 1 ≤ C.point b := C.point_pos_of_lt (by omega)
+  constructor <;> omega
+
+/-- A selected-block source layer is either the block's left selected layer or
+strictly between adjacent selected cutpoints. -/
+theorem block_sourceLayer_eq_left_or_between {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {b S : ℕ}
+    (hblock : C.block b S) :
+    S + 1 = C.point b ∨
+      C.point b < S + 1 ∧ S + 1 < C.point (b + 1) := by
+  have hIco := C.block_sourceLayer_mem_Ico hblock
+  omega
+
+/-- A layer strictly between adjacent selected cutpoints is not one of the
+selected cutpoints. -/
+theorem point_ne_of_between_adjacent {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {b t : ℕ}
+    (hb : b < ell) (hlo : C.point b < t) (hhi : t < C.point (b + 1))
+    (i : Fin (ell + 1)) :
+    t ≠ C.point i.val := by
+  intro ht
+  by_cases hi_le : i.val ≤ b
+  · have hle : C.point i.val ≤ C.point b :=
+      C.point_le_of_le hi_le (by omega)
+    rw [← ht] at hle
+    omega
+  · have hge : b + 1 ≤ i.val := by omega
+    have hle : C.point (b + 1) ≤ C.point i.val :=
+      C.point_le_of_le hge i.isLt
+    rw [← ht] at hle
+    omega
+
+/-- Width bound for a source layer in a selected block, from an explicit
+block-local actual-width lower-bound hypothesis. -/
+theorem selectedWidthNat_le_actualWidth_of_block
+    {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    (n : ℕ → ℕ) (m : Fin (ell + 1) → ℤ)
+    {p S : ℕ}
+    (hactual :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          aoyagiSelectedWidthNat ell m i.val ≤ (n r : ℤ))
+    (hblock : C.block p S) :
+    aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) := by
+  have hp : p < ell := hblock.1
+  have hIco := C.block_sourceLayer_mem_Ico hblock
+  exact hactual ⟨p, hp⟩ (S + 1) hIco.1 hIco.2
+
+/-- Width bound for a source layer in a selected block, from a selected
+left-endpoint width identity and block-local minimum condition. -/
+theorem selectedWidthNat_le_actualWidth_of_block_of_leftEndpoint_min
+    {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    (n : ℕ → ℕ) (m : Fin (ell + 1) → ℤ)
+    {p S : ℕ}
+    (hleft :
+      ∀ i : Fin ell,
+        (n (C.point i.val) : ℤ) = aoyagiSelectedWidthNat ell m i.val)
+    (hmin :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          n (C.point i.val) ≤ n r)
+    (hblock : C.block p S) :
+    aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) := by
+  exact C.selectedWidthNat_le_actualWidth_of_block n m
+    (fun i r hlo hhi ↦ by
+      rw [← hleft i]
+      exact_mod_cast hmin i r hlo hhi)
+    hblock
+
+/-- Width bound for a source layer in a selected block, from explicit selected
+widths and off-selected-layer dominance.
+
+The hypothesis `hselectedWidth` identifies selected widths with actual widths
+at selected cutpoints.  The hypothesis `hoffSelected` is deliberately
+position-based: every layer not equal to a selected cutpoint is at least as
+wide as every selected width.  This avoids reading extra uniqueness or
+duplicate-value assumptions into Aoyagi's Definition 3. -/
+theorem selectedWidthNat_le_actualWidth_of_block_of_offSelected
+    {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    (n : ℕ → ℕ) (m : Fin (ell + 1) → ℤ)
+    {p S : ℕ} (hblock : C.block p S)
+    (hselectedWidth : ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i ≤ (n t : ℤ)) :
+    aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) := by
+  have hp_block : p < ell := hblock.1
+  have hp_lt : p < ell + 1 := by omega
+  let ip : Fin (ell + 1) := ⟨p, hp_lt⟩
+  have hW : aoyagiSelectedWidthNat ell m p = m ip := by
+    exact aoyagiSelectedWidthNat_of_lt hp_lt
+  rcases C.block_sourceLayer_eq_left_or_between hblock with hleft | hbetween
+  · have hsel := hselectedWidth ip
+    rw [hW, hleft, ← hsel]
+  · rw [hW]
+    exact hoffSelected (S + 1)
+      (fun i ↦ C.point_ne_of_between_adjacent hblock.1 hbetween.1 hbetween.2 i)
+      ip
+
+/-- Strict off-selected-layer dominance version of
+`selectedWidthNat_le_actualWidth_of_block_of_offSelected`. -/
+theorem selectedWidthNat_le_actualWidth_of_block_of_offSelected_lt
+    {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
+    (n : ℕ → ℕ) (m : Fin (ell + 1) → ℤ)
+    {p S : ℕ} (hblock : C.block p S)
+    (hselectedWidth : ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i < (n t : ℤ)) :
+    aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) := by
+  exact C.selectedWidthNat_le_actualWidth_of_block_of_offSelected n m hblock
+    hselectedWidth
+    (fun t ht i ↦ le_of_lt (hoffSelected t ht i))
+
 /-- Every source index in the selected span lies in some selected block. -/
 theorem exists_block_of_mem_selectedSpan {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
     {S : ℕ} (hlo : C.point 0 - 1 ≤ S) (hhi : S < C.point ell - 1) :

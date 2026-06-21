@@ -1595,3 +1595,46 @@ This still does not prove the width bound from Definition 3, construct the
 displayed vector, prove terminal `tilde t=0`, vector admissibility, the Case
 1(2) chart sequence, Lemma 5 order count, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` block width dominance
+
+Reproduction:
+`reproduction-lemma5-eq5-block-width-dominance-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-block-width-dominance.md`.
+Review artifact:
+`review-lemma5-eq5-block-width-dominance-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiSelectedCutpoints.block_sourceLayer_mem_Ico
+AoyagiSelectedCutpoints.block_sourceLayer_eq_left_or_between
+AoyagiSelectedCutpoints.point_ne_of_between_adjacent
+AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block
+AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_leftEndpoint_min
+AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_offSelected
+AoyagiSelectedCutpoints.selectedWidthNat_le_actualWidth_of_block_of_offSelected_lt
+aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_blockWidth
+aoyagiLemma5Eq5_ownBlock_actualWidthLabel_of_lastPoint_leftMin
+aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected
+aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_offSelected_lt
+```
+
+The new cutpoint helper turns `C.block p S` into the source-layer interval
+`C.point p <= S+1 < C.point(p+1)`.  Therefore a block-local actual-width lower
+bound gives the Eq5 width hypothesis `W_p<=n(S+1)`.  The Eq5 wrappers combine
+this with the previous last-cutpoint source-range theorem and the supplied
+own-block value `T(S)=k-1`.
+
+The source check records an obstruction to deriving this width bound from
+Definition 3 alone: Definition 3's non-selected condition is value-level, so
+an unselected layer with a duplicate selected width value is not controlled by
+that condition.  The Lean theorem therefore keeps explicit block-local
+dominance, left-endpoint-minimum, or index-level off-selected dominance
+hypotheses.
+
+This still does not prove block-local width dominance from Definition 3,
+construct the displayed vector, prove terminal `tilde t=0`, vector
+admissibility, the Case 1(2) chart sequence, Lemma 5 order count, normal
+crossings, or RLCT extraction.

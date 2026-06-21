@@ -741,6 +741,13 @@ on the session's original cwd.
    wrappers combine these with the supplied Eq5 value `T(S)=k-1`.  This still
    does not prove the width bound from Definition 3, construct the displayed
    vector, prove terminal `tilde t=0`, chart sequence, or Lemma 5 order count.
+   The next conditional width bridge is now Lean-proved too: `C.block p S`
+   gives `C.point p<=S+1<C.point(p+1)`, so explicit block-local actual-width
+   dominance gives `W_p<=n(S+1)` and the Eq5 actual-label wrapper follows.
+   Left-endpoint-minimum and index-level off-selected dominance variants are
+   also proved.  Source review found that Definition 3 alone is insufficient:
+   its non-selected condition is value-level and does not control unselected
+   layers with duplicate selected width values.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or
