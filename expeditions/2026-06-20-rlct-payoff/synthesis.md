@@ -115,3 +115,16 @@ reviewer PASS-with-notes. Commits e782f76/b913ecf. (2,2,2)r=0 → 1 top componen
 Phase G COMPLETE: G2 stratification ✓, G3 components=maximal Ō_M ✓, θ-A top-dim⟹component ✓.
 θ-count: bijection+injectivity ✓, count gated on 2 bricks. Remaining: θ-bricks → D → R(Cited).
 ENV: Codex down env-wide (decorrelate via reviewer). [IsAlgClosed k][CharZero k] on the geometric headlines.
+
+## 2026-06-21 — θ-count reduced to ONE inequality (Brick 2 landed; Brick 1 → cCodim·0 mono)
+`Core.CCodimCornerMono`: **Brick 2 LANDED** (`gabrielPartition`, `orbitRankLocus_realizerD_gabrielPartition`
+— Gabriel→Kostant recovery, unconditional). **Brick 1 REDUCED**: `numTop_eq_ncard_topComponents_of_dimMono`
+proves `θ=numTop` GIVEN `hMono`/`hMonoStrict` = dimension-monotonicity of `cCodim·0` (`cCodim e 0 ≤/< cCodim
+e' 0` for `e ≤/< e'`). Both old geometric hyps discharge from this one CTheta inequality (via rank-shift
+`cCodim d t = cCodim (d−t) 0`). Green (3016 jobs), 0-sorry, axiom-clean, reviewer PASS. Commits 3b8110c..2120900.
+- **REMAINING (thread 07, ~120–160 LoC): `cCodim_zero_mono`/`_strict`** via the SHORTEST-interval split at an
+  over-covered vertex (verified 199/199 never raises codimForm; merge-up route DEAD; strict single-vertex FALSE,
+  strict ALL-vertex holds). `codimForm` = type-A Ext-pairing form `∑_{a<c≤b+1, b<e} m̄[a,b]m̄[c,e]`; split delta =
+  ∑ coeff(B)m̄(B), positive-coeff B = shorter intervals covering k (absent when I shortest ⟹ delta≤0). Discharge
+  ⟹ θ=numTop UNCONDITIONAL. Then Phase D, then R-interface.
+- Correction: (2,3,2) θ=2 is at r=0 (not r=1; r=1 → numTop=1). ENV: Codex still flaky for formaliser/me.
