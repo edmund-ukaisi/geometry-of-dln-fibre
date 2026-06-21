@@ -2876,6 +2876,25 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-supplied-terminal-candidate-family-a5.md`.
 
+The terminal bridge now also distinguishes a tagged branch count from a
+distinct supplied-label image count.  `branchLabel` maps a tagged branch to its
+supplied `Sigma.mk (branchS x) (branchK x)` label, and `branchLabelImage` is
+the finite image of that map over `fullBranches`.  Lean proves each branch
+label belongs to `introducedLabelFinset` and that the image is contained in
+that finite introduced-label set.  Under an explicit `Set.InjOn branchLabel
+fullBranches` hypothesis, Lean proves
+`branchLabelImage.card = a*(n+1-a)+1`, and every label in that image inherits
+the branchwise introduced-label, least-value-zero, and terminal-exponent
+minimum data.  This is only a distinct supplied-candidate image count: it does
+not prove injectivity from the source, coverage of all terminal minimizers, a
+pole order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-branch-label-image-count-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-branch-label-image-count.md`;
+review:
+`threads/05-arithmetic-tail/review-lemma5-branch-label-image-count-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

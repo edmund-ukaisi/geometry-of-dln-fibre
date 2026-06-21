@@ -3519,6 +3519,28 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-supplied-terminal-candidate-family-a5.md`.
 
+Latest A5 branch-label-image update: the terminal bridge file now defines
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel` and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage`, using the
+same dependent-pair label type as `introducedLabelFinset`.
+`branchLabel_mem_introducedLabelFinset` and
+`branchLabelImage_subset_introducedLabelFinset` place the supplied labels in
+the existing finite introduced-label set.  Under an explicit injectivity
+hypothesis on `fullBranches`,
+`branchLabelImage_card_eq_fullBranches_card_of_injOn` proves the image has the
+same cardinality as the tagged branch set, and `branchLabelImage_card`
+combines that with the supplied Lemma 5 branch count to get
+`a*(n+1-a)+1`.  `branchLabelImage_terminalCandidateData` transfers the
+branchwise introduced-label, least-value-zero, and terminal-exponent data to
+any label in the image.  This is not source-backed label injectivity,
+no-extra-minimizer coverage, pole order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-branch-label-image-count-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-branch-label-image-count.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-branch-label-image-count-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

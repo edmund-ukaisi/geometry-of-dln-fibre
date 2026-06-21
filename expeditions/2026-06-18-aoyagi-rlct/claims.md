@@ -2456,6 +2456,19 @@ No such claim is formalisation-ready until both fields are filled.
   This packages supplied branch-to-label maps, introduced-label proofs,
   terminal least-value-zero data, and numerator normalisation for each tagged
   branch.
+  Also proved the supplied branch-label image wrappers
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_mem_introducedLabelFinset`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_subset_introducedLabelFinset`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_eq_fullBranches_card_of_injOn`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card`, and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_terminalCandidateData`.
+  These place the supplied branch labels in `introducedLabelFinset`, count the
+  finite image of supplied branch labels under an explicit injectivity
+  hypothesis, and transfer the branchwise candidate data to labels in that
+  image.  They do not prove source-backed injectivity or any no-extra-minimizer
+  theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
@@ -2467,8 +2480,8 @@ No such claim is formalisation-ready until both fields are filled.
   same-coordinate hypotheses, source-label and terminal `tilde t=0`
   realisation, identification of the source terminal-exponent numerator with
   the isolated Lemma 3 free-count expression, Lemma 4's correspondence to
-  `lambda`, injectivity of supplied branch labels, absence of extra terminal
-  minimizers,
+  `lambda`, source-backed injectivity of supplied branch labels, absence of
+  extra terminal minimizers,
   conclusion, source-backed Lemma 5 chart-family admissibility and coverage
   from Aoyagi's printed equations, existence of the supplied chart-family
   boundary data including the supplied base branch, pole-order count, and

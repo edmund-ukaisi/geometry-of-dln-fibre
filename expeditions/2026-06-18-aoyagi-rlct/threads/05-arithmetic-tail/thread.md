@@ -2703,3 +2703,38 @@ This still does not construct labels from Aoyagi's printed equations, prove
 terminal `tilde t=0` from the chart process, prove label injectivity or absence
 of extra terminal minimizers, identify `lambda`, prove pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 branch-label image count
+
+Reproduction:
+`reproduction-lemma5-branch-label-image-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-branch-label-image-count.md`.
+Review artifact:
+`review-lemma5-branch-label-image-count-a5.md`.
+
+Lean now separates the tagged supplied branch count from the distinct supplied
+source-label image count in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_mem_introducedLabelFinset
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_subset_introducedLabelFinset
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_eq_fullBranches_card_of_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_terminalCandidateData
+```
+
+The image count is conditional on an explicit hypothesis that `branchLabel` is
+injective on `fullBranches`.  Under that hypothesis, the finite image has the
+same cardinality as `fullBranches`, hence cardinality `a*(n+1-a)+1`.  Every
+branch label belongs to `introducedLabelFinset`, the image is contained in
+that finite introduced-label set, and every label in the image inherits the
+branchwise introduced-label, least-value-zero, and terminal-exponent-minimum
+data by unpacking image membership.
+
+This is still not a pole-order theorem.  It does not prove source-backed label
+injectivity, coverage of all terminal minimizers, absence of extra terminal
+minimizers, normal crossings, or RLCT extraction.

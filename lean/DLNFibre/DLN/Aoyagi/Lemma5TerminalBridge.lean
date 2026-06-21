@@ -126,6 +126,30 @@ def fullBranches {β : Type*} [DecidableEq β]
     Finset (Option β) :=
   C.family.fullBranches
 
+/-- The supplied source-label pair attached to a tagged branch. -/
+def branchLabel {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (x : Option β) :
+    Σ _ : ℕ, ℕ :=
+  Sigma.mk (C.branchS x) (C.branchK x)
+
+/-- The finite image of supplied branch labels.
+
+This is a candidate-label image only.  It is not the full terminal-minimizer
+set unless separate no-extra-minimizer/coverage data are supplied. -/
+def branchLabelImage {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) :
+    Finset (Σ _ : ℕ, ℕ) :=
+  C.fullBranches.image C.branchLabel
+
 /-- The supplied terminal-candidate branch set has Aoyagi's Lemma 5 supplied
 finite count. -/
 theorem fullBranches_card {β : Type*} [DecidableEq β]
@@ -138,6 +162,66 @@ theorem fullBranches_card {β : Type*} [DecidableEq β]
     C.fullBranches.card = a * (n + 1 - a) + 1 := by
   exact AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card
     (n + 1) a M m C.family hell ha
+
+/-- The supplied label attached to a tagged branch belongs to the finite
+introduced-label set. -/
+theorem branchLabel_mem_introducedLabelFinset {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    {x : Option β} (hx : x ∈ C.fullBranches) :
+    C.branchLabel x ∈ introducedLabelFinset L width S J := by
+  exact mem_introducedLabelFinset.mpr (C.introduced hx)
+
+/-- The supplied branch-label image is contained in the finite introduced-label
+set. -/
+theorem branchLabelImage_subset_introducedLabelFinset {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) :
+    C.branchLabelImage ⊆ introducedLabelFinset L width S J := by
+  intro label hlabel
+  rcases Finset.mem_image.mp hlabel with ⟨x, hx, rfl⟩
+  exact C.branchLabel_mem_introducedLabelFinset hx
+
+/-- The branch-label image has the same cardinality as the tagged branch set
+when the supplied branch-to-label map is injective on the supplied branch set.
+
+This is only a distinct supplied-candidate count.  It does not assert that all
+terminal minimizers occur in this image. -/
+theorem branchLabelImage_card_eq_fullBranches_card_of_injOn {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches) :
+    C.branchLabelImage.card = C.fullBranches.card := by
+  exact Finset.card_image_of_injOn (s := C.fullBranches) (f := C.branchLabel) hinj
+
+/-- Under supplied branch-label injectivity, the distinct supplied
+terminal-candidate label image has Aoyagi's Lemma 5 supplied finite count.
+
+This is not a pole-order theorem: it counts only the injected image of the
+supplied candidate labels, and assumes no coverage of possible extra terminal
+minimizers. -/
+theorem branchLabelImage_card {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches) :
+    C.branchLabelImage.card = a * (n + 1 - a) + 1 := by
+  rw [C.branchLabelImage_card_eq_fullBranches_card_of_injOn hinj]
+  exact C.fullBranches_card n a M m (Nat.succ_pos n) ha
 
 /-- Every tagged supplied terminal candidate has terminal least value zero. -/
 theorem branch_terminalLeastValue_zero {β : Type*} [DecidableEq β]
@@ -190,6 +274,29 @@ theorem branch_terminalCandidateData {β : Type*} [DecidableEq β]
             (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
   exact ⟨C.introduced hx, C.branch_terminalLeastValue_zero hx,
     C.branch_terminalExponent_eq_minNumerator ha hselected hx⟩
+
+/-- Every label in the supplied branch-label image inherits the branchwise
+terminal-candidate data.
+
+This does not say that the image contains every terminal minimizer; it only
+transfers data from the supplied tagged branches to their supplied labels. -/
+theorem branchLabelImage_terminalCandidateData {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    {label : Σ _ : ℕ, ℕ} (hlabel : label ∈ C.branchLabelImage) :
+    introducedLabel L width S J label.1 label.2 ∧
+      leastValue label.1 label.2 = 0 ∧
+        terminalExponent L (widthZ width) (t label.1 label.2) =
+          (a : ℤ) * ((n + 1 : ℕ) : ℤ) *
+            (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  rcases Finset.mem_image.mp hlabel with ⟨x, hx, rfl⟩
+  exact C.branch_terminalCandidateData ha hselected hx
 
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
