@@ -416,9 +416,14 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   rlctAt=⊤, equality ⊤=⊤). So hGfin is wrong both ways; hHne is the sound hyp AND what fm-2's step_* already carry
   (the H=0 corner + cmpF a.e.-positivity). fm-2 ACCEPTED hHne. **EXACT LOCKED FORM** (relayed to fm; restate
   batched with S1.3, keep sorry): `(hGmeas : Measurable G) (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0)`
-  (germ form, G≠0 a.e. ⟺ G²≠0 a.e.). PENDING: fm-2's lift may also need `[SigmaFinite (volume : Measure Y)]`/
-  locally-finite instances (R1's Y=Fin d→ℝ has them) — fm-2 sends the COMPLETE sig when lift _aux closes → fm adds
-  them for a zero-drift wire. R1's monomial ∏|y_j|^{2k_j} discharges hGne (≠0 off null coordinate hyperplanes).
+  (germ form, G≠0 a.e. ⟺ G²≠0 a.e.). **FINAL COMPLETE SIG (fm-2 pinned, relayed to fm):** instances
+  `[PseudoMetricSpace Y][MeasureSpace Y][ProperSpace Y][IsFiniteMeasureOnCompacts (volume)][OpensMeasurableSpace Y]`
+  (the down-set needs them; NOT SigmaFinite as first guessed) — STRENGTHENING IS REQUIRED (the proof needs them ⟹
+  a weaker Skeleton sig breaks the `exact _aux` wire; the "keep [TopologicalSpace] general" alt does NOT work).
+  RHS `(n:ENNReal)/2 + rlctAtOn (fun y => G y^2) y0`. fm restates (batch w/ resolution_charts re-scope + (1,1,1)
+  gate). USE-SITE: core's Y = Fin d→ℝ provides all 4 instances (bridge if Params-typed). R1's monomial ∏|y_j|^{2k_j}
+  discharges hGne (≠0 off null coordinate hyperplanes). fm-2's proof _aux lands at iteration-close (one dependent-Fin
+  snag: finPeel.continuous_invFun, no math depth) → fm wires `exact`.
 - **R1 USE-SITE CONFIRMED (pp + Codex identical): CLEAN to relocate (confirms A) + 2 obligations folded into R1:**
   (1) **unit-absorption** — R1 chart core = unit·∏|y_j|^{2k_j}, so R1.2's S2 invocation MUST first absorb the
   nonvanishing unit via `rlct_unit_invariant` (S1.3), THEN S2 on the pure monomial (THE main hidden gap; Jacobian
