@@ -586,4 +586,42 @@ theorem phiUnit_cov (V : Set (Fin 8 → ℝ)) (hV : MeasurableSet V) (g : (Fin 8
     ENNReal.ofReal_mul (by positivity)]
   ring
 
+/-! ## The leaf unit and the per-leaf integrand identity (the fidelity bridge)
+
+`myF222 ∘ phiUnit = u0² · u2² · Uval` factors as the binding monomial times the **unit** `Uval ≥ 1 > 0`
+(`Uval_ge_one`). So the leaf integrand `|det Dφ| · |myF222 ∘ φ|^{−c} = monomialIntegrand 8 unitK8 unitH8
+c · |Uval|^{−c}` — a monomial against a unit bounded away from `0`: the load-bearing per-leaf fidelity
+bridge (the leaf's `monomialThreshold` IS its actual RLCT; the unit doesn't move it; rv-2 audits). -/
+
+/-- The step-2 leaf unit `Uval = 1 + F0'² + (q + δ̂G)² + (qF0' + δ̂H)²` (in the `phiUnit`-chart tail
+coordinates); the residual factor of `myF222 ∘ phiUnit` after the binding monomial `u0²·u2²`. -/
+noncomputable def Uval (u : Fin 8 → ℝ) : ℝ :=
+  1 + ((Fin.tail u) 2) ^ 2 + ((Fin.tail u) 4 + (Fin.tail u) 3 * (Fin.tail u) 5) ^ 2
+    + ((Fin.tail u) 4 * (Fin.tail u) 2 + (Fin.tail u) 3 * (Fin.tail u) 6) ^ 2
+
+/-- `myF222 ∘ phiUnit = u0² · u2² · Uval` (`u2 = (tail u) 1`): the binding monomial times the unit. -/
+theorem myF222_phiUnit_eq_mul_Uval (u : Fin 8 → ℝ) :
+    myF222 (phiUnit u) = (u 0) ^ 2 * ((Fin.tail u) 1) ^ 2 * Uval u := by
+  rw [myF222_phiUnit_monomial]; unfold Uval; ring
+
+/-- The leaf unit is `≥ 1` (a sum of `1` and squares) — the `0 < a` input (`a = 1`) to
+`integrableOn_monomial_mul_unit_iff`. -/
+theorem Uval_ge_one (u : Fin 8 → ℝ) : (1 : ℝ) ≤ Uval u := by
+  unfold Uval
+  nlinarith [sq_nonneg ((Fin.tail u) 2),
+    sq_nonneg ((Fin.tail u) 4 + (Fin.tail u) 3 * (Fin.tail u) 5),
+    sq_nonneg ((Fin.tail u) 4 * (Fin.tail u) 2 + (Fin.tail u) 3 * (Fin.tail u) 6)]
+
+/-- **The monomial part of the leaf integrand.** `monomialIntegrand 8 unitK8 unitH8 c u =
+(|u0|³·|u2|²) · (|u0|²·|u2|²)^{−c}` — the `(det, loss-base)` monomial on the two exceptional axes
+`u0, u2` (the six spectator axes contribute `|·|^0 = 1`). -/
+theorem monomialIntegrand_unit_eq (c : ℝ) (u : Fin 8 → ℝ) :
+    monomialIntegrand 8 unitK8 unitH8 c u
+      = (|u 0| ^ 3 * |u 2| ^ 2) * (|u 0| ^ 2 * |u 2| ^ 2) ^ (-c) := by
+  unfold monomialIntegrand unitK8 unitH8
+  rw [Fin.prod_univ_eight, Fin.prod_univ_eight]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val,
+    Fin.isValue, pow_zero, mul_one, one_mul, pow_one]
+  norm_num
+
 end DLNFibre.DLN.RLCT
