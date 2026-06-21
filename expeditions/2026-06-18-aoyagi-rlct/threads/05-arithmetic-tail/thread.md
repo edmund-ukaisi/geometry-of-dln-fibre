@@ -2988,3 +2988,41 @@ chain bounds to membership in the same-coordinate interval value set.
 This does not prove the prefix-delta bounds from binary increments or source
 vectors.  It is only the algebraic landing point for the next binary-prefix
 count step.
+
+## 2026-06-21 Lean Lemma 5 binary prefix-delta bounds
+
+Reproduction:
+`reproduction-lemma5-binary-prefix-delta-bounds-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-binary-prefix-delta-bounds.md`.
+Review artifact:
+`review-lemma5-binary-prefix-delta-bounds-a5.md`.
+
+Lean now proves the elementary finite binary-prefix bounds and feeds them into
+the existing `Htilde` interval API:
+
+```text
+aoyagiIntegerPrefix_binaryDelta_bounds
+aoyagiLemma4IncrementPrefix_bounds_of_terminalH_binaryIncrementPrefixDelta
+aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+aoyagiHtilde_interval_mem_of_terminalH_binaryIncrementPrefixDelta
+```
+
+For a prefix sequence with binary successive deltas, `D_0=0`, and
+`D_ell=a`, Lean proves
+
+```text
+min(a, j-(ell-a)) <= D_j <= min(j,a)
+```
+
+with natural-number truncated subtraction.  The Aoyagi wrapper uses
+`H_0=m_0`, terminal `H_ell=0`, and the selected-width sum to identify
+`D_0=0` and `D_ell=a`; a supplied binary-delta hypothesis then yields the
+displayed same-coordinate bounds `Htilde <= H <= Htilde'` and interval
+membership.
+
+This remains conditional finite arithmetic.  It does not prove that source
+exponent vectors have binary prefix deltas, does not prove the source
+`T -> (H_j),(S_j)` coordinate correspondence, and does not prove the Lemma 5
+upper-bound classifier, Case 1(2) uniqueness, back-to-label coverage, pole
+order, normal crossings, or RLCT extraction.

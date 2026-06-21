@@ -3025,6 +3025,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-prefix-delta-chain-bounds-a5.md`.
 
+The supplied prefix-delta bounds are now produced from terminal binary prefix
+deltas.  `aoyagiIntegerPrefix_binaryDelta_bounds` proves the elementary
+finite statement: if a sequence has binary successive deltas, starts at `0`,
+ends at `a`, and `a<=ell`, then
+`min(a,j-(ell-a)) <= D_j <= min(j,a)` for every `j<=ell`.
+The Aoyagi wrappers
+`aoyagiLemma4IncrementPrefix_bounds_of_terminalH_binaryIncrementPrefixDelta`,
+`aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta`, and
+`aoyagiHtilde_interval_mem_of_terminalH_binaryIncrementPrefixDelta` use
+`H_0=m_0`, terminal `H_ell=0`, the selected-width sum, and a supplied
+binary-delta hypothesis to derive displayed `Htilde` chain bounds and
+same-coordinate interval membership.  This still does not prove binary deltas
+from source exponent vectors or the Lemma 5 upper-bound classifier.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-binary-prefix-delta-bounds-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-binary-prefix-delta-bounds.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-binary-prefix-delta-bounds-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

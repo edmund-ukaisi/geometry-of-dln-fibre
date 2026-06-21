@@ -3676,6 +3676,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-prefix-delta-chain-bounds-a5.md`.
 
+Latest A5 binary-prefix-delta-bound update: `HtildeChainArithmetic.lean` now
+proves the elementary binary-prefix bounds and their Aoyagi wrapper.  Names:
+`aoyagiIntegerPrefix_binaryDelta_bounds`,
+`aoyagiLemma4IncrementPrefix_bounds_of_terminalH_binaryIncrementPrefixDelta`,
+`aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta`, and
+`aoyagiHtilde_interval_mem_of_terminalH_binaryIncrementPrefixDelta`.  Under
+`a<=ell`, binary successive deltas, `D_0=0`, and `D_ell=a`, Lean proves
+`min(a,j-(ell-a)) <= D_j <= min(j,a)`, then uses the terminal source
+hypotheses for the Aoyagi increment prefix to derive displayed `Htilde` chain
+bounds and interval membership.  This does not prove binary deltas from source
+vectors or the Lemma 5 upper-bound classifier.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-binary-prefix-delta-bounds-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-binary-prefix-delta-bounds.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-binary-prefix-delta-bounds-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

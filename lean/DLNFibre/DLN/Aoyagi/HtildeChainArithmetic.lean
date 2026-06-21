@@ -1712,6 +1712,225 @@ theorem aoyagiLemma4IncrementPrefixDelta_sum_eq_a_of_terminalH
   rw [aoyagiLemma4IncrementPrefix_last_eq_a_of_terminalH ell a M m H hHlast hselected]
   omega
 
+/-- Elementary bounds for a binary integer prefix sequence.
+
+If `D_0=0`, `D_ell=a`, and every successive difference is either `0` or `1`,
+then every prefix lies between the low-first and high-first binary count
+prefixes.  The lower bound uses Nat-truncated subtraction, matching
+`aoyagiHtildeUpperHighCount`. -/
+theorem aoyagiIntegerPrefix_binaryDelta_bounds
+    (ell a : ℕ) (D delta : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hD0 : D 0 = 0) (hDlast : D ell = a)
+    (hstep : ∀ i, i < ell → D (i + 1) - D i = delta i)
+    (hbin : ∀ i, i < ell → delta i = 0 ∨ delta i = 1) :
+    ∀ j, j ≤ ell →
+      (aoyagiHtildeUpperHighCount ell a j : ℤ) ≤ D j ∧
+        D j ≤ (aoyagiHtildeLowerHighCount a j : ℤ) := by
+  have hprefix : ∀ j, j ≤ ell →
+      D j = ∑ i ∈ Finset.range j, delta i := by
+    intro j
+    induction j with
+    | zero =>
+        intro _hj
+        simp [hD0]
+    | succ j ih =>
+        intro hsucc
+        have hjle : j ≤ ell := by omega
+        have hjlt : j < ell := by omega
+        have hDsucc : D (j + 1) = D j + delta j := by
+          have hs := hstep j hjlt
+          omega
+        rw [hDsucc, ih hjle, Finset.sum_range_succ]
+  have htotal : (∑ i ∈ Finset.range ell, delta i) = (a : ℤ) := by
+    have h := hprefix ell le_rfl
+    rw [← h, hDlast]
+  have hdelta_nonneg : ∀ i, i < ell → (0 : ℤ) ≤ delta i := by
+    intro i hi
+    rcases hbin i hi with hzero | hone <;> omega
+  have hdelta_le_one : ∀ i, i < ell → delta i ≤ (1 : ℤ) := by
+    intro i hi
+    rcases hbin i hi with hzero | hone <;> omega
+  intro j hj
+  have hDj : D j = ∑ i ∈ Finset.range j, delta i :=
+    hprefix j hj
+  have hprefix_nonneg :
+      (0 : ℤ) ≤ ∑ i ∈ Finset.range j, delta i := by
+    exact Finset.sum_nonneg (by
+      intro i hi
+      have hi_lt_j : i < j := Finset.mem_range.mp hi
+      exact hdelta_nonneg i (by omega))
+  have hD_nonneg : (0 : ℤ) ≤ D j := by
+    rw [hDj]
+    exact hprefix_nonneg
+  have hprefix_le_j :
+      (∑ i ∈ Finset.range j, delta i) ≤ (j : ℤ) := by
+    have hsum_le :
+        (∑ i ∈ Finset.range j, delta i) ≤
+          ∑ _i ∈ Finset.range j, (1 : ℤ) := by
+      exact Finset.sum_le_sum (by
+        intro i hi
+        have hi_lt_j : i < j := Finset.mem_range.mp hi
+        exact hdelta_le_one i (by omega))
+    simpa using hsum_le
+  have hD_le_j : D j ≤ (j : ℤ) := by
+    rw [hDj]
+    exact hprefix_le_j
+  let tail := ∑ i ∈ Finset.Ico j ell, delta i
+  have hsplit :
+      (∑ i ∈ Finset.range j, delta i) + tail =
+        ∑ i ∈ Finset.range ell, delta i := by
+    dsimp [tail]
+    exact Finset.sum_range_add_sum_Ico delta hj
+  have htail_nonneg : (0 : ℤ) ≤ tail := by
+    dsimp [tail]
+    exact Finset.sum_nonneg (by
+      intro i hi
+      rw [Finset.mem_Ico] at hi
+      exact hdelta_nonneg i hi.2)
+  have hD_le_a : D j ≤ (a : ℤ) := by
+    rw [hDj]
+    linarith
+  have htail_le :
+      tail ≤ ((ell - j : ℕ) : ℤ) := by
+    have htail_le_sum :
+        tail ≤ ∑ _i ∈ Finset.Ico j ell, (1 : ℤ) := by
+      dsimp [tail]
+      exact Finset.sum_le_sum (by
+        intro i hi
+        rw [Finset.mem_Ico] at hi
+        exact hdelta_le_one i hi.2)
+    have htail_const :
+        (∑ _i ∈ Finset.Ico j ell, (1 : ℤ)) =
+          ((ell - j : ℕ) : ℤ) := by
+      have hcard : (Finset.Ico j ell).card = ell - j := by
+        rw [Nat.card_Ico]
+      simp [hcard]
+    rw [htail_const] at htail_le_sum
+    exact htail_le_sum
+  have htail_eq : (a : ℤ) - D j = tail := by
+    rw [hDj]
+    linarith
+  have hlower_int : (a : ℤ) - ((ell - j : ℕ) : ℤ) ≤ D j := by
+    linarith
+  constructor
+  · unfold aoyagiHtildeUpperHighCount
+    by_cases hj_low : j < ell - a
+    · have hsub : j - (ell - a) = 0 := by omega
+      simp [hsub, hD_nonneg]
+    · have hsub_le_a : j - (ell - a) ≤ a := by omega
+      have hmin : min a (j - (ell - a)) = j - (ell - a) :=
+        Nat.min_eq_right hsub_le_a
+      have hcast :
+          ((j - (ell - a) : ℕ) : ℤ) =
+            (a : ℤ) - ((ell - j : ℕ) : ℤ) := by
+        rw [Nat.cast_sub (by omega : ell - a ≤ j),
+          Nat.cast_sub ha, Nat.cast_sub hj]
+        ring
+      rw [hmin, hcast]
+      exact hlower_int
+  · unfold aoyagiHtildeLowerHighCount
+    by_cases hja : j ≤ a
+    · have hmin : min j a = j := Nat.min_eq_left hja
+      rw [hmin]
+      exact hD_le_j
+    · have hmin : min j a = a := Nat.min_eq_right (by omega)
+      rw [hmin]
+      exact hD_le_a
+
+/-- Terminal binary prefix deltas give the displayed Htilde high-count bounds
+for the Aoyagi increment prefix.
+
+This is conditional finite arithmetic only: the binary-delta hypothesis is not
+derived from source exponent vectors here. -/
+theorem aoyagiLemma4IncrementPrefix_bounds_of_terminalH_binaryIncrementPrefixDelta
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hH0 : H 0 = m 0) (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H j = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1) :
+    (∀ j : Fin (ell + 1),
+        (aoyagiHtildeUpperHighCount ell a j.val : ℤ) ≤
+          aoyagiLemma4IncrementPrefix ell M m H j) ∧
+      (∀ j : Fin (ell + 1),
+        aoyagiLemma4IncrementPrefix ell M m H j ≤
+          (aoyagiHtildeLowerHighCount a j.val : ℤ)) := by
+  let D : ℕ → ℤ := fun i =>
+    if h : i < ell + 1 then
+      aoyagiLemma4IncrementPrefix ell M m H ⟨i, h⟩
+    else 0
+  let delta : ℕ → ℤ := fun i =>
+    if h : i < ell then
+      aoyagiLemma4IncrementPrefixDelta ell M m H ⟨i, h⟩
+    else 0
+  have hD0 : D 0 = 0 := by
+    simpa [D] using aoyagiLemma4IncrementPrefix_zero_of_H0 ell M m H hH0
+  have hDlast : D ell = (a : ℤ) := by
+    simpa [D] using
+      aoyagiLemma4IncrementPrefix_last_eq_a_of_terminalH ell a M m H hHlast hselected
+  have hstep : ∀ i, i < ell → D (i + 1) - D i = delta i := by
+    intro i hi
+    have hi_le : i ≤ ell := by omega
+    simp [D, delta, hi, hi_le, aoyagiLemma4IncrementPrefixDelta]
+  have hbin_nat : ∀ i, i < ell → delta i = 0 ∨ delta i = 1 := by
+    intro i hi
+    dsimp [delta]
+    rw [dif_pos hi]
+    exact hbin ⟨i, hi⟩
+  have hbounds :=
+    aoyagiIntegerPrefix_binaryDelta_bounds ell a D delta ha hD0 hDlast hstep hbin_nat
+  constructor
+  · intro j
+    have hj : j.val ≤ ell := by omega
+    have hDval : D j.val = aoyagiLemma4IncrementPrefix ell M m H j := by
+      dsimp [D]
+      rw [if_pos j.isLt]
+    simpa [hDval] using (hbounds j.val hj).1
+  · intro j
+    have hj : j.val ≤ ell := by omega
+    have hDval : D j.val = aoyagiLemma4IncrementPrefix ell M m H j := by
+      dsimp [D]
+      rw [if_pos j.isLt]
+    simpa [hDval] using (hbounds j.val hj).2
+
+/-- Terminal binary prefix deltas imply the displayed same-coordinate
+`Htilde` chain bounds. -/
+theorem aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hH0 : H 0 = m 0) (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H j = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1) :
+    aoyagiHtildeLowerChain ell a M m ≤ H ∧
+      H ≤ aoyagiHtildeUpperChain ell a M m := by
+  rcases
+    aoyagiLemma4IncrementPrefix_bounds_of_terminalH_binaryIncrementPrefixDelta
+      ell a M m H ha hH0 hHlast hselected hbin with
+    ⟨hupper, hlower⟩
+  exact aoyagiHtildeChainBounds_of_incrementPrefix_bounds
+    ell a M m H hupper hlower
+
+/-- Terminal binary prefix deltas put every `H_j` in the corresponding
+displayed same-coordinate interval value set. -/
+theorem aoyagiHtilde_interval_mem_of_terminalH_binaryIncrementPrefixDelta
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hH0 : H 0 = m 0) (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ j : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H j = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1) :
+    ∀ j, H j ∈ aoyagiHtildeIntervalValueSet ell a M m j := by
+  rcases aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+    ell a M m H ha hH0 hHlast hselected hbin with
+    ⟨hlower, hupper⟩
+  exact aoyagiHtildeChainBounds_mem_intervalValueSet
+    ell a M m H ha hlower hupper
+
 /-- Binary prefix deltas are counted by the endpoint excess `a` under the
 terminal source hypotheses. -/
 theorem aoyagiLemma4_binaryIncrementPrefix_count_eq

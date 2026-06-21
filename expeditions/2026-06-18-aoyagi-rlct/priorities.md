@@ -21,14 +21,14 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Latest pushed A5 state before the current classifier-interface slice is
-`7923a7b`, which exposes terminal-minimum label exactness through a supplied
-`Set.BijOn` API.  The meaningful source frontier is still the
-upper-bound/no-extra side of Aoyagi Lemma 5, not another lower-bound printed
-equation pass.  PDF p. 26 asserts the upper count using interval counting plus
-the Case 1(2) sentence that `J` increases by one, but that assertion still has
-to be reproduced as a classifier from terminal lambda-vectors to counted
-interval data before it can source-discharge Lean's
+Latest pushed A5 state before the current binary-prefix slice is `efccfb9`,
+which bridges supplied prefix-delta bounds to displayed `Htilde` chain bounds.
+The meaningful source frontier is still the upper-bound/no-extra side of
+Aoyagi Lemma 5, not another lower-bound printed equation pass.  PDF p. 26
+asserts the upper count using interval counting plus the Case 1(2) sentence
+that `J` increases by one, but that assertion still has to be reproduced as a
+classifier from terminal lambda-vectors to counted interval data before it can
+source-discharge Lean's
 `terminalMinimumLabels subset branchLabelImage`.
 
 Recorded audit:
@@ -43,6 +43,8 @@ Current source-facing classifier-boundary slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-a5.md`.
 Current prefix-delta chain-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-prefix-delta-chain-bounds-a5.md`.
+Current binary-prefix-delta bound slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-binary-prefix-delta-bounds-a5.md`.
 
 Immediate order:
 
