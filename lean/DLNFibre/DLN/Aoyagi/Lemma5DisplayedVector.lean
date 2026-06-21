@@ -844,6 +844,35 @@ theorem aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
     (aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
       ell a p M m C layerWidth T hp hselected hT hterminal)
 
+/-- In the `p=1` terminal-collision equation `(4)` case, Definition 3's
+selected-width hypotheses rule out a supplied terminal upper-chain extension.
+
+This is a supplied-data incompatibility only.  It does not construct equation
+`(4)`'s certificate, construct a terminal extension, prove terminal
+`tilde t=0`, or prove Aoyagi Lemma 5. -/
+theorem aoyagiLemma5Eq4_no_terminalUpperNatExtension_of_p1_sourceSelectedInequality
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp : 1 + 1 = a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a 1 M m C layerWidth T) :
+    T (C.point ell - 1) ≠ aoyagiHtildeUpperNat ell a M m ell := by
+  have hell : 1 ≤ ell := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m ell ≤ M - 1 := by
+    rw [aoyagiSelectedWidthNat_of_lt (by omega)]
+    exact aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell hT.a_le_ell hselected hsource ⟨ell, by omega⟩
+  have hne :
+      aoyagiSelectedWidthNat ell m ell ≠ M - (1 : ℤ) + 1 := by
+    omega
+  exact aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
+    ell a 1 M m C layerWidth T hp hselected hT hne
+
 /-- For the closed `ell=3`, `a=2`, `p=1`, all-widths-two tuple, a supplied
 equation `(4)` certificate gives terminal endpoint value `1`, while the
 terminal upper-chain endpoint is `0`.

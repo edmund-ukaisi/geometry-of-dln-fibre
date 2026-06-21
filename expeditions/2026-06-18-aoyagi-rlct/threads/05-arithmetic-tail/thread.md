@@ -1080,6 +1080,31 @@ This is finite compatibility arithmetic only.  It does not construct equation
 `(4)`'s displayed vector, prove the terminal convention, or prove Lemma 5's
 chart-family/order-count theorem.
 
+## 2026-06-21 Lean Lemma 5 equation `(4)` p=1 terminal extension obstruction
+
+Reproduction:
+`reproduction-lemma5-eq4-p1-terminal-extension-obstruction-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-p1-terminal-extension-obstruction.md`.
+Review artifact:
+`review-lemma5-eq4-p1-terminal-extension-obstruction-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_no_terminalUpperNatExtension_of_p1_sourceSelectedInequality
+```
+
+In the `p=1` terminal-collision equation `(4)` case, a supplied terminal
+upper-chain extension would force `W_(ell+1)=M`.  Definition 3's selected-width
+hypotheses force `W_(ell+1)<=M-1`.  Therefore any supplied equation `(4)`
+certificate satisfying those source-selected hypotheses is incompatible with
+the supplied terminal upper-chain extension.
+
+This is finite supplied-data arithmetic only.  It does not construct a
+supplied equation `(4)` branch certificate, construct a terminal extension,
+prove terminal `tilde t=0`, or prove Lemma 5.
+
 ## 2026-06-20 Lean Lemma 5 equation `(4)` terminal compatibility counterexample
 
 Reproduction:

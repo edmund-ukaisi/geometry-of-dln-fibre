@@ -2584,6 +2584,23 @@ Review artifact:
 Counterexample review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-compatibility-counterexample-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` `p=1` terminal-extension
+obstruction has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean name
+is
+`aoyagiLemma5Eq4_no_terminalUpperNatExtension_of_p1_sourceSelectedInequality`.
+It says that in the `p=1` terminal-collision case, Definition 3's
+selected-width hypotheses rule out the supplied terminal upper-chain extension:
+the extension would force `W_(ell+1)=M`, while Definition 3 gives
+`W_(ell+1)<=M-1`.  This is finite supplied-data arithmetic only; it does not
+construct the supplied certificate, construct a terminal extension, prove
+terminal `tilde t=0`, or prove Lemma 5.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-p1-terminal-extension-obstruction-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-p1-terminal-extension-obstruction.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-p1-terminal-extension-obstruction-a5.md`.
+
 Latest A5 update: the Lemma 5 equation `(4)` no-terminal-upper-extension
 example has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names

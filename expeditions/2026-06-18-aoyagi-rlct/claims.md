@@ -2127,6 +2127,12 @@ No such claim is formalisation-ready until both fields are filled.
   selected-sum and strict selected-width inequalities while failing that
   condition.
   Also proved
+  `aoyagiLemma5Eq4_no_terminalUpperNatExtension_of_p1_sourceSelectedInequality`,
+  which strengthens the terminal-extension obstruction in the `p=1`
+  terminal-collision case: Definition 3's selected-width hypotheses force
+  `W_(ell+1)<=M-1`, while a supplied terminal upper-chain extension would
+  force `W_(ell+1)=M`.
+  Also proved
   `aoyagiLemma5Eq4_terminalEndpoint_values_ell3_a2_p1_allWidthsTwo` and
   `aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo`,
   which combine that concrete tuple with the supplied terminal-extension

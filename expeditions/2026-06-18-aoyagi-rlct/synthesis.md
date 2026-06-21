@@ -2053,6 +2053,10 @@ future record supplies `T(S_(ell+1)-1)=Htilde'_ell`, then
 with the terminal-collision branch: when `p+1=a`, a supplied equation `(4)`
 certificate plus such a terminal extension forces
 `W_(ell+1)=M-p+1`, and failure of that compatibility rules out the extension.
+A uniform `p=1` source-selected corollary now rules out that supplied terminal
+upper-chain extension without choosing concrete widths: when `p=1`, the
+extension would force `W_(ell+1)=M`, but Definition 3's strict selected-width
+inequality gives `W_(ell+1)<=M-1`.
 A concrete supplied-data wrapper now combines this obstruction with the closed
 Definition 3-shaped tuple `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths
 `2`: any supplied equation `(4)` certificate for that tuple is incompatible
