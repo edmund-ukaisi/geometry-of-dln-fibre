@@ -118,6 +118,37 @@ axiom monomial_rlct (d : ℕ) (k h : Fin d → ℕ) :
     monomialThreshold d k h = (⨅ j : Fin d, axisRatio (h j) (k j))
     ∧ ((∃ j : Fin d, k j ≠ 0) → monomialOrderAnalytic d k h = monomialOrder d k h)
 
+/-! ### R1.2 threshold-level divisor arithmetic (the lower/upper bracket; shape-independent).
+The per-axis seeds `axisRatio_regularSeq` / `axisRatio_ge_of_mult` lift through S2's threshold value
+`monomialThreshold = ⨅ axisRatio` to the chart threshold. These bracket a chart's threshold and are
+the arithmetic the R1 value-match assembly consumes: the lower bound (every divisor obeys the
+multiplicity bound ⟹ threshold `≥ m/2`) and the upper bound (one binding divisor realises `c/2`). -/
+
+/-- **R1.2 lower bound (multiplicity control at the threshold).** If every axis obeys the
+multiplicity bound `m·kⱼ ≤ hⱼ+1` (regular sequence: `kⱼ=1` ⟹ `m ≤ hⱼ+1`), the chart threshold is
+`≥ m/2`. Lifts `axisRatio_ge_of_mult` over the axes via S2 (`monomial_rlct.1` + `le_iInf`). With
+`m = min_t Mval` this is the per-chart half of `min over charts ≥ ½·min_t Mval`. -/
+theorem monomialThreshold_ge_of_mult (d : ℕ) (k h : Fin d → ℕ) (m : ℕ)
+    (hk : ∀ j, 1 ≤ k j) (hmult : ∀ j, m * k j ≤ h j + 1) :
+    (m : ℝ≥0∞) / 2 ≤ monomialThreshold d k h := by
+  rw [(monomial_rlct d k h).1]
+  exact le_iInf (fun j => axisRatio_ge_of_mult (h j) (k j) m (hk j) (hmult j))
+
+/-- **R1.2 upper bound (one axis bounds the threshold).** A single axis's ratio bounds the chart
+threshold above (`monomial_rlct.1` + `iInf_le`): the binding-divisor seed. -/
+theorem monomialThreshold_le_axis (d : ℕ) (k h : Fin d → ℕ) (j : Fin d) :
+    monomialThreshold d k h ≤ axisRatio (h j) (k j) := by
+  rw [(monomial_rlct d k h).1]; exact iInf_le _ j
+
+/-- **R1.2 binding divisor (upper bound `c/2`).** A regular-sequence binding axis `(kⱼ,hⱼ)=(1,c−1)`
+makes the chart threshold `≤ c/2` (the binding divisor over a codim-`c` stratum realises `½·c`).
+With `c = Mval(t)` at the minimizing stratum this is the upper half of the value-match. -/
+theorem monomialThreshold_le_regularSeq (d : ℕ) (k h : Fin d → ℕ) (c : ℕ) (hc : 1 ≤ c) (j : Fin d)
+    (hkj : k j = 1) (hhj : h j = c - 1) :
+    monomialThreshold d k h ≤ (c : ℝ≥0∞) / 2 := by
+  refine (monomialThreshold_le_axis d k h j).trans ?_
+  rw [hkj, hhj, axisRatio_regularSeq c hc]
+
 /-! ## S1 — RLCT invariance substrate (thread 05; design-spec §8)
 
 The shared analytic linchpin, in the `weightedThreshold` abstraction (`Foundations/Rlct.lean`):
