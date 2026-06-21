@@ -356,8 +356,11 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   (the y≤0 slice is pure x², ∫(x²)^{-c} diverges for c≥1/2, CAPPING the joint) ≠ RHS 1/2+1/2=1 ⟹ equality FALSE
   under hGfin. hHne excludes it (G²=0 on positive measure ⟹ ¬hHne). hGfin ALSO over-excludes true cases (G²=1:
   rlctAt=⊤, equality ⊤=⊤). So hGfin is wrong both ways; hHne is the sound hyp AND what fm-2's step_* already carry
-  (the H=0 corner + cmpF a.e.-positivity). fm-2 builds the lift+iterate in S1Fubini Foundations under hHne NOW
-  (unblocked), reports the exact hHne Lean form → fm restates the Skeleton sig (defer the edit to a clean point).
+  (the H=0 corner + cmpF a.e.-positivity). fm-2 ACCEPTED hHne. **EXACT LOCKED FORM** (relayed to fm; restate
+  batched with S1.3, keep sorry): `(hGmeas : Measurable G) (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0)`
+  (germ form, G≠0 a.e. ⟺ G²≠0 a.e.). PENDING: fm-2's lift may also need `[SigmaFinite (volume : Measure Y)]`/
+  locally-finite instances (R1's Y=Fin d→ℝ has them) — fm-2 sends the COMPLETE sig when lift _aux closes → fm adds
+  them for a zero-drift wire. R1's monomial ∏|y_j|^{2k_j} discharges hGne (≠0 off null coordinate hyperplanes).
 - **R1 USE-SITE CONFIRMED (pp + Codex identical): CLEAN to relocate (confirms A) + 2 obligations folded into R1:**
   (1) **unit-absorption** — R1 chart core = unit·∏|y_j|^{2k_j}, so R1.2's S2 invocation MUST first absorb the
   nonvanishing unit via `rlct_unit_invariant` (S1.3), THEN S2 on the pure monomial (THE main hidden gap; Jacobian
