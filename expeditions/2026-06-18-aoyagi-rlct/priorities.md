@@ -39,6 +39,8 @@ Current supplied-interface slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-interface-a5.md`.
 Current counted-codomain slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-set-a5.md`.
+Current source-facing classifier-boundary slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-a5.md`.
 
 Immediate order:
 

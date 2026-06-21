@@ -2995,6 +2995,20 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-set-a5.md`.
 
+The label-free counted-datum codomain now has a source-facing supplied
+classifier boundary.  `AoyagiLemma5CountDatumClassifier` takes an abstract
+finite candidate set, a classifier into the counted datum set, a maps-to proof,
+and injectivity on candidates; `candidates_card_le` proves the upper count
+`candidates.card <= a*(ell-a)+1`.  This isolates exactly the missing part of
+Aoyagi Lemma 5's upper-bound paragraph: source candidates and an injective
+classification into interval data remain supplied, not PDF-derived.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

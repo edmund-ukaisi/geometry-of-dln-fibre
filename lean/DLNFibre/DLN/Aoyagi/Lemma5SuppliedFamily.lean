@@ -152,6 +152,60 @@ theorem aoyagiLemma5CountDatumSet_card
     ell a M m hell ha
   omega
 
+/-- Supplied classifier from an abstract finite source-candidate set into the
+counted interval datum set.
+
+This is the source-facing upper-bound boundary: it packages interval
+membership and nonduplication as supplied data, without constructing them from
+Aoyagi's printed Lemma 5 paragraph. -/
+structure AoyagiLemma5CountDatumClassifier (α : Type*) [DecidableEq α]
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) (candidates : Finset α) where
+  classify : α → AoyagiLemma5CountDatum
+  mapsTo :
+    ∀ {x : α}, x ∈ candidates →
+      classify x ∈ aoyagiLemma5CountDatumSet ell a M m baseValue
+  injOn : Set.InjOn classify ↑candidates
+
+namespace AoyagiLemma5CountDatumClassifier
+
+/-- The image of a supplied counted-datum classifier is contained in the
+counted datum set. -/
+theorem image_subset_countDatumSet {α : Type*} [DecidableEq α]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    {baseValue : ℕ → ℤ} {candidates : Finset α}
+    (C : AoyagiLemma5CountDatumClassifier α ell a M m baseValue candidates) :
+    candidates.image C.classify ⊆
+      aoyagiLemma5CountDatumSet ell a M m baseValue := by
+  intro datum hdatum
+  rcases Finset.mem_image.mp hdatum with ⟨x, hx, rfl⟩
+  exact C.mapsTo hx
+
+/-- A supplied injective classifier into the counted datum set gives the
+source-candidate upper count.
+
+This theorem only uses supplied classifier data and the finite counted-datum
+codomain count.  It does not construct the classifier from Aoyagi's source. -/
+theorem candidates_card_le {α : Type*} [DecidableEq α]
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) (candidates : Finset α)
+    (C : AoyagiLemma5CountDatumClassifier α ell a M m baseValue candidates)
+    (hell : 1 ≤ ell) (ha : a ≤ ell)
+    (hbase :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j) :
+    candidates.card ≤ a * (ell - a) + 1 := by
+  calc
+    candidates.card = (candidates.image C.classify).card := by
+      exact (Finset.card_image_of_injOn (s := candidates) (f := C.classify)
+        C.injOn).symm
+    _ ≤ (aoyagiLemma5CountDatumSet ell a M m baseValue).card :=
+      Finset.card_le_card C.image_subset_countDatumSet
+    _ = a * (ell - a) + 1 :=
+      aoyagiLemma5CountDatumSet_card ell a M m baseValue hell ha hbase
+
+end AoyagiLemma5CountDatumClassifier
+
 /-- Supplied nonbase branch values for Aoyagi Lemma 5.
 
 For each interior coordinate `j`, the branch values are required to biject

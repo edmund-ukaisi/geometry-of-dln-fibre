@@ -3645,6 +3645,22 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-set-a5.md`.
 
+Latest A5 counted-datum-classifier update: `Lemma5SuppliedFamily.lean` now
+also packages the source-facing upper-bound classifier as supplied finite
+data.  Names:
+`AoyagiLemma5CountDatumClassifier`,
+`AoyagiLemma5CountDatumClassifier.image_subset_countDatumSet`, and
+`AoyagiLemma5CountDatumClassifier.candidates_card_le`.  A finite candidate set
+whose classifier maps into the counted datum set injectively has cardinality
+at most `a*(ell-a)+1`.  The source candidate set, source classifier, Case 1(2)
+nonduplication, and back-to-label map remain unproved boundaries.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

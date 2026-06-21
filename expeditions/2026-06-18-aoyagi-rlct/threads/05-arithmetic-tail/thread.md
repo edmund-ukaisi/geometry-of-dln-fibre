@@ -2933,3 +2933,31 @@ does not prove that source lambda-vectors classify into the set, does not
 construct supplied branches, does not prove Case 1(2) uniqueness or
 back-to-label coverage, and does not touch terminal labels, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 counted datum classifier boundary
+
+Reproduction:
+`reproduction-lemma5-counted-datum-classifier-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-classifier.md`.
+Review artifact:
+`review-lemma5-counted-datum-classifier-a5.md`.
+
+Lean now packages the source-facing upper-bound classifier as supplied finite
+data:
+
+```text
+AoyagiLemma5CountDatumClassifier
+AoyagiLemma5CountDatumClassifier.image_subset_countDatumSet
+AoyagiLemma5CountDatumClassifier.candidates_card_le
+```
+
+For an abstract finite candidate set, the classifier supplies a map into the
+counted datum set, proof that the map lands in the set, and injectivity on the
+candidate set.  Lean then proves the upper bound
+`candidates.card <= a*(ell-a)+1`.
+
+This is the honest source frontier for Aoyagi's Lemma 5 upper-bound paragraph.
+It does not construct the candidate set, classify source vectors, prove the
+Case 1(2) nonduplication sentence, prove back-to-label coverage, or connect to
+terminal labels, pole order, normal crossings, or RLCT extraction.
