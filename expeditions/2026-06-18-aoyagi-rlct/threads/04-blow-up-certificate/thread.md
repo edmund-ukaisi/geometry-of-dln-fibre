@@ -3418,3 +3418,31 @@ coverage or arbitrary-pivot coverage, source-produce `C'^(S+1)`, derive
 source-produced post-data, prove transition invariance, terminal relabeling,
 Jacobian arithmetic, normal crossings/RLCT, or repair the printed Case 2
 vector mismatch.
+
+## 2026-06-21 Lean Case 2 terminal-prefix transported product
+
+Reproduction:
+`reproduction-case2-terminal-prefix-transported-product-a4.md`.
+Statement card:
+`statement-card-a4-case2-terminal-prefix-transported-product.md`.
+Review artifact:
+`review-case2-terminal-prefix-transported-product-a4.md`.
+
+Lean now rewrites the stopped terminal-prefix product candidate directly using
+the explicit transported terminal rows:
+
+```text
+case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_transportedRowsPrefix_mul
+```
+
+It combines the existing terminal-prefix product rewrite with the existing
+identity between the terminal-prefix `C'` candidate and
+`case2DisplayedSourceTerminalTransportedRows` restricted to the prefix rows.
+The final row remains the transported top row of `Q^-1 C`; it is not replaced
+by an original source row unless the actual-width column-exhaustion hypothesis
+is supplied separately.
+
+This is finite terminal-prefix algebra only.  It does not construct charts,
+source-produce `C'^(S+1)`, produce recurrence/exponent post-data, prove chart
+coverage or transition invariance, compute a Jacobian, prove normal crossings,
+pole order, or RLCT extraction.

@@ -417,6 +417,8 @@ Immediate order:
    transported row by original rows without actual-width exhaustion, and do not
    transport Case 2 gap/tail invariants without separately checking their
    shifted thresholds.
+   Current terminal-prefix transported product slice:
+   `threads/04-blow-up-certificate/reproduction-case2-terminal-prefix-transported-product-a4.md`.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

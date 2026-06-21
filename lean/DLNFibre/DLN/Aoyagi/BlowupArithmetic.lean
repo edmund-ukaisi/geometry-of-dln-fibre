@@ -13115,6 +13115,32 @@ theorem case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimeP
     (Equiv.refl τ)]
   simp
 
+/-- The terminal-prefix product candidate with the explicit transported
+terminal rows.
+
+This is the row-exhausted terminal-prefix form: the last row is the transported
+top row of `Q⁻¹ C`, not the original source row unless actual-width column
+exhaustion is separately available. -/
+theorem case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_transportedRowsPrefix_mul
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (n : ℕ → ℕ) {S : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (F : Matrix τ υ R) :
+    case2DisplayedSourceTerminalProductPrefixCandidate Wold n hS hcont hstop
+        b0 residual C F =
+      (case2DisplayedSourceTerminalWeightPrefixCandidate Wold n hcont hstop b0 *
+        (case2DisplayedSourceTerminalTransportedRows n hS hcont residual C).submatrix
+          (case2SourceTerminalRowEquivPrefixOfNotNext n hcont hstop).symm id) *
+        F := by
+  rw [case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_cprimePrefixCandidate_mul]
+  rw [case2DisplayedSourceTerminalCprimePrefixCandidate,
+    case2DisplayedSourceTerminalCprimeCandidate_eq_transportedRows]
+
 namespace SuppliedTerminalCprimeBridge
 
 variable {τ υ R : Type*} [CommRing R] [Fintype τ]

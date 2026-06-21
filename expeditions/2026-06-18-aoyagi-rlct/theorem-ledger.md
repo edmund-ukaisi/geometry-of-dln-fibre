@@ -2456,6 +2456,23 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-a4.md`.
 
+Latest A4 update: the displayed Case 2 terminal-prefix transported-product
+rewrite has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+The proved Lean name is
+`case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_transportedRowsPrefix_mul`.
+It rewrites the stopped terminal-prefix product candidate as terminal-prefix
+weight times the explicit transported terminal rows, followed by the supplied
+suffix.  The pivot row remains the transported top row of `Q^{-1}C`; no
+original-row identification is made without actual-width exhaustion.  This is
+finite terminal-prefix algebra only, not chart production, source-produced
+`C'^(S+1)`, recurrence/exponent post-data, transition invariance, Jacobian
+arithmetic, normal crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-terminal-prefix-transported-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-terminal-prefix-transported-product.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-terminal-prefix-transported-product-a4.md`.
+
 Latest A5 update: the Lemma 5 equation `(3)` local-data and actual-label
 bridge has landed in
 `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and

@@ -3786,6 +3786,19 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-exactness-bijon-equivalence-a5.md`.
 
+The Case 2 terminal-prefix product now has an explicit transported-row form in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  New Lean name:
+`case2DisplayedSourceTerminalProductPrefixCandidate_eq_weight_mul_transportedRowsPrefix_mul`.
+It rewrites the stopped terminal-prefix product candidate as terminal-prefix
+weight times the explicit transported terminal rows, followed by the supplied
+suffix.  The pivot row remains the transported top row of `Q^-1 C`; no
+original-row identification is made without actual-width exhaustion.  Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-terminal-prefix-transported-product-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-terminal-prefix-transported-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-terminal-prefix-transported-product-a4.md`.
+
 The Eq5 nonfirst block admissibility wrapper has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean name:
 `aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard`.
