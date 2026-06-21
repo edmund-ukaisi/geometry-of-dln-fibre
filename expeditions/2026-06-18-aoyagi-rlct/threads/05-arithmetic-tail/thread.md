@@ -4129,3 +4129,37 @@ the existing exactness structure.
 This is finite API bookkeeping only.  It does not construct exactness,
 classifier data, a back-to-label map, source labels, source branches, pole
 order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 alpha-indexed branch source labels
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-indexed-branch-source-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-indexed-branch-source-label.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-indexed-branch-source-label-a5.md`.
+
+Lean now packages the strict Eq5 alpha-domain source-label theorem over a
+supplied finite branch family:
+
+```text
+aoyagiLemma5Eq5_alphaIndexedBranch_actualWidthLabel_of_widthBound
+aoyagiLemma5Eq5_alphaIndexedBranchLabel_mem_actualWidthLabelFinset_of_widthBound
+aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn
+```
+
+The first two theorems are branchwise wrappers: if each supplied branch alpha
+lies in the strict Eq5 alpha domain, its supplied Sigma label has source
+coordinate in range, the selected width is bounded by the actual width at that
+source coordinate, and the label is `Htilde'_p+1-alpha`, then the label is an
+actual-width label and belongs to `actualWidthLabelFinset`.
+
+The injectivity theorem is also supplied-boundary bookkeeping: if `alphaOf` is
+injective on the supplied branch family, then the supplied Sigma-valued
+`branchLabel` is injective on that family.  Do not infer this from alpha-domain
+coverage alone.
+
+This does not construct Eq5 branch records, prove alpha-domain coverage,
+selected-span coverage, displayed-vector construction, terminal exactness,
+classifier/back-to-label coverage, Lemma 5 order count, pole order, normal
+crossings, or RLCT extraction.

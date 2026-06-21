@@ -1142,6 +1142,97 @@ theorem aoyagiLemma5Eq5_alphaFamily_actualWidthLabel_at_of_widthBound
     L ell a p alpha S n M m hell ha hpell halpha_pos halpha_le_excess
     hselected hsource hs_pos hs_le hwidth_le hk
 
+/-- A finite alpha-indexed equation `(5)` branch family gives actual source
+labels branchwise, provided each branch alpha lies in the strict Eq5 alpha
+domain.
+
+This is only a wrapper around the alpha-family source-label theorem.  It does
+not construct the branches, prove branch injectivity, or prove selected-span
+coverage. -/
+theorem aoyagiLemma5Eq5_alphaIndexedBranch_actualWidthLabel_of_widthBound
+    {β : Type*}
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha : ∀ b ∈ branches, alphaOf b ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) =
+      (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : ∀ b ∈ branches, 1 ≤ (branchLabel b).1)
+    (hs_le : ∀ b ∈ branches, (branchLabel b).1 ≤ L)
+    (hwidth_le : ∀ b ∈ branches,
+      aoyagiSelectedWidthNat ell m p ≤ (n ((branchLabel b).1 + 1) : ℤ))
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ)) :
+    ∀ b ∈ branches, actualWidthLabel L n (branchLabel b).1 (branchLabel b).2 := by
+  intro b hb
+  exact aoyagiLemma5Eq5_alphaFamily_actualWidthLabel_at_of_widthBound
+    L ell a p (alphaOf b) (branchLabel b).1 n M m hell ha hpell
+    (halpha b hb) hselected hsource (hs_pos b hb) (hs_le b hb)
+    (hwidth_le b hb) (hlabel b hb)
+
+/-- A finite alpha-indexed equation `(5)` branch family gives members of the
+actual-width label finite set branchwise.
+
+This is only the finite-set form of
+`aoyagiLemma5Eq5_alphaIndexedBranch_actualWidthLabel_of_widthBound`. -/
+theorem
+    aoyagiLemma5Eq5_alphaIndexedBranchLabel_mem_actualWidthLabelFinset_of_widthBound
+    {β : Type*}
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha : ∀ b ∈ branches, alphaOf b ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) =
+      (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : ∀ b ∈ branches, 1 ≤ (branchLabel b).1)
+    (hs_le : ∀ b ∈ branches, (branchLabel b).1 ≤ L)
+    (hwidth_le : ∀ b ∈ branches,
+      aoyagiSelectedWidthNat ell m p ≤ (n ((branchLabel b).1 + 1) : ℤ))
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ)) :
+    ∀ b ∈ branches, branchLabel b ∈ actualWidthLabelFinset L n := by
+  intro b hb
+  exact mem_actualWidthLabelFinset.mpr
+    (aoyagiLemma5Eq5_alphaIndexedBranch_actualWidthLabel_of_widthBound
+      L ell a p n M m branches alphaOf branchLabel hell ha hpell halpha
+      hselected hsource hs_pos hs_le hwidth_le hlabel b hb)
+
+/-- If the alpha projection is injective on a supplied alpha-indexed equation
+`(5)` branch family, then the supplied branch labels are injective.
+
+The proof uses only the displayed label formula
+`k=Htilde'_p+1-alpha`.  It is not a construction of the branch family and does
+not prove coverage or a classifier. -/
+theorem aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn
+    {β : Type*}
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (halpha_inj : Set.InjOn alphaOf ↑branches)
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ)) :
+    Set.InjOn branchLabel ↑branches := by
+  intro b hb c hc hbranch
+  have hlabel_eq : (branchLabel b).2 = (branchLabel c).2 :=
+    congrArg Sigma.snd hbranch
+  apply halpha_inj hb hc
+  have hlabel_int : ((branchLabel b).2 : ℤ) = ((branchLabel c).2 : ℤ) := by
+    exact_mod_cast hlabel_eq
+  have hb_formula := hlabel b hb
+  have hc_formula := hlabel c hc
+  omega
+
 /-- The terminal selected coordinate `C.point ell - 1` is a positive source
 index when the selected list has positive length.
 

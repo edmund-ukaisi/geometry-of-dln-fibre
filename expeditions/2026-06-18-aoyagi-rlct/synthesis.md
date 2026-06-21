@@ -114,6 +114,32 @@ exact-rank openness, no Aoyagi Lemma 1/analytic ideal transport, no
 regular-coordinate RLCT additivity, no normal crossings, and no RLCT
 consequence.
 
+## Latest A5 Update
+
+The Eq5 alpha-indexed branch source-label slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  Lean now proves:
+`aoyagiLemma5Eq5_alphaIndexedBranch_actualWidthLabel_of_widthBound`,
+`aoyagiLemma5Eq5_alphaIndexedBranchLabel_mem_actualWidthLabelFinset_of_widthBound`,
+and `aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn`.
+
+This packages a supplied finite Eq5 strict-offset branch family branchwise:
+if each branch alpha lies in the strict Eq5 alpha domain, the supplied Sigma
+label's source coordinate is in range, the selected width is bounded by the
+actual width at that source coordinate, and the label is
+`Htilde'_p+1-alpha`, then the label is an actual-width label and belongs to
+`actualWidthLabelFinset`.  If the supplied alpha projection is injective on
+the branch family, the supplied Sigma-valued branch-label map is injective.
+
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-source-label-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-branch-source-label.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-source-label-a5.md`.
+This is source-label and finite injection packaging only: no Eq5 branch
+construction, no alpha-domain coverage, no selected-span coverage, no
+displayed-vector construction, no terminal exactness, no classifier/back-to-
+label coverage, no pole order, no normal crossings, and no RLCT extraction.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:

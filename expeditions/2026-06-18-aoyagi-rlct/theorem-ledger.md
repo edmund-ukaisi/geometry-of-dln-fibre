@@ -58,6 +58,22 @@ crossings, or an RLCT consequence.
 
 ## Latest A5 Update
 
+The Eq5 alpha-indexed branch source-label slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  New Lean names:
+`aoyagiLemma5Eq5_alphaIndexedBranch_actualWidthLabel_of_widthBound`,
+`aoyagiLemma5Eq5_alphaIndexedBranchLabel_mem_actualWidthLabelFinset_of_widthBound`,
+and `aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn`.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-source-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-branch-source-label.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-source-label-a5.md`.
+This proves branchwise actual-width label legality and supplied branch-label
+injectivity for alpha-indexed Eq5 strict-offset branch families under explicit
+branchwise hypotheses.  It does not construct Eq5 branches, prove alpha-domain
+coverage, selected-span coverage, terminal exactness, classifier/back-to-label
+coverage, pole order, normal crossings, or RLCT extraction.
+
 The Lemma 4 same-coordinate bridge has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`.  Source check:
 Aoyagi's Definition 4 defines componentwise vector order, but not a unique
