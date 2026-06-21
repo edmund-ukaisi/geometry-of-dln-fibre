@@ -1458,7 +1458,7 @@ private theorem sq_sum_le_of_sorted_prefix (n : ℕ) (q Y : Fin n → ℤ)
   have := karamata_sq n (srt n q) (srt n Y) hmono htot' hpre
   rw [hqsq, hYsq] at this; exact this
 
-/-- **Subset-min (the `k`-smallest minimises among `k`-subsets).** If every entry of `B` is `≤` every
+/-- **Subset-min (the `k`-smallest minimises among `k`-subsets).** If every entry of `B` is `≤` each
 entry outside `B`, then `∑_B g ≤ ∑_A g` for any `A` of the same cardinality (swap `B∖A ↔ A∖B`). -/
 private theorem sum_le_sum_of_compl_ge {m : ℕ} (g : Fin m → ℤ) (A B : Finset (Fin m))
     (hcard : A.card = B.card) (hval : ∀ j ∈ B, ∀ j' ∉ B, g j ≤ g j') :
@@ -1489,7 +1489,7 @@ private theorem mono_prefix_le_subset {m : ℕ} (g : Fin m → ℤ) (hg : Monoto
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj hj'
     apply hg; rw [Fin.le_def]; omega
 
-/-- The sorted prefix `∑_{i<k} srt n q i` as a sum over `{i : Fin n | i < k}` of `q ∘ Tuple.sort q`. -/
+/-- The sorted prefix `∑_{i<k} srt n q i` as a sum over `{i : Fin n | i < k}` of `q ∘ sort q`. -/
 private theorem srt_prefix_eq_filter (n k : ℕ) (hk : k ≤ n) (q : Fin n → ℤ) :
     ∑ i ∈ Finset.range k, srt n q i
       = ∑ j ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < k), (q ∘ Tuple.sort q) j := by
