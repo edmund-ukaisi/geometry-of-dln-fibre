@@ -771,7 +771,7 @@ theorem reduceStep_strict {e : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N +
         (Y.1 : ℤ) ≤ (c : ℤ) - 1 → (c : ℤ) - 1 ≤ (Y.2 : ℤ) →
         (d' : ℤ) - (a : ℤ) ≤ (Y.2 : ℤ) - (Y.1 : ℤ) :=
       fun Y hY h1 h2 ↦ claimA_left hA'act hB'act hA'B'p hshorter hmin hY h1 h2
-    have hkc : (c : ℤ) - 1 = (k : ℤ) := by rw [hkval]; push_cast; omega
+    have hkc : (c : ℤ) - 1 = (k : ℤ) := by rw [hkval]; omega
     -- ClaimA in the `(b:ℤ)+1`/`d'`/`a` covering forms each move's `hshort` expects
     refine ⟨k, hek, ?_⟩
     rcases lt_or_eq_of_le (Fin.le_def.mp hak) with hak' | hak'

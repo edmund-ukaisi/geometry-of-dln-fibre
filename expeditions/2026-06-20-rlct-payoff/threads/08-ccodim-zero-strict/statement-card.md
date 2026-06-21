@@ -26,7 +26,7 @@
 >   carries (it is a `Finset.inf'`).
 > - **Cited.** none.
 > - **Deferred.** none.
-> - **Status.** sorry-free; axiom-clean (`[propext, Classical.choice, Quot.sound]`).
+> - **Status.** sorry-free + reviewed; axiom-clean (`[propext, Classical.choice, Quot.sound]`).
 
 > **Consequence (θ-count headline, UNCONDITIONAL).** `θ = numTop d r = #{top-dimensional irreducible
 > components of the rank-`r` orbit-closure stratification `Σ̄^r`}`.
@@ -42,7 +42,7 @@
 > - **Cited.** none (the geometric reading `codimRepCanonical = codimForm` is `Core.CThetaGeometric`,
 >   proved upstream).
 > - **Deferred.** none.
-> - **Status.** sorry-free; axiom-clean (`[propext, Classical.choice, Quot.sound]`).
+> - **Status.** sorry-free + reviewed; axiom-clean (`[propext, Classical.choice, Quot.sound]`).
 
 ## Route B fidelity notes (for the reviewer)
 
