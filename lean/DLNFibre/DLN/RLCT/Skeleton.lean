@@ -2095,7 +2095,7 @@ private theorem smallestK_of_monotone (n k : ℕ) (q : Fin n → ℤ) (hq : Mono
   rw [srt_of_monotone n q hq i (by omega), dif_pos (by omega)]
 
 /-- `Mvec`'s sorted value at `j` equals `aSort M j` (both the `j`-th smallest width; the two sort
-permutations may differ on ties but their value-sequences — the unique monotone arrangement — agree). -/
+permutations may differ on ties but their value-sequences — the unique monotone form — agree). -/
 private theorem Mvec_sort_eq_aSort (M : Fin (L + 1) → ℕ) (j : Fin (L + 1)) :
     Mvec M (Tuple.sort (Mvec M) j) = (aSort M j : ℤ) := by
   -- `Mvec M ∘ sort M` is monotone, so by uniqueness it equals `Mvec M ∘ sort (Mvec M)`
@@ -2119,6 +2119,95 @@ private theorem smallestK_Mvec (M : Fin (L + 1) → ℕ) (n : ℕ) (hn : n ≤ L
   have hi' : i < L + 1 := by omega
   rw [srt, dif_pos hi', aS, dif_pos hi']
   exact Mvec_sort_eq_aSort M ⟨i, hi'⟩
+
+/-- `aS` is monotone in the `ℕ` index (the sorted widths ascend). -/
+private theorem aS_mono (M : Fin (L + 1) → ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < L + 1) :
+    aS M i ≤ aS M j := by
+  unfold aS; rw [dif_pos (show i < L + 1 by omega), dif_pos hj]
+  exact aSort_mono M (by simp only [Fin.le_def]; omega)
+
+/-- When the achiever `c = cAch M < L`, `c+1` is not `goodAch` (`c` is the largest good index). -/
+private theorem not_goodAch_cAch_succ (M : Fin (L + 1) → ℕ) (hcL : cAch M < L) :
+    ¬ goodAch M (cAch M + 1) := by
+  have h : Nat.findGreatest (goodAch M) L < cAch M + 1 := by rw [← cAch]; omega
+  exact Nat.findGreatest_is_greatest h (by omega)
+
+/-- **Junction bound** `⌊P/c⌋ + 1 ≤ a_{c+1}` (`P = Sprefix M (c+1)`, `c = cAch M < L`): the smallest
+tail width dominates the balanced split's max. From `¬goodAch (c+1)` (violation lands at `c+1`). -/
+private theorem junction_bound (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (hcL : cAch M < L) :
+    (Sprefix M (cAch M + 1)) / (cAch M) + 1 ≤ aS M (cAch M + 1) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  have hng := not_goodAch_cAch_succ M hcL
+  -- ¬goodAch (c+1): the violating index is c+1 (all i≤c are good)
+  rw [goodAch] at hng; push_neg at hng
+  obtain ⟨i, hilt, hi1, hviol⟩ := hng
+  -- i ≤ c is good (goodAch c), so the violation forces i = c+1
+  have hic : i = c + 1 := by
+    by_contra hne
+    have hic : i ≤ c := by omega
+    have := (cAch_spec M hL).2.2 i (by omega) hi1
+    omega
+  subst hic
+  -- (c+1)·a_{c+1} > Sprefix(c+2) + (c+1) − 1 = Sprefix(c+1) + a_{c+1} + c
+  rw [Sprefix_succ M (c + 1)] at hviol
+  -- Sprefix(c+2) = Sprefix(c+1) + aS(c+1); goal arithmetic
+  have hPc : c * aS M (c + 1) > Sprefix M (c + 1) + c := by
+    have : (c + 1) * aS M (c + 1) > Sprefix M (c + 1) + aS M (c + 1) + c := by omega
+    nlinarith [this]
+  -- c·a_{c+1} > P + c ≥ P ⟹ a_{c+1} > P/c ⟹ a_{c+1} ≥ P/c + 1
+  have hdiv : Sprefix M (c + 1) / c * c ≤ Sprefix M (c + 1) := Nat.div_mul_le_self _ _
+  -- P/c * c ≤ P < c·A ⟹ P/c * c < c·A ⟹ P/c < A
+  have hlt : Sprefix M (c + 1) / c * c < c * aS M (c + 1) := by omega
+  have : Sprefix M (c + 1) / c < aS M (c + 1) := by
+    rw [mul_comm] at hlt; exact lt_of_mul_lt_mul_left hlt (Nat.zero_le c)
+  omega
+
+/-- The target edge multiset `Yvec`, arranged **monotone** (so its `srt` is itself): the sorted
+balanced split of `P = Sprefix M (c+1)` into `c` parts on positions `[0,c)`, then the tail widths
+`a_{c+1},…,a_L` on `[c,L)`. The lower bound's comparison vector and the achiever's edge image. -/
+noncomputable def Yvec (M : Fin (L + 1) → ℕ) (c : ℕ) (j : Fin L) : ℤ :=
+  if (j : ℕ) < c then
+    (if (j : ℕ) < c - (Sprefix M (c + 1)) % c then ((Sprefix M (c + 1) / c : ℕ) : ℤ)
+      else ((Sprefix M (c + 1) / c : ℕ) : ℤ) + 1)
+  else (aS M (j + 1) : ℤ)
+
+/-- `Yvec M (cAch M)` is monotone: balanced block `b ≤ b+1`, then the tail `aS` ascends, and at the
+junction `b+1 ≤ a_{c+1}` (`junction_bound`). -/
+private theorem Yvec_monotone (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    Monotone (Yvec M (cAch M)) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set b : ℤ := ((Sprefix M (c + 1) / c : ℕ) : ℤ) with hb
+  -- the value of Yvec as a function of the nat index, monotone in it
+  have hval : ∀ j : Fin L, Yvec M c j =
+      (if (j : ℕ) < c then (if (j : ℕ) < c - Sprefix M (c + 1) % c then b else b + 1)
+        else (aS M ((j : ℕ) + 1) : ℤ)) := fun j => rfl
+  intro x y hxy
+  rw [hval, hval]
+  have hxyN : (x : ℕ) ≤ (y : ℕ) := hxy
+  by_cases hxc : (x : ℕ) < c
+  · by_cases hyc : (y : ℕ) < c
+    · -- both in balanced block
+      split_ifs with h1 h2 h2 <;> first | rfl | (try omega) | linarith
+    · -- x in balanced, y in tail: b or b+1 ≤ aS(y+1); use junction b+1 ≤ aS(c+1) ≤ aS(y+1)
+      rw [if_pos hxc, if_neg hyc]
+      have hcL : c < L := by
+        rcases lt_or_eq_of_le hcleL with h | h
+        · exact h
+        · exact absurd (by omega : (y : ℕ) < c) (by omega)
+      have hj := junction_bound M hL hcL
+      have hmono : aS M (c + 1) ≤ aS M ((y : ℕ) + 1) :=
+        aS_mono M (by omega) (by omega)
+      have hbb : (if (x : ℕ) < c - Sprefix M (c + 1) % c then b else b + 1) ≤ b + 1 := by
+        split_ifs <;> [linarith; rfl]
+      have : b + 1 ≤ (aS M (c + 1) : ℤ) := by rw [hb]; exact_mod_cast hj
+      calc (if (x : ℕ) < c - Sprefix M (c + 1) % c then b else b + 1) ≤ b + 1 := hbb
+        _ ≤ (aS M (c + 1) : ℤ) := this
+        _ ≤ (aS M ((y : ℕ) + 1) : ℤ) := by exact_mod_cast hmono
+  · -- x in tail ⟹ y in tail
+    rw [if_neg hxc, if_neg (by omega : ¬ (y : ℕ) < c)]
+    exact_mod_cast aS_mono M (by omega) (by omega)
 
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
