@@ -2446,6 +2446,78 @@ private theorem edge_le_Yvec (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT :
     have := smallestK_edge_le_width M T hT hL k hk
     rwa [smallestK_Mvec M (k + 1) (by omega)] at this
 
+/-- `∑ edgeQ = ∑ M` (the edge total telescopes to the full width sum, using `u_L = 0`). -/
+private theorem sum_edgeQ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L) :
+    ∑ j : Fin L, edgeQ M T (j : ℕ) = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  have hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0 := by
+    rw [Adm, Finset.mem_filter] at hT; exact hT.2.2.2
+  rw [Fin.sum_univ_eq_sum_range (fun j => edgeQ M T j) L]
+  rw [prefix_edgeQ M T L, Useq_zero, Useq_last M T hL hlast]
+  have hM0 : Mseq M 0 = (M 0 : ℤ) := by unfold Mseq; rw [dif_pos (by omega)]; rfl
+  have hMseqsum : ∑ i ∈ Finset.range (L + 1), Mseq M i = ∑ i : Fin (L + 1), (M i : ℤ) := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => Mseq M i) (L + 1)]
+    exact Finset.sum_congr rfl (fun i _ => by unfold Mseq; rw [dif_pos i.isLt])
+  rw [hM0, hMseqsum]
+  ring
+
+/-- `Sprefix M (L+1) = ∑ M i` (the full sorted prefix equals the total). -/
+private theorem Sprefix_total (M : Fin (L + 1) → ℕ) :
+    (Sprefix M (L + 1) : ℤ) = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  rw [Sprefix, Nat.cast_sum, ← Fin.sum_univ_eq_sum_range (fun i => (aS M i : ℤ)) (L + 1)]
+  rw [show (∑ i : Fin (L + 1), (aS M (i : ℕ) : ℤ)) = ∑ i : Fin (L + 1), ((M (Tuple.sort M i)) : ℤ)
+      from Finset.sum_congr rfl (fun i _ => by rw [aS, dif_pos i.isLt]; rfl)]
+  exact Equiv.sum_comp (Tuple.sort M) (fun i => (M i : ℤ))
+
+/-- `∑ Yvec = ∑ M` (total preserved). -/
+private theorem sum_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    ∑ j : Fin L, Yvec M (cAch M) j = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  have hpre := Yvec_prefix M hL L (le_refl L)
+  rw [← hc] at hpre
+  rw [← Fin.sum_univ_eq_sum_range (fun i => (if h : i < L then Yvec M c ⟨i, h⟩ else 0)) L] at hpre
+  rw [show (∑ i : Fin L, (if h : (i : ℕ) < L then Yvec M c ⟨i, h⟩ else 0))
+        = ∑ i : Fin L, Yvec M c i from
+      Finset.sum_congr rfl (fun i _ => by rw [dif_pos i.isLt])] at hpre
+  rw [hpre, ← Sprefix_total M]
+  by_cases hcL : L ≤ c
+  · have hcLeq : c = L := le_antisymm hcleL hcL
+    rw [if_pos hcL, hcLeq]
+    have hrnn : (0 : ℤ) ≤ ((Sprefix M (L + 1) % L : ℕ) : ℤ) := by positivity
+    rw [max_eq_right (show (0:ℤ) ≤ (L:ℤ) + ((Sprefix M (L+1) % L : ℕ):ℤ) - (L:ℤ) by linarith)]
+    have hLpos : 0 < L := by omega
+    have hPeq : (Sprefix M (L + 1) : ℤ)
+        = (L : ℤ) * ((Sprefix M (L + 1) / L : ℕ) : ℤ) + ((Sprefix M (L + 1) % L : ℕ) : ℤ) := by
+      rw [← Nat.cast_mul, ← Nat.cast_add]; exact_mod_cast (Nat.div_add_mod _ L).symm
+    rw [hPeq]; ring
+  · rw [if_neg hcL]
+
+/-- **A1 lower bound (C).** For `T ∈ Adm M`, `∑Yvec² − ∑M² ≤ 2·Mval M T` — the convexity bound from
+the `Yvec`-domination via `sq_sum_le_of_sorted_prefix` + `edge_identity`. -/
+private theorem two_Mval_ge (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L) :
+    (∑ j : Fin L, (Yvec M (cAch M) j) ^ 2) - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2
+      ≤ 2 * Mval M T := by
+  set c := cAch M with hc
+  set q := fun j : Fin L => edgeQ M T (j : ℕ) with hq
+  have hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0 := by
+    rw [Adm, Finset.mem_filter] at hT; exact hT.2.2.2
+  -- ∑ Yvec² ≤ ∑ q²  via sq_sum_le_of_sorted_prefix (total + domination)
+  have htot : ∑ j, q j = ∑ j, Yvec M c j := by
+    rw [sum_edgeQ M T hT hL, sum_Yvec M hL]
+  have hdom : ∀ k, k ≤ L → ∑ i ∈ Finset.range k, srt L q i
+      ≤ ∑ i ∈ Finset.range k, srt L (Yvec M c) i := fun k hk => edge_le_Yvec M T hT hL k hk
+  have hsq : ∑ j, (Yvec M c j) ^ 2 ≤ ∑ j, (q j) ^ 2 :=
+    sq_sum_le_of_sorted_prefix L q (Yvec M c) htot hdom
+  -- edge_identity: 2·Mval = ∑ q² − ∑ Mseq²; relate the two sums to the Fin-univ forms
+  have hedge := edge_identity M T hL hlast
+  have hqsq : ∑ j ∈ Finset.range L, edgeQ M T j ^ 2 = ∑ j : Fin L, (q j) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun j => edgeQ M T j ^ 2) L]
+  have hMsq : ∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2 = ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => Mseq M i ^ 2) (L + 1)]
+    exact Finset.sum_congr rfl (fun i _ => by unfold Mseq; rw [dif_pos i.isLt])
+  rw [hqsq, hMsq] at hedge
+  linarith [hsq, hedge]
+
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
