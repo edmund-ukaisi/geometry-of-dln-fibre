@@ -2634,6 +2634,36 @@ private theorem count_bp1_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
       rw [← Nat.add_mul]; congr 1; omega
     omega
 
+/-- `Sprefix M (c+1) ≥ Sprefix M (i+1) + (c−i)·aS M i` for `i ≤ c ≤ L`: the tail widths `a_{i+1..c}`
+each dominate `a_i` (aS monotone). -/
+private theorem Sprefix_tail_ge (M : Fin (L + 1) → ℕ) (i c : ℕ) (hic : i ≤ c) (hcL : c ≤ L) :
+    Sprefix M (i + 1) + (c - i) * aS M i ≤ Sprefix M (c + 1) := by
+  have hsplit : Sprefix M (c + 1) = Sprefix M (i + 1) + ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
+    rw [Sprefix, Sprefix, ← Finset.sum_range_add_sum_Ico (fun k => aS M k) (by omega : i + 1 ≤ c + 1)]
+  have htail : (c - i) * aS M i ≤ ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
+    rw [show (c - i) * aS M i = ∑ _k ∈ Finset.Ico (i + 1) (c + 1), aS M i from by
+      rw [Finset.sum_const, Nat.card_Ico]; ring_nf; rw [Nat.mul_comm]; congr 1; omega]
+    apply Finset.sum_le_sum; intro k hk; rw [Finset.mem_Ico] at hk
+    exact aS_mono M (by omega) (by omega)
+  omega
+
+/-- **Shared good-`c` core** (used by both the band `qFM_band` and the Dom precondition's `B2`):
+`c·aS M i ≤ Sprefix M (c+1) + (i−1)` for `1 ≤ i ≤ c = cAch M`. From `goodAch i` + `Sprefix_tail_ge`;
+the same `goodAch`-family as `count_bp1_le`. -/
+private theorem good_floor_core (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {i : ℕ} (hi1 : 1 ≤ i)
+    (hic : i ≤ cAch M) :
+    cAch M * aS M i ≤ Sprefix M (cAch M + 1) + (i - 1) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  -- goodAch i: i·aS_i ≤ Sprefix(i+1) + i − 1
+  have hgi := hgood i (by omega) hi1
+  -- tail: Sprefix(c+1) ≥ Sprefix(i+1) + (c−i)·aS_i
+  have htail := Sprefix_tail_ge M i c hic hcleL
+  -- combine: c·aS_i = i·aS_i + (c−i)·aS_i ≤ [Sprefix(i+1)+i−1] + [Sprefix(c+1)−Sprefix(i+1)]
+  have hexp : c * aS M i = i * aS M i + (c - i) * aS M i := by
+    rw [← Nat.add_mul]; congr 1; omega
+  omega
+
 /-- **Lower-fit guard** `smallestK m (Yvec) ≤ Sprefix M (m+1)` (`m ≤ L`). `m > c`: equality
 (`Yvec_prefix`); `m ≤ c`: the complement `∑ tail ≤ (c−m)b +
 min(r,c−m)` from `aS_le_bp1` + `count_bp1_le`. The greedy non-emptiness' lower-fit. -/
