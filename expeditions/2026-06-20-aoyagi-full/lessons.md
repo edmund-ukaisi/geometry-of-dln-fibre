@@ -302,3 +302,13 @@ finiteness). LESSON: before adopting a hypothesis "equivalent to" the one your p
 witness in BOTH directions — a one-line example (G²=1) settles it. The right contract hypothesis is the WEAKEST
 that (i) makes the statement true, (ii) the proof literally uses, (iii) the use-site supplies — here hHne, which
 R1's monomial core (≠0 a.e.) supplies, and under which even the ⊤-cases stay true.
+
+UPDATE (sharper): hGfin is not merely over-strict — it is UNSOUND as the contract hypothesis. Witness
+G(y)=y·[y>0], G²=y²·[y>0], y0=0, n=1: rlctAtOn(G²)(0)=1/2<⊤ (hGfin HOLDS) but the shift equality is FALSE —
+LHS rlctAtOn(x²+G²)(0,0)=1/2 (the y≤0 slice is pure x², and ∫(x²)^{-c} diverges for c≥1/2, CAPPING the joint
+admissible set), while RHS = 1/2+1/2 = 1. So hGfin admits a false instance; only hHne (which kills the
+positive-measure zero-set that drives the cap) is sound. META-LESSON: the proof author proposed the plausible
+hypothesis and asserted equivalence; the decorrelated controller check (construct the witness, both directions)
+caught that it was unsound. This is the "heed the decorrelated flag — build the witness before dismissing"
+discipline applied to a HYPOTHESIS proposal, not just a claim: a hypothesis is a claim too (it claims "this
+suffices / is necessary"), and gets the same witness-or-it-isn't-true treatment.

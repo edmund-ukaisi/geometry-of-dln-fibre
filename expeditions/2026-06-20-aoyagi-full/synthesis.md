@@ -350,10 +350,14 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
   is bare = self-contradictory contract (the 12th finding's restatement was documented, never executed in the sig).
   FIX (controller-decided, fm executes single-writer, keep sorry): add `Measurable G` + a germ-non-vanishing hyp.
-  **CONTROLLER CALL: hHne (G²≠0 a.e. near y0), NOT fm-2's hGfin (rlctAtOn(G²)<⊤)** — hGfin over-excludes TRUE
-  cases (G²=1: rlctAt=⊤ but equality holds ⊤=⊤) and the proof uses a.e.-nonvanishing not finiteness; hGfin≠hHne
-  (G²=1 separates them). fm-2 pinning the EXACT Lean form its step_*/lift need → I relay to fm. fm-2's step_* are
-  the proof engine, waiting on the corrected sig.
+  **CONTROLLER CALL: hHne (G²≠0 a.e. near y0), NOT fm-2's hGfin (rlctAtOn(G²)<⊤) — hGfin is UNSOUND.** They are
+  INDEPENDENT (not equal as fm-2 believed): hGfin admits a FALSE case. AIRTIGHT WITNESS (controller-derived,
+  n=1,Y=ℝ,y0=0): G(y)=y·[y>0] ⟹ G²=y²·[y>0]; rlctAtOn(G²)(0)=1/2<⊤ (hGfin HOLDS) but LHS rlctAtOn(x²+G²)(0,0)=1/2
+  (the y≤0 slice is pure x², ∫(x²)^{-c} diverges for c≥1/2, CAPPING the joint) ≠ RHS 1/2+1/2=1 ⟹ equality FALSE
+  under hGfin. hHne excludes it (G²=0 on positive measure ⟹ ¬hHne). hGfin ALSO over-excludes true cases (G²=1:
+  rlctAt=⊤, equality ⊤=⊤). So hGfin is wrong both ways; hHne is the sound hyp AND what fm-2's step_* already carry
+  (the H=0 corner + cmpF a.e.-positivity). fm-2 builds the lift+iterate in S1Fubini Foundations under hHne NOW
+  (unblocked), reports the exact hHne Lean form → fm restates the Skeleton sig (defer the edit to a clean point).
 - **R1 USE-SITE CONFIRMED (pp + Codex identical): CLEAN to relocate (confirms A) + 2 obligations folded into R1:**
   (1) **unit-absorption** — R1 chart core = unit·∏|y_j|^{2k_j}, so R1.2's S2 invocation MUST first absorb the
   nonvanishing unit via `rlct_unit_invariant` (S1.3), THEN S2 on the pure monomial (THE main hidden gap; Jacobian
