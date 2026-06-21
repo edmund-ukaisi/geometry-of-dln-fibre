@@ -33,7 +33,7 @@ These discharge the `g5_step` per-leaf `hφ'`/`hinj` (and supply the `det` for t
 the explicit chart family — `φᵢ`, `Vᵢ`, `Zᵢ`, the cover/disjointness — lands from the design. -/
 
 open MeasureTheory Set Matrix
-open scoped BigOperators
+open scoped BigOperators ENNReal
 namespace DLNFibre.DLN.RLCT
 
 /-- The pivot blow-up chart on `Fin (n+1) → ℝ`: `φ(x)₀ = x₀`, `φ(x)ᵢ = x₀·xᵢ` for `i ≠ 0`.
@@ -473,5 +473,169 @@ theorem pivotBlowupOn_image {N : ℕ} (active : Finset (Fin N)) (p : Fin N) (hp 
           rw [mul_div_cancel₀ _ hyp]
         · show pivotBlowupOn active p _ i = y i
           simp only [pivotBlowupOn, if_neg hip, if_neg ha]
+
+/-- The standard-basis matrix entry of `pivotBlowupOnDeriv`: pivot/spectator rows are basis vectors,
+active rows are `x_p` on the diagonal plus `x_i` in column `p`. -/
+private theorem pbon_entry {N : ℕ} (active : Finset (Fin N)) (p : Fin N) (x : Fin N → ℝ)
+    (i j : Fin N) :
+    LinearMap.toMatrix' (pivotBlowupOnDeriv active p x :
+        (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)) i j
+      = (if i = p then (if j = p then (1 : ℝ) else 0)
+         else if i ∈ active then (x p) * (if j = i then 1 else 0) + (x i) * (if j = p then 1 else 0)
+         else (if j = i then (1 : ℝ) else 0)) := by
+  rw [LinearMap.toMatrix'_apply]
+  change (pivotBlowupOnDeriv active p x) (Pi.single j 1) i = _
+  rw [pivotBlowupOnDeriv]; simp only [ContinuousLinearMap.pi_apply]
+  rcases eq_or_ne i p with rfl | hi
+  · by_cases hj : j = i
+    · simp [hj]
+    · simp [hj, Ne.symm hj]
+  · by_cases ha : i ∈ active
+    · simp only [if_neg hi, if_pos ha, ContinuousLinearMap.add_apply,
+        ContinuousLinearMap.smul_apply, ContinuousLinearMap.proj_apply, Pi.single_apply,
+        smul_eq_mul]
+      by_cases hj1 : j = i <;> by_cases hj2 : j = p <;> simp_all [eq_comm]
+    · simp only [if_neg hi, if_neg ha, ContinuousLinearMap.proj_apply, Pi.single_apply]
+      by_cases hj : j = i
+      · simp [hj]
+      · simp [hj, Ne.symm hj]
+
+/-- **(node Jac value).** `det (pivotBlowupOnDeriv active p x) = (x p)^(active.card - 1)` (`p ∈
+active`). The fderiv is an "arrow" matrix (diagonal + pivot column), not triangular in the `Fin N`
+order; conjugating by `swap 0 p` (via `det_submatrix_equiv_self`) makes the pivot column the first
+column ⟹ lower-triangular (`BlockTriangular toDual`), and the diagonal product is `(x p)` over the
+`active.card - 1` active non-pivot rows (counted by `Finset.card_equiv σ` onto `active.erase p`).
+`|x p|^(active.card-1)` is the Jacobian weight in the `g5_step` `weightedThreshold` ρ-slot. -/
+theorem pivotBlowupOnDeriv_det {N : ℕ} (active : Finset (Fin N)) (p : Fin N) (hp : p ∈ active)
+    (x : Fin N → ℝ) :
+    (pivotBlowupOnDeriv active p x).det = (x p) ^ (active.card - 1) := by
+  rw [ContinuousLinearMap.det, ← LinearMap.det_toMatrix']
+  set M := LinearMap.toMatrix' (pivotBlowupOnDeriv active p x :
+    (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)) with hM
+  have hNpos : 0 < N := lt_of_le_of_lt (Nat.zero_le _) p.isLt
+  let z : Fin N := ⟨0, hNpos⟩
+  let σ : Fin N ≃ Fin N := Equiv.swap z p
+  have hσeq : ∀ j, σ j = p ↔ j = z := by
+    intro j
+    rw [show σ = Equiv.swap z p from rfl, Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]
+  rw [← Matrix.det_submatrix_equiv_self σ M]
+  have htri : (M.submatrix σ σ).BlockTriangular OrderDual.toDual := by
+    intro i j hij
+    rw [OrderDual.toDual_lt_toDual] at hij
+    rw [Matrix.submatrix_apply, hM, pbon_entry]
+    have hjz : j ≠ z := by
+      intro h; rw [h] at hij
+      exact absurd hij (by rw [Fin.lt_def]; simp only [z]; exact Nat.not_lt_zero _)
+    have hsjp : σ j ≠ p := fun h => hjz ((hσeq j).1 h)
+    have hsji : σ j ≠ σ i := fun h => (ne_of_gt hij) (σ.injective h)
+    rcases eq_or_ne (σ i) p with hip | hip
+    · rw [if_pos hip, if_neg hsjp]
+    · rw [if_neg hip]
+      by_cases ha : σ i ∈ active
+      · rw [if_pos ha, if_neg hsji, if_neg hsjp, mul_zero, mul_zero, add_zero]
+      · rw [if_neg ha, if_neg hsji]
+  rw [Matrix.det_of_lowerTriangular _ htri]
+  have hdiag : ∀ i, (M.submatrix σ σ) i i
+      = (if σ i = p then (1 : ℝ) else if σ i ∈ active then x p else 1) := by
+    intro i
+    rw [Matrix.submatrix_apply, hM, pbon_entry]
+    rcases eq_or_ne (σ i) p with hip | hip
+    · simp [hip]
+    · rw [if_neg hip]
+      by_cases ha : σ i ∈ active
+      · simp [hip, ha]
+      · simp [hip, ha]
+  rw [Finset.prod_congr rfl (fun i _ => hdiag i)]
+  classical
+  have hval : ∀ i, (if σ i = p then (1 : ℝ) else if σ i ∈ active then x p else 1)
+      = (if (σ i ∈ active ∧ σ i ≠ p) then x p else 1) := by
+    intro i
+    by_cases h1 : σ i = p
+    · rw [if_pos h1, if_neg (by tauto)]
+    · rw [if_neg h1]
+      by_cases h2 : σ i ∈ active
+      · rw [if_pos h2, if_pos ⟨h2, h1⟩]
+      · rw [if_neg h2, if_neg (by tauto)]
+  simp_rw [hval]
+  rw [← Finset.prod_filter, Finset.prod_const]
+  congr 1
+  rw [← Finset.card_erase_of_mem hp]
+  apply Finset.card_equiv σ
+  intro i
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase]
+  tauto
+
+/-! ## The packaged single g5_step node (`g5_pivotNode`)
+
+The reusable "one blow-up node" lemma: it discharges ALL six `g5_step` per-node obligations from the
+flat-subset atoms above, leaving the caller only the cover hypothesis `U =ᵐ ⋃ argmaxCellOn`. The
+three `(2,2,2)` blow-up steps each instantiate this with their active coordinate set; the 3-deep
+`∫⁻=Σ∫⁻` is `g5_pivotNode` composed (Codex shape (a): recurse on `g' := wᵢ·(g∘φᵢ)`). -/
+
+/-- `argmaxCellOn` is Borel (finite intersection of measurable coordinate conditions) — the
+`g5_step` `hmeas`. -/
+theorem argmaxCellOn_measurableSet {N : ℕ} (active : Finset (Fin N)) (p : Fin N) :
+    MeasurableSet (argmaxCellOn active p) := by
+  have h1 : MeasurableSet {y : Fin N → ℝ | y p ≠ 0} := by
+    have hpre : {y : Fin N → ℝ | y p ≠ 0} = (fun y => y p) ⁻¹' {0}ᶜ := by
+      ext y; simp [Set.mem_preimage]
+    rw [hpre]; exact (measurable_pi_apply p) (measurableSet_singleton 0).compl
+  have h2 : MeasurableSet {y : Fin N → ℝ | ∀ j ∈ active, |y j| ≤ |y p|} := by
+    rw [Set.setOf_forall]
+    refine MeasurableSet.iInter (fun j => ?_)
+    by_cases hj : j ∈ active
+    · simp only [hj, true_implies]
+      exact measurableSet_le (by fun_prop) (by fun_prop)
+    · simp [hj]
+  exact h1.inter h2
+
+/-- The chart domain minus its exceptional locus is measurable — the `g5_step` `hVZ`. -/
+theorem chartDomOn_diff_measurableSet {N : ℕ} (active : Finset (Fin N)) (p : Fin N) :
+    MeasurableSet (chartDomOn active p \ pivotZeroOn p) := by
+  apply MeasurableSet.diff
+  · unfold chartDomOn
+    rw [Set.setOf_forall]
+    refine MeasurableSet.iInter (fun j => ?_)
+    by_cases hj : j ∈ active
+    · simp only [hj, true_implies]
+      by_cases hjp : j = p
+      · simp only [hjp, ne_eq, not_true_eq_false, false_implies, Set.setOf_true]
+        exact MeasurableSet.univ
+      · simp only [hjp, ne_eq, not_false_eq_true, true_implies]
+        exact measurableSet_le (by fun_prop) measurable_const
+    · simp [hj]
+  · exact measurableSet_eq_fun (measurable_pi_apply p) measurable_const
+
+/-- **The packaged blow-up node.** For an `active` coordinate set, if `U` is covered (up to null) by
+the active argmax cells, then the threshold integral splits as the weighted sum over the charts:
+`∫⁻_U g = Σ_{p∈active} ∫⁻_{Vp\Zp} ofReal|det φ_p'| · g(φ_p)`. All six `g5_step` obligations are
+discharged from the flat-subset atoms (`pivotBlowupOn_*`, `argmaxCellOn_*`, the measurability
+lemmas); the caller supplies only the cover. The single g5_step node the `(2,2,2)` tree composes. -/
+theorem g5_pivotNode {N : ℕ} (active : Finset (Fin N)) (U : Set (Fin N → ℝ))
+    (hUcov : U =ᵐ[volume] ⋃ p ∈ active, argmaxCellOn active p)
+    (g : (Fin N → ℝ) → ℝ≥0∞) :
+    ∫⁻ x in U, g x ∂volume
+      = ∑ p ∈ active, ∫⁻ x in chartDomOn active p \ pivotZeroOn p,
+          ENNReal.ofReal |(pivotBlowupOnDeriv active p x).det| * g (pivotBlowupOn active p x)
+          ∂volume := by
+  have hcov : U =ᵐ[volume] ⋃ p ∈ active, (pivotBlowupOn active p) ''
+      (chartDomOn active p \ pivotZeroOn p) := by
+    refine hUcov.trans (Filter.EventuallyEq.of_eq ?_)
+    apply Set.iUnion₂_congr
+    intro p hp
+    exact (pivotBlowupOn_image active p hp).symm
+  apply g5_step volume active (fun p => pivotBlowupOn active p)
+    (fun p => pivotBlowupOnDeriv active p) (fun p => chartDomOn active p) (fun p => pivotZeroOn p) U
+  · exact fun p _ => chartDomOn_diff_measurableSet active p
+  · exact fun p _ x _ => pivotBlowupOn_hasFDerivWithinAt active p _ x
+  · exact fun p _ => pivotBlowupOn_injOn active p _
+  · exact hcov
+  · intro p hp q hq hpq
+    simp only [Function.onFun]
+    rw [pivotBlowupOn_image active p hp, pivotBlowupOn_image active q hq]
+    exact argmaxCellOn_aedisjoint active p q hp hq hpq
+  · intro p hp
+    rw [pivotBlowupOn_image active p hp]
+    exact (argmaxCellOn_measurableSet active p).nullMeasurableSet
 
 end DLNFibre.DLN.RLCT
