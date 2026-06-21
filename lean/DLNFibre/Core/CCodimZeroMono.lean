@@ -588,4 +588,89 @@ theorem splitMove_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1)
     simp only [splitMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
     exact hc0
 
+/-! ## The reduction: every corner-`0` partition of `e'` dominates one of `e` (for `e ≤ e'`)
+
+The shortest-split step packaged for induction. At an over-covered vertex `k`, the shortest covering
+interval `[a,d']` (positive multiplicity) is split — generically into `[a,k−1] + [k+1,d']`, with the
+left piece dropped when `k = a` and the right piece dropped when `k = d'` (a single endpoint or a
+singleton). This `splitStep` is the uniform move; reusing the interior `splitMove` machinery requires
+both pieces present, so the endpoint/singleton cases are handled by the same bilinear delta with the
+empty box contributing `0`. The recursion on `∑ e'` then drives `e'` down to `e`. -/
+
+/-- Among the positive-multiplicity intervals of `m` covering a vertex `k`, there is one of minimal
+length, *provided at least one exists*. Extracts `[a,d']` with `m (a,d') ≥ 1`, `a ≤ k ≤ d'`, and
+minimality: any covering positive-multiplicity `Y` is at least as long. -/
+theorem exists_shortest_covering {m : Fin (N + 1) × Fin (N + 1) → ℕ} {k : Fin (N + 1)}
+    (hcov : ∃ p : Fin (N + 1) × Fin (N + 1), 1 ≤ m p ∧ p.1 ≤ k ∧ k ≤ p.2) :
+    ∃ p : Fin (N + 1) × Fin (N + 1), (1 ≤ m p ∧ p.1 ≤ k ∧ k ≤ p.2) ∧
+      ∀ q : Fin (N + 1) × Fin (N + 1), 1 ≤ m q → q.1 ≤ k → k ≤ q.2 →
+        (p.2 : ℤ) - (p.1 : ℤ) ≤ (q.2 : ℤ) - (q.1 : ℤ) := by
+  classical
+  -- the covering positive-multiplicity intervals form a nonempty finite set; take a length-minimiser
+  set T : Finset (Fin (N + 1) × Fin (N + 1)) :=
+    Finset.univ.filter (fun p ↦ 1 ≤ m p ∧ p.1 ≤ k ∧ k ≤ p.2) with hT
+  have hTne : T.Nonempty := by
+    obtain ⟨p, hp⟩ := hcov; exact ⟨p, by rw [hT, Finset.mem_filter]; exact ⟨Finset.mem_univ _, hp⟩⟩
+  obtain ⟨p, hpT, hpmin⟩ := T.exists_min_image (fun p ↦ (p.2 : ℤ) - (p.1 : ℤ)) hTne
+  rw [hT, Finset.mem_filter] at hpT
+  refine ⟨p, hpT.2, fun q hq hq1 hq2 ↦ ?_⟩
+  exact hpmin q (by rw [hT, Finset.mem_filter]; exact ⟨Finset.mem_univ _, hq, hq1, hq2⟩)
+
+/-- The guarded reduction move: replace one copy of `[a,d']` by `[a,b]` (only when `a ≤ b`) and
+`[c,d']` (only when `c ≤ d'`). With `b = k−1`, `c = k+1` this is the shortest-split, dropping the
+left piece at `k = a` and the right piece at `k = d'`, so a single uniform move covers the interior,
+endpoint and singleton cases. -/
+def redMove (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a b c d' : Fin (N + 1)) :
+    Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ m p + (if a ≤ b ∧ p = (a, b) then 1 else 0) + (if c ≤ d' ∧ p = (c, d') then 1 else 0)
+    - (if p = (a, d') then 1 else 0)
+
+/-- `codimForm` reads its argument only at box points `(i-1, j-1)` and `(u, v)` with
+`1 ≤ i ≤ u ≤ j ≤ v ≤ N` (so first index `≤` second, both in `[0, N]`). Hence two ℤ-arrays agreeing on
+the box `{(α,β) : 0 ≤ α ≤ β ≤ N}` have equal `codimForm`. -/
+theorem codimForm_congr_onbox {f g : ℤ → ℤ → ℤ}
+    (h : ∀ α β : ℤ, 0 ≤ α → α ≤ β → β ≤ (N : ℤ) → f α β = g α β) :
+    codimForm N f = codimForm N g := by
+  unfold codimForm
+  refine Finset.sum_congr rfl fun i hi ↦ Finset.sum_congr rfl fun u hu ↦
+    Finset.sum_congr rfl fun j hj ↦ Finset.sum_congr rfl fun v hv ↦ ?_
+  rw [Finset.mem_Icc] at hi hu hj hv
+  rw [h (i - 1) (j - 1) (by omega) (by omega) (by omega), h u v (by omega) (by omega) (by omega)]
+
+/-- `redMove` and `splitMove` have the same `extendℤ` *on the box*: there the guards `a ≤ b` /
+`c ≤ d'` are automatic (a box-point `(a,b)` has `a ≤ b`). Off the box `codimForm` does not read them,
+so `codimForm` of the two agree. -/
+theorem extendℤ_redMove_onbox (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a b c d' : Fin (N + 1))
+    {α β : ℤ} (hα : 0 ≤ α) (hαβ : α ≤ β) (hβ : β ≤ (N : ℤ)) :
+    extendℤ (redMove m a b c d') α β = extendℤ (splitMove m a b c d') α β := by
+  unfold extendℤ
+  rw [dif_pos ⟨hα, hαβ, hβ⟩, dif_pos ⟨hα, hαβ, hβ⟩]
+  congr 1
+  set q : Fin (N + 1) × Fin (N + 1) := (⟨α.toNat, by omega⟩, ⟨β.toNat, by omega⟩) with hq
+  show redMove m a b c d' q = splitMove m a b c d' q
+  have hαβN : (q.1 : ℕ) ≤ q.2 := by rw [hq]; dsimp only [Fin.val_mk]; omega
+  simp only [redMove, splitMove]
+  -- the guards `a ≤ b` / `c ≤ d'` are redundant on-box (only fire when `q` equals an on-box key)
+  have gAB : (if a ≤ b ∧ q = (a, b) then (1 : ℕ) else 0) = (if q = (a, b) then 1 else 0) := by
+    by_cases h : q = (a, b)
+    · rw [if_pos ⟨by rw [h] at hαβN; exact hαβN, h⟩, if_pos h]
+    · rw [if_neg (fun hh ↦ h hh.2), if_neg h]
+  have gCD : (if c ≤ d' ∧ q = (c, d') then (1 : ℕ) else 0) = (if q = (c, d') then 1 else 0) := by
+    by_cases h : q = (c, d')
+    · rw [if_pos ⟨by rw [h] at hαβN; exact hαβN, h⟩, if_pos h]
+    · rw [if_neg (fun hh ↦ h hh.2), if_neg h]
+  rw [gAB, gCD]
+
+/-- **`redMove` `codimForm`-delta.** For `a ≤ b`, `b + 1 < c`, `c ≤ d'`, source present, the guarded
+`redMove` has the same `codimForm`-delta as the interior `splitMove`:
+`codimForm (extendℤ (redMove …)) = codimForm (extendℤ m) + ∑_Y m̄ Y · splitCoeff Y`. The guards differ
+from `splitMove` only off the box, which `codimForm` never reads (`codimForm_congr_onbox`). -/
+theorem codimForm_redMove (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbc : (b : ℕ) + 1 < c) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d')) :
+    codimForm N (extendℤ (redMove m a b c d'))
+      = codimForm N (extendℤ m)
+        + ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * splitCoeff a b c d' Y := by
+  rw [codimForm_congr_onbox (fun α β hα hαβ hβ ↦ extendℤ_redMove_onbox m a b c d' hα hαβ hβ),
+    codimForm_splitMove m hab hbc hcd hsad]
+
 end DLNFibre.Core
