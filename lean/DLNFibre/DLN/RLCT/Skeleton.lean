@@ -921,12 +921,25 @@ the deepest singular point** `deepestPoint H r B` (Aoyagi 2013 Thm 2, the monoto
 RLCT over the fibre). This turns `⨅ w ∈ optimalSet, rlctAt` into the local RLCT at the
 one constructed point that L2 evaluates. (Rung-0c FLAG: keyed to the constructed `deepestPoint`,
 replacing the under-claiming `∃ wstar ∈ optimalSet` that did not name the attainer.) Non-vacuous:
-equates the inf to the local RLCT at `deepestPoint`. -/
+equates the inf to the local RLCT at `deepestPoint`. **Proof state:** the `≤` direction is PROVEN
+(`deepestPoint ∈ optimalSet` ⟹ `iInf₂_le`); the `≥` direction is reduced to the per-point obligation
+`rlctAt deepest ≤ rlctAt v` for every optimal `v` (Aoyagi 2013 Thm 2) — the `sorry`. That residual
+is L2-gated: its engine is `rlctAt_mono`, but applying it needs the loss-domination of the
+HOMOGENEOUS core (the raw `dlnLoss B`, `B≠0`, is not homogeneous), available after the L2 form. -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v)
       = rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) := by
+  -- `deepestPoint` is in the fibre (`IsDeepLayers.1`), so the `≤` direction is `iInf₂_le` — PROVEN.
+  have hmem : deepestPoint H r B hB hr hL ∈ optimalSet H B :=
+    (deepestPoint_isDeep H r B hB hr hL).1
+  refine le_antisymm (iInf₂_le (deepestPoint H r B hB hr hL) hmem) ?_
+  -- `≥` direction = Aoyagi 2013 Thm 2: the local RLCT at the deepest point is ≤ that at every other
+  -- fibre point. The engine is `rlctAt_mono`, but applying it needs the loss-domination near the
+  -- deepest point of the HOMOGENEOUS core (raw `dlnLoss B`, `B≠0`, is not homogeneous — thread-04):
+  -- that domination is L2-downstream (the homogeneous normal form). Residual obligation, L2-gated.
+  refine le_iInf₂ (fun v _ => ?_)
   sorry
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
