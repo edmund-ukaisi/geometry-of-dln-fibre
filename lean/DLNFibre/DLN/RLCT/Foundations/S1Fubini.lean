@@ -432,4 +432,133 @@ theorem step_rlct_ge {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperS
     exact push u.toReal (v.toNNReal : ℝ) ENNReal.toReal_nonneg ha_lt (by positivity) hqle
       (core_admissible_of_lt H hHmeas y0 v.toNNReal hb_lt)
 
+/-! ## The threshold-lift, `≤` direction (`n = 1`) — the open-witness wrapper -/
+
+/-- The cusp `≤`-direction's "high-`H`" piece: on `W ⊆ {H > R²}` of finite measure, `|H|^{−(c−1/2)}`
+is bounded by `(R²)^{−(c−1/2)}` (the negative power is decreasing, `H > R² > 0`), hence integrable.
+The harmless half of the `V₀ = {H ≤ R²} ∪ {H > R²}` split. -/
+theorem core_int_high {Y : Type*} [MeasureSpace Y] (H : Y → ℝ) (hHmeas : Measurable H)
+    (c R : ℝ) (hc : 1 / 2 < c) (hR : 0 < R) (W : Set Y) (hWmeas : MeasurableSet W)
+    (hWfin : volume W ≠ ⊤) (hWsub : ∀ z ∈ W, R ^ 2 < H z) :
+    IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) W volume := by
+  apply Integrable.mono' (g := fun _ => (R ^ 2) ^ (-(c - 1 / 2)))
+    (integrableOn_const (hs := hWfin))
+    ((by fun_prop : Measurable (fun z => |H z| ^ (-(c - 1 / 2)))).aestronglyMeasurable)
+  filter_upwards [ae_restrict_mem hWmeas] with z hz
+  rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+  have hHpos : R ^ 2 < H z := hWsub z hz
+  have hHz0 : (0 : ℝ) < H z := lt_trans (by positivity) hHpos
+  rw [abs_of_nonneg hHz0.le]
+  exact Real.rpow_le_rpow_of_nonpos (by positivity) hHpos.le (by linarith)
+
+/-- **Joint-admissible ⟹ core-admissible at the shifted exponent** (open-neighbourhood form). From a
+joint admissibility witness (open `Ω ∋ (0, y0)`, `c > 1/2`), produce an open `Ω' ∋ y0` carrying
+`|H|^{−(c−1/2)}` integrably. Shrink `Ω` to a product `Icc (-R/2) (R/2) ×ˢ V₀` (`V₀ = ball y0 δ ⊆`
+the `H ≠ 0`-witness nbhd), split `V₀ = (V₀ ∩ {H ≤ (R/2)²}) ∪ (V₀ ∩ {H > (R/2)²})`: the low part is
+`core_int_of_joint_int` (cusp inside the ball), the high part `core_int_high` (bounded integrand).
+The split dodges the unboundedness of merely-measurable `H` near `y0` (Codex-confirmed: no
+continuity needed). -/
+theorem core_adm_of_joint_adm {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H) (y0 : Y)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0)
+    (c : ℝ) (hc : 1 / 2 < c)
+    (hjadm : ∃ Ω : Set (ℝ × Y), IsOpen Ω ∧ (0, y0) ∈ Ω ∧
+      IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-c) * (1 : ℝ)) Ω volume) :
+    ∃ Ω : Set Y, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) Ω volume := by
+  obtain ⟨Ω, hΩopen, hmem, hint⟩ := hjadm
+  obtain ⟨U, hU, hUne⟩ := hHne
+  obtain ⟨A, Vbase, hAopen, hVbopen, h0A, hy0Vb, hsub⟩ := isOpen_prod_iff.1 hΩopen 0 y0 hmem
+  obtain ⟨R, hRpos, hRA⟩ := Metric.isOpen_iff.1 hAopen 0 h0A
+  obtain ⟨U₀, hU₀sub, hU₀open, hy0U₀⟩ := _root_.mem_nhds_iff.1 hU
+  obtain ⟨δ, hδpos, hδsub⟩ := Metric.isOpen_iff.1 (hVbopen.inter hU₀open) y0 ⟨hy0Vb, hy0U₀⟩
+  set V₀ := Metric.ball y0 δ with hV₀
+  have hV₀open : IsOpen V₀ := Metric.isOpen_ball
+  have hV₀fin : volume V₀ ≠ ⊤ := Metric.isBounded_ball.measure_lt_top.ne
+  have hV₀Vb : V₀ ⊆ Vbase := fun z hz => (hδsub hz).1
+  have hV₀U : V₀ ⊆ U := fun z hz => hU₀sub (hδsub hz).2
+  set R2 := R / 2 with hR2
+  have hR2pos : 0 < R2 := by positivity
+  have hIccA : Icc (-R2) R2 ⊆ A := by
+    intro x hx; apply hRA; rw [Metric.mem_ball, Real.dist_eq, sub_zero]
+    simp only [mem_Icc] at hx
+    have : |x| ≤ R2 := abs_le.2 ⟨hx.1, hx.2⟩
+    linarith [this, (by linarith : R2 < R)]
+  have hjrect : IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-c) * (1 : ℝ))
+      ((Icc (-R2) R2) ×ˢ V₀) volume :=
+    hint.mono_set (fun p hp => hsub ⟨hIccA hp.1, hV₀Vb hp.2⟩)
+  set Vlo := V₀ ∩ {z | H z ≤ R2 ^ 2} with hVlo
+  set Vhi := V₀ ∩ {z | R2 ^ 2 < H z} with hVhi
+  have hVlomeas : MeasurableSet Vlo :=
+    hV₀open.measurableSet.inter (measurableSet_le hHmeas measurable_const)
+  have hVhimeas : MeasurableSet Vhi :=
+    hV₀open.measurableSet.inter (measurableSet_lt measurable_const hHmeas)
+  have hHneVlo : ∀ᵐ z ∂(volume.restrict Vlo), H z ≠ 0 :=
+    ae_restrict_of_ae_restrict_of_subset (fun z hz => hV₀U hz.1) hUne
+  have hcore_lo : IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) Vlo volume :=
+    core_int_of_joint_int H hH hHmeas c R2 hc hR2pos Vlo hVlomeas hHneVlo (fun z hz => hz.2)
+      (hjrect.mono_set (Set.prod_mono (subset_refl _) inter_subset_left))
+  have hcore_hi : IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) Vhi volume :=
+    core_int_high H hHmeas c R2 hc hR2pos Vhi hVhimeas
+      ((measure_mono inter_subset_left).trans_lt hV₀fin.lt_top).ne (fun z hz => hz.2)
+  have hVunion : V₀ = Vlo ∪ Vhi := by
+    ext z; simp only [hVlo, hVhi, mem_inter_iff, mem_union, mem_setOf_eq]
+    constructor
+    · intro hz; rcases le_or_gt (H z) (R2 ^ 2) with h | h
+      · exact Or.inl ⟨hz, h⟩
+      · exact Or.inr ⟨hz, h⟩
+    · rintro (⟨hz, _⟩ | ⟨hz, _⟩) <;> exact hz
+  exact ⟨V₀, hV₀open, Metric.mem_ball_self hδpos, hVunion ▸ hcore_lo.union hcore_hi⟩
+
+/-- **The threshold-lift, `≤` direction.** `rlctAtOn (x² + H) (0, y0) ≤ ½ + rlctAtOn H y0`. By
+`sSup_le`: a joint-admissible `c'` with `c' ≤ 1/2` is trivially `≤ ½ + λ_H`; for `c' > 1/2`,
+`core_adm_of_joint_adm` gives core-admissibility at `c' − 1/2`, so `(c' − 1/2) ≤ λ_H` (`le_sSup`),
+hence `c' = ½ + (c' − 1/2) ≤ ½ + λ_H`. -/
+theorem step_rlct_le {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0) :
+    rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) ≤ (1 / 2 : ℝ≥0∞) + rlctAtOn H y0 := by
+  rw [show rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0)
+      = sSup { c : ℝ≥0∞ | ∃ c' : NNReal, c = (c' : ℝ≥0∞) ∧ ∃ Ω : Set (ℝ × Y), IsOpen Ω ∧
+          {((0 : ℝ), y0)} ⊆ Ω ∧
+          IntegrableOn (fun w => |w.1 ^ 2 + H w.2| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w) Ω volume }
+      from rfl]
+  apply sSup_le
+  rintro c ⟨c', rfl, Ω, hΩopen, hmem, hint⟩
+  by_cases hc12 : (c' : ℝ) ≤ 1 / 2
+  · apply le_trans _ le_self_add
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp, ENNReal.coe_le_coe,
+      ← NNReal.coe_le_coe]
+    push_cast; linarith
+  · push_neg at hc12
+    obtain ⟨Ωc, hΩcopen, hy0c, hcint⟩ :=
+      core_adm_of_joint_adm H hH hHmeas y0 hHne (c' : ℝ) hc12
+        ⟨Ω, hΩopen, by simpa using hmem, hint⟩
+    set bN := ((c' : ℝ) - 1 / 2).toNNReal with hbN
+    have hbNcoe : (bN : ℝ) = (c' : ℝ) - 1 / 2 := Real.coe_toNNReal _ (by linarith)
+    have hble : (bN : ℝ≥0∞) ≤ rlctAtOn H y0 := by
+      unfold rlctAtOn weightedThreshold
+      apply le_sSup
+      refine ⟨bN, rfl, Ωc, hΩcopen, by simpa using hy0c, ?_⟩
+      rw [hbNcoe]; simpa using hcint
+    have hsum : (c' : ℝ≥0∞) = (1 / 2 : ℝ≥0∞) + (bN : ℝ≥0∞) := by
+      rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp, ← ENNReal.coe_add]
+      congr 1
+      apply NNReal.coe_injective; push_cast [hbNcoe]; ring
+    rw [hsum]; gcongr
+
+/-- **The smooth-block Fubini RLCT lemma, `n = 1`** (`step_rlct`). Adding the coordinate `x²`
+to a measurable, a.e.-nonvanishing core `H` shifts the RLCT by exactly `1/2`:
+`rlctAtOn (x² + H) (0, y0) = 1/2 + rlctAtOn H y0`. The `le_antisymm` of the integrability (`≥`) and
+cusp (`≤`) directions. Iterating over the `n` regular coordinates yields the general `n/2` shift
+(`Skeleton.rlct_additive_smooth_block`). Axiom-clean; the `hHne` hygiene hypothesis (the 13th
+fidelity fix) rules out the germ-vanishing counterexample. -/
+theorem step_rlct {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0) :
+    rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) = (1 / 2 : ℝ≥0∞) + rlctAtOn H y0 :=
+  le_antisymm (step_rlct_le H y0 hH hHmeas hHne) (step_rlct_ge H y0 hH hHmeas hHne)
+
 end DLNFibre.DLN.RLCT
