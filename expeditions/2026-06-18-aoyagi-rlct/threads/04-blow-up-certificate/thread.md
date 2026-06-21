@@ -3222,3 +3222,36 @@ branch-specific product packages, construct a chart, produce recurrence or
 exponent post-data, construct a successor chart-family boundary, prove
 transition invariance, compute Jacobians, prove normal crossings/RLCT, or
 repair the printed Case 2 vector mismatch.
+
+## 2026-06-21 Lean Case 2 source-chart frontier packages
+
+Reproduction:
+`reproduction-case2-source-chart-frontier-packages-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-chart-frontier-packages.md`.
+Review artifact:
+`review-case2-source-chart-frontier-packages-a4.md`.
+
+Lean now packages the displayed Case 2 source-chart frontier as fielded
+implications:
+
+```text
+ContinuingSourceChartFrontierPayload
+ActualWidthSourceChartFrontierPayload
+RowExhaustedTerminalLastSourceChartFrontierPayload
+SourceChartFrontierBoundaryPackages
+sourceChartMap_frontierBoundaryPackages
+```
+
+The package exposes the existing continuing, actual-width, and row-exhausted
+boundary theorems under their own explicit branch hypotheses.  This is
+deliberately not a single `Or`: the stopped hypotheses may overlap, and their
+conclusions have different domains.  Actual-width still carries original rows
+and `(S+1,0)` relabelled certificates; row-exhausted still carries transported
+prefix rows and only the terminal-last suffix-removal field.
+
+This is supplied-boundary assembly only.  It does not construct charts,
+produce recurrence or exponent post-data, construct a successor chart-family
+boundary, prove transition invariance, prove terminal source truth, compute
+Jacobians, prove normal crossings/RLCT, or repair the printed Case 2 vector
+mismatch.

@@ -114,6 +114,14 @@ domain bookkeeping only.  It does not combine the branch-specific product
 packages, prove chart construction, chart-produced post-data, transition
 invariance, terminal source truth, normal crossings, pole order, or RLCT.
 
+Follow-up A4 checkpoint:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-frontier-packages-a4.md`.
+Lean now packages the continuing, actual-width, and row-exhausted displayed
+source-chart consequences as fielded implications under explicit branch
+hypotheses.  Keep this as supplied-boundary assembly: no chart construction,
+post-data production, transition invariant, terminal source truth, normal
+crossings, pole order, or RLCT follows.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch

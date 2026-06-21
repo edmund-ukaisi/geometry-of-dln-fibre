@@ -15317,6 +15317,236 @@ theorem sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFinit
       case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
       case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
 
+/-- Continuing-branch displayed source-chart frontier payload.
+
+This is the next same-stage lower-row product package together with the
+finite nonemptiness of the next residual center. -/
+abbrev ContinuingSourceChartFrontierPayload
+    {τ R : Type*} [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ)
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : ℕ → τ → R) : Prop :=
+  (case2ResidualBlockPivotEntries n S (J + 1)).Nonempty ∧
+    (case2DisplayedPaperDppp n hS hcont residual *
+        case2DisplayedPaperCprime n hS hcont residual C).submatrix
+        (fun i ↦
+          Sum.inr
+            ((case2DisplayedPivotRowComplementEquivResidualRowSucc
+              n hS hcont).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C ∧
+    IntroducedLabelExponentCertificates L n S (J + 1)
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    IntroducedLabelLevelInvariants L n S (J + 1)
+      ((pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).level)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    case2IntroducedLabelLeastValueGap L n S (J + 1)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    (pre.case2Succ
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).case2Gap
+
+/-- Actual-width stopped displayed source-chart frontier payload with a supplied
+following factor and finite center principalization. -/
+abbrev ActualWidthSourceChartFrontierPayload
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ)
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : ℕ → τ → R) (F : Matrix τ υ R) : Prop :=
+  (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+    matrixEntryIdeal
+        ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+            (weightedPivotBlockRowOp q
+                  (fun i ↦
+                    pivotFirstX
+                      (case2DisplayedPivotRow n hS hcont)
+                      (case2DisplayedPivotCol n hS hcont)
+                      (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                  case2DisplayedSourceSubstitutionBlock n hS hcont
+                    (case2DisplayedSourceChartMap n hS hcont u residual
+                      (J + 1, J + 1)) residual).submatrix
+                  (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                  (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+            verticalBlock (case2DisplayedSourceOldTopBlock C)
+              (case2DisplayedSourceFollowingFactor n hS hcont C)) * F) =
+    matrixEntryIdeal
+        ((case2DisplayedSourceTerminalWeight
+            (case2DisplayedSourceOldTopWeight pre)
+            ((pre.case2Succ
+              (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+              |>.stageRelabelSuccZero
+              |>.weight (J + 1)) *
+          case2DisplayedSourceTerminalOriginalRows C) * F)) ∧
+  IntroducedLabelLevelInvariants L n (S + 1) 0
+    ((pre.case2Succ
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+      |>.stageRelabelSuccZero
+      |>.level)
+    (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+  IntroducedLabelExponentCertificates L n (S + 1) 0
+    (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+    (updateSelectedLabelScalar S (J + 1)
+      (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+        ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+    (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+  u ∈
+    {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+      case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+  (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+    u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+  Ideal.span
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+    Ideal.span ({u} : Set R)
+
+/-- Row-exhausted terminal-last displayed source-chart frontier payload with
+transported prefix rows and finite center principalization. -/
+abbrev RowExhaustedTerminalLastSourceChartFrontierPayload
+    {R : Type*} [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hrow : prefixMinNat n S = J + 1)
+    (κ : Fin (L + 1) → Type*) [∀ i, Finite (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R) :
+    Prop :=
+  (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+    matrixEntryIdeal
+        (fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+            (weightedPivotBlockRowOp q
+                  (fun i ↦
+                    pivotFirstX
+                      (case2DisplayedPivotRow n hS hcont)
+                      (case2DisplayedPivotCol n hS hcont)
+                      (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                  case2DisplayedSourceSubstitutionBlock n hS hcont
+                    (case2DisplayedSourceChartMap n hS hcont u residual
+                      (J + 1, J + 1)) residual).submatrix
+                  (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                  (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+            verticalBlock (case2DisplayedSourceOldTopBlock C)
+              (case2DisplayedSourceFollowingFactor n hS hcont C)) =
+    matrixEntryIdeal
+        (case2DisplayedSourceTerminalWeightPrefixCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            n hcont
+            (case2_not_next_cont_of_prefixMin_current_eq hS hrow)
+            ((pre.case2Succ
+              (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+              |>.weight (J + 1)) *
+          (case2DisplayedSourceTerminalTransportedRows n hS hcont residual C).submatrix
+            (case2SourceTerminalRowEquivPrefixOfNotNext n hcont
+              (case2_not_next_cont_of_prefixMin_current_eq hS hrow)).symm id)) ∧
+  u ∈
+    {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+      case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+  (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+    u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+  Ideal.span
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+    Ideal.span ({u} : Set R)
+
+/-- Fielded implication bundle for the displayed Case 2 source-chart frontier.
+
+The fields expose existing consequences under explicit branch hypotheses
+`hnext`, `hwidth`, and `hrow`.  The stopped alternatives may overlap, and this
+structure does not choose a unique semantic branch.  It is branch-domain and
+supplied-boundary bookkeeping only; it does not produce charts, post-data,
+terminal source data, transition invariance, normal crossings, pole order, or
+RLCT consequences. -/
+structure SourceChartFrontierBoundaryPackages
+    (R : Type*) [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ)
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1)) : Prop where
+  frontierBranch : Case2DisplayedStepBranch n S J
+  continuing :
+    ∀ {τ : Type*} (C : ℕ → τ → R),
+      J + 2 ≤ prefixMinNat n (S + 1) →
+        ContinuingSourceChartFrontierPayload
+          L n S J t numerator leastValue pre u residual hS hcont C
+  actualWidthStopped :
+    ∀ {υ τ : Type*} [Fintype τ] (C : ℕ → τ → R) (F : Matrix τ υ R),
+      n (S + 1) = J + 1 →
+        ActualWidthSourceChartFrontierPayload
+          L n S J t numerator leastValue pre u residual hS hcont C F
+  rowExhaustedStopped :
+    ∀ (κ : Fin (L + 1) → Type*) [∀ i, Finite (κ i)]
+      (hSuffix : S + 1 ≤ L) (_hLast : S + 1 = L)
+      (C : ℕ → κ (sourceLayerIndex L (S + 2)
+        (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+      (_Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R),
+      (hrow : prefixMinNat n S = J + 1) →
+        RowExhaustedTerminalLastSourceChartFrontierPayload
+          L n S J pre u residual hS hcont hrow κ hSuffix C
+
+/-- Concrete displayed source-chart frontier implication package.
+
+This packages existing branch-specific boundary theorems as implications under
+their explicit branch hypotheses.  It does not assert that the branch
+hypotheses are exclusive, and it does not identify the row-exhausted branch
+with actual-width terminal relabeling. -/
+theorem sourceChartMap_frontierBoundaryPackages
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular) :
+    SourceChartFrontierBoundaryPackages R L n S J t numerator leastValue
+      pre u residual hS hcont where
+  frontierBranch := case2DisplayedStepBranch_of_cont hS hcont
+  continuing := by
+    intro τ C hnext
+    exact
+      ⟨case2DisplayedPostPivotResidualBlock_nonempty_of_next n hS hnext,
+        sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData
+          pre u residual hS hSL hcont exponentPre levelInv leastValueGap
+          chartFamily C⟩
+  actualWidthStopped := by
+    intro υ τ inst C F hwidth
+    exact
+      sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal
+        pre u residual hS hSL hcont hwidth exponentPre levelInv leastValueGap
+        chartFamily C F
+  rowExhaustedStopped := by
+    intro κ inst hSuffix hLast C Ctail hrow
+    exact
+      sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal
+        pre u residual hS hSL hcont hrow exponentPre levelInv leastValueGap
+        chartFamily κ hSuffix hLast C Ctail
+
 end Case2DisplayedSuppliedChartFamilyBoundary
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence

@@ -3528,6 +3528,27 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-displayed-frontier-branch-a4.md`.
 
+The source-chart frontier package slice has also landed in
+`BlowupArithmetic.lean`.  New Lean names:
+`Case2DisplayedSuppliedChartFamilyBoundary.ContinuingSourceChartFrontierPayload`,
+`Case2DisplayedSuppliedChartFamilyBoundary.ActualWidthSourceChartFrontierPayload`,
+`Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedTerminalLastSourceChartFrontierPayload`,
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceChartFrontierBoundaryPackages`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_frontierBoundaryPackages`.
+The package is a fielded implication interface: continuing, actual-width, and
+row-exhausted consequences are exposed only under their own explicit branch
+hypotheses.  It is not a chosen-branch transition theorem, and it keeps the
+actual-width original-row/relabel conclusion separate from the row-exhausted
+transported-prefix terminal-last conclusion.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-frontier-packages-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-chart-frontier-packages.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-chart-frontier-packages-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
