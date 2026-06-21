@@ -4189,3 +4189,30 @@ This is finite supplied-image bookkeeping only.  It does not construct Eq5
 branches, prove alpha-domain coverage, selected-span coverage, displayed
 vectors, terminal exactness, classifier/back-to-label coverage, pole order,
 normal crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 5 Eq5 alpha-indexed branch cardinal bound
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-indexed-branch-card-bound.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`.
+
+Lean now packages the supplied alpha-indexed Eq5 branch-label image as
+cardinality bounds:
+
+```text
+aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_le_actualWidthLabelFinset_card
+aoyagiLemma5Eq5_alphaIndexedBranch_card_le_actualWidthLabelFinset_card
+```
+
+The image-card theorem uses only the already-proved image subset
+`branches.image branchLabel ⊆ actualWidthLabelFinset L n`.  The branch-card
+theorem adds supplied alpha injectivity to identify the image cardinality with
+the supplied branch-family cardinality.
+
+This is finite supplied-cardinality bookkeeping only.  It does not construct
+Eq5 branches, prove alpha-domain coverage, selected-span coverage, displayed
+vectors, terminal exactness, classifier/back-to-label coverage, pole order,
+normal crossings, or RLCT.

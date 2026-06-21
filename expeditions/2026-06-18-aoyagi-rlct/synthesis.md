@@ -158,6 +158,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`.
 
+The Eq5 alpha-indexed branch cardinal-bound wrapper has now landed in the same
+file.  New Lean names:
+`aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_le_actualWidthLabelFinset_card`
+and `aoyagiLemma5Eq5_alphaIndexedBranch_card_le_actualWidthLabelFinset_card`.
+The first theorem converts the branch-label image subset into an image
+cardinality bound.  The second combines that bound with supplied alpha
+injectivity to bound the supplied branch-family cardinality by
+`(actualWidthLabelFinset L n).card`.  This is finite supplied-cardinality
+bookkeeping only: no branch construction, alpha-domain coverage,
+selected-span coverage, terminal exactness, classifier/back-to-label
+coverage, pole order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-branch-card-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:

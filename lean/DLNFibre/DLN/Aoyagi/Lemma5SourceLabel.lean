@@ -1288,6 +1288,76 @@ theorem aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_of_alphaInj
     (aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn
       ell a p M m branches alphaOf branchLabel halpha_inj hlabel)
 
+/-- The supplied alpha-indexed equation `(5)` branch-label image has
+cardinality bounded by the total actual-width label finite set.
+
+This is only finite image bookkeeping from branchwise source-label legality.
+It does not prove branch injectivity, alpha-domain coverage, or coverage of
+all actual-width labels. -/
+theorem
+    aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_le_actualWidthLabelFinset_card
+    {β : Type*}
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha : ∀ b ∈ branches, alphaOf b ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) =
+      (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : ∀ b ∈ branches, 1 ≤ (branchLabel b).1)
+    (hs_le : ∀ b ∈ branches, (branchLabel b).1 ≤ L)
+    (hwidth_le : ∀ b ∈ branches,
+      aoyagiSelectedWidthNat ell m p ≤ (n ((branchLabel b).1 + 1) : ℤ))
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ)) :
+    (branches.image branchLabel).card ≤ (actualWidthLabelFinset L n).card :=
+  Finset.card_le_card
+    (aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_subset_actualWidthLabelFinset_of_widthBound
+      L ell a p n M m branches alphaOf branchLabel hell ha hpell halpha
+      hselected hsource hs_pos hs_le hwidth_le hlabel)
+
+/-- Under supplied alpha injectivity and branchwise label legality, the number
+of supplied alpha-indexed equation `(5)` branch labels is bounded by the total
+actual-width label finite set.
+
+This is only a finite image-cardinality consequence of the previous wrappers.
+It does not assert that the supplied image covers actual-width labels,
+terminal-minimum labels, or Aoyagi's displayed branch family. -/
+theorem aoyagiLemma5Eq5_alphaIndexedBranch_card_le_actualWidthLabelFinset_card
+    {β : Type*}
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha : ∀ b ∈ branches, alphaOf b ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) =
+      (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : ∀ b ∈ branches, 1 ≤ (branchLabel b).1)
+    (hs_le : ∀ b ∈ branches, (branchLabel b).1 ≤ L)
+    (hwidth_le : ∀ b ∈ branches,
+      aoyagiSelectedWidthNat ell m p ≤ (n ((branchLabel b).1 + 1) : ℤ))
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ))
+    (halpha_inj : Set.InjOn alphaOf ↑branches) :
+    branches.card ≤ (actualWidthLabelFinset L n).card := by
+  calc
+    branches.card = (branches.image branchLabel).card := by
+      exact
+        (aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_of_alphaInj
+          ell a p M m branches alphaOf branchLabel halpha_inj hlabel).symm
+    _ ≤ (actualWidthLabelFinset L n).card :=
+      aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_le_actualWidthLabelFinset_card
+        L ell a p n M m branches alphaOf branchLabel hell ha hpell halpha
+        hselected hsource hs_pos hs_le hwidth_le hlabel
+
 /-- The terminal selected coordinate `C.point ell - 1` is a positive source
 index when the selected list has positive length.
 

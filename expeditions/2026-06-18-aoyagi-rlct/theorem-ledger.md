@@ -91,6 +91,22 @@ injectivity.  It is not branch construction, alpha-domain coverage,
 selected-span coverage, terminal exactness, classifier/back-to-label coverage,
 pole order, normal crossings, or RLCT extraction.
 
+The Eq5 alpha-indexed branch cardinal-bound wrapper has also landed in
+`Lemma5SourceLabel.lean`.  New Lean names:
+`aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_le_actualWidthLabelFinset_card`
+and `aoyagiLemma5Eq5_alphaIndexedBranch_card_le_actualWidthLabelFinset_card`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-branch-card-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`.
+This converts the supplied image subset into an image-cardinality bound, and
+then, under supplied alpha injectivity, into a bound on the supplied branch
+family itself.  It is not branch construction, alpha-domain coverage,
+selected-span coverage, terminal exactness, classifier/back-to-label coverage,
+pole order, normal crossings, or RLCT extraction.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in
