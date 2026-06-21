@@ -2243,3 +2243,29 @@ guards `1 <= p`, `p <= a`, and `p <= ell-a` explicit.  It does not construct
 displayed vectors, prove source-label legality, cover all intervals, package
 all branch families, prove Lemma 5 order count, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3-shaped component interval coverage
+
+Reproduction:
+`reproduction-lemma5-eq3-shaped-component-interval-coverage-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-shaped-component-interval-coverage.md`.
+Review artifact:
+`review-lemma5-eq3-shaped-component-interval-coverage-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat
+```
+
+For one coordinate in the rising range, the supplied Eq3-shaped component
+value is the upper endpoint, and this instantiates the supplied-upper interval
+coverage wrapper with the supplied Eq4 lower endpoint and strict Eq5 offsets.
+
+This is component-value and one-interval finite-set bookkeeping only.  It does
+not prove source-label legality or introduced-label status for the Eq3-shaped
+component, construct displayed vectors, cover all intervals, package all
+branch families, prove Lemma 5 order count, normal crossings, or RLCT
+extraction.

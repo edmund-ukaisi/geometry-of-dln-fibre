@@ -2373,6 +2373,11 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min`;
   its upper endpoint equality is an explicit hypothesis, not a printed Eq3
   claim.
+  Also proved the supplied Eq3-shaped component-value wrapper
+  `aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap` and its
+  one-interval finite-set coverage instantiation
+  `aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat`;
+  no source-label legality or introduced-label status is claimed.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

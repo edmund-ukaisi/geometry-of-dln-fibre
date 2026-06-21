@@ -854,6 +854,10 @@ on the session's original cwd.
    endpoint, and the strict Eq5 offsets, without claiming printed Eq3 supplies
    the upper endpoint.  This should be the reusable API for later
    branch-specific endpoint instantiations.
+   The Eq3-shaped component-value instantiation is now proved too: a supplied
+   Eq3-shaped branch gives the upper endpoint as a component value on block
+   `p`, and the supplied-upper interval coverage wrapper then fills that one
+   interval.  Keep source-label legality and introduced-label status separate.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

@@ -1517,6 +1517,24 @@ theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_
   · exact hvalue
   · exact hlabel
 
+/-- A supplied equation-`(3)`-shaped certificate has the upper endpoint value
+on selected block `p` in the rising range.
+
+This is only a component-value consequence of the supplied piecewise
+certificate; it is not a source-label legality or terminality theorem. -/
+theorem aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    T (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p := by
+  have hp_lt_ell : p < ell := by
+    have ha : a ≤ ell := hT.a_le_ell
+    have ha_pos : 1 ≤ a := hT.indexGuard
+    omega
+  exact hT.upper p (C.point p - 1) hp_pos hp_c
+    (C.leftEndpoint_mem_block hp_lt_ell)
+
 /-- In the boundary case `a=1`, a supplied equation `(3)` certificate assigns
 the terminal selected endpoint the value `1`.
 
@@ -2160,6 +2178,37 @@ theorem aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNa
             rw [hEq4, hupper]
     _ = aoyagiHtildeIntervalValueSetNat ell a M m p :=
       Finset.insert_erase hupper_mem
+
+/-- In any rising-range interval, a supplied Eq3-shaped upper component and
+supplied equation `(4)` lower own-coordinate fill the two endpoints missing
+from the strict Eq5 offset set.
+
+This instantiates the supplied-upper finite-set wrapper with the component
+value supplied by an equation-`(3)`-shaped certificate.  It does not assert that
+the component is a legal source label, construct displayed vectors, cover all
+intervals, prove order count, normal crossings, or RLCT extraction.
+-/
+theorem aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (layerWidth3 T3 layerWidth4 T4 : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3)
+    (hT4 : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth4 T4) :
+    insert (T3 (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hupper :=
+    aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+      ell a p M m C layerWidth3 T3 hp_pos hp_c hT3
+  exact
+    aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min
+      ell a p M m C T3 layerWidth4 T4 hell hp_pos hp_a hp_c hselected hsource
+      hupper hT4
 
 /-- A supplied equation `(5)` own-coordinate branch has the displayed value
 `Htilde'_p - alpha` on block `p`. -/

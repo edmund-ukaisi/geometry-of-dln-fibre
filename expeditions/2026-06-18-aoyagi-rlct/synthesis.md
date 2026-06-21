@@ -2628,6 +2628,22 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-supplied-upper-eq4-interval-coverage-a5.md`.
 
+The supplied-upper finite-set wrapper now has an Eq3-shaped component
+instantiation.  The theorems
+`aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap` and
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` prove that a supplied
+Eq3-shaped component value is the upper endpoint on block `p`, and that this
+component plus the supplied Eq4 lower endpoint and strict Eq5 offsets fills the
+one same-coordinate interval.  This is still only component-value and
+one-interval finite-set bookkeeping: no source-label legality, introduced-label
+status, displayed-vector construction, all-interval/all-branch coverage, Lemma
+5 order count, normal crossings, or RLCT extraction is proved.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-shaped-component-interval-coverage-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-shaped-component-interval-coverage.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-interval-coverage-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

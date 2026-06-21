@@ -3253,6 +3253,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-supplied-upper-eq4-interval-coverage-a5.md`.
 
+Latest A5 update: the supplied-upper finite-set wrapper now has an Eq3-shaped
+component instantiation in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.
+The names are
+`aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap` and
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat`.
+The first theorem reads the supplied Eq3-shaped upper branch as a component
+value on selected block `p`; the second combines it with the supplied Eq4 lower
+endpoint and strict Eq5 offsets to fill one interval.  No source-label
+legality, introduced-label status, all-interval coverage, all-branch packaging,
+order count, normal crossings, or RLCT extraction is proved.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-shaped-component-interval-coverage-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-shaped-component-interval-coverage.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-interval-coverage-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
