@@ -993,20 +993,29 @@ private theorem prod_smul (H : Fin (L + 1) → ℕ) (t : ℝ) (A : Params H) :
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
-/-- **D1 per-point obligation (Aoyagi 2013 Thm 2, the fibre monotonicity).** The local RLCT of the
-loss at the deepest point is `≤` that at every other fibre point `v`. This is the `≥` leg of D1 (after
-`le_iInf₂`), isolated as a building block under its correct statement.
+/-- **D1 per-point obligation (Aoyagi 2013 Thm 2, the fibre monotonicity) — ROADMAPPED.** The local
+RLCT of the loss at the deepest point is `≤` that at every other fibre point `v`. This is the `≥` leg
+of D1 (after `le_iInf₂`), the geometric refinement "the deepest point is the global fibre minimiser",
+isolated as a building block under its correct statement.
 
-**Dependency (named, not vague):** the engine is `rlctAt_mono` (`Rlct.lean`), which compares two
-functions at ONE point via `|G| ≤ |F|` near `w*`. Here we have the SAME loss `dlnLoss H B` at TWO
-points (`deepestPoint` vs `v`), so `rlctAt_mono` does not apply directly. Bridging the two points
-needs the loss in its **homogeneous normal form** — the L2 decomposition (`product_reduction`:
-regular shift + singular core `lambdaCore` on reduced widths `M = H − r`, via `S1Fubini`), under
-which the deepest point's core pointwise-dominates the core at any other fibre point. With `B ≠ 0`
-the raw `dlnLoss B` is not homogeneous, so this domination is **L2-downstream**. Open: whether the
-homogeneous domination is provable from L1 `block_elimination` (green) + the deepest-point structure
-ALONE (R1-separable, value-independent) or genuinely needs the resolution value — a scoping question
-for the controller / pp-hall. -/
+**Status: roadmapped, NOT on the only-S2 headline path.** The headline `aoyagi_learning_coefficient`
+is stated at the deepest point (`rlctAt (deepestPoint) = aoyagiLambda`, completable via L2 + R1, only
+the S2 monomial-integral citation), matching the validated `(2,2,2)` ladder (`case222_rlct` is the
+RLCT *at* the deepest point, not the `⨅` over the fibre). This `≥` leg upgrades that to the `⨅`-over-
+fibre identity — a strict refinement, deferred.
+
+**Why deferred (the precise blocker — value-free per pp-hall #112/#117, but Mathlib-gated):** the
+engine is `rlctAt_mono` (`Rlct.lean`), comparing two functions at ONE point via `|G| ≤ |F|`. Here the
+SAME loss sits at TWO points (`deepestPoint` vs `v`); the Aoyagi-Thm-2 bridge is a homogeneous-residual
+normal form at the arbitrary fibre point `v` (`F ∘ coord =ᶠ ‖x‖² + ‖core‖²`, `core` homogeneous), via a
+**local constant-rank / Morse split**. That split is value-free (it does NOT use R1's resolution value)
+but rests on the **constant-rank theorem**, which is **absent from Mathlib v4.29** (no constant-rank /
+Morse normal form; only the inverse-function and implicit-function primitives). Building it is a
+Mathlib-contribution-scale analytic-geometry tide (the `AnalyticLocalEquiv` normal form + the
+regular-block ⊕ homogeneous-core split, covering the non-empty cores at intermediate singular `v` for
+`L ≥ 3`), not a rung — so the `⨅`
+refinement is roadmapped for a later commissioned tide, kept off the only-S2 headline path. The
+value-free `(b)` half (the fibre cone `prod_smul`, `prod (t·A) = t^L • prod A`) is already built. -/
 theorem rlctAt_deepest_le_of_optimal (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
