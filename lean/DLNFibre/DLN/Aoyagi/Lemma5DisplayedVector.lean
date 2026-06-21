@@ -515,6 +515,27 @@ theorem aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_sourceSelected
       ell a p M m C layerWidth T hT hp_strict hselected hsource hmem
   omega
 
+/-- A concrete `p=2` constant-width guardrail: for this Definition 3-shaped
+selected-width tuple, a supplied equation `(4)` certificate puts the strict
+boundary value in the boundary-coordinate interval.
+
+This does not construct the supplied certificate or displayed source vector.
+It only records that the necessary condition `2 <= p` is not a hidden
+nonmembership theorem for all `p >= 2`. -/
+theorem aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example
+    (C : AoyagiSelectedCutpoints 5) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector 5 4 2 (5 : ℤ)
+      (fun _ : Fin (5 + 1) => (4 : ℤ)) C layerWidth T) :
+    T (C.point (2 + (5 - 4) + 1) - 1) ∈
+      aoyagiHtildeIntervalValueSetNat 5 4 (5 : ℤ)
+        (fun _ : Fin (5 + 1) => (4 : ℤ)) (2 + (5 - 4) + 1) := by
+  exact (aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow_min
+    5 4 2 (5 : ℤ) (fun _ : Fin (5 + 1) => (4 : ℤ)) C layerWidth T hT
+      (by norm_num)).2 (by
+    constructor
+    · norm_num [aoyagiSelectedWidthNat]
+    · norm_num [aoyagiSelectedWidthNat])
+
 /-- In the `p=1` strict equation `(4)` case, Definition 3's selected-width
 upper bound puts the boundary value strictly above the boundary-coordinate
 upper endpoint. -/

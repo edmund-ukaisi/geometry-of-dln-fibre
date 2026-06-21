@@ -1243,3 +1243,38 @@ membership.  This is a necessary condition only; it does not prove membership
 for `p>=2`, construct equation `(4)`'s displayed vector, prove terminal
 `tilde t=0`, introduced-label status, vector admissibility, Case 1(2) chart
 sequence, Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(4)` p=2 membership guardrail
+
+Reproduction:
+`reproduction-lemma5-eq4-boundary-membership-p2-example-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-boundary-membership-p2-example.md`.
+Review artifact:
+`review-lemma5-eq4-boundary-membership-p2-example-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example
+```
+
+For the concrete selected-width tuple
+
+```text
+ell=5, a=4, p=2, M=5, W_i=4 for all i,
+```
+
+any supplied equation `(4)` certificate puts the strict boundary value in its
+boundary-coordinate interval.  The width window is `4<=W_r<=5` at
+`r=p+(ell-a)+1=4`, and `W_r=4`.
+
+This is a guardrail for the previous obstruction: `2<=p` is only a necessary
+condition for boundary-coordinate membership, not a theorem that membership
+always fails for `p>=2`.  The example intentionally does not satisfy the older
+own-coordinate guard `p<=ell-a`; that guard belongs to the classifier at
+coordinate `p+(ell-a)`, not the boundary-coordinate theorem.  The checkpoint
+does not construct the supplied certificate or displayed vector, prove
+terminal `tilde t=0`, introduced-label status, vector admissibility, Case
+1(2) chart sequence, Lemma 5 order count, normal crossings, or RLCT
+extraction.

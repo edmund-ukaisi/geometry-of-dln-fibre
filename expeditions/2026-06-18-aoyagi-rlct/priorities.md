@@ -690,6 +690,10 @@ on the session's original cwd.
    either build a richer supplied Case 1(2) terminal convention explicitly or
    continue extracting finite consequences below the displayed-family
    realisation boundary.
+   A concrete `p=2` constant-width guardrail now confirms this obstruction is
+   not a uniform nonmembership theorem for `p>=2`; the theorem remains
+   conditional on a supplied equation `(4)` certificate and does not construct
+   the displayed vector.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

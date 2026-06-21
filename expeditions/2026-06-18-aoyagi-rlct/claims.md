@@ -2144,6 +2144,13 @@ No such claim is formalisation-ready until both fields are filled.
   which generalize the source-selected obstruction to a necessary condition:
   boundary-coordinate membership forces `2<=p`, so `p<2` rules out
   membership.  This does not assert membership for `p>=2`.
+  Also proved
+  `aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example`,
+  which supplies a concrete `p=2` constant-width guardrail: for any supplied
+  equation `(4)` certificate with `ell=5`, `a=4`, `p=2`, `M=5`, and all
+  selected widths equal to `4`, the boundary value is in the
+  boundary-coordinate interval.  This does not construct the supplied
+  certificate or displayed vector.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

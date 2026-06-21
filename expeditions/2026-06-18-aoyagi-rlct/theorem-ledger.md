@@ -2648,6 +2648,25 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-boundary-membership-forces-p-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` `p=2` boundary-coordinate
+membership guardrail has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean name
+is
+`aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example`.
+For `ell=5`, `a=4`, `p=2`, `M=5`, and all selected widths equal to `4`, any
+supplied equation `(4)` certificate puts the strict boundary value in its
+boundary-coordinate interval.  This shows that the previous theorem
+`membership -> 2<=p` is only a necessary condition, not a uniform
+nonmembership theorem for `p>=2`.  The example does not construct the supplied
+certificate or displayed vector, and it does not prove terminal `tilde t=0`,
+chart sequence, introduced-label status, Lemma 5 order count, normal
+crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-boundary-membership-p2-example-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-boundary-membership-p2-example.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-boundary-membership-p2-example-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

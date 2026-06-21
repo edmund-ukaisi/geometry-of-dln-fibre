@@ -2184,6 +2184,16 @@ boundary-coordinate interval, the lower edge of the width window gives
 sequence, introduced-label status, Lemma 5 order count, normal crossings, or
 RLCT extraction.
 
+The converse overclaim is now guarded by a concrete `p=2` constant-width
+example.  With `ell=5`, `a=4`, `p=2`, `M=5`, and all six selected widths equal
+to `4`, the Definition 3-shaped selected-width sum and strict inequalities
+hold, and the boundary-coordinate width window is satisfied.  Therefore any
+supplied equation `(4)` certificate with these constants has the strict
+boundary value inside its boundary-coordinate interval.  This does not
+construct such a certificate or the displayed vector; it only shows that the
+previous `2<=p` theorem is a necessary condition, not a uniform
+nonmembership statement for `p>=2`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
