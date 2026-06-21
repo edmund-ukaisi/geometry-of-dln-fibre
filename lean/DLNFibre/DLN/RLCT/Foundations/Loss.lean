@@ -85,4 +85,12 @@ theorem optimalSet_eq_loss_zero (H : Fin (L + 1) → ℕ)
     have := sub_eq_zero.1 (by simpa [Matrix.sub_apply] using hij)
     simpa using this
 
+/-- **`dlnLoss` is nonnegative.** A sum of squares: `0 ≤ dlnLoss H B A`. Reusable bedrock — needed
+for the sqrt-wrapper `Real.sqrt (dlnLoss …) ^ 2 = dlnLoss …` that feeds `rlct_additive_smooth_block`
+(the smooth-block split), and for the homogeneous-core work. -/
+theorem dlnLoss_nonneg (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (A : Params H) :
+    0 ≤ dlnLoss H B A :=
+  Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _
+
 end DLNFibre.DLN.RLCT
