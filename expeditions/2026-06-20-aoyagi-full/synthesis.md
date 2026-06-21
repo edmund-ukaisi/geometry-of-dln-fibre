@@ -352,9 +352,16 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
 - Assembly T: assembles from D1+L2 (+ hr threaded).
 - Two hard builds remain: S1.1 + R1's cover-inequality (lower bound).
 
-## STATUS @ 2026-06-21 ~01:00 (trunk past 8f6c98a; Fubini @b8f53c7)
-- **S1.1 + S1.4 CLOSED + green-gated + rv-2 PASS** (@67ae3c1; both axiom-clean, FLAG-1 orphan resolved). Skeleton 7 sorries.
-- **S1.3 wiring now** (fm; actionable — S1Local sorry-free on origin, my earlier b6eaa80-stale ref was wrong). → then D1.
+## STATUS @ 2026-06-21 ~01:30 (trunk @c32b694; Fubini @e2a3f0c)
+- **S1 WIRE BATCH COMPLETE — S1.1/S1.3/S1.4 ALL CLOSED + green-gated + axiom-clean** (@c32b694; build green 2855,
+  Skeleton 6 sorries; rv-2 PASS on S1.1/S1.4, S1.3 audit queued). The S1 transport/locality/unit substrate is DONE;
+  only S1.5 (Fubini) remains of S1. 6 sorries: S1.5, L2, D1, R1, #19, A2.
+- **R1 EXECUTION LAUNCHED** (pp leads math, fm formalises): pre-Fubini parts first — R1.1 chart construction
+  (L1-reuse) + R1.2 multiplicity-control (`h_E+1 ≥ k_E·min Mval` per divisor, NOT codim shortcut); R1.4
+  (Fubini-per-chart) plugs fm-2's shift theorem when the lift lands; obligations folded in (unit-absorption via
+  S1.3, hcore_top endpoint, min-over-cover factorises n upstream-fixed). The mountain.
+- **S1.5 restatement+wire deferred to ONE pass** at fm-2's Fubini lift-close: I relay the complete signature
+  (hGmeas + hGne + `[ProperSpace]`/`[IsFiniteMeasureOnCompacts]` instances) → fm restates + wires `exact` in one go.
 - **FUBINI: ALL ATOMS PROVEN** (fm-2, S1Fubini.lean @e2a3f0c, 302 LoC, axiom-clean): both integral directions
   (`step_integrableOn` ≥, `step_lintegral_top` ≤ cusp) + `admissible_downset` (the hardest sub-piece, rpow
   two-sided bound on a bounded finite-measure nbhd; needs `[ProperSpace]`+`[IsFiniteMeasureOnCompacts]`) +
@@ -387,8 +394,10 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
 
 ## Next tick
-HOLD + integrate: (1) fm-2's pinned hHne signature → relay to fm → fm restates `rlct_additive_smooth_block` →
-green-gate. (2) fm's S1.3 wire → green-gate + merge + rv-2 audit → then D1. (3) fm-2's Fubini threshold-lift +
-iterate → the full S1.5 engine → wire into Skeleton (controller adds S1Fubini to aggregator) → green-gate +
-rv-2 audit. (4) THEN R1 EXECUTION (pp + fm, R1.2 multiplicity-control first, unit-absorption obligation folded
-in) → L2 → T. #19 keystone PARKED. Keep rv-2 decorrelated. Don't stop in a blocked state.
+INTEGRATE as they land: (1) fm-2's Fubini lift-close → complete S1.5 sig (hGmeas+hGne+instances) → relay to fm
+→ fm restates+wires `rlct_additive_smooth_block` in ONE pass + I add S1Fubini to the aggregator → green-gate +
+rv-2 audit. (2) R1 EXECUTION (pp leads, fm formalises): R1.1 charts + R1.2 multiplicity-control (pre-Fubini) →
+R1.4 Fubini-per-chart (post-lift) → R1.3/R1.5/R1.6/R1.7 → green-gate + rv-2 (heaviest audit). (3) L2 (needs S1.5)
+→ D1 (needs L2) → T assembly. #19 PARKED (edge-transform route + karamata_sq banked = one majorization gate for a
+dedicated tide). Critical path now: Fubini-close → S1.5 wire + R1 → L2 → D1 → T. Keep rv-2 decorrelated. Watch
+the fm→#19 pull (parked 3×). Don't stop in a blocked state.
