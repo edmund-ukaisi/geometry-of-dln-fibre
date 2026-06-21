@@ -4064,6 +4064,22 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-source-label-a5.md`.
 
+Latest A5 Eq5 post-`p` lower-obstruction update:
+`Lemma5DisplayedVector.lean` now has
+`aoyagiLemma5Eq5_postP_belowLower_of_intervalExcess_lt_offset`.  It proves
+that in the supplied equation `(5)` post-`p` range, if the printed subtraction
+`alpha+b-p` exceeds the Htilde interval excess at `b`, then the branch value is
+strictly below the lower Htilde chain.  This is an obstruction criterion for
+supplied piecewise Eq5 data, not a source-vector construction, corrected Eq5
+family, source-label legality theorem, chart-coverage theorem, classifier,
+pole-order result, normal-crossing theorem, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-obstruction-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-postp-lower-obstruction.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-postp-lower-obstruction-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

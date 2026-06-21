@@ -1990,6 +1990,50 @@ theorem aoyagiLemma5Eq5_piecewise_not_lowerBounded_allWidthsFour
     aoyagiLemma5Eq5_piecewise_belowLowerCounterexample_allWidthsFour C layerWidth T hT
   omega
 
+/-- General lower-bound obstruction for equation `(5)`'s post-`p` branch.
+
+In the post-`p` range, the displayed value subtracts `alpha+b-p` from the
+upper Htilde chain.  If this subtraction is larger than the Htilde interval
+excess at coordinate `b`, the value lies strictly below the lower Htilde
+chain.  This is an obstruction criterion for supplied piecewise data, not a
+construction or global failure theorem for Aoyagi's branch family. -/
+theorem aoyagiLemma5Eq5_postP_belowLower_of_intervalExcess_lt_offset
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {b S : ℕ} (hp_le_b : p ≤ b) (hb_hi : b ≤ p + (a - alpha))
+    (hS : C.block b S)
+    (hgap : aoyagiLemma5IntervalExcess ell a b < alpha + b - p) :
+    T S < aoyagiHtildeLowerNat ell a M m b := by
+  have hvalue := hT.postP b S hp_le_b hb_hi hS
+  have hb_lt_ell : b < ell := hS.1
+  have hb_lt : b < ell + 1 := by omega
+  have hchainGap :=
+    aoyagiHtildeUpper_sub_lower_eq_intervalExcess
+      ell a M m hT.a_le_ell ⟨b, hb_lt⟩
+  have hgapNat :
+      aoyagiHtildeUpperNat ell a M m b -
+          aoyagiHtildeLowerNat ell a M m b =
+        (aoyagiLemma5IntervalExcess ell a b : ℤ) := by
+    simpa [aoyagiHtildeUpperChain, aoyagiHtildeLowerChain] using hchainGap
+  have hoffset_cast :
+      ((alpha + b - p : ℕ) : ℤ) =
+        (alpha : ℤ) + (b : ℤ) - (p : ℤ) := by
+    omega
+  have hgap_int :
+      (aoyagiLemma5IntervalExcess ell a b : ℤ) <
+        ((alpha + b - p : ℕ) : ℤ) := by
+    exact_mod_cast hgap
+  calc
+    T S =
+        aoyagiHtildeUpperNat ell a M m b -
+          ((alpha + b - p : ℕ) : ℤ) := by
+      rw [hvalue, hoffset_cast]
+      ring
+    _ < aoyagiHtildeLowerNat ell a M m b := by
+      linarith
+
 /-- The finite offset values realised by equation `(5)`'s own-coordinate
 branch under the source guard `1 <= alpha < p` and same-coordinate interval
 guard `alpha <= Htilde'_p-Htilde_p`. -/

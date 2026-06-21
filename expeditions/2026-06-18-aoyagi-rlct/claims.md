@@ -2596,6 +2596,12 @@ No such claim is formalisation-ready until both fields are filled.
   together with legal label `k=1` under explicit terminal source-range and
   width-positivity hypotheses.  They do not construct the terminal source
   branch or the source-realisation equality from branch-chain data.
+  Also proved the Eq5 post-`p` lower-bound obstruction
+  `aoyagiLemma5Eq5_postP_belowLower_of_intervalExcess_lt_offset`: a supplied
+  equation `(5)` post-`p` branch lies strictly below the lower Htilde chain
+  whenever its printed subtraction `alpha+b-p` exceeds the Htilde interval
+  excess at the same coordinate.  This is an obstruction criterion only, not a
+  corrected Eq5 construction or chart-coverage theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

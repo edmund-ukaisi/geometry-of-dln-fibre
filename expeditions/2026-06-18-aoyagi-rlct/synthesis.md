@@ -3418,10 +3418,27 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-source-label-a5.md`.
 
-Next source-arithmetic frontier from the latest scouts: generalize the Eq5
-post-`p` below-lower obstruction by comparing the printed post-branch
-subtraction with `aoyagiLemma5IntervalExcess`.  Keep that as an obstruction
-record; it is not a corrected Eq5 construction or source coverage theorem.
+The Eq5 post-`p` lower-bound obstruction has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` as
+`aoyagiLemma5Eq5_postP_belowLower_of_intervalExcess_lt_offset`.  For a supplied
+equation `(5)` piecewise certificate, the post-`p` branch value is below the
+lower Htilde chain whenever the printed subtraction `alpha+b-p` is larger than
+`aoyagiLemma5IntervalExcess ell a b`.  This generalizes the all-widths-four
+counterexample into a reusable obstruction criterion.  It is not a corrected
+Eq5 construction, a global failure theorem, source-label legality, terminality,
+chart coverage, classifier coverage, pole order, normal crossings, or RLCT
+extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-obstruction-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-postp-lower-obstruction.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-postp-lower-obstruction-a5.md`.
+
+Next source-arithmetic frontier from the latest scouts: Eq4 rising-guard
+exhaustion.  In the Eq5 rising lower-endpoint-deficit region, failure of the
+repaired Eq4 guard `p+1<=a` should reduce to the recorded boundary `p=a`;
+keep this as guard arithmetic, not Eq4 branch construction.
 
 ## Drift guard
 

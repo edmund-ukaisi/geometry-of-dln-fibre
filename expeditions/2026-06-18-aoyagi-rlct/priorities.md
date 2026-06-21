@@ -76,6 +76,8 @@ Current Eq3 boundary Eq5 obstruction slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
 Current Eq4 rising-boundary gap slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-boundary-gap-a5.md`.
+Current Eq5 post-`p` lower obstruction slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-obstruction-a5.md`.
 Current terminal Eq5 gap slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-eq5-gap-a5.md`.
 Current supplied-family terminal chain-zero slice:
@@ -111,15 +113,17 @@ Immediate order:
    injectivity.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
-5. Next concrete source-arithmetic target after the terminal-label slice:
-   generalize the existing Eq5 all-widths-four lower-bound obstruction to a
-   post-`p` criterion comparing the printed post-branch subtraction with the
-   Htilde interval excess.  This must stay an obstruction record, not a
-   corrected Eq5 construction or source coverage theorem.
-6. Low-risk Lean API may package the supplied boundary using standard finite
+5. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an
+   obstruction record only: it is not a corrected Eq5 construction, a source
+   coverage theorem, or a disproof of Lemma 5.
+6. Next concrete source-arithmetic target: Eq4 rising-guard exhaustion.  In
+   the Eq5 rising lower-endpoint-deficit region, prove that failure of Eq4's
+   repaired guard `p+1<=a` is exactly the recorded boundary `p=a`; do not
+   present this as Eq4 branch construction.
+7. Low-risk Lean API may package the supplied boundary using standard finite
    classifier or bijection language, but it must not be described as source
    exactness.
-7. Do not start a Lean normal-crossing/RLCT extraction interface before actual
+8. Do not start a Lean normal-crossing/RLCT extraction interface before actual
    finite chart/certificate data exist.
 
 ## Ranked next

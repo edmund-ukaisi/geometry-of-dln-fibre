@@ -3631,3 +3631,38 @@ This is terminal source-label bookkeeping only.  It does not construct the
 terminal source branch, prove source-realisation from a supplied branch chain,
 prove terminal-label exactness, classifier coverage, branch-label injectivity,
 back-to-label coverage, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 post-p lower obstruction
+
+Reproduction:
+`reproduction-lemma5-eq5-postp-lower-obstruction-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-postp-lower-obstruction.md`.
+Review artifact:
+`review-lemma5-eq5-postp-lower-obstruction-a5.md`.
+
+Lean now generalizes the existing all-widths-four Eq5 obstruction:
+
+```text
+aoyagiLemma5Eq5_postP_belowLower_of_intervalExcess_lt_offset
+```
+
+For a supplied equation `(5)` piecewise certificate, in the post-`p` range
+`p<=b<=p+(a-alpha)`, the displayed value is
+
+```text
+T S = Htilde'_b - alpha + p - b
+    = Htilde'_b - (alpha+b-p).
+```
+
+Since `Htilde'_b-Htilde_b` is the interval excess, the theorem proves that if
+
+```text
+aoyagiLemma5IntervalExcess ell a b < alpha + b - p,
+```
+
+then `T S < Htilde_b`.  This is a lower-bound obstruction for supplied Eq5
+post-`p` data.  It does not construct the displayed source vector, prove all
+Eq5 branches fail, supply a corrected Eq5 construction, prove source-label
+legality, terminality, chart coverage, classifier coverage, pole order, normal
+crossings, or RLCT extraction.
