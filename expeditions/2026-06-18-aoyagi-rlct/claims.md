@@ -2378,6 +2378,13 @@ No such claim is formalisation-ready until both fields are filled.
   one-interval finite-set coverage instantiation
   `aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat`;
   no source-label legality or introduced-label status is claimed.
+  Also proved supplied-bound Eq3-shaped component source-label wrappers:
+  `aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds`,
+  `aoyagiLemma5Eq3_component_introducedLabel_of_lastPoint_labelBounds`,
+  `aoyagiLemma5Eq3_component_mem_introducedLabelFinset_of_lastPoint_labelBounds`,
+  and
+  `aoyagiLemma5Eq3_component_intervalValue_mem_introducedLabelFinset_of_lastPoint_labelBounds`.
+  They keep actual-width compatibility and label bounds explicit.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

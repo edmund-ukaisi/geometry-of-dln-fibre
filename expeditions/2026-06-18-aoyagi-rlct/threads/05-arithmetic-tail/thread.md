@@ -2269,3 +2269,30 @@ not prove source-label legality or introduced-label status for the Eq3-shaped
 component, construct displayed vectors, cover all intervals, package all
 branch families, prove Lemma 5 order count, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3-shaped component supplied label bounds
+
+Reproduction:
+`reproduction-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-shaped-component-supplied-label-bounds.md`.
+Review artifact:
+`review-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds
+aoyagiLemma5Eq3_component_introducedLabel_of_lastPoint_labelBounds
+aoyagiLemma5Eq3_component_mem_introducedLabelFinset_of_lastPoint_labelBounds
+aoyagiLemma5Eq3_component_intervalValue_mem_introducedLabelFinset_of_lastPoint_labelBounds
+```
+
+For one Eq3-shaped upper component, supplied actual-width compatibility and
+supplied label bounds package the component as an actual source label,
+introduced label, finite introduced-label member, and interval value.
+
+This is source-label packaging under supplied bounds only.  It does not derive
+p-general Eq3 label legality from Definition 3, construct displayed vectors,
+cover all intervals, package all branch families, prove Lemma 5 order count,
+normal crossings, or RLCT extraction.

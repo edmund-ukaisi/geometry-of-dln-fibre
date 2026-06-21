@@ -3270,6 +3270,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-interval-coverage-a5.md`.
 
+Latest A5 update: the Eq3-shaped p-general component now has supplied-bound
+source-label wrappers in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.
+The names are
+`aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_component_introducedLabel_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_component_mem_introducedLabelFinset_of_lastPoint_labelBounds`,
+and
+`aoyagiLemma5Eq3_component_intervalValue_mem_introducedLabelFinset_of_lastPoint_labelBounds`.
+They package the component value as an actual source label and finite
+introduced-label member only under supplied actual-width compatibility and
+supplied label bounds.  They do not derive p-general Eq3 label legality from
+Definition 3 and do not construct displayed vectors, prove all-interval/all-
+branch coverage, order count, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-shaped-component-supplied-label-bounds.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

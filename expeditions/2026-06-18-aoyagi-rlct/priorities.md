@@ -858,6 +858,10 @@ on the session's original cwd.
    Eq3-shaped branch gives the upper endpoint as a component value on block
    `p`, and the supplied-upper interval coverage wrapper then fills that one
    interval.  Keep source-label legality and introduced-label status separate.
+   The p-general Eq3-shaped component now has supplied-bound source-label
+   wrappers too.  These package actual-label and introduced-label membership
+   only when actual-width compatibility and the upper-label bounds are supplied;
+   do not read them as a derivation of Eq3 label legality from Definition 3.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

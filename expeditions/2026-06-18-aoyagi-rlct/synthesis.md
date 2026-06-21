@@ -2644,6 +2644,24 @@ status, displayed-vector construction, all-interval/all-branch coverage, Lemma
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-interval-coverage-a5.md`.
 
+The Eq3-shaped p-general component now has supplied-bound source-label
+wrappers.  Theorems
+`aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_component_introducedLabel_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_component_mem_introducedLabelFinset_of_lastPoint_labelBounds`,
+and
+`aoyagiLemma5Eq3_component_intervalValue_mem_introducedLabelFinset_of_lastPoint_labelBounds`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean` package the component as
+an actual source label, introduced label, finite introduced-label member, and
+interval value under explicit actual-width compatibility and label-bound
+hypotheses.  They do not derive p-general Eq3 label legality from Definition 3
+or prove displayed-vector construction, all-interval/all-branch coverage,
+Lemma 5 order count, normal crossings, or RLCT extraction.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-shaped-component-supplied-label-bounds.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -254,6 +254,141 @@ theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
     L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack
     hs_le hwidth hT hk
 
+/-- Eq3-shaped component actual-label wrapper under supplied label bounds.
+
+This p-general wrapper deliberately does not derive the label bounds from
+Definition 3.  It only combines the supplied Eq3-shaped component value with
+explicit source-range, actual-width, and label-bound hypotheses. -/
+theorem aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1) :
+    T (C.point p - 1) = (k : ℤ) - 1 ∧
+      actualWidthLabel L n (C.point p - 1) k := by
+  have hp_lt_ell : p < ell := by
+    have ha : a ≤ ell := hT.a_le_ell
+    have ha_pos : 1 ≤ a := hT.indexGuard
+    omega
+  have hblock : C.block p (C.point p - 1) :=
+    C.leftEndpoint_mem_block hp_lt_ell
+  have hS_pos : 1 ≤ C.point p - 1 := by
+    have hp0 : 0 < p := by omega
+    have hpoint0_pos : 1 ≤ C.point 0 := C.point_pos_of_lt (by omega)
+    have hstrict : C.point 0 < C.point p :=
+      C.point_strict_of_lt hp0 (by omega)
+    omega
+  have hS_le : C.point p - 1 ≤ L :=
+    C.block_sourceIndex_le_of_lastPoint_le hblock hlast
+  have hcomponent :=
+    aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+      ell a p M m C layerWidth T hp_pos hp_c hT
+  constructor
+  · rw [hcomponent, hk]
+    ring
+  · refine ⟨hS_pos, hS_le, ?_, ?_⟩
+    · have hk_pos_int : (1 : ℤ) ≤ (k : ℤ) := by
+        rw [hk]
+        exact hlabelBounds.1
+      exact_mod_cast hk_pos_int
+    · have hk_le_int : (k : ℤ) ≤ (n ((C.point p - 1) + 1) : ℤ) := by
+        rw [hk, hwidth]
+        exact hlabelBounds.2
+      exact_mod_cast hk_le_int
+
+/-- Eq3-shaped component wrapper with post-advance introduced-label
+membership under supplied label bounds. -/
+theorem aoyagiLemma5Eq3_component_introducedLabel_of_lastPoint_labelBounds
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1) :
+    T (C.point p - 1) = (k : ℤ) - 1 ∧
+      introducedLabel L n (C.point p - 1) k (C.point p - 1) k := by
+  have hlabel :=
+    aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds
+      L ell a p n M m C layerWidth T hp_pos hp_c hlast hwidth
+      hlabelBounds hT hk
+  exact ⟨hlabel.1, introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl⟩
+
+/-- Finite-domain version of
+`aoyagiLemma5Eq3_component_introducedLabel_of_lastPoint_labelBounds`. -/
+theorem aoyagiLemma5Eq3_component_mem_introducedLabelFinset_of_lastPoint_labelBounds
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1) :
+    T (C.point p - 1) = (k : ℤ) - 1 ∧
+      Sigma.mk (C.point p - 1) k ∈
+        introducedLabelFinset L n (C.point p - 1) k := by
+  have h :=
+    aoyagiLemma5Eq3_component_introducedLabel_of_lastPoint_labelBounds
+      L ell a p n M m C layerWidth T hp_pos hp_c hlast hwidth
+      hlabelBounds hT hk
+  exact ⟨h.1, mem_introducedLabelFinset.mpr h.2⟩
+
+/-- Eq3-shaped component wrapper with interval membership and finite-domain
+introduced-label membership under supplied label bounds. -/
+theorem aoyagiLemma5Eq3_component_intervalValue_mem_introducedLabelFinset_of_lastPoint_labelBounds
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1) :
+    T (C.point p - 1) ∈ aoyagiHtildeIntervalValueSetNat ell a M m p ∧
+      T (C.point p - 1) = (k : ℤ) - 1 ∧
+        Sigma.mk (C.point p - 1) k ∈
+          introducedLabelFinset L n (C.point p - 1) k := by
+  have hcomponent :=
+    aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+      ell a p M m C layerWidth T hp_pos hp_c hT
+  have hfinite :=
+    aoyagiLemma5Eq3_component_mem_introducedLabelFinset_of_lastPoint_labelBounds
+      L ell a p n M m C layerWidth T hp_pos hp_c hlast hwidth
+      hlabelBounds hT hk
+  refine ⟨?_, hfinite.1, hfinite.2⟩
+  have hp_lt : p < ell + 1 := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  rw [hcomponent]
+  exact aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+    ell a p M m hT.a_le_ell hp_lt
+
 /-- Equation `(4)` own-coordinate wrapper with post-advance introduced-label
 membership.
 
