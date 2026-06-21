@@ -2281,6 +2281,13 @@ No such claim is formalisation-ready until both fields are filled.
   rising-coordinate indicator, and show the lower endpoint is not a strict
   Eq5 offset value in the rising region.  This is count scaffolding only, not
   displayed-vector realisation or Lemma 5's order-count theorem.
+  Also proved the Eq3/Eq4 own-coordinate actual-label adapters
+  `aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility`
+  and
+  `aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack`.
+  These package `T(S)=k-1` with `actualWidthLabel` for supplied piecewise
+  certificates; they still assume actual-width compatibility, and Eq3 keeps
+  the explicit one-unit slack.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

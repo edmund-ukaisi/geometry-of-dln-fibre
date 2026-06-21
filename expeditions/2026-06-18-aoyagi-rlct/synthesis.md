@@ -2321,6 +2321,19 @@ order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-offset-excess-decomposition-a5.md`.
 
+Eq3/Eq4 now have own-coordinate actual-label adapter wrappers:
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility`
+and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  They combine the
+existing supplied-piecewise own-coordinate value theorem with the existing
+actual-label bridge, giving `T(S)=k-1` and `actualWidthLabel L n S k` in one
+API.  Eq3 still carries the explicit one-unit slack.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-own-coordinate-actual-label-adapters.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

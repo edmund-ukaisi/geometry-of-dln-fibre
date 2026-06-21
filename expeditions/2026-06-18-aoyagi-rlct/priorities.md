@@ -762,6 +762,11 @@ on the session's original cwd.
    displayed-vector realisation.  Next A5 moves should either add thin
    combined source-label/value adapters for Eq3/Eq4, or continue count-side
    decomposition without claiming that Eq3/Eq4 realise the missing value.
+   Eq3/Eq4 own-coordinate source-label adapters are now Lean-proved, so the
+   current source-label API consistently packages `T(S)=k-1` with
+   `actualWidthLabel`.  This is adapter cleanup only; the real blockers remain
+   displayed-vector construction, terminality, admissibility, and chart
+   sequence.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

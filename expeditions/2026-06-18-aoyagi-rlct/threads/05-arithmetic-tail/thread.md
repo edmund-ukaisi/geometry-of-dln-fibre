@@ -1707,3 +1707,32 @@ This is only count scaffolding below Lemma 5.  It does not show that equation
 `(3)` or `(4)` realises the extra value, construct any displayed vector,
 prove source-label legality, terminal `tilde t=0`, vector admissibility,
 chart sequence, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equations `(3)`/`(4)` own-coordinate actual-label adapters
+
+Reproduction:
+`reproduction-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-eq4-own-coordinate-actual-label-adapters.md`.
+Review artifact:
+`review-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility
+aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack
+```
+
+These are thin adapters over existing results.  For supplied equation `(4)`
+piecewise data, the theorem combines the own-coordinate value
+`T(C.point p-1)=Htilde_p` with the actual-label bridge for
+`k=Htilde_p+1`.  For supplied equation `(3)` piecewise data, the theorem
+combines the own-coordinate value `T(C.point 1-1)=Htilde'_1` with the
+actual-label bridge for `k=Htilde'_1+1`, keeping the explicit slack
+`W_1+2<=M`.
+
+These theorems do not construct the displayed vectors, derive actual-width
+compatibility from Definition 3, remove the Eq3 slack, prove terminal
+`tilde t=0`, vector admissibility, chart sequence, pole order, normal
+crossings, or RLCT extraction.

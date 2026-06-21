@@ -2909,6 +2909,21 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-offset-excess-decomposition-a5.md`.
 
+Latest A5 update: Eq3/Eq4 own-coordinate actual-label adapters are proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The names are
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility`
+and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack`.
+They combine supplied-piecewise own-coordinate values with existing
+actual-label bridges, giving `T(S)=k-1` and `actualWidthLabel L n S k` in one
+conclusion.  Eq3 still requires the explicit slack; neither theorem constructs
+the displayed vector or proves terminality.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-own-coordinate-actual-label-adapters.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -115,6 +115,74 @@ theorem aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack
       exact hlabel.2
     exact_mod_cast hk_le_int
 
+/-- A supplied equation `(4)` piecewise certificate gives the own-coordinate
+value `k-1` and a legal actual source label under the repaired guards and
+actual-width compatibility.
+
+This is only an adapter combining the already-proved equation `(4)` value
+theorem with the actual-label bridge.  It does not construct the displayed
+vector or prove terminality. -/
+theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp0 : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : 1 ≤ C.point p - 1) (hs_le : C.point p - 1 ≤ L)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeLowerNat ell a M m p + 1) :
+    T (C.point p - 1) = (k : ℤ) - 1 ∧
+      actualWidthLabel L n (C.point p - 1) k := by
+  have hown :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
+      ell a p M m C layerWidth T hell hp0 hp_c hselected hsource hT
+  have hp_a : p ≤ a := by
+    have hp_tail := hT.indexGuard
+    omega
+  constructor
+  · rw [hown.2.1, hk]
+    ring
+  · exact aoyagiLemma5Eq4_actualWidthLabel_of_widthCompatibility
+      L ell a p n M m C hell hT.a_le_ell hp0 hp_a hselected hsource
+      hs_pos hs_le hwidth hk
+
+/-- A supplied equation `(3)` piecewise certificate gives the own-coordinate
+value `k-1` and a legal actual source label when the explicit one-unit slack
+and actual-width compatibility are supplied.
+
+This is only an adapter combining the already-proved equation `(3)` value
+theorem with the actual-label bridge.  It does not construct the displayed
+vector or prove terminality. -/
+theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M)
+    (hs_le : C.point 1 - 1 ≤ L)
+    (hwidth :
+      (n ((C.point 1 - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeUpperNat ell a M m 1 + 1) :
+    T (C.point 1 - 1) = (k : ℤ) - 1 ∧
+      actualWidthLabel L n (C.point 1 - 1) k := by
+  have hown :=
+    aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack
+      ell a M m C layerWidth T hell ha_lt hselected hsource hslack hT
+  constructor
+  · rw [hown.2.1, hk]
+    ring
+  · exact aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack
+      L ell a n M m C hell hT.a_le_ell hT.indexGuard ha_lt hselected hsource
+      hslack hs_le hwidth hk
+
 /-- Equation `(5)`'s label `k=Htilde'_p+1-alpha` is an actual source label
 when the selected width at `p` is identified with the actual layer width at
 `S_(p+1)`.
