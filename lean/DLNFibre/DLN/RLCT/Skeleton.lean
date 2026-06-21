@@ -2638,7 +2638,8 @@ private theorem count_bp1_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
 each dominate `a_i` (aS monotone). -/
 private theorem Sprefix_tail_ge (M : Fin (L + 1) → ℕ) (i c : ℕ) (hic : i ≤ c) (hcL : c ≤ L) :
     Sprefix M (i + 1) + (c - i) * aS M i ≤ Sprefix M (c + 1) := by
-  have hsplit : Sprefix M (c + 1) = Sprefix M (i + 1) + ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
+  have hsplit : Sprefix M (c + 1)
+      = Sprefix M (i + 1) + ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
     rw [Sprefix, Sprefix, ← Finset.sum_range_add_sum_Ico (fun k => aS M k) (by omega : i + 1 ≤ c + 1)]
   have htail : (c - i) * aS M i ≤ ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
     rw [show (c - i) * aS M i = ∑ _k ∈ Finset.Ico (i + 1) (c + 1), aS M i from by
@@ -3070,10 +3071,8 @@ The proof is fully assembled: the achiever ordering `qStar` is corridor-feasible
   assumes it). Flagged for the controller — do not discharge from nothing.
 * `hDom` — the BG-engine precondition (`Dom`), a pp-hall certificate (pending).
 * `hband` — the admissibility band on `qStar`'s prefix sums, a pp-hall certificate (pending). -/
-theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
+theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
-  -- ⚠️ STATEMENT-FIDELITY HOLE: false at L=0; signature needs `(hL : 1 ≤ L)`. See docstring.
-  have hL : 1 ≤ L := by sorry
   -- pp-hall certificate (pending): the BG-engine domination precondition.
   have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := by sorry
   -- pp-hall certificate (pending): the admissibility band on qStar's prefix sums.
