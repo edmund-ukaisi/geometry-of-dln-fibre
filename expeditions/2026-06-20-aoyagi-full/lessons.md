@@ -312,3 +312,63 @@ hypothesis and asserted equivalence; the decorrelated controller check (construc
 caught that it was unsound. This is the "heed the decorrelated flag — build the witness before dismissing"
 discipline applied to a HYPOTHESIS proposal, not just a claim: a hypothesis is a claim too (it claims "this
 suffices / is necessary"), and gets the same witness-or-it-isn't-true treatment.
+
+## 2026-06-21 — an ORPHANED rung can harbor a false statement; the validate-small case must EXERCISE the feature (14th finding)
+
+Designing R1.1, pp found `resolution_charts` was both (a) ORPHANED — `product_reduction` (the rung that needs the
+resolution) never calls it, so nothing forced its statement to be right — and (b) FALSE for r>0: it stated the
+full-loss RLCT = ⨅ monomialThreshold (a MIN), but the full-loss RLCT at the deepest point = n/2 + ½·min Mval (a
+SUM — the regular n/2 directions ADD to the RLCT via the Fubini shift, they are NOT a min-direction). Two
+compounding lessons:
+1. **An orphaned rung (consumed by nothing) is unchecked by construction** — the build is green and no downstream
+   proof forces it to be true, so a false statement hides indefinitely. Grep every rung for its CONSUMERS; a rung
+   the headline never reaches is either dead or a landmine. (Here it would have been catastrophic: R1, the
+   mountain, was about to be built proving a statement the headline doesn't use — proven-but-unplugged.)
+2. **The validate-small case must EXERCISE the feature under test.** The (1,1,1) end-to-end gate passed because it
+   has r=0 ⟹ n=0 ⟹ the regular block is EMPTY ⟹ the SUM degenerates to the MIN, so the min-vs-sum error is
+   invisible there. A degenerate small case gives false confidence. Pick the smallest case where the feature is
+   NON-degenerate (here, r>0 / n>0, e.g. (2,1,2)) — or know explicitly which features your small case does NOT
+   exercise.
+3. **Structural corollary (reusable architecture):** the regular (smooth-quadratic) directions ADD to the RLCT
+   (the Fubini shift theorem: rlctAt(Σx²+core) = n/2 + rlctAt(core)); they never participate in the min-over-charts.
+   So any "RLCT = ⨅ over charts" statement must be about the CORE (singular part) alone; the regular n/2 lives in a
+   separate additive step. Keep resolution (min over charts) and the regular block (additive Fubini) in separate
+   rungs — conflating them produces a min=sum type error.
+
+## 2026-06-21 — route-before-lines paid off: the product-structure concern KILLED the cheap route; and a fork can have a third answer (R1.2 verdict)
+
+The controller flagged a concern in the cheap R1 route (B: "iterated-L1 exposes the core as a regular sequence of
+coordinates") — that the core ‖∏C‖² is a PRODUCT, so naively not linear coordinates — and gated the build on pp
+validating it (decorrelated, witness-or-refute). The verdict (pp + Codex, independently identical, with witnesses):
+route B is FALSE. THE DECIDER: a residual product of length q≥2 has ordinary vanishing order 2q, and regular
+coordinate changes PRESERVE ordinary order, so L1-alone can never reach the order-2 of a smooth coordinate-square
+block. Witnesses: (1,2,1) F=(a₁b₁+a₂b₂)² (singular quadratic cone), (2,2,2) F=‖AB‖² (ord 4, Hessian zero, needs a
+genuine blow-up). Lessons:
+1. **The route-before-lines gate is worth the round-trip.** Had fm built the (B) general path, it would have hit
+   the order-2q wall after sinking ~150-250 lines. The concern → decorrelated validation → refutation cost two
+   messages and zero Lean. ALWAYS validate the load-bearing route claim (with a witness, decorrelated) before the
+   formaliser commits lines — especially when a cheap route seems "too good" (here: "R1 is trivially light").
+2. **A route fork is not necessarily binary.** The controller framed it as (B) L1-light vs (A) abstract-blow-up-infra
+   mountain. The validated answer was a THIRD option: (A)-CONCRETE — explicit polynomial blow-up charts (vanishing
+   Jacobian on the exceptional locus), carried by the existing S1.1 change-of-variables (whose hsurj+hImE hyps, added
+   for the 10th finding, are EXACTLY for a blow-up's non-injectivity + null exceptional image). Neither cheap-but-false
+   nor needs-new-infra. When validating a fork, ask "is there a middle route?" — don't accept the binary.
+3. **The controller's own reconciliation can be wrong — let the decorrelated check correct it.** The controller had
+   written "if (B) holds, multiplicity-control is vacuous + R1 is light." (B) was refuted, so that's dead; the bank
+   was corrected. Bank conclusions as provisional until the validation lands; don't let an elegant-but-unverified
+   reconciliation harden into a planning assumption.
+
+## 2026-06-21 — a tractability win on one piece is not a win on the whole; pressure-test the residual (R1.6)
+
+Designing the general R1 atlas, pp found R1.3 (the codimension piece, feared as the heavy "determinantal-codim,
+Mathlib-lacking" mountain) is actually a LIGHT ℕ count identity (∑ residual block sizes = Mval) — a real win, the
+Mathlib gap dissolved. Then pp started writing "R1 is medium" — and CAUGHT ITSELF, pressure-tested R1.6 (the
+cover), and corrected: R1.6 (general-M cover) is the genuine mountain, because the headline EQUALITY needs the
+LOWER bound, the lower bound needs a COMPLETE resolution (no missed worse divisor), the codim-shortcut for the
+lower bound is FALSE (the route-B witnesses x^{2k}/(x²+y²)²), and D1 (inf over the fibre) does not give the
+per-point lower bound. LESSON: when one feared sub-piece turns out easy, that's exactly the moment the
+"visible-progress / confident-headline" instinct fires ("R1 is medium now!") — resist it by pressure-testing the
+OTHER pieces before re-headlining the whole. A win on the piece you feared most does not relocate the difficulty to
+zero; it relocates it to wherever you weren't looking. (pp did this unprompted — the self-correction IS the
+standard; the controller reinforces it.) Naming corollary: "R1 is medium" was the over-claim; "R1.3 light, R1.6 the
+mountain" is the accurate map — name the difficulty where it actually is.

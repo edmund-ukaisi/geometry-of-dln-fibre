@@ -39,6 +39,97 @@ namespace DLNFibre.DLN.RLCT
 open MeasureTheory Set Real Filter
 open scoped ENNReal Topology
 
+/-! ## RLCT invariance under a measure-preserving homeomorphism (iteration infrastructure)
+
+`rlctAtOn` is unchanged by precomposition with a measure-preserving homeomorphism `e`: the
+admissible nbhds and their integrals transport across `e` (open-image / preimage + the measure-
+change-of-variables `MeasurePreserving.integrableOn_image`). This is what lets the `n = 1` step
+`step_rlct` be iterated over the regular coordinates via the `Fin`-peeling chart
+`(Fin (n+1) → ℝ) × Y ≃ ℝ × ((Fin n → ℝ) × Y)`, staying on the product (Params-flat) measure. -/
+
+/-- **RLCT is invariant under a measure-preserving homeomorphism.** For `e : M ≃ₜ M'` measure-
+preserving (a `MeasurableEmbedding`), `rlctAtOn (F ∘ e) w0 = rlctAtOn F (e w0)`. The admissible sets
+biject: `Ω ↦ e '' Ω` (open, `e.isOpenMap`) with `MeasurePreserving.integrableOn_image`, and back via
+`e ⁻¹' Ω'` with `integrableOn_comp_preimage`. -/
+theorem rlctAtOn_comp_homeomorph {M M' : Type*} [MeasureSpace M] [TopologicalSpace M]
+    [MeasureSpace M'] [TopologicalSpace M']
+    (e : M ≃ₜ M') (he : MeasurePreserving e volume volume) (hemb : MeasurableEmbedding e)
+    (F : M' → ℝ) (w0 : M) :
+    rlctAtOn (fun w => F (e w)) w0 = rlctAtOn F (e w0) := by
+  unfold rlctAtOn weightedThreshold
+  congr 1
+  ext c
+  constructor
+  · rintro ⟨c', rfl, Ω, hΩopen, hw0, hint⟩
+    refine ⟨c', rfl, e '' Ω, e.isOpenMap _ hΩopen, ?_, ?_⟩
+    · exact Set.singleton_subset_iff.2 ⟨w0, hw0 rfl, rfl⟩
+    · rw [he.integrableOn_image hemb]; convert hint using 2
+  · rintro ⟨c', rfl, Ω, hΩopen, hw0, hint⟩
+    refine ⟨c', rfl, e ⁻¹' Ω, hΩopen.preimage e.continuous, ?_, ?_⟩
+    · exact Set.singleton_subset_iff.2 (hw0 rfl)
+    · rw [show (fun w => |(fun w => F (e w)) w| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w)
+          = (fun w => |F w| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w) ∘ e from rfl]
+      rw [he.integrableOn_comp_preimage hemb]; exact hint
+
+/-! ## The `Fin`-peeling chart (iteration infrastructure)
+
+To iterate `step_rlct` over the `n` regular coordinates, peel one coordinate per step via a
+measure-preserving homeomorphism `(Fin (n+1) → ℝ) × Y ≃ₜ ℝ × ((Fin n → ℝ) × Y)`. The peel itself is
+`MeasurableEquiv.piFinSuccAbove 0` (forward `x ↦ (x 0, x ∘ succAbove 0)`, inverse `Fin.cons`), made
+a `Homeomorph` (both maps continuous) and measure-preserving (`volume_preserving_piFinSuccAbove`);
+the `× Y` factor and re-association are `prodCongr`/`prodAssoc` + `MeasurePreserving.prod`/
+`measurePreserving_prodAssoc`. Stays on the product (Params-flat) measure — no Haar bridge. -/
+
+/-- `(Fin (n+1) → ℝ) ≃ₜ ℝ × (Fin n → ℝ)`, peeling the `0`-th coordinate. Forward `x ↦ (x 0, x ∘
+succAbove 0)` (continuous); inverse `Fin.cons` (continuous, `Continuous.finCons`).
+Measure-preserving (`finPeel_mp`). -/
+noncomputable def finPeel (n : ℕ) : (Fin (n + 1) → ℝ) ≃ₜ (ℝ × (Fin n → ℝ)) where
+  toEquiv := (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) 0).toEquiv
+  continuous_toFun :=
+    Continuous.prodMk (continuous_apply 0) (continuous_pi (fun j => continuous_apply _))
+  continuous_invFun := by
+    have hinv : ⇑(((MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (n + 1))).toEquiv).symm)
+        = fun p : ℝ × (Fin n → ℝ) => Fin.cons p.1 p.2 := by
+      funext p
+      show (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (n + 1))).symm p = _
+      rw [MeasurableEquiv.piFinSuccAbove_symm_apply]; exact Fin.insertNth_zero' p.1 p.2
+    show Continuous
+      (⇑(((MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (n + 1))).toEquiv).symm))
+    rw [hinv]; exact Continuous.finCons continuous_fst continuous_snd
+
+/-- `finPeel` is measure-preserving (`volume_preserving_piFinSuccAbove`). -/
+theorem finPeel_mp (n : ℕ) : MeasurePreserving (finPeel n) :=
+  volume_preserving_piFinSuccAbove (fun _ => ℝ) 0
+
+/-- The `Fin`-peeling product chart `(Fin (n+1) → ℝ) × Y ≃ₜ ℝ × ((Fin n → ℝ) × Y)`:
+`finPeel` on the first factor, then re-associate. Measure-preserving (`chartN_mp`). -/
+noncomputable def chartN (n : ℕ) (Y : Type*) [TopologicalSpace Y] [MeasureSpace Y] :
+    ((Fin (n + 1) → ℝ) × Y) ≃ₜ (ℝ × ((Fin n → ℝ) × Y)) :=
+  ((finPeel n).prodCongr (Homeomorph.refl Y)).trans (Homeomorph.prodAssoc ℝ (Fin n → ℝ) Y)
+
+/-- The `Fin`-peeling product chart is measure-preserving (`MeasurePreserving.prod` of `finPeel_mp`
+and the identity, then `measurePreserving_prodAssoc`; the ambient `volume`s are products by
+`Measure.volume_eq_prod`). -/
+theorem chartN_mp {Y : Type*} [TopologicalSpace Y] [MeasureSpace Y]
+    [SigmaFinite (volume : Measure Y)] (n : ℕ) : MeasurePreserving (chartN n Y) := by
+  have h1 : MeasurePreserving (Prod.map (finPeel n) (id : Y → Y)) (volume) (volume) := by
+    rw [show (volume : Measure ((Fin (n + 1) → ℝ) × Y)) = (volume).prod (volume) from
+        Measure.volume_eq_prod _ _,
+      show (volume : Measure ((ℝ × (Fin n → ℝ)) × Y)) = (volume).prod (volume) from
+        Measure.volume_eq_prod _ _]
+    exact (finPeel_mp n).prod (MeasurePreserving.id volume)
+  have h2 : MeasurePreserving
+      (MeasurableEquiv.prodAssoc : (ℝ × (Fin n → ℝ)) × Y ≃ᵐ ℝ × ((Fin n → ℝ) × Y)) (volume)
+      (volume) := by
+    rw [show (volume : Measure ((ℝ × (Fin n → ℝ)) × Y))
+          = ((volume).prod (volume)).prod (volume) from by
+          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _],
+      show (volume : Measure (ℝ × ((Fin n → ℝ) × Y)))
+          = (volume).prod ((volume).prod (volume)) from by
+          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _]]
+    exact measurePreserving_prodAssoc volume volume volume
+  exact h2.comp h1
+
 /-! ## Admissible-exponent down-set (for the threshold-lift `≥` direction)
 
 The set of exponents `c'` for which `|H|^{−c'}` is locally integrable at `w0` is a **down-set**: a
@@ -150,7 +241,7 @@ theorem step_integrableOn
     {W : Type*} [MeasureSpace W] [SigmaFinite (volume : Measure W)]
     (H wt : W → ℝ) (hH : ∀ z, 0 ≤ H z) (hwt : ∀ z, 0 ≤ wt z)
     (hHmeas : Measurable H) (hwtmeas : Measurable wt)
-    (a b ε : ℝ) (ha : 0 < a) (hb : 0 < b)
+    (a b ε : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b)
     (V : Set W)
     (hHne : ∀ᵐ z ∂(volume.restrict V), H z ≠ 0)
     (hx : IntegrableOn (fun x : ℝ => |x| ^ (-(2 * a))) (Icc (-ε) ε) volume)
@@ -175,7 +266,7 @@ theorem step_integrableOn
       abs_of_nonneg (hwt p.2), abs_of_nonneg (by positivity : (0 : ℝ) ≤ p.1 ^ 2 + H p.2)]
   have hcmp : (p.1 ^ 2 + H p.2) ^ (-(a + b)) ≤ |p.1| ^ (-(2 * a)) * |H p.2| ^ (-b) := by
     calc (p.1 ^ 2 + H p.2) ^ (-(a + b)) ≤ (p.1 ^ 2) ^ (-a) * (H p.2) ^ (-b) :=
-          cmpF _ _ a b hsx htg ha.le hb.le
+          cmpF _ _ a b hsx htg ha hb
       _ = |p.1| ^ (-(2 * a)) * |H p.2| ^ (-b) := by
           rw [abs_of_nonneg (hH p.2), ← sq_abs p.1, ← Real.rpow_natCast |p.1| 2,
               ← Real.rpow_mul (abs_nonneg _)]
@@ -298,5 +389,267 @@ theorem step_lintegral_top
   calc (2 : ℝ) ^ (-c) * (H y) ^ (-c) * wt y * (2 * (H y) ^ ((1 : ℝ) / 2))
       = ((2 : ℝ) ^ (-c) * 2) * ((H y) ^ (-c) * (H y) ^ ((1 : ℝ) / 2)) * wt y := by ring
     _ = 2 ^ (1 - c) * (H y) ^ ((1 : ℝ) / 2 - c) * wt y := by rw [c2, chy]
+
+/-! ## The threshold-lift, `≤` direction (`n = 1`) — the cusp contrapositive -/
+
+/-- **Joint-integrable ⟹ core-integrable at the shifted exponent** (the `≤`-direction key, the
+contrapositive of `step_lintegral_top`). If `|x² + H|^{−c}` is integrable on the rectangle
+`Icc (-R) R ×ˢ V` (with `H ≤ R²` on `V`, so the cusp sits inside, and `H ≠ 0` a.e. on `V`), then
+`|H|^{−(c − 1/2)}` is integrable on `V`. Proof: were it not, its `lintegral` on `V` would be `⊤`, so
+(factoring `2^{1−c}`) the cusp hypothesis `hcore_top` holds, and `step_lintegral_top` forces
+the joint `lintegral` to `⊤` — contradicting `IntegrableOn.setLIntegral_lt_top`. -/
+theorem core_int_of_joint_int {Y : Type*} [MeasureSpace Y] [SigmaFinite (volume : Measure Y)]
+    (H : Y → ℝ) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (c R : ℝ) (hc : 1 / 2 < c) (hR : 0 < R) (V : Set Y) (hVmeas : MeasurableSet V)
+    (hHne : ∀ᵐ z ∂(volume.restrict V), H z ≠ 0) (hHle : ∀ z ∈ V, H z ≤ R ^ 2)
+    (hjoint : IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-c) * (1 : ℝ))
+      ((Icc (-R) R) ×ˢ V) volume) :
+    IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) V volume := by
+  by_contra hcon
+  have htop : ∫⁻ z in V, ENNReal.ofReal (|H z| ^ (-(c - 1 / 2))) = ⊤ := by
+    by_contra h
+    refine hcon ⟨(by fun_prop : Measurable (fun z => |H z| ^ (-(c - 1 / 2)))).aemeasurable
+      |>.aestronglyMeasurable, ?_⟩
+    rw [hasFiniteIntegral_iff_enorm]
+    have hz : ∀ z, ‖|H z| ^ (-(c - 1 / 2))‖ₑ = ENNReal.ofReal (|H z| ^ (-(c - 1 / 2))) :=
+      fun z => by
+      rw [← ofReal_norm_eq_enorm, Real.norm_eq_abs,
+        abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+    simp_rw [hz]; exact lt_top_iff_ne_top.2 h
+  have hcore_top : ∫⁻ z in V, ENNReal.ofReal (2 ^ (1 - c) * (H z) ^ (1 / 2 - c) *
+      (fun _ => (1 : ℝ)) z) = ⊤ := by
+    have heq : ∀ z, ENNReal.ofReal (2 ^ (1 - c) * (H z) ^ (1 / 2 - c) * (1 : ℝ))
+        = ENNReal.ofReal (2 ^ (1 - c)) * ENNReal.ofReal (|H z| ^ (-(c - 1 / 2))) := fun z => by
+      rw [mul_one, ← ENNReal.ofReal_mul (by positivity)]
+      congr 1
+      rw [abs_of_nonneg (hH z), show (1 : ℝ) / 2 - c = -(c - 1 / 2) by ring]
+    simp only [heq]
+    rw [lintegral_const_mul' _ _ (by simp : ENNReal.ofReal (2 ^ (1 - c)) ≠ ⊤), htop,
+      ENNReal.mul_top (by simp [show (0 : ℝ) < 2 ^ (1 - c) from by positivity])]
+  have hjtop := step_lintegral_top H (fun _ => 1) hH (fun _ => zero_le_one) hHmeas measurable_const
+    c R (by linarith) hR V hVmeas hHne hHle hcore_top
+  have hjfin := hjoint.setLIntegral_lt_top
+  rw [hjtop] at hjfin
+  exact (lt_irrefl ⊤) hjfin
+
+/-! ## The threshold-lift, `≥` direction (`n = 1`)
+
+Assembling the integral `≥` engine into the RLCT inequality `½ + λ_H ≤ rlctAtOn(x² + H)`. The core
+space `Y` has locally-finite volume (`ProperSpace` + `IsFiniteMeasureOnCompacts` — holds for
+`Fin d → ℝ`) so the down-set lemma applies. -/
+
+/-- A split exponent `a + b` (`a < 1/2` smooth side, `b` core-admissible) is joint-admissible:
+some open `Ω ∋ (0, y0)` carries `|x² + H|^{−(a+b)}` integrably. `step_integrableOn` on the rectangle
+`Icc (-1) 1 ×ˢ V` (`V = Ω_core ∩` an open nbhd witnessing `hHne`), restricted to the open
+`Ioo (-1) 1 ×ˢ V`. -/
+theorem joint_admissible_of_split {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y]
+    [SigmaFinite (volume : Measure Y)]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0)
+    (a b : ℝ) (ha0 : 0 ≤ a) (ha : a < 1 / 2) (hb0 : 0 ≤ b)
+    (hbadm : ∃ Ω : Set Y, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-b)) Ω volume) :
+    ∃ Ω : Set (ℝ × Y), IsOpen Ω ∧ (0, y0) ∈ Ω ∧
+      IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-(a + b)) * (1 : ℝ)) Ω volume := by
+  obtain ⟨Ωc, hΩcopen, hy0c, hcint⟩ := hbadm
+  obtain ⟨U, hU, hUne⟩ := hHne
+  have hxint : IntegrableOn (fun x : ℝ => |x| ^ (-(2 * a))) (Icc (-1 : ℝ) 1) volume := by
+    rw [abs_rpow_integrableOn_Icc_symm _ _ (by norm_num : (0 : ℝ) < 1)]; linarith
+  obtain ⟨U₀, hU₀sub, hU₀open, hy0U₀⟩ := _root_.mem_nhds_iff.1 hU
+  set V := Ωc ∩ U₀ with hV
+  have hVopen : IsOpen V := hΩcopen.inter hU₀open
+  have hcintV : IntegrableOn (fun w => |H w| ^ (-b) * (1 : ℝ)) V volume := by
+    simp only [mul_one]; exact hcint.mono_set (inter_subset_left : V ⊆ Ωc)
+  have hHneV : ∀ᵐ z ∂(volume.restrict V), H z ≠ 0 :=
+    ae_restrict_of_ae_restrict_of_subset (fun x hx => hU₀sub hx.2) hUne
+  have hstep := step_integrableOn H (fun _ => 1) hH (fun _ => zero_le_one) hHmeas measurable_const
+    a b 1 ha0 hb0 V hHneV hxint hcintV
+  exact ⟨Ioo (-1 : ℝ) 1 ×ˢ V, isOpen_Ioo.prod hVopen, ⟨by norm_num, hy0c, hy0U₀⟩,
+    hstep.mono_set (Set.prod_mono Ioo_subset_Icc_self (subset_refl V))⟩
+
+/-- **The threshold-lift, `≥` direction.** `½ + rlctAtOn H y0 ≤ rlctAtOn (x² + H) (0, y0)`. By
+`le_of_forall_lt_imp_le_of_dense`: any `q < ½ + λ_H` splits (`ENNReal.exists_lt_add_of_lt_add`, or
+`lt_iff_exists_nnreal_btwn` when `λ_H = 0`) as `a + b` with `a < 1/2`, `b` core-admissible
+(`core_admissible_of_lt` / `core_admissible_zero`); `joint_admissible_of_split` then puts `a + b` in
+the joint admissible set, so `q ≤ a + b ≤ sSup`. -/
+theorem step_rlct_ge {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0) :
+    (1 / 2 : ℝ≥0∞) + rlctAtOn H y0 ≤ rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) := by
+  have half_ne_top : (1 / 2 : ℝ≥0∞) ≠ ⊤ := by
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp]; exact ENNReal.coe_ne_top
+  have half_ne_zero : (1 / 2 : ℝ≥0∞) ≠ 0 := by
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp]
+    exact_mod_cast (by norm_num : (1 / 2 : NNReal) ≠ 0)
+  have half_toReal : ((1 / 2 : ℝ≥0∞).toReal) = (1 / 2 : ℝ) := by
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp]; simp
+  apply le_of_forall_lt_imp_le_of_dense
+  intro q hq
+  set lamH := rlctAtOn H y0 with hlamH
+  have push : ∀ (a b : ℝ), 0 ≤ a → a < 1 / 2 → 0 ≤ b → q ≤ ENNReal.ofReal (a + b) →
+      (∃ Ω : Set Y, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-b)) Ω volume) →
+      q ≤ rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) := by
+    intro a b ha0 ha hb0 hqle hadm
+    obtain ⟨Ω, hΩopen, hmem, hint⟩ :=
+      joint_admissible_of_split H y0 hH hHmeas hHne a b ha0 ha hb0 hadm
+    apply hqle.trans
+    unfold rlctAtOn weightedThreshold
+    apply le_sSup
+    refine ⟨(a + b).toNNReal, ?_, Ω, hΩopen, by simpa using hmem, ?_⟩
+    · rw [ENNReal.ofReal]
+    · rw [Real.coe_toNNReal _ (by linarith)]; exact hint
+  by_cases hlam0 : lamH = 0
+  · have hqhalf : q < (1 / 2 : ℝ≥0∞) := by simpa [hlam0] using hq
+    obtain ⟨r, hqr, hrhalf⟩ := ENNReal.lt_iff_exists_nnreal_btwn.1 hqhalf
+    refine push (r : ℝ) 0 (by positivity) ?_ (le_refl 0) ?_ ?_
+    · have := (ENNReal.toReal_lt_toReal ENNReal.coe_ne_top half_ne_top).2 hrhalf
+      rwa [half_toReal] at this
+    · simpa using hqr.le
+    · simpa using core_admissible_zero H y0
+  · obtain ⟨u, huhalf, v, hvlam, hquv⟩ := ENNReal.exists_lt_add_of_lt_add hq half_ne_zero hlam0
+    have hvfin : v ≠ ⊤ := hvlam.ne_top
+    have ha_lt : (u.toReal) < 1 / 2 := by
+      have := (ENNReal.toReal_lt_toReal huhalf.ne_top half_ne_top).2 huhalf
+      rwa [half_toReal] at this
+    have hb_lt : ((v.toNNReal : ℝ≥0∞)) < lamH := by rwa [ENNReal.coe_toNNReal hvfin]
+    have hqle : q ≤ ENNReal.ofReal (u.toReal + (v.toNNReal : ℝ)) := by
+      have hsum : ENNReal.ofReal (u.toReal + (v.toNNReal : ℝ)) = u + v := by
+        rw [ENNReal.ofReal_add ENNReal.toReal_nonneg (by positivity : 0 ≤ ((v.toNNReal : ℝ)))]
+        rw [ENNReal.ofReal_toReal huhalf.ne_top]
+        congr 1
+        rw [show ENNReal.ofReal (v.toNNReal : ℝ) = ((v.toNNReal : ℝ≥0∞)) by
+              rw [ENNReal.ofReal_coe_nnreal], ENNReal.coe_toNNReal hvfin]
+      exact hquv.le.trans_eq hsum.symm
+    exact push u.toReal (v.toNNReal : ℝ) ENNReal.toReal_nonneg ha_lt (by positivity) hqle
+      (core_admissible_of_lt H hHmeas y0 v.toNNReal hb_lt)
+
+/-! ## The threshold-lift, `≤` direction (`n = 1`) — the open-witness wrapper -/
+
+/-- The cusp `≤`-direction's "high-`H`" piece: on `W ⊆ {H > R²}` of finite measure, `|H|^{−(c−1/2)}`
+is bounded by `(R²)^{−(c−1/2)}` (the negative power is decreasing, `H > R² > 0`), hence integrable.
+The harmless half of the `V₀ = {H ≤ R²} ∪ {H > R²}` split. -/
+theorem core_int_high {Y : Type*} [MeasureSpace Y] (H : Y → ℝ) (hHmeas : Measurable H)
+    (c R : ℝ) (hc : 1 / 2 < c) (hR : 0 < R) (W : Set Y) (hWmeas : MeasurableSet W)
+    (hWfin : volume W ≠ ⊤) (hWsub : ∀ z ∈ W, R ^ 2 < H z) :
+    IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) W volume := by
+  apply Integrable.mono' (g := fun _ => (R ^ 2) ^ (-(c - 1 / 2)))
+    (integrableOn_const (hs := hWfin))
+    ((by fun_prop : Measurable (fun z => |H z| ^ (-(c - 1 / 2)))).aestronglyMeasurable)
+  filter_upwards [ae_restrict_mem hWmeas] with z hz
+  rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+  have hHpos : R ^ 2 < H z := hWsub z hz
+  have hHz0 : (0 : ℝ) < H z := lt_trans (by positivity) hHpos
+  rw [abs_of_nonneg hHz0.le]
+  exact Real.rpow_le_rpow_of_nonpos (by positivity) hHpos.le (by linarith)
+
+/-- **Joint-admissible ⟹ core-admissible at the shifted exponent** (open-neighbourhood form). From a
+joint admissibility witness (open `Ω ∋ (0, y0)`, `c > 1/2`), produce an open `Ω' ∋ y0` carrying
+`|H|^{−(c−1/2)}` integrably. Shrink `Ω` to a product `Icc (-R/2) (R/2) ×ˢ V₀` (`V₀ = ball y0 δ ⊆`
+the `H ≠ 0`-witness nbhd), split `V₀ = (V₀ ∩ {H ≤ (R/2)²}) ∪ (V₀ ∩ {H > (R/2)²})`: the low part is
+`core_int_of_joint_int` (cusp inside the ball), the high part `core_int_high` (bounded integrand).
+The split dodges the unboundedness of merely-measurable `H` near `y0` (Codex-confirmed: no
+continuity needed). -/
+theorem core_adm_of_joint_adm {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H) (y0 : Y)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0)
+    (c : ℝ) (hc : 1 / 2 < c)
+    (hjadm : ∃ Ω : Set (ℝ × Y), IsOpen Ω ∧ (0, y0) ∈ Ω ∧
+      IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-c) * (1 : ℝ)) Ω volume) :
+    ∃ Ω : Set Y, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) Ω volume := by
+  obtain ⟨Ω, hΩopen, hmem, hint⟩ := hjadm
+  obtain ⟨U, hU, hUne⟩ := hHne
+  obtain ⟨A, Vbase, hAopen, hVbopen, h0A, hy0Vb, hsub⟩ := isOpen_prod_iff.1 hΩopen 0 y0 hmem
+  obtain ⟨R, hRpos, hRA⟩ := Metric.isOpen_iff.1 hAopen 0 h0A
+  obtain ⟨U₀, hU₀sub, hU₀open, hy0U₀⟩ := _root_.mem_nhds_iff.1 hU
+  obtain ⟨δ, hδpos, hδsub⟩ := Metric.isOpen_iff.1 (hVbopen.inter hU₀open) y0 ⟨hy0Vb, hy0U₀⟩
+  set V₀ := Metric.ball y0 δ with hV₀
+  have hV₀open : IsOpen V₀ := Metric.isOpen_ball
+  have hV₀fin : volume V₀ ≠ ⊤ := Metric.isBounded_ball.measure_lt_top.ne
+  have hV₀Vb : V₀ ⊆ Vbase := fun z hz => (hδsub hz).1
+  have hV₀U : V₀ ⊆ U := fun z hz => hU₀sub (hδsub hz).2
+  set R2 := R / 2 with hR2
+  have hR2pos : 0 < R2 := by positivity
+  have hIccA : Icc (-R2) R2 ⊆ A := by
+    intro x hx; apply hRA; rw [Metric.mem_ball, Real.dist_eq, sub_zero]
+    simp only [mem_Icc] at hx
+    have : |x| ≤ R2 := abs_le.2 ⟨hx.1, hx.2⟩
+    linarith [this, (by linarith : R2 < R)]
+  have hjrect : IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-c) * (1 : ℝ))
+      ((Icc (-R2) R2) ×ˢ V₀) volume :=
+    hint.mono_set (fun p hp => hsub ⟨hIccA hp.1, hV₀Vb hp.2⟩)
+  set Vlo := V₀ ∩ {z | H z ≤ R2 ^ 2} with hVlo
+  set Vhi := V₀ ∩ {z | R2 ^ 2 < H z} with hVhi
+  have hVlomeas : MeasurableSet Vlo :=
+    hV₀open.measurableSet.inter (measurableSet_le hHmeas measurable_const)
+  have hVhimeas : MeasurableSet Vhi :=
+    hV₀open.measurableSet.inter (measurableSet_lt measurable_const hHmeas)
+  have hHneVlo : ∀ᵐ z ∂(volume.restrict Vlo), H z ≠ 0 :=
+    ae_restrict_of_ae_restrict_of_subset (fun z hz => hV₀U hz.1) hUne
+  have hcore_lo : IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) Vlo volume :=
+    core_int_of_joint_int H hH hHmeas c R2 hc hR2pos Vlo hVlomeas hHneVlo (fun z hz => hz.2)
+      (hjrect.mono_set (Set.prod_mono (subset_refl _) inter_subset_left))
+  have hcore_hi : IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) Vhi volume :=
+    core_int_high H hHmeas c R2 hc hR2pos Vhi hVhimeas
+      ((measure_mono inter_subset_left).trans_lt hV₀fin.lt_top).ne (fun z hz => hz.2)
+  have hVunion : V₀ = Vlo ∪ Vhi := by
+    ext z; simp only [hVlo, hVhi, mem_inter_iff, mem_union, mem_setOf_eq]
+    constructor
+    · intro hz; rcases le_or_gt (H z) (R2 ^ 2) with h | h
+      · exact Or.inl ⟨hz, h⟩
+      · exact Or.inr ⟨hz, h⟩
+    · rintro (⟨hz, _⟩ | ⟨hz, _⟩) <;> exact hz
+  exact ⟨V₀, hV₀open, Metric.mem_ball_self hδpos, hVunion ▸ hcore_lo.union hcore_hi⟩
+
+/-- **The threshold-lift, `≤` direction.** `rlctAtOn (x² + H) (0, y0) ≤ ½ + rlctAtOn H y0`. By
+`sSup_le`: a joint-admissible `c'` with `c' ≤ 1/2` is trivially `≤ ½ + λ_H`; for `c' > 1/2`,
+`core_adm_of_joint_adm` gives core-admissibility at `c' − 1/2`, so `(c' − 1/2) ≤ λ_H` (`le_sSup`),
+hence `c' = ½ + (c' − 1/2) ≤ ½ + λ_H`. -/
+theorem step_rlct_le {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0) :
+    rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) ≤ (1 / 2 : ℝ≥0∞) + rlctAtOn H y0 := by
+  rw [show rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0)
+      = sSup { c : ℝ≥0∞ | ∃ c' : NNReal, c = (c' : ℝ≥0∞) ∧ ∃ Ω : Set (ℝ × Y), IsOpen Ω ∧
+          {((0 : ℝ), y0)} ⊆ Ω ∧
+          IntegrableOn (fun w => |w.1 ^ 2 + H w.2| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w) Ω volume }
+      from rfl]
+  apply sSup_le
+  rintro c ⟨c', rfl, Ω, hΩopen, hmem, hint⟩
+  by_cases hc12 : (c' : ℝ) ≤ 1 / 2
+  · apply le_trans _ le_self_add
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp, ENNReal.coe_le_coe,
+      ← NNReal.coe_le_coe]
+    push_cast; linarith
+  · push_neg at hc12
+    obtain ⟨Ωc, hΩcopen, hy0c, hcint⟩ :=
+      core_adm_of_joint_adm H hH hHmeas y0 hHne (c' : ℝ) hc12
+        ⟨Ω, hΩopen, by simpa using hmem, hint⟩
+    set bN := ((c' : ℝ) - 1 / 2).toNNReal with hbN
+    have hbNcoe : (bN : ℝ) = (c' : ℝ) - 1 / 2 := Real.coe_toNNReal _ (by linarith)
+    have hble : (bN : ℝ≥0∞) ≤ rlctAtOn H y0 := by
+      unfold rlctAtOn weightedThreshold
+      apply le_sSup
+      refine ⟨bN, rfl, Ωc, hΩcopen, by simpa using hy0c, ?_⟩
+      rw [hbNcoe]; simpa using hcint
+    have hsum : (c' : ℝ≥0∞) = (1 / 2 : ℝ≥0∞) + (bN : ℝ≥0∞) := by
+      rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp, ← ENNReal.coe_add]
+      congr 1
+      apply NNReal.coe_injective; push_cast [hbNcoe]; ring
+    rw [hsum]; gcongr
+
+/-- **The smooth-block Fubini RLCT lemma, `n = 1`** (`step_rlct`). Adding the coordinate `x²`
+to a measurable, a.e.-nonvanishing core `H` shifts the RLCT by exactly `1/2`:
+`rlctAtOn (x² + H) (0, y0) = 1/2 + rlctAtOn H y0`. The `le_antisymm` of the integrability (`≥`) and
+cusp (`≤`) directions. Iterating over the `n` regular coordinates yields the general `n/2` shift
+(`Skeleton.rlct_additive_smooth_block`). Axiom-clean; the `hHne` hygiene hypothesis (the 13th
+fidelity fix) rules out the germ-vanishing counterexample. -/
+theorem step_rlct {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0) :
+    rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) = (1 / 2 : ℝ≥0∞) + rlctAtOn H y0 :=
+  le_antisymm (step_rlct_le H y0 hH hHmeas hHne) (step_rlct_ge H y0 hH hHmeas hHne)
 
 end DLNFibre.DLN.RLCT

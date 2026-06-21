@@ -360,17 +360,88 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   (L1-reuse) + R1.2 multiplicity-control (`h_E+1 ≥ k_E·min Mval` per divisor, NOT codim shortcut); R1.4
   (Fubini-per-chart) plugs fm-2's shift theorem when the lift lands; obligations folded in (unit-absorption via
   S1.3, hcore_top endpoint, min-over-cover factorises n upstream-fixed). The mountain.
+  - **R1.2 ROUTE — VERDICT: route B REFUTED → route-A-CONCRETE (pp + decorrelated Codex, INDEPENDENTLY IDENTICAL +
+    witnesses).** ⚠️ CORRECTS my prior "L1-pivot charts resolve it" bank — that reading is WRONG. **THE DECIDER:**
+    a residual product of length q≥2 has ‖∏C̃‖² with ordinary VANISHING ORDER 2q (NOT 2); regular changes (= L1)
+    PRESERVE ordinary order ⟹ **L1-alone can NEVER expose the core as a smooth coordinate-square block** (route B
+    is FALSE). The product-structure concern I gated on was REAL + it KILLS B. WITNESSES: (1,1,1) F=c₁²c₂² (monomial
+    NC, only easy case); (1,2,1) F=(a₁b₁+a₂b₂)² (singular quadratic cone, first non-monomial); (2,2,2) F=‖AB‖²
+    ord_0=4, Hessian ZERO, codim-3 irreducible, rlct=3/2 via radial/angular blow-up. So a **genuine BLOW-UP is
+    REQUIRED + multiplicity-control is NON-VACUOUS** (k=1 on the EXCEPTIONAL divisors, post-blow-up, via the
+    pos-def-REAL initial form — over ℂ fails at (x²+y²)²). **BUT not the abstract-infra mountain: route-A-CONCRETE**
+    = explicit POLYNOMIAL blow-up charts (A=tA'; (2,1,2)=(x,xy,z,zw); etc.) with vanishing Jacobian on the
+    exceptional locus, **S1.1 carrying the change-of-variables** (its hsurj+hImE hyps are EXACTLY for the blow-up's
+    non-injectivity / null exceptional image — the 10th-finding design was built for this). NO Mathlib blow-up
+    primitive. R1 = MEDIUM (explicit-poly-chart resolution + S1.1 + non-vacuous mult-control + cover). fm: do NOT
+    build (B); the validate-small φ's (φ=id (1,1,1); explicit-poly (2,1,2)/(2,2,2)) ARE route-A-concrete charts.
+    Codex sharpenings folded: (#2) R1.2 stays BARE (divisor inequality), assembly
+    applies 1.unit-absorption → 2.monomial_rlct → 3.R1.2 → 4.S1Fubini SEPARATELY; (#3) Mval = CORE codim (reduced
+    widths), assembly = **n/2 + B/2** (don't double-count the regular n). **fm seeded with R1.2a/b** (axisRatio
+    arithmetic, zero-dep) + the route-independent (1,1,1) gate (xcheck vs `case111_rlct`); pp designing R1.1 charts
+    validate-small-first ((1,1,1)→(2,1,2)→(2,2,2), symbolically verified). Climb order: R1.2a/b → R1.3 codim →
+    R1.1 charts → R1.6 cover → assembly.
+  - **14th FIDELITY FINDING (pp, load-bearing) — `resolution_charts` ORPHANED + MIS-SCOPED → RE-SCOPE to CORE
+    (controller APPROVED):** (1) it's consumed by NOTHING (product_reduction doesn't call it ⟹ R1 was about to be
+    built proven-but-unplugged); (2) it states the FULL-loss RLCT = ⨅ monomialThreshold (a MIN), but the full-loss
+    RLCT = n/2 + ½·min Mval (a SUM — the reg n/2 is ADDITIVE via Fubini, not a min-direction) ⟹ FALSE for r>0; the
+    (1,1,1) validate case had r=0 (n=0) so it didn't exercise the reg-term. FIX: re-scope to `rlctAt(core) wstar =
+    ⨅ monomialThreshold` (R1's genuine content), and WIRE the assembly into product_reduction:
+    `dlnLoss(deepestPt)` →[block_elimination] reg⊞core →[S1Fubini] n/2+rlctAt(core) →[resolution_charts(core)]
+    n/2+⨅monomialThreshold →[A1] n/2+½·min Mval = aoyagiLambda. Clean separation: **R1 = core resolution; L2 =
+    the assembly (split+Fubini+R1+A1); A1 = arithmetic.** The re-scope is REQUIRED for composition (S1Fubini takes
+    rlctAt(core)). pp pins the corrected stmt + the `core` (∏C^(s)) object → fm restates + wires product_reduction;
+    R1.1 charts resolve the CORE ‖∏C‖² (NOT full dlnLoss). Supersedes the stale-docstring item (whole stmt re-scoped).
 - **S1.5 restatement+wire deferred to ONE pass** at fm-2's Fubini lift-close: I relay the complete signature
   (hGmeas + hGne + `[ProperSpace]`/`[IsFiniteMeasureOnCompacts]` instances) → fm restates + wires `exact` in one go.
-- **FUBINI: ALL ATOMS PROVEN** (fm-2, S1Fubini.lean @e2a3f0c, 302 LoC, axiom-clean): both integral directions
-  (`step_integrableOn` ≥, `step_lintegral_top` ≤ cusp) + `admissible_downset` (the hardest sub-piece, rpow
-  two-sided bound on a bounded finite-measure nbhd; needs `[ProperSpace]`+`[IsFiniteMeasureOnCompacts]`) +
-  core_admissible_of_lt/_zero + cmpF + oneDimCuspVol + inner_slice + cusp_lower_bound. Measure-route = B (1-D
-  interval vol, no EuclideanSpace/addHaar; statement-shape (A) abstract-core). REMAINING = pure ENNReal sSup
-  BOOKKEEPING (no new math, no walls): n=1 `step_rlct` le_antisymm (≥ split q=a+b + step_integrableOn; ≤
-  step_lintegral_top contrapositive) + iterate over n coords → n/2+λ_core. fm-2 PAUSED at this clean green
-  checkpoint (good discipline — not grinding ENNReal coercions tired) → closing it next as a focused task
-  (template = its own smoothBlock1D_rlct). ~80% done by content. Both directions carry hHne/hGne.
+- **FUBINI n=1 EQUALITY PROVEN** (fm-2, S1Fubini.lean @e1cf73c, 564 LoC / 17 thms, ALL axiom-clean): `step_rlct :
+  rlctAtOn(x²+H)(0,y0) = ½ + rlctAtOn H y0` (H≥0, Measurable H, hHne germ-a.e.≠0; core space ProperSpace +
+  IsFiniteMeasureOnCompacts). The **hardest analytic content of the whole expedition is DONE** — both directions:
+  ≥ (step_rlct_ge: integrability split + sSup-lower-bound, ENNReal split idiom, admissible_downset); ≤
+  (step_rlct_le: the cusp — step_lintegral_top contrapositive + core_adm_of_joint_adm open-witness wrapper via the
+  {H≤R²}∪{H>R²} split; NO continuity needed for measurable H, the resolved subtlety). Measure-route B (1-D
+  interval vol, no addHaar/EuclideanSpace bridge — lighter; cusp proven ONCE + reused per induction). **~95% DONE
+  @2e8f3c0** — ALL iteration infra proven (finPeel + chartN measure-preserving [dependent-Fin snag closed via
+  Fin.cons/Continuous.finCons], rlctAtOn_comp_homeomorph, step_rlct, Σ-peel; ~22 thms axiom-clean). REMAINING =
+  the induction chaining ONLY (rlct_additive_smooth_block_aux, induction on n; pure assembly, no new math) → the
+  Skeleton `rlct_additive_smooth_block`. Then fm wires `exact` → controller aggregator-wire + green-gate → rv-2.
+- **R1 DIFFICULTY MAP (pp general-atlas design + honest correction):** **R1.3 = LIGHT** — codim is a ℕ COUNT
+  identity (∑ residual block sizes = Mval), NOT the determinantal-codim theorem; **Mathlib v4.29 gap GONE**
+  (decorrelated-Codex + verified). **R1.1 = MEDIUM** (pivot recursion on L; base L=1 = smooth block via
+  smoothBlockND_rlct, step = explicit-poly blow-up + recurse). **R1.6 (general cover) = THE MOUNTAIN** — the
+  headline EQUALITY needs the LOWER bound (rlct ≥ ½min Mval), which needs the COVER complete (no missed worse
+  divisor; codim-shortcut FALSE per x^{2k}/(x²+y²)², D1 doesn't give per-point LB) ⟹ critical-path, no shortcut.
+  pp HONESTLY corrected its own "R1 medium" drift → R1.6 is where the difficulty concentrates; general-M may be a
+  GENUINE WALL.
+  - **R1.6 SHARP BOUNDARY + HEADLINE-REACH DECISION (pp detailed cover design + decorrelated Codex; controller
+    adjudicated):** FIXED-M = INTRICATE-STANDARD, **provable now** (resolution = finite tree depth ≤L−1, unrolled
+    to a finite explicit leaf-chart list; cover = finite sum, ONE Mathlib single-c-o-v per leaf; (2,2,2)=24 charts;
+    NO recursion infra). GENERAL-M = **RESEARCH-WALL** (decorrelated-identical pp+Codex): n/tree/φ_i depend on M ⟹
+    needs the recursion-as-a-theorem = the two missing-infra obligations **G3 (strict-transform tracking over
+    arbitrary rank vectors) + G5 (gluing iterated c-o-v into ONE global integral identity; Mathlib has SINGLE
+    c-o-v only)**. The cover is UNAVOIDABLE for the lower bound (Codex Q3 FACT; codim-shortcut false).
+    **DECISION: (1) fixed-M LADDER near-term + (2) general infra (G3+G5) ROADMAPPED; (3) axiomatize-cover RULED OUT**
+    (breaks one-citation / awkward-middle). LADDER (each a complete axiom-clean-mod-S2 headline instance +
+    validates a machinery piece): (1,1,1) monomial [no cover] → (2,1,2) **Fubini-PRODUCT** [disjoint vars separate,
+    NO blow-up — pp refinement] → (2,2,2) first TRUE cover [24 charts] → up the M-ladder. **DELIVERABLE FRAMING:**
+    the full machinery (S1·Fubini·R1-fixed-M·A1·assembly) + the headline PROVEN for ladder cases; the FULLY-GENERAL
+    headline = those + the named G3+G5 research obstruction (honest partial, NOT a false general claim). Assessing
+    whether **G5 (abstract c-o-v-tree-gluing) is separable + buildable now** as a down-payment on the general lift.
+    **OPERATOR SCOPE FLAG:** the general-M headline is gated on the G3+G5 research-infra lift — surfaced for the
+    operator's steer (attempt the lift vs deliver ladder+roadmap); proceeding with the ladder meanwhile (no stop).
+  - **(2,2,2) FULL COVER CLIMBED + VALIDATED (pp, exact-symbolic):** two nested blow-ups (faithful to Aoyagi
+    Lemma 2/Thm 3): step-1 blow up {A=0} (4 charts, x-divisor ratio 2) → Lemma-2 regular split → step-2 blow up
+    (3 charts, s-divisor ratio 3/2 = binding). **GENUINE HOLE caught+closed (validate-small working):** the 3
+    step-2 charts are NOT uniform — E-/F0-pivot residuals are positive units (clean monomial×unit leaves), but the
+    **δ-pivot residual U(origin)=0 is a SMOOTH-4-BLOCK** (v²+w²+G'²+H'²), so the δ-leaf = x²s²·(Σ⁴y²), NOT
+    monomial×unit. Closed by CHECKING (not assuming): block rlct = 2 ≥ binding 3/2 ⟹ s-exceptional still binds at
+    3/2 = ½·Mval(deepest), θ=1. Cover SOUND. **FIDELITY → Option A (BLESSED, fixed-M):** monomialize the smooth
+    block (ratio-preserving — the cone Σⁿy² blows up to exceptional ratio EXACTLY n/2 = its rlct), so RHS
+    `⨅ monomialThreshold` stays LITERALLY TRUE + leaves uniform. **DESIGN REFINEMENT:** the atlas has a THIRD
+    block-monomialization layer ((2,2,2) is NOT 4×3=12 simple leaves; δ-branch subdivides into a 4-chart Σy²
+    blow-up). **A-vs-B for GENERAL-M (open, part of the tractability verdict):** Option A's 3rd layer may COMPOUND
+    G3/G5; Option B (block leaves bounded directly via smoothBlockND_rlct+Fubini, no extra layer, heterogeneous
+    cover sum) reuses existing machinery — pp weighing as part of the general-M verdict. (2,1,2) confirmed NOT a
+    cover (Fubini-product, disjoint vars, rlct=min(1,1)=1=½·Mval — separate small lemma).
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
@@ -384,20 +455,31 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   rlctAt=⊤, equality ⊤=⊤). So hGfin is wrong both ways; hHne is the sound hyp AND what fm-2's step_* already carry
   (the H=0 corner + cmpF a.e.-positivity). fm-2 ACCEPTED hHne. **EXACT LOCKED FORM** (relayed to fm; restate
   batched with S1.3, keep sorry): `(hGmeas : Measurable G) (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0)`
-  (germ form, G≠0 a.e. ⟺ G²≠0 a.e.). PENDING: fm-2's lift may also need `[SigmaFinite (volume : Measure Y)]`/
-  locally-finite instances (R1's Y=Fin d→ℝ has them) — fm-2 sends the COMPLETE sig when lift _aux closes → fm adds
-  them for a zero-drift wire. R1's monomial ∏|y_j|^{2k_j} discharges hGne (≠0 off null coordinate hyperplanes).
+  (germ form, G≠0 a.e. ⟺ G²≠0 a.e.). **FINAL COMPLETE SIG (fm-2 pinned, relayed to fm):** instances
+  `[PseudoMetricSpace Y][MeasureSpace Y][ProperSpace Y][IsFiniteMeasureOnCompacts (volume)][OpensMeasurableSpace Y]`
+  (the down-set needs them; NOT SigmaFinite as first guessed) — STRENGTHENING IS REQUIRED (the proof needs them ⟹
+  a weaker Skeleton sig breaks the `exact _aux` wire; the "keep [TopologicalSpace] general" alt does NOT work).
+  RHS `(n:ENNReal)/2 + rlctAtOn (fun y => G y^2) y0`. fm restates (batch w/ resolution_charts re-scope + (1,1,1)
+  gate). USE-SITE: core's Y = Fin d→ℝ provides all 4 instances (bridge if Params-typed). R1's monomial ∏|y_j|^{2k_j}
+  discharges hGne (≠0 off null coordinate hyperplanes). fm-2's proof _aux lands at iteration-close (one dependent-Fin
+  snag: finPeel.continuous_invFun, no math depth) → fm wires `exact`.
 - **R1 USE-SITE CONFIRMED (pp + Codex identical): CLEAN to relocate (confirms A) + 2 obligations folded into R1:**
   (1) **unit-absorption** — R1 chart core = unit·∏|y_j|^{2k_j}, so R1.2's S2 invocation MUST first absorb the
   nonvanishing unit via `rlct_unit_invariant` (S1.3), THEN S2 on the pure monomial (THE main hidden gap; Jacobian
   same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
   literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
 
-## Next tick
-INTEGRATE as they land: (1) fm-2's Fubini lift-close → complete S1.5 sig (hGmeas+hGne+instances) → relay to fm
-→ fm restates+wires `rlct_additive_smooth_block` in ONE pass + I add S1Fubini to the aggregator → green-gate +
-rv-2 audit. (2) R1 EXECUTION (pp leads, fm formalises): R1.1 charts + R1.2 multiplicity-control (pre-Fubini) →
-R1.4 Fubini-per-chart (post-lift) → R1.3/R1.5/R1.6/R1.7 → green-gate + rv-2 (heaviest audit). (3) L2 (needs S1.5)
-→ D1 (needs L2) → T assembly. #19 PARKED (edge-transform route + karamata_sq banked = one majorization gate for a
-dedicated tide). Critical path now: Fubini-close → S1.5 wire + R1 → L2 → D1 → T. Keep rv-2 decorrelated. Watch
-the fm→#19 pull (parked 3×). Don't stop in a blocked state.
+## Next tick (state @ ~02:00, trunk past 54ffe32)
+TWO BIGGEST RISKS RETIRED: Fubini n=1 equality PROVEN (@e1cf73c) + R1 route VALIDATED (A-concrete, B refuted).
+Remaining = execution + assembly. **Re-scope PINNED** (pp → fm): `resolution_charts(M) = rlctAtOn(dlnLoss M 0)(0)
+= ⨅ monomialThreshold` (reduced widths M = core) + product_reduction wiring chain (block_elim → S1Fubini n/2 →
+resolution_charts-core + S2 + A1 → aoyagiLambda). **λ_core=0 edge HANDLED** (fm-2, core_admissible_zero, no
+λ_core>0 hyp). Iteration keystone `rlctAtOn_comp_homeomorph` banked (@f254397).
+INTEGRATE as they land: (1) fm-2's Fubini ITERATION (Fin-peel homeomorph + Σ-peel) → general-n
+rlct_additive_smooth_block → report final sig → fm restate+wire (ONE pass) → I aggregator-wire S1Fubini +
+green-gate → rv-2 audit. (2) R1 CLIMB (validate-small-first): fm closes the **(1,1,1) gate** (φ=id chart + S2 +
+arith, NO general geometry, xcheck `case111_rlct`) → (2,1,2)/(2,2,2) explicit-poly charts; pp designs the GENERAL
+atlas R1.1/R1.3(codim=Mval, heavy)/R1.6(cover) in PARALLEL (math validate-small'd via witnesses). fm also restates
+resolution_charts (core) + wires product_reduction. (3) L2 → D1 → T. #19 PARKED. Critical path: Fubini-iteration
++ R1-(1,1,1)-gate → general R1 atlas → wire product_reduction → D1 → T. rv-2 decorrelated (R1 = heaviest audits).
+Watch the fm→#19 pull (parked 3×). Don't stop in a blocked state.
