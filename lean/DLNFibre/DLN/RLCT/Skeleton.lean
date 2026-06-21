@@ -1207,7 +1207,9 @@ private theorem prefix_edgeQ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (n : 
   congr 1
   rw [Finset.sum_range_succ' (fun i => Mseq M i) n]; ring
 
-/-- **A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
+/-! ### A1 (`lambdaCore_eq_clean`) route notes (the theorem itself is built at the end of the file).
+
+**A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
 `lambdaCore M = ½·min_T M(T)` equals `cleanCore c (sortedSmallest M c)` for an **achiever**
 `c ∈ {1,…,L}` — the `m` argument is **pinned** to `M`'s `c+1` smallest reduced widths (a function of
 `M`, not a free choice), so this is the faithful Aoyagi Lemma 3 (`min_{T∈Adm} M(T) = clean form at
@@ -1252,10 +1254,8 @@ provably undershoots (the leaked prefix mass lands on a strictly larger tail slo
 irreducible), so the global smallest-`k`-sum majorization is mandatory. Upper bound (achiever) needs
 the same order-reconciliation: an explicit `T* ∈ Adm M` (greedy placement of `Y`, or first prove
 `lambdaCore M = lambdaCore (sort M)`) with `Mval M T* = ½(∑Y² − ∑M²)`, then `Finset.inf'_le`. All
-sub-claims numerically verified 0-failure (L≤4); the gate is purely the Lean majorization build. -/
-theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
-    ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
-  sorry
+sub-claims numerically verified 0-failure (L≤4); the gate is purely the Lean majorization build.
+The proof is built at the end of the file, after the `balancedSplit_*` arithmetic engines used. -/
 
 /-- The balanced-split sum of squares: `∑ᵢ qᵢ² = (P%ℓ)(P/ℓ+1)² + (ℓ−P%ℓ)(P/ℓ)²` (nat-division
 casts). The `a` parts of `⌈P/ℓ⌉` and `ℓ−a` parts of `⌊P/ℓ⌋`, where `a = P%ℓ`. -/
@@ -1413,5 +1413,49 @@ theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- assemble: D1 (⨅ = rlctAt at the constructed deepestPoint) ▸ L2 (= closed form there).
   rw [deepest_point_reduction H r B hB hr hL]
   exact product_reduction H r B hB hr hL
+
+/-! ## A1 (`lambdaCore_eq_clean`) — the genuine clean closed form, built here.
+
+The route is in the `lambdaCore_eq_clean` docstring above. The hard core is a from-scratch Karamata
+(majorization) inequality: Mathlib v4.29 has no Schur-convexity / "sum of `k` smallest" API. We
+build the sorted-prefix-domination bridge to the `karamata_sq` engine, the `smallestK ≤ k-subset`
+fact, the QFeasible-edge majorization, and the explicit achiever. -/
+
+/-- The ascending-sorted sequence of `q : Fin n → ℤ` as a total `ℕ → ℤ` (padded `0` past `n`), built
+from `Tuple.sort` so that prefix `range`-sums are sums of the `k` smallest entries. -/
+noncomputable def srt (n : ℕ) (q : Fin n → ℤ) (i : ℕ) : ℤ :=
+  if h : i < n then q (Tuple.sort q ⟨i, h⟩) else 0
+
+/-- **Karamata via sort (the convexity lower bound, sorted form).** If `q, Y : Fin n → ℤ` have equal
+total and every sorted prefix of `q` is `≤` the corresponding sorted prefix of `Y` (`Y` more
+balanced), then `∑ Y² ≤ ∑ q²`. Bridges sorted-prefix domination to the `karamata_sq` engine. -/
+private theorem sq_sum_le_of_sorted_prefix (n : ℕ) (q Y : Fin n → ℤ)
+    (htot : ∑ i, q i = ∑ i, Y i)
+    (hpre : ∀ k, k ≤ n → ∑ i ∈ Finset.range k, srt n q i ≤ ∑ i ∈ Finset.range k, srt n Y i) :
+    ∑ i, (Y i) ^ 2 ≤ ∑ i, (q i) ^ 2 := by
+  have hYsq : ∑ i ∈ Finset.range n, (srt n Y i) ^ 2 = ∑ i, (Y i) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => (srt n Y i) ^ 2) n]
+    rw [show (∑ i : Fin n, (srt n Y (i : ℕ)) ^ 2) = ∑ i : Fin n, (Y (Tuple.sort Y i)) ^ 2 from
+      Finset.sum_congr rfl (fun i _ => by simp only [srt, dif_pos i.isLt])]
+    exact Equiv.sum_comp (Tuple.sort Y) (fun i => (Y i) ^ 2)
+  have hqsq : ∑ i ∈ Finset.range n, (srt n q i) ^ 2 = ∑ i, (q i) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => (srt n q i) ^ 2) n]
+    rw [show (∑ i : Fin n, (srt n q (i : ℕ)) ^ 2) = ∑ i : Fin n, (q (Tuple.sort q i)) ^ 2 from
+      Finset.sum_congr rfl (fun i _ => by simp only [srt, dif_pos i.isLt])]
+    exact Equiv.sum_comp (Tuple.sort q) (fun i => (q i) ^ 2)
+  have htot' : ∑ i ∈ Finset.range n, srt n q i = ∑ i ∈ Finset.range n, srt n Y i := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => srt n q i) n,
+        ← Fin.sum_univ_eq_sum_range (fun i => srt n Y i) n]
+    rw [show (∑ i : Fin n, srt n q (i : ℕ)) = ∑ i : Fin n, q (Tuple.sort q i) from
+          Finset.sum_congr rfl (fun i _ => by simp only [srt, dif_pos i.isLt]),
+        show (∑ i : Fin n, srt n Y (i : ℕ)) = ∑ i : Fin n, Y (Tuple.sort Y i) from
+          Finset.sum_congr rfl (fun i _ => by simp only [srt, dif_pos i.isLt])]
+    rw [Equiv.sum_comp (Tuple.sort q) q, Equiv.sum_comp (Tuple.sort Y) Y]; exact htot
+  have hmono : ∀ i, i + 1 < n → srt n Y i ≤ srt n Y (i + 1) := by
+    intro i hi
+    simp only [srt, dif_pos (show i < n by omega), dif_pos hi]
+    apply Tuple.monotone_sort Y; simp [Fin.le_def]
+  have := karamata_sq n (srt n q) (srt n Y) hmono htot' hpre
+  rw [hqsq, hYsq] at this; exact this
 
 end DLNFibre.DLN.RLCT
