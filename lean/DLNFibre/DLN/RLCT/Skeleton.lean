@@ -2778,7 +2778,9 @@ private theorem Mval_Tstar (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (hL : 1 �
     exact Equiv.sum_comp σ (fun j => (Yvec M (cAch M) j) ^ 2)
   rw [hid, hqsq, hMsq, hpermsq]
 
-/-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
+/-! ## A1 closing machinery (Route B: Rado–Gale achiever) + `lambdaCore_eq_clean`
+
+**A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
 
@@ -2797,6 +2799,66 @@ is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`,
 - UPPER `lambdaCore ≤ cleanCore`: telescope `T*` for a corridor-feasible ordering `q*` of `Y` — then
   `edgeQ(M,T*) = q*` by construction, `T*∈Adm` by corridor↔Adm, and `2·Mval(T*) = ∑Y² − ∑M²`.
 - VALUE `4·cleanCore c (sortedSmallest M c) = ∑Y² − ∑M²` closes the equality with both bounds. -/
+/-- `uTel` as a telescoped prefix sum: `u_n = M⁰ + ∑_{j<n}(M⁽ʲ⁺¹⁾ − q_j)`. -/
+private theorem uTel_eq_prefix (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (n : ℕ) :
+    uTel M q n = (M 0 : ℤ) + ∑ j ∈ Finset.range n, (Mseq M (j + 1) - q j) := by
+  induction n with
+  | zero => simp [uTel]
+  | succ k ih => rw [uTel, ih, Finset.sum_range_succ]; ring
+
+/-- `∑_{i<n+1} Mseq = M⁰ + ∑_{j<n} Mseq(j+1)` (split off the `0` term). -/
+private theorem Mseq_prefix_succ (M : Fin (L + 1) → ℕ) (n : ℕ) :
+    ∑ i ∈ Finset.range (n + 1), Mseq M i = (M 0 : ℤ) + ∑ j ∈ Finset.range n, Mseq M (j + 1) := by
+  rw [Finset.sum_range_succ' (fun i => Mseq M i) n]
+  have hM0 : Mseq M 0 = (M 0 : ℤ) := by unfold Mseq; rw [dif_pos (by omega)]; rfl
+  rw [hM0]; ring
+
+/-- **QFeasible from a corridor-feasible assignment (the clause-algebra bridge).** A bijection
+`q` of `Y` (extended by `0` past `L`) with the polymatroid prefix/per-position/suffix bounds yields
+`QFeas M q`: prefix `⟹ uⁿ≥0`, total `⟹ uᴸ=0`, per-position `qⁿ≥M⁽ⁿ⁺¹⁾ ⟹ antitone`, suffix `⟹
+uⁿ⁺¹≤admBound`. (All pp-verified 0/1360.) -/
+private theorem QFeas_of_assignment (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
+    (hext : ∀ j, L ≤ j → q j = 0)
+    (htot : ∑ j ∈ Finset.range L, q j = ∑ i ∈ Finset.range (L + 1), Mseq M i)
+    (hpre : ∀ n, n ≤ L → ∑ j ∈ Finset.range n, q j ≤ ∑ i ∈ Finset.range (n + 1), Mseq M i)
+    (hge : ∀ j : Fin L, Mseq M ((j : ℕ) + 1) ≤ q (j : ℕ))
+    (hadm : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+        ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), q i) :
+    QFeas M q := by
+  have hpast : ∀ i, L + 1 ≤ i → Mseq M i = 0 := by
+    intro i hi; unfold Mseq; rw [dif_neg (by omega)]
+  -- u_L = 0 first (used by the n>L nonneg case)
+  have huL : uTel M q L = 0 := by
+    rw [uTel_eq_prefix, Finset.sum_sub_distrib]
+    have h := htot; rw [Mseq_prefix_succ] at h; linarith
+  refine ⟨?_, huL, ?_, ?_⟩
+  · -- u_n ≥ 0
+    intro n
+    rcases Nat.lt_or_ge n (L + 1) with hn | hn
+    · rw [uTel_eq_prefix, Finset.sum_sub_distrib]
+      have hp := hpre n (by omega); rw [Mseq_prefix_succ] at hp; linarith
+    · -- n ≥ L+1: uTel n = uTel L = 0 (Mseq and q both 0 on [L, n))
+      rw [uTel_eq_prefix]
+      have hsplit : ∑ j ∈ Finset.range n, (Mseq M (j + 1) - q j)
+          = ∑ j ∈ Finset.range L, (Mseq M (j + 1) - q j) := by
+        rw [← Finset.sum_range_add_sum_Ico _ (show L ≤ n by omega)]
+        have hz : ∑ j ∈ Finset.Ico L n, (Mseq M (j + 1) - q j) = 0 := by
+          apply Finset.sum_eq_zero; intro j hj; rw [Finset.mem_Ico] at hj
+          rw [hpast (j + 1) (by omega), hext j (by omega)]; ring
+        rw [hz, add_zero]
+      rw [hsplit]
+      have h := huL; rw [uTel_eq_prefix] at h; linarith
+  · -- antitone: u_{j+1} ≤ u_j ⟺ q_j ≥ M^{j+1}
+    intro j
+    rw [uTel_eq_prefix, uTel_eq_prefix, Finset.sum_range_succ]
+    have := hge j; linarith
+  · -- Ladm: u_{j+1} ≤ admBound j
+    intro j
+    rw [uTel_eq_prefix, Finset.sum_sub_distrib]
+    have hp := hadm j
+    rw [show (j : ℕ) + 2 = ((j : ℕ) + 1) + 1 by omega, Mseq_prefix_succ] at hp
+    linarith
+
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
   sorry
