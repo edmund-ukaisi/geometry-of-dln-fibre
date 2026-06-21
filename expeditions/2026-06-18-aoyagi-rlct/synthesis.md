@@ -2450,6 +2450,20 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`.
 
+Eq5 strict offsets are now named as the same-coordinate interval with both
+endpoints erased.  The new theorem
+`aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` erases the lower
+endpoint from the existing equality
+`insert Htilde_p Eq5OffsetValueSet_p = interval.erase Htilde'_p`, using the
+existing proof that `Htilde_p` is not a strict Eq5 offset.  This is only
+finite-set normalization; it does not claim endpoint realisation,
+displayed-vector construction, or Lemma 5 order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-offsets-erase-endpoints-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-offsets-erase-endpoints.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-offsets-erase-endpoints-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

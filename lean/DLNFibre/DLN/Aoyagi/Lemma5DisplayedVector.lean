@@ -2005,6 +2005,39 @@ theorem aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
       Finset.card_erase_add_one hupper_mem
     omega
 
+/-- In the rising region, the strict equation `(5)` offset values are exactly
+the same-coordinate interval with both endpoints erased.
+
+This is only finite-set bookkeeping.  It does not assert that the erased
+endpoints are realised by equation `(3)` or `(4)`, or construct any displayed
+source vector. -/
+theorem aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    aoyagiLemma5Eq5OffsetValueSet ell a p M m =
+      ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+        (aoyagiHtildeUpperNat ell a M m p)).erase
+          (aoyagiHtildeLowerNat ell a M m p) := by
+  ext z
+  constructor
+  · intro hz
+    rw [Finset.mem_erase]
+    constructor
+    · exact fun hz_lower =>
+        aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min
+          ell a p M m ha hp_a hp_c (by simpa [hz_lower] using hz)
+    · rw [← aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
+        ell a p M m ha hp_pos hp_a hp_c]
+      exact Finset.mem_insert_of_mem hz
+  · intro hz
+    rw [Finset.mem_erase] at hz
+    rw [← aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
+        ell a p M m ha hp_pos hp_a hp_c] at hz
+    rw [Finset.mem_insert] at hz
+    rcases hz.2 with hz_lower | hz_offset
+    · exact False.elim (hz.1 hz_lower)
+    · exact hz_offset
+
 /-- A supplied equation `(4)` own-coordinate value supplies the lower endpoint
 in the Eq5 lower-plus-strict-offset finite set.
 

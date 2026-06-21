@@ -2333,6 +2333,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_le_min`,
   which substitutes a supplied Eq4 own-coordinate lower endpoint into the
   Eq5 erase-upper finite-set equality.
+  Also proved
+  `aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min`, isolating
+  the strict Eq5 offsets as the same-coordinate interval with both endpoints
+  erased in the rising region.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

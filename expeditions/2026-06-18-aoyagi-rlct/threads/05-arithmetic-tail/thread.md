@@ -1944,3 +1944,32 @@ This is a finite-set substitution wrapper only.  It does not realise the
 erased upper endpoint, construct Eq4 or Eq5 displayed vectors, prove
 terminality, chart sequence, Lemma 5 order count, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 offsets erase both endpoints
+
+Reproduction:
+`reproduction-lemma5-eq5-offsets-erase-endpoints-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-offsets-erase-endpoints.md`.
+Review artifact:
+`review-lemma5-eq5-offsets-erase-endpoints-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
+```
+
+In the rising region, the strict Eq5 offset finite set is exactly the
+same-coordinate interval after erasing both endpoints:
+
+```text
+Eq5OffsetValueSet_p
+  = (HtildeIntervalValueSet_p.erase Htilde'_p).erase Htilde_p.
+```
+
+This is derived from the existing lower-plus-offset erase-upper equality and
+the existing proof that the lower endpoint is not a strict Eq5 offset.  It is
+finite-set bookkeeping only and does not construct displayed vectors, realise
+the endpoints, prove terminality, chart sequence, Lemma 5 order count, normal
+crossings, or RLCT extraction.

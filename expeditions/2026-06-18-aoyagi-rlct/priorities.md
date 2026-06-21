@@ -803,6 +803,10 @@ on the session's original cwd.
    continue one-step count/API hardening below the same supplied-family
    boundary, or move to a deliberately supplied terminal/exponent boundary
    whose fields explicitly include terminal exponent and least value data.
+   The Eq5 strict-offset erase-both-endpoints normalization is now proved.
+   Further A5 work should prefer wrappers that combine already-proved
+   interval membership with introduced-label finite-domain adapters, while
+   keeping endpoint realisation and order count out of scope.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

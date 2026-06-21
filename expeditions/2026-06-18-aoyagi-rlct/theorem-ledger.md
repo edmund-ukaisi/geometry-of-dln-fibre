@@ -3057,6 +3057,21 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`.
 
+Latest A5 update: Eq5 strict offsets are now isolated as the same-coordinate
+interval with both endpoints erased in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The name is
+`aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min`.  It erases
+the lower endpoint from the existing lower-plus-offset erase-upper equality,
+using the existing proof that the lower endpoint is not a strict Eq5 offset.
+This is finite-set normalization only; it does not realise Eq3/Eq4 endpoints,
+construct displayed vectors, prove terminality, admissibility, order count,
+normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-offsets-erase-endpoints-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-offsets-erase-endpoints.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-offsets-erase-endpoints-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
