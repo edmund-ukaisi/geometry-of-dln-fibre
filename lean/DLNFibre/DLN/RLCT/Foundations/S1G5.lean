@@ -80,4 +80,27 @@ theorem g5_flat_cover {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fi
   exact perChart μ (φ i) (φ' i) (V i) (N i) (hV i hi) (hN i hi) (hφ' i hi) (hinj i hi)
     (hNnull i hi) g
 
+/-- **G5-step** (pp's `g5-abstract-statement.md` card form, the `(2,2,2)` consumer). The cover is by
+the **injective-locus images** `φ_i '' (V_i \ Z_i)` directly (the caller drops the exceptional `Z_i`
+at the cover level), so each term is the c-o-v on `V_i \ Z_i` with no per-term null-drop:
+`∫⁻ x in U, g = Σ_{i∈s} ∫⁻ x in V_i \ Z_i, ofReal |det (φ_i' x)| · g (φ_i x)`. This is what the
+`(2,2,2)` cover discharges (`H-null/inj/cover/disj` from the explicit charts); the 24-leaf
+`∫⁻=Σ∫⁻` is `g5_step` composed 3-deep (step-1 4-way ∘ step-2 3-way ∘ step-3 4-way). -/
+theorem g5_step {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure]
+    {ι : Type*} (s : Finset ι) (φ : ι → E → E) (φ' : ι → E → (E →L[ℝ] E)) (V Z : ι → Set E)
+    (U : Set E)
+    (hVZ : ∀ i ∈ s, MeasurableSet (V i \ Z i))
+    (hφ' : ∀ i ∈ s, ∀ x ∈ V i \ Z i, HasFDerivWithinAt (φ i) (φ' i x) (V i \ Z i) x)
+    (hinj : ∀ i ∈ s, InjOn (φ i) (V i \ Z i))
+    (hcover : U =ᵐ[μ] ⋃ i ∈ s, (φ i) '' (V i \ Z i))
+    (hdisj : Set.Pairwise (↑s) (Function.onFun (AEDisjoint μ) (fun i : ι => (φ i) '' (V i \ Z i))))
+    (hmeas : ∀ i ∈ s, NullMeasurableSet ((φ i) '' (V i \ Z i)) μ)
+    (g : E → ℝ≥0∞) :
+    ∫⁻ x in U, g x ∂μ
+      = ∑ i ∈ s, ∫⁻ x in V i \ Z i, ENNReal.ofReal |(φ' i x).det| * g (φ i x) ∂μ := by
+  rw [setLIntegral_congr hcover, lintegral_biUnion_finset₀ hdisj hmeas g]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  exact lintegral_image_eq_lintegral_abs_det_fderiv_mul μ (hVZ i hi) (hφ' i hi) (hinj i hi) g
+
 end DLNFibre.DLN.RLCT
