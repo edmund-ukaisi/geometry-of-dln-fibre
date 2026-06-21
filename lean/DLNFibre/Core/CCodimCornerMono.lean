@@ -187,14 +187,247 @@ theorem orbitRankLocus_realizerD_gabrielPartition [Nontrivial k] (d : Fin (N + 1
     orbitRankLocus (realizerD (k := k) (gabrielPartition_mem d M')) = orbitRankLocus M' :=
   orbitRankLocus_eq_of_rankPattern_eq (rankPattern_realizerD_gabrielPartition d M')
 
-/-! ## Dimension-monotonicity of `cCodim · 0` (the combinatorial crux)
+/-! ## The diagonal partition (corner-`0` nonemptiness, for free)
 
-`cCodim e 0 ≤ cCodim e' 0` for `e ≤ e'` pointwise. The single load-bearing inequality behind
-corner-monotonicity. By `Finset.le_inf'_iff` it reduces to: every corner-`0` partition `m'` of `e'`
-dominates (in `codimForm`) a corner-`0` partition of `e`. The witness is the **interval-shortening**
-restriction of `m'`: at a vertex `k` over-covered by 1, split the SHORTEST covering interval `[i,j]`
-into `[i,k-1]` and `[k+1,j]` (the codimForm-minimal restriction). -/
+The all-singletons partition `m(k,k) = e_k` (else `0`) is Kostant for `e` with corner `0` (when
+`N ≥ 1`, so `(0, last N) ≠ (k, k)`): the dimension equation at `k` reads `e_k` (only `(k,k)` covers
+`k` among the diagonal intervals), and the corner is `0`. So `kostantPartitions e 0` is nonempty
+unconditionally. -/
 
-/-! TODO `cCodim_zero_mono` (the shortest-interval split). -/
+/-- The all-singletons partition `diagPart e (k, l) = if k = l then e k else 0`. -/
+def diagPart (e : Fin (N + 1) → ℕ) : Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ if p.1 = p.2 then e p.1 else 0
+
+/-- The diagonal partition is Kostant for `e` with corner `0` (needs `N ≥ 1` so the corner
+`(0, last N)` is off the diagonal). -/
+theorem diagPart_mem {e : Fin (N + 1) → ℕ} (hN : 1 ≤ N) :
+    diagPart e ∈ kostantPartitions e 0 := by
+  rw [mem_kostantPartitions]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- bound `diagPart e p ≤ e p.1`
+    intro p; unfold diagPart; split_ifs with h
+    · rw [h]
+    · exact Nat.zero_le _
+  · -- support: off the triangle `p.1 > p.2`, so `p.1 ≠ p.2`
+    intro p hp; unfold diagPart; rw [if_neg (fun he ↦ hp (le_of_eq he))]
+  · -- dimension equation: only `(k, k)` in the filter has nonzero `diagPart`
+    intro k; rw [kostantAt]
+    rw [Finset.sum_eq_single (k, k)]
+    · unfold diagPart; rw [if_pos rfl]
+    · intro p hp hpne
+      unfold diagPart; split_ifs with h
+      · -- `p.1 = p.2` and `p ∈ filter k` (so `p.1 ≤ k ≤ p.2`) but `p ≠ (k,k)` is impossible
+        rw [Finset.mem_filter] at hp
+        obtain ⟨-, h1, h2⟩ := hp
+        exact absurd (Prod.ext (le_antisymm h1 (h ▸ h2)) (h ▸ le_antisymm h1 (h ▸ h2))) hpne
+      · rfl
+    · intro hbad
+      exact absurd (Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_rfl, le_rfl⟩) hbad
+  · -- corner `(0, last N)` is off-diagonal (`0 ≠ last N` since `N ≥ 1`)
+    unfold diagPart
+    rw [if_neg (fun h ↦ by
+      have : (0 : ℕ) = N := by have := congrArg Fin.val h; simpa [Fin.val_last] using this
+      omega)]
+
+/-- `kostantPartitions e 0` is nonempty for `N ≥ 1` (the diagonal partition). -/
+theorem kostantPartitions_zero_nonempty {e : Fin (N + 1) → ℕ} (hN : 1 ≤ N) :
+    (kostantPartitions e 0).Nonempty :=
+  ⟨diagPart e, diagPart_mem hN⟩
+
+/-! ## Corner-monotonicity from the dimension-monotonicity
+
+`cCodim d r ≤ cCodim d s` for `s ≤ r`, via the LANDED rank-shift `cCodim d t = cCodim (d−t) 0` and
+the dimension-monotonicity `cCodim e 0 ≤ cCodim e' 0` for `e ≤ e'` (since `r ≥ s ⟹ d−r ≤ d−s`). The
+`r ≤ d k` / `s ≤ d k` hypotheses are automatic from corner partitions existing. -/
+
+/-- A Kostant partition of `d` with corner `r` forces `r ≤ d k` at every vertex (the corner `[0,N]`
+covers `k`, so `r = m_{0N}` is one summand of `d k`). -/
+theorem corner_le_dim_of_mem {d : Fin (N + 1) → ℕ} {r : ℕ}
+    {m : Fin (N + 1) × Fin (N + 1) → ℕ} (hm : m ∈ kostantPartitions d r) (k : Fin (N + 1)) :
+    r ≤ d k := by
+  obtain ⟨-, -, hk, hcorner⟩ := mem_kostantPartitions.mp hm
+  rw [← hcorner, hk k]
+  exact Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) (corner_mem_filter k)
+
+/-- `dminus` is pointwise antitone in the corner: `s ≤ r ⟹ dminus d r k ≤ dminus d s k`. -/
+theorem dminus_anti {d : Fin (N + 1) → ℕ} {s r : ℕ} (hsr : s ≤ r) (k : Fin (N + 1)) :
+    dminus d r k ≤ dminus d s k := by
+  unfold dminus; omega
+
+/-- **Corner-monotonicity from dimension-monotonicity.** Given the dimension-monotonicity of
+`cCodim · 0` (`hMono`: `e ≤ e' ⟹ cCodim e 0 ≤ cCodim e' 0`), the codimension is corner-antitone:
+`cCodim d r ≤ cCodim d s` for `s ≤ r`. By the LANDED rank-shift both sides are `cCodim (d−·) 0`, and
+`d−r ≤ d−s`. The rank-shift hypotheses `t ≤ d k` come from the corner partitions existing
+(`corner_le_dim_of_mem`). -/
+theorem cCodim_corner_anti_of
+    (hMono : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
+      (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k ≤ e' k) →
+      cCodim e 0 he ≤ cCodim e' 0 he')
+    {d : Fin (N + 1) → ℕ} {s r : ℕ} (hsr : s ≤ r)
+    (hs : (kostantPartitions d s).Nonempty) (hr : (kostantPartitions d r).Nonempty) :
+    cCodim d r hr ≤ cCodim d s hs := by
+  obtain ⟨ms, hms⟩ := id hs
+  obtain ⟨mr, hmr⟩ := id hr
+  have hrd : ∀ k, r ≤ d k := corner_le_dim_of_mem hmr
+  have hsd : ∀ k, s ≤ d k := corner_le_dim_of_mem hms
+  have hr0 : (kostantPartitions (dminus d r) 0).Nonempty := by
+    rw [kostantPartitions_dminus_eq_image hrd]; exact hr.image dropCorner
+  have hs0 : (kostantPartitions (dminus d s) 0).Nonempty := by
+    rw [kostantPartitions_dminus_eq_image hsd]; exact hs.image dropCorner
+  have er : cCodim d r hr = cCodim (dminus d r) 0 hr0 := (cCodim_rankShift hrd hr0 hr).symm
+  have es : cCodim d s hs = cCodim (dminus d s) 0 hs0 := (cCodim_rankShift hsd hs0 hs).symm
+  rw [er, es]
+  exact hMono hr0 hs0 (dminus_anti hsr)
+
+/-! ## The geometric lower bound `hLowerBound`, from corner-monotonicity
+
+For a corner-`≤ r` tuple `M'`, the geometric codimension of its orbit closure is `codimForm` of the
+Gabriel Kostant partition (corner `s = (mult M').rank ≤ r`), which is `≥ cCodim d s ≥ cCodim d r`. -/
+
+/-- **`hLowerBound`, from corner-monotonicity.** Every corner-`≤ r` orbit closure has codimension
+`≥ cCodim d r`. Via the Gabriel bridge (`codimRep(Ō_{M'}) = codimForm (extendℤ (gabrielPartition))`,
+corner `(mult M').rank`), `Finset.inf'_le` (`codimForm ≥ cCodim d s`), and corner-monotonicity
+(`cCodim d r ≤ cCodim d s` for `s ≤ r`). -/
+theorem cCodim_le_codimRepCanonical_of [IsAlgClosed k] [CharZero k]
+    (hMono : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
+      (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k ≤ e' k) →
+      cCodim e 0 he ≤ cCodim e' 0 he')
+    (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : (kostantPartitions d r).Nonempty)
+    (M' : Tuple (k := k) d) (hM' : (mult d M').rank ≤ r) :
+    ((cCodim d r hr).toNat : ℕ∞) ≤ codimRepCanonical (orbitRankLocus M') := by
+  set s := (mult d M').rank with hsdef
+  have hms : gabrielPartition d M' ∈ kostantPartitions d s := gabrielPartition_mem d M'
+  have hs : (kostantPartitions d s).Nonempty := ⟨_, hms⟩
+  -- the geometric codim of `Ō_{M'}` is `codimForm (extendℤ (gabrielPartition))`
+  have hgeo : ((codimRepCanonical (orbitRankLocus M')).toNat : ℤ)
+      = codimForm N (extendℤ (gabrielPartition d M')) := by
+    rw [← orbitRankLocus_realizerD_gabrielPartition (k := k) d M',
+      codimRepCanonical_orbitRankLocus_realizerD hms]
+  -- `cCodim d s ≤ codimForm (gabrielPartition)` (inf'_le) and `cCodim d r ≤ cCodim d s` (corner-anti)
+  have hinf : cCodim d s hs ≤ codimForm N (extendℤ (gabrielPartition d M')) :=
+    Finset.inf'_le _ hms
+  have hanti : cCodim d r hr ≤ cCodim d s hs := cCodim_corner_anti_of hMono hM' hs hr
+  -- assemble: `cCodim d r ≤ codimForm = codimRep.toNat`, then cast to `ℕ∞`
+  have hZ : (cCodim d r hr) ≤ ((codimRepCanonical (orbitRankLocus M')).toNat : ℤ) := by
+    rw [hgeo]; exact le_trans hanti hinf
+  have hfin : codimRepCanonical (orbitRankLocus M') ≠ ⊤ := by
+    rw [codimRepCanonical_orbitRankLocus_eq_height]
+    exact Ideal.height_ne_top (isPrime_vanishingIdeal_orbitRankLocus _).ne_top
+  -- `(cCodim d r).toNat ≤ codimRep.toNat` as ℕ, then `≤` as ℕ∞
+  have hcr_nonneg : 0 ≤ cCodim d r hr := by
+    rw [cCodim_eq_inf_geomCodim (k := k), Finset.le_inf'_iff]
+    exact fun m' _ ↦ Int.natCast_nonneg _
+  have hnat : (cCodim d r hr).toNat ≤ (codimRepCanonical (orbitRankLocus M')).toNat := by omega
+  calc ((cCodim d r hr).toNat : ℕ∞)
+      ≤ ((codimRepCanonical (orbitRankLocus M')).toNat : ℕ∞) := by exact_mod_cast hnat
+    _ = codimRepCanonical (orbitRankLocus M') := ENat.coe_toNat hfin
+
+/-! ## Strict corner-monotonicity and the recovery `hRecover`
+
+`cCodim d r < cCodim d s` for `s < r`, via the rank-shift and the STRICT all-vertex dimension-drop
+`cCodim e 0 < cCodim e' 0` when `e < e'` at every vertex (here `d−r < d−s` everywhere since `r > s`).
+Strict corner-monotonicity forces a top-dimensional component (codim `= cCodim d r`) onto corner
+exactly `r`: a corner-`s` orbit (`s < r`) has codim `cCodim d s > cCodim d r` (strict), so cannot be
+top-dimensional. This is what `hRecover` needs to recast a top component as a corner-`r` realizer. -/
+
+/-- **Strict corner-monotonicity, from the strict all-vertex dimension-drop.** Given `hMonoStrict`
+(`e < e' at every vertex ⟹ cCodim e 0 < cCodim e' 0`), for `s < r` (both nonempty),
+`cCodim d r < cCodim d s` (since `d−r < d−s` at every vertex). -/
+theorem cCodim_corner_strict_of
+    (hMonoStrict : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
+      (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k < e' k) →
+      cCodim e 0 he < cCodim e' 0 he')
+    {d : Fin (N + 1) → ℕ} {s r : ℕ} (hsr : s < r)
+    (hs : (kostantPartitions d s).Nonempty) (hr : (kostantPartitions d r).Nonempty) :
+    cCodim d r hr < cCodim d s hs := by
+  obtain ⟨ms, hms⟩ := id hs
+  obtain ⟨mr, hmr⟩ := id hr
+  have hrd : ∀ k, r ≤ d k := corner_le_dim_of_mem hmr
+  have hsd : ∀ k, s ≤ d k := corner_le_dim_of_mem hms
+  have hr0 : (kostantPartitions (dminus d r) 0).Nonempty := by
+    rw [kostantPartitions_dminus_eq_image hrd]; exact hr.image dropCorner
+  have hs0 : (kostantPartitions (dminus d s) 0).Nonempty := by
+    rw [kostantPartitions_dminus_eq_image hsd]; exact hs.image dropCorner
+  have er : cCodim d r hr = cCodim (dminus d r) 0 hr0 := (cCodim_rankShift hrd hr0 hr).symm
+  have es : cCodim d s hs = cCodim (dminus d s) 0 hs0 := (cCodim_rankShift hsd hs0 hs).symm
+  rw [er, es]
+  -- `dminus d r k = d k − r < d k − s = dminus d s k` at every vertex (since `r > s ≤ d k`)
+  refine hMonoStrict hr0 hs0 (fun k ↦ ?_)
+  have := hrd k; unfold dminus; omega
+
+/-- **`hRecover`, from strict corner-monotonicity.** Every top-dimensional component `p` (a minimal
+prime of `sigmaIdeal d r` of height `cCodim d r`) is the orbit ideal of *some corner-`r`* Kostant
+partition. From G3 (`minimalPrimes_sigmaIdeal_eq`) `p = vanishingIdeal (Ō_{M'})` for a corner-`≤ r`
+tuple `M'`; the Gabriel partition has corner `s = (mult M').rank ≤ r` and the same orbit ideal; the
+top-dimensional height `cCodim d r = codimForm (gabrielPartition) ≥ cCodim d s` with strict
+corner-monotonicity (`s < r ⟹ cCodim d r < cCodim d s`) forces `s = r`. -/
+theorem exists_kostantPartition_partitionIdeal_eq_of [IsAlgClosed k] [CharZero k]
+    (hMonoStrict : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
+      (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k < e' k) →
+      cCodim e 0 he < cCodim e' 0 he')
+    (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : (kostantPartitions d r).Nonempty)
+    (p : Ideal (MvPolynomial (RepCoord d) k)) (hp : p ∈ topComponents (k := k) d r hr) :
+    ∃ m ∈ kostantPartitions d r, partitionIdeal (k := k) d r m = p := by
+  -- G3: `p` is a corner-`≤ r` orbit ideal `vanishingIdeal (Ō_{M'})`
+  rw [topComponents, Set.mem_setOf_eq, minimalPrimes_sigmaIdeal_eq] at hp
+  obtain ⟨⟨⟨M', hM', hpeq⟩, -⟩, hheight⟩ := hp
+  simp only at hpeq
+  -- the Gabriel partition of `M'`: Kostant of corner `s = (mult M').rank ≤ r`, same orbit ideal
+  set s := (mult d M').rank with hsdef
+  have hms : gabrielPartition d M' ∈ kostantPartitions d s := gabrielPartition_mem d M'
+  have hs : (kostantPartitions d s).Nonempty := ⟨_, hms⟩
+  have hlocus : orbitRankLocus (realizerD (k := k) hms) = orbitRankLocus M' :=
+    orbitRankLocus_realizerD_gabrielPartition (k := k) d M'
+  have hideal : partitionIdeal (k := k) d s (gabrielPartition d M') = p := by
+    rw [partitionIdeal_of_mem hms, hlocus, hpeq]
+  -- `p.height = codimRep (Ō_{M'}).toNat = codimForm (gabrielPartition)` and `= cCodim d r`
+  have hcodimForm : (p.height.toNat : ℤ) = codimForm N (extendℤ (gabrielPartition d M')) := by
+    rw [← hpeq, ← codimRepCanonical_orbitRankLocus_eq_height, ← hlocus,
+      codimRepCanonical_orbitRankLocus_realizerD hms]
+  have hpheightVal : p.height = ((cCodim d r hr).toNat : ℕ∞) := hheight
+  -- corner `s = r`: else `s < r` gives `cCodim d r < cCodim d s ≤ codimForm = cCodim d r`
+  have hsr : s ≤ r := hM'
+  have hsEqR : s = r := by
+    rcases lt_or_eq_of_le hsr with hlt | heq
+    · exfalso
+      -- `codimForm (gabrielPartition) = p.height.toNat = cCodim d r` (top-dim height)
+      have hcf_eq : codimForm N (extendℤ (gabrielPartition d M')) = (cCodim d r hr : ℤ) := by
+        have hcr_nonneg : 0 ≤ cCodim d r hr := by
+          rw [cCodim_eq_inf_geomCodim (k := k), Finset.le_inf'_iff]
+          exact fun m' _ ↦ Int.natCast_nonneg _
+        rw [← hcodimForm, hpheightVal, ENat.toNat_coe]; omega
+      -- `cCodim d s ≤ codimForm = cCodim d r` and strict `cCodim d r < cCodim d s` ⟹ contradiction
+      have hinf : cCodim d s hs ≤ codimForm N (extendℤ (gabrielPartition d M')) :=
+        Finset.inf'_le _ hms
+      have hstrict : cCodim d r hr < cCodim d s hs := cCodim_corner_strict_of hMonoStrict hlt hs hr
+      rw [hcf_eq] at hinf
+      exact absurd hinf (not_le.mpr hstrict)
+    · exact heq
+  -- `gabrielPartition ∈ kostantPartitions d r` and `partitionIdeal d r = p`
+  subst hsEqR
+  exact ⟨gabrielPartition d M', hms, hideal⟩
+
+/-! ## The θ-count headline, reduced to the two dimension-monotonicities
+
+Both gating hypotheses of `numTop_eq_ncard_topComponents_of` discharge from the dimension-monotonicity
+of `cCodim · 0`: `hLowerBound` from the weak `hMono`, `hRecover` from the strict `hMonoStrict`. So the
+headline `numTop d r = #top-dim components` holds given those two combinatorial monotonicities. -/
+
+/-- **θ-count headline, reduced to dimension-monotonicity.** Given the weak (`hMono`) and strict
+(`hMonoStrict`) dimension-monotonicities of `cCodim · 0`, `numTop d r = #{top-dimensional irreducible
+components of Σ̄^r}` — the two corner-selection hypotheses of `numTop_eq_ncard_topComponents_of`
+discharged. -/
+theorem numTop_eq_ncard_topComponents_of_dimMono [IsAlgClosed k] [CharZero k]
+    (hMono : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
+      (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k ≤ e' k) →
+      cCodim e 0 he ≤ cCodim e' 0 he')
+    (hMonoStrict : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
+      (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k < e' k) →
+      cCodim e 0 he < cCodim e' 0 he')
+    (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : (kostantPartitions d r).Nonempty) :
+    numTop d r hr = (topComponents (k := k) d r hr).ncard :=
+  numTop_eq_ncard_topComponents_of d r hr
+    (fun M' hM' ↦ cCodim_le_codimRepCanonical_of hMono d r hr M' hM')
+    (fun p hp ↦ exists_kostantPartition_partitionIdeal_eq_of hMonoStrict d r hr p hp)
 
 end DLNFibre.Core
