@@ -3610,10 +3610,11 @@ private theorem headP_ge_uTel (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ)
     rw [huz]; exact le_max_left _ _
   · rw [if_neg hi0]; exact le_max_left _ _
 
-/-- **Consumer: the per-step band from `FMDom`.** Given the Dom-invariant at `j`, the forward-max
-pick `qFM_j` is `≥ head'_j ≥ uTel_j` (via `le_maxPick` + the minimal feasible witness). -/
-private theorem qFM_ge_uTel (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : ℕ) (hj : j < L)
-    (hInv : FMDom M j) : uTel M (qFM M) j ≤ qFM M j := by
+/-- **Consumer: the per-step bound from `FMDom`.** Given the Dom-invariant at `j`, the forward-max
+pick `qFM_j ≥ head'_j` (via `le_maxPick` + the minimal feasible witness). Since `head'_j ≥ uTel_j`
+this gives the band; since `head'_0 = max(M⁰,M¹)` it gives the `j=0` corner. -/
+private theorem qFM_ge_headP (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : ℕ) (hj : j < L)
+    (hInv : FMDom M j) : headP M j ≤ qFM M j := by
   set R := Rpool M j with hR
   set ws := (Mwidths M).drop (j + 1) with hws
   -- the global j-th pick is the maxPick at depth j
@@ -3639,15 +3640,93 @@ private theorem qFM_ge_uTel (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : ℕ) (
     BGEngine.dom_head_lower hInv' (headP_ge_width M j hj)
   have hle : BGEngine.pick (headP M j) R ≤ BGEngine.maxPick (Mseq M (j + 1)) ws R :=
     BGEngine.le_maxPick hwidthDom hpmem hpw hpdom
-  -- chain: uTel_j ≤ head'_j ≤ pick(head'_j) ≤ maxPick = qFM_j
+  -- chain: head'_j ≤ pick(head'_j) ≤ maxPick = qFM_j
   rw [hqj]
-  exact le_trans (headP_ge_uTel M hL j hj) (le_trans hpge hle)
+  exact le_trans hpge hle
+
+/-- The list `Mwidths.drop i` is `M^{i+1} :: ws_i` (head = the `i`-th width). -/
+private theorem Mwidths_drop_cons (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < L) :
+    (Mwidths M).drop i = Mseq M (i + 1) :: (Mwidths M).drop (i + 1) := by
+  have hlt : i < (Mwidths M).length := by rw [Mwidths_len]; exact hi
+  rw [List.drop_eq_getElem_cons hlt, Mwidths_get M i hi]
+
+/-- **The STRONG INV** (the achiever band-value invariant): for `τ ≤ head'_i`, the residual pool `R_i`
+has no more elements below `τ` than the post-head suffix widths `ws_i = Mwidths.drop (i+1)`. The one
+achiever-tied fact (good_floor_core + the τ-split / β-count); holds at every `i ≤ L`. -/
+private theorem strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i ≤ L)
+    {τ : ℤ} (hτ : τ ≤ headP M i) :
+    BGEngine.cLt (Rpool M i) τ ≤ BGEngine.cLt (((Mwidths M).drop (i + 1) : Multiset ℤ)) τ := by
+  sorry
+
+/-- **The carrier `FMDom` from the STRONG INV.** Head-count split at `head'_i`: `τ ≤ head'_i` from
+`strongCount`; `τ > head'_i` from the tight `Dom (Mwidths.drop i) R_i` (`eraseIter_dom`). -/
+private theorem FMDom_of_strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+    FMDom M i := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  -- tight Dom on the residual: Dom (Mwidths.drop i) R_i
+  have htight : BGEngine.Dom ((Mwidths M).drop i) (Rpool M i) :=
+    BGEngine.eraseIter_dom hDom i
+  refine ⟨?_, fun τ => ?_⟩
+  · -- card: R_i has card L − i; headP :: ws has length (L − (i+1)) + 1 = L − i
+    rw [htight.1, Mwidths_drop_cons M i hi]
+    simp
+  · -- head-count at τ
+    set ws := (Mwidths M).drop (i + 1) with hws
+    have hheadsplit : BGEngine.cLt ((headP M i :: ws : List ℤ) : Multiset ℤ) τ
+        = BGEngine.cLt (ws : Multiset ℤ) τ + (if headP M i < τ then 1 else 0) := by
+      rw [← Multiset.cons_coe, BGEngine.cLt_erase _ (headP M i) τ (Multiset.mem_cons_self _ _),
+        Multiset.erase_cons_head]
+    rw [hheadsplit]
+    by_cases hcase : τ ≤ headP M i
+    · -- τ ≤ head'_i: from strongCount, [head'_i<τ]=0
+      rw [if_neg (by omega)]
+      simpa using strongCount M hL i (le_of_lt hi) hcase
+    · -- τ > head'_i: from tight Dom, the +1 absorbs M^{i+1}
+      rw [if_pos (by omega)]
+      have htd := htight.2 τ
+      rw [Mwidths_drop_cons M i hi, ← Multiset.cons_coe,
+        BGEngine.cLt_erase _ (Mseq M (i + 1)) τ (Multiset.mem_cons_self _ _),
+        Multiset.erase_cons_head] at htd
+      have hwle : Mseq M (i + 1) ≤ headP M i := headP_ge_width M i hi
+      split_ifs at htd with hM
+      · omega
+      · omega
 
 /-- **The per-step band** `qFM_j ≥ uTel j` (j≥1) and `qFM_0 ≥ max(M⁰,M¹)`, in the unified u-space
-form `uTel (j+1) ≤ admBound_j`. The achiever content (shapeInv + good_floor_core). -/
+form `uTel (j+1) ≤ admBound_j`. The achiever content (`strongCount` + `good_floor_core`). -/
 private theorem qFM_uTel_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin L) :
     uTel M (qFM M) ((j : ℕ) + 1) ≤ (admBound M j : ℤ) := by
-  sorry
+  -- per-step bound qFM_j ≥ headP_j from the carrier, then u-space algebra to admBound_j.
+  have hj : (j : ℕ) < L := j.isLt
+  have hgeH : headP M (j : ℕ) ≤ qFM M (j : ℕ) :=
+    qFM_ge_headP M hL (j : ℕ) hj (FMDom_of_strongCount M hL (j : ℕ) hj)
+  have hge : uTel M (qFM M) (j : ℕ) ≤ qFM M (j : ℕ) :=
+    le_trans (headP_ge_uTel M hL (j : ℕ) hj) hgeH
+  -- uTel(j+1) = Mseq(j+1) + uTel j − qFM_j
+  have hurec : uTel M (qFM M) ((j : ℕ) + 1)
+      = Mseq M ((j : ℕ) + 1) + uTel M (qFM M) (j : ℕ) - qFM M (j : ℕ) := rfl
+  by_cases hj0 : (j : ℕ) = 0
+  · -- admBound_0 = min(M⁰,M¹); qFM_0 ≥ headP_0 = max(M⁰,M¹)
+    have hadm : admBound M j = min (M 0) (M 1) := by unfold admBound; rw [if_pos hj0]
+    have hq0 : max (M 0 : ℤ) (M 1 : ℤ) ≤ qFM M (j : ℕ) := by
+      have hhead0 : headP M (j : ℕ) = max (M 0 : ℤ) (M 1 : ℤ) := by
+        unfold headP; rw [if_pos hj0]
+      rw [← hhead0]; exact hgeH
+    have hfin : (⟨1, by omega⟩ : Fin (L + 1)) = (1 : Fin (L + 1)) := by
+      apply Fin.ext; simp [Fin.val_one, Nat.mod_eq_of_lt (by omega : 1 < L + 1)]
+    have hms1 : Mseq M ((j : ℕ) + 1) = (M 1 : ℤ) := by
+      rw [hj0]; unfold Mseq; rw [dif_pos (by omega), hfin]
+    have hu0 : uTel M (qFM M) (j : ℕ) = (M 0 : ℤ) := by rw [hj0]; rfl
+    rw [hurec, hadm, hms1, hu0]
+    push_cast
+    rcases le_total (M 0 : ℤ) (M 1 : ℤ) with h | h
+    · rw [max_eq_right h, min_eq_left h] at *; linarith
+    · rw [max_eq_left h, min_eq_right h] at *; linarith
+  · -- j ≥ 1: admBound_j = M^{j+1} = Mseq(j+1); uTel(j+1) = Mseq(j+1) + uTel_j − qFM_j ≤ Mseq(j+1)
+    have hadm : (admBound M j : ℤ) = Mseq M ((j : ℕ) + 1) := by
+      unfold admBound; rw [if_neg hj0]
+      unfold Mseq; rw [dif_pos (by omega)]; rfl
+    rw [hurec, hadm]; linarith
 
 /-- **The band on `qFM`** (the achiever content; the forward-max prefix meets the corridor bound). -/
 private theorem qFM_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin L) :
