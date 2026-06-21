@@ -536,6 +536,15 @@ G5-abstract); ROADMAPPED = G3 (crux G3.2 = Aoyagi pp.15-21 to formalize). One we
 formalization-only wall — the cleanest possible roadmap (a known proof to formalize, not open research).
 **OPERATOR SCOPE (sharpened):** the general-M headline is gated on the G3.2 Lean construction — a dedicated tide;
 everything else proven/buildable. Choice: deliver now (ladder + machinery + G3 roadmap) vs commission the G3 tide.
+**G3.2 AS A PRECISE LEMMA + ON-RAMP (pp, final sharpening):** G3.2 = "if the leading t₁×t₁ minor of the partial
+product is a unit in a pivot chart, UNIMODULAR row/col changes give ∏(QCQ)=diag(E_{t₁}-regular, ∏C') with C' the
+Schur-REDUCED chain (widths M^s−δ_s), and ‖∏C−B‖²=‖reg generators‖²+‖∏C'‖² ⟹ rlctAt=½·reg-dim+rlctAt(‖∏C'‖²),
+recurse" = **Aoyagi Thm 3 + the chain-Schur recursion** (verified L=1; well-founded, ΣM^s strictly drops, base =
+smooth block). **ON-RAMP: G3.2 REUSES `block_elimination` (L1, DONE) + `product_reduction` (L2)** — it's their
+GENERAL-M chained form. So the G3 tide is "**generalize the already-built L1/L2 to an arbitrary-rank-vector
+recursion + glue with G5-abstract**," NOT from-scratch resolution infra; the fixed-M product_reduction wiring is
+the PROTOTYPE the tide generalizes. The roadmap is genuinely set up: one named wall, a precise lemma, a known
+paper proof, AND a concrete on-ramp.
 
 ## D1 RE-SCOPED (fm proof-attempt-as-audit) — NOT a light standalone rung
 D1 `deepest_point_reduction` is blocked on TWO real deps: (1) the **RLCT-monotonicity lemma** `|G|≤|F| a.e. near
@@ -546,6 +555,20 @@ raw mixed-degree dlnLoss B ⟹ per-point core reduction ≈ L2-per-point). So cr
 **S1✓ → [monotonicity lemma + L2(needs R1/Fubini)] → D1**, NOT S1→D1. Rung map corrected.
 **fm BLOCKER cleared:** resolution_charts re-scope (#47) was decided but never LANDED in Skeleton — fm landing it
 now (pp's core form, BLESSED) + the S1.5 wire (fm-2's verified package) in one batch → green-gate → (1,1,1) gate.
+
+## STATE @ ~03:00, trunk @c92501d — R1 DESIGN PHASE COMPLETE; execution remains
+- **rlctAt_mono ON TRUNK** (D1/L2 engine; green-gated 2855 jobs, controller-verified axiom-clean). fm built it with
+  the **zero-set-inclusion hyp (G=0→F=0)** — BETTER than the hGne alt (pointwise, no a.e. machinery; use-site:
+  D1's scaled core has F's zero set). 15th finding (bare monotonicity false, G≡0/F=|x|⁴) caught at SPECIFY by both
+  fm+fm-2; fm's fix adopted. (Also merged: R1.2a/b + the #19 engines, banked on trunk.)
+- **FIXED-M LADDER DESIGN COMPLETE + CERTIFIED (pp R1 design role DISCHARGED):** (1,1,1) [done] · (2,1,2) [#55,
+  product-MIN, min≠sum CERTIFIED via the c=3/2 ∫r^{-2}=∞ divergence test] · (2,2,2) [#54, 24-leaf cover, cover-
+  complete 12063/12063, a G5-instance]. Roadmap mapped: lower-bound settled · G5-abstract build-ready (#52) ·
+  A-vs-B verdict (wall is G3 alone) · G3 spec (crux G3.2 = Aoyagi pp.15-21 formalization gap). **Residual = pure
+  formalization labour** (fm + fm-2 execute) + the G3 tide if commissioned.
+- **EXECUTION UNITS:** fm → the R1 BATCH (S1.5 wire + resolution_charts core re-scope + (1,1,1) gate) FIRST [still
+  not landed — fm redirected to it], then #55 (2,1,2) + #54-assembly; fm-2 → #52 G5-step + #54-measure; pp →
+  on-demand (G5 questions / assembly / G3 tide). rv-2 → S1.5 PASS done; queued for the wires + ladder audits.
 
 ## Next tick (state @ ~02:30, trunk @da24204)
 **S1.5 FUBINI ENGINE COMPLETE @ad1f313** (controller-verified axiom-clean) — whole S1 substrate proven. R1 lower-bound
