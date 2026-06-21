@@ -22,30 +22,28 @@ import DLNFibre.Core.CThetaExplicit
 import DLNFibre.Core.CThetaDropM
 import DLNFibre.Core.CThetaValue
 import DLNFibre.Core.CThetaThetaBridge
-import DLNFibre.Core.IntegralDimension
-import DLNFibre.Core.PolynomialDimension
-import DLNFibre.Core.NoetherMonicPositioning
-import DLNFibre.Core.NullstellensatzCodim
-import DLNFibre.Core.AffineDomainDimension
-import DLNFibre.Core.FlatQuasiFiniteHeight
-import DLNFibre.Core.SmoothLocalRelativeDimension
-import DLNFibre.Core.SmoothPointRegular
-import DLNFibre.Core.PolynomialCurveLimit
-import DLNFibre.Core.OrbitVariety
-import DLNFibre.Core.CotangentJacobian
-import DLNFibre.Core.BoxMoveDegeneration
-import DLNFibre.Core.RankLocusClosed
-import DLNFibre.Core.BoxMoveGeneral
-import DLNFibre.Core.BoxMoveGeneration
-import DLNFibre.Core.OrbitClosure
-import DLNFibre.Core.OrbitPullbackDim
-import DLNFibre.Core.OrbitSmooth
-import DLNFibre.Core.AffineNoetherRank
-import DLNFibre.Core.JacobianTrdeg
-import DLNFibre.Core.OrbitImageDim
-import DLNFibre.Core.OrbitDifferential
-import DLNFibre.Core.MatrixKaehler
-import DLNFibre.Core.OrbitDifferentialRank
-import DLNFibre.Core.OrbitTangentCotangent
-import DLNFibre.Core.VoigtDischarge
-import DLNFibre.Core.CThetaGeometric
+import DLNFibre.DLN.RLCT.Foundations.Loss
+import DLNFibre.DLN.RLCT.Foundations.Rlct
+import DLNFibre.DLN.RLCT.Foundations.Lambda
+import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Validate.Case111Bridge
+import DLNFibre.DLN.RLCT.Validate.Case111
+-- Measure-side engines, built ahead of their consumers. Kept in the green-gate explicitly: else
+-- `lake build DLNFibre` only covers the headline's transitive closure and an orphan engine (broken
+-- or unsound) escapes the gate. Re-importing an already-reachable module is harmless (deduped).
+import DLNFibre.DLN.RLCT.Foundations.S1Transport
+import DLNFibre.DLN.RLCT.Foundations.S1Local
+import DLNFibre.DLN.RLCT.Foundations.S1SmoothBlock
+import DLNFibre.DLN.RLCT.Foundations.S1Additive
+import DLNFibre.DLN.RLCT.Foundations.S1Fubini
+import DLNFibre.DLN.RLCT.Foundations.S1G5
+import DLNFibre.DLN.RLCT.Foundations.S1G5Charts
+import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
+import DLNFibre.DLN.RLCT.Foundations.S1Cover
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat222
+import DLNFibre.DLN.RLCT.Validate.Case212
+import DLNFibre.DLN.RLCT.Validate.Case222Value
+import DLNFibre.DLN.RLCT.Validate.Case222Cover
+-- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
+import DLNFibre.DLN.RLCT.AxCheck
