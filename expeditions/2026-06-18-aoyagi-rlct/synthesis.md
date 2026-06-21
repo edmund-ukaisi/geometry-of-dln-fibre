@@ -2057,6 +2057,11 @@ A uniform `p=1` source-selected corollary now rules out that supplied terminal
 upper-chain extension without choosing concrete widths: when `p=1`, the
 extension would force `W_(ell+1)=M`, but Definition 3's strict selected-width
 inequality gives `W_(ell+1)<=M-1`.
+The general terminal-extension necessary condition is now Lean-proved too:
+under the same source-selected hypotheses, imposing the supplied terminal
+upper-chain extension forces `2<=p`, and `p<2` rules it out.  The `p=0` edge
+is recorded only as a Lean-totalized supplied-certificate consequence, not as
+an additional printed source case.
 A concrete supplied-data wrapper now combines this obstruction with the closed
 Definition 3-shaped tuple `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths
 `2`: any supplied equation `(4)` certificate for that tuple is incompatible

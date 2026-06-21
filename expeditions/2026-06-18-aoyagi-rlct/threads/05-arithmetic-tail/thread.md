@@ -1105,6 +1105,34 @@ This is finite supplied-data arithmetic only.  It does not construct a
 supplied equation `(4)` branch certificate, construct a terminal extension,
 prove terminal `tilde t=0`, or prove Lemma 5.
 
+## 2026-06-21 Lean Lemma 5 equation `(4)` terminal extension forces p
+
+Reproduction:
+`reproduction-lemma5-eq4-terminal-extension-forces-p-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-terminal-extension-forces-p.md`.
+Review artifact:
+`review-lemma5-eq4-terminal-extension-forces-p-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_terminalExtension_forces_two_le_p_of_sourceSelected
+aoyagiLemma5Eq4_no_terminalExtension_of_sourceSelected_of_p_lt_two
+```
+
+In the terminal-collision equation `(4)` case, a supplied terminal upper-chain
+extension would force `W_(ell+1)=M-p+1`.  Definition 3's selected-width
+hypotheses force `W_(ell+1)<=M-1`.  Therefore such an extension forces
+`2<=p`; under the same supplied-certificate and source-selected hypotheses,
+`p<2` rules it out.
+
+The theorem is stated for the totalized supplied-certificate API.  The `p=0`
+edge is a Lean-totalized supplied-certificate consequence, not an additional
+printed source case.  This is finite supplied-data arithmetic only; it does
+not construct a supplied equation `(4)` branch certificate, construct a
+terminal extension, prove terminal `tilde t=0`, or prove Lemma 5.
+
 ## 2026-06-20 Lean Lemma 5 equation `(4)` terminal compatibility counterexample
 
 Reproduction:

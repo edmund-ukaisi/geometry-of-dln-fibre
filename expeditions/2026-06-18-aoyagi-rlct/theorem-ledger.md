@@ -2601,6 +2601,27 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-p1-terminal-extension-obstruction-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` terminal-extension necessary
+condition has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names
+are
+`aoyagiLemma5Eq4_terminalExtension_forces_two_le_p_of_sourceSelected`
+and
+`aoyagiLemma5Eq4_no_terminalExtension_of_sourceSelected_of_p_lt_two`.
+They say that in the terminal-collision case, Definition 3's selected-width
+hypotheses force `2<=p` if a supplied terminal upper-chain extension is also
+imposed; equivalently, `p<2` rules out that extension.  The theorem is stated
+for the totalized supplied-certificate API, so the `p=0` edge is a
+Lean-totalized supplied-certificate consequence, not an additional printed
+source case.  This is finite supplied-data arithmetic only; it does not
+construct the supplied certificate, construct a terminal extension, prove
+terminal `tilde t=0`, or prove Lemma 5.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-extension-forces-p-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-terminal-extension-forces-p.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-terminal-extension-forces-p-a5.md`.
+
 Latest A5 update: the Lemma 5 equation `(4)` no-terminal-upper-extension
 example has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names

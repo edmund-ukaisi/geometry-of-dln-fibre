@@ -844,6 +844,55 @@ theorem aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
     (aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
       ell a p M m C layerWidth T hp hselected hT hterminal)
 
+/-- Under Definition 3's selected-width hypotheses, a supplied terminal
+upper-chain extension in the terminal-collision equation `(4)` case forces
+`2 <= p`.
+
+This is a necessary condition only.  It does not construct equation `(4)`'s
+certificate, construct a terminal extension, prove terminal `tilde t=0`, or
+prove Aoyagi Lemma 5. -/
+theorem aoyagiLemma5Eq4_terminalExtension_forces_two_le_p_of_sourceSelected
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp : p + 1 = a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hterminal :
+      T (C.point ell - 1) = aoyagiHtildeUpperNat ell a M m ell) :
+    2 ≤ p := by
+  have hcompat :=
+    aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
+      ell a p M m C layerWidth T hp hselected hT hterminal
+  have hell : 1 ≤ ell := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m ell ≤ M - 1 := by
+    rw [aoyagiSelectedWidthNat_of_lt (by omega)]
+    exact aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell hT.a_le_ell hselected hsource ⟨ell, by omega⟩
+  omega
+
+/-- Under Definition 3's selected-width hypotheses, a supplied terminal
+upper-chain extension in the terminal-collision equation `(4)` case is
+impossible when `p < 2`. -/
+theorem aoyagiLemma5Eq4_no_terminalExtension_of_sourceSelected_of_p_lt_two
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp : p + 1 = a) (hp_lt_two : p < 2)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    T (C.point ell - 1) ≠ aoyagiHtildeUpperNat ell a M m ell := by
+  intro hterminal
+  have hp_ge_two :=
+    aoyagiLemma5Eq4_terminalExtension_forces_two_le_p_of_sourceSelected
+      ell a p M m C layerWidth T hp hselected hsource hT hterminal
+  omega
+
 /-- In the `p=1` terminal-collision equation `(4)` case, Definition 3's
 selected-width hypotheses rule out a supplied terminal upper-chain extension.
 

@@ -2133,6 +2133,14 @@ No such claim is formalisation-ready until both fields are filled.
   `W_(ell+1)<=M-1`, while a supplied terminal upper-chain extension would
   force `W_(ell+1)=M`.
   Also proved
+  `aoyagiLemma5Eq4_terminalExtension_forces_two_le_p_of_sourceSelected`
+  and
+  `aoyagiLemma5Eq4_no_terminalExtension_of_sourceSelected_of_p_lt_two`,
+  which give the general terminal-extension necessary condition: such an
+  extension forces `2<=p`, and `p<2` rules it out.  The `p=0` edge is a
+  Lean-totalized supplied-certificate consequence, not an additional printed
+  source case.
+  Also proved
   `aoyagiLemma5Eq4_terminalEndpoint_values_ell3_a2_p1_allWidthsTwo` and
   `aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo`,
   which combine that concrete tuple with the supplied terminal-extension

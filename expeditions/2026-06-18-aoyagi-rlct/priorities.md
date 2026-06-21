@@ -679,7 +679,11 @@ on the session's original cwd.
    terminal upper-chain extension.  A uniform `p=1` source-selected corollary
    now rules out the same supplied terminal upper-chain extension whenever the
    terminal-collision guard `1+1=a` and Definition 3 selected-width hypotheses
-   hold.  The next A5 move should either build a
+   hold.  The general necessary condition is now Lean-proved too: any supplied
+   terminal upper-chain extension under the terminal-collision and
+   source-selected hypotheses forces `2<=p`, and `p<2` rules it out.  The
+   `p=0` edge is a Lean-totalized supplied-certificate consequence, not an
+   additional printed source case.  The next A5 move should either build a
    richer supplied Case 1(2) terminal convention explicitly, or move to another
    finite consequence below the displayed-family realisation boundary.
    A4 has now filled the finite source-coordinate representative for the
