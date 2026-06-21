@@ -150,7 +150,7 @@ theorem step_integrableOn
     {W : Type*} [MeasureSpace W] [SigmaFinite (volume : Measure W)]
     (H wt : W → ℝ) (hH : ∀ z, 0 ≤ H z) (hwt : ∀ z, 0 ≤ wt z)
     (hHmeas : Measurable H) (hwtmeas : Measurable wt)
-    (a b ε : ℝ) (ha : 0 < a) (hb : 0 < b)
+    (a b ε : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b)
     (V : Set W)
     (hHne : ∀ᵐ z ∂(volume.restrict V), H z ≠ 0)
     (hx : IntegrableOn (fun x : ℝ => |x| ^ (-(2 * a))) (Icc (-ε) ε) volume)
@@ -175,7 +175,7 @@ theorem step_integrableOn
       abs_of_nonneg (hwt p.2), abs_of_nonneg (by positivity : (0 : ℝ) ≤ p.1 ^ 2 + H p.2)]
   have hcmp : (p.1 ^ 2 + H p.2) ^ (-(a + b)) ≤ |p.1| ^ (-(2 * a)) * |H p.2| ^ (-b) := by
     calc (p.1 ^ 2 + H p.2) ^ (-(a + b)) ≤ (p.1 ^ 2) ^ (-a) * (H p.2) ^ (-b) :=
-          cmpF _ _ a b hsx htg ha.le hb.le
+          cmpF _ _ a b hsx htg ha hb
       _ = |p.1| ^ (-(2 * a)) * |H p.2| ^ (-b) := by
           rw [abs_of_nonneg (hH p.2), ← sq_abs p.1, ← Real.rpow_natCast |p.1| 2,
               ← Real.rpow_mul (abs_nonneg _)]
@@ -298,5 +298,96 @@ theorem step_lintegral_top
   calc (2 : ℝ) ^ (-c) * (H y) ^ (-c) * wt y * (2 * (H y) ^ ((1 : ℝ) / 2))
       = ((2 : ℝ) ^ (-c) * 2) * ((H y) ^ (-c) * (H y) ^ ((1 : ℝ) / 2)) * wt y := by ring
     _ = 2 ^ (1 - c) * (H y) ^ ((1 : ℝ) / 2 - c) * wt y := by rw [c2, chy]
+
+/-! ## The threshold-lift, `≥` direction (`n = 1`)
+
+Assembling the integral `≥` engine into the RLCT inequality `½ + λ_H ≤ rlctAtOn(x² + H)`. The core
+space `Y` has locally-finite volume (`ProperSpace` + `IsFiniteMeasureOnCompacts` — holds for
+`Fin d → ℝ`) so the down-set lemma applies. -/
+
+/-- A split exponent `a + b` (`a < 1/2` smooth side, `b` core-admissible) is joint-admissible:
+some open `Ω ∋ (0, y0)` carries `|x² + H|^{−(a+b)}` integrably. `step_integrableOn` on the rectangle
+`Icc (-1) 1 ×ˢ V` (`V = Ω_core ∩` an open nbhd witnessing `hHne`), restricted to the open
+`Ioo (-1) 1 ×ˢ V`. -/
+theorem joint_admissible_of_split {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y]
+    [SigmaFinite (volume : Measure Y)]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0)
+    (a b : ℝ) (ha0 : 0 ≤ a) (ha : a < 1 / 2) (hb0 : 0 ≤ b)
+    (hbadm : ∃ Ω : Set Y, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-b)) Ω volume) :
+    ∃ Ω : Set (ℝ × Y), IsOpen Ω ∧ (0, y0) ∈ Ω ∧
+      IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-(a + b)) * (1 : ℝ)) Ω volume := by
+  obtain ⟨Ωc, hΩcopen, hy0c, hcint⟩ := hbadm
+  obtain ⟨U, hU, hUne⟩ := hHne
+  have hxint : IntegrableOn (fun x : ℝ => |x| ^ (-(2 * a))) (Icc (-1 : ℝ) 1) volume := by
+    rw [abs_rpow_integrableOn_Icc_symm _ _ (by norm_num : (0 : ℝ) < 1)]; linarith
+  obtain ⟨U₀, hU₀sub, hU₀open, hy0U₀⟩ := _root_.mem_nhds_iff.1 hU
+  set V := Ωc ∩ U₀ with hV
+  have hVopen : IsOpen V := hΩcopen.inter hU₀open
+  have hcintV : IntegrableOn (fun w => |H w| ^ (-b) * (1 : ℝ)) V volume := by
+    simp only [mul_one]; exact hcint.mono_set (inter_subset_left : V ⊆ Ωc)
+  have hHneV : ∀ᵐ z ∂(volume.restrict V), H z ≠ 0 :=
+    ae_restrict_of_ae_restrict_of_subset (fun x hx => hU₀sub hx.2) hUne
+  have hstep := step_integrableOn H (fun _ => 1) hH (fun _ => zero_le_one) hHmeas measurable_const
+    a b 1 ha0 hb0 V hHneV hxint hcintV
+  exact ⟨Ioo (-1 : ℝ) 1 ×ˢ V, isOpen_Ioo.prod hVopen, ⟨by norm_num, hy0c, hy0U₀⟩,
+    hstep.mono_set (Set.prod_mono Ioo_subset_Icc_self (subset_refl V))⟩
+
+/-- **The threshold-lift, `≥` direction.** `½ + rlctAtOn H y0 ≤ rlctAtOn (x² + H) (0, y0)`. By
+`le_of_forall_lt_imp_le_of_dense`: any `q < ½ + λ_H` splits (`ENNReal.exists_lt_add_of_lt_add`, or
+`lt_iff_exists_nnreal_btwn` when `λ_H = 0`) as `a + b` with `a < 1/2`, `b` core-admissible
+(`core_admissible_of_lt` / `core_admissible_zero`); `joint_admissible_of_split` then puts `a + b` in
+the joint admissible set, so `q ≤ a + b ≤ sSup`. -/
+theorem step_rlct_ge {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    (H : Y → ℝ) (y0 : Y) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (hHne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), H z ≠ 0) :
+    (1 / 2 : ℝ≥0∞) + rlctAtOn H y0 ≤ rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) := by
+  have half_ne_top : (1 / 2 : ℝ≥0∞) ≠ ⊤ := by
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp]; exact ENNReal.coe_ne_top
+  have half_ne_zero : (1 / 2 : ℝ≥0∞) ≠ 0 := by
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp]
+    exact_mod_cast (by norm_num : (1 / 2 : NNReal) ≠ 0)
+  have half_toReal : ((1 / 2 : ℝ≥0∞).toReal) = (1 / 2 : ℝ) := by
+    rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp]; simp
+  apply le_of_forall_lt_imp_le_of_dense
+  intro q hq
+  set lamH := rlctAtOn H y0 with hlamH
+  have push : ∀ (a b : ℝ), 0 ≤ a → a < 1 / 2 → 0 ≤ b → q ≤ ENNReal.ofReal (a + b) →
+      (∃ Ω : Set Y, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-b)) Ω volume) →
+      q ≤ rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) := by
+    intro a b ha0 ha hb0 hqle hadm
+    obtain ⟨Ω, hΩopen, hmem, hint⟩ :=
+      joint_admissible_of_split H y0 hH hHmeas hHne a b ha0 ha hb0 hadm
+    apply hqle.trans
+    unfold rlctAtOn weightedThreshold
+    apply le_sSup
+    refine ⟨(a + b).toNNReal, ?_, Ω, hΩopen, by simpa using hmem, ?_⟩
+    · rw [ENNReal.ofReal]
+    · rw [Real.coe_toNNReal _ (by linarith)]; exact hint
+  by_cases hlam0 : lamH = 0
+  · have hqhalf : q < (1 / 2 : ℝ≥0∞) := by simpa [hlam0] using hq
+    obtain ⟨r, hqr, hrhalf⟩ := ENNReal.lt_iff_exists_nnreal_btwn.1 hqhalf
+    refine push (r : ℝ) 0 (by positivity) ?_ (le_refl 0) ?_ ?_
+    · have := (ENNReal.toReal_lt_toReal ENNReal.coe_ne_top half_ne_top).2 hrhalf
+      rwa [half_toReal] at this
+    · simpa using hqr.le
+    · simpa using core_admissible_zero H y0
+  · obtain ⟨u, huhalf, v, hvlam, hquv⟩ := ENNReal.exists_lt_add_of_lt_add hq half_ne_zero hlam0
+    have hvfin : v ≠ ⊤ := hvlam.ne_top
+    have ha_lt : (u.toReal) < 1 / 2 := by
+      have := (ENNReal.toReal_lt_toReal huhalf.ne_top half_ne_top).2 huhalf
+      rwa [half_toReal] at this
+    have hb_lt : ((v.toNNReal : ℝ≥0∞)) < lamH := by rwa [ENNReal.coe_toNNReal hvfin]
+    have hqle : q ≤ ENNReal.ofReal (u.toReal + (v.toNNReal : ℝ)) := by
+      have hsum : ENNReal.ofReal (u.toReal + (v.toNNReal : ℝ)) = u + v := by
+        rw [ENNReal.ofReal_add ENNReal.toReal_nonneg (by positivity : 0 ≤ ((v.toNNReal : ℝ)))]
+        rw [ENNReal.ofReal_toReal huhalf.ne_top]
+        congr 1
+        rw [show ENNReal.ofReal (v.toNNReal : ℝ) = ((v.toNNReal : ℝ≥0∞)) by
+              rw [ENNReal.ofReal_coe_nnreal], ENNReal.coe_toNNReal hvfin]
+      exact hquv.le.trans_eq hsum.symm
+    exact push u.toReal (v.toNNReal : ℝ) ENNReal.toReal_nonneg ha_lt (by positivity) hqle
+      (core_admissible_of_lt H hHmeas y0 v.toNNReal hb_lt)
 
 end DLNFibre.DLN.RLCT
