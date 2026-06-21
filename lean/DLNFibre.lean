@@ -51,3 +51,4 @@ import DLNFibre.Core.VoigtDischarge
 import DLNFibre.Core.CThetaGeometric
 import DLNFibre.Core.SigmaStratification
 import DLNFibre.Core.SigmaComponents
+import DLNFibre.Core.ThetaComponentCount
