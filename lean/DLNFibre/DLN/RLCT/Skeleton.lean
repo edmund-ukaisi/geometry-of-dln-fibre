@@ -3194,6 +3194,21 @@ theorem dom_head_lower {a a' : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom
   rw [hsa] at hd; rw [hsa']
   split_ifs at hd ⊢ <;> omega
 
+/-- `cLt` is monotone under multiset `≤` (fewer elements ⟹ fewer below `τ`). -/
+theorem cLt_le_of_le {A B : Multiset ℤ} (h : A ≤ B) (τ : ℤ) : cLt A τ ≤ cLt B τ :=
+  card_le_card (filter_le_filter _ h)
+
+/-- The residual pool is `≤` the original (eraseIter only removes elements). -/
+theorem eraseIter_le (i : ℕ) (b : List ℤ) (R : Multiset ℤ) : eraseIter i b R ≤ R := by
+  induction i generalizing b R with
+  | zero => simp [eraseIter]
+  | succ k ih =>
+    match b with
+    | [] => simp [eraseIter]
+    | w :: ws =>
+      rw [eraseIter]
+      exact le_trans (ih ws (R.erase (maxPick w ws R))) (Multiset.erase_le _ _)
+
 /-- The residual pool stays `Dom`-dominated by the suffix widths. -/
 theorem eraseIter_dom {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
     Dom (b.drop i) (eraseIter i b R) := by
@@ -3650,13 +3665,56 @@ private theorem Mwidths_drop_cons (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < 
   have hlt : i < (Mwidths M).length := by rw [Mwidths_len]; exact hi
   rw [List.drop_eq_getElem_cons hlt, Mwidths_get M i hi]
 
+/-- **`static_count`** (the ONE achiever-tied lemma, region A): for `M^{i+1} < τ ≤ uTel_i`, the FIXED
+achiever pool `Ymulti` has no more elements below `τ` than the suffix `ws_i = Mwidths.drop(i+1)`.
+One-shot `good_floor_core` on the FIXED `Ymulti` (NOT recursion-threaded). -/
+private theorem static_count (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
+    {τ : ℤ} (hlo : Mseq M (i + 1) < τ) (hhi : τ ≤ uTel M (qFM M) i) :
+    BGEngine.cLt (Ymulti M) τ ≤ BGEngine.cLt (((Mwidths M).drop (i + 1) : Multiset ℤ)) τ := by
+  sorry
+
 /-- **The STRONG INV** (the achiever band-value invariant): for `τ ≤ head'_i`, the residual pool `R_i`
-has no more elements below `τ` than the post-head suffix widths `ws_i = Mwidths.drop (i+1)`. The one
-achiever-tied fact (good_floor_core + the τ-split / β-count); holds at every `i ≤ L`. -/
-private theorem strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i ≤ L)
+has no more elements below `τ` than the post-head suffix widths `ws_i = Mwidths.drop (i+1)`. Proven
+DIRECTLY (no recursion-threaded maintenance) by the `M^{i+1}` τ-split:
+`Region T (τ ≤ M^{i+1})` via the GREEN tight chain (`eraseIter_dom`; head indicator 0);
+`Region A (M^{i+1} < τ ≤ head'_i = uTel_i)` via `static_count` (one-shot gfc) + submultiset. -/
+private theorem strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
     {τ : ℤ} (hτ : τ ≤ headP M i) :
     BGEngine.cLt (Rpool M i) τ ≤ BGEngine.cLt (((Mwidths M).drop (i + 1) : Multiset ℤ)) τ := by
-  sorry
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  set ws := (Mwidths M).drop (i + 1) with hws
+  -- the green tight chain Dom (Mwidths.drop i) R_i, split at M^{i+1}
+  have htight : BGEngine.Dom ((Mwidths M).drop i) (Rpool M i) := BGEngine.eraseIter_dom hDom i
+  have htd := htight.2 τ
+  rw [Mwidths_drop_cons M i hi, ← Multiset.cons_coe,
+    BGEngine.cLt_erase _ (Mseq M (i + 1)) τ (Multiset.mem_cons_self _ _),
+    Multiset.erase_cons_head] at htd
+  by_cases hT : τ ≤ Mseq M (i + 1)
+  · -- Region T: [M^{i+1}<τ]=0, the tight chain gives it directly
+    rw [if_neg (by omega : ¬ Mseq M (i + 1) < τ)] at htd
+    simpa using htd
+  · -- Region A: M^{i+1} < τ; τ ≤ head'_i forces τ ≤ uTel_i (since head'_i = max(uTel_i, M^{i+1}))
+    push_neg at hT
+    have hτu : τ ≤ uTel M (qFM M) i := by
+      have hhead : headP M i = max (uTel M (qFM M) i) (Mseq M (i + 1)) := by
+        unfold headP
+        by_cases hi0 : i = 0
+        · subst hi0
+          have huz : uTel M (qFM M) 0 = (M 0 : ℤ) := rfl
+          have hfin : (⟨1, by omega⟩ : Fin (L + 1)) = (1 : Fin (L + 1)) := by
+            apply Fin.ext; simp [Fin.val_one, Nat.mod_eq_of_lt (by omega : 1 < L + 1)]
+          have hms1 : Mseq M (0 + 1) = (M 1 : ℤ) := by
+            unfold Mseq; rw [dif_pos (by omega), hfin]
+          rw [if_pos rfl, huz, hms1]
+        · rw [if_neg hi0]
+      rw [hhead] at hτ
+      rcases le_total (uTel M (qFM M) i) (Mseq M (i + 1)) with h | h
+      · rw [max_eq_right h] at hτ; omega
+      · rwa [max_eq_left h] at hτ
+    -- achiever core + submultiset
+    have hsub : BGEngine.cLt (Rpool M i) τ ≤ BGEngine.cLt (Ymulti M) τ :=
+      BGEngine.cLt_le_of_le (BGEngine.eraseIter_le i (Mwidths M) (Ymulti M)) τ
+    exact le_trans hsub (static_count M hL i hi hT hτu)
 
 /-- **The carrier `FMDom` from the STRONG INV.** Head-count split at `head'_i`: `τ ≤ head'_i` from
 `strongCount`; `τ > head'_i` from the tight `Dom (Mwidths.drop i) R_i` (`eraseIter_dom`). -/
@@ -3680,7 +3738,7 @@ private theorem FMDom_of_strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i
     by_cases hcase : τ ≤ headP M i
     · -- τ ≤ head'_i: from strongCount, [head'_i<τ]=0
       rw [if_neg (by omega)]
-      simpa using strongCount M hL i (le_of_lt hi) hcase
+      simpa using strongCount M hL i hi hcase
     · -- τ > head'_i: from tight Dom, the +1 absorbs M^{i+1}
       rw [if_pos (by omega)]
       have htd := htight.2 τ
