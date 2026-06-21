@@ -469,6 +469,13 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
     rank vectors — quiver-determinantal geometry Mathlib lacks) STILL the genuine general-M research piece**;
     G5-abstract isolates it, does NOT dissolve it. Refined roadmap: **general headline = ladder instances +
     G5-abstract (BUILT) + G3 (named open obstruction).**
+    - **#52 SIMPLIFIED (pp, g5-abstract-statement.md): the LADDER needs only the SINGLE-STEP lemma** `∫⁻_U g =
+      Σ_i ∫⁻_{V_i\Z_i} |det fderiv φ_i|·g∘φ_i` (finite a.e.-disjoint null-cover) — NO abstract rose-tree datatype.
+      The (2,2,2) cover = finite compositions of the single-step lemma (A-blowup 4 ∘ step-2 3 ∘ block 4 = 24
+      leaves). The abstract-tree form is DEFERRED to general-M (part of the G3 roadmap, not the down-payment).
+      Mathlib anchors all checked (lintegral_image_eq_lintegral_abs_det_fderiv_mul + addHaar_image null + lintegral
+      set-additivity); ℝ≥0∞-not-Bochner load-bearing. So #52 is the reusable single-step atom, tractable now.
+      SEQUENCING: fm → (2,1,2) [product-MIN, no G5 dep] ∥ fm-2 → #52 single-step; then fm → (2,2,2) instantiates it.
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
@@ -495,6 +502,50 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   nonvanishing unit via `rlct_unit_invariant` (S1.3), THEN S2 on the pure monomial (THE main hidden gap; Jacobian
   same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
   literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
+
+## GENERAL-M TRACTABILITY VERDICT (pp + decorrelated Codex) — THE WALL IS G3 ALONE
+The definitive headline-reach picture. **A-vs-B (does the block-monomialization layer compound the wall?): NO.**
+Codex flagged residual entanglement as FACT; pp LOCATED WHERE IT LANDS — at the T1 unit-termini (harmless:
+monomial×unit either way), NOT the split-relevant T2 smooth-block termini (there the exceptional is pulled out
+front ⟹ disjoint ⟹ product-MIN split holds). So: A's block blow-up compounds ONLY G5 (more leaves), no new G3;
+B/hybrid (default B, cone-blowup only where entanglement occurs) is lighter for general M (reuses smoothBlockND +
+the (2,1,2) product-MIN). **VERDICT: fixed-M (2,2,2) keeps Option A (uniform, execution-ready); general-M uses
+B/hybrid; the block layer does NOT compound the wall.** CLIMB-OR-ROADMAP (assessed, not assumed): lower bound
+SETTLED · G5-abstract BUILDABLE (down-payment, task #52) · block layer non-compounding ⟹ **G3 (explicit
+flag-resolution / strict-transform for arbitrary M = quiver-determinantal geometry Mathlib lacks) is THE ONE
+genuine research-wall — ISOLATED + NAMED.** ⟹ CLIMB fixed-M ladder + BUILD G5-abstract; ROADMAP G3. **Honest
+general headline = ladder instances + G5-abstract + G3 (single named open obstruction)** — the best possible
+roadmap shape (one well-scoped wall, not diffuse difficulty). OPERATOR SCOPE FLAG sharpened: general-M gated on
+G3 ALONE. METHOD LESSON (pp, logged): when a decorrelated model flags a failure mode as FACT, the value is often
+"locate WHERE it lands," not "abandon" — an obstruction confined to where it doesn't matter is a refinement, not
+a refutation (dual of the Q4-trap: both = interrogate the SCOPE of the model's claim).
+
+## G3 SPEC — the named wall, sharpened to its internal crux (pp, g3-spec-the-named-wall.md)
+G3 = the EXPLICIT combinatorial flag-resolution of {∏C=0} (route-A-concrete, explicit poly charts — **NOT general
+Hironaka**). Claim: for every M, a finite rose tree of explicit charts with (G3.1) coordinate-subspace stratum
+centers, (G3.2) **strict-transform = smaller chain product [THE CRUX]**, (G3.3) leaves bottom out, (G3.4) cover
+up to null, (G3.5) binding ratio (k=1, h=Mval−1) ⟹ rlctAt = ½·min_Adm Mval = lambdaCore.
+**DONE vs OPEN:** G3.1 designed (R1.3 ℕ-count), G3.4 designed (cover + lower-bound settled), G3.5 done (R1.2a/b +
+k=1 validated). **G3.2 (the in-chart residual re-identifies as a smaller matrix-chain product — the iterated
+"Schur-complement-of-a-matrix-chain is a smaller chain product" fact) is THE genuinely-open crux.** CRITICAL:
+**Aoyagi PROVES G3.2 on paper (pp.15-21) — so G3 is a FORMALIZATION gap, NOT open math.** The dedicated-tide build:
+explicit pivot-chart φ+Jacobian → the Schur-complement lemma (G3.2, substantial) → recursion (terminates) →
+cover+ratio wiring → glue with G5-abstract. Multi-rung tide.
+**HONEST HEADLINE SHAPE — LOCKED:** PROVEN = the fixed-M ladder + the general machinery (S1/L1/L2/D1/A1/A2/
+G5-abstract); ROADMAPPED = G3 (crux G3.2 = Aoyagi pp.15-21 to formalize). One well-scoped, paper-proven,
+formalization-only wall — the cleanest possible roadmap (a known proof to formalize, not open research).
+**OPERATOR SCOPE (sharpened):** the general-M headline is gated on the G3.2 Lean construction — a dedicated tide;
+everything else proven/buildable. Choice: deliver now (ladder + machinery + G3 roadmap) vs commission the G3 tide.
+
+## D1 RE-SCOPED (fm proof-attempt-as-audit) — NOT a light standalone rung
+D1 `deepest_point_reduction` is blocked on TWO real deps: (1) the **RLCT-monotonicity lemma** `|G|≤|F| a.e. near
+w* ⇒ rlctAt G ≤ rlctAt F` — MISSING + measure-theoretic (the 0^neg a.e.-domination corner: |G|^{-c}≥|F|^{-c} a.e.
+where G≠0, reverses at {G=0}); **assigned fm-2** (reusable by L2's per-point argument). fm has the pointwise core
+`rpow_neg_antitone`. (2) D1 depends on **L2** (homogeneous-scaling Thm-2 argument needs core-homogeneity, not the
+raw mixed-degree dlnLoss B ⟹ per-point core reduction ≈ L2-per-point). So critical-path order is
+**S1✓ → [monotonicity lemma + L2(needs R1/Fubini)] → D1**, NOT S1→D1. Rung map corrected.
+**fm BLOCKER cleared:** resolution_charts re-scope (#47) was decided but never LANDED in Skeleton — fm landing it
+now (pp's core form, BLESSED) + the S1.5 wire (fm-2's verified package) in one batch → green-gate → (1,1,1) gate.
 
 ## Next tick (state @ ~02:30, trunk @da24204)
 **S1.5 FUBINI ENGINE COMPLETE @ad1f313** (controller-verified axiom-clean) — whole S1 substrate proven. R1 lower-bound

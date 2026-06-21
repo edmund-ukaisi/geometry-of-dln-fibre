@@ -622,7 +622,7 @@ theorem step_rlct_le {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperS
     rw [show (1 / 2 : ℝ≥0∞) = ((1 / 2 : NNReal) : ℝ≥0∞) by simp, ENNReal.coe_le_coe,
       ← NNReal.coe_le_coe]
     push_cast; linarith
-  · push_neg at hc12
+  · rw [not_le] at hc12
     obtain ⟨Ωc, hΩcopen, hy0c, hcint⟩ :=
       core_adm_of_joint_adm H hH hHmeas y0 hHne (c' : ℝ) hc12
         ⟨Ω, hΩopen, by simpa using hmem, hint⟩
@@ -669,6 +669,7 @@ instance instProbFin0 : IsProbabilityMeasure (volume : Measure (Fin 0 → ℝ)) 
   ⟨by rw [show (volume : Measure (Fin 0 → ℝ)) = Measure.pi (fun _ => volume) from rfl,
       Measure.pi_univ]; simp⟩
 
+omit [ProperSpace Y] [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y] in
 private theorem chartN_symm_app (n : ℕ) (a : ℝ) (f : Fin n → ℝ) (y : Y) :
     (chartN n Y).symm (a, (f, y)) = (Fin.cons a f, y) := by
   have h : (chartN n Y).symm (a, (f, y)) = ((finPeel n).symm (a, f), y) := rfl
@@ -676,6 +677,7 @@ private theorem chartN_symm_app (n : ℕ) (a : ℝ) (f : Fin n → ℝ) (y : Y) 
   show (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0:Fin (n+1))).symm (a, f) = Fin.cons a f
   rw [MeasurableEquiv.piFinSuccAbove_symm_apply]; exact Fin.insertNth_zero' a f
 
+omit [ProperSpace Y] [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y] in
 private theorem chartN_at_zero (n : ℕ) (y0 : Y) : (chartN n Y) (0, y0) = (0, (0, y0)) := by
   apply (chartN n Y).symm.injective
   rw [Homeomorph.symm_apply_apply, chartN_symm_app]
@@ -684,6 +686,7 @@ private theorem chartN_at_zero (n : ℕ) (y0 : Y) : (chartN n Y) (0, y0) = (0, (
   · rw [Fin.cons_zero]; rfl
   · rw [Fin.cons_succ]; rfl
 
+omit [BorelSpace Y] in
 private theorem hHne_sumSq (m : ℕ) (G : Y → ℝ) (y0 : Y)
     (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0) :
     ∃ U ∈ 𝓝 ((0:Fin m → ℝ), y0), ∀ᵐ z ∂(volume.restrict U),
