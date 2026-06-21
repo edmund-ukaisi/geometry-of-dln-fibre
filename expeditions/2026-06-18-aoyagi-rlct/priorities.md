@@ -51,18 +51,19 @@ Current binary supplied-family slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-binary-supplied-family-a5.md`.
 Current coordinate-coverage classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-coordinate-coverage-classifier-a5.md`.
+Current counted-datum injection slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-injection-a5.md`.
 
 Immediate order:
 
-1. Review and commit the conditional interval `mapsTo` layer:
-   coordinate-wise raw value coverage ->
-   `AoyagiLemma5SuppliedNonbaseFamily`, then supplied branch coordinate ->
-   `AoyagiLemma5CountDatumClassifier`.
+1. Review and commit the counted-datum injection bridge: derive tagged
+   classifier injectivity from supplied branch-coordinate correctness and the
+   existing supplied family fields, then expose the binary-family wrapper.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. Next Lean target: connect this counted-datum classifier boundary to the
-   binary supplied-family boundary only as supplied data, or return to source
-   reproduction for missing plateau/falling-coordinate coverage.
+3. Next source-facing target: return to missing plateau/falling-coordinate
+   coverage and source proof of the supplied family fields; do not claim
+   Aoyagi's printed Case 1(2) paragraph supplies them.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
 5. Low-risk Lean API may package the supplied boundary using standard finite

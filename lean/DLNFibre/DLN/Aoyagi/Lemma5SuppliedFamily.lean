@@ -437,6 +437,50 @@ def countDatumOfBranchCoord {β : Type*} [DecidableEq β]
   | none => none
   | some b => some ((Sigma.mk (branchCoord b) (F.value b)) : Σ _ : ℕ, ℤ)
 
+/-- The counted-datum map is injective on the supplied full branch set once
+the supplied coordinate function is correct on each coordinate branch set.
+
+This uses only the supplied branch-coordinate equation and per-coordinate
+injectivity of `value`; it does not need cross-coordinate disjointness. -/
+theorem countDatumOfBranchCoord_injOn {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedNonbaseFamily β ell a M m)
+    (branchCoord : β → ℕ)
+    (branchCoord_eq :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ {b : β}, b ∈ F.branches j → branchCoord b = j) :
+    Set.InjOn (F.countDatumOfBranchCoord branchCoord) ↑F.fullBranches := by
+  intro x hx y hy hxy
+  cases x with
+  | none =>
+      cases y with
+      | none => rfl
+      | some c =>
+          simp [countDatumOfBranchCoord] at hxy
+  | some b =>
+      cases y with
+      | none =>
+          simp [countDatumOfBranchCoord] at hxy
+      | some c =>
+          rcases (some_mem_fullBranches_iff F).mp hx with ⟨j, hj, hb⟩
+          rcases (some_mem_fullBranches_iff F).mp hy with ⟨k, hk, hc⟩
+          have hbcoord : branchCoord b = j := branchCoord_eq hj hb
+          have hccoord : branchCoord c = k := branchCoord_eq hk hc
+          have hsigma :
+              ((Sigma.mk (branchCoord b) (F.value b)) : Σ _ : ℕ, ℤ) =
+                ((Sigma.mk (branchCoord c) (F.value c)) : Σ _ : ℕ, ℤ) := by
+            simpa [countDatumOfBranchCoord] using Option.some.inj hxy
+          have hcoord_pair : branchCoord b = branchCoord c :=
+            congrArg Sigma.fst hsigma
+          have hvalue : F.value b = F.value c :=
+            congrArg Sigma.snd hsigma
+          have hjk : j = k := by
+            exact hbcoord.symm.trans (hcoord_pair.trans hccoord)
+          have hcj : c ∈ F.branches j := by
+            simpa [hjk.symm] using hc
+          have hbc : b = c := F.value_injective hj hb hcj hvalue
+          simp [hbc]
+
 /-- Build a counted-datum classifier from a supplied nonbase family, a supplied
 coordinate for every nonbase branch, and supplied injectivity of the tagged
 classifier.
@@ -479,6 +523,23 @@ def countDatumClassifierOfBranchCoord {β : Type*} [DecidableEq β]
         · simpa [hcoord] using hj
         · simpa [hcoord] using hvalue
   injOn := hinj
+
+/-- Build the counted-datum classifier from a supplied coordinate map.
+
+The tagged-classifier injectivity is derived from the supplied nonbase-family
+fields.  This remains supplied-data assembly: it does not construct those
+fields from Aoyagi's printed equations. -/
+def countDatumClassifierOfBranchCoord_of_branchCoord_eq {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedNonbaseFamily β ell a M m)
+    (branchCoord : β → ℕ)
+    (branchCoord_eq :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ {b : β}, b ∈ F.branches j → branchCoord b = j) :
+    AoyagiLemma5CountDatumClassifier
+      (Option β) ell a M m F.baseValue F.fullBranches :=
+  F.countDatumClassifierOfBranchCoord branchCoord branchCoord_eq
+    (F.countDatumOfBranchCoord_injOn branchCoord branchCoord_eq)
 
 /-- The full supplied branch set has Aoyagi's Lemma 5 count, once the branch
 family and its base branch are supplied.
@@ -763,6 +824,38 @@ structure AoyagiLemma5SuppliedBinaryNonbaseFamily (β : Type*) [DecidableEq β]
 
 namespace AoyagiLemma5SuppliedBinaryNonbaseFamily
 
+/-- The counted datum attached to a tagged branch in a supplied binary nonbase
+family.
+
+The binary fields are not used by this datum; it is the underlying supplied
+nonbase-family counted datum. -/
+def countDatumOfBranchCoord {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryNonbaseFamily β ell a M m)
+    (branchCoord : β → ℕ) :
+    Option β → AoyagiLemma5CountDatum :=
+  F.toAoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord branchCoord
+
+/-- A supplied binary nonbase family gives the counted-datum classifier once a
+correct coordinate function on nonbase branches is supplied.
+
+This uses only the underlying supplied nonbase-family fields.  The binary
+prefix-delta fields are not needed for this classifier. -/
+def countDatumClassifierOfBranchCoord {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryNonbaseFamily β ell a M m)
+    (branchCoord : β → ℕ)
+    (branchCoord_eq :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ {b : β}, b ∈ F.branches j → branchCoord b = j) :
+    AoyagiLemma5CountDatumClassifier
+      (Option β) ell a M m F.baseValue
+      F.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches := by
+  simpa [countDatumOfBranchCoord] using
+    (F.toAoyagiLemma5SuppliedNonbaseFamily
+      |>.countDatumClassifierOfBranchCoord_of_branchCoord_eq branchCoord
+        branchCoord_eq)
+
 /-- Terminal binary prefix deltas convert a supplied binary nonbase family into
 the existing admissible nonbase-family boundary. -/
 def toAdmissibleNonbaseFamily {β : Type*} [DecidableEq β]
@@ -837,6 +930,36 @@ def fullH {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
     (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m) (b : β) :
     F.fullH (some b) = F.H b :=
   rfl
+
+/-- The counted datum attached to a tagged branch in a supplied binary family.
+
+The binary fields are not used by this datum; it is the underlying supplied
+nonbase-family counted datum. -/
+def countDatumOfBranchCoord {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m)
+    (branchCoord : β → ℕ) :
+    Option β → AoyagiLemma5CountDatum :=
+  F.toAoyagiLemma5SuppliedBinaryNonbaseFamily.countDatumOfBranchCoord branchCoord
+
+/-- A supplied binary family gives the counted-datum classifier once a correct
+coordinate function on nonbase branches is supplied.
+
+This is a convenience wrapper around the binary nonbase-family classifier.  It
+does not use the base branch or binary prefix-delta fields. -/
+def countDatumClassifierOfBranchCoord {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m)
+    (branchCoord : β → ℕ)
+    (branchCoord_eq :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ {b : β}, b ∈ F.branches j → branchCoord b = j) :
+    AoyagiLemma5CountDatumClassifier
+      (Option β) ell a M m F.baseValue F.fullBranches := by
+  simpa [fullBranches, countDatumOfBranchCoord] using
+    (F.toAoyagiLemma5SuppliedBinaryNonbaseFamily
+      |>.countDatumClassifierOfBranchCoord branchCoord
+        branchCoord_eq)
 
 /-- Terminal binary prefix deltas convert a supplied binary full family into
 the existing admissible full-family boundary. -/

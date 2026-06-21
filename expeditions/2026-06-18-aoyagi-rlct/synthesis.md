@@ -3109,6 +3109,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-coordinate-coverage-classifier-a5.md`.
 
+The counted-datum classifier now has a supplied-family injection proof.
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord_injOn` proves that
+the tagged map `none |-> none`, `some b |-> (branchCoord b, value b)` is
+injective on `F.fullBranches` whenever the supplied coordinate map is correct
+on each `F.branches j`.  The proof uses the existing supplied
+`value_injective` field; it does not derive that field from the source.
+`countDatumClassifierOfBranchCoord_of_branchCoord_eq` builds
+the classifier without a separate injectivity hypothesis, and the binary full
+family now exposes binary-nonbase and full-family
+`countDatumOfBranchCoord`/`countDatumClassifierOfBranchCoord` wrappers through
+the same underlying nonbase-family proof.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-injection-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-injection.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-injection-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -3134,3 +3134,35 @@ branch-coordinate correctness, and tagged-classifier injectivity remain
 explicit hypotheses.  The source construction of Aoyagi's displayed family,
 Case 1(2) nonduplication, back-to-label coverage, pole order, normal
 crossings, and RLCT extraction remain open.
+
+## 2026-06-21 Lean Lemma 5 counted datum injection
+
+Reproduction:
+`reproduction-lemma5-counted-datum-injection-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-injection.md`.
+Review artifact:
+`review-lemma5-counted-datum-injection-a5.md`.
+
+Lean now proves that the tagged counted-datum map is injective on a supplied
+nonbase family once the branch-coordinate map is correct:
+
+```text
+AoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord_injOn
+AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfBranchCoord_of_branchCoord_eq
+AoyagiLemma5SuppliedBinaryNonbaseFamily.countDatumOfBranchCoord
+AoyagiLemma5SuppliedBinaryNonbaseFamily.countDatumClassifierOfBranchCoord
+AoyagiLemma5SuppliedBinaryFamily.countDatumOfBranchCoord
+AoyagiLemma5SuppliedBinaryFamily.countDatumClassifierOfBranchCoord
+```
+
+The proof uses only existing supplied family fields: membership in
+`F.fullBranches` gives coordinate branch sets for two nonbase branches, the
+counted datum equality gives equal supplied coordinates and values, and
+per-coordinate injectivity of `F.value` gives equality of branches.  The binary
+nonbase and full-family wrappers reuse the same underlying nonbase-family
+proof.
+
+This does not prove the supplied family fields from source.  In particular,
+source value-injectivity, branch-coordinate correctness, and branch
+coverage remain the real Aoyagi Lemma 5 construction frontier.

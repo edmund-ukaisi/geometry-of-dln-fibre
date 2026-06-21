@@ -3755,6 +3755,28 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-coordinate-coverage-classifier-a5.md`.
 
+Latest A5 counted-datum injection update: `Lemma5SuppliedFamily.lean` now
+derives the tagged counted-datum injection from the supplied family fields.
+Names:
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumOfBranchCoord_injOn`,
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfBranchCoord_of_branchCoord_eq`,
+`AoyagiLemma5SuppliedBinaryNonbaseFamily.countDatumOfBranchCoord`,
+`AoyagiLemma5SuppliedBinaryNonbaseFamily.countDatumClassifierOfBranchCoord`,
+`AoyagiLemma5SuppliedBinaryFamily.countDatumOfBranchCoord`, and
+`AoyagiLemma5SuppliedBinaryFamily.countDatumClassifierOfBranchCoord`.
+The proof uses supplied branch-coordinate correctness, per-coordinate
+injectivity of `value`, and equality of the tagged coordinate.  The binary
+wrappers add no source content and use only the underlying nonbase family.
+This still does not prove Aoyagi's printed branch construction, source
+value-injectivity, branch-coordinate correctness, back-to-label
+coverage, pole order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-injection-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-injection.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-injection-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
