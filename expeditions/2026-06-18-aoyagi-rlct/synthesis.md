@@ -2859,6 +2859,23 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-terminal-minimum-numerator-bridge-a5.md`.
 
+The bridge file now also packages a supplied terminal-candidate family:
+`AoyagiLemma5SuppliedTerminalCandidateFamily`.  It attaches every tagged
+supplied Lemma 5 branch to supplied source-label maps `branchS`, `branchK`,
+an introduced-label proof, terminal least-value-zero data, and a numerator
+normalisation to the Lemma 3 free-count expression.  Lean proves the inherited
+branch count, branchwise terminal least-value zero, branchwise terminal
+exponent equality to the isolated Lemma 3 minimum numerator, and the bundled
+`branch_terminalCandidateData`.  This still does not construct source labels
+from the printed equations, prove terminal `tilde t=0` from the chart process,
+prove label injectivity/no-extra-terminal-minimizer data, identify `lambda`,
+prove pole order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-terminal-candidate-family-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-terminal-candidate-family.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-supplied-terminal-candidate-family-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

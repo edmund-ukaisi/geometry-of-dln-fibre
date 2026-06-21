@@ -2670,3 +2670,36 @@ terminalExponent L (widthZ width) (t s k)
 This does not prove terminal `tilde t=0`, derive the terminal-exponent
 quadratic rewrite from the PDF, construct source labels or displayed vectors,
 identify `lambda`, prove chart coverage, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 supplied terminal candidate family
+
+Reproduction:
+`reproduction-lemma5-supplied-terminal-candidate-family-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-supplied-terminal-candidate-family.md`.
+Review artifact:
+`review-lemma5-supplied-terminal-candidate-family-a5.md`.
+
+Lean now packages branchwise supplied terminal-candidate data in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily
+AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches
+AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalLeastValue_zero
+AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalExponent_eq_minNumerator
+AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalCandidateData
+```
+
+The structure attaches each tagged branch to supplied source-label maps
+`branchS`, `branchK`, a supplied introduced-label proof, a supplied terminal
+least-value-zero proof, and a supplied numerator normalisation to the Lemma 3
+free-count expression.  The package then proves each tagged branch is
+introduced, terminal in the least-value-zero sense, and has terminal exponent
+equal to the isolated Lemma 3 minimum numerator.
+
+This still does not construct labels from Aoyagi's printed equations, prove
+terminal `tilde t=0` from the chart process, prove label injectivity or absence
+of extra terminal minimizers, identify `lambda`, prove pole order, normal
+crossings, or RLCT extraction.

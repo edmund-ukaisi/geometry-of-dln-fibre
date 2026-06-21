@@ -2446,6 +2446,16 @@ No such claim is formalisation-ready until both fields are filled.
   free-count expression for a tagged supplied branch and then proves the
   corresponding `terminalExponent` equals the isolated Lemma 3 minimum
   numerator.
+  Also proved the supplied terminal-candidate package:
+  `AoyagiLemma5SuppliedTerminalCandidateFamily`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalLeastValue_zero`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalExponent_eq_minNumerator`,
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalCandidateData`.
+  This packages supplied branch-to-label maps, introduced-label proofs,
+  terminal least-value-zero data, and numerator normalisation for each tagged
+  branch.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
@@ -2457,7 +2467,8 @@ No such claim is formalisation-ready until both fields are filled.
   same-coordinate hypotheses, source-label and terminal `tilde t=0`
   realisation, identification of the source terminal-exponent numerator with
   the isolated Lemma 3 free-count expression, Lemma 4's correspondence to
-  `lambda`
+  `lambda`, injectivity of supplied branch labels, absence of extra terminal
+  minimizers,
   conclusion, source-backed Lemma 5 chart-family admissibility and coverage
   from Aoyagi's printed equations, existence of the supplied chart-family
   boundary data including the supplied base branch, pole-order count, and

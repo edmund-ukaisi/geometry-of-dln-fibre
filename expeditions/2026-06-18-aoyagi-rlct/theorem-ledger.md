@@ -3499,6 +3499,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-terminal-minimum-numerator-bridge-a5.md`.
 
+Latest A5 supplied-terminal-candidate update: the terminal bridge file now
+defines `AoyagiLemma5SuppliedTerminalCandidateFamily`.  Names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalLeastValue_zero`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalExponent_eq_minNumerator`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branch_terminalCandidateData`.
+The structure supplies branch-to-label maps, introduced-label proofs,
+terminal least-value-zero proofs, and numerator normalisation for every tagged
+branch.  The theorems package those supplied fields with the existing branch
+minimum theorem.  This is not label construction from equations `(3)`, `(4)`,
+or `(5)`, not no-extra-minimizer data, and not a pole-order/RLCT theorem.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-terminal-candidate-family-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-terminal-candidate-family.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-supplied-terminal-candidate-family-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

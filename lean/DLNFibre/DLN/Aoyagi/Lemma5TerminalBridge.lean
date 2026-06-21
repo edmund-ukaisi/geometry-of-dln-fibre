@@ -85,6 +85,114 @@ theorem IntroducedLabelExponentCertificates.terminalExponent_eq_suppliedLemma5Mi
         (((n + 1 : ℕ) : ℤ) - (a : ℤ)) :=
       F.fullBranch_freeHighCountMin ha hselected hx
 
+/-- Supplied terminal-candidate data over a full Lemma 5 branch family.
+
+The fields attach each tagged supplied branch to a source label in the generic
+introduced-label exponent-certificate API, supply terminality as least value
+zero, and supply the missing numerator normalisation to the Lemma 3 free-count
+expression.  This is still a supplied boundary: it does not construct these
+labels from Aoyagi's printed equations and does not assert there are no other
+terminal minimizers. -/
+structure AoyagiLemma5SuppliedTerminalCandidateFamily (β : Type*) [DecidableEq β]
+    (L : ℕ) (width : ℕ → ℕ) (S J : ℕ)
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ) where
+  family : AoyagiLemma5SuppliedAdmissibleFamily β (n + 1) a M m
+  certs : IntroducedLabelExponentCertificates L width S J t numerator leastValue
+  branchS : Option β → ℕ
+  branchK : Option β → ℕ
+  introduced :
+    ∀ {x : Option β}, x ∈ family.fullBranches →
+      introducedLabel L width S J (branchS x) (branchK x)
+  terminal_leastValue_zero :
+    ∀ {x : Option β}, x ∈ family.fullBranches →
+      leastValue (branchS x) (branchK x) = 0
+  numerator_eq_lemma3A :
+    ∀ {x : Option β}, x ∈ family.fullBranches →
+      numerator (branchS x) (branchK x) =
+        aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+          (aoyagiLemma4FreeHighCount n M m (family.fullH x) : ℤ)
+
+namespace AoyagiLemma5SuppliedTerminalCandidateFamily
+
+/-- The tagged branch set of a supplied terminal-candidate family. -/
+def fullBranches {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) :
+    Finset (Option β) :=
+  C.family.fullBranches
+
+/-- The supplied terminal-candidate branch set has Aoyagi's Lemma 5 supplied
+finite count. -/
+theorem fullBranches_card {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hell : 1 ≤ n + 1) (ha : a ≤ n + 1) :
+    C.fullBranches.card = a * (n + 1 - a) + 1 := by
+  exact AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card
+    (n + 1) a M m C.family hell ha
+
+/-- Every tagged supplied terminal candidate has terminal least value zero. -/
+theorem branch_terminalLeastValue_zero {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    {x : Option β} (hx : x ∈ C.fullBranches) :
+    leastValue (C.branchS x) (C.branchK x) = 0 :=
+  C.terminal_leastValue_zero hx
+
+/-- Every tagged supplied terminal candidate has terminal exponent equal to
+the isolated Lemma 3 minimum numerator.
+
+The source-label realisation, terminal least-value zero, and numerator
+normalisation are supplied fields of the structure. -/
+theorem branch_terminalExponent_eq_minNumerator {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    {x : Option β} (hx : x ∈ C.fullBranches) :
+    terminalExponent L (widthZ width) (t (C.branchS x) (C.branchK x)) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) *
+        (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  exact C.certs.terminalExponent_eq_suppliedLemma5MinNumerator
+    C.family ha hselected hx (C.introduced hx) (C.numerator_eq_lemma3A hx)
+
+/-- Branchwise supplied terminal-candidate package: introduced label,
+terminal least value zero, and terminal-exponent minimum numerator. -/
+theorem branch_terminalCandidateData {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    {x : Option β} (hx : x ∈ C.fullBranches) :
+    introducedLabel L width S J (C.branchS x) (C.branchK x) ∧
+      leastValue (C.branchS x) (C.branchK x) = 0 ∧
+        terminalExponent L (widthZ width) (t (C.branchS x) (C.branchK x)) =
+          (a : ℤ) * ((n + 1 : ℕ) : ℤ) *
+            (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  exact ⟨C.introduced hx, C.branch_terminalLeastValue_zero hx,
+    C.branch_terminalExponent_eq_minNumerator ha hselected hx⟩
+
+end AoyagiLemma5SuppliedTerminalCandidateFamily
+
 end Aoyagi
 end DLN
 end DLNFibre
