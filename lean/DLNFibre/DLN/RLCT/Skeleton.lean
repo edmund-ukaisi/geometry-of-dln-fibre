@@ -1112,7 +1112,7 @@ private theorem Mval_eq_range (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) :
   intro j _
   rw [tPrev_eq_Useq, Tj_eq_Useq, Msucc_eq_Mseq]
 
-/-- **Edge-variable identity (CERTAIN algebra).** `2·Mval M T = ∑_{j<L}(edgeQ j)² − ∑_{i<L+1}(M⁽ⁱ⁾)²`
+/-- **Edge identity (certain algebra).** `2·Mval M T = ∑_{j<L}(edgeQ j)² − ∑_{i<L+1}(M⁽ⁱ⁾)²`
 (level sequence from `M⁰` to `0`, admissibility). The transform sending the admissible cone to a
 fixed `Fin L` edge polytope. -/
 private theorem edge_identity (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
