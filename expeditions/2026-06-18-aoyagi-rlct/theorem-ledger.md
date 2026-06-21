@@ -74,6 +74,23 @@ branchwise hypotheses.  It does not construct Eq5 branches, prove alpha-domain
 coverage, selected-span coverage, terminal exactness, classifier/back-to-label
 coverage, pole order, normal crossings, or RLCT extraction.
 
+The Eq5 alpha-indexed branch-label image wrapper has also landed in
+`Lemma5SourceLabel.lean`.  New Lean names:
+`aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_subset_actualWidthLabelFinset_of_widthBound`
+and `aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_of_alphaInj`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-branch-label-image.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`.
+This proves only that the supplied branch-label image is a subset of
+`actualWidthLabelFinset L n` under the existing branchwise hypotheses, and
+that the image has the supplied branch-family cardinality under supplied alpha
+injectivity.  It is not branch construction, alpha-domain coverage,
+selected-span coverage, terminal exactness, classifier/back-to-label coverage,
+pole order, normal crossings, or RLCT extraction.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in

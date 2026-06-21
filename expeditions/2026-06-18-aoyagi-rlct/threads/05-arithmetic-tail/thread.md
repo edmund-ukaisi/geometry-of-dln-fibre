@@ -4163,3 +4163,29 @@ This does not construct Eq5 branch records, prove alpha-domain coverage,
 selected-span coverage, displayed-vector construction, terminal exactness,
 classifier/back-to-label coverage, Lemma 5 order count, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 alpha-indexed branch-label image
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-indexed-branch-label-image.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`.
+
+Lean now packages the supplied alpha-indexed Eq5 branch-label family at image
+level:
+
+```text
+aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_subset_actualWidthLabelFinset_of_widthBound
+aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_of_alphaInj
+```
+
+Branchwise actual-width label legality gives
+`branches.image branchLabel ⊆ actualWidthLabelFinset L n`, and supplied alpha
+injectivity gives `(branches.image branchLabel).card = branches.card`.
+
+This is finite supplied-image bookkeeping only.  It does not construct Eq5
+branches, prove alpha-domain coverage, selected-span coverage, displayed
+vectors, terminal exactness, classifier/back-to-label coverage, pole order,
+normal crossings, or RLCT.

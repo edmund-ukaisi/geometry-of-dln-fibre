@@ -1207,6 +1207,40 @@ theorem
       L ell a p n M m branches alphaOf branchLabel hell ha hpell halpha
       hselected hsource hs_pos hs_le hwidth_le hlabel b hb)
 
+/-- The supplied branch-label image of a finite alpha-indexed equation `(5)`
+family is contained in the actual-width label finite set.
+
+This is only the image-level form of branchwise label legality.  It does not
+assert that the image covers all Eq5 labels, all actual-width labels, or any
+terminal-minimum label set. -/
+theorem
+    aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_subset_actualWidthLabelFinset_of_widthBound
+    {β : Type*}
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha : ∀ b ∈ branches, alphaOf b ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) =
+      (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : ∀ b ∈ branches, 1 ≤ (branchLabel b).1)
+    (hs_le : ∀ b ∈ branches, (branchLabel b).1 ≤ L)
+    (hwidth_le : ∀ b ∈ branches,
+      aoyagiSelectedWidthNat ell m p ≤ (n ((branchLabel b).1 + 1) : ℤ))
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ)) :
+    branches.image branchLabel ⊆ actualWidthLabelFinset L n := by
+  intro label hlabel_mem
+  rcases Finset.mem_image.mp hlabel_mem with ⟨b, hb, rfl⟩
+  exact
+    aoyagiLemma5Eq5_alphaIndexedBranchLabel_mem_actualWidthLabelFinset_of_widthBound
+      L ell a p n M m branches alphaOf branchLabel hell ha hpell halpha
+      hselected hsource hs_pos hs_le hwidth_le hlabel b hb
+
 /-- If the alpha projection is injective on a supplied alpha-indexed equation
 `(5)` branch family, then the supplied branch labels are injective.
 
@@ -1232,6 +1266,27 @@ theorem aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn
   have hb_formula := hlabel b hb
   have hc_formula := hlabel c hc
   omega
+
+/-- Under supplied alpha injectivity, the supplied branch-label image has the
+same cardinality as the supplied branch family.
+
+This is finite image bookkeeping for supplied Eq5 branches.  It is not a
+coverage theorem for the strict alpha domain, actual-width labels, terminal
+minimum labels, or Aoyagi's displayed family. -/
+theorem aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_of_alphaInj
+    {β : Type*}
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (halpha_inj : Set.InjOn alphaOf ↑branches)
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ)) :
+    (branches.image branchLabel).card = branches.card := by
+  exact Finset.card_image_of_injOn
+    (s := branches) (f := branchLabel)
+    (aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn
+      ell a p M m branches alphaOf branchLabel halpha_inj hlabel)
 
 /-- The terminal selected coordinate `C.point ell - 1` is a positive source
 index when the selected list has positive length.

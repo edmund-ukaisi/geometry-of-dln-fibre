@@ -140,6 +140,24 @@ construction, no alpha-domain coverage, no selected-span coverage, no
 displayed-vector construction, no terminal exactness, no classifier/back-to-
 label coverage, no pole order, no normal crossings, and no RLCT extraction.
 
+The Eq5 alpha-indexed branch-label image wrapper has also landed in the same
+file.  New Lean names:
+`aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_subset_actualWidthLabelFinset_of_widthBound`
+and `aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_of_alphaInj`.
+The first theorem upgrades branchwise actual-width-label membership to the
+finite image subset
+`branches.image branchLabel ⊆ actualWidthLabelFinset L n`; the second counts
+that supplied image under supplied alpha injectivity.  This is image-level
+bookkeeping only: no branch construction, alpha-domain coverage, selected-span
+coverage, terminal exactness, classifier/back-to-label coverage, pole order,
+normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-branch-label-image.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:
