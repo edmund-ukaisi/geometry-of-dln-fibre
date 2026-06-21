@@ -4027,6 +4027,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-maps-to-adapters-a5.md`.
 
+Latest A5 Eq5 counted-datum bridge update: `Lemma5Eq5CountDatumBridge.lean`
+now contains
+`aoyagiLemma5Eq5_nonfirstBlock_countDatumSet_mem_of_alphaDomain_of_postPLowerGuard`
+and
+`aoyagiLemma5Eq5_nonfirstBlock_countDatumSet_mem_of_alphaDomain_of_terminalRoom`.
+For a supplied Eq5 piecewise vector, strict alpha-domain membership, nonfirst
+block data, and a supplied non-base-value inequality, the branch value `T S`
+belongs to the counted-datum codomain.  The two variants use either the
+explicit post-`p` guard or terminal-room inequality.  This is only a maps-to
+bridge; it does not construct Eq5 vectors, produce nonbase status, construct
+classifiers, prove injections, back-to-label coverage, order counts, pole
+order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-counted-datum-bridge-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-counted-datum-bridge.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-counted-datum-bridge-a5.md`.
+
 Latest A5 prefix-delta-chain-bound update: `HtildeChainArithmetic.lean` now
 proves the algebraic translation from supplied prefix-delta bounds to displayed
 chain bounds.  Names:

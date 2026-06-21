@@ -4351,3 +4351,28 @@ membership.  This is finite codomain bookkeeping only.  It does not construct
 a source branch, Eq3/Eq4/Eq5 vector, classifier, injection, back-to-label map,
 terminal-minimum exactness, order count, pole order, normal crossings, or
 RLCT.
+
+## 2026-06-21 Lean Lemma 5 Eq5 counted-datum bridge
+
+Reproduction:
+`reproduction-lemma5-eq5-counted-datum-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-counted-datum-bridge.md`.
+Review artifact:
+`review-lemma5-eq5-counted-datum-bridge-a5.md`.
+
+Lean now packages the exact handoff from supplied Eq5 nonfirst interval
+admissibility to the counted-datum codomain:
+
+```text
+aoyagiLemma5Eq5_nonfirstBlock_countDatumSet_mem_of_alphaDomain_of_postPLowerGuard
+aoyagiLemma5Eq5_nonfirstBlock_countDatumSet_mem_of_alphaDomain_of_terminalRoom
+```
+
+For a supplied Eq5 piecewise vector, strict alpha-domain membership, nonfirst
+block data, and a supplied non-base-value inequality, the branch value
+`T S` gives a counted datum `some (b,T S)`.  The two variants use either the
+explicit post-`p` guard or the terminal-room inequality.  This is maps-to
+bookkeeping only.  It does not construct Eq5 vectors, prove nonbase status,
+prove classifier/injection/back-to-label coverage, prove an order count, pole
+order, normal crossings, or RLCT.

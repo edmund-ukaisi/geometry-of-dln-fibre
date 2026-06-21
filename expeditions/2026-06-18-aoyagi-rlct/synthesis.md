@@ -4110,6 +4110,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-maps-to-adapters-a5.md`.
 
+Latest A5 Eq5 counted-datum bridge update:
+`Lemma5Eq5CountDatumBridge.lean` now contains
+`aoyagiLemma5Eq5_nonfirstBlock_countDatumSet_mem_of_alphaDomain_of_postPLowerGuard`
+and
+`aoyagiLemma5Eq5_nonfirstBlock_countDatumSet_mem_of_alphaDomain_of_terminalRoom`.
+For a supplied Eq5 piecewise vector, strict alpha-domain membership, nonfirst
+block data, and a supplied non-base-value inequality, the branch value `T S`
+belongs to the counted-datum codomain.  The two variants use either the
+explicit post-`p` guard or the terminal-room inequality.  This is maps-to
+bookkeeping only, not Eq5 vector construction, nonbase production, classifier
+construction, injection, back-to-label coverage, order count, pole order,
+normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-counted-datum-bridge-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-counted-datum-bridge.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-counted-datum-bridge-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
