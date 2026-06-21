@@ -276,37 +276,13 @@ theorem Eleaf_lintegral_lt_top (c' : NNReal) (hc0 : 0 < c') (hc' : (c' : ℝ≥0
   rw [IntegrableOn, Integrable, hasFiniteIntegral_iff_ofReal hnn] at hint
   exact hint.2
 
-/-- **A step-1 A-pivot leaf-summand is finite (below `3/2`).** For each A-pivot `p ∈ {0,1,2,3}` and
-`c' < 3/2`, the `p`-cell of the step-1 `g5_pivotNode` split — the chart-domain integral of
-`|det φ₁ₚ| · (openBox.indicator |myF222|^{−c'}) ∘ φ₁ₚ` — is finite. This is the per-A-pivot recursion
-chain (Lemma-2 splice → step-2 `{1,2,3}` → step-3 block → per-leaf `monomialThreshold = 3/2`
-finiteness). The four pivots' chains are structurally analogous (each factors `myF222 ∘ φ₁ₚ =
-yₚ²·Qₚ` by `ring`, the residual `Qₚ` a resolved form with the same leaf thresholds). -/
-theorem aPivotSummand_lt_top (c' : NNReal) (hc' : (c' : ℝ≥0∞) < 3 / 2) (p : Fin 8) (hp : p ∈ Aact) :
-    ∫⁻ x in chartDomOn Aact p \ pivotZeroOn p,
-        ENNReal.ofReal |(pivotBlowupOnDeriv Aact p x).det|
-          * openBox.indicator (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c' : ℝ))))
-              (pivotBlowupOn Aact p x) < ⊤ := by
-  sorry
+/-! ## The ≥-direction headline lives downstream (`Case222CoverGETail`)
 
-/-- **The `(2,2,2)` ≥-direction threshold finiteness (over the bounded box).** For every `c' < 3/2`,
-the threshold integral of `myF222` over the bounded open box `(−1,1)^8` is finite — the LOCAL input
-the `≥` lower bound needs. The step-1 `g5_pivotNode` (`recStep` on the box) splits it into the four
-A-pivot summands (`aPivotSummand_lt_top`), each finite; `ENNReal.sum_lt_top` closes. NOTE the `univ`
-form is FALSE (diverges at infinity); the bound is genuinely local. -/
-theorem myF222_threshold_lintegral_lt_top (c' : NNReal) (hc' : (c' : ℝ≥0∞) < 3 / 2) :
-    ∫⁻ x in openBox, ENNReal.ofReal (|myF222 x| ^ (-(c' : ℝ))) < ⊤ := by
-  rw [recStep Aact 0 (by decide) openBox isOpen_openBox.measurableSet
-    (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c' : ℝ))))]
-  exact ENNReal.sum_lt_top.2 (fun p hp => aPivotSummand_lt_top c' hc' p hp)
-
-/-- **The `(2,2,2)` ≥-direction headline.** `rlctAtOn myF222 0 ≥ 3/2` — the lower bound matching the
-gated `≤`-half (`rlctAtOn_myF222_le`). Via `rlctAtOn_ge_of_integral_lt` on the bounded open box
-`openBox ∋ 0` (`myF222_threshold_lintegral_lt_top` supplies the local threshold finiteness for every
-`c' < 3/2`). -/
-theorem rlctAtOn_myF222_ge : (3 : ℝ≥0∞) / 2 ≤ rlctAtOn myF222 0 := by
-  apply rlctAtOn_ge_of_integral_lt myF222 ?_ openBox isOpen_openBox mem_openBox_zero (3 / 2)
-    myF222_threshold_lintegral_lt_top
-  unfold myF222; fun_prop
+The per-A-pivot summand finiteness and the `≥`-headline are proven in `Case222CoverGETail`
+(`rlctAtOn_myF222_ge'`, `rlctAtOn_myF222_eq`), where `p0_summand_via_tail` (the `p = 0` chain) and the
+coordinate-conjugation A-pivots are in scope. The earlier sorry'd stubs that lived here
+(`aPivotSummand_lt_top` / `myF222_threshold_lintegral_lt_top` / `rlctAtOn_myF222_ge`) were superseded by
+that downstream restatement and removed (this file is the `≥`-foundation: `openBox`, `Aact`, the
+per-leaf `monomialThreshold` lemmas, the `p = 0` support/cube/factor machinery the tail consumes). -/
 
 end DLNFibre.DLN.RLCT
