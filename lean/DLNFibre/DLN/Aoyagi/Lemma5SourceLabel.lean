@@ -1115,6 +1115,71 @@ theorem aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound
       exact le_trans hlabel.2 hwidth_le
     exact_mod_cast hk_le_int
 
+/-- The terminal selected coordinate `C.point ell - 1` is a positive source
+index when the selected list has positive length.
+
+This is source-index bookkeeping only. -/
+theorem aoyagiLemma5_terminalSourceIndex_pos
+    (ell : ℕ) (C : AoyagiSelectedCutpoints ell) (hell : 1 ≤ ell) :
+    1 ≤ C.point ell - 1 := by
+  have hpoint0 : 1 ≤ C.point 0 := C.point_pos_of_lt (by omega)
+  have hstrict : C.point 0 < C.point ell :=
+    C.point_strict_of_lt (by omega) (by omega)
+  omega
+
+/-- The terminal label `k=1` is an actual source label at the terminal selected
+coordinate under explicit source-range and width-positivity hypotheses.
+
+This proves only label legality.  It does not construct a terminal source
+branch or prove terminal-minimum-label exactness. -/
+theorem aoyagiLemma5_terminal_actualWidthLabel_of_lastPoint
+    (L ell : ℕ) (n : ℕ → ℕ) (C : AoyagiSelectedCutpoints ell)
+    (hell : 1 ≤ ell) (hlast : C.point ell ≤ L + 1)
+    (hwidth_pos : 1 ≤ n (C.point ell)) :
+    actualWidthLabel L n (C.point ell - 1) 1 := by
+  have hpoint_pos : 1 ≤ C.point ell := C.point_pos_of_lt (by omega)
+  have hsucc : C.point ell - 1 + 1 = C.point ell := by
+    omega
+  refine ⟨?_, ?_, by omega, ?_⟩
+  · exact aoyagiLemma5_terminalSourceIndex_pos ell C hell
+  · omega
+  · change 1 ≤ n (C.point ell - 1 + 1)
+    rw [hsucc]
+    exact hwidth_pos
+
+/-- A supplied terminal source-coordinate zero gives terminal interval
+membership and introduced-label membership for the terminal label `k=1`.
+
+The equality `T(C.point ell - 1)=0` is supplied.  This theorem does not
+construct the terminal source branch or any classifier data. -/
+theorem aoyagiLemma5_terminal_intervalValue_mem_introducedLabelFinset_of_terminalZero
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth_pos : 1 ≤ n (C.point ell))
+    (hterminal : T (C.point ell - 1) = 0) :
+    T (C.point ell - 1) ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m ell ∧
+      T (C.point ell - 1) = (1 : ℤ) - 1 ∧
+        Sigma.mk (C.point ell - 1) 1 ∈
+          introducedLabelFinset L n (C.point ell - 1) 1 := by
+  have hlabel :
+      actualWidthLabel L n (C.point ell - 1) 1 :=
+    aoyagiLemma5_terminal_actualWidthLabel_of_lastPoint
+      L ell n C hell hlast hwidth_pos
+  refine ⟨?_, ?_, ?_⟩
+  · rw [hterminal,
+      aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum
+        ell a M m ha hselected]
+    simp
+  · rw [hterminal]
+    norm_num
+  · exact mem_introducedLabelFinset.mpr
+      (introducedLabel_of_eq_stage_le hlabel rfl le_rfl)
+
 /-- Equation `(5)`'s source guards put every member of the own selected block
 in the positive source-layer range.
 

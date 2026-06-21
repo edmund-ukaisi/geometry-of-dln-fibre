@@ -3602,3 +3602,32 @@ construct the counted-datum classifier, branch-coordinate map, or
 back-to-label bridge from Aoyagi's displayed equations, and it does not prove
 source-label legality, injection, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal source label
+
+Reproduction:
+`reproduction-lemma5-terminal-source-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-source-label.md`.
+Review artifact:
+`review-lemma5-terminal-source-label-a5.md`.
+
+Lean now isolates source-label legality for the terminal singleton:
+
+```text
+aoyagiLemma5_terminalSourceIndex_pos
+aoyagiLemma5_terminal_actualWidthLabel_of_lastPoint
+aoyagiLemma5_terminal_intervalValue_mem_introducedLabelFinset_of_terminalZero
+```
+
+Under `1<=ell`, `C.point ell<=L+1`, and `1<=n(C.point ell)`, the terminal
+source coordinate `C.point ell-1` is a legal source layer and `k=1` is a legal
+actual-width label.  If the terminal source-coordinate value is separately
+supplied as `T(C.point ell-1)=0`, then this value lies in the terminal
+same-coordinate interval, equals `1-1`, and the label
+`(C.point ell-1,1)` belongs to `introducedLabelFinset L n (C.point ell-1) 1`.
+
+This is terminal source-label bookkeeping only.  It does not construct the
+terminal source branch, prove source-realisation from a supplied branch chain,
+prove terminal-label exactness, classifier coverage, branch-label injectivity,
+back-to-label coverage, pole order, normal crossings, or RLCT extraction.

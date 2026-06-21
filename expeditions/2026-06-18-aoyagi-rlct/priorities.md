@@ -84,6 +84,8 @@ Current Eq4 local lower-endpoint slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-lower-endpoint-a5.md`.
 Current terminal source-realisation bridge slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-bridge-a5.md`.
+Current terminal source-label slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-label-a5.md`.
 Current terminal binary counted-datum maps-to slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`.
 Current terminal-minimum counted-datum classifier slice:
@@ -109,10 +111,15 @@ Immediate order:
    injectivity.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
-5. Low-risk Lean API may package the supplied boundary using standard finite
+5. Next concrete source-arithmetic target after the terminal-label slice:
+   generalize the existing Eq5 all-widths-four lower-bound obstruction to a
+   post-`p` criterion comparing the printed post-branch subtraction with the
+   Htilde interval excess.  This must stay an obstruction record, not a
+   corrected Eq5 construction or source coverage theorem.
+6. Low-risk Lean API may package the supplied boundary using standard finite
    classifier or bijection language, but it must not be described as source
    exactness.
-6. Do not start a Lean normal-crossing/RLCT extraction interface before actual
+7. Do not start a Lean normal-crossing/RLCT extraction interface before actual
    finite chart/certificate data exist.
 
 ## Ranked next

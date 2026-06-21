@@ -3400,6 +3400,29 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-a5.md`.
 
+The terminal source-label bookkeeping slice is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  New Lean names:
+`aoyagiLemma5_terminalSourceIndex_pos`,
+`aoyagiLemma5_terminal_actualWidthLabel_of_lastPoint`, and
+`aoyagiLemma5_terminal_intervalValue_mem_introducedLabelFinset_of_terminalZero`.
+Under explicit terminal range and width-positivity hypotheses, the terminal
+coordinate `C.point ell-1` carries the legal label `k=1`; if the source value
+there is supplied to be zero, Lean places it in the terminal Htilde interval
+and in the introduced-label finset at state `(C.point ell-1,1)`.  This still
+does not construct the terminal source branch or the source-realisation
+equality from a branch chain.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-label-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-label.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-label-a5.md`.
+
+Next source-arithmetic frontier from the latest scouts: generalize the Eq5
+post-`p` below-lower obstruction by comparing the printed post-branch
+subtraction with `aoyagiLemma5IntervalExcess`.  Keep that as an obstruction
+record; it is not a corrected Eq5 construction or source coverage theorem.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -2588,6 +2588,14 @@ No such claim is formalisation-ready until both fields are filled.
   derives the existing `UpperBoundClassifier`.  It does not construct the
   classifier, branch-coordinate map, or back-to-label bridge from Aoyagi's
   source.
+  Also proved terminal source-label bookkeeping:
+  `aoyagiLemma5_terminalSourceIndex_pos`,
+  `aoyagiLemma5_terminal_actualWidthLabel_of_lastPoint`, and
+  `aoyagiLemma5_terminal_intervalValue_mem_introducedLabelFinset_of_terminalZero`.
+  These put the supplied terminal zero at source coordinate `C.point ell-1`
+  together with legal label `k=1` under explicit terminal source-range and
+  width-positivity hypotheses.  They do not construct the terminal source
+  branch or the source-realisation equality from branch-chain data.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

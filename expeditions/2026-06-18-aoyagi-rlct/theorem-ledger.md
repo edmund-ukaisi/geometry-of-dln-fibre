@@ -4046,6 +4046,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-a5.md`.
 
+Latest A5 terminal source-label update:
+`Lemma5SourceLabel.lean` now has
+`aoyagiLemma5_terminalSourceIndex_pos`,
+`aoyagiLemma5_terminal_actualWidthLabel_of_lastPoint`, and
+`aoyagiLemma5_terminal_intervalValue_mem_introducedLabelFinset_of_terminalZero`.
+These prove terminal source-layer and `k=1` label legality under explicit
+source-range and width-positivity hypotheses, and combine a supplied terminal
+zero with the terminal interval singleton.  They do not construct the terminal
+source branch, source-realisation equality, terminal-label exactness,
+classifier coverage, injection, back-to-label coverage, pole order, normal
+crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-label.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-label-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
