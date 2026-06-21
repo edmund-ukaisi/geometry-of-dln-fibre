@@ -1,4 +1,5 @@
 import DLNFibre.Core.CThetaQIPConverse
+import DLNFibre.Core.CCodimCornerMono
 
 /-!
 # `DLNFibre.Core.CCodimZeroMono` — dimension-monotonicity of `cCodim · 0`
@@ -26,6 +27,8 @@ This file reuses the bilinear `codimBil` machinery (`codimBil`, `codimForm_add`,
 namespace DLNFibre.Core
 
 open Finset
+
+universe u
 
 variable {N : ℕ}
 
@@ -1543,5 +1546,24 @@ theorem cCodim_zero_mono {e e' : Fin (N + 1) → ℕ}
     _ ≤ codimForm N (extendℤ m) := Finset.inf'_le _ hm
     _ ≤ codimForm N (extendℤ m') := hcf
     _ = cCodim e' 0 he' := hm'eq.symm
+
+/-! ## Discharging the weak gating hypothesis `hMono`
+
+`cCodim_zero_mono` is exactly the weak dimension-monotonicity `hMono` consumed by
+`Core.CCodimCornerMono.numTop_eq_ncard_topComponents_of_dimMono`; so the θ-count headline becomes
+conditional on *only* the strict all-vertex version `hMonoStrict` (still open — see the thread-07
+card). `cCodim_le_codimRepCanonical_of` (`hLowerBound`) is thereby fully discharged. -/
+
+/-- **θ-count headline, with `hMono` discharged.** Given only the strict all-vertex dimension-mono
+`hMonoStrict`, `numTop d r = #{top-dim components of Σ̄^r}` — the weak `hMono` is now supplied by
+`cCodim_zero_mono`. -/
+theorem numTop_eq_ncard_topComponents_of_strict {k : Type u} [Field k] [IsAlgClosed k] [CharZero k]
+    (hMonoStrict : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
+      (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k < e' k) →
+      cCodim e 0 he < cCodim e' 0 he')
+    (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : (kostantPartitions d r).Nonempty) :
+    numTop d r hr = (topComponents (k := k) d r hr).ncard :=
+  numTop_eq_ncard_topComponents_of_dimMono
+    (fun he he' hle ↦ cCodim_zero_mono he he' hle) hMonoStrict d r hr
 
 end DLNFibre.Core
