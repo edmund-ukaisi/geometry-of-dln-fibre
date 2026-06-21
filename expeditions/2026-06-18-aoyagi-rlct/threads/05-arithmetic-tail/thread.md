@@ -4041,6 +4041,44 @@ post-`p` lower guard from source hypotheses, prove terminal `tilde t=0`, chart
 coverage, Lemma 5 order count, pole order, normal crossings, or RLCT
 extraction.
 
+## 2026-06-21 Lean Lemma 5 Eq5 terminal-room guard
+
+Reproduction:
+`reproduction-lemma5-eq5-terminal-room-guard-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-terminal-room-guard.md`.
+Review artifact:
+`review-lemma5-eq5-terminal-room-guard-a5.md`.
+
+Lean now proves the exact finite-arithmetic characterization
+
+```text
+aoyagiLemma5Eq5PostPLowerGuard_iff_terminalRoom_of_alphaDomain
+```
+
+Under strict Eq5 alpha-domain membership, the global post-`p` lower guard is
+equivalent to
+
+```text
+p + 2*a - alpha <= ell.
+```
+
+The proof evaluates the global guard at the terminal post-`p` coordinate
+`b=p+(a-alpha)` for the reverse direction, and reuses the existing sufficient
+terminal-room theorem for the forward direction.  Lean also adds
+
+```text
+aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_terminalRoom
+```
+
+which replaces the opaque post-`p` guard in the nonfirst-block admissibility
+wrapper by this concrete inequality.
+
+This is finite arithmetic for supplied Eq5 piecewise data.  It does not
+construct Eq5 source vectors, prove terminal-room from source hypotheses, prove
+source-label legality, prove terminal `tilde t=0`, chart coverage, Lemma 5
+order count, pole order, normal crossings, or RLCT extraction.
+
 ## 2026-06-21 Lean Lemma 5 counted-datum back-to-label bijection
 
 Reproduction:

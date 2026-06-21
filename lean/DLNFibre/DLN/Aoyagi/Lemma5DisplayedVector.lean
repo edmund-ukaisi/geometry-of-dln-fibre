@@ -2428,6 +2428,50 @@ theorem aoyagiLemma5Eq5_alphaFamily_mem_iff_guards
     · exact halpha_pos
     · exact le_min halpha_le_excess (by omega)
 
+/-- Under equation `(5)`'s strict alpha domain, the global post-`p`
+lower-bound guard is equivalent to the terminal-room inequality
+`p+2*a-alpha <= ell`.
+
+This is finite arithmetic for the printed post-`p` branch.  It is not a source
+claim that Aoyagi's displayed family automatically satisfies the guard. -/
+theorem aoyagiLemma5Eq5PostPLowerGuard_iff_terminalRoom_of_alphaDomain
+    (ell a p alpha : ℕ)
+    (halpha : alpha ∈ aoyagiLemma5Eq5AlphaDomain ell a p) :
+    aoyagiLemma5Eq5PostPLowerGuard ell a p alpha ↔
+      p + 2 * a - alpha ≤ ell := by
+  rw [aoyagiLemma5Eq5_alphaFamily_mem_iff_guards] at halpha
+  rcases halpha with ⟨_halpha_pos, halpha_le_excess, halpha_lt_p⟩
+  have halpha_le_p : alpha ≤ p := by omega
+  have halpha_le_a : alpha ≤ a := by
+    unfold aoyagiLemma5IntervalExcess at halpha_le_excess
+    omega
+  constructor
+  · intro hguard
+    let b := p + (a - alpha)
+    have hb_lo : p ≤ b := by
+      dsimp [b]
+      omega
+    have hb_hi : b ≤ p + (a - alpha) := by
+      dsimp [b]
+      exact le_rfl
+    have hguard_b := hguard b hb_lo hb_hi
+    have hoffset : alpha + b - p = a := by
+      dsimp [b]
+      omega
+    have htail :
+        aoyagiLemma5IntervalExcess ell a b ≤ ell - b := by
+      unfold aoyagiLemma5IntervalExcess
+      exact le_trans (Nat.min_le_right b (min (ell - b) (min a (ell - a))))
+        (Nat.min_le_left (ell - b) (min a (ell - a)))
+    have ha_tail : a ≤ ell - b := by
+      rw [hoffset] at hguard_b
+      exact le_trans hguard_b htail
+    dsimp [b] at ha_tail
+    omega
+  · intro hroom
+    exact aoyagiLemma5Eq5PostPLowerGuard_of_terminalRoom
+      ell a p alpha halpha_le_p halpha_le_a hroom
+
 /-- The strict Eq5 alpha-domain guards supply the pre-alpha lower-bound guard. -/
 theorem aoyagiLemma5Eq5PreAlphaLowerGuard_of_alphaDomain
     (ell a p alpha : ℕ)
@@ -2521,6 +2565,31 @@ theorem aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_
       exact le_of_lt (C.leftEndpoint_lt_of_lt_block hlt hS)
   exact aoyagiLemma5Eq5_tail_mem_intervalValueSetNat
     ell a p alpha M m C layerWidth T hT hb_tail hS hcut_le_S
+
+/-- A supplied equation `(5)` piecewise certificate is interval-admissible on
+every non-first selected block when the strict alpha domain and concrete
+terminal-room inequality hold.
+
+This replaces the opaque post-`p` lower guard in the preceding theorem by its
+finite-arithmetic characterization under the strict alpha domain.  It still
+does not construct the displayed vector or prove source-label legality,
+terminality, chart coverage, classifier coverage, pole order, normal crossings,
+or RLCT extraction. -/
+theorem aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_terminalRoom
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (halpha : alpha ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hroom : p + 2 * a - alpha ≤ ell)
+    {b S : ℕ} (hb_pos : 1 ≤ b) (hS : C.block b S) :
+    T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m b := by
+  exact
+    aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard
+      ell a p alpha M m C layerWidth T hT halpha
+      ((aoyagiLemma5Eq5PostPLowerGuard_iff_terminalRoom_of_alphaDomain
+        ell a p alpha halpha).mpr hroom)
+      hb_pos hS
 
 /-- Concrete check that the strict Eq5 alpha domain and post-`p` range do not
 force the post-`p` lower-bound guard. -/

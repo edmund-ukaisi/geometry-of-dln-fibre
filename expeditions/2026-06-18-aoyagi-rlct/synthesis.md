@@ -3816,6 +3816,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-nonfirst-block-admissibility-a5.md`.
 
+The Eq5 post-`p` lower guard now has an exact terminal-room characterization
+under the strict Eq5 alpha domain.  New Lean names:
+`aoyagiLemma5Eq5PostPLowerGuard_iff_terminalRoom_of_alphaDomain` and
+`aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_terminalRoom`.
+The first theorem proves that the global post-`p` lower guard is equivalent to
+the concrete inequality `p+2*a-alpha<=ell`; the second replaces the opaque
+post-`p` guard in the nonfirst-block admissibility wrapper by that concrete
+inequality.  This is finite arithmetic for supplied Eq5 piecewise data.  It
+does not construct Eq5 vectors, prove terminal-room from source hypotheses,
+prove source-label legality, selected-span exactness, order count, pole order,
+normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-room-guard-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-room-guard.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-room-guard-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in

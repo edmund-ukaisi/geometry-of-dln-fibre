@@ -2882,6 +2882,24 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-nonfirst-block-admissibility-a5.md`.
 
+Latest A5 update: the Eq5 post-`p` lower guard now has an exact
+terminal-room characterization in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names
+are `aoyagiLemma5Eq5PostPLowerGuard_iff_terminalRoom_of_alphaDomain` and
+`aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_terminalRoom`.
+Under strict Eq5 alpha-domain membership, the global post-`p` lower guard is
+equivalent to `p+2*a-alpha<=ell`; the nonfirst-block wrapper can therefore use
+that concrete inequality instead of the opaque guard.  This is finite
+arithmetic for supplied Eq5 piecewise data.  It is not Eq5 construction,
+source-label legality, source-backed terminal-room production, selected-span
+exactness, order count, pole order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-room-guard-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-room-guard.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-room-guard-a5.md`.
+
 Latest A5 update: the Lemma 5 equation `(5)` supplied piecewise certificate has
 landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved
 Lean names are `AoyagiLemma5Eq5PiecewiseSourceVector`,

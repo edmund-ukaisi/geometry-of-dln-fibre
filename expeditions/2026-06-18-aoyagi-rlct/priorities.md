@@ -82,6 +82,8 @@ Current Eq5 post-`p` lower obstruction slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-obstruction-a5.md`.
 Current Eq5 post-`p` lower exact-guard slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-exact-guard-a5.md`.
+Current Eq5 terminal-room guard slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-room-guard-a5.md`.
 Current Eq5 early/tail interval-guard slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-early-tail-interval-guards-a5.md`.
 Current Eq5 nonfirst block admissibility slice:
@@ -219,6 +221,11 @@ Immediate order:
 5. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an
    obstruction record only: it is not a corrected Eq5 construction, a source
    coverage theorem, or a disproof of Lemma 5.
+   The post-`p` lower guard is now exactly characterized by the terminal-room
+   inequality `p+2*a-alpha<=ell` under the strict Eq5 alpha domain, and a
+   nonfirst-block wrapper uses that concrete inequality.  Do not read this as
+   source construction of Eq5 branches or as source-backed production of the
+   terminal-room inequality.
 6. Eq4 rising-guard exhaustion is now reduced to finite guard arithmetic:
    under `p<=a`, failure of the repaired guard `p+1<=a` is exactly `p=a`.
    Do not upgrade this to Eq4 branch construction or to a converse
