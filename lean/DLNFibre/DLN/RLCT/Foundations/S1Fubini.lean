@@ -39,6 +39,53 @@ namespace DLNFibre.DLN.RLCT
 open MeasureTheory Set Real Filter
 open scoped ENNReal Topology
 
+/-! ## Admissible-exponent down-set (for the threshold-lift `≥` direction)
+
+The set of exponents `c'` for which `|H|^{−c'}` is locally integrable at `w0` is a **down-set**: a
+smaller exponent stays admissible. The catch under Lean's `rpow` convention is that `|g|^{−c'}`
+*increases* in `c'` where `|g| < 1` (near the singularity) — so the bound is the two-sided
+`|g|^{−b'} ≤ |g|^{−d'} + 1` (`rpow_neg_le_add_one`), integrable on a **bounded** (finite-measure)
+neighbourhood. This is what turns `b' < rlctAtOn H w0` into "`b'` is admissible" inside the lift. -/
+
+/-- The pointwise down-set bound: `|g|^{−b'} ≤ |g|^{−d'} + 1` for `0 ≤ b' ≤ d'`. Cases: `|g| ≥ 1`
+(`≤ 1`), `0 < |g| < 1` (`|g|^{−b'} ≤ |g|^{−d'}`, exponent-antitone), `g = 0` (`0`, the rpow
+convention). The `+1` absorbs the `|g| ≥ 1` regime where the `−d'` power alone is too small. -/
+theorem rpow_neg_le_add_one (b' d' : ℝ) (g : ℝ) (hb : 0 ≤ b') (hbd : b' ≤ d') :
+    |g| ^ (-b') ≤ |g| ^ (-d') + 1 := by
+  rcases eq_or_lt_of_le (abs_nonneg g) with h0 | hpos
+  · rcases eq_or_lt_of_le hb with hb0 | hbpos
+    · rw [← hb0, neg_zero, Real.rpow_zero]; linarith [Real.rpow_nonneg (abs_nonneg g) (-d')]
+    · rw [← h0, Real.zero_rpow (by linarith : -b' ≠ 0)]; positivity
+  · rcases le_or_gt 1 |g| with h1 | h1
+    · have : |g| ^ (-b') ≤ 1 := Real.rpow_le_one_of_one_le_of_nonpos h1 (by linarith)
+      linarith [Real.rpow_nonneg hpos.le (-d')]
+    · have : |g| ^ (-b') ≤ |g| ^ (-d') := Real.rpow_le_rpow_of_exponent_ge hpos h1.le (by linarith)
+      linarith
+
+/-- **Admissibility is a down-set.** On a core space with locally-finite volume (`ProperSpace` +
+`IsFiniteMeasureOnCompacts` — e.g. `Fin d → ℝ`), if `|H|^{−d'}` is integrable on some open `Ω ∋ w0`
+and `0 ≤ b' ≤ d'`, then `|H|^{−b'}` is integrable on some open `Ω' ∋ w0`. Shrink to the bounded
+`Ω ∩ ball w0 1` (finite measure), where `rpow_neg_le_add_one` dominates `|H|^{−b'}` by the
+`|H|^{−d'} + 1`. -/
+theorem admissible_downset {M : Type*} [PseudoMetricSpace M] [MeasureSpace M] [ProperSpace M]
+    [IsFiniteMeasureOnCompacts (volume : Measure M)] [OpensMeasurableSpace M]
+    (H : M → ℝ) (hHmeas : Measurable H) (w0 : M) (b' d' : ℝ) (hb : 0 ≤ b') (hbd : b' ≤ d')
+    (hd : ∃ Ω : Set M, IsOpen Ω ∧ w0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-d')) Ω volume) :
+    ∃ Ω : Set M, IsOpen Ω ∧ w0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-b')) Ω volume := by
+  obtain ⟨Ω, hΩopen, hw0, hint⟩ := hd
+  refine ⟨Ω ∩ Metric.ball w0 1, hΩopen.inter Metric.isOpen_ball,
+    ⟨hw0, Metric.mem_ball_self one_pos⟩, ?_⟩
+  have hfin : volume (Ω ∩ Metric.ball w0 1) ≠ ⊤ :=
+    (Metric.isBounded_ball.subset inter_subset_right).measure_lt_top.ne
+  have hd' : IntegrableOn (fun w => |H w| ^ (-d')) (Ω ∩ Metric.ball w0 1) volume :=
+    hint.mono_set inter_subset_left
+  apply Integrable.mono' (g := fun w => |H w| ^ (-d') + 1)
+    (hd'.add (integrableOn_const (hs := hfin)))
+    ((by fun_prop : Measurable (fun w => |H w| ^ (-b'))).aestronglyMeasurable)
+  filter_upwards [] with w
+  rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+  exact rpow_neg_le_add_one b' d' (H w) hb hbd
+
 /-! ## The pointwise comparison (the `≥`-direction engine) -/
 
 /-- **The sum-power comparison.** For `s, t > 0` and `a, b ≥ 0`,
