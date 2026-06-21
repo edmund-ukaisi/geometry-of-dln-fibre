@@ -4,6 +4,7 @@ import Mathlib.Analysis.Calculus.FDeriv.Mul
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.LinearAlgebra.Determinant
+import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 
 /-!
 # `DLNFibre.DLN.RLCT.Foundations.S1G5Charts` — the pivot blow-up chart node (R1 measure-side)
@@ -128,5 +129,119 @@ theorem pivotBlowup_injOn (n : ℕ) (s : Set (Fin (n + 1) → ℝ)) :
     simp only [pivotBlowup, if_neg hi] at hi'
     rw [← h0] at hi'
     exact mul_left_cancel₀ hx0 hi'
+
+/-! ## The argmax cover (the `g5_step` `hcover`/`hdisj` discharge — the cover wall)
+
+The pivot-blow-up FAMILY (one chart per pivot `p`) covers `{y ≠ 0}` up to the null tie-set, a.e.-
+disjointly. The chart's fundamental domain bounds the NON-pivot coordinates (`|x j| ≤ 1` for
+`j ≠ p`; the pivot `x p` is free), so the pivot blow-up at `p` maps it ONTO the weak-argmax cell at
+`p` — the `g5_step` per-chart image. Cover by a finite argmax (`Finset.exists_max_image`);
+disjointness because two argmax cells meet only on the null hyperplane pair `{|y p| = |y q|}`
+(proper subspaces, Haar-null via `addHaar_submodule`). Structure Codex-confirmed (no bundled
+Mathlib argmax-cover lemma). -/
+
+/-- The pivot blow-up at coordinate `p`: `φ(x)_p = x_p`, `φ(x)_j = x_p · x_j` for `j ≠ p`. The
+general pivot (`pivotBlowup n = pivotBlowupAt n 0`); the `(2,2,2)` step-1 = the 4 A-pivots. -/
+noncomputable def pivotBlowupAt (n : ℕ) (p : Fin (n + 1)) (x : Fin (n + 1) → ℝ) : Fin (n + 1) → ℝ :=
+  fun i => if i = p then x p else x p * x i
+
+/-- The weak-argmax cell at `p`: `{y | y p ≠ 0 ∧ ∀ j, |y j| ≤ |y p|}` (the `g5_step` image). -/
+def argmaxCell (n : ℕ) (p : Fin (n + 1)) : Set (Fin (n + 1) → ℝ) :=
+  {y | y p ≠ 0 ∧ ∀ j, |y j| ≤ |y p|}
+
+/-- The chart fundamental domain: non-pivot coordinates bounded by `1` (the pivot `x p` is free). -/
+def chartDom (n : ℕ) (p : Fin (n + 1)) : Set (Fin (n + 1) → ℝ) := {x | ∀ j, j ≠ p → |x j| ≤ 1}
+
+/-- The chart exceptional locus (the pivot-zero hyperplane). -/
+def pivotZero (n : ℕ) (p : Fin (n + 1)) : Set (Fin (n + 1) → ℝ) := {x | x p = 0}
+
+/-- **(cover image char).** The pivot-`p` blow-up maps its fundamental domain (off the pivot-zero
+locus) ONTO the weak-argmax cell: `φ_p '' (chartDom \ pivotZero) = argmaxCell p`. Forward: `|y j| =
+|x p|·|x j| ≤ |x p| = |y p|` (`|x j| ≤ 1`). Backward: `x p = y p`, `x j = y j / y p` (`|x j| ≤ 1`
+from `|y j| ≤ |y p|`). The `g5_step` per-chart image set (with this `V \ Z`). -/
+theorem pivotBlowupAt_image (n : ℕ) (p : Fin (n + 1)) :
+    (pivotBlowupAt n p) '' (chartDom n p \ pivotZero n p) = argmaxCell n p := by
+  ext y
+  constructor
+  · rintro ⟨x, ⟨hxdom, hxnz⟩, rfl⟩
+    simp only [chartDom, Set.mem_setOf_eq] at hxdom
+    simp only [pivotZero, Set.mem_setOf_eq] at hxnz
+    refine ⟨by simp only [pivotBlowupAt]; exact hxnz, fun j => ?_⟩
+    rcases eq_or_ne j p with rfl | hj
+    · simp only [pivotBlowupAt]; exact le_refl _
+    · simp only [pivotBlowupAt, if_neg hj, abs_mul]
+      calc |x p| * |x j| ≤ |x p| * 1 := mul_le_mul_of_nonneg_left (hxdom j hj) (abs_nonneg _)
+        _ = |x p| := mul_one _
+  · rintro ⟨hyp, hybound⟩
+    refine ⟨fun i => if i = p then y p else y i / y p, ⟨fun j hj => ?_, ?_⟩, ?_⟩
+    · simp only [if_neg hj, abs_div, div_le_one (abs_pos.2 hyp)]; exact hybound j
+    · simp only [pivotZero, Set.mem_setOf_eq]; exact hyp
+    · funext i
+      rcases eq_or_ne i p with rfl | hi
+      · simp [pivotBlowupAt]
+      · show pivotBlowupAt n p _ i = y i
+        simp only [pivotBlowupAt, if_neg hi, if_true]
+        rw [mul_div_cancel₀ _ hyp]
+
+/-- **(cover).** The argmax cells cover the nonzero set EXACTLY: `{y ≠ 0} = ⋃ p, argmaxCell p`. `⊇`:
+each cell has `y p ≠ 0`. `⊆`: for `y ≠ 0`, the argmax `p` of `|y ·|` has `y p ≠ 0` and dominates all
+coordinates (`Finset.exists_max_image`). -/
+theorem argmaxCell_cover (n : ℕ) :
+    {y : Fin (n + 1) → ℝ | y ≠ 0} = ⋃ p : Fin (n + 1), argmaxCell n p := by
+  ext y
+  simp only [Set.mem_setOf_eq, Set.mem_iUnion, argmaxCell]
+  constructor
+  · intro hy
+    obtain ⟨p, _, hp⟩ :=
+      Finset.exists_max_image Finset.univ (fun j => |y j|) ⟨0, Finset.mem_univ 0⟩
+    refine ⟨p, ?_, fun j => hp j (Finset.mem_univ j)⟩
+    intro hyp0
+    apply hy
+    funext j
+    have hj := hp j (Finset.mem_univ j)
+    rw [hyp0, abs_zero] at hj
+    simpa using abs_nonpos_iff.1 hj
+  · rintro ⟨p, hyp, _⟩ hy0
+    exact hyp (by rw [hy0]; rfl)
+
+/-- The eq-abs-coordinate set `{y | |y p| = |y q|}` is Haar-null for `p ≠ q`: it lies in the union
+of the two hyperplanes `ker (proj p ∓ proj q)`, both proper subspaces (`addHaar_submodule`). -/
+private theorem absEq_null (n : ℕ) (p q : Fin (n + 1)) (hpq : p ≠ q) :
+    (volume : Measure (Fin (n + 1) → ℝ)) {y | |y p| = |y q|} = 0 := by
+  let fm : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ :=
+    (LinearMap.proj p : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ) - (LinearMap.proj q : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ)
+  let fp : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ :=
+    (LinearMap.proj p : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ) + (LinearMap.proj q : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ)
+  have hsub : {y : Fin (n + 1) → ℝ | |y p| = |y q|}
+      ⊆ (↑(LinearMap.ker fm) : Set _) ∪ (↑(LinearMap.ker fp) : Set _) := by
+    intro y hy
+    simp only [Set.mem_setOf_eq] at hy
+    rcases abs_eq_abs.1 hy with h | h
+    · left; simp only [SetLike.mem_coe, LinearMap.mem_ker, fm, LinearMap.sub_apply,
+        LinearMap.proj_apply, sub_eq_zero]; exact h
+    · right; simp only [SetLike.mem_coe, LinearMap.mem_ker, fp, LinearMap.add_apply,
+        LinearMap.proj_apply, add_eq_zero_iff_eq_neg]; exact h
+  apply measure_mono_null hsub
+  rw [measure_union_null_iff]
+  refine ⟨MeasureTheory.Measure.addHaar_submodule _ _ ?_,
+    MeasureTheory.Measure.addHaar_submodule _ _ ?_⟩
+  · intro htop
+    have hmem : (Pi.single p (1 : ℝ)) ∈ LinearMap.ker fm := htop ▸ Submodule.mem_top
+    simp only [LinearMap.mem_ker, fm, LinearMap.sub_apply, LinearMap.proj_apply,
+      Pi.single_eq_same, Pi.single_eq_of_ne (Ne.symm hpq), sub_zero, one_ne_zero] at hmem
+  · intro htop
+    have hmem : (Pi.single p (1 : ℝ)) ∈ LinearMap.ker fp := htop ▸ Submodule.mem_top
+    simp only [LinearMap.mem_ker, fp, LinearMap.add_apply, LinearMap.proj_apply,
+      Pi.single_eq_same, Pi.single_eq_of_ne (Ne.symm hpq), add_zero, one_ne_zero] at hmem
+
+/-- **(disjoint).** Distinct argmax cells are a.e.-disjoint: their overlap forces `|y p| = |y q|`
+(`|y q| ≤ |y p|` from the `p`-cell, `|y p| ≤ |y q|` from the `q`-cell): a null set (`absEq_null`).
+The `g5_step` `hdisj`. -/
+theorem argmaxCell_aedisjoint (n : ℕ) (p q : Fin (n + 1)) (hpq : p ≠ q) :
+    AEDisjoint volume (argmaxCell n p) (argmaxCell n q) := by
+  have hov : argmaxCell n p ∩ argmaxCell n q ⊆ {y | |y p| = |y q|} := by
+    rintro y ⟨⟨_, hp⟩, ⟨_, hq⟩⟩
+    exact le_antisymm (hq p) (hp q)
+  exact measure_mono_null hov (absEq_null n p q hpq)
 
 end DLNFibre.DLN.RLCT
