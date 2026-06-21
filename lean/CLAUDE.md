@@ -80,3 +80,26 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   m̄(A) m̄(B)`. The split delta is `∑_B coeff(B) m̄(B)` with the positive-coeff `B` being the shorter
   intervals covering `k` (absent when `I` is shortest). `codimForm` is also corner-blind
   (`codimForm_update_corner`, LANDED) — it never reads `m_{0N}`.
+
+## `cCodim·0` weak monotonicity LANDED (`Core.CCodimZeroMono`, thread 07)
+- **`cCodim_zero_mono` is PROVED sorry-free** (`e ≤ e' ⟹ cCodim e 0 ≤ cCodim e' 0`), discharging the
+  weak gating hypothesis `hMono`. The θ-count headline is now `numTop_eq_ncard_topComponents_of_strict`
+  — UNCONDITIONAL except for the strict `hMonoStrict`. Axiom-clean `[propext, Classical.choice,
+  Quot.sound]`. `hLowerBound` is fully unconditional.
+- **Reusable infrastructure** (all in `CCodimZeroMono`, built on `CThetaQIPConverse`'s `codimBil`):
+  `codimBil_extendℤ_boxℤ_right`/`_left` (univ-sum collapse of `codimBil` vs a single box, via the
+  clamped `rrInd`/`llInd` indicators), `codimBil_boxℤ_boxℤ` (the box-pairing value), `codimForm_add`
+  (reused), `codimForm_congr_onbox` (codimForm reads only on-box values).
+- **Four atomic shortest-split moves**, each with delta / sign / `_le` / `_cover` / `_mem`: interior
+  `redMove` (`c = b+2` gap kills the self-term), `leftShrink` (omit left endpoint; handles `a=0` and
+  singleton-via-empty-piece), `rightShrink` (omit right endpoint; handles `d'=N`), `removeMove`
+  (singleton removal; coefficient ALWAYS `≤ 0`). Boundary lesson: there is NO `Fin` `b` with `b+1 = 0`,
+  so `k=0` left-endpoint and `k=N` right-endpoint genuinely need the dedicated shrink moves (the
+  interior `redMove`'s empty-piece guard `a≤b` can't be made false when `a=0`). `reduceStep` dispatches
+  by `k`'s position; `exists_le_codimForm` is the recursion (strong induction on `∑ e'`).
+- **`cCodim_zero_strict` (strict all-vertex) is the ONE remaining gap** — numerically certified
+  (800/800, gap ≥ 1) but NOT in Lean (NOT sorry-patched). Hard point: a single shortest-split can be
+  FLAT (splitting `[0,N]` has no negative-coeff `Y`), so the strict drop is configuration-dependent and
+  does not localise to an obvious step. Cleanest next route: prove the `+1`-step invariant
+  `cCodim e 0 < cCodim (e+1) 0` (then `e ≤ e+1 ≤ e'` + weak mono gives all-vertex strict), or a global
+  `cCodim e' ≥ cCodim e + 1` counting argument — a pen-and-paper certificate is recommended.
