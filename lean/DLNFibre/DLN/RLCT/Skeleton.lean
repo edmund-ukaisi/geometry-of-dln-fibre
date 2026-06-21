@@ -194,9 +194,14 @@ general form is FALSE (Codex: alternating step functions give `⊤ ≠ 2`) and t
 version needs heavy Laplace/Tauberian machinery — a **roadmap** lemma off the critical path, not
 carried here. The smooth block (`Σ xᵢ²`, RLCT `n/2`) is analytic-clean and closes the rung. Stated
 on `rlctAtOn` (general singular block `Y`; the regular block is `Fin n → ℝ` at the origin).
-Non-vacuous: equates the joint RLCT to `n/2` plus the block RLCT. -/
+Non-vacuous: equates the joint RLCT to `n/2` plus the block RLCT. **13th-finding fix (fm-2):** the
+bare form is FALSE for a germ-vanishing block (`G ≡ 0` near `y0` ⟹ the block RLCT is `⊤`, so the LHS
+`n/2 + ⊤ = ⊤` while the joint side need not be — `rlctAtOn_zero_eq_top`). Guarded by `hGmeas`
+(`Measurable G`) + `hGne` (`G ≠ 0` a.e. on a nbhd of `y0`), the germ hygiene fm-2's lift uses. -/
 theorem rlct_additive_smooth_block {n : ℕ}
-    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] (G : Y → ℝ) (y0 : Y) :
+    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] (G : Y → ℝ) (y0 : Y)
+    (hGmeas : Measurable G)
+    (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0) :
     rlctAtOn (fun p : (Fin n → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) (0, y0)
       = (n : ENNReal) / 2 + rlctAtOn (fun y => G y ^ 2) y0 := by
   sorry
@@ -921,12 +926,25 @@ the deepest singular point** `deepestPoint H r B` (Aoyagi 2013 Thm 2, the monoto
 RLCT over the fibre). This turns `⨅ w ∈ optimalSet, rlctAt` into the local RLCT at the
 one constructed point that L2 evaluates. (Rung-0c FLAG: keyed to the constructed `deepestPoint`,
 replacing the under-claiming `∃ wstar ∈ optimalSet` that did not name the attainer.) Non-vacuous:
-equates the inf to the local RLCT at `deepestPoint`. -/
+equates the inf to the local RLCT at `deepestPoint`. **Proof state:** the `≤` direction is PROVEN
+(`deepestPoint ∈ optimalSet` ⟹ `iInf₂_le`); the `≥` direction is reduced to the per-point obligation
+`rlctAt deepest ≤ rlctAt v` for every optimal `v` (Aoyagi 2013 Thm 2) — the `sorry`. That residual
+is L2-gated: its engine is `rlctAt_mono`, but applying it needs the loss-domination of the
+HOMOGENEOUS core (the raw `dlnLoss B`, `B≠0`, is not homogeneous), available after the L2 form. -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v)
       = rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) := by
+  -- `deepestPoint` is in the fibre (`IsDeepLayers.1`), so the `≤` direction is `iInf₂_le` — PROVEN.
+  have hmem : deepestPoint H r B hB hr hL ∈ optimalSet H B :=
+    (deepestPoint_isDeep H r B hB hr hL).1
+  refine le_antisymm (iInf₂_le (deepestPoint H r B hB hr hL) hmem) ?_
+  -- `≥` direction = Aoyagi 2013 Thm 2: the local RLCT at the deepest point is ≤ that at every other
+  -- fibre point. The engine is `rlctAt_mono`, but applying it needs the loss-domination near the
+  -- deepest point of the HOMOGENEOUS core (raw `dlnLoss B`, `B≠0`, is not homogeneous — thread-04):
+  -- that domination is L2-downstream (the homogeneous normal form). Residual obligation, L2-gated.
+  refine le_iInf₂ (fun v _ => ?_)
   sorry
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
