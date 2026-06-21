@@ -880,6 +880,13 @@ on the session's original cwd.
    table.  Next source work should reproduce vectorwise bounds and Lemma 4
    increment checks for equations `(3)`, `(4)`, and `(5)` before any
    source-backed order-count Lean theorem is attempted.
+   That source work now found concrete printed-form obstructions: Eq `(3)`
+   exceeds the upper chain at its special endpoint, Eq `(4)` has a special
+   increment `W_(q+1)-1<=M-2`, and Eq `(5)` needs extra guards.  Lean records
+   a conditional Eq5 lower-bound counterexample in
+   `Lemma5DisplayedVector.lean`.  Do not attempt a source-backed Lemma 5
+   order-count theorem from the printed equations; either search for corrected
+   formulas or use a supplied chart-family boundary.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

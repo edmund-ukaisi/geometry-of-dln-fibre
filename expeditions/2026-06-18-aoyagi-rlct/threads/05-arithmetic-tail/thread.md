@@ -2418,3 +2418,41 @@ Existing Lean proves finite counts and many supplied one-coordinate wrappers,
 but the PDF's final sentence does not spell out the Case 1(2) chart sequence.
 Do not start a source-backed Lemma 5 Lean theorem until the vectorwise bounds
 and Lemma 4 increment checks have been reproduced under explicit guards.
+
+## 2026-06-21 Lemma 5 printed equations fail Lemma 4 witness checks
+
+Reproduction:
+`reproduction-lemma5-printed-equations-lemma4-obstructions-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-printed-lower-bound-obstruction.md`.
+Review artifact:
+`review-lemma5-printed-equations-lemma4-obstructions-a5.md`.
+
+Xhigh equation-specific source passes checked equations `(3)`, `(4)`, and
+`(5)` against Lemma 4's requirements.  The result is stronger than the prior
+obligation table: each printed equation has a concrete obstruction to being a
+complete Lemma 4 witness as printed.
+
+Equation `(3)` assigns `Htilde'_(ell-a+1)+1` at the special endpoint, so the
+componentwise upper bound `T<=Ttilde'` fails there.  Away from the terminal
+edge, the adjacent increment also becomes `M+1`.
+
+Equation `(4)`'s special one-point line gives the increment
+`W_(q+1)-1`, where `q=j0+ell-a+1`.  Definition 3 gives
+`W_(q+1)<=M-1`, so this increment is at most `M-2`, not `M-1` or `M`.
+
+Equation `(5)` needs additional guards beyond the printed ones.  Lean now
+records a concrete conditional supplied-certificate obstruction:
+
+```text
+aoyagiLemma5Eq5_piecewise_belowLowerCounterexample_allWidthsFour
+aoyagiLemma5Eq5_piecewise_not_lowerBounded_allWidthsFour
+```
+
+For `ell=6`, `a=4`, all selected widths `4`, `M=5`, `p=2`, and `alpha=1`,
+the supplied branch value at selected coordinate `4` is `-1`, while the lower
+chain there is `0`.
+
+Do not use equations `(3)`, `(4)`, or `(5)` as source-backed all-branch Lemma
+4 witnesses in their printed form.  The next route must be either corrected
+formula search or a supplied chart-family boundary.

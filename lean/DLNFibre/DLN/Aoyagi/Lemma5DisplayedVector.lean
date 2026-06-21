@@ -1719,6 +1719,45 @@ theorem aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
           (alpha : ℤ) + (p : ℤ) - (p : ℤ) := hvalue
       _ = aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) := by ring
 
+/-- A concrete supplied equation `(5)` certificate can put a selected endpoint
+below the lower `Htilde` chain even with the current cutoff guard.
+
+For `ell=6`, `a=4`, all selected widths `4`, integer `M=5`, and the printed
+equation `(5)` parameters `p=2`, `alpha=1`, the branch at selected coordinate
+`4` gives value `-1`, while the lower chain there is `0`.  This is only a
+conditional obstruction for supplied branch data; it does not construct the
+source vector or assert source-label existence. -/
+theorem aoyagiLemma5Eq5_piecewise_belowLowerCounterexample_allWidthsFour
+    (C : AoyagiSelectedCutpoints 6) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      6 4 2 1 (5 : ℤ) (fun _ : Fin (6 + 1) => (4 : ℤ)) C layerWidth T) :
+    T (C.point 4 - 1) = -1 ∧
+      aoyagiHtildeLowerNat 6 4 (5 : ℤ)
+        (fun _ : Fin (6 + 1) => (4 : ℤ)) 4 = 0 := by
+  constructor
+  · have hblock : C.block 4 (C.point 4 - 1) :=
+      C.leftEndpoint_mem_block (by norm_num)
+    have hvalue := hT.postP 4 (C.point 4 - 1) (by norm_num) (by norm_num) hblock
+    simpa [aoyagiHtildeUpperNat, aoyagiHtildeUpperIncrementPrefix,
+      aoyagiHtildeUpperHighCount, aoyagiPrefixSum, aoyagiSelectedWidthNat]
+      using hvalue
+  · norm_num [aoyagiHtildeLowerNat, aoyagiHtildeLowerIncrementPrefix,
+      aoyagiHtildeLowerHighCount, aoyagiPrefixSum, aoyagiSelectedWidthNat,
+      Finset.sum_range_succ]
+
+/-- The all-widths-four supplied equation `(5)` counterexample is strictly
+below the lower `Htilde` chain at selected coordinate `4`. -/
+theorem aoyagiLemma5Eq5_piecewise_not_lowerBounded_allWidthsFour
+    (C : AoyagiSelectedCutpoints 6) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      6 4 2 1 (5 : ℤ) (fun _ : Fin (6 + 1) => (4 : ℤ)) C layerWidth T) :
+    T (C.point 4 - 1) <
+      aoyagiHtildeLowerNat 6 4 (5 : ℤ)
+        (fun _ : Fin (6 + 1) => (4 : ℤ)) 4 := by
+  have h :=
+    aoyagiLemma5Eq5_piecewise_belowLowerCounterexample_allWidthsFour C layerWidth T hT
+  omega
+
 /-- The finite offset values realised by equation `(5)`'s own-coordinate
 branch under the source guard `1 <= alpha < p` and same-coordinate interval
 guard `alpha <= Htilde'_p-Htilde_p`. -/

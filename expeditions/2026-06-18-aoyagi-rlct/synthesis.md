@@ -2734,6 +2734,24 @@ Lemma 5 order-count statement.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-source-chart-family-reconstruction-a5.md`.
 
+The equation-by-equation source pass has now found concrete Lemma 4 witness
+obstructions in the printed Lemma 5 equations.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-printed-equations-lemma4-obstructions-a5.md`.
+Equation `(3)` exceeds `Ttilde'` at its special endpoint and gives an adjacent
+`M+1` increment away from the terminal edge.  Equation `(4)`'s special
+one-point line gives increment `W_(q+1)-1`, which is at most `M-2` under
+Definition 3.  Equation `(5)` needs extra guards beyond the printed ones; Lean
+now includes the conditional all-widths-four obstruction
+`aoyagiLemma5Eq5_piecewise_belowLowerCounterexample_allWidthsFour` and
+`aoyagiLemma5Eq5_piecewise_not_lowerBounded_allWidthsFour` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  Consequence: do not
+state a source-backed Lemma 5 order-count theorem from the printed equations.
+The remaining honest routes are corrected-formula reconstruction or a supplied
+chart-family boundary.  Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-printed-lower-bound-obstruction.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-printed-equations-lemma4-obstructions-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

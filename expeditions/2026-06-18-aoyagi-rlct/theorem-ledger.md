@@ -3366,6 +3366,22 @@ target yet.
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-source-chart-family-reconstruction-a5.md`.
 
+Latest A5 source obstruction: equations `(3)`, `(4)`, and `(5)` in Aoyagi
+Lemma 5 have been checked against Lemma 4's witness requirements in
+`threads/05-arithmetic-tail/reproduction-lemma5-printed-equations-lemma4-obstructions-a5.md`.
+Equation `(3)` exceeds the upper chain at its special endpoint; equation `(4)`
+has a special-line increment `W_(q+1)-1`, hence at most `M-2`; equation `(5)`
+needs extra guards beyond the printed ones.  Lean now records the Eq5
+conditional lower-bound obstruction:
+`aoyagiLemma5Eq5_piecewise_belowLowerCounterexample_allWidthsFour` and
+`aoyagiLemma5Eq5_piecewise_not_lowerBounded_allWidthsFour` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  This is an obstruction
+checkpoint, not a replacement proof or final theorem.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-printed-lower-bound-obstruction.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-printed-equations-lemma4-obstructions-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
