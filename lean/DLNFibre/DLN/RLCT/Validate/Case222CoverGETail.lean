@@ -514,6 +514,40 @@ theorem block_eq_shear (z : Fin 7 → ℝ) :
         = z 6 + z 4 * z 2 from by rw [Function.update_self]]
   ring
 
+/-- **Spectator-peel for a box integral.** An integrand that depends only on the non-`p` coordinates
+factors out the `p`-axis: `∫⁻_{[−T,T]^{n+1}} h(drop-p x) = (∫⁻_{[−T,T]^n} h) · vol[−T,T]`
+(measure-preserving `piFinSuccAbove p` + `lintegral_prod_mul` with the constant-`1` `p`-factor). Reduces
+the δ-block `Σ⁴`-integral over `Fin 7` to `Fin 4` by peeling the three spectator coordinates. -/
+theorem boxT_peel_spectator {n : ℕ} (T : ℝ) (hT : 0 < T) (p : Fin (n+1))
+    (h : (Fin n → ℝ) → ℝ≥0∞) (hh : Measurable h) :
+    ∫⁻ x in boxT (n+1) T, h (fun k => x (p.succAbove k))
+      = (∫⁻ y in boxT n T, h y) * (volume (Set.Icc (-T) T)) := by
+  set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℝ) p with he
+  have hmp : MeasurePreserving e (volume : Measure (Fin (n+1) → ℝ)) volume :=
+    volume_preserving_piFinSuccAbove (fun _ : Fin (n+1) => ℝ) p
+  have hemb : MeasurableEmbedding e := e.measurableEmbedding
+  have heapp : ∀ x : Fin (n+1) → ℝ, e x = (x p, fun k => x (p.succAbove k)) := fun x => rfl
+  have hpre : boxT (n+1) T = e ⁻¹' (Set.Icc (-T) T ×ˢ boxT n T) := by
+    ext x
+    simp only [boxT, Set.mem_preimage, heapp, Set.mem_prod, Set.mem_pi, Set.mem_univ,
+      true_implies, Set.mem_Icc]
+    constructor
+    · intro hx; exact ⟨hx p, fun k => hx (p.succAbove k)⟩
+    · rintro ⟨hp, hrest⟩ i
+      rcases Fin.eq_self_or_eq_succAbove p i with rfl | ⟨j, rfl⟩
+      · exact hp
+      · exact hrest j
+  rw [hpre]
+  rw [show (fun x : Fin (n+1) → ℝ => h (fun k => x (p.succAbove k)))
+        = (fun x : Fin (n+1) → ℝ => (fun q : ℝ × (Fin n → ℝ) => (fun _ : ℝ => (1:ℝ≥0∞)) q.1 * h q.2) (e x))
+        from by funext x; rw [heapp]; simp]
+  rw [hmp.setLIntegral_comp_preimage_emb hemb
+    (fun q : ℝ × (Fin n → ℝ) => (fun _ : ℝ => (1:ℝ≥0∞)) q.1 * h q.2) (Set.Icc (-T) T ×ˢ boxT n T)]
+  rw [show (volume : Measure (ℝ × (Fin n → ℝ))) = (volume : Measure ℝ).prod volume from
+        Measure.volume_eq_prod _ _, ← Measure.prod_restrict,
+    lintegral_prod_mul (f := fun _ : ℝ => (1:ℝ≥0∞)) (g := h) measurable_const.aemeasurable hh.aemeasurable]
+  rw [lintegral_const, one_mul, Measure.restrict_apply_univ, mul_comm]
+
 /-- The step-3 block residual finiteness over a bounded box (the 4th-level recursion: blow up
 `block = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` along its vertex, `blockForm_step3` + `step3_unit_ge_one`
 + `block_leaf_integrable`). The δ-cell's inner integral. -/
