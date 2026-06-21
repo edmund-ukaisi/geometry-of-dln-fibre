@@ -132,3 +132,11 @@ load-bearing injectivity; the open content named in two hypotheses). Notes **app
 Gap honestly named (gated headline + the two corner-selection hypotheses), NOT sorry-patched. The
 (★) "thousands of cases" enumeration is pen-and-paper evidence (not machine-checked here) — the
 corner-monotonicity lemma is the roadmap'd item that would make it machine-checked.
+
+**UPDATE (thread 06, 2026-06-21).** The two corner-selection hypotheses `hLowerBound`/`hRecover` are
+now **discharged down to one combinatorial inequality** in `Core.CCodimCornerMono` (the
+dimension-monotonicity of `cCodim · 0`), via the LANDED rank-shift + a new Gabriel→Kostant bridge
+(`gabrielPartition`). The reduced headline `numTop_eq_ncard_topComponents_of_dimMono` proves
+`numTop d r = #top-dim components` given that one monotonicity. See
+`threads/06-theta-discharge/statement-card.md`. The single remaining gap for the fully-unconditional
+headline is the dimension-monotonicity itself (the shortest-interval split).

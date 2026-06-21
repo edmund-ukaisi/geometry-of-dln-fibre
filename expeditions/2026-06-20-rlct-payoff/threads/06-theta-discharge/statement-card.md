@@ -93,4 +93,13 @@ recomputed, `(2,3,2) r=1` is `cCodim=1, numTop=1`; the `θ=2` (2,3,2) instance i
 sorry-free + axiom-clean (`[propext, Classical.choice, Quot.sound]`); whole library green. The two
 geometric bricks are reduced to ONE combinatorial inequality (strict improvement over thread-05's two
 opaque geometric hypotheses). Gap honestly named (the dimension-monotonicity of `cCodim · 0`), fully
-scoped with construction + numerics, NOT sorry-patched. Reviewer fidelity AUDIT requested.
+scoped with construction + numerics, NOT sorry-patched.
+
+**Reviewer fidelity AUDIT: PASS-with-notes** (2026-06-21). No soundness break, no fidelity mismatch
+in any Lean statement, no smuggling (the reduction genuinely proves `hLowerBound`/`hRecover` from the
+two combinatorial monotonicities; `hRecover`'s "corner = r" is genuinely derived from strict
+corner-monotonicity, not restated). The reviewer independently re-verified all numerics (weak mono
+0 fails, strict all-vertex 0 fails, single-vertex strict FALSE, and the (2,3,2)/r=0→θ=2 correction)
+and its Codex consult independently confirmed the gap is real. ONE note applied: the module docstring
+said the headline "becomes unconditional" — corrected to "reduced to the combinatorial
+dimension-monotonicity" (the reduced headline still carries `hMono`/`hMonoStrict` as hypotheses).
