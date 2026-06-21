@@ -465,3 +465,53 @@ Delegate sub-tides to a DISTINCT file/lemma (proof-module pattern: _aux in Found
 check a rung's status before assigning (sorry-free on trunk / done = closed; don't re-open). Controller corollary:
 when two agents reach for the same lemma (the rlctAt_mono collision), resolve the lane + delete the duplicate task
 immediately — overlapping assignment is the upstream cause of duplicated/divergent work.
+
+## 2026-06-21 — a PROVEN, TRUE, hypothesis-sharpened result can STILL be an orphan (S1.1 mis-scoped for its use-site)
+
+fm's SPECIFY phase found a single explicit blow-up chart does NOT satisfy S1.1 `weightedThreshold_transport`'s
+GLOBAL `IsProperMap` + `Surjective` hypotheses (a blow-up chart is non-injective on the exceptional, not globally
+proper/surjective). pp traced the full reverse-dependency: `weightedThreshold_le_transport` (no external consumer),
+`weightedThreshold_transport_aux` (used only by its wrapper), `weightedThreshold_transport` (no rung consumer) —
+and D1 (`rlctAt_mono`), L1/L2 (`block_elimination`/`product_reduction`), R1 (`g5_flat_cover`) all independent of it.
+So S1.1 is an ORPHAN. This is a DISTINCT pattern from the resolution_charts orphan above (which was orphaned AND
+FALSE — an unchecked landmine): S1.1 is orphaned AND TRUE — it was even SHARPENED to a true statement by the
+10th-finding (`hsurj`+`hImE` added so the bare equality holds). The trap here is subtler: a result can be proven,
+true, AND have its hypotheses carefully sharpened, and STILL be mis-scoped — because the true statement's
+hypothesis SHAPE (global proper+surjective) doesn't fit the use-site that motivated it (per-chart blow-up transport,
+which is non-injective-off-a-null-set; carried by g5_flat_cover instead). LESSON: "proven + true + sharpened" is NOT
+"plugged in." Sharpening a statement's hypotheses to make it TRUE (the 10th-finding) is necessary but does not
+verify the hypotheses MATCH the intended consumer's shape. Track a rung by its actual CONSUMER (grep the call-site),
+not by "it's proven and true." When the use-site's shape (per-chart, non-injective) differs from the lemma's
+hypothesis shape (global, proper+surjective), the lemma orphans even though both are individually correct.
+Name it honestly: ORPHAN-pending-reuse (S1.1 is still bedrock — axiom-clean, true general transport; the global
+proper+surj form is a candidate for the G3 tide's GLOBAL Lemma-2 unit-Jac reparam, distinct from the blow-up charts
+g5 carries). The earlier pp claim "S1.1 carries the blow-up CoV" was imprecise — g5_flat_cover does. Name the
+consumer, not the theorem.
+
+**THE ACTIONABLE EDGE (controller self-noted — applies to controller AND pp):** VERIFY THE USE-SITE ACTUALLY
+CONSUMES THE LEMMA BEFORE SHARPENING ITS HYPOTHESES TO FIT IT. The 10th-finding sharpening of S1.1 (adding
+hsurj+hImE) was driven on the ASSUMPTION that S1.1 was R1's transport — an unverified-consumer assumption. Effort
+went into making S1.1's hypotheses fit a use-site that, on inspection, doesn't consume S1.1 at all (R1's blow-up
+charts are per-chart non-injective, the wrong shape for S1.1's global proper+surjective; g5_flat_cover is the real
+transport). The cheap check — "grep the call-site: does the rung that motivates this lemma actually invoke it, with
+THESE hypotheses?" — comes BEFORE the expensive sharpening, not after. Had it been run first, S1.1 would have been
+scoped to its true consumer (a global reparam) from the start, or recognized as not-yet-needed. Order of operations:
+(1) name the intended consumer, (2) verify the consumer's use-site shape matches the lemma's hypothesis shape,
+(3) THEN sharpen. Skipping (2) produces a proven-true-but-orphaned lemma — wasted sharpening effort + a misleading
+"S1.1 is the transport linchpin" in the contract until the trace corrects it.
+
+## Green-gate gap: `lake build <lib>` only covers the aggregator's transitive closure (2026-06-21)
+
+`lake build DLNFibre` builds only what the aggregator `DLNFibre.lean` imports (its transitive
+closure). Engine modules built AHEAD of their consumers — S1ProductMin (#56), S1G5 (#52),
+ParamsFlat — are imported by nothing wired into the headline, so they were **never compiled by the
+standard green-gate**. A broken or unsound orphan engine would pass `lake build DLNFibre` silently.
+
+**Caught by:** an `#print axioms` run failing with `'S1ProductMin.olean does not exist'` — the module
+had never been built. Building all Foundations modules explicitly (`lake build DLNFibre.DLN.RLCT.Foundations.*`)
+closed the gate; all green, #56 axiom-clean.
+
+**Lesson:** a green `lake build <lib>` is *necessary but not sufficient* — it covers only what the
+aggregator reaches. Gate orphan engines explicitly until they are consumed, and keep them permanently
+covered by (a) importing stable engines into the aggregator and (b) a restored `AxCheck.lean` that
+`#print axioms` the key results on every build. "Green build" ≠ "every module compiles."

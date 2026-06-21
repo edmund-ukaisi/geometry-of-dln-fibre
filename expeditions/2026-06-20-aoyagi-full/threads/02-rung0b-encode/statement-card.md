@@ -79,6 +79,19 @@ The foundational definitions (`Params`, `prod`, `dlnLoss`, `optimalSet`, `rlctAt
 | A1 | `clean_eq_printed` | `cleanCore ℓ m = printedCore ℓ m` (verified universal identity, 19600/19600) | equality |
 | A2 | `aoyagiTheta_eq` | `∃ ℓ a d k h, monomialOrder d k h = aoyagiTheta ℓ a` (chart-count = a(ℓ−a)+1) | ∃ |
 
+### Foundation-lemma consumer status (honest contract, 2026-06-21)
+Not every proven foundation lemma is plugged into the headline. Tracked by ACTUAL consumer (grep the
+call-site), not by "proven + true":
+- **S1.1 `weightedThreshold_transport` (+ `weightedThreshold_transport_aux`, `weightedThreshold_le_transport`,
+  `S1Transport.lean`) — ORPHAN-pending-reuse.** PROVEN, axiom-clean, TRUE (10th-finding sharpened it with
+  `hsurj`+`hImE` so the equality holds), but **no rung consumes it**: R1 uses `g5_flat_cover` (per-chart
+  blow-up transport, InjOn-off-null) — a blow-up chart is NON-injective on the exceptional, so it does NOT
+  satisfy S1.1's GLOBAL `IsProperMap`+`Surjective`. D1 = `rlctAt_mono`, L1/L2 = `block_elimination`/
+  `product_reduction`, all independent of S1.1. Still bedrock — the global proper+surj form is a candidate
+  for the **G3 tide's GLOBAL Lemma-2 unit-Jac reparam** (distinct from the blow-up charts g5 carries). The
+  earlier "S1.1 carries the blow-up CoV" was imprecise; g5_flat_cover does. (Lesson: a proven+true+sharpened
+  result can still be mis-scoped for its use-site — name the consumer, not the theorem.)
+
 ## Headline (the GOAL)
 
 > **`aoyagi_learning_coefficient (H r B) (hB : B.rank = r) :`**

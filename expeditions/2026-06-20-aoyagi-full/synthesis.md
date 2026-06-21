@@ -2,7 +2,45 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-20): ★ CONTRACT IS BEDROCK @296d3e4 — structural-proof phase OPEN ★
+## Current read (2026-06-21): ★ R1 EXECUTION — S1.5 sorry CLOSED (6→5) @1304cf2; (2,2,2) route PINNED ★
+
+**Milestone @`1304cf2` (pushed origin, rv-2 auditing):** the S1.5 wire is in — `rlct_additive_smooth_block`
+now `exact …_aux` (closes a sorry, **6→5**), axioms `[propext, Classical.choice, Quot.sound]` (no sorryAx,
+no monomial_rlct). `resolution_charts` **re-scoped to the CORE form** `rlctAt M (dlnLoss M 0) (0:Params M)
+= ⨅ i, monomialThreshold (d i)(k i)(h i)` (rlctAt, deepest=0 — replaces the old false full-loss form);
+`resolution_charts_case111` realigned to it, STILL axiom-free (the genuine M=(1,1,1) instance). Only declared
+axioms in-tree: `monomial_rlct` (S2) + `opaque rlctOrderAt` (θ-seam). 5 sorries, all in Skeleton (the rungs).
+
+**Measure engines all axiom-clean** (verified by explicit build + #print axioms): Fubini `_aux` (S1.5),
+G5-step `g5_flat_cover` (#52), `rlctAt_mono`, `product_min_rlct` (#56), `product_min_rlct_of_ne` (#57).
+
+**R1 design COMPLETE — (2,2,2) deeper-point pin RESOLVED (pp + decorrelated Codex, identical):** the δ-pivot
+chart's "unit" U=ξ²+η²+(bξ+r)²+(bη+s)² is a nondeg smooth-4-block (Hessian det 16) vanishing EXACTLY at
+{ξ=η=r=s=0} = the deeper stratum **B=0** (fm SPECIFY-catch, chart-exact §8 caveat). Route = **STEP-3
+sub-blowup** (option b); the δ-pivot was never a leaf — its 4 step-3 children ARE part of the **stable 24-leaf
+set** (8 unit d=2, k=![1,1], h=![3,2] + 16 block d=3, k=![1,1,1], h=![3,2,3], all RHS 3/2; ⨅=3/2=lambdaCore(2,2,2),
+θ=1). **Soundness DISCHARGED:** deeper stratum B=0 has codim 4 > minMval 3 ⟹ its exceptional ratio 2 > binding
+3/2 ⟹ NEVER binds — chart-exact form of "centers=admissible strata, no center beats min". Full Jac = **α³·ρ²**
+(α³ = step-1 A-blowup). Durable in r1-222-cover card §δ-CHART-DEEPER-POINT-PIN + §δ-BRANCH-BUILD-ROUTE-FORK.
+
+**Route-fork adjudicated (controller call):** the product_min-skip route is SOUND (shear unimodular even with
+b free; rlct(U)=2; positivity-OK) but **heavier** — it needs a NEW weighted-product-split lemma (because #56
+is **TRIVIAL-weight** and the δ-leaf carries the α³ρ² Jacobian). step-3 is lighter for (2,2,2) (uniform monomial
+machinery, no new lemma). The weighted-split is a reusable **general-M down-payment** → **DEFERRED** (general-M
+gated on G3 = roadmapped, not the active target). ⟹ build (2,2,2) δ-branch via step-3; #56 serves trivial-weight
+call-sites only ((2,1,2) #55 TBC).
+
+**Green-gate GAP found + fixing:** `lake build DLNFibre` builds only the aggregator's closure → not-yet-consumed
+engines (S1ProductMin #56, S1G5 #52, ParamsFlat) escaped it (caught via "S1ProductMin.olean does not exist" on
+axiom-check). Built them explicitly (green; #56 axiom-clean). fm to (a) import stable engines into the aggregator
++ (b) restore AxCheck.lean. Lesson banked. "Green build" ≠ "every module compiles."
+
+**Active:** fm-2 #58 (step-1 g5 node) → #54 ((2,2,2)-measure, step-3 leaves); fm — (2,2,2) chart φ (step-3
+sub-charts) + #55 ((2,1,2)); pp on-demand; rv-2 auditing the @1304cf2 milestone.
+**Roadmapped (operator-gated scope):** G3 (general-M wall), #19 keystone (#37/#45/#46), weighted-product-split
+(general-M). Fixed-M ladder = the active proven-scope target: (1,1,1) DONE · (2,1,2) #55 · (2,2,2) #54.
+
+## Prior read (2026-06-20): ★ CONTRACT IS BEDROCK @296d3e4 — structural-proof phase OPEN ★
 
 **rv-2 FINAL re-audit @`296d3e4` CLEAN → BEDROCK DECLARED.** The 9-issue fidelity arc is CLOSED. The contract
 is genuine bedrock: domain PROVABLY complete (hr middle-width + hL L=0, systematic corner sweep proved no

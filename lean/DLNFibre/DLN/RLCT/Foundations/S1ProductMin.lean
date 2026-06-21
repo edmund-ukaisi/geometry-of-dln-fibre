@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Foundations.Rlct
+import DLNFibre.DLN.RLCT.Foundations.S1Fubini
 import Mathlib.MeasureTheory.Measure.Prod
 
 /-!
@@ -175,6 +176,7 @@ private theorem pmr_ge (G : X → ℝ) (H : Y → ℝ) (hGm : Measurable G) (hHm
 -- main: product_min_rlct via le_antisymm. Takes the directly-usable hyps (caller derives from
 -- hGne):
 -- hGpos/hHpos (positivity on open nbhds) for ≤; hdown/hdownH (down-set extractors) for ≥.
+omit [SecondCountableTopology X] in
 theorem product_min_rlct (G : X → ℝ) (H : Y → ℝ) (hGm : Measurable G) (hHm : Measurable H)
     (hGpos : ∀ (c' : ℝ) (U : Set X), IsOpen U → (0:X) ∈ U →
       0 < ∫⁻ x in U, ENNReal.ofReal (|G x| ^ (-c')))
@@ -190,4 +192,88 @@ theorem product_min_rlct (G : X → ℝ) (H : Y → ℝ) (hGm : Measurable G) (h
   · apply le_min (pmr_le_left G H hGm hHm hHpos)
     exact pmr_le_right G H hGm hHm hGpos
   · exact pmr_ge G H hGm hHm hdown hdownH
+
+/-! ## The FINAL-form corollary — `product_min_rlct_of_ne` (`hGne`/`hHne` guards)
+
+The agreed call-site interface (the (2,1,2) hand-off card, FINAL form): take the a.e.-nonvanishing
+guards `hGne : G ≠ 0 a.e.` / `hHne : H ≠ 0 a.e.` directly and discharge the four core hypotheses of
+`product_min_rlct` internally. ONE lemma covers block×block (2,1,2), monomial×block (δ-leaf),
+monomial×monomial — `hGne` is `≠0 a.e.`, true for both consumers (block zero-set `{0}` null;
+monomial zero-set = coordinate hyperplanes null).
+
+- `hGpos`/`hHpos` (positivity) ← `hGne` + `IsOpen.measure_pos`: on open `U ∋ 0`,
+  `support (ofReal |G|^{−c'}) ⊇ {G ≠ 0}` (positive-base rpow is positive), `{G = 0}` null, so
+  `μ(support ∩ U) ≥ μ U > 0` (`setLIntegral_pos_iff`).
+- `hdown`/`hdownH` (down-set extractors) ← `core_admissible_of_lt` (S1Fubini), needing only
+  measurability + the proper/locally-finite core instances (no nonvanishing hypothesis). -/
+
+section OfNe
+
+/-- **Positivity from a.e.-nonvanishing.** If `G ≠ 0 a.e.` and `U` is an open set containing `0`,
+then `0 < ∫⁻_U |G|^{−c'}`. The other-factor positivity that discharges the `0·∞` corner of
+`product_min_rlct` (`hGpos`/`hHpos`). -/
+private theorem pos_of_ne_ae {A : Type*} [TopologicalSpace A] [MeasureSpace A]
+    [BorelSpace A] [MeasureTheory.Measure.IsOpenPosMeasure (volume : Measure A)] [Zero A]
+    (G : A → ℝ) (hGm : Measurable G)
+    (hGne : ∀ᵐ x ∂(volume : Measure A), G x ≠ 0)
+    (c' : ℝ) (U : Set A) (hU : IsOpen U) (h0 : (0 : A) ∈ U) :
+    0 < ∫⁻ x in U, ENNReal.ofReal (|G x| ^ (-c')) := by
+  set f : A → ℝ≥0∞ := fun x => ENNReal.ofReal (|G x| ^ (-c')) with hf
+  have hfmeas : Measurable f := by fun_prop
+  rw [setLIntegral_pos_iff hfmeas]
+  -- {G ≠ 0} ⊆ support f : positive base ⟹ positive rpow ⟹ ofReal positive
+  have hsub : {x : A | G x ≠ 0} ⊆ Function.support f := by
+    intro x hx
+    have hpos : 0 < |G x| := abs_pos.2 hx
+    have hxp : 0 < |G x| ^ (-c') := Real.rpow_pos_of_pos hpos _
+    simp only [Function.mem_support, hf, ne_eq, ENNReal.ofReal_eq_zero, not_le]
+    exact hxp
+  -- {G = 0} is null ⟹ μ(U) ≤ μ({G≠0} ∩ U)
+  have hnull : (volume : Measure A) {x | G x = 0} = 0 := by
+    rw [show {x : A | G x = 0} = {x : A | G x ≠ 0}ᶜ by ext x; simp]
+    exact (MeasureTheory.ae_iff.1 hGne)
+  have hUle : (volume : Measure A) U ≤ volume ({x | G x ≠ 0} ∩ U) := by
+    have hsplit : U ⊆ ({x | G x ≠ 0} ∩ U) ∪ ({x | G x = 0} ∩ U) := by
+      intro x hx; by_cases hg : G x = 0
+      · exact Or.inr ⟨hg, hx⟩
+      · exact Or.inl ⟨hg, hx⟩
+    calc (volume : Measure A) U
+        ≤ volume (({x | G x ≠ 0} ∩ U) ∪ ({x | G x = 0} ∩ U)) := measure_mono hsplit
+      _ ≤ volume ({x | G x ≠ 0} ∩ U) + volume ({x | G x = 0} ∩ U) := measure_union_le _ _
+      _ = volume ({x | G x ≠ 0} ∩ U) :=
+          by rw [measure_inter_null_of_null_left U hnull, add_zero]
+  calc (0 : ℝ≥0∞) < volume U := hU.measure_pos _ ⟨0, h0⟩
+    _ ≤ volume ({x | G x ≠ 0} ∩ U) := hUle
+    _ ≤ volume (Function.support f ∩ U) := measure_mono (Set.inter_subset_inter_left U hsub)
+
+/-- **`product_min_rlct`, FINAL form.** For `G : A → ℝ`, `H : B → ℝ` measurable and
+a.e.-nonvanishing,
+`rlctAtOn (G·H) (0,0) = min (rlctAtOn G 0) (rlctAtOn H 0)`. The single call-site interface for the
+(2,1,2) headline and the (2,2,2) δ-leaf — the four core hypotheses are discharged from `hGne`/`hHne`
+(`pos_of_ne_ae`) and `core_admissible_of_lt` (down-set). The instances all hold for the consumers'
+flat factors `Fin p → ℝ` / `EuclideanSpace ℝ (Fin n)`. -/
+theorem product_min_rlct_of_ne
+    {A B : Type*}
+    [PseudoMetricSpace A] [MeasureSpace A] [ProperSpace A]
+    [IsFiniteMeasureOnCompacts (volume : Measure A)]
+    [MeasureTheory.Measure.IsOpenPosMeasure (volume : Measure A)]
+    [SFinite (volume : Measure A)] [Zero A] [BorelSpace A] [SecondCountableTopology A]
+    [PseudoMetricSpace B] [MeasureSpace B] [ProperSpace B]
+    [IsFiniteMeasureOnCompacts (volume : Measure B)]
+    [MeasureTheory.Measure.IsOpenPosMeasure (volume : Measure B)]
+    [SFinite (volume : Measure B)] [Zero B] [BorelSpace B] [SecondCountableTopology B]
+    (G : A → ℝ) (H : B → ℝ) (hGm : Measurable G) (hHm : Measurable H)
+    (hGne : ∀ᵐ x ∂(volume : Measure A), G x ≠ 0)
+    (hHne : ∀ᵐ y ∂(volume : Measure B), H y ≠ 0) :
+    rlctAtOn (fun p : A × B => G p.1 * H p.2) (0, 0)
+      = min (rlctAtOn G 0) (rlctAtOn H 0) := by
+  apply product_min_rlct G H hGm hHm
+  · exact fun c' U hU h0 => pos_of_ne_ae G hGm hGne c' U hU h0
+  · exact fun c' V hV h0 => pos_of_ne_ae H hHm hHne c' V hV h0
+  · exact fun q hq => core_admissible_of_lt G hGm 0 q hq
+  · exact fun q hq => core_admissible_of_lt H hHm 0 q hq
+
+end OfNe
+
+end DLNFibre.DLN.RLCT
 
