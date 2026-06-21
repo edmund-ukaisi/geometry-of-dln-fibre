@@ -2598,3 +2598,37 @@ fields or inherited nonbase fields.
 This remains a supplied-data theorem only.  It does not infer membership,
 admissibility, source labels, or chart construction from the printed equations,
 and it does not prove normal crossings or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 full supplied family free-count minimum
+
+Reproduction:
+`reproduction-lemma5-full-supplied-family-free-count-minimum-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-full-supplied-family-free-count-minimum.md`.
+Review artifact:
+`review-lemma5-full-supplied-family-free-count-minimum-a5.md`.
+
+Lean now combines the full supplied branch API with the existing Lemma 4 to
+Lemma 3 finite bridge:
+
+```text
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card_and_fullBranch_twoValueCount
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCount_lemma3A_eq_min
+```
+
+The first theorem bundles the supplied full branch count with the per-branch
+two-value count.  The second theorem specializes to total increment length
+`n+1` and proves that every tagged branch's free high-count parameter attains
+the isolated Lemma 3 numerator minimum:
+
+```text
+A(n+1,a,b) = a*(n+1)*((n+1)-a).
+```
+
+Here `b` counts only the first `n` increments via `j.castSucc`; the final
+increment is separated by the existing count-split theorem.
+
+This is still a supplied-data theorem only.  It does not identify the numerator
+with a terminal exponent or `lambda`, prove terminal `tilde t=0`, construct
+source labels or displayed vectors, prove chart coverage, normal crossings, or
+RLCT extraction.

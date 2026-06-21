@@ -2429,6 +2429,14 @@ No such claim is formalisation-ready until both fields are filled.
   `AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_twoValueCount`.  These
   prove Lemma 4's finite two-value count for every tagged supplied full branch
   under explicit `a<=ell` and selected-width sum hypotheses.
+  Also proved the full supplied-family free-count minimum wrappers:
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card_and_fullBranch_twoValueCount`
+  and
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCount_lemma3A_eq_min`.
+  These combine the tagged supplied branch API with the existing finite Lemma
+  4-to-Lemma 3 bridge; for total increment length `n+1`, every tagged branch's
+  first-`n` free high-count parameter attains the isolated Lemma 3 numerator
+  minimum.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
@@ -2437,8 +2445,9 @@ No such claim is formalisation-ready until both fields are filled.
   the minimizing exponent chains, the Lemma 4 two-value hypothesis from source
   vector inequalities, the source `T -> (H_j),(S_j)` correspondence and proof
   that Aoyagi's displayed `Ttilde <= T <= Ttilde'` supplies the
-  same-coordinate hypotheses, the terminal exponent rewrite into the isolated
-  Lemma 3 free-count quadratic, Lemma 4's correspondence-to-`lambda`
+  same-coordinate hypotheses, identification of the source terminal exponent
+  with the isolated Lemma 3 free-count quadratic, Lemma 4's
+  correspondence-to-`lambda`
   conclusion, source-backed Lemma 5 chart-family admissibility and coverage
   from Aoyagi's printed equations, existence of the supplied chart-family
   boundary data including the supplied base branch, pole-order count, and

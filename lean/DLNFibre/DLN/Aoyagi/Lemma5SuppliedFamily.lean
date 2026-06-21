@@ -369,6 +369,55 @@ theorem fullBranch_twoValueCount {β : Type*} [DecidableEq β]
           F.toAoyagiLemma5SuppliedAdmissibleNonbaseFamily ha hselected hj hb
       simpa [fullH] using h
 
+/-- The full supplied admissible branch family simultaneously has Aoyagi's
+Lemma 5 finite count and Lemma 4's finite two-value count on every tagged
+branch.
+
+This is a supplied-data certificate wrapper.  It does not construct the
+displayed branch family, source labels, terminal exponent vectors, pole order,
+normal crossings, or RLCT extraction. -/
+theorem fullBranches_card_and_fullBranch_twoValueCount {β : Type*}
+    [DecidableEq β] (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m)
+    (hell : 1 ≤ ell) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    F.fullBranches.card = a * (ell - a) + 1 ∧
+      ∀ {x : Option β}, x ∈ F.fullBranches →
+        ((Finset.univ.filter fun r : Fin ell ↦
+            aoyagiLemma4F ell m (F.fullH x) r = M).card = a) ∧
+          ((Finset.univ.filter fun r : Fin ell ↦
+            aoyagiLemma4F ell m (F.fullH x) r = M - 1).card = ell - a) := by
+  constructor
+  · exact fullBranches_card ell a M m F hell ha
+  · intro x hx
+    exact F.fullBranch_twoValueCount ha hselected hx
+
+/-- Every tagged branch in a full supplied admissible family attains the
+isolated Lemma 3 numerator minimum in the free high-count parameter.
+
+This is the finite Lemma 4-to-Lemma 3 bridge applied branchwise to the supplied
+full family.  It does not identify the numerator with a source terminal
+exponent, prove `\tilde t=0`, construct source labels, prove chart coverage,
+or extract pole order/RLCT data. -/
+theorem fullBranch_freeHighCount_lemma3A_eq_min {β : Type*} [DecidableEq β]
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β (n + 1) a M m)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    {x : Option β} (hx : x ∈ F.fullBranches) :
+    aoyagiLemma3A ((n + 1 : ℕ) : ℤ) (a : ℤ)
+        ((Finset.univ.filter fun j : Fin n ↦
+          aoyagiLemma4F (n + 1) m (F.fullH x) j.castSucc = M).card : ℤ) =
+      (a : ℤ) * ((n + 1 : ℕ) : ℤ) *
+        (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
+  have hcount :
+      (Finset.univ.filter fun j : Fin (n + 1) ↦
+        aoyagiLemma4F (n + 1) m (F.fullH x) j = M).card = a :=
+    (F.fullBranch_twoValueCount ha hselected hx).1
+  exact aoyagiLemma4_freeHighCount_lemma3A_eq_min_of_totalCount n a M
+    (aoyagiLemma4F (n + 1) m (F.fullH x)) hcount
+
 end AoyagiLemma5SuppliedAdmissibleFamily
 
 end Aoyagi

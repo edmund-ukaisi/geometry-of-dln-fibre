@@ -2822,6 +2822,24 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
 
+The full supplied family now also has the first branchwise Lemma 3 minimum
+consequence.  In `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`,
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card_and_fullBranch_twoValueCount`
+bundles the supplied family cardinality with the per-branch two-value count,
+and
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCount_lemma3A_eq_min`
+proves that, when the total increment length is `n+1`, every tagged supplied
+branch attains the isolated Lemma 3 numerator minimum in the free high-count
+parameter over the first `n` increments.  This uses the existing Lemma 4
+free-count bridge and does not identify the numerator with a terminal exponent
+or `lambda`, prove terminal `tilde t=0`, construct source labels or displayed
+vectors, prove chart coverage, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-full-supplied-family-free-count-minimum-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-full-supplied-family-free-count-minimum.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-full-supplied-family-free-count-minimum-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

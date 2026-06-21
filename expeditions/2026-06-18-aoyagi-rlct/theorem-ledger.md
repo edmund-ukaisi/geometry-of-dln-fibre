@@ -3460,6 +3460,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
 
+Latest A5 free-count minimum update: the supplied full family now has a
+branchwise Lemma 3 numerator consequence in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  Names:
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card_and_fullBranch_twoValueCount`
+and
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCount_lemma3A_eq_min`.
+The first theorem bundles the supplied family count with the per-tagged-branch
+Lemma 4 two-value count.  The second theorem applies the existing Lemma 4
+free-count bridge with total increment length `n+1`, so the free count over
+the first `n` increments attains Aoyagi Lemma 3's isolated numerator minimum.
+This does not identify the numerator with a source terminal exponent or
+`lambda`, prove terminal `tilde t=0`, construct source labels or displayed
+vectors, prove chart coverage, or prove pole order/RLCT data.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-full-supplied-family-free-count-minimum-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-full-supplied-family-free-count-minimum.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-full-supplied-family-free-count-minimum-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
