@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Foundations.Rlct
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 import DLNFibre.DLN.RLCT.Foundations.S1Transport
 import DLNFibre.DLN.RLCT.Foundations.S1Local
+import DLNFibre.DLN.RLCT.Foundations.S1Fubini
 import Mathlib.MeasureTheory.Function.Jacobian
 import Mathlib.Data.Fin.Tuple.Sort
 
@@ -231,12 +232,12 @@ bare form is FALSE for a germ-vanishing block (`G ≡ 0` near `y0` ⟹ the block
 (`Measurable G`) + `hGne` (`G ≠ 0` a.e. on a nbhd of `y0`), the germ hygiene fm-2's lift uses. -/
 theorem rlct_additive_smooth_block {n : ℕ}
     {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
-    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [OpensMeasurableSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y]
     (G : Y → ℝ) (y0 : Y) (hGmeas : Measurable G)
     (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0) :
     rlctAtOn (fun p : (Fin n → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) (0, y0)
-      = (n : ENNReal) / 2 + rlctAtOn (fun y => G y ^ 2) y0 := by
-  sorry
+      = (n : ENNReal) / 2 + rlctAtOn (fun y => G y ^ 2) y0 :=
+  rlct_additive_smooth_block_aux G y0 hGmeas hGne n
 
 /-! ## L1 / L2 — block elimination + product reduction (design-spec §8) -/
 
