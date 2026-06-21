@@ -954,6 +954,43 @@ theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) = ENNReal.ofReal (aoyagiLambda H r) := by
   sorry
 
+/-- HEq is preserved by scalar multiplication across value-equal matrix dimensions. -/
+private theorem heq_smul {m1 n1 m2 n2 : ℕ} (t : ℝ)
+    (x : Matrix (Fin m1) (Fin n1) ℝ) (y : Matrix (Fin m2) (Fin n2) ℝ)
+    (hm : m1 = m2) (hn : n1 = n2) (h : HEq x y) : HEq (t • x) (t • y) := by
+  subst hm; subst hn; rw [eq_of_heq h]
+
+/-- **The fibre core is a cone** (the value-free `(b)` prerequisite, reusable bedrock): scaling every
+layer by `t` scales the `k`-fold layer product by `t^k` — `prodAux H (t·A) k = t^k • prodAux H A k`,
+where `t·A := fun s ↦ t • A s`. Pure algebra: `prodAux_step` peels the last layer from both sides, the
+scaled step matrix is `t •` the unscaled one (`heq_smul`), and `Matrix.mul_smul` pulls the scalar out.
+No chart, no `#111`, no RLCT value. -/
+private theorem prodAux_smul (H : Fin (L + 1) → ℕ) (t : ℝ) (A : Params H) (k : ℕ) (hk : k < L + 1) :
+    prodAux H (fun s => t • A s) k hk = t ^ k • prodAux H A k hk := by
+  induction k with
+  | zero => rw [prodAux, prodAux, pow_zero, one_smul]
+  | succ n ih =>
+    have hn1 : n + 1 < L + 1 := hk
+    have hn : n < L + 1 := Nat.lt_of_succ_lt hk
+    have hnk2 : n < L := Nat.lt_of_succ_lt_succ hk
+    -- canonical step matrix for the A-layer at index n (cast into the prodAux step dims)
+    set MA : Matrix (Fin (H ⟨n, hn⟩)) (Fin (H ⟨n + 1, hn1⟩)) ℝ :=
+      Eq.mpr (by rw [show (⟨n, hn⟩ : Fin (L + 1)) = (⟨n, hnk2⟩ : Fin L).castSucc from
+                      Fin.ext (by simp [Fin.castSucc]),
+                    show (⟨n + 1, hn1⟩ : Fin (L + 1)) = (⟨n, hnk2⟩ : Fin L).succ from
+                      Fin.ext (by simp [Fin.succ])]) (A ⟨n, hnk2⟩) with hMA
+    have hheqA : HEq (A ⟨n, hnk2⟩) MA := (mpr_heq _ _).symm
+    -- peel both products at the last layer via prodAux_step
+    rw [prodAux_step H A n hn1 MA hheqA]
+    rw [prodAux_step H (fun s => t • A s) n hn1 (t • MA)
+      (heq_smul t (A ⟨n, hnk2⟩) MA rfl rfl hheqA)]
+    rw [ih hn, Matrix.smul_mul, Matrix.mul_smul, smul_smul, pow_succ, mul_comm (t ^ n) t]
+
+/-- `prod H (t·A) = t^L • prod H A` (the cone, at the top product). -/
+private theorem prod_smul (H : Fin (L + 1) → ℕ) (t : ℝ) (A : Params H) :
+    prod H (fun s => t • A s) = t ^ L • prod H A :=
+  prodAux_smul H t A L (Nat.lt_succ_self L)
+
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
 /-- **D1 per-point obligation (Aoyagi 2013 Thm 2, the fibre monotonicity).** The local RLCT of the
