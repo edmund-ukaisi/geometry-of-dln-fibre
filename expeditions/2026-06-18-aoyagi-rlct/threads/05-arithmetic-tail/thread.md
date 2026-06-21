@@ -1459,3 +1459,57 @@ equation `(5)`'s displayed vector, prove source-label legality for `k`, prove
 terminal `tilde t=0`, cover the terminal selected endpoint, prove vector
 admissibility, build the Case 1(2) chart sequence, prove Lemma 5 order count,
 normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` source label
+
+Reproduction:
+`reproduction-lemma5-eq5-source-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-source-label.md`.
+Review artifact:
+`review-lemma5-eq5-source-label-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiHtildeLowerIncrementPrefix_le_prefixSum_of_selectedWidth_le_pred
+aoyagiHtildeLowerNat_add_one_pos_any_of_sourceSelectedInequality
+aoyagiPrefixSum_sub_current_le_mul_pred_of_selectedWidth_le_pred
+aoyagiHtildeUpperNat_le_selectedWidth_of_selectedWidth_le_pred
+aoyagiHtildeUpperNat_le_selectedWidth_of_sourceSelectedInequality
+aoyagiLemma5Eq5_labelBounds_of_sourceSelectedInequality
+aoyagiLemma5Eq5_actualWidthLabel_of_widthCompatibility
+aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel
+```
+
+For equation `(5)`'s own-coordinate label
+
+```text
+k = Htilde'_p+1-alpha,
+```
+
+Definition 3's selected-width hypotheses and the supplied offset guard
+`1<=alpha<=excess(ell,a,p)` prove
+
+```text
+1<=k<=W_p.
+```
+
+With explicit source-layer range and actual-width compatibility
+
+```text
+n((C.point p-1)+1)=W_p,
+```
+
+Lean proves `actualWidthLabel L n (C.point p-1) k`.  A supplied full Eq5
+piecewise certificate also gives the own-coordinate value
+
+```text
+T(C.point p-1)=k-1.
+```
+
+This is conditional source-label arithmetic only.  It does not construct the
+equation `(5)` displayed vector, prove arbitrary-point label legality across
+the whole selected block, prove terminal `tilde t=0`, vector admissibility,
+the Case 1(2) chart sequence, Lemma 5 order count, normal crossings, or RLCT
+extraction.

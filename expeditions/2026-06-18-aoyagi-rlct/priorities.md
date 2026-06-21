@@ -717,6 +717,15 @@ on the session's original cwd.
    own-coordinate offset record.  It still leaves vector construction,
    source-label legality, terminal `tilde t=0`, chart sequence, and Lemma 5
    order count open.
+   The equation `(5)` own-coordinate source-label bridge is now also
+   Lean-proved.  Definition 3's selected-width hypotheses and the supplied
+   offset guard `1<=alpha<=excess(ell,a,p)` give
+   `1<=Htilde'_p+1-alpha<=W_p`; with explicit actual-width compatibility,
+   Lean gets `actualWidthLabel L n (C.point p-1) k`, and a supplied Eq5
+   piecewise certificate also rewrites the own-coordinate value as `k-1`.
+   This is still not a construction of the displayed vector, arbitrary-block
+   label legality, terminal `tilde t=0`, chart sequence, or Lemma 5 order
+   count.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

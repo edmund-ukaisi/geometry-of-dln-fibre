@@ -2205,6 +2205,22 @@ No such claim is formalisation-ready until both fields are filled.
   own-coordinate branch record, but still does not construct the displayed
   vector, prove source-label legality, prove terminal `tilde t=0`, build the
   chart sequence, or prove Lemma 5.
+  Also proved
+  `aoyagiHtildeLowerIncrementPrefix_le_prefixSum_of_selectedWidth_le_pred`,
+  `aoyagiHtildeLowerNat_add_one_pos_any_of_sourceSelectedInequality`,
+  `aoyagiPrefixSum_sub_current_le_mul_pred_of_selectedWidth_le_pred`,
+  `aoyagiHtildeUpperNat_le_selectedWidth_of_selectedWidth_le_pred`,
+  `aoyagiHtildeUpperNat_le_selectedWidth_of_sourceSelectedInequality`,
+  `aoyagiLemma5Eq5_labelBounds_of_sourceSelectedInequality`,
+  `aoyagiLemma5Eq5_actualWidthLabel_of_widthCompatibility`, and
+  `aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel`, which prove
+  equation `(5)`'s own-coordinate source-label legality under Definition 3
+  selected-width hypotheses, the supplied offset guard
+  `1<=alpha<=excess(ell,a,p)`, and explicit actual-width compatibility at
+  `C.point p-1`.  The piecewise wrapper also combines this with the value
+  rewrite `T(C.point p-1)=k-1`.  This still does not construct the displayed
+  vector, prove arbitrary-point label legality across the whole block, prove
+  terminal `tilde t=0`, build the chart sequence, or prove Lemma 5.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

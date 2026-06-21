@@ -2231,6 +2231,17 @@ from the post-`p` branch at `b=p`.  It still leaves construction of the
 vector, source-label legality, terminal `tilde t=0`, chart sequence, and Lemma
 5 order count open.
 
+Eq5 now also has the own-coordinate source-label bridge.  Definition 3's
+selected-width inequalities first give `W_i<=M-1`; the same prefix/tail
+arithmetic then proves
+`1<=Htilde'_p+1-alpha<=W_p` under the supplied Eq5 offset guard
+`1<=alpha<=excess(ell,a,p)`.  With explicit actual-width compatibility at
+`C.point p-1`, Lean proves `actualWidthLabel`, and the supplied Eq5 piecewise
+certificate wrapper combines this with the own-coordinate value `T=k-1`.
+This removes the narrow own-coordinate label-legality blocker, but still does
+not construct the displayed vector, prove arbitrary-point block label
+legality, terminal `tilde t=0`, chart sequence, or Lemma 5 order count.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

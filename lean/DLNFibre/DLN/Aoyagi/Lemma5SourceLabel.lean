@@ -115,6 +115,81 @@ theorem aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack
       exact hlabel.2
     exact_mod_cast hk_le_int
 
+/-- Equation `(5)`'s label `k=Htilde'_p+1-alpha` is an actual source label
+when the selected width at `p` is identified with the actual layer width at
+`S_(p+1)`.
+
+This is only source-label arithmetic.  It assumes the Eq. `(5)` offset guards
+`1<=alpha<=Htilde'_p-Htilde_p`; it does not construct the displayed vector,
+prove terminality, chart coverage, pole order, normal crossings, or RLCT
+extraction. -/
+theorem aoyagiLemma5Eq5_actualWidthLabel_of_widthCompatibility
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha_pos : 1 ≤ alpha)
+    (halpha_le_excess : alpha ≤ aoyagiLemma5IntervalExcess ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : 1 ≤ C.point p - 1) (hs_le : C.point p - 1 ≤ L)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    {k : ℕ} (hk :
+      (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    actualWidthLabel L n (C.point p - 1) k := by
+  have hlabel :=
+    aoyagiLemma5Eq5_labelBounds_of_sourceSelectedInequality
+      ell a p alpha M m hell ha hpell halpha_pos halpha_le_excess
+      hselected hsource
+  refine ⟨hs_pos, hs_le, ?_, ?_⟩
+  · have hk_pos_int : (1 : ℤ) ≤ (k : ℤ) := by
+      rw [hk]
+      exact hlabel.1
+    exact_mod_cast hk_pos_int
+  · have hk_le_int : (k : ℤ) ≤ (n ((C.point p - 1) + 1) : ℤ) := by
+      rw [hk, hwidth]
+      exact hlabel.2
+    exact_mod_cast hk_le_int
+
+/-- A supplied equation `(5)` piecewise certificate gives the own-coordinate
+value `k-1` and a legal actual source label under Definition 3 selected-width
+hypotheses and actual-width compatibility.
+
+The theorem remains conditional on the supplied piecewise certificate; it does
+not construct equation `(5)`'s vector or prove terminal `tilde t=0`. -/
+theorem aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : 1 ≤ C.point p - 1) (hs_le : C.point p - 1 ≤ L)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {k : ℕ} (hk :
+      (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T (C.point p - 1) = (k : ℤ) - 1 ∧
+      actualWidthLabel L n (C.point p - 1) k := by
+  have hp_lt_ell : p < ell := by
+    have hcut := hT.cutoffIndexGuard
+    omega
+  have hblock : C.block p (C.point p - 1) :=
+    C.leftEndpoint_mem_block hp_lt_ell
+  have hown :=
+    aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+      ell a p alpha M m C layerWidth T hT
+  constructor
+  · exact aoyagiLemma5Eq5_ownCoordinate_eq_label_pred
+      ell a p alpha M m C T hown hblock hk
+  · exact aoyagiLemma5Eq5_actualWidthLabel_of_widthCompatibility
+      L ell a p alpha n M m C hell hT.a_le_ell (le_of_lt hp_lt_ell)
+      hT.alpha_pos hT.alpha_le_excess hselected hsource hs_pos hs_le hwidth hk
+
 end Aoyagi
 end DLN
 end DLNFibre

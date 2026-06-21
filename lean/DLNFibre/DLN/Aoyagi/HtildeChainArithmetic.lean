@@ -765,6 +765,188 @@ theorem aoyagiHtildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
   · exact aoyagiHtildeLowerNat_add_one_le_selectedWidth_of_sourceSelectedInequality
       ell a p M m hell ha hp0 hp_a hselected hsource
 
+/-- If every selected width is at most `M-1`, then the lower-chain subtraction
+prefix is bounded by the selected-width prefix at any selected coordinate.
+
+This is the same tail estimate used in the equation `(4)` label calculation,
+but without assuming `p<=a`. -/
+theorem aoyagiHtildeLowerIncrementPrefix_le_prefixSum_of_selectedWidth_le_pred
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hpell : p ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1) :
+    aoyagiHtildeLowerIncrementPrefix a M p ≤
+      aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p := by
+  let w := aoyagiSelectedWidthNat ell m
+  let P := aoyagiPrefixSum w
+  let tail := ∑ i ∈ Finset.Ico (p + 1) (ell + 1), w i
+  have hsplit : P p + tail = P ell := by
+    dsimp [P, tail, aoyagiPrefixSum]
+    exact Finset.sum_range_add_sum_Ico w (by omega)
+  have htotal : P p + tail = (ell : ℤ) * (M - 1) + a := by
+    rw [hsplit]
+    dsimp [P, w]
+    rw [aoyagiPrefixSum_selectedWidthNat_last, hselected]
+  have htail_terms :
+      ∀ i ∈ Finset.Ico (p + 1) (ell + 1), w i ≤ M - 1 := by
+    intro i hi
+    rw [Finset.mem_Ico] at hi
+    dsimp [w]
+    rw [aoyagiSelectedWidthNat_of_lt hi.2]
+    exact hbound ⟨i, hi.2⟩
+  have htail_le_sum :
+      tail ≤ ∑ _i ∈ Finset.Ico (p + 1) (ell + 1), (M - 1 : ℤ) := by
+    exact Finset.sum_le_sum htail_terms
+  have htail_const :
+      (∑ _i ∈ Finset.Ico (p + 1) (ell + 1), (M - 1 : ℤ)) =
+        ((ell - p : ℕ) : ℤ) * (M - 1) := by
+    have hcard : (Finset.Ico (p + 1) (ell + 1)).card = ell - p := by
+      rw [Nat.card_Ico]
+      omega
+    simp [hcard]
+    ring
+  have htail_le :
+      tail ≤ ((ell - p : ℕ) : ℤ) * (M - 1) := by
+    rw [htail_const] at htail_le_sum
+    exact htail_le_sum
+  have hprefix_from_tail :
+      (ell : ℤ) * (M - 1) + (a : ℤ) -
+          ((ell - p : ℕ) : ℤ) * (M - 1) ≤ P p := by
+    linarith
+  have hprefix_floor :
+      (ell : ℤ) * (M - 1) + (a : ℤ) -
+          ((ell - p : ℕ) : ℤ) * (M - 1) =
+        (p : ℤ) * (M - 1) + (a : ℤ) := by
+    rw [Nat.cast_sub hpell]
+    ring
+  have hmin_le_a : ((min p a : ℕ) : ℤ) ≤ (a : ℤ) := by
+    exact_mod_cast Nat.min_le_right p a
+  have hlower_le_floor :
+      aoyagiHtildeLowerIncrementPrefix a M p ≤
+        (p : ℤ) * (M - 1) + (a : ℤ) := by
+    unfold aoyagiHtildeLowerIncrementPrefix aoyagiHtildeLowerHighCount
+    linarith
+  rw [hprefix_floor] at hprefix_from_tail
+  exact le_trans hlower_le_floor hprefix_from_tail
+
+/-- Source-shaped form of the unrestricted lower-chain positivity needed for
+Aoyagi Lemma 5 equation `(5)`. -/
+theorem aoyagiHtildeLowerNat_add_one_pos_any_of_sourceSelectedInequality
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    1 ≤ aoyagiHtildeLowerNat ell a M m p + 1 := by
+  have hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1 :=
+    aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell ha hselected hsource
+  have hprefix :=
+    aoyagiHtildeLowerIncrementPrefix_le_prefixSum_of_selectedWidth_le_pred
+      ell a p M m hpell hselected hbound
+  unfold aoyagiHtildeLowerNat
+  omega
+
+/-- If every selected width is at most `M-1`, then the previous selected-width
+prefix before coordinate `p` is at most `p*(M-1)`. -/
+theorem aoyagiPrefixSum_sub_current_le_mul_pred_of_selectedWidth_le_pred
+    (ell p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hpell : p ≤ ell) (hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1) :
+    aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p -
+        aoyagiSelectedWidthNat ell m p ≤
+      (p : ℤ) * (M - 1) := by
+  have hprefix :
+      aoyagiPrefixSum (aoyagiSelectedWidthNat ell m) p -
+          aoyagiSelectedWidthNat ell m p =
+        ∑ i ∈ Finset.range p, aoyagiSelectedWidthNat ell m i := by
+    unfold aoyagiPrefixSum
+    rw [Finset.sum_range_succ]
+    ring
+  have hterm :
+      ∀ i ∈ Finset.range p, aoyagiSelectedWidthNat ell m i ≤ M - 1 := by
+    intro i hi
+    rw [Finset.mem_range] at hi
+    have hi_lt : i < ell + 1 := by omega
+    rw [aoyagiSelectedWidthNat_of_lt hi_lt]
+    exact hbound ⟨i, hi_lt⟩
+  have hsum_le :
+      (∑ i ∈ Finset.range p, aoyagiSelectedWidthNat ell m i) ≤
+        (∑ _i ∈ Finset.range p, (M - 1 : ℤ)) := by
+    exact Finset.sum_le_sum hterm
+  have hsum_const :
+      (∑ _i ∈ Finset.range p, (M - 1 : ℤ)) = (p : ℤ) * (M - 1) := by
+    simp
+    ring
+  rw [hprefix]
+  rw [hsum_const] at hsum_le
+  exact hsum_le
+
+/-- The selected-width upper bound puts the upper displayed chain below the
+same coordinate's selected width. -/
+theorem aoyagiHtildeUpperNat_le_selectedWidth_of_selectedWidth_le_pred
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hpell : p ≤ ell) (hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1) :
+    aoyagiHtildeUpperNat ell a M m p ≤
+      aoyagiSelectedWidthNat ell m p := by
+  have hprev :=
+    aoyagiPrefixSum_sub_current_le_mul_pred_of_selectedWidth_le_pred
+      ell p M m hpell hbound
+  have hhigh_nonneg :
+      (0 : ℤ) ≤ (aoyagiHtildeUpperHighCount ell a p : ℤ) := by
+    exact_mod_cast Nat.zero_le (aoyagiHtildeUpperHighCount ell a p)
+  unfold aoyagiHtildeUpperNat aoyagiHtildeUpperIncrementPrefix
+  linarith
+
+/-- Source-shaped form: Definition 3's strict selected-width inequalities put
+the upper displayed chain below the same coordinate's selected width. -/
+theorem aoyagiHtildeUpperNat_le_selectedWidth_of_sourceSelectedInequality
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    aoyagiHtildeUpperNat ell a M m p ≤
+      aoyagiSelectedWidthNat ell m p := by
+  have hbound : ∀ i : Fin (ell + 1), m i ≤ M - 1 :=
+    aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell ha hselected hsource
+  exact aoyagiHtildeUpperNat_le_selectedWidth_of_selectedWidth_le_pred
+    ell a p M m hpell hbound
+
+/-- Aoyagi Lemma 5 equation `(5)` label arithmetic.
+
+For `k = Htilde'_p+1-alpha`, the source guards
+`1<=alpha<=Htilde'_p-Htilde_p` and Definition 3's selected-width hypotheses
+prove `1<=k<=W_(p+1)`.  This is only finite label arithmetic; it does not
+construct equation `(5)`'s displayed vector or prove terminality. -/
+theorem aoyagiLemma5Eq5_labelBounds_of_sourceSelectedInequality
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha_pos : 1 ≤ alpha)
+    (halpha_le_excess : alpha ≤ aoyagiLemma5IntervalExcess ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    1 ≤ aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ) ∧
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ) ≤
+        aoyagiSelectedWidthNat ell m p := by
+  have hp : p < ell + 1 := by omega
+  have hgap :=
+    aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m ha ⟨p, hp⟩
+  simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] at hgap
+  have hlower_pos :=
+    aoyagiHtildeLowerNat_add_one_pos_any_of_sourceSelectedInequality
+      ell a p M m hell ha hpell hselected hsource
+  have hupper_le :=
+    aoyagiHtildeUpperNat_le_selectedWidth_of_sourceSelectedInequality
+      ell a p M m hell ha hpell hselected hsource
+  have halpha_le_int :
+      (alpha : ℤ) ≤ (aoyagiLemma5IntervalExcess ell a p : ℤ) := by
+    exact_mod_cast halpha_le_excess
+  have halpha_pos_int : (1 : ℤ) ≤ (alpha : ℤ) := by
+    exact_mod_cast halpha_pos
+  constructor <;> linarith
+
 /-- Corrected local arithmetic data for Aoyagi Lemma 5 equation `(4)`.
 
 Under the selected-index guard `p+1<=a` and the own-coordinate guard
