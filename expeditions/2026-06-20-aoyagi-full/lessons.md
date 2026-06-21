@@ -386,3 +386,15 @@ hands you a shortcut whose output equals what you're trying to prove, that is ev
 rely on an unproven bridge? does it import a citation/dependency you've committed to avoid? does it assume the
 thing you're trying to establish? If any — it's a cross-check, not a path. (This is the dual of "build the witness
 before dismissing": here, don't ADOPT a confirmation just because the number matches.)
+
+## 2026-06-21 — ℝ≥0∞ gotcha: "product finite ⟺ both factors finite" is FALSE (0·∞=0) — record the positivity (2,1,2)
+
+Designing the (2,1,2) product-MIN lemma (`rlctAt(G·H) = min(rlctAt G, rlctAt H)` for G,H≥0 on disjoint vars, via
+Tonelli split of `∫⁻(GH)^{-c}`), pp caught a silent hole: in ℝ≥0∞, `a·b < ⊤ ⟺ a<⊤ ∧ b<⊤` is FALSE — if one
+factor is 0 and the other ⊤, the product is 0·∞ = 0 < ⊤. So "the joint integral is finite iff both block
+integrals are finite" needs the extra fact that neither block integral is 0. It doesn't bite here (each
+`∫⁻_U G^{-c} ≥ μ(U ∩ {G≤1}) > 0`, strictly positive because G≥0 vanishes only at 0), but the lemma's hypothesis
+must RECORD that positivity rather than rely on the false equivalence. LESSON: any ℝ≥0∞ argument that factors a
+finiteness/admissibility condition through a PRODUCT must rule out the 0·∞ corner explicitly — the convention
+makes `0·∞=0`, so a "both-finite" inference silently assumes both factors are nonzero. (Surfaced on the concrete
+(2,1,2) case before it could hide in the general product-MIN lemma — validate-small-first again.)
