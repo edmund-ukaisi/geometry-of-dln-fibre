@@ -428,6 +428,20 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
     whether **G5 (abstract c-o-v-tree-gluing) is separable + buildable now** as a down-payment on the general lift.
     **OPERATOR SCOPE FLAG:** the general-M headline is gated on the G3+G5 research-infra lift — surfaced for the
     operator's steer (attempt the lift vs deliver ladder+roadmap); proceeding with the ladder meanwhile (no stop).
+  - **(2,2,2) FULL COVER CLIMBED + VALIDATED (pp, exact-symbolic):** two nested blow-ups (faithful to Aoyagi
+    Lemma 2/Thm 3): step-1 blow up {A=0} (4 charts, x-divisor ratio 2) → Lemma-2 regular split → step-2 blow up
+    (3 charts, s-divisor ratio 3/2 = binding). **GENUINE HOLE caught+closed (validate-small working):** the 3
+    step-2 charts are NOT uniform — E-/F0-pivot residuals are positive units (clean monomial×unit leaves), but the
+    **δ-pivot residual U(origin)=0 is a SMOOTH-4-BLOCK** (v²+w²+G'²+H'²), so the δ-leaf = x²s²·(Σ⁴y²), NOT
+    monomial×unit. Closed by CHECKING (not assuming): block rlct = 2 ≥ binding 3/2 ⟹ s-exceptional still binds at
+    3/2 = ½·Mval(deepest), θ=1. Cover SOUND. **FIDELITY → Option A (BLESSED, fixed-M):** monomialize the smooth
+    block (ratio-preserving — the cone Σⁿy² blows up to exceptional ratio EXACTLY n/2 = its rlct), so RHS
+    `⨅ monomialThreshold` stays LITERALLY TRUE + leaves uniform. **DESIGN REFINEMENT:** the atlas has a THIRD
+    block-monomialization layer ((2,2,2) is NOT 4×3=12 simple leaves; δ-branch subdivides into a 4-chart Σy²
+    blow-up). **A-vs-B for GENERAL-M (open, part of the tractability verdict):** Option A's 3rd layer may COMPOUND
+    G3/G5; Option B (block leaves bounded directly via smoothBlockND_rlct+Fubini, no extra layer, heterogeneous
+    cover sum) reuses existing machinery — pp weighing as part of the general-M verdict. (2,1,2) confirmed NOT a
+    cover (Fubini-product, disjoint vars, rlct=min(1,1)=1=½·Mval — separate small lemma).
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
