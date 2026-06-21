@@ -275,3 +275,30 @@ as a hypothesis, and discharge it at the use-site from the citation. The hygiene
 not implicit assumptions) to avoid the measurability/non-triviality levers — but explicit hyps discharged
 downstream are honest, not hand-waving. (Symmetry check: the ≥ direction already took core-integrability as a
 hypothesis, so the abstract ≤ form is the dual — a sign the abstraction is the natural one.)
+
+## 2026-06-21 — a "known-false placeholder with a docstring caveat" is still a landmine: restate the SIGNATURE (13th finding)
+
+The 12th finding established that the bare disjoint-block additivity is FALSE and must be restated to the Fubini
+shift lemma. That was DOCUMENTED — but the Skeleton statement `rlct_additive_smooth_block` was left with the
+bare (false) signature and a docstring saying "the bare-measurable general form is FALSE." fm-2, building the
+proof, hit the contradiction: the SIGNATURE is the false form the docstring disavows. The bare statement is
+Lean-provable-FALSE from an existing substrate lemma (`rlctAtOn_zero_eq_top`): instantiate G≡0 ⟹ RHS=n/2+⊤=⊤,
+LHS=n/2. LESSON: a caveat that CONTRADICTS the signature it annotates is worse than no caveat — it signals the
+fix was deferred, and a `sorry` on a false statement is a landmine (anyone who later proves it has proven
+nonsense, or more likely wastes a thread discovering it can't be proven). When a finding says "restate X,"
+restate the SIGNATURE in the same pass, not just the docstring; if the proof isn't ready, the corrected signature
++ sorry is the honest interim, never the false signature + caveat. (CLAUDE.md "caveats live next to claims" has a
+corollary: a caveat may NARROW or CONDITION a claim, never CONTRADICT it — if it contradicts, the claim is wrong,
+fix the claim.)
+
+## 2026-06-21 — don't assume two hygiene conditions are equivalent; find the separating witness (hGfin vs hHne)
+
+Pinning the 13th-finding fix, fm-2 proposed `hGfin : rlctAtOn(G²) y0 < ⊤` and asserted it "≡ G²≠0 a.e. near y0"
+(= hHne, what the proof engine carries). They are NOT equivalent: G²≡1 (nonvanishing constant) has rlctAtOn=⊤
+(everything integrable on a bounded nbhd) yet is ≠0 a.e. — so hHne holds but hGfin fails. Consequences: (a)
+hGfin OVER-excludes — it drops the true `rlctAt(G²)=⊤` cases where the equality holds vacuously (⊤=⊤); (b) hGfin
+isn't even what the cusp/integrability proofs use (they need a.e.-nonvanishing for the H=0 corner, not
+finiteness). LESSON: before adopting a hypothesis "equivalent to" the one your proof needs, find the separating
+witness in BOTH directions — a one-line example (G²=1) settles it. The right contract hypothesis is the WEAKEST
+that (i) makes the statement true, (ii) the proof literally uses, (iii) the use-site supplies — here hHne, which
+R1's monomial core (≠0 a.e.) supplies, and under which even the ⊤-cases stay true.

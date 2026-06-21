@@ -338,7 +338,31 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
 - Assembly T: assembles from D1+L2 (+ hr threaded).
 - Two hard builds remain: S1.1 + R1's cover-inequality (lower bound).
 
+## STATUS @ 2026-06-21 ~01:00 (trunk past 8f6c98a; Fubini @b8f53c7)
+- **S1.1 + S1.4 CLOSED + green-gated + rv-2 PASS** (@67ae3c1; both axiom-clean, FLAG-1 orphan resolved). Skeleton 7 sorries.
+- **S1.3 wiring now** (fm; actionable — S1Local sorry-free on origin, my earlier b6eaa80-stale ref was wrong). → then D1.
+- **FUBINI: BOTH n=1 directions PROVEN** (fm-2, S1Fubini.lean @b8f53c7, 224 LoC, axiom-clean): `step_integrableOn`
+  (≥) + `step_lintegral_top` (≤, the heavy cusp — DONE). Measure-route = B (1-D interval vol, no EuclideanSpace/
+  addHaar — fm-2's lighter call; statement-shape still (A) abstract-core). REMAINING = threshold-lift
+  (rlctAt(x²+H)=½+λ_H, ~80-120 sSup lines) + iterate over n coords → n/2+λ_core. Both directions carry hHne.
+- **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
+  (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
+  LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
+  is bare = self-contradictory contract (the 12th finding's restatement was documented, never executed in the sig).
+  FIX (controller-decided, fm executes single-writer, keep sorry): add `Measurable G` + a germ-non-vanishing hyp.
+  **CONTROLLER CALL: hHne (G²≠0 a.e. near y0), NOT fm-2's hGfin (rlctAtOn(G²)<⊤)** — hGfin over-excludes TRUE
+  cases (G²=1: rlctAt=⊤ but equality holds ⊤=⊤) and the proof uses a.e.-nonvanishing not finiteness; hGfin≠hHne
+  (G²=1 separates them). fm-2 pinning the EXACT Lean form its step_*/lift need → I relay to fm. fm-2's step_* are
+  the proof engine, waiting on the corrected sig.
+- **R1 USE-SITE CONFIRMED (pp + Codex identical): CLEAN to relocate (confirms A) + 2 obligations folded into R1:**
+  (1) **unit-absorption** — R1 chart core = unit·∏|y_j|^{2k_j}, so R1.2's S2 invocation MUST first absorb the
+  nonvanishing unit via `rlct_unit_invariant` (S1.3), THEN S2 on the pure monomial (THE main hidden gap; Jacobian
+  same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
+  literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
+
 ## Next tick
-Process: fm's hr-fix green (→ merge worktree-rung0-defs→expedition, green-gate via rv-2, rv-2 re-audit); rv-2's
-keystone verdict; fm-2's bridge. Merge fm's Skeleton commits forward as they land (clean, disjoint). Keep rv-2
-decorrelated. fm-liveness: CONFIRMED live (reported A1 + the bug). Don't stop in a blocked state.
+HOLD + integrate: (1) fm-2's pinned hHne signature → relay to fm → fm restates `rlct_additive_smooth_block` →
+green-gate. (2) fm's S1.3 wire → green-gate + merge + rv-2 audit → then D1. (3) fm-2's Fubini threshold-lift +
+iterate → the full S1.5 engine → wire into Skeleton (controller adds S1Fubini to aggregator) → green-gate +
+rv-2 audit. (4) THEN R1 EXECUTION (pp + fm, R1.2 multiplicity-control first, unit-absorption obligation folded
+in) → L2 → T. #19 keystone PARKED. Keep rv-2 decorrelated. Don't stop in a blocked state.
