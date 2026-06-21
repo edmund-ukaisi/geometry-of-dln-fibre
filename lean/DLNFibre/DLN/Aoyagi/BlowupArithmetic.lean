@@ -10580,6 +10580,40 @@ noncomputable def case2DisplayedPostPivotResidualBlock
     (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm
     (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm
 
+/-- A source-coordinate representative of the displayed Case 2 post-pivot
+lower-right block.
+
+It agrees with `case2DisplayedPostPivotResidualBlock` on the next same-stage
+residual row/column domain `(S,J+1)` and is zero outside that domain.  This is
+only a finite representative for supplied residual data; it does not construct
+a successor chart family, source-produce recurrence/exponent post-data, or
+prove a transition invariant. -/
+noncomputable def case2DisplayedPostPivotSourceResidual
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    ℕ × ℕ → R :=
+  fun p ↦
+    if hi : p.1 ∈ case2ResidualBlockRows n S (J + 1) then
+      if hj : p.2 ∈ case2ResidualBlockCols n S (J + 1) then
+        case2DisplayedPostPivotResidualBlock n hS hcont residual
+          ⟨p.1, hi⟩ ⟨p.2, hj⟩
+      else 0
+    else 0
+
+/-- Restricting the zero-extended source-coordinate representative to the
+next same-stage residual block recovers the displayed post-pivot residual
+block. -/
+theorem case2SourceResidualBlock_postPivotSourceResidual
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+        (case2DisplayedPostPivotSourceResidual n hS hcont residual) =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual := by
+  ext i j
+  simp [case2SourceResidualBlock, case2DisplayedPostPivotSourceResidual]
+
 /-- The displayed Case 2 transported following-factor tail, reindexed onto the
 next same-stage residual column domain `(S,J+1)`.
 
@@ -10833,6 +10867,29 @@ theorem case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct_sou
         case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C := by
   rw [case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct]
   rw [case2DisplayedPostPivotFollowingFactor_eq_sourceFollowingFactor_succ]
+
+/-- Source-coordinate residual/following-factor form of the displayed Case 2
+continuing lower-row product.
+
+The post-pivot residual block is represented as a zero-extended source
+function and then restricted back to the next same-stage residual domain.  This
+is a notation adapter over the lower-row product identity; it does not
+source-produce the post-pivot data or assert chart construction, transition
+invariance, normal crossings, or RLCT content. -/
+theorem case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_sourceFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    (case2DisplayedPaperDppp n hS hcont residual *
+        case2DisplayedPaperCprime n hS hcont residual C).submatrix
+        (fun i ↦
+          Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+        id =
+      case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+          (case2DisplayedPostPivotSourceResidual n hS hcont residual) *
+        case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C := by
+  rw [case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct_sourceFollowingFactor]
+  rw [case2SourceResidualBlock_postPivotSourceResidual]
 
 /-- The paper block `D''` is exactly the post-`Q` pivot block for the
 displayed Case 2 source-coordinate chart. -/

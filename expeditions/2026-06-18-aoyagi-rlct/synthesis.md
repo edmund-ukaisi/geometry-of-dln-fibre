@@ -3965,6 +3965,25 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-weighted-source-following-payload-a4.md`.
 
+The post-pivot lower-right block now also has a source-coordinate residual
+representative.  New Lean names:
+`case2DisplayedPostPivotSourceResidual`,
+`case2SourceResidualBlock_postPivotSourceResidual`, and
+`case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_sourceFollowingFactor`.
+The representative is a zero-extension of the already-defined displayed
+post-pivot residual block to a total source-pair function.  Restricting it
+back to the next same-stage residual domain `(S,J+1)` recovers the displayed
+post-pivot block, and the paper-`C'` lower-row product rewrites in
+source-residual/source-following notation.  This is not chart production,
+source-produced post-data, successor chart-family construction, transition
+invariance, normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-post-pivot-source-residual.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-post-pivot-source-residual-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

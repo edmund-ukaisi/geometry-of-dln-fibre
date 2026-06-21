@@ -74,6 +74,28 @@ branchwise hypotheses.  It does not construct Eq5 branches, prove alpha-domain
 coverage, selected-span coverage, terminal exactness, classifier/back-to-label
 coverage, pole order, normal crossings, or RLCT extraction.
 
+## Latest A4 Update
+
+The Case 2 post-pivot source-residual representative has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  New Lean names:
+`case2DisplayedPostPivotSourceResidual`,
+`case2SourceResidualBlock_postPivotSourceResidual`, and
+`case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_sourceFollowingFactor`.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-post-pivot-source-residual.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-post-pivot-source-residual-a4.md`.
+
+This packages the displayed post-pivot lower-right block as a zero-extended
+source-coordinate residual function and proves restriction recovery at
+`(S,J+1)`.  It also rewrites the existing paper-`C'` continuing lower-row
+product using `case2SourceResidualBlock` and the next same-stage
+`case2SourceFollowingFactor`.  It is finite representative bookkeeping only:
+no chart production, source-produced successor post-data, transition
+invariance, terminal relabeling, normal crossings, pole order, or RLCT follows.
+
 The Lemma 4 same-coordinate bridge has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`.  Source check:
 Aoyagi's Definition 4 defines componentwise vector order, but not a unique

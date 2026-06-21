@@ -216,6 +216,18 @@ nonemptiness and finite center principalization:
 payload wrapper only; it is not chart production, source-produced post-data,
 transition invariance, or a full successor product.
 
+Current post-pivot source-residual representative slice:
+`threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.
+Lean now zero-extends the displayed post-pivot residual block to a total
+source-coordinate residual function and proves that restricting it back to
+the next same-stage residual block recovers the displayed block:
+`case2DisplayedPostPivotSourceResidual` and
+`case2SourceResidualBlock_postPivotSourceResidual`.  The existing paper-`C'`
+lower-row product also has a source-residual/source-following notation
+rewrite.  Keep this as finite representative bookkeeping only; it is not
+chart production, source-produced successor post-data, transition invariance,
+or a full successor product.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch

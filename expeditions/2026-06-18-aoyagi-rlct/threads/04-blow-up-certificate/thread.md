@@ -3505,3 +3505,23 @@ This is still supplied-boundary assembly and finite center principalization.
 It does not construct charts, source-produce `C'^(S+1)`, produce
 recurrence/exponent post-data, prove chart coverage or transition invariance,
 compute a Jacobian, prove normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-21 Lean Case 2 post-pivot source residual
+
+Reproduction:
+`reproduction-case2-post-pivot-source-residual-a4.md`.
+Statement card:
+`statement-card-a4-case2-post-pivot-source-residual.md`.
+Review artifact:
+`review-case2-post-pivot-source-residual-a4.md`.
+
+Lean now names a zero-extended source-coordinate representative of the
+displayed Case 2 post-pivot lower-right block.  Restricting this source
+representative back to the next same-stage residual row/column domains
+recovers `case2DisplayedPostPivotResidualBlock`, and the existing paper-`C'`
+lower-row product is rewritten in source-residual/source-following notation.
+
+This is finite representative bookkeeping only.  It does not construct the
+successor chart, produce recurrence or exponent post-data from coordinates,
+prove a transition invariant, handle terminal relabeling, prove normal
+crossings, or extract an RLCT.
