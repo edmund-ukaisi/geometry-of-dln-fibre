@@ -88,3 +88,15 @@ Green (3013 jobs), 0-sorry, axiom-clean, `[Field k]` only, reviewer PASS. Bricks
 **Next: G3** (thread 04) — irreducible components of `Σ̄^r` = maximal `Ō_M` (Mathlib `irreducibleComponents` +
 `mem_of_subset_sUnion_irreducibleComponents`, consuming G2's union + collapse), then top-dim = min-codim ⟹
 `θ = numTop` (consumes LANDED Voigt codim). START with the spec-transport/`minimalPrimes(⨅)` spike (flagged risk).
+
+## 2026-06-21 — G3 LANDED (components = maximal Ō_M); θ-A landed; θ-count remaining
+`Core.SigmaComponents`: irreducible components of `Σ̄^r` = maximal `Ō_M` (`minimalPrimes_sigmaIdeal_eq`,
+`irreducibleComponents_sigmaIdeal_equiv`); spike `minimalPrimes_sInf_of_finite_of_isPrime` (general, prime
+avoidance) — architecture CLEAN (PrimeSpectrum/⨅ route, no point-space union algebra). θ-A
+`orbitRankLocus_minCodim_mem_minimalPrimes` (top-dim ⟹ component, strict-mono height). Green (3014 jobs),
+0-sorry, axiom-clean, reviewer PASS-with-notes. Commits 99eafe0/d59862e. Closes CThetaGeometric roadmap step (ii).
+- **θ-count remaining** (thread 05, ~150–250 LoC, scoped by G3): `numTop = θ = #top-dim components` — the
+  Kostant-partition ↔ component count-bijection (surjectivity via Kostant reps + injectivity + min-height↔
+  min-codimForm restricted to minimisers; the height=codimForm transport is LANDED). Then Phase D, then R-interface.
+- **ENV FLAG: Codex non-functional in this worktree** (codex doctor/exec timeout, exit 143/144). Decorrelated-
+  Codex discipline degraded → use the reviewer for decorrelation until Codex returns. Flagged to operator.
