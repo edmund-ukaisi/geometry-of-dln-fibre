@@ -1,6 +1,6 @@
 # Thread 04 — Phase G3 + θ (irreducible components of `Σ̄^r` and the count `θ`) — statement card
 
-Module: `lean/DLNFibre/Core/SigmaComponents.lean` (318 LoC, sorry-free, axiom-clean).
+Module: `lean/DLNFibre/Core/SigmaComponents.lean` (318 LoC, sorry-free, axiom-clean) @ `99eafe0`.
 Build: whole `DLNFibre` library green (3014 jobs); `scripts/sorries` = 0.
 Axioms (all headlines, via `#print axioms`): `[propext, Classical.choice, Quot.sound]`.
 
