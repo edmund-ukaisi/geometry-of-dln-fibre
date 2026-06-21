@@ -242,3 +242,23 @@ Commits 933e424/e39a1a7.
    C_r zero-cited; the rlct value Cited (Aoyagi) + the bundle shift Cited (Lemma 4.6), both honest named interfaces.
 **Cited boundary (all named, name=content):** Aoyagi rlct value; Lemma 4.6 bundle shift. **Open (roadmap):**
 θ-strict `hMonoStrict` (hard-open combinatorial). **CLOSE: propose PR `expedition/rlct-payoff → dev` (operator-gated).**
+
+## 2026-06-21 — θ-strict DE-RISKED: strict-cert peer delivered a certified Route B (~50–70 LoC)
+The orphaned thread-07 `strict-cert` seat kept working after retracting its flat-chain route, and delivered a
+NEW certified route for `cCodim_zero_strict` (decorrelated: own exhaustive enumeration + an independent Codex
+derivation CONVERGED). DATA (peer, not yet Lean — pending realization + AUDIT; a prior route was retracted, so
+build carefully):
+- **Route B — reuses the EXISTING move machinery (no new move, no Φ); ~50–70 LoC on weak-mono.** 3 lemmas:
+  - **Lemma Y** (full coverage ⟹ codimForm ≥ 1): e_v≥1 ∀v ⟹ every corner-0 Kostant partition has codimForm≥1
+    (contrapositive, extremal-interval; verified N≤4, 3305/3305).
+  - **Lemma X (crux/new content):** codimForm≥1 ⟹ a STRICT reduceStep exists. Pick a MINIMAL-LENGTH active
+    interval INVOLVED IN A PAIR; reduce at the partner-adjacent vertex; partner sits at coeff −1, "shortest"
+    kills positive coeffs ⟹ delta ≤ −1 < 0 (upgrades the EXISTING `codimForm_*_le` "≤0" to "<0"). Verified 379877/379877.
+  - **+1-step + all-vertex strict (wiring):** Y + X + LANDED weak-mono ⟹ `cCodim e 0 < cCodim(e+1)0`; then
+    `e ≤ e+1 ≤ e'` ⟹ all-vertex strict. Verified 252/252.
+- **Ruled out (don't re-explore):** Route A (simple Φ — gap too tight); all deterministic local step-rules
+  (location is config-dependent). Load-bearing refinement = "involved-in-a-pair + extremal-by-length".
+- **One Lean care-step:** the "shortest-covering" contradiction in Lemma X (Case 1/2) — elementary Fin/omega.
+- Reserve: a "corner-uncross" route (cleaner but needs a NEW move) — Route B preferred (reuses existing 4 moves).
+**Impact:** the θ-strict is no longer "hard-open / dedicated effort" — it's a sized, decorrelated ~50–70 LoC build.
+The push-θ option is now bounded + low-risk; discharging it ⟹ `θ = numTop` FULLY unconditional, expedition gap-free.
