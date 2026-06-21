@@ -2300,6 +2300,152 @@ private theorem Yvec_value (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) (h
   rw [hYsplit, hMsplit, htail, Yvec_balanced_sq M c hc1]
   ring
 
+/-- The `k`-smallest of `edgeQ` restricted to its `c` smallest equals the `k`-smallest of `edgeQ`
+(`k ≤ c`); the first `c` sorted values, re-sorted, are unchanged. -/
+private theorem smallestK_restrict (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (c k : ℕ) (hk : k ≤ c)
+    (hcL : c ≤ L) :
+    smallestK c k (fun i : Fin c => srt L (fun j : Fin L => edgeQ M T (j : ℕ)) (i : ℕ))
+      = smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) := by
+  set q := fun j : Fin L => edgeQ M T (j : ℕ) with hq
+  set xc := fun i : Fin c => srt L q (i : ℕ) with hxc
+  have hxcmono : Monotone xc := by
+    intro a b hab; rw [hxc]; exact srt_mono L q hab (by omega)
+  rw [smallestK, smallestK]
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  rw [srt_of_monotone c xc hxcmono i (by omega)]
+
+/-- **k ≤ c regime.** `smallestK L k edgeQ ≤ smallestK c k (balancedSplit P c)` for `T ∈ Adm M`,
+`k ≤ c = cAch M`: F1 (`smallestK_edge_le_width` at `c`, giving `∑(c smallest) ≤ P`) + Step B. -/
+private theorem edge_le_balanced (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L)
+    (k : ℕ) (hkc : k ≤ cAch M) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ))
+      ≤ smallestK (cAch M) k
+          (fun i => ((balancedSplit (Sprefix M (cAch M + 1)) (cAch M) i : ℕ) : ℤ)) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set q := fun j : Fin L => edgeQ M T (j : ℕ) with hq
+  set xc := fun i : Fin c => srt L q (i : ℕ) with hxc
+  -- F1: ∑ xc = smallestK L c edgeQ ≤ smallestK (L+1)(c+1) Mvec = Sprefix M (c+1)
+  have hF1 : (∑ i, xc i) ≤ (Sprefix M (c + 1) : ℤ) := by
+    have hle := smallestK_edge_le_width M T hT hL c hcleL
+    rw [smallestK_Mvec M (c + 1) (by omega)] at hle
+    have hsum : (∑ i, xc i) = smallestK L c q := by
+      rw [smallestK, hxc, ← Fin.sum_univ_eq_sum_range (fun i => srt L q i) c]
+    rw [hsum]; exact hle
+  -- xc nonneg
+  have hxcnn : ∀ i, 0 ≤ xc i := fun i => srt_nonneg L q (fun j => edgeQ_nonneg M T hT j) (i : ℕ)
+  -- Step B on xc
+  have hstepB := stepB (Sprefix M (c + 1)) c k hc1 hkc xc hxcnn hF1
+  rw [smallestK_balancedSplit (Sprefix M (c + 1)) c k hc1 hkc]
+  rw [smallestK_restrict M T c k hkc hcleL] at hstepB
+  exact hstepB
+
+/-- The monotone-`Yvec` prefix sum `∑_{i<k} Yvec`, in two regimes: `k·b + max(0,k+r−c)` for `k≤c`
+(the balanced block), `Sprefix M (k+1)` for `c<k≤L` (balanced total + the `k−c` smallest tail). -/
+private theorem Yvec_prefix (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (k : ℕ) (hk : k ≤ L) :
+    ∑ i ∈ Finset.range k, (if h : i < L then Yvec M (cAch M) ⟨i, h⟩ else 0)
+      = if k ≤ cAch M then
+          (k : ℤ) * ((Sprefix M (cAch M + 1) / cAch M : ℕ) : ℤ)
+            + max 0 ((k : ℤ) + ((Sprefix M (cAch M + 1) % cAch M : ℕ) : ℤ) - (cAch M : ℤ))
+        else (Sprefix M (k + 1) : ℤ) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set r : ℤ := ((P % c : ℕ) : ℤ) with hr
+  have hrlt : P % c < c := Nat.mod_lt _ hc1
+  -- the balanced-block prefix sum `∑_{i<m} bform = m·b + max(0, m+r−c)` for `m ≤ c`
+  have hbalpre : ∀ m, m ≤ c →
+      ∑ i ∈ Finset.range m, (if i < c - P % c then b else b + 1)
+        = (m : ℤ) * b + max 0 ((m : ℤ) + r - (c : ℤ)) := by
+    intro m hm
+    rw [Finset.sum_ite, Finset.sum_const, Finset.sum_const]
+    have hcard1 : ((Finset.range m).filter (fun i => i < c - P % c)).card = min m (c - P % c) := by
+      rw [show ((Finset.range m).filter (fun i => i < c - P % c))
+            = Finset.range (min m (c - P % c)) from by
+          ext i; simp only [Finset.mem_filter, Finset.mem_range, lt_min_iff]]
+      rw [Finset.card_range]
+    have hcard2 : ((Finset.range m).filter (fun i => ¬ i < c - P % c)).card = m - (c - P % c) := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card (s := Finset.range m)
+        (p := fun i => i < c - P % c)
+      rw [hcard1, Finset.card_range] at this; omega
+    rw [hcard1, hcard2, nsmul_eq_mul, nsmul_eq_mul, hr]
+    -- ↑(m-(c-r')) = max 0 (m+r'-c); ↑(min m (c-r')) = m - that
+    have hmaxcast : ((m - (c - P % c) : ℕ) : ℤ)
+        = max 0 ((m : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ)) := by
+      rcases Nat.lt_or_ge (m + P % c) c with h | h
+      · rw [show m - (c - P % c) = 0 by omega, max_eq_left (by push_cast; omega)]; rfl
+      · rw [max_eq_right (by push_cast; omega), Nat.cast_sub (by omega), Nat.cast_sub (by omega)]
+        push_cast; ring
+    have hmincast : ((min m (c - P % c) : ℕ) : ℤ) = (m : ℤ) - ((m - (c - P % c) : ℕ) : ℤ) := by
+      rw [← Nat.cast_sub (by omega)]; congr 1; omega
+    rw [hmincast, hmaxcast]; ring
+  by_cases hkc : k ≤ c
+  · rw [if_pos hkc]
+    rw [show (∑ i ∈ Finset.range k, (if h : i < L then Yvec M c ⟨i, h⟩ else 0))
+          = ∑ i ∈ Finset.range k, (if i < c - P % c then b else b + 1) from ?_]
+    · exact hbalpre k hkc
+    · apply Finset.sum_congr rfl; intro i hi
+      rw [Finset.mem_range] at hi
+      rw [dif_pos (show i < L by omega), Yvec, if_pos (show ((⟨i, by omega⟩ : Fin L) : ℕ) < c by
+        simp only [Fin.val_mk]; omega)]
+  · rw [if_neg hkc]
+    -- split range k = range c ⊎ Ico c k; balanced total P + tail = Sprefix(k+1)
+    rw [← Finset.sum_range_add_sum_Ico _ (not_le.mp hkc).le]
+    have hbal : ∑ i ∈ Finset.range c, (if h : i < L then Yvec M c ⟨i, h⟩ else 0)
+        = (P : ℤ) := by
+      rw [show (∑ i ∈ Finset.range c, (if h : i < L then Yvec M c ⟨i, h⟩ else 0))
+            = ∑ i ∈ Finset.range c, (if i < c - P % c then b else b + 1) from ?_]
+      · rw [hbalpre c (le_refl c)]
+        have hrnn : (0 : ℤ) ≤ ((P % c : ℕ) : ℤ) := by positivity
+        rw [max_eq_right (show (0 : ℤ) ≤ (c : ℤ) + r - (c : ℤ) by rw [hr]; linarith)]
+        have hPeq : (P : ℤ) = (c : ℤ) * b + r := by
+          rw [hb, hr, ← Nat.cast_mul, ← Nat.cast_add]; exact_mod_cast (Nat.div_add_mod P c).symm
+        rw [hPeq]; ring
+      · apply Finset.sum_congr rfl; intro i hi
+        rw [Finset.mem_range] at hi
+        rw [dif_pos (show i < L by omega), Yvec, if_pos (show ((⟨i, by omega⟩ : Fin L) : ℕ) < c by
+          simp only [Fin.val_mk]; omega)]
+    have htail : ∑ i ∈ Finset.Ico c k, (if h : i < L then Yvec M c ⟨i, h⟩ else 0)
+        = ∑ i ∈ Finset.Ico c k, (aS M (i + 1) : ℤ) := by
+      apply Finset.sum_congr rfl; intro i hi
+      rw [Finset.mem_Ico] at hi
+      rw [dif_pos (show i < L by omega), Yvec, if_neg (show ¬ ((⟨i, by omega⟩ : Fin L) : ℕ) < c by
+        simp only [Fin.val_mk]; omega)]
+    rw [hbal, htail]
+    -- P + ∑_{Ico c k} aS(i+1) = Sprefix(k+1) = ∑_{i<k+1} aS i
+    have hPeq : (P : ℤ) = ∑ i ∈ Finset.range (c + 1), (aS M i : ℤ) := by
+      rw [hP, Sprefix, Nat.cast_sum]
+    have hSk : (Sprefix M (k + 1) : ℤ) = ∑ i ∈ Finset.range (k + 1), (aS M i : ℤ) := by
+      rw [Sprefix, Nat.cast_sum]
+    rw [hPeq, hSk, ← Finset.sum_range_add_sum_Ico _ (by omega : c + 1 ≤ k + 1)]
+    congr 1
+    -- ∑_{Ico c k} aS(i+1) = ∑_{Ico (c+1) (k+1)} aS i  (reindex i ↦ i+1)
+    rw [Finset.sum_Ico_eq_sum_range, Finset.sum_Ico_eq_sum_range]
+    apply Finset.sum_congr (by congr 1; omega)
+    intro i _
+    have : c + i + 1 = c + 1 + i := by omega
+    rw [this]
+
+/-- **The per-`T` domination** `∀k, smallestK L k edgeQ ≤ smallestK L k (Yvec M cAch)`, `T ∈ Adm M`
+— the input to `sq_sum_le_of_sorted_prefix`. `k ≤ c`: `edge_le_balanced` + balanced closed form;
+`k > c`: `smallestK_edge_le_width` (`≤ Sprefix`). -/
+private theorem edge_le_Yvec (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L)
+    (k : ℕ) (hk : k ≤ L) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) ≤ smallestK L k (Yvec M (cAch M)) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  rw [smallestK_of_monotone L k (Yvec M c) (Yvec_monotone M hL) hk, Yvec_prefix M hL k hk]
+  by_cases hkc : k ≤ c
+  · rw [if_pos hkc]
+    have := edge_le_balanced M T hT hL k hkc
+    rwa [smallestK_balancedSplit (Sprefix M (c + 1)) c k hc1 hkc] at this
+  · rw [if_neg hkc]
+    have := smallestK_edge_le_width M T hT hL k hk
+    rwa [smallestK_Mvec M (k + 1) (by omega)] at this
+
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
