@@ -59,4 +59,44 @@ theorem measurePreserving_e222 :
     (MeasurePreserving.id (volume : Measure ℝ))
   exact (h1.symm _).trans ((h2.symm _).trans ha)
 
+/-! ## The coordinate identification (the seam's fidelity realization)
+
+`e222.symm` recovers each matrix entry from its flat slot — DEFINITIONALLY (`rfl`), since the equiv
+is a `piCurry`-collapse + reindex (the extraction mirrors `prod_paramsEquivFlat`'s `rfl`). Composing
+with the explicit `fin8EquivFlatIdx222` slot table (`decide`, kernel) pins `a00=0, …, b11=7`. So the
+coordinate identification is PROVEN and auditable, not asserted. -/
+
+/-- **Coordinate extraction (`rfl`).** The `(s,i,j)` matrix entry of `e222.symm x` is the flat
+coordinate `x` at the slot `fin8EquivFlatIdx222.symm ⟨⟨s,i⟩,j⟩`. -/
+theorem e222_symm_coord (x : Fin 8 → ℝ) (s i j : Fin 2) :
+    (e222.symm x) s i j = x (fin8EquivFlatIdx222.symm (⟨⟨s, i⟩, j⟩ : FlatIdx H222)) := rfl
+
+/-- The `A`-block slots (`s = 0`): `a00=0, a01=1, a10=2, a11=3`. By `decide` (kernel). -/
+theorem slot_a00 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨0, by decide⟩, ⟨0, by decide⟩⟩, ⟨0, by decide⟩⟩ : FlatIdx H222)
+      = 0 := by decide
+theorem slot_a01 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨0, by decide⟩, ⟨0, by decide⟩⟩, ⟨1, by decide⟩⟩ : FlatIdx H222)
+      = 1 := by decide
+theorem slot_a10 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨0, by decide⟩, ⟨1, by decide⟩⟩, ⟨0, by decide⟩⟩ : FlatIdx H222)
+      = 2 := by decide
+theorem slot_a11 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨0, by decide⟩, ⟨1, by decide⟩⟩, ⟨1, by decide⟩⟩ : FlatIdx H222)
+      = 3 := by decide
+
+/-- The `B`-block slots (`s = 1`): `b00=4, b01=5, b10=6, b11=7`. By `decide` (kernel). -/
+theorem slot_b00 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨1, by decide⟩, ⟨0, by decide⟩⟩, ⟨0, by decide⟩⟩ : FlatIdx H222)
+      = 4 := by decide
+theorem slot_b01 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨1, by decide⟩, ⟨0, by decide⟩⟩, ⟨1, by decide⟩⟩ : FlatIdx H222)
+      = 5 := by decide
+theorem slot_b10 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨1, by decide⟩, ⟨1, by decide⟩⟩, ⟨0, by decide⟩⟩ : FlatIdx H222)
+      = 6 := by decide
+theorem slot_b11 :
+    fin8EquivFlatIdx222.symm (⟨⟨⟨1, by decide⟩, ⟨1, by decide⟩⟩, ⟨1, by decide⟩⟩ : FlatIdx H222)
+      = 7 := by decide
+
 end DLNFibre.DLN.RLCT
