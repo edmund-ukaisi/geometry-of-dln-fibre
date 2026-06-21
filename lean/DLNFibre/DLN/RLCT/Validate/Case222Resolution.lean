@@ -352,4 +352,45 @@ theorem phiUnit_image_subset_cubeBox (ε : ℝ) (hε : 0 < ε) :
   simp only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Ioo] at hxmem
   intro i _; exact ⟨(hxmem i).1.le, (hxmem i).2.le⟩
 
+/-! ## The spectator-lift (`tailLift`) for the composite change-of-variables
+
+The composite chart `phiUnit` applies maps to the `Fin 7` tail with `u0` a spectator. `tailLift F u =
+Fin.cons (u 0) (F (Fin.tail u))` packages this; it factors through `finPeel 7` (`(Fin 8 → ℝ) ≃ₜ ℝ ×
+(Fin 7 → ℝ)`, `u ↦ (u0, tail u)`) as `(finPeel 7).symm ∘ (id × F) ∘ finPeel 7`. The composite c-o-v
+peels `u0` via the measure-preserving `finPeel 7` (route B, Codex 2026-06-21): the `Fin 7` blow-up
+(`step2E`) and the Lemma-2 splice act on the tail factor. -/
+
+/-- The spectator lift: apply a `Fin 7` map to the tail, keeping coordinate `0` fixed. -/
+def tailLift (F : (Fin 7 → ℝ) → Fin 7 → ℝ) (u : Fin 8 → ℝ) : Fin 8 → ℝ :=
+  Fin.cons (u 0) (F (Fin.tail u))
+
+/-- `finPeel 7 u = (u 0, Fin.tail u)` (the `0`-th coordinate peeled off). -/
+theorem finPeel7_apply (u : Fin 8 → ℝ) : (finPeel 7) u = (u 0, Fin.tail u) := by
+  unfold finPeel; simp only [Homeomorph.homeomorph_mk_coe]; rfl
+
+/-- `(finPeel 7).symm (a, r) = Fin.cons a r` (reassemble; `piFinSuccAbove.symm = insertNth 0`). -/
+theorem finPeel7_symm_apply (a : ℝ) (r : Fin 7 → ℝ) :
+    (finPeel 7).symm (a, r) = Fin.cons a r := by
+  unfold finPeel; simp only [Homeomorph.homeomorph_mk_coe]; exact Fin.insertNth_zero' a r
+
+/-- `tailLift` factors through `finPeel 7` as `(finPeel 7).symm ∘ (id × F) ∘ finPeel 7` (the
+spectator-product structure for the measure-preserving peel). -/
+theorem tailLift_eq_finPeel (F : (Fin 7 → ℝ) → Fin 7 → ℝ) (u : Fin 8 → ℝ) :
+    tailLift F u = (finPeel 7).symm (Prod.map id F (finPeel 7 u)) := by
+  rw [finPeel7_apply, Prod.map_apply, id_eq, finPeel7_symm_apply]; rfl
+
+/-- `lemma2Inv` is measure-preserving (the inverse of the measure-preserving `lemma2Hom`). -/
+theorem measurePreserving_lemma2Inv :
+    MeasurePreserving lemma2Inv (volume : Measure (Fin 7 → ℝ)) volume :=
+  measurePreserving_lemma2Hom.symm lemma2Hom.toMeasurableEquiv
+
+/-- **`phiUnit` as a `Fin 8` chain.** `phiUnit = step1A ∘ tailLift lemma2Inv ∘ tailLift step2E`
+(`Fin.cons_zero` / `Fin.tail_cons` collapse the nested cons/tail). The composite c-o-v then peels the
+`u0`-spectator (`finPeel 7`) so the Fin-7 tail receives the gated `step2E_lintegral_image` and the
+Lemma-2 measure-preserving splice (route B, Codex 2026-06-21). -/
+theorem phiUnit_eq_comp (u : Fin 8 → ℝ) :
+    phiUnit u = step1A (tailLift lemma2Inv (tailLift step2E u)) := by
+  unfold phiUnit tailLift
+  rw [Fin.cons_zero, Fin.tail_cons]
+
 end DLNFibre.DLN.RLCT
