@@ -87,14 +87,28 @@ theorem rlctAtOn_blockG_eq_one : rlctAtOn blockG (0 : Fin 2 → ℝ) = 1 := by
 theorem rlctAtOn_blockH_eq_one : rlctAtOn blockH (0 : Fin 2 → ℝ) = 1 := by
   sorry
 
+/-- A sum-of-squares block `Σᵢ xᵢ²` vanishes only at the origin, a `volume`-null singleton on
+`Fin 2 → ℝ`, so it is nonzero a.e. (the `hGne`/`hHne` input to `product_min_rlct_of_ne`). -/
+theorem block_ne_ae : ∀ᵐ x ∂(volume : Measure (Fin 2 → ℝ)), blockG x ≠ 0 := by
+  have hz : {x : Fin 2 → ℝ | blockG x = 0} ⊆ {0} := by
+    intro x hx
+    simp only [Set.mem_setOf_eq, blockG] at hx
+    have hi : ∀ i, x i = 0 := fun i => by
+      have hnn : ∀ j, (0 : ℝ) ≤ x j ^ 2 := fun j => sq_nonneg _
+      have := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hnn j)).1 hx i (Finset.mem_univ i)
+      exact pow_eq_zero_iff (by norm_num) |>.1 this
+    simp only [Set.mem_singleton_iff]; funext i; exact hi i
+  exact compl_mem_ae_iff.mpr (measure_mono_null hz (measure_singleton _))
+
 /-- **product-MIN for the two blocks.** `rlctAtOn (G·H)(0,0) = min (rlctAtOn G 0)(rlctAtOn H 0)`
-via `product_min_rlct` (Tonelli `∫(GH)^{−c} = (∫G^{−c})(∫H^{−c})`, finite ⟺ both ⟺ `c < min`). The 4
-positivity/down-set hypotheses are discharged from the smooth-block structure (cleaner via `#57`
-`product_min_rlct_of_ne` once on trunk). -/
+via `product_min_rlct_of_ne` (#57; Tonelli `∫(GH)^{−c} = (∫G^{−c})(∫H^{−c})`, finite ⟺ both ⟺
+`c < min`). The a.e.-nonvanishing inputs are `block_ne_ae` (`blockG = blockH` as functions). -/
 theorem rlctAtOn_product_blocks :
     rlctAtOn (fun p : (Fin 2 → ℝ) × (Fin 2 → ℝ) => blockG p.1 * blockH p.2) (0, 0)
       = min (rlctAtOn blockG 0) (rlctAtOn blockH 0) := by
-  sorry
+  have hGm : Measurable blockG := by unfold blockG; fun_prop
+  have hHm : Measurable blockH := by unfold blockH; fun_prop
+  exact product_min_rlct_of_ne blockG blockH hGm hHm block_ne_ae block_ne_ae
 
 /-- **The `(2,1,2)` headline** (target: axiom-clean modulo the named sorries above). The local RLCT
 of the deep-linear `(2,1,2)` loss at the deepest point of the `B = 0` fibre equals Aoyagi's closed
@@ -104,8 +118,9 @@ theorem case212_rlct :
     rlctAtOn (dlnLoss (![2, 1, 2] : Fin 3 → ℕ) 0) deepest212
       = ENNReal.ofReal (aoyagiLambda (![2, 1, 2] : Fin 3 → ℕ) 0) := by
   rw [rlctAtOn_case212_eq_product, rlctAtOn_product_blocks,
-    rlctAtOn_blockG_eq_one, rlctAtOn_blockH_eq_one]
-  -- min(1,1) = 1 = ofReal(aoyagiLambda (2,1,2) 0)
-  sorry
+    rlctAtOn_blockG_eq_one, rlctAtOn_blockH_eq_one, min_self]
+  -- aoyagiLambda (2,1,2) 0 = 1 (rational, by kernel), so ofReal = 1
+  have h1 : aoyagiLambda (![2, 1, 2] : Fin 3 → ℕ) 0 = (1 : ℚ) := by decide +kernel
+  rw [h1]; norm_num
 
 end DLNFibre.DLN.RLCT
