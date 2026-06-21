@@ -818,6 +818,32 @@ theorem terminalMinimumLabelExactness_of_branchLabel_bijOn {β : Type*}
     rw [← hxl]
     exact Finset.mem_image.mpr ⟨x, hx, rfl⟩
 
+/-- Packaged terminal-minimum exactness is equivalent to a branch-label
+bijection once the supplied terminal-candidate branches are known to attain
+the minimum.
+
+This is finite supplied-data bookkeeping.  It does not construct the
+exactness fields, source labels, displayed branches, or the no-extra
+classifier from Aoyagi's source. -/
+theorem terminalMinimumLabelExactness_iff_branchLabel_bijOn {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a) :
+    C.TerminalMinimumLabelExactness ↔
+      Set.BijOn C.branchLabel ↑C.fullBranches ↑C.terminalMinimumLabels := by
+  constructor
+  · intro exactness
+    exact C.branchLabel_bijOn_terminalMinimumLabels_of_exactness ha hselected
+      exactness
+  · intro hbij
+    exact C.terminalMinimumLabelExactness_of_branchLabel_bijOn hbij
+
 /-- Count terminal minimum labels from a supplied branch-label bijection.
 
 This wrapper does not prove the bijection from Aoyagi's source equations. -/

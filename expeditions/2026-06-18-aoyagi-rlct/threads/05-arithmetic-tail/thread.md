@@ -4066,3 +4066,28 @@ This remains supplied finite API.  It does not construct Aoyagi's classifier,
 prove Case 1(2) nonduplication, construct the back-to-label map from equations
 `(3)`, `(4)`, and `(5)`, prove source-label legality, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal exactness/bijection equivalence
+
+Reproduction:
+`reproduction-lemma5-terminal-exactness-bijon-equivalence-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-exactness-bijon-equivalence.md`.
+Review artifact:
+`review-lemma5-terminal-exactness-bijon-equivalence-a5.md`.
+
+Lean now packages the two supplied-boundary formulations of terminal-minimum
+exactness as an equivalence:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_bijOn
+```
+
+The forward direction still needs `a<=n+1` and the selected-width sum to show
+that supplied branch labels land in the terminal-minimum label set.  The
+reverse direction unpacks the `Set.BijOn` injection and surjection fields into
+the existing exactness structure.
+
+This is finite API bookkeeping only.  It does not construct exactness,
+classifier data, a back-to-label map, source labels, source branches, pole
+order, normal crossings, or RLCT extraction.

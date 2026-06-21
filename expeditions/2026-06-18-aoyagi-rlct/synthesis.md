@@ -3770,6 +3770,22 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-back-to-label-bijon-a5.md`.
 
+The terminal-minimum exactness boundary now has an explicit bijection
+equivalence in `lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  New Lean
+name:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_bijOn`.
+It packages the existing two directions between supplied
+`TerminalMinimumLabelExactness` and
+`Set.BijOn C.branchLabel C.fullBranches C.terminalMinimumLabels`.  The
+selected-width sum and `a<=n+1` remain explicit because the exactness-to-bijon
+direction uses them to show supplied branches attain the terminal minimum.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-bijon-equivalence-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-exactness-bijon-equivalence.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-exactness-bijon-equivalence-a5.md`.
+
 The Eq5 nonfirst block admissibility wrapper has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean name:
 `aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard`.

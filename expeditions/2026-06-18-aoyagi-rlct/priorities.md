@@ -114,6 +114,8 @@ Current counted-datum back-to-branch-label exactness slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
 Current counted-datum back-to-label bijection slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-back-to-label-bijon-a5.md`.
+Current terminal exactness/bijection equivalence slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-bijon-equivalence-a5.md`.
 Current Eq4 rising non-strict endpoint split slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
 Current Eq5 alpha-family value-image slice:
