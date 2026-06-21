@@ -44,7 +44,7 @@ theorem monomialIntegrand_downset (d : ℕ) (k h : Fin d → ℕ) (c' c'' : ℝ)
   have hb1 : b ≤ 1 := by
     rw [hb]; apply Finset.prod_le_one (fun j _ => pow_nonneg (abs_nonneg _) _)
     intro j _; apply pow_le_one₀ (abs_nonneg _); rw [abs_of_nonneg (hu j).1]; exact (hu j).2
-  show |monomialIntegrand d k h c' u| ≤ monomialIntegrand d k h c'' u
+  change |monomialIntegrand d k h c' u| ≤ monomialIntegrand d k h c'' u
   unfold monomialIntegrand
   rw [← hP, ← hb, abs_of_nonneg (mul_nonneg hP0 (Real.rpow_nonneg hb0 _))]
   apply mul_le_mul_of_nonneg_left _ hP0

@@ -106,4 +106,42 @@ theorem step2E_unit_ge_one (z : Fin 7 → ℝ) :
     (1 : ℝ) ≤ 1 + (z 2) ^ 2 + (z 4 + z 3 * z 5) ^ 2 + (z 4 * z 2 + z 3 * z 6) ^ 2 := by
   nlinarith [sq_nonneg (z 2), sq_nonneg (z 4 + z 3 * z 5), sq_nonneg (z 4 * z 2 + z 3 * z 6)]
 
+/-- **Step-2 δ-pivot chart** `φ₂'` (pivot `δ = z1`): `δ = z1`, `E = z1·z2`, `F0 = z1·z3`; `q, G, H`
+pass through. The blow-up of the resolved vertex along the `δ` direction — the branch whose residual
+`block` VANISHES at the centre (`= G² + H²`), so it is NOT a unit and needs step-3 (the BLOCK leaves).
+-/
+noncomputable def step2D (z : Fin 7 → ℝ) : Fin 7 → ℝ :=
+  ![z 0, z 1 * z 2, z 1 * z 3, z 1, z 4, z 5, z 6]
+
+/-- **Step-2 δ-pivot factorization (the BLOCK branch).** `resolvedForm (φ₂' z) = z1² · block`, where
+`block = E'² + F0'² + (q·E' + G)² + (q·F0' + H)²` (`E' = z2 = E/δ`, `F0' = z3 = F0/δ`) is a
+4-variable sum of squares vanishing at the centre — so step-3 must blow it up further. Pure algebra. -/
+theorem resolvedForm_step2D (z : Fin 7 → ℝ) :
+    resolvedForm (step2D z)
+      = (z 1) ^ 2 * ((z 2) ^ 2 + (z 3) ^ 2 + (z 4 * z 2 + z 5) ^ 2 + (z 4 * z 3 + z 6) ^ 2) := by
+  unfold resolvedForm step2D
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Fin.isValue]
+  ring
+
+/-- The step-2 δ-branch block `block(q, v, w, G, H) = v² + w² + (q·v + G)² + (q·w + H)²` (on the four
+`v = E', w = F0', G, H` plus spectator `q`). The input to step-3. -/
+noncomputable def blockForm (q v w G H : ℝ) : ℝ :=
+  v ^ 2 + w ^ 2 + (q * v + G) ^ 2 + (q * w + H) ^ 2
+
+/-- **Step-3 block factorization (the BLOCK leaf).** Blowing up the block vertex along the `v = u`
+direction (`v = u`, `w = u·a1`, `G = u·a2`, `H = u·a3`; `q` spectator) factors out `u²` against a
+**unit**: `blockForm q u (u·a1) (u·a2) (u·a3) = u² · res`, with
+`res = (q·a1 + a3)² + (q + a2)² + a1² + 1 ≥ 1 > 0` (`step3_unit_ge_one`). The `u`-exceptional divisor
+(`k = 1`, `h = 3` after the `³`-Jacobian; axis ratio `2`). Pure algebra. -/
+theorem blockForm_step3 (q u a1 a2 a3 : ℝ) :
+    blockForm q u (u * a1) (u * a2) (u * a3)
+      = u ^ 2 * ((q * a1 + a3) ^ 2 + (q + a2) ^ 2 + a1 ^ 2 + 1) := by
+  unfold blockForm; ring
+
+/-- The step-3 block residual `res = (q·a1+a3)² + (q+a2)² + a1² + 1 ≥ 1` — the block-leaf nonvanishing
+input (`0 < a`, `a = 1`) to `integrableOn_monomial_mul_unit_iff`. -/
+theorem step3_unit_ge_one (q a1 a2 a3 : ℝ) :
+    (1 : ℝ) ≤ (q * a1 + a3) ^ 2 + (q + a2) ^ 2 + a1 ^ 2 + 1 := by
+  nlinarith [sq_nonneg (q * a1 + a3), sq_nonneg (q + a2), sq_nonneg a1]
+
 end DLNFibre.DLN.RLCT
