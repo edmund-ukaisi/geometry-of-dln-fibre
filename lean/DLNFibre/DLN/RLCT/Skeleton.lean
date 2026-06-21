@@ -2859,6 +2859,57 @@ private theorem QFeas_of_assignment (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
     rw [show (j : ℕ) + 2 = ((j : ℕ) + 1) + 1 by omega, Mseq_prefix_succ] at hp
     linarith
 
+/-- `∑ sortedSmallest M c = Sprefix M (c+1)` (the `c+1` smallest widths sum to the prefix). -/
+private theorem sum_sortedSmallest (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) :
+    ∑ k : Fin (c + 1), sortedSmallest M c hc k = Sprefix M (c + 1) := by
+  rw [Sprefix, ← Fin.sum_univ_eq_sum_range (fun i => aS M i) (c + 1)]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [aS, dif_pos (by omega), sortedSmallest]
+  congr 1
+
+/-- **A1 close, given a corridor-feasible achiever ordering.** With `c = cAch M`, a `QFeas` ordering
+`q` permuting `Yvec` closes the equality: upper bound via `Tstar`/`Mval_Tstar` + `Finset.inf'_le`,
+lower bound via `two_Mval_ge` + `Finset.le_inf'`, value via `Yvec_value`. The engine (∃ such `q`)
+is the only remaining piece. -/
+private theorem close_of_feasible (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (q : ℕ → ℤ) (hq : QFeas M q)
+    (σ : Equiv.Perm (Fin L)) (hperm : ∀ j : Fin L, q (j : ℕ) = Yvec M (cAch M) (σ j)) :
+    ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set c := cAch M with hc
+  refine ⟨c, hcleL, hc1, ?_⟩
+  set D : ℤ := (∑ j : Fin L, (Yvec M c j) ^ 2) - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 with hD
+  set I : ℤ := (Adm M).inf' (Adm_nonempty M) (Mval M) with hI
+  -- T* achieves the value 2·Mval = D; the inf' is achieved at some T₀
+  have hTadm : Tstar M q ∈ Adm M := Tstar_mem_Adm M q hL hq
+  have hTval : 2 * Mval M (Tstar M q) = D := Mval_Tstar M q hL hq σ hperm
+  obtain ⟨T₀, hT₀mem, hT₀eq⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+  -- upper: I ≤ Mval(Tstar) ⟹ 2I ≤ D ; lower: D ≤ 2·Mval T₀ = 2I
+  have hub : 2 * I ≤ D := by
+    have : I ≤ Mval M (Tstar M q) := Finset.inf'_le _ hTadm
+    nlinarith [this, hTval]
+  have hlb : D ≤ 2 * I := by
+    have h0 := two_Mval_ge M T₀ hT₀mem hL
+    rw [← hT₀eq] at h0; linarith [h0]
+  have hID : 2 * I = D := le_antisymm hub hlb
+  -- lambdaCore = ½·I ; cleanCore = ¼·D ; with 2I = D ⟹ equal
+  have hlam : lambdaCore M = (1 / 2 : ℚ) * (I : ℤ) := by rw [lambdaCore, hI]
+  -- cleanCore c (sortedSmallest) = ¼·D
+  have hclean : cleanCore c (sortedSmallest M c hcleL) = (1 / 4 : ℚ) * (D : ℚ) := by
+    rw [cleanCore]
+    have hsum : ∑ k, sortedSmallest M c hcleL k = Sprefix M (c + 1) := sum_sortedSmallest M c hcleL
+    simp only [hsum]
+    rw [Yvec_value M c hcleL hc1] at hD
+    rw [hD]; push_cast; ring
+  rw [hlam, hclean]
+  have : (2 : ℚ) * (I : ℚ) = (D : ℚ) := by exact_mod_cast hID
+  rw [hc] at *
+  linarith [this]
+
+/-- **A1 (Lemma 3, the headline arithmetic).** `lambdaCore M = cleanCore` at the achiever `cAch M`.
+The whole proof is assembled (`close_of_feasible` + the green lower-bound / value machinery); the one
+remaining input is the **achiever-Y feasible ordering** (the BG construction), which discharges the
+`QFeas M q` + permutation hypotheses of `close_of_feasible`. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
   sorry
