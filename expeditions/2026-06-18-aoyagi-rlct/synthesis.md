@@ -3298,6 +3298,28 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-supplied-family-terminal-chain-zero-a5.md`.
 
+The Eq4 local lower-endpoint wrapper is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The new theorem
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_lowerEndpoint_of_le_min` extracts the
+lower own-coordinate value `T4(C.point p-1)=Htilde_p` from a supplied Eq4
+piecewise certificate using only `1<=p` and `p<=ell-a`; the Eq4 certificate
+already carries `p+1<=a` and `a<=ell`.  The finite-set wrappers
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_piecewise`,
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_piecewise`,
+`aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_piecewise`,
+and
+`aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_eq_intervalValueSetNat`
+reuse that local endpoint without the global source-selected label-legality
+hypotheses.  This is still finite-set bookkeeping: it does not prove source
+label legality, Eq4 existence at `p=a`, terminal-collision compatibility in
+the `p+1=a` boundary case, or any all-branch order count.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-lower-endpoint-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-local-lower-endpoint.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-local-lower-endpoint-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

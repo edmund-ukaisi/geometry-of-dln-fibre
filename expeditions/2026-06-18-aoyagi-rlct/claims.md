@@ -2544,6 +2544,16 @@ No such claim is formalisation-ready until both fields are filled.
   `AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalH_zero`.  These prove
   terminal chain-coordinate equality `H_ell=0` for supplied branches.  They do
   not prove the source-coordinate terminal equality `T(C.point ell-1)=0`.
+  Also proved the Eq4 local lower-endpoint wrappers:
+  `aoyagiLemma5Eq4_piecewise_ownCoordinate_lowerEndpoint_of_le_min`,
+  `aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_piecewise`,
+  `aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_piecewise`,
+  `aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_piecewise`,
+  and
+  `aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_eq_intervalValueSetNat`.
+  These remove source-label legality hypotheses from the lower-endpoint
+  finite-set wrappers; they do not prove source-label legality or solve the
+  `p=a` and `p+1=a` boundary issues.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

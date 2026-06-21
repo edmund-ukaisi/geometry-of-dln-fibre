@@ -3433,3 +3433,34 @@ terminal equality `T(C.point ell-1)=0` needed by the terminal Eq5 finite-set
 wrapper.  Source-label legality, terminal-label exactness, classifier
 coverage, injection, back-to-label coverage, pole order, normal crossings, and
 RLCT extraction remain outside this claim.
+
+## 2026-06-21 Lean Lemma 5 Eq4 local lower endpoint
+
+Reproduction:
+`reproduction-lemma5-eq4-local-lower-endpoint-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-local-lower-endpoint.md`.
+Review artifact:
+`review-lemma5-eq4-local-lower-endpoint-a5.md`.
+
+Lean now packages the source-legality-free lower endpoint carried by a supplied
+Eq4 piecewise certificate:
+
+```text
+aoyagiLemma5Eq4_piecewise_ownCoordinate_lowerEndpoint_of_le_min
+aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_piecewise
+aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_piecewise
+aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_piecewise
+aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_eq_intervalValueSetNat
+```
+
+The first theorem uses `1<=p`, `p<=ell-a`, and the supplied Eq4 certificate;
+the certificate itself carries the repaired guard `p+1<=a`.  It proves only
+`T4(C.point p-1)=Htilde_p`.  The finite-set wrappers then fill Eq5's lower
+endpoint deficit, and with a separately supplied upper endpoint fill the
+same-coordinate interval.
+
+This does not prove source-label legality for `Htilde_p+1`, Eq4 existence at
+`p=a`, terminal-collision compatibility in the `p+1=a` case, all-coordinate
+branch-family coverage, injection, back-to-label coverage, pole order, normal
+crossings, or RLCT extraction.

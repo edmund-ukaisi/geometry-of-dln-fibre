@@ -21,14 +21,14 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Latest pushed A5 state is `b3d0d6a`, which records the terminal Eq5 gap:
-at `p=ell`, Eq5 offsets are empty while the terminal same-coordinate interval
-is `{0}` under the selected-width sum, so terminal coverage needs a separately
-supplied terminal zero/upper endpoint.  The meaningful source frontier is still
-the upper-bound/no-extra side of Aoyagi Lemma 5, not another lower-bound printed
-equation pass.  The renewed source probe confirms that PDF p. 26's interval
-count plus the Case 1(2) sentence that `J` increases by one does not by itself
-prove a classifier, injection, or back-to-label map.
+Current A5 state includes the Eq4 local lower-endpoint slice: the lower
+endpoint carried by a supplied Eq4 piecewise certificate is now available
+without the source-label legality hypotheses, and this fills Eq5's lower
+endpoint deficit in the rising window.  The meaningful source frontier is
+still the upper-bound/no-extra side of Aoyagi Lemma 5, not another lower-bound
+printed equation pass.  The renewed source probe confirms that PDF p. 26's
+interval count plus the Case 1(2) sentence that `J` increases by one does not
+by itself prove a classifier, injection, or back-to-label map.
 
 Recorded audit:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-source-audit-a5.md`.
@@ -72,12 +72,15 @@ Current terminal Eq5 gap slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-eq5-gap-a5.md`.
 Current supplied-family terminal chain-zero slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-supplied-family-terminal-chain-zero-a5.md`.
+Current Eq4 local lower-endpoint slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-lower-endpoint-a5.md`.
 
 Immediate order:
 
-1. Re-probe the source/API boundary for terminal branch construction and for
-   remaining Eq4 lower-endpoint cases, using the terminal Eq5 gap as an
-   inventory constraint rather than as source construction.
+1. Next source-facing target: either add an explicit terminal source-realisation
+   bridge only under a hypothesis equating `T(C.point ell-1)` with a supplied
+   branch chain endpoint, or continue the no-extra/classifier frontier.  Do not
+   infer source-coordinate terminal coverage from `H_ell=0`.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
 3. Next source-facing target: continue the endpoint inventory around the

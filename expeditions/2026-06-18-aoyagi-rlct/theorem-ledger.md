@@ -3481,6 +3481,28 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-supplied-family-terminal-chain-zero-a5.md`.
 
+Latest A5 Eq4 local lower-endpoint update: the Eq4 lower endpoint has a
+source-legality-free wrapper in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  Names:
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_lowerEndpoint_of_le_min`,
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_piecewise`,
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_piecewise`,
+`aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_piecewise`,
+and
+`aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_eq_intervalValueSetNat`.
+The first theorem uses the supplied Eq4 piecewise certificate, `1<=p`, and
+`p<=ell-a`; the certificate's repaired guard supplies `p+1<=a`.  The wrappers
+then fill Eq5's lower endpoint deficit, and with a separately supplied upper
+endpoint fill the same-coordinate interval.  They do not prove source-label
+legality, Eq4 existence at `p=a`, terminal-collision compatibility when
+`p+1=a`, or all-coordinate branch-family coverage.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-lower-endpoint-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-local-lower-endpoint.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-local-lower-endpoint-a5.md`.
+
 Latest A5 free-count minimum update: the supplied full family now has a
 branchwise Lemma 3 numerator consequence in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  Names:

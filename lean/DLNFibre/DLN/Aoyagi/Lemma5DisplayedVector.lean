@@ -1332,6 +1332,33 @@ theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
     exact hown
   · exact hlabel
 
+/-- A supplied equation `(4)` piecewise vector has the lower endpoint at its
+own coordinate in the rising range.
+
+This is the lower-endpoint part of
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality`, with the
+source-label legality hypotheses removed.  It uses only the supplied piecewise
+certificate, the positive coordinate guard, and the rising condition
+`p<=ell-a`; it does not prove that the lower endpoint is a legal source label. -/
+theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_lowerEndpoint_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    T (C.point p - 1) = aoyagiHtildeLowerNat ell a M m p := by
+  have hp_a : p ≤ a := by
+    have hguard : p + 1 ≤ a := hT.indexGuard
+    omega
+  have hp_lt_ell : p < ell := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  have hblock : C.block p (C.point p - 1) :=
+    C.leftEndpoint_mem_block hp_lt_ell
+  have hvalue := hT.prefixBranch p (C.point p - 1) hp_pos le_rfl hblock
+  rw [hvalue]
+  exact aoyagiHtildeUpperNat_sub_index_eq_lowerNat_of_le_min
+    ell a p M m hT.a_le_ell hp_a hp_c
+
 /-- Supplied source-layer piecewise data for Aoyagi Lemma 5 equation `(3)`.
 
 This is a certificate that a function `T` has the displayed branch values on
@@ -2929,6 +2956,30 @@ theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_o
   exact aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
     ell a p M m hT.a_le_ell hp_pos hp_a hp_c
 
+/-- A supplied equation `(4)` own-coordinate value supplies the lower endpoint
+in the Eq5 lower-plus-strict-offset finite set, using only the local
+lower-endpoint hypotheses.
+
+This is the finite-set content of the Eq4 lower endpoint.  It does not prove
+source-label legality for the lower endpoint. -/
+theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_piecewise
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    insert (T (C.point p - 1)) (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      (aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+        (aoyagiHtildeUpperNat ell a M m p) := by
+  have hp_a : p ≤ a := by
+    have hguard : p + 1 ≤ a := hT.indexGuard
+    omega
+  have hown :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_lowerEndpoint_of_le_min
+      ell a p M m C layerWidth T hp_pos hp_c hT
+  rw [hown]
+  exact aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
+    ell a p M m hT.a_le_ell hp_pos hp_a hp_c
+
 /-- A supplied equation `(4)` lower endpoint adds one value to the strict Eq5
 offset set in the rising region.
 
@@ -2950,6 +3001,37 @@ theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_on
     aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
       ell a p M m C layerWidth T hell hp_pos hp_c hselected hsource hT
   rw [hown.2.1]
+  rw [aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min
+    ell a p M m hT.a_le_ell hp_pos hp_a hp_c]
+  rw [aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min
+    ell a p M m hT.a_le_ell hp_pos hp_a hp_c]
+  have hexcess :
+      aoyagiLemma5IntervalExcess ell a p = p :=
+    aoyagiLemma5IntervalExcess_eq_self_of_le_min
+      ell a p hT.a_le_ell hp_a hp_c
+  rw [hexcess]
+  omega
+
+/-- Cardinality form of
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_piecewise`.
+
+This removes the source-label legality hypotheses from the older cardinality
+wrapper. -/
+theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_piecewise
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    (insert (T (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m)).card =
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card + 1 := by
+  have hp_a : p ≤ a := by
+    have hguard : p + 1 ≤ a := hT.indexGuard
+    omega
+  have hown :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_lowerEndpoint_of_le_min
+      ell a p M m C layerWidth T hp_pos hp_c hT
+  rw [hown]
   rw [aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min
     ell a p M m hT.a_le_ell hp_pos hp_a hp_c]
   rw [aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min
@@ -3059,6 +3141,44 @@ theorem aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNa
     _ = aoyagiHtildeIntervalValueSetNat ell a M m p :=
       Finset.insert_erase hupper_mem
 
+/-- In any rising-range interval, a supplied upper endpoint value and supplied
+equation `(4)` lower own-coordinate fill the two endpoints missing from the
+strict Eq5 offset set, using only local endpoint hypotheses.
+
+This is the source-legality-free version of
+`aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min`. -/
+theorem aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_piecewise
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (Tupper layerWidth4 T4 : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hupper :
+      Tupper (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p)
+    (hT4 : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth4 T4) :
+    insert (Tupper (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hEq4 :=
+    aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_piecewise
+      ell a p M m C layerWidth4 T4 hp_pos hp_c hT4
+  have hupper_mem :
+      aoyagiHtildeUpperNat ell a M m p ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m p :=
+    aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+      ell a p M m hT4.a_le_ell (by omega)
+  calc
+    insert (Tupper (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m))
+        =
+          insert (aoyagiHtildeUpperNat ell a M m p)
+            ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+              (aoyagiHtildeUpperNat ell a M m p)) := by
+            rw [hEq4, hupper]
+    _ = aoyagiHtildeIntervalValueSetNat ell a M m p :=
+      Finset.insert_erase hupper_mem
+
 /-- In any rising-range interval, a supplied Eq3-shaped upper component and
 supplied equation `(4)` lower own-coordinate fill the two endpoints missing
 from the strict Eq5 offset set.
@@ -3089,6 +3209,29 @@ theorem aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_
     aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min
       ell a p M m C T3 layerWidth4 T4 hell hp_pos hp_a hp_c hselected hsource
       hupper hT4
+
+/-- Source-legality-free version of
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat`.
+
+The supplied Eq3-shaped certificate is used only for the upper component value;
+the supplied Eq4 certificate is used only for the lower endpoint value. -/
+theorem aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_eq_intervalValueSetNat
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (layerWidth3 T3 layerWidth4 T4 : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3)
+    (hT4 : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth4 T4) :
+    insert (T3 (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hupper :=
+    aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+      ell a p M m C layerWidth3 T3 hp_pos hp_c hT3
+  exact
+    aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_piecewise
+      ell a p M m C T3 layerWidth4 T4 hp_pos hp_c hupper hT4
 
 /-- Cardinality form of
 `aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat`.
