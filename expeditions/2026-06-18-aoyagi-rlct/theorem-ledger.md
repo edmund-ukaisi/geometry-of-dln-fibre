@@ -4082,6 +4082,23 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-prefix-profile-a5.md`.
 
+Latest A5 Eq5 binary-prefix-delta update:
+`Lemma5Eq5EndpointProfile.lean` now contains
+`aoyagiLemma5Eq5_endpointChain_incrementPrefix_profile_of_terminalRoom` and
+`aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom`.
+For a supplied Eq5 piecewise vector, supplied endpoint-chain correspondence,
+source endpoint, terminal endpoint, selected-width sum, and terminal room, the
+successive Lemma 4 increment-prefix deltas are all `0` or `1`.  This is the
+adjacent endpoint-profile calculation only, not Eq5 vector construction,
+endpoint realisation, terminality, classifier data, order count, pole order,
+normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-binary-prefix-delta-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-binary-prefix-delta.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-binary-prefix-delta-a5.md`.
+
 Latest A5 prefix-delta-chain-bound update: `HtildeChainArithmetic.lean` now
 proves the algebraic translation from supplied prefix-delta bounds to displayed
 chain bounds.  Names:

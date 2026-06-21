@@ -4272,6 +4272,31 @@ branch labels, prove branch-label injectivity, prove no-extra terminal-minimum
 coverage, compute terminal-minimum cardinality, prove pole order, normal
 crossings, or RLCT.
 
+## 2026-06-21 Lean Lemma 5 Eq5 binary prefix delta
+
+Reproduction:
+`reproduction-lemma5-eq5-binary-prefix-delta-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-binary-prefix-delta.md`.
+Review artifact:
+`review-lemma5-eq5-binary-prefix-delta-a5.md`.
+
+Lean now proves the terminal-room endpoint-profile and binary adjacent
+prefix-delta theorem:
+
+```text
+aoyagiLemma5Eq5_endpointChain_incrementPrefix_profile_of_terminalRoom
+aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom
+```
+
+For a supplied Eq5 piecewise vector, supplied endpoint-chain correspondence,
+source endpoint `H_0=m_0`, terminal endpoint `H_ell=0`, selected-width sum,
+and terminal room, every successive Lemma 4 increment-prefix delta is `0` or
+`1`.  The proof records the four adjacent ranges: initial rise, alpha plateau,
+post-`p` rise, and final plateau.  This is endpoint arithmetic only.  It does
+not construct Eq5 vectors, prove endpoint realisation, terminality,
+classifier data, order count, pole order, normal crossings, or RLCT.
+
 ## 2026-06-21 Lean Lemma 5 terminal minimum lower bound
 
 Reproduction:

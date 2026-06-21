@@ -4166,6 +4166,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-prefix-profile-a5.md`.
 
+Latest A5 Eq5 binary-prefix-delta update:
+`Lemma5Eq5EndpointProfile.lean` now contains
+`aoyagiLemma5Eq5_endpointChain_incrementPrefix_profile_of_terminalRoom` and
+`aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom`.
+For a supplied Eq5 piecewise vector, supplied endpoint-chain correspondence,
+source endpoint, terminal endpoint, selected-width sum, and terminal room, the
+successive Lemma 4 increment-prefix deltas are all `0` or `1`.  This is the
+adjacent endpoint-profile calculation only.  It does not construct Eq5
+vectors, prove endpoint realisation, terminality, classifier data, order
+count, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-binary-prefix-delta-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-binary-prefix-delta.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-binary-prefix-delta-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
