@@ -28,3 +28,16 @@ import DLNFibre.DLN.RLCT.Foundations.Lambda
 import DLNFibre.DLN.RLCT.Skeleton
 import DLNFibre.DLN.RLCT.Validate.Case111Bridge
 import DLNFibre.DLN.RLCT.Validate.Case111
+-- Measure-side engines, built ahead of their consumers. Kept in the green-gate explicitly: else
+-- `lake build DLNFibre` only covers the headline's transitive closure and an orphan engine (broken
+-- or unsound) escapes the gate. Re-importing an already-reachable module is harmless (deduped).
+import DLNFibre.DLN.RLCT.Foundations.S1Transport
+import DLNFibre.DLN.RLCT.Foundations.S1Local
+import DLNFibre.DLN.RLCT.Foundations.S1SmoothBlock
+import DLNFibre.DLN.RLCT.Foundations.S1Additive
+import DLNFibre.DLN.RLCT.Foundations.S1Fubini
+import DLNFibre.DLN.RLCT.Foundations.S1G5
+import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
+-- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
+import DLNFibre.DLN.RLCT.AxCheck
