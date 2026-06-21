@@ -398,3 +398,70 @@ must RECORD that positivity rather than rely on the false equivalence. LESSON: a
 finiteness/admissibility condition through a PRODUCT must rule out the 0·∞ corner explicitly — the convention
 makes `0·∞=0`, so a "both-finite" inference silently assumes both factors are nonzero. (Surfaced on the concrete
 (2,1,2) case before it could hide in the general product-MIN lemma — validate-small-first again.)
+
+## 2026-06-21 — residual-smooth-block entanglement is real but lands on UNIT termini (harmless) — the A-vs-B call
+
+Adjudicating how to handle residual smooth blocks in the resolution (Option A: monomialize the block, extra
+blow-up layer, uniform monomial leaves, RHS stays `⨅ monomialThreshold`; Option B: handle the leaf
+`monomial × Σy²` directly via `smoothBlockND_rlct` + Fubini-product-MIN, no extra layer, heterogeneous leaves).
+Decorrelated Codex flagged (FACT) that the Fubini split `rlct(monomial × Σy²) = min(monomial-ratios, n/2)` CAN
+fail in general — later blow-ups can make an exceptional coord divide a combination defining the block (verified:
+a 2-pivot residual carries `q²` on a sub-block). pp REFINED this into the usable form: the entanglement lands at
+**T1 (unit) termini** — where the residual is `monomial × (unit with constant term)`, so it's a clean
+monomial×unit leaf either way and the split is IRRELEVANT — and NOT at **T2 (smooth-block) termini**, the only
+place the split matters, where the block coords are fresh ratio/residual coords with the exceptional pulled OUT
+front (disjoint). So Codex's CAN-ENTANGLE is correct but does not threaten Option B. VERDICT: A for fixed-M
+(contract-fidelity, cheap at small M); B/HYBRID for general-M (lighter, reuses existing lemmas, no extra layer;
+the hybrid applies the cone blow-up only where entanglement actually occurs, needing no global disjointness
+guarantee). The block layer adds NO new G3 geometry (the block is a standard coordinate-cone) — it compounds only
+G5 under A, which B avoids. So the residual-block handling does NOT compound the genuine wall (G3); the wall stays
+G3 alone. LESSON (general): when a decorrelated model flags a failure mode as FACT, the value is often not
+"abandon the approach" but "locate WHERE the failure lands" — a real failure mode confined to the cases where it
+doesn't matter is a refinement, not a refutation. (Pair with the Q4-trap lesson: there, a matching answer wasn't
+a proof; here, a real obstruction wasn't a blocker. Both: interrogate the SCOPE of the model's claim.)
+
+## 2026-06-21 — state the hypothesis for what it ACTUALLY needs (product-MIN: positivity-guard, not "vanishes only at 0")
+
+The (2,1,2) `product_min_rlct` lemma (`rlctAtOn(G·H) = min(rlctAtOn G, rlctAtOn H)`, disjoint vars) was
+first stated with hyp "G,H ≥ 0 each vanishing only at 0." Re-examining shapes (prompted by rv-2's
+S1.5-PASS — checking whether S1.5 was the (2,2,2) δ-leaf tool; it is NOT, S1.5 is a SUM-shift, the δ-leaf
+is a PRODUCT) surfaced that "vanishes only at 0" is SUFFICIENT-BUT-OVER-STRONG: it excludes MONOMIAL
+factors (`x²s²` vanishes on hyperplanes, not only at 0), so the lemma as stated would WRONGLY fail to
+cover the δ-leaf (`monomial × block`). The hypothesis the proof actually USES is only the POSITIVITY
+GUARD (both block integrals `∫⁻ > 0`, ruling out the ℝ≥0∞ `0·∞=0` corner) + disjoint vars + measurable.
+Restating with the positivity guard UNIFIES three cases under one lemma: block×block (2,1,2),
+monomial×block (the δ-leaf), monomial×monomial. LESSON: when a hypothesis is "obviously true for the case
+in front of you" (the smooth block does vanish only at 0), check whether it's what the PROOF needs or
+just what's CONVENIENT — an over-strong hyp silently narrows the lemma's reach and blocks reuse on a
+sibling case (here the monomial factor). State the hypothesis at the altitude the proof actually requires.
+(Dual of "name the result for what it is" — name the HYPOTHESIS for what it is: the minimal guard, not a
+convenient sufficient condition.)
+
+## 2026-06-21 — per-chart cover value is the JACOBIAN-WEIGHTED threshold, NOT bare rlctAtOn(F∘φ)
+
+Pairing with fm-2 on the (2,2,2) cover measure pieces, fm-2 asked for the exact δ-leaf RHS "to dodge
+another bare-false trap." Pinning it caught one: the per-leaf contribution to the cover rlct is
+`weightedThreshold (F∘φ) |Jac φ| {0}` (weight ρ = the Jacobian), NOT `rlctAtOn (F∘φ)` (which is
+`weightedThreshold F 1 {w*}` — TRIVIAL weight ρ=1, `Rlct.lean:168`). For the δ-block leaf
+`x²s²u²·unit`: bare `rlctAtOn = min(½,½,2,…) = ½` (WRONG), but the Jacobian `x³s²u³` shifts the
+exponents to `min((3+1)/2,(2+1)/2,(3+1)/2) = 3/2` (correct, matches the cover). The Jacobian weight IS
+the content of the resolution — it's what makes the divisor ratios `(h+1)/(2k)` come out right.
+Mechanically safe: the change-of-variables lemma `lintegral_image_eq_lintegral_abs_det_fderiv_mul`
+PRODUCES the `|det fderiv|·g∘φ` integrand, so the Jacobian lands in the `weightedThreshold` ρ slot
+automatically — but ONLY if the per-chart lemma is STATED as a weighted threshold. State it as bare
+`rlctAtOn(F∘φ)` and you've dropped the Jacobian and get the wrong value. LESSON: in a resolution-RLCT,
+the per-chart value is the Jacobian-WEIGHTED threshold; the bare rlct of the pulled-back function omits
+the divisor weights and is wrong. (Reusable for the general G3 tide — every per-chart lemma there is a
+weighted threshold too.) The DLNFibre `weightedThreshold (G ρ K)` def has the ρ slot precisely for this;
+`rlctAtOn`/`rlctAt` are the ρ=1 specialisation and must NOT be used for a chart that carries a Jacobian.
+
+## 2026-06-21 — single-writer on the contract file; don't spawn parallel sessions re-proving closed rungs
+
+A parallel session re-derived `deepestPoint_exists` ("prove r=0, narrowed r>0 sorry") while fm's branch ALREADY had
+the fully-proven r>0 case (sorry-free, #21) — a merge divergence fm had to resolve (keep the complete proof,
+salvage the parallel side's helpers). Wasted effort + reconciliation cost on an already-closed rung. LESSON: the
+Skeleton (contract file) has ONE single-writer (fm); other sessions must not edit it or re-prove its rungs.
+Delegate sub-tides to a DISTINCT file/lemma (proof-module pattern: _aux in Foundations, never the Skeleton), and
+check a rung's status before assigning (sorry-free on trunk / done = closed; don't re-open). Controller corollary:
+when two agents reach for the same lemma (the rlctAt_mono collision), resolve the lane + delete the duplicate task
+immediately — overlapping assignment is the upstream cause of duplicated/divergent work.

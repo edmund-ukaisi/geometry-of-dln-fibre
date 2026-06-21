@@ -567,8 +567,15 @@ now (pp's core form, BLESSED) + the S1.5 wire (fm-2's verified package) in one b
   A-vs-B verdict (wall is G3 alone) · G3 spec (crux G3.2 = Aoyagi pp.15-21 formalization gap). **Residual = pure
   formalization labour** (fm + fm-2 execute) + the G3 tide if commissioned.
 - **EXECUTION UNITS:** fm → the R1 BATCH (S1.5 wire + resolution_charts core re-scope + (1,1,1) gate) FIRST [still
-  not landed — fm redirected to it], then #55 (2,1,2) + #54-assembly; fm-2 → #52 G5-step + #54-measure; pp →
-  on-demand (G5 questions / assembly / G3 tide). rv-2 → S1.5 PASS done; queued for the wires + ladder audits.
+  not landed — fm redirected to it 3×; recurring fm→adjacent-work drift], then #55 (2,1,2) + #54-assembly; fm-2 →
+  #52 G5-step + #54-measure; pp → on-demand (G5 questions / assembly / G3 tide). rv-2 → S1.5 PASS done; queued.
+- **G5-ABSTRACT FLAT-COVER DONE (#52, fm-2 @48b9468, axiom-clean):** `perChart` (single-step c-o-v on V\N + null
+  drop) + `g5_flat_cover` (∫⁻_U=Σ∫⁻ over a finite a.e.-disjoint chart-cover, lintegral_biUnion_finset₀). The (2,2,2)
+  cover = this **composed 3×** (nested levels 4∘3∘4), NOT the abstract tree (deferred to G3). Over ℝ≥0∞ ⟹ no
+  integrability hyps.
+- **product_min_rlct HYP UNIFIED (pp):** positivity-guard (both ∫⁻>0) + disjoint + measurable, NOT "vanish only at
+  0" (over-strong, excludes monomials) ⟹ ONE lemma covers block×block (2,1,2) + monomial×block (δ-leaf) +
+  monomial². The (2,1,2) tool IS the δ-leaf tool. S1.5-PASS = the L2/additivity SUM-engine (NOT the δ-leaf PRODUCT).
 
 ## Next tick (state @ ~02:30, trunk @da24204)
 **S1.5 FUBINI ENGINE COMPLETE @ad1f313** (controller-verified axiom-clean) — whole S1 substrate proven. R1 lower-bound
