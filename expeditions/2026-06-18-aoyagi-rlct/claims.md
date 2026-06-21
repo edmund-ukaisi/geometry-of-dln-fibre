@@ -2325,6 +2325,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5IntervalSize_eq_falling_of_max_le`, and
   `aoyagiLemma5IntervalSize_sourcePiecewise`, which reproduce the source
   three-region interval-size profile as finite arithmetic only.
+  Also proved
+  `aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPoint_widthBound`,
+  an Eq5 one-alpha adapter packaging offset-value membership, interval
+  membership, `T S=k-1`, and introduced-label finite-domain membership.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

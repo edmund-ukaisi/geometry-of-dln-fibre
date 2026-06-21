@@ -3024,6 +3024,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-interval-size-profile-a5.md`.
 
+Latest A5 update: Eq5 now has a strict-offset finite-domain adapter in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The name is
+`aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+It combines the supplied own-coordinate offset membership theorem with the
+existing interval/finite-domain introduced-label wrapper, proving for one
+supplied branch that `T S` belongs to `aoyagiLemma5Eq5OffsetValueSet`, belongs
+to the same-coordinate interval, equals `k-1`, and has
+`Sigma.mk S k ∈ introducedLabelFinset L n S k`.  This is one-alpha supplied
+API scaffolding only, not displayed-vector construction, terminality,
+admissibility, order-count, normal-crossing, or RLCT data.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-offset-finset-adapter-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-offset-finset-adapter.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-offset-finset-adapter-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

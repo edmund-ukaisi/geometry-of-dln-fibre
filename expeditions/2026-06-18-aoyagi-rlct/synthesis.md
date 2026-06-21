@@ -2422,6 +2422,19 @@ Lemma 5 order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-interval-size-profile-a5.md`.
 
+Eq5 now has a strict-offset finite-domain adapter in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`:
+`aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+For one supplied Eq5 piecewise certificate and one own-block source index, it
+packages `T S` as an Eq5 strict-offset value, a same-coordinate interval value,
+the label predecessor `k-1`, and `Sigma.mk S k ∈ introducedLabelFinset L n S k`.
+This still works one fixed `alpha` at a time and does not construct the family
+of all Eq5 vectors or prove Lemma 5 order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-offset-finset-adapter-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-offset-finset-adapter.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-offset-finset-adapter-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

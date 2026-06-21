@@ -1890,3 +1890,28 @@ This is still finite arithmetic below Lemma 5.  It does not construct the
 displayed source vectors, prove that the counted values are realised by
 admissible vectors, prove terminality, chart sequence, Lemma 5 order count,
 normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` offset finset adapter
+
+Reproduction:
+`reproduction-lemma5-eq5-offset-finset-adapter-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-offset-finset-adapter.md`.
+Review artifact:
+`review-lemma5-eq5-offset-finset-adapter-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPoint_widthBound
+```
+
+For one supplied Eq5 piecewise certificate and one own-block source index, the
+branch value is simultaneously a strict Eq5 offset value, a same-coordinate
+interval value, equal to `k-1`, and a member of `introducedLabelFinset L n S k`
+as `Sigma.mk S k`.
+
+This is a conjunction adapter over existing facts.  It does not construct the
+Eq5 displayed vector, quantify over all `alpha` at once, derive the explicit
+actual-width lower bound from Definition 3, prove terminality, chart sequence,
+Lemma 5 order count, normal crossings, or RLCT extraction.

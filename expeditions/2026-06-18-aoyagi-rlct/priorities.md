@@ -795,6 +795,10 @@ on the session's original cwd.
    wrapper replacing the abstract lower endpoint in the Eq5 erase-upper set
    equality.  Keep both conditional on supplied piecewise data and explicit
    width/slack hypotheses.
+   The Eq5 strict-offset/introduced-finset adapter is now proved.  The next
+   nearby A5 candidate is the Eq4-own-value wrapper for the lower endpoint in
+   the Eq5 erase-upper equality, keeping the repaired Eq4 guard and no
+   construction/order-count claim.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

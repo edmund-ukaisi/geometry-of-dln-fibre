@@ -755,6 +755,39 @@ theorem aoyagiLemma5Eq5_ownBlock_intervalValue_mem_introducedLabelFinset_of_last
       hwidth_le hk
   exact ⟨h.1, h.2.1, mem_introducedLabelFinset.mpr h.2.2⟩
 
+/-- Equation `(5)` own-block wrapper with strict-offset membership and
+finite-domain introduced-label membership.
+
+This is still for one supplied `alpha` and one supplied piecewise certificate;
+it does not package all offsets at once. -/
+theorem aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S ∈ aoyagiLemma5Eq5OffsetValueSet ell a p M m ∧
+      T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m p ∧
+        T S = (k : ℤ) - 1 ∧
+          Sigma.mk S k ∈ introducedLabelFinset L n S k := by
+  have hown :=
+    aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+      ell a p alpha M m C layerWidth T hT
+  have hfinite :=
+    aoyagiLemma5Eq5_ownBlock_intervalValue_mem_introducedLabelFinset_of_lastPoint_widthBound
+      L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+      hwidth_le hk
+  exact ⟨aoyagiLemma5Eq5_ownCoordinate_mem_offsetValueSet
+    ell a p alpha M m C T hown hS, hfinite⟩
+
 /-- Source-shaped arbitrary-own-block equation `(5)` label legality from a
 block-local actual-width lower-bound hypothesis.
 
