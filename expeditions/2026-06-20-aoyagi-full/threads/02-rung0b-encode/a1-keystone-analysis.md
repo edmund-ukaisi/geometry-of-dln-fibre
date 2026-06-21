@@ -67,3 +67,26 @@ RECOMMENDATION: route (B). The hard sub-piece is the `Mval`-to-breakpoint comple
 the balanced split on the smallest is Adm-realisable). `balancedSplit_min` (Step 1, DONE) is the lower-
 bound engine. A dedicated tide with this route + the verified facts is the efficient path if fm stays
 on critical-path work.
+
+## #45 gate fully characterized (fm, 2026-06-21) — balanced-split maximality
+
+The remaining #19 gate (sorted-prefix domination, feeding `sq_sum_le_of_sorted_prefix`) is now pinned:
+> **∀ T∈Adm, ∀k: prefix_k(sort(edgeQ M T)) ≤ prefix_k(sort Y)**, `Y` = achiever multiset =
+> `balancedSplit(P_{c*}, c*) ∪ {a_{c*+1}…a_L}` (`a`=sort M). Verified 1628/1628 (L≤3, widths 1..4).
+
+MECHANISM (worked M=[1,2,1,3], c*=3, a=[1,1,2,3], Y=sort[3,2,2]=[2,2,3], Y-prefixes [0,2,4,7]):
+distinct sorted edgeQ = (1,2,4)→[0,1,3,7], (1,3,3)→[0,1,4,7], (2,2,3)→[0,2,4,7]=Y. Every sorted-prefix
+≤ Y's. So **Y (the balanced split on the smallest widths) is the MAJORIZATION MAXIMUM** of the
+QFeasible polytope: it maximizes every sorted prefix. This IS pp's "Step B" (balanced split maximizes
+every k-smallest among nonneg integers of bounded sum) + the QFeasible corridor.
+
+WHY no shortcut (the trap pp flagged): the bound is NOT pointwise and NOT a cleanCore-widths-extremum;
+it's the genuine sorted-prefix (Hardy–Littlewood–Pólya) majorization Y ≻ edgeQ, driven by the QFeasible
+positional prefix bounds `S_{n-1} ≤ ∑_{j<n}edgeQ ≤ S_n` (the `(M^S−H)` factors reward small M^S). The
+banked `smallestK_le_subset` gives `prefix_k(sort q) ≤ ∑_A q` for any k-subset A — the gate is choosing
+A + bounding `∑_A edgeQ ≤ prefix_k(sort Y)` via balanced-maximality. ~150-250 lines, no Mathlib API.
+
+STATUS: engines all banked green (sq_sum_le_of_sorted_prefix, smallestK_le_subset, srt machinery,
+karamata_sq, balancedSplit_min, edge_identity, cleanCore_perm). The gate is the balanced-split-maximality
+majorization (#45) + the achiever T*∈Adm construction (#46). A dedicated push; OFF the headline path
+(headline uses lambdaCore's min-def). All numerically 0-fail (L≤4).
