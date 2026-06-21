@@ -474,4 +474,20 @@ theorem tailLift_step2E_lintegral_image (V : Set (Fin 8 → ℝ)) (hV : Measurab
     (hV.diff (measurableSet_eq_fun (measurable_pi_apply 2) measurable_const))
     (fun x _ => pivotBlowupOn_hasFDerivWithinAt _ _ _ x) (pivotBlowupOn_injOn _ _ _)]
 
+/-- **The Lemma-2 spectator-lift as a measurable equivalence.** `tailLift lemma2Inv` packaged as a
+`(Fin 8 → ℝ) ≃ᵐ (Fin 8 → ℝ)` (via `finPeel 7` ∘ `id × lemma2Hom.symm` ∘ `finPeel 7`), so the Lemma-2
+splice transports `lintegral`s through `setLIntegral_image_of_mp` (it is measure-preserving by
+`measurePreserving_tailLift_lemma2Inv`). The homeomorph transport touches ONLY Lemma-2, never a
+blow-up node — the soundness boundary (rv-2 audits). -/
+noncomputable def lemma2LiftME : (Fin 8 → ℝ) ≃ᵐ (Fin 8 → ℝ) :=
+  ((finPeel 7).toMeasurableEquiv.trans
+    ((MeasurableEquiv.refl ℝ).prodCongr lemma2Hom.symm.toMeasurableEquiv)).trans
+    (finPeel 7).toMeasurableEquiv.symm
+
+/-- `lemma2LiftME` is the spectator-lift `tailLift lemma2Inv` (definitional, via the `finPeel`
+factorisation). -/
+theorem lemma2LiftME_apply (u : Fin 8 → ℝ) : lemma2LiftME u = tailLift lemma2Inv u := by
+  show (finPeel 7).symm (Prod.map id (lemma2Hom.symm) ((finPeel 7) u)) = _
+  rw [← tailLift_eq_finPeel]; rfl
+
 end DLNFibre.DLN.RLCT
