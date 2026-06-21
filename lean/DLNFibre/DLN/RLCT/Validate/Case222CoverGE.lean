@@ -109,6 +109,34 @@ theorem block_leaf_integrable (c' : NNReal) (hc0 : 0 < c') (hc' : (c' : ℝ≥0�
   monomialIntegrand_integrable_of_lt 8 blockK8 blockH8 c' hc0
     (lt_of_lt_of_le hc' blockMonomialThreshold_ge)
 
+/-! ## Effective-support containment (the leaf integrals are over a bounded box)
+
+The step-1 chart domain `chartDomOn Aact 0` bounds only the *non-pivot active* coordinates
+(`|x₁|, |x₂|, |x₃| ≤ 1`); the pivot `x₀` and the spectators `x₄..x₇` are FREE there. What bounds them
+is the `openBox` cutoff carried through the chart: on `{step1A x ∈ openBox}` the pivot
+(`step1A x` slot 0 `= x₀`) and the spectators (slots 4..7 `= x₄..x₇`) are each in `(−1, 1)`. So the
+EFFECTIVE support of the `p = 0` summand sits inside the symmetric cube `[−1, 1]^8` — the integral is
+over a bounded box, which is what the per-leaf `monomialThreshold` integrability (unit-box-shaped)
+needs. (Codex 2026-06-21 Q3 mitigation: the support→bounded-box step.) -/
+
+/-- **`p = 0` effective-support containment.** On the step-1 chart domain `chartDomOn Aact 0`, the
+`openBox` cutoff `step1A x ∈ openBox` forces `x ∈ [−1, 1]^8`: the pivot `x₀` and spectators `x₄..x₇`
+are bounded by `openBox` (via `step1A` slots `0, 4..7`), the active `x₁, x₂, x₃` by `chartDomOn`. -/
+theorem p0_support_subset_cube (x : Fin 8 → ℝ)
+    (hcd : x ∈ chartDomOn Aact 0) (hob : step1A x ∈ openBox) :
+    x ∈ Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1) := by
+  intro i _
+  simp only [openBox, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Ioo] at hob
+  fin_cases i
+  · have := hob 0; simp only [step1A, Matrix.cons_val_zero] at this; exact ⟨this.1.le, this.2.le⟩
+  · have := hcd 1 (by decide) (by decide); rw [abs_le] at this; exact this
+  · have := hcd 2 (by decide) (by decide); rw [abs_le] at this; exact this
+  · have := hcd 3 (by decide) (by decide); rw [abs_le] at this; exact this
+  · have := hob 4; simp only [step1A, Matrix.cons_val] at this; exact ⟨this.1.le, this.2.le⟩
+  · have := hob 5; simp only [step1A, Matrix.cons_val] at this; exact ⟨this.1.le, this.2.le⟩
+  · have := hob 6; simp only [step1A, Matrix.cons_val] at this; exact ⟨this.1.le, this.2.le⟩
+  · have := hob 7; simp only [step1A, Matrix.cons_val] at this; exact ⟨this.1.le, this.2.le⟩
+
 /-- **A step-1 A-pivot leaf-summand is finite (below `3/2`).** For each A-pivot `p ∈ {0,1,2,3}` and
 `c' < 3/2`, the `p`-cell of the step-1 `g5_pivotNode` split — the chart-domain integral of
 `|det φ₁ₚ| · (openBox.indicator |myF222|^{−c'}) ∘ φ₁ₚ` — is finite. This is the per-A-pivot recursion
