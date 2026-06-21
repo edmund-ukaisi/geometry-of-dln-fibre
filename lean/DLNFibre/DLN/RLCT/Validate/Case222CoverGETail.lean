@@ -633,13 +633,142 @@ theorem shearΦ_box_subset : shearΦ '' boxT 7 2 ⊆ boxT 7 6 := by
   · exact b5
   · exact b6
 
+/-! ## The δ-block spectator-separation chain (Σ⁴-on-{1,2,5,6} → sumSq4 via 3 peels)
+
+After the shear, the δ-block integral is `∫_{[−6,6]⁷} (Σ_{i∈{1,2,5,6}} wᵢ²)^{−c'}`. The three spectator
+coordinates (`0, 3, 4`) peel off one at a time (`boxT_peel_spectator`, each contributing a finite
+`vol[−6,6]` factor), the integrand reindexing through the successive `succAbove` maps (`g7 → h6 → h5
+→ h4`, the `decide`-checked index relabelings), landing on the Fin-4 `Σ`-over-all terminal
+`sumSq4_box_lt_top`. -/
+
+-- Σ4 over {0,1,2,3} of Fin 4 (matches sumSq4_box_lt_top's ∑ i, (x i)^2).
+-- Build the chain: g7 (Σ over {1,2,5,6} Fin7) → peel 3 spectators → Fin4 Σ-all.
+-- Use boxT_peel_spectator 3×. Track integrand via explicit h functions + decide on succAbove.
+
+-- After peeling coord 0 (Fin7→Fin6): {1,2,5,6}→{0,1,4,5}. h6 v = (v0²+v1²+v4²+v5²)^{-c'}.
+-- After peeling coord 3 of Fin6 (=old 4, a spectator) (Fin6→Fin5): need 3.succAbove:Fin5→Fin6.
+--   3.succAbove sends {0,1,2}→{0,1,2}, {3,4}→{4,5}. So {0,1,4,5}→preimages: 0→0,1→1,4→3,5→4.
+--   h5 v = (v0²+v1²+v3²+v4²)^{-c'}.
+-- After peeling coord 2 of Fin5 (=old 3, spectator) (Fin5→Fin4): 2.succAbove:Fin4→Fin5 sends {0,1}→{0,1},{2,3}→{3,4}.
+--   {0,1,3,4}→preimages: 0→0,1→1,3→2,4→3. h4 v = (v0²+v1²+v2²+v3²)^{-c'} = Σ over all Fin4. ✓
+
+noncomputable def g7 (c' : ℝ) (w : Fin 7 → ℝ) : ℝ≥0∞ :=
+  ENNReal.ofReal (((w 1)^2 + (w 2)^2 + (w 5)^2 + (w 6)^2) ^ (-c'))
+noncomputable def h6 (c' : ℝ) (v : Fin 6 → ℝ) : ℝ≥0∞ :=
+  ENNReal.ofReal (((v 0)^2 + (v 1)^2 + (v 4)^2 + (v 5)^2) ^ (-c'))
+noncomputable def h5 (c' : ℝ) (v : Fin 5 → ℝ) : ℝ≥0∞ :=
+  ENNReal.ofReal (((v 0)^2 + (v 1)^2 + (v 3)^2 + (v 4)^2) ^ (-c'))
+noncomputable def h4 (c' : ℝ) (v : Fin 4 → ℝ) : ℝ≥0∞ :=
+  ENNReal.ofReal (((v 0)^2 + (v 1)^2 + (v 2)^2 + (v 3)^2) ^ (-c'))
+
+theorem g7_peel0 (c' : ℝ) (w : Fin 7 → ℝ) : g7 c' w = h6 c' (fun k => w ((0:Fin 7).succAbove k)) := by
+  unfold g7 h6
+  simp only [show ((0:Fin 7).succAbove 0 : Fin 7) = 1 from by decide,
+      show ((0:Fin 7).succAbove 1 : Fin 7) = 2 from by decide,
+      show ((0:Fin 7).succAbove 4 : Fin 7) = 5 from by decide,
+      show ((0:Fin 7).succAbove 5 : Fin 7) = 6 from by decide]
+
+theorem h6_peel3 (c' : ℝ) (v : Fin 6 → ℝ) : h6 c' v = h5 c' (fun k => v ((3:Fin 6).succAbove k)) := by
+  unfold h6 h5
+  simp only [show ((3:Fin 6).succAbove 0 : Fin 6) = 0 from by decide,
+      show ((3:Fin 6).succAbove 1 : Fin 6) = 1 from by decide,
+      show ((3:Fin 6).succAbove 3 : Fin 6) = 4 from by decide,
+      show ((3:Fin 6).succAbove 4 : Fin 6) = 5 from by decide]
+
+theorem h5_peel2 (c' : ℝ) (v : Fin 5 → ℝ) : h5 c' v = h4 c' (fun k => v ((2:Fin 5).succAbove k)) := by
+  unfold h5 h4
+  simp only [show ((2:Fin 5).succAbove 0 : Fin 5) = 0 from by decide,
+      show ((2:Fin 5).succAbove 1 : Fin 5) = 1 from by decide,
+      show ((2:Fin 5).succAbove 2 : Fin 5) = 3 from by decide,
+      show ((2:Fin 5).succAbove 3 : Fin 5) = 4 from by decide]
+
+-- h4 over boxT 4 6 IS sumSq4_box_lt_top.
+theorem h4_box_lt_top (c' : NNReal) (hc' : (c':ℝ) < 2) :
+    ∫⁻ v in boxT 4 (6:ℝ), h4 (c':ℝ) v < ⊤ := by
+  have := sumSq4_box_lt_top 6 (by norm_num) c' hc'
+  refine lt_of_le_of_lt (le_of_eq ?_) this
+  apply setLIntegral_congr_fun (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+  intro v _
+  unfold h4
+  congr 2
+  rw [Fin.sum_univ_four]
+
+-- measurability of the h's
+theorem h6_meas (c' : ℝ) : Measurable (h6 c') := by unfold h6; fun_prop
+theorem h5_meas (c' : ℝ) : Measurable (h5 c') := by unfold h5; fun_prop
+theorem h4_meas (c' : ℝ) : Measurable (h4 c') := by unfold h4; fun_prop
+
+-- chain: ∫ g7 = (∫ h6)·v = (∫ h5)·v·v = (∫ h4)·v³, each v=vol[-6,6]<⊤.
+theorem sumSq4_subset_box_lt_top (c' : NNReal) (hc' : (c':ℝ) < 2) :
+    ∫⁻ w in boxT 7 (6:ℝ), g7 (c':ℝ) w < ⊤ := by
+  have hvol : volume (Set.Icc (-6:ℝ) 6) < ⊤ := by
+    rw [Real.volume_Icc]; exact ENNReal.ofReal_lt_top
+  -- peel 0: ∫ g7 = ∫ h6(drop0) = (∫_{boxT 6} h6)·vol
+  have hstep0 : ∫⁻ w in boxT 7 (6:ℝ), g7 (c':ℝ) w
+      = (∫⁻ v in boxT 6 (6:ℝ), h6 (c':ℝ) v) * volume (Set.Icc (-6:ℝ) 6) := by
+    rw [show (fun w => g7 (c':ℝ) w) = (fun w : Fin 7 → ℝ => h6 (c':ℝ) (fun k => w ((0:Fin 7).succAbove k)))
+          from funext (fun w => g7_peel0 (c':ℝ) w)]
+    exact boxT_peel_spectator (n:=6) 6 (by norm_num) 0 (h6 (c':ℝ)) (h6_meas _)
+  have hstep1 : ∫⁻ v in boxT 6 (6:ℝ), h6 (c':ℝ) v
+      = (∫⁻ v in boxT 5 (6:ℝ), h5 (c':ℝ) v) * volume (Set.Icc (-6:ℝ) 6) := by
+    rw [show (fun v => h6 (c':ℝ) v) = (fun v : Fin 6 → ℝ => h5 (c':ℝ) (fun k => v ((3:Fin 6).succAbove k)))
+          from funext (fun v => h6_peel3 (c':ℝ) v)]
+    exact boxT_peel_spectator (n:=5) 6 (by norm_num) 3 (h5 (c':ℝ)) (h5_meas _)
+  have hstep2 : ∫⁻ v in boxT 5 (6:ℝ), h5 (c':ℝ) v
+      = (∫⁻ v in boxT 4 (6:ℝ), h4 (c':ℝ) v) * volume (Set.Icc (-6:ℝ) 6) := by
+    rw [show (fun v => h5 (c':ℝ) v) = (fun v : Fin 5 → ℝ => h4 (c':ℝ) (fun k => v ((2:Fin 5).succAbove k)))
+          from funext (fun v => h5_peel2 (c':ℝ) v)]
+    exact boxT_peel_spectator (n:=4) 6 (by norm_num) 2 (h4 (c':ℝ)) (h4_meas _)
+  rw [hstep0, hstep1, hstep2]
+  exact ENNReal.mul_lt_top (ENNReal.mul_lt_top (ENNReal.mul_lt_top (h4_box_lt_top c' hc') hvol) hvol) hvol
+
+/-- **General box pivot-peel.** `∫_{[−T,T]^{n+1}} f(x p)·g(drop-p x) = (∫_{[−T,T]} f)·(∫_{[−T,T]^n} g)` — the arbitrary-slot, nonconstant-tail Tonelli separation (generalises `cube8_tonelli_peel`). -/
+-- general pivot-peel: f at coord p × g of the rest, separates (generalizes cube8_tonelli_peel).
+theorem boxT_pivot_peel {n : ℕ} (T : ℝ) (p : Fin (n+1)) (f : ℝ → ℝ≥0∞) (g : (Fin n → ℝ) → ℝ≥0∞)
+    (hf : Measurable f) (hg : Measurable g) :
+    ∫⁻ x in boxT (n+1) T, f (x p) * g (fun k => x (p.succAbove k))
+      = (∫⁻ t in Set.Icc (-T) T, f t) * (∫⁻ y in boxT n T, g y) := by
+  set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℝ) p with he
+  have hmp : MeasurePreserving e (volume : Measure (Fin (n+1) → ℝ)) volume :=
+    volume_preserving_piFinSuccAbove (fun _ : Fin (n+1) => ℝ) p
+  have hemb : MeasurableEmbedding e := e.measurableEmbedding
+  have heapp : ∀ x : Fin (n+1) → ℝ, e x = (x p, fun k => x (p.succAbove k)) := fun x => rfl
+  have hpre : boxT (n+1) T = e ⁻¹' (Set.Icc (-T) T ×ˢ boxT n T) := by
+    ext x
+    simp only [boxT, Set.mem_preimage, heapp, Set.mem_prod, Set.mem_pi, Set.mem_univ,
+      true_implies, Set.mem_Icc]
+    constructor
+    · intro hx; exact ⟨hx p, fun k => hx (p.succAbove k)⟩
+    · rintro ⟨hpp, hrest⟩ i
+      rcases Fin.eq_self_or_eq_succAbove p i with rfl | ⟨j, rfl⟩
+      · exact hpp
+      · exact hrest j
+  rw [hpre]
+  rw [show (fun x : Fin (n+1) → ℝ => f (x p) * g (fun k => x (p.succAbove k)))
+        = (fun x : Fin (n+1) → ℝ => (fun q : ℝ × (Fin n → ℝ) => f q.1 * g q.2) (e x))
+        from by funext x; rw [heapp]]
+  rw [hmp.setLIntegral_comp_preimage_emb hemb (fun q : ℝ × (Fin n → ℝ) => f q.1 * g q.2)
+    (Set.Icc (-T) T ×ˢ boxT n T)]
+  rw [show (volume : Measure (ℝ × (Fin n → ℝ))) = (volume : Measure ℝ).prod volume from
+        Measure.volume_eq_prod _ _, ← Measure.prod_restrict,
+    lintegral_prod_mul hf.aemeasurable hg.aemeasurable]
+
 /-- The step-3 block residual finiteness over a bounded box (the 4th-level recursion: blow up
 `block = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` along its vertex, `blockForm_step3` + `step3_unit_ge_one`
 + `block_leaf_integrable`). The δ-cell's inner integral. -/
 theorem block_residual_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
     ∫⁻ z in boxT 7 (2:ℝ),
         ENNReal.ofReal (|(z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2| ^ (-(c':ℝ))) < ⊤ := by
-  sorry
+  have hstep : ∀ z, ENNReal.ofReal (|(z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2| ^ (-(c':ℝ)))
+      = g7 (c':ℝ) (shearΦ z) := by
+    intro z
+    unfold g7
+    rw [abs_of_nonneg (by positivity : (0:ℝ) ≤ (z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2),
+        block_eq_shear]
+  simp_rw [hstep]
+  rw [shearΦ_mp.setLIntegral_comp_emb shearΦ_emb (g7 (c':ℝ)) (boxT 7 2)]
+  refine lt_of_le_of_lt (lintegral_mono_set shearΦ_box_subset) ?_
+  exact sumSq4_subset_box_lt_top c' (by linarith)
 
 theorem deltaCell_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
     ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 3 \ pivotZeroOn 3,
