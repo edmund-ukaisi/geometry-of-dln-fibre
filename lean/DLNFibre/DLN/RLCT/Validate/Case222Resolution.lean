@@ -260,6 +260,36 @@ theorem step1A_det (x : Fin 8 → ℝ) :
   rw [pivotBlowupOnDeriv_det _ _ (by decide)]
   norm_num [show ({0, 1, 2, 3} : Finset (Fin 8)).card = 4 from by decide]
 
+/-- **`step2E` is a pivot blow-up.** `step2E = pivotBlowupOn {1,2,3} 1` (the resolved-form blow-up,
+pivot `E = z1`), reusing the gated `pivotBlowupOn` infra for the step-2 node's c-o-v (determinant
+`(z 1)^{card−1} = z1²`, injectivity off `{z1 = 0}`). -/
+theorem step2E_eq_pivotBlowupOn (z : Fin 7 → ℝ) :
+    step2E z = pivotBlowupOn ({1, 2, 3} : Finset (Fin 7)) 1 z := by
+  funext i
+  unfold step2E pivotBlowupOn
+  fin_cases i <;> simp [Matrix.cons_val]
+
+/-- The step-2 Jacobian determinant: `|det Dφ₂| = |z1|²` (`pivotBlowupOnDeriv_det`,
+`card {1,2,3} − 1 = 2`). -/
+theorem step2E_det (z : Fin 7 → ℝ) :
+    (pivotBlowupOnDeriv ({1, 2, 3} : Finset (Fin 7)) 1 z).det = (z 1) ^ 2 := by
+  rw [pivotBlowupOnDeriv_det _ _ (by decide)]
+  norm_num [show ({1, 2, 3} : Finset (Fin 7)).card = 3 from by decide]
+
+/-- **Step-2 change-of-variables** (parallel to `step1A_lintegral_image`): for measurable `V` off the
+pivot-zero locus `{z1 = 0}`, `∫⁻_{step2E '' (V \ {z1=0})} g = ∫⁻_{V \ {z1=0}} |det Dφ₂| · (g ∘
+step2E)`. -/
+theorem step2E_lintegral_image (V : Set (Fin 7 → ℝ)) (hV : MeasurableSet V)
+    (g : (Fin 7 → ℝ) → ℝ≥0∞) :
+    ∫⁻ x in step2E '' (V \ {x | x 1 = 0}), g x
+      = ∫⁻ x in V \ {x | x 1 = 0},
+          ENNReal.ofReal |(pivotBlowupOnDeriv ({1, 2, 3} : Finset (Fin 7)) 1 x).det|
+            * g (step2E x) := by
+  simp_rw [step2E_eq_pivotBlowupOn]
+  rw [lintegral_image_eq_lintegral_abs_det_fderiv_mul volume
+    (hV.diff (measurableSet_eq_fun (measurable_pi_apply 1) measurable_const))
+    (fun x _ => pivotBlowupOn_hasFDerivWithinAt _ _ _ x) (pivotBlowupOn_injOn _ _ _)]
+
 /-! ## The composite chart's continuity + image containment (the `≤`-direction localisation input)
 
 For the `≤`-direction lower bound `∫⁻_{cubeBox 8 ε} ≥ ∫⁻_{φ '' V}`, the chart image must sit inside the
