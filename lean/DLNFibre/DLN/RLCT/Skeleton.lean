@@ -2524,7 +2524,7 @@ noncomputable def uTel (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) : ℕ → ℤ
   | 0 => (M 0 : ℤ)
   | (j + 1) => Mseq M (j + 1) + uTel M q j - q j
 
-/-- **(D1) telescope is `edgeQ`-inverse.** If the telescoped `uTel` stays nonnegative and ends at `0`,
+/-- **(D1) telescope is `edgeQ`-inverse.** If the telescoped `uTel` stays nonneg and ends at `0`,
 the admissible `T*_j := (uTel M q (j+1)).toNat` has `edgeQ M T* j = q j` identically (the clamps are
 inactive). The achiever's edge image equals its target by construction. -/
 private theorem edgeQ_telescope (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
