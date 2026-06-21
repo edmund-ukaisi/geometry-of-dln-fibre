@@ -1132,3 +1132,35 @@ This is finite interval bookkeeping only.  It does not construct equation
 `(3)`'s displayed vector, prove terminal `tilde t=0`, introduced-label
 status, vector admissibility, Case 1(2) chart sequence, Lemma 5 order count,
 normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` interval classifier
+
+Reproduction:
+`reproduction-lemma5-eq4-interval-classifier-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-interval-classifier.md`.
+Review artifact:
+`review-lemma5-eq4-interval-classifier-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_iff_two_mul_le
+aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_of_two_mul_le
+aoyagiLemma5Eq4_boundaryValue_not_mem_intervalValueSetNat_of_lt_two_mul
+```
+
+For a supplied equation `(4)` certificate in the strict boundary case
+`1<=p`, `p+1<a`, and `p<=ell-a`, the special boundary value
+`T(C.point (p+(ell-a)+1)-1)` belongs to the same-coordinate interval value set
+at coordinate `p+(ell-a)` exactly when `2*p<=a+1`.  The proof uses the
+supplied boundary value `Htilde'_(p+ell-a)-p+1` and the already-formalised
+interval excess formula
+`Htilde'_(j)-Htilde_(j)=min(j,ell-j,a,ell-a)`.  At `j=p+(ell-a)`, this excess
+reduces to `min(ell-a,a-p)`, so membership is equivalent to
+`p-1<=min(ell-a,a-p)`, hence to `2*p<=a+1`.
+
+This is a classifier, not a uniform obstruction.  It does not construct
+equation `(4)`'s displayed vector, prove terminal `tilde t=0`,
+introduced-label status, vector admissibility, Case 1(2) chart sequence,
+Lemma 5 order count, normal crossings, or RLCT extraction.

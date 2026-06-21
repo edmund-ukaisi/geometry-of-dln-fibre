@@ -2560,6 +2560,24 @@ Review artifact:
 Counterexample review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-compatibility-counterexample-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` strict-boundary interval
+classifier has landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.
+The proved Lean names are
+`aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_iff_two_mul_le`,
+`aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_of_two_mul_le`, and
+`aoyagiLemma5Eq4_boundaryValue_not_mem_intervalValueSetNat_of_lt_two_mul`.
+They say that for a supplied equation `(4)` certificate with `1<=p`,
+`p+1<a`, and `p<=ell-a`, the special boundary value belongs to the
+same-coordinate interval value set at coordinate `p+(ell-a)` exactly when
+`2*p<=a+1`.  This is a classifier, not a uniform nonmembership result; a
+blanket Eq3-style obstruction for Eq4 would be false.  It makes no
+normal-crossing or RLCT extraction claim.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-interval-classifier-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-interval-classifier.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-interval-classifier-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

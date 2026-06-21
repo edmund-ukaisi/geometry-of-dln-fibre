@@ -276,6 +276,109 @@ theorem aoyagiLemma5Eq4_boundaryEndpoint_not_block_of_predBoundary
     ell a p M m C layerWidth T hT hp]
   exact C.not_block_terminalEndpoint
 
+/-- In the strict equation `(4)` case, the special boundary value belongs to
+the same-coordinate interval at index `p + (ell-a)` exactly in the balanced
+range `2*p <= a+1`.
+
+This records only finite branch arithmetic for a supplied equation `(4)`
+certificate.  It does not construct the displayed source vector, prove
+terminality, admissibility, chart coverage, pole order, normal crossings, or
+RLCT extraction. -/
+theorem aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_iff_two_mul_le
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp0 : 1 ≤ p) (hp_strict : p + 1 < a) (hp_c : p ≤ ell - a) :
+    T (C.point (p + (ell - a) + 1) - 1) ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a)) ↔
+      2 * p ≤ a + 1 := by
+  have hj : p + (ell - a) < ell + 1 := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  have hexcess :
+      aoyagiLemma5IntervalExcess ell a (p + (ell - a)) =
+        min (ell - a) (a - p) := by
+    unfold aoyagiLemma5IntervalExcess
+    have hell_sub : ell - (p + (ell - a)) = a - p := by
+      have ha : a ≤ ell := hT.a_le_ell
+      omega
+    rw [hell_sub]
+    have hinner_le : min (a - p) (min a (ell - a)) ≤ p + (ell - a) := by
+      have hle_c : min (a - p) (min a (ell - a)) ≤ ell - a := by
+        exact le_trans (Nat.min_le_right (a - p) (min a (ell - a)))
+          (Nat.min_le_right a (ell - a))
+      omega
+    rw [Nat.min_eq_right hinner_le]
+    rw [← Nat.min_assoc]
+    have hmin_ap_a : min (a - p) a = a - p := Nat.min_eq_left (Nat.sub_le a p)
+    rw [hmin_ap_a]
+    rw [Nat.min_comm]
+  rw [aoyagiHtildeIntervalValueSetNat]
+  simp only [hj, ↓reduceDIte]
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m hT.a_le_ell
+    ⟨p + (ell - a), hj⟩]
+  constructor
+  · intro hbounds
+    have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m hT.a_le_ell
+      ⟨p + (ell - a), hj⟩
+    rw [hT.boundary] at hbounds
+    simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] at hbounds hgap
+    have hge_int :
+        (p : ℤ) - 1 ≤
+          (aoyagiLemma5IntervalExcess ell a (p + (ell - a)) : ℤ) := by
+      omega
+    have hle_nat : aoyagiLemma5IntervalExcess ell a (p + (ell - a)) ≤ a - p := by
+      rw [hexcess]
+      exact Nat.min_le_right (ell - a) (a - p)
+    have hle_int :
+        (aoyagiLemma5IntervalExcess ell a (p + (ell - a)) : ℤ) ≤
+          (a - p : ℕ) := by
+      exact_mod_cast hle_nat
+    omega
+  · intro hbalanced
+    have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m hT.a_le_ell
+      ⟨p + (ell - a), hj⟩
+    rw [hT.boundary]
+    simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] at hgap ⊢
+    constructor
+    · have hge_nat :
+          p - 1 ≤ aoyagiLemma5IntervalExcess ell a (p + (ell - a)) := by
+        rw [hexcess]
+        apply le_min
+        · omega
+        · omega
+      omega
+    · omega
+
+/-- Balanced strict equation `(4)` boundary values are counted by the
+same-coordinate interval at index `p + (ell-a)`. -/
+theorem aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_of_two_mul_le
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp0 : 1 ≤ p) (hp_strict : p + 1 < a) (hp_c : p ≤ ell - a)
+    (hbalanced : 2 * p ≤ a + 1) :
+    T (C.point (p + (ell - a) + 1) - 1) ∈
+      aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a)) := by
+  exact (aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_iff_two_mul_le
+    ell a p M m C layerWidth T hT hp0 hp_strict hp_c).2 hbalanced
+
+/-- Unbalanced strict equation `(4)` boundary values are not counted by the
+same-coordinate interval at index `p + (ell-a)`. -/
+theorem aoyagiLemma5Eq4_boundaryValue_not_mem_intervalValueSetNat_of_lt_two_mul
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp0 : 1 ≤ p) (hp_strict : p + 1 < a) (hp_c : p ≤ ell - a)
+    (hunbalanced : a + 1 < 2 * p) :
+    T (C.point (p + (ell - a) + 1) - 1) ∉
+      aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a)) := by
+  intro hmem
+  have hbalanced :=
+    (aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_iff_two_mul_le
+      ell a p M m C layerWidth T hT hp0 hp_strict hp_c).1 hmem
+  omega
+
 /-- Branch-value alternatives for Aoyagi Lemma 5 equation `(4)` on the selected
 span.
 

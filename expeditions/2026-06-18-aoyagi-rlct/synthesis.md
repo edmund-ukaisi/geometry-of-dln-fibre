@@ -2124,6 +2124,21 @@ selected-sum and strict selected-width inequalities hold, while
 `(3)` and `(4)` are not terminal-vector theorems from the printed display
 alone.
 
+The strict-boundary interval arithmetic for equation `(4)` is now
+Lean-proved as a classifier.  For a supplied equation `(4)` certificate with
+`1<=p`, `p+1<a`, and `p<=ell-a`, the special boundary value
+`T(C.point (p+(ell-a)+1)-1)=Htilde'_(p+ell-a)-p+1` belongs to
+`aoyagiHtildeIntervalValueSetNat ell a M m (p+(ell-a))` exactly when
+`2*p<=a+1`.  The Lean names are
+`aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_iff_two_mul_le`,
+`aoyagiLemma5Eq4_boundaryValue_mem_intervalValueSetNat_of_two_mul_le`, and
+`aoyagiLemma5Eq4_boundaryValue_not_mem_intervalValueSetNat_of_lt_two_mul`.
+This deliberately avoids the false Eq3-style claim that the Eq4 strict
+boundary is uniformly outside the same-coordinate interval family.  It is
+still finite supplied-branch bookkeeping only, not a displayed-vector
+construction, terminal `tilde t=0`, chart sequence, introduced-label theorem,
+Lemma 5 order count, normal crossings, or RLCT extraction.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
