@@ -5,7 +5,7 @@
 > `cCodim e 0 < cCodim e' 0`.
 >
 > - **Lean:** `DLNFibre.Core.cCodim_zero_strict`
->   (`lean/DLNFibre/Core/CCodimZeroStrict.lean` @ `<commit-sha>`)
+>   (`lean/DLNFibre/Core/CCodimZeroStrict.lean` @ `9947d93`)
 > - **Gloss.** For dimension vectors `e, e' : Fin (N+1) → ℕ` with `(kostantPartitions e 0).Nonempty`,
 >   `(kostantPartitions e' 0).Nonempty`, and `∀ k, e k < e' k`, the minimum of the type-A `Ext`-pairing
 >   quadratic form `codimForm` over the corner-`0` Kostant partitions of `e` is strictly below that of
@@ -32,7 +32,7 @@
 > components of the rank-`r` orbit-closure stratification `Σ̄^r`}`.
 >
 > - **Lean:** `DLNFibre.Core.numTop_eq_ncard_topComponents`
->   (`lean/DLNFibre/Core/CCodimZeroStrict.lean` @ `<commit-sha>`)
+>   (`lean/DLNFibre/Core/CCodimZeroStrict.lean` @ `9947d93`)
 > - **Gloss.** For `[Field k] [IsAlgClosed k] [CharZero k]`, dimension vector `d`, rank `r`, and
 >   `(kostantPartitions d r).Nonempty`, the combinatorial component count `numTop d r` equals the
 >   `Set.ncard` of `topComponents d r` (the top-dimensional irreducible components of `Σ̄^r`).
