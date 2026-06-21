@@ -2079,6 +2079,47 @@ private theorem cAch_spec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
   ⟨Nat.le_findGreatest hL (goodAch_one M hL), Nat.findGreatest_le L,
     Nat.findGreatest_spec hL (goodAch_one M hL)⟩
 
+/-- For a monotone `q`, `srt n q` is `q` (read at the `ℕ` index); sorting fixes a sorted tuple. -/
+private theorem srt_of_monotone (n : ℕ) (q : Fin n → ℤ) (hq : Monotone q) (i : ℕ) (hi : i < n) :
+    srt n q i = q ⟨i, hi⟩ := by
+  simp only [srt, dif_pos hi]
+  rw [(Tuple.sort_eq_refl_iff_monotone).mpr hq, Equiv.refl_apply]
+
+/-- For monotone `q`, `smallestK n k q` is the direct prefix sum `∑_{i<k} q i`. -/
+private theorem smallestK_of_monotone (n k : ℕ) (q : Fin n → ℤ) (hq : Monotone q) (hk : k ≤ n) :
+    smallestK n k q = ∑ i ∈ Finset.range k, (if h : i < n then q ⟨i, h⟩ else 0) := by
+  rw [smallestK]
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  rw [srt_of_monotone n q hq i (by omega), dif_pos (by omega)]
+
+/-- `Mvec`'s sorted value at `j` equals `aSort M j` (both the `j`-th smallest width; the two sort
+permutations may differ on ties but their value-sequences — the unique monotone arrangement — agree). -/
+private theorem Mvec_sort_eq_aSort (M : Fin (L + 1) → ℕ) (j : Fin (L + 1)) :
+    Mvec M (Tuple.sort (Mvec M) j) = (aSort M j : ℤ) := by
+  -- `Mvec M ∘ sort M` is monotone, so by uniqueness it equals `Mvec M ∘ sort (Mvec M)`
+  have hmono : Monotone (Mvec M ∘ Tuple.sort M) := by
+    intro a b hab
+    simp only [Function.comp_apply, Mvec]
+    exact_mod_cast Tuple.monotone_sort M hab
+  have h1 : Mvec M ∘ Tuple.sort M = Mvec M ∘ Tuple.sort (Mvec M) :=
+    Tuple.comp_sort_eq_comp_iff_monotone.mpr hmono
+  have := congrArg (fun f => f j) h1
+  simp only [Function.comp_apply] at this
+  rw [← this]; rfl
+
+/-- `smallestK (L+1) n (Mvec M) = Sprefix M n`: the `n`-smallest widths sum to the sorted prefix. -/
+private theorem smallestK_Mvec (M : Fin (L + 1) → ℕ) (n : ℕ) (hn : n ≤ L + 1) :
+    smallestK (L + 1) n (Mvec M) = (Sprefix M n : ℤ) := by
+  rw [smallestK, Sprefix, Nat.cast_sum]
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  have hi' : i < L + 1 := by omega
+  rw [srt, dif_pos hi', aS, dif_pos hi']
+  exact Mvec_sort_eq_aSort M ⟨i, hi'⟩
+
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
