@@ -811,6 +811,10 @@ on the session's original cwd.
    are now proved.  Remaining nearby A5 adapter work should avoid duplicating
    these conjunctions and should not infer `LabelExponentCertificate` data
    without explicit terminal exponent and least-value fields.
+   The Eq5 one-step introduced-domain insert wrapper is now proved.  This is
+   useful for recurrence-domain bookkeeping, but it still supplies no
+   terminal exponent or least-value fields; do not promote it to a
+   `LabelExponentCertificate` adapter.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

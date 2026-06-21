@@ -3089,6 +3089,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-finset-adapters-a5.md`.
 
+Latest A5 update: Eq5 now has a one-step introduced-domain insert wrapper in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The name is
+`aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_succ_eq_insert_of_lastPoint_widthBound`.
+For one supplied Eq5 own-block branch whose label is `J+1`, it proves
+`introducedLabelFinset L n S (J+1) =
+insert (Sigma.mk S (J+1)) (introducedLabelFinset L n S J)`, using the existing
+Eq5 actual-label wrapper and the generic finite-domain insert theorem.  It is
+finite-domain bookkeeping only; no terminal exponent, least-value,
+displayed-vector construction, admissibility, order count, normal-crossing, or
+RLCT data is proved.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-domain-insert-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-domain-insert.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-domain-insert-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

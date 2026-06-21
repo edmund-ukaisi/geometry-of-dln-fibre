@@ -2480,6 +2480,19 @@ vector construction or Lemma 5 order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-finset-adapters-a5.md`.
 
+Eq5 now has a one-step introduced-domain insert wrapper in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The theorem
+`aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_succ_eq_insert_of_lastPoint_widthBound`
+specializes the generic `introducedLabelFinset_succ_eq_insert` theorem to a
+supplied Eq5 branch label `J+1 = Htilde'_p+1-alpha`, using the existing Eq5
+actual-width label wrapper.  It is finite-domain bookkeeping only and does not
+provide terminal exponent, least-value, or displayed-vector construction data.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-domain-insert-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-domain-insert.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-domain-insert-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

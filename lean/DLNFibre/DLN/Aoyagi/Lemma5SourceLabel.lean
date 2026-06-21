@@ -862,6 +862,35 @@ theorem aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPo
   exact ⟨aoyagiLemma5Eq5_ownCoordinate_mem_offsetValueSet
     ell a p alpha M m C T hown hS, hfinite⟩
 
+/-- A supplied Eq5 own-block branch gives the one-step finite-domain update
+for its current-layer label.
+
+This specializes `introducedLabelFinset_succ_eq_insert` to the Eq5 label
+`J+1 = Htilde'_p+1-alpha`, using only the supplied actual-width lower bound at
+the own-block source index.  It is finite-domain bookkeeping, not an exponent
+certificate or displayed-vector construction. -/
+theorem aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_succ_eq_insert_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S J : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    introducedLabelFinset L n S (J + 1) =
+      insert (Sigma.mk S (J + 1)) (introducedLabelFinset L n S J) := by
+  have hlabel :=
+    aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+      L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+      hwidth_le hJ
+  exact introducedLabelFinset_succ_eq_insert hlabel.2
+
 /-- Source-shaped arbitrary-own-block equation `(5)` label legality from a
 block-local actual-width lower-bound hypothesis.
 

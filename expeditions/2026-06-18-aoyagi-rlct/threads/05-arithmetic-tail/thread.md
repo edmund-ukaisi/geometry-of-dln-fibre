@@ -1999,3 +1999,28 @@ introduced-label finite-domain facts.  It keeps Eq3's explicit slack and Eq4's
 repaired guards.  It does not construct displayed vectors, provide terminal
 exponent/least-value data, prove terminality, chart sequence, Lemma 5 order
 count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 one-step introduced domain insert
+
+Reproduction:
+`reproduction-lemma5-eq5-domain-insert-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-domain-insert.md`.
+Review artifact:
+`review-lemma5-eq5-domain-insert-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_succ_eq_insert_of_lastPoint_widthBound
+```
+
+For one supplied Eq5 own-block branch whose label is `J+1`, advancing the
+introduced-label finite domain from `(S,J)` to `(S,J+1)` inserts exactly
+`Sigma.mk S (J+1)`.
+
+This is finite-domain bookkeeping only.  It uses the existing Eq5 actual-label
+wrapper and the generic `introducedLabelFinset_succ_eq_insert` theorem.  It
+does not construct Eq5 vectors, quantify over all `alpha`, provide
+terminal-exponent or least-value data, prove terminality, chart sequence,
+Lemma 5 order count, normal crossings, or RLCT extraction.
