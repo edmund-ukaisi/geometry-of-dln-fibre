@@ -3026,3 +3026,80 @@ exponent vectors have binary prefix deltas, does not prove the source
 `T -> (H_j),(S_j)` coordinate correspondence, and does not prove the Lemma 5
 upper-bound classifier, Case 1(2) uniqueness, back-to-label coverage, pole
 order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Source probe - Lemma 5 classifier fields
+
+Source probe:
+`source-probe-lemma5-classifier-fields-a5.md`.
+
+Ptolemy rechecked Aoyagi PDF pp. 25-27 against the open Lemma 5
+upper-bound/no-extra classifier fields.  Verdict: the full classifier is not
+proved by the printed paragraph.  The interval count plus the Case 1(2)
+sentence that `J` increases by one does not supply a classifier, an injection,
+or a back-to-label map.
+
+Status by field:
+
+```text
+label-to-vector              conditional
+minimum-to-lambda            conditional/obstructed from pp. 25-27 alone
+interval classifier          mapsTo only, under explicit source-chain hypotheses
+Case 1(2) uniqueness         obstructed
+back-to-label                obstructed as printed
+```
+
+The recommended next formal direction is a narrow conditional interval
+`mapsTo` theorem from terminal/binary chain data to the counted interval
+codomain, not a full no-extra classifier.
+
+## 2026-06-21 API probe - coordinate coverage classifier
+
+API probe:
+`api-probe-lemma5-coordinate-coverage-classifier-a5.md`.
+
+Lovelace inspected the existing `Lemma5DisplayedVector`,
+`Lemma5SuppliedFamily`, and `Lemma5TerminalBridge` APIs.  Recommended next
+Lean slice: in `Lemma5SuppliedFamily.lean`, add a generic constructor from
+coordinate-wise raw value coverage to `AoyagiLemma5SuppliedNonbaseFamily` by
+filtering out the supplied base value, plus a counted-datum classifier bridge
+from a supplied coordinate function on branches.
+
+The probe also records the boundary: the equation `(3)`/`(4)`/`(5)` coverage
+currently available in `Lemma5DisplayedVector.lean` is one-coordinate and
+rising-region only.  It can feed coordinate-wise value-image hypotheses, but
+it cannot construct full coverage for all `j=1,...,ell-1` without additional
+supplied plateau/falling-coordinate data.
+
+## 2026-06-21 Lean Lemma 5 binary supplied family
+
+Reproduction:
+`reproduction-lemma5-binary-supplied-family-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-binary-supplied-family.md`.
+Review artifact:
+`review-lemma5-binary-supplied-family-a5.md`.
+
+Lean now packages a narrower supplied-data boundary for Lemma 5 branch
+families:
+
+```text
+AoyagiLemma5SuppliedBinaryNonbaseFamily
+AoyagiLemma5SuppliedBinaryNonbaseFamily.toAdmissibleNonbaseFamily
+AoyagiLemma5SuppliedBinaryFamily
+AoyagiLemma5SuppliedBinaryFamily.fullBranches
+AoyagiLemma5SuppliedBinaryFamily.fullH
+AoyagiLemma5SuppliedBinaryFamily.toAdmissibleFamily
+AoyagiLemma5SuppliedBinaryFamily.fullBranches_card_and_fullBranch_twoValueCount
+```
+
+Instead of directly supplying `Htilde <= H <= Htilde'` and the two-value
+increment field for each branch, the binary structures supply `H_0=m_0`,
+terminal `H_ell=0`, and binary prefix deltas.  Under `a<=ell` and the
+selected-width sum, the conversion theorems derive the previous admissible
+family boundary from the binary-prefix arithmetic.
+
+This remains supplied-data assembly.  It does not construct Aoyagi's displayed
+source vectors, prove binary deltas from source, prove source-label legality,
+prove terminal `tilde t=0`, prove chart coverage, construct the Lemma 5
+upper-bound classifier, prove pole order, prove normal crossings, or extract
+RLCT data.

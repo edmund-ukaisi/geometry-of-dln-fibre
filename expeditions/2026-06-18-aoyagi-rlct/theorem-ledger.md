@@ -3694,6 +3694,46 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-binary-prefix-delta-bounds-a5.md`.
 
+Latest A5 classifier source-probe update: PDF pp. 25-27 still do not prove
+the full Lemma 5 upper-bound/no-extra classifier.  The interval count plus
+Case 1(2)'s `J`-increase sentence does not supply a classifier, injection, or
+back-to-label map.  The safe next source-facing statement is interval
+`mapsTo` under explicit terminal/binary chain hypotheses.
+Source probe:
+`threads/05-arithmetic-tail/source-probe-lemma5-classifier-fields-a5.md`.
+
+Latest A5 coordinate-coverage API probe: the next clean classifier-adjacent
+Lean slice should stay in `Lemma5SuppliedFamily.lean`: construct
+`AoyagiLemma5SuppliedNonbaseFamily` from coordinate-wise raw value coverage by
+filtering out the supplied base value, then construct an
+`AoyagiLemma5CountDatumClassifier` from a supplied branch-coordinate map and
+injectivity of the tagged classifier.  Existing equation `(3)`/`(4)`/`(5)`
+coverage is only one-coordinate/rising-region, so full-coordinate coverage
+remains supplied.
+API probe:
+`threads/05-arithmetic-tail/api-probe-lemma5-coordinate-coverage-classifier-a5.md`.
+
+Latest A5 binary supplied-family update: `Lemma5SuppliedFamily.lean` now
+contains a narrower binary-prefix input form for the supplied admissible-family
+boundary.  Names:
+`AoyagiLemma5SuppliedBinaryNonbaseFamily`,
+`AoyagiLemma5SuppliedBinaryNonbaseFamily.toAdmissibleNonbaseFamily`,
+`AoyagiLemma5SuppliedBinaryFamily`,
+`AoyagiLemma5SuppliedBinaryFamily.fullBranches`,
+`AoyagiLemma5SuppliedBinaryFamily.fullH`,
+`AoyagiLemma5SuppliedBinaryFamily.toAdmissibleFamily`, and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranches_card_and_fullBranch_twoValueCount`.
+The conversion derives explicit `Htilde` bounds and two-value increment fields
+from terminal binary prefix-delta data under `a<=ell` and the selected-width
+sum.  It does not construct source vectors, prove source binary deltas, prove
+the no-extra classifier, or touch pole order/normal crossings/RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-binary-supplied-family-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-binary-supplied-family.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-binary-supplied-family-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -601,6 +601,156 @@ theorem fullBranch_freeHighCount_lemma3A_eq_min {β : Type*} [DecidableEq β]
 
 end AoyagiLemma5SuppliedAdmissibleFamily
 
+/-- Supplied nonbase branch family with binary prefix-delta data.
+
+This is a narrower supplied boundary than
+`AoyagiLemma5SuppliedAdmissibleNonbaseFamily`: the displayed `Htilde` bounds
+and two-value increment obligations are derived from terminal binary prefix
+deltas, but the branches, values, terminality, and binary deltas are still
+supplied data. -/
+structure AoyagiLemma5SuppliedBinaryNonbaseFamily (β : Type*) [DecidableEq β]
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    extends AoyagiLemma5SuppliedNonbaseFamily β ell a M m where
+  H : β → Fin (ell + 1) → ℤ
+  H0 :
+    ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+      ∀ {b : β}, b ∈ branches j → H b 0 = m 0
+  Hlast :
+    ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+      ∀ {b : β}, b ∈ branches j → H b (Fin.last ell) = 0
+  binary_delta :
+    ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+      ∀ {b : β}, b ∈ branches j →
+        ∀ r : Fin ell,
+          aoyagiLemma4IncrementPrefixDelta ell M m (H b) r = 0 ∨
+            aoyagiLemma4IncrementPrefixDelta ell M m (H b) r = 1
+  value_eq_chain :
+    ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+      ∀ {b : β}, b ∈ branches j →
+        value b = H b (aoyagiLemma5InteriorCoord ell j hj)
+
+namespace AoyagiLemma5SuppliedBinaryNonbaseFamily
+
+/-- Terminal binary prefix deltas convert a supplied binary nonbase family into
+the existing admissible nonbase-family boundary. -/
+def toAdmissibleNonbaseFamily {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryNonbaseFamily β ell a M m)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    AoyagiLemma5SuppliedAdmissibleNonbaseFamily β ell a M m where
+  toAoyagiLemma5SuppliedNonbaseFamily := F.toAoyagiLemma5SuppliedNonbaseFamily
+  H := F.H
+  H0 := F.H0
+  lower_bound := by
+    intro j hj b hb
+    exact (aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+      ell a M m (F.H b) ha (F.H0 hj hb) (F.Hlast hj hb) hselected
+      (F.binary_delta hj hb)).1
+  upper_bound := by
+    intro j hj b hb
+    exact (aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+      ell a M m (F.H b) ha (F.H0 hj hb) (F.Hlast hj hb) hselected
+      (F.binary_delta hj hb)).2
+  increment_twoValue := by
+    intro j hj b hb
+    exact aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta
+      ell M m (F.H b) (F.binary_delta hj hb)
+  value_eq_chain := F.value_eq_chain
+
+end AoyagiLemma5SuppliedBinaryNonbaseFamily
+
+/-- Supplied full branch family with binary prefix-delta data.
+
+This adds a base branch to the binary nonbase family.  The conversion theorem
+below derives the existing admissible full-family fields from terminal binary
+prefix deltas; it does not construct the source branches or prove that
+Aoyagi's displayed vectors satisfy the binary hypotheses. -/
+structure AoyagiLemma5SuppliedBinaryFamily (β : Type*) [DecidableEq β]
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    extends AoyagiLemma5SuppliedBinaryNonbaseFamily β ell a M m where
+  baseH : Fin (ell + 1) → ℤ
+  baseH0 : baseH 0 = m 0
+  baseHlast : baseH (Fin.last ell) = 0
+  base_binary_delta :
+    ∀ r : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m baseH r = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m baseH r = 1
+
+namespace AoyagiLemma5SuppliedBinaryFamily
+
+/-- The full supplied branch set attached to a binary full family. -/
+def fullBranches {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m) :
+    Finset (Option β) :=
+  F.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches
+
+/-- The `H`-chain attached to a tagged supplied binary full branch. -/
+def fullH {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m) :
+    Option β → Fin (ell + 1) → ℤ
+  | none => F.baseH
+  | some b => F.H b
+
+@[simp] theorem fullH_none {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m) :
+    F.fullH none = F.baseH :=
+  rfl
+
+@[simp] theorem fullH_some {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m) (b : β) :
+    F.fullH (some b) = F.H b :=
+  rfl
+
+/-- Terminal binary prefix deltas convert a supplied binary full family into
+the existing admissible full-family boundary. -/
+def toAdmissibleFamily {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    AoyagiLemma5SuppliedAdmissibleFamily β ell a M m where
+  toAoyagiLemma5SuppliedAdmissibleNonbaseFamily :=
+    F.toAoyagiLemma5SuppliedBinaryNonbaseFamily.toAdmissibleNonbaseFamily
+      ha hselected
+  baseH := F.baseH
+  baseH0 := F.baseH0
+  base_lower_bound :=
+    (aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+      ell a M m F.baseH ha F.baseH0 F.baseHlast hselected
+      F.base_binary_delta).1
+  base_upper_bound :=
+    (aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+      ell a M m F.baseH ha F.baseH0 F.baseHlast hselected
+      F.base_binary_delta).2
+  base_increment_twoValue :=
+    aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta
+      ell M m F.baseH F.base_binary_delta
+
+/-- Binary supplied full families inherit the existing full branch count and
+per-branch two-value count after conversion to the admissible boundary. -/
+theorem fullBranches_card_and_fullBranch_twoValueCount {β : Type*}
+    [DecidableEq β] (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m)
+    (hell : 1 ≤ ell) (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    F.fullBranches.card = a * (ell - a) + 1 ∧
+      ∀ {x : Option β}, x ∈ F.fullBranches →
+        ((Finset.univ.filter fun r : Fin ell ↦
+            aoyagiLemma4F ell m (F.fullH x) r = M).card = a) ∧
+          ((Finset.univ.filter fun r : Fin ell ↦
+            aoyagiLemma4F ell m (F.fullH x) r = M - 1).card = ell - a) := by
+  simpa [fullBranches, fullH, AoyagiLemma5SuppliedAdmissibleFamily.fullBranches,
+    AoyagiLemma5SuppliedAdmissibleFamily.fullH] using
+    AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card_and_fullBranch_twoValueCount
+      ell a M m (F.toAdmissibleFamily ha hselected) hell ha hselected
+
+end AoyagiLemma5SuppliedBinaryFamily
+
 end Aoyagi
 end DLN
 end DLNFibre

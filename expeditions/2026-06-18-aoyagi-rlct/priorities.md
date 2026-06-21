@@ -21,15 +21,13 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Latest pushed A5 state before the current binary-prefix slice is `efccfb9`,
-which bridges supplied prefix-delta bounds to displayed `Htilde` chain bounds.
-The meaningful source frontier is still the upper-bound/no-extra side of
-Aoyagi Lemma 5, not another lower-bound printed equation pass.  PDF p. 26
-asserts the upper count using interval counting plus the Case 1(2) sentence
-that `J` increases by one, but that assertion still has to be reproduced as a
-classifier from terminal lambda-vectors to counted interval data before it can
-source-discharge Lean's
-`terminalMinimumLabels subset branchLabelImage`.
+Latest pushed A5 state before the current binary supplied-family slice is
+`8f8ad99`, which derives displayed `Htilde` bounds from terminal binary prefix
+deltas.  The meaningful source frontier is still the upper-bound/no-extra side
+of Aoyagi Lemma 5, not another lower-bound printed equation pass.  The renewed
+source probe confirms that PDF p. 26's interval count plus the Case 1(2)
+sentence that `J` increases by one does not by itself prove a classifier,
+injection, or back-to-label map.
 
 Recorded audit:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-source-audit-a5.md`.
@@ -45,18 +43,26 @@ Current prefix-delta chain-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-prefix-delta-chain-bounds-a5.md`.
 Current binary-prefix-delta bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-binary-prefix-delta-bounds-a5.md`.
+Current classifier-field source probe:
+`threads/05-arithmetic-tail/source-probe-lemma5-classifier-fields-a5.md`.
+Current coordinate-coverage API probe:
+`threads/05-arithmetic-tail/api-probe-lemma5-coordinate-coverage-classifier-a5.md`.
+Current binary supplied-family slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-binary-supplied-family-a5.md`.
 
 Immediate order:
 
-1. Probe the Lemma 5 upper-bound classifier fields: label-to-vector,
-   minimum-to-lambda, interval classifier, Case 1(2) uniqueness, and
-   back-to-label.
+1. Build the next conditional interval `mapsTo` layer: coordinate-wise raw
+   value coverage -> `AoyagiLemma5SuppliedNonbaseFamily`, then supplied branch
+   coordinate -> `AoyagiLemma5CountDatumClassifier`.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. Low-risk Lean API may package the supplied boundary using standard finite
+3. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
+   printed; do not treat the `J`-increase sentence as nonduplication.
+4. Low-risk Lean API may package the supplied boundary using standard finite
    classifier or bijection language, but it must not be described as source
    exactness.
-4. Do not start a Lean normal-crossing/RLCT extraction interface before actual
+5. Do not start a Lean normal-crossing/RLCT extraction interface before actual
    finite chart/certificate data exist.
 
 ## Ranked next

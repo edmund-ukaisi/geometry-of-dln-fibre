@@ -3045,6 +3045,51 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-binary-prefix-delta-bounds-a5.md`.
 
+Ptolemy's source probe of Aoyagi PDF pp. 25-27 confirms the full Lemma 5
+upper-bound/no-extra classifier is still not source-proved.  The interval
+count and the sentence that Case 1(2) increases `J` do not themselves supply a
+classifier, injection, or back-to-label map.  Field status: label-to-vector is
+conditional; minimum-to-lambda is conditional/obstructed from pp. 25-27 alone;
+the interval classifier is available only as `mapsTo` under explicit
+source-chain hypotheses; Case 1(2) uniqueness/injection and back-to-label are
+obstructed as printed.
+Artifact:
+`threads/05-arithmetic-tail/source-probe-lemma5-classifier-fields-a5.md`.
+
+Lovelace's API probe identifies the next clean Lean slice below the classifier
+frontier: construct `AoyagiLemma5SuppliedNonbaseFamily` from coordinate-wise
+raw value coverage by filtering out the supplied base value, then bridge such
+a supplied family to `AoyagiLemma5CountDatumClassifier` using a supplied branch
+coordinate and injectivity of the tagged classifier.  The probe also warns
+that existing equation `(3)`/`(4)`/`(5)` value coverage is currently
+one-coordinate/rising-region only, so full-coordinate coverage remains supplied
+unless plateau/falling-coordinate data are added.
+Artifact:
+`threads/05-arithmetic-tail/api-probe-lemma5-coordinate-coverage-classifier-a5.md`.
+
+The supplied Lemma 5 admissible-family boundary now has a binary-prefix input
+form in `Lemma5SuppliedFamily.lean`.  The new structures
+`AoyagiLemma5SuppliedBinaryNonbaseFamily` and
+`AoyagiLemma5SuppliedBinaryFamily` keep branch coverage/nonduplication
+supplied, but replace explicit per-branch `Htilde` bounds and two-valued
+increments by `H_0=m_0`, terminal `H_ell=0`, and binary prefix deltas.
+The conversions
+`AoyagiLemma5SuppliedBinaryNonbaseFamily.toAdmissibleNonbaseFamily` and
+`AoyagiLemma5SuppliedBinaryFamily.toAdmissibleFamily` derive the existing
+admissible-family boundary from the binary-prefix arithmetic under `a<=ell`
+and the selected-width sum.  The direct binary accessors
+`AoyagiLemma5SuppliedBinaryFamily.fullBranches` and `.fullH` support the
+wrapper
+`AoyagiLemma5SuppliedBinaryFamily.fullBranches_card_and_fullBranch_twoValueCount`.
+This is still a supplied-data conversion, not source construction or the
+no-extra classifier.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-binary-supplied-family-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-binary-supplied-family.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-binary-supplied-family-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
