@@ -3320,6 +3320,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-local-lower-endpoint-a5.md`.
 
+The terminal source-realisation bridge is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalSourceBridge.lean`.  The bridge imports
+the displayed-vector terminal Eq5 wrapper and the supplied-family terminal
+chain-zero wrappers, and proves
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_Eq5Coverage`
+and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_Eq5Coverage`.
+Both theorems require the explicit source-coordinate hypothesis
+`T(C.point ell-1)=fullH x (Fin.last ell)`; only then does branch terminal
+chain-zero produce the terminal zero needed by
+`aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`.  This
+does not construct a terminal source branch or prove terminal-label exactness.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-bridge-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-bridge.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-bridge-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

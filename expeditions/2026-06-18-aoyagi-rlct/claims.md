@@ -2554,6 +2554,14 @@ No such claim is formalisation-ready until both fields are filled.
   These remove source-label legality hypotheses from the lower-endpoint
   finite-set wrappers; they do not prove source-label legality or solve the
   `p=a` and `p+1=a` boundary issues.
+  Also proved the terminal source-realisation bridge module
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalSourceBridge.lean`, with
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_Eq5Coverage`
+  and
+  `AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_Eq5Coverage`.
+  These require the explicit hypothesis
+  `T(C.point ell-1)=fullH x (Fin.last ell)` before using branch terminal
+  chain-zero to fill the terminal Eq5 singleton.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

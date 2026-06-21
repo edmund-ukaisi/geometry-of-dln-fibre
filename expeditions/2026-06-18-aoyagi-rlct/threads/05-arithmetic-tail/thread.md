@@ -3464,3 +3464,30 @@ This does not prove source-label legality for `Htilde_p+1`, Eq4 existence at
 `p=a`, terminal-collision compatibility in the `p+1=a` case, all-coordinate
 branch-family coverage, injection, back-to-label coverage, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal source-realisation bridge
+
+Reproduction:
+`reproduction-lemma5-terminal-source-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-source-bridge.md`.
+Review artifact:
+`review-lemma5-terminal-source-bridge-a5.md`.
+
+Lean now packages the exact handoff from supplied branch terminal chain zero
+to terminal Eq5 source-coordinate coverage:
+
+```text
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_Eq5Coverage
+AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_Eq5Coverage
+```
+
+Both theorems require an explicit hypothesis
+`T(C.point ell-1)=fullH x (Fin.last ell)`.  With that equality, the supplied
+family terminal chain-zero theorem gives `T(C.point ell-1)=0`, and the existing
+terminal Eq5 supplied-zero wrapper fills the terminal singleton interval.
+
+This does not construct the source-realisation equality, a terminal/base
+source branch, source-label legality, terminal-label exactness, classifier
+coverage, injection, back-to-label coverage, pole order, normal crossings, or
+RLCT extraction.

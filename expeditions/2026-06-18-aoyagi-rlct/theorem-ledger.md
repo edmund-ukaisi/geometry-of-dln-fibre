@@ -3503,6 +3503,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-local-lower-endpoint-a5.md`.
 
+Latest A5 terminal source-realisation bridge update: a new module
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalSourceBridge.lean` connects supplied
+branch-chain terminal zero to the terminal Eq5 finite-set wrapper under an
+explicit source-realisation hypothesis.  Names:
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_Eq5Coverage`
+and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_Eq5Coverage`.
+Both require a tagged branch `x in fullBranches` and
+`T(C.point ell-1)=fullH x (Fin.last ell)`.  They do not construct that source
+equality, source labels, terminal minimizer exactness, or no-extra coverage.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-bridge-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-bridge.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-bridge-a5.md`.
+
 Latest A5 free-count minimum update: the supplied full family now has a
 branchwise Lemma 3 numerator consequence in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  Names:

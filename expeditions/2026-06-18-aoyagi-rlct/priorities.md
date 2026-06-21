@@ -21,10 +21,10 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Current A5 state includes the Eq4 local lower-endpoint slice: the lower
-endpoint carried by a supplied Eq4 piecewise certificate is now available
-without the source-label legality hypotheses, and this fills Eq5's lower
-endpoint deficit in the rising window.  The meaningful source frontier is
+Current A5 state includes the terminal source-realisation bridge slice: a
+supplied full-family branch fills the terminal Eq5 singleton only under an
+explicit source-coordinate equality
+`T(C.point ell-1)=fullH x (Fin.last ell)`.  The meaningful source frontier is
 still the upper-bound/no-extra side of Aoyagi Lemma 5, not another lower-bound
 printed equation pass.  The renewed source probe confirms that PDF p. 26's
 interval count plus the Case 1(2) sentence that `J` increases by one does not
@@ -74,13 +74,15 @@ Current supplied-family terminal chain-zero slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-supplied-family-terminal-chain-zero-a5.md`.
 Current Eq4 local lower-endpoint slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-lower-endpoint-a5.md`.
+Current terminal source-realisation bridge slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-bridge-a5.md`.
 
 Immediate order:
 
-1. Next source-facing target: either add an explicit terminal source-realisation
-   bridge only under a hypothesis equating `T(C.point ell-1)` with a supplied
-   branch chain endpoint, or continue the no-extra/classifier frontier.  Do not
-   infer source-coordinate terminal coverage from `H_ell=0`.
+1. Continue the no-extra/classifier frontier: source-backed terminal branch
+   construction, source-label legality, injection, and back-to-label coverage
+   remain unproved.  Do not infer any of these from the conditional terminal
+   source-realisation bridge.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
 3. Next source-facing target: continue the endpoint inventory around the
