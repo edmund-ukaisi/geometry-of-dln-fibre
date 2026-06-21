@@ -360,6 +360,18 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   (L1-reuse) + R1.2 multiplicity-control (`h_E+1 ≥ k_E·min Mval` per divisor, NOT codim shortcut); R1.4
   (Fubini-per-chart) plugs fm-2's shift theorem when the lift lands; obligations folded in (unit-absorption via
   S1.3, hcore_top endpoint, min-over-cover factorises n upstream-fixed). The mountain.
+  - **R1.2 ROUTE FORK (fm scoped, pp adjudicating — HIGH-STAKES, fixes R1's whole size):** (A) abstract
+    blow-up lemma (φ, exceptional divisor, u²·unit + u^{c−1} Jacobian) — needs blow-up/exceptional-divisor infra
+    Mathlib v4.29 LACKS = a SECOND MOUNTAIN; vs **(B) concrete-via-L1 (pp §8, STRONGLY preferred)** — iterated-L1
+    pivot split exposes the residual block as Mval coordinates ⟹ core = Σ residual²·unit ⟹ directly
+    smoothBlockND_rlct (#38) after S1.1 transport, NO blow-up infra (reuses L1 + smoothBlockND_rlct + S1.1, all in
+    hand). **(B) GATED on pp validating the CRUX (decorrelated, route-before-lines per #19 lesson):** does
+    iterated-L1 actually expose the core as a REGULAR SEQUENCE of coordinates (k=1)? CONTROLLER CONCERN flagged to
+    pp: core = ‖∏C^(s)‖² is the norm of a PRODUCT (degree-L in the C^(s)), naively NOT linear coordinates — pp
+    must pin how/whether it becomes coordinates. **RECONCILIATION: if (B) holds (k=1), multiplicity-control is
+    VACUOUS + R1 is LIGHT; if the product gives k>1, (B) fails ⟹ (A)/mountain.** fm HOLDS the (B) build until pp
+    confirms; meanwhile fm builds the route-independent (1,1,1) R1.2 gate (identity chart, cross-checked vs the
+    proven `case111_rlct`).
 - **S1.5 restatement+wire deferred to ONE pass** at fm-2's Fubini lift-close: I relay the complete signature
   (hGmeas + hGne + `[ProperSpace]`/`[IsFiniteMeasureOnCompacts]` instances) → fm restates + wires `exact` in one go.
 - **FUBINI: ALL ATOMS PROVEN** (fm-2, S1Fubini.lean @e2a3f0c, 302 LoC, axiom-clean): both integral directions
