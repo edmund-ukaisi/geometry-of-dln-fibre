@@ -320,6 +320,20 @@ PIVOTED to CRITICAL-PATH:** S1 wires (S1.1/S1.3/S1.4) → D1 `deepest_point_redu
 when Fubini lands) → L2 → T. Bounded #19 engine-nibbling (e.g. the per-T Mval identity) is FILL only, never over
 the critical path.
 
+**#19 ROUTE ADVANCE (fm @`85b0077`, supersedes the dependent-Fin descentSet plan — much cleaner):** the
+**EDGE-VARIABLE TRANSFORM** `q_j = M⁽ʲ⁺¹⁾ + (u_j − u_{j+1})` on the FIXED level sequence — a fixed-`Fin L`
+reparametrisation, NO dependent-Fin descentSet reindex (that was the hard bulk; dissolved). Exhaustively verified
+(0 failures L≤4). NEW engines axiom-clean: `karamata_sq` (Karamata-for-squares via Abel summation, general/
+reusable), `edge_identity` (`2·Mval = Σ(edgeQ)² − Σ(Mseq)²`), + QFeasible positional prefix bounds (Adm ⟹
+QFeasible). **#19 now reduces to ONE clean gate** (in the docstring): the **smallest-k-sum majorization**
+(`∀k, Σ(k smallest edgeQ) ≤ Σ(k smallest Y)` ⟹ karamata_sq). Mathlib v4.29 has NO Karamata/Schur/k-smallest API
+(confirmed) ⟹ ~150-250 lines new combinatorics; proven irreducible (pointwise-after-sort FALSE q=[1,3]vs[2,2];
+prefix/tail split undershoots — convexity essential). **STILL PARKED (decision b, reaffirmed 3rd time):** the gate
+is a DEDICATED TIDE LATER (after the headline), even better set-up now (edge-transform + karamata_sq + QFeasible
+all banked = one self-contained majorization theorem). fm REDIRECTED to the pending critical-path Skeleton tasks
+(S1.3 wire + the 13th-finding restatement, which it had skipped for this #19 work) → then D1. Process note logged:
+don't dispatch sub-formalisers per task (seat-reuse) + no further cycles on parked #19.
+
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
 instance = section-local `instance` (NOT a global Matrix instance, NOT a goal-type `letI` — elaboration order).
