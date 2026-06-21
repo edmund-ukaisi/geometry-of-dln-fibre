@@ -3576,6 +3576,36 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-terminal-minimum-label-exactness-a5.md`.
 
+Current A5 source frontier: a source audit of Aoyagi Lemma 5's upper-bound
+paragraph records that Aoyagi asserts an upper count of lambda-vectors by
+counted interval data, but a source-backed classifier has not yet been
+reproduced and the paragraph does not yet prove Lean's no-extra containment
+`terminalMinimumLabels subset branchLabelImage`.  Missing bridges:
+label-to-vector, minimum-to-lambda, interval classifier, Case 1(2)
+uniqueness/injection, and back-to-label.  Until these are reproduced or
+explicitly supplied, terminal exactness stays a supplied boundary.
+Audit:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-source-audit-a5.md`.
+Boundary card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-exactness-source-frontier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-exactness-frontier-and-bijon-a5.md`.
+
+Latest A5 bijection-API update: the terminal bridge exposes supplied
+terminal-minimum exactness as a standard finite bijection.  Names:
+`branchLabel_bijOn_terminalMinimumLabels_of_exactness`,
+`terminalMinimumLabelExactness_of_branchLabel_bijOn`, and
+`terminalMinimumLabels_card_of_branchLabel_bijOn`.  These prove exactness
+implies `Set.BijOn branchLabel fullBranches terminalMinimumLabels`, a supplied
+bijection implies the exactness fields, and a supplied bijection gives the
+finite count.  This is not a source-backed bijection construction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-label-bijon-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-label-bijon.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-exactness-frontier-and-bijon-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -2488,6 +2488,24 @@ No such claim is formalisation-ready until both fields are filled.
   `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_exactness`.
   This is only a convenience wrapper over supplied injectivity and no-extra
   containment.
+  A follow-up source audit of Aoyagi Lemma 5's upper-bound paragraph records
+  that Aoyagi asserts an upper count of terminal lambda-vectors by counted
+  interval data, but a source-backed classifier has not yet been reproduced
+  and the paragraph does not yet discharge
+  `terminalMinimumLabels subset branchLabelImage`.  The missing bridges are
+  label-to-vector, minimum-to-lambda, interval classifier, Case 1(2)
+  uniqueness/injection, and back-to-label.  See
+  `threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-source-audit-a5.md`
+  and
+  `threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-exactness-source-frontier.md`.
+  Also proved the bijection API
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_exactness`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_branchLabel_bijOn`,
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_branchLabel_bijOn`.
+  This is only an equivalent finite packaging of supplied exactness as
+  `Set.BijOn branchLabel fullBranches terminalMinimumLabels`; it does not
+  construct the bijection from the source.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

@@ -2805,3 +2805,67 @@ terminalMinimumLabels.card = a*(n+1-a)+1.
 This is a convenience package for downstream finite handoff.  It does not
 prove exactness from Aoyagi's printed equations and does not define or invoke a
 normal-crossing-to-RLCT extraction theorem.
+
+## 2026-06-21 Source audit for Lemma 5 terminal exactness
+
+Source audit:
+`reproduction-lemma5-terminal-exactness-source-audit-a5.md`.
+Boundary card:
+`statement-card-a5-lemma5-terminal-exactness-source-frontier.md`.
+Review artifact:
+`review-lemma5-terminal-exactness-frontier-and-bijon-a5.md`.
+
+The exactness package exposed the no-extra field
+
+```text
+terminalMinimumLabels subset branchLabelImage.
+```
+
+A source pass over Aoyagi Lemma 5's upper-bound paragraph shows that the
+promising source-backed direction is an upper classifier from terminal
+lambda-vectors to the counted interval data.  The PDF asserts the
+interval-count upper bound and invokes the Case 1(2) fact that `J` increases
+by one, but this assertion has not yet been reproduced as a source-backed
+classifier.  It does not yet supply the Lean bridge from
+`terminalMinimumLabels` to those lambda-vectors or from counted interval data
+back to `branchLabelImage`.
+
+The current source obligations are:
+
+```text
+label-to-vector bridge
+minimum-to-lambda bridge
+interval classifier
+Case 1(2) uniqueness / injection
+back-to-label bridge
+```
+
+Until those are reproduced or explicitly supplied, terminal exactness remains
+supplied finite data.  This audit does not change the Lean theorem status.
+
+## 2026-06-21 Lean terminal minimum label bijection API
+
+Reproduction:
+`reproduction-lemma5-terminal-minimum-label-bijon-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-minimum-label-bijon.md`.
+Review artifact:
+`review-lemma5-terminal-exactness-frontier-and-bijon-a5.md`.
+
+Lean now exposes the supplied terminal-exactness boundary in standard
+`Set.BijOn` form:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_exactness
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_branchLabel_bijOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_branchLabel_bijOn
+```
+
+Exactness implies a bijection from supplied `fullBranches` to
+`terminalMinimumLabels`; conversely a supplied bijection gives the exactness
+fields.  The cardinality wrapper counts terminal minimum labels from such a
+supplied bijection and `a<=n+1`.
+
+This is only finite API packaging.  It does not prove the bijection from
+Aoyagi's source equations, branch-label injectivity, no-extra containment,
+normal crossings, or RLCT extraction.

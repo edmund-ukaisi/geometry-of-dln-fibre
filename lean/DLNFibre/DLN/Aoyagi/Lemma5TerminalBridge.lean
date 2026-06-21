@@ -454,6 +454,82 @@ theorem terminalMinimumLabels_card_of_exactness {β : Type*} [DecidableEq β]
   rw [C.terminalMinimumLabels_eq_branchLabelImage_of_exactness ha hselected exactness]
   exact C.branchLabelImage_card n a M m ha exactness.branchLabel_injOn
 
+/-- Packaged exactness gives a bijection from supplied branches to terminal
+minimum labels.
+
+This is finite bookkeeping only: the exactness fields themselves remain
+supplied. -/
+theorem branchLabel_bijOn_terminalMinimumLabels_of_exactness {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (exactness : C.TerminalMinimumLabelExactness) :
+    Set.BijOn C.branchLabel ↑C.fullBranches ↑C.terminalMinimumLabels := by
+  refine ⟨?_, exactness.branchLabel_injOn, ?_⟩
+  · intro x hx
+    exact C.branchLabelImage_subset_terminalMinimumLabels ha hselected
+      (Finset.mem_image.mpr ⟨x, hx, rfl⟩)
+  · intro label hlabel
+    have heq : C.terminalMinimumLabels = C.branchLabelImage :=
+      C.terminalMinimumLabels_eq_branchLabelImage_of_exactness ha hselected exactness
+    have himage : label ∈ C.branchLabelImage := by
+      rwa [heq] at hlabel
+    rcases Finset.mem_image.mp himage with ⟨x, hx, hxl⟩
+    exact ⟨x, hx, hxl⟩
+
+/-- A bijection from supplied branches to terminal minimum labels is one
+standard way to supply terminal-minimum exactness. -/
+theorem terminalMinimumLabelExactness_of_branchLabel_bijOn {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hbij : Set.BijOn C.branchLabel ↑C.fullBranches ↑C.terminalMinimumLabels) :
+    C.TerminalMinimumLabelExactness where
+  branchLabel_injOn := hbij.injOn
+  terminalMinimumLabels_subset_branchLabelImage := by
+    intro label hlabel
+    rcases hbij.surjOn hlabel with ⟨x, hx, hxl⟩
+    rw [← hxl]
+    exact Finset.mem_image.mpr ⟨x, hx, rfl⟩
+
+/-- Count terminal minimum labels from a supplied branch-label bijection.
+
+This wrapper does not prove the bijection from Aoyagi's source equations. -/
+theorem terminalMinimumLabels_card_of_branchLabel_bijOn {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hbij : Set.BijOn C.branchLabel ↑C.fullBranches ↑C.terminalMinimumLabels) :
+    C.terminalMinimumLabels.card = a * (n + 1 - a) + 1 := by
+  have hsubset : C.branchLabelImage ⊆ C.terminalMinimumLabels := by
+    intro label hlabel
+    rcases Finset.mem_image.mp hlabel with ⟨x, hx, rfl⟩
+    exact hbij.mapsTo hx
+  have hnoExtra : C.terminalMinimumLabels ⊆ C.branchLabelImage :=
+    (C.terminalMinimumLabelExactness_of_branchLabel_bijOn hbij).2
+  have heq : C.terminalMinimumLabels = C.branchLabelImage := by
+    ext label
+    constructor
+    · intro hlabel
+      exact hnoExtra hlabel
+    · intro hlabel
+      exact hsubset hlabel
+  rw [heq]
+  exact C.branchLabelImage_card n a M m ha hbij.injOn
+
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
 end Aoyagi
