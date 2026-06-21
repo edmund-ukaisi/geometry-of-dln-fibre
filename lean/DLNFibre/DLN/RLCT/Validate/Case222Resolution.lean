@@ -393,4 +393,36 @@ theorem phiUnit_eq_comp (u : Fin 8 → ℝ) :
   unfold phiUnit tailLift
   rw [Fin.cons_zero, Fin.tail_cons]
 
+/-- **`lintegral` transport under a measure-preserving measurable equivalence.** For `e : M ≃ᵐ N`
+measure-preserving, `∫⁻_{e '' S} g = ∫⁻_S (g ∘ e)` (`setLIntegral_comp_preimage_emb` +
+`preimage_image_eq` via injectivity). The clean transport for the Lemma-2 splice (which is m.p., not
+a blow-up). -/
+theorem setLIntegral_image_of_mp {M N : Type*} [MeasureSpace M] [MeasureSpace N]
+    [MeasurableSpace.CountablyGenerated N] (e : M ≃ᵐ N)
+    (he : MeasurePreserving e volume volume) (S : Set M) (g : N → ℝ≥0∞) :
+    ∫⁻ y in e '' S, g y = ∫⁻ x in S, g (e x) := by
+  rw [← he.setLIntegral_comp_preimage_emb e.measurableEmbedding,
+    Set.preimage_image_eq _ e.injective]
+
+/-- **The Lemma-2 spectator-lift is measure-preserving.** `tailLift lemma2Inv = (finPeel 7).symm ∘
+(id × lemma2Inv) ∘ finPeel 7`, a composition of measure-preserving maps (`finPeel_mp`,
+`measurePreserving_lemma2Inv` in the product). So the Lemma-2 splice transports `lintegral`s by
+`setLIntegral_image_of_mp` — no Jacobian (det `±1`). -/
+theorem measurePreserving_tailLift_lemma2Inv :
+    MeasurePreserving (tailLift lemma2Inv) (volume : Measure (Fin 8 → ℝ)) volume := by
+  have hprodvol : (volume : Measure (ℝ × (Fin 7 → ℝ))) = (volume : Measure ℝ).prod volume :=
+    Measure.volume_eq_prod _ _
+  have hfp : MeasurePreserving (finPeel 7) (volume : Measure (Fin 8 → ℝ)) volume := finPeel_mp 7
+  have hmid : MeasurePreserving (Prod.map (id : ℝ → ℝ) lemma2Inv)
+      (volume : Measure (ℝ × (Fin 7 → ℝ))) volume := by
+    rw [hprodvol]; exact (MeasurePreserving.id volume).prod measurePreserving_lemma2Inv
+  have hfps : MeasurePreserving (finPeel 7).symm (volume : Measure (ℝ × (Fin 7 → ℝ)))
+      (volume : Measure (Fin 8 → ℝ)) := by
+    have := (finPeel_mp 7).symm; rwa [hprodvol] at this
+  have hcomp := (hfps.comp hmid).comp hfp
+  have heq : (⇑(finPeel 7).symm ∘ Prod.map (id : ℝ → ℝ) lemma2Inv) ∘ (finPeel 7)
+      = tailLift lemma2Inv := by
+    funext u; simp only [Function.comp_apply]; exact (tailLift_eq_finPeel lemma2Inv u).symm
+  rwa [heq] at hcomp
+
 end DLNFibre.DLN.RLCT

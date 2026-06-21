@@ -29,14 +29,12 @@ This file states the Lemma-2 node as the measure-preserving homeomorphism the co
 - `lemma2Equiv : (Fin 7 → ℝ) ≃ (Fin 7 → ℝ)` — the explicit polynomial bijection (proven here).
 - `continuous_lemma2Fwd` / `continuous_lemma2Inv` — both directions continuous (proven here).
 - `lemma2Hom : (Fin 7 → ℝ) ≃ₜ (Fin 7 → ℝ)` — packaged homeomorphism (proven here).
-- `measurePreserving_lemma2` — the volume-preservation. **The next build chunk** (not yet in this
-  file). Jacobian determinant is the constant `−1` (sympy-verified), so it preserves volume. ROUTE
-  (Codex 2026-06-21, de-risked): a coordinate permutation (`volume_measurePreserving_piCongrLeft`)
-  followed by three elementary shears `xᵢ ↦ xᵢ ± (product of other coords)`, each measure-preserving
-  via `MeasurePreserving.skew_product` (`f = id`, the fibre map `x ↦ x + g(rest)` measure-preserving
-  by `measurePreserving_add_right` + `ae_of_all`). The shear primitive is verified to close;
-  remaining friction is the `piEquivPiSubtypeProd` coordinate-isolation (subtype `Fintype`) and the
-  broader Haar imports — pure plumbing, the natural parallel hand-off boundary.
+- `measurePreserving_lemma2` / `measurePreserving_lemma2Hom` — the volume-preservation (proven
+  here). Jacobian determinant is the constant `−1` (sympy-verified). Route: a coordinate permutation
+  (`measurePreserving_perm`) ∘ three elementary shears `xᵢ ↦ xᵢ ± (product of other coords)`, each
+  measure-preserving via `measurePreserving_shearAt` (`MeasurePreserving.skew_product` + the fibre
+  translation `measurePreserving_add_right`); the composite equals `lemma2Fwd` by `fin_cases` + `ring`.
+  The `measurePreserving_shearAt` atom is reusable for any polynomial-shear volume argument.
 
 The cover assembly (`Case222Cover`) composes `lemma2Hom` between the step-1 and step-2 pivot nodes
 via `rlctAtOn_comp_homeomorph`.
