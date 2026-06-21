@@ -693,7 +693,8 @@ on the session's original cwd.
    A concrete `p=2` constant-width guardrail now confirms this obstruction is
    not a uniform nonmembership theorem for `p>=2`; the theorem remains
    conditional on a supplied equation `(4)` certificate and does not construct
-   the displayed vector.
+   the displayed vector.  The selected-width sum and strict inequalities for
+   that tuple are now Lean-packaged too.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

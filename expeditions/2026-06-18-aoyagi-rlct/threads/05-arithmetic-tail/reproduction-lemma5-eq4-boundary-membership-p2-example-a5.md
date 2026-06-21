@@ -105,6 +105,7 @@ boundary-coordinate membership theorem at coordinate `p+(ell-a)+1` does not.
 
 ```text
 aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example
+aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_sourceSelected_example
 ```
 
 ## Nonclaims

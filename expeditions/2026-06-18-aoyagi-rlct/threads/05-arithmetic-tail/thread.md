@@ -1257,6 +1257,7 @@ Lean now proves:
 
 ```text
 aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example
+aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_sourceSelected_example
 ```
 
 For the concrete selected-width tuple
@@ -1268,6 +1269,10 @@ ell=5, a=4, p=2, M=5, W_i=4 for all i,
 any supplied equation `(4)` certificate puts the strict boundary value in its
 boundary-coordinate interval.  The width window is `4<=W_r<=5` at
 `r=p+(ell-a)+1=4`, and `W_r=4`.
+
+The source-selected wrapper also Lean-packages the selected-width sum and
+strict selected-width inequalities for the same constant tuple, while keeping
+the membership conclusion conditional on a supplied equation `(4)` certificate.
 
 This is a guardrail for the previous obstruction: `2<=p` is only a necessary
 condition for boundary-coordinate membership, not a theorem that membership

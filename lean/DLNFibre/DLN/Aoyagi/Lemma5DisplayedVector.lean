@@ -536,6 +536,47 @@ theorem aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_exam
     · norm_num [aoyagiSelectedWidthNat]
     · norm_num [aoyagiSelectedWidthNat])
 
+/-- The `p=2` constant-width guardrail also satisfies the selected-width
+arithmetic hypotheses from Aoyagi Definition 3.
+
+The final membership conclusion remains conditional on a supplied equation
+`(4)` certificate; this theorem does not construct that certificate or the
+displayed source vector. -/
+theorem aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_sourceSelected_example :
+    let ell : ℕ := 5
+    let a : ℕ := 4
+    let p : ℕ := 2
+    let M : ℤ := 5
+    let m : Fin (ell + 1) → ℤ := fun _ => 4
+    1 ≤ ell ∧ a ≤ ell ∧ 1 ≤ p ∧ p + 1 < a ∧
+      (∀ i : Fin (ell + 1), 1 ≤ m i) ∧
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a ∧
+      (∀ i : Fin (ell + 1), (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      ∀ (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ),
+        AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T →
+          T (C.point (p + (ell - a) + 1) - 1) ∈
+            aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a) + 1) := by
+  dsimp
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · norm_num
+  constructor
+  · intro i
+    fin_cases i <;> norm_num
+  constructor
+  · norm_num
+  constructor
+  · intro i
+    fin_cases i <;> norm_num
+  · intro C layerWidth T hT
+    exact aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example
+      C layerWidth T hT
+
 /-- In the `p=1` strict equation `(4)` case, Definition 3's selected-width
 upper bound puts the boundary value strictly above the boundary-coordinate
 upper endpoint. -/

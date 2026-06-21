@@ -9,6 +9,7 @@ File:
 Name:
 
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_sourceSelected_example`
 
 ## Statement
 
@@ -26,11 +27,13 @@ the strict boundary value belongs to its boundary-coordinate interval.
 - The boundary-coordinate width window is satisfied at `p=2`.
 - A supplied equation `(4)` certificate therefore gives boundary-coordinate
   membership.
+- The concrete selected-width tuple satisfies the selected-width sum and
+  strict selected-width inequalities from Definition 3.
 
 ## Assumed
 
-- A supplied equation `(4)` piecewise branch certificate for the concrete
-  constants.
+- For the membership conclusion, a supplied equation `(4)` piecewise branch
+  certificate for the concrete constants.
 
 ## Reproduced Arithmetic
 

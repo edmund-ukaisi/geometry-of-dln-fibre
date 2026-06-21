@@ -8,6 +8,7 @@ Reviewer: xhigh independent audit, 2026-06-21.
 
 - Lean declaration in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`:
   - `aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_example`
+  - `aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_p2_constantWidth_sourceSelected_example`
 - Reproduction note:
   `reproduction-lemma5-eq4-boundary-membership-p2-example-a5.md`.
 - Statement card:
@@ -25,8 +26,10 @@ widths equal to `4`, the selected-width sum is `24`, the target sum
 `5*4<24`, the boundary coordinate is `r=4`, and the boundary-coordinate width
 window is `4<=W_r<=5`.
 
-The Lean theorem remains conditional on a supplied equation `(4)` certificate.
-It does not construct that certificate or the displayed vector.
+The Lean theorems remain conditional on a supplied equation `(4)` certificate
+for the membership conclusion.  They do not construct that certificate or the
+displayed vector.  The source-selected wrapper Lean-packages the selected-width
+sum and strict selected-width inequalities for the same tuple.
 
 The caveat that the example fails `p<=ell-a` is accurate and not harmful: that
 guard belongs to the older own-coordinate classifier at coordinate
@@ -46,11 +49,14 @@ The checkpoint does not claim:
 
 ## Verification
 
-The reviewer reported passing:
+The reviewers reported passing:
 
 ```text
 lake env lean DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean
 git diff --check
 ```
 
-The reviewer did not run a full library build.
+The second reviewer also reported a targeted forbidden-token scan of the edited
+Lean file with no `sorry`, `axiom`, `native_decide`, or `#exit`.
+
+The reviewers did not run a full library build.
