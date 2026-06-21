@@ -21,29 +21,33 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Latest pushed A5 state is `4f47996`, which packages terminal-minimum label
-exactness as supplied finite data.  The meaningful source frontier is now the
+Latest pushed A5 state before the current classifier-interface slice is
+`7923a7b`, which exposes terminal-minimum label exactness through a supplied
+`Set.BijOn` API.  The meaningful source frontier is still the
 upper-bound/no-extra side of Aoyagi Lemma 5, not another lower-bound printed
 equation pass.  PDF p. 26 asserts the upper count using interval counting plus
 the Case 1(2) sentence that `J` increases by one, but that assertion still has
 to be reproduced as a classifier from terminal lambda-vectors to counted
-interval data before it can discharge Lean's
+interval data before it can source-discharge Lean's
 `terminalMinimumLabels subset branchLabelImage`.
 
 Recorded audit:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-source-audit-a5.md`.
 Boundary card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-exactness-source-frontier.md`.
+Current supplied-interface slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-interface-a5.md`.
 
 Immediate order:
 
 1. Probe the Lemma 5 upper-bound classifier fields: label-to-vector,
    minimum-to-lambda, interval classifier, Case 1(2) uniqueness, and
    back-to-label.
-2. Keep `TerminalMinimumLabelExactness` supplied until those fields are
-   source-backed or separately constructed.
+2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
+   until those fields are source-backed or separately constructed.
 3. Low-risk Lean API may package the supplied boundary using standard finite
-   bijection language, but it must not be described as source exactness.
+   classifier or bijection language, but it must not be described as source
+   exactness.
 4. Do not start a Lean normal-crossing/RLCT extraction interface before actual
    finite chart/certificate data exist.
 

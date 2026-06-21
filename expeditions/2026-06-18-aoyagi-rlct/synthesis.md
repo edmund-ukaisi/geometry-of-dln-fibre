@@ -2960,6 +2960,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-exactness-frontier-and-bijon-a5.md`.
 
+The terminal bridge now also names the no-extra direction as a supplied
+upper-bound classifier.  `UpperBoundClassifier C` says every label in
+`C.terminalMinimumLabels` is the supplied label of some branch in
+`C.fullBranches`.  Lean proves the containment
+`terminalMinimumLabels subset branchLabelImage`, the upper cardinal inequality
+`terminalMinimumLabels.card <= a*(n+1-a)+1` without branch-label injectivity,
+and a conversion from this classifier plus injectivity to
+`TerminalMinimumLabelExactness`.  This is deliberately weaker than a
+source-backed Lemma 5 upper-bound proof: the label-to-vector,
+minimum-to-lambda, interval classifier, Case 1(2) uniqueness, and
+back-to-label bridges remain open.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-interface-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-upper-bound-classifier-interface.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-interface-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -2869,3 +2869,33 @@ supplied bijection and `a<=n+1`.
 This is only finite API packaging.  It does not prove the bijection from
 Aoyagi's source equations, branch-label injectivity, no-extra containment,
 normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 upper-bound classifier interface
+
+Reproduction:
+`reproduction-lemma5-upper-bound-classifier-interface-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-upper-bound-classifier-interface.md`.
+Review artifact:
+`review-lemma5-upper-bound-classifier-interface-a5.md`.
+
+Lean now names the no-extra direction as a supplied upper-bound classifier:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.UpperBoundClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_branchLabelImage_card_of_upperBoundClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_upperBoundClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_upperBoundClassifier
+```
+
+`UpperBoundClassifier C` says that every label in `C.terminalMinimumLabels`
+comes from some supplied branch label.  Lean derives the containment
+`terminalMinimumLabels subset branchLabelImage`, the upper cardinal inequality
+`terminalMinimumLabels.card <= a*(n+1-a)+1` under `a<=n+1` alone, and the
+existing exactness package when branch-label injectivity is also supplied.
+
+This does not prove the classifier from Aoyagi's PDF.  It leaves open the
+label-to-vector bridge, minimum-to-lambda bridge, interval classifier, Case
+1(2) uniqueness/injection, back-to-label bridge, pole order, normal crossings,
+and RLCT extraction.

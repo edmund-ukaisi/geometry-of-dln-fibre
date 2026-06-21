@@ -247,6 +247,75 @@ theorem branchLabelImage_card {β : Type*} [DecidableEq β]
   rw [C.branchLabelImage_card_eq_fullBranches_card_of_injOn hinj]
   exact C.fullBranches_card n a M m (Nat.succ_pos n) ha
 
+/-- Supplied upper-bound classifier for the terminal-minimum labels.
+
+The classifier is the no-extra direction phrased constructively: every finite
+terminal-minimum label is assigned to a tagged supplied branch whose supplied
+label is the original label.  This is still a supplied boundary; it is not
+proved from Aoyagi's Lemma 5 upper-bound paragraph. -/
+structure UpperBoundClassifier {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) : Prop where
+  classify :
+    ∀ {label : Σ _ : ℕ, ℕ}, label ∈ C.terminalMinimumLabels →
+      ∃ x ∈ C.fullBranches, C.branchLabel x = label
+
+/-- A supplied upper-bound classifier gives the no-extra containment from
+terminal minimum labels to the supplied branch-label image. -/
+theorem terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (classifier : C.UpperBoundClassifier) :
+    C.terminalMinimumLabels ⊆ C.branchLabelImage := by
+  intro label hlabel
+  rcases classifier.classify hlabel with ⟨x, hx, hxl⟩
+  rw [← hxl]
+  exact Finset.mem_image.mpr ⟨x, hx, rfl⟩
+
+/-- A supplied upper-bound classifier gives a cardinal upper bound by the
+branch-label image. -/
+theorem terminalMinimumLabels_card_le_branchLabelImage_card_of_upperBoundClassifier
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (classifier : C.UpperBoundClassifier) :
+    C.terminalMinimumLabels.card ≤ C.branchLabelImage.card :=
+  Finset.card_le_card
+    (C.terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier
+      classifier)
+
+/-- Numeric upper count from a supplied upper-bound classifier.
+
+This is an upper-bound wrapper only.  It does not prove the classifier,
+branch-label injectivity, pole order, normal crossings, or RLCT extraction. -/
+theorem terminalMinimumLabels_card_le_of_upperBoundClassifier {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (classifier : C.UpperBoundClassifier) :
+    C.terminalMinimumLabels.card ≤ a * (n + 1 - a) + 1 := by
+  calc
+    C.terminalMinimumLabels.card ≤ C.branchLabelImage.card :=
+      C.terminalMinimumLabels_card_le_branchLabelImage_card_of_upperBoundClassifier
+        classifier
+    _ ≤ C.fullBranches.card := Finset.card_image_le
+    _ = a * (n + 1 - a) + 1 :=
+      C.fullBranches_card n a M m (Nat.succ_pos n) ha
+
 /-- Membership in the finite exact-minimum label set. -/
 theorem mem_terminalMinimumLabels {β : Type*} [DecidableEq β]
     {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
@@ -407,6 +476,23 @@ structure TerminalMinimumLabelExactness {β : Type*} [DecidableEq β]
   branchLabel_injOn : Set.InjOn C.branchLabel ↑C.fullBranches
   terminalMinimumLabels_subset_branchLabelImage :
     C.terminalMinimumLabels ⊆ C.branchLabelImage
+
+/-- A supplied upper-bound classifier and supplied branch-label injectivity
+package exactly the existing terminal-minimum exactness boundary. -/
+theorem terminalMinimumLabelExactness_of_upperBoundClassifier {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (classifier : C.UpperBoundClassifier) :
+    C.TerminalMinimumLabelExactness where
+  branchLabel_injOn := hinj
+  terminalMinimumLabels_subset_branchLabelImage :=
+    C.terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier
+      classifier
 
 /-- Packaged exactness identifies the finite terminal-minimum label set with
 the supplied branch-label image.

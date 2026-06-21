@@ -3606,6 +3606,27 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-exactness-frontier-and-bijon-a5.md`.
 
+Latest A5 classifier-interface update: the terminal bridge now names the
+upper-bound/no-extra direction independently as supplied classifier data.
+Names:
+`UpperBoundClassifier`,
+`terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier`,
+`terminalMinimumLabels_card_le_branchLabelImage_card_of_upperBoundClassifier`,
+`terminalMinimumLabels_card_le_of_upperBoundClassifier`, and
+`terminalMinimumLabelExactness_of_upperBoundClassifier`.  The classifier
+produces a supplied branch for every terminal-minimum label; Lean derives the
+containment, the finite upper cardinal inequality without branch-label
+injectivity, and exactness packaging when injectivity is supplied.  This is
+not a source-backed classifier and does not discharge the label-to-vector,
+minimum-to-lambda, interval classifier, Case 1(2) uniqueness, or back-to-label
+bridges.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-interface-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-upper-bound-classifier-interface.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-interface-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
