@@ -50,3 +50,4 @@ import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.VoigtDischarge
 import DLNFibre.Core.CThetaGeometric
 import DLNFibre.Core.SigmaStratification
+import DLNFibre.Core.SigmaComponents
