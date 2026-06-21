@@ -3123,6 +3123,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-domain-card-a5.md`.
 
+Latest A5 update: Eq5 now has a one-branch adapter from strict-offset
+membership to membership in the same-coordinate interval with both endpoints
+erased.  The theorem
+`aoyagiLemma5Eq5_ownBlock_eraseEndpoints_mem_introducedLabelFinset_of_lastPoint_widthBound`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean` uses the existing
+strict-offset finite-domain adapter and the finite-set equality
+`aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min`.  It is
+conditional on the rising-region guards and supplied Eq5 branch data.  It does
+not package all Eq5 branches, realise endpoints by Eq3/Eq4, construct
+displayed vectors, prove admissibility, order count, normal-crossing, or RLCT
+data.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-interval-erase-endpoints-finset-adapter.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

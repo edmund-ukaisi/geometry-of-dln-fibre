@@ -2507,6 +2507,20 @@ Lemma 5 order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-domain-card-a5.md`.
 
+Eq5 now also has a one-branch adapter from strict-offset membership to
+same-coordinate interval membership with both endpoints erased.  The theorem
+`aoyagiLemma5Eq5_ownBlock_eraseEndpoints_mem_introducedLabelFinset_of_lastPoint_widthBound`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean` combines the existing
+strict-offset finite-domain adapter with
+`aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min`.  It keeps the
+rising-region guards explicit and still proves only one supplied branch at a
+time.  It does not realise the erased endpoints, construct displayed vectors,
+or prove the Lemma 5 order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-interval-erase-endpoints-finset-adapter.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

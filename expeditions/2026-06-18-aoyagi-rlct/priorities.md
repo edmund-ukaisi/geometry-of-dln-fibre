@@ -819,6 +819,10 @@ on the session's original cwd.
    It is a useful local count increment for later order-count scaffolding, but
    it is not itself the Lemma 5 order count and still carries no terminal
    exponent or least-value fields.
+   The Eq5 one-branch erased-endpoints interval finite-domain adapter is now
+   proved.  It links strict-offset membership to the interval-with-endpoints-
+   erased normalization for one supplied branch, but it still does not package
+   all Eq5 branches or realise the erased endpoints via Eq3/Eq4.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

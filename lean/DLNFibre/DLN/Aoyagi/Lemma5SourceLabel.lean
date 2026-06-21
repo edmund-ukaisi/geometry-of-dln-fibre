@@ -862,6 +862,45 @@ theorem aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPo
   exact ⟨aoyagiLemma5Eq5_ownCoordinate_mem_offsetValueSet
     ell a p alpha M m C T hown hS, hfinite⟩
 
+/-- In the rising region, a supplied Eq5 strict-offset branch lands in the
+same-coordinate interval with both endpoints erased, while retaining its
+finite-domain introduced-label membership.
+
+This is a one-branch adapter from the Eq5 strict-offset finite-domain theorem
+through the finite-set equality
+`aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min`.  It does not
+package all offsets, construct displayed vectors, or prove an order count. -/
+theorem
+    aoyagiLemma5Eq5_ownBlock_eraseEndpoints_mem_introducedLabelFinset_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S ∈ ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+        (aoyagiHtildeUpperNat ell a M m p)).erase
+          (aoyagiHtildeLowerNat ell a M m p) ∧
+      T S = (k : ℤ) - 1 ∧
+        Sigma.mk S k ∈ introducedLabelFinset L n S k := by
+  have hoffset :=
+    aoyagiLemma5Eq5_ownBlock_offsetValue_mem_introducedLabelFinset_of_lastPoint_widthBound
+      L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+      hwidth_le hk
+  have hinterior_eq :=
+    aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
+      ell a p M m hT.a_le_ell hp_pos hp_a hp_c
+  refine ⟨?_, hoffset.2.2.1, hoffset.2.2.2⟩
+  rw [← hinterior_eq]
+  exact hoffset.1
+
 /-- A supplied Eq5 own-block branch gives the one-step finite-domain update
 for its current-layer label.
 

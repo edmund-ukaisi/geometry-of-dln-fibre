@@ -2051,3 +2051,29 @@ introduced at stage `J`, and the existing Eq5 actual-label wrapper.  It does
 not construct Eq5 vectors, quantify over all `alpha`, provide
 terminal-exponent or least-value data, prove terminality, chart sequence,
 Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 erased-endpoints finset adapter
+
+Reproduction:
+`reproduction-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-interval-erase-endpoints-finset-adapter.md`.
+Review artifact:
+`review-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_ownBlock_eraseEndpoints_mem_introducedLabelFinset_of_lastPoint_widthBound
+```
+
+For one supplied Eq5 own-block branch in the rising region, the branch value
+lies in the same-coordinate interval with both endpoints erased, equals
+`k-1`, and has `Sigma.mk S k` in the introduced-label finite domain.
+
+This is a one-branch adapter over the existing strict-offset finite-domain
+wrapper and the existing finite-set equality identifying Eq5 strict offsets
+with the interval after erasing both endpoints.  It does not package all Eq5
+branches, realise the erased endpoints by Eq3/Eq4, construct displayed
+vectors, provide terminal-exponent or least-value data, prove terminality,
+chart sequence, Lemma 5 order count, normal crossings, or RLCT extraction.
