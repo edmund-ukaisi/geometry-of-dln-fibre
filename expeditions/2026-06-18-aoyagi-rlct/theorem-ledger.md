@@ -4338,6 +4338,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
 
+Latest A4 update: the Case 2 row-exhausted source-suffix payload has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFiniteCenterIdeal`,
+`Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedSourceSuffixTransportedPrefixPayload`,
+and `SourceChartFrontierBoundaryPackages.rowExhaustedSourceSuffix`.  The slice
+packages the existing row-exhausted transported-prefix source-suffix
+entry-ideal equality with finite residual-center principalization.  It keeps
+`sourceSuffixProduct`, transported rows, and explicit row-exhaustion
+hypotheses; it does not require terminal-last, does not replace transported
+rows by original rows, and does not assert `(S+1,0)` relabelled level/exponent
+data.  It is not chart production, source-produced post-data, transition
+invariance, Jacobian arithmetic, normal crossings, pole order, or RLCT
+extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-row-exhausted-source-suffix-payload-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-row-exhausted-source-suffix-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-row-exhausted-source-suffix-payload-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

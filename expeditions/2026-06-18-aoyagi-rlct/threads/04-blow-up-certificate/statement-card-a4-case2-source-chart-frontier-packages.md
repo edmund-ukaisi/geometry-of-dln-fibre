@@ -11,6 +11,7 @@ Names:
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.ContinuingSourceChartFrontierPayload`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.ActualWidthSourceChartFrontierPayload`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedTerminalLastSourceChartFrontierPayload`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedSourceSuffixTransportedPrefixPayload`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SourceChartFrontierBoundaryPackages`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_frontierBoundaryPackages`
 
@@ -24,6 +25,8 @@ implications.  A package contains:
 - an actual-width stopped consequence under `n(S+1)=J+1`;
 - a row-exhausted terminal-last consequence under `prefixMinNat n S=J+1` and
   `S+1=L`.
+- a row-exhausted source-suffix consequence under `prefixMinNat n S=J+1`,
+  keeping `sourceSuffixProduct` explicitly and not requiring `S+1=L`.
 
 The branch consequences remain separate because their conclusions have
 different domains and different mathematical meaning.
@@ -35,6 +38,8 @@ different domains and different mathematical meaning.
 - The actual-width field keeps original source rows and `(S+1,0)` relabelled
   level/exponent certificates.
 - The row-exhausted field keeps transported prefix rows and does not relabel.
+- The row-exhausted source-suffix field keeps transported prefix rows followed
+  by the actual source suffix product.
 
 ## Assumed
 
@@ -42,6 +47,7 @@ different domains and different mathematical meaning.
 - Explicit branch hypotheses for each field.
 - A supplied following matrix in the actual-width field.
 - Terminal-last data in the row-exhausted field.
+- Fintype/decidable index data for the row-exhausted source-suffix field.
 
 ## Cited
 

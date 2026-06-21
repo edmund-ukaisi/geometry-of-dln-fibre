@@ -145,6 +145,11 @@ source-chart consequences as fielded implications under explicit branch
 hypotheses.  Keep this as supplied-boundary assembly: no chart construction,
 post-data production, transition invariant, terminal source truth, normal
 crossings, pole order, or RLCT follows.
+Current row-exhausted source-suffix payload slice:
+`threads/04-blow-up-certificate/reproduction-case2-row-exhausted-source-suffix-payload-a4.md`.
+Lean now exposes the row-exhausted transported-prefix source-chart boundary
+with the actual `sourceSuffixProduct` and finite center principalization,
+without terminal-last, original-row, or `(S+1,0)` relabel claims.
 
 Free-`Cprime` A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-free-cprime-continuing-branch-a4.md`.
@@ -426,6 +431,8 @@ Immediate order:
    shifted thresholds.
    Current terminal-prefix transported product slice:
    `threads/04-blow-up-certificate/reproduction-case2-terminal-prefix-transported-product-a4.md`.
+   Current row-exhausted source-suffix payload slice:
+   `threads/04-blow-up-certificate/reproduction-case2-row-exhausted-source-suffix-payload-a4.md`.
 2. Product reduction repair beyond the landed chart-local and entry-ideal
    steps. Re-state A2 with source-faithful rank/open-chart hypotheses and keep
    certificate transport separate from the algebraic induction identity now

@@ -3446,3 +3446,32 @@ This is finite terminal-prefix algebra only.  It does not construct charts,
 source-produce `C'^(S+1)`, produce recurrence/exponent post-data, prove chart
 coverage or transition invariance, compute a Jacobian, prove normal crossings,
 pole order, or RLCT extraction.
+
+## 2026-06-21 Lean Case 2 row-exhausted source-suffix payload
+
+Reproduction:
+`reproduction-case2-row-exhausted-source-suffix-payload-a4.md`.
+Statement card:
+`statement-card-a4-case2-row-exhausted-source-suffix-payload.md`.
+Review artifact:
+`review-case2-row-exhausted-source-suffix-payload-a4.md`.
+
+Lean now packages the row-exhausted source-chart boundary with the actual
+source suffix and finite center principalization:
+
+```text
+Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFiniteCenterIdeal
+Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedSourceSuffixTransportedPrefixPayload
+SourceChartFrontierBoundaryPackages.rowExhaustedSourceSuffix
+```
+
+This removes the previous terminal-last restriction from the row-exhausted
+frontier payload by keeping `sourceSuffixProduct` explicitly.  The terminal
+side remains transported prefix rows; it does not replace the transported top
+row by an original source row, does not set the suffix to `1`, and does not add
+`(S+1,0)` relabelled level/exponent certificates.
+
+This is still supplied-boundary assembly and finite center principalization.
+It does not construct charts, source-produce `C'^(S+1)`, produce
+recurrence/exponent post-data, prove chart coverage or transition invariance,
+compute a Jacobian, prove normal crossings, pole order, or RLCT extraction.

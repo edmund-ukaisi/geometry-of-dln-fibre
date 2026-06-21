@@ -91,6 +91,9 @@ sourceChartMap_frontierBoundaryPackages
 - The field `rowExhaustedStopped` exposes the existing terminal-last
   transported-prefix package under explicit row-exhaustion and terminal-last
   hypotheses.
+- The later field `rowExhaustedSourceSuffix` exposes the source-suffix
+  transported-prefix package under explicit row-exhaustion, keeping
+  `sourceSuffixProduct` and not requiring terminal-last.
 
 ## Assumed
 
@@ -98,8 +101,9 @@ sourceChartMap_frontierBoundaryPackages
   certificates, level invariants, least-value gap, and residual-block
   chart-family boundary.
 - Branch hypotheses are supplied independently to each implication.
-- The row-exhausted stopped field still requires the terminal-last hypothesis
-  `S+1=L`.
+- The row-exhausted terminal-last field still requires the terminal-last
+  hypothesis `S+1=L`.  The source-suffix field instead requires finite and
+  decidable suffix index data and keeps the suffix product explicit.
 
 ## Not Claimed
 

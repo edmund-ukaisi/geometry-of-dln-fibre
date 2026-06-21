@@ -3877,6 +3877,25 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-chart-frontier-packages-a4.md`.
 
+The row-exhausted source-chart frontier now also has a source-suffix
+transported-prefix payload.  New Lean names:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFiniteCenterIdeal`,
+`Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedSourceSuffixTransportedPrefixPayload`,
+and `SourceChartFrontierBoundaryPackages.rowExhaustedSourceSuffix`.  This
+packages the existing row-exhausted source-suffix entry-ideal equality with
+finite residual-center principalization, keeping `sourceSuffixProduct`
+explicit.  It does not require terminal-last, does not replace transported rows
+by original rows, and does not assert `(S+1,0)` relabelled level/exponent data.
+It remains supplied-boundary assembly: no chart construction, source-produced
+post-data, transition invariant, Jacobian, normal crossings, pole order, or
+RLCT follows.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-row-exhausted-source-suffix-payload-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-row-exhausted-source-suffix-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-row-exhausted-source-suffix-payload-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
