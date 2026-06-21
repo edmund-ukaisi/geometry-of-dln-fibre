@@ -391,6 +391,64 @@ theorem aoyagiLemma5Eq4_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of
       hwidth hT hJ
   exact fun i hi ↦ hpost.weight_succ_current_eq_new_mul_of_ge hlabel.2 hi
 
+/-- Source-facing Eq4 supplied exponent-domain extension.
+
+For one supplied Eq4 endpoint branch whose label is `J+1`, the existing
+source-label wrapper supplies the new label's introduced-label field.  The
+terminal exponent and least-value fields are supplied explicitly; this theorem
+only routes them through the generic one-step exponent-certificate domain
+extension. -/
+theorem aoyagiLemma5Eq4_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp0 : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeLowerNat ell a M m p + 1)
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates
+      L n (C.point p - 1) J t numerator leastValue)
+    (hterminal :
+      terminalExponent L (widthZ n) (t' (C.point p - 1) (J + 1)) =
+        numerator' (C.point p - 1) (J + 1))
+    (hleast :
+      IsLeast
+        {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧
+          t' (C.point p - 1) (J + 1) i = v}
+        (leastValue' (C.point p - 1) (J + 1)))
+    (ht_old : ∀ {s k}, introducedLabel L n (C.point p - 1) J s k →
+      t' s k = t s k)
+    (hn_old : ∀ {s k}, introducedLabel L n (C.point p - 1) J s k →
+      numerator' s k = numerator s k)
+    (hl_old : ∀ {s k}, introducedLabel L n (C.point p - 1) J s k →
+      leastValue' s k = leastValue s k) :
+    IntroducedLabelExponentCertificates
+      L n (C.point p - 1) (J + 1) t' numerator' leastValue' := by
+  have hlabel :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+      L ell a p n M m C layerWidth T hell hp0 hp_c hselected hsource hlast
+      hwidth hT hJ
+  have hnew :
+      LabelExponentCertificate L n (C.point p - 1) (J + 1)
+        (C.point p - 1) (J + 1)
+        (t' (C.point p - 1) (J + 1))
+        (numerator' (C.point p - 1) (J + 1))
+        (leastValue' (C.point p - 1) (J + 1)) := by
+    refine
+      { introduced := ?_
+        terminalExponent_eq := hterminal
+        least_value := hleast }
+    exact introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl
+  exact hcert.extendDomain_succ_current hnew ht_old hn_old hl_old
+
 /-- Equation `(4)` own-coordinate wrapper with interval membership and
 finite-domain introduced-label membership.
 
@@ -571,6 +629,65 @@ theorem aoyagiLemma5Eq3_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of
       L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack hlast
       hwidth hT hJ
   exact fun i hi ↦ hpost.weight_succ_current_eq_new_mul_of_ge hlabel.2 hi
+
+/-- Source-facing Eq3 supplied exponent-domain extension.
+
+For one supplied Eq3 endpoint branch whose label is `J+1`, the existing
+source-label wrapper supplies the new label's introduced-label field.  The
+terminal exponent and least-value fields are supplied explicitly; this theorem
+only routes them through the generic one-step exponent-certificate domain
+extension. -/
+theorem aoyagiLemma5Eq3_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point 1 - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m 1 + 1)
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates
+      L n (C.point 1 - 1) J t numerator leastValue)
+    (hterminal :
+      terminalExponent L (widthZ n) (t' (C.point 1 - 1) (J + 1)) =
+        numerator' (C.point 1 - 1) (J + 1))
+    (hleast :
+      IsLeast
+        {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧
+          t' (C.point 1 - 1) (J + 1) i = v}
+        (leastValue' (C.point 1 - 1) (J + 1)))
+    (ht_old : ∀ {s k}, introducedLabel L n (C.point 1 - 1) J s k →
+      t' s k = t s k)
+    (hn_old : ∀ {s k}, introducedLabel L n (C.point 1 - 1) J s k →
+      numerator' s k = numerator s k)
+    (hl_old : ∀ {s k}, introducedLabel L n (C.point 1 - 1) J s k →
+      leastValue' s k = leastValue s k) :
+    IntroducedLabelExponentCertificates
+      L n (C.point 1 - 1) (J + 1) t' numerator' leastValue' := by
+  have hlabel :=
+    aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+      L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack hlast
+      hwidth hT hJ
+  have hnew :
+      LabelExponentCertificate L n (C.point 1 - 1) (J + 1)
+        (C.point 1 - 1) (J + 1)
+        (t' (C.point 1 - 1) (J + 1))
+        (numerator' (C.point 1 - 1) (J + 1))
+        (leastValue' (C.point 1 - 1) (J + 1)) := by
+    refine
+      { introduced := ?_
+        terminalExponent_eq := hterminal
+        least_value := hleast }
+    exact introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl
+  exact hcert.extendDomain_succ_current hnew ht_old hn_old hl_old
 
 /-- Equation `(3)` own-coordinate wrapper with interval membership and
 finite-domain introduced-label membership.
@@ -1168,6 +1285,57 @@ theorem aoyagiLemma5Eq5_ownBlock_case2_weight_succ_current_eq_newVar_mul_of_last
       L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
       hwidth_le hJ
   exact fun i hi ↦ hpost.weight_succ_current_eq_new_mul_of_ge hlabel.2 hi
+
+/-- Source-facing Eq5 supplied exponent-domain extension.
+
+For one supplied Eq5 own-block branch whose label is `J+1`, the existing
+source-label wrapper supplies the new label's introduced-label field.  The
+terminal exponent and least-value fields are supplied explicitly; this theorem
+only routes them through the generic one-step exponent-certificate domain
+extension. -/
+theorem aoyagiLemma5Eq5_ownBlock_extendExponentDomain_succ_current_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S J : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (hterminal :
+      terminalExponent L (widthZ n) (t' S (J + 1)) =
+        numerator' S (J + 1))
+    (hleast :
+      IsLeast
+        {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧ t' S (J + 1) i = v}
+        (leastValue' S (J + 1)))
+    (ht_old : ∀ {s k}, introducedLabel L n S J s k → t' s k = t s k)
+    (hn_old : ∀ {s k}, introducedLabel L n S J s k →
+      numerator' s k = numerator s k)
+    (hl_old : ∀ {s k}, introducedLabel L n S J s k →
+      leastValue' s k = leastValue s k) :
+    IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' := by
+  have hlabel :=
+    aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+      L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+      hwidth_le hJ
+  have hnew :
+      LabelExponentCertificate L n S (J + 1) S (J + 1)
+        (t' S (J + 1)) (numerator' S (J + 1)) (leastValue' S (J + 1)) := by
+    refine
+      { introduced := ?_
+        terminalExponent_eq := hterminal
+        least_value := hleast }
+    exact introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl
+  exact hcert.extendDomain_succ_current hnew ht_old hn_old hl_old
 
 /-- Source-shaped arbitrary-own-block equation `(5)` label legality from a
 block-local actual-width lower-bound hypothesis.

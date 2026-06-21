@@ -3193,6 +3193,28 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-case2-weight-update-a5.md`.
 
+Latest A5 update: Eq3/Eq4/Eq5 now have source-facing supplied
+exponent-domain extension wrappers in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The names are
+`aoyagiLemma5Eq4_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint`,
+`aoyagiLemma5Eq3_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint`,
+and
+`aoyagiLemma5Eq5_ownBlock_extendExponentDomain_succ_current_of_lastPoint_widthBound`.
+They use the existing source-label wrappers only to supply the new label's
+`introducedLabel` field at state `(S,J+1)`.  The terminal-exponent equality
+and least-value proof for the new label remain explicit hypotheses.  The
+generic theorem
+`IntroducedLabelExponentCertificates.extendDomain_succ_current` then extends
+the all-introduced-label exponent-certificate family.  No terminal-exponent
+formula, least-value calculation, displayed-vector construction,
+admissibility, order count, normal-crossing, or RLCT data is proved.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-exponent-domain-extension-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-exponent-domain-extension.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-supplied-exponent-domain-extension-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

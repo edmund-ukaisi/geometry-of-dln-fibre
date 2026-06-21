@@ -2159,3 +2159,32 @@ the supplied post-data package remain explicit.  It does not prove that a
 blow-up chart produces the post-state, construct Eq3/Eq4 vectors, provide
 terminal-exponent or least-value data, prove terminality, chart sequence,
 Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 supplied exponent-domain extension
+
+Reproduction:
+`reproduction-lemma5-supplied-exponent-domain-extension-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-supplied-exponent-domain-extension.md`.
+Review artifact:
+`review-lemma5-supplied-exponent-domain-extension-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint
+aoyagiLemma5Eq3_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint
+aoyagiLemma5Eq5_ownBlock_extendExponentDomain_succ_current_of_lastPoint_widthBound
+```
+
+For one supplied Eq4, Eq3, or Eq5 branch whose label is `J+1`, the source-label
+wrappers supply the new label's `introducedLabel` field at state `(S,J+1)`.
+If the terminal-exponent equality and least-value proof for the new label are
+also supplied, the generic one-step theorem extends
+`IntroducedLabelExponentCertificates` from `(S,J)` to `(S,J+1)`.
+
+This is a supplied-certificate boundary.  It does not compute the terminal
+exponent or least value for any branch.  Eq3 keeps the explicit slack and Eq5
+keeps the explicit own-block width bound.  It does not construct displayed
+vectors, prove terminality, chart sequence, Lemma 5 order count, normal
+crossings, or RLCT extraction.

@@ -2571,6 +2571,25 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-case2-weight-update-a5.md`.
 
+Eq3/Eq4/Eq5 now have source-facing supplied exponent-domain extension
+wrappers.  The theorem names are
+`aoyagiLemma5Eq4_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint`,
+`aoyagiLemma5Eq3_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint`,
+and
+`aoyagiLemma5Eq5_ownBlock_extendExponentDomain_succ_current_of_lastPoint_widthBound`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  They use the existing
+source-label wrappers only to supply the new label's introduced-label field at
+state `(S,J+1)`.  The new label's terminal-exponent equality and least-value
+proof are explicit hypotheses.  The generic one-step exponent-domain theorem
+then extends the all-introduced-label exponent-certificate family from
+`(S,J)` to `(S,J+1)`.  This is not a terminal-exponent calculation, not a
+least-value calculation, and not displayed-vector construction or Lemma 5
+order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-exponent-domain-extension-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-exponent-domain-extension.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-supplied-exponent-domain-extension-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -835,6 +835,13 @@ on the session's original cwd.
    compatibility, and the supplied post-data package.  They still do not
    produce a chart, displayed vector family, terminal exponent, least-value
    data, or Lemma 5 order count.
+   Eq3/Eq4/Eq5 supplied exponent-domain extension wrappers are now proved.
+   They are the deliberately narrow certificate boundary allowed by the
+   previous guardrails: source labels supply only the new label's
+   `introducedLabel` field, while terminal-exponent equality and least-value
+   proofs are supplied explicitly.  This can be reused by later branch-family
+   packaging without pretending that interval membership or recurrence weights
+   determine exponent certificates.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or
