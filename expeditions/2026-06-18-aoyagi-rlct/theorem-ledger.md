@@ -123,6 +123,23 @@ integer offset values, and it is not branch construction, source-label
 legality, actual-width coverage, terminal exactness, classifier/back-to-label
 coverage, pole order, normal crossings, or RLCT extraction.
 
+The terminal branch introduced-domain capacity wrapper has also landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_le_introducedLabelFinset_card`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card_le_introducedLabelFinset_card_of_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.suppliedBranchCount_le_introducedLabelFinset_card_of_branchLabel_injOn`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-branch-introduced-domain-capacity-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-branch-introduced-domain-capacity.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-branch-introduced-domain-capacity-a5.md`.
+This is finite introduced-domain capacity bookkeeping for supplied terminal
+branches.  It is not branch-label injectivity, no-extra terminal-minimum
+coverage, exact terminal-minimum cardinality, pole order, normal crossings, or
+RLCT extraction.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in

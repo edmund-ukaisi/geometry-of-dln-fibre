@@ -193,6 +193,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-offset-card-a5.md`.
 
+The terminal branch introduced-domain capacity wrapper has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_le_introducedLabelFinset_card`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card_le_introducedLabelFinset_card_of_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.suppliedBranchCount_le_introducedLabelFinset_card_of_branchLabel_injOn`.
+The first theorem bounds the supplied branch-label image by the current
+introduced-label domain.  The second and third use supplied branch-label
+injectivity and the supplied family count to show the introduced domain has
+room for the supplied branch count `a*(n+1-a)+1`.  This is a conditional
+capacity statement only: no branch-label injectivity proof, no no-extra
+terminal-minimum coverage, no terminal-minimum count, pole order, normal
+crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-branch-introduced-domain-capacity-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-branch-introduced-domain-capacity.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-branch-introduced-domain-capacity-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:

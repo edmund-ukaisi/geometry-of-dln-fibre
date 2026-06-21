@@ -299,6 +299,42 @@ theorem branchLabelImage_card_eq_fullBranches_card_of_injOn {β : Type*}
     C.branchLabelImage.card = C.fullBranches.card := by
   exact Finset.card_image_of_injOn (s := C.fullBranches) (f := C.branchLabel) hinj
 
+/-- The supplied branch-label image has cardinality bounded by the current
+introduced-label finite domain.
+
+This is only the cardinality form of
+`branchLabelImage_subset_introducedLabelFinset`; it does not assert that the
+image contains all introduced labels or all terminal-minimum labels. -/
+theorem branchLabelImage_card_le_introducedLabelFinset_card {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) :
+    C.branchLabelImage.card ≤ (introducedLabelFinset L width S J).card :=
+  Finset.card_le_card C.branchLabelImage_subset_introducedLabelFinset
+
+/-- Under supplied branch-label injectivity, the supplied branch family has
+cardinality bounded by the current introduced-label finite domain.
+
+This is finite supplied-domain bookkeeping only.  It does not prove
+branch-label injectivity, no-extra terminal-minimum coverage, or pole order. -/
+theorem fullBranches_card_le_introducedLabelFinset_card_of_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches) :
+    C.fullBranches.card ≤ (introducedLabelFinset L width S J).card := by
+  calc
+    C.fullBranches.card = C.branchLabelImage.card := by
+      exact (C.branchLabelImage_card_eq_fullBranches_card_of_injOn hinj).symm
+    _ ≤ (introducedLabelFinset L width S J).card :=
+      C.branchLabelImage_card_le_introducedLabelFinset_card
+
 /-- Under supplied branch-label injectivity, the distinct supplied
 terminal-candidate label image has Aoyagi's Lemma 5 supplied finite count.
 
@@ -316,6 +352,30 @@ theorem branchLabelImage_card {β : Type*} [DecidableEq β]
     C.branchLabelImage.card = a * (n + 1 - a) + 1 := by
   rw [C.branchLabelImage_card_eq_fullBranches_card_of_injOn hinj]
   exact C.fullBranches_card n a M m (Nat.succ_pos n) ha
+
+/-- Under supplied branch-label injectivity, the current introduced-label
+finite domain has room for the supplied Lemma 5 branch count.
+
+This is the numeric form of
+`fullBranches_card_le_introducedLabelFinset_card_of_branchLabel_injOn`
+together with the supplied branch-family count.  It is not a terminal-minimum
+exactness or pole-order theorem. -/
+theorem suppliedBranchCount_le_introducedLabelFinset_card_of_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches) :
+    a * (n + 1 - a) + 1 ≤ (introducedLabelFinset L width S J).card := by
+  calc
+    a * (n + 1 - a) + 1 = C.fullBranches.card := by
+      exact (C.fullBranches_card n a M m (Nat.succ_pos n) ha).symm
+    _ ≤ (introducedLabelFinset L width S J).card :=
+      C.fullBranches_card_le_introducedLabelFinset_card_of_branchLabel_injOn
+        hinj
 
 /-- Supplied upper-bound classifier for the terminal-minimum labels.
 

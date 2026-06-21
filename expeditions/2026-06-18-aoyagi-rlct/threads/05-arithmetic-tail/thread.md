@@ -4243,3 +4243,31 @@ This is finite supplied-cardinality bookkeeping only.  It does not construct
 Eq5 branches, prove source-label legality or width compatibility, prove
 coverage of actual-width or terminal-minimum labels, provide a classifier or
 back-to-label map, prove pole order, normal crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 5 terminal branch introduced-domain capacity
+
+Reproduction:
+`reproduction-lemma5-terminal-branch-introduced-domain-capacity-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-branch-introduced-domain-capacity.md`.
+Review artifact:
+`review-lemma5-terminal-branch-introduced-domain-capacity-a5.md`.
+
+Lean now packages the supplied terminal-branch labels as finite capacity
+statements inside the current introduced-label domain:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_le_introducedLabelFinset_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card_le_introducedLabelFinset_card_of_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.suppliedBranchCount_le_introducedLabelFinset_card_of_branchLabel_injOn
+```
+
+The first theorem is the cardinality form of the existing
+`branchLabelImage_subset_introducedLabelFinset`.  The latter two add supplied
+branch-label injectivity and the supplied family count to show
+`a*(n+1-a)+1 <= (introducedLabelFinset L width S J).card`.
+
+This is only a conditional capacity statement.  It does not construct terminal
+branch labels, prove branch-label injectivity, prove no-extra terminal-minimum
+coverage, compute terminal-minimum cardinality, prove pole order, normal
+crossings, or RLCT.
