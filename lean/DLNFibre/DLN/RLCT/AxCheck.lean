@@ -36,5 +36,11 @@ open DLNFibre.DLN.RLCT
 -- Must stay clean: NO `monomial_rlct` (the seam's S2-dependence is downstream in the cover), NO `sorryAx`.
 #print axioms dlnLoss222_eq_myF222
 
+-- (2,2,2) ≤-direction cover headline (#80, the hard half) — carries `monomial_rlct`, the PERMITTED S2
+-- citation (the threshold value rests on S2 via the box-divergence atom). Must be
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] — NO `sorryAx`. (Contrast dlnLoss222 above,
+-- which must stay monomial_rlct-FREE: the S2-dependence enters here, in the singular cover.)
+#print axioms rlctAtOn_myF222_le
+
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

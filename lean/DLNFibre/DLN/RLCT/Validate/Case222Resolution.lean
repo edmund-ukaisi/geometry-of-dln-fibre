@@ -624,4 +624,137 @@ theorem monomialIntegrand_unit_eq (c : ℝ) (u : Fin 8 → ℝ) :
     Fin.isValue, pow_zero, mul_one, one_mul, pow_one]
   norm_num
 
+/-! ## The `≤`-direction (`rlctAtOn myF222 0 ≤ 3/2`)
+
+The single-binding-leaf lower bound: for `c' > 3/2`, the threshold integral over the cube `[−ε, ε]^8`
+diverges, because it dominates the image of one composite leaf chart `phiUnit` over a small positive
+box, which (after the composite c-o-v and the integrand identity) is the `⊤`-divergent
+`monomialIntegrand · Uval^{−c'}`. Discharges `rlctAtOn_le_of_box_diverges`. -/
+
+/-- **The leaf integrand identity** (the per-leaf fidelity bridge, concrete). On the chart orthant the
+pulled-back integrand factors as the binding monomial against the unit-power: `|u0|³·|u2|² ·
+|myF222(φ u)|^{−c} = monomialIntegrand 8 unitK8 unitH8 c u · (Uval u)^{−c}` (`monomialIntegrand_unit_eq`
++ `myF222_phiUnit_eq_mul_Uval`, all factors `≥ 0` since `Uval ≥ 1`). rv-2's load-bearing audit target. -/
+theorem myF222_phiUnit_leaf_integrand (c : ℝ) (u : Fin 8 → ℝ) :
+    |u 0| ^ 3 * |u 2| ^ 2 * |myF222 (phiUnit u)| ^ (-c)
+      = monomialIntegrand 8 unitK8 unitH8 c u * (Uval u) ^ (-c) := by
+  rw [monomialIntegrand_unit_eq, myF222_phiUnit_eq_mul_Uval, show (Fin.tail u) 1 = u 2 from rfl]
+  have hUpos : 0 < Uval u := lt_of_lt_of_le one_pos (Uval_ge_one u)
+  rw [abs_of_nonneg (by positivity : (0 : ℝ) ≤ (u 0) ^ 2 * (u 2) ^ 2 * Uval u),
+    Real.mul_rpow (by positivity) hUpos.le, ← sq_abs (u 0), ← sq_abs (u 2)]
+  ring
+
+/-- The leaf unit is continuous (polynomial). -/
+theorem Uval_cont : Continuous Uval := by unfold Uval; fun_prop
+
+/-- The leaf unit is bounded above on the compact box `[0, ε]^8` (`∃ B ≥ 1, Uval ≤ B`); the upper
+bound `b` (with `a = 1` from `Uval_ge_one`) bounding the unit two-sidedly on the leaf box. -/
+theorem Uval_le_on_box (ε : ℝ) :
+    ∃ B, 1 ≤ B ∧ ∀ u ∈ Set.univ.pi (fun _ : Fin 8 => Set.Icc (0 : ℝ) ε), Uval u ≤ B := by
+  have hcpt : IsCompact (Set.univ.pi (fun _ : Fin 8 => Set.Icc (0 : ℝ) ε)) :=
+    isCompact_univ_pi (fun _ => isCompact_Icc)
+  rcases (Set.univ.pi (fun _ : Fin 8 => Set.Icc (0 : ℝ) ε)).eq_empty_or_nonempty with he | hne
+  · exact ⟨1, le_refl _, fun u hu => absurd (he ▸ hu) (Set.mem_empty_iff_false u).mp⟩
+  · obtain ⟨u0, _, hu0⟩ := hcpt.exists_isMaxOn hne Uval_cont.continuousOn
+    exact ⟨max 1 (Uval u0), le_max_left _ _, fun u hu => le_trans (hu0 hu) (le_max_right _ _)⟩
+
+/-- A coordinate hyperplane `{x | x p = 0}` is Lebesgue-null (a proper subspace, `addHaar_submodule`).
+The pivot-zero loci dropped in the composite c-o-v are null. -/
+theorem coordZero_null {N : ℕ} (p : Fin N) : (volume : Measure (Fin N → ℝ)) {x | x p = 0} = 0 := by
+  apply measure_mono_null (show {x : Fin N → ℝ | x p = 0}
+      ⊆ ↑(LinearMap.ker (LinearMap.proj p : (Fin N → ℝ) →ₗ[ℝ] ℝ)) from
+    fun x hx => by simp only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.proj_apply]; exact hx)
+  apply MeasureTheory.Measure.addHaar_submodule
+  intro htop
+  have hmem : (Pi.single p (1 : ℝ)) ∈ LinearMap.ker (LinearMap.proj p : (Fin N → ℝ) →ₗ[ℝ] ℝ) :=
+    htop ▸ Submodule.mem_top
+  simp only [LinearMap.mem_ker, LinearMap.proj_apply, Pi.single_eq_same, one_ne_zero] at hmem
+
+/-- **The leaf box divergence** (the unit-stripped ε-uniform divergence). For `c' ≥ monomialThreshold`
+(`0 < c'`), the leaf integrand `monomialIntegrand · Uval^{−c'}` over `[0, ε]^8` is `⊤`: lower-bound
+`Uval^{−c'} ≥ B^{−c'} > 0` (`Uval ∈ [1, B]`, `−c' < 0`), pull the constant out, and apply the bare-
+monomial box divergence (`monomialIntegrand_lintegral_box_eq_top`). The unit doesn't move the
+threshold. -/
+theorem leaf_box_div (c' : ℝ) (hc'0 : 0 < c')
+    (hc' : monomialThreshold 8 unitK8 unitH8 ≤ ENNReal.ofReal c') (hk : ∃ j, unitK8 j ≠ 0)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∫⁻ u in Set.univ.pi (fun _ : Fin 8 => Set.Icc (0 : ℝ) ε),
+      ENNReal.ofReal (monomialIntegrand 8 unitK8 unitH8 c' u * (Uval u) ^ (-c')) = ⊤ := by
+  obtain ⟨B, hB1, hBle⟩ := Uval_le_on_box ε
+  have hB0 : (0 : ℝ) < B := lt_of_lt_of_le one_pos hB1
+  set box := Set.univ.pi (fun _ : Fin 8 => Set.Icc (0 : ℝ) ε) with hbox
+  have hUm : Measurable Uval := Uval_cont.measurable
+  have hmonomeas : Measurable (fun u : Fin 8 → ℝ => monomialIntegrand 8 unitK8 unitH8 c' u) := by
+    unfold monomialIntegrand; fun_prop
+  have hmonomeas' : Measurable
+      (fun u : Fin 8 → ℝ => ENNReal.ofReal (|monomialIntegrand 8 unitK8 unitH8 c' u|)) :=
+    ENNReal.measurable_ofReal.comp (continuous_abs.measurable.comp hmonomeas)
+  have hlb : ∫⁻ u in box, ENNReal.ofReal (B ^ (-c'))
+        * ENNReal.ofReal (|monomialIntegrand 8 unitK8 unitH8 c' u|)
+      ≤ ∫⁻ u in box, ENNReal.ofReal (monomialIntegrand 8 unitK8 unitH8 c' u * (Uval u) ^ (-c')) := by
+    apply setLIntegral_mono_ae
+      (ENNReal.measurable_ofReal.comp (hmonomeas.mul (hUm.pow_const _))).aemeasurable
+    filter_upwards [] with u _
+    rw [← ENNReal.ofReal_mul (by positivity)]
+    apply ENNReal.ofReal_le_ofReal
+    have hmono : 0 ≤ monomialIntegrand 8 unitK8 unitH8 c' u := by unfold monomialIntegrand; positivity
+    rw [abs_of_nonneg hmono, mul_comm]
+    exact mul_le_mul_of_nonneg_left
+      (Real.rpow_le_rpow_of_nonpos (lt_of_lt_of_le one_pos (Uval_ge_one u)) (hBle u ‹_›) (by linarith))
+      hmono
+  have hBne : ENNReal.ofReal (B ^ (-c')) ≠ 0 := by
+    simp only [ne_eq, ENNReal.ofReal_eq_zero, not_le]; exact Real.rpow_pos_of_pos hB0 _
+  rw [lintegral_const_mul _ hmonomeas',
+    monomialIntegrand_lintegral_box_eq_top 8 unitK8 unitH8 hk c' hc' hc'0 hε,
+    ENNReal.mul_top hBne] at hlb
+  exact top_le_iff.1 hlb
+
+/-- **The `≤`-direction.** `rlctAtOn myF222 0 ≤ 3/2`. For every `c' > 3/2`, `ε > 0`, the cube threshold
+integral diverges: dominate by one composite binding leaf chart's image (`phiUnit_image_subset_cubeBox`
++ `lintegral_mono_set`), transport by the composite c-o-v (`phiUnit_cov`), match the integrand to
+`monomialIntegrand · Uval^{−c'}` (`myF222_phiUnit_leaf_integrand`, pivot loci dropped as null via
+`coordZero_null`), diverge (`leaf_box_div`). Then `rlctAtOn_le_of_box_diverges`. -/
+theorem rlctAtOn_myF222_le : rlctAtOn myF222 0 ≤ 3 / 2 := by
+  apply rlctAtOn_le_of_box_diverges myF222 (3 / 2)
+  intro c' hc' ε hε
+  have h32 : (3 : ℝ≥0∞) / 2 = ENNReal.ofReal (3 / 2) := by
+    rw [ENNReal.ofReal_div_of_pos (by norm_num)]; norm_num
+  have hc'r : (3 / 2 : ℝ) < (c' : ℝ) := (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by norm_num)).1
+    (by rw [← h32, ENNReal.ofReal_coe_nnreal]; exact hc')
+  have hc'0 : (0 : ℝ) < (c' : ℝ) := by linarith
+  have hthr : monomialThreshold 8 unitK8 unitH8 ≤ ENNReal.ofReal (c' : ℝ) :=
+    le_trans unitMonomialThreshold_le (by rw [h32]; exact ENNReal.ofReal_le_ofReal hc'r.le)
+  obtain ⟨δ, hδ, hsub⟩ := phiUnit_image_subset_cubeBox ε hε
+  set P := Set.univ.pi (fun _ : Fin 8 => Set.Icc (0 : ℝ) δ) with hP
+  have hPmeas : MeasurableSet P := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  have hPsub : P ⊆ cubeBox 8 δ := fun x hx i _ => by
+    have := hx i (Set.mem_univ i); simp only [Set.mem_Icc] at this ⊢
+    exact ⟨by linarith [this.1], by linarith [this.2]⟩
+  have hdiffnull : ∫⁻ x in (P \ {x | x 2 = 0}) \ {x | x 0 = 0},
+        ENNReal.ofReal (|x 0| ^ 3 * |x 2| ^ 2) * ENNReal.ofReal (|myF222 (phiUnit x)| ^ (-(c' : ℝ)))
+      = ∫⁻ x in P, ENNReal.ofReal (|x 0| ^ 3 * |x 2| ^ 2)
+          * ENNReal.ofReal (|myF222 (phiUnit x)| ^ (-(c' : ℝ))) := by
+    apply setLIntegral_congr
+    rw [Set.diff_diff]
+    exact MeasureTheory.diff_ae_eq_self.2 (measure_mono_null Set.inter_subset_right
+      (by rw [measure_union_null_iff]; exact ⟨coordZero_null 2, coordZero_null 0⟩))
+  apply top_le_iff.1
+  calc (⊤ : ℝ≥0∞)
+      = ∫⁻ u in P,
+          ENNReal.ofReal (monomialIntegrand 8 unitK8 unitH8 (c' : ℝ) u * (Uval u) ^ (-(c' : ℝ))) :=
+        (leaf_box_div (c' : ℝ) hc'0 hthr ⟨2, by decide⟩ δ hδ).symm
+    _ = ∫⁻ u in P, ENNReal.ofReal (|u 0| ^ 3 * |u 2| ^ 2)
+          * ENNReal.ofReal (|myF222 (phiUnit u)| ^ (-(c' : ℝ))) := by
+        refine setLIntegral_congr_fun hPmeas (fun u _ => ?_)
+        rw [← ENNReal.ofReal_mul (by positivity), myF222_phiUnit_leaf_integrand]
+    _ = ∫⁻ x in (P \ {x | x 2 = 0}) \ {x | x 0 = 0},
+          ENNReal.ofReal (|x 0| ^ 3 * |x 2| ^ 2)
+            * ENNReal.ofReal (|myF222 (phiUnit x)| ^ (-(c' : ℝ))) := hdiffnull.symm
+    _ = ∫⁻ x in phiUnit '' ((P \ {x | x 2 = 0}) \ {x | x 0 = 0}),
+          ENNReal.ofReal (|myF222 x| ^ (-(c' : ℝ))) :=
+        (phiUnit_cov P hPmeas (fun x => ENNReal.ofReal (|myF222 x| ^ (-(c' : ℝ))))).symm
+    _ ≤ ∫⁻ x in cubeBox 8 ε, ENNReal.ofReal (|myF222 x| ^ (-(c' : ℝ))) :=
+        lintegral_mono_set (subset_trans
+          (Set.image_mono ((Set.diff_subset.trans Set.diff_subset).trans hPsub)) hsub)
+
 end DLNFibre.DLN.RLCT
