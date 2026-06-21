@@ -119,4 +119,82 @@ theorem rlct_germ_local_aux (H : Fin (L + 1) → ℕ) (F G : Params H → ℝ) (
   ext c
   exact ⟨key F G hFGU₀ c, key G F (fun w hw => (hFGU₀ w hw).symm) c⟩
 
+/-! ## S1.3 on a general domain — `rlctAtOn` unit-invariance
+
+The `rlctAt`/`Params H` unit-invariance above does not reach the general-M resolution tree: a
+chart-local reduction lives on `rlctAtOn` over a PRODUCT domain `(Fin n → ℝ) × Params M'`, not on
+`Params H`. The version below is `rlct_unit_invariant_aux` restated at the `weightedThreshold` /
+`rlctAtOn` level over a general `[MeasureSpace] [TopologicalSpace] [OpensMeasurableSpace]` source —
+the proof is the same germ argument (`Integrable.bdd_mul` both ways, the admissibility down-sets
+coincide), with the `Params H` skin replaced by the typeclass hypotheses. Reusable bedrock: every
+node's `g' := wᵢ · (g ∘ φᵢ)` recursion in the general-M tree strips a unit through this. (Same `_aux`
+proof-module pattern; the general statement carries no separate Skeleton wire — it is the engine the
+general-M rungs consume directly.) -/
+
+/-- **S1.3 (general domain).** The RLCT threshold `rlctAtOn` is invariant under multiplying the
+integrand by a measurable unit `u` bounded in `[a,b]` (`a > 0`) on a neighbourhood of `w*`:
+`rlctAtOn (u·F) w* = rlctAtOn F w*`. The general-domain twin of `rlct_unit_invariant_aux` (drops the
+`Params H` skin for typeclass hypotheses). On `Params` it agrees with the latter via
+`rlctAtOn_eq_rlctAt`. -/
+theorem rlctAtOn_unit_invariant_aux {M : Type*} [MeasureSpace M] [TopologicalSpace M]
+    [OpensMeasurableSpace M] (F u : M → ℝ) (wstar : M)
+    (a b : ℝ) (ha : 0 < a) (hmeas : Measurable u)
+    (hu : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, a ≤ |u w| ∧ |u w| ≤ b) :
+    rlctAtOn (fun w => u w * F w) wstar = rlctAtOn F wstar := by
+  obtain ⟨U₀, hU₀, hbnd⟩ := hu
+  -- Forward: `F` admissible at `c'` ⟹ `u·F` admissible (unit-factor `|u|^{−c'} ≤ a^{−c'}`).
+  have fwd : ∀ c' : NNReal, (∃ Ω : Set M, IsOpen Ω ∧ {wstar} ⊆ Ω ∧
+        IntegrableOn (fun w => |F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w) Ω volume) →
+      (∃ Ω : Set M, IsOpen Ω ∧ {wstar} ⊆ Ω ∧
+        IntegrableOn (fun w => |u w * F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w) Ω volume) := by
+    rintro c' ⟨Ω, hΩopen, hKΩ, hint⟩
+    have hwΩ : wstar ∈ Ω := hKΩ rfl
+    obtain ⟨V, hVsub, hVopen, hwV⟩ :=
+      mem_nhds_iff.1 (Filter.inter_mem (hΩopen.mem_nhds hwΩ) hU₀)
+    refine ⟨V, hVopen, Set.singleton_subset_iff.2 hwV, ?_⟩
+    have hVΩ : V ⊆ Ω := fun x hx => (hVsub hx).1
+    have hVU₀ : V ⊆ U₀ := fun x hx => (hVsub hx).2
+    have hbound : ∀ᵐ w ∂(volume.restrict V), a ≤ |u w| ∧ |u w| ≤ b :=
+      (ae_restrict_mem hVopen.measurableSet).mono fun w hw => hbnd w (hVU₀ hw)
+    have hrw : (fun w => |u w * F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w)
+        = (fun w => |u w| ^ (-(c' : ℝ)) * (|F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w)) := by
+      funext w; rw [abs_mul, Real.mul_rpow (abs_nonneg _) (abs_nonneg _)]; ring
+    rw [hrw]
+    refine Integrable.bdd_mul (c := a ^ (-(c' : ℝ))) (hint.mono_set hVΩ)
+      ((by fun_prop : Measurable (fun w => |u w| ^ (-(c' : ℝ)))).aestronglyMeasurable) ?_
+    filter_upwards [hbound] with w hw
+    rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+    exact Real.rpow_le_rpow_of_nonpos ha hw.1 (by simp)
+  -- Backward: `u·F` admissible ⟹ `F` admissible (factor `|u|^{c'} ≤ b^{c'}`).
+  have bwd : ∀ c' : NNReal, (∃ Ω : Set M, IsOpen Ω ∧ {wstar} ⊆ Ω ∧
+        IntegrableOn (fun w => |u w * F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w) Ω volume) →
+      (∃ Ω : Set M, IsOpen Ω ∧ {wstar} ⊆ Ω ∧
+        IntegrableOn (fun w => |F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w) Ω volume) := by
+    rintro c' ⟨Ω, hΩopen, hKΩ, hint⟩
+    have hwΩ : wstar ∈ Ω := hKΩ rfl
+    obtain ⟨V, hVsub, hVopen, hwV⟩ :=
+      mem_nhds_iff.1 (Filter.inter_mem (hΩopen.mem_nhds hwΩ) hU₀)
+    refine ⟨V, hVopen, Set.singleton_subset_iff.2 hwV, ?_⟩
+    have hVΩ : V ⊆ Ω := fun x hx => (hVsub hx).1
+    have hVU₀ : V ⊆ U₀ := fun x hx => (hVsub hx).2
+    have hbound : ∀ᵐ w ∂(volume.restrict V), a ≤ |u w| ∧ |u w| ≤ b :=
+      (ae_restrict_mem hVopen.measurableSet).mono fun w hw => hbnd w (hVU₀ hw)
+    refine (Integrable.bdd_mul (c := b ^ (c' : ℝ)) (hint.mono_set hVΩ)
+      ((by fun_prop : Measurable (fun w => |u w| ^ (c' : ℝ))).aestronglyMeasurable) ?_).congr ?_
+    · filter_upwards [hbound] with w hw
+      rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+      exact Real.rpow_le_rpow (abs_nonneg _) hw.2 (by positivity)
+    · filter_upwards [hbound] with w hw
+      have hupos : (0:ℝ) < |u w| := lt_of_lt_of_le ha hw.1
+      show |u w| ^ (c' : ℝ) * (|u w * F w| ^ (-(c' : ℝ)) * 1) = |F w| ^ (-(c' : ℝ)) * 1
+      rw [abs_mul, Real.mul_rpow (abs_nonneg _) (abs_nonneg _), mul_one, mul_one, ← mul_assoc,
+        ← Real.rpow_add hupos]
+      simp
+  unfold rlctAtOn weightedThreshold
+  congr 1
+  ext c
+  constructor
+  · rintro ⟨c', rfl, hadm⟩; exact ⟨c', rfl, bwd c' hadm⟩
+  · rintro ⟨c', rfl, hadm⟩; exact ⟨c', rfl, fwd c' hadm⟩
+
 end DLNFibre.DLN.RLCT
