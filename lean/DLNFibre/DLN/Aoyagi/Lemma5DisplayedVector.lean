@@ -844,6 +844,33 @@ theorem aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
     (aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
       ell a p M m C layerWidth T hp hselected hT hterminal)
 
+/-- For the closed `ell=3`, `a=2`, `p=1`, all-widths-two tuple, a supplied
+equation `(4)` certificate gives terminal endpoint value `1`, while the
+terminal upper-chain endpoint is `0`.
+
+This is a concrete endpoint calculation only; it does not construct the
+supplied certificate or a terminal extension. -/
+theorem aoyagiLemma5Eq4_terminalEndpoint_values_ell3_a2_p1_allWidthsTwo
+    (C : AoyagiSelectedCutpoints 3) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector
+      3 2 1 (3 : ℤ) (fun _ : Fin (3 + 1) => (2 : ℤ)) C layerWidth T) :
+    T (C.point 3 - 1) = 1 ∧
+      aoyagiHtildeUpperNat 3 2 (3 : ℤ)
+        (fun _ : Fin (3 + 1) => (2 : ℤ)) 3 = 0 := by
+  constructor
+  · have hselected :
+        (∑ j : Fin (3 + 1), (fun _ : Fin (3 + 1) => (2 : ℤ)) j) =
+          (3 : ℤ) * ((3 : ℤ) - 1) + (2 : ℕ) := by
+      norm_num
+    have hvalue :=
+      aoyagiLemma5Eq4_terminalEndpoint_value_of_predBoundary
+        3 2 1 (3 : ℤ) (fun _ : Fin (3 + 1) => (2 : ℤ)) C layerWidth T
+        (by norm_num) hselected hT
+    simpa [aoyagiSelectedWidthNat] using hvalue
+  · exact aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum
+      3 2 (3 : ℤ) (fun _ : Fin (3 + 1) => (2 : ℤ))
+      (by norm_num) (by norm_num)
+
 /-- For the closed `ell=3`, `a=2`, `p=1`, all-widths-two tuple, any supplied
 equation `(4)` certificate rules out the supplied terminal upper-chain
 extension at the terminal selected endpoint.

@@ -2058,7 +2058,8 @@ Definition 3-shaped tuple `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths
 `2`: any supplied equation `(4)` certificate for that tuple is incompatible
 with the supplied terminal upper-chain extension
 `T(S_(ell+1)-1)=Htilde'_ell`.  Equivalently, the printed terminal-collision
-branch value is `1`, while `Htilde'_ell=0`.
+branch value is `1`, while `Htilde'_ell=0`; these endpoint values are now
+Lean-proved directly too.
 A fresh source audit reconfirms that the printed paper does not supply the
 Case 1(2) chart sequence, repeated gap checks, terminal endpoint convention,
 or proof of `tilde t=0`; therefore this is not a displayed-vector realisation

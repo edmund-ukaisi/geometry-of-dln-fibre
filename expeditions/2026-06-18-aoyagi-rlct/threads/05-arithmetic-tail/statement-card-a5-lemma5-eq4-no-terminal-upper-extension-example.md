@@ -8,6 +8,7 @@ File:
 
 Name:
 
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_terminalEndpoint_values_ell3_a2_p1_allWidthsTwo`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo`
 
 ## Statement
@@ -33,10 +34,20 @@ In Lean notation this is
 T (C.point 3 - 1) != aoyagiHtildeUpperNat 3 2 3 (fun _ => 2) 3.
 ```
 
+The endpoint values are also Lean-proved directly:
+
+```text
+T (C.point 3 - 1) = 1,
+aoyagiHtildeUpperNat 3 2 3 (fun _ => 2) 3 = 0.
+```
+
 ## Proved
 
 - The closed selected-width tuple has terminal-collision index
   `p+(ell-a)+1=ell`.
+- For any supplied equation `(4)` piecewise certificate with these constants,
+  the terminal-collision branch assigns endpoint value `1`, while the terminal
+  upper-chain endpoint is `0`.
 - For any supplied equation `(4)` piecewise certificate with these constants,
   the last-width compatibility obstruction rules out the terminal upper-chain
   extension.
@@ -47,9 +58,8 @@ T (C.point 3 - 1) != aoyagiHtildeUpperNat 3 2 3 (fun _ => 2) 3.
 
 ## Cited
 
-- No Lean citation.  The source context is Aoyagi Lemma 5, PDF pp. 25-27; the
-  Lean statement is finite endpoint arithmetic plus supplied-data
-  compatibility.
+- No external source beyond Aoyagi Lemma 5, PDF pp. 25-27.  The Lean statement
+  is finite endpoint arithmetic plus supplied-data compatibility.
 
 ## Deferred
 

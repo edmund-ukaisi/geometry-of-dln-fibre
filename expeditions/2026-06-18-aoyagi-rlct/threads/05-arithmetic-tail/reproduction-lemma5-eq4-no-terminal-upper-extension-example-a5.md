@@ -101,6 +101,7 @@ T(S_(ell+1)-1) = Htilde'_ell.
 ## Lean Target
 
 ```text
+aoyagiLemma5Eq4_terminalEndpoint_values_ell3_a2_p1_allWidthsTwo
 aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo
 ```
 

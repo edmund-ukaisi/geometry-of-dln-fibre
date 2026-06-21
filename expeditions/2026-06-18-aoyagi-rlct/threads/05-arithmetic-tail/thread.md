@@ -1116,6 +1116,7 @@ Review artifact:
 Lean now proves:
 
 ```text
+aoyagiLemma5Eq4_terminalEndpoint_values_ell3_a2_p1_allWidthsTwo
 aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo
 ```
 
