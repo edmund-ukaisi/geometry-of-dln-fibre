@@ -2090,8 +2090,143 @@ theorem aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
     aoyagiHtildeLowerNat ell a M m p ≤
         aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ∧
       aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ≤
-        aoyagiHtildeUpperNat ell a M m p
+      aoyagiHtildeUpperNat ell a M m p
   constructor <;> omega
+
+/-- The Eq5 strict offset set never contains the upper endpoint.
+
+The upper endpoint would require offset `alpha=0`, while equation `(5)` uses
+only offsets with `1<=alpha`. -/
+theorem aoyagiLemma5Eq5_upperEndpoint_not_mem_offsetValueSet
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :
+    aoyagiHtildeUpperNat ell a M m p ∉
+      aoyagiLemma5Eq5OffsetValueSet ell a p M m := by
+  intro hmem
+  rw [aoyagiLemma5Eq5OffsetValueSet, Finset.mem_image] at hmem
+  rcases hmem with ⟨alpha, halpha, hvalue⟩
+  rw [Finset.mem_Icc] at halpha
+  have halpha_zero : (alpha : ℤ) = 0 := by
+    linarith
+  omega
+
+/-- When the interval excess is at most `p-1`, Eq5 strict offsets are exactly
+the same-coordinate interval with the upper endpoint erased.
+
+This is the finite-set complement of the rising-region theorem, where Eq5
+also misses the lower endpoint.  It is not a source construction or legality
+theorem for the displayed vectors. -/
+theorem aoyagiLemma5Eq5_offsets_eq_interval_erase_upper_of_excess_le_pred
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp : p < ell + 1)
+    (hexcess_le : aoyagiLemma5IntervalExcess ell a p ≤ p - 1) :
+    aoyagiLemma5Eq5OffsetValueSet ell a p M m =
+      (aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+        (aoyagiHtildeUpperNat ell a M m p) := by
+  apply Finset.eq_of_subset_of_card_le
+  · intro z hz
+    rw [Finset.mem_erase]
+    constructor
+    · intro hz_upper
+      exact aoyagiLemma5Eq5_upperEndpoint_not_mem_offsetValueSet
+        ell a p M m (by rwa [hz_upper] at hz)
+    · exact aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
+        ell a p M m ha hp hz
+  · have hupper_mem :
+        aoyagiHtildeUpperNat ell a M m p ∈
+          aoyagiHtildeIntervalValueSetNat ell a M m p :=
+      aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+        ell a p M m ha hp
+    have hcard_erase :
+        ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+            (aoyagiHtildeUpperNat ell a M m p)).card =
+          aoyagiLemma5IntervalExcess ell a p := by
+      have h := Finset.card_erase_add_one hupper_mem
+      rw [aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m p hp] at h
+      simp [aoyagiLemma5IntervalSize] at h
+      omega
+    rw [hcard_erase]
+    rw [aoyagiLemma5Eq5OffsetValueSet_card]
+    exact Nat.le_of_eq (Nat.min_eq_left hexcess_le).symm
+
+/-- A supplied upper endpoint fills the same-coordinate interval together with
+the Eq5 strict offsets in the non-rising case `excess<=p-1`.
+
+This is finite supplied-data bookkeeping.  It does not assert that equation
+`(3)` or any other displayed source branch legally supplies the upper
+endpoint. -/
+theorem aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (Tupper : ℕ → ℤ)
+    (ha : a ≤ ell) (hp : p < ell + 1)
+    (hexcess_le : aoyagiLemma5IntervalExcess ell a p ≤ p - 1)
+    (hupper :
+      Tupper (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p) :
+    insert (Tupper (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hEq :=
+    aoyagiLemma5Eq5_offsets_eq_interval_erase_upper_of_excess_le_pred
+      ell a p M m ha hp hexcess_le
+  have hupper_mem :
+      aoyagiHtildeUpperNat ell a M m p ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m p :=
+    aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+      ell a p M m ha hp
+  calc
+    insert (Tupper (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m)
+        =
+          insert (aoyagiHtildeUpperNat ell a M m p)
+            ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+              (aoyagiHtildeUpperNat ell a M m p)) := by
+            rw [hEq, hupper]
+    _ = aoyagiHtildeIntervalValueSetNat ell a M m p :=
+      Finset.insert_erase hupper_mem
+
+/-- In the plateau part with `a<p<=ell-a`, a supplied Eq3-shaped upper
+component and the Eq5 strict offsets fill the same-coordinate interval.
+
+This uses only the component value from the supplied Eq3-shaped certificate.
+It does not prove source-label legality, terminality, chart coverage, or the
+full Lemma 5 order count. -/
+theorem aoyagiLemma5_suppliedEq3Upper_Eq5_offsets_eq_intervalValueSetNat_of_plateau
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth3 T3 : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (ha_lt_p : a < p) (hp_c : p ≤ ell - a)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3) :
+    insert (T3 (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hp : p < ell + 1 := by
+    have ha : a ≤ ell := hT3.a_le_ell
+    omega
+  have hexcess_le_a : aoyagiLemma5IntervalExcess ell a p ≤ a := by
+    unfold aoyagiLemma5IntervalExcess
+    exact le_trans
+      (Nat.min_le_right p (min (ell - p) (min a (ell - a))))
+      (le_trans (Nat.min_le_right (ell - p) (min a (ell - a)))
+        (Nat.min_le_left a (ell - a)))
+  have hexcess_le :
+      aoyagiLemma5IntervalExcess ell a p ≤ p - 1 := by
+    omega
+  have hupper :=
+    aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+      ell a p M m C layerWidth3 T3 hp_pos hp_c hT3
+  exact
+    aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
+      ell a p M m C T3 hT3.a_le_ell hp hexcess_le hupper
+
+/-- Alias with the word `Component`, parallel to the rising-region wrapper. -/
+theorem aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNat_of_plateau
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth3 T3 : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (ha_lt_p : a < p) (hp_c : p ≤ ell - a)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3) :
+    insert (T3 (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p :=
+  aoyagiLemma5_suppliedEq3Upper_Eq5_offsets_eq_intervalValueSetNat_of_plateau
+    ell a p M m C layerWidth3 T3 hp_pos ha_lt_p hp_c hT3
 
 /-- In the rising region, the lower endpoint together with the strict equation
 `(5)` offset values is contained in the same-coordinate interval.

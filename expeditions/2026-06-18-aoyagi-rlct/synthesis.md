@@ -3127,6 +3127,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-injection-a5.md`.
 
+The displayed-vector file now has the non-rising counterpart to the earlier
+rising-region Eq5 offset coverage.  The new theorem
+`aoyagiLemma5Eq5_offsets_eq_interval_erase_upper_of_excess_le_pred` proves
+that if `aoyagiLemma5IntervalExcess ell a p <= p-1`, then the strict Eq5
+offset values equal the same-coordinate interval with the upper endpoint
+erased.  `aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred`
+then fills the interval from any supplied upper endpoint, and
+`aoyagiLemma5_suppliedEq3Upper_Eq5_offsets_eq_intervalValueSetNat_of_plateau`
+and its `...Eq3UpperComponent...` alias instantiate this in the plateau
+subcase `a<p<=ell-a` from a supplied Eq3-shaped component value.  This is
+finite set bookkeeping only; source-label legality and terminal/chart data
+remain open.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonrising-coverage-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-nonrising-coverage.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-nonrising-coverage-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

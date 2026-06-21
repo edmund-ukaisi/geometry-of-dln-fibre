@@ -3166,3 +3166,33 @@ proof.
 This does not prove the supplied family fields from source.  In particular,
 source value-injectivity, branch-coordinate correctness, and branch
 coverage remain the real Aoyagi Lemma 5 construction frontier.
+
+## 2026-06-21 Lean Lemma 5 Eq5 non-rising coverage
+
+Reproduction:
+`reproduction-lemma5-eq5-nonrising-coverage-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-nonrising-coverage.md`.
+Review artifact:
+`review-lemma5-eq5-nonrising-coverage-a5.md`.
+
+Lean now proves the complementary finite-set coverage statement for equation
+`(5)` offsets outside the strictly rising interval region:
+
+```text
+aoyagiLemma5Eq5_upperEndpoint_not_mem_offsetValueSet
+aoyagiLemma5Eq5_offsets_eq_interval_erase_upper_of_excess_le_pred
+aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
+aoyagiLemma5_suppliedEq3Upper_Eq5_offsets_eq_intervalValueSetNat_of_plateau
+aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNat_of_plateau
+```
+
+If the interval excess at coordinate `p` satisfies `excess <= p-1`, then the
+strict Eq5 offset set is exactly the same-coordinate interval with the upper
+endpoint removed.  A separately supplied upper endpoint fills the interval.
+In the plateau subcase `a<p<=ell-a`, a supplied Eq3-shaped component supplies
+that upper endpoint value.
+
+This is still finite set bookkeeping.  It does not prove Eq3/Eq5 source-label
+legality, terminal `tilde t=0`, chart coverage, an all-coordinate branch
+family, pole order, normal crossings, or RLCT extraction.

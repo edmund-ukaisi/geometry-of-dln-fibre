@@ -3777,6 +3777,27 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-injection-a5.md`.
 
+Latest A5 Eq5 non-rising coverage update: `Lemma5DisplayedVector.lean` now
+proves the finite-set complement to the rising Eq5 offset result.  Names:
+`aoyagiLemma5Eq5_upperEndpoint_not_mem_offsetValueSet`,
+`aoyagiLemma5Eq5_offsets_eq_interval_erase_upper_of_excess_le_pred`,
+`aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred`,
+`aoyagiLemma5_suppliedEq3Upper_Eq5_offsets_eq_intervalValueSetNat_of_plateau`,
+and
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNat_of_plateau`.
+If `excess<=p-1`, the strict Eq5 offsets are exactly the same-coordinate
+interval with the upper endpoint erased; a supplied upper endpoint fills the
+interval.  In the plateau subcase `a<p<=ell-a`, a supplied Eq3-shaped
+component gives that upper endpoint value.  This does not prove source-label
+legality, terminality, chart coverage, an all-coordinate branch family, pole
+order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonrising-coverage-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-nonrising-coverage.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-nonrising-coverage-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

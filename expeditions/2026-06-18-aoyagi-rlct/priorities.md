@@ -53,17 +53,18 @@ Current coordinate-coverage classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-coordinate-coverage-classifier-a5.md`.
 Current counted-datum injection slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-injection-a5.md`.
+Current Eq5 non-rising coverage slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonrising-coverage-a5.md`.
 
 Immediate order:
 
-1. Review and commit the counted-datum injection bridge: derive tagged
-   classifier injectivity from supplied branch-coordinate correctness and the
-   existing supplied family fields, then expose the binary-family wrapper.
+1. Review and commit the Eq5 non-rising interval coverage bridge.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. Next source-facing target: return to missing plateau/falling-coordinate
-   coverage and source proof of the supplied family fields; do not claim
-   Aoyagi's printed Case 1(2) paragraph supplies them.
+3. Next source-facing target: use the rising/non-rising interval coverage
+   split to inventory exactly which coordinates still lack supplied upper or
+   lower endpoints; do not claim Aoyagi's printed Case 1(2) paragraph supplies
+   source coverage or injectivity.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
 5. Low-risk Lean API may package the supplied boundary using standard finite
