@@ -1363,3 +1363,55 @@ does not construct the supplied certificate or displayed vector, prove
 terminal `tilde t=0`, introduced-label status, vector admissibility, Case
 1(2) chart sequence, Lemma 5 order count, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` own-coordinate offset
+
+Reproduction:
+`reproduction-lemma5-eq5-own-coordinate-offset-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-own-coordinate-offset.md`.
+Review artifact:
+`review-lemma5-eq5-own-coordinate-offset-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5Eq5OwnCoordinateBranch
+aoyagiLemma5Eq5OffsetValueSet
+aoyagiLemma5Eq5_offsetValue_injective
+aoyagiLemma5Eq5OffsetValueSet_card
+aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
+aoyagiLemma5Eq5_ownCoordinate_value
+aoyagiLemma5Eq5_ownCoordinate_eq_label_pred
+aoyagiLemma5Eq5_ownCoordinate_mem_intervalValueSetNat
+aoyagiLemma5Eq5_ownCoordinate_mem_offsetValueSet
+```
+
+For Aoyagi Lemma 5 equation `(5)`, Lean now records a supplied
+own-coordinate branch.  The paper's `j0` is Lean coordinate `p`; the own
+coordinate lies in block `C.block p s`, corresponding to paper block
+`j=j0+1`.  The supplied branch gives
+
+```text
+T(s)=Htilde'_p-alpha.
+```
+
+Under the supplied label relation
+
+```text
+k=Htilde'_p+1-alpha,
+```
+
+this rewrites to `T(s)=k-1`.  If `alpha<=Htilde'_p-Htilde_p`, encoded by
+`alpha<=aoyagiLemma5IntervalExcess ell a p`, the value belongs to the
+same-coordinate interval value set at coordinate `p`.  The finite offset
+values for `1<=alpha<=min(excess(ell,a,p),p-1)` have cardinality
+`min(excess(ell,a,p),p-1)`.
+
+This is supplied own-coordinate branch arithmetic only.  It does not
+construct equation `(5)`'s displayed vector, prove source-label legality for
+`k`, classify the whole selected span, prove terminal `tilde t=0`, prove
+vector admissibility, build the Case 1(2) chart sequence, prove Lemma 5 order
+count, normal crossings, or RLCT extraction.  A full selected-span equation
+`(5)` classifier still needs the selected-range guard
+`p+(a-alpha)+1<=ell` for the final cutoff.

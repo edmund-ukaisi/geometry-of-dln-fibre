@@ -1312,6 +1312,153 @@ theorem aoyagiLemma5Eq3_no_terminalEndpointZero_of_one
       ell M m C layerWidth T hselected hT
   omega
 
+/-- Supplied own-coordinate branch data for Aoyagi Lemma 5 equation `(5)`.
+
+Here `p` is the paper's `j_0` in Lean's zero-based selected-coordinate
+notation: the own coordinate lies in block `p`, i.e. paper block `j = j_0+1`.
+This is not a full equation `(5)` piecewise certificate. -/
+structure AoyagiLemma5Eq5OwnCoordinateBranch
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ) : Prop where
+  a_le_ell : a ≤ ell
+  alpha_pos : 1 ≤ alpha
+  alpha_lt_p : alpha < p
+  alpha_le_excess : alpha ≤ aoyagiLemma5IntervalExcess ell a p
+  ownBranch : ∀ S, C.block p S →
+    T S = aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ)
+
+/-- The finite offset values realised by equation `(5)`'s own-coordinate
+branch under the source guard `1 <= alpha < p` and same-coordinate interval
+guard `alpha <= Htilde'_p-Htilde_p`. -/
+def aoyagiLemma5Eq5OffsetValueSet
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) : Finset ℤ :=
+  (Finset.Icc 1 (min (aoyagiLemma5IntervalExcess ell a p) (p - 1))).image
+    (fun alpha : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ))
+
+/-- Offsets below a fixed upper endpoint give distinct integer values. -/
+theorem aoyagiLemma5Eq5_offsetValue_injective
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :
+    Function.Injective
+      (fun alpha : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ)) := by
+  intro alpha beta h
+  have hcast : (alpha : ℤ) = (beta : ℤ) := by
+    linarith
+  exact_mod_cast hcast
+
+/-- The equation `(5)` offset-value set has the expected finite cardinality.
+
+This is only a count of supplied same-coordinate offset values.  It is not a
+chart-family count or a proof of Aoyagi Lemma 5. -/
+theorem aoyagiLemma5Eq5OffsetValueSet_card
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :
+    (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card =
+      min (aoyagiLemma5IntervalExcess ell a p) (p - 1) := by
+  unfold aoyagiLemma5Eq5OffsetValueSet
+  rw [Finset.card_image_of_injOn]
+  · rw [Nat.card_Icc]
+    omega
+  · intro x _ y _ hxy
+    exact aoyagiLemma5Eq5_offsetValue_injective ell a p M m hxy
+
+/-- Every equation `(5)` offset value is a same-coordinate interval value. -/
+theorem aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp : p < ell + 1) :
+    aoyagiLemma5Eq5OffsetValueSet ell a p M m ⊆
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  intro z hz
+  rw [aoyagiLemma5Eq5OffsetValueSet, Finset.mem_image] at hz
+  rcases hz with ⟨alpha, halpha, rfl⟩
+  rw [Finset.mem_Icc] at halpha
+  rw [aoyagiHtildeIntervalValueSetNat]
+  simp only [hp, ↓reduceDIte]
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m ha ⟨p, hp⟩]
+  have hgap :=
+    aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m ha ⟨p, hp⟩
+  simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] at hgap
+  change
+    aoyagiHtildeLowerNat ell a M m p ≤
+        aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ∧
+      aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ≤
+        aoyagiHtildeUpperNat ell a M m p
+  constructor <;> omega
+
+/-- A supplied equation `(5)` own-coordinate branch has the displayed value
+`Htilde'_p - alpha` on block `p`. -/
+theorem aoyagiLemma5Eq5_ownCoordinate_value
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5OwnCoordinateBranch ell a p alpha M m C T)
+    {S : ℕ} (hS : C.block p S) :
+    T S = aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) := by
+  exact hT.ownBranch S hS
+
+/-- With Aoyagi's equation `(5)` relation
+`alpha = Htilde'_p + 1 - k`, the own-coordinate value is `k-1`. -/
+theorem aoyagiLemma5Eq5_ownCoordinate_eq_label_pred
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5OwnCoordinateBranch ell a p alpha M m C T)
+    {S k : ℕ} (hS : C.block p S)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 := by
+  rw [aoyagiLemma5Eq5_ownCoordinate_value
+    ell a p alpha M m C T hT hS, hk]
+  ring
+
+/-- A supplied equation `(5)` own-coordinate branch value lies in the
+same-coordinate interval at coordinate `p`.
+
+This uses only `alpha <= Htilde'_p-Htilde_p`, recorded as
+`alpha_le_excess`.  It does not construct the equation `(5)` vector, prove
+source-label legality, terminal `tilde t=0`, chart coverage, or the Lemma 5
+order count. -/
+theorem aoyagiLemma5Eq5_ownCoordinate_mem_intervalValueSetNat
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5OwnCoordinateBranch ell a p alpha M m C T)
+    {S : ℕ} (hS : C.block p S) :
+    T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hp : p < ell + 1 := by
+    have hp_lt : p < ell := hS.1
+    omega
+  rw [aoyagiHtildeIntervalValueSetNat]
+  simp only [hp, ↓reduceDIte]
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m hT.a_le_ell ⟨p, hp⟩]
+  have hgap :=
+    aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m hT.a_le_ell ⟨p, hp⟩
+  have hvalue := hT.ownBranch S hS
+  simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] at hgap
+  have halpha_le_int :
+      (alpha : ℤ) ≤ (aoyagiLemma5IntervalExcess ell a p : ℤ) := by
+    exact_mod_cast hT.alpha_le_excess
+  rw [hvalue]
+  change
+    aoyagiHtildeLowerNat ell a M m p ≤
+        aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ∧
+      aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ≤
+        aoyagiHtildeUpperNat ell a M m p
+  constructor <;> omega
+
+/-- A supplied equation `(5)` own-coordinate branch value belongs to the finite
+offset-value set counted by `aoyagiLemma5Eq5OffsetValueSet_card`. -/
+theorem aoyagiLemma5Eq5_ownCoordinate_mem_offsetValueSet
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5OwnCoordinateBranch ell a p alpha M m C T)
+    {S : ℕ} (hS : C.block p S) :
+    T S ∈ aoyagiLemma5Eq5OffsetValueSet ell a p M m := by
+  rw [aoyagiLemma5Eq5_ownCoordinate_value
+    ell a p alpha M m C T hT hS]
+  exact Finset.mem_image_of_mem
+    (fun beta : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (beta : ℤ)) (by
+      rw [Finset.mem_Icc]
+      constructor
+      · exact hT.alpha_pos
+      · exact le_min hT.alpha_le_excess
+          (Nat.le_sub_one_of_lt hT.alpha_lt_p))
+
 end Aoyagi
 end DLN
 end DLNFibre

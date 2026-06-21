@@ -704,6 +704,13 @@ on the session's original cwd.
    conditional on a supplied equation `(4)` certificate and does not construct
    the displayed vector.  The selected-width sum and strict inequalities for
    that tuple are now Lean-packaged too.
+   The first equation `(5)` own-coordinate offset slice is now Lean-proved as
+   supplied branch data: `T(s)=Htilde'_p-alpha`, `T(s)=k-1` under the label
+   relation, same-coordinate interval membership under `alpha<=excess`, and
+   the finite offset-value cardinality `min(excess,p-1)`.  This is not a full
+   equation `(5)` selected-span classifier or displayed-vector construction;
+   the final cutoff guard `p+(a-alpha)+1<=ell`, source-label legality,
+   terminal `tilde t=0`, and chart sequence remain open.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

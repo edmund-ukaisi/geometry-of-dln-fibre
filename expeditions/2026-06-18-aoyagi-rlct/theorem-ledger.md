@@ -2730,6 +2730,31 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-boundary-membership-p2-example-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(5)` own-coordinate offset slice has
+landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved
+Lean names are `AoyagiLemma5Eq5OwnCoordinateBranch`,
+`aoyagiLemma5Eq5OffsetValueSet`,
+`aoyagiLemma5Eq5_offsetValue_injective`,
+`aoyagiLemma5Eq5OffsetValueSet_card`,
+`aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat`,
+`aoyagiLemma5Eq5_ownCoordinate_value`,
+`aoyagiLemma5Eq5_ownCoordinate_eq_label_pred`,
+`aoyagiLemma5Eq5_ownCoordinate_mem_intervalValueSetNat`, and
+`aoyagiLemma5Eq5_ownCoordinate_mem_offsetValueSet`.  They record only a
+supplied own-coordinate equation `(5)` branch: with paper `j0` represented by
+Lean coordinate `p`, the own block gives `T(s)=Htilde'_p-alpha`; under the
+label relation `k=Htilde'_p+1-alpha`, this is `k-1`; and under
+`alpha<=Htilde'_p-Htilde_p`, the value lies in the same-coordinate interval.
+The finite offset-value set has cardinality `min(excess(ell,a,p),p-1)`.  This
+does not construct equation `(5)`'s displayed vector, prove source-label
+legality, selected-span classification, terminal `tilde t=0`, chart sequence,
+Lemma 5 order count, normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-own-coordinate-offset-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-own-coordinate-offset.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-own-coordinate-offset-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

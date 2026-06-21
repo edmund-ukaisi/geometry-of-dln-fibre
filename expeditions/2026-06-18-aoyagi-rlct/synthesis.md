@@ -2210,6 +2210,18 @@ construct such a certificate or the displayed vector; it only shows that the
 previous `2<=p` theorem is a necessary condition, not a uniform
 nonmembership statement for `p>=2`.
 
+Equation `(5)` now has its first supplied own-coordinate offset slice in Lean.
+The record `AoyagiLemma5Eq5OwnCoordinateBranch` is not a full piecewise
+certificate; it stores only the source-facing own-branch value
+`T(s)=Htilde'_p-alpha` on block `p`, with `p` equal to Aoyagi's paper `j0`.
+Lean proves the source label rewrite `T(s)=k-1` under
+`k=Htilde'_p+1-alpha`, membership in the same-coordinate interval under
+`alpha<=excess(ell,a,p)`, and the finite offset-value cardinality
+`min(excess(ell,a,p),p-1)`.  This moves Eq5 into the same conditional
+displayed-family scaffold as Eq3/Eq4 while keeping source-label legality, full
+selected-span classification, terminal `tilde t=0`, chart sequence, and Lemma
+5 order count open.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

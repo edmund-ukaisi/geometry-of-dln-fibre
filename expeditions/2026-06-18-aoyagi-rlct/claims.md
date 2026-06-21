@@ -2177,6 +2177,24 @@ No such claim is formalisation-ready until both fields are filled.
   equation `(4)` certificate for it has the boundary value in the
   boundary-coordinate interval.  This does not construct the supplied
   certificate or displayed vector.
+  Also proved `AoyagiLemma5Eq5OwnCoordinateBranch`,
+  `aoyagiLemma5Eq5OffsetValueSet`,
+  `aoyagiLemma5Eq5_offsetValue_injective`,
+  `aoyagiLemma5Eq5OffsetValueSet_card`,
+  `aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat`,
+  `aoyagiLemma5Eq5_ownCoordinate_value`,
+  `aoyagiLemma5Eq5_ownCoordinate_eq_label_pred`,
+  `aoyagiLemma5Eq5_ownCoordinate_mem_intervalValueSetNat`, and
+  `aoyagiLemma5Eq5_ownCoordinate_mem_offsetValueSet`, which give the first
+  supplied equation `(5)` own-coordinate offset slice.  With paper `j0`
+  represented by Lean coordinate `p`, the own block value is
+  `Htilde'_p-alpha`; under the supplied label relation
+  `k=Htilde'_p+1-alpha`, this is `k-1`; and under
+  `alpha<=Htilde'_p-Htilde_p`, it lies in the same-coordinate interval.  The
+  finite offset-value set has cardinality `min(excess(ell,a,p),p-1)`.  This
+  still does not construct equation `(5)`'s displayed vector, prove
+  source-label legality, classify the selected span, prove terminal
+  `tilde t=0`, build the chart sequence, or prove Lemma 5.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
