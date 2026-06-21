@@ -211,3 +211,17 @@ RISK: the shift's fibre-dim drop may hit the SAME no-Chevalley-fibre-dim wall as
 pen-and-paper): is there a zero-cited route for the shift, or is Cite-Lemma-4.6-named the honest move
 (consistent with the Aoyagi rlct interface)? Then build D3-general + R2-general `rlct=(C+shift)/2`.
 (2,2,2)/r=1: codim Σ̄^1=1, shift 3, fibre codim 4, rlct=2.
+
+## 2026-06-21 — general-r sizing (thread 11): bundle shift = fibre-dim WALL ⟹ CITE Lemma 4.6 (Codex-convergent)
+The shift `codim(fibre B) = codim(Σ̄^r) + r(d_0+d_N−r)` is NOT zero-cited-provable (same wall as voigt L2b★: for
+B≠0 the fibre is not GL-stable / not an orbit closure / not one inner orbit; the bundle dim-formula IS the missing
+Chevalley fibre-dim). Honest split:
+- **Brick A `codim Σ̄^r = cCodim d r` (general r): PROVE zero-cited** — Σ̄^r GL-stable; landed orbit-closure machinery
+  (sigmaIdeal d r, minimal-primes=maximal Ō_M, Voigt, cCodim_rankShift) is general in r; uses WEAK monotonicity only
+  ⟹ INDEPENDENT of the open θ-strict gap (`hMonoStrict`).
+- **Brick B the shift: CITE Lemma 4.6** (`lem:rank_vs_fibers`, main.tex:844-858) via a named `BundleShiftInterface`
+  (separate from the Aoyagi `RlctInterface`). Honest Cited boundary, like Aoyagi.
+- **R2-general `rlct(K^DLN_B) = (cCodim d r + r(d_0+d_N−r))/2 via_aoyagi`**: pure transport (the landed
+  `cited_aoyagi_dln` is ALREADY general in r) gated on Brick A + Brick B.
+Checks: (2,2,2) r=1 → codim Σ̄^1=1, shift 3, fibre codim 4, rlct=2; r=2 → shift 4, codim 4; (2,2,1) r=1 → shift 2,
+codim 2 (confirms d_0+d_N form). ~80–150 LoC, 1 DLN module. DISPATCHED thread 12.
