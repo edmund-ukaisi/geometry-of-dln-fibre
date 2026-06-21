@@ -4402,3 +4402,30 @@ profile facts were already present as
 for a later Eq5 endpoint profile.  It does not prove binary deltas, two-value
 Lemma 4 increments, Eq5 vector construction, endpoint realisation, classifier
 data, order count, pole order, normal crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 5 Eq5 endpoint prefix profile
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-prefix-profile-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-prefix-profile.md`.
+Review artifact:
+pending.
+
+Lean now proves the four branchwise endpoint-prefix values for a supplied Eq5
+piecewise vector and supplied endpoint-chain correspondence:
+
+```text
+aoyagiLemma5Eq5_endpointChain_incrementPrefix_preAlpha
+aoyagiLemma5Eq5_endpointChain_incrementPrefix_alphaToP
+aoyagiLemma5Eq5_endpointChain_incrementPrefix_postP
+aoyagiLemma5Eq5_endpointChain_incrementPrefix_tail
+```
+
+The pre-alpha branch gives prefix value `b`; alpha-to-`p` gives `alpha-1`;
+post-`p` gives `alpha+b-p`; tail gives `a`.  The alpha-to-`p` and post-`p`
+profiles use the terminal-room hypothesis.  This is branchwise endpoint
+profile arithmetic only.  It does not combine adjacent branches, prove binary
+prefix deltas, prove Lemma 4 two-value increments, construct Eq5 vectors,
+prove endpoint realisation, classifier data, order count, pole order, normal
+crossings, or RLCT.

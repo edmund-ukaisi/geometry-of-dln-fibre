@@ -4146,6 +4146,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma4-prefix-profile-computations-a5.md`.
 
+Latest A5 Eq5 endpoint-prefix profile update:
+`Lemma5Eq5EndpointProfile.lean` now contains the branchwise endpoint-prefix
+profile theorems
+`aoyagiLemma5Eq5_endpointChain_incrementPrefix_preAlpha`,
+`aoyagiLemma5Eq5_endpointChain_incrementPrefix_alphaToP`,
+`aoyagiLemma5Eq5_endpointChain_incrementPrefix_postP`, and
+`aoyagiLemma5Eq5_endpointChain_incrementPrefix_tail`.  For a supplied Eq5
+piecewise vector and supplied endpoint-chain correspondence, the endpoint
+prefix values are respectively `b`, `alpha-1`, `alpha+b-p`, and `a`; the
+alpha-to-`p` and post-`p` profiles also assume terminal-room.  This is
+branchwise arithmetic only, not adjacent-branch binary deltas, two-value
+increments, Eq5 vector construction, endpoint realisation, order count, pole
+order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-prefix-profile-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-prefix-profile.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-prefix-profile-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
