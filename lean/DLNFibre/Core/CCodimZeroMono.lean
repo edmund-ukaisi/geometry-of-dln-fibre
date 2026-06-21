@@ -1409,4 +1409,84 @@ theorem removeMove_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1
     simp only [removeMove, if_neg h1, Nat.sub_zero]
     exact hc0
 
+/-! ## The reduction step and the recursion
+
+`reduceStep`: at any vertex `k` with positive coverage in a corner-`0` partition of `e'`, there is a
+corner-`0` partition of `e'` decremented at `k` with `codimForm` no larger — dispatch the shortest
+covering interval `[a,d']` to one of the four atomic moves by where `k` sits in `[a,d']`. Then
+`reduce` drives `e'` down to any `e ≤ e'` by recursion on `∑ e'`. -/
+
+/-- **One reduction step.** If `m ∈ kostantPartitions e' 0` and the coverage of `m` at `k` is positive
+(`1 ≤ e' k`), there is `m'' ∈ kostantPartitions (Function.update e' k (e' k - 1)) 0` with
+`codimForm (extendℤ m'') ≤ codimForm (extendℤ m)`. -/
+theorem reduceStep {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
+    (hm : m ∈ kostantPartitions e' 0) (k : Fin (N + 1)) (hk : 1 ≤ e' k) :
+    ∃ m'' ∈ kostantPartitions (Function.update e' k (e' k - 1)) 0,
+      codimForm N (extendℤ m'') ≤ codimForm N (extendℤ m) := by
+  obtain ⟨hbnd, hsupp, hkost, hc0⟩ := mem_kostantPartitions.mp hm
+  have hcov : ∃ p : Fin (N + 1) × Fin (N + 1), 1 ≤ m p ∧ p.1 ≤ k ∧ k ≤ p.2 := by
+    by_contra hno
+    push_neg at hno
+    have : e' k = 0 := by
+      rw [hkost k, Finset.sum_eq_zero]
+      intro p hp; rw [Finset.mem_filter] at hp
+      by_contra hmp; exact absurd (hno p (Nat.one_le_iff_ne_zero.mpr hmp) hp.2.1) (not_lt.mpr hp.2.2)
+    omega
+  obtain ⟨⟨a, d'⟩, ⟨hsad, hak, hkd⟩, hmin⟩ := exists_shortest_covering hcov
+  have hcorner : ((a, d') : Fin (N + 1) × Fin (N + 1)) ≠ ((0 : Fin (N + 1)), Fin.last N) := by
+    rintro h; rw [h, hc0] at hsad; exact absurd hsad (by norm_num)
+  have hakN : (a : ℕ) ≤ k := Fin.le_def.mp hak
+  have hkdN : (k : ℕ) ≤ d' := Fin.le_def.mp hkd
+  -- the minimality, in the form each `_le` consumes (at any vertex `kk`)
+  have hsh : ∀ Y : Fin (N + 1) × Fin (N + 1), 1 ≤ m Y →
+      (Y.1 : ℤ) ≤ (k : ℤ) → (k : ℤ) ≤ (Y.2 : ℤ) →
+      (d' : ℤ) - (a : ℤ) ≤ (Y.2 : ℤ) - (Y.1 : ℤ) := fun Y hY h1 h2 ↦
+    hmin Y hY (Fin.le_def.mpr (by exact_mod_cast h1)) (Fin.le_def.mpr (by exact_mod_cast h2))
+  rcases lt_or_eq_of_le hakN with hak' | hak'
+  · rcases lt_or_eq_of_le hkdN with hkd' | hkd'
+    · -- interior `a < k < d'`: redMove
+      have hkN : (k : ℕ) < N := by have := d'.isLt; omega
+      set b : Fin (N + 1) := ⟨(k : ℕ) - 1, by omega⟩ with hbdef
+      set c : Fin (N + 1) := ⟨(k : ℕ) + 1, by omega⟩ with hcdef
+      have hbk : (k : ℕ) = (b : ℕ) + 1 := by rw [hbdef]; dsimp only [Fin.val_mk]; omega
+      have hcc : (c : ℕ) = (b : ℕ) + 2 := by rw [hbdef, hcdef]; dsimp only [Fin.val_mk]; omega
+      have habb : (a : ℕ) ≤ b := by rw [hbdef]; dsimp only [Fin.val_mk]; omega
+      have hcdd : (c : ℕ) ≤ d' := by rw [hcdef]; dsimp only [Fin.val_mk]; omega
+      have hkeq : k = (⟨(b : ℕ) + 1, by omega⟩ : Fin (N + 1)) := Fin.ext (by omega)
+      refine ⟨redMove m a b c d', ?_, ?_⟩
+      · rw [hkeq]
+        exact redMove_mem hm (Fin.le_def.mpr (by omega)) (Fin.le_def.mpr (by omega)) hcc hcdd
+          (by dsimp only [Fin.val_mk]) (hsad) (hcorner)
+      · refine codimForm_redMove_le m habb hcc hcdd hsad (fun Y hY h1 h2 ↦ hsh Y hY ?_ ?_)
+        · rw [show ((b : ℤ) + 1) = (k : ℤ) by rw [hbk]; push_cast; ring] at h1; exact h1
+        · rw [show ((b : ℤ) + 1) = (k : ℤ) by rw [hbk]; push_cast; ring] at h2; exact h2
+    · -- right endpoint `a < k = d'`: rightShrink
+      have hkeqd : k = d' := Fin.ext hkd'
+      subst hkeqd
+      have hk1 : 1 ≤ (k : ℕ) := by omega
+      set b : Fin (N + 1) := ⟨(k : ℕ) - 1, by have := k.isLt; omega⟩ with hbdef
+      have hbd2 : (b : ℕ) + 1 = k := by rw [hbdef]; dsimp only [Fin.val_mk]; omega
+      have habb : (a : ℕ) ≤ b := by rw [hbdef]; dsimp only [Fin.val_mk]; omega
+      refine ⟨rightShrink m a b k, rightShrink_mem hm (Fin.le_def.mpr habb) hbd2 hak hsad hcorner, ?_⟩
+      exact codimForm_rightShrink_le m habb hbd2 hsad (fun Y hY h1 h2 ↦ hsh Y hY h1 h2)
+  · -- left endpoint `k = a`
+    have hkeqa : k = a := Fin.ext hak'.symm
+    rcases lt_or_eq_of_le hkdN with hkd' | hkd'
+    · -- `k = a < d'`: leftShrink
+      subst hkeqa
+      have hkN : (k : ℕ) < N := by have := d'.isLt; omega
+      set c : Fin (N + 1) := ⟨(k : ℕ) + 1, by omega⟩ with hcdef
+      have hca : (c : ℕ) = (k : ℕ) + 1 := by rw [hcdef]
+      have hcd2 : (c : ℕ) ≤ d' := by rw [hcdef]; dsimp only [Fin.val_mk]; omega
+      refine ⟨leftShrink m k c d', leftShrink_mem hm hca hcd2 hkd hsad hcorner, ?_⟩
+      exact codimForm_leftShrink_le m hca hcd2 hsad (fun Y hY h1 h2 ↦ hsh Y hY h1 h2)
+    · -- singleton `k = a = d'`: removeMove
+      have hkeqd : k = d' := Fin.ext hkd'
+      have haa : (a, d') = (k, k) := by rw [← hkeqa, ← hkeqd]
+      refine ⟨removeMove m k, ?_, ?_⟩
+      · have hsak : 1 ≤ m (k, k) := by rw [← haa]; exact hsad
+        exact removeMove_mem hm hsak
+      · have hsak : 1 ≤ m (k, k) := by rw [← haa]; exact hsad
+        exact codimForm_removeMove_le m hsak
+
 end DLNFibre.Core
