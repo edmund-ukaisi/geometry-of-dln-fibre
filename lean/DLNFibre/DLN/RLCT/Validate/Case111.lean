@@ -284,4 +284,19 @@ theorem case111_rlct :
       = ENNReal.ofReal (aoyagiLambda (![1, 1, 1] : Fin 3 → ℕ) 0) := by
   rw [case111_rlct_eq_monomialThreshold, case111_monomialThreshold]
 
+/-- **The `(1,1,1)` instance of `resolution_charts` (the R1 value-match shape; axiom-free).**
+The general `resolution_charts` existential `∃ ι d k h, rlctAt = ⨅ monomialThreshold` is realised
+for the trivial network by the single identity-chart datum `ι = Unit`, `d = 2`, `k = (1,1)`,
+`h = (0,0)`: the already-normal-crossing `(1,1,1)` loss needs no blow-up. Validates the R1 plumbing
+(chart → S1.1 transport → monomial threshold) against the known answer — the `⨅`-over-`Unit`
+collapses (`iInf_unique`) to the proven baby-S1.1 bridge `case111_rlct_eq_monomialThreshold`
+(= `1/2`), the value `case111_rlct` also lands on. A worked closed instance of the
+`resolution_charts` statement the general R1 (the mountain) must reproduce. -/
+theorem resolution_charts_case111 :
+    ∃ (ι : Type) (_ : Fintype ι) (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ),
+      rlctAt (![1, 1, 1] : Fin 3 → ℕ) (dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0) deepest111
+        = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) :=
+  ⟨Unit, inferInstance, fun _ => 2, fun _ => (![1, 1] : Fin 2 → ℕ),
+    fun _ => (![0, 0] : Fin 2 → ℕ), by rw [case111_rlct_eq_monomialThreshold, iInf_unique]⟩
+
 end DLNFibre.DLN.RLCT
