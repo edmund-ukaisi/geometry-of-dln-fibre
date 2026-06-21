@@ -50,6 +50,56 @@ def ChainDimSplit.splitEquiv {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSp
     (Fin (S.drop s) ⊕ Fin (S.red s)) ≃ Fin (M s) :=
   (finSumFinEquiv).trans (finCongr (S.hsum s))
 
+/-! ## The G3.2 per-node strict-transform datum — `IsSchurNode` (I3, blow-up form, SPECIFY)
+
+The (C)-sound per-node contract (controller-relayed from fm's interface; replaces the incomplete
+scalar `IsSchurChart`). The I3 strict-transform identity in **blow-up form**: pulling the core
+`dlnLoss M 0` back along the per-node blow-up chart `φ` re-identifies it as the **exceptional
+monomial Jacobian-weight** `∏ x^{h}` (NOT a unit — the `(x_p)^{card−1}`-type weight `pivotBlowupOn`
+produces) times the **reduced-chain core** `dlnLoss M' 0` on the strictly-smaller chain `M' = S.red`
+(via the coordinate embedding `ι`). fm's `g5_pivotNode` glue composes these nodes → `resolution_charts`
+(`⨅ monomialThreshold`), descending on the reduced core, reading `(k,h)` at the leaves.
+
+`φ`, the node's chart, is kept ABSTRACT here (a chart function `(Fin N → ℝ) → (Fin N → ℝ)` on the
+flat coords + the reduced-chain map): the exact composition — pure `pivotBlowupOn` (C1) vs a det-1
+GL-straightening THEN `pivotBlowupOn` (C2) — is pinned by pp-hall's #109 reconcile (the (2,2,2) Lean
+anchor exhibits C2: `lemma2Fwd` det-1 then `pivotBlowupOn`). The I3 SHAPE (monomial × reduced-core)
+is settled regardless; only the `φ` field's construction differs. `monExp` is the exceptional
+exponent vector `h_{n,p}` (the Jacobian-induced monomial), `active`/`p` the blow-up's index data
+(matching `pivotBlowupOn`'s `(active : Finset) (p)` signature, pp-hall #123 field-3). -/
+
+/-- **The per-node strict-transform datum (I3, blow-up form) — SPECIFY.** Carries fm's
+`ResolutionNode` fields on the flat coords (`Fin N → ℝ` via `paramsEquivFlat`): the active index set +
+pivot (blow-up data), the reduced chain `M' = S.red`, the exceptional monomial exponent, and the I3
+strict-transform identity `(dlnLoss M 0 ∘ paramsEquivFlat.symm) ∘ φ = (∏ exceptional monomial) ·
+((dlnLoss M' 0 ∘ paramsEquivFlat.symm) ∘ reduced-embed)`. The monomial is the BLOW-UP Jacobian weight,
+NOT a unit (the (C) correction). `φ` abstract pending pp-hall #109's exact composition. -/
+structure IsSchurNode {L : ℕ} {N : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    (flatCore : (Fin N → ℝ) → ℝ)            -- `dlnLoss M 0` in flat coords
+    (flatRedCore : (Fin N → ℝ) → ℝ)         -- `dlnLoss M' 0` (M' = S.red) in flat coords
+    (φ : (Fin N → ℝ) → (Fin N → ℝ))          -- the node's blow-up chart (abstract pending pp #109)
+    (active : Finset (Fin N)) (p : Fin N)    -- blow-up index data (matches pivotBlowupOn sig)
+    (monExp : (Fin N → ℝ) → ℝ)               -- the exceptional monomial Jacobian-weight ∏ x^h
+    (ι : (Fin N → ℝ) → (Fin N → ℝ)) : Prop where
+  /-- I3 strict-transform (blow-up form): pulled-back core = monomial-weight × reduced core. -/
+  strictTransform : ∀ x, flatCore (φ x) = monExp x * flatRedCore (ι x)
+  /-- The exceptional weight is the blow-up Jacobian monomial (nonneg; vanishes on the center). -/
+  monExp_nonneg : ∀ x, 0 ≤ monExp x
+  /-- Well-foundedness (pp #123 field-6): the reduced chain is strictly smaller. -/
+  measure_drops : ∑ s, S.red s < ∑ s, M s
+
+/-- **G3.2 crux — the per-node strict-transform existence (SPECIFY, body `sorry`; mine).** There
+exists a blow-up node realising the I3 datum: the per-node chart `φ` + index data + monomial exponent
++ reduced chain, with the strict-transform identity. The heavy Schur-construction crux (the
+`(uᵢ, ψᵢ)` adapted-basis substitution; pp-hall spells the sub-steps). `φ`'s exact composition
+(C1/C2) pinned by pp #109; the I3 shape is settled. A sorry'd existence ⟹ vacuous recursion. -/
+theorem schur_node_exists {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    {N : ℕ} (flatCore flatRedCore : (Fin N → ℝ) → ℝ) :
+    ∃ (φ : (Fin N → ℝ) → (Fin N → ℝ)) (active : Finset (Fin N)) (p : Fin N)
+      (monExp : (Fin N → ℝ) → ℝ) (ι : (Fin N → ℝ) → (Fin N → ℝ)),
+      IsSchurNode M S flatCore flatRedCore φ active p monExp ι := by
+  sorry
+
 /-! ## The G3.2 recursion step (SOUND conditional form — PROVEN)
 
 The clean `rlctAtOn(dlnLoss M 0) 0 = nReg/2 + rlctAtOn(dlnLoss Mred 0) 0` (no chart hypothesis) is
