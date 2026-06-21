@@ -1187,4 +1187,12 @@ theorem rlctAtOn_myF222_ge' : (3 : ℝ≥0∞) / 2 ≤ rlctAtOn myF222 0 := by
     exact myF222_threshold_lt_top' c' hc'r
   · unfold myF222; fun_prop
 
+/-- **The `(2,2,2)` resolution value (`#80`): `rlctAtOn myF222 0 = 3/2`.** `le_antisymm` of the gated
+`≤`-half (`rlctAtOn_myF222_le`, `Case222Resolution` @dd40c45) and the `≥`-half proven here
+(`rlctAtOn_myF222_ge'`). Every leaf threshold is `3/2` (`Case222Value`), so this is the `⨅`-value. The
+`≥`-half is axiom-clean (`[propext, Classical.choice, Quot.sound]`); the `≤`-half carries the single
+permitted S2 citation (`monomial_rlct`, via the box-divergence atom). -/
+theorem rlctAtOn_myF222_eq : rlctAtOn myF222 0 = 3 / 2 :=
+  le_antisymm rlctAtOn_myF222_le rlctAtOn_myF222_ge'
+
 end DLNFibre.DLN.RLCT
