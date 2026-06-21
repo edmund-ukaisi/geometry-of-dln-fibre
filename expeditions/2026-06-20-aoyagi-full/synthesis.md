@@ -496,6 +496,16 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
   literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
 
+## D1 RE-SCOPED (fm proof-attempt-as-audit) — NOT a light standalone rung
+D1 `deepest_point_reduction` is blocked on TWO real deps: (1) the **RLCT-monotonicity lemma** `|G|≤|F| a.e. near
+w* ⇒ rlctAt G ≤ rlctAt F` — MISSING + measure-theoretic (the 0^neg a.e.-domination corner: |G|^{-c}≥|F|^{-c} a.e.
+where G≠0, reverses at {G=0}); **assigned fm-2** (reusable by L2's per-point argument). fm has the pointwise core
+`rpow_neg_antitone`. (2) D1 depends on **L2** (homogeneous-scaling Thm-2 argument needs core-homogeneity, not the
+raw mixed-degree dlnLoss B ⟹ per-point core reduction ≈ L2-per-point). So critical-path order is
+**S1✓ → [monotonicity lemma + L2(needs R1/Fubini)] → D1**, NOT S1→D1. Rung map corrected.
+**fm BLOCKER cleared:** resolution_charts re-scope (#47) was decided but never LANDED in Skeleton — fm landing it
+now (pp's core form, BLESSED) + the S1.5 wire (fm-2's verified package) in one batch → green-gate → (1,1,1) gate.
+
 ## Next tick (state @ ~02:30, trunk @da24204)
 **S1.5 FUBINI ENGINE COMPLETE @ad1f313** (controller-verified axiom-clean) — whole S1 substrate proven. R1 lower-bound
 soundness SETTLED (general result PROVEN on paper). **(2,2,2) cover EXECUTION-READY** (pp, 24 leaves, cover-complete
