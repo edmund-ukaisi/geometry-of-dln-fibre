@@ -2821,6 +2821,31 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-block-source-label-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(5)` source-label bridge now has a
+source-range and width-bound refinement.  The selected-cutpoint helpers
+`AoyagiSelectedCutpoints.selectedSpan_sourceIndex_le_of_terminalEndpoint_le`,
+`AoyagiSelectedCutpoints.selectedSpan_sourceIndex_le_of_lastPoint_le`,
+`AoyagiSelectedCutpoints.block_sourceIndex_le_of_terminalEndpoint_le`, and
+`AoyagiSelectedCutpoints.block_sourceIndex_le_of_lastPoint_le` prove that
+selected-block membership plus `C.point ell<=L+1` gives `S<=L`.  The Eq5
+wrappers `aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound`,
+`aoyagiLemma5Eq5_piecewise_block_actualWidthLabel_of_widthBound`,
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_widthBound`,
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthCompatibility`,
+and
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound`
+prove the own-block value and actual label legality using the sufficient
+width hypothesis `W_p<=n(S+1)`; equality `n(S+1)=W_p` remains only a special
+case.  This does not prove the width bound from Definition 3, construct the
+displayed vector, prove terminal `tilde t=0`, vector admissibility, chart
+sequence, Lemma 5 order count, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-source-range-width-bound-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-source-range-width-bound.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-source-range-width-bound-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

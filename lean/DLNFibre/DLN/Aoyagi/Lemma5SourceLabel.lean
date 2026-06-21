@@ -188,6 +188,40 @@ theorem aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility
       exact hlabel.2
     exact_mod_cast hk_le_int
 
+/-- Inequality-shaped source-label bridge for equation `(5)`.
+
+Actual label legality only needs the selected-width upper bound
+`W_p<=n(S+1)`, not equality.  This is the source-facing form for an arbitrary
+point in a selected block, where actual width may be larger than the selected
+width. -/
+theorem aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound
+    (L ell a p alpha S : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
+    (halpha_pos : 1 ≤ alpha)
+    (halpha_le_excess : alpha ≤ aoyagiLemma5IntervalExcess ell a p)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hs_pos : 1 ≤ S) (hs_le : S ≤ L)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    {k : ℕ} (hk :
+      (k : ℤ) = aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    actualWidthLabel L n S k := by
+  have hlabel :=
+    aoyagiLemma5Eq5_labelBounds_of_sourceSelectedInequality
+      ell a p alpha M m hell ha hpell halpha_pos halpha_le_excess
+      hselected hsource
+  refine ⟨hs_pos, hs_le, ?_, ?_⟩
+  · have hk_pos_int : (1 : ℤ) ≤ (k : ℤ) := by
+      rw [hk]
+      exact hlabel.1
+    exact_mod_cast hk_pos_int
+  · have hk_le_int : (k : ℤ) ≤ (n (S + 1) : ℤ) := by
+      rw [hk]
+      exact le_trans hlabel.2 hwidth_le
+    exact_mod_cast hk_le_int
+
 /-- Equation `(5)`'s source guards put every member of the own selected block
 in the positive source-layer range.
 
@@ -280,6 +314,38 @@ theorem aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block
       L ell a p alpha S n M m hell hT.a_le_ell (le_of_lt hS.1)
       hT.alpha_pos hT.alpha_le_excess hselected hsource hs_pos hs_le hwidth hk
 
+/-- Inequality-shaped arbitrary-own-block version of equation `(5)` source
+label legality.
+
+For any `S` in the own selected block `C.block p S`, a supplied piecewise
+certificate gives `T S=k-1`.  The actual-label conclusion only needs
+`W_p<=n(S+1)`, not equality. -/
+theorem aoyagiLemma5Eq5_piecewise_block_actualWidthLabel_of_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k : ℕ} (hS : C.block p S) (hs_pos : 1 ≤ S) (hs_le : S ≤ L)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  have hown :=
+    aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+      ell a p alpha M m C layerWidth T hT
+  constructor
+  · exact aoyagiLemma5Eq5_ownCoordinate_eq_label_pred
+      ell a p alpha M m C T hown hS hk
+  · exact aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound
+      L ell a p alpha S n M m hell hT.a_le_ell (le_of_lt hS.1)
+      hT.alpha_pos hT.alpha_le_excess hselected hsource hs_pos hs_le
+      hwidth_le hk
+
 /-- Source-shaped arbitrary-own-block version of equation `(5)` label
 legality.
 
@@ -307,6 +373,84 @@ theorem aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_wid
     L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS
     (aoyagiLemma5Eq5_sourceIndex_pos_of_ownBlock ell a p alpha M m C layerWidth T hT hS)
     hs_le hwidth hk
+
+/-- Source-shaped arbitrary-own-block equation `(5)` label legality with
+width bound instead of width equality.
+
+This derives the lower source-layer bound from Eq. `(5)`'s own-block guards.
+The upper range `S<=L` and the actual-width lower bound `W_p<=n(S+1)` remain
+explicit. -/
+theorem aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k : ℕ} (hS : C.block p S) (hs_le : S ≤ L)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  exact aoyagiLemma5Eq5_piecewise_block_actualWidthLabel_of_widthBound
+    L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS
+    (aoyagiLemma5Eq5_sourceIndex_pos_of_ownBlock ell a p alpha M m C layerWidth T hT hS)
+    hs_le hwidth_le hk
+
+/-- Source-shaped arbitrary-own-block equation `(5)` label legality from the
+last selected cutpoint range.
+
+Compared with
+`aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_widthCompatibility`,
+this wrapper derives both source-layer range conditions for `S`: the lower
+bound from Eq. `(5)`'s own-block guards, and the upper bound from the source
+compatibility `S_(ell+1)<=L+1`.  The actual-width compatibility at the
+particular `S` remains explicit. -/
+theorem aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthCompatibility
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth : (n (S + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  exact aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_widthCompatibility
+    L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS
+    (C.block_sourceIndex_le_of_lastPoint_le hS hlast) hwidth hk
+
+/-- Source-shaped arbitrary-own-block equation `(5)` label legality from the
+last selected cutpoint range, with width bound instead of width equality.
+
+This derives both source-layer range conditions for `S` while keeping the
+actual-width lower bound at `S` explicit. -/
+theorem aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S = (k : ℤ) - 1 ∧ actualWidthLabel L n S k := by
+  exact aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_widthBound
+    L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS
+    (C.block_sourceIndex_le_of_lastPoint_le hS hlast) hwidth_le hk
 
 end Aoyagi
 end DLN

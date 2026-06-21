@@ -2258,6 +2258,22 @@ and strictness give `1<=C.point p-1`, and `C.block p S` gives `1<=S`.  The
 new source-shaped theorem keeps only `S<=L` and `n(S+1)=W_p` explicit on the
 source-range/width side.
 
+Eq5 now has a source-range and width-bound refinement.  The selected-cutpoint
+helpers prove that `C.block b S` and last-cutpoint compatibility
+`C.point ell<=L+1` imply `S<=L`.  The actual-label theorem now also accepts
+the weaker and more source-faithful width hypothesis `W_p<=n(S+1)` instead of
+only equality `n(S+1)=W_p`.  The new wrappers
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_widthBound` and
+`aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound`
+combine this with the supplied Eq5 own-block value `T(S)=k-1`.  This still
+does not prove the width bound from Definition 3, construct the displayed
+vector, prove terminal `tilde t=0`, build the chart sequence, or prove Lemma
+5 order count.  Reproduction, statement card, and review are saved at
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-source-range-width-bound-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-source-range-width-bound.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-source-range-width-bound-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

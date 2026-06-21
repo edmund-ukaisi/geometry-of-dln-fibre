@@ -2234,6 +2234,22 @@ No such claim is formalisation-ready until both fields are filled.
   deriving the lower source-range hypothesis `1<=S` from Eq5's
   `1<=alpha<p` guards and `C.block p S`, while keeping `S<=L` and
   `n(S+1)=W_p` explicit.
+  Also proved selected-cutpoint source-range helpers
+  `AoyagiSelectedCutpoints.selectedSpan_sourceIndex_le_of_terminalEndpoint_le`,
+  `AoyagiSelectedCutpoints.selectedSpan_sourceIndex_le_of_lastPoint_le`,
+  `AoyagiSelectedCutpoints.block_sourceIndex_le_of_terminalEndpoint_le`, and
+  `AoyagiSelectedCutpoints.block_sourceIndex_le_of_lastPoint_le`, plus the
+  Eq5 width-bound wrappers
+  `aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound`,
+  `aoyagiLemma5Eq5_piecewise_block_actualWidthLabel_of_widthBound`,
+  `aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_widthBound`,
+  `aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthCompatibility`,
+  and
+  `aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound`.
+  These derive `S<=L` from `C.block p S` and `C.point ell<=L+1`, and weaken
+  the arbitrary-block width side from equality `n(S+1)=W_p` to the sufficient
+  bound `W_p<=n(S+1)`.  They still do not prove that width bound from
+  Definition 3 or construct the displayed Eq5 vector.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

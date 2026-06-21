@@ -143,6 +143,43 @@ theorem block_mem_selectedSpan {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
     exact C.point_le_of_le (by omega) (by omega)
   constructor <;> omega
 
+/-- A point in the half-open selected span is in the source range whenever the
+terminal selected endpoint is in the source range. -/
+theorem selectedSpan_sourceIndex_le_of_terminalEndpoint_le {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {L S : ℕ}
+    (hhi : S < C.point ell - 1)
+    (hterminal : C.point ell - 1 ≤ L) :
+    S ≤ L := by
+  omega
+
+/-- Source-shaped endpoint version: if the last selected cutpoint
+`S_(ell+1)` is at most `L+1`, then every point in the selected span has
+source index at most `L`. -/
+theorem selectedSpan_sourceIndex_le_of_lastPoint_le {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {L S : ℕ}
+    (hhi : S < C.point ell - 1)
+    (hlast : C.point ell ≤ L + 1) :
+    S ≤ L := by
+  have hpos : 1 ≤ C.point ell := C.point_pos_of_lt (by omega)
+  exact C.selectedSpan_sourceIndex_le_of_terminalEndpoint_le hhi (by omega)
+
+/-- A selected-block member is in the source range whenever the terminal
+selected endpoint is in the source range. -/
+theorem block_sourceIndex_le_of_terminalEndpoint_le {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {L b S : ℕ}
+    (hblock : C.block b S) (hterminal : C.point ell - 1 ≤ L) :
+    S ≤ L := by
+  exact C.selectedSpan_sourceIndex_le_of_terminalEndpoint_le
+    (C.block_mem_selectedSpan hblock).2 hterminal
+
+/-- Source-shaped endpoint version for selected blocks. -/
+theorem block_sourceIndex_le_of_lastPoint_le {ell : ℕ}
+    (C : AoyagiSelectedCutpoints ell) {L b S : ℕ}
+    (hblock : C.block b S) (hlast : C.point ell ≤ L + 1) :
+    S ≤ L := by
+  exact C.selectedSpan_sourceIndex_le_of_lastPoint_le
+    (C.block_mem_selectedSpan hblock).2 hlast
+
 /-- Every source index in the selected span lies in some selected block. -/
 theorem exists_block_of_mem_selectedSpan {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
     {S : ℕ} (hlo : C.point 0 - 1 ≤ S) (hhi : S < C.point ell - 1) :

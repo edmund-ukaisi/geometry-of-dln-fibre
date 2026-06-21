@@ -733,6 +733,14 @@ on the session's original cwd.
    prove the width compatibility itself.
    The wrapper now also derives `1<=S` from the Eq5 own-block guards
    `1<=alpha<p`; only `S<=L` and width compatibility remain explicit.
+   The Eq5 source-label bridge now also has a source-range and width-bound
+   refinement.  Selected-cutpoint helpers derive `S<=L` for any selected-block
+   member from the source-shaped last-cutpoint compatibility
+   `C.point ell<=L+1`, and the actual-label theorem accepts the weaker
+   hypothesis `W_p<=n(S+1)` instead of only `n(S+1)=W_p`.  The new own-block
+   wrappers combine these with the supplied Eq5 value `T(S)=k-1`.  This still
+   does not prove the width bound from Definition 3, construct the displayed
+   vector, prove terminal `tilde t=0`, chart sequence, or Lemma 5 order count.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

@@ -1559,3 +1559,39 @@ This still does not prove actual-width compatibility for arbitrary block
 points, upper source range, construct the displayed vector, prove terminal `tilde t=0`, vector
 admissibility, the chart sequence, Lemma 5 order count, normal crossings, or
 RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` source range and width bound
+
+Reproduction:
+`reproduction-lemma5-eq5-source-range-width-bound-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-source-range-width-bound.md`.
+Review artifact:
+`review-lemma5-eq5-source-range-width-bound-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiSelectedCutpoints.selectedSpan_sourceIndex_le_of_terminalEndpoint_le
+AoyagiSelectedCutpoints.selectedSpan_sourceIndex_le_of_lastPoint_le
+AoyagiSelectedCutpoints.block_sourceIndex_le_of_terminalEndpoint_le
+AoyagiSelectedCutpoints.block_sourceIndex_le_of_lastPoint_le
+aoyagiLemma5Eq5_actualWidthLabel_at_of_widthBound
+aoyagiLemma5Eq5_piecewise_block_actualWidthLabel_of_widthBound
+aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_widthBound
+aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthCompatibility
+aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+```
+
+The selected-cutpoint helpers derive the upper source-layer range for a
+selected-block member from the source-shaped compatibility
+`C.point ell<=L+1`.  The Eq5 source-label bridge is also weakened from the
+equality-shaped width hypothesis `n(S+1)=W_p` to the sufficient bound
+`W_p<=n(S+1)`.  Combining these, a supplied Eq5 piecewise certificate and
+`C.block p S` prove both `T(S)=k-1` and `actualWidthLabel L n S k` under
+`C.point ell<=L+1` and `W_p<=n(S+1)`.
+
+This still does not prove the width bound from Definition 3, construct the
+displayed vector, prove terminal `tilde t=0`, vector admissibility, the Case
+1(2) chart sequence, Lemma 5 order count, normal crossings, or RLCT
+extraction.
