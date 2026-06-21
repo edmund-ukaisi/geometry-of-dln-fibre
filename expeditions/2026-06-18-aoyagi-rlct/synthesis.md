@@ -2706,6 +2706,22 @@ normal crossings, or RLCT extraction.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`.
 
+The supplied Eq3-shaped component plus Eq4 lower endpoint coverage now has
+cardinality wrappers.  Theorems
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_card_eq_intervalSize`
+and
+`aoyagiLemma5_suppliedEq3Upper_Eq4_insertComponents_card_eq_offsetCard_add_two`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` prove that the
+one-coordinate supplied three-piece set has interval-size cardinality, and in
+the rising region has strict Eq5 offset-cardinality plus two.  These remain
+one-coordinate finite count theorems: no source-label legality,
+displayed-vector construction, all-coordinate/all-branch coverage, Lemma 5
+order count, normal crossings, or RLCT extraction.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-interval-cardinality-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-interval-cardinality.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-cardinality-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -873,6 +873,9 @@ on the session's original cwd.
    The supplied Eq4 lower endpoint now has the matching one-coordinate
    `card=offsetCard+1` wrapper with Eq5 strict offsets.  This is finite count
    bookkeeping only, not source-label legality or upper endpoint realisation.
+   The supplied Eq3-shaped upper component plus Eq4 lower endpoint interval
+   coverage now also has interval-size and `offsetCard+2` cardinality wrappers.
+   This closes another count-side API gap below the all-branch order count.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

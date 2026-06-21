@@ -2374,3 +2374,29 @@ This is one-coordinate finite count bookkeeping only.  It does not prove
 source-label legality, construct Eq4 or Eq5 displayed vectors, realise the
 upper endpoint, aggregate over all coordinates, package all branches, prove
 Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3/Eq4 interval cardinality
+
+Reproduction:
+`reproduction-lemma5-eq3-eq4-interval-cardinality-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-eq4-interval-cardinality.md`.
+Review artifact:
+`review-lemma5-eq3-eq4-interval-cardinality-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_card_eq_intervalSize
+aoyagiLemma5_suppliedEq3Upper_Eq4_insertComponents_card_eq_offsetCard_add_two
+```
+
+For one rising-coordinate interval, a supplied Eq3-shaped upper component,
+supplied Eq4 lower endpoint, and strict Eq5 offsets have cardinality equal to
+the interval size; equivalently, in the rising region, they have the strict
+Eq5 offset-set cardinality plus two.
+
+This is one-coordinate finite cardinality bookkeeping only.  It does not prove
+source-label legality, construct displayed vectors, aggregate over all
+coordinates, package all branches, prove Lemma 5 order count, normal crossings,
+or RLCT extraction.

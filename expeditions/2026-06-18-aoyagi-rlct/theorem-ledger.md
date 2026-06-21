@@ -3339,6 +3339,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`.
 
+Latest A5 update: the supplied Eq3-shaped component plus Eq4 lower endpoint
+coverage now has cardinality wrappers in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The names are
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_card_eq_intervalSize`
+and
+`aoyagiLemma5_suppliedEq3Upper_Eq4_insertComponents_card_eq_offsetCard_add_two`.
+They prove one-coordinate interval-size cardinality and strict Eq5
+offset-cardinality plus two under the rising-region guards.  They do not prove
+source-label legality, displayed-vector construction, all-coordinate/all-branch
+coverage, or Lemma 5 order count.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-interval-cardinality-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-interval-cardinality.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-cardinality-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

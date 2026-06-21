@@ -2259,6 +2259,60 @@ theorem aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_
       ell a p M m C T3 layerWidth4 T4 hell hp_pos hp_a hp_c hselected hsource
       hupper hT4
 
+/-- Cardinality form of
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat`.
+
+This is a one-coordinate count consequence of the supplied Eq3-shaped upper
+component, supplied Eq4 lower endpoint, and strict Eq5 offset set.  It is not
+an all-branch order-count theorem. -/
+theorem aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_card_eq_intervalSize
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (layerWidth3 T3 layerWidth4 T4 : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3)
+    (hT4 : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth4 T4) :
+    (insert (T3 (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m))).card =
+      aoyagiLemma5IntervalSize ell a p := by
+  rw [aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_eq_intervalValueSetNat
+    ell a p M m C layerWidth3 T3 layerWidth4 T4 hell hp_pos hp_a hp_c
+    hselected hsource hT3 hT4]
+  exact aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m p (by omega)
+
+/-- In the rising region, the supplied Eq3-shaped upper component and supplied
+Eq4 lower endpoint add two values to the strict Eq5 offset set.
+
+This is a cardinality consequence of the one-coordinate interval coverage
+theorem.  It does not prove displayed-vector construction, source-label
+legality, or the full Lemma 5 order count. -/
+theorem aoyagiLemma5_suppliedEq3Upper_Eq4_insertComponents_card_eq_offsetCard_add_two
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (layerWidth3 T3 layerWidth4 T4 : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3)
+    (hT4 : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth4 T4) :
+    (insert (T3 (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m))).card =
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card + 2 := by
+  rw [aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_card_eq_intervalSize
+    ell a p M m C layerWidth3 T3 layerWidth4 T4 hell hp_pos hp_a hp_c
+    hselected hsource hT3 hT4]
+  rw [aoyagiLemma5IntervalSize_eq_succ_of_le_min
+    ell a p hT4.a_le_ell (Nat.le_min.mpr ⟨hp_a, hp_c⟩)]
+  rw [aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min
+    ell a p M m hT4.a_le_ell hp_pos hp_a hp_c]
+  omega
+
 /-- A supplied equation `(5)` own-coordinate branch has the displayed value
 `Htilde'_p - alpha` on block `p`. -/
 theorem aoyagiLemma5Eq5_ownCoordinate_value

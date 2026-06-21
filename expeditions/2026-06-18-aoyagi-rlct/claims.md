@@ -2399,6 +2399,10 @@ No such claim is formalisation-ready until both fields are filled.
   finite count specialization of the existing offset-cardinality theorem.
   Also proved the Eq4 lower plus Eq5 offset count wrapper
   `aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_le_min`.
+  Also proved the supplied Eq3/Eq4 interval cardinality wrappers
+  `aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_card_eq_intervalSize`
+  and
+  `aoyagiLemma5_suppliedEq3Upper_Eq4_insertComponents_card_eq_offsetCard_add_two`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
