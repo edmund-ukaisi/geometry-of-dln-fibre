@@ -43,17 +43,19 @@ gated @2e8dc4c. **#58** pivot-blow-up atom gated @930a6a0 (pivotBlowup/Deriv/_de
 n — serves all 3 (2,2,2) blow-up nodes). Lesson banked: green `lake build <lib>` covers only the aggregator
 closure (orphan engines escape).
 
-**Active (both ladder rungs in clean-ownership parallel progress):**
-- **(2,1,2) #55** — fm, all 4 remaining sorries IN-SEAT (on branch @b8bb537): product-MIN heart
-  (`rlctAtOn_product_blocks` via #57) + final assembly PROVEN (6→4); left = `prod212_entry` cast-closer,
-  coord-split `rlctAtOn_case212_eq_product`, 2× `rlctAtOn_blockG/H_eq_one` (EuclideanSpace↔Pi carrier bridge).
-  Merges to trunk + aggregator-wired only when COMPLETE (validate scaffolding stays off trunk).
-- **(2,2,2) #54** — fm-2, fully specified now: pp delivered the 5-item measure-assembly geometry + a
-  **load-bearing catch** (naive `{y_P≠0}` charts overlap on +measure ⟹ g5_step `hdisj` UNPROVABLE; FIX =
-  **max-region tiling** `Vᵢ={|pivot|≥|others|}`, overlaps=ties=null — verified vs g5_step's real Pairwise
-  AEDisjoint hyp) + honesty flag (equivFin Fin-8↔entry = probe-confirm). fm-2 building **#61** (argmax-cover
-  atom) → assemble 3-deep g5_step (4-way → φ_L2 → 3-way → 4-way → Σ₂₄); per-node obligations from #58.
-- pp on-demand; rv-2 queued for #58 + #52/#54/#55 audits (real-pos-def-k=1 radar).
+**Active (trunk @4f4bd96; 4 audits PASS — milestone/#58/#61/#52, all decorrelated):**
+- **(2,1,2) #55** — fm, **1 sorry** left (on branch): product-MIN heart, both block-RLCT bridges (EuclideanSpace↔Pi
+  via `PiLp.volume_preserving_toLp`, done in-seat), final assembly, `prod212_entry` (lean-formaliser) all PROVEN
+  (6→1). Remaining = coord-split `rlctAtOn_case212_eq_product` (the (1,1,1)-`entryME` pattern; fm's tactic call:
+  in-seat or reuse-lean-formaliser + Case222-SPECIFY). Merge + aggregator-wire when sorry-free.
+- **(2,2,2) #54** — fm-2, on flat `Fin 8→ℝ` (carrier **FORCED**: product `(Fin4→ℝ)²` lacks the `IsAddHaarMeasure`
+  g5_step needs — pp/fm-2 instance-probed). **Carrier-independent node toolkit COMPLETE + gated:** #58
+  (C¹/det=(x 0)ⁿ/InjOn), #61 (argmax cover), #64 (spectator), #65 (hmeas), #67 (argmaxCellOn = flat-subset
+  cover = g5_step-native hcover/hdisj). REMAINING: `pivotBlowupOn` det/fderiv/inj (subset block-triangular,
+  det=(x p)^(|active|−1)) + the 24-leaf assembly (3-deep g5_step + φ_L2 splice) + the **#66 seam**
+  (Params↔Fin8 m.p. via a fresh flatten equiv + the generic reindex-m.p. lemma — NOT the noncomputable equivFin
+  hand proof; the load-bearing fidelity point, rv-2 audits it).
+- pp on-demand; rv-2 queued for #54/#55 (real-pos-def-k=1 radar + the #66 coordinate-seam).
 **Roadmapped (operator-gated scope):** G3 (general-M wall), #19 keystone (#37/#45/#46), weighted-product-split
 (general-M). Fixed-M ladder = the active proven-scope target: (1,1,1) DONE · (2,1,2) #55 · (2,2,2) #54.
 
