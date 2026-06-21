@@ -379,6 +379,143 @@ theorem aoyagiLemma5Eq4_boundaryValue_not_mem_intervalValueSetNat_of_lt_two_mul
       ell a p M m C layerWidth T hT hp0 hp_strict hp_c).1 hmem
   omega
 
+/-- At the boundary block's own coordinate, equation `(4)`'s strict-boundary
+value is shifted from the next upper-chain endpoint by one selected width.
+
+This is only supplied branch arithmetic for a supplied equation `(4)`
+certificate.  It does not construct the displayed source vector, prove
+terminality, admissibility, chart coverage, pole order, normal crossings, or
+RLCT extraction. -/
+theorem aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp_strict : p + 1 < a) :
+    T (C.point (p + (ell - a) + 1) - 1) -
+        aoyagiHtildeUpperNat ell a M m (p + (ell - a) + 1) =
+      M - aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) - (p : ℤ) + 1 := by
+  have ha : a ≤ ell := hT.a_le_ell
+  have hsucc :=
+    aoyagiHtildeUpperNat_succ_eq_add_selectedWidthNat_sub_increment
+      ell a (p + (ell - a)) M m ha (by omega)
+  have hnot : ¬ p + (ell - a) < ell - a := by omega
+  rw [if_neg hnot] at hsucc
+  rw [hT.boundary, hsucc]
+  ring
+
+/-- At the boundary block's own coordinate, equation `(4)`'s strict-boundary
+value lies in the same-coordinate interval exactly when the next selected width
+lies in the corresponding width window. -/
+theorem aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp_strict : p + 1 < a) :
+    T (C.point (p + (ell - a) + 1) - 1) ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a) + 1) ↔
+      M - (p : ℤ) + 1 ≤ aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) ∧
+        aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) ≤
+          M - (p : ℤ) + 1 +
+            (aoyagiLemma5IntervalExcess ell a (p + (ell - a) + 1) : ℤ) := by
+  have hr : p + (ell - a) + 1 < ell + 1 := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  rw [aoyagiHtildeIntervalValueSetNat]
+  simp only [hr, ↓reduceDIte]
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m hT.a_le_ell
+    ⟨p + (ell - a) + 1, hr⟩]
+  constructor
+  · intro hbounds
+    have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m hT.a_le_ell
+      ⟨p + (ell - a) + 1, hr⟩
+    have hoffset :=
+      aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate
+        ell a p M m C layerWidth T hT hp_strict
+    simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] at hbounds hgap
+    constructor <;> omega
+  · intro hwindow
+    have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess ell a M m hT.a_le_ell
+      ⟨p + (ell - a) + 1, hr⟩
+    have hoffset :=
+      aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate
+        ell a p M m C layerWidth T hT hp_strict
+    simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] at hgap ⊢
+    constructor <;> omega
+
+/-- Reduced-minimum form of the equation `(4)` own-coordinate width window. -/
+theorem aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp_strict : p + 1 < a) :
+    T (C.point (p + (ell - a) + 1) - 1) ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a) + 1) ↔
+      M - (p : ℤ) + 1 ≤ aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) ∧
+        aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) ≤
+          M - (p : ℤ) + 1 + ((min (ell - a) (a - p - 1) : ℕ) : ℤ) := by
+  rw [aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow
+    ell a p M m C layerWidth T hT hp_strict]
+  rw [aoyagiLemma5Eq4_boundaryCoordinate_intervalExcess_eq_min
+    ell a p hT.a_le_ell hp_strict]
+
+/-- In the `p=1` strict equation `(4)` case, Definition 3's selected-width
+upper bound puts the boundary value strictly above the boundary-coordinate
+upper endpoint. -/
+theorem aoyagiLemma5Eq4_boundaryValue_gt_boundaryUpper_of_p1_sourceSelected
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a 1 M m C layerWidth T)
+    (hp_strict : 1 + 1 < a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    aoyagiHtildeUpperNat ell a M m (1 + (ell - a) + 1) <
+      T (C.point (1 + (ell - a) + 1) - 1) := by
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m (1 + (ell - a) + 1) ≤ M - 1 := by
+    have hell : 1 ≤ ell := by
+      have ha : a ≤ ell := hT.a_le_ell
+      omega
+    have hr : 1 + (ell - a) + 1 < ell + 1 := by
+      have ha : a ≤ ell := hT.a_le_ell
+      omega
+    rw [aoyagiSelectedWidthNat_of_lt hr]
+    exact aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell hT.a_le_ell hselected hsource ⟨1 + (ell - a) + 1, hr⟩
+  have hoffset :=
+    aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate
+      ell a 1 M m C layerWidth T hT hp_strict
+  omega
+
+/-- Consequently, in the `p=1` strict equation `(4)` case, Definition 3's
+selected-width hypotheses force nonmembership in the boundary-coordinate
+same-coordinate interval. -/
+theorem aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_p1_sourceSelected
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a 1 M m C layerWidth T)
+    (hp_strict : 1 + 1 < a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    T (C.point (1 + (ell - a) + 1) - 1) ∉
+      aoyagiHtildeIntervalValueSetNat ell a M m (1 + (ell - a) + 1) := by
+  intro hmem
+  have hr : 1 + (ell - a) + 1 < ell + 1 := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  rw [aoyagiHtildeIntervalValueSetNat] at hmem
+  simp only [hr, ↓reduceDIte] at hmem
+  have hbounds :=
+    (aoyagiHtilde_mem_intervalValueSet_iff_bounds ell a M m hT.a_le_ell
+      ⟨1 + (ell - a) + 1, hr⟩
+      (T (C.point (1 + (ell - a) + 1) - 1))).1 hmem
+  have hgt :=
+    aoyagiLemma5Eq4_boundaryValue_gt_boundaryUpper_of_p1_sourceSelected
+      ell a M m C layerWidth T hT hp_strict hselected hsource
+  simp [aoyagiHtildeUpperChain] at hbounds
+  omega
+
 /-- Branch-value alternatives for Aoyagi Lemma 5 equation `(4)` on the selected
 span.
 

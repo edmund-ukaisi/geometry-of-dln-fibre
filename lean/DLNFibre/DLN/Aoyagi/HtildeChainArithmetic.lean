@@ -298,6 +298,29 @@ theorem aoyagiHtildeUpperIncrementPrefix_succ_sub (ell a : ℕ) (M : ℤ) (j : �
     ring_nf
     omega
 
+/-- Successor rule for the upper displayed `Htilde'` chain.
+
+The increment is the next selected width minus the displayed upper-chain
+subtraction increment.  This is finite chain arithmetic only. -/
+theorem aoyagiHtildeUpperNat_succ_eq_add_selectedWidthNat_sub_increment
+    (ell a j : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hjell : j < ell) :
+    aoyagiHtildeUpperNat ell a M m (j + 1) =
+      aoyagiHtildeUpperNat ell a M m j +
+        aoyagiSelectedWidthNat ell m (j + 1) -
+          (if j < ell - a then M - 1 else M) := by
+  let w := aoyagiSelectedWidthNat ell m
+  let A := aoyagiHtildeUpperIncrementPrefix ell a M
+  have hprefix : aoyagiPrefixSum w (j + 1) = aoyagiPrefixSum w j + w (j + 1) :=
+    aoyagiPrefixSum_succ w j
+  have hinc := aoyagiHtildeUpperIncrementPrefix_succ_sub ell a M j ha hjell
+  unfold aoyagiHtildeUpperNat
+  change aoyagiPrefixSum w (j + 1) - A (j + 1) =
+    aoyagiPrefixSum w j - A j + w (j + 1) -
+      (if j < ell - a then M - 1 else M)
+  rw [hprefix, ← hinc]
+  ring
+
 /-- The lower chain has the common terminal endpoint displayed in Lemma 4. -/
 theorem aoyagiHtildeLowerChain_last_eq_terminalEndpoint (ell a : ℕ) (M : ℤ)
     (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell) :

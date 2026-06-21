@@ -1164,3 +1164,44 @@ This is a classifier, not a uniform obstruction.  It does not construct
 equation `(4)`'s displayed vector, prove terminal `tilde t=0`,
 introduced-label status, vector admissibility, Case 1(2) chart sequence,
 Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-20 Lean Lemma 5 equation `(4)` boundary-coordinate window
+
+Reproduction:
+`reproduction-lemma5-eq4-boundary-coordinate-window-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-boundary-coordinate-window.md`.
+Review artifact:
+`review-lemma5-eq4-boundary-coordinate-window-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiHtildeUpperNat_succ_eq_add_selectedWidthNat_sub_increment
+aoyagiLemma5Eq4_boundaryCoordinate_intervalExcess_eq_min
+aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate
+aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow
+aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow_min
+aoyagiLemma5Eq4_boundaryValue_gt_boundaryUpper_of_p1_sourceSelected
+aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_p1_sourceSelected
+```
+
+For a supplied equation `(4)` certificate in the strict boundary case
+`p+1<a`, the special boundary point lies in selected block
+`r=p+(ell-a)+1`.  At that boundary block's own coordinate, the value
+`T(C.point r-1)=Htilde'_(r-1)-p+1` belongs to the same-coordinate interval
+exactly when the selected width `W_r` lies in the window
+
+```text
+M-p+1 <= W_r <= M-p+1+excess(ell,a,r).
+```
+
+The excess at this coordinate reduces to `min(ell-a,a-p-1)`.  The source
+`p=1` corollary combines this with Definition 3's selected-width upper bound
+`W_r<=M-1`, proving the boundary value is strictly above the upper endpoint
+and hence not in the boundary-coordinate interval.
+
+This is finite supplied-branch and interval arithmetic only.  It does not
+construct equation `(4)`'s displayed vector, prove terminal `tilde t=0`,
+introduced-label status, vector admissibility, Case 1(2) chart sequence,
+Lemma 5 order count, normal crossings, or RLCT extraction.

@@ -69,6 +69,15 @@ theorem aoyagiLemma5Eq4_boundaryIndex_eq_ell_iff
     p + (ell - a) + 1 = ell ↔ p + 1 = a := by
   omega
 
+/-- At the strict equation `(4)` boundary block coordinate, the interval excess
+has the advertised residual-minimum form. -/
+theorem aoyagiLemma5Eq4_boundaryCoordinate_intervalExcess_eq_min
+    (ell a p : ℕ) (ha : a ≤ ell) (hp_strict : p + 1 < a) :
+    aoyagiLemma5IntervalExcess ell a (p + (ell - a) + 1) =
+      min (ell - a) (a - p - 1) := by
+  unfold aoyagiLemma5IntervalExcess
+  omega
+
 /-- The selected-index guard needed by Aoyagi Lemma 5 equation `(3)`.
 
 With `c = ell-a`, the displayed special cutoff `S_(c+2)` lies in the selected

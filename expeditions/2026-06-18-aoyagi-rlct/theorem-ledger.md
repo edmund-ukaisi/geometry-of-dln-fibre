@@ -2578,6 +2578,32 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-interval-classifier-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` boundary-coordinate width-window
+classifier has landed in
+`lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean`,
+`lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`, and
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names
+are `aoyagiHtildeUpperNat_succ_eq_add_selectedWidthNat_sub_increment`,
+`aoyagiLemma5Eq4_boundaryCoordinate_intervalExcess_eq_min`,
+`aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate`,
+`aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow`,
+`aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow_min`,
+`aoyagiLemma5Eq4_boundaryValue_gt_boundaryUpper_of_p1_sourceSelected`, and
+`aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_p1_sourceSelected`.
+They say that in the strict equation `(4)` boundary case, at the boundary
+block's own coordinate `r=p+(ell-a)+1`, interval membership is equivalent to
+the width window `M-p+1 <= W_r <= M-p+1+excess(ell,a,r)`, with
+`excess(ell,a,r)=min(ell-a,a-p-1)`.  For `p=1`, Definition 3's selected-width
+upper bound forces nonmembership by putting the boundary value strictly above
+the upper endpoint.  This is finite supplied-branch arithmetic only and makes
+no displayed-vector, order-count, normal-crossing, or RLCT extraction claim.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-boundary-coordinate-window-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-boundary-coordinate-window.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-boundary-coordinate-window-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

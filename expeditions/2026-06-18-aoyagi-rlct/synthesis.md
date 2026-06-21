@@ -2139,6 +2139,29 @@ still finite supplied-branch bookkeeping only, not a displayed-vector
 construction, terminal `tilde t=0`, chart sequence, introduced-label theorem,
 Lemma 5 order count, normal crossings, or RLCT extraction.
 
+The companion equation `(4)` boundary-coordinate window is now Lean-proved.
+For the strict boundary point itself, let `r=p+(ell-a)+1`; the supplied value
+is `Htilde'_(r-1)-p+1`, while the boundary-coordinate interval is
+`[Htilde_r,Htilde'_r]`.  Lean proves the offset from the boundary-coordinate
+upper endpoint,
+
+```text
+T(C.point r-1)-Htilde'_r = M-W_r-p+1,
+```
+
+and the exact membership window
+
+```text
+M-p+1 <= W_r <= M-p+1+excess(ell,a,r),
+```
+
+with `excess(ell,a,r)=min(ell-a,a-p-1)`.  The source-shaped `p=1` corollary
+uses Definition 3's selected-width inequality `W_r<=M-1` to prove the
+boundary value is strictly above `Htilde'_r` and is not in the
+boundary-coordinate interval.  This is still not a displayed-vector
+construction, terminal `tilde t=0`, chart sequence, introduced-label theorem,
+Lemma 5 order count, normal crossings, or RLCT extraction.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
