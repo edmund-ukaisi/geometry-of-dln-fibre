@@ -24,7 +24,7 @@ This file is built incrementally (each node factorization a committable sub-lemm
 -/
 
 open MeasureTheory
-open scoped BigOperators
+open scoped BigOperators ENNReal
 namespace DLNFibre.DLN.RLCT
 
 /-- The explicit `(2,2,2)` loss in flat coordinates `(a00,a01,a10,a11,b00,b01,b10,b11) = (x0,…,x7)`:
@@ -197,5 +197,67 @@ theorem myF222_phiUnit_monomial (u : Fin 8 → ℝ) :
           * (1 + ((Fin.tail u) 2) ^ 2 + ((Fin.tail u) 4 + (Fin.tail u) 3 * (Fin.tail u) 5) ^ 2
               + ((Fin.tail u) 4 * (Fin.tail u) 2 + (Fin.tail u) 3 * (Fin.tail u) 6) ^ 2) := by
   rw [myF222_phiUnit, resolvedForm_step2E]; ring
+
+/-! ## The `d = 8` binding-monomial threshold (the `≤`-direction divergence input)
+
+The post-c-o-v leaf integrand on `Fin 8 → ℝ` is `monomialIntegrand 8 unitK8 unitH8 c' · U^{−c'}` — the
+Jacobian `|u0|³·|z1|²` (`= ∏ |uⱼ|^{unitH8 j}`, `unitH8 = (3,0,2,0,…)`) against the loss base
+`(|u0|²·|z1|²)^{−c'}` (`= (∏|uⱼ|^{2·unitK8 j})^{−c'}`, `unitK8 = (1,0,1,0,…)`). For the
+box-divergence atom (`monomialIntegrand_lintegral_box_eq_top`) the hypothesis is
+`monomialThreshold ≤ ofReal c'`; here it suffices that the threshold is `≤ 3/2` (the binding `z1`-axis
+`(k,h) = (1,2) = (1, 3−1)`), since `c' > 3/2`. The spectator axes have `k = 0` (so the multiplicity
+lower-bound lemma does NOT apply — but it is not needed; only the single binding axis bounds the
+threshold above). -/
+
+/-- The `(2,2,2)` unit-leaf binding-monomial exponents on `Fin 8` (the loss base `∏|uⱼ|^{2kⱼ}`): `k =
+1` on the two exceptional axes `u0` (step-1 pivot) and `u2` (`= z1`, step-2 pivot), `0` on the six
+spectators. -/
+def unitK8 : Fin 8 → ℕ := ![1, 0, 1, 0, 0, 0, 0, 0]
+
+/-- The `(2,2,2)` unit-leaf binding-monomial Jacobian exponents on `Fin 8` (`∏|uⱼ|^{hⱼ}`): `h = 3` on
+`u0` (`|det| = u0³`), `h = 2` on `u2 = z1` (`|det| = z1²`), `0` on the six spectators. -/
+def unitH8 : Fin 8 → ℕ := ![3, 0, 2, 0, 0, 0, 0, 0]
+
+/-- **The unit-leaf monomial threshold is `≤ 3/2`** (the binding `z1`-axis `(k,h) = (1,2) = (1, 3−1)`
+realises `3/2` via `monomialThreshold_le_regularSeq`). The `≤`-direction input: for `c' > 3/2`, the
+`d = 8` monomial diverges (`monomialThreshold ≤ 3/2 < c'`). The spectator `k = 0` axes don't obstruct
+the upper bound (one binding axis suffices). -/
+theorem unitMonomialThreshold_le : monomialThreshold 8 unitK8 unitH8 ≤ 3 / 2 := by
+  have := monomialThreshold_le_regularSeq 8 unitK8 unitH8 3 (by norm_num) 2 (by rfl) (by rfl)
+  rwa [show ((3 : ℕ) : ℝ≥0∞) / 2 = 3 / 2 by norm_num] at this
+
+/-- The binding axis `u2 = z1` has `unitK8 2 = 1 ≠ 0` — the singular-axis witness for
+`monomialIntegrand_lintegral_box_eq_top` / `exists_binding_axis`. -/
+theorem unitK8_binding : unitK8 2 ≠ 0 := by decide
+
+/-! ## The step-1 change-of-variables (reusing the gated `pivotBlowupOn` infrastructure)
+
+`step1A = pivotBlowupOn {0,1,2,3} 0` (`step1A_eq_pivotBlowupOn`), so the change-of-variables
+(`lintegral_image_eq_lintegral_abs_det_fderiv_mul`) plugs the gated infra directly: the derivative
+(`pivotBlowupOn_hasFDerivWithinAt`), injectivity off the pivot-zero locus (`pivotBlowupOn_injOn`),
+and the determinant (`pivotBlowupOnDeriv_det`, `= (x 0)^{card−1} = (x 0)³`). The first node of the
+`≤`-direction lower bound. -/
+
+/-- **Step-1 change-of-variables.** For a measurable `V` (off the pivot-zero locus `{x0 = 0}`),
+`∫⁻_{step1A '' (V \ {x0=0})} g = ∫⁻_{V \ {x0=0}} |det Dφ₁| · (g ∘ step1A)` — the
+`lintegral_image_eq_lintegral_abs_det_fderiv_mul` applied to `step1A = pivotBlowupOn {0,1,2,3} 0`,
+discharging the derivative / injectivity from the gated `pivotBlowupOn` infrastructure. -/
+theorem step1A_lintegral_image (V : Set (Fin 8 → ℝ)) (hV : MeasurableSet V)
+    (g : (Fin 8 → ℝ) → ℝ≥0∞) :
+    ∫⁻ x in step1A '' (V \ {x | x 0 = 0}), g x
+      = ∫⁻ x in V \ {x | x 0 = 0},
+          ENNReal.ofReal |(pivotBlowupOnDeriv ({0, 1, 2, 3} : Finset (Fin 8)) 0 x).det|
+            * g (step1A x) := by
+  simp_rw [step1A_eq_pivotBlowupOn]
+  rw [lintegral_image_eq_lintegral_abs_det_fderiv_mul volume
+    (hV.diff (measurableSet_eq_fun (measurable_pi_apply 0) measurable_const))
+    (fun x _ => pivotBlowupOn_hasFDerivWithinAt _ _ _ x) (pivotBlowupOn_injOn _ _ _)]
+
+/-- The step-1 Jacobian determinant on the active set: `|det Dφ₁| = |x0|³` (`pivotBlowupOnDeriv_det`
+with `card {0,1,2,3} − 1 = 3`). -/
+theorem step1A_det (x : Fin 8 → ℝ) :
+    (pivotBlowupOnDeriv ({0, 1, 2, 3} : Finset (Fin 8)) 0 x).det = (x 0) ^ 3 := by
+  rw [pivotBlowupOnDeriv_det _ _ (by decide)]
+  norm_num [show ({0, 1, 2, 3} : Finset (Fin 8)).card = 4 from by decide]
 
 end DLNFibre.DLN.RLCT
