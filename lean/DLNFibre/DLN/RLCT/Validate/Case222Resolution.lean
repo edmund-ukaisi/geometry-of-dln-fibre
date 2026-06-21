@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.Case222Cover
 import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
+import DLNFibre.DLN.RLCT.Foundations.S1G5Charts
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case222Resolution` — the `(2,2,2)` concrete resolution cover
@@ -143,5 +144,58 @@ input (`0 < a`, `a = 1`) to `integrableOn_monomial_mul_unit_iff`. -/
 theorem step3_unit_ge_one (q a1 a2 a3 : ℝ) :
     (1 : ℝ) ≤ (q * a1 + a3) ^ 2 + (q + a2) ^ 2 + a1 ^ 2 + 1 := by
   nlinarith [sq_nonneg (q * a1 + a3), sq_nonneg (q + a2), sq_nonneg a1]
+
+/-! ## The composite unit-leaf chart (the `≤`-direction single binding leaf)
+
+The `≤` direction (`rlctAtOn_le_of_box_diverges`) needs ONE binding leaf chart `φ` whose pulled-back
+integrand diverges. The unit-leaf composite (Codex 2026-06-21): `φ = step1A ∘ (Lemma-2, y0 spectator)
+∘ step2E`, parametrised `φ u = step1A (cons u0 (lemma2Inv (step2E (tail u))))` — `lemma2Inv` because
+`step1Residual = resolvedForm ∘ lemma2Fwd`, so `lemma2Fwd v = step2E z` ⟹ `v = lemma2Inv (step2E z)`.
+Chaining the three factorizations: `myF222 (φ u) = u0² · z1² · U` (`z1 = (tail u) 1`, `U ≥ 1`). With
+the iterated Jacobians (`y0³ · 1 · z1²`) the leaf integrand is `monomialIntegrand`-shaped on the two
+exceptional axes `(u0, z1)` (`k = 1, h = (3,2)`) times the unit `U^{−c}`. -/
+
+/-- `myF222 ∘ step1A` via `step1Residual` of the tail (the bracket in `myF222_step1A` is exactly
+`step1Residual (Fin.tail y)`, the `y1..y7` reindex `v0..v6`). -/
+theorem myF222_step1A' (y : Fin 8 → ℝ) :
+    myF222 (step1A y) = (y 0) ^ 2 * step1Residual (Fin.tail y) := by
+  rw [myF222_step1A]; congr 1
+
+/-- **`step1A` is a pivot blow-up.** `step1A = pivotBlowupOn {0,1,2,3} 0` (the `A`-block blow-up with
+pivot `a00`). Lets the step-1 chart reuse the gated `pivotBlowupOn` infrastructure — derivative
+(`pivotBlowupOn_hasFDerivWithinAt`), determinant (`pivotBlowupOnDeriv_det`, `= (x 0)^{card−1} =
+x0³`), injectivity (`pivotBlowupOn_injOn`), image (`pivotBlowupOn_image`) — in the change-of-variables
+for the `≤`-direction, instead of a hand-derived composite Jacobian. -/
+theorem step1A_eq_pivotBlowupOn (y : Fin 8 → ℝ) :
+    step1A y = pivotBlowupOn ({0, 1, 2, 3} : Finset (Fin 8)) 0 y := by
+  funext i
+  unfold step1A pivotBlowupOn
+  fin_cases i <;> simp [Matrix.cons_val]
+
+/-- The composite unit-leaf chart `φ` (step-1 A-pivot ∘ Lemma-2⁻¹ ∘ step-2 E-pivot), parametrised on
+`u : Fin 8 → ℝ` (`u0` the step-1 pivot, `tail u` the step-2 chart coordinates). -/
+noncomputable def phiUnit (u : Fin 8 → ℝ) : Fin 8 → ℝ :=
+  step1A (Fin.cons (u 0) (lemma2Inv (step2E (Fin.tail u))))
+
+/-- **Composite unit-leaf factorization.** `myF222 (φ u) = u0² · resolvedForm (step2E (tail u))` —
+chaining `myF222_step1A'` (step-1), `step1Residual_eq_resolvedForm` + `lemma2Fwd_lemma2Inv` (the
+Lemma-2 splice cancels), leaving the step-2-ready resolved form. With `resolvedForm_step2E` this is
+`u0² · ((tail u) 1)² · U`, the monomial-times-unit the box-divergence atom consumes. -/
+theorem myF222_phiUnit (u : Fin 8 → ℝ) :
+    myF222 (phiUnit u) = (u 0) ^ 2 * resolvedForm (step2E (Fin.tail u)) := by
+  unfold phiUnit
+  rw [myF222_step1A', Fin.cons_zero, Fin.tail_cons,
+    step1Residual_eq_resolvedForm, lemma2Fwd_lemma2Inv]
+
+/-- **Composite unit-leaf, monomial-times-unit form.** `myF222 (φ u) = u0² · z1² · U`, where
+`z1 = (tail u) 1` and `U = 1 + z2² + (q+δ̂G)² + (qv+δ̂H)² ≥ 1` (`step2E_unit_ge_one`). The two
+exceptional axes `(u0, z1)` carry the binding behaviour (`k = 1`, loss exponents `2, 2`); after the
+Jacobian `u0³·z1²` (`h = 3, 2`) the integrand is `monomialIntegrand 2 ![1,1] ![3,2] · U^{−c}`. -/
+theorem myF222_phiUnit_monomial (u : Fin 8 → ℝ) :
+    myF222 (phiUnit u)
+      = (u 0) ^ 2 * ((Fin.tail u) 1) ^ 2
+          * (1 + ((Fin.tail u) 2) ^ 2 + ((Fin.tail u) 4 + (Fin.tail u) 3 * (Fin.tail u) 5) ^ 2
+              + ((Fin.tail u) 4 * (Fin.tail u) 2 + (Fin.tail u) 3 * (Fin.tail u) 6) ^ 2) := by
+  rw [myF222_phiUnit, resolvedForm_step2E]; ring
 
 end DLNFibre.DLN.RLCT
