@@ -770,12 +770,147 @@ theorem block_residual_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
   refine lt_of_le_of_lt (lintegral_mono_set shearΦ_box_subset) ?_
   exact sumSq4_subset_box_lt_top c' (by linarith)
 
+/-! ## The δ-cell finiteness (block branch via z3-peel onto the Fin-6 block)
+
+The δ-cell residual `z3²·blockδ` (`resolvedForm_pivotDelta`, `blockδ = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²`,
+independent of `z3`). Support-contain to `[−2,2]⁷`, bound the integrand by `|z3|^{2−2c'}·blockδ^{−c'}`,
+then `boxT_pivot_peel` separates the `z3`-monomial (finite, `2−2c' > −1 ⟺ c' < 3/2`) from the Fin-6
+block `blockδ6` — whose finiteness comes from `block_residual_lt_top` itself by peeling `z3` as a
+spectator (`boxT_peel_spectator`), no second shear chain needed. -/
+
+/-- The δ-block as an `ℝ≥0∞`-integrand (`Σ⁴`-form, independent of `z3`). -/
+noncomputable def blockδ (c' : ℝ) (z : Fin 7 → ℝ) : ℝ≥0∞ :=
+  ENNReal.ofReal (((z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2) ^ (-c'))
+
+/-- The δ-block read on `Fin 6` (after dropping the `z3` pivot via `3.succAbove`). -/
+noncomputable def blockδ6 (c' : ℝ) (v : Fin 6 → ℝ) : ℝ≥0∞ :=
+  ENNReal.ofReal (((v 1)^2 + (v 2)^2 + (v 3 * v 1 + v 4)^2 + (v 3 * v 2 + v 5)^2) ^ (-c'))
+
+/-- `blockδ z = blockδ6 (drop-3 z)` (`3.succAbove` sends `{1,2,3,4,5} ↦ {1,2,4,5,6}`). -/
+theorem blockδ_peel3 (c' : ℝ) (z : Fin 7 → ℝ) :
+    blockδ c' z = blockδ6 c' (fun k => z ((3:Fin 7).succAbove k)) := by
+  unfold blockδ blockδ6
+  simp only [show ((3:Fin 7).succAbove 1 : Fin 7) = 1 from by decide,
+      show ((3:Fin 7).succAbove 2 : Fin 7) = 2 from by decide,
+      show ((3:Fin 7).succAbove 3 : Fin 7) = 4 from by decide,
+      show ((3:Fin 7).succAbove 4 : Fin 7) = 5 from by decide,
+      show ((3:Fin 7).succAbove 5 : Fin 7) = 6 from by decide]
+
+theorem blockδ6_meas (c' : ℝ) : Measurable (blockδ6 c') := by unfold blockδ6; fun_prop
+
+/-- **The Fin-6 δ-block is finite below `3/2`.** Derived from `block_residual_lt_top` (`= ∫ blockδ`
+over `[−2,2]⁷`) by peeling `z3` as a spectator (`boxT_peel_spectator`): the Fin-7 block integral
+factors as `(∫ blockδ6)·vol[−2,2]`, and `vol[−2,2] ≠ 0` forces `∫ blockδ6 < ⊤`. -/
+theorem blockδ6_box_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
+    ∫⁻ v in boxT 6 (2:ℝ), blockδ6 (c':ℝ) v < ⊤ := by
+  have hbr := block_residual_lt_top c' hc'
+  have heq : (∫⁻ z in boxT 7 (2:ℝ), ENNReal.ofReal (|(z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2| ^ (-(c':ℝ))))
+      = ∫⁻ z in boxT 7 (2:ℝ), blockδ (c':ℝ) z := by
+    apply setLIntegral_congr_fun (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+    intro z _; unfold blockδ; simp only
+    rw [abs_of_nonneg (by positivity)]
+  rw [heq] at hbr
+  rw [show (fun z => blockδ (c':ℝ) z) = (fun z : Fin 7 → ℝ => blockδ6 (c':ℝ) (fun k => z ((3:Fin 7).succAbove k)))
+        from funext (fun z => blockδ_peel3 (c':ℝ) z),
+      boxT_peel_spectator (n:=6) 2 (by norm_num) 3 (blockδ6 (c':ℝ)) (blockδ6_meas _)] at hbr
+  have hvol0 : volume (Set.Icc (-2:ℝ) 2) ≠ 0 := by
+    rw [Real.volume_Icc]; rw [show (2:ℝ) - (-2) = 4 from by norm_num]
+    exact (ENNReal.ofReal_pos.2 (by norm_num)).ne'
+  by_contra h
+  rw [not_lt, top_le_iff] at h
+  rw [h, ENNReal.top_mul hvol0] at hbr
+  exact (lt_irrefl _ hbr).elim
+
+/-- **δ-cell support containment.** On `chartDomOn {1,2,3} 3`, the `bigbox7` cutoff forces `z ∈ [−2,2]⁷`. -/
+theorem pivotδ_support_box (z : Fin 7 → ℝ) (hcd : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 3)
+    (hb : pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z ∈ bigbox7) : z ∈ boxT 7 2 := by
+  rw [show pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z = ![z 0, z 3 * z 1, z 3 * z 2, z 3, z 4, z 5, z 6]
+        from by funext i; fin_cases i <;> simp [pivotBlowupOn, Matrix.cons_val]] at hb
+  simp only [bigbox7, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc] at hb
+  have h1 : |z 1| ≤ 1 := hcd 1 (by decide) (by decide)
+  have h2 : |z 2| ≤ 1 := hcd 2 (by decide) (by decide)
+  have b0 : -2 ≤ z 0 ∧ z 0 ≤ 2 := by have := hb 0; simpa using this
+  have b3 : -2 ≤ z 3 ∧ z 3 ≤ 2 := by have := hb 3; simpa using this
+  have b1 : -2 ≤ z 1 ∧ z 1 ≤ 2 := ⟨by linarith [abs_le.1 h1], by linarith [abs_le.1 h1]⟩
+  have b2 : -2 ≤ z 2 ∧ z 2 ≤ 2 := ⟨by linarith [abs_le.1 h2], by linarith [abs_le.1 h2]⟩
+  have b4 : -2 ≤ z 4 ∧ z 4 ≤ 2 := by have := hb 4; simpa using this
+  have b5 : -2 ≤ z 5 ∧ z 5 ≤ 2 := by have := hb 5; simpa using this
+  have b6 : -2 ≤ z 6 ∧ z 6 ≤ 2 := by have := hb 6; simpa using this
+  intro i _; simp only [boxT, Set.mem_Icc]
+  fin_cases i
+  · exact b0
+  · exact b1
+  · exact b2
+  · exact b3
+  · exact b4
+  · exact b5
+  · exact b6
+
+/-- **δ-cell integrand bound** (off `{z3=0}`): the cell integrand `≤` the single pivot-monomial times
+`blockδ`, on the box. `|det| = z3²`, `resolvedForm_pivotDelta` gives `z3²·blockδ`, and the `rpow`
+algebra factors `|z3²|·|z3²·B|^{−c'} = |z3|^{2−2c'}·B^{−c'}`. -/
+theorem deltaCell_integrand_bound (c' : NNReal) (z : Fin 7 → ℝ)
+    (hz : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 3 \ pivotZeroOn 3) :
+    ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 3 z).det|
+        * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+            (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z)
+      ≤ (boxT 7 2).indicator
+          (fun z => ENNReal.ofReal (|z 3| ^ (2 - 2*(c':ℝ))) * blockδ (c':ℝ) z) z := by
+  rw [show (pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 3 z).det = (z 3)^2 from by
+        rw [pivotBlowupOnDeriv_det _ _ (by decide)];
+        norm_num [show ({1,2,3} : Finset (Fin 7)).card = 3 from by decide]]
+  by_cases hb : pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z ∈ bigbox7
+  · rw [Set.indicator_of_mem hb, Set.indicator_of_mem (pivotδ_support_box z hz.1 hb),
+      resolvedForm_pivotDelta]
+    have hz3 : z 3 ≠ 0 := hz.2
+    have hz3a : (0:ℝ) < |z 3| := abs_pos.2 hz3
+    unfold blockδ
+    set B := (z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2 with hBdef
+    have hbpos : (0:ℝ) ≤ B := by rw [hBdef]; positivity
+    rw [← ENNReal.ofReal_mul (abs_nonneg _), ← ENNReal.ofReal_mul (Real.rpow_nonneg (abs_nonneg _) _)]
+    apply le_of_eq
+    congr 1
+    have key : |z 3 ^ 2| * |z 3 ^ 2 * B| ^ (-(c':ℝ)) = |z 3| ^ (2 - 2*(c':ℝ)) * B ^ (-(c':ℝ)) := by
+      rw [show |z 3 ^ 2 * B| = |z 3| ^ 2 * B from by rw [abs_mul, abs_pow, abs_of_nonneg hbpos],
+          show |z 3 ^ 2| = |z 3| ^ 2 from by rw [abs_pow],
+          Real.mul_rpow (by positivity) hbpos]
+      have h2e : (|z 3| ^ 2 : ℝ) = |z 3| ^ (2:ℝ) := by rw [← Real.rpow_natCast (|z 3|) 2]; norm_num
+      rw [h2e, ← Real.rpow_mul (abs_nonneg _), ← mul_assoc, ← Real.rpow_add hz3a]
+      congr 2 <;> push_cast <;> ring
+    exact key
+  · rw [Set.indicator_of_notMem hb, mul_zero]; exact zero_le _
+
+
 theorem deltaCell_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
     ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 3 \ pivotZeroOn 3,
         ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 3 z).det|
           * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
               (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z) < ⊤ := by
-  sorry
+  have hbm : MeasurableSet (boxT 7 (2:ℝ)) := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  have hbound : ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 3 \ pivotZeroOn 3,
+        ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 3 z).det|
+          * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+              (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z)
+      ≤ ∫⁻ z in boxT 7 (2:ℝ), ENNReal.ofReal (|z 3| ^ (2 - 2*(c':ℝ))) * blockδ (c':ℝ) z := by
+    rw [← lintegral_indicator (chartDomOn_diff_measurableSet ({1,2,3} : Finset (Fin 7)) 3)
+          (fun z => ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 3 z).det|
+            * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+                (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z)),
+        ← lintegral_indicator hbm
+          (fun z => ENNReal.ofReal (|z 3| ^ (2 - 2*(c':ℝ))) * blockδ (c':ℝ) z)]
+    apply lintegral_mono; intro z
+    by_cases hz : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 3 \ pivotZeroOn 3
+    · rw [Set.indicator_of_mem hz]; exact deltaCell_integrand_bound c' z hz
+    · rw [Set.indicator_of_notMem hz]; exact zero_le _
+  refine lt_of_le_of_lt hbound ?_
+  rw [show (fun z : Fin 7 → ℝ => ENNReal.ofReal (|z 3| ^ (2 - 2*(c':ℝ))) * blockδ (c':ℝ) z)
+        = (fun z : Fin 7 → ℝ => (fun t => ENNReal.ofReal (|t| ^ (2 - 2*(c':ℝ)))) (z 3)
+            * blockδ6 (c':ℝ) (fun k => z ((3:Fin 7).succAbove k)))
+        from by funext z; simp only; rw [blockδ_peel3]]
+  rw [boxT_pivot_peel (n := 6) 2 3 (fun t => ENNReal.ofReal (|t| ^ (2 - 2*(c':ℝ)))) (blockδ6 (c':ℝ))
+    (ENNReal.measurable_ofReal.comp (by fun_prop)) (blockδ6_meas _)]
+  exact ENNReal.mul_lt_top (abs_rpow_lintegral_Icc_lt_top 2 (by norm_num) (2 - 2*(c':ℝ)) (by linarith))
+    (blockδ6_box_lt_top c' hc')
 
 -- ===== assemble resolved_residual via recStep {1,2,3} 1 =====
 theorem resolved_residual_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
