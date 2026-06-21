@@ -981,26 +981,26 @@ theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
 
-/-- **R1 (the resolution).** Aoyagi's recursive blow-up as explicit coordinate charts: a finite
-chart family with monomial pullback `F∘φᵢ = unitᵢ·∏|uⱼ|^{2k_{i,j}}` and Jacobian-monomial
-`|det Dφᵢ|·(bump∘φᵢ) = posᵢ·∏|uⱼ|^{h_{i,j}}`, whose images cover a nbhd of `w* ∩ {F=0}`, and whose
-exponents `(k_{i,j}, h_{i,j})` range over exactly the admissible cone `Adm` (so the chart minima
-realise `min_T M(T)`). Stated as the existence of chart-exponent data whose monomial thresholds
-reconstruct the RLCT; the explicit charts are R1's obligation (design-spec §9 item 3: the R1↔Adm
-match).
+/-- **R1 (the resolution — CORE form).** Aoyagi's recursive blow-up as explicit coordinate charts: a
+finite chart family with monomial pullback `core∘φᵢ = unitᵢ·∏|uⱼ|^{2k_{i,j}}` and Jacobian-monomial
+`|det Dφᵢ| = posᵢ·∏|uⱼ|^{h_{i,j}}`, whose images cover a nbhd of `0 ∩ {core=0}`, whose monomial
+thresholds reconstruct the core RLCT. **The value-match:** the chart family `(ι,d,k,h)` reconstructs
+`rlctAtOn(core) 0`; the chart exponents realise `½·min_t Mval(t)`. This is **NOT** a chart↔`Adm`
+bijection — the charts (pivot branches × affine-minor choices) outnumber the `Adm` vectors / strata;
+the match is purely the VALUE. That value `⨅ monomialThreshold = ofReal(lambdaCore M)` is **A1's**
+job (S2 `monomial_rlct` + `lambdaCore_eq_clean`), kept separate from this chart fact.
 
-Rung-0c FLAG (specialisation): the value-match `rlctAt F = ⨅ monomialThreshold` is **FALSE for a
-generic `F`** — even one `≢ 0` near `w*` (rv-2: a non-analytic such `F` breaks the existential); it
-holds only for `F` real-analytic, and analyticity is not Mathlib-stateable on `Params` (a `def` over
-`Matrix`, no canonical norm, so no `NormedSpace ℝ` — an `AnalyticAt` hypothesis would be
-unsatisfiable and re-vacuate). So R1 is **specialised to the loss `dlnLoss H B`**, the polynomial
-it is actually applied to: the resolution genuinely holds there (analyticity automatic), and the
-statement is TRUE and `Params`-norm-free. The fully-general analytic-`F` form is a roadmap lemma for
-after the `Params ≃ᵐ ℝ^N` flattening (then `AnalyticOn (F ∘ paramsEquivFlat.symm)` is stateable). -/
-theorem resolution_charts (H : Fin (L + 1) → ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (wstar : Params H) :
+**Scoped to the CORE** (14th-finding re-scope, pp): the prior full-loss form
+`rlctAt(dlnLoss B) wstar = ⨅ monomialThreshold` was FALSE for `r > 0` (the regular shift `n/2` is
+ADDITIVE via Fubini, a SUM, not a `min`). R1 is about the singular core `‖∏C‖² = dlnLoss M 0` on the
+reduced widths `M = H − r`, at its deepest point (the origin `0 : Params M`); the `n/2` regular term
+enters in `product_reduction` via `S1Fubini`, not here. The core is the polynomial R1 is actually
+applied to: analyticity automatic, statement `Params`-norm-free. -/
+theorem resolution_charts (M : Fin (L + 1) → ℕ) :
     ∃ (ι : Type) (_ : Fintype ι) (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ),
-      rlctAt H (dlnLoss H B) wstar = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) := by
+      rlctAtOn (fun A : Params M =>
+          dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) A) (fun _ => 0 : Params M)
+        = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) := by
   sorry
 
 /-! ## A1 / A2 — the arithmetic minimisation + the order count (design-spec §8) -/

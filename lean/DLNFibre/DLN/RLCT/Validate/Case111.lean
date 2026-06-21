@@ -284,19 +284,24 @@ theorem case111_rlct :
       = ENNReal.ofReal (aoyagiLambda (![1, 1, 1] : Fin 3 → ℕ) 0) := by
   rw [case111_rlct_eq_monomialThreshold, case111_monomialThreshold]
 
-/-- **The `(1,1,1)` instance of `resolution_charts` (the R1 value-match shape; axiom-free).**
-The general `resolution_charts` existential `∃ ι d k h, rlctAt = ⨅ monomialThreshold` is realised
-for the trivial network by the single identity-chart datum `ι = Unit`, `d = 2`, `k = (1,1)`,
-`h = (0,0)`: the already-normal-crossing `(1,1,1)` loss needs no blow-up. Validates the R1 plumbing
-(chart → S1.1 transport → monomial threshold) against the known answer — the `⨅`-over-`Unit`
-collapses (`iInf_unique`) to the proven baby-S1.1 bridge `case111_rlct_eq_monomialThreshold`
-(= `1/2`), the value `case111_rlct` also lands on. A worked closed instance of the
-`resolution_charts` statement the general R1 (the mountain) must reproduce. -/
+/-- **The `(1,1,1)` instance of `resolution_charts` (CORE form; axiom-free).** Matches the
+re-scoped (14th-finding) general `resolution_charts`: the core `dlnLoss M 0` on `Params M` at the
+origin, `rlctAtOn(core)(0) = ⨅ monomialThreshold`. For the trivial network `M = (1,1,1)` the core IS
+the full loss (`r = 0`, regular shift `0`), the deepest point is `deepest111 = 0`, and the datum is
+the single identity chart `ι = Unit`, `d = 2`, `k = (1,1)`, `h = (0,0)` (already normal-crossing, no
+blow-up). Validates the R1 plumbing against the known answer — `⨅`-over-`Unit` collapses
+(`iInf_unique`), `rlctAtOn = rlctAt` on `Params`, to the proven bridge
+`case111_rlct_eq_monomialThreshold` (= `1/2`, the value `case111_rlct` lands on). A worked closed
+instance of the (core-scoped) `resolution_charts` the general R1 must reproduce. -/
 theorem resolution_charts_case111 :
     ∃ (ι : Type) (_ : Fintype ι) (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ),
-      rlctAt (![1, 1, 1] : Fin 3 → ℕ) (dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0) deepest111
+      rlctAtOn (fun A : Params (![1, 1, 1] : Fin 3 → ℕ) =>
+          dlnLoss (![1, 1, 1] : Fin 3 → ℕ) (0 : Matrix (Fin 1) (Fin 1) ℝ) A) deepest111
         = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) :=
-  ⟨Unit, inferInstance, fun _ => 2, fun _ => (![1, 1] : Fin 2 → ℕ),
-    fun _ => (![0, 0] : Fin 2 → ℕ), by rw [case111_rlct_eq_monomialThreshold, iInf_unique]⟩
+  ⟨Unit, inferInstance, fun _ => 2, fun _ => (![1, 1] : Fin 2 → ℕ), fun _ => (![0, 0] : Fin 2 → ℕ),
+    by rw [show (fun A : Params (![1, 1, 1] : Fin 3 → ℕ) =>
+              dlnLoss (![1, 1, 1] : Fin 3 → ℕ) (0 : Matrix (Fin 1) (Fin 1) ℝ) A)
+            = dlnLoss (![1, 1, 1] : Fin 3 → ℕ) 0 from rfl,
+          rlctAtOn_eq_rlctAt, case111_rlct_eq_monomialThreshold, iInf_unique]⟩
 
 end DLNFibre.DLN.RLCT
