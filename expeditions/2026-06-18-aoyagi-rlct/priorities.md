@@ -887,6 +887,10 @@ on the session's original cwd.
    `Lemma5DisplayedVector.lean`.  Do not attempt a source-backed Lemma 5
    order-count theorem from the printed equations; either search for corrected
    formulas or use a supplied chart-family boundary.
+   The Eq3/Eq4 increment parts of this obstruction are now Lean-proved as
+   conditional supplied-chain facts.  This hardens the negative boundary but
+   does not change the next route: corrected-formula search or supplied
+   chart-family interface.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

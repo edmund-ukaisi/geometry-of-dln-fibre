@@ -515,6 +515,80 @@ theorem aoyagiLemma5Eq4_boundaryEndpoint_not_block_of_predBoundary
     ell a p M m C layerWidth T hT hp]
   exact C.not_block_terminalEndpoint
 
+/-- Equation `(4)`'s printed special one-point line forces the corresponding
+Lemma 4 increment to be the next selected width minus one.
+
+This is finite chain arithmetic for supplied adjacent `H` values.  It does
+not construct the displayed vector or prove that those `H` values come from a
+source chart. -/
+theorem aoyagiLemma5Eq4_specialIncrement_eq_selectedWidth_sub_one
+    (ell a p : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_strict : p + 1 < a)
+    (hprev :
+      H ⟨p + (ell - a), by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (p + (ell - a)) - (p : ℤ))
+    (hboundary :
+      H ⟨p + (ell - a) + 1, by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (p + (ell - a)) - (p : ℤ) + 1) :
+    aoyagiLemma4F ell m H ⟨p + (ell - a), by omega⟩ =
+      aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) - 1 := by
+  unfold aoyagiLemma4F
+  change
+    H ⟨p + (ell - a), by omega⟩ -
+          H ⟨p + (ell - a) + 1, by omega⟩ +
+        m ⟨p + (ell - a) + 1, by omega⟩ =
+      aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) - 1
+  rw [hprev, hboundary, aoyagiSelectedWidthNat_of_lt (by omega)]
+  ring
+
+/-- Under Definition 3's selected-width inequalities, equation `(4)`'s
+special-line increment is strictly below `M-1`.
+
+This is the formal obstruction behind the source calculation
+`W_(q+1)-1 <= M-2`. -/
+theorem aoyagiLemma5Eq4_specialIncrement_lt_pred_of_sourceSelected
+    (ell a p : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp_strict : p + 1 < a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hprev :
+      H ⟨p + (ell - a), by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (p + (ell - a)) - (p : ℤ))
+    (hboundary :
+      H ⟨p + (ell - a) + 1, by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (p + (ell - a)) - (p : ℤ) + 1) :
+    aoyagiLemma4F ell m H ⟨p + (ell - a), by omega⟩ < M - 1 := by
+  rw [aoyagiLemma5Eq4_specialIncrement_eq_selectedWidth_sub_one
+    ell a p M m H ha hp_strict hprev hboundary]
+  have hwidth :
+      aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) ≤ M - 1 := by
+    rw [aoyagiSelectedWidthNat_of_lt (by omega)]
+    exact aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell ha hselected hsource ⟨p + (ell - a) + 1, by omega⟩
+  omega
+
+/-- Under Definition 3's selected-width inequalities, equation `(4)`'s
+special-line increment cannot satisfy Lemma 4's two-value condition. -/
+theorem aoyagiLemma5Eq4_specialIncrement_not_twoValue_of_sourceSelected
+    (ell a p : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell) (hp_strict : p + 1 < a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hprev :
+      H ⟨p + (ell - a), by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (p + (ell - a)) - (p : ℤ))
+    (hboundary :
+      H ⟨p + (ell - a) + 1, by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (p + (ell - a)) - (p : ℤ) + 1) :
+    aoyagiLemma4F ell m H ⟨p + (ell - a), by omega⟩ ≠ M - 1 ∧
+      aoyagiLemma4F ell m H ⟨p + (ell - a), by omega⟩ ≠ M := by
+  have hlt :=
+    aoyagiLemma5Eq4_specialIncrement_lt_pred_of_sourceSelected
+      ell a p M m H hell ha hp_strict hselected hsource hprev hboundary
+  constructor <;> omega
+
 /-- In the strict equation `(4)` case, the special boundary value belongs to
 the same-coordinate interval at index `p + (ell-a)` exactly in the balanced
 range `2*p <= a+1`.
@@ -1366,6 +1440,53 @@ theorem aoyagiLemma5Eq3_boundaryValue_gt_upperNat
       T (C.point (ell - a + 1) - 1) := by
   rw [hT.boundary]
   omega
+
+/-- In the nonterminal equation `(3)` special-boundary case, raising the
+boundary chain value by one forces the next Lemma 4 increment to be `M+1`.
+
+This is finite chain arithmetic for supplied adjacent `H` values.  It does
+not construct the displayed vector or prove that those `H` values come from a
+source chart. -/
+theorem aoyagiLemma5Eq3_specialNextIncrement_eq_succ
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (ha_two : 2 ≤ a)
+    (hboundary :
+      H ⟨ell - a + 1, by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (ell - a + 1) + 1)
+    (hnext :
+      H ⟨ell - a + 2, by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (ell - a + 2)) :
+    aoyagiLemma4F ell m H ⟨ell - a + 1, by omega⟩ = M + 1 := by
+  have hsucc :=
+    aoyagiHtildeUpperNat_succ_eq_add_selectedWidthNat_sub_increment
+      ell a (ell - a + 1) M m ha (by omega)
+  have hnot : ¬ ell - a + 1 < ell - a := by omega
+  rw [if_neg hnot] at hsucc
+  unfold aoyagiLemma4F
+  change
+    H ⟨ell - a + 1, by omega⟩ -
+          H ⟨ell - a + 2, by omega⟩ +
+        m ⟨ell - a + 2, by omega⟩ =
+      M + 1
+  rw [hboundary, hnext, hsucc, aoyagiSelectedWidthNat_of_lt (by omega)]
+  ring
+
+/-- In the nonterminal equation `(3)` special-boundary case, the next
+increment cannot satisfy Lemma 4's two-value condition. -/
+theorem aoyagiLemma5Eq3_specialNextIncrement_not_twoValue
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (ha_two : 2 ≤ a)
+    (hboundary :
+      H ⟨ell - a + 1, by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (ell - a + 1) + 1)
+    (hnext :
+      H ⟨ell - a + 2, by omega⟩ =
+        aoyagiHtildeUpperNat ell a M m (ell - a + 2)) :
+    aoyagiLemma4F ell m H ⟨ell - a + 1, by omega⟩ ≠ M - 1 ∧
+      aoyagiLemma4F ell m H ⟨ell - a + 1, by omega⟩ ≠ M := by
+  rw [aoyagiLemma5Eq3_specialNextIncrement_eq_succ
+    ell a M m H ha ha_two hboundary hnext]
+  constructor <;> omega
 
 /-- Equation `(3)`'s special boundary value is not one of the same-coordinate
 interval values at the boundary coordinate.

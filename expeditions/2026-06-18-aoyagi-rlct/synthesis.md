@@ -2752,6 +2752,22 @@ chart-family boundary.  Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-printed-equations-lemma4-obstructions-a5.md`.
 
+The finite increment pieces of the printed-equation obstruction are now in
+Lean.  Theorems
+`aoyagiLemma5Eq3_specialNextIncrement_eq_succ`,
+`aoyagiLemma5Eq3_specialNextIncrement_not_twoValue`,
+`aoyagiLemma5Eq4_specialIncrement_eq_selectedWidth_sub_one`,
+`aoyagiLemma5Eq4_specialIncrement_lt_pred_of_sourceSelected`, and
+`aoyagiLemma5Eq4_specialIncrement_not_twoValue_of_sourceSelected` live in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  They are conditional
+finite-chain results: Eq `(3)`'s nonterminal printed special boundary gives
+next increment `M+1`; Eq `(4)`'s special one-point line gives increment
+`W-1`, strictly below `M-1` under Definition 3.  They do not construct source
+vectors or corrected formulas.  Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-printed-increment-obstructions.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-printed-increment-obstructions-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

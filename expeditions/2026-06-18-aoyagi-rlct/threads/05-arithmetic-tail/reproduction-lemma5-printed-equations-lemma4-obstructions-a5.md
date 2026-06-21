@@ -93,6 +93,13 @@ raised by one.  The increment at `j0` changes from `M` to `M-1`, but if
 `a>=2`, the next increment changes from `M` to `M+1`.  The latter is not
 allowed by Lemma 4.
 
+Lean now records the nonterminal adjacent-increment obstruction:
+
+```text
+aoyagiLemma5Eq3_specialNextIncrement_eq_succ
+aoyagiLemma5Eq3_specialNextIncrement_not_twoValue
+```
+
 When `a=1`, there is no next increment, but the special point is the terminal
 selected endpoint and the printed value is
 
@@ -152,6 +159,14 @@ H_(q-1)-H_q+W_(q+1)
 Since Definition 3 gives `W_(q+1)<=M-1`, this increment is at most `M-2`.
 It is neither `M-1` nor `M`.  Thus equation `(4)` cannot satisfy Lemma 4 as
 printed.
+
+Lean now records this supplied-adjacent-values obstruction:
+
+```text
+aoyagiLemma5Eq4_specialIncrement_eq_selectedWidth_sub_one
+aoyagiLemma5Eq4_specialIncrement_lt_pred_of_sourceSelected
+aoyagiLemma5Eq4_specialIncrement_not_twoValue_of_sourceSelected
+```
 
 The terminal case is also not repaired by a convention: if the special
 one-point line lands on `S_(ell+1)-1`, it assigns

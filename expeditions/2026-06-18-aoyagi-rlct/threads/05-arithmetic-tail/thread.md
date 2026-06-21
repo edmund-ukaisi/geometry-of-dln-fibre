@@ -2456,3 +2456,31 @@ chain there is `0`.
 Do not use equations `(3)`, `(4)`, or `(5)` as source-backed all-branch Lemma
 4 witnesses in their printed form.  The next route must be either corrected
 formula search or a supplied chart-family boundary.
+
+## 2026-06-21 Lean Lemma 5 printed increment obstructions
+
+Statement card:
+`statement-card-a5-lemma5-printed-increment-obstructions.md`.
+Review artifact:
+`review-lemma5-printed-increment-obstructions-a5.md`.
+
+Lean now records the finite increment part of the printed-equation obstruction
+checkpoint:
+
+```text
+aoyagiLemma5Eq3_specialNextIncrement_eq_succ
+aoyagiLemma5Eq3_specialNextIncrement_not_twoValue
+aoyagiLemma5Eq4_specialIncrement_eq_selectedWidth_sub_one
+aoyagiLemma5Eq4_specialIncrement_lt_pred_of_sourceSelected
+aoyagiLemma5Eq4_specialIncrement_not_twoValue_of_sourceSelected
+```
+
+For Eq `(3)`, supplied adjacent `H`-values matching the nonterminal printed
+special boundary make the next Lemma 4 increment equal to `M+1`.  For Eq
+`(4)`, supplied adjacent `H`-values matching the special one-point line make
+the corresponding increment equal to the next selected width minus one; under
+Definition 3's selected-width hypotheses this is strictly below `M-1`.
+
+These are conditional finite-chain theorems only.  They do not construct
+displayed vectors, prove source-label legality, or search for corrected
+formulas.

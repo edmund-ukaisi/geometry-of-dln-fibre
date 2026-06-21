@@ -3382,6 +3382,21 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-printed-equations-lemma4-obstructions-a5.md`.
 
+Latest A5 Lean increment obstruction: the finite supplied-chain increment
+pieces behind the printed-equation obstruction are proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  Names:
+`aoyagiLemma5Eq3_specialNextIncrement_eq_succ`,
+`aoyagiLemma5Eq3_specialNextIncrement_not_twoValue`,
+`aoyagiLemma5Eq4_specialIncrement_eq_selectedWidth_sub_one`,
+`aoyagiLemma5Eq4_specialIncrement_lt_pred_of_sourceSelected`, and
+`aoyagiLemma5Eq4_specialIncrement_not_twoValue_of_sourceSelected`.
+These state only conditional finite consequences of supplied adjacent
+`H`-values; no displayed-vector construction or corrected formula is proved.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-printed-increment-obstructions.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-printed-increment-obstructions-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
