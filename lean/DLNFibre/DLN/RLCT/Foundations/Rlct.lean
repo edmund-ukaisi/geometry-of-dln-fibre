@@ -32,6 +32,13 @@ diverges *at* `c = λ`), so `sSup` is the faithful operation.
 > real-analytic, so the precondition holds for every use here. The equality to the bumped
 > Def-1 value, and `λ(⟨Fᵢ⟩) = λ(∑Fᵢ²)`, are S1 lemmas.
 
+> **Convention honesty — the `F ≡ 0` corner gives `⊤` (not a meaningful RLCT).** If `F ≡ 0`
+> near `w*` (the degenerate, outside-the-precondition case), then `|F|^{−c'} = 0` for every
+> `c' > 0`, so the integrand is integrable for **all** `c'` and the `sSup` is `⊤` — the same
+> `⊤` as the locally-nonvanishing case but for the opposite reason; neither `⊤` is an RLCT, it
+> is the `sSup` value outside the faithfulness precondition. The proved results read `rlctAt`
+> only on `dlnLoss B` (`≢ 0` where the analytic theory applies), so `⊤` never enters them.
+
 ## `rlctOrderAt` (design-spec §3 — FLAGGED SEAM)
 The order θ is the multiplicity of the largest pole of the zeta function `Z(z) = ∫_U |F|^z φ`
 at `z = −λ` (Aoyagi Def 1). Its faithful analytic definition needs meromorphic continuation
