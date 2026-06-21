@@ -2403,6 +2403,17 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5_suppliedEq3UpperComponent_Eq4_interval_insertComponents_card_eq_intervalSize`
   and
   `aoyagiLemma5_suppliedEq3Upper_Eq4_insertComponents_card_eq_offsetCard_add_two`.
+  Also proved the supplied chart-family count boundary in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`:
+  `AoyagiLemma5SuppliedNonbaseFamily`,
+  `AoyagiLemma5SuppliedAdmissibleNonbaseFamily`,
+  `aoyagiLemma5SuppliedNonbaseFamily_branch_card_eq_interval_card_sub_one`,
+  `aoyagiLemma5SuppliedNonbaseFamily_count`,
+  `aoyagiLemma5SuppliedNonbaseFamily_biUnion_count`, and
+  `AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_twoValueCount`.  These
+  prove the aggregate count only from supplied base-value membership,
+  injective erased-interval coverage, cross-coordinate disjointness for the
+  union count, and explicit branchwise Lemma 4 obligations.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
@@ -2413,8 +2424,9 @@ No such claim is formalisation-ready until both fields are filled.
   that Aoyagi's displayed `Ttilde <= T <= Ttilde'` supplies the
   same-coordinate hypotheses, the terminal exponent rewrite into the isolated
   Lemma 3 free-count quadratic, Lemma 4's correspondence-to-`lambda`
-  conclusion, Lemma 5 chart-family admissibility and coverage, pole-order
-  count, and analytic extraction.
+  conclusion, source-backed Lemma 5 chart-family admissibility and coverage
+  from Aoyagi's printed equations, existence of the supplied chart-family
+  boundary data, pole-order count, and analytic extraction.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 

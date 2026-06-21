@@ -2484,3 +2484,49 @@ Definition 3's selected-width hypotheses this is strictly below `M-1`.
 These are conditional finite-chain theorems only.  They do not construct
 displayed vectors, prove source-label legality, or search for corrected
 formulas.
+
+## 2026-06-21 Lean Lemma 5 supplied chart-family count boundary
+
+Reproduction:
+`reproduction-lemma5-supplied-chart-family-count-boundary-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-supplied-chart-family-count-boundary.md`.
+Review artifact:
+`review-lemma5-supplied-chart-family-count-boundary-a5.md`.
+
+The corrected-formula route is not recoverable from Aoyagi's PDF alone, so the
+next honest Lean theorem is a supplied-data boundary.  Lean now defines
+
+```text
+AoyagiLemma5SuppliedNonbaseFamily
+AoyagiLemma5SuppliedAdmissibleNonbaseFamily
+```
+
+and proves:
+
+```text
+aoyagiLemma5SuppliedNonbaseFamily_branch_card_eq_interval_card_sub_one
+aoyagiLemma5SuppliedNonbaseFamily_count
+aoyagiLemma5SuppliedNonbaseFamily_biUnion_count
+AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_twoValueCount
+```
+
+The nonbase family carries, for each interior coordinate, a supplied base value
+in the same-coordinate interval, an injective value map from supplied branches
+onto the interval with that base erased, and cross-coordinate disjointness for
+the finite-union count.  The admissible nonbase extension carries explicit
+branchwise Lemma 4 obligations: `H_0=m_0`, lower/upper `Htilde` chain bounds,
+two-value increments, and same-coordinate value equality.
+
+This proves only the aggregate finite consequence of supplied coverage:
+
+```text
+1 + sum_j |branches j| = a*(ell-a)+1
+1 + |union_j branches j| = a*(ell-a)+1
+```
+
+under the existing interval-count hypotheses.  It does not construct the
+supplied branch family, prove that Aoyagi's printed equations `(3)`, `(4)`, or
+`(5)` satisfy the fields, prove source-label legality, reconstruct the Case
+1(2) chart sequence, prove terminal `tilde t=0`, normal crossings, or RLCT
+extraction.

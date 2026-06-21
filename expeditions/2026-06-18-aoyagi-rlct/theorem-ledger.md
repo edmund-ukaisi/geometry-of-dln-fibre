@@ -3397,6 +3397,28 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-printed-increment-obstructions-a5.md`.
 
+Latest A5 supplied-boundary update: after checking that corrected Lemma 5
+formulas are not recoverable from the PDF alone, the supplied chart-family
+count boundary is Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  Names:
+`AoyagiLemma5SuppliedNonbaseFamily`,
+`AoyagiLemma5SuppliedAdmissibleNonbaseFamily`,
+`aoyagiLemma5SuppliedNonbaseFamily_branch_card_eq_interval_card_sub_one`,
+`aoyagiLemma5SuppliedNonbaseFamily_count`,
+`aoyagiLemma5SuppliedNonbaseFamily_biUnion_count`, and
+`AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_twoValueCount`.
+The nonbase family requires supplied base-value membership, injective coverage
+of each interval with the base erased, and cross-coordinate disjointness for
+the union count.  The admissible nonbase extension requires explicit Lemma 4
+chain obligations for each branch.  This is not a source-backed construction
+from printed equations `(3)`, `(4)`, or `(5)`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-chart-family-count-boundary-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-chart-family-count-boundary.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-supplied-chart-family-count-boundary-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

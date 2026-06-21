@@ -2768,6 +2768,27 @@ vectors or corrected formulas.  Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-printed-increment-obstructions-a5.md`.
 
+The corrected-formula route for Lemma 5 is not recoverable from Aoyagi's PDF
+alone.  The next Lean slice therefore lands only a supplied chart-family count
+boundary in `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  The
+nonbase supplied family carries a base interval value, injective branch-value
+coverage of the interval with that base erased, and cross-coordinate
+disjointness for a finite-union count.  Lean proves
+`aoyagiLemma5SuppliedNonbaseFamily_branch_card_eq_interval_card_sub_one`,
+`aoyagiLemma5SuppliedNonbaseFamily_count`, and
+`aoyagiLemma5SuppliedNonbaseFamily_biUnion_count`, giving
+`1 + sum_j |branches j| = a*(ell-a)+1` and, under disjointness,
+`1 + |union_j branches j| = a*(ell-a)+1`.  The admissible nonbase extension
+`AoyagiLemma5SuppliedAdmissibleNonbaseFamily` carries explicit Lemma 4 witness
+obligations and proves `branch_twoValueCount` for each supplied branch.  This
+is not a construction of the branch family and not a source-backed proof from
+printed equations `(3)`, `(4)`, or `(5)`.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-chart-family-count-boundary-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-chart-family-count-boundary.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-supplied-chart-family-count-boundary-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
