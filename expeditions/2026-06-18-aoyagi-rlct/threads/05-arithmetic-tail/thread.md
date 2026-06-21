@@ -3546,3 +3546,28 @@ This is only an upper-bound wrapper.  It does not prove the classifier from
 Aoyagi's PDF, does not identify `terminalMinimumLabels` with `branchLabelImage`,
 and does not prove source-label legality, injection, back-to-label coverage,
 pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 upper-bound classifier equivalence
+
+Reproduction:
+`reproduction-lemma5-upper-bound-classifier-interface-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-upper-bound-classifier-interface.md`.
+Review artifact:
+`review-lemma5-upper-bound-classifier-equivalence-a5.md`.
+
+Lean now proves the reverse finite-set direction for the supplied upper-bound
+classifier:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage
+AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage
+```
+
+The first theorem unpacks membership in `branchLabelImage` to recover the
+classifier witness `x in fullBranches` with `branchLabel x = label`.  The
+second theorem records that `UpperBoundClassifier` is exactly the no-extra
+inclusion `terminalMinimumLabels ⊆ branchLabelImage`.  This is finite
+bookkeeping for the supplied boundary only.  It does not prove that inclusion
+from Aoyagi's source, nor source-label legality, injection, back-to-label
+coverage, pole order, normal crossings, or RLCT extraction.

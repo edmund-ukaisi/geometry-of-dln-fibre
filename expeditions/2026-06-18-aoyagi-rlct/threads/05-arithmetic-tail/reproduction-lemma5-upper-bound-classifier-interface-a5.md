@@ -56,6 +56,43 @@ From `UpperBoundClassifier C`, Lean can prove the finite containment
 C.terminalMinimumLabels subset C.branchLabelImage.
 ```
 
+Conversely, this containment gives the classifier field by unpacking image
+membership.  If
+
+```text
+label in C.terminalMinimumLabels
+```
+
+and the containment gives
+
+```text
+label in C.branchLabelImage,
+```
+
+then by the definition of `branchLabelImage` as the image of `C.fullBranches`
+under `C.branchLabel`, there is some
+
+```text
+x in C.fullBranches
+```
+
+with
+
+```text
+C.branchLabel x = label.
+```
+
+This is exactly the `UpperBoundClassifier.classify` field.  Thus the supplied
+classifier is equivalent to the no-extra inclusion
+
+```text
+UpperBoundClassifier C
+  iff C.terminalMinimumLabels subset C.branchLabelImage.
+```
+
+This equivalence is finite-set bookkeeping only.  It does not construct the
+containment from Aoyagi's source.
+
 Combining this containment with the elementary bound
 `branchLabelImage.card <= fullBranches.card` and the existing supplied branch
 count gives the upper cardinal inequality

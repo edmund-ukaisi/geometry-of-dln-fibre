@@ -38,6 +38,9 @@ Boundary card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-exactness-source-frontier.md`.
 Current supplied-interface slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-interface-a5.md`.
+This slice now also records that `UpperBoundClassifier` is equivalent to the
+no-extra inclusion `terminalMinimumLabels ⊆ branchLabelImage`; this is finite
+bookkeeping, not a source-backed classifier.
 Current counted-codomain slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-set-a5.md`.
 Current source-facing classifier-boundary slice:

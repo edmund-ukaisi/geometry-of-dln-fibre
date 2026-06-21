@@ -312,6 +312,47 @@ theorem terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier
   rw [← hxl]
   exact Finset.mem_image.mpr ⟨x, hx, rfl⟩
 
+/-- The no-extra containment from terminal minimum labels to the supplied
+branch-label image gives the supplied upper-bound classifier.
+
+This is the reverse finite-set direction to
+`terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier`; it
+does not prove the containment from Aoyagi's source. -/
+theorem upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hsubset : C.terminalMinimumLabels ⊆ C.branchLabelImage) :
+    C.UpperBoundClassifier where
+  classify := by
+    intro label hlabel
+    rcases Finset.mem_image.mp (hsubset hlabel) with ⟨x, hx, hxl⟩
+    exact ⟨x, hx, hxl⟩
+
+/-- The supplied upper-bound classifier is exactly the no-extra containment
+from terminal minimum labels to the supplied branch-label image.
+
+This is a definitional finite-set equivalence for the supplied boundary, not a
+source-backed classifier theorem. -/
+theorem upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) :
+    C.UpperBoundClassifier ↔ C.terminalMinimumLabels ⊆ C.branchLabelImage := by
+  constructor
+  · intro classifier
+    exact C.terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier
+      classifier
+  · intro hsubset
+    exact C.upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage
+      hsubset
+
 /-- A supplied upper-bound classifier gives a cardinal upper bound by the
 branch-label image. -/
 theorem terminalMinimumLabels_card_le_branchLabelImage_card_of_upperBoundClassifier

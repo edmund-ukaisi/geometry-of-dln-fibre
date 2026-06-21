@@ -3365,6 +3365,21 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-classifier-boundary-a5.md`.
 
+The upper-bound classifier interface has also been hardened in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`: Lean now proves
+`AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage`.
+This records that the supplied `UpperBoundClassifier` is exactly the no-extra
+inclusion from terminal minimum labels into the supplied branch-label image.
+It does not prove that inclusion from Aoyagi's source.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-interface-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-upper-bound-classifier-interface.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-equivalence-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

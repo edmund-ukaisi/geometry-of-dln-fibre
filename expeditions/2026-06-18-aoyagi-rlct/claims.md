@@ -2572,6 +2572,12 @@ No such claim is formalisation-ready until both fields are filled.
   package a supplied injective classifier from terminal-minimum labels into
   the counted datum set and derive the upper bound.  They do not construct the
   classifier or prove branch-label exactness.
+  Also hardened the supplied upper-bound classifier interface:
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage`
+  prove that `UpperBoundClassifier` is equivalent to the supplied no-extra
+  inclusion `terminalMinimumLabels ⊆ branchLabelImage`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

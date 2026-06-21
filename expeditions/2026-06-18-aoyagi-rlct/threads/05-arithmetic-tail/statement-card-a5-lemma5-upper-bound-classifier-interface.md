@@ -4,6 +4,8 @@
 
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.UpperBoundClassifier`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_subset_branchLabelImage_of_upperBoundClassifier`
+- `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage`
+- `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_upperBoundClassifier`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_upperBoundClassifier`
 
@@ -12,7 +14,8 @@
 For a supplied terminal-candidate family, an `UpperBoundClassifier` is a
 supplied map-on-membership from every terminal-minimum label to a supplied
 branch whose label is the original label.  It gives the no-extra containment
-and, with supplied branch-label injectivity, the finite upper count.
+and the finite upper count; with supplied branch-label injectivity, it also
+packages terminal-minimum exactness.
 
 ## Inputs
 
@@ -27,6 +30,8 @@ and, with supplied branch-label injectivity, the finite upper count.
 ```text
 C.terminalMinimumLabels subset C.branchLabelImage
 ```
+
+is equivalent to `UpperBoundClassifier C`;
 
 and
 

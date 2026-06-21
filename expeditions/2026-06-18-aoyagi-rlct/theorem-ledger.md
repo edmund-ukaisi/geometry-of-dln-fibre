@@ -4012,6 +4012,21 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-classifier-boundary-a5.md`.
 
+Latest A5 upper-bound classifier equivalence update:
+`Lemma5TerminalBridge.lean` now has
+`AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_of_terminalMinimumLabels_subset_branchLabelImage`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.upperBoundClassifier_iff_terminalMinimumLabels_subset_branchLabelImage`.
+These prove that the supplied `UpperBoundClassifier` is equivalent to the
+no-extra inclusion `terminalMinimumLabels ⊆ branchLabelImage` by unpacking the
+finite image definition.  This is not a source-backed classifier theorem.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-interface-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-upper-bound-classifier-interface.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-equivalence-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
