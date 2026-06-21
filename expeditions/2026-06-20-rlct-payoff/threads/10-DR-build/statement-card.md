@@ -6,7 +6,7 @@ Build: whole `DLNFibre` library green (`lake build`, 3676 jobs); `scripts/sorrie
 Axioms (`#print axioms`): `[propext, Classical.choice, Quot.sound]` on every delivered theorem,
 including the payoff `rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi` — the Cited Aoyagi content is a
 carried structure FIELD (`RlctInterface.cited_aoyagi_dln`), NOT a global axiom.
-Pinned commit: `e1fda77` (branch `expedition/rlct-payoff`).
+Pinned commit: `d3650f4` (branch `expedition/rlct-payoff`).
 
 ## The destination, plainly
 
