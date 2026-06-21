@@ -360,14 +360,21 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   (L1-reuse) + R1.2 multiplicity-control (`h_E+1 ≥ k_E·min Mval` per divisor, NOT codim shortcut); R1.4
   (Fubini-per-chart) plugs fm-2's shift theorem when the lift lands; obligations folded in (unit-absorption via
   S1.3, hcore_top endpoint, min-over-cover factorises n upstream-fixed). The mountain.
-  - **R1.2 ROUTE — RESOLVED (pp + decorrelated Codex):** route = **L1-pivot charts, NO abstract blow-up infra**
-    (reuses block_elimination; the (A) blow-up-infra "second mountain" AVOIDED). The controller product-structure
-    concern is REAL + ADDRESSED: core = ‖∏C^(s)‖² DOES vanish to high order (~2L), so the naive "(B)-light /
-    multiplicity-control vacuous" hope is DEAD — but the resolution charts bring it to **k=1 per-chart** because
-    the **degree-2 initial form is POSITIVE-DEFINITE on I/I²** (F=Σg² ⟹ ord_I(F)=2 ⟹ F∘π=u²·unit). **REAL/pos-def
-    is LOAD-BEARING** (over ℂ it fails exactly at the (x²+y²)² point; we're over ℝ ⟹ safe). So R1 is a genuine
-    resolution (multiplicity-control R1.2b NEEDED + rigorously justified), but a **climbable mountain** built from
-    L1, not a second-infra-mountain. Codex sharpenings folded: (#2) R1.2 stays BARE (divisor inequality), assembly
+  - **R1.2 ROUTE — VERDICT: route B REFUTED → route-A-CONCRETE (pp + decorrelated Codex, INDEPENDENTLY IDENTICAL +
+    witnesses).** ⚠️ CORRECTS my prior "L1-pivot charts resolve it" bank — that reading is WRONG. **THE DECIDER:**
+    a residual product of length q≥2 has ‖∏C̃‖² with ordinary VANISHING ORDER 2q (NOT 2); regular changes (= L1)
+    PRESERVE ordinary order ⟹ **L1-alone can NEVER expose the core as a smooth coordinate-square block** (route B
+    is FALSE). The product-structure concern I gated on was REAL + it KILLS B. WITNESSES: (1,1,1) F=c₁²c₂² (monomial
+    NC, only easy case); (1,2,1) F=(a₁b₁+a₂b₂)² (singular quadratic cone, first non-monomial); (2,2,2) F=‖AB‖²
+    ord_0=4, Hessian ZERO, codim-3 irreducible, rlct=3/2 via radial/angular blow-up. So a **genuine BLOW-UP is
+    REQUIRED + multiplicity-control is NON-VACUOUS** (k=1 on the EXCEPTIONAL divisors, post-blow-up, via the
+    pos-def-REAL initial form — over ℂ fails at (x²+y²)²). **BUT not the abstract-infra mountain: route-A-CONCRETE**
+    = explicit POLYNOMIAL blow-up charts (A=tA'; (2,1,2)=(x,xy,z,zw); etc.) with vanishing Jacobian on the
+    exceptional locus, **S1.1 carrying the change-of-variables** (its hsurj+hImE hyps are EXACTLY for the blow-up's
+    non-injectivity / null exceptional image — the 10th-finding design was built for this). NO Mathlib blow-up
+    primitive. R1 = MEDIUM (explicit-poly-chart resolution + S1.1 + non-vacuous mult-control + cover). fm: do NOT
+    build (B); the validate-small φ's (φ=id (1,1,1); explicit-poly (2,1,2)/(2,2,2)) ARE route-A-concrete charts.
+    Codex sharpenings folded: (#2) R1.2 stays BARE (divisor inequality), assembly
     applies 1.unit-absorption → 2.monomial_rlct → 3.R1.2 → 4.S1Fubini SEPARATELY; (#3) Mval = CORE codim (reduced
     widths), assembly = **n/2 + B/2** (don't double-count the regular n). **fm seeded with R1.2a/b** (axisRatio
     arithmetic, zero-dep) + the route-independent (1,1,1) gate (xcheck vs `case111_rlct`); pp designing R1.1 charts
@@ -386,15 +393,16 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
     R1.1 charts resolve the CORE ‖∏C‖² (NOT full dlnLoss). Supersedes the stale-docstring item (whole stmt re-scoped).
 - **S1.5 restatement+wire deferred to ONE pass** at fm-2's Fubini lift-close: I relay the complete signature
   (hGmeas + hGne + `[ProperSpace]`/`[IsFiniteMeasureOnCompacts]` instances) → fm restates + wires `exact` in one go.
-- **FUBINI: ALL ATOMS PROVEN** (fm-2, S1Fubini.lean @e2a3f0c, 302 LoC, axiom-clean): both integral directions
-  (`step_integrableOn` ≥, `step_lintegral_top` ≤ cusp) + `admissible_downset` (the hardest sub-piece, rpow
-  two-sided bound on a bounded finite-measure nbhd; needs `[ProperSpace]`+`[IsFiniteMeasureOnCompacts]`) +
-  core_admissible_of_lt/_zero + cmpF + oneDimCuspVol + inner_slice + cusp_lower_bound. Measure-route = B (1-D
-  interval vol, no EuclideanSpace/addHaar; statement-shape (A) abstract-core). REMAINING = pure ENNReal sSup
-  BOOKKEEPING (no new math, no walls): n=1 `step_rlct` le_antisymm (≥ split q=a+b + step_integrableOn; ≤
-  step_lintegral_top contrapositive) + iterate over n coords → n/2+λ_core. fm-2 PAUSED at this clean green
-  checkpoint (good discipline — not grinding ENNReal coercions tired) → closing it next as a focused task
-  (template = its own smoothBlock1D_rlct). ~80% done by content. Both directions carry hHne/hGne.
+- **FUBINI n=1 EQUALITY PROVEN** (fm-2, S1Fubini.lean @e1cf73c, 564 LoC / 17 thms, ALL axiom-clean): `step_rlct :
+  rlctAtOn(x²+H)(0,y0) = ½ + rlctAtOn H y0` (H≥0, Measurable H, hHne germ-a.e.≠0; core space ProperSpace +
+  IsFiniteMeasureOnCompacts). The **hardest analytic content of the whole expedition is DONE** — both directions:
+  ≥ (step_rlct_ge: integrability split + sSup-lower-bound, ENNReal split idiom, admissible_downset); ≤
+  (step_rlct_le: the cusp — step_lintegral_top contrapositive + core_adm_of_joint_adm open-witness wrapper via the
+  {H≤R²}∪{H>R²} split; NO continuity needed for measurable H, the resolved subtlety). Measure-route B (1-D
+  interval vol, no addHaar/EuclideanSpace bridge — lighter; cusp proven ONCE + reused per induction). REMAINING =
+  ITERATION (bookkeeping): rlctAtOn-transport-under-measure-preserving-homeo lemma (~40-60) + Fin-peeling
+  induction → `rlctAtOn(Σxᵢ²+G²)=n/2+rlctAtOn(G²)` = the Skeleton `rlct_additive_smooth_block`. fm-2 building it;
+  then report final sig → fm restate+wire (one pass) → controller aggregator-wire + green-gate → rv-2 audit.
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE

@@ -334,3 +334,26 @@ compounding lessons:
    So any "RLCT = ⨅ over charts" statement must be about the CORE (singular part) alone; the regular n/2 lives in a
    separate additive step. Keep resolution (min over charts) and the regular block (additive Fubini) in separate
    rungs — conflating them produces a min=sum type error.
+
+## 2026-06-21 — route-before-lines paid off: the product-structure concern KILLED the cheap route; and a fork can have a third answer (R1.2 verdict)
+
+The controller flagged a concern in the cheap R1 route (B: "iterated-L1 exposes the core as a regular sequence of
+coordinates") — that the core ‖∏C‖² is a PRODUCT, so naively not linear coordinates — and gated the build on pp
+validating it (decorrelated, witness-or-refute). The verdict (pp + Codex, independently identical, with witnesses):
+route B is FALSE. THE DECIDER: a residual product of length q≥2 has ordinary vanishing order 2q, and regular
+coordinate changes PRESERVE ordinary order, so L1-alone can never reach the order-2 of a smooth coordinate-square
+block. Witnesses: (1,2,1) F=(a₁b₁+a₂b₂)² (singular quadratic cone), (2,2,2) F=‖AB‖² (ord 4, Hessian zero, needs a
+genuine blow-up). Lessons:
+1. **The route-before-lines gate is worth the round-trip.** Had fm built the (B) general path, it would have hit
+   the order-2q wall after sinking ~150-250 lines. The concern → decorrelated validation → refutation cost two
+   messages and zero Lean. ALWAYS validate the load-bearing route claim (with a witness, decorrelated) before the
+   formaliser commits lines — especially when a cheap route seems "too good" (here: "R1 is trivially light").
+2. **A route fork is not necessarily binary.** The controller framed it as (B) L1-light vs (A) abstract-blow-up-infra
+   mountain. The validated answer was a THIRD option: (A)-CONCRETE — explicit polynomial blow-up charts (vanishing
+   Jacobian on the exceptional locus), carried by the existing S1.1 change-of-variables (whose hsurj+hImE hyps, added
+   for the 10th finding, are EXACTLY for a blow-up's non-injectivity + null exceptional image). Neither cheap-but-false
+   nor needs-new-infra. When validating a fork, ask "is there a middle route?" — don't accept the binary.
+3. **The controller's own reconciliation can be wrong — let the decorrelated check correct it.** The controller had
+   written "if (B) holds, multiplicity-control is vacuous + R1 is light." (B) was refuted, so that's dead; the bank
+   was corrected. Bank conclusions as provisional until the validation lands; don't let an elegant-but-unverified
+   reconciliation harden into a planning assumption.
