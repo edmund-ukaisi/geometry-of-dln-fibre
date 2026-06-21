@@ -447,6 +447,73 @@ theorem sumSq4_box_lt_top (T : ℝ) (hT : 0 < T) (c' : NNReal) (hc' : (c':ℝ) <
   rw [IntegrableOn, Integrable, hasFiniteIntegral_iff_ofReal hnn] at hint
   convert hint.2 using 1
 
+/-! ## The δ-block shear (block → Σ⁴ squares, measure-preserving)
+
+`block z = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` equals, under the det-1 measure-preserving shear `shearΦ`
+(`z5 ↦ z5+z4z1`, `z6 ↦ z6+z4z2`; the off-diagonal `z4`-coupling shifted into the squared slots), the
+clean 4-D sum of squares `Σ_{i∈{1,2,5,6}} (shearΦ z)ᵢ²`. Two `measurePreserving_shearAt` (bridged to
+the explicit `Function.update` form via the `succAbove`-index `decide`), composed. The block residual
+then transports to the smooth-4D `sumSq4_box_lt_top` terminal (RLCT 2 > 3/2). -/
+
+-- single shear m.p. helper (proven above)
+theorem shear5_mp : MeasurePreserving
+    (fun z : Fin 7 → ℝ => Function.update z 5 (z 5 + z 4 * z 1))
+    (volume : Measure (Fin 7 → ℝ)) volume := by
+  have h := measurePreserving_shearAt (n := 6) 5 (fun w : Fin 6 → ℝ => w 4 * w 1) (by fun_prop)
+  have hidx4 : ((5:Fin 7).succAbove 4) = 4 := by decide
+  have hidx1 : ((5:Fin 7).succAbove 1) = 1 := by decide
+  have heq : (fun z : Fin 7 → ℝ => Function.update z 5
+          (z 5 + (fun w : Fin 6 → ℝ => w 4 * w 1) (fun k => z ((5:Fin 7).succAbove k))))
+        = (fun z : Fin 7 → ℝ => Function.update z 5 (z 5 + z 4 * z 1)) := by
+    funext z; simp only [hidx4, hidx1]
+  rw [← heq]; exact h
+
+-- shear 6 (add z4·z2 to z6)
+theorem shear6_mp : MeasurePreserving
+    (fun z : Fin 7 → ℝ => Function.update z 6 (z 6 + z 4 * z 2))
+    (volume : Measure (Fin 7 → ℝ)) volume := by
+  have h := measurePreserving_shearAt (n := 6) 6 (fun w : Fin 6 → ℝ => w 4 * w 2) (by fun_prop)
+  have hidx4 : ((6:Fin 7).succAbove 4) = 4 := by decide
+  have hidx2 : ((6:Fin 7).succAbove 2) = 2 := by decide
+  have heq : (fun z : Fin 7 → ℝ => Function.update z 6
+          (z 6 + (fun w : Fin 6 → ℝ => w 4 * w 2) (fun k => z ((6:Fin 7).succAbove k))))
+        = (fun z : Fin 7 → ℝ => Function.update z 6 (z 6 + z 4 * z 2)) := by
+    funext z; simp only [hidx4, hidx2]
+  rw [← heq]; exact h
+
+-- composed shear Φ = shear6 ∘ shear5 (order: shear5 first since shear6 doesn't touch z5)
+noncomputable def shearΦ (z : Fin 7 → ℝ) : Fin 7 → ℝ :=
+  Function.update (Function.update z 5 (z 5 + z 4 * z 1)) 6 (z 6 + z 4 * z 2)
+
+theorem shearΦ_mp : MeasurePreserving shearΦ (volume : Measure (Fin 7 → ℝ)) volume := by
+  have hcomp := shear6_mp.comp shear5_mp
+  have heq : (fun z : Fin 7 → ℝ => Function.update z 6 (z 6 + z 4 * z 2)) ∘
+      (fun z : Fin 7 → ℝ => Function.update z 5 (z 5 + z 4 * z 1)) = shearΦ := by
+    funext z
+    unfold shearΦ
+    simp only [Function.comp_apply]
+    -- shear6 of (shear5 z): value at 6 reads coords 4,2 of (shear5 z), which are unchanged (≠5)
+    rw [Function.update_of_ne (show (4:Fin 7) ≠ 5 by decide),
+        Function.update_of_ne (show (2:Fin 7) ≠ 5 by decide),
+        Function.update_of_ne (show (6:Fin 7) ≠ 5 by decide)]
+  rw [← heq]; exact hcomp
+
+-- block identity: block(z) = (Σ over {1,2,5,6} of (shearΦ z)_i²)
+theorem block_eq_shear (z : Fin 7 → ℝ) :
+    (z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2
+      = ((shearΦ z) 1)^2 + ((shearΦ z) 2)^2 + ((shearΦ z) 5)^2 + ((shearΦ z) 6)^2 := by
+  unfold shearΦ
+  -- slot1: ≠6,≠5 ; slot2: ≠6,≠5 ; slot5: ≠6, =5 ; slot6: =6
+  rw [show ((Function.update (Function.update z 5 (z 5 + z 4 * z 1)) 6 (z 6 + z 4 * z 2)) 1)
+        = z 1 from by rw [Function.update_of_ne (by decide), Function.update_of_ne (by decide)],
+      show ((Function.update (Function.update z 5 (z 5 + z 4 * z 1)) 6 (z 6 + z 4 * z 2)) 2)
+        = z 2 from by rw [Function.update_of_ne (by decide), Function.update_of_ne (by decide)],
+      show ((Function.update (Function.update z 5 (z 5 + z 4 * z 1)) 6 (z 6 + z 4 * z 2)) 5)
+        = z 5 + z 4 * z 1 from by rw [Function.update_of_ne (by decide), Function.update_self],
+      show ((Function.update (Function.update z 5 (z 5 + z 4 * z 1)) 6 (z 6 + z 4 * z 2)) 6)
+        = z 6 + z 4 * z 2 from by rw [Function.update_self]]
+  ring
+
 /-- The step-3 block residual finiteness over a bounded box (the 4th-level recursion: blow up
 `block = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` along its vertex, `blockForm_step3` + `step3_unit_ge_one`
 + `block_leaf_integrable`). The δ-cell's inner integral. -/
