@@ -1006,9 +1006,28 @@ theorem cleanCore_perm (c : ℕ) (m : Fin (c + 1) → ℕ) (σ : Equiv.Perm (Fin
 `M`, not a free choice), so this is the faithful Aoyagi Lemma 3 (`min_{T∈Adm} M(T) = clean form at
 the smallest widths), NOT the weak existential. Verified total 1360/1360 (pp). It is **NOT** an
 extremum over `c` — both `min_c` and `max_c` are refuted (`M=[1,1,4]`, `[2,2,2]`); the `∃ c` is the
-achiever (the `c` whose balanced split on the smallest widths is `Adm`-admissible). Proof route
-(Aoyagi Lemma 3): balanced-split-minimises-`Σq²` (exchange) + `Adm` reparametrisation + per-`c`
-lower bound + constructed achiever. -/
+achiever (the `c` whose balanced split on the smallest widths is `Adm`-admissible).
+
+**Verified route (re-derived + numerically pinned, fm rung0-defs).** Write `a` for the entries of
+`M` sorted ascending (`a k = sortedSmallest M L`'s prefix). For `1 ≤ c ≤ L` put
+`Φ c = 2·cleanCore c (a₀,…,a_c)` (so `lambdaCore M = ½·minMval`, and the target is
+`minMval M = Φ c*`). The achiever is `c* = the largest c ∈ {1,…,L}` satisfying the **cumulative
+ceiling** predicate `good c := ∀ 1 ≤ i ≤ c, aᵢ ≤ ⌈Sᵢ/i⌉` where `Sᵢ = a₀+⋯+aᵢ` — equivalently in ℕ
+`i·aᵢ ≤ Sᵢ + i − 1` (`c = 1` is always good, so `c*` exists; verified `lambdaCore = cleanCore c*`
+over **all** `M` with widths `0..3`, `L ≤ 4`, zero failures). NOTE the prior route line ("per-`c`
+lower bound", `min_c`) was the *wrong* (refuted) framing, and Codex's single-`a_c ≤ ⌈S_c/c⌉` test is
+also wrong (278/3900 fail — needs the **cumulative** ∀i≤c); both corrected here.
+
+**Sub-lemmas (the remaining work — the documented keystone, ~250-350 lines):**
+1. `balancedSplit_min` — DONE (above): `∑ balancedSplitᵢ² ≤ ∑ qᵢ²` at fixed `∑q`. The LB engine.
+2. `good`/`cstar` (self-contained ℕ arithmetic): `c = 1` good; `c*` = largest good `c` exists; `1 ≤ c* ≤ L`.
+3. **Lower bound** `Φ c* ≤ Mval M T` for every `T ∈ Adm M`. Crux: only strict-descent positions of
+   `u = [M⁰,T⁰,…,Tᴸ⁻¹=0]` contribute (zero gap elsewhere), giving `Mval = ∑ₖ gapₖ(wₖ − Hₖ)`
+   (`H` the level sequence, `w` the `M`-values at the breakpoints); complete the square + `balancedSplit_min`.
+4. **Achiever** `∃ T* ∈ Adm M, Mval M T* = Φ c*` (automatic from the finite `inf'` once 3 holds, but the
+   value-match needs the breakpoint reparametrisation of the minimiser). The hard `Fin`-reindexing
+   (descent set → `(c, gaps, widths)`) lives in 3+4 — the perm-invariance wall reappears as the
+   minimiser's breakpoint widths needing to be tied to `a`'s prefix. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
   sorry
