@@ -3832,6 +3832,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
 
+Latest A5 Eq3 tail upper Eq5 coverage update:
+`Lemma5DisplayedVector.lean` now has
+`aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt` and
+`aoyagiLemma5_suppliedEq3TailUpper_Eq5_offsets_eq_intervalValueSetNat_of_boundary_lt`.
+For ordinary selected blocks strictly after Eq3's special boundary and before
+the terminal endpoint, `ell-a+1 < p < ell`, the supplied Eq3 tail clause gives
+the component value `Htilde'_p`; Eq5 non-rising coverage then fills the
+same-coordinate interval.  This does not apply at `p=ell-a+1` or `p=ell`, and
+it does not prove that this component is the vector's own source label, nor
+Eq3 source-label legality, introduced-label status, terminality,
+all-coordinate branch-family coverage, pole order, normal crossings, or RLCT
+extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-tail-upper-eq5-coverage.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -3254,3 +3254,32 @@ This is still supplied endpoint bookkeeping.  It does not prove Eq3, Eq4, or
 Eq5 legally supplies the endpoint values, and it does not prove terminality,
 chart coverage, branch-family coverage, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3 tail upper Eq5 coverage
+
+Reproduction:
+`reproduction-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-tail-upper-eq5-coverage.md`.
+Review artifact:
+`review-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
+
+Lean now records an ordinary-tail Eq3 upper endpoint instantiation:
+
+```text
+aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt
+aoyagiLemma5_suppliedEq3TailUpper_Eq5_offsets_eq_intervalValueSetNat_of_boundary_lt
+```
+
+If `ell-a+1 < p` and `p < ell`, then the selected-block left endpoint
+`C.point p-1` is strictly after Eq3's special boundary and still inside
+ordinary selected block `p`.  The supplied Eq3 tail clause therefore gives the
+component value `Htilde'_p`.  Since this coordinate is outside the rising
+region, Eq5 offsets miss only the upper endpoint, so inserting the Eq3 tail
+component fills the same-coordinate interval.
+
+This deliberately excludes the special boundary `p=ell-a+1` and terminal
+endpoint `p=ell`.  It is component-value and finite-set bookkeeping only: no
+own-source-label status, Eq3 source-label legality, introduced-label status,
+displayed-vector construction, all-coordinate branch-family coverage, pole
+order, normal crossings, or RLCT extraction is claimed.

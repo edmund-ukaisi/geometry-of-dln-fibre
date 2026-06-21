@@ -1656,6 +1656,31 @@ theorem aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
   exact hT.upper p (C.point p - 1) hp_pos hp_c
     (C.leftEndpoint_mem_block hp_lt_ell)
 
+/-- A supplied equation-`(3)` piecewise certificate has the upper endpoint value
+on ordinary selected blocks strictly after the special Eq3 boundary.
+
+The strict guard `ell-a+1 < p` avoids the special boundary value
+`Htilde'_(ell-a+1)+1`; the guard `p<ell` keeps the selected-block left endpoint
+inside an ordinary half-open selected block rather than the terminal endpoint.
+This is only a component-value theorem, not source-label legality. -/
+theorem aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hboundary_lt : ell - a + 1 < p) (hp_lt_ell : p < ell)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    T (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p := by
+  have hblock : C.block p (C.point p - 1) :=
+    C.leftEndpoint_mem_block hp_lt_ell
+  have hafter : C.point (ell - a + 1) - 1 < C.point p - 1 := by
+    have hstrict :
+        C.point (ell - a + 1) < C.point p :=
+      C.point_strict_of_lt hboundary_lt (by omega)
+    have hpos :
+        1 ≤ C.point (ell - a + 1) :=
+      C.point_pos_of_lt (by omega)
+    omega
+  exact hT.tail p (C.point p - 1) (by omega) hblock hafter
+
 /-- In the boundary case `a=1`, a supplied equation `(3)` certificate assigns
 the terminal selected endpoint the value `1`.
 
@@ -2298,6 +2323,35 @@ theorem aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNa
       aoyagiHtildeIntervalValueSetNat ell a M m p :=
   aoyagiLemma5_suppliedEq3Upper_Eq5_offsets_eq_intervalValueSetNat_of_plateau
     ell a p M m C layerWidth3 T3 hp_pos ha_lt_p hp_c hT3
+
+/-- In the ordinary Eq3 tail region, a supplied Eq3-shaped upper component and
+the Eq5 strict offsets fill the same-coordinate interval.
+
+This instantiates the supplied upper endpoint with the Eq3 tail component.
+The theorem deliberately excludes the special Eq3 boundary and the terminal
+endpoint.  It is not source-label legality or all-coordinate coverage. -/
+theorem aoyagiLemma5_suppliedEq3TailUpper_Eq5_offsets_eq_intervalValueSetNat_of_boundary_lt
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth3 T3 : ℕ → ℤ)
+    (hboundary_lt : ell - a + 1 < p) (hp_lt_ell : p < ell)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3) :
+    insert (T3 (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hp_pos : 1 ≤ p := by omega
+  have hp : p < ell + 1 := by omega
+  have hnot : ¬ (p ≤ a ∧ p ≤ ell - a) := by
+    intro h
+    omega
+  have hexcess_le :=
+    aoyagiLemma5IntervalExcess_le_pred_of_not_le_min
+      ell a p hT3.a_le_ell hp_pos hnot
+  have hupper :=
+    aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt
+      ell a p M m C layerWidth3 T3 hboundary_lt hp_lt_ell hT3
+  exact
+    aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
+      ell a p M m C T3 hT3.a_le_ell hp hexcess_le hupper
 
 /-- In the rising region, the lower endpoint together with the strict equation
 `(5)` offset values is contained in the same-coordinate interval.

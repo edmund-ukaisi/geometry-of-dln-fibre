@@ -3180,6 +3180,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
 
+The ordinary Eq3 tail region now supplies one more upper-endpoint
+instantiation for Eq5 coverage.  `aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt`
+reads the supplied Eq3 tail clause at the selected-block left endpoint when
+`ell-a+1 < p` and `p < ell`, proving the selected-block component value is
+`Htilde'_p`.
+`aoyagiLemma5_suppliedEq3TailUpper_Eq5_offsets_eq_intervalValueSetNat_of_boundary_lt`
+then combines that upper endpoint with the Eq5 non-rising erase-upper theorem
+to fill the same-coordinate interval.  This explicitly excludes the Eq3
+special boundary and terminal endpoint and does not prove Eq3 label legality,
+introduced-label status, all-coordinate source coverage, or the Lemma 5 order
+count.  The source scout separately warned not to read this component-value
+fact as an own-source-label or all-endpoint-realisation theorem.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-tail-upper-eq5-coverage-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-tail-upper-eq5-coverage.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
