@@ -299,6 +299,48 @@ theorem step_lintegral_top
       = ((2 : ℝ) ^ (-c) * 2) * ((H y) ^ (-c) * (H y) ^ ((1 : ℝ) / 2)) * wt y := by ring
     _ = 2 ^ (1 - c) * (H y) ^ ((1 : ℝ) / 2 - c) * wt y := by rw [c2, chy]
 
+/-! ## The threshold-lift, `≤` direction (`n = 1`) — the cusp contrapositive -/
+
+/-- **Joint-integrable ⟹ core-integrable at the shifted exponent** (the `≤`-direction key, the
+contrapositive of `step_lintegral_top`). If `|x² + H|^{−c}` is integrable on the rectangle
+`Icc (-R) R ×ˢ V` (with `H ≤ R²` on `V`, so the cusp sits inside, and `H ≠ 0` a.e. on `V`), then
+`|H|^{−(c − 1/2)}` is integrable on `V`. Proof: were it not, its `lintegral` on `V` would be `⊤`, so
+(factoring `2^{1−c}`) the cusp hypothesis `hcore_top` holds, and `step_lintegral_top` forces
+the joint `lintegral` to `⊤` — contradicting `IntegrableOn.setLIntegral_lt_top`. -/
+theorem core_int_of_joint_int {Y : Type*} [MeasureSpace Y] [SigmaFinite (volume : Measure Y)]
+    (H : Y → ℝ) (hH : ∀ z, 0 ≤ H z) (hHmeas : Measurable H)
+    (c R : ℝ) (hc : 1 / 2 < c) (hR : 0 < R) (V : Set Y) (hVmeas : MeasurableSet V)
+    (hHne : ∀ᵐ z ∂(volume.restrict V), H z ≠ 0) (hHle : ∀ z ∈ V, H z ≤ R ^ 2)
+    (hjoint : IntegrableOn (fun p : ℝ × Y => |p.1 ^ 2 + H p.2| ^ (-c) * (1 : ℝ))
+      ((Icc (-R) R) ×ˢ V) volume) :
+    IntegrableOn (fun z => |H z| ^ (-(c - 1 / 2))) V volume := by
+  by_contra hcon
+  have htop : ∫⁻ z in V, ENNReal.ofReal (|H z| ^ (-(c - 1 / 2))) = ⊤ := by
+    by_contra h
+    refine hcon ⟨(by fun_prop : Measurable (fun z => |H z| ^ (-(c - 1 / 2)))).aemeasurable
+      |>.aestronglyMeasurable, ?_⟩
+    rw [hasFiniteIntegral_iff_enorm]
+    have hz : ∀ z, ‖|H z| ^ (-(c - 1 / 2))‖ₑ = ENNReal.ofReal (|H z| ^ (-(c - 1 / 2))) :=
+      fun z => by
+      rw [← ofReal_norm_eq_enorm, Real.norm_eq_abs,
+        abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+    simp_rw [hz]; exact lt_top_iff_ne_top.2 h
+  have hcore_top : ∫⁻ z in V, ENNReal.ofReal (2 ^ (1 - c) * (H z) ^ (1 / 2 - c) *
+      (fun _ => (1 : ℝ)) z) = ⊤ := by
+    have heq : ∀ z, ENNReal.ofReal (2 ^ (1 - c) * (H z) ^ (1 / 2 - c) * (1 : ℝ))
+        = ENNReal.ofReal (2 ^ (1 - c)) * ENNReal.ofReal (|H z| ^ (-(c - 1 / 2))) := fun z => by
+      rw [mul_one, ← ENNReal.ofReal_mul (by positivity)]
+      congr 1
+      rw [abs_of_nonneg (hH z), show (1 : ℝ) / 2 - c = -(c - 1 / 2) by ring]
+    simp only [heq]
+    rw [lintegral_const_mul' _ _ (by simp : ENNReal.ofReal (2 ^ (1 - c)) ≠ ⊤), htop,
+      ENNReal.mul_top (by simp [show (0 : ℝ) < 2 ^ (1 - c) from by positivity])]
+  have hjtop := step_lintegral_top H (fun _ => 1) hH (fun _ => zero_le_one) hHmeas measurable_const
+    c R (by linarith) hR V hVmeas hHne hHle hcore_top
+  have hjfin := hjoint.setLIntegral_lt_top
+  rw [hjtop] at hjfin
+  exact (lt_irrefl ⊤) hjfin
+
 /-! ## The threshold-lift, `≥` direction (`n = 1`)
 
 Assembling the integral `≥` engine into the RLCT inequality `½ + λ_H ≤ rlctAtOn(x² + H)`. The core
