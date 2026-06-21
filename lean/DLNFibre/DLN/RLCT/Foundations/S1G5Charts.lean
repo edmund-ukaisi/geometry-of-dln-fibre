@@ -372,4 +372,106 @@ theorem argmaxCellOn_aedisjoint {N : ℕ} (active : Finset (Fin N)) (p q : Fin N
     exact le_antisymm (hqd p hp) (hpd q hq)
   exact measure_mono_null hov (absEq_null p q hpq)
 
+/-! ## The flat-subset chart map and its per-node obligations (`hφ'`/`hinj`/image)
+
+`pivotBlowupOn active p` blows up the active block at pivot `p` on flat `Fin N → ℝ`, identity on the
+inactive (spectator) coords. Its fderiv is `pivotBlowupOnDeriv` (an "arrow" linear map: diagonal +
+pivot column); `InjOn` off `{x p = 0}`; image of the bounded chart domain = `argmaxCellOn`. These
+are the flat-carrier analogues of the full-block `pivotBlowup` node. The Jacobian
+`det = (x p)^(active.card-1)` is handled separately. -/
+
+/-- The flat-subset pivot blow-up: pivot `x_p`, active `j ≠ p` ↦ `x_p·x_j`, spectators fixed. -/
+noncomputable def pivotBlowupOn {N : ℕ} (active : Finset (Fin N)) (p : Fin N) (x : Fin N → ℝ) :
+    Fin N → ℝ :=
+  fun i => if i = p then x p else if i ∈ active then x p * x i else x i
+
+/-- The fderiv of `pivotBlowupOn`: the arrow map `v ↦ (v_p at p; x_p·v_i + x_i·v_p at active i≠p;
+v_i at spectators)`. -/
+noncomputable def pivotBlowupOnDeriv {N : ℕ} (active : Finset (Fin N)) (p : Fin N) (x : Fin N → ℝ) :
+    (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) :=
+  ContinuousLinearMap.pi (fun i =>
+    if i = p then ContinuousLinearMap.proj p
+    else if i ∈ active then (x p) • ContinuousLinearMap.proj i + (x i) • ContinuousLinearMap.proj p
+    else ContinuousLinearMap.proj i)
+
+/-- The flat-subset chart domain (active non-pivot coords bounded; pivot and spectators free). -/
+def chartDomOn {N : ℕ} (active : Finset (Fin N)) (p : Fin N) : Set (Fin N → ℝ) :=
+  {x | ∀ j ∈ active, j ≠ p → |x j| ≤ 1}
+
+/-- The flat-subset exceptional locus (the pivot-zero hyperplane). -/
+def pivotZeroOn {N : ℕ} (p : Fin N) : Set (Fin N → ℝ) := {x | x p = 0}
+
+/-- **(node C¹).** `pivotBlowupOn` has fderiv `pivotBlowupOnDeriv` on any set: componentwise the
+pivot/spectator rows are projections, the active rows are products of two projections. -/
+theorem pivotBlowupOn_hasFDerivWithinAt {N : ℕ} (active : Finset (Fin N)) (p : Fin N)
+    (s : Set (Fin N → ℝ)) (x : Fin N → ℝ) :
+    HasFDerivWithinAt (pivotBlowupOn active p) (pivotBlowupOnDeriv active p x) s x := by
+  apply hasFDerivWithinAt_pi''
+  intro i
+  rw [pivotBlowupOnDeriv, ContinuousLinearMap.proj_pi]
+  rcases eq_or_ne i p with rfl | hi
+  · have hc : (fun y : Fin N → ℝ => pivotBlowupOn active i y i) = (fun y => y i) := by
+      funext y; unfold pivotBlowupOn; rw [if_pos rfl]
+    rw [if_pos rfl, hc]; exact hasFDerivWithinAt_apply i x s
+  · by_cases ha : i ∈ active
+    · have hc : (fun y : Fin N → ℝ => pivotBlowupOn active p y i) = (fun y => y p * y i) := by
+        funext y; unfold pivotBlowupOn; rw [if_neg hi, if_pos ha]
+      rw [if_neg hi, if_pos ha, hc]
+      exact (hasFDerivWithinAt_apply p x s).mul (hasFDerivWithinAt_apply i x s)
+    · have hc : (fun y : Fin N → ℝ => pivotBlowupOn active p y i) = (fun y => y i) := by
+        funext y; unfold pivotBlowupOn; rw [if_neg hi, if_neg ha]
+      rw [if_neg hi, if_neg ha, hc]; exact hasFDerivWithinAt_apply i x s
+
+/-- **(node inj).** `pivotBlowupOn` is injective off `{x p = 0}`: `x p = y p` (pivot), `x i = y i`
+(active via `mul_left_cancel`, spectators directly). -/
+theorem pivotBlowupOn_injOn {N : ℕ} (active : Finset (Fin N)) (p : Fin N) (s : Set (Fin N → ℝ)) :
+    InjOn (pivotBlowupOn active p) (s \ {x | x p = 0}) := by
+  rintro x ⟨_, hx⟩ y ⟨_, _⟩ hxy
+  simp only [Set.mem_setOf_eq] at hx
+  have hx0 : x p ≠ 0 := hx
+  have hpeq : x p = y p := by have := congrFun hxy p; simpa [pivotBlowupOn] using this
+  funext i
+  rcases eq_or_ne i p with rfl | hi
+  · exact hpeq
+  · by_cases ha : i ∈ active
+    · have hi' := congrFun hxy i
+      simp only [pivotBlowupOn, if_neg hi, if_pos ha] at hi'
+      rw [← hpeq] at hi'
+      exact mul_left_cancel₀ hx0 hi'
+    · have hi' := congrFun hxy i
+      simp only [pivotBlowupOn, if_neg hi, if_neg ha] at hi'
+      exact hi'
+
+/-- **(image char).** `pivotBlowupOn '' (chartDomOn \ pivotZeroOn) = argmaxCellOn active p`
+(`p ∈ active`). Forward: `|x_p·x_j| ≤ |x_p|` (active `|x_j| ≤ 1`); spectators free. Backward: `x_p =
+y_p`, active `x_j = y_j/y_p` (`|x_j| ≤ 1`), spectators `x_i = y_i`. -/
+theorem pivotBlowupOn_image {N : ℕ} (active : Finset (Fin N)) (p : Fin N) (hp : p ∈ active) :
+    (pivotBlowupOn active p) '' (chartDomOn active p \ pivotZeroOn p) = argmaxCellOn active p := by
+  ext y
+  constructor
+  · rintro ⟨x, ⟨hxdom, hxnz⟩, rfl⟩
+    simp only [chartDomOn, Set.mem_setOf_eq] at hxdom
+    simp only [pivotZeroOn, Set.mem_setOf_eq] at hxnz
+    refine ⟨by simp only [pivotBlowupOn]; exact hxnz, fun j hj => ?_⟩
+    rcases eq_or_ne j p with rfl | hjp
+    · simp only [pivotBlowupOn]; exact le_refl _
+    · simp only [pivotBlowupOn, if_neg hjp, if_pos hj, abs_mul]
+      calc |x p| * |x j| ≤ |x p| * 1 :=
+            mul_le_mul_of_nonneg_left (hxdom j hj hjp) (abs_nonneg _)
+        _ = |x p| := mul_one _
+  · rintro ⟨hyp, hybound⟩
+    refine ⟨fun i => if i = p then y p else if i ∈ active then y i / y p else y i,
+      ⟨fun j hj hjp => ?_, ?_⟩, ?_⟩
+    · simp only [if_neg hjp, if_pos hj, abs_div, div_le_one (abs_pos.2 hyp)]; exact hybound j hj
+    · simp only [pivotZeroOn, Set.mem_setOf_eq]; exact hyp
+    · funext i
+      rcases eq_or_ne i p with rfl | hip
+      · simp [pivotBlowupOn]
+      · by_cases ha : i ∈ active
+        · show pivotBlowupOn active p _ i = y i
+          simp only [pivotBlowupOn, if_neg hip, if_pos ha, if_true]
+          rw [mul_div_cancel₀ _ hyp]
+        · show pivotBlowupOn active p _ i = y i
+          simp only [pivotBlowupOn, if_neg hip, if_neg ha]
+
 end DLNFibre.DLN.RLCT
