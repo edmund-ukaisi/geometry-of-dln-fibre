@@ -1,13 +1,18 @@
 import DLNFibre.Core.ThetaComponentCount
 
 /-!
-# `DLNFibre.Core.CCodimCornerMono` — the two θ-count gating bricks, discharged
+# `DLNFibre.Core.CCodimCornerMono` — the two θ-count gating bricks, reduced
 
-This module discharges the explicit hypotheses `hLowerBound` and `hRecover` of
-`Core.ThetaComponentCount.numTop_eq_ncard_topComponents_of`, so the θ-count headline
-`numTop d r = #{top-dimensional irreducible components of Σ̄^r}` becomes **unconditional**.
+This module **reduces** the two explicit hypotheses `hLowerBound` and `hRecover` of
+`Core.ThetaComponentCount.numTop_eq_ncard_topComponents_of` to a *single* combinatorial monotonicity
+— the dimension-monotonicity of `cCodim · 0` (`hMono` / `hMonoStrict` below); it does NOT make the
+θ-count headline unconditional: the reduced headline still
+carries those two combinatorial monotonicities as explicit hypotheses. They are numerically verified
+true (the shortest-interval-split construction, thousands of cases, zero failures) but **not yet
+proved in Lean** — the single remaining gap, fully scoped in the thread-06 statement card. The two
+*geometric* hypotheses of thread 05 are thereby replaced by one clean `CTheta`-level inequality.
 
-Two bricks, both reducing to one combinatorial monotonicity of `cCodim`:
+Two bricks, both reducing to that one combinatorial monotonicity of `cCodim`:
 
 * **The Gabriel→Kostant bridge** (`orbitRankLocus_realizerD_gabrielPartition`). Every tuple lies
   in the orbit closure of the realizer of a Kostant partition of `d` with corner exactly
@@ -282,7 +287,7 @@ theorem cCodim_corner_anti_of
 /-! ## The geometric lower bound `hLowerBound`, from corner-monotonicity
 
 For a corner-`≤ r` tuple `M'`, the geometric codimension of its orbit closure is `codimForm` of the
-Gabriel Kostant partition (corner `s = (mult M').rank ≤ r`), which is `≥ cCodim d s ≥ cCodim d r`. -/
+Gabriel Kostant partition (corner `s = (mult M').rank ≤ r`), `≥ cCodim d s ≥ cCodim d r`. -/
 
 /-- **`hLowerBound`, from corner-monotonicity.** Every corner-`≤ r` orbit closure has codimension
 `≥ cCodim d r`. Via the Gabriel bridge (`codimRep(Ō_{M'}) = codimForm (extendℤ (gabrielPartition))`,
@@ -303,7 +308,7 @@ theorem cCodim_le_codimRepCanonical_of [IsAlgClosed k] [CharZero k]
       = codimForm N (extendℤ (gabrielPartition d M')) := by
     rw [← orbitRankLocus_realizerD_gabrielPartition (k := k) d M',
       codimRepCanonical_orbitRankLocus_realizerD hms]
-  -- `cCodim d s ≤ codimForm (gabrielPartition)` (inf'_le) and `cCodim d r ≤ cCodim d s` (corner-anti)
+  -- `cCodim d s ≤ codimForm (gabrielPartition)` (inf'_le); `cCodim d r ≤ cCodim d s`
   have hinf : cCodim d s hs ≤ codimForm N (extendℤ (gabrielPartition d M')) :=
     Finset.inf'_le _ hms
   have hanti : cCodim d r hr ≤ cCodim d s hs := cCodim_corner_anti_of hMono hM' hs hr
@@ -325,10 +330,10 @@ theorem cCodim_le_codimRepCanonical_of [IsAlgClosed k] [CharZero k]
 /-! ## Strict corner-monotonicity and the recovery `hRecover`
 
 `cCodim d r < cCodim d s` for `s < r`, via the rank-shift and the STRICT all-vertex dimension-drop
-`cCodim e 0 < cCodim e' 0` when `e < e'` at every vertex (here `d−r < d−s` everywhere since `r > s`).
+`cCodim e 0 < cCodim e' 0` when `e < e'` at every vertex (`d−r < d−s` when `r > s`).
 Strict corner-monotonicity forces a top-dimensional component (codim `= cCodim d r`) onto corner
 exactly `r`: a corner-`s` orbit (`s < r`) has codim `cCodim d s > cCodim d r` (strict), so cannot be
-top-dimensional. This is what `hRecover` needs to recast a top component as a corner-`r` realizer. -/
+top-dimensional. This is what `hRecover` needs for the top component. -/
 
 /-- **Strict corner-monotonicity, from the strict all-vertex dimension-drop.** Given `hMonoStrict`
 (`e < e' at every vertex ⟹ cCodim e 0 < cCodim e' 0`), for `s < r` (both nonempty),
@@ -409,12 +414,12 @@ theorem exists_kostantPartition_partitionIdeal_eq_of [IsAlgClosed k] [CharZero k
 
 /-! ## The θ-count headline, reduced to the two dimension-monotonicities
 
-Both gating hypotheses of `numTop_eq_ncard_topComponents_of` discharge from the dimension-monotonicity
-of `cCodim · 0`: `hLowerBound` from the weak `hMono`, `hRecover` from the strict `hMonoStrict`. So the
+Both gating hypotheses of `numTop_eq_ncard_topComponents_of` discharge from the dimension-mono
+of `cCodim · 0`: `hLowerBound` from the weak `hMono`, `hRecover` from strict `hMonoStrict`. So the
 headline `numTop d r = #top-dim components` holds given those two combinatorial monotonicities. -/
 
 /-- **θ-count headline, reduced to dimension-monotonicity.** Given the weak (`hMono`) and strict
-(`hMonoStrict`) dimension-monotonicities of `cCodim · 0`, `numTop d r = #{top-dimensional irreducible
+(`hMonoStrict`) dimension-monotonicities of `cCodim · 0`, `numTop d r = #{top-dim irreducible
 components of Σ̄^r}` — the two corner-selection hypotheses of `numTop_eq_ncard_topComponents_of`
 discharged. -/
 theorem numTop_eq_ncard_topComponents_of_dimMono [IsAlgClosed k] [CharZero k]
