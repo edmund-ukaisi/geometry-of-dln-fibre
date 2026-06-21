@@ -977,4 +977,45 @@ theorem p0_summand_via_tail (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
     filter_upwards [hae] with x hx0 _
     exact p0_integrand_factor c' x hx0
 
+/-! ## The `≥`-headline (restated downstream, consuming `p0_summand_via_tail`)
+
+`aPivotSummand_lt_top` lives upstream in `Case222CoverGE` (where `p0_summand_via_tail` is not yet in
+scope), so the `≥`-headline is restated here. The four step-1 A-pivot summands: `p = 0` is
+`p0_summand_via_tail` (the full p=0 chain, now proven); `p ∈ {1,2,3}` are `aPivotSummand_p123_lt_top`
+(the A-block coordinate-symmetric variants — the one remaining gap). -/
+
+/-- **The three non-`a00` A-pivot summands are finite** (the A-block-symmetric variants of the `p = 0`
+chain `p0_summand_via_tail`). The last open piece of the `(2,2,2)` `≥`-direction. -/
+theorem aPivotSummand_p123_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) (p : Fin 8)
+    (hp : p ∈ ({1,2,3} : Finset (Fin 8))) :
+    ∫⁻ x in chartDomOn Aact p \ pivotZeroOn p,
+        ENNReal.ofReal |(pivotBlowupOnDeriv Aact p x).det|
+          * openBox.indicator (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c':ℝ))))
+              (pivotBlowupOn Aact p x) < ⊤ := by
+  sorry
+
+/-- **The `(2,2,2)` `≥`-direction threshold finiteness** (downstream restatement). For every `c' < 3/2`,
+`∫⁻_{openBox} |myF222|^{−c'} < ⊤`: the step-1 `recStep` splits into the four A-pivot summands, `p = 0`
+by `p0_summand_via_tail`, `p ∈ {1,2,3}` by `aPivotSummand_p123_lt_top`; `ENNReal.sum_lt_top` closes. -/
+theorem myF222_threshold_lt_top' (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
+    ∫⁻ x in openBox, ENNReal.ofReal (|myF222 x| ^ (-(c':ℝ))) < ⊤ := by
+  rw [recStep Aact 0 (by decide) openBox isOpen_openBox.measurableSet
+    (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c':ℝ))))]
+  refine ENNReal.sum_lt_top.2 (fun p hp => ?_)
+  rcases Finset.mem_insert.1 hp with rfl | hp'
+  · exact p0_summand_via_tail c' hc'
+  · exact aPivotSummand_p123_lt_top c' hc' p hp'
+
+/-- **The `(2,2,2)` `≥`-direction headline** (downstream restatement). `rlctAtOn myF222 0 ≥ 3/2` via
+`rlctAtOn_ge_of_integral_lt` on `openBox ∋ 0` (`myF222_threshold_lt_top'`). -/
+theorem rlctAtOn_myF222_ge' : (3 : ℝ≥0∞) / 2 ≤ rlctAtOn myF222 0 := by
+  apply rlctAtOn_ge_of_integral_lt myF222 ?_ openBox isOpen_openBox mem_openBox_zero (3 / 2)
+  · intro c' hc'
+    have h32 : (3 : ℝ≥0∞) / 2 = ENNReal.ofReal (3 / 2) := by
+      rw [ENNReal.ofReal_div_of_pos (by norm_num)]; norm_num
+    have hc'r : (c' : ℝ) < 3 / 2 := (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by norm_num)).1
+      (by rw [← h32, ENNReal.ofReal_coe_nnreal]; exact hc')
+    exact myF222_threshold_lt_top' c' hc'r
+  · unfold myF222; fun_prop
+
 end DLNFibre.DLN.RLCT
