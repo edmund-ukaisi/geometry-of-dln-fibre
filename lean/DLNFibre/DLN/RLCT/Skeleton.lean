@@ -3147,6 +3147,70 @@ theorem sum_range_getD_eq_take_sum (l : List ℤ) (k : ℕ) :
       simp only [List.getD_cons_zero]
       ring
 
+/-- Iterated erasure: the residual pool after the first `i` forwardMax picks. -/
+noncomputable def eraseIter : ℕ → List ℤ → Multiset ℤ → Multiset ℤ
+  | 0,     _,       R => R
+  | (_+1), [],      R => R
+  | (i+1), (w::ws), R => eraseIter i ws (R.erase (maxPick w ws R))
+
+/-- **forwardMax suffix locality** — the global list's `drop i` equals the local recursion on the
+suffix widths from the residual pool. Abstract; induction on `i` + `forwardMax_cons`. -/
+theorem forwardMax_drop_eq (b : List ℤ) (R : Multiset ℤ) (i : ℕ) :
+    (forwardMax b R).drop i = forwardMax (b.drop i) (eraseIter i b R) := by
+  induction i generalizing b R with
+  | zero => simp [eraseIter]
+  | succ k ih =>
+    match b with
+    | [] => simp [forwardMax, eraseIter]
+    | w :: ws =>
+      rw [forwardMax_cons, List.drop_succ_cons, eraseIter, List.drop_succ_cons]
+      exact ih ws (R.erase (maxPick w ws R))
+
+/-- Corollary: the global `i`-th pick = the `maxPick` at the head of the depth-`i` local recursion
+(when the suffix width-list is nonempty, i.e. `i < b.length`). -/
+theorem forwardMax_getD_eq (b : List ℤ) (R : Multiset ℤ) (i : ℕ) (w : ℤ) (ws : List ℤ)
+    (hdrop : b.drop i = w :: ws) :
+    (forwardMax b R).getD i 0 = maxPick w ws (eraseIter i b R) := by
+  have hd : (forwardMax b R).drop i = forwardMax (b.drop i) (eraseIter i b R) :=
+    forwardMax_drop_eq b R i
+  rw [hdrop, forwardMax_cons] at hd
+  -- (forwardMax b R).getD i 0 = ((forwardMax b R).drop i).getD 0 0
+  have hgetD : (forwardMax b R).getD i 0 = ((forwardMax b R).drop i).getD 0 0 := by
+    rw [List.getD_eq_getElem?_getD, List.getD_eq_getElem?_getD, List.getElem?_drop, Nat.add_zero]
+  rw [hgetD, hd, List.getD_cons_zero]
+
+/-- The residual pool stays `Dom`-dominated by the suffix widths. -/
+theorem eraseIter_dom {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
+    Dom (b.drop i) (eraseIter i b R) := by
+  induction i generalizing b R with
+  | zero => simpa [eraseIter] using hD
+  | succ k ih =>
+    match b with
+    | [] => simpa [eraseIter] using hD
+    | w :: ws =>
+      obtain ⟨_, _, hdom2⟩ := maxPick_spec hD
+      rw [List.drop_succ_cons, eraseIter]
+      exact ih hdom2
+
+/-- The residual pool is a permutation of the forwardMax suffix (same multiset). -/
+theorem eraseIter_perm {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
+    ((forwardMax b R).drop i : Multiset ℤ) = eraseIter i b R := by
+  rw [forwardMax_drop_eq]
+  exact forwardMax_perm (eraseIter_dom hD i)
+
+/-- Conservation of mass: `∑ R_i = ∑ R − ∑(first i forwardMax picks)`. -/
+theorem eraseIter_sum {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
+    (eraseIter i b R).sum = R.sum - ((forwardMax b R).take i).sum := by
+  have hperm : ((forwardMax b R).drop i : Multiset ℤ) = eraseIter i b R := eraseIter_perm hD i
+  have hdropsum : (eraseIter i b R).sum = ((forwardMax b R).drop i).sum := by
+    rw [← hperm, Multiset.sum_coe]
+  have hsplit : (forwardMax b R).sum = ((forwardMax b R).take i).sum
+      + ((forwardMax b R).drop i).sum := by
+    rw [← List.sum_append, List.take_append_drop]
+  have hRsum : (forwardMax b R).sum = R.sum := by
+    rw [← Multiset.sum_coe, forwardMax_perm hD]
+  rw [hdropsum]; linarith
+
 end BGEngine
 
 /-- The achiever-width list `[M¹,…,Mᴸ]` and pool `Y`-multiset feeding the BG engine. -/
@@ -3411,6 +3475,65 @@ maximality lever `le_maxPick` + a Dom-preserving feasible witness whose existenc
 /-- The forward-max front-loader ordering, extended by junk `0` past `L`. -/
 noncomputable def qFM (M : Fin (L + 1) → ℕ) : ℕ → ℤ :=
   fun i ↦ (BGEngine.forwardMax (Mwidths M) (Ymulti M)).getD i 0
+
+/-- `Ymulti.sum = ∑ M` (the achiever target conserves total mass). -/
+private theorem Ymulti_sum (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    (Ymulti M).sum = ∑ i : Fin (L + 1), (M i : ℤ) := by
+  rw [Ymulti, Multiset.sum_coe, List.sum_ofFn]
+  exact sum_Yvec M hL
+
+/-- `(Mwidths M).getD k 0 = Mseq M (k+1)` (the list value as the shifted width sequence). -/
+private theorem Mwidths_getD (M : Fin (L + 1) → ℕ) (k : ℕ) :
+    (Mwidths M).getD k 0 = Mseq M (k + 1) := by
+  by_cases hk : k < L
+  · rw [List.getD_eq_getElem _ _ (by rw [Mwidths_len]; exact hk), Mwidths_get M k hk]
+  · rw [List.getD_eq_default _ _ (by rw [Mwidths_len]; omega)]
+    unfold Mseq; rw [dif_neg (by omega)]
+
+/-- The full `Mwidths` sum is `∑_{k<L} Mseq (k+1)`. -/
+private theorem Mwidths_sum (M : Fin (L + 1) → ℕ) :
+    (Mwidths M).sum = ∑ k ∈ Finset.range L, Mseq M (k + 1) := by
+  have h := BGEngine.sum_range_getD_eq_take_sum (Mwidths M) L
+  rw [List.take_of_length_le (by rw [Mwidths_len])] at h
+  rw [← h]
+  exact Finset.sum_congr rfl (fun k _ => Mwidths_getD M k)
+
+/-- `(Mwidths M).take i` sums to `∑_{k<i} Mseq (k+1)`. -/
+private theorem Mwidths_take_sum (M : Fin (L + 1) → ℕ) (i : ℕ) :
+    ((Mwidths M).take i).sum = ∑ k ∈ Finset.range i, Mseq M (k + 1) := by
+  rw [← BGEngine.sum_range_getD_eq_take_sum (Mwidths M) i]
+  exact Finset.sum_congr rfl (fun k _ => Mwidths_getD M k)
+
+/-- `∑_{k<i} qFM_k = (forwardMax …).take i .sum` (prefix-sum of the front-loader). -/
+private theorem qFM_prefix_sum (M : Fin (L + 1) → ℕ) (i : ℕ) :
+    ∑ k ∈ Finset.range i, qFM M k = ((BGEngine.forwardMax (Mwidths M) (Ymulti M)).take i).sum :=
+  BGEngine.sum_range_getD_eq_take_sum _ i
+
+/-- **Conservation bridge:** the global telescope = local residual minus suffix-width mass. -/
+private theorem uTel_conservation (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) :
+    uTel M (qFM M) i
+      = (BGEngine.eraseIter i (Mwidths M) (Ymulti M)).sum - ((Mwidths M).drop i).sum := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  -- residual sum = Ymulti.sum − prefix_i(qFM)
+  have hres : (BGEngine.eraseIter i (Mwidths M) (Ymulti M)).sum
+      = (Ymulti M).sum - ∑ k ∈ Finset.range i, qFM M k := by
+    rw [BGEngine.eraseIter_sum hDom i, qFM_prefix_sum]
+  -- Ymulti.sum = M⁰ + ∑_{k<L} Mseq(k+1)
+  have hYsum : (Ymulti M).sum = (M 0 : ℤ) + ∑ k ∈ Finset.range L, Mseq M (k + 1) := by
+    rw [Ymulti_sum M hL, Fin.sum_univ_succ]
+    congr 1
+    rw [← Fin.sum_univ_eq_sum_range (fun k => Mseq M (k + 1)) L]
+    refine Finset.sum_congr rfl (fun k _ => ?_)
+    unfold Mseq; rw [dif_pos (by omega)]; rfl
+  -- drop sum = ∑_{k<L} − ∑_{k<i}
+  have hdrop : ((Mwidths M).drop i).sum
+      = (∑ k ∈ Finset.range L, Mseq M (k + 1)) - ∑ k ∈ Finset.range i, Mseq M (k + 1) := by
+    have hsplit : (Mwidths M).sum = ((Mwidths M).take i).sum + ((Mwidths M).drop i).sum := by
+      rw [← List.sum_append, List.take_append_drop]
+    rw [Mwidths_sum, Mwidths_take_sum] at hsplit
+    linarith
+  rw [hres, hYsum, hdrop, uTel_eq_prefix, Finset.sum_sub_distrib]
+  ring
 
 /-- **Prefix transport: `qStar` prefix-dominates `qFM`.** -/
 private theorem qStar_prefix_ge_qFM (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (k : ℕ) :
