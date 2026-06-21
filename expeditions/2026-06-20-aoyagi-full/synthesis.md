@@ -520,6 +520,23 @@ G3 ALONE. METHOD LESSON (pp, logged): when a decorrelated model flags a failure 
 "locate WHERE it lands," not "abandon" — an obstruction confined to where it doesn't matter is a refinement, not
 a refutation (dual of the Q4-trap: both = interrogate the SCOPE of the model's claim).
 
+## G3 SPEC — the named wall, sharpened to its internal crux (pp, g3-spec-the-named-wall.md)
+G3 = the EXPLICIT combinatorial flag-resolution of {∏C=0} (route-A-concrete, explicit poly charts — **NOT general
+Hironaka**). Claim: for every M, a finite rose tree of explicit charts with (G3.1) coordinate-subspace stratum
+centers, (G3.2) **strict-transform = smaller chain product [THE CRUX]**, (G3.3) leaves bottom out, (G3.4) cover
+up to null, (G3.5) binding ratio (k=1, h=Mval−1) ⟹ rlctAt = ½·min_Adm Mval = lambdaCore.
+**DONE vs OPEN:** G3.1 designed (R1.3 ℕ-count), G3.4 designed (cover + lower-bound settled), G3.5 done (R1.2a/b +
+k=1 validated). **G3.2 (the in-chart residual re-identifies as a smaller matrix-chain product — the iterated
+"Schur-complement-of-a-matrix-chain is a smaller chain product" fact) is THE genuinely-open crux.** CRITICAL:
+**Aoyagi PROVES G3.2 on paper (pp.15-21) — so G3 is a FORMALIZATION gap, NOT open math.** The dedicated-tide build:
+explicit pivot-chart φ+Jacobian → the Schur-complement lemma (G3.2, substantial) → recursion (terminates) →
+cover+ratio wiring → glue with G5-abstract. Multi-rung tide.
+**HONEST HEADLINE SHAPE — LOCKED:** PROVEN = the fixed-M ladder + the general machinery (S1/L1/L2/D1/A1/A2/
+G5-abstract); ROADMAPPED = G3 (crux G3.2 = Aoyagi pp.15-21 to formalize). One well-scoped, paper-proven,
+formalization-only wall — the cleanest possible roadmap (a known proof to formalize, not open research).
+**OPERATOR SCOPE (sharpened):** the general-M headline is gated on the G3.2 Lean construction — a dedicated tide;
+everything else proven/buildable. Choice: deliver now (ladder + machinery + G3 roadmap) vs commission the G3 tide.
+
 ## D1 RE-SCOPED (fm proof-attempt-as-audit) — NOT a light standalone rung
 D1 `deepest_point_reduction` is blocked on TWO real deps: (1) the **RLCT-monotonicity lemma** `|G|≤|F| a.e. near
 w* ⇒ rlctAt G ≤ rlctAt F` — MISSING + measure-theoretic (the 0^neg a.e.-domination corner: |G|^{-c}≥|F|^{-c} a.e.
