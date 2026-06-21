@@ -1106,14 +1106,15 @@ private theorem Mval_eq_range (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) :
     Mval M T = ∑ j ∈ Finset.range L,
       (Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1)) := by
   unfold Mval
-  rw [Finset.sum_range fun j => (Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1))]
+  rw [Finset.sum_range fun j =>
+    (Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1))]
   apply Finset.sum_congr rfl
   intro j _
   rw [tPrev_eq_Useq, Tj_eq_Useq, Msucc_eq_Mseq]
 
-/-- **Edge-variable identity (CERTAIN algebra).** `2·Mval M T = ∑_{j<L} (edgeQ j)² − ∑_{i<L+1} M⁽ⁱ⁾²`,
-when the level sequence starts at `M⁰` and ends at `0` (admissibility's `T⁽ᴸ⁻¹⁾ = 0`). The transform
-sending the admissible cone to a fixed `Fin L` edge polytope. -/
+/-- **Edge-variable identity (CERTAIN algebra).** `2·Mval M T = ∑_{j<L}(edgeQ j)² − ∑_{i<L+1}(M⁽ⁱ⁾)²`
+(level sequence from `M⁰` to `0`, admissibility). The transform sending the admissible cone to a
+fixed `Fin L` edge polytope. -/
 private theorem edge_identity (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
     (hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0) :
     2 * Mval M T = (∑ j ∈ Finset.range L, edgeQ M T j ^ 2)
@@ -1143,7 +1144,7 @@ private theorem Useq_pos (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : ℕ)
     (hi0 : i ≠ 0) : Useq M T i = (T ⟨i - 1, hi⟩ : ℤ) := by
   unfold Useq; rw [if_neg hi0, dif_pos hi]
 
-/-- The level sequence is antitone on `[0, L]` (admissibility's weak decrease + the index-0 bound). -/
+/-- The level sequence is antitone on `[0, L]` (admissibility weak-decrease + index-0 bound). -/
 private theorem Useq_antitone (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
     ∀ i, i + 1 ≤ L → Useq M T (i + 1) ≤ Useq M T i := by
   rw [Adm, Finset.mem_filter] at hT
@@ -1194,7 +1195,7 @@ private theorem Useq_le_M (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T 
     rw [hsucc] at hbm
     exact_mod_cast le_trans hb hbm
 
-/-- The prefix sum of the edge vector telescopes: `∑_{j<n} q_j = (∑_{i<n+1} M⁽ⁱ⁾) − M⁰ + (M⁰ − u_n)`. -/
+/-- The edge vector's prefix sum telescopes: `∑_{j<n} q_j = (∑_{i<n+1} M⁽ⁱ⁾) − M⁰ + (M⁰ − u_n)`. -/
 private theorem prefix_edgeQ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (n : ℕ) :
     ∑ j ∈ Finset.range n, edgeQ M T j
       = (∑ i ∈ Finset.range (n + 1), Mseq M i) - Mseq M 0 + (Useq M T 0 - Useq M T n) := by
