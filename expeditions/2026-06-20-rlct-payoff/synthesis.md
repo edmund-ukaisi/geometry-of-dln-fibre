@@ -163,3 +163,16 @@ the sketch is FLAWED (bounds only the all-singletons partition of e', not an arb
 - **Phase D (loss + codim identity) and Phase R (Cited rlct interface) do NOT depend on `hMonoStrict`** — they can
   proceed; the strict gap is isolated to θ's full-unconditionality.
 - Orphaned thread-07 seats now idle (delta-cert/strict-cert/reviewer07) — stand down at close.
+
+## 2026-06-21 — Phase D/R DESIGNED (thread 09); r=0 RLCT payoff ~1 module; Codex intermittently back
+Design (Codex-convergent, findings in thread 09): **r=0 is load-bearing + nearly free** — `fibre d 0 =
+productRankLocusLE d 0 = Σ̄^0` ⟹ `codim(fibre 0) = cCodim d 0 = C` (no bundle shift). Loss `K^DLN_B =
+‖mult A − B‖²_F` over ℝ; zero-set = fibre. **Cited boundary (name=content):** a `Cited`-tagged
+`RlctInterface` axiomatising ONLY Aoyagi's `rlct(K^DLN_B) = codim(fibre)/2` (stops at codim(fibre)/2 ⟹ R2 is
+real transport); payoff `rlct(K^DLN_0) = C/2` carries `I : RlctInterface` in its type + `via_aoyagi` in its
+name (no bare `rlct_eq_half_codim`). FIELD: loss over ℝ, geometric C over ℂ (alg-closed) — the interface
+bridges real-rlct↔complex-codim (Aoyagi-Cited); the one subtlety to handle cleanly. (2,2,2) r=0: C=3, rlct=3/2.
+- **DISPATCHED thread 10:** the r=0 payoff build (D2 loss + D3(r=0) codim=C + R1 interface + R2 rlct=C/2),
+  ~200–410 LoC, one `DLNFibre.DLN` module. General-r shift (Lemma 4.6) roadmapped.
+- **CODEX update:** intermittently back — the thread-09 pen-and-paper's bounded `codex exec` completed (exit 0);
+  only `codex doctor` reliably times out. Decorrelation discipline partly restored.
