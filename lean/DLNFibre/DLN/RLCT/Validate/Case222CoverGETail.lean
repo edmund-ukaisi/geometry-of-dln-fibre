@@ -548,6 +548,91 @@ theorem boxT_peel_spectator {n : ℕ} (T : ℝ) (hT : 0 < T) (p : Fin (n+1))
     lintegral_prod_mul (f := fun _ : ℝ => (1:ℝ≥0∞)) (g := h) measurable_const.aemeasurable hh.aemeasurable]
   rw [lintegral_const, one_mul, Measure.restrict_apply_univ, mul_comm]
 
+/-! ## The δ-block shear transport (measurable-equiv + image-box domination)
+
+`shearΦ` is a measurable equivalence (`shearΦEquiv`, explicit polynomial inverse `shearΦinv`), hence a
+`MeasurableEmbedding` (`shearΦ_emb`) — the transport vehicle for the block integral. Its image of the
+witness box `[−2,2]^7` sits in the enlarged box `[−6,6]^7` (`shearΦ_box_subset`: the `z4·z1`/`z4·z2`
+shifts grow each coord by at most `4`), so the transported `Σ⁴` integral is dominated by the
+`[−6,6]^7` box. -/
+
+/-- The explicit inverse of `shearΦ` (subtract the two shears back). -/
+noncomputable def shearΦinv (w : Fin 7 → ℝ) : Fin 7 → ℝ :=
+  Function.update (Function.update w 5 (w 5 - w 4 * w 1)) 6 (w 6 - w 4 * w 2)
+
+theorem shearΦinv_shearΦ (z : Fin 7 → ℝ) : shearΦinv (shearΦ z) = z := by
+  funext i; unfold shearΦinv shearΦ
+  fin_cases i <;>
+    simp only [Function.update_self, Function.update_of_ne, ne_eq, Fin.reduceEq,
+      not_false_eq_true] <;> ring_nf <;> try rfl
+
+theorem shearΦ_shearΦinv (w : Fin 7 → ℝ) : shearΦ (shearΦinv w) = w := by
+  funext i; unfold shearΦinv shearΦ
+  fin_cases i <;>
+    simp only [Function.update_self, Function.update_of_ne, ne_eq, Fin.reduceEq,
+      not_false_eq_true] <;> ring_nf <;> try rfl
+
+theorem measurable_shearΦ : Measurable shearΦ := by unfold shearΦ; fun_prop
+
+theorem measurable_shearΦinv : Measurable shearΦinv := by unfold shearΦinv; fun_prop
+
+noncomputable def shearΦEquiv : (Fin 7 → ℝ) ≃ᵐ (Fin 7 → ℝ) where
+  toFun := shearΦ
+  invFun := shearΦinv
+  left_inv := shearΦinv_shearΦ
+  right_inv := shearΦ_shearΦinv
+  measurable_toFun := measurable_shearΦ
+  measurable_invFun := measurable_shearΦinv
+
+theorem shearΦ_emb : MeasurableEmbedding shearΦ :=
+  shearΦEquiv.measurableEmbedding
+
+/-- **`shearΦ` image of `[−2,2]^7` sits in `[−6,6]^7`.** -/
+theorem shearΦ_box_subset : shearΦ '' boxT 7 2 ⊆ boxT 7 6 := by
+  rintro w ⟨z, hz, rfl⟩
+  simp only [boxT, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc] at hz
+  -- product bounds |z4·z1| ≤ 4, |z4·z2| ≤ 4
+  have hp41 : |z 4 * z 1| ≤ 4 := by
+    rw [abs_mul]; have := abs_le.2 ⟨(hz 4).1, (hz 4).2⟩; have := abs_le.2 ⟨(hz 1).1, (hz 1).2⟩
+    nlinarith [abs_nonneg (z 4), abs_nonneg (z 1), abs_le.2 (⟨(hz 4).1,(hz 4).2⟩ : -2 ≤ z 4 ∧ z 4 ≤ 2),
+      abs_le.2 (⟨(hz 1).1,(hz 1).2⟩ : -2 ≤ z 1 ∧ z 1 ≤ 2)]
+  have hp42 : |z 4 * z 2| ≤ 4 := by
+    rw [abs_mul]
+    nlinarith [abs_nonneg (z 4), abs_nonneg (z 2), abs_le.2 (⟨(hz 4).1,(hz 4).2⟩ : -2 ≤ z 4 ∧ z 4 ≤ 2),
+      abs_le.2 (⟨(hz 2).1,(hz 2).2⟩ : -2 ≤ z 2 ∧ z 2 ≤ 2)]
+  -- the 7 explicit shearΦ entry bounds
+  have b0 : -6 ≤ shearΦ z 0 ∧ shearΦ z 0 ≤ 6 := by
+    unfold shearΦ; rw [Function.update_of_ne (by decide), Function.update_of_ne (by decide)]
+    constructor <;> linarith [(hz 0).1, (hz 0).2]
+  have b1 : -6 ≤ shearΦ z 1 ∧ shearΦ z 1 ≤ 6 := by
+    unfold shearΦ; rw [Function.update_of_ne (by decide), Function.update_of_ne (by decide)]
+    constructor <;> linarith [(hz 1).1, (hz 1).2]
+  have b2 : -6 ≤ shearΦ z 2 ∧ shearΦ z 2 ≤ 6 := by
+    unfold shearΦ; rw [Function.update_of_ne (by decide), Function.update_of_ne (by decide)]
+    constructor <;> linarith [(hz 2).1, (hz 2).2]
+  have b3 : -6 ≤ shearΦ z 3 ∧ shearΦ z 3 ≤ 6 := by
+    unfold shearΦ; rw [Function.update_of_ne (by decide), Function.update_of_ne (by decide)]
+    constructor <;> linarith [(hz 3).1, (hz 3).2]
+  have b4 : -6 ≤ shearΦ z 4 ∧ shearΦ z 4 ≤ 6 := by
+    unfold shearΦ; rw [Function.update_of_ne (by decide), Function.update_of_ne (by decide)]
+    constructor <;> linarith [(hz 4).1, (hz 4).2]
+  have b5 : -6 ≤ shearΦ z 5 ∧ shearΦ z 5 ≤ 6 := by
+    unfold shearΦ; rw [Function.update_of_ne (by decide), Function.update_self]
+    constructor <;> [linarith [(hz 5).1, abs_le.1 hp41]; linarith [(hz 5).2, abs_le.1 hp41]]
+  have b6 : -6 ≤ shearΦ z 6 ∧ shearΦ z 6 ≤ 6 := by
+    unfold shearΦ; rw [Function.update_self]
+    constructor <;> [linarith [(hz 6).1, abs_le.1 hp42]; linarith [(hz 6).2, abs_le.1 hp42]]
+  intro i _
+  simp only [boxT, Set.mem_Icc]
+  fin_cases i
+  · exact b0
+  · exact b1
+  · exact b2
+  · exact b3
+  · exact b4
+  · exact b5
+  · exact b6
+
 /-- The step-3 block residual finiteness over a bounded box (the 4th-level recursion: blow up
 `block = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` along its vertex, `blockForm_step3` + `step3_unit_ge_one`
 + `block_leaf_integrable`). The δ-cell's inner integral. -/
