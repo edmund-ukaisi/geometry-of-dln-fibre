@@ -2274,6 +2274,13 @@ No such claim is formalisation-ready until both fields are filled.
   Definition 3-shaped selected-width data, but fail `W_p<=n(S+1)` for
   `p=2`, `S=5`.  This is a guardrail for the explicit Eq5 width hypotheses,
   not a construction theorem.
+  Also proved
+  `aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator` and
+  `aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min`, which
+  decompose the interval excess into the Eq5 strict-offset count plus a
+  rising-coordinate indicator, and show the lower endpoint is not a strict
+  Eq5 offset value in the rising region.  This is count scaffolding only, not
+  displayed-vector realisation or Lemma 5's order-count theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

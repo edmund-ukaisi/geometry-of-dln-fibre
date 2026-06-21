@@ -1671,3 +1671,39 @@ non-selected condition does not control it.
 This is a guardrail, not a construction theorem.  It does not refute the
 conditional block-width dominance bridges; it explains why their extra
 index-level hypotheses are explicit.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` offset/excess decomposition
+
+Reproduction:
+`reproduction-lemma5-eq5-offset-excess-decomposition-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-offset-excess-decomposition.md`.
+Review artifact:
+`review-lemma5-eq5-offset-excess-decomposition-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator
+aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min
+```
+
+The first theorem decomposes the interval excess at coordinate `p` into the
+cardinality of the Eq5 strict-offset value set plus one rising-coordinate
+indicator:
+
+```text
+excess(ell,a,p)
+  = card(Eq5OffsetValueSet p)
+    + if 1<=p and p<=a and p<=ell-a then 1 else 0.
+```
+
+The second theorem identifies the missing value in the rising case as finite
+set bookkeeping: when `p<=a` and `p<=ell-a`, the lower endpoint `Htilde_p` is
+not in the Eq5 strict-offset value set, since reaching it from `Htilde'_p`
+would require the forbidden offset `alpha=p`.
+
+This is only count scaffolding below Lemma 5.  It does not show that equation
+`(3)` or `(4)` realises the extra value, construct any displayed vector,
+prove source-label legality, terminal `tilde t=0`, vector admissibility,
+chart sequence, pole order, normal crossings, or RLCT extraction.

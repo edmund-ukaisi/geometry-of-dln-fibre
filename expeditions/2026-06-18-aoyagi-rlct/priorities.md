@@ -755,6 +755,13 @@ on the session's original cwd.
    layer `6`.  Treat this as a guardrail: do not later remove the explicit
    block-local or index-level dominance hypotheses from the Eq5 wrappers
    unless a stronger source assumption is reproduced.
+   The Eq5 strict-offset count is now tied pointwise to the interval excess:
+   excess equals the Eq5 offset-value-set cardinality plus one rising
+   indicator, and the lower endpoint is excluded from the strict-offset set in
+   the rising region.  This is useful order-count scaffolding but not
+   displayed-vector realisation.  Next A5 moves should either add thin
+   combined source-label/value adapters for Eq3/Eq4, or continue count-side
+   decomposition without claiming that Eq3/Eq4 realise the missing value.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

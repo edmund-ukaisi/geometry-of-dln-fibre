@@ -2893,6 +2893,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-width-bound-counterexample-a5.md`.
 
+Latest A5 update: Eq5 now has a finite count decomposition in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved names are
+`aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator` and
+`aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min`.  They prove
+that the same-coordinate interval excess equals the Eq5 strict-offset
+value-set count plus one rising-coordinate indicator, and that the lower
+endpoint is not in the strict-offset set when `p<=a` and `p<=ell-a`.  This is
+only order-count scaffolding; it does not realise the extra value by equations
+`(3)` or `(4)`, construct source vectors, prove terminality, or prove Lemma 5.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-offset-excess-decomposition-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-offset-excess-decomposition.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-offset-excess-decomposition-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

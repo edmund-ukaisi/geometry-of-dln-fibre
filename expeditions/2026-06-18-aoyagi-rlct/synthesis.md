@@ -2305,6 +2305,22 @@ statement card, and review are saved at
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-width-bound-counterexample-a5.md`.
 
+Eq5 now has a finite offset/excess decomposition:
+`aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator` and
+`aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  Pointwise, the Lemma 5
+interval excess equals the Eq5 strict-offset value-set cardinality plus one
+extra contribution exactly on the rising coordinates
+`1<=p`, `p<=a`, `p<=ell-a`; in that rising region, Lean also proves the lower
+endpoint is not in the strict-offset set.  This is a count scaffold only: it
+does not realise the extra contribution by equations `(3)`/`(4)`, construct
+vectors, prove source-label legality, terminality, admissibility, or Lemma 5
+order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-offset-excess-decomposition-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-offset-excess-decomposition.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-offset-excess-decomposition-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

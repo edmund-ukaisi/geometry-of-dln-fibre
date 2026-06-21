@@ -1734,6 +1734,89 @@ theorem aoyagiLemma5Eq5OffsetValueSet_card
   · intro x _ y _ hxy
     exact aoyagiLemma5Eq5_offsetValue_injective ell a p M m hxy
 
+/-- Decompose one interval excess into the equation `(5)` offset count and the
+remaining rising-coordinate contribution.
+
+The offset set counts the values `Htilde'_p-alpha` with `1<=alpha<p`.  If the
+interval excess is still rising at coordinate `p`, namely
+`1<=p`, `p<=a`, and `p<=ell-a`, the lower endpoint contributes one additional
+value not seen by those strict offsets.  This is finite count bookkeeping only;
+it does not construct any displayed vector or prove Aoyagi Lemma 5. -/
+theorem aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) (ha : a ≤ ell) :
+    aoyagiLemma5IntervalExcess ell a p =
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card +
+        if 1 ≤ p ∧ p ≤ a ∧ p ≤ ell - a then 1 else 0 := by
+  rw [aoyagiLemma5Eq5OffsetValueSet_card]
+  by_cases h : 1 ≤ p ∧ p ≤ a ∧ p ≤ ell - a
+  · rw [if_pos h]
+    have he : aoyagiLemma5IntervalExcess ell a p = p :=
+      aoyagiLemma5IntervalExcess_eq_self_of_le_min ell a p ha h.2.1 h.2.2
+    rw [he]
+    have hmin : min p (p - 1) = p - 1 := Nat.min_eq_right (Nat.sub_le p 1)
+    rw [hmin]
+    omega
+  · rw [if_neg h]
+    have hle : aoyagiLemma5IntervalExcess ell a p ≤ p - 1 := by
+      by_cases hp : 1 ≤ p
+      · by_cases hpa : p ≤ a
+        · have hpc_not : ¬ p ≤ ell - a := by
+            intro hpc
+            exact h ⟨hp, hpa, hpc⟩
+          have he_le_inner :
+              aoyagiLemma5IntervalExcess ell a p ≤ min a (ell - a) := by
+            unfold aoyagiLemma5IntervalExcess
+            exact le_trans
+              (Nat.min_le_right p (min (ell - p) (min a (ell - a))))
+              (Nat.min_le_right (ell - p) (min a (ell - a)))
+          have he_le : aoyagiLemma5IntervalExcess ell a p ≤ ell - a :=
+            le_trans he_le_inner (Nat.min_le_right a (ell - a))
+          omega
+        · have he_le_inner :
+              aoyagiLemma5IntervalExcess ell a p ≤ min a (ell - a) := by
+            unfold aoyagiLemma5IntervalExcess
+            exact le_trans
+              (Nat.min_le_right p (min (ell - p) (min a (ell - a))))
+              (Nat.min_le_right (ell - p) (min a (ell - a)))
+          have he_le : aoyagiLemma5IntervalExcess ell a p ≤ a :=
+            le_trans he_le_inner (Nat.min_le_left a (ell - a))
+          omega
+      · have hp0 : p = 0 := by omega
+        simp [aoyagiLemma5IntervalExcess, hp0]
+    rw [Nat.min_eq_left hle]
+    omega
+
+/-- In the rising part of the interval, the lower endpoint is not one of the
+strict Eq5 offset values.
+
+Under `p<=a` and `p<=ell-a`, the interval excess is `p`; reaching the lower
+endpoint from `Htilde'_p` would require offset `alpha=p`, while equation `(5)`
+uses only strict offsets `alpha<p`.  This identifies the extra contribution in
+`aoyagiLemma5IntervalExcess_eq_eq5OffsetCard_add_risingIndicator` as set
+bookkeeping, not as a source-vector construction. -/
+theorem aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    aoyagiHtildeLowerNat ell a M m p ∉
+      aoyagiLemma5Eq5OffsetValueSet ell a p M m := by
+  intro hmem
+  rw [aoyagiLemma5Eq5OffsetValueSet, Finset.mem_image] at hmem
+  rcases hmem with ⟨alpha, halpha, hvalue⟩
+  rw [Finset.mem_Icc] at halpha
+  have hp_lt : p < ell + 1 := by omega
+  have hgap := aoyagiHtildeUpper_sub_lower_eq_intervalExcess
+    ell a M m ha ⟨p, hp_lt⟩
+  have hexcess : aoyagiLemma5IntervalExcess ell a p = p :=
+    aoyagiLemma5IntervalExcess_eq_self_of_le_min ell a p ha hp_a hp_c
+  simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain, hexcess] at hgap
+  have halpha_eq : alpha = p := by
+    have hcast : (alpha : ℤ) = (p : ℤ) := by
+      linarith
+    exact_mod_cast hcast
+  have halpha_le : alpha ≤ p - 1 := by
+    simpa [hexcess] using halpha.2
+  omega
+
 /-- Every equation `(5)` offset value is a same-coordinate interval value. -/
 theorem aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
