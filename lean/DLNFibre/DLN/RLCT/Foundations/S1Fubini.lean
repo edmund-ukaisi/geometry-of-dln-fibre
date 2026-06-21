@@ -71,6 +71,65 @@ theorem rlctAtOn_comp_homeomorph {M M' : Type*} [MeasureSpace M] [TopologicalSpa
           = (fun w => |F w| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w) ∘ e from rfl]
       rw [he.integrableOn_comp_preimage hemb]; exact hint
 
+/-! ## The `Fin`-peeling chart (iteration infrastructure)
+
+To iterate `step_rlct` over the `n` regular coordinates, peel one coordinate per step via a
+measure-preserving homeomorphism `(Fin (n+1) → ℝ) × Y ≃ₜ ℝ × ((Fin n → ℝ) × Y)`. The peel itself is
+`MeasurableEquiv.piFinSuccAbove 0` (forward `x ↦ (x 0, x ∘ succAbove 0)`, inverse `Fin.cons`), made
+a `Homeomorph` (both maps continuous) and measure-preserving (`volume_preserving_piFinSuccAbove`);
+the `× Y` factor and re-association are `prodCongr`/`prodAssoc` + `MeasurePreserving.prod`/
+`measurePreserving_prodAssoc`. Stays on the product (Params-flat) measure — no Haar bridge. -/
+
+/-- `(Fin (n+1) → ℝ) ≃ₜ ℝ × (Fin n → ℝ)`, peeling the `0`-th coordinate. Forward `x ↦ (x 0, x ∘
+succAbove 0)` (continuous); inverse `Fin.cons` (continuous, `Continuous.finCons`).
+Measure-preserving (`finPeel_mp`). -/
+noncomputable def finPeel (n : ℕ) : (Fin (n + 1) → ℝ) ≃ₜ (ℝ × (Fin n → ℝ)) where
+  toEquiv := (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) 0).toEquiv
+  continuous_toFun :=
+    Continuous.prodMk (continuous_apply 0) (continuous_pi (fun j => continuous_apply _))
+  continuous_invFun := by
+    have hinv : ⇑(((MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (n + 1))).toEquiv).symm)
+        = fun p : ℝ × (Fin n → ℝ) => Fin.cons p.1 p.2 := by
+      funext p
+      show (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (n + 1))).symm p = _
+      rw [MeasurableEquiv.piFinSuccAbove_symm_apply]; exact Fin.insertNth_zero' p.1 p.2
+    show Continuous
+      (⇑(((MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (n + 1))).toEquiv).symm))
+    rw [hinv]; exact Continuous.finCons continuous_fst continuous_snd
+
+/-- `finPeel` is measure-preserving (`volume_preserving_piFinSuccAbove`). -/
+theorem finPeel_mp (n : ℕ) : MeasurePreserving (finPeel n) :=
+  volume_preserving_piFinSuccAbove (fun _ => ℝ) 0
+
+/-- The `Fin`-peeling product chart `(Fin (n+1) → ℝ) × Y ≃ₜ ℝ × ((Fin n → ℝ) × Y)`:
+`finPeel` on the first factor, then re-associate. Measure-preserving (`chartN_mp`). -/
+noncomputable def chartN (n : ℕ) (Y : Type*) [TopologicalSpace Y] [MeasureSpace Y] :
+    ((Fin (n + 1) → ℝ) × Y) ≃ₜ (ℝ × ((Fin n → ℝ) × Y)) :=
+  ((finPeel n).prodCongr (Homeomorph.refl Y)).trans (Homeomorph.prodAssoc ℝ (Fin n → ℝ) Y)
+
+/-- The `Fin`-peeling product chart is measure-preserving (`MeasurePreserving.prod` of `finPeel_mp`
+and the identity, then `measurePreserving_prodAssoc`; the ambient `volume`s are products by
+`Measure.volume_eq_prod`). -/
+theorem chartN_mp {Y : Type*} [TopologicalSpace Y] [MeasureSpace Y]
+    [SigmaFinite (volume : Measure Y)] (n : ℕ) : MeasurePreserving (chartN n Y) := by
+  have h1 : MeasurePreserving (Prod.map (finPeel n) (id : Y → Y)) (volume) (volume) := by
+    rw [show (volume : Measure ((Fin (n + 1) → ℝ) × Y)) = (volume).prod (volume) from
+        Measure.volume_eq_prod _ _,
+      show (volume : Measure ((ℝ × (Fin n → ℝ)) × Y)) = (volume).prod (volume) from
+        Measure.volume_eq_prod _ _]
+    exact (finPeel_mp n).prod (MeasurePreserving.id volume)
+  have h2 : MeasurePreserving
+      (MeasurableEquiv.prodAssoc : (ℝ × (Fin n → ℝ)) × Y ≃ᵐ ℝ × ((Fin n → ℝ) × Y)) (volume)
+      (volume) := by
+    rw [show (volume : Measure ((ℝ × (Fin n → ℝ)) × Y))
+          = ((volume).prod (volume)).prod (volume) from by
+          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _],
+      show (volume : Measure (ℝ × ((Fin n → ℝ) × Y)))
+          = (volume).prod ((volume).prod (volume)) from by
+          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _]]
+    exact measurePreserving_prodAssoc volume volume volume
+  exact h2.comp h1
+
 /-! ## Admissible-exponent down-set (for the threshold-lift `≥` direction)
 
 The set of exponents `c'` for which `|H|^{−c'}` is locally integrable at `w0` is a **down-set**: a
