@@ -3040,6 +3040,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-offset-finset-adapter-a5.md`.
 
+Latest A5 update: Eq4 now has a lower-endpoint wrapper for the Eq5
+erase-upper finite-set equality in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The name is
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_le_min`.
+It uses the supplied Eq4 own-coordinate value theorem to rewrite
+`T(C.point p-1)` to `Htilde_p`, then applies the existing Eq5 set equality
+identifying `insert Htilde_p Eq5OffsetValueSet_p` with the same-coordinate
+interval after erasing the upper endpoint.  It is conditional on supplied Eq4
+piecewise data and rising-region hypotheses, and it does not construct
+vectors, realise the erased upper endpoint, prove terminality, admissibility,
+order count, normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-lower-endpoint-eq5-erase-upper.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

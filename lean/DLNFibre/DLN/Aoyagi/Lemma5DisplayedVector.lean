@@ -2005,6 +2005,31 @@ theorem aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
       Finset.card_erase_add_one hupper_mem
     omega
 
+/-- A supplied equation `(4)` own-coordinate value supplies the lower endpoint
+in the Eq5 lower-plus-strict-offset finite set.
+
+This rewrites the abstract lower endpoint in
+`aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min` using
+the supplied Eq4 own-coordinate value.  It is not a construction or legality
+theorem for Aoyagi's displayed vectors. -/
+theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    insert (T (C.point p - 1)) (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      (aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+        (aoyagiHtildeUpperNat ell a M m p) := by
+  have hown :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
+      ell a p M m C layerWidth T hell hp_pos hp_c hselected hsource hT
+  rw [hown.2.1]
+  exact aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
+    ell a p M m hT.a_le_ell hp_pos hp_a hp_c
+
 /-- A supplied equation `(5)` own-coordinate branch has the displayed value
 `Htilde'_p - alpha` on block `p`. -/
 theorem aoyagiLemma5Eq5_ownCoordinate_value

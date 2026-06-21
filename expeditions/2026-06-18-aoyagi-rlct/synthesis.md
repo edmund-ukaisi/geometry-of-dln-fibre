@@ -2435,6 +2435,21 @@ of all Eq5 vectors or prove Lemma 5 order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-offset-finset-adapter-a5.md`.
 
+Eq4 now supplies the lower endpoint in the Eq5 erase-upper finite-set equality.
+The new theorem
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_le_min`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` rewrites
+`T(C.point p-1)` to `Htilde_p` using the supplied Eq4 own-coordinate theorem,
+then applies the existing Eq5 equality
+`insert Htilde_p Eq5OffsetValueSet_p = interval.erase Htilde'_p`.  This is
+only a conditional finite-set wrapper; it does not realise the erased upper
+endpoint or prove any displayed-vector construction/order-count result.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-lower-endpoint-eq5-erase-upper.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -1915,3 +1915,32 @@ This is a conjunction adapter over existing facts.  It does not construct the
 Eq5 displayed vector, quantify over all `alpha` at once, derive the explicit
 actual-width lower bound from Definition 3, prove terminality, chart sequence,
 Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq4 lower endpoint and Eq5 erase-upper set
+
+Reproduction:
+`reproduction-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-lower-endpoint-eq5-erase-upper.md`.
+Review artifact:
+`review-lemma5-eq4-lower-endpoint-eq5-erase-upper-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_le_min
+```
+
+For a supplied Eq4 piecewise certificate in the rising region, the Eq4
+own-coordinate value can replace the abstract lower endpoint in the Eq5
+lower-plus-strict-offset equality:
+
+```text
+insert (T(C.point p-1)) Eq5OffsetValueSet_p
+  = HtildeIntervalValueSet_p.erase Htilde'_p.
+```
+
+This is a finite-set substitution wrapper only.  It does not realise the
+erased upper endpoint, construct Eq4 or Eq5 displayed vectors, prove
+terminality, chart sequence, Lemma 5 order count, normal crossings, or RLCT
+extraction.
