@@ -425,11 +425,17 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
   literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
 
-## Next tick
-INTEGRATE as they land: (1) fm-2's Fubini lift-close → complete S1.5 sig (hGmeas+hGne+instances) → relay to fm
-→ fm restates+wires `rlct_additive_smooth_block` in ONE pass + I add S1Fubini to the aggregator → green-gate +
-rv-2 audit. (2) R1 EXECUTION (pp leads, fm formalises): R1.1 charts + R1.2 multiplicity-control (pre-Fubini) →
-R1.4 Fubini-per-chart (post-lift) → R1.3/R1.5/R1.6/R1.7 → green-gate + rv-2 (heaviest audit). (3) L2 (needs S1.5)
-→ D1 (needs L2) → T assembly. #19 PARKED (edge-transform route + karamata_sq banked = one majorization gate for a
-dedicated tide). Critical path now: Fubini-close → S1.5 wire + R1 → L2 → D1 → T. Keep rv-2 decorrelated. Watch
-the fm→#19 pull (parked 3×). Don't stop in a blocked state.
+## Next tick (state @ ~02:00, trunk past 54ffe32)
+TWO BIGGEST RISKS RETIRED: Fubini n=1 equality PROVEN (@e1cf73c) + R1 route VALIDATED (A-concrete, B refuted).
+Remaining = execution + assembly. **Re-scope PINNED** (pp → fm): `resolution_charts(M) = rlctAtOn(dlnLoss M 0)(0)
+= ⨅ monomialThreshold` (reduced widths M = core) + product_reduction wiring chain (block_elim → S1Fubini n/2 →
+resolution_charts-core + S2 + A1 → aoyagiLambda). **λ_core=0 edge HANDLED** (fm-2, core_admissible_zero, no
+λ_core>0 hyp). Iteration keystone `rlctAtOn_comp_homeomorph` banked (@f254397).
+INTEGRATE as they land: (1) fm-2's Fubini ITERATION (Fin-peel homeomorph + Σ-peel) → general-n
+rlct_additive_smooth_block → report final sig → fm restate+wire (ONE pass) → I aggregator-wire S1Fubini +
+green-gate → rv-2 audit. (2) R1 CLIMB (validate-small-first): fm closes the **(1,1,1) gate** (φ=id chart + S2 +
+arith, NO general geometry, xcheck `case111_rlct`) → (2,1,2)/(2,2,2) explicit-poly charts; pp designs the GENERAL
+atlas R1.1/R1.3(codim=Mval, heavy)/R1.6(cover) in PARALLEL (math validate-small'd via witnesses). fm also restates
+resolution_charts (core) + wires product_reduction. (3) L2 → D1 → T. #19 PARKED. Critical path: Fubini-iteration
++ R1-(1,1,1)-gate → general R1 atlas → wire product_reduction → D1 → T. rv-2 decorrelated (R1 = heaviest audits).
+Watch the fm→#19 pull (parked 3×). Don't stop in a blocked state.
