@@ -3700,3 +3700,31 @@ only a guard-failure wrapper.  It does not prove the converse
 `not Eq4PiecewiseSourceVector iff p=a`, construct Eq4 branches, fill the Eq5
 lower endpoint at `p=a`, prove source-label legality, chart coverage, pole
 order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 counted-datum back-to-branch-label card bound
+
+Reproduction:
+`reproduction-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-back-to-branch-label-card.md`.
+Review artifact:
+`review-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
+
+Lean now proves the direct numeric upper-bound wrapper:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumBackToBranchLabel
+```
+
+From a supplied counted-datum classifier and a supplied back-to-label bridge,
+the theorem first obtains the existing `UpperBoundClassifier`, then applies
+the existing upper-bound-cardinality theorem to get
+
+```text
+C.terminalMinimumLabels.card <= a * (n + 1 - a) + 1.
+```
+
+This is only finite bookkeeping from supplied data.  It does not construct the
+counted-datum classifier, branch-coordinate map, or back-to-label bridge from
+Aoyagi's source, and it does not prove exact cardinality, pole order, normal
+crossings, or RLCT extraction.

@@ -2612,6 +2612,13 @@ No such claim is formalisation-ready until both fields are filled.
   obstruction from guard failure.  It does not prove
   `not Eq4PiecewiseSourceVector iff p=a`, construct Eq4 branches, or fill the
   lower endpoint at `p=a`.
+  Also proved the counted-datum back-to-branch-label card-bound wrapper
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumBackToBranchLabel`.
+  It derives `C.terminalMinimumLabels.card <= a * (n+1-a) + 1` from a supplied
+  counted-datum classifier and supplied back-to-label bridge by passing
+  through the existing `UpperBoundClassifier`.  It does not construct the
+  classifier, branch-coordinate map, or back-to-label bridge from Aoyagi's
+  source, and it does not prove exact cardinality.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

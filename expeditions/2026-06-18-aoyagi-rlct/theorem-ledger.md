@@ -4099,6 +4099,22 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-rising-guard-exhaustion-a5.md`.
 
+Latest A5 counted-datum back-to-branch-label card-bound update:
+`Lemma5TerminalBridge.lean` now has
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumBackToBranchLabel`.
+It derives the numeric upper bound on `terminalMinimumLabels` from supplied
+counted-datum classifier data plus the supplied back-to-label bridge by
+passing through the existing `UpperBoundClassifier`.  This is not a
+source-backed classifier, branch-coordinate construction, back-to-label proof,
+exact-cardinality theorem, pole-order theorem, normal-crossing theorem, or
+RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-back-to-branch-label-card.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -450,6 +450,29 @@ theorem terminalMinimumLabels_card_le_of_upperBoundClassifier {β : Type*}
     _ = a * (n + 1 - a) + 1 :=
       C.fullBranches_card n a M m (Nat.succ_pos n) ha
 
+/-- A supplied counted-datum back-to-label bridge gives the terminal-minimum
+numeric upper count.
+
+This is a convenience wrapper over
+`upperBoundClassifier_of_countDatumBackToBranchLabel`; the counted-datum
+classifier and back-to-label bridge remain supplied data. -/
+theorem terminalMinimumLabels_card_le_of_countDatumBackToBranchLabel {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (branchCoord : β → ℕ)
+    (classifier : C.TerminalMinimumCountDatumClassifier)
+    (backToLabel :
+      C.TerminalMinimumCountDatumBackToBranchLabel branchCoord classifier) :
+    C.terminalMinimumLabels.card ≤ a * (n + 1 - a) + 1 := by
+  exact C.terminalMinimumLabels_card_le_of_upperBoundClassifier n a M m ha
+    (C.upperBoundClassifier_of_countDatumBackToBranchLabel
+      branchCoord classifier backToLabel)
+
 /-- Membership in the finite exact-minimum label set. -/
 theorem mem_terminalMinimumLabels {β : Type*} [DecidableEq β]
     {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}

@@ -3454,6 +3454,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-rising-guard-exhaustion-a5.md`.
 
+The counted-datum back-to-branch-label card-bound wrapper has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean` as
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumBackToBranchLabel`.
+It composes the supplied counted-datum back-to-label bridge with the existing
+`UpperBoundClassifier` and numeric upper-bound theorem, giving
+`C.terminalMinimumLabels.card <= a * (n+1-a) + 1`.  This is only finite
+bookkeeping from supplied classifier/back-to-label data; it does not construct
+the classifier, branch-coordinate map, or back-to-label bridge from source and
+does not prove exact cardinality, pole order, normal crossings, or RLCT
+extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-card-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-back-to-branch-label-card.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
