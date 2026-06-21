@@ -2789,6 +2789,23 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-supplied-chart-family-count-boundary-a5.md`.
 
+The supplied chart-family boundary now also has an explicit base-branch
+wrapper.  In `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`,
+`AoyagiLemma5SuppliedNonbaseFamily.fullBranches` is the finite set
+`{none} union union_j {some b : b in branches j}`, and
+`AoyagiLemma5SuppliedNonbaseFamily.fullBranches_card` proves its cardinality is
+`a*(ell-a)+1` under the same supplied nonbase boundary.  The full admissible
+structure `AoyagiLemma5SuppliedAdmissibleFamily` adds the base branch's
+supplied `H`-chain, lower/upper chain bounds, and two-value increment
+hypothesis; `base_twoValueCount` applies the existing Lemma 4 bridge to that
+base branch.  This still does not construct the supplied family from Aoyagi's
+printed equations.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-full-supplied-family-base-branch-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-full-supplied-family-base-branch.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-full-supplied-family-base-branch-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

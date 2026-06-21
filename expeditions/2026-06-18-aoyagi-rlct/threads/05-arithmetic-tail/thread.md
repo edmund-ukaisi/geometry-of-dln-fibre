@@ -2530,3 +2530,42 @@ supplied branch family, prove that Aoyagi's printed equations `(3)`, `(4)`, or
 `(5)` satisfy the fields, prove source-label legality, reconstruct the Case
 1(2) chart sequence, prove terminal `tilde t=0`, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 full supplied family base branch
+
+Reproduction:
+`reproduction-lemma5-full-supplied-family-base-branch-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-full-supplied-family-base-branch.md`.
+Review artifact:
+`review-lemma5-full-supplied-family-base-branch-a5.md`.
+
+Lean now turns the leading `1` in the supplied Lemma 5 count into an explicit
+supplied base branch.  The full branch set is
+
+```text
+{none} union union_j {some b : b in branches j}.
+```
+
+New Lean names:
+
+```text
+AoyagiLemma5SuppliedNonbaseFamily.fullBranches
+AoyagiLemma5SuppliedNonbaseFamily.none_mem_fullBranches
+AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_of_mem
+AoyagiLemma5SuppliedNonbaseFamily.fullBranches_card
+AoyagiLemma5SuppliedAdmissibleFamily
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranches
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card
+AoyagiLemma5SuppliedAdmissibleFamily.base_twoValueCount
+```
+
+The finite count uses the previous supplied nonbase union count, injectivity of
+`some`, and disjointness of `none` from the `some` image.  The admissible full
+family adds only the supplied base branch's Lemma 4 fields: `baseH`,
+`baseH0`, lower/upper `Htilde` chain bounds, and two-value increments.
+
+This is still a supplied-data boundary.  It does not construct the base branch
+or nonbase family from Aoyagi's printed equations, prove source-label legality,
+reconstruct the Case 1(2) chart sequence, prove terminal `tilde t=0`, normal
+crossings, or RLCT extraction.

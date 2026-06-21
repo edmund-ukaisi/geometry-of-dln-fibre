@@ -3419,6 +3419,29 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-supplied-chart-family-count-boundary-a5.md`.
 
+Latest A5 full supplied-family update: the leading base contribution in the
+supplied count is now represented by an explicit branch tag in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  Names:
+`AoyagiLemma5SuppliedNonbaseFamily.fullBranches`,
+`AoyagiLemma5SuppliedNonbaseFamily.none_mem_fullBranches`,
+`AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_of_mem`,
+`AoyagiLemma5SuppliedNonbaseFamily.fullBranches_card`,
+`AoyagiLemma5SuppliedAdmissibleFamily`,
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranches`,
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card`, and
+`AoyagiLemma5SuppliedAdmissibleFamily.base_twoValueCount`.  The full branch
+set is `{none} union union_j {some b : b in branches j}`; its count uses
+`Option.some` injectivity, disjointness from `none`, and the inherited supplied
+nonbase disjointness.  The full admissible structure adds only supplied base
+Lemma 4 fields.  This is not a source-backed construction from printed
+equations `(3)`, `(4)`, or `(5)`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-full-supplied-family-base-branch-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-full-supplied-family-base-branch.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-full-supplied-family-base-branch-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

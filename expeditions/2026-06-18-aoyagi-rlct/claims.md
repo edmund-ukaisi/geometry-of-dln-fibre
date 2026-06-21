@@ -2414,6 +2414,15 @@ No such claim is formalisation-ready until both fields are filled.
   prove the aggregate count only from supplied base-value membership,
   injective erased-interval coverage, cross-coordinate disjointness for the
   union count, and explicit branchwise Lemma 4 obligations.
+  Also proved the explicit supplied base-branch wrapper:
+  `AoyagiLemma5SuppliedNonbaseFamily.fullBranches`,
+  `AoyagiLemma5SuppliedNonbaseFamily.fullBranches_card`,
+  `AoyagiLemma5SuppliedAdmissibleFamily`,
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullBranches_card`, and
+  `AoyagiLemma5SuppliedAdmissibleFamily.base_twoValueCount`.  These encode the
+  leading `1` as a supplied `none` branch and nonbase branches as `some b`,
+  then count the resulting tagged finite family under the same supplied
+  boundary.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
@@ -2426,7 +2435,8 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 3 free-count quadratic, Lemma 4's correspondence-to-`lambda`
   conclusion, source-backed Lemma 5 chart-family admissibility and coverage
   from Aoyagi's printed equations, existence of the supplied chart-family
-  boundary data, pole-order count, and analytic extraction.
+  boundary data including the supplied base branch, pole-order count, and
+  analytic extraction.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 
