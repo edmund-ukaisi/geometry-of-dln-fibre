@@ -2681,6 +2681,18 @@ RLCT extraction.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-component-domain-recurrence-exponent-a5.md`.
 
+The strict equation `(5)` offset set now has a named rising-region cardinality
+specialization.  The theorem
+`aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` proves that, under
+`1<=p`, `p<=a`, and `p<=ell-a`, the strict-offset set has cardinality `p-1`.
+This is only one-coordinate finite count bookkeeping below the all-branch
+order-count boundary.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-strict-offset-rising-count-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-strict-offset-rising-count.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-strict-offset-rising-count-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

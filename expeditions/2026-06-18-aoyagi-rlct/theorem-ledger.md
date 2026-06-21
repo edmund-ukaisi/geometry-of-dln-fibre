@@ -3310,6 +3310,20 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-component-domain-recurrence-exponent-a5.md`.
 
+Latest A5 update: the strict Eq5 offset-value set has a rising-region
+cardinality specialization in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The theorem
+`aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min` proves that under
+`1<=p`, `p<=a`, and `p<=ell-a`, the set has cardinality `p-1`.  This is a
+one-coordinate finite count theorem only; it does not construct Eq5 displayed
+vectors, prove source-label legality, realise endpoints, aggregate all
+coordinates, package all branches, or prove Lemma 5 order count.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-strict-offset-rising-count-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-strict-offset-rising-count.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-strict-offset-rising-count-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

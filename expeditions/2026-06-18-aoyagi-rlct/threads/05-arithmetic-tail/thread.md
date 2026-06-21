@@ -2324,3 +2324,28 @@ This is API bookkeeping under supplied bounds.  It does not derive the label
 bounds from Definition 3, compute terminal exponents or least values,
 construct displayed vectors, cover all intervals, package all branch families,
 prove Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 strict-offset rising count
+
+Reproduction:
+`reproduction-lemma5-eq5-strict-offset-rising-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-strict-offset-rising-count.md`.
+Review artifact:
+`review-lemma5-eq5-strict-offset-rising-count-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min
+```
+
+In the rising region `1<=p`, `p<=a`, and `p<=ell-a`, the strict equation `(5)`
+offset-value set has cardinality `p-1`.  The proof rewrites the existing
+offset-cardinality theorem by the rising-region interval-excess equality
+`excess=p`.
+
+This is one-coordinate finite count bookkeeping only.  It does not construct
+Eq5 displayed vectors, prove source-label legality, realise endpoints, sum
+over all coordinates, package all branches, prove Lemma 5 order count, normal
+crossings, or RLCT extraction.

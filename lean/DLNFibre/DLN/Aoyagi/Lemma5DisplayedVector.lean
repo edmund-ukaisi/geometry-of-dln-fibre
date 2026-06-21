@@ -1752,6 +1752,23 @@ theorem aoyagiLemma5Eq5OffsetValueSet_card
   · intro x _ y _ hxy
     exact aoyagiLemma5Eq5_offsetValue_injective ell a p M m hxy
 
+/-- In the rising region, the strict equation `(5)` offsets have cardinality
+`p-1`.
+
+This is only the count of the strict offset values `1<=alpha<p` after the
+interval excess has simplified to `p`.  It is not a displayed-vector
+construction, source-label legality theorem, or Lemma 5 order count. -/
+theorem aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card = p - 1 := by
+  rw [aoyagiLemma5Eq5OffsetValueSet_card]
+  have hexcess :
+      aoyagiLemma5IntervalExcess ell a p = p :=
+    aoyagiLemma5IntervalExcess_eq_self_of_le_min ell a p ha hp_a hp_c
+  rw [hexcess]
+  exact Nat.min_eq_right (by omega)
+
 /-- Decompose one interval excess into the equation `(5)` offset count and the
 remaining rising-coordinate contribution.
 

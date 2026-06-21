@@ -2394,6 +2394,9 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq3_component_extendExponentDomain_succ_current_of_lastPoint_labelBounds`.
   The exponent wrapper keeps terminal-exponent equality and least-value data
   explicit.
+  Also proved the Eq5 strict-offset rising count
+  `aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min`, a one-coordinate
+  finite count specialization of the existing offset-cardinality theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

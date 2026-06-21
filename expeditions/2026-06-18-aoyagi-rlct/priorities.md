@@ -867,6 +867,9 @@ on the session's original cwd.
    wrappers.  These are API bookkeeping only: terminal-exponent equality and
    least-value data remain explicit in the exponent wrapper, and no chart
    production or order count is claimed.
+   The strict Eq5 offset set also has the rising-region cardinality
+   specialization `card=p-1`.  This is a useful count-side API for later
+   supplied aggregate scaffolds, but not an all-coordinate order count.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or
