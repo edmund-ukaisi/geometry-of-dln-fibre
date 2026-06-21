@@ -61,6 +61,25 @@ imposes no threshold bound (it does not lower the `⨅`). -/
 theorem axisRatio_spectator (h : ℕ) : axisRatio h 0 = ⊤ := by
   unfold axisRatio; simp [ENNReal.div_zero]
 
+/-- **1-D even-reflection of integrability.** For an even `f` (`f (−x) = f x`), integrability on
+`[0,1]` lifts to `[−1,1]`: the `[−1,0]` half is the `Neg.neg`-image of `[0,1]`
+(`MeasurePreserving.integrableOn_image`, `measurePreserving_neg`, `f ∘ neg = f`), then `IntegrableOn`
+on the union `[−1,0] ∪ [0,1] = [−1,1]`. The per-coordinate atom of the box-adapter (the leaf supports
+after the blow-ups are symmetric in each coord; the gated per-leaf integrability is `[0,1]`-shaped). -/
+theorem integrableOn_Icc_symm_of_even {f : ℝ → ℝ} (hev : ∀ x, f (-x) = f x)
+    (h : IntegrableOn f (Set.Icc (0 : ℝ) 1) volume) :
+    IntegrableOn f (Set.Icc (-1 : ℝ) 1) volume := by
+  have hmp : MeasurePreserving (Neg.neg : ℝ → ℝ) volume volume := Measure.measurePreserving_neg volume
+  have hemb : MeasurableEmbedding (Neg.neg : ℝ → ℝ) := (Homeomorph.neg ℝ).measurableEmbedding
+  have hfeq : f ∘ (Neg.neg : ℝ → ℝ) = f := funext (fun x => hev x)
+  have hneg : IntegrableOn f (Set.Icc (-1 : ℝ) 0) volume := by
+    have himg : (Neg.neg : ℝ → ℝ) '' Set.Icc (0 : ℝ) 1 = Set.Icc (-1 : ℝ) 0 := by
+      rw [Set.image_neg_eq_neg, neg_Icc]; norm_num
+    rw [← himg, hmp.integrableOn_image hemb, hfeq]; exact h
+  rw [show (Set.Icc (-1 : ℝ) 1) = Set.Icc (-1 : ℝ) 0 ∪ Set.Icc (0 : ℝ) 1 from
+    (Set.Icc_union_Icc_eq_Icc (by norm_num) (by norm_num)).symm]
+  exact hneg.union h
+
 /-- **The unit-leaf `Fin 8` monomial threshold is `≥ 3/2`** (the `≥`-half; the gated
 `unitMonomialThreshold_le` is the `≤`-half, so `= 3/2`). Per-axis: binding axes (`k = 1`) via
 `axisRatio_ge_of_mult` (`m = 3`, `3·1 ≤ hⱼ+1`); spectator axes (`k = 0`) via `axisRatio_spectator`
