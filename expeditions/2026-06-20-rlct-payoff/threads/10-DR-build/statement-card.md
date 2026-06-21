@@ -6,7 +6,7 @@ Build: whole `DLNFibre` library green (`lake build`, 3676 jobs); `scripts/sorrie
 Axioms (`#print axioms`): `[propext, Classical.choice, Quot.sound]` on every delivered theorem,
 including the payoff `rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi` — the Cited Aoyagi content is a
 carried structure FIELD (`RlctInterface.cited_aoyagi_dln`), NOT a global axiom.
-Pinned commit: `d3650f4` (branch `expedition/rlct-payoff`).
+Pinned commit: `74bbdc4` (branch `expedition/rlct-payoff`); theorems introduced at `d3650f4`.
 
 ## The destination, plainly
 
@@ -95,4 +95,9 @@ from-scratch real↔complex codimension base-change lemma is needed.
 
 ## Status
 
-sorry-free; reviewer fidelity check requested (AUDIT gate).
+sorry-free + **reviewed** (fidelity AUDIT gate passed). Reviewer verdict: FIDELITY OK — name=content
+confirmed (no `rlct = C/2` without `RlctInterface` in scope; `via_aoyagi` in every payoff name); Cited
+boundary honest (`cited_aoyagi_dln` stops at `½·codim mult⁻¹(B)`, verified against paper Thm 8.6,
+main.tex:1889; a carried field, not a global axiom — `#print axioms` clean); D3 geometric content
+non-circular; general-`r` legitimately separate/Deferred. One cosmetic finding (long-line / `open
+Classical` lint) addressed in the tidy commit.
