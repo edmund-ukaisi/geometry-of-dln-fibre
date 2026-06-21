@@ -132,6 +132,8 @@ Current Eq5 alpha-indexed branch-label image slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-label-image-a5.md`.
 Current Eq5 alpha-indexed branch cardinal-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`.
+Current Eq5 alpha-indexed offset-cardinality slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-offset-card-a5.md`.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.

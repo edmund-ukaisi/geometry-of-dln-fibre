@@ -1358,6 +1358,48 @@ theorem aoyagiLemma5Eq5_alphaIndexedBranch_card_le_actualWidthLabelFinset_card
         L ell a p n M m branches alphaOf branchLabel hell ha hpell halpha
         hselected hsource hs_pos hs_le hwidth_le hlabel
 
+/-- If a supplied alpha-indexed equation `(5)` branch family covers the strict
+alpha domain and has injective alpha projection, then its branch-label image has
+the same cardinality as the strict Eq5 offset-value set.
+
+This is finite supplied-cardinality bookkeeping.  It does not construct the
+branch family, prove source-label legality, or assert that the Sigma-valued
+branch-label image equals the integer offset-value set. -/
+theorem
+    aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_offsetValueSet_card
+    {β : Type*}
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ)
+    (branchLabel : β → Σ _ : ℕ, ℕ)
+    (halpha_image : branches.image alphaOf = aoyagiLemma5Eq5AlphaDomain ell a p)
+    (halpha_inj : Set.InjOn alphaOf ↑branches)
+    (hlabel : ∀ b ∈ branches,
+      ((branchLabel b).2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m p + 1 - (alphaOf b : ℤ)) :
+    (branches.image branchLabel).card =
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card := by
+  have halpha_card :
+      (branches.image alphaOf).card = branches.card :=
+    Finset.card_image_of_injOn (s := branches) (f := alphaOf) halpha_inj
+  have hoffset_card :
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card =
+        (aoyagiLemma5Eq5AlphaDomain ell a p).card := by
+    rw [← aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet ell a p M m]
+    exact Finset.card_image_of_injOn
+      (s := aoyagiLemma5Eq5AlphaDomain ell a p)
+      (f := fun alpha : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ))
+      (by
+        intro alpha _ beta _ hvalue
+        exact aoyagiLemma5Eq5_offsetValue_injective ell a p M m hvalue)
+  calc
+    (branches.image branchLabel).card = branches.card :=
+      aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_of_alphaInj
+        ell a p M m branches alphaOf branchLabel halpha_inj hlabel
+    _ = (branches.image alphaOf).card := halpha_card.symm
+    _ = (aoyagiLemma5Eq5AlphaDomain ell a p).card := by rw [halpha_image]
+    _ = (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card :=
+      hoffset_card.symm
+
 /-- The terminal selected coordinate `C.point ell - 1` is a positive source
 index when the selected list has positive length.
 

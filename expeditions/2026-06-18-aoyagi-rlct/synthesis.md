@@ -176,6 +176,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-card-bound-a5.md`.
 
+The Eq5 alpha-indexed offset-cardinality bridge has now landed in the same
+file.  New Lean name:
+`aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_offsetValueSet_card`.
+Under supplied alpha-domain image coverage and supplied alpha injectivity, the
+branch-label image has the same cardinality as the strict Eq5 offset-value
+set.  This counts both sides through the strict alpha domain.  It is not a set
+equality or explicit bijection between Sigma-valued branch labels and integer
+offset values, and it does not prove branch construction, source-label
+legality, actual-width coverage, terminal exactness, classifier/back-to-label
+coverage, pole order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-offset-card-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-offset-card.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-offset-card-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:

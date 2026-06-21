@@ -107,6 +107,22 @@ family itself.  It is not branch construction, alpha-domain coverage,
 selected-span coverage, terminal exactness, classifier/back-to-label coverage,
 pole order, normal crossings, or RLCT extraction.
 
+The Eq5 alpha-indexed offset-cardinality bridge has also landed in
+`Lemma5SourceLabel.lean`.  New Lean name:
+`aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_offsetValueSet_card`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-offset-card-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-offset-card.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-offset-card-a5.md`.
+This uses supplied alpha-domain coverage and supplied alpha injectivity to
+show cardinal equality between the branch-label image and the strict Eq5
+offset-value set.  It is not set equality between Sigma-valued labels and
+integer offset values, and it is not branch construction, source-label
+legality, actual-width coverage, terminal exactness, classifier/back-to-label
+coverage, pole order, normal crossings, or RLCT extraction.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in

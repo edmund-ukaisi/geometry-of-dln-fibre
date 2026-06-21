@@ -4216,3 +4216,30 @@ This is finite supplied-cardinality bookkeeping only.  It does not construct
 Eq5 branches, prove alpha-domain coverage, selected-span coverage, displayed
 vectors, terminal exactness, classifier/back-to-label coverage, pole order,
 normal crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 5 Eq5 alpha-indexed offset cardinality
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-indexed-offset-card-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-indexed-offset-card.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-indexed-offset-card-a5.md`.
+
+Lean now packages supplied alpha-domain coverage for Eq5 strict offsets:
+
+```text
+aoyagiLemma5Eq5_alphaIndexedBranchLabelImage_card_eq_offsetValueSet_card
+```
+
+If the supplied alpha projection maps the branch family onto
+`aoyagiLemma5Eq5AlphaDomain ell a p` and is injective, then the supplied
+branch-label image has the same cardinality as
+`aoyagiLemma5Eq5OffsetValueSet ell a p M m`.  This is cardinal equality only:
+the branch-label image is Sigma-valued, while the offset-value set is an
+integer value set.
+
+This is finite supplied-cardinality bookkeeping only.  It does not construct
+Eq5 branches, prove source-label legality or width compatibility, prove
+coverage of actual-width or terminal-minimum labels, provide a classifier or
+back-to-label map, prove pole order, normal crossings, or RLCT.
