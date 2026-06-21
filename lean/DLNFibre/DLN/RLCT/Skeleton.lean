@@ -2548,6 +2548,82 @@ private theorem edgeQ_telescope (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
   show Mseq M ((j : ℕ) + 1) + uTel M q (j : ℕ) - uTel M q ((j : ℕ) + 1) = q (j : ℕ)
   rw [uTel]; ring
 
+/-- Corridor-feasibility of an ordering `q : ℕ → ℤ`: the telescoped `uTel` is nonneg, ends at `0`,
+weakly-decreasing, and within `admBound`. Exactly `telescope M q ∈ Adm M` (D2). -/
+def QFeas (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) : Prop :=
+  (∀ j, 0 ≤ uTel M q j) ∧ uTel M q L = 0 ∧
+    (∀ j : Fin L, uTel M q ((j : ℕ) + 1) ≤ uTel M q (j : ℕ)) ∧
+    (∀ j : Fin L, uTel M q ((j : ℕ) + 1) ≤ (admBound M j : ℤ))
+
+/-- `Tstar M q : Fin L → ℕ`, the admissible point telescoped from a feasible ordering `q`
+(`Tstar j = uTel(j+1)`, faithful since `uTel ≥ 0`). -/
+noncomputable def Tstar (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (j : Fin L) : ℕ :=
+  (uTel M q ((j : ℕ) + 1)).toNat
+
+/-- A feasible ordering's `Tstar` is admissible. -/
+private theorem Tstar_mem_Adm (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (hL : 1 ≤ L) (hq : QFeas M q) :
+    Tstar M q ∈ Adm M := by
+  obtain ⟨hnn, hlast, hanti, hbound⟩ := hq
+  have hTval : ∀ j : Fin L, (Tstar M q j : ℤ) = uTel M q ((j : ℕ) + 1) := fun j => by
+    rw [Tstar, Int.toNat_of_nonneg (hnn _)]
+  rw [Adm, Finset.mem_filter]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [Fintype.mem_piFinset]; intro j; rw [Finset.mem_range]
+    have := hbound j; rw [← hTval j] at this
+    have : (Tstar M q j : ℤ) ≤ (admBound M j : ℤ) := this
+    have h2 : Tstar M q j ≤ admBound M j := by exact_mod_cast this
+    omega
+  · intro j; have := hbound j; rw [← hTval j] at this; exact_mod_cast this
+  · intro i j hij
+    -- weakly decreasing T_j ≤ T_i : uTel is antitone (from hanti, chained)
+    have key : ∀ a b : ℕ, a ≤ b → b < L + 1 → uTel M q b ≤ uTel M q a := by
+      intro a b hab hbL
+      induction b with
+      | zero => rw [show a = 0 by omega]
+      | succ n ih =>
+        rcases Nat.lt_or_ge a (n + 1) with h | h
+        · have hstep : uTel M q (n + 1) ≤ uTel M q n := hanti ⟨n, by omega⟩
+          exact le_trans hstep (ih (by omega) (by omega))
+        · rw [show a = n + 1 by omega]
+    have hle : uTel M q ((j : ℕ) + 1) ≤ uTel M q ((i : ℕ) + 1) :=
+      key ((i : ℕ) + 1) ((j : ℕ) + 1) (by exact Nat.add_le_add_right hij 1) (by omega)
+    rw [← hTval i, ← hTval j] at hle; exact_mod_cast hle
+  · intro j hj
+    have : (Tstar M q j : ℤ) = uTel M q ((j : ℕ) + 1) := hTval j
+    rw [show ((j : ℕ) + 1) = L by omega] at this
+    rw [hlast] at this
+    have : Tstar M q j = 0 := by exact_mod_cast this
+    exact this
+
+/-- **A1 upper bound (D, value at the achiever).** Given a feasible ordering `q` whose `Fin L` values
+permute `Yvec`, `2·Mval M (Tstar M q) = ∑Yvec² − ∑M²` (via D1 `edgeQ_telescope` +
+`edge_identity` + multiset-symmetry of `∑·²`). The upper-bound witness value. -/
+private theorem Mval_Tstar (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (hL : 1 ≤ L) (hq : QFeas M q)
+    (σ : Equiv.Perm (Fin L)) (hperm : ∀ j : Fin L, q (j : ℕ) = Yvec M (cAch M) (σ j)) :
+    2 * Mval M (Tstar M q) = (∑ j : Fin L, (Yvec M (cAch M) j) ^ 2)
+      - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 := by
+  obtain ⟨hnn, hlast, hanti, hbd⟩ := hq
+  have hTmem := Tstar_mem_Adm M q hL ⟨hnn, hlast, hanti, hbd⟩
+  have hlastT : ∀ j : Fin L, j.val = L - 1 → Tstar M q j = 0 := by
+    rw [Adm, Finset.mem_filter] at hTmem; exact hTmem.2.2.2
+  have hTval : ∀ j : Fin L, (Tstar M q j : ℤ) = uTel M q ((j : ℕ) + 1) := fun j => by
+    rw [Tstar, Int.toNat_of_nonneg (hnn _)]
+  have hedgeQ : ∀ j : Fin L, edgeQ M (Tstar M q) (j : ℕ) = q (j : ℕ) :=
+    fun j => edgeQ_telescope M q hnn hlast (Tstar M q) hTval j
+  have hid := edge_identity M (Tstar M q) hL hlastT
+  have hqsq : ∑ j ∈ Finset.range L, edgeQ M (Tstar M q) j ^ 2
+      = ∑ j : Fin L, (q (j : ℕ)) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun j => edgeQ M (Tstar M q) j ^ 2) L]
+    exact Finset.sum_congr rfl (fun j _ => by rw [hedgeQ j])
+  have hMsq : ∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2 = ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 := by
+    rw [← Fin.sum_univ_eq_sum_range (fun i => Mseq M i ^ 2) (L + 1)]
+    exact Finset.sum_congr rfl (fun i _ => by unfold Mseq; rw [dif_pos i.isLt])
+  -- ∑ q² = ∑ (Yvec ∘ σ)² = ∑ Yvec²  (Equiv.sum_comp)
+  have hpermsq : ∑ j : Fin L, (q (j : ℕ)) ^ 2 = ∑ j : Fin L, (Yvec M (cAch M) j) ^ 2 := by
+    rw [Finset.sum_congr rfl (fun j _ => by rw [hperm j])]
+    exact Equiv.sum_comp σ (fun j => (Yvec M (cAch M) j) ^ 2)
+  rw [hid, hqsq, hMsq, hpermsq]
+
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
