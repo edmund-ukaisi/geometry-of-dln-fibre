@@ -149,9 +149,68 @@ theorem lemma2Fwd_box7_subset : lemma2Fwd '' box7 ⊆ bigbox7 := by
   · exact e5
   · exact e6
 
+/-- The symmetric box `[−T,T]^m` (the bounded chart domain at half-width `T`). -/
+noncomputable def boxT (m : ℕ) (T : ℝ) : Set (Fin m → ℝ) := Set.univ.pi (fun _ => Set.Icc (-T) T)
+
+/-- **1-D `rpow` lintegral finiteness.** `∫⁻_{[−T,T]} |x|^a < ⊤` for `a > −1`: `|x|^a` is integrable
+on the symmetric interval (`abs_rpow_integrableOn_Icc_symm_iff`), and the `< ⊤` form follows from the
+nonneg `hasFiniteIntegral_iff_ofReal` bridge. The per-axis convergent atom of the box pivot-peel. -/
+theorem abs_rpow_lintegral_Icc_lt_top (T : ℝ) (hT : 0 < T) (a : ℝ) (ha : -1 < a) :
+    ∫⁻ x in Set.Icc (-T) T, ENNReal.ofReal (|x| ^ a) < ⊤ := by
+  have hint : IntegrableOn (fun x : ℝ => |x| ^ a) (Set.Icc (-T) T) volume := by
+    rw [abs_rpow_integrableOn_Icc_symm_iff a T hT]; exact ha
+  have hnn : 0 ≤ᵐ[volume.restrict (Set.Icc (-T) T)] (fun x : ℝ => |x| ^ a) :=
+    ae_of_all _ (fun x => Real.rpow_nonneg (abs_nonneg _) _)
+  rw [IntegrableOn, Integrable, hasFiniteIntegral_iff_ofReal hnn] at hint
+  convert hint.2 using 1
+
+/-- **Single-coordinate monomial over a box is finite.** `∫⁻_{[−T,T]^{n+1}} |x p|^a < ⊤` for
+`a > −1`: peel coordinate `p` via the measure-preserving `piFinSuccAbove p` into `ℝ × (Fin n → ℝ)`,
+Tonelli-separate (`lintegral_prod_mul`) into the convergent pivot factor (`abs_rpow_lintegral_Icc_lt_top`)
+times the constant `1` over the compact box (`IsCompact.measure_lt_top`). The reusable terminal of the
+resolved-form per-cell pivot-peel: a leaf's integrand is bounded by such a single-coord monomial. -/
+theorem boxT_coord_rpow_lt_top {n : ℕ} (T : ℝ) (hT : 0 < T) (p : Fin (n+1)) (a : ℝ) (ha : -1 < a) :
+    ∫⁻ x in boxT (n+1) T, ENNReal.ofReal (|x p| ^ a) < ⊤ := by
+  set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℝ) p with he
+  have hmp : MeasurePreserving e (volume : Measure (Fin (n+1) → ℝ)) volume :=
+    volume_preserving_piFinSuccAbove (fun _ : Fin (n+1) => ℝ) p
+  have hemb : MeasurableEmbedding e := e.measurableEmbedding
+  have heapp : ∀ x : Fin (n+1) → ℝ, e x = (x p, fun j => x (p.succAbove j)) := fun x => rfl
+  have hpre : boxT (n+1) T = e ⁻¹' (Set.Icc (-T) T ×ˢ boxT n T) := by
+    ext x
+    simp only [boxT, Set.mem_preimage, heapp, Set.mem_prod, Set.mem_pi, Set.mem_univ,
+      true_implies, Set.mem_Icc]
+    constructor
+    · intro h; exact ⟨h p, fun j => h (p.succAbove j)⟩
+    · rintro ⟨hp, hrest⟩ i
+      rcases Fin.eq_self_or_eq_succAbove p i with rfl | ⟨j, rfl⟩
+      · exact hp
+      · exact hrest j
+  rw [hpre]
+  rw [show (fun x : Fin (n+1) → ℝ => ENNReal.ofReal (|x p| ^ a))
+        = (fun x : Fin (n+1) → ℝ =>
+            (fun q : ℝ × (Fin n → ℝ) =>
+              (fun x0 : ℝ => ENNReal.ofReal (|x0| ^ a)) q.1 * (fun _ : Fin n → ℝ => (1:ℝ≥0∞)) q.2)
+              (e x))
+        from by funext x; rw [heapp]; simp]
+  rw [hmp.setLIntegral_comp_preimage_emb hemb
+    (fun q : ℝ × (Fin n → ℝ) =>
+      (fun x0 : ℝ => ENNReal.ofReal (|x0| ^ a)) q.1 * (fun _ : Fin n → ℝ => (1:ℝ≥0∞)) q.2)
+    (Set.Icc (-T) T ×ˢ boxT n T)]
+  rw [show (volume : Measure (ℝ × (Fin n → ℝ))) = (volume : Measure ℝ).prod volume from
+        Measure.volume_eq_prod _ _, ← Measure.prod_restrict,
+    lintegral_prod_mul (f := fun x0 : ℝ => ENNReal.ofReal (|x0| ^ a))
+      (g := fun _ : Fin n → ℝ => (1:ℝ≥0∞))
+      (ENNReal.measurable_ofReal.comp (by fun_prop)).aemeasurable measurable_const.aemeasurable]
+  refine ENNReal.mul_lt_top (abs_rpow_lintegral_Icc_lt_top T hT a ha) ?_
+  rw [lintegral_const, one_mul, Measure.restrict_apply_univ]
+  exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
+
 /-- **The resolved-form finiteness over the bounded box** (the inner step-2/step-3 recursion). For
 `c' < 3/2`, `∫⁻_{bigbox7} |resolvedForm w|^{−c'} < ⊤`. The remaining `sorry`: the `recStep {1,2,3}`
-blow-up of `resolvedForm` (E/F0/δ cells) + per-cell Tonelli pivot-peel (each unit/block `≥ 1`). -/
+blow-up of `resolvedForm` (E/F0/δ cells) + per-cell pivot-peel — each cell's integrand is bounded by a
+single-coord monomial `|z_q|^{2−2c'}` (`2−2c' > −1 ⟺ c' < 3/2`; the residual unit/block `≥ 1`), closed
+by `boxT_coord_rpow_lt_top` after the `bigbox7`-cutoff support containment. -/
 theorem resolved_residual_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
     ∫⁻ w in bigbox7, ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))) < ⊤ := by
   sorry
