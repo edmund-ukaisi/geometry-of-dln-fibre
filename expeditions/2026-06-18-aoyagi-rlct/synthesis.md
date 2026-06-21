@@ -2806,6 +2806,22 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-full-supplied-family-base-branch-a5.md`.
 
+The full supplied family now also has a single tagged-branch admissibility
+wrapper.  `AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff`
+characterizes `some b in fullBranches` by existence of an interior coordinate
+with `b in branches j`.  `AoyagiLemma5SuppliedAdmissibleFamily.fullH` defines
+the branch chain by `fullH none = baseH` and `fullH (some b)=H b`, and
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_twoValueCount` proves Lemma
+4's finite two-value count for every tagged branch under `a<=ell` and the
+selected-width sum.  The proof only dispatches to supplied base or nonbase
+fields; it does not reconstruct any branch from equations `(3)`, `(4)`, or
+`(5)`.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-full-supplied-family-branchwise-admissibility-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-full-supplied-family-branchwise-admissibility.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

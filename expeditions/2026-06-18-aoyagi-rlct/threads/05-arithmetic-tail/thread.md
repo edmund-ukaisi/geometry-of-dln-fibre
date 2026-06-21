@@ -2569,3 +2569,32 @@ This is still a supplied-data boundary.  It does not construct the base branch
 or nonbase family from Aoyagi's printed equations, prove source-label legality,
 reconstruct the Case 1(2) chart sequence, prove terminal `tilde t=0`, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 full supplied family branchwise admissibility
+
+Reproduction:
+`reproduction-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-full-supplied-family-branchwise-admissibility.md`.
+Review artifact:
+`review-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
+
+Lean now packages base and nonbase admissibility into a single tagged-branch
+API:
+
+```text
+AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff
+AoyagiLemma5SuppliedAdmissibleFamily.fullH
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_twoValueCount
+```
+
+The membership theorem characterizes `some b in fullBranches` as existence of
+an interior coordinate `j` with `b in branches j`.  The branch chain is
+definitionally `fullH none = baseH` and `fullH (some b) = H b`.  Under
+`a<=ell` and the selected-width sum, every tagged branch in `fullBranches`
+satisfies Lemma 4's finite two-value count, dispatching to the supplied base
+fields or inherited nonbase fields.
+
+This remains a supplied-data theorem only.  It does not infer membership,
+admissibility, source labels, or chart construction from the printed equations,
+and it does not prove normal crossings or RLCT extraction.

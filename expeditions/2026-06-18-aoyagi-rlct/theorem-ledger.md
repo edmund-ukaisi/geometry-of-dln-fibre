@@ -3442,6 +3442,24 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-full-supplied-family-base-branch-a5.md`.
 
+Latest A5 full-branch admissibility update: the supplied full family now has a
+single branchwise Lemma 4 wrapper in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  Names:
+`AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff`,
+`AoyagiLemma5SuppliedAdmissibleFamily.fullH`, and
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_twoValueCount`.  The
+membership theorem extracts the nonbase coordinate witness from a tagged
+`some` branch; `fullH` dispatches between supplied `baseH` and inherited
+nonbase `H`; and the count theorem applies the existing Lemma 4 bridge to
+every tagged branch under explicit selected-width hypotheses.  This is not a
+source-backed construction from printed equations `(3)`, `(4)`, or `(5)`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-full-supplied-family-branchwise-admissibility.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

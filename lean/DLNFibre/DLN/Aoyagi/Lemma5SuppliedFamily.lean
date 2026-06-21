@@ -146,6 +146,27 @@ theorem some_mem_fullBranches_of_mem {β : Type*} [DecidableEq β]
   rw [Finset.mem_biUnion]
   exact ⟨j, hj, Finset.mem_image.mpr ⟨b, hb, rfl⟩⟩
 
+/-- Membership of a tagged nonbase branch in the full branch set is exactly
+membership in one of the supplied coordinate branch sets. -/
+theorem some_mem_fullBranches_iff {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedNonbaseFamily β ell a M m) {b : β} :
+    some b ∈ F.fullBranches ↔
+      ∃ j ∈ Finset.Icc 1 (ell - 1), b ∈ F.branches j := by
+  constructor
+  · intro h
+    rw [fullBranches, Finset.mem_insert] at h
+    rcases h with hnone | hmem
+    · cases hnone
+    · rw [Finset.mem_biUnion] at hmem
+      rcases hmem with ⟨j, hj, himage⟩
+      rw [Finset.mem_image] at himage
+      rcases himage with ⟨b', hb', hsome⟩
+      cases hsome
+      exact ⟨j, hj, hb'⟩
+  · rintro ⟨j, hj, hb⟩
+    exact F.some_mem_fullBranches_of_mem hj hb
+
 /-- The full supplied branch set has Aoyagi's Lemma 5 count, once the branch
 family and its base branch are supplied.
 
@@ -272,6 +293,26 @@ def fullBranches {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
     Finset (Option β) :=
   F.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches
 
+/-- The `H`-chain attached to a tagged supplied full branch. -/
+def fullH {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m) :
+    Option β → Fin (ell + 1) → ℤ
+  | none => F.baseH
+  | some b => F.H b
+
+@[simp] theorem fullH_none {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m) :
+    F.fullH none = F.baseH :=
+  rfl
+
+@[simp] theorem fullH_some {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m) (b : β) :
+    F.fullH (some b) = F.H b :=
+  rfl
+
 /-- The full supplied admissible branch set has cardinality
 `a * (ell - a) + 1` under the supplied boundary. -/
 theorem fullBranches_card {β : Type*} [DecidableEq β] (ell a : ℕ) (M : ℤ)
@@ -295,6 +336,38 @@ theorem base_twoValueCount {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
   exact aoyagiLemma4_twoValueCount_of_HtildeChainBounds ell a M m F.baseH
     F.baseH0 ha hselected F.base_lower_bound F.base_upper_bound
     F.base_increment_twoValue
+
+/-- Every tagged supplied full branch satisfies Lemma 4's finite two-value
+count.
+
+The theorem dispatches to the supplied base branch fields for `none`, and to
+the inherited nonbase branch fields for `some b`.  It does not construct either
+kind of branch from Aoyagi's printed formulas. -/
+theorem fullBranch_twoValueCount {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    {x : Option β} (hx : x ∈ F.fullBranches) :
+    ((Finset.univ.filter fun r : Fin ell ↦
+        aoyagiLemma4F ell m (F.fullH x) r = M).card = a) ∧
+      ((Finset.univ.filter fun r : Fin ell ↦
+        aoyagiLemma4F ell m (F.fullH x) r = M - 1).card = ell - a) := by
+  cases x with
+  | none =>
+      simpa [fullH] using F.base_twoValueCount ha hselected
+  | some b =>
+      have hx' :
+          some b ∈ F.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches := by
+        simpa [fullBranches] using hx
+      rcases
+        (AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff
+          F.toAoyagiLemma5SuppliedNonbaseFamily).mp hx'
+        with ⟨j, hj, hb⟩
+      have h :=
+        AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_twoValueCount
+          F.toAoyagiLemma5SuppliedAdmissibleNonbaseFamily ha hselected hj hb
+      simpa [fullH] using h
 
 end AoyagiLemma5SuppliedAdmissibleFamily
 

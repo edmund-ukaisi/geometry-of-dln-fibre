@@ -2423,6 +2423,12 @@ No such claim is formalisation-ready until both fields are filled.
   leading `1` as a supplied `none` branch and nonbase branches as `some b`,
   then count the resulting tagged finite family under the same supplied
   boundary.
+  Also proved full tagged-branch admissibility wrappers:
+  `AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff`,
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullH`, and
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_twoValueCount`.  These
+  prove Lemma 4's finite two-value count for every tagged supplied full branch
+  under explicit `a<=ell` and selected-width sum hypotheses.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
