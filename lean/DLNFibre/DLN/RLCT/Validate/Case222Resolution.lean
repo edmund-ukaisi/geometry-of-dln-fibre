@@ -490,4 +490,22 @@ theorem lemma2LiftME_apply (u : Fin 8 → ℝ) : lemma2LiftME u = tailLift lemma
   show (finPeel 7).symm (Prod.map id (lemma2Hom.symm) ((finPeel 7) u)) = _
   rw [← tailLift_eq_finPeel]; rfl
 
+/-- `lemma2LiftME` is measure-preserving (it IS `tailLift lemma2Inv`). -/
+theorem measurePreserving_lemma2LiftME :
+    MeasurePreserving lemma2LiftME (volume : Measure (Fin 8 → ℝ)) volume := by
+  have := measurePreserving_tailLift_lemma2Inv
+  rwa [show ⇑lemma2LiftME = tailLift lemma2Inv from funext lemma2LiftME_apply]
+
+/-- **The Lemma-2 splice `lintegral`-transport.** `∫⁻_{tailLift lemma2Inv '' A} g = ∫⁻_A (g ∘ tailLift
+lemma2Inv)` — the measure-preserving change of variables for the Lemma-2 node (no Jacobian, det `±1`),
+via `setLIntegral_image_of_mp lemma2LiftME`. The ONLY homeomorph transport in the composite chain (the
+soundness boundary; the blow-up nodes use the Jacobian c-o-v `lintegral_image_eq_lintegral_abs_det…`).
+-/
+theorem tailLift_lemma2Inv_lintegral_image (A : Set (Fin 8 → ℝ)) (g : (Fin 8 → ℝ) → ℝ≥0∞) :
+    ∫⁻ y in tailLift lemma2Inv '' A, g y = ∫⁻ x in A, g (tailLift lemma2Inv x) := by
+  rw [show (tailLift lemma2Inv '' A) = lemma2LiftME '' A from by
+    rw [show ⇑lemma2LiftME = tailLift lemma2Inv from funext lemma2LiftME_apply]]
+  rw [setLIntegral_image_of_mp lemma2LiftME measurePreserving_lemma2LiftME]
+  simp_rw [lemma2LiftME_apply]
+
 end DLNFibre.DLN.RLCT
