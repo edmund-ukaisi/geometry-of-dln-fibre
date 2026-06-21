@@ -2320,6 +2320,11 @@ No such claim is formalisation-ready until both fields are filled.
   These are finite-domain adapters over existing introduced-label wrappers;
   they do not provide `LabelExponentCertificate` terminal-exponent or
   least-value data.
+  Also proved `aoyagiLemma5IntervalSize_eq_succ_of_le_min`,
+  `aoyagiLemma5IntervalSize_eq_min_succ_of_min_le_of_le_max`,
+  `aoyagiLemma5IntervalSize_eq_falling_of_max_le`, and
+  `aoyagiLemma5IntervalSize_sourcePiecewise`, which reproduce the source
+  three-region interval-size profile as finite arithmetic only.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

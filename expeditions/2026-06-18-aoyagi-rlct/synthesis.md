@@ -2408,6 +2408,20 @@ not a terminal-exponent or least-value theorem.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-introduced-label-finset-adapters-a5.md`.
 
+The three-region interval-size profile displayed in Aoyagi Lemma 5 is now
+named directly in `lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`.
+The proved names are `aoyagiLemma5IntervalSize_eq_succ_of_le_min`,
+`aoyagiLemma5IntervalSize_eq_min_succ_of_min_le_of_le_max`,
+`aoyagiLemma5IntervalSize_eq_falling_of_max_le`, and
+`aoyagiLemma5IntervalSize_sourcePiecewise`.  These are pure finite arithmetic
+for `1 + min(j,ell-j,a,ell-a)`, matching the PDF's rising, plateau, and
+falling cardinality regions.  They do not assert source-vector realisation or
+Lemma 5 order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-interval-size-profile-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-interval-size-profile.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-interval-size-profile-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

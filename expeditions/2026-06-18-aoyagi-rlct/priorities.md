@@ -789,6 +789,12 @@ on the session's original cwd.
    finite count decomposition with a fresh reproduction, or a carefully scoped
    supplied-certificate boundary that includes terminal-exponent and
    least-value fields rather than inferring them from introduced labels alone.
+   The source-displayed three-region interval-size profile is now proved as
+   finite arithmetic.  Queued next low-risk A5 candidates from xhigh scouts:
+   add an Eq5 strict-offset/introduced-finset adapter, or add the Eq4-own-value
+   wrapper replacing the abstract lower endpoint in the Eq5 erase-upper set
+   equality.  Keep both conditional on supplied piecewise data and explicit
+   width/slack hypotheses.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

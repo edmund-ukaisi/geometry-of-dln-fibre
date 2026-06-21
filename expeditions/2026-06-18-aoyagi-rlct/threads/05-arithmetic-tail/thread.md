@@ -1862,3 +1862,31 @@ This is API cleanup only.  It does not provide `LabelExponentCertificate`
 fields, terminal exponents, least values, displayed-vector construction,
 terminality, admissibility, chart sequence, Lemma 5 order count, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 interval-size profile
+
+Reproduction:
+`reproduction-lemma5-interval-size-profile-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-interval-size-profile.md`.
+Review artifact:
+`review-lemma5-interval-size-profile-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5IntervalSize_eq_succ_of_le_min
+aoyagiLemma5IntervalSize_eq_min_succ_of_min_le_of_le_max
+aoyagiLemma5IntervalSize_eq_falling_of_max_le
+aoyagiLemma5IntervalSize_sourcePiecewise
+```
+
+These theorem names reproduce the three-region interval-cardinality profile
+displayed in Aoyagi Lemma 5.  They work only with
+`aoyagiLemma5IntervalSize ell a j = 1 + min(j,ell-j,a,ell-a)`, under `a<=ell`
+and `j<=ell` for the combined piecewise theorem.
+
+This is still finite arithmetic below Lemma 5.  It does not construct the
+displayed source vectors, prove that the counted values are realised by
+admissible vectors, prove terminality, chart sequence, Lemma 5 order count,
+normal crossings, or RLCT extraction.

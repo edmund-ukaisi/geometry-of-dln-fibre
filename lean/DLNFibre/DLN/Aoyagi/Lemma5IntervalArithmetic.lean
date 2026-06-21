@@ -28,6 +28,97 @@ def aoyagiLemma5IntervalExcess (ell a j : ℕ) : ℕ :=
 def aoyagiLemma5IntervalSize (ell a j : ℕ) : ℕ :=
   1 + aoyagiLemma5IntervalExcess ell a j
 
+/-- Source-facing first region of Aoyagi's Lemma 5 interval-size profile. -/
+theorem aoyagiLemma5IntervalSize_eq_succ_of_le_min
+    (ell a j : ℕ) (ha : a ≤ ell) (hj : j ≤ min a (ell - a)) :
+    aoyagiLemma5IntervalSize ell a j = j + 1 := by
+  have hja : j ≤ a := le_trans hj (Nat.min_le_left a (ell - a))
+  have hjc : j ≤ ell - a := le_trans hj (Nat.min_le_right a (ell - a))
+  unfold aoyagiLemma5IntervalSize aoyagiLemma5IntervalExcess
+  rw [Nat.min_eq_left (Nat.le_min.mpr ⟨by omega, Nat.le_min.mpr ⟨hja, hjc⟩⟩)]
+  omega
+
+/-- Source-facing middle region of Aoyagi's Lemma 5 interval-size profile. -/
+theorem aoyagiLemma5IntervalSize_eq_min_succ_of_min_le_of_le_max
+    (ell a j : ℕ) (ha : a ≤ ell)
+    (hlo : min a (ell - a) ≤ j) (hhi : j ≤ max a (ell - a)) :
+    aoyagiLemma5IntervalSize ell a j = min a (ell - a) + 1 := by
+  unfold aoyagiLemma5IntervalSize aoyagiLemma5IntervalExcess
+  by_cases hac : a ≤ ell - a
+  · have hmax : max a (ell - a) = ell - a := max_eq_right hac
+    have hmin : min a (ell - a) = a := Nat.min_eq_left hac
+    have htail : a ≤ ell - j := by
+      rw [hmax] at hhi
+      omega
+    rw [hmin]
+    rw [Nat.min_eq_right htail]
+    rw [Nat.min_eq_right (by omega : a ≤ j)]
+    omega
+  · have hca : ell - a ≤ a := by omega
+    have hmax : max a (ell - a) = a := max_eq_left hca
+    have hmin : min a (ell - a) = ell - a := Nat.min_eq_right hca
+    have htail : ell - a ≤ ell - j := by
+      rw [hmax] at hhi
+      omega
+    rw [hmin]
+    rw [Nat.min_eq_right htail]
+    rw [Nat.min_eq_right (by omega : ell - a ≤ j)]
+    omega
+
+/-- Source-facing falling region of Aoyagi's Lemma 5 interval-size profile. -/
+theorem aoyagiLemma5IntervalSize_eq_falling_of_max_le
+    (ell a j : ℕ) (ha : a ≤ ell)
+    (hhi : max a (ell - a) ≤ j) (hj : j ≤ ell) :
+    aoyagiLemma5IntervalSize ell a j =
+      min a (ell - a) + 1 + max a (ell - a) - j := by
+  have hexcess : aoyagiLemma5IntervalExcess ell a j = ell - j := by
+    unfold aoyagiLemma5IntervalExcess
+    by_cases hac : a ≤ ell - a
+    · have hmax : max a (ell - a) = ell - a := max_eq_right hac
+      have htail_a : ell - j ≤ a := by
+        rw [hmax] at hhi
+        omega
+      rw [hmax] at hhi
+      rw [Nat.min_eq_left hac]
+      rw [Nat.min_eq_left htail_a]
+      rw [Nat.min_eq_right (by omega : ell - j ≤ j)]
+    · have hca : ell - a ≤ a := by omega
+      have hmax : max a (ell - a) = a := max_eq_left hca
+      have htail_c : ell - j ≤ ell - a := by
+        rw [hmax] at hhi
+        omega
+      rw [hmax] at hhi
+      rw [Nat.min_eq_right hca]
+      rw [Nat.min_eq_left htail_c]
+      rw [Nat.min_eq_right (by omega : ell - j ≤ j)]
+  have hsum : min a (ell - a) + max a (ell - a) = ell := by
+    rw [min_add_max]
+    omega
+  rw [aoyagiLemma5IntervalSize, hexcess]
+  omega
+
+/-- Aoyagi's displayed three-region interval-size profile in Lemma 5. -/
+theorem aoyagiLemma5IntervalSize_sourcePiecewise
+    (ell a j : ℕ) (ha : a ≤ ell) (hj : j ≤ ell) :
+    aoyagiLemma5IntervalSize ell a j =
+      if j ≤ min a (ell - a) then
+        j + 1
+      else if j ≤ max a (ell - a) then
+        min a (ell - a) + 1
+      else
+        min a (ell - a) + 1 + max a (ell - a) - j := by
+  by_cases hjlo : j ≤ min a (ell - a)
+  · rw [if_pos hjlo]
+    exact aoyagiLemma5IntervalSize_eq_succ_of_le_min ell a j ha hjlo
+  · rw [if_neg hjlo]
+    by_cases hjhi : j ≤ max a (ell - a)
+    · rw [if_pos hjhi]
+      exact aoyagiLemma5IntervalSize_eq_min_succ_of_min_le_of_le_max
+        ell a j ha (by omega) hjhi
+    · rw [if_neg hjhi]
+      exact aoyagiLemma5IntervalSize_eq_falling_of_max_le
+        ell a j ha (by omega) hj
+
 /-- In the initial overlap of the two Lemma 5 arms, the interval excess is
 the coordinate index itself.
 

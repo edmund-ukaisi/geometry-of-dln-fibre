@@ -3007,6 +3007,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-introduced-label-finset-adapters-a5.md`.
 
+Latest A5 update: the source-displayed interval-size profile from Aoyagi
+Lemma 5 is now Lean-proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`.  The names are
+`aoyagiLemma5IntervalSize_eq_succ_of_le_min`,
+`aoyagiLemma5IntervalSize_eq_min_succ_of_min_le_of_le_max`,
+`aoyagiLemma5IntervalSize_eq_falling_of_max_le`, and
+`aoyagiLemma5IntervalSize_sourcePiecewise`.  They prove the rising, plateau,
+and falling formulas for `aoyagiLemma5IntervalSize ell a j` using only the
+closed excess formula `min(j,ell-j,a,ell-a)`.  This is finite interval
+arithmetic, not displayed-vector construction, value realisation, terminality,
+admissibility, order-count, normal-crossing, or RLCT data.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-interval-size-profile-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-interval-size-profile.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-interval-size-profile-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
