@@ -72,6 +72,50 @@ noncomputable def rlctAt (H : Fin (L + 1) → ℕ) (F : Params H → ℝ) (wstar
   sSup { c : ENNReal | ∃ c' : NNReal, c = (c' : ENNReal) ∧
           ∃ U ∈ 𝓝 wstar, IntegrableOn (fun w => |F w| ^ (-(c' : ℝ))) U volume }
 
+/-- Pointwise: with `|g| ≤ |f|` and `g` vanishing only where `f` does, `|f|^{−c'} ≤ |g|^{−c'}`
+(`c' ≥ 0`). The `g = 0 → f = 0` clause dodges the `0^{neg}=0` convention at `{g=0, f≠0}`, so the
+domination is everywhere — no a.e./null-set argument needed. -/
+theorem abs_rpow_neg_mono (f g c' : ℝ) (hc : 0 ≤ c') (hgf : |g| ≤ |f|) (hz : g = 0 → f = 0) :
+    |f| ^ (-c') ≤ |g| ^ (-c') := by
+  rcases eq_or_ne f 0 with hf0 | hf0
+  · rcases eq_or_lt_of_le hc with rfl | hcpos
+    · simp
+    · rw [hf0]; simp only [abs_zero]; rw [Real.zero_rpow (by linarith)]
+      exact Real.rpow_nonneg (abs_nonneg g) _
+  · have hg0 : g ≠ 0 := fun h => hf0 (hz h)
+    exact Real.rpow_le_rpow_of_nonpos (abs_pos.mpr hg0) hgf (by linarith)
+
+/-- **RLCT monotonicity** (`g²≤f²` ⟹ `λ(g²)≤λ(f²)`, the D1/L2-additivity engine). If, on a
+neighbourhood of `w*`, `|G| ≤ |F|` and `G` vanishes only where `F` does, then `rlctAt G ≤ rlctAt F`:
+a smaller `|·|` makes `|·|^{−c'}` larger, hence harder to integrate, so fewer exponents qualify.
+Measure-theory-light — the `G=0→F=0` clause makes the integrand domination pointwise everywhere (no
+a.e./null-set). `Measurable F` is the one analytic hypothesis (`dlnLoss` is polynomial ⇒ holds). -/
+theorem rlctAt_mono (H : Fin (L + 1) → ℕ) (F G : Params H → ℝ) (wstar : Params H)
+    (hFmeas : Measurable F)
+    (hdom : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, |G w| ≤ |F w| ∧ (G w = 0 → F w = 0)) :
+    rlctAt H G wstar ≤ rlctAt H F wstar := by
+  haveI : OpensMeasurableSpace (Params H) :=
+    inferInstanceAs (OpensMeasurableSpace
+      (∀ s : Fin L, (Fin (H s.castSucc)) → (Fin (H s.succ)) → ℝ))
+  apply sSup_le_sSup
+  rintro c ⟨c', rfl, U, hU, hint⟩
+  obtain ⟨V, hV, hVdom⟩ := hdom
+  obtain ⟨U', hU'U, hU'open, hwU'⟩ := mem_nhds_iff.mp hU
+  obtain ⟨W, hWV, hWopen, hwW⟩ := mem_nhds_iff.mp hV
+  refine ⟨c', rfl, U' ∩ W, Filter.inter_mem (hU'open.mem_nhds hwU') (hWopen.mem_nhds hwW), ?_⟩
+  have hmeasF : AEStronglyMeasurable (fun w => |F w| ^ (-(c' : ℝ))) (volume.restrict (U' ∩ W)) :=
+    (((continuous_abs.measurable).comp hFmeas).pow_const _).aestronglyMeasurable
+  apply MeasureTheory.Integrable.mono
+    (hint.mono_set (Set.inter_subset_left.trans hU'U)) hmeasF
+  have hUW_meas : MeasurableSet (U' ∩ W) := (hU'open.inter hWopen).measurableSet
+  refine (ae_restrict_iff' hUW_meas).mpr ?_
+  filter_upwards with w hw
+  have hd := hVdom w (hWV hw.2)
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
+      abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+  exact abs_rpow_neg_mono (F w) (G w) c' c'.2 hd.1 hd.2
+
 /-- The order θ: the multiplicity of the largest pole of the zeta function `Z(z) = ∫_U |F|^z φ`
 at `z = −rlctAt F w*` (Aoyagi Def 1). Carried as an opaque placeholder (total, axiom-free); its
 value is pinned by the S2 citation (`rlct_of_normalCrossing`), which returns the order as the
