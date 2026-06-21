@@ -172,6 +172,24 @@ successor-weight diagonal times the bare post-pivot product.  It still says
 nothing about the pivot row, full successor products, chart production, or
 analytic/RLCT content.
 
+The source-side weighted lower-row handoff has also landed.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-side-weighted-lower-row-handoff-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-side-weighted-lower-row-handoff.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-side-weighted-lower-row-handoff-a4.md`.
+
+Lean name:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_constructedSourceFreeCprimeWeightedNextSameStageProduct_withCorrectedPostData`.
+It projects the constructed-source weighted `Q/P` equality to lower rows and
+then uses the weighted lower-row projection to rewrite the right side as the
+successor lower-row diagonal times the bare post-pivot residual-block/free-
+following-factor product, carrying the corrected post-data fields.  It keeps
+the `P_q = weightedPivotBlockRowOp q` source-side operation explicit.  It is
+not a full successor product, chart production, source production of
+`Cprime`, transition invariance, terminal relabeling, normal crossings, pole
+order, or RLCT content.
+
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at

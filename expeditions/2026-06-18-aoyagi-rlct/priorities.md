@@ -161,6 +161,17 @@ and
 Keep this as a lower-row weighted projection only; it is not a full successor
 product or chart-production theorem.
 
+Source-side weighted lower-row handoff checkpoint:
+`threads/04-blow-up-certificate/reproduction-case2-source-side-weighted-lower-row-handoff-a4.md`.
+Lean now projects the old source-side weighted `Q/P` product, with the
+constructed source following factor from `Q*Cprime`, to the lower rows and
+rewrites it as the successor lower-row diagonal times the bare post-pivot
+product:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_constructedSourceFreeCprimeWeightedNextSameStageProduct_withCorrectedPostData`.
+Keep this as a source-side projection package only; it is not a full
+successor product, chart production, source production of `Cprime`, or a
+transition invariant.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch

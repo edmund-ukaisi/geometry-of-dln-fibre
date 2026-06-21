@@ -3355,3 +3355,34 @@ row, prove a full successor product, construct chart coverage or arbitrary
 pivot coverage, source-produce `Cprime`, derive recurrence/exponent post-data,
 prove transition invariance, terminal relabeling, Jacobian arithmetic, normal
 crossings/RLCT, or repair the printed Case 2 vector mismatch.
+
+## 2026-06-21 Lean Case 2 source-side weighted lower-row handoff
+
+Reproduction:
+`reproduction-case2-source-side-weighted-lower-row-handoff-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-side-weighted-lower-row-handoff.md`.
+Review artifact:
+`review-case2-source-side-weighted-lower-row-handoff-a4.md`.
+
+Lean now projects the constructed-source weighted `Q/P` equality itself to the
+lower rows and rewrites the weighted right side with the successor lower-row
+diagonal:
+
+```text
+Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_constructedSourceFreeCprimeWeightedNextSameStageProduct_withCorrectedPostData
+```
+
+The proof composes the existing local product package with the weighted
+free-`Cprime` lower-row projection.  The source-side expression keeps the
+`weightedPivotBlockRowOp q` factor and reconstructs the old source following
+factor from `Q*Cprime`; the conclusion is the successor lower-row diagonal
+times the bare post-pivot residual-block/free-following-factor product, plus
+the corrected exponent, level, least-value-gap, and `case2Gap` data.
+
+This remains finite displayed-pivot algebra only.  It is not a full successor
+product including the pivot row, and it does not construct charts, prove
+chart coverage or arbitrary-pivot coverage, source-produce `Cprime`, derive
+source-produced post-data, prove transition invariance, terminal relabeling,
+Jacobian arithmetic, normal crossings/RLCT, or repair the printed Case 2
+vector mismatch.
