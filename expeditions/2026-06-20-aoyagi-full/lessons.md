@@ -372,3 +372,17 @@ OTHER pieces before re-headlining the whole. A win on the piece you feared most 
 zero; it relocates it to wherever you weren't looking. (pp did this unprompted — the self-correction IS the
 standard; the controller reinforces it.) Naming corollary: "R1 is medium" was the over-claim; "R1.3 light, R1.6 the
 mountain" is the accurate map — name the difficulty where it actually is.
+
+## 2026-06-21 — a shortcut whose ANSWER matches is a cross-check, not a proof path (the Q4-lct trap)
+
+Settling R1's lower bound, decorrelated Codex offered a shortcut: `rlct(F) = ½·lct(I)` with `lct(I) = min_Adm Mval`
+via quiver multiplier ideals — sidestepping the whole flag-resolution. Its ANSWER matched the target. pp rejected
+it as a proof path, for three reasons, and kept it only as a cross-check: (1) it rests on an UNPROVEN coincidence
+(real rlct = ½·complex lct — not generally true; needs proving for this family); (2) it introduces a SECOND
+citation beyond S2 AND breaks the Aoyagi-independence constraint (it's the Lehalleur–Rimányi/determinantal-
+multiplier-ideal literature); (3) it BLACK-BOXES the very content the rung exists to prove. LESSON: when a tool
+hands you a shortcut whose output equals what you're trying to prove, that is evidence the TARGET is right
+(valuable — take the confidence), not evidence the shortcut is a valid PROOF. Before adopting it, check: does it
+rely on an unproven bridge? does it import a citation/dependency you've committed to avoid? does it assume the
+thing you're trying to establish? If any — it's a cross-check, not a path. (This is the dual of "build the witness
+before dismissing": here, don't ADOPT a confirmation just because the number matches.)
