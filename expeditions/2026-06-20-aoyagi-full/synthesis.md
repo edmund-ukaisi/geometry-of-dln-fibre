@@ -567,6 +567,15 @@ now (pp's core form, BLESSED) + the S1.5 wire (fm-2's verified package) in one b
   Fubini-product = the done Case111Bridge. No cover, no G5 — fm SPECIFYs directly. The R1-batch's last item.
 - fm: WIRE rlct_additive_smooth_block ((b) keep+exact, closes S1.5 sorry 6→5) + re-scope resolution_charts + the
   (1,1,1) gate → (2,1,2) [#55]. fm-2: product_min_rlct (#56) → (2,2,2)-measure (#54). pp: on-demand. rv-2: queued.
+- **PROPERNESS GAP (fm SPECIFY-catch) → AVOIDED via g5_flat_cover (controller adjudicated):** a single explicit
+  blow-up chart does NOT satisfy S1.1 `weightedThreshold_transport`'s GLOBAL `IsProperMap`+`Surjective`. Resolution:
+  R1's per-chart transport = the **lintegral c-o-v inside g5_flat_cover** (per-chart `InjOn` off the null exceptional
+  only — NO global proper/surj); global coverage = R1.6 (the cover). So `rlctAt(core)=⨅ monomialThreshold` =
+  g5_flat_cover (∫=Σ∫) + per-chart weighted-monomial threshold (S2+unit-absorption) + sSup algebra. NOT
+  G1/G2/G3-bespoke — g5_flat_cover is the GENERAL version of how (1,1,1) bypassed S1.1. (2,1,2) uses product_min_rlct
+  (Tonelli, no transport) ⟹ gap moot there. **S1.1 ORPHAN FLAG:** S1.1 is NOT R1's chart-transport (earlier
+  "S1.1 carries the blow-up CoV" was imprecise — g5_flat_cover does) ⟹ revisit whether S1.1 is used by D1/L2 or is
+  now an orphan (proven, hsurj+hImE 10th-finding banked, possibly unplugged) — pp checking; name honestly; doesn't block.
 
 ## STATE @ ~03:00, trunk @c92501d — R1 DESIGN PHASE COMPLETE; execution remains
 - **rlctAt_mono ON TRUNK** (D1/L2 engine; green-gated 2855 jobs, controller-verified axiom-clean). fm built it with
