@@ -1293,6 +1293,15 @@ No such claim is formalisation-ready until both fields are filled.
   source-produce `Cprime`, construct next `C'^(S+1)`, produce recurrence or
   exponent post-data, or prove chart coverage, regularity, Jacobians, normal
   crossings/RLCT, or a transition invariant.
+  The constructed source following-factor lift proves only that the old
+  pivot-first following factor can be represented by a total source-coordinate
+  function whose displayed source-following restriction is the supplied matrix.
+  Applied to `Q*Cprime`, this gives the source-coordinate form of
+  `Q^-1*(Q*Cprime)=Cprime` and a supplied-boundary `Q/P` wrapper. It still
+  does not source-produce the full next `C'^(S+1)`, recurrence or exponent
+  post-data, successor chart-family data, coverage, regularity, Jacobians,
+  normal crossings/RLCT, arbitrary-pivot coverage, terminal relabeling, or a
+  transition invariant.
   The displayed center count is only a selected coordinate-equation count. It
   is not a center-dimension theorem, Jacobian exponent, chart-produced exponent
   update, chart coverage theorem, normal-crossing certificate, RLCT extraction,

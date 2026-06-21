@@ -2432,6 +2432,30 @@ Statement card:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-constructed-cprime-qp-a4.md`.
 
+Latest A4 update: the displayed Case 2 constructed source following-factor
+lift has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
+The proved Lean names are
+`case2DisplayedConstructedSourceFollowingFactor`,
+`case2DisplayedSourceFollowingFactor_constructed`,
+`case2DisplayedPaperCprime_of_constructedSourceFollowingFactor`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_constructedSourceFollowingFactor_paperQP`.
+Lean zero-extends a supplied pivot-first residual following matrix to a total
+source-coordinate function and proves that restricting it back with
+`case2DisplayedSourceFollowingFactor` recovers the supplied matrix.  With the
+special supplied matrix `Q*Cprime`, the paper-named inverse update recovers
+`Cprime`, and the supplied-boundary `Q/P` identity can be expressed using this
+total source-coordinate old following factor.  This is finite reindexing and
+matrix algebra only.  It does not source-produce the full next
+`C'^(S+1)`, produce recurrence or exponent post-data, build a successor chart
+family, prove chart coverage, Jacobian arithmetic, normal crossings/RLCT,
+arbitrary pivot coverage, terminal relabeling, or the printed-vector repair.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-source-following-factor-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-source-following-factor.md`.
+Review artifact:
+`threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-a4.md`.
+
 Latest A5 update: the Lemma 5 equation `(3)` local-data and actual-label
 bridge has landed in
 `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and

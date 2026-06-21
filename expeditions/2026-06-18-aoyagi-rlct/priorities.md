@@ -677,6 +677,13 @@ on the session's original cwd.
    should either build a richer supplied Case 1(2) terminal convention
    explicitly, or move to another finite consequence below the
    displayed-family realisation boundary.
+   A4 has now filled the finite source-coordinate representative for the
+   constructed-`Cprime` direction: the old factor `Q*Cprime` can be
+   zero-extended to a total source function, and restriction through the
+   displayed source-following API recovers it.  The next A4 move remains the
+   harder chart-production boundary: full next `C'^(S+1)`, recurrence/exponent
+   post-data from coordinates, or an explicitly supplied successor-boundary
+   interface that says no more than its fields.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

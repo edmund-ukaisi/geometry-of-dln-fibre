@@ -1994,6 +1994,18 @@ successor chart family, transition invariant, Jacobian, normal crossing, RLCT
 extraction, arbitrary pivot coverage, terminal relabeling, or printed-vector
 repair is claimed.
 
+The old following factor in that reverse coordinate direction is now also
+represented by a total source-coordinate function.  Lean zero-extends any
+pivot-first following matrix outside the old residual-column block and proves
+that `case2DisplayedSourceFollowingFactor` restricts the result back to the
+supplied matrix.  Applying this to `Q*Cprime` gives the source-coordinate
+version of `Q^-1*(Q*Cprime)=Cprime`, and the supplied-boundary `Q/P` product
+identity now has a paper-named wrapper whose old following factor is a total
+source function.  This still stops below full source production of the next
+`C'^(S+1)`, recurrence/exponent post-data, successor chart family, transition
+invariant, Jacobian, normal crossing, RLCT extraction, arbitrary pivot
+coverage, terminal relabeling, or printed-vector repair.
+
 The stronger A4 chart-production route has now been explicitly audited and
 blocked at the current source/API boundary.  Aoyagi pp. 19-22 support the
 displayed local Case 2 algebra and the continuation/terminal slogans, but do

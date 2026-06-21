@@ -10222,6 +10222,41 @@ def case2DisplayedPaperConstructedFollowingFactor
     Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
   case2DisplayedPaperQ n hS hcont residual * Cprime
 
+/-- Construct a total source-coordinate following factor whose residual-column
+restriction, after pivot-first reindexing, is the supplied pivot-first matrix.
+
+Values outside the residual-column range are set to zero.  This is a finite
+source-coordinate representative for supplied following-factor data; it is not
+chart production, source production of a successor `C'^(S+1)`, recurrence or
+exponent post-data, coverage, regularity, Jacobian arithmetic, normal
+crossings, or RLCT extraction. -/
+noncomputable def case2DisplayedConstructedSourceFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Csrc : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    ℕ → τ → R :=
+  fun j a =>
+    if hj : j ∈ case2ResidualBlockCols n S J then
+      Csrc ((pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont)).symm
+        ⟨j, hj⟩) a
+    else 0
+
+/-- Restricting the constructed source-coordinate following factor to the old
+residual columns recovers the supplied pivot-first following factor. -/
+theorem case2DisplayedSourceFollowingFactor_constructed
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Csrc : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedSourceFollowingFactor n hS hcont
+        (case2DisplayedConstructedSourceFollowingFactor n hS hcont Csrc) =
+      Csrc := by
+  ext i a
+  simp [case2DisplayedSourceFollowingFactor, case2DisplayedFollowingFactor,
+    pivotFirstFollowingFactor, case2SourceFollowingFactor,
+    case2DisplayedConstructedSourceFollowingFactor]
+
 /-- If the old following factor is constructed as `Q * C'`, then Aoyagi's
 displayed inverse operation recovers the chart coordinate `C'`. -/
 theorem case2DisplayedPaperCprime_of_constructedFollowingFactor
@@ -10237,6 +10272,23 @@ theorem case2DisplayedPaperCprime_of_constructedFollowingFactor
   rw [← Matrix.mul_assoc]
   rw [pivotQinv_mul_pivotQ]
   simp
+
+/-- Source-coordinate form of the reverse Case 2 following-factor direction:
+if the source following factor is reconstructed from `Q*C'`, Aoyagi's
+displayed inverse operation recovers the free pivot-first coordinate `C'`. -/
+theorem case2DisplayedPaperCprime_of_constructedSourceFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedPaperCprime n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactor n hS hcont
+          (case2DisplayedPaperConstructedFollowingFactor n hS hcont residual Cprime)) =
+      Cprime := by
+  rw [case2DisplayedPaperCprime]
+  rw [case2DisplayedSourceFollowingFactor_constructed]
+  exact case2DisplayedPaperCprime_of_constructedFollowingFactor
+    n hS hcont residual Cprime
 
 /-- Reverse-coordinate form of Aoyagi's displayed Case 2 `Q` operation:
 with `C = Q * C'`, multiplying `D'' = D_chart * Q` by `C'` is the same as
@@ -11522,6 +11574,68 @@ theorem sourceDisplayedQP_constructedCprime_paperQP
   simpa [row, col, A, Csrc, case2DisplayedPaperDchart, case2DisplayedPaperDppp,
     case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix,
     case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix, hC] using hq
+
+/-- Paper-named displayed Case 2 `Q/P` identity with a free chart-coordinate
+following factor, where the old following factor is represented by a total
+source-coordinate function.
+
+This packages the source-coordinate lift
+`case2DisplayedConstructedSourceFollowingFactor` into the supplied-boundary
+`Q/P` calculation.  It still does not produce recurrence or exponent post-data,
+construct the successor chart family, prove chart coverage or regularity,
+compute Jacobians, prove normal crossings/RLCT, handle arbitrary pivots,
+terminal relabeling, or repair the printed Case 2 vector. -/
+theorem sourceDisplayedQP_constructedSourceFollowingFactor_paperQP
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R)
+    (Cprime : Matrix
+      (Unit ⊕ pivotComplement
+        (case2DisplayedPivotCol n data.stage_pos data.continuation)) τ R) :
+    let row := case2DisplayedPivotRow n data.stage_pos data.continuation
+    let col := case2DisplayedPivotCol n data.stage_pos data.continuation
+    let A := case2DisplayedPaperDchart n data.stage_pos data.continuation residual
+    let C :=
+      case2DisplayedConstructedSourceFollowingFactor n data.stage_pos data.continuation
+        (case2DisplayedPaperConstructedFollowingFactor n data.stage_pos data.continuation
+          residual Cprime)
+    ∃ q : pivotComplement row → R,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSourceSubstitutionBlock n data.stage_pos data.continuation u
+              residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          case2DisplayedSourceFollowingFactor n data.stage_pos data.continuation C =
+        (weightedPivotDiagonal (post.weight (J + 1))
+            (fun i : pivotComplement row ↦ post.weight (case2ResidualRowLevel n S J i.1)) *
+          case2DisplayedPaperDppp n data.stage_pos data.continuation residual) *
+          Cprime := by
+  let Csrc :=
+    case2DisplayedPaperConstructedFollowingFactor n data.stage_pos data.continuation
+      residual Cprime
+  let C :=
+    case2DisplayedConstructedSourceFollowingFactor n data.stage_pos data.continuation Csrc
+  rcases sourceDisplayedQP_constructedCprime_paperQP data residual Cprime with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hC :
+      case2DisplayedSourceFollowingFactor n data.stage_pos data.continuation C = Csrc := by
+    dsimp [C, Csrc]
+    exact case2DisplayedSourceFollowingFactor_constructed
+      n data.stage_pos data.continuation
+      (case2DisplayedPaperConstructedFollowingFactor n data.stage_pos data.continuation
+        residual Cprime)
+  simpa [C, Csrc, hC] using hq
 
 /-- The displayed supplied boundary exposes the continuing-branch lower-row
 product of Aoyagi's paper `D''' * C'` as the supplied next same-stage block

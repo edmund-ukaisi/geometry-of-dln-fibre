@@ -3155,3 +3155,38 @@ total source-coordinate following function from `Cprime`, source-produce next
 chart family, prove chart coverage or regularity, compute Jacobians, prove
 normal crossings/RLCT, handle arbitrary pivots, terminal relabeling, or repair
 the printed Case 2 vector.
+
+## 2026-06-21 Lean Case 2 constructed source following factor
+
+Reproduction:
+`reproduction-case2-constructed-source-following-factor-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-source-following-factor.md`.
+Review artifact:
+`review-case2-constructed-source-following-factor-a4.md`.
+
+Lean now fills the source-coordinate gap left by the pivot-first constructed
+`Cprime` checkpoints:
+
+```text
+case2DisplayedConstructedSourceFollowingFactor
+case2DisplayedSourceFollowingFactor_constructed
+case2DisplayedPaperCprime_of_constructedSourceFollowingFactor
+Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_constructedSourceFollowingFactor_paperQP
+```
+
+Given any pivot-first following matrix on the old displayed residual columns,
+Lean defines a total source-coordinate function by transporting entries back
+through the pivot-first equivalence and setting all non-residual columns to
+zero.  Restricting this function with
+`case2DisplayedSourceFollowingFactor` recovers the supplied matrix exactly.
+For the constructed matrix `Q*Cprime`, the paper-named update
+`C' = Q^-1 C` therefore recovers the free chart coordinate `Cprime`, and the
+supplied-boundary `Q/P` identity can be stated with the old following factor
+represented as a total source-coordinate function.
+
+This is still finite source-coordinate bookkeeping and matrix algebra.  It
+does not source-produce the full next `C'^(S+1)`, produce recurrence or
+exponent post-data, construct a successor chart family, prove chart coverage
+or regularity, compute Jacobians, prove normal crossings/RLCT, handle
+arbitrary pivots, terminal relabeling, or repair the printed Case 2 vector.
