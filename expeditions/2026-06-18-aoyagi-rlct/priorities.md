@@ -826,6 +826,9 @@ on the session's original cwd.
    Eq3/Eq4 one-step introduced-domain insert/cardinality wrappers are now
    proved.  They complete the endpoint analogue of the Eq5 domain bookkeeping,
    but they still do not supply terminal exponent or least-value fields.
+   The Eq5 supplied-post-data recurrence-weight wrapper is now proved.  It
+   starts using the domain bookkeeping in the recurrence API, but it still
+   assumes the Case 2 post-data package and does not prove chart production.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

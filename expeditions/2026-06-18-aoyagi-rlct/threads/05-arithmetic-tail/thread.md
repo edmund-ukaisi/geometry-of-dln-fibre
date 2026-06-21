@@ -2105,3 +2105,29 @@ actual-width compatibility explicit; Eq3 keeps the one-unit slack and
 actual-width compatibility explicit.  It does not construct displayed vectors,
 provide terminal-exponent or least-value data, prove terminality, chart
 sequence, Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 Case 2 recurrence weight update
+
+Reproduction:
+`reproduction-lemma5-eq5-case2-weight-update-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-case2-weight-update.md`.
+Review artifact:
+`review-lemma5-eq5-case2-weight-update-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_ownBlock_case2_weight_succ_current_eq_newVar_mul_of_lastPoint_widthBound
+```
+
+For one supplied Eq5 own-block branch whose label is `J+1`, a supplied Case 2
+recurrence post-state with the standard new-label data has
+`post.weight i = u * pre.weight i` for every row `i` with `J+1 <= i`.
+
+This is conditional recurrence bookkeeping only.  It uses the existing Eq5
+actual-label wrapper and the generic supplied-post-data recurrence theorem.  It
+does not prove that a blow-up chart produces the post-state, construct Eq5
+vectors, quantify over all `alpha`, provide terminal-exponent or least-value
+data, prove terminality, chart sequence, Lemma 5 order count, normal
+crossings, or RLCT extraction.

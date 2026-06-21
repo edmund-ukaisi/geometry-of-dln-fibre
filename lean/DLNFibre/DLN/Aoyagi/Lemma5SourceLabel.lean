@@ -1065,6 +1065,40 @@ theorem aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_card_succ_eq_succ_of_last
       hwidth_le hJ
   exact introducedLabelFinset_card_succ_eq_succ hlabel.2
 
+/-- Source-facing Eq5 specialization of the supplied Case 2 recurrence-weight
+update.
+
+For one supplied Eq5 own-block branch whose label is `J+1`, a supplied
+successor recurrence state with the standard Case 2 post-data has row weights
+multiplied by the new variable from row `J+1` onward.  This is conditional
+recurrence bookkeeping and does not assert that a blow-up chart produces the
+post-state. -/
+theorem aoyagiLemma5Eq5_ownBlock_case2_weight_succ_current_eq_newVar_mul_of_lastPoint_widthBound
+    {α : Type*} [CommMonoid α]
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S J : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    {pre : IntroducedLabelRecurrenceState L n S J α}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u) :
+    ∀ i, J + 1 ≤ i → post.weight i = u * pre.weight i := by
+  have hlabel :=
+    aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+      L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+      hwidth_le hJ
+  exact fun i hi ↦ hpost.weight_succ_current_eq_new_mul_of_ge hlabel.2 hi
+
 /-- Source-shaped arbitrary-own-block equation `(5)` label legality from a
 block-local actual-width lower-bound hypothesis.
 
