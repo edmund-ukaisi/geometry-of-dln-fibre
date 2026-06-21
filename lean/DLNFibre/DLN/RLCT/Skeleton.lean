@@ -1596,26 +1596,508 @@ private theorem smallestK_le_subset (n k : ℕ) (hk : k ≤ n) (q : Fin n → �
   refine mono_prefix_le_subset (q ∘ Tuple.sort q) (Tuple.monotone_sort q) k hk A' ?_
   rw [hA', Finset.card_image_of_injective _ (Tuple.sort q).symm.injective, hA]
 
+/-- The sum of the `k` smallest entries of `q : Fin n → ℤ` (the sorted prefix `∑_{i<k} srt q i`). -/
+noncomputable def smallestK (n k : ℕ) (q : Fin n → ℤ) : ℤ := ∑ i ∈ Finset.range k, srt n q i
+
+/-- The index set of the `k` smallest entries of `w` (image of the first `k` sorted slots). Its
+cardinality is `k` (for `k ≤ n`) and its `w`-sum is `smallestK n k w`. -/
+noncomputable def leastSet (n k : ℕ) (w : Fin n → ℤ) : Finset (Fin n) :=
+  (Finset.univ.filter (fun i : Fin n => (i : ℕ) < k)).image (Tuple.sort w)
+
+/-- `leastSet n k w` has cardinality `min k n` and `w`-sum `smallestK n k w` (for `k ≤ n`). -/
+private theorem leastSet_card_sum (n k : ℕ) (hk : k ≤ n) (w : Fin n → ℤ) :
+    (leastSet n k w).card = k ∧ ∑ j ∈ leastSet n k w, w j = smallestK n k w := by
+  have hcard : (leastSet n k w).card = k := by
+    rw [leastSet, Finset.card_image_of_injective _ (Tuple.sort w).injective,
+      Fin.card_filter_val_lt]; omega
+  refine ⟨hcard, ?_⟩
+  rw [smallestK, srt_prefix_eq_filter n k hk w, leastSet,
+    Finset.sum_image (fun a _ b _ h => (Tuple.sort w).injective h)]
+  exact Finset.sum_congr rfl (fun a _ => rfl)
+
+/-- **Elementary transfer ⟹ `smallestK` weakly decreases.** If `w'` is `w` with the value at `lo`
+pushed down (below both `w lo` and `w hi`) and `hi` pushed up by the same amount (total preserved),
+all other entries fixed, then every `k`-smallest sum of `w'` is `≤` that of `w`. The single Karamata
+elementary-transfer step (proved via the `k`-smallest-subset engine, no induction). -/
+private theorem smallestK_pair_spread {n k : ℕ} (hk : k ≤ n) {w w' : Fin n → ℤ}
+    {lo hi : Fin n} (hne : lo ≠ hi) (hlo₁ : w' lo ≤ w lo) (hlo₂ : w' lo ≤ w hi)
+    (hsum : w' lo + w' hi = w lo + w hi) (hfixed : ∀ r, r ≠ lo → r ≠ hi → w' r = w r) :
+    smallestK n k w' ≤ smallestK n k w := by
+  obtain ⟨hScard, hSsum⟩ := leastSet_card_sum n k hk w
+  set S := leastSet n k w with hSdef
+  by_cases hcase : hi ∈ S ∧ lo ∉ S
+  · -- swap hi for lo in S; the lifted lo is bounded by the (now-gone) hi
+    obtain ⟨hhiS, hloS⟩ := hcase
+    set A := insert lo (S.erase hi) with hAdef
+    have hloErase : lo ∉ S.erase hi := fun h => hloS (Finset.mem_of_mem_erase h)
+    have hkpos : 1 ≤ k := by
+      rw [← hScard]; exact Finset.card_pos.mpr ⟨hi, hhiS⟩
+    have hAcard : A.card = k := by
+      rw [hAdef, Finset.card_insert_of_notMem hloErase, Finset.card_erase_of_mem hhiS, hScard]
+      omega
+    have hstep : smallestK n k w' ≤ ∑ j ∈ A, w' j := by
+      rw [smallestK]; exact smallestK_le_subset n k hk w' A hAcard
+    refine le_trans hstep ?_
+    -- ∑_A w' = ∑_{S.erase hi} w + w' lo ≤ ∑_{S.erase hi} w + w hi = ∑_S w
+    rw [hAdef, Finset.sum_insert hloErase]
+    have heq : ∑ j ∈ S.erase hi, w' j = ∑ j ∈ S.erase hi, w j := by
+      apply Finset.sum_congr rfl
+      intro r hr
+      have hrhi : r ≠ hi := Finset.ne_of_mem_erase hr
+      have hrlo : r ≠ lo := fun h => hloErase (h ▸ hr)
+      exact hfixed r hrlo hrhi
+    rw [heq]
+    have hSsplit : ∑ j ∈ S.erase hi, w j + w hi = ∑ j ∈ S, w j := Finset.sum_erase_add S w hhiS
+    rw [← hSsum]; linarith [hSsplit]
+  · -- A = S works: the changed indices' sum over S only drops (or is fixed)
+    have hstep : smallestK n k w' ≤ ∑ j ∈ S, w' j := by
+      rw [smallestK]; exact smallestK_le_subset n k hk w' S hScard
+    refine le_trans hstep ?_
+    rw [← hSsum]
+    -- compare ∑_S w' to ∑_S w pointwise-after-isolating lo,hi
+    push_neg at hcase
+    by_cases hloS : lo ∈ S
+    · by_cases hhiS : hi ∈ S
+      · -- both in S: sums equal by hsum
+        have hsplit' : ∑ j ∈ S, w' j
+            = ∑ j ∈ (S.erase lo).erase hi, w' j + w' lo + w' hi := by
+          rw [add_right_comm, Finset.sum_erase_add _ _ (Finset.mem_erase.mpr ⟨(Ne.symm hne), hhiS⟩),
+            Finset.sum_erase_add _ _ hloS]
+        have hsplit : ∑ j ∈ S, w j
+            = ∑ j ∈ (S.erase lo).erase hi, w j + w lo + w hi := by
+          rw [add_right_comm, Finset.sum_erase_add _ _ (Finset.mem_erase.mpr ⟨(Ne.symm hne), hhiS⟩),
+            Finset.sum_erase_add _ _ hloS]
+        have hmid : ∑ j ∈ (S.erase lo).erase hi, w' j = ∑ j ∈ (S.erase lo).erase hi, w j := by
+          apply Finset.sum_congr rfl
+          intro r hr
+          have hrhi : r ≠ hi := Finset.ne_of_mem_erase hr
+          have hrlo : r ≠ lo := Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hr)
+          exact hfixed r hrlo hrhi
+        rw [hsplit', hsplit, hmid]; linarith
+      · -- lo in S, hi not: drop at lo by hlo₁
+        have hsplit' : ∑ j ∈ S, w' j = ∑ j ∈ S.erase lo, w' j + w' lo :=
+          (Finset.sum_erase_add _ _ hloS).symm
+        have hsplit : ∑ j ∈ S, w j = ∑ j ∈ S.erase lo, w j + w lo :=
+          (Finset.sum_erase_add _ _ hloS).symm
+        have hmid : ∑ j ∈ S.erase lo, w' j = ∑ j ∈ S.erase lo, w j := by
+          apply Finset.sum_congr rfl
+          intro r hr
+          have hrlo : r ≠ lo := Finset.ne_of_mem_erase hr
+          have hrhi : r ≠ hi := fun h => hhiS (h ▸ Finset.mem_of_mem_erase hr)
+          exact hfixed r hrlo hrhi
+        rw [hsplit', hsplit, hmid]; linarith
+    · -- lo not in S: then hi not in S either (else the by_cases branch); all fixed
+      have hhiS : hi ∉ S := fun h => hloS (hcase h)
+      apply le_of_eq
+      apply Finset.sum_congr rfl
+      intro r hr
+      have hrlo : r ≠ lo := fun h => hloS (h ▸ hr)
+      have hrhi : r ≠ hi := fun h => hhiS (h ▸ hr)
+      exact hfixed r hrlo hrhi
+
+/-- `Mvec M : Fin (L+1) → ℤ`, the width sequence as a `Fin (L+1)` vector (for `smallestK`). -/
+noncomputable def Mvec (M : Fin (L + 1) → ℕ) (i : Fin (L + 1)) : ℤ := (M i : ℤ)
+
+/-- `eqPad M T : Fin (L+1) → ℤ`, the edge vector padded with `0` at the last index (so it and `Mvec`
+are both `Fin (L+1)` vectors, for the corridor majorization). -/
+noncomputable def eqPad (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : Fin (L + 1)) : ℤ :=
+  if h : (i : ℕ) < L then edgeQ M T (i : ℕ) else 0
+
+/-- The interpolating sequence `Vseq M T t`: edges on `[0,t)`, the level `u_t` at index `t`, and
+widths past `t`. `Vseq M T 0 = Mvec`, `Vseq M T L = eqPad`; each step is
+one Karamata elementary transfer (pushing `u_t` down to `u_{t+1}`, `M⁽ᵗ⁺¹⁾` up to `edgeQ_t`). -/
+noncomputable def Vseq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (t : ℕ) (i : Fin (L + 1)) : ℤ :=
+  if (i : ℕ) < t then eqPad M T i
+  else if (i : ℕ) = t then Useq M T t
+  else Mvec M i
+
+private theorem Vseq_zero (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Vseq M T 0 = Mvec M := by
+  funext i; unfold Vseq
+  rw [if_neg (by omega)]
+  by_cases h : (i : ℕ) = 0
+  · rw [if_pos h]
+    have : i = (0 : Fin (L + 1)) := Fin.ext (by rw [h]; rfl)
+    rw [this, Useq_zero]; unfold Mvec; rfl
+  · rw [if_neg h]
+
+private theorem Vseq_last (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
+    (hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0) : Vseq M T L = eqPad M T := by
+  funext i; unfold Vseq
+  by_cases h : (i : ℕ) < L
+  · rw [if_pos h]
+  · have hiL : (i : ℕ) = L := by omega
+    rw [if_neg h, if_pos hiL]
+    unfold eqPad; rw [dif_neg h]
+    exact Useq_last M T hL hlast
+
+/-- One step of the interpolation `Vseq M T t → Vseq M T (t+1)` weakly decreases every `smallestK`
+(the Karamata elementary transfer `(u_t, M⁽ᵗ⁺¹⁾) ↦ (u_{t+1}, edgeQ_t)`). -/
+private theorem Vseq_step (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (t : ℕ)
+    (ht : t < L) (k : ℕ) (hk : k ≤ L + 1) :
+    smallestK (L + 1) k (Vseq M T (t + 1)) ≤ smallestK (L + 1) k (Vseq M T t) := by
+  let lo : Fin (L + 1) := ⟨t + 1, by omega⟩
+  let hi : Fin (L + 1) := ⟨t, by omega⟩
+  have hloval : (lo : ℕ) = t + 1 := rfl
+  have hhival : (hi : ℕ) = t := rfl
+  have hne : lo ≠ hi := fun h => absurd (congrArg Fin.val h) (by rw [hloval, hhival]; omega)
+  -- values of Vseq (t+1) and Vseq t at lo, hi
+  have hwlo : Vseq M T t lo = Mvec M lo := by
+    unfold Vseq
+    rw [if_neg (show ¬((lo : ℕ) < t) by rw [hloval]; omega),
+        if_neg (show ¬((lo : ℕ) = t) by rw [hloval]; omega)]
+  have hwhi : Vseq M T t hi = Useq M T t := by
+    unfold Vseq
+    rw [if_neg (show ¬((hi : ℕ) < t) by rw [hhival]; omega), if_pos hhival]
+  have hw'lo : Vseq M T (t + 1) lo = Useq M T (t + 1) := by
+    unfold Vseq
+    rw [if_neg (show ¬((lo : ℕ) < t + 1) by rw [hloval]; omega), if_pos hloval]
+  have hw'hi : Vseq M T (t + 1) hi = eqPad M T hi := by
+    unfold Vseq; rw [if_pos (show (hi : ℕ) < t + 1 by rw [hhival]; omega)]
+  have heqhi : eqPad M T hi = edgeQ M T t := by
+    unfold eqPad; rw [dif_pos (show (hi : ℕ) < L by rw [hhival]; omega), hhival]
+  have hMlo : Mvec M lo = Mseq M (t + 1) := by
+    unfold Mvec Mseq; rw [dif_pos (show t + 1 < L + 1 by omega)]
+  -- corridor facts
+  have hu_anti : Useq M T (t + 1) ≤ Useq M T t := Useq_antitone M T hT t (by omega)
+  have hu_le_M : Useq M T (t + 1) ≤ Mseq M (t + 1) := by
+    have := Useq_le_M M T hT (t + 1) (by omega); exact this
+  have hedge : edgeQ M T t = Mseq M (t + 1) + Useq M T t - Useq M T (t + 1) := by
+    unfold edgeQ; ring
+  refine smallestK_pair_spread (n := L + 1) (k := k) hk hne ?_ ?_ ?_ ?_
+  · -- w' lo ≤ w lo : Useq (t+1) ≤ Mvec lo = Mseq (t+1)
+    rw [hw'lo, hwlo, hMlo]; exact hu_le_M
+  · -- w' lo ≤ w hi : Useq (t+1) ≤ Useq t
+    rw [hw'lo, hwhi]; exact hu_anti
+  · -- w' lo + w' hi = w lo + w hi
+    rw [hw'lo, hw'hi, hwlo, hwhi, heqhi, hMlo, hedge]; ring
+  · -- fixed elsewhere
+    intro r hrlo hrhi
+    have hrne1 : (r : ℕ) ≠ t + 1 := fun h => hrlo (Fin.ext (by rw [hloval]; exact h))
+    have hrne0 : (r : ℕ) ≠ t := fun h => hrhi (Fin.ext (by rw [hhival]; exact h))
+    unfold Vseq
+    by_cases h1 : (r : ℕ) < t
+    · rw [if_pos h1, if_pos (by omega)]
+    · rw [if_neg (by omega), if_neg hrne1, if_neg (by omega), if_neg hrne0]
+
+/-- **Corridor majorization (the key A1 lower-bound bridge).** For `T ∈ Adm M`, the `0`-padded edge
+vector `eqPad` is majorized by the widths `Mvec`: every `k`-smallest sum of `eqPad` is `≤` that of
+`Mvec`. Proved by folding `L` Karamata elementary transfers (`Vseq` interpolation). -/
+private theorem smallestK_eqPad_le (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M)
+    (hL : 1 ≤ L) (k : ℕ) (hk : k ≤ L + 1) :
+    smallestK (L + 1) k (eqPad M T) ≤ smallestK (L + 1) k (Mvec M) := by
+  have hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0 := by
+    rw [Adm, Finset.mem_filter] at hT; exact hT.2.2.2
+  have hchain : ∀ t, t ≤ L → smallestK (L + 1) k (Vseq M T t) ≤ smallestK (L + 1) k (Mvec M) := by
+    intro t ht
+    induction t with
+    | zero => rw [Vseq_zero]
+    | succ s ih =>
+      refine le_trans (Vseq_step M T hT s (by omega) k hk) (ih (by omega))
+  have := hchain L (le_refl L)
+  rwa [Vseq_last M T hL hlast] at this
+
+/-- The bridge: the `k` smallest edges sum equals the `(k+1)` smallest of the `0`-padded edge vector
+(the appended `0` is the minimum, so it joins the smallest slot for free). Lets the corridor
+majorization (`Fin (L+1)`) feed the `Fin L` edge majorization. -/
+private theorem edgeQ_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (j : Fin L) :
+    0 ≤ edgeQ M T (j : ℕ) := by
+  unfold edgeQ
+  have h1 : (0 : ℤ) ≤ Mseq M ((j : ℕ) + 1) := by
+    unfold Mseq; split
+    · positivity
+    · exact le_refl 0
+  have h2 : Useq M T ((j : ℕ) + 1) ≤ Useq M T (j : ℕ) := Useq_antitone M T hT (j : ℕ) (by omega)
+  linarith
+
+private theorem smallestK_edge_eq_pad (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M)
+    (k : ℕ) (hk : k ≤ L) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ))
+      ≤ smallestK (L + 1) (k + 1) (eqPad M T) := by
+  -- B = the (k+1) smallest positions of eqPad; A = its members that lie in Fin L (drop index L)
+  obtain ⟨hBcard, hBsum⟩ := leastSet_card_sum (L + 1) (k + 1) (by omega) (eqPad M T)
+  set B := leastSet (L + 1) (k + 1) (eqPad M T) with hBdef
+  set lastI : Fin (L + 1) := ⟨L, by omega⟩ with hlastdef
+  set A : Finset (Fin L) :=
+    Finset.univ.filter (fun j : Fin L => (⟨(j : ℕ), by omega⟩ : Fin (L + 1)) ∈ B) with hAdef
+  have hinjOn : Set.InjOn (fun j : Fin L => (⟨(j : ℕ), by omega⟩ : Fin (L + 1))) A :=
+    fun a _ b _ h => Fin.ext (Fin.mk.inj h)
+  have himg : A.image (fun j : Fin L => (⟨(j : ℕ), by omega⟩ : Fin (L + 1))) = B.erase lastI := by
+    apply Finset.ext; intro i
+    simp only [Finset.mem_image, hAdef, Finset.mem_filter, Finset.mem_univ, true_and,
+      Finset.mem_erase, hlastdef]
+    constructor
+    · rintro ⟨j, hjB, rfl⟩
+      exact ⟨fun h => absurd (Fin.mk.inj h) (by omega), hjB⟩
+    · rintro ⟨hine, hiB⟩
+      have hiL : (i : ℕ) < L := by
+        rcases Nat.lt_or_ge (i : ℕ) L with h | h
+        · exact h
+        · exact absurd (Fin.ext (show (i : ℕ) = L by omega)) hine
+      exact ⟨⟨(i : ℕ), hiL⟩, by simpa using hiB, Fin.ext rfl⟩
+  -- ∑_A edgeQ = ∑_{B.erase lastI} eqPad  (eqPad = edgeQ on indices < L)
+  have hAsum : ∑ j ∈ A, edgeQ M T (j : ℕ) = ∑ i ∈ B.erase lastI, eqPad M T i := by
+    rw [← himg, Finset.sum_image hinjOn]
+    apply Finset.sum_congr rfl; intro j _
+    unfold eqPad
+    rw [dif_pos (show ((⟨(j : ℕ), by omega⟩ : Fin (L + 1)) : ℕ) < L by simpa using j.isLt)]
+  -- ∑_{B.erase lastI} eqPad ≤ ∑_B eqPad  (drop the nonneg entry at lastI)
+  have heqPad_nonneg : ∀ i, 0 ≤ eqPad M T i := by
+    intro i; unfold eqPad; split
+    · rename_i h
+      exact edgeQ_nonneg M T hT ⟨(i : ℕ), h⟩
+    · exact le_refl 0
+  have hdrop : ∑ i ∈ B.erase lastI, eqPad M T i ≤ ∑ i ∈ B, eqPad M T i := by
+    by_cases h : lastI ∈ B
+    · rw [← Finset.sum_erase_add B _ h]; linarith [heqPad_nonneg lastI]
+    · rw [Finset.erase_eq_of_notMem h]
+  have hAcard : k ≤ A.card := by
+    have hcardeq : A.card = (B.erase lastI).card := by
+      rw [← himg, Finset.card_image_of_injOn hinjOn]
+    rw [hcardeq]
+    have hple : B.card ≤ (B.erase lastI).card + 1 := by
+      rw [Finset.card_erase_eq_ite]; split <;> omega
+    omega
+  -- extract a k-subset A'' ⊆ A; smallestK ≤ its sum ≤ ∑_A edgeQ ≤ ∑_{B.erase} eqPad ≤ ∑_B eqPad
+  obtain ⟨A'', hA''sub, hA''card⟩ := Finset.le_card_iff_exists_subset_card.mp hAcard
+  have hstep1 : smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) ≤ ∑ j ∈ A'', edgeQ M T (j : ℕ) :=
+    smallestK_le_subset L k hk _ A'' hA''card
+  have hstep2 : ∑ j ∈ A'', edgeQ M T (j : ℕ) ≤ ∑ j ∈ A, edgeQ M T (j : ℕ) := by
+    apply Finset.sum_le_sum_of_subset_of_nonneg hA''sub
+    intro j _ _; exact edgeQ_nonneg M T hT j
+  rw [← hBsum]
+  calc smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ))
+      ≤ ∑ j ∈ A'', edgeQ M T (j : ℕ) := hstep1
+    _ ≤ ∑ j ∈ A, edgeQ M T (j : ℕ) := hstep2
+    _ = ∑ i ∈ B.erase lastI, eqPad M T i := hAsum
+    _ ≤ ∑ i ∈ B, eqPad M T i := hdrop
+
+/-- The `k`-smallest of the edges is `≤` the `(k+1)`-smallest of the widths (`H4`/`F1` unified, via
+corridor majorization + the padding bridge). -/
+private theorem smallestK_edge_le_width (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M)
+    (hL : 1 ≤ L) (k : ℕ) (hk : k ≤ L) :
+    smallestK L k (fun j : Fin L => edgeQ M T (j : ℕ)) ≤ smallestK (L + 1) (k + 1) (Mvec M) := by
+  refine le_trans (smallestK_edge_eq_pad M T hT k hk) ?_
+  exact smallestK_eqPad_le M T hT hL (k + 1) (by omega)
+
+/-- `srt`-prefix sum equals `smallestK` (unfolding). -/
+private theorem smallestK_eq_srt (n k : ℕ) (q : Fin n → ℤ) :
+    smallestK n k q = ∑ i ∈ Finset.range k, srt n q i := rfl
+
+/-- The total of `srt n q` over `range n` equals `∑ q` (sorting is a permutation). -/
+private theorem sum_srt_range (n : ℕ) (q : Fin n → ℤ) :
+    ∑ i ∈ Finset.range n, srt n q i = ∑ i, q i := by
+  rw [← Fin.sum_univ_eq_sum_range (fun i => srt n q i) n]
+  rw [show (∑ i : Fin n, srt n q (i : ℕ)) = ∑ i : Fin n, q (Tuple.sort q i) from
+    Finset.sum_congr rfl (fun i _ => by simp only [srt, dif_pos i.isLt])]
+  exact Equiv.sum_comp (Tuple.sort q) q
+
+/-- `srt n q` is monotone in the `ℕ` index (within range). -/
+private theorem srt_mono (n : ℕ) (q : Fin n → ℤ) {i j : ℕ} (hij : i ≤ j) (hj : j < n) :
+    srt n q i ≤ srt n q j := by
+  simp only [srt, dif_pos (show i < n by omega), dif_pos hj]
+  exact Tuple.monotone_sort q (by simp only [Fin.le_def]; omega)
+
+/-- `srt n q` is nonnegative when `q` is. -/
+private theorem srt_nonneg (n : ℕ) (q : Fin n → ℤ) (hq : ∀ i, 0 ≤ q i) (i : ℕ) : 0 ≤ srt n q i := by
+  unfold srt; split
+  · exact hq _
+  · exact le_refl 0
+
+/-- **A1 Step B (the one novel arithmetic sub-lemma; verified 0/11219).** The balanced split of `P`
+into `c` parts maximises every `k`-smallest sum among nonneg integer `c`-vectors of total `≤ P`. The
+convexity-irreducible piece: the average bound `m·smallestK ≤ k·∑` undershoots, balanced is needed
+exactly. Proven by the water-filling contradiction: a too-big `k`-smallest forces a too-big tail. -/
+private theorem stepB (P c k : ℕ) (hc : 0 < c) (hk : k ≤ c) (q : Fin c → ℤ)
+    (hq : ∀ i, 0 ≤ q i) (hsum : (∑ i, q i) ≤ (P : ℤ)) :
+    smallestK c k q ≤ (k : ℤ) * ((P / c : ℕ) : ℤ)
+      + (max 0 ((k : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ))) := by
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set r : ℤ := ((P % c : ℕ) : ℤ) with hr
+  set e : ℤ := max 0 ((k : ℤ) + r - (c : ℤ)) with he
+  have hPeq : (P : ℤ) = (c : ℤ) * b + r := by
+    rw [hb, hr, ← Nat.cast_mul, ← Nat.cast_add]
+    exact_mod_cast (Nat.div_add_mod P c).symm
+  by_contra hcon
+  push_neg at hcon
+  -- hcon : k*b + e < smallestK c k q
+  set x : ℕ → ℤ := srt c q with hx
+  have hsmall : smallestK c k q = ∑ i ∈ Finset.range k, x i := rfl
+  rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+  · have hz : smallestK c k q = 0 := by rw [hsmall, hk0, Finset.range_zero, Finset.sum_empty]
+    have he0 : (0 : ℤ) ≤ e := le_max_left _ _
+    rw [hz, hk0] at hcon; push_cast at hcon; linarith
+  -- k ≥ 1: x(k-1) is the largest of the first k; ∑_{<k} x ≤ k·x(k-1)
+  have hxmono : ∀ i j, i ≤ j → j < c → x i ≤ x j := fun i j hij hj => srt_mono c q hij hj
+  have hkm1 : k - 1 < c := by omega
+  have hprefix_le : (∑ i ∈ Finset.range k, x i) ≤ (k : ℤ) * x (k - 1) := by
+    calc (∑ i ∈ Finset.range k, x i) ≤ ∑ i ∈ Finset.range k, x (k - 1) := by
+          apply Finset.sum_le_sum; intro i hi; rw [Finset.mem_range] at hi
+          exact hxmono i (k - 1) (by omega) hkm1
+      _ = (k : ℤ) * x (k - 1) := by rw [Finset.sum_const, Finset.card_range]; ring
+  -- x(k-1) ≥ b+1 (else prefix ≤ k·b contradicts hcon, since e ≥ 0)
+  have hxk_ge : b + 1 ≤ x (k - 1) := by
+    by_contra hlt; push_neg at hlt
+    have : x (k - 1) ≤ b := by omega
+    have hpre : (∑ i ∈ Finset.range k, x i) ≤ (k : ℤ) * b := by
+      refine le_trans hprefix_le ?_; nlinarith [Nat.cast_nonneg (α := ℤ) k]
+    have : (0 : ℤ) ≤ e := le_max_left _ _
+    rw [hsmall] at hcon; linarith
+  -- tail ∑_{k≤i<c} x ≥ (c-k)·x(k-1) ≥ (c-k)(b+1); total ∑x ≥ (kb+e+1)+(c-k)(b+1) > P
+  have htail : ((c : ℤ) - (k : ℤ)) * x (k - 1) ≤ ∑ i ∈ Finset.Ico k c, x i := by
+    calc ((c : ℤ) - (k : ℤ)) * x (k - 1)
+        = ∑ _i ∈ Finset.Ico k c, x (k - 1) := by
+          rw [Finset.sum_const, Nat.card_Ico, nsmul_eq_mul, Nat.cast_sub hk]
+      _ ≤ ∑ i ∈ Finset.Ico k c, x i := by
+          apply Finset.sum_le_sum; intro i hi; rw [Finset.mem_Ico] at hi
+          exact hxmono (k - 1) i (by omega) (by omega)
+  have hsplit : (∑ i, q i) = (∑ i ∈ Finset.range k, x i) + ∑ i ∈ Finset.Ico k c, x i := by
+    rw [← sum_srt_range c q, ← hx, ← Finset.sum_range_add_sum_Ico x hk]
+  -- combine
+  have hcon' : (k : ℤ) * b + e + 1 ≤ ∑ i ∈ Finset.range k, x i := by rw [hsmall] at hcon; omega
+  have htail' : ((c : ℤ) - (k : ℤ)) * (b + 1) ≤ ∑ i ∈ Finset.Ico k c, x i := by
+    refine le_trans ?_ htail
+    apply mul_le_mul_of_nonneg_left hxk_ge (by push_cast; omega)
+  have he_ge : (k : ℤ) + r - (c : ℤ) ≤ e := le_max_right _ _
+  have : (P : ℤ) + 1 ≤ ∑ i, q i := by
+    rw [hsplit, hPeq]; nlinarith [hcon', htail', he_ge]
+  linarith
+
+/-- The `k`-smallest sum of the balanced split (closed form `k·b + max(0, k+r−c)`, `b = P/c`,
+`r = P%c`). Proved by the same `srt`-monotone water-filling argument bounding it both ways. -/
+private theorem smallestK_balancedSplit (P c k : ℕ) (hc : 0 < c) (hk : k ≤ c) :
+    smallestK c k (fun i => ((balancedSplit P c i : ℕ) : ℤ))
+      = (k : ℤ) * ((P / c : ℕ) : ℤ) + max 0 ((k : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ)) := by
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set r : ℤ := ((P % c : ℕ) : ℤ) with hr
+  have hrlt : P % c < c := Nat.mod_lt _ hc
+  have hrnn : (0 : ℤ) ≤ r := by rw [hr]; positivity
+  -- ∑ balancedSplit = P (closed-form sum)
+  have hmod : P % c ≤ c := le_of_lt hrlt
+  have hcard : (Finset.univ.filter (fun i : Fin c => (i : ℕ) < P % c)).card = P % c := by
+    rw [Fin.card_filter_val_lt]; omega
+  have hcompl : (Finset.univ.filter (fun i : Fin c => ¬ (i : ℕ) < P % c)).card = c - P % c := by
+    have := Finset.filter_card_add_filter_neg_card_eq_card (s := (Finset.univ : Finset (Fin c)))
+      (p := fun i : Fin c => (i : ℕ) < P % c)
+    simp only [Finset.card_univ, Fintype.card_fin] at this; rw [hcard] at this; omega
+  have hbsterm : ∀ i : Fin c, ((balancedSplit P c i : ℕ) : ℤ)
+      = if (i : ℕ) < P % c then ((P / c + 1 : ℕ) : ℤ) else ((P / c : ℕ) : ℤ) := by
+    intro i; unfold balancedSplit; split_ifs <;> rfl
+  have hP : (P : ℤ) = (c : ℤ) * ((P / c : ℕ) : ℤ) + ((P % c : ℕ) : ℤ) := by
+    rw [← Nat.cast_mul, ← Nat.cast_add]; exact_mod_cast (Nat.div_add_mod P c).symm
+  have hbsumeq : (∑ i, ((balancedSplit P c i : ℕ) : ℤ)) = (P : ℤ) := by
+    rw [Finset.sum_congr rfl (fun i _ => hbsterm i)]
+    rw [Finset.sum_ite]; simp only [Finset.sum_const, nsmul_eq_mul]; rw [hcard, hcompl]
+    rw [Nat.cast_sub hmod, Nat.cast_add, Nat.cast_one]
+    rw [hP]; ring
+  -- ≤ : stepB applied to balancedSplit itself (total = P)
+  have hle := stepB P c k hc hk (fun i => ((balancedSplit P c i : ℕ) : ℤ))
+    (fun i => by positivity) (le_of_eq hbsumeq)
+  -- ≥ : smallestK = ∑ over leastSet S (|S|=k); ∑_S balancedSplit = k·b + bcount(S), bcount ≥ max
+  obtain ⟨hScard, hSsum⟩ := leastSet_card_sum c k hk (fun i => ((balancedSplit P c i : ℕ) : ℤ))
+  set S := leastSet c k (fun i => ((balancedSplit P c i : ℕ) : ℤ)) with hSdef
+  -- ∑_S balancedSplit = ∑_S (if i<r then b+1 else b) = k·b + (count of i<r in S)
+  set Sb1 := S.filter (fun i : Fin c => (i : ℕ) < P % c) with hSb1
+  have hsumS : ∑ i ∈ S, ((balancedSplit P c i : ℕ) : ℤ)
+      = (k : ℤ) * b + (Sb1.card : ℤ) := by
+    have hterm2 : ∀ i : Fin c, ((balancedSplit P c i : ℕ) : ℤ)
+        = if (i : ℕ) < P % c then b + 1 else b := by
+      intro i; unfold balancedSplit; rw [hb]; split_ifs <;> push_cast <;> ring
+    rw [Finset.sum_congr rfl (fun i _ => hterm2 i)]
+    rw [Finset.sum_ite, Finset.sum_const, Finset.sum_const]
+    simp only [nsmul_eq_mul, ← hSb1]
+    have hcompl : (S.filter (fun i : Fin c => ¬ (i : ℕ) < P % c)).card = k - Sb1.card := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card (s := S)
+        (p := fun i : Fin c => (i : ℕ) < P % c)
+      rw [hScard] at this; rw [hSb1]; omega
+    have hle' : Sb1.card ≤ k := by rw [hSb1, ← hScard]; exact Finset.card_filter_le _ _
+    rw [hcompl, Nat.cast_sub hle']; ring
+  -- bcount(S) ≥ max(0, k+r-c): S has k elements; non-(<r) ones live in {i ≥ r}, only c-r of them
+  have hScompl : (S.filter (fun i : Fin c => ¬ (i : ℕ) < P % c)).card ≤ c - P % c := by
+    rw [← hcompl]
+    exact Finset.card_le_card
+      (Finset.filter_subset_filter (fun i : Fin c => ¬ (i : ℕ) < P % c) (Finset.subset_univ S))
+  have hsumcard := Finset.filter_card_add_filter_neg_card_eq_card (s := S)
+    (p := fun i : Fin c => (i : ℕ) < P % c)
+  rw [hScard, ← hSb1] at hsumcard
+  -- ℕ fact: Sb1.card ≥ k + P%c - c (and ≥ 0)
+  have hbcount_nat : (max 0 (k + P % c - c) : ℕ) ≤ Sb1.card := by omega
+  have hbcount_ge : max 0 ((k : ℤ) + r - (c : ℤ)) ≤ (Sb1.card : ℤ) := by
+    rw [hr]
+    have hcast : ((max 0 (k + P % c - c) : ℕ) : ℤ) ≤ (Sb1.card : ℤ) := by exact_mod_cast hbcount_nat
+    have : max 0 ((k : ℤ) + ((P % c : ℕ) : ℤ) - (c : ℤ)) ≤ ((max 0 (k + P % c - c) : ℕ) : ℤ) := by
+      rw [Nat.cast_max]; push_cast; omega
+    linarith
+  have hge : (k : ℤ) * b + max 0 ((k : ℤ) + r - (c : ℤ))
+      ≤ smallestK c k (fun i => ((balancedSplit P c i : ℕ) : ℤ)) := by
+    rw [← hSsum, hsumS]; linarith [hbcount_ge]
+  exact le_antisymm hle hge
+
+/-- `aSort M : Fin (L+1) → ℕ`, the widths of `M` sorted ascending (`i`-th value = `i`-smallest). -/
+noncomputable def aSort (M : Fin (L + 1) → ℕ) (i : Fin (L + 1)) : ℕ := M (Tuple.sort M i)
+
+/-- `aSort` is monotone (ascending). -/
+private theorem aSort_mono (M : Fin (L + 1) → ℕ) : Monotone (aSort M) := Tuple.monotone_sort M
+
+/-- Total `n`-th smallest width `aS M n` (`= aₙ` for `n < L+1`, else `0`). -/
+noncomputable def aS (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
+  if h : n < L + 1 then aSort M ⟨n, h⟩ else 0
+
+/-- The sorted-prefix sum `Sprefix M n = a₀+⋯+a_{n-1}` (`n` smallest widths), as `ℕ`. -/
+noncomputable def Sprefix (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ := ∑ i ∈ Finset.range n, aS M i
+
+/-- The achiever predicate `good M c`: the cumulative ceiling test `∀ 1 ≤ i ≤ c, i·aᵢ ≤ Sᵢ + i − 1`
+(`Sᵢ = a₀+⋯+aᵢ`). `c = 1` always holds, and the achiever is the largest good `c ≤ L`. -/
+def goodAch (M : Fin (L + 1) → ℕ) (c : ℕ) : Prop :=
+  ∀ i : ℕ, i < c + 1 → 1 ≤ i → i * aS M i ≤ Sprefix M (i + 1) + i - 1
+
+noncomputable instance (M : Fin (L + 1) → ℕ) (c : ℕ) : Decidable (goodAch M c) :=
+  Classical.dec _
+
+/-- `Sprefix M (n+1) = Sprefix M n + aₙ`. -/
+private theorem Sprefix_succ (M : Fin (L + 1) → ℕ) (n : ℕ) :
+    Sprefix M (n + 1) = Sprefix M n + aS M n := by
+  unfold Sprefix; rw [Finset.sum_range_succ]
+
+/-- `goodAch M 1` always holds (the base case making the achiever well-defined). -/
+private theorem goodAch_one (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) : goodAch M 1 := by
+  intro i hi1 hi
+  interval_cases i
+  · rw [Sprefix_succ M 1, Sprefix_succ M 0]
+    simp only [Sprefix, Finset.range_zero, Finset.sum_empty, one_mul, zero_add]
+    have h0 : (0 : ℕ) < L + 1 := by omega
+    have h1 : (1 : ℕ) < L + 1 := by omega
+    have : aS M 0 ≤ aS M 1 := by
+      unfold aS; rw [dif_pos h0, dif_pos h1]; exact aSort_mono M (by simp [Fin.le_def])
+    omega
+
+/-- The achiever `cAch M`: the largest `c ≤ L` with `goodAch M c` (`goodAch 1` holds, so `≥ 1`). -/
+noncomputable def cAch (M : Fin (L + 1) → ℕ) : ℕ := Nat.findGreatest (goodAch M) L
+
+/-- The achiever lies in `{1,…,L}` and is `goodAch` (given `1 ≤ L`). -/
+private theorem cAch_spec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    1 ≤ cAch M ∧ cAch M ≤ L ∧ goodAch M (cAch M) :=
+  ⟨Nat.le_findGreatest hL (goodAch_one M hL), Nat.findGreatest_le L,
+    Nat.findGreatest_spec hL (goodAch_one M hL)⟩
+
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
 
-**Remaining gate (the from-scratch Karamata lower bound).** Reusable engines banked above (green,
-axiom-clean): `sq_sum_le_of_sorted_prefix` (sorted-prefix domination ⟹ `∑Y² ≤ ∑q²`, the convexity
-LB via `karamata_sq`); `smallestK_le_subset` (`k`-smallest sum `≤` any `k`-subset sum);
-`mono_prefix_le_subset`; `sum_le_sum_of_compl_ge`. With `a = M` sorted ascending, `Sₙ = a₀+⋯+aₙ`,
-achiever `c`, target `Y = balancedSplit(S_c, c) ∷ (a_{c+1}…a_L)`, the verified reduction (Python,
-0-fail L≤4): `4·cleanCore c (sortedSmallest M c) = ∑Y² − ∑M²` (CERTAIN, via `balancedSplit_sq_int`
-+ `cleanCore_perm`), so `lambdaCore M = ¼(∑Y² − ∑M²)`. The LB then needs
-`∀ T ∈ Adm M, ∀ k, smallestK k (edgeQ M T) ≤ smallestK k Y`, fed to `sq_sum_le_of_sorted_prefix`
-+ `edge_identity`. That domination splits by regime at the witness `m = (if k ≤ c then c else k)`:
-- `k > c`: `smallestK k Y = S_k`, and `smallestK k edgeQ ≤ S_k` (`k`-smallest `≤` first `k`
-  positions; their sum `≤ S_k` by the QFeasible corridor `prefix_k ≤ S_k`).
-- `k ≤ c`: `smallestK k Y = smallestK k (balancedSplit S_c c)`, and `smallestK k edgeQ ≤` it via
-  `smallestK_le_subset` (subset = first `c` positions) + corridor (`prefix_c ≤ S_c`) + **Step B**
-  (`balancedSplit P m` maximises every `k`-smallest among `m` nonneg ints of sum `≤ P` — the one
-  remaining novel sub-lemma; the avg bound `m·smallestK ≤ k·∑` undershoots, balanced is needed
-  exactly). UPPER bound: explicit achiever `T*∈Adm M` with `Mval M T* = ½(∑Y²−∑M²)`. -/
+**Banked machinery (green, axiom-clean, above).** The two novel lower-bound pieces are proven:
+`smallestK_eqPad_le` (the corridor majorization, via `L` Karamata elementary transfers
+`smallestK_pair_spread` + `Vseq`) and `stepB` (the balanced split maximises every `k`-smallest;
+`smallestK_balancedSplit` gives its closed form `k·b + max(0,k+r−c)`). The padding bridge
+`smallestK_edge_le_width` turns the majorization into the `Fin L` edge bound. The achiever
+`cAch M` (largest `goodAch` index, `cAch_spec`) is banked. Engines: `sq_sum_le_of_sorted_prefix`,
+`edge_identity`, `balancedSplit_sq_int`, `cleanCore_perm`.
+
+**Remaining assembly (routed; expedition card `a1-achiever-design.md`).** `a = aSort M`,
+`Sₙ = Sprefix M n`, `c = cAch M`, target `Y = balancedSplit(S_c,c) ⊕ (a_{c+1}…a_L)`:
+- LOWER `lambdaCore ≥ cleanCore`: feed the per-`k` edge bound (`smallestK_edge_le_width` for `k>c`;
+  F1 + `stepB` for `k≤c`) to `sq_sum_le_of_sorted_prefix` + `edge_identity`. Needs `Y`-sort facts.
+- UPPER `lambdaCore ≤ cleanCore`: telescope `T*` for a corridor-feasible ordering `q*` of `Y` — then
+  `edgeQ(M,T*) = q*` by construction, `T*∈Adm` by corridor↔Adm, and `2·Mval(T*) = ∑Y² − ∑M²`.
+- VALUE `4·cleanCore c (sortedSmallest M c) = ∑Y² − ∑M²` closes the equality with both bounds. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
   sorry
