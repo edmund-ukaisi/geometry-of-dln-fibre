@@ -190,6 +190,26 @@ not a full successor product, chart production, source production of
 `Cprime`, transition invariance, terminal relabeling, normal crossings, pole
 order, or RLCT content.
 
+The paper-`Cprime` source-following weighted handoff has also landed.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-paper-cprime-source-following-weighted-handoff-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-paper-cprime-source-following-weighted-handoff.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-paper-cprime-source-following-weighted-handoff-a4.md`.
+
+Lean names:
+`case2DisplayedPostPivotFreeFollowingFactor_paperCprime_eq_sourceFollowingFactor_succ`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_withCorrectedPostData`.
+The theorem specializes the lower-row weighted source-side handoff to
+Aoyagi's paper `C' = Q^-1 C` and rewrites only its lower tail as the next
+same-stage source following factor.  It keeps the `P_q` row operation and
+successor lower-row diagonal explicit and carries the corrected post-data
+fields.  It is not a full successor product, chart production, source
+production of `C'^(S+1)`, transition invariance, terminal relabeling, normal
+crossings, pole order, or RLCT content.
+
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at

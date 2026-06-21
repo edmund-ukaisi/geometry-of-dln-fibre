@@ -3386,3 +3386,35 @@ chart coverage or arbitrary-pivot coverage, source-produce `Cprime`, derive
 source-produced post-data, prove transition invariance, terminal relabeling,
 Jacobian arithmetic, normal crossings/RLCT, or repair the printed Case 2
 vector mismatch.
+
+## 2026-06-21 Lean Case 2 paper-Cprime source-following weighted handoff
+
+Reproduction:
+`reproduction-case2-paper-cprime-source-following-weighted-handoff-a4.md`.
+Statement card:
+`statement-card-a4-case2-paper-cprime-source-following-weighted-handoff.md`.
+Review artifact:
+`review-case2-paper-cprime-source-following-weighted-handoff-a4.md`.
+
+Lean now specializes the source-side weighted lower-row handoff to Aoyagi's
+paper transported following factor `C' = Q^-1 C`:
+
+```text
+case2DisplayedPostPivotFreeFollowingFactor_paperCprime_eq_sourceFollowingFactor_succ
+Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_withCorrectedPostData
+```
+
+The helper identifies only the lower tail of the paper `C'` with the next
+same-stage source following factor.  The package projects the `P_q`-operated
+weighted source-chart `Q/P` equality to lower rows and rewrites the right side
+as the successor lower-row diagonal times
+`case2DisplayedPostPivotResidualBlock * case2SourceFollowingFactor (J:=J+1)`.
+It also carries the corrected exponent, level, least-value-gap, and
+`case2Gap` data.
+
+This remains finite displayed-pivot algebra only.  It is not a full successor
+product including the pivot row, and it does not construct charts, prove chart
+coverage or arbitrary-pivot coverage, source-produce `C'^(S+1)`, derive
+source-produced post-data, prove transition invariance, terminal relabeling,
+Jacobian arithmetic, normal crossings/RLCT, or repair the printed Case 2
+vector mismatch.

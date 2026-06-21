@@ -172,6 +172,15 @@ Keep this as a source-side projection package only; it is not a full
 successor product, chart production, source production of `Cprime`, or a
 transition invariant.
 
+Paper-`Cprime` source-following weighted handoff checkpoint:
+`threads/04-blow-up-certificate/reproduction-case2-paper-cprime-source-following-weighted-handoff-a4.md`.
+Lean now specializes the source-side weighted lower-row handoff to the paper
+transported factor `C' = Q^-1 C` and rewrites the lower tail as the next
+same-stage source following factor:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_withCorrectedPostData`.
+Keep this as a lower-row paper-`C'` specialization only; it is not full source
+production of `C'^(S+1)`, chart production, or a transition invariant.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch
