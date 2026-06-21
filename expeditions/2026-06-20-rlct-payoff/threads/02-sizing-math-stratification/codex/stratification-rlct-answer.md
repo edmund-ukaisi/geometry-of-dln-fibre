@@ -1,6 +1,6 @@
 **Q1**
 
-Let `X_M := closure(O_M) = orbitRankLocus M`, ordered by rank patterns:  
+Let `X_M := closure(O_M) = orbitRankLocus M`, ordered by rank patterns:
 `X_S ⊆ X_R` iff `rankPattern(S) ≤ rankPattern(R)` entrywise.
 
 Precise stratification:
@@ -25,7 +25,7 @@ For the closed locus `Σbar^r`, components are the `X_M` maximal among `m_{0N}�
 
 `θ = numTop d r`: yes, for top-dimensional components of `Σ^r`.
 
-Load-bearing lemma: if `X_M ⊊ X_L` are irreducible orbit closures inside `Rep_d`, then  
+Load-bearing lemma: if `X_M ⊊ X_L` are irreducible orbit closures inside `Rep_d`, then
 `codim X_L < codim X_M`.
 
 Proof: proper inclusion of irreducible closed subsets strictly raises dimension. Since geometric codimension equals `codimForm`, strict containment strictly lowers `codimForm`.

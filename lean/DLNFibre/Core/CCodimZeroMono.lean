@@ -957,7 +957,7 @@ theorem codimForm_leftShrink_le (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a c d'
 /-- Filtered-coverage change of `leftShrink` (as `ℤ`): coverage of `m` plus the guarded `[c,d']`
 indicator minus the `[a,d']` indicator. -/
 theorem leftShrink_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a c d' : Fin (N + 1)}
-    (hac : (a : ℕ) < c) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d')) (v : Fin (N + 1)) :
+    (hac : (a : ℕ) < c) (hsad : 1 ≤ m (a, d')) (v : Fin (N + 1)) :
     (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
         leftShrink m a c d' p : ℤ)
       = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2), m p : ℤ)
@@ -1010,7 +1010,7 @@ theorem leftShrink_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1
   have hkost' : ∀ v, kostantAt (Function.update e' a (e' a - 1)) (leftShrink m a c d') v := by
     intro v
     rw [kostantAt]
-    have hcov := leftShrink_cover m hac0 hcd hsad v
+    have hcov := leftShrink_cover m hac0 hsad v
     have hbase : (e' v : ℤ)
         = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
             m p : ℤ) := by exact_mod_cast hkost v
@@ -1180,7 +1180,7 @@ theorem codimForm_rightShrink_le (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b d
 
 /-- Filtered-coverage change of `rightShrink` (as `ℤ`). -/
 theorem rightShrink_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b d' : Fin (N + 1)}
-    (hab : (a : ℕ) ≤ b) (hbd : (b : ℕ) < d') (hsad : 1 ≤ m (a, d')) (v : Fin (N + 1)) :
+    (hbd : (b : ℕ) < d') (hsad : 1 ≤ m (a, d')) (v : Fin (N + 1)) :
     (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
         rightShrink m a b d' p : ℤ)
       = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2), m p : ℤ)
@@ -1219,7 +1219,6 @@ theorem rightShrink_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 
     (hcorner : (a, d') ≠ ((0 : Fin (N + 1)), Fin.last N)) :
     rightShrink m a b d' ∈ kostantPartitions (Function.update e' d' (e' d' - 1)) 0 := by
   obtain ⟨hbnd, hsupp, hkost, hc0⟩ := mem_kostantPartitions.mp hm
-  have habN : (a : ℕ) ≤ b := Fin.le_def.mp hab
   have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → rightShrink m a b d' p = 0 := by
     intro p hp
     have h1 : ¬ (a ≤ b ∧ p = (a, b)) := fun h ↦ hp (by rw [h.2]; exact h.1)
@@ -1232,7 +1231,7 @@ theorem rightShrink_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 
   have hkost' : ∀ v, kostantAt (Function.update e' d' (e' d' - 1)) (rightShrink m a b d') v := by
     intro v
     rw [kostantAt]
-    have hcov := rightShrink_cover m habN (by omega) hsad v
+    have hcov := rightShrink_cover (b := b) m (by omega) hsad v
     have hbase : (e' v : ℤ)
         = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
             m p : ℤ) := by exact_mod_cast hkost v
@@ -1551,12 +1550,18 @@ theorem cCodim_zero_mono {e e' : Fin (N + 1) → ℕ}
 
 `cCodim_zero_mono` is exactly the weak dimension-monotonicity `hMono` consumed by
 `Core.CCodimCornerMono.numTop_eq_ncard_topComponents_of_dimMono`; so the θ-count headline becomes
-conditional on *only* the strict all-vertex version `hMonoStrict` (still open — see the thread-07
-card). `cCodim_le_codimRepCanonical_of` (`hLowerBound`) is thereby fully discharged. -/
+conditional on *only* the strict all-vertex version `hMonoStrict`. That strict version is now also
+proved (`Core.CCodimZeroStrict.cCodim_zero_strict`), so the fully-unconditional headline is
+`Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`. The theorem below
+(`numTop_eq_ncard_topComponents_of_strict`) is the intermediate step that still carries `hMonoStrict`
+as a hypothesis (the weak `hMono` already supplied by `cCodim_zero_mono`).
+`cCodim_le_codimRepCanonical_of` (`hLowerBound`) is thereby fully discharged. -/
 
-/-- **θ-count headline, with `hMono` discharged.** Given only the strict all-vertex dimension-mono
-`hMonoStrict`, `numTop d r = #{top-dim components of Σ̄^r}` — the weak `hMono` is now supplied by
-`cCodim_zero_mono`. -/
+/-- **θ-count headline, with the weak `hMono` discharged (strict `hMonoStrict` still a hypothesis).**
+Given the strict all-vertex dimension-mono `hMonoStrict`, `numTop d r = #{top-dim components of Σ̄^r}`
+— the weak `hMono` is supplied by `cCodim_zero_mono`. The fully unconditional version (with
+`hMonoStrict` also discharged via `Core.CCodimZeroStrict.cCodim_zero_strict`) is
+`Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`. -/
 theorem numTop_eq_ncard_topComponents_of_strict {k : Type u} [Field k] [IsAlgClosed k] [CharZero k]
     (hMonoStrict : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
       (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k < e' k) →

@@ -289,11 +289,13 @@ structure RlctInterface (d : Fin (N + 1) → ℕ)
     (K : Type v) [Field K] [IsAlgClosed K] [CharZero K] (ι : ℝ →+* K) where
   /-- The opaque real log-canonical threshold of a (real) loss function on `Rep_d`. -/
   rlct : (Tuple (k := ℝ) d → ℝ) → ℝ
-  /-- **Cited (Aoyagi Thm 1 / LR Thm 8.6):** the rlct of the DLN loss `K^DLN_B` equals half the
-  geometric codimension of the multiplication fibre `mult⁻¹(B)` (base-changed to `K`). Assumed
-  analytic content, not a proved fact. -/
+  /-- **Cited (Aoyagi Thm 1 / LR Thm 8.6, scope `0 < N`):** for a genuine deep network, the rlct of
+  the DLN loss `K^DLN_B` equals half the geometric codimension of the multiplication fibre `mult⁻¹(B)`
+  (base-changed to `K`). Assumed analytic content, not a proved fact. The `0 < N` guard restricts it to
+  the scope of Aoyagi's theorem (an `N ≥ 1` deep linear network); at `N = 0` the "product" `mult` is
+  the empty product and the statement is outside the cited scope. -/
   cited_aoyagi_dln : ∀ (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) (r : ℕ),
-    B.rank = r → r ≤ (Finset.univ.inf' Finset.univ_nonempty d) →
+    0 < N → B.rank = r → r ≤ (Finset.univ.inf' Finset.univ_nonempty d) →
     rlct (lossDLN d B)
       = ((codimRepCanonical (fibre (k := K) d (B.map ι))).toNat : ℝ) / 2
 
@@ -305,23 +307,24 @@ the rlct of the zero-product DLN loss `K^DLN_0` equals half the geometric codime
 zero-product fibre `mult⁻¹(0) = Σ̄^0` (over `K`). The interface `I : RlctInterface …` is an explicit
 hypothesis — the Cited dependency is visible in the type — and `via_aoyagi` names the source; this is
 **not** an unconditional `rlct = ½·codim`. From `I.cited_aoyagi_dln` at `B = 0`, `r = 0`, using
-`(0).map ι = 0`. -/
-theorem rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi (I : RlctInterface d K ι) :
+`(0).map ι = 0`; the `0 < N` guard is the Cited scope (a genuine deep network). -/
+theorem rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi (I : RlctInterface d K ι) (hN : 0 < N) :
     I.rlct (lossDLN d 0)
       = ((codimRepCanonical (fibre (k := K) d 0)).toNat : ℝ) / 2 := by
   have hmap : (0 : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ).map ι = 0 :=
     Matrix.map_zero ι ι.map_zero
-  rw [I.cited_aoyagi_dln 0 0 Matrix.rank_zero (Nat.zero_le _), hmap]
+  rw [I.cited_aoyagi_dln 0 0 hN Matrix.rank_zero (Nat.zero_le _), hmap]
 
 /-- **The RLCT payoff at `r = 0` against the orbit-codim infimum (bridge (a)).** Combining the payoff
 with bridge (a) (`codimRepCanonical_fibre_zero_eq_iInf_orbitCodim`): the rlct of `K^DLN_0` is half the
 minimum geometric codimension over the corner-`0` orbit closures. The `cCodim`-form (that this
-infimum *is* `C`) is `rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi`, through bridge (b). -/
-theorem rlct_lossDLN_zero_eq_half_iInf_orbitCodim_via_aoyagi (I : RlctInterface d K ι) :
+infimum *is* `C`) is `rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi`, through bridge (b). The `0 < N`
+guard is the Cited scope (a genuine deep network). -/
+theorem rlct_lossDLN_zero_eq_half_iInf_orbitCodim_via_aoyagi (I : RlctInterface d K ι) (hN : 0 < N) :
     I.rlct (lossDLN d 0)
       = ((⨅ M ∈ {M : Tuple (k := K) d | (mult d M).rank ≤ 0},
             codimRepCanonical (orbitRankLocus M)).toNat : ℝ) / 2 := by
-  rw [rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi I,
+  rw [rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi I hN,
     codimRepCanonical_fibre_zero_eq_iInf_orbitCodim]
 
 /-- **The RLCT payoff at `r = 0`: `rlct(K^DLN_0) = C/2`, through the Cited Aoyagi interface.** Given
@@ -331,11 +334,12 @@ Cited interface (R2, `rlct = ½·codim mult⁻¹(0)`) with bridge (b)
 (`codimRepCanonical_fibre_zero_eq_cCodim`, the geometric content `codim mult⁻¹(0) = C`). The interface
 `I` is an explicit hypothesis — the Cited analytic dependency is visible in the type — and
 `via_aoyagi` names the source; this is **not** an unconditional `rlct = C/2`. Requires the Kostant
-set nonempty (`h`); `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the geometric codimension). -/
-theorem rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi (I : RlctInterface d K ι)
+set nonempty (`h`) and the `0 < N` Cited scope (a genuine deep network); `[IsAlgClosed K] [CharZero K]`
+(the scope where `C` is the geometric codimension). -/
+theorem rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi (I : RlctInterface d K ι) (hN : 0 < N)
     (h : (kostantPartitions d 0).Nonempty) :
     I.rlct (lossDLN d 0) = ((cCodim d 0 h).toNat : ℝ) / 2 := by
-  rw [rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi I]
+  rw [rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi I hN]
   have hnat : (codimRepCanonical (fibre (k := K) d 0)).toNat = (cCodim d 0 h).toNat := by
     have := codimRepCanonical_fibre_zero_eq_cCodim (k := K) d h
     omega
@@ -364,11 +368,13 @@ theorem codimRepCanonical_fibre_d222_zero :
 
 /-- **`(2,2,2)`, `r = 0`: the RLCT payoff `rlct(K^DLN_0) = 3/2`**, over `ℂ`, through the Cited Aoyagi
 interface. `C = 3` (LR Ex 4.3), so `rlct = C/2 = 3/2`: the `(2,2,2)` zero-product DLN is mildly
-singular. The interface `I` is the explicit Cited hypothesis. -/
+singular. `(2,2,2)` has `N = 2 > 0`, so the `0 < N` Cited-scope guard is met. The interface `I` is the
+explicit Cited hypothesis. -/
 theorem rlct_lossDLN_d222_zero_eq_three_halves_via_aoyagi
     (I : RlctInterface Core.d222 ℂ Complex.ofRealHom) :
     I.rlct (lossDLN Core.d222 0) = 3 / 2 := by
-  rw [rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi I Core.kostantPartitions_d222_nonempty,
+  rw [rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi I (by norm_num)
+      Core.kostantPartitions_d222_nonempty,
     Core.cCodim_d222_zero, show ((3 : ℤ).toNat : ℝ) = 3 from rfl]
 
 end Witness

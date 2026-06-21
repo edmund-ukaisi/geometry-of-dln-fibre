@@ -15,7 +15,7 @@ Each thread's artefacts live under `threads/<NN>-<slug>/`.
 | 05 | theta-count | formaliser | closed | numTop = θ = #top-dim components (Kostant↔component count-bijection) |
 
 | 06 | theta-discharge | formaliser | closed | Brick2 Gabriel recovery LANDED; Brick1 reduced to cCodim·0 dim-monotonicity |
-| 07 | ccodim-zero-mono | formaliser | review-pending | cCodim e 0 ≤/< cCodim e' 0 (shortest-interval-split delta-sign) ⟹ θ=numTop unconditional |
+| 07 | ccodim-zero-mono | formaliser | closed | WEAK `cCodim e 0 ≤ cCodim e' 0` (`cCodim_zero_mono`, shortest-interval-split delta-sign) LANDED; discharges the weak gate `hMono` + `hLowerBound`, leaving only strict `hMonoStrict` (→ thread 08) |
 
 | 08 | ccodim-zero-strict | formaliser | closed | cCodim e 0 < cCodim e' 0 (all-vertex) via +1-step invariant ⟹ θ=numTop UNCONDITIONAL |
 

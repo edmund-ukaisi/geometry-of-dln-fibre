@@ -28,14 +28,21 @@ The form `codimForm N m` is **literally** the right-hand side of the committed h
 closure `Ō_M` is now **PROVED** in `Core.CThetaGeometric` (`codimForm` = geometric
 `codimRepCanonical (orbitRankLocus (⊕L))`, via the discharged Voigt lemma
 `Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[IsAlgClosed k] [CharZero k]`) —
-no longer deferred. What is **NOT** asserted here, and stays open per the `Core.CThetaGeometric`
-roadmap, is the **aggregate** reading: that `cCodim`/`numTop` are the geometric codimension / top
-component count of the *whole* rank-`r` locus `Σ^r` (the union of orbit closures), which needs a
-geometric definition of `Σ^r` and its orbit stratification. The combinatorial `cCodim`/`numTop`
-here are min / minimiser-count of a ℤ-quadratic form over a finite set, nothing more; the proved
-geometric reading is per-orbit (`Core.CThetaGeometric.cCodim_eq_inf_geomCodim`: `cCodim` = min over
-partitions of the genuine geometric orbit-closure codimension). Later layers reformulate `cCodim` as
-the QIP (Thm 6.1) and the explicit closest-lattice-point formula (Thm 7.10).
+no longer deferred. The **aggregate** reading — that `cCodim`/`numTop` are the geometric codimension /
+top-component count of the whole *closed* rank-`≤ r` locus `Σ̄^r = productRankLocusLE d r` (the
+genuine Zariski closure of the exact-rank locus `Σ^r`, equal to the union of the corner-`≤ r` orbit
+closures) — is **now also formalised**: `Σ̄^r = ⋃_M Ō_M` (`Core.SigmaStratification`), its irreducible
+components are the orbit closures (`Core.SigmaComponents.minimalPrimes_sigmaIdeal_eq`),
+`codim Σ̄^r = cCodim d r` (`Core.SigmaCodim.codimRepCanonical_productRankLocusLE_eq_cCodim`), and
+`numTop d r = #{top-dimensional irreducible components of Σ̄^r}`
+(`Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`, unconditional). The exact-rank `Σ^r` (rank
+*exactly* `r`) is not separately carved out as a variety here, but `codim Σ̄^r = codim Σ^r` (the
+closure preserves codimension, LR Cor. 4.4 + Lemma 4.5), so `Σ̄^r` carries the aggregate codimension
+content. The combinatorial `cCodim`/`numTop` themselves are min / minimiser-count of a ℤ-quadratic
+form over a finite set; the per-orbit geometric reading is
+`Core.CThetaGeometric.cCodim_eq_inf_geomCodim` (`cCodim` = min over partitions of the genuine
+geometric orbit-closure codimension). Later layers reformulate `cCodim` as the QIP (Thm 6.1) and the
+explicit closest-lattice-point formula (Thm 7.10).
 
 **Encoding.** A Kostant partition is encoded as a function `m : Fin (N+1) × Fin (N+1) → ℕ`
 (the multiplicity `m_{ij}` of the interval module `M_{ij}`), required to vanish off `i ≤ j`. The
@@ -145,9 +152,11 @@ theorem mem_kostantPartitions {d : Fin (N + 1) → ℕ} {r : ℕ}
 
 /-- The **combinatorial codimension** `C`: the minimum of `codimForm` over the Kostant partitions of
 `d` with corner `r`. Requires the partition set nonempty (`h`). This is the minimum of the genuine
-**geometric** orbit-closure codimensions (`Core.CThetaGeometric.cCodim_eq_inf_geomCodim`, proved);
-it is NOT (yet) the geometric codimension of the *whole* rank-`r` locus `Σ^r` — that aggregate
-reading awaits a geometric `Σ^r` (see `Core.CThetaGeometric` roadmap). -/
+**geometric** orbit-closure codimensions (`Core.CThetaGeometric.cCodim_eq_inf_geomCodim`, proved), and
+it is the geometric codimension of the whole *closed* rank-`≤ r` locus
+`Σ̄^r = productRankLocusLE d r` (`Core.SigmaCodim.codimRepCanonical_productRankLocusLE_eq_cCodim`,
+proved). `Σ̄^r` is the Zariski closure of the exact-rank `Σ^r`, and `codim Σ̄^r = codim Σ^r`
+(LR Cor. 4.4 + Lemma 4.5). -/
 noncomputable def cCodim (d : Fin (N + 1) → ℕ) (r : ℕ)
     (h : (kostantPartitions d r).Nonempty) : ℤ :=
   (kostantPartitions d r).inf' h (fun m ↦ codimForm N (extendℤ m))
@@ -435,10 +444,11 @@ theorem cCodim_d222_zero : cCodim d222 0 kostantPartitions_d222_nonempty = 3 := 
   decide +kernel
 
 /-- **`(2,2,2)`, `r = 0`: `θ = 1`.** The minimum codimension `3` is attained at a unique Kostant
-partition (`mMin`): the combinatorial `θ = 1` (one minimiser). The aggregate geometric reading "the
-rank-`0` locus `Σ^0` has one top-dimensional component" is still OPEN — the component-count half
-needs a geometric `Σ^0` and its orbit stratification (the `Core.CThetaGeometric` roadmap); the
-per-orbit codimension reading there is proved. -/
+partition (`mMin`): the combinatorial `θ = 1` (one minimiser). The aggregate geometric reading — "the
+closed rank-`≤ 0` locus `Σ̄^0` has one top-dimensional irreducible component" — is now also formalised
+through `Core.CCodimZeroStrict.numTop_eq_ncard_topComponents` (unconditional:
+`numTop d r = #{top-dim irreducible components of Σ̄^r}`), so this `θ = 1` reads as one
+top-dimensional geometric component of `Σ̄^0`. -/
 theorem numTop_d222_zero : numTop d222 0 kostantPartitions_d222_nonempty = 1 := by
   decide +kernel
 

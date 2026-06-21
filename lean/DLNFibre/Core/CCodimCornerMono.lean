@@ -5,12 +5,12 @@ import DLNFibre.Core.ThetaComponentCount
 
 This module **reduces** the two explicit hypotheses `hLowerBound` and `hRecover` of
 `Core.ThetaComponentCount.numTop_eq_ncard_topComponents_of` to a *single* combinatorial monotonicity
-— the dimension-monotonicity of `cCodim · 0` (`hMono` / `hMonoStrict` below); it does NOT make the
-θ-count headline unconditional: the reduced headline still
-carries those two combinatorial monotonicities as explicit hypotheses. They are numerically verified
-true (the shortest-interval-split construction, thousands of cases, zero failures) but **not yet
-proved in Lean** — the single remaining gap, fully scoped in the thread-06 statement card. The two
-*geometric* hypotheses of thread 05 are thereby replaced by one clean `CTheta`-level inequality.
+— the dimension-monotonicity of `cCodim · 0` (`hMono` / `hMonoStrict` below). Those two combinatorial
+monotonicities are now **proved in Lean** (`Core.CCodimZeroMono.cCodim_zero_mono`, weak;
+`Core.CCodimZeroStrict.cCodim_zero_strict`, strict all-vertex — both via the shortest-interval-split
+construction), so the θ-count headline `Core.CCodimZeroStrict.numTop_eq_ncard_topComponents` is now
+**unconditional** (no open hypothesis), axiom-clean. The two *geometric* hypotheses of thread 05 were
+thereby first replaced by one clean `CTheta`-level inequality, and that inequality is now discharged.
 
 Two bricks, both reducing to that one combinatorial monotonicity of `cCodim`:
 
