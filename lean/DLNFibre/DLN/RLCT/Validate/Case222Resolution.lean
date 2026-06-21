@@ -508,4 +508,82 @@ theorem tailLift_lemma2Inv_lintegral_image (A : Set (Fin 8 → ℝ)) (g : (Fin 8
   rw [setLIntegral_image_of_mp lemma2LiftME measurePreserving_lemma2LiftME]
   simp_rw [lemma2LiftME_apply]
 
+/-! ## The composite change-of-variables (the `≤`-direction's core)
+
+Chaining the three transports through the set-image identity `phiUnit '' W = step1A '' (tailLift
+lemma2Inv '' (tailLift step2E '' W))` gives the composite c-o-v `∫⁻_{phiUnit '' W} g = ∫⁻_W |u0³·u2²|
+· (g ∘ phiUnit)` for `W` off both pivot loci (`{u0=0}`, `{u2=0}`). The pivot-zero restrictions of the
+two blow-up c-o-v lemmas are no-ops on such `W` (coord-0 preserved by `lemma2Inv ∘ step2E`, coord-2 is
+the step-2 pivot); the chart-image measurability is Lusin-Souslin
+(`MeasurableSet.image_of_continuousOn_injOn`). -/
+
+/-- `pivotBlowupOn` is continuous (polynomial entries). -/
+theorem pivotBlowupOn_cont {N : ℕ} (active : Finset (Fin N)) (p : Fin N) :
+    Continuous (pivotBlowupOn active p) := by
+  unfold pivotBlowupOn; apply continuous_pi; intro i
+  by_cases hip : i = p
+  · simp only [hip, if_pos]; exact continuous_apply p
+  · by_cases hia : i ∈ active
+    · simp only [hip, hia, if_neg, if_pos, not_false_eq_true]
+      exact (continuous_apply p).mul (continuous_apply i)
+    · simp only [hip, hia, if_neg, not_false_eq_true]; exact continuous_apply i
+
+/-- Coordinate `0` is preserved by `tailLift lemma2Inv ∘ tailLift step2E` (both fix the spectator
+slot `0`). So the step-1 Jacobian at the composed point is `(u 0)³`. -/
+theorem coord0_L2S2 (u : Fin 8 → ℝ) : (tailLift lemma2Inv (tailLift step2E u)) 0 = u 0 := by
+  rw [tailLift]; simp only [Fin.cons_zero]; rw [tailLift_step2E_apply]; rfl
+
+/-- The step-2-lift image of a measurable set off `{u2 = 0}` is measurable (Lusin-Souslin:
+`pivotBlowupOn` continuous + injective off the pivot-zero locus). -/
+theorem s2img_meas (W : Set (Fin 8 → ℝ)) (hW : MeasurableSet W) (hWZ : ∀ x ∈ W, x 2 ≠ 0) :
+    MeasurableSet (tailLift step2E '' W) := by
+  simp_rw [tailLift_step2E_eq_pivotBlowupOn]
+  refine MeasurableSet.image_of_continuousOn_injOn hW (pivotBlowupOn_cont _ _).continuousOn ?_
+  intro x hx y hy hxy
+  exact pivotBlowupOn_injOn _ _ Set.univ ⟨Set.mem_univ _, hWZ x hx⟩
+    ⟨Set.mem_univ _, hWZ y hy⟩ hxy
+
+/-- **The composite change-of-variables** (`≤`-direction core). For `W = (V \ {u2=0}) \ {u0=0}`
+(measurable, off both pivot loci), `∫⁻_{phiUnit '' W} g = ∫⁻_W ofReal(|u0|³ · |u2|²) · (g ∘ phiUnit)` —
+the chain step1A c-o-v (`|det| = u0³`) ∘ Lemma-2 m.p. splice (det `±1`) ∘ step2E-lift c-o-v
+(`|det| = u2²`), with the pivot-zero restrictions no-ops. The Jacobian-product `u0³·u2²` is the
+binding-monomial weight (`unitH8`) the box-divergence atom consumes. -/
+theorem phiUnit_cov (V : Set (Fin 8 → ℝ)) (hV : MeasurableSet V) (g : (Fin 8 → ℝ) → ℝ≥0∞) :
+    ∫⁻ x in phiUnit '' ((V \ {x | x 2 = 0}) \ {x | x 0 = 0}), g x
+      = ∫⁻ u in (V \ {x | x 2 = 0}) \ {x | x 0 = 0},
+          ENNReal.ofReal (|u 0| ^ 3 * |u 2| ^ 2) * g (phiUnit u) := by
+  set W := (V \ {x | x 2 = 0}) \ {x | x 0 = 0} with hWdef
+  have hWmeas : MeasurableSet W :=
+    (hV.diff (measurableSet_eq_fun (measurable_pi_apply 2) measurable_const)).diff
+      (measurableSet_eq_fun (measurable_pi_apply 0) measurable_const)
+  have hW2 : ∀ x ∈ W, x 2 ≠ 0 := fun x hx => hx.1.2
+  have hW0 : ∀ x ∈ W, x 0 ≠ 0 := fun x hx => hx.2
+  have hS2meas : MeasurableSet (tailLift step2E '' W) := s2img_meas W hWmeas hW2
+  have hL2S2meas : MeasurableSet (tailLift lemma2Inv '' (tailLift step2E '' W)) := by
+    rw [show tailLift lemma2Inv '' (tailLift step2E '' W) = lemma2LiftME '' (tailLift step2E '' W)
+      from by rw [show ⇑lemma2LiftME = tailLift lemma2Inv from funext lemma2LiftME_apply]]
+    exact lemma2LiftME.measurableEmbedding.measurableSet_image.2 hS2meas
+  -- coord-0 ≠ 0 on L2''(S2''W), so the {x0=0} restriction is a no-op for step1A
+  have hsub0 : tailLift lemma2Inv '' (tailLift step2E '' W) ⊆ {x | x 0 ≠ 0} := by
+    rintro x ⟨y, ⟨u, hu, rfl⟩, rfl⟩
+    simp only [Set.mem_setOf_eq, coord0_L2S2]; exact hW0 u hu
+  have hdisj0 : Disjoint (tailLift lemma2Inv '' (tailLift step2E '' W)) {x | x 0 = 0} := by
+    rw [Set.disjoint_left]; intro x hx hx0; exact (hsub0 hx) hx0
+  -- chain: set-image, step1A c-o-v (no-op), L2 splice, step2E c-o-v (no-op)
+  rw [show phiUnit '' W = step1A '' (tailLift lemma2Inv '' (tailLift step2E '' W)) from by
+        rw [Set.image_image, Set.image_image]; exact Set.image_congr (fun u _ => phiUnit_eq_comp u)]
+  rw [← hdisj0.sdiff_eq_left, step1A_lintegral_image _ hL2S2meas g, hdisj0.sdiff_eq_left]
+  rw [tailLift_lemma2Inv_lintegral_image]
+  rw [show tailLift step2E '' W = tailLift step2E '' (W \ {x | x 2 = 0}) from by
+        rw [(Set.disjoint_left.2 (fun x hx hx2 => hW2 x hx hx2) :
+          Disjoint W {x | x 2 = 0}).sdiff_eq_left]]
+  rw [tailLift_step2E_lintegral_image W hWmeas]
+  -- now both restrictions back to W
+  rw [(Set.disjoint_left.2 (fun x hx hx2 => hW2 x hx hx2) : Disjoint W {x | x 2 = 0}).sdiff_eq_left]
+  -- rewrite the det factors and reassemble the Jacobian product
+  refine setLIntegral_congr_fun hWmeas (fun u _ => ?_)
+  rw [step1A_det, coord0_L2S2, tailLift_step2E_det, ← phiUnit_eq_comp, abs_pow, abs_pow,
+    ENNReal.ofReal_mul (by positivity)]
+  ring
+
 end DLNFibre.DLN.RLCT
