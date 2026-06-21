@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
+import DLNFibre.DLN.RLCT.Foundations.S1Fubini
 import Mathlib.Logic.Equiv.Fin.Basic
 
 /-!
@@ -98,5 +99,66 @@ theorem slot_b10 :
 theorem slot_b11 :
     fin8EquivFlatIdx222.symm (⟨⟨⟨1, by decide⟩, ⟨1, by decide⟩⟩, ⟨1, by decide⟩⟩ : FlatIdx H222)
       = 7 := by decide
+
+/-! ## The `rlctAtOn` transport (the seam's payload)
+
+`e222` is a homeomorphism (continuous both ways — `piCurry`/`arrowCongr'` are continuous, as in
+`continuous_paramsEquivFlat`) AND measure-preserving, so `rlctAtOn` transports across it via
+`rlctAtOn_comp_homeomorph`. Given the loss-identity `dlnLoss H222 0 = myF ∘ e222` (the consumer
+supplies it — `myF = ‖A·B‖²` in the `a00=0..b11=7` order, from `prod`-characterization +
+`e222_symm_coord` + the slot table), the deepest point `0 : Params` maps to `0 : Fin 8 → ℝ`
+(`e222_deepest`), giving `rlctAtOn (dlnLoss H222 0) deepest222 = rlctAtOn myF 0`. -/
+
+/-- `e222` is continuous (two `Sigma.uncurry` steps + an evaluation re-index). -/
+theorem continuous_e222 : Continuous e222 := by
+  unfold e222
+  have e1 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (s : Fin 2) (_ : Fin (H222 s.castSucc)) => Fin (H222 s.succ) → ℝ)).symm) := by
+    rw [MeasurableEquiv.coe_piCurry_symm]; exact continuous_sigmaUncurry _
+  have e2 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (q : FlatRowIdx H222) (_ : Fin (H222 q.1.succ)) => ℝ)).symm) := by
+    rw [MeasurableEquiv.coe_piCurry_symm]; exact continuous_sigmaUncurry _
+  have e3 : Continuous (⇑(MeasurableEquiv.arrowCongr' fin8EquivFlatIdx222.symm
+      (MeasurableEquiv.refl ℝ))) := by
+    apply continuous_pi; intro i; exact continuous_apply (fin8EquivFlatIdx222.symm.symm i)
+  exact e3.comp (e2.comp e1)
+
+/-- `e222.symm` is continuous (two `Sigma.curry` steps + an evaluation re-index). -/
+theorem continuous_e222_symm : Continuous e222.symm := by
+  unfold e222
+  have e1 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (s : Fin 2) (_ : Fin (H222 s.castSucc)) => Fin (H222 s.succ) → ℝ))) := by
+    rw [MeasurableEquiv.coe_piCurry]; exact continuous_sigmaCurry _
+  have e2 : Continuous (⇑(MeasurableEquiv.piCurry
+      (fun (q : FlatRowIdx H222) (_ : Fin (H222 q.1.succ)) => ℝ))) := by
+    rw [MeasurableEquiv.coe_piCurry]; exact continuous_sigmaCurry _
+  have e3 : Continuous (⇑(MeasurableEquiv.arrowCongr' fin8EquivFlatIdx222.symm
+      (MeasurableEquiv.refl ℝ)).symm) := by
+    apply continuous_pi; intro i; exact continuous_apply (fin8EquivFlatIdx222.symm i)
+  exact e1.comp (e2.comp e3)
+
+/-- `e222` as a homeomorphism (measurable equiv + both continuities), for the rlct transport. -/
+noncomputable def eHom222 : Params H222 ≃ₜ (Fin 8 → ℝ) :=
+  { e222.toEquiv with
+    continuous_toFun := continuous_e222, continuous_invFun := continuous_e222_symm }
+
+/-- The `(2,2,2)` deepest point (the rank-1 stratum's origin) — `fun _ => 0` (à la `deepest212`,
+dodging the `Params` `Zero`-instance opacity). -/
+def deepest222 : Params H222 := fun _ => 0
+
+/-- **The seam payload.** Given the loss-identity `dlnLoss H222 0 = myF ∘ e222`, the RLCT of the
+`(2,2,2)` loss at the deepest point equals the RLCT of `myF` (`= ‖A·B‖²` in `a00=0..b11=7` order) at
+the origin — by `rlctAtOn_comp_homeomorph` (measure-preserving homeomorph `e222`) + `e222 deepest =
+0`. The cover assembly then evaluates `rlctAtOn myF 0 = 3/2`. -/
+theorem rlctAtOn_dlnLoss222_transport (myF : (Fin 8 → ℝ) → ℝ)
+    (hloss : dlnLoss H222 0 = fun A => myF (e222 A)) :
+    rlctAtOn (dlnLoss H222 0) deepest222 = rlctAtOn myF 0 := by
+  have hmp : MeasurePreserving eHom222 volume volume := measurePreserving_e222
+  have hemb : MeasurableEmbedding eHom222 := e222.measurableEmbedding
+  have key := rlctAtOn_comp_homeomorph eHom222 hmp hemb myF deepest222
+  have he0 : eHom222 deepest222 = 0 := by funext k; rfl
+  rw [he0] at key
+  rw [hloss]
+  exact key
 
 end DLNFibre.DLN.RLCT
