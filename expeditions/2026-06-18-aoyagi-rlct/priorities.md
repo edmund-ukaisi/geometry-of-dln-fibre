@@ -88,6 +88,8 @@ Current Eq5 early/tail interval-guard slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-early-tail-interval-guards-a5.md`.
 Current Eq5 nonfirst block admissibility slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonfirst-block-admissibility-a5.md`.
+Current Eq5 nonfirst block explicit-bounds slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonfirst-block-bounds-a5.md`.
 Current Eq4 rising-guard exhaustion slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-guard-exhaustion-a5.md`.
 Current terminal Eq5 gap slice:

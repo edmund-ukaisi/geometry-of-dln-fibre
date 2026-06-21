@@ -2591,6 +2591,59 @@ theorem aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_
         ell a p alpha halpha).mpr hroom)
       hb_pos hS
 
+/-- Explicit vectorwise Htilde bounds for equation `(5)` on every nonfirst
+selected block, under the strict alpha domain and supplied post-`p` lower
+guard.
+
+This is only an unwrapping of same-coordinate interval membership.  It does not
+construct equation `(5)`'s displayed vector or prove the post-`p` guard from
+source hypotheses. -/
+theorem aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_postPLowerGuard
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (halpha : alpha ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hpost : aoyagiLemma5Eq5PostPLowerGuard ell a p alpha)
+    {b S : ℕ} (hb_pos : 1 ≤ b) (hS : C.block b S) :
+    aoyagiHtildeLowerNat ell a M m b ≤ T S ∧
+      T S ≤ aoyagiHtildeUpperNat ell a M m b := by
+  have hmem :=
+    aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard
+      ell a p alpha M m C layerWidth T hT halpha hpost hb_pos hS
+  have hb_lt : b < ell + 1 := Nat.lt_succ_of_lt hS.1
+  have hmemFin :
+      T S ∈ aoyagiHtildeIntervalValueSet ell a M m ⟨b, hb_lt⟩ := by
+    simpa [aoyagiHtildeIntervalValueSetNat, hb_lt] using hmem
+  have hbounds :=
+    (aoyagiHtilde_mem_intervalValueSet_iff_bounds
+      ell a M m hT.a_le_ell ⟨b, hb_lt⟩ (T S)).mp hmemFin
+  simpa [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] using hbounds
+
+/-- Explicit vectorwise Htilde bounds for equation `(5)` on every nonfirst
+selected block, using the terminal-room inequality instead of the opaque
+post-`p` lower guard.
+
+This is finite branch-admissibility bookkeeping only; it does not prove
+source-label legality, terminality, chart coverage, classifier coverage, pole
+order, normal crossings, or RLCT extraction. -/
+theorem aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_terminalRoom
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (halpha : alpha ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hroom : p + 2 * a - alpha ≤ ell)
+    {b S : ℕ} (hb_pos : 1 ≤ b) (hS : C.block b S) :
+    aoyagiHtildeLowerNat ell a M m b ≤ T S ∧
+      T S ≤ aoyagiHtildeUpperNat ell a M m b := by
+  exact
+    aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_postPLowerGuard
+      ell a p alpha M m C layerWidth T hT halpha
+      ((aoyagiLemma5Eq5PostPLowerGuard_iff_terminalRoom_of_alphaDomain
+        ell a p alpha halpha).mpr hroom)
+      hb_pos hS
+
 /-- Concrete check that the strict Eq5 alpha domain and post-`p` range do not
 force the post-`p` lower-bound guard. -/
 theorem aoyagiLemma5Eq5_alphaDomain_and_postPRange_not_lowerGuard :

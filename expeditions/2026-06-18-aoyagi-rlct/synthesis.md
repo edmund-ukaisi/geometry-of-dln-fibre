@@ -231,6 +231,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-minimum-lower-bound-a5.md`.
 
+The Eq5 nonfirst-block explicit-bounds wrapper has landed in
+`Lemma5DisplayedVector.lean`.  New Lean names:
+`aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_postPLowerGuard`
+and
+`aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_terminalRoom`.
+These unwrap the existing nonfirst Eq5 interval-membership theorem into the
+vectorwise Htilde inequalities `Htilde_b <= T S <= Htilde'_b`, under the same
+supplied Eq5 piecewise certificate, strict alpha domain, nonfirst-block
+hypothesis, and either the explicit post-`p` lower guard or terminal-room
+inequality.  This is only same-coordinate interval bookkeeping: it does not
+construct Eq5 vectors, prove source-label legality, produce the post-`p` guard
+from source hypotheses, prove terminality, classifier/back-to-label coverage,
+pole order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonfirst-block-bounds-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-nonfirst-block-bounds.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:

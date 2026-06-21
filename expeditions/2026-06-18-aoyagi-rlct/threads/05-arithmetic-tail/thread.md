@@ -4298,3 +4298,31 @@ branch-label injectivity and the supplied family count to show
 This is only the supplied-candidates-attain-minimum direction.  It does not
 prove no-extra terminal-minimum coverage, the upper bound, exact
 terminal-minimum cardinality, pole order, normal crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 5 Eq5 nonfirst block explicit bounds
+
+Reproduction:
+`reproduction-lemma5-eq5-nonfirst-block-bounds-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-nonfirst-block-bounds.md`.
+Review artifact:
+`review-lemma5-eq5-nonfirst-block-bounds-a5.md`.
+
+Lean now unwraps the already proved nonfirst Eq5 interval-membership theorem
+into explicit same-coordinate Htilde bounds:
+
+```text
+aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_postPLowerGuard
+aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_terminalRoom
+```
+
+Under a supplied Eq5 piecewise certificate, strict alpha-domain membership,
+`1<=b`, and `C.block b S`, the first theorem uses the explicit post-`p` lower
+guard to prove `Htilde_b <= T S <= Htilde'_b`.  The second theorem replaces
+that guard by the terminal-room inequality `p+2*a-alpha<=ell`.
+
+This is only interval-membership unwrapping.  It does not construct Eq5
+vectors, prove source-label legality, produce the post-`p` guard from source
+hypotheses, prove terminality, selected-span exactness,
+classifier/injection/back-to-label coverage, Lemma 5 order count, pole order,
+normal crossings, or RLCT.
