@@ -673,4 +673,134 @@ theorem codimForm_redMove (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : F
   rw [codimForm_congr_onbox (fun α β hα hαβ hβ ↦ extendℤ_redMove_onbox m a b c d' hα hαβ hβ),
     codimForm_splitMove m hab hbc hcd hsad]
 
+/-- **`redMove` does not increase `codimForm`** when `[a,d']` is a shortest covering interval of
+`k = b + 1` (`c = b + 2`) of positive multiplicity. Same sign argument as `codimForm_splitMove_le`,
+now uniform over the interior, endpoint and singleton cases. -/
+theorem codimForm_redMove_le (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbc : (c : ℕ) = b + 2) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d'))
+    (hshort : ∀ Y : Fin (N + 1) × Fin (N + 1), 1 ≤ m Y →
+      (Y.1 : ℤ) ≤ (b : ℤ) + 1 → (b : ℤ) + 1 ≤ (Y.2 : ℤ) →
+      (d' : ℤ) - (a : ℤ) ≤ (Y.2 : ℤ) - (Y.1 : ℤ)) :
+    codimForm N (extendℤ (redMove m a b c d')) ≤ codimForm N (extendℤ m) := by
+  rw [codimForm_redMove m hab (by omega) hcd hsad]
+  have hsum : ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * splitCoeff a b c d' Y ≤ 0 := by
+    refine Finset.sum_nonpos fun Y _ ↦ ?_
+    rcases lt_or_ge 0 (splitCoeff a b c d' Y) with hc | hc
+    · obtain ⟨⟨h1, h2⟩, hlen⟩ := splitCoeff_pos_imp hab hbc hcd hc
+      have hmY : m Y = 0 := by
+        by_contra hne
+        exact absurd (hshort Y (Nat.one_le_iff_ne_zero.mpr hne) h1 h2) (not_le.mpr hlen)
+      rw [hmY]; simp
+    · exact mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg _) hc
+  linarith
+
+/-- **Filtered-coverage change of `redMove`** (as `ℤ`). At every vertex `v`, the coverage of
+`redMove m a b c d'` is the coverage of `m` plus the *guarded* `[a,b]`/`[c,d']` indicators, minus the
+`[a,d']` indicator. -/
+theorem redMove_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : Fin (N + 1)}
+    (hac0 : (a : ℕ) < c) (hbc : (c : ℕ) = b + 2) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d'))
+    (v : Fin (N + 1)) :
+    (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+        redMove m a b c d' p : ℤ)
+      = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2), m p : ℤ)
+        + (if a ≤ b ∧ a ≤ v ∧ v ≤ b then 1 else 0) + (if c ≤ d' ∧ c ≤ v ∧ v ≤ d' then 1 else 0)
+        - (if a ≤ v ∧ v ≤ d' then 1 else 0) := by
+  set S := Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2) with hS
+  have hac : a ≠ c := by rw [Fin.ne_iff_vne]; omega
+  have hbd : b ≠ d' := by rw [Fin.ne_iff_vne]; omega
+  have hterm : ∀ p : Fin (N + 1) × Fin (N + 1),
+      ((redMove m a b c d' p : ℕ) : ℤ)
+        = (m p : ℤ) + (if a ≤ b ∧ p = (a, b) then 1 else 0) + (if c ≤ d' ∧ p = (c, d') then 1 else 0)
+          - (if p = (a, d') then 1 else 0) := by
+    intro p
+    by_cases h1 : a ≤ b ∧ p = (a, b)
+    · have h2 : ¬ (c ≤ d' ∧ p = (c, d')) := by
+        rintro ⟨-, h⟩; rw [h1.2] at h; exact hac (congrArg Prod.fst h)
+      have h3 : p ≠ (a, d') := by rw [h1.2]; intro h; exact hbd (congrArg Prod.snd h)
+      simp only [redMove, if_pos h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+      push_cast; ring
+    · by_cases h2 : c ≤ d' ∧ p = (c, d')
+      · have h3 : p ≠ (a, d') := by rw [h2.2]; intro h; exact hac (congrArg Prod.fst h).symm
+        simp only [redMove, if_neg h1, if_pos h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+        push_cast; ring
+      · by_cases h3 : p = (a, d')
+        · have hpos : 1 ≤ m p := by rw [h3]; exact hsad
+          simp only [redMove, if_neg h1, if_neg h2, if_pos h3, Nat.add_zero]
+          rw [Nat.cast_sub (by omega)]; push_cast; ring
+        · simp only [redMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+          push_cast; ring
+  rw [Finset.sum_congr rfl (fun p (_ : p ∈ S) ↦ hterm p),
+    Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib]
+  -- collapse each guarded single-key indicator sum
+  have hcollapse : ∀ (P : Prop) [Decidable P] (key : Fin (N + 1) × Fin (N + 1)),
+      (∑ p ∈ S, if P ∧ p = key then (1 : ℤ) else 0)
+        = if P ∧ key ∈ S then 1 else 0 := by
+    intro P _ key
+    by_cases hP : P
+    · simp only [hP, true_and]; rw [Finset.sum_ite_eq' S key]
+    · simp only [hP, false_and, if_false, Finset.sum_const_zero]
+  rw [hcollapse (a ≤ b) (a, b), hcollapse (c ≤ d') (c, d'), Finset.sum_ite_eq' S (a, d')]
+  have hmemS : ∀ x y : Fin (N + 1), ((x, y) ∈ S) ↔ (x ≤ v ∧ v ≤ y) := by
+    intro x y; rw [hS]; simp [Finset.mem_filter]
+  simp only [hmemS]
+
+/-- **The shortest `redMove` lands in the corner-`0` Kostant partitions of the decremented vector.**
+Uniform over interior, endpoint and singleton: if `m ∈ kostantPartitions e' 0`, `[a,d']` covers `k`
+(`(k:ℕ) = b + 1`, `c = b + 2`, `a ≤ k ≤ d'`), is present, and `[a,d'] ≠ [0,N]`, then `redMove m a b c
+d' ∈ kostantPartitions (Function.update e' k (e' k - 1)) 0`. -/
+theorem redMove_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
+    {a b c d' k : Fin (N + 1)} (hm : m ∈ kostantPartitions e' 0)
+    (hak : a ≤ k) (hkd : k ≤ d') (hbc : (c : ℕ) = b + 2) (hcd : (c : ℕ) ≤ d') (hk : (k : ℕ) = b + 1)
+    (hsad : 1 ≤ m (a, d')) (hcorner : (a, d') ≠ ((0 : Fin (N + 1)), Fin.last N)) :
+    redMove m a b c d' ∈ kostantPartitions (Function.update e' k (e' k - 1)) 0 := by
+  obtain ⟨hbnd, hsupp, hkost, hc0⟩ := mem_kostantPartitions.mp hm
+  have hakN : (a : ℕ) ≤ k := Fin.le_def.mp hak
+  have hkdN : (k : ℕ) ≤ d' := Fin.le_def.mp hkd
+  have hac0 : (a : ℕ) < c := by omega
+  -- support: off the triangle, all three guarded keys differ, so `redMove m p = m p = 0`
+  have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → redMove m a b c d' p = 0 := by
+    intro p hp
+    have h1 : ¬ (a ≤ b ∧ p = (a, b)) := fun h ↦ hp (by rw [h.2]; exact h.1)
+    have h2 : ¬ (c ≤ d' ∧ p = (c, d')) := fun h ↦ hp (by rw [h.2]; exact (Fin.le_def.mpr hcd))
+    have h3 : p ≠ (a, d') := fun h ↦ hp (by rw [h]; exact (Fin.le_def.mpr (by omega : (a : ℕ) ≤ d')))
+    simp only [redMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+    exact hsupp p hp
+  have hekpos : 1 ≤ e' k := by
+    rw [hkost k]
+    refine le_trans hsad (Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) ?_)
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact ⟨hak, hkd⟩
+  have hkost' : ∀ v, kostantAt (Function.update e' k (e' k - 1)) (redMove m a b c d') v := by
+    intro v
+    rw [kostantAt]
+    have hcov := redMove_cover m hac0 hbc hcd hsad v
+    have hbase : (e' v : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            m p : ℤ) := by exact_mod_cast hkost v
+    have hZ : ((Function.update e' k (e' k - 1) v : ℕ) : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            redMove m a b c d' p : ℤ) := by
+      rw [hcov, ← hbase]
+      have hupd : ((Function.update e' k (e' k - 1) v : ℕ) : ℤ)
+          = (e' v : ℤ) - (if v = k then 1 else 0) := by
+        by_cases hvk : v = k
+        · subst hvk; rw [Function.update_self, if_pos rfl, Nat.cast_sub hekpos]; push_cast; ring
+        · rw [Function.update_of_ne hvk, if_neg hvk]; ring
+      rw [hupd]
+      have hvkN : (v = k) ↔ ((v : ℕ) = b + 1) := by rw [Fin.ext_iff]; omega
+      simp only [Fin.le_def, hvkN]
+      split_ifs <;> omega
+    exact_mod_cast hZ
+  refine mem_kostantPartitions.mpr ⟨bound_of_kostant hsupp' hkost', hsupp', hkost', ?_⟩
+  · have hdN : (d' : ℕ) ≤ N := by have := d'.isLt; omega
+    have h1 : ¬ (a ≤ b ∧ ((0 : Fin (N + 1)), Fin.last N) = (a, b)) := by
+      rintro ⟨-, hh⟩; rw [Prod.mk.injEq] at hh; have := hh.2
+      rw [Fin.ext_iff, Fin.val_last] at this; omega
+    have h2 : ¬ (c ≤ d' ∧ ((0 : Fin (N + 1)), Fin.last N) = (c, d')) := by
+      rintro ⟨-, hh⟩; rw [Prod.mk.injEq] at hh; have := hh.1
+      rw [Fin.ext_iff, Fin.val_zero] at this; omega
+    have h3 : ((0 : Fin (N + 1)), Fin.last N) ≠ (a, d') := fun h ↦ hcorner h.symm
+    show redMove m a b c d' ((0 : Fin (N + 1)), Fin.last N) = 0
+    simp only [redMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+    exact hc0
+
 end DLNFibre.Core
