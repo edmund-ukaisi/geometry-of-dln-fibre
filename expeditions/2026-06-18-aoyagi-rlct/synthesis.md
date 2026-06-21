@@ -2552,6 +2552,25 @@ count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-case2-weight-update-a5.md`.
 
+Eq3/Eq4 now have the analogous source-facing Case 2 recurrence-weight update
+wrappers.  The theorem names are
+`aoyagiLemma5Eq4_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint`
+and
+`aoyagiLemma5Eq3_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  They combine the
+existing Eq3/Eq4 actual-label wrappers with
+`IntroducedLabelRecurrenceState.Case2SuppliedPostData.weight_succ_current_eq_new_mul_of_ge`.
+They prove that, for one supplied endpoint branch and supplied Case 2
+post-data, rows from `J+1` onward have `post.weight i = u * pre.weight i`.
+Eq4's repaired guards, Eq3's explicit slack, actual-width compatibility, and
+the supplied post-data package remain explicit.  They do not assert chart
+production, terminal exponent, least-value data, or Lemma 5 order count.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-case2-weight-update-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-case2-weight-update.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-case2-weight-update-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

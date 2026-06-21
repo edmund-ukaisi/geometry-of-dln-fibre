@@ -829,6 +829,12 @@ on the session's original cwd.
    The Eq5 supplied-post-data recurrence-weight wrapper is now proved.  It
    starts using the domain bookkeeping in the recurrence API, but it still
    assumes the Case 2 post-data package and does not prove chart production.
+   Eq3/Eq4 supplied-post-data recurrence-weight wrappers are now proved too.
+   They complete the endpoint analogue of the Eq5 recurrence wrapper while
+   preserving Eq4's repaired guards, Eq3's explicit slack, actual-width
+   compatibility, and the supplied post-data package.  They still do not
+   produce a chart, displayed vector family, terminal exponent, least-value
+   data, or Lemma 5 order count.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

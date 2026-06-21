@@ -2131,3 +2131,31 @@ does not prove that a blow-up chart produces the post-state, construct Eq5
 vectors, quantify over all `alpha`, provide terminal-exponent or least-value
 data, prove terminality, chart sequence, Lemma 5 order count, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3/Eq4 Case 2 recurrence weight update
+
+Reproduction:
+`reproduction-lemma5-eq3-eq4-case2-weight-update-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-eq4-case2-weight-update.md`.
+Review artifact:
+`review-lemma5-eq3-eq4-case2-weight-update-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint
+aoyagiLemma5Eq3_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint
+```
+
+For one supplied Eq4 or Eq3 endpoint branch whose label is `J+1`, a supplied
+Case 2 recurrence post-state with the standard new-label data has
+`post.weight i = u * pre.weight i` for every row `i` with `J+1 <= i`.
+
+This is conditional recurrence bookkeeping only.  It uses the existing Eq3/Eq4
+actual-label wrappers and the generic supplied-post-data recurrence theorem.
+Eq4's repaired guards, Eq3's explicit slack, actual-width compatibility, and
+the supplied post-data package remain explicit.  It does not prove that a
+blow-up chart produces the post-state, construct Eq3/Eq4 vectors, provide
+terminal-exponent or least-value data, prove terminality, chart sequence,
+Lemma 5 order count, normal crossings, or RLCT extraction.

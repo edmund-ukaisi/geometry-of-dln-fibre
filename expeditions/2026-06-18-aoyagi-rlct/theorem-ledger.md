@@ -3174,6 +3174,25 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-case2-weight-update-a5.md`.
 
+Latest A5 update: Eq3/Eq4 now have source-facing Case 2 recurrence-weight
+update wrappers in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The
+names are
+`aoyagiLemma5Eq4_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint`
+and
+`aoyagiLemma5Eq3_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint`.
+They use the existing Eq3/Eq4 actual-label wrappers and the generic supplied
+post-data recurrence theorem to prove `post.weight i = u * pre.weight i` for
+all `i` with `J+1 <= i`, for one supplied endpoint branch.  Eq4's repaired
+guards, Eq3's explicit slack, actual-width compatibility, and supplied
+`Case2SuppliedPostData` remain explicit.  They do not assert that a chart
+produces the post-state.  No displayed-vector construction, admissibility,
+order count, normal-crossing, or RLCT data is proved.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-case2-weight-update-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-case2-weight-update.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-case2-weight-update-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

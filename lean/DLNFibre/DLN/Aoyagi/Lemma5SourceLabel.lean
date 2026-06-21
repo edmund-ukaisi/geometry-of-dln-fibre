@@ -357,6 +357,40 @@ theorem aoyagiLemma5Eq4_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint
       hwidth hT hJ
   exact introducedLabelFinset_card_succ_eq_succ hlabel.2
 
+/-- Source-facing Eq4 specialization of the supplied Case 2 recurrence-weight
+update.
+
+For one supplied Eq4 endpoint branch whose label is `J+1`, a supplied
+successor recurrence state with the standard Case 2 post-data has row weights
+multiplied by the new variable from row `J+1` onward.  This is conditional
+recurrence bookkeeping and does not assert that a blow-up chart produces the
+post-state. -/
+theorem aoyagiLemma5Eq4_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint
+    {α : Type*} [CommMonoid α]
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp0 : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeLowerNat ell a M m p + 1)
+    {pre : IntroducedLabelRecurrenceState L n (C.point p - 1) J α}
+    {post : IntroducedLabelRecurrenceState L n (C.point p - 1) (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u) :
+    ∀ i, J + 1 ≤ i → post.weight i = u * pre.weight i := by
+  have hlabel :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+      L ell a p n M m C layerWidth T hell hp0 hp_c hselected hsource hlast
+      hwidth hT hJ
+  exact fun i hi ↦ hpost.weight_succ_current_eq_new_mul_of_ge hlabel.2 hi
+
 /-- Equation `(4)` own-coordinate wrapper with interval membership and
 finite-domain introduced-label membership.
 
@@ -501,6 +535,42 @@ theorem aoyagiLemma5Eq3_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint
       L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack hlast
       hwidth hT hJ
   exact introducedLabelFinset_card_succ_eq_succ hlabel.2
+
+/-- Source-facing Eq3 specialization of the supplied Case 2 recurrence-weight
+update.
+
+For one supplied Eq3 endpoint branch whose label is `J+1`, a supplied
+successor recurrence state with the standard Case 2 post-data has row weights
+multiplied by the new variable from row `J+1` onward.  The explicit one-unit
+slack and actual-width compatibility are inherited from the source-label
+wrapper.  This is conditional recurrence bookkeeping and does not assert that a
+blow-up chart produces the post-state. -/
+theorem aoyagiLemma5Eq3_ownCoordinate_case2_weight_succ_current_eq_newVar_mul_of_lastPoint
+    {α : Type*} [CommMonoid α]
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point 1 - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m 1 + 1)
+    {pre : IntroducedLabelRecurrenceState L n (C.point 1 - 1) J α}
+    {post : IntroducedLabelRecurrenceState L n (C.point 1 - 1) (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u) :
+    ∀ i, J + 1 ≤ i → post.weight i = u * pre.weight i := by
+  have hlabel :=
+    aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+      L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack hlast
+      hwidth hT hJ
+  exact fun i hi ↦ hpost.weight_succ_current_eq_new_mul_of_ge hlabel.2 hi
 
 /-- Equation `(3)` own-coordinate wrapper with interval membership and
 finite-domain introduced-label membership.
