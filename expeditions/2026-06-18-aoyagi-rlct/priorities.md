@@ -141,6 +141,15 @@ Keep this as finite displayed-pivot block algebra.  It does not source-produce
 successor recurrence/exponent data, prove transition invariance, terminal
 relabeling, normal crossings, pole order, or RLCT.
 
+Free-`Cprime` local product package checkpoint:
+`threads/04-blow-up-certificate/reproduction-case2-free-cprime-local-product-package-a4.md`.
+Lean now pairs the constructed-source `Q/P` identity for `Q*Cprime` with the
+free bare lower-row product and corrected supplied post-data in
+`sourceChartMap_constructedSourceFreeCprimeLocalProduct_withCorrectedPostData`.
+Keep the weighted `Q/P` equality and bare `D''' * Cprime` lower-row equality
+as separate conjuncts; do not absorb successor row weights into the
+post-pivot residual block.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch

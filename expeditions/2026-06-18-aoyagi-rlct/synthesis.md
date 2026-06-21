@@ -137,6 +137,22 @@ arbitrary-pivot coverage, no chart-produced recurrence/exponent data, no
 transition invariant, no terminal relabeling, no normal crossings/RLCT, and no
 repair of the printed Case 2 vector mismatch.
 
+The next local product package has also landed.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-free-cprime-local-product-package-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-free-cprime-local-product-package.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-free-cprime-local-product-package-a4.md`.
+
+Lean name:
+`sourceChartMap_constructedSourceFreeCprimeLocalProduct_withCorrectedPostData`.
+It pairs the constructed-source `Q/P` theorem for the old following factor
+`Q*Cprime` with the separate bare lower-row identity for `D'''*Cprime` and the
+corrected post-data projections.  The first product equality is weighted by
+the successor row-weight diagonal; the lower-row post-pivot equality is stated
+for bare `D'''*Cprime`.  This prevents a false identification of successor row
+weights with the post-pivot residual block.
+
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at

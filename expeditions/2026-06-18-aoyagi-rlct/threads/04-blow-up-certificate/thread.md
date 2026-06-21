@@ -3291,3 +3291,34 @@ coverage or arbitrary-pivot coverage, produce successor recurrence/exponent
 data, prove transition invariance, compute Jacobians, prove normal
 crossings/RLCT, terminal relabeling, or repair the printed Case 2 vector
 mismatch.
+
+## 2026-06-21 Lean Case 2 free Cprime local product package
+
+Reproduction:
+`reproduction-case2-free-cprime-local-product-package-a4.md`.
+Statement card:
+`statement-card-a4-case2-free-cprime-local-product-package.md`.
+Review artifact:
+`review-case2-free-cprime-local-product-package-a4.md`.
+
+Lean now packages the displayed source-chart `Q/P` identity for a free
+chart-coordinate following matrix together with the free-`Cprime` continuing
+lower-row product and corrected post-data:
+
+```text
+sourceChartMap_constructedSourceFreeCprimeLocalProduct_withCorrectedPostData
+```
+
+The first conjunct reconstructs the old source residual following factor from
+`Q*Cprime`, zero-extends it to a total source-coordinate function, and applies
+the weighted source-displayed `Q/P` theorem.  Its right side is
+`weightedPivotDiagonal(...) * D''' * Cprime`.  The second conjunct is the
+separate bare lower-row identity for `D''' * Cprime`, reindexed to
+`(S,J+1)`.  Keeping these separate avoids absorbing successor row weights into
+the post-pivot residual block.
+
+This is still finite displayed-pivot bookkeeping.  It does not prove chart
+coverage, arbitrary-pivot coverage, source production of all `Cprime`,
+successor chart-family construction, source-produced recurrence/exponent
+post-data, transition invariance, terminal relabeling, Jacobian arithmetic,
+normal crossings/RLCT, or repair the printed Case 2 vector mismatch.
