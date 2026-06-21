@@ -536,6 +536,15 @@ G5-abstract); ROADMAPPED = G3 (crux G3.2 = Aoyagi pp.15-21 to formalize). One we
 formalization-only wall — the cleanest possible roadmap (a known proof to formalize, not open research).
 **OPERATOR SCOPE (sharpened):** the general-M headline is gated on the G3.2 Lean construction — a dedicated tide;
 everything else proven/buildable. Choice: deliver now (ladder + machinery + G3 roadmap) vs commission the G3 tide.
+**G3.2 AS A PRECISE LEMMA + ON-RAMP (pp, final sharpening):** G3.2 = "if the leading t₁×t₁ minor of the partial
+product is a unit in a pivot chart, UNIMODULAR row/col changes give ∏(QCQ)=diag(E_{t₁}-regular, ∏C') with C' the
+Schur-REDUCED chain (widths M^s−δ_s), and ‖∏C−B‖²=‖reg generators‖²+‖∏C'‖² ⟹ rlctAt=½·reg-dim+rlctAt(‖∏C'‖²),
+recurse" = **Aoyagi Thm 3 + the chain-Schur recursion** (verified L=1; well-founded, ΣM^s strictly drops, base =
+smooth block). **ON-RAMP: G3.2 REUSES `block_elimination` (L1, DONE) + `product_reduction` (L2)** — it's their
+GENERAL-M chained form. So the G3 tide is "**generalize the already-built L1/L2 to an arbitrary-rank-vector
+recursion + glue with G5-abstract**," NOT from-scratch resolution infra; the fixed-M product_reduction wiring is
+the PROTOTYPE the tide generalizes. The roadmap is genuinely set up: one named wall, a precise lemma, a known
+paper proof, AND a concrete on-ramp.
 
 ## D1 RE-SCOPED (fm proof-attempt-as-audit) — NOT a light standalone rung
 D1 `deepest_point_reduction` is blocked on TWO real deps: (1) the **RLCT-monotonicity lemma** `|G|≤|F| a.e. near
@@ -546,6 +555,48 @@ raw mixed-degree dlnLoss B ⟹ per-point core reduction ≈ L2-per-point). So cr
 **S1✓ → [monotonicity lemma + L2(needs R1/Fubini)] → D1**, NOT S1→D1. Rung map corrected.
 **fm BLOCKER cleared:** resolution_charts re-scope (#47) was decided but never LANDED in Skeleton — fm landing it
 now (pp's core form, BLESSED) + the S1.5 wire (fm-2's verified package) in one batch → green-gate → (1,1,1) gate.
+
+## STATE @ ~03:20 — R1.2 LIGHT confirmed (de-risk) + (1,1,1) gate spec'd; trunk @995a674
+- **R1.2 IS LIGHT (pp confirmed, §8 literal):** post the L1/Lemma-2 unit-Jac changes, the residual/reg entries ARE
+  coordinates (the changes DEFINE them so — F₂/F₃ are the L1 coord changes) ⟹ ‖reg‖² + residual block = Σ(coord)²
+  = smoothBlockND + rlctAtOn_comp_homeomorph. NO IFT, no general reg-seq, no S1.1-diffeo. And the (2,2,2) Option-A
+  cover is EVEN LIGHTER — all leaves monomial×unit ⟹ per-leaf = WEIGHTED monomial threshold, NO block-rlct. So
+  the fixed-M ladder is cheap throughout; no R1.2 sub-mountain. fm-2's #54 block-rlct under Option A = quick.
+- **(1,1,1) gate SPEC'D (pp → fm):** ι=Unit (1 chart), φ=id, |Jac|=1 (so BARE rlctAtOn is correct here — contrast
+  the WEIGHTED (2,2,2)); d=2, k=(1,1), h=(0,0); monomialThreshold = 1/2 = lambdaCore(1,1,1) = ½·Mval, θ=2; box =
+  Fubini-product = the done Case111Bridge. No cover, no G5 — fm SPECIFYs directly. The R1-batch's last item.
+- fm: WIRE rlct_additive_smooth_block ((b) keep+exact, closes S1.5 sorry 6→5) + re-scope resolution_charts + the
+  (1,1,1) gate → (2,1,2) [#55]. fm-2: product_min_rlct (#56) → (2,2,2)-measure (#54). pp: on-demand. rv-2: queued.
+- **PROPERNESS GAP (fm SPECIFY-catch) → AVOIDED via g5_flat_cover (controller adjudicated):** a single explicit
+  blow-up chart does NOT satisfy S1.1 `weightedThreshold_transport`'s GLOBAL `IsProperMap`+`Surjective`. Resolution:
+  R1's per-chart transport = the **lintegral c-o-v inside g5_flat_cover** (per-chart `InjOn` off the null exceptional
+  only — NO global proper/surj); global coverage = R1.6 (the cover). So `rlctAt(core)=⨅ monomialThreshold` =
+  g5_flat_cover (∫=Σ∫) + per-chart weighted-monomial threshold (S2+unit-absorption) + sSup algebra. NOT
+  G1/G2/G3-bespoke — g5_flat_cover is the GENERAL version of how (1,1,1) bypassed S1.1. (2,1,2) uses product_min_rlct
+  (Tonelli, no transport) ⟹ gap moot there. **S1.1 ORPHAN FLAG:** S1.1 is NOT R1's chart-transport (earlier
+  "S1.1 carries the blow-up CoV" was imprecise — g5_flat_cover does) ⟹ revisit whether S1.1 is used by D1/L2 or is
+  now an orphan (proven, hsurj+hImE 10th-finding banked, possibly unplugged) — pp checking; name honestly; doesn't block.
+
+## STATE @ ~03:00, trunk @c92501d — R1 DESIGN PHASE COMPLETE; execution remains
+- **rlctAt_mono ON TRUNK** (D1/L2 engine; green-gated 2855 jobs, controller-verified axiom-clean). fm built it with
+  the **zero-set-inclusion hyp (G=0→F=0)** — BETTER than the hGne alt (pointwise, no a.e. machinery; use-site:
+  D1's scaled core has F's zero set). 15th finding (bare monotonicity false, G≡0/F=|x|⁴) caught at SPECIFY by both
+  fm+fm-2; fm's fix adopted. (Also merged: R1.2a/b + the #19 engines, banked on trunk.)
+- **FIXED-M LADDER DESIGN COMPLETE + CERTIFIED (pp R1 design role DISCHARGED):** (1,1,1) [done] · (2,1,2) [#55,
+  product-MIN, min≠sum CERTIFIED via the c=3/2 ∫r^{-2}=∞ divergence test] · (2,2,2) [#54, 24-leaf cover, cover-
+  complete 12063/12063, a G5-instance]. Roadmap mapped: lower-bound settled · G5-abstract build-ready (#52) ·
+  A-vs-B verdict (wall is G3 alone) · G3 spec (crux G3.2 = Aoyagi pp.15-21 formalization gap). **Residual = pure
+  formalization labour** (fm + fm-2 execute) + the G3 tide if commissioned.
+- **EXECUTION UNITS:** fm → the R1 BATCH (S1.5 wire + resolution_charts core re-scope + (1,1,1) gate) FIRST [still
+  not landed — fm redirected to it 3×; recurring fm→adjacent-work drift], then #55 (2,1,2) + #54-assembly; fm-2 →
+  #52 G5-step + #54-measure; pp → on-demand (G5 questions / assembly / G3 tide). rv-2 → S1.5 PASS done; queued.
+- **G5-ABSTRACT FLAT-COVER DONE (#52, fm-2 @48b9468, axiom-clean):** `perChart` (single-step c-o-v on V\N + null
+  drop) + `g5_flat_cover` (∫⁻_U=Σ∫⁻ over a finite a.e.-disjoint chart-cover, lintegral_biUnion_finset₀). The (2,2,2)
+  cover = this **composed 3×** (nested levels 4∘3∘4), NOT the abstract tree (deferred to G3). Over ℝ≥0∞ ⟹ no
+  integrability hyps.
+- **product_min_rlct HYP UNIFIED (pp):** positivity-guard (both ∫⁻>0) + disjoint + measurable, NOT "vanish only at
+  0" (over-strong, excludes monomials) ⟹ ONE lemma covers block×block (2,1,2) + monomial×block (δ-leaf) +
+  monomial². The (2,1,2) tool IS the δ-leaf tool. S1.5-PASS = the L2/additivity SUM-engine (NOT the δ-leaf PRODUCT).
 
 ## Next tick (state @ ~02:30, trunk @da24204)
 **S1.5 FUBINI ENGINE COMPLETE @ad1f313** (controller-verified axiom-clean) — whole S1 substrate proven. R1 lower-bound
