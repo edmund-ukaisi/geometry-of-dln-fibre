@@ -399,11 +399,14 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   ≥ (step_rlct_ge: integrability split + sSup-lower-bound, ENNReal split idiom, admissible_downset); ≤
   (step_rlct_le: the cusp — step_lintegral_top contrapositive + core_adm_of_joint_adm open-witness wrapper via the
   {H≤R²}∪{H>R²} split; NO continuity needed for measurable H, the resolved subtlety). Measure-route B (1-D
-  interval vol, no addHaar/EuclideanSpace bridge — lighter; cusp proven ONCE + reused per induction). **~95% DONE
-  @2e8f3c0** — ALL iteration infra proven (finPeel + chartN measure-preserving [dependent-Fin snag closed via
-  Fin.cons/Continuous.finCons], rlctAtOn_comp_homeomorph, step_rlct, Σ-peel; ~22 thms axiom-clean). REMAINING =
-  the induction chaining ONLY (rlct_additive_smooth_block_aux, induction on n; pure assembly, no new math) → the
-  Skeleton `rlct_additive_smooth_block`. Then fm wires `exact` → controller aggregator-wire + green-gate → rv-2.
+  interval vol, no addHaar/EuclideanSpace bridge — lighter; cusp proven ONCE + reused per induction). **✅ S1.5
+  ENGINE COMPLETE @ad1f313 — `rlct_additive_smooth_block_aux` (general-n shift `rlctAtOn(Σxᵢ²+G²)=n/2+rlctAtOn(G²)`)
+  DONE + controller-VERIFIED axiom-clean (builds 2644 jobs, [propext,Classical.choice,Quot.sound], no sorryAx / no
+  monomial_rlct).** The HARDEST analytic content of the expedition is proven (both dirs + cusp + down-set + sSup +
+  λ_core=0 + the finPeel/chartN measure-preserving iteration). Minor: unusedSectionVars lint on [BorelSpace Y]
+  (cosmetic). REMAINING for S1.5: fm wires `exact rlct_additive_smooth_block_aux` into the restated Skeleton
+  statement (Skeleton-import pulls S1Fubini into the closure) → green-gate → rv-2 audit. **The whole S1 analytic
+  substrate (S1.1/S1.3/S1.4 wired + S1.5 engine proven) is now COMPLETE.**
 - **R1 DIFFICULTY MAP (pp general-atlas design + honest correction):** **R1.3 = LIGHT** — codim is a ℕ COUNT
   identity (∑ residual block sizes = Mval), NOT the determinantal-codim theorem; **Mathlib v4.29 gap GONE**
   (decorrelated-Codex + verified). **R1.1 = MEDIUM** (pivot recursion on L; base L=1 = smooth block via
@@ -454,6 +457,18 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
     now: **general theorem PROVEN on paper (decorrelated-sound); general Lean formalization = G3+G5 construction
     labour (roadmapped); fixed-M ladder formalized.** Operator scope flag refined: the lift is formalization-labour
     of a SETTLED result, not open research.
+  - **G5-ABSTRACT SEPARABLE + BUILDABLE NOW (pp, checked vs Mathlib) → wall reduced to G3 alone.** G5 = `∫⁻_U|F|^{-c}
+    = Σ_leaves ∫⁻(|F∘φ_i|^{-c})|Jac φ_i|` = [lintegral cover-additivity] ∘ [single c-o-v per chart], by finite
+    induction on the depth-≤L−1 tree. Both Mathlib FACTS: single c-o-v = `lintegral_image_eq_lintegral_abs_det_
+    fderiv_mul` (Jacobian.lean:1189) — over **lintegral (ℝ≥0∞) ⟹ NO integrability side-conditions** (the key; the
+    threshold integrand is ∞ above rlct, ℝ≥0∞ handles it); + cover-additivity. ONE friction (not a wall): the lemma
+    wants InjOn (blow-ups injective only OFF the null exceptional) → ADAPTER: apply to chart-minus-exceptional, the
+    exceptional is null (`addHaar_image_eq_zero_of_det_fderivWithin_eq_zero`). Intricate-standard, REUSABLE. **DECISION:
+    BUILD G5-abstract (assigned fm-2, the measure specialist) — it's needed for the (2,2,2) cover's ∫=Σ∫ anyway (a
+    G5-instance), reusable, and ISOLATES G3.** RESIDUAL (honest): **G3 (strict-transform tracking over arbitrary
+    rank vectors — quiver-determinantal geometry Mathlib lacks) STILL the genuine general-M research piece**;
+    G5-abstract isolates it, does NOT dissolve it. Refined roadmap: **general headline = ladder instances +
+    G5-abstract (BUILT) + G3 (named open obstruction).**
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
