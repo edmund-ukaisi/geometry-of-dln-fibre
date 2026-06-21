@@ -18,6 +18,23 @@ namespace Aoyagi
 
 namespace AoyagiLemma5SuppliedAdmissibleFamily
 
+/-- For a supplied admissible full-family branch, terminal source realisation
+is equivalent to a supplied terminal source zero.
+
+This only uses branch-chain terminal zero.  It does not construct the terminal
+source value. -/
+theorem fullBranch_terminalSource_realisation_iff_terminalZero {β : Type*}
+    [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    {x : Option β} (hx : x ∈ F.fullBranches) :
+    T (C.point ell - 1) = (F.fullH x) (Fin.last ell) ↔
+      T (C.point ell - 1) = 0 := by
+  rw [F.fullBranch_terminalH_zero ha hselected hx]
+
 /-- If a supplied admissible full-family branch is explicitly realised at the
 terminal source coordinate, then it supplies the terminal zero needed to fill
 the terminal Eq5 interval.
@@ -44,6 +61,21 @@ theorem fullBranch_terminalSource_Eq5Coverage {β : Type*} [DecidableEq β]
 end AoyagiLemma5SuppliedAdmissibleFamily
 
 namespace AoyagiLemma5SuppliedBinaryFamily
+
+/-- For a supplied binary full-family branch, terminal source realisation is
+equivalent to a supplied terminal source zero.
+
+This only uses branch-chain terminal zero.  It does not construct the terminal
+source value. -/
+theorem fullBranch_terminalSource_realisation_iff_terminalZero {β : Type*}
+    [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    {x : Option β} (hx : x ∈ F.fullBranches) :
+    T (C.point ell - 1) = (F.fullH x) (Fin.last ell) ↔
+      T (C.point ell - 1) = 0 := by
+  rw [F.fullBranch_terminalH_zero hx]
 
 /-- If a supplied binary full-family branch is explicitly realised at the
 terminal source coordinate, then it supplies the terminal zero needed to fill

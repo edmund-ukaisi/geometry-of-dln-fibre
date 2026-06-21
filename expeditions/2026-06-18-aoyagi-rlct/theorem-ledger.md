@@ -4115,6 +4115,23 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
 
+Latest A5 terminal source-realisation iff zero update:
+`Lemma5TerminalSourceBridge.lean` now has
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_realisation_iff_terminalZero`
+and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_realisation_iff_terminalZero`.
+They use branch-chain terminal zero to rewrite the terminal source-realisation
+hypothesis as a supplied terminal source-zero hypothesis.  This is not a proof
+of terminal source zero, terminal source-branch construction, terminal-label
+exactness, classifier coverage, pole order, normal crossings, or RLCT
+extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-realisation-iff-zero-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-realisation-iff-zero.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-realisation-iff-zero-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

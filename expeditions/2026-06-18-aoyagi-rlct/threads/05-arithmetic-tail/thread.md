@@ -3728,3 +3728,37 @@ This is only finite bookkeeping from supplied data.  It does not construct the
 counted-datum classifier, branch-coordinate map, or back-to-label bridge from
 Aoyagi's source, and it does not prove exact cardinality, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal source realisation iff zero
+
+Reproduction:
+`reproduction-lemma5-terminal-source-realisation-iff-zero-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-source-realisation-iff-zero.md`.
+Review artifact:
+`review-lemma5-terminal-source-realisation-iff-zero-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_realisation_iff_terminalZero
+AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_realisation_iff_terminalZero
+```
+
+For any supplied full-family branch, branch-chain terminal zero rewrites the
+terminal source-realisation equality
+
+```text
+T(C.point ell - 1) = F.fullH x (Fin.last ell)
+```
+
+as the simpler terminal source-zero equality
+
+```text
+T(C.point ell - 1) = 0.
+```
+
+This is only a reduction of supplied hypotheses.  It does not prove terminal
+source zero, construct the terminal source branch, prove terminal-label
+exactness, classifier coverage, pole order, normal crossings, or RLCT
+extraction.

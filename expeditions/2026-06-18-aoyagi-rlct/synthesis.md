@@ -3471,6 +3471,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
 
+The terminal source-realisation iff zero slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalSourceBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_realisation_iff_terminalZero`
+and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_realisation_iff_terminalZero`.
+For a supplied full-family branch, branch-chain terminal zero rewrites the
+terminal source-realisation equality `T(C.point ell-1)=fullH x (Fin.last ell)`
+as the simpler supplied terminal source-zero equality `T(C.point ell-1)=0`.
+This is only a reduction of supplied hypotheses; it does not prove terminal
+source zero or construct a terminal source branch.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-realisation-iff-zero-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-realisation-iff-zero.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-realisation-iff-zero-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

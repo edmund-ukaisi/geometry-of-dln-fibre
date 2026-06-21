@@ -2619,6 +2619,13 @@ No such claim is formalisation-ready until both fields are filled.
   through the existing `UpperBoundClassifier`.  It does not construct the
   classifier, branch-coordinate map, or back-to-label bridge from Aoyagi's
   source, and it does not prove exact cardinality.
+  Also proved terminal source-realisation iff terminal source zero:
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_realisation_iff_terminalZero`
+  and
+  `AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_realisation_iff_terminalZero`.
+  These use branch-chain terminal zero to rewrite
+  `T(C.point ell-1)=fullH x (Fin.last ell)` as `T(C.point ell-1)=0`.  They do
+  not prove terminal source zero or construct a terminal source branch.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

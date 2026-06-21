@@ -88,6 +88,8 @@ Current Eq4 local lower-endpoint slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-lower-endpoint-a5.md`.
 Current terminal source-realisation bridge slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-bridge-a5.md`.
+Current terminal source-realisation iff zero slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-realisation-iff-zero-a5.md`.
 Current terminal source-label slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-label-a5.md`.
 Current terminal binary counted-datum maps-to slice:
