@@ -176,3 +176,29 @@ bridges real-rlct↔complex-codim (Aoyagi-Cited); the one subtlety to handle cle
   ~200–410 LoC, one `DLNFibre.DLN` module. General-r shift (Lemma 4.6) roadmapped.
 - **CODEX update:** intermittently back — the thread-09 pen-and-paper's bounded `codex exec` completed (exit 0);
   only `codex doctor` reliably times out. Decorrelation discipline partly restored.
+
+## 2026-06-21 — ★ DESTINATION DELIVERED ★ rlct(K^DLN_0) = C/2 (thread 10)
+`DLNFibre.DLN.RlctPayoff` (green 3676 jobs, 0-sorry, axiom-clean `[propext, Classical.choice, Quot.sound]`,
+reviewer FIDELITY OK): `lossDLN` (square-Frobenius, ℝ) · `zeroLocus_lossDLN_eq_fibre` ·
+`fibre_zero_eq_productRankLocusLE_zero` · **`codimRepCanonical_fibre_zero_eq_cCodim`** (codim(fibre 0)=C,
+zero-cited; bridge (b) Kostant↔orbit-codim-min PROVED IN FULL — better than the design's "Deferred") ·
+`RlctInterface` (Cited `cited_aoyagi_dln`, a carried hypothesis NOT a global axiom) · **`rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi`**
+(rlct(K^DLN_0)=C/2, name=content: `I : RlctInterface` in the type + `via_aoyagi`). (2,2,2): rlct=3/2. Commits d3650f4/f52430d.
+
+## EXPEDITION DELIVERABLE (close-pending)
+1. **Σ^r geometry** (zero-cited): stratification `Σ̄^r = ⋃ Ō_M` + irreducible components = maximal Ō_M
+   (`Core.SigmaStratification`/`Core.SigmaComponents`) — closes the CThetaGeometric roadmap.
+2. **θ = #top-dimensional components** (`Core.ThetaComponentCount`) — MODULO one named, exhaustively-certified
+   open hypothesis `hMonoStrict` (the strict cCodim inequality). Weak half + bijection + Gabriel recovery LANDED.
+3. **The destination `rlct(K^DLN_0) = C/2`** (`DLNFibre.DLN.RlctPayoff`) — Cited Aoyagi interface, name=content,
+   C the zero-cited geometric codimension. "DLNs are mildly singular," r=0.
+
+## HONEST OPEN (roadmap — operator decision: close-and-roadmap vs dedicated effort)
+- **(A) θ-strict `cCodim_zero_strict`:** hard-open combinatorial (statement exhaustively true 252/252; NO short
+  proof — no closed-form LB, obvious routes fail; single-vertex strict FALSE). Needs a dedicated effort. θ is
+  currently the honest "weak + one named open hypothesis" (a real strict-improvement over thread-05's 2 opaque hyps).
+- **(B) general-r rlct:** the Lemma 4.6 bundle shift `codim(fibre B) = C + r(d_0+d_N−r)` — genuinely separate;
+  the r=0 (zero-product) case is the load-bearing destination + is delivered.
+- rlct DEFINITION is honestly Cited (Aoyagi interface), per project policy — NOT a from-scratch SLT sub-library.
+
+## CLOSE: propose PR `expedition/rlct-payoff → dev` (operator-gated, signal-and-wait). Stand seats down at close.

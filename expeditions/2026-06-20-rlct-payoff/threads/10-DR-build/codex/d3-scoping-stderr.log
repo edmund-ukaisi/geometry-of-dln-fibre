@@ -1,0 +1,80 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+Reading additional input from stdin...
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-20-rlct-payoff/threads/10-DR-build/codex
+model: gpt-5-codex
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019eea80-8cab-7431-ac87-0d438550ad15
+--------
+user
+# D3 honest-scoping decision (RLCT payoff, r=0, Lean 4 / Mathlib v4.29)
+
+## Context
+Formalising the geometric codimension identity for the DLN multiplication-fibre at r=0, en route to
+the RLCT payoff `rlct = C/2` with a Cited (Aoyagi) interface. I must NOT overclaim (the harness's
+`rlct_…` trap: a name asserting more than is proved).
+
+## Landed Core API (over a field k; the geometric ones need [IsAlgClosed k][CharZero k]):
+- `fibre d B := {A | mult d A = B}`; `productRankLocusLE d r := {A | rank(mult A) ≤ r}`.
+- `codimRepCanonical Z := Ideal.height (vanishingIdeal (canonicalCoord d '' Z))` : ℕ∞  (codim of Zariski closure).
+- `sigmaIdeal d r := vanishingIdeal (canonicalCoord d '' productRankLocusLE d r)`.
+- `sigmaIdeal_eq_sInf_orbitIdeals : sigmaIdeal d r = sInf (orbitIdeals d r)` where
+  `orbitIdeals d r := (M ↦ vanishingIdeal (canonicalCoord d '' orbitRankLocus M)) '' {M | rank(mult M) ≤ r}`.
+- `minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] : (sigmaIdeal d r).minimalPrimes = {p | p ∈ orbitIdeals d r ∧ ∀ q ∈ orbitIdeals d r, q ≤ p → p ≤ q}`.
+- `orbitIdeals_isPrime`, `orbitIdeals_finite`.
+- `codimRepCanonical_orbitRankLocus_eq_height : codimRepCanonical (orbitRankLocus M) = (vanishingIdeal (canonicalCoord d '' orbitRankLocus M)).height` (rfl).
+- `cCodim_eq_inf_geomCodim [IsAlgClosed k][CharZero k] (d r) (h : (kostantPartitions d r).Nonempty) :
+    cCodim d r h = (kostantPartitions d r).inf' h (fun m ↦ ((codimRepCanonical (orbitRankLocus (intervalDirectSum (listOfPartition m)))).toNat : ℤ))`.
+- Mathlib: `Ideal.height I = ⨅ J ∈ I.minimalPrimes, J.primeHeight`; `height_eq_primeHeight` (prime ⟹ height=primeHeight);
+  `height_strict_mono_of_is_prime` (I<J prime, finite height ⟹ height I < height J); finite Krull dim instance present.
+
+## The two families differ by index type
+- `sigmaIdeal`'s minimal primes range over `orbitIdeals d 0` = orbit ideals of corner-≤0 TUPLES M.
+- `cCodim d 0` is an `inf'` over KOSTANT PARTITIONS m (realized as tuples `intervalDirectSum(listOfPartition m)`).
+Both are corner-0 orbit closures, but indexed differently. Bridging `height(sigmaIdeal 0) = cCodim d 0`
+needs: (a) `height(sInf finite primes) = ⨅ over the family of their heights` (= min codim, since non-minimal
+ideals strictly contain minimal ⟹ strictly larger height); (b) the family `{codimRepCanonical(Ō_M) : corner M ≤ 0}`
+and `{codimRepCanonical(Ō_{⊕listOfPartition m}) : m ∈ kostantPartitions d 0}` have the SAME minimum
+(every corner-0 tuple's orbit = some Kostant partition's orbit, Gabriel; and vice versa).
+
+## Question
+1. Is `codimRepCanonical (productRankLocusLE d 0) = cCodim d 0` (cast ℕ∞↔ℤ/ℕ) the right honest D3 target,
+   given it requires BOTH bridges (a) and (b)? Or is the honest scope-limited target
+   `codimRepCanonical (fibre d 0) = ⨅_{M : corner ≤ 0} codimRepCanonical (orbitRankLocus M)` (bridge (a) only,
+   the "codim of union = min codim of components", purely from Mathlib height + minimalPrimes_sigmaIdeal_eq),
+   leaving the `= cCodim` (bridge (b), the Kostant-count identification) as a separately-named lemma or
+   a roadmap step?
+2. For the RLCT payoff R2 `rlct(lossDLN 0) = (cCodim d 0)/2`, which target do I actually need to land to
+   make the payoff honest and non-vacuous — the full `= cCodim`, or does the (2,2,2) witness
+   `cCodim_d222_zero = 3` + a concrete `codimRepCanonical(fibre d222 0) = 3` suffice to anchor it?
+3. Estimate the Lean difficulty (LoC, friction) of bridge (a) `height(sInf finite primes) = ⨅ heights`
+   and bridge (b) the Kostant↔corner-tuple min-codim identification. Flag if (b) is a multi-day step
+   that should be roadmapped rather than attempted in a ~200-410 LoC module.
+4. Name=content check: what is the most precise name for each target so the geometric codim claim is
+   not confused with an aggregate-variety claim the Core explicitly says is NOT formalised?
+warning: Model metadata for `gpt-5-codex` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+**Scope Choice**
+- Land first on `codimRepCanonical (fibre d 0) = ⨅_{M ∈ orbitIdeals d 0} codimRepCanonical (orbitRankLocus M)` (i.e. bridge (a) only). This is exactly the “codimension of a finite union is the minimum codimension of its irreducible components” statement justified by `minimalPrimes_sigmaIdeal_eq`, `orbitIdeals_isPrime`, and Mathlib’s height facts, so it stays inside the algebraic tools you already have.
+- Treat the Kostant-partition identification (bridge (b)) as a follow-on lemma: it relies on Gabriel-style orbit classification plus Lean bookkeeping between `intervalDirectSum (listOfPartition m)` and arbitrary corner-0 tuples. That matching is the genuinely new geometric input and deserves its own milestone rather than being smuggled into the D3 target.
+
+**RLCT Payoff**
+- The R2 payoff `rlct(lossDLN 0) = cCodim d 0 / 2` explicitly references `cCodim`. To state it honestly you must point Lean (or the paper exposition) to the bridge `codimRepCanonical (fibre d 0) = cCodim d 0`; otherwise the symbol `cCodim` remains an unexplained external quantity.
+- However, for a *numerical* witness like `(2,2,2)` you can already combine `cCodim_d222_zero = 3` (once proved) with `codimRepCanonical (fibre d222 0) = 3` to certify the RLCT value in that concrete case. So: full bridge for the general theorem, concrete equality for the illustrative example.
+
+**Difficulty Estimate**
+- Bridge (a): ~120–180 LoC, medium friction. Most work is instantiating existing Mathlib lemmas (`height_eq_primeHeight`, finiteness of minimal primes) with the sigma-ideal data and managing `ℕ∞` ↔ `ℕ` casts. Expect a few auxiliary lemmas about infimums over finite sets and `Ideal.height` monotonicity.
+- Bridge (b): easily 300 LoC+, likely multi-day. You must (i) formalise the bijection between corner-0 tuples and Kostant partitions in Lean, (ii) prove the corresponding orbits coincide, and (iii) transfer codimension data through that bijection. Each substep touches representation-theoretic infrastructure that is not yet abstracted, so plan it as a separate roadmap item (D4-level or preparatory expedition) rather than squeezing it into a 200–410 LoC module.
+
+**Naming**
+- Bridge (a) lemma: `codimRepCanonical_fibre_zero_eq_iInf_orbitCodim` (stresses it is a fibre-level codimension equality via an infimum over orbit closures).
+- Bridge (b) lemma: `iInf_orbitCodim_zero_eq_cCodim` (made explicit that it matches the Kostant-partition infimum defining `cCodim`).
+- Combined statement (once both bridges land): `codimRepCanonical_fibre_zero_eq_cCodim`. Keeping “fibre” in the name avoids suggesting a statement about the entire multiplication variety and honours the warning against overclaiming.
+tokens used
+4,581
