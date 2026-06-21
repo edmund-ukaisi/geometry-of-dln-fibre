@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.Rlct
 import DLNFibre.DLN.RLCT.Foundations.Lambda
+import DLNFibre.DLN.RLCT.Foundations.S1Transport
+import DLNFibre.DLN.RLCT.Foundations.S1Local
 import Mathlib.MeasureTheory.Function.Jacobian
 import Mathlib.Data.Fin.Tuple.Sort
 
@@ -122,10 +124,12 @@ theorem weightedThreshold_transport
     (hE_meas : MeasurableSet E)
     (hE_null : volume E = 0)
     (hinj : Set.InjOn π Eᶜ)
-    (hderiv : ∀ m ∈ Eᶜ, HasFDerivAt π (Dπ m) m) :
+    (hderiv : ∀ m ∈ Eᶜ, HasFDerivAt π (Dπ m) m)
+    (hsurj : Function.Surjective π)
+    (hImE : volume (π '' E) = 0) :
     weightedThreshold F φ {wstar}
-      = weightedThreshold (F ∘ π) (fun m => φ (π m) * |(Dπ m).det|) (π ⁻¹' {wstar}) := by
-  sorry
+      = weightedThreshold (F ∘ π) (fun m => φ (π m) * |(Dπ m).det|) (π ⁻¹' {wstar}) :=
+  weightedThreshold_transport_aux F φ wstar π Dπ E hproper hE_meas hE_null hinj hderiv hsurj hImE
 
 /-- **S1.3 (Lemma 1, ideal invariance core).** The RLCT is invariant under multiplying `F` by a unit
 `u` bounded away from `0` near `w*` (`0 < a ≤ |u| ≤ b` on a neighbourhood) — the operative content
@@ -144,8 +148,8 @@ bump-free monomial conclusion connect to the bumped resolution. Non-vacuous: it 
 and `rlctAt G` from a local-agreement hypothesis. -/
 theorem rlct_germ_local (H : Fin (L + 1) → ℕ) (F G : Params H → ℝ) (wstar : Params H)
     (hFG : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, F w = G w) :
-    rlctAt H F wstar = rlctAt H G wstar := by
-  sorry
+    rlctAt H F wstar = rlctAt H G wstar :=
+  rlct_germ_local_aux H F G wstar hFG
 
 /-- **S1.5 (RLCT additivity — the smooth/regular block; thread 07, the L2-use form).** Splitting off
 a **nondegenerate-quadratic** (regular) block from a disjoint singular block: for `Σᵢ xᵢ²` in the
