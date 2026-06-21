@@ -2722,6 +2722,18 @@ order count, normal crossings, or RLCT extraction.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-cardinality-a5.md`.
 
+The remaining source-backed Lemma 5 gap has been re-expressed as a concrete
+obligation table in
+`threads/05-arithmetic-tail/reproduction-lemma5-source-chart-family-reconstruction-a5.md`.
+The table separates the already-proved finite count/supplied one-coordinate
+wrappers from the missing source family data: legal labels, vectorwise
+`Ttilde<=T<=Ttilde'` bounds, Lemma 4 increment checks, a Case 1(2) chart
+sequence, terminal `tilde t=0`, and nonduplication/coverage.  This is not a
+Lean theorem yet; it is the source-reproduction gate before any source-backed
+Lemma 5 order-count statement.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-source-chart-family-reconstruction-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

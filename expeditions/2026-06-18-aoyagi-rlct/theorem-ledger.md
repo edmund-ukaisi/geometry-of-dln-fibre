@@ -3355,6 +3355,17 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-cardinality-a5.md`.
 
+Latest A5 source reconstruction: the remaining source-backed Lemma 5
+chart-family gap is recorded at
+`threads/05-arithmetic-tail/reproduction-lemma5-source-chart-family-reconstruction-a5.md`.
+It identifies the missing obligations before any order-count theorem can be
+source-backed: legal labels, vectorwise chain bounds, Lemma 4 increment tests,
+Case 1(2) chart sequence, terminal `tilde t=0`, and
+nonduplication/coverage.  Status: source reconstruction draft; not a Lean
+target yet.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-source-chart-family-reconstruction-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

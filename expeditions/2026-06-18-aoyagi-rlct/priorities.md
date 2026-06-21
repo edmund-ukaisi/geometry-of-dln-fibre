@@ -876,6 +876,10 @@ on the session's original cwd.
    The supplied Eq3-shaped upper component plus Eq4 lower endpoint interval
    coverage now also has interval-size and `offsetCard+2` cardinality wrappers.
    This closes another count-side API gap below the all-branch order count.
+   The source-backed Lemma 5 chart-family gap is now an explicit obligation
+   table.  Next source work should reproduce vectorwise bounds and Lemma 4
+   increment checks for equations `(3)`, `(4)`, and `(5)` before any
+   source-backed order-count Lean theorem is attempted.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

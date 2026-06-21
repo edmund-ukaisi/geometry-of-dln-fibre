@@ -2400,3 +2400,21 @@ This is one-coordinate finite cardinality bookkeeping only.  It does not prove
 source-label legality, construct displayed vectors, aggregate over all
 coordinates, package all branches, prove Lemma 5 order count, normal crossings,
 or RLCT extraction.
+
+## 2026-06-21 Source reconstruction of Lemma 5 chart-family gap
+
+Reproduction:
+`reproduction-lemma5-source-chart-family-reconstruction-a5.md`.
+Review artifact:
+`review-lemma5-source-chart-family-reconstruction-a5.md`.
+
+The remaining source-facing Lemma 5 gap is now recorded as an obligation table
+rather than a Lean target.  A source-backed order-count theorem would need, for
+each displayed branch family, legal source labels, vectorwise
+`Ttilde<=T<=Ttilde'` bounds, Lemma 4 increment checks, a concrete Case 1(2)
+chart sequence, terminal `tilde t=0`, and a nonduplication/coverage argument.
+
+Existing Lean proves finite counts and many supplied one-coordinate wrappers,
+but the PDF's final sentence does not spell out the Case 1(2) chart sequence.
+Do not start a source-backed Lemma 5 Lean theorem until the vectorwise bounds
+and Lemma 4 increment checks have been reproduced under explicit guards.
