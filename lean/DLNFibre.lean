@@ -81,5 +81,8 @@ import DLNFibre.DLN.RLCT.Validate.Case222Resolution
 -- (`Case222CoverGE`/`Case222CoverGETail`) into the green-gate — else the eq headline + the ≥-cover
 -- are not in the build's transitive closure and escape the gate.
 import DLNFibre.DLN.RLCT.Validate.Case222Rlct
+-- General-M resolution recursion (det-1 straightening phase): the sound recursion-step
+-- + `rlctAtOn_germ_local` + the L=1 smooth-block leaf. Kept in the green-gate (0 sorry).
+import DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
