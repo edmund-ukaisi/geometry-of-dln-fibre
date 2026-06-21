@@ -147,3 +147,19 @@ Headline `numTop_eq_ncard_topComponents_of_strict` now needs ONLY `hMonoStrict`.
 Phase G COMPLETE (G2 stratification, G3 components=maximal Ō_M, θ-A). θ-count: bijection+injectivity+Gabriel
 recovery+weak cCodim mono ✓ → ONE strict inequality (`cCodim_zero_strict`, route known) from `θ=numTop`
 unconditional. Then D (loss+codim identity), then R (Cited rlct interface). [IsAlgClosed][CharZero] on geom headlines.
+
+## 2026-06-21 — CORRECTION: θ strict step is a HARD OPEN combinatorial problem (not "route known")
+Thread-07-spawned decorrelated pen-and-paper (`strict-cert`) RETRACTED its `+1`-step "flat-chain" route:
+the sketch is FLAWED (bounds only the all-singletons partition of e', not an arbitrary minimiser). Honest state:
+- **WEAK `cCodim_zero_mono`: LANDED** (sorry-free, axiom-clean; reviewer07 AUDIT = PASS-with-notes). Solid.
+- **STRICT `cCodim_zero_strict` (`hMonoStrict`): PROOF OPEN, genuinely hard.** Statement TRUE (252/252 exhaustive,
+  N≤2 exhaustive + N≤4 sampled) but NO short proof: no closed-form lower bound (product/cut-sum/adjacent-min/
+  transversal-chain all fail); single-VERTEX strict is FALSE; the `cCodim≥1` floor does NOT bridge to the `+1`.
+- **HONEST LANDING (decorrelated recommendation):** keep `numTop_eq_ncard_topComponents_of_strict` with
+  `hMonoStrict` as the SINGLE named explicit hypothesis ("all-vertex strict `+1`, exhaustively certified, proof
+  open") — a real strict-improvement over thread-05's two opaque geometric hyps (now: one combinatorial, weak
+  half discharged). Full unconditionality needs a DEDICATED effort (new invariant / minimiser strict-step chain),
+  NOT a quick patch — roadmap it; do not ship a strict lemma backed by the retracted sketch.
+- **Phase D (loss + codim identity) and Phase R (Cited rlct interface) do NOT depend on `hMonoStrict`** — they can
+  proceed; the strict gap is isolated to θ's full-unconditionality.
+- Orphaned thread-07 seats now idle (delta-cert/strict-cert/reviewer07) — stand down at close.
