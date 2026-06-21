@@ -2372,6 +2372,25 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`.
 
+Eq5 now also identifies the inserted lower-plus-strict-offset set exactly as
+the same-coordinate interval with the upper endpoint erased.  The proved names
+are `aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt`,
+`aoyagiLemma5Eq5_upperEndpoint_not_mem_insert_lowerEndpoint_offsets_of_le_min`,
+and
+`aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  In the rising region
+`1<=p`, `p<=a`, `p<=ell-a`, Lean proves that the upper endpoint belongs to the
+interval but not to the lower-plus-offset inserted set; together with the
+previous subset and cardinality bridge, this gives equality with
+`erase Htilde'_p`.  This remains count-side scaffolding only: it does not
+realise the erased endpoint by equations `(3)`/`(4)`, construct displayed
+vectors, prove source-label legality, terminality, admissibility, order count,
+normal crossings, or RLCT extraction.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-interval-erase-upper-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-interval-erase-upper.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-upper-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

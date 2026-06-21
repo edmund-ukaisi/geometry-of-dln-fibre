@@ -1803,3 +1803,32 @@ The wrappers keep the existing actual-width compatibility hypotheses.  Eq3
 also keeps the explicit slack `W_1+2<=M`.  They do not construct displayed
 vectors, prove terminality, vector admissibility, chart sequence, pole order,
 normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` interval erase-upper equality
+
+Reproduction:
+`reproduction-lemma5-eq5-interval-erase-upper-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-interval-erase-upper.md`.
+Review artifact:
+`review-lemma5-eq5-interval-erase-upper-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+aoyagiLemma5Eq5_upperEndpoint_not_mem_insert_lowerEndpoint_offsets_of_le_min
+aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
+```
+
+In the rising region `1<=p`, `p<=a`, `p<=ell-a`, the lower endpoint plus the
+strict Eq5 offset values is exactly the same-coordinate interval value set
+with the upper endpoint erased.  The proof uses the previous subset and
+cardinality bridge, plus a new upper-endpoint nonmembership proof: the upper
+endpoint is not the lower endpoint because the gap is `p>=1`, and it is not a
+strict offset value because that would force offset `alpha=0`.
+
+This is still finite-set count scaffolding.  It does not prove that equations
+`(3)` or `(4)` realise the erased upper endpoint, construct any displayed
+vector, prove source-label legality, terminality, vector admissibility, chart
+coverage, Lemma 5 order count, normal crossings, or RLCT extraction.

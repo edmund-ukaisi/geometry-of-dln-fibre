@@ -1835,6 +1835,23 @@ theorem aoyagiLemma5Eq5_lowerEndpoint_mem_intervalValueSetNat_of_lt
   · simpa [aoyagiHtildeLowerChain] using
       (aoyagiHtildeLowerChain_le_upperChain ell a M m ha ⟨p, hp⟩)
 
+/-- The upper endpoint belongs to the same-coordinate interval value set.
+
+This is finite interval bookkeeping only. -/
+theorem aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp : p < ell + 1) :
+    aoyagiHtildeUpperNat ell a M m p ∈
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  rw [aoyagiHtildeIntervalValueSetNat]
+  simp only [hp, ↓reduceDIte]
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds
+    ell a M m ha ⟨p, hp⟩]
+  constructor
+  · simpa [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] using
+      (aoyagiHtildeLowerChain_le_upperChain ell a M m ha ⟨p, hp⟩)
+  · rfl
+
 /-- In the rising region, the strict equation `(5)` offset values plus the
 lower endpoint have cardinality equal to the interval excess.
 
@@ -1920,6 +1937,73 @@ theorem aoyagiLemma5Eq5_insertLower_offsetCard_add_one_eq_intervalCard_of_le_min
   rw [aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m p (by omega)]
   simp [aoyagiLemma5IntervalSize]
   omega
+
+/-- In the rising region, the upper endpoint is not among the lower endpoint
+and strict equation `(5)` offset values.
+
+The strict offsets stop at `alpha=p-1`, while the lower endpoint corresponds
+to `alpha=p`; neither gives the upper endpoint, which would require
+`alpha=0`. -/
+theorem aoyagiLemma5Eq5_upperEndpoint_not_mem_insert_lowerEndpoint_offsets_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    aoyagiHtildeUpperNat ell a M m p ∉
+      insert (aoyagiHtildeLowerNat ell a M m p)
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) := by
+  intro hmem
+  rw [Finset.mem_insert] at hmem
+  rcases hmem with h_eq_lower | h_offset
+  · have hgap :=
+      aoyagiHtildeUpper_sub_lower_eq_intervalExcess
+        ell a M m ha ⟨p, by omega⟩
+    have hexcess :
+        aoyagiLemma5IntervalExcess ell a p = p :=
+      aoyagiLemma5IntervalExcess_eq_self_of_le_min ell a p ha hp_a hp_c
+    simp [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain, hexcess] at hgap
+    omega
+  · rw [aoyagiLemma5Eq5OffsetValueSet, Finset.mem_image] at h_offset
+    rcases h_offset with ⟨alpha, halpha, hvalue⟩
+    rw [Finset.mem_Icc] at halpha
+    have halpha_zero : (alpha : ℤ) = 0 := by
+      linarith
+    omega
+
+/-- In the rising region, the lower endpoint plus the strict equation `(5)`
+offset values are exactly the same-coordinate interval with the upper endpoint
+erased.
+
+This identifies the one value not represented by this finite Eq5 count
+scaffold.  It is not a construction or legality theorem for Aoyagi's displayed
+vectors. -/
+theorem aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    insert (aoyagiHtildeLowerNat ell a M m p)
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      (aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+        (aoyagiHtildeUpperNat ell a M m p) := by
+  apply Finset.eq_of_subset_of_card_le
+  · intro z hz
+    rw [Finset.mem_erase]
+    constructor
+    · intro hz_upper
+      exact
+        aoyagiLemma5Eq5_upperEndpoint_not_mem_insert_lowerEndpoint_offsets_of_le_min
+          ell a p M m ha hp_pos hp_a hp_c (by rwa [hz_upper] at hz)
+    · exact
+        aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_subset_intervalValueSetNat_of_le_min
+          ell a p M m ha hp_a hp_c hz
+  · have hupper_mem :
+        aoyagiHtildeUpperNat ell a M m p ∈
+          aoyagiHtildeIntervalValueSetNat ell a M m p :=
+      aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+        ell a p M m ha (by omega)
+    have hcard_insert :=
+      aoyagiLemma5Eq5_insertLower_offsetCard_add_one_eq_intervalCard_of_le_min
+        ell a p M m ha hp_pos hp_a hp_c
+    have hcard_erase :=
+      Finset.card_erase_add_one hupper_mem
+    omega
 
 /-- A supplied equation `(5)` own-coordinate branch has the displayed value
 `Htilde'_p - alpha` on block `p`. -/

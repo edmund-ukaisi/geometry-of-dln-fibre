@@ -775,6 +775,15 @@ on the session's original cwd.
    range from `C.point ell<=L+1`.  This is adapter cleanup only; the real
    blockers remain actual-width compatibility, displayed-vector construction,
    terminality, admissibility, and chart sequence.
+   The Eq5 rising-region lower-plus-offset set is now identified exactly as
+   the same-coordinate interval with the upper endpoint erased.  This fills a
+   count-side hole below Lemma 5, but it still does not say that Eq3/Eq4
+   realise the erased endpoint.  The next small A5 slice should be
+   finite-domain membership wrappers for the existing Eq3/Eq4/Eq5
+   introduced-label wrappers: convert `introducedLabel` into membership in
+   `introducedLabelFinset`.  Do not build `LabelExponentCertificate` adapters
+   yet; the terminal-exponent and least-value fields are not available for
+   these wrappers.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

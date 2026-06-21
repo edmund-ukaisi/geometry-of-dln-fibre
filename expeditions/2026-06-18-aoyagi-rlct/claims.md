@@ -2302,6 +2302,16 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq4_piecewise_ownCoordinate_introducedLabel_of_lastPoint` and
   `aoyagiLemma5Eq3_piecewise_ownCoordinate_introducedLabel_of_lastPoint`
   package the same own-coordinate value as `introducedLabel L n S k S k`.
+  Also proved
+  `aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt`,
+  `aoyagiLemma5Eq5_upperEndpoint_not_mem_insert_lowerEndpoint_offsets_of_le_min`,
+  and
+  `aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min`.
+  These identify, in the rising region, the lower endpoint plus strict Eq5
+  offsets with the same-coordinate interval after erasing the upper endpoint.
+  This is finite-set count scaffolding only; it does not prove that equations
+  `(3)` or `(4)` realise the erased endpoint or prove displayed-vector
+  construction.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

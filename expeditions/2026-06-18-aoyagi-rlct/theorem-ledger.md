@@ -2967,6 +2967,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`.
 
+Latest A5 update: Eq5 now has the exact rising-region erase-upper finite-set
+equality in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The names
+are `aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt`,
+`aoyagiLemma5Eq5_upperEndpoint_not_mem_insert_lowerEndpoint_offsets_of_le_min`,
+and
+`aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min`.
+They prove that, under `1<=p`, `p<=a`, and `p<=ell-a`, the lower endpoint
+inserted into the strict Eq5 offset-value set is exactly the same-coordinate
+interval value set with the upper endpoint erased.  The upper endpoint is
+excluded because the interval gap is `p>=1` and strict Eq5 offsets have
+`alpha>=1`, so reaching the upper endpoint would require `alpha=0`.  This is
+finite count bookkeeping only, not a claim that equations `(3)` or `(4)`
+realise the erased endpoint and not a displayed-vector, terminality,
+admissibility, order-count, normal-crossing, or RLCT theorem.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-interval-erase-upper-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-interval-erase-upper.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-upper-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
