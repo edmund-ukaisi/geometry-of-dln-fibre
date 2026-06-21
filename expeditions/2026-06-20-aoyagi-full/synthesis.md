@@ -35,8 +35,25 @@ engines (S1ProductMin #56, S1G5 #52, ParamsFlat) escaped it (caught via "S1Produ
 axiom-check). Built them explicitly (green; #56 axiom-clean). fm to (a) import stable engines into the aggregator
 + (b) restore AxCheck.lean. Lesson banked. "Green build" ≠ "every module compiles."
 
-**Active:** fm-2 #58 (step-1 g5 node) → #54 ((2,2,2)-measure, step-3 leaves); fm — (2,2,2) chart φ (step-3
-sub-charts) + #55 ((2,1,2)); pp on-demand; rv-2 auditing the @1304cf2 milestone.
+**Since the milestone (trunk now @930a6a0, all pushed):** rv-2 AUDIT **PASS** on @1304cf2 (S1.5 wire / re-scope /
+case111 — decorrelated, validated the min-on-core + n/2-via-Fubini decomposition). **Green-gate gap CLOSED**
+(@73c52f9 + @930a6a0): all 9 measure engines now imported by the aggregator + **AxCheck.lean restored**
+(emits `#print axioms` every build — 5 results clean, headline sorryAx). **#57** `product_min_rlct_of_ne`
+gated @2e8dc4c. **#58** pivot-blow-up atom gated @930a6a0 (pivotBlowup/Deriv/_det=(x 0)^n/_injOn, parametric
+n — serves all 3 (2,2,2) blow-up nodes). Lesson banked: green `lake build <lib>` covers only the aggregator
+closure (orphan engines escape).
+
+**Active (both ladder rungs in clean-ownership parallel progress):**
+- **(2,1,2) #55** — fm, all 4 remaining sorries IN-SEAT (on branch @b8bb537): product-MIN heart
+  (`rlctAtOn_product_blocks` via #57) + final assembly PROVEN (6→4); left = `prod212_entry` cast-closer,
+  coord-split `rlctAtOn_case212_eq_product`, 2× `rlctAtOn_blockG/H_eq_one` (EuclideanSpace↔Pi carrier bridge).
+  Merges to trunk + aggregator-wired only when COMPLETE (validate scaffolding stays off trunk).
+- **(2,2,2) #54** — fm-2, fully specified now: pp delivered the 5-item measure-assembly geometry + a
+  **load-bearing catch** (naive `{y_P≠0}` charts overlap on +measure ⟹ g5_step `hdisj` UNPROVABLE; FIX =
+  **max-region tiling** `Vᵢ={|pivot|≥|others|}`, overlaps=ties=null — verified vs g5_step's real Pairwise
+  AEDisjoint hyp) + honesty flag (equivFin Fin-8↔entry = probe-confirm). fm-2 building **#61** (argmax-cover
+  atom) → assemble 3-deep g5_step (4-way → φ_L2 → 3-way → 4-way → Σ₂₄); per-node obligations from #58.
+- pp on-demand; rv-2 queued for #58 + #52/#54/#55 audits (real-pos-def-k=1 radar).
 **Roadmapped (operator-gated scope):** G3 (general-M wall), #19 keystone (#37/#45/#46), weighted-product-split
 (general-M). Fixed-M ladder = the active proven-scope target: (1,1,1) DONE · (2,1,2) #55 · (2,2,2) #54.
 
