@@ -279,3 +279,9 @@ theorems (Aoyagi rlct, Lemma 4.6 shift), each a visible carried interface. NO op
 geometric content. Exposition: `expositions/rlct-payoff-overview.md` (draft).
 **CLOSE:** ready. Signal-and-wait for the operator-gated close PR `expedition/rlct-payoff → dev`. Stand seats
 down at close (incl. the orphaned thread-07/strict-cert peers, now idle).
+
+## 2026-06-21 — CLOSE: PR #5 opened (expedition/rlct-payoff → dev)
+https://github.com/edmund-ukaisi/geometry-of-dln-fibre/pull/5 — awaiting operator review/merge (operator-gated).
+Expedition deliverable: Σ^r geometry + θ (unconditional) + rlct(K^DLN_B)=(C_r+shift)/2 general r; geometric
+content zero-cited; only Aoyagi + Lemma 4.6 Cited (named interfaces). Seats stood down (formaliser/pen-and-paper/
+reviewer tides + the orphaned thread-07 delta-cert/strict-cert/reviewer07 peers — all came to rest/idle). EXPEDITION CLOSED.
