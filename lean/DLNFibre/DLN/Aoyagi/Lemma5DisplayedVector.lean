@@ -2073,6 +2073,131 @@ theorem aoyagiLemma5Eq5_postP_belowLower_of_intervalExcess_lt_offset
     _ < aoyagiHtildeLowerNat ell a M m b := by
       linarith
 
+/-- Local lower-bound guard for every post-`p` coordinate of Aoyagi Lemma 5
+equation `(5)`.
+
+This is only a finite arithmetic predicate.  It is not asserted to follow from
+the strict alpha domain or from Aoyagi's source hypotheses. -/
+def aoyagiLemma5Eq5PostPLowerGuard (ell a p alpha : ℕ) : Prop :=
+  ∀ b, p ≤ b → b ≤ p + (a - alpha) →
+    alpha + b - p ≤ aoyagiLemma5IntervalExcess ell a b
+
+/-- A terminal-room inequality is a sufficient finite-arithmetic condition for
+the post-`p` lower-bound guard. -/
+theorem aoyagiLemma5Eq5PostPLowerGuard_of_terminalRoom
+    (ell a p alpha : ℕ)
+    (halpha_p : alpha ≤ p) (halpha_a : alpha ≤ a)
+    (hroom : p + 2 * a - alpha ≤ ell) :
+    aoyagiLemma5Eq5PostPLowerGuard ell a p alpha := by
+  intro b hp_le_b hb_hi
+  unfold aoyagiLemma5IntervalExcess
+  apply le_min
+  · omega
+  · apply le_min
+    · omega
+    · apply le_min
+      · omega
+      · omega
+
+/-- Exact interval-membership guard for equation `(5)`'s post-`p` branch.
+
+For a supplied post-`p` branch value, membership in the same-coordinate Htilde
+interval is equivalent to the local subtraction guard
+`alpha+b-p <= intervalExcess(ell,a,b)`.  This is local admissibility
+bookkeeping only; it does not construct the branch or prove the guard from
+Aoyagi's source hypotheses. -/
+theorem aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_iff_offset_le_intervalExcess
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {b S : ℕ} (hp_le_b : p ≤ b) (hb_hi : b ≤ p + (a - alpha))
+    (hS : C.block b S) :
+    T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m b ↔
+      alpha + b - p ≤ aoyagiLemma5IntervalExcess ell a b := by
+  have hvalue := hT.postP b S hp_le_b hb_hi hS
+  have hb_lt_ell : b < ell := hS.1
+  have hb_lt : b < ell + 1 := by omega
+  have hchainGap :=
+    aoyagiHtildeUpper_sub_lower_eq_intervalExcess
+      ell a M m hT.a_le_ell ⟨b, hb_lt⟩
+  have hgapNat :
+      aoyagiHtildeUpperNat ell a M m b -
+          aoyagiHtildeLowerNat ell a M m b =
+        (aoyagiLemma5IntervalExcess ell a b : ℤ) := by
+    simpa [aoyagiHtildeUpperChain, aoyagiHtildeLowerChain] using hchainGap
+  have hoffset_cast :
+      ((alpha + b - p : ℕ) : ℤ) =
+        (alpha : ℤ) + (b : ℤ) - (p : ℤ) := by
+    omega
+  have hvalue_offset :
+      T S =
+        aoyagiHtildeUpperNat ell a M m b -
+          ((alpha + b - p : ℕ) : ℤ) := by
+    rw [hvalue, hoffset_cast]
+    ring
+  constructor
+  · intro hmem
+    have hmemFin :
+        T S ∈ aoyagiHtildeIntervalValueSet ell a M m ⟨b, hb_lt⟩ := by
+      simpa [aoyagiHtildeIntervalValueSetNat, hb_lt] using hmem
+    have hbounds :=
+      (aoyagiHtilde_mem_intervalValueSet_iff_bounds
+        ell a M m hT.a_le_ell ⟨b, hb_lt⟩ (T S)).mp hmemFin
+    have hoffset_le_int :
+        ((alpha + b - p : ℕ) : ℤ) ≤
+          (aoyagiLemma5IntervalExcess ell a b : ℤ) := by
+      rw [hvalue_offset] at hbounds
+      simp [aoyagiHtildeUpperChain, aoyagiHtildeLowerChain] at hbounds
+      linarith
+    exact_mod_cast hoffset_le_int
+  · intro hle
+    have hle_int :
+        ((alpha + b - p : ℕ) : ℤ) ≤
+          (aoyagiLemma5IntervalExcess ell a b : ℤ) := by
+      exact_mod_cast hle
+    have hoffset_nonneg : (0 : ℤ) ≤ ((alpha + b - p : ℕ) : ℤ) := by
+      exact_mod_cast Nat.zero_le (alpha + b - p)
+    have hbounds :
+        aoyagiHtildeLowerChain ell a M m ⟨b, hb_lt⟩ ≤ T S ∧
+          T S ≤ aoyagiHtildeUpperChain ell a M m ⟨b, hb_lt⟩ := by
+      rw [hvalue_offset]
+      simp [aoyagiHtildeUpperChain, aoyagiHtildeLowerChain]
+      linarith
+    have hmemFin :
+        T S ∈ aoyagiHtildeIntervalValueSet ell a M m ⟨b, hb_lt⟩ :=
+      (aoyagiHtilde_mem_intervalValueSet_iff_bounds
+        ell a M m hT.a_le_ell ⟨b, hb_lt⟩ (T S)).mpr hbounds
+    simpa [aoyagiHtildeIntervalValueSetNat, hb_lt] using hmemFin
+
+/-- Positive wrapper for the exact post-`p` interval-membership guard. -/
+theorem aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_of_offset_le_intervalExcess
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {b S : ℕ} (hp_le_b : p ≤ b) (hb_hi : b ≤ p + (a - alpha))
+    (hS : C.block b S)
+    (hguard : alpha + b - p ≤ aoyagiLemma5IntervalExcess ell a b) :
+    T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m b :=
+  (aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_iff_offset_le_intervalExcess
+    ell a p alpha M m C layerWidth T hT hp_le_b hb_hi hS).mpr hguard
+
+/-- A global post-`p` lower guard supplies same-coordinate interval membership
+for every supplied post-`p` branch point. -/
+theorem aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_of_postPLowerGuard
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hguard : aoyagiLemma5Eq5PostPLowerGuard ell a p alpha)
+    {b S : ℕ} (hp_le_b : p ≤ b) (hb_hi : b ≤ p + (a - alpha))
+    (hS : C.block b S) :
+    T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m b :=
+  aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_of_offset_le_intervalExcess
+    ell a p alpha M m C layerWidth T hT hp_le_b hb_hi hS
+    (hguard b hp_le_b hb_hi)
+
 /-- The finite offset values realised by equation `(5)`'s own-coordinate
 branch under the source guard `1 <= alpha < p` and same-coordinate interval
 guard `alpha <= Htilde'_p-Htilde_p`. -/
@@ -2117,6 +2242,22 @@ theorem aoyagiLemma5Eq5_alphaFamily_mem_iff_guards
     constructor
     · exact halpha_pos
     · exact le_min halpha_le_excess (by omega)
+
+/-- Concrete check that the strict Eq5 alpha domain and post-`p` range do not
+force the post-`p` lower-bound guard. -/
+theorem aoyagiLemma5Eq5_alphaDomain_and_postPRange_not_lowerGuard :
+    1 ∈ aoyagiLemma5Eq5AlphaDomain 6 4 2 ∧
+      2 ≤ 4 ∧ 4 ≤ 2 + (4 - 1) ∧
+        ¬ 1 + 4 - 2 ≤ aoyagiLemma5IntervalExcess 6 4 4 := by
+  norm_num [aoyagiLemma5Eq5AlphaDomain, aoyagiLemma5IntervalExcess]
+
+/-- The concrete alpha-domain/post-range counterexample refutes the global
+post-`p` lower guard. -/
+theorem aoyagiLemma5Eq5_not_postPLowerGuard_counterexample :
+    ¬ aoyagiLemma5Eq5PostPLowerGuard 6 4 2 1 := by
+  intro hguard
+  have hbad := hguard 4 (by norm_num) (by norm_num)
+  norm_num [aoyagiLemma5IntervalExcess] at hbad
 
 /-- A finite family of branch records whose alpha projection covers the strict
 Eq5 alpha domain and whose values are `Htilde'_p-alpha` has value image equal

@@ -3939,3 +3939,38 @@ records, equation `(5)` displayed vectors, source-label legality, cutoff
 guards, selected-span coverage, terminal `tilde t=0`, injection, classifier,
 back-to-label coverage, Lemma 5 order count, pole order, normal crossings, or
 RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 post-p lower exact guard
+
+Reproduction:
+`reproduction-lemma5-eq5-postp-lower-exact-guard-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-postp-lower-exact-guard.md`.
+Review artifact:
+`review-lemma5-eq5-postp-lower-exact-guard-a5.md`.
+
+Lean now proves the exact local interval-membership guard for the post-`p`
+branch of a supplied Eq5 piecewise certificate:
+
+```text
+aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_iff_offset_le_intervalExcess
+```
+
+For a post-`p` block point, membership in the same-coordinate Htilde interval
+is equivalent to
+
+```text
+alpha+b-p <= aoyagiLemma5IntervalExcess ell a b.
+```
+
+Lean also names the global guard predicate
+`aoyagiLemma5Eq5PostPLowerGuard`, proves a sufficient terminal-room condition
+`aoyagiLemma5Eq5PostPLowerGuard_of_terminalRoom`, gives positive wrappers,
+and records a concrete counterexample showing that strict Eq5 alpha-domain
+membership plus the post-`p` range does not imply the lower guard.
+
+This is local finite arithmetic and admissibility bookkeeping only.  It does
+not construct Eq5 vectors, prove the lower guard from source hypotheses,
+prove source-label legality, cutoff coverage, terminal `tilde t=0`,
+classifier/injection/back-to-label coverage, Lemma 5 order count, pole order,
+normal crossings, or RLCT extraction.

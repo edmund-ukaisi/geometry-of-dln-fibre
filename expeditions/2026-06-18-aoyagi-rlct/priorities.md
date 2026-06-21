@@ -80,6 +80,8 @@ Current Eq4 rising-boundary gap slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-boundary-gap-a5.md`.
 Current Eq5 post-`p` lower obstruction slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-obstruction-a5.md`.
+Current Eq5 post-`p` lower exact-guard slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-exact-guard-a5.md`.
 Current Eq4 rising-guard exhaustion slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-guard-exhaustion-a5.md`.
 Current terminal Eq5 gap slice:

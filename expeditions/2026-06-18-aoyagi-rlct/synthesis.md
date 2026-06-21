@@ -3709,6 +3709,29 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-value-image-a5.md`.
 
+The Eq5 post-`p` lower exact-guard slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean names:
+`aoyagiLemma5Eq5PostPLowerGuard`,
+`aoyagiLemma5Eq5PostPLowerGuard_of_terminalRoom`,
+`aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_iff_offset_le_intervalExcess`,
+`aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_of_offset_le_intervalExcess`,
+`aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_of_postPLowerGuard`,
+`aoyagiLemma5Eq5_alphaDomain_and_postPRange_not_lowerGuard`, and
+`aoyagiLemma5Eq5_not_postPLowerGuard_counterexample`.  For a supplied Eq5
+post-`p` branch point, Lean proves Htilde interval membership is exactly the
+local guard `alpha+b-p <= intervalExcess(ell,a,b)`.  It also proves a
+sufficient terminal-room condition and records that the strict alpha domain
+plus post-`p` range does not imply the guard.  This is not Eq5 construction,
+source-label legality, source-backed guard production, cutoff coverage,
+classifier exactness, order count, pole order, normal crossings, or RLCT
+extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-exact-guard-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-postp-lower-exact-guard.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-postp-lower-exact-guard-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in
