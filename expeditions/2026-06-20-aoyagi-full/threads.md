@@ -19,7 +19,7 @@ Durable thread-status index. Status ∈ open / in-progress / blocked / review-pe
 | 13 | formalisation | fm-2 | in-progress | (1,1,1) rlctAt bridge — obstruction was paramsEquivFlat-shaped; resumes as measure-track Unit 2 |
 | 14 | formalisation | fm | in-progress | **ALGEBRA track** (Skeleton.lean): A1 `lambdaCore_eq_clean`+`clean_eq_printed` → L1 `block_elimination` → `deepestPoint_exists` |
 | 15 | formalisation | fm-2 | in-progress | **MEASURE track**: `paramsEquivFlat` (Route A++ keystone, ParamsFlat.lean) → (1,1,1) bridge close (#13) |
-| 16 | design | pp | in-progress | **R1 design** (the mountain): explicit blow-up charts + monomial exponents + cover + R1↔Adm match; decorrelated Codex |
+| 16 | design | pp | design-DONE | **R1 design** (the mountain): fixed-M LADDER fully designed ((1,1,1) monomial / (2,1,2) product-MIN / (2,2,2) 24-leaf cover, execution-ready); lower-bound crux SETTLED (centers=admissible strata); G5-abstract BUILD-READY for fm-2 (#52: G5-adapter+G5-step+leaf-sum, exact Mathlib anchors); A-vs-B verdict (B/hybrid general-M, block layer doesn't compound wall); GENERAL-M gated on **G3 alone** (spec'd for roadmap). 3 traps caught (Q4-lct, 0·∞, δ-block). LADDER COMPLETE (3 rungs scoped+handed): (1,1,1) #9/#12 done · (2,1,2) #55 (product-MIN, CERTIFIED min≠sum via c=3/2 test) · (2,2,2) #54 (24-leaf cover) · G5-abstract #52. Cards: `r1-general-atlas-design.md`, `r1-212-product-min-handoff.md` (#55), `r1-222-cover-handoff-split.md` (#54), `g5-abstract-statement.md` (#52), `g3-spec-the-named-wall.md` (roadmap). pp design DONE; residual = fm/fm-2 execution (#55,#54,#52) + G3 tide |
 
 ## Seats (reuse across tides; stand down at close)
 
