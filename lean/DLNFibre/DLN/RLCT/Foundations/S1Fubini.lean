@@ -39,6 +39,38 @@ namespace DLNFibre.DLN.RLCT
 open MeasureTheory Set Real Filter
 open scoped ENNReal Topology
 
+/-! ## RLCT invariance under a measure-preserving homeomorphism (iteration infrastructure)
+
+`rlctAtOn` is unchanged by precomposition with a measure-preserving homeomorphism `e`: the
+admissible nbhds and their integrals transport across `e` (open-image / preimage + the measure-
+change-of-variables `MeasurePreserving.integrableOn_image`). This is what lets the `n = 1` step
+`step_rlct` be iterated over the regular coordinates via the `Fin`-peeling chart
+`(Fin (n+1) → ℝ) × Y ≃ ℝ × ((Fin n → ℝ) × Y)`, staying on the product (Params-flat) measure. -/
+
+/-- **RLCT is invariant under a measure-preserving homeomorphism.** For `e : M ≃ₜ M'` measure-
+preserving (a `MeasurableEmbedding`), `rlctAtOn (F ∘ e) w0 = rlctAtOn F (e w0)`. The admissible sets
+biject: `Ω ↦ e '' Ω` (open, `e.isOpenMap`) with `MeasurePreserving.integrableOn_image`, and back via
+`e ⁻¹' Ω'` with `integrableOn_comp_preimage`. -/
+theorem rlctAtOn_comp_homeomorph {M M' : Type*} [MeasureSpace M] [TopologicalSpace M]
+    [MeasureSpace M'] [TopologicalSpace M']
+    (e : M ≃ₜ M') (he : MeasurePreserving e volume volume) (hemb : MeasurableEmbedding e)
+    (F : M' → ℝ) (w0 : M) :
+    rlctAtOn (fun w => F (e w)) w0 = rlctAtOn F (e w0) := by
+  unfold rlctAtOn weightedThreshold
+  congr 1
+  ext c
+  constructor
+  · rintro ⟨c', rfl, Ω, hΩopen, hw0, hint⟩
+    refine ⟨c', rfl, e '' Ω, e.isOpenMap _ hΩopen, ?_, ?_⟩
+    · exact Set.singleton_subset_iff.2 ⟨w0, hw0 rfl, rfl⟩
+    · rw [he.integrableOn_image hemb]; convert hint using 2
+  · rintro ⟨c', rfl, Ω, hΩopen, hw0, hint⟩
+    refine ⟨c', rfl, e ⁻¹' Ω, hΩopen.preimage e.continuous, ?_, ?_⟩
+    · exact Set.singleton_subset_iff.2 (hw0 rfl)
+    · rw [show (fun w => |(fun w => F (e w)) w| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w)
+          = (fun w => |F w| ^ (-(c' : ℝ)) * (fun _ => (1 : ℝ)) w) ∘ e from rfl]
+      rw [he.integrableOn_comp_preimage hemb]; exact hint
+
 /-! ## Admissible-exponent down-set (for the threshold-lift `≥` direction)
 
 The set of exponents `c'` for which `|H|^{−c'}` is locally integrable at `w0` is a **down-set**: a
