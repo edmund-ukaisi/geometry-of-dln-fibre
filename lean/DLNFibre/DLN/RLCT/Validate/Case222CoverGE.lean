@@ -247,6 +247,22 @@ theorem Eleaf_integrable (c' : NNReal) (hc0 : 0 < c') (hc' : (c' : ℝ≥0∞) <
     rw [abs_of_nonneg (le_trans zero_le_one (Uval_ge_one u))]
     exact ⟨Uval_ge_one u, hBle u (by simpa [unitBox] using hu)⟩
 
+/-- **The E (unit) leaf threshold integral is finite** below `3/2` (the `ℝ≥0∞`-lintegral form the
+cover sum consumes). `∫⁻_{unitBox} ofReal(monomialIntegrand·|Uval|^{−c'}) < ⊤` — the `< ⊤` shape
+`cover_integral_lt_top_iff` / `ENNReal.sum_lt_top` need, from `Eleaf_integrable` via
+`hasFiniteIntegral_iff_ofReal` (nonneg integrand). -/
+theorem Eleaf_lintegral_lt_top (c' : NNReal) (hc0 : 0 < c') (hc' : (c' : ℝ≥0∞) < 3 / 2) :
+    ∫⁻ u in unitBox 8,
+        ENNReal.ofReal (monomialIntegrand 8 unitK8 unitH8 (c' : ℝ) u * |Uval u| ^ (-(c' : ℝ))) < ⊤ := by
+  have hint := Eleaf_integrable c' hc0 hc'
+  have hnn : 0 ≤ᵐ[volume.restrict (unitBox 8)]
+      (fun u => monomialIntegrand 8 unitK8 unitH8 (c' : ℝ) u * |Uval u| ^ (-(c' : ℝ))) := by
+    filter_upwards with u
+    have : 0 ≤ monomialIntegrand 8 unitK8 unitH8 (c' : ℝ) u := by unfold monomialIntegrand; positivity
+    positivity
+  rw [IntegrableOn, Integrable, hasFiniteIntegral_iff_ofReal hnn] at hint
+  exact hint.2
+
 /-- **A step-1 A-pivot leaf-summand is finite (below `3/2`).** For each A-pivot `p ∈ {0,1,2,3}` and
 `c' < 3/2`, the `p`-cell of the step-1 `g5_pivotNode` split — the chart-domain integral of
 `|det φ₁ₚ| · (openBox.indicator |myF222|^{−c'}) ∘ φ₁ₚ` — is finite. This is the per-A-pivot recursion
