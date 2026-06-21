@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlat222
 import DLNFibre.DLN.RLCT.Validate.Case222Resolution
+import DLNFibre.DLN.RLCT.Validate.Case222CoverGETail
+import DLNFibre.DLN.RLCT.Validate.Case222Value
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case222Algebra` — the `(2,2,2)` layer-product entry form
@@ -72,5 +74,36 @@ theorem dlnLoss222_eq_myF222 :
   change ∑ i : Fin 2, ∑ j : Fin 2, (∑ k : Fin 2, A 0 i k * A 1 k j) ^ 2 = _
   simp only [Fin.sum_univ_two, a00, a01, a10, a11, b00, b01, b10, b11]
   ring
+
+/-- **The `(2,2,2)` RLCT value (`#76`/`#80`).** The local RLCT of the deep-linear `(2,2,2)` loss at
+the deepest singular point of the `B = 0` fibre equals `3/2`. Transports the cover value
+`rlctAtOn myF222 0 = 3/2` (`rlctAtOn_myF222_eq`, `≤`-half `Case222Resolution` + `≥`-half
+`Case222CoverGETail`) along the measure-preserving flat-coordinate equiv `e222` via the seam
+loss-identity `dlnLoss222_eq_myF222`. The `(2,2,2)` analogue of `case111_rlct_eq_monomialThreshold`
+(value form). -/
+theorem case222_rlct :
+    rlctAtOn (dlnLoss H222 (0 : Matrix (Fin (H222 0)) (Fin (H222 (Fin.last 2))) ℝ)) deepest222
+      = 3 / 2 := by
+  rw [rlctAtOn_dlnLoss222_transport myF222 dlnLoss222_eq_myF222, rlctAtOn_myF222_eq]
+
+/-- **The `(2,2,2)` resolution-charts headline (`#76`, third ladder rung).** Aoyagi's resolution as a
+finite monomial-threshold chart family whose `⨅` reconstructs the RLCT: there is a chart family
+`(ι, d, k, h)` with `rlctAtOn (dlnLoss H222 0) deepest222 = ⨅ᵢ monomialThreshold (dᵢ)(kᵢ)(hᵢ)`. The
+`∃`-VALUE contract (`resolution_charts`, scoped to the singular core): the match is the VALUE, not a
+chart↔stratum bijection. Every leaf threshold of the `(2,2,2)` cover is `3/2` (`Case222Value`), so a
+representative single-leaf witness (`d = 2`, `k = ![1,1]`, `h = ![3,2]`, via
+`case222_unit_leaf_threshold`) realises the `⨅`; `iInf_unique` collapses the singleton. Mirrors
+`resolution_charts_case111`. -/
+theorem resolution_charts_case222 :
+    ∃ (ι : Type) (_ : Fintype ι) (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ),
+      rlctAtOn (fun A : Params H222 =>
+          dlnLoss H222 (0 : Matrix (Fin (H222 0)) (Fin (H222 (Fin.last 2))) ℝ) A) deepest222
+        = ⨅ i : ι, monomialThreshold (d i) (k i) (h i) :=
+  ⟨Unit, inferInstance, fun _ => 2, fun _ => (![1, 1] : Fin 2 → ℕ),
+    fun _ => (![3, 2] : Fin 2 → ℕ), by
+      rw [show (fun A : Params H222 =>
+              dlnLoss H222 (0 : Matrix (Fin (H222 0)) (Fin (H222 (Fin.last 2))) ℝ) A)
+            = dlnLoss H222 0 from rfl,
+          case222_rlct, iInf_unique, case222_unit_leaf_threshold]⟩
 
 end DLNFibre.DLN.RLCT

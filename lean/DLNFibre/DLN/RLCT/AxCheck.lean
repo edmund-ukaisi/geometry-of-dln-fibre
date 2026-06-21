@@ -42,5 +42,19 @@ open DLNFibre.DLN.RLCT
 -- which must stay monomial_rlct-FREE: the S2-dependence enters here, in the singular cover.)
 #print axioms rlctAtOn_myF222_le
 
+-- (2,2,2) ≥-direction cover headline (#86, route R) — the box-local threshold-finiteness lower bound.
+-- Must stay CLEAN: [propext, Classical.choice, Quot.sound], NO `monomial_rlct`, NO `sorryAx` (the ≥
+-- half is pure measure theory + coordinate-conjugation symmetry, S2-FREE).
+#print axioms rlctAtOn_myF222_ge'
+
+-- (2,2,2) RLCT value (#80, the `=` half) — `le_antisymm` of the two halves. Carries `monomial_rlct`
+-- ONLY (via the ≤-half), NO `sorryAx`.
+#print axioms rlctAtOn_myF222_eq
+
+-- (2,2,2) headline value + resolution-charts wrapper (#76, third ladder rung) — transports the cover
+-- value along `e222`. Carries `monomial_rlct` ONLY (via the value), NO `sorryAx`.
+#print axioms case222_rlct
+#print axioms resolution_charts_case222
+
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
