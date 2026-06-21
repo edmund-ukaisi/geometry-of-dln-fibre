@@ -142,6 +142,27 @@ theorem aoyagiLemma5Eq4_selectedIndexGuard_iff
     p + (ell - a) + 2 ≤ ell + 1 ↔ p + 1 ≤ a := by
   omega
 
+/-- In the rising range `p<=a`, failure of the repaired equation `(4)` guard
+`p+1<=a` is exactly the boundary case `p=a`.
+
+This is only finite guard arithmetic.  It does not construct an equation `(4)`
+source vector or prove any endpoint coverage. -/
+theorem aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a
+    (a p : ℕ) (hp_a : p ≤ a) :
+    ¬ (p + 1 ≤ a) ↔ p = a := by
+  omega
+
+/-- Raw selected-index form of
+`aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a`.
+
+Under `a<=ell` and `p<=a`, failure of the printed cutoff bound
+`S_(p+ell-a+2)` to lie in the selected list is exactly `p=a`. -/
+theorem aoyagiLemma5Eq4_selectedIndexGuardFailure_iff_eq_a
+    (ell a p : ℕ) (ha : a ≤ ell) (hp_a : p ≤ a) :
+    ¬ (p + (ell - a) + 2 ≤ ell + 1) ↔ p = a := by
+  rw [aoyagiLemma5Eq4_selectedIndexGuard_iff ell a p ha]
+  exact aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a a p hp_a
+
 /-- Strict form of the equation `(4)` selected-boundary guard.
 
 Under `a<=ell`, the boundary index `p+(ell-a)+1` is strictly before the

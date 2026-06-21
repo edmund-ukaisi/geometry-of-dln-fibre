@@ -3666,3 +3666,37 @@ post-`p` data.  It does not construct the displayed source vector, prove all
 Eq5 branches fail, supply a corrected Eq5 construction, prove source-label
 legality, terminality, chart coverage, classifier coverage, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq4 rising-guard exhaustion
+
+Reproduction:
+`reproduction-lemma5-eq4-rising-guard-exhaustion-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-rising-guard-exhaustion.md`.
+Review artifact:
+`review-lemma5-eq4-rising-guard-exhaustion-a5.md`.
+
+Lean now proves the exact repaired Eq4 guard-failure arithmetic:
+
+```text
+aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a
+aoyagiLemma5Eq4_selectedIndexGuardFailure_iff_eq_a
+```
+
+Under `p<=a`, failure of the repaired guard `p+1<=a` is equivalent to `p=a`.
+Under `a<=ell`, the same statement is available for the raw selected-index
+guard `p+(ell-a)+2<=ell+1`, using the existing selected-index equivalence.
+
+The displayed-vector wrapper
+
+```text
+aoyagiLemma5Eq4_risingGuardFailure_eq_a_and_no_piecewiseSourceVector
+```
+
+adds the existing supplied-certificate obstruction: if guard failure occurs in
+the rising-side range, then `p=a` and no
+`AoyagiLemma5Eq4PiecewiseSourceVector` of the repaired shape exists.  This is
+only a guard-failure wrapper.  It does not prove the converse
+`not Eq4PiecewiseSourceVector iff p=a`, construct Eq4 branches, fill the Eq5
+lower endpoint at `p=a`, prove source-label legality, chart coverage, pole
+order, normal crossings, or RLCT extraction.

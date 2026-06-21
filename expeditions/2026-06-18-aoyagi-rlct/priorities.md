@@ -78,6 +78,8 @@ Current Eq4 rising-boundary gap slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-boundary-gap-a5.md`.
 Current Eq5 post-`p` lower obstruction slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-postp-lower-obstruction-a5.md`.
+Current Eq4 rising-guard exhaustion slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-guard-exhaustion-a5.md`.
 Current terminal Eq5 gap slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-eq5-gap-a5.md`.
 Current supplied-family terminal chain-zero slice:
@@ -116,10 +118,10 @@ Immediate order:
 5. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an
    obstruction record only: it is not a corrected Eq5 construction, a source
    coverage theorem, or a disproof of Lemma 5.
-6. Next concrete source-arithmetic target: Eq4 rising-guard exhaustion.  In
-   the Eq5 rising lower-endpoint-deficit region, prove that failure of Eq4's
-   repaired guard `p+1<=a` is exactly the recorded boundary `p=a`; do not
-   present this as Eq4 branch construction.
+6. Eq4 rising-guard exhaustion is now reduced to finite guard arithmetic:
+   under `p<=a`, failure of the repaired guard `p+1<=a` is exactly `p=a`.
+   Do not upgrade this to Eq4 branch construction or to a converse
+   nonexistence theorem.
 7. Low-risk Lean API may package the supplied boundary using standard finite
    classifier or bijection language, but it must not be described as source
    exactness.

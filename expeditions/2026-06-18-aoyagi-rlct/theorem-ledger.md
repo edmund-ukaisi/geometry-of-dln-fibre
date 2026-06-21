@@ -4080,6 +4080,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-postp-lower-obstruction-a5.md`.
 
+Latest A5 Eq4 rising-guard exhaustion update:
+`Lemma5IntervalArithmetic.lean` now has
+`aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a` and
+`aoyagiLemma5Eq4_selectedIndexGuardFailure_iff_eq_a`.  Under `p<=a`, failure
+of the repaired Eq4 guard `p+1<=a`, equivalently failure of the raw selected
+cutoff bound `p+(ell-a)+2<=ell+1` under `a<=ell`, is exactly the boundary
+`p=a`.  `Lemma5DisplayedVector.lean` also has
+`aoyagiLemma5Eq4_risingGuardFailure_eq_a_and_no_piecewiseSourceVector`, which
+packages this with the supplied Eq4 certificate's guard-field obstruction.
+This is guard arithmetic only, not a converse nonexistence theorem, Eq4
+branch construction, endpoint coverage, pole order, normal crossings, or RLCT
+extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-guard-exhaustion-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-rising-guard-exhaustion.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-rising-guard-exhaustion-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

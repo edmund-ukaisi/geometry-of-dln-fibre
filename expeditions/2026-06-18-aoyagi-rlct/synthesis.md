@@ -3435,10 +3435,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-postp-lower-obstruction-a5.md`.
 
-Next source-arithmetic frontier from the latest scouts: Eq4 rising-guard
-exhaustion.  In the Eq5 rising lower-endpoint-deficit region, failure of the
-repaired Eq4 guard `p+1<=a` should reduce to the recorded boundary `p=a`;
-keep this as guard arithmetic, not Eq4 branch construction.
+The Eq4 rising-guard exhaustion slice has landed.  In
+`lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean`, Lean now proves
+`aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a` and
+`aoyagiLemma5Eq4_selectedIndexGuardFailure_iff_eq_a`: under `p<=a`, failure
+of the repaired guard `p+1<=a`, equivalently the raw selected-index guard
+`p+(ell-a)+2<=ell+1` under `a<=ell`, is exactly `p=a`.  The displayed-vector
+wrapper
+`aoyagiLemma5Eq4_risingGuardFailure_eq_a_and_no_piecewiseSourceVector` adds
+the existing supplied-certificate obstruction.  This is only guard arithmetic
+and does not prove the converse nonexistence statement, Eq4 branch
+construction, Eq4 lower-endpoint coverage at `p=a`, pole order, normal
+crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-guard-exhaustion-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-rising-guard-exhaustion.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-rising-guard-exhaustion-a5.md`.
 
 ## Drift guard
 

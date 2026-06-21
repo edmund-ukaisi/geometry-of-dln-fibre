@@ -474,6 +474,22 @@ theorem aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a
   have hguard : p + 1 ≤ a := hT.indexGuard
   omega
 
+/-- In the rising range `p<=a`, a failure of equation `(4)`'s repaired guard
+is exhausted by the boundary `p=a`, and hence no supplied Eq4-piecewise source
+vector of this shape exists.
+
+This packages guard failure only; it does not construct the missing lower
+endpoint or any equation `(4)` branch. -/
+theorem aoyagiLemma5Eq4_risingGuardFailure_eq_a_and_no_piecewiseSourceVector
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_a : p ≤ a) (hfail : ¬ (p + 1 ≤ a)) :
+    p = a ∧
+      ¬ AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T := by
+  exact ⟨(aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a a p hp_a).1 hfail,
+    aoyagiLemma5Eq4_no_piecewiseSourceVector_of_not_indexGuard
+      ell a p M m C layerWidth T hfail⟩
+
 /-- The repaired equation `(4)` selected-index guard makes the displayed
 boundary `S_(p+ell-a+2)-1` a selected cutpoint index. -/
 theorem aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector

@@ -2602,6 +2602,16 @@ No such claim is formalisation-ready until both fields are filled.
   whenever its printed subtraction `alpha+b-p` exceeds the Htilde interval
   excess at the same coordinate.  This is an obstruction criterion only, not a
   corrected Eq5 construction or chart-coverage theorem.
+  Also proved Eq4 rising-guard exhaustion:
+  `aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a`,
+  `aoyagiLemma5Eq4_selectedIndexGuardFailure_iff_eq_a`, and
+  `aoyagiLemma5Eq4_risingGuardFailure_eq_a_and_no_piecewiseSourceVector`.
+  Under `p<=a`, failure of the repaired Eq4 guard `p+1<=a`, equivalently
+  failure of the raw selected-index guard under `a<=ell`, is exactly `p=a`.
+  The displayed-vector wrapper derives only the supplied Eq4 certificate
+  obstruction from guard failure.  It does not prove
+  `not Eq4PiecewiseSourceVector iff p=a`, construct Eq4 branches, or fill the
+  lower endpoint at `p=a`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
