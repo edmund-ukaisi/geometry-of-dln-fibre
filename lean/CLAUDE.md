@@ -97,9 +97,33 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   so `k=0` left-endpoint and `k=N` right-endpoint genuinely need the dedicated shrink moves (the
   interior `redMove`'s empty-piece guard `a≤b` can't be made false when `a=0`). `reduceStep` dispatches
   by `k`'s position; `exists_le_codimForm` is the recursion (strong induction on `∑ e'`).
-- **`cCodim_zero_strict` (strict all-vertex) is the ONE remaining gap** — numerically certified
-  (800/800, gap ≥ 1) but NOT in Lean (NOT sorry-patched). Hard point: a single shortest-split can be
-  FLAT (splitting `[0,N]` has no negative-coeff `Y`), so the strict drop is configuration-dependent and
-  does not localise to an obvious step. Cleanest next route: prove the `+1`-step invariant
-  `cCodim e 0 < cCodim (e+1) 0` (then `e ≤ e+1 ≤ e'` + weak mono gives all-vertex strict), or a global
-  `cCodim e' ≥ cCodim e + 1` counting argument — a pen-and-paper certificate is recommended.
+## `cCodim·0` strict monotonicity LANDED → θ UNCONDITIONAL (`Core.CCodimZeroStrict`, thread 08)
+- **`cCodim_zero_strict` is PROVED sorry-free** (`(∀ v, e v < e' v) → cCodim e 0 < cCodim e' 0`),
+  discharging `hMonoStrict`. **`numTop_eq_ncard_topComponents` is now UNCONDITIONAL** (`θ =
+  #top-dimensional irreducible components of Σ̄^r`, no open hypothesis); axiom-clean `[propext,
+  Classical.choice, Quot.sound]`.
+- **Route B (the landed route), reusing the four atomic moves + their `_le` sign lemmas:**
+  - **Double sum** `codimForm_extendℤ_eq_sum_pairs`: `codimForm (extendℤ m) = ∑_{A,B} m(A) m(B) ·
+    [pairBox A B]` (built from `codimBil_sum_right` + `codimBil_const_mul_right` + the existing
+    right-rectangle collapse; `rrInd (B.1)(B.2) A ↔ pairBox A B` on the box). Gives `∃ active pair ⟺
+    codimForm ≥ 1` (`codimForm_extendℤ_pos_of_exists_pair` / `exists_pair_of_codimForm_pos`).
+  - **Lemma Y** `codimForm_extendℤ_pos_of_fullCover`: full coverage ⟹ `codimForm ≥ 1`, via the
+    extremal longest-`[0,b]` argument (`b<N` from corner-`0`; maximality forces `c≥1` so `[0,b]→[c,d]`
+    pairs).
+  - **Lemma X** `reduceStep_strict`: select the active pair minimising `min(ilen A, ilen B)`; split the
+    shorter member at the partner-adjacent vertex. **ClaimA** (`claimA_left`/`claimA_right`) — that
+    member is shortest *active* covering that vertex — is the one non-mechanical step (the `y<d` vs
+    `d≤y` / `a<x` vs `x≤a` interval-arithmetic case split; minimality MUST be over the shorter member,
+    Codex-confirmed). The partner sits at split-coefficient EXACTLY `−1` (`splitCoeff_partner_le` &c.,
+    `omega` on indicators), and `sum_coeff_le_neg_one` upgrades the `_le` ("≤0") to `_lt` ("≤ −1").
+    8-way dispatch (left/right member × interior/leftShrink/rightShrink/removeMove); each move has TWO
+    partner orientations (the partner can sit left or right of the split source).
+  - **Wiring** (`cCodim_zero_strict`): a minimiser `m'` of `cCodim e' 0` is full-coverage (Lemma Y ⟹
+    `codimForm ≥ 1`); `reduceStep_strict` drops it `≥ 1` to a partition of `e'` decremented at `k`,
+    which still dominates `e` (`e ≤ e''` since `e < e'` everywhere), so LANDED `exists_le_codimForm`
+    gives `cCodim e 0 ≤ cCodim e' 0 − 1`. (No `+1`-step vector needed — the minimiser-of-`e'` route is
+    cleaner and uses only the two given nonemptiness hypotheses.)
+  - RULED OUT (don't re-explore): Route A (simple `Φ` with `codimForm ≥ Φ ≥ cCodim+1`) — the gap is
+    often exactly 1, no simple `Φ` carries it; every deterministic LOCAL step-selection rule fails —
+    the strict step's location is config-dependent (the "involved-in-a-pair + extremal-by-length"
+    refinement is load-bearing).
