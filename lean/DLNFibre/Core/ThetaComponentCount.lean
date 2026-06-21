@@ -21,9 +21,12 @@ min-codim ones among them. So the count is `numTop ↔ {components that are ALSO
 **The bijection.** `m ↦ vanishingIdeal (Ō_{realizerD m})`, where `realizerD m` is the interval
 direct sum `⊕_{(a,b)} M_{ab}^{m_{ab}}` realised over `d` (`foldDim (listOfPartition m) = d` for a
 Kostant `m`). On the minimisers (`codimForm = cCodim`) this is a bijection onto the top-dimensional
-minimal primes of `sigmaIdeal d r`: surjectivity from the Gabriel brick + the rank-pattern collapse;
-injectivity from the `diff/cumul` inversion (distinct partitions ⟹ distinct rank patterns ⟹ distinct
-orbit closures ⟹ distinct vanishing ideals).
+minimal primes of `sigmaIdeal d r`. **Injectivity is unconditional** (the `diff/cumul` inversion:
+distinct partitions ⟹ distinct rank patterns ⟹ distinct orbit closures ⟹ distinct vanishing ideals);
+**`MapsTo` and `SurjOn` are gated** on two named corner-selection hypotheses (`hLowerBound`,
+`hRecover` — `SurjOn` is exactly `hRecover`, the unbuilt Gabriel→Kostant recovery), discharged from
+the pen-and-paper (★) certificate. So the unconditional built content is the realizer infrastructure
++ injectivity; the count headline is gated.
 
 **Typeclass.** `[IsAlgClosed k] [CharZero k]` — inherited from the Voigt codim (the geometric reading
 `codimRepCanonical = codimForm`) + the Nullstellensatz primality. **Dependency rule:** `Core` only.
@@ -285,8 +288,12 @@ theorem partition_eq_of_rankPattern_realizerD_eq {d : Fin (N + 1) → ℕ} {r : 
     rw [extendℤ, dif_neg, extendℤ, dif_neg] <;> rintro ⟨_, h2, _⟩ <;> omega
 
 /-- The **top-dimensional components** of `Σ̄^r`: the minimal primes of `sigmaIdeal d r` (the
-irreducible components, G3) whose height equals `cCodim d r h` (the minimal codimension). The
-geometric "top-dimensional component" set whose count is `θ`. -/
+irreducible components, G3) whose height equals the combinatorial constant `cCodim d r h`. That this
+constant IS the minimal codimension among the components (so the predicate genuinely selects the
+top-dimensional ones) is the content delivered by the gating hypotheses `hLowerBound`/`hRecover` of
+`bijOn_partitionIdeal_topComponents_of`, not asserted here: `cCodim` is a fixed combinatorial integer
+(the min over corner-`r` *orbits*), independent of the minimal primes, so this is a genuine Spec-side
+subset, not an alias of the bijection's image. -/
 def topComponents [IsAlgClosed k] [CharZero k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     (h : (kostantPartitions d r).Nonempty) :
     Set (Ideal (MvPolynomial (RepCoord d) k)) :=
@@ -315,23 +322,27 @@ The bijection rests on two facts about the corner-`≤ r` family, both pen-and-p
   corner-monotonicity** `cCodim d r < cCodim d s` for `s < r` (a corner-`s` orbit, `s < r`, has
   strictly larger codimension) plus the Gabriel reading `codimRep(Ō_{M'}) = codimForm`. This is what
   the landed `orbitRankLocus_minCodim_mem_minimalPrimes` quantifier `∀ corner-≤r M'` needs.
-* **`hRecover`** — every top-dimensional component is the orbit ideal of a *minimising corner-`r`*
-  Kostant-partition realizer. The content is the Gabriel normal form
-  (`exists_orbitRankLocus_mem_rankPattern_eq`) recast as a corner-`r` Kostant partition (the
-  `kostantArrayOfRank`/`CMPlus` recovery of `Core.OrbitKostant`, bridged to the `extendℤ` encoding)
-  plus corner-monotonicity forcing the corner to be exactly `r` on a top-dimensional component. -/
+* **`hRecover`** — every top-dimensional component is the orbit ideal of *some corner-`r`*
+  Kostant-partition realizer (membership in the full `kostantPartitions d r`, NOT pre-assumed
+  minimising — the minimising property is *derived* here from the top-dimensional height). The content
+  is the Gabriel normal form (`exists_orbitRankLocus_mem_rankPattern_eq` / `baseChange_normalForm`)
+  recast as a corner-`r` Kostant partition (the `kostantArrayOfRank`/`CMPlus` recovery of
+  `Core.OrbitKostant`, bridged to the `extendℤ` encoding), with corner-monotonicity forcing the corner
+  to be exactly `r` on a top-dimensional component. Phrasing it as `∈ kostantPartitions d r` (not
+  `∈ minimisingPartitions`) keeps it the genuine recovery brick, not a restatement of `SurjOn`. -/
 
-/-- **The count-bijection, gated on the corner-selection facts.** Under `hLowerBound` (minimising
-realizer is globally min-codim) and `hRecover` (every top component is a minimising corner-`r`
-realizer), the map `m ↦ partitionIdeal m` is a bijection from the minimising Kostant partitions
-(counted by `numTop`) onto the top-dimensional components of `Σ̄^r`. The injectivity is unconditional
-(`partition_eq_of_rankPattern_realizerD_eq`); `hLowerBound`/`hRecover` feed `MapsTo`/`SurjOn`. -/
+/-- **The count-bijection, gated on the corner-selection facts.** Under `hLowerBound` (every
+corner-`≤ r` orbit has codim `≥ cCodim`, so a minimising realizer is globally min-codim) and
+`hRecover` (every top component is *some* corner-`r` realizer), the map `m ↦ partitionIdeal m` is a
+bijection from the minimising Kostant partitions (counted by `numTop`) onto the top-dimensional
+components of `Σ̄^r`. The injectivity is unconditional (`partition_eq_of_rankPattern_realizerD_eq`);
+the minimising property in `SurjOn` is *derived* from the top-dimensional height, not assumed. -/
 theorem bijOn_partitionIdeal_topComponents_of [IsAlgClosed k] [CharZero k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (hLowerBound : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       ((cCodim d r h).toNat : ℕ∞) ≤ codimRepCanonical (orbitRankLocus M'))
     (hRecover : ∀ p ∈ topComponents (k := k) d r h,
-      ∃ m ∈ minimisingPartitions d r h, partitionIdeal (k := k) d r m = p) :
+      ∃ m ∈ kostantPartitions d r, partitionIdeal (k := k) d r m = p) :
     Set.BijOn (partitionIdeal (k := k) d r)
       ↑(minimisingPartitions d r h)
       (topComponents (k := k) d r h) := by
@@ -381,10 +392,25 @@ theorem bijOn_partitionIdeal_topComponents_of [IsAlgClosed k] [CharZero k]
     have h2 : realizerD (k := k) hm₂.1 ∈ orbitRankLocus (realizerD (k := k) hm₁.1) := by
       rw [hloc]; exact self_mem_orbitRankLocus _
     exact le_antisymm (h1 i j hij) (h2 i j hij)
-  · -- SurjOn: supplied by `hRecover`
+  · -- SurjOn: `hRecover` gives a corner-`r` partition; the top-dim height forces it minimising
     rintro p hp
     obtain ⟨m, hm, rfl⟩ := hRecover p hp
-    exact ⟨m, hm, rfl⟩
+    refine ⟨m, ?_, rfl⟩
+    rw [Finset.mem_coe, minimisingPartitions, Finset.mem_filter]
+    refine ⟨hm, ?_⟩
+    -- `codimForm(extendℤ m) = codimRep(Ō_{realizerD m}).toNat = p.height.toNat = cCodim.toNat`,
+    -- and both `codimForm` and `cCodim` are `≥ 0`, so they are equal as `ℤ`.
+    have hpheight : (partitionIdeal (k := k) d r m).height = ((cCodim d r h).toNat : ℕ∞) := hp.2
+    rw [partitionIdeal_of_mem hm, ← codimRepCanonical_orbitRankLocus_eq_height] at hpheight
+    have hval : codimRepCanonical (orbitRankLocus (realizerD (k := k) hm))
+        = ((cCodim d r h).toNat : ℕ∞) := hpheight
+    have hcf : codimForm N (extendℤ m) = ((cCodim d r h).toNat : ℤ) := by
+      rw [← codimRepCanonical_orbitRankLocus_realizerD (k := k) hm, hval, ENat.toNat_coe]
+    -- `cCodim ≥ 0` (a min of `codimForm`-values, each a `ℕ`-cast), so `cCodim.toNat = cCodim`
+    have hcCodim_nonneg : 0 ≤ cCodim d r h := by
+      rw [cCodim_eq_inf_geomCodim (k := k), Finset.le_inf'_iff]
+      exact fun m' _ ↦ Int.natCast_nonneg _
+    omega
 
 /-- **θ-count headline (gated).** `numTop d r = #{top-dimensional irreducible components of Σ̄^r}`:
 the combinatorial minimiser-count equals the number of minimal-codimension irreducible components,
@@ -392,14 +418,15 @@ under the corner-selection facts `hLowerBound`/`hRecover` (see `bijOn_partitionI
 The two hypotheses are pen-and-paper certified ((★): a corner-`s` orbit with `s < r` has strictly
 larger codimension, so the min-codim components sit at corner `r`; expedition thread 05) and reduce to
 two unbuilt `Core` lemmas — the corner-monotonicity of `cCodim` and the Gabriel-normal-form recovery
-of a corner-`r` Kostant partition — recorded in the module roadmap. The bijection's structure (and
-its injectivity) is proved unconditionally. -/
+of a corner-`r` Kostant partition — recorded in the module roadmap. The realizer infrastructure and
+the bijection's **injectivity** are proved unconditionally; `MapsTo`/`SurjOn` are reduced to
+`hLowerBound`/`hRecover`. -/
 theorem numTop_eq_ncard_topComponents_of [IsAlgClosed k] [CharZero k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (hLowerBound : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       ((cCodim d r h).toNat : ℕ∞) ≤ codimRepCanonical (orbitRankLocus M'))
     (hRecover : ∀ p ∈ topComponents (k := k) d r h,
-      ∃ m ∈ minimisingPartitions d r h, partitionIdeal (k := k) d r m = p) :
+      ∃ m ∈ kostantPartitions d r, partitionIdeal (k := k) d r m = p) :
     numTop d r h = (topComponents (k := k) d r h).ncard := by
   rw [numTop_eq_card_minimising, ← Set.ncard_coe_finset,
     (bijOn_partitionIdeal_topComponents_of (k := k) d r h hLowerBound hRecover).ncard_eq]

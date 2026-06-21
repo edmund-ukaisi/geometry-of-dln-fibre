@@ -54,7 +54,9 @@ sorry-patched. The `(2,2,2)`, `r=0` machinery fires (witnesses in-file).
   (`codim.toNat = codimForm (extendℤ m)`, consuming the LANDED `Core.CThetaGeometric`).
 - **`MapsTo` / `SurjOn` bookkeeping.** Fully proved modulo `hLowerBound`/`hRecover`: the minimiser's
   realizer is a minimal prime (LANDED `orbitRankLocus_minCodim_mem_minimalPrimes`, fed `hLowerBound`)
-  of height `cCodim.toNat` (top-dimensional); surjectivity is `hRecover`.
+  of height `cCodim.toNat` (top-dimensional); `SurjOn` consumes `hRecover` (a corner-`r` partition
+  with `partitionIdeal = p`) and **derives** the minimising property from the top-dim height +
+  `cCodim ≥ 0` (so `hRecover` is the recovery brick, not `SurjOn` restated).
 
 ## Gated on (the precise gap — NOT sorry-patched)
 
@@ -67,11 +69,14 @@ Two named hypotheses of `numTop_eq_ncard_topComponents_of` / `bijOn_partitionIde
    the corner while strictly dropping `codimForm`) + the Gabriel reading
    `codimRep(Ō_{M'}) = codimForm`. Feeds the `∀ corner-≤r M'` quantifier of
    `orbitRankLocus_minCodim_mem_minimalPrimes`.
-2. **`hRecover`** — every top-dimensional component is the orbit ideal of a *minimising corner-`r`*
-   Kostant-partition realizer. Content: the Gabriel normal form
+2. **`hRecover`** — every top-dimensional component is the orbit ideal of *some* corner-`r`
+   Kostant-partition realizer (`∃ m ∈ kostantPartitions d r, partitionIdeal m = p` — membership in the
+   FULL `kostantPartitions d r`, NOT pre-assumed minimising; the minimising property is **derived** in
+   `SurjOn` from the top-dimensional height + `cCodim ≥ 0`). Content: the Gabriel normal form
    (`exists_orbitRankLocus_mem_rankPattern_eq` / `baseChange_normalForm`) recast as a corner-`r`
    Kostant partition (the `kostantArrayOfRank`/`CMPlus` recovery of `Core.OrbitKostant`, bridged to
-   the `extendℤ` encoding), + corner-monotonicity forcing corner = `r` on a top-dim component.
+   the `extendℤ` encoding), + corner-monotonicity forcing corner = `r` on a top-dim component. Phrased
+   this way (not `∈ minimisingPartitions`) it is the genuine recovery brick, not `SurjOn` restated.
 
 **(★) certificate.** Pen-and-paper (expedition thread 05, this thread): (★) "every top-dimensional
 component has corner exactly `r`" is TRUE (strict corner-monotonicity; corner-`<r` orbits are absorbed /
@@ -109,6 +114,21 @@ risk; the brief's "land the reachable direction + report the precise gap" discip
 
 ## Status
 
-sorry-free + axiom-clean; whole library green. **Reviewer fidelity AUDIT: pending** (requested
-2026-06-21; Codex non-functional env-wide, reviewer is the decorrelation). Gap honestly named
-(gated headline + the two corner-selection hypotheses), NOT sorry-patched.
+sorry-free + axiom-clean; whole library green. **Reviewer fidelity AUDIT: PASS-with-notes**
+(reviewer 2026-06-21; Codex non-functional env-wide, reviewer was the decorrelation, independent
+adversarial pass). Verdict: no soundness break; injectivity + realizer infrastructure are
+unconditional axiom-clean bedrock; the gated headline is an honest deliverable (built skeleton +
+load-bearing injectivity; the open content named in two hypotheses). Notes **applied**:
+- (N2) `hRecover` was `SurjOn` restated verbatim → **reformulated** to `∈ kostantPartitions d r` (the
+  genuine Gabriel-recovery brick), with the minimising property now **derived** in `SurjOn` from the
+  top-dim height + `cCodim ≥ 0` — `hRecover` is no longer a restatement of the conclusion.
+- (N1b) `topComponents` docstring "(the minimal codimension)" gloss → **tightened** to state that
+  `cCodim` IS the min codim is delivered by the gating hypotheses, not asserted (with the
+  non-circularity argument: `cCodim` is a fixed combinatorial integer, so `topComponents` is a genuine
+  Spec-side subset, not the bijection's image).
+- (N8) headline/module-header "bijection's structure proved unconditionally" overclaim → **corrected**
+  to "realizer infrastructure + injectivity unconditional; MapsTo/SurjOn gated".
+
+Gap honestly named (gated headline + the two corner-selection hypotheses), NOT sorry-patched. The
+(★) "thousands of cases" enumeration is pen-and-paper evidence (not machine-checked here) — the
+corner-monotonicity lemma is the roadmap'd item that would make it machine-checked.
