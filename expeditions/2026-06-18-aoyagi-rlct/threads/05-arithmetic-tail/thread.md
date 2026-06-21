@@ -3341,3 +3341,30 @@ This is an endpoint-inventory obstruction, not coverage.  It does not prove
 source-label legality, own-source-label status, all-coordinate endpoint
 realisation, injection, back-to-label coverage, pole order, normal crossings,
 or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq4 rising-boundary gap
+
+Reproduction:
+`reproduction-lemma5-eq4-rising-boundary-gap-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-rising-boundary-gap.md`.
+Review artifact:
+`review-lemma5-eq4-rising-boundary-gap-a5.md`.
+
+Lean now packages the Eq4 lower-endpoint gap at the rising boundary:
+
+```text
+aoyagiLemma5Eq4_no_piecewiseSourceVector_of_not_indexGuard
+aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a
+aoyagiLemma5Eq5_risingBoundary_eq_a_noEq4LowerEndpoint
+```
+
+The Eq4 source-shaped certificate carries the repaired guard `p+1<=a`, so at
+`p=a` it would require `a+1<=a`, impossible.  Under `a<=ell`, `1<=a`, and
+`a<=ell-a`, the same coordinate is still in Eq5's rising region, so Eq5
+strict offsets are the same-coordinate interval with both endpoints erased.
+
+This is a gap record, not a lower-endpoint replacement.  It does not prove
+Eq4 source-label legality, construction of Eq4/Eq5 vectors, all-coordinate
+endpoint realisation, injection, back-to-label coverage, pole order, normal
+crossings, or RLCT extraction.

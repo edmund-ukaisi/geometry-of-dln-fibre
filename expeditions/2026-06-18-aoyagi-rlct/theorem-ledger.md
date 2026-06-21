@@ -3888,6 +3888,23 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
 
+Latest A5 Eq4 rising-boundary gap update:
+`Lemma5DisplayedVector.lean` now has
+`aoyagiLemma5Eq4_no_piecewiseSourceVector_of_not_indexGuard`,
+`aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a`, and
+`aoyagiLemma5Eq5_risingBoundary_eq_a_noEq4LowerEndpoint`.
+At `p=a`, the Eq4 repaired guard would require `a+1<=a`, so no supplied
+Eq4-piecewise source vector of this shape exists.  Under `a<=ell`, `1<=a`,
+and `a<=ell-a`, Eq5 at the same coordinate is still in the rising
+erased-endpoints case.  This is a gap record, not a replacement lower-endpoint
+construction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-boundary-gap-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-rising-boundary-gap.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-rising-boundary-gap-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

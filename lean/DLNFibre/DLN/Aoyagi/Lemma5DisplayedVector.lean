@@ -453,6 +453,27 @@ structure AoyagiLemma5Eq4PiecewiseSourceVector
       C.point (p + (ell - a) + 1) - 1 < S →
         T S = aoyagiHtildeUpperNat ell a M m b
 
+/-- If equation `(4)`'s repaired index guard fails, no supplied
+Eq4-piecewise source vector of this shape exists. -/
+theorem aoyagiLemma5Eq4_no_piecewiseSourceVector_of_not_indexGuard
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hfail : ¬ (p + 1 ≤ a)) :
+    ¬ AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T := by
+  intro hT
+  exact hfail hT.indexGuard
+
+/-- At the rising boundary `p=a`, equation `(4)`'s repaired guard would require
+`a+1<=a`, so no supplied Eq4-piecewise source vector of this shape exists. -/
+theorem aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp : p = a) :
+    ¬ AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T := by
+  intro hT
+  have hguard : p + 1 ≤ a := hT.indexGuard
+  omega
+
 /-- The repaired equation `(4)` selected-index guard makes the displayed
 boundary `S_(p+ell-a+2)-1` a selected cutpoint index. -/
 theorem aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector
@@ -2625,6 +2646,25 @@ theorem aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
     rcases hz.2 with hz_lower | hz_offset
     · exact False.elim (hz.1 hz_lower)
     · exact hz_offset
+
+/-- At the rising boundary `p=a`, Eq5 still has the rising endpoint deficit,
+while no Eq4-piecewise source vector of the repaired source shape exists.
+
+This is an obstruction record, not a replacement lower-endpoint construction. -/
+theorem aoyagiLemma5Eq5_risingBoundary_eq_a_noEq4LowerEndpoint
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (ha : a ≤ ell) (ha_pos : 1 ≤ a) (ha_c : a ≤ ell - a) :
+    aoyagiLemma5Eq5OffsetValueSet ell a a M m =
+        ((aoyagiHtildeIntervalValueSetNat ell a M m a).erase
+          (aoyagiHtildeUpperNat ell a M m a)).erase
+            (aoyagiHtildeLowerNat ell a M m a) ∧
+      ¬ AoyagiLemma5Eq4PiecewiseSourceVector ell a a M m C layerWidth T := by
+  constructor
+  · exact aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
+      ell a a M m ha ha_pos le_rfl ha_c
+  · exact aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a
+      ell a a M m C layerWidth T rfl
 
 /-- Every positive coordinate falls into one of the two Eq5 endpoint-deficit
 set cases.

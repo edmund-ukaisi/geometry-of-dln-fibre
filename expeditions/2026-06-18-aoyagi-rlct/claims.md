@@ -2516,6 +2516,13 @@ No such claim is formalisation-ready until both fields are filled.
   is outside the same-coordinate interval and cannot fill that interval when
   inserted into the Eq5 strict offsets.  This is an obstruction record, not an
   endpoint-coverage theorem.
+  Also proved the Eq4 rising-boundary gap:
+  `aoyagiLemma5Eq4_no_piecewiseSourceVector_of_not_indexGuard`,
+  `aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a`, and
+  `aoyagiLemma5Eq5_risingBoundary_eq_a_noEq4LowerEndpoint`.  At `p=a`, the
+  repaired Eq4 guard would require `a+1<=a`; under the rising hypotheses
+  `1<=a` and `a<=ell-a`, Eq5 still misses both endpoints at that coordinate.
+  This is a gap record, not a lower-endpoint construction.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

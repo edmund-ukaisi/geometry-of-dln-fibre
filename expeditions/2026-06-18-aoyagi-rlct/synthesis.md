@@ -3237,6 +3237,22 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
 
+The Eq4 rising-boundary gap is now recorded.  `AoyagiLemma5Eq4PiecewiseSourceVector`
+has the repaired selected-index guard `p+1<=a`; hence
+`aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a` proves that no such Eq4
+certificate exists at `p=a`.  The combined theorem
+`aoyagiLemma5Eq5_risingBoundary_eq_a_noEq4LowerEndpoint` records that under
+`a<=ell`, `1<=a`, and `a<=ell-a`, Eq5 is still in the rising erased-endpoints
+case at this same coordinate, while Eq4 cannot supply a lower endpoint through
+the current source-shaped certificate.  This is distinct from the existing
+`p+1=a` terminal Eq4 obstruction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-boundary-gap-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-rising-boundary-gap.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-rising-boundary-gap-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
