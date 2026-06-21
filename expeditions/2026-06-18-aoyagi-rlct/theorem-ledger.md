@@ -4150,6 +4150,26 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
 
+Latest A5 terminal source endpoint payload update:
+`Lemma5TerminalSourceBridge.lean` now has
+`aoyagiLemma5TerminalSourceEndpointPayload`,
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_terminalEndpointPayload`,
+and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_terminalEndpointPayload`.
+These combine the existing terminal source-realisation bridge with terminal
+source-label bookkeeping.  Under an explicit source-realisation equality,
+terminal source range, and terminal width positivity, a supplied branch gives
+terminal Eq5 finite-set coverage plus introduced-label membership for
+`(C.point ell-1,1)`.  This is not source branch construction, not a proof of
+the source-realisation equality, not terminal exactness, not classifier or
+back-to-label coverage, and not pole order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-endpoint-payload-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-endpoint-payload.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-endpoint-payload-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

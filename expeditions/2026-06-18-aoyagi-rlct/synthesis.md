@@ -3506,6 +3506,33 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
 
+The terminal source endpoint payload slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalSourceBridge.lean`.  New Lean names:
+`aoyagiLemma5TerminalSourceEndpointPayload`,
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_terminalEndpointPayload`,
+and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_terminalEndpointPayload`.
+For a supplied full-family branch, an explicit source-realisation equality
+`T(C.point ell-1)=F.fullH x (Fin.last ell)` now yields both terminal Eq5
+finite-set coverage and terminal source-label bookkeeping for
+`(C.point ell-1,1)`, under explicit terminal source range and width-positivity
+hypotheses.  This is not terminal branch construction, not source-realisation
+production, not terminal exactness, not classifier/injection/back-to-label
+coverage, and not pole order/RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-endpoint-payload-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-source-endpoint-payload.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-source-endpoint-payload-a5.md`.
+
+The latest A5 scout pass recommends the next source-facing endpoint target:
+formalise the Eq4 rising non-strict split.  Under rising hypotheses, failure
+of the strict endpoint case `p+1<a` should split into `p+1=a` and `p=a`, with
+the `p+1=a` terminal-collision case kept separate from the existing `p=a`
+no-repaired-Eq4-guard gap.  Do not fold this into classifier, injection, or
+source-backed Lemma 5 exactness.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in

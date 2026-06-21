@@ -3791,3 +3791,32 @@ This is supplied finite exactness only.  It does not construct the
 counted-datum classifier, branch-coordinate map, back-to-label bridge, or
 branch-label injectivity from Aoyagi's source; it is not a pole-order,
 normal-crossing, or RLCT theorem.
+
+## 2026-06-21 Lean Lemma 5 terminal source endpoint payload
+
+Reproduction:
+`reproduction-lemma5-terminal-source-endpoint-payload-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-source-endpoint-payload.md`.
+Review artifact:
+`review-lemma5-terminal-source-endpoint-payload-a5.md`.
+
+Lean now packages the terminal endpoint consequences of a realised supplied
+full-family branch:
+
+```text
+aoyagiLemma5TerminalSourceEndpointPayload
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalSource_terminalEndpointPayload
+AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalSource_terminalEndpointPayload
+```
+
+The payload combines terminal Eq5 finite-set coverage with terminal
+source-label bookkeeping for `(C.point ell-1,1)`.  Both branch-family theorems
+keep the source-realisation equality
+`T(C.point ell-1)=F.fullH x (Fin.last ell)` explicit, and also require
+terminal source range and width positivity for the introduced-label side.
+
+This does not construct the terminal source branch, prove the source
+realisation equality, prove terminal exactness, construct a classifier,
+prove injection or back-to-label coverage, compute pole order, prove normal
+crossings, or extract RLCT.

@@ -21,15 +21,17 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Current A5 state includes the terminal source-realisation bridge slice and a
-new counted-datum classifier-boundary slice.  A supplied full-family branch
-fills the terminal Eq5 singleton only under an explicit source-coordinate
-equality `T(C.point ell-1)=fullH x (Fin.last ell)`.  Terminal binary chain data
-now gives a single nonbase counted datum under an explicit non-base-value
-hypothesis, and a supplied counted-datum classifier on `terminalMinimumLabels`
-gives the upper count.  A further supplied back-to-label boundary records that
-if a terminal-minimum counted datum is matched by a supplied branch carrying
-the same terminal label, then the existing `UpperBoundClassifier` follows.
+Current A5 state includes the terminal source-realisation bridge slice, the
+terminal source endpoint payload slice, and counted-datum classifier-boundary
+slices.  A supplied full-family branch fills the terminal Eq5 singleton and
+terminal introduced-label payload only under an explicit source-coordinate
+equality `T(C.point ell-1)=fullH x (Fin.last ell)`, plus terminal source range
+and width-positivity hypotheses.  Terminal binary chain data now gives a
+single nonbase counted datum under an explicit non-base-value hypothesis, and
+a supplied counted-datum classifier on `terminalMinimumLabels` gives the upper
+count.  A further supplied back-to-label boundary records that if a
+terminal-minimum counted datum is matched by a supplied branch carrying the
+same terminal label, then the existing `UpperBoundClassifier` follows.
 The meaningful source frontier is still the
 upper-bound/no-extra side of Aoyagi Lemma 5: the renewed source probe confirms
 that PDF p. 26's interval count plus the Case 1(2) sentence that `J` increases
@@ -92,6 +94,8 @@ Current terminal source-realisation iff zero slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-realisation-iff-zero-a5.md`.
 Current terminal source-label slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-label-a5.md`.
+Current terminal source endpoint payload slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-endpoint-payload-a5.md`.
 Current terminal binary counted-datum maps-to slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`.
 Current terminal-minimum counted-datum classifier slice:
@@ -131,13 +135,14 @@ Immediate order:
    boundary.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. Next source-facing target: continue the endpoint inventory around the
-   remaining gaps: source-backed terminal branch construction, and any Eq4
-   lower endpoint cases at rising coordinates not satisfying Eq4's strict
-   guard beyond the recorded `p=a` boundary.  Source-label legality,
-   injection, and back-to-label coverage remain unproved.  Do not claim
-   Aoyagi's printed Case 1(2) paragraph supplies source coverage or
-   injectivity.
+3. Next source-facing target: continue the endpoint inventory with the Eq4
+   rising non-strict split recommended by the latest source scout.  Under
+   rising hypotheses, failure of the strict `p+1<a` endpoint case splits into
+   `p+1=a` and `p=a`; keep the `p+1=a` terminal-collision case separate from
+   the `p=a` no-repaired-Eq4-guard case.  Source-backed terminal branch
+   construction, source-label legality, injection, and back-to-label coverage
+   remain unproved.  Do not claim Aoyagi's printed Case 1(2) paragraph
+   supplies source coverage or injectivity.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
 5. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an

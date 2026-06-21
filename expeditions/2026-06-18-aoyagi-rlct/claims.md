@@ -1766,6 +1766,11 @@ No such claim is formalisation-ready until both fields are filled.
   label bounds for `k=Htilde_p+1` imply `actualWidthLabel` only after explicit
   source-layer range, selected-width/actual-width compatibility, and Nat/Int
   label compatibility are supplied.
+  The terminal source endpoint payload is now also Lean-proved: a supplied
+  branch whose terminal chain coordinate is explicitly realised by the source
+  terminal coordinate gives terminal Eq5 finite-set coverage and terminal
+  introduced-label membership, still under explicit source-realisation,
+  source-range, and width-positivity hypotheses.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1817,7 +1822,9 @@ No such claim is formalisation-ready until both fields are filled.
   terminal endpoint boundary at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq4-terminal-endpoint-boundary-a5.md`;
   actual-width label bridge at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-actual-width-label-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-actual-width-label-a5.md`;
+  terminal source endpoint payload at
+  `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-endpoint-payload-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1872,7 +1879,10 @@ No such claim is formalisation-ready until both fields are filled.
   and xhigh Lean/API audit `Hilbert` at
   `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-endpoint-boundary-a5.md`;
   actual-width label bridge checked by xhigh `Ohm` at
-  `threads/05-arithmetic-tail/review-lemma5-eq4-actual-width-label-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq4-actual-width-label-a5.md`;
+  terminal source endpoint payload checked by xhigh API scout `Euclid` and
+  xhigh hardener `Carver` at
+  `threads/05-arithmetic-tail/review-lemma5-terminal-source-endpoint-payload-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
