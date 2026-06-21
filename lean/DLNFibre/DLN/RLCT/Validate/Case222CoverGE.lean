@@ -137,6 +137,47 @@ theorem p0_support_subset_cube (x : Fin 8 → ℝ)
   · have := hob 6; simp only [step1A, Matrix.cons_val] at this; exact ⟨this.1.le, this.2.le⟩
   · have := hob 7; simp only [step1A, Matrix.cons_val] at this; exact ⟨this.1.le, this.2.le⟩
 
+/-- The symmetric unit cube `[−1, 1]^8` — the bounded box the `p = 0` leaf support sits inside
+(`p0_support_subset_cube`); the box on which the per-leaf monomial integrability is transported. -/
+noncomputable def cube8 : Set (Fin 8 → ℝ) := Set.univ.pi (fun _ => Set.Icc (-1 : ℝ) 1)
+
+/-- `cube8` is measurable. -/
+theorem cube8_meas : MeasurableSet cube8 := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+
+/-- The `p = 0` step-1 leaf-summand integrand: `|det φ₁| · (openBox.indicator |myF222|^{−c'}) ∘ φ₁`. -/
+noncomputable def p0integrand (c' : NNReal) (x : Fin 8 → ℝ) : ℝ≥0∞ :=
+  ENNReal.ofReal |(pivotBlowupOnDeriv Aact 0 x).det|
+    * openBox.indicator (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c' : ℝ)))) (pivotBlowupOn Aact 0 x)
+
+/-- The `p = 0` integrand vanishes off `{step1A x ∈ openBox}` (the `openBox.indicator` factor). -/
+theorem p0integrand_support (c' : NNReal) (x : Fin 8 → ℝ) (hx : p0integrand c' x ≠ 0) :
+    step1A x ∈ openBox := by
+  unfold p0integrand at hx
+  by_contra hni
+  rw [show pivotBlowupOn Aact 0 x = step1A x from (step1A_eq_pivotBlowupOn x).symm,
+    Set.indicator_of_notMem hni, mul_zero] at hx
+  exact hx rfl
+
+/-- **`p = 0` cube-bound reduction.** The step-1 `p = 0` summand is bounded by the integral over the
+bounded cube `cube8`: the integrand vanishes off `{step1A x ∈ openBox}`, and there (on the chart
+domain) `x ∈ cube8` (`p0_support_subset_cube`); so the chart-domain indicator is dominated by the
+`cube8` indicator (`lintegral_indicator` + `lintegral_mono`). Reduces the unbounded chart-domain
+integral to a bounded box, where the per-leaf monomial integrability applies. -/
+theorem p0_summand_le_cube (c' : NNReal) :
+    ∫⁻ x in chartDomOn Aact 0 \ pivotZeroOn 0, p0integrand c' x
+      ≤ ∫⁻ x in cube8, p0integrand c' x := by
+  rw [← lintegral_indicator (chartDomOn_diff_measurableSet Aact 0) (p0integrand c'),
+    ← lintegral_indicator cube8_meas (p0integrand c')]
+  apply lintegral_mono
+  intro x
+  by_cases hmem : x ∈ chartDomOn Aact 0 \ pivotZeroOn 0
+  · rw [Set.indicator_of_mem hmem]
+    by_cases hf : p0integrand c' x = 0
+    · rw [hf]; exact zero_le _
+    · rw [Set.indicator_of_mem (show x ∈ cube8 from
+        p0_support_subset_cube x hmem.1 (p0integrand_support c' x hf))]
+  · rw [Set.indicator_of_notMem hmem]; exact zero_le _
+
 /-- **A step-1 A-pivot leaf-summand is finite (below `3/2`).** For each A-pivot `p ∈ {0,1,2,3}` and
 `c' < 3/2`, the `p`-cell of the step-1 `g5_pivotNode` split — the chart-domain integral of
 `|det φ₁ₚ| · (openBox.indicator |myF222|^{−c'}) ∘ φ₁ₚ` — is finite. This is the per-A-pivot recursion
