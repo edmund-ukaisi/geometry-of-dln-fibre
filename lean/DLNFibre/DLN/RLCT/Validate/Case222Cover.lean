@@ -62,4 +62,44 @@ theorem monomialIntegrand_integrable_of_lt (d : ℕ) (k h : Fin d → ℕ) (c' :
   have hle : (c' : ℝ) ≤ (d' : ℝ) := by exact_mod_cast (by exact_mod_cast hc'c.le : c' ≤ d')
   exact monomialIntegrand_downset d k h (c' : ℝ) (d' : ℝ) (by exact_mod_cast hc') hle hint
 
+/-- **Unit-factor threshold-invariance (the per-leaf fidelity bridge).** A leaf's integrand factors
+as `monomialIntegrand d k h c · |unit|^{−c}` (NOT a bare monomial — the residual `unit` with
+`unit 0 ≠ 0` is nonconstant). On a set where `|unit| ∈ [a, b]` (`0 < a`), the bounded factor
+`|unit|^{−c}` does NOT change integrability — `monomial·|unit|^{−c}` integrable ⟺ `monomial`
+integrable — via `Integrable.bdd_mul` both ways (the `S1.3` `rlct_unit_invariant_aux` technique,
+fixed-box form). So the leaf's `monomialThreshold` IS its actual RLCT: the load-bearing per-leaf
+identification (the `(2,2,2)` analogue of the seam's coordinate identification). NOTE the equality
+to a *bare* monomial is FALSE for a nonconstant unit — the invariance is the correct statement. -/
+theorem integrableOn_monomial_mul_unit_iff (d : ℕ) (k h : Fin d → ℕ) (unit : (Fin d → ℝ) → ℝ)
+    (S : Set (Fin d → ℝ)) (c : ℝ) (a b : ℝ) (ha : 0 < a) (hmeas : Measurable unit)
+    (hunit : ∀ᵐ u ∂(volume.restrict S), a ≤ |unit u| ∧ |unit u| ≤ b) :
+    IntegrableOn (fun u => monomialIntegrand d k h c u * |unit u| ^ (-c)) S volume
+      ↔ IntegrableOn (monomialIntegrand d k h c) S volume := by
+  constructor
+  · intro hint
+    have key : IntegrableOn
+        (fun u => |unit u| ^ c * (monomialIntegrand d k h c u * |unit u| ^ (-c))) S volume := by
+      refine Integrable.bdd_mul (c := max (a ^ c) (b ^ c)) hint
+        ((by fun_prop : Measurable (fun u => |unit u| ^ c)).aestronglyMeasurable) ?_
+      filter_upwards [hunit] with u hu
+      rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+      rcases le_or_gt 0 c with hc | hc
+      · exact le_max_of_le_right (Real.rpow_le_rpow (abs_nonneg _) hu.2 hc)
+      · exact le_max_of_le_left (Real.rpow_le_rpow_of_nonpos ha hu.1 hc.le)
+    refine key.congr ?_
+    filter_upwards [hunit] with u hu
+    have hupos : (0 : ℝ) < |unit u| := lt_of_lt_of_le ha hu.1
+    rw [← mul_assoc, mul_comm (|unit u| ^ c), mul_assoc, ← Real.rpow_add hupos]; simp
+  · intro hint
+    have key : IntegrableOn (fun u => |unit u| ^ (-c) * monomialIntegrand d k h c u) S volume := by
+      refine Integrable.bdd_mul (c := max (a ^ (-c)) (b ^ (-c))) hint
+        ((by fun_prop : Measurable (fun u => |unit u| ^ (-c))).aestronglyMeasurable) ?_
+      filter_upwards [hunit] with u hu
+      rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+      rcases le_or_gt 0 (-c) with hc | hc
+      · exact le_max_of_le_right (Real.rpow_le_rpow (abs_nonneg _) hu.2 hc)
+      · exact le_max_of_le_left (Real.rpow_le_rpow_of_nonpos ha hu.1 hc.le)
+    refine key.congr ?_
+    filter_upwards [] with u; rw [mul_comm]
+
 end DLNFibre.DLN.RLCT
