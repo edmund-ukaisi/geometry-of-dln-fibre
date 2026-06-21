@@ -132,14 +132,15 @@ theorem weightedThreshold_transport
   weightedThreshold_transport_aux F φ wstar π Dπ E hproper hE_meas hE_null hinj hderiv hsurj hImE
 
 /-- **S1.3 (Lemma 1, ideal invariance core).** The RLCT is invariant under multiplying `F` by a unit
-`u` bounded away from `0` near `w*` (`0 < a ≤ |u| ≤ b` on a neighbourhood) — the operative content
-of "depends only on the ideal" (and what reduces `λ(⟨Fᵢ⟩)` to `λ(∑Fᵢ²)`, and removes the bump and
-`Σ_X`). Non-vacuous: it equates the RLCT of `u·F` to that of `F`. -/
+`u` (measurable, bounded `0 < a ≤ |u| ≤ b` near `w*`) — the operative "depends only on the ideal"
+content (reduces `λ(⟨Fᵢ⟩)` to `λ(∑Fᵢ²)`, removes the bump and `Σ_X`). `Measurable u` is the
+11th-finding fidelity fix (the integrand pushforward needs it). Wired to `rlct_unit_invariant_aux`
+(`Foundations/S1Local`). Non-vacuous: equates the RLCT of `u·F` to that of `F`. -/
 theorem rlct_unit_invariant (H : Fin (L + 1) → ℕ) (F u : Params H → ℝ) (wstar : Params H)
-    (a b : ℝ) (ha : 0 < a)
+    (a b : ℝ) (ha : 0 < a) (hmeas : Measurable u)
     (hu : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, a ≤ |u w| ∧ |u w| ≤ b) :
-    rlctAt H (fun w => u w * F w) wstar = rlctAt H F wstar := by
-  sorry
+    rlctAt H (fun w => u w * F w) wstar = rlctAt H F wstar :=
+  rlct_unit_invariant_aux H F u wstar a b ha hmeas hu
 
 /-- **S1.4 (germ-locality / φ-independence).** The RLCT depends only on the germ of `F` at `w*`: if
 `F` and `G` agree on a neighbourhood of `w*`, their RLCTs are equal. This is the bump-independence
