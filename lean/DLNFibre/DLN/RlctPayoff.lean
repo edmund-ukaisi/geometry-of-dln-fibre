@@ -315,8 +315,8 @@ theorem rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi (I : RlctInterface d K �
 
 /-- **The RLCT payoff at `r = 0` against the orbit-codim infimum (bridge (a)).** Combining the payoff
 with bridge (a) (`codimRepCanonical_fibre_zero_eq_iInf_orbitCodim`): the rlct of `K^DLN_0` is half the
-minimum geometric codimension over the corner-`0` orbit closures. The `cCodim`-form (that this infimum
-*is* `C`) is `rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi`, through bridge (b). -/
+minimum geometric codimension over the corner-`0` orbit closures. The `cCodim`-form (that this
+infimum *is* `C`) is `rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi`, through bridge (b). -/
 theorem rlct_lossDLN_zero_eq_half_iInf_orbitCodim_via_aoyagi (I : RlctInterface d K ι) :
     I.rlct (lossDLN d 0)
       = ((⨅ M ∈ {M : Tuple (k := K) d | (mult d M).rank ≤ 0},
@@ -352,8 +352,6 @@ RLCT value `3/2`. The codimension side is shown over `AlgebraicClosure ℚ`; the
 (which carries the embedding `ℝ →+* ℂ` the interface needs — there is no ring hom `ℝ →+* ℚ̄`). -/
 
 section Witness
-
-open scoped Classical
 
 /-- **`(2,2,2)`, `r = 0`: the geometric codimension of `mult⁻¹(0)` is `3`**, over `AlgebraicClosure ℚ`
 — the geometric reading of the combinatorial `C = cCodim d222 0 = 3` (LR Ex 4.3), via bridge (b). -/
