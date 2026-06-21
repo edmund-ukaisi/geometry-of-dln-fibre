@@ -82,10 +82,22 @@ theorem rlctAtOn_case212_eq_product :
 `Fin 2 → ℝ`, which is `smoothBlockND_rlct 1` (`m = 1`, `n = m+1 = 2`, value `(m+1)/2 = 1`) bridged
 across the `EuclideanSpace ℝ (Fin 2) ≃ Fin 2 → ℝ` identification. -/
 theorem rlctAtOn_blockG_eq_one : rlctAtOn blockG (0 : Fin 2 → ℝ) = 1 := by
-  sorry
+  -- bridge `Fin 2 → ℝ` to `EuclideanSpace ℝ (Fin 2)` via the measure-preserving homeomorph `toLp`
+  -- (`PiLp.volume_preserving_toLp`), then `smoothBlockND_rlct 1` gives `(1+1)/2 = 1`.
+  set e : (Fin 2 → ℝ) ≃ₜ EuclideanSpace ℝ (Fin 2) :=
+    (EuclideanSpace.equiv (Fin 2) ℝ).toHomeomorph.symm with he
+  have hmp : MeasurePreserving e volume volume := PiLp.volume_preserving_toLp (Fin 2)
+  have hemb : MeasurableEmbedding e := e.measurableEmbedding
+  have key := rlctAtOn_comp_homeomorph e hmp hemb
+    (fun x : EuclideanSpace ℝ (Fin 2) => ∑ i, x i ^ 2) 0
+  have he0 : e 0 = 0 := by simp [he]
+  rw [he0, smoothBlockND_rlct 1] at key
+  rw [show blockG = (fun w => ∑ i, (e w) i ^ 2) from by funext x; simp [blockG, he]]
+  rw [key, show ((1 : ℕ) : ℝ≥0∞) + 1 = 2 by norm_num,
+    ENNReal.div_self (by norm_num) (by norm_num)]
 
-theorem rlctAtOn_blockH_eq_one : rlctAtOn blockH (0 : Fin 2 → ℝ) = 1 := by
-  sorry
+theorem rlctAtOn_blockH_eq_one : rlctAtOn blockH (0 : Fin 2 → ℝ) = 1 :=
+  rlctAtOn_blockG_eq_one
 
 /-- A sum-of-squares block `Σᵢ xᵢ²` vanishes only at the origin, a `volume`-null singleton on
 `Fin 2 → ℝ`, so it is nonzero a.e. (the `hGne`/`hHne` input to `product_min_rlct_of_ne`). -/
