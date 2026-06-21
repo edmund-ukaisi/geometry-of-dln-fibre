@@ -2217,3 +2217,29 @@ certificates.  Eq3 keeps its explicit slack and the rising-region guard
 `1 <= ell-a` remains explicit.  The theorem does not construct displayed
 vectors, prove source-label legality, cover all intervals, package all branch
 families, prove Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 supplied upper and Eq4 interval coverage
+
+Reproduction:
+`reproduction-lemma5-supplied-upper-eq4-interval-coverage-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-supplied-upper-eq4-interval-coverage.md`.
+Review artifact:
+`review-lemma5-supplied-upper-eq4-interval-coverage-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min
+```
+
+For any one coordinate in the rising range, a supplied upper endpoint value
+and a supplied Eq4 lower own-coordinate value fill the endpoints missing from
+the strict Eq5 offset set.  The upper equality is an explicit hypothesis; this
+is not a claim that printed Eq3 supplies an upper endpoint or source label.
+
+This is one-interval finite-set bookkeeping only.  It keeps the rising-region
+guards `1 <= p`, `p <= a`, and `p <= ell-a` explicit.  It does not construct
+displayed vectors, prove source-label legality, cover all intervals, package
+all branch families, prove Lemma 5 order count, normal crossings, or RLCT
+extraction.

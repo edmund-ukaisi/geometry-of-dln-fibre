@@ -2611,6 +2611,23 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-first-interval-supplied-shaped-coverage-a5.md`.
 
+One-interval coverage now has a p-general supplied-upper finite-set wrapper.
+The theorem
+`aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` proves that an
+explicitly supplied upper endpoint equality, a supplied Eq4 lower
+own-coordinate value, and the strict Eq5 offset set equal
+`aoyagiHtildeIntervalValueSetNat ell a M m p`.  This deliberately keeps the
+upper endpoint as an input rather than claiming printed Eq3 supplies it.  It is
+only one-interval finite-set bookkeeping; it does not construct displayed
+vectors, prove source-label legality, cover all intervals, package all
+branches, prove Lemma 5 order count, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-upper-eq4-interval-coverage-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-upper-eq4-interval-coverage.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-supplied-upper-eq4-interval-coverage-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

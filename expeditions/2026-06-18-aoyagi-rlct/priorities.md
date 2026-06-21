@@ -849,6 +849,11 @@ on the session's original cwd.
    count-side coverage bridge below the displayed-family realisation boundary,
    not a claim that the printed Eq3 branch supplies that endpoint.  It is not
    yet an all-interval or all-branch order-count theorem.
+   A p-general supplied-upper finite-set wrapper is now also proved.  It fills
+   one interval from an explicit upper endpoint equality, a supplied Eq4 lower
+   endpoint, and the strict Eq5 offsets, without claiming printed Eq3 supplies
+   the upper endpoint.  This should be the reusable API for later
+   branch-specific endpoint instantiations.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

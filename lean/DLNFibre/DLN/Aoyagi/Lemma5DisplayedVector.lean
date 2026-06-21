@@ -2118,6 +2118,49 @@ theorem aoyagiLemma5_suppliedEq3Upper_Eq4_firstInterval_insertOwnCoordinates_eq_
     _ = aoyagiHtildeIntervalValueSetNat ell a M m 1 :=
       Finset.insert_erase hupper_mem
 
+/-- In any rising-range interval, a supplied upper endpoint value and supplied
+equation `(4)` lower own-coordinate fill the two endpoints missing from the
+strict Eq5 offset set.
+
+This is a finite-set equality for supplied certificates only.  It does not
+construct an upper-endpoint displayed vector, prove source-label legality,
+cover all intervals, prove pole order, normal crossings, or RLCT extraction.
+-/
+theorem aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (Tupper layerWidth4 T4 : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hupper :
+      Tupper (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p)
+    (hT4 : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth4 T4) :
+    insert (Tupper (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hEq4 :=
+    aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_le_min
+      ell a p M m C layerWidth4 T4 hell hp_pos hp_a hp_c hselected hsource hT4
+  have hupper_mem :
+      aoyagiHtildeUpperNat ell a M m p ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m p :=
+    aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+      ell a p M m hT4.a_le_ell (by omega)
+  calc
+    insert (Tupper (C.point p - 1))
+        (insert (T4 (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m))
+        =
+          insert (aoyagiHtildeUpperNat ell a M m p)
+            ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+              (aoyagiHtildeUpperNat ell a M m p)) := by
+            rw [hEq4, hupper]
+    _ = aoyagiHtildeIntervalValueSetNat ell a M m p :=
+      Finset.insert_erase hupper_mem
+
 /-- A supplied equation `(5)` own-coordinate branch has the displayed value
 `Htilde'_p - alpha` on block `p`. -/
 theorem aoyagiLemma5Eq5_ownCoordinate_value

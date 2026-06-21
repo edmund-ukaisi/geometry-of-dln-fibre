@@ -3235,6 +3235,24 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-first-interval-supplied-shaped-coverage-a5.md`.
 
+Latest A5 update: one-interval coverage now has a p-general supplied-upper
+finite-set wrapper in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.
+The name is
+`aoyagiLemma5_suppliedUpper_Eq4_insertOwnCoordinate_eq_intervalValueSetNat_of_le_min`.
+It combines the existing Eq4/Eq5 erase-upper equality with an explicitly
+supplied upper endpoint equality to prove that the upper endpoint, supplied
+Eq4 lower endpoint, and strict Eq5 offset set equal the full interval at
+coordinate `p`.  This is not a printed Eq3 claim; the upper endpoint equality
+is an input.  This is one-interval finite-set bookkeeping only.  It does not
+construct displayed vectors, prove source-label legality, cover all intervals,
+package all branches, prove order count, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-upper-eq4-interval-coverage-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-upper-eq4-interval-coverage.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-supplied-upper-eq4-interval-coverage-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
