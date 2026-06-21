@@ -100,3 +100,18 @@ avoidance) — architecture CLEAN (PrimeSpectrum/⨅ route, no point-space union
   min-codimForm restricted to minimisers; the height=codimForm transport is LANDED). Then Phase D, then R-interface.
 - **ENV FLAG: Codex non-functional in this worktree** (codex doctor/exec timeout, exit 143/144). Decorrelated-
   Codex discipline degraded → use the reviewer for decorrelation until Codex returns. Flagged to operator.
+
+## 2026-06-21 — θ-count PARTIAL (bijection + injectivity landed; count gated on 2 bricks)
+`Core.ThetaComponentCount`: `numTop_eq_ncard_topComponents_of` (count headline, GATED) +
+`bijOn_partitionIdeal_topComponents_of` (the bijection, gated) + `partition_eq_of_rankPattern_realizerD_eq`
+(injectivity, UNCONDITIONAL) + the realizer-over-d infra. Green (3015 jobs), 0-sorry, axiom-clean,
+reviewer PASS-with-notes. Commits e782f76/b913ecf. (2,2,2)r=0 → 1 top component; (2,3,2)/r=1 → 2 (pen-and-paper).
+- **θ-count GATING (2 bricks, ~120–180 LoC, pen-and-paper (★)-certified — the next build):**
+  (i) corner-monotonicity of `cCodim` (constructive interval-merge ⟹ top-dim component sits at corner exactly r);
+  (ii) Gabriel→`kostantPartition` recovery in the `extendℤ` encoding. Discharge these ⟹ θ=numTop UNCONDITIONAL.
+- Then Phase D (DLN loss + codim identity), then Phase R (Cited rlct interface).
+
+## STATUS SNAPSHOT (for re-ground)
+Phase G COMPLETE: G2 stratification ✓, G3 components=maximal Ō_M ✓, θ-A top-dim⟹component ✓.
+θ-count: bijection+injectivity ✓, count gated on 2 bricks. Remaining: θ-bricks → D → R(Cited).
+ENV: Codex down env-wide (decorrelate via reviewer). [IsAlgClosed k][CharZero k] on the geometric headlines.

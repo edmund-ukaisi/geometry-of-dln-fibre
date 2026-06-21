@@ -12,6 +12,6 @@ Each thread's artefacts live under `threads/<NN>-<slug>/`.
 
 | 04 | G3-components | formaliser | closed | irreducible components of Σ̄^r = maximal Ō_M; top-dim = min-codim → θ=numTop (spec-transport spike first) |
 
-| 05 | theta-count | formaliser | open | numTop = θ = #top-dim components (Kostant↔component count-bijection) |
+| 05 | theta-count | formaliser | review-pending | numTop = θ = #top-dim components (Kostant↔component count-bijection) |
 
 Threads open dynamically as the sizing recon re-scopes the ladder (Phase G/θ/D/R builds).
