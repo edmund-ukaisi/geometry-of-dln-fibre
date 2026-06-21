@@ -1528,6 +1528,8 @@ Lean now proves:
 ```text
 aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility
 aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block
+aoyagiLemma5Eq5_sourceIndex_pos_of_ownBlock
+aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_widthCompatibility
 ```
 
 The previous source-label bridge was stated at the block's left endpoint
@@ -1548,7 +1550,12 @@ T(S)=k-1
 
 and the same actual-label conclusion.
 
+The source-shaped wrapper derives the lower source-layer bound `1<=S` from
+the Eq5 guards `1<=alpha<p`, selected-cutpoint positivity and monotonicity,
+and the own-block lower endpoint.  It still keeps `S<=L` and `n(S+1)=W_p`
+explicit.
+
 This still does not prove actual-width compatibility for arbitrary block
-points, construct the displayed vector, prove terminal `tilde t=0`, vector
+points, upper source range, construct the displayed vector, prove terminal `tilde t=0`, vector
 admissibility, the chart sequence, Lemma 5 order count, normal crossings, or
 RLCT extraction.

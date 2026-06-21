@@ -4,6 +4,8 @@
 
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq5_sourceIndex_pos_of_ownBlock`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_widthCompatibility`
 
 ## Claim
 
@@ -35,6 +37,11 @@ If a supplied equation `(5)` piecewise certificate is also given and
 T(S)=k-1.
 ```
 
+The source-shaped wrapper also derives the lower source-layer condition
+`1<=S` from the Eq. `(5)` own-block guards `1<=alpha<p` and selected-cutpoint
+monotonicity.  It still requires the upper source range `S<=L` and actual-width
+compatibility at `S`.
+
 ## Inputs
 
 - Definition 3 selected-width sum and strict selected-width inequalities.
@@ -50,9 +57,11 @@ T(S)=k-1.
   compatibility.
 - For `S` in the own selected block, the supplied Eq5 value is `k-1` and the
   label is actual-width legal.
+- The lower source-layer bound `1<=S` for Eq5 own-block points.
 
 ## Does Not Prove
 
+- Upper source-layer range `S<=L`.
 - That arbitrary block points have actual width `W_p`.
 - Construction or existence of equation `(5)`'s displayed vector.
 - Terminal `tilde t=0`.

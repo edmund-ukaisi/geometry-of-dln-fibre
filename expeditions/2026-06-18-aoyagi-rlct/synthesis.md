@@ -2251,6 +2251,13 @@ arbitrary-`s` form of the same conditional bridge; it still does not prove the
 width compatibility, construct the displayed vector, prove terminality, or
 count Lemma 5 families.
 
+The arbitrary-own-block wrapper now derives its lower source-range hypothesis
+from the Eq5 guards.  Since the supplied Eq5 certificate carries
+`1<=alpha<p`, the own coordinate satisfies `0<p`; selected-cutpoint positivity
+and strictness give `1<=C.point p-1`, and `C.block p S` gives `1<=S`.  The
+new source-shaped theorem keeps only `S<=L` and `n(S+1)=W_p` explicit on the
+source-range/width side.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

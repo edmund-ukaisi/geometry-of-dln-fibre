@@ -2802,12 +2802,17 @@ Review artifact:
 Latest A5 update: the Lemma 5 equation `(5)` source-label bridge now has an
 arbitrary-own-block wrapper in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The proved Lean names are
-`aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility` and
-`aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block`.  The
+`aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility`,
+`aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block`,
+`aoyagiLemma5Eq5_sourceIndex_pos_of_ownBlock`, and
+`aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_widthCompatibility`.
+The
 theorem takes arbitrary `S`, explicit range `1<=S<=L`, and actual-width
 compatibility `n(S+1)=W_p`; with a supplied Eq5 piecewise certificate and
 `C.block p S`, it proves `T(S)=k-1` and `actualWidthLabel L n S k`.  This does
-not prove the width compatibility itself, construct equation `(5)`'s displayed
+not prove the width compatibility itself.  The source-shaped wrapper derives
+`1<=S` from Eq5's `1<=alpha<p` guards and selected-cutpoint monotonicity, but
+still keeps `S<=L` explicit.  It does not construct equation `(5)`'s displayed
 vector, terminal `tilde t=0`, vector admissibility, chart sequence, Lemma 5
 order count, normal crossings, or RLCT extraction.  Reproduction:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-block-source-label-a5.md`.

@@ -2229,6 +2229,11 @@ No such claim is formalisation-ready until both fields are filled.
   certificate, Lean also proves `T(S)=k-1`.  This still does not prove the
   actual-width compatibility itself, construct the displayed vector, prove
   terminal `tilde t=0`, build the chart sequence, or prove Lemma 5.
+  Also proved `aoyagiLemma5Eq5_sourceIndex_pos_of_ownBlock` and
+  `aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_widthCompatibility`,
+  deriving the lower source-range hypothesis `1<=S` from Eq5's
+  `1<=alpha<p` guards and `C.block p S`, while keeping `S<=L` and
+  `n(S+1)=W_p` explicit.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

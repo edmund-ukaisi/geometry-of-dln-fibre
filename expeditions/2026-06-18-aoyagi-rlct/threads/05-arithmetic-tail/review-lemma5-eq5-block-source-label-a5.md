@@ -74,6 +74,13 @@ statement through the own-coordinate branch, but not for label legality itself.
 The proof uses `hS.1` to feed the `p<=ell` witness to the label theorem; this
 is not a soundness issue.
 
+Follow-up review by `Huygens` and `Carver` checked the source-index positivity
+refinement.  The proof is source-faithful because Eq. `(5)` supplies
+`1<=alpha<p`, hence `0<p`; selected-cutpoint positivity and strictness give
+`1<=C.point p-1`; and the own-block lower bound gives `1<=S`.  Carver flagged
+only a naming risk and recommended using `ownBlock`, which is reflected in the
+landed names.
+
 ## Checks
 
 Controller verification:

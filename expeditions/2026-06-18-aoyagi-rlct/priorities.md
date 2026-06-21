@@ -731,6 +731,8 @@ on the session's original cwd.
    `actualWidthLabel L n S k`, and the supplied Eq5 piecewise certificate
    gives `T(S)=k-1`.  This removes the left-endpoint restriction but does not
    prove the width compatibility itself.
+   The wrapper now also derives `1<=S` from the Eq5 own-block guards
+   `1<=alpha<p`; only `S<=L` and width compatibility remain explicit.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

@@ -56,6 +56,17 @@ the already-proved label bounds give
 actualWidthLabel L n s k.
 ```
 
+The lower source-layer bound `1<=s` can be derived in the own-block Eq. `(5)`
+setting.  The supplied certificate carries `1<=alpha` and `alpha<p`, so
+`0<p`.  Since selected cutpoints are positive and strictly increasing,
+
+```text
+1 <= C.point 0 < C.point p,
+```
+
+so `2<=C.point p` and hence `1<=C.point p-1`.  The block lower bound
+`C.point p-1<=s` gives `1<=s`.
+
 The supplied equation `(5)` piecewise certificate gives an own-coordinate
 branch record, and this branch record applies to every `s` in `C.block p s`.
 Therefore, under the label relation,
@@ -69,10 +80,13 @@ T(s) = k-1.
 ```text
 aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility
 aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block
+aoyagiLemma5Eq5_sourceIndex_pos_of_ownBlock
+aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_ownBlock_widthCompatibility
 ```
 
 ## Nonclaims
 
+- No proof of the upper source range `s<=L`.
 - No proof that `n(s+1)=W_p` holds for arbitrary `s` in the block.
 - No construction or existence proof for equation `(5)`'s displayed vector.
 - No terminal `tilde t=0` theorem.
