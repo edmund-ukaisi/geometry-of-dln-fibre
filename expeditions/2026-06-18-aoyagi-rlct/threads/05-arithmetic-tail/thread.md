@@ -2899,3 +2899,37 @@ This does not prove the classifier from Aoyagi's PDF.  It leaves open the
 label-to-vector bridge, minimum-to-lambda bridge, interval classifier, Case
 1(2) uniqueness/injection, back-to-label bridge, pole order, normal crossings,
 and RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 counted datum set
+
+Reproduction:
+`reproduction-lemma5-counted-datum-set-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-set.md`.
+Review artifact:
+`review-lemma5-counted-datum-set-a5.md`.
+
+Lean now defines a label-free finite codomain for Aoyagi Lemma 5's
+upper-bound interval count:
+
+```text
+AoyagiLemma5CountDatum
+aoyagiLemma5CountDatumNonbaseSet
+aoyagiLemma5CountDatumSet
+none_mem_aoyagiLemma5CountDatumSet
+some_mem_aoyagiLemma5CountDatumSet_iff
+aoyagiLemma5CountDatumNonbaseSet_card
+aoyagiLemma5CountDatumSet_card
+```
+
+The datum set consists of one base datum and tagged pairs `(j,H)` for
+interior `j=1,...,ell-1`, with `H` in the same-coordinate interval value set
+after erasing a supplied base value for that coordinate.  If every erased base
+value lies in its interval, Lean proves the cardinality is
+`a*(ell-a)+1`.
+
+This only counts the codomain suggested by Aoyagi's upper-bound paragraph.  It
+does not prove that source lambda-vectors classify into the set, does not
+construct supplied branches, does not prove Case 1(2) uniqueness or
+back-to-label coverage, and does not touch terminal labels, pole order, normal
+crossings, or RLCT extraction.

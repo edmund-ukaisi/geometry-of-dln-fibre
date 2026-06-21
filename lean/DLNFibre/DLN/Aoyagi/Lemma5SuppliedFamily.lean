@@ -25,6 +25,133 @@ def aoyagiLemma5InteriorCoord (ell j : ℕ)
     have hjle : j ≤ ell - 1 := (Finset.mem_Icc.mp hj).2
     omega⟩
 
+/-- Counted data for Aoyagi Lemma 5's interval upper-bound codomain.
+
+The `none` datum is the base datum standing for the supplied base branch.  A
+nonbase datum `some ⟨j,H⟩` records an interior coordinate and a
+same-coordinate interval value. -/
+abbrev AoyagiLemma5CountDatum : Type :=
+  Option (Σ _ : ℕ, ℤ)
+
+/-- The nonbase counted data at one coordinate: interval values with the
+supplied base value erased, tagged by their coordinate. -/
+def aoyagiLemma5CountDatumNonbaseSet (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ) (j : ℕ) :
+    Finset AoyagiLemma5CountDatum :=
+  ((aoyagiHtildeIntervalValueSetNat ell a M m j).erase (baseValue j)).image
+    (fun H : ℤ ↦ some (Sigma.mk j H))
+
+/-- The counted datum set: one base datum plus all tagged nonbase interval
+values over the interior coordinates. -/
+def aoyagiLemma5CountDatumSet (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ) :
+    Finset AoyagiLemma5CountDatum :=
+  insert none
+    ((Finset.Icc 1 (ell - 1)).biUnion
+      (aoyagiLemma5CountDatumNonbaseSet ell a M m baseValue))
+
+/-- The base datum belongs to the counted datum set. -/
+theorem none_mem_aoyagiLemma5CountDatumSet (ell a : ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ) :
+    none ∈ aoyagiLemma5CountDatumSet ell a M m baseValue := by
+  simp [aoyagiLemma5CountDatumSet]
+
+/-- Membership for a nonbase counted datum. -/
+theorem some_mem_aoyagiLemma5CountDatumSet_iff
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) {j : ℕ} {H : ℤ} :
+    some (Sigma.mk j H) ∈ aoyagiLemma5CountDatumSet ell a M m baseValue ↔
+      j ∈ Finset.Icc 1 (ell - 1) ∧
+        H ∈ (aoyagiHtildeIntervalValueSetNat ell a M m j).erase
+          (baseValue j) := by
+  constructor
+  · intro h
+    rw [aoyagiLemma5CountDatumSet, Finset.mem_insert] at h
+    rcases h with hnone | hmem
+    · cases hnone
+    · rw [Finset.mem_biUnion] at hmem
+      rcases hmem with ⟨j', hj', himage⟩
+      rw [aoyagiLemma5CountDatumNonbaseSet, Finset.mem_image] at himage
+      rcases himage with ⟨H', hH', hsome⟩
+      cases hsome
+      exact ⟨hj', hH'⟩
+  · rintro ⟨hj, hH⟩
+    rw [aoyagiLemma5CountDatumSet, Finset.mem_insert]
+    right
+    rw [Finset.mem_biUnion]
+    exact ⟨j, hj, Finset.mem_image.mpr ⟨H, hH, rfl⟩⟩
+
+/-- One coordinate of nonbase counted data has interval cardinality minus the
+supplied base value. -/
+theorem aoyagiLemma5CountDatumNonbaseSet_card
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) {j : ℕ}
+    (hbase :
+      baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j) :
+    (aoyagiLemma5CountDatumNonbaseSet ell a M m baseValue j).card =
+      (aoyagiHtildeIntervalValueSetNat ell a M m j).card - 1 := by
+  have himage_card :
+      (aoyagiLemma5CountDatumNonbaseSet ell a M m baseValue j).card =
+        ((aoyagiHtildeIntervalValueSetNat ell a M m j).erase
+          (baseValue j)).card := by
+    unfold aoyagiLemma5CountDatumNonbaseSet
+    rw [Finset.card_image_of_injOn]
+    intro H _ H' _ h
+    cases h
+    rfl
+  rw [himage_card]
+  exact Finset.card_erase_of_mem hbase
+
+/-- The counted datum set has Aoyagi's Lemma 5 upper-bound cardinality.
+
+This is only the cardinality of the counted-data codomain.  It does not prove
+that source lambda-vectors map into it, nor any branch-label or terminal-label
+exactness statement. -/
+theorem aoyagiLemma5CountDatumSet_card
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell)
+    (hbase :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j) :
+    (aoyagiLemma5CountDatumSet ell a M m baseValue).card =
+      a * (ell - a) + 1 := by
+  have hnone_not :
+      none ∉
+        ((Finset.Icc 1 (ell - 1)).biUnion
+          (aoyagiLemma5CountDatumNonbaseSet ell a M m baseValue)) := by
+    rw [Finset.mem_biUnion]
+    rintro ⟨j, _hj, hmem⟩
+    rw [aoyagiLemma5CountDatumNonbaseSet, Finset.mem_image] at hmem
+    rcases hmem with ⟨H, _hH, hsome⟩
+    cases hsome
+  have hpair :
+      ((Finset.Icc 1 (ell - 1) : Finset ℕ) : Set ℕ).PairwiseDisjoint
+        (aoyagiLemma5CountDatumNonbaseSet ell a M m baseValue) := by
+    intro i _hi j _hj hij
+    exact Finset.disjoint_left.mpr (by
+      intro x hxi hxj
+      rw [aoyagiLemma5CountDatumNonbaseSet, Finset.mem_image] at hxi hxj
+      rcases hxi with ⟨Hi, _hHi, rfl⟩
+      rcases hxj with ⟨Hj, _hHj, hsome⟩
+      cases hsome
+      exact (hij rfl).elim)
+  have hsum :
+      (∑ j ∈ Finset.Icc 1 (ell - 1),
+          (aoyagiLemma5CountDatumNonbaseSet ell a M m baseValue j).card) =
+        ∑ j ∈ Finset.Icc 1 (ell - 1),
+          ((aoyagiHtildeIntervalValueSetNat ell a M m j).card - 1) := by
+    apply Finset.sum_congr rfl
+    intro j hj
+    exact aoyagiLemma5CountDatumNonbaseSet_card ell a M m baseValue
+      (hbase hj)
+  rw [aoyagiLemma5CountDatumSet, Finset.card_insert_of_notMem hnone_not]
+  rw [Finset.card_biUnion hpair]
+  rw [hsum]
+  have hcount := aoyagiHtildeIntervalValueSetNat_excess_sum_Icc
+    ell a M m hell ha
+  omega
+
 /-- Supplied nonbase branch values for Aoyagi Lemma 5.
 
 For each interior coordinate `j`, the branch values are required to biject

@@ -2978,6 +2978,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-interface-a5.md`.
 
+The source-independent counted-data codomain for the Lemma 5 upper bound is
+now Lean-proved in `Lemma5SuppliedFamily.lean`.  The new names are
+`AoyagiLemma5CountDatum`, `aoyagiLemma5CountDatumNonbaseSet`,
+`aoyagiLemma5CountDatumSet`, `some_mem_aoyagiLemma5CountDatumSet_iff`,
+`aoyagiLemma5CountDatumNonbaseSet_card`, and
+`aoyagiLemma5CountDatumSet_card`.  Given a supplied base value in every
+interior same-coordinate interval, the set with one base datum and all tagged
+nonbase interval values has cardinality `a*(ell-a)+1`.  This is only the
+counted codomain; it does not classify source vectors, construct branches, or
+connect to terminal labels.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-set-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-set.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-set-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

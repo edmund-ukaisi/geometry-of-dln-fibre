@@ -3627,6 +3627,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-interface-a5.md`.
 
+Latest A5 counted-datum update: `Lemma5SuppliedFamily.lean` now contains a
+label-free finite codomain for the Lemma 5 upper-bound interval count.  Names:
+`AoyagiLemma5CountDatum`, `aoyagiLemma5CountDatumNonbaseSet`,
+`aoyagiLemma5CountDatumSet`, `none_mem_aoyagiLemma5CountDatumSet`,
+`some_mem_aoyagiLemma5CountDatumSet_iff`,
+`aoyagiLemma5CountDatumNonbaseSet_card`, and
+`aoyagiLemma5CountDatumSet_card`.  With supplied base-value membership in each
+interior same-coordinate interval, Lean proves this codomain has cardinality
+`a*(ell-a)+1`.  It does not prove a source classifier, Case 1(2) uniqueness,
+back-to-label coverage, terminal-label exactness, pole order, normal
+crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-set-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-set.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-set-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
