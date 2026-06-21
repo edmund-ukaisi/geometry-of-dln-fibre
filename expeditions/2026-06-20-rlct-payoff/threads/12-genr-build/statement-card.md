@@ -98,7 +98,24 @@ Brick A + CITE Brick B**, NOT a single proved `codim mult⁻¹(B) = C + shift`.
 >   independently confirmed by direct Jacobian rank in thread 11). Codim over `AlgebraicClosure ℚ`, rlct
 >   over `ℂ` (which carries `ℝ →+* ℂ`), as the LANDED `r = 0` `(2,2,2)` witness does.
 
+## Paper-notation note (recorded by the reviewer; no Lean change)
+
+The paper's *printed* set-builder for `\overline{Σ}^r` (main.tex:758) reads `{rk mult ≥ r}`, but the
+Lean `productRankLocusLE d r` (the docstring's `Σ̄^r`) is `{rk mult ≤ r}`. The printed `≥` is a paper
+typo: the paper's *operative* definition — its orbit stratification `\overline{Σ}^r = ⊔_{m∈M^{≤r}}
+O_m` (main.tex:793), the `M^{≤r}`/`R^{≤r}` index sets, the "determinantal variety" remark, and
+"closure of `Σ^r`" (Cor 4.4) — all use rank `≤ r` (sanity: literal `≥ r` gives `Σ̄^0 = Rep`, codim 0,
+contradicting `codim Σ̄^0 = C > 0`). The Lean `{rk ≤ r}` is faithful to the paper's intended object;
+flagged only so a reader comparing against main.tex:758 is not misled.
+
 ## Status
 
-sorry-free; awaiting reviewer fidelity AUDIT (name=content; Brick A proved; Aoyagi + Lemma 4.6 both
-honestly Cited as named carried interfaces; Brick A uses only weak monotonicity).
+sorry-free + **reviewed** (fidelity AUDIT gate passed, commit `933e424`). Reviewer verdict: FIDELITY
+OK on all four checks — (1) Brick A genuinely PROVED zero-cited (`#print axioms` clean, only LANDED
+Core machinery); (2) Brick A uses ONLY weak monotonicity (`cCodim_le_codimRepCanonical_of` +
+`cCodim_zero_mono`; no `hMonoStrict`/strict leak — independent of the open θ-strict gap); (3) both
+Cited facts honestly carried named interfaces (Aoyagi `cited_aoyagi_dln`; Lemma 4.6
+`cited_bundle_shift_lemma46`, a SEPARATE structure, not folded into `RlctInterface`, not a global
+`axiom`); (4) R2-general name=content (both `I`, `J` explicit in the type; `via_aoyagi`; no
+unconditional `rlct = (C+shift)/2`). Decorrelated Codex (xhigh) convergent: no hidden fibre-dimension
+content in Brick A, shift faithful to Lemma 4.6. Codex artefacts: `codex/fidelity-{prompt,answer}.md`.

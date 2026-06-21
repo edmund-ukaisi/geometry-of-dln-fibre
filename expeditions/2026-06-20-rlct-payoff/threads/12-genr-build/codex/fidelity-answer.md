@@ -1,0 +1,11 @@
+**A. RANK-MISMATCH VERDICT**  
+[INFERENCE] For the Lean set `{rk ≤ r}`, the finite union is dominated by the rank-exactly-`r` stratum: among strata `s ≤ r`, the largest admissible rank has the smallest codimension. The guard `∀ k', r ≤ d k'` is what makes rank `r` admissible/nonempty in the intended geometry. [FACT] Paper Lemma 4.5 states `codim cSigma^r = codim Sigma^r`; [INFERENCE] if `cSigma^r` is taken literally as `{rk ≥ r}`, that equality is not justified by the same finite-union dominance argument, since the highest-rank stratum would dominate. Verdict: Brick B is faithful to Lemma 4.6 as a codimension formula only after the codimension identification `{rk ≤ r}` with `{rk = r}`; it is not a literal set transcription.
+
+**B. PROVED/CITED HONESTY**  
+[FACT] Brick A’s stated proof route is orbit-closure ideal height, `sigmaIdeal = sInf orbitIdeals`, minimal primes, and weak combinatorial monotonicity, with an upper bound from a corner-`r` orbit realizer. [INFERENCE] On those stated facts, Brick A is not secretly using Lemma 4.6 or fibre-dimension/bundle-local-triviality content. The Proved/Cited split looks honest: Brick A proves a rank-locus codimension by orbit-closure algebra/combinatorics, while Brick B separately carries the fibre shift as cited paper content.
+
+**C. ANY OTHER FIDELITY RED FLAG**  
+- [FACT] The docstring name “`Σ̄^r`” for `{rk ≤ r}` conflicts with the supplied paper notation `cSigma^r = {rk ≥ r}`; that is a documentation/notation fidelity red flag even if codimensions are later identified.
+- [INFERENCE] The `ℕ` subtraction `d_0 + d_N − r` is harmless under `r ≤ d_0,d_N`, which follows from the stated `∀ k', r ≤ d k'` guard.
+- [FACT] `.toNat` in the RLCT formula depends on `cCodim d r` being nonnegative/integer-valued; codimension suggests this, but the supplied facts do not spell out the needed Lean-side coercion guarantees.
+- [FACT] Lemma 4.6 is over `k = ℂ`, while the R2 statement involves `B.map ι` and separate interfaces; fidelity across base fields is being delegated to those carried fields, not proved in the described transport.
