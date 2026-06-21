@@ -140,6 +140,23 @@ branches.  It is not branch-label injectivity, no-extra terminal-minimum
 coverage, exact terminal-minimum cardinality, pole order, normal crossings, or
 RLCT extraction.
 
+The terminal-minimum lower-bound wrapper has also landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_le_terminalMinimumLabels_card`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card_le_terminalMinimumLabels_card_of_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.suppliedBranchCount_le_terminalMinimumLabels_card_of_branchLabel_injOn`.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-lower-bound-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-lower-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-lower-bound-a5.md`.
+This is the easy lower-bound direction from supplied candidates attaining the
+minimum.  It is not no-extra terminal-minimum coverage, exact
+terminal-minimum cardinality, pole order, normal crossings, or RLCT
+extraction.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in

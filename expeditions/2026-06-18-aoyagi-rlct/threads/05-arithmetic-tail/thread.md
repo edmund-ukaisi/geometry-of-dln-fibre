@@ -4271,3 +4271,30 @@ This is only a conditional capacity statement.  It does not construct terminal
 branch labels, prove branch-label injectivity, prove no-extra terminal-minimum
 coverage, compute terminal-minimum cardinality, prove pole order, normal
 crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 5 terminal minimum lower bound
+
+Reproduction:
+`reproduction-lemma5-terminal-minimum-lower-bound-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-minimum-lower-bound.md`.
+Review artifact:
+`review-lemma5-terminal-minimum-lower-bound-a5.md`.
+
+Lean now packages the easy lower-bound direction for the supplied terminal
+candidate family:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_le_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card_le_terminalMinimumLabels_card_of_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.suppliedBranchCount_le_terminalMinimumLabels_card_of_branchLabel_injOn
+```
+
+The first theorem is the cardinality form of the existing
+`branchLabelImage_subset_terminalMinimumLabels`.  The latter two add supplied
+branch-label injectivity and the supplied family count to show
+`a*(n+1-a)+1 <= C.terminalMinimumLabels.card`.
+
+This is only the supplied-candidates-attain-minimum direction.  It does not
+prove no-extra terminal-minimum coverage, the upper bound, exact
+terminal-minimum cardinality, pole order, normal crossings, or RLCT.

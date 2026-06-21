@@ -213,6 +213,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-branch-introduced-domain-capacity-a5.md`.
 
+The terminal-minimum lower-bound wrapper has also landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_card_le_terminalMinimumLabels_card`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches_card_le_terminalMinimumLabels_card_of_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.suppliedBranchCount_le_terminalMinimumLabels_card_of_branchLabel_injOn`.
+These prove only the easy lower-bound direction: supplied candidates attain
+the minimum, so under supplied branch-label injectivity the supplied branch
+count `a*(n+1-a)+1` is at most `C.terminalMinimumLabels.card`.  This is not
+the no-extra upper bound, exact terminal-minimum cardinality, pole order,
+normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-lower-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-lower-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-lower-bound-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:

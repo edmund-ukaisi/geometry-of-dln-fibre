@@ -646,6 +646,71 @@ theorem branchLabelImage_subset_terminalMinimumLabels {β : Type*}
   exact ⟨hintro, hleast, by
     simpa [aoyagiLemma5MinNumerator] using hterminal⟩
 
+/-- The supplied branch-label image gives a cardinal lower bound inside the
+terminal-minimum label set.
+
+This is only the easy direction that supplied candidates attain the minimum.
+It does not say that every terminal-minimum label is supplied. -/
+theorem branchLabelImage_card_le_terminalMinimumLabels_card {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a) :
+    C.branchLabelImage.card ≤ C.terminalMinimumLabels.card :=
+  Finset.card_le_card (C.branchLabelImage_subset_terminalMinimumLabels ha hselected)
+
+/-- Under supplied branch-label injectivity, the supplied branch family gives a
+cardinal lower bound inside the terminal-minimum label set.
+
+This is not a no-extra theorem: terminal-minimum labels may still exist outside
+the supplied branch-label image. -/
+theorem fullBranches_card_le_terminalMinimumLabels_card_of_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches) :
+    C.fullBranches.card ≤ C.terminalMinimumLabels.card := by
+  calc
+    C.fullBranches.card = C.branchLabelImage.card := by
+      exact (C.branchLabelImage_card_eq_fullBranches_card_of_injOn hinj).symm
+    _ ≤ C.terminalMinimumLabels.card :=
+      C.branchLabelImage_card_le_terminalMinimumLabels_card ha hselected
+
+/-- Under supplied branch-label injectivity, the supplied Lemma 5 branch count
+is a lower bound for the terminal-minimum label set.
+
+This is the numeric easy direction.  It does not prove the no-extra upper
+direction or exact terminal-minimum cardinality. -/
+theorem suppliedBranchCount_le_terminalMinimumLabels_card_of_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches) :
+    a * (n + 1 - a) + 1 ≤ C.terminalMinimumLabels.card := by
+  calc
+    a * (n + 1 - a) + 1 = C.fullBranches.card := by
+      exact (C.fullBranches_card n a M m (Nat.succ_pos n) ha).symm
+    _ ≤ C.terminalMinimumLabels.card :=
+      C.fullBranches_card_le_terminalMinimumLabels_card_of_branchLabel_injOn
+        ha hselected hinj
+
 /-- Exact finite count of terminal minimum labels under supplied no-extra
 coverage and supplied branch-label injectivity.
 
