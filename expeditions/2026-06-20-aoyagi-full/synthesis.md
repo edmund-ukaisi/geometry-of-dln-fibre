@@ -177,11 +177,17 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   Laplace), in flight (fm-2). S1.3 also PROVEN + ON TRUNK now (S1Local 0-sorry @505e0a2).
   **FUBINI DE-RISK (fm-2 SPECIFY + Codex):** the exact radial identity holds ONLY at ε=∞; finite-ε (RLCT nbhd)
   is asymptotic-only + Mathlib has NO parametric radial integral. So directions SPLIT: ">=/integrability LIGHT"
-  (a.e. comparison + Integrable.mul_prod + radial_ball_iff, ~4-6 sublemmas — fm-2 building now, L2-consumable
-  regular-block >= contribution); "<=/non-integrability" (the CUSP lower bound — pp re-adjudication SHAVED to ~5-7 sublemmas via EXACT
-  ball-volume `vol{‖x‖²≤s}=V_n·s^{n/2}` [measure_ball/addHaar_ball — NOT a parametric radial integral, dodges
-  the gap] + S2-REUSE for the monomial divergence [cusp-volume yields exactly S2's pure-monomial input]; no
-  Fubini shortcut for divergence). The <= IS NEEDED (R1 UPPER = binding-chart divergence = Fubini <=; S2 does
+  (a.e. comparison + Integrable.mul_prod + radial_ball_iff, ~4-6 sublemmas); "<=/non-integrability" (the CUSP
+  lower bound — pp re-adjudication SHAVED to ~5-7 sublemmas via EXACT ball-volume `vol{‖x‖²≤s}=V_n·s^{n/2}`
+  [measure_ball/addHaar_ball — NOT a parametric radial integral, dodges the gap]; monomial divergence finish).
+  **≥ DIRECTION DONE (fm-2, S1Fubini.lean, 110 LoC, axiom-clean, module-green 2676):** `cmpF` (split engine
+  `(s+t)^{-(a+b)}≤s^{-a}t^{-b}`) + `joint_integrableOn_weighted` (a.e. cmpF comparison + Integrable.mul_prod +
+  volume_eq_prod). Off-Skeleton, committing to trunk; controller wires into the aggregator. **≤ ROUTING DECIDED
+  (i) STANDALONE divergence, NOT S2-reuse (correction to the earlier card):** the monomial-divergence fact
+  (`∫∏|y_j|^{a_j} over a box = ∞ iff some a_j ≤ −1`) is proven AXIOM-FREE standalone (~30 LoC, 1-D Ioo rpow
+  divergence + Fubini) — STRICTLY LIGHTER than S2's RLCT threshold, keeps S1Fubini axiom-clean, and nibbles
+  toward thread-10's "S2 itself eliminable." cuspVol shave prototyped clean (closedBall + addHaar_closedBall
+  scaling, √s^n = s^{n/2}). The <= IS NEEDED (R1 UPPER = binding-chart divergence = Fubini <=; S2 does
   NOT cover it — binding chart is Sum-x^2 + monomial, a SUM, and +Sum-x^2 shrinks the integrand so divergence
   is non-trivial). pp finding the lightest <= route. HYGIENE: explicit monomial core (abstract G>=0,!=0 FALSE
   via germ-local =0, same as 12th); Jacobian in weightedThreshold. So R1 is heavier than first scoped (the
