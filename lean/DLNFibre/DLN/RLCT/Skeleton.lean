@@ -2640,7 +2640,8 @@ private theorem Sprefix_tail_ge (M : Fin (L + 1) → ℕ) (i c : ℕ) (hic : i �
     Sprefix M (i + 1) + (c - i) * aS M i ≤ Sprefix M (c + 1) := by
   have hsplit : Sprefix M (c + 1)
       = Sprefix M (i + 1) + ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
-    rw [Sprefix, Sprefix, ← Finset.sum_range_add_sum_Ico (fun k => aS M k) (by omega : i + 1 ≤ c + 1)]
+    rw [Sprefix, Sprefix,
+      ← Finset.sum_range_add_sum_Ico (fun k => aS M k) (by omega : i + 1 ≤ c + 1)]
   have htail : (c - i) * aS M i ≤ ∑ k ∈ Finset.Ico (i + 1) (c + 1), aS M k := by
     rw [show (c - i) * aS M i = ∑ _k ∈ Finset.Ico (i + 1) (c + 1), aS M i from by
       rw [Finset.sum_const, Nat.card_Ico]; ring_nf; rw [Nat.mul_comm]; congr 1; omega]
