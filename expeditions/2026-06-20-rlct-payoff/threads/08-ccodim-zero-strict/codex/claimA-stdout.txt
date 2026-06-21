@@ -1,0 +1,450 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019eeb6e-4a4f-7d71-abbe-fd9a25ecacc7
+--------
+user
+# Contract: verify (or refute) a combinatorial "shortest-covering" claim, give the cleanest proof skeleton
+
+## Setup (type-A interval combinatorics; all integers; N a fixed natural)
+Intervals are pairs [a,b] of integers with 0<=a<=b<=N. A multiset of intervals is given by
+multiplicities m([a,b]) >= 0. "Active" = m>=1. Define the (ordered) PAIRING predicate:
+  pair(A=[a,b], B=[c,d])  :⟺  (0<=a) ∧ (d<=N) ∧ (a<c) ∧ (c<=b+1) ∧ (b<d).
+(This is the type-A Ext-pairing: A is the "left" member, B the "right" member.)
+Length ℓ([x,y]) := y - x (>=0). "Y covers vertex k" :⟺ Y.1 <= k <= Y.2.
+
+## The selection
+Assume at least one active pair exists. Among ALL ordered active pairs (A,B) with pair(A,B), pick one
+(A*,B*) MINIMIZING min(ℓ(A), ℓ(B)) (the length of the shorter member). Let I be the shorter member:
+- if ℓ(A*) <= ℓ(B*): I := A* (the LEFT member), and set k := c* - 1  where B*=[c*,d*];
+- else: I := B* (the RIGHT member), and set k := b* + 1 where A*=[a*,b*].
+
+## CLAIM A (to verify and give a clean proof of)
+With I=[a,d'] and k as above:
+(1) a <= k <= d'  (I covers k);
+(2) I is a SHORTEST active covering interval of k: for every active Y covering k, ℓ(I) <= ℓ(Y).
+
+I have numerically verified (1) and (2) for N<=2 over all full-coverage configs (0 failures), and the
+"partner coeff = -1" companion fact (the split of I at k assigns the partner exactly -1) for N<=4.
+
+## What I need from you
+(a) Confirm CLAIM A is TRUE, or give a concrete counterexample (m, the pair, I, k, and a shorter
+    active Y covering k).
+(b) If true, give the CLEANEST proof of (2), structured as an interval-arithmetic case split that an
+    `omega`-driven Lean proof can follow. In particular: suppose for contradiction some active Y=[x,y]
+    covers k with ℓ(Y) < ℓ(I). Show Y forms a pair (as left or right member) with one of A*,B* (or with
+    a third interval) whose shorter member has length < min(ℓ(A*),ℓ(B*)), contradicting minimality.
+    The certificate I'm following suggests the case split is on "y < d*" vs "y >= d*" (for the I=A* case).
+    Pin down EXACTLY which interval Y pairs with, in each case, and the precise inequalities
+    (in terms of a*,b*,c*,d*,x,y,k,N) that omega needs. Be concrete and exhaustive about the cases.
+(c) Flag any case where Y covering k with ℓ(Y)<ℓ(I) does NOT immediately yield a shorter pair — i.e.
+    whether the minimality must be over min(ℓ(A),ℓ(B)) or whether a different extremal choice
+    (e.g. lexicographic, or minimize ℓ of a single distinguished member) makes the contradiction cleaner.
+
+Answer concretely with the inequalities; this is going straight into a Lean 4 proof.
+
+codex
+I’ll work this as a bare interval-combinatorics problem and spell the contradictions in Lean-friendly inequalities, since the repo is read-only and no file edits are needed.
+codex
+Claim A is **true**. No lexicographic refinement or third interval is needed.
+
+Let
+`A* = [a,b]`, `B* = [c,d]`, and assume
+
+```text
+a < c,   c <= b + 1,   b < d
+```
+
+Let `M = min (b-a) (d-c)`. Minimality says every active pair `(P,Q)` satisfies
+
+```text
+M <= min (len P) (len Q).
+```
+
+**Covering part.**
+
+If `I=A*`, then `b-a <= d-c`, `k=c-1`, and
+
+```text
+a <= c-1        from a < c
+c-1 <= b        from c <= b+1
+```
+
+so `A*` covers `k`.
+
+If `I=B*`, then `d-c < b-a`, `k=b+1`, and
+
+```text
+c <= b+1        from c <= b+1
+b+1 <= d        from b < d
+```
+
+so `B*` covers `k`.
+
+**Shortest-Covering Proof Skeleton**
+
+Case 1: `I=A*`, so `b-a <= d-c`, `M=b-a`, `k=c-1`.
+
+Assume active `Y=[x,y]` covers `k` and is shorter:
+
+```text
+x <= c-1
+c-1 <= y
+y - x < b - a
+```
+
+Split on `y < d`.
+
+Subcase 1a: `y < d`.
+
+Then `Y` pairs with `B*` as the left member:
+
+```text
+pair(Y,B*):
+
+0 <= x          active Y
+d <= N          active B*
+x < c           from x <= c-1
+c <= y+1        from c-1 <= y
+y < d           case assumption
+```
+
+Thus `(Y,B*)` is an active pair, so by minimality:
+
+```text
+b-a <= min (y-x) (d-c)
+```
+
+but
+
+```text
+min (y-x) (d-c) <= y-x
+y-x < b-a
+```
+
+contradiction by `omega`.
+
+Subcase 1b: `d <= y`.
+
+Then `A*` pairs with `Y` as the left member:
+
+```text
+pair(A*,Y):
+
+0 <= a          active A*
+y <= N          active Y
+a < x           from b < d, d <= y, y-x < b-a
+x <= b+1        from x <= c-1 and c <= b+1
+b < y           from b < d <= y
+```
+
+The only non-immediate inequality is `a < x`; `omega` proves it from:
+
+```text
+b < d
+d <= y
+y - x < b - a
+```
+
+Then minimality gives
+
+```text
+b-a <= min (b-a) (y-x)
+```
+
+while
+
+```text
+min (b-a) (y-x) <= y-x
+y-x < b-a
+```
+
+contradiction.
+
+Case 2: `I=B*`, so `d-c < b-a`, `M=d-c`, `k=b+1`.
+
+Assume active `Y=[x,y]` covers `k` and is shorter:
+
+```text
+x <= b+1
+b+1 <= y
+y - x < d - c
+```
+
+Split on `a < x`.
+
+Subcase 2a: `a < x`.
+
+Then `A*` pairs with `Y`:
+
+```text
+pair(A*,Y):
+
+0 <= a          active A*
+y <= N          active Y
+a < x           case assumption
+x <= b+1        covering
+b < y           from b+1 <= y
+```
+
+Minimality gives
+
+```text
+d-c <= min (b-a) (y-x)
+```
+
+but
+
+```text
+min (b-a) (y-x) <= y-x
+y-x < d-c
+```
+
+contradiction.
+
+Subcase 2b: `x <= a`.
+
+Then `Y` pairs with `B*`:
+
+```text
+pair(Y,B*):
+
+0 <= x          active Y
+d <= N          active B*
+x < c           from x <= a and a < c
+c <= y+1        from c <= b+1 <= y
+y < d           from x <= a, a < c, y-x < d-c
+```
+
+Again, `omega` proves `y < d` from:
+
+```text
+x <= a
+a < c
+y - x < d - c
+```
+
+Then minimality gives
+
+```text
+d-c <= min (y-x) (d-c)
+```
+
+while
+
+```text
+min (y-x) (d-c) <= y-x
+y-x < d-c
+```
+
+contradiction.
+
+So every shorter active interval covering the selected `k` immediately produces a strictly smaller-min active pair, using only `A*` or `B*`.
+
+For (c): minimality over `min(len A, len B)` is the right hypothesis. Minimizing only the left member would not contradict subcase `I=A*`, `d <= y`, because the new pair is `(A*,Y)` and the left length is unchanged. Similarly, minimizing only the right member would not contradict subcase `I=B*`, `x <= a`, because the new pair is `(Y,B*)` and the right length is unchanged.
+tokens used
+10,801
+Claim A is **true**. No lexicographic refinement or third interval is needed.
+
+Let
+`A* = [a,b]`, `B* = [c,d]`, and assume
+
+```text
+a < c,   c <= b + 1,   b < d
+```
+
+Let `M = min (b-a) (d-c)`. Minimality says every active pair `(P,Q)` satisfies
+
+```text
+M <= min (len P) (len Q).
+```
+
+**Covering part.**
+
+If `I=A*`, then `b-a <= d-c`, `k=c-1`, and
+
+```text
+a <= c-1        from a < c
+c-1 <= b        from c <= b+1
+```
+
+so `A*` covers `k`.
+
+If `I=B*`, then `d-c < b-a`, `k=b+1`, and
+
+```text
+c <= b+1        from c <= b+1
+b+1 <= d        from b < d
+```
+
+so `B*` covers `k`.
+
+**Shortest-Covering Proof Skeleton**
+
+Case 1: `I=A*`, so `b-a <= d-c`, `M=b-a`, `k=c-1`.
+
+Assume active `Y=[x,y]` covers `k` and is shorter:
+
+```text
+x <= c-1
+c-1 <= y
+y - x < b - a
+```
+
+Split on `y < d`.
+
+Subcase 1a: `y < d`.
+
+Then `Y` pairs with `B*` as the left member:
+
+```text
+pair(Y,B*):
+
+0 <= x          active Y
+d <= N          active B*
+x < c           from x <= c-1
+c <= y+1        from c-1 <= y
+y < d           case assumption
+```
+
+Thus `(Y,B*)` is an active pair, so by minimality:
+
+```text
+b-a <= min (y-x) (d-c)
+```
+
+but
+
+```text
+min (y-x) (d-c) <= y-x
+y-x < b-a
+```
+
+contradiction by `omega`.
+
+Subcase 1b: `d <= y`.
+
+Then `A*` pairs with `Y` as the left member:
+
+```text
+pair(A*,Y):
+
+0 <= a          active A*
+y <= N          active Y
+a < x           from b < d, d <= y, y-x < b-a
+x <= b+1        from x <= c-1 and c <= b+1
+b < y           from b < d <= y
+```
+
+The only non-immediate inequality is `a < x`; `omega` proves it from:
+
+```text
+b < d
+d <= y
+y - x < b - a
+```
+
+Then minimality gives
+
+```text
+b-a <= min (b-a) (y-x)
+```
+
+while
+
+```text
+min (b-a) (y-x) <= y-x
+y-x < b-a
+```
+
+contradiction.
+
+Case 2: `I=B*`, so `d-c < b-a`, `M=d-c`, `k=b+1`.
+
+Assume active `Y=[x,y]` covers `k` and is shorter:
+
+```text
+x <= b+1
+b+1 <= y
+y - x < d - c
+```
+
+Split on `a < x`.
+
+Subcase 2a: `a < x`.
+
+Then `A*` pairs with `Y`:
+
+```text
+pair(A*,Y):
+
+0 <= a          active A*
+y <= N          active Y
+a < x           case assumption
+x <= b+1        covering
+b < y           from b+1 <= y
+```
+
+Minimality gives
+
+```text
+d-c <= min (b-a) (y-x)
+```
+
+but
+
+```text
+min (b-a) (y-x) <= y-x
+y-x < d-c
+```
+
+contradiction.
+
+Subcase 2b: `x <= a`.
+
+Then `Y` pairs with `B*`:
+
+```text
+pair(Y,B*):
+
+0 <= x          active Y
+d <= N          active B*
+x < c           from x <= a and a < c
+c <= y+1        from c <= b+1 <= y
+y < d           from x <= a, a < c, y-x < d-c
+```
+
+Again, `omega` proves `y < d` from:
+
+```text
+x <= a
+a < c
+y - x < d - c
+```
+
+Then minimality gives
+
+```text
+d-c <= min (y-x) (d-c)
+```
+
+while
+
+```text
+min (y-x) (d-c) <= y-x
+y-x < d-c
+```
+
+contradiction.
+
+So every shorter active interval covering the selected `k` immediately produces a strictly smaller-min active pair, using only `A*` or `B*`.
+
+For (c): minimality over `min(len A, len B)` is the right hypothesis. Minimizing only the left member would not contradict subcase `I=A*`, `d <= y`, because the new pair is `(A*,Y)` and the left length is unchanged. Similarly, minimizing only the right member would not contradict subcase `I=B*`, `x <= a`, because the new pair is `(Y,B*)` and the right length is unchanged.

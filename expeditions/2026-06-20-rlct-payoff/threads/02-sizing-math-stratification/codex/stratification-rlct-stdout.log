@@ -1,0 +1,212 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ee73c-cbd9-7312-862c-850f966c55c4
+--------
+user
+<task>
+I am sizing a Lean 4 + Mathlib formalisation of one section of a published algebraic-geometry
+paper (Lehalleur–Rimányi 2024, "Geometry of the fibers of the multiplication map of deep linear
+neural networks"). I need an INDEPENDENT mathematical read on two questions; do your own derivation
+from the objects below, do not try to guess what I concluded.
+
+SETTING (all over an algebraically closed field k of characteristic 0).
+- Fix a dimension vector d = (d_0,…,d_N) in N^{N+1}. Rep_d = ∏_{i=1}^N Mat_{d_i, d_{i-1}}(k), the
+  affine space of composable matrix tuples A = (A_1,…,A_N), A_i : k^{d_{i-1}} → k^{d_i}.
+- mult(A) = A_N A_{N-1} ⋯ A_1 ∈ Mat_{d_N,d_0}.
+- These tuples are representations of the equioriented type-A quiver 0→1→…→N. The group
+  G = ∏ GL_{d_i} acts by base change; orbits ↔ isomorphism classes ↔ Kostant partitions
+  m = (m_{ij})_{0≤i≤j≤N} (m_{ij} = multiplicity of the interval module M_{ij}), with
+  d_k = Σ_{i≤k≤j} m_{ij}. Orbit of m is O_m.
+- Rank pattern r_{ij} = rank(A_j⋯A_{i+1}) (and r_{ii}=d_i); related to m by inclusion–exclusion.
+  CRUCIAL fact: the product rank rank(mult(A)) is exactly the corner entry r_{0N}, equivalently
+  the corner Kostant multiplicity m_{0N}.
+- Orbit-closure order (Abeasis–Del Fra, type A equioriented): O_s ⊆ closure(O_r) ⟺ s ≤ r
+  entrywise in the rank pattern. (Higher rank pattern ⟹ bigger closure.)
+- Per-orbit codimension (Voigt / Ext): codim_Rep(O_m) = Σ_{1≤i≤u≤j≤v≤N} m_{(i-1)(j-1)} · m_{uv}.
+- Define Σ^r_d = {A : rank(mult(A)) = r} and its closure Σbar^r_d = {A : rank(mult(A)) ≤ r}.
+
+ALREADY FORMALISED, CONSUMABLE AS FACTS (do not re-derive):
+- Rep_d, mult, Σ^r (productRankLocus), Σ^{≤r}, fibre mult^{-1}(B) as honest Lean Set objects.
+- orbitRankLocus M = closure(O_M), the determinantal locus {A : r_{ij}(A) ≤ r_{ij}(M) ∀ i≤j};
+  proved equal to the Zariski closure of the orbit, and proved irreducible (prime vanishing ideal).
+- Per-orbit geometric codim = the combinatorial form codimForm above (Voigt discharged).
+- cCodim d r := min over Kostant partitions m of d with corner m_{0N}=r of codimForm(m);
+  numTop d r := number of those m attaining the min. Both proved = min / count of the GEOMETRIC
+  orbit-closure codimensions per-orbit.
+
+QUESTION 1 — the stratification Σ^r = ⋃ closure(O_M).
+State precisely which Kostant partitions / rank patterns index the irreducible COMPONENTS of Σ^r
+(equivalently Σbar^r), and prove the two inclusions of Σ^r_d = ⋃_{M : corner = r} O_M and that
+Σbar^r = ⋃_{M : corner ≤ r} closure(O_M). Then: are the irreducible components the MAXIMAL orbit
+closures (in the entrywise rank-pattern order) among that set, or the MINIMAL ones? Give the precise
+statement and a proof sketch. Separately address: is the count of top-dimensional (= min-codim)
+components equal to numTop d r (the min-codim count over ALL corner-r orbits, NOT only over the
+components)? State the lemma that makes "min-codim orbit ⟹ it is a component" hold, with proof.
+
+QUESTION 2 — the RLCT payoff and the Cited boundary.
+The loss is K^DLN_B(A) = ‖mult(A) − B‖_2^2, a real-analytic function on Rep_d (real form), with
+zero-set (K^DLN_B)^{-1}(0) = mult^{-1}(B). The real log-canonical threshold rlct(F) =
+sup{s : |F|^{-s} locally integrable}. General fact (Atiyah/Bernstein-type): for real-analytic
+F ≥ 0, rlct(F) ≤ codim(F^{-1}(0)) / 2. The paper's Theorem (via Aoyagi) is
+rlct(K^DLN_B) = codim(mult^{-1}(B)) / 2.
+(a) In a Lean formalisation that takes the rlct as an interfaced/cited object, which single analytic
+    fact is the load-bearing CITED input that upgrades the general inequality to the DLN equality,
+    and which half is "ours" (geometric codimension)? Be precise about what Aoyagi's theorem
+    actually supplies vs. what the codimension computation supplies.
+(b) The secondary invariant is the rlc-MULTIPLICITY (rlcm, the order of the largest pole of the
+    archimedean zeta function). Is there any reason to expect rlcm(K^DLN_B) to equal θ (the number
+    of top-dimensional irreducible components of the fibre)? Reason from the additivity properties
+    of rlct/rlcm under sums/products and from the geometry; do not assume they are equal.
+</task>
+
+<output_contract>
+Two sections, "Q1" and "Q2". Each: the precise statement(s), a proof sketch with the load-bearing
+step named, and any place the argument is subtler than it looks. For Q1 explicitly answer
+maximal-vs-minimal and the numTop-vs-θ identity. For Q2(b) give a yes/no/uncertain with reasoning.
+Be terse. Flag any inference vs. fact. Under 700 words.
+</output_contract>
+
+<grounding_rules>
+Reason from the objects as given; if a claim needs a hypothesis I did not state, name it. Do not
+invent Mathlib lemma names. If you are uncertain whether components are maximal or minimal, say so
+and give the test that decides it (e.g. a small example).
+</grounding_rules>
+
+codex
+**Q1**
+
+Let `X_M := closure(O_M) = orbitRankLocus M`, ordered by rank patterns:
+`X_S ⊆ X_R` iff `rankPattern(S) ≤ rankPattern(R)` entrywise.
+
+Precise stratification:
+
+`Σ^r_d = ⋃_{M : m_{0N}=r} O_M`.
+
+Proof: orbits partition `Rep_d`, and the product rank is exactly the corner multiplicity `m_{0N}`.
+
+Also:
+
+`Σbar^r_d = {rank(mult) ≤ r} = ⋃_{M : m_{0N}≤r} X_M`.
+
+Proof: if `m_{0N}≤r`, then every point of `X_M` has corner rank `≤ m_{0N}≤r`, since `X_M` is the determinantal rank locus bounded by `M`’s rank pattern. Conversely, any point of `Σbar^r` lies in some orbit `O_S` with `s_{0N}≤r`, hence lies in `X_S`.
+
+Components are indexed by **maximal**, not minimal, rank patterns. More precisely, the irreducible components of the exact rank stratum are the dense open pieces
+
+`X_M ∩ Σ^r_d`
+
+where `M` is maximal, under entrywise rank-pattern order, among Kostant partitions with `m_{0N}=r`. Their closures in `Rep_d` are the corresponding `X_M`.
+
+For the closed locus `Σbar^r`, components are the `X_M` maximal among `m_{0N}≤r`. These agree with the previous list once one knows the rank-raising/density fact: every maximal component of `Σbar^r` meets `Σ^r`, equivalently no component is trapped in `Σbar^{r-1}`. If not assumed, this is the subtle point.
+
+`θ = numTop d r`: yes, for top-dimensional components of `Σ^r`.
+
+Load-bearing lemma: if `X_M ⊊ X_L` are irreducible orbit closures inside `Rep_d`, then
+`codim X_L < codim X_M`.
+
+Proof: proper inclusion of irreducible closed subsets strictly raises dimension. Since geometric codimension equals `codimForm`, strict containment strictly lowers `codimForm`.
+
+Therefore, if a corner-`r` orbit closure has minimal codimension among all corner-`r` orbits, it cannot be contained in a larger corner-`r` orbit closure. Hence it is maximal, so it gives a component. Non-components are contained in larger corner-`r` closures and have strictly larger codimension. Thus the number of top-dimensional components equals the min-codim count `numTop d r`.
+
+**Q2**
+
+(a) The cited analytic input is Aoyagi’s DLN RLCT theorem: for the squared Frobenius loss
+
+`K^DLN_B(A) = ||mult(A)-B||^2`
+
+with `rank B = r`, the RLCT equals the explicit DLN value, namely half of the same minimised codimension invariant appearing geometrically.
+
+What Aoyagi supplies is the **analytic lower bound/equality**, not the algebraic geometry of the fibre. The general Atiyah/Bernstein inequality only gives
+
+`rlct(K^DLN_B) ≤ codim(mult^{-1}(B))/2`.
+
+Our contribution is the geometric identification
+
+`codim(mult^{-1}(B)) = cCodim d r`
+
+or the corresponding min over Voigt/orbit-closure codimensions. Substituting this codimension into Aoyagi’s analytic formula gives the paper’s equality.
+
+Subtlety: Aoyagi does not prove the orbit-closure/codimension computation; it proves that the analytic RLCT lands on that number.
+
+(b) No general reason to expect
+
+`rlcm(K^DLN_B) = θ`.
+
+`θ` counts top-dimensional irreducible components of the fibre or rank locus. `rlcm` is the order of the largest pole of the local/global zeta function; it is controlled by the worst local normal-crossing/exceptional-divisor configuration after resolution.
+
+Multiple top-dimensional components usually add residues, not pole orders. For disjoint smooth components, the pole order stays `1`, while `θ` can be larger. Conversely, a single singular component can produce higher pole order. Under products/sums, RLCT multiplicities obey analytic rules such as “sum gives multiplicities adding minus one” in independent variables, which is not how irreducible component counts behave.
+
+So equality may occur in special DLN cases, but it is not a consequence of the component count or codimension theorem. It would need a separate analytic/resolution theorem.
+tokens used
+19,460
+**Q1**
+
+Let `X_M := closure(O_M) = orbitRankLocus M`, ordered by rank patterns:
+`X_S ⊆ X_R` iff `rankPattern(S) ≤ rankPattern(R)` entrywise.
+
+Precise stratification:
+
+`Σ^r_d = ⋃_{M : m_{0N}=r} O_M`.
+
+Proof: orbits partition `Rep_d`, and the product rank is exactly the corner multiplicity `m_{0N}`.
+
+Also:
+
+`Σbar^r_d = {rank(mult) ≤ r} = ⋃_{M : m_{0N}≤r} X_M`.
+
+Proof: if `m_{0N}≤r`, then every point of `X_M` has corner rank `≤ m_{0N}≤r`, since `X_M` is the determinantal rank locus bounded by `M`’s rank pattern. Conversely, any point of `Σbar^r` lies in some orbit `O_S` with `s_{0N}≤r`, hence lies in `X_S`.
+
+Components are indexed by **maximal**, not minimal, rank patterns. More precisely, the irreducible components of the exact rank stratum are the dense open pieces
+
+`X_M ∩ Σ^r_d`
+
+where `M` is maximal, under entrywise rank-pattern order, among Kostant partitions with `m_{0N}=r`. Their closures in `Rep_d` are the corresponding `X_M`.
+
+For the closed locus `Σbar^r`, components are the `X_M` maximal among `m_{0N}≤r`. These agree with the previous list once one knows the rank-raising/density fact: every maximal component of `Σbar^r` meets `Σ^r`, equivalently no component is trapped in `Σbar^{r-1}`. If not assumed, this is the subtle point.
+
+`θ = numTop d r`: yes, for top-dimensional components of `Σ^r`.
+
+Load-bearing lemma: if `X_M ⊊ X_L` are irreducible orbit closures inside `Rep_d`, then
+`codim X_L < codim X_M`.
+
+Proof: proper inclusion of irreducible closed subsets strictly raises dimension. Since geometric codimension equals `codimForm`, strict containment strictly lowers `codimForm`.
+
+Therefore, if a corner-`r` orbit closure has minimal codimension among all corner-`r` orbits, it cannot be contained in a larger corner-`r` orbit closure. Hence it is maximal, so it gives a component. Non-components are contained in larger corner-`r` closures and have strictly larger codimension. Thus the number of top-dimensional components equals the min-codim count `numTop d r`.
+
+**Q2**
+
+(a) The cited analytic input is Aoyagi’s DLN RLCT theorem: for the squared Frobenius loss
+
+`K^DLN_B(A) = ||mult(A)-B||^2`
+
+with `rank B = r`, the RLCT equals the explicit DLN value, namely half of the same minimised codimension invariant appearing geometrically.
+
+What Aoyagi supplies is the **analytic lower bound/equality**, not the algebraic geometry of the fibre. The general Atiyah/Bernstein inequality only gives
+
+`rlct(K^DLN_B) ≤ codim(mult^{-1}(B))/2`.
+
+Our contribution is the geometric identification
+
+`codim(mult^{-1}(B)) = cCodim d r`
+
+or the corresponding min over Voigt/orbit-closure codimensions. Substituting this codimension into Aoyagi’s analytic formula gives the paper’s equality.
+
+Subtlety: Aoyagi does not prove the orbit-closure/codimension computation; it proves that the analytic RLCT lands on that number.
+
+(b) No general reason to expect
+
+`rlcm(K^DLN_B) = θ`.
+
+`θ` counts top-dimensional irreducible components of the fibre or rank locus. `rlcm` is the order of the largest pole of the local/global zeta function; it is controlled by the worst local normal-crossing/exceptional-divisor configuration after resolution.
+
+Multiple top-dimensional components usually add residues, not pole orders. For disjoint smooth components, the pole order stays `1`, while `θ` can be larger. Conversely, a single singular component can produce higher pole order. Under products/sums, RLCT multiplicities obey analytic rules such as “sum gives multiplicities adding minus one” in independent variables, which is not how irreducible component counts behave.
+
+So equality may occur in special DLN cases, but it is not a consequence of the component count or codimension theorem. It would need a separate analytic/resolution theorem.

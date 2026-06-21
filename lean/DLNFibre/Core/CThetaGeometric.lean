@@ -26,16 +26,20 @@ so this module records the geometric reading **without any deferral**:
    (`cCodim_eq_inf_geomCodim`). Built from deliverable 1 + the partition↔list correspondence
    `listOfPartition` realising `multiplicityArray (listOfPartition m) = extendℤ m`.
 
-## The remaining step (roadmap, NOT built here)
+## The aggregate step (now built — in downstream `Core` modules, not here)
 
-The full `Σ^r`-**aggregate** geometric reading — "`cCodim d r` = geometric codimension of the whole
-rank-`r` product locus `Σ^r`" and "`numTop d r` = number of top-dimensional **geometric** components
-of `Σ^r`" — is NOT formalised. `Σ^r` is not defined as a geometric variety anywhere in `Core` (only
-prose, in `Core.Setup` and docstrings). Closing the aggregate reading needs, for a future tide:
-(i) a geometric definition of `Σ^r` (the rank-`r` product locus); (ii) its orbit stratification
-`Σ^r = ⋃_M Ō_M`; (iii) codimension-of-a-union = minimum-over-components, and an analogous
-top-component count. The per-orbit reading (deliverables 1, 2) is the input to that step; the
-component-count half of `numTop`'s geometric reading remains open.
+The `Σ̄^r`-**aggregate** geometric reading is now formalised, for the *closed* rank-`≤ r` product
+locus `Σ̄^r = productRankLocusLE d r = {A | rank (mult A) ≤ r}` — the genuine Zariski closure of the
+exact-rank `Σ^r`. The three steps the per-orbit reading (deliverables 1, 2) fed into:
+(i) the geometric `Σ̄^r` and its orbit stratification `Σ̄^r = ⋃_M Ō_M`
+(`Core.SigmaStratification`); (ii) its irreducible components are the maximal orbit closures
+(`Core.SigmaComponents.minimalPrimes_sigmaIdeal_eq`); (iii) codimension-of-a-union =
+minimum-over-components, giving `codim Σ̄^r = cCodim d r`
+(`Core.SigmaCodim.codimRepCanonical_productRankLocusLE_eq_cCodim`) and the top-component count
+`numTop d r = #{top-dimensional irreducible components of Σ̄^r}`
+(`Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`, unconditional). The exact-rank `Σ^r` is not
+separately carved out as a variety, but `codim Σ̄^r = codim Σ^r` (the closure preserves codimension,
+LR Cor. 4.4 + Lemma 4.5), so the closed `Σ̄^r` carries the aggregate codimension content.
 
 **Name = content.** Every headline carries `[IsAlgClosed k] [CharZero k]` (the scope of the
 discharged `hVoigt`). These are geometric **codimension** statements — not RLCT, not `½·codim`; the

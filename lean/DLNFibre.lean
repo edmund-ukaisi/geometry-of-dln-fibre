@@ -49,3 +49,12 @@ import DLNFibre.Core.OrbitDifferentialRank
 import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.VoigtDischarge
 import DLNFibre.Core.CThetaGeometric
+import DLNFibre.Core.SigmaStratification
+import DLNFibre.Core.SigmaComponents
+import DLNFibre.Core.ThetaComponentCount
+import DLNFibre.Core.CCodimCornerMono
+import DLNFibre.Core.CCodimZeroMono
+import DLNFibre.DLN.RlctPayoff
+import DLNFibre.DLN.RlctPayoffGeneral
+import DLNFibre.Core.CCodimZeroStrict
+import DLNFibre.Core.SigmaCodim
