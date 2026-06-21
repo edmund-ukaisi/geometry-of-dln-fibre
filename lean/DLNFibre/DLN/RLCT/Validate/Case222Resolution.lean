@@ -260,4 +260,66 @@ theorem step1A_det (x : Fin 8 → ℝ) :
   rw [pivotBlowupOnDeriv_det _ _ (by decide)]
   norm_num [show ({0, 1, 2, 3} : Finset (Fin 8)).card = 4 from by decide]
 
+/-! ## The composite chart's continuity + image containment (the `≤`-direction localisation input)
+
+For the `≤`-direction lower bound `∫⁻_{cubeBox 8 ε} ≥ ∫⁻_{φ '' V}`, the chart image must sit inside the
+cube: `phiUnit '' (cubeBox 8 δ) ⊆ cubeBox 8 ε` for a small `δ`. By continuity (`phiUnit` polynomial,
+`phiUnit 0 = 0`) the preimage of the open cube `(−ε, ε)^8` is an open neighbourhood of `0`, hence
+contains a `cubeBox 8 δ` (Codex 2026-06-21 — the continuity route avoids explicit polynomial bounds).
+-/
+
+theorem continuous_step1A : Continuous step1A := by
+  unfold step1A
+  refine Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_
+    (Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_
+      (Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_ continuous_const)))))))
+  all_goals fun_prop
+
+theorem continuous_step2E : Continuous step2E := by
+  unfold step2E
+  refine Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_
+    (Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_ (Continuous.matrixVecCons ?_
+      (Continuous.matrixVecCons ?_ continuous_const))))))
+  all_goals fun_prop
+
+/-- The composite leaf chart `phiUnit` is continuous (`step1A`, `step2E` polynomial; `lemma2Inv`
+continuous; `Fin.cons` / `Fin.tail` continuous). -/
+theorem continuous_phiUnit : Continuous phiUnit := by
+  unfold phiUnit
+  refine continuous_step1A.comp (Continuous.finCons (continuous_apply 0) ?_)
+  exact continuous_lemma2Inv.comp (continuous_step2E.comp
+    (by fun_prop : Continuous (Fin.tail : (Fin 8 → ℝ) → Fin 7 → ℝ)))
+
+/-- `phiUnit` fixes the origin (the deepest point maps to the cube centre). -/
+theorem phiUnit_zero : phiUnit (0 : Fin 8 → ℝ) = 0 := by
+  have htail : Fin.tail (0 : Fin 8 → ℝ) = 0 := by funext i; simp [Fin.tail]
+  unfold phiUnit
+  rw [Pi.zero_apply, htail]
+  rw [show step2E (0 : Fin 7 → ℝ) = 0 from by
+        funext i; unfold step2E; fin_cases i <;> simp [Matrix.cons_val],
+    show lemma2Inv (0 : Fin 7 → ℝ) = 0 from by
+        funext i; unfold lemma2Inv; fin_cases i <;> simp [Matrix.cons_val],
+    show Fin.cons (0 : ℝ) (0 : Fin 7 → ℝ) = (0 : Fin 8 → ℝ) from by
+        funext i; rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩ <;> simp [Fin.cons]]
+  funext i; unfold step1A; fin_cases i <;> simp [Matrix.cons_val]
+
+/-- **Composite-chart image containment.** For any `ε > 0`, a small enough cube `cubeBox 8 δ` maps
+into `cubeBox 8 ε` under `phiUnit` (continuity + `phiUnit 0 = 0`; the preimage of the open cube
+`(−ε, ε)^8` is an open neighbourhood of `0`, hence contains a `cubeBox 8 δ` via
+`cubeBox_subset_of_isOpen`). The `φ '' V ⊆ cubeBox` input to the `≤`-direction lower bound. -/
+theorem phiUnit_image_subset_cubeBox (ε : ℝ) (hε : 0 < ε) :
+    ∃ δ > 0, phiUnit '' (cubeBox 8 δ) ⊆ cubeBox 8 ε := by
+  have hopen : IsOpen (Set.univ.pi (fun _ : Fin 8 => Set.Ioo (-ε) ε)) :=
+    isOpen_set_pi Set.finite_univ (fun _ _ => isOpen_Ioo)
+  have hmem : (0 : Fin 8 → ℝ) ∈ phiUnit ⁻¹' (Set.univ.pi (fun _ : Fin 8 => Set.Ioo (-ε) ε)) := by
+    simp only [Set.mem_preimage, phiUnit_zero, Set.mem_pi, Set.mem_univ, true_implies,
+      Set.mem_Ioo, Pi.zero_apply]
+    exact fun i => ⟨by linarith, hε⟩
+  obtain ⟨δ, hδ, hsub⟩ := cubeBox_subset_of_isOpen (hopen.preimage continuous_phiUnit) hmem
+  refine ⟨δ, hδ, ?_⟩
+  rintro y ⟨x, hx, rfl⟩
+  have hxmem := hsub hx
+  simp only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Ioo] at hxmem
+  intro i _; exact ⟨(hxmem i).1.le, (hxmem i).2.le⟩
+
 end DLNFibre.DLN.RLCT
