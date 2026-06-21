@@ -2632,6 +2632,76 @@ private theorem count_bp1_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
       rw [← Nat.add_mul]; congr 1; omega
     omega
 
+/-- **Lower-fit guard** `smallestK m (Yvec) ≤ Sprefix M (m+1)` (`m ≤ L`): `Y`'s `m` smallest below `M`'s
+`m+1` smallest. `m > c`: equality (`Yvec_prefix`); `m ≤ c`: the complement `∑ tail ≤ (c−m)b +
+min(r,c−m)` from `aS_le_bp1` + `count_bp1_le`. The greedy non-emptiness' lower-fit. -/
+private theorem Yvec_lowerfit (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (m : ℕ) (hm : m ≤ L) :
+    smallestK L m (Yvec M (cAch M)) ≤ (Sprefix M (m + 1) : ℤ) := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b := P / c with hb
+  set r := P % c with hr
+  rw [smallestK_of_monotone L m (Yvec M c) (Yvec_monotone M hL) hm]
+  have hpre := Yvec_prefix M hL m hm
+  rw [← hc] at hpre
+  rw [hpre]
+  by_cases hmc : m ≤ c
+  · rw [if_pos hmc]
+    -- complement: tail = ∑_{i=m+1}^c aS i ≤ (c−m)b + min(r,c−m); Sprefix(m+1) = P − tail
+    have hrlt : r < c := Nat.mod_lt _ hc1
+    -- count of b+1 in [m+1,c] ≤ min(r, c−m)
+    set cnt := ((Finset.Icc (m + 1) c).filter (fun i => aS M i = b + 1)).card with hcnt
+    have hcnt_le_cm : cnt ≤ c - m := by
+      rw [hcnt]
+      refine le_trans (Finset.card_filter_le _ _) ?_
+      rw [Nat.card_Icc]; omega
+    have hcnt_le_r : cnt ≤ r := by
+      refine le_trans ?_ (count_bp1_le M hL)
+      rw [hcnt]
+      apply Finset.card_le_card
+      apply Finset.filter_subset_filter
+      intro i hi; rw [Finset.mem_Icc] at hi ⊢; omega
+    -- tail ≤ (c−m)·b + cnt  (each aS i ≤ b+1 = b + [aS i = b+1])
+    have htail_le : ∑ i ∈ Finset.Icc (m + 1) c, aS M i ≤ (c - m) * b + cnt := by
+      have hpoint : ∀ i ∈ Finset.Icc (m + 1) c, aS M i ≤ b + (if aS M i = b + 1 then 1 else 0) := by
+        intro i hi; rw [Finset.mem_Icc] at hi
+        have hb1 : aS M i ≤ b + 1 := by
+          have := aS_le_bp1 M hL (show 1 ≤ i by omega) hi.2; rw [← hP, ← hb] at this; exact this
+        split_ifs with h <;> omega
+      refine le_trans (Finset.sum_le_sum hpoint) ?_
+      rw [Finset.sum_add_distrib, Finset.sum_const, Nat.card_Icc, smul_eq_mul,
+        show c + 1 - (m + 1) = c - m by omega]
+      have hboole : ∑ i ∈ Finset.Icc (m + 1) c, (if aS M i = b + 1 then 1 else 0) = cnt := by
+        rw [hcnt, Finset.card_filter]
+      omega
+    -- Sprefix(m+1) = P − tail
+    have hSpre : Sprefix M (m + 1) + ∑ i ∈ Finset.Icc (m + 1) c, aS M i = P := by
+      rw [hP, Sprefix, Sprefix]
+      rw [show Finset.Icc (m + 1) c = Finset.Ico (m + 1) (c + 1) from by
+        ext i; rw [Finset.mem_Icc, Finset.mem_Ico]; omega]
+      rw [← Finset.sum_range_add_sum_Ico (fun i => aS M i) (by omega : m + 1 ≤ c + 1)]
+    -- assemble: target balanced-prefix ≤ Sprefix(m+1), as ℤ
+    have hPdm : P = c * b + r := (Nat.div_add_mod P c).symm
+    have hmb : m * b + (c - m) * b = c * b := by rw [← Nat.add_mul]; congr 1; omega
+    have hcast : (m : ℤ) * (b : ℤ) + max 0 ((m : ℤ) + (r : ℤ) - (c : ℤ))
+        ≤ ((Sprefix M (m + 1) : ℕ) : ℤ) := by
+      rcases Nat.lt_or_ge (m + r) c with hlt | hge
+      · -- m+r<c ⟹ max=0; mb ≤ Sprefix(m+1) (cnt ≤ r)
+        rw [max_eq_left (by push_cast; omega)]
+        have hnat : m * b ≤ Sprefix M (m + 1) := by omega
+        have : ((m * b : ℕ) : ℤ) ≤ ((Sprefix M (m + 1) : ℕ) : ℤ) := by exact_mod_cast hnat
+        push_cast at this; linarith
+      · -- m+r≥c ⟹ max=m+r−c; cnt ≤ c−m; mb+(m+r−c) ≤ Sprefix(m+1)
+        rw [max_eq_right (by push_cast; omega)]
+        have hnat : m * b + (m + r - c) ≤ Sprefix M (m + 1) := by omega
+        have hgec : c ≤ m + r := by omega
+        have : ((m * b + (m + r - c) : ℕ) : ℤ) ≤ ((Sprefix M (m + 1) : ℕ) : ℤ) := by
+          exact_mod_cast hnat
+        rw [Nat.cast_add, Nat.cast_sub hgec] at this; push_cast at this; linarith
+    exact hcast
+  · rw [if_neg hmc]
+
 /-- Corridor-feasibility of an ordering `q : ℕ → ℤ`: the telescoped `uTel` is nonneg, ends at `0`,
 weakly-decreasing, and within `admBound`. Exactly `telescope M q ∈ Adm M` (D2). -/
 def QFeas (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) : Prop :=
