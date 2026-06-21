@@ -3755,6 +3755,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-early-tail-interval-guards-a5.md`.
 
+The Eq5 nonfirst block admissibility wrapper has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean name:
+`aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard`.
+For a supplied Eq5 piecewise certificate, strict alpha-domain membership and
+an explicit post-`p` lower guard imply Htilde interval membership on every
+selected block `b` with `1<=b`.  The first branch `b=0` is deliberately
+excluded, and the post-`p` lower guard remains supplied.  This is not Eq5
+construction, source-label legality, source-backed guard production,
+selected-span exactness, order count, pole order, normal crossings, or RLCT
+extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonfirst-block-admissibility-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-nonfirst-block-admissibility.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-nonfirst-block-admissibility-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in

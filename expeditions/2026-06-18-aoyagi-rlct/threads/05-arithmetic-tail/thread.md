@@ -4009,3 +4009,34 @@ shows it is not implied by strict alpha-domain membership plus post-`p` range.
 No Eq5 vector construction, source-label legality, terminal `tilde t=0`,
 chart coverage, Lemma 5 order count, pole order, normal crossings, or RLCT
 extraction follows.
+
+## 2026-06-21 Lean Lemma 5 Eq5 nonfirst block admissibility
+
+Reproduction:
+`reproduction-lemma5-eq5-nonfirst-block-admissibility-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-nonfirst-block-admissibility.md`.
+Review artifact:
+`review-lemma5-eq5-nonfirst-block-admissibility-a5.md`.
+
+Lean now assembles the Eq5 branch-local interval guards into the supplied
+nonfirst-block wrapper
+
+```text
+aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard
+```
+
+For a supplied Eq5 piecewise certificate, if `alpha` is in the strict Eq5
+alpha domain and the explicit post-`p` lower guard is supplied, then every
+block point `C.block b S` with `1<=b` has
+
+```text
+T S in aoyagiHtildeIntervalValueSetNat ell a M m b.
+```
+
+The `b=0` first branch is intentionally excluded because its value is the
+ambient layer width, not an Htilde-chain expression.  This theorem still does
+not construct Eq5 source vectors, prove source-label legality, prove the
+post-`p` lower guard from source hypotheses, prove terminal `tilde t=0`, chart
+coverage, Lemma 5 order count, pole order, normal crossings, or RLCT
+extraction.

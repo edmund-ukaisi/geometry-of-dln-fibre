@@ -2478,6 +2478,50 @@ theorem aoyagiLemma5Eq5AlphaToPLowerGuard_of_alphaDomain
       · omega
       · omega
 
+/-- A supplied equation `(5)` piecewise certificate is interval-admissible on
+every non-first selected block once the strict alpha-domain guards and the
+post-`p` lower guard are supplied.
+
+The first branch `b=0` is excluded: its value is the ambient layer width, not a
+same-coordinate Htilde interval value.  This theorem is still supplied
+bookkeeping only; it does not construct the displayed vector or prove the
+post-`p` guard from source hypotheses. -/
+theorem aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (halpha : alpha ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hpost : aoyagiLemma5Eq5PostPLowerGuard ell a p alpha)
+    {b S : ℕ} (hb_pos : 1 ≤ b) (hS : C.block b S) :
+    T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m b := by
+  have hpreGuard :=
+    aoyagiLemma5Eq5PreAlphaLowerGuard_of_alphaDomain ell a p alpha halpha
+  have halphaToPGuard :=
+    aoyagiLemma5Eq5AlphaToPLowerGuard_of_alphaDomain ell a p alpha halpha
+  by_cases hb_pre : b + 2 ≤ alpha
+  · exact aoyagiLemma5Eq5_preAlpha_mem_intervalValueSetNat_of_preAlphaLowerGuard
+      ell a p alpha M m C layerWidth T hT hpreGuard hb_pos hb_pre hS
+  have halpha_le_b : alpha ≤ b + 1 := by omega
+  by_cases hb_p_hi : b + 1 ≤ p
+  · exact aoyagiLemma5Eq5_alphaToP_mem_intervalValueSetNat_of_alphaToPLowerGuard
+      ell a p alpha M m C layerWidth T hT halphaToPGuard
+      hb_pos halpha_le_b hb_p_hi hS
+  have hp_le_b : p ≤ b := by omega
+  by_cases hb_post : b ≤ p + (a - alpha)
+  · exact aoyagiLemma5Eq5_postP_mem_intervalValueSetNat_of_postPLowerGuard
+      ell a p alpha M m C layerWidth T hT hpost hp_le_b hb_post hS
+  have hb_tail : p + (a - alpha) + 1 ≤ b := by omega
+  have hcut_le_S :
+      C.point (p + (a - alpha) + 1) - 1 ≤ S := by
+    by_cases hb_eq : b = p + (a - alpha) + 1
+    · subst b
+      exact hS.2.1
+    · have hlt : p + (a - alpha) + 1 < b := by omega
+      exact le_of_lt (C.leftEndpoint_lt_of_lt_block hlt hS)
+  exact aoyagiLemma5Eq5_tail_mem_intervalValueSetNat
+    ell a p alpha M m C layerWidth T hT hb_tail hS hcut_le_S
+
 /-- Concrete check that the strict Eq5 alpha domain and post-`p` range do not
 force the post-`p` lower-bound guard. -/
 theorem aoyagiLemma5Eq5_alphaDomain_and_postPRange_not_lowerGuard :
