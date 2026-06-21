@@ -1104,6 +1104,32 @@ This is a closed finite counterexample to that compatibility being a
 Definition 3 consequence.  It does not construct a supplied equation `(4)`
 branch certificate or a terminal extension.
 
+## 2026-06-21 Lean Lemma 5 equation `(4)` no terminal upper extension example
+
+Reproduction:
+`reproduction-lemma5-eq4-no-terminal-upper-extension-example-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-no-terminal-upper-extension-example.md`.
+Review artifact:
+`review-lemma5-eq4-no-terminal-upper-extension-example-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo
+```
+
+For `ell=3`, `a=2`, `p=1`, `M=3`, and all selected widths equal to `2`, any
+supplied equation `(4)` certificate is incompatible with the supplied terminal
+upper-chain extension
+`T(S_(ell+1)-1)=Htilde'_ell`.  In this tuple the printed terminal-collision
+branch value is `1`, while `Htilde'_ell=0`.
+
+This combines the existing terminal-extension obstruction with the closed
+Definition 3-shaped counterexample.  It does not construct a supplied equation
+`(4)` branch certificate, construct a terminal extension, prove terminal
+`tilde t=0`, or prove Lemma 5.
+
 ## 2026-06-20 Lean Lemma 5 equation `(3)` interval obstruction
 
 Reproduction:

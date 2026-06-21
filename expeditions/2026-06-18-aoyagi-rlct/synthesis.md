@@ -2053,6 +2053,12 @@ future record supplies `T(S_(ell+1)-1)=Htilde'_ell`, then
 with the terminal-collision branch: when `p+1=a`, a supplied equation `(4)`
 certificate plus such a terminal extension forces
 `W_(ell+1)=M-p+1`, and failure of that compatibility rules out the extension.
+A concrete supplied-data wrapper now combines this obstruction with the closed
+Definition 3-shaped tuple `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths
+`2`: any supplied equation `(4)` certificate for that tuple is incompatible
+with the supplied terminal upper-chain extension
+`T(S_(ell+1)-1)=Htilde'_ell`.  Equivalently, the printed terminal-collision
+branch value is `1`, while `Htilde'_ell=0`.
 A fresh source audit reconfirms that the printed paper does not supply the
 Case 1(2) chart sequence, repeated gap checks, terminal endpoint convention,
 or proof of `tilde t=0`; therefore this is not a displayed-vector realisation

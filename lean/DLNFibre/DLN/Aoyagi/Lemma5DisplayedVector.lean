@@ -844,6 +844,23 @@ theorem aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
     (aoyagiLemma5Eq4_terminalExtension_forces_lastWidth_of_predBoundary
       ell a p M m C layerWidth T hp hselected hT hterminal)
 
+/-- For the closed `ell=3`, `a=2`, `p=1`, all-widths-two tuple, any supplied
+equation `(4)` certificate rules out the supplied terminal upper-chain
+extension at the terminal selected endpoint.
+
+This does not construct the supplied certificate, construct a terminal
+extension, prove terminal `tilde t=0`, or prove Aoyagi Lemma 5. -/
+theorem aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo
+    (C : AoyagiSelectedCutpoints 3) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector
+      3 2 1 (3 : ℤ) (fun _ : Fin (3 + 1) => (2 : ℤ)) C layerWidth T) :
+    T (C.point 3 - 1) ≠
+      aoyagiHtildeUpperNat 3 2 (3 : ℤ)
+        (fun _ : Fin (3 + 1) => (2 : ℤ)) 3 := by
+  exact aoyagiLemma5Eq4_no_terminalExtension_of_lastWidth_ne_predBoundary
+    3 2 1 (3 : ℤ) (fun _ : Fin (3 + 1) => (2 : ℤ)) C layerWidth T
+    (by norm_num) (by norm_num) hT (by norm_num [aoyagiSelectedWidthNat])
+
 /-- A supplied equation `(4)` piecewise vector has the correct own-coordinate
 value and legal source label under the repaired guards.
 

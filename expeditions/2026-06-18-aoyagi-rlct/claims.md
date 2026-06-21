@@ -2127,6 +2127,13 @@ No such claim is formalisation-ready until both fields are filled.
   selected-sum and strict selected-width inequalities while failing that
   condition.
   Also proved
+  `aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo`,
+  which combines that concrete tuple with the supplied terminal-extension
+  obstruction: any supplied equation `(4)` certificate for the tuple is
+  incompatible with the supplied terminal upper-chain extension
+  `T(S_(ell+1)-1)=Htilde'_ell`.  This does not construct the certificate or a
+  terminal extension.
+  Also proved
   `aoyagiHtildeUpperNat_succ_eq_add_selectedWidthNat_sub_increment`,
   `aoyagiLemma5Eq4_boundaryCoordinate_intervalExcess_eq_min`,
   `aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate`,

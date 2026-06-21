@@ -2584,6 +2584,25 @@ Review artifact:
 Counterexample review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-terminal-compatibility-counterexample-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` no-terminal-upper-extension
+example has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean name
+is
+`aoyagiLemma5Eq4_no_terminalUpperNatExtension_ell3_a2_p1_allWidthsTwo`.
+It says that for `ell=3`, `a=2`, `p=1`, `M=3`, and all selected widths equal
+to `2`, any supplied equation `(4)` certificate is incompatible with the
+supplied terminal upper-chain extension
+`T(S_(ell+1)-1)=Htilde'_ell`.  This is the finite incompatibility obtained by
+combining the existing terminal-extension obstruction with the closed
+Definition 3-shaped counterexample; it does not construct the supplied
+certificate, construct a terminal extension, prove terminal `tilde t=0`, or
+prove Lemma 5.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-no-terminal-upper-extension-example-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-no-terminal-upper-extension-example.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-no-terminal-upper-extension-example-a5.md`.
+
 Latest A5 update: the Lemma 5 equation `(4)` strict-boundary interval
 classifier has landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.
 The proved Lean names are

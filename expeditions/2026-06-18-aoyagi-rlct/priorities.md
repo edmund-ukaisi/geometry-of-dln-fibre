@@ -673,10 +673,12 @@ on the session's original cwd.
    terminal-collision case is now Lean-proved to force that same last-width
    condition, and its failure rules out the extension.  A closed Lean
    counterexample now shows Definition 3 does not force that compatibility:
-   `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths `2`.  The next A5 move
-   should either build a richer supplied Case 1(2) terminal convention
-   explicitly, or move to another finite consequence below the
-   displayed-family realisation boundary.
+   `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths `2`.  The counterexample
+   has now been combined with the supplied-extension obstruction: any supplied
+   equation `(4)` certificate for that tuple is incompatible with the supplied
+   terminal upper-chain extension.  The next A5 move should either build a
+   richer supplied Case 1(2) terminal convention explicitly, or move to another
+   finite consequence below the displayed-family realisation boundary.
    A4 has now filled the finite source-coordinate representative for the
    constructed-`Cprime` direction: the old factor `Q*Cprime` can be
    zero-extended to a total source function, and restriction through the
