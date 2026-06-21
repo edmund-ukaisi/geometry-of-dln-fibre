@@ -803,4 +803,236 @@ theorem redMove_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) �
     simp only [redMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
     exact hc0
 
+/-! ## The boundary shrink moves (omitting an endpoint of `[a,d']`)
+
+When the omitted vertex `k` is an endpoint of `[a,d']` (so the interior split's left or right piece is
+not just empty but unrepresentable — e.g. `k = a = 0`), use a single-piece shrink: `leftShrink`
+replaces `[a,d']` by `[c,d']` (`c = a+1`, omitting vertex `a`); `rightShrink` replaces it by `[a,b]`
+(`b = d'−1`, omitting vertex `d'`). Each reuses the same `boxℤ` `codimForm` machinery (one fewer
+piece than `redMove`). -/
+
+/-- The left-shrink move: replace one copy of `[a,d']` by `[c,d']` (kept only when `c ≤ d'`),
+omitting the left endpoint `a` (`c = a+1`). -/
+def leftShrink (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a c d' : Fin (N + 1)) :
+    Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ m p + (if c ≤ d' ∧ p = (c, d') then 1 else 0) - (if p = (a, d') then 1 else 0)
+
+/-- The left-shrink ℤ-delta: `boxℤ c d' − boxℤ a d'`. -/
+def leftDelta (a c d' : Fin (N + 1)) : ℤ → ℤ → ℤ :=
+  fun α β ↦ boxℤ (c : ℤ) (d' : ℤ) α β - boxℤ (a : ℤ) (d' : ℤ) α β
+
+/-- Per-interval coefficient of the left-shrink delta. -/
+def leftCoeff (a c d' : Fin (N + 1)) (Y : Fin (N + 1) × Fin (N + 1)) : ℤ :=
+  ((if rrInd (c : ℤ) (d' : ℤ) Y then 1 else 0) - (if rrInd (a : ℤ) (d' : ℤ) Y then 1 else 0))
+  + ((if llInd (c : ℤ) (d' : ℤ) Y then 1 else 0) - (if llInd (a : ℤ) (d' : ℤ) Y then 1 else 0))
+
+/-- `codimBil (extendℤ m) (leftDelta …)` as a per-interval `univ`-sum (right-rectangle indicators). -/
+theorem codimBil_extendℤ_leftDelta_right (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a c d' : Fin (N + 1)) :
+    codimBil N (extendℤ m) (leftDelta a c d')
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ)
+          * ((if rrInd (c : ℤ) (d' : ℤ) Y then 1 else 0)
+              - (if rrInd (a : ℤ) (d' : ℤ) Y then 1 else 0)) := by
+  have hbox : ∀ p q : ℤ, codimBil N (extendℤ m) (boxℤ p q)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * (if rrInd p q Y then 1 else 0) := by
+    intro p q
+    rw [codimBil_extendℤ_boxℤ_right, Finset.sum_filter]
+    exact Finset.sum_congr rfl fun Y _ ↦ by split_ifs with h <;> simp
+  rw [show leftDelta a c d' = boxℤ (c : ℤ) (d' : ℤ) - boxℤ (a : ℤ) (d' : ℤ) by
+        funext α β; simp only [Pi.sub_apply]; rfl,
+    codimBil_sub_right, hbox, hbox, ← Finset.sum_sub_distrib]
+  exact Finset.sum_congr rfl fun Y _ ↦ by ring
+
+/-- `codimBil (leftDelta …) (extendℤ m)` as a per-interval `univ`-sum (left-rectangle indicators). -/
+theorem codimBil_leftDelta_extendℤ_left (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a c d' : Fin (N + 1)) :
+    codimBil N (leftDelta a c d') (extendℤ m)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ)
+          * ((if llInd (c : ℤ) (d' : ℤ) Y then 1 else 0)
+              - (if llInd (a : ℤ) (d' : ℤ) Y then 1 else 0)) := by
+  have hbox : ∀ p q : ℤ, codimBil N (boxℤ p q) (extendℤ m)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * (if llInd p q Y then 1 else 0) := by
+    intro p q
+    rw [codimBil_boxℤ_extendℤ_left, Finset.sum_filter]
+    exact Finset.sum_congr rfl fun Y _ ↦ by split_ifs with h <;> simp
+  rw [show leftDelta a c d' = boxℤ (c : ℤ) (d' : ℤ) - boxℤ (a : ℤ) (d' : ℤ) by
+        funext α β; simp only [Pi.sub_apply]; rfl,
+    codimBil_sub_left, hbox, hbox, ← Finset.sum_sub_distrib]
+  exact Finset.sum_congr rfl fun Y _ ↦ by ring
+
+/-- The left-shrink self-term `codimForm (leftDelta …) = 0` (two boxes that never type-A pair when
+`a < c ≤ d'`). -/
+theorem codimForm_leftDelta (a c d' : Fin (N + 1)) (hac : (a : ℕ) < c) (hcd : (c : ℕ) ≤ d') :
+    codimForm N (leftDelta a c d') = 0 := by
+  have hcN : (c : ℤ) ≤ N := by have := c.isLt; omega
+  have hdN : (d' : ℤ) ≤ N := by have := d'.isLt; omega
+  have hacZ : (a : ℤ) < c := by exact_mod_cast hac
+  have hcdZ : (c : ℤ) ≤ d' := by exact_mod_cast hcd
+  rw [show codimForm N (leftDelta a c d') = codimBil N (leftDelta a c d') (leftDelta a c d') from rfl,
+    show leftDelta a c d' = boxℤ (c : ℤ) (d' : ℤ) - boxℤ (a : ℤ) (d' : ℤ) by
+        funext α β; simp only [Pi.sub_apply]; rfl]
+  simp only [codimBil_sub_left, codimBil_sub_right, codimBil_boxℤ_boxℤ]
+  rw [if_neg (by omega), if_neg (by omega), if_neg (by omega), if_neg (by omega)]
+  ring
+
+/-- `extendℤ (leftShrink m a c d')` agrees with `extendℤ m + leftDelta` on the box; off the box
+`codimForm` does not read the guard. -/
+theorem extendℤ_leftShrink_onbox (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a c d' : Fin (N + 1))
+    {α β : ℤ} (hα : 0 ≤ α) (hαβ : α ≤ β) (hβ : β ≤ (N : ℤ)) (hsad : 1 ≤ m (a, d')) (hac : a ≠ c) :
+    extendℤ (leftShrink m a c d') α β = (extendℤ m + leftDelta a c d') α β := by
+  simp only [Pi.add_apply, extendℤ, leftDelta, boxℤ]
+  rw [dif_pos ⟨hα, hαβ, hβ⟩, dif_pos ⟨hα, hαβ, hβ⟩]
+  set q : Fin (N + 1) × Fin (N + 1) := (⟨α.toNat, by omega⟩, ⟨β.toNat, by omega⟩) with hq
+  have hαβN : (q.1 : ℕ) ≤ q.2 := by rw [hq]; dsimp only [Fin.val_mk]; omega
+  have eCD : (q = (c, d')) ↔ (α = (c : ℤ) ∧ β = (d' : ℤ)) := by
+    rw [hq, Prod.mk.injEq, Fin.ext_iff, Fin.ext_iff]; dsimp only [Fin.val_mk]; omega
+  have eAD : (q = (a, d')) ↔ (α = (a : ℤ) ∧ β = (d' : ℤ)) := by
+    rw [hq, Prod.mk.injEq, Fin.ext_iff, Fin.ext_iff]; dsimp only [Fin.val_mk]; omega
+  rw [show leftShrink m a c d' (⟨α.toNat, by omega⟩, ⟨β.toNat, by omega⟩)
+      = leftShrink m a c d' q from rfl, leftShrink]
+  by_cases h2 : q = (c, d')
+  · have h3 : q ≠ (a, d') := fun h ↦ hac (by have := h.symm.trans h2; exact (Prod.mk.injEq .. ▸ this).1)
+    rw [if_pos ⟨by rw [h2] at hαβN; exact hαβN, h2⟩, if_neg h3, if_pos (eCD.mp h2),
+      if_neg (fun h ↦ h3 (eAD.mpr h))]
+    push_cast; ring
+  · by_cases h3 : q = (a, d')
+    · have hpos : 1 ≤ m q := by rw [h3]; exact hsad
+      rw [if_neg (fun h ↦ h2 h.2), if_pos h3, if_neg (fun h ↦ h2 (eCD.mpr h)), if_pos (eAD.mp h3)]
+      rw [Nat.cast_sub (by omega)]; push_cast; ring
+    · rw [if_neg (fun h ↦ h2 h.2), if_neg h3, if_neg (fun h ↦ h2 (eCD.mpr h)),
+        if_neg (fun h ↦ h3 (eAD.mpr h))]
+      simp only [Nat.add_zero, Nat.sub_zero]; push_cast; ring
+
+/-- **The left-shrink `codimForm`-delta.** `codimForm (extendℤ (leftShrink m a c d')) =
+codimForm (extendℤ m) + ∑_Y m̄ Y · leftCoeff a c d' Y` (for `a < c ≤ d'`, source present). -/
+theorem codimForm_leftShrink (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a c d' : Fin (N + 1)}
+    (hac : (a : ℕ) < c) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d')) :
+    codimForm N (extendℤ (leftShrink m a c d'))
+      = codimForm N (extendℤ m)
+        + ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * leftCoeff a c d' Y := by
+  have hacF : a ≠ c := by rw [Fin.ne_iff_vne]; omega
+  rw [codimForm_congr_onbox (fun α β hα hαβ hβ ↦ extendℤ_leftShrink_onbox m a c d' hα hαβ hβ hsad hacF)]
+  rw [codimForm_add, codimBil_extendℤ_leftDelta_right, codimBil_leftDelta_extendℤ_left,
+    codimForm_leftDelta a c d' hac hcd, add_zero, add_assoc, ← Finset.sum_add_distrib]
+  congr 1
+  exact Finset.sum_congr rfl fun Y _ ↦ by unfold leftCoeff; ring
+
+/-- **Left-shrink sign lemma.** For `c = a + 1 ≤ d'` (omitting the left endpoint `a`), any `Y` with
+`leftCoeff a c d' Y > 0` covers `a` and is strictly shorter than `[a,d']`. -/
+theorem leftCoeff_pos_imp {a c d' : Fin (N + 1)} (hac : (c : ℕ) = a + 1) (hcd : (c : ℕ) ≤ d')
+    {Y : Fin (N + 1) × Fin (N + 1)} (hpos : 0 < leftCoeff a c d' Y) :
+    ((Y.1 : ℤ) ≤ (a : ℤ) ∧ (a : ℤ) ≤ (Y.2 : ℤ)) ∧ (Y.2 : ℤ) - (Y.1 : ℤ) < (d' : ℤ) - (a : ℤ) := by
+  have hcZ : (c : ℤ) = (a : ℤ) + 1 := by exact_mod_cast hac
+  have hcdZ : (c : ℤ) ≤ d' := by exact_mod_cast hcd
+  have hY1 : (Y.1 : ℤ) ≤ (N : ℤ) := by have := Y.1.isLt; omega
+  have hY2 : (Y.2 : ℤ) ≤ (N : ℤ) := by have := Y.2.isLt; omega
+  have haN : (a : ℤ) ≤ (N : ℤ) := by have := a.isLt; omega
+  have hdN : (d' : ℤ) ≤ (N : ℤ) := by have := d'.isLt; omega
+  have hY1nn : (0 : ℤ) ≤ (Y.1 : ℤ) := by positivity
+  have hY2nn : (0 : ℤ) ≤ (Y.2 : ℤ) := by positivity
+  have hann : (0 : ℤ) ≤ (a : ℤ) := by positivity
+  unfold leftCoeff rrInd llInd at hpos
+  split_ifs at hpos <;> omega
+
+/-- **Left-shrink does not increase `codimForm`** when `[a,d']` is a shortest covering interval of its
+left endpoint `a` (`c = a + 1`), of positive multiplicity. -/
+theorem codimForm_leftShrink_le (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a c d' : Fin (N + 1)}
+    (hac : (c : ℕ) = a + 1) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d'))
+    (hshort : ∀ Y : Fin (N + 1) × Fin (N + 1), 1 ≤ m Y →
+      (Y.1 : ℤ) ≤ (a : ℤ) → (a : ℤ) ≤ (Y.2 : ℤ) →
+      (d' : ℤ) - (a : ℤ) ≤ (Y.2 : ℤ) - (Y.1 : ℤ)) :
+    codimForm N (extendℤ (leftShrink m a c d')) ≤ codimForm N (extendℤ m) := by
+  rw [codimForm_leftShrink m (by omega) hcd hsad]
+  have hsum : ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * leftCoeff a c d' Y ≤ 0 := by
+    refine Finset.sum_nonpos fun Y _ ↦ ?_
+    rcases lt_or_ge 0 (leftCoeff a c d' Y) with hc | hc
+    · obtain ⟨⟨h1, h2⟩, hlen⟩ := leftCoeff_pos_imp hac hcd hc
+      have hmY : m Y = 0 := by
+        by_contra hne; exact absurd (hshort Y (Nat.one_le_iff_ne_zero.mpr hne) h1 h2) (not_le.mpr hlen)
+      rw [hmY]; simp
+    · exact mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg _) hc
+  linarith
+
+/-- Filtered-coverage change of `leftShrink` (as `ℤ`): coverage of `m` plus the guarded `[c,d']`
+indicator minus the `[a,d']` indicator. -/
+theorem leftShrink_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a c d' : Fin (N + 1)}
+    (hac : (a : ℕ) < c) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d')) (v : Fin (N + 1)) :
+    (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+        leftShrink m a c d' p : ℤ)
+      = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2), m p : ℤ)
+        + (if c ≤ d' ∧ c ≤ v ∧ v ≤ d' then 1 else 0) - (if a ≤ v ∧ v ≤ d' then 1 else 0) := by
+  set S := Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2) with hS
+  have hacF : a ≠ c := by rw [Fin.ne_iff_vne]; omega
+  have hterm : ∀ p : Fin (N + 1) × Fin (N + 1),
+      ((leftShrink m a c d' p : ℕ) : ℤ)
+        = (m p : ℤ) + (if c ≤ d' ∧ p = (c, d') then 1 else 0) - (if p = (a, d') then 1 else 0) := by
+    intro p
+    by_cases h2 : c ≤ d' ∧ p = (c, d')
+    · have h3 : p ≠ (a, d') := by rw [h2.2]; intro h; exact hacF (congrArg Prod.fst h).symm
+      simp only [leftShrink, if_pos h2, if_neg h3, Nat.add_zero, Nat.sub_zero]; push_cast; ring
+    · by_cases h3 : p = (a, d')
+      · have hpos : 1 ≤ m p := by rw [h3]; exact hsad
+        simp only [leftShrink, if_neg h2, if_pos h3, Nat.add_zero]
+        rw [Nat.cast_sub (by omega)]; push_cast; ring
+      · simp only [leftShrink, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]; push_cast; ring
+  rw [Finset.sum_congr rfl (fun p (_ : p ∈ S) ↦ hterm p), Finset.sum_sub_distrib,
+    Finset.sum_add_distrib]
+  have hcollapse : ∀ (P : Prop) [Decidable P] (key : Fin (N + 1) × Fin (N + 1)),
+      (∑ p ∈ S, if P ∧ p = key then (1 : ℤ) else 0) = if P ∧ key ∈ S then 1 else 0 := by
+    intro P _ key
+    by_cases hP : P
+    · simp only [hP, true_and]; rw [Finset.sum_ite_eq' S key]
+    · simp only [hP, false_and, if_false, Finset.sum_const_zero]
+  rw [hcollapse (c ≤ d') (c, d'), Finset.sum_ite_eq' S (a, d')]
+  have hmemS : ∀ x y : Fin (N + 1), ((x, y) ∈ S) ↔ (x ≤ v ∧ v ≤ y) := by
+    intro x y; rw [hS]; simp [Finset.mem_filter]
+  simp only [hmemS]
+
+/-- **Left-shrink lands in the corner-`0` Kostant partitions of the vector decremented at `a`.** For
+`[a,d']` covering its left endpoint, present, and `≠ [0,N]` (corner stays `0`). -/
+theorem leftShrink_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
+    {a c d' : Fin (N + 1)} (hm : m ∈ kostantPartitions e' 0)
+    (hac : (c : ℕ) = a + 1) (hcd : (c : ℕ) ≤ d') (had : a ≤ d') (hsad : 1 ≤ m (a, d'))
+    (hcorner : (a, d') ≠ ((0 : Fin (N + 1)), Fin.last N)) :
+    leftShrink m a c d' ∈ kostantPartitions (Function.update e' a (e' a - 1)) 0 := by
+  obtain ⟨hbnd, hsupp, hkost, hc0⟩ := mem_kostantPartitions.mp hm
+  have hac0 : (a : ℕ) < c := by omega
+  have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → leftShrink m a c d' p = 0 := by
+    intro p hp
+    have h2 : ¬ (c ≤ d' ∧ p = (c, d')) := fun h ↦ hp (by rw [h.2]; exact (Fin.le_def.mpr hcd))
+    have h3 : p ≠ (a, d') := fun h ↦ hp (by rw [h]; exact had)
+    simp only [leftShrink, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]; exact hsupp p hp
+  have hekpos : 1 ≤ e' a := by
+    rw [hkost a]
+    refine le_trans hsad (Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) ?_)
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact ⟨le_rfl, had⟩
+  have hkost' : ∀ v, kostantAt (Function.update e' a (e' a - 1)) (leftShrink m a c d') v := by
+    intro v
+    rw [kostantAt]
+    have hcov := leftShrink_cover m hac0 hcd hsad v
+    have hbase : (e' v : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            m p : ℤ) := by exact_mod_cast hkost v
+    have hZ : ((Function.update e' a (e' a - 1) v : ℕ) : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            leftShrink m a c d' p : ℤ) := by
+      rw [hcov, ← hbase]
+      have hupd : ((Function.update e' a (e' a - 1) v : ℕ) : ℤ)
+          = (e' v : ℤ) - (if v = a then 1 else 0) := by
+        by_cases hva : v = a
+        · subst hva; rw [Function.update_self, if_pos rfl, Nat.cast_sub hekpos]; push_cast; ring
+        · rw [Function.update_of_ne hva, if_neg hva]; ring
+      rw [hupd]
+      have hvaN : (v = a) ↔ ((v : ℕ) = a) := by rw [Fin.ext_iff]
+      simp only [Fin.le_def, hvaN]
+      split_ifs <;> omega
+    exact_mod_cast hZ
+  refine mem_kostantPartitions.mpr ⟨bound_of_kostant hsupp' hkost', hsupp', hkost', ?_⟩
+  · have hdN : (d' : ℕ) ≤ N := by have := d'.isLt; omega
+    have h2 : ¬ (c ≤ d' ∧ ((0 : Fin (N + 1)), Fin.last N) = (c, d')) := by
+      rintro ⟨-, hh⟩; rw [Prod.mk.injEq] at hh; have := hh.1
+      rw [Fin.ext_iff, Fin.val_zero] at this; omega
+    have h3 : ((0 : Fin (N + 1)), Fin.last N) ≠ (a, d') := fun h ↦ hcorner h.symm
+    show leftShrink m a c d' ((0 : Fin (N + 1)), Fin.last N) = 0
+    simp only [leftShrink, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+    exact hc0
+
 end DLNFibre.Core
