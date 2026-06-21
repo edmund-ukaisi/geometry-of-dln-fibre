@@ -170,6 +170,11 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   for general both-arbitrary additivity, not ours). Route B (iterated-1D: n=1 Fubini `∫(x²+s)^{-c}=C·s^{1/2-c}`
   iterated, stays on Params-flat product measure) likely cleaner than Route A (radial via
   `integrable_fun_norm_addHaar` [Mathlib HAS it, corrects the earlier gap-flag] + EuclideanSpace-Haar bridge).
+  **UPDATE: general-n single-block n/2 PROVEN** (`smoothBlockND_rlct` rlctAtOn(Σxᵢ²)=n/2 on EuclideanSpace,
+  S1SmoothBlock.lean @505e0a2, axiom-clean, 201 LoC — the Mathlib-gap was NOT real, radial `integrable_fun_norm_addHaar`
+  + ball-truncation + rpow-iff). The FUBINI lemma (the +core combination = n/2+λ_core) is the s>0 EXTENSION of
+  that radial machinery (`∫(‖x‖²+s)^{-c}=C·s^{n/2-c}`, Fubini, + monomial-core threshold) — CLOSED-FORM (NOT
+  Laplace), in flight (fm-2). S1.3 also PROVEN + ON TRUNK now (S1Local 0-sorry @505e0a2).
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
