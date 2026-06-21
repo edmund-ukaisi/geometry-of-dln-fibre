@@ -41,9 +41,11 @@ the type, `via_aoyagi` in the theorem names — never a smuggled axiom):
 - **Aoyagi / Watanabe** — the analytic equality `rlct(K^DLN_B) = codim(fibre)/2` (`RlctInterface.cited_aoyagi_dln`).
   The real-log-canonical-threshold *definition* and this analytic bridge are out of scope for a from-scratch
   Lean development (no SLT machinery in Mathlib); they are interfaced, not built.
-- **Lemma 4.6** — the bundle shift `codim(fibre B) = codim(Σ̄^r) + r(d_0+d_N−r)`
-  (`BundleShiftInterface.cited_bundle_shift_lemma46`). Its fibre-dimension drop needs general Chevalley
-  fibre-dimension theory, absent in Mathlib; interfaced for the general-`r` case (the `r=0` case is bundle-free).
+- **Lemma 4.5 + Lemma 4.6** — the bundle shift `codim(fibre B) = codim(Σ̄^r) + r(d_0+d_N−r)`
+  (`BundleShiftInterface.cited_bundle_shift`, guarded `0 < N`). The shift itself is Lemma 4.6 (stated for
+  the exact-rank `Σ^r`); the closed-locus form folds in `codim Σ̄^r = codim Σ^r` (Cor 4.4 + Lemma 4.5). Its
+  fibre-dimension drop needs general Chevalley fibre-dimension theory, absent in Mathlib; interfaced for the
+  general-`r` case (the `r=0` case is bundle-free).
 
 `θ` is the **geometric component count**, not the RLCT multiplicity — the paper records no simple relation
 between the two.

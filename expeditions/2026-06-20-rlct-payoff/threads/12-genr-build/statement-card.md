@@ -6,9 +6,13 @@ Build: whole `DLNFibre` library green (`lake build`, 3677 jobs); `scripts/sorrie
 / 0 native_decide / 0 axiom (whole library).
 Axioms (`#print axioms`): `[propext, Classical.choice, Quot.sound]` on `codimRepCanonical_productRankLocusLE_eq_cCodim`
 (Brick A), `rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi` (R2-general), and both `(2,2,2)` `r=1`
-witnesses — both Cited facts (Aoyagi rlct + Lemma 4.6 shift) are carried structure FIELDS
-(`RlctInterface.cited_aoyagi_dln` / `BundleShiftInterface.cited_bundle_shift_lemma46`), NOT global axioms.
-Pinned commit: see thread-12 commit on `expedition/rlct-payoff`.
+witnesses — both Cited facts (Aoyagi rlct + the Lemma 4.5/4.6 shift) are carried structure FIELDS
+(`RlctInterface.cited_aoyagi_dln` / `BundleShiftInterface.cited_bundle_shift`, both guarded `0 < N`),
+NOT global axioms.
+Pinned commit: see thread-12 commit on `expedition/rlct-payoff`. **Update (PR #5 review, commit 7a52633):**
+Brick A moved to the network-free Core module `lean/DLNFibre/Core/SigmaCodim.lean` (no `DLN` import); the
+two Cited fields gained a `0 < N` guard (false at `N = 0`, the empty product); `cited_bundle_shift_lemma46`
+renamed → `cited_bundle_shift` and restated as the combined LR Lemma 4.5 + Lemma 4.6 (see Brick B).
 
 ## The destination, plainly
 
@@ -24,9 +28,10 @@ Brick A + CITE Brick B**, NOT a single proved `codim mult⁻¹(B) = C + shift`.
 > **Claim.** The geometric codimension of the closed rank-`≤ r` product locus `Σ̄^r =
 > productRankLocusLE d r` equals the combinatorial `C = cCodim d r`.
 >
-> - **Lean:** `codimRepCanonical_productRankLocusLE_eq_cCodim` (`[IsAlgClosed k] [CharZero k]`); `ℕ∞`
->   form `…_eq_cCodim_enat`; bridge (a) `codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim`;
->   definitional `…_eq_height_sigmaIdeal`.
+> - **Lean:** `Core.codimRepCanonical_productRankLocusLE_eq_cCodim` (now in the network-free Core module
+>   `lean/DLNFibre/Core/SigmaCodim.lean`, `[IsAlgClosed k] [CharZero k]`); `ℕ∞` form `…_eq_cCodim_enat`;
+>   bridge (a) `codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim`; definitional
+>   `…_eq_height_sigmaIdeal`.
 > - **Gloss.** `((codimRepCanonical (productRankLocusLE k d r)).toNat : ℤ) = cCodim d r h`.
 > - **Proved.** Mirrors the LANDED `r = 0` chain (`codimRepCanonical_fibre_zero_eq_cCodim`), but stated
 >   *about `Σ̄^r` itself* — every brick is general in `r`. `codim Σ̄^r = height (sigmaIdeal d r)` (rfl)
@@ -46,22 +51,27 @@ Brick A + CITE Brick B**, NOT a single proved `codim mult⁻¹(B) = C + shift`.
 > - **No fibre-dim wall.** `Σ̄^r` is `GL_d`-stable (a finite union of orbit closures), so the landed
 >   orbit-closure machinery applies directly. The wall is only Brick B's `Σ̄^r ⤳ mult⁻¹(B)`.
 
-## Brick B — the bundle shift (CITED, named: LR Lemma 4.6)
+## Brick B — the bundle shift (CITED, named: LR Lemma 4.5 + Lemma 4.6)
 
-> **Claim.** `codim mult⁻¹(B) = codim Σ̄^r + r(d_0+d_N−r)` for `B` of rank `r ≤ min d`.
+> **Claim.** `codim mult⁻¹(B) = codim Σ̄^r + r(d_0+d_N−r)` for `B` of *exact* rank `r ≤ min d`, `0 < N`.
 >
-> - **Lean:** `BundleShiftInterface` (structure), field `cited_bundle_shift_lemma46`.
-> - **Gloss.** `BundleShiftInterface d K ι` carries `cited_bundle_shift_lemma46 : ∀ B r, B.rank = r →
+> - **Lean:** `BundleShiftInterface` (structure), field `cited_bundle_shift`.
+> - **Gloss.** `BundleShiftInterface d K ι` carries `cited_bundle_shift : ∀ B r, 0 < N → B.rank = r →
 >   (∀ k', r ≤ d k') → codimRepCanonical (fibre K d (B.map ι)) = codimRepCanonical (productRankLocusLE
 >   K d r) + ((r * (d 0 + d (Fin.last N) − r) : ℕ) : ℕ∞)`.
-> - **Cited.** Lehalleur–Rimányi Lemma 4.6 = `lem:rank_vs_fibers` (main.tex:844–858): `mult⁻¹(B)` is a
->   locally-trivial bundle over the rank-`r` matrix orbit `Mat^{rk=r}` (dim `r(d_0+d_N−r)`), so its
->   codim is that of `Σ̄^r` shifted by the base dimension. A fibre-dimension / locally-trivial-bundle
->   count Mathlib v4.29 lacks (thread 11: four routes, all hit the same wall). The field is a CARRIED
->   hypothesis, NOT a global `axiom` (so `#print axioms` stays clean).
-> - **Why separate from `RlctInterface`.** Different source (Lemma 4.6, a geometric bundle statement,
->   vs Aoyagi Thm 1, an analytic rlct statement), so the two Cited dependencies are independently
->   visible in any consumer's type.
+> - **Cited.** The *closed-locus* shift combines two LR §4 facts: Lemma 4.6 = `lem:rank_vs_fibers`
+>   (main.tex:844–858) gives `codim mult⁻¹(B) = codim Σ^r + r(d_0+d_N−r)` for the *exact-rank* `Σ^r`
+>   (`mult⁻¹(B)` is a locally-trivial bundle over the rank-`r` matrix orbit `Mat^{rk=r}`, dim
+>   `r(d_0+d_N−r)`); Cor 4.4 (`cor:irred_comp`) + Lemma 4.5 (`lem:rank_0`, main.tex:816–833) give
+>   `codim Σ̄^r = codim Σ^r` (Zariski closure preserves codimension), so the field's `Σ̄^r` form is
+>   honest. A fibre-dimension / locally-trivial-bundle count Mathlib v4.29 lacks (thread 11: four routes,
+>   all hit the same wall). The field is a CARRIED hypothesis, NOT a global `axiom` (so `#print axioms`
+>   stays clean).
+> - **`0 < N` guard.** restricts the field to a genuine deep network — where Lemma 4.6 holds. At `N = 0`
+>   the "product" `mult` is the empty product (`mult = 1`) and the shift identity is false.
+> - **Why separate from `RlctInterface`.** Different source (the Lemma 4.5/4.6 geometric bundle
+>   statement, vs Aoyagi Thm 1, an analytic rlct statement), so the two Cited dependencies are
+>   independently visible in any consumer's type.
 > - **Honest-subtraction guard.** the shift is a `ℕ`-cast `((r * (d 0 + d (Fin.last N) − r) : ℕ) : ℕ∞)`;
 >   the `∀ k', r ≤ d k'` guard keeps `d 0 + d_N − r` the genuine integer (no `ℕ`-truncation).
 > - **`B.rank` over ℝ.** matches `RlctInterface.cited_aoyagi_dln` exactly (a ring embedding preserves
@@ -72,17 +82,18 @@ Brick A + CITE Brick B**, NOT a single proved `codim mult⁻¹(B) = C + shift`.
 > **Claim.** `rlct(K^DLN_B) = (C + r(d_0+d_N−r))/2` for `B` of rank `r ≤ min d`.
 >
 > - **Lean:** `rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi (I : RlctInterface d K ι)
->   (J : BundleShiftInterface d K ι) (hB : B.rank = r) (hr : ∀ k', r ≤ d k') (h) :
+>   (J : BundleShiftInterface d K ι) (hN : 0 < N) (hB : B.rank = r) (hr : ∀ k', r ≤ d k') (h) :
 >   I.rlct (lossDLN d B) = (((cCodim d r h).toNat : ℝ) + (r * (d 0 + d (Fin.last N) − r) : ℕ)) / 2`.
-> - **Proved.** Pure transport: `I.cited_aoyagi_dln B r hB` (general in `r`, LANDED) gives `rlct =
->   ½·codim mult⁻¹(B.map ι)`; `J.cited_bundle_shift_lemma46 B r hB hr` rewrites the fibre codim as
+> - **Proved.** Pure transport: `I.cited_aoyagi_dln B r hN hB` (general in `r`, LANDED) gives `rlct =
+>   ½·codim mult⁻¹(B.map ι)`; `J.cited_bundle_shift B r hN hB hr` rewrites the fibre codim as
 >   `codim Σ̄^r + shift`; Brick A (`…_eq_cCodim_enat`) rewrites `codim Σ̄^r = cCodim d r`; the
 >   `ℕ∞.toNat`-of-sum splits because both summands are finite (Brick A finite; shift a `ℕ` literal).
 >   The Aoyagi guard `r ≤ univ.inf' d` is `∀ k, r ≤ d k` via `Finset.le_inf'_iff`.
 > - **Assumed.** both interfaces `I`, `J` (explicit hypotheses; both Cited dependencies in the type);
->   `[IsAlgClosed K] [CharZero K]`; `(kostantPartitions d r).Nonempty`; `B.rank = r`; `∀ k', r ≤ d k'`.
-> - **Cited.** `I.cited_aoyagi_dln` (Aoyagi Thm 1 / LR Thm 8.6) AND `J.cited_bundle_shift_lemma46`
->   (LR Lemma 4.6). Both carried fields, not global axioms.
+>   `0 < N` (the Cited scope, a genuine deep network); `[IsAlgClosed K] [CharZero K]`;
+>   `(kostantPartitions d r).Nonempty`; `B.rank = r`; `∀ k', r ≤ d k'`.
+> - **Cited.** `I.cited_aoyagi_dln` (Aoyagi Thm 1 / LR Thm 8.6) AND `J.cited_bundle_shift`
+>   (LR Lemma 4.5 + Lemma 4.6). Both carried fields, not global axioms.
 > - **Name = content.** both `I` and `J` explicit in the type (both Cited dependencies visible);
 >   `via_aoyagi` names the rlct source; the `+ shift` is visibly the Lemma-4.6 contribution, NOT claimed
 >   as proved geometry. NO unconditional `rlct = (C + shift)/2`. `θ` is absent (R is `C/2` + shift only).
@@ -119,3 +130,11 @@ Cited facts honestly carried named interfaces (Aoyagi `cited_aoyagi_dln`; Lemma 
 `axiom`); (4) R2-general name=content (both `I`, `J` explicit in the type; `via_aoyagi`; no
 unconditional `rlct = (C+shift)/2`). Decorrelated Codex (xhigh) convergent: no hidden fibre-dimension
 content in Brick A, shift faithful to Lemma 4.6. Codex artefacts: `codex/fidelity-{prompt,answer}.md`.
+
+**PR #5 review update (commit `7a52633`, fidelity re-audited PASS).** Three points above are superseded:
+(i) the Lemma-4.6 field is renamed `cited_bundle_shift_lemma46 → cited_bundle_shift` and restated as the
+combined LR Lemma 4.5 + Lemma 4.6 (the closed-locus form folds in `codim Σ̄^r = codim Σ^r`); (ii) Brick A
+now lives in the network-free Core module `Core.SigmaCodim` (no `DLN` import); (iii) the "open θ-strict
+gap" is closed — `Core.CCodimZeroStrict.cCodim_zero_strict` is proved, the θ-count headline
+`numTop_eq_ncard_topComponents` is unconditional. Brick A still uses only the weak monotonicity (its
+independence from the strict version is unaffected). Both Cited fields gained a `0 < N` scope guard.
