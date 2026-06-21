@@ -4046,6 +4046,23 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-counted-datum-bridge-a5.md`.
 
+Latest A5 Lemma 4 prefix-profile computation update:
+`HtildeChainArithmetic.lean` now contains
+`aoyagiLemma4IncrementPrefix_eq_upperHighCount_add_of_eq_upperNat_sub` and
+`aoyagiLemma4IncrementPrefix_eq_lowerHighCount_of_eq_lowerNat`.  These prove
+the generic coordinate algebra for the Lemma 4 prefix normal form: upper
+Htilde minus offset `r` gives `upperHighCount+r`, and lower Htilde gives
+`lowerHighCount`.  This is a prerequisite-style computation for a later Eq5
+endpoint-profile proof, not a binary-delta theorem, two-value increment
+theorem, Eq5 construction, endpoint realisation, order count, pole order,
+normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma4-prefix-profile-computations-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma4-prefix-profile-computations.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma4-prefix-profile-computations-a5.md`.
+
 Latest A5 prefix-delta-chain-bound update: `HtildeChainArithmetic.lean` now
 proves the algebraic translation from supplied prefix-delta bounds to displayed
 chain bounds.  Names:

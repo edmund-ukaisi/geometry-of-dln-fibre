@@ -54,6 +54,8 @@ Current counted-datum maps-to adapter slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-maps-to-adapters-a5.md`.
 Current Eq5 counted-datum bridge slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-counted-datum-bridge-a5.md`.
+Current Lemma 4 prefix-profile computation slice:
+`threads/05-arithmetic-tail/reproduction-lemma4-prefix-profile-computations-a5.md`.
 Current prefix-delta chain-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-prefix-delta-chain-bounds-a5.md`.
 Current binary-prefix-delta bound slice:

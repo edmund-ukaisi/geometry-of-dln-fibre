@@ -4129,6 +4129,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-counted-datum-bridge-a5.md`.
 
+Latest A5 Lemma 4 prefix-profile computation update:
+`HtildeChainArithmetic.lean` now contains
+`aoyagiLemma4IncrementPrefix_eq_upperHighCount_add_of_eq_upperNat_sub` and
+`aoyagiLemma4IncrementPrefix_eq_lowerHighCount_of_eq_lowerNat`.  These unfold
+the Lemma 4 prefix normal form at a single coordinate: an upper Htilde value
+minus offset `r` has prefix value `upperHighCount+r`, and a lower Htilde value
+has prefix value `lowerHighCount`.  This is generic algebra for a later Eq5
+endpoint-profile proof, not binary deltas, two-value increments, Eq5 vector
+construction, endpoint realisation, order count, pole order, normal crossings,
+or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma4-prefix-profile-computations-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma4-prefix-profile-computations.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma4-prefix-profile-computations-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

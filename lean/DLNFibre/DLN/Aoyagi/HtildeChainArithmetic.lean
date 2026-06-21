@@ -1497,6 +1497,32 @@ def aoyagiLemma4IncrementPrefixDelta (ell : ℕ) (M : ℤ)
   aoyagiLemma4IncrementPrefix ell M m H j.succ -
     aoyagiLemma4IncrementPrefix ell M m H j.castSucc
 
+/-- If a chain coordinate is an upper Htilde value minus an offset, its
+Lemma 4 increment prefix is the upper high-count plus that offset. -/
+theorem aoyagiLemma4IncrementPrefix_eq_upperHighCount_add_of_eq_upperNat_sub
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    {j : Fin (ell + 1)} {r : ℤ}
+    (hH : H j = aoyagiHtildeUpperNat ell a M m j.val - r) :
+    aoyagiLemma4IncrementPrefix ell M m H j =
+      (aoyagiHtildeUpperHighCount ell a j.val : ℤ) + r := by
+  unfold aoyagiLemma4IncrementPrefix
+  rw [hH]
+  unfold aoyagiHtildeUpperNat aoyagiHtildeUpperIncrementPrefix
+  ring
+
+/-- If a chain coordinate is a lower Htilde value, its Lemma 4 increment
+prefix is the lower high-count. -/
+theorem aoyagiLemma4IncrementPrefix_eq_lowerHighCount_of_eq_lowerNat
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    {j : Fin (ell + 1)}
+    (hH : H j = aoyagiHtildeLowerNat ell a M m j.val) :
+    aoyagiLemma4IncrementPrefix ell M m H j =
+      (aoyagiHtildeLowerHighCount a j.val : ℤ) := by
+  unfold aoyagiLemma4IncrementPrefix
+  rw [hH]
+  unfold aoyagiHtildeLowerNat aoyagiHtildeLowerIncrementPrefix
+  ring
+
 /-- Supplied prefix-delta bounds imply the displayed same-coordinate
 `Htilde` chain bounds.
 

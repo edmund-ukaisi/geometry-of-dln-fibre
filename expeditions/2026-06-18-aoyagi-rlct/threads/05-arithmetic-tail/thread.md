@@ -4376,3 +4376,29 @@ explicit post-`p` guard or the terminal-room inequality.  This is maps-to
 bookkeeping only.  It does not construct Eq5 vectors, prove nonbase status,
 prove classifier/injection/back-to-label coverage, prove an order count, pole
 order, normal crossings, or RLCT.
+
+## 2026-06-21 Lean Lemma 4 prefix-profile computations
+
+Reproduction:
+`reproduction-lemma4-prefix-profile-computations-a5.md`.
+Statement card:
+`statement-card-a5-lemma4-prefix-profile-computations.md`.
+Review artifact:
+`review-lemma4-prefix-profile-computations-a5.md`.
+
+Lean now proves two generic coordinate computations for the Lemma 4
+increment-prefix normal form:
+
+```text
+aoyagiLemma4IncrementPrefix_eq_upperHighCount_add_of_eq_upperNat_sub
+aoyagiLemma4IncrementPrefix_eq_lowerHighCount_of_eq_lowerNat
+```
+
+If `H_j=Htilde'_j-r`, then the prefix value is `upperHighCount_j+r`; if
+`H_j=Htilde_j`, then it is `lowerHighCount_j`.  The initial and terminal
+profile facts were already present as
+`aoyagiLemma4IncrementPrefix_zero_of_H0` and
+`aoyagiLemma4IncrementPrefix_last_eq_a_of_terminalH`.  This is generic algebra
+for a later Eq5 endpoint profile.  It does not prove binary deltas, two-value
+Lemma 4 increments, Eq5 vector construction, endpoint realisation, classifier
+data, order count, pole order, normal crossings, or RLCT.
