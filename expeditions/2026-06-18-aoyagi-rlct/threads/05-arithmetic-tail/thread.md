@@ -2296,3 +2296,31 @@ This is source-label packaging under supplied bounds only.  It does not derive
 p-general Eq3 label legality from Definition 3, construct displayed vectors,
 cover all intervals, package all branch families, prove Lemma 5 order count,
 normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3 component domain/recurrence/exponent wrappers
+
+Reproduction:
+`reproduction-lemma5-eq3-component-domain-recurrence-exponent-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-component-domain-recurrence-exponent.md`.
+Review artifact:
+`review-lemma5-eq3-component-domain-recurrence-exponent-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq3_componentFinset_succ_eq_insert_of_lastPoint_labelBounds
+aoyagiLemma5Eq3_componentFinset_card_succ_eq_succ_of_lastPoint_labelBounds
+aoyagiLemma5Eq3_component_case2_weight_succ_current_eq_newVar_mul_of_lastPoint_labelBounds
+aoyagiLemma5Eq3_component_extendExponentDomain_succ_current_of_lastPoint_labelBounds
+```
+
+For one Eq3-shaped upper component with supplied actual-width compatibility
+and supplied label bounds, the component feeds the generic one-step
+introduced-domain insert, domain-cardinality, Case 2 recurrence-weight, and
+supplied exponent-domain extension APIs.
+
+This is API bookkeeping under supplied bounds.  It does not derive the label
+bounds from Definition 3, compute terminal exponents or least values,
+construct displayed vectors, cover all intervals, package all branch families,
+prove Lemma 5 order count, normal crossings, or RLCT extraction.

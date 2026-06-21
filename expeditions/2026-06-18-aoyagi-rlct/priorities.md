@@ -862,6 +862,11 @@ on the session's original cwd.
    wrappers too.  These package actual-label and introduced-label membership
    only when actual-width compatibility and the upper-label bounds are supplied;
    do not read them as a derivation of Eq3 label legality from Definition 3.
+   The same component now also has one-step introduced-domain insert,
+   cardinality, supplied recurrence-weight, and supplied exponent-domain
+   wrappers.  These are API bookkeeping only: terminal-exponent equality and
+   least-value data remain explicit in the exponent wrapper, and no chart
+   production or order count is claimed.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

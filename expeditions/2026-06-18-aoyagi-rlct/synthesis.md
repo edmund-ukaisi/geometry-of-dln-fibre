@@ -2662,6 +2662,25 @@ Lemma 5 order count, normal crossings, or RLCT extraction.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`.
 
+The same supplied-bound Eq3 component now feeds the one-step domain,
+recurrence, and exponent-certificate APIs.  Theorems
+`aoyagiLemma5Eq3_componentFinset_succ_eq_insert_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_componentFinset_card_succ_eq_succ_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_component_case2_weight_succ_current_eq_newVar_mul_of_lastPoint_labelBounds`,
+and
+`aoyagiLemma5Eq3_component_extendExponentDomain_succ_current_of_lastPoint_labelBounds`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean` specialize the existing
+generic one-step APIs after the component is supplied as an actual label.  The
+terminal-exponent equality and least-value proof in the exponent wrapper remain
+explicit hypotheses.  This still does not derive p-general Eq3 label bounds
+from Definition 3, construct displayed vectors, prove chart production,
+all-interval/all-branch coverage, Lemma 5 order count, normal crossings, or
+RLCT extraction.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-component-domain-recurrence-exponent-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-component-domain-recurrence-exponent.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-component-domain-recurrence-exponent-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

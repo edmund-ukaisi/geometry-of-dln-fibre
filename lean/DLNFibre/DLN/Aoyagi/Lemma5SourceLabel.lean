@@ -389,6 +389,154 @@ theorem aoyagiLemma5Eq3_component_intervalValue_mem_introducedLabelFinset_of_las
   exact aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
     ell a p M m hT.a_le_ell hp_lt
 
+/-- Eq3-shaped component one-step introduced-label finite-domain update under
+supplied label bounds.
+
+This is finite-domain bookkeeping for the p-general Eq3-shaped upper component.
+It does not derive the label bounds from Definition 3 or construct displayed
+vectors. -/
+theorem aoyagiLemma5Eq3_componentFinset_succ_eq_insert_of_lastPoint_labelBounds
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1) :
+    introducedLabelFinset L n (C.point p - 1) (J + 1) =
+      insert (Sigma.mk (C.point p - 1) (J + 1))
+        (introducedLabelFinset L n (C.point p - 1) J) := by
+  have hlabel :=
+    aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds
+      L ell a p n M m C layerWidth T hp_pos hp_c hlast hwidth
+      hlabelBounds hT hJ
+  exact introducedLabelFinset_succ_eq_insert hlabel.2
+
+/-- Cardinality form of
+`aoyagiLemma5Eq3_componentFinset_succ_eq_insert_of_lastPoint_labelBounds`. -/
+theorem aoyagiLemma5Eq3_componentFinset_card_succ_eq_succ_of_lastPoint_labelBounds
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1) :
+    (introducedLabelFinset L n (C.point p - 1) (J + 1)).card =
+      (introducedLabelFinset L n (C.point p - 1) J).card + 1 := by
+  have hlabel :=
+    aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds
+      L ell a p n M m C layerWidth T hp_pos hp_c hlast hwidth
+      hlabelBounds hT hJ
+  exact introducedLabelFinset_card_succ_eq_succ hlabel.2
+
+/-- Source-facing Eq3 component specialization of the supplied Case 2
+recurrence-weight update.
+
+For one Eq3-shaped upper component whose label is `J+1`, a supplied successor
+recurrence state with the standard Case 2 post-data has row weights multiplied
+by the new variable from row `J+1` onward.  This is conditional recurrence
+bookkeeping, not chart production. -/
+theorem aoyagiLemma5Eq3_component_case2_weight_succ_current_eq_newVar_mul_of_lastPoint_labelBounds
+    {α : Type*} [CommMonoid α]
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1)
+    {pre : IntroducedLabelRecurrenceState L n (C.point p - 1) J α}
+    {post : IntroducedLabelRecurrenceState L n (C.point p - 1) (J + 1) α}
+    {u : α}
+    (hpost : IntroducedLabelRecurrenceState.Case2SuppliedPostData pre post u) :
+    ∀ i, J + 1 ≤ i → post.weight i = u * pre.weight i := by
+  have hlabel :=
+    aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds
+      L ell a p n M m C layerWidth T hp_pos hp_c hlast hwidth
+      hlabelBounds hT hJ
+  exact fun i hi ↦ hpost.weight_succ_current_eq_new_mul_of_ge hlabel.2 hi
+
+/-- Source-facing Eq3 component supplied exponent-domain extension.
+
+For one Eq3-shaped upper component whose label is `J+1`, the source-label
+wrapper supplies only the new label's introduced-label field.  The terminal
+exponent and least-value fields are supplied explicitly; this theorem only
+routes them through the generic one-step exponent-certificate domain
+extension. -/
+theorem aoyagiLemma5Eq3_component_extendExponentDomain_succ_current_of_lastPoint_labelBounds
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hlabelBounds :
+      (1 : ℤ) ≤ aoyagiHtildeUpperNat ell a M m p + 1 ∧
+        aoyagiHtildeUpperNat ell a M m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {J : ℕ} (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1)
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (hcert : IntroducedLabelExponentCertificates
+      L n (C.point p - 1) J t numerator leastValue)
+    (hterminal :
+      terminalExponent L (widthZ n) (t' (C.point p - 1) (J + 1)) =
+        numerator' (C.point p - 1) (J + 1))
+    (hleast :
+      IsLeast
+        {v : ℤ | ∃ i, i ∈ Finset.Icc 1 L ∧
+          t' (C.point p - 1) (J + 1) i = v}
+        (leastValue' (C.point p - 1) (J + 1)))
+    (ht_old : ∀ {s k}, introducedLabel L n (C.point p - 1) J s k →
+      t' s k = t s k)
+    (hn_old : ∀ {s k}, introducedLabel L n (C.point p - 1) J s k →
+      numerator' s k = numerator s k)
+    (hl_old : ∀ {s k}, introducedLabel L n (C.point p - 1) J s k →
+      leastValue' s k = leastValue s k) :
+    IntroducedLabelExponentCertificates
+      L n (C.point p - 1) (J + 1) t' numerator' leastValue' := by
+  have hlabel :=
+    aoyagiLemma5Eq3_component_actualWidthLabel_of_lastPoint_labelBounds
+      L ell a p n M m C layerWidth T hp_pos hp_c hlast hwidth
+      hlabelBounds hT hJ
+  have hnew :
+      LabelExponentCertificate L n (C.point p - 1) (J + 1)
+        (C.point p - 1) (J + 1)
+        (t' (C.point p - 1) (J + 1))
+        (numerator' (C.point p - 1) (J + 1))
+        (leastValue' (C.point p - 1) (J + 1)) := by
+    refine
+      { introduced := ?_
+        terminalExponent_eq := hterminal
+        least_value := hleast }
+    exact introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl
+  exact hcert.extendDomain_succ_current hnew ht_old hn_old hl_old
+
 /-- Equation `(4)` own-coordinate wrapper with post-advance introduced-label
 membership.
 

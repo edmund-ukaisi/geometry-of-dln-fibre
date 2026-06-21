@@ -3290,6 +3290,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-shaped-component-supplied-label-bounds-a5.md`.
 
+Latest A5 update: the supplied-bound Eq3 component now has one-step
+introduced-domain, recurrence-weight, and exponent-domain wrappers in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The names are
+`aoyagiLemma5Eq3_componentFinset_succ_eq_insert_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_componentFinset_card_succ_eq_succ_of_lastPoint_labelBounds`,
+`aoyagiLemma5Eq3_component_case2_weight_succ_current_eq_newVar_mul_of_lastPoint_labelBounds`,
+and
+`aoyagiLemma5Eq3_component_extendExponentDomain_succ_current_of_lastPoint_labelBounds`.
+They use the supplied actual-label wrapper to specialize generic APIs.  The
+exponent wrapper still supplies terminal-exponent equality and least-value data
+explicitly.  No derivation of p-general Eq3 label bounds from Definition 3,
+displayed-vector construction, chart production, all-interval/all-branch
+coverage, order count, normal crossings, or RLCT extraction is proved.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-component-domain-recurrence-exponent-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-component-domain-recurrence-exponent.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-component-domain-recurrence-exponent-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

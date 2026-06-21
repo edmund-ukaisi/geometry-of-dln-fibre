@@ -2385,6 +2385,15 @@ No such claim is formalisation-ready until both fields are filled.
   and
   `aoyagiLemma5Eq3_component_intervalValue_mem_introducedLabelFinset_of_lastPoint_labelBounds`.
   They keep actual-width compatibility and label bounds explicit.
+  Also proved supplied-bound Eq3 component domain, recurrence, and exponent
+  wrappers:
+  `aoyagiLemma5Eq3_componentFinset_succ_eq_insert_of_lastPoint_labelBounds`,
+  `aoyagiLemma5Eq3_componentFinset_card_succ_eq_succ_of_lastPoint_labelBounds`,
+  `aoyagiLemma5Eq3_component_case2_weight_succ_current_eq_newVar_mul_of_lastPoint_labelBounds`,
+  and
+  `aoyagiLemma5Eq3_component_extendExponentDomain_succ_current_of_lastPoint_labelBounds`.
+  The exponent wrapper keeps terminal-exponent equality and least-value data
+  explicit.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
