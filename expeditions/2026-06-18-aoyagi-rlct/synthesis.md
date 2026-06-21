@@ -2358,6 +2358,20 @@ order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-interval-introduced-label-a5.md`.
 
+Eq3/Eq4 now also have post-advance introduced-label wrappers:
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_introducedLabel_of_lastPoint` and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_introducedLabel_of_lastPoint` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  These wrap the existing
+last-point actual-label adapters, giving `T S=k-1` and
+`introducedLabel L n S k S k` for the own coordinate.  Eq3 keeps the explicit
+one-unit slack, and all actual-width compatibility remains explicit.  This is
+introduced-label API cleanup only, not displayed-vector construction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-own-coordinate-introduced-label.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

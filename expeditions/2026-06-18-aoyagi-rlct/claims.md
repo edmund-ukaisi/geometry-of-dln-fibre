@@ -2298,6 +2298,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint`
   derive the upper source range from `C.point ell<=L+1`; they still assume
   actual-width compatibility, and Eq3 keeps the explicit one-unit slack.
+  The post-advance introduced-label wrappers
+  `aoyagiLemma5Eq4_piecewise_ownCoordinate_introducedLabel_of_lastPoint` and
+  `aoyagiLemma5Eq3_piecewise_ownCoordinate_introducedLabel_of_lastPoint`
+  package the same own-coordinate value as `introducedLabel L n S k S k`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

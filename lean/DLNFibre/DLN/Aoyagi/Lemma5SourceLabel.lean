@@ -254,6 +254,61 @@ theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
     L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack
     hs_le hwidth hT hk
 
+/-- Equation `(4)` own-coordinate wrapper with post-advance introduced-label
+membership.
+
+The state is `(S,k)` for `S=C.point p-1`: the supplied branch gives
+`T S=k-1`, while the actual source label is introduced after advancing through
+label `k`. -/
+theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_introducedLabel_of_lastPoint
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp0 : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeLowerNat ell a M m p + 1) :
+    T (C.point p - 1) = (k : ℤ) - 1 ∧
+      introducedLabel L n (C.point p - 1) k (C.point p - 1) k := by
+  have hlabel :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+      L ell a p n M m C layerWidth T hell hp0 hp_c hselected hsource hlast
+      hwidth hT hk
+  exact ⟨hlabel.1, introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl⟩
+
+/-- Equation `(3)` own-coordinate wrapper with post-advance introduced-label
+membership.
+
+The explicit slack and actual-width compatibility are inherited from the
+actual-label wrapper.  This remains a supplied-piecewise adapter, not a
+displayed-vector construction. -/
+theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_introducedLabel_of_lastPoint
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point 1 - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeUpperNat ell a M m 1 + 1) :
+    T (C.point 1 - 1) = (k : ℤ) - 1 ∧
+      introducedLabel L n (C.point 1 - 1) k (C.point 1 - 1) k := by
+  have hlabel :=
+    aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+      L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack hlast
+      hwidth hT hk
+  exact ⟨hlabel.1, introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl⟩
+
 /-- Equation `(5)`'s label `k=Htilde'_p+1-alpha` is an actual source label
 when the selected width at `p` is identified with the actual layer width at
 `S_(p+1)`.

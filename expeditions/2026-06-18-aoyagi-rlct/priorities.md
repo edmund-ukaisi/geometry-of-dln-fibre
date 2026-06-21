@@ -764,9 +764,11 @@ on the session's original cwd.
    source wrapper also packages supplied Eq5 own-block interval membership,
    `T S=k-1`, and post-advance introduced-label membership.  This is useful
    order-count/API scaffolding but not displayed-vector realisation.
-   Next A5 moves should add thin introduced-label adapters for Eq3/Eq4, or
-   continue count-side decomposition without claiming that Eq3/Eq4 realise the
-   missing value.
+   The analogous Eq3/Eq4 own-coordinate introduced-label wrappers are now
+   proved too.  Next A5 moves should continue count-side decomposition or add
+   similarly thin `LabelExponentCertificate` adapters only if the certificate
+   fields are already available; do not claim that Eq3/Eq4 realise the missing
+   value without a fresh reproduction.
    Eq3/Eq4 own-coordinate source-label adapters are now Lean-proved, so the
    current source-label API consistently packages `T(S)=k-1` with
    `actualWidthLabel`, and the last-cutpoint wrappers derive the upper source

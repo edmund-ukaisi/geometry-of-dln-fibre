@@ -2951,6 +2951,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-interval-introduced-label-a5.md`.
 
+Latest A5 update: Eq3/Eq4 own-coordinate introduced-label wrappers are proved
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The names are
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_introducedLabel_of_lastPoint` and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_introducedLabel_of_lastPoint`.
+They combine the existing last-point actual-label adapters with the generic
+post-advance rule `introducedLabel_of_eq_stage_le`, giving `T S=k-1` and
+`introducedLabel L n S k S k` at the own coordinate.  Actual-width
+compatibility remains explicit, and Eq3 still requires the one-unit slack.
+No displayed vector construction, terminality, admissibility, or order count
+is proved.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-own-coordinate-introduced-label.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

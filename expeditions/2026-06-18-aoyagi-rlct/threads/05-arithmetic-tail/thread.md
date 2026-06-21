@@ -1777,3 +1777,29 @@ This still does not construct the displayed vector, prove that equations
 `W_p<=n(S+1)` from Definition 3 alone, prove terminal `tilde t=0`, vector
 admissibility, chart sequence, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 equations `(3)`/`(4)` own-coordinate introduced-label wrappers
+
+Reproduction:
+`reproduction-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-eq4-own-coordinate-introduced-label.md`.
+Review artifact:
+`review-lemma5-eq3-eq4-own-coordinate-introduced-label-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_piecewise_ownCoordinate_introducedLabel_of_lastPoint
+aoyagiLemma5Eq3_piecewise_ownCoordinate_introducedLabel_of_lastPoint
+```
+
+These are post-advance wrappers over the existing Eq3/Eq4 last-point
+actual-label adapters.  For the own coordinate `S`, they prove `T S=k-1` and
+`introducedLabel L n S k S k`.  The state is deliberately `(S,k)`, matching
+the fact that the branch value is `k-1` after label `k` has been introduced.
+
+The wrappers keep the existing actual-width compatibility hypotheses.  Eq3
+also keeps the explicit slack `W_1+2<=M`.  They do not construct displayed
+vectors, prove terminality, vector admissibility, chart sequence, pole order,
+normal crossings, or RLCT extraction.
