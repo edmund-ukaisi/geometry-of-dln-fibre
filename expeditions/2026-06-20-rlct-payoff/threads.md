@@ -22,4 +22,6 @@ Each thread's artefacts live under `threads/<NN>-<slug>/`.
 | 09 | DR-design | pen-and-paper | closed | Phase D/R design: loss+fibre, codim(fibre 0)=C, Cited RlctInterface, rlct=C/2; r=0 ~1 module |
 | 10 | DR-build | formaliser | closed | r=0 RLCT payoff: lossDLN + codim(fibre 0)=C + RlctInterface + rlct(K^DLN_0)=C/2 |
 
+| 11 | genr-shift-sizing | pen-and-paper | open | codim(fibre B)=C_r+r(d_0+d_N−r): zero-cited route vs Cite Lemma 4.6 (fibre-dim wall risk) |
+
 Threads open dynamically as the sizing recon re-scopes the ladder (Phase G/θ/D/R builds).

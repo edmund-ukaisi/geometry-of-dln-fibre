@@ -202,3 +202,12 @@ zero-cited; bridge (b) Kostant↔orbit-codim-min PROVED IN FULL — better than 
 - rlct DEFINITION is honestly Cited (Aoyagi interface), per project policy — NOT a from-scratch SLT sub-library.
 
 ## CLOSE: propose PR `expedition/rlct-payoff → dev` (operator-gated, signal-and-wait). Stand seats down at close.
+
+## 2026-06-21 — operator: PUSH GENERAL-r payoff (before close)
+Target: `rlct(K^DLN_B) = (C_r + r(d_0+d_N−r))/2` for general rank-r B, via the bundle shift
+`codim(fibre B) = codim(Σ̄^r) + r(d_0+d_N−r)` (= dim of the rank-r determinantal variety; Lemma 4.6).
+RISK: the shift's fibre-dim drop may hit the SAME no-Chevalley-fibre-dim wall as voigt-discharge L2b★
+(Mathlib lacks fibre-dim) — voigt dodged it via route-c (Jacobian⟹trdeg). SIZING FIRST (thread 11,
+pen-and-paper): is there a zero-cited route for the shift, or is Cite-Lemma-4.6-named the honest move
+(consistent with the Aoyagi rlct interface)? Then build D3-general + R2-general `rlct=(C+shift)/2`.
+(2,2,2)/r=1: codim Σ̄^1=1, shift 3, fibre codim 4, rlct=2.
