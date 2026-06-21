@@ -225,3 +225,20 @@ Chevalley fibre-dim). Honest split:
   `cited_aoyagi_dln` is ALREADY general in r) gated on Brick A + Brick B.
 Checks: (2,2,2) r=1 → codim Σ̄^1=1, shift 3, fibre codim 4, rlct=2; r=2 → shift 4, codim 4; (2,2,1) r=1 → shift 2,
 codim 2 (confirms d_0+d_N form). ~80–150 LoC, 1 DLN module. DISPATCHED thread 12.
+
+## 2026-06-21 — ★ GENERAL-r DESTINATION DELIVERED ★ (thread 12)
+`DLNFibre.DLN.RlctPayoffGeneral` (green 3677 jobs, 0-sorry, axiom-clean, reviewer FIDELITY OK):
+- **Brick A `codimRepCanonical_productRankLocusLE_eq_cCodim`** (`codim Σ̄^r = cCodim d r`, general r): PROVED
+  zero-cited, WEAK-monotonicity-only (independent of the open θ-strict gap) — new general-r geometric content.
+- **Brick B `BundleShiftInterface`** (Cited Lemma 4.6, named carried hypothesis).
+- **R2-general `rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi`**: `rlct(K^DLN_B) = (cCodim d r +
+  r(d_0+d_N−r))/2` for general rank-r B, name=content (I,J interfaces explicit, via_aoyagi). (2,2,2) r=1: rlct=2.
+Commits 933e424/e39a1a7.
+
+## EXPEDITION DELIVERABLE — FULL DESTINATION (close-pending)
+1. **Σ^r geometry** (zero-cited): `Σ̄^r = ⋃ Ō_M` + components = maximal Ō_M.
+2. **θ = #top-dim components** — MODULO the one named, exhaustively-certified open `hMonoStrict`.
+3. **`rlct(K^DLN_B) = (C_r + r(d_0+d_N−r))/2` for GENERAL rank-r B** ("DLNs are mildly singular") — geometric
+   C_r zero-cited; the rlct value Cited (Aoyagi) + the bundle shift Cited (Lemma 4.6), both honest named interfaces.
+**Cited boundary (all named, name=content):** Aoyagi rlct value; Lemma 4.6 bundle shift. **Open (roadmap):**
+θ-strict `hMonoStrict` (hard-open combinatorial). **CLOSE: propose PR `expedition/rlct-payoff → dev` (operator-gated).**
