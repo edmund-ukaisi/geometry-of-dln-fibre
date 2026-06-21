@@ -521,4 +521,71 @@ theorem splitMove_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : Fin
     intro x y; rw [hS]; simp [Finset.mem_filter]
   simp only [hmemS]
 
+/-- **The shortest-split lands in the corner-`0` Kostant partitions of the decremented vector.** If
+`m` is a corner-`0` Kostant partition of `e'`, `[a,d']` covers `k` (with `(k : ℕ) = b + 1`,
+`c = b + 2`), is present (`m (a,d') ≥ 1`), and is not the all-covering `[0,N]` (so the corner stays
+`0`), then `splitMove m a b c d'` is a corner-`0` Kostant partition of `e''` — `e'` with the coverage
+at `k` decremented by `1` (`e'' = Function.update e' k (e' k - 1)`). -/
+theorem splitMove_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
+    {a b c d' k : Fin (N + 1)} (hm : m ∈ kostantPartitions e' 0)
+    (hab : (a : ℕ) ≤ b) (hbc : (c : ℕ) = b + 2) (hcd : (c : ℕ) ≤ d') (hk : (k : ℕ) = b + 1)
+    (hsad : 1 ≤ m (a, d')) (hcorner : (a, d') ≠ ((0 : Fin (N + 1)), Fin.last N)) :
+    splitMove m a b c d' ∈ kostantPartitions (Function.update e' k (e' k - 1)) 0 := by
+  obtain ⟨hbnd, hsupp, hkost, hc0⟩ := mem_kostantPartitions.mp hm
+  -- coverage of `[a,d']` at `k`: `a ≤ k ≤ d'` (since `a ≤ b < k = b+1 ≤ c ≤ d'`)
+  have hak : a ≤ k := Fin.le_def.mpr (by omega)
+  have hkd : k ≤ d' := Fin.le_def.mpr (by omega)
+  have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → splitMove m a b c d' p = 0 := by
+    intro p hp
+    have h1 : p ≠ (a, b) := fun h ↦ hp (by rw [h]; exact hab)
+    have h2 : p ≠ (c, d') := fun h ↦ hp (by rw [h]; exact (Fin.le_def.mpr hcd))
+    have h3 : p ≠ (a, d') := fun h ↦ hp (by rw [h]; exact (Fin.le_def.mpr (by omega : (a : ℕ) ≤ d')))
+    simp only [splitMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+    exact hsupp p hp
+  -- `e' k ≥ 1`: `[a,d']` covers `k` and has multiplicity `≥ 1`, so it is one summand of `e' k`.
+  have hekpos : 1 ≤ e' k := by
+    rw [hkost k]
+    refine le_trans hsad (Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) ?_)
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨hak, hkd⟩
+  -- Kostant at every vertex: read the coverage shift off `splitMove_cover`
+  have hkost' : ∀ v, kostantAt (Function.update e' k (e' k - 1)) (splitMove m a b c d') v := by
+    intro v
+    rw [kostantAt]
+    have hcov := splitMove_cover m hab hbc hcd hsad v
+    have hbase : (e' v : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            m p : ℤ) := by exact_mod_cast hkost v
+    -- coverage delta at `v`: `−1` if `v = k`, else `0`
+    have hZ : ((Function.update e' k (e' k - 1) v : ℕ) : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            splitMove m a b c d' p : ℤ) := by
+      rw [hcov, ← hbase]
+      -- the `e' k − 1` decrement value, as a ℤ subtraction (honest since `e' k ≥ 1`)
+      have hupd : ((Function.update e' k (e' k - 1) v : ℕ) : ℤ)
+          = (e' v : ℤ) - (if v = k then 1 else 0) := by
+        by_cases hvk : v = k
+        · subst hvk; rw [Function.update_self, if_pos rfl, Nat.cast_sub hekpos]; push_cast; ring
+        · rw [Function.update_of_ne hvk, if_neg hvk]; ring
+      rw [hupd]
+      -- normalise the `Fin`-interval conditions and the decrement to `ℕ`/`v = k`, then `omega`
+      have hvkN : (v = k) ↔ ((v : ℕ) = b + 1) := by rw [Fin.ext_iff]; omega
+      simp only [Fin.le_def, hvkN]
+      split_ifs <;> omega
+    exact_mod_cast hZ
+  refine mem_kostantPartitions.mpr ⟨?_, hsupp', hkost', ?_⟩
+  · exact bound_of_kostant hsupp' hkost'
+  · -- corner `(0, last)`: all three split keys differ from it, so it keeps `m (0,last) = 0`
+    have hdN : (d' : ℕ) ≤ N := by have := d'.isLt; omega
+    have h1 : ((0 : Fin (N + 1)), Fin.last N) ≠ (a, b) := by
+      intro hh; rw [Prod.mk.injEq] at hh; have := hh.2
+      rw [Fin.ext_iff, Fin.val_last] at this; omega
+    have h2 : ((0 : Fin (N + 1)), Fin.last N) ≠ (c, d') := by
+      intro hh; rw [Prod.mk.injEq] at hh; have := hh.1
+      rw [Fin.ext_iff, Fin.val_zero] at this; omega
+    have h3 : ((0 : Fin (N + 1)), Fin.last N) ≠ (a, d') := fun h ↦ hcorner h.symm
+    show splitMove m a b c d' ((0 : Fin (N + 1)), Fin.last N) = 0
+    simp only [splitMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+    exact hc0
+
 end DLNFibre.Core
