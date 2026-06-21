@@ -143,9 +143,9 @@ private theorem pmr_le_right (G : X → ℝ) (H : Y → ℝ) (hGm : Measurable G
 omit [BorelSpace X] [BorelSpace Y] [SecondCountableTopology X] [SecondCountableTopology Y] in
 private theorem pmr_ge (G : X → ℝ) (H : Y → ℝ) (hGm : Measurable G) (hHm : Measurable H)
     (hdown : ∀ (q : NNReal), (q:ℝ≥0∞) < rlctAtOn G 0 →
-      ∃ U : Set X, IsOpen U ∧ (0:X) ∈ U ∧ IntegrableOn (fun x => |G x|^(-(q:ℝ))) U volume)
+      ∃ U : Set X, IsOpen U ∧ (0:X) ∈ U ∧ IntegrableOn (fun x => |G x| ^ (-(q : ℝ))) U volume)
     (hdownH : ∀ (q : NNReal), (q:ℝ≥0∞) < rlctAtOn H 0 →
-      ∃ V : Set Y, IsOpen V ∧ (0:Y) ∈ V ∧ IntegrableOn (fun y => |H y|^(-(q:ℝ))) V volume) :
+      ∃ V : Set Y, IsOpen V ∧ (0:Y) ∈ V ∧ IntegrableOn (fun y => |H y| ^ (-(q : ℝ))) V volume) :
     min (rlctAtOn G 0) (rlctAtOn H 0) ≤ rlctAtOn (fun p : X × Y => G p.1 * H p.2) (0,0) := by
   apply le_of_forall_lt_imp_le_of_dense
   intro q hq
@@ -183,9 +183,9 @@ theorem product_min_rlct (G : X → ℝ) (H : Y → ℝ) (hGm : Measurable G) (h
     (hHpos : ∀ (c' : ℝ) (V : Set Y), IsOpen V → (0:Y) ∈ V →
       0 < ∫⁻ y in V, ENNReal.ofReal (|H y| ^ (-c')))
     (hdown : ∀ (q : NNReal), (q:ℝ≥0∞) < rlctAtOn G 0 →
-      ∃ U : Set X, IsOpen U ∧ (0:X) ∈ U ∧ IntegrableOn (fun x => |G x|^(-(q:ℝ))) U volume)
+      ∃ U : Set X, IsOpen U ∧ (0:X) ∈ U ∧ IntegrableOn (fun x => |G x| ^ (-(q : ℝ))) U volume)
     (hdownH : ∀ (q : NNReal), (q:ℝ≥0∞) < rlctAtOn H 0 →
-      ∃ V : Set Y, IsOpen V ∧ (0:Y) ∈ V ∧ IntegrableOn (fun y => |H y|^(-(q:ℝ))) V volume) :
+      ∃ V : Set Y, IsOpen V ∧ (0:Y) ∈ V ∧ IntegrableOn (fun y => |H y| ^ (-(q : ℝ))) V volume) :
     rlctAtOn (fun p : X × Y => G p.1 * H p.2) (0,0)
       = min (rlctAtOn G 0) (rlctAtOn H 0) := by
   apply le_antisymm

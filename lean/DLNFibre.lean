@@ -46,5 +46,6 @@ import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Validate.Case222Value
 import DLNFibre.DLN.RLCT.Validate.Case222Cover
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
+import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
