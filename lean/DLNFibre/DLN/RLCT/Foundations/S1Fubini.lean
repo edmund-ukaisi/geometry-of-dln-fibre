@@ -652,4 +652,99 @@ theorem step_rlct {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpac
     rlctAtOn (fun p : ℝ × Y => p.1 ^ 2 + H p.2) (0, y0) = (1 / 2 : ℝ≥0∞) + rlctAtOn H y0 :=
   le_antisymm (step_rlct_le H y0 hH hHmeas hHne) (step_rlct_ge H y0 hH hHmeas hHne)
 
+/-! ## The general-`n` smooth-block Fubini lemma (the S1.5 deliverable)
+
+Iterate `step_rlct` over the `n` regular coordinates via the `Fin`-peeling chart `chartN`: each step
+transports along `chartN m Y` (measure-preserving, `rlctAtOn_comp_homeomorph`), peels one `xᵢ²` off
+sum (`Fin.sum_univ_succ`), and applies the `n = 1` shift `step_rlct` to the intermediate core
+`∑_{<m} xᵢ² + G²` (whose a.e.-nonvanishing `hHne_sumSq` follows from `hGne` since `∑+G² ≥ G²`).
+base case `n = 0` collapses the empty regular block via the singleton chart `(Fin 0 → ℝ) × Y ≃ₜ Y`.
+Result: `rlctAtOn (∑ᵢ xᵢ² + G²) (0, y0) = n/2 + rlctAtOn (G²) y0` — the S1.5 wire-in target. -/
+
+section Iterate
+variable {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y]
+
+instance instProbFin0 : IsProbabilityMeasure (volume : Measure (Fin 0 → ℝ)) :=
+  ⟨by rw [show (volume : Measure (Fin 0 → ℝ)) = Measure.pi (fun _ => volume) from rfl,
+      Measure.pi_univ]; simp⟩
+
+private theorem chartN_symm_app (n : ℕ) (a : ℝ) (f : Fin n → ℝ) (y : Y) :
+    (chartN n Y).symm (a, (f, y)) = (Fin.cons a f, y) := by
+  have h : (chartN n Y).symm (a, (f, y)) = ((finPeel n).symm (a, f), y) := rfl
+  rw [h]; congr 1
+  show (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0:Fin (n+1))).symm (a, f) = Fin.cons a f
+  rw [MeasurableEquiv.piFinSuccAbove_symm_apply]; exact Fin.insertNth_zero' a f
+
+private theorem chartN_at_zero (n : ℕ) (y0 : Y) : (chartN n Y) (0, y0) = (0, (0, y0)) := by
+  apply (chartN n Y).symm.injective
+  rw [Homeomorph.symm_apply_apply, chartN_symm_app]
+  congr 1; funext i
+  rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩
+  · rw [Fin.cons_zero]; rfl
+  · rw [Fin.cons_succ]; rfl
+
+private theorem hHne_sumSq (m : ℕ) (G : Y → ℝ) (y0 : Y)
+    (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0) :
+    ∃ U ∈ 𝓝 ((0:Fin m → ℝ), y0), ∀ᵐ z ∂(volume.restrict U),
+      ((∑ i, ((z:(Fin m→ℝ)×Y).1) i ^ 2) + G z.2 ^ 2) ≠ 0 := by
+  obtain ⟨Ug, hUg, hGae⟩ := hGne
+  refine ⟨Set.univ ×ˢ Ug, prod_mem_nhds Filter.univ_mem hUg, ?_⟩
+  have hsnd : ∀ᵐ z ∂(volume.restrict (Set.univ ×ˢ Ug : Set ((Fin m→ℝ)×Y))), G z.2 ≠ 0 := by
+    rw [Measure.volume_eq_prod, ← Measure.prod_restrict]
+    exact (Measure.quasiMeasurePreserving_snd
+      (μ := (volume:Measure (Fin m→ℝ)).restrict univ)
+      (ν := (volume:Measure Y).restrict Ug)).tendsto_ae.eventually hGae
+  filter_upwards [hsnd] with z hz
+  have h1 : 0 < G z.2 ^ 2 := by positivity
+  have h2 : 0 ≤ ∑ i, (z.1) i ^ 2 := Finset.sum_nonneg (fun i _ => sq_nonneg _)
+  positivity
+
+theorem rlct_additive_smooth_block_aux (G : Y → ℝ) (y0 : Y) (hGmeas : Measurable G)
+    (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0) (n : ℕ) :
+    rlctAtOn (fun p : (Fin n → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) (0, y0)
+      = (n : ℝ≥0∞) / 2 + rlctAtOn (fun y => G y ^ 2) y0 := by
+  induction n with
+  | zero =>
+    have hrhs : (↑(0:ℕ) : ℝ≥0∞) / 2 + rlctAtOn (fun y => G y ^ 2) y0
+        = rlctAtOn (fun y => G y ^ 2) y0 := by simp
+    rw [hrhs]
+    set e : Y ≃ₜ ((Fin 0 → ℝ) × Y) := (Homeomorph.uniqueProd (Fin 0 → ℝ) Y).symm with he
+    have hfwd : MeasurePreserving (Homeomorph.uniqueProd (Fin 0 → ℝ) Y) (volume) (volume) := by
+      have hsnd : MeasurePreserving (Prod.snd : (Fin 0 → ℝ) × Y → Y) (volume) (volume) := by
+        rw [Measure.volume_eq_prod]; exact measurePreserving_snd
+      rw [show (Homeomorph.uniqueProd (Fin 0 → ℝ) Y : ((Fin 0→ℝ)×Y) → Y) = Prod.snd from rfl]
+      exact hsnd
+    have hMP : MeasurePreserving e :=
+      MeasurePreserving.symm (Homeomorph.uniqueProd (Fin 0 → ℝ) Y).toMeasurableEquiv hfwd
+    have hkey := rlctAtOn_comp_homeomorph e hMP e.measurableEmbedding
+      (fun p : (Fin 0 → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) y0
+    rw [show ((0:Fin 0→ℝ), y0) = e y0 from
+          Prod.ext (Subsingleton.elim _ _) rfl, ← hkey]
+    congr 1
+    funext y
+    show (∑ i : Fin 0, ((e y).1) i ^ 2) + G ((e y).2) ^ 2 = G y ^ 2
+    rw [Finset.univ_eq_empty, Finset.sum_empty, zero_add]
+    rfl
+  | succ m ih =>
+    have hMP : MeasurePreserving (chartN m Y).symm :=
+      MeasurePreserving.symm (chartN m Y).toMeasurableEquiv (chartN_mp m)
+    have hkey := rlctAtOn_comp_homeomorph (chartN m Y).symm hMP
+      (chartN m Y).symm.measurableEmbedding
+      (fun p : (Fin (m+1) → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) (0, (0, y0))
+    rw [show ((0:Fin (m+1)→ℝ), y0) = (chartN m Y).symm (0, (0, y0)) from by
+          rw [← chartN_at_zero m y0, Homeomorph.symm_apply_apply], ← hkey]
+    have hcomp : (fun q : ℝ × ((Fin m → ℝ) × Y) =>
+          (∑ i, ((chartN m Y).symm q).1 i ^ 2) + G ((chartN m Y).symm q).2 ^ 2)
+        = (fun q : ℝ × ((Fin m → ℝ) × Y) => q.1^2 + ((∑ i, q.2.1 i ^ 2) + G q.2.2 ^ 2)) := by
+      funext q; obtain ⟨a, f, y⟩ := q
+      rw [chartN_symm_app]
+      simp only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]; ring
+    rw [hcomp, step_rlct (fun p : (Fin m → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) (0, y0)
+      (fun p => by positivity) (by fun_prop) (hHne_sumSq m G y0 hGne), ih, ← add_assoc]
+    congr 1
+    rw [← ENNReal.add_div]; congr 1; push_cast; ring
+
+end Iterate
+
 end DLNFibre.DLN.RLCT
