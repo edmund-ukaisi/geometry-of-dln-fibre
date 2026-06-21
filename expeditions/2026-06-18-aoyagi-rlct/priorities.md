@@ -103,6 +103,17 @@ Current counted-datum back-to-branch-label card-bound slice:
 Current counted-datum back-to-branch-label exactness slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
 
+Recent A4 checkpoint:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.
+Lean now records the displayed Case 2 finite frontier alternatives as an
+overlapping branch witness:
+`Case2DisplayedStepBranch`,
+`case2DisplayedFrontier_next_or_actualWidth_or_rowExhausted_of_cont`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.frontierBranch`.  This is finite
+domain bookkeeping only.  It does not combine the branch-specific product
+packages, prove chart construction, chart-produced post-data, transition
+invariance, terminal source truth, normal crossings, pole order, or RLCT.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch

@@ -3506,6 +3506,28 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
 
+## Latest A4 Update
+
+The displayed Case 2 finite frontier branch slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  New Lean names:
+`Case2DisplayedStepBranch`,
+`case2DisplayedFrontier_next_or_actualWidth_or_rowExhausted_of_cont`,
+`case2DisplayedStepBranch_of_cont`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.frontierBranch`.  Under displayed
+pivot validity `J+1 <= prefixMinNat n (S+1)`, Lean records the overlapping
+frontier alternatives: next same-stage continuation, actual next-width
+exhaustion, or current-prefix row exhaustion.  This gives later branch
+dispatch a precise finite witness without pretending to prove an atlas,
+source-produced post-data, transition invariance, terminal source truth,
+normal crossings, pole order, or RLCT.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-frontier-branch.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-displayed-frontier-branch-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -1417,6 +1417,51 @@ theorem case2PostPivotEntries_eq_empty_of_not_next_cont
   intro p hp
   exact hstop ((case2PostPivotEntries_nonempty_iff_next_cont n hS).1 ⟨p, hp⟩)
 
+/-- A supplied finite frontier branch after the displayed Case 2 pivot.
+
+The stopped constructors are not mutually exclusive: the current-prefix row
+side and actual next-width column side may both be exhausted.  This is only
+finite domain bookkeeping, not a chart-transition or terminal-source theorem. -/
+inductive Case2DisplayedStepBranch (n : ℕ → ℕ) (S J : ℕ) : Prop where
+  | continuing (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+  | actualWidthStopped (hwidth : n (S + 1) = J + 1)
+  | rowExhaustedStopped (hrow : prefixMinNat n S = J + 1)
+
+/-- A valid displayed Case 2 pivot gives the overlapping finite frontier
+alternatives: either the next same-stage residual center is nonempty, or one
+of the two stopped sides has frontier value `J+1`.
+
+This is only the arithmetic frontier split.  It does not assert chart coverage,
+source-produced post-data, terminal relabeling outside the actual-width branch,
+or any normal-crossing/RLCT consequence. -/
+theorem case2DisplayedFrontier_next_or_actualWidth_or_rowExhausted_of_cont
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    J + 2 ≤ prefixMinNat n (S + 1) ∨
+      n (S + 1) = J + 1 ∨ prefixMinNat n S = J + 1 := by
+  by_cases hnext : J + 2 ≤ prefixMinNat n (S + 1)
+  · exact Or.inl hnext
+  · rcases
+      case2_next_frontier_currentPrefixMin_or_nextWidth_eq_of_cont_of_not_next
+        hS hcont hnext with hrow | hwidth
+    · exact Or.inr (Or.inr hrow)
+    · exact Or.inr (Or.inl hwidth)
+
+/-- Choose a finite frontier branch from the current displayed Case 2 pivot
+validity.  The choice is only a witness for downstream case analysis; it does
+not make the stopped constructors exclusive. -/
+theorem case2DisplayedStepBranch_of_cont
+    {n : ℕ → ℕ} {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    Case2DisplayedStepBranch n S J := by
+  rcases
+      case2DisplayedFrontier_next_or_actualWidth_or_rowExhausted_of_cont
+        hS hcont with hnext | hstop
+  · exact Case2DisplayedStepBranch.continuing hnext
+  · rcases hstop with hwidth | hrow
+    · exact Case2DisplayedStepBranch.actualWidthStopped hwidth
+    · exact Case2DisplayedStepBranch.rowExhaustedStopped hrow
+
 /-- Case 1 center generator symbols after externally choosing the old exceptional variable.
 The `Unit` branch does not encode the old label, its validity, level, minimality, or
 comparability; the right branch records a row-strip entry. -/
@@ -9120,6 +9165,28 @@ theorem displayedPivot_centerIdeal_eq_span_singleton
           selectedEntryChartMap (J + 1, J + 1) u residual q = v} =
       Ideal.span ({u} : Set R) :=
   data.sourceSelectedBoundary.selectedPivot_centerIdeal_eq_span_singleton residual
+
+/-- The displayed boundary exposes the finite frontier branch after its pivot.
+
+This is only branch-domain bookkeeping.  The stopped branches may overlap, and
+the result does not assert chart coverage, chart-produced post-data, or a
+terminal source model. -/
+theorem frontierBranch
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    Case2DisplayedStepBranch n S J :=
+  case2DisplayedStepBranch_of_cont data.stage_pos data.continuation
 
 /-- Concrete displayed-boundary constructor using the named recurrence
 successor and corrected selected-label exponent updates.

@@ -3190,3 +3190,35 @@ does not source-produce the full next `C'^(S+1)`, produce recurrence or
 exponent post-data, construct a successor chart family, prove chart coverage
 or regularity, compute Jacobians, prove normal crossings/RLCT, handle
 arbitrary pivots, terminal relabeling, or repair the printed Case 2 vector.
+
+## 2026-06-21 Lean Case 2 displayed frontier branch
+
+Reproduction:
+`reproduction-case2-displayed-frontier-branch-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-frontier-branch.md`.
+Review artifact:
+`review-case2-displayed-frontier-branch-a4.md`.
+
+Lean now records the finite frontier alternatives after the displayed Case 2
+pivot:
+
+```text
+Case2DisplayedStepBranch
+case2DisplayedFrontier_next_or_actualWidth_or_rowExhausted_of_cont
+case2DisplayedStepBranch_of_cont
+Case2DisplayedSuppliedChartFamilyBoundary.frontierBranch
+```
+
+Under displayed pivot validity `J+1 <= prefixMinNat n (S+1)`, Lean proves that
+either `J+2 <= prefixMinNat n (S+1)`, or actual next-width exhaustion
+`n(S+1)=J+1`, or current-prefix row exhaustion
+`prefixMinNat n S=J+1`.  The stopped alternatives are explicitly not claimed
+to be mutually exclusive.  A supplied displayed boundary exports this as a
+branch witness using only its `stage_pos` and `continuation` fields.
+
+This is finite domain bookkeeping only.  It does not combine the existing
+branch-specific product packages, construct a chart, produce recurrence or
+exponent post-data, construct a successor chart-family boundary, prove
+transition invariance, compute Jacobians, prove normal crossings/RLCT, or
+repair the printed Case 2 vector mismatch.
