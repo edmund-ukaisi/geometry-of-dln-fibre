@@ -1458,4 +1458,63 @@ private theorem sq_sum_le_of_sorted_prefix (n : ℕ) (q Y : Fin n → ℤ)
   have := karamata_sq n (srt n q) (srt n Y) hmono htot' hpre
   rw [hqsq, hYsq] at this; exact this
 
+/-- **Subset-min (the `k`-smallest minimises among `k`-subsets).** If every entry of `B` is `≤` every
+entry outside `B`, then `∑_B g ≤ ∑_A g` for any `A` of the same cardinality (swap `B∖A ↔ A∖B`). -/
+private theorem sum_le_sum_of_compl_ge {m : ℕ} (g : Fin m → ℤ) (A B : Finset (Fin m))
+    (hcard : A.card = B.card) (hval : ∀ j ∈ B, ∀ j' ∉ B, g j ≤ g j') :
+    ∑ j ∈ B, g j ≤ ∑ j ∈ A, g j := by
+  have hB : ∑ j ∈ B, g j = ∑ j ∈ B ∩ A, g j + ∑ j ∈ B \ A, g j := by
+    rw [← Finset.sum_inter_add_sum_diff B A g]
+  have hA : ∑ j ∈ A, g j = ∑ j ∈ A ∩ B, g j + ∑ j ∈ A \ B, g j := by
+    rw [← Finset.sum_inter_add_sum_diff A B g]
+  rw [hB, hA, Finset.inter_comm B A]
+  have hcd : (B \ A).card = (A \ B).card := Finset.card_sdiff_comm hcard.symm
+  obtain e := Finset.equivOfCardEq hcd
+  have h1 : ∑ j ∈ B \ A, g j = ∑ x : ↥(B \ A), g (x : Fin m) := (Finset.sum_attach (B \ A) g).symm
+  have h2 : ∑ j ∈ A \ B, g j = ∑ x : ↥(A \ B), g (x : Fin m) := (Finset.sum_attach (A \ B) g).symm
+  have hsum : ∑ j ∈ B \ A, g j ≤ ∑ j ∈ A \ B, g j := by
+    rw [h1, h2, ← Equiv.sum_comp e (fun x => g (x : Fin m))]
+    exact Finset.sum_le_sum fun x _ =>
+      hval _ (Finset.mem_sdiff.mp x.2).1 _ (Finset.mem_sdiff.mp (e x).2).2
+  linarith
+
+/-- For a monotone `g : Fin m → ℤ`, the prefix `∑_{i<k} g` (its `k` smallest values) is `≤` the sum
+over any `k`-element subset. -/
+private theorem mono_prefix_le_subset {m : ℕ} (g : Fin m → ℤ) (hg : Monotone g) (k : ℕ) (hk : k ≤ m)
+    (A : Finset (Fin m)) (hA : A.card = k) :
+    ∑ j ∈ Finset.univ.filter (fun i : Fin m => (i : ℕ) < k), g j ≤ ∑ j ∈ A, g j := by
+  refine sum_le_sum_of_compl_ge g A _ ?_ ?_
+  · rw [hA, Fin.card_filter_val_lt]; omega
+  · intro j hj j' hj'
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj hj'
+    apply hg; rw [Fin.le_def]; omega
+
+/-- The sorted prefix `∑_{i<k} srt n q i` as a sum over `{i : Fin n | i < k}` of `q ∘ Tuple.sort q`. -/
+private theorem srt_prefix_eq_filter (n k : ℕ) (hk : k ≤ n) (q : Fin n → ℤ) :
+    ∑ i ∈ Finset.range k, srt n q i
+      = ∑ j ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < k), (q ∘ Tuple.sort q) j := by
+  symm
+  apply Finset.sum_bij (i := fun (a : Fin n) _ => (a : ℕ))
+  · intro a ha; simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
+    exact Finset.mem_range.mpr ha
+  · intro a _ b _ hab; exact Fin.ext hab
+  · intro b hb; refine ⟨⟨b, lt_of_lt_of_le (Finset.mem_range.mp hb) hk⟩, ?_, rfl⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact Finset.mem_range.mp hb
+  · intro a ha; simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
+    simp only [srt, dif_pos (lt_of_lt_of_le ha hk), Function.comp_apply]
+
+/-- **`k`-smallest-sum is `≤` any `k`-subset sum.** The sorted prefix of `q` (its `k` smallest
+entries) is `≤` the sum of `q` over any `k`-element subset of indices. -/
+private theorem smallestK_le_subset (n k : ℕ) (hk : k ≤ n) (q : Fin n → ℤ)
+    (A : Finset (Fin n)) (hA : A.card = k) :
+    ∑ i ∈ Finset.range k, srt n q i ≤ ∑ j ∈ A, q j := by
+  rw [srt_prefix_eq_filter n k hk q]
+  set A' := A.image (Tuple.sort q).symm with hA'
+  have hreindex : ∑ j ∈ A, q j = ∑ j ∈ A', (q ∘ Tuple.sort q) j := by
+    rw [hA', Finset.sum_image (fun a _ b _ h => (Tuple.sort q).symm.injective h)]
+    apply Finset.sum_congr rfl; intro a _; simp
+  rw [hreindex]
+  refine mono_prefix_le_subset (q ∘ Tuple.sort q) (Tuple.monotone_sort q) k hk A' ?_
+  rw [hA', Finset.card_image_of_injective _ (Tuple.sort q).symm.injective, hA]
+
 end DLNFibre.DLN.RLCT
