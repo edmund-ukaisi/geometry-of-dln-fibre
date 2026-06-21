@@ -2081,6 +2081,18 @@ def aoyagiLemma5Eq5OffsetValueSet
   (Finset.Icc 1 (min (aoyagiLemma5IntervalExcess ell a p) (p - 1))).image
     (fun alpha : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ))
 
+/-- Equation `(5)`'s strict alpha-family values are exactly the offset-value
+set.
+
+This is a named definitional wrapper for downstream finite-set rewrites.  It
+does not construct the displayed vector or prove source coverage. -/
+theorem aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :
+    (Finset.Icc 1 (min (aoyagiLemma5IntervalExcess ell a p) (p - 1))).image
+      (fun alpha : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ)) =
+        aoyagiLemma5Eq5OffsetValueSet ell a p M m := by
+  rfl
+
 /-- Offsets below a fixed upper endpoint give distinct integer values. -/
 theorem aoyagiLemma5Eq5_offsetValue_injective
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :

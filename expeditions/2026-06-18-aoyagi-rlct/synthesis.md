@@ -3654,6 +3654,23 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
 
+The Eq5 alpha-family value-image API wrapper has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean name:
+`aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet`.  It proves by
+definition that the image of the strict offset domain
+`1<=alpha<=min(excess(ell,a,p),p-1)` under
+`alpha |-> Htilde'_p-alpha` is exactly
+`aoyagiLemma5Eq5OffsetValueSet ell a p M m`.  This is finite-set API naming
+only, not displayed-vector construction, source-label legality, selected-span
+coverage, terminal `tilde t=0`, chart sequence, Lemma 5 order count, pole
+order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-family-value-image-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-family-value-image.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-family-value-image-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in

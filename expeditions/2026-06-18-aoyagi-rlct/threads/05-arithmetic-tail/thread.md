@@ -3852,3 +3852,33 @@ This does not construct displayed vectors, prove source coverage, fill the
 `p=a` lower endpoint, prove terminal zero in the `p+1=a` branch without
 last-width compatibility, prove classifier/injection/back-to-label coverage,
 compute pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-21 Lean Lemma 5 Eq5 alpha-family value image
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-family-value-image-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-family-value-image.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-family-value-image-a5.md`.
+
+Lean now names the definitional equality
+
+```text
+aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet
+```
+
+between the strict equation `(5)` alpha-family image
+
+```text
+image (alpha |-> Htilde'_p - alpha)
+  {alpha | 1 <= alpha <= min(excess(ell,a,p),p-1)}
+```
+
+and the existing finite set
+`aoyagiLemma5Eq5OffsetValueSet ell a p M m`.
+
+This is finite-set API naming only.  It does not construct equation `(5)`'s
+displayed vector, prove source-label legality for `k`, prove selected-span
+coverage, terminal `tilde t=0`, chart sequence, Lemma 5 order count, pole
+order, normal crossings, or RLCT extraction.
