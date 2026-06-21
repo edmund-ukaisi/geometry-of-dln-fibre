@@ -197,6 +197,19 @@ theorem p0_summand_le_cube (c' : NNReal) :
         p0_support_subset_cube x hmem.1 (p0integrand_support c' x hf))]
   · rw [Set.indicator_of_notMem hmem]; exact zero_le _
 
+/-- **`p = 0` cube integral split into the step-2 `{E,F0,δ}` cells** (the L2 recStep node). The
+cube-restricted `p = 0` integrand splits as the finite sum over the three step-2 pivot cells
+(`recStep {2,3,4} 2`, the lifted-`Fin 8` `{E,F0,δ}` blow-up), the integrand carried opaque as
+`cube8.indicator (p0integrand c')`. With `p0_summand_le_cube` + `ENNReal.sum_lt_top`, the `p = 0`
+summand finiteness reduces to: each of the three cell integrals `< ⊤`. -/
+theorem p0_cube_split (c' : NNReal) :
+    ∫⁻ x in cube8, p0integrand c' x
+      = ∑ q ∈ ({2, 3, 4} : Finset (Fin 8)),
+          ∫⁻ x in chartDomOn ({2, 3, 4} : Finset (Fin 8)) q \ pivotZeroOn q,
+            ENNReal.ofReal |(pivotBlowupOnDeriv ({2, 3, 4} : Finset (Fin 8)) q x).det|
+              * cube8.indicator (p0integrand c') (pivotBlowupOn ({2, 3, 4} : Finset (Fin 8)) q x) :=
+  recStep ({2, 3, 4} : Finset (Fin 8)) 2 (by decide) cube8 cube8_meas (p0integrand c')
+
 /-- The flat-subset chart domain `chartDomOn active p` is measurable (an intersection over the active
 non-pivot axes of `{|x j| ≤ 1}`). The `V` input to the step-1 change-of-variables. -/
 theorem chartDomOn_measurableSet {N : ℕ} (active : Finset (Fin N)) (p : Fin N) :
