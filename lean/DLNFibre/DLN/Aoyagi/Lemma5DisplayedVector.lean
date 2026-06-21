@@ -5,7 +5,7 @@ import DLNFibre.DLN.Aoyagi.HtildeChainArithmetic
 # Conditional displayed-vector data for Aoyagi's Lemma 5
 
 This file introduces source-layer cutpoints and supplied piecewise certificates
-for Aoyagi Lemma 5 equations `(3)` and `(4)`.  It does not construct the
+for Aoyagi Lemma 5 equations `(3)`, `(4)`, and `(5)`.  It does not construct the
 displayed vector, prove terminal `tilde t=0`, chart coverage, pole order,
 normal crossings, or RLCT extraction.
 -/
@@ -1326,6 +1326,141 @@ structure AoyagiLemma5Eq5OwnCoordinateBranch
   alpha_le_excess : alpha ≤ aoyagiLemma5IntervalExcess ell a p
   ownBranch : ∀ S, C.block p S →
     T S = aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ)
+
+/-- Supplied source-layer piecewise data for Aoyagi Lemma 5 equation `(5)`.
+
+This records only the displayed branch values as data.  It is not a
+construction of the vector and carries no terminal or chart-coverage claim. -/
+structure AoyagiLemma5Eq5PiecewiseSourceVector
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) : Prop where
+  a_le_ell : a ≤ ell
+  alpha_pos : 1 ≤ alpha
+  alpha_lt_p : alpha < p
+  alpha_le_excess : alpha ≤ aoyagiLemma5IntervalExcess ell a p
+  cutoffIndexGuard : p + (a - alpha) + 1 ≤ ell
+  first :
+    ∀ S, S < C.point 1 - 1 → T S = layerWidth (S + 1)
+  preAlpha :
+    ∀ b S, 1 ≤ b → b + 2 ≤ alpha → C.block b S →
+      T S = aoyagiHtildeUpperNat ell a M m b - (b : ℤ)
+  alphaToP :
+    ∀ b S, 1 ≤ b → alpha ≤ b + 1 → b + 1 ≤ p → C.block b S →
+      T S = aoyagiHtildeUpperNat ell a M m b - (alpha : ℤ) + 1
+  postP :
+    ∀ b S, p ≤ b → b ≤ p + (a - alpha) → C.block b S →
+      T S =
+        aoyagiHtildeUpperNat ell a M m b - (alpha : ℤ) + (p : ℤ) - (b : ℤ)
+  tail :
+    ∀ b S, p + (a - alpha) + 1 ≤ b → C.block b S →
+      C.point (p + (a - alpha) + 1) - 1 ≤ S →
+        T S = aoyagiHtildeLowerNat ell a M m b
+
+/-- Branch-value alternatives for Aoyagi Lemma 5 equation `(5)` on the
+selected span.
+
+This is only a domain/value classification for a supplied piecewise
+certificate.  It does not construct the displayed source vector and makes no
+terminality, admissibility, chart-coverage, pole-order, normal-crossing, or
+RLCT claim. -/
+inductive AoyagiLemma5Eq5SelectedSpanBranchValue
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) (S : ℕ) : Prop where
+  | first
+      (hS : S < C.point 1 - 1)
+      (hvalue : T S = layerWidth (S + 1))
+  | preAlpha
+      (b : ℕ) (hb_pos : 1 ≤ b) (hb_pre : b + 2 ≤ alpha)
+      (hb : C.block b S)
+      (hvalue : T S = aoyagiHtildeUpperNat ell a M m b - (b : ℤ))
+  | alphaToP
+      (b : ℕ) (hb_pos : 1 ≤ b) (hb_alpha : alpha ≤ b + 1)
+      (hb_p : b + 1 ≤ p) (hb : C.block b S)
+      (hvalue :
+        T S = aoyagiHtildeUpperNat ell a M m b - (alpha : ℤ) + 1)
+  | postP
+      (b : ℕ) (hb_p : p ≤ b) (hb_hi : b ≤ p + (a - alpha))
+      (hb : C.block b S)
+      (hvalue :
+        T S =
+          aoyagiHtildeUpperNat ell a M m b - (alpha : ℤ) + (p : ℤ) - (b : ℤ))
+  | tail
+      (b : ℕ) (hb_tail : p + (a - alpha) + 1 ≤ b)
+      (hb : C.block b S)
+      (hS : C.point (p + (a - alpha) + 1) - 1 ≤ S)
+      (hvalue : T S = aoyagiHtildeLowerNat ell a M m b)
+
+/-- A supplied equation `(5)` piecewise certificate classifies any selected
+block point by one of its advertised branches.
+
+This is half-open block bookkeeping plus the supplied branch equalities. -/
+theorem aoyagiLemma5Eq5_branchValue_of_block
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector ell a p alpha M m C layerWidth T)
+    {b S : ℕ} (hb : C.block b S) :
+    AoyagiLemma5Eq5SelectedSpanBranchValue ell a p alpha M m C layerWidth T S := by
+  by_cases hb0 : b = 0
+  · subst b
+    exact AoyagiLemma5Eq5SelectedSpanBranchValue.first
+      hb.2.2 (hT.first S hb.2.2)
+  have hb_pos : 1 ≤ b := by omega
+  by_cases hb_pre : b + 2 ≤ alpha
+  · exact AoyagiLemma5Eq5SelectedSpanBranchValue.preAlpha b hb_pos hb_pre hb
+      (hT.preAlpha b S hb_pos hb_pre hb)
+  have halpha : alpha ≤ b + 1 := by omega
+  by_cases hb_p_hi : b + 1 ≤ p
+  · exact AoyagiLemma5Eq5SelectedSpanBranchValue.alphaToP
+      b hb_pos halpha hb_p_hi hb
+      (hT.alphaToP b S hb_pos halpha hb_p_hi hb)
+  have hp_le_b : p ≤ b := by omega
+  by_cases hb_post : b ≤ p + (a - alpha)
+  · exact AoyagiLemma5Eq5SelectedSpanBranchValue.postP b hp_le_b hb_post hb
+      (hT.postP b S hp_le_b hb_post hb)
+  have hb_tail : p + (a - alpha) + 1 ≤ b := by omega
+  have hcut_le_S :
+      C.point (p + (a - alpha) + 1) - 1 ≤ S := by
+    by_cases hb_eq : b = p + (a - alpha) + 1
+    · subst b
+      exact hb.2.1
+    · have hlt : p + (a - alpha) + 1 < b := by omega
+      exact le_of_lt (C.leftEndpoint_lt_of_lt_block hlt hb)
+  exact AoyagiLemma5Eq5SelectedSpanBranchValue.tail b hb_tail hb hcut_le_S
+    (hT.tail b S hb_tail hb hcut_le_S)
+
+/-- A supplied equation `(5)` piecewise certificate covers every source index in
+the selected span by one of its advertised branches.
+
+This is only a selected-span consequence of the block classifier.  It does not
+claim coverage before `S_1-1`, at `S_(ell+1)-1`, or after it. -/
+theorem aoyagiLemma5Eq5_selectedSpan_branchValue
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector ell a p alpha M m C layerWidth T)
+    {S : ℕ} (hlo : C.point 0 - 1 ≤ S) (hhi : S < C.point ell - 1) :
+    AoyagiLemma5Eq5SelectedSpanBranchValue ell a p alpha M m C layerWidth T S := by
+  rcases C.exists_block_of_mem_selectedSpan hlo hhi with ⟨b, hb⟩
+  exact aoyagiLemma5Eq5_branchValue_of_block
+    ell a p alpha M m C layerWidth T hT hb
+
+/-- A full supplied equation `(5)` piecewise certificate gives the narrower
+own-coordinate branch record used by the interval-offset lemmas. -/
+theorem aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+    (ell a p alpha : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector ell a p alpha M m C layerWidth T) :
+    AoyagiLemma5Eq5OwnCoordinateBranch ell a p alpha M m C T where
+  a_le_ell := hT.a_le_ell
+  alpha_pos := hT.alpha_pos
+  alpha_lt_p := hT.alpha_lt_p
+  alpha_le_excess := hT.alpha_le_excess
+  ownBranch := by
+    intro S hS
+    have hvalue := hT.postP p S le_rfl (by omega) hS
+    calc
+      T S = aoyagiHtildeUpperNat ell a M m p -
+          (alpha : ℤ) + (p : ℤ) - (p : ℤ) := hvalue
+      _ = aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) := by ring
 
 /-- The finite offset values realised by equation `(5)`'s own-coordinate
 branch under the source guard `1 <= alpha < p` and same-coordinate interval

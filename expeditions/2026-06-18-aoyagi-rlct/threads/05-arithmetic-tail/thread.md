@@ -1415,3 +1415,47 @@ vector admissibility, build the Case 1(2) chart sequence, prove Lemma 5 order
 count, normal crossings, or RLCT extraction.  A full selected-span equation
 `(5)` classifier still needs the selected-range guard
 `p+(a-alpha)+1<=ell` for the final cutoff.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` piecewise certificate
+
+Reproduction:
+`reproduction-lemma5-eq5-piecewise-certificate-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-piecewise-certificate.md`.
+Review artifact:
+`review-lemma5-eq5-piecewise-certificate-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5Eq5PiecewiseSourceVector
+AoyagiLemma5Eq5SelectedSpanBranchValue
+aoyagiLemma5Eq5_branchValue_of_block
+aoyagiLemma5Eq5_selectedSpan_branchValue
+aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+```
+
+This extends the previous own-coordinate Eq(5) offset slice to a full supplied
+branch certificate.  The paper block variable `j` is represented by Lean block
+`b=j-1`, and paper `j0` is Lean coordinate `p`.  The supplied certificate
+stores the five displayed Eq5 branches in zero-based form:
+
+```text
+first:      S < S_2-1;
+preAlpha:  2 <= j <= alpha-1;
+alphaToP:  alpha <= j <= j0;
+postP:     j0 < j <= j0+(a-alpha)+1;
+tail:      S >= S_(j0+(a-alpha)+2)-1.
+```
+
+Lean classifies any point in a selected block, and therefore any point in the
+half-open selected span, into one of these supplied branch alternatives.  The
+full supplied certificate also implies the narrower
+`AoyagiLemma5Eq5OwnCoordinateBranch`, so the existing own-coordinate offset
+and interval-membership lemmas apply.
+
+This is still supplied branch bookkeeping only.  It does not construct
+equation `(5)`'s displayed vector, prove source-label legality for `k`, prove
+terminal `tilde t=0`, cover the terminal selected endpoint, prove vector
+admissibility, build the Case 1(2) chart sequence, prove Lemma 5 order count,
+normal crossings, or RLCT extraction.

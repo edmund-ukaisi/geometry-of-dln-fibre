@@ -2755,6 +2755,25 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-own-coordinate-offset-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(5)` supplied piecewise certificate has
+landed in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved
+Lean names are `AoyagiLemma5Eq5PiecewiseSourceVector`,
+`AoyagiLemma5Eq5SelectedSpanBranchValue`,
+`aoyagiLemma5Eq5_branchValue_of_block`,
+`aoyagiLemma5Eq5_selectedSpan_branchValue`, and
+`aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector`.  They record
+the five displayed Eq5 branch values as supplied data, classify selected-block
+and selected-span points into those supplied branches, and derive the narrower
+own-coordinate branch record from the full certificate.  This does not
+construct equation `(5)`'s displayed vector, prove source-label legality,
+terminal `tilde t=0`, vector admissibility, chart sequence, Lemma 5 order
+count, normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-piecewise-certificate-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-piecewise-certificate.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-piecewise-certificate-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

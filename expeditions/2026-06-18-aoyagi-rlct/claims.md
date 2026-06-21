@@ -2195,6 +2195,16 @@ No such claim is formalisation-ready until both fields are filled.
   still does not construct equation `(5)`'s displayed vector, prove
   source-label legality, classify the selected span, prove terminal
   `tilde t=0`, build the chart sequence, or prove Lemma 5.
+  Also proved `AoyagiLemma5Eq5PiecewiseSourceVector`,
+  `AoyagiLemma5Eq5SelectedSpanBranchValue`,
+  `aoyagiLemma5Eq5_branchValue_of_block`,
+  `aoyagiLemma5Eq5_selectedSpan_branchValue`, and
+  `aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector`, which extend
+  equation `(5)` to a supplied piecewise branch certificate and selected-span
+  classifier.  The full supplied certificate implies the previous narrow
+  own-coordinate branch record, but still does not construct the displayed
+  vector, prove source-label legality, prove terminal `tilde t=0`, build the
+  chart sequence, or prove Lemma 5.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

@@ -2222,6 +2222,15 @@ displayed-family scaffold as Eq3/Eq4 while keeping source-label legality, full
 selected-span classification, terminal `tilde t=0`, chart sequence, and Lemma
 5 order count open.
 
+Eq5 now has the full supplied selected-span branch certificate too.  The new
+record stores Aoyagi's five displayed Eq5 branch rows with paper `j`
+translated to Lean block `b=j-1` and paper `j0` translated to Lean coordinate
+`p`.  The classifier is only selected-span bookkeeping: it routes selected
+blocks to the supplied branches and derives the narrower own-coordinate record
+from the post-`p` branch at `b=p`.  It still leaves construction of the
+vector, source-label legality, terminal `tilde t=0`, chart sequence, and Lemma
+5 order count open.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
