@@ -43,6 +43,34 @@ minimum — the function is a unit in that direction). Division is in `ℝ≥0�
 would be wrong here). -/
 noncomputable def axisRatio (h k : ℕ) : ℝ≥0∞ := ((h : ℝ≥0∞) + 1) / (2 * (k : ℝ≥0∞))
 
+/-- **R1.2a (regular-sequence divisor ratio).** A binding divisor over a codim-`c` stratum has
+`(k, h) = (1, c−1)` (k=1 from order-2 vanishing of a real sum-of-squares; `h=c−1` from the smooth
+codim-`c` blow-up Jacobian), ratio `c/2`. The upper-bound seed (binding divisor on the minimizing
+stratum realises `½·Mval(t)`). -/
+theorem axisRatio_regularSeq (c : ℕ) (hc : 1 ≤ c) : axisRatio (c - 1) 1 = (c : ℝ≥0∞) / 2 := by
+  unfold axisRatio
+  rw [Nat.cast_one, mul_one]
+  congr 1
+  have : ((c - 1 : ℕ) : ℝ≥0∞) + 1 = ((c - 1 + 1 : ℕ) : ℝ≥0∞) := by push_cast; ring
+  rw [this, Nat.sub_add_cancel hc]
+
+/-- **R1.2b (multiplicity control — the lower-bound inequality).** Any divisor with `m·k ≤ h+1` has
+ratio `≥ m/2`. With `m = min_t Mval` and our core's regular-sequence `k=1, h=c−1` (so `m·k = m ≤ c =
+h+1`), every divisor ratio is `≥ ½·min_t Mval` — the lower-bound mechanism (the regular sequence,
+not codim, is why `rlct = ½·codim` here; `xᵏ`/`(x²+y²)²` show the bare codim bound is false). -/
+theorem axisRatio_ge_of_mult (h k m : ℕ) (hk : 1 ≤ k) (hmult : m * k ≤ h + 1) :
+    (m : ℝ≥0∞) / 2 ≤ axisRatio h k := by
+  unfold axisRatio
+  have hk0 : (k : ℝ≥0∞) ≠ 0 := by exact_mod_cast (by omega : k ≠ 0)
+  have hstep : (m : ℝ≥0∞) / 2 = ((m : ℝ≥0∞) * k) / (2 * k) := by
+    rw [mul_comm (2 : ℝ≥0∞) (k : ℝ≥0∞), ← ENNReal.mul_div_mul_right (m : ℝ≥0∞) 2 hk0 (by simp)]
+    ring_nf
+  rw [hstep]
+  apply ENNReal.div_le_div_right
+  calc (m : ℝ≥0∞) * k = ((m * k : ℕ) : ℝ≥0∞) := by push_cast; ring
+    _ ≤ ((h + 1 : ℕ) : ℝ≥0∞) := by exact_mod_cast hmult
+    _ = (h : ℝ≥0∞) + 1 := by push_cast; ring
+
 /-- The weighted monomial integrand: density `∏ uⱼ^{hⱼ}` (the pulled-back Jacobian × bump) against
 the monomial `∏ uⱼ^{2kⱼ}` (the resolved function) raised to `−c`. The object whose threshold S2
 cites. -/
