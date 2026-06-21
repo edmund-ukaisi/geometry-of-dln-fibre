@@ -211,6 +211,23 @@ theorem p0_summand_eq_image (c' : NNReal) :
   simp_rw [show ∀ x, pivotBlowupOn ({0, 1, 2, 3} : Finset (Fin 8)) 0 x = step1A x from
     fun x => (step1A_eq_pivotBlowupOn x).symm]
 
+/-- **The E (step-2 unit) leaf integrand is integrable** below `3/2`. The unit-leaf integrand
+`monomialIntegrand 8 unitK8 unitH8 c' · |Uval|^{−c'}` is integrable on the unit box for `0 < c' < 3/2`:
+the unit factor `|Uval|` is two-sided bounded (`Uval_ge_one`: `≥ 1`; `Uval_le_on_box 1`: `≤ B` on
+`[0,1]^8 = unitBox`), so `integrableOn_monomial_mul_unit_iff` reduces it to the gated monomial
+integrability `unit_leaf_integrable`. The E-cell evaluator's finiteness core. -/
+theorem Eleaf_integrable (c' : NNReal) (hc0 : 0 < c') (hc' : (c' : ℝ≥0∞) < 3 / 2) :
+    IntegrableOn (fun u => monomialIntegrand 8 unitK8 unitH8 (c' : ℝ) u * |Uval u| ^ (-(c' : ℝ)))
+      (unitBox 8) volume := by
+  obtain ⟨B, hB1, hBle⟩ := Uval_le_on_box 1
+  rw [integrableOn_monomial_mul_unit_iff 8 unitK8 unitH8 Uval (unitBox 8) (c' : ℝ) 1 B one_pos
+    Uval_cont.measurable ?_]
+  · exact unit_leaf_integrable c' hc0 hc'
+  · filter_upwards [self_mem_ae_restrict
+      (MeasurableSet.univ_pi (fun _ => measurableSet_Icc) : MeasurableSet (unitBox 8))] with u hu
+    rw [abs_of_nonneg (le_trans zero_le_one (Uval_ge_one u))]
+    exact ⟨Uval_ge_one u, hBle u (by simpa [unitBox] using hu)⟩
+
 /-- **A step-1 A-pivot leaf-summand is finite (below `3/2`).** For each A-pivot `p ∈ {0,1,2,3}` and
 `c' < 3/2`, the `p`-cell of the step-1 `g5_pivotNode` split — the chart-domain integral of
 `|det φ₁ₚ| · (openBox.indicator |myF222|^{−c'}) ∘ φ₁ₚ` — is finite. This is the per-A-pivot recursion
