@@ -2928,6 +2928,29 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`.
 
+Latest A5 update: Eq5 interval/introduced-label wrappers are proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` and
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The names are
+`aoyagiLemma5Eq5_lowerEndpoint_mem_intervalValueSetNat_of_lt`,
+`aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min`,
+`aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_subset_intervalValueSetNat_of_le_min`,
+`aoyagiLemma5Eq5_insertLower_offsetCard_add_one_eq_intervalCard_of_le_min`,
+and
+`aoyagiLemma5Eq5_piecewise_ownBlock_intervalValue_introducedLabel_of_lastPoint_widthBound`.
+The finite-set wrappers say that, in the rising region, inserting the lower
+endpoint into the strict Eq5 offset-value set gives a subset of the
+same-coordinate interval with cardinality equal to the interval excess and one
+less than the full interval.  The source-label wrapper combines supplied Eq5
+own-block interval membership, `T S=k-1`, and post-advance introduced-label
+membership.  The actual-width lower bound remains explicit; no displayed
+vector construction, terminality, admissibility, or order count is proved.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-interval-introduced-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-interval-introduced-label.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-interval-introduced-label-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

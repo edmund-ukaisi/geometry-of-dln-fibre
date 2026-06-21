@@ -1817,6 +1817,47 @@ theorem aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min
     simpa [hexcess] using halpha.2
   omega
 
+/-- The lower endpoint belongs to the same-coordinate interval value set.
+
+This is finite interval bookkeeping only.  It does not assert that the lower
+endpoint is realised by any displayed source vector. -/
+theorem aoyagiLemma5Eq5_lowerEndpoint_mem_intervalValueSetNat_of_lt
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp : p < ell + 1) :
+    aoyagiHtildeLowerNat ell a M m p ∈
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  rw [aoyagiHtildeIntervalValueSetNat]
+  simp only [hp, ↓reduceDIte]
+  rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds
+    ell a M m ha ⟨p, hp⟩]
+  constructor
+  · rfl
+  · simpa [aoyagiHtildeLowerChain] using
+      (aoyagiHtildeLowerChain_le_upperChain ell a M m ha ⟨p, hp⟩)
+
+/-- In the rising region, the strict equation `(5)` offset values plus the
+lower endpoint have cardinality equal to the interval excess.
+
+The full same-coordinate interval has one further value, the upper endpoint.
+This theorem is count bookkeeping only; it does not say that the inserted lower
+endpoint is realised by equation `(3)` or `(4)`. -/
+theorem aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    (insert (aoyagiHtildeLowerNat ell a M m p)
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m)).card =
+      aoyagiLemma5IntervalExcess ell a p := by
+  rw [Finset.card_insert_of_notMem
+    (aoyagiLemma5Eq5_lowerEndpoint_not_mem_offsetValueSet_of_le_min
+      ell a p M m ha hp_a hp_c)]
+  rw [aoyagiLemma5Eq5OffsetValueSet_card]
+  have hexcess :
+      aoyagiLemma5IntervalExcess ell a p = p :=
+    aoyagiLemma5IntervalExcess_eq_self_of_le_min ell a p ha hp_a hp_c
+  rw [hexcess]
+  rw [Nat.min_eq_right (Nat.sub_le p 1)]
+  omega
+
 /-- Every equation `(5)` offset value is a same-coordinate interval value. -/
 theorem aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
@@ -1839,6 +1880,46 @@ theorem aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
       aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ) ≤
         aoyagiHtildeUpperNat ell a M m p
   constructor <;> omega
+
+/-- In the rising region, the lower endpoint together with the strict equation
+`(5)` offset values is contained in the same-coordinate interval.
+
+This is only a set-level inclusion for counted values, not a displayed-vector
+construction or legality theorem. -/
+theorem aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_subset_intervalValueSetNat_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    insert (aoyagiHtildeLowerNat ell a M m p)
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) ⊆
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hp_lt : p < ell + 1 := by
+    have _hp_c : p ≤ ell - a := hp_c
+    omega
+  intro z hz
+  rw [Finset.mem_insert] at hz
+  rcases hz with hz | hz
+  · subst z
+    exact aoyagiLemma5Eq5_lowerEndpoint_mem_intervalValueSetNat_of_lt
+      ell a p M m ha hp_lt
+  · exact aoyagiLemma5Eq5OffsetValueSet_subset_intervalValueSetNat
+      ell a p M m ha hp_lt hz
+
+/-- In the rising region, the strict equation `(5)` offset values plus the
+lower endpoint account for all but one value in the same-coordinate interval.
+
+The extra value is not identified here.  This theorem is a cardinality bridge,
+not a construction of Aoyagi's displayed vector family. -/
+theorem aoyagiLemma5Eq5_insertLower_offsetCard_add_one_eq_intervalCard_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a) :
+    (insert (aoyagiHtildeLowerNat ell a M m p)
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m)).card + 1 =
+      (aoyagiHtildeIntervalValueSetNat ell a M m p).card := by
+  rw [aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min
+    ell a p M m ha hp_pos hp_a hp_c]
+  rw [aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m p (by omega)]
+  simp [aoyagiLemma5IntervalSize]
+  omega
 
 /-- A supplied equation `(5)` own-coordinate branch has the displayed value
 `Htilde'_p - alpha` on block `p`. -/

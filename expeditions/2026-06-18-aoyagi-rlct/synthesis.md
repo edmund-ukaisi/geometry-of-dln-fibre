@@ -2339,6 +2339,25 @@ explicit.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`.
 
+Eq5 now has a small interval/introduced-label hardening layer.  Theorems
+`aoyagiLemma5Eq5_lowerEndpoint_mem_intervalValueSetNat_of_lt`,
+`aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min`,
+`aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_subset_intervalValueSetNat_of_le_min`,
+and
+`aoyagiLemma5Eq5_insertLower_offsetCard_add_one_eq_intervalCard_of_le_min`
+record that in the rising region the lower endpoint plus the strict Eq5
+offset values form a subset of the same-coordinate interval with cardinality
+equal to the excess, one value short of the full interval.  The wrapper
+`aoyagiLemma5Eq5_piecewise_ownBlock_intervalValue_introducedLabel_of_lastPoint_widthBound`
+combines supplied Eq5 own-block interval membership, `T S=k-1`, and
+post-advance `introducedLabel L n S k S k`.  It keeps the actual-width lower
+bound explicit and does not construct displayed vectors or prove the Lemma 5
+order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-interval-introduced-label-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-interval-introduced-label.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-interval-introduced-label-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

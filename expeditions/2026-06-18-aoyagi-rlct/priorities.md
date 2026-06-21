@@ -758,10 +758,15 @@ on the session's original cwd.
    The Eq5 strict-offset count is now tied pointwise to the interval excess:
    excess equals the Eq5 offset-value-set cardinality plus one rising
    indicator, and the lower endpoint is excluded from the strict-offset set in
-   the rising region.  This is useful order-count scaffolding but not
-   displayed-vector realisation.  Next A5 moves should either add thin
-   combined source-label/value adapters for Eq3/Eq4, or continue count-side
-   decomposition without claiming that Eq3/Eq4 realise the missing value.
+   the rising region.  The follow-up inserted-set wrappers show that lower
+   endpoint plus strict Eq5 offsets has excess-cardinality, lies inside the
+   same-coordinate interval, and is one value short of the full interval; the
+   source wrapper also packages supplied Eq5 own-block interval membership,
+   `T S=k-1`, and post-advance introduced-label membership.  This is useful
+   order-count/API scaffolding but not displayed-vector realisation.
+   Next A5 moves should add thin introduced-label adapters for Eq3/Eq4, or
+   continue count-side decomposition without claiming that Eq3/Eq4 realise the
+   missing value.
    Eq3/Eq4 own-coordinate source-label adapters are now Lean-proved, so the
    current source-label API consistently packages `T(S)=k-1` with
    `actualWidthLabel`, and the last-cutpoint wrappers derive the upper source

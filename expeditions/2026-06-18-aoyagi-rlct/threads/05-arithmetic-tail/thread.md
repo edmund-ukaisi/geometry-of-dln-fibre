@@ -1741,3 +1741,39 @@ These theorems do not construct the displayed vectors, derive actual-width
 compatibility from Definition 3, remove the Eq3 slack, prove terminal
 `tilde t=0`, vector admissibility, chart sequence, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` interval and introduced-label wrappers
+
+Reproduction:
+`reproduction-lemma5-eq5-interval-introduced-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-interval-introduced-label.md`.
+Review artifact:
+`review-lemma5-eq5-interval-introduced-label-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_lowerEndpoint_mem_intervalValueSetNat_of_lt
+aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min
+aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_subset_intervalValueSetNat_of_le_min
+aoyagiLemma5Eq5_insertLower_offsetCard_add_one_eq_intervalCard_of_le_min
+aoyagiLemma5Eq5_piecewise_ownBlock_intervalValue_introducedLabel_of_lastPoint_widthBound
+```
+
+The finite-set wrappers work in the rising region
+`1<=p`, `p<=a`, `p<=ell-a`.  They insert the lower endpoint into the strict
+Eq5 offset-value set and prove that the inserted set has cardinality equal to
+the interval excess, lies inside the same-coordinate interval value set, and
+is one value short of the full interval.
+
+The source-label wrapper combines supplied Eq5 own-block data with the
+last-cutpoint/width-bound actual-label wrapper.  It proves `T S` is in the
+same-coordinate interval, `T S=k-1`, and
+`introducedLabel L n S k S k` in the post-advance state `(S,k)`.
+
+This still does not construct the displayed vector, prove that equations
+`(3)` or `(4)` realise the remaining interval value, derive
+`W_p<=n(S+1)` from Definition 3 alone, prove terminal `tilde t=0`, vector
+admissibility, chart sequence, pole order, normal crossings, or RLCT
+extraction.

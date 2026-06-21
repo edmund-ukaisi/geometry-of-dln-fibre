@@ -591,6 +591,41 @@ theorem aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBo
     L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS
     (C.block_sourceIndex_le_of_lastPoint_le hS hlast) hwidth_le hk
 
+/-- Source-shaped equation `(5)` own-block wrapper with interval membership
+and post-advance introduced-label membership.
+
+The state is `(S,k)`: the supplied branch gives `T S=k-1`, while the actual
+label is introduced after advancing the current layer through label `k`.  This
+remains conditional on the supplied piecewise certificate and the explicit
+actual-width lower bound. -/
+theorem aoyagiLemma5Eq5_piecewise_ownBlock_intervalValue_introducedLabel_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    T S ∈ aoyagiHtildeIntervalValueSetNat ell a M m p ∧
+      T S = (k : ℤ) - 1 ∧ introducedLabel L n S k S k := by
+  have hown :=
+    aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+      ell a p alpha M m C layerWidth T hT
+  have hlabel :=
+    aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+      L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS
+      hlast hwidth_le hk
+  refine ⟨?_, hlabel.1, ?_⟩
+  · exact aoyagiLemma5Eq5_ownCoordinate_mem_intervalValueSetNat
+      ell a p alpha M m C T hown hS
+  · exact introducedLabel_of_eq_stage_le hlabel.2 rfl le_rfl
+
 /-- Source-shaped arbitrary-own-block equation `(5)` label legality from a
 block-local actual-width lower-bound hypothesis.
 

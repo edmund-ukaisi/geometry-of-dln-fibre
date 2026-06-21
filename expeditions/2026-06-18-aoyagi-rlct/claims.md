@@ -2281,6 +2281,13 @@ No such claim is formalisation-ready until both fields are filled.
   rising-coordinate indicator, and show the lower endpoint is not a strict
   Eq5 offset value in the rising region.  This is count scaffolding only, not
   displayed-vector realisation or Lemma 5's order-count theorem.
+  The follow-up Eq5 interval/introduced-label wrappers insert the lower
+  endpoint into the strict-offset set in the rising region, prove the inserted
+  set has excess-cardinality and lies in the same-coordinate interval, and
+  package supplied Eq5 own-block data as interval membership, `T S=k-1`, and
+  post-advance `introducedLabel L n S k S k`.  These remain count/API
+  scaffolding only: the actual-width lower bound is explicit, and no displayed
+  vector, terminality, admissibility, or order count is proved.
   Also proved the Eq3/Eq4 own-coordinate actual-label adapters
   `aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility`
   and
