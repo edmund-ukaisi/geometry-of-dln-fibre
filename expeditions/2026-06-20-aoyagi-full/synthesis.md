@@ -496,7 +496,19 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
   literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
 
-## Next tick (state @ ~02:00, trunk past 54ffe32)
+## Next tick (state @ ~02:30, trunk @da24204)
+**S1.5 FUBINI ENGINE COMPLETE @ad1f313** (controller-verified axiom-clean) — whole S1 substrate proven. R1 lower-bound
+soundness SETTLED (general result PROVEN on paper). **(2,2,2) cover EXECUTION-READY** (pp, 24 leaves, cover-complete
+12063/12063, a G5-instance). **G5-abstract BUILDABLE + assigned fm-2** (Mathlib lintegral c-o-v; reduces general wall
+to G3 alone). Headline-reach DECIDED+flagged: fixed-M ladder now + G3 named obstruction.
+LIVE: (1) **fm** — Skeleton batch (S1.5 `exact` wire + resolution_charts core re-scope + product_reduction wiring) +
+the (1,1,1) gate → report green-gate. (2) **fm-2** — G5-abstract (cover-gluing lemma) + (2,2,2) per-chart measure
+pieces. (3) **pp** — (2,1,2) Fubini-product design (completes the ladder design). (4) **rv-2** — audit the S1.5 engine
+(#50) + queued wires. Then: fm formalises the (2,2,2) cover (pp leaf-list + fm-2 G5-abstract) → L2 (=block_elim+
+S1Fubini+R1-core+A1) → D1 → T (fixed-M headline). #19 PARKED. G3 = the one named general-M research obstruction.
+Watch the fm→#19 pull (parked 3×). Don't stop in a blocked state.
+
+### (prior next-tick) state @ ~02:00
 TWO BIGGEST RISKS RETIRED: Fubini n=1 equality PROVEN (@e1cf73c) + R1 route VALIDATED (A-concrete, B refuted).
 Remaining = execution + assembly. **Re-scope PINNED** (pp → fm): `resolution_charts(M) = rlctAtOn(dlnLoss M 0)(0)
 = ⨅ monomialThreshold` (reduced widths M = core) + product_reduction wiring chain (block_elim → S1Fubini n/2 →
