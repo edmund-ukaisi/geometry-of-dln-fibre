@@ -1973,3 +1973,29 @@ the existing proof that the lower endpoint is not a strict Eq5 offset.  It is
 finite-set bookkeeping only and does not construct displayed vectors, realise
 the endpoints, prove terminality, chart sequence, Lemma 5 order count, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3/Eq4 interval finset adapters
+
+Reproduction:
+`reproduction-lemma5-eq3-eq4-interval-finset-adapters-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-eq4-interval-finset-adapters.md`.
+Review artifact:
+`review-lemma5-eq3-eq4-interval-finset-adapters-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint
+aoyagiLemma5Eq3_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint
+```
+
+For supplied Eq4/Eq3 piecewise certificates, the own-coordinate branch value is
+packaged as a same-coordinate interval value, a label predecessor `k-1`, and a
+member of `introducedLabelFinset L n S k`.
+
+This is a conjunction adapter over existing endpoint interval-membership and
+introduced-label finite-domain facts.  It keeps Eq3's explicit slack and Eq4's
+repaired guards.  It does not construct displayed vectors, provide terminal
+exponent/least-value data, prove terminality, chart sequence, Lemma 5 order
+count, normal crossings, or RLCT extraction.

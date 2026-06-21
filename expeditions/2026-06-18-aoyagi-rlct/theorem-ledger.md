@@ -3072,6 +3072,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-offsets-erase-endpoints-a5.md`.
 
+Latest A5 update: Eq3/Eq4 supplied own-coordinate branches now have
+interval-membership plus finite-domain introduced-label adapters in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The names are
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint`
+and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint`.
+They combine already-proved endpoint interval membership with the existing
+`introducedLabelFinset` adapters.  Eq3's explicit slack and Eq4's repaired
+guards remain explicit.  No terminal exponent, least-value, displayed-vector
+construction, admissibility, order count, normal-crossing, or RLCT data is
+proved.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-interval-finset-adapters-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-interval-finset-adapters.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-finset-adapters-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

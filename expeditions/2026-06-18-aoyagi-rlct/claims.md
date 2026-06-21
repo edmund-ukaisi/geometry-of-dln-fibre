@@ -2337,6 +2337,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min`, isolating
   the strict Eq5 offsets as the same-coordinate interval with both endpoints
   erased in the rising region.
+  Also proved Eq3/Eq4 own-coordinate interval finite-domain adapters:
+  `aoyagiLemma5Eq4_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint`
+  and
+  `aoyagiLemma5Eq3_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

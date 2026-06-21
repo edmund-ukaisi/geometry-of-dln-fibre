@@ -807,6 +807,10 @@ on the session's original cwd.
    Further A5 work should prefer wrappers that combine already-proved
    interval membership with introduced-label finite-domain adapters, while
    keeping endpoint realisation and order count out of scope.
+   Eq3/Eq4 interval-membership plus introduced-label finite-domain adapters
+   are now proved.  Remaining nearby A5 adapter work should avoid duplicating
+   these conjunctions and should not infer `LabelExponentCertificate` data
+   without explicit terminal exponent and least-value fields.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

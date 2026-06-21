@@ -2464,6 +2464,22 @@ displayed-vector construction, or Lemma 5 order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-offsets-erase-endpoints-a5.md`.
 
+Eq3 and Eq4 own-coordinate supplied branches now have interval-membership plus
+finite-domain introduced-label adapters in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The new theorem names are
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint`
+and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint`.
+They package the already-proved endpoint value, endpoint interval membership,
+label predecessor, and `introducedLabelFinset` membership facts.  Eq3's
+explicit slack and Eq4's repaired guards remain explicit.  This does not
+provide terminal exponent or least-value data and does not prove displayed
+vector construction or Lemma 5 order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-interval-finset-adapters-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-interval-finset-adapters.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-interval-finset-adapters-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
