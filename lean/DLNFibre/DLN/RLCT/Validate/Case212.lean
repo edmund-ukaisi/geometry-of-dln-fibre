@@ -41,15 +41,33 @@ noncomputable def blockG : (Fin 2 → ℝ) → ℝ := fun a => ∑ i, a i ^ 2
 /-- The two smooth blocks: `H(b) = b₁²+b₂²` on `Fin 2 → ℝ`. -/
 noncomputable def blockH : (Fin 2 → ℝ) → ℝ := fun b => ∑ i, b i ^ 2
 
+/-- The `prod` entry form for `(2,1,2)`: `P_ij = aᵢ·bⱼ` (the `2×1` times `1×2` product, single inner
+index `⟨0,_⟩ : Fin 1`). `prodAux` for `L = 2` telescopes `(1·C⁽¹⁾)·C⁽²⁾`. PROVE note: closes on a
+bare-`Loss` import. Under the full Case212 imports the simp normal form differs: `simp` reduces to
+`(1 * A 0) i 0 = A 0 i 0 ∨ A 1 0 j = 0`, and the left disjunct's `1 * A 0` carries a `prodAux`
+`Fin`-cast that blocks `Matrix.one_mul` (the cast-aware closer is the remaining work). -/
+theorem prod212_entry (A : Params (![2, 1, 2] : Fin 3 → ℕ)) (i j : Fin 2) :
+    prod (![2, 1, 2] : Fin 3 → ℕ) A i j
+      = A 0 i ⟨0, by norm_num⟩ * A 1 ⟨0, by norm_num⟩ j := by
+  sorry
+
 /-- **(2,1,2) loss factors as `G·H`** (the entrywise product form). `dlnLoss (2,1,2) 0` at a tuple
 `A` equals `(Σᵢ aᵢ²)(Σⱼ bⱼ²)` with `aᵢ = A 0 i ⟨0,·⟩` (the `2×1` first layer) and
-`bⱼ = A 1 ⟨0,·⟩ j` (the `1×2` second layer). The `prod` for `L = 2` is `C⁽¹⁾·C⁽²⁾`, entry
-`P_ij = aᵢ·bⱼ`, and `Σ_ij (aᵢbⱼ)² = (Σaᵢ²)(Σbⱼ²)`. The middle row/col index `⟨0, _⟩` is the unique
-element of `Fin 1` (`![2,1,2] 1 = 1`); explicit, to avoid the `OfNat (Fin 1)` reduction snag. -/
+`bⱼ = A 1 ⟨0,·⟩ j` (the `1×2` second layer). From `prod212_entry` (`P_ij = aᵢ·bⱼ`) +
+`Σ_ij (aᵢbⱼ)² = (Σaᵢ²)(Σbⱼ²)` (`Finset.sum_mul_sum`). The middle index `⟨0, _⟩` is the unique
+element of `Fin 1` (`![2,1,2] 1 = 1`); explicit, to avoid the `OfNat (Fin 1)` reduction snag.
+The `prod212_entry` → `sum_mul_sum` → `ring` chain is verified (scratch); blocked only on the
+`prod212_entry` cast-closer above. -/
 theorem dlnLoss_case212 (A : Params (![2, 1, 2] : Fin 3 → ℕ)) :
     dlnLoss (![2, 1, 2] : Fin 3 → ℕ) 0 A
       = (∑ i, (A 0 i ⟨0, by norm_num⟩) ^ 2) * (∑ j, (A 1 ⟨0, by norm_num⟩ j) ^ 2) := by
-  sorry
+  unfold dlnLoss
+  have hentry : ∀ i j, (prod (![2, 1, 2] : Fin 3 → ℕ) A - 0) i j
+      = A 0 i ⟨0, by norm_num⟩ * A 1 ⟨0, by norm_num⟩ j := by
+    intro i j; rw [sub_zero]; exact prod212_entry A i j
+  simp_rw [hentry]
+  rw [Finset.sum_mul_sum]
+  congr 1; ext i; congr 1; ext j; ring
 
 /-- **The coordinate split.** `Params (2,1,2)` is measure-preservingly `(Fin 2→ℝ)×(Fin 2→ℝ)` (the
 `a`-block × the `b`-block), under which `dlnLoss (2,1,2) 0` transports to `blockG p.1 · blockH p.2`.
