@@ -164,4 +164,61 @@ theorem cusp_lower_bound {W : Type*} (H wt : W → ℝ) (hH : ∀ z, 0 ≤ H z) 
     rw [abs_of_nonneg hFpos.le]
     exact Real.rpow_le_rpow_of_nonpos hFpos hFle (by linarith)
 
+/-! ## The `n = 1` cusp divergence (the `≤` direction) -/
+
+/-- **The `n = 1` cusp divergence.** If the core diverges at the shifted exponent —
+`∫_V (2^{1−c}·(H z)^{1/2−c}·wt z) = ⊤` (the core's own weighted threshold `< c − 1/2`) — then
+the joint density `|x² + H(z)|^{−c}·wt(z)` is non-integrable on `Icc (-R) R ×ˢ V`. The cusp lower
+bound: restrict the integrand below by `[x² ≤ H z]·(2 H z)^{−c}·wt z` (`cusp_lower_bound`), Tonelli
+(`setLIntegral_prod_symm`, `y`-outer), the inner `x`-slice `= (2 H z)^{−c}·wt z · 2√(H z)`
+(`inner_slice`, using `hHle` so the cusp `{x² ≤ H z}` sits in `Icc (-R) R`), which equals
+`2^{1−c}·(H z)^{1/2−c}·wt z`, so the `y`-integral is exactly the divergent core integral. The
+`hHne : H ≠ 0 a.e.` hypothesis (as in `step_integrableOn`) dodges the `H = 0` corner where the inner
+identity fails at `c = 1/2`. Stated as `lintegral = ⊤`; `IntegrableOn` failure follows by
+`IntegrableOn.setLIntegral_lt_top`. -/
+theorem step_lintegral_top
+    {W : Type*} [MeasureSpace W] [SigmaFinite (volume : Measure W)]
+    (H wt : W → ℝ) (hH : ∀ z, 0 ≤ H z) (hwt : ∀ z, 0 ≤ wt z)
+    (hHmeas : Measurable H) (hwtmeas : Measurable wt)
+    (c R : ℝ) (hc : 0 < c) (hR : 0 < R)
+    (V : Set W) (hVmeas : MeasurableSet V)
+    (hHne : ∀ᵐ z ∂(volume.restrict V), H z ≠ 0)
+    (hHle : ∀ z ∈ V, H z ≤ R ^ 2)
+    (hcore_top : ∫⁻ z in V, ENNReal.ofReal (2 ^ (1 - c) * (H z) ^ (1 / 2 - c) * wt z) = ⊤) :
+    ∫⁻ p in (Icc (-R) R) ×ˢ V, ENNReal.ofReal (|p.1 ^ 2 + H p.2| ^ (-c) * wt p.2) = ⊤ := by
+  classical
+  set LBf : ℝ × W → ℝ≥0∞ :=
+    fun p => if p.1 ^ 2 ≤ H p.2 then ENNReal.ofReal ((2 * H p.2) ^ (-c) * wt p.2) else 0 with hLBf
+  have hmeasLB : Measurable LBf := by
+    apply Measurable.ite (measurableSet_le (by fun_prop) (by fun_prop)) (by fun_prop) (by fun_prop)
+  have hmono : ∫⁻ p in (Icc (-R) R) ×ˢ V, LBf p
+      ≤ ∫⁻ p in (Icc (-R) R) ×ˢ V, ENNReal.ofReal (|p.1 ^ 2 + H p.2| ^ (-c) * wt p.2) := by
+    apply lintegral_mono; intro p
+    by_cases hcusp : p.1 ^ 2 ≤ H p.2
+    · simp only [hLBf, if_pos hcusp]; exact cusp_lower_bound H wt hH hwt c hc p hcusp
+    · simp only [hLBf, if_neg hcusp]; exact zero_le _
+  suffices hLBtop : ∫⁻ p in (Icc (-R) R) ×ˢ V, LBf p = ⊤ by
+    rw [hLBtop] at hmono; exact top_le_iff.1 hmono
+  rw [Measure.volume_eq_prod, setLIntegral_prod_symm LBf (hmeasLB.aemeasurable.restrict),
+    ← hcore_top]
+  apply lintegral_congr_ae
+  filter_upwards [hHne, ae_restrict_mem hVmeas] with y hyne hyV
+  have hgpos : 0 < H y := lt_of_le_of_ne (hH y) (Ne.symm hyne)
+  have hinner : ∫⁻ x in Icc (-R) R, LBf (x, y)
+      = ENNReal.ofReal ((2 * H y) ^ (-c) * wt y) * ENNReal.ofReal (2 * Real.sqrt (H y)) := by
+    simp only [hLBf]; exact inner_slice (H y) R (hH y) hR.le (hHle y hyV) _
+  rw [hinner, ← ENNReal.ofReal_mul (mul_nonneg (Real.rpow_nonneg (by positivity) _) (hwt y))]
+  congr 1
+  have hsqrt : Real.sqrt (H y) = (H y) ^ ((1 : ℝ) / 2) := Real.sqrt_eq_rpow (H y)
+  have e2 : ((2 : ℝ) * (H y)) ^ (-c) = (2 : ℝ) ^ (-c) * (H y) ^ (-c) :=
+    Real.mul_rpow (by norm_num) hgpos.le
+  have c2 : (2 : ℝ) ^ (-c) * (2 : ℝ) = 2 ^ (1 - c) := by
+    rw [show (1 : ℝ) - c = -c + 1 by ring, Real.rpow_add (by norm_num), Real.rpow_one]
+  have chy : (H y) ^ (-c) * (H y) ^ ((1 : ℝ) / 2) = (H y) ^ ((1 : ℝ) / 2 - c) := by
+    rw [← Real.rpow_add hgpos]; ring_nf
+  rw [hsqrt, e2]
+  calc (2 : ℝ) ^ (-c) * (H y) ^ (-c) * wt y * (2 * (H y) ^ ((1 : ℝ) / 2))
+      = ((2 : ℝ) ^ (-c) * 2) * ((H y) ^ (-c) * (H y) ^ ((1 : ℝ) / 2)) * wt y := by ring
+    _ = 2 ^ (1 - c) * (H y) ^ ((1 : ℝ) / 2 - c) * wt y := by rw [c2, chy]
+
 end DLNFibre.DLN.RLCT
