@@ -274,6 +274,25 @@ S1.1+S1.4 → #19 route B → R1/L2/D1
 (critical-path beats off-path as Fubini lands for R1). S1 STATE (trunk @b6eaa80): S1Transport 0-sorry (S1.1
 ready), S1Local 1-sorry (S1.4 ready; S1.3 pending fm-2's push of its proof), S1Additive 0 (Fubini pending).
 
+**#19 CHECKPOINT (fm @`88cf38e`, worktree-rung0-defs) — ENGINES PROVEN + ROUTE CORRECTED + KEYSTONE PARKED (decision b).**
+Two engines axiom-clean: `balancedSplit_min` (lower-bound engine `Σ balancedSplit² ≤ Σqᵢ²` at fixed sum;
+re-derived solid after trunk syncs, `43b443e`) + `cleanCore_perm` (cleanCore multiset-symmetry, route-B crux,
+`cfeec6f`). **ROUTE CORRECTED AGAIN (fidelity catch, now in the lambdaCore_eq_clean docstring):** the route-B
+"per-c lower bound / min_c" framing is FALSE (M=[1,1,4]); AND Codex's first "single-c achiever rule
+(aᵢ ≤ ⌈Sᵢ/i⌉)" is ALSO FALSE (278/3900 fail). The CORRECT rule (0 failures exhaustive widths 0..3 L≤4 +
+3900/3900 widths 1..5): `c* = largest c with the CUMULATIVE predicate ∀1≤i≤c, aᵢ ≤ ⌈Sᵢ/i⌉` on sorted M, plus
+the exact per-T identity `Mval = Σₖ gapₖ·(wₖ−Hₖ)` over strict-descent positions. **KEYSTONE PROPER = a dedicated
+multi-session lift (~250-350 lines), NOT a bounded sub-thread:** two sub-lemmas on unsorted M — (1) per-T lower
+bound (descent-set **dependent-Fin reparametrisation** of each T + complete-square + balancedSplit_min) +
+(2) achiever construction + Adm-membership. The dependent-Fin descent reindexing is the genuine hard bulk (the
+minimizer's breakpoint widths aren't literally sortedSmallest — they coincide only at c*; the "perm-invariance
+wall" persists at this level). **DECISION (b): PARK the keystone, ROADMAP it** — it is WELL-SET-UP (genuine
+statement + 2 engines + corrected cumulative-predicate route all banked → a dedicated tide later, after the
+headline / when capacity); #19 is OFF the headline path (headline uses aoyagiLambda's min-def directly). **fm
+PIVOTED to CRITICAL-PATH:** S1 wires (S1.1/S1.3/S1.4) → D1 `deepest_point_reduction` → R1 EXECUTION (with pp,
+when Fubini lands) → L2 → T. Bounded #19 engine-nibbling (e.g. the per-T Mval identity) is FILL only, never over
+the critical path.
+
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
 instance = section-local `instance` (NOT a global Matrix instance, NOT a goal-type `letI` — elaboration order).
