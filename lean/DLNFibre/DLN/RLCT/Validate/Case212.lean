@@ -80,8 +80,12 @@ theorem dlnLoss_case212 (A : Params (![2, 1, 2] : Fin 3 → ℕ)) :
 
 /-- **The coordinate split.** `Params (2,1,2)` is measure-preservingly `(Fin 2→ℝ)×(Fin 2→ℝ)` (the
 `a`-block × the `b`-block), under which `dlnLoss (2,1,2) 0` transports to `blockG p.1 · blockH p.2`.
-Built from `paramsEquivFlat` (measure-preserving) → the layer partition `Fin 4 ≃ Fin 2 ⊕ Fin 2` →
-`sumPiEquivProdPi`. The deepest point maps to `(0, 0)`. -/
+SOUND-CLOSE technique (per task #66, the (2,2,2) seam analog; do NOT compute `equivFin`): define a
+FRESH explicit `e : Params (2,1,2) ≃ᵐ (Fin 2→ℝ)×(Fin 2→ℝ)` (the `a₁,a₂ ↦ p.1`, `b₁,b₂ ↦ p.2` slot
+flatten); the loss-match `dlnLoss ∘ e.symm = (blockG·blockH)` is by CONSTRUCTION + `dlnLoss_case212`
+(entry-product form); prove `e` measure-preserving via a GENERIC coordinate-reindex lemma
+(`piCongrLeft`/`sumPiEquivProdPi` is m.p. for any reindex, never computing the order); transport
+`rlctAtOn` via `rlctAtOn_comp_homeomorph` (`S1Fubini`), `deepest212 ↦ (0,0)`. -/
 theorem rlctAtOn_case212_eq_product :
     rlctAtOn (dlnLoss (![2, 1, 2] : Fin 3 → ℕ) 0) deepest212
       = rlctAtOn (fun p : (Fin 2 → ℝ) × (Fin 2 → ℝ) => blockG p.1 * blockH p.2) (0, 0) := by
