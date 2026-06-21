@@ -206,14 +206,208 @@ theorem boxT_coord_rpow_lt_top {n : ℕ} (T : ℝ) (hT : 0 < T) (p : Fin (n+1)) 
   rw [lintegral_const, one_mul, Measure.restrict_apply_univ]
   exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
 
-/-- **The resolved-form finiteness over the bounded box** (the inner step-2/step-3 recursion). For
-`c' < 3/2`, `∫⁻_{bigbox7} |resolvedForm w|^{−c'} < ⊤`. The remaining `sorry`: the `recStep {1,2,3}`
-blow-up of `resolvedForm` (E/F0/δ cells) + per-cell pivot-peel — each cell's integrand is bounded by a
-single-coord monomial `|z_q|^{2−2c'}` (`2−2c' > −1 ⟺ c' < 3/2`; the residual unit/block `≥ 1`), closed
-by `boxT_coord_rpow_lt_top` after the `bigbox7`-cutoff support containment. -/
+/-! ## The resolved-form recursion (`recStep {1,2,3}` → E/F0/δ cells)
+
+`∫⁻_{bigbox7} |resolvedForm|^{−c'}` splits (via `recStep {1,2,3} 1`) into the three step-2 pivot cells.
+The E (`q=1`) and F0 (`q=2`) cells are UNIT leaves (`resolvedForm (φ₂q z) = z_q²·U`, `U ≥ 1`): support
+containment (`step2E_support_box` / `pivotF0_support_box`: the `bigbox7` cutoff bounds `z` into a box)
++ the pointwise bound to the single-coord monomial `|z_q|^{2−2c'}` (`U^{−c'} ≤ 1`) + the box terminal
+`boxT_coord_rpow_lt_top` (`2−2c' > −1 ⟺ c' < 3/2`). The δ (`q=3`) cell is the BLOCK branch
+(`resolvedForm (φ₂₃ z) = z3²·block`, `block` vanishing) — it needs step-3 (`block_residual_lt_top`). -/
+
+theorem step2E_support_box (z : Fin 7 → ℝ) (hcd : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 1)
+    (hb : step2E z ∈ bigbox7) : z ∈ boxT 7 2 := by
+  simp only [bigbox7, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc] at hb
+  have h2 : |z 2| ≤ 1 := hcd 2 (by decide) (by decide)
+  have h3 : |z 3| ≤ 1 := hcd 3 (by decide) (by decide)
+  have b0 : -2 ≤ z 0 ∧ z 0 ≤ 2 := by have := hb 0; simpa [step2E] using this
+  have b1 : -2 ≤ z 1 ∧ z 1 ≤ 2 := by have := hb 1; simpa [step2E] using this
+  have b2 : -2 ≤ z 2 ∧ z 2 ≤ 2 := ⟨by linarith [abs_le.1 h2], by linarith [abs_le.1 h2]⟩
+  have b3 : -2 ≤ z 3 ∧ z 3 ≤ 2 := ⟨by linarith [abs_le.1 h3], by linarith [abs_le.1 h3]⟩
+  have b4 : -2 ≤ z 4 ∧ z 4 ≤ 2 := by have := hb 4; simpa [step2E] using this
+  have b5 : -2 ≤ z 5 ∧ z 5 ≤ 2 := by have := hb 5; simpa [step2E] using this
+  have b6 : -2 ≤ z 6 ∧ z 6 ≤ 2 := by have := hb 6; simpa [step2E] using this
+  intro i _
+  simp only [boxT, Set.mem_Icc] at *
+  fin_cases i
+  · exact b0
+  · exact b1
+  · exact b2
+  · exact b3
+  · exact b4
+  · exact b5
+  · exact b6
+
+-- pointwise: the E-cell integrand at z (using step2E = pivotBlowupOn {1,2,3} 1) factors and bounds.
+theorem Ecell_integrand_bound (c' : NNReal) (z : Fin 7 → ℝ)
+    (hz : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 1 \ pivotZeroOn 1) :
+    ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 1 z).det|
+        * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+            (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 1 z)
+      ≤ (boxT 7 2).indicator (fun z => ENNReal.ofReal (|z 1| ^ (2 - 2*(c':ℝ)))) z := by
+  rw [show pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 1 z = step2E z from (step2E_eq_pivotBlowupOn z).symm,
+      step2E_det]
+  by_cases hb : step2E z ∈ bigbox7
+  · rw [Set.indicator_of_mem hb]
+    rw [Set.indicator_of_mem (step2E_support_box z hz.1 hb)]
+    -- |z1²| · |resolvedForm(step2E z)|^{-c'} ≤ |z1|^{2-2c'}
+    rw [resolvedForm_step2E]
+    have hz1 : z 1 ≠ 0 := hz.2
+    have hUge : (1:ℝ) ≤ 1 + (z 2)^2 + (z 4 + z 3 * z 5)^2 + (z 4 * z 2 + z 3 * z 6)^2 :=
+      step2E_unit_ge_one z
+    -- ofReal(|z1²|) * ofReal(|z1²·U|^{-c'}) ≤ ofReal(|z1|^{2-2c'})
+    rw [← ENNReal.ofReal_mul (abs_nonneg _)]
+    apply ENNReal.ofReal_le_ofReal
+    set U := 1 + (z 2)^2 + (z 4 + z 3 * z 5)^2 + (z 4 * z 2 + z 3 * z 6)^2 with hUdef
+    have hUpos : 0 < U := lt_of_lt_of_le one_pos hUge
+    have hz1a : (0:ℝ) < |z 1| := abs_pos.2 hz1
+    -- the clean real bound: |z1²| · |z1²·U|^{-c'} = |z1|^{2-2c'} · U^{-c'}
+    have key : |z 1 ^ 2| * |z 1 ^ 2 * U| ^ (-(c':ℝ)) = |z 1| ^ (2 - 2*(c':ℝ)) * U ^ (-(c':ℝ)) := by
+      rw [show |z 1 ^ 2 * U| = |z 1| ^ 2 * U from by rw [abs_mul, abs_pow, abs_of_pos hUpos],
+          show |z 1 ^ 2| = |z 1| ^ 2 from by rw [abs_pow],
+          Real.mul_rpow (by positivity) hUpos.le]
+      have h2 : (|z 1| ^ 2 : ℝ) = |z 1| ^ (2:ℝ) := by rw [← Real.rpow_natCast (|z 1|) 2]; norm_num
+      rw [h2, ← Real.rpow_mul (abs_nonneg _), ← mul_assoc, ← Real.rpow_add hz1a]
+      congr 2 <;> push_cast <;> ring
+    rw [key]
+    calc |z 1| ^ (2 - 2*(c':ℝ)) * U ^ (-(c':ℝ))
+        ≤ |z 1| ^ (2 - 2*(c':ℝ)) * 1 :=
+          mul_le_mul_of_nonneg_left
+            (Real.rpow_le_one_of_one_le_of_nonpos hUge (neg_nonpos.2 (by positivity)))
+            (Real.rpow_nonneg (abs_nonneg _) _)
+      _ = |z 1| ^ (2 - 2*(c':ℝ)) := mul_one _
+  · rw [Set.indicator_of_notMem hb, mul_zero]; exact zero_le _
+
+theorem Ecell_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
+    ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 1 \ pivotZeroOn 1,
+        ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 1 z).det|
+          * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+              (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 1 z) < ⊤ := by
+  have hmono : ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 1 \ pivotZeroOn 1,
+        ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 1 z).det|
+          * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+              (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 1 z)
+      ≤ ∫⁻ z in boxT 7 2, ENNReal.ofReal (|z 1| ^ (2 - 2*(c':ℝ))) := by
+    rw [← lintegral_indicator (chartDomOn_diff_measurableSet _ _),
+        ← lintegral_indicator (by exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc) :
+          MeasurableSet (boxT 7 2))]
+    apply lintegral_mono
+    intro z
+    by_cases hz : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 1 \ pivotZeroOn 1
+    · rw [Set.indicator_of_mem hz]
+      exact Ecell_integrand_bound c' z hz
+    · rw [Set.indicator_of_notMem hz]; exact zero_le _
+  exact lt_of_le_of_lt hmono (boxT_coord_rpow_lt_top 2 (by norm_num) 1 (2 - 2*(c':ℝ)) (by linarith))
+
+-- ===== F0-cell (q=2), mirror of E (resolvedForm_pivotF0 / pivotF0_unit_ge_one) =====
+theorem pivotBlowupF0_apply (z : Fin 7 → ℝ) :
+    pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 2 z = ![z 0, z 2 * z 1, z 2, z 2 * z 3, z 4, z 5, z 6] := by
+  funext i; fin_cases i <;> simp [pivotBlowupOn, Matrix.cons_val]
+
+theorem pivotF0_support_box (z : Fin 7 → ℝ) (hcd : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 2)
+    (hb : pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 2 z ∈ bigbox7) : z ∈ boxT 7 2 := by
+  rw [pivotBlowupF0_apply] at hb
+  simp only [bigbox7, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc] at hb
+  have h1 : |z 1| ≤ 1 := hcd 1 (by decide) (by decide)
+  have h3 : |z 3| ≤ 1 := hcd 3 (by decide) (by decide)
+  have b0 : -2 ≤ z 0 ∧ z 0 ≤ 2 := by have := hb 0; simpa using this
+  have b2 : -2 ≤ z 2 ∧ z 2 ≤ 2 := by have := hb 2; simpa using this
+  have b1 : -2 ≤ z 1 ∧ z 1 ≤ 2 := ⟨by linarith [abs_le.1 h1], by linarith [abs_le.1 h1]⟩
+  have b3 : -2 ≤ z 3 ∧ z 3 ≤ 2 := ⟨by linarith [abs_le.1 h3], by linarith [abs_le.1 h3]⟩
+  have b4 : -2 ≤ z 4 ∧ z 4 ≤ 2 := by have := hb 4; simpa using this
+  have b5 : -2 ≤ z 5 ∧ z 5 ≤ 2 := by have := hb 5; simpa using this
+  have b6 : -2 ≤ z 6 ∧ z 6 ≤ 2 := by have := hb 6; simpa using this
+  intro i _; simp only [boxT, Set.mem_Icc] at *
+  fin_cases i
+  · exact b0
+  · exact b1
+  · exact b2
+  · exact b3
+  · exact b4
+  · exact b5
+  · exact b6
+
+theorem F0cell_integrand_bound (c' : NNReal) (z : Fin 7 → ℝ)
+    (hz : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 2 \ pivotZeroOn 2) :
+    ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 2 z).det|
+        * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+            (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 2 z)
+      ≤ (boxT 7 2).indicator (fun z => ENNReal.ofReal (|z 2| ^ (2 - 2*(c':ℝ)))) z := by
+  rw [show (pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 2 z).det = (z 2)^2 from by
+        rw [pivotBlowupOnDeriv_det _ _ (by decide)];
+        norm_num [show ({1,2,3} : Finset (Fin 7)).card = 3 from by decide]]
+  by_cases hb : pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 2 z ∈ bigbox7
+  · rw [Set.indicator_of_mem hb, Set.indicator_of_mem (pivotF0_support_box z hz.1 hb),
+      resolvedForm_pivotF0]
+    have hz2 : z 2 ≠ 0 := hz.2
+    have hUge := pivotF0_unit_ge_one z
+    rw [← ENNReal.ofReal_mul (abs_nonneg _)]
+    apply ENNReal.ofReal_le_ofReal
+    set U := 1 + (z 1)^2 + (z 4 * z 1 + z 3 * z 5)^2 + (z 4 + z 3 * z 6)^2 with hUdef
+    have hUpos : 0 < U := lt_of_lt_of_le one_pos hUge
+    have hz2a : (0:ℝ) < |z 2| := abs_pos.2 hz2
+    have key : |z 2 ^ 2| * |z 2 ^ 2 * U| ^ (-(c':ℝ)) = |z 2| ^ (2 - 2*(c':ℝ)) * U ^ (-(c':ℝ)) := by
+      rw [show |z 2 ^ 2 * U| = |z 2| ^ 2 * U from by rw [abs_mul, abs_pow, abs_of_pos hUpos],
+          show |z 2 ^ 2| = |z 2| ^ 2 from by rw [abs_pow],
+          Real.mul_rpow (by positivity) hUpos.le]
+      have h2 : (|z 2| ^ 2 : ℝ) = |z 2| ^ (2:ℝ) := by rw [← Real.rpow_natCast (|z 2|) 2]; norm_num
+      rw [h2, ← Real.rpow_mul (abs_nonneg _), ← mul_assoc, ← Real.rpow_add hz2a]
+      congr 2 <;> push_cast <;> ring
+    rw [key]
+    calc |z 2| ^ (2 - 2*(c':ℝ)) * U ^ (-(c':ℝ))
+        ≤ |z 2| ^ (2 - 2*(c':ℝ)) * 1 :=
+          mul_le_mul_of_nonneg_left
+            (Real.rpow_le_one_of_one_le_of_nonpos hUge (neg_nonpos.2 (by positivity)))
+            (Real.rpow_nonneg (abs_nonneg _) _)
+      _ = |z 2| ^ (2 - 2*(c':ℝ)) := mul_one _
+  · rw [Set.indicator_of_notMem hb, mul_zero]; exact zero_le _
+
+theorem F0cell_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
+    ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 2 \ pivotZeroOn 2,
+        ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 2 z).det|
+          * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+              (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 2 z) < ⊤ := by
+  have hmono : ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 2 \ pivotZeroOn 2,
+        ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 2 z).det|
+          * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+              (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 2 z)
+      ≤ ∫⁻ z in boxT 7 2, ENNReal.ofReal (|z 2| ^ (2 - 2*(c':ℝ))) := by
+    rw [← lintegral_indicator (chartDomOn_diff_measurableSet _ _),
+        ← lintegral_indicator (by exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc) :
+          MeasurableSet (boxT 7 2))]
+    apply lintegral_mono; intro z
+    by_cases hz : z ∈ chartDomOn ({1,2,3} : Finset (Fin 7)) 2 \ pivotZeroOn 2
+    · rw [Set.indicator_of_mem hz]; exact F0cell_integrand_bound c' z hz
+    · rw [Set.indicator_of_notMem hz]; exact zero_le _
+  exact lt_of_le_of_lt hmono (boxT_coord_rpow_lt_top 2 (by norm_num) 2 (2 - 2*(c':ℝ)) (by linarith))
+
+-- ===== δ-cell (q=3): block branch — needs step-3 (block vanishes, not ≥1). =====
+/-- The step-3 block residual finiteness over a bounded box (the 4th-level recursion: blow up
+`block = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` along its vertex, `blockForm_step3` + `step3_unit_ge_one`
++ `block_leaf_integrable`). The δ-cell's inner integral. -/
+theorem block_residual_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
+    ∫⁻ z in boxT 7 (2:ℝ),
+        ENNReal.ofReal (|(z 1)^2 + (z 2)^2 + (z 4 * z 1 + z 5)^2 + (z 4 * z 2 + z 6)^2| ^ (-(c':ℝ))) < ⊤ := by
+  sorry
+
+theorem deltaCell_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
+    ∫⁻ z in chartDomOn ({1,2,3} : Finset (Fin 7)) 3 \ pivotZeroOn 3,
+        ENNReal.ofReal |(pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 7)) 3 z).det|
+          * bigbox7.indicator (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))
+              (pivotBlowupOn ({1,2,3} : Finset (Fin 7)) 3 z) < ⊤ := by
+  sorry
+
+-- ===== assemble resolved_residual via recStep {1,2,3} 1 =====
 theorem resolved_residual_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
     ∫⁻ w in bigbox7, ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))) < ⊤ := by
-  sorry
+  rw [recStep ({1,2,3} : Finset (Fin 7)) 1 (by decide) bigbox7
+    (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+    (fun w => ENNReal.ofReal (|resolvedForm w| ^ (-(c':ℝ))))]
+  refine ENNReal.sum_lt_top.2 (fun q hq => ?_)
+  fin_cases hq
+  · exact Ecell_lt_top c' hc'
+  · exact F0cell_lt_top c' hc'
+  · exact deltaCell_lt_top c' hc'
 
 theorem tail_residual_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
     ∫⁻ v in box7, ENNReal.ofReal (|step1Residual v| ^ (-(c':ℝ))) < ⊤ := by
