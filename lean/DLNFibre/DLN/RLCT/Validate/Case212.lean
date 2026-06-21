@@ -4,25 +4,27 @@ import DLNFibre.DLN.RLCT.Foundations.S1SmoothBlock
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
 
 /-!
-# `DLNFibre.DLN.RLCT.Validate.Case212` — the `(2,1,2)` headline via product-MIN (SPECIFY skeleton)
+# `DLNFibre.DLN.RLCT.Validate.Case212` — the `(2,1,2)` headline via product-MIN (axiom-clean)
 
 The second ladder rung. `M = (2,1,2)`, `r = 0`: the core is `C⁽¹⁾` (`2×1`, entries `a₁,a₂`) times
 `C⁽²⁾` (`1×2`, entries `b₁,b₂`), product `P_ij = aᵢbⱼ`, and
 
   `dlnLoss (2,1,2) 0 A = ‖P‖² = Σ_ij (aᵢbⱼ)² = (a₁²+a₂²)(b₁²+b₂²) = G(a)·H(b)`
 
-a **product of two disjoint smooth blocks** (verified `F = G·H`). So the RLCT is `min` (NOT sum —
-`product_min_rlct`, the Tonelli split), each block `= 1` (`smoothBlockND_rlct 1`), giving
-`min(1,1) = 1 = lambdaCore (2,1,2) = aoyagiLambda (2,1,2) 0` (verified `#eval`).
+a **product of two disjoint smooth blocks** (`dlnLoss_case212`). So the RLCT is `min` (NOT sum —
+`product_min_rlct_of_ne`, the Tonelli split), each block `= 1` (`smoothBlockND_rlct 1`), giving
+`min(1,1) = 1 = aoyagiLambda (2,1,2) 0`.
 
-**This is SPECIFY-phase**: the headline statement + the decomposition into named sorries, structure
-validated by `lake build`. The genuine work to fill:
+**Fully closed and axiom-free**: `case212_rlct` has `#print axioms = [propext, Classical.choice,
+Quot.sound]` — no `sorryAx`, no `native_decide`. The pieces, all sorry-free:
 - `dlnLoss_case212`: the entrywise product form (dependent-`Fin` `prod` unfold for `L = 2`);
-- `entryME212`: the measure-preserving `Params (2,1,2) ≃ᵐ (Fin 2→ℝ)×(Fin 2→ℝ)` (paramsEquivFlat →
-  `Fin 4 ≃ Fin 2 ⊕ Fin 2` layer-partition → `sumPiEquivProdPi`) transporting `dlnLoss` to `G·H`;
-- the `EuclideanSpace ℝ (Fin 2)` ↔ `Fin 2 → ℝ` bridge for `smoothBlockND_rlct`;
-- the `product_min_rlct` hypothesis discharge (positivity + down-set), cleaner once `#57`
-  `product_min_rlct_of_ne` lands on trunk.
+- `eME212`/`eHom212`: the measure-preserving homeomorph `Params (2,1,2) ≃ₜ (Fin 2→ℝ)×(Fin 2→ℝ)` (the
+  `a`-block × `b`-block flatten), built from generic coordinate-reindex equivs (`piFinTwo`,
+  `arrowCongr'·funUnique`, `funUnique`) — never computing `paramsEquivFlat`'s opaque `equivFin`
+  order — transporting `dlnLoss` to `blockG·blockH` via `rlctAtOn_comp_homeomorph`;
+- `rlctAtOn_blockG_eq_one`: the `EuclideanSpace ℝ (Fin 2)` ↔ `Fin 2 → ℝ` bridge for
+  `smoothBlockND_rlct`;
+- `rlctAtOn_product_blocks`: the `product_min_rlct_of_ne` (#57) discharge (`block_ne_ae`).
 
 NO blow-up, NO transport-properness (product-MIN is a Tonelli split, dodges the R1 chart-cover gap).
 -/
@@ -78,18 +80,78 @@ theorem dlnLoss_case212 (A : Params (![2, 1, 2] : Fin 3 → ℕ)) :
   rw [Finset.sum_mul_sum]
   congr 1; ext i; congr 1; ext j; ring
 
+/-! ## The coordinate split (the `a`-block × `b`-block flatten)
+
+`Params (2,1,2) = (Fin 2→Fin 1→ℝ) × (Fin 1→Fin 2→ℝ)` (two layers, `2×1` and `1×2`). A FRESH explicit
+measure-preserving equiv `eME212` flattens it to `(Fin 2→ℝ) × (Fin 2→ℝ)` — the `a`-block
+`aᵢ = A 0 i ⟨0,·⟩` to the first factor, the `b`-block `bⱼ = A 1 ⟨0,·⟩ j` to the second — built from
+three generic coordinate-reindex equivs (never computing `paramsEquivFlat`'s opaque `equivFin`
+order): `piFinTwo` (split the two layers), `arrowCongr'·funUnique` (collapse the `2×1` layer's inner
+`Fin 1`), `funUnique` (collapse the `1×2` layer's outer `Fin 1`). Each is measure-preserving by the
+matching Mathlib volume-preserving lemma, so `eME212` is too. -/
+
+/-- The coordinate-split measurable equiv `Params (2,1,2) ≃ᵐ (Fin 2→ℝ) × (Fin 2→ℝ)`: the `2×1`
+`a`-block to the first factor (`(eME212 A).1 i = A 0 i ⟨0,·⟩`), the `1×2` `b`-block to the second
+(`(eME212 A).2 j = A 1 ⟨0,·⟩ j`). Both forward components are definitional (`rfl`). -/
+noncomputable def eME212 : Params (![2, 1, 2] : Fin 3 → ℕ) ≃ᵐ (Fin 2 → ℝ) × (Fin 2 → ℝ) :=
+  (MeasurableEquiv.piFinTwo (fun s : Fin 2 =>
+      (Fin ((![2, 1, 2] : Fin 3 → ℕ) s.castSucc)) →
+        (Fin ((![2, 1, 2] : Fin 3 → ℕ) s.succ)) → ℝ)).trans
+    (MeasurableEquiv.prodCongr
+      (MeasurableEquiv.arrowCongr' (Equiv.refl (Fin 2)) (MeasurableEquiv.funUnique (Fin 1) ℝ))
+      (MeasurableEquiv.funUnique (Fin 1) (Fin 2 → ℝ)))
+
+/-- `eME212` is measure-preserving: a `trans` of `piFinTwo` (volume-preserving) and the `prod` of
+the two per-layer collapses (`arrowCongr'·funUnique` and `funUnique`, each volume-preserving). -/
+theorem measurePreserving_eME212 : MeasurePreserving eME212 volume volume := by
+  unfold eME212
+  refine (volume_preserving_piFinTwo _).trans ?_
+  exact MeasurePreserving.prod
+    (volume_preserving_arrowCongr' (Equiv.refl (Fin 2)) (MeasurableEquiv.funUnique (Fin 1) ℝ)
+      (measurePreserving_funUnique volume (Fin 1)))
+    (measurePreserving_funUnique volume (Fin 1))
+
+/-- `eME212` is continuous: its forward map is `A ↦ (fun i ↦ A 0 i default, fun j ↦ A 1 default j)`,
+each output coordinate an evaluation of `A`. -/
+theorem continuous_eME212 : Continuous eME212 := by
+  have h : (⇑eME212) = (fun A : Params (![2, 1, 2] : Fin 3 → ℕ) =>
+      ((fun i => A 0 i (default : Fin 1)), (fun j => A 1 (default : Fin 1) j))) := rfl
+  rw [h]; fun_prop
+
+/-- `eME212.symm` is continuous: rebuilding the two layer matrices, each entry a projection of `p`
+(`p.1 i` on layer `0`, `p.2 j` on layer `1`). -/
+theorem continuous_eME212_symm : Continuous eME212.symm := by
+  apply continuous_pi; intro s
+  apply continuous_pi; intro i
+  apply continuous_pi; intro j
+  fin_cases s
+  · exact (continuous_apply i).comp continuous_fst
+  · exact (continuous_apply j).comp continuous_snd
+
+/-- `eME212` as a homeomorphism (the measurable equiv + both continuities), for transporting
+`rlctAtOn` via `rlctAtOn_comp_homeomorph`. -/
+noncomputable def eHom212 : Params (![2, 1, 2] : Fin 3 → ℕ) ≃ₜ (Fin 2 → ℝ) × (Fin 2 → ℝ) :=
+  { eME212.toEquiv with
+    continuous_toFun := continuous_eME212, continuous_invFun := continuous_eME212_symm }
+
 /-- **The coordinate split.** `Params (2,1,2)` is measure-preservingly `(Fin 2→ℝ)×(Fin 2→ℝ)` (the
-`a`-block × the `b`-block), under which `dlnLoss (2,1,2) 0` transports to `blockG p.1 · blockH p.2`.
-SOUND-CLOSE technique (per task #66, the (2,2,2) seam analog; do NOT compute `equivFin`): define a
-FRESH explicit `e : Params (2,1,2) ≃ᵐ (Fin 2→ℝ)×(Fin 2→ℝ)` (the `a₁,a₂ ↦ p.1`, `b₁,b₂ ↦ p.2` slot
-flatten); the loss-match `dlnLoss ∘ e.symm = (blockG·blockH)` is by CONSTRUCTION + `dlnLoss_case212`
-(entry-product form); prove `e` measure-preserving via a GENERIC coordinate-reindex lemma
-(`piCongrLeft`/`sumPiEquivProdPi` is m.p. for any reindex, never computing the order); transport
-`rlctAtOn` via `rlctAtOn_comp_homeomorph` (`S1Fubini`), `deepest212 ↦ (0,0)`. -/
+`a`-block × the `b`-block, via `eHom212`), under which `dlnLoss (2,1,2) 0` transports to
+`blockG p.1 · blockH p.2`. The loss-match `dlnLoss = (blockG·blockH) ∘ eHom212` is `dlnLoss_case212`
+(entry-product form) + the definitional forward components; `eHom212` is measure-preserving
+(`measurePreserving_eME212`); transport via `rlctAtOn_comp_homeomorph` (`S1Fubini`), with
+`eHom212 deepest212 = (0,0)`. -/
 theorem rlctAtOn_case212_eq_product :
     rlctAtOn (dlnLoss (![2, 1, 2] : Fin 3 → ℕ) 0) deepest212
       = rlctAtOn (fun p : (Fin 2 → ℝ) × (Fin 2 → ℝ) => blockG p.1 * blockH p.2) (0, 0) := by
-  sorry
+  have hmp : MeasurePreserving eHom212 volume volume := measurePreserving_eME212
+  have hemb : MeasurableEmbedding eHom212 := eME212.measurableEmbedding
+  have key := rlctAtOn_comp_homeomorph eHom212 hmp hemb
+    (fun p : (Fin 2 → ℝ) × (Fin 2 → ℝ) => blockG p.1 * blockH p.2) deepest212
+  have he0 : eHom212 deepest212 = (0, 0) := by apply Prod.ext <;> · funext k; rfl
+  have hloss : dlnLoss (![2, 1, 2] : Fin 3 → ℕ) 0
+      = (fun A => (fun p : (Fin 2 → ℝ) × (Fin 2 → ℝ) => blockG p.1 * blockH p.2) (eHom212 A)) := by
+    funext A; rw [dlnLoss_case212 A]; simp only [blockG, blockH]; rfl
+  rw [hloss, key, he0]
 
 /-- **Each block has RLCT 1.** `rlctAtOn blockG 0 = 1` (and likewise `blockH`): `blockG = Σᵢ aᵢ²` on
 `Fin 2 → ℝ`, which is `smoothBlockND_rlct 1` (`m = 1`, `n = m+1 = 2`, value `(m+1)/2 = 1`) bridged
@@ -135,10 +197,10 @@ theorem rlctAtOn_product_blocks :
   have hHm : Measurable blockH := by unfold blockH; fun_prop
   exact product_min_rlct_of_ne blockG blockH hGm hHm block_ne_ae block_ne_ae
 
-/-- **The `(2,1,2)` headline** (target: axiom-clean modulo the named sorries above). The local RLCT
-of the deep-linear `(2,1,2)` loss at the deepest point of the `B = 0` fibre equals Aoyagi's closed
-form `aoyagiLambda (2,1,2) 0 = 1`. Assembled: loss = `G·H` (`rlctAtOn_case212_eq_product`) ⟹ `min`
-(`rlctAtOn_product_blocks`) of the two block RLCTs (`= 1` each) `= min(1,1) = 1 = aoyagiLambda`. -/
+/-- **The `(2,1,2)` headline** (axiom-clean: `[propext, Classical.choice, Quot.sound]`). The local
+RLCT of the deep-linear `(2,1,2)` loss at the deepest point of the `B = 0` fibre equals Aoyagi's
+closed form `aoyagiLambda (2,1,2) 0 = 1`. Assembled: loss = `G·H` (`rlctAtOn_case212_eq_product`) ⟹
+`min` (`rlctAtOn_product_blocks`) of the block RLCTs (`= 1` each), `min(1,1) = 1 = aoyagiLambda`. -/
 theorem case212_rlct :
     rlctAtOn (dlnLoss (![2, 1, 2] : Fin 3 → ℕ) 0) deepest212
       = ENNReal.ofReal (aoyagiLambda (![2, 1, 2] : Fin 3 → ℕ) 0) := by
