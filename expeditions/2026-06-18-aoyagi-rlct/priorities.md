@@ -815,6 +815,10 @@ on the session's original cwd.
    useful for recurrence-domain bookkeeping, but it still supplies no
    terminal exponent or least-value fields; do not promote it to a
    `LabelExponentCertificate` adapter.
+   The matching one-step introduced-domain cardinality wrapper is now proved.
+   It is a useful local count increment for later order-count scaffolding, but
+   it is not itself the Lemma 5 order count and still carries no terminal
+   exponent or least-value fields.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

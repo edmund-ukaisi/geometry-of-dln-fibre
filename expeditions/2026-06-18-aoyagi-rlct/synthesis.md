@@ -2493,6 +2493,20 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-domain-insert-a5.md`.
 
+Eq5 now also has the corresponding one-step finite-domain cardinality wrapper.
+The generic theorem `introducedLabelFinset_card_succ_eq_succ` in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` combines the one-step insert
+equality with `not_mem_introducedLabelFinset_case2_new_before`; the Eq5 theorem
+`aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_card_succ_eq_succ_of_lastPoint_widthBound`
+specializes it to a supplied Eq5 branch label `J+1 = Htilde'_p+1-alpha`.
+This is finite-domain cardinality bookkeeping only and does not provide
+terminal exponent, least-value, displayed-vector construction data, or the
+Lemma 5 order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-domain-card-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-domain-card.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-domain-card-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

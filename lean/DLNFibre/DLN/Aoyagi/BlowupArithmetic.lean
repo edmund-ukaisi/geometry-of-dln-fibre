@@ -622,6 +622,17 @@ theorem not_mem_introducedLabelFinset_case2_new_before
   rw [mem_introducedLabelFinset]
   exact not_introducedLabel_case2_new_before L n S J
 
+/-- A one-step current-layer advance increases the finite introduced-label
+domain cardinality by exactly one. -/
+theorem introducedLabelFinset_card_succ_eq_succ
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (hnew : actualWidthLabel L n S (J + 1)) :
+    (introducedLabelFinset L n S (J + 1)).card =
+      (introducedLabelFinset L n S J).card + 1 := by
+  rw [introducedLabelFinset_succ_eq_insert hnew]
+  exact Finset.card_insert_of_notMem
+    (not_mem_introducedLabelFinset_case2_new_before L n S J)
+
 /-- If the actual next width is exhausted at `J+1`, then old `(S,J+1)`
 introduced labels are exactly the labels at `(S+1,0)`.
 

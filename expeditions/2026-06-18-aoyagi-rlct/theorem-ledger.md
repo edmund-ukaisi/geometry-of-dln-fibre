@@ -3105,6 +3105,24 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-domain-insert-a5.md`.
 
+Latest A5 update: Eq5 now has the corresponding one-step finite-domain
+cardinality wrapper.  The generic theorem
+`introducedLabelFinset_card_succ_eq_succ` in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean` proves that a one-step
+current-layer advance increases `introducedLabelFinset` cardinality by one
+when the new current-layer label is actual.  The source-facing Eq5 theorem
+`aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_card_succ_eq_succ_of_lastPoint_widthBound`
+uses the existing Eq5 actual-label wrapper to apply this generic theorem to
+one supplied branch label `J+1 = Htilde'_p+1-alpha`.  This is finite-domain
+cardinality bookkeeping only; no terminal exponent, least-value,
+displayed-vector construction, admissibility, order count, normal-crossing, or
+RLCT data is proved.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-domain-card-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-domain-card.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-domain-card-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

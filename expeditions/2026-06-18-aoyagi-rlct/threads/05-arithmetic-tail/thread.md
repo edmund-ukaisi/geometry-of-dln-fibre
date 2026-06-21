@@ -2024,3 +2024,30 @@ wrapper and the generic `introducedLabelFinset_succ_eq_insert` theorem.  It
 does not construct Eq5 vectors, quantify over all `alpha`, provide
 terminal-exponent or least-value data, prove terminality, chart sequence,
 Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 one-step introduced domain cardinality
+
+Reproduction:
+`reproduction-lemma5-eq5-domain-card-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-domain-card.md`.
+Review artifact:
+`review-lemma5-eq5-domain-card-a5.md`.
+
+Lean now proves:
+
+```text
+introducedLabelFinset_card_succ_eq_succ
+aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_card_succ_eq_succ_of_lastPoint_widthBound
+```
+
+For one supplied Eq5 own-block branch whose label is `J+1`, advancing the
+introduced-label finite domain from `(S,J)` to `(S,J+1)` increases the finite
+domain cardinality by exactly one.
+
+This is the cardinality form of the preceding insert wrapper.  It uses the
+generic insert equality, the generic proof that `(S,J+1)` was not previously
+introduced at stage `J`, and the existing Eq5 actual-label wrapper.  It does
+not construct Eq5 vectors, quantify over all `alpha`, provide
+terminal-exponent or least-value data, prove terminality, chart sequence,
+Lemma 5 order count, normal crossings, or RLCT extraction.

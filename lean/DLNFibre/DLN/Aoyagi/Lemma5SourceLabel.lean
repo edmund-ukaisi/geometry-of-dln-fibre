@@ -891,6 +891,35 @@ theorem aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_succ_eq_insert_of_lastPoi
       hwidth_le hJ
   exact introducedLabelFinset_succ_eq_insert hlabel.2
 
+/-- A supplied Eq5 own-block branch increases the introduced-label finite-domain
+cardinality by one when advancing through its current-layer label.
+
+This is the cardinality form of
+`aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_succ_eq_insert_of_lastPoint_widthBound`.
+It remains finite-domain bookkeeping, not a displayed-vector construction,
+order count, or exponent certificate. -/
+theorem aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_card_succ_eq_succ_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S J : ℕ} (hS : C.block p S) (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hJ : ((J + 1 : ℕ) : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ)) :
+    (introducedLabelFinset L n S (J + 1)).card =
+      (introducedLabelFinset L n S J).card + 1 := by
+  have hlabel :=
+    aoyagiLemma5Eq5_piecewise_ownBlock_actualWidthLabel_of_lastPoint_widthBound
+      L ell a p alpha n M m C layerWidth T hell hselected hsource hT hS hlast
+      hwidth_le hJ
+  exact introducedLabelFinset_card_succ_eq_succ hlabel.2
+
 /-- Source-shaped arbitrary-own-block equation `(5)` label legality from a
 block-local actual-width lower-bound hypothesis.
 

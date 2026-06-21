@@ -2343,6 +2343,9 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq3_piecewise_ownCoordinate_intervalValue_mem_introducedLabelFinset_of_lastPoint`.
   Also proved the Eq5 one-step introduced-domain insert wrapper
   `aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_succ_eq_insert_of_lastPoint_widthBound`.
+  Also proved the generic one-step introduced-domain cardinality theorem
+  `introducedLabelFinset_card_succ_eq_succ` and its Eq5 source-facing wrapper
+  `aoyagiLemma5Eq5_ownBlock_introducedLabelFinset_card_succ_eq_succ_of_lastPoint_widthBound`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
