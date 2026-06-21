@@ -128,7 +128,7 @@ whenever `c' > t`, then no `c' > t` is admissible on any open `Ω ∋ 0` (each `
 contradicting the hypothesis), so `rlctAtOn F 0 ≤ t`. This is the abstract packaging of the crux —
 the consumer (`Case222Cover`) supplies `hdiv` from the cover + the per-leaf ε-independent monomial
 divergence (`monomialIntegrand_lintegral_box_eq_top`). -/
-theorem rlctAtOn_le_of_box_diverges {N : ℕ} (F : (Fin N → ℝ) → ℝ) (hFm : Measurable F) (t : ℝ≥0∞)
+theorem rlctAtOn_le_of_box_diverges {N : ℕ} (F : (Fin N → ℝ) → ℝ) (t : ℝ≥0∞)
     (hdiv : ∀ c' : NNReal, t < (c' : ℝ≥0∞) → ∀ ε > 0,
       ∫⁻ x in cubeBox N ε, ENNReal.ofReal (|F x| ^ (-(c' : ℝ))) = ⊤) :
     rlctAtOn F (0 : Fin N → ℝ) ≤ t := by
