@@ -399,10 +399,21 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   ≥ (step_rlct_ge: integrability split + sSup-lower-bound, ENNReal split idiom, admissible_downset); ≤
   (step_rlct_le: the cusp — step_lintegral_top contrapositive + core_adm_of_joint_adm open-witness wrapper via the
   {H≤R²}∪{H>R²} split; NO continuity needed for measurable H, the resolved subtlety). Measure-route B (1-D
-  interval vol, no addHaar/EuclideanSpace bridge — lighter; cusp proven ONCE + reused per induction). REMAINING =
-  ITERATION (bookkeeping): rlctAtOn-transport-under-measure-preserving-homeo lemma (~40-60) + Fin-peeling
-  induction → `rlctAtOn(Σxᵢ²+G²)=n/2+rlctAtOn(G²)` = the Skeleton `rlct_additive_smooth_block`. fm-2 building it;
-  then report final sig → fm restate+wire (one pass) → controller aggregator-wire + green-gate → rv-2 audit.
+  interval vol, no addHaar/EuclideanSpace bridge — lighter; cusp proven ONCE + reused per induction). **~95% DONE
+  @2e8f3c0** — ALL iteration infra proven (finPeel + chartN measure-preserving [dependent-Fin snag closed via
+  Fin.cons/Continuous.finCons], rlctAtOn_comp_homeomorph, step_rlct, Σ-peel; ~22 thms axiom-clean). REMAINING =
+  the induction chaining ONLY (rlct_additive_smooth_block_aux, induction on n; pure assembly, no new math) → the
+  Skeleton `rlct_additive_smooth_block`. Then fm wires `exact` → controller aggregator-wire + green-gate → rv-2.
+- **R1 DIFFICULTY MAP (pp general-atlas design + honest correction):** **R1.3 = LIGHT** — codim is a ℕ COUNT
+  identity (∑ residual block sizes = Mval), NOT the determinantal-codim theorem; **Mathlib v4.29 gap GONE**
+  (decorrelated-Codex + verified). **R1.1 = MEDIUM** (pivot recursion on L; base L=1 = smooth block via
+  smoothBlockND_rlct, step = explicit-poly blow-up + recurse). **R1.6 (general cover) = THE MOUNTAIN** — the
+  headline EQUALITY needs the LOWER bound (rlct ≥ ½min Mval), which needs the COVER complete (no missed worse
+  divisor; codim-shortcut FALSE per x^{2k}/(x²+y²)², D1 doesn't give per-point LB) ⟹ critical-path, no shortcut.
+  pp HONESTLY corrected its own "R1 medium" drift → R1.6 is where the difficulty concentrates; general-M may be a
+  GENUINE WALL. Climb plan: validate-small ladder ((1,1,1) no cover → (2,1,2) 4-chart → (2,2,2) 24-chart →
+  general-M); assess general-M honestly; if genuine wall → ROADMAP (validated cases + scoped general, headline =
+  "proven for validated cases + general machinery, general cover roadmapped"). TARGET = general; honest partial = fallback.
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
