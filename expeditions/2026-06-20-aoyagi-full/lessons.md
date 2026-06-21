@@ -312,3 +312,25 @@ hypothesis and asserted equivalence; the decorrelated controller check (construc
 caught that it was unsound. This is the "heed the decorrelated flag — build the witness before dismissing"
 discipline applied to a HYPOTHESIS proposal, not just a claim: a hypothesis is a claim too (it claims "this
 suffices / is necessary"), and gets the same witness-or-it-isn't-true treatment.
+
+## 2026-06-21 — an ORPHANED rung can harbor a false statement; the validate-small case must EXERCISE the feature (14th finding)
+
+Designing R1.1, pp found `resolution_charts` was both (a) ORPHANED — `product_reduction` (the rung that needs the
+resolution) never calls it, so nothing forced its statement to be right — and (b) FALSE for r>0: it stated the
+full-loss RLCT = ⨅ monomialThreshold (a MIN), but the full-loss RLCT at the deepest point = n/2 + ½·min Mval (a
+SUM — the regular n/2 directions ADD to the RLCT via the Fubini shift, they are NOT a min-direction). Two
+compounding lessons:
+1. **An orphaned rung (consumed by nothing) is unchecked by construction** — the build is green and no downstream
+   proof forces it to be true, so a false statement hides indefinitely. Grep every rung for its CONSUMERS; a rung
+   the headline never reaches is either dead or a landmine. (Here it would have been catastrophic: R1, the
+   mountain, was about to be built proving a statement the headline doesn't use — proven-but-unplugged.)
+2. **The validate-small case must EXERCISE the feature under test.** The (1,1,1) end-to-end gate passed because it
+   has r=0 ⟹ n=0 ⟹ the regular block is EMPTY ⟹ the SUM degenerates to the MIN, so the min-vs-sum error is
+   invisible there. A degenerate small case gives false confidence. Pick the smallest case where the feature is
+   NON-degenerate (here, r>0 / n>0, e.g. (2,1,2)) — or know explicitly which features your small case does NOT
+   exercise.
+3. **Structural corollary (reusable architecture):** the regular (smooth-quadratic) directions ADD to the RLCT
+   (the Fubini shift theorem: rlctAt(Σx²+core) = n/2 + rlctAt(core)); they never participate in the min-over-charts.
+   So any "RLCT = ⨅ over charts" statement must be about the CORE (singular part) alone; the regular n/2 lives in a
+   separate additive step. Keep resolution (min over charts) and the regular block (additive Fubini) in separate
+   rungs — conflating them produces a min=sum type error.
