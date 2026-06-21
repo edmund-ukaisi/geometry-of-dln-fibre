@@ -2562,6 +2562,16 @@ No such claim is formalisation-ready until both fields are filled.
   These require the explicit hypothesis
   `T(C.point ell-1)=fullH x (Fin.last ell)` before using branch terminal
   chain-zero to fill the terminal Eq5 singleton.
+  Also proved the counted-datum classifier-boundary slice:
+  `aoyagiLemma5CountDatumSet_mem_of_terminalH_binaryIncrementPrefixDelta`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumClassifier`,
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumClassifier`.
+  The first theorem proves one nonbase `mapsTo` datum from terminal binary
+  chain hypotheses and a non-base-value condition.  The second and third
+  package a supplied injective classifier from terminal-minimum labels into
+  the counted datum set and derive the upper bound.  They do not construct the
+  classifier or prove branch-label exactness.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

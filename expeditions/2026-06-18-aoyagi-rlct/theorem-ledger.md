@@ -3985,6 +3985,33 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-eq5-gap-a5.md`.
 
+Latest A5 counted-datum classifier-boundary update:
+`Lemma5SuppliedFamily.lean` now has
+`aoyagiLemma5CountDatumSet_mem_of_terminalH_binaryIncrementPrefixDelta`.  For
+one interior coordinate, terminal binary prefix-delta chain data puts the
+chain value in the same-coordinate interval, and a non-base-value hypothesis
+puts the corresponding `some (j,H_j)` datum in the counted datum set.  This is
+only a one-branch `mapsTo` theorem.
+`Lemma5TerminalBridge.lean` now has
+`AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumClassifier`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumClassifier`.
+These package a supplied injective classifier from `terminalMinimumLabels` into
+the counted datum set and derive the upper cardinality bound.  They do not
+construct the classifier, prove branch-label exactness, prove source-label
+legality, prove injection/back-to-label coverage from Aoyagi's printed
+paragraph, or prove pole order/RLCT data.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`
+and
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-a5.md`.
+Statement cards:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-binary-counted-datum-maps-to.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-counted-datum-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-classifier-boundary-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

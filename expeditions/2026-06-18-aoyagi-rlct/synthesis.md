@@ -3339,6 +3339,32 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-source-bridge-a5.md`.
 
+The next classifier-boundary slice has now landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean` and
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  The single-branch
+maps-to theorem
+`aoyagiLemma5CountDatumSet_mem_of_terminalH_binaryIncrementPrefixDelta` turns
+terminal binary prefix-delta chain data at an interior coordinate into a
+nonbase counted datum, assuming the value is not the supplied base value.  The
+terminal-minimum wrapper
+`AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumClassifier`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumClassifier`
+separate the source-facing upper classifier from branch-label exactness: a
+supplied injective classifier from `terminalMinimumLabels` into the counted
+datum set gives the upper count.  These results still do not construct the
+classifier from Aoyagi's equations, prove source-label legality, prove
+injection/back-to-label coverage from the source, identify terminal labels with
+branch labels, count pole order, prove normal crossings, or extract RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-binary-counted-datum-maps-to.md`,
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-a5.md`,
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-counted-datum-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-classifier-boundary-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

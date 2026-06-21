@@ -174,6 +174,39 @@ def terminalMinimumLabels {β : Type*} [DecidableEq β]
       terminalExponent L (widthZ width) (t label.1 label.2) =
         aoyagiLemma5MinNumerator n a
 
+/-- A supplied counted-datum classifier for the finite terminal-minimum labels.
+
+This is the source-facing upper-bound boundary separated from branch-label
+exactness: it classifies terminal minimum labels into the counted interval
+codomain, but does not say that they are supplied branch labels. -/
+abbrev TerminalMinimumCountDatumClassifier {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) : Type :=
+  AoyagiLemma5CountDatumClassifier (Σ _ : ℕ, ℕ)
+    (n + 1) a M m C.family.baseValue C.terminalMinimumLabels
+
+/-- A supplied counted-datum classifier gives the terminal-minimum upper
+count.
+
+This is an upper-bound wrapper only.  The classifier, source-to-counted-datum
+map, and injectivity are supplied data; branch-label exactness is not used. -/
+theorem terminalMinimumLabels_card_le_of_countDatumClassifier {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (classifier : C.TerminalMinimumCountDatumClassifier) :
+    C.terminalMinimumLabels.card ≤ a * (n + 1 - a) + 1 := by
+  exact AoyagiLemma5CountDatumClassifier.candidates_card_le
+    (n + 1) a M m C.family.baseValue C.terminalMinimumLabels classifier
+    (Nat.succ_pos n) ha C.family.baseValue_mem
+
 /-- The supplied terminal-candidate branch set has Aoyagi's Lemma 5 supplied
 finite count. -/
 theorem fullBranches_card {β : Type*} [DecidableEq β]

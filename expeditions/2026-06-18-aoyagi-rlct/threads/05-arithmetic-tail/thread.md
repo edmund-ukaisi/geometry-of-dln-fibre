@@ -3491,3 +3491,58 @@ This does not construct the source-realisation equality, a terminal/base
 source branch, source-label legality, terminal-label exactness, classifier
 coverage, injection, back-to-label coverage, pole order, normal crossings, or
 RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal binary counted-datum maps-to
+
+Reproduction:
+`reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-binary-counted-datum-maps-to.md`.
+Review artifact:
+`review-lemma5-classifier-boundary-a5.md`.
+
+Lean now proves the one-branch counted-datum codomain membership theorem:
+
+```text
+aoyagiLemma5CountDatumSet_mem_of_terminalH_binaryIncrementPrefixDelta
+```
+
+For an interior coordinate `j`, a chain `H` with `H_0=m_0`,
+`H_ell=0`, selected-width sum, and binary prefix deltas has
+`H_j` in the same-coordinate Htilde interval.  If additionally
+`H_j != baseValue j`, Lean packages
+`some (j,H_j)` as a member of the counted datum set.  This is the `mapsTo`
+half for one nonbase branch value only.  It does not construct source
+branches, prove coordinate-wise coverage, prove classifier injectivity, or
+give a back-to-label map.
+
+## 2026-06-21 Lean Lemma 5 terminal-minimum counted-datum classifier
+
+Reproduction:
+`reproduction-lemma5-terminal-minimum-counted-datum-classifier-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-minimum-counted-datum-classifier.md`.
+Review artifact:
+`review-lemma5-classifier-boundary-a5.md`.
+
+Lean now separates the source-facing upper-bound classifier from branch-label
+exactness:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumCountDatumClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_countDatumClassifier
+```
+
+The classifier is supplied data from `terminalMinimumLabels` into
+`aoyagiLemma5CountDatumSet (n+1) a M m C.family.baseValue`.  If such an
+injective classifier is supplied, the existing counted-datum codomain count
+gives
+
+```text
+C.terminalMinimumLabels.card <= a * (n + 1 - a) + 1.
+```
+
+This is only an upper-bound wrapper.  It does not prove the classifier from
+Aoyagi's PDF, does not identify `terminalMinimumLabels` with `branchLabelImage`,
+and does not prove source-label legality, injection, back-to-label coverage,
+pole order, normal crossings, or RLCT extraction.

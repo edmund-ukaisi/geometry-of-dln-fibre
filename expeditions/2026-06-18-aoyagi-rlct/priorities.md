@@ -21,14 +21,16 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Current A5 state includes the terminal source-realisation bridge slice: a
-supplied full-family branch fills the terminal Eq5 singleton only under an
-explicit source-coordinate equality
-`T(C.point ell-1)=fullH x (Fin.last ell)`.  The meaningful source frontier is
-still the upper-bound/no-extra side of Aoyagi Lemma 5, not another lower-bound
-printed equation pass.  The renewed source probe confirms that PDF p. 26's
-interval count plus the Case 1(2) sentence that `J` increases by one does not
-by itself prove a classifier, injection, or back-to-label map.
+Current A5 state includes the terminal source-realisation bridge slice and a
+new counted-datum classifier-boundary slice.  A supplied full-family branch
+fills the terminal Eq5 singleton only under an explicit source-coordinate
+equality `T(C.point ell-1)=fullH x (Fin.last ell)`.  Terminal binary chain data
+now gives a single nonbase counted datum under an explicit non-base-value
+hypothesis, and a supplied counted-datum classifier on `terminalMinimumLabels`
+gives the upper count.  The meaningful source frontier is still the
+upper-bound/no-extra side of Aoyagi Lemma 5: the renewed source probe confirms
+that PDF p. 26's interval count plus the Case 1(2) sentence that `J` increases
+by one does not by itself prove a classifier, injection, or back-to-label map.
 
 Recorded audit:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-source-audit-a5.md`.
@@ -76,6 +78,10 @@ Current Eq4 local lower-endpoint slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-local-lower-endpoint-a5.md`.
 Current terminal source-realisation bridge slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-bridge-a5.md`.
+Current terminal binary counted-datum maps-to slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`.
+Current terminal-minimum counted-datum classifier slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-a5.md`.
 
 Immediate order:
 

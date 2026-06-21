@@ -206,6 +206,43 @@ theorem candidates_card_le {α : Type*} [DecidableEq α]
 
 end AoyagiLemma5CountDatumClassifier
 
+/-- Terminal binary prefix-delta chain data give one nonbase counted datum.
+
+This is only the `mapsTo` part for a single branch value.  It assumes the
+interior coordinate, terminal chain endpoint, binary prefix deltas, and
+non-base-value condition; it does not prove source branch coverage,
+nonduplication, or a back-to-label map. -/
+theorem aoyagiLemma5CountDatumSet_mem_of_terminalH_binaryIncrementPrefixDelta
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) {j : ℕ}
+    (hj : j ∈ Finset.Icc 1 (ell - 1))
+    (ha : a ≤ ell)
+    (hH0 : H 0 = m 0)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ r : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H r = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H r = 1)
+    (hne_base :
+      H (aoyagiLemma5InteriorCoord ell j hj) ≠ baseValue j) :
+    some (Sigma.mk j (H (aoyagiLemma5InteriorCoord ell j hj))) ∈
+      aoyagiLemma5CountDatumSet ell a M m baseValue := by
+  rw [some_mem_aoyagiLemma5CountDatumSet_iff]
+  constructor
+  · exact hj
+  · rw [Finset.mem_erase]
+    constructor
+    · exact hne_base
+    · have hj_lt : j < ell + 1 := by
+        have hj_le : j ≤ ell - 1 := (Finset.mem_Icc.mp hj).2
+        omega
+      have hmem :=
+        aoyagiHtilde_interval_mem_of_terminalH_binaryIncrementPrefixDelta
+          ell a M m H ha hH0 hHlast hselected hbin
+          (aoyagiLemma5InteriorCoord ell j hj)
+      simpa [aoyagiHtildeIntervalValueSetNat,
+        aoyagiLemma5InteriorCoord, hj_lt] using hmem
+
 /-- Filtering out elements with value `y` maps to erasing `y` from the image.
 
 This is finite-set bookkeeping for turning full coordinate-value coverage into
