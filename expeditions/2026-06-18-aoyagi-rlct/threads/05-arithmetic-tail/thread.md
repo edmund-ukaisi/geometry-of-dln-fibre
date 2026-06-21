@@ -3974,3 +3974,38 @@ not construct Eq5 vectors, prove the lower guard from source hypotheses,
 prove source-label legality, cutoff coverage, terminal `tilde t=0`,
 classifier/injection/back-to-label coverage, Lemma 5 order count, pole order,
 normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 early and tail interval guards
+
+Reproduction:
+`reproduction-lemma5-eq5-early-tail-interval-guards-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-early-tail-interval-guards.md`.
+Review artifact:
+`review-lemma5-eq5-early-tail-interval-guards-a5.md`.
+
+Lean now proves the exact same-coordinate interval guards for the remaining
+Eq5 branch clauses:
+
+```text
+aoyagiLemma5Eq5_preAlpha_mem_intervalValueSetNat_iff_index_le_intervalExcess
+aoyagiLemma5Eq5_alphaToP_mem_intervalValueSetNat_iff_predAlpha_le_intervalExcess
+aoyagiLemma5Eq5_tail_mem_intervalValueSetNat
+```
+
+The `preAlpha` branch uses offset `b`; the `alphaToP` branch uses offset
+`alpha-1`; the `tail` branch is automatically the lower endpoint.  Lean also
+names early-branch guard predicates and proves that strict Eq5 alpha-domain
+membership supplies them:
+
+```text
+aoyagiLemma5Eq5PreAlphaLowerGuard_of_alphaDomain
+aoyagiLemma5Eq5AlphaToPLowerGuard_of_alphaDomain
+```
+
+This does not repair the post-`p` branch: the post-`p` lower guard remains the
+separate condition from the exact-guard slice, and the existing counterexample
+shows it is not implied by strict alpha-domain membership plus post-`p` range.
+No Eq5 vector construction, source-label legality, terminal `tilde t=0`,
+chart coverage, Lemma 5 order count, pole order, normal crossings, or RLCT
+extraction follows.

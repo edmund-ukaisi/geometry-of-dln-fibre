@@ -3732,6 +3732,29 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-postp-lower-exact-guard-a5.md`.
 
+The Eq5 early/tail interval-guard slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean names:
+`aoyagiLemma5Eq5PreAlphaLowerGuard`,
+`aoyagiLemma5Eq5AlphaToPLowerGuard`,
+`aoyagiLemma5Eq5_preAlpha_mem_intervalValueSetNat_iff_index_le_intervalExcess`,
+`aoyagiLemma5Eq5_alphaToP_mem_intervalValueSetNat_iff_predAlpha_le_intervalExcess`,
+`aoyagiLemma5Eq5_preAlpha_mem_intervalValueSetNat_of_preAlphaLowerGuard`,
+`aoyagiLemma5Eq5_alphaToP_mem_intervalValueSetNat_of_alphaToPLowerGuard`,
+`aoyagiLemma5Eq5_tail_mem_intervalValueSetNat`,
+`aoyagiLemma5Eq5PreAlphaLowerGuard_of_alphaDomain`, and
+`aoyagiLemma5Eq5AlphaToPLowerGuard_of_alphaDomain`.  This proves exact local
+Htilde interval guards for the `preAlpha` and `alphaToP` branches and
+automatic lower-endpoint membership for the `tail` branch.  Strict alpha-domain
+membership supplies the early-branch guards, but not the post-`p` guard.  This
+is not Eq5 construction, source-label legality, selected-span exactness,
+order count, pole order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-early-tail-interval-guards-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-early-tail-interval-guards.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-early-tail-interval-guards-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in
