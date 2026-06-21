@@ -1517,4 +1517,28 @@ private theorem smallestK_le_subset (n k : ℕ) (hk : k ≤ n) (q : Fin n → �
   refine mono_prefix_le_subset (q ∘ Tuple.sort q) (Tuple.monotone_sort q) k hk A' ?_
   rw [hA', Finset.card_image_of_injective _ (Tuple.sort q).symm.injective, hA]
 
+/-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
+`∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
+is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
+
+**Remaining gate (the from-scratch Karamata lower bound).** Reusable engines banked above (green,
+axiom-clean): `sq_sum_le_of_sorted_prefix` (sorted-prefix domination ⟹ `∑Y² ≤ ∑q²`, the convexity
+LB via `karamata_sq`); `smallestK_le_subset` (`k`-smallest sum `≤` any `k`-subset sum);
+`mono_prefix_le_subset`; `sum_le_sum_of_compl_ge`. With `a = M` sorted ascending, `Sₙ = a₀+⋯+aₙ`,
+achiever `c`, target `Y = balancedSplit(S_c, c) ∷ (a_{c+1}…a_L)`, the verified reduction (Python,
+0-fail L≤4): `4·cleanCore c (sortedSmallest M c) = ∑Y² − ∑M²` (CERTAIN, via `balancedSplit_sq_int`
++ `cleanCore_perm`), so `lambdaCore M = ¼(∑Y² − ∑M²)`. The LB then needs
+`∀ T ∈ Adm M, ∀ k, smallestK k (edgeQ M T) ≤ smallestK k Y`, fed to `sq_sum_le_of_sorted_prefix`
++ `edge_identity`. That domination splits by regime at the witness `m = (if k ≤ c then c else k)`:
+- `k > c`: `smallestK k Y = S_k`, and `smallestK k edgeQ ≤ S_k` (`k`-smallest `≤` first `k`
+  positions; their sum `≤ S_k` by the QFeasible corridor `prefix_k ≤ S_k`).
+- `k ≤ c`: `smallestK k Y = smallestK k (balancedSplit S_c c)`, and `smallestK k edgeQ ≤` it via
+  `smallestK_le_subset` (subset = first `c` positions) + corridor (`prefix_c ≤ S_c`) + **Step B**
+  (`balancedSplit P m` maximises every `k`-smallest among `m` nonneg ints of sum `≤ P` — the one
+  remaining novel sub-lemma; the avg bound `m·smallestK ≤ k·∑` undershoots, balanced is needed
+  exactly). UPPER bound: explicit achiever `T*∈Adm M` with `Mval M T* = ½(∑Y²−∑M²)`. -/
+theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
+    ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
+  sorry
+
 end DLNFibre.DLN.RLCT
