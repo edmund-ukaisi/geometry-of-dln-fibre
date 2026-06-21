@@ -3009,6 +3009,22 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-a5.md`.
 
+The interval-membership arithmetic now has a prefix-delta landing point.
+`aoyagiHtildeChainBounds_of_incrementPrefix_bounds` proves that supplied
+bounds
+`min(a,j-(ell-a)) <= D_j <= min(j,a)` on
+`D_j=P_j-H_j-j*(M-1)` imply `Htilde <= H <= Htilde'`.
+`aoyagiHtilde_interval_mem_of_incrementPrefix_bounds` then gives membership
+in the same-coordinate interval value set under `a<=ell`.  This does not prove
+those prefix-delta bounds from binary increments; it only isolates the
+algebraic translation needed by the future source-classifier work.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-prefix-delta-chain-bounds-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-prefix-delta-chain-bounds.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-prefix-delta-chain-bounds-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

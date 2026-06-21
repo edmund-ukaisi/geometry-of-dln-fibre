@@ -3661,6 +3661,21 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-a5.md`.
 
+Latest A5 prefix-delta-chain-bound update: `HtildeChainArithmetic.lean` now
+proves the algebraic translation from supplied prefix-delta bounds to displayed
+chain bounds.  Names:
+`aoyagiHtildeChainBounds_of_incrementPrefix_bounds` and
+`aoyagiHtilde_interval_mem_of_incrementPrefix_bounds`.  These prove that
+`min(a,j-(ell-a)) <= D_j <= min(j,a)` implies `Htilde <= H <= Htilde'`, and
+then interval membership under `a<=ell`.  They do not prove the prefix-delta
+bounds from binary increments or source vectors.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-prefix-delta-chain-bounds-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-prefix-delta-chain-bounds.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-prefix-delta-chain-bounds-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

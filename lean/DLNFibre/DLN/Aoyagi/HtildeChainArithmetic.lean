@@ -1497,6 +1497,55 @@ def aoyagiLemma4IncrementPrefixDelta (ell : ℕ) (M : ℤ)
   aoyagiLemma4IncrementPrefix ell M m H j.succ -
     aoyagiLemma4IncrementPrefix ell M m H j.castSucc
 
+/-- Supplied prefix-delta bounds imply the displayed same-coordinate
+`Htilde` chain bounds.
+
+This is only the algebraic translation from bounds on
+`aoyagiLemma4IncrementPrefix` to bounds on the chain `H`.  It does not prove
+the prefix-delta bounds from source vectors or binary increments. -/
+theorem aoyagiHtildeChainBounds_of_incrementPrefix_bounds
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (hupper :
+      ∀ j : Fin (ell + 1),
+        (aoyagiHtildeUpperHighCount ell a j.val : ℤ) ≤
+          aoyagiLemma4IncrementPrefix ell M m H j)
+    (hlower :
+      ∀ j : Fin (ell + 1),
+        aoyagiLemma4IncrementPrefix ell M m H j ≤
+          (aoyagiHtildeLowerHighCount a j.val : ℤ)) :
+    aoyagiHtildeLowerChain ell a M m ≤ H ∧
+      H ≤ aoyagiHtildeUpperChain ell a M m := by
+  constructor
+  · intro j
+    have h := hlower j
+    dsimp [aoyagiLemma4IncrementPrefix, aoyagiHtildeLowerChain,
+      aoyagiHtildeLowerNat, aoyagiHtildeLowerIncrementPrefix] at h ⊢
+    omega
+  · intro j
+    have h := hupper j
+    dsimp [aoyagiLemma4IncrementPrefix, aoyagiHtildeUpperChain,
+      aoyagiHtildeUpperNat, aoyagiHtildeUpperIncrementPrefix] at h ⊢
+    omega
+
+/-- Supplied prefix-delta bounds imply membership in every displayed
+same-coordinate interval value set. -/
+theorem aoyagiHtilde_interval_mem_of_incrementPrefix_bounds
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hupper :
+      ∀ j : Fin (ell + 1),
+        (aoyagiHtildeUpperHighCount ell a j.val : ℤ) ≤
+          aoyagiLemma4IncrementPrefix ell M m H j)
+    (hlower :
+      ∀ j : Fin (ell + 1),
+        aoyagiLemma4IncrementPrefix ell M m H j ≤
+          (aoyagiHtildeLowerHighCount a j.val : ℤ)) :
+    ∀ j, H j ∈ aoyagiHtildeIntervalValueSet ell a M m j := by
+  rcases aoyagiHtildeChainBounds_of_incrementPrefix_bounds
+    ell a M m H hupper hlower with ⟨hlower_chain, hupper_chain⟩
+  exact aoyagiHtildeChainBounds_mem_intervalValueSet
+    ell a M m H ha hlower_chain hupper_chain
+
 /-- The increment `F_j` is `M-1` plus the successive prefix-delta change. -/
 theorem aoyagiLemma4F_eq_pred_add_incrementPrefixDelta
     (ell : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ) (j : Fin ell) :

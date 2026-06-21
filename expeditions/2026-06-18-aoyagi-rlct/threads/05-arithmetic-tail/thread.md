@@ -2961,3 +2961,30 @@ This is the honest source frontier for Aoyagi's Lemma 5 upper-bound paragraph.
 It does not construct the candidate set, classify source vectors, prove the
 Case 1(2) nonduplication sentence, prove back-to-label coverage, or connect to
 terminal labels, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 prefix-delta chain bounds
+
+Reproduction:
+`reproduction-lemma5-prefix-delta-chain-bounds-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-prefix-delta-chain-bounds.md`.
+Review artifact:
+`review-lemma5-prefix-delta-chain-bounds-a5.md`.
+
+Lean now proves the algebraic bridge from supplied prefix-delta bounds to
+displayed `Htilde` chain bounds:
+
+```text
+aoyagiHtildeChainBounds_of_incrementPrefix_bounds
+aoyagiHtilde_interval_mem_of_incrementPrefix_bounds
+```
+
+The first theorem says that if the prefix delta
+`D_j = P_j - H_j - j*(M-1)` lies between the upper-chain high count
+`min(a, j-(ell-a))` and the lower-chain high count `min(j,a)`, then
+`Htilde <= H <= Htilde'`.  The second theorem adds `a<=ell` and converts those
+chain bounds to membership in the same-coordinate interval value set.
+
+This does not prove the prefix-delta bounds from binary increments or source
+vectors.  It is only the algebraic landing point for the next binary-prefix
+count step.
