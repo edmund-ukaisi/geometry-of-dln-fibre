@@ -2221,6 +2221,14 @@ No such claim is formalisation-ready until both fields are filled.
   rewrite `T(C.point p-1)=k-1`.  This still does not construct the displayed
   vector, prove arbitrary-point label legality across the whole block, prove
   terminal `tilde t=0`, build the chart sequence, or prove Lemma 5.
+  Also proved `aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility` and
+  `aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block`, which
+  remove the left-endpoint restriction: for arbitrary `S`, explicit source
+  range and actual-width compatibility `n(S+1)=W_p` give
+  `actualWidthLabel L n S k`; with `C.block p S` and a supplied Eq5 piecewise
+  certificate, Lean also proves `T(S)=k-1`.  This still does not prove the
+  actual-width compatibility itself, construct the displayed vector, prove
+  terminal `tilde t=0`, build the chart sequence, or prove Lemma 5.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

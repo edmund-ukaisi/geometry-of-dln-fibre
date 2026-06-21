@@ -1513,3 +1513,42 @@ equation `(5)` displayed vector, prove arbitrary-point label legality across
 the whole selected block, prove terminal `tilde t=0`, vector admissibility,
 the Case 1(2) chart sequence, Lemma 5 order count, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` block source label
+
+Reproduction:
+`reproduction-lemma5-eq5-block-source-label-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-block-source-label.md`.
+Review artifact:
+`review-lemma5-eq5-block-source-label-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility
+aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block
+```
+
+The previous source-label bridge was stated at the block's left endpoint
+`C.point p-1`.  This refinement handles an arbitrary source index `S`.  The
+theorem keeps the required actual-width bridge explicit:
+
+```text
+n(S+1)=W_p.
+```
+
+With `1<=S<=L`, the existing label bounds give
+`actualWidthLabel L n S k`.  If a supplied Eq5 piecewise certificate and
+`C.block p S` are also given, Lean proves
+
+```text
+T(S)=k-1
+```
+
+and the same actual-label conclusion.
+
+This still does not prove actual-width compatibility for arbitrary block
+points, construct the displayed vector, prove terminal `tilde t=0`, vector
+admissibility, the chart sequence, Lemma 5 order count, normal crossings, or
+RLCT extraction.

@@ -2799,6 +2799,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-source-label-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(5)` source-label bridge now has an
+arbitrary-own-block wrapper in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The proved Lean names are
+`aoyagiLemma5Eq5_actualWidthLabel_at_of_widthCompatibility` and
+`aoyagiLemma5Eq5_piecewise_ownCoordinate_actualWidthLabel_of_block`.  The
+theorem takes arbitrary `S`, explicit range `1<=S<=L`, and actual-width
+compatibility `n(S+1)=W_p`; with a supplied Eq5 piecewise certificate and
+`C.block p S`, it proves `T(S)=k-1` and `actualWidthLabel L n S k`.  This does
+not prove the width compatibility itself, construct equation `(5)`'s displayed
+vector, terminal `tilde t=0`, vector admissibility, chart sequence, Lemma 5
+order count, normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-block-source-label-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-block-source-label.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-block-source-label-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

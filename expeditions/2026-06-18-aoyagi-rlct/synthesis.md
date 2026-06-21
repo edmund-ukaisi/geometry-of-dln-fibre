@@ -2242,6 +2242,15 @@ This removes the narrow own-coordinate label-legality blocker, but still does
 not construct the displayed vector, prove arbitrary-point block label
 legality, terminal `tilde t=0`, chart sequence, or Lemma 5 order count.
 
+The Eq5 source-label bridge now also has an arbitrary-own-block wrapper.
+Instead of fixing `S=C.point p-1`, the theorem takes a source index `S`, range
+data `1<=S<=L`, and explicit width compatibility `n(S+1)=W_p`.  With
+`C.block p S` and a supplied Eq5 piecewise certificate, Lean proves both
+`T(S)=k-1` and `actualWidthLabel L n S k`.  This is the source-faithful
+arbitrary-`s` form of the same conditional bridge; it still does not prove the
+width compatibility, construct the displayed vector, prove terminality, or
+count Lemma 5 families.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

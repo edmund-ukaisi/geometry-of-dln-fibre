@@ -726,6 +726,11 @@ on the session's original cwd.
    This is still not a construction of the displayed vector, arbitrary-block
    label legality, terminal `tilde t=0`, chart sequence, or Lemma 5 order
    count.
+   A follow-up arbitrary-own-block wrapper is now Lean-proved: for any `S` in
+   the own block, explicit width compatibility `n(S+1)=W_p` gives
+   `actualWidthLabel L n S k`, and the supplied Eq5 piecewise certificate
+   gives `T(S)=k-1`.  This removes the left-endpoint restriction but does not
+   prove the width compatibility itself.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or
