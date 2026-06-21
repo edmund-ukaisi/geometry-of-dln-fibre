@@ -411,9 +411,23 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   headline EQUALITY needs the LOWER bound (rlct ≥ ½min Mval), which needs the COVER complete (no missed worse
   divisor; codim-shortcut FALSE per x^{2k}/(x²+y²)², D1 doesn't give per-point LB) ⟹ critical-path, no shortcut.
   pp HONESTLY corrected its own "R1 medium" drift → R1.6 is where the difficulty concentrates; general-M may be a
-  GENUINE WALL. Climb plan: validate-small ladder ((1,1,1) no cover → (2,1,2) 4-chart → (2,2,2) 24-chart →
-  general-M); assess general-M honestly; if genuine wall → ROADMAP (validated cases + scoped general, headline =
-  "proven for validated cases + general machinery, general cover roadmapped"). TARGET = general; honest partial = fallback.
+  GENUINE WALL.
+  - **R1.6 SHARP BOUNDARY + HEADLINE-REACH DECISION (pp detailed cover design + decorrelated Codex; controller
+    adjudicated):** FIXED-M = INTRICATE-STANDARD, **provable now** (resolution = finite tree depth ≤L−1, unrolled
+    to a finite explicit leaf-chart list; cover = finite sum, ONE Mathlib single-c-o-v per leaf; (2,2,2)=24 charts;
+    NO recursion infra). GENERAL-M = **RESEARCH-WALL** (decorrelated-identical pp+Codex): n/tree/φ_i depend on M ⟹
+    needs the recursion-as-a-theorem = the two missing-infra obligations **G3 (strict-transform tracking over
+    arbitrary rank vectors) + G5 (gluing iterated c-o-v into ONE global integral identity; Mathlib has SINGLE
+    c-o-v only)**. The cover is UNAVOIDABLE for the lower bound (Codex Q3 FACT; codim-shortcut false).
+    **DECISION: (1) fixed-M LADDER near-term + (2) general infra (G3+G5) ROADMAPPED; (3) axiomatize-cover RULED OUT**
+    (breaks one-citation / awkward-middle). LADDER (each a complete axiom-clean-mod-S2 headline instance +
+    validates a machinery piece): (1,1,1) monomial [no cover] → (2,1,2) **Fubini-PRODUCT** [disjoint vars separate,
+    NO blow-up — pp refinement] → (2,2,2) first TRUE cover [24 charts] → up the M-ladder. **DELIVERABLE FRAMING:**
+    the full machinery (S1·Fubini·R1-fixed-M·A1·assembly) + the headline PROVEN for ladder cases; the FULLY-GENERAL
+    headline = those + the named G3+G5 research obstruction (honest partial, NOT a false general claim). Assessing
+    whether **G5 (abstract c-o-v-tree-gluing) is separable + buildable now** as a down-payment on the general lift.
+    **OPERATOR SCOPE FLAG:** the general-M headline is gated on the G3+G5 research-infra lift — surfaced for the
+    operator's steer (attempt the lift vs deliver ladder+roadmap); proceeding with the ladder meanwhile (no stop).
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
