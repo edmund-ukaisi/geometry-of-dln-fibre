@@ -256,3 +256,22 @@ later dedicated tide) and PIVOT the formaliser to the critical path — do NOT k
 off an off-path keystone while the headline path has open rungs. The bedrock "Just Do It if within reach, else
 roadmap it" applies at the THREAD-budget granularity: "within reach" means a bounded thread, not an unbounded
 sequence of them.
+
+## 2026-06-21 — when a sub-fact turns out heavy AND it's the cited axiom's domain, RELOCATE it via an abstract hypothesis (Fubini shift)
+
+The S1.5 Fubini lemma needed the core's divergence-above-threshold for its ≤ direction. First plan: prove the
+monomial divergence `∫_box ∏|y_j|^{a_j} = ⊤` standalone (~30 LoC, "elementary"). Building it, fm-2 found it is
+NOT elementary — Mathlib's pi-product factorization (`integral_fintype_prod_volume_eq_prod`) covers only the
+FINITE/integrable case, not a lintegral=⊤ divergence; the divergent case needs a custom pi-Tonelli (heavy). The
+two obvious exits were both bad: build it (heavy, and it re-proves what S2 already gives) or import S2 into the
+otherwise-axiom-clean analytic module (pollutes the axiom audit). THE FIX: state the lemma ABSTRACTLY as the
+general shift theorem `rlctAt(Σxᵢ² + core) = n/2 + rlctAt(core)`, taking the core's threshold/divergence as
+EXPLICIT hypotheses, and DISCHARGE those at the use-site (R1) where the core is a resolved monomial and its RLCT
+is exactly S2's domain. This (a) keeps the analytic module axiom-clean + monomial-machinery-free, (b) lands the
+one cited axiom (S2) precisely where it belongs, (c) yields a MORE GENERAL, reusable theorem. LESSON: when a
+required sub-fact is both heavier than expected AND squarely inside the one thing you're allowed to cite, don't
+re-prove it and don't import the axiom into the clean module — abstract the general statement, take the sub-fact
+as a hypothesis, and discharge it at the use-site from the citation. The hygiene must stay EXPLICIT (hypotheses,
+not implicit assumptions) to avoid the measurability/non-triviality levers — but explicit hyps discharged
+downstream are honest, not hand-waving. (Symmetry check: the ≥ direction already took core-integrability as a
+hypothesis, so the abstract ≤ form is the dual — a sign the abstraction is the natural one.)

@@ -182,16 +182,28 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   [measure_ball/addHaar_ball — NOT a parametric radial integral, dodges the gap]; monomial divergence finish).
   **≥ DIRECTION DONE (fm-2, S1Fubini.lean, 110 LoC, axiom-clean, module-green 2676):** `cmpF` (split engine
   `(s+t)^{-(a+b)}≤s^{-a}t^{-b}`) + `joint_integrableOn_weighted` (a.e. cmpF comparison + Integrable.mul_prod +
-  volume_eq_prod). Off-Skeleton, committing to trunk; controller wires into the aggregator. **≤ ROUTING DECIDED
-  (i) STANDALONE divergence, NOT S2-reuse (correction to the earlier card):** the monomial-divergence fact
-  (`∫∏|y_j|^{a_j} over a box = ∞ iff some a_j ≤ −1`) is proven AXIOM-FREE standalone (~30 LoC, 1-D Ioo rpow
-  divergence + Fubini) — STRICTLY LIGHTER than S2's RLCT threshold, keeps S1Fubini axiom-clean, and nibbles
-  toward thread-10's "S2 itself eliminable." cuspVol shave prototyped clean (closedBall + addHaar_closedBall
-  scaling, √s^n = s^{n/2}). The <= IS NEEDED (R1 UPPER = binding-chart divergence = Fubini <=; S2 does
-  NOT cover it — binding chart is Sum-x^2 + monomial, a SUM, and +Sum-x^2 shrinks the integrand so divergence
-  is non-trivial). pp finding the lightest <= route. HYGIENE: explicit monomial core (abstract G>=0,!=0 FALSE
-  via germ-local =0, same as 12th); Jacobian in weightedThreshold. So R1 is heavier than first scoped (the
-  Fubini <= + multiplicity-control R1.2 + cover R1.6) but all designed + tractable.
+  volume_eq_prod). rv-2 PASS (#40, axiom-clean, right condition, hGne faithful). Off-Skeleton; controller wires
+  into the aggregator at the equality. **≤ DIRECTION fully de-risked** (every atom + Step A `[‖x‖²≤G](2G)^{-c}w ≤
+  |F|^{-c}w` handling BOTH G>0 antitone + G=0 hygiene-corner, cuspVol exact `vol{‖x‖²≤s}=ofReal(√s^n)·Vₙ`,
+  notIntegrable_rpow, joint_lintegral_top sig — all in scratch; remaining = mechanical Tonelli + factor +
+  hcore_top⟹⊤). **STATEMENT-SHAPE DECISION (load-bearing, supersedes the (i)-vs-(ii) routing Q AND the card §B
+  "explicit monomial core"): (A) ABSTRACT-CORE SHIFT THEOREM.** fm-2 found the standalone multivar monomial
+  divergence `∫_box ∏|y_j|^{a_j}=⊤` is NOT the ~30-LoC elementary fact first estimated — Mathlib has the pi-product
+  factorization only for the FINITE/integrable case, not a lintegral=⊤ divergence (custom pi-Tonelli = heavy).
+  So BOTH the standalone build (heavy) and S2-reuse (axiom-import) are dodged by stating S1Fubini ABSTRACTLY:
+  `rlctAt(Σxᵢ² + core) = n/2 + rlctAt(core)` — the pure "+Σx² shifts the RLCT by exactly n/2" shift theorem, with
+  the core's integrability (≥, hGne+hy) and divergence-at-shifted-exponent (≤, hcore_top) as EXPLICIT hypotheses
+  (symmetric, honest, dodge both 12th-finding levers by construction). The monomial+S2 obligation MOVES to R1's
+  per-chart use-site: R1 supplies rlctAt(core)=S2's ⨅axisRatio for its resolved monomial, and hcore_top follows
+  from that value by the sSup definition (NO hand-built multivar integral). Strictly cleaner — S1Fubini stays
+  axiom-clean + monomial-machinery-free, the shift is its sole content, and S2 lands exactly where it belongs
+  (the monomial RLCT). pp confirming the R1 use-site discharge (3 hyps + cover-composition) in parallel. **λ_core=0
+  EDGE (rv-2):** the c=a+b split (b>0) covers c<n/2+λ_core only for λ_core>0; the λ_core=0 regime routes through
+  `smoothBlockND_rlct` (=n/2) directly — fm-2 handles in the equality-lift (likely vacuous at the deepest point
+  where the core is genuinely singular, but kept general). The <= IS NEEDED (R1 UPPER = binding-chart divergence;
+  S2 alone doesn't cover the SUM Σx²+monomial — +Σx² shrinks the integrand so divergence is non-trivial). So R1
+  is heavier than first scoped (Fubini-per-chart + multiplicity-control R1.2 + cover R1.6) but all designed +
+  tractable, and the abstract shift makes the Fubini-per-chart step a clean plug-in.
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
