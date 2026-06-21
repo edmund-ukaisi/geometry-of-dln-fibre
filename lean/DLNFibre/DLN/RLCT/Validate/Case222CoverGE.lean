@@ -178,6 +178,39 @@ theorem p0_summand_le_cube (c' : NNReal) :
         p0_support_subset_cube x hmem.1 (p0integrand_support c' x hf))]
   · rw [Set.indicator_of_notMem hmem]; exact zero_le _
 
+/-- The flat-subset chart domain `chartDomOn active p` is measurable (an intersection over the active
+non-pivot axes of `{|x j| ≤ 1}`). The `V` input to the step-1 change-of-variables. -/
+theorem chartDomOn_measurableSet {N : ℕ} (active : Finset (Fin N)) (p : Fin N) :
+    MeasurableSet (chartDomOn active p) := by
+  unfold chartDomOn
+  rw [Set.setOf_forall]
+  refine MeasurableSet.iInter (fun j => ?_)
+  by_cases hj : j ∈ active
+  · simp only [hj, true_implies]
+    by_cases hjp : j = p
+    · simp [hjp]
+    · simp only [hjp, ne_eq, not_false_eq_true, true_implies]
+      exact measurableSet_le (by fun_prop) measurable_const
+  · simp [hj]
+
+/-- **`p = 0` summand as a step-1 image integral.** The `p = 0` step-1 chart-domain summand equals the
+integral of the `openBox.indicator`-cut threshold integrand over the step-1 blow-up image
+`step1A '' (chartDomOn Aact 0 \ {x₀ = 0})` — the gated step-1 change-of-variables
+(`step1A_lintegral_image`) read backwards (`pivotBlowupOn Aact 0 = step1A`). Sets up the Lemma-2 splice
++ step-2 recursion on the image (which sits in `openBox`, hence the resolved coordinates). -/
+theorem p0_summand_eq_image (c' : NNReal) :
+    ∫⁻ x in chartDomOn Aact 0 \ pivotZeroOn 0, p0integrand c' x
+      = ∫⁻ x in step1A '' (chartDomOn Aact 0 \ {x | x 0 = 0}),
+          openBox.indicator (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c' : ℝ)))) x := by
+  unfold p0integrand
+  rw [show (Aact : Finset (Fin 8)) = ({0, 1, 2, 3} : Finset (Fin 8)) from rfl,
+      show pivotZeroOn 0 = {x : Fin 8 → ℝ | x 0 = 0} from rfl]
+  rw [step1A_lintegral_image (chartDomOn ({0, 1, 2, 3} : Finset (Fin 8)) 0)
+    (chartDomOn_measurableSet _ _)
+    (openBox.indicator (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c' : ℝ)))))]
+  simp_rw [show ∀ x, pivotBlowupOn ({0, 1, 2, 3} : Finset (Fin 8)) 0 x = step1A x from
+    fun x => (step1A_eq_pivotBlowupOn x).symm]
+
 /-- **A step-1 A-pivot leaf-summand is finite (below `3/2`).** For each A-pivot `p ∈ {0,1,2,3}` and
 `c' < 3/2`, the `p`-cell of the step-1 `g5_pivotNode` split — the chart-domain integral of
 `|det φ₁ₚ| · (openBox.indicator |myF222|^{−c'}) ∘ φ₁ₚ` — is finite. This is the per-A-pivot recursion
