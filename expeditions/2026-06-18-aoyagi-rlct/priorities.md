@@ -870,6 +870,9 @@ on the session's original cwd.
    The strict Eq5 offset set also has the rising-region cardinality
    specialization `card=p-1`.  This is a useful count-side API for later
    supplied aggregate scaffolds, but not an all-coordinate order count.
+   The supplied Eq4 lower endpoint now has the matching one-coordinate
+   `card=offsetCard+1` wrapper with Eq5 strict offsets.  This is finite count
+   bookkeeping only, not source-label legality or upper endpoint realisation.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

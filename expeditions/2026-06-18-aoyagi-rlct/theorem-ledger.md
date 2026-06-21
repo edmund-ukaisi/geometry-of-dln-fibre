@@ -3324,6 +3324,21 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-strict-offset-rising-count-a5.md`.
 
+Latest A5 update: Eq4 lower plus Eq5 strict offsets now has a source-facing
+cardinality wrapper in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.
+The theorem
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_le_min`
+proves that a supplied Eq4 lower own-coordinate value adds one value to the
+strict Eq5 offset set in the rising region.  It is a one-coordinate finite
+count theorem only; it does not prove source-label legality, displayed-vector
+construction, upper endpoint realisation, all-coordinate/all-branch coverage,
+or Lemma 5 order count.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-lower-plus-eq5-offset-count.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

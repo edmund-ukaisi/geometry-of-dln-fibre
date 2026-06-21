@@ -2098,6 +2098,38 @@ theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_o
   exact aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
     ell a p M m hT.a_le_ell hp_pos hp_a hp_c
 
+/-- A supplied equation `(4)` lower endpoint adds one value to the strict Eq5
+offset set in the rising region.
+
+This is the cardinality form of the Eq4 lower-endpoint wrapper.  It is still
+finite count bookkeeping only; it does not construct displayed vectors or
+prove source-label legality. -/
+theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) :
+    (insert (T (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m)).card =
+      (aoyagiLemma5Eq5OffsetValueSet ell a p M m).card + 1 := by
+  have hown :=
+    aoyagiLemma5Eq4_piecewise_ownCoordinate_of_sourceSelectedInequality
+      ell a p M m C layerWidth T hell hp_pos hp_c hselected hsource hT
+  rw [hown.2.1]
+  rw [aoyagiLemma5Eq5_insert_lowerEndpoint_offsetValueSet_card_of_le_min
+    ell a p M m hT.a_le_ell hp_pos hp_a hp_c]
+  rw [aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min
+    ell a p M m hT.a_le_ell hp_pos hp_a hp_c]
+  have hexcess :
+      aoyagiLemma5IntervalExcess ell a p = p :=
+    aoyagiLemma5IntervalExcess_eq_self_of_le_min
+      ell a p hT.a_le_ell hp_a hp_c
+  rw [hexcess]
+  omega
+
 /-- At the first interval, a separately supplied Eq3-shaped upper endpoint and
 supplied equation `(4)` lower endpoint fill the two endpoints
 missing from the strict Eq5 offset set.

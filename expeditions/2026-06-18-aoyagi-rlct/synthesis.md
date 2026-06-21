@@ -2693,6 +2693,19 @@ order-count boundary.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-strict-offset-rising-count-a5.md`.
 
+Eq4 now has the matching lower-plus-Eq5 offset count wrapper.  The theorem
+`aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_le_min`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` proves that a
+supplied Eq4 lower own-coordinate value increases the strict Eq5 offset-set
+cardinality by one in the rising region.  It is still a one-coordinate finite
+count theorem: no source-label legality, displayed-vector construction, upper
+endpoint realisation, all-coordinate/all-branch coverage, Lemma 5 order count,
+normal crossings, or RLCT extraction.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-lower-plus-eq5-offset-count.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

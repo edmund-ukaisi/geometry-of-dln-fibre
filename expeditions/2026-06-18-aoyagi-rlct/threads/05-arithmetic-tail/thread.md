@@ -2349,3 +2349,28 @@ This is one-coordinate finite count bookkeeping only.  It does not construct
 Eq5 displayed vectors, prove source-label legality, realise endpoints, sum
 over all coordinates, package all branches, prove Lemma 5 order count, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq4 lower plus Eq5 offset count
+
+Reproduction:
+`reproduction-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-lower-plus-eq5-offset-count.md`.
+Review artifact:
+`review-lemma5-eq4-lower-plus-eq5-offset-count-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_le_min
+```
+
+In the rising region, a supplied Eq4 lower own-coordinate value adds one value
+to the strict Eq5 offset-value set.  The proof rewrites the supplied Eq4 value
+to the abstract lower endpoint, uses the existing lower-plus-offset
+cardinality theorem, and compares with the strict Eq5 rising count.
+
+This is one-coordinate finite count bookkeeping only.  It does not prove
+source-label legality, construct Eq4 or Eq5 displayed vectors, realise the
+upper endpoint, aggregate over all coordinates, package all branches, prove
+Lemma 5 order count, normal crossings, or RLCT extraction.

@@ -2397,6 +2397,8 @@ No such claim is formalisation-ready until both fields are filled.
   Also proved the Eq5 strict-offset rising count
   `aoyagiLemma5Eq5OffsetValueSet_card_eq_pred_of_le_min`, a one-coordinate
   finite count specialization of the existing offset-cardinality theorem.
+  Also proved the Eq4 lower plus Eq5 offset count wrapper
+  `aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_card_eq_offsetCard_add_one_of_le_min`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
