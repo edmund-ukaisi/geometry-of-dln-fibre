@@ -1036,6 +1036,64 @@ private theorem balancedSplit_sq (P ℓ : ℕ) (hℓ : 0 < ℓ) :
   · apply Finset.sum_congr rfl
     intro i _; unfold balancedSplit; split <;> push_cast <;> ring
 
+/-- The balanced-split sum of squares as a closed integer expression `ℓ·b² + a·(2b+1)` with
+`b = P/ℓ`, `a = P%ℓ`. (ℤ companion of `balancedSplit_sq`, used by `balancedSplit_min`.) -/
+private theorem balancedSplit_sq_int (P ℓ : ℕ) (hℓ : 0 < ℓ) :
+    (∑ i : Fin ℓ, ((balancedSplit P ℓ i : ℕ) : ℤ) ^ 2)
+      = (ℓ : ℤ) * ((P / ℓ : ℕ) : ℤ) ^ 2
+        + ((P % ℓ : ℕ) : ℤ) * (2 * ((P / ℓ : ℕ) : ℤ) + 1) := by
+  have hmod : P % ℓ ≤ ℓ := le_of_lt (Nat.mod_lt _ hℓ)
+  have hcard : (Finset.univ.filter (fun i : Fin ℓ => (i : ℕ) < P % ℓ)).card = P % ℓ := by
+    have := @Fin.card_filter_val_lt ℓ (P % ℓ); rw [this]; omega
+  rw [show (∑ i : Fin ℓ, ((balancedSplit P ℓ i : ℕ) : ℤ) ^ 2)
+        = ∑ i : Fin ℓ, (if (i : ℕ) < P % ℓ then ((P / ℓ + 1 : ℕ) : ℤ) ^ 2
+            else ((P / ℓ : ℕ) : ℤ) ^ 2) from ?_]
+  · rw [Finset.sum_ite]; simp only [Finset.sum_const, nsmul_eq_mul]; rw [hcard]
+    have hcompl : (Finset.univ.filter (fun i : Fin ℓ => ¬ (i : ℕ) < P % ℓ)).card = ℓ - P % ℓ := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card (s := (Finset.univ : Finset (Fin ℓ)))
+        (p := fun i : Fin ℓ => (i : ℕ) < P % ℓ)
+      simp only [Finset.card_univ, Fintype.card_fin] at this
+      rw [hcard] at this; omega
+    rw [hcompl]; push_cast [Nat.cast_sub hmod]; ring
+  · apply Finset.sum_congr rfl
+    intro i _; unfold balancedSplit; split <;> push_cast <;> ring
+
+/-- **A1 Step 1 (balanced-split minimises `Σq²`).** Among integer vectors `q : Fin ℓ → ℕ` of fixed
+sum `P`, the balanced ℓ-split minimises `∑ qᵢ²`. The proof is elementary: with `b = P/ℓ`, the
+deficit `∑qᵢ² − ∑balancedᵢ² = ∑(qᵢ−b)² − (P%ℓ)`, and `∑(qᵢ−b) = P%ℓ`, so the claim reduces to
+`∑(qᵢ−b)² ≥ ∑(qᵢ−b)` — true since `d² ≥ d` for every integer `d`. The lower-bound engine for A1. -/
+theorem balancedSplit_min (P ℓ : ℕ) (hℓ : 0 < ℓ) (q : Fin ℓ → ℕ) (hq : ∑ i, q i = P) :
+    (∑ i : Fin ℓ, ((balancedSplit P ℓ i : ℕ) : ℤ) ^ 2) ≤ ∑ i : Fin ℓ, ((q i : ℕ) : ℤ) ^ 2 := by
+  set b : ℤ := ((P / ℓ : ℕ) : ℤ) with hb
+  set a : ℤ := ((P % ℓ : ℕ) : ℤ) with ha
+  have hP : (P : ℤ) = (ℓ : ℤ) * b + a := by
+    rw [hb, ha]
+    have := Nat.div_add_mod P ℓ
+    omega
+  have hsumq : ∑ i : Fin ℓ, ((q i : ℕ) : ℤ) = (P : ℤ) := by
+    rw [← hq]; push_cast; ring
+  -- ∑ (q i - b) = a
+  have hsumd : ∑ i : Fin ℓ, (((q i : ℕ) : ℤ) - b) = a := by
+    rw [Finset.sum_sub_distrib, hsumq, hP]
+    simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
+  -- ∑ (q i - b)² ≥ ∑ (q i - b) = a  (since d² ≥ d for every integer d)
+  have hdsq : ∑ i : Fin ℓ, (((q i : ℕ) : ℤ) - b) ≤ ∑ i : Fin ℓ, (((q i : ℕ) : ℤ) - b) ^ 2 := by
+    apply Finset.sum_le_sum; intro i _; nlinarith [sq_nonneg (((q i : ℕ) : ℤ) - b - 1)]
+  -- expand ∑ (q i - b)² = ∑ q i² - 2 b P + ℓ b²
+  have hexpand : ∑ i : Fin ℓ, (((q i : ℕ) : ℤ) - b) ^ 2
+      = (∑ i : Fin ℓ, ((q i : ℕ) : ℤ) ^ 2) - 2 * b * (P : ℤ) + (ℓ : ℤ) * b ^ 2 := by
+    have : ∀ i : Fin ℓ, (((q i : ℕ) : ℤ) - b) ^ 2
+        = ((q i : ℕ) : ℤ) ^ 2 - 2 * b * ((q i : ℕ) : ℤ) + b ^ 2 := by intro i; ring
+    rw [Finset.sum_congr rfl (fun i _ => this i)]
+    rw [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, hsumq]
+    simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  rw [balancedSplit_sq_int P ℓ hℓ]
+  rw [hsumd] at hdsq
+  rw [hexpand] at hdsq
+  -- now a ≤ ∑q² - 2bP + ℓb²  ⟹  ℓb² + a(2b+1) ≤ ∑q²  (using P = ℓb + a)
+  rw [hP] at hdsq
+  nlinarith [hdsq]
+
 /-- Expanding `(∑ mₖ)²`: `(∑ mₖ)² = ∑ mₖ² + 2 ∑_{i<j} mᵢmⱼ` (the off-diagonal is symmetric). -/
 private theorem sum_sq_eq (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) :
     ((∑ k, (m k : ℚ))) ^ 2
