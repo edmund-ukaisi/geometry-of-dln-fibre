@@ -5,6 +5,7 @@ import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.LinearAlgebra.Determinant
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+import Mathlib.MeasureTheory.Measure.Prod
 
 /-!
 # `DLNFibre.DLN.RLCT.Foundations.S1G5Charts` — the pivot blow-up chart node (R1 measure-side)
@@ -243,5 +244,92 @@ theorem argmaxCell_aedisjoint (n : ℕ) (p q : Fin (n + 1)) (hpq : p ≠ q) :
     rintro y ⟨⟨_, hp⟩, ⟨_, hq⟩⟩
     exact le_antisymm (hq p) (hp q)
   exact measure_mono_null hov (absEq_null n p q hpq)
+
+/-! ## The spectator-product extension (each `(2,2,2)` node has SPECTATOR coordinates)
+
+A blow-up node acts on a sub-block (the pivot block) while the other coordinates are SPECTATORS
+(passed through, ranging over a bounded box `S`). The chart is `pivotBlowupAt ⊗ id` on the product
+`(Fin (n+1) → ℝ) × W`, with `Vᵢ = chartDom ×ˢ S`, `Zᵢ = pivotZero ×ˢ univ`. Cover and
+a.e.-disjointness reduce to the active-block argmax (the spectator factor is common): step-1 has the
+`B`-block as `W`, step-2 has `q,G,H` as `W`. -/
+
+/-- The product chart `pivotBlowupAt n p` on the active block, identity on the spectator `W`. -/
+noncomputable def pivotBlowupProd (n : ℕ) (p : Fin (n + 1)) {W : Type*}
+    (x : (Fin (n + 1) → ℝ) × W) : (Fin (n + 1) → ℝ) × W :=
+  (pivotBlowupAt n p x.1, x.2)
+
+/-- The product chart domain: the active max-region `chartDom` times the spectator box `S`. -/
+def chartDomProd (n : ℕ) (p : Fin (n + 1)) {W : Type*} (S : Set W) :
+    Set ((Fin (n + 1) → ℝ) × W) := (chartDom n p) ×ˢ S
+
+/-- The product exceptional locus: the active pivot-zero hyperplane (any spectator). -/
+def pivotZeroProd (n : ℕ) (p : Fin (n + 1)) {W : Type*} :
+    Set ((Fin (n + 1) → ℝ) × W) := (pivotZero n p) ×ˢ (Set.univ)
+
+/-- **(product image char).** `pivotBlowupProd '' (chartDomProd \ pivotZeroProd) = argmaxCell ×ˢ S`
+— the active blow-up image (`pivotBlowupAt_image`) times the spectator box. -/
+theorem pivotBlowupProd_image (n : ℕ) (p : Fin (n + 1)) {W : Type*} (S : Set W) :
+    (pivotBlowupProd n p) '' (chartDomProd n p S \ pivotZeroProd n p)
+      = (argmaxCell n p) ×ˢ S := by
+  have hdom : (chartDomProd n p S \ pivotZeroProd n p (W := W))
+      = (chartDom n p \ pivotZero n p) ×ˢ S := by
+    ext ⟨a, b⟩
+    simp only [chartDomProd, pivotZeroProd, Set.mem_diff, Set.mem_prod, Set.mem_univ, and_true]
+    tauto
+  rw [hdom, ← pivotBlowupAt_image n p]
+  ext ⟨y, w⟩
+  simp only [pivotBlowupProd, Set.mem_image, Set.mem_prod, Prod.mk.injEq, Prod.exists]
+  constructor
+  · rintro ⟨a, b, ⟨ha, hb⟩, rfl, rfl⟩
+    exact ⟨⟨a, ha, rfl⟩, hb⟩
+  · rintro ⟨⟨a, ha, rfl⟩, hw⟩
+    exact ⟨a, w, ⟨ha, hw⟩, rfl, rfl⟩
+
+/-- **(product cover).** The product cells cover the active-nonzero × spectator-box set exactly. -/
+theorem argmaxCellProd_cover (n : ℕ) {W : Type*} (S : Set W) :
+    {x : (Fin (n + 1) → ℝ) × W | x.1 ≠ 0 ∧ x.2 ∈ S}
+      = ⋃ p : Fin (n + 1), (argmaxCell n p) ×ˢ S := by
+  have hbase := argmaxCell_cover n
+  ext ⟨y, w⟩
+  simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_prod]
+  constructor
+  · rintro ⟨hy, hw⟩
+    have hmem : y ∈ ⋃ p, argmaxCell n p := by rw [← hbase]; exact hy
+    rw [Set.mem_iUnion] at hmem
+    obtain ⟨p, hp⟩ := hmem
+    exact ⟨p, hp, hw⟩
+  · rintro ⟨p, hp, hw⟩
+    refine ⟨?_, hw⟩
+    have hmem : y ∈ ⋃ p, argmaxCell n p := Set.mem_iUnion.2 ⟨p, hp⟩
+    rw [← hbase] at hmem
+    exact hmem
+
+/-- **(product disjoint).** Distinct product cells are a.e.-disjoint: the overlap is
+`(argmaxCell p ∩ argmaxCell q) ×ˢ S`, null because the active overlap is null
+(`argmaxCell_aedisjoint`) and `volume (null ×ˢ S) = 0 · volume S = 0`. -/
+theorem argmaxCellProd_aedisjoint {W : Type*} [MeasureSpace W] [SFinite (volume : Measure W)]
+    (n : ℕ) (p q : Fin (n + 1)) (hpq : p ≠ q) (S : Set W) :
+    AEDisjoint volume ((argmaxCell n p) ×ˢ S) ((argmaxCell n q) ×ˢ S) := by
+  have hnull := argmaxCell_aedisjoint n p q hpq
+  unfold AEDisjoint at hnull ⊢
+  rw [Set.prod_inter_prod, Set.inter_self, Measure.volume_eq_prod, Measure.prod_prod, hnull,
+    zero_mul]
+
+/-- **(cell measurability).** `argmaxCell p` is Borel: a finite intersection of measurable
+coordinate conditions (`y p ≠ 0` and each `|y j| ≤ |y p|`). Supports the `g5_step` `hmeas`
+(`NullMeasurableSet` of the chart image). -/
+theorem argmaxCell_measurableSet (n : ℕ) (p : Fin (n + 1)) :
+    MeasurableSet (argmaxCell n p) := by
+  have h1 : MeasurableSet {y : Fin (n + 1) → ℝ | y p ≠ 0} := by
+    have hpre : {y : Fin (n + 1) → ℝ | y p ≠ 0} = (fun y => y p) ⁻¹' {0}ᶜ := by
+      ext y; simp [Set.mem_preimage]
+    rw [hpre]; exact (measurable_pi_apply p) (measurableSet_singleton 0).compl
+  have h2 : MeasurableSet {y : Fin (n + 1) → ℝ | ∀ j, |y j| ≤ |y p|} := by
+    rw [Set.setOf_forall]
+    refine MeasurableSet.iInter (fun j => ?_)
+    have hj : Measurable (fun y : Fin (n + 1) → ℝ => |y j|) := by fun_prop
+    have hp : Measurable (fun y : Fin (n + 1) → ℝ => |y p|) := by fun_prop
+    exact measurableSet_le hj hp
+  exact h1.inter h2
 
 end DLNFibre.DLN.RLCT
