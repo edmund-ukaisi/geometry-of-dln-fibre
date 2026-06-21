@@ -17,7 +17,7 @@ Each thread's artefacts live under `threads/<NN>-<slug>/`.
 | 06 | theta-discharge | formaliser | closed | Brick2 Gabriel recovery LANDED; Brick1 reduced to cCodim·0 dim-monotonicity |
 | 07 | ccodim-zero-mono | formaliser | review-pending | cCodim e 0 ≤/< cCodim e' 0 (shortest-interval-split delta-sign) ⟹ θ=numTop unconditional |
 
-| 08 | ccodim-zero-strict | formaliser | in-progress | cCodim e 0 < cCodim e' 0 (all-vertex) via +1-step invariant ⟹ θ=numTop UNCONDITIONAL |
+| 08 | ccodim-zero-strict | formaliser | closed | cCodim e 0 < cCodim e' 0 (all-vertex) via +1-step invariant ⟹ θ=numTop UNCONDITIONAL |
 
 | 09 | DR-design | pen-and-paper | closed | Phase D/R design: loss+fibre, codim(fibre 0)=C, Cited RlctInterface, rlct=C/2; r=0 ~1 module |
 | 10 | DR-build | formaliser | closed | r=0 RLCT payoff: lossDLN + codim(fibre 0)=C + RlctInterface + rlct(K^DLN_0)=C/2 |

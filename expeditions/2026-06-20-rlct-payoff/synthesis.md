@@ -262,3 +262,20 @@ build carefully):
 - Reserve: a "corner-uncross" route (cleaner but needs a NEW move) — Route B preferred (reuses existing 4 moves).
 **Impact:** the θ-strict is no longer "hard-open / dedicated effort" — it's a sized, decorrelated ~50–70 LoC build.
 The push-θ option is now bounded + low-risk; discharging it ⟹ `θ = numTop` FULLY unconditional, expedition gap-free.
+
+## 2026-06-21 — ★★★ θ PROVED — EXPEDITION GAP-FREE ★★★ (thread 08, Route B held)
+`Core.CCodimZeroStrict.cCodim_zero_strict` LANDED (Route B, no fallback, no sorry; shortest-covering
+contradiction clean, Codex-converged; reviewer PASS 6/6) ⟹ `numTop_eq_ncard_topComponents` UNCONDITIONAL
+(no hMono/hMonoStrict; only `[Field][IsAlgClosed][CharZero]` + partition-nonempty). θ = #top-dim components,
+fully proved. Green (3678 jobs), 0-sorry, axiom-clean. Commits 9947d93/2258965.
+
+## EXPEDITION COMPLETE — full destination, GAP-FREE
+1. **Σ^r geometry** (zero-cited): `Σ̄^r = ⋃ Ō_m`; components = maximal Ō_m.
+2. **θ = #top-dim components** (zero-cited): `numTop_eq_ncard_topComponents` UNCONDITIONAL.
+3. **`rlct(K^DLN_B) = (C_r + r(d_0+d_N−r))/2` general r** (geometric C_r zero-cited; rlct value Cited Aoyagi,
+   bundle shift Cited Lemma 4.6 — both honest named interfaces, name=content, axiom-clean).
+The geometric/new content is ENTIRELY zero-cited; the only Cited pieces are the two established external
+theorems (Aoyagi rlct, Lemma 4.6 shift), each a visible carried interface. NO open hypotheses remain in the
+geometric content. Exposition: `expositions/rlct-payoff-overview.md` (draft).
+**CLOSE:** ready. Signal-and-wait for the operator-gated close PR `expedition/rlct-payoff → dev`. Stand seats
+down at close (incl. the orphaned thread-07/strict-cert peers, now idle).
