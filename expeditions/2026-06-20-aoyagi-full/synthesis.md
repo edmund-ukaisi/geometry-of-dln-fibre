@@ -496,6 +496,23 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
   same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
   literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
 
+## GENERAL-M TRACTABILITY VERDICT (pp + decorrelated Codex) — THE WALL IS G3 ALONE
+The definitive headline-reach picture. **A-vs-B (does the block-monomialization layer compound the wall?): NO.**
+Codex flagged residual entanglement as FACT; pp LOCATED WHERE IT LANDS — at the T1 unit-termini (harmless:
+monomial×unit either way), NOT the split-relevant T2 smooth-block termini (there the exceptional is pulled out
+front ⟹ disjoint ⟹ product-MIN split holds). So: A's block blow-up compounds ONLY G5 (more leaves), no new G3;
+B/hybrid (default B, cone-blowup only where entanglement occurs) is lighter for general M (reuses smoothBlockND +
+the (2,1,2) product-MIN). **VERDICT: fixed-M (2,2,2) keeps Option A (uniform, execution-ready); general-M uses
+B/hybrid; the block layer does NOT compound the wall.** CLIMB-OR-ROADMAP (assessed, not assumed): lower bound
+SETTLED · G5-abstract BUILDABLE (down-payment, task #52) · block layer non-compounding ⟹ **G3 (explicit
+flag-resolution / strict-transform for arbitrary M = quiver-determinantal geometry Mathlib lacks) is THE ONE
+genuine research-wall — ISOLATED + NAMED.** ⟹ CLIMB fixed-M ladder + BUILD G5-abstract; ROADMAP G3. **Honest
+general headline = ladder instances + G5-abstract + G3 (single named open obstruction)** — the best possible
+roadmap shape (one well-scoped wall, not diffuse difficulty). OPERATOR SCOPE FLAG sharpened: general-M gated on
+G3 ALONE. METHOD LESSON (pp, logged): when a decorrelated model flags a failure mode as FACT, the value is often
+"locate WHERE it lands," not "abandon" — an obstruction confined to where it doesn't matter is a refinement, not
+a refutation (dual of the Q4-trap: both = interrogate the SCOPE of the model's claim).
+
 ## D1 RE-SCOPED (fm proof-attempt-as-audit) — NOT a light standalone rung
 D1 `deepest_point_reduction` is blocked on TWO real deps: (1) the **RLCT-monotonicity lemma** `|G|≤|F| a.e. near
 w* ⇒ rlctAt G ≤ rlctAt F` — MISSING + measure-theoretic (the 0^neg a.e.-domination corner: |G|^{-c}≥|F|^{-c} a.e.
