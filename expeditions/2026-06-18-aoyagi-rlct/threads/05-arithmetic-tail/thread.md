@@ -4040,3 +4040,29 @@ not construct Eq5 source vectors, prove source-label legality, prove the
 post-`p` lower guard from source hypotheses, prove terminal `tilde t=0`, chart
 coverage, Lemma 5 order count, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 counted-datum back-to-label bijection
+
+Reproduction:
+`reproduction-lemma5-back-to-label-bijon-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-back-to-label-bijon.md`.
+Review artifact:
+`review-lemma5-back-to-label-bijon-a5.md`.
+
+Lean now exposes the supplied counted-datum back-to-label boundary as the
+standard finite bijection
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_countDatumBackToBranchLabel
+```
+
+The theorem assumes the counted-datum classifier, the back-to-label bridge,
+branch-label injectivity, `a<=n+1`, and the selected-width sum.  It composes
+the existing supplied exactness wrapper with the existing
+exactness-to-bijection theorem.
+
+This remains supplied finite API.  It does not construct Aoyagi's classifier,
+prove Case 1(2) nonduplication, construct the back-to-label map from equations
+`(3)`, `(4)`, and `(5)`, prove source-label legality, pole order, normal
+crossings, or RLCT extraction.

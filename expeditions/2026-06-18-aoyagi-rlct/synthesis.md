@@ -3755,6 +3755,21 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-early-tail-interval-guards-a5.md`.
 
+The counted-datum back-to-label boundary now has a direct bijection wrapper in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.  New Lean name:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_countDatumBackToBranchLabel`.
+From a supplied counted-datum classifier, supplied back-to-label bridge, and
+supplied branch-label injectivity, Lean derives
+`Set.BijOn C.branchLabel C.fullBranches C.terminalMinimumLabels`.  This is a
+finite API wrapper over supplied data, not source-backed construction of the
+classifier, back-to-label map, or injectivity.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-back-to-label-bijon-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-back-to-label-bijon.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-back-to-label-bijon-a5.md`.
+
 The Eq5 nonfirst block admissibility wrapper has landed in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean name:
 `aoyagiLemma5Eq5_nonfirstBlock_mem_intervalValueSetNat_of_alphaDomain_of_postPLowerGuard`.

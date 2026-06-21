@@ -774,6 +774,32 @@ theorem branchLabel_bijOn_terminalMinimumLabels_of_exactness {β : Type*}
     rcases Finset.mem_image.mp himage with ⟨x, hx, hxl⟩
     exact ⟨x, hx, hxl⟩
 
+/-- A supplied counted-datum back-to-label bridge and supplied branch-label
+injectivity give a bijection from supplied branches to terminal-minimum labels.
+
+This is finite supplied-data packaging; it does not construct the counted-datum
+classifier, the back-to-label bridge, branch-label injectivity, source labels,
+or Aoyagi's displayed chart family. -/
+theorem branchLabel_bijOn_terminalMinimumLabels_of_countDatumBackToBranchLabel
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (branchCoord : β → ℕ)
+    (classifier : C.TerminalMinimumCountDatumClassifier)
+    (backToLabel :
+      C.TerminalMinimumCountDatumBackToBranchLabel branchCoord classifier) :
+    Set.BijOn C.branchLabel ↑C.fullBranches ↑C.terminalMinimumLabels := by
+  exact C.branchLabel_bijOn_terminalMinimumLabels_of_exactness ha hselected
+    (C.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel
+      hinj branchCoord classifier backToLabel)
+
 /-- A bijection from supplied branches to terminal minimum labels is one
 standard way to supply terminal-minimum exactness. -/
 theorem terminalMinimumLabelExactness_of_branchLabel_bijOn {β : Type*}
