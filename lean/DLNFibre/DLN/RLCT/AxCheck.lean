@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.Case111
+import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 
 /-!
@@ -20,9 +21,10 @@ This file is `#print`-only — it adds no definitions and no axioms of its own.
 
 open DLNFibre.DLN.RLCT
 
--- (1,1,1) validate showcase — must stay axiom-free.
+-- (1,1,1) + (2,1,2) validate showcases — must stay axiom-free.
 #print axioms case111_rlct
 #print axioms resolution_charts_case111
+#print axioms case212_rlct
 
 -- S1 substrate (the heaviest analytic rung) + product-MIN engine — must stay clean.
 #print axioms rlct_additive_smooth_block
