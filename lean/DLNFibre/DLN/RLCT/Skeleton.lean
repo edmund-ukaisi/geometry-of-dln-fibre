@@ -2940,6 +2940,215 @@ private theorem close_of_feasible (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (q : 
   rw [hc] at *
   linarith [this]
 
+/-! ### The forward-max front-loader (abstract BG-engine extension).
+
+The band needs a *feasible competitor* whose prefix the greedy dominates. `forwardMax` places, left to
+right, the **largest** pool element `≥` each width that keeps `Dom` on the rest (the lookahead-max
+pick). It is a feasible permutation of the pool, and the backward greedy's prefix sums dominate it
+(`forwardMax_prefix_le_backwardGreedy`). All abstract — no achiever content. (Engine family; a
+post-close cleanup lifts these into `BGEngine.lean` proper.) -/
+
+namespace BGEngine
+
+open Multiset
+
+/-- Under `Dom (w :: ws) R`, some pool element is `≥ w`. -/
+theorem head_pick_exists {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    ∃ y ∈ R, w ≤ y := by
+  by_contra hcon
+  have hall : ∀ y ∈ R, y < w := by
+    intro y hy; by_contra hge; exact hcon ⟨y, hy, not_lt.mp hge⟩
+  have hfull : cLt R w = R.card := by
+    rw [cLt_eq_countP]; exact countP_eq_card.mpr hall
+  have hdom := hD.2 w
+  have hwmem : w ∈ ((w :: ws : List ℤ) : Multiset ℤ) := by
+    rw [← Multiset.cons_coe]; exact Multiset.mem_cons_self _ _
+  have hsplit := cLt_erase ((w :: ws : List ℤ) : Multiset ℤ) w w hwmem
+  rw [if_neg (lt_irrefl _)] at hsplit
+  have herase : ((w :: ws : List ℤ) : Multiset ℤ).erase w = (ws : Multiset ℤ) := by
+    rw [← Multiset.cons_coe, Multiset.erase_cons_head]
+  rw [herase] at hsplit
+  have hle : cLt (ws : Multiset ℤ) w ≤ ws.length := by
+    rw [cLt_eq_countP]; rw [← Multiset.coe_card (ws)]; exact countP_le_card _ _
+  rw [hfull, hD.1] at hdom
+  simp only [List.length_cons] at hdom
+  omega
+
+/-- HEAD-PEEL Hall lemma: the minimal pool elt `≥ w` keeps `Dom ws` on the erase. -/
+theorem dom_head_pick {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    w ≤ pick w R ∧ Dom ws (R.erase (pick w R)) := by
+  have hex : ∃ y ∈ R, w ≤ y := head_pick_exists hD
+  set v := pick w R with hv
+  have hvmem : v ∈ R := pick_mem hex
+  have htv : w ≤ v := le_pick hex
+  have hvmin : ∀ y ∈ R, w ≤ y → v ≤ y := fun y hy hwy => pick_le hex hy hwy
+  refine ⟨htv, ?_, ?_⟩
+  · have hcard : R.card = ws.length + 1 := by rw [hD.1, List.length_cons]
+    rw [card_erase_of_mem hvmem, hcard]; simp
+  · intro τ
+    have hwmem : w ∈ ((w :: ws : List ℤ) : Multiset ℤ) := by
+      rw [← Multiset.cons_coe]; exact Multiset.mem_cons_self _ _
+    have hbsplit := cLt_erase ((w :: ws : List ℤ) : Multiset ℤ) w τ hwmem
+    have herase : ((w :: ws : List ℤ) : Multiset ℤ).erase w = (ws : Multiset ℤ) := by
+      rw [← Multiset.cons_coe, Multiset.erase_cons_head]
+    rw [herase] at hbsplit
+    have hRsplit := cLt_erase R v τ hvmem
+    have hdom := hD.2 τ
+    by_cases hτw : τ ≤ w
+    · rw [if_neg (by omega : ¬ v < τ)] at hRsplit
+      rw [if_neg (by omega : ¬ w < τ)] at hbsplit
+      omega
+    · rw [not_le] at hτw
+      by_cases hτv : τ ≤ v
+      · rw [if_neg (by omega : ¬ v < τ)] at hRsplit
+        rw [if_pos (by omega : w < τ)] at hbsplit
+        have hRtt : cLt R τ = cLt R w := by
+          simp only [cLt]
+          refine congrArg card (filter_congr ?_)
+          intro y hy
+          constructor
+          · intro hyτ; by_contra hyw
+            have : w ≤ y := not_lt.mp hyw
+            have := hvmin y hy this; omega
+          · intro hyw; omega
+        have hdomw := hD.2 w
+        have hbsplitw := cLt_erase ((w :: ws : List ℤ) : Multiset ℤ) w w hwmem
+        rw [if_neg (lt_irrefl _), herase] at hbsplitw
+        have hmono := cLt_mono (ws : Multiset ℤ) (le_of_lt hτw)
+        omega
+      · rw [not_le] at hτv
+        rw [if_pos (by omega : v < τ)] at hRsplit
+        rw [if_pos (by omega : w < τ)] at hbsplit
+        omega
+
+open Classical in
+/-- The set of Dom-preserving feasible head-picks for `Dom (w :: ws) R`. -/
+noncomputable def headPickSet (w : ℤ) (ws : List ℤ) (R : Multiset ℤ) : Finset ℤ :=
+  R.toFinset.filter (fun y => w ≤ y ∧ Dom ws (R.erase y))
+
+open Classical in
+/-- Nonempty: `pick w R` (the minimal feasible) is Dom-preserving by `dom_head_pick`. -/
+theorem headPickSet_nonempty {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    (headPickSet w ws R).Nonempty := by
+  have hex : ∃ y ∈ R, w ≤ y := head_pick_exists hD
+  obtain ⟨hwv, hdv⟩ := dom_head_pick hD
+  refine ⟨pick w R, ?_⟩
+  simp only [headPickSet, Finset.mem_filter, Multiset.mem_toFinset]
+  exact ⟨pick_mem hex, hwv, hdv⟩
+
+open Classical in
+/-- The lookahead-max head-pick: largest pool elt `≥ w` keeping `Dom ws` on the erase (junk `w` if
+the set is empty — never under `Dom`). Total, so the recursion need not thread the proof. -/
+noncomputable def maxPick (w : ℤ) (ws : List ℤ) (R : Multiset ℤ) : ℤ :=
+  if h : (headPickSet w ws R).Nonempty then (headPickSet w ws R).max' h else w
+
+open Classical in
+/-- `maxPick` is in the pool, `≥ w`, and Dom-preserving (under `Dom (w :: ws) R`). -/
+theorem maxPick_spec {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R) :
+    maxPick w ws R ∈ R ∧ w ≤ maxPick w ws R ∧ Dom ws (R.erase (maxPick w ws R)) := by
+  have hne := headPickSet_nonempty hD
+  rw [maxPick, dif_pos hne]
+  have hm := (headPickSet w ws R).max'_mem hne
+  simp only [headPickSet, Finset.mem_filter, Multiset.mem_toFinset] at hm
+  exact ⟨hm.1, hm.2.1, hm.2.2⟩
+
+open Classical in
+/-- `maxPick` is `≥` every Dom-preserving feasible pick (the maximality lever for the band). -/
+theorem le_maxPick {w : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (w :: ws) R)
+    {y : ℤ} (hyR : y ∈ R) (hwy : w ≤ y) (hdy : Dom ws (R.erase y)) : y ≤ maxPick w ws R := by
+  have hne := headPickSet_nonempty hD
+  rw [maxPick, dif_pos hne]
+  refine (headPickSet w ws R).le_max' y ?_
+  simp only [headPickSet, Finset.mem_filter, Multiset.mem_toFinset]
+  exact ⟨hyR, hwy, hdy⟩
+
+/-- **The forward-max front-loader.** Place, left to right, the lookahead-max pool element `≥` each
+width. Output in position order `p₀, …, p_{n-1}`. -/
+noncomputable def forwardMax (b : List ℤ) (R : Multiset ℤ) : List ℤ :=
+  match b with
+  | [] => []
+  | w :: ws => maxPick w ws R :: forwardMax ws (R.erase (maxPick w ws R))
+
+/-- Unfolding lemma for `forwardMax` on a cons. -/
+theorem forwardMax_cons (w : ℤ) (ws : List ℤ) (R : Multiset ℤ) :
+    forwardMax (w :: ws) R = maxPick w ws R :: forwardMax ws (R.erase (maxPick w ws R)) := rfl
+
+/-- **forwardMax is a permutation of the pool.** -/
+theorem forwardMax_perm {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) :
+    (forwardMax b R : Multiset ℤ) = R := by
+  match b with
+  | [] =>
+    have : R.card = 0 := by simpa using hD.1
+    simp [forwardMax, (card_eq_zero.mp this).symm]
+  | w :: ws =>
+    obtain ⟨hvmem, _, hdom2⟩ := maxPick_spec hD
+    rw [forwardMax_cons, ← Multiset.cons_coe]
+    rw [forwardMax_perm hdom2, cons_erase hvmem]
+
+/-- **forwardMax has the same length as `b`.** -/
+theorem forwardMax_length {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) :
+    (forwardMax b R).length = b.length := by
+  have h := forwardMax_perm hD
+  have : card (forwardMax b R : Multiset ℤ) = card R := by rw [h]
+  rw [coe_card] at this; rw [this, hD.1]
+
+/-- **forwardMax is feasible:** each entry dominates its width. -/
+theorem forwardMax_feasible {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) :
+    Feasible b (forwardMax b R) := by
+  match b with
+  | [] => intro i hb hp; simp at hb
+  | w :: ws =>
+    obtain ⟨hvmem, hwv, hdom2⟩ := maxPick_spec hD
+    intro i hb hp
+    match i with
+    | 0 =>
+      simp only [forwardMax_cons, List.getElem_cons_zero]
+      exact hwv
+    | (k + 1) =>
+      have hib : k < ws.length := by simpa using hb
+      have hip : k < (forwardMax ws (R.erase (maxPick w ws R))).length := by
+        rw [forwardMax_length hdom2]; exact hib
+      have hgoal := forwardMax_feasible hdom2 k hib hip
+      simpa only [forwardMax_cons, List.getElem_cons_succ] using hgoal
+
+/-- **Prefix transport.** The backward greedy's prefix sums dominate the forward-max front-loader's
+(greedy minimises suffix ⟹ maximises prefix; the front-loader is a feasible competitor). -/
+theorem forwardMax_prefix_le_backwardGreedy {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (k : ℕ) :
+    ((forwardMax b R).take k).sum ≤ ((backwardGreedy b R).take k).sum := by
+  have hpf : (forwardMax b R : Multiset ℤ) = R := forwardMax_perm hD
+  have hpb : (backwardGreedy b R : Multiset ℤ) = R := backwardGreedy_perm hD
+  have htotf : (forwardMax b R).sum = (backwardGreedy b R).sum := by
+    have e1 : (forwardMax b R).sum = R.sum := by rw [← Multiset.sum_coe, hpf]
+    have e2 : (backwardGreedy b R).sum = R.sum := by rw [← Multiset.sum_coe, hpb]
+    rw [e1, e2]
+  have hsuf := backwardGreedy_suffix_le hD (forwardMax b R) hpf (forwardMax_feasible hD) k
+  have hsplit_f : (forwardMax b R).sum = ((forwardMax b R).take k).sum
+      + ((forwardMax b R).drop k).sum := by
+    rw [← List.sum_append, List.take_append_drop]
+  have hsplit_b : (backwardGreedy b R).sum = ((backwardGreedy b R).take k).sum
+      + ((backwardGreedy b R).drop k).sum := by
+    rw [← List.sum_append, List.take_append_drop]
+  linarith
+
+/-- `∑_{i<k} l.getD i 0 = (l.take k).sum` (the range-sum of `getD` is the prefix sum). -/
+theorem sum_range_getD_eq_take_sum (l : List ℤ) (k : ℕ) :
+    ∑ i ∈ Finset.range k, l.getD i 0 = (l.take k).sum := by
+  induction l generalizing k with
+  | nil => simp
+  | cons a t ih =>
+    match k with
+    | 0 => simp
+    | (m + 1) =>
+      rw [Finset.sum_range_succ', List.take_succ_cons, List.sum_cons]
+      have hshift : ∑ i ∈ Finset.range m, (a :: t).getD (i + 1) 0
+          = ∑ i ∈ Finset.range m, t.getD i 0 := by
+        apply Finset.sum_congr rfl; intro i _; rw [List.getD_cons_succ]
+      rw [hshift, ih m]
+      simp only [List.getD_cons_zero]
+      ring
+
+end BGEngine
+
 /-- The achiever-width list `[M¹,…,Mᴸ]` and pool `Y`-multiset feeding the BG engine. -/
 noncomputable def Mwidths (M : Fin (L + 1) → ℕ) : List ℤ :=
   List.ofFn (fun j : Fin L => (M j.succ : ℤ))
@@ -3191,17 +3400,64 @@ private theorem dom_Mtail_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
   -- combine: cLt(Ymulti) ≤ cLt(Ytail) = cLt(Mfull)−[aS0<τ] ≤ cLt(Mfull)−[M⁰<τ] = cLt(Mwidths)
   omega
 
+/-! ### The forward-max ordering `qFM` and the band.
+
+`qFM = forwardMax (Mwidths M) (Ymulti M)` is the front-loader competitor. The backward greedy `qStar`
+prefix-dominates it (`forwardMax_prefix_le_backwardGreedy`), so the band on `qStar` follows from the
+band on `qFM` — and the latter is the achiever content (the per-step `qFM_i ≥ uTel i`, via the
+maximality lever `le_maxPick` + a Dom-preserving feasible witness whose existence is `good_floor_core`).
+-/
+
+/-- The forward-max front-loader ordering, extended by junk `0` past `L`. -/
+noncomputable def qFM (M : Fin (L + 1) → ℕ) : ℕ → ℤ :=
+  fun i ↦ (BGEngine.forwardMax (Mwidths M) (Ymulti M)).getD i 0
+
+/-- **Prefix transport: `qStar` prefix-dominates `qFM`.** -/
+private theorem qStar_prefix_ge_qFM (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (k : ℕ) :
+    ∑ i ∈ Finset.range k, qFM M i ≤ ∑ i ∈ Finset.range k, qStar M i := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  have hF : ∑ i ∈ Finset.range k, qFM M i
+      = ((BGEngine.forwardMax (Mwidths M) (Ymulti M)).take k).sum :=
+    BGEngine.sum_range_getD_eq_take_sum _ k
+  have hS : ∑ i ∈ Finset.range k, qStar M i
+      = ((BGEngine.backwardGreedy (Mwidths M) (Ymulti M)).take k).sum :=
+    BGEngine.sum_range_getD_eq_take_sum _ k
+  rw [hF, hS]
+  exact BGEngine.forwardMax_prefix_le_backwardGreedy hDom k
+
+/-- **u-space band ⟹ prefix band.** `uTel (j+1) ≤ admBound_j` gives the prefix band on any `q`. -/
+private theorem band_of_uTel (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (j : Fin L)
+    (hu : uTel M q ((j : ℕ) + 1) ≤ (admBound M j : ℤ)) :
+    (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), q i := by
+  rw [uTel_eq_prefix, Finset.sum_sub_distrib] at hu
+  rw [show (j : ℕ) + 2 = ((j : ℕ) + 1) + 1 by omega, Mseq_prefix_succ] at *
+  linarith
+
+/-- **The per-step band** `qFM_j ≥ uTel j` (j≥1) and `qFM_0 ≥ max(M⁰,M¹)`, in the unified u-space
+form `uTel (j+1) ≤ admBound_j`. The achiever content (shapeInv + good_floor_core). -/
+private theorem qFM_uTel_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin L) :
+    uTel M (qFM M) ((j : ℕ) + 1) ≤ (admBound M j : ℤ) := by
+  sorry
+
+/-- **The band on `qFM`** (the achiever content; the forward-max prefix meets the corridor bound). -/
+private theorem qFM_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin L) :
+    (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qFM M i :=
+  band_of_uTel M (qFM M) j (qFM_uTel_band M hL j)
+
 /-- **A1 (Lemma 3, the headline arithmetic).** `lambdaCore M = cleanCore` at the achiever `cAch M`
 (needs `hL : 1 ≤ L`; the conclusion is unsatisfiable at `L = 0`). Assembled: the achiever ordering
 `qStar` is corridor-feasible and permutes `Yvec` (via `QFeas_qStar`) → `close_of_feasible`. `hDom`
-is proven (`dom_Mtail_Yvec`); the one open input is the admissibility band `hband` (the forward-max
-witness, reducing to `good_floor_core`). -/
+is proven (`dom_Mtail_Yvec`); the band `hband` is the forward-max competitor band (`qFM_band`)
+transported to `qStar` by `qStar_prefix_ge_qFM`. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
   have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
-  -- OPEN: the achiever band (the forward-max witness; see the docstring).
+  -- the band on qStar: the qFM band transported by qStar's prefix-dominance.
   have hband : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
-      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i := by sorry
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i := fun j =>
+    le_trans (qFM_band M hL j) (qStar_prefix_ge_qFM M hL ((j : ℕ) + 1))
   obtain ⟨hq, σ, hperm⟩ := QFeas_qStar M hL hDom hband
   exact close_of_feasible M hL (qStar M) hq σ hperm
 
