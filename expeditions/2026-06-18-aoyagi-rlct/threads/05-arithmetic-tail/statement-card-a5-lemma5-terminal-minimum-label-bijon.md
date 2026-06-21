@@ -6,7 +6,7 @@
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_branchLabel_bijOn`
 - `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_branchLabel_bijOn`
 
-Commit pin: `78f16e1`.
+Commit pin: `6a2400e`.
 
 ## Claim
 
