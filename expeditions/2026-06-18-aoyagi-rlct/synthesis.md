@@ -2912,6 +2912,21 @@ and
 review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-minimum-label-count-a5.md`.
 
+The terminal bridge now packages the two finite exactness hypotheses as
+`TerminalMinimumLabelExactness`: branch-label injectivity on `fullBranches`
+and no-extra containment from `terminalMinimumLabels` to `branchLabelImage`.
+The wrapper `terminalMinimumLabels_eq_branchLabelImage_of_exactness` derives
+the finite equality, and `terminalMinimumLabels_card_of_exactness` derives the
+finite count `a*(n+1-a)+1` from this package, `a<=n+1`, and the selected-width
+sum.  This is only a reuse package; exactness remains supplied, and no Lean
+normal-crossing/RLCT extraction interface has been introduced.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-label-exactness-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-label-exactness.md`;
+review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-label-exactness-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

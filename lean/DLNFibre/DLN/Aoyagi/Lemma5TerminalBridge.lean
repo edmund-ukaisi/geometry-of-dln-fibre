@@ -391,6 +391,69 @@ theorem terminalMinimumLabels_card_of_noExtra {β : Type*} [DecidableEq β]
   rw [heq]
   exact C.branchLabelImage_card n a M m ha hinj
 
+/-- Supplied exactness data for the finite terminal-minimum label set.
+
+The injectivity field separates distinct supplied branches as distinct source
+labels.  The no-extra field says every introduced label with terminal least
+value zero and the supplied minimum numerator is in the supplied branch-label
+image.  This is still finite label data, not a normal-crossing or RLCT
+extraction theorem. -/
+structure TerminalMinimumLabelExactness {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) : Prop where
+  branchLabel_injOn : Set.InjOn C.branchLabel ↑C.fullBranches
+  terminalMinimumLabels_subset_branchLabelImage :
+    C.terminalMinimumLabels ⊆ C.branchLabelImage
+
+/-- Packaged exactness identifies the finite terminal-minimum label set with
+the supplied branch-label image.
+
+The forward inclusion from the branch-label image to the minimum-label set
+still uses `ha` and the selected-width sum through the supplied terminal
+minimum bridge; the reverse inclusion is the supplied no-extra field. -/
+theorem terminalMinimumLabels_eq_branchLabelImage_of_exactness {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (exactness : C.TerminalMinimumLabelExactness) :
+    C.terminalMinimumLabels = C.branchLabelImage := by
+  have himage : C.branchLabelImage ⊆ C.terminalMinimumLabels :=
+    C.branchLabelImage_subset_terminalMinimumLabels ha hselected
+  ext label
+  constructor
+  · intro hlabel
+    exact exactness.terminalMinimumLabels_subset_branchLabelImage hlabel
+  · intro hlabel
+    exact himage hlabel
+
+/-- Exact finite count of terminal minimum labels from packaged supplied
+exactness data.
+
+This is a convenience wrapper around `terminalMinimumLabels_card_of_noExtra`.
+It does not prove the exactness fields from the source. -/
+theorem terminalMinimumLabels_card_of_exactness {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (exactness : C.TerminalMinimumLabelExactness) :
+    C.terminalMinimumLabels.card = a * (n + 1 - a) + 1 := by
+  rw [C.terminalMinimumLabels_eq_branchLabelImage_of_exactness ha hselected exactness]
+  exact C.branchLabelImage_card n a M m ha exactness.branchLabel_injOn
+
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
 end Aoyagi

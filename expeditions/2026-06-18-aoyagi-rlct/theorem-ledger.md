@@ -3560,6 +3560,22 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-terminal-minimum-label-count-a5.md`.
 
+Latest A5 exactness-package update: the terminal bridge now defines
+`AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumLabelExactness`,
+with fields for branch-label injectivity on `fullBranches` and no-extra
+containment `terminalMinimumLabels subset branchLabelImage`.  The theorem
+`terminalMinimumLabels_eq_branchLabelImage_of_exactness` derives the finite
+equality, and `terminalMinimumLabels_card_of_exactness` derives the finite
+exact-minimum label count from this package.  This is only a supplied finite
+exactness wrapper, not source-backed exactness, normal crossings, or RLCT
+extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-label-exactness-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-label-exactness.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-label-exactness-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

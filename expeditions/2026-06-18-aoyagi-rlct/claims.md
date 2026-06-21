@@ -2480,6 +2480,14 @@ No such claim is formalisation-ready until both fields are filled.
   explicit no-extra containment plus branch-label injectivity count the finite
   minimum-label set.  They do not prove the no-extra containment from the
   source or extract pole order.
+  Also packaged the exactness hypotheses as
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumLabelExactness`
+  and proved
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_exactness`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_exactness`.
+  This is only a convenience wrapper over supplied injectivity and no-extra
+  containment.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

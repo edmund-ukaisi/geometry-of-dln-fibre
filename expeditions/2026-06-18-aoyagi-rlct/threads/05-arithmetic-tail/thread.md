@@ -2773,3 +2773,35 @@ terminalMinimumLabels.card = a*(n+1-a)+1.
 This is still not a pole-order theorem.  It does not prove source-backed
 no-extra-minimizer coverage, source-backed label injectivity, normal crossings,
 or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal minimum label exactness package
+
+Reproduction:
+`reproduction-lemma5-terminal-minimum-label-exactness-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-minimum-label-exactness.md`.
+Review artifact:
+`review-lemma5-terminal-minimum-label-exactness-a5.md`.
+
+Lean now packages the two supplied exactness hypotheses used by
+`terminalMinimumLabels_card_of_noExtra`:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.TerminalMinimumLabelExactness
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_exactness
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_exactness
+```
+
+The exactness structure contains branch-label injectivity on `fullBranches`
+and the no-extra containment
+`terminalMinimumLabels subset branchLabelImage`.  The wrapper theorem derives
+the finset equality `terminalMinimumLabels = branchLabelImage` and the same
+finite minimum-label count
+
+```text
+terminalMinimumLabels.card = a*(n+1-a)+1.
+```
+
+This is a convenience package for downstream finite handoff.  It does not
+prove exactness from Aoyagi's printed equations and does not define or invoke a
+normal-crossing-to-RLCT extraction theorem.
