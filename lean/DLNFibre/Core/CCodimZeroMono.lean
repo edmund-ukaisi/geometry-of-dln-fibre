@@ -334,4 +334,111 @@ theorem codimBil_splitDelta_extendℤ_left (m : Fin (N + 1) × Fin (N + 1) → �
     ← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun Y _ ↦ by ring
 
+/-- **The box-pairing value.** `codimBil (boxℤ p q) (boxℤ p' q')` is `1` exactly when the type-A
+pairing fires (`0 ≤ p`, `q' ≤ N`, `p < p' ≤ q + 1`, `q < q'`), else `0`. Reduces to the right-rectangle
+of `boxℤ p q` over the singleton support of `boxℤ p' q'` (via `codimBil_extendℤ_boxℤ_right`-style
+collapse, here using the existing single-point collapse on the second box). -/
+theorem codimBil_boxℤ_boxℤ (p q p' q' : ℤ) :
+    codimBil N (boxℤ p q) (boxℤ p' q')
+      = if 0 ≤ p ∧ q' ≤ (N : ℤ) ∧ p < p' ∧ p' ≤ q + 1 ∧ q < q' then 1 else 0 := by
+  by_cases hp'r : 1 ≤ p' ∧ p' ≤ q' ∧ q' ≤ (N : ℤ)
+  · obtain ⟨hp', hp'q', hq'⟩ := hp'r
+    rw [show boxℤ p' q' = (fun α β ↦ if α = p' ∧ β = q' then (1 : ℤ) else 0) from rfl,
+      codimBil_single_right (boxℤ p q) hp' hp'q' hq']
+    -- `∑_{i∈[1,p']}∑_{j∈[p',q']} boxℤ p q (i-1) (j-1)` collapses at `(i,j)=(p+1,q+1)`.
+    unfold boxℤ
+    by_cases hcond : 0 ≤ p ∧ q' ≤ (N : ℤ) ∧ p < p' ∧ p' ≤ q + 1 ∧ q < q'
+    · obtain ⟨hp, -, hpp, hpq, hqq⟩ := hcond
+      rw [if_pos ⟨hp, hq', hpp, hpq, hqq⟩,
+        Finset.sum_eq_single_of_mem (p + 1) (by simp only [Finset.mem_Icc]; omega),
+        Finset.sum_eq_single_of_mem (q + 1) (by simp only [Finset.mem_Icc]; omega),
+        if_pos ⟨by ring, by ring⟩]
+      · intro j hj hjq; simp only [Finset.mem_Icc] at hj
+        rw [if_neg (by rintro ⟨-, h⟩; exact hjq (by omega))]
+      · intro i hi hip; simp only [Finset.mem_Icc] at hi
+        refine Finset.sum_eq_zero fun j _ ↦ ?_
+        rw [if_neg (by rintro ⟨h, -⟩; exact hip (by omega))]
+    · rw [if_neg hcond]
+      refine Finset.sum_eq_zero fun i hi ↦ Finset.sum_eq_zero fun j hj ↦ ?_
+      simp only [Finset.mem_Icc] at hi hj
+      rw [if_neg (by rintro ⟨h1, h2⟩; exact hcond ⟨by omega, hq', by omega, by omega, by omega⟩)]
+  · -- `p'` out of the single-point range: both sides `0`.
+    rw [if_neg (by rintro ⟨hp0, hq', hpp, hpq, hqq⟩; exact hp'r ⟨by omega, by omega, hq'⟩)]
+    unfold codimBil boxℤ
+    refine Finset.sum_eq_zero fun i hi ↦ Finset.sum_eq_zero fun u hu ↦
+      Finset.sum_eq_zero fun j hj ↦ Finset.sum_eq_zero fun v hv ↦ ?_
+    simp only [Finset.mem_Icc] at hi hu hj hv
+    -- the second factor (`boxℤ p' q' u v`) is `0`: `u = p', v = q'` would force `p'` in range
+    rw [show (if (u : ℤ) = p' ∧ (v : ℤ) = q' then (1 : ℤ) else 0) = 0 from
+      if_neg (by rintro ⟨h1, h2⟩; exact hp'r ⟨by omega, by omega, by omega⟩), mul_zero]
+
+/-- **The split self-term vanishes (gap).** With the one-vertex gap `b + 1 < c`, no box-pair of
+`splitDelta` is type-A adjacent, so `codimForm (splitDelta a b c d') = 0`. -/
+theorem codimForm_splitDelta (a b c d' : Fin (N + 1)) (hab : (a : ℕ) ≤ b) (hbc : (b : ℕ) + 1 < c)
+    (hcd : (c : ℕ) ≤ d') :
+    codimForm N (splitDelta a b c d') = 0 := by
+  have haN : (a : ℤ) ≤ N := by have := a.isLt; omega
+  have hbN : (b : ℤ) ≤ N := by have := b.isLt; omega
+  have hcN : (c : ℤ) ≤ N := by have := c.isLt; omega
+  have hdN : (d' : ℤ) ≤ N := by have := d'.isLt; omega
+  have habZ : (a : ℤ) ≤ b := by exact_mod_cast hab
+  have hbcZ : (b : ℤ) + 1 < c := by exact_mod_cast hbc
+  have hcdZ : (c : ℤ) ≤ d' := by exact_mod_cast hcd
+  rw [show codimForm N (splitDelta a b c d') = codimBil N (splitDelta a b c d') (splitDelta a b c d')
+      from rfl]
+  rw [show splitDelta a b c d'
+      = (boxℤ (a : ℤ) (b : ℤ) + boxℤ (c : ℤ) (d' : ℤ)) - boxℤ (a : ℤ) (d' : ℤ) by
+        funext α β; simp only [Pi.sub_apply, Pi.add_apply]; rfl]
+  simp only [codimBil_sub_left, codimBil_add_left, codimBil_sub_right, codimBil_add_right,
+    codimBil_boxℤ_boxℤ]
+  -- each of the nine box-pair indicators evaluates by `omega` on the endpoints (gap kills adjacency)
+  rw [if_neg (by omega), if_neg (by omega), if_neg (by omega), if_neg (by omega), if_neg (by omega),
+    if_neg (by omega), if_neg (by omega), if_neg (by omega), if_neg (by omega)]
+  ring
+
+/-! ## The split-`codimForm` delta as `∑_Y m̄ Y · splitCoeff Y` and its sign
+
+Assembling the bilinear expansion: the split's `codimForm`-change is `∑_Y m̄ Y · splitCoeff Y`. Then
+the sign lemma `splitCoeff_pos_imp` (`splitCoeff Y > 0 ⟹ Y covers k ∧ len Y < len I`) makes the
+change `≤ 0` when `[a,d']` is a shortest covering interval of the omitted vertex `k = b+1`. -/
+
+/-- **The split `codimForm`-delta.** With the gap `b + 1 < c` and source `[a,d']` present,
+`codimForm (extendℤ (splitMove m a b c d')) = codimForm (extendℤ m) + ∑_Y m̄ Y · splitCoeff Y`. -/
+theorem codimForm_splitMove (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbc : (b : ℕ) + 1 < c) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d')) :
+    codimForm N (extendℤ (splitMove m a b c d'))
+      = codimForm N (extendℤ m)
+        + ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * splitCoeff a b c d' Y := by
+  rw [extendℤ_splitMove hab (by omega) hcd hsad, codimForm_add,
+    codimBil_extendℤ_splitDelta_right, codimBil_splitDelta_extendℤ_left,
+    codimForm_splitDelta a b c d' hab hbc hcd, add_zero, add_assoc, ← Finset.sum_add_distrib]
+  congr 1
+  refine Finset.sum_congr rfl fun Y _ ↦ ?_
+  unfold splitCoeff
+  ring
+
+/-- **The sign lemma (crux).** For the single-vertex-gap split `[a,d'] → [a,b] + [c,d']` with
+`c = b + 2` (omitting vertex `k = b + 1`), any interval `Y` with `splitCoeff a b c d' Y > 0` covers
+`k` (`Y.1 ≤ b + 1 ≤ Y.2`) and is strictly shorter than `[a,d']` (`Y.2 − Y.1 < d' − a`). The positive
+contributions to the split delta are exactly the strictly-shorter covering intervals of `k`. -/
+theorem splitCoeff_pos_imp {a b c d' : Fin (N + 1)} (hab : (a : ℕ) ≤ b) (hbc : (c : ℕ) = b + 2)
+    (hcd : (c : ℕ) ≤ d') {Y : Fin (N + 1) × Fin (N + 1)} (hpos : 0 < splitCoeff a b c d' Y) :
+    ((Y.1 : ℤ) ≤ (b : ℤ) + 1 ∧ (b : ℤ) + 1 ≤ (Y.2 : ℤ))
+      ∧ (Y.2 : ℤ) - (Y.1 : ℤ) < (d' : ℤ) - (a : ℤ) := by
+  -- pin all the integer endpoint relations omega needs (casts of `Fin` bounds + the move hyps)
+  have hcZ : (c : ℤ) = (b : ℤ) + 2 := by exact_mod_cast hbc
+  have habZ : (a : ℤ) ≤ b := by exact_mod_cast hab
+  have hcdZ : (c : ℤ) ≤ d' := by exact_mod_cast hcd
+  have hY1 : (Y.1 : ℤ) ≤ (N : ℤ) := by have := Y.1.isLt; omega
+  have hY2 : (Y.2 : ℤ) ≤ (N : ℤ) := by have := Y.2.isLt; omega
+  have haN : (a : ℤ) ≤ (N : ℤ) := by have := a.isLt; omega
+  have hbN : (b : ℤ) ≤ (N : ℤ) := by have := b.isLt; omega
+  have hdN : (d' : ℤ) ≤ (N : ℤ) := by have := d'.isLt; omega
+  have hY1nn : (0 : ℤ) ≤ (Y.1 : ℤ) := by positivity
+  have hY2nn : (0 : ℤ) ≤ (Y.2 : ℤ) := by positivity
+  have hann : (0 : ℤ) ≤ (a : ℤ) := by positivity
+  unfold splitCoeff rrInd llInd at hpos
+  -- each indicator's condition is linear in the endpoints; `split_ifs` + `omega` discharges all cases
+  split_ifs at hpos <;> omega
+
 end DLNFibre.Core
