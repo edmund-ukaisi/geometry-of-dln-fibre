@@ -1035,4 +1035,226 @@ theorem leftShrink_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1
     simp only [leftShrink, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
     exact hc0
 
+/-! ### The right-shrink (omitting the right endpoint `d'`) -/
+
+/-- The right-shrink move: replace one copy of `[a,d']` by `[a,b]` (kept only when `a ≤ b`), omitting
+the right endpoint `d'` (`b = d'−1`). -/
+def rightShrink (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a b d' : Fin (N + 1)) :
+    Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ m p + (if a ≤ b ∧ p = (a, b) then 1 else 0) - (if p = (a, d') then 1 else 0)
+
+/-- The right-shrink ℤ-delta: `boxℤ a b − boxℤ a d'`. -/
+def rightDelta (a b d' : Fin (N + 1)) : ℤ → ℤ → ℤ :=
+  fun α β ↦ boxℤ (a : ℤ) (b : ℤ) α β - boxℤ (a : ℤ) (d' : ℤ) α β
+
+/-- Per-interval coefficient of the right-shrink delta. -/
+def rightCoeff (a b d' : Fin (N + 1)) (Y : Fin (N + 1) × Fin (N + 1)) : ℤ :=
+  ((if rrInd (a : ℤ) (b : ℤ) Y then 1 else 0) - (if rrInd (a : ℤ) (d' : ℤ) Y then 1 else 0))
+  + ((if llInd (a : ℤ) (b : ℤ) Y then 1 else 0) - (if llInd (a : ℤ) (d' : ℤ) Y then 1 else 0))
+
+/-- `codimBil (extendℤ m) (rightDelta …)` as a per-interval `univ`-sum (right-rectangle indicators). -/
+theorem codimBil_extendℤ_rightDelta_right (m : Fin (N + 1) × Fin (N + 1) → ℕ)
+    (a b d' : Fin (N + 1)) :
+    codimBil N (extendℤ m) (rightDelta a b d')
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ)
+          * ((if rrInd (a : ℤ) (b : ℤ) Y then 1 else 0)
+              - (if rrInd (a : ℤ) (d' : ℤ) Y then 1 else 0)) := by
+  have hbox : ∀ p q : ℤ, codimBil N (extendℤ m) (boxℤ p q)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * (if rrInd p q Y then 1 else 0) := by
+    intro p q
+    rw [codimBil_extendℤ_boxℤ_right, Finset.sum_filter]
+    exact Finset.sum_congr rfl fun Y _ ↦ by split_ifs with h <;> simp
+  rw [show rightDelta a b d' = boxℤ (a : ℤ) (b : ℤ) - boxℤ (a : ℤ) (d' : ℤ) by
+        funext α β; simp only [Pi.sub_apply]; rfl,
+    codimBil_sub_right, hbox, hbox, ← Finset.sum_sub_distrib]
+  exact Finset.sum_congr rfl fun Y _ ↦ by ring
+
+/-- `codimBil (rightDelta …) (extendℤ m)` as a per-interval `univ`-sum (left-rectangle indicators). -/
+theorem codimBil_rightDelta_extendℤ_left (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a b d' : Fin (N + 1)) :
+    codimBil N (rightDelta a b d') (extendℤ m)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ)
+          * ((if llInd (a : ℤ) (b : ℤ) Y then 1 else 0)
+              - (if llInd (a : ℤ) (d' : ℤ) Y then 1 else 0)) := by
+  have hbox : ∀ p q : ℤ, codimBil N (boxℤ p q) (extendℤ m)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * (if llInd p q Y then 1 else 0) := by
+    intro p q
+    rw [codimBil_boxℤ_extendℤ_left, Finset.sum_filter]
+    exact Finset.sum_congr rfl fun Y _ ↦ by split_ifs with h <;> simp
+  rw [show rightDelta a b d' = boxℤ (a : ℤ) (b : ℤ) - boxℤ (a : ℤ) (d' : ℤ) by
+        funext α β; simp only [Pi.sub_apply]; rfl,
+    codimBil_sub_left, hbox, hbox, ← Finset.sum_sub_distrib]
+  exact Finset.sum_congr rfl fun Y _ ↦ by ring
+
+/-- The right-shrink self-term `codimForm (rightDelta …) = 0` (for `a ≤ b < d'`). -/
+theorem codimForm_rightDelta (a b d' : Fin (N + 1)) (hab : (a : ℕ) ≤ b) (hbd : (b : ℕ) < d') :
+    codimForm N (rightDelta a b d') = 0 := by
+  have hbN : (b : ℤ) ≤ N := by have := b.isLt; omega
+  have hdN : (d' : ℤ) ≤ N := by have := d'.isLt; omega
+  have habZ : (a : ℤ) ≤ b := by exact_mod_cast hab
+  have hbdZ : (b : ℤ) < d' := by exact_mod_cast hbd
+  rw [show codimForm N (rightDelta a b d') = codimBil N (rightDelta a b d') (rightDelta a b d') from rfl,
+    show rightDelta a b d' = boxℤ (a : ℤ) (b : ℤ) - boxℤ (a : ℤ) (d' : ℤ) by
+        funext α β; simp only [Pi.sub_apply]; rfl]
+  simp only [codimBil_sub_left, codimBil_sub_right, codimBil_boxℤ_boxℤ]
+  rw [if_neg (by omega), if_neg (by omega), if_neg (by omega), if_neg (by omega)]
+  ring
+
+/-- `extendℤ (rightShrink …)` agrees with `extendℤ m + rightDelta` on the box. -/
+theorem extendℤ_rightShrink_onbox (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a b d' : Fin (N + 1))
+    {α β : ℤ} (hα : 0 ≤ α) (hαβ : α ≤ β) (hβ : β ≤ (N : ℤ)) (hsad : 1 ≤ m (a, d')) (hbd : b ≠ d') :
+    extendℤ (rightShrink m a b d') α β = (extendℤ m + rightDelta a b d') α β := by
+  simp only [Pi.add_apply, extendℤ, rightDelta, boxℤ]
+  rw [dif_pos ⟨hα, hαβ, hβ⟩, dif_pos ⟨hα, hαβ, hβ⟩]
+  set q : Fin (N + 1) × Fin (N + 1) := (⟨α.toNat, by omega⟩, ⟨β.toNat, by omega⟩) with hq
+  have hαβN : (q.1 : ℕ) ≤ q.2 := by rw [hq]; dsimp only [Fin.val_mk]; omega
+  have eAB : (q = (a, b)) ↔ (α = (a : ℤ) ∧ β = (b : ℤ)) := by
+    rw [hq, Prod.mk.injEq, Fin.ext_iff, Fin.ext_iff]; dsimp only [Fin.val_mk]; omega
+  have eAD : (q = (a, d')) ↔ (α = (a : ℤ) ∧ β = (d' : ℤ)) := by
+    rw [hq, Prod.mk.injEq, Fin.ext_iff, Fin.ext_iff]; dsimp only [Fin.val_mk]; omega
+  rw [show rightShrink m a b d' (⟨α.toNat, by omega⟩, ⟨β.toNat, by omega⟩)
+      = rightShrink m a b d' q from rfl, rightShrink]
+  by_cases h1 : q = (a, b)
+  · have h3 : q ≠ (a, d') := fun h ↦ hbd (by have := h1.symm.trans h; exact (Prod.mk.injEq .. ▸ this).2)
+    rw [if_pos ⟨by rw [h1] at hαβN; exact hαβN, h1⟩, if_neg h3, if_pos (eAB.mp h1),
+      if_neg (fun h ↦ h3 (eAD.mpr h))]
+    push_cast; ring
+  · by_cases h3 : q = (a, d')
+    · have hpos : 1 ≤ m q := by rw [h3]; exact hsad
+      rw [if_neg (fun h ↦ h1 h.2), if_pos h3, if_neg (fun h ↦ h1 (eAB.mpr h)), if_pos (eAD.mp h3)]
+      rw [Nat.cast_sub (by omega)]; push_cast; ring
+    · rw [if_neg (fun h ↦ h1 h.2), if_neg h3, if_neg (fun h ↦ h1 (eAB.mpr h)),
+        if_neg (fun h ↦ h3 (eAD.mpr h))]
+      simp only [Nat.add_zero, Nat.sub_zero]; push_cast; ring
+
+/-- **The right-shrink `codimForm`-delta.** -/
+theorem codimForm_rightShrink (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbd : (b : ℕ) < d') (hsad : 1 ≤ m (a, d')) :
+    codimForm N (extendℤ (rightShrink m a b d'))
+      = codimForm N (extendℤ m)
+        + ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * rightCoeff a b d' Y := by
+  have hbdF : b ≠ d' := by rw [Fin.ne_iff_vne]; omega
+  rw [codimForm_congr_onbox (fun α β hα hαβ hβ ↦ extendℤ_rightShrink_onbox m a b d' hα hαβ hβ hsad hbdF)]
+  rw [codimForm_add, codimBil_extendℤ_rightDelta_right, codimBil_rightDelta_extendℤ_left,
+    codimForm_rightDelta a b d' hab hbd, add_zero, add_assoc, ← Finset.sum_add_distrib]
+  congr 1
+  exact Finset.sum_congr rfl fun Y _ ↦ by unfold rightCoeff; ring
+
+/-- **Right-shrink sign lemma.** For `b = d' − 1` (`b + 1 = d'`, omitting the right endpoint `d'`),
+any `Y` with `rightCoeff a b d' Y > 0` covers `d'` and is strictly shorter than `[a,d']`. -/
+theorem rightCoeff_pos_imp {a b d' : Fin (N + 1)} (hab : (a : ℕ) ≤ b) (hbd : (b : ℕ) + 1 = d')
+    {Y : Fin (N + 1) × Fin (N + 1)} (hpos : 0 < rightCoeff a b d' Y) :
+    ((Y.1 : ℤ) ≤ (d' : ℤ) ∧ (d' : ℤ) ≤ (Y.2 : ℤ)) ∧ (Y.2 : ℤ) - (Y.1 : ℤ) < (d' : ℤ) - (a : ℤ) := by
+  have hbdZ : (b : ℤ) + 1 = d' := by exact_mod_cast hbd
+  have habZ : (a : ℤ) ≤ b := by exact_mod_cast hab
+  have hY1 : (Y.1 : ℤ) ≤ (N : ℤ) := by have := Y.1.isLt; omega
+  have hY2 : (Y.2 : ℤ) ≤ (N : ℤ) := by have := Y.2.isLt; omega
+  have haN : (a : ℤ) ≤ (N : ℤ) := by have := a.isLt; omega
+  have hbN : (b : ℤ) ≤ (N : ℤ) := by have := b.isLt; omega
+  have hY1nn : (0 : ℤ) ≤ (Y.1 : ℤ) := by positivity
+  have hY2nn : (0 : ℤ) ≤ (Y.2 : ℤ) := by positivity
+  have hann : (0 : ℤ) ≤ (a : ℤ) := by positivity
+  unfold rightCoeff rrInd llInd at hpos
+  split_ifs at hpos <;> omega
+
+/-- **Right-shrink does not increase `codimForm`** when `[a,d']` is a shortest covering interval of
+its right endpoint `d'` (`b = d' − 1`), of positive multiplicity. -/
+theorem codimForm_rightShrink_le (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbd : (b : ℕ) + 1 = d') (hsad : 1 ≤ m (a, d'))
+    (hshort : ∀ Y : Fin (N + 1) × Fin (N + 1), 1 ≤ m Y →
+      (Y.1 : ℤ) ≤ (d' : ℤ) → (d' : ℤ) ≤ (Y.2 : ℤ) →
+      (d' : ℤ) - (a : ℤ) ≤ (Y.2 : ℤ) - (Y.1 : ℤ)) :
+    codimForm N (extendℤ (rightShrink m a b d')) ≤ codimForm N (extendℤ m) := by
+  rw [codimForm_rightShrink m hab (by omega) hsad]
+  have hsum : ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * rightCoeff a b d' Y ≤ 0 := by
+    refine Finset.sum_nonpos fun Y _ ↦ ?_
+    rcases lt_or_ge 0 (rightCoeff a b d' Y) with hc | hc
+    · obtain ⟨⟨h1, h2⟩, hlen⟩ := rightCoeff_pos_imp hab hbd hc
+      have hmY : m Y = 0 := by
+        by_contra hne; exact absurd (hshort Y (Nat.one_le_iff_ne_zero.mpr hne) h1 h2) (not_le.mpr hlen)
+      rw [hmY]; simp
+    · exact mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg _) hc
+  linarith
+
+/-- Filtered-coverage change of `rightShrink` (as `ℤ`). -/
+theorem rightShrink_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbd : (b : ℕ) < d') (hsad : 1 ≤ m (a, d')) (v : Fin (N + 1)) :
+    (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+        rightShrink m a b d' p : ℤ)
+      = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2), m p : ℤ)
+        + (if a ≤ b ∧ a ≤ v ∧ v ≤ b then 1 else 0) - (if a ≤ v ∧ v ≤ d' then 1 else 0) := by
+  set S := Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2) with hS
+  have hbdF : b ≠ d' := by rw [Fin.ne_iff_vne]; omega
+  have hterm : ∀ p : Fin (N + 1) × Fin (N + 1),
+      ((rightShrink m a b d' p : ℕ) : ℤ)
+        = (m p : ℤ) + (if a ≤ b ∧ p = (a, b) then 1 else 0) - (if p = (a, d') then 1 else 0) := by
+    intro p
+    by_cases h1 : a ≤ b ∧ p = (a, b)
+    · have h3 : p ≠ (a, d') := by rw [h1.2]; intro h; exact hbdF (congrArg Prod.snd h)
+      simp only [rightShrink, if_pos h1, if_neg h3, Nat.add_zero, Nat.sub_zero]; push_cast; ring
+    · by_cases h3 : p = (a, d')
+      · have hpos : 1 ≤ m p := by rw [h3]; exact hsad
+        simp only [rightShrink, if_neg h1, if_pos h3, Nat.add_zero]
+        rw [Nat.cast_sub (by omega)]; push_cast; ring
+      · simp only [rightShrink, if_neg h1, if_neg h3, Nat.add_zero, Nat.sub_zero]; push_cast; ring
+  rw [Finset.sum_congr rfl (fun p (_ : p ∈ S) ↦ hterm p), Finset.sum_sub_distrib,
+    Finset.sum_add_distrib]
+  have hcollapse : ∀ (P : Prop) [Decidable P] (key : Fin (N + 1) × Fin (N + 1)),
+      (∑ p ∈ S, if P ∧ p = key then (1 : ℤ) else 0) = if P ∧ key ∈ S then 1 else 0 := by
+    intro P _ key
+    by_cases hP : P
+    · simp only [hP, true_and]; rw [Finset.sum_ite_eq' S key]
+    · simp only [hP, false_and, if_false, Finset.sum_const_zero]
+  rw [hcollapse (a ≤ b) (a, b), Finset.sum_ite_eq' S (a, d')]
+  have hmemS : ∀ x y : Fin (N + 1), ((x, y) ∈ S) ↔ (x ≤ v ∧ v ≤ y) := by
+    intro x y; rw [hS]; simp [Finset.mem_filter]
+  simp only [hmemS]
+
+/-- **Right-shrink lands in the corner-`0` Kostant partitions of the vector decremented at `d'`.** -/
+theorem rightShrink_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
+    {a b d' : Fin (N + 1)} (hm : m ∈ kostantPartitions e' 0)
+    (hab : a ≤ b) (hbd : (b : ℕ) + 1 = d') (had : a ≤ d') (hsad : 1 ≤ m (a, d'))
+    (hcorner : (a, d') ≠ ((0 : Fin (N + 1)), Fin.last N)) :
+    rightShrink m a b d' ∈ kostantPartitions (Function.update e' d' (e' d' - 1)) 0 := by
+  obtain ⟨hbnd, hsupp, hkost, hc0⟩ := mem_kostantPartitions.mp hm
+  have habN : (a : ℕ) ≤ b := Fin.le_def.mp hab
+  have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → rightShrink m a b d' p = 0 := by
+    intro p hp
+    have h1 : ¬ (a ≤ b ∧ p = (a, b)) := fun h ↦ hp (by rw [h.2]; exact h.1)
+    have h3 : p ≠ (a, d') := fun h ↦ hp (by rw [h]; exact had)
+    simp only [rightShrink, if_neg h1, if_neg h3, Nat.add_zero, Nat.sub_zero]; exact hsupp p hp
+  have hekpos : 1 ≤ e' d' := by
+    rw [hkost d']
+    refine le_trans hsad (Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) ?_)
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact ⟨had, le_rfl⟩
+  have hkost' : ∀ v, kostantAt (Function.update e' d' (e' d' - 1)) (rightShrink m a b d') v := by
+    intro v
+    rw [kostantAt]
+    have hcov := rightShrink_cover m habN (by omega) hsad v
+    have hbase : (e' v : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            m p : ℤ) := by exact_mod_cast hkost v
+    have hZ : ((Function.update e' d' (e' d' - 1) v : ℕ) : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            rightShrink m a b d' p : ℤ) := by
+      rw [hcov, ← hbase]
+      have hupd : ((Function.update e' d' (e' d' - 1) v : ℕ) : ℤ)
+          = (e' v : ℤ) - (if v = d' then 1 else 0) := by
+        by_cases hvd : v = d'
+        · subst hvd; rw [Function.update_self, if_pos rfl, Nat.cast_sub hekpos]; push_cast; ring
+        · rw [Function.update_of_ne hvd, if_neg hvd]; ring
+      rw [hupd]
+      have hvdN : (v = d') ↔ ((v : ℕ) = d') := by rw [Fin.ext_iff]
+      simp only [Fin.le_def, hvdN]
+      split_ifs <;> omega
+    exact_mod_cast hZ
+  refine mem_kostantPartitions.mpr ⟨bound_of_kostant hsupp' hkost', hsupp', hkost', ?_⟩
+  · have hdN : (d' : ℕ) ≤ N := by have := d'.isLt; omega
+    have h1 : ¬ (a ≤ b ∧ ((0 : Fin (N + 1)), Fin.last N) = (a, b)) := by
+      rintro ⟨-, hh⟩; rw [Prod.mk.injEq] at hh; have := hh.2
+      rw [Fin.ext_iff, Fin.val_last] at this; omega
+    have h3 : ((0 : Fin (N + 1)), Fin.last N) ≠ (a, d') := fun h ↦ hcorner h.symm
+    show rightShrink m a b d' ((0 : Fin (N + 1)), Fin.last N) = 0
+    simp only [rightShrink, if_neg h1, if_neg h3, Nat.add_zero, Nat.sub_zero]
+    exact hc0
+
 end DLNFibre.Core
