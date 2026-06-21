@@ -207,13 +207,13 @@ theorem argmaxCell_cover (n : ℕ) :
 
 /-- The eq-abs-coordinate set `{y | |y p| = |y q|}` is Haar-null for `p ≠ q`: it lies in the union
 of the two hyperplanes `ker (proj p ∓ proj q)`, both proper subspaces (`addHaar_submodule`). -/
-private theorem absEq_null (n : ℕ) (p q : Fin (n + 1)) (hpq : p ≠ q) :
-    (volume : Measure (Fin (n + 1) → ℝ)) {y | |y p| = |y q|} = 0 := by
-  let fm : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ :=
-    (LinearMap.proj p : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ) - (LinearMap.proj q : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ)
-  let fp : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ :=
-    (LinearMap.proj p : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ) + (LinearMap.proj q : (Fin (n + 1) → ℝ) →ₗ[ℝ] ℝ)
-  have hsub : {y : Fin (n + 1) → ℝ | |y p| = |y q|}
+private theorem absEq_null {N : ℕ} (p q : Fin N) (hpq : p ≠ q) :
+    (volume : Measure (Fin N → ℝ)) {y | |y p| = |y q|} = 0 := by
+  let fm : (Fin N → ℝ) →ₗ[ℝ] ℝ :=
+    (LinearMap.proj p : (Fin N → ℝ) →ₗ[ℝ] ℝ) - (LinearMap.proj q : (Fin N → ℝ) →ₗ[ℝ] ℝ)
+  let fp : (Fin N → ℝ) →ₗ[ℝ] ℝ :=
+    (LinearMap.proj p : (Fin N → ℝ) →ₗ[ℝ] ℝ) + (LinearMap.proj q : (Fin N → ℝ) →ₗ[ℝ] ℝ)
+  have hsub : {y : Fin N → ℝ | |y p| = |y q|}
       ⊆ (↑(LinearMap.ker fm) : Set _) ∪ (↑(LinearMap.ker fp) : Set _) := by
     intro y hy
     simp only [Set.mem_setOf_eq] at hy
@@ -243,7 +243,7 @@ theorem argmaxCell_aedisjoint (n : ℕ) (p q : Fin (n + 1)) (hpq : p ≠ q) :
   have hov : argmaxCell n p ∩ argmaxCell n q ⊆ {y | |y p| = |y q|} := by
     rintro y ⟨⟨_, hp⟩, ⟨_, hq⟩⟩
     exact le_antisymm (hq p) (hp q)
-  exact measure_mono_null hov (absEq_null n p q hpq)
+  exact measure_mono_null hov (absEq_null p q hpq)
 
 /-! ## The spectator-product extension (each `(2,2,2)` node has SPECTATOR coordinates)
 
@@ -331,5 +331,45 @@ theorem argmaxCell_measurableSet (n : ℕ) (p : Fin (n + 1)) :
     have hp : Measurable (fun y : Fin (n + 1) → ℝ => |y p|) := by fun_prop
     exact measurableSet_le hj hp
   exact h1.inter h2
+
+/-! ## The flat coordinate-subset cover (the form that plugs into `g5_step` on `Fin N → ℝ`)
+
+`g5_step` requires `E` to carry `IsAddHaarMeasure`; the product `(Fin k → ℝ) × W` does NOT
+auto-synth it, but the flat `Fin N → ℝ` does — so the `(2,2,2)` cover runs on flat `Fin 8 → ℝ` with
+the active block expressed as a coordinate SUBSET (spectators are the inactive coords, passed
+through). This is the `g5_step`-ready cover; the three nodes are instances (`active` = the A-block /
+`(E,F0,δ)`-slots / the 4-block). Argmax over `active`; cover is `{∃ active coord ≠ 0}`. -/
+
+/-- The argmax cell over a coordinate SUBSET `active`, pivot `p`: `y p ≠ 0` and `p` dominates the
+active coords (the inactive/spectator coords are free). -/
+def argmaxCellOn {N : ℕ} (active : Finset (Fin N)) (p : Fin N) : Set (Fin N → ℝ) :=
+  {y | y p ≠ 0 ∧ ∀ j ∈ active, |y j| ≤ |y p|}
+
+/-- **(subset cover).** The active-pivot cells cover `{some active coord ≠ 0}` exactly: for such
+a `y`, the argmax `p` over `active` of `|y ·|` dominates and is nonzero (`exists_max_image`). -/
+theorem argmaxCellOn_cover {N : ℕ} (active : Finset (Fin N)) :
+    {y : Fin N → ℝ | ∃ j ∈ active, y j ≠ 0} = ⋃ p ∈ active, argmaxCellOn active p := by
+  ext y
+  simp only [Set.mem_setOf_eq, Set.mem_iUnion, argmaxCellOn, exists_prop]
+  constructor
+  · rintro ⟨j0, hj0a, hj0⟩
+    obtain ⟨p, hpa, hp⟩ := active.exists_max_image (fun j => |y j|) ⟨j0, hj0a⟩
+    refine ⟨p, hpa, ?_, fun j hj => hp j hj⟩
+    intro hyp0
+    have hle : |y j0| ≤ |y p| := hp j0 hj0a
+    rw [hyp0, abs_zero] at hle
+    exact hj0 (abs_eq_zero.1 (le_antisymm hle (abs_nonneg _)))
+  · rintro ⟨p, hpa, hyp, _⟩
+    exact ⟨p, hpa, hyp⟩
+
+/-- **(subset disjoint).** Distinct active-pivot cells (`p, q ∈ active`) are a.e.-disjoint: the
+overlap forces `|y p| = |y q|` (each pivot dominates the other, both being active): a null set. -/
+theorem argmaxCellOn_aedisjoint {N : ℕ} (active : Finset (Fin N)) (p q : Fin N)
+    (hp : p ∈ active) (hq : q ∈ active) (hpq : p ≠ q) :
+    AEDisjoint volume (argmaxCellOn active p) (argmaxCellOn active q) := by
+  have hov : argmaxCellOn active p ∩ argmaxCellOn active q ⊆ {y | |y p| = |y q|} := by
+    rintro y ⟨⟨_, hpd⟩, ⟨_, hqd⟩⟩
+    exact le_antisymm (hqd p hp) (hpd q hq)
+  exact measure_mono_null hov (absEq_null p q hpq)
 
 end DLNFibre.DLN.RLCT
