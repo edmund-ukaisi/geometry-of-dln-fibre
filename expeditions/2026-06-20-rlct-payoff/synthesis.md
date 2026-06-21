@@ -128,3 +128,22 @@ e' 0` for `e ≤/< e'`). Both old geometric hyps discharge from this one CTheta 
   ∑ coeff(B)m̄(B), positive-coeff B = shorter intervals covering k (absent when I shortest ⟹ delta≤0). Discharge
   ⟹ θ=numTop UNCONDITIONAL. Then Phase D, then R-interface.
 - Correction: (2,3,2) θ=2 is at r=0 (not r=1; r=1 → numTop=1). ENV: Codex still flaky for formaliser/me.
+
+## 2026-06-21 — θ-count WEAK mono LANDED (thread 07); strict = last θ gap
+`Core.CCodimZeroMono.cCodim_zero_mono` (`e ≤ e' ⟹ cCodim e 0 ≤ cCodim e' 0`) FULL, sorry-free, axiom-clean
+(~1569 LoC; crux delta-sign `codimForm_splitMove`/`splitCoeff_pos_imp` via the LANDED `codimBil` machinery;
+four atomic shortest-split moves incl. endpoint cases). Discharges `hMono` ⟹ `hLowerBound` UNCONDITIONAL.
+Headline `numTop_eq_ncard_topComponents_of_strict` now needs ONLY `hMonoStrict`. Green (3017 jobs). HEAD 7ee71b3.
+- **LAST θ GAP (thread 08): `cCodim_zero_strict`** (all-vertex strict). A single shortest-split can be FLAT
+  (splitting [0,N] has no negative term), so strict doesn't localise to one step. Route (teammate-identified,
+  certified 200/200): the **+1-step invariant `cCodim e 0 < cCodim (e+1) 0`**, then `e ≤ e+1 ≤ e'` + weak mono ⟹
+  all-vertex strict. Discharge ⟹ `numTop = #top-dim components` FULLY UNCONDITIONAL. Then Phase D, then R-interface.
+- **IN-FLIGHT (thread-07-spawned, uncertain status):** `reviewer07` (weak-mono AUDIT), `strict-cert` (pen-and-paper
+  for the +1-step route). Integrate when they report; else re-dispatch fresh.
+- **ENV: Codex STILL broken for build agents** (exit 124 timeout from the worktree, even at 70s) despite operator's
+  "fixed" — only the reviewer's codex worked partially. Decorrelation = reviewer + exhaustive enumeration. FLAG to operator.
+
+## STATUS SNAPSHOT (re-ground)
+Phase G COMPLETE (G2 stratification, G3 components=maximal Ō_M, θ-A). θ-count: bijection+injectivity+Gabriel
+recovery+weak cCodim mono ✓ → ONE strict inequality (`cCodim_zero_strict`, route known) from `θ=numTop`
+unconditional. Then D (loss+codim identity), then R (Cited rlct interface). [IsAlgClosed][CharZero] on geom headlines.
