@@ -2188,3 +2188,32 @@ exponent or least value for any branch.  Eq3 keeps the explicit slack and Eq5
 keeps the explicit own-block width bound.  It does not construct displayed
 vectors, prove terminality, chart sequence, Lemma 5 order count, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 first-interval supplied-shaped coverage
+
+Reproduction:
+`reproduction-lemma5-first-interval-supplied-shaped-coverage-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-first-interval-supplied-shaped-coverage.md`.
+Review artifact:
+`review-lemma5-first-interval-supplied-shaped-coverage-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5_suppliedEq3Upper_Eq4_firstInterval_insertOwnCoordinates_eq_intervalValueSetNat
+```
+
+For the first same-coordinate interval, a supplied Eq4 lower endpoint and a
+separately supplied Eq3-shaped upper endpoint fill the two endpoints missing
+from the strict Eq5 offset set.  The proof combines the existing Eq4/Eq5
+erase-upper equality with the separately supplied Eq3-shaped own-coordinate
+upper endpoint and `Finset.insert_erase`.  The printed equation `(3)` excludes
+`(S_2-1,Htilde'_1+1)`, so this is not claimed to be source-backed by the
+printed Eq3 branch.
+
+This is only first-interval finite-set coverage for supplied branch
+certificates.  Eq3 keeps its explicit slack and the rising-region guard
+`1 <= ell-a` remains explicit.  The theorem does not construct displayed
+vectors, prove source-label legality, cover all intervals, package all branch
+families, prove Lemma 5 order count, normal crossings, or RLCT extraction.

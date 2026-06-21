@@ -3215,6 +3215,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-supplied-exponent-domain-extension-a5.md`.
 
+Latest A5 update: the first same-coordinate interval now has supplied-shaped
+finite-set coverage in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.
+The name is
+`aoyagiLemma5_suppliedEq3Upper_Eq4_firstInterval_insertOwnCoordinates_eq_intervalValueSetNat`.
+It combines the existing Eq4/Eq5 erase-upper equality with a separately
+supplied Eq3-shaped own-coordinate upper endpoint to prove that this upper
+endpoint, the supplied Eq4 lower endpoint, and the strict Eq5 offset set equal
+the full first interval.  The printed equation `(3)` excludes
+`(S_2-1,Htilde'_1+1)`, so the upper endpoint is not claimed to be supplied by
+the printed Eq3 branch.  This is first-interval finite-set bookkeeping only.
+It does not construct displayed vectors, prove source-label legality, cover
+all intervals, package all branches, prove order count, normal crossings, or
+RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-interval-supplied-shaped-coverage-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-interval-supplied-shaped-coverage.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-first-interval-supplied-shaped-coverage-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

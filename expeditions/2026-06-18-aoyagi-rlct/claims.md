@@ -2365,6 +2365,10 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiLemma5Eq3_ownCoordinate_extendExponentDomain_succ_current_of_lastPoint`,
   and
   `aoyagiLemma5Eq5_ownBlock_extendExponentDomain_succ_current_of_lastPoint_widthBound`.
+  Also proved the first-interval supplied-shaped finite-set coverage theorem
+  `aoyagiLemma5_suppliedEq3Upper_Eq4_firstInterval_insertOwnCoordinates_eq_intervalValueSetNat`,
+  where the upper endpoint is a separately supplied Eq3-shaped certificate;
+  printed Eq3 excludes `(S_2-1,Htilde'_1+1)`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

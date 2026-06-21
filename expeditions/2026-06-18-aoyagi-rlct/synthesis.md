@@ -2590,6 +2590,27 @@ order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-supplied-exponent-domain-extension-a5.md`.
 
+The first same-coordinate interval now has supplied-shaped finite-set
+coverage.  The theorem
+`aoyagiLemma5_suppliedEq3Upper_Eq4_firstInterval_insertOwnCoordinates_eq_intervalValueSetNat`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean` proves that the
+separately supplied Eq3-shaped upper endpoint, supplied Eq4 lower endpoint,
+and strict Eq5 offset set equal
+`aoyagiHtildeIntervalValueSetNat ell a M m 1`.  The proof uses the existing
+Eq4/Eq5 erase-upper equality, the separately supplied Eq3-shaped
+own-coordinate upper endpoint, and `Finset.insert_erase`.  The printed
+equation `(3)` excludes `(S_2-1,Htilde'_1+1)`, so this is not a claim that the
+printed Eq3 branch supplies the first-interval upper endpoint.  This is only
+first-interval finite-set bookkeeping for supplied branch certificates; it
+does not construct displayed vectors, prove source-label legality, cover all
+intervals, package all branches, prove Lemma 5 order count, normal crossings,
+or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-interval-supplied-shaped-coverage-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-interval-supplied-shaped-coverage.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-first-interval-supplied-shaped-coverage-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

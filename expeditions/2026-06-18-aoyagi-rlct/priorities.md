@@ -842,6 +842,13 @@ on the session's original cwd.
    proofs are supplied explicitly.  This can be reused by later branch-family
    packaging without pretending that interval membership or recurrence weights
    determine exponent certificates.
+   The first same-coordinate interval now has supplied-shaped finite-set
+   coverage: a separately supplied Eq3-shaped upper endpoint, a supplied Eq4
+   lower endpoint, and the strict Eq5 offset set equal the full interval.
+   Printed Eq3 excludes `(S_2-1,Htilde'_1+1)`, so this is the first
+   count-side coverage bridge below the displayed-family realisation boundary,
+   not a claim that the printed Eq3 branch supplies that endpoint.  It is not
+   yet an all-interval or all-branch order-count theorem.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

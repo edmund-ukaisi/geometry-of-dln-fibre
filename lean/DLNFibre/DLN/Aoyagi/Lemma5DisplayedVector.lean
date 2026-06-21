@@ -2063,6 +2063,61 @@ theorem aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_o
   exact aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
     ell a p M m hT.a_le_ell hp_pos hp_a hp_c
 
+/-- At the first interval, a separately supplied Eq3-shaped upper endpoint and
+supplied equation `(4)` lower endpoint fill the two endpoints
+missing from the strict Eq5 offset set.
+
+This is a finite-set equality for supplied branch certificates only.  It does
+not assert that the printed equation `(3)` source branch supplies the excluded
+label `(S_2-1,Htilde'_1+1)`, and it does not construct the displayed
+source-vector family, prove source-label legality, terminality, chart
+coverage, pole order, normal crossings, or RLCT extraction.
+-/
+theorem aoyagiLemma5_suppliedEq3Upper_Eq4_firstInterval_insertOwnCoordinates_eq_intervalValueSetNat
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (layerWidth3 T3 layerWidth4 T4 : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M)
+    (hp_c : 1 ≤ ell - a)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3)
+    (hT4 : AoyagiLemma5Eq4PiecewiseSourceVector ell a 1 M m C layerWidth4 T4) :
+    insert (T3 (C.point 1 - 1))
+        (insert (T4 (C.point 1 - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a 1 M m)) =
+      aoyagiHtildeIntervalValueSetNat ell a M m 1 := by
+  have hp_a : 1 ≤ a := by
+    have hguard : 1 + 1 ≤ a := hT4.indexGuard
+    omega
+  have ha_lt : a < ell := by
+    have ha : a ≤ ell := hT4.a_le_ell
+    omega
+  have hEq4 :=
+    aoyagiLemma5Eq4_insertOwnCoordinate_eq5Offsets_eq_interval_erase_upper_of_le_min
+      ell a 1 M m C layerWidth4 T4 hell le_rfl hp_a hp_c hselected hsource hT4
+  have hEq3 :=
+    aoyagiLemma5Eq3_piecewise_ownCoordinate_of_sourceSelectedInequality_and_slack
+      ell a M m C layerWidth3 T3 hell ha_lt hselected hsource hslack hT3
+  have hupper_mem :
+      aoyagiHtildeUpperNat ell a M m 1 ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m 1 :=
+    aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+      ell a 1 M m hT4.a_le_ell (by omega)
+  calc
+    insert (T3 (C.point 1 - 1))
+        (insert (T4 (C.point 1 - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a 1 M m))
+        =
+          insert (aoyagiHtildeUpperNat ell a M m 1)
+            ((aoyagiHtildeIntervalValueSetNat ell a M m 1).erase
+              (aoyagiHtildeUpperNat ell a M m 1)) := by
+            rw [hEq4, hEq3.2.1]
+    _ = aoyagiHtildeIntervalValueSetNat ell a M m 1 :=
+      Finset.insert_erase hupper_mem
+
 /-- A supplied equation `(5)` own-coordinate branch has the displayed value
 `Htilde'_p - alpha` on block `p`. -/
 theorem aoyagiLemma5Eq5_ownCoordinate_value
