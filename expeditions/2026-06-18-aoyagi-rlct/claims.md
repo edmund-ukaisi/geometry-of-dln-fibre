@@ -2534,6 +2534,16 @@ No such claim is formalisation-ready until both fields are filled.
   terminal interval is `{0}`.  A separately supplied terminal zero, or
   terminal upper endpoint, fills the interval.  This does not construct the
   terminal branch or prove terminal-label exactness.
+  Also proved supplied-family terminal chain zero in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`:
+  `AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_terminalH_zero`,
+  `AoyagiLemma5SuppliedAdmissibleFamily.base_terminalH_zero`,
+  `AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalH_zero`,
+  `AoyagiLemma5SuppliedBinaryNonbaseFamily.branch_terminalH_zero`,
+  `AoyagiLemma5SuppliedBinaryFamily.base_terminalH_zero`, and
+  `AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalH_zero`.  These prove
+  terminal chain-coordinate equality `H_ell=0` for supplied branches.  They do
+  not prove the source-coordinate terminal equality `T(C.point ell-1)=0`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

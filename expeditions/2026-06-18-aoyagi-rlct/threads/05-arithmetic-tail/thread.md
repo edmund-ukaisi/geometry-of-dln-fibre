@@ -3400,3 +3400,36 @@ This is supplied endpoint bookkeeping, not source construction.  It does not
 prove terminal source-label legality, terminal-label exactness,
 all-coordinate endpoint realisation, injection, back-to-label coverage, pole
 order, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 supplied family terminal chain zero
+
+Reproduction:
+`reproduction-lemma5-supplied-family-terminal-chain-zero-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-supplied-family-terminal-chain-zero.md`.
+Review artifact:
+`review-lemma5-supplied-family-terminal-chain-zero-a5.md`.
+
+Lean now packages terminal chain value zero for supplied Lemma 5 branch
+families:
+
+```text
+AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_terminalH_zero
+AoyagiLemma5SuppliedAdmissibleFamily.base_terminalH_zero
+AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalH_zero
+AoyagiLemma5SuppliedBinaryNonbaseFamily.branch_terminalH_zero
+AoyagiLemma5SuppliedBinaryFamily.base_terminalH_zero
+AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalH_zero
+```
+
+For admissible families this is a direct application of the existing
+`Htilde` terminal squeeze under `a<=ell` and the selected-width sum.  For
+binary families it is a direct dispatch to the supplied `Hlast` and
+`baseHlast` fields.
+
+This is chain-coordinate endpoint bookkeeping only.  It does not construct a
+terminal/base source branch, and it does not prove the source-coordinate
+terminal equality `T(C.point ell-1)=0` needed by the terminal Eq5 finite-set
+wrapper.  Source-label legality, terminal-label exactness, classifier
+coverage, injection, back-to-label coverage, pole order, normal crossings, and
+RLCT extraction remain outside this claim.

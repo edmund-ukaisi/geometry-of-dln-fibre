@@ -3460,6 +3460,27 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-full-supplied-family-branchwise-admissibility-a5.md`.
 
+Latest A5 supplied-family terminal chain update: branchwise terminal chain
+zero is now packaged in `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.
+For admissible supplied families, the new names
+`AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_terminalH_zero`,
+`AoyagiLemma5SuppliedAdmissibleFamily.base_terminalH_zero`, and
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalH_zero` apply the
+existing `Htilde` terminal squeeze under `a<=ell` and the selected-width sum.
+For binary supplied families,
+`AoyagiLemma5SuppliedBinaryNonbaseFamily.branch_terminalH_zero`,
+`AoyagiLemma5SuppliedBinaryFamily.base_terminalH_zero`, and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalH_zero` dispatch to the
+supplied `Hlast`/`baseHlast` fields.  This is chain-coordinate endpoint data,
+not the source-coordinate terminal equality `T(C.point ell-1)=0` needed by the
+terminal Eq5 finite-set wrapper.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-family-terminal-chain-zero-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-family-terminal-chain-zero.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-supplied-family-terminal-chain-zero-a5.md`.
+
 Latest A5 free-count minimum update: the supplied full family now has a
 branchwise Lemma 3 numerator consequence in
 `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  Names:

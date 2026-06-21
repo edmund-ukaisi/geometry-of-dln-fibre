@@ -639,6 +639,25 @@ theorem branch_twoValueCount
     (F.H0 hj hb) ha hselected (F.lower_bound hj hb) (F.upper_bound hj hb)
     (F.increment_twoValue hj hb)
 
+/-- Each supplied admissible nonbase branch has terminal chain value zero.
+
+This is a consequence of the supplied `Htilde` chain bounds and the selected
+width sum.  It is a statement about the branch's chain value `H_ell`; it does
+not identify that chain coordinate with a source-vector endpoint
+`T(C.point ell - 1)`. -/
+theorem branch_terminalH_zero
+    {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleNonbaseFamily β ell a M m)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    {j : ℕ} (hj : j ∈ Finset.Icc 1 (ell - 1))
+    {b : β} (hb : b ∈ F.branches j) :
+    F.H b (Fin.last ell) = 0 := by
+  exact aoyagiLemma4_Hlast_eq_zero_of_HtildeChainBounds
+    ell a M m (F.H b) ha hselected (F.lower_bound hj hb)
+    (F.upper_bound hj hb)
+
 end AoyagiLemma5SuppliedAdmissibleNonbaseFamily
 
 /-- Supplied admissible full branch family for Aoyagi Lemma 5.
@@ -711,6 +730,20 @@ theorem base_twoValueCount {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
     F.baseH0 ha hselected F.base_lower_bound F.base_upper_bound
     F.base_increment_twoValue
 
+/-- The supplied base branch has terminal chain value zero.
+
+This packages only `H_ell=0` for the supplied base chain.  It does not construct
+the base source vector or prove the terminal source-coordinate equality needed
+by the Eq5 terminal endpoint wrapper. -/
+theorem base_terminalH_zero {β : Type*} [DecidableEq β] {ell a : ℕ} {M : ℤ}
+    {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    F.baseH (Fin.last ell) = 0 := by
+  exact aoyagiLemma4_Hlast_eq_zero_of_HtildeChainBounds
+    ell a M m F.baseH ha hselected F.base_lower_bound F.base_upper_bound
+
 /-- Every tagged supplied full branch satisfies Lemma 4's finite two-value
 count.
 
@@ -740,6 +773,35 @@ theorem fullBranch_twoValueCount {β : Type*} [DecidableEq β]
         with ⟨j, hj, hb⟩
       have h :=
         AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_twoValueCount
+          F.toAoyagiLemma5SuppliedAdmissibleNonbaseFamily ha hselected hj hb
+      simpa [fullH] using h
+
+/-- Every tagged branch in a supplied admissible full family has terminal chain
+value zero.
+
+For `none` this is the supplied base chain; for `some b` it is the inherited
+nonbase branch chain.  The theorem deliberately remains at the chain level and
+does not provide a source-coordinate terminal value. -/
+theorem fullBranch_terminalH_zero {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedAdmissibleFamily β ell a M m)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    {x : Option β} (hx : x ∈ F.fullBranches) :
+    (F.fullH x) (Fin.last ell) = 0 := by
+  cases x with
+  | none =>
+      simpa [fullH] using F.base_terminalH_zero ha hselected
+  | some b =>
+      have hx' :
+          some b ∈ F.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches := by
+        simpa [fullBranches] using hx
+      rcases
+        (AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff
+          F.toAoyagiLemma5SuppliedNonbaseFamily).mp hx'
+        with ⟨j, hj, hb⟩
+      have h :=
+        AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_terminalH_zero
           F.toAoyagiLemma5SuppliedAdmissibleNonbaseFamily ha hselected hj hb
       simpa [fullH] using h
 
@@ -856,6 +918,19 @@ def countDatumClassifierOfBranchCoord {β : Type*} [DecidableEq β]
       |>.countDatumClassifierOfBranchCoord_of_branchCoord_eq branchCoord
         branchCoord_eq)
 
+/-- Each supplied binary nonbase branch has terminal chain value zero by its
+explicit `Hlast` field.
+
+This is branch-chain bookkeeping only; it does not identify the terminal chain
+coordinate with a source-vector endpoint. -/
+theorem branch_terminalH_zero {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryNonbaseFamily β ell a M m)
+    {j : ℕ} (hj : j ∈ Finset.Icc 1 (ell - 1))
+    {b : β} (hb : b ∈ F.branches j) :
+    F.H b (Fin.last ell) = 0 :=
+  F.Hlast hj hb
+
 /-- Terminal binary prefix deltas convert a supplied binary nonbase family into
 the existing admissible nonbase-family boundary. -/
 def toAdmissibleNonbaseFamily {β : Type*} [DecidableEq β]
@@ -960,6 +1035,41 @@ def countDatumClassifierOfBranchCoord {β : Type*} [DecidableEq β]
     (F.toAoyagiLemma5SuppliedBinaryNonbaseFamily
       |>.countDatumClassifierOfBranchCoord branchCoord
         branchCoord_eq)
+
+/-- The supplied binary base branch has terminal chain value zero by its
+explicit `baseHlast` field. -/
+theorem base_terminalH_zero {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m) :
+    F.baseH (Fin.last ell) = 0 :=
+  F.baseHlast
+
+/-- Every tagged branch in a supplied binary full family has terminal chain
+value zero.
+
+This dispatches to `baseHlast` for `none` and to the inherited nonbase `Hlast`
+field for `some b`.  It remains a chain-level statement, not a source-vector
+terminal endpoint theorem. -/
+theorem fullBranch_terminalH_zero {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (F : AoyagiLemma5SuppliedBinaryFamily β ell a M m)
+    {x : Option β} (hx : x ∈ F.fullBranches) :
+    (F.fullH x) (Fin.last ell) = 0 := by
+  cases x with
+  | none =>
+      simpa [fullH] using F.base_terminalH_zero
+  | some b =>
+      have hx' :
+          some b ∈ F.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches := by
+        simpa [fullBranches] using hx
+      rcases
+        (AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff
+          F.toAoyagiLemma5SuppliedNonbaseFamily).mp hx'
+        with ⟨j, hj, hb⟩
+      have h :=
+        AoyagiLemma5SuppliedBinaryNonbaseFamily.branch_terminalH_zero
+          F.toAoyagiLemma5SuppliedBinaryNonbaseFamily hj hb
+      simpa [fullH] using h
 
 /-- Terminal binary prefix deltas convert a supplied binary full family into
 the existing admissible full-family boundary. -/

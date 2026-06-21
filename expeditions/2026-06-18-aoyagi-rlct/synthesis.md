@@ -3275,6 +3275,29 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-eq5-gap-a5.md`.
 
+The supplied family terminal chain-zero wrapper is now Lean-proved.  In
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`, admissible supplied
+branches get terminal chain value zero from the existing `Htilde` chain-bound
+squeeze under the selected-width sum:
+`AoyagiLemma5SuppliedAdmissibleNonbaseFamily.branch_terminalH_zero`,
+`AoyagiLemma5SuppliedAdmissibleFamily.base_terminalH_zero`, and
+`AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_terminalH_zero`.  Binary
+supplied families expose the same endpoint directly from the explicit
+`Hlast`/`baseHlast` fields:
+`AoyagiLemma5SuppliedBinaryNonbaseFamily.branch_terminalH_zero`,
+`AoyagiLemma5SuppliedBinaryFamily.base_terminalH_zero`, and
+`AoyagiLemma5SuppliedBinaryFamily.fullBranch_terminalH_zero`.  This is only
+chain endpoint bookkeeping.  It deliberately does not feed the base branch
+into the terminal Eq5 source-coordinate wrapper; doing that still requires an
+explicit source-realisation hypothesis equating `T(C.point ell-1)` with the
+terminal chain coordinate.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-supplied-family-terminal-chain-zero-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-supplied-family-terminal-chain-zero.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-supplied-family-terminal-chain-zero-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
