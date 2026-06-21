@@ -132,14 +132,15 @@ theorem weightedThreshold_transport
   weightedThreshold_transport_aux F φ wstar π Dπ E hproper hE_meas hE_null hinj hderiv hsurj hImE
 
 /-- **S1.3 (Lemma 1, ideal invariance core).** The RLCT is invariant under multiplying `F` by a unit
-`u` bounded away from `0` near `w*` (`0 < a ≤ |u| ≤ b` on a neighbourhood) — the operative content
-of "depends only on the ideal" (and what reduces `λ(⟨Fᵢ⟩)` to `λ(∑Fᵢ²)`, and removes the bump and
-`Σ_X`). Non-vacuous: it equates the RLCT of `u·F` to that of `F`. -/
+`u` (measurable, bounded `0 < a ≤ |u| ≤ b` near `w*`) — the operative "depends only on the ideal"
+content (reduces `λ(⟨Fᵢ⟩)` to `λ(∑Fᵢ²)`, removes the bump and `Σ_X`). `Measurable u` is the
+11th-finding fidelity fix (the integrand pushforward needs it). Wired to `rlct_unit_invariant_aux`
+(`Foundations/S1Local`). Non-vacuous: equates the RLCT of `u·F` to that of `F`. -/
 theorem rlct_unit_invariant (H : Fin (L + 1) → ℕ) (F u : Params H → ℝ) (wstar : Params H)
-    (a b : ℝ) (ha : 0 < a)
+    (a b : ℝ) (ha : 0 < a) (hmeas : Measurable u)
     (hu : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, a ≤ |u w| ∧ |u w| ≤ b) :
-    rlctAt H (fun w => u w * F w) wstar = rlctAt H F wstar := by
-  sorry
+    rlctAt H (fun w => u w * F w) wstar = rlctAt H F wstar :=
+  rlct_unit_invariant_aux H F u wstar a b ha hmeas hu
 
 /-- **S1.4 (germ-locality / φ-independence).** The RLCT depends only on the germ of `F` at `w*`: if
 `F` and `G` agree on a neighbourhood of `w*`, their RLCTs are equal. This is the bump-independence
@@ -1024,6 +1025,188 @@ theorem Mval_descent (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ A
   have hz : tPrev M T j - (T j : ℤ) = 0 := by omega
   rw [hz, zero_mul]
 
+/-- **Karamata for squares (ascending-prefix form, over ℤ).** If `y` is monotone on `[0,n)`, `x` and
+`y` have equal total over `range n`, and every prefix sum of `x` is `≤` that of `y`, then
+`∑ y² ≤ ∑ x²`. The convexity lower-bound engine: `x²−y² ≥ 2y(x−y)`, and `∑ y(x−y) ≥ 0` by
+summation-by-parts (`Finset.sum_range_by_parts`) from prefix-domination + monotonicity. -/
+private theorem karamata_sq (n : ℕ) (x y : ℕ → ℤ)
+    (hmono : ∀ i, i + 1 < n → y i ≤ y (i + 1))
+    (htot : ∑ i ∈ Finset.range n, x i = ∑ i ∈ Finset.range n, y i)
+    (hpre : ∀ k, k ≤ n → ∑ i ∈ Finset.range k, x i ≤ ∑ i ∈ Finset.range k, y i) :
+    ∑ i ∈ Finset.range n, y i ^ 2 ≤ ∑ i ∈ Finset.range n, x i ^ 2 := by
+  have key : 0 ≤ ∑ i ∈ Finset.range n, y i * (x i - y i) := by
+    set d : ℕ → ℤ := fun i => x i - y i with hd
+    have hsumd : ∀ k, k ≤ n → ∑ i ∈ Finset.range k, d i ≤ 0 := by
+      intro k hk; simp only [hd, Finset.sum_sub_distrib]; linarith [hpre k hk]
+    have habel := Finset.sum_range_by_parts (fun i => y i) (fun i => d i) n
+    simp only [smul_eq_mul] at habel
+    rw [habel]
+    have e1 : ∑ i ∈ Finset.range n, d i = 0 := by
+      simp only [hd, Finset.sum_sub_distrib]; rw [htot]; ring
+    rw [e1, mul_zero, zero_sub, neg_nonneg]
+    apply Finset.sum_nonpos
+    intro i hi
+    rw [Finset.mem_range] at hi
+    have hy : 0 ≤ y (i + 1) - y i := by linarith [hmono i (by omega)]
+    exact mul_nonpos_of_nonneg_of_nonpos hy (hsumd (i + 1) (by omega))
+  have hpt : ∀ i ∈ Finset.range n, y i ^ 2 + 2 * (y i * (x i - y i)) ≤ x i ^ 2 := by
+    intro i _; nlinarith [sq_nonneg (x i - y i)]
+  have hsum := Finset.sum_le_sum hpt
+  rw [Finset.sum_add_distrib, ← Finset.mul_sum] at hsum
+  linarith [hsum, key]
+
+/-! ### A1 keystone: the edge-variable transform (fixed `Fin L` index, no descent reindexing).
+
+Route (verified exhaustively, fm rung0-defs + Codex xhigh): map every admissible `T` to a
+fixed-length edge vector `q_j = M_{j+1} + (u_j − u_{j+1})` (`u` the level sequence `[M⁰,T⁰,…]`).
+Then `2·Mval = ∑ q² − ∑ M²` (CERTAIN algebra), and the admissible cone maps onto the
+prefix-constrained polytope `QFeasible`. The minimum of `∑ q²` over it is the balanced split of the
+`c+1` smallest widths' total plus the squares of the `L−c` largest — matched to `cleanCore` via
+`balancedSplit_sq_int` + `cleanCore_perm`. The lower bound is `karamata_sq`; the achiever is the
+explicit balanced-split placement. -/
+
+/-- The level sequence `u : ℕ → ℤ`, `u 0 = M⁰`, `u (i+1) = Tⁱ` (and `0` past `L`). Total `ℕ→ℤ` to
+avoid `Fin` casts in the `range`-sum algebra. -/
+noncomputable def Useq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : ℕ) : ℤ :=
+  if i = 0 then (M 0 : ℤ) else if h : i - 1 < L then (T ⟨i - 1, h⟩ : ℤ) else 0
+
+/-- The width sequence `Mseq i = M⁽ⁱ⁾` as `ℕ → ℤ` (`0` past `L`), for `range`-sum algebra. -/
+noncomputable def Mseq (M : Fin (L + 1) → ℕ) (i : ℕ) : ℤ :=
+  if h : i < L + 1 then (M ⟨i, h⟩ : ℤ) else 0
+
+/-- The fixed-length edge vector `q_j = M⁽ʲ⁺¹⁾ + (u_j − u_{j+1})`, `j ∈ range L` (`ℕ → ℤ`). -/
+noncomputable def edgeQ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : ℕ) : ℤ :=
+  Mseq M (j + 1) + Useq M T j - Useq M T (j + 1)
+
+private theorem Useq_zero (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Useq M T 0 = (M 0 : ℤ) := rfl
+
+private theorem tPrev_eq_Useq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : Fin L) :
+    tPrev M T j = Useq M T j.val := by
+  unfold tPrev Useq; split
+  · rfl
+  · rw [dif_pos (show j.val - 1 < L by omega)]
+
+private theorem Tj_eq_Useq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : Fin L) :
+    (T j : ℤ) = Useq M T (j.val + 1) := by
+  unfold Useq; rw [if_neg (by omega), dif_pos (show (j.val + 1) - 1 < L by omega)]; norm_num
+
+private theorem Msucc_eq_Mseq (M : Fin (L + 1) → ℕ) (j : Fin L) :
+    (M j.succ : ℤ) = Mseq M (j.val + 1) := by
+  unfold Mseq; rw [dif_pos (show j.val + 1 < L + 1 by omega)]; rfl
+
+/-- `Useq` past `L` is `0` when the last exponent vanishes (`T⁽ᴸ⁻¹⁾ = 0`, from admissibility). -/
+private theorem Useq_last (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
+    (hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0) : Useq M T L = 0 := by
+  unfold Useq
+  rw [if_neg (by omega), dif_pos (show L - 1 < L by omega)]
+  have : T ⟨L - 1, by omega⟩ = 0 := hlast _ rfl
+  rw [this]; rfl
+
+/-- `Mval M T` as a `range L` sum in the level sequence. -/
+private theorem Mval_eq_range (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) :
+    Mval M T = ∑ j ∈ Finset.range L,
+      (Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1)) := by
+  unfold Mval
+  rw [Finset.sum_range fun j =>
+    (Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1))]
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [tPrev_eq_Useq, Tj_eq_Useq, Msucc_eq_Mseq]
+
+/-- **Edge identity (certain algebra).** `2·Mval M T = ∑_{j<L}(edgeQ j)² − ∑_{i<L+1}(M⁽ⁱ⁾)²`
+(level sequence from `M⁰` to `0`, admissibility). The transform sending the admissible cone to a
+fixed `Fin L` edge polytope. -/
+private theorem edge_identity (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
+    (hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0) :
+    2 * Mval M T = (∑ j ∈ Finset.range L, edgeQ M T j ^ 2)
+      - ∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2 := by
+  rw [Mval_eq_range, Finset.mul_sum]
+  -- per-term: 2*(u_j - u_{j+1})(M_{j+1} - u_{j+1}) = edgeQ_j^2 - M_{j+1}^2 - (u_j^2 - u_{j+1}^2)
+  have hterm : ∀ j ∈ Finset.range L,
+      2 * ((Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1)))
+        = edgeQ M T j ^ 2 - Mseq M (j + 1) ^ 2
+          - (Useq M T j ^ 2 - Useq M T (j + 1) ^ 2) := by
+    intro j _; unfold edgeQ; ring
+  rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, Finset.sum_sub_distrib]
+  -- ∑_{j<L} M_{j+1}^2 = (∑_{i<L+1} M_i^2) - M_0^2
+  have hM : ∑ j ∈ Finset.range L, Mseq M (j + 1) ^ 2
+      = (∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2) - Mseq M 0 ^ 2 := by
+    rw [Finset.sum_range_succ' (fun i => Mseq M i ^ 2) L]; ring
+  -- ∑_{j<L} (u_j^2 - u_{j+1}^2) = u_0^2 - u_L^2 = M_0^2 - 0
+  have hU : ∑ j ∈ Finset.range L, (Useq M T j ^ 2 - Useq M T (j + 1) ^ 2)
+      = Useq M T 0 ^ 2 - Useq M T L ^ 2 :=
+    Finset.sum_range_sub' (fun i => Useq M T i ^ 2) L
+  rw [hM, hU, Useq_zero, Useq_last M T hL hlast]
+  have hM0 : Mseq M 0 = (M 0 : ℤ) := by unfold Mseq; rw [dif_pos (by omega)]; rfl
+  rw [hM0]; ring
+
+/-- `Useq` at a positive index is the corresponding `T` entry. -/
+private theorem Useq_pos (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : ℕ) (hi : i - 1 < L)
+    (hi0 : i ≠ 0) : Useq M T i = (T ⟨i - 1, hi⟩ : ℤ) := by
+  unfold Useq; rw [if_neg hi0, dif_pos hi]
+
+/-- The level sequence is antitone on `[0, L]` (admissibility weak-decrease + index-0 bound). -/
+private theorem Useq_antitone (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
+    ∀ i, i + 1 ≤ L → Useq M T (i + 1) ≤ Useq M T i := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨hbound, hdec, _⟩ := hT.2
+  intro i hi
+  rcases Nat.eq_zero_or_pos i with hi0 | hipos
+  · subst hi0
+    rw [Useq_pos M T 1 (by omega) (by omega), Useq_zero]
+    have hb := hbound ⟨0, by omega⟩
+    unfold admBound at hb; rw [if_pos rfl] at hb
+    have h0 : T ⟨0, by omega⟩ ≤ M 0 := le_trans hb (min_le_left _ _)
+    simpa using (by exact_mod_cast h0 : (T ⟨1 - 1, by omega⟩ : ℤ) ≤ (M 0 : ℤ))
+  · rw [Useq_pos M T (i + 1) (by omega) (by omega), Useq_pos M T i (by omega) (by omega)]
+    have hle : (⟨i - 1, by omega⟩ : Fin L) ≤ ⟨i + 1 - 1, by omega⟩ := by
+      simp only [Fin.le_def]; omega
+    exact_mod_cast hdec ⟨i - 1, by omega⟩ ⟨i + 1 - 1, by omega⟩ hle
+
+/-- The level sequence is nonnegative. -/
+private theorem Useq_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : ℕ) : 0 ≤ Useq M T i := by
+  unfold Useq; split
+  · positivity
+  · split
+    · positivity
+    · rfl
+
+/-- The block bound `admBound j ≤ M⁽ʲ⁺¹⁾` (the index-0 `min(M⁰,M¹) ≤ M¹`). -/
+private theorem admBound_le_Msucc (M : Fin (L + 1) → ℕ) (j : Fin L) : admBound M j ≤ M j.succ := by
+  unfold admBound; split
+  · rename_i h0
+    have hs : j.succ = (1 : Fin (L + 1)) := by
+      apply Fin.ext; rw [Fin.val_succ, h0, Fin.val_one', Nat.mod_eq_of_lt (by omega)]
+    rw [hs]; exact min_le_right _ _
+  · exact le_refl _
+
+/-- The level sequence is bounded by the widths: `u_i ≤ M⁽ⁱ⁾` (the block bound). -/
+private theorem Useq_le_M (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (i : ℕ)
+    (hi : i < L + 1) : Useq M T i ≤ Mseq M i := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨hbound, _, _⟩ := hT.2
+  rcases Nat.eq_zero_or_pos i with hi0 | hipos
+  · subst hi0; rw [Useq_zero]; unfold Mseq; rw [dif_pos (by omega)]; norm_num
+  · rw [Useq_pos M T i (by omega) (by omega)]
+    unfold Mseq; rw [dif_pos hi]
+    have hb := hbound ⟨i - 1, by omega⟩
+    have hbm := admBound_le_Msucc M ⟨i - 1, by omega⟩
+    have hsucc : (⟨i - 1, by omega⟩ : Fin L).succ = (⟨i, hi⟩ : Fin (L + 1)) := by
+      apply Fin.ext; simp [Fin.succ]; omega
+    rw [hsucc] at hbm
+    exact_mod_cast le_trans hb hbm
+
+/-- The edge vector's prefix sum telescopes: `∑_{j<n} q_j = (∑_{i<n+1} M⁽ⁱ⁾) − M⁰ + (M⁰ − u_n)`. -/
+private theorem prefix_edgeQ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (n : ℕ) :
+    ∑ j ∈ Finset.range n, edgeQ M T j
+      = (∑ i ∈ Finset.range (n + 1), Mseq M i) - Mseq M 0 + (Useq M T 0 - Useq M T n) := by
+  unfold edgeQ
+  rw [show (fun j => Mseq M (j + 1) + Useq M T j - Useq M T (j + 1))
+        = (fun j => Mseq M (j + 1) + (Useq M T j - Useq M T (j + 1))) from by funext j; ring,
+      Finset.sum_add_distrib, Finset.sum_range_sub' (fun i => Useq M T i) n]
+  congr 1
+  rw [Finset.sum_range_succ' (fun i => Mseq M i) n]; ring
+
 /-- **A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
 `lambdaCore M = ½·min_T M(T)` equals `cleanCore c (sortedSmallest M c)` for an **achiever**
 `c ∈ {1,…,L}` — the `m` argument is **pinned** to `M`'s `c+1` smallest reduced widths (a function of
@@ -1042,16 +1225,34 @@ over **all** `M` with widths `0..3`, `L ≤ 4`, zero failures). NOTE the prior r
 lower bound", `min_c`) was the *wrong* (refuted) framing, and Codex's single-`a_c ≤ ⌈S_c/c⌉` test is
 also wrong (278/3900 fail — needs the **cumulative** ∀i≤c); both corrected here.
 
-**Sub-lemmas (the remaining work — the documented keystone, ~250-350 lines):**
-1. `balancedSplit_min` — DONE (above): `∑ balancedSplitᵢ² ≤ ∑ qᵢ²` at fixed `∑q`. The LB engine.
-2. `good`/`cstar` (ℕ arithmetic): `c = 1` good; `c*` = largest good `c`, `1 ≤ c* ≤ L`.
-3. **Lower bound** `Φ c* ≤ Mval M T` for every `T ∈ Adm M`. Crux: only strict-descent positions of
-   `u = [M⁰,T⁰,…,Tᴸ⁻¹=0]` contribute (zero gap elsewhere, `Mval_descent`), giving
-   `Mval = ∑ₖ gapₖ(wₖ − Hₖ)`; complete the square + `balancedSplit_min`.
-4. **Achiever** `∃ T* ∈ Adm M, Mval M T* = Φ c*` (from the finite `inf'` once 3 holds, but the
-   value-match needs the breakpoint reparametrisation of the minimiser). The hard `Fin`-reindexing
-   (descent set → `(c, gaps, widths)`) lives in 3+4 — the perm-invariance wall reappears as the
-   minimiser's breakpoint widths needing to be tied to `a`'s prefix. -/
+**VERIFIED TURNKEY ROUTE (fm rung0-defs; the descent reindex is REPLACED by a fixed-`Fin L` edge
+transform — no `Fin c_T`).** Engines now BANKED green in-file:
+- `edge_identity`: `2·Mval M T = ∑_{j<L} (edgeQ M T j)² − ∑_{i<L+1} (Mseq M i)²`, the fixed-length
+  transform `q_j = M⁽ʲ⁺¹⁾ + u_j − u_{j+1}` (CERTAIN algebra; `Useq`/`Mseq`/`edgeQ` defs above).
+- `karamata_sq`: ascending-prefix majorization ⟹ `∑ y² ≤ ∑ x²` (Abel summation). The convexity LB.
+- `Useq_antitone`, `Useq_nonneg`, `Useq_le_M`, `admBound_le_Msucc`, `prefix_edgeQ`: give that the
+  edge vector of any `T ∈ Adm M` is `QFeasible` — `q_j ≥ M⁽ʲ⁺¹⁾`, total `= ∑M`, positional prefix
+  `S_{n-1} ≤ ∑_{j<n} q_j ≤ S_n` (`S_n = M⁰+⋯+Mⁿ`). [Adm ↔ QFeasible bijection verified both ways.]
+- `balancedSplit_min`/`balancedSplit_sq_int`: `∑β² = c·b²+a(2b+1)`, the balanced-split value.
+- `cleanCore_perm`: `cleanCore` is multiset-only — matches the achiever's edge multiset `Y` to
+  `sortedSmallest M c`.
+
+Achiever `c* = largest c∈{1..L}` with cumulative `good c := ∀1≤i≤c, i·aᵢ ≤ Sᵢ+i−1` (`a = sort M`
+ascending; `c=1` always good). Target edge multiset `Y = {β₀…β_{c*−1}} ∪ {a_{c*+1}…a_L}`,
+`β = balancedSplit P_{c*} c*`, `P_{c*} = ∑_{i≤c*} aᵢ`. Then `minMval = ∑Y² − ∑M²` and
+`2·cleanCore c* (sortedSmallest M c*) = ∑Y² − ∑M²` (arithmetic via `balancedSplit_sq_int`).
+
+**THE ONE REMAINING GATE (the genuine hard core; ~150-250 lines of from-scratch combinatorics).**
+Lower bound `∑Y² ≤ ∑_{j<L} (edgeQ M T j)²` for every `T ∈ Adm M`. To feed `karamata_sq` one must
+sort the (positional) edge vector and show the SMALLEST-`k`-sum majorization
+`∀k, ∑(k smallest of edgeQ) ≤ ∑(k smallest of Y)` from the positional QFeasible bounds. This is a
+combinatorial majorization Mathlib LACKS (no Karamata/Schur-convexity, no "sum of k smallest" API at
+v4.29). Pointwise-after-sorting is FALSE (`q=[1,3]` vs `Y=[2,2]`) and a prefix/tail two-part split
+provably undershoots (the leaked prefix mass lands on a strictly larger tail slot — convexity is
+irreducible), so the global smallest-`k`-sum majorization is mandatory. Upper bound (achiever) needs
+the same order-reconciliation: an explicit `T* ∈ Adm M` (greedy placement of `Y`, or first prove
+`lambdaCore M = lambdaCore (sort M)`) with `Mval M T* = ½(∑Y² − ∑M²)`, then `Finset.inf'_le`. All
+sub-claims numerically verified 0-failure (L≤4); the gate is purely the Lean majorization build. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
   sorry
