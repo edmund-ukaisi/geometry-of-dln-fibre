@@ -1040,7 +1040,7 @@ also wrong (278/3900 fail — needs the **cumulative** ∀i≤c); both corrected
 
 **Sub-lemmas (the remaining work — the documented keystone, ~250-350 lines):**
 1. `balancedSplit_min` — DONE (above): `∑ balancedSplitᵢ² ≤ ∑ qᵢ²` at fixed `∑q`. The LB engine.
-2. `good`/`cstar` (self-contained ℕ arithmetic): `c = 1` good; `c*` = largest good `c` in `1 ≤ c* ≤ L`.
+2. `good`/`cstar` (ℕ arithmetic): `c = 1` good; `c*` = largest good `c`, `1 ≤ c* ≤ L`.
 3. **Lower bound** `Φ c* ≤ Mval M T` for every `T ∈ Adm M`. Crux: only strict-descent positions of
    `u = [M⁰,T⁰,…,Tᴸ⁻¹=0]` contribute (zero gap elsewhere, `Mval_descent`), giving
    `Mval = ∑ₖ gapₖ(wₖ − Hₖ)`; complete the square + `balancedSplit_min`.
