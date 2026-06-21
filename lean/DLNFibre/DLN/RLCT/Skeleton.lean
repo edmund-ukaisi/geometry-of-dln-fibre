@@ -3179,6 +3179,21 @@ theorem forwardMax_getD_eq (b : List ℤ) (R : Multiset ℤ) (i : ℕ) (w : ℤ)
     rw [List.getD_eq_getElem?_getD, List.getD_eq_getElem?_getD, List.getElem?_drop, Nat.add_zero]
   rw [hgetD, hd, List.getD_cons_zero]
 
+/-- **Head-lowering preserves `Dom`** (the SOUND direction): replacing the head width by a smaller
+one keeps domination. (Raising the head is FALSE — it makes covering harder.) -/
+theorem dom_head_lower {a a' : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom (a :: ws) R)
+    (h : a' ≤ a) : Dom (a' :: ws) R := by
+  refine ⟨by simpa using hD.1, fun τ => ?_⟩
+  have hd := hD.2 τ
+  have hsa : cLt ((a :: ws : List ℤ) : Multiset ℤ) τ
+      = cLt (ws : Multiset ℤ) τ + (if a < τ then 1 else 0) := by
+    rw [← Multiset.cons_coe, cLt_erase _ a τ (mem_cons_self _ _), erase_cons_head]
+  have hsa' : cLt ((a' :: ws : List ℤ) : Multiset ℤ) τ
+      = cLt (ws : Multiset ℤ) τ + (if a' < τ then 1 else 0) := by
+    rw [← Multiset.cons_coe, cLt_erase _ a' τ (mem_cons_self _ _), erase_cons_head]
+  rw [hsa] at hd; rw [hsa']
+  split_ifs at hd ⊢ <;> omega
+
 /-- The residual pool stays `Dom`-dominated by the suffix widths. -/
 theorem eraseIter_dom {b : List ℤ} {R : Multiset ℤ} (hD : Dom b R) (i : ℕ) :
     Dom (b.drop i) (eraseIter i b R) := by
@@ -3556,6 +3571,77 @@ private theorem band_of_uTel (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (j : Fi
   rw [uTel_eq_prefix, Finset.sum_sub_distrib] at hu
   rw [show (j : ℕ) + 2 = ((j : ℕ) + 1) + 1 by omega, Mseq_prefix_succ] at *
   linarith
+
+/-- The augmented head `head'_i`: `max(M⁰,M¹)` at `i=0`, else `max(uTel_i, M^{i+1})`. Carries BOTH
+the band (`uTel`) and the feasibility (the width `M^{i+1}`). -/
+noncomputable def headP (M : Fin (L + 1) → ℕ) (i : ℕ) : ℤ :=
+  if i = 0 then max (M 0 : ℤ) (M 1 : ℤ) else max (uTel M (qFM M) i) (Mseq M (i + 1))
+
+/-- `R_i`, the residual pool after the first `i` forwardMax picks. -/
+noncomputable def Rpool (M : Fin (L + 1) → ℕ) (i : ℕ) : Multiset ℤ :=
+  BGEngine.eraseIter i (Mwidths M) (Ymulti M)
+
+/-- The carried Dom-invariant: `R_i` dominates the `head'_i`-augmented suffix widths. -/
+def FMDom (M : Fin (L + 1) → ℕ) (i : ℕ) : Prop :=
+  BGEngine.Dom (headP M i :: (Mwidths M).drop (i + 1)) (Rpool M i)
+
+/-- `head'_i ≥ M^{i+1}` (the augmented head dominates the current width — feasibility). -/
+private theorem headP_ge_width (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < L) :
+    Mseq M (i + 1) ≤ headP M i := by
+  unfold headP
+  by_cases hi0 : i = 0
+  · subst hi0
+    rw [if_pos rfl, show (0 : ℕ) + 1 = 1 from rfl]
+    have hfin : (⟨1, by omega⟩ : Fin (L + 1)) = (1 : Fin (L + 1)) := by
+      apply Fin.ext; simp [Fin.val_one, Nat.mod_eq_of_lt (by omega : 1 < L + 1)]
+    have heq : Mseq M 1 = (M 1 : ℤ) := by
+      unfold Mseq; rw [dif_pos (by omega), hfin]
+    rw [heq]; exact le_max_right _ _
+  · rw [if_neg hi0]; exact le_max_right _ _
+
+/-- `head'_i ≥ uTel_i` (the augmented head dominates the level — the band carrier). -/
+private theorem headP_ge_uTel (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+    uTel M (qFM M) i ≤ headP M i := by
+  unfold headP
+  by_cases hi0 : i = 0
+  · subst hi0
+    rw [if_pos rfl]
+    have huz : uTel M (qFM M) 0 = (M 0 : ℤ) := rfl
+    rw [huz]; exact le_max_left _ _
+  · rw [if_neg hi0]; exact le_max_left _ _
+
+/-- **Consumer: the per-step band from `FMDom`.** Given the Dom-invariant at `j`, the forward-max
+pick `qFM_j` is `≥ head'_j ≥ uTel_j` (via `le_maxPick` + the minimal feasible witness). -/
+private theorem qFM_ge_uTel (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : ℕ) (hj : j < L)
+    (hInv : FMDom M j) : uTel M (qFM M) j ≤ qFM M j := by
+  set R := Rpool M j with hR
+  set ws := (Mwidths M).drop (j + 1) with hws
+  -- the global j-th pick is the maxPick at depth j
+  have hdrop : (Mwidths M).drop j = (Mseq M (j + 1)) :: ws := by
+    have hlt : j < (Mwidths M).length := by rw [Mwidths_len]; exact hj
+    rw [hws, List.drop_eq_getElem_cons hlt, Mwidths_get M j hj]
+  have hqj : qFM M j = BGEngine.maxPick (Mseq M (j + 1)) ws R := by
+    rw [qFM, hR, Rpool]
+    exact BGEngine.forwardMax_getD_eq (Mwidths M) (Ymulti M) j (Mseq M (j + 1)) ws hdrop
+  -- witness: pick(head'_j, R) — feasible (≥ head'_j ≥ M^{j+1}) and Dom-preserving (dom_head_pick)
+  -- hInv : Dom (head'_j :: ws) R, so dom_head_pick applies with head head'_j
+  have hInv' : BGEngine.Dom (headP M j :: ws) R := hInv
+  obtain ⟨hpge, hpdom⟩ := BGEngine.dom_head_pick hInv'
+  have hpmem : BGEngine.pick (headP M j) R ∈ R := by
+    apply BGEngine.pick_mem
+    exact BGEngine.head_pick_exists hInv'
+  -- pick(head'_j) ≥ head'_j ≥ M^{j+1}, so it is a feasible (≥ width) Dom-preserving witness
+  have hpw : Mseq M (j + 1) ≤ BGEngine.pick (headP M j) R :=
+    le_trans (headP_ge_width M j hj) hpge
+  -- le_maxPick: maxPick (width) ws R ≥ this witness. Need Dom (M^{j+1} :: ws) R:
+  -- from hInv' (Dom (head'_j :: ws) R) by head-LOWERING (head'_j ≥ M^{j+1}, the SOUND direction).
+  have hwidthDom : BGEngine.Dom (Mseq M (j + 1) :: ws) R :=
+    BGEngine.dom_head_lower hInv' (headP_ge_width M j hj)
+  have hle : BGEngine.pick (headP M j) R ≤ BGEngine.maxPick (Mseq M (j + 1)) ws R :=
+    BGEngine.le_maxPick hwidthDom hpmem hpw hpdom
+  -- chain: uTel_j ≤ head'_j ≤ pick(head'_j) ≤ maxPick = qFM_j
+  rw [hqj]
+  exact le_trans (headP_ge_uTel M hL j hj) (le_trans hpge hle)
 
 /-- **The per-step band** `qFM_j ≥ uTel j` (j≥1) and `qFM_0 ≥ max(M⁰,M¹)`, in the unified u-space
 form `uTel (j+1) ≤ admBound_j`. The achiever content (shapeInv + good_floor_core). -/
