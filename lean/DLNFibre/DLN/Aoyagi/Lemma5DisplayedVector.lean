@@ -346,6 +346,87 @@ theorem not_block_terminalEndpoint {ell : ℕ} (C : AoyagiSelectedCutpoints ell)
 
 end AoyagiSelectedCutpoints
 
+/-- A concrete guardrail showing that Definition 3-shaped selected-width data
+do not force the block width bound needed by Lemma 5 equation `(5)`.
+
+The selected cutpoints are `1,3,5,7`, the selected widths are `1,2,2,2`,
+and the unselected layer `6` has actual width `1`.  This actual width value is
+selected elsewhere, so Aoyagi's value-level nonselected-width condition is
+vacuous at that layer; nevertheless it lies in block `p=2`, where the selected
+width is `2`. -/
+theorem aoyagiLemma5Eq5_blockWidthBound_not_forced_by_selectedWidthHypotheses_example :
+    ∃ (C : AoyagiSelectedCutpoints 3) (n : ℕ → ℕ) (m : Fin 4 → ℤ)
+      (p S : ℕ),
+      C.block p S ∧
+      (∀ i : Fin 4, (n (C.point i.val) : ℤ) = m i) ∧
+      (∀ i : Fin 4, 1 ≤ m i) ∧
+      (∑ j : Fin 4, m j) = (3 : ℤ) * (3 - 1) + 1 ∧
+      (∀ i : Fin 4, (3 : ℤ) * m i < ∑ j : Fin 4, m j) ∧
+      (∀ t : ℕ, (∀ i : Fin 4, (n t : ℤ) ≠ m i) →
+        ∀ i : Fin 4, m i ≤ (n t : ℤ)) ∧
+      ¬ aoyagiSelectedWidthNat 3 m p ≤ (n (S + 1) : ℤ) := by
+  let C : AoyagiSelectedCutpoints 3 :=
+    { cut := fun i =>
+        match i.val with
+        | 0 => 1
+        | 1 => 3
+        | 2 => 5
+        | _ => 7
+      pos := by
+        intro i
+        fin_cases i <;> norm_num
+      strict := by
+        intro i
+        fin_cases i <;> norm_num }
+  let n : ℕ → ℕ := fun t =>
+    if t = 1 then 1
+    else if t = 3 then 2
+    else if t = 5 then 2
+    else if t = 7 then 2
+    else if t = 6 then 1
+    else 1
+  let m : Fin 4 → ℤ := fun i =>
+    match i.val with
+    | 0 => 1
+    | _ => 2
+  refine ⟨C, n, m, 2, 5, ?_⟩
+  constructor
+  · unfold AoyagiSelectedCutpoints.block C AoyagiSelectedCutpoints.point
+    norm_num
+  constructor
+  · intro i
+    fin_cases i <;> norm_num [C, n, m, AoyagiSelectedCutpoints.point]
+  constructor
+  · intro i
+    fin_cases i <;> norm_num [m]
+  constructor
+  · norm_num [m, Fin.sum_univ_four]
+  constructor
+  · intro i
+    fin_cases i <;> norm_num [m, Fin.sum_univ_four]
+  constructor
+  · intro t hnot i
+    have hhit : ∃ j : Fin 4, (n t : ℤ) = m j := by
+      by_cases h1 : t = 1
+      · refine ⟨0, ?_⟩
+        norm_num [n, m, h1]
+      · by_cases h3 : t = 3
+        · refine ⟨1, ?_⟩
+          norm_num [n, m, h1, h3]
+        · by_cases h5 : t = 5
+          · refine ⟨1, ?_⟩
+            norm_num [n, m, h1, h3, h5]
+          · by_cases h7 : t = 7
+            · refine ⟨1, ?_⟩
+              norm_num [n, m, h1, h3, h5, h7]
+            · by_cases h6 : t = 6
+              · refine ⟨0, ?_⟩
+                norm_num [n, m, h1, h3, h5, h7, h6]
+              · refine ⟨0, ?_⟩
+                norm_num [n, m, h1, h3, h5, h7, h6]
+    exact False.elim (hnot hhit.choose hhit.choose_spec)
+  · norm_num [n, m, aoyagiSelectedWidthNat]
+
 /-- Supplied source-layer piecewise data for Aoyagi Lemma 5 equation `(4)`.
 
 This is a certificate that a function `T` has the displayed branch values on

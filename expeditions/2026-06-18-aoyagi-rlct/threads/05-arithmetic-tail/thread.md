@@ -1638,3 +1638,36 @@ This still does not prove block-local width dominance from Definition 3,
 construct the displayed vector, prove terminal `tilde t=0`, vector
 admissibility, the Case 1(2) chart sequence, Lemma 5 order count, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(5)` width-bound counterexample
+
+Reproduction:
+`reproduction-lemma5-eq5-width-bound-counterexample-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-width-bound-counterexample.md`.
+Review artifact:
+`review-lemma5-eq5-width-bound-counterexample-a5.md`.
+
+Lean now proves the duplicate-width obstruction as a closed guardrail:
+
+```text
+aoyagiLemma5Eq5_blockWidthBound_not_forced_by_selectedWidthHypotheses_example
+```
+
+The witness has selected cutpoints `1,3,5,7`, selected widths `1,2,2,2`,
+actual widths matching these at the selected cutpoints, and actual width
+`n(6)=1`.  With `p=2` and `S=5`, the selected block condition `C.block p S`
+holds, but the Eq5 width bound fails:
+
+```text
+not aoyagiSelectedWidthNat 3 m p <= n(S+1).
+```
+
+The theorem also includes the value-level non-selected-width condition.  This
+records the source issue precisely: the bad layer has width value `1`, which
+is already a selected value, so Aoyagi Definition 3's value-level
+non-selected condition does not control it.
+
+This is a guardrail, not a construction theorem.  It does not refute the
+conditional block-width dominance bridges; it explains why their extra
+index-level hypotheses are explicit.

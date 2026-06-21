@@ -2266,6 +2266,14 @@ No such claim is formalisation-ready until both fields are filled.
   left-endpoint-minimum data, or index-level off-selected dominance.  They do
   not derive it from Definition 3 alone; the source check records a
   duplicate-width obstruction to that stronger claim.
+  Also proved the closed guardrail
+  `aoyagiLemma5Eq5_blockWidthBound_not_forced_by_selectedWidthHypotheses_example`.
+  It packages the duplicate-width obstruction with selected cutpoint
+  compatibility and the value-level non-selected condition: selected cutpoints
+  `1,3,5,7`, selected widths `1,2,2,2`, and actual width `n(6)=1` satisfy the
+  Definition 3-shaped selected-width data, but fail `W_p<=n(S+1)` for
+  `p=2`, `S=5`.  This is a guardrail for the explicit Eq5 width hypotheses,
+  not a construction theorem.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

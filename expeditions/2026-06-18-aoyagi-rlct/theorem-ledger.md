@@ -2876,6 +2876,23 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-block-width-dominance-a5.md`.
 
+Latest A5 update: the duplicate-width obstruction behind the equation `(5)`
+width-bound caveat is now Lean-proved as
+`aoyagiLemma5Eq5_blockWidthBound_not_forced_by_selectedWidthHypotheses_example`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The closed witness
+uses selected cutpoints `1,3,5,7`, selected widths `1,2,2,2`, actual widths
+matching those values at the selected cutpoints, and an off-selected layer
+`6` of actual width `1`.  It satisfies the selected-width sum, the strict
+selected inequalities, and the value-level non-selected-width condition, but
+fails the Eq5 bound `W_p<=n(S+1)` for `p=2`, `S=5`.  This theorem is a
+guardrail for the existing conditional bridges, not a construction theorem.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-width-bound-counterexample-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-width-bound-counterexample.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq5-width-bound-counterexample-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

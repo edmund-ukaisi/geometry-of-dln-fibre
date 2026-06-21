@@ -748,6 +748,13 @@ on the session's original cwd.
    also proved.  Source review found that Definition 3 alone is insufficient:
    its non-selected condition is value-level and does not control unselected
    layers with duplicate selected width values.
+   The duplicate-width obstruction is now Lean-packaged as the closed theorem
+   `aoyagiLemma5Eq5_blockWidthBound_not_forced_by_selectedWidthHypotheses_example`.
+   It includes selected cutpoint compatibility and the value-level
+   non-selected condition, but still fails `W_p<=n(S+1)` at the off-selected
+   layer `6`.  Treat this as a guardrail: do not later remove the explicit
+   block-local or index-level dominance hypotheses from the Eq5 wrappers
+   unless a stronger source assumption is reproduced.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

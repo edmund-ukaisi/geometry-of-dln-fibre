@@ -2290,6 +2290,21 @@ statement card, and review are saved at
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-block-width-dominance-a5.md`.
 
+The duplicate-width obstruction is now Lean-proved as a closed guardrail:
+`aoyagiLemma5Eq5_blockWidthBound_not_forced_by_selectedWidthHypotheses_example`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The witness uses
+cutpoints `1,3,5,7`, selected widths `1,2,2,2`, actual width `n(6)=1`,
+`p=2`, and `S=5`.  It satisfies selected cutpoint compatibility, the selected
+sum and strict selected-width inequalities, and the value-level non-selected
+condition, but fails `W_p<=n(S+1)`.  This records that the Eq5 width bound is
+not a Definition 3 consequence unless Definition 3 is strengthened by
+position-level/off-selected or block-local dominance data.  Reproduction,
+statement card, and review are saved at
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-width-bound-counterexample-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-width-bound-counterexample.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-width-bound-counterexample-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
