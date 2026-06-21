@@ -24,12 +24,18 @@ The form `codimForm N m` is **literally** the right-hand side of the committed h
 `Core.OrbitLinearCodim.orbitLinearCodim_eq_multSum` (and `finrank_deformationExt1_self_eq_multSum`)
 (`codimForm_multiplicityArray` is `rfl` against it). That headline reads the form as the *expected*
 (tangent / `Ext¹`) codimension `orbitLinearCodim M = dim Ext¹(M,M)` of the orbit of
-`M = ⊕ M_{(a,b)}^{m_{ab}}`. Its identification with the **geometric** codimension of the rank-`r`
-locus `Σ^r` (the orbit closure) rides on the DEFERRED Voigt hypothesis `hVoigt`
-(`Core.OrbitCodim`); **the combinatorial `cCodim`/`numTop` here do NOT assert that geometric
-identity** — they are min / minimiser-count of a ℤ-quadratic form over a finite set, nothing more.
-Later layers reformulate `cCodim` as the QIP (Thm 6.1) and the explicit closest-lattice-point
-formula (Thm 7.10).
+`M = ⊕ M_{(a,b)}^{m_{ab}}`. Its identification with the **geometric** codimension of the orbit
+closure `Ō_M` is now **PROVED** in `Core.CThetaGeometric` (`codimForm` = geometric
+`codimRepCanonical (orbitRankLocus (⊕L))`, via the discharged Voigt lemma
+`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[IsAlgClosed k] [CharZero k]`) —
+no longer deferred. What is **NOT** asserted here, and stays open per the `Core.CThetaGeometric`
+roadmap, is the **aggregate** reading: that `cCodim`/`numTop` are the geometric codimension / top
+component count of the *whole* rank-`r` locus `Σ^r` (the union of orbit closures), which needs a
+geometric definition of `Σ^r` and its orbit stratification. The combinatorial `cCodim`/`numTop`
+here are min / minimiser-count of a ℤ-quadratic form over a finite set, nothing more; the proved
+geometric reading is per-orbit (`Core.CThetaGeometric.cCodim_eq_inf_geomCodim`: `cCodim` = min over
+partitions of the genuine geometric orbit-closure codimension). Later layers reformulate `cCodim` as
+the QIP (Thm 6.1) and the explicit closest-lattice-point formula (Thm 7.10).
 
 **Encoding.** A Kostant partition is encoded as a function `m : Fin (N+1) × Fin (N+1) → ℕ`
 (the multiplicity `m_{ij}` of the interval module `M_{ij}`), required to vanish off `i ≤ j`. The
@@ -138,8 +144,10 @@ theorem mem_kostantPartitions {d : Fin (N + 1) → ℕ} {r : ℕ}
 (via `Finset.min'`); `numTop` is unconditional (a `card`). -/
 
 /-- The **combinatorial codimension** `C`: the minimum of `codimForm` over the Kostant partitions of
-`d` with corner `r`. Requires the partition set nonempty (`h`). NOT the geometric codimension of
-`Σ^r` — that identification rests on the deferred `hVoigt` (see module docstring). -/
+`d` with corner `r`. Requires the partition set nonempty (`h`). This is the minimum of the genuine
+**geometric** orbit-closure codimensions (`Core.CThetaGeometric.cCodim_eq_inf_geomCodim`, proved);
+it is NOT (yet) the geometric codimension of the *whole* rank-`r` locus `Σ^r` — that aggregate
+reading awaits a geometric `Σ^r` (see `Core.CThetaGeometric` roadmap). -/
 noncomputable def cCodim (d : Fin (N + 1) → ℕ) (r : ℕ)
     (h : (kostantPartitions d r).Nonempty) : ℤ :=
   (kostantPartitions d r).inf' h (fun m ↦ codimForm N (extendℤ m))
@@ -162,7 +170,8 @@ zero-product one without changing `(C, θ)`. Combinatorially: the corner multipl
 
 `codimForm`-blindness to the corner is `codimForm_update_corner`; the bijection is
 `kostantEquivShift`; the conclusions are `cCodim_rankShift` / `numTop_rankShift`. **Proved**
-(elementary `Finset` combinatorics; the geometric reading still rides on `hVoigt`, as in L1). -/
+(elementary `Finset` combinatorics; the per-orbit geometric reading of these combinatorial values
+is now also proved, `Core.CThetaGeometric`). -/
 
 /-- `extendℤ` is blind to a corner `update` (at `(0, last N)`) when the first index is `≥ 1`
 (so `⟨a.toNat,_⟩ ≠ 0`): the updated and original arrays agree there. -/
@@ -426,8 +435,10 @@ theorem cCodim_d222_zero : cCodim d222 0 kostantPartitions_d222_nonempty = 3 := 
   decide +kernel
 
 /-- **`(2,2,2)`, `r = 0`: `θ = 1`.** The minimum codimension `3` is attained at a unique Kostant
-partition (`mMin`): the combinatorial `θ = 1` (one minimiser). The geometric reading "the rank-`0`
-locus has one top-dimensional component" rests on the deferred `hVoigt` (see module docstring). -/
+partition (`mMin`): the combinatorial `θ = 1` (one minimiser). The aggregate geometric reading "the
+rank-`0` locus `Σ^0` has one top-dimensional component" is still OPEN — the component-count half
+needs a geometric `Σ^0` and its orbit stratification (the `Core.CThetaGeometric` roadmap); the
+per-orbit codimension reading there is proved. -/
 theorem numTop_d222_zero : numTop d222 0 kostantPartitions_d222_nonempty = 1 := by
   decide +kernel
 

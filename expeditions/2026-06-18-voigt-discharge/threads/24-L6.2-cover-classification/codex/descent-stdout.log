@@ -1,0 +1,593 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ee1e0-c38c-7030-9e87-c5d73d1cf744
+--------
+user
+<task>
+We are formalising (in Lean 4) the orbit-closure order on rank patterns of the equioriented type-A_n
+quiver. I need to decide whether one combinatorial lemma has a DIRECT, elementary, constructive proof
+or whether it genuinely requires the Abeasis-Del Fra lace-diagram "cover classification" theorem.
+
+SETUP (exact, all integer-valued; this is the combinatorial shadow of representation degenerations):
+- Vertices 0..N. Intervals [a,b] with 0<=a<=b<=N. A "multiplicity array" is m[(a,b)] >= 0 (a Kostant
+  partition / lace data). The dimension vector is d_t = sum_{a<=t<=b} m[(a,b)].
+- The "rank pattern" of m is r[(i,j)] = sum over intervals with a<=i and j<=b of m[(a,b)], for i<=j
+  (this is the 2D cumulative sum / "cumul"). The diagonal r[(i,i)] = d_i. The map m <-> r is a bijection
+  (inverse = second finite difference: m[(a,b)] = r[a][b]-r[a][b+1]-r[a-1][b]+r[a-1][b+1], out-of-range r=0).
+- Order: s <= r  iff  for all i<=j, s[(i,j)] <= r[(i,j)]. (s,r both rank patterns of achievable m,m'>=0,
+  SAME dimension vector d.)
+- "Linked box move" with indices a < c <= b+1 <= e, applied to multiplicities m:
+      m[(a,e)] -= 1;  (if c<=b) m[(c,b)] -= 1;   m[(a,b)] += 1;  m[(c,e)] += 1.
+  (split case c=b+1: omit the [c,b] term.) It is APPLICABLE to m if m[(a,e)]>=1 and (c=b+1 or m[(c,b)]>=1).
+  EXACT FACT (verified by exhaustive sympy over many m): this move sends r to r' = r - 1_D where the
+  "drop rectangle" is D(a,c,b,e) = { (i,j) : a<=i<c  and  b<j<=e }, and it preserves the dimension vector.
+
+THE LEMMA I NEED (the "descent step"):
+  Given achievable rank patterns with s < r (strict, same d), there EXISTS a linked box move applicable
+  to m(r) whose drop rectangle D is contained in supp(g) where g = r - s (i.e. D only touches cells with
+  g>0). Then r' = r - 1_D satisfies s <= r' < r, and one inducts on Phi = sum_{i<j}(r[(i,j)]-s[(i,j)]).
+  (Move-existence verified by exhaustive sympy: ZERO failures over d=(2,2,2),(1,2,2,1),(2,2,2,2),(1,2,3,2,1)
+   etc., all s<r pairs.)
+
+WHAT I OBSERVED:
+- Single-cell drops are NOT always available: a single-cell drop at (p,q) needs BOTH m[(p,q')]... ; in
+  general the minimal valid drop is a genuine RECTANGLE.
+- A "maximal u in [s,r)" route would reduce move-existence to "r covers u => the cover is a linked move",
+  which is exactly the Abeasis-Del Fra cover-classification theorem (heavy).
+
+THE QUESTION:
+  Is there a DIRECT construction of the witnessing (a,c,b,e) from r and g alone (no enumeration of the
+  poset, no "maximal u", no cover-classification), whose CORRECTNESS PROOF is elementary (induction /
+  extremal-corner / pigeonhole on the integer arrays m, r, g)? Specifically I want a construction +
+  proof sketch that a Lean formaliser can build in ~2-3 modules without reproving the lace/multisegment
+  cover theorem.
+</task>
+
+<output_contract>
+1. VERDICT: does a direct elementary construction exist? (yes / no / partial). One paragraph.
+2. If yes: give the explicit rule choosing (a,c,b,e) from (r, g=r-s, m=m(r)), and the KEY LEMMA whose
+   proof makes it work — state precisely WHY the chosen move is (i) applicable to m(r) and (ii) has
+   D subset supp(g). Identify the extremal/pigeonhole principle doing the work.
+3. If no / partial: name precisely the obstruction — the exact sub-fact that forces cover-classification,
+   and whether a WEAKER target (e.g. allowing a chain of moves with total drop in supp(g), not a single
+   move) is elementarily provable.
+4. Sanity check your construction against this instance: N=3, d=(1,2,2,1).
+   r = cumul of m_r=[(0,3):1,(1,2):1,(1,1):1,(2,2):1]  (so r[(0,3)]=1, r[(1,2)]=2,...).
+   s = cumul of m_s=[(0,1):1,(1,2):1,(2,3):1,(1,2):...]  -- pick any achievable s<r you like with same
+   d=(1,2,2,1) and show your rule's first move.
+5. Distinguish clearly: which of your claims are PROVEN facts vs heuristic/conjectural.
+Be concise and concrete. Prefer an explicit index formula over prose.
+</output_contract>
+
+<grounding_rules>
+- Do not claim a construction works without giving the proof mechanism; if you are unsure, say so.
+- "supp(g)" means cells (i,j), i<=j, with g[(i,j)]>0; note g[(i,i)]=0 since d is fixed.
+- The reduction to "maximal u + cover" is known; I am asking specifically whether it can be AVOIDED.
+- This is a real formalisation decision: an over-optimistic "yes" that needs cover-classification anyway
+  costs us a multi-module detour. Be calibrated.
+</grounding_rules>
+
+codex
+I’ll first pin down the combinatorics rather than guessing from the geometric statement. I’m going to inspect the local notes/paper references for the exact cover theorem and then test the proposed descent statement against the array identities.
+exec
+/bin/bash -lc 'rg --files . | head -200' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+exec
+/bin/bash -lc 'rg -n "Abeasis|Del Fra|cover|linked box|box move|rank pattern|Kostant|lace" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+ succeeded in 0ms:
+./descent-stdout.log:5:workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+./descent-stdout.log:16:We are formalising (in Lean 4) the orbit-closure order on rank patterns of the equioriented type-A_n
+./descent-stdout.log:18:or whether it genuinely requires the Abeasis-Del Fra lace-diagram "cover classification" theorem.
+./descent-stdout.log:21:- Vertices 0..N. Intervals [a,b] with 0<=a<=b<=N. A "multiplicity array" is m[(a,b)] >= 0 (a Kostant
+./descent-stdout.log:22:  partition / lace data). The dimension vector is d_t = sum_{a<=t<=b} m[(a,b)].
+./descent-stdout.log:23:- The "rank pattern" of m is r[(i,j)] = sum over intervals with a<=i and j<=b of m[(a,b)], for i<=j
+./descent-stdout.log:26:- Order: s <= r  iff  for all i<=j, s[(i,j)] <= r[(i,j)]. (s,r both rank patterns of achievable m,m'>=0,
+./descent-stdout.log:28:- "Linked box move" with indices a < c <= b+1 <= e, applied to multiplicities m:
+./descent-stdout.log:35:  Given achievable rank patterns with s < r (strict, same d), there EXISTS a linked box move applicable
+./descent-stdout.log:44:- A "maximal u in [s,r)" route would reduce move-existence to "r covers u => the cover is a linked move",
+./descent-stdout.log:45:  which is exactly the Abeasis-Del Fra cover-classification theorem (heavy).
+./descent-stdout.log:49:  poset, no "maximal u", no cover-classification), whose CORRECTNESS PROOF is elementary (induction /
+./descent-stdout.log:51:  proof sketch that a Lean formaliser can build in ~2-3 modules without reproving the lace/multisegment
+./descent-stdout.log:52:  cover theorem.
+./descent-stdout.log:60:3. If no / partial: name precisely the obstruction — the exact sub-fact that forces cover-classification,
+./descent-stdout.log:74:- The reduction to "maximal u + cover" is known; I am asking specifically whether it can be AVOIDED.
+./descent-stdout.log:75:- This is a real formalisation decision: an over-optimistic "yes" that needs cover-classification anyway
+./descent-stdout.log:80:I’ll first pin down the combinatorics rather than guessing from the geometric statement. I’m going to inspect the local notes/paper references for the exact cover theorem and then test the proposed descent statement against the array identities.
+./descent-prompt.md:2:We are formalising (in Lean 4) the orbit-closure order on rank patterns of the equioriented type-A_n
+./descent-prompt.md:4:or whether it genuinely requires the Abeasis-Del Fra lace-diagram "cover classification" theorem.
+./descent-prompt.md:7:- Vertices 0..N. Intervals [a,b] with 0<=a<=b<=N. A "multiplicity array" is m[(a,b)] >= 0 (a Kostant
+./descent-prompt.md:8:  partition / lace data). The dimension vector is d_t = sum_{a<=t<=b} m[(a,b)].
+./descent-prompt.md:9:- The "rank pattern" of m is r[(i,j)] = sum over intervals with a<=i and j<=b of m[(a,b)], for i<=j
+./descent-prompt.md:12:- Order: s <= r  iff  for all i<=j, s[(i,j)] <= r[(i,j)]. (s,r both rank patterns of achievable m,m'>=0,
+./descent-prompt.md:14:- "Linked box move" with indices a < c <= b+1 <= e, applied to multiplicities m:
+./descent-prompt.md:21:  Given achievable rank patterns with s < r (strict, same d), there EXISTS a linked box move applicable
+./descent-prompt.md:30:- A "maximal u in [s,r)" route would reduce move-existence to "r covers u => the cover is a linked move",
+./descent-prompt.md:31:  which is exactly the Abeasis-Del Fra cover-classification theorem (heavy).
+./descent-prompt.md:35:  poset, no "maximal u", no cover-classification), whose CORRECTNESS PROOF is elementary (induction /
+./descent-prompt.md:37:  proof sketch that a Lean formaliser can build in ~2-3 modules without reproving the lace/multisegment
+./descent-prompt.md:38:  cover theorem.
+./descent-prompt.md:46:3. If no / partial: name precisely the obstruction — the exact sub-fact that forces cover-classification,
+./descent-prompt.md:60:- The reduction to "maximal u + cover" is known; I am asking specifically whether it can be AVOIDED.
+./descent-prompt.md:61:- This is a real formalisation decision: an over-optimistic "yes" that needs cover-classification anyway
+
+exec
+/bin/bash -lc "sed -n '1,220p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+ succeeded in 136ms:
+./descent-stdout.log
+./descent-prompt.md
+
+ exited 2 in 118ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+codex
+The local worktree only contains this prompt/log, so there is no nearby exposition or Lean file to mine. I’m switching to the bare combinatorics: rewrite the problem in terms of finite differences, then check candidate extremal rules on small enumerations.
+exec
+/bin/bash -lc "python3 - <<'PY'
+from itertools import product, combinations
+
+def intervals(N): return [(a,b) for a in range(N+1) for b in range(a,N+1)]
+def dim(N,m):
+ return tuple(sum(m.get((a,b),0) for a,b in intervals(N) if a<=t<=b) for t in range(N+1))
+def rank(N,m):
+ return {(i,j):sum(m.get((a,b),0) for a,b in intervals(N) if a<=i and j<=b) for i in range(N+1) for j in range(i,N+1)}
+def inv(N,r):
+ def R(i,j):
+  if i<0 or j>N or i>j: return 0
+  return r.get((i,j),0)
+ return {(a,b):R(a,b)-R(a,b+1)-R(a-1,b)+R(a-1,b+1) for a,b in intervals(N)}
+def moves(N,m):
+ out=[]
+ for a in range(N+1):
+  for c in range(a+1,N+1):
+   for b in range(c-1,N+1):
+    for e in range(max(b+1,c),N+1):
+     # c<=b+1<=e, a<c
+     if c>b+1 or b+1>e: continue
+     if m.get((a,e),0)>=1 and (c==b+1 or m.get((c,b),0)>=1):
+      D=[(i,j) for i in range(a,c) for j in range(b+1,e+1) if i<=j]
+      out.append((a,c,b,e,D))
+ return out
+
+def all_m_for_d(N,d):
+ ints=intervals(N)
+ # brute recursive small
+ res=[]
+ cur={}
+ rem=list(d)
+ # simple bound min d
+ maxv=max(d)
+ def rec(k):
+  if k==len(ints):
+   if dim(N,cur)==d: res.append(cur.copy())
+   return
+  a,b=ints[k]
+  maxcnt=min(rem[t] for t in range(a,b+1))
+  for v in range(maxcnt+1):
+   if v: cur[(a,b)]=v
+   elif (a,b) in cur: del cur[(a,b)]
+   for t in range(a,b+1): rem[t]-=v
+   rec(k+1)
+   for t in range(a,b+1): rem[t]+=v
+  cur.pop((a,b),None)
+ rec(0)
+ return res
+
+def ok_rule_NE(N, r,s,m):
+ g={k:r[k]-s[k] for k in r}
+ supp=[k for k,v in g.items() if v>0]
+ if not supp: return None
+ # minimal row a among supp, maximal e in that row
+ a=min(i for i,j in supp)
+ e=max(j for i,j in supp if i==a)
+ return a,e,g,inv(N,g).get((a,e))
+
+def witness_for_anchor(N,m,g,a,e):
+ cand=[]
+ for A,C,B,E,D in moves(N,m):
+  if A==a and E==e and all(g[x]>0 for x in D): cand.append((A,C,B,E,D))
+ return cand
+for N,d in [(3,(1,2,2,1)),(3,(2,2,2,2)),(2,(2,2,2)),(4,(1,2,3,2,1))]:
+ ms=all_m_for_d(N,d)
+ ranks=[rank(N,m) for m in ms]
+ pairs=0; fail=0; failanchor=0; examples=[]
+ for idx,r in enumerate(ranks):
+  for jdx,s in enumerate(ranks):
+   if idx==jdx: continue
+   if all(s[k]<=r[k] for k in r) and any(s[k]<r[k] for k in r):
+    pairs+=1
+    g={k:r[k]-s[k] for k in r}
+    m=ms[idx]
+    w=[M for M in moves(N,m) if all(g[x]>0 for x in M[4])]
+    if not w:
+     fail+=1; examples.append((m,ms[jdx],g))
+    a,e,g,h=ok_rule_NE(N,r,s,m)
+    wa=witness_for_anchor(N,m,g,a,e)
+    if not wa:
+     failanchor+=1
+     if len(examples)<5: examples.append(('anchorfail',N,d,m,ms[jdx],a,e,h,g,w[:3]))
+ print('N,d',N,d,'#m',len(ms),'pairs',pairs,'fail',fail,'failanchor',failanchor)
+ for ex in examples[:2]: print(' ex',ex)
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+ succeeded in 288ms:
+N,d 3 (1, 2, 2, 1) #m 18 pairs 103 fail 0 failanchor 0
+N,d 3 (2, 2, 2, 2) #m 35 pairs 321 fail 0 failanchor 0
+N,d 2 (2, 2, 2) #m 10 pairs 34 fail 0 failanchor 0
+N,d 4 (1, 2, 3, 2, 1) #m 86 pairs 1719 fail 0 failanchor 0
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+from itertools import product
+
+def intervals(N): return [(a,b) for a in range(N+1) for b in range(a,N+1)]
+def dim(N,m): return tuple(sum(m.get((a,b),0) for a,b in intervals(N) if a<=t<=b) for t in range(N+1))
+def rank(N,m): return {(i,j):sum(m.get((a,b),0) for a,b in intervals(N) if a<=i and j<=b) for i in range(N+1) for j in range(i,N+1)}
+def all_m_for_d(N,d):
+ ints=intervals(N); res=[]; cur={}; rem=list(d)
+ def rec(k):
+  if k==len(ints):
+   if all(x==0 for x in rem): res.append(cur.copy())
+   return
+  a,b=ints[k]; maxcnt=min(rem[t] for t in range(a,b+1))
+  for v in range(maxcnt+1):
+   if v: cur[(a,b)]=v
+   else: cur.pop((a,b),None)
+   for t in range(a,b+1): rem[t]-=v
+   rec(k+1)
+   for t in range(a,b+1): rem[t]+=v
+  cur.pop((a,b),None)
+ rec(0); return res
+
+def ne(N,g):
+ supp=[k for k,v in g.items() if v>0]
+ a=min(i for i,j in supp); e=max(j for i,j in supp if i==a)
+ return a,e
+for N,d in [(3,(1,2,2,1)),(4,(1,2,3,2,1)),(3,(2,2,2,2)),(4,(2,2,2,2,2))]:
+ ms=all_m_for_d(N,d); ranks=[rank(N,m) for m in ms]
+ fails=0; ex=None
+ for r,m in zip(ranks,ms):
+  for s in ranks:
+   if all(s[k]<=r[k] for k in r) and any(s[k]<r[k] for k in r):
+    g={k:r[k]-s[k] for k in r}
+    a,e=ne(N,g)
+    # c=min >a with g(c,e)=0; exists e since g(e,e)=0 if e>a
+    c=next(x for x in range(a+1,e+1) if g.get((x,e),0)==0)
+    b=c-1
+    D=[(i,j) for i in range(a,c) for j in range(c,e+1)]
+    if not all(g.get(x,0)>0 for x in D):
+     fails+=1; ex=(N,d,m,s,a,e,c,b,[(x,g.get(x,0)) for x in D]); break
+  if fails: break
+ print('case',N,d,'fails split-col rule',fails,'ex',ex)
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+ succeeded in 121ms:
+case 3 (1, 2, 2, 1) fails split-col rule 1 ex (3, (1, 2, 2, 1), {(0, 3): 1, (1, 2): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 0, (1, 1): 2, (1, 2): 2, (1, 3): 1, (2, 2): 2, (2, 3): 1, (3, 3): 1}, 0, 3, 1, 0, [((0, 1), 0), ((0, 2), 0), ((0, 3), 1)])
+case 4 (1, 2, 3, 2, 1) fails split-col rule 1 ex (4, (1, 2, 3, 2, 1), {(0, 4): 1, (1, 3): 1, (2, 2): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 1, (0, 4): 1, (1, 1): 2, (1, 2): 2, (1, 3): 1, (1, 4): 1, (2, 2): 3, (2, 3): 2, (2, 4): 1, (3, 3): 2, (3, 4): 1, (4, 4): 1}, 1, 3, 2, 1, [((1, 2), 0), ((1, 3), 1)])
+case 3 (2, 2, 2, 2) fails split-col rule 1 ex (3, (2, 2, 2, 2), {(0, 1): 1, (0, 3): 1, (2, 2): 1, (3, 3): 1}, {(0, 0): 2, (0, 1): 2, (0, 2): 1, (0, 3): 0, (1, 1): 2, (1, 2): 1, (1, 3): 0, (2, 2): 2, (2, 3): 1, (3, 3): 2}, 0, 3, 2, 1, [((0, 2), 0), ((0, 3), 1), ((1, 2), 0), ((1, 3), 1)])
+case 4 (2, 2, 2, 2, 2) fails split-col rule 1 ex (4, (2, 2, 2, 2, 2), {(0, 2): 1, (0, 4): 1, (3, 3): 1, (4, 4): 1}, {(0, 0): 2, (0, 1): 2, (0, 2): 2, (0, 3): 1, (0, 4): 0, (1, 1): 2, (1, 2): 2, (1, 3): 1, (1, 4): 0, (2, 2): 2, (2, 3): 1, (2, 4): 0, (3, 3): 2, (3, 4): 1, (4, 4): 2}, 0, 4, 3, 2, [((0, 3), 0), ((0, 4), 1), ((1, 3), 0), ((1, 4), 1), ((2, 3), 0), ((2, 4), 1)])
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+def intervals(N): return [(a,b) for a in range(N+1) for b in range(a,N+1)]
+def rank(N,m): return {(i,j):sum(m.get((a,b),0) for a,b in intervals(N) if a<=i and j<=b) for i in range(N+1) for j in range(i,N+1)}
+def print_tri(N,g):
+ for i in range(N+1):
+  print('  '*i + ' '.join(str(g.get((i,j),'.')) for j in range(i,N+1)))
+# example r [0,3]+[1,2], s maybe from rank printed; reconstruct? Use inv
+N=3
+m={(0,3):1,(1,2):1}
+r=rank(N,m)
+s={(0,0):1,(0,1):1,(0,2):1,(0,3):0,(1,1):2,(1,2):2,(1,3):1,(2,2):2,(2,3):1,(3,3):1}
+g={k:r[k]-s[k] for k in r}
+print('r'); print_tri(N,r)
+print('s'); print_tri(N,s)
+print('g'); print_tri(N,g)
+# inv s
+def inv(N,r):
+ def R(i,j):
+  if i<0 or j>N or i>j: return 0
+  return r.get((i,j),0)
+ return {(a,b):R(a,b)-R(a,b+1)-R(a-1,b)+R(a-1,b+1) for a,b in intervals(N) if R(a,b)-R(a,b+1)-R(a-1,b)+R(a-1,b+1)}
+print('m_s',inv(N,s))
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+ succeeded in 0ms:
+r
+1 1 1 1
+  2 2 1
+    2 1
+      1
+s
+1 1 1 0
+  2 2 1
+    2 1
+      1
+g
+0 0 0 1
+  0 0 0
+    0 0
+      0
+m_s {(0, 2): 1, (1, 3): 1}
+
+codex
+A promising pattern emerged in the small cases: take the north-east corner of the positive defect `g`. That corner forces `m_r(a,e)>0` by a one-line finite-difference calculation. The remaining issue is whether an inner interval or split cut can always be found on the zero-frontier of `g`; I’m testing that frontier rule now.
+exec
+/bin/bash -lc "python3 - <<'PY'
+
+def intervals(N): return [(a,b) for a in range(N+1) for b in range(a,N+1)]
+def dim(N,m): return tuple(sum(m.get((a,b),0) for a,b in intervals(N) if a<=t<=b) for t in range(N+1))
+def rank(N,m): return {(i,j):sum(m.get((a,b),0) for a,b in intervals(N) if a<=i and j<=b) for i in range(N+1) for j in range(i,N+1)}
+def all_m_for_d(N,d):
+ ints=intervals(N); res=[]; cur={}; rem=list(d)
+ def rec(k):
+  if k==len(ints):
+   if all(x==0 for x in rem): res.append(cur.copy())
+   return
+  a,b=ints[k]; maxcnt=min(rem[t] for t in range(a,b+1))
+  for v in range(maxcnt+1):
+   if v: cur[(a,b)]=v
+   else: cur.pop((a,b),None)
+   for t in range(a,b+1): rem[t]-=v
+   rec(k+1)
+   for t in range(a,b+1): rem[t]+=v
+  cur.pop((a,b),None)
+ rec(0); return res
+
+def ne(g):
+ supp=[k for k,v in g.items() if v>0]
+ a=min(i for i,j in supp); e=max(j for i,j in supp if i==a)
+ return a,e
+
+def frontier_rule(N,m,g,a,e):
+ for c in range(a+1,e+1):
+  zeros=[]
+  for i in range(a,c):
+   for j in range(max(i,0),e): # j<e
+    if i<=j and g.get((i,j),0)==0:
+     zeros.append(j)
+  b=max(zeros) if zeros else c-1
+  if b < c-1: b=c-1
+  if b>=e: continue
+  # condition c<=b+1 true by max
+  D=[(i,j) for i in range(a,c) for j in range(b+1,e+1) if i<=j]
+  if not all(g.get(x,0)>0 for x in D):
+   return ('badD',c,b,D,[(x,g.get(x,0)) for x in D])
+  if c==b+1 or m.get((c,b),0)>0:
+   return (c,b,D)
+ return None
+for N,d in [(3,(1,2,2,1)),(4,(1,2,3,2,1)),(3,(2,2,2,2)),(4,(2,2,2,2,2)),(4,(1,3,3,3,1)),(5,(1,2,3,3,2,1))]:
+ ms=all_m_for_d(N,d); ranks=[rank(N,m) for m in ms]
+ fails=0; ex=None; pairs=0
+ for r,m in zip(ranks,ms):
+  for s in ranks:
+   if all(s[k]<=r[k] for k in r) and any(s[k]<r[k] for k in r):
+    pairs+=1; g={k:r[k]-s[k] for k in r}; a,e=ne(g)
+    res=frontier_rule(N,m,g,a,e)
+    if not res or (isinstance(res,tuple) and res and res[0]=='badD'):
+     fails+=1; ex=(N,d,m,s,a,e,res,g); break
+  if fails: break
+ print('case',N,d,'#m',len(ms),'pairs',pairs,'fails',fails)
+ if ex: print(' ex',ex[:7])
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+ succeeded in 584ms:
+case 3 (1, 2, 2, 1) #m 18 pairs 6 fails 1
+ ex (3, (1, 2, 2, 1), {(0, 3): 1, (1, 2): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 0, (0, 3): 0, (1, 1): 2, (1, 2): 1, (1, 3): 1, (2, 2): 2, (2, 3): 1, (3, 3): 1}, 0, 3, ('badD', 2, 1, [(0, 2), (0, 3), (1, 2), (1, 3)], [((0, 2), 1), ((0, 3), 1), ((1, 2), 1), ((1, 3), 0)]))
+case 4 (1, 2, 3, 2, 1) #m 86 pairs 15 fails 1
+ ex (4, (1, 2, 3, 2, 1), {(0, 4): 1, (1, 3): 1, (2, 2): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 0, (0, 4): 0, (1, 1): 2, (1, 2): 2, (1, 3): 1, (1, 4): 1, (2, 2): 3, (2, 3): 2, (2, 4): 1, (3, 3): 2, (3, 4): 1, (4, 4): 1}, 0, 4, ('badD', 2, 2, [(0, 3), (0, 4), (1, 3), (1, 4)], [((0, 3), 1), ((0, 4), 1), ((1, 3), 1), ((1, 4), 0)]))
+case 3 (2, 2, 2, 2) #m 35 pairs 172 fails 1
+ ex (3, (2, 2, 2, 2), {(0, 0): 1, (0, 3): 1, (1, 2): 1, (3, 3): 1}, {(0, 0): 2, (0, 1): 1, (0, 2): 0, (0, 3): 0, (1, 1): 2, (1, 2): 1, (1, 3): 1, (2, 2): 2, (2, 3): 1, (3, 3): 2}, 0, 3, ('badD', 2, 1, [(0, 2), (0, 3), (1, 2), (1, 3)], [((0, 2), 1), ((0, 3), 1), ((1, 2), 1), ((1, 3), 0)]))
+case 4 (2, 2, 2, 2, 2) #m 125 pairs 625 fails 1
+ ex (4, (2, 2, 2, 2, 2), {(0, 1): 1, (0, 4): 1, (2, 3): 1, (4, 4): 1}, {(0, 0): 2, (0, 1): 2, (0, 2): 1, (0, 3): 0, (0, 4): 0, (1, 1): 2, (1, 2): 1, (1, 3): 0, (1, 4): 0, (2, 2): 2, (2, 3): 1, (2, 4): 1, (3, 3): 2, (3, 4): 1, (4, 4): 2}, 0, 4, ('badD', 3, 2, [(0, 3), (0, 4), (1, 3), (1, 4), (2, 3), (2, 4)], [((0, 3), 1), ((0, 4), 1), ((1, 3), 1), ((1, 4), 1), ((2, 3), 1), ((2, 4), 0)]))
+case 4 (1, 3, 3, 3, 1) #m 165 pairs 35 fails 1
+ ex (4, (1, 3, 3, 3, 1), {(0, 4): 1, (1, 3): 2}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 0, (0, 4): 0, (1, 1): 3, (1, 2): 3, (1, 3): 2, (1, 4): 1, (2, 2): 3, (2, 3): 2, (2, 4): 1, (3, 3): 3, (3, 4): 1, (4, 4): 1}, 0, 4, ('badD', 2, 2, [(0, 3), (0, 4), (1, 3), (1, 4)], [((0, 3), 1), ((0, 4), 1), ((1, 3), 1), ((1, 4), 0)]))
+case 5 (1, 2, 3, 3, 2, 1) #m 522 pairs 6 fails 1
+ ex (5, (1, 2, 3, 3, 2, 1), {(0, 5): 1, (1, 4): 1, (2, 3): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 1, (0, 4): 1, (0, 5): 1, (1, 1): 2, (1, 2): 2, (1, 3): 1, (1, 4): 1, (1, 5): 1, (2, 2): 3, (2, 3): 2, (2, 4): 2, (2, 5): 1, (3, 3): 3, (3, 4): 2, (3, 5): 1, (4, 4): 2, (4, 5): 1, (5, 5): 1}, 1, 4, ('badD', 3, 2, [(1, 3), (1, 4), (2, 3), (2, 4)], [((1, 3), 1), ((1, 4), 1), ((2, 3), 1), ((2, 4), 0)]))
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+
+def intervals(N): return [(a,b) for a in range(N+1) for b in range(a,N+1)]
+def rank(N,m): return {(i,j):sum(m.get((a,b),0) for a,b in intervals(N) if a<=i and j<=b) for i in range(N+1) for j in range(i,N+1)}
+def all_m_for_d(N,d):
+ ints=intervals(N); res=[]; cur={}; rem=list(d)
+ def rec(k):
+  if k==len(ints):
+   if all(x==0 for x in rem): res.append(cur.copy())
+   return
+  a,b=ints[k]; maxcnt=min(rem[t] for t in range(a,b+1))
+  for v in range(maxcnt+1):
+   if v: cur[(a,b)]=v
+   else: cur.pop((a,b),None)
+   for t in range(a,b+1): rem[t]-=v
+   rec(k+1)
+   for t in range(a,b+1): rem[t]+=v
+  cur.pop((a,b),None)
+ rec(0); return res
+
+def ne(g):
+ supp=[k for k,v in g.items() if v>0]
+ a=min(i for i,j in supp); e=max(j for i,j in supp if i==a)
+ return a,e
+
+def frontier_rule(N,m,g,a,e):
+ for c in range(a+1,e+1):
+  if any(g.get((i,e),0)==0 for i in range(a,c)):
+   continue
+  zeros=[]
+  for i in range(a,c):
+   for j in range(i,e): # j<e
+    if g.get((i,j),0)==0:
+     zeros.append(j)
+  b=max(zeros) if zeros else c-1
+  if b < c-1: b=c-1
+  if b>=e: continue
+  D=[(i,j) for i in range(a,c) for j in range(b+1,e+1) if i<=j]
+  if not all(g.get(x,0)>0 for x in D):
+   return ('badD',c,b,D,[(x,g.get(x,0)) for x in D])
+  if c==b+1 or m.get((c,b),0)>0:
+   return (c,b,D)
+ return None
+for N,d in [(3,(1,2,2,1)),(4,(1,2,3,2,1)),(3,(2,2,2,2)),(4,(2,2,2,2,2)),(4,(1,3,3,3,1)),(5,(1,2,3,3,2,1))]:
+ ms=all_m_for_d(N,d); ranks=[rank(N,m) for m in ms]
+ fails=0; ex=None; pairs=0
+ for r,m in zip(ranks,ms):
+  for s in ranks:
+   if all(s[k]<=r[k] for k in r) and any(s[k]<r[k] for k in r):
+    pairs+=1; g={k:r[k]-s[k] for k in r}; a,e=ne(g)
+    res=frontier_rule(N,m,g,a,e)
+    if not res or (isinstance(res,tuple) and res and res[0]=='badD'):
+     fails+=1; ex=(N,d,m,s,a,e,res,g); break
+  if fails: break
+ print('case',N,d,'#m',len(ms),'pairs',pairs,'fails',fails)
+ if ex: print(' ex',ex[:7])
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/voigt-discharge/expeditions/2026-06-18-voigt-discharge/threads/24-L6.2-cover-classification/codex
+ succeeded in 412ms:
+case 3 (1, 2, 2, 1) #m 18 pairs 6 fails 1
+ ex (3, (1, 2, 2, 1), {(0, 3): 1, (1, 2): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 0, (0, 3): 0, (1, 1): 2, (1, 2): 1, (1, 3): 1, (2, 2): 2, (2, 3): 1, (3, 3): 1}, 0, 3, None)
+case 4 (1, 2, 3, 2, 1) #m 86 pairs 15 fails 1
+ ex (4, (1, 2, 3, 2, 1), {(0, 4): 1, (1, 3): 1, (2, 2): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 0, (0, 4): 0, (1, 1): 2, (1, 2): 2, (1, 3): 1, (1, 4): 1, (2, 2): 3, (2, 3): 2, (2, 4): 1, (3, 3): 2, (3, 4): 1, (4, 4): 1}, 0, 4, None)
+case 3 (2, 2, 2, 2) #m 35 pairs 172 fails 1
+ ex (3, (2, 2, 2, 2), {(0, 0): 1, (0, 3): 1, (1, 2): 1, (3, 3): 1}, {(0, 0): 2, (0, 1): 1, (0, 2): 0, (0, 3): 0, (1, 1): 2, (1, 2): 1, (1, 3): 1, (2, 2): 2, (2, 3): 1, (3, 3): 2}, 0, 3, None)
+case 4 (2, 2, 2, 2, 2) #m 125 pairs 625 fails 1
+ ex (4, (2, 2, 2, 2, 2), {(0, 1): 1, (0, 4): 1, (2, 3): 1, (4, 4): 1}, {(0, 0): 2, (0, 1): 2, (0, 2): 1, (0, 3): 0, (0, 4): 0, (1, 1): 2, (1, 2): 1, (1, 3): 0, (1, 4): 0, (2, 2): 2, (2, 3): 1, (2, 4): 1, (3, 3): 2, (3, 4): 1, (4, 4): 2}, 0, 4, None)
+case 4 (1, 3, 3, 3, 1) #m 165 pairs 35 fails 1
+ ex (4, (1, 3, 3, 3, 1), {(0, 4): 1, (1, 3): 2}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 0, (0, 4): 0, (1, 1): 3, (1, 2): 3, (1, 3): 2, (1, 4): 1, (2, 2): 3, (2, 3): 2, (2, 4): 1, (3, 3): 3, (3, 4): 1, (4, 4): 1}, 0, 4, None)
+case 5 (1, 2, 3, 3, 2, 1) #m 522 pairs 6 fails 1
+ ex (5, (1, 2, 3, 3, 2, 1), {(0, 5): 1, (1, 4): 1, (2, 3): 1}, {(0, 0): 1, (0, 1): 1, (0, 2): 1, (0, 3): 1, (0, 4): 1, (0, 5): 1, (1, 1): 2, (1, 2): 2, (1, 3): 1, (1, 4): 1, (1, 5): 1, (2, 2): 3, (2, 3): 2, (2, 4): 2, (2, 5): 1, (3, 3): 3, (3, 4): 2, (3, 5): 1, (4, 4): 2, (4, 5): 1, (5, 5): 1}, 1, 4, None)
+
+web search:
+web search: Abeasis Del Fra degeneration order quiver type A cover classification lace diagrams box moves
+web search:
+web search: multisegments degeneration order elementary box moves Zelevinsky rank order
+web search:
+web search: Zelevinsky multisegment partial order elementary operations linked segments rank matrix proof
+codex
+**Verdict**
+
+Partial, but effectively **no** for the Lean-planning question. The descent lemma is not merely adjacent to the Abeasis-Del Fra cover classification: in full generality it **implies** the rank-cover part of that classification. So a direct proof may exist as a new elementary proof, but it cannot avoid proving the core cover-classification subfact.
+
+**Obstruction**
+
+The forced subfact is:
+
+> If `u < r` is a cover in the rank-pattern poset, then `u = r - 1_D` for one linked box move applicable to `m(r)`.
+
+Indeed, apply your descent lemma with `s = u`. It gives a move `r' = r - 1_D` with `u <= r' < r`. Since `u` is covered by `r`, this forces `r' = u`. Thus the descent lemma immediately classifies covers.
+
+Conversely, the usual “choose maximal `u` with `s <= u < r`” argument derives the descent lemma from cover classification. So, over finite rank-pattern fibers, the two are equivalent in logical strength.
+
+**Constructive Rule That Is Safe But Not Lighter**
+
+A natural direct rule is:
+
+1. Let `g = r - s`.
+2. Choose the north-east defect corner
+   `a = min { i | exists j, g(i,j) > 0 }`,
+   `e = max { j | g(a,j) > 0 }`.
+3. Then
+   `m_r(a,e) - m_s(a,e) = g(a,e) > 0`,
+   because the north/east boundary terms in the second finite difference vanish. Hence `m_r(a,e) > 0`.
+4. Search pairs `a < c <= b+1 <= e` with
+   `c = b+1 or m_r(c,b) > 0`,
+   and
+   `D(a,c,b,e) subset supp(g)`,
+   and take the lexicographically first one.
+
+If the search succeeds, correctness is immediate: applicability is exactly the multiplicity condition, and `D subset supp(g)` gives `s <= r - 1_D`. The hard theorem is precisely that this search always succeeds. Proving that nonemptiness is the cover-classification subfact above.
+
+**Weaker Targets**
+
+A “chain of downward linked moves whose total drop stays in `supp(g)`” is not really weaker: the first move already has its drop rectangle inside `supp(g)`, so it gives the original descent step.
+
+A genuinely weaker statement, connectivity of two decompositions with the same dimension vector using linked moves in both directions, is elementary via interval straightening / toric fiber moves. But it does not preserve `s <= current_rank`, so it does not prove the orbit-closure descent.
+
+**Sanity Check**
+
+Your listed `m_r = [(0,3):1,(1,2):1,(1,1):1,(2,2):1]` has dimension vector `(1,3,3,1)`, not `(1,2,2,1)`.
+
+For the corrected same-`d` example, take
+
+`m_s = [(0,2):1,(1,3):1,(1,1):1,(2,2):1]`.
+
+Then `g` is supported only at `(0,3)`. The first move is
+
+`(a,c,b,e) = (0,1,2,3)`,
+
+using `[0,3]` and `[1,2]`:
+
+`[0,3] + [1,2] -> [0,2] + [1,3]`.
+
+Its drop rectangle is `D = {(0,3)}`, so `D subset supp(g)`, and the result is exactly `s`.
+
+**Status**
+
+Proven: the descent lemma is equivalent in strength to rank-cover classification.
+Heuristic only: the north-east-corner finite search is a good constructive implementation strategy. Its total-correctness proof is not a lightweight substitute for cover classification.
+tokens used
+50,347
+**Verdict**
+
+Partial, but effectively **no** for the Lean-planning question. The descent lemma is not merely adjacent to the Abeasis-Del Fra cover classification: in full generality it **implies** the rank-cover part of that classification. So a direct proof may exist as a new elementary proof, but it cannot avoid proving the core cover-classification subfact.
+
+**Obstruction**
+
+The forced subfact is:
+
+> If `u < r` is a cover in the rank-pattern poset, then `u = r - 1_D` for one linked box move applicable to `m(r)`.
+
+Indeed, apply your descent lemma with `s = u`. It gives a move `r' = r - 1_D` with `u <= r' < r`. Since `u` is covered by `r`, this forces `r' = u`. Thus the descent lemma immediately classifies covers.
+
+Conversely, the usual “choose maximal `u` with `s <= u < r`” argument derives the descent lemma from cover classification. So, over finite rank-pattern fibers, the two are equivalent in logical strength.
+
+**Constructive Rule That Is Safe But Not Lighter**
+
+A natural direct rule is:
+
+1. Let `g = r - s`.
+2. Choose the north-east defect corner
+   `a = min { i | exists j, g(i,j) > 0 }`,
+   `e = max { j | g(a,j) > 0 }`.
+3. Then
+   `m_r(a,e) - m_s(a,e) = g(a,e) > 0`,
+   because the north/east boundary terms in the second finite difference vanish. Hence `m_r(a,e) > 0`.
+4. Search pairs `a < c <= b+1 <= e` with
+   `c = b+1 or m_r(c,b) > 0`,
+   and
+   `D(a,c,b,e) subset supp(g)`,
+   and take the lexicographically first one.
+
+If the search succeeds, correctness is immediate: applicability is exactly the multiplicity condition, and `D subset supp(g)` gives `s <= r - 1_D`. The hard theorem is precisely that this search always succeeds. Proving that nonemptiness is the cover-classification subfact above.
+
+**Weaker Targets**
+
+A “chain of downward linked moves whose total drop stays in `supp(g)`” is not really weaker: the first move already has its drop rectangle inside `supp(g)`, so it gives the original descent step.
+
+A genuinely weaker statement, connectivity of two decompositions with the same dimension vector using linked moves in both directions, is elementary via interval straightening / toric fiber moves. But it does not preserve `s <= current_rank`, so it does not prove the orbit-closure descent.
+
+**Sanity Check**
+
+Your listed `m_r = [(0,3):1,(1,2):1,(1,1):1,(2,2):1]` has dimension vector `(1,3,3,1)`, not `(1,2,2,1)`.
+
+For the corrected same-`d` example, take
+
+`m_s = [(0,2):1,(1,3):1,(1,1):1,(2,2):1]`.
+
+Then `g` is supported only at `(0,3)`. The first move is
+
+`(a,c,b,e) = (0,1,2,3)`,
+
+using `[0,3]` and `[1,2]`:
+
+`[0,3] + [1,2] -> [0,2] + [1,3]`.
+
+Its drop rectangle is `D = {(0,3)}`, so `D subset supp(g)`, and the result is exactly `s`.
+
+**Status**
+
+Proven: the descent lemma is equivalent in strength to rank-cover classification.
+Heuristic only: the north-east-corner finite search is a good constructive implementation strategy. Its total-correctness proof is not a lightweight substitute for cover classification.

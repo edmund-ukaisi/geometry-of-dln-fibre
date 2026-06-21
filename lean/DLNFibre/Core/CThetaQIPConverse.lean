@@ -827,8 +827,9 @@ theorem cCodim_ge_qipMin (d : Fin (N + 1) → ℕ) (hd : Monotone d)
   rw [qipFeasible, Finset.mem_finAntidiagonal]; exact he
 
 /-- **The QIP (Thm 6.1), as equality.** For weakly-increasing `d`, `cCodim d 0 = qipMin d`: the
-combinatorial codimension of the zero-product locus equals the QIP minimum. (Geometric reading still
-rides on the deferred `hVoigt`, as in `Core.CTheta`.) -/
+combinatorial codimension of the zero-product locus equals the QIP minimum. (The per-orbit geometric
+reading of `cCodim` is proved in `Core.CThetaGeometric`; only the `Σ^r`-aggregate reading remains
+open, per its roadmap — as in `Core.CTheta`.) -/
 theorem cCodim_eq_qipMin (d : Fin (N + 1) → ℕ) (hd : Monotone d)
     (h : (kostantPartitions d 0).Nonempty) (hne : (qipFeasible d).Nonempty) :
     cCodim d 0 h = qipMin d hne :=

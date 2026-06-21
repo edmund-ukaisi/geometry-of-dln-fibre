@@ -18,9 +18,11 @@ the codimension of the orbit's tangent space `B¹ = im δ_M` inside the ambient 
 geometric codimension `codim Ō_M` of the orbit closure **only if** the orbit is smooth and
 `dim Ō_M = dim (tangent space at M)` — that the orbit tangent space is `B¹` (orbit smoothness /
 the orbit-map differential is surjective onto `B¹`) and that `dim Ō = dim C¹ − dim Ext¹` (Voigt's
-theorem, the orbit-dimension bridge). Those algebraic-geometry facts are **DEFERRED (Layer 2)**:
-nothing here proves them. Hence no declaration is named `codim O` / `codim_orbit`; this module is
-the honest **linear shadow** of Voigt's codimension formula, not Voigt's theorem.
+theorem, the orbit-dimension bridge). Those algebraic-geometry facts are **now PROVED** in
+`Core.VoigtDischarge` (`codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[IsAlgClosed k] [CharZero k]`)
+— this module itself does not invoke them; it stays the honest **linear shadow** (`orbitLinearCodim`
+is by definition `dim C¹ ⧸ B¹`, not the geometric codim), and the geometric reading is recorded in
+`Core.CThetaGeometric`. Hence no declaration here is named `codim O` / `codim_orbit`.
 
 The chain to the paper's quadratic form (Le Halleur–Rimányi Cor 3.5) is *exact* at the linear level:
 `orbitLinearCodim (⊕L) = Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}`, by composing the rank–nullity identity
@@ -37,8 +39,9 @@ variable {k : Type u} [Field k] {N : ℕ}
 
 /-- The **expected (tangent-space) codimension** of the orbit `O_M`: `finrank C¹ − finrank im δ_M`,
 the codimension of the orbit tangent space `B¹ = im δ_M` inside the ambient tangent space
-`C¹ = cochain1 d d`. **Not** the geometric `codim Ō_M`: that equality needs orbit smoothness and the
-orbit-dimension bridge (Voigt), both DEFERRED (Layer 2). The linear shadow of Voigt's formula. -/
+`C¹ = cochain1 d d`. **Not** (by definition) the geometric `codim Ō_M`: that equality (orbit
+smoothness + the Voigt orbit-dimension bridge) is proved in `Core.VoigtDischarge`, not here. The
+linear shadow of Voigt's formula. -/
 noncomputable def orbitLinearCodim {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) : ℕ :=
   finrank k (cochain1 (k := k) d d) - finrank k (LinearMap.range (deformationδ M M))
 
@@ -55,7 +58,8 @@ theorem orbitLinearCodim_eq_finrank_deformationExt1 {d : Fin (N + 1) → ℕ} (M
 `M = intervalDirectSum L` over a field, the expected (tangent-space) codimension is the paper's
 quadratic form `Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}`, `m = multiplicityArray L`. Rank–nullity chained
 with the committed headline `finrank_deformationExt1_self_eq_multSum`. The geometric reading
-`= codim Ō` still rests on the DEFERRED orbit-dimension bridge (Voigt). -/
+`= codim Ō` is proved in `Core.VoigtDischarge` / `Core.CThetaGeometric` (`[IsAlgClosed k]
+[CharZero k]`). -/
 theorem orbitLinearCodim_eq_multSum (L : List (Fin (N + 1) × Fin (N + 1))) :
     (orbitLinearCodim (intervalDirectSum (k := k) L) : ℤ)
       = ∑ i ∈ Finset.Icc (1 : ℤ) N, ∑ u ∈ Finset.Icc i (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),
@@ -67,8 +71,9 @@ theorem orbitLinearCodim_eq_multSum (L : List (Fin (N + 1) × Fin (N + 1))) :
 
 The same two Kostant partitions of the dimension vector `(2,2,2)` as in `DeformationExt`, now read
 as the *expected* orbit codimension: the `(1,1)`-orbit `M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}` has
-`orbitLinearCodim = 3` (the paper's codimension `C` for this orbit, under the DEFERRED geometric
-reading), the zero-product locus `{A = 0} = M_{00}² ⊕ M_{12}²` has `orbitLinearCodim = 4`. -/
+`orbitLinearCodim = 3` (the paper's codimension `C` for this orbit; the geometric reading is now
+proved, `Core.CThetaGeometric`), the zero-product locus `{A = 0} = M_{00}² ⊕ M_{12}²` has
+`orbitLinearCodim = 4`. -/
 
 /-- **`(2,2,2)` `(1,1)`-orbit:** `orbitLinearCodim = 3` for `M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}`. -/
 example :

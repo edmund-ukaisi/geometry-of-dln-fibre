@@ -57,3 +57,7 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   so `Matrix.cons_val_one`/`_two`/… do not fire on the outer selection. Normalize first with
   `rw [show (⟨k, by omega⟩ : Fin n) = (k : Fin n) from rfl]`, then the `cons_val_*` simp set fires; or prove
   the components as separate `have`s and assemble with `funext i; fin_cases i`.
+- **`φ` (U+03C6) as a binder name can hit a lexer reject** (`unexpected token 'φ'; expected identifier`)
+  when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
+  to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
+  shown the problem. Cost two build cycles on `NoetherMonicPositioning.lean`.
