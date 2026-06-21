@@ -182,16 +182,28 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   [measure_ball/addHaar_ball — NOT a parametric radial integral, dodges the gap]; monomial divergence finish).
   **≥ DIRECTION DONE (fm-2, S1Fubini.lean, 110 LoC, axiom-clean, module-green 2676):** `cmpF` (split engine
   `(s+t)^{-(a+b)}≤s^{-a}t^{-b}`) + `joint_integrableOn_weighted` (a.e. cmpF comparison + Integrable.mul_prod +
-  volume_eq_prod). Off-Skeleton, committing to trunk; controller wires into the aggregator. **≤ ROUTING DECIDED
-  (i) STANDALONE divergence, NOT S2-reuse (correction to the earlier card):** the monomial-divergence fact
-  (`∫∏|y_j|^{a_j} over a box = ∞ iff some a_j ≤ −1`) is proven AXIOM-FREE standalone (~30 LoC, 1-D Ioo rpow
-  divergence + Fubini) — STRICTLY LIGHTER than S2's RLCT threshold, keeps S1Fubini axiom-clean, and nibbles
-  toward thread-10's "S2 itself eliminable." cuspVol shave prototyped clean (closedBall + addHaar_closedBall
-  scaling, √s^n = s^{n/2}). The <= IS NEEDED (R1 UPPER = binding-chart divergence = Fubini <=; S2 does
-  NOT cover it — binding chart is Sum-x^2 + monomial, a SUM, and +Sum-x^2 shrinks the integrand so divergence
-  is non-trivial). pp finding the lightest <= route. HYGIENE: explicit monomial core (abstract G>=0,!=0 FALSE
-  via germ-local =0, same as 12th); Jacobian in weightedThreshold. So R1 is heavier than first scoped (the
-  Fubini <= + multiplicity-control R1.2 + cover R1.6) but all designed + tractable.
+  volume_eq_prod). rv-2 PASS (#40, axiom-clean, right condition, hGne faithful). Off-Skeleton; controller wires
+  into the aggregator at the equality. **≤ DIRECTION fully de-risked** (every atom + Step A `[‖x‖²≤G](2G)^{-c}w ≤
+  |F|^{-c}w` handling BOTH G>0 antitone + G=0 hygiene-corner, cuspVol exact `vol{‖x‖²≤s}=ofReal(√s^n)·Vₙ`,
+  notIntegrable_rpow, joint_lintegral_top sig — all in scratch; remaining = mechanical Tonelli + factor +
+  hcore_top⟹⊤). **STATEMENT-SHAPE DECISION (load-bearing, supersedes the (i)-vs-(ii) routing Q AND the card §B
+  "explicit monomial core"): (A) ABSTRACT-CORE SHIFT THEOREM.** fm-2 found the standalone multivar monomial
+  divergence `∫_box ∏|y_j|^{a_j}=⊤` is NOT the ~30-LoC elementary fact first estimated — Mathlib has the pi-product
+  factorization only for the FINITE/integrable case, not a lintegral=⊤ divergence (custom pi-Tonelli = heavy).
+  So BOTH the standalone build (heavy) and S2-reuse (axiom-import) are dodged by stating S1Fubini ABSTRACTLY:
+  `rlctAt(Σxᵢ² + core) = n/2 + rlctAt(core)` — the pure "+Σx² shifts the RLCT by exactly n/2" shift theorem, with
+  the core's integrability (≥, hGne+hy) and divergence-at-shifted-exponent (≤, hcore_top) as EXPLICIT hypotheses
+  (symmetric, honest, dodge both 12th-finding levers by construction). The monomial+S2 obligation MOVES to R1's
+  per-chart use-site: R1 supplies rlctAt(core)=S2's ⨅axisRatio for its resolved monomial, and hcore_top follows
+  from that value by the sSup definition (NO hand-built multivar integral). Strictly cleaner — S1Fubini stays
+  axiom-clean + monomial-machinery-free, the shift is its sole content, and S2 lands exactly where it belongs
+  (the monomial RLCT). pp confirming the R1 use-site discharge (3 hyps + cover-composition) in parallel. **λ_core=0
+  EDGE (rv-2):** the c=a+b split (b>0) covers c<n/2+λ_core only for λ_core>0; the λ_core=0 regime routes through
+  `smoothBlockND_rlct` (=n/2) directly — fm-2 handles in the equality-lift (likely vacuous at the deepest point
+  where the core is genuinely singular, but kept general). The <= IS NEEDED (R1 UPPER = binding-chart divergence;
+  S2 alone doesn't cover the SUM Σx²+monomial — +Σx² shrinks the integrand so divergence is non-trivial). So R1
+  is heavier than first scoped (Fubini-per-chart + multiplicity-control R1.2 + cover R1.6) but all designed +
+  tractable, and the abstract shift makes the Fubini-per-chart step a clean plug-in.
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
@@ -277,8 +289,17 @@ widths = the ℓ*+1 smallest, FORCED over every T via the `(M^S−H)` factors) �
 a widths-extremum (exactly where the false min_c lived; the trap). UPPER (achiever) + LOWER (per-T
 balanced-split + forcing). fm executing route B. So #19 is now a clean bounded build. fm sequence: wire
 S1.1+S1.4 → #19 route B → R1/L2/D1
-(critical-path beats off-path as Fubini lands for R1). S1 STATE (trunk @b6eaa80): S1Transport 0-sorry (S1.1
-ready), S1Local 1-sorry (S1.4 ready; S1.3 pending fm-2's push of its proof), S1Additive 0 (Fubini pending).
+(critical-path beats off-path as Fubini lands for R1).
+
+**S1 WIRES — S1.1 + S1.4 CLOSED + GREEN-GATED on trunk @`7258a36` (fm `aacdc7a`, FF-merged + full `lake build
+DLNFibre` GREEN, 2855 jobs).** Skeleton sorry 10→7. Both rungs INDEPENDENTLY axiom-clean (controller `#print
+axioms`): `weightedThreshold_transport` (S1.1, +hsurj+hImE [10th]) and `rlct_germ_local` (S1.4) = `[propext,
+Classical.choice, Quot.sound]` — no sorryAx, no monomial_rlct. Orphan FLAG resolved for S1Transport+S1Local
+(now in Skeleton's import closure). **7 remaining sorries:** S1.3 rlct_unit_invariant (138 — wire next,
+Measurable u [11th] blessed + _aux proven), S1.5 rlct_additive_smooth_block (169 — awaits fm-2's Fubini lemma),
+L2 (882), D1 (896), R1 (921), #19 lambdaCore (1055), A2 (1196). rv-2 auditing S1.1/S1.4 + the Fubini ≥ half.
+NEXT (fm): wire S1.3 → then D1 `deepest_point_reduction`. S1Additive/S1SmoothBlock/S1Fubini stay orphans until
+S1.5/L2 wire them (controller adds S1Fubini to the aggregator at that point).
 
 **#19 CHECKPOINT (fm @`88cf38e`, worktree-rung0-defs) — ENGINES PROVEN + ROUTE CORRECTED + KEYSTONE PARKED (decision b).**
 Two engines axiom-clean: `balancedSplit_min` (lower-bound engine `Σ balancedSplit² ≤ Σqᵢ²` at fixed sum;
@@ -299,6 +320,20 @@ PIVOTED to CRITICAL-PATH:** S1 wires (S1.1/S1.3/S1.4) → D1 `deepest_point_redu
 when Fubini lands) → L2 → T. Bounded #19 engine-nibbling (e.g. the per-T Mval identity) is FILL only, never over
 the critical path.
 
+**#19 ROUTE ADVANCE (fm @`85b0077`, supersedes the dependent-Fin descentSet plan — much cleaner):** the
+**EDGE-VARIABLE TRANSFORM** `q_j = M⁽ʲ⁺¹⁾ + (u_j − u_{j+1})` on the FIXED level sequence — a fixed-`Fin L`
+reparametrisation, NO dependent-Fin descentSet reindex (that was the hard bulk; dissolved). Exhaustively verified
+(0 failures L≤4). NEW engines axiom-clean: `karamata_sq` (Karamata-for-squares via Abel summation, general/
+reusable), `edge_identity` (`2·Mval = Σ(edgeQ)² − Σ(Mseq)²`), + QFeasible positional prefix bounds (Adm ⟹
+QFeasible). **#19 now reduces to ONE clean gate** (in the docstring): the **smallest-k-sum majorization**
+(`∀k, Σ(k smallest edgeQ) ≤ Σ(k smallest Y)` ⟹ karamata_sq). Mathlib v4.29 has NO Karamata/Schur/k-smallest API
+(confirmed) ⟹ ~150-250 lines new combinatorics; proven irreducible (pointwise-after-sort FALSE q=[1,3]vs[2,2];
+prefix/tail split undershoots — convexity essential). **STILL PARKED (decision b, reaffirmed 3rd time):** the gate
+is a DEDICATED TIDE LATER (after the headline), even better set-up now (edge-transform + karamata_sq + QFeasible
+all banked = one self-contained majorization theorem). fm REDIRECTED to the pending critical-path Skeleton tasks
+(S1.3 wire + the 13th-finding restatement, which it had skipped for this #19 work) → then D1. Process note logged:
+don't dispatch sub-formalisers per task (seat-reuse) + no further cycles on parked #19.
+
 ## Measure-side architecture — ROUTE A++ (DECIDED; now ACTUALLY green)
 Matrix-wall paid-ONCE + contained by interface discipline. `Params.volume`=nested Measure.pi is **rfl**; fiber
 instance = section-local `instance` (NOT a global Matrix instance, NOT a goal-type `letI` — elaboration order).
@@ -317,7 +352,52 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
 - Assembly T: assembles from D1+L2 (+ hr threaded).
 - Two hard builds remain: S1.1 + R1's cover-inequality (lower bound).
 
+## STATUS @ 2026-06-21 ~01:30 (trunk @c32b694; Fubini @e2a3f0c)
+- **S1 WIRE BATCH COMPLETE — S1.1/S1.3/S1.4 ALL CLOSED + green-gated + axiom-clean** (@c32b694; build green 2855,
+  Skeleton 6 sorries; rv-2 PASS on S1.1/S1.4, S1.3 audit queued). The S1 transport/locality/unit substrate is DONE;
+  only S1.5 (Fubini) remains of S1. 6 sorries: S1.5, L2, D1, R1, #19, A2.
+- **R1 EXECUTION LAUNCHED** (pp leads math, fm formalises): pre-Fubini parts first — R1.1 chart construction
+  (L1-reuse) + R1.2 multiplicity-control (`h_E+1 ≥ k_E·min Mval` per divisor, NOT codim shortcut); R1.4
+  (Fubini-per-chart) plugs fm-2's shift theorem when the lift lands; obligations folded in (unit-absorption via
+  S1.3, hcore_top endpoint, min-over-cover factorises n upstream-fixed). The mountain.
+- **S1.5 restatement+wire deferred to ONE pass** at fm-2's Fubini lift-close: I relay the complete signature
+  (hGmeas + hGne + `[ProperSpace]`/`[IsFiniteMeasureOnCompacts]` instances) → fm restates + wires `exact` in one go.
+- **FUBINI: ALL ATOMS PROVEN** (fm-2, S1Fubini.lean @e2a3f0c, 302 LoC, axiom-clean): both integral directions
+  (`step_integrableOn` ≥, `step_lintegral_top` ≤ cusp) + `admissible_downset` (the hardest sub-piece, rpow
+  two-sided bound on a bounded finite-measure nbhd; needs `[ProperSpace]`+`[IsFiniteMeasureOnCompacts]`) +
+  core_admissible_of_lt/_zero + cmpF + oneDimCuspVol + inner_slice + cusp_lower_bound. Measure-route = B (1-D
+  interval vol, no EuclideanSpace/addHaar; statement-shape (A) abstract-core). REMAINING = pure ENNReal sSup
+  BOOKKEEPING (no new math, no walls): n=1 `step_rlct` le_antisymm (≥ split q=a+b + step_integrableOn; ≤
+  step_lintegral_top contrapositive) + iterate over n coords → n/2+λ_core. fm-2 PAUSED at this clean green
+  checkpoint (good discipline — not grinding ENNReal coercions tired) → closing it next as a focused task
+  (template = its own smoothBlock1D_rlct). ~80% done by content. Both directions carry hHne/hGne.
+- **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
+  (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
+  LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
+  is bare = self-contradictory contract (the 12th finding's restatement was documented, never executed in the sig).
+  FIX (controller-decided, fm executes single-writer, keep sorry): add `Measurable G` + a germ-non-vanishing hyp.
+  **CONTROLLER CALL: hHne (G²≠0 a.e. near y0), NOT fm-2's hGfin (rlctAtOn(G²)<⊤) — hGfin is UNSOUND.** They are
+  INDEPENDENT (not equal as fm-2 believed): hGfin admits a FALSE case. AIRTIGHT WITNESS (controller-derived,
+  n=1,Y=ℝ,y0=0): G(y)=y·[y>0] ⟹ G²=y²·[y>0]; rlctAtOn(G²)(0)=1/2<⊤ (hGfin HOLDS) but LHS rlctAtOn(x²+G²)(0,0)=1/2
+  (the y≤0 slice is pure x², ∫(x²)^{-c} diverges for c≥1/2, CAPPING the joint) ≠ RHS 1/2+1/2=1 ⟹ equality FALSE
+  under hGfin. hHne excludes it (G²=0 on positive measure ⟹ ¬hHne). hGfin ALSO over-excludes true cases (G²=1:
+  rlctAt=⊤, equality ⊤=⊤). So hGfin is wrong both ways; hHne is the sound hyp AND what fm-2's step_* already carry
+  (the H=0 corner + cmpF a.e.-positivity). fm-2 ACCEPTED hHne. **EXACT LOCKED FORM** (relayed to fm; restate
+  batched with S1.3, keep sorry): `(hGmeas : Measurable G) (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0)`
+  (germ form, G≠0 a.e. ⟺ G²≠0 a.e.). PENDING: fm-2's lift may also need `[SigmaFinite (volume : Measure Y)]`/
+  locally-finite instances (R1's Y=Fin d→ℝ has them) — fm-2 sends the COMPLETE sig when lift _aux closes → fm adds
+  them for a zero-drift wire. R1's monomial ∏|y_j|^{2k_j} discharges hGne (≠0 off null coordinate hyperplanes).
+- **R1 USE-SITE CONFIRMED (pp + Codex identical): CLEAN to relocate (confirms A) + 2 obligations folded into R1:**
+  (1) **unit-absorption** — R1 chart core = unit·∏|y_j|^{2k_j}, so R1.2's S2 invocation MUST first absorb the
+  nonvanishing unit via `rlct_unit_invariant` (S1.3), THEN S2 on the pure monomial (THE main hidden gap; Jacobian
+  same); (2) **hcore_top endpoint** — free from the down-set property for strict c'>λ, +monomial-endpoint fact if
+  literal ∫=∞ at λ (fm-2 pins which). min-over-charts CLEAN (n=r(H¹+H^{L+1})−r² upstream-fixed ⟹ factorises).
+
 ## Next tick
-Process: fm's hr-fix green (→ merge worktree-rung0-defs→expedition, green-gate via rv-2, rv-2 re-audit); rv-2's
-keystone verdict; fm-2's bridge. Merge fm's Skeleton commits forward as they land (clean, disjoint). Keep rv-2
-decorrelated. fm-liveness: CONFIRMED live (reported A1 + the bug). Don't stop in a blocked state.
+INTEGRATE as they land: (1) fm-2's Fubini lift-close → complete S1.5 sig (hGmeas+hGne+instances) → relay to fm
+→ fm restates+wires `rlct_additive_smooth_block` in ONE pass + I add S1Fubini to the aggregator → green-gate +
+rv-2 audit. (2) R1 EXECUTION (pp leads, fm formalises): R1.1 charts + R1.2 multiplicity-control (pre-Fubini) →
+R1.4 Fubini-per-chart (post-lift) → R1.3/R1.5/R1.6/R1.7 → green-gate + rv-2 (heaviest audit). (3) L2 (needs S1.5)
+→ D1 (needs L2) → T assembly. #19 PARKED (edge-transform route + karamata_sq banked = one majorization gate for a
+dedicated tide). Critical path now: Fubini-close → S1.5 wire + R1 → L2 → D1 → T. Keep rv-2 decorrelated. Watch
+the fm→#19 pull (parked 3×). Don't stop in a blocked state.

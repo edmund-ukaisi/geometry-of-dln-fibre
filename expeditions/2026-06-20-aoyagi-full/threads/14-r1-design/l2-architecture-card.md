@@ -76,3 +76,64 @@ weight) = n/2 + min_j(h_j+1)/(2k_j)`), prove it by the radial-scaling identity +
 one-citation-clean, NO Laplace), and apply it per-chart inside R1. Drop the abstract additivity (false
 + heavy) and the R1-on-full-loss mixed-principalization (heavier). The smooth-block-alone `n/2` value
 is a sublemma. This is L2's analytic engine, one-citation-compliant.
+
+---
+
+## RE-ADJUDICATION 2026-06-21 (fm-2 SPECIFY-phase de-risk + pp + Codex, decorrelated)
+
+fm-2's de-risk REVISES the "light" claim and the hygiene; all three corrections adopted.
+
+### (A) The two directions are NOT symmetric: `≥` light, `≤` heavy
+
+- **`≥` / integrability (LIGHT, ~4–6 sublemmas):** for `c < n/2 + min_j(h_j+1)/(2k_j)`, split
+  `c = a+b` (a,b ≥ 0) with the a.e. pointwise comparison `(‖x‖²+G)^{−c} ≤ ‖x‖^{−2a}·G^{−b}` (both
+  terms ≥ 0), then `Integrable.mul` over the product domain: x-integral `∫‖x‖^{−2a}` finite iff
+  `a < n/2`, y-integral `∫G^{−b}w` finite iff `b < min_j(h_j+1)/(2k_j)`; open ranges cover all `c`
+  below threshold. fm-2 building this now (explicit monomial core).
+- **`≤` / non-integrability (HEAVIER, ~5–7 sublemmas via the cusp — see (C)):** for
+  `c ≥ n/2 + min_j(h_j+1)/(2k_j)`, show the integral `= ∞`. The naive pointwise split goes the WRONG
+  way (gives only an upper bound on the integrand). Needs a genuine divergence witness.
+
+### (B) HYGIENE — the lemma MUST use the EXPLICIT monomial core (not abstract G)
+
+For abstract `G ≥ 0, ≢ 0` the lemma is FALSE (germ-local `≡0 → ⊤`, the same trap as the 12th
+fidelity issue). STATE it with `G(y) = ∏_j |y_j|^{2k_j}` EXPLICIT, `k_j ≥ 0` integers, and the
+Jacobian weight `w(y) = ∏_j |y_j|^{h_j}` in `weightedThreshold`. (The earlier card's `monomial·unit`
+must be the literal monomial, not an opaque nonneg G.)
+
+### (C) The CORRECTED radial fact + the LIGHTEST `≤` route (the cusp)
+
+The exact identity `∫_{|x|<ε}(‖x‖²+s)^{−c}dx = C·s^{n/2−c}` holds ONLY for `ε=∞`; for finite `ε`
+(an RLCT nbhd) it is only the near-0 asymptotic, and Mathlib has NO parametric radial integral. So the
+`≤` route does NOT use that identity. The LIGHTEST `≤` route is the **CUSP lower bound** (pp + Codex,
+independently — `/tmp/cusp_route.py`, `/tmp/codex-cusp-answer.md`):
+
+> On the cusp `D = {(x,y) : ‖x‖² ≤ G(y)}` (inside a product nbhd `B_x(0,R)×Q_y` with `Q_y` shrunk so
+> `G ≤ R²`): `F = ‖x‖²+G ≤ 2G ⇒ |F|^{−c} ≥ (2G)^{−c}`. By Tonelli (nonneg),
+> `∫_D |F|^{−c} w ≥ 2^{−c}·∫_y vol{‖x‖²≤G(y)}·G^{−c}·w dy = 2^{−c}·V_n·∫_y G^{n/2−c}·w dy`
+> `= 2^{−c}·V_n·∫ ∏_j |y_j|^{h_j + k_j(n−2c)} dy`, which is `+∞` iff some `h_j+k_j(n−2c) ≤ −1`
+> iff `c ≥ n/2 + min_{j:k_j>0} (h_j+1)/(2k_j)`. EXACTLY the threshold. ∎
+
+**THE KEY SHAVE — EXACT ball-volume, NOT a parametric integral** (dodges fm-2's flagged gap): the
+`x`-slice contributes `vol{x∈ℝⁿ : ‖x‖²≤s} = V_n·s^{n/2}` (`V_n = vol(unit ball)`), an EXACT scaling of
+the unit-ball volume — a **measure of a ball**, not a parametrized radial integral asymptotic. Mathlib
+has this (`MeasureTheory.measure_ball` / `addHaar_ball` scaling).
+
+**Three ingredients (all EXACT, Mathlib-reachable) + Tonelli — ~5–7 sublemmas, NOT 10–15:**
+(i) cusp containment + `|F|^{−c} ≥ (2G)^{−c}` on `D` [a.e. monotone];
+(ii) EXACT ball-volume `vol{‖x‖²≤s} = V_n·s^{n/2}` [scaling, NOT parametric];
+(iii) monomial divergence `∫∏y_j^{a_j} = ∞ iff some a_j ≤ −1` — **REUSE S2** (Codex shave: the cusp-
+volume step produces a pure monomial `∏|y_j|^{h_j+k_j(n−2c)}` in `y`, exactly S2's input, so divergence
+reuses the existing S2 result rather than re-proving it);
+(+) Tonelli for the `∫_D = ∫_y∫_x` split (nonneg integrand).
+*Not lighter:* single-`y_j`/1-D reduction (annulus/box bookkeeping — pp + Codex agree).
+
+### (D) The FULL equality IS needed for R1's UPPER bound (confirmed)
+
+R1's binding chart has `F = Σx² + monomial-core`. S2 (the cited normal-crossing fact) covers a PURE
+monomial, NOT `Σx²+monomial`. The `+Σx²` shifts the threshold by `n/2`; without the `≤`
+(non-integrability at the threshold) we get only `rlctAt ≥ n/2 + monomial-threshold`. So the `≤`
+(cusp) is REQUIRED for `rlctAt ≤ n/2 + …` ⟹ the R1 upper bound. **Do NOT try to fold `Σx²` into S2
+via a normal-crossing change of variables** — `Σx²` is smooth radial data, not a coordinate monomial
+product (pp + Codex agree); the cusp-volume argument is the clean replacement for the missing
+normal-crossing form. The cusp is unavoidable but light (the ball-volume scaling is the trick).
