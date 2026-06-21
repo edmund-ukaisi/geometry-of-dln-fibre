@@ -3788,8 +3788,79 @@ private theorem static_count (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) 
     congr 1
     exact Multiset.map_univ_val_equiv (Tuple.sort M)
   -- STEP 2 + 3: cLt(ws_i, τ) = cLt(Mfull, τ) − #{dropped M⁰..M^{i+1} < τ}, and that count = 1.
-  -- We use: Mfull = M⁰ ::ₘ Mwidths, and ws_i = Mwidths.drop(i+1).
-  sorry
+  -- Mfull = M⁰ ::ₘ Mwidths;  Mwidths = take(i+1) ++ ws_i.
+  set ws := (Mwidths M).drop (i + 1) with hws
+  -- M⁰ ≥ τ (band-free: uTel antitone ⟹ uTel_i ≤ uTel_0 = M⁰; τ ≤ uTel_i)
+  have hM0 : τ ≤ (M 0 : ℤ) := by
+    have hanti : uTel M (qFM M) i ≤ uTel M (qFM M) 0 := uTel_antitone_le M hL (Nat.zero_le i) (le_of_lt hi)
+    have hu0 : uTel M (qFM M) 0 = (M 0 : ℤ) := rfl
+    rw [hu0] at hanti; linarith
+  -- Mwidths = take(i+1) ++ ws  (list split); cLt additive over append-as-multiset
+  have hsplit : (Mwidths M : Multiset ℤ)
+      = ((Mwidths M).take (i + 1) : Multiset ℤ) + (ws : Multiset ℤ) := by
+    conv_lhs => rw [← List.take_append_drop (i + 1) (Mwidths M)]
+    rw [hws, Multiset.coe_add]
+  have hcMw : BGEngine.cLt (Mwidths M : Multiset ℤ) τ
+      = BGEngine.cLt ((Mwidths M).take (i + 1) : Multiset ℤ) τ + BGEngine.cLt (ws : Multiset ℤ) τ := by
+    rw [BGEngine.cLt, BGEngine.cLt, BGEngine.cLt, hsplit, Multiset.filter_add, Multiset.card_add]
+  -- #{take(i+1) < τ} = 1: take(i+1) = [M¹,…,M^{i+1}], only M^{i+1} < τ.
+  have htakeval : ∀ k, k < i + 1 → ((Mwidths M).take (i + 1)).getD k 0 = Mseq M (k + 1) := by
+    intro k hk
+    rw [List.getD_eq_getElem _ _ (by rw [List.length_take, Mwidths_len]; omega)]
+    rw [List.getElem_take]
+    exact Mwidths_get M k (by omega)
+  -- POSITIONAL CLOSER: Mseq M k ≥ τ for 1 ≤ k ≤ i (via hband + uTel-recurrence + antitone).
+  have hclose : ∀ k, 1 ≤ k → k ≤ i → τ ≤ Mseq M k := by
+    intro k hk1 hki
+    -- M^k ≥ uTel_k ⟺ qFM_{k-1} ≥ uTel_{k-1} (uTel recurrence); k-1 < i so hband applies
+    obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+    have hrec : uTel M (qFM M) (k' + 1) = Mseq M (k' + 1) + uTel M (qFM M) k' - qFM M k' := rfl
+    have hbk : uTel M (qFM M) k' ≤ qFM M k' := hband k' (by omega)
+    have hMk : uTel M (qFM M) (k' + 1) ≤ Mseq M (k' + 1) := by rw [hrec]; linarith
+    have hanti : uTel M (qFM M) i ≤ uTel M (qFM M) (k' + 1) :=
+      uTel_antitone_le M hL hki (le_of_lt hi)
+    linarith
+  -- take(i+1) = ofFn (k : Fin (i+1) ↦ Mseq M (k+1)); then count exactly-one-index.
+  have htakeofFn : (Mwidths M).take (i + 1)
+      = List.ofFn (fun k : Fin (i + 1) => Mseq M ((k : ℕ) + 1)) := by
+    apply List.ext_getElem
+    · rw [List.length_take, Mwidths_len, List.length_ofFn]; omega
+    · intro k h1 h2
+      rw [List.getElem_ofFn]
+      have hk : k < i + 1 := by rw [List.length_ofFn] at h2; exact h2
+      rw [List.getElem_take]
+      exact Mwidths_get M k (by omega)
+  -- #{take(i+1) < τ} = 1: M¹..M^i ≥ τ (hclose), M^{i+1} < τ (hlo).
+  have htakecount : BGEngine.cLt ((Mwidths M).take (i + 1) : Multiset ℤ) τ = 1 := by
+    rw [htakeofFn, cLt_ofFn]
+    -- filter set = {⟨i, _⟩}: only k=i has Mseq(k+1) < τ
+    have hset : (Finset.univ.filter (fun k : Fin (i + 1) => Mseq M ((k : ℕ) + 1) < τ))
+        = {(⟨i, by omega⟩ : Fin (i + 1))} := by
+      ext k
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+      constructor
+      · intro hkτ
+        by_contra hne
+        have hki : (k : ℕ) < i := by
+          rcases Nat.lt_or_ge (k : ℕ) i with h | h
+          · exact h
+          · exact absurd (Fin.ext (by omega : (k : ℕ) = i)) hne
+        exact absurd hkτ (by have := hclose ((k : ℕ) + 1) (by omega) (by omega); linarith)
+      · intro hk; subst hk
+        show Mseq M (i + 1) < τ; exact hlo
+    rw [hset, Finset.card_singleton]
+  -- Mfull = M⁰ ::ₘ Mwidths ; cLt(Mfull) = [M⁰<τ] + cLt(Mwidths) = 0 + 1 + cLt(ws)
+  have hMfcons : Mfull = (M 0 : ℤ) ::ₘ (↑(Mwidths M) : Multiset ℤ) := by
+    rw [hMfull_eq, Mwidths, List.ofFn_succ, ← Multiset.cons_coe]
+  have hcMfull : BGEngine.cLt Mfull τ
+      = (if (M 0 : ℤ) < τ then 1 else 0) + BGEngine.cLt (↑(Mwidths M) : Multiset ℤ) τ := by
+    rw [hMfcons, BGEngine.cLt_erase _ (M 0 : ℤ) τ (Multiset.mem_cons_self _ _),
+      Multiset.erase_cons_head]; ring
+  rw [if_neg (by omega : ¬ (M 0 : ℤ) < τ)] at hcMfull
+  -- combine: cLt(Mfull) = 0 + (1 + cLt(ws)) ; cLt(Mfull) ≥ m+1 ⟹ cLt(ws) ≥ m
+  rw [hcMw, htakecount] at hcMfull
+  rw [← hws] at *
+  omega
 
 /-- **The STRONG INV** (the achiever band-value invariant): for `τ ≤ head'_i`, the residual pool `R_i`
 has no more elements below `τ` than the post-head suffix widths `ws_i = Mwidths.drop (i+1)`. Proven
