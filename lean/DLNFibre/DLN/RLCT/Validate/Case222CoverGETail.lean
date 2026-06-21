@@ -984,6 +984,175 @@ scope), so the `≥`-headline is restated here. The four step-1 A-pivot summands
 `p0_summand_via_tail` (the full p=0 chain, now proven); `p ∈ {1,2,3}` are `aPivotSummand_p123_lt_top`
 (the A-block coordinate-symmetric variants — the one remaining gap). -/
 
+/-! ## The three non-`a00` A-pivots by coordinate-conjugation symmetry
+
+`myF222 = ‖A·B‖²` is invariant under the coordinate permutations realising the A-block row/column
+swaps (`σ1,σ2,σ3` below; `myF222 ∘ σ = myF222` by `ring`). Each such `σ` (with `σ p = 0` and
+`σ : Aact ≃ Aact`) CONJUGATES the `p`-pivot blow-up to the `0`-pivot one
+(`pivotBlowup_conj`), transports the chart domain / pivot-zero locus / `openBox` cutoff
+(`chartDom_preimage_conj`, `pivotZero_preimage_conj`, `openBox_conj`), and preserves the Jacobian
+(`det_conj`). So the `p`-summand equals the proven `p = 0` summand (`p0_summand_via_tail`) under the
+measure-preserving `x ↦ x∘σ` (`measurePreserving_perm8`). The chart-conjugation soundness was
+independently red-teamed (Codex `xhigh`, `threads/codex-chart-conj/`): the blow-up identity holds at
+every coordinate slot (pivot / active / spectator), and the spectator B-swaps commute with the
+A-block blow-up. -/
+
+-- Fin 8 coordinate permutation is measure-preserving (mirror of measurePreserving_perm for Fin 7).
+theorem measurePreserving_perm8 (σ : Fin 8 ≃ Fin 8) :
+    MeasurePreserving (fun x : Fin 8 → ℝ => x ∘ σ) (volume : Measure (Fin 8 → ℝ)) volume := by
+  have h := volume_measurePreserving_piCongrLeft (fun _ : Fin 8 => ℝ) σ.symm
+  convert h using 1
+  funext x; funext a
+  rw [MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]
+  simp [Function.comp]
+
+-- the three involutive permutations.
+noncomputable def σ1 : Fin 8 ≃ Fin 8 := Equiv.ofBijective ![1,0,3,2,6,7,4,5] (by decide)
+noncomputable def σ2 : Fin 8 ≃ Fin 8 := Equiv.ofBijective ![2,3,0,1,4,5,6,7] (by decide)
+noncomputable def σ3 : Fin 8 ≃ Fin 8 := Equiv.ofBijective ![3,2,1,0,6,7,4,5] (by decide)
+
+-- myF222 ∘ σp = myF222 (ring/decide-safe; verified numerically). σ1 example.
+theorem myF222_σ1 (x : Fin 8 → ℝ) : myF222 (x ∘ σ1) = myF222 x := by
+  unfold myF222 σ1
+  simp only [Function.comp, Equiv.ofBijective_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val, Fin.isValue]
+  ring
+
+
+theorem myF222_σ2 (x : Fin 8 → ℝ) : myF222 (x ∘ σ2) = myF222 x := by
+  unfold myF222 σ2
+  simp only [Function.comp, Equiv.ofBijective_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val, Fin.isValue]
+  ring
+
+theorem myF222_σ3 (x : Fin 8 → ℝ) : myF222 (x ∘ σ3) = myF222 x := by
+  unfold myF222 σ3
+  simp only [Function.comp, Equiv.ofBijective_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val, Fin.isValue]
+  ring
+
+-- UNIFORM conjugation reduction: given σ with the right structure, S(p) = S(0).
+-- Hypotheses (Codex-verified): σ p = 0; σ maps Aact→Aact; σ maps Aactᶜ→Aactᶜ; myF222∘σ=myF222.
+-- blow-up conjugation: pivotBlowupOn Aact p (x∘σ) = (pivotBlowupOn Aact 0 x)∘σ.
+theorem pivotBlowup_conj (σ : Fin 8 ≃ Fin 8) (p : Fin 8) (hσp : σ p = 0)
+    (hAact : ∀ i, σ i ∈ Aact ↔ i ∈ Aact) (x : Fin 8 → ℝ) :
+    pivotBlowupOn Aact p (x ∘ σ) = (pivotBlowupOn Aact 0 x) ∘ σ := by
+  funext i
+  unfold pivotBlowupOn
+  simp only [Function.comp]
+  by_cases hip : i = p
+  · subst hip
+    rw [if_pos rfl, hσp, if_pos rfl]
+  · rw [if_neg hip]
+    have hσi0 : σ i ≠ 0 := by rw [← hσp]; exact fun h => hip (σ.injective h)
+    rw [if_neg hσi0]
+    by_cases hia : i ∈ Aact
+    · rw [if_pos hia, if_pos ((hAact i).2 hia), hσp]
+    · rw [if_neg hia, if_neg (fun h => hia ((hAact i).1 h))]
+
+-- chartDom preimage under σ: (·∘σ)⁻¹'(chartDomOn Aact p) = chartDomOn Aact 0, given σ-structure.
+theorem chartDom_preimage_conj (σ : Fin 8 ≃ Fin 8) (p : Fin 8) (hσp : σ p = 0)
+    (hAact : ∀ i, σ i ∈ Aact ↔ i ∈ Aact) :
+    (fun x : Fin 8 → ℝ => x ∘ σ) ⁻¹' (chartDomOn Aact p) = chartDomOn Aact 0 := by
+  ext x
+  simp only [Set.mem_preimage, chartDomOn, Set.mem_setOf_eq, Function.comp]
+  constructor
+  · intro h j hj hj0
+    have hsj : σ (σ.symm j) = j := σ.apply_symm_apply j
+    have hmem : σ.symm j ∈ Aact := (hAact (σ.symm j)).1 (by rw [hsj]; exact hj)
+    have hne : σ.symm j ≠ p := by intro he; rw [he, hσp] at hsj; exact hj0 hsj.symm
+    have := h (σ.symm j) hmem hne
+    rwa [hsj] at this
+  · intro h j hj hjp
+    have hmem : σ j ∈ Aact := (hAact j).2 hj
+    have hne : σ j ≠ 0 := by rw [← hσp]; exact fun he => hjp (σ.injective he)
+    exact h (σ j) hmem hne
+
+theorem pivotZero_preimage_conj (σ : Fin 8 ≃ Fin 8) (p : Fin 8) (hσp : σ p = 0) :
+    (fun x : Fin 8 → ℝ => x ∘ σ) ⁻¹' (pivotZeroOn p) = pivotZeroOn 0 := by
+  ext x
+  simp only [Set.mem_preimage, pivotZeroOn, Set.mem_setOf_eq, Function.comp, hσp]
+
+theorem openBox_conj (σ : Fin 8 ≃ Fin 8) (y : Fin 8 → ℝ) :
+    y ∘ σ ∈ openBox ↔ y ∈ openBox := by
+  simp only [openBox, Set.mem_pi, Set.mem_univ, true_implies, Function.comp]
+  exact ⟨fun h i => by have := h (σ.symm i); rwa [σ.apply_symm_apply] at this, fun h i => h (σ i)⟩
+
+-- det conjugation: |det(pivotBlowupOnDeriv Aact p (y∘σ))| = |det(pivotBlowupOnDeriv Aact 0 y)|, when σ p = 0.
+theorem det_conj (σ : Fin 8 ≃ Fin 8) (p : Fin 8) (hσp : σ p = 0) (hp : p ∈ Aact) (y : Fin 8 → ℝ) :
+    |(pivotBlowupOnDeriv Aact p (y ∘ σ)).det| = |(pivotBlowupOnDeriv Aact 0 y).det| := by
+  rw [pivotBlowupOnDeriv_det Aact p hp, pivotBlowupOnDeriv_det Aact 0 (by decide)]
+  simp only [Function.comp, hσp]
+
+-- THE UNIFORM CONJUGATION REDUCTION: S(p) = S(0), hence < ⊤ via p0_summand_via_tail.
+theorem aPivotSummand_conj (c' : NNReal) (hc' : (c':ℝ) < 3/2) (σ : Fin 8 ≃ Fin 8) (p : Fin 8)
+    (hp : p ∈ Aact) (hσp : σ p = 0) (hAact : ∀ i, σ i ∈ Aact ↔ i ∈ Aact)
+    (hmyF : ∀ x, myF222 (x ∘ σ) = myF222 x) :
+    ∫⁻ x in chartDomOn Aact p \ pivotZeroOn p,
+        ENNReal.ofReal |(pivotBlowupOnDeriv Aact p x).det|
+          * openBox.indicator (fun w => ENNReal.ofReal (|myF222 w| ^ (-(c':ℝ))))
+              (pivotBlowupOn Aact p x) < ⊤ := by
+  -- (·∘σ) as a measurable equiv (precomposition by the permutation σ).
+  let eσ : (Fin 8 → ℝ) ≃ᵐ (Fin 8 → ℝ) :=
+    { toFun := fun x => x ∘ σ, invFun := fun x => x ∘ σ.symm,
+      left_inv := fun x => by funext i; simp [Function.comp],
+      right_inv := fun x => by funext i; simp [Function.comp],
+      measurable_toFun := by dsimp; fun_prop, measurable_invFun := by dsimp; fun_prop }
+  have hmp : MeasurePreserving eσ volume volume := by
+    have := measurePreserving_perm8 σ
+    exact this
+  have hemb : MeasurableEmbedding eσ := eσ.measurableEmbedding
+  set Ip := fun x : Fin 8 → ℝ => ENNReal.ofReal |(pivotBlowupOnDeriv Aact p x).det|
+          * openBox.indicator (fun w => ENNReal.ofReal (|myF222 w| ^ (-(c':ℝ))))
+              (pivotBlowupOn Aact p x) with hIpdef
+  have hDpre : eσ ⁻¹' (chartDomOn Aact p \ pivotZeroOn p)
+      = chartDomOn Aact 0 \ pivotZeroOn 0 := by
+    show (fun x : Fin 8 → ℝ => x ∘ σ) ⁻¹' (chartDomOn Aact p \ pivotZeroOn p) = _
+    rw [Set.preimage_diff, chartDom_preimage_conj σ p hσp hAact, pivotZero_preimage_conj σ p hσp]
+  rw [← hmp.setLIntegral_comp_preimage_emb hemb Ip (chartDomOn Aact p \ pivotZeroOn p), hDpre]
+  -- now ∫_{D(0)} Ip(eσ y); show Ip(eσ y) = p0integrand c' y, then = p0_summand_via_tail
+  refine (setLIntegral_congr_fun (chartDomOn_diff_measurableSet Aact 0)
+    (fun y _ => ?_)).trans_lt (p0_summand_via_tail c' hc')
+  show Ip (y ∘ σ) = p0integrand c' y
+  have hcongr : ∀ y, Ip (y ∘ σ) = p0integrand c' y := by
+    intro y
+    rw [hIpdef]
+    simp only
+    rw [det_conj σ p hσp hp y, pivotBlowup_conj σ p hσp hAact y]
+    unfold p0integrand
+    congr 1
+    -- openBox.indicator (|myF222|^{-c'}) ((pivotBlowupOn Aact 0 y)∘σ) = openBox.indicator (...) (pivotBlowupOn Aact 0 y)
+    by_cases hmem : (pivotBlowupOn Aact 0 y) ∘ σ ∈ openBox
+    · have hmem0 : pivotBlowupOn Aact 0 y ∈ openBox := (openBox_conj σ _).1 hmem
+      rw [Set.indicator_of_mem hmem, Set.indicator_of_mem hmem0, hmyF]
+    · have hmem0 : pivotBlowupOn Aact 0 y ∉ openBox := fun h => hmem ((openBox_conj σ _).2 h)
+      rw [Set.indicator_of_notMem hmem, Set.indicator_of_notMem hmem0]
+  exact hcongr y
+
+-- σ structural facts (decide-checkable for the concrete permutations).
+theorem σ1_p : σ1 1 = 0 := by decide
+theorem σ2_p : σ2 2 = 0 := by decide
+theorem σ3_p : σ3 3 = 0 := by decide
+theorem σ1_Aact : ∀ i, σ1 i ∈ Aact ↔ i ∈ Aact := by decide
+theorem σ2_Aact : ∀ i, σ2 i ∈ Aact ↔ i ∈ Aact := by decide
+theorem σ3_Aact : ∀ i, σ3 i ∈ Aact ↔ i ∈ Aact := by decide
+
+-- the 3-pivot summand finiteness, by conjugation (closing aPivotSummand_p123_lt_top).
+theorem aPivotSummand_p123_done (c' : NNReal) (hc' : (c':ℝ) < 3/2) (p : Fin 8)
+    (hp : p ∈ ({1,2,3} : Finset (Fin 8))) :
+    ∫⁻ x in chartDomOn Aact p \ pivotZeroOn p,
+        ENNReal.ofReal |(pivotBlowupOnDeriv Aact p x).det|
+          * openBox.indicator (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c':ℝ))))
+              (pivotBlowupOn Aact p x) < ⊤ := by
+  have hpA : p ∈ Aact := by
+    rcases Finset.mem_insert.1 hp with rfl | hp'; · decide
+    rcases Finset.mem_insert.1 hp' with rfl | hp''; · decide
+    rw [Finset.mem_singleton.1 hp'']; decide
+  fin_cases hp
+  · exact aPivotSummand_conj c' hc' σ1 1 (by decide) σ1_p σ1_Aact myF222_σ1
+  · exact aPivotSummand_conj c' hc' σ2 2 (by decide) σ2_p σ2_Aact myF222_σ2
+  · exact aPivotSummand_conj c' hc' σ3 3 (by decide) σ3_p σ3_Aact myF222_σ3
+
 /-- **The three non-`a00` A-pivot summands are finite** (the A-block-symmetric variants of the `p = 0`
 chain `p0_summand_via_tail`). The last open piece of the `(2,2,2)` `≥`-direction. -/
 theorem aPivotSummand_p123_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) (p : Fin 8)
@@ -991,8 +1160,8 @@ theorem aPivotSummand_p123_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) (p : Fin 
     ∫⁻ x in chartDomOn Aact p \ pivotZeroOn p,
         ENNReal.ofReal |(pivotBlowupOnDeriv Aact p x).det|
           * openBox.indicator (fun y => ENNReal.ofReal (|myF222 y| ^ (-(c':ℝ))))
-              (pivotBlowupOn Aact p x) < ⊤ := by
-  sorry
+              (pivotBlowupOn Aact p x) < ⊤ :=
+  aPivotSummand_p123_done c' hc' p hp
 
 /-- **The `(2,2,2)` `≥`-direction threshold finiteness** (downstream restatement). For every `c' < 3/2`,
 `∫⁻_{openBox} |myF222|^{−c'} < ⊤`: the step-1 `recStep` splits into the four A-pivot summands, `p = 0`
