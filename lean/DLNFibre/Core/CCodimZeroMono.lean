@@ -441,4 +441,84 @@ theorem splitCoeff_pos_imp {a b c d' : Fin (N + 1)} (hab : (a : ℕ) ≤ b) (hbc
   -- each indicator's condition is linear in the endpoints; `split_ifs` + `omega` discharges all cases
   split_ifs at hpos <;> omega
 
+/-! ## The shortest-split does not increase `codimForm`
+
+When `[a,d']` is a *shortest* covering interval of `k = b + 1` with positive multiplicity, every
+interval `Y` with `splitCoeff Y > 0` is strictly shorter and covering, hence has multiplicity `0` (by
+minimality). So `∑_Y m̄ Y · splitCoeff Y ≤ 0` and the split does not increase `codimForm`. -/
+
+/-- **The shortest-split does not increase `codimForm`.** With the single-vertex-gap split
+`[a,d'] → [a,b] + [c,d']` (`c = b + 2`, vertex `k = b + 1`), source present (`m (a,d') ≥ 1`), and
+`[a,d']` a *shortest* covering interval of `k` among positive-multiplicity intervals
+(`hshort`: any covering `Y` of positive multiplicity is at least as long), the split's
+`codimForm`-change is `≤ 0`. -/
+theorem codimForm_splitMove_le (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbc : (c : ℕ) = b + 2) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d'))
+    (hshort : ∀ Y : Fin (N + 1) × Fin (N + 1), 1 ≤ m Y →
+      (Y.1 : ℤ) ≤ (b : ℤ) + 1 → (b : ℤ) + 1 ≤ (Y.2 : ℤ) →
+      (d' : ℤ) - (a : ℤ) ≤ (Y.2 : ℤ) - (Y.1 : ℤ)) :
+    codimForm N (extendℤ (splitMove m a b c d')) ≤ codimForm N (extendℤ m) := by
+  rw [codimForm_splitMove m hab (by omega) hcd hsad]
+  have hsum : ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * splitCoeff a b c d' Y ≤ 0 := by
+    refine Finset.sum_nonpos fun Y _ ↦ ?_
+    rcases lt_or_ge 0 (splitCoeff a b c d' Y) with hc | hc
+    · -- `splitCoeff Y > 0`: `Y` covers `k` and is strictly shorter ⟹ `m Y = 0` by minimality
+      obtain ⟨⟨h1, h2⟩, hlen⟩ := splitCoeff_pos_imp hab hbc hcd hc
+      have hmY : m Y = 0 := by
+        by_contra hne
+        exact absurd (hshort Y (Nat.one_le_iff_ne_zero.mpr hne) h1 h2) (not_le.mpr hlen)
+      rw [hmY]; simp
+    · exact mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg _) hc
+  linarith
+
+/-! ## The shortest-split lands in the corner-`0` Kostant partitions of the decremented vector
+
+The split changes coverage by `−1` at the omitted vertex `k = b + 1` and by `0` elsewhere, so it
+carries a corner-`0` Kostant partition of `e'` to one of `e''` (= `e'` with `e' k` decremented),
+provided the source `[a,d']` is present and `[a,d'] ≠ [0,N]` (corner stays `0`). -/
+
+/-- **Filtered-coverage change of the split move** (as `ℤ`). At every vertex `v`, the coverage of
+`splitMove m a b c d'` is the coverage of `m` plus the indicator of `[a,b]` covering `v`, plus that of
+`[c,d']`, minus that of `[a,d']`. -/
+theorem splitMove_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a b c d' : Fin (N + 1)}
+    (hab : (a : ℕ) ≤ b) (hbc : (c : ℕ) = b + 2) (hcd : (c : ℕ) ≤ d') (hsad : 1 ≤ m (a, d'))
+    (v : Fin (N + 1)) :
+    (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+        splitMove m a b c d' p : ℤ)
+      = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2), m p : ℤ)
+        + (if a ≤ v ∧ v ≤ b then 1 else 0) + (if c ≤ v ∧ v ≤ d' then 1 else 0)
+        - (if a ≤ v ∧ v ≤ d' then 1 else 0) := by
+  set S := Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2) with hS
+  have hterm : ∀ p : Fin (N + 1) × Fin (N + 1),
+      ((splitMove m a b c d' p : ℕ) : ℤ)
+        = (m p : ℤ) + (if p = (a, b) then 1 else 0) + (if p = (c, d') then 1 else 0)
+          - (if p = (a, d') then 1 else 0) := by
+    intro p
+    have hac : a ≠ c := by rw [Fin.ne_iff_vne]; omega
+    have hbd : b ≠ d' := by rw [Fin.ne_iff_vne]; omega
+    by_cases h1 : p = (a, b)
+    · have h2 : p ≠ (c, d') := by
+        rw [h1]; intro h; exact hac (congrArg Prod.fst h)
+      have h3 : p ≠ (a, d') := by
+        rw [h1]; intro h; exact hbd (congrArg Prod.snd h)
+      simp only [splitMove, if_pos h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+      push_cast; ring
+    · by_cases h2 : p = (c, d')
+      · have h3 : p ≠ (a, d') := by
+          rw [h2]; intro h; exact hac (congrArg Prod.fst h).symm
+        simp only [splitMove, if_pos h2, if_neg h1, if_neg h3, Nat.add_zero, Nat.sub_zero]
+        push_cast; ring
+      · by_cases h3 : p = (a, d')
+        · have hpos : 1 ≤ m p := by rw [h3]; exact hsad
+          simp only [splitMove, if_pos h3, if_neg h1, if_neg h2, Nat.add_zero]
+          rw [Nat.cast_sub (by omega)]; push_cast; ring
+        · simp only [splitMove, if_neg h1, if_neg h2, if_neg h3, Nat.add_zero, Nat.sub_zero]
+          push_cast; ring
+  rw [Finset.sum_congr rfl (fun p (_ : p ∈ S) ↦ hterm p),
+    Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib,
+    Finset.sum_ite_eq' S (a, b), Finset.sum_ite_eq' S (c, d'), Finset.sum_ite_eq' S (a, d')]
+  have hmemS : ∀ x y : Fin (N + 1), ((x, y) ∈ S) ↔ (x ≤ v ∧ v ≤ y) := by
+    intro x y; rw [hS]; simp [Finset.mem_filter]
+  simp only [hmemS]
+
 end DLNFibre.Core
