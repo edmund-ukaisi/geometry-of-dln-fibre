@@ -128,6 +128,19 @@ hypotheses.  Keep this as supplied-boundary assembly: no chart construction,
 post-data production, transition invariant, terminal source truth, normal
 crossings, pole order, or RLCT follows.
 
+Free-`Cprime` A4 checkpoint:
+`threads/04-blow-up-certificate/reproduction-case2-free-cprime-continuing-branch-a4.md`.
+Lean now proves the displayed Case 2 continuing lower-row product for an
+arbitrary pivot-first chart-coordinate following factor `Cprime`, plus a
+narrow source-chart package with corrected supplied post-data:
+`case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`
+and
+`sourceChartMap_postPivotFreeCprimeNextSameStageProduct_withCorrectedPostData`.
+Keep this as finite displayed-pivot block algebra.  It does not source-produce
+`Cprime`, construct chart coverage or arbitrary-pivot coverage, produce
+successor recurrence/exponent data, prove transition invariance, terminal
+relabeling, normal crossings, pole order, or RLCT.
+
 Immediate order:
 
 1. Continue the no-extra/classifier frontier: source-backed terminal branch

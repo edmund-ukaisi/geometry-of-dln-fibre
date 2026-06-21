@@ -10492,6 +10492,41 @@ theorem case2DisplayedPaperCprime_eq_verticalBlock
   ext i t
   rcases i with i | i <;> rfl
 
+/-- The top row of an arbitrary pivot-first displayed Case 2 chart-coordinate
+following factor `C'`. -/
+def case2DisplayedFreeCprimeTop
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    Matrix Unit τ R :=
+  fun i t ↦ Cprime (Sum.inl i) t
+
+/-- The lower rows of an arbitrary pivot-first displayed Case 2
+chart-coordinate following factor `C'`. -/
+def case2DisplayedFreeCprimeTail
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    Matrix (pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  fun i t ↦ Cprime (Sum.inr i) t
+
+omit [CommRing R] in
+/-- Any arbitrary pivot-first displayed Case 2 `C'` splits into its top row
+and lower-row tail. -/
+theorem case2DisplayedFreeCprime_eq_verticalBlock
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    Cprime =
+      verticalBlock
+        (case2DisplayedFreeCprimeTop n hS hcont Cprime)
+        (case2DisplayedFreeCprimeTail n hS hcont Cprime) := by
+  ext i t
+  rcases i with i | i <;> rfl
+
 /-- The displayed Case 2 lower-right cleared block, reindexed onto the next
 same-stage residual row/column domains `(S,J+1)`.
 
@@ -10530,6 +10565,21 @@ noncomputable def case2DisplayedPostPivotFollowingFactor
     (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
     Matrix (Case2ResidualColIndex n S (J + 1)) τ R :=
   (case2DisplayedPaperCprimeTail n hS hcont residual C).submatrix
+    (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm id
+
+/-- The tail of an arbitrary pivot-first displayed Case 2 `C'`, reindexed
+onto the next same-stage residual column domain `(S,J+1)`.
+
+This is free chart-coordinate following-factor data for the continuing branch.
+It does not assert that the arbitrary `C'` was produced from a total
+source-coordinate following factor. -/
+noncomputable def case2DisplayedPostPivotFreeFollowingFactor
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    Matrix (Case2ResidualColIndex n S (J + 1)) τ R :=
+  (case2DisplayedFreeCprimeTail n hS hcont Cprime).submatrix
     (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm id
 
 /-- The reindexed post-pivot following-factor candidate is the original source
@@ -10637,6 +10687,69 @@ theorem case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct
             (case2DisplayedPivotCol n hS hcont)
             (case2DisplayedPaperDchart n hS hcont residual))
       (case2DisplayedPaperCprimeTail n hS hcont residual C)
+      (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm
+      (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm
+      (Equiv.refl τ)).symm
+
+/-- The lower rows of `D''' * C'`, for an arbitrary free pivot-first `C'`,
+reindex to the post-pivot residual block times the reindexed tail of `C'`.
+
+This is finite matrix reindexing and block multiplication only.  It does not
+produce a source following factor, chart recurrence/exponent post-data, chart
+coverage, transition invariance, Jacobian arithmetic, normal crossings, RLCT
+extraction, arbitrary pivot coverage, or the terminal `(S+1,0)` relabel. -/
+theorem case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2DisplayedPaperDppp n hS hcont residual * Cprime).submatrix
+        (fun i ↦
+          Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime := by
+  rw [show Cprime =
+      verticalBlock
+        (case2DisplayedFreeCprimeTop n hS hcont Cprime)
+        (case2DisplayedFreeCprimeTail n hS hcont Cprime) from
+    case2DisplayedFreeCprime_eq_verticalBlock n hS hcont Cprime]
+  rw [case2DisplayedPaperDppp]
+  rw [weightedPivotClearedBlock_mul_verticalBlock]
+  change
+    (((pivotFirstD
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedPaperDchart n hS hcont residual) -
+          pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedPaperDchart n hS hcont residual) *
+            pivotFirstY
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedPaperDchart n hS hcont residual)) *
+        case2DisplayedFreeCprimeTail n hS hcont Cprime).submatrix
+        (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+  rw [case2DisplayedPostPivotResidualBlock, case2DisplayedPostPivotFreeFollowingFactor]
+  exact
+    (Matrix.submatrix_mul_equiv
+      (pivotFirstD
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual) -
+        pivotFirstX
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedPaperDchart n hS hcont residual) *
+          pivotFirstY
+            (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont)
+            (case2DisplayedPaperDchart n hS hcont residual))
+      (case2DisplayedFreeCprimeTail n hS hcont Cprime)
       (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm
       (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm
       (Equiv.refl τ)).symm
@@ -11783,6 +11896,45 @@ theorem postPivotNextSameStageProduct_sourceFollowingFactor
     case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct_sourceFollowingFactor
       n data.stage_pos data.continuation residual C
 
+/-- The displayed supplied boundary exposes the continuing-branch lower-row
+product of Aoyagi's paper `D''' * C'` for an arbitrary free pivot-first
+chart-coordinate following factor `C'`.
+
+This is only a finite matrix projection to the `(S,J+1)` domains.  It does
+not assert that the free `C'` is produced by a source-coordinate chart. -/
+theorem postPivotFreeCprimeNextSameStageProduct
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement
+        (case2DisplayedPivotCol n data.stage_pos data.continuation)) τ R) :
+    (case2DisplayedPaperDppp n data.stage_pos data.continuation residual *
+        Cprime).submatrix
+        (fun i ↦
+          Sum.inr
+            ((case2DisplayedPivotRowComplementEquivResidualRowSucc
+              n data.stage_pos data.continuation).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock
+          n data.stage_pos data.continuation residual *
+        case2DisplayedPostPivotFreeFollowingFactor
+          n data.stage_pos data.continuation Cprime := by
+  simpa using
+    case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+      n data.stage_pos data.continuation residual Cprime
+
 /-- The displayed supplied boundary's continuing-branch next residual center
 is nonempty under the explicit next-continuation bound. -/
 theorem postPivotResidualBlock_nonempty_of_next
@@ -11914,6 +12066,64 @@ theorem sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAn
       exponentPre levelInv leastValueGap chartFamily
   exact
     ⟨data.postPivotNextSameStageProduct_sourceFollowingFactor residual C,
+      data.extendExponentDomain,
+      data.postLevelInvariants,
+      data.successorLeastValueGap,
+      data.postCase2Gap⟩
+
+/-- Concrete displayed source-chart package for the continuing Case 2 branch,
+with an arbitrary free pivot-first chart-coordinate following factor `C'`.
+
+The source-chart constructor fixes the recurrence successor by the displayed
+pivot chart value and fixes exponent data by corrected selected-label
+overrides.  The product identity is free finite block algebra over the
+`(S,J+1)` domains; no chart atlas, source production of `C'`, or transition
+invariant is asserted. -/
+theorem sourceChartMap_postPivotFreeCprimeNextSameStageProduct_withCorrectedPostData
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2DisplayedPaperDppp n hS hcont residual * Cprime).submatrix
+        (fun i ↦
+          Sum.inr
+            ((case2DisplayedPivotRowComplementEquivResidualRowSucc
+              n hS hcont).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime ∧
+    IntroducedLabelExponentCertificates L n S (J + 1)
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    IntroducedLabelLevelInvariants L n S (J + 1)
+      ((pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).level)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    case2IntroducedLabelLeastValueGap L n S (J + 1)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    (pre.case2Succ
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).case2Gap := by
+  let data :=
+    of_sourceChartMap_case2Succ_updateSelected pre u residual hS hSL hcont
+      exponentPre levelInv leastValueGap chartFamily
+  exact
+    ⟨data.postPivotFreeCprimeNextSameStageProduct residual Cprime,
       data.extendExponentDomain,
       data.postLevelInvariants,
       data.successorLeastValueGap,

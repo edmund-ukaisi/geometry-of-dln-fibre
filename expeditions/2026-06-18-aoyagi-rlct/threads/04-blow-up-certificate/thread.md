@@ -3255,3 +3255,39 @@ produce recurrence or exponent post-data, construct a successor chart-family
 boundary, prove transition invariance, prove terminal source truth, compute
 Jacobians, prove normal crossings/RLCT, or repair the printed Case 2 vector
 mismatch.
+
+## 2026-06-21 Lean Case 2 free Cprime continuing branch
+
+Reproduction:
+`reproduction-case2-free-cprime-continuing-branch-a4.md`.
+Statement card:
+`statement-card-a4-case2-free-cprime-continuing-branch.md`.
+Review artifact:
+`review-case2-free-cprime-continuing-branch-a4.md`.
+
+Lean now proves the continuing lower-row product identity for an arbitrary
+free pivot-first displayed Case 2 chart-coordinate following factor `Cprime`:
+
+```text
+case2DisplayedFreeCprimeTop
+case2DisplayedFreeCprimeTail
+case2DisplayedFreeCprime_eq_verticalBlock
+case2DisplayedPostPivotFreeFollowingFactor
+case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+Case2DisplayedSuppliedChartFamilyBoundary.postPivotFreeCprimeNextSameStageProduct
+sourceChartMap_postPivotFreeCprimeNextSameStageProduct_withCorrectedPostData
+```
+
+The calculation is the block identity
+`blockdiag(1,D-x*y) * [Ctop; Ctail] = [Ctop; (D-x*y)*Ctail]`
+followed by the existing row/column complement reindexing to `(S,J+1)`.
+The source-chart package conjoins this finite product identity with the
+existing corrected exponent, level, least-value-gap, and `case2Gap`
+projections.
+
+This is finite displayed-pivot matrix algebra only.  It does not assert that
+the free `Cprime` is produced by a source-coordinate chart, construct chart
+coverage or arbitrary-pivot coverage, produce successor recurrence/exponent
+data, prove transition invariance, compute Jacobians, prove normal
+crossings/RLCT, terminal relabeling, or repair the printed Case 2 vector
+mismatch.

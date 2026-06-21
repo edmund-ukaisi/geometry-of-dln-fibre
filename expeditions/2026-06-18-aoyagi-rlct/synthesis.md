@@ -109,6 +109,34 @@ exact-rank openness, no Aoyagi Lemma 1/analytic ideal transport, no
 regular-coordinate RLCT additivity, no normal crossings, and no RLCT
 consequence.
 
+## Latest A4 Update
+
+The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-free-cprime-continuing-branch-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-free-cprime-continuing-branch.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-free-cprime-continuing-branch-a4.md`.
+
+Lean names:
+`case2DisplayedFreeCprimeTop`,
+`case2DisplayedFreeCprimeTail`,
+`case2DisplayedFreeCprime_eq_verticalBlock`,
+`case2DisplayedPostPivotFreeFollowingFactor`,
+`case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`,
+`Case2DisplayedSuppliedChartFamilyBoundary.postPivotFreeCprimeNextSameStageProduct`,
+and
+`sourceChartMap_postPivotFreeCprimeNextSameStageProduct_withCorrectedPostData`.
+This proves the finite block identity
+`blockdiag(1,D-x*y)*[Ctop;Ctail] = [Ctop;(D-x*y)*Ctail]` after reindexing to
+the continuing `(S,J+1)` domains, for an arbitrary compatible pivot-first
+chart-coordinate matrix `Cprime`.
+
+Nonclaims remain: no source production of `Cprime`, no chart coverage or
+arbitrary-pivot coverage, no chart-produced recurrence/exponent data, no
+transition invariant, no terminal relabeling, no normal crossings/RLCT, and no
+repair of the printed Case 2 vector mismatch.
+
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at
