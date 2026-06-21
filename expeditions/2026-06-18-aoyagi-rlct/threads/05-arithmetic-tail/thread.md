@@ -1722,6 +1722,8 @@ Lean now proves:
 ```text
 aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility
 aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack
+aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
 ```
 
 These are thin adapters over existing results.  For supplied equation `(4)`
@@ -1731,6 +1733,9 @@ piecewise data, the theorem combines the own-coordinate value
 combines the own-coordinate value `T(C.point 1-1)=Htilde'_1` with the
 actual-label bridge for `k=Htilde'_1+1`, keeping the explicit slack
 `W_1+2<=M`.
+
+The last-cutpoint wrappers replace the manual upper source-range hypothesis by
+`C.point ell<=L+1`.  They keep actual-width compatibility explicit.
 
 These theorems do not construct the displayed vectors, derive actual-width
 compatibility from Definition 3, remove the Eq3 slack, prove terminal

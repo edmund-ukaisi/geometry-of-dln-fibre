@@ -2328,7 +2328,12 @@ and
 in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  They combine the
 existing supplied-piecewise own-coordinate value theorem with the existing
 actual-label bridge, giving `T(S)=k-1` and `actualWidthLabel L n S k` in one
-API.  Eq3 still carries the explicit one-unit slack.  Artifacts:
+API.  The last-cutpoint wrappers
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint` and
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint`
+derive the upper source range from `C.point ell<=L+1`.  Eq3 still carries the
+explicit one-unit slack, and all wrappers keep actual-width compatibility
+explicit.  Artifacts:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-own-coordinate-actual-label-adapters-a5.md`,
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-own-coordinate-actual-label-adapters.md`,
 and

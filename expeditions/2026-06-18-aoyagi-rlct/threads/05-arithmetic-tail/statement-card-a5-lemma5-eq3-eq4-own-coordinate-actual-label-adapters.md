@@ -4,6 +4,8 @@
 
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility`
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint`
 
 ## Claim
 
@@ -18,11 +20,16 @@ actualWidthLabel L n S k.
 Equation `(4)` uses `S=C.point p-1` and `k=Htilde_p+1`.  Equation `(3)` uses
 `S=C.point 1-1` and `k=Htilde'_1+1`.
 
+Lean also has last-cutpoint wrappers deriving the upper source range from
+`C.point ell<=L+1`, while keeping actual-width compatibility explicit.
+
 ## Inputs
 
 - The relevant supplied piecewise certificate.
 - Definition 3 selected-width sum and strict selected-width inequalities.
 - Source range and actual-width compatibility at the own source layer.
+- Or, for the last-cutpoint wrappers, `C.point ell<=L+1` plus actual-width
+  compatibility at the own source layer.
 - For equation `(3)`, the explicit slack `W_1+2<=M`.
 
 ## Proves

@@ -183,6 +183,77 @@ theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelect
       L ell a n M m C hell hT.a_le_ell hT.indexGuard ha_lt hselected hsource
       hslack hs_le hwidth hk
 
+/-- Last-cutpoint source-range wrapper for equation `(4)`'s own-coordinate
+actual label.
+
+The last-cutpoint compatibility `C.point ell<=L+1` supplies the upper source
+range for the own selected source layer.  Actual-width compatibility at that
+source layer remains explicit. -/
+theorem aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+    (L ell a p : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (hp0 : 1 ≤ p) (hp_c : p ≤ ell - a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point p - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m p)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeLowerNat ell a M m p + 1) :
+    T (C.point p - 1) = (k : ℤ) - 1 ∧
+      actualWidthLabel L n (C.point p - 1) k := by
+  have hp_lt_ell : p < ell := by
+    have ha : a ≤ ell := hT.a_le_ell
+    have hp_tail : p + 1 ≤ a := hT.indexGuard
+    omega
+  have hblock : C.block p (C.point p - 1) :=
+    C.leftEndpoint_mem_block hp_lt_ell
+  have hs_pos : 1 ≤ C.point p - 1 := by
+    have hp_pos : 0 < p := by omega
+    have hpoint0_pos : 1 ≤ C.point 0 := C.point_pos_of_lt (by omega)
+    have hstrict : C.point 0 < C.point p :=
+      C.point_strict_of_lt hp_pos (by omega)
+    omega
+  have hs_le : C.point p - 1 ≤ L :=
+    C.block_sourceIndex_le_of_lastPoint_le hblock hlast
+  exact aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility
+    L ell a p n M m C layerWidth T hell hp0 hp_c hselected hsource
+    hs_pos hs_le hwidth hT hk
+
+/-- Last-cutpoint source-range wrapper for equation `(3)`'s own-coordinate
+actual label.
+
+The last-cutpoint compatibility `C.point ell<=L+1` supplies the upper source
+range for `S_2-1`.  Actual-width compatibility and the equation `(3)` slack
+remain explicit. -/
+theorem aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (C : AoyagiSelectedCutpoints ell)
+    (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell) (ha_lt : a < ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ M)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth :
+      (n ((C.point 1 - 1) + 1) : ℤ) = aoyagiSelectedWidthNat ell m 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T)
+    {k : ℕ} (hk : (k : ℤ) = aoyagiHtildeUpperNat ell a M m 1 + 1) :
+    T (C.point 1 - 1) = (k : ℤ) - 1 ∧
+      actualWidthLabel L n (C.point 1 - 1) k := by
+  have ha_pos : 1 ≤ a := hT.indexGuard
+  have h1_lt : 1 < ell := by omega
+  have hblock : C.block 1 (C.point 1 - 1) :=
+    C.leftEndpoint_mem_block h1_lt
+  have hs_le : C.point 1 - 1 ≤ L :=
+    C.block_sourceIndex_le_of_lastPoint_le hblock hlast
+  exact aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack
+    L ell a n M m C layerWidth T hell ha_lt hselected hsource hslack
+    hs_le hwidth hT hk
+
 /-- Equation `(5)`'s label `k=Htilde'_p+1-alpha` is an actual source label
 when the selected width at `p` is identified with the actual layer width at
 `S_(p+1)`.

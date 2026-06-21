@@ -26,6 +26,12 @@ aoyagiLemma5Eq3_actualWidthLabel_of_sourceSelectedInequality_and_slack
 The explicit slack remains in the statement, as required by the existing
 counterexample.
 
+The last-cutpoint wrappers are valid thin source-range refinements.  For Eq4,
+the supplied equation `(4)` guards imply `p<ell`, so the own left endpoint is
+in block `p`; for Eq3, `1<=a<ell` implies the own left endpoint is in block
+`1`.  The existing selected-block source-range helper then derives the upper
+range from `C.point ell<=L+1`.
+
 ## Source Fidelity
 
 These theorems do not assert the existence of the displayed vectors.  They

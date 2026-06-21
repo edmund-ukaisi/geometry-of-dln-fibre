@@ -67,11 +67,32 @@ one-unit slack and actual-width compatibility, proves
 actualWidthLabel L n (C.point 1 - 1) k.
 ```
 
+## Last-Cutpoint Source Range
+
+The source range hypothesis can be reduced in the same way as for Eq5.  If
+
+```text
+C.point ell <= L+1,
+```
+
+then every selected-block source index is at most `L`.
+
+For equation `(4)`, the own coordinate `C.point p-1` is in block `p` because
+the supplied guards give `p<ell`.  The source-layer lower bound follows from
+`1<=p` and strict monotonicity of the selected cutpoints, while
+`C.point ell<=L+1` gives `C.point p-1<=L`.
+
+For equation `(3)`, the own coordinate `C.point 1-1` is in block `1` because
+the supplied guard `1<=a` and the interior hypothesis `a<ell` give `1<ell`.
+Again `C.point ell<=L+1` gives the upper source range.
+
 ## Lean Targets
 
 ```text
 aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_widthCompatibility
 aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_sourceSelected_slack
+aoyagiLemma5Eq4_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
+aoyagiLemma5Eq3_piecewise_ownCoordinate_actualWidthLabel_of_lastPoint
 ```
 
 ## Nonclaims
