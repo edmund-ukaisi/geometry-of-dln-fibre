@@ -67,6 +67,16 @@ in a scratch and were consumed directly.
 This closes **step (ii)** of the `Core.CThetaGeometric` aggregate roadmap ("its orbit stratification
 `Σ^r = ⋃_M Ō_M`" → its components).
 
+> **Paper transcription caveat (co-located at `minimalPrimes_sigmaIdeal_eq`).** Le Halleur–Rimányi
+> Cor 4.4(b) as **printed** reads "the **minimal** elements of `R^{≤r}`". Under the paper's own order
+> (§3.2 `s ≤ r ⟺ ∀ i≤j, s_ij ≤ r_ij`; Thm 3.8 `O_s ⊆ Ō_r ⟺ s ≤ r`), the components are the
+> inclusion-**maximal** orbit closures — the all-zero pattern is the order-minimal element and sits
+> inside every closure, so is never a component. Settled by the worked `(2,2,2)`/`(2,3,2)` examples
+> (recon thread 02, item 3; decorrelated Codex agreed). The Lean module proves the
+> geometrically-correct object: inclusion-**maximal** orbit closures = inclusion-**minimal** vanishing
+> ideals. Reviewer (2026-06-21) flagged the caveat was not co-located with the claim; now added to the
+> module + theorem docstrings.
+
 ---
 
 ## Headline θ-A — top-dimensional components = minimal-codimension orbit closures
@@ -145,7 +155,13 @@ maximal Kostant partitions ⟹ three components, one top-dimensional); the COUNT
 
 ## Status
 
-sorry-free + axiom-clean; **awaiting reviewer fidelity AUDIT** (does the Lean statement match the
-paper's Cor 4.4 components claim? is the θ-A scoping honest, the count gap correctly named?). Codex
-decorrelation was attempted but Codex is non-functional in this environment (`codex doctor` /
-`codex exec` time out, exit 144 / 143) — flagged for the controller; the reviewer is the decorrelation.
+sorry-free + axiom-clean; **reviewer fidelity AUDIT: G3 = PASS-with-notes, θ-A = PASS**
+(reviewer 2026-06-21). Findings: (N1) the paper-Cor-4.4-says-"minimal" transcription caveat was not
+co-located with the Lean claim — **applied** (now in the module + `minimalPrimes_sigmaIdeal_eq`
+docstrings + this card); (N2) the components are the Spec-incarnation `zeroLocus(sigmaIdeal)`, not the
+point-set `Σ̄^r ⊆ (RepCoord d → k)` — reviewer confirmed this is **honestly scoped** (docstrings say
+"Spec-incarnation"), point-set components are a downstream roadmap step, not a hidden gap. SPIKE
+correct + no hidden hypothesis (holds even for empty family). θ COUNT gap honestly named, not
+sorry-patched. Codex decorrelation was attempted but Codex is non-functional in this environment
+(`codex doctor` / `codex exec` time out, exit 144 / 143) — flagged for the controller; the reviewer
+was the decorrelation (adversarial pass, independently re-derived MAXIMAL).

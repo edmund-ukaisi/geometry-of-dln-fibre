@@ -20,8 +20,15 @@ via the **aggregate vanishing ideal** of `Σ̄^r`:
   the finite family of prime orbit ideals (G2 + `vanishingIdeal` turns unions into infs), so its
   minimal primes (= irreducible components of `zeroLocus`, Mathlib
   `Ideal.minimalPrimes.equivIrreducibleComponents`) are the inclusion-minimal members of the family.
+  (Paper Cor 4.4(b) prints "minimal elements of `R^{≤r}`"; the geometrically-correct object is the
+  inclusion-**maximal** orbit closures = inclusion-**minimal** vanishing ideals — settled by the
+  worked `(2,2,2)`/`(2,3,2)` examples. The caveat is co-located at `minimalPrimes_sigmaIdeal_eq`.)
 
-* **θ — top-dimensional components count `numTop`.** *(filled if the strict-codim brick lands.)*
+* **θ — top-dimensional components are the minimal-codimension orbit closures.** A corner-`≤ r`
+  `Ō_M` of minimal geometric codimension (`codimRepCanonical`, the LANDED Voigt codim) is a component
+  (`orbitRankLocus_minCodim_mem_minimalPrimes`), via the strict drop of `Ideal.height` under proper
+  prime inclusion. The COUNT `numTop d r = #top-dim components` is a roadmap step (the
+  Kostant-partition ↔ orbit-ideal count-bijection), NOT proved here.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -185,11 +192,17 @@ theorem orbitIdeals_isPrime [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
 
 /-- **G3 (minimal-primes form).** The minimal primes of the aggregate ideal `sigmaIdeal d r` of
 `Σ̄^r` are exactly the **inclusion-minimal** orbit ideals `vanishingIdeal (Ō_M)` over the
-corner-`≤ r` family. Since `vanishingIdeal` is order-reversing, "inclusion-minimal orbit ideal" =
-"maximal orbit closure `Ō_M`" (orbit-closure order): the irreducible components of `Σ̄^r` are the
-maximal `Ō_M`.
+corner-`≤ r` family. Since `vanishingIdeal` is order-reversing
+(`vanishingIdeal_orbitRankLocus_le_iff`), "inclusion-minimal orbit ideal" = "maximal orbit closure
+`Ō_M`" (orbit-closure / rank-pattern order, Thm 3.8 `O_s ⊆ Ō_r ⟺ s ≤ r`): the irreducible components
+of `Σ̄^r` are the maximal `Ō_M`.
 From the bridge `sigmaIdeal = sInf orbitIdeals` + the SPIKE (`minimalPrimes` of `sInf` of a finite
-family of primes = its inclusion-minimal members). `[IsAlgClosed k]` (for primality). -/
+family of primes = its inclusion-minimal members). `[IsAlgClosed k]` (for primality).
+**Caveat (paper transcription).** Le Halleur–Rimányi Cor 4.4(b) as printed reads "the **minimal**
+elements of `R^{≤r}`"; the geometrically-correct object is the inclusion-**maximal** orbit closures =
+inclusion-**minimal** vanishing ideals (the all-zero pattern is the order-minimal one and sits inside
+every closure, so is never a component). Settled by the worked `(2,2,2)`/`(2,3,2)` examples (recon
+thread 02); this is what the theorem proves. -/
 theorem minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
     (sigmaIdeal (k := k) d r).minimalPrimes
       = {p | p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q} := by
