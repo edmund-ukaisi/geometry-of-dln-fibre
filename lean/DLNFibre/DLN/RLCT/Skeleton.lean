@@ -2632,8 +2632,8 @@ private theorem count_bp1_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
       rw [← Nat.add_mul]; congr 1; omega
     omega
 
-/-- **Lower-fit guard** `smallestK m (Yvec) ≤ Sprefix M (m+1)` (`m ≤ L`): `Y`'s `m` smallest below `M`'s
-`m+1` smallest. `m > c`: equality (`Yvec_prefix`); `m ≤ c`: the complement `∑ tail ≤ (c−m)b +
+/-- **Lower-fit guard** `smallestK m (Yvec) ≤ Sprefix M (m+1)` (`m ≤ L`). `m > c`: equality
+(`Yvec_prefix`); `m ≤ c`: the complement `∑ tail ≤ (c−m)b +
 min(r,c−m)` from `aS_le_bp1` + `count_bp1_le`. The greedy non-emptiness' lower-fit. -/
 private theorem Yvec_lowerfit (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (m : ℕ) (hm : m ≤ L) :
     smallestK L m (Yvec M (cAch M)) ≤ (Sprefix M (m + 1) : ℤ) := by
