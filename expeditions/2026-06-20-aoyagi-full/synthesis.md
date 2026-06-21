@@ -341,10 +341,15 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
 ## STATUS @ 2026-06-21 ~01:00 (trunk past 8f6c98a; Fubini @b8f53c7)
 - **S1.1 + S1.4 CLOSED + green-gated + rv-2 PASS** (@67ae3c1; both axiom-clean, FLAG-1 orphan resolved). Skeleton 7 sorries.
 - **S1.3 wiring now** (fm; actionable — S1Local sorry-free on origin, my earlier b6eaa80-stale ref was wrong). → then D1.
-- **FUBINI: BOTH n=1 directions PROVEN** (fm-2, S1Fubini.lean @b8f53c7, 224 LoC, axiom-clean): `step_integrableOn`
-  (≥) + `step_lintegral_top` (≤, the heavy cusp — DONE). Measure-route = B (1-D interval vol, no EuclideanSpace/
-  addHaar — fm-2's lighter call; statement-shape still (A) abstract-core). REMAINING = threshold-lift
-  (rlctAt(x²+H)=½+λ_H, ~80-120 sSup lines) + iterate over n coords → n/2+λ_core. Both directions carry hHne.
+- **FUBINI: ALL ATOMS PROVEN** (fm-2, S1Fubini.lean @e2a3f0c, 302 LoC, axiom-clean): both integral directions
+  (`step_integrableOn` ≥, `step_lintegral_top` ≤ cusp) + `admissible_downset` (the hardest sub-piece, rpow
+  two-sided bound on a bounded finite-measure nbhd; needs `[ProperSpace]`+`[IsFiniteMeasureOnCompacts]`) +
+  core_admissible_of_lt/_zero + cmpF + oneDimCuspVol + inner_slice + cusp_lower_bound. Measure-route = B (1-D
+  interval vol, no EuclideanSpace/addHaar; statement-shape (A) abstract-core). REMAINING = pure ENNReal sSup
+  BOOKKEEPING (no new math, no walls): n=1 `step_rlct` le_antisymm (≥ split q=a+b + step_integrableOn; ≤
+  step_lintegral_top contrapositive) + iterate over n coords → n/2+λ_core. fm-2 PAUSED at this clean green
+  checkpoint (good discipline — not grinding ENNReal coercions tired) → closing it next as a focused task
+  (template = its own smoothBlock1D_rlct). ~80% done by content. Both directions carry hHne/hGne.
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
