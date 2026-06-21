@@ -3368,3 +3368,35 @@ This is a gap record, not a lower-endpoint replacement.  It does not prove
 Eq4 source-label legality, construction of Eq4/Eq5 vectors, all-coordinate
 endpoint realisation, injection, back-to-label coverage, pole order, normal
 crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal Eq5 gap
+
+Reproduction:
+`reproduction-lemma5-terminal-eq5-gap-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-eq5-gap.md`.
+Review artifact:
+`review-lemma5-terminal-eq5-gap-a5.md`.
+
+Lean now packages the terminal endpoint finite-set inventory:
+
+```text
+aoyagiLemma5Eq5OffsetValueSet_eq_empty_of_terminal
+aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum
+aoyagiLemma5Eq5_terminal_offsets_ne_intervalValueSetNat_of_selectedSum
+aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat
+aoyagiLemma5_suppliedTerminalUpper_Eq5_offsets_eq_intervalValueSetNat
+```
+
+At `p=ell`, Eq5's strict-offset set is empty because the interval excess has
+the terminal factor `ell-ell=0`.  Under the selected-width sum and `a<=ell`,
+the lower and upper Htilde terminal values are both zero, so the terminal
+same-coordinate interval is `{0}`.  Thus Eq5 offsets alone do not fill the
+terminal interval, while a separately supplied terminal zero does.  The
+terminal-upper wrapper records the same coverage when the supplied equality is
+written as `T(C.point ell-1)=Htilde'_ell`.
+
+This is supplied endpoint bookkeeping, not source construction.  It does not
+prove terminal source-label legality, terminal-label exactness,
+all-coordinate endpoint realisation, injection, back-to-label coverage, pole
+order, normal crossings, or RLCT extraction.

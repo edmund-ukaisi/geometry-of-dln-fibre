@@ -3253,6 +3253,28 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-rising-boundary-gap-a5.md`.
 
+The terminal Eq5 gap is now recorded as finite-set bookkeeping.  Eq5 has no
+strict offsets at `p=ell`, because the interval excess contains the factor
+`ell-ell=0`.  Under the selected-width sum, both terminal Htilde endpoints are
+zero, so the terminal same-coordinate interval is `{0}`.  Lean now proves that
+Eq5 offsets alone do not fill this interval, and that a separately supplied
+terminal zero fills it:
+`aoyagiLemma5Eq5OffsetValueSet_eq_empty_of_terminal`,
+`aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum`,
+`aoyagiLemma5Eq5_terminal_offsets_ne_intervalValueSetNat_of_selectedSum`, and
+`aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`.  The
+same supplied coverage is also packaged as
+`aoyagiLemma5_suppliedTerminalUpper_Eq5_offsets_eq_intervalValueSetNat`, where
+the terminal equality is stated in upper-chain form `T(...)=Htilde'_ell`.
+This does not construct the terminal source branch or prove terminal-label
+exactness.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-eq5-gap-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-eq5-gap.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-eq5-gap-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -1996,6 +1996,23 @@ theorem aoyagiLemma5Eq5OffsetValueSet_card
   · intro x _ y _ hxy
     exact aoyagiLemma5Eq5_offsetValue_injective ell a p M m hxy
 
+/-- At the terminal coordinate `p=ell`, equation `(5)` has no strict offset
+values. -/
+theorem aoyagiLemma5Eq5OffsetValueSet_eq_empty_of_terminal
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :
+    aoyagiLemma5Eq5OffsetValueSet ell a ell M m = ∅ := by
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro z hz
+  rw [aoyagiLemma5Eq5OffsetValueSet, Finset.mem_image] at hz
+  rcases hz with ⟨alpha, halpha, _hvalue⟩
+  rw [Finset.mem_Icc] at halpha
+  have hle_zero : alpha ≤ 0 := by
+    have hle_excess : aoyagiLemma5IntervalExcess ell a ell ≤ 0 := by
+      unfold aoyagiLemma5IntervalExcess
+      omega
+    omega
+  omega
+
 /-- In the rising region, the strict equation `(5)` offsets have cardinality
 `p-1`.
 
@@ -2201,6 +2218,116 @@ theorem aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
   · simpa [aoyagiHtildeLowerChain, aoyagiHtildeUpperChain] using
       (aoyagiHtildeLowerChain_le_upperChain ell a M m ha ⟨p, hp⟩)
   · rfl
+
+/-- Under the selected-width sum, the terminal same-coordinate interval is
+the singleton `{0}`. -/
+theorem aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiHtildeIntervalValueSetNat ell a M m ell = {0} := by
+  ext z
+  constructor
+  · intro hz
+    rw [Finset.mem_singleton]
+    have hell : ell < ell + 1 := Nat.lt_succ_self ell
+    rw [aoyagiHtildeIntervalValueSetNat] at hz
+    simp only [hell, ↓reduceDIte] at hz
+    have hbounds :=
+      (aoyagiHtilde_mem_intervalValueSet_iff_bounds
+        ell a M m ha ⟨ell, hell⟩ z).1 hz
+    have hlo :
+        aoyagiHtildeLowerChain ell a M m ⟨ell, hell⟩ = 0 := by
+      simpa [aoyagiHtildeLowerChain] using
+        aoyagiHtildeLowerNat_last_eq_zero_of_selectedSum
+          ell a M m ha hselected
+    have hhi :
+        aoyagiHtildeUpperChain ell a M m ⟨ell, hell⟩ = 0 := by
+      simpa [aoyagiHtildeUpperChain] using
+        aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum
+          ell a M m ha hselected
+    omega
+  · intro hz
+    rw [Finset.mem_singleton] at hz
+    subst z
+    have hell : ell < ell + 1 := Nat.lt_succ_self ell
+    rw [aoyagiHtildeIntervalValueSetNat]
+    simp only [hell, ↓reduceDIte]
+    rw [aoyagiHtilde_mem_intervalValueSet_iff_bounds
+      ell a M m ha ⟨ell, hell⟩ 0]
+    constructor
+    · have hlo :
+          aoyagiHtildeLowerChain ell a M m ⟨ell, hell⟩ = 0 := by
+        simpa [aoyagiHtildeLowerChain] using
+          aoyagiHtildeLowerNat_last_eq_zero_of_selectedSum
+            ell a M m ha hselected
+      omega
+    · have hhi :
+          aoyagiHtildeUpperChain ell a M m ⟨ell, hell⟩ = 0 := by
+        simpa [aoyagiHtildeUpperChain] using
+          aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum
+            ell a M m ha hselected
+      omega
+
+/-- At the terminal coordinate, Eq5 strict offsets alone do not fill the
+same-coordinate interval under the selected-width sum. -/
+theorem aoyagiLemma5Eq5_terminal_offsets_ne_intervalValueSetNat_of_selectedSum
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a) :
+    aoyagiLemma5Eq5OffsetValueSet ell a ell M m ≠
+      aoyagiHtildeIntervalValueSetNat ell a M m ell := by
+  intro hEq
+  have hzero :
+      (0 : ℤ) ∈ aoyagiHtildeIntervalValueSetNat ell a M m ell := by
+    rw [aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum
+      ell a M m ha hselected]
+    simp
+  rw [← hEq, aoyagiLemma5Eq5OffsetValueSet_eq_empty_of_terminal] at hzero
+  simp at hzero
+
+/-- A separately supplied terminal zero fills the terminal same-coordinate
+interval together with the empty Eq5 strict-offset set.
+
+This is only supplied endpoint bookkeeping.  It does not construct the source
+branch or prove terminal-label exactness. -/
+theorem aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hterminal : T (C.point ell - 1) = 0) :
+    insert (T (C.point ell - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a ell M m) =
+      aoyagiHtildeIntervalValueSetNat ell a M m ell := by
+  rw [hterminal, aoyagiLemma5Eq5OffsetValueSet_eq_empty_of_terminal,
+    aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum
+      ell a M m ha hselected]
+  simp
+
+/-- A separately supplied terminal upper-endpoint value fills the terminal
+same-coordinate interval with Eq5 strict offsets.
+
+This form matches APIs that supply terminal compatibility as
+`T(...)=Htilde'_ell`; the selected-width sum identifies `Htilde'_ell` with
+zero. -/
+theorem aoyagiLemma5_suppliedTerminalUpper_Eq5_offsets_eq_intervalValueSetNat
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hterminal :
+      T (C.point ell - 1) = aoyagiHtildeUpperNat ell a M m ell) :
+    insert (T (C.point ell - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a ell M m) =
+      aoyagiHtildeIntervalValueSetNat ell a M m ell := by
+  have hzero :
+      T (C.point ell - 1) = 0 := by
+    rw [hterminal]
+    exact aoyagiHtildeUpperNat_last_eq_zero_of_selectedSum
+      ell a M m ha hselected
+  exact aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat
+    ell a M m C T ha hselected hzero
 
 /-- In the rising region, the strict equation `(5)` offset values plus the
 lower endpoint have cardinality equal to the interval excess.

@@ -21,13 +21,13 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
-Latest pushed A5 state before the current Eq4 rising-boundary gap slice is
-`29961e5`, which records the Eq3 special-boundary obstruction against Eq5
-endpoint coverage.  The meaningful source frontier is still the
-upper-bound/no-extra side of Aoyagi Lemma 5, not another lower-bound printed
-equation pass.  The renewed source probe confirms that PDF p. 26's interval
-count plus the Case 1(2) sentence that `J` increases by one does not by itself
-prove a classifier, injection, or back-to-label map.
+Latest pushed A5 state before the current terminal Eq5 gap slice is
+`c4e5260`, which records the Eq4 rising-boundary gap at `p=a`.  The
+meaningful source frontier is still the upper-bound/no-extra side of Aoyagi
+Lemma 5, not another lower-bound printed equation pass.  The renewed source
+probe confirms that PDF p. 26's interval count plus the Case 1(2) sentence
+that `J` increases by one does not by itself prove a classifier, injection, or
+back-to-label map.
 
 Recorded audit:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-source-audit-a5.md`.
@@ -67,18 +67,21 @@ Current Eq3 boundary Eq5 obstruction slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq3-boundary-eq5-obstruction-a5.md`.
 Current Eq4 rising-boundary gap slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-boundary-gap-a5.md`.
+Current terminal Eq5 gap slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-eq5-gap-a5.md`.
 
 Immediate order:
 
-1. Review and commit the Eq4 rising-boundary gap slice.
+1. Review and commit the terminal Eq5 gap slice.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
 3. Next source-facing target: continue the endpoint inventory around the
-   remaining gaps: the terminal endpoint `p=ell`, and any Eq4 lower endpoint
-   cases at rising coordinates not satisfying Eq4's strict guard beyond the
-   recorded `p=a` boundary.  Source-label legality, injection, and
-   back-to-label coverage remain unproved.  Do not claim Aoyagi's printed Case
-   1(2) paragraph supplies source coverage or injectivity.
+   remaining gaps: source-backed terminal branch construction, and any Eq4
+   lower endpoint cases at rising coordinates not satisfying Eq4's strict
+   guard beyond the recorded `p=a` boundary.  Source-label legality,
+   injection, and back-to-label coverage remain unproved.  Do not claim
+   Aoyagi's printed Case 1(2) paragraph supplies source coverage or
+   injectivity.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
 5. Low-risk Lean API may package the supplied boundary using standard finite

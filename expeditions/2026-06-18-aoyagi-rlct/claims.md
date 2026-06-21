@@ -2523,6 +2523,17 @@ No such claim is formalisation-ready until both fields are filled.
   repaired Eq4 guard would require `a+1<=a`; under the rising hypotheses
   `1<=a` and `a<=ell-a`, Eq5 still misses both endpoints at that coordinate.
   This is a gap record, not a lower-endpoint construction.
+  Also proved the terminal Eq5 gap:
+  `aoyagiLemma5Eq5OffsetValueSet_eq_empty_of_terminal`,
+  `aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum`,
+  `aoyagiLemma5Eq5_terminal_offsets_ne_intervalValueSetNat_of_selectedSum`,
+  and
+  `aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`, plus
+  `aoyagiLemma5_suppliedTerminalUpper_Eq5_offsets_eq_intervalValueSetNat`.
+  At `p=ell`, Eq5 offsets are empty; under the selected-width sum, the
+  terminal interval is `{0}`.  A separately supplied terminal zero, or
+  terminal upper endpoint, fills the interval.  This does not construct the
+  terminal branch or prove terminal-label exactness.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

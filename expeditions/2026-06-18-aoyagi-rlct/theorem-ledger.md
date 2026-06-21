@@ -3905,6 +3905,26 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-rising-boundary-gap-a5.md`.
 
+Latest A5 terminal Eq5 gap update:
+`Lemma5DisplayedVector.lean` now has
+`aoyagiLemma5Eq5OffsetValueSet_eq_empty_of_terminal`,
+`aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum`,
+`aoyagiLemma5Eq5_terminal_offsets_ne_intervalValueSetNat_of_selectedSum`, and
+`aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`, plus
+the upper-endpoint form
+`aoyagiLemma5_suppliedTerminalUpper_Eq5_offsets_eq_intervalValueSetNat`.
+At `p=ell`, Eq5 strict offsets are empty.  Under the selected-width sum and
+`a<=ell`, the terminal same-coordinate interval is `{0}`.  Eq5 offsets alone
+therefore do not fill the terminal interval, while a separately supplied
+terminal zero, or terminal upper endpoint, does.  This is supplied endpoint
+bookkeeping, not terminal source construction or terminal-label exactness.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-eq5-gap-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-eq5-gap.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-eq5-gap-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
