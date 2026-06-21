@@ -277,8 +277,17 @@ widths = the ℓ*+1 smallest, FORCED over every T via the `(M^S−H)` factors) �
 a widths-extremum (exactly where the false min_c lived; the trap). UPPER (achiever) + LOWER (per-T
 balanced-split + forcing). fm executing route B. So #19 is now a clean bounded build. fm sequence: wire
 S1.1+S1.4 → #19 route B → R1/L2/D1
-(critical-path beats off-path as Fubini lands for R1). S1 STATE (trunk @b6eaa80): S1Transport 0-sorry (S1.1
-ready), S1Local 1-sorry (S1.4 ready; S1.3 pending fm-2's push of its proof), S1Additive 0 (Fubini pending).
+(critical-path beats off-path as Fubini lands for R1).
+
+**S1 WIRES — S1.1 + S1.4 CLOSED + GREEN-GATED on trunk @`7258a36` (fm `aacdc7a`, FF-merged + full `lake build
+DLNFibre` GREEN, 2855 jobs).** Skeleton sorry 10→7. Both rungs INDEPENDENTLY axiom-clean (controller `#print
+axioms`): `weightedThreshold_transport` (S1.1, +hsurj+hImE [10th]) and `rlct_germ_local` (S1.4) = `[propext,
+Classical.choice, Quot.sound]` — no sorryAx, no monomial_rlct. Orphan FLAG resolved for S1Transport+S1Local
+(now in Skeleton's import closure). **7 remaining sorries:** S1.3 rlct_unit_invariant (138 — wire next,
+Measurable u [11th] blessed + _aux proven), S1.5 rlct_additive_smooth_block (169 — awaits fm-2's Fubini lemma),
+L2 (882), D1 (896), R1 (921), #19 lambdaCore (1055), A2 (1196). rv-2 auditing S1.1/S1.4 + the Fubini ≥ half.
+NEXT (fm): wire S1.3 → then D1 `deepest_point_reduction`. S1Additive/S1SmoothBlock/S1Fubini stay orphans until
+S1.5/L2 wire them (controller adds S1Fubini to the aggregator at that point).
 
 **#19 CHECKPOINT (fm @`88cf38e`, worktree-rung0-defs) — ENGINES PROVEN + ROUTE CORRECTED + KEYSTONE PARKED (decision b).**
 Two engines axiom-clean: `balancedSplit_min` (lower-bound engine `Σ balancedSplit² ≤ Σqᵢ²` at fixed sum;
