@@ -194,9 +194,14 @@ general form is FALSE (Codex: alternating step functions give `⊤ ≠ 2`) and t
 version needs heavy Laplace/Tauberian machinery — a **roadmap** lemma off the critical path, not
 carried here. The smooth block (`Σ xᵢ²`, RLCT `n/2`) is analytic-clean and closes the rung. Stated
 on `rlctAtOn` (general singular block `Y`; the regular block is `Fin n → ℝ` at the origin).
-Non-vacuous: equates the joint RLCT to `n/2` plus the block RLCT. -/
+Non-vacuous: equates the joint RLCT to `n/2` plus the block RLCT. **13th-finding fix (fm-2):** the
+bare form is FALSE for a germ-vanishing block (`G ≡ 0` near `y0` ⟹ the block RLCT is `⊤`, so the LHS
+`n/2 + ⊤ = ⊤` while the joint side need not be — `rlctAtOn_zero_eq_top`). Guarded by `hGmeas`
+(`Measurable G`) + `hGne` (`G ≠ 0` a.e. on a nbhd of `y0`), the germ hygiene fm-2's lift uses. -/
 theorem rlct_additive_smooth_block {n : ℕ}
-    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] (G : Y → ℝ) (y0 : Y) :
+    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] (G : Y → ℝ) (y0 : Y)
+    (hGmeas : Measurable G)
+    (hGne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), G z ≠ 0) :
     rlctAtOn (fun p : (Fin n → ℝ) × Y => (∑ i, p.1 i ^ 2) + G p.2 ^ 2) (0, y0)
       = (n : ENNReal) / 2 + rlctAtOn (fun y => G y ^ 2) y0 := by
   sorry
