@@ -57,16 +57,18 @@ Current Eq5 non-rising coverage slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-nonrising-coverage-a5.md`.
 Current Eq5 endpoint-deficit slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-deficit-a5.md`.
+Current supplied endpoint coverage slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
 
 Immediate order:
 
-1. Review and commit the Eq5 endpoint-deficit split.
+1. Review and commit the supplied endpoint coverage split.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. Next source-facing target: use the endpoint-deficit split to inventory which
-   printed/supplied branch certificates can legally realise the missing upper
-   and lower endpoints in each coordinate region; do not claim Aoyagi's printed
-   Case 1(2) paragraph supplies source coverage or injectivity.
+3. Next source-facing target: instantiate the supplied endpoint split only
+   where existing Eq3/Eq4 wrappers legally supply endpoint values; otherwise
+   record the missing legal endpoint obligations.  Do not claim Aoyagi's
+   printed Case 1(2) paragraph supplies source coverage or injectivity.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
 5. Low-risk Lean API may package the supplied boundary using standard finite

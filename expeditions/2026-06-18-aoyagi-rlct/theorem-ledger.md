@@ -3816,6 +3816,22 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-deficit-a5.md`.
 
+Latest A5 supplied endpoint coverage update: `Lemma5DisplayedVector.lean` now
+packages the endpoint-deficit split as supplied endpoint coverage.  Names:
+`aoyagiLemma5_suppliedUpperLower_Eq5_offsets_eq_intervalValueSetNat_of_le_min`
+and `aoyagiLemma5_suppliedEndpointCoverage_Eq5_offsets_split`.  A supplied
+upper endpoint suffices outside the rising region; in the rising region a
+supplied upper and supplied lower endpoint suffice.  This does not prove Eq3,
+Eq4, or Eq5 legally supplies those endpoints, nor terminality, chart coverage,
+all-coordinate branch-family coverage, pole order, normal crossings, or RLCT
+extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-supplied-endpoint-coverage.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

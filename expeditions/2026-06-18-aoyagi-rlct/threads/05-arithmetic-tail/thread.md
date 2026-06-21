@@ -3226,3 +3226,31 @@ exactly in the rising region.  The set-level split packages this as either
 This is an obligation split for endpoint realisation.  It does not construct
 any source branch, prove source-label legality, prove terminality, prove chart
 coverage, or prove the Lemma 5 order count.
+
+## 2026-06-21 Lean Lemma 5 Eq5 supplied endpoint coverage
+
+Reproduction:
+`reproduction-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-supplied-endpoint-coverage.md`.
+Review artifact:
+`review-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
+
+Lean now turns the Eq5 endpoint-deficit split into a supplied endpoint coverage
+split:
+
+```text
+aoyagiLemma5_suppliedUpperLower_Eq5_offsets_eq_intervalValueSetNat_of_le_min
+aoyagiLemma5_suppliedEndpointCoverage_Eq5_offsets_split
+```
+
+In the rising region, supplied upper and lower endpoint values together with
+the strict Eq5 offsets fill the same-coordinate interval.  For any positive
+coordinate, the split theorem proves either that a supplied upper endpoint plus
+Eq5 offsets fills the interval, or that we are in the rising region and a
+supplied upper plus supplied lower endpoint plus Eq5 offsets fills it.
+
+This is still supplied endpoint bookkeeping.  It does not prove Eq3, Eq4, or
+Eq5 legally supplies the endpoint values, and it does not prove terminality,
+chart coverage, branch-family coverage, pole order, normal crossings, or RLCT
+extraction.

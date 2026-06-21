@@ -2469,6 +2469,87 @@ theorem aoyagiLemma5Eq5_offsets_endpointDeficit_split
     exact aoyagiLemma5Eq5_offsets_eq_interval_erase_upper_of_excess_le_pred
       ell a p M m ha hp hexcess_le
 
+/-- In the rising region, supplied upper and lower endpoint values fill the
+same-coordinate interval together with the strict Eq5 offsets.
+
+This is a generic supplied-endpoint version of the Eq4 lower-endpoint wrapper.
+It does not assert that any printed source branch legally supplies either
+endpoint. -/
+theorem aoyagiLemma5_suppliedUpperLower_Eq5_offsets_eq_intervalValueSetNat_of_le_min
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (Tupper Tlower : ℕ → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a) (hp_c : p ≤ ell - a)
+    (hupper :
+      Tupper (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p)
+    (hlower :
+      Tlower (C.point p - 1) = aoyagiHtildeLowerNat ell a M m p) :
+    insert (Tupper (C.point p - 1))
+        (insert (Tlower (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hEq :=
+    aoyagiLemma5Eq5_insertLower_offsets_eq_interval_erase_upper_of_le_min
+      ell a p M m ha hp_pos hp_a hp_c
+  have hupper_mem :
+      aoyagiHtildeUpperNat ell a M m p ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m p :=
+    aoyagiLemma5Eq5_upperEndpoint_mem_intervalValueSetNat_of_lt
+      ell a p M m ha (by omega)
+  calc
+    insert (Tupper (C.point p - 1))
+        (insert (Tlower (C.point p - 1))
+          (aoyagiLemma5Eq5OffsetValueSet ell a p M m))
+        =
+          insert (aoyagiHtildeUpperNat ell a M m p)
+            (insert (aoyagiHtildeLowerNat ell a M m p)
+              (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) := by
+            rw [hupper, hlower]
+    _ =
+          insert (aoyagiHtildeUpperNat ell a M m p)
+            ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+              (aoyagiHtildeUpperNat ell a M m p)) := by
+            rw [hEq]
+    _ = aoyagiHtildeIntervalValueSetNat ell a M m p :=
+      Finset.insert_erase hupper_mem
+
+/-- For each positive coordinate, supplied endpoint obligations split into the
+non-rising and rising cases.
+
+Outside the rising region, a supplied upper endpoint and Eq5 offsets fill the
+interval.  In the rising region, a supplied upper endpoint, a supplied lower
+endpoint, and Eq5 offsets fill the interval.  This is not source coverage: the
+endpoint equalities are hypotheses. -/
+theorem aoyagiLemma5_suppliedEndpointCoverage_Eq5_offsets_split
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (Tupper Tlower : ℕ → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp : p < ell + 1)
+    (hupper :
+      Tupper (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p)
+    (hlower :
+      p ≤ a → p ≤ ell - a →
+        Tlower (C.point p - 1) = aoyagiHtildeLowerNat ell a M m p) :
+    insert (Tupper (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+        aoyagiHtildeIntervalValueSetNat ell a M m p ∨
+      (p ≤ a ∧ p ≤ ell - a ∧
+        insert (Tupper (C.point p - 1))
+          (insert (Tlower (C.point p - 1))
+            (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) =
+          aoyagiHtildeIntervalValueSetNat ell a M m p) := by
+  by_cases hrising : p ≤ a ∧ p ≤ ell - a
+  · right
+    exact ⟨hrising.1, hrising.2,
+      aoyagiLemma5_suppliedUpperLower_Eq5_offsets_eq_intervalValueSetNat_of_le_min
+        ell a p M m C Tupper Tlower ha hp_pos hrising.1 hrising.2
+        hupper (hlower hrising.1 hrising.2)⟩
+  · left
+    have hexcess_le :=
+      aoyagiLemma5IntervalExcess_le_pred_of_not_le_min
+        ell a p ha hp_pos hrising
+    exact
+      aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
+        ell a p M m C Tupper ha hp hexcess_le hupper
+
 /-- A supplied equation `(4)` own-coordinate value supplies the lower endpoint
 in the Eq5 lower-plus-strict-offset finite set.
 

@@ -3165,6 +3165,21 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-deficit-a5.md`.
 
+The Eq5 endpoint-deficit split now has a supplied endpoint coverage wrapper.
+`aoyagiLemma5_suppliedUpperLower_Eq5_offsets_eq_intervalValueSetNat_of_le_min`
+is the generic rising-region theorem: if upper and lower endpoint values are
+supplied, then those values plus the strict Eq5 offsets fill the
+same-coordinate interval.  `aoyagiLemma5_suppliedEndpointCoverage_Eq5_offsets_split`
+packages every positive coordinate as either the non-rising upper-only case or
+the rising upper-plus-lower case.  Endpoint realisation remains supplied; this
+does not construct Eq3/Eq4/Eq5 source labels or terminal/chart data.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-supplied-endpoint-coverage-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-supplied-endpoint-coverage.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
