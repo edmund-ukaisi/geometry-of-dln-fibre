@@ -1489,4 +1489,59 @@ theorem reduceStep {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) �
       · have hsak : 1 ≤ m (k, k) := by rw [← haa]; exact hsad
         exact codimForm_removeMove_le m hsak
 
+/-- **The reduction (recursion on `∑ e'`).** For `e ≤ e'` pointwise and any corner-`0` partition `m'`
+of `e'`, there is a corner-`0` partition `m` of `e` with `codimForm (extendℤ m) ≤ codimForm (extendℤ
+m')`. Each step decrements `e'` at a strictly-over-target vertex by a shortest-split (`reduceStep`),
+not increasing `codimForm`; the recursion terminates as `∑ e'` strictly decreases. -/
+theorem exists_le_codimForm : ∀ (s : ℕ) (e e' : Fin (N + 1) → ℕ),
+    (∑ v, e' v) = s → (∀ v, e v ≤ e' v) → ∀ m' ∈ kostantPartitions e' 0,
+    ∃ m ∈ kostantPartitions e 0, codimForm N (extendℤ m) ≤ codimForm N (extendℤ m') := by
+  intro s
+  induction s using Nat.strong_induction_on with
+  | _ s ih =>
+    intro e e' hsum hle m' hm'
+    by_cases hee : ∀ v, e' v = e v
+    · -- `e' = e`: take `m'` itself
+      have : e = e' := funext fun v ↦ (hee v).symm
+      exact ⟨m', this ▸ hm', le_refl _⟩
+    · -- some vertex `k` has `e k < e' k`: reduce there, recurse
+      push_neg at hee
+      obtain ⟨k, hk⟩ := hee
+      have hkpos : 1 ≤ e' k := by have := hle k; omega
+      obtain ⟨m'', hm'', hcf⟩ := reduceStep hm' k hkpos
+      set e'' := Function.update e' k (e' k - 1) with he''
+      have heq_erase : ∀ v ∈ Finset.univ.erase k, e'' v = e' v := by
+        intro v hv; rw [he'', Function.update_of_ne (Finset.ne_of_mem_erase hv)]
+      have hsum'' : (∑ v, e'' v) < s := by
+        have h1 : (∑ v, e'' v) = e'' k + ∑ v ∈ Finset.univ.erase k, e'' v :=
+          (Finset.add_sum_erase _ e'' (Finset.mem_univ k)).symm
+        have h2 : (∑ v, e' v) = e' k + ∑ v ∈ Finset.univ.erase k, e' v :=
+          (Finset.add_sum_erase _ e' (Finset.mem_univ k)).symm
+        have heq : (∑ v ∈ Finset.univ.erase k, e'' v) = ∑ v ∈ Finset.univ.erase k, e' v :=
+          Finset.sum_congr rfl heq_erase
+        have hek : e'' k = e' k - 1 := by rw [he'', Function.update_self]
+        rw [heq, hek] at h1; rw [hsum] at h2; omega
+      have hle'' : ∀ v, e v ≤ e'' v := by
+        intro v; rw [he'']
+        by_cases hv : v = k
+        · rw [hv, Function.update_self]; have := hle k; omega
+        · rw [Function.update_of_ne hv]; exact hle v
+      obtain ⟨m, hm, hcf2⟩ := ih (∑ v, e'' v) hsum'' e e'' rfl hle'' m'' hm''
+      exact ⟨m, hm, le_trans hcf2 hcf⟩
+
+/-- **Weak dimension-monotonicity of `cCodim · 0`.** `e ≤ e'` pointwise ⟹ `cCodim e 0 ≤ cCodim e'
+0`. The first of the two combinatorial inequalities discharging the θ-count gating hypotheses. -/
+theorem cCodim_zero_mono {e e' : Fin (N + 1) → ℕ}
+    (he : (kostantPartitions e 0).Nonempty) (he' : (kostantPartitions e' 0).Nonempty)
+    (hle : ∀ v, e v ≤ e' v) :
+    cCodim e 0 he ≤ cCodim e' 0 he' := by
+  -- `cCodim e' 0` is attained at some minimiser `m'`; dominate it by a partition of `e`
+  obtain ⟨m', hm'mem, hm'eq⟩ := (kostantPartitions e' 0).exists_mem_eq_inf' he'
+    (fun m ↦ codimForm N (extendℤ m))
+  obtain ⟨m, hm, hcf⟩ := exists_le_codimForm (∑ v, e' v) e e' rfl hle m' hm'mem
+  calc cCodim e 0 he = (kostantPartitions e 0).inf' he (fun m ↦ codimForm N (extendℤ m)) := rfl
+    _ ≤ codimForm N (extendℤ m) := Finset.inf'_le _ hm
+    _ ≤ codimForm N (extendℤ m') := hcf
+    _ = cCodim e' 0 he' := hm'eq.symm
+
 end DLNFibre.Core
