@@ -1257,4 +1257,156 @@ theorem rightShrink_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 
     simp only [rightShrink, if_neg h1, if_neg h3, Nat.add_zero, Nat.sub_zero]
     exact hc0
 
+/-! ### Singleton removal (omitting both endpoints of `[a,a]`) -/
+
+/-- The singleton-removal move: drop one copy of `[a,a]` (omitting vertex `a`). -/
+def removeMove (m : Fin (N + 1) × Fin (N + 1) → ℕ) (a : Fin (N + 1)) :
+    Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ m p - (if p = (a, a) then 1 else 0)
+
+/-- The singleton-removal ℤ-delta: `−boxℤ a a` (as a raw lambda, mirroring `splitDelta`). -/
+def removeDelta (a : Fin (N + 1)) : ℤ → ℤ → ℤ := fun α β ↦ - boxℤ (a : ℤ) (a : ℤ) α β
+
+/-- Per-interval coefficient of the singleton-removal delta. -/
+def removeCoeff (a : Fin (N + 1)) (Y : Fin (N + 1) × Fin (N + 1)) : ℤ :=
+  -((if rrInd (a : ℤ) (a : ℤ) Y then 1 else 0) + (if llInd (a : ℤ) (a : ℤ) Y then 1 else 0))
+
+/-- `extendℤ (removeMove m a) = extendℤ m + removeDelta a` (source `[a,a]` present). -/
+theorem extendℤ_removeMove {m : Fin (N + 1) × Fin (N + 1) → ℕ} {a : Fin (N + 1)}
+    (hsa : 1 ≤ m (a, a)) :
+    extendℤ (removeMove m a) = extendℤ m + removeDelta a := by
+  funext α β
+  simp only [Pi.add_apply, extendℤ, removeDelta, boxℤ]
+  by_cases hbox : (0 : ℤ) ≤ α ∧ α ≤ β ∧ β ≤ (N : ℤ)
+  · rw [dif_pos hbox, dif_pos hbox]
+    obtain ⟨hα0, hαβ, hβN⟩ := hbox
+    set q : Fin (N + 1) × Fin (N + 1) := (⟨α.toNat, by omega⟩, ⟨β.toNat, by omega⟩) with hq
+    have eAA : (q = (a, a)) ↔ (α = (a : ℤ) ∧ β = (a : ℤ)) := by
+      rw [hq, Prod.mk.injEq, Fin.ext_iff, Fin.ext_iff]; dsimp only [Fin.val_mk]; omega
+    rw [show removeMove m a (⟨α.toNat, by omega⟩, ⟨β.toNat, by omega⟩) = removeMove m a q from rfl,
+      removeMove]
+    by_cases h1 : q = (a, a)
+    · have hpos : 1 ≤ m q := by rw [h1]; exact hsa
+      rw [if_pos h1, if_pos (eAA.mp h1), Nat.cast_sub (by omega)]; push_cast; ring
+    · rw [if_neg h1, if_neg (fun h ↦ h1 (eAA.mpr h)), Nat.sub_zero]; push_cast; ring
+  · simp only [dif_neg hbox]
+    have haN : (a : ℤ) ≤ N := by have := a.isLt; omega
+    rw [if_neg (by rintro ⟨h1, h2⟩; exact hbox ⟨by omega, by omega, by omega⟩)]; ring
+
+/-- **The singleton-removal `codimForm`-delta.** -/
+theorem codimForm_removeMove (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a : Fin (N + 1)}
+    (hsa : 1 ≤ m (a, a)) :
+    codimForm N (extendℤ (removeMove m a))
+      = codimForm N (extendℤ m) + ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * removeCoeff a Y := by
+  have hbr : codimBil N (extendℤ m) (removeDelta a)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ)
+          * (-(if rrInd (a : ℤ) (a : ℤ) Y then 1 else 0)) := by
+    rw [show removeDelta a = (0 : ℤ → ℤ → ℤ) - boxℤ (a : ℤ) (a : ℤ) by
+          funext α β; simp only [removeDelta, Pi.sub_apply, Pi.zero_apply]; ring,
+      codimBil_sub_right, codimBil_extendℤ_boxℤ_right, Finset.sum_filter]
+    have hz : codimBil N (extendℤ m) (0 : ℤ → ℤ → ℤ) = 0 := by unfold codimBil; simp
+    rw [hz, zero_sub, ← Finset.sum_neg_distrib]
+    exact Finset.sum_congr rfl fun Y _ ↦ by split_ifs with h <;> simp
+  have hbl : codimBil N (removeDelta a) (extendℤ m)
+      = ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ)
+          * (-(if llInd (a : ℤ) (a : ℤ) Y then 1 else 0)) := by
+    rw [show removeDelta a = (0 : ℤ → ℤ → ℤ) - boxℤ (a : ℤ) (a : ℤ) by
+          funext α β; simp only [removeDelta, Pi.sub_apply, Pi.zero_apply]; ring,
+      codimBil_sub_left, codimBil_boxℤ_extendℤ_left, Finset.sum_filter]
+    have hz : codimBil N (0 : ℤ → ℤ → ℤ) (extendℤ m) = 0 := by unfold codimBil; simp
+    rw [hz, zero_sub, ← Finset.sum_neg_distrib]
+    exact Finset.sum_congr rfl fun Y _ ↦ by split_ifs with h <;> simp
+  have hself : codimForm N (removeDelta a) = 0 := by
+    rw [show codimForm N (removeDelta a) = codimBil N (removeDelta a) (removeDelta a) from rfl,
+      show removeDelta a = (0 : ℤ → ℤ → ℤ) - boxℤ (a : ℤ) (a : ℤ) by
+          funext α β; simp only [removeDelta, Pi.sub_apply, Pi.zero_apply]; ring]
+    have hz1 : codimBil N (0 : ℤ → ℤ → ℤ) (0 : ℤ → ℤ → ℤ) = 0 := by unfold codimBil; simp
+    have hz2 : codimBil N (0 : ℤ → ℤ → ℤ) (boxℤ (a : ℤ) (a : ℤ)) = 0 := by unfold codimBil; simp
+    have hz3 : codimBil N (boxℤ (a : ℤ) (a : ℤ)) (0 : ℤ → ℤ → ℤ) = 0 := by unfold codimBil; simp
+    have haN : (a : ℤ) ≤ N := by have := a.isLt; omega
+    rw [codimBil_sub_left, codimBil_sub_right, codimBil_sub_right, hz1, hz2, hz3,
+      codimBil_boxℤ_boxℤ, if_neg (by omega)]; ring
+  rw [extendℤ_removeMove hsa, codimForm_add, hbr, hbl, hself, add_zero, add_assoc,
+    ← Finset.sum_add_distrib]
+  congr 1
+  exact Finset.sum_congr rfl fun Y _ ↦ by unfold removeCoeff; ring
+
+/-- Every coefficient of the singleton-removal delta is `≤ 0` (the omitted `[a,a]` has length `0`, so
+no covering interval is strictly shorter). -/
+theorem removeCoeff_nonpos (a : Fin (N + 1)) (Y : Fin (N + 1) × Fin (N + 1)) :
+    removeCoeff a Y ≤ 0 := by
+  unfold removeCoeff; split_ifs <;> omega
+
+/-- **Singleton removal does not increase `codimForm`.** -/
+theorem codimForm_removeMove_le (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a : Fin (N + 1)}
+    (hsa : 1 ≤ m (a, a)) :
+    codimForm N (extendℤ (removeMove m a)) ≤ codimForm N (extendℤ m) := by
+  rw [codimForm_removeMove m hsa]
+  have hsum : ∑ Y : Fin (N + 1) × Fin (N + 1), (m Y : ℤ) * removeCoeff a Y ≤ 0 :=
+    Finset.sum_nonpos fun Y _ ↦ mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg _)
+      (removeCoeff_nonpos a Y)
+  linarith
+
+/-- Filtered-coverage change of `removeMove`. -/
+theorem removeMove_cover (m : Fin (N + 1) × Fin (N + 1) → ℕ) {a : Fin (N + 1)}
+    (hsa : 1 ≤ m (a, a)) (v : Fin (N + 1)) :
+    (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+        removeMove m a p : ℤ)
+      = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2), m p : ℤ)
+        - (if a ≤ v ∧ v ≤ a then 1 else 0) := by
+  set S := Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2) with hS
+  have hterm : ∀ p : Fin (N + 1) × Fin (N + 1),
+      ((removeMove m a p : ℕ) : ℤ) = (m p : ℤ) - (if p = (a, a) then 1 else 0) := by
+    intro p
+    by_cases h1 : p = (a, a)
+    · have hpos : 1 ≤ m p := by rw [h1]; exact hsa
+      simp only [removeMove, if_pos h1]; rw [Nat.cast_sub (by omega)]; push_cast; ring
+    · simp only [removeMove, if_neg h1, Nat.sub_zero]; push_cast; ring
+  rw [Finset.sum_congr rfl (fun p (_ : p ∈ S) ↦ hterm p), Finset.sum_sub_distrib,
+    Finset.sum_ite_eq' S (a, a)]
+  have hmemS : ((a, a) ∈ S) ↔ (a ≤ v ∧ v ≤ a) := by rw [hS]; simp [Finset.mem_filter]
+  simp only [hmemS]
+
+/-- **Singleton removal lands in the corner-`0` Kostant partitions of the vector decremented at `a`.**
+-/
+theorem removeMove_mem {e' : Fin (N + 1) → ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ} {a : Fin (N + 1)}
+    (hm : m ∈ kostantPartitions e' 0) (hsa : 1 ≤ m (a, a)) :
+    removeMove m a ∈ kostantPartitions (Function.update e' a (e' a - 1)) 0 := by
+  obtain ⟨hbnd, hsupp, hkost, hc0⟩ := mem_kostantPartitions.mp hm
+  have hsupp' : ∀ p, ¬ p.1 ≤ p.2 → removeMove m a p = 0 := by
+    intro p hp
+    have h1 : p ≠ (a, a) := fun h ↦ hp (by rw [h])
+    simp only [removeMove, if_neg h1, Nat.sub_zero]; exact hsupp p hp
+  have hekpos : 1 ≤ e' a := by
+    rw [hkost a]
+    refine le_trans hsa (Finset.single_le_sum (fun q _ ↦ Nat.zero_le _) ?_)
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact ⟨le_rfl, le_rfl⟩
+  have hkost' : ∀ v, kostantAt (Function.update e' a (e' a - 1)) (removeMove m a) v := by
+    intro v
+    rw [kostantAt]
+    have hcov := removeMove_cover m hsa v
+    have hbase : (e' v : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            m p : ℤ) := by exact_mod_cast hkost v
+    have hZ : ((Function.update e' a (e' a - 1) v : ℕ) : ℤ)
+        = (∑ p ∈ Finset.univ.filter (fun p : Fin (N + 1) × Fin (N + 1) ↦ p.1 ≤ v ∧ v ≤ p.2),
+            removeMove m a p : ℤ) := by
+      rw [hcov, ← hbase]
+      have hupd : ((Function.update e' a (e' a - 1) v : ℕ) : ℤ)
+          = (e' v : ℤ) - (if v = a then 1 else 0) := by
+        by_cases hva : v = a
+        · subst hva; rw [Function.update_self, if_pos rfl, Nat.cast_sub hekpos]; push_cast; ring
+        · rw [Function.update_of_ne hva, if_neg hva]; ring
+      rw [hupd]
+      have hva : (v = a) ↔ (a ≤ v ∧ v ≤ a) :=
+        ⟨fun h ↦ by subst h; exact ⟨le_rfl, le_rfl⟩, fun ⟨h1, h2⟩ ↦ le_antisymm h2 h1⟩
+      simp only [hva]
+    exact_mod_cast hZ
+  refine mem_kostantPartitions.mpr ⟨bound_of_kostant hsupp' hkost', hsupp', hkost', ?_⟩
+  · have h1 : ((0 : Fin (N + 1)), Fin.last N) ≠ (a, a) := by
+      intro hh; rw [← hh, hc0] at hsa; exact absurd hsa (by norm_num)
+    show removeMove m a ((0 : Fin (N + 1)), Fin.last N) = 0
+    simp only [removeMove, if_neg h1, Nat.sub_zero]
+    exact hc0
+
 end DLNFibre.Core
