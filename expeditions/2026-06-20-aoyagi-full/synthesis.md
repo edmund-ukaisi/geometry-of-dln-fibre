@@ -469,6 +469,13 @@ back via `integrableOn_comp_preimage` — never re-touch Matrix.
     rank vectors — quiver-determinantal geometry Mathlib lacks) STILL the genuine general-M research piece**;
     G5-abstract isolates it, does NOT dissolve it. Refined roadmap: **general headline = ladder instances +
     G5-abstract (BUILT) + G3 (named open obstruction).**
+    - **#52 SIMPLIFIED (pp, g5-abstract-statement.md): the LADDER needs only the SINGLE-STEP lemma** `∫⁻_U g =
+      Σ_i ∫⁻_{V_i\Z_i} |det fderiv φ_i|·g∘φ_i` (finite a.e.-disjoint null-cover) — NO abstract rose-tree datatype.
+      The (2,2,2) cover = finite compositions of the single-step lemma (A-blowup 4 ∘ step-2 3 ∘ block 4 = 24
+      leaves). The abstract-tree form is DEFERRED to general-M (part of the G3 roadmap, not the down-payment).
+      Mathlib anchors all checked (lintegral_image_eq_lintegral_abs_det_fderiv_mul + addHaar_image null + lintegral
+      set-additivity); ℝ≥0∞-not-Bochner load-bearing. So #52 is the reusable single-step atom, tractable now.
+      SEQUENCING: fm → (2,1,2) [product-MIN, no G5 dep] ∥ fm-2 → #52 single-step; then fm → (2,2,2) instantiates it.
 - **13th FIDELITY FINDING (fm-2, proof-attempt-as-audit):** the committed Skeleton `rlct_additive_smooth_block`
   (line 169) is stated BARE (no hygiene on G) and is LITERALLY FALSE — germ-vanishing G² (or G≡0) ⟹ RHS=n/2+⊤=⊤,
   LHS=n/2; Lean-provable from `rlctAtOn_zero_eq_top` (S1Additive:67). The docstring ADMITS false but the SIGNATURE
