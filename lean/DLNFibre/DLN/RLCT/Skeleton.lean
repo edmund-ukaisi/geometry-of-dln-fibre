@@ -2548,6 +2548,90 @@ private theorem edgeQ_telescope (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
   show Mseq M ((j : ℕ) + 1) + uTel M q (j : ℕ) - uTel M q ((j : ℕ) + 1) = q (j : ℕ)
   rw [uTel]; ring
 
+/-- `aS M i ≤ b+1` for `1 ≤ i ≤ c` (`b = ⌊Sprefix(c+1)/c⌋`), from `good c` at `i=c` + sortedness. -/
+private theorem aS_le_bp1 (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {i : ℕ} (hi1 : 1 ≤ i)
+    (hic : i ≤ cAch M) :
+    aS M i ≤ Sprefix M (cAch M + 1) / cAch M + 1 := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  -- good c at i=c: c·a_c ≤ Sprefix(c+1) + c − 1 = P + c − 1
+  have hgc := hgood c (by omega) hc1
+  rw [← hP] at hgc
+  -- a_c ≤ b+1: c·a_c ≤ P+c−1 = c·b+r+c−1 < c(b+2), so a_c < b+2
+  have hPdm : P = c * (P / c) + P % c := (Nat.div_add_mod P c).symm
+  have hrlt : P % c < c := Nat.mod_lt _ hc1
+  -- c·a_c ≤ P+c−1 = c·(P/c) + (P%c + c − 1) < c·(P/c+2), so a_c ≤ P/c+1
+  have hac : aS M c ≤ P / c + 1 := by
+    by_contra hgt; push_neg at hgt
+    have hge2 : P / c + 2 ≤ aS M c := by omega
+    have hbig : c * (P / c + 2) ≤ c * aS M c := Nat.mul_le_mul_left c hge2
+    have hexp : c * (P / c + 2) = c * (P / c) + 2 * c := by ring
+    omega
+  exact le_trans (aS_mono M hic (by omega)) hac
+
+/-- **Count bound (the achiever Hall content).** At most `r = P%c` of `aS 1,…,aS c` equal `b+1`
+(`b = ⌊P/c⌋`): from `good i₀` at the least such index (sortedness ⟹ they form a suffix). -/
+private theorem count_bp1_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    ((Finset.Icc 1 (cAch M)).filter
+        (fun i => aS M i = Sprefix M (cAch M + 1) / cAch M + 1)).card
+      ≤ Sprefix M (cAch M + 1) % cAch M := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, hgood⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b := P / c with hb
+  set S := (Finset.Icc 1 c).filter (fun i => aS M i = b + 1) with hSdef
+  rcases S.eq_empty_or_nonempty with hemp | hne
+  · rw [hemp]; simp
+  · -- least element i0 of S
+    set i0 := S.min' hne with hi0def
+    have hi0S : i0 ∈ S := S.min'_mem hne
+    have hi0mem : 1 ≤ i0 ∧ i0 ≤ c := by
+      have := Finset.mem_filter.mp hi0S; exact Finset.mem_Icc.mp this.1
+    have hi0val : aS M i0 = b + 1 := (Finset.mem_filter.mp hi0S).2
+    -- sortedness: every i in [i0, c] is in S (aS i = b+1)
+    have hsuffix : ∀ i, i0 ≤ i → i ≤ c → aS M i = b + 1 := by
+      intro i hi0i hic
+      have hge : aS M i0 ≤ aS M i := aS_mono M hi0i (by omega)
+      rw [hi0val] at hge
+      have hle : aS M i ≤ b + 1 := aS_le_bp1 M hL (by omega) hic
+      omega
+    -- so S = Icc i0 c, card = c − i0 + 1
+    have hScard : S.card = c - i0 + 1 := by
+      rw [show S = Finset.Icc i0 c from ?_, Nat.card_Icc]
+      · omega
+      · apply Finset.ext; intro i
+        simp only [hSdef, Finset.mem_filter, Finset.mem_Icc]
+        constructor
+        · rintro ⟨⟨hi1, hic⟩, hival⟩
+          refine ⟨S.min'_le i ?_, hic⟩
+          rw [hSdef]; exact Finset.mem_filter.mpr ⟨Finset.mem_Icc.mpr ⟨hi1, hic⟩, hival⟩
+        · rintro ⟨hi0i, hic⟩
+          exact ⟨⟨by omega, hic⟩, hsuffix i hi0i hic⟩
+    -- good i0: i0·(b+1) ≤ Sprefix(i0+1) + i0 − 1 ⟹ Sprefix(i0+1) ≥ i0·b + 1
+    have hgi0 := hgood i0 (by omega) hi0mem.1
+    rw [hi0val] at hgi0
+    have hexpi0 : i0 * (b + 1) = i0 * b + i0 := by ring
+    have hSi0 : i0 * b + 1 ≤ Sprefix M (i0 + 1) := by omega
+    -- Sprefix(i0+1) = P − ∑_{i0+1}^c aS = P − (c−i0)(b+1) [suffix all b+1]
+    have htailsum : ∑ i ∈ Finset.Ico (i0 + 1) (c + 1), aS M i = (c - i0) * (b + 1) := by
+      rw [show (∑ i ∈ Finset.Ico (i0 + 1) (c + 1), aS M i)
+            = ∑ _i ∈ Finset.Ico (i0 + 1) (c + 1), (b + 1) from
+          Finset.sum_congr rfl (fun i hi => by
+            rw [Finset.mem_Ico] at hi; exact hsuffix i (by omega) (by omega))]
+      rw [Finset.sum_const, Nat.card_Ico, smul_eq_mul, show c + 1 - (i0 + 1) = c - i0 by omega]
+    have hPsplit : P = Sprefix M (i0 + 1) + (c - i0) * (b + 1) := by
+      rw [← htailsum, hP, Sprefix, Sprefix,
+        ← Finset.sum_range_add_sum_Ico (fun i => aS M i) (by omega : i0 + 1 ≤ c + 1)]
+    -- combine: P ≥ i0·b+1 + (c−i0)(b+1); P = cb + r ⟹ r ≥ c−i0+1 = card
+    have hPdm : P = c * b + P % c := (Nat.div_add_mod P c).symm
+    rw [hScard]
+    -- (c−i0)(b+1) = (c−i0)·b + (c−i0); i0·b + (c−i0)·b = c·b (i0 ≤ c)
+    have hexp : (c - i0) * (b + 1) = (c - i0) * b + (c - i0) := by ring
+    have hcb : i0 * b + (c - i0) * b = c * b := by
+      rw [← Nat.add_mul]; congr 1; omega
+    omega
+
 /-- Corridor-feasibility of an ordering `q : ℕ → ℤ`: the telescoped `uTel` is nonneg, ends at `0`,
 weakly-decreasing, and within `admBound`. Exactly `telescope M q ∈ Adm M` (D2). -/
 def QFeas (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) : Prop :=
@@ -2595,7 +2679,7 @@ private theorem Tstar_mem_Adm (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (hL : 
     have : Tstar M q j = 0 := by exact_mod_cast this
     exact this
 
-/-- **A1 upper bound (D, value at the achiever).** Given a feasible ordering `q` whose `Fin L` values
+/-- **A1 upper bound (D, value at achiever).** Given a feasible ordering `q` whose `Fin L` values
 permute `Yvec`, `2·Mval M (Tstar M q) = ∑Yvec² − ∑M²` (via D1 `edgeQ_telescope` +
 `edge_identity` + multiset-symmetry of `∑·²`). The upper-bound witness value. -/
 private theorem Mval_Tstar (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) (hL : 1 ≤ L) (hq : QFeas M q)
