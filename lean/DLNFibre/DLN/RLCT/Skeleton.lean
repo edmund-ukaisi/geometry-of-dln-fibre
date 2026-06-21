@@ -3198,6 +3198,35 @@ theorem dom_head_lower {a a' : ℤ} {ws : List ℤ} {R : Multiset ℤ} (hD : Dom
 theorem cLt_le_of_le {A B : Multiset ℤ} (h : A ≤ B) (τ : ℤ) : cLt A τ ≤ cLt B τ :=
   card_le_card (filter_le_filter _ h)
 
+/-- **Order statistic.** For a monotone `A : Fin L → ℤ`, if at least `m ≥ 1` indices have `A k < τ`, then
+the `m`-th smallest value `A ⟨m-1,_⟩ < τ`. (The predicate `A · < τ` is downward-closed under monotonicity;
+`Fin.lt_card_filter_univ_iff_apply_of_imp`.) -/
+theorem fin_monotone_lt_of_card_ge {L m : ℕ} {A : Fin L → ℤ} {τ : ℤ}
+    (hm0 : 1 ≤ m) (hmL : m ≤ L) (hmono : Monotone A)
+    (hcount : m ≤ (Finset.univ.filter (fun k : Fin L => A k < τ)).card) :
+    A ⟨m - 1, by omega⟩ < τ := by
+  classical
+  have hdown : ∀ a b : Fin L, b ≤ a → A a < τ → A b < τ :=
+    fun a b hba ha => lt_of_le_of_lt (hmono hba) ha
+  have hlt : (⟨m - 1, by omega⟩ : Fin L)
+      < (Finset.univ.filter (fun k : Fin L => A k < τ)).card := by
+    show m - 1 < _; omega
+  exact (Fin.lt_card_filter_univ_iff_apply_of_imp (p := fun k => A k < τ) hdown).mp hlt
+
+/-- **Converse order statistic.** For monotone `A : Fin L → ℤ`, if `A ⟨j,_⟩ < τ` then at least `j+1`
+indices have `A k < τ`. -/
+theorem card_ge_of_fin_monotone_lt {L j : ℕ} {A : Fin L → ℤ} {τ : ℤ} (hj : j < L)
+    (hmono : Monotone A) (hval : A ⟨j, hj⟩ < τ) :
+    j + 1 ≤ (Finset.univ.filter (fun k : Fin L => A k < τ)).card := by
+  classical
+  have hdown : ∀ a b : Fin L, b ≤ a → A a < τ → A b < τ :=
+    fun a b hba ha => lt_of_le_of_lt (hmono hba) ha
+  have h := (Fin.lt_card_filter_univ_iff_apply_of_imp (p := fun k => A k < τ) hdown
+    (j := ⟨j, hj⟩)).mpr hval
+  -- h : (⟨j,hj⟩ : Fin L) < card, i.e. j < card
+  have hj' : j < (Finset.univ.filter (fun k : Fin L => A k < τ)).card := h
+  omega
+
 /-- The residual pool is `≤` the original (eraseIter only removes elements). -/
 theorem eraseIter_le (i : ℕ) (b : List ℤ) (R : Multiset ℤ) : eraseIter i b R ≤ R := by
   induction i generalizing b R with
@@ -3703,10 +3732,63 @@ private theorem Mwidths_drop_cons (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < 
 
 /-- **`static_count`** (the ONE achiever-tied lemma, region A): for `M^{i+1} < τ ≤ uTel_i`, the FIXED
 achiever pool `Ymulti` has no more elements below `τ` than the suffix `ws_i = Mwidths.drop(i+1)`.
-One-shot `good_floor_core` on the FIXED `Ymulti` (NOT recursion-threaded). -/
+Steps 1–2 are one-shot `good_floor_core` on the FIXED `Ymulti`; Step 3 (the positional-suffix drop count
+`#{M⁰..M^{i+1} < τ} = 1`) needs the band `uTel_k ≤ qFM_k` at the EARLIER steps `k < i` (`hband`),
+supplied by the `FMDom_all` strong induction. -/
 private theorem static_count (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
+    (hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k)
     {τ : ℤ} (hlo : Mseq M (i + 1) < τ) (hhi : τ ≤ uTel M (qFM M) i) :
     BGEngine.cLt (Ymulti M) τ ≤ BGEngine.cLt (((Mwidths M).drop (i + 1) : Multiset ℤ)) τ := by
+  classical
+  set m := BGEngine.cLt (Ymulti M) τ with hm
+  rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+  · -- m = 0: trivial
+    rw [hm0]; exact Nat.zero_le _
+  -- m ≥ 1. KERNEL: aS M m < τ.
+  -- m = #{k:Fin L | Yvec_k < τ} ≤ #{k:Fin L | aS_{k+1} < τ}
+  have hmval : m = (Finset.univ.filter (fun k : Fin L => Yvec M (cAch M) k < τ)).card := by
+    rw [hm, Ymulti, cLt_ofFn]
+  have hmle : m ≤ (Finset.univ.filter (fun k : Fin L => (aS M ((k : ℕ) + 1) : ℤ) < τ)).card := by
+    have hpt := cLt_le_of_pointwise L (fun k => (aS M ((k : ℕ) + 1) : ℤ)) (Yvec M (cAch M))
+      (fun k => aS_succ_le_Yvec M hL k) τ
+    rw [cLt_ofFn, cLt_ofFn] at hpt
+    rw [hmval]; exact hpt
+  -- mono of A k = aS M (k+1) on Fin L
+  have hAmono : Monotone (fun k : Fin L => (aS M ((k : ℕ) + 1) : ℤ)) := by
+    intro a b hab
+    have hle : (a : ℕ) + 1 ≤ (b : ℕ) + 1 := by simpa using Fin.le_def.mp hab
+    simp only
+    exact_mod_cast aS_mono M hle (by omega)
+  have hmL : m ≤ L := by
+    rw [hmval]; exact le_trans (Finset.card_filter_le _ _) (by simp)
+  have hkern : (aS M (((m - 1) : ℕ) + 1) : ℤ) < τ :=
+    BGEngine.fin_monotone_lt_of_card_ge hmpos hmL hAmono hmle
+  have haSm : (aS M m : ℤ) < τ := by
+    rwa [show (m - 1) + 1 = m by omega] at hkern
+  -- STEP 1: cLt(Mfull, τ) ≥ m+1.  Mfull = ofFn (aS M ·) (sorted, monotone); aS_0..aS_m < τ.
+  set Mfull : Multiset ℤ := (↑(List.ofFn (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ))) : Multiset ℤ)
+    with hMfdef
+  have hASmono : Monotone (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ)) := by
+    intro a b hab
+    have hle : (a : ℕ) ≤ (b : ℕ) := Fin.le_def.mp hab
+    simp only
+    exact_mod_cast aS_mono M hle b.isLt
+  have hMfull_ge : m + 1 ≤ BGEngine.cLt Mfull τ := by
+    rw [hMfdef, cLt_ofFn]
+    have hmval2 : (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ)) ⟨m, by omega⟩ < τ := by
+      show (aS M m : ℤ) < τ; exact haSm
+    exact BGEngine.card_ge_of_fin_monotone_lt (by omega) hASmono hmval2
+  -- relate Mfull to Mwidths: Mfull = ofFn(M ·) (= sorted M), and as MULTISET = M⁰ ::ₘ Mwidths
+  have hMfull_eq : Mfull = (↑(List.ofFn (fun k : Fin (L + 1) => (M k : ℤ))) : Multiset ℤ) := by
+    rw [hMfdef, ← Fin.univ_val_map, ← Fin.univ_val_map]
+    have hpt : (fun k : Fin (L + 1) => (aS M (k : ℕ) : ℤ))
+        = (fun k : Fin (L + 1) => (M k : ℤ)) ∘ Tuple.sort M := by
+      funext k; simp only [Function.comp_apply, aS, dif_pos k.isLt, aSort]
+    rw [hpt, ← Multiset.map_map]
+    congr 1
+    exact Multiset.map_univ_val_equiv (Tuple.sort M)
+  -- STEP 2 + 3: cLt(ws_i, τ) = cLt(Mfull, τ) − #{dropped M⁰..M^{i+1} < τ}, and that count = 1.
+  -- We use: Mfull = M⁰ ::ₘ Mwidths, and ws_i = Mwidths.drop(i+1).
   sorry
 
 /-- **The STRONG INV** (the achiever band-value invariant): for `τ ≤ head'_i`, the residual pool `R_i`
@@ -3715,6 +3797,7 @@ DIRECTLY (no recursion-threaded maintenance) by the `M^{i+1}` τ-split:
 `Region T (τ ≤ M^{i+1})` via the GREEN tight chain (`eraseIter_dom`; head indicator 0);
 `Region A (M^{i+1} < τ ≤ head'_i = uTel_i)` via `static_count` (one-shot gfc) + submultiset. -/
 private theorem strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
+    (hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k)
     {τ : ℤ} (hτ : τ ≤ headP M i) :
     BGEngine.cLt (Rpool M i) τ ≤ BGEngine.cLt (((Mwidths M).drop (i + 1) : Multiset ℤ)) τ := by
   have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
@@ -3750,11 +3833,13 @@ private theorem strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (
     -- achiever core + submultiset
     have hsub : BGEngine.cLt (Rpool M i) τ ≤ BGEngine.cLt (Ymulti M) τ :=
       BGEngine.cLt_le_of_le (BGEngine.eraseIter_le i (Mwidths M) (Ymulti M)) τ
-    exact le_trans hsub (static_count M hL i hi hT hτu)
+    exact le_trans hsub (static_count M hL i hi hband hT hτu)
 
 /-- **The carrier `FMDom` from the STRONG INV.** Head-count split at `head'_i`: `τ ≤ head'_i` from
-`strongCount`; `τ > head'_i` from the tight `Dom (Mwidths.drop i) R_i` (`eraseIter_dom`). -/
-private theorem FMDom_of_strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+`strongCount`; `τ > head'_i` from the tight `Dom (Mwidths.drop i) R_i` (`eraseIter_dom`). Needs the
+band at earlier steps (`hband`, `k < i`), supplied by `FMDom_all`'s strong-induction IH. -/
+private theorem FMDom_of_strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L)
+    (hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k) :
     FMDom M i := by
   have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
   -- tight Dom on the residual: Dom (Mwidths.drop i) R_i
@@ -3774,7 +3859,7 @@ private theorem FMDom_of_strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i
     by_cases hcase : τ ≤ headP M i
     · -- τ ≤ head'_i: from strongCount, [head'_i<τ]=0
       rw [if_neg (by omega)]
-      simpa using strongCount M hL i hi hcase
+      simpa using strongCount M hL i hi hband hcase
     · -- τ > head'_i: from tight Dom, the +1 absorbs M^{i+1}
       rw [if_pos (by omega)]
       have htd := htight.2 τ
@@ -3786,6 +3871,24 @@ private theorem FMDom_of_strongCount (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i
       · omega
       · omega
 
+/-- **`FMDom` holds at every depth** — by STRONG INDUCTION on `i`. The step at `i` derives the band at
+earlier steps `k < i` (`uTel_k ≤ qFM_k`, from the IH `FMDom k` via `qFM_ge_headP ∘ headP_ge_uTel`) and
+feeds it to `FMDom_of_strongCount`. Well-founded (the achiever step consumes only band-at-`<i`); the
+declaration cycle is resolved by this single induction (`qFM_uTel_band`'s statement is unchanged). -/
+private theorem FMDom_all (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    ∀ i, i < L → FMDom M i := by
+  intro i
+  induction i using Nat.strong_induction_on with
+  | _ i ih =>
+    intro hi
+    -- IH gives FMDom k for k < i; convert to the band uTel_k ≤ qFM_k for k < i
+    have hband : ∀ k, k < i → uTel M (qFM M) k ≤ qFM M k := by
+      intro k hk
+      have hkL : k < L := by omega
+      have hFMk : FMDom M k := ih k hk hkL
+      exact le_trans (headP_ge_uTel M hL k hkL) (qFM_ge_headP M hL k hkL hFMk)
+    exact FMDom_of_strongCount M hL i hi hband
+
 /-- **The per-step band** `qFM_j ≥ uTel j` (j≥1) and `qFM_0 ≥ max(M⁰,M¹)`, in the unified u-space
 form `uTel (j+1) ≤ admBound_j`. The achiever content (`strongCount` + `good_floor_core`). -/
 private theorem qFM_uTel_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin L) :
@@ -3793,7 +3896,7 @@ private theorem qFM_uTel_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (j : Fin 
   -- per-step bound qFM_j ≥ headP_j from the carrier, then u-space algebra to admBound_j.
   have hj : (j : ℕ) < L := j.isLt
   have hgeH : headP M (j : ℕ) ≤ qFM M (j : ℕ) :=
-    qFM_ge_headP M hL (j : ℕ) hj (FMDom_of_strongCount M hL (j : ℕ) hj)
+    qFM_ge_headP M hL (j : ℕ) hj (FMDom_all M hL (j : ℕ) hj)
   have hge : uTel M (qFM M) (j : ℕ) ≤ qFM M (j : ℕ) :=
     le_trans (headP_ge_uTel M hL (j : ℕ) hj) hgeH
   -- uTel(j+1) = Mseq(j+1) + uTel j − qFM_j
