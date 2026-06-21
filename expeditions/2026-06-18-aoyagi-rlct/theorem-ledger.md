@@ -3851,6 +3851,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
 
+Latest A5 Eq3 upper away-from-boundary update:
+`Lemma5DisplayedVector.lean` now has
+`aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_ne_boundary` and
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNat_of_nonrising_ne_boundary`.
+For `1<=p`, `p<ell`, and `p!=ell-a+1`, the supplied Eq3 piecewise certificate
+gives component value `Htilde'_p`; under the additional non-rising hypothesis,
+Eq5 offsets plus that component fill the same-coordinate interval.  The result
+packages the left ordinary Eq3 upper clause with the ordinary-tail clause.  It
+excludes the Eq3 special boundary and terminal endpoint, and it does not prove
+own-source-label status, source-label legality, introduced-label status,
+all-coordinate endpoint realisation, injection, back-to-label coverage, pole
+order, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-upper-away-from-boundary-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-upper-away-from-boundary.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-upper-away-from-boundary-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

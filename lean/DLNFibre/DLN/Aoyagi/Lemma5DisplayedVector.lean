@@ -1681,6 +1681,27 @@ theorem aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt
     omega
   exact hT.tail p (C.point p - 1) (by omega) hblock hafter
 
+/-- Away from equation `(3)`'s special boundary and the terminal endpoint, a
+supplied Eq3-shaped certificate has the upper endpoint component value.
+
+For `p<=ell-a` this is the ordinary upper clause.  For `ell-a+1<p<ell` this is
+the tail clause.  The excluded coordinate `p=ell-a+1` is the special boundary,
+where Eq3 has value `Htilde'_(ell-a+1)+1`, not the same-coordinate upper
+endpoint. -/
+theorem aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_ne_boundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_lt_ell : p < ell)
+    (hne_boundary : p ≠ ell - a + 1)
+    (hT : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth T) :
+    T (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p := by
+  by_cases hp_c : p ≤ ell - a
+  · exact aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_le_gap
+      ell a p M m C layerWidth T hp_pos hp_c hT
+  · have hboundary_lt : ell - a + 1 < p := by omega
+    exact aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt
+      ell a p M m C layerWidth T hboundary_lt hp_lt_ell hT
+
 /-- In the boundary case `a=1`, a supplied equation `(3)` certificate assigns
 the terminal selected endpoint the value `1`.
 
@@ -2349,6 +2370,35 @@ theorem aoyagiLemma5_suppliedEq3TailUpper_Eq5_offsets_eq_intervalValueSetNat_of_
   have hupper :=
     aoyagiLemma5Eq3_piecewise_tail_upperEndpoint_of_boundary_lt
       ell a p M m C layerWidth3 T3 hboundary_lt hp_lt_ell hT3
+  exact
+    aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
+      ell a p M m C T3 hT3.a_le_ell hp hexcess_le hupper
+
+/-- Away from Eq3's special boundary and the terminal endpoint, a supplied
+Eq3-shaped upper component and Eq5 strict offsets fill the same-coordinate
+interval in the non-rising case.
+
+This packages the plateau and ordinary-tail component-value wrappers.  It does
+not prove source-label legality, own-source-label status, or all-coordinate
+coverage. -/
+theorem
+aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNat_of_nonrising_ne_boundary
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth3 T3 : ℕ → ℤ)
+    (hp_pos : 1 ≤ p) (hp_lt_ell : p < ell)
+    (hnot_rising : ¬ (p ≤ a ∧ p ≤ ell - a))
+    (hne_boundary : p ≠ ell - a + 1)
+    (hT3 : AoyagiLemma5Eq3PiecewiseSourceVector ell a M m C layerWidth3 T3) :
+    insert (T3 (C.point p - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell a p M m) =
+      aoyagiHtildeIntervalValueSetNat ell a M m p := by
+  have hp : p < ell + 1 := by omega
+  have hexcess_le :=
+    aoyagiLemma5IntervalExcess_le_pred_of_not_le_min
+      ell a p hT3.a_le_ell hp_pos hnot_rising
+  have hupper :=
+    aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_ne_boundary
+      ell a p M m C layerWidth3 T3 hp_pos hp_lt_ell hne_boundary hT3
   exact
     aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
       ell a p M m C T3 hT3.a_le_ell hp hexcess_le hupper

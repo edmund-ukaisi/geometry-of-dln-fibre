@@ -3199,6 +3199,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
 
+The Eq3 upper component inventory is now packaged away from the special
+boundary.  `aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_ne_boundary`
+splits on `p<=ell-a`: the ordinary upper clause supplies `Htilde'_p` on the
+left side, and the ordinary-tail clause supplies `Htilde'_p` when
+`ell-a+1<p<ell`.  The excluded coordinate `p=ell-a+1` is Eq3's special
+boundary, where the printed value is `Htilde'_(ell-a+1)+1`; `p=ell` is
+terminal and outside the half-open block theorem.  The non-rising wrapper
+`aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNat_of_nonrising_ne_boundary`
+uses this component value as the supplied upper endpoint and Eq5's
+erase-upper theorem to fill the same-coordinate interval.  This is still not
+source-label legality, own-source-label status, all-coordinate endpoint
+realisation, injection, back-to-label coverage, or the Lemma 5 order count.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-upper-away-from-boundary-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-upper-away-from-boundary.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-upper-away-from-boundary-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -3283,3 +3283,32 @@ endpoint `p=ell`.  It is component-value and finite-set bookkeeping only: no
 own-source-label status, Eq3 source-label legality, introduced-label status,
 displayed-vector construction, all-coordinate branch-family coverage, pole
 order, normal crossings, or RLCT extraction is claimed.
+
+## 2026-06-21 Lean Lemma 5 Eq3 upper away from boundary
+
+Reproduction:
+`reproduction-lemma5-eq3-upper-away-from-boundary-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-upper-away-from-boundary.md`.
+Review artifact:
+`review-lemma5-eq3-upper-away-from-boundary-a5.md`.
+
+Lean now packages Eq3's upper component value away from the special boundary:
+
+```text
+aoyagiLemma5Eq3_piecewise_component_upperEndpoint_of_ne_boundary
+aoyagiLemma5_suppliedEq3UpperComponent_Eq5_offsets_eq_intervalValueSetNat_of_nonrising_ne_boundary
+```
+
+For `1<=p`, `p<ell`, and `p!=ell-a+1`, the proof splits on `p<=ell-a`.
+On the left side, Eq3's ordinary upper clause gives the component value
+`Htilde'_p`; on the right side, `p!=ell-a+1` upgrades `ell-a<p` to
+`ell-a+1<p`, so the ordinary-tail clause gives the same component value.
+
+With the additional non-rising hypothesis, Eq5 offsets miss only the upper
+endpoint, so inserting this Eq3 component fills the same-coordinate interval.
+This is a source-inventory/finite-set wrapper only.  The special boundary
+`p=ell-a+1`, terminal endpoint `p=ell`, source-label legality,
+own-source-label status, all-coordinate endpoint realisation, injection,
+back-to-label coverage, pole order, normal crossings, and RLCT extraction
+remain outside this claim.
