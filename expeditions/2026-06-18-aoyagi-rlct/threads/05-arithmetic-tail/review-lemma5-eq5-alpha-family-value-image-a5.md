@@ -5,7 +5,8 @@ Status: reviewed and formalised.
 ## Scope
 
 The theorem names the definitional equality between the strict alpha-family
-image and the existing `aoyagiLemma5Eq5OffsetValueSet`.
+image over `aoyagiLemma5Eq5AlphaDomain` and the existing
+`aoyagiLemma5Eq5OffsetValueSet`.
 
 ## Verdict
 
@@ -29,9 +30,9 @@ bookkeeping from Aoyagi PDF p. 27 equation `(5)`, with the displayed chains
 from PDF pp. 25-26.
 
 Lean API scout `Kuhn` confirmed the theorem is a pure wrapper around the
-existing definition and checks by `rfl`.  Kuhn recommended not adding a
-separate image definition unless later code repeatedly needs a standalone
-alpha-domain API.
+existing definition.  The later branch-image slice added the standalone
+alpha-domain API because downstream statements now need that domain as a
+named hypothesis target.
 
 ## Nonclaims
 

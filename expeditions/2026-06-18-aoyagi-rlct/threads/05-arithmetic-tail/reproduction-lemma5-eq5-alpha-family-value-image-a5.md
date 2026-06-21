@@ -28,8 +28,8 @@ alpha |-> Htilde'_p - alpha.
 
 ## Reproduction
 
-The previous Eq5 own-coordinate offset slice defined the finite strict-offset
-domain as
+The previous Eq5 own-coordinate offset slice used the finite strict-offset
+domain
 
 ```text
 1 <= alpha <= min(excess(ell,a,p), p-1),
@@ -46,15 +46,22 @@ image
   {alpha | 1 <= alpha <= min(excess(ell,a,p), p-1)}.
 ```
 
-This is exactly the already-defined finite set
+Lean now names this strict domain as
+
+```text
+aoyagiLemma5Eq5AlphaDomain ell a p.
+```
+
+The alpha-family image over this named domain is exactly the already-defined
+finite set
 
 ```text
 aoyagiLemma5Eq5OffsetValueSet ell a p M m.
 ```
 
-The Lean theorem is consequently definitional: it names this equality so later
-classifier code can rewrite through the alpha-family image without unfolding
-the set definition at every use.
+The Lean theorem is consequently definitional after unfolding the named domain:
+it names this equality so later classifier code can rewrite through the
+alpha-family image without unfolding the set definition at every use.
 
 ## Lean Target
 

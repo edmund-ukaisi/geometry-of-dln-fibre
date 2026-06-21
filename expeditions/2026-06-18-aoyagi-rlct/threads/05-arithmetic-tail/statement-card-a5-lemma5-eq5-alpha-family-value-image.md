@@ -3,13 +3,14 @@
 ## Lean Name
 
 - `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet`
+- `DLNFibre.DLN.Aoyagi.aoyagiLemma5Eq5AlphaDomain`
 
 ## Claim
 
 The strict equation `(5)` alpha-family value image
 
 ```text
-(Finset.Icc 1 (min (aoyagiLemma5IntervalExcess ell a p) (p-1))).image
+(aoyagiLemma5Eq5AlphaDomain ell a p).image
   (alpha |-> aoyagiHtildeUpperNat ell a M m p - alpha)
 ```
 
@@ -21,8 +22,8 @@ aoyagiLemma5Eq5OffsetValueSet ell a p M m.
 
 ## Proved
 
-Lean proves the equality by `rfl`, since `aoyagiLemma5Eq5OffsetValueSet` is
-defined as that image.
+Lean proves the equality by unfolding `aoyagiLemma5Eq5AlphaDomain` and
+`aoyagiLemma5Eq5OffsetValueSet`.
 
 ## Assumed
 

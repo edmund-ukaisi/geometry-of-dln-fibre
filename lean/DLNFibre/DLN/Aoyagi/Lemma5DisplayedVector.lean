@@ -2081,6 +2081,10 @@ def aoyagiLemma5Eq5OffsetValueSet
   (Finset.Icc 1 (min (aoyagiLemma5IntervalExcess ell a p) (p - 1))).image
     (fun alpha : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ))
 
+/-- Equation `(5)`'s strict alpha domain. -/
+def aoyagiLemma5Eq5AlphaDomain (ell a p : ℕ) : Finset ℕ :=
+  Finset.Icc 1 (min (aoyagiLemma5IntervalExcess ell a p) (p - 1))
+
 /-- Equation `(5)`'s strict alpha-family values are exactly the offset-value
 set.
 
@@ -2088,19 +2092,18 @@ This is a named definitional wrapper for downstream finite-set rewrites.  It
 does not construct the displayed vector or prove source coverage. -/
 theorem aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet
     (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ) :
-    (Finset.Icc 1 (min (aoyagiLemma5IntervalExcess ell a p) (p - 1))).image
+    (aoyagiLemma5Eq5AlphaDomain ell a p).image
       (fun alpha : ℕ ↦ aoyagiHtildeUpperNat ell a M m p - (alpha : ℤ)) =
         aoyagiLemma5Eq5OffsetValueSet ell a p M m := by
-  rfl
+  simp [aoyagiLemma5Eq5AlphaDomain, aoyagiLemma5Eq5OffsetValueSet]
 
 /-- Membership in equation `(5)`'s strict alpha domain is exactly the source
 guard `1<=alpha`, the same-coordinate interval guard, and `alpha<p`. -/
 theorem aoyagiLemma5Eq5_alphaFamily_mem_iff_guards
     (ell a p alpha : ℕ) :
-    alpha ∈ Finset.Icc 1
-      (min (aoyagiLemma5IntervalExcess ell a p) (p - 1)) ↔
+    alpha ∈ aoyagiLemma5Eq5AlphaDomain ell a p ↔
     1 ≤ alpha ∧ alpha ≤ aoyagiLemma5IntervalExcess ell a p ∧ alpha < p := by
-  rw [Finset.mem_Icc]
+  rw [aoyagiLemma5Eq5AlphaDomain, Finset.mem_Icc]
   constructor
   · intro h
     constructor
@@ -2114,6 +2117,42 @@ theorem aoyagiLemma5Eq5_alphaFamily_mem_iff_guards
     constructor
     · exact halpha_pos
     · exact le_min halpha_le_excess (by omega)
+
+/-- A finite family of branch records whose alpha projection covers the strict
+Eq5 alpha domain and whose values are `Htilde'_p-alpha` has value image equal
+to the Eq5 offset-value set.
+
+This is finite-set packaging only.  It does not construct any branch records,
+prove source labels, or assert coverage of Aoyagi's displayed family. -/
+theorem aoyagiLemma5Eq5_alphaIndexedBranch_value_image_eq_offsetValueSet
+    {β : Type*}
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ) (value : β → ℤ)
+    (halpha_image : branches.image alphaOf = aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hvalue : ∀ b ∈ branches,
+      value b = aoyagiHtildeUpperNat ell a M m p - (alphaOf b : ℤ)) :
+    branches.image value = aoyagiLemma5Eq5OffsetValueSet ell a p M m := by
+  rw [← aoyagiLemma5Eq5_alphaFamily_value_image_eq_offsetValueSet ell a p M m]
+  ext z
+  constructor
+  · intro hz
+    rw [Finset.mem_image] at hz
+    rcases hz with ⟨b, hb, rfl⟩
+    rw [Finset.mem_image]
+    refine ⟨alphaOf b, ?_, (hvalue b hb).symm⟩
+    rw [← halpha_image]
+    exact Finset.mem_image.mpr ⟨b, hb, rfl⟩
+  · intro hz
+    rw [Finset.mem_image] at hz
+    rcases hz with ⟨alpha, halpha, hza⟩
+    have halpha_branch : alpha ∈ branches.image alphaOf := by
+      simpa [halpha_image] using halpha
+    rw [Finset.mem_image] at halpha_branch
+    rcases halpha_branch with ⟨b, hb, hb_alpha⟩
+    rw [Finset.mem_image]
+    refine ⟨b, hb, ?_⟩
+    rw [hvalue b hb, hb_alpha]
+    exact hza
 
 /-- Offsets below a fixed upper endpoint give distinct integer values. -/
 theorem aoyagiLemma5Eq5_offsetValue_injective

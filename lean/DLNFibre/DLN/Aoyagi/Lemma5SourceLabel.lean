@@ -1125,9 +1125,7 @@ theorem aoyagiLemma5Eq5_alphaFamily_actualWidthLabel_at_of_widthBound
     (L ell a p alpha S : ℕ) (n : ℕ → ℕ) (M : ℤ)
     (m : Fin (ell + 1) → ℤ)
     (hell : 1 ≤ ell) (ha : a ≤ ell) (hpell : p ≤ ell)
-    (halpha :
-      alpha ∈ Finset.Icc 1
-        (min (aoyagiLemma5IntervalExcess ell a p) (p - 1)))
+    (halpha : alpha ∈ aoyagiLemma5Eq5AlphaDomain ell a p)
     (hselected : (∑ j : Fin (ell + 1), m j) =
       (ell : ℤ) * (M - 1) + a)
     (hsource : ∀ i : Fin (ell + 1),

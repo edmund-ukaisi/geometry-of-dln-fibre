@@ -3911,3 +3911,31 @@ prove branch existence, derive the cutoff guard, prove selected-span coverage,
 terminal `tilde t=0`, chart sequence, classifier/injection/back-to-label
 coverage, Lemma 5 order count, pole order, normal crossings, or RLCT
 extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq5 alpha-indexed branch value image
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-indexed-branch-value-image-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-indexed-branch-value-image.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-indexed-branch-value-image-a5.md`.
+
+Lean now proves the finite branch-image bridge
+
+```text
+aoyagiLemma5Eq5_alphaIndexedBranch_value_image_eq_offsetValueSet
+```
+
+If a supplied finite branch family has alpha projection exactly
+`aoyagiLemma5Eq5AlphaDomain ell a p`, and every branch value is
+`Htilde'_p-alphaOf b`, then the branch-value image is exactly
+`aoyagiLemma5Eq5OffsetValueSet ell a p M m`.  The slice also names the strict
+Eq5 alpha domain as `aoyagiLemma5Eq5AlphaDomain` and rewires the existing
+alpha-family value-image and source-label statements through this domain.
+
+This is finite-set image bookkeeping only.  It does not construct branch
+records, equation `(5)` displayed vectors, source-label legality, cutoff
+guards, selected-span coverage, terminal `tilde t=0`, injection, classifier,
+back-to-label coverage, Lemma 5 order count, pole order, normal crossings, or
+RLCT extraction.

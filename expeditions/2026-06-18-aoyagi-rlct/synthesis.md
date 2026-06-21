@@ -3691,6 +3691,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-alpha-family-source-label-a5.md`.
 
+The Eq5 alpha-indexed branch value-image bridge has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean names:
+`aoyagiLemma5Eq5AlphaDomain` and
+`aoyagiLemma5Eq5_alphaIndexedBranch_value_image_eq_offsetValueSet`.  If a
+supplied finite branch family has alpha image exactly the strict Eq5 alpha
+domain and branchwise values `Htilde'_p-alphaOf b`, Lean proves its value
+image is `aoyagiLemma5Eq5OffsetValueSet ell a p M m`.  This is only image
+bookkeeping from supplied branch data; it is not branch construction,
+source-label legality, selected-span/cutoff coverage, injection,
+classifier/back-to-label coverage, order count, pole order, normal crossings,
+or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-indexed-branch-value-image-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-indexed-branch-value-image.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-indexed-branch-value-image-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in
