@@ -203,6 +203,16 @@ same-stage source following factor:
 `Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_withCorrectedPostData`.
 Keep this as a lower-row paper-`C'` specialization only; it is not full source
 production of `C'^(S+1)`, chart production, or a transition invariant.
+Current continuing weighted source-following payload slice:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-weighted-source-following-payload-a4.md`.
+Lean now exposes this lower-row weighted handoff through the source-chart
+frontier package under the explicit next-continuation guard, adding next-center
+nonemptiness and finite center principalization:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal`,
+`ContinuingWeightedSourceFollowingFrontierPayload`, and
+`SourceChartFrontierBoundaryPackages.continuingWeighted`.  Keep this as a
+payload wrapper only; it is not chart production, source-produced post-data,
+transition invariance, or a full successor product.
 
 Immediate order:
 

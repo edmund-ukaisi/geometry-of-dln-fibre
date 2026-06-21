@@ -9,6 +9,7 @@ File:
 Names:
 
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.ContinuingSourceChartFrontierPayload`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.ContinuingWeightedSourceFollowingFrontierPayload`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.ActualWidthSourceChartFrontierPayload`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedTerminalLastSourceChartFrontierPayload`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedSourceSuffixTransportedPrefixPayload`
@@ -22,6 +23,8 @@ implications.  A package contains:
 
 - a finite frontier branch witness;
 - a continuing consequence under `J+2 <= prefixMinNat n (S+1)`;
+- a continuing weighted source-following consequence under
+  `J+2 <= prefixMinNat n (S+1)`;
 - an actual-width stopped consequence under `n(S+1)=J+1`;
 - a row-exhausted terminal-last consequence under `prefixMinNat n S=J+1` and
   `S+1=L`.
@@ -35,6 +38,9 @@ different domains and different mathematical meaning.
 
 - Existing continuing, actual-width, and row-exhausted boundary theorems can be
   assembled behind one fielded implication interface.
+- The continuing weighted field keeps the paper-`C'` handoff lower-row only,
+  keeps the successor diagonal explicit, and adds finite center
+  principalization.
 - The actual-width field keeps original source rows and `(S+1,0)` relabelled
   level/exponent certificates.
 - The row-exhausted field keeps transported prefix rows and does not relabel.

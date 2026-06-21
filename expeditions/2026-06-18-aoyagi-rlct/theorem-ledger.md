@@ -4357,6 +4357,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-row-exhausted-source-suffix-payload-a4.md`.
 
+Latest A4 update: the Case 2 continuing weighted source-following payload has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal`,
+`Case2DisplayedSuppliedChartFamilyBoundary.ContinuingWeightedSourceFollowingFrontierPayload`,
+and `SourceChartFrontierBoundaryPackages.continuingWeighted`.  The slice
+packages the existing paper-`C'` weighted lower-row handoff with
+next-residual-center nonemptiness and finite residual-center
+principalization under `J+2 <= prefixMinNat n (S+1)`.  It keeps the equality
+lower-row only and keeps the successor lower-row diagonal explicit.  It is not
+chart production, source-produced post-data, a full successor product,
+transition invariance, Jacobian arithmetic, normal crossings, pole order, or
+RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-weighted-source-following-payload-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-weighted-source-following-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-weighted-source-following-payload-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -210,6 +210,26 @@ fields.  It is not a full successor product, chart production, source
 production of `C'^(S+1)`, transition invariance, terminal relabeling, normal
 crossings, pole order, or RLCT content.
 
+The continuing weighted source-following payload has also landed in
+`BlowupArithmetic.lean`.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-weighted-source-following-payload-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-weighted-source-following-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-weighted-source-following-payload-a4.md`.
+
+Lean names:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal`,
+`ContinuingWeightedSourceFollowingFrontierPayload`, and
+`SourceChartFrontierBoundaryPackages.continuingWeighted`.
+This packages the paper-`C'` weighted lower-row handoff with the finite
+next-center nonemptiness guard and finite residual-center principalization,
+under the explicit continuing hypothesis `J+2 <= prefixMinNat n (S+1)`.  It
+keeps the pivot row out of the equality and keeps the successor lower-row
+diagonal explicit.  It is not chart production, source production of
+`C'^(S+1)`, source-produced post-data, a transition invariant, normal
+crossings, pole order, or RLCT content.
+
 ## Reproduction status
 
 - A1/A2 block and product reduction: draft reproduction landed at
@@ -3895,6 +3915,24 @@ and
 `threads/04-blow-up-certificate/statement-card-a4-case2-row-exhausted-source-suffix-payload.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-row-exhausted-source-suffix-payload-a4.md`.
+
+The continuing source-chart frontier now also has a weighted source-following
+payload.  New Lean names:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal`,
+`Case2DisplayedSuppliedChartFamilyBoundary.ContinuingWeightedSourceFollowingFrontierPayload`,
+and `SourceChartFrontierBoundaryPackages.continuingWeighted`.  This packages
+the existing paper-`C'` weighted lower-row handoff with next residual-center
+nonemptiness and finite residual-center principalization under
+`J+2 <= prefixMinNat n (S+1)`.  The equality is still lower-row only, with the
+successor lower-row diagonal explicit; it is not full chart production,
+source-produced `C'^(S+1)`, source-produced post-data, transition invariance,
+normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-weighted-source-following-payload-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-weighted-source-following-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-weighted-source-following-payload-a4.md`.
 
 ## Drift guard
 

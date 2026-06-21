@@ -74,6 +74,7 @@ fields:
 
 ```text
 ContinuingSourceChartFrontierPayload
+ContinuingWeightedSourceFollowingFrontierPayload
 ActualWidthSourceChartFrontierPayload
 RowExhaustedTerminalLastSourceChartFrontierPayload
 SourceChartFrontierBoundaryPackages
@@ -86,6 +87,10 @@ sourceChartMap_frontierBoundaryPackages
   pivot validity.
 - The field `continuing` exposes the existing next same-stage source-following
   product package under the explicit next-continuation hypothesis.
+- The field `continuingWeighted` exposes the paper-`C'` weighted lower-row
+  source-following payload, next residual-center nonemptiness, and finite
+  center principalization under the same explicit next-continuation
+  hypothesis.
 - The field `actualWidthStopped` exposes the existing actual-width original-row
   supplied-following package under the explicit actual-width hypothesis.
 - The field `rowExhaustedStopped` exposes the existing terminal-last

@@ -3419,6 +3419,36 @@ source-produced post-data, prove transition invariance, terminal relabeling,
 Jacobian arithmetic, normal crossings/RLCT, or repair the printed Case 2
 vector mismatch.
 
+## 2026-06-21 Lean Case 2 continuing weighted source-following payload
+
+Reproduction:
+`reproduction-case2-continuing-weighted-source-following-payload-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-weighted-source-following-payload.md`.
+Review artifact:
+`review-case2-continuing-weighted-source-following-payload-a4.md`.
+
+Lean now exposes the paper-`C'` weighted lower-row handoff through the
+source-chart frontier package:
+
+```text
+Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal
+ContinuingWeightedSourceFollowingFrontierPayload
+SourceChartFrontierBoundaryPackages.continuingWeighted
+```
+
+Under `J+2 <= prefixMinNat n (S+1)`, the payload combines next residual-center
+nonemptiness, the existing lower-row weighted source-following equality, the
+corrected post-data fields, and the finite displayed source-chart center facts
+`u in center`, center divisibility by `u`, and center ideal `Ideal.span {u}`.
+
+This is a payload wrapper only.  It keeps the equality lower-row only and keeps
+the successor lower-row diagonal explicit.  It does not prove a full successor
+product including the pivot row, chart production, chart coverage,
+source-produced `C'^(S+1)`, source-produced post-data, transition invariance,
+terminal relabeling, Jacobian arithmetic, normal crossings/RLCT, or repair the
+printed Case 2 vector mismatch.
+
 ## 2026-06-21 Lean Case 2 terminal-prefix transported product
 
 Reproduction:
