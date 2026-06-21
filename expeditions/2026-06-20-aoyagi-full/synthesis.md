@@ -43,21 +43,23 @@ gated @2e8dc4c. **#58** pivot-blow-up atom gated @930a6a0 (pivotBlowup/Deriv/_de
 n — serves all 3 (2,2,2) blow-up nodes). Lesson banked: green `lake build <lib>` covers only the aggregator
 closure (orphan engines escape).
 
-**Active (trunk @4f4bd96; 4 audits PASS — milestone/#58/#61/#52, all decorrelated):**
-- **(2,1,2) #55** — fm, **1 sorry** left (on branch): product-MIN heart, both block-RLCT bridges (EuclideanSpace↔Pi
-  via `PiLp.volume_preserving_toLp`, done in-seat), final assembly, `prod212_entry` (lean-formaliser) all PROVEN
-  (6→1). Remaining = coord-split `rlctAtOn_case212_eq_product` (the (1,1,1)-`entryME` pattern; fm's tactic call:
-  in-seat or reuse-lean-formaliser + Case222-SPECIFY). Merge + aggregator-wire when sorry-free.
-- **(2,2,2) #54** — fm-2, on flat `Fin 8→ℝ` (carrier **FORCED**: product `(Fin4→ℝ)²` lacks the `IsAddHaarMeasure`
-  g5_step needs — pp/fm-2 instance-probed). **Carrier-independent node toolkit COMPLETE + gated:** #58
-  (C¹/det=(x 0)ⁿ/InjOn), #61 (argmax cover), #64 (spectator), #65 (hmeas), #67 (argmaxCellOn = flat-subset
-  cover = g5_step-native hcover/hdisj). REMAINING: `pivotBlowupOn` det/fderiv/inj (subset block-triangular,
-  det=(x p)^(|active|−1)) + the 24-leaf assembly (3-deep g5_step + φ_L2 splice) + the **#66 seam**
-  (Params↔Fin8 m.p. via a fresh flatten equiv + the generic reindex-m.p. lemma — NOT the noncomputable equivFin
-  hand proof; the load-bearing fidelity point, rv-2 audits it).
-- pp on-demand; rv-2 queued for #54/#55 (real-pos-def-k=1 radar + the #66 coordinate-seam).
+**Active (trunk @536740b; LADDER 2/3 — (1,1,1) + (2,1,2) DONE + axiom-free):**
+- **(2,1,2) #55 — DONE @536740b, axiom-free.** `case212_rlct = [propext, Classical.choice, Quot.sound]` (AxCheck);
+  6→0: product-MIN heart (`product_min_rlct`), both block-RLCT bridges (EuclideanSpace↔Pi via
+  `PiLp.volume_preserving_toLp`, in-seat), coord-split (the (1,1,1)-`entryME` pattern), `prod212_entry`
+  (lean-formaliser). Merged + aggregator/AxCheck-wired. rv-2 auditing. Audits PASS so far: milestone/#58/#61/#52.
+- **(2,2,2) #54** — fm-2, on flat `Fin 8→ℝ` (carrier **FORCED**: product `(Fin4→ℝ)²` lacks `IsAddHaarMeasure`).
+  Node toolkit done/near: #58 (C¹/det/InjOn full-block), #61 (argmax cover), #64 (spectator), #65 (hmeas),
+  #67 (argmaxCellOn flat-subset cover) — all gated; + `pivotBlowupOn` det (fm-2's +91 WIP, green+sorry-free,
+  gating pending fm-2's confirm) → **#69 g5_pivotNode** (single reusable node, in progress). **#68 per-leaf
+  VALUE lemmas DONE (fm half of #54).** REMAINING: pivotNode → 24-leaf 3-deep assembly (+ φ_L2 splice) + the
+  **#66 seam** — route (ii): fm-2's OWN explicit m.p. `Params≃ᵐFin8` via `piCongrLeft` + an explicit a00..b11
+  bijection (order pinned by construction, sidesteps the noncomputable equivFin). **Measure-instance verify-first
+  flagged:** the piCongrLeft m.p. must land on Params's *actual* MeasureSpace instance (= rlctAtOn's), via the
+  generic reindex lemma — not a parallel canonical-Pi measure. rv-2 audits the seam (the silent-hole point).
+- **Case222 wrapper** (fm) — thin (2,2,2) validate headline, gated on #54's result. **pp** on-demand.
 **Roadmapped (operator-gated scope):** G3 (general-M wall), #19 keystone (#37/#45/#46), weighted-product-split
-(general-M). Fixed-M ladder = the active proven-scope target: (1,1,1) DONE · (2,1,2) #55 · (2,2,2) #54.
+(general-M). **Fixed-M ladder = active target: (1,1,1) DONE · (2,1,2) DONE · (2,2,2) #54 (the last rung).**
 
 ## Prior read (2026-06-20): ★ CONTRACT IS BEDROCK @296d3e4 — structural-proof phase OPEN ★
 
