@@ -61,3 +61,22 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
   to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
   shown the problem. Cost two build cycles on `NoetherMonicPositioning.lean`.
+
+## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
+- **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
+  `cCodim · 0` (`cCodim e 0 ≤ cCodim e' 0` for `e ≤ e'`, + a strict all-vertex version). Both gating
+  bricks (`hLowerBound`, `hRecover`) discharge from it via the LANDED rank-shift `cCodim d t = cCodim
+  (d−t) 0` + the Gabriel→Kostant bridge `gabrielPartition` (a tuple's `kostantArrayOfRank (rankFn ·)`
+  recast into the `CTheta` `Fin × Fin → ℕ` encoding via `finArrayOfSupp`).
+- **The right construction for the dimension-monotonicity is the SHORTEST-interval split** (at an
+  over-covered vertex `k`, split the shortest `[i,j] ∋ k` into `[i,k−1]+[k+1,j]`): verified to never
+  increase `codimForm` (199/199), whereas splitting a non-shortest interval CAN increase it. The
+  merge-up route (raise the corner per-partition) is DEAD — corner-`s` partitions often admit no
+  corner-raise with non-increasing `codimForm` (71/252).
+- **Strict SINGLE-vertex dimension-mono is FALSE** (e.g. `cCodim [1,1,0] 0 = cCodim [1,2,0] 0 = 0`);
+  only the strict ALL-vertex version holds (`d−r < d−s` everywhere when `r > s`). Strict corner-
+  monotonicity (needed for `hRecover`'s "corner = r") rides on the all-vertex strict version.
+- **`codimForm` is the type-A `Ext`-pairing form**: reindexed, `= ∑_{A=[a,b],B=[c,e]: a<c≤b+1, b<e}
+  m̄(A) m̄(B)`. The split delta is `∑_B coeff(B) m̄(B)` with the positive-coeff `B` being the shorter
+  intervals covering `k` (absent when `I` is shortest). `codimForm` is also corner-blind
+  (`codimForm_update_corner`, LANDED) — it never reads `m_{0N}`.
