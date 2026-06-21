@@ -2391,6 +2391,23 @@ normal crossings, or RLCT extraction.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-upper-a5.md`.
 
+The existing Eq3/Eq4/Eq5 introduced-label wrappers now also have finite-domain
+membership versions in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The
+proved names are
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint`,
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint`,
+and
+`aoyagiLemma5Eq5_ownBlock_intervalValue_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+They do not add source content: each calls the corresponding
+`introducedLabel` wrapper and applies `mem_introducedLabelFinset.mpr` to put
+`Sigma.mk S k` in `introducedLabelFinset L n S k`.  This is the finite-domain
+shape needed by later product/sum APIs, not a `LabelExponentCertificate` and
+not a terminal-exponent or least-value theorem.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-introduced-label-finset-adapters-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-introduced-label-finset-adapters.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-introduced-label-finset-adapters-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

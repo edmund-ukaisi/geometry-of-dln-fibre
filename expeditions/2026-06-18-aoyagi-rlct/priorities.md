@@ -784,6 +784,11 @@ on the session's original cwd.
    `introducedLabelFinset`.  Do not build `LabelExponentCertificate` adapters
    yet; the terminal-exponent and least-value fields are not available for
    these wrappers.
+   The finite-domain wrappers are now proved.  The next A5 step should again
+   be chosen below the displayed-family realisation boundary: either another
+   finite count decomposition with a fresh reproduction, or a carefully scoped
+   supplied-certificate boundary that includes terminal-exponent and
+   least-value fields rather than inferring them from introduced labels alone.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

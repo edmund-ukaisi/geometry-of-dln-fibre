@@ -2312,6 +2312,14 @@ No such claim is formalisation-ready until both fields are filled.
   This is finite-set count scaffolding only; it does not prove that equations
   `(3)` or `(4)` realise the erased endpoint or prove displayed-vector
   construction.
+  Also proved
+  `aoyagiLemma5Eq4_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint`,
+  `aoyagiLemma5Eq3_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint`,
+  and
+  `aoyagiLemma5Eq5_ownBlock_intervalValue_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+  These are finite-domain adapters over existing introduced-label wrappers;
+  they do not provide `LabelExponentCertificate` terminal-exponent or
+  least-value data.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

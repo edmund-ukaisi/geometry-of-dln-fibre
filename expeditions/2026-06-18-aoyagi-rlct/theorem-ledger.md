@@ -2987,6 +2987,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-upper-a5.md`.
 
+Latest A5 update: the Eq3/Eq4/Eq5 introduced-label wrappers now have
+finite-domain adapters in `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.
+The names are
+`aoyagiLemma5Eq4_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint`,
+`aoyagiLemma5Eq3_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint`,
+and
+`aoyagiLemma5Eq5_ownBlock_intervalValue_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+They keep the corresponding introduced-label hypotheses and convert
+`introducedLabel L n S k S k` into
+`Sigma.mk S k ∈ introducedLabelFinset L n S k` via
+`mem_introducedLabelFinset.mpr`.  They do not assert terminal exponents,
+least values, `LabelExponentCertificate`, displayed-vector construction,
+terminality, admissibility, order count, normal crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-introduced-label-finset-adapters-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-introduced-label-finset-adapters.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-introduced-label-finset-adapters-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

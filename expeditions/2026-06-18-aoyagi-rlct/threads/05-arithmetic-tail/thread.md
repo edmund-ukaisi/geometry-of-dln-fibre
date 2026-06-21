@@ -1832,3 +1832,33 @@ This is still finite-set count scaffolding.  It does not prove that equations
 `(3)` or `(4)` realise the erased upper endpoint, construct any displayed
 vector, prove source-label legality, terminality, vector admissibility, chart
 coverage, Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 introduced-label finite-domain adapters
+
+Reproduction:
+`reproduction-lemma5-introduced-label-finset-adapters-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-introduced-label-finset-adapters.md`.
+Review artifact:
+`review-lemma5-introduced-label-finset-adapters-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint
+aoyagiLemma5Eq3_piecewise_ownCoordinate_mem_introducedLabelFinset_of_lastPoint
+aoyagiLemma5Eq5_ownBlock_intervalValue_mem_introducedLabelFinset_of_lastPoint_widthBound
+```
+
+These are finite-domain versions of the existing introduced-label wrappers.
+They keep the same hypotheses and convert the existing
+`introducedLabel L n S k S k` conclusion into
+`Sigma.mk S k ∈ introducedLabelFinset L n S k` using
+`mem_introducedLabelFinset.mpr`.  The Eq5 wrapper also carries forward the
+same-coordinate interval membership already proved by the introduced-label
+wrapper.
+
+This is API cleanup only.  It does not provide `LabelExponentCertificate`
+fields, terminal exponents, least values, displayed-vector construction,
+terminality, admissibility, chart sequence, Lemma 5 order count, normal
+crossings, or RLCT extraction.
