@@ -2518,6 +2518,36 @@ private theorem two_Mval_ge (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : 
   rw [hqsq, hMsq] at hedge
   linarith [hsq, hedge]
 
+/-- The telescoped level sequence `uTel M q : ℕ → ℤ` for a target edge sequence `q`: `u₀ = M⁰`,
+`u_{j+1} = M⁽ʲ⁺¹⁾ + u_j − q_j`. Inverse to `edgeQ` (D1). -/
+noncomputable def uTel (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ) : ℕ → ℤ
+  | 0 => (M 0 : ℤ)
+  | (j + 1) => Mseq M (j + 1) + uTel M q j - q j
+
+/-- **(D1) telescope is `edgeQ`-inverse.** If the telescoped `uTel` stays nonnegative and ends at `0`,
+the admissible `T*_j := (uTel M q (j+1)).toNat` has `edgeQ M T* j = q j` identically (the clamps are
+inactive). The achiever's edge image equals its target by construction. -/
+private theorem edgeQ_telescope (M : Fin (L + 1) → ℕ) (q : ℕ → ℤ)
+    (hnn : ∀ j, 0 ≤ uTel M q j) (hlast : uTel M q L = 0)
+    (T : Fin L → ℕ) (hT : ∀ j : Fin L, (T j : ℤ) = uTel M q (j.val + 1)) (j : Fin L) :
+    edgeQ M T (j : ℕ) = q (j : ℕ) := by
+  unfold edgeQ
+  have hu0 : Useq M T (j : ℕ) = uTel M q (j : ℕ) := by
+    rcases Nat.eq_zero_or_pos (j : ℕ) with h | h
+    · rw [h, Useq_zero, uTel]
+    · rw [Useq_pos M T (j : ℕ) (by omega) (by omega)]
+      have hh := hT ⟨(j : ℕ) - 1, by omega⟩
+      rw [show ((j : ℕ) - 1) + 1 = (j : ℕ) by omega] at hh
+      exact hh
+  have hu1 : Useq M T ((j : ℕ) + 1) = uTel M q ((j : ℕ) + 1) := by
+    rw [Useq_pos M T ((j : ℕ) + 1) (by omega) (by omega)]
+    have hh := hT ⟨(j : ℕ), by omega⟩
+    simp only [Nat.add_sub_cancel]
+    exact hh
+  rw [hu0, hu1]
+  show Mseq M ((j : ℕ) + 1) + uTel M q (j : ℕ) - uTel M q ((j : ℕ) + 1) = q (j : ℕ)
+  rw [uTel]; ring
+
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
