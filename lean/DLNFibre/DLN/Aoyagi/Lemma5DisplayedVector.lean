@@ -458,6 +458,63 @@ theorem aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_
   rw [aoyagiLemma5Eq4_boundaryCoordinate_intervalExcess_eq_min
     ell a p hT.a_le_ell hp_strict]
 
+/-- Under Definition 3's selected-width hypotheses, membership in equation
+`(4)`'s boundary-coordinate interval forces `2 <= p`.
+
+This is a necessary condition only.  It does not prove membership for
+`2 <= p`, construct the displayed source vector, prove terminality,
+admissibility, chart coverage, pole order, normal crossings, or RLCT
+extraction. -/
+theorem aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_forces_two_le_p_of_sourceSelected
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp_strict : p + 1 < a)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hmem :
+      T (C.point (p + (ell - a) + 1) - 1) ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a) + 1)) :
+    2 ≤ p := by
+  have hwindow :=
+    (aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow
+      ell a p M m C layerWidth T hT hp_strict).1 hmem
+  have hwidth_ge :
+      M - (p : ℤ) + 1 ≤
+        aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) := hwindow.1
+  have hell : 1 ≤ ell := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  have hr : p + (ell - a) + 1 < ell + 1 := by
+    have ha : a ≤ ell := hT.a_le_ell
+    omega
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m (p + (ell - a) + 1) ≤ M - 1 := by
+    rw [aoyagiSelectedWidthNat_of_lt hr]
+    exact aoyagiSelectedWidth_le_pred_of_sourceSelectedInequality
+      ell a M m hell hT.a_le_ell hselected hsource
+      ⟨p + (ell - a) + 1, hr⟩
+  omega
+
+/-- Under Definition 3's selected-width hypotheses, the strict equation `(4)`
+boundary value is not in its boundary-coordinate interval when `p < 2`. -/
+theorem aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_sourceSelected_of_p_lt_two
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T)
+    (hp_strict : p + 1 < a) (hp_lt_two : p < 2)
+    (hselected : (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    T (C.point (p + (ell - a) + 1) - 1) ∉
+      aoyagiHtildeIntervalValueSetNat ell a M m (p + (ell - a) + 1) := by
+  intro hmem
+  have hp_ge_two :=
+    aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_forces_two_le_p_of_sourceSelected
+      ell a p M m C layerWidth T hT hp_strict hselected hsource hmem
+  omega
+
 /-- In the `p=1` strict equation `(4)` case, Definition 3's selected-width
 upper bound puts the boundary value strictly above the boundary-coordinate
 upper endpoint. -/

@@ -2174,6 +2174,16 @@ boundary-coordinate interval.  This is still not a displayed-vector
 construction, terminal `tilde t=0`, chart sequence, introduced-label theorem,
 Lemma 5 order count, normal crossings, or RLCT extraction.
 
+The boundary-coordinate source-selected obstruction for equation `(4)` is now
+Lean-proved.  If the strict boundary value belongs to its own
+boundary-coordinate interval, the lower edge of the width window gives
+`M-p+1<=W_r`; Definition 3's strict selected-width inequality gives
+`W_r<=M-1`; hence `2<=p`.  The companion theorem rules out membership when
+`p<2`.  This is only a necessary condition and does not assert membership for
+`p>=2`, construct the displayed vector, prove terminal `tilde t=0`, chart
+sequence, introduced-label status, Lemma 5 order count, normal crossings, or
+RLCT extraction.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

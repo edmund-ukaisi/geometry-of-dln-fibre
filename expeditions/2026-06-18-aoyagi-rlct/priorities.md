@@ -684,6 +684,12 @@ on the session's original cwd.
    harder chart-production boundary: full next `C'^(S+1)`, recurrence/exponent
    post-data from coordinates, or an explicitly supplied successor-boundary
    interface that says no more than its fields.
+   The Eq4 boundary-coordinate source-selected obstruction is now Lean-proved:
+   boundary-coordinate membership forces `2<=p`, and `p<2` rules out
+   membership.  This is only a necessary condition.  The next A5 move should
+   either build a richer supplied Case 1(2) terminal convention explicitly or
+   continue extracting finite consequences below the displayed-family
+   realisation boundary.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or

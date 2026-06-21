@@ -2126,6 +2126,24 @@ No such claim is formalisation-ready until both fields are filled.
   `ell=3`, `a=2`, `p=1`, `M=3`, all selected widths `2`, satisfies the
   selected-sum and strict selected-width inequalities while failing that
   condition.
+  Also proved
+  `aoyagiHtildeUpperNat_succ_eq_add_selectedWidthNat_sub_increment`,
+  `aoyagiLemma5Eq4_boundaryCoordinate_intervalExcess_eq_min`,
+  `aoyagiLemma5Eq4_boundaryValue_sub_upperNat_boundaryCoordinate`,
+  `aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow`,
+  `aoyagiLemma5Eq4_boundaryValue_mem_boundaryCoordinateIntervalValueSetNat_iff_widthWindow_min`,
+  `aoyagiLemma5Eq4_boundaryValue_gt_boundaryUpper_of_p1_sourceSelected`, and
+  `aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_p1_sourceSelected`,
+  which classify the strict equation `(4)` boundary value against its own
+  boundary-coordinate interval and rule out boundary-coordinate membership in
+  the source-selected special case `p=1`.
+  Also proved
+  `aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_forces_two_le_p_of_sourceSelected`
+  and
+  `aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_sourceSelected_of_p_lt_two`,
+  which generalize the source-selected obstruction to a necessary condition:
+  boundary-coordinate membership forces `2<=p`, so `p<2` rules out
+  membership.  This does not assert membership for `p>=2`.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

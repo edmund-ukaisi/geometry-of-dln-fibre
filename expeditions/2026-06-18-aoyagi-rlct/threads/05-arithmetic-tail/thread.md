@@ -1205,3 +1205,41 @@ This is finite supplied-branch and interval arithmetic only.  It does not
 construct equation `(4)`'s displayed vector, prove terminal `tilde t=0`,
 introduced-label status, vector admissibility, Case 1(2) chart sequence,
 Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 equation `(4)` boundary membership forces `p`
+
+Reproduction:
+`reproduction-lemma5-eq4-boundary-membership-forces-p-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-boundary-membership-forces-p.md`.
+Review artifact:
+`review-lemma5-eq4-boundary-membership-forces-p-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_forces_two_le_p_of_sourceSelected
+aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_sourceSelected_of_p_lt_two
+```
+
+For a supplied equation `(4)` certificate in the strict boundary case
+`p+1<a`, if the special boundary value belongs to its own
+boundary-coordinate interval, then Definition 3's selected-width hypotheses
+force `2<=p`.  The proof combines the already-proved lower edge of the
+boundary-coordinate width window,
+
+```text
+M-p+1 <= W_r,
+```
+
+with the source-selected upper bound
+
+```text
+W_r <= M-1.
+```
+
+The companion wrapper says that `p<2` rules out boundary-coordinate
+membership.  This is a necessary condition only; it does not prove membership
+for `p>=2`, construct equation `(4)`'s displayed vector, prove terminal
+`tilde t=0`, introduced-label status, vector admissibility, Case 1(2) chart
+sequence, Lemma 5 order count, normal crossings, or RLCT extraction.

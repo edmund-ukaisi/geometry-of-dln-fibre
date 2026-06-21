@@ -2628,6 +2628,26 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq4-boundary-coordinate-window-a5.md`.
 
+Latest A5 update: the Lemma 5 equation `(4)` boundary-coordinate
+source-selected obstruction has landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  The proved Lean names
+are
+`aoyagiLemma5Eq4_boundaryValue_mem_boundaryInterval_forces_two_le_p_of_sourceSelected`
+and
+`aoyagiLemma5Eq4_boundaryValue_not_mem_boundaryInterval_of_sourceSelected_of_p_lt_two`.
+They say that for a supplied equation `(4)` certificate in the strict boundary
+case `p+1<a`, Definition 3's selected-width hypotheses force `2<=p` if the
+boundary value belongs to its own boundary-coordinate interval.  Equivalently,
+`p<2` rules out boundary-coordinate membership.  This is only a necessary
+condition: it does not assert membership for `p>=2`, construct the displayed
+vector, prove terminal `tilde t=0`, chart sequence, introduced-label status,
+Lemma 5 order count, normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-boundary-membership-forces-p-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-boundary-membership-forces-p.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq4-boundary-membership-forces-p-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
