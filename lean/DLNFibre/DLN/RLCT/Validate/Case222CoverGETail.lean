@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.Case222CoverGE
 import DLNFibre.DLN.RLCT.Foundations.S1Fubini
+import DLNFibre.DLN.RLCT.Foundations.S1SmoothBlock
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case222CoverGETail` — the `p = 0` A-pivot summand finiteness
@@ -29,7 +30,7 @@ over the bounded box, the inner step-2/step-3 recursion — the one remaining `s
 A-pivots are structurally identical by the A-block coordinate symmetry of `myF222`.
 -/
 
-open MeasureTheory Set
+open MeasureTheory Set Metric
 open scoped ENNReal BigOperators
 namespace DLNFibre.DLN.RLCT
 
@@ -382,6 +383,70 @@ theorem F0cell_lt_top (c' : NNReal) (hc' : (c':ℝ) < 3/2) :
   exact lt_of_le_of_lt hmono (boxT_coord_rpow_lt_top 2 (by norm_num) 2 (2 - 2*(c':ℝ)) (by linarith))
 
 -- ===== δ-cell (q=3): block branch — needs step-3 (block vanishes, not ≥1). =====
+/-! ## The δ-block smooth-4D finiteness (the EuclideanSpace radial terminal)
+
+The δ-cell block `z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` is, after the det-1 shear `(z5,z6) ↦ (z4z1+z5, z4z2+z6)`,
+a clean 4-D sum of squares `Σ⁴ zᵢ²` — a SMOOTH block (RLCT `4/2 = 2 > 3/2`), NOT a step-3 case. The
+4-D `Σ²` box integral is finite below `2` via the measure-preserving bridge `(Fin 4 → ℝ) ≃ᵐ
+EuclideanSpace ℝ (Fin 4)` (`PiLp.volume_preserving_toLp`) + the radial integrability
+`radial_ball_iff` (`‖y‖^{−2c'}` on a ball, `−4 < −2c' ⟺ c' < 2`) + box-⊆-ball domination. -/
+
+-- On EuclideanSpace ℝ (Fin 4): ‖y‖^{-2c'} integrable on any ball for c'<2.
+theorem euclid4_ball_integrable (R : ℝ) (hR : 0 < R) (c' : NNReal) (hc' : (c':ℝ) < 2) :
+    IntegrableOn (fun y : EuclideanSpace ℝ (Fin 4) => ‖y‖ ^ (-(2*(c':ℝ)))) (ball 0 R) volume := by
+  have := radial_ball_iff 3 R (-(2*(c':ℝ))) hR
+  rw [show (3:ℕ)+1 = 4 from rfl] at this
+  rw [this]; push_cast; linarith
+
+-- integrand identity: (Σ x_i²)^{-c'} = ‖toLp x‖^{-2c'} (norm_eq), for x : Fin 4 → ℝ.
+theorem sumSq4_eq_norm (c' : NNReal) (x : Fin 4 → ℝ) :
+    ((∑ i, (x i)^2) ^ (-(c':ℝ))) = ‖(WithLp.toLp 2 x : EuclideanSpace ℝ (Fin 4))‖ ^ (-(2*(c':ℝ))) := by
+  have hnorm : ‖(WithLp.toLp 2 x : EuclideanSpace ℝ (Fin 4))‖ ^ 2 = ∑ i, (x i)^2 := by
+    rw [EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]
+    apply Finset.sum_congr rfl; intro i _
+    rw [Real.norm_eq_abs, sq_abs]
+  rw [← hnorm, ← Real.rpow_natCast ‖_‖ 2, ← Real.rpow_mul (norm_nonneg _)]
+  ring_nf
+
+-- 4-D core finiteness over the box, via transport to EuclideanSpace + ball domination.
+theorem sumSq4_box_lt_top (T : ℝ) (hT : 0 < T) (c' : NNReal) (hc' : (c':ℝ) < 2) :
+    ∫⁻ x in boxT 4 T, ENNReal.ofReal ((∑ i, (x i)^2) ^ (-(c':ℝ))) < ⊤ := by
+  -- IntegrableOn on the box (Fin 4 → ℝ), then lintegral < ⊤.
+  have hmp : MeasurePreserving (WithLp.toLp 2 : (Fin 4 → ℝ) → EuclideanSpace ℝ (Fin 4)) :=
+    PiLp.volume_preserving_toLp (Fin 4)
+  have hemb : MeasurableEmbedding (WithLp.toLp 2 : (Fin 4 → ℝ) → EuclideanSpace ℝ (Fin 4)) :=
+    (MeasurableEquiv.toLp 2 (Fin 4 → ℝ)).measurableEmbedding
+  set R := 2*T + 1 with hRdef
+  have hRpos : 0 < R := by positivity
+  -- the box maps into ball 0 R
+  have hsub : (WithLp.toLp 2 : (Fin 4 → ℝ) → EuclideanSpace ℝ (Fin 4)) '' boxT 4 T ⊆ ball 0 R := by
+    rintro y ⟨x, hx, rfl⟩
+    simp only [boxT, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc] at hx
+    rw [mem_ball_zero_iff, EuclideanSpace.norm_eq]
+    have hb : ∀ i, (x i)^2 ≤ T^2 := fun i => by
+      rcases hx i with ⟨h1, h2⟩; nlinarith
+    calc Real.sqrt (∑ i, ‖x i‖^2) ≤ Real.sqrt (∑ i : Fin 4, T^2) := by
+            apply Real.sqrt_le_sqrt; apply Finset.sum_le_sum; intro i _
+            rw [Real.norm_eq_abs, sq_abs]; exact hb i
+      _ = Real.sqrt (4 * T^2) := by
+            congr 1; rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; norm_num
+      _ < R := by
+            rw [hRdef, show (4:ℝ)*T^2 = (2*T)^2 from by ring, Real.sqrt_sq (by positivity)]
+            linarith
+  -- IntegrableOn (Σ x_i²)^{-c'} on box via transport
+  have hint : IntegrableOn (fun x : Fin 4 → ℝ => (∑ i, (x i)^2) ^ (-(c':ℝ))) (boxT 4 T) volume := by
+    have hball := euclid4_ball_integrable R hRpos c' hc'
+    have hballbox : IntegrableOn (fun y : EuclideanSpace ℝ (Fin 4) => ‖y‖ ^ (-(2*(c':ℝ))))
+        (WithLp.toLp 2 '' boxT 4 T) volume := hball.mono_set hsub
+    rw [hmp.integrableOn_image hemb] at hballbox
+    refine hballbox.congr_fun ?_ (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+    intro x _; exact (sumSq4_eq_norm c' x).symm
+  -- IntegrableOn → lintegral < ⊤
+  have hnn : 0 ≤ᵐ[volume.restrict (boxT 4 T)] (fun x : Fin 4 → ℝ => (∑ i, (x i)^2) ^ (-(c':ℝ))) :=
+    ae_of_all _ (fun x => Real.rpow_nonneg (by positivity) _)
+  rw [IntegrableOn, Integrable, hasFiniteIntegral_iff_ofReal hnn] at hint
+  convert hint.2 using 1
+
 /-- The step-3 block residual finiteness over a bounded box (the 4th-level recursion: blow up
 `block = z1²+z2²+(z4z1+z5)²+(z4z2+z6)²` along its vertex, `blockForm_step3` + `step3_unit_ge_one`
 + `block_leaf_integrable`). The δ-cell's inner integral. -/
