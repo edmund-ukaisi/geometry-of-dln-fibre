@@ -1,0 +1,13 @@
+**(A)**
+Fact: with `closure(S) := zeroLocus(vanishingIdeal(S))`, `vanishingIdeal(S)=vanishingIdeal(T)` is equivalent to `closure(S)=closure(T)` over any field, not just infinite fields. The mechanism is the Galois connection and the identity `I(V(I(S))) = I(S)`; no Nullstellensatz is needed. Since the rank locus is also proved closed as a determinantal zero locus, the ideal equality really does give the same `k`-point Zariski closure. The headline is honest if read as “ideal-level / `k`-point closure,” not as raw set equality `orbitSet M = rankLocus M` or scheme-theoretic equality after base change.
+
+**(B)**
+Yes, `[Infinite k]` for (1) smells mathematically right. Rank preservation, determinantal closedness, and type-A rank-pattern orbit classification do not inherently require algebraic closedness. The infinite-field hypothesis is exactly what polynomial-curve degeneration arguments usually need: a polynomial vanishing on infinitely many parameter values must vanish identically / at the limit. Inference about this code: provided the box-move degeneration and rank-pattern bridge are genuinely over `k`, I do not see a hidden Nullstellensatz dependency in headline (1).
+
+**(C)**
+Fact: over a non-algebraically-closed field, “prime vanishing ideal” is safe algebraically, but “irreducible variety” is convention-sensitive. For `k`-point geometry it can overclaim: over `ℝ`, `(x^2+1)` is prime but its real zero locus is empty. If one means integral affine `k`-scheme, prime is fine; if one means classical point-set variety, algebraic closedness is the honest guard. The `[IsAlgClosed k]` hypothesis on (2) is therefore appropriate for the advertised irreducible-variety language.
+
+**(D)**
+The proof chain does not look suspicious merely because it ends at an ideal statement. In the actual structure described, the hard step proves point containment `canonicalCoord '' orbitRankLocus M ⊆ repClosure(orbitSet M)`, where `repClosure` is already `V(I(-))`; then the ideal equality is pushed through the Galois connection. So there is no gap of the form “ideal equality holds while the advertised `k`-point closure inclusion fails,” relative to that closure definition. The genuine limitation is scope: over finite fields the analogous set-level closure statement is generally false because the `k`-Zariski topology on finite affine space is discrete, and over nonclosed fields this is not automatically the same as geometric closure over `\bar k`.
+
+VERDICT: RIGHT-RENDERING.
