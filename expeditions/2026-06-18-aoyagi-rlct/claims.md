@@ -1771,6 +1771,11 @@ No such claim is formalisation-ready until both fields are filled.
   terminal coordinate gives terminal Eq5 finite-set coverage and terminal
   introduced-label membership, still under explicit source-realisation,
   source-range, and width-positivity hypotheses.
+  The Eq4 rising non-strict endpoint inventory is now Lean-proved as a
+  dispatcher over existing boundary facts: under `p<=a`, failure of `p+1<a`
+  splits into terminal collision `p+1=a` or repaired-guard failure `p=a`,
+  with terminal-collision consequences conditional on supplied Eq4 data and
+  the `p=a` branch retaining the Eq5 erased-endpoints deficit.
 - **Kill-condition.** Boundary cases in the dimension vector contradict the
   stated minimiser or pole-order count.
 - **Evidence/source.** Aoyagi quadratic exponent expression and Lemmas 3-5,
@@ -1824,7 +1829,9 @@ No such claim is formalisation-ready until both fields are filled.
   actual-width label bridge at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq4-actual-width-label-a5.md`;
   terminal source endpoint payload at
-  `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-endpoint-payload-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-endpoint-payload-a5.md`;
+  Eq4 rising non-strict endpoint split at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1882,7 +1889,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma5-eq4-actual-width-label-a5.md`;
   terminal source endpoint payload checked by xhigh API scout `Euclid` and
   xhigh hardener `Carver` at
-  `threads/05-arithmetic-tail/review-lemma5-terminal-source-endpoint-payload-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-terminal-source-endpoint-payload-a5.md`;
+  Eq4 rising non-strict endpoint split checked by xhigh Lean scout `Jason`
+  and xhigh hardener `McClintock` at
+  `threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;

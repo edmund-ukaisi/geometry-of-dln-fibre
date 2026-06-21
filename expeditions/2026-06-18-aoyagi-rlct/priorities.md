@@ -106,6 +106,8 @@ Current counted-datum back-to-branch-label card-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-card-a5.md`.
 Current counted-datum back-to-branch-label exactness slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-exactness-a5.md`.
+Current Eq4 rising non-strict endpoint split slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.
@@ -135,12 +137,12 @@ Immediate order:
    boundary.
 2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. Next source-facing target: continue the endpoint inventory with the Eq4
-   rising non-strict split recommended by the latest source scout.  Under
-   rising hypotheses, failure of the strict `p+1<a` endpoint case splits into
-   `p+1=a` and `p=a`; keep the `p+1=a` terminal-collision case separate from
-   the `p=a` no-repaired-Eq4-guard case.  Source-backed terminal branch
-   construction, source-label legality, injection, and back-to-label coverage
+3. The Eq4 rising non-strict endpoint split is now Lean-packaged as a
+   dispatcher over existing boundary facts.  Keep the `p+1=a`
+   terminal-collision case conditional on supplied Eq4 data, and keep the
+   `p=a` branch as no repaired Eq4 piecewise shape plus Eq5 erased-endpoints
+   deficit.  Source-backed terminal branch construction, source-label legality
+   beyond explicit local hypotheses, injection, and back-to-label coverage
    remain unproved.  Do not claim Aoyagi's printed Case 1(2) paragraph
    supplies source coverage or injectivity.
 4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as

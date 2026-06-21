@@ -490,6 +490,29 @@ theorem aoyagiLemma5Eq4_risingGuardFailure_eq_a_and_no_piecewiseSourceVector
     aoyagiLemma5Eq4_no_piecewiseSourceVector_of_not_indexGuard
       ell a p M m C layerWidth T hfail⟩
 
+/-- In the rising range `p<=a`, failure of the strict equation `(4)` endpoint
+case `p+1<a` is either terminal collision `p+1=a` or the repaired-guard
+failure `p=a`.
+
+The right branch records only nonexistence of the repaired supplied Eq4
+piecewise shape; the left branch does not assert that an Eq4 certificate
+exists. -/
+theorem aoyagiLemma5Eq4_risingNonStrictEndpoint_predBoundary_or_no_piecewiseSourceVector
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hp_a : p ≤ a) (hnot_strict : ¬ (p + 1 < a)) :
+    p + 1 = a ∨
+      (p = a ∧
+        ¬ AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T) := by
+  have hcases : p + 1 = a ∨ p = a :=
+    (aoyagiLemma5Eq4_risingNonStrictEndpoint_iff_predBoundary_or_eq_a
+      a p hp_a).1 hnot_strict
+  rcases hcases with hpred | heq
+  · exact Or.inl hpred
+  · exact Or.inr ⟨heq,
+      aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a
+        ell a p M m C layerWidth T heq⟩
+
 /-- The repaired equation `(4)` selected-index guard makes the displayed
 boundary `S_(p+ell-a+2)-1` a selected cutpoint index. -/
 theorem aoyagiLemma5Eq4_boundaryIndex_le_ell_of_piecewiseSourceVector
@@ -2879,6 +2902,86 @@ theorem aoyagiLemma5Eq5_risingBoundary_eq_a_noEq4LowerEndpoint
       ell a a M m ha ha_pos le_rfl ha_c
   · exact aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a
       ell a a M m C layerWidth T rfl
+
+/-- Terminal-collision consequences in equation `(4)`'s non-strict rising
+endpoint split.
+
+This payload is conditional on a supplied Eq4-piecewise certificate; it does
+not assert that such a certificate exists. -/
+abbrev aoyagiLemma5Eq4TerminalCollisionPayload
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) : Prop :=
+  ∀ _hT : AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T,
+    C.point (p + (ell - a) + 1) - 1 = C.point ell - 1 ∧
+      (∀ b : ℕ, ¬ C.block b (C.point (p + (ell - a) + 1) - 1)) ∧
+        (T (C.point ell - 1) = 0 ↔
+          aoyagiSelectedWidthNat ell m ell = M - (p : ℤ) + 1)
+
+/-- Guard-failure consequences in equation `(4)`'s non-strict rising endpoint
+split.
+
+The Eq5 equality records the remaining erased-endpoints deficit at this
+coordinate.  The Eq4 statement is only nonexistence of the repaired supplied
+piecewise shape, not a converse obstruction theorem. -/
+abbrev aoyagiLemma5Eq4GuardFailurePayload
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ) : Prop :=
+  p = a ∧
+    aoyagiLemma5Eq5OffsetValueSet ell a p M m =
+      ((aoyagiHtildeIntervalValueSetNat ell a M m p).erase
+        (aoyagiHtildeUpperNat ell a M m p)).erase
+          (aoyagiHtildeLowerNat ell a M m p) ∧
+    ¬ AoyagiLemma5Eq4PiecewiseSourceVector ell a p M m C layerWidth T
+
+/-- Non-strict rising endpoint inventory for equation `(4)`.
+
+Under the rising hypotheses, failure of the strict endpoint case `p+1<a`
+splits into terminal collision `p+1=a` and repaired-guard failure `p=a`.
+The terminal-collision branch gives consequences only for every supplied
+Eq4-piecewise certificate; the guard-failure branch records the Eq5
+erased-endpoints deficit and absence of the repaired Eq4 piecewise shape.
+
+This is endpoint bookkeeping only.  It does not construct displayed vectors,
+prove source coverage, fill the `p=a` lower endpoint, prove classifier
+coverage, pole order, normal crossings, or RLCT extraction. -/
+theorem aoyagiLemma5Eq4_risingNonStrictEndpoint_split
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (ha : a ≤ ell) (hp_pos : 1 ≤ p) (hp_a : p ≤ a)
+    (hp_c : p ≤ ell - a)
+    (hselected :
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hnot_strict : ¬ (p + 1 < a)) :
+    (p + 1 = a ∧
+        aoyagiLemma5Eq4TerminalCollisionPayload ell a p M m C layerWidth T) ∨
+      aoyagiLemma5Eq4GuardFailurePayload ell a p M m C layerWidth T := by
+  have hcases :
+      p + 1 = a ∨ p = a :=
+    (aoyagiLemma5Eq4_risingNonStrictEndpoint_iff_predBoundary_or_eq_a
+      a p hp_a).1 hnot_strict
+  rcases hcases with hp_pred | hp_eq
+  · left
+    refine ⟨hp_pred, ?_⟩
+    intro hT
+    refine ⟨?_, ?_, ?_⟩
+    · exact
+        aoyagiLemma5Eq4_boundaryEndpoint_eq_terminal_of_predBoundary
+          ell a p M m C layerWidth T hT hp_pred
+    · intro b
+      exact
+        aoyagiLemma5Eq4_boundaryEndpoint_not_block_of_predBoundary
+          ell a p M m C layerWidth T hT hp_pred
+    · exact
+        aoyagiLemma5Eq4_terminalEndpoint_zero_iff_lastWidth_of_predBoundary
+          ell a p M m C layerWidth T hp_pred hselected hT
+  · right
+    refine ⟨hp_eq, ?_, ?_⟩
+    · exact
+        aoyagiLemma5Eq5_offsets_eq_interval_erase_endpoints_of_le_min
+          ell a p M m ha hp_pos hp_a hp_c
+    · exact
+        aoyagiLemma5Eq4_no_piecewiseSourceVector_of_eq_a
+          ell a p M m C layerWidth T hp_eq
 
 /-- Every positive coordinate falls into one of the two Eq5 endpoint-deficit
 set cases.

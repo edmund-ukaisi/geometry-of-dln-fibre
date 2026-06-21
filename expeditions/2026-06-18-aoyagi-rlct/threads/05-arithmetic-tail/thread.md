@@ -3820,3 +3820,35 @@ This does not construct the terminal source branch, prove the source
 realisation equality, prove terminal exactness, construct a classifier,
 prove injection or back-to-label coverage, compute pole order, prove normal
 crossings, or extract RLCT.
+
+## 2026-06-21 Lean Lemma 5 Eq4 rising non-strict endpoint split
+
+Reproduction:
+`reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq4-rising-nonstrict-endpoint-split.md`.
+Review artifact:
+`review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
+
+Lean now packages the non-strict Eq4 endpoint inventory:
+
+```text
+aoyagiLemma5Eq4_risingNonStrictEndpoint_iff_predBoundary_or_eq_a
+aoyagiLemma5Eq4_boundaryIndex_not_lt_ell_iff_predBoundary_or_eq_a
+aoyagiLemma5Eq4_risingNonStrictEndpoint_predBoundary_or_no_piecewiseSourceVector
+aoyagiLemma5Eq4TerminalCollisionPayload
+aoyagiLemma5Eq4GuardFailurePayload
+aoyagiLemma5Eq4_risingNonStrictEndpoint_split
+```
+
+Under `p<=a`, failure of the strict endpoint case `p+1<a` splits into
+terminal collision `p+1=a` or repaired-guard failure `p=a`.  The
+terminal-collision branch only gives consequences for every supplied Eq4
+piecewise certificate; it does not prove such a certificate exists.  The
+`p=a` branch records the existing Eq5 erased-endpoints deficit and absence of
+the repaired Eq4 piecewise shape.
+
+This does not construct displayed vectors, prove source coverage, fill the
+`p=a` lower endpoint, prove terminal zero in the `p+1=a` branch without
+last-width compatibility, prove classifier/injection/back-to-label coverage,
+compute pole order, prove normal crossings, or extract RLCT.

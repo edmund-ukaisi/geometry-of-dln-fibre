@@ -163,6 +163,17 @@ theorem aoyagiLemma5Eq4_selectedIndexGuardFailure_iff_eq_a
   rw [aoyagiLemma5Eq4_selectedIndexGuard_iff ell a p ha]
   exact aoyagiLemma5Eq4_risingGuardFailure_iff_eq_a a p hp_a
 
+/-- In the rising range `p<=a`, failure of the strict equation `(4)` endpoint
+case `p+1<a` has exactly two boundary forms: terminal collision `p+1=a` or
+guard failure `p=a`.
+
+This is finite guard arithmetic only.  It does not construct an equation `(4)`
+source vector or choose either endpoint branch. -/
+theorem aoyagiLemma5Eq4_risingNonStrictEndpoint_iff_predBoundary_or_eq_a
+    (a p : ℕ) (hp_a : p ≤ a) :
+    ¬ (p + 1 < a) ↔ p + 1 = a ∨ p = a := by
+  omega
+
 /-- Strict form of the equation `(4)` selected-boundary guard.
 
 Under `a<=ell`, the boundary index `p+(ell-a)+1` is strictly before the
@@ -171,6 +182,17 @@ theorem aoyagiLemma5Eq4_boundaryIndex_lt_ell_iff
     (ell a p : ℕ) (ha : a ≤ ell) :
     p + (ell - a) + 1 < ell ↔ p + 1 < a := by
   omega
+
+/-- Raw boundary-index form of the non-strict equation `(4)` endpoint split.
+
+Under `a<=ell` and `p<=a`, failure of the boundary index to be strictly before
+the terminal selected index splits into terminal collision `p+1=a` or guard
+failure `p=a`. -/
+theorem aoyagiLemma5Eq4_boundaryIndex_not_lt_ell_iff_predBoundary_or_eq_a
+    (ell a p : ℕ) (ha : a ≤ ell) (hp_a : p ≤ a) :
+    ¬ (p + (ell - a) + 1 < ell) ↔ p + 1 = a ∨ p = a := by
+  rw [aoyagiLemma5Eq4_boundaryIndex_lt_ell_iff ell a p ha]
+  exact aoyagiLemma5Eq4_risingNonStrictEndpoint_iff_predBoundary_or_eq_a a p hp_a
 
 /-- Terminal form of the equation `(4)` selected-boundary guard.
 

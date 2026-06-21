@@ -3533,6 +3533,26 @@ the `p+1=a` terminal-collision case kept separate from the existing `p=a`
 no-repaired-Eq4-guard gap.  Do not fold this into classifier, injection, or
 source-backed Lemma 5 exactness.
 
+That Eq4 rising non-strict endpoint split has now landed in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5IntervalArithmetic.lean` and
+`lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`.  New Lean names:
+`aoyagiLemma5Eq4_risingNonStrictEndpoint_iff_predBoundary_or_eq_a`,
+`aoyagiLemma5Eq4_boundaryIndex_not_lt_ell_iff_predBoundary_or_eq_a`,
+`aoyagiLemma5Eq4_risingNonStrictEndpoint_predBoundary_or_no_piecewiseSourceVector`,
+`aoyagiLemma5Eq4TerminalCollisionPayload`,
+`aoyagiLemma5Eq4GuardFailurePayload`, and
+`aoyagiLemma5Eq4_risingNonStrictEndpoint_split`.  This is a dispatcher over
+existing boundary facts: terminal collision remains conditional on supplied
+Eq4 data, while `p=a` records no repaired Eq4 piecewise shape and the Eq5
+erased-endpoints deficit.  It is not source coverage, terminal zero,
+classifier/injection/back-to-label coverage, pole order, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-rising-nonstrict-endpoint-split.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 finite frontier branch slice has landed in

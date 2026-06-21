@@ -4170,6 +4170,29 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-source-endpoint-payload-a5.md`.
 
+Latest A5 Eq4 rising non-strict endpoint split update:
+`Lemma5IntervalArithmetic.lean` now has
+`aoyagiLemma5Eq4_risingNonStrictEndpoint_iff_predBoundary_or_eq_a` and
+`aoyagiLemma5Eq4_boundaryIndex_not_lt_ell_iff_predBoundary_or_eq_a`.
+`Lemma5DisplayedVector.lean` now has
+`aoyagiLemma5Eq4_risingNonStrictEndpoint_predBoundary_or_no_piecewiseSourceVector`,
+`aoyagiLemma5Eq4TerminalCollisionPayload`,
+`aoyagiLemma5Eq4GuardFailurePayload`, and
+`aoyagiLemma5Eq4_risingNonStrictEndpoint_split`.  Under rising hypotheses,
+failure of the strict endpoint case `p+1<a` splits into terminal collision
+`p+1=a` or repaired-guard failure `p=a`.  The terminal-collision branch is
+conditional on supplied Eq4 piecewise data; the `p=a` branch records no
+repaired Eq4 piecewise shape plus the Eq5 erased-endpoints deficit.  This is
+endpoint bookkeeping only, not displayed-vector construction, source coverage,
+terminal zero, classifier/injection/back-to-label coverage, pole order,
+normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq4-rising-nonstrict-endpoint-split.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
