@@ -2521,6 +2521,22 @@ or prove the Lemma 5 order count.  Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`.
 
+Eq3/Eq4 now also have one-step introduced-domain insert and cardinality
+wrappers for their supplied endpoint branches.  The theorem names are
+`aoyagiLemma5Eq4_ownCoordinateFinset_succ_eq_insert_of_lastPoint`,
+`aoyagiLemma5Eq4_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint`,
+`aoyagiLemma5Eq3_ownCoordinateFinset_succ_eq_insert_of_lastPoint`, and
+`aoyagiLemma5Eq3_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  They apply the existing
+Eq3/Eq4 actual-label wrappers to the generic one-step insert and cardinality
+theorems.  Eq3's slack and Eq4's repaired guards remain explicit.  These
+theorems are finite-domain bookkeeping only, not displayed-vector construction
+or Lemma 5 order count.  Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-domain-insert-card-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-domain-insert-card.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-domain-insert-card-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

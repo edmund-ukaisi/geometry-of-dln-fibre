@@ -3140,6 +3140,24 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-eq5-interval-erase-endpoints-finset-adapter-a5.md`.
 
+Latest A5 update: Eq3/Eq4 now have one-step introduced-domain insert and
+cardinality wrappers for supplied endpoint branches in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`.  The names are
+`aoyagiLemma5Eq4_ownCoordinateFinset_succ_eq_insert_of_lastPoint`,
+`aoyagiLemma5Eq4_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint`,
+`aoyagiLemma5Eq3_ownCoordinateFinset_succ_eq_insert_of_lastPoint`, and
+`aoyagiLemma5Eq3_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint`.  They
+use the existing Eq3/Eq4 actual-label wrappers and the generic one-step
+finite-domain insert/cardinality theorems.  Eq4's repaired guards and Eq3's
+explicit slack remain in the hypotheses.  No displayed-vector construction,
+admissibility, order count, normal-crossing, or RLCT data is proved.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-domain-insert-card-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-domain-insert-card.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-domain-insert-card-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

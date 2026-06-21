@@ -2077,3 +2077,31 @@ with the interval after erasing both endpoints.  It does not package all Eq5
 branches, realise the erased endpoints by Eq3/Eq4, construct displayed
 vectors, provide terminal-exponent or least-value data, prove terminality,
 chart sequence, Lemma 5 order count, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 Eq3/Eq4 one-step domain insert and cardinality
+
+Reproduction:
+`reproduction-lemma5-eq3-eq4-domain-insert-card-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-eq4-domain-insert-card.md`.
+Review artifact:
+`review-lemma5-eq3-eq4-domain-insert-card-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq4_ownCoordinateFinset_succ_eq_insert_of_lastPoint
+aoyagiLemma5Eq4_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint
+aoyagiLemma5Eq3_ownCoordinateFinset_succ_eq_insert_of_lastPoint
+aoyagiLemma5Eq3_ownCoordinateFinset_card_succ_eq_succ_of_lastPoint
+```
+
+For supplied Eq4/Eq3 endpoint branches whose label is `J+1`, advancing the
+introduced-label finite domain from `J` to `J+1` inserts the endpoint label and
+increases finite-domain cardinality by one.
+
+This is finite-domain bookkeeping only.  Eq4 keeps the repaired guards and
+actual-width compatibility explicit; Eq3 keeps the one-unit slack and
+actual-width compatibility explicit.  It does not construct displayed vectors,
+provide terminal-exponent or least-value data, prove terminality, chart
+sequence, Lemma 5 order count, normal crossings, or RLCT extraction.

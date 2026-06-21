@@ -823,6 +823,9 @@ on the session's original cwd.
    proved.  It links strict-offset membership to the interval-with-endpoints-
    erased normalization for one supplied branch, but it still does not package
    all Eq5 branches or realise the erased endpoints via Eq3/Eq4.
+   Eq3/Eq4 one-step introduced-domain insert/cardinality wrappers are now
+   proved.  They complete the endpoint analogue of the Eq5 domain bookkeeping,
+   but they still do not supply terminal exponent or least-value fields.
    Latest A2 scout pass recommends leaving A2 at the current elementary
    `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
    certificate data.  Optional future A2 work should be thin source-rank or
