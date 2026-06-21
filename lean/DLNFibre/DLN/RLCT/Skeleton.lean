@@ -1024,6 +1024,120 @@ theorem Mval_descent (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ A
   have hz : tPrev M T j - (T j : ℤ) = 0 := by omega
   rw [hz, zero_mul]
 
+/-- **Karamata for squares (ascending-prefix form, over ℤ).** If `y` is monotone on `[0,n)`, `x` and
+`y` have equal total over `range n`, and every prefix sum of `x` is `≤` that of `y`, then
+`∑ y² ≤ ∑ x²`. The convexity lower-bound engine: `x²−y² ≥ 2y(x−y)`, and `∑ y(x−y) ≥ 0` by
+summation-by-parts (`Finset.sum_range_by_parts`) from prefix-domination + monotonicity. -/
+private theorem karamata_sq (n : ℕ) (x y : ℕ → ℤ)
+    (hmono : ∀ i, i + 1 < n → y i ≤ y (i + 1))
+    (htot : ∑ i ∈ Finset.range n, x i = ∑ i ∈ Finset.range n, y i)
+    (hpre : ∀ k, k ≤ n → ∑ i ∈ Finset.range k, x i ≤ ∑ i ∈ Finset.range k, y i) :
+    ∑ i ∈ Finset.range n, y i ^ 2 ≤ ∑ i ∈ Finset.range n, x i ^ 2 := by
+  have key : 0 ≤ ∑ i ∈ Finset.range n, y i * (x i - y i) := by
+    set d : ℕ → ℤ := fun i => x i - y i with hd
+    have hsumd : ∀ k, k ≤ n → ∑ i ∈ Finset.range k, d i ≤ 0 := by
+      intro k hk; simp only [hd, Finset.sum_sub_distrib]; linarith [hpre k hk]
+    have habel := Finset.sum_range_by_parts (fun i => y i) (fun i => d i) n
+    simp only [smul_eq_mul] at habel
+    rw [habel]
+    have e1 : ∑ i ∈ Finset.range n, d i = 0 := by
+      simp only [hd, Finset.sum_sub_distrib]; rw [htot]; ring
+    rw [e1, mul_zero, zero_sub, neg_nonneg]
+    apply Finset.sum_nonpos
+    intro i hi
+    rw [Finset.mem_range] at hi
+    have hy : 0 ≤ y (i + 1) - y i := by linarith [hmono i (by omega)]
+    exact mul_nonpos_of_nonneg_of_nonpos hy (hsumd (i + 1) (by omega))
+  have hpt : ∀ i ∈ Finset.range n, y i ^ 2 + 2 * (y i * (x i - y i)) ≤ x i ^ 2 := by
+    intro i _; nlinarith [sq_nonneg (x i - y i)]
+  have hsum := Finset.sum_le_sum hpt
+  rw [Finset.sum_add_distrib, ← Finset.mul_sum] at hsum
+  linarith [hsum, key]
+
+/-! ### A1 keystone: the edge-variable transform (fixed `Fin L` index, no descent reindexing).
+
+Route (verified exhaustively, fm rung0-defs + Codex xhigh): map every admissible `T` to a
+fixed-length edge vector `q_j = M_{j+1} + (u_j − u_{j+1})` (`u` the level sequence `[M⁰,T⁰,…]`).
+Then `2·Mval = ∑ q² − ∑ M²` (CERTAIN algebra), and the admissible cone maps onto the
+prefix-constrained polytope `QFeasible`. The minimum of `∑ q²` over it is the balanced split of the
+`c+1` smallest widths' total plus the squares of the `L−c` largest — matched to `cleanCore` via
+`balancedSplit_sq_int` + `cleanCore_perm`. The lower bound is `karamata_sq`; the achiever is the
+explicit balanced-split placement. -/
+
+/-- The level sequence `u : ℕ → ℤ`, `u 0 = M⁰`, `u (i+1) = Tⁱ` (and `0` past `L`). Total `ℕ→ℤ` to
+avoid `Fin` casts in the `range`-sum algebra. -/
+noncomputable def Useq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : ℕ) : ℤ :=
+  if i = 0 then (M 0 : ℤ) else if h : i - 1 < L then (T ⟨i - 1, h⟩ : ℤ) else 0
+
+/-- The width sequence `Mseq i = M⁽ⁱ⁾` as `ℕ → ℤ` (`0` past `L`), for `range`-sum algebra. -/
+noncomputable def Mseq (M : Fin (L + 1) → ℕ) (i : ℕ) : ℤ :=
+  if h : i < L + 1 then (M ⟨i, h⟩ : ℤ) else 0
+
+/-- The fixed-length edge vector `q_j = M⁽ʲ⁺¹⁾ + (u_j − u_{j+1})`, `j ∈ range L` (`ℕ → ℤ`). -/
+noncomputable def edgeQ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : ℕ) : ℤ :=
+  Mseq M (j + 1) + Useq M T j - Useq M T (j + 1)
+
+private theorem Useq_zero (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Useq M T 0 = (M 0 : ℤ) := rfl
+
+private theorem tPrev_eq_Useq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : Fin L) :
+    tPrev M T j = Useq M T j.val := by
+  unfold tPrev Useq; split
+  · rfl
+  · rw [dif_pos (show j.val - 1 < L by omega)]
+
+private theorem Tj_eq_Useq (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : Fin L) :
+    (T j : ℤ) = Useq M T (j.val + 1) := by
+  unfold Useq; rw [if_neg (by omega), dif_pos (show (j.val + 1) - 1 < L by omega)]; norm_num
+
+private theorem Msucc_eq_Mseq (M : Fin (L + 1) → ℕ) (j : Fin L) :
+    (M j.succ : ℤ) = Mseq M (j.val + 1) := by
+  unfold Mseq; rw [dif_pos (show j.val + 1 < L + 1 by omega)]; rfl
+
+/-- `Useq` past `L` is `0` when the last exponent vanishes (`T⁽ᴸ⁻¹⁾ = 0`, from admissibility). -/
+private theorem Useq_last (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
+    (hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0) : Useq M T L = 0 := by
+  unfold Useq
+  rw [if_neg (by omega), dif_pos (show L - 1 < L by omega)]
+  have : T ⟨L - 1, by omega⟩ = 0 := hlast _ rfl
+  rw [this]; rfl
+
+/-- `Mval M T` as a `range L` sum in the level sequence. -/
+private theorem Mval_eq_range (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) :
+    Mval M T = ∑ j ∈ Finset.range L,
+      (Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1)) := by
+  unfold Mval
+  rw [Finset.sum_range fun j => (Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1))]
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [tPrev_eq_Useq, Tj_eq_Useq, Msucc_eq_Mseq]
+
+/-- **Edge-variable identity (CERTAIN algebra).** `2·Mval M T = ∑_{j<L} (edgeQ j)² − ∑_{i<L+1} M⁽ⁱ⁾²`,
+when the level sequence starts at `M⁰` and ends at `0` (admissibility's `T⁽ᴸ⁻¹⁾ = 0`). The transform
+sending the admissible cone to a fixed `Fin L` edge polytope. -/
+private theorem edge_identity (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hL : 1 ≤ L)
+    (hlast : ∀ j : Fin L, j.val = L - 1 → T j = 0) :
+    2 * Mval M T = (∑ j ∈ Finset.range L, edgeQ M T j ^ 2)
+      - ∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2 := by
+  rw [Mval_eq_range, Finset.mul_sum]
+  -- per-term: 2*(u_j - u_{j+1})(M_{j+1} - u_{j+1}) = edgeQ_j^2 - M_{j+1}^2 - (u_j^2 - u_{j+1}^2)
+  have hterm : ∀ j ∈ Finset.range L,
+      2 * ((Useq M T j - Useq M T (j + 1)) * (Mseq M (j + 1) - Useq M T (j + 1)))
+        = edgeQ M T j ^ 2 - Mseq M (j + 1) ^ 2
+          - (Useq M T j ^ 2 - Useq M T (j + 1) ^ 2) := by
+    intro j _; unfold edgeQ; ring
+  rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, Finset.sum_sub_distrib]
+  -- ∑_{j<L} M_{j+1}^2 = (∑_{i<L+1} M_i^2) - M_0^2
+  have hM : ∑ j ∈ Finset.range L, Mseq M (j + 1) ^ 2
+      = (∑ i ∈ Finset.range (L + 1), Mseq M i ^ 2) - Mseq M 0 ^ 2 := by
+    rw [Finset.sum_range_succ' (fun i => Mseq M i ^ 2) L]; ring
+  -- ∑_{j<L} (u_j^2 - u_{j+1}^2) = u_0^2 - u_L^2 = M_0^2 - 0
+  have hU : ∑ j ∈ Finset.range L, (Useq M T j ^ 2 - Useq M T (j + 1) ^ 2)
+      = Useq M T 0 ^ 2 - Useq M T L ^ 2 :=
+    Finset.sum_range_sub' (fun i => Useq M T i ^ 2) L
+  rw [hM, hU, Useq_zero, Useq_last M T hL hlast]
+  have hM0 : Mseq M 0 = (M 0 : ℤ) := by unfold Mseq; rw [dif_pos (by omega)]; rfl
+  rw [hM0]; ring
+
 /-- **A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
 `lambdaCore M = ½·min_T M(T)` equals `cleanCore c (sortedSmallest M c)` for an **achiever**
 `c ∈ {1,…,L}` — the `m` argument is **pinned** to `M`'s `c+1` smallest reduced widths (a function of
