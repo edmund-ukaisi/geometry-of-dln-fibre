@@ -425,4 +425,53 @@ theorem measurePreserving_tailLift_lemma2Inv :
     funext u; simp only [Function.comp_apply]; exact (tailLift_eq_finPeel lemma2Inv u).symm
   rwa [heq] at hcomp
 
+/-! ## The step-2 spectator-lift is a `Fin 8` blow-up (the c-o-v node)
+
+`tailLift step2E = pivotBlowupOn {2,3,4} 2` on `Fin 8` (the `Fin.cons`/`Fin.tail` shift the pivot
+`1 ↦ 2` and active `{1,2,3} ↦ {2,3,4}`). Proven by comparing BOTH sides to the explicit vector
+`![u0,u1,u2,u2·u3,u2·u4,u5,u6,u7]` (sidestepping the `Fin.cons` vs `pivotBlowupOn`-`if`-membership simp
+friction). So the step-2 lift reuses the gated `Fin 8` `pivotBlowupOn` c-o-v directly — no `finPeel`
+product gymnastics for the blow-up Jacobian. -/
+
+/-- `tailLift step2E` as an explicit vector (`Fin.cons = Matrix.vecCons`, `rfl` per coordinate). -/
+theorem tailLift_step2E_apply (u : Fin 8 → ℝ) :
+    tailLift step2E u = ![u 0, u 1, u 2, u 2 * u 3, u 2 * u 4, u 5, u 6, u 7] := by
+  funext i
+  fin_cases i <;> rfl
+
+/-- `pivotBlowupOn {2,3,4} 2` as the same explicit vector (per-coordinate `if`-reduction by `decide`
+on the concrete `Fin 8` membership). -/
+theorem pivotBlowupOn_234_apply (u : Fin 8 → ℝ) :
+    pivotBlowupOn ({2, 3, 4} : Finset (Fin 8)) 2 u
+      = ![u 0, u 1, u 2, u 2 * u 3, u 2 * u 4, u 5, u 6, u 7] := by
+  funext i
+  fin_cases i <;> simp [pivotBlowupOn, Matrix.cons_val]
+
+/-- **The step-2 spectator-lift is a `Fin 8` blow-up.** `tailLift step2E = pivotBlowupOn {2,3,4} 2`
+(both equal the explicit vector). -/
+theorem tailLift_step2E_eq_pivotBlowupOn (u : Fin 8 → ℝ) :
+    tailLift step2E u = pivotBlowupOn ({2, 3, 4} : Finset (Fin 8)) 2 u := by
+  rw [tailLift_step2E_apply, pivotBlowupOn_234_apply]
+
+/-- The step-2-lift Jacobian determinant: `|det| = |u2|²` (`pivotBlowupOnDeriv_det`,
+`card {2,3,4} − 1 = 2`). -/
+theorem tailLift_step2E_det (u : Fin 8 → ℝ) :
+    (pivotBlowupOnDeriv ({2, 3, 4} : Finset (Fin 8)) 2 u).det = (u 2) ^ 2 := by
+  rw [pivotBlowupOnDeriv_det _ _ (by decide)]
+  norm_num [show ({2, 3, 4} : Finset (Fin 8)).card = 3 from by decide]
+
+/-- **Step-2-lift change-of-variables** (the lifted step-2 c-o-v node, parallel to
+`step1A_lintegral_image`): for measurable `V` off the pivot-zero locus `{u2 = 0}`,
+`∫⁻_{tailLift step2E '' (V \ {u2=0})} g = ∫⁻_{V \ {u2=0}} |det Dφ₂'| · (g ∘ tailLift step2E)`. -/
+theorem tailLift_step2E_lintegral_image (V : Set (Fin 8 → ℝ)) (hV : MeasurableSet V)
+    (g : (Fin 8 → ℝ) → ℝ≥0∞) :
+    ∫⁻ x in tailLift step2E '' (V \ {x | x 2 = 0}), g x
+      = ∫⁻ x in V \ {x | x 2 = 0},
+          ENNReal.ofReal |(pivotBlowupOnDeriv ({2, 3, 4} : Finset (Fin 8)) 2 x).det|
+            * g (tailLift step2E x) := by
+  simp_rw [tailLift_step2E_eq_pivotBlowupOn]
+  rw [lintegral_image_eq_lintegral_abs_det_fderiv_mul volume
+    (hV.diff (measurableSet_eq_fun (measurable_pi_apply 2) measurable_const))
+    (fun x _ => pivotBlowupOn_hasFDerivWithinAt _ _ _ x) (pivotBlowupOn_injOn _ _ _)]
+
 end DLNFibre.DLN.RLCT
