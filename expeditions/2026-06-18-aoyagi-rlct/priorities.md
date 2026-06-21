@@ -1127,11 +1127,13 @@ Immediate order:
    conditional supplied-chain facts.  This hardens the negative boundary but
    does not change the next route: corrected-formula search or supplied
    chart-family interface.
-   Latest A2 scout pass recommends leaving A2 at the current elementary
-   `ProductReductionBoundary.lean` boundary until A4/A5 produce stable
-   certificate data.  Optional future A2 work should be thin source-rank or
-   residual-rank wrappers only, not exact-rank openness, full Theorem 3
-   packaging, or regular-suspension/RLCT transport.
+   Latest A2 residual-product pass now names the endpoint lower-right block as
+   the deterministic product of transformed Schur residuals in
+   `ProductReductionBoundary.lean`. Leave A2 at this elementary boundary until
+   A4/A5 produce stable certificate data. Optional future A2 work should be
+   thin source-rank, residual-rank, or hypothesis-weakening wrappers only, not
+   exact-rank openness, full Theorem 3 packaging, or
+   regular-suspension/RLCT transport.
 7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
    DLN notation only after the Aoyagi-side statements are stable.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

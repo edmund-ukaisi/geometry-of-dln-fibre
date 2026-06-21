@@ -24,31 +24,37 @@ holding PDF line numbers only in context.
 
 ## Latest A2 Update
 
-The Aoyagi Theorem 3 triangular endpoint-multiplier wrapper has landed.  The
-new Lean names are `lowerUnitriangular_mul_fromBlocks_one_zero_indexed`,
-`ChartLocalSuffixState.step_L_eq_lowerUnitriangular`,
-`ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular`,
-`ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal`,
-`productReduction_chartLocal_suffixChain_triangularBlockDiagonal_indexed`, and
-`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal`.
+The Aoyagi Theorem 3 residual-product endpoint wrapper has landed. The new
+Lean names are `ChartLocalSuffixState.residualProduct`,
+`ChartLocalSuffixState.residualProduct_self`,
+`ChartLocalSuffixState.residualProduct_castSucc`,
+`ChartLocalSuffixState.suffixState_D_eq_residualProduct`,
+`ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal_residualProduct`,
+`productReduction_chartLocal_suffixChain_triangularBlockDiagonal_residualProduct_indexed`,
+and
+`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct`.
 Reproduction:
-`threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`.
+`threads/03-block-product-reduction/reproduction-a2-residual-product.md`.
 Statement card:
-`threads/03-block-product-reduction/statement-card-a2-triangular-block-diagonal.md`.
+`threads/03-block-product-reduction/statement-card-a2-residual-product.md`.
 Review:
-`threads/03-block-product-reduction/review-a2-triangular-block-diagonal.md`.
+`threads/03-block-product-reduction/review-a2-residual-product.md`.
 
 This proves the existing fixed-base product-reduction certificate can be read
 in the Aoyagi form
 
 ```text
-[I 0; F3 I] * total * [I F2; 0 I] = [Ctop 0; 0 D],
+[I 0; F3 I] * total * [I F2; 0 I]
+  = [Ctop 0; 0 residualProduct],
 ```
 
-with determinant-unit triangular factors and proof witness `F2 = -S.B`.  It is
-still not chart coverage from source rank hypotheses, exact-rank openness,
-Aoyagi Lemma 1, analytic ideal transport, regular-coordinate RLCT bookkeeping,
-normal crossings, or an RLCT consequence.
+where `residualProduct` is the deterministic product of transformed Schur
+residual blocks visited by the suffix recursion. This is not the raw
+lower-right edge-block product. The abstract suffix-chain wrapper still keeps
+the older all-`Bprev` determinant-chart hypothesis. It is still not chart
+coverage from source rank hypotheses, exact-rank openness, Aoyagi Lemma 1,
+analytic ideal transport, regular-coordinate RLCT bookkeeping, normal
+crossings, or an RLCT consequence.
 
 ## Latest A5 Update
 

@@ -669,6 +669,54 @@ def residualBlock
   schurResidualBlock
     (transformedEdge E p (suffixState E j p.succ hpj))
 
+/-- The ordered product of transformed Schur residual blocks visited by the
+deterministic suffix recursion.
+
+This is the lower-right block product produced by the chart-local algorithm;
+it is not a product of the raw input edge lower-right blocks. -/
+def residualProduct
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (j i : Fin (N + 1)) (hij : i ≤ j) :
+    Matrix (κ j) (κ i) K :=
+  Nat.decreasingInduction
+    (motive := fun m hmj ↦
+      Matrix (κ j) (κ ⟨m, lt_of_le_of_lt hmj j.isLt⟩) K)
+    (fun m hms D ↦
+      let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (lt_of_le_of_lt hms j.isLt)⟩
+      by
+        let D' : Matrix (κ j) (κ p.succ) K := by
+          simpa [p] using D
+        simpa [p] using
+          D' * residualBlock E j p (Fin.val_fin_le.mpr hms))
+    (by simpa using (1 : Matrix (κ j) (κ j) K))
+    (Fin.val_fin_le.mp hij)
+
+/-- The residual product is identity at the right endpoint. -/
+@[simp]
+theorem residualProduct_self
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (j : Fin (N + 1)) :
+    residualProduct E j j le_rfl = 1 := by
+  simp [residualProduct]
+
+/-- The residual product unfolds by multiplying the next transformed Schur
+residual block. -/
+theorem residualProduct_castSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j) :
+    residualProduct E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
+      residualProduct E j p.succ hpj * residualBlock E j p hpj := by
+  unfold residualProduct
+  rw [Nat.decreasingInduction_succ_left]
+  · congr 1
+  · exact Fin.val_fin_le.mp hpj
+
 /-- The deterministic suffix-state `D` field unfolds by multiplying the next
 visited Schur residual block. -/
 theorem suffixState_D_castSucc
@@ -680,6 +728,45 @@ theorem suffixState_D_castSucc
       (suffixState E j p.succ hpj).D * residualBlock E j p hpj := by
   rw [suffixState_castSucc]
   rfl
+
+/-- The deterministic suffix-state lower-right block is exactly the ordered
+product of transformed Schur residual blocks visited by the recursion. -/
+theorem suffixState_D_eq_residualProduct
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {i j : Fin (N + 1)} (hij : i ≤ j) :
+    (suffixState E j i hij).D = residualProduct E j i hij := by
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    (suffixState E j im (Fin.val_fin_le.mpr hmj)).D =
+      residualProduct E j im (Fin.val_fin_le.mpr hmj)
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    simp [terminal]
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (lt_of_le_of_lt hms j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        (suffixState E j p.succ hpj).D = residualProduct E j p.succ hpj := by
+      simpa [motive, p, hpj] using ih
+    calc
+      (suffixState E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)).D =
+          (suffixState E j p.succ hpj).D * residualBlock E j p hpj := by
+            rw [suffixState_D_castSucc]
+      _ = residualProduct E j p.succ hpj * residualBlock E j p hpj := by
+            rw [ih']
+      _ = residualProduct E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) := by
+            rw [residualProduct_castSucc]
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase
+    (Fin.val_fin_le.mp hij)
+  have hcanon' :
+      (suffixState E j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij))).D =
+        residualProduct E j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) := by
+    simpa [motive] using hcanon
+  simpa using hcanon'
 
 /-- One deterministic suffix-state update preserves lower-unitriangularity of `L`. -/
 theorem step_L_eq_lowerUnitriangular
@@ -881,6 +968,61 @@ theorem suffixState_blockDiagonal_exists_triangularBlockDiagonal
   refine ⟨-S.B, F3, S.Ctop, S.D, hLeft, hRight, hCtop, ?_⟩
   simpa [S, hF3] using hdiag
 
+/-- A deterministic block-diagonal suffix state gives triangular multipliers
+whose lower-right block is the named transformed residual product. -/
+theorem suffixState_blockDiagonal_exists_triangularBlockDiagonal_residualProduct
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    {i j : Fin (N + 1)} (hij : i ≤ j)
+    (hS : (suffixState E j i hij).BlockDiagonal P hij) :
+    ∃ F2 : Matrix ρ (κ i) K, ∃ F3 : Matrix (κ j) ρ K,
+      ∃ Ctop : Matrix ρ ρ K,
+          IsUnit
+            (fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)).det ∧
+          IsUnit
+            (fromBlocks (1 : Matrix ρ ρ K) F2 0
+              (1 : Matrix (κ i) (κ i) K)).det ∧
+          IsUnit Ctop.det ∧
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K) *
+            P i j hij *
+            fromBlocks (1 : Matrix ρ ρ K) F2 0
+              (1 : Matrix (κ i) (κ i) K) =
+          fromBlocks Ctop 0 0 (residualProduct E j i hij) := by
+  let S : ChartLocalSuffixState ρ κ K j i := suffixState E j i hij
+  rcases hS with ⟨_, hCtop, hdiag⟩
+  rcases suffixState_L_eq_lowerUnitriangular E hij with ⟨F3, hF3⟩
+  have hLeft : IsUnit
+      (fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ j) (κ j) K)).det := by
+    exact (Matrix.isUnit_iff_isUnit_det
+        (A := fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ j) (κ j) K))).mp
+      ((Matrix.isUnit_fromBlocks_zero₁₂).2 ⟨isUnit_one, isUnit_one⟩)
+  have hRight : IsUnit
+      (fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0
+        (1 : Matrix (κ i) (κ i) K)).det := by
+    exact (Matrix.isUnit_iff_isUnit_det
+        (A := fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0
+          (1 : Matrix (κ i) (κ i) K))).mp
+      ((Matrix.isUnit_fromBlocks_zero₂₁).2 ⟨isUnit_one, isUnit_one⟩)
+  have hD : S.D = residualProduct E j i hij := by
+    simpa [S] using suffixState_D_eq_residualProduct (K := K) E hij
+  refine ⟨-S.B, F3, S.Ctop, hLeft, hRight, hCtop, ?_⟩
+  calc
+    fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ j) (κ j) K) *
+        P i j hij *
+        fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0
+          (1 : Matrix (κ i) (κ i) K) =
+        fromBlocks S.Ctop 0 0 S.D := by
+          simpa [S, hF3] using hdiag
+    _ = fromBlocks S.Ctop 0 0 (residualProduct E j i hij) := by
+          rw [hD]
+
 end ChartLocalSuffixState
 
 /-- Abstract suffix-chain block diagonalisation on explicit determinant charts. -/
@@ -962,6 +1104,52 @@ theorem productReduction_chartLocal_suffixChain_triangularBlockDiagonal_indexed
           hchart p (ChartLocalSuffixState.suffixState E j p.succ hpj).B)
   exact ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal
     E P hij hS
+
+/-- Abstract suffix-chain block diagonalisation with Aoyagi-style triangular
+multipliers and a named lower-right product of transformed Schur residuals. -/
+theorem productReduction_chartLocal_suffixChain_triangularBlockDiagonal_residualProduct_indexed
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hPproof : ∀ {i j : Fin (N + 1)} (h h' : i ≤ j), P i j h = P i j h')
+    (hself : ∀ j : Fin (N + 1), P j j le_rfl = 1)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    (hchart : ∀ (p : Fin N) (Bprev : Matrix ρ (κ p.succ) K),
+      identityCornerDetChart
+        (fromBlocks (1 : Matrix ρ ρ K) Bprev 0
+          (1 : Matrix (κ p.succ) (κ p.succ) K) * E p)) :
+    ∀ i j : Fin (N + 1), ∀ hij : i ≤ j,
+      ∃ F2 : Matrix ρ (κ i) K, ∃ F3 : Matrix (κ j) ρ K,
+        ∃ Ctop : Matrix ρ ρ K,
+          IsUnit
+              (fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K)).det ∧
+            IsUnit
+              (fromBlocks (1 : Matrix ρ ρ K) F2 0
+                (1 : Matrix (κ i) (κ i) K)).det ∧
+            IsUnit Ctop.det ∧
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K) *
+              P i j hij *
+              fromBlocks (1 : Matrix ρ ρ K) F2 0
+                (1 : Matrix (κ i) (κ i) K) =
+            fromBlocks Ctop 0 0
+              (ChartLocalSuffixState.residualProduct E j i hij) := by
+  intro i j hij
+  let S : ChartLocalSuffixState ρ κ K j i := ChartLocalSuffixState.suffixState E j i hij
+  have hS : S.BlockDiagonal P hij := by
+    dsimp [S]
+    exact ChartLocalSuffixState.suffixState_blockDiagonal E P hPproof hself hsuccRight hij
+      (fun p hpj ↦ by
+        simpa [ChartLocalSuffixState.transformedEdge] using
+          hchart p (ChartLocalSuffixState.suffixState E j p.succ hpj).B)
+  exact
+    ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal_residualProduct
+      E P hij hS
 
 end InductionStep
 

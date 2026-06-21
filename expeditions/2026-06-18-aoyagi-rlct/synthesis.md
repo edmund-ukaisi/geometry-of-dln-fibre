@@ -84,26 +84,31 @@ interface without surfacing it.
 
 ## Latest A2 Update
 
-The triangular endpoint-multiplier wrapper for Aoyagi Theorem 3 has landed.
+The residual-product endpoint wrapper for Aoyagi Theorem 3 has landed.
 Pen-and-paper reproduction:
-`threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`.
+`threads/03-block-product-reduction/reproduction-a2-residual-product.md`.
 Statement card:
-`threads/03-block-product-reduction/statement-card-a2-triangular-block-diagonal.md`.
+`threads/03-block-product-reduction/statement-card-a2-residual-product.md`.
 Review:
-`threads/03-block-product-reduction/review-a2-triangular-block-diagonal.md`.
+`threads/03-block-product-reduction/review-a2-residual-product.md`.
 
 Lean names:
-`lowerUnitriangular_mul_fromBlocks_one_zero_indexed`,
-`ChartLocalSuffixState.step_L_eq_lowerUnitriangular`,
-`ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular`,
-`ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal`,
-`productReduction_chartLocal_suffixChain_triangularBlockDiagonal_indexed`, and
-`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal`.
-The fixed-base endpoint theorem extracts regular triangular multipliers
-`[I 0; F3 I]` and `[I F2; 0 I]` from the existing source-facing certificate,
-with the proof witness `F2 = -S.B`.  This closes the narrow "triangular
-multiplier shape" gap in the certificate.
+`ChartLocalSuffixState.residualProduct`,
+`ChartLocalSuffixState.residualProduct_self`,
+`ChartLocalSuffixState.residualProduct_castSucc`,
+`ChartLocalSuffixState.suffixState_D_eq_residualProduct`,
+`ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal_residualProduct`,
+`productReduction_chartLocal_suffixChain_triangularBlockDiagonal_residualProduct_indexed`, and
+`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct`.
+The fixed-base endpoint theorem now exposes the lower-right block in the
+triangular block-diagonal certificate as the deterministic product of
+transformed Schur residual blocks visited by `suffixState`. This extends the
+previous triangular-multiplier wrapper, where the right multiplier is still
+realized by the proof witness `F2 = -S.B`.
 
+The product is not the raw lower-right edge-block product. The abstract
+suffix-chain theorem still carries the stronger all-`Bprev` determinant-chart
+hypothesis, although the proof only uses recursively visited `Bprev` values.
 Nonclaims remain: no chart coverage from only source rank hypotheses, no
 exact-rank openness, no Aoyagi Lemma 1/analytic ideal transport, no
 regular-coordinate RLCT additivity, no normal crossings, and no RLCT

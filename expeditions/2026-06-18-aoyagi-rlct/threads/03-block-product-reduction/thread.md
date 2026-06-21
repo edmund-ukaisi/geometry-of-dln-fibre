@@ -1138,3 +1138,41 @@ with the same non-claims. Controller verified targeted build, full `DLNFibre`
 build, `scripts/sorries`, `git diff --check`, and axiom spot checks for the
 public theorems. Statement card:
 `statement-card-a2-product-reduction-boundary-certificate.md`.
+
+## 2026-06-21 A2 residual-product endpoint wrapper
+
+Returned to the Theorem 3 endpoint form to name the lower-right residual
+product explicitly. Aoyagi's induction updates the lower-right block by
+multiplying the previous residual product by the Schur residual of the next
+transformed layer. The Lean suffix state already had this recurrence for `D`;
+this checkpoint gives the recurrence a named product.
+
+New Lean artifacts in `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`:
+
+- `ChartLocalSuffixState.residualProduct`;
+- `ChartLocalSuffixState.residualProduct_self`;
+- `ChartLocalSuffixState.residualProduct_castSucc`;
+- `ChartLocalSuffixState.suffixState_D_eq_residualProduct`;
+- `ChartLocalSuffixState.suffixState_blockDiagonal_exists_triangularBlockDiagonal_residualProduct`;
+- `productReduction_chartLocal_suffixChain_triangularBlockDiagonal_residualProduct_indexed`.
+
+New endpoint wrapper in
+`lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`:
+
+- `PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct`.
+
+The product is explicitly the deterministic product of transformed Schur
+residuals visited by `suffixState`, not a raw product of original lower-right
+edge blocks. The abstract suffix-chain wrapper still keeps the older
+all-`Bprev` determinant-chart hypothesis; that is stronger than needed for the
+proof but explicit in the statement.
+
+Still open: weakening the abstract chart hypothesis, chart coverage from
+source rank hypotheses, exact-rank openness, Aoyagi Lemma 1, analytic
+ideal-germ transport, regular-coordinate RLCT bookkeeping, normal-crossing
+extraction, and every RLCT consequence.
+
+Artifacts:
+`reproduction-a2-residual-product.md`,
+`statement-card-a2-residual-product.md`, and
+`review-a2-residual-product.md`.
