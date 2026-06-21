@@ -3625,6 +3625,42 @@ private theorem headP_ge_uTel (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ)
     rw [huz]; exact le_max_left _ _
   · rw [if_neg hi0]; exact le_max_left _ _
 
+/-- **`qFM` is feasible:** `Mseq M (i+1) ≤ qFM_i` for `i < L` (from `forwardMax_feasible`). The
+band-free feasibility fact (NO `good_floor_core`, NO band). -/
+private theorem qFM_feasible (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+    Mseq M (i + 1) ≤ qFM M i := by
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  have hflen : (BGEngine.forwardMax (Mwidths M) (Ymulti M)).length = L := by
+    rw [BGEngine.forwardMax_length hDom, Mwidths_len]
+  have hib : i < (Mwidths M).length := by rw [Mwidths_len]; exact hi
+  have hip : i < (BGEngine.forwardMax (Mwidths M) (Ymulti M)).length := by rw [hflen]; exact hi
+  have hfeas := BGEngine.forwardMax_feasible hDom i hib hip
+  rw [Mwidths_get M i hi] at hfeas
+  rw [qFM, List.getD_eq_getElem _ _ hip]
+  exact hfeas
+
+/-- **`uTel ∘ qFM` is antitone:** `uTel_{i+1} ≤ uTel_i` for `i < L` (⟺ `qFM_i ≥ M^{i+1}`, feasibility).
+Band-free. -/
+private theorem uTel_antitone (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : ℕ) (hi : i < L) :
+    uTel M (qFM M) (i + 1) ≤ uTel M (qFM M) i := by
+  have hrec : uTel M (qFM M) (i + 1) = Mseq M (i + 1) + uTel M (qFM M) i - qFM M i := rfl
+  have hfeas := qFM_feasible M hL i hi
+  rw [hrec]; linarith
+
+/-- **`uTel ∘ qFM` is antitone (general):** `uTel_j ≤ uTel_i` for `i ≤ j ≤ L`. -/
+private theorem uTel_antitone_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {i j : ℕ}
+    (hij : i ≤ j) (hj : j ≤ L) : uTel M (qFM M) j ≤ uTel M (qFM M) i := by
+  induction j with
+  | zero => have : i = 0 := by omega
+            rw [this]
+  | succ k ih =>
+    rcases Nat.lt_or_ge i (k + 1) with hlt | hge
+    · have hk : uTel M (qFM M) (k + 1) ≤ uTel M (qFM M) k :=
+        uTel_antitone M hL k (by omega)
+      exact le_trans hk (ih (by omega) (by omega))
+    · have : i = k + 1 := by omega
+      rw [this]
+
 /-- **Consumer: the per-step bound from `FMDom`.** Given the Dom-invariant at `j`, the forward-max
 pick `qFM_j ≥ head'_j` (via `le_maxPick` + the minimal feasible witness). Since `head'_j ≥ uTel_j`
 this gives the band; since `head'_0 = max(M⁰,M¹)` it gives the `j=0` corner. -/
