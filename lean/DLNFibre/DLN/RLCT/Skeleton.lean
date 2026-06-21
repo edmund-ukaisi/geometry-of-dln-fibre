@@ -2209,6 +2209,97 @@ private theorem Yvec_monotone (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
     rw [if_neg hxc, if_neg (by omega : ¬ (y : ℕ) < c)]
     exact_mod_cast aS_mono M (by omega) (by omega)
 
+/-- `(range c).filter (· < m) = range m` for `m ≤ c`. -/
+private theorem filter_range_lt (c m : ℕ) (hm : m ≤ c) :
+    (Finset.range c).filter (fun j => j < m) = Finset.range m := by
+  ext j; simp only [Finset.mem_filter, Finset.mem_range]; omega
+
+/-- The balanced block of `Yvec` (sorted form `b…b,b+1…b+1`) has the same sum-of-squares as
+`balancedSplit P c` (same multiset: `c−r` copies of `b`, `r` of `b+1`). -/
+private theorem Yvec_balanced_sq (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : 0 < c) :
+    ∑ j ∈ Finset.range c,
+        (if j < c - Sprefix M (c + 1) % c then ((Sprefix M (c + 1) / c : ℕ) : ℤ)
+          else ((Sprefix M (c + 1) / c : ℕ) : ℤ) + 1) ^ 2
+      = ∑ i : Fin c, ((balancedSplit (Sprefix M (c + 1)) c i : ℕ) : ℤ) ^ 2 := by
+  set P := Sprefix M (c + 1) with hP
+  set b : ℤ := ((P / c : ℕ) : ℤ) with hb
+  set rr : ℤ := ((P % c : ℕ) : ℤ) with hrr
+  rw [balancedSplit_sq_int P c hc]
+  have hr : P % c ≤ c := le_of_lt (Nat.mod_lt _ hc)
+  -- push the square inside the if, then split the sum
+  have hterm : ∀ j, ((if j < c - P % c then b else b + 1) ^ 2)
+      = (if j < c - P % c then b ^ 2 else (b + 1) ^ 2) := fun j => by split_ifs <;> rfl
+  simp only [hterm]
+  rw [Finset.sum_ite, Finset.sum_const, Finset.sum_const]
+  have hcard1 : (Finset.range c |>.filter (fun j => j < c - P % c)).card = c - P % c := by
+    rw [filter_range_lt c (c - P % c) (by omega), Finset.card_range]
+  have hcard2 : (Finset.range c |>.filter (fun j => ¬ j < c - P % c)).card = P % c := by
+    have := Finset.filter_card_add_filter_neg_card_eq_card (s := Finset.range c)
+      (p := fun j => j < c - P % c)
+    rw [hcard1, Finset.card_range] at this; omega
+  rw [hcard1, hcard2, nsmul_eq_mul, nsmul_eq_mul, Nat.cast_sub hr]
+  ring
+
+/-- `∑ (M i)² = ∑ (aS M i)²` (sum of squares is invariant under the sorting permutation). -/
+private theorem sum_sq_M_eq_aS (M : Fin (L + 1) → ℕ) :
+    ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2 = ∑ i ∈ Finset.range (L + 1), (aS M i : ℤ) ^ 2 := by
+  rw [← Fin.sum_univ_eq_sum_range (fun i => (aS M i : ℤ) ^ 2) (L + 1)]
+  rw [show (∑ i : Fin (L + 1), (aS M (i : ℕ) : ℤ) ^ 2)
+        = ∑ i : Fin (L + 1), ((M (Tuple.sort M i) : ℤ)) ^ 2 from
+      Finset.sum_congr rfl (fun i _ => by rw [aS, dif_pos i.isLt]; rfl)]
+  exact (Equiv.sum_comp (Tuple.sort M) (fun i => ((M i : ℤ)) ^ 2)).symm
+
+/-- `∑ Yvec²` over `Fin L`, written as a `range L` sum (for splitting at `c`). -/
+private theorem sum_Yvec_sq_range (M : Fin (L + 1) → ℕ) (c : ℕ) :
+    (∑ j : Fin L, (Yvec M c j) ^ 2)
+      = ∑ j ∈ Finset.range L,
+          (if j < c then (if j < c - Sprefix M (c + 1) % c then ((Sprefix M (c + 1) / c : ℕ) : ℤ)
+              else ((Sprefix M (c + 1) / c : ℕ) : ℤ) + 1)
+            else (aS M (j + 1) : ℤ)) ^ 2 := by
+  rw [← Fin.sum_univ_eq_sum_range (fun j => _) L]
+  apply Finset.sum_congr rfl
+  intro j _
+  rfl
+
+/-- **A1 value identity (E).** `∑ Yvec² − ∑ M² = ∑(balancedSplit P c)² − ∑(sortedSmallest)²`: the
+tail (the `L−c` largest widths) appears in both `∑Yvec²` and `∑M²` and cancels. -/
+private theorem Yvec_value (M : Fin (L + 1) → ℕ) (c : ℕ) (hc : c ≤ L) (hc1 : 1 ≤ c) :
+    (∑ j : Fin L, (Yvec M c j) ^ 2) - ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2
+      = (∑ i : Fin c, ((balancedSplit (Sprefix M (c + 1)) c i : ℕ) : ℤ) ^ 2)
+        - ∑ k : Fin (c + 1), ((sortedSmallest M c hc k : ℕ) : ℤ) ^ 2 := by
+  set P := Sprefix M (c + 1) with hP
+  set bform := fun j => (if j < c - P % c then ((P / c : ℕ) : ℤ) else ((P / c : ℕ) : ℤ) + 1)
+    with hbf
+  -- ∑ Yvec² = balanced-block² + tail²  (split range L at c)
+  have hYsplit : (∑ j : Fin L, (Yvec M c j) ^ 2)
+      = (∑ j ∈ Finset.range c, (bform j) ^ 2)
+        + ∑ j ∈ Finset.Ico c L, (aS M (j + 1) : ℤ) ^ 2 := by
+    rw [sum_Yvec_sq_range M c, ← Finset.sum_range_add_sum_Ico _ hc]
+    congr 1
+    · exact Finset.sum_congr rfl (fun j hj => by
+        rw [Finset.mem_range] at hj; rw [if_pos hj])
+    · exact Finset.sum_congr rfl (fun j hj => by
+        rw [Finset.mem_Ico] at hj; rw [if_neg (by omega)])
+  -- ∑ M² = ∑ aS² = sortedSmallest² + tail²  (split range (L+1) at c+1)
+  have hMsplit : ∑ i : Fin (L + 1), ((M i : ℤ)) ^ 2
+      = (∑ k : Fin (c + 1), ((sortedSmallest M c hc k : ℕ) : ℤ) ^ 2)
+        + ∑ i ∈ Finset.Ico (c + 1) (L + 1), (aS M i : ℤ) ^ 2 := by
+    rw [sum_sq_M_eq_aS M, ← Finset.sum_range_add_sum_Ico _ (by omega : c + 1 ≤ L + 1)]
+    congr 1
+    rw [← Fin.sum_univ_eq_sum_range (fun i => (aS M i : ℤ) ^ 2) (c + 1)]
+    exact Finset.sum_congr rfl (fun k _ => by
+      rw [aS, dif_pos (by omega), sortedSmallest]; rfl)
+  -- the two tails are equal (reindex Ico c L by +1 ↦ Ico (c+1) (L+1))
+  have htail : ∑ j ∈ Finset.Ico c L, (aS M (j + 1) : ℤ) ^ 2
+      = ∑ i ∈ Finset.Ico (c + 1) (L + 1), (aS M i : ℤ) ^ 2 := by
+    rw [Finset.sum_Ico_eq_sum_range, Finset.sum_Ico_eq_sum_range]
+    apply Finset.sum_congr (by congr 1; omega)
+    intro k _
+    have : c + k + 1 = c + 1 + k := by omega
+    rw [this]
+  rw [hYsplit, hMsplit, htail, Yvec_balanced_sq M c hc1]
+  ring
+
 /-- **A1 (Lemma 3): `lambdaCore M = cleanCore` at the achiever `c`.** Statement frozen (rv-2). The
 `∃ c` is the **achiever** (largest `c ∈ {1,…,L}` whose balanced split on the `c+1` smallest widths
 is admissible), NOT a min/max over `c` (both `min_c`/`max_c` refuted: `[1,1,4]`, `[2,2,2]`).
