@@ -43,9 +43,10 @@ noncomputable def blockH : (Fin 2 → ℝ) → ℝ := fun b => ∑ i, b i ^ 2
 
 /-- The `prod` entry form for `(2,1,2)`: `P_ij = aᵢ·bⱼ` (the `2×1` times `1×2` product, single inner
 index `⟨0,_⟩ : Fin 1`). `prodAux` for `L = 2` telescopes `(1·C⁽¹⁾)·C⁽²⁾`. PROVE note: closes on a
-bare-`Loss` import. Under the full Case212 imports the simp normal form differs: `simp` reduces to
-`(1 * A 0) i 0 = A 0 i 0 ∨ A 1 0 j = 0`, and the left disjunct's `1 * A 0` carries a `prodAux`
-`Fin`-cast that blocks `Matrix.one_mul` (the cast-aware closer is the remaining work). -/
+bare-`Loss` import (`unfold prod; simp [prodAux, Matrix.mul_apply, Matrix.one_mul]`); under the full
+Case212 imports `prodAux`'s `Fin`-cast wraps the base factor as `1 * (Eq.mpr … (A ⟨0,_⟩))`,
+so `Matrix.one_mul` no longer matches `1 * ?M` (the cast sits between) — needs a cast-aware closer
+(`conv`/`Eq.mpr`-normalising), pure-`prodAux` algebra, scratch-proven. -/
 theorem prod212_entry (A : Params (![2, 1, 2] : Fin 3 → ℕ)) (i j : Fin 2) :
     prod (![2, 1, 2] : Fin 3 → ℕ) A i j
       = A 0 i ⟨0, by norm_num⟩ * A 1 ⟨0, by norm_num⟩ j := by
