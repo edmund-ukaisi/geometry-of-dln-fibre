@@ -27,6 +27,12 @@ def aoyagiLemma4FreeHighCount (n : ℕ) (M : ℤ)
   (Finset.univ.filter fun j : Fin n ↦
     aoyagiLemma4F (n + 1) m H j.castSucc = M).card
 
+/-- The isolated Lemma 5 terminal-exponent numerator supplied by the Lemma 3
+minimum calculation for total increment length `n+1`. -/
+def aoyagiLemma5MinNumerator (n a : ℕ) : ℤ :=
+  (a : ℤ) * ((n + 1 : ℕ) : ℤ) *
+    (((n + 1 : ℕ) : ℤ) - (a : ℤ))
+
 /-- Every tagged branch in a supplied full Lemma 5 family attains the isolated
 Lemma 3 numerator minimum, stated with the named free high-count parameter. -/
 theorem AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCountMin
@@ -150,6 +156,24 @@ def branchLabelImage {β : Type*} [DecidableEq β]
     Finset (Σ _ : ℕ, ℕ) :=
   C.fullBranches.image C.branchLabel
 
+/-- Introduced labels with terminal least value zero and the supplied Lemma 5
+minimum numerator.
+
+This is a finite exact-minimum label set inside the current introduced-label
+domain.  It is not a pole-order statement and it is not known to equal the
+branch-label image without a separate no-extra/coverage hypothesis. -/
+def terminalMinimumLabels {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (_C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue) :
+    Finset (Σ _ : ℕ, ℕ) :=
+  (introducedLabelFinset L width S J).filter fun label ↦
+    leastValue label.1 label.2 = 0 ∧
+      terminalExponent L (widthZ width) (t label.1 label.2) =
+        aoyagiLemma5MinNumerator n a
+
 /-- The supplied terminal-candidate branch set has Aoyagi's Lemma 5 supplied
 finite count. -/
 theorem fullBranches_card {β : Type*} [DecidableEq β]
@@ -222,6 +246,21 @@ theorem branchLabelImage_card {β : Type*} [DecidableEq β]
     C.branchLabelImage.card = a * (n + 1 - a) + 1 := by
   rw [C.branchLabelImage_card_eq_fullBranches_card_of_injOn hinj]
   exact C.fullBranches_card n a M m (Nat.succ_pos n) ha
+
+/-- Membership in the finite exact-minimum label set. -/
+theorem mem_terminalMinimumLabels {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    {label : Σ _ : ℕ, ℕ} :
+    label ∈ C.terminalMinimumLabels ↔
+      introducedLabel L width S J label.1 label.2 ∧
+        leastValue label.1 label.2 = 0 ∧
+          terminalExponent L (widthZ width) (t label.1 label.2) =
+            aoyagiLemma5MinNumerator n a := by
+  simp [terminalMinimumLabels, mem_introducedLabelFinset]
 
 /-- Every tagged supplied terminal candidate has terminal least value zero. -/
 theorem branch_terminalLeastValue_zero {β : Type*} [DecidableEq β]
@@ -297,6 +336,60 @@ theorem branchLabelImage_terminalCandidateData {β : Type*} [DecidableEq β]
             (((n + 1 : ℕ) : ℤ) - (a : ℤ)) := by
   rcases Finset.mem_image.mp hlabel with ⟨x, hx, rfl⟩
   exact C.branch_terminalCandidateData ha hselected hx
+
+/-- The supplied branch-label image is contained in the exact-minimum label
+set.
+
+This is only the easy direction: supplied candidates attain the minimum.  It
+does not say that every minimum label comes from the supplied branch family. -/
+theorem branchLabelImage_subset_terminalMinimumLabels {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a) :
+    C.branchLabelImage ⊆ C.terminalMinimumLabels := by
+  intro label hlabel
+  rcases C.branchLabelImage_terminalCandidateData ha hselected hlabel with
+    ⟨hintro, hleast, hterminal⟩
+  rw [C.mem_terminalMinimumLabels]
+  exact ⟨hintro, hleast, by
+    simpa [aoyagiLemma5MinNumerator] using hterminal⟩
+
+/-- Exact finite count of terminal minimum labels under supplied no-extra
+coverage and supplied branch-label injectivity.
+
+The hypothesis `hnoExtra` is the no-extra-minimizer boundary: every introduced
+label with terminal least value zero and the supplied minimum numerator is in
+the supplied branch-label image.  This theorem is still not a pole-order or
+RLCT extraction theorem. -/
+theorem terminalMinimumLabels_card_of_noExtra {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (hnoExtra : C.terminalMinimumLabels ⊆ C.branchLabelImage) :
+    C.terminalMinimumLabels.card = a * (n + 1 - a) + 1 := by
+  have himage : C.branchLabelImage ⊆ C.terminalMinimumLabels :=
+    C.branchLabelImage_subset_terminalMinimumLabels ha hselected
+  have heq : C.terminalMinimumLabels = C.branchLabelImage := by
+    ext label
+    constructor
+    · intro hlabel
+      exact hnoExtra hlabel
+    · intro hlabel
+      exact himage hlabel
+  rw [heq]
+  exact C.branchLabelImage_card n a M m ha hinj
 
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 

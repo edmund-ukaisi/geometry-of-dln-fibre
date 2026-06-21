@@ -2738,3 +2738,38 @@ data by unpacking image membership.
 This is still not a pole-order theorem.  It does not prove source-backed label
 injectivity, coverage of all terminal minimizers, absence of extra terminal
 minimizers, normal crossings, or RLCT extraction.
+
+## 2026-06-21 Lean Lemma 5 terminal minimum label count
+
+Reproduction:
+`reproduction-lemma5-terminal-minimum-label-count-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-minimum-label-count.md`.
+Review artifact:
+`review-lemma5-terminal-minimum-label-count-a5.md`.
+
+Lean now defines the finite exact-minimum label set inside
+`introducedLabelFinset`:
+
+```text
+aoyagiLemma5MinNumerator
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels
+AoyagiLemma5SuppliedTerminalCandidateFamily.mem_terminalMinimumLabels
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_subset_terminalMinimumLabels
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_noExtra
+```
+
+The set `terminalMinimumLabels` consists of introduced labels with
+`leastValue=0` and terminal exponent equal to
+`aoyagiLemma5MinNumerator n a = a*(n+1)*((n+1)-a)`.  Lean proves the supplied
+branch-label image is contained in this set.  If the reverse containment is
+supplied as the no-extra-minimizer boundary, and `branchLabel` is injective on
+`fullBranches`, Lean proves
+
+```text
+terminalMinimumLabels.card = a*(n+1-a)+1.
+```
+
+This is still not a pole-order theorem.  It does not prove source-backed
+no-extra-minimizer coverage, source-backed label injectivity, normal crossings,
+or RLCT extraction.

@@ -2895,6 +2895,23 @@ and
 review:
 `threads/05-arithmetic-tail/review-lemma5-branch-label-image-count-a5.md`.
 
+The bridge now also has a finite exact-minimum label boundary.  It names the
+minimum numerator as `aoyagiLemma5MinNumerator n a` and defines
+`terminalMinimumLabels` as the introduced labels with `leastValue=0` and
+terminal exponent equal to that numerator.  Lean proves the supplied
+branch-label image is contained in this finite exact-minimum set.  Under the
+explicit no-extra containment `terminalMinimumLabels subset branchLabelImage`
+and supplied branch-label injectivity, Lean proves
+`terminalMinimumLabels.card = a*(n+1-a)+1`.  This is still not pole order: the
+reverse containment is supplied, and normal-crossing/RLCT extraction remains
+outside this finite count.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-label-count-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-label-count.md`;
+review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-label-count-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -2469,6 +2469,17 @@ No such claim is formalisation-ready until both fields are filled.
   hypothesis, and transfer the branchwise candidate data to labels in that
   image.  They do not prove source-backed injectivity or any no-extra-minimizer
   theorem.
+  Also proved the finite terminal minimum label boundary:
+  `aoyagiLemma5MinNumerator`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.mem_terminalMinimumLabels`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabelImage_subset_terminalMinimumLabels`,
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_noExtra`.
+  These prove the supplied candidate labels are minimum labels, and under an
+  explicit no-extra containment plus branch-label injectivity count the finite
+  minimum-label set.  They do not prove the no-extra containment from the
+  source or extract pole order.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

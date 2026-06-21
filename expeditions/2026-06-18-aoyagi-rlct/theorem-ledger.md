@@ -3541,6 +3541,25 @@ Statement card:
 Review artifact:
 `threads/05-arithmetic-tail/review-lemma5-branch-label-image-count-a5.md`.
 
+Latest A5 terminal-minimum-label update: the terminal bridge file now defines
+`aoyagiLemma5MinNumerator` and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels`, the finite
+introduced-label set with `leastValue=0` and terminal exponent equal to the
+supplied Lemma 5 minimum numerator.  Names:
+`mem_terminalMinimumLabels`,
+`branchLabelImage_subset_terminalMinimumLabels`, and
+`terminalMinimumLabels_card_of_noExtra`.  The image inclusion is proved from
+the supplied branchwise terminal-candidate data.  The exact cardinality theorem
+assumes the reverse no-extra containment and branch-label injectivity.  This is
+not a source-backed no-extra-minimizer theorem, pole order, normal crossings,
+or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-label-count-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-minimum-label-count.md`.
+Review artifact:
+`threads/05-arithmetic-tail/review-lemma5-terminal-minimum-label-count-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
