@@ -86,6 +86,37 @@ theorem admissible_downset {M : Type*} [PseudoMetricSpace M] [MeasureSpace M] [P
   rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
   exact rpow_neg_le_add_one b' d' (H w) hb hbd
 
+/-- **Below-threshold ⟹ admissible.** If `(b : ℝ≥0∞) < rlctAtOn H y0` then `b` is an admissible core
+exponent: `|H|^{−b}` is integrable on some open `Ω ∋ y0`. Via `lt_sSup` (extract a strictly-larger
+admissible `d'`) + `admissible_downset` (`b ≤ d'`). The bridge feeding the threshold-lift's `≥`
+direction. -/
+theorem core_admissible_of_lt {M : Type*} [PseudoMetricSpace M] [MeasureSpace M] [ProperSpace M]
+    [IsFiniteMeasureOnCompacts (volume : Measure M)] [OpensMeasurableSpace M]
+    (H : M → ℝ) (hHmeas : Measurable H) (y0 : M) (b : NNReal)
+    (hb : (b : ℝ≥0∞) < rlctAtOn H y0) :
+    ∃ Ω : Set M, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-(b : ℝ))) Ω volume := by
+  unfold rlctAtOn weightedThreshold at hb
+  obtain ⟨c, hc_mem, hbc⟩ := lt_sSup_iff.1 hb
+  obtain ⟨d', rfl, Ω, hΩopen, hKΩ, hint⟩ := hc_mem
+  have hbd : (b : ℝ) ≤ (d' : ℝ) := by
+    have : b < d' := by exact_mod_cast hbc
+    exact_mod_cast this.le
+  have hintd : IntegrableOn (fun w => |H w| ^ (-(d' : ℝ))) Ω volume := by
+    apply hint.congr_fun _ hΩopen.measurableSet; intro w _; simp
+  exact admissible_downset H hHmeas y0 (b : ℝ) (d' : ℝ) (by positivity) hbd
+    ⟨Ω, hΩopen, by simpa using hKΩ, hintd⟩
+
+/-- **Exponent `0` is always admissible.** `|H|^{−0} = 1` is integrable on the bounded `ball y0 1`
+(finite measure). The base case of the `≥` direction when the core threshold is `0`. -/
+theorem core_admissible_zero {M : Type*} [PseudoMetricSpace M] [MeasureSpace M] [ProperSpace M]
+    [IsFiniteMeasureOnCompacts (volume : Measure M)] (H : M → ℝ) (y0 : M) :
+    ∃ Ω : Set M, IsOpen Ω ∧ y0 ∈ Ω ∧ IntegrableOn (fun w => |H w| ^ (-(0 : ℝ))) Ω volume := by
+  refine ⟨Metric.ball y0 1, Metric.isOpen_ball, Metric.mem_ball_self one_pos, ?_⟩
+  have hone : (fun w : M => |H w| ^ (-(0 : ℝ))) = (fun _ => (1 : ℝ)) := by
+    funext w; rw [neg_zero, Real.rpow_zero]
+  rw [hone]
+  exact integrableOn_const (hs := Metric.isBounded_ball.measure_lt_top.ne)
+
 /-! ## The pointwise comparison (the `≥`-direction engine) -/
 
 /-- **The sum-power comparison.** For `s, t > 0` and `a, b ≥ 0`,
