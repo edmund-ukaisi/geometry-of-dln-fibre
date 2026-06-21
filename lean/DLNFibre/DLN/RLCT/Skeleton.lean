@@ -1000,6 +1000,26 @@ theorem cleanCore_perm (c : ℕ) (m : Fin (c + 1) → ℕ) (σ : Equiv.Perm (Fin
     have := Equiv.sum_comp σ (fun k => (m k : ℚ) ^ 2); simpa using this
   rw [hsum, hsq]
 
+/-- The strict-descent positions of `T ∈ Adm M`: indices `j` where `u_j > u_{j+1}` (`u = M⁰ ∷ T`),
+i.e. `T j < tPrev M T j`. The `Mval` sum collapses to these (the gap factor is `0` elsewhere). -/
+noncomputable def descentSet (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Finset (Fin L) :=
+  Finset.univ.filter (fun j => (T j : ℤ) < tPrev M T j)
+
+/-- **#19 step-2 entry: `Mval` collapses to the strict descents.** For `T ∈ Adm M`, `Mval M T` sums
+over only its `descentSet` (at a non-descent index `tPrev = T j` by admissibility, so the gap factor
+`tPrev − T j` is `0`). The reparametrisation that feeds the per-T lower bound. -/
+theorem Mval_descent (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
+    Mval M T = ∑ j ∈ descentSet M T, (tPrev M T j - (T j : ℤ)) * ((M j.succ : ℤ) - (T j : ℤ)) := by
+  unfold Mval
+  rw [descentSet]
+  symm
+  apply Finset.sum_subset (Finset.filter_subset _ _)
+  intro j _ hj
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hj
+  have hge : (T j : ℤ) ≤ tPrev M T j := T_le_tPrev M T hT j
+  have hz : tPrev M T j - (T j : ℤ) = 0 := by omega
+  rw [hz, zero_mul]
+
 /-- **A1 (Lemma 3, the genuine clean closed form; pp statement card, candidate (d)).** The core
 `lambdaCore M = ½·min_T M(T)` equals `cleanCore c (sortedSmallest M c)` for an **achiever**
 `c ∈ {1,…,L}` — the `m` argument is **pinned** to `M`'s `c+1` smallest reduced widths (a function of
@@ -1020,11 +1040,11 @@ also wrong (278/3900 fail — needs the **cumulative** ∀i≤c); both corrected
 
 **Sub-lemmas (the remaining work — the documented keystone, ~250-350 lines):**
 1. `balancedSplit_min` — DONE (above): `∑ balancedSplitᵢ² ≤ ∑ qᵢ²` at fixed `∑q`. The LB engine.
-2. `good`/`cstar` (self-contained ℕ arithmetic): `c = 1` good; `c*` = largest good `c` exists; `1 ≤ c* ≤ L`.
+2. `good`/`cstar` (self-contained ℕ arithmetic): `c = 1` good; `c*` = largest good `c` in `1 ≤ c* ≤ L`.
 3. **Lower bound** `Φ c* ≤ Mval M T` for every `T ∈ Adm M`. Crux: only strict-descent positions of
-   `u = [M⁰,T⁰,…,Tᴸ⁻¹=0]` contribute (zero gap elsewhere), giving `Mval = ∑ₖ gapₖ(wₖ − Hₖ)`
-   (`H` the level sequence, `w` the `M`-values at the breakpoints); complete the square + `balancedSplit_min`.
-4. **Achiever** `∃ T* ∈ Adm M, Mval M T* = Φ c*` (automatic from the finite `inf'` once 3 holds, but the
+   `u = [M⁰,T⁰,…,Tᴸ⁻¹=0]` contribute (zero gap elsewhere, `Mval_descent`), giving
+   `Mval = ∑ₖ gapₖ(wₖ − Hₖ)`; complete the square + `balancedSplit_min`.
+4. **Achiever** `∃ T* ∈ Adm M, Mval M T* = Φ c*` (from the finite `inf'` once 3 holds, but the
    value-match needs the breakpoint reparametrisation of the minimiser). The hard `Fin`-reindexing
    (descent set → `(c, gaps, widths)`) lives in 3+4 — the perm-invariance wall reappears as the
    minimiser's breakpoint widths needing to be tied to `a`'s prefix. -/
