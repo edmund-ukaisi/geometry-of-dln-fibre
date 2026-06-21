@@ -175,6 +175,15 @@ fm-2's 2 lemmas PASS; Codex Q3 resolved (hsurj+hImE COMPLETE, no 4th gap). Execu
   + ball-truncation + rpow-iff). The FUBINI lemma (the +core combination = n/2+λ_core) is the s>0 EXTENSION of
   that radial machinery (`∫(‖x‖²+s)^{-c}=C·s^{n/2-c}`, Fubini, + monomial-core threshold) — CLOSED-FORM (NOT
   Laplace), in flight (fm-2). S1.3 also PROVEN + ON TRUNK now (S1Local 0-sorry @505e0a2).
+  **FUBINI DE-RISK (fm-2 SPECIFY + Codex):** the exact radial identity holds ONLY at ε=∞; finite-ε (RLCT nbhd)
+  is asymptotic-only + Mathlib has NO parametric radial integral. So directions SPLIT: ">=/integrability LIGHT"
+  (a.e. comparison + Integrable.mul_prod + radial_ball_iff, ~4-6 sublemmas — fm-2 building now, L2-consumable
+  regular-block >= contribution); "<=/non-integrability HEAVY" (the CUSP lower bound, ~10-15 sublemmas; no
+  Fubini shortcut for divergence). The <= IS NEEDED (R1 UPPER = binding-chart divergence = Fubini <=; S2 does
+  NOT cover it — binding chart is Sum-x^2 + monomial, a SUM, and +Sum-x^2 shrinks the integrand so divergence
+  is non-trivial). pp finding the lightest <= route. HYGIENE: explicit monomial core (abstract G>=0,!=0 FALSE
+  via germ-local =0, same as 12th); Jacobian in weightedThreshold. So R1 is heavier than first scoped (the
+  Fubini <= + multiplicity-control R1.2 + cover R1.6) but all designed + tractable.
 **Use-site obligation (tracked):** hsurj+hImE (S1.1) + Measurable u (S1.3) must discharge at D1/R1 (resolution
 charts: surjective onto nbhd, exceptional-image null, analytic unit measurable). The bare-under-specification
 gap-class is RECURRING across the analytic rungs — caught reliably by the proof attempts + escalation.
