@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
+import DLNFibre.DLN.RLCT.Validate.Case222Rlct
 
 /-!
 # Axiom-hygiene check
@@ -41,6 +42,21 @@ open DLNFibre.DLN.RLCT
 -- [propext, Classical.choice, Quot.sound, monomial_rlct] — NO `sorryAx`. (Contrast dlnLoss222 above,
 -- which must stay monomial_rlct-FREE: the S2-dependence enters here, in the singular cover.)
 #print axioms rlctAtOn_myF222_le
+
+-- (2,2,2) ≥-direction cover headline (#86) — the GEOMETRIC content. Must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound] — S2-FREE (no `monomial_rlct`), no `sorryAx`: the ≥-cover
+-- (recStep 24-leaf g5_pivotNode + δ-branch smooth-block + conjugation A-pivots) carries no cited bound.
+#print axioms rlctAtOn_myF222_ge'
+
+-- (2,2,2) `=` value (#80) — `le_antisymm` of the ≥ (clean) + the ≤ (monomial_rlct). Must be
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] — NO `sorryAx` (the only citation enters via
+-- the ≤-half; the ≥-content is citation-free).
+#print axioms rlctAtOn_myF222_eq
+
+-- (2,2,2) network headline (#107, ladder 3/3) — `rlctAt (dlnLoss H222) deepest222 = 3/2`, via the
+-- m.p. transport ∘ the loss-identity seam ∘ the `=` value. Same axiom profile as `_eq`:
+-- [propext, Classical.choice, Quot.sound, monomial_rlct], NO `sorryAx`.
+#print axioms case222_rlct
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

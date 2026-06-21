@@ -48,5 +48,9 @@ import DLNFibre.DLN.RLCT.Validate.Case222Cover
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
 import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
 import DLNFibre.DLN.RLCT.Validate.Case222Resolution
+-- (2,2,2) ≥-cover + RLCT headline (ladder 3/3). `Case222Rlct` transitively pulls the cover
+-- (`Case222CoverGE`/`Case222CoverGETail`) into the green-gate — else the eq headline + the ≥-cover
+-- are not in the build's transitive closure and escape the gate.
+import DLNFibre.DLN.RLCT.Validate.Case222Rlct
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
