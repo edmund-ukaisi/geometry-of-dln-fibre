@@ -181,20 +181,28 @@ THREADING (controller-assigned): I thread it through R1's lemmas; crux2 threads 
   lemmas carry (B); classify's domain is already interior M_s≥1 so it's a natural fit. AWAITING crux2's
   form-lock, then thread.
 
-## hMid FORM LOCKED (crux2 + fm3, verified) — the shared non-degeneracy predicate
-SHARED FORM (headline + L2 + R1 all use this verbatim):
-  hMid : ∀ s : Fin L, 0 < (s : ℕ) → r < H s.castSucc
-- Hits EXACTLY interior H_1,…,H_{L-1} (verified vs Params: A^(s):Fin(H s.castSucc)×Fin(H s.succ); prod
-  cuts through the intermediate widths; endpoints H_0/H_L free, need only r≤H from hr). castSucc reaches
-  0..L-1; 0<s.val drops H_0; H_L is a .succ value never touched. ✓
-- R1 CARRIES it (NOT discharged — lambdaCore identity is ⊤≠finite for interior M_s=0).
-- VACUOUS at L=1 (Fin 1={0}, 0<s.val empty) — leaf/single-matrix, no interior cut. ✓
-- crux2 threads → headline (aoyagi_learning_coefficient) + deepest_point_reduction + L2; fm3 threads →
-  resolution_charts + RouteMTree identity lemmas. My RouteState.M (Fin(L+1)) bridges via
-  M (s.castSucc) = H (s.castSucc) − r ⟹ (r < H s.castSucc ⟺ 0 < M (s.castSucc)) — one-line lemma at the
-  R1↔headline seam, internal to me. resolution_charts gains hMid as a hypothesis.
-DONE @origin/fm3/routem 6f4e70f: resolution_charts carries `(hMid : ∀ s : Fin L, 0 < s.val → 0 < M s.castSucc)`
-(M-form), docstring-fenced as the carve-out, green (2671). crux2 takes the additive merge.
+## hMid FORM — CORRECTED to ALL-s (g159, crux2 fidelity catch + controller Decision A)
+⚠ The interior-only lock below (g154) was INCOMPLETE — it missed the ENDPOINTS. SUPERSEDED.
+CORRECT SHARED FORM (headline + L2 + R1, all-s, endpoints included):
+  H-form (headline/L2): hMid : ∀ s : Fin (L + 1), r < H s
+  M-form (R1/resolution_charts): hMid : ∀ s : Fin (L + 1), 0 < M s
+  bridge: M s = H s − r ⟹ (r < H s ⟺ 0 < M s), all s.
+WHY all-s (the fidelity catch): R1's identity rlctAtOn(dlnLoss M 0) 0 = ofReal(lambdaCore M) is FALSE
+whenever ANY reduced width M_s=0 — INTERIOR OR ENDPOINT:
+  - interior M_s=0 (0<s<L): prod ≡ 0 (zero-dim intermediate cut).
+  - ENDPOINT M_0=0 (r=H_0) or M_L=0 (r=H_L): prod M A : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) is an
+    EMPTY matrix ⟹ prod ≡ 0. r=H_0/H_L are REACHABLE under hr (r ≤ H, non-strict). So the endpoints break
+    R1's identity (and L2's smooth-block) exactly like the interior. The interior-only form left M_0/M_L=0 in.
+- R1 CARRIES it (NOT discharged — ⊤≠finite for any M_s=0). DONE @origin/fm3/routem 0cedc7e:
+  resolution_charts carries `(hMid : ∀ s : Fin (L+1), 0 < M s)`, docstring fences both interior+endpoint
+  degeneracies, green (2671). crux2 re-threads L2/headline to ∀ s, r<H s + builds the hMid⟹hGne bridge.
+- NOT vacuous at L=1 anymore (the all-s form constrains M_0,M_1 even at L=1 — correct: a single zero-width
+  layer makes the lone matrix empty ⟹ prod≡0). The earlier "vacuous at L=1" was an artifact of the wrong
+  interior-only form.
+
+--- SUPERSEDED (g154, interior-only — kept for the finding's history) ---
+[Was: hMid : ∀ s : Fin L, 0 < s.val → r < H s.castSucc; "hits interior H_1…H_{L-1}, endpoints free".
+ The "endpoints free" was the GAP — r=H_0/H_L break R1's identity. Corrected to all-s above.]
 
 ## ARCHITECTURE FINDING (g155, Codex-decorrelated + crux2's own design docstring) — RESHAPES #39
 THE FORK on the general-M R1: my RouteMTree.lean re-invents a recursion-state (RouteState/schurState/
