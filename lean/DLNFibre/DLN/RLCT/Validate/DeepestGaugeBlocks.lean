@@ -213,34 +213,22 @@ nonlinear residual `E` (a local diffeo near `w0`, restricted to a homeomorphism 
 def regSliceHomeo {Reg Core Spec : Type*}
     [TopologicalSpace Reg] [TopologicalSpace Core] [TopologicalSpace Spec]
     (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2) :
-    (Reg × (Core × Spec)) ≃ₜ (Reg × (Core × Spec)) where
-  toFun := fun q => ((Ψ (q.1, q.2.2)).1, (q.2.1, q.2.2))
-  invFun := fun q => ((Ψ.symm (q.1, q.2.2)).1, (q.2.1, q.2.2))
-  left_inv := fun q => by
-    have hpair : ((Ψ (q.1, q.2.2)).1, q.2.2) = Ψ (q.1, q.2.2) :=
-      Prod.ext rfl (hΨspec _).symm
-    refine Prod.ext ?_ rfl
-    show (Ψ.symm ((Ψ (q.1, q.2.2)).1, q.2.2)).1 = q.1
-    rw [hpair, Ψ.symm_apply_apply]
-  right_inv := fun q => by
-    have hfst : (Ψ.symm (q.1, q.2.2)).2 = q.2.2 := by
-      have h := hΨspec (Ψ.symm (q.1, q.2.2))
-      rw [Ψ.apply_symm_apply] at h; exact h
-    have hpair : ((Ψ.symm (q.1, q.2.2)).1, q.2.2) = Ψ.symm (q.1, q.2.2) :=
-      Prod.ext rfl hfst.symm
-    refine Prod.ext ?_ rfl
-    show (Ψ ((Ψ.symm (q.1, q.2.2)).1, q.2.2)).1 = q.1
-    rw [hpair, Ψ.apply_symm_apply]
-  continuous_toFun := by
-    have hrs : Continuous fun q : Reg × (Core × Spec) => (q.1, q.2.2) :=
-      continuous_fst.prodMk (continuous_snd.comp continuous_snd)
-    exact ((continuous_fst.comp Ψ.continuous).comp hrs).prodMk
-      ((continuous_fst.comp continuous_snd).prodMk (continuous_snd.comp continuous_snd))
-  continuous_invFun := by
-    have hrs : Continuous fun q : Reg × (Core × Spec) => (q.1, q.2.2) :=
-      continuous_fst.prodMk (continuous_snd.comp continuous_snd)
-    exact ((continuous_fst.comp Ψ.symm.continuous).comp hrs).prodMk
-      ((continuous_fst.comp continuous_snd).prodMk (continuous_snd.comp continuous_snd))
+    (Reg × (Core × Spec)) ≃ₜ (Reg × (Core × Spec)) :=
+  -- Regroup `Reg × (Core × Spec) ≃ₜ (Reg × Spec) × Core`, act by `Ψ × id` on the `(Reg × Spec)`
+  -- factor, regroup back. The `left_inv`/`right_inv`/continuity come free from the component
+  -- homeomorphisms; `Ψ` fixing the spectator (`hΨspec`) makes the net action the reg-slice map.
+  let reassoc : (Reg × (Core × Spec)) ≃ₜ ((Reg × Spec) × Core) :=
+    (Homeomorph.prodCongr (Homeomorph.refl Reg) (Homeomorph.prodComm Core Spec)).trans
+      (Homeomorph.prodAssoc Reg Spec Core).symm
+  reassoc.trans ((Ψ.prodCongr (Homeomorph.refl Core)).trans reassoc.symm)
+
+/-- `regSliceHomeo` evaluated: `q ↦ ((Ψ (q.1, q.2.2)).1, (q.2.1, (Ψ (q.1, q.2.2)).2))`. The composition
+of `prodComm`/`prodAssoc`/`prodCongr` reduces to this by `rfl`. -/
+theorem regSliceHomeo_apply {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [TopologicalSpace Core] [TopologicalSpace Spec]
+    (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2)
+    (q : Reg × (Core × Spec)) :
+    regSliceHomeo Ψ hΨspec q = ((Ψ (q.1, q.2.2)).1, (q.2.1, (Ψ (q.1, q.2.2)).2)) := rfl
 
 /-- `regSliceHomeo` fixes the core slot. -/
 theorem regSliceHomeo_core {Reg Core Spec : Type*}
@@ -248,11 +236,12 @@ theorem regSliceHomeo_core {Reg Core Spec : Type*}
     (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2)
     (q : Reg × (Core × Spec)) : (regSliceHomeo Ψ hΨspec q).2.1 = q.2.1 := rfl
 
-/-- `regSliceHomeo` fixes the spectator slot. -/
+/-- `regSliceHomeo` fixes the spectator slot (via `hΨspec`: `Ψ` keeps the spectator component). -/
 theorem regSliceHomeo_spectator {Reg Core Spec : Type*}
     [TopologicalSpace Reg] [TopologicalSpace Core] [TopologicalSpace Spec]
     (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2)
-    (q : Reg × (Core × Spec)) : (regSliceHomeo Ψ hΨspec q).2.2 = q.2.2 := rfl
+    (q : Reg × (Core × Spec)) : (regSliceHomeo Ψ hΨspec q).2.2 = q.2.2 := by
+  rw [regSliceHomeo_apply]; exact hΨspec (q.1, q.2.2)
 
 /-- `regSliceHomeo` fixes the origin iff `Ψ` fixes the origin reg-component — the
 `regAbsorb_basepoint` datum (the residual `E = 0` at the deepest point, where all gauge coords `0`). -/
@@ -262,7 +251,10 @@ theorem regSliceHomeo_basepoint {Reg Core Spec : Type*}
     (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2)
     (h0 : (Ψ (0, 0)).1 = 0) :
     regSliceHomeo Ψ hΨspec (0 : Reg × (Core × Spec)) = 0 := by
-  show ((Ψ ((0 : Reg), (0 : Spec))).1, ((0 : Core), (0 : Spec))) = 0
-  rw [h0]; rfl
+  rw [regSliceHomeo_apply]
+  have hsp : (Ψ ((0 : Reg), (0 : Spec))).2 = 0 := hΨspec (0, 0)
+  refine Prod.ext ?_ (Prod.ext rfl ?_)
+  · exact h0
+  · exact hsp
 
 end DLNFibre.DLN.RLCT

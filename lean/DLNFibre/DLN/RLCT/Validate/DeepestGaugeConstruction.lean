@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
+import DLNFibre.DLN.RLCT.Validate.DeepestFrame
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction` — the `DeepestGaugeChart` instance (#44c)
