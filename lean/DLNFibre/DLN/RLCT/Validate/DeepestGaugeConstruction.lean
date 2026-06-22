@@ -164,11 +164,42 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
   sorry
 
-/-- **PIN 0 — the core absorption** (the Schur shear, determined). `coreAbsorb` turns the raw core
+/-! ## The measure-preserving core-shear peel (Route A, Codex g165)
+
+The core-shear `coreShearHomeo shift` is MEASURE-PRESERVING (det = 1, a fiber translation), so it
+peels the RLCT via `rlctAtOn_comp_homeomorph` (NO derivative bookkeeping). The MP is
+`MeasurePreserving.skew_product` (the fiber-shift `(a,c) ↦ (a, c + shift a)` with per-fiber
+translation invariance `measurePreserving_add_right`) sandwiched by the
+`reassoc : Reg × (Core × Spec) ≃ₜ (Reg × Spec) × Core` regrouping. Shift-agnostic — holds for any
+continuous `shift`; the concrete Schur shift is plugged in by `deepest_coreAbsorb_exists`. -/
+
+/-- The product-volume reassociation `(Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) ≃ₜ
+((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ)` is measure-preserving (product-`volume`, det `= ±1`
+reindex). The carrier for the core-shear MP. -/
+private theorem measurePreserving_coreReassoc (a b c : ℕ) :
+    MeasurePreserving
+      (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) => ((q.1, q.2.2), q.2.1))
+      volume volume := by
+  sorry
+
+/-- **The core-shear is measure-preserving** (Route A core, Codex g165). For any continuous
+`shift : (Fin a → ℝ) × (Fin c → ℝ) → (Fin b → ℝ)`, the fiber-shear
+`(reg, core, spec) ↦ (reg, core + shift (reg, spec), spec)` preserves the product `volume`
+(`skew_product` on the `(reg×spec) × core` regrouping, per-fiber `measurePreserving_add_right`). -/
+private theorem measurePreserving_coreShear (a b c : ℕ)
+    (shift : (Fin a → ℝ) × (Fin c → ℝ) → (Fin b → ℝ)) (hshift : Continuous shift) :
+    MeasurePreserving
+      (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) =>
+        (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
+      volume volume := by
+  sorry
+
+/-- **PIN 0 — the core absorption** (the Schur shear, Route A peel). `coreAbsorb` turns the raw core
 slot `T_s` into the Schur complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` via `coreShearHomeo` with the
-gauge-dependent shift; fixes reg+spec+origin; `coreAbsorb_rlct` peels its (global) unit Jacobian via
-`#71` (the shear has det = 1). The shift is read off the gauge blocks (`gaugeSlotRead ∘ frame`); its
-exact continuous form is part of this obligation. -/
+gauge-dependent shift; fixes reg+spec+origin; `coreAbsorb_rlct` peels its unit Jacobian via the
+MEASURE-PRESERVING `rlctAtOn_comp_homeomorph` (the shear is MP, `measurePreserving_coreShear`). The
+shift is read off the gauge blocks (`gaugeSlotRead ∘ frame`); its exact continuous form is part of
+this obligation. -/
 theorem deepest_coreAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ) :
