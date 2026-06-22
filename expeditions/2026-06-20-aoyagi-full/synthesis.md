@@ -97,6 +97,23 @@
   convention), so at the boundary the decomposition nReg/2 + rlctAtOn(core) gives ⊤ — FALSE; #70 routes AROUND it,
   computing rlctAt(deepest)=nReg/2 directly via the rank-nReg Morse-Bott quadratic (vanished-core dirs flat → 0).
   (Supersedes the earlier "(A) all-s, r=min carve-out" bank above — that was the pre-audit call; corrected to non-strict.)
+- **★ g159 RESOLVED — LOCAL-DIFFEO (germ), not global homeo.** cobuild-sub34 flagged regAbsorb is NONLINEAR
+  (E = X1+X2+X1X2+…, not a shear like coreAbsorb) ⟹ a GLOBAL self-homeo construction hits the g159 wall.
+  RESOLUTION: rlctAt is a GERM (Rlct.lean: sSup over ∃ U ∈ 𝓝 w0), so the reparametrization π (regAbsorb /
+  coreAbsorb) need only be a LOCAL diffeo at w0 (PartialHomeomorph), NOT a global Homeomorph. The nonlinear
+  regAbsorb's higher-order terms (X1X2…) vanish at the basepoint ⟹ dE(w0) = the invertible linear part ⟹ local
+  diffeo by IFT ⟹ bounded-unit Jacobian on a nbhd ⟹ the peel applies. So crux2's abstract peel lemma (#71,
+  consumed by both regAbsorb_rlct + coreAbsorb_rlct) must be stated for a LOCAL diffeo at w0 ("π PartialHomeomorph
+  / dπ(w0) invertible + bounded-unit Jacobian near w0 ⟹ RLCT invariance"), NOT a global self-homeo. This is the
+  general resolution of the g159 global-≃ₜ-from-local wall — it was never needed; local suffices because rlctAt
+  is a germ. (cobuild-sub34 owns the MAP + dE(w0)-invertible check; crux2 owns the LOCAL peel #71.)
+- **R1 per-node datum: light-vs-heavy CONFLICT being reconciled (controller-flagged).** Literal tension: pp2 g188
+  says NO IsSchurStraightenSqueeze on R1's path (all R1 nodes = LIGHT monomial pullback node_loss_pivot_factor;
+  the heavy IsSchurStraightenSqueeze = L2's deepest-gauge node); crux2 told fm3 R1's "Schur node" consumes
+  schur_straighten_squeeze_exists / "presentation in IsSchurStraightenSqueeze." Likely crux2's interface predates
+  pp2's g188 light correction. NAIL before fm3 commits the certified RouteStep datum field (else wrong-type
+  rework). Reconciliation in flight (crux2 ↔ pp2 ↔ fm3; pp2 exercising node-reduction on (3,3,2), C5→C2+C1 no new
+  lemma, single-step verified, multi-step pending). The R1 transport-field gate = this resolution.
 
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
