@@ -941,18 +941,100 @@ theorem deepestPoint_isDeep (H : Fin (L + 1) → ℕ) (r : ℕ)
     IsDeepLayers H r B (deepestPoint H r B hB hr hL) :=
   (Classical.choice (deepestPoint_exists H r B hB hr hL)).2
 
+/-- **`Mval ≥ 0` on the admissible cone** (the L2 wiring prerequisite). Every admissible exponent
+vector's codimension `Mval M T` is `≥ 0`: each summand `(tPrev − T j)(M_{j+1} − T j)` has both factors
+`≥ 0` (the weak-decrease `tPrev ≥ T j` and the block bound `M_{j+1} ≥ T j` from `admPred`). Re-derived
+from `admPred` at the `Lambda`/Skeleton level (the downstream `Mval_nonneg_adm` lives in
+`ResolutionAtlas`, below this file; #28 should dedup these to one `Lambda`-level home). -/
+theorem Mval_nonneg_of_adm (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L) :
+    0 ≤ Mval M T := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨_, hbound, hdec, _⟩ := hT
+  unfold Mval
+  apply Finset.sum_nonneg
+  intro j _
+  refine mul_nonneg (sub_nonneg.2 ?_) (sub_nonneg.2 ?_)
+  · unfold tPrev
+    rcases Nat.eq_zero_or_pos j.val with hj0 | hjpos
+    · rw [if_pos hj0]
+      have hb := hbound j; unfold admBound at hb; rw [if_pos hj0] at hb
+      exact_mod_cast le_trans hb (min_le_left _ _)
+    · rw [if_neg (by omega)]
+      have hle : T j ≤ T ⟨j.val - 1, by omega⟩ :=
+        hdec ⟨j.val - 1, by omega⟩ j (Fin.mk_le_of_le_val (by omega))
+      exact_mod_cast hle
+  · have hb := hbound j; unfold admBound at hb
+    rcases Nat.eq_zero_or_pos j.val with hj0 | hjpos
+    · rw [if_pos hj0] at hb
+      have h1 : (j.succ : Fin (L + 1)) = 1 := by
+        apply Fin.ext
+        have : ((1 : Fin (L + 1)) : ℕ) = 1 := Fin.val_one' (L + 1) ▸ Nat.mod_eq_of_lt (by omega)
+        rw [Fin.val_succ, hj0, this]
+      rw [h1]; exact_mod_cast le_trans hb (min_le_right _ _)
+    · rw [if_neg (by omega)] at hb; exact_mod_cast hb
+
+/-- **L2 arithmetic wiring** (the closed-form recombination). The regular shift `nReg/2`
+(`nReg = r(H⁰+Hᴸ−r)`, `ℝ≥0∞`) plus the singular core `ofReal(lambdaCore M)` (`M = H−r`) recombines to
+`ofReal(aoyagiLambda H r)`. Pure `ℚ`/`ℝ≥0∞` cast arithmetic; uses `Mval_nonneg_of_adm` for
+`lambdaCore M ≥ 0` (so `ofReal` splits additively) and `r ≤ H s` for the `nReg` natural-subtraction. -/
+theorem reg_shift_add_core_eq_aoyagiLambda (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
+        + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ)
+      = ENNReal.ofReal (aoyagiLambda H r : ℝ) := by
+  set M := fun s => H s - r with hM
+  have h0 : r ≤ H 0 := hr 0
+  have hl : r ≤ H (Fin.last L) := hr (Fin.last L)
+  set nReg : ℕ := r * (H 0 + H (Fin.last L) - r) with hnReg
+  have hsplit : (aoyagiLambda H r : ℝ) = (nReg : ℝ) / 2 + (lambdaCore M : ℝ) := by
+    unfold aoyagiLambda
+    rw [Rat.cast_add, Rat.cast_div]
+    congr 1
+    rw [hnReg, Nat.cast_mul, Nat.cast_sub (by omega : r ≤ H 0 + H (Fin.last L))]; push_cast; ring
+  have hcore_nn : (0 : ℝ) ≤ (lambdaCore M : ℝ) := by
+    rw [show (0 : ℝ) = ((0 : ℚ) : ℝ) by norm_num, Rat.cast_le]; unfold lambdaCore
+    have : (0 : ℤ) ≤ (Adm M).inf' (Adm_nonempty M) (Mval M) := by
+      obtain ⟨T, hT, he⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+      rw [he]; exact Mval_nonneg_of_adm M T hT hL
+    positivity
+  rw [hsplit, ENNReal.ofReal_add (by positivity) hcore_nn]
+  congr 1
+  rw [ENNReal.ofReal_div_of_pos (by norm_num), ENNReal.ofReal_natCast,
+      show ENNReal.ofReal (2 : ℝ) = 2 by
+        rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, ENNReal.ofReal_natCast]; rfl]
+
+/-- **L2 deepest-point normal form (the heavy gauge-slice geometry — NAMED `sorry`).** At the deepest
+point (every layer rank exactly `r`), the local RLCT of `dlnLoss H B` splits as the regular shift
+`nReg/2` (`nReg = r(H⁰+Hᴸ−r)` nondegenerate gauge directions, Fubini-additive `S1.5`) plus the singular
+core `lambdaCore` on the reduced widths `M = H−r`. The split is the rank-`r` gauge-slice change of
+variables `C_s = [[I_r+X_s, Y_s],[Z_s, T_s]]` (regular coords = the output residual blocks
+`P₁₁−I_r, P₁₂, P₂₁`; reduced core = `‖∏C'_s‖² = dlnLoss M 0`). The gauge slice is NOT measure-preserving
+(unit Jacobian, not `det ±1`), so it routes through `rlctAtOn_unit_invariant_aux` + germ-locality, NOT
+`rlctAtOn_comp_homeomorph` — its own substantial lemma (Codex g146; ~600–1500 lines; consult-gated, task
+#44). The `nReg`-count `r(H⁰+Hᴸ−r) = r² + r(Hᴸ−r) + (H⁰−r)r` (the `r²` overlap counted once). This is
+the ONE open geometric obligation of L2; the wiring above it is green. -/
+theorem deepest_regular_core_normal_form (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+      = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
+        + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ) := by
+  sorry
+
 /-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at the deepest point**
 as the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
 widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r`: it equals `aoyagiLambda H r` (cast to `ℝ≥0∞`). (Rung-0c FLAG: keyed to the
 single constructed `deepestPoint`, **not** `∀ optimal w` — an over-claim — nor a
 `∀`-deepest-predicate — the per-partial-product form was too weak. The local RLCT varies over the
 fibre, equalling the closed form at the deepest point.) Non-vacuous: equates the local RLCT at
-`deepestPoint` to the closed form. -/
+`deepestPoint` to the closed form. **WIRING (crux2 #41):** `deepest_regular_core_normal_form` (the heavy
+gauge-slice normal form, #44) ▸ `reg_shift_add_core_eq_aoyagiLambda` (the closed-form recombination,
+proven). The L2 wiring is GREEN; the single open obligation is the named normal form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) = ENNReal.ofReal (aoyagiLambda H r) := by
-  sorry
+  rw [deepest_regular_core_normal_form H r B hB hr hL, reg_shift_add_core_eq_aoyagiLambda H r hr hL]
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
