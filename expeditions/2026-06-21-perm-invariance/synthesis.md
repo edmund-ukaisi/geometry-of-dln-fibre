@@ -57,3 +57,22 @@ was down) gives a genuine scope-surprise:
 (B) Attempt zero-cited route (a) — NEW research (combinatorial proof the authors don't have); high-risk, multi-week.
 (C) Scope down: land order-reversal + geometric transfer zero-cited; roadmap full Cor 5.10 (no cite-interface).
 Order-reversal fragment is landable zero-cited bedrock regardless. SURFACED to operator.
+
+## 2026-06-22 — AMBITIOUS RE-SCOPE (operator: "what is your ambitious suggestion")
+Operator asked for the ambitious version. DECISION: do NOT cite Thm 5.5 by default — SWING for the OPEN
+PROBLEM (a zero-cited combinatorial proof of Cor 5.10, which the authors lack), with a graceful Cited fallback.
+Prize if it cracks: the WHOLE combinatorial side zero-cited + general (all d) — Poincaré series closed form,
+explicit (C,θ) for all d (extends monotone-only Thm 7.10), Cor 5.10 as a one-line corollary; + a new
+math contribution. Our EDGE: the strict-cert corner-pair rigidity (minimisers = corner pairs only; 256521/256521).
+
+Two-pronged DECORRELATED bounded probe LAUNCHED (background):
+- **thread 02 (probe-direct):** corner-pair rigidity → manifestly-symmetric closed form for (C,θ) on all d;
+  and/or a MIN-LEVEL adjacent-transposition map (weaker than the refuted full Kostant bijection).
+- **thread 03 (probe-qseries):** combinatorial/bijective proof of the Thm 5.5 identity (or its lowest-degree
+  term θ q^C) — sign-reversing involution / LGV lattice paths / q-Vandermonde / recursion.
+Each: exact-arithmetic-verified, Codex-decorrelated, bounded, honest verdict (crack/partial/obstruct).
+
+DECISION RULE: either prong yields a Lean-targetable proof ⟹ formaliser tide for general (C,θ) + Cor 5.10
+(zero-cited, the big win). Both stall ⟹ fallback = cite Thm 5.5 as a named interface (like Aoyagi/Lemma 4.6)
++ derive Cor 5.10 + LAND the order-reversal fragment (0/11795, codimForm-preserving bijection) zero-cited.
+Order-reversal is bedrock either way. AWAITING the two probe verdicts.
