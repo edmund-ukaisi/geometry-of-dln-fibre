@@ -2,7 +2,66 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-21): ★ R1 EXECUTION — S1.5 sorry CLOSED (6→5) @1304cf2; (2,2,2) route PINNED ★
+## Current read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
+
+**Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
+an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
+Jacobian weight). The pen-and-paper / design side is **complete and corrected** (pp2 arc g132→g153, + g138 §1
+C1 prose fixed). What remains is pure Lean: three concurrent grinds against a settled design, no open mechanism.
+
+**The λ headline** `aoyagi_learning_coefficient` (Skeleton) is proven modulo three named rungs; A1, the top
+assembly, the transport/shift machinery are proven. The headline-given-atlas chain is proven, green, S2-free
+(`RouteMAtlas` unifies `IsRouteMCover` + `IsResolutionAtlas`; `routeM_rlctAtOn_eq_lambdaCore`). The three rungs:
+- **R1** `resolution_charts` — fm3 #39: the `RouteMTree` dispatcher (classify + schur/pass/left/right state +
+  descent) + cover-facts (`cover_le`/`cover_ge_div`) + achiever. `cover_le` (the path-composite CoV integral)
+  is the one evidence-then-switch spot (WF.fix vs plain-inductive).
+- **L2** `product_reduction` — crux2: APPROVED SPLIT (2026-06-22) into value-free `deepest_regular_core_reduces`
+  (rlctAt deepest = nReg/2 + rlctAtOn(dlnLoss M 0) 0) + R1-value composition (▸). #50 = consuming side
+  (S1 spectator-peel + sub-5/6/7 + assembly); #51 = the XL chart-existence.
+- **D1** `rlctAt_deepest_le_of_optimal` (≥-leg) — downstream of L2's gauge chart (the 6-step wiring once the
+  general-`IsDeepLayers` chart lands).
+
+**C1 mechanism (SETTLED, g152/g153).** Per-node C1 = blow-up (x_p² weight, exceptional (k,h)=(1,card−1)) +
+**det-1 triangular Schur peel** (w:=D−b·a, the #37 change) + recurse. The peel is NEEDED (g152: {S=0}={D=b·a}
+is BILINEAR; pivotBlowupOn only hits coordinate subspaces — the peel makes it {w=0} first). The peel is det=1
+MP at ANY rank (g153: unipotent block-triangular block-shear, rides measurePreserving_lemma2, no Jacobian
+weight, no bounded-unit lemma); Σdrop=2 (ChainDimSplit.measure_drops). The same triangular peel appears one
+level up at the g150 deepest-point gauge chart (there det-UNIT, non-MP). NOT the squeeze, NOT lemma2Fwd.
+
+**g150 gauge chart (CORRECTED).** Reduced core = gauge-normalized ‖T̃_1···T̃_L‖² (product Schur complement),
+NOT raw ‖∏T_s‖² (on {E=0} the cross-term becomes invertible gauge factor (I−V·Y)^{-1}). nReg = r(H₀+H_last−r).
+jac_unit bounded positive det, non-MP (transport via unit-invariance + germ-locality, not comp_homeomorph).
+
+**Current execution (three grinds):**
+- fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
+  confirmed cover-fact signatures = the contract). Achiever = `_le_regularSeq` at j₀ (card=m₀ min-ratio axis) +
+  threshold_ge, bundled by of_mult_and_achiever; binding axis = ⨅ over multiple C1 axes.
+- crux2 #50 (value-free reduction, consuming side: S1 spectator-peel — new reusable Foundations lemma
+  `rlctAtOn (fun p => F p.1) = rlctAtOn F`, reused by D1 #42 — + sub-5/6/7 + assembly) on
+  origin/fm2/deepest-gauge-chart (@fbe8d01: structure + assembly green, 3 sorries).
+- cobuild-sub34 #51 (the XL sub-3/4 `deepest_gauge_chart_exists`, g150-fix-cert-backed block algebra,
+  ~600-1500 lines) — own worktree off origin/fm2/deepest-gauge-chart, skeleton-first; crux2 reviews the
+  skeleton for cert-fidelity.
+
+**CANONICAL CERT LINEAGE (for #28 — pp2's authoritative tips, 2026-06-22):**
+- g138 design (C1 = blow-up + det-1 triangular peel + recurse): **origin/g138-c1-peel-prose @0823917** ← canonical
+- g140 ι-pin: origin/g140-both-steps @2f80d44
+- g134 (S-min): origin/g134-surjectivity-sketch @e18c00e
+- g147 achiever: origin/g147-achiever-cert @6e6b00d
+- g148 i₀ re-spell (2-node (2,2,2)): origin/g148-222fix2 @34c1d6c
+- g150 gauge chart: **origin/g150-gauge-chart-fix @50251296** ← canonical (corrected T̃ form; raw-T superseded)
+- g152/g153 C1-peel: origin/g152-c1-peel @0006f3a (also folded into g138-c1-peel-prose)
+- S-min value (canonical ResolutionAtlas, 3-conjunct): origin/cover/resolution-atlas-value @1c4b9b5
+- bridge/atlas: RouteMBridge origin/fm2/route-m-bridge @472433b; RouteMAtlas origin/fm2/route-m-atlas @31063ec
+- consolidation base: origin/integration/routeM-wip @0afee3a (g129 toolkit; has OLD 4-conjunct ResolutionAtlas —
+  pull S-min from @1c4b9b5 instead)
+
+**#28 plan (controller, at core-green):** consolidate onto expedition/aoyagi-full — RouteMAtlas = local core
+branch; pick g150-gauge-chart-fix (T̃) + g138-c1-peel-prose + S-min @1c4b9b5 (3-conjunct, NOT the 4-conjunct on
+routeM-wip); dedup Mval_nonneg; flush this synthesis. PR only after the full general-M `aoyagi_learning_coefficient`
+is sorry-free (operator: no PR until the hero task is done).
+
+## Prior read (2026-06-21): ★ R1 EXECUTION — S1.5 sorry CLOSED (6→5) @1304cf2; (2,2,2) route PINNED ★
 
 **Milestone @`1304cf2` (pushed origin, rv-2 auditing):** the S1.5 wire is in — `rlct_additive_smooth_block`
 now `exact …_aux` (closes a sorry, **6→5**), axioms `[propext, Classical.choice, Quot.sound]` (no sorryAx,
