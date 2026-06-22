@@ -1,0 +1,156 @@
+# routeStep dispatcher cert — the certified rank-pattern → RouteStep recipe + 3 correctness arguments (pp-hall, 2026-06-22, #68)
+
+**The R1 combinatorial core**: the formalization-ready recipe for the single sorry `routeStep M : RouteStep M`
+in fm3's `RouteMRecursion.lean`, generalizing the `(2,2,2)` hand-build (`Case222Resolution.lean`). The
+target is fm3's CERTIFIED type (g161/g162 + Codex vacuity-trap): a raw `routeStep` with arbitrary splits is
+**worse than `sorry`** (type-checks, terminates, encodes wrong combinatorics, no connection to `dlnLoss M 0`).
+This cert pins the recipe AND the per-cell certificate fields (`ValidRouteStep`) so the three correctness
+obligations — COVER, VALUE+CONSISTENCY, CODIM — are dischargeable, and names the load-bearing conditions
+(decorrelated Codex confirmed each).
+
+## §0 — the target (fm3's certified type, g162)
+`routeStep : (M : Fin (L+1) → ℕ) → RouteStep M` with each `branch` cell carrying a `ValidRouteStep` certificate
+(crux2's `schur_straighten_squeeze_of_data` consumed data: `nReg`, reduced ambient `Y`, `flatCore`, `G`,
+`redEmbed : Y ≃ₜ Params S.red`, `c₁ c₂`, the `IsSchurStraightenSqueeze` datum, the node-loss identification,
+the cover fact). The fold theorem (fm3) reconstructs `rlctAtOn (dlnLoss M 0) 0 = ⨅ᵢ monomialThreshold (dᵢ)(kᵢ)(hᵢ)`
+from the certified branches; the value side feeds `RouteMState.foldDivisors`/`appendDivisor` (banked).
+
+## §1 — the recipe (`classify M`): the dispatch logic
+Read ranks **relative to the active prefix image** (#138 Fix 1). At node `M`:
+
+1. **LEAF** — iff the residual core is a **UNIT** (Codex #5, the corrected condition; NOT "no C1 applies").
+   Concretely: after the accumulated pivot monomials are factored out, the residual core ideal is a unit
+   (`monomialThreshold = ⊤`, `leafMonoData`, `leafMonoData_threshold`). The Lean predicate is
+   `Leaf → IsUnit residualCore`, carrying the unit certificate (`residual ≥ a > 0`, the `step2E_unit_ge_one`
+   / `step3_unit_ge_one` shape). **This is load-bearing** (Codex #5): "no rank-defect coupling remains" is
+   too weak — scalar/rank-1 remnants, post-C2 downstream products, and unresolved C4/C5 cores can be
+   non-units misclassified as leaves, silently dropping a binding divisor.
+2. else **separating** (a width-1 / rank-1 inner pinch, or forced `s=0`) → **C4** (Fubini product split, two
+   children `leftState`/`rightState`, `L` drops). The C4-terminal proviso (empty-Schur/width-1 → C4, not C1)
+   is the no-stall guard.
+3. else on the active factor's rank on the incoming prefix image (`t_{s-1}`):
+   - drops to coupled/0 → **C1** (blow up the rank-defect center, Schur-descend, recurse, `ΣM` drops by 2);
+   - full rank `= t_{s-1}` (later-factor drop) → **C2** (pass-through, `L` drops);
+   - partial `t_{s-1} > t_s > 0` → **C5** (block-column split: complement via C1, survivor via C2).
+4. **C3** (NC-completion, `k ≥ 2` divisors) is a per-leaf `(d,k,h)` post-pass, NOT a tree node.
+
+**C1 node mechanism** (triply-converged, g138/g140/g152/g153): `pivotBlowupOn active p` (core∘φ = x_p²·Q,
+Jac `(x_p)^{card−1}`, `k=1` weight, `ΣM` unchanged) + the **det-1 triangular Schur peel** `w := D − ba`
+(the #37 ΣM-2 drop, `measurePreserving_lemma2` / MP, no Jacobian) → `schurState M'` (`M'_0 = M_0−1`,
+`M'_1 = M_1−1`, `M'_{s≥2} = M_s`) + recurse. Precondition `M_0, M_1 ≥ 2` (else width-1 → C4).
+
+## §2 — THE LOAD-BEARING CONDITION (the C1-condition): codim = geometric codim = Mval, with an admissible witness
+**This is the single seam that makes the dispatcher CERTIFIED vs green-but-wrong (Codex #1, #4, my #138).**
+`pivotBlowupOn` only knows "blow up this coordinate subspace" — it does NOT know the subspace is the strict
+transform of an admissible rank-pattern stratum. A type-checking dispatcher can record `c = card pivotCoords`
+or a Jacobian/Hessian rank and get a divisor codim that is **not any admissible `Mval(T)`** (the `(4,3,2)`
+thin-product trap). So **every C1/C5 pivot cell MUST carry**, in its `ValidRouteStep` certificate:
+- a **rank-pattern witness** `T` with `Adm M T` (`Adm`/`Mval` from `RouteMState`/design-spec §3);
+- a proof that the pivot center is the smooth strict-transform / normal slice of the rank-pattern stratum
+  `S_T`, with the selected pivot coordinates a regular parameter system for its ideal, so
+      **`codim(center) = height(S_T) = Mval(M, T)`**   (the geometric codim, NOT the raw Jacobian rank);
+- a proof the exceptional multiplicity is exactly one pivot square: the axis is `(k,h) = (1, c−1)`,
+  `c = Mval(M,T)` (ratio `c/2`), the `appendDivisor c` shape (`RouteMState.appendDivisor`).
+
+This is the field the `ValidRouteStep` certificate threads (co-designed with fm3, g162): `codim : cells → ℕ`
+must come paired with `witness : (c : cells) → {T // Adm M T ∧ codim c = Mval M T}` (and the multiplicity-1
+proof), NOT a bare `ℕ`. **Without this, C≥ is unprovable** (Codex #2: a bogus axis — non-admissible T,
+non-Mval codim, or an over-broad center creating a falsely small `c` — is the only way the cover `⨅` dips
+below `minAdm/2`).
+
+## §3 — the three correctness arguments
+
+### (1) COVER — the cells cover the node locus
+The pivot cells of `pivotBlowupOn active p` are its affine charts (`argmaxCellOn` cover + `aedisjoint`,
+banked `g5_pivotNode`/`argmaxCellOn_cover`/`_aedisjoint`). Per-cell change-of-variables
+(`node_loss_pivot_factor` + `node_jacobian_det` composed down the path) lands `monomial · unit` on
+`chartDomOn [−1,1]^d`; normalization (signed box → bare-monomial `[0,1]^d`) via crux2's
+`monomialIntegrand_abs_invariant` + `integrableOn_monomial_mul_unit_iff` (banked). The cover obligation is
+`IsRouteMCover` (crux2's bridge consumer); the recursion glues child covers (each `S.red` recursion's cover
+lifts through the parent chart). **Validated** `(2,2,2)`: the 8 unit leaves + 16 block leaves = 24 cells
+cover the cube (`Case222Resolution`, `cover_le`/`cover_ge_div` route, the `phiUnit` binding leaf for `≤`).
+
+### (2) VALUE + CONSISTENCY — the ⨅-min = aoyagiLambda AND matches fm3's foldDivisors achiever
+The leaf threshold = `monomialThreshold (foldDivisors cs)` = `ratioMinFold cs` = `min over the path of c/2`
+(`RouteMState.monomialThreshold_foldDivisors`, banked). The dispatcher's per-node codim contributions ARE
+the `appendDivisor c` codims (§2: `c = Mval(M,T)`), so the leaf-monomials match fm3's `foldDivisors` achiever
+exactly (obligation #2 satisfied **by construction**, since both fold the same per-node codims). Then:
+- **(C≥)** `∀ i, ½·minAdm(Mval) ≤ monomialThreshold (dᵢ)(kᵢ)(hᵢ)`: every divisor codim is some `Mval(T) ≥
+  minAdm` (§2 witness), so `ratioMinFold ≥ minAdm/2` (`monomialThreshold_appendDivisor_ge` /
+  `ratioMinFold_ge_of_all_ge`, banked). **Holds ONLY given §2's certification** (Codex #2). The mult-control
+  `m·k ≤ h+1` (`monomialThreshold_ge_of_mult'`, banked) is C3-robust (`k≥2` NC divisors:
+  `k_E = Σk_i`, `h_E+1 = Σ(h_i+1)`, the ratio is a weighted average, cannot undershoot).
+- **(C=∃)** `∃ i₀, monomialThreshold (dᵢ₀)(kᵢ₀)(hᵢ₀) = ½·minAdm(Mval)`: the achiever path `i₀` (pp2 g147/g148,
+  delivered) resolves each factor to its `T*`-rank, the minimiser; its binding divisor has codim
+  `= Mval(T*) = minAdm` (`monomialThreshold_appendDivisor_le_binding` / `_le_regularSeq`, banked). **Needs a
+  reachability lemma** (Codex #3, see §4).
+- `⨅ᵢ = ½·minAdm(Mval) = ofReal(lambdaCore M)` by `le_antisymm` (the `(S-min)` form, #134; replaces per-path
+  `threshold_eq`). The achiever wiring is `of_mult_and_achiever` (g148/g154: `eq_half_of_binding` bundles the
+  multi-axis `le_antisymm` at `j₀` + the within-chart mult-bound).
+
+### (3) CODIM — per-node codims accumulate to C
+Each C1/C5 node's `appendDivisor c` (`c = Mval(M,T)`) accumulates along the path
+(`RouteMState.foldDivisors`); the cover's binding (minimal-codim) divisor controls the `⨅`. The total
+geometric codim `C = minAdm(Mval)` is realized at the achiever path's binding divisor. (`C` the codim, `θ`
+the component count, `rlct = ½·codim` are separate levels — this cert is the R1 chart `⨅`, the `½·codim`
+reading rides the cited Aoyagi bound, NOT proved here.)
+
+## §4 — the reachability obligation (C=∃, Codex #3 — name it, it's a theorem not a freebie)
+"Resolve each factor to its `T*`-rank by iterated rank-defect blow-ups" is NOT automatic: it needs
+**for every minimiser `T*`, a legal C1/C2/C4/C5 chart path whose transformed target stays admissible after
+each peel/pass/split, with binding C1/C5 center exactly `S_{T*}` of codim `Mval(T*)`.** This is the
+realizability seam (pp2 g147/g148): `T*` is realizable via `Core.OrbitKostant` / `Orbit.baseChange_normalForm`
+(Gabriel normal form hits `T*`; `RealizableRank M = range rankFn`), and **only the minimiser need be reached**
+(weaker than full `stratum_surjective`). The nodeC1/C5 branch at each step picks the `T*`-rank pivot cell.
+**Validated** (g147): `(2,2,2)→T*=(1,0)` codim 3; `(3,2,3)→(1,0)` codim 5; `(2,2,2,2)→(1,0,0)` codim 3 (one
+of 3 achievers — only one need be reached); `(4,3,2)→(2,0)` codim 6; `(2,1,2)→(1)` codim 1. No
+forced counterexample to reachability if the route tree covers all admissible strata — but that COVERAGE IS A
+THEOREM (the realizability lemma), not a consequence of termination.
+
+## §5 — validation (the recipe is right on (2,2,2) + a second case + depth-3, not just (2,2,2))
+QIP ground-truth (`g183_qip_minAdm.py`, exact): `minAdm(Mval)` and achievers —
+| M | minAdm | λ=minAdm/2 | achiever T* | reached? |
+|---|---|---|---|---|
+| (2,2,2) | 3 | 3/2 | (1,0) | ✓ (codims {4,3}, binding 3) |
+| (3,2,3) | 5 | 5/2 | (1,0) | ✓ (binding codim 5) |
+| (2,2,2,2) | 3 | 3/2 | (1,0,0) [3 achievers] | ✓ (reach one) |
+| (4,3,2) | 6 | 3 | (2,0) | ✓ (binding codim 6) |
+
+`(2,2,2)` tree (`Case222Resolution`, the anchor): step-1 A-pivot `pivotBlowupOn {0,1,2,3} 0` card 4 =
+`Mval(t=(0,0))=4` (ratio 2); Lemma-2 (det ±1, no divisor); step-2 `pivotBlowupOn {1,2,3} 1` card 3 =
+`Mval(t=(1,0))=3` = **the achiever binding** (ratio 3/2); δ-branch step-3 card 4 (ratio 2). Binding leaf
+codims `{4,3}` → `ratioMinFold = min(2, 3/2) = 3/2 = λ(2,2,2)` ✓; all 24 leaves give `3/2`
+(`g179`/`g180`/`g181`). `(3,2,3)`, `(2,2,2,2)` (`g182`): rank-descent reaches the minimiser, C≥/C=∃ hold.
+
+The codim-sequence reads as a **rank-descent**: each C1 node crosses one rank stratum, its divisor codim =
+that stratum's `Mval`; the path traces `t_root → … → 0`; the MIN codim on the achiever path = `minAdm`. The
+`(4,3,2)` trap is the witness that codim MUST be the geometric `Mval`, not the coordinate cardinality / raw
+Jacobian rank (there they diverge — §2).
+
+## §6 — what fm3 transcribes (the ValidRouteStep field list, co-designed)
+`ValidRouteStep M step` per `branch` cell carries: `nReg`, reduced ambient `Y` + instances,
+`flatCore`/`G`/`redEmbed`/`c₁ c₂`/`IsSchurStraightenSqueeze` (crux2's consumed data), the node-loss
+identification (`flatCore = dlnLoss M 0` in blow-up coords), the cover fact, AND the §2 certification:
+`witness : (c : cells) → {T // Adm M T ∧ codim c = Mval M T}` + the multiplicity-1 proof `(k,h)=(1,c−1)`.
+LEAF carries `IsUnit residualCore` (§1.1). The generic fold theorem (fm3) reconstructs the `⨅`-identity from
+the certified fields; the achiever (`of_mult_and_achiever`, pp2 g148) + threshold_ge supply VALUE; the cover
+supplies COVER; the appendDivisor accumulation supplies CODIM.
+
+## §7 — most likely thing to break this (the green-but-wrong risk, Codex #4)
+**Computing `codim` from local coordinate cardinality / raw rank data instead of threading the admissible-`T`
+witness + `codim = Mval`.** It type-checks, terminates, passes small symmetric tests `(2,2,2)`/`(3,3,3)`, and
+FAILS thin/mixed cases `(4,3,2)`. The guard: `codim` is NOT a bare `ℕ` field — it is paired with the
+admissible-rank-pattern witness and the `codim = Mval` proof (§2). The second risk: LEAF as "no C1 applies"
+(must be `IsUnit residualCore`, §1.1). The third: C=∃ reachability assumed instead of proved (§4) — it rides
+`Core.baseChange_normalForm`, the realizability seam. All three are NAMED `ValidRouteStep` obligations here,
+not silent assumptions.
+
+## §8 — decorrelation
+pp-hall exact algebra (`g183_qip_minAdm.py` the QIP ground-truth; `g179`/`g180`/`g181` the (2,2,2) trace +
+codim=Mval reading; `g182` the depth-3 reachability) + decorrelated Codex (gpt-5.x xhigh,
+`g183-dispatcher-codex-answer.md`) — CONVERGED on the load-bearing C1-condition (codim=Mval, not Jacobian
+rank — Codex #1/#4 = my #138 C1-condition, independently re-found) and SHARPENED three obligations: the
+admissible-`T` witness on every pivot (§2), the reachability lemma for C=∃ (§4), and the `IsUnit residualCore`
+LEAF condition (§1.1). Builds on #26/g138 (the node taxonomy), g147/g148 (the achiever i₀, re-spelled in
+fm3's encoding), `Case222Resolution` (the (2,2,2) anchor), `RouteMState` (the value-side foldDivisors,
+banked), fm3 g161/g162 (the certified-not-raw type + the co-design). No Lean — fm3 transcribes against §6.
