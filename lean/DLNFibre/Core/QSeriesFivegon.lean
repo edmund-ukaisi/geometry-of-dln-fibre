@@ -1274,4 +1274,17 @@ theorem innerSum_eq_transferRHS (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast
       = transferRHS (List.ofFn (fun i : Fin (N + 1) ↦ m' (i, Fin.last N))) dlast := by
   rw [innerSum_eq_qSum, qSum_eq_transferRHS]
 
+/-- **The per-fibre collapse** (deliverable 2): the fibre weight-sum over `{m : peelPart m = m'}`
+collapses to `X^{codim m'}·Pm m'·P(d_last)`. (P) `perfibre_reduces` reduces it to
+`X^{codim}·lowerPm·innerSum`; (Q) + `transferRHS_eq` + `listOfFn_col_prod` evaluate `innerSum` to
+`P(d_last)·∏ P(m'_{·,N})`, and `Pm_eq_colN_mul_lower` reassembles `Pm N m'`. -/
+theorem perfibre_collapse (d : Fin (N + 2) → ℕ) (m' : Fin (N + 1) × Fin (N + 1) → ℕ)
+    (hm' : m' ∈ kostantAll (d ∘ Fin.castSucc)) :
+    ∑ m ∈ (kostantAll d).filter (fun m ↦ peelPart m = m'),
+        X ^ (codimForm (N + 1) (extendℤ m)).toNat * Pm (N + 1) m
+      = X ^ (codimForm N (extendℤ m')).toNat * Pm N m' * P (d (Fin.last (N + 1))) := by
+  rw [perfibre_reduces d m' hm', innerSum_eq_transferRHS, transferRHS_eq, listOfFn_col_prod,
+    Pm_eq_colN_mul_lower]
+  ring
+
 end DLNFibre.Core
