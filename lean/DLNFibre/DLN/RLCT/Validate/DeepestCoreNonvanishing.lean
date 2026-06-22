@@ -15,22 +15,28 @@ the product map `prod M` to be NOT identically zero — which holds iff **every*
 / `r = H_L`), then `prod M ≡ 0` (a zero-width vertex annihilates the chain, or an entry-empty endpoint
 product), so `dlnLoss M 0 ≡ 0` and `hGne` FAILS. The interior-only `hMid` (`∀ s, 0 < s.val → r < H
 s.castSucc`) does NOT suffice — it misses `M_0 = 0` and `M_L = 0`. The faithful hypothesis is `∀ s,
-1 ≤ M s` (equivalently `r < H_s ∀ s`). [Escalated to controller/fm3 — resolution (A) widen the locked
-form vs (B) keep interior-only + a degenerate-endpoint branch (the headline IS true there, `lambdaCore
-= 0`, only the smooth-block proof route breaks). This module proves the non-degenerate (all-`M_s ≥ 1`)
-case, which both (A) and (B)'s non-vanishing branch need.]
+1 ≤ M s` (equivalently `r < H_s ∀ s`). [RESOLVED by the controller: route (B). The headline stays
+NON-STRICT (`r ≤ min`, paper-faithful, audit-verified true at the boundary); the rungs prove the
+non-degenerate bulk `∀ s, M_s ≥ 1` (this module's hypothesis), and the degenerate boundary `some M_s = 0`
+is the headline's separate case `#70` (direct-Morse `rlctAt = nReg/2`, NOT the additive route which gives
+`⊤`).]
 
-## Route (crux2 own assessment; Codex consult g175 stalled on a contended CLI)
+## Route (Codex g175 + the controller's #69/#70 decoupling)
 
 `hGne` needs `≠ 0` A.E. (not everywhere — the basepoint `0` has `dlnLoss M 0 0 = 0`), so a measure-zero
-argument is unavoidable. Two pieces:
-1. **The constructive nonzero witness** (`dlnLoss_deepest_core_ne_zero_witness`): an explicit `A` with
-   `dlnLoss M 0 A ≠ 0` when all `M_s ≥ 1` — each layer `= e₀₀` (a `1` at `(0,0)`), so the product's
-   `(0,0)` entry is `1`. Route-independent, pure algebra.
-2. **The measure-zero of the polynomial zero-set** (`dlnLoss_deepest_core_ae_ne_zero`): `dlnLoss M 0 ∘
-   flatSymm` is a nonzero polynomial, so `{= 0}` is measure-zero, so `≠ 0` a.e. The heavy piece (no
-   multivariate "nonzero poly ⟹ ae ne zero" in Mathlib v4.29; `#vars`-induction + Fubini + univariate
-   finite-roots, ~150-250 LoC). Roadmap-grade.
+argument is unavoidable. Decoupled into:
+1. **The constructive nonzero witness** (`dlnLoss_deepest_core_ne_zero_witness`, crux2, PROVEN): an
+   explicit `A` with `dlnLoss M 0 A ≠ 0` when all `M_s ≥ 1` — each layer `= e₀₀` (a `1` at `(0,0)`), so
+   the product's `(0,0)` entry is `1`. Route-independent, pure algebra.
+2. **The general null lemma** (`mvpoly_zeroSet_null`, #69, network-free, → `DLNFibre.Core`, dispatched to
+   a sibling formaliser): `(p : MvPolynomial (Fin n) ℝ) (hp : p ≠ 0) → volume {x | eval x p = 0} = 0`.
+3. **The connection** (`dlnLoss_deepest_core_ae_ne_zero`, crux2): encode `dlnLoss M 0 ∘ flatSymm = eval z
+   P`, `P ≠ 0` from (1), invoke (2). See the theorem's connection-plan docstring.
+
+The all-`M_s ≥ 1` hypothesis is the non-degenerate bulk the rungs (R1/L2/D1) prove; the degenerate
+boundary (`some M_s = 0`, `r = H_s`) is the headline's separate case (#70, direct-Morse `rlctAt = nReg/2`,
+`lambdaCore = 0`; the headline stays NON-STRICT / paper-faithful `r ≤ min`, audit-verified true). The
+headline case-splits on `(∀ s, M_s ≥ 1)` (crux2 owns the wiring).
 -/
 
 open MeasureTheory Matrix
@@ -116,8 +122,15 @@ theorem dlnLoss_deepest_core_ne_zero_witness (M : Fin (L + 1) → ℕ) (hpos : �
 
 /-- **The reduced core is `≠ 0` a.e. near the origin** (`hGne`, the bridge target). When every reduced
 width `M_s ≥ 1`, `dlnLoss M 0 ∘ (paramsEquivFlat M).symm` is a nonzero polynomial, so its zero set is
-measure-zero, so it is `≠ 0` a.e. on any neighbourhood of `0`. The measure-zero of a nonzero-polynomial
-zero-set is the heavy step (roadmap; see header). -/
+measure-zero, so it is `≠ 0` a.e. (on `U = univ`).
+
+CONNECTION PLAN (the `(c)` connect, crux2): `dlnLoss M 0 ((paramsEquivFlat M).symm z) = eval z P` for a
+single `P : MvPolynomial (Fin (flatDim M)) ℝ` (`P = ∑ᵢⱼ (prod-entry-poly)²`, the entries being products
+of the coordinate variables `X (equivFin ⟨⟨s,i⟩,j⟩)` since `(flatSymm z) s i j = z (equivFin ⟨⟨s,i⟩,j⟩)`
+by `rfl`; lift via `Matrix.map_mul` + `eval (X k) = z k`). `P ≠ 0` from `dlnLoss_deepest_core_ne_zero_witness`
+(`eval (witness-flat) P = dlnLoss(witness) ≠ 0`). Then the general null lemma (#69, decoupled:
+`mvpoly_zeroSet_null (p ≠ 0) : volume {x | eval x p = 0} = 0`) gives `{eval z P = 0}` null, hence `≠ 0`
+a.e. Blocked on #69 landing. -/
 theorem dlnLoss_deepest_core_ae_ne_zero (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 1 ≤ M s) :
     ∃ U ∈ 𝓝 (0 : Fin (flatDim M) → ℝ),
       ∀ᵐ z ∂(volume.restrict U),
