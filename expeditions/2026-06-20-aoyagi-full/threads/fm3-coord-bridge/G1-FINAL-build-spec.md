@@ -589,10 +589,14 @@ chainRel_wf/redM_chainRel @55db82d):
       fintype : Fintype ι
       data : ι → MonoData
 
+    -- LIGHT-ENRICHED (g176): branch carries the §2 PivotWitness sibling (codim=Mval, value);
+    -- the per-cell TRANSPORT is the LIGHT pullback (node_loss_pivot_factor), threaded at cover-fact
+    -- level, NOT a heavy IsSchurStraightenSqueeze field here.
     inductive RouteStep {L : ℕ} (M : Fin (L + 1) → ℕ) : Type 1
       | leaf (md : MonoData)
       | branch (cells : Type) (cellsFin : Fintype cells)
           (split : cells → ChainDimSplit M) (codim : cells → ℕ)
+          (witness : (c : cells) → PivotWitness M (codim c))
 
     noncomputable def routeStep {L : ℕ} (M : Fin (L + 1) → ℕ) : RouteStep M := sorry
 
@@ -600,7 +604,7 @@ chainRel_wf/redM_chainRel @55db82d):
       fun {L} => WellFounded.fix chainRel_wf fun M rec =>
         match routeStep M with
         | .leaf md => { ι := PUnit, fintype := inferInstance, data := fun _ => md }
-        | .branch cells cellsFin split codim =>
+        | .branch cells cellsFin split codim _witness =>
             letI : Fintype cells := cellsFin
             let child : (c : cells) → NodeChartFamily (split c).red :=
               fun c => rec (split c).red (split c).redM_chainRel
