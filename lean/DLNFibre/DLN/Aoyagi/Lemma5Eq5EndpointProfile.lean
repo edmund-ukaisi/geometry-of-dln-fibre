@@ -395,6 +395,102 @@ theorem aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom
         left
         omega
 
+/-- The supplied equation `(5)` terminal-room endpoint chain has Lemma 4
+increments in the two values `M-1` and `M`. -/
+theorem aoyagiLemma5Eq5_endpointChain_F_twoValue_of_terminalRoom
+    (ell a p alpha : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hroom : p + 2 * a - alpha ≤ ell)
+    (hH0 : H 0 = m 0)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected :
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hH_endpoint :
+      ∀ b : Fin (ell + 1), 1 ≤ b.val → b.val < ell →
+        H b = T (C.point b.val - 1)) :
+    ∀ r : Fin ell,
+      aoyagiLemma4F ell m H r = M - 1 ∨
+        aoyagiLemma4F ell m H r = M := by
+  exact aoyagiLemma4F_twoValue_of_binaryIncrementPrefixDelta ell M m H
+    (aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom
+      ell a p alpha M m H C layerWidth T hT hroom hH0 hHlast hselected
+      hH_endpoint)
+
+/-- The supplied equation `(5)` terminal-room endpoint chain has exactly `a`
+high Lemma 4 increments and `ell-a` low increments. -/
+theorem aoyagiLemma5Eq5_endpointChain_twoValueCount_of_terminalRoom
+    (ell a p alpha : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hroom : p + 2 * a - alpha ≤ ell)
+    (hH0 : H 0 = m 0)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected :
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hH_endpoint :
+      ∀ b : Fin (ell + 1), 1 ≤ b.val → b.val < ell →
+        H b = T (C.point b.val - 1)) :
+    ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = M).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = M - 1).card = ell - a) := by
+  exact aoyagiLemma4_twoValueCount_of_terminalH ell a M m H hH0 hHlast
+    hselected
+    (aoyagiLemma5Eq5_endpointChain_F_twoValue_of_terminalRoom
+      ell a p alpha M m H C layerWidth T hT hroom hH0 hHlast hselected
+      hH_endpoint)
+
+/-- The supplied equation `(5)` terminal-room endpoint chain has exactly `a`
+unit prefix deltas and `ell-a` zero prefix deltas. -/
+theorem aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefix_count_eq_of_terminalRoom
+    (ell a p alpha : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hroom : p + 2 * a - alpha ≤ ell)
+    (hH0 : H 0 = m 0)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected :
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hH_endpoint :
+      ∀ b : Fin (ell + 1), 1 ≤ b.val → b.val < ell →
+        H b = T (C.point b.val - 1)) :
+    ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 1).card = a) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4IncrementPrefixDelta ell M m H j = 0).card = ell - a) := by
+  exact aoyagiLemma4_binaryIncrementPrefix_count_eq ell a M m H hH0 hHlast
+    hselected
+    (aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom
+      ell a p alpha M m H C layerWidth T hT hroom hH0 hHlast hselected
+      hH_endpoint)
+
+/-- The supplied equation `(5)` terminal-room endpoint chain lies between the
+displayed lower and upper Htilde chains. -/
+theorem aoyagiLemma5Eq5_endpointChain_HtildeChainBounds_of_terminalRoom
+    (ell a p alpha : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hroom : p + 2 * a - alpha ≤ ell)
+    (hH0 : H 0 = m 0)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected :
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (M - 1) + a)
+    (hH_endpoint :
+      ∀ b : Fin (ell + 1), 1 ≤ b.val → b.val < ell →
+        H b = T (C.point b.val - 1)) :
+    aoyagiHtildeLowerChain ell a M m ≤ H ∧
+      H ≤ aoyagiHtildeUpperChain ell a M m := by
+  exact aoyagiHtildeChainBounds_of_terminalH_binaryIncrementPrefixDelta
+    ell a M m H hT.a_le_ell hH0 hHlast hselected
+    (aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom
+      ell a p alpha M m H C layerWidth T hT hroom hH0 hHlast hselected
+      hH_endpoint)
+
 end Aoyagi
 end DLN
 end DLNFibre

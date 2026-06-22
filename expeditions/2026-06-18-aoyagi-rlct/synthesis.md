@@ -4183,6 +4183,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-binary-prefix-delta-a5.md`.
 
+Latest A5 Eq5 two-value-wrapper update:
+`Lemma5Eq5EndpointProfile.lean` now contains
+`aoyagiLemma5Eq5_endpointChain_F_twoValue_of_terminalRoom`,
+`aoyagiLemma5Eq5_endpointChain_twoValueCount_of_terminalRoom`,
+`aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefix_count_eq_of_terminalRoom`,
+and
+`aoyagiLemma5Eq5_endpointChain_HtildeChainBounds_of_terminalRoom`.  These are
+thin adapters from the supplied Eq5 terminal-room binary-prefix deltas to the
+existing Lemma 4 two-value, count, and Htilde-bound APIs.  They do not prove
+Eq5 vector construction, endpoint realisation, terminality, counted-datum
+membership, classifier data, order count, pole order, normal crossings, or
+RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-two-value-wrapper-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-two-value-wrapper.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-two-value-wrapper-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

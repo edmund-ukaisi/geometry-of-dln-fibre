@@ -60,6 +60,8 @@ Current Eq5 endpoint prefix-profile slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-prefix-profile-a5.md`.
 Current Eq5 binary-prefix-delta slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-binary-prefix-delta-a5.md`.
+Current Eq5 two-value wrapper slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-two-value-wrapper-a5.md`.
 Current prefix-delta chain-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-prefix-delta-chain-bounds-a5.md`.
 Current binary-prefix-delta bound slice:

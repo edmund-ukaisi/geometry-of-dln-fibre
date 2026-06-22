@@ -4297,6 +4297,33 @@ post-`p` rise, and final plateau.  This is endpoint arithmetic only.  It does
 not construct Eq5 vectors, prove endpoint realisation, terminality,
 classifier data, order count, pole order, normal crossings, or RLCT.
 
+## 2026-06-21 Lean Lemma 5 Eq5 two-value wrappers
+
+Reproduction:
+`reproduction-lemma5-eq5-two-value-wrapper-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-two-value-wrapper.md`.
+Review artifact:
+`review-lemma5-eq5-two-value-wrapper-a5.md`.
+
+Lean now packages the supplied Eq5 terminal-room binary-prefix deltas into
+the existing Lemma 4 APIs:
+
+```text
+aoyagiLemma5Eq5_endpointChain_F_twoValue_of_terminalRoom
+aoyagiLemma5Eq5_endpointChain_twoValueCount_of_terminalRoom
+aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefix_count_eq_of_terminalRoom
+aoyagiLemma5Eq5_endpointChain_HtildeChainBounds_of_terminalRoom
+```
+
+These wrappers prove two-value increments, two-value counts, binary-prefix
+counts, and displayed Htilde chain bounds for the supplied Eq5 endpoint chain
+under the same explicit source, terminal, selected-sum, endpoint-chain, and
+terminal-room hypotheses.  This is API packaging only.  It does not construct
+Eq5 vectors, prove endpoint realisation, terminality, counted-datum
+membership, classifier data, order count, pole order, normal crossings, or
+RLCT.
+
 ## 2026-06-21 Lean Lemma 5 terminal minimum lower bound
 
 Reproduction:
