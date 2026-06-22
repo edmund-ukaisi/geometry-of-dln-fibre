@@ -27,7 +27,10 @@ root-to-leaf path. The achiever `i₀` for the minimiser `T* = (t_1,…,t_L)` is
 factor to its `T*`-rank:
 - `classify S = .c1 cs dec` (coupled defect, `T*` wants rank `t_s < t_{s-1}`):
   `i₀ at S = ⟨c*, i₀'⟩ : Σ c : cs, (routeAtlas (schurState S c.1)).ι`, where `c* ∈ cs` is the
-  `PivotChoice` exposing rank `t_s` (the `T*`-rank pivot cell), `i₀'` the achiever of the residual.
+  `PivotChoice` dropping ONE rank-unit toward `t_s` (fm3's per-factor recursion: resolving `C_s` from
+  rank `t_{s-1}` to `t_s` takes `(t_{s-1}−t_s)` such C1 steps, each a Schur `ΣM−2` drop), `i₀'` the
+  achiever of the residual. The achiever follows the C1 pivot-cell at each step until `C_s` is at rank
+  `t_s`, then proceeds to the next factor.
 - `classify S = .c2 c dec` (full-rank pass-through, `t_s = t_{s-1}`): `i₀ at S = i₀' : (routeAtlas (passState S c)).ι` (same ι, descend).
 - `classify S = .c5 cs p ..` (mixed): `i₀ at S = Sum.inl ⟨c*, i₀'⟩` — the complement-via-C1 branch
   (the minimiser's binding center is the complement's codim-`m₀` divisor, so `Sum.inl`).
@@ -38,25 +41,34 @@ factor to its `T*`-rank:
 So `i₀ = ⟨c*₁, ⟨c*₂, … , PUnit.unit⟩⟩` (Σ-nesting through C1 nodes, `Sum.inl`/`inr` at C4/C5), bottoming at
 the `PUnit` leaf whose `MonoData` has the binding `(1, m₀−1)`.
 
-## The (2,2,2) concrete instance (the depth-2 anchor, `S₀ = ⟨2, ![2,2,2]⟩`)
-`T* = (1,0)`, `m₀ = 3`, `lambdaCore = 3/2`:
-- `classify S₀ = .c1 cs dec` (resolve `C₁` from rank 2 to rank `t_1 = 1` — the rank-1 coupled defect).
-  `c* ∈ cs` = the `PivotChoice` exposing the rank-1 incidence locus (the banked `Case222` δ-branch →
-  ρ-chart pivot).
-- `classify (schurState S₀ c*) = .leaf md₁`, `md₁` = the `MonoData` with the **ρ binding divisor**
-  `(k,h) = (1, 2) = (1, m₀−1)` (`Case222`: ρ-chart, `|det Dφ| = |ρ|²`, `F = α²ρ²·[unit]`).
-- ⟹ `i₀ = ⟨c*, PUnit.unit⟩ : Σ c : cs, (routeAtlas (schurState S₀ c.1)).ι = routeMIota S₀`.
-- ⟹ `routeK S₀ i₀` at the binding coord `= 1`, `routeH S₀ i₀` at it `= 2 = m₀−1`, so
-  `monomialThreshold (routeD S₀ i₀)(routeK S₀ i₀)(routeH S₀ i₀) = (2+1)/(2·1) = 3/2 = ½·m₀`. ✓
-**`IsResolutionAtlas.achiever` for `S₀`:** `⟨i₀, (proof: threshold = ½·m₀)⟩` with `i₀ = ⟨c*, PUnit.unit⟩`.
+## The (2,2,2) concrete instance (`S₀ = ⟨2, ![2,2,2]⟩`) — TWO C1 nodes (fm3's authoritative depth)
+`T* = (1,0)`, `m₀ = 3`, `lambdaCore = 3/2`. **CORRECTION (fm3 #47): fm3's dispatcher resolves PER-FACTOR
+incrementally (each C1 a one-rank-unit Schur `ΣM−2` step), so the achiever path is TWO C1 nodes, not one.
+My earlier 1-node `⟨c*, PUnit.unit⟩` used the r1-design §2 abstract "codim-3 in one blow-up" form (the
+banked `Case222` ρ-chart); fm3's RouteMTree is the authoritative per-factor recursion.**
+- `classify S₀ = .c1 cs dec` (resolve `C₁` from rank 2 → rank 1, the rank-1 drop). `c*₁ ∈ cs` = the
+  A-block pivot cell. `schurState S₀ c*₁` = the residual node (the incidence locus still to resolve).
+- `classify (schurState S₀ c*₁) = .c1 cs' dec'` (resolve the residual at the incidence pivot — the
+  `A₁A₂ = 0` alignment). `c*₂ ∈ cs'` = the incidence pivot cell (the `Case222` ρ-chart pivot). Its
+  `pivotBlowupOn` center is the full codim-`m₀` (=3) stratum, so its axis is the binding divisor
+  `(k,h) = (1, m₀−1) = (1, 2)` (`Case222`: ρ-chart, `|det Dφ| = |ρ|²`, `F = α²ρ²·[unit]`).
+- `classify (schurState … c*₂) = .leaf md` → `PUnit.unit`.
+- ⟹ `i₀ = ⟨c*₁, ⟨c*₂, PUnit.unit⟩⟩ : routeMIota S₀` (TWO nested `.c1` Σ's, then the leaf).
+- ⟹ the binding axis `j₀` (on the `c*₂` step) has `routeK S₀ i₀ j₀ = 1`, `routeH S₀ i₀ j₀ = 2 = m₀−1`, so
+  `monomialThreshold (routeD S₀ i₀)(routeK S₀ i₀)(routeH S₀ i₀) = ⨅_j axisRatio = (2+1)/(2·1) = 3/2 = ½·m₀`. ✓
+**`IsResolutionAtlas.achiever` for `S₀`:** `⟨i₀, (proof: threshold = ½·m₀)⟩`, `i₀ = ⟨c*₁, ⟨c*₂, PUnit.unit⟩⟩`.
 
 ## What fm3 transcribes
 The `achiever` field (or `of_mult_and_achiever`'s `(i₀, j₀)`):
 - `i₀ : routeMIota ⟨L,M⟩` = the nested Σ/Sum term following the `T*`-rank `PivotChoice` at each node
   (built by the same `WellFounded.fix` as `routeAtlas`, selecting the `T*`-rank cell). For the `(2,2,2)`
-  anchor: `i₀ = ⟨c*, PUnit.unit⟩`, `c*` the ρ-chart pivot cell.
+  anchor: `i₀ = ⟨c*₁, ⟨c*₂, PUnit.unit⟩⟩` (two C1 nodes), `c*₂` the ρ-chart (incidence) pivot cell.
 - `j₀ : Fin (routeD ⟨L,M⟩ i₀)` = the binding-divisor coordinate on `i₀`'s `MonoData`, with
-  `routeK _ i₀ j₀ = 1` (`hk₀`) and `routeH _ i₀ j₀ = m₀−1` (`hh₀`).
+  `routeK _ i₀ j₀ = 1` (`hk₀`) and `routeH _ i₀ j₀ = m₀−1` (`hh₀`). **Which axis is `j₀`:** the
+  `monomialThreshold = ⨅_j axisRatio` is the MIN over the path's C1 axes; `j₀` is the axis with the
+  LARGEST `card = m₀` (the C1 step whose `pivotBlowupOn` center is the full codim-`m₀` stratum — the last
+  step completing `T*`'s resolution). That axis binds the `⨅` at `½·m₀`; the others (smaller `card`) have
+  larger ratio. So `j₀` = the codim-`m₀` C1 axis (the `c*₂` step for `(2,2,2)`).
 - then `monomialThreshold_eq_half_of_binding` (already wired in `of_mult_and_achiever`) closes `achiever`.
 
 **Realizability (why `i₀` exists, the (S-min) obligation):** `classify S` returns `.c1`/`.c5` with a `cs`
@@ -71,7 +83,7 @@ un-stubbed (the rank-pattern combinatorics, #39), `i₀` is concretely "the Σ/S
 `classify S := sorry`). The achiever `i₀` is concrete only once those carry the real rank-pattern content
 (the `PivotChoice` indexing the `argmaxCellOn` pivot cells, `classify` reading rank relative to the active
 prefix image). Until then, `i₀` is specified structurally (the nested term following the `T*`-rank cell at
-each node), and the `(2,2,2)` anchor is the concrete check (`⟨c*, PUnit.unit⟩`, `c*` the ρ-chart pivot).
+each node), and the `(2,2,2)` anchor is the concrete check (`⟨c*₁, ⟨c*₂, PUnit.unit⟩⟩` two C1 nodes, `c*₂` the ρ-chart pivot).
 The realizability (`cs` nonempty at the `T*`-rank cell) rides `Core.baseChange_normalForm` — independent of
 the stub. So fm3 can wire `achiever`'s SHAPE now (the recursion selecting the `T*`-cell) and fill the
 concrete `c*` when `classify`/`PivotChoice` land.
@@ -80,5 +92,6 @@ concrete `c*` when `classify`/`PivotChoice` land.
 Re-spells g147's encoding-independent achiever datum (`T*` = `inf' Mval` minimiser, binding divisor
 `(1,m₀−1)`) into fm3's `RouteMTree.lean` `routeMIota` Σ/⊕-tree encoding. Reads `RouteMTree.lean`
 (`routeAtlas`, `routeMIota`, `routeD/K/H`, the `RouteCase` constructors). The `(2,2,2)` anchor is the
-concrete instance (`i₀ = ⟨c*, PUnit.unit⟩`, ρ-chart). Script: `g148_iota_respell.py` in `g129-scripts/`.
+concrete instance (`i₀ = ⟨c*₁, ⟨c*₂, PUnit.unit⟩⟩` two C1 nodes, the ρ-chart incidence pivot — fm3 #47).
+Script: `g148_iota_respell.py` in `g129-scripts/`.
 Builds on #147 (the achiever cert), #134 ((S-min)), `Core.OrbitKostant` (realizability), fm3's G1 (#39).
