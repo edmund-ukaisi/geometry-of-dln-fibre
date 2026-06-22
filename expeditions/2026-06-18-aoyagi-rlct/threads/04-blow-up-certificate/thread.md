@@ -3624,3 +3624,28 @@ than supply, the old top rows, transported pivot row, post-pivot tail, and
 suffix handling for the next `C'^(S+1)` or successor following-product
 package.  A thin total-source adapter for paper `C'` is acceptable only if it
 directly serves that source-production theorem.
+
+## 2026-06-22 Lean Case 2 continuing weighted following product
+
+Reproduction:
+`reproduction-case2-continuing-weighted-following-product-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-weighted-following-product.md`.
+Review artifact:
+`review-case2-continuing-weighted-following-product-a4.md`.
+
+Lean now right-multiplies the continuing paper-`C'` weighted lower-row handoff
+by an arbitrary supplied following product:
+
+```text
+Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withCorrectedPostData
+```
+
+This is exactly congruence of the existing lower-row identity under
+right-multiplication by `F`.  The matrix `F` is supplied.  The theorem keeps
+the pivot row absent, keeps the successor lower-row diagonal explicit, and
+carries the corrected exponent/level/gap/recurrence post-data projections from
+the existing boundary.  It does not assert next-center nonemptiness, source
+production of `F`, source production of the full successor `C'^(S+1)`,
+successor chart-family construction, transition invariance, Jacobian
+arithmetic, normal crossings, pole order, or RLCT.

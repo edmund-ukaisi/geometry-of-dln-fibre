@@ -4960,6 +4960,23 @@ displayed chart across continuing and terminal branches; the current terminal
 bridges deliberately stop at supplied row equations.  Audit:
 `threads/04-blow-up-certificate/source-frontier-audit-case2-paper-cprime-a4.md`.
 
+Latest A4 update: the Case 2 continuing weighted following-product slice has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+name is
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withCorrectedPostData`.
+It right-multiplies the existing paper-`C'` weighted lower-row handoff by a
+supplied following product `F`, preserving the same witness and corrected
+post-data projections.  This is lower-row equality congruence only: `F`
+remains supplied, the pivot row is absent, the successor lower-row diagonal is
+explicit, and there is no next-center nonemptiness, source-produced successor
+`C'^(S+1)`, chart production, transition invariant, normal crossings, pole
+order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-weighted-following-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-weighted-following-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-weighted-following-product-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

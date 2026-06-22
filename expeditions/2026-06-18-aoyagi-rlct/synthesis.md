@@ -4536,6 +4536,23 @@ package already isolated in Lean and does not repair the printed vector
 mismatch as a source theorem.  It is not chart production, a transition
 invariant, pole order, normal crossings, or RLCT.
 
+Latest A4 Case 2 continuing weighted following-product update:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withCorrectedPostData`.
+This right-multiplies the existing paper-`C'` weighted lower-row handoff by an
+arbitrary supplied following product `F`, preserving the same row-operation
+witness and corrected post-data projections.  The theorem is lower-row only,
+keeps the successor lower-row diagonal explicit, and keeps `F` supplied.  It
+does not add next-center nonemptiness, source production of `F`, source
+production of the full successor `C'^(S+1)`, successor chart-family
+construction, transition invariance, Jacobian arithmetic, normal crossings,
+pole order, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-weighted-following-product-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-weighted-following-product.md`,
+and
+`threads/04-blow-up-certificate/review-case2-continuing-weighted-following-product-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

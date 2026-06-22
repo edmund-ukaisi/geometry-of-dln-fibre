@@ -12884,6 +12884,69 @@ theorem sourceChartMap_paperCprimeWeightedLowerRows_withCorrectedPostData
       simpa [data, row, col, A, upivot, post, Cprime, e, htail] using
         data.postPivotWeightedFreeCprimeNextSameStageProduct residual Cprime
 
+/-- Continuing displayed source-chart lower-row handoff after right
+multiplication by a supplied following product.
+
+This is only congruence of the existing paper-`C'` lower-row handoff.  The
+matrix `F` remains supplied; the theorem does not include the pivot row,
+construct a successor following product, prove chart coverage, or assert a
+transition invariant. -/
+theorem sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withCorrectedPostData
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let col := case2DisplayedPivotCol n hS hcont
+    let A := case2DisplayedPaperDchart n hS hcont residual
+    let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+    let post := pre.case2Succ upivot
+    ∃ q : pivotComplement row → R,
+      (((weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSourceSubstitutionBlock n hS hcont upivot residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          case2DisplayedSourceFollowingFactor n hS hcont C).submatrix
+          (fun i ↦
+            Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+          id) * F =
+        (diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+          (case2DisplayedPostPivotResidualBlock n hS hcont residual *
+            case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C)) * F ∧
+      IntroducedLabelExponentCertificates L n S (J + 1)
+        (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+        (updateSelectedLabelScalar S (J + 1)
+          (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+            ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelLevelInvariants L n S (J + 1)
+        post.level
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      case2IntroducedLabelLeastValueGap L n S (J + 1)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      post.case2Gap := by
+  rcases
+      sourceChartMap_paperCprimeWeightedLowerRows_withCorrectedPostData
+        pre u residual hS hSL hcont exponentPre levelInv leastValueGap
+        chartFamily C with
+    ⟨q, hq, hexp, hlevel, hgap, hcase2⟩
+  refine ⟨q, ?_, hexp, hlevel, hgap, hcase2⟩
+  simpa using congrArg (fun M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R ↦ M * F) hq
+
 /-- Source-order terminal weight matrix for the stopped displayed Case 2
 candidate.
 

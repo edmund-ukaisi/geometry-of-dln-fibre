@@ -283,6 +283,16 @@ nonemptiness and finite center principalization:
 `SourceChartFrontierBoundaryPackages.continuingWeighted`.  Keep this as a
 payload wrapper only; it is not chart production, source-produced post-data,
 transition invariance, or a full successor product.
+Current continuing weighted following-product slice:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-weighted-following-product-a4.md`.
+Lean now right-multiplies the paper-`C'` weighted lower-row handoff by a
+supplied following product `F`:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withCorrectedPostData`.
+This is only equality congruence under right multiplication.  It keeps `F`
+supplied, omits the pivot row, keeps the successor lower-row diagonal
+explicit, and carries the corrected post-data projections.  It is not
+source-production of `F`, a full successor product, chart production, or a
+transition invariant.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.
