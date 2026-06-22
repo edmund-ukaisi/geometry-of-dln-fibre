@@ -92,6 +92,17 @@ off this path — the transvection's det-1-ness does not make the loss invariant
 verdict docs @728fbb0/a1dc1e4 + my cherry-picked squeeze chain @48cefc0). The DATUM commit (the +71 in
 f6fedb1's re-state) still needs cherry-picking onto the verdict line — or merge `fm2/squeeze-datum`.
 
+## Toolkit-instantiation interface — crux2's REVIEW CHECKLIST (decorrelation-gated)
+
+> **DO NOT SHARE WITH fm3 PRE-DISCHARGE (decorrelation, controller 2026-06-22).** fm3 (the producer)
+> must derive the blow-up→hnode connection INDEPENDENTLY — that independence is what makes its discharge
+> a real faithfulness check on the interface that was wrong 3×. This block is crux2's *consumer-side
+> reviewer checklist* (used to AUDIT fm3's contract AFTER fm3 surfaces it), NOT a recipe to hand fm3.
+> fm3 gets only: the hnode SHAPE (the 3 conjuncts, with T/bcol/SΓ/Erow as FREE parameters), the toolkit
+> lemma SIGNATURES, and the atlas API. fm3 does NOT get the cofactor formula, the "redEmbed = MP
+> homeomorphism" recipe, or crux2's reference existence/transport instances below — those are crux2's
+> producer-side theory and would collapse the decorrelation.
+
 ## Toolkit-instantiation interface (for fm3's coordinate bridge — the review checklist)
 
 fm3 owns the coordinate bridge + final assembly (b1 loss-form identity, b2 transport, the literal
