@@ -4429,6 +4429,32 @@ bookkeeping only.  It does not construct Eq5 vectors, prove nonbase status,
 prove classifier/injection/back-to-label coverage, prove an order count, pole
 order, normal crossings, or RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint counted-datum bridge
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-counted-datum-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-counted-datum-bridge.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-counted-datum-bridge-a5.md`.
+
+Lean now proves counted-datum codomain membership for supplied Eq5
+terminal-room endpoint values:
+
+```text
+aoyagiLemma5Eq5_endpointChain_countDatumSet_mem_of_terminalRoom
+aoyagiLemma5Eq5_endpointValue_countDatumSet_mem_of_terminalRoom
+```
+
+The first theorem maps the chain value `H_j` at an interior selected
+coordinate into `aoyagiLemma5CountDatumSet`, using the Eq5 binary-prefix-delta
+theorem and the existing terminal-binary counted-datum maps-to theorem.  The
+second rewrites this through the supplied endpoint-chain correspondence to
+map the source-facing value `T(C.point j - 1)`.  Both require the relevant
+nonbase inequality as a hypothesis.  This does not construct Eq5 vectors,
+endpoint realisation, nonbase status, classifiers, injection, back-to-label
+coverage, order count, pole order, normal crossings, or RLCT.
+
 ## 2026-06-21 Lean Lemma 4 prefix-profile computations
 
 Reproduction:

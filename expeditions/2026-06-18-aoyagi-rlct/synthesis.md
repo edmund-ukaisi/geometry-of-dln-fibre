@@ -4129,6 +4129,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-counted-datum-bridge-a5.md`.
 
+Latest A5 Eq5 endpoint counted-datum bridge update:
+`Lemma5Eq5CountDatumBridge.lean` now contains
+`aoyagiLemma5Eq5_endpointChain_countDatumSet_mem_of_terminalRoom` and
+`aoyagiLemma5Eq5_endpointValue_countDatumSet_mem_of_terminalRoom`.  For a
+supplied Eq5 terminal-room endpoint chain, an interior selected coordinate,
+and a supplied nonbase inequality, the chain value `H_j` and the source-facing
+endpoint value `T(C.point j - 1)` belong to the counted-datum codomain.  This
+uses the Eq5 binary-prefix-delta theorem and the existing terminal-binary
+counted-datum maps-to theorem.  It does not construct Eq5 vectors, endpoint
+realisation, nonbase status, classifiers, injection, back-to-label coverage,
+order count, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-counted-datum-bridge-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-counted-datum-bridge.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-counted-datum-bridge-a5.md`.
+
 Latest A5 Lemma 4 prefix-profile computation update:
 `HtildeChainArithmetic.lean` now contains
 `aoyagiLemma4IncrementPrefix_eq_upperHighCount_add_of_eq_upperNat_sub` and
