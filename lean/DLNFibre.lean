@@ -58,3 +58,5 @@ import DLNFibre.DLN.RlctPayoff
 import DLNFibre.DLN.RlctPayoffGeneral
 import DLNFibre.Core.CCodimZeroStrict
 import DLNFibre.Core.SigmaCodim
+-- q-series primitives (perm-invariance M1): P / Pm / Pmult / Qseries + constant-term-1 + nonneg.
+import DLNFibre.Core.QSeries

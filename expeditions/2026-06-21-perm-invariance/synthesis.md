@@ -115,3 +115,14 @@ PLAN (bottom-up, serial Lean):
 - order-reversal fragment (independent, ~1 file) — slot in when convenient.
 
 NOW: dispatch (a) transfer-pin pen-and-paper [parallel, no Lean], (b) M1 primitives formaliser [serial Lean].
+
+## 2026-06-22 — M3 DE-RISKED: transfer PINNED (thread 04), M2 SHRINKS
+pin-transfer pinned the PEEL local transfer identity (findings homed to threads/04; scratch committed 6eb7705).
+KEY CORRECTION: transfer = N nested applications of the SINGLE N=1 Durfee identity (D) + an arithmetic
+exponent-split (E) — NOT q-Vandermonde×Durfee (corrects thread-03 §4). Recommended Lean target = staged
+single-induction on m (one invariant), one Durfee per step. Subtle step = terminal staged↔flat reindexing
+(de-risked: x_j≤s_j is free given ∑x=d). Exact-verified (28 (b;d) incl wide/non-monotone, 0 mismatch).
+IMPACT: M3 (PEEL) needs ONLY (D) Durfee as classical input. M2 re-scoped: (D) Durfee [M3] + the S3
+q-binomial inverse [M4, possibly AVOIDABLE by own induction]; q-Vandermonde likely NOT needed at all.
+GIT NOTE: findings.md + this flush written to disk; commit DEFERRED to the post-M1 coordinated pass
+(fm-qseries-m1 is mid-tide in the shared worktree — avoid racing its build/commit).

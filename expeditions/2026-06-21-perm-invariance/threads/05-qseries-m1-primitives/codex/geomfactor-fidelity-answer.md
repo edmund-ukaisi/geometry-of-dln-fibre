@@ -1,0 +1,11 @@
+1. **YES.** FACT: `PowerSeries.mk f` has coefficient `f n` at `X^n`, so this definition gives coefficient `if k ∣ n then 1 else 0`. FACT: For `k ≥ 1`, the coefficient of `X^n` in `∑_{j≥0} X^{j k}` is `1` exactly when there is a unique `j` with `j k = n`, equivalently `k ∣ n`, and is `0` otherwise.
+
+2. **CORRECT, with caveat.** FACT: In Lean/Nat divisibility, `0 ∣ n ↔ n = 0`, so `geomFactor 0` is the constant series `1`. FACT: The naive series `∑_{j≥0} X^{j·0}` is not a valid ordinary formal power series over `ℤ`, since infinitely many terms contribute to the constant coefficient. INFERENCE: This is fine for the stated product if `P s` really ranges over `Finset.Icc 1 s`; then `k = 0` is never used, but prose should say the geometric-series interpretation is for `k ≥ 1`.
+
+3. **YES.** FACT: The hypothesis `1 ≤ k` is necessary because at `k = 0`, `X^0 = 1`, hence `1 - X^0 = 0`, and `geomFactor 0 * 0 = 0 ≠ 1`. FACT: For `k ≥ 1`, the usual coefficient telescoping works: the coefficient is `c_n - c_{n-k}` when applicable, and `k ∣ n ↔ k ∣ n-k`, leaving only the constant coefficient `1`.
+
+4. **CORRECT, with terminology caveat.** FACT: For `k ≥ 1`, `1 - X^k` has constant coefficient `1`, hence is a unit in `ℤ⟦X⟧`. FACT: The displayed equation makes `geomFactor k` a left inverse of `1 - X^k` in the usual terminology, not a right inverse, since it is on the left; but because `1 - X^k` is a unit, this still uniquely implies `geomFactor k = (1 - X^k)⁻¹`. FACT: `ℤ⟦X⟧` is commutative, so the left/right issue has no behavioral consequence here.
+
+5. **YES.** FACT: For all intended uses with `k ≥ 1`, the definition faithfully encodes the geometric series coefficients of `(1 - X^k)^{-1}`. INFERENCE: There is no fidelity concern provided the informal statement is restricted to positive `k`, and uses excluding `k = 0` are explicit.
+
+**Overall verdict:** yes, `geomFactor_mul_one_sub` with hypothesis `1 ≤ k` is the correct and complete witness for the claim that `geomFactor k` represents `(1 - X^k)^{-1}` for the intended positive values of `k`.
