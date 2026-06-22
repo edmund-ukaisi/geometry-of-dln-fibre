@@ -135,4 +135,17 @@ def peelPart (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 1) × Fin (N + 
     peelPart m (I, J₀.castSucc) = m (I.castSucc, J₀.castSucc.castSucc) := by
   simp [peelPart]
 
+/-- The peel preserves support: if `m` is supported on `i ≤ j` then so is `peelPart m`. -/
+theorem peelPart_support {m : Fin (N + 2) × Fin (N + 2) → ℕ}
+    (hs : ∀ p : Fin (N + 2) × Fin (N + 2), ¬ p.1 ≤ p.2 → m p = 0)
+    (p : Fin (N + 1) × Fin (N + 1)) (hp : ¬ p.1 ≤ p.2) : peelPart m p = 0 := by
+  obtain ⟨I, J⟩ := p
+  induction J using Fin.lastCases with
+  | last => exact absurd (Fin.le_last I) hp
+  | cast J₀ =>
+    rw [peelPart_castSucc]
+    apply hs
+    simp only [Fin.castSucc_le_castSucc_iff] at hp ⊢
+    exact hp
+
 end DLNFibre.Core
