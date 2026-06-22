@@ -30,7 +30,20 @@ level up at the g150 deepest-point gauge chart (there det-UNIT, non-MP). NOT the
 
 **g150 gauge chart (CORRECTED).** Reduced core = gauge-normalized ‖T̃_1···T̃_L‖² (product Schur complement),
 NOT raw ‖∏T_s‖² (on {E=0} the cross-term becomes invertible gauge factor (I−V·Y)^{-1}). nReg = r(H₀+H_last−r).
-jac_unit bounded positive det, non-MP (transport via unit-invariance + germ-locality, not comp_homeomorph).
+
+**Cert sharpening (cobuild-sub34 + Codex, decorrelated, 2026-06-22).** The raw-chain squeeze ‖T·S‖² is FALSE
+for matrices (g=(I−VY)⁻¹ maps a TS=0 dir to TgS≠0, ratio→∞) — independent re-derivation of why the core must
+be T̃; the g-absorption IS the non-MP content. The cert framing refines: "exact split, not a squeeze" →
+"exact only in T̃-coords; the raw-chain squeeze is false."
+
+**sub-3/4 ROUTE DECISION (controller taste-call, 2026-06-22): R-squeeze, NOT the chart** (crux2 fast-veto
+pending). rlctAtOn is a germ ⟹ the DeepestGaugeChart's GLOBAL `chart : Flat ≃ₜ Flat` + ∀x HasFDerivAt is
+UNSATISFIABLE (the honest gauge map is only a local diffeo at w0; (I−VY)⁻¹/A⁻¹ blow up away from w0). Route A:
+a same-point rlct sandwich c₁Φ ≤ F ≤ c₂Φ (`rlctAtOn_squeeze`, the blessed #128 pattern — no c-o-v, no
+Jacobian), Φ = (regular nondeg block) ⊕ ‖T̃‖², split via #52 + rlct_additive_smooth_block. All content → the
+matrix comparability ‖T·g·S‖² ≍ dlnLoss M 0 (cobuild-sub34 sub-lemma 1; g's coupling → bounded uniform
+constants). DROPS the global chart + jac_unit + sub-5 non-MP transport (crux2 HOLDS sub-5); SURVIVES the
+assembly statement, #52, sub-2. Chosen over Route B (local PartialHomeomorph + a new local-transport S1.1 variant).
 
 **Current execution (three grinds):**
 - fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
@@ -39,11 +52,11 @@ jac_unit bounded positive det, non-MP (transport via unit-invariance + germ-loca
 - crux2 #50 (value-free reduction, consuming side) on origin/fm2/deepest-gauge-chart (@9ed57e5): S1
   spectator-peel `rlctAtOn_spectator_peel` (Foundations/S1Spectator.lean — gauge-orbit spectator dirs are
   RLCT-neutral) **PROVEN, axiom-clean** (#52; the hard piece of sub-6/7, reused by D1 #42); sub-2 (rank-exact)
-  PROVEN. Reachable + framing-independent: sub-5 (non-MP transport, ~100-150 lines) + sub-6/7 assembly
-  (~80-120 lines). The XL sub-3/4 (chart-existence) is cobuild-sub34's, in parallel.
-- cobuild-sub34 #51 (the XL sub-3/4 `deepest_gauge_chart_exists`, g150-fix-cert-backed block algebra,
-  ~600-1500 lines) — own worktree off origin/fm2/deepest-gauge-chart, skeleton-first; crux2 reviews the
-  skeleton for cert-fidelity.
+  PROVEN. sub-6/7 assembly (~80-120 lines) reachable. sub-5 non-MP transport SUPERSEDED by the Route-A squeeze
+  (crux2 HOLDS sub-5).
+- cobuild-sub34 #51 (sub-3/4 via Route A: the matrix comparability ‖T·g·S‖² ≍ dlnLoss M 0 + rlctAtOn_squeeze,
+  no chart) — own worktree (workspace/dgc-sub34) off origin/fm2/deepest-gauge-chart; baseline building. pp2 =
+  decorrelated backup if the comparability walls.
 
 **CANONICAL CERT LINEAGE (for #28 — pp2's authoritative tips, 2026-06-22):**
 - g138 design (C1 = blow-up + det-1 triangular peel + recurse): **origin/g138-c1-peel-prose @0823917** ← canonical
