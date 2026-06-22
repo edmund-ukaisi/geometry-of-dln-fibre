@@ -4402,6 +4402,29 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-terminal-countdatum-cardinal-squeeze-a5.md`.
 
+Latest A5 Eq5 branch-label injection update:
+`Lemma5TerminalBridge.lean` now contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_fullBranches_of_some_injOn`.
+It lifts supplied nonbase branch-label injectivity to the full `Option`-tagged
+terminal branch set under explicit base/nonbase separation.
+`Lemma5Eq5TerminalClassifier.lean` now contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_eq5AlphaIndexed_nonbase`.
+It derives the nonbase injectivity for Eq5 alpha-indexed branches from
+coordinatewise alpha injectivity, supplied selected-block membership of source
+coordinates, and the displayed Eq5 label formula; selected-cutpoint block
+uniqueness supplies cross-coordinate disjointness.  This is still conditional
+branch-label injection only.  It does not construct Eq5 branches, prove
+alpha-domain coverage, produce terminal payloads, prove counted-datum
+injectivity, build back-to-label coverage, construct an upper-bound
+classifier, prove no-extra terminal-minimum coverage, order count, pole order,
+normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-branch-label-injection-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-branch-label-injection.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-branch-label-injection-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.

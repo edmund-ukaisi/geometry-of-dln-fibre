@@ -86,6 +86,8 @@ Current Eq5 terminal counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-countdatum-classifier-a5.md`.
 Current Eq5 terminal counted-datum cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-countdatum-cardinal-squeeze-a5.md`.
+Current Eq5 branch-label injection slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-branch-label-injection-a5.md`.
 Current Eq5 alpha endpoint value-image split slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
 Current Lemma 4 prefix-profile computation slice:
@@ -298,9 +300,11 @@ Immediate order:
    `J`-increment bridge under the exact p. 18 guard, without connecting it to
    Lemma 5 no-extra counting.
 2. Continue the no-extra/classifier frontier only with explicit supplied
-   boundaries: terminal branch construction, source-label legality, injection,
-   and back-to-label coverage
-   remain unproved.  Do not infer any of these from the conditional terminal
+   boundaries: terminal branch construction, source-label legality, and
+   back-to-label coverage remain unproved.  A conditional Eq5 branch-label
+   injection wrapper is now available, but it still assumes alpha injectivity,
+   selected-block membership, the Eq5 label formula, and base/nonbase
+   separation.  Do not infer these from the conditional terminal
    source-realisation bridge or from the supplied counted-datum back-to-label
    boundary.
 3. Use the Eq5 alpha endpoint value-image split only as one-coordinate

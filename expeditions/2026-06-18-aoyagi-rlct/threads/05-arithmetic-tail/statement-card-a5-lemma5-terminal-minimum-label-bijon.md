@@ -41,4 +41,5 @@ None.
 
 ## Status
 
-Sorry-free focused build; review pending.
+Sorry-free focused build; reviewed in
+`review-lemma5-terminal-exactness-frontier-and-bijon-a5.md`.

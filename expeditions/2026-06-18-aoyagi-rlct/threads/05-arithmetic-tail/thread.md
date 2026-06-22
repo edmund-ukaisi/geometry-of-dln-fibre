@@ -4816,7 +4816,7 @@ Reproduction:
 Statement card:
 `statement-card-a5-lemma5-eq5-endpoint-prefix-profile.md`.
 Review artifact:
-pending.
+`review-lemma5-eq5-endpoint-prefix-profile-a5.md`.
 
 Lean now proves the four branchwise endpoint-prefix values for a supplied Eq5
 piecewise vector and supplied endpoint-chain correspondence:
@@ -4835,3 +4835,34 @@ profile arithmetic only.  It does not combine adjacent branches, prove binary
 prefix deltas, prove Lemma 4 two-value increments, construct Eq5 vectors,
 prove endpoint realisation, classifier data, order count, pole order, normal
 crossings, or RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 branch-label injection
+
+Reproduction:
+`reproduction-lemma5-eq5-branch-label-injection-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-branch-label-injection.md`.
+Review artifact:
+`review-lemma5-eq5-branch-label-injection-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_fullBranches_of_some_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_eq5AlphaIndexed_nonbase
+```
+
+The first theorem is finite `Option` bookkeeping: nonbase branch-label
+injectivity plus explicit base/nonbase separation gives injectivity on the
+full supplied terminal branch set.  The second theorem specializes the
+nonbase injection to Eq5 alpha-indexed branches.  Equality of Sigma labels
+puts two nonbase branches in the same selected block, block uniqueness gives
+the same coordinate, and the existing fixed-coordinate alpha-indexed injection
+uses supplied alpha injectivity and the displayed Eq5 label formula.
+
+This is conditional branch-label injection only.  It does not construct Eq5
+branches, prove alpha-domain coverage, produce terminal payloads, derive
+counted-datum injectivity, build back-to-label coverage, construct an
+upper-bound classifier, prove no-extra terminal-minimum coverage, prove a
+Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.

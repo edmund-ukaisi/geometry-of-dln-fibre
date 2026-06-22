@@ -299,6 +299,42 @@ theorem branchLabelImage_card_eq_fullBranches_card_of_injOn {β : Type*}
     C.branchLabelImage.card = C.fullBranches.card := by
   exact Finset.card_image_of_injOn (s := C.fullBranches) (f := C.branchLabel) hinj
 
+/-- Lift injectivity of nonbase branch labels to the full `Option`-tagged
+branch set.
+
+The two mixed cases are kept as an explicit supplied separation hypothesis:
+the base branch label `none` must not equal any nonbase branch label.  This is
+finite `Option` bookkeeping only; it does not prove the nonbase injectivity or
+base/nonbase separation from Aoyagi's source. -/
+theorem branchLabel_injOn_fullBranches_of_some_injOn {β : Type*}
+    [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (hsome :
+      Set.InjOn (fun b : β ↦ C.branchLabel (some b))
+        {b : β | some b ∈ C.fullBranches})
+    (hbase_ne :
+      ∀ {b : β}, some b ∈ C.fullBranches →
+        C.branchLabel none ≠ C.branchLabel (some b)) :
+    Set.InjOn C.branchLabel ↑C.fullBranches := by
+  intro x hx y hy hxy
+  cases x with
+  | none =>
+      cases y with
+      | none => rfl
+      | some b =>
+          exact (hbase_ne hy hxy).elim
+  | some b =>
+      cases y with
+      | none =>
+          exact (hbase_ne hx hxy.symm).elim
+      | some c =>
+          have hbc : b = c := hsome hx hy hxy
+          simp [hbc]
+
 /-- The supplied branch-label image has cardinality bounded by the current
 introduced-label finite domain.
 

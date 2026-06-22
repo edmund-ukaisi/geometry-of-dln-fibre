@@ -736,6 +736,73 @@ theorem branchLabel_bijOn_terminalMinimumLabels_of_eq5OwnBlockCommon_widthBound_
         cut pOf alphaOf layerWidth T hselected hsource hT hblock hlast
         hwidth_le hk hne_base hinjCountDatum)
 
+/-- Branch-label injectivity from supplied Eq5 alpha-indexed nonbase branch
+data.
+
+The proof separates the base branch from all nonbase branches by the explicit
+`hbase_ne` hypothesis.  For two nonbase branches, equality of Sigma labels
+puts their source coordinates in the same selected block, and the displayed
+Eq5 label formula reduces equality to supplied alpha injectivity on that
+block.  This does not construct the branch family or prove counted-datum
+injectivity. -/
+theorem branchLabel_injOn_of_eq5AlphaIndexed_nonbase
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (alphaOf : β → ℕ)
+    (halpha_inj :
+      ∀ j ∈ Finset.Icc 1 N,
+        Set.InjOn alphaOf ↑(TC.family.branches j))
+    (hblock :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        cut.block j (TC.branchLabel (some b)).1)
+    (hlabel :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        ((TC.branchLabel (some b)).2 : ℤ) =
+          aoyagiHtildeUpperNat (N + 1) a M m j + 1 - (alphaOf b : ℤ))
+    (hbase_ne :
+      ∀ {b : β}, some b ∈ TC.fullBranches →
+        TC.branchLabel none ≠ TC.branchLabel (some b)) :
+    Set.InjOn TC.branchLabel ↑TC.fullBranches := by
+  refine TC.branchLabel_injOn_fullBranches_of_some_injOn ?_ hbase_ne
+  intro b hb c hc hbc_label
+  have hb_nonbase :
+      some b ∈ TC.family.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches := by
+    simpa [AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches,
+      AoyagiLemma5SuppliedAdmissibleFamily.fullBranches] using hb
+  have hc_nonbase :
+      some c ∈ TC.family.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches := by
+    simpa [AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches,
+      AoyagiLemma5SuppliedAdmissibleFamily.fullBranches] using hc
+  rcases
+    (AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff
+      TC.family.toAoyagiLemma5SuppliedNonbaseFamily).mp hb_nonbase
+    with ⟨j, hj, hbj⟩
+  rcases
+    (AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff
+      TC.family.toAoyagiLemma5SuppliedNonbaseFamily).mp hc_nonbase
+    with ⟨k, hk, hck⟩
+  have hsource_eq :
+      (TC.branchLabel (some b)).1 = (TC.branchLabel (some c)).1 :=
+    congrArg Sigma.fst hbc_label
+  have hblock_b : cut.block j (TC.branchLabel (some b)).1 :=
+    hblock j hj b hbj
+  have hblock_c_same : cut.block k (TC.branchLabel (some b)).1 := by
+    rw [hsource_eq]
+    exact hblock k hk c hck
+  have hjk : j = k := cut.block_index_unique hblock_b hblock_c_same
+  have hck_j : c ∈ TC.family.branches j := by
+    simpa [hjk] using hck
+  exact
+    (aoyagiLemma5Eq5_alphaIndexedBranchLabel_injOn
+      (N + 1) a j M m (TC.family.branches j) alphaOf
+      (fun b : β ↦ TC.branchLabel (some b))
+      (halpha_inj j hj) (hlabel j hj)) hbj hck_j hbc_label
+
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
 end Aoyagi
