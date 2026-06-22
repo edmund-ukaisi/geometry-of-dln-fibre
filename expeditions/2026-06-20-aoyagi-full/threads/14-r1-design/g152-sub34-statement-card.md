@@ -1,56 +1,51 @@
-# Statement card — #44c `deepest_gauge_chart_exists` (sub-34)
+# Statement card — #44c / #54 matrix-core comparability (sub-34)
 
-**Status: ROUTE-ANALYSED, NOT YET PROVEN.** Held on an interface decision (crux2 owns the
-`DeepestGaugeChart` structure + sub-5). No Lean written — three converged findings indicate the
-banked structure is the wrong shape, and building 600+ lines against it would be the
-visible-progress trap (CLAUDE.md disposition).
+**Status: ABSTRACT COMPARABILITY sorry-free (GREEN). The geometric instantiation into sub-3's
+`loss_squeeze` is gated on crux2's #58 coreEmbed structure fix.**
 
-## Target (as banked by crux2, `DeepestGaugeChart.lean`)
-```lean
-theorem deepest_gauge_chart_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    Nonempty (DeepestGaugeChart H r B hB hr hL)
+## Module
+`lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean` (pinned `fm2/deepest-gauge-chart-sub34` @19b62a7)
+
+## Delivered (4 lemmas, 0 sorry, axioms = {propext, Classical.choice, Quot.sound})
+
+### `twofactor_block_product`
+`(fromBlocks (1+X₁) Y₁ Z₁ T₁) * (fromBlocks (1+X₂) Y₂ Z₂ T₂) = fromBlocks (…) (…) (…) (Z₁Y₂+T₁T₂)`.
+The 2-factor gauge-sliced product blocks (`fromBlocks_multiply`). g150 cert's gauge slice.
+
+### `schur_P11_decomp`
+`P11 = (P11 − P10·Ainv·P01) + P10·Ainv·P01`. The Schur split: `R := P11 − P10·Ainv·P01` (the
+gauge-normalized T̃ core), leak `:= P10·Ainv·P01` (regular×regular). Pure ring algebra.
+
+### `frobenius_fromBlocks`
+`∑ᵢⱼ f((fromBlocks E00 E01 E10 E11)ᵢⱼ) = (∑f(E00)+∑f(E01))+(∑f(E10)+∑f(E11))`. The block-Frobenius
+split (`f = (·²)` ⟹ `loss = ∑E² + ‖P11‖²`). `Fintype.sum_sum_type` regrouping.
+
+### `core_comparability_squeeze` (THE load-bearing #54)
+Given `P11 j = leak j + Rcore j` (`hsplit`) and `∑ leak² ≤ t²·∑ E²` (`hleak`, leak ∈ ideal(reg)):
 ```
-`DeepestGaugeChart` carries: `split` (MP reindex flat ≃ₜ reg×(core×spectator)) + `split_mp`/`split_zero`;
-`chart : Flat ≃ₜ Flat` (global) + `Dchart` + `hasDeriv : ∀x` + `jac_unit` + `chart_zero`; `loss_form`
-(germ equality `dlnLoss∘psymm∘chart =ᶠ ∑reg² + dlnLoss M 0(core)`).
+(2(1+t²))⁻¹·(∑E²+‖Rcore‖²) ≤ ∑E²+‖P11‖² ≤ (2+2t²)·(∑E²+‖Rcore‖²)
+```
+The thin specialisation of `squeeze_bounds_abstract` (`p = leak`, `s = Rcore`, `p+s = P11`).
 
 ## English gloss
-At a rank-`r`-exact deepest point, a coordinate change on the flat parameter space splits it into
-`nReg = r(H₀+H_last−r)` regular gauge directions, the reduced core `Params M` (`M = H−r`), and
-`nGauge` spectators, under which `dlnLoss H B` pulls back to `∑ regular² + dlnLoss M 0(core)` near `0`.
+At a rank-`r`-exact deepest point, the gauge-sliced loss `= ∑E² + ‖P11‖²`; the `(1,1)` block `P11`
+splits as the gauge-normalized Schur core `R` (the T̃ chain) plus a regular×regular leak; since the
+leak is charged to the regular block (`∑leak² ≤ t²∑E²`, `t = ‖pivot‖ → 0` at `w0`), the loss is
+two-sidedly comparable to `∑E² + ‖R‖²` — the squeeze datum sub-5/6 consume.
 
-## Numeric sanity checks (all PASS)
-- `nReg = r(H₀+H_last−r)` matches the regular-residual Jacobian rank at `w0`: (2,2,2)r1→3, 3-layer
-  (3,3,3,3)r1→5 (finite-diff rank).
-- Dimension split `flatDim H = nReg + flatDim M + nGauge` exact: 8=3+2+3, 18=8+2+8, 27=5+12+10.
+## g153 (the refutation this dodges)
+The naive RAW-`∏T` core is FALSE: `C1C2C3 = blockdiag[1,−ε⁴]` has `∑E²=0`, raw `∏T=0` (interior
+`T2=0`), `P11=−ε⁴` ⟹ `loss=ε⁸ > c₂·Φ_raw=0`. The Schur core `R` (not raw `∏T`) is load-bearing; the
+leak (which the raw form mis-assigned to the core) is correctly charged to `∑E²` here.
 
-## The three route findings (decorrelated: exact-numeric + Codex xhigh; full notes in
-`codex/g152-sub34-finding.md`)
-1. The squeeze against the RAW reduced chain `‖T·S‖²` is FALSE for matrices (`g=(I−VY)⁻¹` between
-   T,S; `‖TgS‖²/‖TS‖²→∞` as `TS→0`). The cert's gauge-normalized `T̃` is right; the core must be in
-   `T̃`-coords. (The scalar (2,2,2)r1 case hides this.)
-2. `Dchart`/`jac_unit` are NOT dead weight under the S1.1 transport route: the regular-residual c-o-v
-   is a genuine diffeo, and unweighted `rlctAt(F∘π)=rlctAt(F)` is FALSE (S1.1 docstring: `(u,uv)⟹1/2≠1`).
-3. (Decisive.) The structure's GLOBAL `chart : Flat ≃ₜ Flat` + `∀x HasFDerivAt` over-reaches:
-   `rlctAtOn` is local; the honest gauge chart is a local diffeo only (inverse uses `A⁻¹`,`(I−VY)⁻¹`);
-   S1.1 has global `IsProperMap`+`Surjective`. No `PartialHomeomorph`-RLCT lemma exists in the codebase.
+## Numeric checks (PASS)
+- `nReg = r(H₀+H_last−r)` = residual Jacobian rank at `w0` (3-layer fold).
+- `flatDim H = nReg + flatDim M + nGauge` exact (8=3+2+3, 18=8+2+8, 27=5+12+10).
+- `‖leak‖²/∑E² → 0` as deviation→0 (leak reg×reg, charged to ∑E²).
+- `nGauge = 0` for ALL L=1 (⟹ MP-split exact-germ impossible at L=1; coreEmbed route needed).
 
-## Two routes
-- **R-S1.1** (structure as-is, populable but heavy ~600-1500 LoC): local gauge c-o-v + global
-  cutoff-extension to `Flat ≃ₜ Flat` + `Dchart` + `jac_unit` + `loss_form` germ; sub-5 transports via
-  `weightedThreshold_transport` + `rlctAtOn_unit_invariant_aux`. Buildable WITHOUT changing crux2's
-  file (I only fill sub-3/4). Confirmed populable: a local diffeo at 0 (invertible `D(0)`) extends to a
-  global self-homeo via a smooth cutoff to identity outside a ball.
-- **R-squeeze** (recommended, lighter, purely local): requires crux2 to replace `loss_form` equality
-  with a squeeze datum `c₁Φ ≤ loss ≤ c₂Φ` near 0; sub-5 = `rlctAtOn_squeeze` + spectator-peel(#52) +
-  `rlct_additive_smooth_block`. Reuses only existing infra. The one real obligation: the matrix
-  ideal-membership squeeze (`loss − Φ ∈ ideal(reg)`, bounded near `w0`).
-
-## Blocker
-crux2's interface decision (owns sub-5 + the structure). Default absent a reply: R-S1.1 (respects
-single-writer ownership). Recommendation: R-squeeze (if crux2/controller direct the structure change).
-
-## Pinned commit
-`fm2/deepest-gauge-chart-sub34` @ a42f57d (diligence; baseline GREEN, 0 Lean LoC delta).
+## Remaining (gated on crux2 #58)
+Geometric instantiation: identify E/P11/leak/R from the gauge-sliced `dlnLoss` via `block_elimination`
+units; the leak bound; `R = dlnLoss M 0(coreEmbed core)`; MP split reindex; assembly into `loss_squeeze`.
+The current structure hardcodes the raw `(paramsEquivFlat M).symm` core (g153-false); crux2 owns the
+coreEmbed reshape (#58). pp2's #56 general-v cert cross-checks the same T̃/R core.
