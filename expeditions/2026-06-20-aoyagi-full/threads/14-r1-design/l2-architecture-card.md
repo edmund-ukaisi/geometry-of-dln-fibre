@@ -267,3 +267,28 @@ HONEST factoring: the split's three fields do NOT pin the slot SEMANTICS (regula
 = `FlatIdx (deepestM H r)` raw `T_s`) — those are pinned only by `loss_squeeze`, so cobuild-sub34
 realizes the concrete partition when wiring (ii)–(iv). g159 flags the `coreAbsorb` GLOBAL homeomorphism
 + its Jacobian as "the wall" — cobuild-sub34's remaining XL.
+
+### FIDELITY FINDING (crux2, 2026-06-22) — interior-only hMid does NOT imply hGne
+
+Threading the locked `hMid` (`∀ s : Fin L, 0 < s.val → r < H s.castSucc`, interior H_1..H_{L-1}) into
+the L2 lemmas surfaced a gap. The L2 lemmas (`deepest_regular_smooth_split`,
+`deepest_regular_core_reduces`) take the analytic `hGne` (`dlnLoss M 0 ∘ flatSymm ≠ 0` a.e. near 0).
+**`hGne` does NOT follow from interior-only `hMid`** — it needs `r < H_s` for ALL `s` (all reduced
+widths `M_s = H_s − r ≥ 1`), endpoints included:
+- `M_0 = 0` (r = H_0, B full row rank): `prod_M` is `0 × M_L` → no entries → `dlnLoss M 0 ≡ 0` → hGne FAILS.
+- `M_L = 0` (r = H_L): `prod_M` is `M_0 × 0` → hGne FAILS.
+- interior `M_s = 0`: `prod_M ≡ 0` → hGne FAILS (this one IS covered by hMid).
+All numerically verified. The endpoint cases are reachable under `hr : ∀ s, r ≤ H s`. Since
+`rlct_additive_smooth_block` is FALSE for a germ-vanishing block, the M_0=0 case breaks the current
+L2 proof route.
+
+RESOLUTION PENDING controller/fm3 verdict:
+- (A) widen the locked form to `r < H_s` for ALL s (contradicts fm3's interior-only lock — needs R1
+  re-confirm);
+- (B) keep interior-only + add a degenerate-endpoint branch (M_0=0 or M_L=0 ⟹ core RLCT 0, separate route).
+
+THE `hMid ⟹ hGne` BRIDGE (non-degenerate all-s case) — HEAVY, roadmap-grade. Two pieces:
+1. `prod_M ≢ 0` when all `M_s ≥ 1` (constructive: an explicit nonzero-product witness). Tractable.
+2. `{A : dlnLoss M 0 A = 0}` measure-zero. Mathlib has NO multivariate "nonzero analytic/poly ⟹ ae ne
+   zero" (only 1-D `IsolatedZeros`). From-scratch: induct on #vars + Fubini to 1-D slices + univariate
+   finite-roots (`Polynomial.setOf_isRoot_finite`). ~150–250 LoC standalone. Shared R1+L2 obligation.
