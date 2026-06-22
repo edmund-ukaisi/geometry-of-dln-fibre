@@ -1303,4 +1303,33 @@ theorem fivegon : ∀ {N : ℕ} (d : Fin (N + 1) → ℕ), fivegonSum d = Pmult 
       rw [Finset.sum_congr rfl hstep, ← Finset.sum_mul, ← fivegonSum, fivegon (d ∘ Fin.castSucc),
         ← Pmult_succ]
 
+/-- The corner-`r` fibre of `kostantAll d` (those `m` with `m (0, last) = r`) is exactly
+`kostantPartitions d r`. -/
+theorem kostantAll_filter_corner (d : Fin (N + 1) → ℕ) (r : ℕ) :
+    (kostantAll d).filter (fun m ↦ m (0, Fin.last N) = r) = kostantPartitions d r := by
+  ext m
+  rw [Finset.mem_filter, mem_kostantAll, mem_kostantPartitions]
+  constructor
+  · rintro ⟨⟨hb, hs, hk⟩, hc⟩; exact ⟨hb, hs, hk, hc⟩
+  · rintro ⟨hb, hs, hk, hc⟩; exact ⟨⟨hb, hs, hk⟩, hc⟩
+
+/-- **Corner-graded decomposition**: `fivegonSum d = ∑_{r=0}^{d 0} Qseries d r`. `kostantAll` fibres
+over the corner value `r = m (0, last) ≤ d 0`, and each fibre is `kostantPartitions d r` (the index
+set of `Qseries d r`). Connects the corner-free fivegon to the corner-graded `Qseries` layer. -/
+theorem fivegonSum_eq_sum_Qseries (d : Fin (N + 1) → ℕ) :
+    fivegonSum d = ∑ r ∈ Finset.range (d 0 + 1), Qseries d r := by
+  have hmaps : ∀ m ∈ kostantAll d, m (0, Fin.last N) ∈ Finset.range (d 0 + 1) :=
+    fun m hm ↦ Finset.mem_range.mpr (Nat.lt_succ_of_le ((mem_kostantAll.mp hm).1 (0, Fin.last N)))
+  rw [fivegonSum, ← Finset.sum_fiberwise_of_maps_to hmaps
+    (fun m ↦ (X : ℤ⟦X⟧) ^ (codimForm N (extendℤ m)).toNat * Pm N m)]
+  refine Finset.sum_congr rfl fun r _ ↦ ?_
+  rw [kostantAll_filter_corner, Qseries]
+
+/-- **The fivegon, Qseries form**: `∑_{r=0}^{d 0} Qseries d r = Pmult d` (`= ∏_i P (d i)`). The
+corner-summed `Qseries` is the multiplicity factor — manifestly multiset-symmetric in `d`. (Per-corner
+permutation invariance of `(C,θ)`, the full Cor 5.10, needs the per-`r` Thm 5.5 identity, not this sum.) -/
+theorem sum_Qseries_eq_Pmult (d : Fin (N + 1) → ℕ) :
+    ∑ r ∈ Finset.range (d 0 + 1), Qseries d r = Pmult d := by
+  rw [← fivegonSum_eq_sum_Qseries, fivegon]
+
 end DLNFibre.Core
