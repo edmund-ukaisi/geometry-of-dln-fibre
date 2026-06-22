@@ -96,3 +96,36 @@ factors are the ONLY non-trivial frame, and they are exactly the bounded constan
 `c₁, c₂`. So the framed-block `∑E² + core` decomposition is valid and the telescoping holds — the
 frame is a clean READING device, not a source of cross-layer entanglement. (Verified: the deepest
 product `= B` exactly on L=3 `H=(2,2,2,2)` r=1.)
+
+## CORRECTION (simpler #77 route): per-layer block-elim on the EXPOSED rank, NOT wLayers' U,V
+
+The "frame = wLayers' U,V" framing above is OVER-complicated (and unsound to extract): `deepestPoint =
+Classical.choice (deepestPoint_exists …)` is an OPAQUE witness — the `U,V`/`wLayers` structure is NOT
+recoverable from it, and a fresh global `block_elimination B` need not match the chosen witness.
+
+The clean route: `deepestPoint_isDeep.2 s : (deepestPoint … s).rank = r` EXPOSES that each layer is
+rank-`r`. So the per-layer frame `(P_s, Q_s)` is just `block_elimination` applied to EACH LAYER
+`deepestPoint s` directly (a rank-`r` matrix) — `P_s · (deepestPoint s) · Q_s = [[I_r,0],[0,0]]`. No
+`wLayers`, no `U,V`, no `Classical.choice` spelunking; the frame is reconstructed per-layer from the
+EXPOSED rank, not extracted from the opaque witness.
+
+The only gap: the existing `block_elimination` (Skeleton:279) is stated H-network-specifically
+(`B : H_0 × H_last`), though its core (`block_elimination_rank_data`, the construction) is general
+`{a b r}`. So #77 = generalize `block_elimination` to `{a b r}(M : Matrix (Fin a)(Fin b) ℝ)(hM :
+M.rank = r)` (a thin generalization, same proof body) + apply per layer (`M = deepestPoint s`,
+`hM = isDeep.2 s`). Much smaller than re-stating `deepestPoint_exists`.
+
+**IMPORTANT — telescoping is NOT trivial under independent per-layer frames** (correcting the
+over-clean claim above): with EACH layer `deepestPoint s` (rank-`r` but NOT block-normal) getting its
+OWN `block_elimination` frame `(P_s, Q_s)`, the interior frames are generally `≠ I`, so the interior
+seams `g_s := Q_s⁻¹ · P_{s+1}⁻¹ ≠ I` do NOT cancel. So `∏ A_s = P_0⁻¹ · (C_1 g_1 C_2 g_2 ⋯ C_L) ·
+Q_{L−1}⁻¹` carries nontrivial interior **g-units** `g_s` between the framed layers `C_s` (= pp2's
+g177 between-layer gauge units). This is NOT a bug — it is exactly why the honest core is the
+GAUGE-NORMALIZED Schur chain `R = ∏ S_s` (the g-units absorbed), NOT the raw `∏ T_s` (g150-fix/g153).
+The `coreAbsorb` (Schur shear) + `coreAbsorb_rlct` peel the g-units; `core_comparability_squeeze`
+(#54) consumes the resulting `P11 = leak + Rcore` split. So the per-layer frame is the right reading
+device for `gaugeDecode`, and the interior g-units it exposes are handled DOWNSTREAM by coreAbsorb —
+consistent with the whole `(e)`-architecture. (The clean-telescoping `loss = ‖P_0⁻¹(∏C −
+blockNormal)Q_{L−1}⁻¹‖²` form only holds for the SPECIFIC `wLayers` witness with interior block-normal
+layers — which the opaque `deepestPoint` is not provably, hence the g-units. The squeeze is robust to
+them either way.)
