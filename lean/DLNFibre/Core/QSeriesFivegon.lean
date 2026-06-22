@@ -275,6 +275,37 @@ theorem codimForm_peel_lhs (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
     ← codimBil_self (extendℤ (peelCorr m)), codimBil_peelCorr_left]
   ring
 
+/-- The "true last column" of `m` at the last vertex `N+1`, as a `Fin (N+2)` array. -/
+def peelLast (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 2) × Fin (N + 2) → ℕ :=
+  fun p ↦ if p.2 = Fin.last (N + 1) then m (p.1, Fin.last (N + 1)) else 0
+
+/-- **Big-side on-box identity**: on the box `0 ≤ α ≤ β ≤ N+1`, `extendℤ m = extendℤ (peelLower m)
++ extendℤ (peelLast m)` — columns `≤ N` come from `peelLower` (`castSucc`), column `N+1` from
+`peelLast`. Hence the `(N+1)`-codimForm of `extendℤ m` rewrites to that of the split (`congr_onbox`). -/
+theorem codimForm_peel_rhs (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimForm (N + 1) (extendℤ m)
+      = codimForm (N + 1) (extendℤ (peelLower m) + extendℤ (peelLast m)) := by
+  apply codimForm_congr_onbox
+  intro α β hα hαβ hβ
+  simp only [Pi.add_apply, extendℤ, peelLower, peelLast]
+  rw [dif_pos ⟨hα, hαβ, hβ⟩]
+  by_cases hbN : β ≤ (N : ℤ)
+  · rw [dif_pos ⟨hα, hαβ, hbN⟩, dif_pos ⟨hα, hαβ, hβ⟩]
+    split_ifs with hif
+    · exfalso
+      have hv := Fin.val_eq_of_eq hif; rw [Fin.val_last] at hv
+      change β.toNat = N + 1 at hv; omega
+    · rw [Nat.cast_zero, add_zero]
+      congr 1
+  · rw [dif_neg (by rintro ⟨_, _, h⟩; omega), dif_pos ⟨hα, hαβ, hβ⟩]
+    split_ifs with hif
+    · rw [zero_add]
+      congr 1
+      congr 1
+      rw [hif]
+    · exfalso; apply hif
+      apply Fin.ext; rw [Fin.val_last]; change β.toNat = N + 1; omega
+
 /-- The peel preserves support: if `m` is supported on `i ≤ j` then so is `peelPart m`. -/
 theorem peelPart_support {m : Fin (N + 2) × Fin (N + 2) → ℕ}
     (hs : ∀ p : Fin (N + 2) × Fin (N + 2), ¬ p.1 ≤ p.2 → m p = 0)
@@ -299,14 +330,14 @@ theorem peelPart_mem {d : Fin (N + 2) → ℕ} {m : Fin (N + 2) × Fin (N + 2) �
     have hkk := hk k.castSucc
     rw [kostantAt] at hkk
     rw [kostantAt]
-    show d k.castSucc = ∑ q ∈ coverF N k, peelPart m q
+    change d k.castSucc = ∑ q ∈ coverF N k, peelPart m q
     rw [peelPart_cover_sum]
     exact hkk
   refine ⟨fun p ↦ ?_, peelPart_support hs, hk'⟩
   by_cases hp : p.1 ≤ p.2
   · have hkp := hk' p.1
     rw [kostantAt] at hkp
-    show peelPart m p ≤ d (Fin.castSucc p.1)
+    change peelPart m p ≤ d (Fin.castSucc p.1)
     rw [show d (Fin.castSucc p.1) = (d ∘ Fin.castSucc) p.1 from rfl, hkp]
     refine Finset.single_le_sum (f := peelPart m) (fun i _ ↦ Nat.zero_le _) ?_
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
@@ -323,5 +354,132 @@ theorem fivegonSum_fiberwise (d : Fin (N + 2) → ℕ) :
             (X : ℤ⟦X⟧) ^ (codimForm (N + 1) (extendℤ m)).toNat * Pm (N + 1) m := by
   rw [fivegonSum]
   exact (Finset.sum_fiberwise_of_maps_to (fun m hm ↦ peelPart_mem hm) _).symm
+
+/-! ## The codimForm split (thread-07 piece 2 / thread-08 A·R·L route)
+
+`codimForm (N+1) (extendℤ m) = codimForm N (extendℤ (peelPart m)) + Δ`, with
+`Δ = codimBil (N+1) A L − codimBil N A R` (`A = extendℤ (peelLower m)` the common lower part,
+`R = extendℤ (peelCorr m)` the peeled last column at slot `N`, `L = extendℤ (peelLast m)` the true
+last column at slot `N+1`). Built by expanding both sides with `codimForm_add` against `A` and killing
+the first-slot cross-terms (`R`/`L` read out of range). -/
+
+/-- `extendℤ` (level `K`) vanishes for column `b > K`. Here at level `N` for `peelLower m`. -/
+theorem extendℤ_peelLower_col (m : Fin (N + 2) × Fin (N + 2) → ℕ) (a b : ℤ) (hb : (N : ℤ) < b) :
+    extendℤ (peelLower m) a b = 0 := by
+  unfold extendℤ; rw [dif_neg]; rintro ⟨_, _, h⟩; omega
+
+/-- `extendℤ (peelLast m)` (level `N+1`) vanishes off the last column `N+1`. -/
+theorem extendℤ_peelLast_off (m : Fin (N + 2) × Fin (N + 2) → ℕ) (a b : ℤ)
+    (hb : b ≠ ((N : ℤ) + 1)) : extendℤ (peelLast m) a b = 0 := by
+  unfold extendℤ
+  split_ifs with h
+  · obtain ⟨ha, hab, hbN⟩ := h
+    unfold peelLast
+    split_ifs with h2
+    · exfalso
+      have hval : b.toNat = N + 1 := by
+        have := congrArg Fin.val h2; simpa [Fin.val_last] using this
+      omega
+    · rfl
+  · rfl
+
+/-- The `L`-first cross-terms vanish: `codimBil (N+1) (extendℤ (peelLast m)) A = 0` (the first factor
+reads column `j-1 ≤ N < N+1`, where `extendℤ (peelLast m)` is `0`). -/
+theorem codimBil_peelLast_left (m : Fin (N + 2) × Fin (N + 2) → ℕ) (A : ℤ → ℤ → ℤ) :
+    codimBil (N + 1) (extendℤ (peelLast m)) A = 0 := by
+  unfold codimBil
+  refine Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun u _ ↦
+    Finset.sum_eq_zero fun j hj ↦ Finset.sum_eq_zero fun v _ ↦ ?_
+  rw [Finset.mem_Icc] at hj
+  rw [extendℤ_peelLast_off m (i - 1) (j - 1) (by omega), zero_mul]
+
+/-- Drop the top `N+1` of an integer `Icc`-range sum whose summand vanishes there. -/
+private lemma sum_Icc_peel_top (a : ℤ) (g : ℤ → ℤ) (h : g ((N : ℤ) + 1) = 0) :
+    ∑ x ∈ Finset.Icc a ((N : ℤ) + 1), g x = ∑ x ∈ Finset.Icc a (N : ℤ), g x := by
+  refine (Finset.sum_subset (Finset.Icc_subset_Icc_right (by omega)) ?_).symm
+  intro x hx hx'
+  rw [Finset.mem_Icc] at hx
+  rw [Finset.mem_Icc, not_and] at hx'
+  have hxN : x = (N : ℤ) + 1 := by have := hx' hx.1; omega
+  rw [hxN, h]
+
+/-- **Step D — level change for `A = extendℤ (peelLower m)`**: `codimForm (N+1) A = codimForm N A`.
+`A` vanishes off columns `≤ N`, so every term of the `(N+1)`-form involving the new index `N+1` reads
+a zero factor (innermost) or sits over an empty inner range — they all drop. -/
+theorem codimForm_peelLower_level (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimForm (N + 1) (extendℤ (peelLower m)) = codimForm N (extendℤ (peelLower m)) := by
+  unfold codimForm
+  simp only [Nat.cast_add, Nat.cast_one]
+  set F := extendℤ (peelLower m) with hF
+  have hv : ∀ i u j : ℤ,
+      ∑ v ∈ Finset.Icc j ((N : ℤ) + 1), F (i - 1) (j - 1) * F u v
+        = ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v := by
+    intro i u j
+    refine sum_Icc_peel_top j (fun v ↦ F (i - 1) (j - 1) * F u v) ?_
+    show F (i - 1) (j - 1) * F u ((N : ℤ) + 1) = 0
+    rw [hF, extendℤ_peelLower_col m u ((N : ℤ) + 1) (by omega), mul_zero]
+  have hj : ∀ i u : ℤ,
+      ∑ j ∈ Finset.Icc u ((N : ℤ) + 1), ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v
+        = ∑ j ∈ Finset.Icc u (N : ℤ), ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v := by
+    intro i u
+    refine sum_Icc_peel_top u
+      (fun j ↦ ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v) ?_
+    show ∑ v ∈ Finset.Icc ((N : ℤ) + 1) (N : ℤ), F (i - 1) (((N : ℤ) + 1) - 1) * F u v = 0
+    rw [Finset.Icc_eq_empty (by omega), Finset.sum_empty]
+  have hu : ∀ i : ℤ,
+      ∑ u ∈ Finset.Icc i ((N : ℤ) + 1), ∑ j ∈ Finset.Icc u (N : ℤ),
+          ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v
+        = ∑ u ∈ Finset.Icc i (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),
+            ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v := by
+    intro i
+    refine sum_Icc_peel_top i
+      (fun u ↦ ∑ j ∈ Finset.Icc u (N : ℤ), ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v) ?_
+    show ∑ j ∈ Finset.Icc ((N : ℤ) + 1) (N : ℤ),
+        ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F ((N : ℤ) + 1) v = 0
+    rw [Finset.Icc_eq_empty (by omega), Finset.sum_empty]
+  calc ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          ∑ j ∈ Finset.Icc u ((N : ℤ) + 1), ∑ v ∈ Finset.Icc j ((N : ℤ) + 1),
+            F (i - 1) (j - 1) * F u v
+      = ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          ∑ j ∈ Finset.Icc u ((N : ℤ) + 1), ∑ v ∈ Finset.Icc j (N : ℤ),
+            F (i - 1) (j - 1) * F u v := by
+        refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun u _ ↦
+          Finset.sum_congr rfl fun j _ ↦ hv i u j
+    _ = ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          ∑ j ∈ Finset.Icc u (N : ℤ), ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v := by
+        refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun u _ ↦ hj i u
+    _ = ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i (N : ℤ),
+          ∑ j ∈ Finset.Icc u (N : ℤ), ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v := by
+        refine Finset.sum_congr rfl fun i _ ↦ hu i
+    _ = ∑ i ∈ Finset.Icc (1 : ℤ) (N : ℤ), ∑ u ∈ Finset.Icc i (N : ℤ),
+          ∑ j ∈ Finset.Icc u (N : ℤ), ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v := by
+        refine sum_Icc_peel_top 1
+          (fun i ↦ ∑ u ∈ Finset.Icc i (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),
+            ∑ v ∈ Finset.Icc j (N : ℤ), F (i - 1) (j - 1) * F u v) ?_
+        show ∑ u ∈ Finset.Icc ((N : ℤ) + 1) (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),
+            ∑ v ∈ Finset.Icc j (N : ℤ), F (((N : ℤ) + 1) - 1) (j - 1) * F u v = 0
+        rw [Finset.Icc_eq_empty (by omega), Finset.sum_empty]
+
+/-- **Big-side codimForm** (`codimForm_add` + the two `L`-first vanishings + Step D level-change):
+`codimForm (N+1) (extendℤ m) = codimForm N A + codimBil (N+1) A L` (`A = extendℤ (peelLower m)`,
+`L = extendℤ (peelLast m)`). -/
+theorem codimForm_big (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimForm (N + 1) (extendℤ m)
+      = codimForm N (extendℤ (peelLower m))
+        + codimBil (N + 1) (extendℤ (peelLower m)) (extendℤ (peelLast m)) := by
+  rw [codimForm_peel_rhs, codimForm_add, codimBil_peelLast_left,
+    ← codimBil_self (extendℤ (peelLast m)), codimBil_peelLast_left, codimForm_peelLower_level]
+  ring
+
+/-- **The codimForm split** (thread-07 piece 2): `codimForm (N+1) (extendℤ m) =
+codimForm N (extendℤ (peelPart m)) + Δ` with `Δ = codimBil (N+1) A L − codimBil N A R` the
+last-two-columns pairing (`A = extendℤ (peelLower m)`, `R = extendℤ (peelCorr m)`,
+`L = extendℤ (peelLast m)`). -/
+theorem codimForm_split (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimForm (N + 1) (extendℤ m)
+      = codimForm N (extendℤ (peelPart m))
+        + (codimBil (N + 1) (extendℤ (peelLower m)) (extendℤ (peelLast m))
+           - codimBil N (extendℤ (peelLower m)) (extendℤ (peelCorr m))) := by
+  rw [codimForm_big, codimForm_peel_lhs]; ring
 
 end DLNFibre.Core
