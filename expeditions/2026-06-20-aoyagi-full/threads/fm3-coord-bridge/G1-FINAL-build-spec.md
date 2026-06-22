@@ -64,6 +64,19 @@ surface the (2,2,2) IsRouteMCover instance when green. EVERY signature now verif
 adapters, no shape gaps. The grind (routeStep + cover_le/cover_ge_div + Fmeas/Uopen/Umem + mult-bound/binding-leaf)
 is pure formalisation against the signed-off interface. === COORDINATION ARC EXHAUSTIVELY CLOSED (g155→g182). ===
 
+## TWO COVER-PROOF REFINEMENTS — INTERNAL, zero interface impact (g183, crux2 confirm)
+crux2 confirms both are INSIDE my cover-fact proofs, NOT interface hyps (IsRouteMCover's cover_le/cover_ge_div
+are integral inequalities, agnostic to HOW proven):
+(1) routeMBaseNbhd S must be BOUNDED (a bounded open box ∋ 0, NOT univ): the ≥-direction
+    (rlctAtOn_ge_of_integral_lt, downstream of cover_le) needs the bounded witness; univ breaks THAT. My
+    choice in defining U + proving the Props; crux2's package just takes the U I give.
+(2) the per-chart unit lower bound is `≥ a > 0` (NOT `≥ 1`): the bedrock-correct general fact (a step INSIDE
+    my cover_le proof — node_loss_pivot_factor's unit `core∘hardPivotAt` is bounded-below-by-a-positive, not
+    necessarily 1). `≥ 1` where free is fine; `≥ a>0` is the honest general form. The bridge never sees it —
+    only the resulting integral inequality.
+NEITHER changes crux2's packaging. (Hold #26 for the authoritative packaging if it pins different; crux2
+consumes #26's then.) === ALL INTERFACE + INTERNAL-PROOF CHOICES NOW SETTLED; the grind is fully scoped. ===
+
 ## Encoding (controller-accepted): WF.fix / NodeChartFamily, Fintype-as-field
 RouteState(L,M); routeMeasure = lex(L,ΣM,ncDefect); routeRel_wf. routeAtlas = WellFounded.fix.
 NodeChartFamily per-leaf record (crux2 leaf-level): {composite chart φ_i, pullback L∘φ_i=monomial·unit
