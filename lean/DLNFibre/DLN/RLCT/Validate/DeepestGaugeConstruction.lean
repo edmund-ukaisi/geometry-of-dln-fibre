@@ -99,18 +99,95 @@ noncomputable def gaugeSlotRead (H : Fin (L + 1) → ℕ) (r : ℕ)
     , Matrix.of (fun i j => g ⟨s, Sum.inr (i, j)⟩)
     , T s )
 
-/-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). The four fields
-are properties of the SAME maps `(split, coreAbsorb)`, so they bundle into one existence statement
-(the loss-squeeze + RLCT-peel are FALSE for arbitrary maps — they hold only for the specific gauge
-maps). Producing this is the heavy geometric construction:
-- `split`: the `block_elimination` MP reindex (flat ⟶ regular ⊕ raw-core ⊕ spectator),
-  `split_basepoint` carries the deepest point to `0`;
-- `coreAbsorb`: the g-absorption `T_s ↦ S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (the per-layer **Schur
-  complement**, g156/#61 — NOT the unit `T_s·(I−V_sY_s)⁻¹`), fixing reg+spec+origin;
-- `coreAbsorb_rlct`: the bounded-unit Jacobian peel (`det(I−VY)⁻ᴹ⁰` via
-  `weightedThreshold_weight_unit_invariant`);
-- `loss_squeeze`: the two-sided bound (banked `core_comparability_squeeze` + `frobenius_fromBlocks`,
-  g153: leak ∈ ideal(reg) charged to `∑E²`; core = Schur `∏S_s` = `R` on `{E=0}`, NOT raw `∏T`). -/
+/-! ## The two PINNED hard sub-proofs (skeleton-first)
+
+The bundle factors into determined wires + two SUBSTANTIAL sub-proofs, each stated as a named
+obligation with its signature pinned (`sorry` body, validated by the assembly typechecking):
+
+- `deepest_regAbsorb_exists` — the regular-slot absorption: a self-homeomorphism `regAbsorb` of
+  `DeepestSplit` fixing core+spectator, with `regAbsorb 0 = 0`, whose regular slot through `regAbsorb`
+  has the SAME local RLCT as the raw regular slot (`regAbsorb_rlct`, peeled by the refined `#72`
+  local bounded-unit Jacobian peel). The map is `regSliceHomeo Ψ` for the IFT E-straightening `Ψ`
+  (the analytic submersion `dE(w0)` rank `= nReg`); the IFT construction is the standalone
+  parallelizable piece. PINNED here as the bundled existence the assembly consumes.
+- `deepest_loss_squeeze` — the two-sided squeeze: near the deepest point, `dlnLoss H B` is bounded
+  by `Φ = ∑ (regAbsorb (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`. The matrix-block
+  reduction (`∏C − blockNormal` → `P11 = leak + Rcore`) feeding the banked `core_comparability_squeeze`
+  (#54) over the bounded boundary frame factors (g164). The geometric heart.
+
+The `split` (`deepestSplit_exists`), `coreAbsorb` (`coreShearHomeo` + the Schur shift), and the
+determined slot-fix / basepoint / `coreAbsorb_rlct` (#71, global shear det = 1) are wired directly. -/
+
+/-- **PIN 1 — the regular absorption** (the IFT E-straightening, standalone-parallelizable). Bundles
+the `regAbsorb` map + its core/spectator-fix + basepoint + the `regAbsorb_rlct` peel (against a fixed
+`coreAbsorb`, sequenced reg-first per the structure). The map is `regSliceHomeo Ψ` for the IFT
+straightening `Ψ` of the regular residual `E`; `regAbsorb_rlct` peels its bounded-unit Jacobian via
+the refined `#72`. -/
+theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ)
+    (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge) :
+    ∃ regAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge,
+      regAbsorb 0 = 0 ∧
+      (∀ q : DeepestSplit H r nGauge, (regAbsorb q).2.1 = q.2.1) ∧
+      (∀ q : DeepestSplit H r nGauge, (regAbsorb q).2.2 = q.2.2) ∧
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge =>
+            (∑ i, (regAbsorb q).1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge =>
+              (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+            (0 : DeepestSplit H r nGauge) := by
+  sorry
+
+/-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
+is two-sidedly bounded by `Φ = ∑ (regAbsorb (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`.
+The matrix-block reduction `∏C − blockNormal → P11 = leak + Rcore` (g164 boundary frames) feeding the
+banked `core_comparability_squeeze` (#54: leak ∈ ideal(reg), charged to `∑E²`). -/
+theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
+    (coreAbsorb regAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
+    (hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0) :
+    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
+      ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ w ∈ U,
+          0 ≤ ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
+          c₁ * ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split w)).2.1)
+            ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
+          dlnLoss H B ((paramsEquivFlat H).symm w)
+            ≤ c₂ * ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
+  sorry
+
+/-- **PIN 0 — the core absorption** (the Schur shear, determined). `coreAbsorb` turns the raw core
+slot `T_s` into the Schur complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` via `coreShearHomeo` with the
+gauge-dependent shift; fixes reg+spec+origin; `coreAbsorb_rlct` peels its (global) unit Jacobian via
+`#71` (the shear has det = 1). The shift is read off the gauge blocks (`gaugeSlotRead ∘ frame`); its
+exact continuous form is part of this obligation. -/
+theorem deepest_coreAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ) :
+    ∃ coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge,
+      coreAbsorb 0 = 0 ∧
+      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1) ∧
+      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2) ∧
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+            (0 : DeepestSplit H r nGauge) := by
+  sorry
+
+/-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
+`split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
+`regAbsorb` (`deepest_regAbsorb_exists`, PIN 1), and the `loss_squeeze` (`deepest_loss_squeeze`,
+PIN 2) into the bundled existence the structure consumes. -/
 theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
@@ -149,7 +226,21 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
             dlnLoss H B ((paramsEquivFlat H).symm w)
               ≤ c₂ * ((∑ i, (regAbsorb (split w)).1 i ^ 2)
                 + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  sorry
+  -- `split` (obligation (i), MP reindex carrying the deepest point to `0`).
+  obtain ⟨split, hsplit_mp, hsplit_base⟩ :=
+    deepestSplit_exists H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
+  -- PIN 0: `coreAbsorb` (the Schur shear) + its slot-fix/basepoint/rlct.
+  obtain ⟨coreAbsorb, hca_base, hca_reg, hca_spec, hca_rlct⟩ :=
+    deepest_coreAbsorb_exists H r B hB hr hL (deepestNGauge H r)
+  -- PIN 1: `regAbsorb` (the IFT E-straightening) + its slot-fix/basepoint/rlct (against `coreAbsorb`).
+  obtain ⟨regAbsorb, hra_base, hra_core, hra_spec, hra_rlct⟩ :=
+    deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
+  -- PIN 2: the loss squeeze.
+  obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
+    deepest_loss_squeeze H r B hB hr hL (deepestNGauge H r) split coreAbsorb regAbsorb hsplit_base
+  exact ⟨deepestNGauge H r, split, coreAbsorb, regAbsorb, hsplit_mp, hsplit_base,
+    hca_base, hca_reg, hca_spec, hca_rlct, hra_base, hra_core, hra_spec, hra_rlct,
+    c₁, c₂, hc₁, hc₂, U, hU, hsq⟩
 
 /-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`). Destructures
 the bundled construction into the structure. crux2 wires `deepest_gauge_squeeze_exists := this`. -/
