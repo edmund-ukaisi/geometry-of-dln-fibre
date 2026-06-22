@@ -311,3 +311,31 @@ production, active-ratio lower bounds, chart-count upper bounds from source
 charts, chart-count/terminal-label identification from source, Lemma 5
 no-extra coverage, pole order without A0, normal crossings, or RLCT
 extraction.
+
+## Current slice - 2026-06-22, displayed-ratio count handoff
+
+The bridge now has source-facing wrappers whose chart-count hypotheses are
+stated at the displayed Theorem 2 lambda value rather than at
+`D.exponentMinimum`.  The active-ratio minimum certificate first proves that
+the displayed value is `D.exponentMinimum`; the A0 ratio-count rewrite then
+turns these counts into the chartwise global-minimum counts used by
+`D.exponentOrder`.
+
+Lean names:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_ratioCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_ratioCount_terminalMinimumLabels_card
+```
+
+Artifacts:
+
+- `reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`;
+- `statement-card-a6-theorem2-ratio-count-terminal-order-bridge.md`;
+- `review-theorem2-ratio-count-terminal-order-bridge-a6.md`.
+
+Boundary: this is only a ratio-count rewrite and final-socket handoff.  It
+does not prove source chart counts, chart-count upper bounds, source-backed
+Lemma 5 no-extra coverage, pole order without A0, normal crossings, or RLCT
+extraction.

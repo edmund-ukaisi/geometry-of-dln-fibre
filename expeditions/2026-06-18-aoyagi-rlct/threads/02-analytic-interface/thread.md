@@ -108,3 +108,27 @@ Artifacts:
 Nonclaims remain unchanged: these are finite `min'`/`max'` lemmas only.  They
 do not produce charts, prove normal crossings, identify chartwise counts with
 Lemma 5 terminal labels, prove pole order without A0, or extract RLCT.
+
+## 2026-06-22 ratio chart counts
+
+Lean now also exposes source-facing chart counts at a specified ratio:
+
+```text
+coordsInChartAtRatio
+countInChartAtRatio
+minCoordsInChart_eq_coordsInChartAtRatio_of_exponentMinimum_eq
+minCountInChart_eq_countInChartAtRatio_of_exponentMinimum_eq
+exponentOrder_eq_of_countInChartAtRatio_eq_of_forall_le
+```
+
+These lemmas rewrite ratio-specific chart counts to the existing
+global-minimum chart counts once the candidate ratio is proved equal to
+`D.exponentMinimum`.  This is finite definitional bookkeeping only; it does
+not construct charts, prove source chart counts, prove pole order, or extract
+RLCT.
+
+Artifacts:
+
+- `reproduction-normal-crossing-ratio-chart-counts-a0.md`;
+- `statement-card-a0-normal-crossing-ratio-chart-counts.md`;
+- `review-normal-crossing-ratio-chart-counts-a0.md`.

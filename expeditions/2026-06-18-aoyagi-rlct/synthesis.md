@@ -133,6 +133,19 @@ and
 Review:
 `threads/02-analytic-interface/review-normal-crossing-finite-certificates-a0.md`.
 
+Latest A0 ratio-chart-count update: `NormalCrossingInterface.lean` now exposes
+`coordsInChartAtRatio`, `countInChartAtRatio`, and rewrite/order-certificate
+lemmas from counts at a candidate ratio to the existing global-minimum chart
+counts once `D.exponentMinimum = q` is known.  This is finite definitional
+bookkeeping only; it does not construct charts, source-prove chart counts, or
+move pole order/RLCT extraction.
+Artifacts:
+`threads/02-analytic-interface/reproduction-normal-crossing-ratio-chart-counts-a0.md`
+and
+`threads/02-analytic-interface/statement-card-a0-normal-crossing-ratio-chart-counts.md`.
+Review:
+`threads/02-analytic-interface/review-normal-crossing-ratio-chart-counts-a0.md`.
+
 ## Latest A2 Update
 
 The residual-product endpoint wrapper for Aoyagi Theorem 3 has landed.
@@ -5480,6 +5493,24 @@ and
 `threads/06-dln-translation/statement-card-a6-theorem2-active-chart-terminal-order-bridge.md`.
 Review:
 `threads/06-dln-translation/review-theorem2-active-chart-terminal-order-bridge-a6.md`.
+
+Latest A6 displayed-ratio count handoff:
+`Theorem2TerminalOrderBridge.lean` now uses the A0 ratio-chart-count rewrite
+so chart counts can be supplied at
+`aoyagiTheorem2Lambda_fromCeilData ...` rather than at the internal
+`D.exponentMinimum`.  The active-ratio certificate first identifies the
+displayed value with the finite minimum; then the ratio-count chart witness
+and all-chart upper bound certify
+`D.exponentOrder = TC.terminalMinimumLabels.card`, after which the A5
+terminal-order bridge rewrites to `data.theorem2OrderFormula`.  This still
+does not source-prove the ratio inequalities, chart counts, Lemma 5 no-extra
+coverage, normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-ratio-count-terminal-order-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-ratio-count-terminal-order-bridge-a6.md`.
 
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages

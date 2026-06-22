@@ -126,6 +126,15 @@ def minCoordsInChart (D : AoyagiNormalCrossingExponentData)
   (Finset.univ : Finset (Fin D.numCoords)).filter
     fun j ↦ 0 < D.lossExp c j ∧ D.ratioAt (c, j) = D.exponentMinimum
 
+/-- Coordinates in one chart with positive loss exponent and a specified
+ratio.  This is a source-facing variant of `minCoordsInChart`; it becomes the
+minimum-coordinate set after the specified ratio is proved to be
+`D.exponentMinimum`. -/
+def coordsInChartAtRatio (D : AoyagiNormalCrossingExponentData)
+    (q : ℚ) (c : Fin D.numCharts) : Finset (Fin D.numCoords) :=
+  (Finset.univ : Finset (Fin D.numCoords)).filter
+    fun j ↦ 0 < D.lossExp c j ∧ D.ratioAt (c, j) = q
+
 @[simp] theorem mem_minCoordsInChart
     (D : AoyagiNormalCrossingExponentData) (c : Fin D.numCharts)
     (j : Fin D.numCoords) :
@@ -133,10 +142,41 @@ def minCoordsInChart (D : AoyagiNormalCrossingExponentData)
       0 < D.lossExp c j ∧ D.ratioAt (c, j) = D.exponentMinimum := by
   simp [minCoordsInChart]
 
+@[simp] theorem mem_coordsInChartAtRatio
+    (D : AoyagiNormalCrossingExponentData) (q : ℚ)
+    (c : Fin D.numCharts) (j : Fin D.numCoords) :
+    j ∈ D.coordsInChartAtRatio q c ↔
+      0 < D.lossExp c j ∧ D.ratioAt (c, j) = q := by
+  simp [coordsInChartAtRatio]
+
 /-- The chartwise count used before taking the maximum finite order count. -/
 def minCountInChart (D : AoyagiNormalCrossingExponentData)
     (c : Fin D.numCharts) : ℕ :=
   (D.minCoordsInChart c).card
+
+/-- The chartwise count of coordinates at a specified active ratio. -/
+def countInChartAtRatio (D : AoyagiNormalCrossingExponentData)
+    (q : ℚ) (c : Fin D.numCharts) : ℕ :=
+  (D.coordsInChartAtRatio q c).card
+
+/-- Once a candidate ratio is identified with the global exponent minimum,
+the source-facing ratio-specific coordinate set is the minimum-coordinate
+set. -/
+theorem minCoordsInChart_eq_coordsInChartAtRatio_of_exponentMinimum_eq
+    (D : AoyagiNormalCrossingExponentData) {q : ℚ}
+    (hmin : D.exponentMinimum = q) (c : Fin D.numCharts) :
+    D.minCoordsInChart c = D.coordsInChartAtRatio q c := by
+  ext j
+  simp [hmin]
+
+/-- Count form of
+`minCoordsInChart_eq_coordsInChartAtRatio_of_exponentMinimum_eq`. -/
+theorem minCountInChart_eq_countInChartAtRatio_of_exponentMinimum_eq
+    (D : AoyagiNormalCrossingExponentData) {q : ℚ}
+    (hmin : D.exponentMinimum = q) (c : Fin D.numCharts) :
+    D.minCountInChart c = D.countInChartAtRatio q c := by
+  rw [minCountInChart, countInChartAtRatio,
+    D.minCoordsInChart_eq_coordsInChartAtRatio_of_exponentMinimum_eq hmin c]
 
 /-- The chart index set is nonempty because an active coordinate exists. -/
 theorem chart_univ_nonempty (D : AoyagiNormalCrossingExponentData) :
@@ -201,6 +241,22 @@ theorem exponentOrder_eq_of_chart_minCount_eq_of_forall_le
   · intro r hr
     rw [chartMinCounts] at hr
     rcases Finset.mem_image.mp hr with ⟨c', _hc', rfl⟩
+    exact hle c'
+
+/-- Certify the finite exponent order using chart counts at a candidate ratio,
+after that ratio has been identified with the global exponent minimum. -/
+theorem exponentOrder_eq_of_countInChartAtRatio_eq_of_forall_le
+    (D : AoyagiNormalCrossingExponentData)
+    {ratio : ℚ} {c : Fin D.numCharts} {q : ℕ}
+    (hmin : D.exponentMinimum = ratio)
+    (hchart : D.countInChartAtRatio ratio c = q)
+    (hle : ∀ c' : Fin D.numCharts, D.countInChartAtRatio ratio c' ≤ q) :
+    D.exponentOrder = q := by
+  refine D.exponentOrder_eq_of_chart_minCount_eq_of_forall_le (c := c) ?_ ?_
+  · rw [D.minCountInChart_eq_countInChartAtRatio_of_exponentMinimum_eq hmin c]
+    exact hchart
+  · intro c'
+    rw [D.minCountInChart_eq_countInChartAtRatio_of_exponentMinimum_eq hmin c']
     exact hle c'
 
 /-- Certify the finite exponent order from a uniform upper bound and an

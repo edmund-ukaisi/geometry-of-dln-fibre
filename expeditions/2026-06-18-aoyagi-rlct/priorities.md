@@ -38,6 +38,13 @@ candidate `exponentMinimum` or `exponentOrder` from supplied active-ratio and
 chart-count bounds.  This is only finite bookkeeping over supplied exponent
 data, not chart production or analytic extraction.
 
+The current A0 ratio-chart-count slice is
+`threads/02-analytic-interface/reproduction-normal-crossing-ratio-chart-counts-a0.md`.
+It adds chart counts at an arbitrary candidate ratio and rewrites them to
+`minCountInChart` once that ratio is identified with `D.exponentMinimum`.
+This supports source-facing count statements at the displayed Theorem 2 lambda
+without moving chart production or analytic extraction.
+
 The current A6 finite-certificate bridge is
 `threads/06-dln-translation/reproduction-theorem2-finite-certificate-bridge-a6.md`.
 It uses those A0 finite certificates to build
@@ -404,6 +411,14 @@ Lean now also consumes the A0 chart-count maximum certificate with candidate
 `D.exponentOrder = TC.terminalMinimumLabels.card` equality by a chart-count
 witness and all-chart upper bound.  Chart production, source-backed chart
 counts, source-backed Lemma 5 no-extra coverage, and pole order remain open.
+
+Current A6 displayed-ratio count handoff:
+`threads/06-dln-translation/reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`.
+Lean now allows chart-count witnesses and upper bounds to be stated at the
+displayed Theorem 2 lambda value.  The active-ratio certificate rewrites that
+displayed value to `D.exponentMinimum`; the A0 ratio-chart-count lemmas then
+turn the supplied displayed-ratio counts into the chartwise global-minimum
+counts used by `D.exponentOrder`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the

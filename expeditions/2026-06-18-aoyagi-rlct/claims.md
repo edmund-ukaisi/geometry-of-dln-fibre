@@ -2942,7 +2942,9 @@ No such claim is formalisation-ready until both fields are filled.
   finite active chart-terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-active-chart-terminal-order-bridge-a6.md`;
   supplied final assembly boundary reproduced at
-  `threads/06-dln-translation/reproduction-theorem2-final-assembly-a6.md`.
+  `threads/06-dln-translation/reproduction-theorem2-final-assembly-a6.md`;
+  displayed-ratio count terminal-order bridge reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   conditional bridge reviewed at
@@ -2951,6 +2953,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-theorem2-active-terminal-order-bridge-a6.md`;
   active chart-terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-active-chart-terminal-order-bridge-a6.md`;
+  displayed-ratio count terminal-order bridge reviewed at
+  `threads/06-dln-translation/review-theorem2-ratio-count-terminal-order-bridge-a6.md`;
   final assembly reviewed at
   `threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
@@ -3015,6 +3019,12 @@ No such claim is formalisation-ready until both fields are filled.
   and
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_chartCount_terminalMinimumLabels_card`
   in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
+  displayed-ratio count terminal-order bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_terminalMinimumLabels_card`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_ratioCount_terminalMinimumLabels_card`,
+  and
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_ratioCount_terminalMinimumLabels_card`
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
   supplied final boundary:
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary`,
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_eq_natCast_sub`,
@@ -3060,7 +3070,10 @@ No such claim is formalisation-ready until both fields are filled.
   obstruction fill the order field.  Also proved an active chart-terminal
   final-socket bridge: a supplied chart whose global-minimum coordinate count
   is `TC.terminalMinimumLabels.card`, plus an all-chart upper bound by that
-  count, replaces the raw chart/order equality.  Selected rank-width
+  count, replaces the raw chart/order equality.  Also proved a displayed-ratio
+  count bridge: chart counts may be supplied at the displayed Theorem 2 lambda
+  value and are rewritten through the active-ratio minimum certificate to the
+  `D.exponentMinimum` counts used by `D.exponentOrder`.  Selected rank-width
   hypotheses and the strict source-selected inequality remain explicit
   auxiliary theorem inputs where used.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
