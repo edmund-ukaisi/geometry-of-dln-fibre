@@ -253,4 +253,15 @@ theorem peelPart_mem {d : Fin (N + 2) → ℕ} {m : Fin (N + 2) × Fin (N + 2) �
     exact ⟨le_refl _, hp⟩
   · rw [peelPart_support hs p hp]; exact Nat.zero_le _
 
+/-- **Fiberwise decomposition of `fivegonSum`** (the SUCC case `d : Fin (N+2) → ℕ`): reorganize the
+sum over `kostantAll d` into its `peelPart`-fibres over `kostantAll d'`. Independent of the weight
+identity — just `Finset.sum_fiberwise_of_maps_to` with `peelPart_mem`. -/
+theorem fivegonSum_fiberwise (d : Fin (N + 2) → ℕ) :
+    fivegonSum d
+      = ∑ m' ∈ kostantAll (d ∘ Fin.castSucc),
+          ∑ m ∈ (kostantAll d).filter (fun m ↦ peelPart m = m'),
+            (X : ℤ⟦X⟧) ^ (codimForm (N + 1) (extendℤ m)).toNat * Pm (N + 1) m := by
+  rw [fivegonSum]
+  exact (Finset.sum_fiberwise_of_maps_to (fun m hm ↦ peelPart_mem hm) _).symm
+
 end DLNFibre.Core
