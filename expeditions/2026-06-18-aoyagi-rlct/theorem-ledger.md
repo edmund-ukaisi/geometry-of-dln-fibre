@@ -4820,6 +4820,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-branch-label-injection-a5.md`.
 
+Latest A5 Eq5 alpha-injection cardinal-squeeze update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze`.
+These compose the Eq5 terminal counted-datum cardinal squeeze with explicit
+Eq5 alpha-indexed branch-label injection data.  The opaque supplied
+branch-label injectivity boundary is replaced by coordinatewise branch alpha
+injectivity, branch block membership, branch label formula, and base/nonbase
+separation.  Counted-datum injectivity and terminal-label Eq5 payloads remain
+supplied.  This is not source-produced no-extra coverage, back-to-label
+coverage, order count, pole order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.

@@ -88,6 +88,8 @@ Current Eq5 terminal counted-datum cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-countdatum-cardinal-squeeze-a5.md`.
 Current Eq5 branch-label injection slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-branch-label-injection-a5.md`.
+Current Eq5 alpha-injection cardinal-squeeze slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`.
 Current Eq5 alpha endpoint value-image split slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
 Current Lemma 4 prefix-profile computation slice:
@@ -299,7 +301,12 @@ Immediate order:
 1. Continue the source-backed local Case 1(2) frontier: formalise the local
    `J`-increment bridge under the exact p. 18 guard, without connecting it to
    Lemma 5 no-extra counting.
-2. Continue the no-extra/classifier frontier only with explicit supplied
+2. The next source-backed move should pivot back to A4 Case 2 source-chart
+   production: reproduce the source-produced following factor
+   `C' = Q^-1*C` as a total source-coordinate object, with old top rows,
+   pivot row, and post-pivot tail separated.  Keep it below transition
+   theorem / chart-family production.  Pen-and-paper reproduction first.
+3. Continue the no-extra/classifier frontier only with explicit supplied
    boundaries: terminal branch construction, source-label legality, and
    back-to-label coverage remain unproved.  A conditional Eq5 branch-label
    injection wrapper is now available, but it still assumes alpha injectivity,
@@ -307,14 +314,17 @@ Immediate order:
    separation.  Do not infer these from the conditional terminal
    source-realisation bridge or from the supplied counted-datum back-to-label
    boundary.
-3. Use the Eq5 alpha endpoint value-image split only as one-coordinate
+4. Use the Eq5 alpha endpoint value-image split only as one-coordinate
    supplied coverage input.  It still needs branch construction, endpoint
    source-label legality, value injectivity, base-value membership, and
    cross-coordinate disjointness before it can feed the generic supplied
    nonbase-family constructor.
-4. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
-   until those fields are source-backed or separately constructed.
-5. The Eq4 rising non-strict endpoint split is now Lean-packaged as a
+5. Keep `UpperBoundClassifier` supplied until the no-extra/back-to-label
+   fields are source-backed or separately constructed.  `TerminalMinimumLabelExactness`
+   can now be reached from Eq5 counted-datum payloads plus explicit
+   alpha-indexed branch-label injection data, but counted-datum injectivity
+   and terminal payload production remain supplied.
+6. The Eq4 rising non-strict endpoint split is now Lean-packaged as a
    dispatcher over existing boundary facts.  Keep the `p+1=a`
    terminal-collision case conditional on supplied Eq4 data, and keep the
    `p=a` branch as no repaired Eq4 piecewise shape plus Eq5 erased-endpoints

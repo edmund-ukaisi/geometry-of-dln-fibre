@@ -4425,6 +4425,28 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-branch-label-injection-a5.md`.
 
+Latest A5 Eq5 alpha-injection cardinal-squeeze update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze`.
+These compose the Eq5 terminal counted-datum cardinal squeeze with the
+explicit Eq5 alpha-indexed branch-label injection theorem.  They remove the
+opaque `hinjBranchLabel` boundary from the width-bound exactness/count
+wrappers, but keep counted-datum injectivity, terminal-label Eq5 payloads,
+coordinatewise branch alpha injectivity, branch block membership, branch label
+formula, and base/nonbase separation explicit.  This is still conditional
+finite exactness only: no branch construction, alpha-domain coverage,
+source-produced terminal payloads, counted-datum injectivity, back-to-label
+coverage, no-extra classifier, order count, pole order, normal crossings, or
+RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.
@@ -4470,6 +4492,13 @@ classifier frontier.  The interval cardinality formula and the local Case
 paragraph does not supply a classifier, injection, back-to-label map, no-extra
 terminal-minimum coverage, nonbase status, endpoint-chain realisation, or
 terminal source realisation.
+
+Latest xhigh source-frontier scout recommendation: after the cheap A5 wrapper
+above, pivot back to A4 displayed Case 2 source-chart production.  The next
+source-backed slice should be a pen-and-paper reproduction of the
+source-produced following factor `C' = Q^-1*C` as a total source-coordinate
+object, separated into old top rows, pivot row, and post-pivot tail, and
+stopping before successor chart-family production or transition invariance.
 
 Latest A4 Case 1(2) J-increment payload update:
 `BlowupArithmetic.lean` now contains

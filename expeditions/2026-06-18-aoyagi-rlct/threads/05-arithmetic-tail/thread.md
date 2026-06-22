@@ -4866,3 +4866,33 @@ counted-datum injectivity, build back-to-label coverage, construct an
 upper-bound classifier, prove no-extra terminal-minimum coverage, prove a
 Lemma 5 order count, prove pole order, prove normal crossings, or extract
 RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 terminal alpha-injection cardinal squeeze
+
+Reproduction:
+`reproduction-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze.md`.
+Review artifact:
+`review-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze
+```
+
+These wrappers compose the Eq5 terminal counted-datum cardinal squeeze with
+the explicit Eq5 alpha-indexed branch-label injection theorem.  The opaque
+`hinjBranchLabel` hypothesis is replaced by coordinatewise branch alpha
+injectivity, branch block membership, branch label formula, and base/nonbase
+separation.  Counted-datum injectivity and terminal-label Eq5 payloads remain
+explicit hypotheses.
+
+This is conditional finite exactness only.  It does not construct Eq5
+branches, prove alpha-domain coverage, produce terminal payloads, derive
+counted-datum injectivity, build back-to-label coverage, construct an
+upper-bound classifier, prove no-extra terminal-minimum coverage, prove a
+Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.

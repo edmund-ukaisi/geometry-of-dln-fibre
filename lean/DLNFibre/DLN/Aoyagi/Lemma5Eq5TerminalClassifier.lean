@@ -803,6 +803,134 @@ theorem branchLabel_injOn_of_eq5AlphaIndexed_nonbase
       (fun b : β ↦ TC.branchLabel (some b))
       (halpha_inj j hj) (hlabel j hj)) hbj hck_j hbc_label
 
+/-- Terminal-minimum exactness from Eq5 own-block common-domain payloads and
+explicit alpha-indexed branch-label injection data. -/
+theorem terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (ha : a ≤ N + 1)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (pOf labelAlphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (branchAlphaOf : β → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hselected :
+      (∑ i : Fin (N + 2), m i) = ((N + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (N + 2),
+      ((N + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (N + 2), m j)
+    (hT : ∀ label ∈ TC.terminalMinimumLabels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        (N + 1) a (pOf label) (labelAlphaOf label) M m cut
+        (layerWidth label) (T label))
+    (hlabelBlock : ∀ label ∈ TC.terminalMinimumLabels,
+      cut.block (pOf label) label.1)
+    (hlast : cut.point (N + 1) ≤ L + 1)
+    (hwidth_le : ∀ label ∈ TC.terminalMinimumLabels,
+      aoyagiSelectedWidthNat (N + 1) m (pOf label) ≤
+        (width (label.1 + 1) : ℤ))
+    (hlabelFormula : ∀ label ∈ TC.terminalMinimumLabels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat (N + 1) a M m (pOf label) + 1 -
+          (labelAlphaOf label : ℤ))
+    (hlabel_ne_base : ∀ label ∈ TC.terminalMinimumLabels,
+      T label label.1 ≠ TC.family.baseValue (pOf label))
+    (hinjCountDatum :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (some (Sigma.mk (pOf label) (T label label.1)) :
+            AoyagiLemma5CountDatum))
+        ↑TC.terminalMinimumLabels)
+    (hbranchAlpha_inj :
+      ∀ j ∈ Finset.Icc 1 N,
+        Set.InjOn branchAlphaOf ↑(TC.family.branches j))
+    (hbranchBlock :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        cut.block j (TC.branchLabel (some b)).1)
+    (hbranchLabelFormula :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        ((TC.branchLabel (some b)).2 : ℤ) =
+          aoyagiHtildeUpperNat (N + 1) a M m j + 1 -
+            (branchAlphaOf b : ℤ))
+    (hbase_ne :
+      ∀ {b : β}, some b ∈ TC.fullBranches →
+        TC.branchLabel none ≠ TC.branchLabel (some b)) :
+    TC.TerminalMinimumLabelExactness := by
+  exact
+    TC.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_cardSqueeze
+      ha cut pOf labelAlphaOf layerWidth T hselected hsource hT
+      hlabelBlock hlast hwidth_le hlabelFormula hlabel_ne_base
+      hinjCountDatum
+      (TC.branchLabel_injOn_of_eq5AlphaIndexed_nonbase cut branchAlphaOf
+        hbranchAlpha_inj hbranchBlock hbranchLabelFormula hbase_ne)
+
+/-- Exact terminal-minimum count from Eq5 own-block common-domain payloads and
+explicit alpha-indexed branch-label injection data. -/
+theorem terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_alphaIndexedBranch_cardSqueeze
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (ha : a ≤ N + 1)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (pOf labelAlphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (branchAlphaOf : β → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hselected :
+      (∑ i : Fin (N + 2), m i) = ((N + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (N + 2),
+      ((N + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (N + 2), m j)
+    (hT : ∀ label ∈ TC.terminalMinimumLabels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        (N + 1) a (pOf label) (labelAlphaOf label) M m cut
+        (layerWidth label) (T label))
+    (hlabelBlock : ∀ label ∈ TC.terminalMinimumLabels,
+      cut.block (pOf label) label.1)
+    (hlast : cut.point (N + 1) ≤ L + 1)
+    (hwidth_le : ∀ label ∈ TC.terminalMinimumLabels,
+      aoyagiSelectedWidthNat (N + 1) m (pOf label) ≤
+        (width (label.1 + 1) : ℤ))
+    (hlabelFormula : ∀ label ∈ TC.terminalMinimumLabels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat (N + 1) a M m (pOf label) + 1 -
+          (labelAlphaOf label : ℤ))
+    (hlabel_ne_base : ∀ label ∈ TC.terminalMinimumLabels,
+      T label label.1 ≠ TC.family.baseValue (pOf label))
+    (hinjCountDatum :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (some (Sigma.mk (pOf label) (T label label.1)) :
+            AoyagiLemma5CountDatum))
+        ↑TC.terminalMinimumLabels)
+    (hbranchAlpha_inj :
+      ∀ j ∈ Finset.Icc 1 N,
+        Set.InjOn branchAlphaOf ↑(TC.family.branches j))
+    (hbranchBlock :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        cut.block j (TC.branchLabel (some b)).1)
+    (hbranchLabelFormula :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        ((TC.branchLabel (some b)).2 : ℤ) =
+          aoyagiHtildeUpperNat (N + 1) a M m j + 1 -
+            (branchAlphaOf b : ℤ))
+    (hbase_ne :
+      ∀ {b : β}, some b ∈ TC.fullBranches →
+        TC.branchLabel none ≠ TC.branchLabel (some b)) :
+    TC.terminalMinimumLabels.card = a * (N + 1 - a) + 1 := by
+  exact
+    TC.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_cardSqueeze
+      ha cut pOf labelAlphaOf layerWidth T hselected hsource hT
+      hlabelBlock hlast hwidth_le hlabelFormula hlabel_ne_base
+      hinjCountDatum
+      (TC.branchLabel_injOn_of_eq5AlphaIndexed_nonbase cut branchAlphaOf
+        hbranchAlpha_inj hbranchBlock hbranchLabelFormula hbase_ne)
+
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
 end Aoyagi
