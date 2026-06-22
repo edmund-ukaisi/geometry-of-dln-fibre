@@ -13,3 +13,18 @@
 4. **BIGGEST RISK:** dependent-index splitting/casts for “prefix product times last layer,” not measure theory. Cheapest mitigation: prove the null theorem on an explicit split product type using `MeasurableEquiv.piFinSuccAbove`, keep algebraic statements close to `prodAux`, and use `Matrix.mulLeftLinearMap` instead of defining a custom linear map.
 
 5. **AVOID MEASURE-ZERO ENTIRELY?** No, for `L ≥ 1`. Every neighborhood of `0` contains `0`, and `(paramsEquivFlat M).symm 0 = 0`, while `prod M 0 = 0`, hence `dlnLoss M 0 0 = 0`. A small open set around a nonzero witness exists by continuity, but it is not a neighborhood of the origin and cannot discharge this `hGne`.
+## crux2 route de-risk (post-consult, 2026-06-22)
+
+Probed both routes' Lean foundations:
+- **addHaar route (Codex's recommendation):** `Measure.addHaar_submodule` EXISTS at v4.29 and is the right
+  tool, BUT bare `Matrix (Fin k) (Fin n) ℝ` has NO `MeasureSpace` instance, and giving it one (via the
+  Pi instance `letI`) is not enough — `addHaar_submodule` needs the matrix volume to be
+  `IsAddHaarMeasure`, which requires the full `NormedAddCommGroup` + `NormedSpace ℝ` + matching-Haar
+  instance stack on the matrix type. Real instance-plumbing friction (the matrix-factor measure setup).
+- **Fubini-to-1D (controller's suggestion):** works on the FLAT space `Fin N → ℝ` (clean volume) but uses
+  the analytic 1-D `IsolatedZeros` + slicing.
+- **#69 overlap:** the controller dispatched the general nonzero-MvPolynomial-null lemma to a sibling;
+  the addHaar route (option (a)) makes #69 unnecessary AND dodges the prod→MvPolynomial encoding.
+
+Decision (route + #69 ownership + matrix-instance approach) put to the controller. Both routes have real
+cost; the addHaar route is lighter in principle but needs the matrix Haar-instance stack set up.
