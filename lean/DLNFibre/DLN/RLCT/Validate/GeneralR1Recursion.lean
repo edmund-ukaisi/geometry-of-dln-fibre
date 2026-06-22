@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Skeleton
+import Mathlib.LinearAlgebra.Matrix.SchurComplement
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion` — the general-M resolution recursion (det-1 phase)
@@ -108,6 +109,28 @@ structure IsSchurStraighten {L : ℕ} {N N' : ℕ} (M : Fin (L + 1) → ℕ) (S 
   active_nonempty : active.Nonempty
   /-- (4) Well-foundedness (pp #123 field-6): the reduced chain is strictly smaller. -/
   measure_drops : ∑ s, S.red s < ∑ s, M s
+
+/-! ## Body sub-lemma (1): the hard-1-pivot Schur block-identity (the `(L,R)` transvections)
+
+The #127 witness's `(L,R)` transvection pair, at the hard-1 pivot: `L = fromBlocks 1 0 (−c) 1`
+(clear col 0), `R = fromBlocks 1 (−b) 0 1` (clear row 0), both UNIPOTENT (det 1), with
+`L · (fromBlocks 1 b c D) · R = fromBlocks 1 0 0 (D − c·b)` — block-diagonalizing to the `1×1` regular
+pivot ⊕ the reduced Schur factor `S = D − c·b`. Specializes Mathlib's `fromBlocks_eq_of_invertible₁₁`
+(the LDU/Schur factorization) to `A = 1` (`⅟1 = 1`). -/
+theorem hardPivot_schur_blockId {m n l : ℕ}
+    (b : Matrix (Fin m) (Fin n) ℝ) (c : Matrix (Fin l) (Fin m) ℝ) (D : Matrix (Fin l) (Fin n) ℝ) :
+    (Matrix.fromBlocks (1 : Matrix (Fin m) (Fin m) ℝ) 0 (-c) 1)
+        * (Matrix.fromBlocks 1 b c D)
+        * (Matrix.fromBlocks (1 : Matrix (Fin m) (Fin m) ℝ) (-b) 0 1)
+      = Matrix.fromBlocks 1 0 0 (D - c * b) := by
+  -- Direct double `fromBlocks_multiply`. L·A first (clear col 0), then ·R (clear row 0).
+  rw [Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
+  -- Discharge the four resulting blocks by ring/matrix algebra.
+  congr 1 <;>
+    simp only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul,
+      Matrix.neg_mul, Matrix.mul_neg, add_zero, zero_add, Matrix.add_mul, Matrix.mul_add] <;>
+    abel_nf <;>
+    ring_nf
 
 /-- **G3.2 crux — the det-1 Schur straightening existence (SPECIFY, body `sorry`; mine).** Within a
 post-blow-up chart (unit pivot available), there exists a measure-preserving det-1 Schur straightening
