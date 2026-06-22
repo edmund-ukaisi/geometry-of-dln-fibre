@@ -1549,9 +1549,12 @@ Immediate order:
    and the three displayed lambda formulas plus rational rewrites.  Keep this
    layer formula-only.  A thin `Definition3Bridge.lean` wrapper now connects
    the supplied ceiling datum to existing Lemma 4/Htilde endpoint-zero and
-   label-bound APIs, keeping the strict source-selected inequality explicit.
-   The next A6 work should connect it to already-proved Lemma 4/Lemma 5
-   arithmetic only after those source boundaries are stable;
+   label-bound APIs, finite same-coordinate count arithmetic, terminal
+   singleton/Eq5 bookkeeping, and the Theorem 2 displayed order formula,
+   keeping the strict source-selected inequality, Lemma 4 two-value
+   hypothesis, Eq4 guards, and Eq3 slack explicit.
+   Further A6 work should connect only to source-stable Lemma 4/Lemma 5
+   arithmetic;
    it must not call the formula an RLCT theorem before the normal-crossing
    certificate and cited extraction interface are in place.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

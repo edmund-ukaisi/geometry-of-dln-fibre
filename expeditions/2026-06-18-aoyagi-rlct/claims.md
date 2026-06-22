@@ -2883,11 +2883,21 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.terminalEndpoint_eq_zero`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeLowerChain_last_eq_zero`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeUpperChain_last_eq_zero`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeLowerNat_last_eq_zero`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeUpperNat_last_eq_zero`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeUpperNat_pred_eq_sub_lastWidth`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.Hlast_eq_zero_of_htildeChainBounds`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.intervalSize_excess_sum_Icc_eq_theorem2OrderFormula`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeIntervalValueSetNat_excess_sum_Icc_eq_theorem2OrderFormula`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeIntervalValueSetNat_terminal_eq_singleton_zero`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma4_twoValueCount_of_htildeChainBounds`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.selectedWidth_le_pred_of_sourceSelectedInequality`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq4_localData_of_sourceSelectedInequality`,
   and
-  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq5_labelBounds_of_sourceSelectedInequality`
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq5_labelBounds_of_sourceSelectedInequality`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq3_localData_of_sourceSelectedInequality_and_slack`
   in `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`.
 - **Proved.** formula-only arithmetic: integer reduced-width notation,
   Definition 3 selected-sum average rewrite, equality of the average and
@@ -2895,11 +2905,16 @@ No such claim is formalisation-ready until both fields are filled.
   of the ceiling and expanded displayed lambda formulas when `0 < ell`.  Also
   proved Definition 3 positivity wrappers, selected-sum wrappers for Lemma 4
   terminal endpoint zero, lower/upper Htilde terminal zero, a
-  chain-bounds-to-terminal-zero wrapper, and source-selected-inequality
-  wrappers for selected-width and label bounds.
+  chain-bounds-to-terminal-zero wrapper, finite interval-count/order-formula
+  rewrites, terminal same-coordinate/Eq5 singleton bookkeeping, a Lemma 4
+  two-value count wrapper under supplied chain bounds and supplied two-value
+  increments, and source-selected-inequality wrappers for selected-width and
+  local equation `(4)`/`(5)` data.  The local equation `(3)` wrapper also
+  requires the explicit one-unit slack hypothesis.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** full Definition 3 selection inequalities, existence of the
-  selected cutpoints and ceiling datum, the Lemma 4/Lemma 5 exponent-to-formula
-  bridge, normal crossings, pole-order interpretation, final RLCT theorem, and
-  formal analytic extraction theorem.
+  selected cutpoints and ceiling datum, the Lemma 4 two-value increment proof,
+  Lemma 5 chart-family construction/coverage and no-extra classifier,
+  conversion of the finite count to pole order, normal crossings, final RLCT
+  theorem, and formal analytic extraction theorem.

@@ -55,8 +55,9 @@ structure AoyagiDefinition3CeilData
 
 namespace AoyagiDefinition3CeilData
 
-/-- Aoyagi Theorem 2's pole-order/multiplicity formula, named as an order
-formula to avoid confusion with this repository's component-count `theta`. -/
+/-- Aoyagi Theorem 2's displayed order/multiplicity expression, named as an
+order formula to avoid confusion with this repository's component-count
+`theta`. -/
 def theorem2OrderFormula {ell : ℕ} {m : Fin (ell + 1) → ℤ}
     (data : AoyagiDefinition3CeilData ell m) : ℕ :=
   data.aParam * (ell - data.aParam) + 1

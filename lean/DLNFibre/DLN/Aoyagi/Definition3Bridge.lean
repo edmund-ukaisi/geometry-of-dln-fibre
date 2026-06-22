@@ -92,6 +92,82 @@ theorem Hlast_eq_zero_of_htildeChainBounds {ell : ℕ}
   rw [hhi0] at hhi
   exact le_antisymm hhi hlo
 
+/-- The finite interval-size excess sum has the same arithmetic value as
+Aoyagi Theorem 2's displayed order formula.
+
+This is only the elementary count formula.  It does not identify this number
+with a pole order. -/
+theorem intervalSize_excess_sum_Icc_eq_theorem2OrderFormula
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) :
+    1 + (∑ j ∈ Finset.Icc 1 (ell - 1),
+        (aoyagiLemma5IntervalSize ell data.aParam j - 1)) =
+      data.theorem2OrderFormula := by
+  have h :=
+    aoyagiLemma5IntervalSize_excess_sum_Icc
+      ell data.aParam data.one_le_ell data.aParam_le
+  simpa [theorem2OrderFormula] using h
+
+/-- The existing same-coordinate `Htilde` interval value-set count has the
+same arithmetic value as Aoyagi Theorem 2's displayed order formula.
+
+This is only finite value-set cardinality bookkeeping.  It does not prove
+chart-family admissibility, no-extra terminal minima, or pole order. -/
+theorem htildeIntervalValueSetNat_excess_sum_Icc_eq_theorem2OrderFormula
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) :
+    1 + (∑ j ∈ Finset.Icc 1 (ell - 1),
+        ((aoyagiHtildeIntervalValueSetNat
+          ell data.aParam data.ceilWidth m j).card - 1)) =
+      data.theorem2OrderFormula := by
+  have h :=
+    aoyagiHtildeIntervalValueSetNat_excess_sum_Icc
+      ell data.aParam data.ceilWidth m data.one_le_ell data.aParam_le
+  simpa [theorem2OrderFormula] using h
+
+/-- The terminal same-coordinate `Htilde` interval is the singleton `{0}`
+under Definition 3's selected-sum datum. -/
+theorem htildeIntervalValueSetNat_terminal_eq_singleton_zero
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) :
+    aoyagiHtildeIntervalValueSetNat ell data.aParam data.ceilWidth m ell = {0} :=
+  aoyagiHtildeIntervalValueSetNat_terminal_eq_singleton_zero_of_selectedSum
+    ell data.aParam data.ceilWidth m data.aParam_le data.selectedSum_eq
+
+/-- A separately supplied terminal zero fills the terminal Eq5 finite set under
+Definition 3's selected-sum datum. -/
+theorem suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m)
+    (C : AoyagiSelectedCutpoints ell) (T : ℕ → ℤ)
+    (hterminal : T (C.point ell - 1) = 0) :
+    insert (T (C.point ell - 1))
+        (aoyagiLemma5Eq5OffsetValueSet ell data.aParam ell data.ceilWidth m) =
+      aoyagiHtildeIntervalValueSetNat ell data.aParam data.ceilWidth m ell :=
+  aoyagiLemma5_suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat
+    ell data.aParam data.ceilWidth m C T data.aParam_le data.selectedSum_eq
+    hterminal
+
+/-- Lemma 4's two-value count under supplied `Htilde` chain bounds and a
+supplied two-value increment hypothesis. -/
+theorem lemma4_twoValueCount_of_htildeChainBounds
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) (H : Fin (ell + 1) → ℤ)
+    (hH0 : H 0 = m 0)
+    (hlower : aoyagiHtildeLowerChain ell data.aParam data.ceilWidth m ≤ H)
+    (hupper : H ≤ aoyagiHtildeUpperChain ell data.aParam data.ceilWidth m)
+    (hvals : ∀ j : Fin ell,
+      aoyagiLemma4F ell m H j = data.ceilWidth - 1 ∨
+        aoyagiLemma4F ell m H j = data.ceilWidth) :
+    ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = data.ceilWidth).card = data.aParam) ∧
+      ((Finset.univ.filter fun j : Fin ell ↦
+        aoyagiLemma4F ell m H j = data.ceilWidth - 1).card =
+          ell - data.aParam) :=
+  aoyagiLemma4_twoValueCount_of_HtildeChainBounds
+    ell data.aParam data.ceilWidth m H hH0 data.aParam_le data.selectedSum_eq
+    hlower hupper hvals
+
 /-- Definition 3's strict selected-width inequalities, when supplied
 separately, bound every selected width by `ceilWidth-1`. -/
 theorem selectedWidth_le_pred_of_sourceSelectedInequality
@@ -105,8 +181,9 @@ theorem selectedWidth_le_pred_of_sourceSelectedInequality
     ell data.aParam data.ceilWidth m data.ell_pos data.aParam_le
     data.selectedSum_eq hsource i
 
-/-- Source-selected inequalities plus Definition 3 data give equation `(4)`'s
-lower-chain label bounds, with the source inequalities still explicit. -/
+/-- Source-selected inequalities plus Definition 3 data and supplied index
+guards give equation `(4)`'s lower-chain label bounds, with the source
+inequalities still explicit. -/
 theorem htildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
     {ell : ℕ} {m : Fin (ell + 1) → ℤ}
     (data : AoyagiDefinition3CeilData ell m) {p : ℕ}
@@ -120,9 +197,29 @@ theorem htildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
     ell data.aParam p data.ceilWidth m data.ell_pos data.aParam_le hp0 hp_a
     data.selectedSum_eq hsource
 
-/-- Source-selected inequalities plus Definition 3 data give equation `(5)`'s
-displayed label bounds, with alpha-guard and source inequalities still
-explicit. -/
+/-- Source-selected inequalities plus Definition 3 data and supplied index
+guards give equation `(4)`'s local finite arithmetic package, with the
+displayed-vector construction still outside this theorem. -/
+theorem lemma5Eq4_localData_of_sourceSelectedInequality
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) {p : ℕ}
+    (hp0 : 1 ≤ p) (hp_tail : p + 1 ≤ data.aParam)
+    (hp_c : p ≤ ell - data.aParam)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) :
+    p + (ell - data.aParam) + 2 ≤ ell + 1 ∧
+      aoyagiHtildeUpperNat ell data.aParam data.ceilWidth m p - (p : ℤ) =
+        aoyagiHtildeLowerNat ell data.aParam data.ceilWidth m p ∧
+      (1 ≤ aoyagiHtildeLowerNat ell data.aParam data.ceilWidth m p + 1 ∧
+        aoyagiHtildeLowerNat ell data.aParam data.ceilWidth m p + 1 ≤
+          aoyagiSelectedWidthNat ell m p) :=
+  aoyagiLemma5Eq4_localData_of_sourceSelectedInequality
+    ell data.aParam p data.ceilWidth m data.ell_pos data.aParam_le hp0 hp_tail
+    hp_c data.selectedSum_eq hsource
+
+/-- Source-selected inequalities plus Definition 3 data and supplied
+index/alpha guards give equation `(5)`'s displayed label bounds, with source
+inequalities still explicit. -/
 theorem lemma5Eq5_labelBounds_of_sourceSelectedInequality
     {ell : ℕ} {m : Fin (ell + 1) → ℤ}
     (data : AoyagiDefinition3CeilData ell m) {p alpha : ℕ}
@@ -138,6 +235,26 @@ theorem lemma5Eq5_labelBounds_of_sourceSelectedInequality
   aoyagiLemma5Eq5_labelBounds_of_sourceSelectedInequality
     ell data.aParam p alpha data.ceilWidth m data.ell_pos data.aParam_le hpell
     halpha_pos halpha_le_excess data.selectedSum_eq hsource
+
+/-- Source-selected inequalities plus Definition 3 data and supplied
+interior/slack guards give equation `(3)`'s local finite arithmetic package. -/
+theorem lemma5Eq3_localData_of_sourceSelectedInequality_and_slack
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m)
+    (ha_lt : data.aParam < ell)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hslack : aoyagiSelectedWidthNat ell m 0 + 2 ≤ data.ceilWidth) :
+    (ell - data.aParam) + 2 ≤ ell + 1 ∧
+      aoyagiHtildeUpperNat ell data.aParam data.ceilWidth m 1 -
+      aoyagiHtildeLowerNat ell data.aParam data.ceilWidth m 1 =
+        1 ∧
+      (1 ≤ aoyagiHtildeUpperNat ell data.aParam data.ceilWidth m 1 + 1 ∧
+        aoyagiHtildeUpperNat ell data.aParam data.ceilWidth m 1 + 1 ≤
+          aoyagiSelectedWidthNat ell m 1) :=
+  aoyagiLemma5Eq3_localData_of_sourceSelectedInequality_and_slack
+    ell data.aParam data.ceilWidth m data.one_le_ell data.aParam_le
+    data.one_le_aParam ha_lt data.selectedSum_eq hsource hslack
 
 end AoyagiDefinition3CeilData
 

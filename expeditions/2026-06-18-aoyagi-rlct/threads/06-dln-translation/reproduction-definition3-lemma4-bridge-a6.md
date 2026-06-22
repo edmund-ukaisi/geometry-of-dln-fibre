@@ -2,7 +2,8 @@
 
 Date: 2026-06-22.
 
-Status: second A6 bridge slice.  This is finite arithmetic only.
+Status: second A6 bridge slice, extended with count/formula handoff wrappers.
+This is finite arithmetic only.
 
 ## Source Anchor
 
@@ -95,6 +96,70 @@ equation `(4)` and equation `(5)`.  The new bridge only repackages those
 theorems through `AoyagiDefinition3CeilData`; it does not construct displayed
 vectors or chart families.
 
+## Count and Formula Handoff Check
+
+Aoyagi Theorem 2 displays the pole-order symbol `theta` as
+
+```text
+a*(ell-a)+1.
+```
+
+The Lean Definition 3 package names this finite arithmetic expression
+`theorem2OrderFormula`, not `theta`, because no pole-order interpretation is
+proved in this file.
+
+Existing A5 arithmetic has already proved the interval-size identity
+
+```text
+1 + sum_{j=1}^{ell-1} (intervalSize_j - 1) = a*(ell-a)+1
+```
+
+and the same identity for the cardinalities of the same-coordinate `Htilde`
+interval value sets.  The A6 bridge substitutes the `aParam` field of
+`AoyagiDefinition3CeilData`, so both finite counts rewrite to
+`data.theorem2OrderFormula`.
+
+At the terminal coordinate, the selected-sum identity makes both displayed
+chains zero.  Therefore the same-coordinate terminal value set is `{0}`.  A
+separately supplied terminal equality
+
+```text
+T(C.point ell - 1)=0
+```
+
+then fills the terminal Eq5-offset set into that same singleton.  This is only
+terminal finite-set bookkeeping; it is not a terminal-minimum classifier.
+
+## Local Eq3/Eq4 and Lemma 4 Handoff Check
+
+The bridge now exposes the existing Lemma 4 count theorem through
+`AoyagiDefinition3CeilData`, but it still requires both:
+
+```text
+Htilde_lower <= H <= Htilde_upper,
+F_j in {M-1,M} for every j.
+```
+
+Thus Definition 3 data plus chain bounds do not by themselves prove Lemma 4's
+two-value increment hypothesis.
+
+For Lemma 5 equation `(4)`, the local arithmetic package is repackaged under
+the strict source-selected inequalities and the local guards
+
+```text
+1 <= p, p+1 <= a, p <= ell-a.
+```
+
+For equation `(3)`, the bridge deliberately keeps the missing one-unit slack
+
+```text
+selectedWidth_0 + 2 <= M
+```
+
+as an explicit hypothesis, along with `a < ell` and the strict source-selected
+inequalities.  This preserves the A5 obstruction: Eq3 slack is not forced by
+Definition 3-shaped data alone.
+
 ## Lean Translation
 
 The new Lean file is `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`.
@@ -110,9 +175,16 @@ It adds method-style wrappers on `AoyagiDefinition3CeilData`:
 - `htildeUpperNat_last_eq_zero`;
 - `htildeUpperNat_pred_eq_sub_lastWidth`;
 - `Hlast_eq_zero_of_htildeChainBounds`;
+- `intervalSize_excess_sum_Icc_eq_theorem2OrderFormula`;
+- `htildeIntervalValueSetNat_excess_sum_Icc_eq_theorem2OrderFormula`;
+- `htildeIntervalValueSetNat_terminal_eq_singleton_zero`;
+- `suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`;
+- `lemma4_twoValueCount_of_htildeChainBounds`;
 - `selectedWidth_le_pred_of_sourceSelectedInequality`;
 - `htildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality`;
-- `lemma5Eq5_labelBounds_of_sourceSelectedInequality`.
+- `lemma5Eq4_localData_of_sourceSelectedInequality`;
+- `lemma5Eq5_labelBounds_of_sourceSelectedInequality`;
+- `lemma5Eq3_localData_of_sourceSelectedInequality_and_slack`.
 
 ## Kill Conditions
 
@@ -125,3 +197,5 @@ It adds method-style wrappers on `AoyagiDefinition3CeilData`:
   crossings, or RLCT extraction.
 - Do not use the Htilde terminal zero wrappers as a proof of Lemma 4's
   two-value increment hypothesis.
+- Do not read the finite count/order-formula wrappers as a pole-order theorem.
+- Do not drop the explicit Eq3 one-unit slack hypothesis.

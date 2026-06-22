@@ -60,8 +60,15 @@ Htilde arithmetic API:
 - terminal endpoint zero;
 - lower/upper Htilde terminal zero;
 - penultimate upper-chain endpoint rewrite;
-- selected-width and equation `(4)`/`(5)` label-bound wrappers only when the
-  strict source-selected inequality is supplied separately.
+- finite interval-size and same-coordinate Htilde value-set count rewrites to
+  `theorem2OrderFormula`;
+- terminal same-coordinate singleton and supplied terminal Eq5 offset
+  bookkeeping;
+- Lemma 4's two-value count wrapper under supplied chain bounds and supplied
+  two-value increments;
+- selected-width and local equation `(4)`/`(5)` wrappers only when the strict
+  source-selected inequality is supplied separately;
+- local equation `(3)` wrapper only with the still-explicit one-unit slack.
 
 Artifacts:
 

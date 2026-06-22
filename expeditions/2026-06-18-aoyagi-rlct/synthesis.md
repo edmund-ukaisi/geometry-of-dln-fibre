@@ -331,10 +331,20 @@ The Definition 3 bridge slice now also lands in
 `one_le_ell`, `one_le_aParam`, `terminalEndpoint_eq_zero`, lower/upper chain
 terminal zeros, Nat-indexed terminal zeros,
 `htildeUpperNat_pred_eq_sub_lastWidth`, and
-`Hlast_eq_zero_of_htildeChainBounds`.  It also provides
-source-selected-inequality wrappers for selected-width upper bounds and
-equation `(4)`/`(5)` label bounds, but the strict selected inequality remains
-an explicit hypothesis rather than a field of the ceiling datum.
+`Hlast_eq_zero_of_htildeChainBounds`.  It also provides finite count/order
+formula handoffs
+`intervalSize_excess_sum_Icc_eq_theorem2OrderFormula` and
+`htildeIntervalValueSetNat_excess_sum_Icc_eq_theorem2OrderFormula`, terminal
+same-coordinate/Eq5 wrappers
+`htildeIntervalValueSetNat_terminal_eq_singleton_zero` and
+`suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`, and the Lemma 4
+count handoff `lemma4_twoValueCount_of_htildeChainBounds` under supplied
+chain bounds and supplied two-value increments.  Source-selected-inequality
+wrappers now include selected-width upper bounds, equation `(4)` local data,
+and equation `(5)` label bounds; equation `(3)` local data remains available
+only with the explicit one-unit slack hypothesis.  The strict selected
+inequality remains an explicit hypothesis rather than a field of the ceiling
+datum.
 
 Artifacts:
 `threads/06-dln-translation/reproduction-definition3-lemma4-bridge-a6.md`,
@@ -343,8 +353,9 @@ Artifacts:
 
 Nonclaims for the bridge: no full Definition 3 selection package, no
 displayed-vector construction, no Lemma 4 two-value increment proof, no Lemma
-5 chart-family coverage, no terminal-minimum classifier, no pole order, no
-normal crossings, and no RLCT extraction.
+5 chart-family coverage, no terminal-minimum classifier, no conversion of the
+finite count into Aoyagi's pole-order symbol, no normal crossings, and no RLCT
+extraction.
 
 ## Latest A4 Update
 
