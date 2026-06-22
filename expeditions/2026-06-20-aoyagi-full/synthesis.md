@@ -36,9 +36,11 @@ jac_unit bounded positive det, non-MP (transport via unit-invariance + germ-loca
 - fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
   confirmed cover-fact signatures = the contract). Achiever = `_le_regularSeq` at j₀ (card=m₀ min-ratio axis) +
   threshold_ge, bundled by of_mult_and_achiever; binding axis = ⨅ over multiple C1 axes.
-- crux2 #50 (value-free reduction, consuming side: S1 spectator-peel — new reusable Foundations lemma
-  `rlctAtOn (fun p => F p.1) = rlctAtOn F`, reused by D1 #42 — + sub-5/6/7 + assembly) on
-  origin/fm2/deepest-gauge-chart (@fbe8d01: structure + assembly green, 3 sorries).
+- crux2 #50 (value-free reduction, consuming side) on origin/fm2/deepest-gauge-chart (@9ed57e5): S1
+  spectator-peel `rlctAtOn_spectator_peel` (Foundations/S1Spectator.lean — gauge-orbit spectator dirs are
+  RLCT-neutral) **PROVEN, axiom-clean** (#52; the hard piece of sub-6/7, reused by D1 #42); sub-2 (rank-exact)
+  PROVEN. Reachable + framing-independent: sub-5 (non-MP transport, ~100-150 lines) + sub-6/7 assembly
+  (~80-120 lines). The XL sub-3/4 (chart-existence) is cobuild-sub34's, in parallel.
 - cobuild-sub34 #51 (the XL sub-3/4 `deepest_gauge_chart_exists`, g150-fix-cert-backed block algebra,
   ~600-1500 lines) — own worktree off origin/fm2/deepest-gauge-chart, skeleton-first; crux2 reviews the
   skeleton for cert-fidelity.
@@ -58,8 +60,10 @@ jac_unit bounded positive det, non-MP (transport via unit-invariance + germ-loca
 
 **#28 plan (controller, at core-green):** consolidate onto expedition/aoyagi-full — RouteMAtlas = local core
 branch; pick g150-gauge-chart-fix (T̃) + g138-c1-peel-prose + S-min @1c4b9b5 (3-conjunct, NOT the 4-conjunct on
-routeM-wip); dedup Mval_nonneg; flush this synthesis. PR only after the full general-M `aoyagi_learning_coefficient`
-is sorry-free (operator: no PR until the hero task is done).
+routeM-wip); dedup Mval_nonneg; flush this synthesis. At merge, fold pp2's g140 gloss ("inductive RouteMTree"
+→ "the WF.fix atlas's leaves (nested Σ/Sum)" — fm3's encoding is WF.fix, not a materialized inductive; ι +
+achiever unaffected). PR only after the full general-M `aoyagi_learning_coefficient` is sorry-free (operator:
+no PR until the hero task is done).
 
 ## Prior read (2026-06-21): ★ R1 EXECUTION — S1.5 sorry CLOSED (6→5) @1304cf2; (2,2,2) route PINNED ★
 
