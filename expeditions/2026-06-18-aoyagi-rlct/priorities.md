@@ -179,6 +179,17 @@ obligation's supplied terminal matrix `Cterm`, leaving the source suffix and
 finite center facts unchanged.  It still constructs neither the obligation nor
 `Cterm`/`Csucc`, and it does not move the source/chart-production boundary.
 
+The continuing supplied-obligation consumer layer now also proves
+`SourceProductionObligation.continuing_Csucc_currentFollowingBlock_eq_formula`
+and
+`SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc`.
+These rewrite the continuing old-top/source-suffix stack through the supplied
+successor object `Csucc`, using only the obligation's `Csucc_eq_formula` and
+the already proved source-current stack theorem.  This improves downstream
+consumption of a supplied obligation, but it still constructs neither `Csucc`
+nor a successor chart/suffix and does not move the source/chart-production
+boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

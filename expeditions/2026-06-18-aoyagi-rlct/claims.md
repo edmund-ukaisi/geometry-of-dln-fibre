@@ -715,6 +715,9 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-source-suffix-chain-split-and-actual-width-boundary-a4.md`.
 	  Review of the source suffix utilities is saved at
 	  `threads/04-blow-up-certificate/review-source-suffix-utilities-a4.md`.
+	  Review of the Case 2 continuing supplied-`Csucc` stack consumer is saved
+	  at
+	  `threads/04-blow-up-certificate/review-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1728,6 +1731,16 @@ No such claim is formalisation-ready until both fields are filled.
   current Lean API.  This hardens the interface but still does not
   source-produce successor data, suffixes, charts, coverage, transition
   regularity, or a full transition theorem.
+  The continuing supplied-obligation stack consumer is now proved as
+  `SourceProductionObligation.continuing_Csucc_currentFollowingBlock_eq_formula`
+  and
+  `SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc`.
+  It rewrites the existing old-top/source-suffix continuing stack payload with
+  the supplied successor object `Csucc` on the successor side, consuming only
+  `Csucc_eq_formula` and the already proved source-current stack theorem.
+  This is still finite payload rewriting, not construction of `Csucc`,
+  suffixes, charts, coverage, transition regularity, or a full transition
+  theorem.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

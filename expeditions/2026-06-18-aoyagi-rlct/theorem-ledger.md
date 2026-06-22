@@ -5354,6 +5354,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-cterm-frontier-a4.md`.
 
+Latest A4 Case 2 obligation continuing Csucc stack:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_Csucc_currentFollowingBlock_eq_formula`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc`.
+The first theorem rewrites the current source-row block of the supplied
+successor factor `Csucc` to the formula-level successor block using the
+obligation's `Csucc_eq_formula`.  The second consumes a supplied obligation
+and the continuing guard `J+2 <= prefixMinNat n (S+1)` to restate the
+old-top/source-suffix stack payload with
+`case2SourceCurrentFollowingBlock n S Csucc` on the successor side.  This is
+finite payload rewriting only; it does not construct the obligation, `Csucc`,
+`C'^(S+1)`, suffixes, charts, coverage, transition regularity, coordinate
+post-data, normal crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-continuing-csucc-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -4213,3 +4213,32 @@ charts, source-produce `Csucc`/`C'^(S+1)`, produce suffixes, prove coverage or
 meaningful transition regularity, derive corrected post-data, prove normal
 crossings, pole order, termination, RLCT, or repair the printed Case 2 vector
 mismatch.
+
+## 2026-06-22 Lean Case 2 obligation continuing Csucc stack
+
+Reproduction:
+`reproduction-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation-continuing-csucc-stack.md`.
+Review artifact:
+`review-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
+
+Lean now adds the continuing source-current stack consumer for a supplied
+`SourceProductionObligation`:
+
+```text
+SourceProductionObligation.continuing_Csucc_currentFollowingBlock_eq_formula
+SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc
+```
+
+The first theorem rewrites the current source-row block of the supplied
+successor factor `Csucc` to the existing formula-level successor block using
+only `Csucc_eq_formula`.  Under the continuing guard
+`J+2 <= prefixMinNat n (S+1)`, the second theorem restates the existing
+old-top/source-suffix stack payload with
+`case2SourceCurrentFollowingBlock n S Csucc` on the successor side.
+
+This is finite payload rewriting only.  It does not construct the obligation,
+`Csucc`, `C'^(S+1)`, source suffixes, successor charts, coverage, transition
+regularity, coordinate post-data, normal crossings, pole order, termination,
+RLCT, or repair the printed Case 2 vector mismatch.

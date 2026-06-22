@@ -5512,6 +5512,25 @@ and
 Review:
 `threads/06-dln-translation/review-theorem2-ratio-count-terminal-order-bridge-a6.md`.
 
+Latest A4 Case 2 continuing supplied-`Csucc` stack consumer:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_Csucc_currentFollowingBlock_eq_formula`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc`.
+Given a supplied `SourceProductionObligation` and the continuing guard
+`J+2 <= prefixMinNat n (S+1)`, the existing old-top/source-suffix stack
+payload is rewritten with `case2SourceCurrentFollowingBlock n S Csucc` on the
+successor side.  This consumes only `Csucc_eq_formula` plus the already proved
+source-current stack theorem; it is not construction of `Csucc`, source
+suffixes, successor charts, transition regularity, normal crossings, pole
+order, termination, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-continuing-csucc-stack-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-continuing-csucc-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
