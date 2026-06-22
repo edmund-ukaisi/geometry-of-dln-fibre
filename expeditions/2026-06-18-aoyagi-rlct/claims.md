@@ -1840,8 +1840,12 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`;
   Eq5 endpoint raw value injectivity at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`;
+  Eq5 endpoint raw cardinality at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-cardinality-a5.md`;
   Eq5 endpoint counted-datum classifier at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`;
+  Eq5 value-label branch injection at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1911,9 +1915,13 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`;
   Eq5 endpoint raw value injectivity checked by xhigh `Dalton` at
   `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-value-injective-a5.md`;
+  Eq5 endpoint raw cardinality checked by xhigh `Arendt` at
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-raw-cardinality-a5.md`;
   Eq5 endpoint counted-datum classifier reviewed by xhigh `Hypatia` and
   `Dirac`, with documentation repairs recorded at
-  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`;
+  Eq5 value-label branch injection reviewed by xhigh `Hume` at
+  `threads/05-arithmetic-tail/review-lemma5-eq5-value-label-branch-injection-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1960,7 +1968,10 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 supplied endpoint raw coverage in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5SuppliedCoverage.lean`, including the
   endpoint branch-coordinate, disjointness, raw value-injectivity, and
-  counted-datum classifier adapters; broader A5 targets TBD.
+  counted-datum classifier adapters; Eq5 terminal value-label branch
+  injectivity and terminal cardinal-squeeze wrappers in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalClassifier.lean`; broader A5
+  targets TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
   `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
@@ -2740,6 +2751,19 @@ No such claim is formalisation-ready until both fields are filled.
   `(p, alpha)` injectivity, branch alpha data, terminal-label nonbase
   inequalities, and the terminal-endpoint base label.  They do not prove
   source-backed no-extra coverage or a Lemma 5 order count.
+  Also proved
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel_terminalEndpointBase`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze`,
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze`.
+  These prove branch-label injectivity from supplied selected-block
+  membership, supplied nonbase value-label synchronisation, and endpoint-base
+  separation, then compose it with terminal `(p, alpha)` counted-datum
+  injectivity in the existing cardinal squeeze.  They do not construct the
+  value-label relation or terminal Eq5 payloads from source, prove direct
+  counted-datum back-to-label coverage, prove source-backed no-extra
+  coverage, or prove a Lemma 5 order count.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

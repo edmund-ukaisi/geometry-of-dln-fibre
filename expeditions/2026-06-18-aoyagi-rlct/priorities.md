@@ -212,6 +212,8 @@ Current Eq5 endpoint raw cardinality slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
 Current Eq5 endpoint counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
+Current Eq5 value-label branch-injection slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -233,6 +235,21 @@ cardinality only under supplied terminal Eq5 payloads, terminal `(p, alpha)`
 injectivity, branch alpha data, terminal-label nonbase inequalities, and the
 terminal-endpoint base label.  It is not source-backed no-extra coverage and
 does not prove the Lemma 5 order count, pole order, normal crossings, or RLCT.
+
+Lean now also exposes the value-label sibling of this cardinal-squeeze route:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel_terminalEndpointBase`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze`.
+This replaces branch alpha-formula/injectivity inputs with the supplied
+value-label relation
+`TC.family.value b = ((TC.branchLabel (some b)).2 : Z) - 1`.
+It remains conditional on terminal Eq5 payloads, terminal `(p, alpha)`
+injectivity, nonbase selected-block membership, terminal-label nonbase
+inequalities, and the terminal-endpoint base label.  It is not a source proof
+of value-label synchronisation, branch construction, source-backed no-extra
+coverage, pole order, normal crossings, or RLCT.
 
 Lean now also exposes the conditional Eq5 raw coverage constructor:
 `aoyagiLemma5Eq5EndpointRawBranches`,

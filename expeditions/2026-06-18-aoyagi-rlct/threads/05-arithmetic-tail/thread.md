@@ -5145,3 +5145,38 @@ strict alpha injectivity, prove base-filter survival, count filtered nonbase
 branches, classify terminal-minimum labels, prove no-extra coverage, prove a
 Lemma 5 order count, prove pole order, prove normal crossings, or extract
 RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 value-label branch injection
+
+Reproduction:
+`reproduction-lemma5-eq5-value-label-branch-injection-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-value-label-branch-injection.md`.
+Review artifact:
+`review-lemma5-eq5-value-label-branch-injection-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel_terminalEndpointBase
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze
+```
+
+The branch-label theorem proves injectivity on the full `Option`-tagged
+branch set from supplied selected-block membership, supplied nonbase
+value-label synchronisation
+`TC.family.value b = ((TC.branchLabel (some b)).2 : Z) - 1`, and either
+explicit base/nonbase label separation or the terminal-endpoint base-label
+wrapper.  The cardinal-squeeze wrappers use this branch-label injectivity
+together with the existing terminal `(p, alpha)` counted-datum injectivity
+adapter.
+
+This is finite terminal-candidate bookkeeping only.  It replaces the earlier
+branch-alpha formula/injectivity inputs with supplied value-label data.  It
+does not construct Eq5 branches, prove the value-label relation from source,
+prove terminal Eq5 payload coverage from source, prove terminal
+`(p, alpha)` injectivity from source, build a direct counted-datum
+back-to-label map, prove source-backed no-extra coverage, prove a Lemma 5
+order count, prove pole order, prove normal crossings, or extract RLCT.

@@ -4839,6 +4839,31 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
 
+Latest A5 Eq5 value-label branch-injection update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel_terminalEndpointBase`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze`.
+The branch-label theorem uses supplied selected-block membership and the
+supplied nonbase value-label relation
+`TC.family.value b = ((TC.branchLabel (some b)).2 : Z) - 1` to prove
+branch-label injectivity; the endpoint wrapper supplies base/nonbase
+separation from the terminal-endpoint base label.  The terminal cardinal
+squeeze then composes this with the existing terminal `(p, alpha)`
+counted-datum injection adapter.  This replaces branch-alpha data with
+supplied value-label synchronisation, but it is still conditional on terminal
+Eq5 payloads, terminal `(p, alpha)` injectivity, terminal-label nonbase
+inequalities, and endpoint-base data.  It is not a source proof of the
+value-label relation, branch construction, source-backed no-extra coverage,
+normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-value-label-branch-injection.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-value-label-branch-injection-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
