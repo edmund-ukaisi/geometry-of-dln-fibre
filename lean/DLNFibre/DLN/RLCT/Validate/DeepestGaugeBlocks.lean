@@ -87,4 +87,24 @@ theorem frobenius_fromBlocks {r mlo nhi₀ nhi₁ : Type*} [Fintype r] [Fintype 
   · simp only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
     rw [Finset.sum_add_distrib]
 
+/-- **The matrix-core comparability squeeze** (#54, the load-bearing #44c obligation, route- and
+encoding-independent). With the loss-block decomposed as `P₁₁ = leak + R` entrywise (`hsplit`: `R` =
+the gauge-normalized Schur core, `leak` = the regular×regular endpoint leak) and the leak charged to
+the regular block `∑ leak² ≤ t²·∑ E²` (`hleak`; `t = ‖pivot‖ → 0` at `w0`), the loss `∑E² + ‖P₁₁‖²`
+is two-sidedly comparable to the clean form `∑E² + ‖R‖²`:
+`(2(1+t²))⁻¹·(∑E²+‖R‖²) ≤ ∑E²+‖P₁₁‖² ≤ (2+2t²)·(∑E²+‖R‖²)`.
+The thin specialisation of `squeeze_bounds_abstract` (`p = leak`, `s = R`, `p+s = P₁₁`). The g153
+raw-`∏T` refutation is dodged: the leak is in the regular ideal (`hleak`), so its excess is charged
+to `∑E²`, not the core — exactly where the raw-`∏T` core was insufficient. -/
+theorem core_comparability_squeeze {ι κ : Type*} [Fintype ι] [Fintype κ]
+    (E : ι → ℝ) (P11 leak Rcore : κ → ℝ) (t : ℝ)
+    (hsplit : ∀ j, P11 j = leak j + Rcore j)
+    (hleak : (∑ j, (leak j) ^ 2) ≤ t ^ 2 * (∑ i, (E i) ^ 2)) :
+    ((∑ i, (E i) ^ 2) + (∑ j, (Rcore j) ^ 2))
+        ≤ (2 * (1 + t ^ 2)) * ((∑ i, (E i) ^ 2) + (∑ j, (P11 j) ^ 2))
+    ∧ ((∑ i, (E i) ^ 2) + (∑ j, (P11 j) ^ 2))
+        ≤ (2 + 2 * t ^ 2) * ((∑ i, (E i) ^ 2) + (∑ j, (Rcore j) ^ 2)) := by
+  simp only [hsplit]
+  exact squeeze_bounds_abstract E leak Rcore t hleak
+
 end DLNFibre.DLN.RLCT
