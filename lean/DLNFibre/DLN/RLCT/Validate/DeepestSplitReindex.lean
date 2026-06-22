@@ -124,6 +124,21 @@ theorem flatDim_deepest_split (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hle := deepestNReg_le_layer_regular_sum H r hr hL
   omega
 
+/-! ## The role-respecting block split (the precision-pin: slots BY ROLE, not arbitrary)
+
+The controller's precision pin (#64): the split's slots must be grouped BY ROLE — the core slot the
+raw `T_s` blocks (`= FlatIdx (deepestM H r)`, forced by the slot type `Fin (flatDim (deepestM H r))`),
+the regular slot the gauge pivots, spectators the rest — NOT an arbitrary `equivOfCardEq`. The
+load-bearing piece is the **role-respecting index bijection** `FlatIdx H ≃ RegIdx ⊕ (FlatIdx (deepestM
+H r) ⊕ GaugeIdx)`, where the middle summand is exactly the `T`-block entries `{(s,i,j) | r ≤ i ∧ r ≤
+j}`. Building blocks below; the per-layer `r`-threshold row split is the atom. -/
+
+/-- The per-vertex `r`-threshold split `Fin a ≃ Fin r ⊕ Fin (a − r)` (for `r ≤ a`): the first `r`
+indices (the gauge/regular rows) and the last `a − r` (the reduced `T`-block rows). The atom of the
+role-respecting block decomposition. -/
+noncomputable def rThresholdSplit (r a : ℕ) (ha : r ≤ a) : Fin a ≃ Fin r ⊕ Fin (a - r) :=
+  (finCongr (by omega : a = r + (a - r))).trans finSumFinEquiv.symm
+
 /-! ## The measure-preserving gauge-slice reindex -/
 
 /-- The spectator (gauge) coordinate count: the flat directions left after the regular frame and the
