@@ -265,6 +265,16 @@ theorem codimBil_peelCorr_left (m : Fin (N + 2) × Fin (N + 2) → ℕ) (A : ℤ
   rw [Finset.mem_Icc] at hj
   rw [extendℤ_peelCorr_off m (i - 1) (j - 1) (by omega), zero_mul]
 
+/-- **Peel-side codimForm** (`codimForm_add` + the two `R`-first vanishings): the `codimForm` of the
+merged partition is `codimForm A + codimBil A R`. -/
+theorem codimForm_peel_lhs (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimForm N (extendℤ (peelPart m))
+      = codimForm N (extendℤ (peelLower m))
+        + codimBil N (extendℤ (peelLower m)) (extendℤ (peelCorr m)) := by
+  rw [peelPart_eq_add, extendℤ_add, codimForm_add, codimBil_peelCorr_left,
+    ← codimBil_self (extendℤ (peelCorr m)), codimBil_peelCorr_left]
+  ring
+
 /-- The peel preserves support: if `m` is supported on `i ≤ j` then so is `peelPart m`. -/
 theorem peelPart_support {m : Fin (N + 2) × Fin (N + 2) → ℕ}
     (hs : ∀ p : Fin (N + 2) × Fin (N + 2), ¬ p.1 ≤ p.2 → m p = 0)
