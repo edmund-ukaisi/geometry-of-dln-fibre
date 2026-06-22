@@ -122,6 +122,16 @@ an existing finite tail identity.  The second consumes the supplied
 `Csucc_eq_formula`.  They do not construct source data or move the
 source-production boundary.
 
+Lean now also constructs the supplied obligation from canonical formula-level
+choices, but only after a continuing next chart-family boundary is supplied:
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`.
+It chooses `Csucc` as the formula-level successor following factor and
+`Cterm` as transported terminal rows.  This removes the need to choose
+arbitrary `Csucc/Cterm` in this canonical constructor; it still does not
+construct the next chart-family boundary, source-produce successor chart data,
+produce suffixes, prove coverage/transition regularity, or move the
+source-production boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

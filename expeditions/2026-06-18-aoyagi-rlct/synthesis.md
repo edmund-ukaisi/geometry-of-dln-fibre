@@ -5266,6 +5266,28 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-csucc-projections-a4.md`.
 
+Latest A4 supplied-obligation constructor update:
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`
+now constructs the obligation using canonical formula-level choices
+`Csucc = case2DisplayedSourceSuccessorFollowingFactor ... C` and
+`Cterm = case2DisplayedSourceTerminalTransportedRows ... C`, provided the
+continuing next chart-family boundary is explicitly supplied.  The existing
+frontier package supplies continuing/actual-width/row-exhausted payloads;
+actual-width terminal original-row equality first uses that transported rows
+are original rows of the canonical successor factor and then uses the
+actual-width collapse to old `C`; row-exhausted terminal transported-row
+equality is reflexive.  This is still supplied-boundary assembly: it does not
+construct the continuing next chart-family,
+source-produce `Csucc` from coordinates, produce suffixes, coverage,
+transition regularity, coordinate post-data, normal crossings, pole order, or
+RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-canonical-formula-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-canonical-formula.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-canonical-formula-a4.md`.
+
 Latest A5 finite-obstruction update: `Lemma5TerminalBridge.lean` now contains
 `terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`
 and

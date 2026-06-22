@@ -5275,6 +5275,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-csucc-projections-a4.md`.
 
+Latest A4 Case 2 source-production obligation canonical formula constructor:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`.
+It constructs a `SourceProductionObligation` with `Csucc` chosen as the
+formula-level successor following factor and `Cterm` chosen as transported
+terminal rows, under an explicit supplied continuing next chart-family
+boundary.  This removes the need to choose arbitrary `Csucc/Cterm` in this
+canonical constructor but does not change the more general interface or
+construct that next chart-family, source-produce successor chart data, produce
+suffixes, prove coverage/transition regularity, normal crossings, pole order,
+or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-canonical-formula-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-canonical-formula.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-canonical-formula-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

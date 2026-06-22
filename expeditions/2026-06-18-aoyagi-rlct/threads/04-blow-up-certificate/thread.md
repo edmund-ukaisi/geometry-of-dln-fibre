@@ -4097,3 +4097,35 @@ coverage, transition regularity, coordinate post-data, Jacobian arithmetic,
 normal crossings, pole order, termination, RLCT, or repair the printed Case 2
 vector mismatch.  They do not make the stopped branches exclusive or derive
 the branch hypotheses from failed continuation.
+
+## 2026-06-22 Lean Case 2 obligation canonical formula constructor
+
+Reproduction:
+`reproduction-case2-source-production-obligation-canonical-formula-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation-canonical-formula.md`.
+Review artifact:
+`review-case2-source-production-obligation-canonical-formula-a4.md`.
+
+Lean now constructs a canonical formula-level inhabitant of
+`SourceProductionObligation` once the continuing next chart-family boundary is
+explicitly supplied:
+
+```text
+SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
+```
+
+The theorem chooses `Csucc` to be the formula-level successor following factor
+and `Cterm` to be the transported terminal-row matrix.  The continuing
+next-chart-family field remains an explicit supplied argument.  The existing
+frontier package supplies the branch payloads; actual-width terminal
+original-row equality follows from the actual-width collapse of the
+formula-level successor factor; row-exhausted terminal transported-row
+equality is reflexive.
+
+This is interface assembly only.  It does not construct the continuing next
+chart-family boundary, source-produce `Csucc` or `C'^(S+1)` from chart
+coordinates, produce the suffix, prove coverage or transition regularity,
+derive corrected post-data from coordinates, add Jacobian arithmetic, prove
+normal crossings, pole order, termination, RLCT, or repair the printed Case 2
+vector mismatch.

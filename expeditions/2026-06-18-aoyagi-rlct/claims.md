@@ -1706,6 +1706,13 @@ No such claim is formalisation-ready until both fields are filled.
   the actual-width theorem consumes the supplied `actualWidth_Cterm_eq`
   branch field, the actual-width collapse identity, and `Csucc_eq_formula`.
   They do not construct source data or a transition theorem.
+  The canonical supplied-obligation constructor
+  `SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`
+  is now also proved.  It chooses `Csucc` and `Cterm` by the existing
+  formula-level successor and transported terminal-row definitions, while
+  keeping the continuing next chart-family boundary explicit as supplied
+  input.  It is still not source production of successor chart data, suffixes,
+  coverage, transition regularity, or a full transition theorem.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

@@ -17944,6 +17944,89 @@ structure SourceProductionObligation
 
 namespace SourceProductionObligation
 
+/-- Canonical formula-level inhabitant of the source-production obligation,
+after the continuing next chart-family boundary is supplied.
+
+This chooses `Csucc` to be the formula-level successor following factor and
+`Cterm` to be the transported terminal rows.  The continuing next chart family
+remains an explicit supplied field; this theorem does not construct charts,
+successor source data, suffixes, transitions, normal crossings, pole order, or
+RLCT data. -/
+theorem of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    (residual : ℕ × ℕ → R)
+    (κ : Fin (L + 1) → Type uκ) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (continuingNextChartFamily :
+      ∀ (_hnext : J + 2 ≤ prefixMinNat n (S + 1)),
+        ∃ ChartRegularNext TransitionRegularNext,
+          Case2ResidualBlockChartFamilyBoundary
+            n S (J + 1) ChartRegularNext TransitionRegularNext) :
+    SourceProductionObligation data residual κ hSuffix C Ctail
+      (case2DisplayedSourceSuccessorFollowingFactor
+        n data.stage_pos data.continuation residual C)
+      (case2DisplayedSourceTerminalTransportedRows
+        n data.stage_pos data.continuation residual C) := by
+  let frontier :
+      SourceChartFrontierBoundaryPackages.{u, uκ, uκ, uκ, uκ, uκ, uκ}
+        R L n S J t numerator leastValue
+        pre u residual data.stage_pos data.continuation :=
+    sourceChartMap_frontierBoundaryPackages
+      pre u residual data.stage_pos data.stage_le data.continuation
+      data.exponentPre data.levelInv data.leastValueGap data.chartFamily
+  refine
+    { frontier := frontier
+      Csucc_eq_formula := rfl
+      continuing_suppliedNextChartFamily := continuingNextChartFamily
+      continuing_frontier := ?_
+      actualWidth_frontier := ?_
+      actualWidth_Cterm_eq := ?_
+      actualWidth_level := ?_
+      actualWidth_exponent := ?_
+      rowExhausted_frontier := ?_
+      rowExhausted_Cterm_eq := ?_ }
+  · intro hnext
+    exact frontier.continuingWeightedSuccFollowing C hnext
+  · intro hwidth
+    exact
+      frontier.actualWidthStopped
+        C (sourceSuffixProduct κ Ctail S hSuffix) hwidth
+  · intro hwidth
+    calc
+      case2DisplayedSourceTerminalTransportedRows
+          n data.stage_pos data.continuation residual C =
+          case2DisplayedSourceTerminalOriginalRows (J := J)
+            (case2DisplayedSourceSuccessorFollowingFactor
+              n data.stage_pos data.continuation residual C) :=
+        (case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor
+          n data.stage_pos data.continuation residual C).symm
+      _ = case2DisplayedSourceTerminalOriginalRows (J := J) C := by
+        rw [case2DisplayedSourceSuccessorFollowingFactor_eq_original_of_width_next_eq
+          n data.stage_pos data.continuation hwidth residual C]
+  · intro hwidth
+    exact data.terminalRelabelPostLevelInvariants_of_actualWidth hwidth
+  · intro hwidth
+    exact data.terminalRelabelExponentDomain_of_actualWidth hwidth
+  · intro hrow
+    exact frontier.rowExhaustedSourceSuffix κ hSuffix C Ctail hrow
+  · intro _hrow
+    rfl
+
 /-- The supplied successor following factor has the same next same-stage tail
 as the old following factor.
 
