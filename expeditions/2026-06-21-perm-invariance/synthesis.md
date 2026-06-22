@@ -182,3 +182,17 @@ REMAINING M3b: the per-fibre weight collapse (codimForm split + Pm split + inner
 the fiberwise sum + induction on N → fivegon (Thm 5.6). Then M4 (chain → Thm 5.5) + M6 (Cor 5.10 via the M5
 bridge + M6-prep). All Lean targets = the exact-verified pen-and-paper certificates (thread 03/04/07).
 Landed this session: M2, M3a, M5/L1+bridge, M6-prep, M3b-foundation+crux.
+
+## 2026-06-22 — M3b codimForm-split: GRANULAR STATE (for compaction-recovery)
+codimForm-split route (thread-08 cert 665f3d9, A/R/L decomposition via LANDED codimBil/codimForm_add/
+codimForm_congr_onbox). TARGET: codimForm(N+1)(extendℤ m) = codimForm N (extendℤ(peelPart m)) + Δ,
+Δ = ∑_{0≤a<u≤N+1} (extendℤ m) a N · (extendℤ m) u (N+1).
+LANDED in QSeriesFivegon.lean (all green, committed ≤61d9228 + later):
+  - extendℤ_add (extendℤ additive); peelLower/peelCorr defs; peelPart_eq_add (peelPart m = peelLower m + peelCorr m);
+  - extendℤ_peelCorr_off (peelCorr-extendℤ zero off col N); codimBil_peelCorr_left (codimBil N (extendℤ peelCorr) A = 0 — peel-side Step C).
+REMAINING codimForm-split:
+  - peel side: codimForm N (extendℤ(peelPart m)) = codimForm N A + codimBil N A R  [rw peelPart_eq_add, extendℤ_add, codimForm_add; codimBil N R A=0 via codimBil_peelCorr_left; codimForm N R = codimBil N R R=0 same]. A=extendℤ(peelLower m), R=extendℤ(peelCorr m).
+  - big side: def peelLast (Fin(N+2)², col N+1) + L=extendℤ peelLast; codimForm(N+1)(extendℤ m)=codimForm(N+1)(A+L) via codimForm_congr_onbox (THE flagged risk: the on-box Fin-index/castSucc identity extendℤ m = extendℤ(peelLower m)+L on box-(N+1)); then codimForm_add; L vanishing (analogue of codimBil_peelCorr_left at level N+1); Step D codimForm(N+1) A = codimForm N A (A bound N; v=N+1 terms vanish — ℤ-Icc top-peel via insert/sum_subset).
+  - Step E: Δ = codimBil(N+1) A L − codimBil N A R = the j=N+1 slice = explicit ∑_{a<u} m_{a,N}m_{u,N+1}.
+THEN: per-fibre collapse (codimForm split + Pm split + transferRHS_eq) + fivegonSum_fiberwise [LANDED] + induction on N → fivegon (Thm 5.6). THEN M4 (chain→Thm5.5) + M6 (Cor 5.10 via M5 bridge + M6-prep [both LANDED]).
+Operator: GRIND ON, full zero-cited, structure survives compaction. Inline only (worktrees too heavy).
