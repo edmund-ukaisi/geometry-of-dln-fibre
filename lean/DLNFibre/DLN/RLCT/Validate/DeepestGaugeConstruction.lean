@@ -38,6 +38,41 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
 
+/-! ## The slot-grouping contract (controller precision pin, option (e))
+
+The #64 confound (and its subtler "wrong grouping" form) recurs unless the `split` slot-semantics
+are a STATED, durable contract — not a verbal agreement. The honest contract (controller): `split`
+delivers semantically **role-grouped RAW slots** (a measure-preserving `det = ±1` reindex), and the
+nonlinear gauge work lives in the absorptions (`regAbsorb` → `E`, `coreAbsorb` → the Schur `S_s`),
+each a clean unit-Jacobian self-map of `DeepestSplit`. So the contract `split` must satisfy is: its
+slots **decode** to the per-layer gauge blocks `(X_s, Y_s, Z_s, T_s)` — pinned here as the consuming
+interface `PerLayerGaugeBlocks` + the `gaugeDecode` map, so the grouping survives as bedrock.
+-/
+
+/-- The per-layer gauge blocks of a rank-`r`-sliced point: for each layer `s : Fin L`, the
+`(X_s, Y_s, Z_s, T_s)` decomposition of `C_s = [[I_r+X_s, Y_s],[Z_s, T_s]]` (`X_s : r×r`,
+`Y_s : r×(H_{s+1}−r)`, `Z_s : (H_s−r)×r`, `T_s : (H_s−r)×(H_{s+1}−r)`). The decode target of the
+split slots — `regAbsorb` reads `(X,Y,Z)` for `E`, `coreAbsorb` reads all four for `S_s`. -/
+abbrev PerLayerGaugeBlocks (H : Fin (L + 1) → ℕ) (r : ℕ) : Type :=
+  ∀ s : Fin L,
+    (Matrix (Fin r) (Fin r) ℝ) × (Matrix (Fin r) (Fin (H s.succ - r)) ℝ)
+      × (Matrix (Fin (H s.castSucc - r)) (Fin r) ℝ)
+      × (Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
+
+/-- **The slot-grouping contract** (controller precision pin). A `split`'s `DeepestSplit` slots
+decode — via a continuous, basepoint-preserving map — to the per-layer gauge blocks. The durable
+the absorptions consume: it pins WHICH slot-entry is which `(X_s,Y_s,Z_s,T_s)` block, so the #64
+"wrong grouping" confound cannot recur. `split` must provide a `gaugeDecode` satisfying this;
+`regAbsorb`/`coreAbsorb` read it. (Reg slot = the `X/Y/Z` gauge entries `E` reads; core = `T_s`;
+split is `det = ±1`, the absorptions carry the gauge nonlinearity.) -/
+structure IsGaugeSliceDecode (H : Fin (L + 1) → ℕ) (r : ℕ) (nGauge : ℕ)
+    (gaugeDecode : DeepestSplit H r nGauge → PerLayerGaugeBlocks H r) : Prop where
+  /-- The decode is continuous (the slots are a coordinate regrouping). -/
+  continuous : Continuous gaugeDecode
+  /-- At the split origin (the deepest basepoint), every gauge block is `0` (the deepest point is
+  the block-normal rank-`r` chain: `X_s=Y_s=Z_s=T_s=0`, i.e. `C_s = blockdiag[I_r, 0]`). -/
+  basepoint : gaugeDecode 0 = fun _ => (0, 0, 0, 0)
+
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). The four fields
 are properties of the SAME maps `(split, coreAbsorb)`, so they bundle into one existence statement
 (the loss-squeeze + RLCT-peel are FALSE for arbitrary maps — they hold only for the specific gauge
