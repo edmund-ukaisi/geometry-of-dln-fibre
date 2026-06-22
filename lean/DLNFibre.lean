@@ -70,3 +70,7 @@ import DLNFibre.Core.QSeriesExtraction
 import DLNFibre.Core.CThetaPermInvariance
 -- Thm 5.6 (the "fivegon", perm-invariance M3b): fivegonSum d = Pmult d, via the last-column transfer.
 import DLNFibre.Core.QSeriesFivegon
+-- Thm 5.5 (M4) chain: corner shift (S1'/S2), inverse-Pochhammer orthogonality, the per-r Poincaré product.
+import DLNFibre.Core.QSeriesShift
+import DLNFibre.Core.QSeriesOrth
+import DLNFibre.Core.QSeriesThm55
