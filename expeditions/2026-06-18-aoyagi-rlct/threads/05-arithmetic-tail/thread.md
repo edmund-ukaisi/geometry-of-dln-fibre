@@ -5406,3 +5406,32 @@ prove the upper bound from Aoyagi's source, construct a source classifier or
 back-to-label map, prove branch-label injectivity from source, build source
 branches, bridge the minimum to lambda, prove chart coverage, prove pole
 order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 terminal order formula bridge
+
+Reproduction:
+`reproduction-lemma5-terminal-order-formula-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-order-formula-bridge.md`.
+Review artifact:
+`review-lemma5-terminal-order-formula-bridge-a5.md`.
+
+Lean now rewrites the remaining supplied terminal-exactness obstruction in
+Aoyagi Theorem 2's order notation:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_theorem2OrderFormula_bound
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_card_bound_and_branchLabel_injOn
+```
+
+For `data : AoyagiDefinition3CeilData (n+1) m` and a terminal-candidate
+family with `a=data.aParam` and `M=data.ceilWidth`, the bridge replaces the
+raw bound `terminalMinimumLabels.card <= data.aParam*(n+1-data.aParam)+1`
+by `terminalMinimumLabels.card <= data.theorem2OrderFormula`.  If branch-label
+injectivity and this upper bound are supplied, Lean proves the terminal
+minimum label count equals `data.theorem2OrderFormula`.
+
+This is a downstream handoff only.  It does not source-prove the upper bound,
+construct branch-label injectivity, prove no-extra coverage, prove the A6
+finite exponent formula, identify pole order, prove normal crossings, or
+extract RLCT.

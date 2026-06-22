@@ -346,6 +346,8 @@ Current Eq5 endpoint-family cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
 Current Eq5 endpoint-family block-width cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`.
+Current terminal order formula bridge:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-order-formula-bridge-a5.md`.
 
 Controller direction after the 2026-06-22 source audit: freeze A5 as a
 supplied boundary rather than trying to prove a source-backed Lemma 5
@@ -354,6 +356,13 @@ provide the classifier/injection/back-to-label map or full Lemma 4 witness
 needed for no-extra terminal-minimum coverage.  Further A5 work should be only
 small handoff wrappers needed downstream unless a corrected independent
 construction is introduced.
+
+Lean now rewrites the remaining supplied A5 obstruction in Aoyagi Theorem 2
+order notation: supplied branch-label injectivity plus
+`terminalMinimumLabels.card <= data.theorem2OrderFormula` gives
+`terminalMinimumLabels.card = data.theorem2OrderFormula`.  This remains a
+supplied-boundary handoff; it does not source-prove the upper bound or no-extra
+coverage, and it does not prove pole order.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the

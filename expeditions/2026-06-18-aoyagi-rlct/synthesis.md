@@ -5362,6 +5362,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-exactness-card-bound-equivalence-a5.md`.
 
+Latest A5-to-A6 terminal order handoff: `Lemma5TerminalOrderBridge.lean` now
+rewrites the remaining supplied Lemma 5 terminal-exactness obstruction in
+Aoyagi Theorem 2 order notation:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_theorem2OrderFormula_bound`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_card_bound_and_branchLabel_injOn`.
+For Definition 3 ceil data with `ell=n+1`, branch-label injectivity plus the
+supplied upper bound
+`terminalMinimumLabels.card <= data.theorem2OrderFormula` imply
+`terminalMinimumLabels.card = data.theorem2OrderFormula`.  This is finite
+bookkeeping only; the upper bound, branch-label injectivity, no-extra
+coverage, pole order, normal crossings, and RLCT remain unproved.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-order-formula-bridge-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-order-formula-bridge.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-order-formula-bridge-a5.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
@@ -5373,7 +5392,7 @@ the source selected-width inequality remain explicit auxiliary theorem inputs
 where used.  This is still a supplied final socket only: it does not prove
 selected cutpoint existence, rank-width hypotheses from the matrix problem,
 normal-crossing chart production, finite exponent formula equalities, Lemma 5
-order count, pole order without A0, or analytic extraction.
+no-extra coverage/order count, pole order without A0, or analytic extraction.
 Artifacts:
 `threads/06-dln-translation/reproduction-theorem2-final-assembly-a6.md`
 and

@@ -10,8 +10,8 @@ normal-crossing exponent formula equalities, and the A0 extraction hypothesis.
 
 It does not prove selected cutpoint existence, rank-width hypotheses from a
 matrix product, source production of the normal-crossing certificate,
-finite exponent formula equalities, chart coverage, pole order without A0, or
-the analytic extraction theorem.
+finite exponent formula equalities, Lemma 5 no-extra coverage or order count,
+chart coverage, pole order without A0, or the analytic extraction theorem.
 -/
 
 namespace DLNFibre
