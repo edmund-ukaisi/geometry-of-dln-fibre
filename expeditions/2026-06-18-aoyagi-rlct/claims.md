@@ -1688,6 +1688,11 @@ No such claim is formalisation-ready until both fields are filled.
   the Lemma 4 two-value hypothesis from source vector inequalities,
   vector admissibility/correspondence to `lambda`, quadratic rewrite from
   terminal exponents, and Lemma 5 order-count construction are not checked.
+  A 2026-06-22 Aoyagi-only source audit recommends freezing A5 as a supplied
+  downstream boundary for now: PDF pp. 25-27's printed Lemma 5 paragraph and
+  Eq3/Eq4/Eq5 families do not by themselves supply a classifier, injection,
+  back-to-label map, or full Lemma 4 witness for source-backed no-extra
+  terminal-minimum coverage.
   The finite bridge from Lemma 4's all-increment count to the Lemma 3
   free-count equality cases is now Lean-proved and reviewed at the same narrow
   arithmetic scope.

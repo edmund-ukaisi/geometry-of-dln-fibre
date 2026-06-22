@@ -4961,6 +4961,36 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
 
+Latest A5 Eq5 endpoint-family block-width cardinal-squeeze update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze`.
+These replace the per-label terminal width-bound input of the endpoint-family
+cardinal squeeze by the blockwise actual-width hypothesis, using the supplied
+terminal label block membership and
+`cut.selectedWidthNat_le_actualWidth_of_block`.  This is still only a
+conditional handoff wrapper: terminal Eq5 payloads, terminal `(p, alpha)`
+injectivity, endpoint-family equality, `branchS`, `branchK`,
+terminal-label nonbase inequalities, blockwise actual-width data, and the
+endpoint base label remain supplied.  It is not source construction,
+source-backed or direct back-to-label no-extra terminal-minimum coverage, pole
+order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`.
+
+Source-audit direction, 2026-06-22: freeze A5 as a supplied downstream
+boundary for now.  The Aoyagi-only source audit found that PDF pp. 25-27's
+printed Lemma 5 paragraph and Eq3/Eq4/Eq5 families do not by themselves give
+a classifier, injection, back-to-label map, or complete Lemma 4 witness.  Do
+not spend another slice trying to promote those printed families into a
+source-backed no-extra theorem unless a corrected independent construction is
+introduced.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

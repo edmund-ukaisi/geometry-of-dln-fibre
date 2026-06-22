@@ -224,6 +224,16 @@ Current Eq5 endpoint-to-terminal branch-coordinate slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-to-terminal-branchcoord-a5.md`.
 Current Eq5 endpoint-family cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
+Current Eq5 endpoint-family block-width cardinal-squeeze slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`.
+
+Controller direction after the 2026-06-22 source audit: freeze A5 as a
+supplied boundary rather than trying to prove a source-backed Lemma 5
+classifier from the printed Eq3/Eq4/Eq5 families.  The printed formulas do not
+provide the classifier/injection/back-to-label map or full Lemma 4 witness
+needed for no-extra terminal-minimum coverage.  Further A5 work should be only
+small handoff wrappers needed downstream unless a corrected independent
+construction is introduced.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the

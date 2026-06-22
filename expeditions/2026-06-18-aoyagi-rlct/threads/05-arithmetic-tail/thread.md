@@ -5337,3 +5337,42 @@ branches, prove source labels, prove base-filter survival, build a direct
 counted-datum back-to-label map, prove source-backed no-extra coverage, prove
 a Lemma 5 order count, prove pole order, prove normal crossings, or extract
 RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint-family block-width cardinal squeeze
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze
+```
+
+These wrappers replace the endpoint-family cardinal squeeze's per-label width
+bound by a blockwise actual-width hypothesis.  The only new proof step is
+`cut.selectedWidthNat_le_actualWidth_of_block`, applied using the supplied
+terminal-label block hypothesis.  Everything else is passed unchanged to the
+previous endpoint-family cardinal squeeze.
+
+This is a boundary-shaping wrapper only.  It still assumes terminal Eq5
+payloads, terminal `(p, alpha)` injectivity, endpoint-family equality,
+`branchS`, `branchK`, terminal-label nonbase inequalities, blockwise
+actual-width data, and the endpoint base label.  It does not construct Eq5
+branches, prove source labels, prove base-filter survival, build a direct
+counted-datum back-to-label map, prove source-backed no-extra coverage, prove
+a Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.
+
+Source audit update: an xhigh Aoyagi-only source audit on 2026-06-22
+recommended freezing A5 as a supplied boundary for now.  The printed
+Eq3/Eq4/Eq5 families on PDF pp. 25-27 do not by themselves provide the
+classifier, injection, back-to-label map, or full Lemma 4 witness needed for a
+source-backed Lemma 5 order-count proof.  Further A5 work should be limited to
+small handoff wrappers needed downstream unless the source policy changes or a
+corrected independent construction is supplied.
