@@ -36,26 +36,37 @@ full-rank-pass-through (C2), or **MIXED partial-drop (C5)** when `t_{s-1} > t_s 
 a divisor-arrangement post-pass, not a node type. {C4, C1, C2, C5} partition the active-layer structure.
 
 - **C1 — coupled rank-defect blow-up** (the MONOMIAL mechanism, the live route; the squeeze is OFF-PATH,
-  §1.6, decision C / g134). **TWO steps per node** (fm3's ΣM caveat, #36): the blow-up carries the weight,
-  the EXACT Schur-descent carries the `ΣM`-drop.
+  §1.6, decision C / g134). **Blow-up + det-1 triangular peel + recurse** (the C1 settlement, fm3 dispatcher
+  + g152/g153, #37-resolved): the blow-up carries the `x_p²` weight, the det-1 triangular peel carries the
+  `ΣM`-drop.
   **(A) `pivotBlowupOn active p`** of the rank-defect center (a smooth coordinate subspace `{pivot-block=0}`,
   NOT the determinantal variety): `core ∘ φ = x_p²·Q`, Jacobian `|x_p|^{card−1}`. **The `x_p²` is the
   EXCEPTIONAL DIVISOR** — `(k,h) = (1, card−1)`, ratio `card/2` via `axisRatio_regularSeq`, **ACCOUNTED by
   `monomialThreshold`, NOT stripped** (`x_p²` vanishes on `{x_p=0}`, NOT a unit; g141). **Step A does NOT
   drop `ΣM`** — the hard-pivot-normalized residual `Q = ‖Â·A2‖²` has the SAME dimensions `M` (`Â` a full
   `M_0×M_1` matrix; g143).
-  **(B) the EXACT det-unit Schur-descent** (the `lemma2Fwd` generalization — a concrete det-`±1` c-o-v,
-  lintegral-level splice, NO Jacobian, NOT a two-sided bound): the unit-pivot row/col ops clear `Â`'s pivot
-  row+col (`L·Â·R = blockdiag[1, S]`, `S = D − b·a`), giving `[regular pivot row] + ‖S·A2red‖²` with
-  `‖S·A2red‖² = dlnLoss M' 0`, `M'_0 = M_0−1`, `M'_1 = M_1−1`. **THE `ΣM`-DROP IS HERE** — `ΣM' = ΣM − 2 <
-  ΣM` (`Σdrop = 2 > 0`, the `ChainDimSplit.measure_drops` shape; g143). **(C) RECURSE** on the strictly
-  smaller core `‖S·A2red‖²` via the dispatcher (`lex` terminates via step-B's `Σdrop`). The squeeze
-  `flatCore − Φ ∈ ideal(E)` (#131) is the OFF-PATH BOUND (drops the `x_p²` weight, §1.6) — step B is the
-  EXACT change, NOT the squeeze. **Constructibility of the general exact Schur-descent (vs the
-  rank-deficiency that blocked the SQUEEZE) is the crux2 check, held** (#35/#36); if it does not generalize,
-  C1 falls back to iterated blow-up (the cover handling chart-locality) — but step B is the intended
-  `ΣM`-drop mechanism. The squeeze `flatCore − Φ ∈ ideal(E)` (#131) is
-  PARKED off-path — NOT C1's mechanism (it drops the `x_p²` weight, §1.6).
+  **(B) the det-1 TRIANGULAR Schur peel** `w := D − b·a` (the #37 change; `S = D − b·a` the Schur
+  complement): the residual `Q`'s next-blow-up center is `{S=0} ∪ {Γ=0}`, and `{S=0} = {D=b·a}` is
+  **BILINEAR** — NOT a coordinate subspace — so `pivotBlowupOn` (which only blows up coordinate subspaces
+  `{coords=0}`) CANNOT fire on it directly. The triangular peel `w := D − b·a` makes it `{w=0}` (a
+  coordinate subspace), so the next `pivotBlowupOn` can fire (g152). The peel is a **block SHEAR**
+  (`w` shifts the `D`-block by the bilinear `b·a`, fixing `a,b`): unipotent block-triangular Jacobian,
+  **det = 1 EXACTLY at any rank** (g153) — so it is MEASURE-PRESERVING (rides `measurePreserving_lemma2` /
+  `rlctAtOn_comp_homeomorph`, NO Jacobian weight), the clean det-1 case, NOT the bounded-unit
+  `rlctAtOn_unit_invariant_aux` path. It clears `Â`'s pivot row+col (`L·Â·R = blockdiag[1, S]`), giving
+  `[regular pivot row] + ‖S·A2red‖²` with `‖S·A2red‖² = dlnLoss M' 0`, `M'_0 = M_0−1`, `M'_1 = M_1−1`.
+  **THE `ΣM`-DROP IS HERE** — `ΣM' = ΣM − 2 < ΣM` (`Σdrop = 2 > 0`, the `ChainDimSplit.measure_drops`
+  shape; g143). **(C) RECURSE** on the strictly smaller core `‖S·A2red‖² = dlnLoss M' 0` via the
+  dispatcher (`lex` terminates via step-B's `Σdrop`).
+  **The peel is NEEDED, not optional** (the `{S=0}` bilinearity, g152) and is the #37 change (det-1,
+  constructible — #37 RESOLVED; NOT a fallback to "pure blow-up"). It is **NOT the squeeze**: the squeeze
+  `flatCore − Φ ∈ ideal(E)` (#131) is the OFF-PATH BOUND (drops the `x_p²` weight, §1.6) — the peel is the
+  EXACT det-1 change. It is **NOT `lemma2Fwd`** (the explicit `![…]` `(2,2,2)` packaging is scaffolding; the
+  general det-1 triangular peel `w := D − b·a` is the route-independent mechanism). This reconciles the C1
+  framing: #36 right (there IS a step-2 = the exact Schur peel = the `Σdrop`-drop), the earlier
+  "pure iterated blow-up" framing was an over-correction, and the lock holds (the peel = #37, det-1, not the
+  squeeze). The SAME triangular peel appears at the deepest-point gauge chart (g150) one level up (there
+  det-UNIT non-MP, the whole-chain slice) — one mechanism, two levels.
 
 - **C2 — full-rank pass-through** (pp3's catch; the later-factor drop).
   The active factor is FULL rank on the prefix image but the product still drops rank (the drop is
