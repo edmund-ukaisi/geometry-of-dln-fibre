@@ -5,7 +5,6 @@
 - `DLNFibre.DLN.Aoyagi.SelectedEntryChartFamilyBoundary.exists_trivial`
 - `DLNFibre.DLN.Aoyagi.Case2ResidualBlockChartFamilyBoundary.exists_trivial`
 - `DLNFibre.DLN.Aoyagi.Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`
-- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`
 
 ## Claim
 

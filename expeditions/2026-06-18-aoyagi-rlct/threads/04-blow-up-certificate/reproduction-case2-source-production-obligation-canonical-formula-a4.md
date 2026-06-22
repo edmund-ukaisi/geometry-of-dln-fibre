@@ -4,6 +4,13 @@ Date: 2026-06-22.
 
 Status: supplied-boundary constructor.  This is not chart/source production.
 
+2026-06-22 update: the current Lean API now has the no-extra-boundary
+constructor
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`.
+The supplied-next-chart-family theorem described below has been removed from
+the current Lean API.  See
+`reproduction-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+
 ## Source Anchor
 
 Aoyagi PDF pp. 21-22, Case 2.  The displayed chart operation gives the
@@ -76,16 +83,21 @@ Cterm = originalRows(C).
 For the row-exhausted terminal-row field, the chosen `Cterm` is exactly the
 transported-row matrix, so the equality is reflexive.
 
-## Lean Target
+## Historical Lean Target
 
-Add:
+This slice originally added:
 
 ```text
 SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
 ```
 
-inside the `Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`
-namespace.
+That name has since been removed.  The current replacement in the
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`
+namespace is:
+
+```text
+SourceProductionObligation.of_formulaSuccessor_transportTerminalRows
+```
 
 ## Nonclaims
 

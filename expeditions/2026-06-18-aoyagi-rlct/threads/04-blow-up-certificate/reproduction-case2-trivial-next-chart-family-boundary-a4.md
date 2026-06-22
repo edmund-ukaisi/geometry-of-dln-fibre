@@ -74,12 +74,11 @@ The slice adds:
 SelectedEntryChartFamilyBoundary.exists_trivial
 Case2ResidualBlockChartFamilyBoundary.exists_trivial
 Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates
-SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary
 ```
 
-The last theorem reuses the previous canonical formula-level constructor and
-fills its continuing next-boundary argument with the `True`-predicate formal
-boundary.
+The final helper has the exact shape of the previously supplied
+next-boundary field, before that field was removed from
+`SourceProductionObligation`.
 
 ## Interpretation
 

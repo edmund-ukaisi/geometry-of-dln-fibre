@@ -1,5 +1,10 @@
 # Statement card - A4 Case 2 source-production obligation canonical formula
 
+2026-06-22 update: the current main constructor is
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`, with
+the supplied-next-boundary theorem removed from the current Lean API.  See
+`statement-card-a4-case2-source-production-obligation-remove-vacuous-next-boundary.md`.
+
 ## Lean Artifact
 
 File:
@@ -8,13 +13,12 @@ File:
 
 Name:
 
-- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`
+- `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`
 
 ## Statement
 
-Given a displayed Case 2 supplied boundary and an explicitly supplied
-continuing next chart-family boundary, the canonical formula-level successor
-factor and transported terminal-row matrix satisfy the supplied
+Given a displayed Case 2 supplied boundary, the canonical formula-level
+successor factor and transported terminal-row matrix satisfy the supplied
 `SourceProductionObligation` interface.
 
 ## Proved
@@ -23,7 +27,7 @@ The theorem chooses
 `Csucc = case2DisplayedSourceSuccessorFollowingFactor ... C` and
 `Cterm = case2DisplayedSourceTerminalTransportedRows ... C`.  The existing
 frontier package supplies the branch payloads; the supplied next chart-family
-field supplies the remaining continuing chart-family obligation.  Actual-width
+field described in the historical slice has since been removed.  Actual-width
 terminal original-row equality first uses that transported rows are original
 rows of the formula-level successor factor, then uses actual-width collapse of
 that factor to the old source factor.  Row-exhausted terminal transported-row
@@ -32,8 +36,7 @@ equality is reflexive.
 ## Assumed
 
 The displayed supplied boundary, source following factor and source suffix
-data, and the continuing next chart-family boundary at `(S,J+1)` under
-`J+2 <= prefixMinNat n (S+1)`.
+data.  No next-chart-family argument is part of the current constructor.
 
 ## Cited
 
@@ -41,8 +44,8 @@ None.  This is finite interface assembly.
 
 ## Deferred
 
-Constructing the continuing next chart-family boundary, source production of
-the successor object from chart coordinates, suffix production, chart coverage,
+Constructing meaningful successor chart data, source production of the
+successor object from chart coordinates, suffix production, chart coverage,
 transition regularity, coordinate derivation of corrected post-data, Jacobian
 arithmetic, normal crossings, pole order, termination, and RLCT extraction.
 

@@ -4108,20 +4108,17 @@ Review artifact:
 `review-case2-source-production-obligation-canonical-formula-a4.md`.
 
 Lean now constructs a canonical formula-level inhabitant of
-`SourceProductionObligation` once the continuing next chart-family boundary is
-explicitly supplied:
+`SourceProductionObligation`:
 
 ```text
-SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
+SourceProductionObligation.of_formulaSuccessor_transportTerminalRows
 ```
 
 The theorem chooses `Csucc` to be the formula-level successor following factor
-and `Cterm` to be the transported terminal-row matrix.  The continuing
-next-chart-family field remains an explicit supplied argument.  The existing
-frontier package supplies the branch payloads; actual-width terminal
-original-row equality follows from the actual-width collapse of the
-formula-level successor factor; row-exhausted terminal transported-row
-equality is reflexive.
+and `Cterm` to be the transported terminal-row matrix.  The existing frontier
+package supplies the branch payloads; actual-width terminal original-row
+equality follows from the actual-width collapse of the formula-level successor
+factor; row-exhausted terminal transported-row equality is reflexive.
 
 This is interface assembly only.  It does not construct the continuing next
 chart-family boundary, source-produce `Csucc` or `C'^(S+1)` from chart
@@ -4145,15 +4142,12 @@ Lean now proves:
 SelectedEntryChartFamilyBoundary.exists_trivial
 Case2ResidualBlockChartFamilyBoundary.exists_trivial
 Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates
-SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary
 ```
 
 The first two theorems choose `True` predicates for chart and transition
 regularity, showing that the current existential chart-family boundary is
 formally syntactic.  The continuing-successor helper has the exact shape of
-the previous supplied field.  The last theorem uses this witness to build the canonical
-formula-level `SourceProductionObligation` without a separate supplied
-next-boundary argument.
+the previous supplied field before that field was removed.
 
 Xhigh source scout `Sartre the 2nd` checked Aoyagi pp. 19-22 and confirmed
 that the paper does not construct next chart-family data; it only states that
@@ -4163,3 +4157,28 @@ does not construct an affine atlas, prove coverage or meaningful transition
 regularity, source-produce `Csucc`/`C'^(S+1)`, produce suffixes, derive
 corrected post-data, prove normal crossings, pole order, termination, RLCT, or
 repair the printed Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 source-production obligation field removal
+
+Reproduction:
+`reproduction-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation-remove-vacuous-next-boundary.md`.
+Review artifact:
+`review-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+
+Lean now removes the vacuous continuing next-chart-family field from
+`SourceProductionObligation` and adds the main constructor
+
+```text
+SourceProductionObligation.of_formulaSuccessor_transportTerminalRows
+```
+
+The older supplied-next-boundary and true-predicate-next-boundary constructor
+names were removed from the current Lean API rather than retained as
+ignored-argument wrappers.  This is an API hardening after the source/API
+audit; it is not a source-production theorem and does not construct successor
+charts, source-produce `Csucc`/`C'^(S+1)`, produce suffixes, prove coverage or
+meaningful transition regularity, derive corrected post-data, prove normal
+crossings, pole order, termination, RLCT, or repair the printed Case 2 vector
+mismatch.

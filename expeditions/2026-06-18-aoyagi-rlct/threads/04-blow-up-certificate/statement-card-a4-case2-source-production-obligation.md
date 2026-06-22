@@ -1,5 +1,10 @@
 # Statement Card - A4 Case 2 Source Production Obligation
 
+2026-06-22 update: the previously described continuing supplied
+next-chart-family field has been removed from the current Lean structure as a
+vacuous API boundary.  See
+`statement-card-a4-case2-source-production-obligation-remove-vacuous-next-boundary.md`.
+
 ## Lean Name
 
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`
@@ -23,9 +28,9 @@ boundary.
 ## Assumed
 
 An inhabitant supplies the successor following object, terminal source matrix,
-continuing supplied next chart-family boundary, branch payloads, source suffix
-factors, and source following factor.  It also carries the existing displayed
-boundary data, including supplied chart-family and corrected post-data fields.
+branch payloads, source suffix factors, and source following factor.  It also
+carries the existing displayed boundary data, including supplied chart-family
+and corrected post-data fields.
 
 ## Deferred
 
@@ -53,5 +58,6 @@ git diff --check
 `scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and
 `0 axiom`.  The full build reports only pre-existing Core warnings.
 
-Xhigh review passed with the `continuing_suppliedNextChartFamily` naming
-hardening applied.  See `review-case2-source-production-obligation-a4.md`.
+Historical xhigh review passed with the `continuing_suppliedNextChartFamily`
+naming hardening applied.  That field has since been removed as vacuous.  See
+`review-case2-source-production-obligation-a4.md`.

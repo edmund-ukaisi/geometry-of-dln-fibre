@@ -5,6 +5,12 @@ Date: 2026-06-22.
 Status: Lean interface target for the branchwise successor-production
 boundary.  This is not a source-production theorem.
 
+2026-06-22 update: the `continuing_suppliedNextChartFamily` field described
+below has been removed from the current Lean structure after an API audit
+showed that the existential was inhabited by `True` predicates and did not
+encode source production.  See
+`reproduction-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+
 ## Source Anchor
 
 Aoyagi PDF pp. 19-22, Case 2.  The source calculation gives the displayed
@@ -40,8 +46,6 @@ supply, while keeping current finite formulas available:
 - `frontier` packages the current displayed source-chart frontier payloads.
 - `Csucc_eq_formula` identifies a supplied `Csucc` with the formula-level
   `case2DisplayedSourceSuccessorFollowingFactor`.
-- `continuing_suppliedNextChartFamily` supplies a next chart-family boundary
-  for the continuing branch.
 - `continuing_frontier` supplies the weighted successor-following frontier
   payload under the stronger nonempty-next-center guard.
 - `actualWidth_frontier` supplies the actual-width stopped source-suffix

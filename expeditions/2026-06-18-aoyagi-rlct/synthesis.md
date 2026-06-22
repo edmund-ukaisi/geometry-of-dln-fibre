@@ -5267,18 +5267,17 @@ Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-csucc-projections-a4.md`.
 
 Latest A4 supplied-obligation constructor update:
-`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`
-now constructs the obligation using canonical formula-level choices
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`
+constructs the obligation using canonical formula-level choices
 `Csucc = case2DisplayedSourceSuccessorFollowingFactor ... C` and
-`Cterm = case2DisplayedSourceTerminalTransportedRows ... C`, provided the
-continuing next chart-family boundary is explicitly supplied.  The existing
+`Cterm = case2DisplayedSourceTerminalTransportedRows ... C`.  The existing
 frontier package supplies continuing/actual-width/row-exhausted payloads;
 actual-width terminal original-row equality first uses that transported rows
 are original rows of the canonical successor factor and then uses the
 actual-width collapse to old `C`; row-exhausted terminal transported-row
 equality is reflexive.  This is still supplied-boundary assembly: it does not
-construct the continuing next chart-family,
-source-produce `Csucc` from coordinates, produce suffixes, coverage,
+construct the continuing next chart-family, source-produce `Csucc` from
+coordinates, produce suffixes, coverage,
 transition regularity, coordinate post-data, normal crossings, pole order, or
 RLCT.
 Artifacts:
@@ -5290,12 +5289,11 @@ Review:
 
 Latest A4 API-hardening update: the continuing next chart-family existential
 inside the canonical formula-level obligation is formally discharged by
-trivial predicates.  Lean now proves
+trivial predicates.  Lean proves
 `SelectedEntryChartFamilyBoundary.exists_trivial`,
 `Case2ResidualBlockChartFamilyBoundary.exists_trivial`,
-`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`,
 and
-`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`.
+`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`.
 This is a useful precision correction, not progress on source production:
 the current `SelectedEntryChartFamilyBoundary` API only asks for implications
 into arbitrary predicates, so choosing `True` satisfies it.  Xhigh source scout
@@ -5308,6 +5306,24 @@ and
 `threads/04-blow-up-certificate/statement-card-a4-case2-trivial-next-chart-family-boundary.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-true-predicate-next-boundary-a4.md`.
+
+Latest A4 API-hardening update: the vacuous next-chart-family field has been
+removed from `SourceProductionObligation`.  The main canonical formula-level
+constructor is now
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`; the
+old supplied-next-boundary and true-predicate-next-boundary constructor names
+were removed from the current Lean API rather than kept as ignored-argument
+wrappers.  This removes a misleading field from the obligation but does not
+construct a successor atlas, source-produce `Csucc` or
+`C'^(S+1)`, produce suffixes, prove meaningful coverage/transition regularity,
+derive corrected post-data from coordinates, prove normal crossings, pole
+order, termination, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-remove-vacuous-next-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
 
 Latest A5 finite-obstruction update: `Lemma5TerminalBridge.lean` now contains
 `terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`

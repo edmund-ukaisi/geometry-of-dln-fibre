@@ -5277,15 +5277,14 @@ Review:
 
 Latest A4 Case 2 source-production obligation canonical formula constructor:
 `BlowupArithmetic.lean` now contains
-`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`.
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`.
 It constructs a `SourceProductionObligation` with `Csucc` chosen as the
 formula-level successor following factor and `Cterm` chosen as transported
-terminal rows, under an explicit supplied continuing next chart-family
-boundary.  This removes the need to choose arbitrary `Csucc/Cterm` in this
-canonical constructor but does not change the more general interface or
-construct that next chart-family, source-produce successor chart data, produce
-suffixes, prove coverage/transition regularity, normal crossings, pole order,
-or RLCT.  Reproduction:
+terminal rows.  This removes the need to choose arbitrary `Csucc/Cterm` in
+this canonical constructor but does not construct a next chart-family,
+source-produce successor chart data, produce suffixes, prove
+coverage/transition regularity, normal crossings, pole order, or RLCT.
+Reproduction:
 `threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-canonical-formula-a4.md`.
 Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-canonical-formula.md`.
@@ -5296,23 +5295,39 @@ Latest A4 Case 2 true-predicate next boundary:
 `BlowupArithmetic.lean` now contains
 `SelectedEntryChartFamilyBoundary.exists_trivial`,
 `Case2ResidualBlockChartFamilyBoundary.exists_trivial`,
-`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`,
 and
-`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`.
+`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`.
 The first two choose `True` predicates for chart and transition regularity.
 The continuing-successor helper has the exact shape of the previous supplied
-field.  The last theorem uses that formal witness to construct the canonical
-formula-level `SourceProductionObligation` without a supplied next-chart-family
-argument.  This is a precision theorem about the weakness of the current API,
-not a source-backed chart-production theorem.  Source audit of Aoyagi pp. 19-22
-found only the assertion that the induction continues after the `Q/P` algebra,
-not construction of the next chart family, transition regularity, coverage,
-successor `C'^(S+1)`, or suffix production.  Reproduction:
+field before that field was removed.  This is a precision theorem about the
+weakness of the old API, not a source-backed chart-production theorem.  Source
+audit of Aoyagi pp. 19-22 found only the assertion that the induction
+continues after the `Q/P` algebra, not construction of the next chart family,
+transition regularity, coverage, successor `C'^(S+1)`, or suffix production.
+Reproduction:
 `threads/04-blow-up-certificate/reproduction-case2-trivial-next-chart-family-boundary-a4.md`.
 Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-trivial-next-chart-family-boundary.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-true-predicate-next-boundary-a4.md`.
+
+Latest A4 Case 2 source-production obligation field removal:
+`BlowupArithmetic.lean` now removes the vacuous
+`continuing_suppliedNextChartFamily` field from
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`.
+The main canonical constructor is
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`.
+The older supplied-next-boundary and true-predicate-next-boundary constructor
+names were removed from the current Lean API rather than retained as
+ignored-argument wrappers.  This is API hardening only: no successor source
+production, suffix production, meaningful chart coverage or transition
+regularity, coordinate post-data derivation, normal crossings, pole order,
+termination, or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-remove-vacuous-next-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
 
 ## Ledger rules
 

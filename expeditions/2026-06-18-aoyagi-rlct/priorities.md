@@ -79,11 +79,10 @@ guard, and does not assert stopped-branch exclusivity.  Use this contract
 before attempting any theorem named as source production of `C'^(S+1)` or
 successor following-product data.
 
-Lean now names this frontier as a supplied obligation interface:
+Lean names this frontier as a supplied obligation interface:
 `Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`.
 This `Prop` structure packages, without constructing, the formula equality for
-a supplied `Csucc`, the continuing supplied next chart-family obligation, the
-continuing weighted successor-following payload, the actual-width stopped
+a supplied `Csucc`, the continuing weighted successor-following payload, the actual-width stopped
 source-suffix/original-row/relabelled-certificate payload, and the
 row-exhausted source-suffix/transported-row payload.  It deliberately has no
 constructor from the current displayed chart boundary.  Treat it as an
@@ -122,30 +121,33 @@ an existing finite tail identity.  The second consumes the supplied
 `Csucc_eq_formula`.  They do not construct source data or move the
 source-production boundary.
 
-Lean now also constructs the supplied obligation from canonical formula-level
-choices, but only after a continuing next chart-family boundary is supplied:
-`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily`.
-It chooses `Csucc` as the formula-level successor following factor and
-`Cterm` as transported terminal rows.  This removes the need to choose
-arbitrary `Csucc/Cterm` in this canonical constructor; it still does not
-construct the next chart-family boundary, source-produce successor chart data,
-produce suffixes, prove coverage/transition regularity, or move the
-source-production boundary.
+The canonical formula-level constructor now lives at
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`.  It
+chooses `Csucc` as the formula-level successor following factor and `Cterm`
+as transported terminal rows.  It does not construct a next chart-family
+boundary, source-produce successor chart data, produce suffixes, prove
+coverage/transition regularity, or move the source-production boundary.
 
 The next-chart-family existential in that constructor has now been audited as
-formally syntactic in the current API.  Lean proves
+formally syntactic in the current API.  Lean still proves
 `SelectedEntryChartFamilyBoundary.exists_trivial`,
 `Case2ResidualBlockChartFamilyBoundary.exists_trivial`,
-`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`,
 and
-`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`
+`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`
 by choosing `True` for chart and transition regularity predicates.  This
-removes the formal supplied existential from the canonical formula-level
-constructor, but it also shows that the field does not encode real chart
-production.  A source scout confirmed Aoyagi pp. 21-22 only says the induction
-continues; it does not construct next charts, coverage, transitions,
-successor source data, or suffixes.  The genuine A4 frontier is therefore
-still source/chart production, not this existential boundary.
+showed that the removed field did not encode real chart production.  A source
+scout confirmed Aoyagi pp. 21-22 only says the induction continues; it does
+not construct next charts, coverage, transitions, successor source data, or
+suffixes.  The genuine A4 frontier is therefore still source/chart
+production, not this existential boundary.
+
+The vacuous next-chart-family field has now been removed from
+`SourceProductionObligation`.  The main canonical constructor is
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`.  The
+old supplied/true-predicate constructor names were removed from the current
+Lean API rather than retained as ignored-argument wrappers.  This is an
+API-hardening correction, not source production; the same source/chart-
+production frontier remains open.
 
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary

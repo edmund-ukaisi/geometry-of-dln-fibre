@@ -17950,11 +17950,6 @@ structure SourceProductionObligation
     Csucc =
       case2DisplayedSourceSuccessorFollowingFactor
         n data.stage_pos data.continuation residual C
-  continuing_suppliedNextChartFamily :
-    ∀ (_hnext : J + 2 ≤ prefixMinNat n (S + 1)),
-      ∃ ChartRegularNext TransitionRegularNext,
-        Case2ResidualBlockChartFamilyBoundary
-          n S (J + 1) ChartRegularNext TransitionRegularNext
   continuing_frontier :
     ∀ (_hnext : J + 2 ≤ prefixMinNat n (S + 1)),
       ContinuingWeightedSuccFollowingFrontierPayload
@@ -17991,14 +17986,15 @@ structure SourceProductionObligation
 namespace SourceProductionObligation
 
 /-- Canonical formula-level inhabitant of the source-production obligation,
-after the continuing next chart-family boundary is supplied.
+with no next-chart-family field.
 
 This chooses `Csucc` to be the formula-level successor following factor and
-`Cterm` to be the transported terminal rows.  The continuing next chart family
-remains an explicit supplied field; this theorem does not construct charts,
-successor source data, suffixes, transitions, normal crossings, pole order, or
-RLCT data. -/
-theorem of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
+`Cterm` to be the transported terminal rows.  The previous next-chart-family
+existential has been removed from `SourceProductionObligation` because it was
+inhabited by `True` predicates and did not encode source production.  This
+theorem still does not construct charts, successor source data, suffixes,
+transitions, normal crossings, pole order, or RLCT data. -/
+theorem of_formulaSuccessor_transportTerminalRows
     {R : Type u} [CommRing R]
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
     {t t' : ℕ → ℕ → ℕ → ℤ}
@@ -18017,12 +18013,7 @@ theorem of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
     (hSuffix : S + 1 ≤ L)
     (C : ℕ → κ (sourceLayerIndex L (S + 2)
       (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
-    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
-    (continuingNextChartFamily :
-      ∀ (_hnext : J + 2 ≤ prefixMinNat n (S + 1)),
-        ∃ ChartRegularNext TransitionRegularNext,
-          Case2ResidualBlockChartFamilyBoundary
-            n S (J + 1) ChartRegularNext TransitionRegularNext) :
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
     SourceProductionObligation data residual κ hSuffix C Ctail
       (case2DisplayedSourceSuccessorFollowingFactor
         n data.stage_pos data.continuation residual C)
@@ -18038,7 +18029,6 @@ theorem of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
   refine
     { frontier := frontier
       Csucc_eq_formula := rfl
-      continuing_suppliedNextChartFamily := continuingNextChartFamily
       continuing_frontier := ?_
       actualWidth_frontier := ?_
       actualWidth_Cterm_eq := ?_
@@ -18072,45 +18062,6 @@ theorem of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
     exact frontier.rowExhaustedSourceSuffix κ hSuffix C Ctail hrow
   · intro _hrow
     rfl
-
-/-- Canonical formula-level inhabitant of the source-production obligation,
-using the `True`-predicate witness for the continuing next boundary field.
-
-This theorem exposes that the present existential chart-family field is only a
-syntactic boundary: choosing `True` predicates proves it.  It still does not
-construct an affine blow-up atlas, source-produce successor data or suffixes,
-prove coverage/transition regularity in a geometric sense, or prove normal
-crossings, pole order, or RLCT data. -/
-theorem of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary
-    {R : Type u} [CommRing R]
-    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
-    {t t' : ℕ → ℕ → ℕ → ℤ}
-    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
-    {pre : IntroducedLabelRecurrenceState L n S J R}
-    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
-    {u : R}
-    {ChartRegular : ℕ × ℕ → Prop}
-    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
-    {data :
-      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
-        t t' numerator numerator' leastValue leastValue'
-        pre post u ChartRegular TransitionRegular}
-    (residual : ℕ × ℕ → R)
-    (κ : Fin (L + 1) → Type uκ) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
-    (hSuffix : S + 1 ≤ L)
-    (C : ℕ → κ (sourceLayerIndex L (S + 2)
-      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
-    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
-    SourceProductionObligation data residual κ hSuffix C Ctail
-      (case2DisplayedSourceSuccessorFollowingFactor
-        n data.stage_pos data.continuation residual C)
-      (case2DisplayedSourceTerminalTransportedRows
-        n data.stage_pos data.continuation residual C) := by
-  exact
-    of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
-      residual κ hSuffix C Ctail
-      (Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates
-        n S J)
 
 /-- The supplied successor following factor has the same next same-stage tail
 as the old following factor.
