@@ -228,3 +228,19 @@ Consuming side (sub-5/6/7 + assembly + `ofExactGerm`) re-proven axiom clean-thre
 gauge-normalized core (`@bd016d0`). The raw-∏T trap is now structurally impossible. The single open
 obligation is `deepest_gauge_squeeze_exists` (cobuild-sub34's `ofExactGerm` target: split + coreAbsorb
 + the one hard `coreAbsorb_rlct` + `loss_germ`). #54 (Schur core = dlnLoss M 0 T̃) feeds both.
+
+### Update (crux2, 2026-06-22) — D1 ≥-leg CORE fully proven
+
+`origin/fm2/d1-deepest-min @152ef0d` (rebased onto deepest-gauge-chart for S1NonMPTransport),
+`Validate/DeepestMinRlct.lean`, zero sorries, all axiom clean-three:
+- `rlctAtOn_ray_scaling_invariant` (L1-a): `rlctAtOn F (t•v) = rlctAtOn F v` for homogeneous `F`,
+  `t>0` — the scaling `σ=t•·` (det `t^N`) via `weightedThreshold_transport` + `weightedThreshold_weight_unit_invariant` (the `t^N` weight peel) + homogeneity + `rlctAtOn_unit_invariant_aux` (the `t^D` function peel).
+- `rlctAtOn_lsc_at_origin` (L1-b): `rlctAtOn F 0 ≤ rlctAtOn F v` — the LIGHT nbhd-monotonicity from the
+  `sSup`/`∃Ω∋·` def (the controller's `rlctAt`-hint, g170; g160's "heavy Watanabe/Varchenko primitive" was an overestimate).
+- `deepest_le_of_homogeneous_core`: the D1 (a) CORE, = L1-b.
+
+The hero-task constraint (only S2 citable) HOLDS for the D1 ≥-leg core: "deepest = min-core" is PROVEN
+value-free, NO Aoyagi 2013 Thm 2 citation, NO new analytic primitive. g158's "rlctAt_mono is
+2-funcs-1-point, D1 is 1-func-2-points" gap is bypassed by the L1-a (ray-constancy) + L1-b (limit
+nbhd-monotonicity) decomposition. Remaining: the full-B bridge (CORE → full `dlnLoss H B`) via L2 +
+the constant fibre-rank shift (g170 route 1).
