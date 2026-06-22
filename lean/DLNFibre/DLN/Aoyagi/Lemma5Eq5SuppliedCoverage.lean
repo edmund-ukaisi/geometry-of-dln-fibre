@@ -19,8 +19,8 @@ namespace Aoyagi
 /-- Raw one-coordinate branch set for Eq5 strict alpha branches plus supplied
 endpoints.
 
-The lower endpoint is included exactly in the rising region
-`j <= a` and `j <= ell-a`. -/
+The lower endpoint is explicitly inserted only in the rising branch
+`j <= a` and `j <= ell-a`; no distinctness from the other records is claimed. -/
 def aoyagiLemma5Eq5EndpointRawBranches
     {β : Type*} [DecidableEq β] (ell a : ℕ)
     (strictBranches : ℕ → Finset β) (upper lower : ℕ → β) (j : ℕ) :
@@ -29,6 +29,39 @@ def aoyagiLemma5Eq5EndpointRawBranches
     insert (upper j) (insert (lower j) (strictBranches j))
   else
     insert (upper j) (strictBranches j)
+
+/-- The Eq5 endpoint raw branch set inherits a supplied coordinate map from
+its strict, upper-endpoint, and rising lower-endpoint component records.
+
+This is finite membership bookkeeping only.  It does not construct branches or
+prove that the coordinate map is source-produced, and it does not assert
+endpoint distinctness. -/
+theorem aoyagiLemma5Eq5EndpointRawBranches_branchCoord_eq
+    {β : Type*} [DecidableEq β] (ell a : ℕ)
+    (strictBranches : ℕ → Finset β) (upper lower : ℕ → β)
+    (branchCoord : β → ℕ) {j : ℕ}
+    (hstrict : ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupper : branchCoord (upper j) = j)
+    (hlower : j ≤ a → j ≤ ell - a → branchCoord (lower j) = j)
+    {b : β}
+    (hb : b ∈ aoyagiLemma5Eq5EndpointRawBranches
+      ell a strictBranches upper lower j) :
+    branchCoord b = j := by
+  by_cases hrising : j ≤ a ∧ j ≤ ell - a
+  · rw [aoyagiLemma5Eq5EndpointRawBranches, if_pos hrising] at hb
+    rw [Finset.mem_insert, Finset.mem_insert] at hb
+    rcases hb with hb_upper | hb_lower | hb_strict
+    · rw [hb_upper]
+      exact hupper
+    · rw [hb_lower]
+      exact hlower hrising.1 hrising.2
+    · exact hstrict b hb_strict
+  · rw [aoyagiLemma5Eq5EndpointRawBranches, if_neg hrising] at hb
+    rw [Finset.mem_insert] at hb
+    rcases hb with hb_upper | hb_strict
+    · rw [hb_upper]
+      exact hupper
+    · exact hstrict b hb_strict
 
 /-- Eq5 strict alpha coverage plus supplied endpoint values gives full
 same-coordinate interval coverage for the raw branch set.
@@ -166,6 +199,79 @@ def ofEq5AlphaIndexedEndpointCoverage {β : Type*} [DecidableEq β]
           strictBranches alphaOf value upper lower ha hj
           (halpha_image hj) (hvalue hj) (hupper hj) (hlower hj))
     value_injective branches_pairwiseDisjoint
+
+/-- Branch-coordinate correctness for the filtered supplied family constructed
+from Eq5 alpha-indexed endpoint coverage.
+
+The base-value filter only removes records, so coordinate correctness follows
+from the raw branch-coordinate adapter. -/
+theorem ofEq5AlphaIndexedEndpointCoverage_branchCoord_eq
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (value_injective :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        Set.InjOn value
+          ↑(aoyagiLemma5Eq5EndpointRawBranches
+            ell a strictBranches upper lower j))
+    (branches_pairwiseDisjoint :
+      ∀ {i j : ℕ}, (hi : i ∈ Finset.Icc 1 (ell - 1)) →
+        (hj : j ∈ Finset.Icc 1 (ell - 1)) → i ≠ j →
+          Disjoint
+            (aoyagiLemma5Eq5EndpointRawBranches
+              ell a strictBranches upper lower i)
+            (aoyagiLemma5Eq5EndpointRawBranches
+              ell a strictBranches upper lower j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        branchCoord (lower j) = j)
+    {j : ℕ} (hj : j ∈ Finset.Icc 1 (ell - 1)) {b : β}
+    (hb :
+      b ∈ (AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage
+        (ell := ell) (a := a) (M := M) (m := m)
+        strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+        halpha_image hvalue hupper hlower value_injective
+        branches_pairwiseDisjoint).branches j) :
+    branchCoord b = j := by
+  have hbfilter :
+      b ∈ (aoyagiLemma5Eq5EndpointRawBranches
+          ell a strictBranches upper lower j).filter
+        (fun b ↦ value b ≠ baseValue j) := by
+    simpa [ofEq5AlphaIndexedEndpointCoverage,
+      AoyagiLemma5SuppliedNonbaseFamily.ofCoordinateValueCoverage] using hb
+  have hbraw :
+      b ∈ aoyagiLemma5Eq5EndpointRawBranches
+        ell a strictBranches upper lower j :=
+    (Finset.mem_filter.mp hbfilter).1
+  exact aoyagiLemma5Eq5EndpointRawBranches_branchCoord_eq
+    ell a strictBranches upper lower branchCoord
+    (hstrictCoord hj) (hupperCoord hj) (hlowerCoord hj) hbraw
 
 end AoyagiLemma5SuppliedNonbaseFamily
 

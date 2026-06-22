@@ -200,6 +200,8 @@ Current Eq5 structured injection-adapter slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-structured-injection-adapters-a5.md`.
 Current Eq5 endpoint raw-branches slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-branches-a5.md`.
+Current Eq5 endpoint branch-coordinate slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -221,6 +223,15 @@ inserted only in the rising region.  It is still supplied-data assembly:
 base-value membership, raw value injectivity, cross-coordinate disjointness,
 source production of endpoint records, source-label legality, no-extra
 coverage, pole order, normal crossings, and RLCT remain unproved.
+
+Lean now also exposes endpoint raw-branch coordinate inheritance:
+`aoyagiLemma5Eq5EndpointRawBranches_branchCoord_eq` and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_branchCoord_eq`.
+This proves only that supplied component coordinate facts pass through the raw
+set and base-value filter, so the existing counted-datum classifier API can be
+used.  It does not prove endpoint distinctness, base-filter survival,
+source-produced coordinates, raw injectivity/disjointness, no-extra coverage,
+pole order, normal crossings, or RLCT.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.

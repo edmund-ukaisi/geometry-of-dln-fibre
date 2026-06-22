@@ -4960,3 +4960,33 @@ branches, prove endpoint records are source-produced, prove source-label
 legality, derive raw branch injectivity or disjointness, build a counted-datum
 classifier, prove no-extra terminal-minimum coverage, prove a Lemma 5 order
 count, prove pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint branch coordinates
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-branchcoord-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-branchcoord.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-branchcoord-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5EndpointRawBranches_branchCoord_eq
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_branchCoord_eq
+```
+
+The raw branch-coordinate adapter dispatches membership in the conditional Eq5
+endpoint raw branch set through the strict, upper-endpoint, and explicitly
+inserted rising lower-endpoint alternatives.  The supplied-family adapter then
+passes this fact through the base-value filter in
+`ofCoordinateValueCoverage`, giving the `branchCoord_eq` input needed by the
+existing generic counted-datum classifier API.
+
+This is finite coordinate bookkeeping only.  It does not construct Eq5
+branches or endpoint records, prove source-label legality, prove the
+coordinate map is source-produced, prove endpoint distinctness or base-filter
+survival, derive raw branch injectivity/disjointness, add a dedicated Eq5
+classifier wrapper, prove no-extra terminal-minimum coverage, prove a Lemma 5
+order count, prove pole order, prove normal crossings, or extract RLCT.

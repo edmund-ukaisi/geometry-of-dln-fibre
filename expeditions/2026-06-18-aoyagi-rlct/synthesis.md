@@ -4732,6 +4732,25 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-raw-branches-a5.md`.
 
+Latest A5 Eq5 endpoint branch-coordinate update:
+`Lemma5Eq5SuppliedCoverage.lean` now also contains
+`aoyagiLemma5Eq5EndpointRawBranches_branchCoord_eq` and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_branchCoord_eq`.
+These prove that supplied coordinate facts for strict Eq5 records, the upper
+endpoint record, and the explicitly inserted rising lower endpoint record pass
+through the conditional raw branch set and then through the base-value filter.
+This gives the coordinate-correctness input to the existing generic
+counted-datum classifier constructor, but no dedicated Eq5 classifier wrapper
+was added.  The result does not prove source-produced branch records,
+source-label legality, endpoint distinctness, base-filter survival, raw
+injectivity/disjointness, no-extra coverage, normal crossings, pole order, or
+RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-branchcoord.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
