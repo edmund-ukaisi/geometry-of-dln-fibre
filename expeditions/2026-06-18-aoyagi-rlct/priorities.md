@@ -206,6 +206,8 @@ Current Eq5 endpoint branch-coordinate disjointness slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
 Current Eq5 endpoint raw value-injectivity slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`.
+Current Eq5 endpoint counted-datum classifier slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -259,6 +261,16 @@ It still assumes base-value membership, alpha-domain coverage, endpoint value
 formulas, strict alpha injectivity, component coordinate facts, and does not
 construct branch records, prove source-label legality, no-extra coverage, pole
 order, normal crossings, or RLCT.
+
+Lean now packages the strictest Eq5 endpoint supplied family into the generic
+counted-datum classifier API:
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq`
+and
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord`.
+This classifier is only for the constructed supplied `fullBranches`; it is not
+a source terminal-minimum classifier and does not prove source-label legality,
+base-filter survival, no-extra coverage, pole order, normal crossings, or
+RLCT.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.

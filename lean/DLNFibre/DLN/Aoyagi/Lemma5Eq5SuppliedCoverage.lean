@@ -10,8 +10,10 @@ nonbase-family boundary.  It does not construct branch records, prove
 source-label legality, or prove the coordinate facts from source.  Raw value
 injectivity is derived only from supplied strict alpha injectivity, and
 cross-coordinate disjointness is derived only from supplied coordinate facts.
-This file does not construct classifiers, prove pole order, normal crossings,
-or extract RLCT data.
+The classifier wrapper constructed here is only for supplied full branches from
+the strictest endpoint constructor; this file does not classify source
+terminal-minimum labels, prove no-extra coverage, prove pole order, normal
+crossings, or extract RLCT data.
 -/
 
 namespace DLNFibre
@@ -479,6 +481,133 @@ def ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
           (halpha_image hj) (hvalue hj) (hupper hj) (hlower hj)
           (halpha_inj hj))
     branchCoord hstrictCoord hupperCoord hlowerCoord
+
+/-- Branch-coordinate correctness for the stricter Eq5 endpoint constructor
+that derives raw value injectivity from strict alpha injectivity and raw
+disjointness from component coordinates. -/
+theorem ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        branchCoord (lower j) = j)
+    {j : ℕ} (hj : j ∈ Finset.Icc 1 (ell - 1)) {b : β}
+    (hb :
+      b ∈
+        (ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+            (ell := ell) (a := a) (M := M) (m := m)
+            strictBranches alphaOf value upper lower baseValue ha
+            baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+            branchCoord hstrictCoord hupperCoord hlowerCoord).branches j) :
+    branchCoord b = j := by
+  have hbfilter :
+      b ∈ (aoyagiLemma5Eq5EndpointRawBranches
+          ell a strictBranches upper lower j).filter
+        (fun b ↦ value b ≠ baseValue j) := by
+    simpa [ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord,
+      ofEq5AlphaIndexedEndpointCoverage_of_branchCoord,
+      ofEq5AlphaIndexedEndpointCoverage,
+      AoyagiLemma5SuppliedNonbaseFamily.ofCoordinateValueCoverage] using hb
+  have hbraw :
+      b ∈ aoyagiLemma5Eq5EndpointRawBranches
+        ell a strictBranches upper lower j :=
+    (Finset.mem_filter.mp hbfilter).1
+  exact aoyagiLemma5Eq5EndpointRawBranches_branchCoord_eq
+    ell a strictBranches upper lower branchCoord
+    (hstrictCoord hj) (hupperCoord hj) (hlowerCoord hj) hbraw
+
+/-- Counted-datum classifier for the supplied full branch set produced by the
+stricter Eq5 endpoint constructor.
+
+This is finite supplied-family bookkeeping only.  It does not classify source
+terminal-minimum labels or prove no-extra coverage. -/
+def countDatumClassifierOfEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        branchCoord (lower j) = j) :
+    AoyagiLemma5CountDatumClassifier
+      (Option β) ell a M m baseValue
+      (ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+          (ell := ell) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower baseValue ha
+          baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+          branchCoord hstrictCoord hupperCoord hlowerCoord).fullBranches :=
+  (ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+      (ell := ell) (a := a) (M := M) (m := m)
+      strictBranches alphaOf value upper lower baseValue ha
+      baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+      branchCoord hstrictCoord hupperCoord hlowerCoord)
+    |>.countDatumClassifierOfBranchCoord_of_branchCoord_eq branchCoord
+      (by
+        intro j hj b hb
+        exact
+          ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq
+              (ell := ell) (a := a) (M := M) (m := m)
+              strictBranches alphaOf value upper lower baseValue ha
+              baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+              branchCoord hstrictCoord hupperCoord hlowerCoord hj hb)
 
 /-- Branch-coordinate correctness for the filtered supplied family constructed
 from Eq5 alpha-indexed endpoint coverage.

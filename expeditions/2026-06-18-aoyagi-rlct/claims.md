@@ -1839,7 +1839,9 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 endpoint branch-coordinate disjointness at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`;
   Eq5 endpoint raw value injectivity at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`;
+  Eq5 endpoint counted-datum classifier at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1908,7 +1910,10 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 endpoint branch-coordinate disjointness checked by xhigh `Noether` at
   `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`;
   Eq5 endpoint raw value injectivity checked by xhigh `Dalton` at
-  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-value-injective-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-value-injective-a5.md`;
+  Eq5 endpoint counted-datum classifier reviewed by xhigh `Hypatia` and
+  `Dirac`, with documentation repairs recorded at
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1954,8 +1959,8 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`;
   Eq5 supplied endpoint raw coverage in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5SuppliedCoverage.lean`, including the
-  endpoint branch-coordinate, disjointness, and raw value-injectivity adapters;
-  broader A5 targets TBD.
+  endpoint branch-coordinate, disjointness, raw value-injectivity, and
+  counted-datum classifier adapters; broader A5 targets TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
   `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
@@ -2709,6 +2714,13 @@ No such claim is formalisation-ready until both fields are filled.
   branch construction, source-label legality, source proof of strict alpha
   injectivity, base-filter survival, no-extra coverage, and order-count data
   remain unproved.
+  Also proved
+  `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq`
+  and
+  `AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord`.
+  These package the strictest endpoint supplied family into the generic
+  counted-datum classifier API for its supplied `fullBranches`.  They do not
+  classify source terminal-minimum labels or prove no-extra coverage.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

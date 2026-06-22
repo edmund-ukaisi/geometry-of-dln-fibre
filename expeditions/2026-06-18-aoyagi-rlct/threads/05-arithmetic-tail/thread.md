@@ -5056,3 +5056,32 @@ branches or endpoint records, prove source-label legality, prove strict alpha
 injectivity from source, prove endpoint record distinctness as a source fact,
 prove base-filter survival, construct a no-extra classifier, prove a Lemma 5
 order count, prove pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint counted-datum classifier
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-countdatum-classifier.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
+
+Lean now proves/packages:
+
+```text
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq
+AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+```
+
+The branch-coordinate theorem unfolds the strictest Eq5 endpoint supplied
+constructor, strips the base-value filter to recover raw branch membership, and
+applies the raw component-coordinate adapter.  The classifier wrapper then
+feeds this branch-coordinate correctness into the generic supplied-family
+`countDatumClassifierOfBranchCoord_of_branchCoord_eq` API.
+
+This is finite supplied-family bookkeeping only.  The classifier is for the
+constructed supplied `fullBranches`; it is not a source terminal-minimum
+classifier.  It does not construct branch records, prove source-label
+legality, prove source production of the coordinate map, prove endpoint
+distinctness or base-filter survival, prove no-extra coverage, prove a Lemma 5
+order count, prove pole order, prove normal crossings, or extract RLCT.

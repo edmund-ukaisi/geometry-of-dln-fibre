@@ -4787,6 +4787,23 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-value-injective-a5.md`.
 
+Latest A5 Eq5 endpoint counted-datum classifier update:
+`Lemma5Eq5SuppliedCoverage.lean` now also contains
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq`
+and
+`AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord`.
+The first theorem passes component coordinate correctness through the
+base-value-filtered strictest endpoint supplied family; the second applies the
+generic supplied-family counted-datum classifier API to that constructed
+`fullBranches` set.  This is not a source terminal-minimum classifier and does
+not prove source-label legality, base-filter survival, no-extra coverage,
+normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-countdatum-classifier.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
