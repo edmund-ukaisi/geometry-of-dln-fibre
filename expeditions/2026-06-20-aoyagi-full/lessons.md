@@ -550,6 +550,21 @@ Same class as the #70 all-interior=r confound and the `rlct_…`-named-but-only-
 thing that's actually special-case/vacuous. Green is necessary, never sufficient — and here an INDEPENDENT
 formaliser's inhabitant-test was the instrument that caught what the skeleton author's typecheck missed.
 
+## "Build completed successfully" ≠ exit-0 + no-error-grep (2026-06-22)
+
+A formaliser committed @b96fd7f as "green" after checking only `lake build` exit-0 + a no-"error"-grep — but
+the build had 4 real errors (a SIGABRT mid-build + name-resolution failures). exit-0 can mask a crash; a grep
+for "error" can miss Lean's actual failure phrasing. The pushed branch was briefly build-broken; caught +
+corrected @c15ef75 by checking the explicit `Build completed successfully` line (lake prints it only on a
+genuinely complete build).
+
+LESSON: verify a Lean build by the `Build completed successfully` line (or full job-count completion), NEVER by
+exit-code + error-grep alone — a SIGABRT / elaborator crash can exit non-cleanly-but-not-1 and skip the error
+phrasing the grep expects. This compounds the skeleton-first + vacuity traps: "green" must mean the build
+genuinely COMPLETED, just as "the obligation is filled" must mean it's NON-VACUOUSLY filled. The controller
+re-verifies `Build completed successfully` + `#print axioms` at integration (#28) as the backstop — agent
+green-claims are necessary, not sufficient.
+
 **Surfaced by:** pp2's #70 decorrelated consult "didn't land (CLI flaky — nested background launch)." The
 nested-launch hypothesis was a RED HERRING: a top-level `codex doctor` / `codex --version` hangs identically.
 It is an environment-wide outage, not a nested-launch artifact.
