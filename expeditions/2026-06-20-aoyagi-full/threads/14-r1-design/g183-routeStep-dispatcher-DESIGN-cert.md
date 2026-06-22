@@ -232,3 +232,58 @@ node type, it's a thin wrapper; the value MIN-folds regardless, §VALUE-TARGET u
 `foldFamily_*` contract). These are the actual combinatorial content; they hold whether the per-cell datum
 is the light pullback or (off-path) the heavy squeeze. The datum field is a thin wrapper either way —
 likely the light `node_loss_pivot_factor` for R1.
+
+---
+
+## TRANSCRIPTION-READY (#68 final, pp-hall, 2026-06-22) — fm3's exact types confirmed; the witnessed-codim form + the banked bridges
+
+fm3 sent the concrete types (RouteMRecursion.lean working tree + RouteMState.lean banked); g183/g187/g188
+already designed against them. Final tightening (fm3's ask): pin the witnessed-codim form + the exact
+banked bridge names + flag the transport-field as crux2-pending.
+
+**The codim field is the witnessed form (fm3 confirmed §2 is the target).** The current
+`codim : cells → ℕ` (in `RouteStep.branch`) is the STUB; the certified `ValidRouteStep` carries
+
+    witness : (c : cells) → { T : Fin L → ℕ // T ∈ Adm M ∧ codim c = (Mval M T).toNat }    (+ the mult-1 proof (k,h)=(1, codim−1)).
+
+Note `(Mval M T).toNat`: `Mval : … → ℤ`, but `Mval M T ≥ 0` on `T ∈ Adm M` (each summand
+`(t_{j-1}−t_j)(M_j−t_j) ≥ 0` by admissibility — weakly-decreasing `t` and `t_j ≤ M_j`; verified
+`g189_mval_nonneg.py` across (2,2,2)/(3,2,3)/(2,2,2,2)/(4,3,2)/(2,3,2)/(3,3,3)/(2,1,2)/(3,1,3)/(4,4,4)),
+so `.toNat` is faithful. **Design every per-cell `codim c` as `(Mval M T).toNat` for an admissible `T`** —
+which §2 already mandates.
+
+**The VALUE+CONSISTENCY obligation maps to fm3's EXACT banked bridges (cleaner than §VALUE-TARGET's (a)+(b)):**
+- **(C≥)** `foldFamily_threshold_ge_of_admWitness`: IF every leaf's codims are `(Mval M T).toNat` with
+  `T ∈ Adm M`, THEN every leaf threshold `≥ ½·minAdm`. **The §2 witness feeds this DIRECTLY** — no
+  separate "all codims ≥ m₀" step; the admissible-`T` witness IS the hypothesis. (Uses `minAdm_le_Mval_toNat`:
+  `T ∈ Adm ⟹ minAdm ≤ (Mval M T).toNat` — the no-undershoot, automatic, banked.)
+- **(C=∃)** `foldFamily_achiever` / `monomialThreshold_foldDivisors_eq_of_binding`: the minimiser path `i₀`
+  has `minAdm ∈ codimsOf i₀` (the §4 reachability: it crosses `S_{T*}`, `Mval(T*) = minAdm`).
+- `(C≥) + (C=∃) ⟹ IsResolutionAtlas ⟹ ⨅ = lambdaCore` (`= ½·minAdm`). BY CONSTRUCTION — no separate
+  consistency proof, once `codimsOf` carries the `(Mval M T).toNat` witnessed codims.
+
+So obligation #2 (VALUE+CONSISTENCY) is discharged by: design `codimsOf i = [(Mval M T_node).toNat : node
+along path i]` (§2 witness per node) + the achiever reaches `T*` (§4). The two banked bridges
+(`foldFamily_threshold_ge_of_admWitness`, `foldFamily_achiever`) then deliver `IsResolutionAtlas` with NO
+new lemma. This is the transcription target.
+
+**The per-cell TRANSPORT field is crux2-pending (the light/heavy fork, g188).** fm3's g164 independently
+found (converging with my g188): the `(2,2,2)` leaf is min-fold/monomial, NOT additive `+nReg/2`, so the
+heavy `IsSchurStraightenSqueeze` (additive) is likely OFF-PATH; R1's per-cell transport is the LIGHT G2
+`node_loss_pivot_factor` (`core∘φ = x_p²·(core∘hardPivotAt)`) + `rlctAtOn_reduced_transport`. **The
+transport-field's exact shape (light G2 vs heavy squeeze) is the ONE thing pending crux2's lemma-mapping
+confirmation** — but it is the analytic WRAPPER, it does NOT change the recipe / codims / the 3 correctness
+arguments. Design the combinatorics (done: §1 recipe + §2 witnessed codims + §3/§4 args + the foldFamily
+value-target); the transport-field is a thin wrapper, likely the light pullback.
+
+**FIRM (design to these):** `ChainDimSplit` (drop/red/hsum/hdrops, `L` fixed, `red = M'`); `M : Fin(L+1)→ℕ`
+(reduced widths, `T : Fin L → ℕ` the rank pattern, `T ∈ Adm M`); `MonoData`/`appendDivisor (1,c−1)`/
+`foldDivisors`; the value-side achiever + the family/§2 bridges. **MOVING:** `codim : cells → ℕ` →
+codim + §2 witness (the `(Mval M T).toNat` form). **crux2-PENDING:** the transport-field (light G2 vs heavy
+squeeze) — wrapper only.
+
+**Transcription-ready.** §1 (recipe), §2 (witnessed `(Mval M T).toNat` codim), §4 (reachability), the
+foldFamily value-target, the (2,2,2)/(3,2,3)/(4,3,2) validation, the light-datum (g188). The dispatcher
+populates `codimsOf` with `(Mval M T).toNat` witnessed codims; `foldFamily_threshold_ge_of_admWitness` +
+`foldFamily_achiever` deliver the value; the light G2 transport (crux2-confirm) wraps each cell. No open
+combinatorial question.
