@@ -4687,6 +4687,47 @@ derive injectivity, build a back-to-label map, prove `UpperBoundClassifier`,
 prove exactness, prove a Lemma 5 order count, prove pole order, prove normal
 crossings, or extract RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 terminal counted-datum cardinal squeeze
+
+Reproduction:
+`reproduction-lemma5-eq5-terminal-countdatum-cardinal-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-terminal-countdatum-cardinal-squeeze.md`.
+Review artifact:
+`review-lemma5-eq5-terminal-countdatum-cardinal-squeeze-a5.md`.
+
+Lean now composes the Eq5 terminal counted-datum classifier constructors with
+the existing finite upper-bound and cardinal-squeeze API.  The upper-bound
+wrappers are:
+
+```text
+terminalMinimumLabels_card_le_of_eq5OwnBlockCommon_widthBound
+terminalMinimumLabels_card_le_of_eq5OwnBlockCommon_blockWidth
+terminalMinimumLabels_card_le_of_eq5OwnBlockCommon_leftEndpointMin
+terminalMinimumLabels_card_le_of_eq5OwnBlockCommon_offSelected
+terminalMinimumLabels_card_le_of_eq5OwnBlockCommon_offSelected_lt
+```
+
+They prove
+
+```text
+TC.terminalMinimumLabels.card <= a * (N + 1 - a) + 1
+```
+
+from supplied Eq5 payload data and supplied counted-datum injectivity.
+
+The width-bound exactness wrappers additionally assume supplied branch-label
+injectivity and prove equality with `TC.branchLabelImage`,
+`TC.TerminalMinimumLabelExactness`, the exact cardinality, and a branch-label
+bijection onto `TC.terminalMinimumLabels`.  The counted-datum injectivity and
+branch-label injectivity hypotheses remain separate.
+
+This is finite conditional API composition only.  It does not construct Eq5
+branches, prove Eq5 payloads for terminal labels, prove either injectivity
+from source, build a counted-datum-preserving back-to-label map, prove the
+printed Lemma 5 order count, prove pole order, prove normal crossings, or
+extract RLCT.
+
 ## 2026-06-22 Lean Lemma 5 Eq5 alpha endpoint value-image split
 
 Reproduction:

@@ -4377,6 +4377,31 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-terminal-countdatum-classifier-a5.md`.
 
+Latest A5 Eq5 terminal counted-datum cardinal-squeeze update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains upper-bound wrappers
+`terminalMinimumLabels_card_le_of_eq5OwnBlockCommon_widthBound`,
+`..._blockWidth`, `..._leftEndpointMin`, `..._offSelected`, and
+`..._offSelected_lt`.  These compose the supplied Eq5 terminal classifier
+with the existing counted-datum cardinal theorem to prove
+`TC.terminalMinimumLabels.card <= a*(N+1-a)+1`.  The same file also contains
+width-bound exactness wrappers
+`terminalMinimumLabels_eq_branchLabelImage_of_eq5OwnBlockCommon_widthBound_cardSqueeze`,
+`terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_cardSqueeze`,
+`terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_cardSqueeze`,
+and
+`branchLabel_bijOn_terminalMinimumLabels_of_eq5OwnBlockCommon_widthBound_cardSqueeze`.
+These use the existing cardinal squeeze after adding supplied branch-label
+injectivity.  Counted-datum injectivity and branch-label injectivity remain
+separate supplied hypotheses.  This is not Eq5 branch construction,
+source-derived classifier data, a counted-datum-preserving back-to-label map,
+the printed Lemma 5 order count, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-countdatum-cardinal-squeeze-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-countdatum-cardinal-squeeze.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-countdatum-cardinal-squeeze-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.
