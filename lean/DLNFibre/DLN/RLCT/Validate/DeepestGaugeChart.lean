@@ -147,6 +147,49 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
                   (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
                   ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
 
+/-- **Smart constructor from the EXACT germ (the g150 cert's discharge target).** The g150-fix cert
+delivers `dlnLoss H B ∘ flatSymm =ᶠ[𝓝 wstar] Φ` (an EXACT germ equality, `Φ = ∑ regular² +
+dlnLoss M 0 (gauge-normalized core)`), which is the `c₁ = c₂ = 1` case of `loss_squeeze`. This packages
+the cert's exact-germ algebra + the MP reindex into the `DeepestGaugeChart` squeeze datum — the
+frictionless target for `cobuild-sub34` (it proves the exact identity + the split; the squeeze follows
+trivially, NO global chart / `jac_unit` / measure-Jacobian). -/
+noncomputable def DeepestGaugeChart.ofExactGerm (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (nGauge : ℕ)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ
+      ((Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ)
+        × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin nGauge → ℝ))))
+    (split_mp : MeasurePreserving split volume volume)
+    (split_basepoint : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0)
+    (loss_germ :
+      (fun w => dlnLoss H B ((paramsEquivFlat H).symm w)) =ᶠ[𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))]
+        fun w =>
+          let q := split w
+          (∑ i, q.1 i ^ 2) +
+            dlnLoss (fun s => H s - r)
+              (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+              ((paramsEquivFlat (fun s => H s - r)).symm q.2.1)) :
+    DeepestGaugeChart H r B hB hr hL where
+  nGauge := nGauge
+  split := split
+  split_mp := split_mp
+  split_basepoint := split_basepoint
+  loss_squeeze := by
+    obtain ⟨U, hU, hUeq⟩ := loss_germ.exists_mem
+    refine ⟨1, 1, one_pos, one_pos, U, hU, fun w hw => ?_⟩
+    have heq : dlnLoss H B ((paramsEquivFlat H).symm w)
+        = (let q := split w
+          (∑ i, q.1 i ^ 2) +
+            dlnLoss (fun s => H s - r)
+              (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+              ((paramsEquivFlat (fun s => H s - r)).symm q.2.1)) := hUeq hw
+    refine ⟨?_, ?_, ?_⟩
+    · -- `Φ ≥ 0`: regular sum-of-squares + the nonneg core loss.
+      exact add_nonneg (Finset.sum_nonneg fun i _ => sq_nonneg _) (dlnLoss_nonneg _ _ _)
+    · rw [one_mul, heq]
+    · rw [one_mul, heq]
+
 /-- **Sub-lemma 2 (`deepestPoint_is_rank_exact`).** The constructed deepest point is rank-`r`-exact on
 every interior layer — a restatement of the green `deepestPoint_isDeep` (`IsDeepLayers.2`), exposed in
 the layer-rank form the gauge chart consumes. -/
