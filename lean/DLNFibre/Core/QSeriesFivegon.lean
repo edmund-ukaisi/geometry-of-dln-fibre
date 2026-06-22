@@ -994,4 +994,43 @@ theorem perfibre_reduces (d : Fin (N + 2) → ℕ) (m' : Fin (N + 1) × Fin (N +
     X_pow_toNat_add _ _ (codimForm_extendℤ_nonneg _) (delta_nonneg _), Pm_rebuild_factor]
   ring
 
+/-! ## (Q) — the q-series inner-sum induction
+
+The `innerSum` over admissible last columns equals `transferRHS` of the column-`N` data. We work
+through a length-indexed flat reformulation `adm b d` (Codex route): admissible `(n+1)`-tuples summing
+to `d` with `x_{i.castSucc} ≤ b_i`. The constrained-vector peel reorganizes `∑_{x ∈ adm b d}` into
+`∑_{x₀} ∑_{y ∈ adm (tail b) (d−x₀)}` via a sigma `Finset.sum_bij'`. The exponent (a `Fin`-indexed
+ℕ-pairing `flatDelta`) peels as `(b₀−x₀)(d−x₀) + flatDelta (tail b) y`, and each block closes with
+`durfee` — yielding `qSum b d = transferRHS (List.ofFn b) d`. -/
+
+/-- Flat admissible tuples: `(n+1)`-tuples summing to `d` with `x_{i.castSucc} ≤ b_i` on the first
+`n` coordinates (the corner coordinate `n` is free, bounded by `d` via the sum). -/
+def adm {n : ℕ} (b : Fin n → ℕ) (d : ℕ) : Finset (Fin (n + 1) → ℕ) :=
+  (Finset.Nat.antidiagonalTuple (n + 1) d).filter (fun x ↦ ∀ i : Fin n, x i.castSucc ≤ b i)
+
+/-- Membership in `adm`, unfolded. -/
+theorem mem_adm {n : ℕ} {b : Fin n → ℕ} {d : ℕ} {x : Fin (n + 1) → ℕ} :
+    x ∈ adm b d ↔ (∑ i, x i = d) ∧ (∀ i : Fin n, x i.castSucc ≤ b i) := by
+  rw [adm, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]
+
+/-- The admissible last columns are exactly `adm` of the column-`N` data. The only non-trivial point
+is the corner bound `x_{last} ≤ dlast`, which follows from `∑ x = dlast`. -/
+theorem admissibleXs_eq_adm (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast : ℕ) :
+    admissibleXs m' dlast = adm (fun i : Fin (N + 1) ↦ m' (i, Fin.last N)) dlast := by
+  ext x
+  rw [admissibleXs, Finset.mem_filter, Fintype.mem_piFinset, mem_adm]
+  constructor
+  · rintro ⟨hb, hsum⟩
+    refine ⟨hsum, fun i ↦ ?_⟩
+    have := hb i.castSucc
+    rwa [Finset.mem_range, Nat.lt_succ_iff, boundX, Fin.lastCases_castSucc] at this
+  · rintro ⟨hsum, hb⟩
+    refine ⟨fun I ↦ ?_, hsum⟩
+    rw [Finset.mem_range, Nat.lt_succ_iff]
+    induction I using Fin.lastCases with
+    | last =>
+      rw [boundX, Fin.lastCases_last, ← hsum]
+      exact Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ _)
+    | cast I' => rw [boundX, Fin.lastCases_castSucc]; exact hb I'
+
 end DLNFibre.Core
