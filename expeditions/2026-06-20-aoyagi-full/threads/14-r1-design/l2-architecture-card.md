@@ -173,3 +173,18 @@ TWO CERT GAPS found in the build (NOT in g150/g147 — decorrelation catch):
    `Fin.cast` makes the entry-product `show` fiddly — a focused cast-handling mini-lemma). Reusable
    bedrock (every `rlctAtOn` integrand site). Can't live in `Loss.lean` (no `Params` topology there —
    `Params` is a def wrapper, instance is in `Rlct.lean`); home is downstream of `Rlct`.
+
+### Update (crux2, 2026-06-22, later) — gap #2 CLOSED; sub-6 now plumbing-bound
+
+Cert-gap #2 (`Measurable (dlnLoss M 0)`) is **CLOSED**: `continuous_prodAux`/`continuous_prod`/
+`continuous_dlnLoss` PROVEN in `DeepestGaugeChart.lean` (local helpers, lift to Foundations at #28).
+The `prodAux` `Fin.cast` that stalled 3 solo attempts — Codex (g151, xhigh) gave the idiom: define
+`layer` via the same `rw [e1,e2]` block, prove `Continuous layer` by
+`simp only [e1, e2, eq_mpr_eq_cast, cast_eq]` reducing the cast to `continuous_apply`, then
+`Continuous.matrix_mul` + `hMul.congr … rfl`. Build green (2673), axiom clean-three.
+
+sub-6 `deepest_regular_smooth_split` is now **plumbing-bound** (no conceptual blocker): the route
+(split MP transport → additive block → spectator-peel → sub-7) is built; the two residual plumbing
+steps are (a) lift `hGne` (core a.e.) to the product nbhd via `quasiMeasurePreserving_fst`/`.ae`, and
+(b) the 3-way `(reg)×((core)×(spec))` reassociation so the spectator-peel and additive block apply.
+Both reachable; reverted to a clean mapped `sorry` pending a focused fill.
