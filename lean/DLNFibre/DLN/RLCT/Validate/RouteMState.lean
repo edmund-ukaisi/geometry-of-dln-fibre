@@ -196,4 +196,16 @@ theorem monomialThreshold_foldDivisors_eq_of_binding (cs : List ℕ) (m₀ : ℕ
   rw [monomialThreshold_foldDivisors cs (fun c hc => le_trans hm₀ (hge c hc))]
   exact le_antisymm (ratioMinFold_le_of_mem cs m₀ hbind) (ratioMinFold_ge_of_all_ge cs m₀ hge)
 
+/-- **(C≥, one path) Every path whose divisors are all codim-`≥m₀` has threshold `≥ ½·m₀`.** The
+no-undershoot lower bound for `IsResolutionAtlas.threshold_ge`: a non-minimising path (binding codim
+`> m₀`) still stays `≥ ½·m₀`. `monomialThreshold_foldDivisors` + `ratioMinFold_ge_of_all_ge`. The
+companion to `_eq_of_binding`: the achiever path hits `= ½·m₀`, every other path is `≥`. -/
+theorem monomialThreshold_foldDivisors_ge (cs : List ℕ) (m₀ : ℕ) (hm₀ : 1 ≤ m₀)
+    (hge : ∀ c ∈ cs, m₀ ≤ c) :
+    (m₀ : ℝ≥0∞) / 2
+      ≤ monomialThreshold (MonoData.foldDivisors cs).d (MonoData.foldDivisors cs).k
+          (MonoData.foldDivisors cs).h := by
+  rw [monomialThreshold_foldDivisors cs (fun c hc => le_trans hm₀ (hge c hc))]
+  exact ratioMinFold_ge_of_all_ge cs m₀ hge
+
 end DLNFibre.DLN.RLCT
