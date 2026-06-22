@@ -76,3 +76,26 @@ DECISION RULE: either prong yields a Lean-targetable proof ⟹ formaliser tide f
 (zero-cited, the big win). Both stall ⟹ fallback = cite Thm 5.5 as a named interface (like Aoyagi/Lemma 4.6)
 + derive Cor 5.10 + LAND the order-reversal fragment (0/11795, codimForm-preserving bijection) zero-cited.
 Order-reversal is bedrock either way. AWAITING the two probe verdicts.
+
+## 2026-06-22 — Q-SERIES VERDICT (thread 03): CRACKED, zero-cited, but a ~6–8 file q-series sub-library
+probe-qseries cracked the FULL route, exact-verified (findings.md committed 092d8a6):
+  perm-inv ⟸ L0 ⟸ L1 (C,θ)-extraction [CLEAN: Pm coeffs ≥0 ⟹ no cancellation; min-deg=cCodim, coeff=numTop]
+  ⟸ L2/Thm5.5 ⟸ S1–S4 chain ⟸ S0=Thm5.6(5gon) ⟸ PEEL induction on N.
+- **RECORD CORRECTED:** thread-01's "open problem" is WRONG. Thm 5.6 = RWY 2018 (arXiv:1608.02030), the
+  paper's OWN cite [RWY]. PEEL (q-Vandermonde + N=1 Durfee, induction on N) reproves it self-contained,
+  equioriented-only (RWY's general Thm 1.7 NOT needed). What the authors lack is only the DIRECT-Kostant-
+  bijection form (|M⁺_d|≠|M⁺_σd|, 2932 vs 3868 — blocks any value-preserving bijection); the q-series route
+  sidesteps that by proving the generating-function identity and reading off (C,θ).
+- **COST:** q-Pochhammer/q-binomial/q-Vandermonde/Durfee ALL absent from Mathlib v4.29 → must BUILD a
+  Core.QSeries sub-library. ~6–8 files, ~2–3 wk. Load-bearing: PEEL local transfer identity. Most-likely-
+  break: S3 PowerSeries q-binomial inversion / the transfer's q-Vandermonde.
+
+## DECISION SPECTRUM (forming — awaiting probe-direct's size comparison)
+- (A) FULL zero-cited q-series: ~6–8 files/~2–3wk. Delivers Cor 5.10 + Poincaré series + general (C,θ) for
+  ALL d (extends monotone-only forms) + an UPSTREAMABLE q-series sub-library (Mathlib lacks all of it). Max ambition.
+- (A') CITE RWY 2018 for Thm 5.6 (one published hard link, honest named interface like Aoyagi/Lemma 4.6),
+  build the rest zero-cited: ~4–5 files (still needs q-series primitives + S1–S4 chain + L1). Saves the PEEL bulk.
+- (C) CITE Thm 5.5 directly: ~1 file, Cor 5.10 one-liner. Cheapest, cites most.
+- direct route (thread 02): sizing said HARD (no bijection, unbounded radius, harder than landed CCodim pair);
+  probe-direct unproductive so far — likely NOT shorter. AWAITING its verdict to confirm.
+- order-reversal fragment (0/11795): zero-cited bedrock, land regardless.
