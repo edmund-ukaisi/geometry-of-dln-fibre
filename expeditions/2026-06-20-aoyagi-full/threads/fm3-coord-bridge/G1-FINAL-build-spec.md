@@ -504,6 +504,24 @@ as the consuming lemma); crux2 confirmed it'll give the exact type if wanted. So
 per cell = (split, codim, PivotWitness [value], ReducedTransport [crux2's det=1 datum]); the monomial pullback (A)
 is at the cover-fact, not a branch field. ALL THREE THREADS NOW ALIGNED on light.
 
+## ReducedTransport BUILT (g179, route-checked green clean-three) — the light det-1 transport, bundled
+I defined the bundled type myself (have rlctAtOn_reduced_transport's signature; no need to wait on crux2's
+delivery). RouteMRecursion.lean (route-checked green; sorry-free DECL, only routeStep elsewhere has the sorry):
+  structure ReducedTransport {L} {M} (S : ChainDimSplit M) (Y : Type)
+      [MeasureSpace Y] [TopologicalSpace Y] [Zero Y] where
+    G : Y → ℝ ; redEmbed : Y ≃ₜ Params S.red ; hmp : MeasurePreserving redEmbed volume volume
+    hemb : MeasurableEmbedding redEmbed ; hzero : redEmbed 0 = (fun _ => 0 : Params S.red)
+    hredCore : ∀ y, G y ^ 2 = dlnLoss S.red 0 (redEmbed y)
+  ReducedTransport.descent (rt) : rlctAtOn (fun y => rt.G y^2) 0 = rlctAtOn (dlnLoss S.red 0) (fun _ => 0)
+    := rlctAtOn_reduced_transport S rt.G rt.redEmbed rt.hmp rt.hemb _ rt.hzero rt.hredCore   -- clean-three.
+DESIGN CHOICES (resolved): (i) Y = a STRUCTURE PARAMETER with [instances] (NOT a field — Lean can't make a
+field an instance for later fields; the param-binder route works), bumping RouteStep to Type 1 (already is).
+(ii) Type-valued (carries G/redEmbed so the dispatcher/cover reads them). (iii) redZero PINNED to the
+layerwise-zero tuple `fun _ => 0 : Params S.red` (Params has NO canonical Zero — GeneralR1Recursion:647 — so
+the deepest point is the explicit fun, NOT `0 : Params`; this was the build error, fixed). The descent closes
+to the CHILD's deepest point, composing with the recursion. clean-three (rests on crux2's banked S1 transport,
+not even monomial_rlct). CANNOT commit RouteMRecursion.lean (routeStep sorry) — route-checked, durably here.
+
 ## TRANSCRIPTION-READY (g171, pp2 g188/g189 @a60bfda) — no open combinatorial question
 pp2 confirmed transcription-ready, three final pins all aligned with my banked value-side:
 1. CODIM = the witnessed (Mval M T).toNat form (= my PivotWitness). pp2 verified Mval ≥ 0 on Adm M
