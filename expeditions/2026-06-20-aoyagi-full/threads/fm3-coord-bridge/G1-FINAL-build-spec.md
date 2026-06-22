@@ -64,6 +64,21 @@ surface the (2,2,2) IsRouteMCover instance when green. EVERY signature now verif
 adapters, no shape gaps. The grind (routeStep + cover_le/cover_ge_div + Fmeas/Uopen/Umem + mult-bound/binding-leaf)
 is pure formalisation against the signed-off interface. === COORDINATION ARC EXHAUSTIVELY CLOSED (g155→g182). ===
 
+## CONSUME-SHAPE MINIMAL — already right, NOT over-enriched (g184, crux2 HOLD + verified)
+crux2 HOLD before enriching NodeChartFamily: read the bridge proof body of routeM_rlctAtOn_eq_iInf — it
+references ONLY the 5 fields (cover_le/cover_ge_div/Fmeas/Uopen/Umem) + Skeleton atoms; NEVER a chart φ_i /
+pullback eqn / Jacobian. The CoV (|x_p|^{−2c'}·|res|^{−c'}·|x_p|^{card−1} = monomialIntegrand) happens ENTIRELY
+INSIDE my cover_le proof — it's HOW I establish the integral inequality; the bridge runs on the inequality
+alone. So NodeChartFamily (the bridge-consumed output) needs ONLY (ι,d,k,h) + the 2 Props + Fmeas/Uopen/Umem.
+VERIFIED I'm already minimal: my NodeChartFamily = {ι, fintype, nonempty, data : ι → MonoData} = exactly
+(ι,d,k,h)+instances, ZERO chart/pullback/jac fields. The PivotWitness + ReducedTransport live on
+RouteStep.branch (my DISPATCHER input / proof machinery), NOT on NodeChartFamily — so the consumed record is
+minimal by construction; I did NOT over-enrich. (crux2's caveat: enriching NodeChartFamily IS legit if MY
+cover_le proof needs the composite chart accumulated — a producer-side convenience for MY proof, my call,
+NOT a consume-requirement. If I add a composite-chart field later it's for my cover_le, not the bridge.)
+NOT blocked on a richer consume-shape — there isn't one. consume-contract = 5 fields over (routeMIota,
+routeD, routeK, routeH), unchanged. (#26 authoritative on MY producer packaging; for crux2 still the 5-field ⟨⟩.)
+
 ## TWO COVER-PROOF REFINEMENTS — INTERNAL, zero interface impact (g183, crux2 confirm)
 crux2 confirms both are INSIDE my cover-fact proofs, NOT interface hyps (IsRouteMCover's cover_le/cover_ge_div
 are integral inequalities, agnostic to HOW proven):
