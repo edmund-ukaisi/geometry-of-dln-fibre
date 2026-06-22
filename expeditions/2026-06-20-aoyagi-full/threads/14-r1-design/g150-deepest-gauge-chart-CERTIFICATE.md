@@ -23,7 +23,9 @@ The **reduced widths** `M_s = H_s − r`; the **reduced core** is `‖∏ T_s‖
 - `(0,0) = (I_r+X_1)(I_r+X_2) + Y_1 Z_2 = I_r + (regular)` — regular;
 - `(0,1) = (I_r+X_1)Y_2 + Y_1 T_2` — regular;
 - `(1,0) = Z_1(I_r+X_2) + T_1 Z_2` — regular;
-- `(1,1) = Z_1 Y_2 + T_1 T_2` — the **reduced block** (`T_1 T_2` = the reduced chain + a cross `Z_1 Y_2`).
+- `(1,1) = Z_1 Y_2 + T_1 T_2` — the **reduced block**. NB on `{E=0}` (solving `B,U,Z`) this is
+  `T_1 (I−V Y)^{-1} T_2` (an internal gauge unit `(I−VY)^{-1}`), NOT raw `T_1 T_2` — see the CORRECTED
+  loss-form below; the reduced core is the gauge-normalized `T̃_1···T̃_L`.
 
 **The regular coordinates** are the **product regular-residual blocks**
 `E := (∏C − blockdiag[I_r,0])` restricted to the `(0,0),(0,1),(1,0)` positions; the **reduced
@@ -36,18 +38,30 @@ have **Jacobian rank `= 3`** over the gauge regular coords at `w0` (linear parts
 the two chain ENDPOINTS, the interior rank-r spine absorbed). Verified to match the interface for
 `(2,2,2)r1→3`, `(3,3,3)r2→8`, `(4,3,2)r2→10`, `(2,2,2)r2→4`, `(3,2,1)r1→4` (`g150_general_r.py`).
 
-## The loss-form germ (sub-lemma 4, `deepest_loss_in_gauge_coords`)
+## The loss-form germ (sub-lemma 4, `deepest_loss_in_gauge_coords`) — CORRECTED (Codex #150)
 Near `w0` (all regular coords `→ 0`):
 
-    dlnLoss H B ∘ chart  =ᶠ[𝓝 0]  (∑ᵢ E_i²)  +  dlnLoss M 0 (T-blocks),    dlnLoss M 0 = ‖∏ T_s‖².
+    dlnLoss H B ∘ chart  =ᶠ[𝓝 0]  (∑ᵢ E_i²)  +  ‖T̃_1 ··· T̃_L‖²,    ‖T̃_1···T̃_L‖² = dlnLoss M 0 (gauge-normalized).
 
-The split is **EXACT** (a germ equality via the c-o-v, NOT a squeeze): the reduced block
-`(1,1) = T_1 T_2 + Z_1 Y_2` carries the cross `Z_1 Y_2`, which is **regular×regular** (order 2 in regular
-coords) and is **absorbed into the regular block** `E` by the chart c-o-v — NOT into the reduced core.
-Verified (`g150_loss_form.py`): on `{reg = 0}`, `(1,1) = T_1 T_2` exactly; `(1,1) − T_1 T_2 = Z_1 Y_2 ∈
-ideal(regular)`. So the regular coords `E` (the full product residuals) capture the cross term, and the
-reduced core is the clean `‖∏ T_s‖² = dlnLoss M 0`. This is the #131 pattern (the residual is a smaller
-matrix-chain core), here the L2/D1 deepest-point version.
+The split is **EXACT** (a germ equality via the c-o-v, NOT a squeeze) — BUT the reduced core's blocks are
+the **GAUGE-NORMALIZED** `T̃_s`, NOT the raw `T_s`. **(Decorrelated Codex caught a real error in my first
+draft: the raw-`T` split is FALSE.)** Solving the chart coords `(E00,E01,E10,T,S,A,Y,V)` for `(B,U,Z)` on
+the product-regular zero locus `{E=0}` gives (verified exact, `g151_codex_check.py`):
+
+    P_{11} | {E=0}  =  T (I − V Y)^{-1} S   ≠   T S   (the cross `ZU` does NOT vanish — it becomes an
+                                                       invertible INTERNAL gauge factor `(I−VY)^{-1}`).
+
+So the literal "cross absorbed ⟹ reduced block `= T_1 T_2`" is **wrong** (my g150_loss_form over-restricted
+by zeroing the gauge coords X,Y,Z, masking `VY`). The CORRECT reduced core is `‖T̃_1···T̃_L‖²` where
+`T̃_s` = the raw `T_s` with the internal gauge units `(I − V_s Y_s)^{-1}` (a UNIT at `w0`, `=I` when
+`V=Y=0`) absorbed — equivalently the **product Schur complement** `R = P_{11} − E_{10}(I+E_{00})^{-1}E_{01}`
+factored as `R = T̃_1···T̃_L` after the det-unit Schur/Gaussian coordinate change. The endpoint-regular
+leak `E_{10}(I+E_{00})^{-1}E_{01}` is endpoint-regular×endpoint-regular, absorbed into `∑E²`. Then a
+parameterized analytic Morse/splitting lemma gives the exact germ `ℓ∘Φ = ∑E² + ‖T̃_1···T̃_L‖²`. This is
+the #131 pattern (residual = smaller matrix-chain core) — but the reduced chain is in the GAUGE-NORMALIZED
+blocks (internal units absorbed), `dlnLoss M 0` in those coords, NOT the literal raw `T_s`. (Verified
+`g151_gauge_normalized.py`: `g = (I−VY)^{-1}` is a unit at `w0`; the reduced core `T·g·S` is an honest
+2-factor reduced chain with the middle unit absorbed.)
 
 ## The det-unit / NON-MP Jacobian (the KEY — sub-lemma 5 input)
 The chart's Jacobian determinant is a **bounded UNIT** near `w0` (`jac_unit`: `∃ U ∈ 𝓝 0, ∃ a b, 0 < a ∧
@@ -58,8 +72,10 @@ unit block × the spectator identity, a unit `≠ 1`. So the RLCT transport is *
 (the germ equality) — **NOT `rlctAtOn_comp_homeomorph`** (which requires MP, `det = 1`). This is the
 exact distinction the dispatch flagged: the deepest-gauge chart is a genuine c-o-v with a nontrivial
 (but unit) Jacobian, transported by the unit-invariance + germ-locality lemmas, not the MP-homeomorph one.
-The `weightedThreshold_transport` use-site (S1.1) carries the `|det Dπ|` weight; the bounded-unit peel
-then strips it (the weight is a unit near `w0`).
+**Explicit (Codex #150):** the inverse-coordinate Jacobian determinant is `det(A)^{-(r+M_2)}·det(B)^{-M_0}`
+(up to sign), where `A = (∏C)`'s leading `r×r` block ≈ `I_r` near `w0` — so it is bounded away from `0`
+and `∞`, plainly NOT identically `1`. The `weightedThreshold_transport` use-site (S1.1) carries the
+`|det Dπ|` weight; the bounded-unit peel then strips it (the weight is a unit near `w0`).
 
 ## `chart_zero` (the basepoint pin)
 `chart 0` is the gauge origin (all deviation blocks `= 0`), which by `block_elimination`'s `P_s,Q_s`
@@ -104,8 +120,9 @@ complement, det a unit. The one Lean-side check: the per-layer gauge units `P_s,
 `block_elimination`, `IsUnit`) compose into a det-unit chart Jacobian — `block_elimination` gives `IsUnit
 P_s`/`IsUnit Q_s` (det `≠ 0`), and the product of units is a unit; the regular-residual c-o-v on top is
 the rank-`nReg` unit block. So `jac_unit` holds, but the explicit `a, b` bounds need the compactness of a
-small nbhd of `w0` (standard). [Decorrelated Codex check on the loss-form exactness + the Jacobian-unit +
-the nReg fold is fired; folded when it lands.]
+small nbhd of `w0` (standard). [Decorrelated Codex check FOLDED (#150): it CAUGHT the raw-`T` split error (`P_{11}|{E=0} = T(I−VY)^{-1}S
+≠ TS`); the corrected reduced core is the gauge-normalized `T̃` / product Schur complement (above). The
+exact germ + det-unit + nReg all survive the correction. Decorrelated + pp-hall exact — converged.]
 
 ## Provenance
 The #44 normal-form (`g147-normalform-skeleton-answer.md`, sub-lemmas 3+4), the #131/g131 pattern
@@ -114,4 +131,7 @@ The #44 normal-form (`g147-normalform-skeleton-answer.md`, sub-lemmas 3+4), the 
 slice + block product), `g150_loss_form.py` (the loss-form germ + cross-term ∈ ideal(reg)), `g150_jac_fix.py`
 (the det-unit Jacobian rank `= nReg`), `g150_general_r.py` (general-r + the `nReg` formula + the `r=0`
 base) — all in `g129-scripts/`. NON-MP transport (`rlctAtOn_unit_invariant_aux` + germ-locality), the key
-distinction from the MP/blow-up work.
+distinction from the MP/blow-up work. **Codex #150 correction folded:** the raw-`T` loss split is FALSE
+(`P_{11}|{E=0} = T(I−VY)^{-1}S ≠ TS`); the reduced core is the gauge-normalized `T̃` / product Schur
+complement (`g151_codex_check.py`, `g151_gauge_normalized.py`). Decorrelated Codex (gpt-5.5 xhigh) +
+pp-hall exact-algebra — converged after the correction.
