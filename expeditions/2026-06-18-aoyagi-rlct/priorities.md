@@ -132,6 +132,21 @@ construct the next chart-family boundary, source-produce successor chart data,
 produce suffixes, prove coverage/transition regularity, or move the
 source-production boundary.
 
+The next-chart-family existential in that constructor has now been audited as
+formally syntactic in the current API.  Lean proves
+`SelectedEntryChartFamilyBoundary.exists_trivial`,
+`Case2ResidualBlockChartFamilyBoundary.exists_trivial`,
+`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`,
+and
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`
+by choosing `True` for chart and transition regularity predicates.  This
+removes the formal supplied existential from the canonical formula-level
+constructor, but it also shows that the field does not encode real chart
+production.  A source scout confirmed Aoyagi pp. 21-22 only says the induction
+continues; it does not construct next charts, coverage, transitions,
+successor source data, or suffixes.  The genuine A4 frontier is therefore
+still source/chart production, not this existential boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

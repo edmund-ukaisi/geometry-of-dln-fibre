@@ -2000,6 +2000,25 @@ structure SelectedEntryChartFamilyBoundary
   transition_regular_of_mem :
     ∀ {p}, p ∈ center → ∀ {q}, q ∈ center → TransitionRegular p q
 
+namespace SelectedEntryChartFamilyBoundary
+
+/-- A selected-entry chart-family boundary has a canonical formal witness with
+trivial regularity predicates.
+
+This is only a witness for the abstract boundary type.  It does not construct
+an affine blow-up atlas or prove analytic/chart regularity. -/
+theorem exists_trivial {ι : Type*} (center : Finset ι) :
+    ∃ ChartRegular TransitionRegular,
+      SelectedEntryChartFamilyBoundary center ChartRegular TransitionRegular := by
+  refine ⟨fun _ ↦ True, fun _ _ ↦ True, ?_⟩
+  constructor
+  · intro p hp
+    trivial
+  · intro p hp q hq
+    trivial
+
+end SelectedEntryChartFamilyBoundary
+
 /-- Case 1 instance of the selected-entry chart-family assumption boundary.
 The `Unit` branch is the externally selected old exceptional generator, and
 the right branch is the finite row strip.  This names regularity obligations
@@ -2098,6 +2117,33 @@ theorem case2ResidualBlockPivotEntries_nonempty_of_cont
     case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont⟩
 
 namespace Case2ResidualBlockChartFamilyBoundary
+
+/-- A Case 2 residual-block chart-family boundary has a canonical formal
+witness with trivial regularity predicates.
+
+This records that the current existential boundary is syntactic.  It is not a
+source-backed chart-production theorem. -/
+theorem exists_trivial (n : ℕ → ℕ) (S J : ℕ) :
+    ∃ ChartRegular TransitionRegular,
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular := by
+  exact
+    SelectedEntryChartFamilyBoundary.exists_trivial
+      (case2ResidualBlockPivotEntries n S J)
+
+/-- The exact continuing-successor chart-family boundary can be filled by
+`True` predicates.
+
+The hypothesis is retained to match the continuing branch interface.  It is
+not used because this is only a syntactic witness for the current boundary
+type, not a source-backed chart-production theorem. -/
+theorem continuingSuccessorBoundary_exists_truePredicates
+    (n : ℕ → ℕ) (S J : ℕ) :
+    ∀ (_hnext : J + 2 ≤ prefixMinNat n (S + 1)),
+      ∃ ChartRegularNext TransitionRegularNext,
+        Case2ResidualBlockChartFamilyBoundary n S (J + 1)
+          ChartRegularNext TransitionRegularNext := by
+  intro _hnext
+  exact exists_trivial n S (J + 1)
 
 /-- A Case 2 residual-block chart-family boundary supplies chart regularity for
 every supplied source pivot pair in the finite residual-block center. -/
@@ -18026,6 +18072,45 @@ theorem of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
     exact frontier.rowExhaustedSourceSuffix κ hSuffix C Ctail hrow
   · intro _hrow
     rfl
+
+/-- Canonical formula-level inhabitant of the source-production obligation,
+using the `True`-predicate witness for the continuing next boundary field.
+
+This theorem exposes that the present existential chart-family field is only a
+syntactic boundary: choosing `True` predicates proves it.  It still does not
+construct an affine blow-up atlas, source-produce successor data or suffixes,
+prove coverage/transition regularity in a geometric sense, or prove normal
+crossings, pole order, or RLCT data. -/
+theorem of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    (residual : ℕ × ℕ → R)
+    (κ : Fin (L + 1) → Type uκ) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    SourceProductionObligation data residual κ hSuffix C Ctail
+      (case2DisplayedSourceSuccessorFollowingFactor
+        n data.stage_pos data.continuation residual C)
+      (case2DisplayedSourceTerminalTransportedRows
+        n data.stage_pos data.continuation residual C) := by
+  exact
+    of_formulaSuccessor_transportTerminalRows_suppliedNextChartFamily
+      residual κ hSuffix C Ctail
+      (Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates
+        n S J)
 
 /-- The supplied successor following factor has the same next same-stage tail
 as the old following factor.

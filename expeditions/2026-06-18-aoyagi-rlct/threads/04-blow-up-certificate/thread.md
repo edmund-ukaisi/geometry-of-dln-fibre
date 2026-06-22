@@ -4129,3 +4129,37 @@ coordinates, produce the suffix, prove coverage or transition regularity,
 derive corrected post-data from coordinates, add Jacobian arithmetic, prove
 normal crossings, pole order, termination, RLCT, or repair the printed Case 2
 vector mismatch.
+
+## 2026-06-22 Lean Case 2 true-predicate next boundary
+
+Reproduction:
+`reproduction-case2-trivial-next-chart-family-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-trivial-next-chart-family-boundary.md`.
+Review artifact:
+`review-case2-true-predicate-next-boundary-a4.md`.
+
+Lean now proves:
+
+```text
+SelectedEntryChartFamilyBoundary.exists_trivial
+Case2ResidualBlockChartFamilyBoundary.exists_trivial
+Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates
+SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary
+```
+
+The first two theorems choose `True` predicates for chart and transition
+regularity, showing that the current existential chart-family boundary is
+formally syntactic.  The continuing-successor helper has the exact shape of
+the previous supplied field.  The last theorem uses this witness to build the canonical
+formula-level `SourceProductionObligation` without a separate supplied
+next-boundary argument.
+
+Xhigh source scout `Sartre the 2nd` checked Aoyagi pp. 19-22 and confirmed
+that the paper does not construct next chart-family data; it only states that
+the induction continues after the displayed `Q/P` computation.  Therefore this
+Lean theorem is an API precision correction, not chart/source production.  It
+does not construct an affine atlas, prove coverage or meaningful transition
+regularity, source-produce `Csucc`/`C'^(S+1)`, produce suffixes, derive
+corrected post-data, prove normal crossings, pole order, termination, RLCT, or
+repair the printed Case 2 vector mismatch.

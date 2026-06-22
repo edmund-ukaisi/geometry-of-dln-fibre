@@ -1713,6 +1713,17 @@ No such claim is formalisation-ready until both fields are filled.
   keeping the continuing next chart-family boundary explicit as supplied
   input.  It is still not source production of successor chart data, suffixes,
   coverage, transition regularity, or a full transition theorem.
+  The follow-up API-hardening slice proves
+  `SelectedEntryChartFamilyBoundary.exists_trivial`,
+  `Case2ResidualBlockChartFamilyBoundary.exists_trivial`,
+  `Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`,
+  and
+  `SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`.
+  This discharges the canonical constructor's next-chart-family existential
+  only because the current boundary accepts arbitrary predicates, so `True`
+  predicates are enough.  A source check of Aoyagi pp. 19-22 confirms that the
+  paper does not construct this next chart family; the theorem is not
+  source-backed chart production.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

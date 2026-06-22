@@ -5288,6 +5288,27 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-canonical-formula-a4.md`.
 
+Latest A4 API-hardening update: the continuing next chart-family existential
+inside the canonical formula-level obligation is formally discharged by
+trivial predicates.  Lean now proves
+`SelectedEntryChartFamilyBoundary.exists_trivial`,
+`Case2ResidualBlockChartFamilyBoundary.exists_trivial`,
+`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`,
+and
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`.
+This is a useful precision correction, not progress on source production:
+the current `SelectedEntryChartFamilyBoundary` API only asks for implications
+into arbitrary predicates, so choosing `True` satisfies it.  Xhigh source scout
+`Sartre the 2nd` checked Aoyagi pp. 19-22 and found no source construction of
+the next chart family, transition regularity, coverage, full successor
+`C'^(S+1)`, or suffix production; the paper only says the induction continues.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-trivial-next-chart-family-boundary-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-trivial-next-chart-family-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-true-predicate-next-boundary-a4.md`.
+
 Latest A5 finite-obstruction update: `Lemma5TerminalBridge.lean` now contains
 `terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`
 and

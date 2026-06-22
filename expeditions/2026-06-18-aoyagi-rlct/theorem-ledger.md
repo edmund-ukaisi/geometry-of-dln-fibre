@@ -5292,6 +5292,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-canonical-formula-a4.md`.
 
+Latest A4 Case 2 true-predicate next boundary:
+`BlowupArithmetic.lean` now contains
+`SelectedEntryChartFamilyBoundary.exists_trivial`,
+`Case2ResidualBlockChartFamilyBoundary.exists_trivial`,
+`Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary`.
+The first two choose `True` predicates for chart and transition regularity.
+The continuing-successor helper has the exact shape of the previous supplied
+field.  The last theorem uses that formal witness to construct the canonical
+formula-level `SourceProductionObligation` without a supplied next-chart-family
+argument.  This is a precision theorem about the weakness of the current API,
+not a source-backed chart-production theorem.  Source audit of Aoyagi pp. 19-22
+found only the assertion that the induction continues after the `Q/P` algebra,
+not construction of the next chart family, transition regularity, coverage,
+successor `C'^(S+1)`, or suffix production.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-trivial-next-chart-family-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-trivial-next-chart-family-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-true-predicate-next-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
