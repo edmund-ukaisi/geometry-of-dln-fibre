@@ -838,4 +838,10 @@ theorem codimForm_rebuild (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N 
             extendℤ (rebuild m' x) (i - 1) (N : ℤ) * extendℤ (rebuild m' x) u ((N : ℤ) + 1) := by
   rw [codimForm_split_explicit, peelPart_rebuild m' x hxbound]
 
+/-- `Pmult` peels its last factor: `Pmult d = Pmult (d ∘ castSucc) · P (d_last)` (the outer
+induction's multiplicative step). -/
+theorem Pmult_succ {N : ℕ} (d : Fin (N + 2) → ℕ) :
+    Pmult d = Pmult (d ∘ Fin.castSucc) * P (d (Fin.last (N + 1))) := by
+  rw [Pmult, Pmult, Fin.prod_univ_castSucc]; rfl
+
 end DLNFibre.Core
