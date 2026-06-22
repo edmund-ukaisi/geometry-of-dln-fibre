@@ -452,6 +452,20 @@ Sent pp2 the full firmed target shape (RouteStep/ChainDimSplit/MonoData types + 
 paths + firm-vs-moving). pp2's g183 cert already designs against it; the codim field tightens to the
 §2-witnessed form, the transport-field flagged crux2-pending.
 
+## PivotWitness BANKED (g167, @040a997) — the §2 certified-codim structure (pp2 co-design target)
+The §2 codim-witness, formalized as the concrete dependent structure pp2 verifies against (RouteMState.lean):
+  structure PivotWitness (M : Fin (L+1) → ℕ) (c : ℕ) where
+    T : Fin L → ℕ ; hAdm : T ∈ Adm M ; hCodim : c = (Mval M T).toNat
+Data-carrying (Type, = pp2's {T // …} subtype) so the dispatcher constructs it + downstream reads T. The
+certified-RouteStep codim field = (c, PivotWitness M c), NOT a bare ℕ — the (4,3,2) green-≠-right trap
+closed by construction. Discharges:
+- PivotWitness.minAdm_le : PivotWitness M c ⟹ minAdm ≤ c (clean-three).
+- foldFamily_threshold_ge_of_pivotWitness : ∀ leaf codim PivotWitness-certified ⟹ ∀ leaf ≥ ½·minAdm (the
+  §2 C≥, fully certified — what pp2 verifies the per-node obligation against).
+VALUE-SIDE NOW COMPLETE: C≥ (PivotWitness → foldFamily_threshold_ge_of_pivotWitness) + C=∃ (foldFamily_achiever
+← pp2 g147/g148 achiever + §4 reachability) = all the IsResolutionAtlas facts, dischargeable from pp2's
+cert, fork-independent. The ONLY remaining field = the per-cell TRANSPORT (crux2 additive-vs-min, in flight).
+
 ### DURABLE: the route-checked recursion skeleton (RouteMRecursion.lean, UNCOMMITTED — preserve vs wipe)
 The fix-body skeleton (route-checked green, 1 sorry = routeStep). Recorded here for durability (the
 worktree-wipe lesson). On top of the committed foundation (chainWidthSum/redM_widthSum_lt/chainRel/
