@@ -2876,11 +2876,27 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.selectedWidthAverage_eq_ceil`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average_eq_fromCeilData`, and
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average_eq_expanded_ofCeilData`
-  in `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`.
+  in `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`; current Definition 3
+  bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.one_le_ell`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.one_le_aParam`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.terminalEndpoint_eq_zero`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeLowerChain_last_eq_zero`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeUpperChain_last_eq_zero`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeUpperNat_pred_eq_sub_lastWidth`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.Hlast_eq_zero_of_htildeChainBounds`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.selectedWidth_le_pred_of_sourceSelectedInequality`,
+  and
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq5_labelBounds_of_sourceSelectedInequality`
+  in `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`.
 - **Proved.** formula-only arithmetic: integer reduced-width notation,
   Definition 3 selected-sum average rewrite, equality of the average and
   ceiling displayed lambda formulas under supplied ceiling data, and equality
-  of the ceiling and expanded displayed lambda formulas when `0 < ell`.
+  of the ceiling and expanded displayed lambda formulas when `0 < ell`.  Also
+  proved Definition 3 positivity wrappers, selected-sum wrappers for Lemma 4
+  terminal endpoint zero, lower/upper Htilde terminal zero, a
+  chain-bounds-to-terminal-zero wrapper, and source-selected-inequality
+  wrappers for selected-width and label bounds.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** full Definition 3 selection inequalities, existence of the

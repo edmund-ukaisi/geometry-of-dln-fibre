@@ -1547,8 +1547,11 @@ Immediate order:
    `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`: Definition 3 ceiling data,
    integer reduced widths, indexed selected widths, Theorem 2 order formula,
    and the three displayed lambda formulas plus rational rewrites.  Keep this
-   layer formula-only.  The next A6 work should connect it to already-proved
-   Lemma 4/Lemma 5 arithmetic only after those source boundaries are stable;
+   layer formula-only.  A thin `Definition3Bridge.lean` wrapper now connects
+   the supplied ceiling datum to existing Lemma 4/Htilde endpoint-zero and
+   label-bound APIs, keeping the strict source-selected inequality explicit.
+   The next A6 work should connect it to already-proved Lemma 4/Lemma 5
+   arithmetic only after those source boundaries are stable;
    it must not call the formula an RLCT theorem before the normal-crossing
    certificate and cited extraction interface are in place.
 8. Review/hardener cadence. Gate every broad theorem name, every universal

@@ -47,3 +47,24 @@ Boundary: this is formula bookkeeping only.  It does not prove the full
 Definition 3 selection inequalities, existence of the ceiling datum, Lemma 4
 or Lemma 5 exponent minimisation, normal crossings, pole order, or RLCT
 extraction.
+
+## Current slice - 2026-06-22, Definition 3 bridge
+
+The next A6 Lean layer is
+`lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`, imported by
+`lean/DLNFibre.lean`.
+
+It consumes a supplied `AoyagiDefinition3CeilData` in the existing Lemma 4 and
+Htilde arithmetic API:
+
+- terminal endpoint zero;
+- lower/upper Htilde terminal zero;
+- penultimate upper-chain endpoint rewrite;
+- selected-width and equation `(4)`/`(5)` label-bound wrappers only when the
+  strict source-selected inequality is supplied separately.
+
+Artifacts:
+
+- `reproduction-definition3-lemma4-bridge-a6.md`;
+- `statement-card-a6-definition3-bridge.md`;
+- `review-definition3-bridge-a6.md`.

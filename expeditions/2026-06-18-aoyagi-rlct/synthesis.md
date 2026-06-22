@@ -325,6 +325,27 @@ uniqueness of the selected cutpoints or ceiling datum, no Lemma 4/Lemma 5
 exponent-to-formula bridge, no normal crossings, no pole-order interpretation,
 and no RLCT extraction.
 
+The Definition 3 bridge slice now also lands in
+`lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`.  It consumes
+`AoyagiDefinition3CeilData` in the existing Lemma 4/Htilde API, proving
+`one_le_ell`, `one_le_aParam`, `terminalEndpoint_eq_zero`, lower/upper chain
+terminal zeros, Nat-indexed terminal zeros,
+`htildeUpperNat_pred_eq_sub_lastWidth`, and
+`Hlast_eq_zero_of_htildeChainBounds`.  It also provides
+source-selected-inequality wrappers for selected-width upper bounds and
+equation `(4)`/`(5)` label bounds, but the strict selected inequality remains
+an explicit hypothesis rather than a field of the ceiling datum.
+
+Artifacts:
+`threads/06-dln-translation/reproduction-definition3-lemma4-bridge-a6.md`,
+`threads/06-dln-translation/statement-card-a6-definition3-bridge.md`, and
+`threads/06-dln-translation/review-definition3-bridge-a6.md`.
+
+Nonclaims for the bridge: no full Definition 3 selection package, no
+displayed-vector construction, no Lemma 4 two-value increment proof, no Lemma
+5 chart-family coverage, no terminal-minimum classifier, no pole order, no
+normal crossings, and no RLCT extraction.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:
