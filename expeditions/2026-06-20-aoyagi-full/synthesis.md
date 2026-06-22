@@ -35,6 +35,46 @@
   3 correctness obligations: cover + ⨅-min achieves aoyagiLambda CONSISTENT-with-fm3's-foldDivisors-achiever +
   codim accumulates to C), fm3 transcribes + firms the interface meanwhile. Decorrelated Codex (the green-≠-right
   risk). It's the formal version of pp2's own #26 Route-M blueprint.
+- **VACUITY TRAP (fm3 + Codex) → CERTIFIED RouteStep.** The bare RouteStep type is too weak: an arbitrary split
+  type-checks but is disconnected from dlnLoss M 0, so rlctAtOn = ⨅ monomialThreshold is UNPROVABLE — a vacuous
+  fill is strictly worse than the sorry. Fix: routeStep produces a CERTIFIED RouteStep (per cell: a transport
+  datum proving the split factorises the loss + cover fact + node-loss-id). Three-way co-design: pp2 (recipe) +
+  crux2 (transport-datum interface) + fm3 (certified type + generic fold guardrail certified-steps ⟹ rlctAtOn=⨅).
+- **pp2 #68 CERT LANDED (origin/g183-routestep-dispatcher @1ac5de4).** Confirms fm3's g164 (per-node op = MONOMIAL
+  MIN-FOLD, codims = Mval). Refinements: §1.1 LEAF = IsUnit residualCore; §2 the C1-condition codim = Mval M T for
+  admissible T (NOT raw cardinality — the (4,3,2) trap); §4 C=∃ reachability; §6 the ValidRouteStep field list.
+  fm3 machine-checked the §2 value-side discharge (@dd6bdb5: minAdm_le_Mval_toNat + foldFamily_threshold_ge_of_admWitness,
+  green clean-three). VALUE-SIDE COMPLETE + fork-independent (achiever + threshold_ge + the consistency-by-
+  CONSTRUCTION contract: design codims so (a) no path undershoots m₀, (b) min-Mval path binding codim = m₀ ⟹
+  IsResolutionAtlas ⟹ ⨅ = lambdaCore, NO separate consistency proof — fm3's foldFamily lemmas).
+- **MONOMIAL-MIN-FOLD vs ADDITIVE (current lean, PENDING crux2's confirm).** fm3 g164 + pp2 §3(1) + (2,2,2)
+  numerics (min(2,3/2)=3/2=lambdaCore) ⟹ R1's per-cell consequence is the MONOMIAL PULLBACK (x_p²·reduced, G2
+  node_loss_pivot_factor) folded by MIN, with rlctAtOn_reduced_transport (det=1) between steps — NOT the additive
+  schur_recursion_step_sound (= L2's nReg/2 split OR the g134-retracted squeeze lane). So the per-cell datum is
+  LIGHTER than the heavy IsSchurStraightenSqueeze (pp2's cert §0 listed both; §3(1) is the live one). DISENTANGLE:
+  L2 peels nReg/2 additively ONCE; R1 resolves the core by monomial min-fold. **R1's entire long-pole has
+  COLLAPSED to ONE gate: crux2's transport-field confirm** (heavy vs lighter) → fm3 pins ValidRouteStep + builds
+  the fold + transcribes. I lean lighter; crux2 has ground-truth, adjudication in flight.
+- **hGne CARVE-OUT — DECISION (A) all-s, consistent across rungs.** crux2's refined find: the headline is TRUE at
+  the degenerate cases (lambdaCore = 0 for any M_s=0, endpoint OR interior); only the PROOF route
+  (rlct_additive_smooth_block needs G≢0) breaks. (A) widen-to-all-s (∀ s, r<H_s) vs (B) interior-only + degenerate
+  branch [keeps r=min]. DECIDED (A): the headline scope = INTERSECTION of rung scopes, and R1 is ALREADY all-s
+  (fm3 @0cedc7e) ⟹ R1 CAPS the headline at all-s regardless of L2, so (B)'s extra generality (r=min) is WASTED at
+  the headline unless R1 also handles the degenerate node (loads the R1 long-pole for a boundary value whose flat-
+  core rlctAtOn(const 0)=0 convention is only "plausibly correct", unverified). r = min_s H_s is a NAMED honest
+  carve-out (refines paper's r≤min(d⃗); flagged "formula plausibly extends but proof route degenerates + convention
+  unverified — deferred"). (B)/r=min is a tracked generality extension needing R1+L2 BOTH — defer as one unit.
+- **hMid⟹hGne BRIDGE — MUST BE BUILT (hero=all-proven), split + (b) DISPATCHED.** (a) prod_M ≢ 0 as a polynomial
+  when all M_s≥1 — DLN-specific, crux2's. (b) the GENERAL lemma "nonzero MvPolynomial over ℝ ⟹ zero set Lebesgue-
+  null (≈ ae-ne-zero)" — decoupled, the heavy ~150-250 LoC piece, DISPATCHED to a fresh lean-formaliser (worktree-
+  isolated, background): searches Mathlib first, else builds Fubini-to-1D + 1D IsolatedZeros by #vars induction.
+  crux2 threads (A)'s L2 skeleton with hGne as a named obligation + does (a) + pins the (b)-interface (the scalar-
+  entry form). NOT roadmapped-as-unproven — provable, not a 2nd citation.
+- **HEADLINE FIDELITY AUDIT (background reviewer).** Decorrelated audit of the most load-bearing STABLE claim:
+  aoyagi_learning_coefficient — non-circularity of aoyagiLambda (= paper's C/2, not the rlct tautologically),
+  the ⨅-keying over optimalSet, loss fidelity, the hMid carve-out honesty, axiom hygiene (only monomial_rlct).
+- **#28 CONSOLIDATION note:** canonical atlas = crux2's route-m-atlas threshold_ge/achiever form; fm3's
+  ResolutionAtlas.lean is the STALE stratum/threshold_eq form (fm3's bridge correctly targets the canonical).
 
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
