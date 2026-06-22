@@ -769,6 +769,198 @@ theorem ofEq5AlphaIndexedEndpointCoverage_branchCoord_eq
     ell a strictBranches upper lower branchCoord
     (hstrictCoord hj) (hupperCoord hj) (hlowerCoord hj) hbraw
 
+/-- One-coordinate cardinality of the filtered supplied Eq5 endpoint family
+constructed from strict alpha branches and endpoint records.
+
+The raw endpoint family has full interval cardinality; the supplied nonbase
+constructor filters out the supplied base value, so the filtered coordinate
+family has interval size minus one.  This is finite supplied-family
+bookkeeping only. -/
+theorem ofEq5AlphaIndexedEndpointCoverage_branch_card_eq_intervalSize_sub_one
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (value_injective :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        Set.InjOn value
+          ↑(aoyagiLemma5Eq5EndpointRawBranches
+            ell a strictBranches upper lower j))
+    (branches_pairwiseDisjoint :
+      ∀ {i j : ℕ}, (hi : i ∈ Finset.Icc 1 (ell - 1)) →
+        (hj : j ∈ Finset.Icc 1 (ell - 1)) → i ≠ j →
+          Disjoint
+            (aoyagiLemma5Eq5EndpointRawBranches
+              ell a strictBranches upper lower i)
+            (aoyagiLemma5Eq5EndpointRawBranches
+              ell a strictBranches upper lower j))
+    {j : ℕ} (hj : j ∈ Finset.Icc 1 (ell - 1)) :
+    ((AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage
+        (ell := ell) (a := a) (M := M) (m := m)
+        strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+        halpha_image hvalue hupper hlower value_injective
+        branches_pairwiseDisjoint).branches j).card =
+      aoyagiLemma5IntervalSize ell a j - 1 := by
+  have hj_lt : j < ell + 1 := by
+    have hj_le : j ≤ ell - 1 := (Finset.mem_Icc.mp hj).2
+    omega
+  calc
+    ((AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage
+        (ell := ell) (a := a) (M := M) (m := m)
+        strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+        halpha_image hvalue hupper hlower value_injective
+        branches_pairwiseDisjoint).branches j).card =
+        (aoyagiHtildeIntervalValueSetNat ell a M m j).card - 1 :=
+      aoyagiLemma5SuppliedNonbaseFamily_branch_card_eq_interval_card_sub_one
+        (AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage
+          (ell := ell) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+          halpha_image hvalue hupper hlower value_injective
+          branches_pairwiseDisjoint) hj
+    _ = aoyagiLemma5IntervalSize ell a j - 1 := by
+      rw [aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m j hj_lt]
+
+/-- Full tagged-branch cardinality for the filtered supplied Eq5 endpoint
+family constructed from strict alpha branches and endpoint records.
+
+This counts the supplied base branch together with all filtered nonbase
+endpoint branches.  It does not count terminal-minimum labels or prove
+source-backed no-extra coverage. -/
+theorem ofEq5AlphaIndexedEndpointCoverage_fullBranches_card
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (value_injective :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        Set.InjOn value
+          ↑(aoyagiLemma5Eq5EndpointRawBranches
+            ell a strictBranches upper lower j))
+    (branches_pairwiseDisjoint :
+      ∀ {i j : ℕ}, (hi : i ∈ Finset.Icc 1 (ell - 1)) →
+        (hj : j ∈ Finset.Icc 1 (ell - 1)) → i ≠ j →
+          Disjoint
+            (aoyagiLemma5Eq5EndpointRawBranches
+              ell a strictBranches upper lower i)
+            (aoyagiLemma5Eq5EndpointRawBranches
+              ell a strictBranches upper lower j))
+    (hell : 1 ≤ ell) :
+    (AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage
+        (ell := ell) (a := a) (M := M) (m := m)
+        strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+        halpha_image hvalue hupper hlower value_injective
+        branches_pairwiseDisjoint).fullBranches.card =
+      a * (ell - a) + 1 := by
+  exact AoyagiLemma5SuppliedNonbaseFamily.fullBranches_card ell a M m
+    (AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage
+      (ell := ell) (a := a) (M := M) (m := m)
+      strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+      halpha_image hvalue hupper hlower value_injective
+      branches_pairwiseDisjoint) hell ha
+
+/-- Full tagged-branch cardinality for the strictest Eq5 endpoint supplied
+family, where raw value injectivity is derived from strict alpha injectivity
+and raw disjointness is derived from supplied component coordinates. -/
+theorem
+    ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_fullBranches_card
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        branchCoord (lower j) = j)
+    (hell : 1 ≤ ell) :
+    (ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+        (ell := ell) (a := a) (M := M) (m := m)
+        strictBranches alphaOf value upper lower baseValue ha
+        baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+        branchCoord hstrictCoord hupperCoord hlowerCoord).fullBranches.card =
+      a * (ell - a) + 1 := by
+  exact ofEq5AlphaIndexedEndpointCoverage_fullBranches_card
+    (ell := ell) (a := a) (M := M) (m := m)
+    strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+    halpha_image hvalue hupper hlower
+    (by
+      intro j hj
+      exact
+        aoyagiLemma5Eq5EndpointRawBranches_value_injective_of_alpha_injective
+          (ell := ell) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower ha hj
+          (halpha_image hj) (hvalue hj) (hupper hj) (hlower hj)
+          (halpha_inj hj))
+    (by
+      intro i j hi hj hij
+      exact
+        aoyagiLemma5Eq5EndpointRawBranches_pairwiseDisjoint_of_branchCoord_eq
+          ell a strictBranches upper lower branchCoord
+          hstrictCoord hupperCoord hlowerCoord hi hj hij)
+    hell
+
 end AoyagiLemma5SuppliedNonbaseFamily
 
 end Aoyagi

@@ -4839,6 +4839,25 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
 
+Latest A5 Eq5 endpoint filtered-cardinality update:
+`Lemma5Eq5SuppliedCoverage.lean` now also contains
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_branch_card_eq_intervalSize_sub_one`,
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_fullBranches_card`,
+and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_fullBranches_card`.
+These specialize the generic supplied-family cardinality theorems to the Eq5
+endpoint constructors.  The one-coordinate theorem counts the filtered
+coordinate branch set after erasing the supplied base value; the full-branch
+wrappers count the tagged supplied branch family, including the supplied base
+branch.  This is not raw branch cardinality, terminal-minimum label
+cardinality, source branch construction, source-label legality,
+source-backed no-extra coverage, normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-filtered-cardinality-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-filtered-cardinality.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-filtered-cardinality-a5.md`.
+
 Latest A5 Eq5 value-label branch-injection update:
 `Lemma5Eq5TerminalClassifier.lean` now also contains
 `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_nonbase_valueLabel`,

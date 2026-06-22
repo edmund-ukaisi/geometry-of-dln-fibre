@@ -5146,6 +5146,38 @@ branches, classify terminal-minimum labels, prove no-extra coverage, prove a
 Lemma 5 order count, prove pole order, prove normal crossings, or extract
 RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint filtered cardinality
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-filtered-cardinality-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-filtered-cardinality.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-filtered-cardinality-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_branch_card_eq_intervalSize_sub_one
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_fullBranches_card
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_fullBranches_card
+```
+
+The first theorem specializes the generic supplied nonbase-family
+one-coordinate count to the filtered Eq5 endpoint constructor: the raw endpoint
+family covers the full same-coordinate interval, then the constructor erases
+the supplied base value.  The next two specialize the generic full tagged
+branch count to the general endpoint constructor and to the strictest
+alpha-injective/component-coordinate endpoint constructor.
+
+This is finite supplied-family bookkeeping only.  It counts filtered supplied
+branches and the tagged supplied full branch set, not terminal-minimum labels.
+It does not construct Eq5 branches or endpoint records, prove source-label
+legality, prove base-filter survival for source records, classify
+terminal-minimum labels, prove source-backed no-extra coverage, prove a
+Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.
+
 ## 2026-06-22 Lean Lemma 5 Eq5 value-label branch injection
 
 Reproduction:

@@ -1844,6 +1844,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-cardinality-a5.md`;
   Eq5 endpoint counted-datum classifier at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`;
+  Eq5 endpoint filtered cardinality at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-filtered-cardinality-a5.md`;
   Eq5 value-label branch injection at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`;
   Eq5 branch-coordinate/value cardinal squeeze at
@@ -1922,6 +1924,8 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 endpoint counted-datum classifier reviewed by xhigh `Hypatia` and
   `Dirac`, with documentation repairs recorded at
   `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`;
+  Eq5 endpoint filtered cardinality reviewed by xhigh `Harvey` at
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-filtered-cardinality-a5.md`;
   Eq5 value-label branch injection reviewed by xhigh `Hume` at
   `threads/05-arithmetic-tail/review-lemma5-eq5-value-label-branch-injection-a5.md`;
   Eq5 branch-coordinate/value cardinal squeeze reviewed by xhigh `Godel` at
@@ -1971,8 +1975,8 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`;
   Eq5 supplied endpoint raw coverage in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5SuppliedCoverage.lean`, including the
-  endpoint branch-coordinate, disjointness, raw value-injectivity, and
-  counted-datum classifier adapters; Eq5 terminal value-label branch
+  endpoint branch-coordinate, disjointness, raw value-injectivity, filtered
+  cardinality, and counted-datum classifier adapters; Eq5 terminal value-label branch
   injectivity, branch-coordinate/value adapters, and terminal cardinal-squeeze wrappers in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalClassifier.lean`; broader A5
   targets TBD.
@@ -2744,6 +2748,17 @@ No such claim is formalisation-ready until both fields are filled.
   These package the strictest endpoint supplied family into the generic
   counted-datum classifier API for its supplied `fullBranches`.  They do not
   classify source terminal-minimum labels or prove no-extra coverage.
+  Also proved
+  `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_branch_card_eq_intervalSize_sub_one`,
+  `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_fullBranches_card`,
+  and
+  `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_fullBranches_card`.
+  These specialize the generic supplied-family counts to the filtered Eq5
+  endpoint constructors, counting filtered supplied branches and tagged
+  supplied full branches only.  They do not count terminal-minimum labels,
+  prove source branch construction or source-label legality, prove base-filter
+  survival for source records, prove source-backed no-extra coverage, or prove
+  a Lemma 5 order count.
   Also proved
   `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze`
   and

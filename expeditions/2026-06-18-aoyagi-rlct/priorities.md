@@ -212,6 +212,8 @@ Current Eq5 endpoint raw cardinality slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
 Current Eq5 endpoint counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
+Current Eq5 endpoint filtered cardinality slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-filtered-cardinality-a5.md`.
 Current Eq5 value-label branch-injection slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`.
 Current Eq5 branch-coordinate/value cardinal-squeeze slice:
@@ -330,6 +332,19 @@ This classifier is only for the constructed supplied `fullBranches`; it is not
 a source terminal-minimum classifier and does not prove source-label legality,
 base-filter survival, no-extra coverage, pole order, normal crossings, or
 RLCT.
+
+Lean now also specializes the generic supplied-family cardinality theorem to
+the filtered Eq5 endpoint constructors:
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_branch_card_eq_intervalSize_sub_one`,
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_fullBranches_card`,
+and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_fullBranches_card`.
+This counts filtered supplied endpoint branches and the tagged supplied
+branch family, not terminal-minimum labels.  The strictest wrapper still
+depends on supplied strict alpha injectivity and component-coordinate facts.
+It is not source branch construction, source-label legality, base-filter
+survival for source records, source-backed no-extra coverage, pole order,
+normal crossings, or RLCT.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.
