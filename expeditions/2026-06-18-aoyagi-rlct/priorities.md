@@ -104,6 +104,8 @@ Current Eq5 endpoint-deficit slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-deficit-a5.md`.
 Current supplied endpoint coverage slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-supplied-endpoint-coverage-a5.md`.
+Current Eq3/Eq4 local interval cardinality slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-local-interval-cardinality-a5.md`.
 Current Eq3 tail upper Eq5 coverage slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq3-tail-upper-eq5-coverage-a5.md`.
 Current Eq3 upper away-from-boundary slice:

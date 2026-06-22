@@ -4279,6 +4279,24 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
 
+Latest A5 Eq3/Eq4 local interval cardinality update:
+`Lemma5DisplayedVector.lean` now contains
+`aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_card_eq_intervalSize`
+and
+`aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_card_eq_offsetCard_add_two`.
+These are source-legality-free cardinality forms of the existing local
+Eq3/Eq4 rising-interval coverage equality.  They count one local insert set
+against the same-coordinate interval size and against strict Eq5 offsets plus
+two, under local Eq3/Eq4 piecewise certificates.  This is not displayed-vector
+construction, source-label legality, classifier coverage, Lemma 5 order count,
+pole order, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-local-interval-cardinality-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-local-interval-cardinality.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-local-interval-cardinality-a5.md`.
+
 Latest source-audit checkpoint:
 xhigh source audit of Aoyagi Lemma 5 pp. 25-27 confirmed the existing
 classifier frontier.  The interval cardinality formula and the local Case

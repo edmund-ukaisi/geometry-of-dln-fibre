@@ -4461,6 +4461,22 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-equivalence-a5.md`.
 
+Latest A5 Eq3/Eq4 local interval cardinality update:
+`Lemma5DisplayedVector.lean` now contains
+`aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_card_eq_intervalSize`
+and
+`aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_card_eq_offsetCard_add_two`.
+These prove the source-legality-free cardinality consequences of the existing
+local Eq3/Eq4 rising-interval coverage equality.  They do not construct
+displayed vectors, prove source-label legality, build classifier coverage,
+prove the Lemma 5 order count, or touch pole order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq3-eq4-local-interval-cardinality-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq3-eq4-local-interval-cardinality.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq3-eq4-local-interval-cardinality-a5.md`.
+
 Latest A5 counted-datum back-to-branch-label boundary update:
 `Lemma5TerminalBridge.lean` now has
 `AoyagiLemma5SuppliedTerminalCandidateFamily.branchCountDatumOfCoord`,

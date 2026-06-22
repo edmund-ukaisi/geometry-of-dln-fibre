@@ -4539,6 +4539,34 @@ base-value membership, prove cross-coordinate disjointness, construct a
 classifier, prove no-extra terminal-minimum coverage, order count, pole order,
 normal crossings, or RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq3/Eq4 local interval cardinality
+
+Reproduction:
+`reproduction-lemma5-eq3-eq4-local-interval-cardinality-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq3-eq4-local-interval-cardinality.md`.
+Review artifact:
+`review-lemma5-eq3-eq4-local-interval-cardinality-a5.md`.
+
+Lean now adds source-legality-free cardinality consequences of the local
+Eq3/Eq4 rising-interval coverage equality:
+
+```text
+aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_card_eq_intervalSize
+aoyagiLemma5_Eq3Upper_Eq4_local_insertComponents_card_eq_offsetCard_add_two
+```
+
+The first counts the local insert set by the same-coordinate interval size.
+The second rewrites that same count as the strict Eq5 offset-set cardinality
+plus two.  Both use only the local Eq3-shaped upper-component certificate,
+the local Eq4 lower-endpoint certificate, `1<=p`, and the Eq4 rising-side
+guard.
+
+This is one-coordinate finite count bookkeeping only.  It does not construct
+displayed vectors, prove source-label legality, build classifier coverage,
+prove a Lemma 5 order count, prove pole order, prove normal crossings, or
+extract RLCT.
+
 ## 2026-06-21 Lean Lemma 4 prefix-profile computations
 
 Reproduction:
