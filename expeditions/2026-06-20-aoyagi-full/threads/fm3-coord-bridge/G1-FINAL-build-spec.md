@@ -483,26 +483,37 @@ pp2 confirmed transcription-ready, three final pins all aligned with my banked v
    with my g164: light G2 node_loss_pivot_factor + rlctAtOn_reduced_transport; heavy IsSchurStraightenSqueeze
    off-path. Light-vs-heavy waits on crux2's lemma-mapping — wrapper only.
 
-## TRANSPORT-FIELD RESOLVED (g173, crux2 fast-veto) — schur_straighten_squeeze_exists, I produce hnode
-crux2's fast-veto ANSWERS the transport-field: NO, the straighten does NOT generalize. I BUILD the dispatcher
-(classify + hnode production); CONSUME crux2's banked lemmas PER NODE-TYPE. Corrects my "light G2 only" read:
-- MAIN coupled-rank-defect Schur node: the transport is crux2's banked EXISTENCE lemma
-  `schur_straighten_squeeze_exists` (#127/#129/#131). Given MY per-node Schur presentation `hnode`
-  (flatCore w = ∑Erow² + ‖b·Erow + S·Γ‖², G²=‖S·Γ‖², ‖b‖²≤T² near 0 — the post-blow-up (B)-lane contract
-  I SUPPLY), it returns ∃c₁c₂, IsSchurStraightenSqueeze (datum + descent). So the transport FIELD = the
-  IsSchurStraightenSqueeze datum, PRODUCED by schur_straighten_squeeze_exists from my hnode. NEW OBLIGATION
-  on my side: produce hnode per main-Schur node (my schur_node_loss_presentation is the banked seed:
-  ‖Â·A2‖² = ‖row0‖²+‖lower‖²). So the transport is NOT "light G2 only" — it's crux2's squeeze existence
-  consuming my hnode (which itself rests on the G2 pullback + the Schur row-decomp).
-- LEAF (L=1/red≡0): consume dlnLoss_one_layer_deepest (banked terminal).
-- MIXED partial-drop (t_{s-1}>t_s>0, C5): COMPOSE — complement via C1 (main Schur ⟹ my hnode +
-  schur_straighten_squeeze_exists), survivor via C2 (pass-through). pp2 §1.3/§4: C5 = block-column split
-  (complement via C1, survivor via C2); nodeC1/C5 picks the T*-rank pivot. So it REDUCES to the main Schur
-  node on its complement residual — no distinct existence lemma — PROVIDED the C1 complement sub-step's
-  residual presents as the clean main-Schur hnode. ⚠ CAVEAT: pp2 validated (2,2,2)/(3,2,3)/(2,2,2,2)/(4,3,2)
-  — NONE a genuine partial-drop t_{s-1}>t_s>0; the C5-composes claim is DESIGN, not exercised on a true mixed
-  case (crux2's t=(3,3,2,2,2,0) is depth-6, not validated). ANSWER to crux2: reduces (per pp2 design); if a
-  specific mixed C1-complement doesn't present as clean hnode, NEW lemma — flag. Asked pp2: design-only vs exercised.
+## ⚠ TRANSPORT-FIELD — g173 WAS WRONG (heavy); CORRECTED to LIGHT (g175, controller catch + pp2 g188 + code)
+g173 (below, SUPERSEDED) accepted crux2's veto framing "R1 node → schur_straighten_squeeze_exists,
+presentation in IsSchurStraightenSqueeze (heavy)". That is WRONG for R1. The controller caught the tension
+vs pp2 g188; I verified against the (2,2,2) code (Case222Resolution): R1's per-cell datum is the LIGHT
+monomial pullback, NOT the heavy squeeze.
+EVIDENCE (grounded, not asserted): Case222Resolution has ZERO mentions of IsSchurStraightenSqueeze /
+schur_recursion_step / c₁ / c₂. step1A = pivotBlowupOn {0,1,2,3} 0; myF222 ∘ step1A = y0²·Q (a MONOMIAL
+pullback, my G2 node_loss_pivot_factor); step1A_det = y0³ (node_jacobian_det). The (2,2,2) leaves USE the
+light pullback. The heavy IsSchurStraightenSqueeze (c₁Φ ≤ flatCore ≤ c₂Φ, additive nReg/2) is the L2 /
+DEEPEST-GAUGE node (g150/g175 core_comparability_squeeze, #54) — a DIFFERENT node (the full-B regular-shift
+reduction), NOT R1's blow-up node. crux2's veto conflated R1's blow-up node with L2's gauge node.
+CORRECT R1 per-cell transport (LIGHT, all mine + the det=1 reindex):
+  node_loss_pivot_factor (core∘φ = x_p²·(core∘hardPivotAt), banked G2) + node_jacobian_det ((x_p)^{card−1},
+  banked G2) ⟹ per-cell rlct = MIN(codim/2, rlct(reduced)), recursing → foldDivisors MIN-fold; the reduced
+  core reindexes via rlctAtOn_reduced_transport (crux2's det=1, the only crux2 piece R1 needs). NO
+  IsSchurStraightenSqueeze, NO c₁/c₂, NO additive nReg/2, NO hnode production. My EARLIER g164 was RIGHT;
+  g173's "crux2 veto resolved it to heavy" was the error (relayed crux2's L2-node framing onto R1).
+- LEAF (L=1/red≡0): dlnLoss_one_layer_deepest.
+- MIXED C5: compose (C2-survivor ⊕ C1-complement), the C1-complement is a LIGHT pivotBlowupOn node (NOT a
+  heavy squeeze) — pp2 g192/g193 exercised on (3,3,2) (the complement residual ‖S·Γ‖² is the reduced core
+  the NEXT light blow-up resolves, not a squeeze datum here). Reduces, no new lemma.
+DATUM FIELD (corrected, the certified RouteStep.branch transport field): the LIGHT pullback witness —
+node_loss_pivot_factor + node_jacobian_det + the cover fact + (PivotWitness sibling, value). HOLD committing
+until crux2 reconciles its veto vs pp2 g188 (controller asked it; veto likely predates g188). Building against
+the heavy interface = the wrong-type rework. The combinatorial recipe + value-side are datum-weight-INDEPENDENT
+(unchanged); only the transport field corrects heavy→light.
+
+--- SUPERSEDED (g173, the heavy reading — kept for the audit trail) ---
+[Was: crux2's veto → R1 node = schur_straighten_squeeze_exists from my hnode (∑Erow²+‖b·Erow+S·Γ‖²); heavy
+ IsSchurStraightenSqueeze datum. WRONG: that's L2's gauge node. R1 is the light pivotBlowupOn pullback.
+ Mixed-node-reduces (g174) is still RIGHT, but its C1-complement is a LIGHT node, not a heavy-hnode node.]
 Per-node recursion (crux2): classify → (main Schur ⟹ hnode ⟹ schur_straighten_squeeze_exists) | (leaf ⟹
 dlnLoss_one_layer_deepest) | (mixed ⟹ compose) → rlctAtOn_reduced_transport closes descent → recurse on
 S.red (ΣM terminates, my redM_widthSum_lt). INTERFACE CONFIRMED: ChainDimSplit = carrier I populate
