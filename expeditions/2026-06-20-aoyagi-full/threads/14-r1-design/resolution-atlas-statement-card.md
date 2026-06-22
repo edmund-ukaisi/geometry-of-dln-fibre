@@ -5,9 +5,10 @@
 - **Module:** `lean/DLNFibre/DLN/RLCT/Validate/ResolutionAtlas.lean` (206 LoC, imports only `Skeleton`).
   Branch `cover/resolution-atlas-scaffold` (off `origin/fm/r1-cover @26eccac`). NOT wired into
   `DLNFibre.lean` — controller wires.
-- **Status.** sorry-free; `resolution_value_of_atlas` is **clean-three / S2-free** (`#print axioms` =
-  `[propext, Classical.choice, Quot.sound]` — no `monomial_rlct`); the structure is non-vacuous (a
-  concrete `M = ![1,1]` atlas exhibited in-file).
+- **Status.** sorry-free + **reviewed** (fidelity check 2026-06-22: all 6 points PASS, decorrelated
+  Codex confirmed sound-conditional — not vacuity, not circularity). `resolution_value_of_atlas` is
+  **clean-three / S2-free** (`#print axioms` = `[propext, Classical.choice, Quot.sound]` — no
+  `monomial_rlct`); the structure is non-vacuous (a concrete `M = ![1,1]` atlas exhibited in-file).
 - **Source:** pp2's `g133-resolution-atlas-obligation-CARD.md` (consumed verbatim; the SURJECTION-not-
   bijection fidelity correction respected).
 

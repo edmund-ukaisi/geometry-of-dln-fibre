@@ -177,10 +177,10 @@ theorem resolution_value_of_atlas (M : Fin (L + 1) → ℕ)
 /-! ## Non-vacuity witness (the four conjuncts are jointly satisfiable)
 
 `IsResolutionAtlas` is not a vacuous predicate: for `M = ![1,1]` (`L = 1`, the smooth-block leaf, one
-admissible stratum `Adm = {0}`, `Mval 0 = 1`, `lambdaCore = ½`) a one-path atlas
-(`ι = Unit`, `d = 1`, `k = ![1]`, `h = ![0]` — the binding regular-sequence divisor `(1, 0) = (1, Mval−1)`)
-satisfies all four conjuncts, so an atlas exists and `resolution_value_of_atlas` returns `½`. The witness
-shown in-file (bedrock: the predicate has a model, the value lemma is non-vacuous). -/
+admissible stratum `Adm = {0}`, `Mval 0 = 1`, `lambdaCore = ½`) a one-path atlas (`ι = Unit`, `d = 1`,
+`k = ![1]`, `h = ![0]` — the binding regular-sequence divisor `(1, 0) = (1, Mval−1)`) satisfies all four
+conjuncts, so an atlas exists and `resolution_value_of_atlas` returns `½`. The witness shown in-file
+(bedrock: the predicate has a model, the value lemma is non-vacuous). -/
 example : IsResolutionAtlas (![1, 1] : Fin 2 → ℕ) Unit (fun _ => 1)
     (fun _ => (![1] : Fin 1 → ℕ)) (fun _ => (![0] : Fin 1 → ℕ)) (fun _ => (fun _ => 0)) where
   stratum_admissible := by
@@ -199,7 +199,8 @@ example : IsResolutionAtlas (![1, 1] : Fin 2 → ℕ) Unit (fun _ => 1)
     -- monomialThreshold 1 ![1] ![0] = axisRatio 0 1 = 1/2 = ½·(1).toNat.
     rw [(monomial_rlct 1 (![1] : Fin 1 → ℕ) (![0] : Fin 1 → ℕ)).1, iInf_unique]
     show axisRatio ((![0] : Fin 1 → ℕ) default) ((![1] : Fin 1 → ℕ) default) = _
-    rw [show ((![0] : Fin 1 → ℕ) default) = 0 from rfl, show ((![1] : Fin 1 → ℕ) default) = 1 from rfl]
+    rw [show ((![0] : Fin 1 → ℕ) default) = 0 from rfl,
+      show ((![1] : Fin 1 → ℕ) default) = 1 from rfl]
     rw [show axisRatio 0 1 = (1 : ℝ≥0∞) / 2 from by unfold axisRatio; norm_num]
     norm_num
 
