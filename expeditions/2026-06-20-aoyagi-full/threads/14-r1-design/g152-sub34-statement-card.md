@@ -1,51 +1,43 @@
-# Statement card — #44c / #54 matrix-core comparability (sub-34)
+# Statement card — #44c sub-3 (the matrix-core comparability + the construction, sub-34)
 
-**Status: ABSTRACT COMPARABILITY sorry-free (GREEN). The geometric instantiation into sub-3's
-`loss_squeeze` is gated on crux2's #58 coreEmbed structure fix.**
+**Status: the matrix-algebra toolkit is sorry-free (GREEN, reviewer SURVIVED). The geometric
+construction (`split` + `coreAbsorb` maps) is the remaining XL piece; the assembly shape is validated.**
 
-## Module
-`lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean` (pinned `fm2/deepest-gauge-chart-sub34` @19b62a7)
+## Modules (pinned `fm2/deepest-gauge-chart-sub34`)
+- `lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean` — 5 matrix lemmas (GREEN, clean-three).
+- `lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean` — `deepest_gauge_chart_construct`
+  (assembly GREEN vs design D) over `deepest_gauge_construction` (1 bundled honest sorry).
 
-## Delivered (4 lemmas, 0 sorry, axioms = {propext, Classical.choice, Quot.sound})
+## Delivered — `DeepestGaugeBlocks` (5 lemmas, 0 sorry, axioms = {propext, Classical.choice, Quot.sound})
+- `twofactor_block_product` — the 2-factor gauge-sliced product blocks (`fromBlocks_multiply`).
+- `schur_P11_decomp` — `P11 = (P11 − P10·Ainv·P01) + P10·Ainv·P01` (the full-product Schur split).
+- `frobenius_fromBlocks` — `∑ᵢⱼ f((fromBlocks …)ᵢⱼ) = block sums` (⟹ `loss = ∑E² + ‖P11‖²`).
+- `core_comparability_squeeze` — the load-bearing SQUEEZE: given `P11 = leak + R` and
+  `∑leak² ≤ t²·∑E²`, `c₁(∑E²+‖R‖²) ≤ ∑E²+‖P11‖² ≤ c₂(∑E²+‖R‖²)`, `c₁=(2(1+t²))⁻¹`, `c₂=2+2t²`.
+- `layer_schur_blockDiag` — the per-layer Schur block-diagonalization
+  `L·C·R = blockdiag[(1+X), S]`, `S = T − Z·⅟(1+X)·Y` (the #61-corrected per-layer Schur complement).
 
-### `twofactor_block_product`
-`(fromBlocks (1+X₁) Y₁ Z₁ T₁) * (fromBlocks (1+X₂) Y₂ Z₂ T₂) = fromBlocks (…) (…) (…) (Z₁Y₂+T₁T₂)`.
-The 2-factor gauge-sliced product blocks (`fromBlocks_multiply`). g150 cert's gauge slice.
+## The findings chain (decorrelated: exact-numeric + Codex xhigh; all accepted into the cert)
+1. **g152** — drove the R-squeeze re-shape (chart/Dchart/jac_unit DROPPED; controller-confirmed).
+2. **g153** — the raw-`∏T` core is FALSE (`C1C2C3 = blockdiag[1,−ε⁴]`: ∑E²=0, ∏T=0, P11=−ε⁴).
+3. **g154** — the MP-split exact germ is impossible at L=1 (`nGauge=0`); the `coreAbsorb` route is right.
+4. **g156** — the per-layer core is the SCHUR complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (NOT the unit
+   `T_s·(I−V_sY_s)⁻¹`, which is 0 at `T=0`). **Accepted as #61 CORRECTION, 3-way aligned.**
+5. **g157** — `coreAbsorb` = (a) per-layer Schur SHEAR (`T→S`, additive, det=1, **MP** — free) + (b) the
+   non-MP inter-layer unit. The loss core is the FULL-product Schur `R`, NOT `∏S_s` (which = `R|{E=0}`
+   only — `Schur(C₁C₂) = S₁(I+…)⁻¹S₂`).
+6. **exact-vs-squeeze** — in raw block coords the germ is a genuine SQUEEZE (`loss − (∑E²+‖R‖²)` =
+   nonzero cross-terms `2⟨R,leak⟩+‖leak‖²`; ratio band →{1} at w0 but ≠1 finitely). The EXACT germ
+   (c₁=c₂=1) is achievable only via an analytic Morse/splitting c-o-v (completing the square) — TRUE
+   but not what the Lean builds. The formalized datum is the squeeze (`core_comparability_squeeze`);
+   `ofExactGerm` (c₁=c₂=1) is dischargeable only via the harder Morse c-o-v, unnecessary for the RLCT.
 
-### `schur_P11_decomp`
-`P11 = (P11 − P10·Ainv·P01) + P10·Ainv·P01`. The Schur split: `R := P11 − P10·Ainv·P01` (the
-gauge-normalized T̃ core), leak `:= P10·Ainv·P01` (regular×regular). Pure ring algebra.
+## Remaining (#59, the geometric construction)
+`deepest_gauge_construction` (one bundled sorry): the concrete `split` (gauge-slice MP reindex —
+heaviest, flagged for crux2 pairing) + `coreAbsorb` (core-output = full Schur `R` via the MP shear +
+the inter-layer unit) + `loss_squeeze` (wired from `core_comparability_squeeze`). The algebra is banked;
+the remainder is measure/coordinate geometry.
 
-### `frobenius_fromBlocks`
-`∑ᵢⱼ f((fromBlocks E00 E01 E10 E11)ᵢⱼ) = (∑f(E00)+∑f(E01))+(∑f(E10)+∑f(E11))`. The block-Frobenius
-split (`f = (·²)` ⟹ `loss = ∑E² + ‖P11‖²`). `Fintype.sum_sum_type` regrouping.
-
-### `core_comparability_squeeze` (THE load-bearing #54)
-Given `P11 j = leak j + Rcore j` (`hsplit`) and `∑ leak² ≤ t²·∑ E²` (`hleak`, leak ∈ ideal(reg)):
-```
-(2(1+t²))⁻¹·(∑E²+‖Rcore‖²) ≤ ∑E²+‖P11‖² ≤ (2+2t²)·(∑E²+‖Rcore‖²)
-```
-The thin specialisation of `squeeze_bounds_abstract` (`p = leak`, `s = Rcore`, `p+s = P11`).
-
-## English gloss
-At a rank-`r`-exact deepest point, the gauge-sliced loss `= ∑E² + ‖P11‖²`; the `(1,1)` block `P11`
-splits as the gauge-normalized Schur core `R` (the T̃ chain) plus a regular×regular leak; since the
-leak is charged to the regular block (`∑leak² ≤ t²∑E²`, `t = ‖pivot‖ → 0` at `w0`), the loss is
-two-sidedly comparable to `∑E² + ‖R‖²` — the squeeze datum sub-5/6 consume.
-
-## g153 (the refutation this dodges)
-The naive RAW-`∏T` core is FALSE: `C1C2C3 = blockdiag[1,−ε⁴]` has `∑E²=0`, raw `∏T=0` (interior
-`T2=0`), `P11=−ε⁴` ⟹ `loss=ε⁸ > c₂·Φ_raw=0`. The Schur core `R` (not raw `∏T`) is load-bearing; the
-leak (which the raw form mis-assigned to the core) is correctly charged to `∑E²` here.
-
-## Numeric checks (PASS)
-- `nReg = r(H₀+H_last−r)` = residual Jacobian rank at `w0` (3-layer fold).
-- `flatDim H = nReg + flatDim M + nGauge` exact (8=3+2+3, 18=8+2+8, 27=5+12+10).
-- `‖leak‖²/∑E² → 0` as deviation→0 (leak reg×reg, charged to ∑E²).
-- `nGauge = 0` for ALL L=1 (⟹ MP-split exact-germ impossible at L=1; coreEmbed route needed).
-
-## Remaining (gated on crux2 #58)
-Geometric instantiation: identify E/P11/leak/R from the gauge-sliced `dlnLoss` via `block_elimination`
-units; the leak bound; `R = dlnLoss M 0(coreEmbed core)`; MP split reindex; assembly into `loss_squeeze`.
-The current structure hardcodes the raw `(paramsEquivFlat M).symm` core (g153-false); crux2 owns the
-coreEmbed reshape (#58). pp2's #56 general-v cert cross-checks the same T̃/R core.
+## Pinned commit
+`fm2/deepest-gauge-chart-sub34` (5 GREEN lemmas + the construction skeleton; reviewer SURVIVED on the
+comparability).
