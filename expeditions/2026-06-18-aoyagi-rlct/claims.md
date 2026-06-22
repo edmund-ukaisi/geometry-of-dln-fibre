@@ -1837,7 +1837,9 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 endpoint branch coordinates at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-a5.md`;
   Eq5 endpoint branch-coordinate disjointness at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`;
+  Eq5 endpoint raw value injectivity at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1904,7 +1906,9 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 endpoint branch coordinates checked by xhigh `Chandrasekhar` at
   `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-a5.md`;
   Eq5 endpoint branch-coordinate disjointness checked by xhigh `Noether` at
-  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`;
+  Eq5 endpoint raw value injectivity checked by xhigh `Dalton` at
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-value-injective-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1950,8 +1954,8 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`;
   Eq5 supplied endpoint raw coverage in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5SuppliedCoverage.lean`, including the
-  endpoint branch-coordinate and disjointness adapters; broader A5 targets
-  TBD.
+  endpoint branch-coordinate, disjointness, and raw value-injectivity adapters;
+  broader A5 targets TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
   `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
@@ -2694,6 +2698,17 @@ No such claim is formalisation-ready until both fields are filled.
   Raw value injectivity, source production, base-value membership, coverage
   data, endpoint values, base-filter survival, and no-extra classifier data
   remain supplied or unproved.
+  Also proved
+  `aoyagiLemma5Eq5EndpointRawBranches_value_injective_of_alpha_injective` and
+  `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord`.
+  These derive one-coordinate raw value injectivity at interior coordinates
+  from strict alpha-domain coverage, strict value formulas, endpoint value
+  formulas, and supplied strict alpha injectivity.  The constructor wrapper
+  combines this with coordinate-disjointness to remove only raw value
+  injectivity and raw disjointness from the strictest Eq5 endpoint constructor;
+  branch construction, source-label legality, source proof of strict alpha
+  injectivity, base-filter survival, no-extra coverage, and order-count data
+  remain unproved.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

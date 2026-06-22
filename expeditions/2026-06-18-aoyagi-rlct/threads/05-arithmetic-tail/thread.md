@@ -5020,3 +5020,39 @@ coordinate map is source-produced, prove endpoint distinctness or base-filter
 survival, derive raw value injectivity, construct a no-extra classifier, prove
 a Lemma 5 order count, prove pole order, prove normal crossings, or extract
 RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint raw value injectivity
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-value-injective-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-value-injective.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-value-injective-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5EndpointRawBranches_value_injective_of_alpha_injective
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+```
+
+The raw theorem proves one-coordinate value injectivity for the Eq5 endpoint
+raw branch set from supplied strict alpha injectivity, strict alpha-domain
+coverage, strict value formulas, and endpoint value formulas.  The proof
+separates strict-strict collisions by alpha injectivity, excludes upper/strict
+and rising lower/strict collisions by the Eq5 offset-value set, and excludes
+rising upper/lower collisions by the positive interior Htilde gap.  The
+interior-coordinate hypothesis is essential: the analogous `j=0` endpoint raw
+set may have coincident upper and lower endpoint values.
+
+The constructor wrapper combines this raw value-injectivity theorem with the
+coordinate-disjointness theorem, removing only the raw value-injectivity and
+raw disjointness inputs from the strictest Eq5 endpoint supplied-family
+constructor.
+
+This is finite endpoint/offset bookkeeping only.  It does not construct Eq5
+branches or endpoint records, prove source-label legality, prove strict alpha
+injectivity from source, prove endpoint record distinctness as a source fact,
+prove base-filter survival, construct a no-extra classifier, prove a Lemma 5
+order count, prove pole order, prove normal crossings, or extract RLCT.

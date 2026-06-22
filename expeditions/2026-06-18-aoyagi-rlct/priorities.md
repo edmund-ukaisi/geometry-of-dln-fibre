@@ -204,6 +204,8 @@ Current Eq5 endpoint branch-coordinate slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-a5.md`.
 Current Eq5 endpoint branch-coordinate disjointness slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
+Current Eq5 endpoint raw value-injectivity slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -245,6 +247,18 @@ endpoint constructor.  Raw value injectivity, base-value membership,
 alpha-domain coverage, endpoint values, source construction/source-label
 legality, base-filter survival, no-extra coverage, pole order, normal
 crossings, and RLCT remain unproved.
+
+Lean now also derives one-coordinate raw value injectivity for Eq5 endpoint
+raw branch sets from supplied strict alpha injectivity:
+`aoyagiLemma5Eq5EndpointRawBranches_value_injective_of_alpha_injective` and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord`.
+The theorem is explicitly interior-coordinate; at `j=0`, upper and lower
+endpoint values can coincide.  This removes only the raw value-injectivity and
+raw disjointness hypotheses from the strictest supplied endpoint constructor.
+It still assumes base-value membership, alpha-domain coverage, endpoint value
+formulas, strict alpha injectivity, component coordinate facts, and does not
+construct branch records, prove source-label legality, no-extra coverage, pole
+order, normal crossings, or RLCT.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.

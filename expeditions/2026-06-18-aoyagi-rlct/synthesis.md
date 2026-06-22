@@ -4768,6 +4768,25 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
 
+Latest A5 Eq5 endpoint raw value-injectivity update:
+`Lemma5Eq5SuppliedCoverage.lean` now also contains
+`aoyagiLemma5Eq5EndpointRawBranches_value_injective_of_alpha_injective` and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord`.
+These derive one-coordinate raw value injectivity from strict alpha-domain
+coverage, strict value formulas, endpoint value formulas, and supplied strict
+alpha injectivity.  The result is deliberately interior-coordinate: at `j=0`,
+upper and lower endpoint values can coincide.  The wrapper combines this with
+coordinate-disjointness to remove only raw value-injectivity and
+raw-disjointness inputs from the strictest Eq5 endpoint constructor.  It still
+does not construct branch records, prove source-label legality, prove strict
+alpha injectivity from source, prove base-filter survival, construct no-extra
+coverage, prove normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-value-injective.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-value-injective-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
