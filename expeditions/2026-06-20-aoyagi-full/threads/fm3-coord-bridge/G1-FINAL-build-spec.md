@@ -270,3 +270,23 @@ recursion-driver-agnostic). RouteMTree's routeAtlas gets rewritten to recurse ov
 (consume crux2's reduction state), NOT WellFounded.fix on RouteState. AWAITING crux2's reply on the
 ChainDimSplit interface shape + whether it carries the per-node pivot-branch data my cover needs (the
 argmaxCellOn pivot cells per node = the branching). Until then: stay on fork-independent value-side.
+
+## ChainDimSplit API STUDIED (g157) — the rebase is NOT a mechanical swap; the taxonomy changes
+Read crux2's banked ChainDimSplit (GeneralR1Recursion.lean @route-m-atlas). Three findings reshape the rebase:
+1. ChainDimSplit M = a SINGLE one-step width split {drop, red, hsum : drop+red=M, hdrops : 0<Σdrop}. NOT a
+   branch family, NOT iterated. L is FIXED (it reduces WIDTHS M→red, never depth). Termination = ΣM drops by
+   Σdrop≥1. So my old L-dropping C2/C4 taxonomy does NOT map — crux2's recursion is pure ΣM-width-reduction.
+2. ChainDimSplit is only ever CONSUMED in GeneralR1Recursion (schur_straighten_of_data / _squeeze /
+   rlctAtOn_reduced_transport all TAKE an (S : ChainDimSplit M)); it is NEVER CONSTRUCTED there. So the
+   rank-pattern dispatcher (WHICH split at each node = my old classify) is UNPROVIDED — still the producer's
+   (my) job. The rebase makes my recursion PRODUCE ChainDimSplits (consume the carrier type) rather than my
+   own RouteState; it does NOT hand me a banked recursion.
+3. NO banked WF recursion over iterated ChainDimSplit exists. I build the fix myself: recurse M → S.red via a
+   per-node ChainDimSplit, terminating on ΣM (hdrops ⟹ ΣS.red < ΣM), base at L=1 / red≡0 (dlnLoss_one_layer_deepest).
+SHARPENED QUESTION to crux2 (supersedes Q1/Q2): does crux2 CONSTRUCT the per-node ChainDimSplit (the
+rank-pattern → split dispatcher) or do I? If I do, the rebase = (i) swap my RouteState carrier for
+(M, ChainDimSplit M); (ii) keep my pivot-branch Finset + the ⨅-min on top (branching is mine — ChainDimSplit
+is single-path); (iii) my recursion produces, at each node, a Finset of child ChainDimSplits (one per pivot
+cell) + folds MonoData via appendDivisor; (iv) terminate on ΣM. The carrier becomes (M, ChainDimSplit M) not
+RouteState, but the RECURSION + BRANCHING + CONSTRUCTION are still mine. The "rebase" narrows to: use crux2's
+split TYPE + its transport lemmas, not a fresh state machine — value/cover layers unchanged.
