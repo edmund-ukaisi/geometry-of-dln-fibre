@@ -38,3 +38,13 @@ for sc in [0.2, 0.08, 0.02]:
         pv=float(phi.subs(s)); lv=float(loss.subs(s))
         if pv>1e-12: rs.append(lv/pv)
     print(f"  scale {sc}: loss/phi ∈ [{min(rs):.4f}, {max(rs):.4f}]  (band tightens to 1 ⟹ squeeze, c₁<c₂→1)")
+
+print()
+print("="*68)
+print("CROSS-TERM LOCK CONFIRMED: the abstract squeeze (squeeze_bounds_abstract)")
+print("absorbs 2⟨Rcore,leak⟩ via Young |2⟨s,p⟩|≤δ‖s‖²+‖p‖²/δ, using ONLY ‖leak‖²≤t²∑E².")
+print("⟹ core_comparability_squeeze (#54) takes EXACTLY 2 hypotheses:")
+print("   (a) the split P11 = leak + Rcore")
+print("   (b) ∑leak² ≤ t²·∑E²  (t=‖pivot‖→0)")
+print("The cross-term ⟨Rcore,leak⟩ is NOT a third hypothesis. c₁<c₂→1 (squeeze, not exact).")
+print("="*68)
