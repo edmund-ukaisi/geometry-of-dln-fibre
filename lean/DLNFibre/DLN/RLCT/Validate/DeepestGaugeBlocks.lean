@@ -196,4 +196,71 @@ theorem coreShearHomeo_basepoint {Reg Core Spec : Type*}
   show ((0 : Reg), ((0 : Core) + shift ((0 : Reg), (0 : Spec)), (0 : Spec))) = 0
   rw [h0, add_zero]; rfl
 
+/-! ## The `regAbsorb` packaging — lifting a spec-fixing reg-homeomorphism to `DeepestSplit`
+
+Unlike `coreAbsorb` (an additive shear, GLOBAL det = 1), `regAbsorb` is the NONLINEAR residual map
+raw→`E` — a genuine LOCAL diffeo (`det → 0` off `w0`). Its structural shape, abstract over the
+concrete `E`: a homeomorphism `Ψ` of the `(Reg × Spec)` part that FIXES the spectator component
+(reads reg+spec, writes reg, the spec untouched), lifted to `DeepestSplit = Reg × (Core × Spec)`
+fixing the core slot. The concrete `Ψ` (the IFT straightening of `E`) is the producer's; this
+packaging is abstract over it. -/
+
+/-- **The reg-slice homeomorphism** (the `regAbsorb` packaging). Given a homeomorphism `Ψ` of
+`Reg × Spec` that fixes the spectator component (`(Ψ p).2 = p.2`), the lift
+`(reg, core, spec) ↦ ((Ψ (reg, spec)).1, core, spec)` is a self-homeomorphism of `Reg × (Core × Spec)`
+fixing the core and spectator slots. The producer supplies `Ψ` = the IFT straightening of the
+nonlinear residual `E` (a local diffeo near `w0`, restricted to a homeomorphism on its image). -/
+def regSliceHomeo {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [TopologicalSpace Core] [TopologicalSpace Spec]
+    (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2) :
+    (Reg × (Core × Spec)) ≃ₜ (Reg × (Core × Spec)) where
+  toFun := fun q => ((Ψ (q.1, q.2.2)).1, (q.2.1, q.2.2))
+  invFun := fun q => ((Ψ.symm (q.1, q.2.2)).1, (q.2.1, q.2.2))
+  left_inv := fun q => by
+    have hsymm : Ψ.symm (Ψ (q.1, q.2.2)) = (q.1, q.2.2) := Ψ.left_inv _
+    have hfst : (Ψ (q.1, q.2.2)).2 = q.2.2 := hΨspec _
+    have : (Ψ.symm ((Ψ (q.1, q.2.2)).1, q.2.2)).1 = q.1 := by
+      rw [← hfst, Prod.mk.eta, hsymm]
+    simp only [this]
+  right_inv := fun q => by
+    have hsymm : Ψ (Ψ.symm (q.1, q.2.2)) = (q.1, q.2.2) := Ψ.right_inv _
+    have hfst : (Ψ.symm (q.1, q.2.2)).2 = q.2.2 := by
+      have := hΨspec (Ψ.symm (q.1, q.2.2)); rwa [hsymm] at this
+    have : (Ψ ((Ψ.symm (q.1, q.2.2)).1, q.2.2)).1 = q.1 := by
+      rw [← hfst, Prod.mk.eta, hsymm]
+    simp only [this]
+  continuous_toFun := by
+    have hrs : Continuous fun q : Reg × (Core × Spec) => (q.1, q.2.2) :=
+      continuous_fst.prodMk (continuous_snd.comp continuous_snd)
+    exact ((continuous_fst.comp Ψ.continuous).comp hrs).prodMk
+      ((continuous_fst.comp continuous_snd).prodMk (continuous_snd.comp continuous_snd))
+  continuous_invFun := by
+    have hrs : Continuous fun q : Reg × (Core × Spec) => (q.1, q.2.2) :=
+      continuous_fst.prodMk (continuous_snd.comp continuous_snd)
+    exact ((continuous_fst.comp Ψ.symm.continuous).comp hrs).prodMk
+      ((continuous_fst.comp continuous_snd).prodMk (continuous_snd.comp continuous_snd))
+
+/-- `regSliceHomeo` fixes the core slot. -/
+theorem regSliceHomeo_core {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [TopologicalSpace Core] [TopologicalSpace Spec]
+    (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2)
+    (q : Reg × (Core × Spec)) : (regSliceHomeo Ψ hΨspec q).2.1 = q.2.1 := rfl
+
+/-- `regSliceHomeo` fixes the spectator slot. -/
+theorem regSliceHomeo_spectator {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [TopologicalSpace Core] [TopologicalSpace Spec]
+    (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2)
+    (q : Reg × (Core × Spec)) : (regSliceHomeo Ψ hΨspec q).2.2 = q.2.2 := rfl
+
+/-- `regSliceHomeo` fixes the origin iff `Ψ` fixes the origin reg-component — the
+`regAbsorb_basepoint` datum (the residual `E = 0` at the deepest point, where all gauge coords `0`). -/
+theorem regSliceHomeo_basepoint {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [TopologicalSpace Core] [TopologicalSpace Spec]
+    [Zero Reg] [Zero Core] [Zero Spec]
+    (Ψ : (Reg × Spec) ≃ₜ (Reg × Spec)) (hΨspec : ∀ p : Reg × Spec, (Ψ p).2 = p.2)
+    (h0 : (Ψ (0, 0)).1 = 0) :
+    regSliceHomeo Ψ hΨspec (0 : Reg × (Core × Spec)) = 0 := by
+  show ((Ψ ((0 : Reg), (0 : Spec))).1, ((0 : Core), (0 : Spec))) = 0
+  rw [h0]; rfl
+
 end DLNFibre.DLN.RLCT
