@@ -349,16 +349,33 @@ non-degeneracy carve-out", NOT "Aoyagi-faithful verbatim". (Optional, deferred, 
 DLN preprint to pin whether Aoyagi's genericity implicitly excludes it — nice-to-have for the final
 fidelity note.)
 THREADING (controller-assigned): I thread it through R1's lemmas; crux2 threads L2 + headline
-(aoyagi_learning_coefficient + deepest_point_reduction). PREDICATE (coordinating with crux2):
-  headline/L2 (A, on H,r): hNonDeg : ∀ s : Fin (L+1), 0 < (s:ℕ) → (s:ℕ) < L → r < H s
-  my R1/RouteMTree (B, on M):              ∀ s : Fin (L+1), 0 < (s:ℕ) → (s:ℕ) < L → 0 < M s
-  defeq-bridged (M s = H s − r ⟹ r<H_s ⟺ 0<M_s); interior 0<s<L (endpoints free); VACUOUS at L=1
-  (no interior s — the leaf/L=1 case needs no condition). resolution_charts + RouteMTree's identity
-  lemmas carry (B); classify's domain is already interior M_s≥1 so it's a natural fit. AWAITING crux2's
-  form-lock, then thread.
+(aoyagi_learning_coefficient + deepest_point_reduction).
+⚠⚠ SUPERSEDED PREDICATE (g154, interior-only — WRONG, kept ONLY for finding-history; DO NOT READ AS CURRENT):
+  [headline/L2 (A): ∀ s, 0<s.val → s.val<L → r<H s ;  R1 (B): ∀ s, 0<s.val → s.val<L → 0<M s ;
+   "interior 0<s<L, endpoints free, VACUOUS at L=1" — the ENDPOINTS-FREE was the ERROR (g159/g186/crux2:
+   M_0=0 / M_L=0 also break the reduced core: prod M ≡ 0 if ANY M_s=0, endpoint or interior; hGne fails).]
+CURRENT LIVE FORM = ALL-s (g159/g168, see the "hMid FORM — ALL-s" section below + crux2's PROVEN witness
+DeepestCoreNonvanishing dlnLoss_deepest_core_ne_zero_witness needs ∀ s, 1≤M_s): the R1/RouteMTree predicate
+is `∀ s : Fin (L+1), 0 < M s` (ALL s, endpoints INCLUDED) — ALREADY committed @0cedc7e (Skeleton:1030).
 
-## hMid FORM — ALL-s is R1's NATURAL DOMAIN (g159 + g168 audit clarification)
+## hMid FORM — ALL-s is R1's NATURAL DOMAIN (g159 + g168 audit clarification; g190 crux2 re-confirm)
 ⚠ The interior-only lock (g154) was INCOMPLETE — missed the ENDPOINTS. SUPERSEDED.
+RE-CONFIRMED (g190, crux2 STOP + controller #69/#70 route-B, dated 2026-06-22): the all-s form is RIGHT and
+now has PROVEN Lean backing — crux2's DeepestCoreNonvanishing.dlnLoss_deepest_core_ne_zero_witness takes
+`hpos : ∀ s, 1 ≤ M s` (ALL s) and the witness e00Witness indexes entry ⟨0, hpos 0⟩ (needs M_0≥1) AND
+⟨0, hpos (Fin.last L)⟩ (needs M_L≥1) — the ENDPOINTS are LOAD-BEARING in the discharge of hGne. The
+interior-only form does NOT discharge hGne (admits M_0=0/M_L=0 where the identity is ⊤). crux2's #69/#70
+decoupling: headline stays NON-STRICT (r ≤ min, paper-faithful); the rungs prove the non-degenerate bulk
+∀s M_s≥1; ANY M_s=0 (interior OR endpoint) = the separate #70 direct-Morse case (rlctAt = nReg/2, lambdaCore
+= 0). My committed Skeleton:1030 ALREADY carries the all-s form `∀ s : Fin (L+1), 0 < M s` (g159 @0cedc7e) —
+crux2's STOP was reacting to the SUPERSEDED g154 block text (now marked); I am ALREADY on B'. The (A')/(B')
+split + the defeq bridge (r<H_s ⟺ 0<M_s, all s) confirmed: I thread B' (∀s 0<M_s) on RouteState.M, crux2
+threads A' (∀s r<H_s) on L2/headline, #70 owns any M_s=0. L=1 re-check: the all-s form BITES at L=1 (s=0,1);
+the (1,1,1) r=1 case (M=(0,0)) is #70 DEGENERATE (lambdaCore=0, rlctAt=nReg/2), NOT the non-deg bulk — the
+old "vacuous-at-L=1" conflated the raw-leaf (no interior 0-cut) with the reduced core (can be all-zero-width
+at the boundary). PAPER-CHECK (optional, crux2 noted): does Aoyagi state ∀s or interior-only? — our Lean core
+needs ALL s regardless (it's the prod M structure, not the citation); if Aoyagi genuinely says interior-only
+that's a fidelity question to escalate, but it doesn't change the Lean requirement.
 ⚠ UPDATE (g168, headline-fidelity audit REVERSED controller Decision A): the HEADLINE stays NON-STRICT
 (r ≤ H_s, paper-faithful — the audit VERIFIED the boundary r=H_s is TRUE, so no narrowing to strict).
 So R1's all-s domain is NOT inherited from a strict headline; it is R1's OWN NATURAL DOMAIN (the
