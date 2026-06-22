@@ -5435,3 +5435,29 @@ This is a downstream handoff only.  It does not source-prove the upper bound,
 construct branch-label injectivity, prove no-extra coverage, prove the A6
 finite exponent formula, identify pole order, prove normal crossings, or
 extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 counted-datum classifier order-formula bridge
+
+Reproduction:
+`reproduction-lemma5-countdatum-classifier-order-formula-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-countdatum-classifier-order-formula-bridge.md`.
+Review artifact:
+`review-lemma5-countdatum-classifier-order-formula-bridge-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_theorem2OrderFormula_of_countDatumClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_countDatumClassifier_and_branchLabel_injOn
+```
+
+These wrappers feed a supplied terminal-minimum counted-datum classifier
+directly into Aoyagi Theorem 2's displayed order formula
+`data.theorem2OrderFormula`.  Adding supplied branch-label injectivity then
+reuses the existing terminal-cardinality squeeze to get equality.
+
+This is a finite A5-to-A6 handoff only.  It does not construct the
+counted-datum classifier, branch-label injectivity, a back-to-label map,
+Eq3/Eq4/Eq5 branch coverage, terminal `tilde t=0`, source labels, pole order,
+normal crossings, or RLCT extraction.

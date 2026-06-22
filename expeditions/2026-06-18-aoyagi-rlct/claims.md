@@ -2928,6 +2928,19 @@ No such claim is formalisation-ready until both fields are filled.
   from Aoyagi's printed equations, existence of the supplied chart-family
   boundary data including the supplied base branch, pole-order count, and
   analytic extraction.
+  Latest handoff wrapper: a supplied terminal-minimum counted-datum classifier
+  now gives the Theorem 2 order-formula upper bound directly, and supplied
+  branch-label injectivity upgrades that bound to equality:
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_theorem2OrderFormula_of_countDatumClassifier`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_countDatumClassifier_and_branchLabel_injOn`
+  in `lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalOrderBridge.lean`.  Reproduction:
+  `threads/05-arithmetic-tail/reproduction-lemma5-countdatum-classifier-order-formula-bridge-a5.md`;
+  review:
+  `threads/05-arithmetic-tail/review-lemma5-countdatum-classifier-order-formula-bridge-a5.md`.
+  This is finite notation handoff only and does not construct the classifier,
+  branch-label injectivity, back-to-label coverage, no-extra coverage, pole
+  order, normal crossings, or RLCT.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 

@@ -1696,6 +1696,13 @@ Immediate order:
    `terminalMinimumLabels.card <= a*(n+1-a)+1`.  This sharpens the remaining
    A5 obstruction without changing the freeze: source-backed branch-label
    injectivity and the upper bound/no-extra coverage are still unproved.
+   The counted-datum classifier now has the matching order-formula handoff in
+   `Lemma5TerminalOrderBridge.lean`: a supplied
+   `TerminalMinimumCountDatumClassifier` gives
+   `terminalMinimumLabels.card <= data.theorem2OrderFormula`, and supplied
+   branch-label injectivity upgrades it to equality.  This is the preferred A5
+   handoff when a downstream theorem already supplies the classifier; it does
+   not unfreeze source-backed Lemma 5 exactness.
    Latest A2 residual-product pass now names the endpoint lower-right block as
    the deterministic product of transformed Schur residuals in
    `ProductReductionBoundary.lean`. Leave A2 at this elementary boundary until

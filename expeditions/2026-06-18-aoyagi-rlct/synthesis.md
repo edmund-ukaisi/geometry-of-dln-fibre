@@ -5418,6 +5418,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-order-formula-bridge-a5.md`.
 
+Latest A5 counted-datum order-formula handoff:
+`Lemma5TerminalOrderBridge.lean` now also routes a supplied
+`TerminalMinimumCountDatumClassifier` straight to the Theorem 2 order-formula
+bound:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_theorem2OrderFormula_of_countDatumClassifier`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_countDatumClassifier_and_branchLabel_injOn`.
+This consumes the existing counted-datum upper-bound API and rewrites
+`a*(n+1-a)+1` as `data.theorem2OrderFormula`; equality still also requires
+supplied branch-label injectivity.  It is a finite handoff wrapper only, not
+source construction of the classifier, injectivity, back-to-label coverage,
+no-extra terminal-minimum coverage, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-countdatum-classifier-order-formula-bridge-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-countdatum-classifier-order-formula-bridge.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-countdatum-classifier-order-formula-bridge-a5.md`.
+
 Latest A6 finite-certificate bridge: `Theorem2FiniteExponentBridge.lean` now
 constructs `AoyagiTheorem2FiniteExponentFormulaHypothesis` from the A0 finite
 min/order certificate API.  If a supplied active coordinate realizes
