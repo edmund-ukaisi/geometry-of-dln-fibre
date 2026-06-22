@@ -165,6 +165,14 @@
       = single-P encoding (P=∑(prod-entry)², eval z P = dlnLoss M 0 via Matrix.map_mul + prodAux-over-MvPoly
       mirror, P≠0 from witness, ae_eval_ne_zero at p:=P). Off the critical path (the bridge's final hGne
       discharge); crux2 keeps #44 priority, interleaves the encoding. Escape hatch: if the mirror walls, switch.
+    - **★ #65 hMid⟹hGne BRIDGE CLOSED @4b4a4cf (crux2, sorry-free clean-three).** The prodAux-mirror was
+      tractable (~100 LoC, NO escape hatch): `prodPolyAux` (a SEPARATE ring-generic mirror of prodAux — NOT
+      making prodAux ring-polymorphic, which would break its ℝ call-sites) + `prodPolyAux_map` (eval commutes
+      via Matrix.map_mul) + `prodPolyAux_eq_prodAux` + `corePoly`/`eval_corePoly` (eval z (corePoly M) =
+      dlnLoss M 0 (flatSymm z)); assembly: corePoly≠0 from the witness ⟹ ae_eval_ne_zero at p:=corePoly ⟹
+      {dlnLoss M 0 ∘ flatSymm = 0} null ⟹ hGne. **The L2 hGne discharge — the one tracked from-scratch heavy
+      lemma, the "everything-proven-except-S2" requirement — is DONE.** The measure-zero arc (formaliser
+      dispatch → route whipsaw 1→2→1 → Route 1 + mirror) landed; Route 1 vindicated.
 
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
