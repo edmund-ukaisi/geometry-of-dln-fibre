@@ -1257,4 +1257,21 @@ theorem qSum_eq_transferRHS : ∀ {n : ℕ} (b : Fin n → ℕ) (d : ℕ),
       rw [hΔ, hcol, hmerge, pow_add]
       ring
 
+/-- `innerSum` is the flat q-sum `qSum` of the column-`N` data: same index set (`admissibleXs_eq_adm`),
+same P-factors (`col i = m'(i,N)`), same exponent (`innerSum_exp_eq_flatDelta`, using the per-`x` bound). -/
+theorem innerSum_eq_qSum (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast : ℕ) :
+    innerSum m' dlast = qSum (fun i : Fin (N + 1) ↦ m' (i, Fin.last N)) dlast := by
+  rw [innerSum, qSum, admissibleXs_eq_adm]
+  refine Finset.sum_congr rfl fun x hx ↦ ?_
+  rw [mem_adm] at hx
+  obtain ⟨_, hxb⟩ := hx
+  rw [innerSum_exp_eq_flatDelta m' x hxb]
+
+/-- **(Q)**: the per-fibre `innerSum` equals the last-column transfer `transferRHS` of the column-`N`
+data — `innerSum = qSum` (`innerSum_eq_qSum`) then the q-series induction (`qSum_eq_transferRHS`). -/
+theorem innerSum_eq_transferRHS (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast : ℕ) :
+    innerSum m' dlast
+      = transferRHS (List.ofFn (fun i : Fin (N + 1) ↦ m' (i, Fin.last N))) dlast := by
+  rw [innerSum_eq_qSum, qSum_eq_transferRHS]
+
 end DLNFibre.Core
