@@ -63,4 +63,46 @@ theorem leafMonoData_threshold (d : ℕ) :
   simp only [leafMonoData]
   exact le_antisymm le_top (le_iInf (fun j => by rw [axisRatio]; simp))
 
+/-! ## Per-node `(d,k,h)` accumulation — appending a pivot divisor (fork-independent value bedrock)
+
+A C1/C5 blow-up node ADDS one exceptional divisor to the accumulated chart datum: a fresh axis with
+`(k, h) = (1, card−1)` (the codim-`card` pivot stratum, `axisRatio = card/2`). On `MonoData` this is
+`appendDivisor` (snoc the new axis at the end). Its effect on the chart threshold is the `⨅`/`min`
+update `monomialThreshold (append) = min (card/2) (monomialThreshold old)` — the binding `⨅` takes
+the min with the new axis's ratio. Pure threshold combinatorics (via `monomial_rlct.1`), INDEPENDENT
+of how the recursion accumulates: the leaf-data semantics every division (A/B/C) shares. -/
+
+/-- `⨅` over `Fin (d+1)` splits as `min` of the last coordinate and the `⨅` over the `castSucc`
+prefix. Generic `ℝ≥0∞` fact (`le_antisymm` + `Fin.lastCases`, no named Mathlib `Fin`-iInf lemma). -/
+theorem iInf_fin_succ_eq_min_last {d : ℕ} (f : Fin (d + 1) → ℝ≥0∞) :
+    (⨅ j : Fin (d + 1), f j) = min (f (Fin.last d)) (⨅ j : Fin d, f j.castSucc) := by
+  apply le_antisymm
+  · exact le_min (iInf_le _ (Fin.last d)) (le_iInf fun j => iInf_le _ j.castSucc)
+  · refine le_iInf fun j => ?_
+    refine Fin.lastCases ?_ ?_ j
+    · exact min_le_left _ _
+    · exact fun i => le_trans (min_le_right _ _) (iInf_le _ i)
+
+/-- Append a pivot divisor `(k,h) = (1, c−1)` (the codim-`c` exceptional axis) to a `MonoData`. -/
+def MonoData.appendDivisor (md : MonoData) (c : ℕ) : MonoData :=
+  ⟨md.d + 1, Fin.snoc md.k 1, Fin.snoc md.h (c - 1)⟩
+
+/-- **Per-node threshold update (the value-side accumulation step).** Appending a codim-`c` pivot
+divisor `(1, c−1)` takes the chart threshold to the `min` of its old value and the new axis's ratio
+`c/2`: `monomialThreshold (md.appendDivisor c) = min (c/2) (monomialThreshold md)` (`1 ≤ c`). The
+`⨅ axisRatio` over the snoc'd family splits (via `iInf_fin_succ_eq_min_last`) into the last axis
+(`axisRatio (c−1) 1 = c/2`, `axisRatio_regularSeq`) and the prefix (the old `⨅`). The `min`-fold is
+how the binding minimal-codim divisor controls the cover `⨅` (`achiever` / `threshold_ge`). Rests on
+`monomial_rlct` (S2). -/
+theorem monomialThreshold_appendDivisor (md : MonoData) (c : ℕ) (hc : 1 ≤ c) :
+    monomialThreshold (md.appendDivisor c).d (md.appendDivisor c).k (md.appendDivisor c).h
+      = min ((c : ℝ≥0∞) / 2) (monomialThreshold md.d md.k md.h) := by
+  rw [(monomial_rlct (md.appendDivisor c).d (md.appendDivisor c).k (md.appendDivisor c).h).1,
+    (monomial_rlct md.d md.k md.h).1]
+  simp only [MonoData.appendDivisor]
+  rw [iInf_fin_succ_eq_min_last]
+  congr 1
+  · rw [Fin.snoc_last, Fin.snoc_last, axisRatio_regularSeq c hc]
+  · exact iInf_congr fun j => by rw [Fin.snoc_castSucc, Fin.snoc_castSucc]
+
 end DLNFibre.DLN.RLCT
