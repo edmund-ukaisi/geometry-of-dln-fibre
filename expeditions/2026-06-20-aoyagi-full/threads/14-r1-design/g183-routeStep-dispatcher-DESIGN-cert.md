@@ -326,3 +326,44 @@ per step). If a multi-step exercise is wanted, run `(3,3,2,2,2)`. But the per-no
 partial-drop step's complement presents as a clean main-Schur node — is exercised, closing crux2's
 transport-field question: the transport datum for every node type (C1, C2, C5-complement) is the SAME
 `schur_straighten_squeeze_exists` / light G2 monomial pullback; C5 needs no new lemma.
+
+---
+
+## (2,2,2)/(3,2,3) SPELL-OUT against the pinned light RouteStep.branch (#68 final, pp-hall, 2026-06-22, @b8d3146)
+
+fm3 PINNED the light certified `RouteStep.branch` (`@b8d3146`, route-checked green; my g188 + Case222 code
++ min-fold numerics = 3 confirmations R1 is light, crux2's heavy framing was the L2 gauge node):
+
+    branch (cells : Type) (cellsFin : Fintype cells)
+      (split : cells → ChainDimSplit M) (codim : cells → ℕ)
+      (witness : (c : cells) → PivotWitness M (codim c))    -- the §2 sibling; NO IsSchurStraightenSqueeze
+
+The per-cell TRANSPORT is the LIGHT pullback (`node_loss_pivot_factor`: `core∘φ = x_p²·(core∘hardPivotAt)`
++ `node_jacobian_det`: `(x_p)^{card−1}`, fm3's banked G2), threaded at the COVER-FACT level, NOT a branch
+field. NO `c₁/c₂`, NO additive `nReg/2`. The concrete spell-out (`g195_spellout.py`):
+
+**(2,2,2)** [root `M=(2,2,2)`, `minAdm=3`, `λ=3/2`]:
+- ROOT `M=(2,2,2)`: `branch` with the A-pivot blow-up cells (`pivotBlowupOn {0,1,2,3} 0`, Case222 step1A).
+  Per cell `c`: `split c = ChainDimSplit (2,2,2)` with `red = schurState (2,2,2) = (1,1,2)` (`ΣM` 6→4);
+  `codim c = (Mval (2,2,2) T).toNat`; `witness c = ⟨T, hAdm, hCodim⟩`. Binding cell `c*`: `T=(0,0)`,
+  `codim = Mval((2,2,2),(0,0)) = 4` (= Case222 step-1 card 4 ✓).
+- RECURSE on `(1,1,2)`: the resolved-form blow-up (`pivotBlowupOn {1,2,3} 1`, Case222 step-2). Binding
+  cell: `T=(1,0)`, `codim = Mval((2,2,2),(1,0)) = 3` (= Case222 step-2 card 3, the ACHIEVER/binding =minAdm ✓).
+- LEAF: `MonoData` (the unit core, `IsUnit residualCore`).
+- `codimsOf(binding leaf) = [4, 3]` ⟹ `foldDivisors` `ratioMinFold = min(4/2, 3/2) = 3/2 = λ(2,2,2)` ✓.
+  PivotWitness: `T=(0,0)∈Adm`, codim 4=Mval ✓; `T=(1,0)∈Adm`, codim 3=Mval=minAdm ✓.
+  `foldFamily_threshold_ge_of_pivotWitness` (all codims ≥3) + `foldFamily_achiever` (3∈[4,3]) ⟹ `⨅=3/2`.
+
+**(3,2,3)** [root `M=(3,2,3)`, `minAdm=5`, `λ=5/2`, strata {(0,0)→6, (1,0)→5, (2,0)→6}]:
+- ROOT: C1 blow-up, `split.red = schurState (3,2,3) = (2,1,3)` (`ΣM` 8→6). Binding cell `T=(1,0)`,
+  `codim = Mval((3,2,3),(1,0)) = 5 = minAdm` (the achiever); other cell `T=(0,0)` codim 6. RECURSE on
+  `(2,1,3)` until the unit leaf. `codimsOf(achiever) ∋ 5` ⟹ binding ratio `5/2 = λ(3,2,3)` ✓. PivotWitness:
+  `T=(1,0)∈Adm`, codim 5=Mval=minAdm ✓.
+
+Both spell-outs type-check against `branch (split, codim, witness : PivotWitness)`: each cell gives
+`(schurState split, (Mval M T).toNat codim, ⟨T, hAdm, hCodim⟩ witness)`; the leaf is `MonoData` (unit). The
+transport is the light `node_loss_pivot_factor` (the `pivotBlowupOn` `x_p²·reduced`), discharged at the
+cover-fact, NOT spelled per cell. `codimsOf = exceptional Mvals`; the value via `foldFamily_*`. **Consistent
+with @b8d3146 — transcription-ready.** This is the (2,2,2) anchor (reproduces Case222Resolution exactly) +
+the (3,2,3) second case; the general recipe (§1) + the per-node PivotWitness (§2, g190) + the achiever i₀
+(§4, g147/g148) wire the same way once `classify`/`PivotChoice` un-stub.
