@@ -242,3 +242,15 @@ transcription (pp2 g148) lands by folding _le_binding at the binding node + _ge 
 leaf (leafMonoData_threshold) — le_antisymm gives = m₀/2. The MonoData accumulator is fm's regardless
 (Codex #3: fm owns the leaf data accumulator + threshold proofs; only the state-transition DRIVER may
 rebase onto crux2's ChainDimSplit).
+
+PER-PATH FOLD BANKED (@origin/fm3/routem a446bcd): the closed-form per-leaf value.
+- `MonoData.foldDivisors cs` : fold appendDivisor over a codim list (one path's appends).
+- `ratioMinFold cs` (+ _nil/_cons) : ℝ≥0∞ min-fold of the ratios c/2.
+- `monomialThreshold_foldDivisors` : monomialThreshold (foldDivisors cs) = ratioMinFold cs.
+- `ratioMinFold_le_of_mem` / `ratioMinFold_ge_of_all_ge` : the two list-min bounds.
+- `monomialThreshold_foldDivisors_eq_of_binding` : all-codim ≥ m₀ ∧ m₀ ∈ cs ⟹ threshold = m₀/2.
+  ⟹ the IsResolutionAtlas achiever VALUE, in Lean, for one reduction path (pp2 g148 transcribed).
+SESSION STATE (g155): hMid threaded (6f4e70f) + full value-side bedrock (3b2ba20→a446bcd), all green
+sorry-free clean-three(+monomial_rlct). RouteMTree.lean stays UNCOMMITTED (all-stub) pending the seam
+decision — do NOT bank the parallel RouteState recursion until controller+crux2 confirm the driver
+(rebase onto ChainDimSplit vs standalone). The recursion DRIVER is the only piece blocked.
