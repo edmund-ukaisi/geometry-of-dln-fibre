@@ -146,4 +146,39 @@ theorem layer_schur_blockDiag {r m : Type*} [Fintype r] [DecidableEq r] [Fintype
   · -- (1,1): 0·(−⅟(1+X)·Y) + (T−Z⅟(1+X)·Y)·1 = T − Z⅟(1+X)·Y
     rw [Matrix.zero_mul, Matrix.mul_one, zero_add]
 
+/-- **The core-shear homeomorphism** (the `coreAbsorb` packaging, part (a)). Given a continuous
+`shift : Spec → Core` (the gauge-dependent Schur correction `S_s − T_s = −Z_s(I+X_s)⁻¹Y_s`, a
+function of the gauge coords alone), `(reg, core, spec) ↦ (reg, core + shift spec, spec)` on
+`Reg × (Core × Spec)` is a homeomorphism fixing reg+spec, inverse `core ↦ core − shift spec`. The
+genuine `coreAbsorb` shear (`T_s ↦ S_s = T_s − Z(I+X)⁻¹Y`); `shift` is abstract so the producer (the
+gauge slice) supplies the concrete `−Z(I+X)⁻¹Y`. -/
+def coreShearHomeo {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [AddCommGroup Core] [TopologicalSpace Core] [IsTopologicalAddGroup Core]
+    [TopologicalSpace Spec] (shift : Spec → Core) (hshift : Continuous shift) :
+    (Reg × (Core × Spec)) ≃ₜ (Reg × (Core × Spec)) where
+  toFun := fun q => (q.1, (q.2.1 + shift q.2.2, q.2.2))
+  invFun := fun q => (q.1, (q.2.1 - shift q.2.2, q.2.2))
+  left_inv := fun q => by simp
+  right_inv := fun q => by simp
+  continuous_toFun := by
+    have hs : Continuous fun q : Reg × (Core × Spec) => q.2.2 := continuous_snd.comp continuous_snd
+    refine continuous_fst.prodMk (Continuous.prodMk ?_ hs)
+    exact (continuous_fst.comp continuous_snd).add (hshift.comp hs)
+  continuous_invFun := by
+    have hs : Continuous fun q : Reg × (Core × Spec) => q.2.2 := continuous_snd.comp continuous_snd
+    refine continuous_fst.prodMk (Continuous.prodMk ?_ hs)
+    exact (continuous_fst.comp continuous_snd).sub (hshift.comp hs)
+
+/-- `coreShearHomeo` fixes the regular slot. -/
+theorem coreShearHomeo_regular {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [AddCommGroup Core] [TopologicalSpace Core] [IsTopologicalAddGroup Core]
+    [TopologicalSpace Spec] (shift : Spec → Core) (hshift : Continuous shift)
+    (q : Reg × (Core × Spec)) : (coreShearHomeo shift hshift q).1 = q.1 := rfl
+
+/-- `coreShearHomeo` fixes the spectator slot. -/
+theorem coreShearHomeo_spectator {Reg Core Spec : Type*}
+    [TopologicalSpace Reg] [AddCommGroup Core] [TopologicalSpace Core] [IsTopologicalAddGroup Core]
+    [TopologicalSpace Spec] (shift : Spec → Core) (hshift : Continuous shift)
+    (q : Reg × (Core × Spec)) : (coreShearHomeo shift hshift q).2.2 = q.2.2 := rfl
+
 end DLNFibre.DLN.RLCT
