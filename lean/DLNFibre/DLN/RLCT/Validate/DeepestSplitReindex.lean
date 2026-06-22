@@ -233,10 +233,13 @@ At the deepest point, a measure-preserving homeomorphism
 to the split origin `0`, with `nGauge = deepestNGauge H r`. Per g159: `split = translation by
 −flatDeepest, then a coordinate reindex (an honest finite-index `Equiv`), then unpacking `⊕` into the
 product`. MP via translation invariance (`measurePreserving_sub_right`) + `volume_preserving_arrowCongr'`
-(relabel, det = ±1) + `volume_preserving_sumPiEquivProdPi` (the product unpack). The slot semantics
-(regular = g125 pivots, core = raw `T_s` blocks `= FlatIdx (deepestM H r)`, spectators = rest) are
-NOT pinned by these three fields — they are pinned by `loss_squeeze` (cobuild-sub34's), so this lemma
-delivers the MP/basepoint structure for ANY index partition of the right cardinalities. -/
+(relabel, det = ±1) + `volume_measurePreserving_sumPiEquivProdPi` (the product unpack).
+
+**The reindex is ROLE-RESPECTING** (the controller's precision pin): it is `deepestRoleIndexEquiv`, NOT
+an arbitrary `equivOfCardEq` — the **core slot** is exactly the reduced `T`-blocks `= FlatIdx (deepestM
+H r)` (type-forced), the regular/spectator slots the gauge `X/Y/Z` entries. So the slots carry the role
+semantics the absorptions consume (`coreAbsorb` reads the `T`-core, `regAbsorb` reads the gauge entries
+for `E`); a wrong (arbitrary) grouping would break them. -/
 theorem deepestSplit_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (wstar : Fin (flatDim H) → ℝ) :
@@ -246,15 +249,9 @@ theorem deepestSplit_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
   set nReg := deepestNReg H r
   set nM := flatDim (deepestM H r)
   set nG := deepestNGauge H r
-  -- (1) The honest finite-index partition `Fin (flatDim H) ≃ Fin nReg ⊕ (Fin nM ⊕ Fin nG)`.
-  have hcard : Fintype.card (Fin (flatDim H))
-      = Fintype.card (Fin nReg ⊕ (Fin nM ⊕ Fin nG)) := by
-    simp only [Fintype.card_fin, Fintype.card_sum]
-    have h := flatDim_deepest_split H r hr hL
-    -- `nG = flatDim H − nReg − nM`; rearrange `nReg + nM + (…) = nReg + (nM + …)`.
-    simp only [nReg, nM, nG, deepestNGauge]
-    omega
-  let eIdx : Fin (flatDim H) ≃ Fin nReg ⊕ (Fin nM ⊕ Fin nG) := Fintype.equivOfCardEq hcard
+  -- (1) The ROLE-RESPECTING finite-index partition (the precision pin): the middle slot is the reduced
+  -- `T`-core (`= FlatIdx (deepestM)`), NOT an arbitrary `equivOfCardEq`. `deepestRoleIndexEquiv`.
+  let eIdx : Fin (flatDim H) ≃ Fin nReg ⊕ (Fin nM ⊕ Fin nG) := deepestRoleIndexEquiv H r hr hL
   -- (2) translation (MP, sends wstar ↦ 0), (3) relabel, (4) unpack `⊕` into the product.
   let tHom : (Fin (flatDim H) → ℝ) ≃ₜ (Fin (flatDim H) → ℝ) := Homeomorph.subRight wstar
   let relabel : (Fin (flatDim H) → ℝ) ≃ₜ (Fin nReg ⊕ (Fin nM ⊕ Fin nG) → ℝ) :=
