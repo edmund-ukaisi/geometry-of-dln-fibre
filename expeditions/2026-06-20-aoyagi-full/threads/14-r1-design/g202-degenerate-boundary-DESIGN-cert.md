@@ -89,3 +89,38 @@ single-orbit structural argument, NOT on the consult. A future decorrelated pass
 is elementary and self-checked). Builds on the headline-fidelity audit (the value verified), L2's
 smooth-block primitive (the reuse target), `block_elimination` (the rank-`r` normal form), the
 `r(H_0+H_L−r)` codim (the orbit-dim complement).
+
+---
+
+## FLAT-COMPLEMENT DECOMPOSITION (sharpened, #70 follow, pp-hall, 2026-06-22) — flat dim = r²·(L−1) = pure gauge
+
+The controller's dispatch framed the flat complement as "vanished-core [the M_s=0 layer's null dirs] +
+gauge orbit." Sharpened (verified `g203`): **at the degenerate boundary, the flat complement is PURE
+gauge — `flat dim = ambient − nReg = r²·(L−1)`** (the `GL_r` orbit at each of the `L−1` interior layer
+junctions), with NO separate vanished-core term. Verified across all cases:
+
+| H | r | L | ambient | nReg | flat = ambient−nReg | gauge = r²·(L−1) | match |
+|---|---|---|---|---|---|---|---|
+| (3,1,3) | 1 | 2 | 6 | 5 | 1 | 1 | ✓ |
+| (2,1,2) | 1 | 2 | 4 | 3 | 1 | 1 | ✓ |
+| (3,1,1,3) | 1 | 3 | 7 | 5 | 2 | 2 | ✓ (two interior `M_s=0`) |
+| (2,2) | 2 | 1 | 4 | 4 | 0 | 0 | ✓ (no interior) |
+| (3,1,1) | 1 | 2 | 4 | 3 | 1 | 1 | ✓ |
+| (2,1,3) | 1 | 2 | 5 | 4 | 1 | 1 | ✓ |
+
+**Reconciliation of the two framings (both correct):**
+- In the **BULK** (`M_s ≥ 1`): the flat complement = the gauge orbit + the (singular) reduced core's
+  tangent directions (the fibre is singular, the core adds degenerate normal directions).
+- At the **BOUNDARY** (`M_s = 0`): the reduced core is EMPTY, so the flat complement = the gauge orbit
+  ONLY. The fibre `{∏C = B}` near the deepest IS the single `GL_r`-orbit (g201: the width-`r` bottleneck
+  makes all rank-`r` factorizations gauge-equivalent), and its tangent = the gauge directions. The
+  dispatch's "vanished-core null dirs" are the `M_s=0` layer's directions that don't move `∏C` — but these
+  are absorbed into the `GL_r` action at the bottleneck (the width-`r` layer's full gauge), NOT a separate
+  flat summand. So `flat = r²·(L−1)` exactly, no extra term.
+
+This makes deliverable (ii) exact: the flat complement is the gauge orbit, dimension `r²·(L−1)`, genuinely
+flat (loss `≡ 0` along it, §(ii) above). The Hessian rank `nReg = ambient − flat = Σ_s H_s H_{s+1} −
+r²·(L−1)` — and independently `nReg = r(H_0 + H_L − r)`; these agree at the boundary (the interior-junction
+contributions to `ambient` are exactly cancelled by the gauge, leaving the two endpoints' `r(H_0+H_L−r)`).
+For the formaliser: the flat dimension is the gauge-group dimension `r²·(L−1)` (a clean closed form), the
+nondegenerate rank is `nReg`, and `rlctAt = nReg/2`.
