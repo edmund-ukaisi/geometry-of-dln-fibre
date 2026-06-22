@@ -51,3 +51,21 @@ equals `‖U_bdry · (∏C_s − blockdiag[I,0]) · V_bdry‖²` in framed coord
 invertible boundary factors `U_bdry, V_bdry`. Those bounded factors are part of the squeeze constants
 `c₁, c₂`. So the frame is not cosmetic — getting its locus right (a, in gaugeDecode) is what makes
 the squeeze well-posed.
+
+## RESOLVED (controller, decisive): option (a), frame = CONSTANT unit-Jacobian iso
+
+The controller confirmed **(a)** with the decisive reason: **(b) breaks `split_mp`** — the gauge
+frame's flat-space determinant is `∏_s det(P_s)^{cols}·det(Q_s)^{rows} ≠ 1` in general, so a
+frame-incorporating split is NOT measure-preserving (sub-6's `rlctAtOn_comp_homeomorph` needs
+`split_mp`). `split` MUST stay the pure MP index reindex; the frame lives in `gaugeDecode`.
+
+Key refinement (controller): the frame is a **CONSTANT linear iso** — evaluated at the FIXED deepest
+point, it does not vary with `w` — so its Jacobian is a nonzero constant (unit). Hence:
+
+    gaugeDecode = roleSplit ∘ frame ∘ (split.symm − deepestFlat),
+
+where `frame ∘ (· − deepestFlat)` is a global AFFINE iso (constant det ≠ 0), and
+`regAbsorb = (the nonlinear E-straightening Ψ) ∘ (the constant affine frame)` is a unit-Jacobian
+local diffeo — peels via `#72` (same machinery as the E-map alone). The frame part is even simpler
+than `Ψ`: a global affine iso, det = nonzero constant. Build target cleared; gated only on crux2
+exposing the per-layer frame `(P_s, Q_s)` + the `RegGaugeIdx` slot roles.
