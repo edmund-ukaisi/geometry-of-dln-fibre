@@ -1130,26 +1130,36 @@ theorem flatDelta_eq_finsum {n : ℕ} (b : Fin n → ℕ) (x : Fin (n + 1) → �
   induction n with
   | zero => rw [flatDelta]; simp
   | succ n ih =>
-    rw [flatDelta_succ, ih (Fin.tail b) (Fin.tail x), Fin.sum_univ_succ]
+    -- split the RHS outer sum over `a : Fin (n+2)` at `a = 0`
+    rw [Fin.sum_univ_succ (f := fun a : Fin (n + 1) ↦ ∑ u : Fin (n + 2),
+        if a.castSucc < u then ((b a : ℤ) - x a.castSucc) * x u else 0)]
+    rw [flatDelta_succ, ih (Fin.tail b) (Fin.tail x)]
     congr 1
-    · -- a = 0 row: the cond holds exactly for u = u'.succ
-      rw [Fin.castSucc_zero, Fin.sum_univ_succ, if_neg (lt_irrefl _), zero_add, Finset.mul_sum]
+    · -- a = 0 row: RHS sum picks u = u'.succ; pull `(b0-x0)` out, match the block tail-sum
+      rw [Finset.mul_sum, Fin.castSucc_zero,
+        Fin.sum_univ_succ (f := fun u : Fin (n + 2) ↦
+          if (0 : Fin (n + 2)) < u then ((b 0 : ℤ) - x 0) * x u else 0),
+        if_neg (lt_irrefl _), zero_add]
       refine Finset.sum_congr rfl fun u _ ↦ ?_
       rw [if_pos (Fin.succ_pos u)]
     · -- a = a'.succ rows reindex to the tail finsum (shift u = u'.succ)
       refine Finset.sum_congr rfl fun a' _ ↦ ?_
-      rw [Fin.sum_univ_succ, if_neg (not_lt_of_le (Fin.zero_le _)), zero_add]
+      rw [Fin.sum_univ_succ (f := fun u : Fin (n + 2) ↦
+          if a'.succ.castSucc < u then ((b a'.succ : ℤ) - x a'.succ.castSucc) * x u else 0),
+        if_neg (not_lt.mpr (Fin.zero_le _)), zero_add]
       refine Finset.sum_congr rfl fun u _ ↦ ?_
-      rw [← Fin.succ_castSucc, Fin.succ_lt_succ_iff]
+      have hcond : (a'.succ.castSucc < u.succ) ↔ (a'.castSucc < u) := by
+        rw [← Fin.succ_castSucc, Fin.succ_lt_succ_iff]
       by_cases h : a'.castSucc < u
-      · rw [if_pos h, if_pos h, Fin.tail, Fin.tail, Fin.tail, Fin.succ_castSucc]
-      · rw [if_neg h, if_neg h]
+      · rw [if_pos (hcond.mpr h), if_pos h, Fin.tail, Fin.tail, Fin.tail, Fin.succ_castSucc]
+      · rw [if_neg (fun hc ↦ h (hcond.mp hc)), if_neg h]
 
 /-- **The exponent bridge**: the `innerSum` codimForm exponent (an `Icc`-indexed ℤ pairing of
 `rebuild`'s last two columns) equals `flatDelta (N+1) (col) x` of the column-`N` data. The two
 `extendℤ_rebuild` eval lemmas turn the `extendℤ` entries into `colₐ − xₐ` and `x_u`; the `Icc`-to-`Fin`
 reindex (`i ↦ ⟨(i−1).toNat⟩`, inner via `Finset.sum_filter`) matches `flatDelta_eq_finsum`. -/
-theorem innerSum_exp_eq_flatDelta (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) :
+theorem innerSum_exp_eq_flatDelta (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ)
+    (hxbound : ∀ I' : Fin (N + 1), x I'.castSucc ≤ m' (I', Fin.last N)) :
     (∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
         extendℤ (rebuild m' x) (i - 1) (N : ℤ) * extendℤ (rebuild m' x) u ((N : ℤ) + 1))
       = flatDelta (N + 1) (fun i : Fin (N + 1) ↦ m' (i, Fin.last N)) x := by
@@ -1158,41 +1168,38 @@ theorem innerSum_exp_eq_flatDelta (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x :
   refine Finset.sum_bij' (fun i hi ↦ (⟨(i - 1).toNat, by rw [Finset.mem_Icc] at hi; omega⟩ : Fin (N + 1)))
     (fun a _ ↦ (a : ℤ) + 1) ?_ ?_ ?_ ?_ ?_
   · intro i _; exact Finset.mem_univ _
-  · intro a _; rw [Finset.mem_Icc]; have := a.isLt; omega
-  · intro i hi; rw [Finset.mem_Icc] at hi; simp only [Fin.val_mk]; omega
-  · intro a _; apply Fin.ext; simp only [Fin.val_mk]; omega
+  · intro a _; simp only; rw [Finset.mem_Icc]; have := a.isLt; omega
+  · intro i hi; simp only [Fin.val_mk]; rw [Finset.mem_Icc] at hi; omega
+  · intro a _; simp only; apply Fin.ext; simp only [Fin.val_mk]; have := a.isLt; omega
   · -- term: inner Icc sum at i = guarded Fin sum at a = ⟨(i-1).toNat⟩
     intro i hi
     rw [Finset.mem_Icc] at hi
+    simp only
     set a : Fin (N + 1) := ⟨(i - 1).toNat, by omega⟩ with ha
     -- rewrite the LHS first factor via the colN eval lemma (independent of u)
+    have haeq : (⟨(i - 1).toNat, by omega⟩ : Fin (N + 1)) = a := by rw [ha]
+    -- the truncated ℕ-subtraction = the ℤ-subtraction, since `x a.castSucc ≤ m' (a, last N)`
     have hcolN : extendℤ (rebuild m' x) (i - 1) (N : ℤ)
-        = ((m' (a, Fin.last N) - x a.castSucc : ℕ) : ℤ) := by
-      rw [extendℤ_rebuild_colN m' x (i - 1) (by omega) (by omega)]
-      norm_cast
-      congr 2
-      · apply Fin.ext; simp only [ha, Fin.val_mk]
-      · apply Fin.ext; simp only [ha, Fin.val_mk, Fin.coe_castSucc]
+        = ((m' (a, Fin.last N) : ℤ) - x a.castSucc) := by
+      rw [extendℤ_rebuild_colN m' x (i - 1) (by omega) (by omega), haeq, Nat.cast_sub (hxbound a)]
     -- convert the guarded Fin sum to a filtered sum
     rw [← Finset.sum_filter]
     -- inner reindex Icc i (N+1) → (univ).filter (a.castSucc < ·), u ↦ ⟨u.toNat⟩, ufin ↦ ufin
     refine Finset.sum_bij' (fun u hu ↦ (⟨u.toNat, by rw [Finset.mem_Icc] at hu; omega⟩ : Fin (N + 2)))
       (fun ufin _ ↦ (ufin : ℤ)) ?_ ?_ ?_ ?_ ?_
-    · intro u hu; rw [Finset.mem_Icc] at hu
+    · intro u hu; simp only; rw [Finset.mem_Icc] at hu
       rw [Finset.mem_filter]
       refine ⟨Finset.mem_univ _, ?_⟩
-      rw [Fin.lt_def, Fin.coe_castSucc]; simp only [ha, Fin.val_mk]; omega
-    · intro ufin hufin; rw [Finset.mem_filter] at hufin
+      rw [Fin.lt_def, Fin.coe_castSucc, ha]; simp only [Fin.val_mk]; omega
+    · intro ufin hufin; simp only; rw [Finset.mem_filter] at hufin
       rw [Finset.mem_Icc]
-      have hlt := hufin.2; rw [Fin.lt_def, Fin.coe_castSucc] at hlt
-      simp only [ha, Fin.val_mk] at hlt
+      have hlt := hufin.2; rw [Fin.lt_def, Fin.coe_castSucc, ha] at hlt
+      simp only [Fin.val_mk] at hlt
       have := ufin.isLt; constructor <;> omega
-    · intro u hu; rw [Finset.mem_Icc] at hu; simp only [Fin.val_mk]; omega
-    · intro ufin _; apply Fin.ext; simp only [Fin.val_mk]
-    · intro u hu; rw [Finset.mem_Icc] at hu
+    · intro u hu; simp only [Fin.val_mk]; rw [Finset.mem_Icc] at hu; omega
+    · intro ufin _; simp only; apply Fin.ext; simp only [Fin.val_mk, Int.toNat_natCast]
+    · intro u hu; simp only; rw [Finset.mem_Icc] at hu
       rw [hcolN, extendℤ_rebuild_colNp1 m' x u (by omega) (by omega)]
-      congr 2
-      apply Fin.ext; simp only [Fin.val_mk]
 
 /-- **(Q), general form**: `qSum b d = transferRHS (List.ofFn b) d` — the flat q-sum equals the
 last-column transfer. Induction on `n`: base `qSum [] d = P d`; step peels the first block via
