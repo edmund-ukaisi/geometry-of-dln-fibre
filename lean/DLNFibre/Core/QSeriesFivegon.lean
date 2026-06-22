@@ -940,4 +940,10 @@ theorem Pm_rebuild_factor (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N 
       rw [Finset.mem_filter] at hq
       simp only [if_neg hq.2, Nat.sub_zero]
 
+/-- The `toNat` exponent split for the per-fibre collapse: `X^{(A+Δ).toNat} = X^{A.toNat}·X^{Δ.toNat}`
+when `A, Δ ≥ 0`. -/
+theorem X_pow_toNat_add (A Δ : ℤ) (hA : 0 ≤ A) (hΔ : 0 ≤ Δ) :
+    (X : ℤ⟦X⟧) ^ (A + Δ).toNat = X ^ A.toNat * X ^ Δ.toNat := by
+  rw [Int.toNat_add hA hΔ, pow_add]
+
 end DLNFibre.Core
