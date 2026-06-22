@@ -53,12 +53,12 @@ reworking sub-5/6/7. Both share the route-INDEPENDENT foundation (local gauge c-
 - fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
   confirmed cover-fact signatures = the contract). Achiever = `_le_regularSeq` at j₀ (card=m₀ min-ratio axis) +
   threshold_ge, bundled by of_mult_and_achiever; binding axis = ⨅ over multiple C1 axes.
-- crux2 #50 (value-free reduction, consuming side) on origin/fm2/deepest-gauge-chart (@9ed57e5): S1
-  spectator-peel `rlctAtOn_spectator_peel` (Foundations/S1Spectator.lean — gauge-orbit spectator dirs are
-  RLCT-neutral) **PROVEN, axiom-clean** (#52; the hard piece of sub-6/7, reused by D1 #42); sub-2 (rank-exact)
-  PROVEN. sub-6/7 assembly (~80-120 lines) reachable; sub-5 non-MP transport back IN PLAY under the chart default
-  (crux2 builds it to consume cobuild-sub34's chart). Two cert gaps found by building: hGne (reduced-chain
-  non-degeneracy — discharge-vs-stated-headline-hypothesis TRACKED) + Measurable(dlnLoss M 0) (Codex on prodAux cast).
+- crux2 #50 (value-free reduction, consuming side) on origin/fm2/deepest-gauge-chart (@781dffc): PROVEN
+  (clean-three) — spectator-peel #52, continuous_prodAux/_prod/_dlnLoss (reusable bedrock), sub-2, sub-6
+  (`deepest_regular_smooth_split`), sub-7, the assembly `deepest_regular_core_reduces` = 4/7 + assembly + 2
+  Foundations lemmas. GATED on just sub-3/4 (cobuild-sub34) + sub-5 (crux2's next, the chart non-MP transport).
+  Cert gaps: #2 Measurable(dlnLoss M 0) CLOSED (Codex g151 prodAux cast idiom); hGne carried as a local
+  hypothesis → discharge-vs-stated-headline TRACKED for spine-wiring.
 - cobuild-sub34 #51 (sub-3/4): the shared route-INDEP foundation (gauge c-o-v + loss decomposition + matrix
   comparability ‖T·g·S‖² ≍ dlnLoss M 0) now, then R-S1.1 chart-existence (cutoff-extension + Dchart + jac_unit +
   loss_form germ) — own worktree (workspace/dgc-sub34) off origin/fm2/deepest-gauge-chart. pp2 =
