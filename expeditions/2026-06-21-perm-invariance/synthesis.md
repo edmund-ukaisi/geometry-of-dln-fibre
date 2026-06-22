@@ -247,12 +247,15 @@ REMAINING per-fibre collapse (two pieces):
       = [codimForm_rebuild + X_pow_toNat_add (Δ≥0 by delta_nonneg(rebuild), c(m')≥0 by codimForm_extendℤ_nonneg)] X^{c(m').toNat}·X^{Δ.toNat}·Pm(N+1)(rebuild)
       = [Pm_rebuild_factor] X^{c(m').toNat}·X^{Δ.toNat}·(∏P x)·(∏P(b−x))·lowerPm; factor out X^{c(m').toNat}·lowerPm (Finset.mul_sum) →
       = X^{c(m').toNat}·lowerPm·innerSum, innerSum := ∑_{x∈admissibleXs} X^{Δ(rebuild x).toNat}·(∏_I P(x I))·(∏_{I'} P(b_{I'}−x_{I'.castSucc})).
-  (Q) innerSum = transferRHS (List.ofFn b) d_last [THE hard induction, ~100 lines]. (a) Δ(rebuild x).toNat = natΔ via colN/colNp1 evals
-      INSIDE a sum_congr (Fin proofs need the Icc range hyps — can't be a standalone-RHS lemma); natΔ = ∑_{a<u}(b_a−x_a)x_u.
-      (b) reorganize admissibleXs (x:Fin(N+2)→ℕ, ∑x=d, x_i≤b_i) into a peel of x_0 (constrained-vector recursion — the hard combinatorial
-      step; ∑x=d couples head+tail) MIRRORING transferRHS recursion; Δ per-step split Δ=(b_0−x_0)(d−x_0)+Δ' (pure ring, thread-04);
-      durfee per step. transferRHS_eq [LANDED] gives = P(d_last)·(b.map P).prod; listOfFn_col_prod [LANDED] → ∏P(b); lowerPm·∏P(b)=Pm N m' [S3a].
-  Final per-fibre: X^{c(m').toNat}·lowerPm·transferRHS = X^{c(m').toNat}·lowerPm·P(d_last)·∏P(b) = X^{c(m').toNat}·P(d_last)·Pm N m'.
+  (P) DONE [commit after edbfac8]: perfibre_reduces — ∑_{fibre} X^{codim(N+1)(extendℤ m).toNat}·Pm(N+1)m = X^{codim N(extendℤ m').toNat}·lowerPm m'·innerSum m' d_last.
+      innerSum m' dlast := ∑_{x∈admissibleXs m' dlast} X^{Δ(rebuild x).toNat}·(∏_I P(x I))·(∏_{I'} P(m'(I',last N)−x I'.castSucc)) [DEF landed].
+  (Q) innerSum m' dlast = transferRHS (List.ofFn (fun i=>m'(i,last N))) dlast [THE hard induction, ~100 lines, ONLY remaining per-fibre gap].
+      TOOLS: Mathlib `Finset.piAntidiag (s) (n)` = {f:ι→μ | supp⊆s, ∑_s f = n} with `piAntidiag_cons (hi:i∉s) (n)` recursion (Mathlib/Algebra/Order/Antidiag/Pi.lean).
+      ROUTE: (a) Δ(rebuild x).toNat = natΔ via colN/colNp1 evals INSIDE a sum_congr (Fin proofs need the Icc range hyps — fold into the proof, not standalone); natΔ = ∑_{a<u}(b_a−x_a)x_u.
+      (b) bridge admissibleXs (piFinset(range(boundX+1)).filter(∑=d)) ↔ peelable form; induct on N (generalize m',dlast), peel x_0 via piAntidiag_cons (bound x_0≤b_0 from boundX,
+      x_0≤d from residual → range = min b_0 d, matching transferRHS); Δ per-step split Δ=(b_0−x_0)(d−x_0)+Δ' (pure ring, thread-04); durfee per step → IH.
+      transferRHS_eq [LANDED] = P(d_last)·(b.map P).prod; listOfFn_col_prod [LANDED] → ∏P(b); lowerPm·∏P(b)=Pm N m' [S3a, Pm_eq_colN_mul_lower].
+  Final per-fibre (P)+(Q)+S3a: X^{c(m').toNat}·lowerPm·transferRHS = X^{c(m').toNat}·lowerPm·P(d_last)·∏P(b) = X^{c(m').toNat}·P(d_last)·Pm N m'.
 SESSION 2026-06-22 banked (all green, axiom-clean, pushed, ~26 lemmas): codimForm split (a340e01), Step E/explicit Δ (c35d2f3),
 the ENTIRE last-column bijection (0ce9200 — flagged crux), codimForm_rebuild, Pmult_succ, listOfFn_col_prod, S3a, S3b, S2, S4 entry evals.
 ALL of fivegon's content EXCEPT the inner-sum induction (Q) + outer induction (S5). Then M4 (Thm 5.5), M6 (Cor 5.10).
