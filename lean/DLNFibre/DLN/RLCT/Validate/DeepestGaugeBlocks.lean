@@ -107,4 +107,43 @@ theorem core_comparability_squeeze {ι κ : Type*} [Fintype ι] [Fintype κ]
   simp only [hsplit]
   exact squeeze_bounds_abstract E leak Rcore t hleak
 
+/-- **The per-layer Schur block-diagonalisation** (#44c, g156 / #61 — the corrected `coreAbsorb`
+core object). A gauge layer `C = fromBlocks (1+X) Y Z T` with invertible `(0,0)` corner
+block-diagonalises by the unipotent transvections `L = [[1,0],[−Z⅟(1+X),1]]`,
+`R = [[1,−⅟(1+X)Y],[0,1]]` to `blockdiag[(1+X), S]`, where `S = T − Z·⅟(1+X)·Y` is the **per-layer
+Schur complement** — the honest reduced block (#61 CORRECTION: NOT the multiplicative unit
+`T·(I−VY)⁻¹`, which is `0` whenever `T=0`; the additive Schur `S` is nonzero when `T=0` but `Z,Y≠0`,
+the g153 case). The general-pivot analog of `hardPivot_schur_blockId` (pivot `= 1`). -/
+theorem layer_schur_blockDiag {r m : Type*} [Fintype r] [DecidableEq r] [Fintype m] [DecidableEq m]
+    {R : Type*} [CommRing R]
+    (X : Matrix r r R) (Y : Matrix r m R) (Z : Matrix m r R) (T : Matrix m m R)
+    [Invertible (1 + X : Matrix r r R)] :
+    Matrix.fromBlocks (1 : Matrix r r R) (0 : Matrix r m R) (-(Z * ⅟(1 + X))) 1
+        * Matrix.fromBlocks (1 + X) Y Z T
+        * Matrix.fromBlocks (1 : Matrix r r R) (-(⅟(1 + X) * Y)) (0 : Matrix m r R) 1
+      = Matrix.fromBlocks (1 + X) (0 : Matrix r m R) (0 : Matrix m r R) (T - Z * ⅟(1 + X) * Y) := by
+  have hr1 : (1 + X : Matrix r r R) * ⅟(1 + X) = 1 := mul_invOf_self _
+  have hl1 : ⅟(1 + X : Matrix r r R) * (1 + X) = 1 := invOf_mul_self _
+  -- Step 1: `L · C = fromBlocks (1+X) Y 0 (T − Z⅟(1+X)·Y)` (clear the lower-left).
+  have hLC : Matrix.fromBlocks (1 : Matrix r r R) (0 : Matrix r m R) (-(Z * ⅟(1 + X))) 1
+        * Matrix.fromBlocks (1 + X) Y Z T
+      = Matrix.fromBlocks (1 + X) Y (0 : Matrix m r R) (T - Z * ⅟(1 + X) * Y) := by
+    rw [Matrix.fromBlocks_multiply]
+    congr 1
+    · simp
+    · simp
+    · -- (1,0): −Z⅟(1+X)·(1+X) + 1·Z = 0
+      rw [Matrix.one_mul, Matrix.neg_mul, Matrix.mul_assoc, hl1, Matrix.mul_one, neg_add_cancel]
+    · -- (1,1): −Z⅟(1+X)·Y + 1·T = T − Z⅟(1+X)·Y
+      rw [Matrix.one_mul, Matrix.neg_mul]; abel
+  -- Step 2: `(L·C) · R = fromBlocks (1+X) 0 0 (T − Z⅟(1+X)·Y)` (clear the upper-right).
+  rw [hLC, Matrix.fromBlocks_multiply]
+  congr 1
+  · simp
+  · -- (0,1): (1+X)·(−⅟(1+X)·Y) + Y·1 = −(1+X)⅟(1+X)·Y + Y = 0
+    rw [Matrix.mul_one, Matrix.mul_neg, ← Matrix.mul_assoc, hr1, Matrix.one_mul, neg_add_cancel]
+  · simp
+  · -- (1,1): 0·(−⅟(1+X)·Y) + (T−Z⅟(1+X)·Y)·1 = T − Z⅟(1+X)·Y
+    rw [Matrix.zero_mul, Matrix.mul_one, zero_add]
+
 end DLNFibre.DLN.RLCT
