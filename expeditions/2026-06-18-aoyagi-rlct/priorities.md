@@ -214,10 +214,14 @@ Current Eq5 endpoint counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
 Current Eq5 endpoint filtered cardinality slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-filtered-cardinality-a5.md`.
+Current Eq5 endpoint strict filtered cardinality slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-strict-filtered-cardinality-a5.md`.
 Current Eq5 value-label branch-injection slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`.
 Current Eq5 branch-coordinate/value cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
+Current Eq5 endpoint-to-terminal branch-coordinate slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-to-terminal-branchcoord-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -345,6 +349,22 @@ depends on supplied strict alpha injectivity and component-coordinate facts.
 It is not source branch construction, source-label legality, base-filter
 survival for source records, source-backed no-extra coverage, pole order,
 normal crossings, or RLCT.
+
+Lean now also exposes the strictest one-coordinate filtered endpoint count:
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_strict_branch_card_eq_intervalSize_sub_one`.
+This only specializes the filtered supplied-family count to the strictest
+endpoint constructor.  It does not prove source branch construction,
+base-filter survival, terminal-minimum label counting, no-extra coverage, pole
+order, normal crossings, or RLCT.
+
+Lean now also transports branch-coordinate correctness from the strictest Eq5
+endpoint constructor into a supplied terminal-candidate family under an
+explicit equality
+`TC.family.toAoyagiLemma5SuppliedNonbaseFamily = ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord ...`.
+The selected-block wrapper additionally uses a supplied left-endpoint
+`branchS` formula.  This is interface alignment only; endpoint counts are
+still not terminal-minimum counts, and no source-backed no-extra coverage,
+pole order, normal crossings, or RLCT follows.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.

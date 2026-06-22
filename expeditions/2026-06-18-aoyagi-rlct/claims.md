@@ -2797,6 +2797,24 @@ No such claim is formalisation-ready until both fields are filled.
   coordinates or labels from source, prove direct counted-datum back-to-label
   coverage, prove source-backed no-extra coverage, or prove a Lemma 5 order
   count.
+  Also proved
+  `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_strict_branch_card_eq_intervalSize_sub_one`.
+  This specializes the one-coordinate filtered count to the strictest Eq5
+  endpoint constructor, still only counting filtered supplied branches after
+  the supplied base value is erased.  It does not prove source branch
+  construction, base-filter survival, terminal-minimum labels, no-extra
+  coverage, or a Lemma 5 order count.
+  Also proved
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchCoord_of_toNonbase_eq_eq5EndpointCoverage`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchBlock_of_toNonbase_eq_eq5EndpointCoverage_leftEndpoint`.
+  These transport branch-coordinate correctness from the strictest endpoint
+  constructor into a terminal-candidate family under an explicit nonbase-family
+  equality, then use a supplied left-endpoint `branchS` formula to derive the
+  selected-block input.  They do not construct endpoint branches from source,
+  prove source labels or terminal Eq5 payloads, identify terminal-minimum
+  labels with endpoint branches, prove no-extra coverage, or prove a Lemma 5
+  order count.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

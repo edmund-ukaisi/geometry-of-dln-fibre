@@ -4906,6 +4906,41 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
 
+Latest A5 Eq5 strict endpoint filtered-cardinality update:
+`Lemma5Eq5SuppliedCoverage.lean` now also contains
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_strict_branch_card_eq_intervalSize_sub_one`.
+This closes the endpoint API asymmetry by specializing the one-coordinate
+filtered count to the strictest endpoint constructor, discharging raw value
+injectivity from supplied strict alpha injectivity and raw disjointness from
+supplied component-coordinate facts.  It counts only filtered supplied
+coordinate branches, not source records or terminal-minimum labels.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-strict-filtered-cardinality-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-strict-filtered-cardinality.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-strict-filtered-and-terminal-branchcoord-a5.md`.
+
+Latest A5 Eq5 endpoint-to-terminal branch-coordinate update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchCoord_of_toNonbase_eq_eq5EndpointCoverage`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchBlock_of_toNonbase_eq_eq5EndpointCoverage_leftEndpoint`.
+These transport endpoint branch-coordinate correctness into a supplied
+terminal-candidate family only under an explicit equality between
+`TC.family.toAoyagiLemma5SuppliedNonbaseFamily` and the strictest endpoint
+constructor.  The selected-block wrapper still requires the supplied
+left-endpoint `branchS` formula.  This is interface alignment only: it does
+not construct Eq5 branches, prove source labels, identify terminal-minimum
+labels with endpoint branches, prove no-extra coverage, or produce any
+pole-order/RLCT result.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-to-terminal-branchcoord-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-to-terminal-branchcoord.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-strict-filtered-and-terminal-branchcoord-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -838,6 +838,77 @@ theorem ofEq5AlphaIndexedEndpointCoverage_branch_card_eq_intervalSize_sub_one
     _ = aoyagiLemma5IntervalSize ell a j - 1 := by
       rw [aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m j hj_lt]
 
+/-- One-coordinate cardinality of the filtered supplied Eq5 endpoint family
+for the strictest constructor, where raw value injectivity is derived from
+strict alpha injectivity and raw disjointness is derived from supplied
+component coordinates.
+
+This counts only the filtered supplied branch family at one coordinate.  It
+does not prove source record construction or base-filter survival. -/
+theorem
+    ofEq5AlphaIndexedEndpointCoverage_strict_branch_card_eq_intervalSize_sub_one
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) → j ≤ a → j ≤ ell - a →
+        branchCoord (lower j) = j)
+    {j : ℕ} (hj : j ∈ Finset.Icc 1 (ell - 1)) :
+    ((ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+        (ell := ell) (a := a) (M := M) (m := m)
+        strictBranches alphaOf value upper lower baseValue ha
+        baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+        branchCoord hstrictCoord hupperCoord hlowerCoord).branches j).card =
+      aoyagiLemma5IntervalSize ell a j - 1 := by
+  exact ofEq5AlphaIndexedEndpointCoverage_branch_card_eq_intervalSize_sub_one
+    (ell := ell) (a := a) (M := M) (m := m)
+    strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+    halpha_image hvalue hupper hlower
+    (by
+      intro j hj
+      exact
+        aoyagiLemma5Eq5EndpointRawBranches_value_injective_of_alpha_injective
+          (ell := ell) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower ha hj
+          (halpha_image hj) (hvalue hj) (hupper hj) (hlower hj)
+          (halpha_inj hj))
+    (by
+      intro i j hi hj hij
+      exact
+        aoyagiLemma5Eq5EndpointRawBranches_pairwiseDisjoint_of_branchCoord_eq
+          ell a strictBranches upper lower branchCoord
+          hstrictCoord hupperCoord hlowerCoord hi hj hij)
+    hj
+
 /-- Full tagged-branch cardinality for the filtered supplied Eq5 endpoint
 family constructed from strict alpha branches and endpoint records.
 

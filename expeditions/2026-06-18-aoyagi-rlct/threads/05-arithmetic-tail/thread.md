@@ -5245,3 +5245,64 @@ labels, prove terminal Eq5 payload coverage from source, prove terminal
 `(p, alpha)` injectivity from source, build a direct counted-datum
 back-to-label map, prove source-backed no-extra coverage, prove a Lemma 5
 order count, prove pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 strict endpoint filtered cardinality
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-strict-filtered-cardinality-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-strict-filtered-cardinality.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-strict-filtered-and-terminal-branchcoord-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_strict_branch_card_eq_intervalSize_sub_one
+```
+
+This specializes the one-coordinate filtered endpoint count to the strictest
+Eq5 endpoint constructor.  Raw value injectivity is discharged by supplied
+strict alpha injectivity and endpoint value formulas; raw cross-coordinate
+disjointness is discharged by supplied component-coordinate facts.  The result
+counts the filtered supplied coordinate branch set after deleting the supplied
+base value.
+
+This is finite supplied-family bookkeeping only.  It does not construct Eq5
+branches or endpoint records, prove source-label legality, prove source
+strict alpha injectivity, prove base-filter survival for a source record,
+count terminal-minimum labels, prove source-backed no-extra coverage, prove a
+Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint-to-terminal branch coordinates
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-to-terminal-branchcoord-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-to-terminal-branchcoord.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-strict-filtered-and-terminal-branchcoord-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchCoord_of_toNonbase_eq_eq5EndpointCoverage
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchBlock_of_toNonbase_eq_eq5EndpointCoverage_leftEndpoint
+```
+
+The coordinate transport theorem assumes explicitly that
+`TC.family.toAoyagiLemma5SuppliedNonbaseFamily` is the strictest Eq5 endpoint
+constructor.  Under that supplied equality, membership in
+`TC.family.branches j` rewrites to membership in the endpoint constructor's
+filtered branch set, so the existing endpoint branch-coordinate theorem gives
+`branchCoord b=j`.  The selected-block wrapper then combines this with the
+separate supplied left-endpoint `branchS` formula and the existing
+`branchBlock_of_branchCoord_leftEndpoint` adapter.
+
+This is a terminal-family interface theorem only.  It does not identify
+terminal-minimum labels with endpoint branches, does not construct Eq5
+branches or endpoint records, does not prove source labels or base-filter
+survival, and does not prove terminal Eq5 payload coverage, terminal
+`(p, alpha)` injectivity, no-extra terminal-minimum coverage, Lemma 5 order
+count, pole order, normal crossings, or RLCT.

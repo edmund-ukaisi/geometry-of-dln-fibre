@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.Lemma5Eq5CountDatumBridge
+import DLNFibre.DLN.Aoyagi.Lemma5Eq5SuppliedCoverage
 import DLNFibre.DLN.Aoyagi.Lemma5TerminalBridge
 
 /-!
@@ -18,6 +19,8 @@ namespace DLN
 namespace Aoyagi
 
 namespace AoyagiLemma5SuppliedTerminalCandidateFamily
+
+open AoyagiLemma5SuppliedNonbaseFamily
 
 /-- Terminal-minimum Eq5 own-block payloads make the terminal counted-datum
 map injective once the `(p, alpha)` data are injective on terminal labels. -/
@@ -1028,6 +1031,147 @@ theorem branchBlock_of_branchCoord_leftEndpoint
     rw [hbranchS j hj b hb, hcoord]
   simpa [AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel, hsource]
     using hleft
+
+/-- Transport nonbase branch-coordinate correctness from the strictest Eq5
+endpoint supplied-family constructor into a terminal-candidate family.
+
+The equality hypothesis is the boundary: it explicitly identifies the
+terminal family's nonbase supplied family with the endpoint constructor.  This
+does not construct the endpoint records or prove source-label legality. -/
+theorem branchCoord_of_toNonbase_eq_eq5EndpointCoverage
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ N + 1)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat (N + 1) a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain (N + 1) a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat (N + 1) a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        value (upper j) = aoyagiHtildeUpperNat (N + 1) a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a →
+          value (lower j) = aoyagiHtildeLowerNat (N + 1) a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a → branchCoord (lower j) = j)
+    (hfamily :
+      TC.family.toAoyagiLemma5SuppliedNonbaseFamily =
+        ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+          (ell := N + 1) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower baseValue ha
+          baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+          branchCoord hstrictCoord hupperCoord hlowerCoord) :
+    ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+      branchCoord b = j := by
+  intro j hj b hb
+  have hj_endpoint : j ∈ Finset.Icc 1 ((N + 1) - 1) := by
+    simpa using hj
+  let Fendpoint : AoyagiLemma5SuppliedNonbaseFamily β (N + 1) a M m :=
+    ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+      (ell := N + 1) (a := a) (M := M) (m := m)
+      strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+      halpha_image hvalue hupper hlower halpha_inj branchCoord
+      hstrictCoord hupperCoord hlowerCoord
+  have hb_endpoint : b ∈ Fendpoint.branches j := by
+    change b ∈ TC.family.toAoyagiLemma5SuppliedNonbaseFamily.branches j at hb
+    simpa [Fendpoint, hfamily] using hb
+  exact
+    ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq
+      (ell := N + 1) (a := a) (M := M) (m := m)
+      strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+      halpha_image hvalue hupper hlower halpha_inj branchCoord
+      hstrictCoord hupperCoord hlowerCoord hj_endpoint hb_endpoint
+
+/-- Selected-block membership from an explicit identification of the terminal
+nonbase family with the strictest Eq5 endpoint supplied-family constructor.
+
+The branch source-label formula remains supplied separately through
+`hbranchS`. -/
+theorem branchBlock_of_toNonbase_eq_eq5EndpointCoverage_leftEndpoint
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (ha : a ≤ N + 1)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat (N + 1) a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain (N + 1) a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat (N + 1) a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        value (upper j) = aoyagiHtildeUpperNat (N + 1) a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a →
+          value (lower j) = aoyagiHtildeLowerNat (N + 1) a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a → branchCoord (lower j) = j)
+    (hfamily :
+      TC.family.toAoyagiLemma5SuppliedNonbaseFamily =
+        ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+          (ell := N + 1) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower baseValue ha
+          baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+          branchCoord hstrictCoord hupperCoord hlowerCoord)
+    (hbranchS :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        TC.branchS (some b) = cut.point (branchCoord b) - 1) :
+    ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+      cut.block j (TC.branchLabel (some b)).1 :=
+  TC.branchBlock_of_branchCoord_leftEndpoint cut branchCoord
+    (TC.branchCoord_of_toNonbase_eq_eq5EndpointCoverage
+      strictBranches alphaOf value upper lower baseValue ha baseValue_mem
+      halpha_image hvalue hupper hlower halpha_inj branchCoord hstrictCoord
+      hupperCoord hlowerCoord hfamily)
+    hbranchS
 
 /-- Convert a supplied `branchK`/value relation into the Sigma-label
 value-label relation used by `branchLabel_injOn_of_nonbase_valueLabel`. -/
