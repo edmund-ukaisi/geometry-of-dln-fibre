@@ -73,4 +73,42 @@ theorem nonnegCoeffs_fivegonSum (d : Fin (N + 1) → ℕ) : NonnegCoeffs (fivego
     rw [coeff_X_pow]; split_ifs <;> norm_num
   exact this n
 
+/-- On `Fin 1` (a single vertex), the only Kostant partition is `m (0,0) = d 0`. -/
+theorem kostantAll_zero_eq (d : Fin 1 → ℕ) :
+    kostantAll d = {fun _ ↦ d 0} := by
+  have fin01 : ∀ i : Fin (0 + 1), i = 0 := fun i ↦ by omega
+  have prod01 : ∀ b : Fin (0 + 1) × Fin (0 + 1), b = (0, 0) := fun b ↦
+    Prod.ext (fin01 b.1) (fin01 b.2)
+  have hsum : ∀ (f : Fin (0 + 1) × Fin (0 + 1) → ℕ),
+      ∑ p ∈ Finset.univ.filter (fun p : Fin (0 + 1) × Fin (0 + 1) ↦
+        p.1 ≤ (0 : Fin (0 + 1)) ∧ (0 : Fin (0 + 1)) ≤ p.2), f p = f (0, 0) := by
+    intro f
+    rw [Finset.sum_eq_single (0, 0)]
+    · intro b _ hb; exact absurd (prod01 b) hb
+    · intro hmem
+      exact absurd (Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_refl _, le_refl _⟩) hmem
+  ext m
+  rw [Finset.mem_singleton, mem_kostantAll]
+  constructor
+  · rintro ⟨-, -, hk⟩
+    have hk0 := hk 0
+    rw [kostantAt, hsum] at hk0
+    funext p
+    rw [prod01 p]
+    exact hk0.symm
+  · rintro rfl
+    refine ⟨fun p ↦ ?_, fun p hp ↦ ?_, fun k ↦ ?_⟩
+    · change d 0 ≤ d p.1; rw [fin01 p.1]
+    · exact absurd (le_of_eq ((fin01 p.1).trans (fin01 p.2).symm)) hp
+    · rw [kostantAt, fin01 k, hsum]
+
+/-- **Thm 5.6 base case** (`N = 0`): `fivegonSum d = Pmult d` — the single partition contributes
+`X^0 · P (d 0) = P (d 0) = Pmult d`. -/
+theorem fivegon_base (d : Fin 1 → ℕ) : fivegonSum d = Pmult d := by
+  rw [fivegonSum, kostantAll_zero_eq, Finset.sum_singleton]
+  have hcf : codimForm 0 (extendℤ (fun _ : Fin 1 × Fin 1 ↦ d 0)) = 0 := by
+    rw [codimForm, show Finset.Icc (1 : ℤ) ((0 : ℕ) : ℤ) = ∅ from by decide, Finset.sum_empty]
+  rw [hcf, Int.toNat_zero, pow_zero, one_mul, Pm, Pmult, Fin.prod_univ_one,
+    show upperPairs 0 = {(0, 0)} from by decide, Finset.prod_singleton]
+
 end DLNFibre.Core
