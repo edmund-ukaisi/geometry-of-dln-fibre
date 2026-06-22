@@ -49,4 +49,28 @@ theorem ChainDimSplit.redM_widthSum_lt {L : ℕ} {M : Fin (L + 1) → ℕ} (S : 
     exact absurd hdrop0 (by have := S.hdrops; omega)
   omega
 
+/-! ## The well-founded recursion carrier (rebased: replaces `RouteState`/`routeRel_wf`)
+
+The iterated Route-M recursion descends over the width vector `M : Fin (L+1) → ℕ` (`L` fixed — the
+`ChainDimSplit` reduction is width-only), terminating on `chainWidthSum`. `chainRel` is the strict
+`ΣM`-decrease; `chainRel_wf` (its well-foundedness) is the carrier for the `WellFounded.fix` that builds
+the chart family — the split-construction-agnostic recursion skeleton. Any `ChainDimSplit M`-driven step
+descends along `chainRel` by `redM_widthSum_lt`, so the recursion is well-founded whoever constructs the
+per-node split. -/
+
+/-- The recursion's well-founded relation on width vectors (fixed `L`): strict `ΣM`-decrease. -/
+def chainRel {L : ℕ} (N M : Fin (L + 1) → ℕ) : Prop := chainWidthSum N < chainWidthSum M
+
+/-- `chainRel` is well-founded (pullback of `<` on `ℕ` along `chainWidthSum`). The carrier for the
+iterated Route-M `WellFounded.fix`, replacing the parallel `routeRel_wf`. -/
+theorem chainRel_wf {L : ℕ} : WellFounded (@chainRel L) :=
+  InvImage.wf chainWidthSum wellFounded_lt
+
+/-- A `ChainDimSplit M` descends along `chainRel` (its reduced widths are `chainRel`-below `M`). The
+bridge from crux2's one-step split to the recursion's descent proof — the `WellFounded.fix` recursive
+call on `S.red` is justified by this, independent of how `S` is constructed. -/
+theorem ChainDimSplit.redM_chainRel {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSplit M) :
+    chainRel S.red M :=
+  S.redM_widthSum_lt
+
 end DLNFibre.DLN.RLCT
