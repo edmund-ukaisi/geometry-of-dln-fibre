@@ -515,3 +515,28 @@ closed the gate; all green, #56 axiom-clean.
 aggregator reaches. Gate orphan engines explicitly until they are consumed, and keep them permanently
 covered by (a) importing stable engines into the aggregator and (b) a restored `AxCheck.lean` that
 `#print axioms` the key results on every build. "Green build" ≠ "every module compiles."
+
+## Decorrelation tool down: the codex CLI hangs environment-wide (2026-06-22)
+
+The local `codex` CLI is non-functional in this environment. `~/.local/bin/codex` is an AISI wrapper that
+runs `uvx --with git+ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools aisitools override-key`
+(the sanctioned AISI key-governance step) on EVERY invocation, and that git-ssh fetch HANGS before codex
+ever starts — even `codex --version` times out; `~/.codex/auth.json` is absent.
+
+**Surfaced by:** pp2's #70 decorrelated consult "didn't land (CLI flaky — nested background launch)." The
+nested-launch hypothesis was a RED HERRING: a top-level `codex doctor` / `codex --version` hangs identically.
+It is an environment-wide outage, not a nested-launch artifact.
+
+**Discipline held (the load-bearing part):** (1) did NOT bypass the wrapper with a raw `npx @openai/codex` —
+that routes around the AISI key path (an org boundary); making a tool work is never a reason to breach the
+sanctioned path. (2) did NOT substitute Claude's own answer for the missing Codex opinion (per the
+`local-codex-consult` skill + `codex-consultation.md`). A failed consult is surfaced, not faked.
+
+**Substitute while codex is down:** the harness's OTHER decorrelation channel — independent subagents
+(reviewer red-team seats, pen-and-paper witness/obstruction seats, adversarial self-guards like pp2's g201).
+Decorrelation degrades (same model family, no cross-vendor check) but is not lost. For a headline-load-bearing
+design cert, run an independent reviewer subagent on the NAMED load-bearing claim before its build.
+
+**Operator action (non-blocking):** restoring codex needs the `uvx` git-ssh fetch to `aisi-inspect-tools` to
+succeed (network / ssh / key) — infra the agent cannot fix. Flagged; the expedition continues on subagent
+decorrelation.
