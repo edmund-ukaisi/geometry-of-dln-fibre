@@ -158,3 +158,15 @@ chose GUARDED formaliser worktrees:
   after each tide. A relative-path slip → transient aoyagi stray file (detected + surgically cleaned).
 - M1 (9d5002c) + M2-partial (032ea0d) banked. M2 to be COMPLETED by the first guarded formaliser:
   B_term, A_sum_desc, B_sum_desc (the reindex), rhs_desc, the durfee induction (domain-cancel 1-X^{b+1}).
+
+## 2026-06-22 — M2 LANDED (the Durfee identity), inline + contention-free
+`Core.QSeriesDurfee.durfee : P a * P b = ∑_{r=0}^{min a b} X^{(a-r)(b-r)} P(a-r) P r P(b-r)` over ℤ⟦X⟧ —
+green, 0-sorry, axiom-clean ([propext,Classical.choice,Quot.sound]). Commit 9d408a3 (card pinned ca8ab05).
+Route B (induction on b; unit-cancellation of 1-X^{b+1} via PowerSeries.isUnit_iff_constantCoeff). The hard
+B_sum_desc reindex (Finset.sum_range_succ' peel-and-shift) landed first try — the thread-06 certificate held.
+EXECUTION: written INLINE in voigt-discharge (warm .lake) — zero new-worktree Mathlib recompile, zero
+contention with aoyagi, zero aoyagi-pollution. (The guarded-worktree approach was abandoned: fresh worktrees
+recompile Mathlib unless cache-get, which contends with the live aoyagi sessions; inline is contention-free.)
+v4.29 gotchas banked in the M2 card: linear_combination + PowerSeries.Inverse need explicit imports;
+ℤ⟦X⟧ no auto IsLeftCancelMulZero (cancel via unit); le_or_lt absent (use by_cases).
+NEXT: M3 = PEEL / Thm 5.6 (the bulk) — uses the LANDED durfee (M2) as its only classical input (thread 04 pin).
