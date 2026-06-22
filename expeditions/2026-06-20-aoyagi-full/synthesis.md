@@ -36,14 +36,18 @@ for matrices (g=(I−VY)⁻¹ maps a TS=0 dir to TgS≠0, ratio→∞) — indep
 be T̃; the g-absorption IS the non-MP content. The cert framing refines: "exact split, not a squeeze" →
 "exact only in T̃-coords; the raw-chain squeeze is false."
 
-**sub-3/4 ROUTE DECISION (controller taste-call, 2026-06-22): R-squeeze, NOT the chart** (crux2 fast-veto
-pending). rlctAtOn is a germ ⟹ the DeepestGaugeChart's GLOBAL `chart : Flat ≃ₜ Flat` + ∀x HasFDerivAt is
-UNSATISFIABLE (the honest gauge map is only a local diffeo at w0; (I−VY)⁻¹/A⁻¹ blow up away from w0). Route A:
-a same-point rlct sandwich c₁Φ ≤ F ≤ c₂Φ (`rlctAtOn_squeeze`, the blessed #128 pattern — no c-o-v, no
-Jacobian), Φ = (regular nondeg block) ⊕ ‖T̃‖², split via #52 + rlct_additive_smooth_block. All content → the
-matrix comparability ‖T·g·S‖² ≍ dlnLoss M 0 (cobuild-sub34 sub-lemma 1; g's coupling → bounded uniform
-constants). DROPS the global chart + jac_unit + sub-5 non-MP transport (crux2 HOLDS sub-5); SURVIVES the
-assembly statement, #52, sub-2. Chosen over Route B (local PartialHomeomorph + a new local-transport S1.1 variant).
+**sub-3/4 ROUTE — UPDATED (controller, 2026-06-22): default BUILD the chart as-is (R-S1.1); R-squeeze = crux2's
+opt-in.** My earlier "R-squeeze, NOT the chart" call rested on a premise cobuild-sub34 then FALSIFIED: the global
+`chart : Flat ≃ₜ Flat` + ∀x HasFDerivAt IS satisfiable — extend the local gauge diffeo at w0 to a global
+self-homeo by a smooth cutoff to identity outside a ball (Mathlib bump API); the cutoff outside the ball doesn't
+touch the germ at w0, so jac_unit stays the right weight. Both routes are sound. Default = R-S1.1 (chart as-is):
+cobuild-sub34 builds it UNILATERALLY (no edit to crux2's single-writer DeepestGaugeChart.lean) and crux2's
+in-flight sub-5/6/7 consume it — no rework, no interruption. R-squeeze (the lighter #128-pattern sandwich,
+loss_form → squeeze datum) stays as crux2's OPT-IN if it judges the cleaner artifact worth changing its file +
+reworking sub-5/6/7. Both share the route-INDEPENDENT foundation (local gauge c-o-v + loss block-decomposition
+∑E²+‖P11‖² + the matrix comparability ‖T·g·S‖² ≍ dlnLoss M 0), which cobuild-sub34 builds now regardless.
+(Ledger lesson: I banked the R-squeeze call as settled before its window closed — bank live decisions as
+"current lean, pending X", not as final.)
 
 **Current execution (three grinds):**
 - fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
@@ -52,10 +56,12 @@ assembly statement, #52, sub-2. Chosen over Route B (local PartialHomeomorph + a
 - crux2 #50 (value-free reduction, consuming side) on origin/fm2/deepest-gauge-chart (@9ed57e5): S1
   spectator-peel `rlctAtOn_spectator_peel` (Foundations/S1Spectator.lean — gauge-orbit spectator dirs are
   RLCT-neutral) **PROVEN, axiom-clean** (#52; the hard piece of sub-6/7, reused by D1 #42); sub-2 (rank-exact)
-  PROVEN. sub-6/7 assembly (~80-120 lines) reachable. sub-5 non-MP transport SUPERSEDED by the Route-A squeeze
-  (crux2 HOLDS sub-5).
-- cobuild-sub34 #51 (sub-3/4 via Route A: the matrix comparability ‖T·g·S‖² ≍ dlnLoss M 0 + rlctAtOn_squeeze,
-  no chart) — own worktree (workspace/dgc-sub34) off origin/fm2/deepest-gauge-chart; baseline building. pp2 =
+  PROVEN. sub-6/7 assembly (~80-120 lines) reachable; sub-5 non-MP transport back IN PLAY under the chart default
+  (crux2 builds it to consume cobuild-sub34's chart). Two cert gaps found by building: hGne (reduced-chain
+  non-degeneracy — discharge-vs-stated-headline-hypothesis TRACKED) + Measurable(dlnLoss M 0) (Codex on prodAux cast).
+- cobuild-sub34 #51 (sub-3/4): the shared route-INDEP foundation (gauge c-o-v + loss decomposition + matrix
+  comparability ‖T·g·S‖² ≍ dlnLoss M 0) now, then R-S1.1 chart-existence (cutoff-extension + Dchart + jac_unit +
+  loss_form germ) — own worktree (workspace/dgc-sub34) off origin/fm2/deepest-gauge-chart. pp2 =
   decorrelated backup if the comparability walls.
 
 **CANONICAL CERT LINEAGE (for #28 — pp2's authoritative tips, 2026-06-22):**
