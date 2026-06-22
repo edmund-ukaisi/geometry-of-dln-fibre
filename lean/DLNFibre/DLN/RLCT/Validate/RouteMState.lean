@@ -208,4 +208,34 @@ theorem monomialThreshold_foldDivisors_ge (cs : List ℕ) (m₀ : ℕ) (hm₀ : 
   rw [monomialThreshold_foldDivisors cs (fun c hc => le_trans hm₀ (hge c hc))]
   exact ratioMinFold_ge_of_all_ge cs m₀ hge
 
+/-! ## The value-side ⟹ IsResolutionAtlas consistency bridge (the pp2-dispatcher contract, fork-indep)
+
+The contract pp2's #68 dispatcher must satisfy so its leaf monomials AGREE with this value-side, yielding
+crux2's `IsResolutionAtlas` (`threshold_ge` C≥ + `achiever` C=∃) over `m₀ = (Adm M).inf' Mval`:
+- every leaf path `i`'s codim-list `codimsOf i` has all codims `≥ m₀` (⟹ `threshold_ge`);
+- the minimising path `i₀` has `m₀ ∈ codimsOf i₀` (⟹ `achiever`).
+Stated over an abstract leaf family `(ι, codimsOf)` so it is independent of the `IsResolutionAtlas` Lean
+structure version (my branch carries the stale `stratum`/`threshold_eq` form; crux2's `route-m-atlas` has
+the `threshold_ge`/`achiever` form). The two outputs below ARE crux2's two atlas fields, branch-agnostic. -/
+
+/-- **(C≥) family-level threshold_ge.** If every leaf `i`'s codim-list has all codims `≥ m₀` (`1 ≤ m₀`),
+every leaf's `foldDivisors` threshold is `≥ ½·m₀`. The `IsResolutionAtlas.threshold_ge` fact, over a leaf
+family. (Lifts `monomialThreshold_foldDivisors_ge` over the index.) -/
+theorem foldFamily_threshold_ge {ι : Type*} (codimsOf : ι → List ℕ) (m₀ : ℕ) (hm₀ : 1 ≤ m₀)
+    (hge : ∀ i, ∀ c ∈ codimsOf i, m₀ ≤ c) (i : ι) :
+    (m₀ : ℝ≥0∞) / 2
+      ≤ monomialThreshold (MonoData.foldDivisors (codimsOf i)).d
+          (MonoData.foldDivisors (codimsOf i)).k (MonoData.foldDivisors (codimsOf i)).h :=
+  monomialThreshold_foldDivisors_ge (codimsOf i) m₀ hm₀ (hge i)
+
+/-- **(C=∃) family-level achiever.** If the minimising leaf `i₀`'s codim-list has all codims `≥ m₀` and
+contains `m₀` (`1 ≤ m₀`), `i₀`'s `foldDivisors` threshold is `= ½·m₀`. The `IsResolutionAtlas.achiever`
+fact. (Specialises `monomialThreshold_foldDivisors_eq_of_binding` at the minimiser.) -/
+theorem foldFamily_achiever {ι : Type*} (codimsOf : ι → List ℕ) (m₀ : ℕ) (hm₀ : 1 ≤ m₀)
+    (i₀ : ι) (hge₀ : ∀ c ∈ codimsOf i₀, m₀ ≤ c) (hbind₀ : m₀ ∈ codimsOf i₀) :
+    ∃ i : ι, monomialThreshold (MonoData.foldDivisors (codimsOf i)).d
+        (MonoData.foldDivisors (codimsOf i)).k (MonoData.foldDivisors (codimsOf i)).h
+      = (m₀ : ℝ≥0∞) / 2 :=
+  ⟨i₀, monomialThreshold_foldDivisors_eq_of_binding (codimsOf i₀) m₀ hm₀ hge₀ hbind₀⟩
+
 end DLNFibre.DLN.RLCT
