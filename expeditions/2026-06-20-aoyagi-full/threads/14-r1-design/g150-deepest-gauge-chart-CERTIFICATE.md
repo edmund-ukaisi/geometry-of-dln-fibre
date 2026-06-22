@@ -135,3 +135,43 @@ distinction from the MP/blow-up work. **Codex #150 correction folded:** the raw-
 (`P_{11}|{E=0} = T(I−VY)^{-1}S ≠ TS`); the reduced core is the gauge-normalized `T̃` / product Schur
 complement (`g151_codex_check.py`, `g151_gauge_normalized.py`). Decorrelated Codex (gpt-5.5 xhigh) +
 pp-hall exact-algebra — converged after the correction.
+
+---
+
+## CORRECTION (#61, pp-hall, 2026-06-22) — the per-layer core is the SCHUR complement `S_s`, NOT the unit `T̃_s`
+
+**cobuild-sub34's g153/g156 litmus caught a real mis-specification in the per-layer gloss above.** The
+FULL product Schur `R = P11 − E10(I+E00)⁻¹E01` framing was right; the per-layer factorization
+`R = T̃_1···T̃_L` with `T̃_s = T_s·(I−V_sY_s)⁻¹` (the UNIT form) is **WRONG**. The correct per-layer
+object is the **per-layer Schur complement**
+
+    S_s  =  T_s − Z_s (I + X_s)⁻¹ Y_s            (X_s = (0,0)-deviation, Y_s=(0,1), Z_s=(1,0), T_s=(1,1)).
+
+**Ground truth (the g153 counterexample, parametrization-free, `g172_perlayer_schur_groundtruth.py`).**
+L=3, r=1, H=(2,2,2,2): `C1=[[1,0],[−ε²,ε]]`, `C2=[[1,ε],[ε,0]]`, `C3=[[1,−ε²],[0,ε]]` ⟹ `∏C =
+blockdiag[1,−ε⁴]`, `loss = ε⁸`.
+- **per-layer UNIT / raw `∏T_s`:** `T=(ε,0,ε)` ⟹ `∏T_s = 0` ⟹ core = 0 ≠ ε⁸. **WRONG** (`T2=0` kills it).
+- **per-layer SCHUR `S_s`:** `S1=ε`, `S2 = 0 − ε·ε/1 = −ε²`, `S3=ε` ⟹ `∏S_s = −ε⁴` ⟹ `‖∏S_s‖² = ε⁸ =
+  loss`. **RIGHT.** The decisive entry is `S2`: raw `T2 = 0`, but the Schur correction `−Z2Y2 = −ε²`
+  carries the whole loss.
+- **full product Schur `R`:** `R = −ε⁴` ⟹ `‖R‖² = ε⁸ = loss` (right here, where reg=0).
+
+**Why my g151 read "unit".** `g151_codex_check.py` solved `P11|{E=0} = T(1−VY)⁻¹S` for an L=2 slice and I
+mislabeled that as "the gauge-normalized core". On cobuild-sub34's generic L=3 slice
+(`g171/g172`), `P11|{E=0} = t1·(t2 − zy)·t3 = S1·S2·S3` — the per-layer **Schur** product, not the
+per-layer unit product. The `(I−VY)⁻¹` was an artifact of the particular L=2 elimination order, not the
+honest reduced core.
+
+**The corrected deepestCoreF.** `deepestCoreF(core) = ‖S_1 ··· S_L‖² = dlnLoss (H−r) 0` on the
+**Schur-reduced** layer factors `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (internal units absorbed by the det-unit /
+analytic core change). Everything else in this cert survives: the EXACT germ split `ℓ∘Φ =ᶠ ∑E² +
+‖∏S_s‖²`, `nReg = r(H_0+H_last−r)`, the bounded-unit (NON-MP) Jacobian, `chart_zero`, the `r=0` base.
+Only the per-layer block's NAME changes: `T̃_s = T_s(I−V_sY_s)⁻¹` (unit, wrong) → `S_s = T_s −
+Z_s(I+X_s)⁻¹Y_s` (per-layer Schur, right). Aligns with cobuild-sub34's #54 `R` + crux2's coreAbsorb (both
+corrected to `S_s`).
+
+**The downstream subtlety cobuild-sub34/Codex flagged (preserved):** the full product Schur `R` depends on
+the regular residuals `P10,P01` OFF `{reg=0}`; the additive split `rlct_additive_smooth_block` needs a
+core-coords-only object. The route (g156): `R = G(core) + Σ E_i H_i` with bounded analytic `H_i`, so
+`∑E² + ‖R‖² ≍ ∑E² + ‖G(core)‖²` and the additive split applies to `G(core) = ∏S_s` alone. The
+`reg`-dependence of `R` is a bounded perturbation peeled like the endpoint-regular leak.
