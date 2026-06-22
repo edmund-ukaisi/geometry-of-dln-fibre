@@ -173,6 +173,26 @@
       {dlnLoss M 0 ∘ flatSymm = 0} null ⟹ hGne. **The L2 hGne discharge — the one tracked from-scratch heavy
       lemma, the "everything-proven-except-S2" requirement — is DONE.** The measure-zero arc (formaliser
       dispatch → route whipsaw 1→2→1 → Route 1 + mirror) landed; Route 1 vindicated.
+- **★ SPINE MAP (#40 re-audit, crux2; Skeleton builds GREEN 2671) — the assembly roadmap to green.** The headline
+  `aoyagi_learning_coefficient` (Skeleton:1594) is PROVEN-CONDITIONAL (`rw deepest_point_reduction; exact
+  product_reduction`), hanging on 4 λ-sorries:
+  1. `deepest_regular_core_normal_form` (Skeleton:1016) — the L2 VALUE-form = the CONVERGENCE NODE, fanning into
+     (a) crux2's deepest_regular_core_reduces (value-free, sorry-free EXCEPT the chart, carries hGne) + (b) R1
+     value rlctAtOn(core)=ofReal(lambdaCore) (= resolution_charts ▸ A1) + (c) hGne discharge (#65 DONE + #70
+     boundary). crux2 PRE-STAGING it as a conditional lemma (one-line fill when the gates land).
+  2. `deepest_gauge_squeeze_exists` (DeepestGaugeChart:287) = #59 (cobuild-sub34's chart) → feeds 1(a). In build:
+     regAbsorb/coreAbsorb MAPs + gaugeDecode + the instance; the bi-invariant-V adapter (rlctAtOn_comp_localDiffeo)
+     = crux2's; general-L squeeze gate CLEARED (pp2 + sympy); det-bound DONE (DeepestGaugeDiffeo).
+  3. `resolution_charts` (Skeleton:1106) = R1 core = ⨅, OPEN only on fm3's RouteMAtlas (#39) → feeds 1(b). fm3
+     BUILDING (cover_le/cover_ge_div + the certified routeStep dispatcher transcription of pp2's g183-g190 cert).
+  4. `rlctAt_deepest_le_of_optimal` (Skeleton:1062) = D1 ≥-leg (#42), PROVEN-CONDITIONAL @8d0fd21 (gated on #62's
+     hAtV), NOT yet wired into Skeleton. Path: #44 (deepest chart) → #62 build (cobuild-sub34 extends to basepoint
+     v) → D1 hAtV discharges → wire into Skeleton. Downstream of #44+#62.
+  OFF λ-path: `aoyagiTheta_eq` (Skeleton:1582) = A2 θ-count, secondary (separate deliverable).
+  PROVEN GREEN: A1 (lambdaCore_eq_clean, reg_shift_add_core), product_reduction wiring (modulo normal_form),
+  deepest_point_reduction ≤-leg + assembly, the headline composition; the §5(5)▸§5(3) bridge on fm2/route-m-atlas.
+  NET: headline → 4 gates (#59 cobuild-sub34 / #39 fm3 / #70 held / #42-D1 downstream of #44+#62), converging at
+  the L2 normal_form node. NO new math owed by crux2 — assembly-ready.
 
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
