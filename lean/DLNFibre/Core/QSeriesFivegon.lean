@@ -715,4 +715,90 @@ theorem lastCol_mem_admissibleXs {d : Fin (N + 2) → ℕ} {m : Fin (N + 2) × F
     rw [Finset.sum_ite_eq' Finset.univ (Fin.last (N + 1)) (fun J ↦ m (I, J))]
     simp only [Finset.mem_univ, if_true, lastCol]
 
+/-- **Backward membership (the crux)**: `rebuild m' x ∈ kostantAll d` for `m' ∈ kostantAll (d∘castSucc)`
+and `x ∈ admissibleXs m' (d_last)`. The Kostant equations at old vertices reduce through
+`peelPart_rebuild` + `peelPart_cover_sum`; at the new vertex through `∑ x = d_last`. -/
+theorem rebuild_mem_kostantAll {d : Fin (N + 2) → ℕ} {m' : Fin (N + 1) × Fin (N + 1) → ℕ}
+    (hm' : m' ∈ kostantAll (d ∘ Fin.castSucc)) {x : Fin (N + 2) → ℕ}
+    (hx : x ∈ admissibleXs m' (d (Fin.last (N + 1)))) :
+    rebuild m' x ∈ kostantAll d := by
+  rw [admissibleXs, Finset.mem_filter, Fintype.mem_piFinset] at hx
+  obtain ⟨hxb, hxsum⟩ := hx
+  rw [mem_kostantAll] at hm' ⊢
+  obtain ⟨hm'b, hm's, hm'k⟩ := hm'
+  have hxbound : ∀ I' : Fin (N + 1), x I'.castSucc ≤ m' (I', Fin.last N) := by
+    intro I'; have := hxb I'.castSucc
+    rwa [Finset.mem_range, Nat.lt_succ_iff, boundX, Fin.lastCases_castSucc] at this
+  have hxle : ∀ I : Fin (N + 2), x I ≤ boundX m' (d (Fin.last (N + 1))) I := by
+    intro I; have := hxb I; rwa [Finset.mem_range, Nat.lt_succ_iff] at this
+  refine ⟨fun p ↦ ?_, fun p hp ↦ ?_, fun k ↦ ?_⟩
+  · -- bound
+    obtain ⟨I, J⟩ := p
+    induction J using Fin.lastCases with
+    | last =>
+      simp only [rebuild, Fin.lastCases_last]
+      refine (hxle I).trans ?_
+      induction I using Fin.lastCases with
+      | last => simp [boundX]
+      | cast I' => simp only [boundX, Fin.lastCases_castSucc]; exact hm'b (I', Fin.last N)
+    | cast J' =>
+      simp only [rebuild, Fin.lastCases_castSucc]
+      induction J' using Fin.lastCases with
+      | last =>
+        simp only [Fin.lastCases_last]
+        induction I using Fin.lastCases with
+        | last => simp only [Fin.lastCases_last]; exact Nat.zero_le _
+        | cast I' =>
+          simp only [Fin.lastCases_castSucc]
+          exact (Nat.sub_le _ _).trans (hm'b (I', Fin.last N))
+      | cast J'' =>
+        simp only [Fin.lastCases_castSucc]
+        induction I using Fin.lastCases with
+        | last => simp only [Fin.lastCases_last]; exact Nat.zero_le _
+        | cast I' => simp only [Fin.lastCases_castSucc]; exact hm'b (I', J''.castSucc)
+  · -- support
+    obtain ⟨I, J⟩ := p
+    induction J using Fin.lastCases with
+    | last => exact absurd (Fin.le_last I) hp
+    | cast J' =>
+      simp only [rebuild, Fin.lastCases_castSucc]
+      induction J' using Fin.lastCases with
+      | last =>
+        simp only [Fin.lastCases_last]
+        induction I using Fin.lastCases with
+        | last => simp only [Fin.lastCases_last]
+        | cast I' =>
+          exfalso; apply hp
+          simp only [Fin.le_def, Fin.coe_castSucc, Fin.val_last] at hp ⊢
+          omega
+      | cast J'' =>
+        simp only [Fin.lastCases_castSucc]
+        induction I using Fin.lastCases with
+        | last => simp only [Fin.lastCases_last]
+        | cast I' =>
+          simp only [Fin.lastCases_castSucc]
+          apply hm's
+          simp only [Fin.le_def, Fin.coe_castSucc] at hp ⊢
+          exact hp
+  · -- kostant
+    induction k using Fin.lastCases with
+    | last =>
+      unfold kostantAt
+      have hfilter : (Finset.univ.filter
+          (fun p : Fin (N + 2) × Fin (N + 2) ↦ p.1 ≤ Fin.last (N + 1) ∧ Fin.last (N + 1) ≤ p.2))
+          = Finset.univ.filter (fun p ↦ p.2 = Fin.last (N + 1)) :=
+        Finset.filter_congr (fun p _ ↦ by simp only [Fin.le_last, true_and, Fin.last_le_iff])
+      rw [hfilter, Finset.sum_filter, Fintype.sum_prod_type]
+      rw [← hxsum]
+      refine Finset.sum_congr rfl fun I _ ↦ ?_
+      rw [Finset.sum_ite_eq' Finset.univ (Fin.last (N + 1)) (fun J ↦ rebuild m' x (I, J))]
+      simp only [Finset.mem_univ, if_true, rebuild, Fin.lastCases_last]
+    | cast k' =>
+      have hck := peelPart_cover_sum (rebuild m' x) k'
+      rw [peelPart_rebuild m' x hxbound] at hck
+      have hm'kk := hm'k k'
+      unfold kostantAt at hm'kk ⊢
+      rw [show d k'.castSucc = (d ∘ Fin.castSucc) k' from rfl, hm'kk]
+      exact hck
+
 end DLNFibre.Core
