@@ -1,4 +1,4 @@
-# General-v squeeze datum — one cert for #44 sub-3 (deepest) + D1 (a) (arbitrary v) (pp-hall, 2026-06-22, #155)
+# General-v gauge-chart datum (EXACT germ; loss_squeeze interface) — #44 sub-3 (deepest) + D1 (a) (arbitrary v) (pp-hall, 2026-06-22, #155)
 
 **Extends #48/#150 to the general-v squeeze datum.** crux2's D1 #111-check: the general-v
 homogeneous-residual chart is NEW (not banked) AND shares technique with #44's deepest squeeze — so ONE
@@ -14,7 +14,8 @@ the deepest-specific part — just rank-exactness), the per-layer gauge slice
 `C_s = [[I_r + X_s, Y_s], [Z_s, T_s]]` (via `block_elimination` at `v`, units `P_s, Q_s` with
 `P_s (v s) Q_s = blockdiag[I_r, 0]`) is **structurally IDENTICAL** to the deepest case (g150). The squeeze
 
-    c₁·Φ ≤ dlnLoss H B(·) ≤ c₂·Φ   near v,    Φ = (∑ E_i²) + ‖T̃_1···T̃_L‖²
+    dlnLoss H B(·) =ᶠ Φ   near v   (EXACT, c₁=c₂=1; §1.5),    Φ = (∑ E_i²) + ‖T̃_1···T̃_L‖²
+    [stated to the consumer as the loss_squeeze interface c₁·Φ ≤ dlnLoss ≤ c₂·Φ, discharged at c₁=c₂=1]
 
 holds VERBATIM, with `T̃_s` the GAUGE-NORMALIZED blocks (the `(I − V_s Y_s)^{-1}`-absorbed product Schur
 complement, g150-fix — NOT raw `T_s`), `‖T̃_1···T̃_L‖² = dlnLoss M 0` (`M = H − r`). The squeeze constants
@@ -30,6 +31,36 @@ Consequence (via the banked `rlctAtOn_squeeze` + `schur_recursion_step_squeeze` 
 
     rlctAt H (dlnLoss H B) v  =  nReg/2 + rlctAtOn (v-core) v,    nReg = r(H_0 + H_last − r),
                                                                   v-core = ‖T̃-chain at v‖² = dlnLoss M 0.
+
+## Part 1.5 — EXACT vs SQUEEZE: the comparability is EXACT (c₁=c₂=1) in the gauge-normalized core
+**(Precision constraint, controller #56 + cobuild-sub34 coordination; the "name results for what they
+are" discipline.)** My #48 said "exact germ"; cobuild-sub34's #55 framed it as a squeeze (`≍`, leak).
+The exact-algebra resolution (g156) + cobuild-sub34's Lean (`DeepestGaugeChart.ofExactGerm`):
+
+**The comparability is EXACT — `c₁ = c₂ = 1`, a germ IDENTITY — in the GAUGE-NORMALIZED core.**
+- `dlnLoss = ‖E‖² + ‖P11‖²` (Frobenius norm splits over the product blocks — exact, no leak).
+- cobuild-sub34's #53 `‖P11‖² = ‖R‖² + leak`: the `leak = E_10(I+E_00)^{-1}E_01` is endpoint-regular ×
+  endpoint-regular, **absorbed into the regular block `∑E²`** (it is `P11 − R`, `R` the product Schur
+  complement). So `dlnLoss = ∑E²(+leak) + ‖R‖²` with the leak in the REGULAR block.
+- cobuild-sub34's #54 `‖R‖² = dlnLoss M 0 (T̃-tuple)`: `R = T(I−VY)^{-1}S =` the GAUGE-NORMALIZED chain.
+⟹ `dlnLoss ∘ flat =ᶠ ∑E² + dlnLoss M 0 (gauge-normalized T̃-core)`, an **EXACT germ equality** (`c₁=c₂=1`).
+This is what `DeepestGaugeChart.ofExactGerm` proves (`refine ⟨1, 1, …⟩` — the `c₁=c₂=1` discharge of the
+`loss_squeeze` field). So **#48 "exact" is CORRECT — not an overclaim** — PROVIDED (i) the leak sits in
+the regular block `∑E²` and (ii) the core is the gauge-normalized `T̃` (= `R`), NOT raw `∏T`.
+
+**Where the SQUEEZE (`≍`, c₁<c₂) genuinely appears — a DIFFERENT comparability:** if one insists on the
+RAW reduced chain `‖∏T_raw‖²` (not gauge-normalized), then `‖R‖² = ‖T(I−VY)^{-1}S‖² ≍ ‖∏T_raw‖²` with the
+`(I−VY)^{-2}` UNIT leak (`c₁ = inf|I−VY|^{-2} < c₂ = sup|I−VY|^{-2}`) — a separate raw-vs-gauge-normalized
+squeeze, NOT the chart's loss-form. The `loss_squeeze` FIELD (the consumable datum) is the general
+two-sided interface (`c₁ ≤ … ≤ c₂`) precisely so it accommodates EITHER — the deepest case discharges it
+EXACTLY (`c₁=c₂=1`, gauge-normalized core); a raw-core framing would need `c₁<c₂`.
+
+**Name it correctly:** the cert's claim is the EXACT germ `dlnLoss∘flat =ᶠ ∑E² + dlnLoss M 0(gauge-norm core)`
+(c₁=c₂=1), matching `ofExactGerm`. The general-`v` datum (Part 1) is likewise EXACT at basepoint `v` in
+the gauge-normalized core. The `loss_squeeze` interface is the consumable SHAPE (accommodates the squeeze
+for safety); the PROVEN content is the exact identity. **[Pending cobuild-sub34 confirmation that their
+#54 lands on the gauge-normalized core (exact) and not a raw-∏T residual (squeeze) — flagged; their
+ofExactGerm strongly indicates exact. If #54 leaves a raw residual unit, I downgrade the cert to SQUEEZE.]**
 
 ## Part 2 — the v=deepest specialization (EXPLICIT, = #44 sub-3 / cobuild-sub34)
 Set `v = deepestPoint H r B`. Then the basepoint is `0` in the gauge coords (the deepest point IS the
