@@ -139,6 +139,20 @@ role-respecting block decomposition. -/
 noncomputable def rThresholdSplit (r a : ℕ) (ha : r ≤ a) : Fin a ≃ Fin r ⊕ Fin (a - r) :=
   (finCongr (by omega : a = r + (a - r))).trans finSumFinEquiv.symm
 
+/-- The per-layer entry split: a layer's entry index `Fin a × Fin b` (rows × cols) splits, by the
+`r`-threshold on both, into the **three regular blocks** `(X = r×r) ⊕ (Y = r×(b−r)) ⊕ (Z = (a−r)×r)`
+collected on the left, and the **reduced `T`-block** `MM = (a−r)×(b−r)` isolated on the right. The
+`MM`-block is exactly the reduced-width layer entry (`a−r = M s.castSucc`, `b−r = M s.succ`), so its
+`Σ`-collection is `FlatIdx (deepestM H r)` (the core slot). -/
+noncomputable def layerEntrySplit (r a b : ℕ) (ha : r ≤ a) (hb : r ≤ b) :
+    (Fin a × Fin b)
+      ≃ ((Fin r × Fin r ⊕ Fin r × Fin (b - r)) ⊕ Fin (a - r) × Fin r)
+          ⊕ (Fin (a - r) × Fin (b - r)) := by
+  refine ((rThresholdSplit r a ha).prodCongr (rThresholdSplit r b hb)).trans ?_
+  refine (Equiv.sumProdDistrib _ _ _).trans ?_
+  refine ((Equiv.prodSumDistrib _ _ _).sumCongr (Equiv.prodSumDistrib _ _ _)).trans ?_
+  exact (Equiv.sumAssoc _ _ _).symm
+
 /-! ## The measure-preserving gauge-slice reindex -/
 
 /-- The spectator (gauge) coordinate count: the flat directions left after the regular frame and the
