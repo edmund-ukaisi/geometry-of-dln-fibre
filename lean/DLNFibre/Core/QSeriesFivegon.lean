@@ -604,4 +604,55 @@ theorem delta_nonneg (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
   Finset.sum_nonneg fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦
     mul_nonneg (extendℤ_nonneg m _ _) (extendℤ_nonneg m _ _)
 
+/-! ## The last-column bijection (thread-07 piece 1)
+
+The fibre `{m : peelPart m = m'}` is parametrised by `m`'s last column `x = lastCol m`. The inverse
+`rebuild m' x` keeps columns `≤ N-1` from `m'`, splits the merged column `N` as `(m'_{·,N} − x, x)`,
+and places the corner. -/
+
+/-- Forward map: `m`'s last column (vertex `N+1`). -/
+def lastCol (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 2) → ℕ :=
+  fun I ↦ m (I, Fin.last (N + 1))
+
+/-- Per-row upper bound for an admissible last column: `m'_{I',N}` for rows `I' ≤ N`, `dlast` for the
+corner row `N+1`. -/
+def boundX (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast : ℕ) : Fin (N + 2) → ℕ :=
+  fun I ↦ Fin.lastCases dlast (fun I' ↦ m' (I', Fin.last N)) I
+
+/-- The admissible last columns for a fixed `m'` and last-vertex dimension `dlast`. -/
+def admissibleXs (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast : ℕ) : Finset (Fin (N + 2) → ℕ) :=
+  (Fintype.piFinset (fun I ↦ Finset.range (boundX m' dlast I + 1))).filter (fun x ↦ ∑ I, x I = dlast)
+
+/-- Inverse map: rebuild `m` from `m'` and a last column `x`. Columns `≤ N-1` come from `m'`; the
+merged column `N` splits as `m_{I,N} = m'_{I',N} − x_I`, the last column `N+1` is `x`. -/
+def rebuild (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) :
+    Fin (N + 2) × Fin (N + 2) → ℕ :=
+  fun p ↦ Fin.lastCases
+    (x p.1)
+    (fun J' ↦ Fin.lastCases
+      (Fin.lastCases 0 (fun I' ↦ m' (I', Fin.last N) - x p.1) p.1)
+      (fun J'' ↦ Fin.lastCases 0 (fun I' ↦ m' (I', J''.castSucc)) p.1)
+      J')
+    p.2
+
+/-- Right inverse: `lastCol (rebuild m' x) = x`. -/
+theorem lastCol_rebuild (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) :
+    lastCol (rebuild m' x) = x := by
+  funext I; simp only [lastCol, rebuild, Fin.lastCases_last]
+
+/-- `peelPart` recovers `m'` from `rebuild m' x` (given the per-row bound, so the `ℕ` split is exact). -/
+theorem peelPart_rebuild (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ)
+    (hx : ∀ I' : Fin (N + 1), x I'.castSucc ≤ m' (I', Fin.last N)) :
+    peelPart (rebuild m' x) = m' := by
+  funext p
+  obtain ⟨I', J'⟩ := p
+  induction J' using Fin.lastCases with
+  | last =>
+    rw [peelPart_last]
+    simp only [rebuild, Fin.lastCases_castSucc, Fin.lastCases_last]
+    exact Nat.sub_add_cancel (hx I')
+  | cast J'' =>
+    rw [peelPart_castSucc]
+    simp only [rebuild, Fin.lastCases_castSucc]
+
 end DLNFibre.Core
