@@ -145,6 +145,76 @@ theorem peelPart_eq (m : Fin (N + 2) × Fin (N + 2) → ℕ) (i j : Fin (N + 1))
   | last => rw [peelPart_last, if_pos rfl]
   | cast j₀ => rw [peelPart_castSucc, if_neg (Fin.castSucc_ne_last j₀), add_zero]
 
+/-- The cover set at vertex `k`: interval-index pairs `q` with `q.1 ≤ k ≤ q.2`. -/
+private def coverF (N : ℕ) (k : Fin (N + 1)) : Finset (Fin (N + 1) × Fin (N + 1)) :=
+  Finset.univ.filter (fun q ↦ q.1 ≤ k ∧ k ≤ q.2)
+
+/-- **The cover-sum reindex** (the `kostantAt`-merge crux): summing `peelPart m` over the cover of
+`k` in `Fin (N+1)` equals summing `m` over the cover of `k.castSucc` in `Fin (N+2)`. Proof via the
+additive form `peelPart_eq`: the shifted entries reindex by `castSucc` (the non-last columns), and the
+`[j = last]` corrections supply the last column. -/
+theorem peelPart_cover_sum (m : Fin (N + 2) × Fin (N + 2) → ℕ) (k : Fin (N + 1)) :
+    ∑ q ∈ coverF N k, peelPart m q
+      = ∑ p ∈ coverF (N + 1) k.castSucc, m p := by
+  -- LHS: expand peelPart via its additive form, split the sum
+  have hL : ∑ q ∈ coverF N k, peelPart m q
+      = (∑ q ∈ coverF N k, m (q.1.castSucc, q.2.castSucc))
+        + ∑ q ∈ coverF N k, (if q.2 = Fin.last N then m (q.1.castSucc, Fin.last (N + 1)) else 0) := by
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun q _ ↦ peelPart_eq m q.1 q.2
+  -- RHS: split the cover of k.castSucc by whether the second index is the last vertex
+  have hR : ∑ p ∈ coverF (N + 1) k.castSucc, m p
+      = (∑ p ∈ (coverF (N + 1) k.castSucc).filter (fun p ↦ p.2 ≠ Fin.last (N + 1)), m p)
+        + ∑ p ∈ (coverF (N + 1) k.castSucc).filter (fun p ↦ ¬ p.2 ≠ Fin.last (N + 1)), m p :=
+    (Finset.sum_filter_add_sum_filter_not (coverF (N + 1) k.castSucc)
+      (fun p ↦ p.2 ≠ Fin.last (N + 1)) m).symm
+  rw [hL, hR]
+  congr 1
+  · -- non-last part: bijection `q ↦ (q.1.castSucc, q.2.castSucc)`
+    refine Finset.sum_bij (fun q _ ↦ (q.1.castSucc, q.2.castSucc)) ?_ ?_ ?_ ?_
+    · intro q hq
+      simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and] at hq ⊢
+      refine ⟨⟨?_, ?_⟩, Fin.castSucc_ne_last _⟩
+      · exact Fin.castSucc_le_castSucc_iff.mpr hq.1
+      · exact Fin.castSucc_le_castSucc_iff.mpr hq.2
+    · intro q₁ _ q₂ _ h
+      simp only [Prod.mk.injEq, Fin.castSucc_inj] at h
+      exact Prod.ext h.1 h.2
+    · intro p hp
+      simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+      obtain ⟨⟨ha, hb⟩, hlast⟩ := hp
+      refine ⟨(p.1.castPred (Fin.ne_last_of_lt (lt_of_le_of_lt ha (Fin.castSucc_lt_last k))),
+        p.2.castPred hlast), ?_, ?_⟩
+      · simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and]
+        constructor
+        · rw [← Fin.castSucc_le_castSucc_iff, Fin.castSucc_castPred]; exact ha
+        · rw [← Fin.castSucc_le_castSucc_iff, Fin.castSucc_castPred]; exact hb
+      · simp [Fin.castSucc_castPred]
+    · intro q _; rfl
+  · -- last part: `(i, last N) ↦ (i.castSucc, last (N+1))`
+    rw [← Finset.sum_filter]
+    refine Finset.sum_bij (fun q _ ↦ (q.1.castSucc, Fin.last (N + 1))) ?_ ?_ ?_ ?_
+    · intro q hq
+      simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and] at hq
+      obtain ⟨⟨hq1, _⟩, _⟩ := hq
+      simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and, not_not]
+      exact ⟨⟨Fin.castSucc_le_castSucc_iff.mpr hq1, Fin.le_last _⟩, trivial⟩
+    · intro q₁ hq₁ q₂ hq₂ h
+      simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and] at hq₁ hq₂
+      simp only [Prod.mk.injEq, Fin.castSucc_inj, and_true] at h
+      exact Prod.ext h (hq₁.2.trans hq₂.2.symm)
+    · intro p hp
+      simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and, not_not] at hp
+      obtain ⟨⟨hp1, _⟩, hp3⟩ := hp
+      have hne : p.1 ≠ Fin.last (N + 1) :=
+        Fin.ne_last_of_lt (lt_of_le_of_lt hp1 (Fin.castSucc_lt_last k))
+      refine ⟨(p.1.castPred hne, Fin.last N), ?_, ?_⟩
+      · simp only [coverF, Finset.mem_filter, Finset.mem_univ, true_and]
+        refine ⟨⟨?_, Fin.le_last _⟩, trivial⟩
+        rw [← Fin.castSucc_le_castSucc_iff, Fin.castSucc_castPred]; exact hp1
+      · exact Prod.ext (Fin.castSucc_castPred p.1 hne) hp3.symm
+    · intro q _; rfl
+
 /-- The peel preserves support: if `m` is supported on `i ≤ j` then so is `peelPart m`. -/
 theorem peelPart_support {m : Fin (N + 2) × Fin (N + 2) → ℕ}
     (hs : ∀ p : Fin (N + 2) × Fin (N + 2), ¬ p.1 ≤ p.2 → m p = 0)
