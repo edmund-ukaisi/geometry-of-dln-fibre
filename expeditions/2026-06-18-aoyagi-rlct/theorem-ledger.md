@@ -80,6 +80,27 @@ coverage from source rank hypotheses, exact-rank openness, Aoyagi Lemma 1,
 analytic ideal transport, regular-coordinate RLCT bookkeeping, normal
 crossings, or an RLCT consequence.
 
+The A2 rank-stratum boundary has also landed.  New Lean names in
+`ProductReductionBoundary.lean` include `paperEndpointFixedBaseEdgeRankStratum`,
+`paperEndpointFixedBaseSourceRankStratum`,
+`paperEndpointFixedBaseContinuousEdgesRecursiveResidualRanks`,
+`PaperEndpointFixedBaseProductReductionRankStratumCertificate`,
+`PaperEndpointFixedBaseProductReductionCertificate.residualRanks_of_edgeRankStratum`,
+`PaperEndpointFixedBaseProductReductionCertificate.rankStratumCertificate`,
+`PaperEndpointFixedBaseProductReductionCertificate.residualBlock_rank_eq_sourceRankSubProductRank`,
+`paperEndpointFixedBaseProductReductionRankStratumCertificate_selfBase_mem_nhdsWithin`,
+`paperEndpointFixedBaseProductReductionRankStratumCertificate_selfBase_mem_nhdsWithin_source`,
+`PaperEndpointFixedBaseProductReductionRankStratumLocalCertificate`,
+`PaperEndpointProductReductionRankStratumLocalCertificate`, and
+`exists_paperEndpointProductReductionRankStratumLocalCertificate`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-rank-stratum-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-rank-stratum-boundary.md`.
+This packages exact layer ranks as a relative stratum, not as an ambient open
+neighborhood.  On the source-shaped stratum it rewrites the visited residual
+rank to `rEdge p - r` using the basepoint certificate.
+
 ## Latest A5 Update
 
 The Eq5 alpha-indexed branch source-label slice has landed in

@@ -1722,11 +1722,21 @@ Immediate order:
    not unfreeze source-backed Lemma 5 exactness.
    Latest A2 residual-product pass now names the endpoint lower-right block as
    the deterministic product of transformed Schur residuals in
-   `ProductReductionBoundary.lean`. Leave A2 at this elementary boundary until
-   A4/A5 produce stable certificate data. Optional future A2 work should be
-   thin source-rank, residual-rank, or hypothesis-weakening wrappers only, not
-   exact-rank openness, full Theorem 3 packaging, or
+   `ProductReductionBoundary.lean`. The exact-rank side is now also packaged
+   as a relative-stratum boundary: `paperEndpointFixedBaseEdgeRankStratum`,
+   `paperEndpointFixedBaseSourceRankStratum`, the rank-stratum certificate, and
+   the `nhdsWithin` wrappers keep Aoyagi's layer-rank hypotheses explicit
+   without claiming exact-rank openness. Leave A2 at this elementary boundary
+   until A4/A0 produce stable certificate data. Optional future A2 work should
+   be thin source-rank, residual-rank, or hypothesis-weakening wrappers only,
+   not exact-rank openness, full Theorem 3 packaging, or
    regular-suspension/RLCT transport.
+   The next source-moving frontier should be A4/A0: either build the
+   normal-crossing certificate spine with non-vacuous chart/exponent/unit/count
+   fields, or start the continuing Case 2 next-state source-product reindex
+   from the displayed `Csucc`/post-pivot residual data. Do not let this become
+   another supplied-obligation consumer unless it removes a real downstream
+   obstacle.
 7. DLN notation translation. The first formula-notation slice has landed in
    `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`: Definition 3 ceiling data,
    integer reduced widths, indexed selected widths, Theorem 2 order formula,

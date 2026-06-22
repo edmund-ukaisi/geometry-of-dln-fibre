@@ -1176,3 +1176,39 @@ Artifacts:
 `reproduction-a2-residual-product.md`,
 `statement-card-a2-residual-product.md`, and
 `review-a2-residual-product.md`.
+
+## 2026-06-22 A2 rank-stratum boundary
+
+Returned to the exact-rank side of Aoyagi Theorem 3.  The previous fixed-base
+certificate kept residual-rank conclusions as implications from exact layer
+ranks.  This checkpoint packages the intended restriction explicitly rather
+than treating exact-rank strata as open.
+
+New Lean artifacts in `lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`:
+
+- `paperEndpointFixedBaseEdgeRankStratum`;
+- `paperEndpointFixedBaseSourceRankStratum`;
+- `paperEndpointFixedBaseContinuousEdgesRecursiveResidualRanks`;
+- `PaperEndpointFixedBaseProductReductionRankStratumCertificate`;
+- `PaperEndpointFixedBaseProductReductionCertificate.residualRanks_of_edgeRankStratum`;
+- `PaperEndpointFixedBaseProductReductionCertificate.rankStratumCertificate`;
+- `PaperEndpointFixedBaseProductReductionCertificate.residualBlock_rank_eq_sourceRankSubProductRank`;
+- `paperEndpointFixedBaseProductReductionRankStratumCertificate_selfBase_mem_nhdsWithin`;
+- `paperEndpointFixedBaseProductReductionRankStratumCertificate_selfBase_mem_nhdsWithin_source`;
+- `PaperEndpointFixedBaseProductReductionRankStratumLocalCertificate`;
+- `PaperEndpointFixedBaseProductReductionRankStratumLocalCertificate.mem_nhdsWithin_source`;
+- `PaperEndpointProductReductionRankStratumLocalCertificate`;
+- `exists_paperEndpointProductReductionRankStratumLocalCertificate`.
+
+The source-shaped stratum records base product rank `r`, exact nearby edge ranks
+`rEdge`, and the inequalities `r <= rEdge p`.  On that stratum the basepoint
+certificate rewrites `finrank U0` to `r`, giving the residual-rank formula
+`rank(residualBlock p) = rEdge p - r`.
+
+This still does not prove exact-rank openness, chart coverage from only source
+rank hypotheses, Aoyagi Lemma 1, analytic ideal-germ transport,
+regular-coordinate RLCT bookkeeping, normal crossings, or any RLCT consequence.
+
+Artifacts:
+`reproduction-a2-rank-stratum-boundary.md` and
+`statement-card-a2-rank-stratum-boundary.md`.

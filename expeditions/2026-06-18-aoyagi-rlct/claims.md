@@ -460,8 +460,10 @@ No such claim is formalisation-ready until both fields are filled.
   transformed-chart neighborhood handoff are now proved under recursive
   basepoint chart hypotheses. Still open: source-faithful full Theorem 3
   statement, certificate transport, and continuity of the remaining state
-  fields if a later certificate needs them. Exact rank-stratum hypotheses remain separate; see
-  `threads/03-block-product-reduction/paper-order-bridge-notes.md`.
+  fields if a later certificate needs them. Exact rank-stratum hypotheses are
+  now packaged as relative-stratum boundaries, not open neighborhoods; see
+  `threads/03-block-product-reduction/paper-order-bridge-notes.md` and
+  `threads/03-block-product-reduction/reproduction-a2-rank-stratum-boundary.md`.
 
 ## Claim A3 - deepest singular point
 
