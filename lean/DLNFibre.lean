@@ -60,3 +60,5 @@ import DLNFibre.Core.CCodimZeroStrict
 import DLNFibre.Core.SigmaCodim
 -- q-series primitives (perm-invariance M1): P / Pm / Pmult / Qseries + constant-term-1 + nonneg.
 import DLNFibre.Core.QSeries
+-- N=1 Durfee identity (perm-invariance M2): P a · P b = ∑_r X^{(a-r)(b-r)} P(a-r) P r P(b-r).
+import DLNFibre.Core.QSeriesDurfee
