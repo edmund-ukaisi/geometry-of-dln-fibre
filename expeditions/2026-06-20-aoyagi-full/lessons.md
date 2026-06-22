@@ -565,19 +565,22 @@ genuinely COMPLETED, just as "the obligation is filled" must mean it's NON-VACUO
 re-verifies `Build completed successfully` + `#print axioms` at integration (#28) as the backstop — agent
 green-claims are necessary, not sufficient.
 
-## A poles-shift homeo can ride green via a.e.-MP; cutoff-inhabit the germ instead (2026-06-22)
+## A homeo field's `Continuous shift` requirement blocks a poles-shift; cutoff to satisfy it (2026-06-22)
 
 The DeepestGaugeChart absorptions are `≃ₜ` FIELDS (global homeos), but the honest maps are local-only: the
 Schur shift −Z(I+X)⁻¹Y has poles where I+X is singular (I+X=0 at X=−I; X unconstrained over `Matrix r r`), and
 the E-straightening is a nonlinear, non-globally-invertible diffeo. A homeo (`≃ₜ`) needs GLOBAL continuity,
 which the poles-shift lacks.
 
-THE TRAP (identified + avoided): coreAbsorb_rlct was peeled via the measure-preserving route (skew_product MP →
-rlctAtOn_comp_homeomorph). skew_product MP holds a.e. THROUGH the poles (the singular locus is Lebesgue-null),
-so it RODE GREEN — but coreAbsorb : `≃ₜ` built on the honest poles-shift is unsound (a homeo needs the global
-continuity the shift lacks). A green build of the MP peel does NOT certify the homeo is sound. Surfaced by a
-controller consistency-flag ("does coreAbsorb have the same poles issue as regAbsorb?") + cobuild-sub34
-verifying I+X is unconstrained.
+THE SAFEGUARD (verified by crux2 — correcting an earlier over-statement that the masking *occurred*): the masking
+does NOT actually occur. coreShearHomeo (and measurePreserving_coreShear) REQUIRE `Continuous shift` as a
+hypothesis, so a poles-shift −Z(I+X)⁻¹Y is UNPROVABLE (you cannot prove `Continuous` of a pole-y function) —
+build-time blocked, NOT silently-green. The peel goes through the homeo (rlctAtOn_comp_homeomorph takes a
+`Homeomorph`), so it is Continuous-gated. So the cutoff is needed to SATISFY the `Continuous` requirement, not to
+dissolve a green-masking. The general caution survives as a *conditional*: an a.e.-MP peel consumed UNGATED by a
+homeo's `Continuous` hyp (i.e. via bare `Measurable`) WOULD ride green through a null singular locus — so verify
+your peel is homeo-gated (Continuous), not MP-ungated (Measurable). This one is gated. Surfaced by a controller
+consistency-flag + cobuild-sub34 verifying I+X is unconstrained (X=−I ⟹ I+X=0).
 
 THE FIX (cutoff-inhabitation): inhabit the `≃ₜ` field with a global homeo whose GERM at 0 = the real (local)
 map, via a globally-continuous CUTOFF (bump × correction, = the real map on a nbhd of 0, tame far away). rlctAt
