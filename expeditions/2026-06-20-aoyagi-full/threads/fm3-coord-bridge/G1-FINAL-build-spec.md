@@ -342,3 +342,25 @@ work: given M, decide leaf-vs-branch + (for branch) the Finset of pivot cells + 
 combinatorics — pp2's lane. CANNOT commit the fix-body until routeStep is filled (sorry-gate). The skeleton
 green VALIDATES the rebase shape end-to-end; routeStep is the substantial remaining grind (likely needs a
 pp2 split-construction cert: rank-pattern → (drop,red) per node, generalizing the (2,2,2) hand-build).
+
+## CRITICAL SPECIFY FINDING (g161, Codex xhigh routeStep-type-{prompt,answer}.md) — the VACUITY TRAP
+The bare `RouteStep.branch (split) (codim)` is TOO WEAK: it gives a SYNTACTIC recursion, not a mathematical
+resolution. A routeStep returning ARBITRARY splits TYPE-CHECKS and routeAtlas produces SOME (d,k,h) — but
+DISCONNECTED from dlnLoss M 0. The value identity rlctAtOn(dlnLoss M 0) 0 = ⨅ monomialThreshold would then
+be UNPROVABLE (the (d,k,h) isn't tied to the loss). Codex CONFIRMS (decisive): filling routeStep with
+arbitrary splits is STRICTLY WORSE than the sorry — it manufactures a misleading "resolution" object that
+lets downstream prove a false-flavoured identity. THE GUARD: never use routeAtlas M as a resolution unless
+paired with a correctness proof built from CERTIFIED steps.
+THE FIX (Codex, my SPECIFY corrected): RouteStep.branch must carry (or a ValidRouteStep M predicate must
+assert) the per-cell TRANSPORT DATUM — the IsSchurStraightenSqueeze-existence that PROVES each split
+factorises the loss (core ∘ φ = unit·(Σx² + dlnLoss S.red 0)). Without it the split is meaningless.
+SEPARABILITY (Codex): dispatcher and identity ARE separable AFTER enriching — the clean architecture is
+  routeStep : M → RouteStep M        (raw plumbing — termination only)
+  ValidRouteStep M (routeStep M)     (the per-cell squeeze/reduced/cover certificates)
+then a GENERIC FOLD theorem `routeAtlas_correct_given_valid` : (every branch certified) ⟹ rlctAtOn = ⨅
+monomialThreshold, by well-founded induction matching routeAtlas. The dispatcher's REAL obligation is
+"construct cells + decreasing splits + the per-cell transport datum", NOT "choose smaller reds".
+MY NEXT (the formaliser's lane, INDEPENDENT of pp2's split-construction): build ValidRouteStep + the
+generic fold theorem (Codex's minimal-honest-step items 1-2) — the GUARDRAIL + the target shape pp2's #67/#68
+designs against ("get target-shape from fm3 first"). pp2 designs the rank-pattern → certified-RouteStep
+recipe (#68); I provide the certified type + prove the fold; pp2's construction populates it.
