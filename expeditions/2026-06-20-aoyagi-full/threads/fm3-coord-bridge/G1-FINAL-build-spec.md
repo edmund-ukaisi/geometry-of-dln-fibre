@@ -458,6 +458,19 @@ So the §2 green-≠-right guard is now machine-checked on the value side: the d
 holds BY the admissible-T witness. STILL AWAITING crux2 on the transport-field (additive-vs-min / which
 lemma the per-cell consequence uses) before pinning the full ValidRouteStep + building the fold.
 
+## VALUE SIDE CLOSED + VERIFIED (g172, pp2 g190) — PivotWitness dischargeable per node
+pp2 g190 verified PivotWitness @040a997 dischargeable per node across all validation cases (the rank-descent
+construction): each C1/C5 pivot cell resolves one rank stratum; its PivotWitness carries T = that admissible
+stratum (∈ Adm M), codim = (Mval M T).toNat; minAdm_le automatic. Verified (2,2,2) [step-1 T=(0,0) codim 4,
+step-2 T=(1,0) codim 3=minAdm — matches the anchor], (3,2,3) m₀=5, (2,2,2,2) m₀=3, (4,3,2) m₀=6 (thin).
+PRECISION pp2 confirmed (the subtlety in PivotWitness): T and codim are w.r.t. the NODE's M, codim = Mval of
+the rank stratum the node RESOLVES (the geometric codim) — while the recursion's schurState tracks WIDTHS.
+Consistent: the dispatcher constructs PivotWitness per pivot from the rank-descent T (the admissible rank
+pattern resolved at that node), separate from the width-bookkeeping. So C≥ (foldFamily_threshold_ge_of_pivotWitness)
++ C=∃ (foldFamily_achiever, §4 achiever i₀ reaches T*) ⟹ IsResolutionAtlas ⟹ ⨅=lambdaCore BY CONSTRUCTION,
+no new lemma. VALUE-SIDE VERIFICATION: DONE (pp2). The ONLY pending field = the per-cell TRANSPORT (crux2's
+light-G2-vs-heavy-squeeze, the analytic wrapper — not the value side).
+
 ## TRANSCRIPTION-READY (g171, pp2 g188/g189 @a60bfda) — no open combinatorial question
 pp2 confirmed transcription-ready, three final pins all aligned with my banked value-side:
 1. CODIM = the witnessed (Mval M T).toNat form (= my PivotWitness). pp2 verified Mval ≥ 0 on Adm M
