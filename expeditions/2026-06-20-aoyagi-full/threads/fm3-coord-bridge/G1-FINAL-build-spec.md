@@ -290,3 +290,19 @@ is single-path); (iii) my recursion produces, at each node, a Finset of child Ch
 cell) + folds MonoData via appendDivisor; (iv) terminate on ΣM. The carrier becomes (M, ChainDimSplit M) not
 RouteState, but the RECURSION + BRANCHING + CONSTRUCTION are still mine. The "rebase" narrows to: use crux2's
 split TYPE + its transport lemmas, not a fresh state machine — value/cover layers unchanged.
+
+## REBASE FOUNDATION BANKED (g158, @origin/fm3/routem 55db82d) — RouteMRecursion.lean
+The construction-agnostic recursion driver, rebased onto ChainDimSplit (replaces the dead RouteState/
+routeMeasure/routeRel_wf). New file RouteMRecursion.lean (imports GeneralR1Recursion for ChainDimSplit +
+RouteMState for MonoData; NO RouteMBridge/RouteMAtlas — single-writer-safe; green, clean-three):
+- `chainWidthSum M := Σ M` — the termination measure.
+- `ChainDimSplit.redM_widthSum_lt` : Σ S.red < Σ M (from hsum+hdrops; extracted from crux2's inlined proof).
+- `chainRel N M := chainWidthSum N < chainWidthSum M` + `chainRel_wf` (InvImage of < on ℕ) — the WF carrier
+  for the iterated Route-M WellFounded.fix.
+- `ChainDimSplit.redM_chainRel` : any split descends along chainRel (the recursive-call descent proof).
+These hold WHOEVER constructs the per-node split — the recursion skeleton stands. STILL GATED on crux2's
+"who builds the per-node ChainDimSplit" reply: the WellFounded.fix BODY (the per-node step: produce the
+pivot-cell Finset + child splits + fold MonoData + layer the cover) needs the split-construction interface.
+NOT building the fix body until the answer lands (avoids baking a wrong split-construction shape).
+NEXT (when crux2 replies): the fix body over chainRel_wf → NodeChartFamily; then the cover-branching
+(g5_pivotNode split per node) + wire isCover/isValue → RouteMAtlas.
