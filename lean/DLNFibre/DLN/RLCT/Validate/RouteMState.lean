@@ -238,4 +238,37 @@ theorem foldFamily_achiever {ι : Type*} (codimsOf : ι → List ℕ) (m₀ : �
       = (m₀ : ℝ≥0∞) / 2 :=
   ⟨i₀, monomialThreshold_foldDivisors_eq_of_binding (codimsOf i₀) m₀ hm₀ hge₀ hbind₀⟩
 
+/-! ## The §2 codim-witness ⟹ no-undershoot bridge (pp2 g183, the load-bearing C1-condition)
+
+pp2's #68 cert §2 (decorrelated-Codex-confirmed): the SINGLE seam making the dispatcher CERTIFIED vs
+green-but-wrong is that every pivot divisor's `codim = Mval M T` for an ADMISSIBLE rank-pattern `T`
+(NOT the raw coordinate cardinality / Jacobian rank — the `(4,3,2)` thin-product trap). Given that
+witness, the no-undershoot `m₀ ≤ codim` is AUTOMATIC: `m₀ = (Adm M).inf' Mval` is the min over `Adm M`,
+so `inf' Mval ≤ Mval M T` for any `T ∈ Adm M` (`Finset.inf'_le`). This lemma names that discharge — the
+admissible-`T` witness mechanically feeds `foldFamily_threshold_ge`'s `m₀ ≤ c` hypothesis. -/
+
+/-- **The admissible-`T` witness discharges no-undershoot.** For `T ∈ Adm M`, the minimal codim
+`m₀ = ((Adm M).inf' Mval).toNat` is `≤ (Mval M T).toNat`. So a pivot divisor certified as `codim =
+Mval M T` (`T` admissible) automatically satisfies `m₀ ≤ codim` — the C≥ per-divisor guarantee (pp2
+§2). `Mval ≥ 0` on `Adm` (`Mval_nonneg_adm`-style; here via the `inf'`-nonneg round-trip). -/
+theorem minAdm_le_Mval_toNat (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
+    (((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat) ≤ (Mval M T).toNat := by
+  have hle : (Adm M).inf' (Adm_nonempty M) (Mval M) ≤ Mval M T := Finset.inf'_le _ hT
+  exact Int.toNat_le_toNat hle
+
+/-- **§2 ⟹ C≥ family-level**: if every leaf's codim-list comes from admissible-`T` witnesses (each
+`c = (Mval M T).toNat`, `T ∈ Adm M`), every leaf threshold is `≥ ½·m₀` (`m₀ = minAdm`). Composes the
+witness discharge (`minAdm_le_Mval_toNat`) with `foldFamily_threshold_ge` — the pp2 §2 certificate's C≥
+consequence, value-side. The hypothesis is exactly what pp2's `witness : {T // Adm M T ∧ codim = Mval}`
+field delivers. -/
+theorem foldFamily_threshold_ge_of_admWitness {ι : Type*} (M : Fin (L + 1) → ℕ)
+    (codimsOf : ι → List ℕ) (hm₀ : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
+    (hwit : ∀ i, ∀ c ∈ codimsOf i, ∃ T ∈ Adm M, c = (Mval M T).toNat) (i : ι) :
+    ((((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat : ℝ≥0∞)) / 2
+      ≤ monomialThreshold (MonoData.foldDivisors (codimsOf i)).d
+          (MonoData.foldDivisors (codimsOf i)).k (MonoData.foldDivisors (codimsOf i)).h := by
+  refine foldFamily_threshold_ge codimsOf _ hm₀ (fun i' c hc => ?_) i
+  obtain ⟨T, hT, hcT⟩ := hwit i' c hc
+  rw [hcT]; exact minAdm_le_Mval_toNat M T hT
+
 end DLNFibre.DLN.RLCT
