@@ -288,6 +288,43 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-nonfirst-block-bounds.md`.
 
+## Latest A6 Update
+
+The first A6 formula-notation slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`, imported by `lean/DLNFibre.lean`.
+It translates Aoyagi Definition 3 and Theorem 2 from PDF pp. 8-9 without using
+the quiver paper and without claiming an RLCT theorem.
+
+Lean now has integer reduced widths
+`aoyagiReducedWidthInt H r s = (H s : Int) - r`, indexed selected widths
+through `AoyagiSelectedCutpoints`, the selected value-set helper
+`aoyagiSelectedWidthValueSet`, and the supplied Definition 3 package
+`AoyagiDefinition3CeilData`.  The package separates Aoyagi's selected object
+from the ceiling integer `ceilWidth`, and records `0 < ell`, `0 < aParam`,
+`aParam <= ell`, and
+`sum selected = ell*(ceilWidth-1)+aParam`.
+
+The displayed Theorem 2 order is named
+`AoyagiDefinition3CeilData.theorem2OrderFormula`, not `theta`, because
+Aoyagi's `theta` is pole order/multiplicity rather than the repository's
+component-count convention.  The three displayed `lambda` forms are named
+`aoyagiTheorem2Lambda_average`, `aoyagiTheorem2Lambda_ceil`, and
+`aoyagiTheorem2Lambda_expanded`.  Lean proves the finite rewrites
+`AoyagiDefinition3CeilData.selectedWidthAverage_eq_ceil`,
+`aoyagiTheorem2Lambda_average_eq_fromCeilData`,
+`aoyagiTheorem2Lambda_ceil_eq_expanded`, and
+`aoyagiTheorem2Lambda_average_eq_expanded_ofCeilData`.
+
+Artifacts:
+`threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`,
+`threads/06-dln-translation/statement-card-a6-final-formula-notation.md`, and
+`threads/06-dln-translation/review-final-formula-notation-a6.md`.
+
+Nonclaims: no full Definition 3 selection inequalities, no existence or
+uniqueness of the selected cutpoints or ceiling datum, no Lemma 4/Lemma 5
+exponent-to-formula bridge, no normal crossings, no pole-order interpretation,
+and no RLCT extraction.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:

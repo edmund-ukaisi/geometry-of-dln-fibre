@@ -1543,8 +1543,14 @@ Immediate order:
    thin source-rank, residual-rank, or hypothesis-weakening wrappers only, not
    exact-rank openness, full Theorem 3 packaging, or
    regular-suspension/RLCT transport.
-7. DLN notation translation. Translate Aoyagi dimension/rank notation to repo
-   DLN notation only after the Aoyagi-side statements are stable.
+7. DLN notation translation. The first formula-notation slice has landed in
+   `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`: Definition 3 ceiling data,
+   integer reduced widths, indexed selected widths, Theorem 2 order formula,
+   and the three displayed lambda formulas plus rational rewrites.  Keep this
+   layer formula-only.  The next A6 work should connect it to already-proved
+   Lemma 4/Lemma 5 arithmetic only after those source boundaries are stable;
+   it must not call the formula an RLCT theorem before the normal-crossing
+   certificate and cited extraction interface are in place.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

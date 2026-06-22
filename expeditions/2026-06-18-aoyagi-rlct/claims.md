@@ -2855,16 +2855,35 @@ No such claim is formalisation-ready until both fields are filled.
   normal-crossing extraction interface gives Aoyagi's RLCT and RLCT-order
   formula for deep linear networks.
 - **Tier.** Final synthesis claim.
-- **Status.** open.
+- **Status.** open.  A first formula-notation slice has landed, but the final
+  RLCT theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
   (PDF pp. 6-7) is a cited earlier three-layer formula, not the multi-layer
   main theorem.
-- **Pen-and-paper reproduction.** pending.
-- **Reproduction check.** pending.
-- **Lean target.** TBD after A1-A5.
-- **Proved.** pending; should include all Aoyagi-specific content.
+- **Pen-and-paper reproduction.** Definition 3/Theorem 2 formula translation
+  reproduced at
+  `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`.
+- **Reproduction check.** xhigh source/API checks incorporated in
+  `threads/06-dln-translation/review-final-formula-notation-a6.md`.
+- **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.theorem2OrderFormula`,
+  `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average`,
+  `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_ceil`,
+  `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_expanded`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.selectedWidthAverage_eq_ceil`,
+  `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average_eq_fromCeilData`, and
+  `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average_eq_expanded_ofCeilData`
+  in `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`.
+- **Proved.** formula-only arithmetic: integer reduced-width notation,
+  Definition 3 selected-sum average rewrite, equality of the average and
+  ceiling displayed lambda formulas under supplied ceiling data, and equality
+  of the ceiling and expanded displayed lambda formulas when `0 < ell`.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
-- **Deferred.** formal analytic extraction theorem.
+- **Deferred.** full Definition 3 selection inequalities, existence of the
+  selected cutpoints and ceiling datum, the Lemma 4/Lemma 5 exponent-to-formula
+  bridge, normal crossings, pole-order interpretation, final RLCT theorem, and
+  formal analytic extraction theorem.

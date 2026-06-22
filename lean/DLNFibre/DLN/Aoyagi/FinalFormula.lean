@@ -1,0 +1,208 @@
+import DLNFibre.DLN.Aoyagi.Lemma5DisplayedVector
+import Mathlib.Data.Rat.Lemmas
+
+/-!
+# Source-facing final formula notation for Aoyagi Theorem 2
+
+This file names the finite arithmetic appearing in Aoyagi Definition 3 and
+Theorem 2.  It is a notation/translation layer only: it does not prove the
+normal-crossing resolution, identify a statistical RLCT, prove the pole order,
+or use the quiver-geometric paper.
+-/
+
+open scoped BigOperators
+
+namespace DLNFibre
+namespace DLN
+namespace Aoyagi
+
+/-- Aoyagi's reduced layer width `M^(s)=H^(s)-r`, with source layers numbered
+from `1`.  It is kept integer-valued to avoid truncating `H s - r` before the
+source rank hypothesis has been supplied. -/
+def aoyagiReducedWidthInt (H : ℕ → ℕ) (r s : ℕ) : ℤ :=
+  (H s : ℤ) - (r : ℤ)
+
+/-- The selected reduced widths `M^(S_j)` attached to selected cutpoints. -/
+def aoyagiSelectedReducedWidths {ell : ℕ}
+    (H : ℕ → ℕ) (r : ℕ) (C : AoyagiSelectedCutpoints ell) :
+    Fin (ell + 1) → ℤ :=
+  fun j ↦ aoyagiReducedWidthInt H r (C.cut j)
+
+/-- The selected value set called `M` in Aoyagi Definition 3.
+
+Aoyagi also uses `M` for the ceiling-like integer below; Lean keeps these
+names separate. -/
+def aoyagiSelectedWidthValueSet {ell : ℕ}
+    (m : Fin (ell + 1) → ℤ) : Finset ℤ :=
+  Finset.univ.image m
+
+/-- Definition 3's ceiling/excess arithmetic for a selected width family.
+
+The source integer named `M` is called `ceilWidth`; the source integer `a` is
+called `aParam`.  The field `selectedSum_eq` is the integral form of the
+source definition `a = sum_j M^(S_j) - (ceilWidth-1)ell`; `aParam_pos` and
+`aParam_le` record the residue bounds forced by
+`ceilWidth - 1 < (sum_j M^(S_j))/ell <= ceilWidth`. -/
+structure AoyagiDefinition3CeilData
+    (ell : ℕ) (m : Fin (ell + 1) → ℤ) where
+  ell_pos : 0 < ell
+  ceilWidth : ℤ
+  aParam : ℕ
+  selectedSum_eq :
+    (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * (ceilWidth - 1) + aParam
+  aParam_pos : 0 < aParam
+  aParam_le : aParam ≤ ell
+
+namespace AoyagiDefinition3CeilData
+
+/-- Aoyagi Theorem 2's pole-order/multiplicity formula, named as an order
+formula to avoid confusion with this repository's component-count `theta`. -/
+def theorem2OrderFormula {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) : ℕ :=
+  data.aParam * (ell - data.aParam) + 1
+
+@[simp] theorem theorem2OrderFormula_eq {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) :
+    data.theorem2OrderFormula = data.aParam * (ell - data.aParam) + 1 :=
+  rfl
+
+end AoyagiDefinition3CeilData
+
+/-- The regular-variable contribution in Aoyagi Theorem 2:
+`(-r^2+r(H^(1)+H^(L+1)))/2`. -/
+def aoyagiTheorem2RegularTerm (L : ℕ) (H : ℕ → ℕ) (r : ℕ) : ℚ :=
+  (-((r : ℚ) ^ 2) + (r : ℚ) * ((H 1 : ℚ) + (H (L + 1) : ℚ))) / 2
+
+/-- The selected-width average appearing in the first displayed form of
+Aoyagi Theorem 2.  The denominator is Aoyagi's `ell`, although there are
+`ell+1` selected widths. -/
+def aoyagiSelectedWidthAverage (ell : ℕ) (m : Fin (ell + 1) → ℤ) : ℚ :=
+  (∑ j : Fin (ell + 1), (m j : ℚ)) / (ell : ℚ)
+
+/-- Definition 3's selected-sum identity rewrites Aoyagi's selected average
+as the ceiling integer plus `(a-ell)/ell`. -/
+theorem AoyagiDefinition3CeilData.selectedWidthAverage_eq_ceil
+    {ell : ℕ} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m) :
+    aoyagiSelectedWidthAverage ell m =
+      (data.ceilWidth : ℚ) + (((data.aParam : ℚ) - (ell : ℚ)) / (ell : ℚ)) := by
+  have hselectedQ :
+      (∑ j : Fin (ell + 1), (m j : ℚ)) =
+        (ell : ℚ) * ((data.ceilWidth : ℚ) - 1) + data.aParam := by
+    exact_mod_cast data.selectedSum_eq
+  have hellQ : (ell : ℚ) ≠ 0 := by
+    exact_mod_cast (ne_of_gt data.ell_pos)
+  unfold aoyagiSelectedWidthAverage
+  rw [hselectedQ]
+  field_simp [hellQ]
+  ring
+
+/-- The pair sum `sum_{1 <= i < j <= ell+1} M^(S_i)M^(S_j)` in zero-based
+Lean indexing. -/
+def aoyagiSelectedWidthPairSum (ell : ℕ) (m : Fin (ell + 1) → ℤ) : ℚ :=
+  ∑ i : Fin (ell + 1), ∑ j : Fin (ell + 1),
+    if i.val < j.val then (m i : ℚ) * (m j : ℚ) else 0
+
+/-- First source-facing display for Aoyagi Theorem 2's `lambda`, using the
+selected-width average. -/
+def aoyagiTheorem2Lambda_average
+    (L ell : ℕ) (H : ℕ → ℕ) (r a : ℕ) (m : Fin (ell + 1) → ℤ) : ℚ :=
+  aoyagiTheorem2RegularTerm L H r +
+    ((a : ℚ) * ((ell : ℚ) - (a : ℚ))) / (4 * (ell : ℚ)) -
+    (((ell : ℚ) * ((ell : ℚ) - 1)) / 4) *
+      (aoyagiSelectedWidthAverage ell m) ^ 2 +
+    aoyagiSelectedWidthPairSum ell m / 2
+
+/-- Second source-facing display for Aoyagi Theorem 2's `lambda`, using
+Definition 3's ceiling integer. -/
+def aoyagiTheorem2Lambda_ceil
+    (L ell : ℕ) (H : ℕ → ℕ) (r a : ℕ) (ceilWidth : ℤ)
+    (m : Fin (ell + 1) → ℤ) : ℚ :=
+  aoyagiTheorem2RegularTerm L H r +
+    ((a : ℚ) * ((ell : ℚ) - (a : ℚ))) / (4 * (ell : ℚ)) -
+    (((ell : ℚ) * ((ell : ℚ) - 1)) / 4) *
+      ((ceilWidth : ℚ) + (((a : ℚ) - (ell : ℚ)) / (ell : ℚ))) ^ 2 +
+    aoyagiSelectedWidthPairSum ell m / 2
+
+/-- Expanded source-facing display for Aoyagi Theorem 2's `lambda`. -/
+def aoyagiTheorem2Lambda_expanded
+    (L ell : ℕ) (H : ℕ → ℕ) (r a : ℕ) (ceilWidth : ℤ)
+    (m : Fin (ell + 1) → ℤ) : ℚ :=
+  aoyagiTheorem2RegularTerm L H r -
+    (((ell : ℚ) - (a : ℚ) - 1) * ((ell : ℚ) - (a : ℚ))) / 4 -
+    (((ell : ℚ) * ((ell : ℚ) - 1)) / 4) *
+      ((ceilWidth : ℚ) ^ 2 +
+        2 * (((a : ℚ) - (ell : ℚ)) / (ell : ℚ)) * (ceilWidth : ℚ)) +
+    aoyagiSelectedWidthPairSum ell m / 2
+
+/-- The second and third displayed forms of Aoyagi Theorem 2's `lambda`
+formula agree by rational arithmetic when `ell > 0`. -/
+theorem aoyagiTheorem2Lambda_ceil_eq_expanded
+    (L ell : ℕ) (H : ℕ → ℕ) (r a : ℕ) (ceilWidth : ℤ)
+    (m : Fin (ell + 1) → ℤ) (hell : 0 < ell) :
+    aoyagiTheorem2Lambda_ceil L ell H r a ceilWidth m =
+      aoyagiTheorem2Lambda_expanded L ell H r a ceilWidth m := by
+  have hellQ : (ell : ℚ) ≠ 0 := by
+    exact_mod_cast (ne_of_gt hell)
+  unfold aoyagiTheorem2Lambda_ceil aoyagiTheorem2Lambda_expanded
+  field_simp [hellQ]
+  ring
+
+/-- Theorem 2's `lambda` formula using a supplied Definition 3 ceiling datum.
+
+This is still formula notation only; it does not assert that this value is the
+statistical RLCT. -/
+def aoyagiTheorem2Lambda_fromCeilData
+    (L ell : ℕ) (H : ℕ → ℕ) (r : ℕ) (m : Fin (ell + 1) → ℤ)
+    (data : AoyagiDefinition3CeilData ell m) : ℚ :=
+  aoyagiTheorem2Lambda_ceil L ell H r data.aParam data.ceilWidth m
+
+/-- If Definition 3's selected average is rewritten using the ceiling integer,
+the first two displayed `lambda` formulas are definitionally the same
+arithmetic expression.
+
+This is formula bookkeeping only.  It does not prove that either value is an
+RLCT. -/
+theorem aoyagiTheorem2Lambda_average_eq_ceil_of_average_eq
+    (L ell : ℕ) (H : ℕ → ℕ) (r a : ℕ) (ceilWidth : ℤ)
+    (m : Fin (ell + 1) → ℤ)
+    (havg :
+      aoyagiSelectedWidthAverage ell m =
+        (ceilWidth : ℚ) + (((a : ℚ) - (ell : ℚ)) / (ell : ℚ))) :
+    aoyagiTheorem2Lambda_average L ell H r a m =
+      aoyagiTheorem2Lambda_ceil L ell H r a ceilWidth m := by
+  unfold aoyagiTheorem2Lambda_average aoyagiTheorem2Lambda_ceil
+  rw [havg]
+
+/-- For a supplied Definition 3 ceiling datum, the average and ceiling
+versions of Aoyagi Theorem 2's displayed `lambda` formula agree.
+
+This is formula bookkeeping only.  It does not prove that either value is an
+RLCT. -/
+theorem aoyagiTheorem2Lambda_average_eq_fromCeilData
+    (L ell : ℕ) (H : ℕ → ℕ) (r : ℕ) (m : Fin (ell + 1) → ℤ)
+    (data : AoyagiDefinition3CeilData ell m) :
+    aoyagiTheorem2Lambda_average L ell H r data.aParam m =
+      aoyagiTheorem2Lambda_fromCeilData L ell H r m data := by
+  unfold aoyagiTheorem2Lambda_fromCeilData
+  exact aoyagiTheorem2Lambda_average_eq_ceil_of_average_eq
+    L ell H r data.aParam data.ceilWidth m data.selectedWidthAverage_eq_ceil
+
+/-- For a supplied Definition 3 ceiling datum, the average and expanded
+versions of Aoyagi Theorem 2's displayed `lambda` formula agree.
+
+This is formula bookkeeping only.  It does not prove that either value is an
+RLCT. -/
+theorem aoyagiTheorem2Lambda_average_eq_expanded_ofCeilData
+    (L ell : ℕ) (H : ℕ → ℕ) (r : ℕ) (m : Fin (ell + 1) → ℤ)
+    (data : AoyagiDefinition3CeilData ell m) :
+    aoyagiTheorem2Lambda_average L ell H r data.aParam m =
+      aoyagiTheorem2Lambda_expanded L ell H r data.aParam data.ceilWidth m := by
+  rw [aoyagiTheorem2Lambda_average_eq_fromCeilData L ell H r m data]
+  unfold aoyagiTheorem2Lambda_fromCeilData
+  exact aoyagiTheorem2Lambda_ceil_eq_expanded
+    L ell H r data.aParam data.ceilWidth m data.ell_pos
+
+end Aoyagi
+end DLN
+end DLNFibre
