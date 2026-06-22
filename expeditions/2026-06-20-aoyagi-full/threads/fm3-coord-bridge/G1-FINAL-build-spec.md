@@ -181,12 +181,20 @@ THREADING (controller-assigned): I thread it through R1's lemmas; crux2 threads 
   lemmas carry (B); classify's domain is already interior M_s≥1 so it's a natural fit. AWAITING crux2's
   form-lock, then thread.
 
-## hMid FORM — CORRECTED to ALL-s (g159, crux2 fidelity catch + controller Decision A)
-⚠ The interior-only lock below (g154) was INCOMPLETE — it missed the ENDPOINTS. SUPERSEDED.
-CORRECT SHARED FORM (headline + L2 + R1, all-s, endpoints included):
-  H-form (headline/L2): hMid : ∀ s : Fin (L + 1), r < H s
-  M-form (R1/resolution_charts): hMid : ∀ s : Fin (L + 1), 0 < M s
-  bridge: M s = H s − r ⟹ (r < H s ⟺ 0 < M s), all s.
+## hMid FORM — ALL-s is R1's NATURAL DOMAIN (g159 + g168 audit clarification)
+⚠ The interior-only lock (g154) was INCOMPLETE — missed the ENDPOINTS. SUPERSEDED.
+⚠ UPDATE (g168, headline-fidelity audit REVERSED controller Decision A): the HEADLINE stays NON-STRICT
+(r ≤ H_s, paper-faithful — the audit VERIFIED the boundary r=H_s is TRUE, so no narrowing to strict).
+So R1's all-s domain is NOT inherited from a strict headline; it is R1's OWN NATURAL DOMAIN (the
+decomposition genuinely needs all M_s≥1). The HEADLINE case-splits: non-degenerate (all M_s≥1) → the
+rungs incl this R1; degenerate boundary (some M_s=0) → a separate direct-Morse lemma (controller #70).
+NOTHING CHANGES in R1's work — resolution_charts's `∀ s, 0 < M s` (@0cedc7e) is correct + unchanged; it
+is the rung's natural hypothesis, NOT a headline-inherited strict hMid.
+R1 DOMAIN (the rung's natural form):
+  M-form (R1/resolution_charts): hMid : ∀ s : Fin (L + 1), 0 < M s    [@0cedc7e, correct, unchanged]
+  (the headline supplies it on its non-degenerate branch; degenerate → #70's Morse lemma, not R1.)
+Historical (the L2/headline H-form, now NON-inherited — headline case-splits instead):
+  H-form: ∀ s : Fin (L + 1), r < H s ; bridge M s = H s − r ⟹ (r < H s ⟺ 0 < M s), all s.
 WHY all-s (the fidelity catch): R1's identity rlctAtOn(dlnLoss M 0) 0 = ofReal(lambdaCore M) is FALSE
 whenever ANY reduced width M_s=0 — INTERIOR OR ENDPOINT:
   - interior M_s=0 (0<s<L): prod ≡ 0 (zero-dim intermediate cut).
