@@ -207,8 +207,10 @@ codimForm_big (big-side assembly). peelLast def + peelPart_mem + fivegonSum_fibe
 QSeriesFivegon NOT yet in DLNFibre.lean aggregator (WIP — add when fivegon proven).
 
 REMAINING for fivegon (Thm 5.6):
-  - Step E (explicit Δ): codimBil(N+1) A L − codimBil N A R = ∑_{0≤a<u≤N+1} m_{a,N}·m_{u,N+1}
-    [two codimBil collapses: R supported at v=↑N, L at v=↑N+1 (sum_eq_single); difference=j=↑N+1 slice; i-1↦a reindex]. NOT STARTED.
+  - Step E (explicit Δ): DONE (commit c35d2f3). codimForm_split_explicit: codimForm(N+1)(extendℤ m)
+    = codimForm N(extendℤ(peelPart m)) + ∑_{i∈Icc 1(↑N+1)}∑_{u∈Icc i(↑N+1)} extendℤ m (i-1)↑N · extendℤ m u(↑N+1)
+    [i-form, a=i-1]. delta_nonneg (Δ≥0). Helpers: extendℤ_peelLast_at/_peelLower_at/_peelCorr_at (col evals),
+    codimBil_peelCorr_collapse/_peelLast_collapse (v-sum picks live col), codimBil_diff_eq_delta (peel+drop), sum_Icc_peel_top.
   - THE BIJECTION (thread-07 piece 1, the flagged grind): fibre {m∈kostantAll d : peelPart m = m'} ↔
     admissibleXs m' = {x:Fin(N+2)→ℕ | x_i≤b_i (i≤N), ∑x=d_{last}}, b_i=m'(i,last). Forward m↦last-col x;
     inverse splits col N into (b−x, x). Via Finset.sum_bij'/sum_nbij' OR direct fibre sum. Membership
