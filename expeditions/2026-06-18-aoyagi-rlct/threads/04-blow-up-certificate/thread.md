@@ -3776,3 +3776,31 @@ pivot-row product, old-top rows, suffix product, full successor `C'^(S+1)`,
 next-center nonemptiness, transition invariance, Jacobian arithmetic, normal
 crossings, pole order, termination, RLCT, or repair of the printed Case 2
 vector mismatch.
+
+## 2026-06-22 Lean Case 2 actual-width successor terminal rows
+
+Reproduction:
+`reproduction-case2-actual-width-successor-terminal-rows-a4.md`.
+Statement card:
+`statement-card-a4-case2-actual-width-successor-terminal-rows.md`.
+Review artifact:
+`review-case2-actual-width-successor-terminal-rows-a4.md`.
+
+Lean now restates the actual-width supplied-following terminal boundary with
+terminal rows written as original rows of the formula-level successor following
+factor:
+
+```text
+sourceChart_actualWidth_terminalOriginalRowsSuccFollowingSuppliedSuffixBoundary
+```
+
+This uses exactly `n(S+1)=J+1`, where
+`case2DisplayedSourceSuccessorFollowingFactor = C`.  It is only API alignment:
+the arbitrary supplied-`F` theorem was added, but source-suffix,
+identity-following, finite-center, and frontier-package variants were not.
+
+This does not apply to row exhaustion, failed continuation alone, or a broad
+stopped-frontier condition.  It does not produce `Csucc`, `F`, source
+suffixes, old-top rows, full successor `C'^(S+1)`, successor chart-family
+data, transition invariance, Jacobian arithmetic, normal crossings, pole
+order, termination, RLCT, or repair of the printed Case 2 vector mismatch.

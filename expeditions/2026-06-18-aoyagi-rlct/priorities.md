@@ -330,6 +330,13 @@ case2SourceFollowingFactor(S,J+1,Csucc)` in
 Per xhigh review, the weighted source-chart variant was not added yet; add it
 only when a downstream theorem needs the fully source-pair RHS under the row
 diagonal.
+Current actual-width successor terminal-row slice:
+`threads/04-blow-up-certificate/reproduction-case2-actual-width-successor-terminal-rows-a4.md`.
+Lean now restates the actual-width supplied-following terminal boundary with
+terminal original rows of the formula-level successor following factor:
+`sourceChart_actualWidth_terminalOriginalRowsSuccFollowingSuppliedSuffixBoundary`.
+This uses exactly `n(S+1)=J+1`, where `Csucc=C`.  No source-suffix, identity,
+finite-center, or frontier-package variants were added.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.

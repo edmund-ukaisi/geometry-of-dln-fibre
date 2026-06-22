@@ -5050,6 +5050,21 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-residual-successor-following-product-a4.md`.
 
+Latest A4 update: the Case 2 actual-width successor terminal-row slice has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+name is
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_actualWidth_terminalOriginalRowsSuccFollowingSuppliedSuffixBoundary`.
+It restates the actual-width supplied-`F` terminal boundary with
+`case2DisplayedSourceTerminalOriginalRows (case2DisplayedSourceSuccessorFollowingFactor ...)`
+on the right.  This uses exactly actual next-width exhaustion
+`n(S+1)=J+1`, under which `Csucc=C`; it is not row-exhaustion or broad stopped
+frontier data.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-actual-width-successor-terminal-rows-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-actual-width-successor-terminal-rows.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-actual-width-successor-terminal-rows-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

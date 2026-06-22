@@ -4633,6 +4633,24 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-source-residual-successor-following-product-a4.md`.
 
+Latest A4 Case 2 actual-width successor terminal-row update:
+`BlowupArithmetic.lean` now contains
+`sourceChart_actualWidth_terminalOriginalRowsSuccFollowingSuppliedSuffixBoundary`.
+This restates the actual-width supplied-following terminal boundary with
+terminal rows written as original rows of the formula-level successor
+following factor.  It uses the exact actual next-width hypothesis
+`n(S+1)=J+1`, under which `case2DisplayedSourceSuccessorFollowingFactor = C`.
+Per xhigh review, only the arbitrary supplied-`F` theorem was added; no
+source-suffix, identity-following, finite-center, or frontier-package variants
+were introduced.  It is not source/chart production of `Csucc`, `F`, source
+suffixes, old-top rows, full successor `C'^(S+1)`, transition invariance,
+normal crossings, pole order, termination, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-actual-width-successor-terminal-rows-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-actual-width-successor-terminal-rows.md`,
+and
+`threads/04-blow-up-certificate/review-case2-actual-width-successor-terminal-rows-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

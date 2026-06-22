@@ -15950,6 +15950,83 @@ theorem sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary
   · simpa [data] using
       (data.terminalRelabelExponentDomain_of_actualWidth hwidth)
 
+/-- Actual-width displayed source-chart terminal boundary with terminal rows
+written using the formula-level successor following factor.
+
+Under actual next-width exhaustion, the successor following factor is the
+original source following factor.  This is only an API alignment wrapper for
+the supplied-`F` actual-width boundary; it does not produce `Csucc`, `F`, a
+source suffix, or a full successor transition. -/
+theorem sourceChart_actualWidth_terminalOriginalRowsSuccFollowingSuppliedSuffixBoundary
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n hS hcont)
+                        (case2DisplayedPivotCol n hS hcont)
+                        (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n hS hcont
+                      (case2DisplayedSourceChartMap n hS hcont u residual
+                        (J + 1, J + 1)) residual).submatrix
+                    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n hS hcont C)) * F) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeight
+              (case2DisplayedSourceOldTopWeight pre)
+              ((pre.case2Succ
+                (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+                |>.stageRelabelSuccZero
+                |>.weight (J + 1)) *
+            case2DisplayedSourceTerminalOriginalRows
+              (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C)) * F)) ∧
+    IntroducedLabelLevelInvariants L n (S + 1) 0
+      ((pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+        |>.stageRelabelSuccZero
+        |>.level)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    IntroducedLabelExponentCertificates L n (S + 1) 0
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) := by
+  rcases
+      sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary
+        pre u residual hS hSL hcont hwidth exponentPre levelInv leastValueGap
+        chartFamily C F with
+    ⟨hentry, hlevel, hexponent⟩
+  refine ⟨?_, hlevel, hexponent⟩
+  rcases hentry with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hsucc :
+      case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C = C :=
+    case2DisplayedSourceSuccessorFollowingFactor_eq_original_of_width_next_eq
+      n hS hcont hwidth residual C
+  simpa [hsucc] using hq
+
 /-- Multiplication by an identity matrix transported along an endpoint equality
 does not change the matrix-entry ideal. -/
 theorem matrixEntryIdeal_mul_ndrec_one
