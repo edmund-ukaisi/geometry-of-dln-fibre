@@ -68,4 +68,23 @@ theorem schur_P11_decomp {r mlo nhi : Type*} [Fintype r] {R : Type*} [Ring R]
     P11 = (P11 - P10 * Ainv * P01) + P10 * Ainv * P01 := by
   rw [sub_add_cancel]
 
+/-- **The Frobenius block-sum** (route-independent). The entrywise-summed `f`-weight of a
+`fromBlocks` matrix splits into the four block sums (`f = (·²)` gives the squared-Frobenius split).
+The block-summing of `dlnLoss = ∑ f((prod − B)ᵢⱼ)` once the gauge-sliced product is in block form:
+`loss = ∑E² + ‖P11‖²`, `E` the regular-residual blocks `(0,0),(0,1),(1,0)`, `P11` the `(1,1)` block.
+Pure `Fintype.sum_sum_type`; stated for a general entry weight `f` to dodge a typeclass. -/
+theorem frobenius_fromBlocks {r mlo nhi₀ nhi₁ : Type*} [Fintype r] [Fintype mlo]
+    [Fintype nhi₀] [Fintype nhi₁] {R S : Type*} [AddCommMonoid S] (f : R → S)
+    (E00 : Matrix r nhi₀ R) (E01 : Matrix r nhi₁ R)
+    (E10 : Matrix mlo nhi₀ R) (E11 : Matrix mlo nhi₁ R) :
+    (∑ i, ∑ j, f (Matrix.fromBlocks E00 E01 E10 E11 i j))
+      = ((∑ i, ∑ j, f (E00 i j)) + (∑ i, ∑ j, f (E01 i j)))
+        + ((∑ i, ∑ j, f (E10 i j)) + (∑ i, ∑ j, f (E11 i j))) := by
+  rw [Fintype.sum_sum_type]
+  congr 1
+  · simp only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂]
+    rw [Finset.sum_add_distrib]
+  · simp only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
+    rw [Finset.sum_add_distrib]
+
 end DLNFibre.DLN.RLCT
