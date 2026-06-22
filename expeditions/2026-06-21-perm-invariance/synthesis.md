@@ -216,10 +216,26 @@ REMAINING for fivegon (Thm 5.6):
     Landed: lastCol/rebuild/boundX/admissibleXs (defs); lastCol_rebuild + rebuild_lastCol (inverses) +
     peelPart_rebuild (peel recovers m'); lastCol_mem_admissibleXs (fwd maps_to) + rebuild_mem_kostantAll
     (bwd maps_to, THE crux — old-vertex kostant via peelPart_rebuild+peelPart_cover_sum, new via ∑x=d_last).
-  - per-fibre collapse (piece 3, NOT STARTED): ∑_{fibre(m')} X^{codimForm(N+1)(extendℤ m).toNat}·Pm(N+1)m =
-    X^{codimForm N(extendℤ m').toNat}·Pm N m'·P(d last). Apply fibre_sum_reindex with F=X^…·Pm; then per-x:
-    codimForm_split_explicit (Δ→Δ_b(x), peelPart_rebuild) + toNat split (delta_nonneg + codimForm_extendℤ_nonneg)
-    + Pm(N+1)(rebuild m' x) factorization (col≤N-1 = Pm N m' lower; col N = P(b_i−x_i); col N+1 = P(x_i)) + (4).
-  - inner sum = transferRHS (piece 4): LANDED transferRHS_eq discharges; induction mirrors transferRHS recursion (Δ_b(x)=(b_0−x_0)(d−x_0)+Δ' per-step, pure ring).
-  - induction on N → fivegon. THEN M4 (chain→Thm5.5) + M6 (Cor 5.10 via M5 bridge + M6-prep [both LANDED]).
+  - codimForm_rebuild [LANDED, commit after 0ce9200]: codimForm(N+1)(extendℤ(rebuild m' x)) = codimForm N(extendℤ m')
+    + Δ(rebuild m' x). Pmult_succ [LANDED]: Pmult d = Pmult(d∘castSucc)·P(d last).
+
+## 2026-06-22 — PIECE 3+4 fully SCOPED (next focused grind, ~150 lines). Bijection (piece 1) DONE.
+Per-fibre collapse target: ∑_{m∈(kostantAll d).filter(peelPart·=m')} X^{codimForm(N+1)(extendℤ m).toNat}·Pm(N+1)m
+  = X^{codimForm N(extendℤ m').toNat}·Pm N m'·P(d last). Steps:
+  S1. fibre_sum_reindex [LANDED] with F m = X^{codimForm(N+1)(extendℤ m).toNat}·Pm(N+1)m → ∑_{x∈admissibleXs m'(d last)} F(rebuild m' x).
+  S2. per x: codimForm_rebuild [LANDED] → exponent = codimForm N(extendℤ m') + Δ(rebuild). toNat split:
+      X^{(A+Δ).toNat} = X^{A.toNat}·X^{Δ.toNat} via Nat-add-of-toNat (codimForm_extendℤ_nonneg [QSeriesExtraction] + delta_nonneg [LANDED]).
+  S3. Pm FACTORIZATIONS (Finset.prod splits of upperPairs by column j; define lowerPm m' = ∏_{p∈upperPairs N, p.2≠last N} P(m' p)):
+      (a) Pm N m' = (∏_{I':Fin(N+1)} P(m'(I',last N)))·lowerPm m'  [split upperPairs N by p.2 = last N; all I'≤last N].
+      (b) Pm(N+1)(rebuild m' x) = (∏_{I:Fin(N+2)} P(x I))·(∏_{I':Fin(N+1)} P(m'(I',last N) − x I'.castSucc))·lowerPm m'
+          [split upperPairs(N+1) 3-way: col N+1 (=x), col N (=b−x), col ≤N-1 (=m' lower); rebuild evals via Fin.lastCases].
+  S4. Δ(rebuild m' x) eval → ∑_{a<u}(b_a−x_a)x_u form (b_a=m'(⟨a⟩,last N), x via extendℤ(rebuild) entry evals: col N+1 = x ⟨u⟩, col N = b−x). Then inner sum
+      ∑_{x∈admissibleXs} X^{Δ.toNat}·(∏P(b−x)·∏P(x)) = transferRHS b (d last) [b=List.ofFn(fun i=>m'(i,last N))], via induction MIRRORING
+      transferRHS recursion (peel x_0; Δ per-step split Δ=(b_0−x_0)(d−x_0)+Δ', pure ring). transferRHS_eq [LANDED]: = P(d last)·(b.map P).prod.
+      (b.map P).prod = ∏_{i} P(m'(i,last N)) [List.prod_ofFn / List bridge — thread-07 secondary risk]. lowerPm cancels: collapse = P(d last)·Pm N m'.
+  S5. induction on N (peel Fin.last): base N=0 (single interval, codimForm 0=0, Pm 0 = P(d 0)); step uses fivegonSum_fiberwise [LANDED] +
+      per-fibre collapse + IH + Pmult_succ → fivegonSum d = Pmult d (= the 5gon, corner-free single sum). Then aggregate QSeriesFivegon into DLNFibre.lean.
+  THEN M4 (S1-S4 chain → Thm 5.5) + M6 (Cor 5.10 via cCodim_eq_of_Qseries_eq/numTop_eq_of_Qseries_eq [M5, LANDED] + Pmult_sub_comp_perm [M6-prep, LANDED]).
+SESSION 2026-06-22 banked (all green, axiom-clean, pushed): codimForm split (a340e01), Step E/explicit Δ (c35d2f3), eval+collapse helpers,
+the ENTIRE last-column bijection (0ce9200 — the flagged crux), codimForm_rebuild, Pmult_succ. ~16 lemmas. Bulk of fivegon's difficulty DONE.
 Operator: GRIND ON, full zero-cited, structure survives compaction. Inline only (worktrees too heavy — subagents launch at PRIMARY checkout, fresh worktrees re-clone mathlib).
