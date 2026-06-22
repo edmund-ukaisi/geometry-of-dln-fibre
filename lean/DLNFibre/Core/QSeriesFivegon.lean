@@ -801,4 +801,31 @@ theorem rebuild_mem_kostantAll {d : Fin (N + 2) → ℕ} {m' : Fin (N + 1) × Fi
       rw [show d k'.castSucc = (d ∘ Fin.castSucc) k' from rfl, hm'kk]
       exact hck
 
+/-- **The last-column bijection as a sum reindex** (thread-07 piece 1): the fibre sum over
+`{m : peelPart m = m'}` reindexes to a sum over admissible last columns `x`. -/
+theorem fibre_sum_reindex {M : Type*} [AddCommMonoid M] (d : Fin (N + 2) → ℕ)
+    (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (hm' : m' ∈ kostantAll (d ∘ Fin.castSucc))
+    (F : (Fin (N + 2) × Fin (N + 2) → ℕ) → M) :
+    ∑ m ∈ (kostantAll d).filter (fun m ↦ peelPart m = m'), F m
+      = ∑ x ∈ admissibleXs m' (d (Fin.last (N + 1))), F (rebuild m' x) := by
+  refine Finset.sum_bij' (fun m _ ↦ lastCol m) (fun x _ ↦ rebuild m' x) ?_ ?_ ?_ ?_ ?_
+  · intro m hm
+    rw [Finset.mem_filter] at hm
+    exact hm.2 ▸ lastCol_mem_admissibleXs hm.1
+  · intro x hx
+    rw [Finset.mem_filter]
+    have hxbound : ∀ I' : Fin (N + 1), x I'.castSucc ≤ m' (I', Fin.last N) := by
+      rw [admissibleXs, Finset.mem_filter, Fintype.mem_piFinset] at hx
+      intro I'; have := hx.1 I'.castSucc
+      rwa [Finset.mem_range, Nat.lt_succ_iff, boundX, Fin.lastCases_castSucc] at this
+    exact ⟨rebuild_mem_kostantAll hm' hx, peelPart_rebuild m' x hxbound⟩
+  · intro m hm
+    rw [Finset.mem_filter] at hm
+    exact hm.2 ▸ rebuild_lastCol m (mem_kostantAll.mp hm.1).2.1
+  · intro x _; exact lastCol_rebuild m' x
+  · intro m hm
+    rw [Finset.mem_filter] at hm
+    have he : rebuild m' (lastCol m) = m := hm.2 ▸ rebuild_lastCol m (mem_kostantAll.mp hm.1).2.1
+    rw [he]
+
 end DLNFibre.Core
