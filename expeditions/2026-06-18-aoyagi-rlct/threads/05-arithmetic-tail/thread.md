@@ -5376,3 +5376,33 @@ classifier, injection, back-to-label map, or full Lemma 4 witness needed for a
 source-backed Lemma 5 order-count proof.  Further A5 work should be limited to
 small handoff wrappers needed downstream unless the source policy changes or a
 corrected independent construction is supplied.
+
+## 2026-06-22 Lean Lemma 5 terminal exactness cardinal-bound equivalence
+
+Reproduction:
+`reproduction-lemma5-terminal-exactness-card-bound-equivalence-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-exactness-card-bound-equivalence.md`.
+Review artifact:
+`review-lemma5-terminal-exactness-card-bound-equivalence-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_card_bound
+```
+
+The helper is the finite cardinal squeeze.  The supplied branch-label image is
+already a subset of `terminalMinimumLabels`; branch-label injectivity gives
+the image cardinality `a*(n+1-a)+1`; a supplied upper bound
+`terminalMinimumLabels.card <= a*(n+1-a)+1` then forces equality of the finite
+sets.  The equivalence theorem packages this as the exact remaining finite
+obstruction: terminal exactness is branch-label injectivity plus the supplied
+terminal-minimum cardinal upper bound.
+
+This is finite terminal-candidate bookkeeping only.  It deliberately does not
+prove the upper bound from Aoyagi's source, construct a source classifier or
+back-to-label map, prove branch-label injectivity from source, build source
+branches, bridge the minimum to lambda, prove chart coverage, prove pole
+order, prove normal crossings, or extract RLCT.

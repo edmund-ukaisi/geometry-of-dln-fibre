@@ -5247,6 +5247,23 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
 
+Latest A5 finite-obstruction update: `Lemma5TerminalBridge.lean` now contains
+`terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`
+and
+`terminalMinimumLabelExactness_iff_branchLabel_injOn_and_card_bound`.
+These say that, after supplied branches attain the terminal minimum, the
+remaining terminal exactness obstruction is exactly supplied branch-label
+injectivity plus a supplied upper bound
+`terminalMinimumLabels.card <= a*(n+1-a)+1`.  This is finite set/cardinality
+bookkeeping only; it does not construct the upper bound, branch-label
+injectivity, no-extra coverage, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-card-bound-equivalence-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-exactness-card-bound-equivalence.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-exactness-card-bound-equivalence-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

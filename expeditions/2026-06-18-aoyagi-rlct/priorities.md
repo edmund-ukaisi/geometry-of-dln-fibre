@@ -1567,6 +1567,13 @@ Immediate order:
    conditional supplied-chain facts.  This hardens the negative boundary but
    does not change the next route: corrected-formula search or supplied
    chart-family interface.
+   The generic terminal exactness/cardinal-bound equivalence is now Lean-proved
+   in `Lemma5TerminalBridge.lean`: after supplied branches attain the terminal
+   minimum, terminal exactness is equivalent to supplied branch-label
+   injectivity plus the supplied upper bound
+   `terminalMinimumLabels.card <= a*(n+1-a)+1`.  This sharpens the remaining
+   A5 obstruction without changing the freeze: source-backed branch-label
+   injectivity and the upper bound/no-extra coverage are still unproved.
    Latest A2 residual-product pass now names the endpoint lower-right block as
    the deterministic product of transformed Schur residuals in
    `ProductReductionBoundary.lean`. Leave A2 at this elementary boundary until

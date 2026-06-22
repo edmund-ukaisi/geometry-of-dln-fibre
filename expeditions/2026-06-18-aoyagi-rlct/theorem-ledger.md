@@ -210,6 +210,23 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`.
 
+The generic terminal exactness/cardinal-bound equivalence has also landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_card_bound`.
+This removes the counted-datum/classifier wrapper from the finite obstruction:
+once supplied branches are known to attain the terminal minimum, supplied
+branch-label injectivity and the supplied numeric upper bound
+`terminalMinimumLabels.card <= a*(n+1-a)+1` are equivalent to terminal
+exactness.  It does not prove the upper bound or injectivity from source and
+does not prove pole order, normal crossings, or RLCT.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-exactness-card-bound-equivalence-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-exactness-card-bound-equivalence.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-exactness-card-bound-equivalence-a5.md`.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in

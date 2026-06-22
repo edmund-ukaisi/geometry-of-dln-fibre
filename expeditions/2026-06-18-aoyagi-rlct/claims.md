@@ -2856,6 +2856,16 @@ No such claim is formalisation-ready until both fields are filled.
   terminal `(p, alpha)` injectivity, branch source/value labels, endpoint base
   label, and source-backed/direct back-to-label no-extra coverage remain
   outside source proof.
+  Also proved
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_card_bound`.
+  These isolate the generic finite obstruction after supplied branches are
+  known to attain the terminal minimum: supplied branch-label injectivity plus
+  a supplied cardinal upper bound
+  `terminalMinimumLabels.card <= a*(n+1-a)+1` is equivalent to terminal
+  exactness.  They do not prove the upper bound, branch-label injectivity, or
+  no-extra coverage from source.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

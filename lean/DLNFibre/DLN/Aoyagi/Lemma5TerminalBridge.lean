@@ -997,6 +997,70 @@ theorem terminalMinimumLabels_card_of_exactness {β : Type*} [DecidableEq β]
   rw [C.terminalMinimumLabels_eq_branchLabelImage_of_exactness ha hselected exactness]
   exact C.branchLabelImage_card n a M m ha exactness.branchLabel_injOn
 
+/-- A supplied terminal-minimum cardinal upper bound and supplied branch-label
+injectivity identify terminal-minimum labels with the supplied branch-label
+image.
+
+This is a finite cardinal squeeze.  The upper bound is supplied; the theorem
+does not construct a source classifier, branch-label injection, or
+back-to-label map. -/
+theorem terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (hupper : C.terminalMinimumLabels.card ≤ a * (n + 1 - a) + 1) :
+    C.terminalMinimumLabels = C.branchLabelImage := by
+  have himage :
+      C.branchLabelImage ⊆ C.terminalMinimumLabels :=
+    C.branchLabelImage_subset_terminalMinimumLabels ha hselected
+  have himage_card :
+      C.branchLabelImage.card = a * (n + 1 - a) + 1 :=
+    C.branchLabelImage_card n a M m ha hinj
+  have hcard :
+      C.terminalMinimumLabels.card ≤ C.branchLabelImage.card := by
+    simpa [himage_card] using hupper
+  exact (Finset.eq_of_subset_of_card_le himage hcard).symm
+
+/-- Terminal-minimum exactness is equivalent to branch-label injectivity plus a
+supplied terminal-minimum cardinal upper bound.
+
+This names the remaining finite obstruction after supplied branches are known
+to attain the minimum.  It does not prove the upper bound or injectivity from
+Aoyagi's source. -/
+theorem terminalMinimumLabelExactness_iff_branchLabel_injOn_and_card_bound
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a) :
+    C.TerminalMinimumLabelExactness ↔
+      Set.InjOn C.branchLabel ↑C.fullBranches ∧
+        C.terminalMinimumLabels.card ≤ a * (n + 1 - a) + 1 := by
+  constructor
+  · intro exactness
+    exact ⟨exactness.branchLabel_injOn,
+      le_of_eq (C.terminalMinimumLabels_card_of_exactness n a M m ha hselected exactness)⟩
+  · intro h
+    rcases h with ⟨hinj, hupper⟩
+    refine ⟨hinj, ?_⟩
+    have heq :
+        C.terminalMinimumLabels = C.branchLabelImage :=
+      C.terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn
+        n a M m ha hselected hinj hupper
+    intro label hlabel
+    simpa [heq] using hlabel
+
 /-- Exact finite count from a supplied counted-datum back-to-label bridge and
 supplied branch-label injectivity.
 
