@@ -35,6 +35,19 @@ routeStep) + cover_le + cover_ge_div (the composed integral Props) + the mult-bo
 Shape STABLE (landed sorry-free). The cover_le/cover_ge_div composition = the analytic grind (my G2 pullbacks
 + ReducedTransport.descent + the argmaxCellOn cover-split, normalized via the banked Case222 adapters).
 
+## BRIDGE-WIRING + Nonempty CATCH (g181, crux2 from landed routeM_rlctAtOn_eq_iInf sig) — HANDLED
+crux2 confirmed (ground truth): routeM_rlctAtOn_eq_iInf takes (ι,d,k,h) as EXPLICIT args — call directly with
+(routeMIota S, routeD S, routeK S, routeH S) + the IsRouteMCover instance; NO adapter, my noncomputable defs
+are valid args. ONE CATCH: needs `[Nonempty ι]` (achiever-side iInf_le). HANDLED (g181, route-checked green):
+threaded Nonempty through the recursion — NodeChartFamily gains `nonempty : Nonempty ι`; RouteStep.branch gains
+`(cellsNe : Nonempty cells)` (a branch always has ≥1 pivot cell = the no-stall/dispatcher guarantee); routeAtlas
+derives nonempty per constructor (leaf → PUnit; branch → ⟨⟨c, i⟩⟩ from cellsNe × child.nonempty);
+`instance : Nonempty (routeMIota M)` carries it. So routeM_rlctAtOn_eq_iInf's [Nonempty ι] resolves.
+SCHUR NAMES (crux2 corrected my mp_schur_transvection_vec — doesn't exist): per-node workhorses (ALL on
+fm3/routem, byte-identical) = schur_straighten_of_data + rlctAtOn_reduced_transport (the ReducedTransport
+field) for descent; schur_node_squeeze_unif (c₁=(2(1+T²))⁻¹, c₂=2+2T²) explicit-constant bound; measure_drops
+= ChainDimSplit FIELD (S.measure_drops). schur_straighten_squeeze_exists = HEAVY/L2 (NOT R1, g188/g175).
+
 ## Encoding (controller-accepted): WF.fix / NodeChartFamily, Fintype-as-field
 RouteState(L,M); routeMeasure = lex(L,ΣM,ncDefect); routeRel_wf. routeAtlas = WellFounded.fix.
 NodeChartFamily per-leaf record (crux2 leaf-level): {composite chart φ_i, pullback L∘φ_i=monomial·unit
@@ -660,7 +673,11 @@ cert, fork-independent. The ONLY remaining field = the per-cell TRANSPORT (crux2
 ### DURABLE: the route-checked recursion skeleton (RouteMRecursion.lean, UNCOMMITTED — preserve vs wipe)
 The fix-body skeleton (route-checked green, 1 sorry = routeStep). Recorded here for durability (the
 worktree-wipe lesson). On top of the committed foundation (chainWidthSum/redM_widthSum_lt/chainRel/
-chainRel_wf/redM_chainRel @55db82d):
+chainRel_wf/redM_chainRel @55db82d). ⚠ UPDATED (g181, NOT re-transcribed below): NodeChartFamily also
+carries `nonempty : Nonempty ι`; RouteStep.branch also carries `(cellsNe : Nonempty cells)`; routeAtlas
+derives nonempty per arm (leaf→PUnit, branch→⟨⟨c,i⟩⟩); `instance : Nonempty (routeMIota M)`. Also
+ReducedTransport (g179) + the witness field (g176). The LIVE file is the source of truth; this block is
+the wipe-recovery shape (the Fintype/Σ recursion core), augment with g176/g179/g181 fields on recovery:
 
     structure NodeChartFamily {L : ℕ} (_M : Fin (L + 1) → ℕ) where
       ι : Type
