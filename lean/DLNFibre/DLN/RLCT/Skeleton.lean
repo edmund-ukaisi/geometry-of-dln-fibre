@@ -1015,7 +1015,8 @@ variables `C_s = [[I_r+X_s, Y_s],[Z_s, T_s]]` (regular coords = the output resid
 the ONE open geometric obligation of L2; the wiring above it is green. -/
 theorem deepest_regular_core_normal_form (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hMid : ∀ s : Fin L, 0 < (s : ℕ) → r < H s.castSucc) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
       = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
         + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ) := by
@@ -1032,9 +1033,11 @@ gauge-slice normal form, #44) ▸ `reg_shift_add_core_eq_aoyagiLambda` (the clos
 proven). The L2 wiring is GREEN; the single open obligation is the named normal form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hMid : ∀ s : Fin L, 0 < (s : ℕ) → r < H s.castSucc) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) = ENNReal.ofReal (aoyagiLambda H r) := by
-  rw [deepest_regular_core_normal_form H r B hB hr hL, reg_shift_add_core_eq_aoyagiLambda H r hr hL]
+  rw [deepest_regular_core_normal_form H r B hB hr hL hMid,
+    reg_shift_add_core_eq_aoyagiLambda H r hr hL]
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
@@ -1062,6 +1065,7 @@ existence with #44. -/
 theorem rlctAt_deepest_le_of_optimal (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hMid : ∀ s : Fin L, 0 < (s : ℕ) → r < H s.castSucc)
     (v : Params H) (hv : v ∈ optimalSet H B) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) ≤ rlctAt H (dlnLoss H B) v := by
   sorry
@@ -1076,7 +1080,8 @@ equates the inf to the local RLCT at `deepestPoint`. **Proof state:** the `≤` 
 per-point building block `rlctAt_deepest_le_of_optimal` (Aoyagi 2013 Thm 2, L2-gated). -/
 theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hMid : ∀ s : Fin L, 0 < (s : ℕ) → r < H s.castSucc) :
     (⨅ v ∈ optimalSet H B, rlctAt H (dlnLoss H B) v)
       = rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) := by
   -- `deepestPoint` is in the fibre (`IsDeepLayers.1`), so the `≤` direction is `iInf₂_le` — PROVEN.
@@ -1084,7 +1089,7 @@ theorem deepest_point_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (deepestPoint_isDeep H r B hB hr hL).1
   -- `≥` direction: `le_iInf₂` of the named per-point obligation (Aoyagi 2013 Thm 2).
   exact le_antisymm (iInf₂_le (deepestPoint H r B hB hr hL) hmem)
-    (le_iInf₂ (fun v hv => rlctAt_deepest_le_of_optimal H r B hB hr hL v hv))
+    (le_iInf₂ (fun v hv => rlctAt_deepest_le_of_optimal H r B hB hr hL hMid v hv))
 
 /-! ## R1 — the resolution: explicit charts → normal-crossing form (the mountain; design-spec §8) -/
 
@@ -1593,11 +1598,12 @@ not the degenerate `⊤` over an empty set). Assembled: D1 (→ deepest point) �
 (→ charts) ▸ S2 (→ min ratio) ▸ A1 (→ clean form = `aoyagiLambda`). -/
 theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hMid : ∀ s : Fin L, 0 < (s : ℕ) → r < H s.castSucc) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
   -- assemble: D1 (⨅ = rlctAt at the constructed deepestPoint) ▸ L2 (= closed form there).
-  rw [deepest_point_reduction H r B hB hr hL]
-  exact product_reduction H r B hB hr hL
+  rw [deepest_point_reduction H r B hB hr hL hMid]
+  exact product_reduction H r B hB hr hL hMid
 
 /-! ## A1 (`lambdaCore_eq_clean`) — the genuine clean closed form, built here.
 
