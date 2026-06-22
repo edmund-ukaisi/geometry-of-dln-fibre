@@ -64,3 +64,5 @@ import DLNFibre.Core.QSeries
 import DLNFibre.Core.QSeriesDurfee
 -- Local transfer identity (perm-invariance M3 engine): transferRHS b d = P d · ∏ P bᵢ.
 import DLNFibre.Core.QSeriesPeel
+-- (C,θ) extraction (perm-invariance M5/L1): cCodim/numTop recovered from Qseries; the symmetry bridge.
+import DLNFibre.Core.QSeriesExtraction
