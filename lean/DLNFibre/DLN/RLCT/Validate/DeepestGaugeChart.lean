@@ -44,6 +44,26 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
 
+/-- The reduced widths `M = H − r` (the deepest-point reduced chain). -/
+abbrev deepestM (H : Fin (L + 1) → ℕ) (r : ℕ) : Fin (L + 1) → ℕ := fun s => H s - r
+
+/-- The regular gauge-orbit-transversal dimension `nReg = r(H⁰+Hᴸ−r)`. -/
+abbrev deepestNReg (H : Fin (L + 1) → ℕ) (r : ℕ) : ℕ := r * (H 0 + H (Fin.last L) - r)
+
+/-- The split codomain: `(regular nReg) × ((reduced core flatDim M) × (spectators nGauge))`. -/
+abbrev DeepestSplit (H : Fin (L + 1) → ℕ) (r nGauge : ℕ) : Type :=
+  (Fin (deepestNReg H r) → ℝ)
+    × ((Fin (flatDim (deepestM H r)) → ℝ) × (Fin nGauge → ℝ))
+
+/-- The RAW reduced-core loss in flat coordinates: `‖∏ T_s‖² = dlnLoss M 0` via the fixed flattening
+`paramsEquivFlat M`. (The additive-block + spectator-peel run on this raw disjoint core; the
+gauge-normalized `T̃` core reaches it through `coreAbsorb` + `coreAbsorb_rlct`.) -/
+noncomputable abbrev deepestCoreF (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (y : Fin (flatDim (deepestM H r)) → ℝ) : ℝ :=
+  dlnLoss (deepestM H r)
+    (0 : Matrix (Fin (deepestM H r 0)) (Fin (deepestM H r (Fin.last L))) ℝ)
+    ((paramsEquivFlat (deepestM H r)).symm y)
+
 /-- The layer partial-product matrix is continuous in the parameters (induction on chain length:
 base `prodAux 0 = 1` constant; step `prodAux (k+1) = prodAux k * (layer k)`, the cast-transported
 `k`-th layer normalised by `simp only [e1, e2, eq_mpr_eq_cast, cast_eq]` to the plain projection,
@@ -113,42 +133,50 @@ unit `(I−VY)⁻¹` between layers makes the raw-`∏T` squeeze FALSE for matri
 structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) where
-  /-- The spectator-coordinate count (the remaining flat directions). The reduced widths
-  `M = H − r` and the regular dimension `nReg = r(H⁰+Hᴸ−r)` are pinned in the field types below. -/
+  /-- The spectator-coordinate count (the remaining flat directions). -/
   nGauge : ℕ
-  /-- The coordinate split: flat `H`-params ≃ₜ `(regular nReg) × ((reduced core flatDim M) × (spectators))`. -/
-  split :
-    (Fin (flatDim H) → ℝ) ≃ₜ
-      ((Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ)
-        × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin nGauge → ℝ)))
+  /-- The coordinate split: flat `H`-params ≃ₜ `(regular nReg) × ((reduced core flatDim M) × (spectators))`,
+  a MEASURE-PRESERVING reindex (so the core slot holds the RAW layer blocks `T_s`). -/
+  split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge
   /-- `split` is measure-preserving (a coordinate reindex). -/
   split_mp : MeasurePreserving split volume volume
   /-- `split` carries the flat image of the deepest point to the split origin (deviation coords `= 0`). -/
   split_basepoint : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0
+  /-- **The gauge-absorption** on split coords (sub-34 g153): a self-homeomorphism that turns the RAW
+  core slot `T_s` into the GAUGE-NORMALIZED `T̃_s = T_s·(I−V_sY_s)⁻¹` (the product Schur complement),
+  fixing the regular and spectator slots. NON-MP (unit Jacobian `det(I−VY)^{−M0}`, `=1` at the basepoint)
+  — needed because the raw-`∏T` squeeze is FALSE for matrices, and a pure MP `split` cannot produce `T̃`. -/
+  coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge
+  /-- `coreAbsorb` fixes the origin. -/
+  coreAbsorb_basepoint : coreAbsorb 0 = 0
+  /-- `coreAbsorb` fixes the regular slot. -/
+  coreAbsorb_regular : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1
+  /-- `coreAbsorb` fixes the spectator slot. -/
+  coreAbsorb_spectator : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2
+  /-- **The producer's unit-Jacobian absorption identity** (the one hard g-unit-peel field, sub-34's
+  obligation): the absorbed-core `Φ` and the raw-disjoint-core `Φ` have the SAME RLCT at the origin.
+  Proof intent: `π := coreAbsorb`, `rawΦ ∘ π = absorbedΦ` (via `coreAbsorb_regular`),
+  `weightedThreshold_transport` deposits `|det Dπ|` in the weight, `weightedThreshold_weight_unit_invariant`
+  peels the bounded unit (`det(I−VY)^{−M0}`). -/
+  coreAbsorb_rlct :
+    rlctAtOn
+        (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+        (0 : DeepestSplit H r nGauge)
+      = rlctAtOn
+          (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+          (0 : DeepestSplit H r nGauge)
   /-- **The loss-squeeze datum.** Near the deepest point (in flat coords), `dlnLoss H B` is two-sidedly
-  bounded by `Φ = ∑ regular² + dlnLoss M 0 (core)` (the smooth regular block + the gauge-normalized
-  reduced core). The matrix-core comparability is the sub-34 pp-hall obligation. -/
+  bounded by `Φ = ∑ regular² + deepestCoreF (absorbed core)` (the smooth regular block + the
+  GAUGE-NORMALIZED reduced core, via `coreAbsorb`). The matrix comparability is sub-34's obligation. -/
   loss_squeeze :
     ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
       ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
         ∀ w ∈ U,
-          0 ≤ (let q := split w
-              (∑ i, q.1 i ^ 2) +
-                dlnLoss (fun s => H s - r)
-                  (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-                  ((paramsEquivFlat (fun s => H s - r)).symm q.2.1)) ∧
-          c₁ * (let q := split w
-              (∑ i, q.1 i ^ 2) +
-                dlnLoss (fun s => H s - r)
-                  (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-                  ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
+          0 ≤ ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
+          c₁ * ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1)
             ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
           dlnLoss H B ((paramsEquivFlat H).symm w)
-            ≤ c₂ * (let q := split w
-              (∑ i, q.1 i ^ 2) +
-                dlnLoss (fun s => H s - r)
-                  (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-                  ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
+            ≤ c₂ * ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1)
 
 /-- **Smart constructor from the EXACT germ (the g150 cert's discharge target).** The g150-fix cert
 delivers `dlnLoss H B ∘ flatSymm =ᶠ[𝓝 wstar] Φ` (an EXACT germ equality, `Φ = ∑ regular² +
@@ -160,36 +188,41 @@ noncomputable def DeepestGaugeChart.ofExactGerm (H : Fin (L + 1) → ℕ) (r : �
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (nGauge : ℕ)
-    (split : (Fin (flatDim H) → ℝ) ≃ₜ
-      ((Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ)
-        × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin nGauge → ℝ))))
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
     (split_mp : MeasurePreserving split volume volume)
     (split_basepoint : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0)
+    (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
+    (coreAbsorb_basepoint : coreAbsorb 0 = 0)
+    (coreAbsorb_regular : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1)
+    (coreAbsorb_spectator : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2)
+    (coreAbsorb_rlct :
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+            (0 : DeepestSplit H r nGauge))
     (loss_germ :
-      (fun w => dlnLoss H B ((paramsEquivFlat H).symm w)) =ᶠ[𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))]
-        fun w =>
-          let q := split w
-          (∑ i, q.1 i ^ 2) +
-            dlnLoss (fun s => H s - r)
-              (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-              ((paramsEquivFlat (fun s => H s - r)).symm q.2.1)) :
+      (fun w => dlnLoss H B ((paramsEquivFlat H).symm w))
+          =ᶠ[𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))]
+        fun w => (∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1) :
     DeepestGaugeChart H r B hB hr hL where
   nGauge := nGauge
   split := split
   split_mp := split_mp
   split_basepoint := split_basepoint
+  coreAbsorb := coreAbsorb
+  coreAbsorb_basepoint := coreAbsorb_basepoint
+  coreAbsorb_regular := coreAbsorb_regular
+  coreAbsorb_spectator := coreAbsorb_spectator
+  coreAbsorb_rlct := coreAbsorb_rlct
   loss_squeeze := by
     obtain ⟨U, hU, hUeq⟩ := loss_germ.exists_mem
     refine ⟨1, 1, one_pos, one_pos, U, hU, fun w hw => ?_⟩
     have heq : dlnLoss H B ((paramsEquivFlat H).symm w)
-        = (let q := split w
-          (∑ i, q.1 i ^ 2) +
-            dlnLoss (fun s => H s - r)
-              (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-              ((paramsEquivFlat (fun s => H s - r)).symm q.2.1)) := hUeq hw
+        = (∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1 := hUeq hw
     refine ⟨?_, ?_, ?_⟩
-    · -- `Φ ≥ 0`: regular sum-of-squares + the nonneg core loss.
-      exact add_nonneg (Finset.sum_nonneg fun i _ => sq_nonneg _) (dlnLoss_nonneg _ _ _)
+    · exact add_nonneg (Finset.sum_nonneg fun i _ => sq_nonneg _) (dlnLoss_nonneg _ _ _)
     · rw [one_mul, heq]
     · rw [one_mul, heq]
 
@@ -227,19 +260,11 @@ theorem deepest_squeeze_transport (H : Fin (L + 1) → ℕ) (r : ℕ)
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
       = rlctAtOn
           (fun x : Fin (flatDim H) → ℝ =>
-            let q := Γ.split x
-            (∑ i, q.1 i ^ 2) +
-              dlnLoss (fun s => H s - r)
-                (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-                ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
+            (∑ i, (Γ.split x).1 i ^ 2) + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
           ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
   set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
   set Φ : (Fin (flatDim H) → ℝ) → ℝ := fun x =>
-    let q := Γ.split x
-    (∑ i, q.1 i ^ 2) +
-      dlnLoss (fun s => H s - r)
-        (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-        ((paramsEquivFlat (fun s => H s - r)).symm q.2.1) with hΦ
+    (∑ i, (Γ.split x).1 i ^ 2) + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1 with hΦ
   -- Step 1: `rlctAt` on `Params` is `rlctAtOn`; transport Params→flat (MP homeomorph).
   rw [← rlctAtOn_eq_rlctAt]
   set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
@@ -263,14 +288,15 @@ theorem deepest_squeeze_transport (H : Fin (L + 1) → ℕ) (r : ℕ)
   refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φ wstar
     ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
     c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => hsq w hw⟩
-  -- `Φ` measurable: regular sum-of-squares + the core loss through the reindex + flattening.
+  -- `Φ` measurable: regular sum-of-squares + the core loss through the reindex + absorb + flattening.
   rw [hΦ]
   apply Measurable.add
   · exact (Finset.measurable_sum _ (fun i _ =>
       ((measurable_pi_apply i).comp (continuous_fst.comp Γ.split.continuous).measurable).pow_const _))
-  · exact ((continuous_dlnLoss (fun s => H s - r) _).comp
+  · exact ((continuous_dlnLoss (deepestM H r) _).comp
       (continuous_paramsEquivFlat_symm _)).measurable.comp
-      ((continuous_fst.comp continuous_snd).comp Γ.split.continuous).measurable
+      ((continuous_fst.comp continuous_snd).comp
+        (Γ.coreAbsorb.continuous.comp Γ.split.continuous)).measurable
 
 /-- **Sub-lemma 7 (`deepest_reduced_core_identification`).** The reduced core loss in flat
 coordinates has the same RLCT as on `Params M`: `rlctAtOn (dlnLoss M 0 ∘ (paramsEquivFlat M).symm) 0
@@ -336,11 +362,7 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
           ((paramsEquivFlat (fun s => H s - r)).symm z) ≠ 0) :
     rlctAtOn
         (fun x : Fin (flatDim H) → ℝ =>
-          let q := Γ.split x
-          (∑ i, q.1 i ^ 2) +
-            dlnLoss (fun s => H s - r)
-              (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-              ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
+          (∑ i, (Γ.split x).1 i ^ 2) + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
         ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
       = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
         + rlctAtOn
@@ -357,20 +379,17 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hcoreF_nonneg : ∀ y, 0 ≤ coreF y := fun y => dlnLoss_nonneg _ _ _
   -- Step 1: transport through the MP split homeomorphism (`split` carries the basepoint to `0`).
   have hstep1 := rlctAtOn_comp_homeomorph Γ.split Γ.split_mp Γ.split.measurableEmbedding
-    (fun q : (Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ) ×
-        ((Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)) => (∑ i, q.1 i ^ 2) + coreF q.2.1)
+    (fun q : DeepestSplit H r Γ.nGauge => (∑ i, q.1 i ^ 2) + coreF (Γ.coreAbsorb q).2.1)
     ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
   rw [Γ.split_basepoint] at hstep1
   have hgoalfun :
       (fun x : Fin (flatDim H) → ℝ =>
-        let q := Γ.split x
-        (∑ i, q.1 i ^ 2) +
-          dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ)
-            ((paramsEquivFlat M).symm q.2.1))
-      = fun x => (fun q : (Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ) ×
-          ((Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)) =>
-          (∑ i, q.1 i ^ 2) + coreF q.2.1) (Γ.split x) := by funext x; rfl
+        (∑ i, (Γ.split x).1 i ^ 2) + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
+      = fun x => (fun q : DeepestSplit H r Γ.nGauge =>
+          (∑ i, q.1 i ^ 2) + coreF (Γ.coreAbsorb q).2.1) (Γ.split x) := by funext x; rfl
   rw [hgoalfun, hstep1]
+  -- Step 2: peel the gauge-absorption (`coreAbsorb_rlct`) — absorbed core ↦ raw disjoint core.
+  rw [Γ.coreAbsorb_rlct]
   -- Step 2: additive smooth-block split on `Y = (core) × (spectator)`, `G = √∘(coreF ∘ fst)`.
   set G : (Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ) → ℝ := fun p => Real.sqrt (coreF p.1) with hG
   have hGsq : ∀ p, G p ^ 2 = coreF p.1 := fun p => Real.sq_sqrt (hcoreF_nonneg p.1)
