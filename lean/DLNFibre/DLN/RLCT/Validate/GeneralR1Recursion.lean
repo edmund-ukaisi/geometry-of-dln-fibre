@@ -639,6 +639,24 @@ theorem schur_straighten_squeeze_exists {L nReg : ℕ} (M : Fin (L + 1) → ℕ)
   obtain ⟨hlo, hhi⟩ := schur_node_squeeze_unif (w.1) (bcol w) (SΓ w) T hbT
   exact ⟨by rw [hΦ]; positivity, by rw [hΦ, hflat]; exact hlo, by rw [hΦ, hflat]; exact hhi⟩
 
+/-- **The reduced-chain RLCT-transport** (closes rv3's FLAG-A — the recursion-CLOSING link). The datum's
+`redCore_eq` is a POINTWISE pullback `G y² = dlnLoss S.red 0 (redEmbed y)`; alone it does NOT give
+`rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) …`. This supplies the transport: if `redEmbed` is a
+measure-preserving homeomorphism `Y ≃ₜ Params S.red` anchored (`redEmbed 0 = redZero`), then
+`rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) redZero` (`rlctAtOn_comp_homeomorph`). The basepoint
+`redZero` is passed EXPLICITLY (`Params` has no canonical `Zero`; the reduced deepest point is named by
+the producer). The recursion-assembly step discharges this with the datum to descend the RLCT. -/
+theorem rlctAtOn_reduced_transport {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSplit M)
+    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] [Zero Y]
+    (G : Y → ℝ) (redEmbed : Y ≃ₜ Params S.red)
+    (hmp : MeasurePreserving redEmbed volume volume) (hemb : MeasurableEmbedding redEmbed)
+    (redZero : Params S.red) (hzero : redEmbed 0 = redZero)
+    (hredCore : ∀ y, G y ^ 2 = dlnLoss S.red 0 (redEmbed y)) :
+    rlctAtOn (fun y => G y ^ 2) (0 : Y) = rlctAtOn (dlnLoss S.red 0) redZero := by
+  have hpull : (fun y => G y ^ 2) = (fun y => dlnLoss S.red 0 (redEmbed y)) := by
+    funext y; exact hredCore y
+  rw [hpull, rlctAtOn_comp_homeomorph redEmbed hmp hemb (dlnLoss S.red 0) 0, hzero]
+
 /-! ## The L=1 base (the `block_elimination` prototype)
 
 The recursion's leaf. At `L = 1` a `Params` is a SINGLE matrix `A : Matrix (Fin (M 0)) (Fin (M 1)) ℝ`
