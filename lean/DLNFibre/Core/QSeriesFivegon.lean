@@ -1287,4 +1287,20 @@ theorem perfibre_collapse (d : Fin (N + 2) → ℕ) (m' : Fin (N + 1) × Fin (N 
     Pm_eq_colN_mul_lower]
   ring
 
+/-- **Thm 5.6 (the "fivegon")**: `fivegonSum d = Pmult d` — the corner-free single sum over **all**
+Kostant partitions of `d`. Induction on `N`: base `fivegon_base`; step `fivegonSum_fiberwise` +
+`perfibre_collapse` (each fibre collapses to `X^{codim m'}·Pm m'·P(d_last)`) + IH + `Pmult_succ`. -/
+theorem fivegon : ∀ {N : ℕ} (d : Fin (N + 1) → ℕ), fivegonSum d = Pmult d
+  | 0, d => fivegon_base d
+  | (N + 1), d => by
+      rw [fivegonSum_fiberwise d]
+      -- collapse each fibre, factor out `P (d_last)`, recognize `fivegonSum (d ∘ castSucc)`
+      have hstep : ∀ m' ∈ kostantAll (d ∘ Fin.castSucc),
+          (∑ m ∈ (kostantAll d).filter (fun m ↦ peelPart m = m'),
+              (X : ℤ⟦X⟧) ^ (codimForm (N + 1) (extendℤ m)).toNat * Pm (N + 1) m)
+            = ((X : ℤ⟦X⟧) ^ (codimForm N (extendℤ m')).toNat * Pm N m') * P (d (Fin.last (N + 1))) :=
+        fun m' hm' ↦ perfibre_collapse d m' hm'
+      rw [Finset.sum_congr rfl hstep, ← Finset.sum_mul, ← fivegonSum, fivegon (d ∘ Fin.castSucc),
+        ← Pmult_succ]
+
 end DLNFibre.Core
