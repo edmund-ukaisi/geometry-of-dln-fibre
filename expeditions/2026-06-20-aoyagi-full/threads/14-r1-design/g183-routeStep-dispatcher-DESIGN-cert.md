@@ -191,3 +191,44 @@ fold against these names; the dispatcher populates `codimsOf` with the `Mval`-wi
 by §2/§4; `⨅ = lambdaCore` follows. The additive `nReg/2` (per-cell transport, `schur_recursion_step`)
 stays separate from this min-fold value — it justifies each cell's split factorises the loss (cover_le), not
 the leaf-codim value.
+
+---
+
+## DATUM-WEIGHT CORRECTION (#68 follow, pp-hall, 2026-06-22) — R1's per-cell datum is the LIGHT monomial pullback, NOT the heavy IsSchurStraightenSqueeze
+
+**§6 over-specified the per-cell datum as crux2's heavy additive `IsSchurStraightenSqueeze`. fm3's numerics
+caught it (controller-relayed): R1's per-cell consequence is the LIGHT monomial pullback, MIN-folded — the
+heavy squeeze is the OFF-PATH / L2 datum, not R1's blow-up node.** The combinatorial recipe + codim-design
+(§1, §2, §4, §VALUE-TARGET) are datum-weight-INDEPENDENT — unchanged; only §6's datum field corrects.
+
+**The light per-cell datum (verified, `g188_light_datum.py`):** a C1/C5 node is `pivotBlowupOn active p`,
+whose G2 factorization (`node_loss_pivot_factor`, fm3 banked) gives
+    `core ∘ φ = x_p² · (core ∘ hardPivotAt)`,    Jacobian `(x_p)^{card−1}` (`node_jacobian_det`).
+So on the chart the pulled-back integrand is `|x_p|^{2·(−c)} · |x_p|^{card−1} · |reduced∘φ|^{−c}` — a
+`monomialIntegrand` on the `x_p` axis (`k=1`, `h=card−1`, ratio `card/2 = codim/2`) times the reduced
+pullback. The per-cell rlct = `MIN(codim/2, rlct(reduced))`, recursing → the `foldDivisors` MIN-fold. **NO
+squeeze constants `c₁ < c₂`, NO additive `nReg/2`.** The per-cell DATUM field is just
+`node_loss_pivot_factor` (the `x_p²·reduced` monomial pullback) + `node_jacobian_det` (the `(x_p)^{card−1}`
+Jacobian) — both fm3's banked G2, light.
+
+**Why §6's heavy datum was wrong (the additive/min confound, sharpened):**
+- **LIGHT (R1 core, this dispatcher):** `pivotBlowupOn` monomial pullback `x_p²·reduced`, MIN-folded
+  (`foldDivisors`). Datum = `node_loss_pivot_factor` + `node_jacobian_det`. This is what the (2,2,2) leaves
+  use (`Case222`: `myF222_step1A` = `y0²·Q`, `step1A_det` = `y0³` — monomial, not a squeeze).
+- **HEAVY (off-path / L2):** `IsSchurStraightenSqueeze` (`c₁Φ ≤ flatCore ≤ c₂Φ`, additive `nReg/2 +
+  rlctAtOn(reduced)`). This is the DEEPEST-GAUGE chart / L2 regular-shift datum (the g150/g175
+  `core_comparability_squeeze`, #54) — a DIFFERENT node (the full-B reduction, the regular `n/2` shift),
+  NOT R1's blow-up node. §6 conflated the two.
+
+**The corrected §6 datum field** (pending crux2's precise lemma confirmation): per branch cell carries the
+LIGHT monomial-pullback witness — `node_loss_pivot_factor` (`core∘φ = x_p²·(core∘hardPivotAt)`) +
+`node_jacobian_det` (`(x_p)^{card−1}`) + the cover fact + the `codim = Mval(M,T)` witness (§2, unchanged).
+The reduced core recurses (the `red = schurState M'`). NO `IsSchurStraightenSqueeze` / `c₁ c₂` / additive
+`nReg/2` on R1's path — that bundle is the L2 datum. (If crux2 confirms a residual additive piece at some
+node type, it's a thin wrapper; the value MIN-folds regardless, §VALUE-TARGET unchanged.)
+
+**Datum-weight-independent content (build-now, unchanged):** §1 (the classify recipe), §2 (the
+`codim = Mval` witness, the C1-condition), §4 (the achiever reachability), §VALUE-TARGET (the (a)+(b) →
+`foldFamily_*` contract). These are the actual combinatorial content; they hold whether the per-cell datum
+is the light pullback or (off-path) the heavy squeeze. The datum field is a thin wrapper either way —
+likely the light `node_loss_pivot_factor` for R1.
