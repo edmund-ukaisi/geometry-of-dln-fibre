@@ -1145,6 +1145,55 @@ theorem flatDelta_eq_finsum {n : ℕ} (b : Fin n → ℕ) (x : Fin (n + 1) → �
       · rw [if_pos h, if_pos h, Fin.tail, Fin.tail, Fin.tail, Fin.succ_castSucc]
       · rw [if_neg h, if_neg h]
 
+/-- **The exponent bridge**: the `innerSum` codimForm exponent (an `Icc`-indexed ℤ pairing of
+`rebuild`'s last two columns) equals `flatDelta (N+1) (col) x` of the column-`N` data. The two
+`extendℤ_rebuild` eval lemmas turn the `extendℤ` entries into `colₐ − xₐ` and `x_u`; the `Icc`-to-`Fin`
+reindex (`i ↦ ⟨(i−1).toNat⟩`, inner via `Finset.sum_filter`) matches `flatDelta_eq_finsum`. -/
+theorem innerSum_exp_eq_flatDelta (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) :
+    (∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+        extendℤ (rebuild m' x) (i - 1) (N : ℤ) * extendℤ (rebuild m' x) u ((N : ℤ) + 1))
+      = flatDelta (N + 1) (fun i : Fin (N + 1) ↦ m' (i, Fin.last N)) x := by
+  rw [flatDelta_eq_finsum]
+  -- outer reindex Icc 1 (N+1) → Fin (N+1) univ, i ↦ ⟨(i-1).toNat⟩, a ↦ a+1
+  refine Finset.sum_bij' (fun i hi ↦ (⟨(i - 1).toNat, by rw [Finset.mem_Icc] at hi; omega⟩ : Fin (N + 1)))
+    (fun a _ ↦ (a : ℤ) + 1) ?_ ?_ ?_ ?_ ?_
+  · intro i _; exact Finset.mem_univ _
+  · intro a _; rw [Finset.mem_Icc]; have := a.isLt; omega
+  · intro i hi; rw [Finset.mem_Icc] at hi; simp only [Fin.val_mk]; omega
+  · intro a _; apply Fin.ext; simp only [Fin.val_mk]; omega
+  · -- term: inner Icc sum at i = guarded Fin sum at a = ⟨(i-1).toNat⟩
+    intro i hi
+    rw [Finset.mem_Icc] at hi
+    set a : Fin (N + 1) := ⟨(i - 1).toNat, by omega⟩ with ha
+    -- rewrite the LHS first factor via the colN eval lemma (independent of u)
+    have hcolN : extendℤ (rebuild m' x) (i - 1) (N : ℤ)
+        = ((m' (a, Fin.last N) - x a.castSucc : ℕ) : ℤ) := by
+      rw [extendℤ_rebuild_colN m' x (i - 1) (by omega) (by omega)]
+      norm_cast
+      congr 2
+      · apply Fin.ext; simp only [ha, Fin.val_mk]
+      · apply Fin.ext; simp only [ha, Fin.val_mk, Fin.coe_castSucc]
+    -- convert the guarded Fin sum to a filtered sum
+    rw [← Finset.sum_filter]
+    -- inner reindex Icc i (N+1) → (univ).filter (a.castSucc < ·), u ↦ ⟨u.toNat⟩, ufin ↦ ufin
+    refine Finset.sum_bij' (fun u hu ↦ (⟨u.toNat, by rw [Finset.mem_Icc] at hu; omega⟩ : Fin (N + 2)))
+      (fun ufin _ ↦ (ufin : ℤ)) ?_ ?_ ?_ ?_ ?_
+    · intro u hu; rw [Finset.mem_Icc] at hu
+      rw [Finset.mem_filter]
+      refine ⟨Finset.mem_univ _, ?_⟩
+      rw [Fin.lt_def, Fin.coe_castSucc]; simp only [ha, Fin.val_mk]; omega
+    · intro ufin hufin; rw [Finset.mem_filter] at hufin
+      rw [Finset.mem_Icc]
+      have hlt := hufin.2; rw [Fin.lt_def, Fin.coe_castSucc] at hlt
+      simp only [ha, Fin.val_mk] at hlt
+      have := ufin.isLt; constructor <;> omega
+    · intro u hu; rw [Finset.mem_Icc] at hu; simp only [Fin.val_mk]; omega
+    · intro ufin _; apply Fin.ext; simp only [Fin.val_mk]
+    · intro u hu; rw [Finset.mem_Icc] at hu
+      rw [hcolN, extendℤ_rebuild_colNp1 m' x u (by omega) (by omega)]
+      congr 2
+      apply Fin.ext; simp only [Fin.val_mk]
+
 /-- **(Q), general form**: `qSum b d = transferRHS (List.ofFn b) d` — the flat q-sum equals the
 last-column transfer. Induction on `n`: base `qSum [] d = P d`; step peels the first block via
 `adm_peel_sum`, the `flatDelta`/P-factor split, one `durfee`, and the IH. -/
