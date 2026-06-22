@@ -5306,3 +5306,34 @@ branches or endpoint records, does not prove source labels or base-filter
 survival, and does not prove terminal Eq5 payload coverage, terminal
 `(p, alpha)` injectivity, no-extra terminal-minimum coverage, Lemma 5 order
 count, pole order, normal crossings, or RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint-family cardinal squeeze
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-family-cardinal-squeeze.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_cardSqueeze
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5EndpointFamily_branchCoordVal_cardSqueeze
+```
+
+These wrappers compose the endpoint-to-terminal branch-coordinate transport
+with the existing branch-coordinate/value cardinal-squeeze route.  The
+explicit equality between `TC.family.toAoyagiLemma5SuppliedNonbaseFamily` and
+the strictest Eq5 endpoint constructor replaces only the abstract terminal
+`hbranchCoord` hypothesis.
+
+This remains conditional terminal-candidate bookkeeping.  Terminal Eq5
+payloads, terminal `(p, alpha)` injectivity, endpoint-family equality,
+`branchS`, `branchK`, terminal-label nonbase inequalities, and the endpoint
+base label are all still supplied.  The wrappers do not construct Eq5
+branches, prove source labels, prove base-filter survival, build a direct
+counted-datum back-to-label map, prove source-backed no-extra coverage, prove
+a Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.

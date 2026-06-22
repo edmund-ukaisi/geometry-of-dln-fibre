@@ -4941,6 +4941,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-strict-filtered-and-terminal-branchcoord-a5.md`.
 
+Latest A5 Eq5 endpoint-family cardinal-squeeze update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_cardSqueeze`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5EndpointFamily_branchCoordVal_cardSqueeze`.
+These compose the endpoint-to-terminal branch-coordinate transport with the
+existing branch-coordinate/value terminal cardinal squeeze.  The explicit
+endpoint-family equality supplies only branch-coordinate correctness; terminal
+Eq5 payloads, terminal `(p, alpha)` injectivity, `branchS`, `branchK`,
+terminal-label nonbase inequalities, and endpoint base label remain supplied.
+This is not source construction, source-backed or direct back-to-label
+no-extra terminal-minimum coverage, pole order, normal crossings, or RLCT
+extraction.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-family-cardinal-squeeze.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

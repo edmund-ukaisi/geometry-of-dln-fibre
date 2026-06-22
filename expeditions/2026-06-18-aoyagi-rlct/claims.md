@@ -2815,6 +2815,17 @@ No such claim is formalisation-ready until both fields are filled.
   prove source labels or terminal Eq5 payloads, identify terminal-minimum
   labels with endpoint branches, prove no-extra coverage, or prove a Lemma 5
   order count.
+  Also proved
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_cardSqueeze`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5EndpointFamily_branchCoordVal_cardSqueeze`.
+  These compose the endpoint-family branch-coordinate transport with the
+  existing branch-coordinate/value terminal cardinal squeeze.  They replace
+  only the abstract terminal branch-coordinate hypothesis by an explicit
+  endpoint-family equality and endpoint constructor data; terminal payloads,
+  terminal `(p, alpha)` injectivity, branch source/value labels, endpoint base
+  label, and source-backed/direct back-to-label no-extra coverage remain
+  outside source proof.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

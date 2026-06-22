@@ -1763,6 +1763,210 @@ theorem
       (TC.valueLabel_of_branchK_value hbranchK)
       hbaseLabel
 
+/-- Terminal-minimum exactness from Eq5 own-block common-domain payloads,
+terminal `(p, alpha)` injectivity, and an explicit identification of the
+terminal nonbase family with the strictest Eq5 endpoint supplied family.
+
+The family equality supplies only branch-coordinate correctness through the
+endpoint constructor.  Terminal Eq5 payloads, the branch source/value labels,
+and source-backed/direct no-extra data still remain separate boundaries. -/
+theorem terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_cardSqueeze
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (ha : a ≤ N + 1)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (pOf labelAlphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (hselected :
+      (∑ i : Fin (N + 2), m i) = ((N + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (N + 2),
+      ((N + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (N + 2), m j)
+    (hT : ∀ label ∈ TC.terminalMinimumLabels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        (N + 1) a (pOf label) (labelAlphaOf label) M m cut
+        (layerWidth label) (T label))
+    (hlabelBlock : ∀ label ∈ TC.terminalMinimumLabels,
+      cut.block (pOf label) label.1)
+    (hlast : cut.point (N + 1) ≤ L + 1)
+    (hwidth_le : ∀ label ∈ TC.terminalMinimumLabels,
+      aoyagiSelectedWidthNat (N + 1) m (pOf label) ≤
+        (width (label.1 + 1) : ℤ))
+    (hlabelFormula : ∀ label ∈ TC.terminalMinimumLabels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat (N + 1) a M m (pOf label) + 1 -
+          (labelAlphaOf label : ℤ))
+    (hlabel_ne_base : ∀ label ∈ TC.terminalMinimumLabels,
+      T label label.1 ≠ TC.family.baseValue (pOf label))
+    (hpAlpha_inj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (Sigma.mk (pOf label) (labelAlphaOf label) : Σ _ : ℕ, ℕ))
+        ↑TC.terminalMinimumLabels)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat (N + 1) a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain (N + 1) a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat (N + 1) a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        value (upper j) = aoyagiHtildeUpperNat (N + 1) a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a →
+          value (lower j) = aoyagiHtildeLowerNat (N + 1) a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a → branchCoord (lower j) = j)
+    (hfamily :
+      TC.family.toAoyagiLemma5SuppliedNonbaseFamily =
+        ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+          (ell := N + 1) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower baseValue ha
+          baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+          branchCoord hstrictCoord hupperCoord hlowerCoord)
+    (hbranchS :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        TC.branchS (some b) = cut.point (branchCoord b) - 1)
+    (hbranchK :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        TC.family.value b = (TC.branchK (some b) : ℤ) - 1)
+    (hbaseLabel :
+      TC.branchLabel none =
+        ((Sigma.mk (cut.point (N + 1) - 1) 1) : Σ _ : ℕ, ℕ)) :
+    TC.TerminalMinimumLabelExactness := by
+  exact
+    TC.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_valueLabel_cardSqueeze
+      ha cut pOf labelAlphaOf layerWidth T hselected hsource hT
+      hlabelBlock hlast hwidth_le hlabelFormula hlabel_ne_base
+      hpAlpha_inj
+      (TC.branchBlock_of_toNonbase_eq_eq5EndpointCoverage_leftEndpoint
+        cut strictBranches alphaOf value upper lower baseValue ha
+        baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+        branchCoord hstrictCoord hupperCoord hlowerCoord hfamily hbranchS)
+      (TC.valueLabel_of_branchK_value hbranchK)
+      hbaseLabel
+
+/-- Exact terminal-minimum count from the endpoint-family version of the Eq5
+branch-coordinate/value cardinal squeeze. -/
+theorem terminalMinimumLabels_card_of_eq5EndpointFamily_branchCoordVal_cardSqueeze
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (ha : a ≤ N + 1)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (pOf labelAlphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β) (baseValue : ℕ → ℤ)
+    (hselected :
+      (∑ i : Fin (N + 2), m i) = ((N + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (N + 2),
+      ((N + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (N + 2), m j)
+    (hT : ∀ label ∈ TC.terminalMinimumLabels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        (N + 1) a (pOf label) (labelAlphaOf label) M m cut
+        (layerWidth label) (T label))
+    (hlabelBlock : ∀ label ∈ TC.terminalMinimumLabels,
+      cut.block (pOf label) label.1)
+    (hlast : cut.point (N + 1) ≤ L + 1)
+    (hwidth_le : ∀ label ∈ TC.terminalMinimumLabels,
+      aoyagiSelectedWidthNat (N + 1) m (pOf label) ≤
+        (width (label.1 + 1) : ℤ))
+    (hlabelFormula : ∀ label ∈ TC.terminalMinimumLabels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat (N + 1) a M m (pOf label) + 1 -
+          (labelAlphaOf label : ℤ))
+    (hlabel_ne_base : ∀ label ∈ TC.terminalMinimumLabels,
+      T label label.1 ≠ TC.family.baseValue (pOf label))
+    (hpAlpha_inj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (Sigma.mk (pOf label) (labelAlphaOf label) : Σ _ : ℕ, ℕ))
+        ↑TC.terminalMinimumLabels)
+    (baseValue_mem :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat (N + 1) a M m j)
+    (halpha_image :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        (strictBranches j).image alphaOf =
+          aoyagiLemma5Eq5AlphaDomain (N + 1) a j)
+    (hvalue :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j,
+          value b = aoyagiHtildeUpperNat (N + 1) a M m j - (alphaOf b : ℤ))
+    (hupper :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        value (upper j) = aoyagiHtildeUpperNat (N + 1) a M m j)
+    (hlower :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a →
+          value (lower j) = aoyagiHtildeLowerNat (N + 1) a M m j)
+    (halpha_inj :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        Set.InjOn alphaOf ↑(strictBranches j))
+    (branchCoord : β → ℕ)
+    (hstrictCoord :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 ((N + 1) - 1)) →
+        ∀ b ∈ strictBranches j, branchCoord b = j)
+    (hupperCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) →
+        branchCoord (upper j) = j)
+    (hlowerCoord :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 ((N + 1) - 1) → j ≤ a →
+        j ≤ (N + 1) - a → branchCoord (lower j) = j)
+    (hfamily :
+      TC.family.toAoyagiLemma5SuppliedNonbaseFamily =
+        ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord
+          (ell := N + 1) (a := a) (M := M) (m := m)
+          strictBranches alphaOf value upper lower baseValue ha
+          baseValue_mem halpha_image hvalue hupper hlower halpha_inj
+          branchCoord hstrictCoord hupperCoord hlowerCoord)
+    (hbranchS :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        TC.branchS (some b) = cut.point (branchCoord b) - 1)
+    (hbranchK :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        TC.family.value b = (TC.branchK (some b) : ℤ) - 1)
+    (hbaseLabel :
+      TC.branchLabel none =
+        ((Sigma.mk (cut.point (N + 1) - 1) 1) : Σ _ : ℕ, ℕ)) :
+    TC.terminalMinimumLabels.card = a * (N + 1 - a) + 1 := by
+  exact
+    TC.terminalMinimumLabels_card_of_exactness N a M m ha hselected
+      (TC.terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_cardSqueeze
+        ha cut pOf labelAlphaOf layerWidth T strictBranches alphaOf value
+        upper lower baseValue hselected hsource hT hlabelBlock hlast hwidth_le
+        hlabelFormula hlabel_ne_base hpAlpha_inj baseValue_mem halpha_image
+        hvalue hupper hlower halpha_inj branchCoord hstrictCoord hupperCoord
+        hlowerCoord hfamily hbranchS hbranchK hbaseLabel)
+
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
 end Aoyagi

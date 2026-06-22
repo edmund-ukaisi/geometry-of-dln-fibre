@@ -222,6 +222,8 @@ Current Eq5 branch-coordinate/value cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
 Current Eq5 endpoint-to-terminal branch-coordinate slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-to-terminal-branchcoord-a5.md`.
+Current Eq5 endpoint-family cardinal-squeeze slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -365,6 +367,18 @@ The selected-block wrapper additionally uses a supplied left-endpoint
 `branchS` formula.  This is interface alignment only; endpoint counts are
 still not terminal-minimum counts, and no source-backed no-extra coverage,
 pole order, normal crossings, or RLCT follows.
+
+Lean now also composes that endpoint-family branch-coordinate transport into
+the existing branch-coordinate/value terminal cardinal squeeze:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5EndpointFamily_branchCoordVal_cardSqueeze`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5EndpointFamily_branchCoordVal_cardSqueeze`.
+This removes only the abstract terminal `hbranchCoord` input, replacing it by
+the explicit endpoint-family equality and endpoint constructor data.  Terminal
+Eq5 payloads, terminal `(p, alpha)` injectivity, `branchS`, `branchK`,
+terminal-label nonbase inequalities, endpoint base label, source-backed or
+direct back-to-label no-extra coverage, pole order, normal crossings, and
+RLCT remain outside this theorem.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.
