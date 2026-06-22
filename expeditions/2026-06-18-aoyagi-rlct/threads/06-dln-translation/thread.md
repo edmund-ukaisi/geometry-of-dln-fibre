@@ -226,3 +226,46 @@ identification, selected-width provenance, A0 extraction hypothesis,
 branch-label injectivity, and terminal upper bound remain supplied.  This is
 not source-backed Lemma 5 no-extra coverage, chart production, pole order
 without A0, or RLCT extraction.
+
+## Current slice - 2026-06-22, active-ratio terminal-order handoff
+
+The same terminal-order bridge now also composes the A0 active-ratio finite
+minimum certificate with the A5 terminal-order handoff.  Instead of supplying
+
+```text
+D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData ...
+```
+
+directly, the new wrappers accept:
+
+```text
+p in D.activePairs,
+D.ratioAt p = aoyagiTheorem2Lambda_fromCeilData ...,
+forall p' in D.activePairs,
+  aoyagiTheorem2Lambda_fromCeilData ... <= D.ratioAt p'.
+```
+
+They still require the supplied chart/order equality
+`D.exponentOrder = TC.terminalMinimumLabels.card`, supplied branch-label
+injectivity, supplied terminal upper bound, selected-width provenance, and the
+A0 extraction hypothesis where relevant.
+
+Lean names:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_terminalMinimumLabels_card
+```
+
+Artifacts:
+
+- `reproduction-theorem2-active-terminal-order-bridge-a6.md`;
+- `statement-card-a6-theorem2-active-terminal-order-bridge.md`;
+- `review-theorem2-active-terminal-order-bridge-a6.md`.
+
+Boundary: this reduces the final finite socket from a raw supplied exponent
+minimum equality to an explicit finite active-ratio certificate.  It still
+does not prove chart production, active-ratio lower bounds from source charts,
+chart-order/terminal-label identification, Lemma 5 no-extra coverage, pole
+order without A0, normal crossings, or RLCT extraction.

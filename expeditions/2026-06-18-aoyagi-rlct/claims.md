@@ -2937,12 +2937,16 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`;
   conditional finite-exponent bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`;
+  finite active-ratio terminal-order bridge reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-active-terminal-order-bridge-a6.md`;
   supplied final assembly boundary reproduced at
   `threads/06-dln-translation/reproduction-theorem2-final-assembly-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   conditional bridge reviewed at
   `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`;
+  active-ratio terminal-order bridge reviewed at
+  `threads/06-dln-translation/review-theorem2-active-terminal-order-bridge-a6.md`;
   final assembly reviewed at
   `threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
@@ -2995,6 +2999,12 @@ No such claim is formalisation-ready until both fields are filled.
   `poleOrder_eq_theorem2OrderFormula_of_extractionHypothesis`, and
   `lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_extractionHypothesis`
   in `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`; current
+  active-ratio terminal-order bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLabels_card`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_terminalMinimumLabels_card`,
+  and
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_terminalMinimumLabels_card`
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
   supplied final boundary:
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary`,
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_eq_natCast_sub`,
@@ -3033,8 +3043,13 @@ No such claim is formalisation-ready until both fields are filled.
   selected-width provenance, A0 extraction, and finite exponent formula
   hypotheses; it projects the displayed lambda/order formulas and finite
   selected-width provenance consequences without constructing the missing
-  certificate.  Selected rank-width hypotheses and the strict source-selected
-  inequality remain explicit auxiliary theorem inputs where used.
+  certificate.  Also proved an active-ratio terminal-order final-socket bridge:
+  a supplied active coordinate realizing the displayed lambda and a supplied
+  lower bound against every active ratio fill the exponent-minimum field,
+  while the supplied chart/order equality and supplied Lemma 5 terminal-order
+  obstruction fill the order field.  Selected rank-width hypotheses and the
+  strict source-selected inequality remain explicit auxiliary theorem inputs
+  where used.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** full Definition 3 selection inequalities, existence of the

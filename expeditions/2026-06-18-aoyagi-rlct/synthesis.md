@@ -5444,6 +5444,26 @@ and
 Review:
 `threads/06-dln-translation/review-theorem2-terminal-order-bridge-a6.md`.
 
+Latest A6 active-ratio terminal-order handoff:
+`Theorem2TerminalOrderBridge.lean` now also composes the A0 active-ratio
+finite-minimum certificate with the supplied Lemma 5 terminal-order route.
+The new wrappers take an active coordinate `p`, its ratio equality with
+`aoyagiTheorem2Lambda_fromCeilData ...`, and the lower bound against every
+active coordinate; they still take the supplied chart/order equality
+`D.exponentOrder = TC.terminalMinimumLabels.card`, supplied branch-label
+injectivity, and the supplied terminal upper bound.  With selected-width
+provenance and A0 extraction, Lean derives the same final ceiling-data pair.
+This does not construct exponent data, prove the active-ratio inequalities,
+prove chart/order identification, prove source-backed Lemma 5 no-extra
+coverage, prove pole order without A0, prove normal crossings, or extract
+RLCT.
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-active-terminal-order-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-active-terminal-order-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-active-terminal-order-bridge-a6.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

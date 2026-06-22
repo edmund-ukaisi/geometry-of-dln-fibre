@@ -388,6 +388,15 @@ does not prove chart-order identification, the exponent-minimum formula,
 normal-crossing chart production, source-backed Lemma 5 no-extra coverage,
 pole order without A0, or RLCT extraction.
 
+Current A6 active-ratio terminal-order handoff:
+`threads/06-dln-translation/reproduction-theorem2-active-terminal-order-bridge-a6.md`.
+Lean now also consumes the A0 active-ratio finite-minimum certificate together
+with the supplied Lemma 5 terminal-order route.  This replaces the raw supplied
+minimum equality in the terminal-order final socket by an active coordinate,
+its displayed ratio equality, and a lower bound against every active ratio.
+The chart/order equality, branch-label injectivity, terminal upper bound,
+selected-width provenance, and A0 extraction hypothesis remain supplied.
+
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
 terminal-family convenience theorem for `TC.terminalMinimumLabels`.  It also
