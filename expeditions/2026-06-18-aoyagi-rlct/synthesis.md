@@ -251,6 +251,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-exactness-a5.md`.
 
+The counted-datum classifier cardinal-squeeze wrappers have landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_countDatumClassifier_and_branchLabel_injOn`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_countDatumClassifier_and_branchLabel_injOn`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_countDatumClassifier_and_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_countDatumClassifier_and_branchLabel_injOn`.
+These derive terminal-minimum exactness from a supplied counted-datum
+classifier and supplied branch-label injectivity by finite cardinality
+squeeze.  This avoids an explicit counted-datum back-to-label witness, but the
+classifier and injectivity remain supplied and no source construction, pole
+order, normal crossings, or RLCT extraction follows.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-classifier-cardinal-squeeze.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`.
+
 The Eq5 nonfirst-block explicit-bounds wrapper has landed in
 `Lemma5DisplayedVector.lean`.  New Lean names:
 `aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_postPLowerGuard`

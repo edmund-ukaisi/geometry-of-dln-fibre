@@ -853,6 +853,68 @@ theorem terminalMinimumLabelExactness_of_countDatumBackToBranchLabel {β : Type*
     (C.upperBoundClassifier_of_countDatumBackToBranchLabel
       branchCoord classifier backToLabel)
 
+/-- A supplied counted-datum classifier and supplied branch-label injectivity
+identify terminal-minimum labels with the supplied branch-label image by a
+finite cardinality squeeze.
+
+The classifier gives the upper cardinal bound on `terminalMinimumLabels`;
+supplied branch-label injectivity gives the matching cardinality for
+`branchLabelImage`; and supplied branches attaining the minimum give
+`branchLabelImage ⊆ terminalMinimumLabels`.  This does not construct a
+back-to-label witness for each terminal label. -/
+theorem terminalMinimumLabels_eq_branchLabelImage_of_countDatumClassifier_and_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (classifier : C.TerminalMinimumCountDatumClassifier) :
+    C.terminalMinimumLabels = C.branchLabelImage := by
+  have himage :
+      C.branchLabelImage ⊆ C.terminalMinimumLabels :=
+    C.branchLabelImage_subset_terminalMinimumLabels ha hselected
+  have himage_card :
+      C.branchLabelImage.card = a * (n + 1 - a) + 1 :=
+    C.branchLabelImage_card n a M m ha hinj
+  have hterminal_card :
+      C.terminalMinimumLabels.card ≤ a * (n + 1 - a) + 1 :=
+    C.terminalMinimumLabels_card_le_of_countDatumClassifier ha classifier
+  have hcard :
+      C.terminalMinimumLabels.card ≤ C.branchLabelImage.card := by
+    simpa [himage_card] using hterminal_card
+  exact (Finset.eq_of_subset_of_card_le himage hcard).symm
+
+/-- A supplied counted-datum classifier and supplied branch-label injectivity
+package terminal-minimum exactness by cardinal squeeze.
+
+This avoids an explicit counted-datum back-to-label bridge, but still keeps
+the counted-datum classifier and branch-label injectivity as supplied data. -/
+theorem terminalMinimumLabelExactness_of_countDatumClassifier_and_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (classifier : C.TerminalMinimumCountDatumClassifier) :
+    C.TerminalMinimumLabelExactness where
+  branchLabel_injOn := hinj
+  terminalMinimumLabels_subset_branchLabelImage := by
+    intro label hlabel
+    have heq :=
+      C.terminalMinimumLabels_eq_branchLabelImage_of_countDatumClassifier_and_branchLabel_injOn
+        n a M m ha hselected hinj classifier
+    simpa [heq] using hlabel
+
 /-- Packaged exactness identifies the finite terminal-minimum label set with
 the supplied branch-label image.
 
@@ -924,6 +986,28 @@ theorem terminalMinimumLabels_card_of_countDatumBackToBranchLabel {β : Type*}
   exact C.terminalMinimumLabels_card_of_exactness n a M m ha hselected
     (C.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel
       hinj branchCoord classifier backToLabel)
+
+/-- Exact finite count from a supplied counted-datum classifier and supplied
+branch-label injectivity.
+
+This is the cardinal-squeeze route to exactness.  It does not construct the
+classifier or branch-label injectivity from Aoyagi's source. -/
+theorem terminalMinimumLabels_card_of_countDatumClassifier_and_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    (n a : ℕ) (M : ℤ) (m : Fin (n + 2) → ℤ)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (classifier : C.TerminalMinimumCountDatumClassifier) :
+    C.terminalMinimumLabels.card = a * (n + 1 - a) + 1 := by
+  exact C.terminalMinimumLabels_card_of_exactness n a M m ha hselected
+    (C.terminalMinimumLabelExactness_of_countDatumClassifier_and_branchLabel_injOn
+      n a M m ha hselected hinj classifier)
 
 /-- A supplied upper-bound classifier and supplied branch-label injectivity
 give the exact finite terminal-minimum count.
@@ -1000,6 +1084,30 @@ theorem branchLabel_bijOn_terminalMinimumLabels_of_countDatumBackToBranchLabel
   exact C.branchLabel_bijOn_terminalMinimumLabels_of_exactness ha hselected
     (C.terminalMinimumLabelExactness_of_countDatumBackToBranchLabel
       hinj branchCoord classifier backToLabel)
+
+/-- A supplied counted-datum classifier and supplied branch-label injectivity
+give a bijection from supplied branches to terminal-minimum labels by cardinal
+squeeze.
+
+This is finite supplied-data packaging.  It does not construct a
+back-to-label map, source classifier, pole order, normal crossings, or RLCT
+extraction. -/
+theorem branchLabel_bijOn_terminalMinimumLabels_of_countDatumClassifier_and_branchLabel_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {S J : ℕ}
+    {n a : ℕ} {M : ℤ} {m : Fin (n + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (C : AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J n a M m
+      t numerator leastValue)
+    (ha : a ≤ n + 1)
+    (hselected :
+      (∑ j : Fin (n + 2), m j) = ((n + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hinj : Set.InjOn C.branchLabel ↑C.fullBranches)
+    (classifier : C.TerminalMinimumCountDatumClassifier) :
+    Set.BijOn C.branchLabel ↑C.fullBranches ↑C.terminalMinimumLabels := by
+  exact C.branchLabel_bijOn_terminalMinimumLabels_of_exactness ha hselected
+    (C.terminalMinimumLabelExactness_of_countDatumClassifier_and_branchLabel_injOn
+      n a M m ha hselected hinj classifier)
 
 /-- A supplied upper-bound classifier and supplied branch-label injectivity
 give a bijection from supplied branches to terminal-minimum labels.

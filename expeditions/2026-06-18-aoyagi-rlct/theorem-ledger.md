@@ -176,6 +176,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-exactness-a5.md`.
 
+The counted-datum classifier cardinal-squeeze wrappers have also landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_countDatumClassifier_and_branchLabel_injOn`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_countDatumClassifier_and_branchLabel_injOn`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_countDatumClassifier_and_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_countDatumClassifier_and_branchLabel_injOn`.
+These use the supplied counted-datum classifier upper bound and supplied
+branch-label injectivity to identify `terminalMinimumLabels` with
+`branchLabelImage` by finite cardinality squeeze.  They do not construct a
+back-to-label map, source classifier, pole order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-counted-datum-classifier-cardinal-squeeze.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in

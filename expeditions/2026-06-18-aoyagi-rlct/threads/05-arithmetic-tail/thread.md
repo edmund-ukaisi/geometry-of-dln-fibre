@@ -4160,6 +4160,35 @@ prove branch-label injectivity, build a counted-datum back-to-label map from
 Aoyagi's source equations, prove pole order, prove normal crossings, or
 extract RLCT.
 
+## 2026-06-22 Lean Lemma 5 counted-datum classifier cardinal squeeze
+
+Reproduction:
+`reproduction-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-counted-datum-classifier-cardinal-squeeze.md`.
+Review artifact:
+`review-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`.
+
+Lean now derives terminal-minimum exactness from a supplied counted-datum
+classifier and supplied branch-label injectivity:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_countDatumClassifier_and_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_countDatumClassifier_and_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_countDatumClassifier_and_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_countDatumClassifier_and_branchLabel_injOn
+```
+
+The proof uses the finite squeeze `branchLabelImage.card = N`,
+`branchLabelImage subset terminalMinimumLabels`, and
+`terminalMinimumLabels.card <= N` from the supplied counted-datum classifier.
+This avoids an explicit counted-datum back-to-label witness.
+
+The counted-datum classifier and branch-label injectivity remain supplied
+data.  This does not construct the classifier from Aoyagi's equations, prove
+source-label legality, build the displayed branch family, prove pole order,
+prove normal crossings, or extract RLCT.
+
 ## 2026-06-21 Lean Lemma 5 Eq5 alpha-indexed branch source labels
 
 Reproduction:

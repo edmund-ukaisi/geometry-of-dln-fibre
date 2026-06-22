@@ -146,6 +146,8 @@ Current terminal binary counted-datum maps-to slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-counted-datum-maps-to-a5.md`.
 Current terminal-minimum counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-a5.md`.
+Current counted-datum classifier cardinal-squeeze slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-classifier-cardinal-squeeze-a5.md`.
 Current counted-datum back-to-branch-label boundary slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-counted-datum-back-to-branch-label-a5.md`.
 Current counted-datum back-to-branch-label card-bound slice:
