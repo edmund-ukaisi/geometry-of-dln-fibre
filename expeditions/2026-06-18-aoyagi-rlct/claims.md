@@ -2721,6 +2721,17 @@ No such claim is formalisation-ready until both fields are filled.
   These package the strictest endpoint supplied family into the generic
   counted-datum classifier API for its supplied `fullBranches`.  They do not
   classify source terminal-minimum labels or prove no-extra coverage.
+  Also proved
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze`
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze`.
+  These compose the structured terminal counted-datum injection and
+  terminal-endpoint-base branch-label injection adapters into the existing
+  finite cardinal squeeze.  They prove conditional terminal-minimum exactness
+  and exact cardinality only under supplied terminal Eq5 payloads, terminal
+  `(p, alpha)` injectivity, branch alpha data, terminal-label nonbase
+  inequalities, and the terminal-endpoint base label.  They do not prove
+  source-backed no-extra coverage or a Lemma 5 order count.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

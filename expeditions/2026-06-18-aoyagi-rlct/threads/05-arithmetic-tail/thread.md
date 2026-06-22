@@ -5085,3 +5085,33 @@ classifier.  It does not construct branch records, prove source-label
 legality, prove source production of the coordinate map, prove endpoint
 distinctness or base-filter survival, prove no-extra coverage, prove a Lemma 5
 order count, prove pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 terminal pAlpha endpoint cardinal squeeze
+
+Reproduction:
+`reproduction-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze.md`.
+Review artifact:
+`review-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze
+```
+
+These theorems compose the structured counted-datum injection adapter from
+terminal Eq5 own-block payloads and supplied terminal `(p, alpha)` injectivity
+with the structured branch-label injection adapter from nonbase alpha-indexed
+branch data and an explicit terminal-endpoint base label.  The result feeds
+those two derived injectivity facts into the existing finite cardinal-squeeze
+wrappers, proving conditional terminal-minimum exactness and the exact finite
+count under the supplied hypotheses.
+
+This is finite terminal-candidate bookkeeping only.  It does not construct Eq5
+branches, prove terminal Eq5 payload coverage from source, prove terminal
+`(p, alpha)` injectivity from source, build a counted-datum back-to-label map,
+prove source-backed no-extra coverage, prove the Lemma 5 order count, prove
+pole order, prove normal crossings, or extract RLCT.

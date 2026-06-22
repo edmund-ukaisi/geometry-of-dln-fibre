@@ -90,6 +90,8 @@ Current Eq5 branch-label injection slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-branch-label-injection-a5.md`.
 Current Eq5 alpha-injection cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-alpha-injection-cardinal-squeeze-a5.md`.
+Current Eq5 pAlpha endpoint cardinal-squeeze slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze-a5.md`.
 Current Eq5 alpha endpoint value-image split slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
 Current Lemma 4 prefix-profile computation slice:
@@ -218,6 +220,17 @@ branch-label injectivity wrapper.  Keep this as hypothesis reduction only:
 `(p, alpha)` injectivity, terminal Eq5 payloads, Eq5 branch construction,
 back-to-label/no-extra coverage, pole order, normal crossings, and RLCT remain
 unproved.
+
+Lean now also composes those structured injection adapters into the existing
+terminal cardinal squeeze:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze`.
+This proves conditional terminal-minimum exactness and exact finite
+cardinality only under supplied terminal Eq5 payloads, terminal `(p, alpha)`
+injectivity, branch alpha data, terminal-label nonbase inequalities, and the
+terminal-endpoint base label.  It is not source-backed no-extra coverage and
+does not prove the Lemma 5 order count, pole order, normal crossings, or RLCT.
 
 Lean now also exposes the conditional Eq5 raw coverage constructor:
 `aoyagiLemma5Eq5EndpointRawBranches`,

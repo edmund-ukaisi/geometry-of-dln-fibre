@@ -4804,6 +4804,24 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
 
+Latest A5 Eq5 terminal pAlpha endpoint cardinal-squeeze update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze`
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_endpointBase_cardSqueeze`.
+These combine the existing terminal counted-datum injection adapter from
+supplied Eq5 payloads plus terminal `(p, alpha)` injectivity with the
+terminal-endpoint-base branch-label injection adapter, then apply the existing
+finite cardinal squeeze.  They prove conditional terminal-minimum exactness
+and exact cardinality only under supplied hypotheses; they are not
+source-backed no-extra coverage, branch construction, pole-order, normal
+crossing, or RLCT theorems.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
