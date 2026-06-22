@@ -31,6 +31,13 @@ boundary.  This module does not prove chart production, unit nonvanishing,
 Aoyagi Lemma 1, regular-coordinate additivity, Theorem 4, pole order, or RLCT
 extraction.
 
+The current A0 finite-certificate slice is
+`threads/02-analytic-interface/reproduction-normal-crossing-finite-certificates-a0.md`.
+Lean now provides finite `min'` and `max'` certificate lemmas for proving a
+candidate `exponentMinimum` or `exponentOrder` from supplied active-ratio and
+chart-count bounds.  This is only finite bookkeeping over supplied exponent
+data, not chart production or analytic extraction.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

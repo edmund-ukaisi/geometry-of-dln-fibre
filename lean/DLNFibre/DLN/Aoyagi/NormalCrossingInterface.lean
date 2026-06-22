@@ -93,6 +93,33 @@ theorem exists_activePair_ratioAt_eq_exponentMinimum
   rcases Finset.mem_image.mp hmem with ⟨p, hp, hratio⟩
   exact ⟨p, hp, hratio⟩
 
+/-- Certify the finite exponent minimum by exhibiting a candidate active ratio
+which lower-bounds all active ratios. -/
+theorem exponentMinimum_eq_of_mem_activeRatios_of_forall_le
+    (D : AoyagiNormalCrossingExponentData) {q : ℚ}
+    (hmem : q ∈ D.activeRatios)
+    (hle : ∀ r ∈ D.activeRatios, q ≤ r) :
+    D.exponentMinimum = q := by
+  apply le_antisymm
+  · exact D.activeRatios.min'_le q hmem
+  · exact hle D.exponentMinimum D.exponentMinimum_mem_activeRatios
+
+/-- Certify the finite exponent minimum from an active coordinate realizing
+the candidate value and a lower bound against all active coordinates. -/
+theorem exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
+    (D : AoyagiNormalCrossingExponentData)
+    {p : Fin D.numCharts × Fin D.numCoords} {q : ℚ}
+    (hp : p ∈ D.activePairs)
+    (hratio : D.ratioAt p = q)
+    (hle : ∀ p' ∈ D.activePairs, q ≤ D.ratioAt p') :
+    D.exponentMinimum = q := by
+  refine D.exponentMinimum_eq_of_mem_activeRatios_of_forall_le ?_ ?_
+  · exact Finset.mem_image.mpr ⟨p, hp, hratio⟩
+  · intro r hr
+    rw [activeRatios] at hr
+    rcases Finset.mem_image.mp hr with ⟨p', hp', rfl⟩
+    exact hle p' hp'
+
 /-- Coordinates in one chart attaining the global exponent minimum. -/
 def minCoordsInChart (D : AoyagiNormalCrossingExponentData)
     (c : Fin D.numCharts) : Finset (Fin D.numCoords) :=
@@ -147,6 +174,44 @@ theorem exists_chart_minCount_eq_exponentOrder
   rw [chartMinCounts] at hmem
   rcases Finset.mem_image.mp hmem with ⟨c, _hc, hcount⟩
   exact ⟨c, hcount⟩
+
+/-- Certify the finite exponent order by exhibiting a candidate chart count
+which upper-bounds all chart counts. -/
+theorem exponentOrder_eq_of_mem_chartMinCounts_of_forall_le
+    (D : AoyagiNormalCrossingExponentData) {q : ℕ}
+    (hmem : q ∈ D.chartMinCounts)
+    (hle : ∀ r ∈ D.chartMinCounts, r ≤ q) :
+    D.exponentOrder = q := by
+  apply le_antisymm
+  · exact hle D.exponentOrder
+      (by simpa [exponentOrder] using
+        D.chartMinCounts.max'_mem D.chartMinCounts_nonempty)
+  · exact D.chartMinCounts.le_max' q hmem
+
+/-- Certify the finite exponent order from one chart realizing the candidate
+count and a uniform upper bound for all chart counts. -/
+theorem exponentOrder_eq_of_chart_minCount_eq_of_forall_le
+    (D : AoyagiNormalCrossingExponentData)
+    {c : Fin D.numCharts} {q : ℕ}
+    (hchart : D.minCountInChart c = q)
+    (hle : ∀ c' : Fin D.numCharts, D.minCountInChart c' ≤ q) :
+    D.exponentOrder = q := by
+  refine D.exponentOrder_eq_of_mem_chartMinCounts_of_forall_le ?_ ?_
+  · exact Finset.mem_image.mpr ⟨c, Finset.mem_univ _, hchart⟩
+  · intro r hr
+    rw [chartMinCounts] at hr
+    rcases Finset.mem_image.mp hr with ⟨c', _hc', rfl⟩
+    exact hle c'
+
+/-- Certify the finite exponent order from a uniform upper bound and an
+existence theorem for a chart attaining the candidate count. -/
+theorem exponentOrder_eq_of_forall_le_of_exists_chart_minCount_eq
+    (D : AoyagiNormalCrossingExponentData) {q : ℕ}
+    (hle : ∀ c : Fin D.numCharts, D.minCountInChart c ≤ q)
+    (hexists : ∃ c : Fin D.numCharts, D.minCountInChart c = q) :
+    D.exponentOrder = q := by
+  rcases hexists with ⟨c, hchart⟩
+  exact D.exponentOrder_eq_of_chart_minCount_eq_of_forall_le hchart hle
 
 /-- The exponent order is positive because the global minimum is attained by
 an active coordinate. -/

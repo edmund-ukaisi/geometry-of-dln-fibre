@@ -109,6 +109,30 @@ This is not an analytic theorem and does not prove chart production, unit
 nonvanishing, Aoyagi Lemma 1, regular-coordinate additivity, Theorem 4, pole
 order, or RLCT extraction.
 
+Latest A0 finite-certificate update: `NormalCrossingInterface.lean` now also
+contains min/max certificate lemmas for the supplied exponent data.  The
+minimum can be proved from a candidate active ratio plus a lower bound against
+all active ratios, or from an active coordinate realizing the candidate value
+plus lower bounds against all active coordinates.  The order can be proved
+from a candidate chart count plus an upper bound against all chart counts, or
+from a realizing chart plus uniform chart-count upper bound:
+`AoyagiNormalCrossingExponentData.exponentMinimum_eq_of_mem_activeRatios_of_forall_le`,
+`AoyagiNormalCrossingExponentData.exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le`,
+`AoyagiNormalCrossingExponentData.exponentOrder_eq_of_mem_chartMinCounts_of_forall_le`,
+`AoyagiNormalCrossingExponentData.exponentOrder_eq_of_chart_minCount_eq_of_forall_le`,
+and
+`AoyagiNormalCrossingExponentData.exponentOrder_eq_of_forall_le_of_exists_chart_minCount_eq`.
+This is finite `Finset.min'`/`Finset.max'` bookkeeping only; it does not
+construct charts, prove the active-ratio inequalities from the blow-up
+recursion, identify chart counts with Lemma 5 terminal labels, prove pole
+order without A0, or extract RLCT.
+Artifacts:
+`threads/02-analytic-interface/reproduction-normal-crossing-finite-certificates-a0.md`
+and
+`threads/02-analytic-interface/statement-card-a0-normal-crossing-finite-certificates.md`.
+Review:
+`threads/02-analytic-interface/review-normal-crossing-finite-certificates-a0.md`.
+
 ## Latest A2 Update
 
 The residual-product endpoint wrapper for Aoyagi Theorem 3 has landed.

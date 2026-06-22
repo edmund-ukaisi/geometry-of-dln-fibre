@@ -73,3 +73,38 @@ Artifacts:
 Nonclaims remain unchanged: no analytic theorem, chart production,
 nonvanishing units, Aoyagi Lemma 1, regular-coordinate additivity, Theorem 4,
 pole-order theorem, or RLCT theorem is proved by this module.
+
+## 2026-06-22 finite min/order certificates
+
+Lean now also exposes finite certificate lemmas in
+`lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`.
+
+For the finite minimum, a candidate `q` is certified by either:
+
+```text
+q in D.activeRatios
+forall r in D.activeRatios, q <= r
+```
+
+or by an active coordinate whose ratio is `q`, plus the corresponding
+lower-bound inequality against every active coordinate.
+
+For the finite order, a candidate `q` is certified by either:
+
+```text
+q in D.chartMinCounts
+forall r in D.chartMinCounts, r <= q
+```
+
+or by a chart whose minimum-coordinate count is `q`, plus a uniform upper
+bound for all chart counts.
+
+Artifacts:
+
+- `reproduction-normal-crossing-finite-certificates-a0.md`;
+- `statement-card-a0-normal-crossing-finite-certificates.md`;
+- `review-normal-crossing-finite-certificates-a0.md`.
+
+Nonclaims remain unchanged: these are finite `min'`/`max'` lemmas only.  They
+do not produce charts, prove normal crossings, identify chartwise counts with
+Lemma 5 terminal labels, prove pole order without A0, or extract RLCT.

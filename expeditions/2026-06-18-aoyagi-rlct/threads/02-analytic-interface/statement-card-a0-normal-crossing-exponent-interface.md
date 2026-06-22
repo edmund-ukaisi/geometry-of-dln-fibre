@@ -34,6 +34,10 @@ Helper theorems include active/minimum nonemptiness, existence of an active
 minimum coordinate, existence of an order-attaining chart, and
 `one_le_exponentOrder`.
 
+The finite certificate wrappers for proving a proposed minimum or order value
+are recorded separately in
+`statement-card-a0-normal-crossing-finite-certificates.md`.
+
 ## Status
 
 Proved in Lean as finite arithmetic/interface infrastructure.
