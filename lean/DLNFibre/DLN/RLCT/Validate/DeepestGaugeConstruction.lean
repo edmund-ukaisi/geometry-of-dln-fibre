@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
 import DLNFibre.DLN.RLCT.Validate.DeepestFrame
+import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction` — the `DeepestGaugeChart` instance (#44c)
@@ -167,65 +168,10 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
 /-! ## The measure-preserving core-shear peel (Route A, Codex g165)
 
 The core-shear `coreShearHomeo shift` is MEASURE-PRESERVING (det = 1, a fiber translation), so it
-peels the RLCT via `rlctAtOn_comp_homeomorph` (NO derivative bookkeeping). The MP is
-`MeasurePreserving.skew_product` (the fiber-shift `(a,c) ↦ (a, c + shift a)` with per-fiber
-translation invariance `measurePreserving_add_right`) sandwiched by the
-`reassoc : Reg × (Core × Spec) ≃ₜ (Reg × Spec) × Core` regrouping. Shift-agnostic — holds for any
-continuous `shift`; the concrete Schur shift is plugged in by `deepest_coreAbsorb_exists`. -/
-
-/-- The product-volume reassociation `(Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) ≃ₜ
-((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ)` is measure-preserving (product-`volume`, det `= ±1`
-reindex). The carrier for the core-shear MP. -/
-private theorem measurePreserving_coreReassoc (a b c : ℕ) :
-    MeasurePreserving
-      (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) => ((q.1, q.2.2), q.2.1))
-      volume volume := by
-  -- `(reg,(core,spec)) ↦ ((reg,spec),core)` = swap-inner (`core×spec → spec×core`), then
-  -- `prodAssoc.symm` (`reg×(spec×core) → (reg×spec)×core`). Each MP via the product-`volume` form.
-  set A := Fin a → ℝ; set Bb := Fin b → ℝ; set C := Fin c → ℝ
-  -- Step 1: swap the inner `(core, spec) ↦ (spec, core)`.
-  have hswap : MeasurePreserving (Prod.swap : Bb × C → C × Bb) volume volume := by
-    rw [show (volume : Measure (Bb × C)) = (volume : Measure Bb).prod (volume) from
-          Measure.volume_eq_prod _ _,
-      show (volume : Measure (C × Bb)) = (volume : Measure C).prod (volume) from
-          Measure.volume_eq_prod _ _]
-    exact Measure.measurePreserving_swap
-  have h1 : MeasurePreserving
-      (Prod.map (id : A → A) (Prod.swap : Bb × C → C × Bb)) volume volume := by
-    rw [show (volume : Measure (A × (Bb × C))) = (volume : Measure A).prod (volume) from
-          Measure.volume_eq_prod _ _,
-      show (volume : Measure (A × (C × Bb))) = (volume : Measure A).prod (volume) from
-          Measure.volume_eq_prod _ _]
-    exact (MeasurePreserving.id (volume : Measure A)).prod hswap
-  -- Step 2: `prodAssoc.symm`: `reg × (spec × core) ↦ (reg × spec) × core`.
-  have h2 : MeasurePreserving
-      (fun q : A × (C × Bb) => ((q.1, q.2.1), q.2.2)) volume volume := by
-    rw [show (volume : Measure (A × (C × Bb)))
-          = (volume : Measure A).prod ((volume : Measure C).prod volume) from by
-          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _],
-      show (volume : Measure ((A × C) × Bb))
-          = ((volume : Measure A).prod volume).prod volume from by
-          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _]]
-    exact MeasurePreserving.symm MeasurableEquiv.prodAssoc
-      (measurePreserving_prodAssoc (volume : Measure A) volume volume)
-  exact h2.comp h1
-
-/-- **The core-shear is measure-preserving** (Route A core, Codex g165). For any continuous
-`shift : (Fin a → ℝ) × (Fin c → ℝ) → (Fin b → ℝ)`, the fiber-shear
-`(reg, core, spec) ↦ (reg, core + shift (reg, spec), spec)` preserves the product `volume`
-(`skew_product` on the `(reg×spec) × core` regrouping, per-fiber `measurePreserving_add_right`). -/
-private theorem measurePreserving_coreShear (a b c : ℕ)
-    (shift : (Fin a → ℝ) × (Fin c → ℝ) → (Fin b → ℝ)) (hshift : Continuous shift) :
-    MeasurePreserving
-      (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) =>
-        (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
-      volume volume := by
-  -- HANDBACK (sub-34 thrash, codex down): the skew_product + reassoc-sandwich route is correct (each
-  -- piece typechecks in isolation), but the `set A/Bb/C` type-shadowing + the `Function.comp`-vs-lambda
-  -- defeq at the final composite + the `uncurry`-measurability ascription keep mismatching. Handed to
-  -- the controller; the route is: hskew = skew_product(id, +shift) on (A×C)×Bb; hfwd =
-  -- measurePreserving_coreReassoc; hrev = prodAssoc + swap; coreShear = hrev∘hskew∘hfwd.
-  sorry
+peels the RLCT via `rlctAtOn_comp_homeomorph` (NO derivative bookkeeping). The two MP helpers
+`measurePreserving_coreReassoc` + `measurePreserving_coreShear` live in `Foundations.CoreShearMP`
+(crux2, #83) — the `MeasurePreserving.skew_product` (fiber-shift `(a,c) ↦ (a, c + shift a)`, per-fiber
+`measurePreserving_add_right`) sandwiched by the `(Reg × Spec) × Core` regrouping. -/
 
 /-- **The shift-agnostic core-shear peel** (PIN 0's mechanism). For ANY continuous shift on the gauge
 slots vanishing at the origin, `coreShearHomeo shift` satisfies all four `coreAbsorb` obligations: it
