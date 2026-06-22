@@ -608,6 +608,202 @@ def
     (fun t ht i ↦ le_of_lt (hoffSelected t ht i))
     hblock hlast hk hne_base hinj
 
+/-- Common-domain version of the Eq5 own-block counted/introduced payload.
+
+The one-branch payload first introduces `(S,k)` at the local state `(S,k)`;
+the supplied state comparison then moves it to a later/common introduced-label
+domain.  This theorem still does not construct Eq5 branches or prove
+terminal-domain coverage. -/
+theorem
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_widthBound
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    {S k Sfinal Jfinal : ℕ} (hp_pos : 1 ≤ p) (hS : C.block p S)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ))
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    (hne_base : T S ≠ baseValue p)
+    (hstate : S < Sfinal ∨ S = Sfinal ∧ k ≤ Jfinal) :
+    some (Sigma.mk p (T S)) ∈
+        aoyagiLemma5CountDatumSet ell a M m baseValue ∧
+      T S = (k : ℤ) - 1 ∧
+        Sigma.mk S k ∈ introducedLabelFinset L n Sfinal Jfinal := by
+  have hpayload :=
+    aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_widthBound
+      L ell a p alpha n M m baseValue C layerWidth T hell hselected hsource hT
+      hp_pos hS hlast hwidth_le hk hne_base
+  exact ⟨hpayload.1, hpayload.2.1,
+    introducedLabelFinset_subset_of_state_le hstate hpayload.2.2⟩
+
+/-- Block-width version of
+`aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_widthBound`. -/
+theorem
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_blockWidth
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hactual :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          aoyagiSelectedWidthNat ell m i.val ≤ (n r : ℤ))
+    {S k Sfinal Jfinal : ℕ} (hS : C.block p S)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    (hne_base : T S ≠ baseValue p)
+    (hstate : S < Sfinal ∨ S = Sfinal ∧ k ≤ Jfinal) :
+    some (Sigma.mk p (T S)) ∈
+        aoyagiLemma5CountDatumSet ell a M m baseValue ∧
+      T S = (k : ℤ) - 1 ∧
+        Sigma.mk S k ∈ introducedLabelFinset L n Sfinal Jfinal := by
+  have hp_pos : 1 ≤ p := by
+    have hpos : 1 ≤ alpha := hT.alpha_pos
+    have hlt : alpha < p := hT.alpha_lt_p
+    omega
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) :=
+    C.selectedWidthNat_le_actualWidth_of_block n m hactual hS
+  exact
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_widthBound
+      L ell a p alpha n M m baseValue C layerWidth T hell hselected hsource hT
+      hp_pos hS hlast hwidth_le hk hne_base hstate
+
+/-- Left-endpoint/minimum version of the Eq5 own-block common-domain payload. -/
+theorem
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_leftEndpointMin
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hleft :
+      ∀ i : Fin ell,
+        (n (C.point i.val) : ℤ) = aoyagiSelectedWidthNat ell m i.val)
+    (hmin :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          n (C.point i.val) ≤ n r)
+    {S k Sfinal Jfinal : ℕ} (hS : C.block p S)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    (hne_base : T S ≠ baseValue p)
+    (hstate : S < Sfinal ∨ S = Sfinal ∧ k ≤ Jfinal) :
+    some (Sigma.mk p (T S)) ∈
+        aoyagiLemma5CountDatumSet ell a M m baseValue ∧
+      T S = (k : ℤ) - 1 ∧
+        Sigma.mk S k ∈ introducedLabelFinset L n Sfinal Jfinal := by
+  have hp_pos : 1 ≤ p := by
+    have hpos : 1 ≤ alpha := hT.alpha_pos
+    have hlt : alpha < p := hT.alpha_lt_p
+    omega
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) :=
+    C.selectedWidthNat_le_actualWidth_of_block_of_leftEndpoint_min
+      n m hleft hmin hS
+  exact
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_widthBound
+      L ell a p alpha n M m baseValue C layerWidth T hell hselected hsource hT
+      hp_pos hS hlast hwidth_le hk hne_base hstate
+
+/-- Off-selected dominance version of the Eq5 own-block common-domain payload. -/
+theorem
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_offSelected
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hselectedWidth :
+      ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i ≤ (n t : ℤ))
+    {S k Sfinal Jfinal : ℕ} (hS : C.block p S)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    (hne_base : T S ≠ baseValue p)
+    (hstate : S < Sfinal ∨ S = Sfinal ∧ k ≤ Jfinal) :
+    some (Sigma.mk p (T S)) ∈
+        aoyagiLemma5CountDatumSet ell a M m baseValue ∧
+      T S = (k : ℤ) - 1 ∧
+        Sigma.mk S k ∈ introducedLabelFinset L n Sfinal Jfinal := by
+  have hp_pos : 1 ≤ p := by
+    have hpos : 1 ≤ alpha := hT.alpha_pos
+    have hlt : alpha < p := hT.alpha_lt_p
+    omega
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) :=
+    C.selectedWidthNat_le_actualWidth_of_block_of_offSelected
+      n m hS hselectedWidth hoffSelected
+  exact
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_widthBound
+      L ell a p alpha n M m baseValue C layerWidth T hell hselected hsource hT
+      hp_pos hS hlast hwidth_le hk hne_base hstate
+
+/-- Strict off-selected dominance version of
+`aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_offSelected`. -/
+theorem
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_offSelected_lt
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hselectedWidth :
+      ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i < (n t : ℤ))
+    {S k Sfinal Jfinal : ℕ} (hS : C.block p S)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    (hne_base : T S ≠ baseValue p)
+    (hstate : S < Sfinal ∨ S = Sfinal ∧ k ≤ Jfinal) :
+    some (Sigma.mk p (T S)) ∈
+        aoyagiLemma5CountDatumSet ell a M m baseValue ∧
+      T S = (k : ℤ) - 1 ∧
+        Sigma.mk S k ∈ introducedLabelFinset L n Sfinal Jfinal := by
+  exact
+    aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_offSelected
+      L ell a p alpha n M m baseValue C layerWidth T hell hselected hsource hT
+      hselectedWidth
+      (fun t ht i ↦ le_of_lt (hoffSelected t ht i))
+      hS hlast hk hne_base hstate
+
 end Aoyagi
 end DLN
 end DLNFibre

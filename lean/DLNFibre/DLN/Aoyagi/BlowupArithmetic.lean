@@ -186,6 +186,34 @@ theorem introducedLabel_mono_J {L : ℕ} {n : ℕ → ℕ} {S J J' s k : ℕ}
   · exact ⟨hlabel, Or.inl hs⟩
   · exact ⟨hlabel, Or.inr ⟨hs, le_trans hk hJJ⟩⟩
 
+/-- Moving forward in the lexicographic blow-up state can only add introduced
+labels.  If the stage increases, all current-stage labels become old-stage
+labels; if the stage is fixed, this is `introducedLabel_mono_J`. -/
+theorem introducedLabel_mono_state
+    {L : ℕ} {n : ℕ → ℕ} {S J S' J' s k : ℕ}
+    (hstate : S < S' ∨ S = S' ∧ J ≤ J')
+    (h : introducedLabel L n S J s k) :
+    introducedLabel L n S' J' s k := by
+  rcases h with ⟨hlabel, hs | ⟨hs, hk⟩⟩
+  · refine ⟨hlabel, ?_⟩
+    rcases hstate with hS | ⟨hS, _hJ⟩
+    · exact Or.inl (lt_trans hs hS)
+    · exact Or.inl (by simpa [hS] using hs)
+  · refine ⟨hlabel, ?_⟩
+    rcases hstate with hS | ⟨hS, hJ⟩
+    · exact Or.inl (by simpa [hs] using hS)
+    · exact Or.inr ⟨by simpa [hs] using hS, le_trans hk hJ⟩
+
+/-- Finite introduced-label domains are monotone under forward
+lexicographic state movement. -/
+theorem introducedLabelFinset_subset_of_state_le
+    {L : ℕ} {n : ℕ → ℕ} {S J S' J' : ℕ}
+    (hstate : S < S' ∨ S = S' ∧ J ≤ J') :
+    introducedLabelFinset L n S J ⊆ introducedLabelFinset L n S' J' := by
+  intro p hp
+  exact mem_introducedLabelFinset.mpr
+    (introducedLabel_mono_state hstate (mem_introducedLabelFinset.mp hp))
+
 /-- If the actual width is larger than the prefix minimum, prefix labels undercount. -/
 theorem actualWidthLabel_not_prefixWidthLabel_of_prefixMinNat_lt_width
     (L : ℕ) (n : ℕ → ℕ) {s : ℕ}

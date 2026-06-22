@@ -4337,6 +4337,27 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-countdatum-classifier-a5.md`.
 
+Latest A5 Eq5 own-block common introduced-domain update:
+`BlowupArithmetic.lean` now contains `introducedLabel_mono_state` and
+`introducedLabelFinset_subset_of_state_le`.  These record that introduced
+labels are monotone under explicit forward state movement
+`S<S' or (S=S' and J<=J')`.  `Lemma5Eq5CountDatumBridge.lean` now contains
+the matching Eq5 own-block common-domain wrappers
+`aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_widthBound`,
+`..._blockWidth`, `..._leftEndpointMin`, `..._offSelected`, and
+`..._offSelected_lt`.  They lift the local introduced-label membership
+`(S,k) in introducedLabelFinset L n S k` to a supplied later/common domain
+`introducedLabelFinset L n Sfinal Jfinal`.  The target-state comparison
+remains explicit.  This is not terminal-domain construction, Eq5 branch
+construction, source-derived classifier data, Lemma 5 order count, pole
+order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-common-introduced-domain-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-ownblock-common-introduced-domain.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-common-introduced-domain-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.

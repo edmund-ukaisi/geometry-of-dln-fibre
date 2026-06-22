@@ -4625,6 +4625,37 @@ introduced labels to a terminal domain, prove back-to-label coverage, prove a
 Lemma 5 order count, prove pole order, prove normal crossings, or extract
 RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 own-block common introduced domain
+
+Reproduction:
+`reproduction-lemma5-eq5-ownblock-common-introduced-domain-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-ownblock-common-introduced-domain.md`.
+Review artifact:
+`review-lemma5-eq5-ownblock-common-introduced-domain-a5.md`.
+
+Lean now proves introduced-label monotonicity and Eq5 own-block common-domain
+wrappers:
+
+```text
+introducedLabel_mono_state
+introducedLabelFinset_subset_of_state_le
+aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_widthBound
+aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_blockWidth
+aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_leftEndpointMin
+aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_offSelected
+aoyagiLemma5Eq5_ownBlock_commonIntroduced_of_lastPoint_offSelected_lt
+```
+
+The state-monotonicity theorem moves introduced-label membership forward
+under `S<S' or (S=S' and J<=J')`.  The Eq5 wrappers use this to lift the
+local payload label `(S,k)` from `introducedLabelFinset L n S k` to an
+explicit supplied target `introducedLabelFinset L n Sfinal Jfinal`.
+
+This is common-domain bookkeeping only.  It does not construct terminal
+states, Eq5 vectors, nonbase status, classifier injectivity, back-to-label
+coverage, a Lemma 5 order count, pole order, normal crossings, or RLCT.
+
 ## 2026-06-22 Lean Lemma 5 Eq5 alpha endpoint value-image split
 
 Reproduction:
