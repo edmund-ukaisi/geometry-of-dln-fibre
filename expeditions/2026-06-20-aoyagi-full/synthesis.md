@@ -142,6 +142,29 @@
     map crux2 sends. OPEN gates: crux2's #72 local-peel proof (critical path), the #44 assembly, fm3's R1
     assembly, then D1 (gated on #44) + #70 (degenerate boundary). No conceptual walls, no 2nd citation, no
     operator surface.
+  - **PROGRESS (cont'd, post-8cf721a):**
+    - **#44 ROLE-RESPECTING SPLIT DELIVERED @c7a28fb (crux2, sorry-free)** — deepestSplit_exists now uses the
+      concrete `deepestRoleIndexEquiv` (NOT arbitrary equivOfCardEq): rThresholdSplit → layerEntrySplit →
+      flatIdxLayerProd/roleSplitIdx (core slot = FlatIdx(deepestM), TYPE-FORCED) → card_regGaugeIdx →
+      deepestRoleIndexEquiv (Fin(flatDim H) ≃ Fin nReg ⊕ (Fin(flatDim M) ⊕ Fin nGauge), middle = T-core). The
+      "biggest split risk" (the FlatIdx bijection) is RETIRED; the slot-by-role precision pin is SATISFIED
+      (core=T, reg/spec=gauge X/Y/Z — what the absorptions read). Remaining #44(i) = the gaugeDecode +
+      IsGaugeSliceDecode witness (seam: crux2 supplies gaugeDecode from deepestRoleIndexEquiv, cobuild-sub34
+      owns IsGaugeSliceDecode).
+    - **g161 (cobuild-sub34, Codex xhigh + sympy) — the (e) counterexample, TRIPLE-CONFIRMED.** The RAW
+      loss_squeeze (∑(split w).1² = raw gauge coords) is FALSE: at (2,1,2),r=1 with x2=1/(1+ε)−1, ∏C=diag(1,0)
+      so loss=0 while raw=Θ(ε²) — lower bound fails ∀c₁>0. regAbsorb→E makes it true (loss=e²+y²+z²+(z1y2)²
+      ≍ ∑E²+core). Vindicates (e): loss_squeeze MUST be through E (the BEDROCK bar on crux2's DeepestGaugeChart
+      edit — green over raw = green-≠-right). Decorrelated-confirmed by pp2's own L=2/L=3 (leak ∈ ideal(E),
+      two-sided squeeze; no counterexample). Nothing built on the false form (no rework).
+    - **R1 light interface IN LEAN (fm3)** — ReducedTransport bundled (consumes crux2's rlctAtOn_reduced_transport
+      sig), descent clean-three. R1's structural backbone landed; remaining = the fold + transcription of pp2's
+      recipe (the routeStep dispatcher).
+    - **Measure-zero ROUTE 1 FINAL (crux2 converged).** The free MvPolynomial lemma (@68ef083) flips the cost:
+      Route 1 (consume it + the ~60-120 LoC P-encoding) is now LIGHTER than Route 2 (~150-250 LoC addHaar). (c)
+      = single-P encoding (P=∑(prod-entry)², eval z P = dlnLoss M 0 via Matrix.map_mul + prodAux-over-MvPoly
+      mirror, P≠0 from witness, ae_eval_ne_zero at p:=P). Off the critical path (the bridge's final hGne
+      discharge); crux2 keeps #44 priority, interleaves the encoding. Escape hatch: if the mirror walls, switch.
 
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
