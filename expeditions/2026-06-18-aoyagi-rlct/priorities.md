@@ -56,6 +56,17 @@ same non-stack payloads.  This still does not produce `Csucc`, source-produce
 `C'^(S+1)`, produce the source suffix, prove transition invariance, normal
 crossings, pole order, or RLCT.
 
+The next A4 boundary has been made reproduction-first rather than wrapper-led:
+`threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`.
+It records that a genuine Case 2 source-production theorem must be branchwise:
+continuing, actual-width stopped, and row-exhausted stopped branches have
+different row domains and different row meanings.  The contract keeps the
+standing displayed-pivot hypotheses explicit, treats the continuing payload as
+the stronger nonempty-next-center refinement of Aoyagi's printed non-strict
+guard, and does not assert stopped-branch exclusivity.  Use this contract
+before attempting any theorem named as source production of `C'^(S+1)` or
+successor following-product data.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

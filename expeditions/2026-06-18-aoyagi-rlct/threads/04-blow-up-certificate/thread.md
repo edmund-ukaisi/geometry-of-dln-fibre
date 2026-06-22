@@ -3932,3 +3932,42 @@ current-center principalization facts, but does not produce `Csucc`, produce
 from coordinates, transition invariance, Jacobian arithmetic, normal
 crossings, pole order, termination, RLCT, or repair of the printed Case 2
 vector mismatch.
+
+## 2026-06-22 Case 2 branchwise successor production boundary
+
+Reproduction:
+`reproduction-case2-branchwise-successor-production-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-branchwise-successor-production-boundary.md`.
+Review artifact:
+`review-case2-branchwise-successor-production-boundary-a4.md`.
+
+The new reproduction is deliberately not another Lean wrapper.  It records the
+branchwise contract for any future Case 2 source-production theorem after the
+source-current stack.  All branch payloads keep the standing displayed-pivot
+hypotheses `1 <= S`, `S <= L`, and
+`J+1 <= prefixMinNat n (S+1)` explicit:
+
+```text
+continuing payload: J+2 <= prefixMinNat n (S+1)
+actual-width stop:   n(S+1) = J+1
+row-exhausted stop:  prefixMinNat n S = J+1
+```
+
+This is a Lean/A4 refinement of Aoyagi's printed branch sentence: the paper's
+non-strict guard lands at `(S,J+1)`, while the continuing payload above uses
+the stronger nonempty-next-center hypothesis.  The stopped hypotheses are not
+asserted to be mutually exclusive.
+
+The contract separates finite data already proved in Lean from supplied and
+deferred data.  The common finite data are the displayed `Q/P` algebra, the
+`Q^-1 C` top-row and tail formulas, lower-row products, the source-current
+stack presentation, actual-width original-row collapse, row-exhausted
+transported-prefix presentations, and current-center principalization.
+
+The source-production boundary remains open: chart/source production of the
+full successor object `C'^(S+1)`, successor chart-family construction,
+coverage and transition regularity, source production of suffix/following
+products, coordinate derivation of corrected post-data, Jacobian arithmetic,
+normal crossings, pole order, termination, RLCT, and repair of the printed
+Case 2 vector mismatch are not claimed.

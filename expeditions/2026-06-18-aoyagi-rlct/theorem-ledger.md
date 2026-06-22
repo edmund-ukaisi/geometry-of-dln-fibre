@@ -5161,6 +5161,28 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-stack-a4.md`.
 
+Latest A4 Case 2 branchwise successor-production boundary:
+`threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`
+records a reproduction-first contract rather than a Lean theorem.  It anchors
+in Aoyagi PDF pp. 19-22 and separates three future source-production branches:
+continuing `J+2 <= prefixMinNat n (S+1)`, actual-width stopped
+`n(S+1)=J+1`, and row-exhausted stopped `prefixMinNat n S=J+1`.  It records
+that all branches keep the standing displayed-pivot hypotheses, that the
+continuing payload is the stronger nonempty-next-center refinement of
+Aoyagi's printed non-strict guard, and that stopped branches are not asserted
+exclusive.  It records the finite data already proved in Lean (`Q/P` algebra,
+`Q^-1 C` row formulas, lower-row products, source-current stack presentation,
+actual-width original-row collapse, row-exhausted transported-prefix
+presentations, and current-center principalization) and keeps source
+production of full `C'^(S+1)`, successor chart-family construction, coverage,
+transition regularity, suffix/following-product production, coordinate
+derivation of corrected post-data, Jacobian arithmetic, normal crossings,
+pole order, termination, and RLCT deferred.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-branchwise-successor-production-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-branchwise-successor-production-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -5032,6 +5032,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-stack-a4.md`.
 
+Latest A4 reproduction boundary: the Case 2 branchwise successor-production
+contract is now recorded in
+`threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`.
+No Lean theorem is introduced.  The boundary says future source production
+must distinguish the continuing branch, the actual-width stopped branch, and
+the row-exhausted stopped branch, because their domains and row meanings
+differ.  The contract keeps the standing displayed-pivot hypotheses explicit,
+records the continuing payload as the stronger nonempty-next-center refinement
+of Aoyagi's printed non-strict guard, and does not assert stopped-branch
+exclusivity.  Existing Lean already covers the finite `Q/P` algebra,
+`Q^-1 C` row formulas, lower-row products, source-current stack presentation,
+actual-width original-row collapse, row-exhausted transported-prefix
+presentations, and current-center principalization.  Still open are source
+production of full `C'^(S+1)`, successor chart-family construction, coverage,
+transition regularity, suffix/following-product production, coordinate
+derivation of corrected post-data, Jacobian arithmetic, normal crossings,
+pole order, termination, and RLCT.  Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-branchwise-successor-production-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-branchwise-successor-production-boundary-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
