@@ -164,3 +164,28 @@ in sub-7 via crux2's PROVEN `weightedThreshold_weight_unit_invariant` (replacing
 `paramsEquivFlat-M comp_homeomorph`). `loss_squeeze` becomes TRUE — the comparability is the banked
 Schur split (`P11 = R + leak`, `R = ‖T̃-chain‖² = dlnLoss M 0(coreEmbed core)`, leak ∈ ideal(reg) ⟹
 `schur_node_squeeze_unif`). Sent to crux2 + controller. Held sub-3 assembly for the coreEmbed fix.
+
+## g154 — MP-split exact germ: dischargeable in principle, but coreEmbed is the right route
+
+crux2 added `ofExactGerm` (MP split + EXACT germ `loss =ᶠ ∑reg² + dlnLoss M 0((paramsEquivFlat M).symm core)`,
+c₁=c₂=1). I first claimed it undischargeable; Codex (xhigh) refined:
+
+- **Dischargeable IN PRINCIPLE if dim spec > 0:** the non-MP gauge chart (det = the g-unit) can be
+  composed with a spectator reparametrization `h(reg,core,s)` whose fiber Jacobian cancels the volume
+  density — `NF ∘ H = NF` while `H` corrects the density. No RLCT/Newton/multiplicity obstruction forces
+  det=1; the unit only changes the measure density.
+- **BUT the Lean-cheap path is (b): `coreEmbed` + a bounded-unit Jacobian-weight invariance lemma.**
+  Building the volume-preserving MP split is standard maths but Lean-expensive (global Homeomorph +
+  monotone integral inverse + product-Lebesgue MeasurePreserving proof). The coreEmbed route peels the
+  g-unit as a bounded positive weight — much cheaper, and it reuses crux2's PROVEN
+  `weightedThreshold_weight_unit_invariant`.
+- **CAVEAT (decisive):** the spectator-compensation needs dim spec > 0. `nGauge = 0` for **ALL L=1
+  cases** (verified: scan — single layer, no interior gauge freedom). So the MP-split route GENUINELY
+  FAILS for L=1; the coreEmbed/unit-peel route works for all L (incl. nGauge=0).
+
+NET (reconciled, decorrelated): the chart collapses (controller confirmed); `ofExactGerm` with an MP
+split + hardcoded raw `(paramsEquivFlat M).symm` core is the wrong target (impossible at L=1, expensive
+otherwise). The right target is `coreEmbed` (g-absorbing reduced map) + peel the g-unit in the
+reduced-core transport. My banked Schur bedrock (`DeepestGaugeBlocks`) IS the coreEmbed content
+(`R = ‖T̃-chain‖²`). This is crux2's structure call; I've recommended it twice now with the L=1
+nGauge=0 evidence. The comparability itself (the load-bearing obligation) is route-final and banked.
