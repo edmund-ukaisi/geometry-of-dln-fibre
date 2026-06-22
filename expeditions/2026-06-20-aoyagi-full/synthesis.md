@@ -127,10 +127,12 @@
   - **L2 peel = ROUTE 2 (LOCAL), interface LOCKED** (#72, crux2's `rlctAtOn_boundedUnit_localHomeomorph`,
     raw-data form, sig validated green): the global #71 peel (proper+surjective) didn't take cobuild-sub34's
     IFT local diffeo (OpenPartialHomeomorph); the local peel is the germ-correct object (Mathlib c-o-v is
-    InjOn-local). crux2 fills the proof (~80-150 LoC, local weightedThreshold_transport on Ω∩V — the critical
-    path for BOTH rlct-peels); cobuild-sub34 wires coreAbsorb_rlct + regAbsorb_rlct against the locked
-    interface IN PARALLEL (π/πsymm/Dπ + dE(w0)=id ⟹ bounded-unit). regAbsorb = IFT OpenPartialHomeomorph
-    (HasStrictFDerivAt.toOpenPartialHomeomorph, dE(w0)=id verified).
+    InjOn-local). **#72 PROVEN @e6a0fd2 (crux2, sorry-free clean-three) — the g159 wall is fully CONSUMED for
+    BOTH coreAbsorb_rlct + regAbsorb_rlct; RLCT-transport machinery DONE.** cobuild-sub34 wires coreAbsorb_rlct
+    + regAbsorb_rlct against it (π/πsymm/Dπ + dE(w0)=id ⟹ bounded-unit). regAbsorb = IFT OpenPartialHomeomorph
+    (HasStrictFDerivAt.toOpenPartialHomeomorph, dE(w0)=id verified). Only remaining L2 analytic content =
+    cobuild-sub34's det-bound (det(I−VY)⁻ᴹ⁰ continuity + =1 at w0); then role split partition (gaugeDecode seam)
+    + the (c) single-P connect + loss_squeeze/assembly.
   - **R1 (#39): fm3 UNBLOCKED — proceeding on the LIGHT datum** without waiting for crux2's formal ack (its
     (2,2,2)-code grounding is authoritative: zero IsSchurStraightenSqueeze, step1A=pivotBlowupOn, pullback
     y0²·Q; + pp2 g188 + numerics = 3 confirmations). Pinning the light ValidRouteStep datum field
