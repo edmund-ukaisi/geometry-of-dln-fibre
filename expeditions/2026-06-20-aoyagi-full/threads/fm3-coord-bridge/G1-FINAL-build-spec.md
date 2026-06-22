@@ -485,6 +485,25 @@ pattern resolved at that node), separate from the width-bookkeeping. So C≥ (fo
 no new lemma. VALUE-SIDE VERIFICATION: DONE (pp2). The ONLY pending field = the per-cell TRANSPORT (crux2's
 light-G2-vs-heavy-squeeze, the analytic wrapper — not the value side).
 
+## TRANSPORT-FIELD FINAL (g178, crux2 #73 confirm) — ALIGNS with g175 light; splits A(mine)+B(crux2)
+crux2's #73 reconciliation CONFIRMS g175 (R1 is light; heavy IsSchurStraightenSqueeze retracted = L2-
+additive lane). The per-cell transport is LIGHT and splits into TWO, only ONE a crux2 field:
+(A) MONOMIAL PULLBACK (x_p² blow-up → appendDivisor codim) = MINE (G2 node_loss_pivot_factor / cover-fact,
+    value-side; pivotBlowupOn chart in S1G5Charts, Jacobian |u|^{Mval−1}). Threaded at the cover-fact level
+    (monomialThreshold / appendDivisor). NOT a crux2 field.
+(B) DET-1 REDUCED-CHAIN TRANSPORT = crux2's rlctAtOn_reduced_transport (BANKED, det=1 MP, recursion-CLOSING):
+    per cell c (S = split c), the field datum = (G, redEmbed : Y≃ₜ Params S.red, hmp : MeasurePreserving,
+    hemb : MeasurableEmbedding, redZero, hzero : redEmbed 0 = redZero, hredCore : ∀y, G y^2 = dlnLoss S.red 0
+    (redEmbed y)) ⟹ rlctAtOn(G²) 0 = rlctAtOn(dlnLoss (split c).red 0) redZero. THIS is the per-cell transport
+    field (NOT IsSchurStraightenSqueeze).
+ASSEMBLY per cell c: (my blow-up → G² + appendDivisor codim c) ▸ (crux2's rlctAtOn_reduced_transport closes
+descent to (split c).red, child basepoint redZero) ▸ recurse (ΣM drops, my redM_widthSum_lt) → ⨅ monomialThreshold.
+DECISION: bundle B as a STRUCTURE field (matches PivotWitness's structure-sibling pattern; tidier than the raw
+7-tuple). I define the `ReducedTransport M S` structure on my side (referencing crux2's rlctAtOn_reduced_transport
+as the consuming lemma); crux2 confirmed it'll give the exact type if wanted. So the certified RouteStep.branch
+per cell = (split, codim, PivotWitness [value], ReducedTransport [crux2's det=1 datum]); the monomial pullback (A)
+is at the cover-fact, not a branch field. ALL THREE THREADS NOW ALIGNED on light.
+
 ## TRANSCRIPTION-READY (g171, pp2 g188/g189 @a60bfda) — no open combinatorial question
 pp2 confirmed transcription-ready, three final pins all aligned with my banked value-side:
 1. CODIM = the witnessed (Mval M T).toNat form (= my PivotWitness). pp2 verified Mval ≥ 0 on Adm M
