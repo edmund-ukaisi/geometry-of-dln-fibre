@@ -22,12 +22,14 @@ layer. By `block_elimination` there are units `P_s,Q_s` with `P_s (w0 s) Q_s = b
 the gauge coords each layer is `C_s = [[I_r+X_s, Y_s],[Z_s, T_s]]`, the reduced block `T_s` of width
 `M_s = H_s − r`. The product residuals `E = (∏C − blockdiag[I_r,0])` on the `(0,0),(0,1),(1,0)` blocks
 are the `nReg` regular coords (Jacobian rank `= nReg` at the chain endpoints). **The reduced core is
-the GAUGE-NORMALIZED chain `‖T̃₁···T̃_L‖² = dlnLoss M 0` (the `core` coords), NOT the raw `‖∏T_s‖²`**
-(g150-fix; Codex caught the raw-`T` error): on `{E=0}` the internal gauge unit `(I−V_sY_s)⁻¹` sits
-between layers, so the honest reduced chain is `T̃_s = T_s` with that unit absorbed (the product Schur
-complement). The raw-`∏T` form is FALSE for matrices (`‖T·g·S‖²/‖TS‖²→∞`). The `core` slot of `split`
-carries the `T̃`-normalized chain — the structure is abstract over it; the gauge-normalization is the
-chart's (cobuild-sub34's) obligation. The transport is the local SQUEEZE (`rlctAtOn_squeeze`), not the
+the GAUGE-NORMALIZED chain `‖∏S_s‖² = dlnLoss M 0` (the `core` coords), NOT the raw `‖∏T_s‖²`**
+(g150-fix → #61/g156: the additive Schur complement, Codex caught the raw-`T` error): the honest
+reduced block is the Schur complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (an ADDITIVE shear of the core
+slot — `coreAbsorb`; NOT the refuted multiplicative `T·(I−VY)⁻¹`). The raw-`∏T` form is FALSE for
+matrices (the gauge unit `g` between blocks maps a `TS=0` direction to `TgS≠0`, ratio `→∞`). The `core`
+slot of `split` carries the `S`-normalized chain — the structure is abstract over it; the
+gauge-normalization is the chart's (cobuild-sub34's) obligation. The transport is the local SQUEEZE
+(`rlctAtOn_squeeze`), not the
 over-reaching global chart (sub-34 g152: the gauge slice is a LOCAL diffeo).
 
 ## Route status
@@ -57,7 +59,7 @@ abbrev DeepestSplit (H : Fin (L + 1) → ℕ) (r nGauge : ℕ) : Type :=
 
 /-- The RAW reduced-core loss in flat coordinates: `‖∏ T_s‖² = dlnLoss M 0` via the fixed flattening
 `paramsEquivFlat M`. (The additive-block + spectator-peel run on this raw disjoint core; the
-gauge-normalized `T̃` core reaches it through `coreAbsorb` + `coreAbsorb_rlct`.) -/
+gauge-normalized Schur-`S` core reaches it through `coreAbsorb` + `coreAbsorb_rlct`.) -/
 noncomputable abbrev deepestCoreF (H : Fin (L + 1) → ℕ) (r : ℕ)
     (y : Fin (flatDim (deepestM H r)) → ℝ) : ℝ :=
   dlnLoss (deepestM H r)
@@ -123,13 +125,16 @@ parameter space `Fin (flatDim H) → ℝ` into `nReg` regular gauge directions, 
 **two-sidedly squeezed** near the deepest point by `Φ = ∑ regular² + dlnLoss M 0 (core)`:
 `c₁·Φ ≤ loss ≤ c₂·Φ` with `0 < c₁, c₂`.
 
-**Why a SQUEEZE, not a chart equality (sub-34 g152, decorrelated):** the honest gauge slice is a LOCAL
-diffeo (its inverse uses `(I_r+X)⁻¹`, `(I−VY)⁻¹` — blows up off the deepest point), so the global
-`chart : Flat ≃ₜ Flat` + `∀x HasFDerivAt` of the chart-equality form over-reaches (possibly unsound).
-`rlctAtOn` is local, so the squeeze (`rlctAtOn_squeeze`) is the right altitude — matching the blessed
-per-node `schur_recursion_step_squeeze`. The squeeze's core is the GAUGE-NORMALIZED chain (the gauge
-unit `(I−VY)⁻¹` between layers makes the raw-`∏T` squeeze FALSE for matrices; the `Φ`-core
-`dlnLoss M 0 (core)` is the `T̃`-normalized chain in the `core` coords). -/
+**Why a SQUEEZE, not a chart equality (sub-34 g152, decorrelated):** a global chart-EQUALITY
+`chart : Flat ≃ₜ Flat` + `∀x HasFDerivAt` over-reaches (its `∀x`-derivative form is unsound — the
+honest gauge geometry is local). `rlctAtOn` is local, so the squeeze (`rlctAtOn_squeeze`) is the right
+altitude — matching the blessed per-node `schur_recursion_step_squeeze`. The absorptions stay `≃ₜ`
+SELF-homeos (`coreAbsorb` an additive translation — global free; `regAbsorb` an `E`-straightening,
+nonlinear in its own reg slot, made a global homeo by a CUTOFF inhabiting the Schur/E germ at `0`); the
+differentiability lives LOCALLY in the `#71`/`#72` peel hypotheses, NOT as an `∀x` structure field. The
+squeeze's core is the GAUGE-NORMALIZED chain (the gauge unit `g = (I+X)⁻¹` makes the raw-`∏T` squeeze
+FALSE for matrices; the `Φ`-core `dlnLoss M 0 (core)` is the additive-Schur
+`S_s = T_s − Z_s(I+X_s)⁻¹Y_s` chain in the `core` coords). -/
 structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) where
@@ -142,10 +147,14 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
   split_mp : MeasurePreserving split volume volume
   /-- `split` carries the flat image of the deepest point to the split origin (deviation coords `= 0`). -/
   split_basepoint : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0
-  /-- **The gauge-absorption** on split coords (sub-34 g153): a self-homeomorphism that turns the RAW
-  core slot `T_s` into the GAUGE-NORMALIZED `T̃_s = T_s·(I−V_sY_s)⁻¹` (the product Schur complement),
-  fixing the regular and spectator slots. NON-MP (unit Jacobian `det(I−VY)^{−M0}`, `=1` at the basepoint)
-  — needed because the raw-`∏T` squeeze is FALSE for matrices, and a pure MP `split` cannot produce `T̃`. -/
+  /-- **The gauge-absorption** on split coords (#61/g156, the corrected ADDITIVE form): a
+  self-homeomorphism that turns the RAW core slot `T_s` into the Schur complement
+  `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (an ADDITIVE shear of the core slot by `shift = −Z(I+X)⁻¹Y`, depending
+  on the reg/spec slots — `coreShearHomeo`), fixing the regular and spectator slots. (NOT the refuted
+  multiplicative `T·(I−VY)⁻¹` — g153's first form; #61/g156 corrected it to the additive Schur
+  complement, which is what the translation `coreShearHomeo` produces.) MEASURE-PRESERVING (det = 1, a
+  fiber translation — `measurePreserving_coreShear`), so `coreAbsorb_rlct` peels via `#71`/the MP route.
+  Needed because the raw-`∏T` squeeze is FALSE for matrices, and a pure MP `split` cannot produce `S`. -/
   coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge
   /-- `coreAbsorb` fixes the origin. -/
   coreAbsorb_basepoint : coreAbsorb 0 = 0
@@ -153,11 +162,12 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
   coreAbsorb_regular : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1
   /-- `coreAbsorb` fixes the spectator slot. -/
   coreAbsorb_spectator : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2
-  /-- **The producer's unit-Jacobian absorption identity** (the one hard g-unit-peel field, sub-34's
-  obligation): the absorbed-core `Φ` and the raw-disjoint-core `Φ` have the SAME RLCT at the origin.
-  Proof intent: `π := coreAbsorb`, `rawΦ ∘ π = absorbedΦ` (via `coreAbsorb_regular`),
-  `weightedThreshold_transport` deposits `|det Dπ|` in the weight, `weightedThreshold_weight_unit_invariant`
-  peels the bounded unit (`det(I−VY)^{−M0}`). -/
+  /-- **The core-absorption RLCT identity** (sub-34's obligation): the absorbed-core `Φ` and the
+  raw-disjoint-core `Φ` have the SAME RLCT at the origin. Proof intent (#61/g156, MP route — the
+  additive Schur shear is MEASURE-PRESERVING, det = 1): `π := coreAbsorb = coreShearHomeo shift`, a
+  fiber translation `core ↦ core − Z(I+X)⁻¹Y`; `rawΦ ∘ π = absorbedΦ` (via `coreAbsorb_regular`); MP
+  via `measurePreserving_coreShear` ⟹ `rlctAtOn_comp_homeomorph` (NO derivative/Jacobian bookkeeping —
+  det = 1, not the refuted non-MP `det(I−VY)^{−M0}` of the multiplicative form). -/
   coreAbsorb_rlct :
     rlctAtOn
         (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
@@ -280,7 +290,8 @@ gauge-slice squeeze datum exists at the deepest point. The g150-cert block algeb
 squeeze form, sub-34 g152): per-layer `block_elimination` units `P_s,Q_s`, the 2-factor block product
 folded over `L`, the MP regular/core/spectator reindex `split` (`split_mp`/`split_basepoint`), and the
 two-sided `loss_squeeze` (`c₁Φ ≤ loss ≤ c₂Φ`) whose load-bearing content is the matrix-core
-comparability `‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0 (core)`. -/
+comparability against the additive Schur core `‖∏(T_s − Z_s(I+X_s)⁻¹Y_s)‖² ≍ dlnLoss M 0 (core)`
+(#61/g156; NOT the refuted multiplicative `T·(I−VY)⁻¹`). -/
 theorem deepest_gauge_squeeze_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
