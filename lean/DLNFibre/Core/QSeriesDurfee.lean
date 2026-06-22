@@ -65,6 +65,22 @@ theorem A_term {a b r : ℕ} (hrb : r ≤ b) :
   rw [durfeeTerm, durfeeTerm, hbr, hexp]
   linear_combination (X ^ (a - r) * X ^ ((a - r) * (b - r)) * P (a - r) * P r) * hP
 
+/-- **B-term shifted shrink.** For `s < a`, `s ≤ b`, after reindex `r = s+1`:
+`X^{b-s} · (1 − X^{s+1}) · T a (b+1) (s+1) = (1 − X^{a-s}) · T a b s` — two telescopes
+(`P(s+1)` down to `P s`, and `P(a-s)` down to `P(a-(s+1))`). -/
+theorem B_term {a b s : ℕ} (hsa : s < a) (hsb : s ≤ b) :
+    X ^ (b - s) * (1 - X ^ (s + 1)) * durfeeTerm a (b + 1) (s + 1)
+      = (1 - X ^ (a - s)) * durfeeTerm a b s := by
+  have hbs1 : (b + 1) - (s + 1) = b - s := by omega
+  have has : a - s = (a - (s + 1)) + 1 := by omega
+  have hexp : ((a - (s + 1)) + 1) * (b - s) = (b - s) + (a - (s + 1)) * (b - s) := by ring
+  have hP1 := P_mul_one_sub_succ s
+  have hP2 := P_mul_one_sub_succ (a - (s + 1))
+  rw [durfeeTerm, durfeeTerm, hbs1, has, hexp]
+  linear_combination
+    (X ^ (b - s) * X ^ ((a - (s + 1)) * (b - s)) * P (b - s) * P (a - (s + 1))) * hP1
+      - (X ^ (b - s) * X ^ ((a - (s + 1)) * (b - s)) * P (b - s) * P s) * hP2
+
 /-- **A-top boundary.** When `b+1 ≤ a` the `r = b+1` A-term vanishes (`(b+1)-(b+1) = 0`). -/
 theorem A_top_zero (a b : ℕ) :
     (1 - X ^ ((b + 1) - (b + 1))) * durfeeTerm a (b + 1) (b + 1) = 0 := by
@@ -79,5 +95,43 @@ theorem B_zero_at_zero (a b : ℕ) :
 theorem B_missing_top_zero (a b : ℕ) :
     (1 - X ^ (a - a)) * durfeeTerm a b a = 0 := by
   simp
+
+/-- **A-sum descent.** Summing `A_term` over `r`; the extra `r = b+1` term (present only when `a > b`)
+vanishes by `A_top_zero`. -/
+theorem A_sum_desc (a b : ℕ) :
+    ∑ r ∈ Finset.range (min a (b + 1) + 1), (1 - X ^ ((b + 1) - r)) * durfeeTerm a (b + 1) r
+      = ∑ r ∈ Finset.range (min a b + 1), X ^ (a - r) * durfeeTerm a b r := by
+  by_cases hab : a ≤ b
+  · have h1 : min a (b + 1) = a := by omega
+    have h2 : min a b = a := by omega
+    rw [h1, h2]
+    exact Finset.sum_congr rfl fun r hr ↦ A_term (by rw [Finset.mem_range] at hr; omega)
+  · have h1 : min a (b + 1) = b + 1 := by omega
+    have h2 : min a b = b := by omega
+    rw [h1, h2, Finset.sum_range_succ, A_top_zero, add_zero]
+    exact Finset.sum_congr rfl fun r hr ↦ A_term (by rw [Finset.mem_range] at hr; omega)
+
+/-- **B-sum descent.** The shifted/reindexed sum: peel the (zero) `r = 0` term, shift `r = s+1`, apply
+`B_term`, then match ranges (the extra `r = a` term when `a ≤ b` vanishes by `B_missing_top_zero`). -/
+theorem B_sum_desc (a b : ℕ) :
+    ∑ r ∈ Finset.range (min a (b + 1) + 1), X ^ ((b + 1) - r) * (1 - X ^ r) * durfeeTerm a (b + 1) r
+      = ∑ r ∈ Finset.range (min a b + 1), (1 - X ^ (a - r)) * durfeeTerm a b r := by
+  have hLHS : ∑ r ∈ Finset.range (min a (b + 1) + 1),
+        X ^ ((b + 1) - r) * (1 - X ^ r) * durfeeTerm a (b + 1) r
+      = ∑ s ∈ Finset.range (min a (b + 1)), (1 - X ^ (a - s)) * durfeeTerm a b s := by
+    rw [Finset.sum_range_succ']
+    simp only [pow_zero, sub_self, mul_zero, zero_mul, add_zero]
+    refine Finset.sum_congr rfl fun s hs ↦ ?_
+    rw [Finset.mem_range] at hs
+    rw [show (b + 1) - (s + 1) = b - s from by omega]
+    exact B_term (by omega) (by omega)
+  rw [hLHS]
+  by_cases hab : a ≤ b
+  · have h1 : min a (b + 1) = a := by omega
+    have h2 : min a b = a := by omega
+    rw [h1, h2, Finset.sum_range_succ, B_missing_top_zero, add_zero]
+  · have h1 : min a (b + 1) = b + 1 := by omega
+    have h2 : min a b = b := by omega
+    rw [h1, h2]
 
 end DLNFibre.Core
