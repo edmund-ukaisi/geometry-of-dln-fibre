@@ -3804,3 +3804,36 @@ stopped-frontier condition.  It does not produce `Csucc`, `F`, source
 suffixes, old-top rows, full successor `C'^(S+1)`, successor chart-family
 data, transition invariance, Jacobian arithmetic, normal crossings, pole
 order, termination, RLCT, or repair of the printed Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 row-exhausted successor-prefix rows
+
+Reproduction:
+`reproduction-case2-row-exhausted-successor-prefix-a4.md`.
+Statement card:
+`statement-card-a4-case2-row-exhausted-successor-prefix.md`.
+Review artifact:
+`review-case2-row-exhausted-successor-prefix-a4.md`.
+
+Lean now rewrites the row-exhausted stopped source-suffix boundary with the
+terminal prefix rows written as original rows of the formula-level successor
+following factor:
+
+```text
+case2DisplayedSourceTerminalCprimePrefixCandidate_eq_originalRows_successorFollowingFactor
+sourceChart_rowExhausted_sourceSuffixSuccFollowingPrefixBoundary_withFiniteCenterIdeal
+```
+
+The hypothesis is row exhaustion `prefixMinNat n S = J+1`, not actual
+next-width exhaustion `n(S+1)=J+1`.  The theorem therefore keeps the transported
+top row of `Q^-1 C`; it is original only as row `J+1` of `Csucc`, not as row
+`J+1` of the old `C`.  The actual `sourceSuffixProduct` remains on both sides
+of the terminal entry-ideal equality, and the finite current-center
+principalization facts are unchanged.
+
+Per xhigh review, this is theorem-only and no new
+`SourceChartFrontierBoundaryPackages` field was added.  It does not produce
+`Csucc`, produce the suffix, prove actual-width original-row collapse, add
+`(S+1,0)` relabelled certificates in the row-exhausted wide-next branch,
+construct a full successor `C'^(S+1)`, prove transition invariance, normal
+crossings, pole order, termination, RLCT, or repair of the printed Case 2
+vector mismatch.

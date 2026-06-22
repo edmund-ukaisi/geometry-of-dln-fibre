@@ -5065,6 +5065,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-actual-width-successor-terminal-rows-a4.md`.
 
+Latest A4 update: the Case 2 row-exhausted successor-prefix row-presentation
+slice has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The
+proved Lean names are
+`case2DisplayedSourceTerminalCprimePrefixCandidate_eq_originalRows_successorFollowingFactor`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_rowExhausted_sourceSuffixSuccFollowingPrefixBoundary_withFiniteCenterIdeal`.
+They rewrite the row-exhausted source-suffix terminal prefix through original
+rows of `case2DisplayedSourceSuccessorFollowingFactor`.  This uses
+`prefixMinNat n S=J+1`, not actual next-width exhaustion; row `J+1` remains
+the transported top row of `Q^-1 C`, now packaged as row `J+1` of `Csucc`.
+The source suffix and current-center principalization facts remain explicit.
+No frontier-package field was added.  This is not chart/source production of
+`Csucc`, source-suffix production, actual-width original-row collapse,
+`(S+1,0)` relabelled data, full successor chart production, transition
+invariance, normal crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-row-exhausted-successor-prefix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-row-exhausted-successor-prefix.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-row-exhausted-successor-prefix-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

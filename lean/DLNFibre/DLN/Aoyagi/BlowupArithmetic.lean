@@ -13718,6 +13718,24 @@ def case2DisplayedSourceTerminalCprimePrefixCandidate
   (case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C).submatrix
     (case2SourceTerminalRowEquivPrefixOfNotNext n hcont hstop).symm id
 
+/-- The stopped terminal-prefix `C'` candidate is the terminal prefix of the
+original rows of the formula-level successor following factor.
+
+This is only a row-presentation equality.  In row-exhausted wide-next cases,
+row `J+1` is the transported top row of `Q⁻¹ C`, not the original row of `C`. -/
+theorem case2DisplayedSourceTerminalCprimePrefixCandidate_eq_originalRows_successorFollowingFactor
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedSourceTerminalCprimePrefixCandidate n hS hcont hstop residual C =
+      (case2DisplayedSourceTerminalOriginalRows
+        (J := J) (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C)).submatrix
+        (case2SourceTerminalRowEquivPrefixOfNotNext n hcont hstop).symm id := by
+  rw [case2DisplayedSourceTerminalCprimePrefixCandidate,
+    case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_successorFollowingFactor]
+
 namespace SuppliedTerminalCprimeBridge
 
 variable {τ R : Type*} [CommRing R]
@@ -16808,6 +16826,97 @@ theorem sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFinit
       case2DisplayedSourceChartMap_value_mem n hS hcont u residual,
       case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
       case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
+
+/-- Row-exhausted source-chart boundary with the actual source suffix and
+terminal prefix rows written as original rows of the formula-level successor
+following factor.
+
+This is only a row-presentation rewrite of the transported-prefix terminal
+boundary.  It does not replace the transported pivot row by the original row
+of `C`, construct `Csucc` or the suffix, add relabelled `(S+1,0)`
+certificates, or prove chart coverage, transition invariance, normal
+crossings/RLCT, termination, or printed-vector repair. -/
+theorem sourceChart_rowExhausted_sourceSuffixSuccFollowingPrefixBoundary_withFiniteCenterIdeal
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hrow : prefixMinNat n S = J + 1)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n hS hcont)
+                        (case2DisplayedPivotCol n hS hcont)
+                        (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n hS hcont
+                      (case2DisplayedSourceChartMap n hS hcont u residual
+                        (J + 1, J + 1)) residual).submatrix
+                    (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                    (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+              verticalBlock (case2DisplayedSourceOldTopBlock C)
+                (case2DisplayedSourceFollowingFactor n hS hcont C)) *
+            sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeightPrefixCandidate
+              (case2DisplayedSourceOldTopWeight pre)
+              n hcont (case2_not_next_cont_of_prefixMin_current_eq hS hrow)
+              ((pre.case2Succ
+                (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+                |>.weight (J + 1)) *
+            (case2DisplayedSourceTerminalOriginalRows
+              (J := J)
+              (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C)).submatrix
+              (case2SourceTerminalRowEquivPrefixOfNotNext n hcont
+                (case2_not_next_cont_of_prefixMin_current_eq hS hrow)).symm id) *
+            sourceSuffixProduct κ Ctail S hSuffix)) ∧
+    u ∈
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+    (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+      u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+    Ideal.span
+        {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+          case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+      Ideal.span ({u} : Set R) := by
+  rcases
+      sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFiniteCenterIdeal
+        pre u residual hS hSL hcont hrow exponentPre levelInv leastValueGap
+        chartFamily κ hSuffix C Ctail with
+    ⟨hentry, hmem, hdvd, hcenter⟩
+  refine ⟨?_, hmem, hdvd, hcenter⟩
+  rcases hentry with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hrows :
+      (case2DisplayedSourceTerminalTransportedRows n hS hcont residual C).submatrix
+          (case2SourceTerminalRowEquivPrefixOfNotNext n hcont
+            (case2_not_next_cont_of_prefixMin_current_eq hS hrow)).symm id =
+        (case2DisplayedSourceTerminalOriginalRows
+          (J := J)
+          (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C)).submatrix
+          (case2SourceTerminalRowEquivPrefixOfNotNext n hcont
+            (case2_not_next_cont_of_prefixMin_current_eq hS hrow)).symm id := by
+    rw [← case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor]
+  simpa [hrows] using hq
 
 /-- Continuing source-chart boundary with the weighted paper-`C'` lower-row
 handoff and finite center principalization.

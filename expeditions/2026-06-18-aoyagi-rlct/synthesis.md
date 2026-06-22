@@ -4651,6 +4651,29 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-actual-width-successor-terminal-rows-a4.md`.
 
+Latest A4 Case 2 row-exhausted successor-prefix update:
+`BlowupArithmetic.lean` now contains
+`case2DisplayedSourceTerminalCprimePrefixCandidate_eq_originalRows_successorFollowingFactor`
+and
+`sourceChart_rowExhausted_sourceSuffixSuccFollowingPrefixBoundary_withFiniteCenterIdeal`.
+This rewrites the row-exhausted stopped source-suffix boundary so the terminal
+prefix rows are written as original rows of the formula-level successor
+following factor `Csucc`.  It uses row exhaustion
+`prefixMinNat n S = J+1`; it does not assume actual next-width exhaustion
+`n(S+1)=J+1`.  Thus row `J+1` is original only as a row of `Csucc`, where
+`Csucc` already contains the transported top row of `Q^-1 C`; it is not
+identified with row `J+1` of the original `C`.  Per xhigh review, this stayed
+theorem-only: no new frontier-package field was added.  This is not
+source/chart production of `Csucc`, source-suffix production, actual-width
+original-row collapse, `(S+1,0)` relabelled certificates, full successor
+`C'^(S+1)`, transition invariance, normal crossings, pole order, termination,
+or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-row-exhausted-successor-prefix-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-row-exhausted-successor-prefix.md`,
+and
+`threads/04-blow-up-certificate/review-case2-row-exhausted-successor-prefix-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

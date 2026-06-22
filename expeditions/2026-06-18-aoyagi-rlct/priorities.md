@@ -337,6 +337,13 @@ terminal original rows of the formula-level successor following factor:
 `sourceChart_actualWidth_terminalOriginalRowsSuccFollowingSuppliedSuffixBoundary`.
 This uses exactly `n(S+1)=J+1`, where `Csucc=C`.  No source-suffix, identity,
 finite-center, or frontier-package variants were added.
+Current row-exhausted successor-prefix slice:
+`threads/04-blow-up-certificate/reproduction-case2-row-exhausted-successor-prefix-a4.md`.
+Lean now rewrites the row-exhausted source-suffix terminal prefix through
+original rows of the formula-level successor following factor `Csucc`, while
+keeping row exhaustion distinct from actual next-width exhaustion.  This is
+only a row-presentation boundary; it is not source production of `Csucc`, the
+suffix, or full successor chart data.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.
