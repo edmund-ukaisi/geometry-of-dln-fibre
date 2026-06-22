@@ -271,4 +271,40 @@ theorem foldFamily_threshold_ge_of_admWitness {ι : Type*} (M : Fin (L + 1) → 
   obtain ⟨T, hT, hcT⟩ := hwit i' c hc
   rw [hcT]; exact minAdm_le_Mval_toNat M T hT
 
+/-! ## The §2 pivot witness — the certified codim (pp2 g183 §2, the dependent-structure shape)
+
+The concrete Lean shape pp2's #68 cert §2 designs against (the co-design target). A `PivotWitness M c`
+certifies a pivot divisor's codim `c` as the geometric codim `(Mval M T).toNat` of an ADMISSIBLE
+rank-pattern stratum `T` — NOT a raw coordinate cardinality (the `(4,3,2)` trap). This is the field the
+certified `RouteStep.branch`/`ValidRouteStep` carries per cell (`codim` is NOT a bare `ℕ`). Its sole
+purpose is to feed `minAdm_le_Mval_toNat` ⟹ the C≥ no-undershoot; the multiplicity-1 `(k,h)=(1,c−1)` is
+the `appendDivisor c` shape (definitional, no field needed). -/
+
+/-- **The §2 pivot witness**: a pivot divisor's codim `c` is the geometric codim of an admissible
+rank-pattern stratum. `T ∈ Adm M` (the admissible witness) + `c = (Mval M T).toNat` (the codim-match).
+The certified-`RouteStep` field that closes the green-≠-right gap (pp2 g183 §2). Data-carrying (`Type`,
+matching pp2's `{T // …}` subtype shape) so the dispatcher constructs it and downstream reads `T`. -/
+structure PivotWitness (M : Fin (L + 1) → ℕ) (c : ℕ) where
+  T : Fin L → ℕ
+  hAdm : T ∈ Adm M
+  hCodim : c = (Mval M T).toNat
+
+/-- A `PivotWitness M c` gives the no-undershoot `minAdm ≤ c` directly (the C≥ per-divisor guarantee). -/
+theorem PivotWitness.minAdm_le {M : Fin (L + 1) → ℕ} {c : ℕ} (w : PivotWitness M c) :
+    (((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat) ≤ c := by
+  rw [w.hCodim]; exact minAdm_le_Mval_toNat M w.T w.hAdm
+
+/-- **§2-witnessed family ⟹ C≥** (the certified form). If every codim on every leaf path carries a
+`PivotWitness` (= the certified-`RouteStep` codim field), every leaf threshold is `≥ ½·minAdm`. The
+exact discharge `foldFamily_threshold_ge_of_admWitness` wants — pp2 verifies the per-node
+`PivotWitness` obligation against this. -/
+theorem foldFamily_threshold_ge_of_pivotWitness {ι : Type*} (M : Fin (L + 1) → ℕ)
+    (codimsOf : ι → List ℕ) (hm₀ : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
+    (hwit : ∀ i, ∀ c ∈ codimsOf i, PivotWitness M c) (i : ι) :
+    ((((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat : ℝ≥0∞)) / 2
+      ≤ monomialThreshold (MonoData.foldDivisors (codimsOf i)).d
+          (MonoData.foldDivisors (codimsOf i)).k (MonoData.foldDivisors (codimsOf i)).h :=
+  foldFamily_threshold_ge_of_admWitness M codimsOf hm₀
+    (fun i' c hc => ⟨(hwit i' c hc).T, (hwit i' c hc).hAdm, (hwit i' c hc).hCodim⟩) i
+
 end DLNFibre.DLN.RLCT
