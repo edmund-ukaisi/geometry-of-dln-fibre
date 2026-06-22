@@ -49,6 +49,14 @@ reworking sub-5/6/7. Both share the route-INDEPENDENT foundation (local gauge c-
 (Ledger lesson: I banked the R-squeeze call as settled before its window closed — bank live decisions as
 "current lean, pending X", not as final.)
 
+**[2026-06-22 LIVE — REOPENED]** crux2's fact that GeneralR1Recursion already does its non-MP transport via
+`rlctAtOn_squeeze` (not weighted-transport) reopened the route: the squeeze is the established codebase pattern,
+and it likely COLLAPSES the XL sub-3/4 chart-existence into the matrix comparability (core squeezes directly to
+dlnLoss M 0, no chart / cutoff-extension). DECIDING QUESTION (crux2 + cobuild-sub34, architecture-owners): does a
+squeeze sub-5 eliminate the chart? If YES → squeeze (crux2 changes its structure; the XL grind drops); if NO →
+chart default (R-S1.1) holds. cobuild-sub34 HOLDS the chart tail + keeps the route-independent comparability; I
+bank the determined route on their verdict. (Current lean: squeeze, pending the technical answer.)
+
 **Current execution (three grinds):**
 - fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
   confirmed cover-fact signatures = the contract). Achiever = `_le_regularSeq` at j₀ (card=m₀ min-ratio axis) +
