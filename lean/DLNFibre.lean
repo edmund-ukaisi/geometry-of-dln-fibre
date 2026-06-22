@@ -62,3 +62,5 @@ import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.QSeries
 -- N=1 Durfee identity (perm-invariance M2): P a · P b = ∑_r X^{(a-r)(b-r)} P(a-r) P r P(b-r).
 import DLNFibre.Core.QSeriesDurfee
+-- Local transfer identity (perm-invariance M3 engine): transferRHS b d = P d · ∏ P bᵢ.
+import DLNFibre.Core.QSeriesPeel
