@@ -68,3 +68,5 @@ import DLNFibre.Core.QSeriesPeel
 import DLNFibre.Core.QSeriesExtraction
 -- Permutation invariance prep (perm-invariance M6): Pmult is multiset-symmetric.
 import DLNFibre.Core.CThetaPermInvariance
+-- Thm 5.6 (the "fivegon", perm-invariance M3b): fivegonSum d = Pmult d, via the last-column transfer.
+import DLNFibre.Core.QSeriesFivegon
