@@ -65,6 +65,27 @@ Then `loss_squeeze` and the RLCT-peel fields use `regAbsorb (split w)` in the re
 acts on `.2.1`, `regAbsorb` on `.1`.) With the nonlinear regular slot the squeeze is TRUE, and the
 RLCT factors `rlctAtOn(Φ) = rlctAtOn(∑raw² + core)` via TWO bounded-unit peels (reg then core).
 
+## General-L verification (sympy/numpy, L=3, H=(2,2,2,2), r=1, M=(1,1,1,1))
+
+The whole squeeze pipeline holds for general `L`, not just `L=2` — verified exactly:
+
+- **Block split exact:** `P11 = leak + Rcore` with `leak = P10·P01/P00` (the cofactor) and
+  `Rcore = P11 − P10·P00⁻¹·P01` the full-product Schur complement. (sympy: `|P11−(leak+Rcore)| = 0`.)
+- **Leak is chargeable (the `t²→0` hypothesis of `core_comparability_squeeze`):** `leak²/E² → 0` as
+  `|w| → 0` (numerically `2e-4` at `ε=0.1`, `→0`). `leak = P10·P01/P00 ∈ ideal(E)` (regular×regular).
+- **The squeeze holds two-sidedly:** `loss = ∑E² + ‖P11‖² ≍ ∑E² + ‖Rcore‖²`; ratio `loss/(E²+R²) =
+  1.000…` across `ε ∈ {0.1, 0.03, 0.01}`.
+- **The g153 interior-zero stress passes:** with `t2 = 0` (interior reduced block zero) the raw
+  `∏T = 0` but `Rcore` (the Schur core) and the loss are BOTH governed correctly — confirming the
+  honest core is the Schur complement, not raw `∏T`.
+- **The core is the deeply-singular block:** for `L≥2`, `Rcore = ∏ S_s = O(|w|^L)` so `R² = O(|w|^{2L})`
+  is HIGHER-ORDER than `E² = O(|w|²)` — this is exactly why the core carries the nontrivial RLCT
+  (computed on the reduced widths `M`), the regular block being the trivial `nReg/2` part.
+
+So `core_comparability_squeeze` (#54, banked) is the exact tool, and the regAbsorb fix makes the
+whole bundle sound for general `L`. The remaining build is plumbing (IFT diffeo + the two peels), not
+new math.
+
 ## Why this is a structural change, not a build-around
 
 `loss_squeeze`/`coreAbsorb_rlct` are FIELDS of crux2's single-writer `DeepestGaugeChart`, and they
