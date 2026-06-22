@@ -153,6 +153,37 @@ noncomputable def layerEntrySplit (r a b : ℕ) (ha : r ≤ a) (hb : r ≤ b) :
   refine ((Equiv.prodSumDistrib _ _ _).sumCongr (Equiv.prodSumDistrib _ _ _)).trans ?_
   exact (Equiv.sumAssoc _ _ _).symm
 
+/-- `FlatIdx H ≃ Σ s, (Fin (H s.castSucc) × Fin (H s.succ))` — the layer-grouped entry form
+(`sigmaAssoc` + the constant-fiber `sigmaEquivProd`). The intermediate for the role split. -/
+noncomputable def flatIdxLayerProd (H : Fin (L + 1) → ℕ) :
+    FlatIdx H ≃ Σ s : Fin L, (Fin (H s.castSucc) × Fin (H s.succ)) :=
+  (Equiv.sigmaAssoc (fun (s : Fin L) (_ : Fin (H s.castSucc)) => Fin (H s.succ))).trans
+    (Equiv.sigmaCongrRight fun s => Equiv.sigmaEquivProd (Fin (H s.castSucc)) (Fin (H s.succ)))
+
+/-- The reg+gauge entry collection (the three `X/Y/Z` blocks summed over layers) — the complement of
+the reduced `T`-core in `FlatIdx H`. -/
+abbrev RegGaugeIdx (H : Fin (L + 1) → ℕ) (r : ℕ) : Type :=
+  Σ s : Fin L,
+    ((Fin r × Fin r ⊕ Fin r × Fin (H s.succ - r)) ⊕ Fin (H s.castSucc - r) × Fin r)
+
+/-- **The role-respecting index split**: `FlatIdx H ≃ RegGaugeIdx H r ⊕ FlatIdx (deepestM H r)` — the
+reg+gauge entries (`X/Y/Z`) and the reduced `T`-core (`= FlatIdx (deepestM)`), grouped BY ROLE. The core
+slot is exactly the reduced-chain flat index (the precision pin: core = the `T_s` blocks). Per-layer
+`layerEntrySplit` collected (`sigmaCongrRight`), then `sigmaSumDistrib` separates reg-gauge from the
+`MM`-core, whose `Σ`-collection is `FlatIdx (deepestM H r)`. -/
+noncomputable def roleSplitIdx (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    FlatIdx H ≃ RegGaugeIdx H r ⊕ FlatIdx (deepestM H r) := by
+  refine (flatIdxLayerProd H).trans ?_
+  refine (Equiv.sigmaCongrRight fun (s : Fin L) =>
+    layerEntrySplit r (H s.castSucc) (H s.succ) (hr s.castSucc) (hr s.succ)).trans ?_
+  refine (Equiv.sigmaSumDistrib _ _).trans ?_
+  refine Equiv.sumCongr (Equiv.refl _) ?_
+  -- `Σ s, (Fin (M s.castSucc) × Fin (M s.succ)) ≃ FlatIdx (deepestM H r)`.
+  refine (Equiv.sigmaCongrRight fun (s : Fin L) =>
+    (Equiv.sigmaEquivProd (Fin (deepestM H r s.castSucc)) (Fin (deepestM H r s.succ))).symm).trans ?_
+  exact (Equiv.sigmaAssoc
+    (fun (s : Fin L) (_ : Fin (deepestM H r s.castSucc)) => Fin (deepestM H r s.succ))).symm
+
 /-! ## The measure-preserving gauge-slice reindex -/
 
 /-- The spectator (gauge) coordinate count: the flat directions left after the regular frame and the
