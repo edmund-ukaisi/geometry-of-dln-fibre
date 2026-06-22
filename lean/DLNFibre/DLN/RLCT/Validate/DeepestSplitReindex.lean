@@ -227,6 +227,31 @@ noncomputable def deepestRoleIndexEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- (Fin nReg ⊕ Fin nGauge) ⊕ Fin (flatDim M) ≃ Fin nReg ⊕ (Fin (flatDim M) ⊕ Fin nGauge).
   refine (Equiv.sumAssoc _ _ _).trans (Equiv.sumCongr (Equiv.refl _) (Equiv.sumComm _ _))
 
+/-- **The reg-gauge index split** (the `eReg` of `deepestRoleIndexEquiv`, named for reuse):
+`RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r)` — the cardinality split of the
+combined reg+gauge entries into the `nReg` regular + `nGauge` spectator `Fin`-blocks. Opaque
+(`Fintype.equivFin`), so the `Fin nReg`/`Fin nGauge` halves do NOT individually carry the per-layer
+`X/Y/Z` structure; that legibility lives one level up in `RegGaugeIdx` (the per-layer `Σ`). -/
+noncomputable def regGaugeIdxSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r) :=
+  (Fintype.equivFin (RegGaugeIdx H r)).trans
+    ((finCongr (card_regGaugeIdx H r hr hL)).trans finSumFinEquiv.symm)
+
+/-- **The reg-gauge SLOT bridge** (crux2 #78, for cobuild-sub34's `gaugeDecode` reshape). The split's
+two opaque function-slots recombine to the LEGIBLE per-layer `RegGaugeIdx` coordinate function:
+`(Fin nReg → ℝ) × (Fin nGauge → ℝ) ≃ₜ (RegGaugeIdx H r → ℝ)`. The producer reads off the per-layer
+`X_s/Y_s/Z_s` matrix blocks from `RegGaugeIdx` (the per-layer `Σ`), so this bridge is the stepping
+stone from the split's `Fin nReg ⊕ Fin nGauge` slots to that legible Sigma BEFORE the matrix-block
+reshape. `(Homeomorph.sumPiEquivProdPi).symm` (joins the two slots into `Fin nReg ⊕ Fin nGauge → ℝ`)
+then `(Homeomorph.piCongrLeft regGaugeIdxSplit).symm` (relabels along the index split). -/
+noncomputable def regGaugeSlotEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ≃ₜ (RegGaugeIdx H r → ℝ) :=
+  (Homeomorph.sumPiEquivProdPi (Fin (deepestNReg H r)) (Fin (deepestNGauge H r))
+      (fun _ => ℝ)).symm.trans
+    (Homeomorph.piCongrLeft (Y := fun _ => ℝ) (regGaugeIdxSplit H r hr hL)).symm
+
 /-- **Obligation (i) — the gauge-slice MP reindex exists** (the `split` field of `DeepestGaugeChart`).
 At the deepest point, a measure-preserving homeomorphism
 `split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge` carrying the flat image of the deepest point
