@@ -381,3 +381,20 @@ achiever+threshold_ge (fd4a622); rebase foundation chainWidthSum/redM_widthSum_l
 (55db82d). UNCOMMITTED route-check artifact: the recursion skeleton (NodeChartFamily/RouteStep/routeAtlas/
 extraction, single routeStep sorry) — validates the rebase shape; RouteStep type PROVISIONAL (→ ValidRouteStep
 once #68 co-design lands). The recursion DRIVER stands; the dispatcher + certificate are the #68-gated grind.
+
+## CONSISTENCY CONTRACT BANKED (g163, @bef5ba5) — controller's critical item (iii), machine-checked
+The value-side ⟹ IsResolutionAtlas bridge — pp2's dispatcher leaf-monomials AGREE with my foldDivisors
+achiever BY CONSTRUCTION, no separate consistency proof. RouteMState.lean, green, clean-three+monomial_rlct:
+- `foldFamily_threshold_ge` (ι codimsOf m₀ ...) : (∀ i, ∀ c∈codimsOf i, m₀≤c) ⟹ ∀ i, ½·m₀ ≤
+  monomialThreshold(foldDivisors (codimsOf i)). [crux2 IsResolutionAtlas.threshold_ge, C≥]
+- `foldFamily_achiever` (ι codimsOf m₀ i₀ ...) : (minimiser i₀: ∀ c∈codimsOf i₀, m₀≤c ∧ m₀∈codimsOf i₀) ⟹
+  ∃ i, monomialThreshold(foldDivisors (codimsOf i)) = ½·m₀. [crux2 IsResolutionAtlas.achiever, C=∃]
+Stated over an ABSTRACT leaf family (ι, codimsOf) — branch-version-independent (my branch's
+ResolutionAtlas.lean carries the STALE stratum/threshold_eq form; crux2's route-m-atlas has the
+threshold_ge/achiever form; this bridge targets the latter via the two facts directly, not the struct).
+THE CONTRACT for pp2's #68 (m₀ = (Adm M).inf' Mval = the min codim; lambdaCore = ½·m₀): design the
+dispatcher's per-leaf codims so (a) ∀ path, ∀ pivot codim ≥ m₀ (no undershoot); (b) the min-Mval path's
+binding pivot codim = m₀. Then (a)+(b) ⟹ IsResolutionAtlas ⟹ ⨅ monomialThreshold = lambdaCore. (2,2,2):
+m₀=3 (codim-3 rank-1 incidence), binding path → (1,2) ratio 3/2 = lambdaCore; others ≥3. SENT pp2.
+=== MEANWHILE-WORK (controller i/ii/iii) DONE: interface target shape (i) + consumer recipe (ii) sent;
+consistency contract (iii) machine-checked + banked. The dispatcher itself = pp2 #68 → I transcribe. ===
