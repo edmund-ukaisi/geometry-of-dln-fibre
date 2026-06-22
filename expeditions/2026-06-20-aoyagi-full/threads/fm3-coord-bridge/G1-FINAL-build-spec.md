@@ -416,16 +416,24 @@ before build):
   (1,2) ratio 3/2 [step-2]. The RLCT is the MIN over axes = EXACTLY my appendDivisor/foldDivisors min-fold.
 - The per-node operation is MONOMIAL (core ∘ φ = x_p²·reduced — my G2 node_loss_pivot_factor; confirmed
   by myF222_step1A: myF222 ∘ step1A = y0²·Q), folded by MIN via the cover. NOT the additive +nReg/2.
-- So crux2's schur_recursion_step_sound/_squeeze (the +nReg/2 split) is the OFF-PATH squeeze lane
-  (g134-retracted), NOT the per-node consequence my fold needs. The LIVE monomial route is min-all-the-way.
-CONSEQUENCE for the schematic fold: the per-cell consequence is the MONOMIAL PULLBACK (node_loss_pivot_factor,
-MINE) + the g5_pivotNode/argmaxCellOn cover (banked, S1G5Charts) + rlctAtOn_reduced_transport (crux2's det=1
-reindex between blow-up steps — still needed). NO additive split. So the fold is MORE self-contained than
-feared (consumes my own G2 + the banked cover, not crux2's transport-datum). SENT crux2 to confirm (1)
-schur_recursion_step_sound off-path? (2) per-node transport = rlctAtOn_reduced_transport (det=1)? HOLD the
-schematic-fold build until crux2 confirms (building against the wrong per-cell consequence = the rework I'm
-avoiding). This ALSO simplifies pp2's #68 cert: the per-cell datum is the x_p² monomial pullback (not the
-heavy IsSchurStraightenSqueeze additive datum) — lighter certificate. AWAITING crux2.
+CONSEQUENCE for the schematic fold: the value/min lane and the additive/transport lane are SEPARATE,
+both real (g164 + pp2 g183 confirm, verified vs RouteMState). The CLEAN reconciliation (pp2, precise):
+- ADDITIVE nReg/2 = the smooth Morse residuals ∑E² = SPECTATOR axes (k=0, axisRatio=⊤) in monomialThreshold;
+  they do NOT bind the ⨅; in the cover integrand they're the bounded-below UNIT factor (monomial·UNIT).
+  The additive nReg/2 is the TRANSPORT direction (how each cell's rlct relates to its reduced core ⟹
+  proves cover_le) — NOT off-path, just not in the value/min. (My earlier "off-path" framing was imprecise:
+  it's the transport/cover_le lane, distinct from value.)
+- MIN over EXCEPTIONAL divisors (k=1) = what foldDivisors min-folds. The leaf's (k,h) carries ONLY these.
+THE CRISP VALUE CONTRACT (pp2, verified vs my foldFamily_*): codimsOf(i) = [Mval of each C1/C5 pivot stratum
+along path i] — EXCEPTIONAL divisors ONLY, nReg smooth dims NOT included. My foldFamily_threshold_ge/_achiever
+already take exactly this (NO additive nReg/2 in them — pp2 checked RouteMState). (2,2,2) verified: unit-leaf
+codimsOf=[4,3], block-leaf=[4,3,4]; all ≥3, 3∈[4,3] for minimiser ⟹ ⨅=3/2=lambda ✓.
+GENERIC FOLD STRUCTURE (pp2): rlctAtOn(dlnLoss M 0) 0 = ⨅ over leaves of foldDivisors(codimsOf i), each
+leaf's value justified BY the per-cell transport down its path. Keep the additive (transport, cover_le)
+SEPARATE from the min (value, foldDivisors). So the per-cell certificate carries BOTH: the transport
+(additive nReg/2 + reduced reindex = crux2's lane, the cover_le justification) AND the codim=Mval witness
+(PivotWitness, the value/min). The transport-field's exact shape (crux2's IsSchurStraightenSqueeze vs the
+lighter monomial-pullback) is STILL crux2's in-flight adjudication — but the value-side is settled + banked.
 
 ## pp2 #68 CERT LANDED (g183, origin/g183-routestep-dispatcher @1ac5de4) + §2 BRIDGE BANKED (g165)
 pp2's dispatcher cert delivered — confirms g164 (per-node op = monomial min-fold, codims = Mval) + adds
