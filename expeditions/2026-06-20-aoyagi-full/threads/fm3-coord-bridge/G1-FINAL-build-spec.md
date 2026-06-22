@@ -458,6 +458,27 @@ So the §2 green-≠-right guard is now machine-checked on the value side: the d
 holds BY the admissible-T witness. STILL AWAITING crux2 on the transport-field (additive-vs-min / which
 lemma the per-cell consequence uses) before pinning the full ValidRouteStep + building the fold.
 
+## TRANSCRIPTION-READY (g171, pp2 g188/g189 @a60bfda) — no open combinatorial question
+pp2 confirmed transcription-ready, three final pins all aligned with my banked value-side:
+1. CODIM = the witnessed (Mval M T).toNat form (= my PivotWitness). pp2 verified Mval ≥ 0 on Adm M
+   (g189_mval_nonneg.py: each summand (t_{j-1}−t_j)(M_j−t_j) ≥ 0 by admissibility, 9 cases) so the toNat
+   round-trip is FAITHFUL.
+2. VALUE → my EXACT banked bridges (cleaner than (a)+(b)): C≥ = foldFamily_threshold_ge_of_admWitness (the
+   §2 witness feeds directly; minAdm_le_Mval_toNat gives no-undershoot, automatic); C=∃ = foldFamily_achiever
+   (§4 reachability). ⟹ IsResolutionAtlas ⟹ ⨅=lambdaCore by construction. No new lemma.
+3. TRANSPORT-FIELD = crux2-pending = the ONLY open piece (analytic wrapper, NOT recipe). pp2 g188 converges
+   with my g164: light G2 node_loss_pivot_factor + rlctAtOn_reduced_transport; heavy IsSchurStraightenSqueeze
+   off-path. Light-vs-heavy waits on crux2's lemma-mapping — wrapper only.
+
+FAITHFULNESS CHECK (fm3, g171): the (Mval M T).toNat round-trip needs Mval ≥ 0 — and PivotWitness's `hAdm :
+T ∈ Adm M` field GUARANTEES it (Mval_nonneg_adm). So NO gap: my minAdm_le_Mval_toNat uses Int.toNat_le_toNat
+(monotone regardless of sign — the ≤ is unconditional); the achiever EQUALITY's faithfulness (= ½·m₀, m₀ =
+(inf' Mval).toNat) is correctly located in pp2's reachability cert (g189-verified), discharged when the
+dispatcher constructs the achiever's PivotWitness with T=T*, (Mval M T*).toNat = minAdm. foldFamily_achiever's
+hypotheses (m₀ ∈ codimsOf i₀, ∀c, m₀≤c) are pure ℕ/List — no Mval-sign dependency. Value-side SOUND as-is.
+(RouteMState can't import ResolutionAtlas's Mval_nonneg_adm — forward dep — but doesn't need to: the witness
+carries hAdm, and the faithfulness lands at the dispatcher's achiever construction, pp2's lane.)
+
 ## VALUE-CONSISTENCY CLOSED + PivotWitness PLACEMENT = SIBLING FIELD (g170, pp2 g186/g187)
 pp2 closed value-consistency: the (a)+(b) contract maps 1:1 onto g183 §2/§4, verified all 6 cases incl
 (4,3,2) [Mval set {6,8,12} all ≥ m₀=6 — the thin case where codim=Mval not cardinality is load-bearing],
