@@ -508,6 +508,19 @@ dlnLoss_one_layer_deepest) | (mixed ⟹ compose) → rlctAtOn_reduced_transport 
 S.red (ΣM terminates, my redM_widthSum_lt). INTERFACE CONFIRMED: ChainDimSplit = carrier I populate
 (drop=resolved pivot dims, red=M−drop); presentation data in IsSchurStraightenSqueeze (mine), NOT ChainDimSplit.
 
+## MIXED-NODE REDUCES — EXERCISED (g174, pp2 g192/g193) — closes g173's design-only caveat (per-node)
+pp2 RAN a genuine partial-drop: M=(3,3,2), T=(2,0) [tt=(3,2,0), genuine t_0=3 > t_1=2 > 0 at s=1]. C5 split:
+- SURVIVOR (rows 0,1, rank t_1=2): 4 smooth regular gens = the ∑Erow² block (C2 pass-through).
+- COMPLEMENT (row 2, the rank-1 drop 3→2): on {E=0}, P_2=(S·b4,S·b5), S = the per-layer Schur complement
+  T−Z(I+X)⁻¹Y (=a8 corner) ⟹ residual ‖S·Γ‖² (Γ=(b4,b5)) = the CLEAN main-Schur hnode (∑Erow²+‖S·Γ‖²,
+  G²=‖S·Γ‖²). crux2's schur_straighten_squeeze_exists applies to the complement's C1 (pivot a8).
+VERDICT (sent crux2): C5 REDUCES, NO new lemma — EXERCISED on (3,3,2) T=(2,0); complement-C1 = clean hnode.
+crux2 HOLDS generalizing. HONEST CAVEAT (pp2, recorded): exercised the MINIMAL single-step partial-drop
+(complement rank 1). Multi-partial-drop ((3,3,2,2,2), crux2's depth-6) compose the SAME reduction ITERATIVELY
+(each step = C2-survivor ⊕ C1-complement) — NOT run explicitly; iteration = DESIGN, per-node step = EXERCISED.
+The per-node reduction (what the existence lemma needs) is exercised; iteration is structural (WF recursion).
+pp2 runs (3,3,2,2,2) on the word if multi-step exercise wanted.
+
 FAITHFULNESS CHECK (fm3, g171): the (Mval M T).toNat round-trip needs Mval ≥ 0 — and PivotWitness's `hAdm :
 T ∈ Adm M` field GUARANTEES it (Mval_nonneg_adm). So NO gap: my minAdm_le_Mval_toNat uses Int.toNat_le_toNat
 (monotone regardless of sign — the ≤ is unconditional); the achiever EQUALITY's faithfulness (= ½·m₀, m₀ =
