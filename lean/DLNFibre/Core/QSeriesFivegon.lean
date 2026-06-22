@@ -1117,4 +1117,64 @@ noncomputable def qSum {n : ℕ} (b : Fin n → ℕ) (d : ℕ) : ℤ⟦X⟧ :=
       * (∏ I : Fin (n + 1), P (x I))
       * (∏ i : Fin n, P (b i - x i.castSucc))
 
+/-- `adm` at `n = 0` is the single tuple `![d]` (no constraints; the sole `Fin 1`-tuple summing to `d`). -/
+theorem adm_zero (b : Fin 0 → ℕ) (d : ℕ) : adm b d = {![d]} := by
+  rw [adm, Finset.filter_true_of_mem (fun x _ i ↦ i.elim0), Finset.Nat.antidiagonalTuple_one]
+
+/-- **(Q), general form**: `qSum b d = transferRHS (List.ofFn b) d` — the flat q-sum equals the
+last-column transfer. Induction on `n`: base `qSum [] d = P d`; step peels the first block via
+`adm_peel_sum`, the `flatDelta`/P-factor split, one `durfee`, and the IH. -/
+theorem qSum_eq_transferRHS : ∀ {n : ℕ} (b : Fin n → ℕ) (d : ℕ),
+    qSum b d = transferRHS (List.ofFn b) d
+  | 0, b, d => by
+      rw [qSum, adm_zero, Finset.sum_singleton, List.ofFn_zero, transferRHS]
+      rw [flatDelta, Int.toNat_zero, pow_zero, one_mul,
+        Fin.prod_univ_one, Finset.prod_of_isEmpty, mul_one]
+      rfl
+  | (n + 1), b, d => by
+      rw [qSum, adm_peel_sum b d]
+      have hofn : List.ofFn b = b 0 :: List.ofFn (Fin.tail b) := by
+        rw [← List.ofFn_cons, Fin.cons_self_tail]
+      rw [hofn, transferRHS]
+      refine Finset.sum_congr rfl fun x0 hx0 ↦ ?_
+      rw [Finset.mem_range, Nat.lt_succ_iff, le_min_iff] at hx0
+      obtain ⟨hx0b, hx0d⟩ := hx0
+      -- IH on the tail transfer, then both sides are `∑_{y ∈ adm (tail b) (d - x0)}`
+      rw [← qSum_eq_transferRHS (Fin.tail b) (d - x0), qSum, Finset.mul_sum]
+      refine Finset.sum_congr rfl fun y hy ↦ ?_
+      rw [mem_adm] at hy
+      obtain ⟨hysum, hyb⟩ := hy
+      -- ∑ i, (cons x0 y) i.succ = ∑ y = d - x0
+      have hyterm : (∑ i : Fin (n + 1), ((Fin.cons x0 y : Fin (n + 2) → ℕ) i.succ : ℤ))
+          = ((d - x0 : ℕ) : ℤ) := by
+        simp only [Fin.cons_succ]; rw [← Nat.cast_sum, hysum]
+      -- flatDelta split
+      have hytailb : ∀ i : Fin n, y i.castSucc ≤ Fin.tail b i := fun i ↦ by
+        have := hyb i; simpa [Fin.tail] using this
+      have hΔ : (flatDelta (n + 1) b (Fin.cons x0 y)).toNat
+          = (b 0 - x0) * (d - x0) + (flatDelta n (Fin.tail b) y).toNat := by
+        rw [flatDelta_succ,
+          show (Fin.cons x0 y : Fin (n + 2) → ℕ) 0 = x0 from Fin.cons_zero _ _, hyterm,
+          Fin.tail_cons]
+        have hblk : ((b 0 : ℤ) - x0) * ((d - x0 : ℕ) : ℤ) = (((b 0 - x0) * (d - x0) : ℕ) : ℤ) := by
+          rw [show ((b 0 : ℤ) - x0) = ((b 0 - x0 : ℕ) : ℤ) from by push_cast; omega, ← Nat.cast_mul]
+        rw [hblk, Int.toNat_add (Int.natCast_nonneg _) (flatDelta_nonneg _ hytailb),
+          Int.toNat_natCast]
+      -- last-column P-factors: ∏ (cons x0 y) = P x0 · ∏ y
+      have hcol : (∏ I : Fin (n + 2), P ((Fin.cons x0 y : Fin (n + 2) → ℕ) I))
+          = P x0 * ∏ I : Fin (n + 1), P (y I) := by
+        rw [Fin.prod_univ_succ, Fin.cons_zero]
+        refine congrArg _ (Finset.prod_congr rfl fun i _ ↦ congrArg P (Fin.cons_succ _ _ _))
+      -- merged-column P-factors: ∏ (b i − (cons x0 y) i.castSucc) = P (b 0 − x0) · ∏ (tail b − y)
+      have hmerge : (∏ i : Fin (n + 1), P (b i - (Fin.cons x0 y : Fin (n + 2) → ℕ) i.castSucc))
+          = P (b 0 - x0) * ∏ i : Fin n, P (Fin.tail b i - y i.castSucc) := by
+        rw [Fin.prod_univ_succ,
+          show (Fin.cons x0 y : Fin (n + 2) → ℕ) (Fin.castSucc 0) = x0 from by
+              rw [Fin.castSucc_zero]; exact Fin.cons_zero _ _]
+        refine congrArg _ (Finset.prod_congr rfl fun i _ ↦ ?_)
+        rw [Fin.tail, show (Fin.cons x0 y : Fin (n + 2) → ℕ) i.succ.castSucc
+              = y i.castSucc from by rw [← Fin.succ_castSucc]; exact Fin.cons_succ _ _ _]
+      rw [hΔ, hcol, hmerge, pow_add]
+      ring
+
 end DLNFibre.Core
