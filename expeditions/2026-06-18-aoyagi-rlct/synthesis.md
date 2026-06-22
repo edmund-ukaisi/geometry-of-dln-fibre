@@ -4864,6 +4864,29 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-value-label-branch-injection-a5.md`.
 
+Latest A5 Eq5 branch-coordinate/value cardinal-squeeze update:
+`Lemma5Eq5TerminalClassifier.lean` now also contains
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchBlock_of_branchCoord_leftEndpoint`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.valueLabel_of_branchK_value`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_branchCoord_leftEndpoint_branchK_value_terminalEndpointBase`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze`.
+The adapters derive the selected-block and Sigma value-label inputs from
+supplied branch-coordinate correctness, supplied left-endpoint `branchS`
+labels, and supplied `branchK`/value synchronisation; then the wrappers
+compose with the existing value-label branch-injection and terminal pAlpha
+cardinal-squeeze route.  This is still conditional terminal-candidate
+bookkeeping: terminal Eq5 payloads, terminal `(p, alpha)` injectivity,
+terminal-label nonbase inequalities, and endpoint-base data remain supplied.
+It is not source construction of branch coordinates or labels, source-backed
+no-extra coverage, normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-branchcoord-value-cardinal-squeeze.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

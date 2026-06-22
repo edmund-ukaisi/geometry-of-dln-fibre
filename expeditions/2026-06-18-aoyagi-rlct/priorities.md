@@ -214,6 +214,8 @@ Current Eq5 endpoint counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
 Current Eq5 value-label branch-injection slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`.
+Current Eq5 branch-coordinate/value cardinal-squeeze slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -250,6 +252,21 @@ injectivity, nonbase selected-block membership, terminal-label nonbase
 inequalities, and the terminal-endpoint base label.  It is not a source proof
 of value-label synchronisation, branch construction, source-backed no-extra
 coverage, pole order, normal crossings, or RLCT.
+
+Lean now also exposes a more structured branch-coordinate/value variant:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchBlock_of_branchCoord_leftEndpoint`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.valueLabel_of_branchK_value`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_branchCoord_leftEndpoint_branchK_value_terminalEndpointBase`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze`.
+This derives the selected-block and Sigma value-label inputs from a supplied
+branch-coordinate map, supplied left-endpoint `branchS` labels, and supplied
+`branchK`/value synchronisation.  It remains conditional on terminal Eq5
+payloads, terminal `(p, alpha)` injectivity, terminal-label nonbase
+inequalities, and the endpoint base label.  It is not a source proof of the
+branch-coordinate map, branch labels, no-extra coverage, pole order, normal
+crossings, or RLCT.
 
 Lean now also exposes the conditional Eq5 raw coverage constructor:
 `aoyagiLemma5Eq5EndpointRawBranches`,

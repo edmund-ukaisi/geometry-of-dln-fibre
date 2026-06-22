@@ -5180,3 +5180,36 @@ prove terminal Eq5 payload coverage from source, prove terminal
 `(p, alpha)` injectivity from source, build a direct counted-datum
 back-to-label map, prove source-backed no-extra coverage, prove a Lemma 5
 order count, prove pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 branch-coordinate/value cardinal squeeze
+
+Reproduction:
+`reproduction-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-branchcoord-value-cardinal-squeeze.md`.
+Review artifact:
+`review-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
+
+Lean now proves:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchBlock_of_branchCoord_leftEndpoint
+AoyagiLemma5SuppliedTerminalCandidateFamily.valueLabel_of_branchK_value
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_branchCoord_leftEndpoint_branchK_value_terminalEndpointBase
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze
+```
+
+The first adapter derives nonbase selected-block membership from supplied
+branch-coordinate correctness and supplied left-endpoint `branchS` labels.
+The second unfolds `TC.branchLabel` to turn a supplied `branchK`/value formula
+into the Sigma value-label relation.  The branch-injection and cardinal-squeeze
+wrappers then compose those adapters with the previous value-label branch
+injection and terminal pAlpha counted-datum injection.
+
+This is finite terminal-candidate bookkeeping only.  It does not construct Eq5
+branches, prove the branch-coordinate map from source, prove source branch
+labels, prove terminal Eq5 payload coverage from source, prove terminal
+`(p, alpha)` injectivity from source, build a direct counted-datum
+back-to-label map, prove source-backed no-extra coverage, prove a Lemma 5
+order count, prove pole order, prove normal crossings, or extract RLCT.

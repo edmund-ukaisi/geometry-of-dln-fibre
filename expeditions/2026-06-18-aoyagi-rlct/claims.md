@@ -1845,7 +1845,9 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 endpoint counted-datum classifier at
   `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`;
   Eq5 value-label branch injection at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-value-label-branch-injection-a5.md`;
+  Eq5 branch-coordinate/value cardinal squeeze at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1921,7 +1923,9 @@ No such claim is formalisation-ready until both fields are filled.
   `Dirac`, with documentation repairs recorded at
   `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-countdatum-classifier-a5.md`;
   Eq5 value-label branch injection reviewed by xhigh `Hume` at
-  `threads/05-arithmetic-tail/review-lemma5-eq5-value-label-branch-injection-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq5-value-label-branch-injection-a5.md`;
+  Eq5 branch-coordinate/value cardinal squeeze reviewed by xhigh `Godel` at
+  `threads/05-arithmetic-tail/review-lemma5-eq5-branchcoord-value-cardinal-squeeze-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1969,7 +1973,7 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5SuppliedCoverage.lean`, including the
   endpoint branch-coordinate, disjointness, raw value-injectivity, and
   counted-datum classifier adapters; Eq5 terminal value-label branch
-  injectivity and terminal cardinal-squeeze wrappers in
+  injectivity, branch-coordinate/value adapters, and terminal cardinal-squeeze wrappers in
   `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalClassifier.lean`; broader A5
   targets TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
@@ -2764,6 +2768,20 @@ No such claim is formalisation-ready until both fields are filled.
   value-label relation or terminal Eq5 payloads from source, prove direct
   counted-datum back-to-label coverage, prove source-backed no-extra
   coverage, or prove a Lemma 5 order count.
+  Also proved
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchBlock_of_branchCoord_leftEndpoint`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.valueLabel_of_branchK_value`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_branchCoord_leftEndpoint_branchK_value_terminalEndpointBase`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze`,
+  and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_eq5OwnBlockCommon_widthBound_pAlpha_branchCoordVal_cardSqueeze`.
+  These derive the selected-block and value-label inputs from supplied
+  branch-coordinate correctness, supplied left-endpoint `branchS` labels, and
+  supplied `branchK`/value synchronisation before applying the existing
+  value-label/pAlpha cardinal squeeze.  They do not construct those branch
+  coordinates or labels from source, prove direct counted-datum back-to-label
+  coverage, prove source-backed no-extra coverage, or prove a Lemma 5 order
+  count.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.
