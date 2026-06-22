@@ -36,26 +36,23 @@ for matrices (g=(I−VY)⁻¹ maps a TS=0 dir to TgS≠0, ratio→∞) — indep
 be T̃; the g-absorption IS the non-MP content. The cert framing refines: "exact split, not a squeeze" →
 "exact only in T̃-coords; the raw-chain squeeze is false."
 
-**sub-3/4 ROUTE — UPDATED (controller, 2026-06-22): default BUILD the chart as-is (R-S1.1); R-squeeze = crux2's
-opt-in.** My earlier "R-squeeze, NOT the chart" call rested on a premise cobuild-sub34 then FALSIFIED: the global
-`chart : Flat ≃ₜ Flat` + ∀x HasFDerivAt IS satisfiable — extend the local gauge diffeo at w0 to a global
-self-homeo by a smooth cutoff to identity outside a ball (Mathlib bump API); the cutoff outside the ball doesn't
-touch the germ at w0, so jac_unit stays the right weight. Both routes are sound. Default = R-S1.1 (chart as-is):
-cobuild-sub34 builds it UNILATERALLY (no edit to crux2's single-writer DeepestGaugeChart.lean) and crux2's
-in-flight sub-5/6/7 consume it — no rework, no interruption. R-squeeze (the lighter #128-pattern sandwich,
-loss_form → squeeze datum) stays as crux2's OPT-IN if it judges the cleaner artifact worth changing its file +
-reworking sub-5/6/7. Both share the route-INDEPENDENT foundation (local gauge c-o-v + loss block-decomposition
-∑E²+‖P11‖² + the matrix comparability ‖T·g·S‖² ≍ dlnLoss M 0), which cobuild-sub34 builds now regardless.
-(Ledger lesson: I banked the R-squeeze call as settled before its window closed — bank live decisions as
-"current lean, pending X", not as final.)
-
-**[2026-06-22 LIVE — REOPENED]** crux2's fact that GeneralR1Recursion already does its non-MP transport via
-`rlctAtOn_squeeze` (not weighted-transport) reopened the route: the squeeze is the established codebase pattern,
-and it likely COLLAPSES the XL sub-3/4 chart-existence into the matrix comparability (core squeezes directly to
-dlnLoss M 0, no chart / cutoff-extension). DECIDING QUESTION (crux2 + cobuild-sub34, architecture-owners): does a
-squeeze sub-5 eliminate the chart? If YES → squeeze (crux2 changes its structure; the XL grind drops); if NO →
-chart default (R-S1.1) holds. cobuild-sub34 HOLDS the chart tail + keeps the route-independent comparability; I
-bank the determined route on their verdict. (Current lean: squeeze, pending the technical answer.)
+**sub-3/4 ROUTE — RESOLVED (2026-06-22): R-SQUEEZE; the XL chart-existence COLLAPSES.** crux2 (structure owner)
+decided R-squeeze after reading cobuild-sub34's g152 finding. DeepestGaugeChart is trimmed: drop the global
+`chart`/`Dchart`/`hasDeriv`/`jac_unit` + the `loss_form` EQUALITY; replace with a `loss_squeeze` datum
+(c₁Φ ≤ dlnLoss∘flat ≤ c₂Φ near the deepest point, Φ = ∑reg² + dlnLoss M 0(core)); keep nGauge/split/split_mp/
+split_zero. WHY: (1) the honest gauge chart is only a LOCAL diffeo at w0 (inverse uses A⁻¹/(I−VY)⁻¹, blows up
+off w0) — a global homeo over-reaches; rlctAtOn is local, the squeeze is local-by-construction; (2) reuses ONLY
+blessed infra — rlctAtOn_squeeze (the GeneralR1Recursion `schur_recursion_step_squeeze` pattern) + #52 +
+rlct_additive_smooth_block; no global-chart construction, no weightedThreshold_transport; (3) crux2's proven
+sub-6 SURVIVES (it computes rlctAtOn Φ; the squeeze only changes how sub-5 reaches Φ). NET: the XL sub-3/4
+chart-existence (~600-1500 lines of cutoff-extension block algebra) is DROPPED — it collapses to ONE obligation:
+the matrix-core comparability ‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0 (GAUGE-NORMALIZED T̃, NOT raw ∏T — raw is FALSE for
+matrices). Ownership: crux2 = structure re-shape + sub-5 (Params→flat MP + rlctAtOn_squeeze); cobuild-sub34 = the
+comparability (#53/#54/#55) against the trimmed loss_squeeze field. Handoff coherence: #55's raw-∏T framing
+(|‖P11‖²−‖∏T‖²| ≤ K∑E²) is valid only if that leak bound holds; else state the comparability in T̃ form directly
+— pinned by crux2's loss_squeeze field shape. (Route arc: squeeze → chart [on cutoff-satisfiability] → R-squeeze
+[on the GeneralR1Recursion precedent + the collapse]; resolved by crux2's owner-call. Ledger lesson: bank live
+decisions as "current lean, pending X", not as settled.)
 
 **Current execution (three grinds):**
 - fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
@@ -64,13 +61,13 @@ bank the determined route on their verdict. (Current lean: squeeze, pending the 
 - crux2 #50 (value-free reduction, consuming side) on origin/fm2/deepest-gauge-chart (@781dffc): PROVEN
   (clean-three) — spectator-peel #52, continuous_prodAux/_prod/_dlnLoss (reusable bedrock), sub-2, sub-6
   (`deepest_regular_smooth_split`), sub-7, the assembly `deepest_regular_core_reduces` = 4/7 + assembly + 2
-  Foundations lemmas. GATED on just sub-3/4 (cobuild-sub34) + sub-5 (crux2's next, the chart non-MP transport).
-  Cert gaps: #2 Measurable(dlnLoss M 0) CLOSED (Codex g151 prodAux cast idiom); hGne carried as a local
-  hypothesis → discharge-vs-stated-headline TRACKED for spine-wiring.
-- cobuild-sub34 #51 (sub-3/4): the shared route-INDEP foundation (gauge c-o-v + loss decomposition + matrix
-  comparability ‖T·g·S‖² ≍ dlnLoss M 0) now, then R-S1.1 chart-existence (cutoff-extension + Dchart + jac_unit +
-  loss_form germ) — own worktree (workspace/dgc-sub34) off origin/fm2/deepest-gauge-chart. pp2 =
-  decorrelated backup if the comparability walls.
+  Foundations lemmas (+ weight-invariance `weightedThreshold_weight_unit_invariant`, @ea273ea). Under R-squeeze,
+  GATED on just: sub-5 (crux2 re-wires to Params→flat MP + rlctAtOn_squeeze, lightweight) + the matrix
+  comparability (cobuild-sub34, = the collapsed sub-3/4). Cert gaps: #2 Measurable CLOSED (Codex g151); hGne
+  carried as a local hypothesis → discharge-vs-stated-headline TRACKED for spine-wiring.
+- cobuild-sub34 #51 (the COLLAPSED sub-3/4 under R-squeeze = the matrix-core comparability, gauge-normalized T̃:
+  ‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0; #53/#54/#55) — the XL chart-existence is DROPPED. Own worktree
+  (workspace/dgc-sub34); builds against crux2's trimmed loss_squeeze field. pp2 = decorrelated backup if it walls.
 
 **CANONICAL CERT LINEAGE (for #28 — pp2's authoritative tips, 2026-06-22):**
 - g138 design (C1 = blow-up + det-1 triangular peel + recurse): **origin/g138-c1-peel-prose @0823917** ← canonical
