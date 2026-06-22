@@ -1696,6 +1696,16 @@ No such claim is formalisation-ready until both fields are filled.
   transported-row/original-successor-row identity.  This is a consequence of
   supplied data only, not construction of `Csucc`, suffixes, charts, or a
   transition theorem.
+  The supplied-obligation projections
+  `SourceProductionObligation.continuing_Csucc_tail_eq_original` and
+  `SourceProductionObligation.actualWidth_Cterm_eq_originalRows_Csucc` are now
+  also proved.  They respectively rewrite the supplied `Csucc` next
+  same-stage tail to the old source-following tail, and rewrite actual-width
+  stopped `Cterm` as original rows of supplied `Csucc`.  The continuing
+  theorem consumes `Csucc_eq_formula` and an existing finite tail identity;
+  the actual-width theorem consumes the supplied `actualWidth_Cterm_eq`
+  branch field, the actual-width collapse identity, and `Csucc_eq_formula`.
+  They do not construct source data or a transition theorem.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

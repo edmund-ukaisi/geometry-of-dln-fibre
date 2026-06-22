@@ -17944,6 +17944,96 @@ structure SourceProductionObligation
 
 namespace SourceProductionObligation
 
+/-- The supplied successor following factor has the same next same-stage tail
+as the old following factor.
+
+This consumes only the obligation's supplied formula equality for `Csucc` and
+the finite fact that the next same-stage restriction ignores the replaced row
+`J+1`.  It does not construct `Csucc`, a suffix, charts, transitions, normal
+crossings, pole order, or RLCT data. -/
+theorem continuing_Csucc_tail_eq_original
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    {residual : ℕ × ℕ → R}
+    {κ : Fin (L + 1) → Type uκ} [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    {hSuffix : S + 1 ≤ L}
+    {C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
+    {Csucc : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R}
+    (ob :
+      SourceProductionObligation data residual κ hSuffix C Ctail Csucc Cterm) :
+    case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) Csucc =
+      case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C := by
+  rw [ob.Csucc_eq_formula]
+  exact case2SourceFollowingFactor_successorFollowingFactor_succ
+    n data.stage_pos data.continuation residual C
+
+/-- Actual-width terminal rows rewritten as original rows of the supplied
+successor following factor.
+
+This consumes the obligation's supplied actual-width terminal-row equality,
+the obligation's supplied formula equality for `Csucc`, and the actual-width
+collapse of the formula-level successor factor; it does not construct
+`Csucc`, a suffix, charts, transitions, normal crossings, pole order, or RLCT
+data. -/
+theorem actualWidth_Cterm_eq_originalRows_Csucc
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    {residual : ℕ × ℕ → R}
+    {κ : Fin (L + 1) → Type uκ} [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    {hSuffix : S + 1 ≤ L}
+    {C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
+    {Csucc : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R}
+    (ob :
+      SourceProductionObligation data residual κ hSuffix C Ctail Csucc Cterm)
+    (hwidth : n (S + 1) = J + 1) :
+    Cterm = case2DisplayedSourceTerminalOriginalRows (J := J) Csucc := by
+  calc
+    Cterm = case2DisplayedSourceTerminalOriginalRows (J := J) C :=
+      ob.actualWidth_Cterm_eq hwidth
+    _ = case2DisplayedSourceTerminalOriginalRows (J := J)
+          (case2DisplayedSourceSuccessorFollowingFactor
+            n data.stage_pos data.continuation residual C) := by
+      rw [case2DisplayedSourceSuccessorFollowingFactor_eq_original_of_width_next_eq
+        n data.stage_pos data.continuation hwidth residual C]
+    _ = case2DisplayedSourceTerminalOriginalRows (J := J) Csucc := by
+      rw [← ob.Csucc_eq_formula]
+
 /-- Row-exhausted terminal rows rewritten as original rows of the supplied
 successor following factor.
 

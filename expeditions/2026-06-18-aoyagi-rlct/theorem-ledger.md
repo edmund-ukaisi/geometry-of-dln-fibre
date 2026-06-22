@@ -5256,6 +5256,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
 
+Latest A4 Case 2 source-production obligation Csucc projections:
+`BlowupArithmetic.lean` now also contains
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_Csucc_tail_eq_original`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.actualWidth_Cterm_eq_originalRows_Csucc`.
+Given a supplied `SourceProductionObligation`, the first rewrites the supplied
+`Csucc` next same-stage tail to the old source-following tail by
+`Csucc_eq_formula` and the existing successor-following restriction theorem.
+Given actual-width exhaustion, the second rewrites `Cterm` as original rows of
+the supplied `Csucc` by `actualWidth_Cterm_eq`, the actual-width collapse of
+the canonical successor factor, and `Csucc_eq_formula`.  These are not
+construction of the obligation, `Csucc`, `C'^(S+1)`, suffixes, charts,
+transitions, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-csucc-projections-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-csucc-projections.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-csucc-projections-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -5247,6 +5247,25 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
 
+Latest A4 supplied-obligation projection update: `SourceProductionObligation`
+now also exposes the continuing tail of supplied `Csucc` and the actual-width
+terminal rows:
+`SourceProductionObligation.continuing_Csucc_tail_eq_original` and
+`SourceProductionObligation.actualWidth_Cterm_eq_originalRows_Csucc`.  The
+continuing theorem uses only `Csucc_eq_formula` and the finite fact that the
+next same-stage following-factor restriction ignores the replaced row `J+1`.
+The actual-width theorem uses `actualWidth_Cterm_eq`, the actual-width
+collapse of the canonical successor factor to old `C`, and `Csucc_eq_formula`.
+These are consequence theorems for an already supplied obligation; they do
+not construct the obligation, source-produce `Csucc` or `C'^(S+1)`, produce a
+suffix, or move chart/coverage/post-data boundaries.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-csucc-projections-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-csucc-projections.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-csucc-projections-a4.md`.
+
 Latest A5 finite-obstruction update: `Lemma5TerminalBridge.lean` now contains
 `terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`
 and

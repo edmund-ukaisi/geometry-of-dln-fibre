@@ -111,6 +111,17 @@ terminal rows of the supplied `Csucc`.  This still constructs neither the
 obligation nor `Csucc`; it only consumes supplied data without moving the hard
 source-production boundary.
 
+The same supplied-obligation consumer layer now also records
+`SourceProductionObligation.continuing_Csucc_tail_eq_original` and
+`SourceProductionObligation.actualWidth_Cterm_eq_originalRows_Csucc`.  The
+first rewrites the next same-stage tail of supplied `Csucc` to the old
+source-following tail; the second rewrites actual-width stopped `Cterm` as
+original rows of supplied `Csucc`.  The first consumes `Csucc_eq_formula` and
+an existing finite tail identity.  The second consumes the supplied
+`actualWidth_Cterm_eq` branch field, the actual-width collapse identity, and
+`Csucc_eq_formula`.  They do not construct source data or move the
+source-production boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

@@ -4065,3 +4065,35 @@ coverage, transition regularity, coordinate post-data, Jacobian arithmetic,
 normal crossings, pole order, termination, RLCT, or repair the printed Case 2
 vector mismatch.  Row `J+1` is original as a row of `Csucc`, not as a row of
 the old `C`.
+
+## 2026-06-22 Lean Case 2 obligation Csucc projections
+
+Reproduction:
+`reproduction-case2-source-production-obligation-csucc-projections-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation-csucc-projections.md`.
+Review artifact:
+`review-case2-source-production-obligation-csucc-projections-a4.md`.
+
+Lean now adds two finite projections from a supplied
+`SourceProductionObligation`:
+
+```text
+SourceProductionObligation.continuing_Csucc_tail_eq_original
+SourceProductionObligation.actualWidth_Cterm_eq_originalRows_Csucc
+```
+
+The continuing projection rewrites the next same-stage tail of the supplied
+`Csucc` to the old source-following tail, using only `Csucc_eq_formula` and
+the existing fact that the `(S,J+1)` following restriction ignores row `J+1`.
+The actual-width projection is the stopped-branch analogue of the existing
+row-exhausted projection: under `n(S+1)=J+1`, the obligation gives
+`Cterm = originalRows(C)`, the canonical successor factor collapses to `C`,
+and `Csucc_eq_formula` rewrites the result to `originalRows(Csucc)`.
+
+These are only consequences of a supplied obligation.  They do not construct
+the obligation, `Csucc`, `C'^(S+1)`, a suffix, a successor chart family,
+coverage, transition regularity, coordinate post-data, Jacobian arithmetic,
+normal crossings, pole order, termination, RLCT, or repair the printed Case 2
+vector mismatch.  They do not make the stopped branches exclusive or derive
+the branch hypotheses from failed continuation.
