@@ -364,6 +364,15 @@ order notation: supplied branch-label injectivity plus
 supplied-boundary handoff; it does not source-prove the upper bound or no-extra
 coverage, and it does not prove pole order.
 
+Current A6 terminal-order handoff:
+`threads/06-dln-translation/reproduction-theorem2-terminal-order-bridge-a6.md`.
+Lean now consumes that supplied terminal count to build the order field of the
+finite exponent boundary when `D.exponentOrder = terminalMinimumLabels.card`
+is separately supplied.  This is useful final-socket decomposition only: it
+does not prove chart-order identification, the exponent-minimum formula,
+normal-crossing chart production, source-backed Lemma 5 no-extra coverage,
+pole order without A0, or RLCT extraction.
+
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
 terminal-family convenience theorem for `TC.terminalMinimumLabels`.  It also

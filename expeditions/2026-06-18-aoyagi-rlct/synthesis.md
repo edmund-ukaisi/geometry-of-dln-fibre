@@ -5381,6 +5381,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-order-formula-bridge-a5.md`.
 
+Latest A6 terminal-order handoff: `Theorem2TerminalOrderBridge.lean` now
+routes the order field of `AoyagiTheorem2FiniteExponentFormulaHypothesis`
+through the supplied Lemma 5 terminal-minimum count.  If the exponent-minimum
+formula is supplied, if the normal-crossing exponent order is supplied to be
+`TC.terminalMinimumLabels.card`, and if the supplied Lemma 5 obstruction gives
+branch-label injectivity plus
+`TC.terminalMinimumLabels.card <= data.theorem2OrderFormula`, Lean constructs
+the finite exponent formula boundary.  With selected-width provenance and A0
+extraction also supplied, Lean obtains the final ceiling-data pair
+`lambda = aoyagiTheorem2Lambda_fromCeilData ...` and
+`poleOrder = data.theorem2OrderFormula`.  This does not prove chart-order
+identification, the exponent-minimum formula, source-backed Lemma 5 no-extra
+coverage, pole order without A0, normal crossings, or RLCT extraction.
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-terminal-order-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-terminal-order-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-terminal-order-bridge-a6.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

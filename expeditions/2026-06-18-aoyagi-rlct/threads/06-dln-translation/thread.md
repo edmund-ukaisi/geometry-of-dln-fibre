@@ -156,3 +156,45 @@ source-selection, rank-width hypotheses from the matrix problem,
 normal-crossing chart production, finite exponent formula equalities, Lemma 5
 no-extra coverage/order count, pole order without A0, or the analytic
 extraction theorem.
+
+## Current slice - 2026-06-22, terminal-order handoff
+
+The A5-to-A6 terminal-order handoff is
+`lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`, imported by
+`lean/DLNFibre.lean`.
+
+It decomposes only the order field of
+`AoyagiTheorem2FiniteExponentFormulaHypothesis`.  Instead of supplying
+`D.exponentOrder = data.theorem2OrderFormula` directly, the new bridge accepts
+the supplied chart/order identification
+
+```text
+D.exponentOrder = TC.terminalMinimumLabels.card
+```
+
+and then uses the existing Lemma 5 terminal-order bridge, under supplied
+branch-label injectivity and supplied terminal upper bound, to derive
+
+```text
+TC.terminalMinimumLabels.card = data.theorem2OrderFormula.
+```
+
+Lean names:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_terminalMinimumLabels_card
+```
+
+Artifacts:
+
+- `reproduction-theorem2-terminal-order-bridge-a6.md`;
+- `statement-card-a6-theorem2-terminal-order-bridge.md`;
+- `review-theorem2-terminal-order-bridge-a6.md`.
+
+Boundary: the exponent-minimum formula, chart-order/terminal-label
+identification, selected-width provenance, A0 extraction hypothesis,
+branch-label injectivity, and terminal upper bound remain supplied.  This is
+not source-backed Lemma 5 no-extra coverage, chart production, pole order
+without A0, or RLCT extraction.
