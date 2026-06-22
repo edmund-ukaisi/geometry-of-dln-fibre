@@ -2904,11 +2904,15 @@ No such claim is formalisation-ready until both fields are filled.
   dimension/rank convention map reproduced at
   `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`;
   conditional finite-exponent bridge reproduced at
-  `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`.
+  `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`;
+  supplied final assembly boundary reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-final-assembly-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   conditional bridge reviewed at
-  `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`.
+  `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`;
+  final assembly reviewed at
+  `threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
   `DLNFibre.DLN.Aoyagi.aoyagiReducedWidthInt`,
   `DLNFibre.DLN.Aoyagi.aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le`,
@@ -2958,7 +2962,22 @@ No such claim is formalisation-ready until both fields are filled.
   `lambda_eq_theorem2Lambda_expanded_of_extractionHypothesis`,
   `poleOrder_eq_theorem2OrderFormula_of_extractionHypothesis`, and
   `lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_extractionHypothesis`
-  in `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`.
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`; current
+  supplied final boundary:
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_eq_natCast_sub`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_nonneg`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidthNat_nonneg`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidth_le_pred`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_eq_theorem2Lambda_fromCeilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_eq_theorem2Lambda_average`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_eq_theorem2Lambda_expanded`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.poleOrder_eq_theorem2OrderFormula`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula`, and
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_and_poleOrder_eq_expanded_and_orderFormula`,
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_eq_theorem2Lambda_average_selectedReducedWidths`, and
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_eq_theorem2Lambda_expanded_selectedReducedWidths`
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2FinalAssembly.lean`.
 - **Proved.** formula-only arithmetic: integer reduced-width notation,
   pointwise rank-width conversion/nonnegativity for reduced widths and
   selected reduced widths under explicit rank-width hypotheses,
@@ -2978,7 +2997,12 @@ No such claim is formalisation-ready until both fields are filled.
   `D.exponentOrder = data.theorem2OrderFormula`, plus
   `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`, Lean derives
   the ceiling-data, average, and expanded displayed `lambda` formulas and the
-  displayed order formula.
+  displayed order formula.  Also proved a supplied final boundary packaging
+  selected-width provenance, A0 extraction, and finite exponent formula
+  hypotheses; it projects the displayed lambda/order formulas and finite
+  selected-width provenance consequences without constructing the missing
+  certificate.  Selected rank-width hypotheses and the strict source-selected
+  inequality remain explicit auxiliary theorem inputs where used.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** full Definition 3 selection inequalities, existence of the

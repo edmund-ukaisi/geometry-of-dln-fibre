@@ -1600,6 +1600,13 @@ Immediate order:
    `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`, imply the
    displayed lambda/order formulas.  This is only a final socket; it does not
    produce exponent data or prove those finite equalities.
+   A supplied final assembly boundary is now also Lean-proved in
+   `Theorem2FinalAssembly.lean`: it packages selected-width provenance, A0
+   extraction, and finite exponent formula hypotheses, then projects
+   selected-width bookkeeping and displayed lambda/order formulas.  Selected
+   rank-width hypotheses and source selected inequality are explicit auxiliary
+   theorem inputs where used.  This is still conditional and must not be called
+   the final RLCT theorem.
    Further A6 work should connect only to source-stable Lemma 4/Lemma 5
    arithmetic;
    it must not call the formula an RLCT theorem before the normal-crossing

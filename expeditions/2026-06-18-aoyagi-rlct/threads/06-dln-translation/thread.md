@@ -111,3 +111,48 @@ data, prove the two finite equalities, prove source parameter provenance, prove
 Definition 3 selection data, prove rank-width hypotheses, prove normal
 crossings, prove Aoyagi Lemma 5 exactness/order count, prove pole order without
 A0, or prove the analytic extraction theorem.
+
+## Current slice - 2026-06-22, supplied final assembly boundary
+
+The A6 final assembly boundary is
+`lean/DLNFibre/DLN/Aoyagi/Theorem2FinalAssembly.lean`, imported by
+`lean/DLNFibre.lean`.
+
+It introduces `AoyagiTheorem2SuppliedFinalBoundary`, which packages:
+
+- selected-width provenance `m = aoyagiSelectedReducedWidths H r C`;
+- `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`;
+- `AoyagiTheorem2FiniteExponentFormulaHypothesis D L ell H r m data`.
+
+Lean then projects selected-width bookkeeping and the displayed formula
+consequences.  The selected rank-width hypotheses and strict source
+selected-width inequality are explicit arguments only on the auxiliary width
+lemmas that use them, not fields of the final socket.
+
+```text
+selectedWidths_eq_natCast_sub
+selectedWidths_nonneg
+selectedWidthNat_nonneg
+selectedWidth_le_pred
+lambda_eq_theorem2Lambda_fromCeilData
+lambda_eq_theorem2Lambda_average
+lambda_eq_theorem2Lambda_expanded
+poleOrder_eq_theorem2OrderFormula
+lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+lambda_and_poleOrder_eq_expanded_and_orderFormula
+lambda_eq_theorem2Lambda_average_selectedReducedWidths
+lambda_eq_theorem2Lambda_expanded_selectedReducedWidths
+```
+
+Artifacts:
+
+- `reproduction-theorem2-final-assembly-a6.md`;
+- `statement-card-a6-theorem2-final-assembly.md`;
+- `review-theorem2-final-assembly-a6.md`.
+
+Boundary: this is still a supplied final socket, not an unconditional final
+theorem.  It does not prove selected cutpoint existence, Definition 3
+source-selection, rank-width hypotheses from the matrix problem,
+normal-crossing chart production, finite exponent formula equalities, Lemma 5
+no-extra coverage/order count, pole order without A0, or the analytic
+extraction theorem.

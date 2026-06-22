@@ -5264,6 +5264,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-exactness-card-bound-equivalence-a5.md`.
 
+Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
+contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
+selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
+extraction hypothesis, and the finite exponent formula hypothesis.  Lean
+projects selected-width provenance consequences and the
+ceiling-data/average/expanded lambda formulas plus
+`poleOrder = data.theorem2OrderFormula`; selected rank-width hypotheses and
+the source selected-width inequality remain explicit auxiliary theorem inputs
+where used.  This is still a supplied final socket only: it does not prove
+selected cutpoint existence, rank-width hypotheses from the matrix problem,
+normal-crossing chart production, finite exponent formula equalities, Lemma 5
+order count, pole order without A0, or analytic extraction.
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-final-assembly-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-final-assembly.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
