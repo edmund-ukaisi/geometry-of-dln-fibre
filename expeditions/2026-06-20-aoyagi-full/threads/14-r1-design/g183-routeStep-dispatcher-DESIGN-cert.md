@@ -154,3 +154,40 @@ admissible-`T` witness on every pivot (§2), the reachability lemma for C=∃ (�
 LEAF condition (§1.1). Builds on #26/g138 (the node taxonomy), g147/g148 (the achiever i₀, re-spelled in
 fm3's encoding), `Case222Resolution` (the (2,2,2) anchor), `RouteMState` (the value-side foldDivisors,
 banked), fm3 g161/g162 (the certified-not-raw type + the co-design). No Lean — fm3 transcribes against §6.
+
+---
+
+## VALUE-TARGET (#68 follow, pp-hall, 2026-06-22) — fm3's machine-checked contract (a)+(b) → foldFamily_* (the two conditions, named)
+
+fm3 banked (`@bef5ba5`, `RouteMState.lean`, green) the consistency contract as TWO checkable conditions on
+the dispatcher's per-leaf codim-lists `codimsOf : ι → List ℕ` (the exceptional-divisor `Mval`-codims along
+each path, §VALUE-CONSISTENCY — NOT the `nReg` smooth dims, which are spectators / the additive transport).
+Let `m₀ = (Adm M).inf' Mval` (`lambdaCore M = ½·m₀`):
+- **(a) NO path undershoots:** `∀ i, ∀ c ∈ codimsOf i, m₀ ≤ c`  ⟹  `foldFamily_threshold_ge` (the C≥ atlas fact);
+- **(b) the minimiser realises m₀:** the min-stratum leaf `i₀` has `(∀ c ∈ codimsOf i₀, m₀ ≤ c) ∧ m₀ ∈ codimsOf i₀`
+  ⟹  `foldFamily_achiever` (the C=∃ atlas fact).
+
+`(a)+(b)` ⟹ `IsResolutionAtlas` (threshold_ge + achiever) ⟹ `⨅ᵢ monomialThreshold = lambdaCore`, via fm3's
+banked `foldDivisors` lemmas. **The dispatcher's leaf monomials then AGREE with the value-side BY
+CONSTRUCTION — no separate consistency proof.** These two ARE this cert's VALUE+CONSISTENCY obligation, in
+fm3's exact names:
+- **(a) = §2** (the C1-condition): every pivot codim is a geometric codim `= Mval(T)`, hence `≥ minAdm = m₀`
+  by definition of the min. The §2 `witness : {T // Adm M T ∧ codim = Mval M T}` field discharges (a)
+  directly — every `codimsOf i` entry is some `Mval(T) ≥ m₀`. **No path can undershoot precisely because
+  the codim is the geometric `Mval`, not the coordinate cardinality** (the green-≠-right guard, §7).
+- **(b) = §4** (the achiever reachability): the path resolving to the minimiser `T*` crosses `S_{T*}`, whose
+  pivot codim is `Mval(T*) = m₀`, so `m₀ ∈ codimsOf i₀`. The reachability lemma (rides
+  `Core.baseChange_normalForm`; only the minimiser need be reached) discharges (b).
+
+**Verified `(a)+(b)` on all validation cases** (`g186_foldFamily_contract.py`): `(2,2,2)` m₀=3
+[Case222: unit-leaf `codimsOf=[4,3]`, block `[4,3,4]`; all ≥3, 3∈[4,3] ✓]; `(3,2,3)` m₀=5; `(2,2,2,2)` m₀=3;
+`(4,3,2)` m₀=6 [`Mval` set {6,8,12}, all ≥6 ✓ — the thin-product case where (a) needs codim=Mval, not
+cardinality]; `(2,3,2)` m₀=4; `(3,3,3)` m₀=7. The `(2,2,2)` `codimsOf` reproduces Case222Resolution's
+step-1(card4)/step-2(card3)/step-3(card4) exactly.
+
+So the cert's value-target is literally `foldFamily_threshold_ge` (needs (a) = §2 witness) +
+`foldFamily_achiever` (needs (b) = §4 reachability). fm3 builds the certified `RouteStep` type + the generic
+fold against these names; the dispatcher populates `codimsOf` with the `Mval`-witnessed codims; (a)+(b) hold
+by §2/§4; `⨅ = lambdaCore` follows. The additive `nReg/2` (per-cell transport, `schur_recursion_step`)
+stays separate from this min-fold value — it justifies each cell's split factorises the loss (cover_le), not
+the leaf-codim value.
