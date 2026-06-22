@@ -135,6 +135,16 @@ def peelPart (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 1) × Fin (N + 
     peelPart m (I, J₀.castSucc) = m (I.castSucc, J₀.castSucc.castSucc) := by
   simp [peelPart]
 
+/-- **Additive form of `peelPart`**: a shifted entry plus a correction at the merged last column.
+`peelPart m (i,j) = m(i⁺, j⁺) + [j = last] · m(i⁺, last)`. The clean handle for the `kostantAt` merge. -/
+theorem peelPart_eq (m : Fin (N + 2) × Fin (N + 2) → ℕ) (i j : Fin (N + 1)) :
+    peelPart m (i, j)
+      = m (i.castSucc, j.castSucc)
+        + (if j = Fin.last N then m (i.castSucc, Fin.last (N + 1)) else 0) := by
+  induction j using Fin.lastCases with
+  | last => rw [peelPart_last, if_pos rfl]
+  | cast j₀ => rw [peelPart_castSucc, if_neg (Fin.castSucc_ne_last j₀), add_zero]
+
 /-- The peel preserves support: if `m` is supported on `i ≤ j` then so is `peelPart m`. -/
 theorem peelPart_support {m : Fin (N + 2) × Fin (N + 2) → ℕ}
     (hs : ∀ p : Fin (N + 2) × Fin (N + 2), ¬ p.1 ≤ p.2 → m p = 0)
