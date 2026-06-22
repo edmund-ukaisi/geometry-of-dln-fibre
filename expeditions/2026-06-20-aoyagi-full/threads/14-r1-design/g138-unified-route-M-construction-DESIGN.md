@@ -50,11 +50,14 @@ a divisor-arrangement post-pass, not a node type. {C4, C1, C2, C5} partition the
   the blow-up cover `argmaxCellOn` handles chart-locality). The squeeze `flatCore − Φ ∈ ideal(E)` (#131) is
   PARKED off-path — NOT C1's mechanism (it drops the `x_p²` weight, §1.6).
 
-- **C2 — full-rank pass-through Schur** (pp3's catch; the later-factor drop).
-  The active factor is FULL rank but the product still drops rank (the drop is downstream). Pass the
-  full-rank factor through (absorb it via its invertible action — a measure-preserving GL change on the
-  next factor's coords, det a unit), descending on the reduced chain so the later-factor drop is resolved.
-  **DEPTH `L` drops** (the factor is consumed), `ΣM` need not. Witness: `(1,2,1)`.
+- **C2 — full-rank pass-through** (pp3's catch; the later-factor drop).
+  The active factor is FULL rank on the prefix image but the product still drops rank (the drop is
+  downstream). **DESCEND on the downstream chain `C_{>s}` (restricted to `im(C_s)`)** — the rank-defect is
+  downstream, so the dispatcher recurses on `C_{>s}` (the full-rank factor's coords ride as spectator/
+  regular coords, or get their own `pivotBlowupOn` if their block is itself singular). **DEPTH `L` drops**
+  (the factor is consumed), `ΣM` need not. NOT a det-unit GL absorption — at the deepest point `C_s → 0`
+  so `det(C_s) → 0` is NOT a unit (g142); the correct C2 is the downstream-descent, same monomial frame as
+  C1. Witness: `(1,2,1)`.
 
 - **C3 — NC-completion (`k_E ≥ 2` allowed)** (pp3's correction to my `k_E=1`).
   A post-pass turning the union of per-factor exceptional divisors into a normal-crossing arrangement may
@@ -70,13 +73,13 @@ a divisor-arrangement post-pass, not a node type. {C4, C1, C2, C5} partition the
 
 - **C5 — MIXED partial-drop node** (the Codex-found gap; `t_{s-1} > t_s > 0`).
   The active factor has a PARTIAL rank drop on the active prefix image: a rank-`t_s` **survivor** block
-  (which passes through later full-rank layers before being killed downstream) PLUS a rank-`(t_{s-1}−t_s)`
-  **complement** (Schur-reducible now). The active factor is neither full-rank (C2) nor zero/clean-coupled
-  in one Schur step (C1) — the survivor is not regular until the later layers are passed. **Resolve by the
-  block-column split**: `C_s` image `= survivor (rank t_s) ⊕ complement (rank t_{s-1}−t_s)`; the product
-  splits as a block-column concatenation `[C_{>s}·survivor | C_{>s}·complement]` (column-independent), the
-  complement resolved by C1 (Schur now) and the survivor by C2 (pass-through to its later kill-layer).
-  C5 is the **C1+C2 composite** at one node. Witness: `t=(3,3,2,2,2,0)` (Codex; `g139_mixed_node.py`).
+  (passes through later layers before being killed downstream) PLUS a rank-`(t_{s-1}−t_s)` **complement**
+  (resolvable now). **Resolve by the block-column split**: `C_s` image `= survivor ⊕ complement`; the
+  product splits as a column-independent block concatenation `[C_{>s}·survivor | C_{>s}·complement]`, the
+  complement resolved by C1 (iterated `pivotBlowupOn` now) and the survivor by C2 (downstream-descent to
+  its later kill-layer). C5 is the **C1+C2 composite** — BOTH iterated blow-up / recursion, **NO det-unit
+  GL change** (the earlier "block-column det-unit to verify" concern is DISSOLVED, g142: C2 is
+  downstream-descent not GL absorption). Witness: `t=(3,3,2,2,2,0)` (Codex; `g139_mixed_node.py`).
 
 **Branch decision at a node** (the dispatcher fm3 builds; rank read RELATIVE TO THE ACTIVE PREFIX IMAGE):
 1. if any inner layer is separating (width-1 / rank-1 pinch / forced `s=0`) → **C4** (Fubini split,
@@ -197,7 +200,7 @@ residual is the dispatcher exhaustiveness + the `(S-min)` achiever.
 2. **Per-branch chart + `(k,h)`** — C1: ITERATED `pivotBlowupOn active p` (`core∘φ = x_p²·Q`, the `x_p²`
    exceptional divisor `(k,h)=(1,card−1)`; `step1A_eq_pivotBlowupOn`/`step2E_eq_pivotBlowupOn` banked) +
    RECURSE on the smaller residual `Q` via the dispatcher — NO explicit straightening (`lemma2Fwd` is
-   `(2,2,2)` scaffolding); C2: the pass-through GL change (det-unit); C4: the Fubini product split
+   `(2,2,2)` scaffolding); C2: the downstream-descent (recurse on `C_{>s}|im(C_s)`, `L` drops — NOT a det-unit GL absorption, g142); C4: the Fubini product split
    (`(2,1,2)`-style); C5: the block-column split → C1 micro-step (complement) + C2 micro-step (survivor).
    C3: NC-completion intersection blow-ups (`k_E ≥ 2` ok, `ncDefect` drops). Read `(k,h)` from the
    strict-transform density (C1-condition). **The squeeze `schur_node_squeeze` AND `lemma2Fwd` are PARKED
@@ -233,10 +236,11 @@ layers `> s` retain their relative drops. So multi-drop is NOT a new mechanism �
 serialising single-layer C5 steps, each `lex`-decreasing.
 The genuine residual is now just the **#27 formalisation induction** (prove the dispatcher total +
 exhaustive for all `M` by induction on `lex(L,ΣM,ncDefect)`) and **(Exh)/(S-min)** as Lean obligations —
-no open *mechanism* remains. The one place to stay honest: the C5 block-column split's measure-preservation
-(the survivor/complement basis change must be det-unit, like C2's pass-through) — assert it inherits the
-#131 Schur det-unit property; verify in the C5 chart construction (the analogue of the #131 cert for the
-block-column split) before #27 locks the C5 chart.
+no open *mechanism* remains, and (correcting an earlier flag) **no det-unit step to verify**: under the
+iterated-blow-up frame every node (C1/C2/C4/C5) is blow-up + recursion (the `(pivot)²` monomial weight),
+with NO det-unit GL absorption anywhere (g142 — C2 is downstream-descent, not GL; C5 inherits that). The
+one thing to confirm in Lean: the block-column split's column-independence (C5) is a clean `Finset`
+partition of the active factor's columns into survivor/complement — flagged for the C5 chart construction.
 
 ## Decorrelation + provenance
 Witness leg #132/#134 (ROUTE-HOLDS, (S-min)) + pp3 obstruction #136 (C1–C4, two sharpening witnesses) +
