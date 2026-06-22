@@ -269,3 +269,45 @@ minimum equality to an explicit finite active-ratio certificate.  It still
 does not prove chart production, active-ratio lower bounds from source charts,
 chart-order/terminal-label identification, Lemma 5 no-extra coverage, pole
 order without A0, normal crossings, or RLCT extraction.
+
+## Current slice - 2026-06-22, active chart-terminal-order handoff
+
+The terminal-order bridge now also composes the A0 chart-count finite maximum
+certificate with the active-ratio minimum and the A5 terminal-order route.
+Instead of supplying
+
+```text
+D.exponentOrder = TC.terminalMinimumLabels.card
+```
+
+directly, the new wrappers accept:
+
+```text
+D.minCountInChart c = TC.terminalMinimumLabels.card,
+forall c', D.minCountInChart c' <= TC.terminalMinimumLabels.card.
+```
+
+Together with the active-ratio certificate and the supplied Lemma 5
+terminal-order obstruction, this fills both fields of
+`AoyagiTheorem2FiniteExponentFormulaHypothesis`.
+
+Lean names:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_chartCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_chartCount_terminalMinimumLabels_card
+```
+
+Artifacts:
+
+- `reproduction-theorem2-active-chart-terminal-order-bridge-a6.md`;
+- `statement-card-a6-theorem2-active-chart-terminal-order-bridge.md`;
+- `review-theorem2-active-chart-terminal-order-bridge-a6.md`.
+
+Boundary: this reduces the remaining raw chart/order equality to an explicit
+finite chart-count maximum certificate.  It still does not prove chart
+production, active-ratio lower bounds, chart-count upper bounds from source
+charts, chart-count/terminal-label identification from source, Lemma 5
+no-extra coverage, pole order without A0, normal crossings, or RLCT
+extraction.

@@ -87,6 +87,44 @@ theorem theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLab
       hp hratio hleRatio)
     horder hinj hupper
 
+/-- Build the finite exponent formula boundary when the minimum is certified
+by a supplied active ratio and the order is certified by a supplied chart count
+equal to the terminal-minimum label count.
+
+This is finite max/min bookkeeping only; it does not construct charts,
+active-ratio bounds, chart-count bounds, Lemma 5 no-extra coverage, pole
+order, or RLCT extraction. -/
+theorem theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_terminalMinimumLabels_card
+    {β : Type*} [DecidableEq β]
+    {D : AoyagiNormalCrossingExponentData}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    {p : Fin D.numCharts × Fin D.numCoords}
+    (hp : p ∈ D.activePairs)
+    (hratio :
+      D.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ D.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        D.ratioAt p')
+    {c : Fin D.numCharts}
+    (hchart : D.minCountInChart c = TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin D.numCharts,
+      D.minCountInChart c' ≤ TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (hupper : TC.terminalMinimumLabels.card ≤ data.theorem2OrderFormula) :
+    AoyagiTheorem2FiniteExponentFormulaHypothesis D L (n + 1) H r m data :=
+  TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLabels_card
+    data hp hratio hleRatio
+    (D.exponentOrder_eq_of_chart_minCount_eq_of_forall_le hchart hleChart)
+    hinj hupper
+
 /-- Build the supplied final Theorem 2 boundary with its order field routed
 through the supplied Lemma 5 terminal-minimum labels.
 
@@ -164,6 +202,45 @@ theorem theorem2SuppliedFinalBoundary_of_activePair_terminalMinimumLabels_card
     TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLabels_card
       data hp hratio hleRatio horder hinj hupper
 
+/-- Build the supplied final Theorem 2 boundary from active-ratio and chart
+count finite certificates routed through supplied Lemma 5 terminal labels. -/
+theorem theorem2SuppliedFinalBoundary_of_activePair_chartCount_terminalMinimumLabels_card
+    {β : Type*} [DecidableEq β]
+    {D : AoyagiNormalCrossingExponentData}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder)
+    {p : Fin D.numCharts × Fin D.numCoords}
+    (hp : p ∈ D.activePairs)
+    (hratio :
+      D.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ D.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        D.ratioAt p')
+    {c : Fin D.numCharts}
+    (hchart : D.minCountInChart c = TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin D.numCharts,
+      D.minCountInChart c' ≤ TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (hupper : TC.terminalMinimumLabels.card ≤ data.theorem2OrderFormula) :
+    AoyagiTheorem2SuppliedFinalBoundary D L (n + 1) H r C m data
+      lambda poleOrder where
+  selectedWidths_eq_reduced := hselected
+  extractionHypothesis := hNC
+  finiteExponentFormula :=
+    TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_terminalMinimumLabels_card
+      data hp hratio hleRatio hchart hleChart hinj hupper
+
 /-- Pair-form final consequence of the supplied terminal-order bridge, in
 ceiling-data notation. -/
 theorem lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_terminalMinimumLabels_card
@@ -233,6 +310,46 @@ theorem lambda_and_poleOrder_eq_of_activePair_terminalMinimumLabels_card
         lambda poleOrder :=
     (TC.theorem2SuppliedFinalBoundary_of_activePair_terminalMinimumLabels_card
       data hselected hNC hp hratio hleRatio horder hinj hupper)
+  exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+
+/-- Pair-form final consequence of active-ratio and chart-count finite
+certificates routed through the supplied Lemma 5 terminal-order bridge. -/
+theorem lambda_and_poleOrder_eq_of_activePair_chartCount_terminalMinimumLabels_card
+    {β : Type*} [DecidableEq β]
+    {D : AoyagiNormalCrossingExponentData}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder)
+    {p : Fin D.numCharts × Fin D.numCoords}
+    (hp : p ∈ D.activePairs)
+    (hratio :
+      D.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ D.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        D.ratioAt p')
+    {c : Fin D.numCharts}
+    (hchart : D.minCountInChart c = TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin D.numCharts,
+      D.minCountInChart c' ≤ TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (hupper : TC.terminalMinimumLabels.card ≤ data.theorem2OrderFormula) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ∧
+      poleOrder = data.theorem2OrderFormula := by
+  let B :
+      AoyagiTheorem2SuppliedFinalBoundary D L (n + 1) H r C m data
+        lambda poleOrder :=
+    (TC.theorem2SuppliedFinalBoundary_of_activePair_chartCount_terminalMinimumLabels_card
+      data hselected hNC hp hratio hleRatio hchart hleChart hinj hupper)
   exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
 
 end AoyagiLemma5SuppliedTerminalCandidateFamily

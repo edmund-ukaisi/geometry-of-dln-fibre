@@ -397,6 +397,14 @@ its displayed ratio equality, and a lower bound against every active ratio.
 The chart/order equality, branch-label injectivity, terminal upper bound,
 selected-width provenance, and A0 extraction hypothesis remain supplied.
 
+Current A6 active chart-terminal-order handoff:
+`threads/06-dln-translation/reproduction-theorem2-active-chart-terminal-order-bridge-a6.md`.
+Lean now also consumes the A0 chart-count maximum certificate with candidate
+`TC.terminalMinimumLabels.card`.  This replaces the raw supplied
+`D.exponentOrder = TC.terminalMinimumLabels.card` equality by a chart-count
+witness and all-chart upper bound.  Chart production, source-backed chart
+counts, source-backed Lemma 5 no-extra coverage, and pole order remain open.
+
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
 terminal-family convenience theorem for `TC.terminalMinimumLabels`.  It also

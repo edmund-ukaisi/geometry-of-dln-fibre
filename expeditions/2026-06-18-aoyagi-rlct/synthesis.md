@@ -5464,6 +5464,23 @@ and
 Review:
 `threads/06-dln-translation/review-theorem2-active-terminal-order-bridge-a6.md`.
 
+Latest A6 active chart-terminal-order handoff:
+`Theorem2TerminalOrderBridge.lean` now also composes the A0 finite chart-count
+maximum certificate into the same terminal-order route.  The new wrappers take
+a supplied chart whose global-minimum coordinate count is
+`TC.terminalMinimumLabels.card`, plus an upper bound by that same count for
+every chart.  This replaces the raw supplied equality
+`D.exponentOrder = TC.terminalMinimumLabels.card`; it does not construct the
+chart, prove the chart counts from source, identify chart counts with
+terminal labels from source, prove source-backed Lemma 5 no-extra coverage, or
+move pole order/RLCT extraction.
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-active-chart-terminal-order-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-active-chart-terminal-order-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-active-chart-terminal-order-bridge-a6.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
