@@ -4608,6 +4608,23 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
 
+Latest A5 Eq5 own-block counted/introduced payload update:
+`Lemma5Eq5CountDatumBridge.lean` now contains
+`aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+For one supplied Eq5 own-block branch, explicit source-label hypotheses and a
+supplied nonbase inequality give both counted-datum membership for
+`some (p,T S)` and introduced-label membership for `Sigma.mk S k`.  This is a
+conditional one-branch payload only; it is not Eq5 vector construction,
+nonbase production, classifier construction, injection, back-to-label
+coverage, no-extra terminal-minimum coverage, order count, pole order, normal
+crossings, or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-ownblock-counted-introduced-payload.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
+
 Latest A4 update: the Case 2 row-exhausted source-suffix payload has landed in
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
 `Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFiniteCenterIdeal`,

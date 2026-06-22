@@ -4455,6 +4455,33 @@ nonbase inequality as a hypothesis.  This does not construct Eq5 vectors,
 endpoint realisation, nonbase status, classifiers, injection, back-to-label
 coverage, order count, pole order, normal crossings, or RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 own-block counted/introduced payload
+
+Reproduction:
+`reproduction-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-ownblock-counted-introduced-payload.md`.
+Review artifact:
+`review-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
+
+Lean now packages one supplied Eq5 own-block branch as both counted-datum and
+introduced-label data:
+
+```text
+aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_widthBound
+```
+
+Under a supplied Eq5 piecewise certificate, an own-block source coordinate,
+the last-point source range, selected-width bound at `S`, the Eq5 label
+formula, positive coordinate `1<=p`, and the explicit nonbase inequality
+`T S != baseValue p`, the theorem proves
+`some (p,T S)` belongs to `aoyagiLemma5CountDatumSet` and also proves
+`T S=k-1` with `Sigma.mk S k` in `introducedLabelFinset L n S k`.  This is a
+one-branch payload adapter only.  It does not construct Eq5 vectors, prove
+nonbase status, alpha-domain coverage, classifier data, injection,
+back-to-label coverage, no-extra terminal-minimum coverage, order count, pole
+order, normal crossings, or RLCT.
+
 ## 2026-06-21 Lean Lemma 4 prefix-profile computations
 
 Reproduction:

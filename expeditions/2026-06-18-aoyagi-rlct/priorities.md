@@ -56,6 +56,8 @@ Current Eq5 counted-datum bridge slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-counted-datum-bridge-a5.md`.
 Current Eq5 endpoint counted-datum bridge slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-counted-datum-bridge-a5.md`.
+Current Eq5 own-block counted/introduced payload slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
 Current Lemma 4 prefix-profile computation slice:
 `threads/05-arithmetic-tail/reproduction-lemma4-prefix-profile-computations-a5.md`.
 Current Eq5 endpoint prefix-profile slice:
@@ -256,14 +258,18 @@ or a full successor product.
 
 Immediate order:
 
-1. Continue the no-extra/classifier frontier: source-backed terminal branch
-   construction, source-label legality, injection, and back-to-label coverage
+1. Continue the source-backed local Case 1(2) frontier: formalise the local
+   `J`-increment bridge under the exact p. 18 guard, without connecting it to
+   Lemma 5 no-extra counting.
+2. Continue the no-extra/classifier frontier only with explicit supplied
+   boundaries: terminal branch construction, source-label legality, injection,
+   and back-to-label coverage
    remain unproved.  Do not infer any of these from the conditional terminal
    source-realisation bridge or from the supplied counted-datum back-to-label
    boundary.
-2. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
+3. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-3. The Eq4 rising non-strict endpoint split is now Lean-packaged as a
+4. The Eq4 rising non-strict endpoint split is now Lean-packaged as a
    dispatcher over existing boundary facts.  Keep the `p+1=a`
    terminal-collision case conditional on supplied Eq4 data, and keep the
    `p=a` branch as no repaired Eq4 piecewise shape plus Eq5 erased-endpoints
@@ -271,9 +277,9 @@ Immediate order:
    beyond explicit local hypotheses, injection, and back-to-label coverage
    remain unproved.  Do not claim Aoyagi's printed Case 1(2) paragraph
    supplies source coverage or injectivity.
-4. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
+5. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
-5. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an
+6. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an
    obstruction record only: it is not a corrected Eq5 construction, a source
    coverage theorem, or a disproof of Lemma 5.
    The post-`p` lower guard is now exactly characterized by the terminal-room

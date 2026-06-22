@@ -4220,6 +4220,35 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-two-value-wrapper-a5.md`.
 
+Latest A5 Eq5 own-block counted/introduced payload update:
+`Lemma5Eq5CountDatumBridge.lean` now contains
+`aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+For one supplied Eq5 own-block branch, the theorem combines source-label
+legality and counted-datum membership: under explicit last-point source range,
+selected-width bound, label formula, positive coordinate, own-block membership,
+and nonbase inequality, it proves both `some (p,T S)` counted-datum membership
+and `T S=k-1` with `Sigma.mk S k` in `introducedLabelFinset L n S k`.  This is
+a one-branch payload adapter only, not Eq5 vector construction, nonbase
+production, classifier construction, injection, back-to-label coverage,
+no-extra terminal-minimum coverage, order count, pole order, normal crossings,
+or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-ownblock-counted-introduced-payload.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
+
+Latest source-audit checkpoint:
+xhigh source audit of Aoyagi Lemma 5 pp. 25-27 confirmed the existing
+classifier frontier.  The interval cardinality formula and the local Case
+1(2) `J` increment are source-backed elementary/local facts, but the printed
+paragraph does not supply a classifier, injection, back-to-label map, no-extra
+terminal-minimum coverage, nonbase status, endpoint-chain realisation, or
+terminal source realisation.  The next source-backed frontier is a narrow
+Case 1(2) local `J`-increment bridge under the p. 18 guard, not a Lemma 5
+no-extra counting theorem.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
