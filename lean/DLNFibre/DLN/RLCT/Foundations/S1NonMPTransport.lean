@@ -147,4 +147,51 @@ theorem rlctAtOn_squeeze (F Φ : M → ℝ) (wstar : M) (hFmeas : Measurable F) 
         · exact h
       nlinarith [hhi, hΦ0]
 
+/-- **The bounded-unit-Jacobian homeomorphism RLCT peel** (the non-MP companion to
+`rlctAtOn_comp_homeomorph`, generalising `rlctAtOn_ray_scaling_invariant` off the scaling map). For a
+homeomorphism `π` FIXING the basepoint (`π wstar = wstar`), with derivative `Dπ` everywhere and a
+**bounded-unit** Jacobian `0 < a ≤ |det Dπ| ≤ b` near `wstar`,
+
+    rlctAtOn (F ∘ π) wstar = rlctAtOn F wstar.
+
+The `det ≠ ±1` is exactly the distinction from the measure-preserving `rlctAtOn_comp_homeomorph`. Two
+ingredients: `weightedThreshold_transport` (S1.1, `E = ∅`) deposits the `|det Dπ|` weight, then
+`weightedThreshold_weight_unit_invariant` strips the bounded unit. The producer supplies the concrete
+`π` + `Dπ` + the Jacobian bound (the "global homeomorphism + Jacobian" obligation); this lemma CONSUMES
+them — so it discharges the gauge-absorption RLCT peels (`coreAbsorb_rlct`, `regAbsorb_rlct`) whose
+maps fix the complementary slots and have a bounded-unit gauge Jacobian (`det(I−VY)⁻ᴹ⁰ ≈ 1`) at the
+deepest point. -/
+theorem rlctAtOn_boundedUnit_homeomorph {M : Type*}
+    [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
+    [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
+    (F : M → ℝ) (wstar : M) (π : M ≃ₜ M) (Dπ : M → (M →L[ℝ] M))
+    (hfix : π wstar = wstar)
+    (hderiv : ∀ x, HasFDerivAt (fun w => π w) (Dπ x) x)
+    (hdetmeas : Measurable fun w => |(Dπ w).det|)
+    (hbdd : ∃ U ∈ 𝓝 wstar, ∃ a b : ℝ, 0 < a ∧ ∀ w ∈ U, a ≤ |(Dπ w).det| ∧ |(Dπ w).det| ≤ b) :
+    rlctAtOn (fun w => F (π w)) wstar = rlctAtOn F wstar := by
+  -- the basepoint preimage is `{wstar}` (π injective + fixes wstar).
+  have hpre : (fun w => π w) ⁻¹' {wstar} = {wstar} := by
+    ext w
+    simp only [Set.mem_preimage, Set.mem_singleton_iff]
+    constructor
+    · intro h; exact π.injective (h.trans hfix.symm)
+    · intro h; rw [h]; exact hfix
+  -- Step 1 (S1.1, `E = ∅`): `wThr F 1 {wstar} = wThr (F∘π) (1·|det Dπ|) {π⁻¹wstar}`.
+  have htrans := weightedThreshold_transport F (fun _ => (1 : ℝ)) wstar (fun w => π w) Dπ ∅
+    π.isProperMap MeasurableSet.empty (by simp) (Set.injOn_of_injective π.injective)
+    (fun x _ => hderiv x) π.surjective (by simp)
+  rw [hpre] at htrans
+  -- the transported weight is `1 · |det Dπ|`; strip the bounded unit.
+  have hwfun : (fun w => (fun _ => (1 : ℝ)) ((fun w => π w) w) * |(Dπ w).det|)
+      = fun w => |(Dπ w).det| := by funext w; rw [one_mul]
+  have hcompfun : (F ∘ fun w => π w) = fun w => F (π w) := rfl
+  rw [hwfun, hcompfun] at htrans
+  obtain ⟨U, hU, a, b, hapos, hbnd⟩ := hbdd
+  have hpeel := weightedThreshold_weight_unit_invariant (fun w => F (π w))
+    (fun w => |(Dπ w).det|) wstar a b hapos hdetmeas
+    ⟨U, hU, fun w hw => by rw [abs_of_nonneg (abs_nonneg _)]; exact hbnd w hw⟩
+  -- `rlctAtOn (F∘π) = wThr (F∘π) 1 = wThr (F∘π) |det| [hpeel.symm] = wThr F 1 [htrans.symm] = rlctAtOn F`.
+  rw [rlctAtOn, rlctAtOn, ← hpeel, ← htrans]
+
 end DLNFibre.DLN.RLCT
