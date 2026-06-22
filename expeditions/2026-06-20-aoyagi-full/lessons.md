@@ -531,6 +531,25 @@ earlier "down environment-wide" over-generalized from down-window samples — ti
 observation (a later window may work; it is timing out as of ~22:00+). Standing discipline unchanged: don't
 DEPEND on codex (substitute subagents + handback-on-thrash); treat an up-window consult as a bonus.
 
+## Skeleton-first trap: a pinned signature can be vacuously satisfiable (2026-06-22)
+
+The L2 gauge-chart assembly was built skeleton-first: `deepest_gauge_construction` "proven from 4 obligations",
+3 PINs sorried, "signatures pinned by the assembly typechecking." An independent formaliser on PIN 1
+(`deepest_regAbsorb_exists`) found its pinned signature is VACUOUSLY satisfiable: `regAbsorb := id` satisfies
+all 4 conjuncts by `rfl` (id 0=0; fixes the core/spec slots; `rlctAtOn(F∘id)=rlctAtOn(F)`). So "the assembly
+typechecks with PIN 1 sorried" did NOT guarantee PIN 1 is meaningful — id closes it, and then PIN 2
+(`loss_squeeze`) receives `regAbsorb=id` and is FALSE (raw-reg loss_squeeze is false, g161). The PINs were
+coupled through the shared `regAbsorb`, but PIN 1's signature didn't capture the coupling.
+
+LESSON: skeleton-first pins signatures by typechecking, but TYPECHECKS ≠ NON-VACUOUS. Before trusting that
+filling a sorried obligation is meaningful, run the INHABITANT-TEST: can a trivial inhabitant (id, a constant,
+0) satisfy the signature? If yes, it's underspecified — the real constraint lives elsewhere (here, the
+`regAbsorb = E-straightening` coupling that only PIN 2 sees), and a "green" fill would be hollow. Capture
+cross-obligation couplings IN the signatures, or "proven from N obligations" is hollow at the vacuous ones.
+Same class as the #70 all-interior=r confound and the `rlct_…`-named-but-only-codim trap: a green/satisfiable
+thing that's actually special-case/vacuous. Green is necessary, never sufficient — and here an INDEPENDENT
+formaliser's inhabitant-test was the instrument that caught what the skeleton author's typecheck missed.
+
 **Surfaced by:** pp2's #70 decorrelated consult "didn't land (CLI flaky — nested background launch)." The
 nested-launch hypothesis was a RED HERRING: a top-level `codex doctor` / `codex --version` hangs identically.
 It is an environment-wide outage, not a nested-launch artifact.
