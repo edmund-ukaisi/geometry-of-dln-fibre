@@ -968,4 +968,30 @@ theorem extendℤ_rebuild_colN (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fi
   rw [if_pos rfl] at h
   convert h using 2
 
+/-- The per-fibre inner sum over admissible last columns: `X^{Δ}·(last col P-factors)·(merged col
+P-factors)`. The per-fibre collapse reduces to this; `(Q)` shows it equals `transferRHS`. -/
+noncomputable def innerSum (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast : ℕ) : ℤ⟦X⟧ :=
+  ∑ x ∈ admissibleXs m' dlast,
+    X ^ (∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          extendℤ (rebuild m' x) (i - 1) (N : ℤ) * extendℤ (rebuild m' x) u ((N : ℤ) + 1)).toNat
+      * (∏ I : Fin (N + 2), P (x I))
+      * (∏ I' : Fin (N + 1), P (m' (I', Fin.last N) - x I'.castSucc))
+
+/-- **(P) — the per-fibre reduction**: the fibre weight-sum reduces to `X^{codim(m')}·lowerPm·innerSum`
+(the last-column bijection + the `toNat` exponent split + the `Pm` factorization). -/
+theorem perfibre_reduces (d : Fin (N + 2) → ℕ) (m' : Fin (N + 1) × Fin (N + 1) → ℕ)
+    (hm' : m' ∈ kostantAll (d ∘ Fin.castSucc)) :
+    ∑ m ∈ (kostantAll d).filter (fun m ↦ peelPart m = m'),
+        X ^ (codimForm (N + 1) (extendℤ m)).toNat * Pm (N + 1) m
+      = X ^ (codimForm N (extendℤ m')).toNat * lowerPm m' * innerSum m' (d (Fin.last (N + 1))) := by
+  rw [fibre_sum_reindex d m' hm', innerSum, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun x hx ↦ ?_
+  have hxbound : ∀ I' : Fin (N + 1), x I'.castSucc ≤ m' (I', Fin.last N) := by
+    rw [admissibleXs, Finset.mem_filter, Fintype.mem_piFinset] at hx
+    intro I'; have := hx.1 I'.castSucc
+    rwa [Finset.mem_range, Nat.lt_succ_iff, boundX, Fin.lastCases_castSucc] at this
+  rw [codimForm_rebuild m' x hxbound,
+    X_pow_toNat_add _ _ (codimForm_extendℤ_nonneg _) (delta_nonneg _), Pm_rebuild_factor]
+  ring
+
 end DLNFibre.Core
