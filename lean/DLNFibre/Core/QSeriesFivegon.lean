@@ -880,4 +880,64 @@ theorem Pm_eq_colN_mul_lower (m' : Fin (N + 1) × Fin (N + 1) → ℕ) :
     prod_lastCol]
   rfl
 
+/-- `rebuild` on a `(castSucc, castSucc)` index (columns `≤ N`): `m'_{I',J'}` minus the split-off `x`
+at the merged column `N`. -/
+theorem rebuild_castSucc (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ)
+    (I' J' : Fin (N + 1)) :
+    rebuild m' x (I'.castSucc, J'.castSucc)
+      = m' (I', J') - (if J' = Fin.last N then x I'.castSucc else 0) := by
+  induction J' using Fin.lastCases with
+  | last => simp only [rebuild, Fin.lastCases_castSucc, Fin.lastCases_last, if_pos]
+  | cast J'' =>
+    simp only [rebuild, Fin.lastCases_castSucc, if_neg (Fin.castSucc_ne_last J''), Nat.sub_zero]
+
+/-- Reindex the columns `< N+1` of `upperPairs (N+1)` to `upperPairs N` via `castSucc`. -/
+theorem prod_lower_reindex (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) :
+    ∏ p ∈ (upperPairs (N + 1)).filter (fun p ↦ ¬ p.2 = Fin.last (N + 1)), P (rebuild m' x p)
+      = ∏ q ∈ upperPairs N, P (rebuild m' x (q.1.castSucc, q.2.castSucc)) := by
+  symm
+  refine Finset.prod_bij' (fun q _ ↦ (q.1.castSucc, q.2.castSucc))
+    (fun p hp ↦ (p.1.castPred (by
+        have h := Finset.mem_filter.mp hp
+        have hle := (Finset.mem_filter.mp h.1).2
+        exact fun he ↦ h.2 (le_antisymm (Fin.le_last p.2) (he ▸ hle))),
+      p.2.castPred (Finset.mem_filter.mp hp).2)) ?_ ?_ ?_ ?_ ?_
+  · intro q hq
+    simp only [upperPairs, Finset.mem_filter, Finset.mem_univ, true_and] at hq ⊢
+    exact ⟨Fin.castSucc_le_castSucc_iff.mpr hq, Fin.castSucc_ne_last q.2⟩
+  · intro p hp
+    simp only [upperPairs, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+    rw [Fin.le_def, Fin.coe_castPred, Fin.coe_castPred, ← Fin.le_def]
+    exact hp.1
+  · intro q _; simp only [Fin.castPred_castSucc]
+  · intro p hp; simp only [Fin.castSucc_castPred]
+  · intro q _; rfl
+
+/-- `rebuild` on the last column: `rebuild m' x (I, last (N+1)) = x I`. -/
+theorem rebuild_last (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) (I : Fin (N + 2)) :
+    rebuild m' x (I, Fin.last (N + 1)) = x I := by
+  simp only [rebuild, Fin.lastCases_last]
+
+/-- **S3(b)**: `Pm (N+1) (rebuild m' x)` factors as last-column × merged-column × lower part. -/
+theorem Pm_rebuild_factor (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) :
+    Pm (N + 1) (rebuild m' x)
+      = (∏ I : Fin (N + 2), P (x I))
+        * ((∏ I' : Fin (N + 1), P (m' (I', Fin.last N) - x I'.castSucc)) * lowerPm m') := by
+  rw [Pm,
+    ← Finset.prod_filter_mul_prod_filter_not (upperPairs (N + 1)) (fun p ↦ p.2 = Fin.last (N + 1))]
+  congr 1
+  · rw [prod_lastCol]
+    exact Finset.prod_congr rfl fun I _ ↦ congrArg P (rebuild_last m' x I)
+  · rw [prod_lower_reindex,
+      Finset.prod_congr rfl (fun q _ ↦ congrArg P (rebuild_castSucc m' x q.1 q.2)),
+      ← Finset.prod_filter_mul_prod_filter_not (upperPairs N) (fun q ↦ q.2 = Fin.last N)]
+    congr 1
+    · rw [prod_lastCol]
+      refine Finset.prod_congr rfl fun I _ ↦ ?_
+      simp only [if_true]
+    · rw [lowerPm]
+      refine Finset.prod_congr rfl fun q hq ↦ ?_
+      rw [Finset.mem_filter] at hq
+      simp only [if_neg hq.2, Nat.sub_zero]
+
 end DLNFibre.Core
