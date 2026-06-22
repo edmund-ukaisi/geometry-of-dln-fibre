@@ -1757,6 +1757,12 @@ Immediate order:
    arithmetic;
    it must not call the formula an RLCT theorem before the normal-crossing
    certificate and cited extraction interface are in place.
+   The remaining-obligations boundary map now lives at
+   `threads/06-dln-translation/boundary-map-theorem2-remaining-source-obligations-a6.md`.
+   Treat it as the controller's current route map: stop A5 source-exactness
+   attempts from the printed equations, and move only source-stable A4/A2/A0
+   obligations unless the operator changes the citation policy or supplies a
+   corrected A5 construction.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

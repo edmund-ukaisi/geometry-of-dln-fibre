@@ -2980,7 +2980,9 @@ No such claim is formalisation-ready until both fields are filled.
   displayed-ratio count terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`;
   counted-datum classifier terminal-order bridge reproduced at
-  `threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`.
+  `threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`;
+  remaining source-obligations boundary map at
+  `threads/06-dln-translation/boundary-map-theorem2-remaining-source-obligations-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   conditional bridge reviewed at

@@ -5613,6 +5613,18 @@ and
 Review:
 `threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
 
+Latest A6 remaining-obligations boundary map:
+`threads/06-dln-translation/boundary-map-theorem2-remaining-source-obligations-a6.md`
+now records the exact source obligations still separating the supplied final
+socket from a source-backed Theorem 2: selected cutpoint/Definition 3
+provenance, normal-crossing certificate production, active-ratio lower bounds,
+displayed-ratio chart counts, A4 source/chart production, A2
+source-boundary/rank-stratum handling, supplied or corrected A5 terminal-order
+data, and A3 avoidance or policy change.  The only planned citation remains
+normal-crossing-to-RLCT extraction; do not silently cite Aoyagi Lemma 1,
+Aoyagi Theorem 4, regular-coordinate additivity, A2 analytic transport, or
+Lemma 5 no-extra coverage.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

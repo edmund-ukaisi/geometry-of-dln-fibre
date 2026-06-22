@@ -385,3 +385,23 @@ Boundary: this is finite A5-to-A6 handoff only.  It does not construct the
 classifier, branch-label injectivity, back-to-label map, Eq3/Eq4/Eq5
 coverage, source labels, terminal `tilde t=0`, chart production, pole order
 without A0, normal crossings, or RLCT extraction.
+
+## Current slice - 2026-06-22, remaining source obligations boundary map
+
+Roadmap artifact:
+`boundary-map-theorem2-remaining-source-obligations-a6.md`.
+Statement card:
+`statement-card-a6-theorem2-remaining-source-obligations.md`.
+
+The boundary map records that the current final socket remains conditional.
+The non-A5 source obligations are selected-cutpoint and Definition 3
+provenance, normal-crossing certificate production, active-ratio lower bounds,
+displayed-ratio chart counts, A4 blow-up source/chart production, A2
+source-boundary handling, and A3 avoidance or policy change.  A5 terminal
+exactness remains supplied or corrected-construction territory after the
+source audit.
+
+The only planned citation remains normal-crossing-to-RLCT extraction.  The map
+explicitly does not cite Aoyagi Lemma 1, Aoyagi Theorem 4,
+regular-coordinate additivity, A2 analytic transport, or Lemma 5 no-extra
+coverage.
