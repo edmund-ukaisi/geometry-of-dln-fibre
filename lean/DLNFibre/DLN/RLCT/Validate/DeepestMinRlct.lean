@@ -46,17 +46,45 @@ theorem rlctAtOn_ray_scaling_invariant
     rlctAtOn F (t • v) = rlctAtOn F v := by
   sorry
 
-/-- **(L1-b) Lower-semicontinuity of the local RLCT at the ray's origin** (the NEW heavy analytic
-primitive — Watanabe/Varchenko lct-semicontinuity; value-INDEPENDENT, NOT Aoyagi Thm 2, NOT banked).
-The deepest core point `0 = lim_{t→0} t • v` has RLCT `≤` the (ray-constant) RLCT at `v`:
-`rlctAtOn F 0 ≤ rlctAtOn F v`. The genuine new obligation of D1 (a) (g160/#57); comparable in weight
-to `weightedThreshold_transport`. NAMED sorry — surfaced, not buried. -/
+/-- **(L1-b) Lower-semicontinuity of the local RLCT at the ray's origin** — LIGHT (g170/#60; the
+controller's `rlctAt`-def hint dissolved g160's "heavy primitive" overestimate). The deepest core
+point `0 = lim_{s→0} s • v` has RLCT `≤` the (ray-constant) RLCT at `v`: `rlctAtOn F 0 ≤ rlctAtOn F v`.
+**Proof = nbhd-monotonicity of `rlctAtOn`, ~10 lines from the `sSup`/`∃Ω∋·` def:** for each admissible
+`c'` at `0` (open `Ω ∋ 0`, `∫|F|^{-c'} < ⊤`), the ray `s • v → 0` enters `Ω` for small `s > 0`, so `Ω`
+is a nbhd of `s • v` too ⟹ `c'` admissible at `s • v` ⟹ `c' ≤ rlctAtOn F (s•v) = rlctAtOn F v` (L1-a);
+`sSup` over admissible `c'`. NO Fatou / Varchenko / absent-Mathlib analysis — value-independent. -/
 theorem rlctAtOn_lsc_at_origin
-    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ) (hD : 0 < D)
-    (hFmeas : Measurable F)
+    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ)
     (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w) :
     rlctAtOn F (0 : Fin N → ℝ) ≤ rlctAtOn F v := by
-  sorry
+  unfold rlctAtOn weightedThreshold
+  apply sSup_le
+  rintro c ⟨c', rfl, Ω, hΩopen, hKΩ, hint⟩
+  have h0Ω : (0 : Fin N → ℝ) ∈ Ω := hKΩ rfl
+  -- the ray `s ↦ s • v` is continuous and hits `0` at `s = 0`, so it enters the open `Ω` for small `s`.
+  have hcont : Continuous (fun s : ℝ => s • v) := by fun_prop
+  have hpre : (fun s : ℝ => s • v) ⁻¹' Ω ∈ 𝓝 (0 : ℝ) :=
+    hcont.continuousAt.preimage_mem_nhds (by
+      show Ω ∈ 𝓝 ((0 : ℝ) • v)
+      rw [zero_smul]; exact hΩopen.mem_nhds h0Ω)
+  -- pick `s ∈ (0, 1]` with `s • v ∈ Ω` (a positive point of the nbhd of `0` in `(0,1]`).
+  obtain ⟨s, hsmem, hspos, hsle⟩ :
+      ∃ s : ℝ, s • v ∈ Ω ∧ 0 < s ∧ s ≤ 1 := by
+    obtain ⟨ε, hεpos, hεsub⟩ := Metric.mem_nhds_iff.1 hpre
+    refine ⟨min (ε / 2) 1, ?_, by positivity, min_le_right _ _⟩
+    exact hεsub (by
+      rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos (by positivity)]
+      calc min (ε / 2) 1 ≤ ε / 2 := min_le_left _ _
+        _ < ε := by linarith)
+  -- `Ω` is a nbhd of `s • v` (open), so `c'` is admissible at `s • v`; transport to `v` by L1-a.
+  have hadm_sv : (c' : ℝ≥0∞) ∈ { c : ℝ≥0∞ | ∃ d : NNReal, c = (d : ℝ≥0∞) ∧
+      ∃ Ω' : Set (Fin N → ℝ), IsOpen Ω' ∧ {s • v} ⊆ Ω' ∧
+        IntegrableOn (fun w => |F w| ^ (-(d : ℝ)) * (fun _ => (1 : ℝ)) w) Ω' volume } :=
+    ⟨c', rfl, Ω, hΩopen, Set.singleton_subset_iff.2 hsmem, hint⟩
+  have hle_sv : (c' : ℝ≥0∞) ≤ rlctAtOn F (s • v) := by
+    rw [rlctAtOn, weightedThreshold]; exact le_sSup hadm_sv
+  rw [rlctAtOn_ray_scaling_invariant F v D s hspos hhomog] at hle_sv
+  exact hle_sv
 
 /-- **D1 (a) core form (the homogeneity comparison).** For a homogeneous-degree-`D` core `F`, the
 deepest point `0` has the minimal local RLCT over all `v`: `rlctAtOn F 0 ≤ rlctAtOn F v`. This is
@@ -65,10 +93,9 @@ at the limit) + the cone (`0 = lim t•v` in the fibre) meet. The full `rlctAt_d
 (Skeleton) wires this through L2's `deepest_regular_core_reduces` (deepest and `v` both reduce to their
 cores; the cores compare here). -/
 theorem deepest_le_of_homogeneous_core
-    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ) (hD : 0 < D)
-    (hFmeas : Measurable F)
+    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ)
     (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w) :
     rlctAtOn F (0 : Fin N → ℝ) ≤ rlctAtOn F v :=
-  rlctAtOn_lsc_at_origin F v D hD hFmeas hhomog
+  rlctAtOn_lsc_at_origin F v D hhomog
 
 end DLNFibre.DLN.RLCT
