@@ -21,11 +21,14 @@ At a deepest point `w0` with `IsDeepLayers H r B w0` (every layer rank exactly `
 layer. By `block_elimination` there are units `P_s,Q_s` with `P_s (w0 s) Q_s = blockdiag[I_r,0]`; in
 the gauge coords each layer is `C_s = [[I_r+X_s, Y_s],[Z_s, T_s]]`, the reduced block `T_s` of width
 `M_s = H_s − r`. The product residuals `E = (∏C − blockdiag[I_r,0])` on the `(0,0),(0,1),(1,0)` blocks
-are the `nReg` regular coords (Jacobian rank `= nReg` at the chain endpoints); the cross term
-`Z₁Y₂` in the `(1,1)` block is `regular×regular ∈ ideal(reg)`, absorbed into `E`, so the reduced core
-is the clean `‖∏T_s‖² = dlnLoss M 0`. The chart Jacobian is a **bounded UNIT** (`≠ 1`), so the
-transport is **NON-MP**: `rlctAtOn_unit_invariant_aux` (peel the unit `|det Dπ|` weight) + germ-locality,
-NOT `rlctAtOn_comp_homeomorph`.
+are the `nReg` regular coords (Jacobian rank `= nReg` at the chain endpoints). **The reduced core is
+the GAUGE-NORMALIZED chain `‖T̃₁···T̃_L‖² = dlnLoss M 0` (the `core` coords), NOT the raw `‖∏T_s‖²`**
+(g150-fix; Codex caught the raw-`T` error): on `{E=0}` the internal gauge unit `(I−V_sY_s)⁻¹` sits
+between layers, so the honest reduced chain is `T̃_s = T_s` with that unit absorbed (the product Schur
+complement). The raw-`∏T` form is FALSE for matrices (`‖T·g·S‖²/‖TS‖²→∞`). The `core` slot of `split`
+carries the `T̃`-normalized chain — the structure is abstract over it; the gauge-normalization is the
+chart's (cobuild-sub34's) obligation. The transport is the local SQUEEZE (`rlctAtOn_squeeze`), not the
+over-reaching global chart (sub-34 g152: the gauge slice is a LOCAL diffeo).
 
 ## Route status
 
