@@ -19,6 +19,18 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Current A0 checkpoint - 2026-06-22
+
+The finite normal-crossing exponent interface has landed in
+`lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`.  It filters active
+coordinates by `k > 0`, takes the finite minimum of `(h+1)/(2*k)` over active
+chart coordinates, counts global-minimum coordinates chartwise, and takes the
+maximum chartwise count as `exponentOrder`.  The analytic theorem is still not
+proved: `AoyagiNormalCrossingExtractionHypothesis` is the explicit cited
+boundary.  This module does not prove chart production, unit nonvanishing,
+Aoyagi Lemma 1, regular-coordinate additivity, Theorem 4, pole order, or RLCT
+extraction.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

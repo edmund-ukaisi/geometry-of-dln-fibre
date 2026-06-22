@@ -82,6 +82,33 @@ lemma. The user's allowed cited boundary is only the normal-crossing-to-RLCT
 extraction theorem, so do not introduce that lemma as a second cited Lean
 interface without surfacing it.
 
+## Latest A0 Update
+
+The finite normal-crossing exponent interface has landed in
+`lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`, imported by
+`lean/DLNFibre.lean`.  It proves the finite arithmetic layer of Aoyagi's
+PDF pp. 5-6 extraction formula:
+
+- `AoyagiNormalCrossingExponentData` records finite chart/coordinate indices,
+  natural loss exponents `k`, natural Jacobian/prior exponents `h`, and a
+  nonempty active coordinate set;
+- `activePairs` filters by `0 < k`, so zero-loss-exponent coordinates do not
+  enter a denominator;
+- `exponentMinimum` is the finite minimum of `(h+1)/(2*k)` over active pairs;
+- `minCoordsInChart` and `exponentOrder` count coordinates attaining the
+  global minimum chartwise and then take the maximum over charts;
+- `AoyagiNormalCrossingExtractionHypothesis` is the explicit cited-boundary
+  assumption equating external `lambda, theta` with these finite values.
+
+Artifacts:
+`threads/02-analytic-interface/reproduction-normal-crossing-exponent-interface-a0.md`,
+`threads/02-analytic-interface/statement-card-a0-normal-crossing-exponent-interface.md`,
+and
+`threads/02-analytic-interface/review-normal-crossing-exponent-interface-a0.md`.
+This is not an analytic theorem and does not prove chart production, unit
+nonvanishing, Aoyagi Lemma 1, regular-coordinate additivity, Theorem 4, pole
+order, or RLCT extraction.
+
 ## Latest A2 Update
 
 The residual-product endpoint wrapper for Aoyagi Theorem 3 has landed.

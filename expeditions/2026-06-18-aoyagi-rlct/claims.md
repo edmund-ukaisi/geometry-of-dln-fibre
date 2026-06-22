@@ -16,21 +16,30 @@ No such claim is formalisation-ready until both fields are filled.
   square loss determines the RLCT and pole order by the standard exponent
   minimum/order formula.
 - **Tier.** Established analytic background.
-- **Status.** open; intended Cited as extraction-only. A2 interface repair
-  decision saved at `threads/02-analytic-interface/interface-repair-a2.md`.
+- **Status.** finite exponent interface proved; analytic extraction remains
+  Cited as extraction-only. A2 interface repair decision saved at
+  `threads/02-analytic-interface/interface-repair-a2.md`.
 - **Kill-condition.** Aoyagi's final extraction uses an analytic hypothesis not
   captured by the interface we state, or the interface computes a different
   invariant.
-- **Evidence/source.** Aoyagi Definition 1, Lemma 1, Definition 2, and
-  Hironaka/normal-crossing extraction discussion, PDF pp. 5-6.
-- **Pen-and-paper reproduction.** Cite-interface check pending.
+- **Evidence/source.** Aoyagi Definition 1, Definition 2, and
+  Hironaka/normal-crossing extraction discussion, PDF pp. 5-6. Aoyagi Lemma 1
+  is noted only as an excluded analytic generator-comparison theorem.
+- **Pen-and-paper reproduction.**
+  `threads/02-analytic-interface/reproduction-normal-crossing-exponent-interface-a0.md`.
 - **Reproduction check.** analytic scout report at
   `threads/02-analytic-interface/scout-report.md`; controller interface draft
-  at `threads/02-analytic-interface/interface-draft.md`.
+  at `threads/02-analytic-interface/interface-draft.md`; xhigh source/API
+  reviews recorded in
+  `threads/02-analytic-interface/review-normal-crossing-exponent-interface-a0.md`.
 - **Lean target.** A named hypothesis/interface for concrete
   normal-crossing-certificate extraction, not a theorem pretending to prove the
   analytic extraction or general ideal-generator invariance.
-- **Proved.** none by us.
+- **Proved.** finite exponent data and formula infrastructure in
+  `lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`:
+  `AoyagiNormalCrossingExponentData`, active-coordinate filtering,
+  `ratioAt`, `activeRatios`, `exponentMinimum`, chartwise minimum-coordinate
+  counts, `exponentOrder`, and helper existence/bound lemmas.
 - **Assumed.** the exact normal-crossing hypotheses once specified: finite
   charts, nonvanishing units, loss/Jacobian-prior exponents, prior hypotheses,
   and zero-loss-exponent convention.

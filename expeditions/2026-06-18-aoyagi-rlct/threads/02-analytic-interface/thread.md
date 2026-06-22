@@ -46,3 +46,30 @@ Consequences:
   build the regular variables into a full normal-crossing certificate, so the
   `c/2` shift is finite certificate arithmetic before the single extraction
   citation.
+
+## 2026-06-22 finite exponent interface
+
+Lean now contains the exponent-only interface
+`lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`, imported by
+`lean/DLNFibre.lean`.
+
+This module records only the finite formula after a normal-crossing chart
+certificate has been supplied:
+
+- active coordinates have `k > 0`;
+- `exponentMinimum` is the minimum of `(h+1)/(2*k)` over active chart
+  coordinates;
+- `exponentOrder` is the maximum, over charts, of the number of active
+  coordinates attaining the global minimum;
+- `AoyagiNormalCrossingExtractionHypothesis` is the explicit cited-boundary
+  hypothesis equating external `lambda, theta` with those finite values.
+
+Artifacts:
+
+- `reproduction-normal-crossing-exponent-interface-a0.md`;
+- `statement-card-a0-normal-crossing-exponent-interface.md`;
+- `review-normal-crossing-exponent-interface-a0.md`.
+
+Nonclaims remain unchanged: no analytic theorem, chart production,
+nonvanishing units, Aoyagi Lemma 1, regular-coordinate additivity, Theorem 4,
+pole-order theorem, or RLCT theorem is proved by this module.
