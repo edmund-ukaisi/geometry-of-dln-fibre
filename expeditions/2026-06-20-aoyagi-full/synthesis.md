@@ -62,12 +62,18 @@ decisions as "current lean, pending X", not as settled.)
   FULLY PROVEN (clean-three) — sub-2, sub-5 (`deepest_squeeze_transport`), sub-6, sub-7, the assembly
   `deepest_regular_core_reduces`; + 4 reusable Foundations lemmas (spectator-peel #52, continuous_dlnLoss,
   weightedThreshold_weight_unit_invariant, rlctAtOn_mono/rlctAtOn_squeeze re-homed GeneralR1Recursion→
-  S1NonMPTransport). GATED on ONLY sub-3 (cobuild-sub34's comparability). hGne carried as a local hypothesis →
-  discharge-vs-stated-headline TRACKED for spine-wiring; gap #2 measurability CLOSED (Codex g151). crux2 NEXT →
-  D1≥ wiring skeleton (below).
-- cobuild-sub34 #51 (the COLLAPSED sub-3 = the matrix-core comparability, GAUGE-NORMALIZED T̃:
-  ‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0; #53/#54) — the XL chart-existence DROPPED. Builds the two-sided loss_squeeze +
-  MP split to-spec against crux2's trimmed structure @c1ce00f. Own worktree (workspace/dgc-sub34). pp2 backup if it walls.
+  S1NonMPTransport). GATED on ONLY sub-3 (cobuild-sub34's comparability). STRUCTURE FIX in flight (cobuild-sub34
+  caught it at instance-production): the trimmed loss_squeeze was OVER-CONSTRAINED — split MP + hardcoded Φ-core
+  = dlnLoss M 0(paramsEquivFlat M ...) forces the RAW core, which g153 refuted (C1C2C3=blockdiag[1,−ε⁴]: loss=ε⁸
+  > 0 = Φ). FIX (A, determined): add `coreEmbed` field (the g-absorbing UNIT-Jacobian reparam) + Φ-core =
+  dlnLoss M 0(coreEmbed ...); split stays MP (sub-5/6 INTACT, verified line-by-line), sub-7 gains the unit-peel
+  via the PROVEN weightedThreshold_weight_unit_invariant. L2 claim HOLDS (unit-Jacobian ⟹ core RLCT =
+  rlctAtOn(dlnLoss M 0) 0). crux2 implementing. hGne carried as a local hypothesis → TRACKED for spine-wiring;
+  gap #2 measurability CLOSED (Codex g151). crux2 NEXT → D1≥ wiring skeleton (below).
+- cobuild-sub34 #51 (the COLLAPSED sub-3 = matrix-core comparability, GAUGE-NORMALIZED T̃ ‖T·(I−VY)⁻¹·S‖² ≍
+  dlnLoss M 0): chart-collapse CONFIRMED (sub-5 uses only split + loss_squeeze + MP transport, no chart). Matrix
+  bedrock BANKED green (twofactor_block_product, schur_P11_decomp [P11=R+leak, R=T̃], frobenius_fromBlocks) = the
+  coreEmbed content. Holds the loss_squeeze assembly for crux2's coreEmbed field. Worktree workspace/dgc-sub34. pp2 backup.
 - **D1 #42 ≥-leg (`rlctAt_deepest_le_of_optimal`):** #111-check verdict — (a) the general-v homogeneous-residual
   chart is NEW (block_elimination only normal-forms target B) AND shares technique with #44's deepest squeeze →
   ONE cert. pp2 EXTENDS #48 to the general-v squeeze datum (serves #44 sub-3 [v=deepest] + D1 (a) [arbitrary
