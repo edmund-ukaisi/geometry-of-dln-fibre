@@ -4822,6 +4822,23 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-terminal-palpha-endpoint-cardinal-squeeze-a5.md`.
 
+Latest A5 Eq5 endpoint raw-cardinality update:
+`Lemma5Eq5SuppliedCoverage.lean` now also contains
+`aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_value_injective`
+and
+`aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_alpha_injective`.
+The proof counts the one-coordinate raw endpoint branch set through its
+injective value image and the Htilde interval value-set cardinality; the
+alpha-injective wrapper derives the needed raw value injectivity from the
+previous endpoint theorem.  This is raw finite bookkeeping only, not
+base-filter survival, filtered nonbase count, terminal-minimum exactness,
+source-backed no-extra coverage, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-cardinality-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-raw-cardinality.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

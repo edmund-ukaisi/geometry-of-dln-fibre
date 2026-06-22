@@ -5115,3 +5115,33 @@ branches, prove terminal Eq5 payload coverage from source, prove terminal
 `(p, alpha)` injectivity from source, build a counted-datum back-to-label map,
 prove source-backed no-extra coverage, prove the Lemma 5 order count, prove
 pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint raw cardinality
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-raw-cardinality.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_value_injective
+aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_alpha_injective
+```
+
+The first theorem counts a one-coordinate Eq5 endpoint raw branch set through
+its injective value image.  The raw value image is already the Htilde interval
+value set, and that value set has cardinality
+`aoyagiLemma5IntervalSize ell a j` for an interior coordinate.  The second
+theorem supplies raw value injectivity from the previous strict
+alpha-injective endpoint wrapper.
+
+This is finite raw endpoint bookkeeping only.  It does not construct Eq5
+branches or endpoint records, prove source-label legality, prove source
+strict alpha injectivity, prove base-filter survival, count filtered nonbase
+branches, classify terminal-minimum labels, prove no-extra coverage, prove a
+Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.

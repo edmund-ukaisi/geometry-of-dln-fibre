@@ -2715,6 +2715,14 @@ No such claim is formalisation-ready until both fields are filled.
   injectivity, base-filter survival, no-extra coverage, and order-count data
   remain unproved.
   Also proved
+  `aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_value_injective`
+  and
+  `aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_alpha_injective`.
+  These count one interior raw endpoint branch set through its injective value
+  image and the Htilde interval value-set cardinality.  They do not count the
+  filtered nonbase family, prove base-filter survival, or classify
+  terminal-minimum labels.
+  Also proved
   `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord_branchCoord_eq`
   and
   `AoyagiLemma5SuppliedNonbaseFamily.countDatumClassifierOfEq5AlphaIndexedEndpointCoverage_of_alphaInjective_branchCoord`.

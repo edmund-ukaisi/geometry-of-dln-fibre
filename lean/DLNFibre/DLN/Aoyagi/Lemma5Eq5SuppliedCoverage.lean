@@ -310,6 +310,93 @@ theorem aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat
       _ = aoyagiHtildeIntervalValueSetNat ell a M m j :=
           Finset.insert_erase hupper_mem
 
+/-- One-coordinate cardinality of the supplied Eq5 endpoint raw branch set,
+assuming raw value injectivity.
+
+This is finite endpoint/offset bookkeeping only.  It does not construct Eq5
+branches, prove source-label legality, or prove source production of endpoint
+records. -/
+theorem aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_value_injective
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β)
+    (ha : a ≤ ell) {j : ℕ}
+    (hj : j ∈ Finset.Icc 1 (ell - 1))
+    (halpha_image :
+      (strictBranches j).image alphaOf = aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue : ∀ b ∈ strictBranches j,
+      value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower : j ≤ a → j ≤ ell - a →
+      value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (hvalue_inj :
+      Set.InjOn value
+        ↑(aoyagiLemma5Eq5EndpointRawBranches
+          ell a strictBranches upper lower j)) :
+    (aoyagiLemma5Eq5EndpointRawBranches
+        ell a strictBranches upper lower j).card =
+      aoyagiLemma5IntervalSize ell a j := by
+  have hj_lt : j < ell + 1 := by
+    have hj_le : j ≤ ell - 1 := (Finset.mem_Icc.mp hj).2
+    omega
+  have hcard_image :
+      ((aoyagiLemma5Eq5EndpointRawBranches
+          ell a strictBranches upper lower j).image value).card =
+        (aoyagiLemma5Eq5EndpointRawBranches
+          ell a strictBranches upper lower j).card :=
+    Finset.card_image_of_injOn
+      (s := aoyagiLemma5Eq5EndpointRawBranches
+        ell a strictBranches upper lower j)
+      (f := value) hvalue_inj
+  calc
+    (aoyagiLemma5Eq5EndpointRawBranches
+        ell a strictBranches upper lower j).card =
+        ((aoyagiLemma5Eq5EndpointRawBranches
+          ell a strictBranches upper lower j).image value).card :=
+          hcard_image.symm
+    _ = (aoyagiHtildeIntervalValueSetNat ell a M m j).card := by
+      rw [aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat
+        (ell := ell) (a := a) (M := M) (m := m)
+        strictBranches alphaOf value upper lower ha hj
+        halpha_image hvalue hupper hlower]
+    _ = aoyagiLemma5IntervalSize ell a j :=
+      aoyagiHtildeIntervalValueSetNat_card_of_lt ell a M m j hj_lt
+
+/-- One-coordinate cardinality of the supplied Eq5 endpoint raw branch set,
+deriving raw value injectivity from strict alpha injectivity.
+
+This is finite endpoint/offset bookkeeping only.  The strict alpha injectivity
+is still supplied; this theorem does not construct source branch records. -/
+theorem aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_alpha_injective
+    {β : Type*} [DecidableEq β]
+    {ell a : ℕ} {M : ℤ} {m : Fin (ell + 1) → ℤ}
+    (strictBranches : ℕ → Finset β) (alphaOf : β → ℕ)
+    (value : β → ℤ) (upper lower : ℕ → β)
+    (ha : a ≤ ell) {j : ℕ}
+    (hj : j ∈ Finset.Icc 1 (ell - 1))
+    (halpha_image :
+      (strictBranches j).image alphaOf = aoyagiLemma5Eq5AlphaDomain ell a j)
+    (hvalue : ∀ b ∈ strictBranches j,
+      value b = aoyagiHtildeUpperNat ell a M m j - (alphaOf b : ℤ))
+    (hupper :
+      value (upper j) = aoyagiHtildeUpperNat ell a M m j)
+    (hlower : j ≤ a → j ≤ ell - a →
+      value (lower j) = aoyagiHtildeLowerNat ell a M m j)
+    (halpha_inj : Set.InjOn alphaOf ↑(strictBranches j)) :
+    (aoyagiLemma5Eq5EndpointRawBranches
+        ell a strictBranches upper lower j).card =
+      aoyagiLemma5IntervalSize ell a j :=
+  aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_value_injective
+    (ell := ell) (a := a) (M := M) (m := m)
+    strictBranches alphaOf value upper lower ha hj
+    halpha_image hvalue hupper hlower
+    (aoyagiLemma5Eq5EndpointRawBranches_value_injective_of_alpha_injective
+      (ell := ell) (a := a) (M := M) (m := m)
+      strictBranches alphaOf value upper lower ha hj
+      halpha_image hvalue hupper hlower halpha_inj)
+
 namespace AoyagiLemma5SuppliedNonbaseFamily
 
 /-- Build the supplied nonbase family from Eq5 alpha-indexed branches and

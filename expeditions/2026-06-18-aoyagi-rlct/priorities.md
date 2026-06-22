@@ -208,6 +208,8 @@ Current Eq5 endpoint branch-coordinate disjointness slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
 Current Eq5 endpoint raw value-injectivity slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-value-injective-a5.md`.
+Current Eq5 endpoint raw cardinality slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-cardinality-a5.md`.
 Current Eq5 endpoint counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-countdatum-classifier-a5.md`.
 
@@ -274,6 +276,16 @@ It still assumes base-value membership, alpha-domain coverage, endpoint value
 formulas, strict alpha injectivity, component coordinate facts, and does not
 construct branch records, prove source-label legality, no-extra coverage, pole
 order, normal crossings, or RLCT.
+
+Lean now also counts one interior Eq5 endpoint raw branch set:
+`aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_value_injective`
+and
+`aoyagiLemma5Eq5EndpointRawBranches_card_eq_intervalSize_of_alpha_injective`.
+The proof counts through the already-proved raw value image and Htilde interval
+value-set cardinality.  It is a raw, one-coordinate theorem only: no
+base-filter survival, filtered nonbase count, source branch construction,
+terminal-minimum exactness, no-extra coverage, pole order, normal crossings,
+or RLCT is proved.
 
 Lean now packages the strictest Eq5 endpoint supplied family into the generic
 counted-datum classifier API:
