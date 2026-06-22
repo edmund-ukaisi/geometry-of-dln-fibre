@@ -28,8 +28,7 @@ print(f"  (Independent of cobuild-sub34's exact numbers — my own (1,1,1) const
 # ---- Q1: leak = P10 P00^{-1} P01, ∈ ideal(E)?  loss ≍ ∑E²+‖Rcore‖²? (L=2 then L=3) ----
 print("\n"+"="*68); print("Q1: leak=P10·P00⁻¹·P01 cofactor + ideal(E) + two-sided squeeze (L=2)")
 print("="*68)
-leak = sp.simplify(P10*P00**(-1)*P01)  # wait P00 is the full (0,0) = 1+E00
-P00 = P[0,0]
+P00 = P[0,0]; P01 = P[0,1]; P10 = P[1,0]; P11_b = P[1,1]
 leak = sp.simplify(P10*P00**(-1)*P01)
 Rcore = sp.simplify(P11 - leak)
 print("leak = P10·P00⁻¹·P01 =", leak)
