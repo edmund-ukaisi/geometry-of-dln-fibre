@@ -10,3 +10,13 @@ Seeded from voigt-discharge + rlct-payoff:
   prove the genuinely-new content. Here: aim zero-cited for the combinatorial invariance.
 - Recovery-substrate hygiene: all thread artefacts under the expedition dir; threads.md current; dates = commit
   dates; `git diff --check` clean; no scratch `.lean` under the library tree.
+
+## 2026-06-22 — subagent cwd hazard (the homing incident)
+- Background SUBAGENTS launch with cwd = the repo's PRIMARY (main) worktree, NOT the controller's worktree,
+  regardless of the controller's cwd or EnterWorktree. Their RELATIVE Write/Edit-tool paths resolve to the
+  main tree. In a multi-session repo where main = another live session, this POLLUTES that session's tree.
+- Pen-and-paper seats were unaffected: they create files via bash `cd <worktree> && …`, which honours the cd.
+  Only Write/Edit-TOOL relative paths mis-home.
+- MITIGATION: controller writes Lean himself (absolute paths) when main is a live foreign session; OR instruct
+  agents to use ONLY absolute paths under the target worktree + self-check `git -C <main> status` for leaks.
+  Detect a mis-home by job-count mismatch (foreign aggregate ≠ your branch's) + `find <repo> -name <file>`.

@@ -126,3 +126,22 @@ IMPACT: M3 (PEEL) needs ONLY (D) Durfee as classical input. M2 re-scoped: (D) Du
 q-binomial inverse [M4, possibly AVOIDABLE by own induction]; q-Vandermonde likely NOT needed at all.
 GIT NOTE: findings.md + this flush written to disk; commit DEFERRED to the post-M1 coordinated pass
 (fm-qseries-m1 is mid-tide in the shared worktree — avoid racing its build/commit).
+
+## 2026-06-22 — M1 LANDED + a worktree-homing INCIDENT (resolved) + operating-mode shift
+- **M1 LANDED:** Core.QSeries primitives green/axiom-clean ([propext,Classical.choice,Quot.sound] verified
+  by me), fidelity-PASS, card SHA-pinned 9d5002c. Commit 9d5002c (+ d3da019 SHA pin). The q-series foundation.
+- **INCIDENT:** the M1 formaliser (background subagent) launched with cwd = the repo MAIN checkout (a DIFFERENT
+  live session, expedition/aoyagi-full), NOT my voigt-discharge worktree. Its relative Write/Edit wrote
+  QSeries.lean + an aggregator import + a stray expedition dir into the AOYAGI tree; it built the aoyagi
+  aggregate (3704 jobs ≠ my 3681). RESOLVED: rescued the content, re-verified green/axiom-clean on MY branch,
+  surgically restored the aoyagi tree (reverted exactly my +2 aggregator lines after re-checking the diff;
+  removed my stray files). Aoyagi's own work untouched; nothing leaked to their commits.
+- **ROOT CAUSE:** harness launches subagents at the repo's primary (main) worktree regardless of my cwd;
+  relative tool-writes go there. EnterWorktree is a no-op (I'm already cwd-rooted in voigt-discharge).
+- **OPERATING MODE (decided):** the controller writes the q-series Lean tides HIMSELF in voigt-discharge with
+  ABSOLUTE paths (provably safe). Pen-and-paper seats remain (they write via bash `cd`, unaffected) for
+  decorrelated MATH + strategy scoping; Codex for decorrelation. Trades formaliser-fleet parallelism for zero
+  risk to the live aoyagi session. Slower/serial but safe. (Operator offered the alternative of guarded
+  formaliser worktrees if speed is wanted.)
+- **NEXT:** M2 = N=1 Durfee identity. scope-durfee (pen-and-paper, thread 06) scoping the Lean route +
+  Mathlib support first; then I write the Lean.
