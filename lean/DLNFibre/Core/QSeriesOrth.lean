@@ -65,7 +65,7 @@ theorem one_sub_pow_split_le {u k : ℕ} (h : k ≤ u) :
   have : (X : ℤ⟦X⟧) ^ (u - k) * X ^ k = X ^ u := by rw [← pow_add, Nat.sub_add_cancel h]
   rw [mul_sub, mul_one, this]; ring
 
-/-- **The orthogonality recurrence** (the work): `orthSum u · (1 − X^u) = (1 − X^{u−1}) · orthSum (u−1)`
+/-- **The orthogonality recurrence**: `orthSum u · (1 − X^u) = (1 − X^{u−1}) · orthSum (u−1)`
 for `u = v + 1`. Distribute `1 − X^{v+1}` by `one_sub_pow_split`: the `(1−X^{u−k})` part telescopes
 (via `(PA)`, the `k = u` term dying) to `orthSum v`; the `X^{u−k}·(1−X^k)` part, after peeling `k = 0`
 and reindexing `j = k−1` (via `(AA)`), gives `−X^v · orthSum v`. -/
