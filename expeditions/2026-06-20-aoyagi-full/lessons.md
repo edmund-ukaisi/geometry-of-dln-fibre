@@ -516,12 +516,20 @@ aggregator reaches. Gate orphan engines explicitly until they are consumed, and 
 covered by (a) importing stable engines into the aggregator and (b) a restored `AxCheck.lean` that
 `#print axioms` the key results on every build. "Green build" ≠ "every module compiles."
 
-## Decorrelation tool down: the codex CLI hangs environment-wide (2026-06-22)
+## Decorrelation tool intermittent: the codex CLI hangs in down-windows (2026-06-22, down ~22:00+)
 
 The local `codex` CLI is non-functional in this environment. `~/.local/bin/codex` is an AISI wrapper that
 runs `uvx --with git+ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools aisitools override-key`
 (the sanctioned AISI key-governance step) on EVERY invocation, and that git-ssh fetch HANGS before codex
 ever starts — even `codex --version` times out; `~/.codex/auth.json` is absent.
+
+**INTERMITTENT, not all-day-down (corrected ~22:00 from a teammate's data):** a fresh consult (g165)
+LANDED successfully at 21:50 today — real 63-line output, a completed run (it confirmed PIN 0's Route A,
+a valid decorrelated opinion). The controller's tests + a teammate's re-test hung only from ~21:56/22:00+.
+So codex cycles up/down; the wrapper's uvx git-ssh fetch is the DOWN-window failure mode. The controller's
+earlier "down environment-wide" over-generalized from down-window samples — timestamp any "codex down"
+observation (a later window may work; it is timing out as of ~22:00+). Standing discipline unchanged: don't
+DEPEND on codex (substitute subagents + handback-on-thrash); treat an up-window consult as a bonus.
 
 **Surfaced by:** pp2's #70 decorrelated consult "didn't land (CLI flaky — nested background launch)." The
 nested-launch hypothesis was a RED HERRING: a top-level `codex doctor` / `codex --version` hangs identically.
