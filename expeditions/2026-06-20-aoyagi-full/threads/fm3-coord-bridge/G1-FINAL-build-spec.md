@@ -88,6 +88,26 @@ surface the (2,2,2) IsRouteMCover instance when green. EVERY signature now verif
 adapters, no shape gaps. The grind (routeStep + cover_le/cover_ge_div + Fmeas/Uopen/Umem + mult-bound/binding-leaf)
 is pure formalisation against the signed-off interface. === COORDINATION ARC EXHAUSTIVELY CLOSED (g155→g182). ===
 
+## cover_le LANDED with ∃-C shape (g189, crux2 @91159e1) — the FINAL stub target
+crux2 WEAKENED + PUSHED cover_le (origin/fm2/route-m-atlas @91159e1; #81 done). The C is EXISTENTIALLY
+quantified INSIDE cover_le (NOT a data field — IsRouteMCover is Prop-valued, a data field
+`coverConst : NNReal → ℝ≥0∞` FAILS Prop-projection). LANDED field (verified):
+  cover_le : ∀ c' : NNReal, ∃ C : ℝ≥0∞, C < ⊤ ∧
+      ∫⁻ x in U, ENNReal.ofReal (|F x| ^ (-(c':ℝ)))
+        ≤ C * ∑ i : ι, ∫⁻ y in unitBox (d i), ENNReal.ofReal (monomialIntegrand (d i)(k i)(h i)(c':ℝ) y)
+So MY routeM_cover_le RETURNS the ∃ C (NO C-function threading — a per-c' finite witness):
+  routeM_cover_le (S)(c') : ∃ C : ℝ≥0∞, C < ⊤ ∧ ∫⁻_U |routeMCore S|^(-(c':ℝ)) ≤ C * ∑ i, ∫_{unitBox (routeD S i)}
+    monomialIntegrand (routeD S i)(routeK S i)(routeH S i)(c':ℝ)
+Provide ⟨(a^{−c'}·2^d as the finite C), (C < ⊤), (the ≤ bound)⟩ — my banked integrableOn_monomial_mul_unit_iff
+(a^{−c'}) + integrableOn_Icc_symm_of_even (2^d) produce that bound with that C. This SUPERSEDES the
+C : RouteState→NNReal→ℝ≥0∞ data-threading idea (g188) — the ∃-inside-Prop is cleaner (no C-function field).
+UNCHANGED: cover_ge_div + Fmeas/Uopen/Umem (no constant); box stays unitBox [0,1]^d; wrap still 5 fields (C
+lives INSIDE cover_le). crux2 verified full lib green (3702) + headline clean-three (C never enters the ⨅).
+DEPENDENCY for the grind: routeM_cover_le's BODY + routeMCore/routeMBaseNbhd (extraction) need routeStep
+CONCRETE (they extract the flat core/nbhd from the node). So order: routeStep (pp2 recipe) → routeAtlas
+concrete → routeMAmbient/Core/BaseNbhd → cover-facts (the ∃-C statement is TRUE, stub-safe per g188). The
+∃-C statement is stub-safe (true) the moment routeMCore is concrete; until then routeMCore itself is the gate.
+
 ## STUB DISCIPLINE — routeM_cover_le MUST stub WITH C(c'), never bare (g188, crux2 STOP)
 crux2 STOP (right — lean-discipline enforced): do NOT stub routeM_cover_le with the BARE RHS (≤ Σ∫). It's
 UNPROVABLE (a^{−c'}·2^d irreducible) — a bare stub = a sorry under a FALSE statement, which would WALL when I
