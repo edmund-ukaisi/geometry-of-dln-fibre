@@ -418,3 +418,26 @@ schur_recursion_step_sound off-path? (2) per-node transport = rlctAtOn_reduced_t
 schematic-fold build until crux2 confirms (building against the wrong per-cell consequence = the rework I'm
 avoiding). This ALSO simplifies pp2's #68 cert: the per-cell datum is the x_p² monomial pullback (not the
 heavy IsSchurStraightenSqueeze additive datum) — lighter certificate. AWAITING crux2.
+
+## pp2 #68 CERT LANDED (g183, origin/g183-routestep-dispatcher @1ac5de4) + §2 BRIDGE BANKED (g165)
+pp2's dispatcher cert delivered — confirms g164 (per-node op = monomial min-fold, codims = Mval) + adds
+the load-bearing refinements:
+- §1.1 LEAF = `IsUnit residualCore` (NOT "no C1 applies" — Codex #5; scalar/rank-1 remnants would be
+  misclassified, dropping a binding divisor).
+- §2 THE C1-CONDITION (the single CERTIFIED-vs-green-wrong seam, Codex #1/#4 = pp2 #138, re-found):
+  every pivot codim = Mval M T for an ADMISSIBLE T, NOT raw coord cardinality / Jacobian rank (the
+  (4,3,2) thin-product trap). So `codim` is NOT a bare ℕ — it pairs with `witness : {T // Adm M T ∧
+  codim = Mval M T}` + the mult-1 proof (k,h)=(1,c−1). Without it C≥ is unprovable.
+- §4 REACHABILITY (C=∃): a named realizability lemma (∀ minimiser T*, a legal chart path reaching S_{T*}
+  with binding codim = Mval(T*)); rides Core.baseChange_normalForm; only the minimiser need be reached.
+- §5 validated (2,2,2)/(3,2,3)/(2,2,2,2)/(4,3,2) against the QIP minAdm ground-truth; codim-sequence =
+  rank-descent, min codim on achiever path = minAdm.
+- §6 ValidRouteStep field list (co-designed) — what I transcribe.
+BANKED (g165, @dd6bdb5, the §2 value-side discharge):
+- `minAdm_le_Mval_toNat` : T ∈ Adm M ⟹ minAdm ≤ (Mval M T).toNat (Finset.inf'_le; clean-three). The
+  admissible-T witness mechanically gives no-undershoot.
+- `foldFamily_threshold_ge_of_admWitness` : leaves built from admissible-T-witnessed codims ⟹ ∀ leaf,
+  ≥ ½·minAdm. The §2 C≥ consequence, value-side — exactly what pp2's witness field delivers.
+So the §2 green-≠-right guard is now machine-checked on the value side: the dispatcher's threshold_ge
+holds BY the admissible-T witness. STILL AWAITING crux2 on the transport-field (additive-vs-min / which
+lemma the per-cell consequence uses) before pinning the full ValidRouteStep + building the fold.
