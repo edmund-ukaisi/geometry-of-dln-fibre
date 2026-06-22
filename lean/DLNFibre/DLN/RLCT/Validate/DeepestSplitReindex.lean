@@ -192,6 +192,41 @@ reduced core. `nGauge = flatDim H − deepestNReg H r − flatDim (deepestM H r)
 abbrev deepestNGauge (H : Fin (L + 1) → ℕ) (r : ℕ) : ℕ :=
   flatDim H - deepestNReg H r - flatDim (deepestM H r)
 
+/-- `card (RegGaugeIdx H r) = deepestNReg + deepestNGauge` — the reg+gauge entries number the
+non-core flat directions (from `roleSplitIdx` being a bijection + the dimension identity). -/
+theorem card_regGaugeIdx (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Fintype.card (RegGaugeIdx H r) = deepestNReg H r + deepestNGauge H r := by
+  have hcard := Fintype.card_congr (roleSplitIdx H r hr)
+  rw [Fintype.card_sum] at hcard
+  have hfH : Fintype.card (FlatIdx H) = flatDim H := rfl
+  have hfM : Fintype.card (FlatIdx (deepestM H r)) = flatDim (deepestM H r) := rfl
+  rw [hfH, hfM] at hcard
+  have hdim := flatDim_deepest_split H r hr hL
+  unfold deepestNGauge
+  omega
+
+/-- **The role-respecting `Fin`-index equivalence** (the precision-pin core): `Fin (flatDim H) ≃
+Fin nReg ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin nGauge)`, where the MIDDLE summand is the reduced `T`-core
+(`= FlatIdx (deepestM)`) and the outer/right are the reg/gauge entries — slots BY ROLE, NOT arbitrary.
+Built from `roleSplitIdx` (the role split) + `Fintype.equivFin` on each summand + `card_regGaugeIdx`
+(reg-gauge count) + `finSumFinEquiv` (the reg/gauge `Fin`-split) + `sumAssoc`. -/
+noncomputable def deepestRoleIndexEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Fin (flatDim H)
+      ≃ Fin (deepestNReg H r) ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin (deepestNGauge H r)) := by
+  -- `Fin (flatDim H) ≃ FlatIdx H ≃ RegGaugeIdx ⊕ FlatIdx (deepestM)`.
+  refine (Fintype.equivFin (FlatIdx H)).symm.trans ((roleSplitIdx H r hr).trans ?_)
+  -- RegGaugeIdx ≃ Fin nReg ⊕ Fin nGauge; FlatIdx (deepestM) ≃ Fin (flatDim M).
+  have eReg : RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r) :=
+    (Fintype.equivFin (RegGaugeIdx H r)).trans
+      ((finCongr (card_regGaugeIdx H r hr hL)).trans finSumFinEquiv.symm)
+  have eCore : FlatIdx (deepestM H r) ≃ Fin (flatDim (deepestM H r)) :=
+    Fintype.equivFin (FlatIdx (deepestM H r))
+  refine (Equiv.sumCongr eReg eCore).trans ?_
+  -- (Fin nReg ⊕ Fin nGauge) ⊕ Fin (flatDim M) ≃ Fin nReg ⊕ (Fin (flatDim M) ⊕ Fin nGauge).
+  refine (Equiv.sumAssoc _ _ _).trans (Equiv.sumCongr (Equiv.refl _) (Equiv.sumComm _ _))
+
 /-- **Obligation (i) — the gauge-slice MP reindex exists** (the `split` field of `DeepestGaugeChart`).
 At the deepest point, a measure-preserving homeomorphism
 `split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge` carrying the flat image of the deepest point
