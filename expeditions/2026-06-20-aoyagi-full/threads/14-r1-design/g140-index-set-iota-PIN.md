@@ -2,32 +2,38 @@
 
 **Unblocks fm3's #27.** fm3's Case222→general map (`threads/fm3-coord-bridge/case222-tree-generalization-map.md`)
 pinned the NODE OPERATION (uniform `pivotBlowupOn`; the `(pivot)²` loss factor IS the exceptional divisor
-feeding `monomialThreshold`, NOT an additive `nReg/2`; uniform blow-up + recurse (NO step-2 straighten, #35); branch =
+feeding `monomialThreshold`, NOT an additive `nReg/2`; node = blow-up (step A, weight) + EXACT Schur-descent (step B, ΣM-drop; #36) + recurse; branch =
 pivot choice). This addendum to #138 pins what I own: the **index set ι** + its reconciliation with the
 the OFF-PATH squeeze, in fm3's uniform-pivotBlowupOn frame. fm3 is correctly blocked until ι is pinned; it is below.
 
-## The node operation: UNIFORM blow-up + RECURSE (NO step-2 squeeze/straighten)
-**(REVISED — controller flag #35: the earlier "two-level reconciliation" put the squeeze back as a step-2
-straighten, which is the BLOCKED E→coordinate straightening; removed. C1 defaults to uniform blow-up +
-recurse, fm3's frame.)** The C1 node operation is:
-1. **`pivotBlowupOn active p`** of the rank-defect center: `core ∘ φ = x_p²·Q`, Jacobian `|x_p|^{card−1}`.
+## The node operation: blow-up (weight) + EXACT Schur-descent (ΣM-drop) + recurse
+**(REVISED — controller #35 then refined #36. The squeeze is OFF-PATH; but there ARE two steps: the
+blow-up carries the weight, the EXACT Schur-descent carries the `ΣM`-drop. Distinguish THREE things: the
+squeeze (off-path bound), the E→coordinate straightening (blocked), and the exact Schur-descent (step B,
+the ΣM-drop; its general constructibility = the crux2 check).)** The C1 node operation, two steps:
+1. **(A) `pivotBlowupOn active p`** of the rank-defect center: `core ∘ φ = x_p²·Q`, Jacobian `|x_p|^{card−1}`.
    **The `x_p²` is the EXCEPTIONAL DIVISOR** — `(k,h) = (1, card−1)`, ratio `card/2`, **ACCOUNTED by
-   `monomialThreshold`** (`x_p²` vanishes on `{x_p=0}`, NOT a unit, so NOT stripped).
-2. **RECURSE on the residual `Q` via the dispatcher** — `Q` is a strictly SMALLER core (singular part = the
-   reduced-width Schur chain `S·A2red`; the regular pivot row rides as spectator coords), `ΣM` drops; the
-   dispatcher re-classifies `Q` and the next `pivotBlowupOn` fires on its rank-defect. `lex`-terminates.
-**NO step-2 straighten.** The E-coupling (the bilinear rank-defect `{r−pq=0}`) is resolved by FURTHER
-blow-ups in the recursion, NEVER by straightening E to coordinates. Why this matters (controller flag #35):
-- straightening `{r−pq=0}` (a singular quadric) to `{w=0}` (smooth coordinate subspace) IS the
-  **E→coordinate straightening crux2 found BLOCKED** — the `(E, SΓ)` Jacobian is rank-deficient at the
-  deepest point, so `E` are NOT coordinates there. If one (wrongly) treats them as coordinates, the
-  "regular squares" give `rlctAtOn(∑E²) = 1/2`, NOT `nReg/2` — the order-4-vs-order-2 failure fm3 proved.
-- The squeeze `flatCore − Φ ∈ ideal(E)` (#131) is a sound analytic FACT but is PARKED off-path: it is NOT
-  C1's mechanism (it drops the `x_p²` weight; decision C / g134). The lemma2Fwd det-1 straighten is `(2,2,2)`
-  SCAFFOLDING (fm3's map), not a general step.
-**The step-2 straighten enters the spec ONLY if fm3 (building C1) + crux2 (vs the rank-deficiency) confirm
-it is both NEEDED and CONSTRUCTIBLE** — held pending that check. Until then C1 = uniform blow-up + recurse. **fm3's correction adopted:
-every node routes through `pivotBlowupOn`; the δ-branch `![…]` algebra is (2,2,2) scaffolding, not general.**
+   `monomialThreshold`** (`x_p²` vanishes on `{x_p=0}`, NOT a unit, so NOT stripped). **Step A does NOT drop
+   `ΣM`** — the hard-pivot-normalized residual `Q = ‖Â·A2‖²` has the SAME dimensions `M` (g143).
+2. **(B) the EXACT det-unit Schur-descent** (the `lemma2Fwd` generalization — det-`±1` c-o-v, lintegral-level
+   splice, NOT a two-sided bound): clears the pivot row+col (`L·Â·R = blockdiag[1, S]`, `S = D − b·a`),
+   giving `[regular pivot row] + ‖S·A2red‖²`, `‖S·A2red‖² = dlnLoss M' 0` with `M'_0=M_0−1`, `M'_1=M_1−1`.
+   **THE `ΣM`-DROP IS HERE** — `ΣM' = ΣM − 2` (`Σdrop=2>0`, `ChainDimSplit.measure_drops`; g143).
+3. **(C) RECURSE** on the smaller core `‖S·A2red‖²` via the dispatcher (`lex`-terminates via step-B's `Σdrop`).
+
+**Three things kept DISTINCT (the controller's flag #35 + refinement #36):**
+- **The SQUEEZE** `c₁Φ ≤ F ≤ c₂Φ` (#131) is OFF-PATH — it drops the `x_p²` weight (decision C / g134, g141).
+  NOT step B.
+- **The E→coordinate straightening** (treating `E` as coordinates, `rlctAtOn(∑E²)=nReg/2`) is BLOCKED — the
+  `(E,SΓ)` Jacobian is rank-deficient at the deepest point (crux2); `∑E²` would give `1/2`, not `nReg/2`
+  (the order-4-vs-2 failure). C1 does NOT straighten `E` to coordinates.
+- **The EXACT Schur-descent** (step B) is the det-`±1` c-o-v clearing the pivot row+col to expose the
+  smaller core `‖S·A2red‖²`. It is the intended `ΣM`-drop. **Its general constructibility (vs the
+  rank-deficiency that blocked the squeeze/E-straightening) is the crux2 check, held** (#36). If step B
+  generalizes, C1 is the both-steps node; if not, C1 falls back to iterated blow-up (the cover handling
+  chart-locality). Either way the squeeze is off-path and `E` is never straightened to coordinates.
+**fm3's correction adopted:** every node routes through `pivotBlowupOn` (step A); the δ-branch `![…]`
+algebra is `(2,2,2)` scaffolding.
 
 ## ι — PINNED (the formaliser-consumable definition)
 `ι M` = the **leaf set of the Route M chart tree** `RouteMTree M`, an inductive type built by the C1/C2/C4/C5
@@ -79,7 +85,7 @@ C1/C2/C4/C5 recursion is its generalization to arbitrary `M`. (The `r=1` reduced
    RELATIVE to the active prefix image, #138 §1.5). `ι M` = its leaves (Fintype).
 2. **Per-node = `pivotBlowupOn active p`** (uniform — NOT the δ-branch `![…]`): `step1A_eq_pivotBlowupOn` /
    `step2E_eq_pivotBlowupOn` are the banked ties; the general node derives `(active, p)` from the
-   `PivotChoice`. Jacobian `(x p)^{card−1}`, loss `(pivot)²`. NO straighten between nodes — recurse (uniform, #35).
+   `PivotChoice`. Jacobian `(x p)^{card−1}`, loss `(pivot)²`. Step B = EXACT det-unit Schur-descent (ΣM-drop, #36); recurse.
 3. **`(d,k,h)` per leaf** from the path's nodes (`(1, c−1)` each); C3 NC-completion post-pass for `k≥2`.
 4. **Value** `⨅ᵢ monomialThreshold = ofReal(lambdaCore M)` via `(C≥)` [`monomialThreshold_ge_of_mult`,
    mult-control, green] + `(C=∃)` [`monomialThreshold_le_regularSeq` at the `(S-min)` achiever, green] +
@@ -96,9 +102,8 @@ The one thing to confirm in Lean: the C5 `MixedChoice` survivor-selector set is 
 
 ## Decorrelation + provenance
 Reconciles fm3's uniform-pivotBlowupOn node frame (`case222-tree-generalization-map.md`) + my #138 taxonomy
-+ the #134 `(S-min)`. **The #129/#131 squeeze is PARKED off-path (NOT a step-2 straighten, #35; decision C
-/ g134) — its earlier framing here as "step-(2) content" is SUPERSEDED.** The uniform-blow-up-recurse node is the key clarification fm3's
++ the #134 `(S-min)`. **The #129/#131 squeeze is PARKED off-path (decision C / g134); the node's ΣM-drop is the EXACT Schur-descent (step B, `lemma2Fwd` generalized, #36), NOT the squeeze and NOT the blocked E→coordinate straightening.** The both-steps node (blow-up + exact Schur-descent + recurse) is the key clarification fm3's
 constraint forced. Scripts: `g140_index_set.py`, `g140_iota_inductive.py`, `g140_scope_check.py` in
 `g129-scripts/`. A Codex pass on the ι inductive shape is optional (the reconciliation is mechanical given
 fm3's frame + #138); the #138 design Codex already stress-tested the taxonomy. Builds on #138 (the
-taxonomy), #134 ((S-min)), decision C / g134 (squeeze off-path), fm3's map (the uniform blow-up + recurse node operation).
+taxonomy), #134 ((S-min)), decision C / g134 (squeeze off-path), #36 (the both-steps node + the crux2 step-B constructibility check), fm3's map (the node operation).
