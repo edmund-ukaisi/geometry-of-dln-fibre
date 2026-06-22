@@ -851,4 +851,33 @@ theorem listOfFn_col_prod (m' : Fin (N + 1) × Fin (N + 1) → ℕ) :
       = ∏ i : Fin (N + 1), P (m' (i, Fin.last N)) := by
   rw [List.map_ofFn, List.prod_ofFn]; rfl
 
+/-- The product over the **top column** `j = last K` of `upperPairs K` reindexes to a product over
+all rows. (Reused for column `N` of `m'` and column `N+1` of `rebuild`.) -/
+theorem prod_lastCol {K : ℕ} (f : Fin (K + 1) × Fin (K + 1) → ℕ) :
+    ∏ p ∈ (upperPairs K).filter (fun p ↦ p.2 = Fin.last K), P (f p)
+      = ∏ I : Fin (K + 1), P (f (I, Fin.last K)) := by
+  refine Finset.prod_bij' (fun p _ ↦ p.1) (fun I _ ↦ (I, Fin.last K)) ?_ ?_ ?_ ?_ ?_
+  · intro p _; exact Finset.mem_univ _
+  · intro I _
+    exact Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, Fin.le_last I⟩, rfl⟩
+  · intro p hp
+    rw [Finset.mem_filter] at hp
+    exact Prod.ext rfl hp.2.symm
+  · intro I _; rfl
+  · intro p hp
+    rw [Finset.mem_filter] at hp
+    exact congrArg (fun q ↦ P (f q)) (Prod.ext rfl hp.2)
+
+/-- The "lower part" of `Pm`: the columns `< N` factors (`p.2 ≠ last N`). Common to `Pm N m'` and
+`Pm (N+1) (rebuild m' x)`. -/
+noncomputable def lowerPm (m' : Fin (N + 1) × Fin (N + 1) → ℕ) : ℤ⟦X⟧ :=
+  ∏ p ∈ (upperPairs N).filter (fun p ↦ ¬ p.2 = Fin.last N), P (m' p)
+
+/-- **S3(a)**: `Pm N m' = (∏_I P(m'_{I,N})) · lowerPm m'`. -/
+theorem Pm_eq_colN_mul_lower (m' : Fin (N + 1) × Fin (N + 1) → ℕ) :
+    Pm N m' = (∏ I : Fin (N + 1), P (m' (I, Fin.last N))) * lowerPm m' := by
+  rw [Pm, ← Finset.prod_filter_mul_prod_filter_not (upperPairs N) (fun p ↦ p.2 = Fin.last N),
+    prod_lastCol]
+  rfl
+
 end DLNFibre.Core
