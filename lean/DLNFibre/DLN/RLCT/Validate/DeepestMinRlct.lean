@@ -37,9 +37,18 @@ namespace DLNFibre.DLN.RLCT
 variable {N : ℕ}
 
 /-- **(L1-a) Ray-scaling-invariance of the local RLCT** (ELEMENTARY, value-independent). For `F`
-homogeneous of degree `D` (`hhomog : ∀ t w, F (t • w) = t ^ D * F w`) and `t ∈ (0,1]`, the local RLCT
-is constant along the punctured ray: `rlctAtOn F (t • v) = rlctAtOn F v`. The scaling `w = t • w'` is a
-homeomorphism (`t ≠ 0`); the germ pulls back to `t^D · (germ at v)`, the `t^D` a positive unit. -/
+homogeneous of degree `D` (`hhomog : ∀ c w, F (c • w) = c ^ D * F w`) and `t > 0`, the local RLCT is
+constant along the punctured ray: `rlctAtOn F (t • v) = rlctAtOn F v`. The scaling `σ_t : w ↦ t • w` is
+a homeomorphism (`t ≠ 0`), `σ_t v = t • v`, with CONSTANT Jacobian `det (t • id) = t^N` (verified:
+`ContinuousLinearMap.det` + `LinearMap.det_smul` + `det_id` + `Module.finrank_pi`).
+
+ROUTE (two options, both elementary; the second avoids the `HasFDerivAt` instance friction):
+(i) `weightedThreshold_transport` along `σ_t` (constant det `t^N`) → the `t^N` weight peeled by
+`weightedThreshold_weight_unit_invariant`; then `F ∘ σ_t = t^D • F` (`hhomog`) with the `t^D` constant
+peeled by `rlctAtOn_unit_invariant_aux`. (ii) DIRECT admissible-set bijection: `Ω ∋ t•v` admissible ⟺
+`σ_t⁻¹ Ω ∋ v` admissible (the integral changes by the constants `t^N` (Jacobian) and `t^{-Dc'}`
+(homogeneity), both finite-nonzero, so finiteness is preserved) — like `rlctAtOn_spectator_peel`'s
+admissible-set argument, no `HasFDerivAt`. The reachable elementary half of D1 (a). -/
 theorem rlctAtOn_ray_scaling_invariant
     (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ) (t : ℝ) (ht0 : 0 < t)
     (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w) :
