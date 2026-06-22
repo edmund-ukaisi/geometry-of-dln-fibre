@@ -55,9 +55,16 @@ comparability (#53/#54/#55) against the trimmed loss_squeeze field. Handoff cohe
 decisions as "current lean, pending X", not as settled.)
 
 **Current execution (three grinds):**
-- fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
-  confirmed cover-fact signatures = the contract). Achiever = `_le_regularSeq` at j₀ (card=m₀ min-ratio axis) +
-  threshold_ge, bundled by of_mult_and_achiever; binding axis = ⨅ over multiple C1 axes.
+- fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. hMid threaded into resolution_charts (@6f4e70f) —
+  carve-out now threaded BOTH sides (fm3 R1 + crux2 @081cf51 L2/headline). **R1 SEAM (decided): crux2 = per-step
+  straighten/additive-descent (banked ChainDimSplit); fm3 = blow-up cover / ⨅-min-over-pivot-branches — BOTH
+  needed (the ⨅ is the branching-min, NOT a single-chain telescope; Codex's "telescope replaces cover" too
+  strong). REBASE: fm3 drops its parallel RouteState (a sync liability) → rebases the descent onto crux2's
+  ChainDimSplit, keeps the cover-branching on top** (de-dups the recursion-state; aligns w/ crux2's
+  GeneralR1Recursion docstring). crux2 answers fm3's 3 ChainDimSplit-interface Qs + extends it if needed. fm3
+  proceeding on the fork-independent MonoData→(d,k,h) threshold lemma meanwhile (good — didn't grind a duplicate
+  recursion). Achiever = `_le_regularSeq` at j₀ (card=m₀ min-ratio axis) + threshold_ge, bundled by
+  of_mult_and_achiever. (#44 split = crux2's #64 — collision resolved; cobuild-sub34 imports deepestSplit_exists.)
 - crux2 #50 (value-free reduction) on origin/fm2/deepest-gauge-chart (@c1ce00f/@7573c0b): CONSUMING SIDE
   FULLY PROVEN (clean-three) — sub-2, sub-5 (`deepest_squeeze_transport`), sub-6, sub-7, the assembly
   `deepest_regular_core_reduces`; + 4 reusable Foundations lemmas (spectator-peel #52, continuous_dlnLoss,
