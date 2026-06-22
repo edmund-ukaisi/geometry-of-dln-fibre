@@ -236,6 +236,24 @@ Per-fibre collapse target: ∑_{m∈(kostantAll d).filter(peelPart·=m')} X^{cod
   S5. induction on N (peel Fin.last): base N=0 (single interval, codimForm 0=0, Pm 0 = P(d 0)); step uses fivegonSum_fiberwise [LANDED] +
       per-fibre collapse + IH + Pmult_succ → fivegonSum d = Pmult d (= the 5gon, corner-free single sum). Then aggregate QSeriesFivegon into DLNFibre.lean.
   THEN M4 (S1-S4 chain → Thm 5.5) + M6 (Cor 5.10 via cCodim_eq_of_Qseries_eq/numTop_eq_of_Qseries_eq [M5, LANDED] + Pmult_sub_comp_perm [M6-prep, LANDED]).
-SESSION 2026-06-22 banked (all green, axiom-clean, pushed): codimForm split (a340e01), Step E/explicit Δ (c35d2f3), eval+collapse helpers,
-the ENTIRE last-column bijection (0ce9200 — the flagged crux), codimForm_rebuild, Pmult_succ. ~16 lemmas. Bulk of fivegon's difficulty DONE.
+
+## 2026-06-22 (cont.) — S2 + S3 + S4-entry-evals LANDED. Per-fibre collapse: assembly + inner-sum induction REMAIN.
+LANDED this run (all green, axiom-clean, committed): prod_lastCol, lowerPm, Pm_eq_colN_mul_lower (S3a),
+rebuild_castSucc, prod_lower_reindex, rebuild_last, Pm_rebuild_factor (S3b: Pm(N+1)(rebuild)=(∏P x)·(∏P(b−x))·lowerPm),
+X_pow_toNat_add (S2: X^{(A+Δ).toNat}=X^{A.toNat}·X^{Δ.toNat}, A,Δ≥0), extendℤ_rebuild_colN (=↑(b−x)), extendℤ_rebuild_colNp1 (=↑x).
+[convert handles Fin.mk proof-irrel — Lean4 defeq.]
+REMAINING per-fibre collapse (two pieces):
+  (P) ASSEMBLY (perfibre_reduces, ~40 lines): fibre_sum_reindex [LANDED] + per-x: F(rebuild x) = X^{codimForm(N+1)(extendℤ rebuild).toNat}·Pm(N+1)(rebuild)
+      = [codimForm_rebuild + X_pow_toNat_add (Δ≥0 by delta_nonneg(rebuild), c(m')≥0 by codimForm_extendℤ_nonneg)] X^{c(m').toNat}·X^{Δ.toNat}·Pm(N+1)(rebuild)
+      = [Pm_rebuild_factor] X^{c(m').toNat}·X^{Δ.toNat}·(∏P x)·(∏P(b−x))·lowerPm; factor out X^{c(m').toNat}·lowerPm (Finset.mul_sum) →
+      = X^{c(m').toNat}·lowerPm·innerSum, innerSum := ∑_{x∈admissibleXs} X^{Δ(rebuild x).toNat}·(∏_I P(x I))·(∏_{I'} P(b_{I'}−x_{I'.castSucc})).
+  (Q) innerSum = transferRHS (List.ofFn b) d_last [THE hard induction, ~100 lines]. (a) Δ(rebuild x).toNat = natΔ via colN/colNp1 evals
+      INSIDE a sum_congr (Fin proofs need the Icc range hyps — can't be a standalone-RHS lemma); natΔ = ∑_{a<u}(b_a−x_a)x_u.
+      (b) reorganize admissibleXs (x:Fin(N+2)→ℕ, ∑x=d, x_i≤b_i) into a peel of x_0 (constrained-vector recursion — the hard combinatorial
+      step; ∑x=d couples head+tail) MIRRORING transferRHS recursion; Δ per-step split Δ=(b_0−x_0)(d−x_0)+Δ' (pure ring, thread-04);
+      durfee per step. transferRHS_eq [LANDED] gives = P(d_last)·(b.map P).prod; listOfFn_col_prod [LANDED] → ∏P(b); lowerPm·∏P(b)=Pm N m' [S3a].
+  Final per-fibre: X^{c(m').toNat}·lowerPm·transferRHS = X^{c(m').toNat}·lowerPm·P(d_last)·∏P(b) = X^{c(m').toNat}·P(d_last)·Pm N m'.
+SESSION 2026-06-22 banked (all green, axiom-clean, pushed, ~26 lemmas): codimForm split (a340e01), Step E/explicit Δ (c35d2f3),
+the ENTIRE last-column bijection (0ce9200 — flagged crux), codimForm_rebuild, Pmult_succ, listOfFn_col_prod, S3a, S3b, S2, S4 entry evals.
+ALL of fivegon's content EXCEPT the inner-sum induction (Q) + outer induction (S5). Then M4 (Thm 5.5), M6 (Cor 5.10).
 Operator: GRIND ON, full zero-cited, structure survives compaction. Inline only (worktrees too heavy — subagents launch at PRIMARY checkout, fresh worktrees re-clone mathlib).
