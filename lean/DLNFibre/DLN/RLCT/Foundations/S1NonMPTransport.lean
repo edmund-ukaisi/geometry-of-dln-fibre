@@ -194,4 +194,139 @@ theorem rlctAtOn_boundedUnit_homeomorph {M : Type*}
   -- `rlctAtOn (F∘π) = wThr (F∘π) 1 = wThr (F∘π) |det| [hpeel.symm] = wThr F 1 [htrans.symm] = rlctAtOn F`.
   rw [rlctAtOn, rlctAtOn, ← hpeel, ← htrans]
 
+/-- **The local `≤` transport** (the forward admissible-set inclusion, restricted to `V`). For `π`
+continuous + injective (via the partial inverse `πsymm`) + differentiable on the open `V ∋ wstar` with
+`π wstar = wstar`: `θ(F, 1; {wstar}) ≤ θ(F∘π, |det Dπ|; {wstar})`. The local adaptation of
+`admissible_subset_transport` (which needs only `hproper.continuous`, NOT full properness): the witness
+`Ω` restricts to `Ω ∩ V`, the change of variables runs on `s = πsymm '' (Ω ∩ V) = V ∩ π⁻¹'(Ω ∩ V)` (open,
+`π '' s = Ω ∩ V ⊆ Ω`, `π` inj+diff on `s ⊆ V`). Applied to `π` (forward) and to `πsymm` (reverse) it
+gives the two-sided transport. -/
+private theorem weightedThreshold_le_transport_local {M : Type*}
+    [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
+    [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
+    (F : M → ℝ) (wstar : M) (π πsymm : M → M) (Dπ : M → (M →L[ℝ] M)) (V : Set M)
+    (hVopen : IsOpen V) (hwV : wstar ∈ V) (hfix : π wstar = wstar)
+    (hsymmmaps : ∀ w ∈ V, πsymm w ∈ V)
+    (hleft : ∀ w ∈ V, πsymm (π w) = w) (hright : ∀ w ∈ V, π (πsymm w) = w)
+    (hπcont : ContinuousOn π V)
+    (hderiv : ∀ w ∈ V, HasFDerivAt (fun w => π w) (Dπ w) w) :
+    weightedThreshold F (fun _ => (1 : ℝ)) {wstar}
+      ≤ weightedThreshold (fun w => F (π w)) (fun w => |(Dπ w).det|) {wstar} := by
+  unfold weightedThreshold
+  apply sSup_le_sSup
+  rintro c ⟨c', rfl, Ω, hΩopen, hKΩ, hint⟩
+  have hwΩ : wstar ∈ Ω := hKΩ rfl
+  set s : Set M := V ∩ π ⁻¹' (Ω ∩ V) with hs
+  have hsopen : IsOpen s := hπcont.isOpen_inter_preimage hVopen (hΩopen.inter hVopen)
+  refine ⟨c', rfl, s, hsopen, ?_, ?_⟩
+  · refine Set.singleton_subset_iff.2 ⟨hwV, ?_⟩
+    show π wstar ∈ Ω ∩ V
+    rw [hfix]; exact ⟨hwΩ, hwV⟩
+  · have hs_sub_V : s ⊆ V := fun x hx => hx.1
+    have hs_meas : MeasurableSet s := hsopen.measurableSet
+    have hderiv_s : ∀ x ∈ s, HasFDerivWithinAt (fun w => π w) (Dπ x) s x :=
+      fun x hx => (hderiv x (hs_sub_V hx)).hasFDerivWithinAt
+    have hinj_s : Set.InjOn π s := by
+      intro a ha b hb hab
+      have := congrArg πsymm hab
+      rwa [hleft a (hs_sub_V ha), hleft b (hs_sub_V hb)] at this
+    have hcov := integrableOn_image_iff_integrableOn_abs_det_fderiv_smul
+      (μ := volume) hs_meas hderiv_s hinj_s (fun w => |F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w)
+    have himg : π '' s ⊆ Ω := by rintro y ⟨x, hx, rfl⟩; exact hx.2.1
+    have hg_img : IntegrableOn (fun w => |F w| ^ (-(c' : ℝ)) * (fun _ => (1:ℝ)) w) (π '' s) volume :=
+      hint.mono_set himg
+    have hh_s := hcov.1 hg_img
+    refine hh_s.congr ?_
+    filter_upwards with x
+    simp only [smul_eq_mul, mul_one]; ring
+
+/-- **Germ-locality of the trivial-weight `weightedThreshold`.** If `f =ᶠ[𝓝 wstar] g` then
+`weightedThreshold f 1 {wstar} = weightedThreshold g 1 {wstar}` — the admissible sets agree (any open
+`Ω ∋ wstar` shrinks to `Ω ∩ U` where `f = g`). The `weightedThreshold`-level twin of
+`rlctAtOn_germ_local` (which lives downstream); inlined here to avoid the import cycle. -/
+private theorem weightedThreshold_congr_germ_one {M : Type*} [MeasureSpace M] [TopologicalSpace M]
+    [OpensMeasurableSpace M] (f g : M → ℝ) (wstar : M) (hfg : f =ᶠ[𝓝 wstar] g) :
+    weightedThreshold f (fun _ => (1 : ℝ)) {wstar} = weightedThreshold g (fun _ => (1 : ℝ)) {wstar} := by
+  obtain ⟨U₀, hU₀mem, hU₀⟩ := Filter.eventually_iff_exists_mem.1 hfg
+  unfold weightedThreshold
+  have key : ∀ (P Q : M → ℝ), (∀ w ∈ U₀, P w = Q w) → ∀ c : ENNReal,
+      (∃ c' : NNReal, c = (c':ENNReal) ∧ ∃ Ω, IsOpen Ω ∧ {wstar} ⊆ Ω ∧
+        IntegrableOn (fun w => |P w| ^ (-(c':ℝ)) * (fun _ => (1:ℝ)) w) Ω volume) →
+      (∃ c' : NNReal, c = (c':ENNReal) ∧ ∃ Ω, IsOpen Ω ∧ {wstar} ⊆ Ω ∧
+        IntegrableOn (fun w => |Q w| ^ (-(c':ℝ)) * (fun _ => (1:ℝ)) w) Ω volume) := by
+    rintro P Q hPQ c ⟨c', rfl, Ω, hΩopen, hKΩ, hint⟩
+    have hw0 : wstar ∈ Ω := hKΩ rfl
+    obtain ⟨V, hVsub, hVopen, hwV⟩ := mem_nhds_iff.1 (Filter.inter_mem (hΩopen.mem_nhds hw0) hU₀mem)
+    refine ⟨c', rfl, V, hVopen, Set.singleton_subset_iff.2 hwV, ?_⟩
+    apply (hint.mono_set (fun x hx => (hVsub hx).1)).congr
+    filter_upwards [ae_restrict_mem hVopen.measurableSet] with w hw
+    rw [hPQ w (hVsub hw).2]
+  congr 1; ext c
+  exact ⟨key f g hU₀ c, key g f (fun w hw => (hU₀ w hw).symm) c⟩
+
+/-- **The LOCAL bounded-unit-Jacobian RLCT peel** (the germ-level companion of
+`rlctAtOn_boundedUnit_homeomorph`, for a diffeomorphism defined only NEAR the basepoint). `rlctAtOn` is
+a germ at `wstar` (the admissible `c'` quantify over open `Ω ∋ wstar`), so a change of variables valid
+only on a neighbourhood `V ∋ wstar` suffices — no GLOBAL proper/surjective hypotheses. For a `π` that is
+a diffeomorphism on `V` (with inverse `πsymm`, both differentiable, bounded-unit Jacobians), fixing
+`wstar`,
+
+    rlctAtOn (F ∘ π) wstar = rlctAtOn F wstar.
+
+This is the right altitude for the gauge absorptions: the implicit-function-theorem gives them as
+`OpenPartialHomeomorph`s (local diffeos, source a `𝓝 wstar`, BOTH `π` and `πsymm` differentiable), with
+`dE(wstar) = id` ⟹ `|det Dπ(wstar)| = 1` ⟹ bounded-unit by continuity. The producer (cobuild-sub34)
+supplies the local data for both directions; this lemma CONSUMES it to discharge `coreAbsorb_rlct`/
+`regAbsorb_rlct`. (Raw-data form, decoupled from the `OpenPartialHomeomorph` API.) -/
+theorem rlctAtOn_boundedUnit_localHomeomorph {M : Type*}
+    [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
+    [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
+    (F : M → ℝ) (wstar : M) (π : M → M) (πsymm : M → M)
+    (Dπ : M → (M →L[ℝ] M)) (Dπsymm : M → (M →L[ℝ] M)) (V : Set M)
+    (hVopen : IsOpen V) (hwV : wstar ∈ V)
+    (hfix : π wstar = wstar)
+    (hmaps : ∀ w ∈ V, π w ∈ V) (hsymmmaps : ∀ w ∈ V, πsymm w ∈ V)
+    (hleft : ∀ w ∈ V, πsymm (π w) = w) (hright : ∀ w ∈ V, π (πsymm w) = w)
+    (hπcont : ContinuousOn π V) (hsymmcont : ContinuousOn πsymm V)
+    (hderiv : ∀ w ∈ V, HasFDerivAt (fun w => π w) (Dπ w) w)
+    (hderivsymm : ∀ w ∈ V, HasFDerivAt (fun w => πsymm w) (Dπsymm w) w)
+    (hdetmeas : Measurable fun w => |(Dπ w).det|)
+    (hdetmeassymm : Measurable fun w => |(Dπsymm w).det|)
+    (hbdd : ∃ a b : ℝ, 0 < a ∧ ∀ w ∈ V, a ≤ |(Dπ w).det| ∧ |(Dπ w).det| ≤ b)
+    (hbddsymm : ∃ a b : ℝ, 0 < a ∧ ∀ w ∈ V, a ≤ |(Dπsymm w).det| ∧ |(Dπsymm w).det| ≤ b) :
+    rlctAtOn (fun w => F (π w)) wstar = rlctAtOn F wstar := by
+  have hfixsymm : πsymm wstar = wstar := by
+    conv_lhs => rw [← hfix]
+    exact hleft wstar hwV
+  -- strip the bounded-unit weight `|det Dπ|` (forward) / `|det Dπsymm|` (reverse) — both via the V-bound.
+  have hVnhds : V ∈ 𝓝 wstar := hVopen.mem_nhds hwV
+  have hstrip : weightedThreshold (fun w => F (π w)) (fun w => |(Dπ w).det|) {wstar}
+      = weightedThreshold (fun w => F (π w)) (fun _ => 1) {wstar} := by
+    obtain ⟨a, b, hapos, hbnd⟩ := hbdd
+    exact weightedThreshold_weight_unit_invariant (fun w => F (π w)) (fun w => |(Dπ w).det|)
+      wstar a b hapos hdetmeas ⟨V, hVnhds, fun w hw => by
+        rw [abs_of_nonneg (abs_nonneg _)]; exact hbnd w hw⟩
+  have hstripsymm : weightedThreshold (fun w => F (π (πsymm w))) (fun w => |(Dπsymm w).det|) {wstar}
+      = weightedThreshold (fun w => F (π (πsymm w))) (fun _ => 1) {wstar} := by
+    obtain ⟨a, b, hapos, hbnd⟩ := hbddsymm
+    exact weightedThreshold_weight_unit_invariant (fun w => F (π (πsymm w)))
+      (fun w => |(Dπsymm w).det|) wstar a b hapos hdetmeassymm ⟨V, hVnhds, fun w hw => by
+        rw [abs_of_nonneg (abs_nonneg _)]; exact hbnd w hw⟩
+  -- `(F∘π)∘πsymm = F` on `V` (a nbhd of wstar, via `hright`): the two weightedThresholds agree.
+  have hcomp : weightedThreshold (fun w => F (π (πsymm w))) (fun _ => 1) {wstar}
+      = weightedThreshold F (fun _ => 1) {wstar} :=
+    weightedThreshold_congr_germ_one (fun w => F (π (πsymm w))) F wstar
+      (Filter.eventuallyEq_of_mem hVnhds (fun w hw => by rw [hright w hw]))
+  -- FORWARD: `rlctAtOn F = wThr F 1 ≤ wThr (F∘π) |det Dπ| = wThr (F∘π) 1 = rlctAtOn (F∘π)`.
+  have hfwd := weightedThreshold_le_transport_local F wstar π πsymm Dπ V hVopen hwV hfix
+    hsymmmaps hleft hright hπcont hderiv
+  -- REVERSE (via `πsymm`): `wThr (F∘π) 1 ≤ wThr ((F∘π)∘πsymm) |det Dπsymm| = wThr F 1`.
+  have hrev := weightedThreshold_le_transport_local (fun w => F (π w)) wstar πsymm π Dπsymm V
+    hVopen hwV hfixsymm hmaps hright hleft hsymmcont hderivsymm
+  rw [hstrip] at hfwd
+  rw [hstripsymm, hcomp] at hrev
+  -- assemble: `rlctAtOn (F∘π) = wThr (F∘π) 1`, `rlctAtOn F = wThr F 1`; le_antisymm of hrev/hfwd.
+  rw [rlctAtOn, rlctAtOn]
+  exact le_antisymm hrev hfwd
+
 end DLNFibre.DLN.RLCT
