@@ -2864,8 +2864,9 @@ No such claim is formalisation-ready until both fields are filled.
   normal-crossing extraction interface gives Aoyagi's RLCT and RLCT-order
   formula for deep linear networks.
 - **Tier.** Final synthesis claim.
-- **Status.** open.  A first formula-notation slice has landed, but the final
-  RLCT theorem remains open.
+- **Status.** open.  Formula-notation, Definition 3 bridge, and conditional
+  finite-exponent bridge slices have landed, but the final RLCT theorem remains
+  open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -2875,9 +2876,13 @@ No such claim is formalisation-ready until both fields are filled.
   reproduced at
   `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`;
   dimension/rank convention map reproduced at
-  `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`.
+  `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`;
+  conditional finite-exponent bridge reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
-  `threads/06-dln-translation/review-final-formula-notation-a6.md`.
+  `threads/06-dln-translation/review-final-formula-notation-a6.md`;
+  conditional bridge reviewed at
+  `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
   `DLNFibre.DLN.Aoyagi.aoyagiReducedWidthInt`,
   `DLNFibre.DLN.Aoyagi.aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le`,
@@ -2919,7 +2924,15 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq5_labelBounds_of_sourceSelectedInequality`,
   and
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq3_localData_of_sourceSelectedInequality_and_slack`
-  in `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`.
+  in `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`; current conditional
+  finite-exponent bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiTheorem2FiniteExponentFormulaHypothesis`,
+  `lambda_eq_theorem2Lambda_fromCeilData_of_extractionHypothesis`,
+  `lambda_eq_theorem2Lambda_average_of_extractionHypothesis`,
+  `lambda_eq_theorem2Lambda_expanded_of_extractionHypothesis`,
+  `poleOrder_eq_theorem2OrderFormula_of_extractionHypothesis`, and
+  `lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_extractionHypothesis`
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`.
 - **Proved.** formula-only arithmetic: integer reduced-width notation,
   pointwise rank-width conversion/nonnegativity for reduced widths and
   selected reduced widths under explicit rank-width hypotheses,
@@ -2933,12 +2946,20 @@ No such claim is formalisation-ready until both fields are filled.
   two-value count wrapper under supplied chain bounds and supplied two-value
   increments, and source-selected-inequality wrappers for selected-width and
   local equation `(4)`/`(5)` data.  The local equation `(3)` wrapper also
-  requires the explicit one-unit slack hypothesis.
+  requires the explicit one-unit slack hypothesis.  Also proved a conditional
+  finite-exponent bridge: from supplied equalities
+  `D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData ...` and
+  `D.exponentOrder = data.theorem2OrderFormula`, plus
+  `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`, Lean derives
+  the ceiling-data, average, and expanded displayed `lambda` formulas and the
+  displayed order formula.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** full Definition 3 selection inequalities, existence of the
-  selected cutpoints and ceiling datum, proof of rank-width inequalities from
-  concrete matrix dimensions and a rank-`r` product, the Lemma 4 two-value
-  increment proof, Lemma 5 chart-family construction/coverage and no-extra
-  classifier, conversion of the finite count to pole order, normal crossings,
-  final RLCT theorem, and formal analytic extraction theorem.
+  selected cutpoints and ceiling datum, source parameter provenance
+  `m = H(S_j)-r`, proof of rank-width inequalities from concrete matrix
+  dimensions and a rank-`r` product, the finite exponent formula equalities
+  from a normal-crossing certificate, the Lemma 4 two-value increment proof,
+  Lemma 5 chart-family construction/coverage and no-extra classifier,
+  conversion of the finite count to pole order, normal crossings, final RLCT
+  theorem, and formal analytic extraction theorem.

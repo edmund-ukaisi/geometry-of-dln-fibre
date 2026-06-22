@@ -1567,6 +1567,13 @@ Immediate order:
    singleton/Eq5 bookkeeping, and the Theorem 2 displayed order formula,
    keeping the strict source-selected inequality, Lemma 4 two-value
    hypothesis, Eq4 guards, and Eq3 slack explicit.
+   The conditional A0/A6 finite-exponent bridge is also Lean-proved in
+   `Theorem2FiniteExponentBridge.lean`: supplied equalities
+   `D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData ...` and
+   `D.exponentOrder = data.theorem2OrderFormula`, together with
+   `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`, imply the
+   displayed lambda/order formulas.  This is only a final socket; it does not
+   produce exponent data or prove those finite equalities.
    Further A6 work should connect only to source-stable Lemma 4/Lemma 5
    arithmetic;
    it must not call the formula an RLCT theorem before the normal-crossing

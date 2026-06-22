@@ -82,3 +82,32 @@ Artifacts:
 - `reproduction-definition3-lemma4-bridge-a6.md`;
 - `statement-card-a6-definition3-bridge.md`;
 - `review-definition3-bridge-a6.md`.
+
+## Current slice - 2026-06-22, conditional finite exponent bridge
+
+The A6/A0 bridge layer is
+`lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`, imported by
+`lean/DLNFibre.lean`.
+
+It introduces `AoyagiTheorem2FiniteExponentFormulaHypothesis`, a supplied
+boundary structure requiring the two finite equalities still owed by the
+eventual normal-crossing certificate:
+
+- `D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData L ell H r m data`;
+- `D.exponentOrder = data.theorem2OrderFormula`.
+
+Together with `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`,
+the module proves conditional wrappers for the ceiling-data, average, and
+expanded displayed `lambda` formulas, plus the displayed order formula.
+
+Artifacts:
+
+- `reproduction-theorem2-finite-exponent-bridge-a6.md`;
+- `statement-card-a6-theorem2-finite-exponent-bridge.md`;
+- `review-theorem2-finite-exponent-bridge-a6.md`.
+
+Boundary: this is final-socket composition only.  It does not produce exponent
+data, prove the two finite equalities, prove source parameter provenance, prove
+Definition 3 selection data, prove rank-width hypotheses, prove normal
+crossings, prove Aoyagi Lemma 5 exactness/order count, prove pole order without
+A0, or prove the analytic extraction theorem.

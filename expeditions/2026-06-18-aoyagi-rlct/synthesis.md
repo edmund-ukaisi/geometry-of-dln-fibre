@@ -393,6 +393,36 @@ displayed-vector construction, no Lemma 4 two-value increment proof, no Lemma
 finite count into Aoyagi's pole-order symbol, no normal crossings, and no RLCT
 extraction.
 
+The conditional A0/A6 finite-exponent bridge has now landed in
+`lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`.  It introduces
+`AoyagiTheorem2FiniteExponentFormulaHypothesis`, which supplies exactly the
+two finite equalities still owed by a future normal-crossing certificate:
+
+```text
+D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData L ell H r m data,
+D.exponentOrder   = data.theorem2OrderFormula.
+```
+
+Together with `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`,
+Lean proves the ceiling-data, average, and expanded displayed `lambda`
+formulas, plus the displayed order formula.  New Lean names:
+`lambda_eq_theorem2Lambda_fromCeilData_of_extractionHypothesis`,
+`lambda_eq_theorem2Lambda_average_of_extractionHypothesis`,
+`lambda_eq_theorem2Lambda_expanded_of_extractionHypothesis`,
+`poleOrder_eq_theorem2OrderFormula_of_extractionHypothesis`, and
+`lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_extractionHypothesis`.
+This is a conditional bridge only.  It does not prove source parameter
+provenance `m = H(S_j)-r`, Definition 3 selection data, rank-width hypotheses,
+chart coverage, unit factors, Jacobian/prior exponent correctness, terminal
+minimum exactness, Lemma 5 order count, normal crossings, or analytic
+extraction.
+
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`,
+`threads/06-dln-translation/statement-card-a6-theorem2-finite-exponent-bridge.md`,
+and
+`threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`.
+
 ## Latest A4 Update
 
 The displayed Case 2 free-`Cprime` continuing branch has landed.  Reproduction:
