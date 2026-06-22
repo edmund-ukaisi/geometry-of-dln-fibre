@@ -235,3 +235,14 @@ The simplification: (a) is free; the non-MP machinery is only for (b), and the l
 comparability is right). Net for the build: coreAbsorb's core-output = R (full Schur), reached by
 (a) shear + (b) inter-layer-unit; coreAbsorb_rlct peels the (b) unit via weightedThreshold_weight_unit_invariant.
 DON'T identify ∏S_s with R (the danger Codex flagged). My #54 R is the right object; ∏S_s is not.
+
+## split build foundation — the dimension identity (verified, for #64)
+
+For the route-A `split` (MP relabel + translation), `nGauge := flatDim H − nReg − flatDim M` is
+well-defined (`nReg + flatDim M ≤ flatDim H` always, verified all L≤3, H≤4, r≤min H). Exact:
+  flatDim H − flatDim M = r·∑_s(H_s + H_{s+1}) − L·r²   (the per-edge `H_sH_{s+1} − (H_s−r)(H_{s+1}−r) = r(H_s+H_{s+1}−r)`)
+  nGauge = (flatDim H − flatDim M) − nReg = 2r·(H_1+…+H_{L-1}) − (L−1)r²   (interior widths only).
+L=1 ⟹ nGauge=0 (no interior, g154). The `split` index-equivalence
+`Fin(flatDim H) ≃ Fin nReg ⊕ (Fin(flatDim M) ⊕ Fin nGauge)` rests on `nReg + flatDim M + nGauge = flatDim H`
+(by the nGauge def). Codex g159: encode the partition as an actual finite-index `≃` (the flagged risk),
+not arithmetic; MP via volume_preserving_arrowCongr' + measurePreserving_add_right + sumArrowHomeomorphProdArrow.
