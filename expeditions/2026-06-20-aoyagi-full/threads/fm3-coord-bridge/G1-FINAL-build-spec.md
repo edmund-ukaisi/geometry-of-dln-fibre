@@ -458,6 +458,20 @@ So the §2 green-≠-right guard is now machine-checked on the value side: the d
 holds BY the admissible-T witness. STILL AWAITING crux2 on the transport-field (additive-vs-min / which
 lemma the per-cell consequence uses) before pinning the full ValidRouteStep + building the fold.
 
+## SPELL-OUT DONE + ENCODING-MATCH VERIFIED (g177, pp2 g195 @1de75f0 + fm3 example-check)
+pp2 spelled (2,2,2)/(3,2,3) against the pinned LIGHT RouteStep.branch @b8d3146 — both type-check,
+reproduce Case222Resolution exactly. Per branch cell = (schurState split, (Mval M T).toNat codim,
+⟨T,hAdm,hCodim⟩ witness); leaf = MonoData; transport = light node_loss_pivot_factor (discharged at the
+cover-fact). (2,2,2): ROOT A-pivot, red=schurState(2,2,2)=(1,1,2) [ΣM 6→4], binding T=(0,0) codim 4
+(=step-1 card4); RECURSE (1,1,2) step-2, binding T=(1,0) codim 3 (=step-2 card3=minAdm); LEAF unit;
+codimsOf(binding)=[4,3] → ratioMinFold=min(2,3/2)=3/2=λ ✓. (3,2,3): red=schurState=(2,1,3) [ΣM 8→6],
+binding T=(1,0) codim 5=minAdm, other T=(0,0) codim 6, ⨅=5/2=λ ✓.
+ENCODING-MATCH (fm3, /tmp/routestep_shape_check.lean): I type-checked pp2's spell-out SHAPE against my
+RouteStep as an example — RouteStep.branch cells inferInstance split codim witness elaborates; the leaf
+arm elaborates; PivotWitness ⟨T,hAdm,hCodim⟩ matches. So NO re-encoding needed (pp2's last concern closed):
+the transcription is mechanical. pp2's design lane is COMPLETE (g183 recipe → g186/187 fold-target →
+g188 light → g189 transcription-ready → g190 per-node dischargeable → g194 C5 exercised → g195 spell-out).
+
 ## VALUE SIDE CLOSED + VERIFIED (g172, pp2 g190) — PivotWitness dischargeable per node
 pp2 g190 verified PivotWitness @040a997 dischargeable per node across all validation cases (the rank-descent
 construction): each C1/C5 pivot cell resolves one rank stratum; its PivotWitness carries T = that admissible
