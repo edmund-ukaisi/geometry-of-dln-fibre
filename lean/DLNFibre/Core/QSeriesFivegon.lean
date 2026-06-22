@@ -844,4 +844,11 @@ theorem Pmult_succ {N : ℕ} (d : Fin (N + 2) → ℕ) :
     Pmult d = Pmult (d ∘ Fin.castSucc) * P (d (Fin.last (N + 1))) := by
   rw [Pmult, Pmult, Fin.prod_univ_castSucc]; rfl
 
+/-- List bridge (piece 4): `(b.map P).prod = ∏_i P(b_i)` for `b = List.ofFn (m'(·, last N))` — the
+column-`N` factors, the `transferRHS_eq` RHS reconciled with a `Finset.prod`. -/
+theorem listOfFn_col_prod (m' : Fin (N + 1) × Fin (N + 1) → ℕ) :
+    ((List.ofFn (fun i : Fin (N + 1) ↦ m' (i, Fin.last N))).map P).prod
+      = ∏ i : Fin (N + 1), P (m' (i, Fin.last N)) := by
+  rw [List.map_ofFn, List.prod_ofFn]; rfl
+
 end DLNFibre.Core
