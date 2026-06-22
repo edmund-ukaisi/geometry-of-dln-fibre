@@ -69,3 +69,30 @@ where `frame ∘ (· − deepestFlat)` is a global AFFINE iso (constant det ≠ 
 local diffeo — peels via `#72` (same machinery as the E-map alone). The frame part is even simpler
 than `Ψ`: a global affine iso, det = nonzero constant. Build target cleared; gated only on crux2
 exposing the per-layer frame `(P_s, Q_s)` + the `RegGaugeIdx` slot roles.
+
+## Frame shape = (ii) per-layer; telescoping VERIFIED (no hidden confound)
+
+The frame crux2 exposes (#77) is **(ii) per-layer** `(P_s, Q_s)` with
+`P_s · (deepestPoint s) · Q_s = corM r (H s.castSucc) (H s.succ)` (the layer's block-normal corner).
+Reading `wLayers` (Skeleton:750): the deepest point's layers are layer 0 = `U·projM`
+(`U = P⁻¹·embM`), layer `L−1` = `embM·V` (`V = projM·Q⁻¹`), interior = `corM` (already block-normal).
+So the frame is NOT arbitrary per-layer `block_elimination`:
+
+- **interior layers** (`0 < s < L−1`): already block-normal ⟹ `P_s = Q_s = I` (identity);
+- **layer 0**: `P_0 =` the `block_elimination P`, `Q_0 = I`;
+- **layer `L−1`**: `P_{L−1} = I`, `Q_{L−1} =` the `block_elimination Q`.
+
+Only the two BOUNDARY frames are nontrivial; both are the `P, Q` already inside `deepestPoint_exists`.
+
+**Telescoping (the one compatibility worry) — VERIFIED, no confound** (numpy, L=3):
+With interior frames `= I` and boundary frames only on the outer chain ends (`P_0` left, `Q_{L−1}`
+right), EVERY interior seam has `Q_s · P_{s+1} = I` (all identity), so they cancel. Hence
+
+    ∏ A_s = P_0⁻¹ · (∏ framed C_s) · Q_{L−1}⁻¹,   and   B = P_0⁻¹ · blockNormal · Q_{L−1}⁻¹
+
+at the deepest point, so `loss = ‖∏A − B‖² = ‖P_0⁻¹((∏C) − blockNormal)Q_{L−1}⁻¹‖²`, comparable to
+`‖(∏C) − blockNormal‖²` up to the bounded invertible boundary factors `P_0⁻¹, Q_{L−1}⁻¹`. Those two
+factors are the ONLY non-trivial frame, and they are exactly the bounded constants feeding the squeeze
+`c₁, c₂`. So the framed-block `∑E² + core` decomposition is valid and the telescoping holds — the
+frame is a clean READING device, not a source of cross-layer entanglement. (Verified: the deepest
+product `= B` exactly on L=3 `H=(2,2,2,2)` r=1.)
