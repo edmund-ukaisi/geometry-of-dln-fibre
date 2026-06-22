@@ -145,3 +145,16 @@ GIT NOTE: findings.md + this flush written to disk; commit DEFERRED to the post-
   formaliser worktrees if speed is wanted.)
 - **NEXT:** M2 = N=1 Durfee identity. scope-durfee (pen-and-paper, thread 06) scoping the Lean route +
   Mathlib support first; then I write the Lean.
+
+## 2026-06-22 — EXECUTION MODE: guarded formaliser worktrees (operator-approved)
+Delegation verdict: isolated subagents = filesystem-safe but BROKEN checkout (iso-probe at bd11537 lacked
+the committed M1 — unreliable); non-isolated = pollute the aoyagi tree. So neither default works. Operator
+chose GUARDED formaliser worktrees:
+- I pre-create a dedicated build worktree `.claude/worktrees/perm-build` on branch `pi-build` off
+  perm-invariance HEAD (VERIFIED M1 + M2-partial present — unlike the broken isolation checkout).
+- Formalisers use ONLY ABSOLUTE paths under perm-build for all Read/Write/Edit; build via `cd perm-build/lean`;
+  commit to `pi-build`; SELF-CHECK `git -C <main> status` clean (no leak to aoyagi) before reporting.
+- I MERGE pi-build → perm-invariance in voigt-discharge + green-gate; I POST-VERIFY the aoyagi tree clean
+  after each tide. A relative-path slip → transient aoyagi stray file (detected + surgically cleaned).
+- M1 (9d5002c) + M2-partial (032ea0d) banked. M2 to be COMPLETED by the first guarded formaliser:
+  B_term, A_sum_desc, B_sum_desc (the reindex), rhs_desc, the durfee induction (domain-cancel 1-X^{b+1}).
