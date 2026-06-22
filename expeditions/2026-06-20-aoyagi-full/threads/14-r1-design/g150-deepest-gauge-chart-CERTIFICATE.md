@@ -175,3 +175,40 @@ the regular residuals `P10,P01` OFF `{reg=0}`; the additive split `rlct_additive
 core-coords-only object. The route (g156): `R = G(core) + Σ E_i H_i` with bounded analytic `H_i`, so
 `∑E² + ‖R‖² ≍ ∑E² + ‖G(core)‖²` and the additive split applies to `G(core) = ∏S_s` alone. The
 `reg`-dependence of `R` is a bounded perturbation peeled like the endpoint-regular leak.
+
+---
+
+## PRECISION (#62 follow, pp-hall, 2026-06-22) — the LITERAL loss core is the FULL-product Schur `‖R‖²`; `‖∏S_s‖²` is its UNIT-PEELED reduced form
+
+cobuild-sub34's g157 sharpens the per-layer Schur correction above: even the per-layer SCHUR PRODUCT
+`∏S_s` is NOT the literal loss core — the literal core is the **full-product Schur** `‖R‖²`,
+`R = P_{11} − P_{10} P_{00}⁻¹ P_{01}`, and `R ≠ ∏S_s` as polynomials. They are related by an inter-layer
+unit (verified exact, `g157_check.py`/`g157_reconcile.py`, 2-layer scalar):
+
+    R  =  S_1 · g · S_2,        g = AB/(AB + VY)   (the inter-layer gauge unit),
+
+where `g` is a **bounded unit at `w0`**: `g(w0) = 1` (A=B=1, Y=V=0), `g → 1` nearby. Hence
+
+    ‖R‖²  =  g² · ‖∏S_s‖²,     g² a bounded unit  ⟹  ‖R‖²  ≍  ‖∏S_s‖²     (same `rlctAt`, via the unit peel).
+
+So the honest hierarchy (three precision levels, all consistent — the same RLCT object):
+1. **the loss core (literal):** `‖R‖²`, the FULL-product Schur complement — what `dlnLoss H B` actually
+   carries off `{E=0}` (the `−B` and the regular residuals couple into `R`). This is g157 / cobuild-sub34's
+   #54 `R`, exactly right.
+2. **`‖R‖² ≍ ‖∏S_s‖²`** up to the bounded inter-layer unit `g²` (a SQUEEZE / unit-comparability, tight at
+   `w0`, NOT exact equality — the SAME pattern as the `c₁<c₂` squeeze, not the false `c₁=c₂=1` exact germ).
+3. **`‖∏S_s‖² = dlnLoss(M)0`** (the per-layer Schur-reduced chain) — the unit-peeled reduced form, the
+   object fed to `rlct_additive_smooth_block`. RLCT-equivalent to `‖R‖²`, not literally equal.
+
+**The overstatement this corrects in the body above:** the CORRECTION section wrote `‖∏S_s‖²` as if it
+were the literal reduced core (`R = T̃_1···T̃_L` "after the det-unit Schur change"). The precise version:
+the loss core is `‖R‖²` (full-product); `‖∏S_s‖²` is `‖R‖²` with the inter-layer unit `g` peeled
+(RLCT-equivalent, via the bounded-unit transport `rlctAtOn_unit_invariant_aux` — the same NON-MP machinery).
+Both the unit→Schur correction (`T̃_s → S_s`, g172 above) AND this `∏S_s → R` precision are instances of
+the recurring lesson: the honest object is reached by peeling a bounded unit, and the comparability is a
+unit-SQUEEZE, never an exact germ. (`ofExactGerm`, `c₁=c₂=1`, is un-dischargeable here — the exact germ is
+FALSE; the genuine `core_comparability_squeeze`, `c₁<c₂`, is the constructor to use — flagged to crux2.)
+
+**Consistency with the D1 g173 L2-at-general-v cert:** the core fed to the additive split there is `‖R‖²`
+(`≍ ‖∏S_s‖²` via the unit), so the constant-active-block split is against the full-product `R` at the
+induced basepoint `D(v)` — consistent with g157.
