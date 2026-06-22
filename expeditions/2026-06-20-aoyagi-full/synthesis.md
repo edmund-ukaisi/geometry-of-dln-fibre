@@ -114,6 +114,32 @@
   pp2's g188 light correction. NAIL before fm3 commits the certified RouteStep datum field (else wrong-type
   rework). Reconciliation in flight (crux2 ↔ pp2 ↔ fm3; pp2 exercising node-reduction on (3,3,2), C5→C2+C1 no new
   lemma, single-step verified, multi-step pending). The R1 transport-field gate = this resolution.
+- **★ BUILD MODE (2026-06-22, cont'd) — architecture fully resolved, parallel builds.** Every conceptual wall
+  is dissolved (split (e), measure-zero route, light R1 datum, non-strict headline, g159 local-diffeo). Now building:
+  - **(b) MvPolynomial lemma DONE + INTEGRATED + build-verified** @68ef083 (DLNFibre.Core.MeasureTheory.
+    PolynomialZeroSet: `MvPolynomial.volume_zeroSet_eq_zero` + `ae_eval_ne_zero` + `measurableSet_zeroSet`,
+    green clean-three, 8248 jobs). The #69 formaliser's bonus-commit-before-standdown was exactly crux2's
+    route-1 lemma — the route whipsaw (MvPoly→matrix→addHaar→MvPoly) landed on what was already built. Module
+    committed but UNWIRED in the single-writer aggregator (crux2's L2 import gates it transitively).
+  - **Measure-zero ROUTE = 1 (MvPolynomial), crux2's final call** (after the addHaar detour): (b) lemma DONE;
+    crux2's (c) = the single-P encoding (P=∑(prod-entry)², eval z P = dlnLoss M 0 via Matrix.map_mul, P≠0 from
+    the witness) → ae_eval_ne_zero at p:=P closes the bridge's last sorry. Queued behind #44.
+  - **L2 peel = ROUTE 2 (LOCAL), interface LOCKED** (#72, crux2's `rlctAtOn_boundedUnit_localHomeomorph`,
+    raw-data form, sig validated green): the global #71 peel (proper+surjective) didn't take cobuild-sub34's
+    IFT local diffeo (OpenPartialHomeomorph); the local peel is the germ-correct object (Mathlib c-o-v is
+    InjOn-local). crux2 fills the proof (~80-150 LoC, local weightedThreshold_transport on Ω∩V — the critical
+    path for BOTH rlct-peels); cobuild-sub34 wires coreAbsorb_rlct + regAbsorb_rlct against the locked
+    interface IN PARALLEL (π/πsymm/Dπ + dE(w0)=id ⟹ bounded-unit). regAbsorb = IFT OpenPartialHomeomorph
+    (HasStrictFDerivAt.toOpenPartialHomeomorph, dE(w0)=id verified).
+  - **R1 (#39): fm3 UNBLOCKED — proceeding on the LIGHT datum** without waiting for crux2's formal ack (its
+    (2,2,2)-code grounding is authoritative: zero IsSchurStraightenSqueeze, step1A=pivotBlowupOn, pullback
+    y0²·Q; + pp2 g188 + numerics = 3 confirmations). Pinning the light ValidRouteStep datum field
+    (node_loss_pivot_factor + det + rlctAtOn_reduced_transport) + fold + transcribe pp2's recipe, parallel to L2.
+  - **Slot-grouping seam**: crux2 owns the role-partition (replaces equivOfCardEq; reg=invertible pivots
+    {X1,Y2,Z1}, core=T, by r-threshold); cobuild-sub34 owns gaugeDecode/IsGaugeSliceDecode + matches the index
+    map crux2 sends. OPEN gates: crux2's #72 local-peel proof (critical path), the #44 assembly, fm3's R1
+    assembly, then D1 (gated on #44) + #70 (degenerate boundary). No conceptual walls, no 2nd citation, no
+    operator surface.
 
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
