@@ -77,20 +77,24 @@ decisions as "current lean, pending X", not as settled.)
   (cobuild-sub34)? DECIDED via the g153 litmus (C1C2C3=blockdiag[1,−ε⁴]: Φ=ε⁸ → MP-deliverable, crux2 right;
   Φ=0 → coreEmbed needed). Note: cobuild-sub34's "MP ⟹ linear reindex" inference is too strong (MP ≠ linear; a
   nonlinear volume-preserving split is possible, gauge slot compensating the (I−VY) det). Worktree workspace/dgc-sub34. pp2 backup.
-- **D1 #42 ≥-leg (`rlctAt_deepest_le_of_optimal`):** pp2's #56 general-v squeeze cert DONE (g155 @2d584f6;
-  core = gauge-normalized T̃, reuses crux2's banked primitives). TWO findings under audit (#57):
-  (i) SCOPE — D1's v ∈ optimalSet is NOT rank-exact in general (varying fibre ranks; #112 cert d1_222_strata.py).
-  #56 Part 1 covers rank-exact v, so D1's non-rank-exact v may need a BROADER homogeneous-residual split (crux2
-  ⟷ pp2 reconciling). (ii) **CRITICAL (citable constraint):** the scaling step's load-bearing fact is
-  "deepest = min-core over optimalSet" = Aoyagi 2013 Thm 2 — NOT the too-clean Σt^{2nᵢ}≤1 (general v is
-  off-deepest by genuine OFFSETS, not t-damping). ONLY S2 (monomial_rlct) is citable ⟹ D1≥ must PROVE
-  "deepest = min-core" (pp2's read: L1-separable, block_elimination-homogeneous-domination), NOT cite Aoyagi
-  Thm 2. PROVE-OR-SURFACE before the D1 grind (#57) — a genuine second citation ⟹ operator escalation. crux2
-  holds the D1 structure + the IsDeepLayers generalization until (i)+(ii) resolve; #112 wiring cert done.
+- **D1 #42 ≥-leg (`rlctAt_deepest_le_of_optimal`):** #57 VERDICT (pp2, decorrelated): D1(a) "deepest = min-rlct
+  over optimalSet" is L1-SEPARABLE — **NO 2nd citation, the only-S2 policy is SAFE** (Aoyagi Thm 2 NOT needed).
+  BUT it needs a NEW value-independent analytic primitive (the design under-estimated D1(a) as a light
+  rlctAtOn_mono step): (P1) RLCT lower-semicontinuity `rlctAt(deepest) ≤ liminf rlctAt(t·v) = rlctAt(v)` [L1-a
+  scaling-invariance g162 elementary + L1-b semicontinuity HEAVY], OR (P2) RLCT = rlct-of-leading-Newton-form
+  (Varchenko). pp2's light routes ALL REFUTED (g163: v's leading form is deg 2 not 4 — "deepest = leading part"
+  is backwards; rlctAtOn_mono compares 2 funcs at 1 pt, not 1 func at 2 pts; block_elim split circular).
+  HEADLINE KEYING (controller call, from the spine): the headline IS ⨅-over-optimalSet (Skeleton:1505) — the
+  faithful learning coefficient; NOT downscoping to the deepest-point value (weaker, λ≤aoyagiLambda only). So
+  D1(a) is load-bearing. DRIVING P1 (cleaner): pp2 designs the cert, crux2 assesses LEAN TRACTABILITY from the
+  existing rlctAtOn machinery (rlctAtOn is the team's own def — semicontinuity may follow from its structure, not
+  absent Mathlib analysis). That read → build P1 inline OR surface a feasibility fork to the operator. crux2 holds
+  D1≥ wiring until P1 scoped; #112 wiring cert done. (Scope (i): non-rank-exact v is MOOT for D1(a) — it's a
+  comparison via the scaling-ray on the RAW loss, charts no v; pp2 reconciled with crux2.)
 
 **TRACKED SOUNDNESS / PRECISION ITEMS (controller holds):**
-1. **hGne** (L2) — reduced-chain non-degeneracy hypothesis; discharge-at-spine-wiring vs stated-headline-hypothesis. Verify vs the actual headline when crux2 reaches spine-wiring.
-2. **deepest = min-core** (D1, #57) — must be PROVEN L1-separable, NOT cited as Aoyagi Thm 2 (only S2 citable); else operator escalation. THE biggest scope risk surfaced.
+1. **hGne** (L2, SHARED with R1) — interior M_s = H_s−r = 0 ⟹ dlnLoss M 0 ≡ 0 ⟹ RLCT=⊤, breaking BOTH L2's smooth-block AND R1's lambdaCore identity. ROUTED to fm3: does its RouteMTree recursion handle interior M_s=0 (short-circuit → discharged) or assume M_s≥1 (→ STATED headline hypothesis ∀ interior s, r<H s)? crux2 carries hGne explicit on L2 meanwhile.
+2. **D1(a) deepest=min-rlct** (#57 RESOLVED on citation) — L1-separable, **NO 2nd citation (only-S2 policy SAFE)**; but needs a NEW value-independent primitive (P1 RLCT lower-semicontinuity / P2 Varchenko); pp2's light routes all refuted. Keying = ⨅ (faithful, Skeleton:1505). DRIVING P1; crux2's Lean-tractability read decides build-inline vs surface-feasibility-fork-to-operator. THE open scope item now.
 3. **split_mp vs T̃-core** (#44 sub-3) — RESOLVED (g153 litmus → Φ=0 with the hardcoded core): a pure MP split can't do the non-MP g-absorption ⟹ crux2 implementing the `coreEmbed` field + re-proving sub-6/7 via its weight-invariance lemma. cobuild-sub34's catch (decorrelation: producer caught consumer bug).
 4. **exact-vs-squeeze** — CORRECTED to SQUEEZE: cobuild-sub34's Lean #54 (`core_comparability_squeeze`) has c₁=(2(1+t²))⁻¹, c₂=2+2t² (c₁=1/2,c₂=2 at w0 — c₁<c₂ even at the basepoint; leak BOUNDED by t²∑E², not absorbed). The frobenius split loss=∑E²+‖P11‖² is exact (lemma 3), but the P11→R core-identification is a genuine SQUEEZE — the "exact" framing would couple reg+core (2⟨R,leak⟩), breaking sub-6's separation. So #48's "exact germ" OVERCLAIMED; the honest name is SQUEEZE. Consequence: `ofExactGerm` (c₁=c₂=1) is unused; cobuild-sub34 fills `loss_squeeze` directly with #54. pp2 reconciling g155 → SQUEEZE. (I'd banked EXACT prematurely — the recurring name-results trap.)
 
