@@ -51,11 +51,18 @@ structure IsRouteMCover {N : ℕ} (F : (Fin N → ℝ) → ℝ) (U : Set (Fin N 
   /-- The base nbhd `U` is open and contains the deepest point `0`. -/
   Uopen : IsOpen U
   Umem : (0 : Fin N → ℝ) ∈ U
-  /-- (COVER ≥) the `U`-integral is bounded by the SUM over leaves of the per-leaf monomial integrals
-  (the cover split + per-chart change-of-variables). -/
-  cover_le : ∀ c' : NNReal,
+  /-- (COVER ≥) the `U`-integral is bounded by a FINITE per-exponent prefactor `C(c')` times the SUM
+  over leaves of the per-leaf monomial integrals. The `C(c')` (existentially quantified, kept inside
+  this `Prop`-field so `IsRouteMCover` stays a `Prop`) absorbs the producer-side normalization slack:
+  the cover's change-of-variables lands `∫_U |F|^{−c'} = Σ ∫_{[−1,1]^d} monomial·unit^{−c'}`, and the
+  banked `integrableOn_monomial_mul_unit_iff` (unit lower bound `a^{−c'}`) + `integrableOn_Icc_symm_of_even`
+  (the signed-box `2^d` orthant) normalize to the `unitBox` bare-monomial RHS up to this finite `C(c')`.
+  The bare-`C=1` form is FALSE (the constant is irreducible). `C` is finiteness-only — it rides the
+  `≥`-leg's finiteness transfer and NEVER enters the `⨅` (the threshold reads the monomial EXPONENTS
+  `(d,k,h)`, which a finite prefactor cannot move), so `⨅ monomialThreshold` is preserved. -/
+  cover_le : ∀ c' : NNReal, ∃ C : ℝ≥0∞, C < ⊤ ∧
       ∫⁻ x in U, ENNReal.ofReal (|F x| ^ (-(c' : ℝ)))
-        ≤ ∑ i : ι, ∫⁻ y in unitBox (d i),
+        ≤ C * ∑ i : ι, ∫⁻ y in unitBox (d i),
             ENNReal.ofReal (monomialIntegrand (d i) (k i) (h i) (c' : ℝ) y)
   /-- (COVER ≤) for `c'` at-or-above some leaf's threshold, the `U`-integral diverges on any open
   `Ω ∋ 0` (the ε-uniform leaf monomial singularity). -/
@@ -84,7 +91,10 @@ theorem routeM_rlctAtOn_eq_iInf {N : ℕ} (F : (Fin N → ℝ) → ℝ) (U : Set
     exact hcover.cover_ge_div c' ⟨i, hi.le⟩ Ω hΩopen h0Ω hint
   · apply rlctAtOn_ge_of_integral_lt F hcover.Fmeas U hcover.Uopen hcover.Umem t
     intro c' hc'lt
-    refine lt_of_le_of_lt (hcover.cover_le c') ?_
+    -- `∫_U ≤ C·Σ∫` with `C` finite; `C·(finite) = finite` (`mul_lt_top`) ⟹ `∫_U < ⊤`.
+    -- The finite prefactor rides the finiteness transfer; it never reaches the `⨅`.
+    obtain ⟨C, hC_lt, hcov_le⟩ := hcover.cover_le c'
+    refine lt_of_le_of_lt hcov_le (ENNReal.mul_lt_top hC_lt ?_)
     rw [ENNReal.sum_lt_top]
     intro i _
     rcases eq_or_lt_of_le (zero_le c') with hc0 | hc0
