@@ -1033,4 +1033,55 @@ theorem admissibleXs_eq_adm (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (dlast : �
       exact Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ _)
     | cast I' => rw [boundX, Fin.lastCases_castSucc]; exact hb I'
 
+/-- **The constrained-vector peel** (the (Q) crux): a sum over `adm b d` (with `b : Fin (n+1) → ℕ`)
+reorganizes into `∑_{x₀ ≤ min (b 0) d} ∑_{y ∈ adm (tail b) (d−x₀)} F (cons x₀ y)`. Proof via a sigma
+`Finset.sum_bij'` (`x ↦ ⟨x 0, tail x⟩`, inverse `⟨x₀, y⟩ ↦ cons x₀ y`). The `∑ = d` filter couples
+head and tail; the head bound `x₀ ≤ min (b 0) d` comes from `x₀ ≤ b₀` and `x₀ ≤ ∑ x = d`. -/
+theorem adm_peel_sum {M : Type*} [AddCommMonoid M] {n : ℕ} (b : Fin (n + 1) → ℕ) (d : ℕ)
+    (F : (Fin (n + 2) → ℕ) → M) :
+    ∑ x ∈ adm b d, F x
+      = ∑ x0 ∈ Finset.range (min (b 0) d + 1),
+          ∑ y ∈ adm (Fin.tail b) (d - x0), F (Fin.cons x0 y) := by
+  rw [Finset.sum_sigma']
+  refine Finset.sum_bij'
+    (fun x _ ↦ (⟨x 0, Fin.tail x⟩ : Σ _ : ℕ, Fin (n + 1) → ℕ))
+    (fun p _ ↦ Fin.cons p.1 p.2) ?_ ?_ ?_ ?_ ?_
+  · -- maps_to: x ∈ adm b d → ⟨x 0, tail x⟩ ∈ sigma
+    intro x hx
+    rw [mem_adm] at hx
+    obtain ⟨hsum, hb⟩ := hx
+    have hx0d : x 0 ≤ d := by
+      rw [← hsum]; exact Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ 0)
+    have hx0b : x 0 ≤ b 0 := by have := hb 0; rwa [Fin.castSucc_zero] at this
+    rw [Finset.mem_sigma, Finset.mem_range, Nat.lt_succ_iff, mem_adm]
+    refine ⟨le_min hx0b hx0d, ?_, fun i ↦ ?_⟩
+    · -- ∑ tail x = d - x 0
+      rw [Fin.sum_univ_succ] at hsum
+      simp only [Fin.tail]; omega
+    · -- tail x bound: (tail x) (i.castSucc) = x (i.castSucc.succ) ≤ b i.succ = (tail b) i
+      simp only [Fin.tail]
+      have := hb i.succ
+      rwa [Fin.castSucc_succ] at this
+  · -- inv maps_to: ⟨x0, y⟩ ∈ sigma → cons x0 y ∈ adm b d
+    intro p hp
+    rw [Finset.mem_sigma, Finset.mem_range, Nat.lt_succ_iff, mem_adm] at hp
+    obtain ⟨hx0, hysum, hyb⟩ := hp
+    simp only
+    rw [mem_adm]
+    refine ⟨?_, fun i ↦ ?_⟩
+    · rw [Fin.sum_cons]; omega
+    · induction i using Fin.cases with
+      | zero => rw [Fin.castSucc_zero, Fin.cons_zero]; omega
+      | succ i' =>
+        rw [Fin.castSucc_succ, Fin.cons_succ]
+        have := hyb i'; simpa [Fin.tail] using this
+  · -- left inverse: cons (x 0) (tail x) = x
+    intro x _; exact Fin.cons_self_tail x
+  · -- right inverse: ⟨(cons x0 y) 0, tail (cons x0 y)⟩ = ⟨x0, y⟩
+    intro p _
+    obtain ⟨x0, y⟩ := p
+    simp only [Fin.cons_zero, Fin.tail_cons]
+  · -- term: F x = F (cons (x 0) (tail x))
+    intro x _; exact congrArg F (Fin.cons_self_tail x).symm
+
 end DLNFibre.Core
