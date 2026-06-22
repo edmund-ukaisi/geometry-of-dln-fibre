@@ -70,16 +70,29 @@ decisions as "current lean, pending X", not as settled.)
   via the PROVEN weightedThreshold_weight_unit_invariant. L2 claim HOLDS (unit-Jacobian ⟹ core RLCT =
   rlctAtOn(dlnLoss M 0) 0). crux2 implementing. hGne carried as a local hypothesis → TRACKED for spine-wiring;
   gap #2 measurability CLOSED (Codex g151). crux2 NEXT → D1≥ wiring skeleton (below).
-- cobuild-sub34 #51 (the COLLAPSED sub-3 = matrix-core comparability, GAUGE-NORMALIZED T̃ ‖T·(I−VY)⁻¹·S‖² ≍
-  dlnLoss M 0): chart-collapse CONFIRMED (sub-5 uses only split + loss_squeeze + MP transport, no chart). Matrix
-  bedrock BANKED green (twofactor_block_product, schur_P11_decomp [P11=R+leak, R=T̃], frobenius_fromBlocks) = the
-  coreEmbed content. Holds the loss_squeeze assembly for crux2's coreEmbed field. Worktree workspace/dgc-sub34. pp2 backup.
-- **D1 #42 ≥-leg (`rlctAt_deepest_le_of_optimal`):** #111-check verdict — (a) the general-v homogeneous-residual
-  chart is NEW (block_elimination only normal-forms target B) AND shares technique with #44's deepest squeeze →
-  ONE cert. pp2 EXTENDS #48 to the general-v squeeze datum (serves #44 sub-3 [v=deepest] + D1 (a) [arbitrary
-  v∈optimalSet]); consumers differ only by basepoint + the homogeneous-scaling step (rlctAtOn_mono = Aoyagi
-  Lemma 1(1)). crux2 builds the D1≥ WIRING skeleton now (structure-light, green-tool route around the shared
-  chart); heavy chart part gated on pp2's general-v cert.
+- cobuild-sub34 #51 (the COLLAPSED sub-3 = matrix-core comparability, GAUGE-NORMALIZED T̃): chart-collapse
+  CONFIRMED; matrix bedrock #53 BANKED green (twofactor_block_product, schur_P11_decomp [P11=R+leak, R=T̃],
+  frobenius_fromBlocks). OPEN soundness Q gating the loss_germ transcription — **split_mp vs T̃-core**: can an MP
+  `split` deliver the T̃ core (crux2's `ofExactGerm` stands as-is), or is a non-MP `coreEmbed` field needed
+  (cobuild-sub34)? DECIDED via the g153 litmus (C1C2C3=blockdiag[1,−ε⁴]: Φ=ε⁸ → MP-deliverable, crux2 right;
+  Φ=0 → coreEmbed needed). Note: cobuild-sub34's "MP ⟹ linear reindex" inference is too strong (MP ≠ linear; a
+  nonlinear volume-preserving split is possible, gauge slot compensating the (I−VY) det). Worktree workspace/dgc-sub34. pp2 backup.
+- **D1 #42 ≥-leg (`rlctAt_deepest_le_of_optimal`):** pp2's #56 general-v squeeze cert DONE (g155 @2d584f6;
+  core = gauge-normalized T̃, reuses crux2's banked primitives). TWO findings under audit (#57):
+  (i) SCOPE — D1's v ∈ optimalSet is NOT rank-exact in general (varying fibre ranks; #112 cert d1_222_strata.py).
+  #56 Part 1 covers rank-exact v, so D1's non-rank-exact v may need a BROADER homogeneous-residual split (crux2
+  ⟷ pp2 reconciling). (ii) **CRITICAL (citable constraint):** the scaling step's load-bearing fact is
+  "deepest = min-core over optimalSet" = Aoyagi 2013 Thm 2 — NOT the too-clean Σt^{2nᵢ}≤1 (general v is
+  off-deepest by genuine OFFSETS, not t-damping). ONLY S2 (monomial_rlct) is citable ⟹ D1≥ must PROVE
+  "deepest = min-core" (pp2's read: L1-separable, block_elimination-homogeneous-domination), NOT cite Aoyagi
+  Thm 2. PROVE-OR-SURFACE before the D1 grind (#57) — a genuine second citation ⟹ operator escalation. crux2
+  holds the D1 structure + the IsDeepLayers generalization until (i)+(ii) resolve; #112 wiring cert done.
+
+**TRACKED SOUNDNESS / PRECISION ITEMS (controller holds):**
+1. **hGne** (L2) — reduced-chain non-degeneracy hypothesis; discharge-at-spine-wiring vs stated-headline-hypothesis. Verify vs the actual headline when crux2 reaches spine-wiring.
+2. **deepest = min-core** (D1, #57) — must be PROVEN L1-separable, NOT cited as Aoyagi Thm 2 (only S2 citable); else operator escalation. THE biggest scope risk surfaced.
+3. **split_mp vs T̃-core** (#44 sub-3) — g153 litmus pending: MP split delivers T̃ (ofExactGerm stands) vs needs coreEmbed. Gates sub-3 transcription.
+4. **exact-vs-squeeze** (minor) — cert must not overclaim "exact" if only a squeeze; loss_squeeze accommodates both.
 
 **CANONICAL CERT LINEAGE (for #28 — pp2's authoritative tips, 2026-06-22):**
 - g138 design (C1 = blow-up + det-1 triangular peel + recurse): **origin/g138-c1-peel-prose @0823917** ← canonical
