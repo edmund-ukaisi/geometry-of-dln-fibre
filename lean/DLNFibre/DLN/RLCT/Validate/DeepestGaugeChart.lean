@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Foundations.S1Spectator
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart` — the L2 deepest-point gauge-slice normal form (#44)
@@ -122,12 +123,50 @@ theorem deepest_nonMP_chart_transport_unit (H : Fin (L + 1) → ℕ) (r : ℕ)
           (0 : Fin (flatDim H) → ℝ) := by
   sorry
 
-/-- **Sub-lemmas 6+7 (`deepest_regular_smooth_split` + `deepest_reduced_core_identification`).** The
-pulled-back loss `∑ regular² + (reduced core)` has RLCT `nReg/2 + rlctAtOn (dlnLoss M 0) 0`: the
-`nReg` nondegenerate quadratic directions split off additively (`rlct_additive_smooth_block`, with
-`G = √∘(dlnLoss M 0)`, `G² = dlnLoss M 0` via `dlnLoss_nonneg`), and the reduced block's RLCT IS
-`rlctAtOn (dlnLoss M 0) 0` (the deepest point of the core is the origin `0 : Params M`, transported
-by the MP flattening `paramsEquivFlat M`). -/
+/-- **Sub-lemma 7 (`deepest_reduced_core_identification`).** The reduced core loss in flat
+coordinates has the same RLCT as on `Params M`: `rlctAtOn (dlnLoss M 0 ∘ (paramsEquivFlat M).symm) 0
+= rlctAtOn (dlnLoss M 0) (fun _ => 0)`. Transport along the measure-preserving flattening
+`paramsEquivFlat M` (its `.symm` is a measure-preserving homeomorph, `0 ↦ fun _ => 0`). -/
+theorem deepest_reduced_core_identification (M : Fin (L + 1) → ℕ) :
+    rlctAtOn
+        (fun y : Fin (flatDim M) → ℝ =>
+          dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) ((paramsEquivFlat M).symm y))
+        (0 : Fin (flatDim M) → ℝ)
+      = rlctAtOn (fun A : Params M => dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) A)
+          (fun _ => 0 : Params M) := by
+  set e : Params M ≃ₜ (Fin (flatDim M) → ℝ) :=
+    ⟨(paramsEquivFlat M).toEquiv, continuous_paramsEquivFlat M, continuous_paramsEquivFlat_symm M⟩
+    with he
+  have hmp : MeasurePreserving e (volume : Measure (Params M)) volume :=
+    measurePreserving_paramsEquivFlat M
+  -- `e` shares the underlying map with the `MeasurableEquiv` `paramsEquivFlat M`, so its measurable
+  -- embedding comes from the latter (no `BorelSpace (Params M)` needed).
+  have hemb : MeasurableEmbedding e := (paramsEquivFlat M).measurableEmbedding
+  have key := rlctAtOn_comp_homeomorph e hmp hemb
+    (fun y : Fin (flatDim M) → ℝ =>
+      dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) ((paramsEquivFlat M).symm y))
+    (fun _ => 0 : Params M)
+  have he0 : e (fun _ => 0 : Params M) = (0 : Fin (flatDim M) → ℝ) := by
+    show (paramsEquivFlat M) (fun _ => 0) = 0
+    funext i
+    show (paramsEquivFlat M) (fun _ => 0) i = 0
+    rfl
+  rw [he0] at key
+  have hcomp : (fun A : Params M =>
+      dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) ((paramsEquivFlat M).symm (e A)))
+      = fun A : Params M => dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) A := by
+    funext A
+    congr 1
+    show (paramsEquivFlat M).symm ((paramsEquivFlat M) A) = A
+    exact (paramsEquivFlat M).symm_apply_apply A
+  rw [hcomp] at key
+  exact key.symm
+
+/-- **Sub-lemma 6 (`deepest_regular_smooth_split`).** The pulled-back loss `∑ regular² + (reduced
+core)` has RLCT `nReg/2 + rlctAtOn (dlnLoss M 0) 0`: the `nReg` nondegenerate quadratic directions
+split off additively (`rlct_additive_smooth_block`, with `G = √∘(dlnLoss M 0)`, `G² = dlnLoss M 0`
+via `dlnLoss_nonneg`), the loss-independent gauge spectators peel off (`rlctAtOn_spectator_peel`),
+and the reduced block's RLCT is `rlctAtOn (dlnLoss M 0) 0` (sub-7). -/
 theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
