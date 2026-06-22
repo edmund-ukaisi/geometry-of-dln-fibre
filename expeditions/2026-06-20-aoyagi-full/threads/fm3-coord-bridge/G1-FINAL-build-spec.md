@@ -88,6 +88,20 @@ surface the (2,2,2) IsRouteMCover instance when green. EVERY signature now verif
 adapters, no shape gaps. The grind (routeStep + cover_le/cover_ge_div + Fmeas/Uopen/Umem + mult-bound/binding-leaf)
 is pure formalisation against the signed-off interface. === COORDINATION ARC EXHAUSTIVELY CLOSED (g155→g182). ===
 
+## STUB DISCIPLINE — routeM_cover_le MUST stub WITH C(c'), never bare (g188, crux2 STOP)
+crux2 STOP (right — lean-discipline enforced): do NOT stub routeM_cover_le with the BARE RHS (≤ Σ∫). It's
+UNPROVABLE (a^{−c'}·2^d irreducible) — a bare stub = a sorry under a FALSE statement, which would WALL when I
+prove it (build the whole dispatcher against a false target, then fail). C(c') is MANDATORY in the STUB
+itself, not a fallback. So routeM_cover_le's STATEMENT (sorry-bodied or proven) is:
+  routeM_cover_le (S) (c') : ∫⁻_U |routeMCore S|^(-(c':ℝ)) ≤ C S c' · ∑ i, ∫_{unitBox} monomialIntegrand
+    (routeD S i)(routeK S i)(routeH S i)(c':ℝ)
+C-THREADING (sync w/ crux2, #81): my side `C : RouteState → NNReal → ℝ≥0∞` (so `C S c'` for the fixed S),
+finite (carries a^{−c'}·2^d). On crux2's IsRouteMCover.cover_le FIELD: `C : NNReal → ℝ≥0∞` (family fixed) —
+matches mine as `C S` for the fixed S. crux2 adds C to the field (the field type = my lemma type, both with
+C); wrap stays ⟨Fmeas, Uopen, Umem, cover_le, cover_ge_div⟩. crux2's structure change = #81, gated controller-go
+(route-m-atlas #38). I HOLD the bare stub; stub WITH C once crux2 confirms the exact C-type so they line up.
+cover_ge_div + Fmeas/Uopen/Umem UNCHANGED (no constant). === lean-discipline: statement TRUE before stub. ===
+
 ## cover_le SEAM — CONSTANT-CARRYING RHS (g185, fm3 flag + crux2 verdict, verified vs bridge proof)
 I flagged: `∫⁻_U |F|^(−c') ≤ Σ_ι ∫_{[0,1]^d} bare-monomialIntegrand` is LITERALLY FALSE — the per-chart unit
 lower bound a (≥a>0, g183) gives |F|^(−c') ≤ a^{−c'}·(monomial)^{−c'}, and the signed-box→[0,1]^d orthant
