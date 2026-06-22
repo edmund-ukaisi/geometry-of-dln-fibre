@@ -441,3 +441,53 @@ BANKED (g165, @dd6bdb5, the §2 value-side discharge):
 So the §2 green-≠-right guard is now machine-checked on the value side: the dispatcher's threshold_ge
 holds BY the admissible-T witness. STILL AWAITING crux2 on the transport-field (additive-vs-min / which
 lemma the per-cell consequence uses) before pinning the full ValidRouteStep + building the fold.
+
+## WAIT-STATE (g166, controller) — set to assemble on crux2's transport-field adjudication
+Controller: R1's long-pole has collapsed to the SINGLE transport-field confirm (in flight — do NOT
+re-ask crux2). Controller leans the lighter monomial-pullback read (my g164): per-cell consequence =
+node_loss_pivot_factor (mine) + rlctAtOn_reduced_transport (crux2 det=1 reindex), NOT the heavy
+IsSchurStraightenSqueeze additive datum. On crux2's reply (likely lighter): pin ValidRouteStep → build
+the fold → transcribe pp2's recipe. Value-side COMPLETE + fork-independent.
+Sent pp2 the full firmed target shape (RouteStep/ChainDimSplit/MonoData types + value-side interface +
+paths + firm-vs-moving). pp2's g183 cert already designs against it; the codim field tightens to the
+§2-witnessed form, the transport-field flagged crux2-pending.
+
+### DURABLE: the route-checked recursion skeleton (RouteMRecursion.lean, UNCOMMITTED — preserve vs wipe)
+The fix-body skeleton (route-checked green, 1 sorry = routeStep). Recorded here for durability (the
+worktree-wipe lesson). On top of the committed foundation (chainWidthSum/redM_widthSum_lt/chainRel/
+chainRel_wf/redM_chainRel @55db82d):
+
+    structure NodeChartFamily {L : ℕ} (_M : Fin (L + 1) → ℕ) where
+      ι : Type
+      fintype : Fintype ι
+      data : ι → MonoData
+
+    inductive RouteStep {L : ℕ} (M : Fin (L + 1) → ℕ) : Type 1
+      | leaf (md : MonoData)
+      | branch (cells : Type) (cellsFin : Fintype cells)
+          (split : cells → ChainDimSplit M) (codim : cells → ℕ)
+
+    noncomputable def routeStep {L : ℕ} (M : Fin (L + 1) → ℕ) : RouteStep M := sorry
+
+    noncomputable def routeAtlas : {L : ℕ} → (M : Fin (L + 1) → ℕ) → NodeChartFamily M :=
+      fun {L} => WellFounded.fix chainRel_wf fun M rec =>
+        match routeStep M with
+        | .leaf md => { ι := PUnit, fintype := inferInstance, data := fun _ => md }
+        | .branch cells cellsFin split codim =>
+            letI : Fintype cells := cellsFin
+            let child : (c : cells) → NodeChartFamily (split c).red :=
+              fun c => rec (split c).red (split c).redM_chainRel
+            { ι := Σ c : cells, (child c).ι
+              fintype := by
+                classical
+                letI : ∀ c : cells, Fintype ((child c).ι) := fun c => (child c).fintype
+                infer_instance
+              data := fun x => ((child x.1).data x.2).appendDivisor (codim x.1) }
+
+    def routeMIota {L : ℕ} (M : Fin (L + 1) → ℕ) : Type := (routeAtlas M).ι
+    noncomputable instance {L : ℕ} (M : Fin (L + 1) → ℕ) : Fintype (routeMIota M) := (routeAtlas M).fintype
+    noncomputable def routeD/routeK/routeH M i := ((routeAtlas M).data i).{d,k,h}
+
+(imports: GeneralR1Recursion [ChainDimSplit] + RouteMState [MonoData] + Mathlib.Data.Fintype.Sigma;
+open scoped BigOperators; namespace DLNFibre.DLN.RLCT.) routeStep → ValidRouteStep (certified, with
+pp2's §2 witness + crux2's transport field) once the transport-field lands.
