@@ -234,6 +234,83 @@ theorem rlctAtOn_germ_local {N : Type*} [MeasureSpace N] [TopologicalSpace N]
   congr 1; ext c
   exact ⟨key F G hU₀ c, key G F (fun w hw => (hU₀ w hw).symm) c⟩
 
+/-! ## The SQUEEZE chain (pp2 #129/#130 — the CORRECTED per-node route)
+
+pp2 #129 (decorrelated) RETRACTED the clean measure-preserving-chart route: the per-node transvection
+`A ↦ L·A·R` IS det-1 / measure-preserving (`mp_schur_transvection_vec`), but the LOSS is NOT invariant
+under it (`L` unipotent ⇏ orthogonal, `‖Â·A2‖² ≠ ‖L·Â·A2‖²`). #127's "clean decoupling" was a MATRIX
+identity misread as a loss-VALUE identity. So the per-node `rlctAtOn` does NOT resolve by
+`rlctAtOn_comp_homeomorph` (a change of variables); it resolves by the SQUEEZE (same as L2/g128): the
+loss `F` is sandwiched `c₁·Φ ≤ F ≤ c₂·Φ` (c₁>0) by the smooth-block normal form `Φ`, comparing `F` and
+`Φ` at the SAME point — NO chart, NO measure Jacobian. `mp_schur_transvection_vec` stays true reusable
+bedrock but is OFF this path. -/
+
+/-- **General-domain RLCT monotonicity** (the flat-domain twin of `rlctAt_mono`): if near `wstar`
+`|G| ≤ |F|` and `G` vanishes only where `F` does, then `rlctAtOn G wstar ≤ rlctAtOn F wstar` — a
+smaller `|·|` makes `|·|^{−c'}` larger (harder to integrate), so fewer exponents qualify. The
+`G=0→F=0` clause makes the domination pointwise (no a.e./null-set); `Measurable F` is the one analytic
+hypothesis. Ports `rlctAt_mono`'s `sSup_le_sSup` argument to a general `MeasureSpace`. -/
+theorem rlctAtOn_mono {M : Type*} [MeasureSpace M] [TopologicalSpace M] [OpensMeasurableSpace M]
+    (F G : M → ℝ) (wstar : M) (hFmeas : Measurable F)
+    (hdom : ∃ U ∈ nhds wstar, ∀ w ∈ U, |G w| ≤ |F w| ∧ (G w = 0 → F w = 0)) :
+    rlctAtOn G wstar ≤ rlctAtOn F wstar := by
+  unfold rlctAtOn weightedThreshold
+  apply sSup_le_sSup
+  rintro c ⟨c', rfl, Ω, hΩopen, hKΩ, hint⟩
+  obtain ⟨V, hV, hVdom⟩ := hdom
+  obtain ⟨W, hWV, hWopen, hwW⟩ := mem_nhds_iff.mp hV
+  have hwΩ : wstar ∈ Ω := hKΩ rfl
+  refine ⟨c', rfl, Ω ∩ W, hΩopen.inter hWopen, Set.singleton_subset_iff.2 ⟨hwΩ, hwW⟩, ?_⟩
+  have hmeasF : AEStronglyMeasurable (fun w => |F w| ^ (-(c' : ℝ)) * (1 : ℝ))
+      (volume.restrict (Ω ∩ W)) :=
+    ((((continuous_abs.measurable).comp hFmeas).pow_const _).mul_const _).aestronglyMeasurable
+  apply MeasureTheory.Integrable.mono (hint.mono_set Set.inter_subset_left) hmeasF
+  have hΩW_meas : MeasurableSet (Ω ∩ W) := (hΩopen.inter hWopen).measurableSet
+  refine (ae_restrict_iff' hΩW_meas).mpr ?_
+  filter_upwards with w hw
+  have hd := hVdom w (hWV hw.2)
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_mul, abs_mul, abs_one, mul_one, mul_one,
+      abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
+      abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+  exact abs_rpow_neg_mono (F w) (G w) c' c'.2 hd.1 hd.2
+
+/-- **The SQUEEZE RLCT-equality** (the g128 chain front): if `F, Φ ≥ 0` near `wstar`, both measurable,
+and `c₁·Φ ≤ F ≤ c₂·Φ` with `0 < c₁`, `0 < c₂`, then `rlctAtOn F wstar = rlctAtOn Φ wstar`. The
+constant multiples `c₁, c₂` are positive units stripped by `rlctAtOn_unit_invariant_aux`; the two
+inequalities give `rlctAtOn_mono` both ways (the `F=0 ⟺ Φ=0` vanishing from the two-sided bound with
+`c₁,c₂>0`). NO change of variables, NO measure Jacobian — `F` and `Φ` compared at the SAME point. -/
+theorem rlctAtOn_squeeze {M : Type*} [MeasureSpace M] [TopologicalSpace M] [OpensMeasurableSpace M]
+    (F Φ : M → ℝ) (wstar : M) (hFmeas : Measurable F) (hΦmeas : Measurable Φ)
+    (c₁ c₂ : ℝ) (hc₁ : 0 < c₁) (hc₂ : 0 < c₂)
+    (hsq : ∃ U ∈ nhds wstar, ∀ w ∈ U, 0 ≤ Φ w ∧ c₁ * Φ w ≤ F w ∧ F w ≤ c₂ * Φ w) :
+    rlctAtOn F wstar = rlctAtOn Φ wstar := by
+  obtain ⟨U, hU, hbnd⟩ := hsq
+  refine le_antisymm ?_ ?_
+  · rw [show rlctAtOn Φ wstar = rlctAtOn (fun w => c₂ * Φ w) wstar from
+      (rlctAtOn_unit_invariant_aux Φ (fun _ => c₂) wstar c₂ c₂ hc₂ (by fun_prop)
+        ⟨U, hU, fun w _ => by rw [abs_of_pos hc₂]; exact ⟨le_refl _, le_refl _⟩⟩).symm]
+    refine rlctAtOn_mono (fun w => c₂ * Φ w) F wstar (by fun_prop) ⟨U, hU, fun w hw => ?_⟩
+    obtain ⟨hΦ, hlo, hhi⟩ := hbnd w hw
+    have hF0 : 0 ≤ F w := le_trans (mul_nonneg hc₁.le hΦ) hlo
+    refine ⟨?_, fun hFeq => ?_⟩
+    · rw [abs_of_nonneg hF0, abs_of_nonneg (mul_nonneg hc₂.le hΦ)]; exact hhi
+    · show c₂ * Φ w = 0
+      have hΦ0 : Φ w = 0 := le_antisymm (by nlinarith [hFeq ▸ hlo]) hΦ
+      rw [hΦ0, mul_zero]
+  · rw [show rlctAtOn Φ wstar = rlctAtOn (fun w => c₁ * Φ w) wstar from
+      (rlctAtOn_unit_invariant_aux Φ (fun _ => c₁) wstar c₁ c₁ hc₁ (by fun_prop)
+        ⟨U, hU, fun w _ => by rw [abs_of_pos hc₁]; exact ⟨le_refl _, le_refl _⟩⟩).symm]
+    refine rlctAtOn_mono F (fun w => c₁ * Φ w) wstar hFmeas ⟨U, hU, fun w hw => ?_⟩
+    obtain ⟨hΦ, hlo, hhi⟩ := hbnd w hw
+    have hF0 : 0 ≤ F w := le_trans (mul_nonneg hc₁.le hΦ) hlo
+    refine ⟨?_, fun hcF0 => ?_⟩
+    · rw [abs_of_nonneg (mul_nonneg hc₁.le hΦ), abs_of_nonneg hF0]; exact hlo
+    · have hΦ0 : Φ w = 0 := by
+        rcases mul_eq_zero.1 hcF0 with h | h
+        · exact absurd h (ne_of_gt hc₁)
+        · exact h
+      nlinarith [hhi, hΦ0]
+
 /-- The smooth-block normal form on the chart source: `(∑ regular coords²) + G(residual)²`. -/
 noncomputable def smoothBlockSplitForm {nReg : ℕ} {Y : Type*} (G : Y → ℝ) :
     (Fin nReg → ℝ) × Y → ℝ := fun p => (∑ i, p.1 i ^ 2) + G p.2 ^ 2
@@ -265,6 +342,37 @@ theorem schur_recursion_step_sound {L : ℕ} (M : Fin (L + 1) → ℕ) (nReg : �
   rw [← rlctAtOn_comp_homeomorph chart hmp hemb (dlnLoss M 0) (0, 0)]
   rw [rlctAtOn_germ_local _ (fun p => u p * smoothBlockSplitForm G p) _ hfactor]
   rw [rlctAtOn_unit_invariant_aux (smoothBlockSplitForm G) u (0, 0) a b ha humeas hu]
+  exact rlct_additive_smooth_block G 0 hGmeas hGne
+
+/-- **G3.2 recursion step — the SQUEEZE form (PROVEN, the CORRECTED per-node route, pp2 #129/#130).**
+At the deepest point `(0,0)`, the per-node core `flatCore` is SQUEEZED by the smooth-block normal form
+`Φ = (∑ Eᵢ²) + G²`: `c₁·Φ ≤ flatCore ≤ c₂·Φ` near `(0,0)` with `0 < c₁`, `0 < c₂` (`hsq`), with `G`
+measurable + germ-nonvanishing (`hGne`). Then the RLCT splits:
+`rlctAtOn flatCore (0,0) = nReg/2 + rlctAtOn (G²) 0`. Chain: `rlctAtOn_squeeze` (the two-sided
+`rlctAtOn_mono` + positive-unit strip — NO chart, NO measure Jacobian) → `rlct_additive_smooth_block`
+(S1.5). This REPLACES `schur_recursion_step_sound`'s measure-preserving-chart front (retracted: the
+transvection is MP but the loss is not invariant under it); the tail (S1.5 split) is shared. The
+squeeze inequality `hsq` rests on `flatCore − Φ ∈ ideal(regular gens)` (the Schur identity as
+ideal-membership; pp2 certifies the general `m×k` node — supplied to `hsq`'s producer downstream). -/
+theorem schur_recursion_step_squeeze {nReg : ℕ}
+    {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y] [OpensMeasurableSpace Y]
+    [Zero Y]
+    (flatCore : (Fin nReg → ℝ) × Y → ℝ) (hFmeas : Measurable flatCore)
+    (G : Y → ℝ) (hGmeas : Measurable G)
+    (hGne : ∃ U ∈ nhds (0 : Y), ∀ᵐ z ∂(volume.restrict U), G z ≠ 0)
+    (c₁ c₂ : ℝ) (hc₁ : 0 < c₁) (hc₂ : 0 < c₂)
+    (hsq : ∃ U ∈ nhds ((0, 0) : (Fin nReg → ℝ) × Y), ∀ w ∈ U,
+        0 ≤ smoothBlockSplitForm G w ∧ c₁ * smoothBlockSplitForm G w ≤ flatCore w
+          ∧ flatCore w ≤ c₂ * smoothBlockSplitForm G w) :
+    rlctAtOn flatCore ((0, 0) : (Fin nReg → ℝ) × Y)
+      = (nReg : ℝ≥0∞) / 2 + rlctAtOn (fun y => G y ^ 2) (0 : Y) := by
+  have hΦmeas : Measurable (smoothBlockSplitForm (nReg := nReg) G) := by
+    unfold smoothBlockSplitForm
+    exact (Finset.measurable_sum _ (fun i _ =>
+      (measurable_pi_apply i |>.comp measurable_fst).pow_const _)).add
+        ((hGmeas.comp measurable_snd).pow_const _)
+  rw [rlctAtOn_squeeze flatCore (smoothBlockSplitForm G) _ hFmeas hΦmeas c₁ c₂ hc₁ hc₂ hsq]
   exact rlct_additive_smooth_block G 0 hGmeas hGne
 
 /-! ## The L=1 base (the `block_elimination` prototype)
