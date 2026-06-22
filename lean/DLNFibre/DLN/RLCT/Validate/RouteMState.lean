@@ -128,4 +128,72 @@ theorem monomialThreshold_appendDivisor_le_binding (md : MonoData) (m₀ : ℕ) 
   rw [monomialThreshold_appendDivisor md m₀ hm₀]
   exact min_le_left _ _
 
+/-! ## A leaf's accumulated datum — folding the pivot divisors along one path
+
+A single chart (one leaf of the resolution tree) accumulates the codim-`c` pivot divisors along its
+reduction PATH. `foldDivisors cs` appends them over the codim list `cs` onto the empty `d=0` base
+(threshold `⊤`). This is the per-leaf value, fork-independent: a leaf's `(d,k,h)` is its path's appends,
+however the branching is organised. The threshold of the fold is the `min` over `cs` of the ratios
+`c/2`, so a path whose binding (minimal-codim) divisor is `m₀` has threshold exactly `½·m₀`. -/
+
+/-- A leaf's `MonoData`: fold `appendDivisor` over the codim list `cs`, base the empty `d=0` datum. -/
+def MonoData.foldDivisors (cs : List ℕ) : MonoData :=
+  cs.foldr (fun c md => md.appendDivisor c) (leafMonoData 0)
+
+/-- The `ℝ≥0∞` min-fold of the divisor ratios `c/2` over a codim list. -/
+noncomputable def ratioMinFold (cs : List ℕ) : ℝ≥0∞ :=
+  cs.foldr (fun c acc => min ((c : ℝ≥0∞) / 2) acc) ⊤
+
+@[simp] theorem ratioMinFold_nil : ratioMinFold [] = ⊤ := rfl
+
+@[simp] theorem ratioMinFold_cons (c : ℕ) (cs : List ℕ) :
+    ratioMinFold (c :: cs) = min ((c : ℝ≥0∞) / 2) (ratioMinFold cs) := rfl
+
+/-- **The leaf threshold is the `min`-fold of the path's divisor ratios.** For a codim list `cs` of
+positive codims, `monomialThreshold (foldDivisors cs) = ratioMinFold cs` — the binding (minimal-codim)
+divisor on the path controls it (empty list ⟹ `⊤`). The achiever value for one path, closed form. -/
+theorem monomialThreshold_foldDivisors (cs : List ℕ) (hpos : ∀ c ∈ cs, 1 ≤ c) :
+    monomialThreshold (MonoData.foldDivisors cs).d (MonoData.foldDivisors cs).k
+        (MonoData.foldDivisors cs).h
+      = ratioMinFold cs := by
+  induction cs with
+  | nil => simpa [MonoData.foldDivisors, ratioMinFold] using leafMonoData_threshold 0
+  | cons c cs ih =>
+      have hc : 1 ≤ c := hpos c List.mem_cons_self
+      have ihp : ∀ c' ∈ cs, 1 ≤ c' := fun c' hc' => hpos c' (List.mem_cons_of_mem c hc')
+      have hstep : MonoData.foldDivisors (c :: cs) = (MonoData.foldDivisors cs).appendDivisor c := rfl
+      rw [hstep, monomialThreshold_appendDivisor _ c hc, ih ihp, ratioMinFold_cons]
+
+/-- The `ratioMinFold` is `≤ m₀/2` when the binding codim `m₀` appears in the list. -/
+theorem ratioMinFold_le_of_mem (cs : List ℕ) (m₀ : ℕ) (hbind : m₀ ∈ cs) :
+    ratioMinFold cs ≤ (m₀ : ℝ≥0∞) / 2 := by
+  induction cs with
+  | nil => exact absurd hbind List.not_mem_nil
+  | cons c cs ih =>
+      rw [ratioMinFold_cons]
+      rcases List.mem_cons.1 hbind with hceq | hmem
+      · exact hceq ▸ min_le_left _ _
+      · exact le_trans (min_le_right _ _) (ih hmem)
+
+/-- The `ratioMinFold` is `≥ m₀/2` when every codim in the list is `≥ m₀`. -/
+theorem ratioMinFold_ge_of_all_ge (cs : List ℕ) (m₀ : ℕ) (hge : ∀ c ∈ cs, m₀ ≤ c) :
+    (m₀ : ℝ≥0∞) / 2 ≤ ratioMinFold cs := by
+  induction cs with
+  | nil => exact le_top
+  | cons c cs ih =>
+      rw [ratioMinFold_cons]
+      refine le_min ?_ (ih fun c' hc' => hge c' (List.mem_cons_of_mem c hc'))
+      exact ENNReal.div_le_div_right (by exact_mod_cast hge c List.mem_cons_self) 2
+
+/-- **(C=∃, one path) A path whose binding divisor is the minimum `m₀` realises threshold `= ½·m₀`.**
+If every codim on the path is `≥ m₀` and `m₀` itself appears (`1 ≤ m₀`), the leaf threshold is exactly
+`m₀/2` — the achiever value (pp2 g148). `le_antisymm` of `ratioMinFold`'s two bounds. -/
+theorem monomialThreshold_foldDivisors_eq_of_binding (cs : List ℕ) (m₀ : ℕ) (hm₀ : 1 ≤ m₀)
+    (hge : ∀ c ∈ cs, m₀ ≤ c) (hbind : m₀ ∈ cs) :
+    monomialThreshold (MonoData.foldDivisors cs).d (MonoData.foldDivisors cs).k
+        (MonoData.foldDivisors cs).h
+      = (m₀ : ℝ≥0∞) / 2 := by
+  rw [monomialThreshold_foldDivisors cs (fun c hc => le_trans hm₀ (hge c hc))]
+  exact le_antisymm (ratioMinFold_le_of_mem cs m₀ hbind) (ratioMinFold_ge_of_all_ge cs m₀ hge)
+
 end DLNFibre.DLN.RLCT
