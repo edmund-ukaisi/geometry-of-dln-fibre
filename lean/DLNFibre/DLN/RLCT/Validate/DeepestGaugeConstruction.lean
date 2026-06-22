@@ -220,7 +220,62 @@ private theorem measurePreserving_coreShear (a b c : ℕ)
       (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) =>
         (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
       volume volume := by
-  sorry
+  set A := Fin a → ℝ; set Bb := Fin b → ℝ; set C := Fin c → ℝ
+  -- On the regrouped space `(A × C) × Bb`, the skew `((reg,spec), core) ↦ ((reg,spec), core + shift)`
+  -- is MP: `f = id` on the base `A × C`, per-fiber `core ↦ core + shift (reg,spec)` a translation.
+  have hskew : MeasurePreserving
+      (fun p : (A × C) × Bb => (p.1, p.2 + shift p.1)) volume volume := by
+    rw [show (volume : Measure ((A × C) × Bb)) = (volume : Measure (A × C)).prod volume from
+          Measure.volume_eq_prod _ _]
+    refine MeasurePreserving.skew_product (MeasurePreserving.id (volume : Measure (A × C)))
+      ?_
+      (ae_of_all _ fun p => (measurePreserving_add_right (volume : Measure Bb) (shift p)).map_eq)
+    -- `uncurry g (p, core) = core + shift p` is measurable (snd + shift ∘ fst, no `fun_prop`).
+    have hsf : Measurable (fun x : (A × C) × Bb => shift x.1) :=
+      hshift.measurable.comp measurable_fst
+    have hm : Measurable (fun x : (A × C) × Bb => x.2 + shift x.1) :=
+      measurable_snd.add hsf
+    exact hm
+  -- forward reassoc `A × (Bb × C) → (A × C) × Bb`, `(reg,(core,spec)) ↦ ((reg,spec),core)`.
+  have hfwd : MeasurePreserving
+      (fun q : A × (Bb × C) => ((q.1, q.2.2), q.2.1)) volume volume :=
+    measurePreserving_coreReassoc a b c
+  -- reverse reassoc `(A × C) × Bb → A × (Bb × C)`, `((reg,spec),core) ↦ (reg,(core,spec))`.
+  have hrev : MeasurePreserving
+      (fun p : (A × C) × Bb => (p.1.1, (p.2, p.1.2))) volume volume := by
+    have h2 : MeasurePreserving
+        (fun p : (A × C) × Bb => (p.1.1, (p.1.2, p.2))) volume volume := by
+      rw [show (volume : Measure ((A × C) × Bb))
+            = ((volume : Measure A).prod volume).prod volume from by
+            rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _],
+        show (volume : Measure (A × (C × Bb)))
+            = (volume : Measure A).prod ((volume : Measure C).prod volume) from by
+            rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _]]
+      exact measurePreserving_prodAssoc (volume : Measure A) volume volume
+    have hswap : MeasurePreserving
+        (fun q : A × (C × Bb) => (q.1, (q.2.2, q.2.1))) volume volume := by
+      have hsw : MeasurePreserving (Prod.swap : C × Bb → Bb × C) volume volume := by
+        rw [show (volume : Measure (C × Bb)) = (volume : Measure C).prod volume from
+              Measure.volume_eq_prod _ _,
+          show (volume : Measure (Bb × C)) = (volume : Measure Bb).prod volume from
+              Measure.volume_eq_prod _ _]
+        exact measurePreserving_swap
+      have : MeasurePreserving
+          (Prod.map (id : A → A) (Prod.swap : C × Bb → Bb × C)) volume volume := by
+        rw [show (volume : Measure (A × (C × Bb))) = (volume : Measure A).prod volume from
+              Measure.volume_eq_prod _ _,
+          show (volume : Measure (A × (Bb × C))) = (volume : Measure A).prod volume from
+              Measure.volume_eq_prod _ _]
+        exact (MeasurePreserving.id (volume : Measure A)).prod hsw
+      exact this
+    exact hswap.comp h2
+  -- `coreShear = hrev ∘ hskew ∘ hfwd` (the composite reduces to the target lambda by `rfl`).
+  have hcomp := hrev.comp (hskew.comp hfwd)
+  have hfun : (fun q : A × (Bb × C) => (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
+      = (fun p : (A × C) × Bb => (p.1.1, (p.2, p.1.2)))
+        ∘ ((fun p : (A × C) × Bb => (p.1, p.2 + shift p.1))
+          ∘ (fun q : A × (Bb × C) => ((q.1, q.2.2), q.2.1))) := rfl
+  rw [hfun]; exact hcomp
 
 /-- **PIN 0 — the core absorption** (the Schur shear, Route A peel). `coreAbsorb` turns the raw core
 slot `T_s` into the Schur complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` via `coreShearHomeo` with the
