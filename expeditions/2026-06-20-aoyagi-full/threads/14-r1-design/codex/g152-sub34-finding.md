@@ -246,3 +246,34 @@ L=1 ⟹ nGauge=0 (no interior, g154). The `split` index-equivalence
 `Fin(flatDim H) ≃ Fin nReg ⊕ (Fin(flatDim M) ⊕ Fin nGauge)` rests on `nReg + flatDim M + nGauge = flatDim H`
 (by the nGauge def). Codex g159: encode the partition as an actual finite-index `≃` (the flagged risk),
 not arithmetic; MP via volume_preserving_arrowCongr' + measurePreserving_add_right + sumArrowHomeomorphProdArrow.
+
+## g160 — SEAM: crux2's arbitrary-MP split does NOT compose with loss_squeeze (genuine, Codex xhigh)
+
+crux2's deepestSplit_exists (fm2/split-reindex @a0dc754, "zero sorries") builds `split` MP + basepoint
+via an ARBITRARY `Fintype.equivOfCardEq` index partition. Its docstring: "slot semantics (reg = pivots,
+core = raw T_s, spec = rest) are NOT pinned by split — pinned by loss_squeeze (cobuild-sub34)."
+
+PROBLEM (Codex confirmed genuine): loss_squeeze's Φ = ∑(split w).1² + coreF(coreAbsorb(split w)).2.1
+uses (split w).1 (the PRE-coreAbsorb reg slot) as "∑E²". But the regular residuals E are a NONLINEAR
+function of the flat params (the gauge slice / block_elimination residuals). An arbitrary MP relabel's
+(split w).1 is a PROJECTION of flat coords — it CANNOT equal the nonlinear E. So ∑(split w).1² is
+unrelated to ∑E², and loss_squeeze (c₁·Φ ≤ loss) is FALSE. The docstring is backwards: loss_squeeze
+can't MANUFACTURE gauge meaning from an arbitrary relabel; it's only TRUE if the coords already mean it.
+
+Codex: MP does NOT forbid a nonlinear split (shears are MP). The obstruction is that crux2's split is
+translation + coordinate RELABEL (so its first slot is a projection). The residual chart replacing
+pivot vars by E is unit-Jacobian, NOT MP; making it genuinely MP needs a volume-normalizing completion
+(spectator compensation) — a NEW construction, not a finite-index partition.
+
+THE MINIMAL FIX (Codex):
+ (c) make E/residual chart explicit, unit-Jacobian transport, change sub-6 OFF split_mp; OR
+ (d-strong) split must be a SPECIFICALLY-CONSTRUCTED nonlinear MP homeo with (split w).1 = E (or
+     ∑(split w).1²+core ≍ ∑E²+core) — NOT arbitrary equivOfCardEq. Needs the spectator-compensation
+     volume-normalization.
+Clean contract: crux2's split must ADD a field `reg_residual : (split w).1 = E w near flatDeepest`
+(or the ≍ form). Arbitrary reindex is INVALID for the consuming loss_squeeze.
+
+⟹ crux2's #64 "zero sorries" proves MP+basepoint but NOT the gauge semantics loss_squeeze needs — a
+green lemma that doesn't compose. Surface to crux2 + controller. The find-confound at the interface:
+the split's truth (MP) ≠ the split's usability (gauge slice). Resolution is crux2's (split contract) +
+possibly the structure (loss_squeeze's reg-slot / sub-6's split_mp dependence).
