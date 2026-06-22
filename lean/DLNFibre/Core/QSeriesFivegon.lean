@@ -111,4 +111,16 @@ theorem fivegon_base (d : Fin 1 → ℕ) : fivegonSum d = Pmult d := by
   rw [hcf, Int.toNat_zero, pow_zero, one_mul, Pm, Pmult, Fin.prod_univ_one,
     show upperPairs 0 = {(0, 0)} from by decide, Finset.prod_singleton]
 
+/-! ## The peeling step (`N+1`): merge the last vertex's column
+
+`peelPart m` drops the last vertex `Fin.last (N+1)` by merging its column into column `N`
+(`m'_{i,N} = m_{i,N} + m_{i,N+1}`); columns `j < N` are untouched. This is the `m'` of the
+bijection `kostantAll d ↔ Σ_{m'} (last-column data)`. -/
+
+/-- The forward peel map: `m' = peelPart m` on `Fin (N+1)` merges `m`'s columns `N` and `N+1`. -/
+def peelPart (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ p.2.lastCases
+    (m (p.1.castSucc, (Fin.last N).castSucc) + m (p.1.castSucc, Fin.last (N + 1)))
+    (fun J₀ ↦ m (p.1.castSucc, J₀.castSucc.castSucc))
+
 end DLNFibre.Core
