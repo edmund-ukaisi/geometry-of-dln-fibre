@@ -398,3 +398,23 @@ binding pivot codim = m₀. Then (a)+(b) ⟹ IsResolutionAtlas ⟹ ⨅ monomialT
 m₀=3 (codim-3 rank-1 incidence), binding path → (1,2) ratio 3/2 = lambdaCore; others ≥3. SENT pp2.
 === MEANWHILE-WORK (controller i/ii/iii) DONE: interface target shape (i) + consumer recipe (ii) sent;
 consistency contract (iii) machine-checked + banked. The dispatcher itself = pp2 #68 → I transcribe. ===
+
+## ADDITIVE-vs-MIN RESOLVED (g164, the (2,2,2) numerical check) — per-node op is MIN, not +nReg/2
+Building the schematic fold guardrail, I checked the (2,2,2) leaf BEFORE committing to the per-cell
+consequence shape — and it resolves the additive-vs-min tension decisively (find-confound: numerics
+before build):
+- (2,2,2) leaf (Case222Rlct): d=2, k=(1,1), h=(3,2). monomialThreshold = ⨅(axisRatio 3 1, axisRatio 2 1)
+  = min(4/2, 3/2) = min(2, 3/2) = 3/2 = lambdaCore. TWO axes: (1,3) ratio 2 [step-1 A-pivot |det|=x³] +
+  (1,2) ratio 3/2 [step-2]. The RLCT is the MIN over axes = EXACTLY my appendDivisor/foldDivisors min-fold.
+- The per-node operation is MONOMIAL (core ∘ φ = x_p²·reduced — my G2 node_loss_pivot_factor; confirmed
+  by myF222_step1A: myF222 ∘ step1A = y0²·Q), folded by MIN via the cover. NOT the additive +nReg/2.
+- So crux2's schur_recursion_step_sound/_squeeze (the +nReg/2 split) is the OFF-PATH squeeze lane
+  (g134-retracted), NOT the per-node consequence my fold needs. The LIVE monomial route is min-all-the-way.
+CONSEQUENCE for the schematic fold: the per-cell consequence is the MONOMIAL PULLBACK (node_loss_pivot_factor,
+MINE) + the g5_pivotNode/argmaxCellOn cover (banked, S1G5Charts) + rlctAtOn_reduced_transport (crux2's det=1
+reindex between blow-up steps — still needed). NO additive split. So the fold is MORE self-contained than
+feared (consumes my own G2 + the banked cover, not crux2's transport-datum). SENT crux2 to confirm (1)
+schur_recursion_step_sound off-path? (2) per-node transport = rlctAtOn_reduced_transport (det=1)? HOLD the
+schematic-fold build until crux2 confirms (building against the wrong per-cell consequence = the rework I'm
+avoiding). This ALSO simplifies pp2's #68 cert: the per-cell datum is the x_p² monomial pullback (not the
+heavy IsSchurStraightenSqueeze additive datum) — lighter certificate. AWAITING crux2.
