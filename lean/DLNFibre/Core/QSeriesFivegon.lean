@@ -946,4 +946,26 @@ theorem X_pow_toNat_add (A Δ : ℤ) (hA : 0 ≤ A) (hΔ : 0 ≤ Δ) :
     (X : ℤ⟦X⟧) ^ (A + Δ).toNat = X ^ A.toNat * X ^ Δ.toNat := by
   rw [Int.toNat_add hA hΔ, pow_add]
 
+/-- `extendℤ (rebuild m' x)` at the last column `N+1`, evaluated to `x` of the row. -/
+theorem extendℤ_rebuild_colNp1 (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) (u : ℤ)
+    (hu0 : 0 ≤ u) (huN : u ≤ (N : ℤ) + 1) :
+    extendℤ (rebuild m' x) u ((N : ℤ) + 1) = (x ⟨u.toNat, by omega⟩ : ℤ) := by
+  unfold extendℤ
+  rw [dif_pos ⟨hu0, by omega, le_refl _⟩]
+  norm_cast
+  convert rebuild_last m' x ⟨u.toNat, by omega⟩ using 2
+
+/-- `extendℤ (rebuild m' x)` at the merged column `N`, evaluated to `m'_{·,N} − x`. -/
+theorem extendℤ_rebuild_colN (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ) (a : ℤ)
+    (ha0 : 0 ≤ a) (haN : a ≤ (N : ℤ)) :
+    extendℤ (rebuild m' x) a (N : ℤ)
+      = ((m' (⟨a.toNat, by omega⟩, Fin.last N)
+          - x (⟨a.toNat, by omega⟩ : Fin (N + 1)).castSucc : ℕ) : ℤ) := by
+  unfold extendℤ
+  rw [dif_pos ⟨ha0, by omega, by omega⟩]
+  norm_cast
+  have h := rebuild_castSucc m' x ⟨a.toNat, by omega⟩ (Fin.last N)
+  rw [if_pos rfl] at h
+  convert h using 2
+
 end DLNFibre.Core
