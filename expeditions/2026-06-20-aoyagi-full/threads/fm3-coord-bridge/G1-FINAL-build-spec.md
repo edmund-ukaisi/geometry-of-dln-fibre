@@ -314,3 +314,31 @@ pivot-cell Finset + child splits + fold MonoData + layer the cover) needs the sp
 NOT building the fix body until the answer lands (avoids baking a wrong split-construction shape).
 NEXT (when crux2 replies): the fix body over chainRel_wf → NodeChartFamily; then the cover-branching
 (g5_pivotNode split per node) + wire isCover/isValue → RouteMAtlas.
+
+## SEAM FULLY RESOLVED (crux2 #66) + FIX-BODY SKELETON ROUTE-CHECKED (g160)
+crux2 #66 answer: **fm3 CONSTRUCTS the dispatcher.** ChainDimSplit = the consumed minimal width-only
+carrier (never constructed in GeneralR1Recursion); the pivot-cell coord-center lives in the paired
+IsSchurStraightenSqueeze datum (field 3, COORD-CENTER), NOT in ChainDimSplit. My termination lemma
+redM_widthSum_lt = crux2's proposed sum_red_lt (don't double-add). CONSUMER RECIPE (3 transport pieces
+my recursion folds per node): schur_straighten_squeeze_of_data (nReg/2 descent, consumes my squeeze datum)
+▸ rlctAtOn_reduced_transport (G²→dlnLoss S.red 0 at redZero) ▸ recurse on S.red ▸ dlnLoss_one_layer_deepest
+(L=1 leaf).
+
+FIX-BODY SKELETON — ROUTE-CHECKED GREEN (RouteMRecursion.lean, UNCOMMITTED, single sorry = routeStep):
+- NodeChartFamily M {ι : Type, fintype, data : ι → MonoData} (Type 1, carries the Type field).
+- RouteStep M : Type 1 := leaf (md) | branch (cells : Type) (cellsFin) (split : cells → ChainDimSplit M)
+  (codim : cells → ℕ). The dispatcher's output. [Type 1 needed — the Type-valued cells field.]
+- routeStep M : RouteStep M := sorry  ← THE substantive dispatcher (rank-pattern → leaf|branch).
+- routeAtlas := WellFounded.fix chainRel_wf (leaf↦PUnit chart with md; branch↦Σ over cells of
+  rec (split c).red [(split c).redM_chainRel] + ((child).data).appendDivisor (codim c)). Fintype derives.
+- routeMIota/Fintype-instance/routeD/routeK/routeH extraction. ALL type-checks around the one sorry.
+RouteMTree.lean (old parallel-RouteState stub) DELETED (untracked, superseded).
+
+THE OPEN CORE = routeStep (the rank-pattern dispatcher). FINDING (g160): NO banked construction precedent —
+even the (2,2,2) case (Case222Resolution.lean) is hand-built concrete coordinate maps (step1A=pivotBlowupOn
+{0,1,2,3} 0, etc.) over Fin 8/Fin 7, NOT a ChainDimSplit instance. So routeStep is from-scratch combinatorial
+work: given M, decide leaf-vs-branch + (for branch) the Finset of pivot cells + each cell's (drop,red) split
++ codim, from the rank pattern (Adm cone / pivotBlowupOn argmaxCellOn structure). This is design-space
+combinatorics — pp2's lane. CANNOT commit the fix-body until routeStep is filled (sorry-gate). The skeleton
+green VALIDATES the rebase shape end-to-end; routeStep is the substantial remaining grind (likely needs a
+pp2 split-construction cert: rank-pattern → (drop,red) per node, generalizing the (2,2,2) hand-build).
