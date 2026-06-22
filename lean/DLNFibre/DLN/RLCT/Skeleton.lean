@@ -1013,8 +1013,18 @@ job (S2 `monomial_rlct` + `lambdaCore_eq_clean`), kept separate from this chart 
 ADDITIVE via Fubini, a SUM, not a `min`). R1 is about the singular core `‖∏C‖² = dlnLoss M 0` on the
 reduced widths `M = H − r`, at its deepest point (the origin `0 : Params M`); the `n/2` regular term
 enters in `product_reduction` via `S1Fubini`, not here. The core is the polynomial R1 is actually
-applied to: analyticity automatic, statement `Params`-norm-free. -/
-theorem resolution_charts (M : Fin (L + 1) → ℕ) :
+applied to: analyticity automatic, statement `Params`-norm-free.
+
+**Non-degeneracy carve-out (`hMid`, CARRIED not discharged).** The identity is FALSE for an interior
+`M_s = 0`: then `prod ≡ 0`, so the core `dlnLoss M 0 ≡ 0`, so `rlctAtOn = ⊤`, while the right side
+`⨅ monomialThreshold` is finite. R1 therefore ASSUMES `0 < M (s.castSucc)` for every interior layer
+`0 < s < L` (`hMid` below). This is the formalisation's non-degeneracy carve-out — it refines the
+paper's realisability (`r ≤ min d⃗`, non-strict, Lehalleur–Rimányi) to exclude the `prod ≡ 0`
+degeneracy the combinatorial `lambdaCore` cannot see; sound within the realisable domain, but NOT a
+verbatim Aoyagi assumption. Vacuous at `L = 1` (no interior layer). The headline supplies it in
+`H`-form (`r < H s.castSucc`); the bridge `M (s.castSucc) = H (s.castSucc) − r` makes the two defeq. -/
+theorem resolution_charts (M : Fin (L + 1) → ℕ)
+    (hMid : ∀ s : Fin L, 0 < (s : ℕ) → 0 < M s.castSucc) :
     ∃ (ι : Type) (_ : Fintype ι) (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ),
       rlctAtOn (fun A : Params M =>
           dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) A) (fun _ => 0 : Params M)
