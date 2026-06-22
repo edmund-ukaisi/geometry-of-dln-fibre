@@ -85,6 +85,7 @@ structure IsSchurStraighten {L : ℕ} {N N' : ℕ} (M : Fin (L + 1) → ℕ) (S 
     (nReg : ℕ)
     (flatCore : (Fin N → ℝ) → ℝ)             -- `dlnLoss M 0` in the post-blow-up flat coords
     (flatRedCore : (Fin nReg → ℝ) × ((Fin N' → ℝ)) → ℝ)  -- split target (reg block + reduced core on N')
+    (redEmbed : (Fin N' → ℝ) → Params S.red)  -- the flat-embed of the reduced coords into Params M'
     (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))  -- the det-1 Schur straightening chart
     (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ)
     (active : Finset (Fin N')) (p : Fin N') : Prop where
@@ -92,6 +93,10 @@ structure IsSchurStraighten {L : ℕ} {N N' : ℕ} (M : Fin (L + 1) → ℕ) (S 
   measurePreserving : MeasurePreserving χ volume volume
   /-- `u` is measurable (the analytic unit). -/
   umeas : Measurable u
+  /-- (4) REDUCED-CHAIN (explicit): the split target is the regular block plus the EXPLICIT reduced
+  core `dlnLoss M' 0` (`M' = S.red`) on the embedded reduced coords — so fm's structural recursion
+  descends on the smaller chain `S.red`, not an abstract residual. -/
+  redCore_eq : ∀ q, flatRedCore q = (∑ i, q.1 i ^ 2) + dlnLoss S.red 0 (redEmbed q.2)
   /-- (5) STRICT-TRANSFORM: the det-1 normal form near the deepest point —
   `core ∘ χ = unit · (reg block + reduced core)`. -/
   factor : (fun q => flatCore (χ q)) =ᶠ[nhds 0] (fun q => u q * flatRedCore q)
@@ -112,11 +117,12 @@ basis; pp-hall spells the sub-steps). NO monomial weight — that's fm's blow-up
 vacuous recursion. (Stated abstractly on flat coords; the upstream unit-pivot hypothesis is left
 implicit pending the exact pivot-data interface with fm's blow-up.) -/
 theorem schur_straighten_exists {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
-    (nReg N N' : ℕ) (flatCore : (Fin N → ℝ) → ℝ)
-    (flatRedCore : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) :
-    ∃ (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
+    (nReg N N' : ℕ) (flatCore : (Fin N → ℝ) → ℝ) :
+    ∃ (flatRedCore : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ)
+      (redEmbed : (Fin N' → ℝ) → Params S.red)
+      (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
       (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) (active : Finset (Fin N')) (p : Fin N'),
-      IsSchurStraighten M S nReg flatCore flatRedCore χ u active p := by
+      IsSchurStraighten M S nReg flatCore flatRedCore redEmbed χ u active p := by
   sorry
 
 /-! ## The G3.2 recursion step (SOUND conditional form — PROVEN)
