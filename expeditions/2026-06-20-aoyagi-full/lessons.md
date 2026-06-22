@@ -515,3 +515,102 @@ closed the gate; all green, #56 axiom-clean.
 aggregator reaches. Gate orphan engines explicitly until they are consumed, and keep them permanently
 covered by (a) importing stable engines into the aggregator and (b) a restored `AxCheck.lean` that
 `#print axioms` the key results on every build. "Green build" ≠ "every module compiles."
+
+## 2026-06-21 — the A1 achiever seam: 8 confounds, the build/exact-algebra is the verdict over any one seat's clean argument
+
+Closing A1 `lambdaCore_eq_clean` (the achiever identity `lambdaCore M = cleanCore c (sortedSmallest M c)`) went
+through EIGHT distinct too-clean confounds across all three working seats (controller, pp-hall design, a114e07e
+formaliser) — EVERY one caught before it shipped, by the find-confound/decorrelation discipline (a114e07e
+building it in Lean + pp-hall's exact-algebra sweeps + Codex-Lean-checks + the controller's adjudication + the
+final fm 5-check). The catalogue:
+1. `Dom_head_mono` RAISE direction — pp-hall floated it as a simplification; a114e07e keystone-tested it FALSE
+   (34% fail); kept the sound LOWER direction the consumer actually needs.
+2. the circular `−1`/`dropped_count_one` route — removed (it routed `M^k≥uTel_k` through the band it was meant
+   to establish).
+3. the **declaration cycle** — `static_count` (3707) is declared before `FMDom_of_strongCount` (3757), so it
+   cannot use band-at-<i as "established facts" in linear order; resolved by the in-order strong induction.
+4. pp-hall's "static_count is non-circular per-i, no induction" — its OWN cliff sweep refuted it (0 violations
+   in-window τ≤uTel_i, 613436 out-of-window): τ≤uTel_i is load-bearing, the band IS needed.
+5. `m≤c` not guaranteed (FAILS 511/13332) — the gfc-direct framing needed it; the order-statistic kernel doesn't.
+6. the "pw-bridge" sorted-vs-positional conflation (`cLt(ws_i)≠pw−1`, 13332/13332) — pp-hall self-caught.
+7. **THE CONTROLLER's** "qFM-free GOAL ⟹ qFM-free PROOF" — logically incomplete: a qFM-free goal with a
+   qFM-ESSENTIAL hypothesis (`τ≤uTel_i`, the cliff) does NOT give a qFM-free proof. Caught by a114e07e building
+   it (the concrete declaration cycle) + pp-hall's cliff sweep.
+8. the off-by-one in the `cLt_erase` chain (`M^0..M^{i+1}` vs `drop(i+1)` = i+1 widths; Mwidths has no M^0,
+   M^0 enters separately via Mfull) — pp-hall pinned it 0/13332.
+RESOLUTION (the honest bedrock structure): band-free order-statistic KERNEL (`aS_m<τ`, gfc only inside
+`aS_succ_le_Yvec`) + POSITIONAL CLOSER (`M^k≥uTel_k` via the pure uTel-recurrence identity + IH band-at-<i, no
+gfc), threaded by a THIN `FMDom_all` in-order strong induction (well-founded, non-circular, `qFM_uTel_band`'s
+statement + downstream UNCHANGED). META-LESSON: when three independent angles each produce a clean-but-wrong
+argument and each is caught by the OTHER two plus the Lean build, that IS the decorrelation working — no seat's
+elegant argument is trusted over the build/exact-algebra. The controller's own confound (#7) is the sharpest:
+holding a clean logical argument against the builder's concrete obstruction would have been the error; updating
+on ground truth (a114e07e found the cycle by building; pp-hall confirmed with the cliff) was correct. "The
+proof attempt is the ultimate audit" extends to the CONTROLLER's arguments, not just the rungs.
+
+## 2026-06-21 — rlctAtOn (value on a set) is NOT the ladder headline rlctAt, even when the number matches (name≠content)
+
+The (2,2,2) wrapper was built twice (a coordination miss, below). The DECIDING fidelity point: the ladder rungs
+are stated with `rlctAt` (`case111_rlct : rlctAt (![1,1,1]) (dlnLoss …) deepest111 = …`), and one wrapper's
+`case222_rlct` proved only `rlctAtOn (…) deepest222 = 3/2` — the INTERMEDIATE "on a set" form, NAMED like the
+ladder headline but missing the `rlctAtOn → rlctAt` localization bridge. The other wrapper had the genuine
+`rlctAt H222 … = 3/2` (via the proven axiom-clean connector `rlctAtOn_eq_rlctAt` + `deepest222 = origin` by rfl,
+making the bridge sound + non-vacuous), plus a dedicated `Case222Rlct.lean`. The rlctAtOn version is a name≠content
+gap: the VALUE matches (3/2) but the STATEMENT is the wrong object. LESSON: `rlctAtOn` (value on a set) ≠ `rlctAt`
+(the RLCT at the point) even when the number matches — the headline needs the localization bridge APPLIED. Verify
+a "headline" theorem proves the headline OBJECT, not just the right value at an intermediate form; reject a
+correctly-valued-but-wrong-object rung the way you'd reject a wrong value. (Carried forward by fm itself.)
+
+## 2026-06-21 — confirm single ownership BEFORE assigning a task that may already be in flight (the wrapper double-build)
+
+The (2,2,2) wrapper got built twice: the controller created/assigned the wrapper task (#107) to fm-2 AFTER fm had
+ALREADY independently fired its own wrapper (a parallel ~275-commit branch). Result: two competing branches, a
+consolidation cost. The consolidation itself was clean (picked the branch with the genuine rlctAt headline on
+FIDELITY grounds, not first-come — see the name≠content lesson), and the loser's branch was left on origin
+(superseded, not deleted). But the duplicate work was avoidable. LESSON (controller): when a task may already be
+in flight — a teammate reported starting adjacent work, or the deliverable is the obvious next step multiple
+seats can see — confirm single ownership BEFORE formally assigning; name the single owner explicitly up front.
+(Pairs with the single-writer / `rlctAt_mono`-collision lesson: overlapping assignment is the upstream cause of
+duplicated/divergent work. The fix is the same at task-granularity — one owner per deliverable, confirmed before
+dispatch.)
+
+## 2026-06-21 — MILESTONE: the active-scope ladder + A1 landed; the find-confound discipline carried a confound-heavy seam to bedrock
+
+The active scope (validate ladder (1,1,1)→(2,1,2)→(2,2,2) + A1 + machinery) closed with both milestone events
+4-leg / all-gate gated (A1: build + source-corroboration + fm 5-check + pp-hall cliff; ladder 3/3: rv-2 focused
+re-audit). The methodological through-line of the whole expedition held to the end: a green build is the FLOOR,
+never sufficient; statement-fidelity + decorrelated exact-algebra + the proof attempt are the bedrock gates; and
+the most dangerous moment is the confident headline (caught here as the controller's own #7 confound and pp-hall's
+#4). The general-M headline (`aoyagi_learning_coefficient`, still sorryAx) is the NEXT phase — gated on the
+operator's G3 scope-decision, and (per the route-before-lines discipline that paid off on R1.2) on a pen-and-paper
+adjudication of the general regular-change BEFORE committing formalisation lines.
+
+## 2026-06-21 (general-M build phase) — two more controller-premise confounds caught by teammates before lines
+
+- **"Validated on cert cases" is only as strong as the table — and must COVER the documented breakers.** I
+  dispatched A2 (`thetaGeom = aoyagiTheta` over Adm/Mval) as "route-done, validated on cert cases." fm's
+  numerical sanity-check (skill discipline) FALSIFIED it: the table omitted **(2,2,2,2,2)**, where both naive
+  `thetaGeom` defs = 6 but `aoyagiTheta = 5` — and this exact breaker is in the design-spec's OWN §3 warning
+  ("6 minimisers but θ=5, naive count over-counts"). The bridge is FALSE; θ is genuinely R1-divisor content
+  (G3.6), confirming the already-decided B3. **Lesson:** before calling a bridge route-done, check the
+  validation table includes the cases the source/spec FLAGS as adversarial — a table that skips the known
+  breaker manufactures false confidence. A controller "it's validated, go build" is itself a claim that needs
+  the breaker in-table. (My premise error; caught before lines by the build-side numerical check.)
+
+- **An UNCONDITIONAL "GO" on a lemma whose hypotheses aren't pinned can be false even when the CONDITIONAL form
+  is sound.** I said "GO the clean `schur_rlct_recursion_step`"; fm-2's `ambient/2 = 4 ≠ 3/2` dimension count
+  proves the *unconditional* clean form false. But fm-2's fix: the step is sound + provable *as a conditional
+  with `MeasurePreserving chart` added as a hypothesis* — the dimension obstruction then lives in whether the
+  hypothesis is ever SATISFIABLE, which relocates the unsoundness cleanly to the chart-producer
+  (`schur_scalar_normalForm` → the C2 blow-up form). **Lesson:** when greenlighting a reduction lemma, pin its
+  HYPOTHESES, not just its conclusion — "sound conditional + the hard existence deferred to the named crux" is
+  often the right factoring, and a flat GO/NO-GO on the conclusion alone misses it. (Teammate's anchor-rule
+  flag — refusing to silently comply with a GO that crossed a disproof — was exactly right and surfaced the
+  reconciliation.)
+
+- **The wrapper-double-build watch recurs at every shared engine.** fm-2's recursion-step (regular-strip →
+  nReg/2) and a114e07e's L2 half-(a) are the SAME computation at (plausibly) different levels. Caught by
+  pattern-matching the two scopes before either sank the ~80-120 LoC; deconflicted by designating one canonical
+  (fm-2's) and having the other CONSUME it against its statement. **Lesson:** when two seats independently
+  describe "block-elim + S1.5 → nReg/2," assume overlap until proven otherwise; route-before-lines on the shared
+  statement, build once.
