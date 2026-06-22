@@ -4278,6 +4278,22 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
 
+Latest A5 Eq5 own-block block-width payload update:
+`Lemma5Eq5CountDatumBridge.lean` now also contains
+`aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_blockWidth`.
+It derives the selected-width bound needed by the existing own-block
+counted/introduced payload from `C.block p S` and the block-local actual-width
+lower-bound hypothesis.  The nonbase inequality remains explicit.  This is a
+one-branch adapter only, not Eq5 vector construction, classifier construction,
+back-to-label coverage, Lemma 5 order count, pole order, normal crossings, or
+RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-block-width-payload-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-ownblock-block-width-payload.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-block-width-payload-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.

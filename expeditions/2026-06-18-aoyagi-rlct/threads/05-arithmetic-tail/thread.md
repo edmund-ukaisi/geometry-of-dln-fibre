@@ -4541,6 +4541,31 @@ nonbase status, alpha-domain coverage, classifier data, injection,
 back-to-label coverage, no-extra terminal-minimum coverage, order count, pole
 order, normal crossings, or RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 own-block block-width payload
+
+Reproduction:
+`reproduction-lemma5-eq5-ownblock-block-width-payload-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-ownblock-block-width-payload.md`.
+Review artifact:
+`review-lemma5-eq5-ownblock-block-width-payload-a5.md`.
+
+Lean now adds the block-width version of the Eq5 own-block counted/introduced
+payload:
+
+```text
+aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_blockWidth
+```
+
+The theorem derives the selected-width bound from `C.block p S` and the
+block-local actual-width lower-bound hypothesis, then reuses the existing
+raw-width payload.  It also derives `1<=p` from the Eq5 strict alpha data.
+
+This remains a one-branch payload adapter.  It does not construct Eq5 vectors,
+prove nonbase status, construct a classifier, prove back-to-label coverage,
+prove a Lemma 5 order count, prove pole order, prove normal crossings, or
+extract RLCT.
+
 ## 2026-06-22 Lean Lemma 5 Eq5 alpha endpoint value-image split
 
 Reproduction:

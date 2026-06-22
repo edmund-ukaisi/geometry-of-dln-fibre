@@ -180,6 +180,51 @@ theorem
       ell a M m baseValue hpIcc hpayload.1 hne_base
   exact ⟨hcount, hpayload.2⟩
 
+/-- A supplied equation `(5)` own-block branch gives both counted-datum and
+introduced-label data, deriving the selected-width bound from a block-local
+actual-width lower-bound hypothesis.
+
+This is the block-width version of
+`aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_widthBound`.
+It still does not construct equation `(5)`, prove nonbase status, or build
+classifier/back-to-label data. -/
+theorem
+    aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_blockWidth
+    (L ell a p alpha : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (layerWidth T : ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : AoyagiLemma5Eq5PiecewiseSourceVector
+      ell a p alpha M m C layerWidth T)
+    (hactual :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          aoyagiSelectedWidthNat ell m i.val ≤ (n r : ℤ))
+    {S k : ℕ} (hS : C.block p S)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : (k : ℤ) =
+      aoyagiHtildeUpperNat ell a M m p + 1 - (alpha : ℤ))
+    (hne_base : T S ≠ baseValue p) :
+    some (Sigma.mk p (T S)) ∈
+        aoyagiLemma5CountDatumSet ell a M m baseValue ∧
+      T S = (k : ℤ) - 1 ∧
+        Sigma.mk S k ∈ introducedLabelFinset L n S k := by
+  have hp_pos : 1 ≤ p := by
+    have hpos : 1 ≤ alpha := hT.alpha_pos
+    have hlt : alpha < p := hT.alpha_lt_p
+    omega
+  have hwidth_le :
+      aoyagiSelectedWidthNat ell m p ≤ (n (S + 1) : ℤ) :=
+    C.selectedWidthNat_le_actualWidth_of_block n m hactual hS
+  exact
+    aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_widthBound
+      L ell a p alpha n M m baseValue C layerWidth T hell hselected hsource hT
+      hp_pos hS hlast hwidth_le hk hne_base
+
 end Aoyagi
 end DLN
 end DLNFibre
