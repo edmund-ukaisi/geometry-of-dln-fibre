@@ -212,3 +212,26 @@ SCHUR complement S_s = T_s − Z_s(I+X_s)⁻¹Y_s (correct)? If unit, coreAbsorb
 schur_P11_decomp (full Schur R) is the FULL-product object; the per-layer S_s is the right per-slot
 object, and ∏S_s = R|_{E=0} (they agree on the reduced locus, differ off it by the reg-ideal leak).
 Settle with crux2 before transcribing — controller's "resolve via the g153 litmus" directive.
+
+## g157 — coreAbsorb factors as (a) MP shear + (b) non-MP inter-layer unit (Codex xhigh)
+
+Probing coreAbsorb's construction surfaced a TWO-PART structure (Codex confirmed, exact):
+- **(a) per-layer Schur shear** `T_s ↦ S_s = T_s − Z_s(I+X_s)⁻¹Y_s`: ADDITIVE, triangular in
+  (T_s, X_s,Y_s,Z_s) with identity on the T_s diagonal ⟹ Jacobian det = 1 ⟹ MEASURE-PRESERVING. The
+  cert's "non-MP det(I−VY)⁻ᴹ⁰" does NOT apply to this additive shear (it was about the wrong
+  multiplicative-unit form). coreAbsorb_rlct for the shear ALONE is trivial (rlctAtOn_comp_homeomorph).
+- **(b) inter-layer interstitial unit**: the loss core is the FULL-PRODUCT Schur
+  R = P11 − P10·P00⁻¹·P01, NOT ∏S_s. For 2 layers Schur(C₁C₂) = S₁·(I + G·E⁻¹·A⁻¹·B)⁻¹·S₂ — an
+  interstitial unit remains between the per-layer Schur blocks. So ∏S_s = R|{E=0} is a {E=0}/scalar
+  ACCIDENT, NOT a general matrix identity (verified: 2-layer matrix, ‖R−∏S‖≈0.0009 ≠ 0 off {E=0}).
+
+⟹ coreAbsorb (raw T-tuple → the core whose dlnLoss M 0 = ‖R‖² = loss core) factors as:
+  (a) MP shear T→S (free, comp_homeomorph) THEN (b) the non-MP inter-layer unit absorption (∏S_s → R,
+  the det(I−VY)-style unit between layers — THIS is where the cert's non-MP peel genuinely lives).
+
+So my core_comparability_squeeze (loss ≍ ∑E²+‖R‖², R = full-product Schur) is the CORRECT target —
+R, not ∏S_s. The coreAbsorb_rlct field's non-MP peel is needed for (b) (the inter-layer unit), NOT (a).
+The simplification: (a) is free; the non-MP machinery is only for (b), and the loss core is R (my banked
+comparability is right). Net for the build: coreAbsorb's core-output = R (full Schur), reached by
+(a) shear + (b) inter-layer-unit; coreAbsorb_rlct peels the (b) unit via weightedThreshold_weight_unit_invariant.
+DON'T identify ∏S_s with R (the danger Codex flagged). My #54 R is the right object; ∏S_s is not.
