@@ -4977,6 +4977,29 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-weighted-following-product-a4.md`.
 
+Latest A4 update: the Case 2 source successor following-factor slice has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are `case2DisplayedSourceSuccessorFollowingFactor`,
+`case2DisplayedSourceSuccessorFollowingFactor_pivotRow`,
+`case2DisplayedSourceSuccessorFollowingFactor_of_ne`,
+`case2DisplayedSourceSuccessorFollowingFactor_oldRow`,
+`case2SourceFollowingFactor_successorFollowingFactor_succ`,
+`case2DisplayedSourceSuccessorFollowingFactor_eq_original_of_width_next_eq`,
+`case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor`, and
+`case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_successorFollowingFactor`.
+This source-order object replaces only row `J+1` of `C` by the top row of
+`Q^-1 C`.  It is formula-level data only: it proves row restrictions,
+unchanged post-pivot same-stage following restriction, actual-width collapse
+to the original `C`, and transported terminal-row presentation, but no chart
+production, source-produced recurrence/exponent post-data, old-top/suffix
+production, transition invariant, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-successor-following-factor-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-successor-following-factor.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-successor-following-factor-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

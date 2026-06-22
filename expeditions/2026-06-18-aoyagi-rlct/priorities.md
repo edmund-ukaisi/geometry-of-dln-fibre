@@ -293,6 +293,14 @@ supplied, omits the pivot row, keeps the successor lower-row diagonal
 explicit, and carries the corrected post-data projections.  It is not
 source-production of `F`, a full successor product, chart production, or a
 transition invariant.
+Current source successor following-factor slice:
+`threads/04-blow-up-certificate/reproduction-case2-source-successor-following-factor-a4.md`.
+Lean now names the formula-level source-order factor obtained by replacing
+only row `J+1` of `C` with the transported top row of `Q^-1 C`:
+`case2DisplayedSourceSuccessorFollowingFactor` and its restriction lemmas.
+This gives a real source-shaped object for later continuing/terminal handoffs,
+but it is still not chart production, recurrence/exponent post-data
+production, old-top/suffix production, or a transition invariant.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.

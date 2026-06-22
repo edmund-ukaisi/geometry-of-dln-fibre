@@ -3649,3 +3649,36 @@ the existing boundary.  It does not assert next-center nonemptiness, source
 production of `F`, source production of the full successor `C'^(S+1)`,
 successor chart-family construction, transition invariance, Jacobian
 arithmetic, normal crossings, pole order, or RLCT.
+
+## 2026-06-22 Lean Case 2 source successor following factor
+
+Reproduction:
+`reproduction-case2-source-successor-following-factor-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-successor-following-factor.md`.
+Review artifact:
+`review-case2-source-successor-following-factor-a4.md`.
+
+Lean now names the source-order following factor obtained after the displayed
+Case 2 pivot by replacing only source row `J+1` with the transported top row
+of `Q^-1 C`:
+
+```text
+case2DisplayedSourceSuccessorFollowingFactor
+case2DisplayedSourceSuccessorFollowingFactor_pivotRow
+case2DisplayedSourceSuccessorFollowingFactor_of_ne
+case2DisplayedSourceSuccessorFollowingFactor_oldRow
+case2SourceFollowingFactor_successorFollowingFactor_succ
+case2DisplayedSourceSuccessorFollowingFactor_eq_original_of_width_next_eq
+case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor
+case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_successorFollowingFactor
+```
+
+This is formula-level source-coordinate data.  It proves that the post-pivot
+same-stage following restriction is unchanged, that actual next-width
+exhaustion collapses the successor factor back to the original `C`, and that
+the transported terminal rows are the original terminal rows of this
+successor factor.  It is not chart production, source-produced recurrence or
+exponent post-data, old-top/suffix production, chart coverage, successor
+chart-family construction, transition invariance, Jacobian arithmetic, normal
+crossings, pole order, or RLCT.

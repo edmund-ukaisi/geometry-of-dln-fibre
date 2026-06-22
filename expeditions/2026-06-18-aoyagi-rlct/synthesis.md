@@ -4553,6 +4553,30 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-continuing-weighted-following-product-a4.md`.
 
+Latest A4 Case 2 source successor following-factor update:
+`BlowupArithmetic.lean` now contains
+`case2DisplayedSourceSuccessorFollowingFactor` and restriction lemmas
+`case2DisplayedSourceSuccessorFollowingFactor_pivotRow`,
+`case2DisplayedSourceSuccessorFollowingFactor_of_ne`,
+`case2DisplayedSourceSuccessorFollowingFactor_oldRow`,
+`case2SourceFollowingFactor_successorFollowingFactor_succ`,
+`case2DisplayedSourceSuccessorFollowingFactor_eq_original_of_width_next_eq`,
+`case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor`, and
+`case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_successorFollowingFactor`.
+The object replaces only source row `J+1` of `C` by the top row of
+`Q^-1 C`.  The lemmas prove the pivot/off-pivot restrictions, unchanged
+post-pivot same-stage following restriction, actual-width collapse to the
+original `C`, and the terminal transported-row presentation.  This is
+formula-level source-coordinate data only: no chart production,
+source-produced recurrence/exponent post-data, old-top/suffix production,
+transition invariant, Jacobian arithmetic, normal crossings, pole order, or
+RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-successor-following-factor-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-successor-following-factor.md`,
+and
+`threads/04-blow-up-certificate/review-case2-source-successor-following-factor-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

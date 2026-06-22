@@ -13041,6 +13041,111 @@ def case2DisplayedSourceTerminalTransportedRows
     else
       C i.1 a
 
+/-- Source-order following factor after the displayed Case 2 pivot.
+
+The only changed source row is `J+1`, replaced by the top row of the
+transported factor `Q⁻¹ C`.  This is formula-level source-coordinate data, not
+chart production of a successor transition. -/
+def case2DisplayedSourceSuccessorFollowingFactor
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    ℕ → τ → R :=
+  fun j a ↦
+    if j = J + 1 then
+      case2DisplayedPaperCprimeTop n hS hcont residual C () a
+    else
+      C j a
+
+/-- The successor following factor has the transported pivot row at `J+1`. -/
+theorem case2DisplayedSourceSuccessorFollowingFactor_pivotRow
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) (a : τ) :
+    case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C (J + 1) a =
+      case2DisplayedPaperCprimeTop n hS hcont residual C () a := by
+  simp [case2DisplayedSourceSuccessorFollowingFactor]
+
+/-- Away from the displayed pivot row, the successor following factor agrees
+with the old source following factor. -/
+theorem case2DisplayedSourceSuccessorFollowingFactor_of_ne
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J j : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) (a : τ)
+    (hj : j ≠ J + 1) :
+    case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C j a =
+      C j a := by
+  simp [case2DisplayedSourceSuccessorFollowingFactor, hj]
+
+/-- Old source rows `1,...,J` are unchanged in the successor following factor. -/
+theorem case2DisplayedSourceSuccessorFollowingFactor_oldRow
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R)
+    (i : case2SourceOldTopRowIndex J) (a : τ) :
+    case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C i.1 a =
+      C i.1 a := by
+  have hi : i.1 ≠ J + 1 := by
+    have hle : i.1 ≤ J := (Finset.mem_Icc.mp i.2).2
+    omega
+  exact case2DisplayedSourceSuccessorFollowingFactor_of_ne
+    n hS hcont residual C a hi
+
+/-- The next same-stage following-factor restriction is unchanged by replacing
+only row `J+1`. -/
+theorem case2SourceFollowingFactor_successorFollowingFactor_succ
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2SourceFollowingFactor (n := n) (S := S) (J := J + 1)
+        (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C) =
+      case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C := by
+  ext j a
+  have hj : j.1 ≠ J + 1 := by
+    have hj_ge := ((mem_case2ResidualBlockCols n S (J + 1) j.1).mp j.2).1
+    omega
+  simp [case2SourceFollowingFactor, case2DisplayedSourceSuccessorFollowingFactor, hj]
+
+/-- Under actual next-width exhaustion, the successor following factor is the
+original source following factor. -/
+theorem case2DisplayedSourceSuccessorFollowingFactor_eq_original_of_width_next_eq
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hwidth : n (S + 1) = J + 1)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C = C := by
+  funext j a
+  by_cases hj : j = J + 1
+  · subst j
+    simp [case2DisplayedSourceSuccessorFollowingFactor,
+      case2DisplayedPaperCprimeTop_apply_of_width_next_eq n hS hcont hwidth residual C a]
+  · simp [case2DisplayedSourceSuccessorFollowingFactor, hj]
+
+/-- The terminal transported-row matrix is the original-row terminal matrix of
+the successor following factor. -/
+theorem case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedSourceTerminalOriginalRows
+        (J := J) (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C) =
+      case2DisplayedSourceTerminalTransportedRows n hS hcont residual C := by
+  ext i a
+  by_cases hi : i.1 = J + 1
+  · simp [case2DisplayedSourceTerminalOriginalRows,
+      case2DisplayedSourceTerminalTransportedRows,
+      case2DisplayedSourceSuccessorFollowingFactor, hi]
+  · simp [case2DisplayedSourceTerminalOriginalRows,
+      case2DisplayedSourceTerminalTransportedRows,
+      case2DisplayedSourceSuccessorFollowingFactor, hi]
+
 /-- A supplied terminal matrix equal to the old source rows and surviving
 pivot row is exactly the source-row terminal `C'` candidate.
 
@@ -13110,6 +13215,19 @@ theorem case2DisplayedSourceTerminalCprimeCandidate_eq_transportedRows
     simp [case2DisplayedSourceTerminalTransportedRows, hne]
   · intro a
     simp [case2DisplayedSourceTerminalTransportedRows]
+
+/-- The stopped terminal `C'` candidate is the original-row terminal matrix of
+the successor following factor. -/
+theorem case2DisplayedSourceTerminalCprimeCandidate_eq_originalRows_successorFollowingFactor
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual C =
+      case2DisplayedSourceTerminalOriginalRows
+        (J := J) (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C) := by
+  rw [case2DisplayedSourceTerminalCprimeCandidate_eq_transportedRows,
+    ← case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor]
 
 /-- Supplied bridge data identifying a terminal source matrix with the
 source-row terminal `C'` candidate.
