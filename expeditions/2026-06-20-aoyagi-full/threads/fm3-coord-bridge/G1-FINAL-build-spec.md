@@ -8,6 +8,33 @@ routeM_rlctAtOn_eq_lambdaCore (atlas) : rlctAtOn F 0 = ofReal (lambdaCore M)  --
 My G1 produces ONE (ι,d,k,h); discharge isCover + isValue over the SAME family. Bridge is
 MECHANISM-INDEPENDENT — ingests the FINAL accumulated per-leaf (d,k,h), however built.
 
+## CONSUME-SHAPE AUTHORITATIVE (g180, crux2 from LANDED RouteMAtlas/RouteMBridge @fm2/route-m-atlas)
+crux2 gave the ground-truth consume-shape (NOT recall — #38 DONE, lives on route-m-atlas, NOT yet on my
+fm3/routem; the production decl is crux2's on route-m-atlas, importing my geometry). PIN:
+- BUNDLE: RouteMAtlas M F U ι [Fintype] d k h := ⟨isCover : IsRouteMCover, isValue : IsResolutionAtlas⟩.
+  I hand crux2: DATA (ι [Fintype], d, k, h) + F + U + the two Prop groups. `stratum` does NOT appear in the
+  consumed shape (it's MY producer scaffold; decorrelated away — my branch's stale ResolutionAtlas.lean
+  stratum/threshold_eq form is SUPERSEDED by the landed threshold_ge/achiever form).
+- isCover = IsRouteMCover, ABSTRACT (Q2 = (b) CONFIRMED): NO `dlnLoss∘chart = monomial·unit` eqn. Takes
+  TWO INTEGRAL Props over the leaf family + Fmeas/Uopen/Umem:
+    cover_le : ∀ c', ∫⁻_U |F|^(−c') ≤ ∑_i ∫⁻_{unitBox(d i)} monomialIntegrand (d i)(k i)(h i) c'
+    cover_ge_div : ∀ c', (∃ i, monomialThreshold (d i)(k i)(h i) ≤ c') → ∀ open Ω∋0, ¬IntegrableOn (|F|^(−c')) Ω
+  The per-node→per-leaf COMPOSITION is ENTIRELY MINE: compose my G2 per-node light pullbacks
+  (node_loss_pivot_factor + node_jacobian_det) + ReducedTransport.descent down the tree to PROVE
+  cover_le/cover_ge_div for the leaves. The bridge consumes only the two resulting inequalities (my
+  argmaxCellOn/g5_pivotNode ae-cover must LAND as these two Props, NOT appear as a field).
+- isValue = IsResolutionAtlas (the LANDED threshold_ge/achiever form, keyed to m₀ = ((Adm M).inf' Mval).toNat):
+  built by of_mult_and_achiever from (i) the A+K mult-bound ∀i∀j, m₀·(k i j) ≤ (h i j)+1 + (ii) one binding
+  leaf (k i₀ j₀, h i₀ j₀)=(1, m₀−1). My PivotWitness (codim=Mval) + regular-seq k=1 + foldFamily_achiever feed
+  these. (My foldFamily_threshold_ge_of_pivotWitness gives threshold_ge directly; of_mult_and_achiever is
+  crux2's path to the same — either works; the landed bridge wants the mult-bound + binding-leaf inputs.)
+PRODUCTION FLOW (crux2's decl on route-m-atlas, importing my geometry): ⟨⟨Fmeas,Uopen,Umem,cover_le,cover_ge_div⟩,
+of_mult_and_achiever M … (mult-bound)(binding-leaf)⟩ → routeM_rlctAtOn_eq_lambdaCore → resolution_charts.
+MY DELIVERABLES (on fm3/routem, standalone, NO route-m-atlas import): the (ι,d,k,h) producer (routeAtlas,
+routeStep) + cover_le + cover_ge_div (the composed integral Props) + the mult-bound + binding-leaf facts.
+Shape STABLE (landed sorry-free). The cover_le/cover_ge_div composition = the analytic grind (my G2 pullbacks
++ ReducedTransport.descent + the argmaxCellOn cover-split, normalized via the banked Case222 adapters).
+
 ## Encoding (controller-accepted): WF.fix / NodeChartFamily, Fintype-as-field
 RouteState(L,M); routeMeasure = lex(L,ΣM,ncDefect); routeRel_wf. routeAtlas = WellFounded.fix.
 NodeChartFamily per-leaf record (crux2 leaf-level): {composite chart φ_i, pullback L∘φ_i=monomial·unit
