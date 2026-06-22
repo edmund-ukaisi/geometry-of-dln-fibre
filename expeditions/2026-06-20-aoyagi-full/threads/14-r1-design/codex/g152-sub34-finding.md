@@ -189,3 +189,26 @@ otherwise). The right target is `coreEmbed` (g-absorbing reduced map) + peel the
 reduced-core transport. My banked Schur bedrock (`DeepestGaugeBlocks`) IS the coreEmbed content
 (`R = ‖T̃-chain‖²`). This is crux2's structure call; I've recommended it twice now with the L=1
 nGauge=0 evidence. The comparability itself (the load-bearing obligation) is route-final and banked.
+
+## g156 — the LITMUS (controller's decider): per-layer-UNIT core FAILS; need per-layer SCHUR
+
+Controller's litmus: run g153 C1C2C3=blockdiag[1,−ε⁴] through design-D Φ. Result (exact + Codex xhigh):
+
+- design-D Φ = ∑E² + deepestCoreF((coreAbsorb(split w)).2.1). At g153: ∑E²=0.
+- IF coreAbsorb is the per-layer UNIT `T_s ↦ T_s·(I−V_sY_s)⁻¹`: the raw T_s = (ε,0,ε) [the (1,1)
+  entries], ∏T̃ = ε·0·ε·units = 0 ⟹ Φ = 0. But loss = ε⁸. UPPER SQUEEZE loss ≤ c₂·0 = 0 FAILS.
+- The CORRECT core is the per-layer SCHUR complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (NOT the unit
+  `T_s·(I−V_sY_s)⁻¹`). On {E=0}: R(full Schur)|_{E=0} = t1·(t2−zy)·t3 = ∏S_s (verified sympy, diff=0).
+  The middle factor S2 = t2−zy carries the `−zy` Schur correction the per-layer-UNIT misses.
+
+So Codex verdict (C): deepestCoreF(core) = ‖S1·S2···SL‖² on the per-layer SCHUR-reduced layers
+S_s = T_s − Z_s(I+X_s)⁻¹Y_s = dlnLoss (H−r) 0 of the Schur-reduced tuple. NOT raw T_s·unit (g153-false),
+NOT the full-vars R (depends on reg coords — not core-only for the additive split). The route:
+loss ≍ ∑E²+‖R‖², R = G(core) + ∑E_i·H_i (reg dependence ∈ ideal(E), bounded), so ∑E²+‖R‖² ≍ ∑E²+‖G(core)‖²
+with G(core) = ‖∏S_s‖² core-only; rlct_additive_smooth_block applies to G(core).
+
+⟹ CERT-FIDELITY for design D: is crux2's coreAbsorb the per-layer UNIT (g153-unsound) or the per-layer
+SCHUR complement S_s = T_s − Z_s(I+X_s)⁻¹Y_s (correct)? If unit, coreAbsorb is the wrong map. My banked
+schur_P11_decomp (full Schur R) is the FULL-product object; the per-layer S_s is the right per-slot
+object, and ∏S_s = R|_{E=0} (they agree on the reduced locus, differ off it by the reg-ideal leak).
+Settle with crux2 before transcribing — controller's "resolve via the g153 litmus" directive.
