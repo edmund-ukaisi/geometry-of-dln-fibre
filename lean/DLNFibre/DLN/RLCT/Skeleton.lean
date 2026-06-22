@@ -1044,14 +1044,21 @@ loss at the deepest point is `≤` that at every other fibre point `v`. This is 
 
 **Dependency (named, not vague):** the engine is `rlctAt_mono` (`Rlct.lean`), which compares two
 functions at ONE point via `|G| ≤ |F|` near `w*`. Here we have the SAME loss `dlnLoss H B` at TWO
-points (`deepestPoint` vs `v`), so `rlctAt_mono` does not apply directly. Bridging the two points
-needs the loss in its **homogeneous normal form** — the L2 decomposition (`product_reduction`:
-regular shift + singular core `lambdaCore` on reduced widths `M = H − r`, via `S1Fubini`), under
-which the deepest point's core pointwise-dominates the core at any other fibre point. With `B ≠ 0`
-the raw `dlnLoss B` is not homogeneous, so this domination is **L2-downstream**. Open: whether the
-homogeneous domination is provable from L1 `block_elimination` (green) + the deepest-point structure
-ALONE (R1-separable, value-independent) or genuinely needs the resolution value — a scoping question
-for the controller / pp-hall. -/
+points (`deepestPoint` vs `v`), so `rlctAt_mono` does not apply directly. The bridge (Aoyagi 2013
+Thm 2; cert #112, decorrelated pp-hall + Codex) is HOMOGENEITY: at `v` a local constant-rank chart
+splits the germ as `Q(x)` (regular block, contributes `q/2 ≥ 0` via `smoothBlockND_rlct`) ⊕ a
+HOMOGENEOUS residual core `K_res(y)`; the radial scaling `Σ t^{2nᵢ}fᵢ'² ≤ Σ fᵢ'²` (`|t|<1`) feeds
+`rlctAt_mono` (= Aoyagi Lemma 1(1), green #51), and the fibre cone `prod (t•A) = t^L · prod A` puts
+the all-zero deepest core in every stratum's closure.
+
+**Scoping (RESOLVED, cert #112):** D1≥ is **VALUE-FREE** — independent of R1's resolution value
+`⨅ monomialThreshold = lambdaCore`. It closes PARALLEL to R1, gated NOT on the value but on two
+EXISTENCE obligations: **(a)** the homogeneous-residual chart at an arbitrary `v` (a local
+constant-rank / Morse split), and **(b)** the fibre-cone closure (pure algebra). Scope boundary
+(Aoyagi Example 3): apply to the HOMOGENEOUS core, never the raw `B ≠ 0` loss. Obligation (a) is the
+SAME constant-rank chart machinery as `deepest_regular_core_normal_form` (#44) — both are
+Morse-with-parameters reductions — so (a) is not yet banked and shares the heavy gauge-slice
+existence with #44. -/
 theorem rlctAt_deepest_le_of_optimal (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
