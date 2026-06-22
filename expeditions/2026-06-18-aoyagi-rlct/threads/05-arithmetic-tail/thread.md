@@ -4130,6 +4130,36 @@ This is finite API bookkeeping only.  It does not construct exactness,
 classifier data, a back-to-label map, source labels, source branches, pole
 order, normal crossings, or RLCT extraction.
 
+## 2026-06-22 Lean Lemma 5 upper-bound classifier exactness wrappers
+
+Reproduction:
+`reproduction-lemma5-upper-bound-classifier-exactness-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-upper-bound-classifier-exactness.md`.
+Review artifact:
+`review-lemma5-upper-bound-classifier-exactness-a5.md`.
+
+Lean now adds direct wrappers from the supplied upper-bound classifier:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_upperBoundClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_upperBoundClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_upperBoundClassifier_and_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_upperBoundClassifier
+```
+
+The finite-set calculation is: `UpperBoundClassifier C` is the no-extra
+containment from `terminalMinimumLabels` to `branchLabelImage`, while the
+existing supplied-candidate theorem gives the reverse containment under
+`a<=n+1` and the selected-width sum.  Hence the finite label sets are equal.
+Adding supplied branch-label injectivity gives the exactness package,
+branch-label bijection, and exact finite count.
+
+This remains supplied finite API.  It does not construct the classifier,
+prove branch-label injectivity, build a counted-datum back-to-label map from
+Aoyagi's source equations, prove pole order, prove normal crossings, or
+extract RLCT.
+
 ## 2026-06-21 Lean Lemma 5 Eq5 alpha-indexed branch source labels
 
 Reproduction:

@@ -231,6 +231,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-minimum-lower-bound-a5.md`.
 
+The upper-bound classifier exactness wrappers have also landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_upperBoundClassifier`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_upperBoundClassifier`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_upperBoundClassifier_and_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_upperBoundClassifier`.
+These prove that the supplied `UpperBoundClassifier` identifies
+`terminalMinimumLabels` with `branchLabelImage`; adding supplied branch-label
+injectivity gives the exactness package, bijection, and exact finite count.
+This is supplied finite API only: the classifier and injectivity are not
+constructed from Aoyagi's source, and no pole order, normal crossings, or RLCT
+extraction follows.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-exactness-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-upper-bound-classifier-exactness.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-exactness-a5.md`.
+
 The Eq5 nonfirst-block explicit-bounds wrapper has landed in
 `Lemma5DisplayedVector.lean`.  New Lean names:
 `aoyagiLemma5Eq5_nonfirstBlock_bounds_of_alphaDomain_of_postPLowerGuard`

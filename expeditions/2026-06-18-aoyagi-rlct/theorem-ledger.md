@@ -157,6 +157,25 @@ minimum.  It is not no-extra terminal-minimum coverage, exact
 terminal-minimum cardinality, pole order, normal crossings, or RLCT
 extraction.
 
+The upper-bound classifier exactness wrappers have also landed in
+`Lemma5TerminalBridge.lean`.  New Lean names:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_eq_branchLabelImage_of_upperBoundClassifier`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabelExactness_iff_branchLabel_injOn_and_upperBoundClassifier`,
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_of_upperBoundClassifier_and_branchLabel_injOn`,
+and
+`AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_bijOn_terminalMinimumLabels_of_upperBoundClassifier`.
+These prove that a supplied `UpperBoundClassifier` is enough to identify the
+finite terminal-minimum label set with the supplied branch-label image; adding
+supplied branch-label injectivity gives exactness, bijection, and the exact
+finite count.  This does not prove the classifier or injectivity from
+Aoyagi's source and does not prove pole order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-upper-bound-classifier-exactness-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-upper-bound-classifier-exactness.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-upper-bound-classifier-exactness-a5.md`.
+
 ## Latest A4 Update
 
 The Case 2 post-pivot source-residual representative has landed in
