@@ -226,6 +226,45 @@ theorem peelPart_cover_sum (m : Fin (N + 2) × Fin (N + 2) → ℕ) (k : Fin (N 
       · exact Prod.ext (Fin.castSucc_castPred p.1 hne) hp3.symm
     · intro q _; rfl
 
+/-- The "lower" part of `m` (columns `≤ N`, raw — NOT merged), as a `Fin (N+1)` array. -/
+def peelLower (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ m (p.1.castSucc, p.2.castSucc)
+
+/-- The last-column correction at the merged column `N` (carries `m`'s column-`N+1` value). -/
+def peelCorr (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 1) × Fin (N + 1) → ℕ :=
+  fun p ↦ if p.2 = Fin.last N then m (p.1.castSucc, Fin.last (N + 1)) else 0
+
+/-- **`peelPart` splits as lower + correction** (`peelPart_eq` repackaged as an array identity). -/
+theorem peelPart_eq_add (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    peelPart m = peelLower m + peelCorr m := by
+  funext p
+  obtain ⟨i, j⟩ := p
+  rw [Pi.add_apply, peelPart_eq, peelLower, peelCorr]
+
+/-- `extendℤ (peelCorr m)` vanishes off column `N` (it lives only at the merged column). -/
+theorem extendℤ_peelCorr_off (m : Fin (N + 2) × Fin (N + 2) → ℕ) (a b : ℤ) (hb : b ≠ (N : ℤ)) :
+    extendℤ (peelCorr m) a b = 0 := by
+  unfold extendℤ
+  split_ifs with h
+  · obtain ⟨ha, hab, hbN⟩ := h
+    unfold peelCorr
+    split_ifs with h2
+    · exfalso
+      have hval : b.toNat = N := by have := congrArg Fin.val h2; simpa [Fin.val_last] using this
+      omega
+    · rfl
+  · rfl
+
+/-- The `peelCorr`-first cross-terms vanish: `codimBil N (extendℤ (peelCorr m)) A = 0` for any `A`
+(the first factor reads column `j-1 ≤ N-1 < N`, where `extendℤ (peelCorr m)` is `0`). -/
+theorem codimBil_peelCorr_left (m : Fin (N + 2) × Fin (N + 2) → ℕ) (A : ℤ → ℤ → ℤ) :
+    codimBil N (extendℤ (peelCorr m)) A = 0 := by
+  unfold codimBil
+  refine Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun u _ ↦
+    Finset.sum_eq_zero fun j hj ↦ Finset.sum_eq_zero fun v _ ↦ ?_
+  rw [Finset.mem_Icc] at hj
+  rw [extendℤ_peelCorr_off m (i - 1) (j - 1) (by omega), zero_mul]
+
 /-- The peel preserves support: if `m` is supported on `i ≤ j` then so is `peelPart m`. -/
 theorem peelPart_support {m : Fin (N + 2) × Fin (N + 2) → ℕ}
     (hs : ∀ p : Fin (N + 2) × Fin (N + 2), ¬ p.1 ≤ p.2 → m p = 0)
