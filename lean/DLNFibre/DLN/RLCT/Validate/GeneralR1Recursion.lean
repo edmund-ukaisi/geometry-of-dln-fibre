@@ -50,54 +50,59 @@ def ChainDimSplit.splitEquiv {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSp
     (Fin (S.drop s) ⊕ Fin (S.red s)) ≃ Fin (M s) :=
   (finSumFinEquiv).trans (finCongr (S.hsum s))
 
-/-! ## The G3.2 per-node strict-transform datum — `IsSchurNode` (I3, blow-up form, SPECIFY)
+/-! ## The G3.2 det-1 Schur straightening — `IsSchurStraighten` (the (A) sub-step, SPECIFY)
 
-The (C)-sound per-node contract (controller-relayed from fm's interface; replaces the incomplete
-scalar `IsSchurChart`). The I3 strict-transform identity in **blow-up form**: pulling the core
-`dlnLoss M 0` back along the per-node blow-up chart `φ` re-identifies it as the **exceptional
-monomial Jacobian-weight** `∏ x^{h}` (NOT a unit — the `(x_p)^{card−1}`-type weight `pivotBlowupOn`
-produces) times the **reduced-chain core** `dlnLoss M' 0` on the strictly-smaller chain `M' = S.red`
-(via the coordinate embedding `ι`). fm's `g5_pivotNode` glue composes these nodes → `resolution_charts`
-(`⨅ monomialThreshold`), descending on the reduced core, reading `(k,h)` at the leaves.
+The (C2) node is **(B) blow-up THEN (A) det-1 Schur** (pp-hall g118/g121). The lanes split it:
+**fm's (B) lane** is the coordinate-subspace blow-up (`pivotBlowupOn`, Jacobian `|u|^{Mval−1}`, the
+monomial weight `(k,h)` → `monomialThreshold`). **My (A) lane** is the det-1 Schur straightening
+WITHIN each blow-up chart: once the blow-up has made a leading pivot a UNIT, a unit-pivot row/col
+clear (Lemma-2-general / the `(uᵢ,ψᵢ)` adapted basis) reduces the residual to a strictly-smaller
+zero-core `‖∏C'‖²` and STRAIGHTENS the bilinear rank-defect center `{r−pq=0}` to a coordinate center
+`{w=0}` (the det-1 change `w := r−pq`). **Jacobian = 1 (measure-preserving) — NO monomial weight;**
+the monomial comes only from fm's (B) blow-up. This is the `resolvedForm` the controller named: the
+det-1 normal form handed to fm's blow-up cover.
 
-`φ`, the node's chart, is kept ABSTRACT here (a chart function `(Fin N → ℝ) → (Fin N → ℝ)` on the
-flat coords + the reduced-chain map): the exact composition — pure `pivotBlowupOn` (C1) vs a det-1
-GL-straightening THEN `pivotBlowupOn` (C2) — is pinned by pp-hall's #109 reconcile (the (2,2,2) Lean
-anchor exhibits C2: `lemma2Fwd` det-1 then `pivotBlowupOn`). The I3 SHAPE (monomial × reduced-core)
-is settled regardless; only the `φ` field's construction differs. `monExp` is the exceptional
-exponent vector `h_{n,p}` (the Jacobian-induced monomial), `active`/`p` the blow-up's index data
-(matching `pivotBlowupOn`'s `(active : Finset) (p)` signature, pp-hall #123 field-3). -/
+This is exactly the chart `schur_recursion_step_sound` consumes (a MEASURE-PRESERVING `χ` factoring
+`dlnLoss M 0` as `u·((∑ regular²) + dlnLoss M' 0)`). The det-1 Schur is the (A) sub-step; it requires
+a UNIT pivot (the hypothesis fm's blow-up supplies — at the bare singular origin the pivot is `0` and
+this fails, which is WHY the blow-up runs first). `#109`'s substitution algebra (all diff=0) is the
+SOUND core of this step. -/
 
-/-- **The per-node strict-transform datum (I3, blow-up form) — SPECIFY.** Carries fm's
-`ResolutionNode` fields on the flat coords (`Fin N → ℝ` via `paramsEquivFlat`): the active index set +
-pivot (blow-up data), the reduced chain `M' = S.red`, the exceptional monomial exponent, and the I3
-strict-transform identity `(dlnLoss M 0 ∘ paramsEquivFlat.symm) ∘ φ = (∏ exceptional monomial) ·
-((dlnLoss M' 0 ∘ paramsEquivFlat.symm) ∘ reduced-embed)`. The monomial is the BLOW-UP Jacobian weight,
-NOT a unit (the (C) correction). `φ` abstract pending pp-hall #109's exact composition. -/
-structure IsSchurNode {L : ℕ} {N : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
-    (flatCore : (Fin N → ℝ) → ℝ)            -- `dlnLoss M 0` in flat coords
-    (flatRedCore : (Fin N → ℝ) → ℝ)         -- `dlnLoss M' 0` (M' = S.red) in flat coords
-    (φ : (Fin N → ℝ) → (Fin N → ℝ))          -- the node's blow-up chart (abstract pending pp #109)
-    (active : Finset (Fin N)) (p : Fin N)    -- blow-up index data (matches pivotBlowupOn sig)
-    (monExp : (Fin N → ℝ) → ℝ)               -- the exceptional monomial Jacobian-weight ∏ x^h
-    (ι : (Fin N → ℝ) → (Fin N → ℝ)) : Prop where
-  /-- I3 strict-transform (blow-up form): pulled-back core = monomial-weight × reduced core. -/
-  strictTransform : ∀ x, flatCore (φ x) = monExp x * flatRedCore (ι x)
-  /-- The exceptional weight is the blow-up Jacobian monomial (nonneg; vanishes on the center). -/
-  monExp_nonneg : ∀ x, 0 ≤ monExp x
+/-- **The det-1 Schur straightening datum (the (A) sub-step) — SPECIFY.** A measure-preserving chart
+`χ` (Jacobian 1, the det-1 Schur / Lemma-2-general) factoring `dlnLoss M 0` near the deepest point as
+a unit `u` times `(regular smooth block) + (reduced-chain core dlnLoss M' 0)`, with `M' = S.red`
+strictly smaller. NO monomial weight (that is fm's blow-up). This `resolvedForm` is what
+`schur_recursion_step_sound` consumes and what fm's blow-up cover then resolves. The unit-pivot
+hypothesis is supplied upstream by fm's blow-up (the singular origin's `0` pivot is why the blow-up
+precedes this). -/
+structure IsSchurStraighten {L : ℕ} {N : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    (nReg : ℕ)
+    (flatCore : (Fin N → ℝ) → ℝ)             -- `dlnLoss M 0` in the post-blow-up flat coords
+    (flatRedCore : (Fin nReg → ℝ) × ((Fin N → ℝ)) → ℝ)  -- the split target (reg block + reduced core)
+    (χ : ((Fin nReg → ℝ) × (Fin N → ℝ)) ≃ₜ (Fin N → ℝ))  -- the det-1 Schur straightening chart
+    (u : (Fin nReg → ℝ) × (Fin N → ℝ) → ℝ) : Prop where
+  /-- The straightening is MEASURE-PRESERVING (det-1, the (A) sub-step contributes no weight). -/
+  measurePreserving : MeasurePreserving χ volume volume
+  /-- `u` is measurable (the analytic unit). -/
+  umeas : Measurable u
+  /-- The det-1 normal form near the deepest point: core = unit · (reg block + reduced core). -/
+  factor : (fun p => flatCore (χ p)) =ᶠ[nhds 0] (fun p => u p * flatRedCore p)
   /-- Well-foundedness (pp #123 field-6): the reduced chain is strictly smaller. -/
   measure_drops : ∑ s, S.red s < ∑ s, M s
 
-/-- **G3.2 crux — the per-node strict-transform existence (SPECIFY, body `sorry`; mine).** There
-exists a blow-up node realising the I3 datum: the per-node chart `φ` + index data + monomial exponent
-+ reduced chain, with the strict-transform identity. The heavy Schur-construction crux (the
-`(uᵢ, ψᵢ)` adapted-basis substitution; pp-hall spells the sub-steps). `φ`'s exact composition
-(C1/C2) pinned by pp #109; the I3 shape is settled. A sorry'd existence ⟹ vacuous recursion. -/
-theorem schur_node_exists {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
-    {N : ℕ} (flatCore flatRedCore : (Fin N → ℝ) → ℝ) :
-    ∃ (φ : (Fin N → ℝ) → (Fin N → ℝ)) (active : Finset (Fin N)) (p : Fin N)
-      (monExp : (Fin N → ℝ) → ℝ) (ι : (Fin N → ℝ) → (Fin N → ℝ)),
-      IsSchurNode M S flatCore flatRedCore φ active p monExp ι := by
+/-- **G3.2 crux — the det-1 Schur straightening existence (SPECIFY, body `sorry`; mine).** Within a
+post-blow-up chart (unit pivot available), there exists a measure-preserving det-1 Schur straightening
+realising the `resolvedForm`: the chart `χ` + unit `u` factoring the core as
+`u·(regular block + reduced-chain core)`. The heavy Schur-construction crux (the `(uᵢ,ψᵢ)` adapted
+basis; pp-hall spells the sub-steps). NO monomial weight — that's fm's blow-up. A sorry'd existence ⟹
+vacuous recursion. (Stated abstractly on flat coords; the upstream unit-pivot hypothesis is left
+implicit pending the exact pivot-data interface with fm's blow-up.) -/
+theorem schur_straighten_exists {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    (nReg N : ℕ) (flatCore : (Fin N → ℝ) → ℝ)
+    (flatRedCore : (Fin nReg → ℝ) × (Fin N → ℝ) → ℝ) :
+    ∃ (χ : ((Fin nReg → ℝ) × (Fin N → ℝ)) ≃ₜ (Fin N → ℝ))
+      (u : (Fin nReg → ℝ) × (Fin N → ℝ) → ℝ),
+      IsSchurStraighten M S nReg flatCore flatRedCore χ u := by
   sorry
 
 /-! ## The G3.2 recursion step (SOUND conditional form — PROVEN)
@@ -205,7 +210,7 @@ theorem prod_one_layer (M : Fin 2 → ℕ) (A : Params M)
 pure entrywise sum of squares of the single layer matrix `A 0` — already the smooth-block normal form
 (`nReg = M0·M1` regular generators, empty reduced chain). This terminates the Schur recursion: there
 is nothing left to pivot. (The genuine Schur split is for `B ≠ 0` of rank `r` via `block_elimination`;
-at the deepest point `rank 0 = 0`, the regular `E_r` block is empty and the whole loss is smooth.) -/
+at the deepest point `rank 0 = 0`, the regular `E_r` block is empty, the whole loss is smooth.) -/
 theorem dlnLoss_one_layer_deepest (M : Fin 2 → ℕ) (A : Params M) :
     dlnLoss M 0 A = ∑ i, ∑ j, (A 0 i j) ^ 2 := by
   unfold dlnLoss
