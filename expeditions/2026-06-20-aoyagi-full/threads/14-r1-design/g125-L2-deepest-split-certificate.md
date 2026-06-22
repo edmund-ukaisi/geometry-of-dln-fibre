@@ -47,6 +47,33 @@ of the nReg regular generators — so the split is triangular Gaussian eliminati
 + finite triangular induction — much lighter than constant-rank, and `deepestPoint_exists` already gives
 the identity corners (no gauge step, unlike arbitrary-v #122).
 
+## THE CHART INTERFACE — UNIT-JACOBIAN, NOT measure-preserving (load-bearing for the consumers)
+The explicit deepest-point χ (replace each regular generator's unit-pivot variable by the generator) has
+**Jacobian determinant a UNIT, NOT ±1** — verified on (2,2,2) r=1: `det = (w0+1)²(w4+1)` (a unit near 0,
+not constant). This is INTRINSIC: the regular generators have the perturbed pivot `(1+w0)` MULTIPLYING the
+pivot variable (`g00 = w4·(1+w0) + w0 + w1·w6`), so the elimination DIVIDES by the unit `(1+w0)` — a pure
+det=±1 shear cannot linearize `w4·(1+w0)`. So **χ is a unit-Jacobian analytic diffeo, NOT
+`MeasurePreserving`.**
+
+Consequence for the two consumers (they need DIFFERENT transport tools):
+- **a114e07e's L2 half-(a) (the regular-block split at the deepest point, NO blow-up):** the pivot is the
+  perturbed unit `(1+w0)`, so χ is unit-Jacobian. It does **NOT** satisfy `rlctAtOn_comp_homeomorph`
+  (which REQUIRES `MeasurePreserving e volume volume`, det=±1, `S1Fubini.lean:54`). Use instead the
+  **unit-weight `rlctAtOn` transport**: single change-of-variables + unit-weight threshold invariance (the
+  `rlct_unit_invariant_aux` mechanism — a Jacobian weight bounded in `[a,b]`, `0<a`, near `w0` doesn't move
+  the `sSup` of admissible exponents). The unit weight `|Jac χ|` is harmless to the RLCT.
+- **fm-2's `schur_chart_exists` (the R1 resolution chart, AFTER the blow-up normalizes the pivot to a HARD
+  1):** there the pivot is a constant `1`, so the straighten is pure TRANSVECTIONS (det=±1) — exactly
+  `lemma2Fwd`'s structure (the (2,2,2) anchor `measurePreserving_lemma2`, det=−1). This CAN be
+  `MeasurePreserving` and uses `rlctAtOn_comp_homeomorph`. The blow-up first (R1) is what makes the pivot a
+  hard 1; without it (L2's direct peel) the chart is unit-Jacobian.
+
+Reconciliation: `lemma2Fwd` is MP because the step-1 BLOW-UP (R1) first normalizes `Â[0,0]=1` (hard),
+making the straighten transvections. L2's regular peel at the deepest point does NOT blow up (the blow-up
+is R1, downstream on the core), so its pivot is the perturbed `(1+w0)` → unit-Jacobian. **Don't force L2's
+half-(a) into `MeasurePreserving`; it is intrinsically unit-Jacobian — there is no det=±1 chart for the
+direct deepest-point regular peel (the unit-matrix `S_11` multiplication is intrinsic).**
+
 ## The caveat (both legs, scope-honest)
 The split is an explicit analytic/unit GENERATOR equivalence: after the regular coordinates, the residual
 bottom-right block is replaced by the Schur-complement/core generator, with only unit denominators. This
