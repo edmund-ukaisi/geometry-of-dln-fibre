@@ -58,16 +58,22 @@ decisions as "current lean, pending X", not as settled.)
 - fm3 #39 (R1 dispatcher + cover-facts) on origin/fm3/routem. Seam VERBATIM-matched to crux2's contract (fm3
   confirmed cover-fact signatures = the contract). Achiever = `_le_regularSeq` at j₀ (card=m₀ min-ratio axis) +
   threshold_ge, bundled by of_mult_and_achiever; binding axis = ⨅ over multiple C1 axes.
-- crux2 #50 (value-free reduction, consuming side) on origin/fm2/deepest-gauge-chart (@781dffc): PROVEN
-  (clean-three) — spectator-peel #52, continuous_prodAux/_prod/_dlnLoss (reusable bedrock), sub-2, sub-6
-  (`deepest_regular_smooth_split`), sub-7, the assembly `deepest_regular_core_reduces` = 4/7 + assembly + 2
-  Foundations lemmas (+ weight-invariance `weightedThreshold_weight_unit_invariant`, @ea273ea). Under R-squeeze,
-  GATED on just: sub-5 (crux2 re-wires to Params→flat MP + rlctAtOn_squeeze, lightweight) + the matrix
-  comparability (cobuild-sub34, = the collapsed sub-3/4). Cert gaps: #2 Measurable CLOSED (Codex g151); hGne
-  carried as a local hypothesis → discharge-vs-stated-headline TRACKED for spine-wiring.
-- cobuild-sub34 #51 (the COLLAPSED sub-3/4 under R-squeeze = the matrix-core comparability, gauge-normalized T̃:
-  ‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0; #53/#54/#55) — the XL chart-existence is DROPPED. Own worktree
-  (workspace/dgc-sub34); builds against crux2's trimmed loss_squeeze field. pp2 = decorrelated backup if it walls.
+- crux2 #50 (value-free reduction) on origin/fm2/deepest-gauge-chart (@c1ce00f/@7573c0b): CONSUMING SIDE
+  FULLY PROVEN (clean-three) — sub-2, sub-5 (`deepest_squeeze_transport`), sub-6, sub-7, the assembly
+  `deepest_regular_core_reduces`; + 4 reusable Foundations lemmas (spectator-peel #52, continuous_dlnLoss,
+  weightedThreshold_weight_unit_invariant, rlctAtOn_mono/rlctAtOn_squeeze re-homed GeneralR1Recursion→
+  S1NonMPTransport). GATED on ONLY sub-3 (cobuild-sub34's comparability). hGne carried as a local hypothesis →
+  discharge-vs-stated-headline TRACKED for spine-wiring; gap #2 measurability CLOSED (Codex g151). crux2 NEXT →
+  D1≥ wiring skeleton (below).
+- cobuild-sub34 #51 (the COLLAPSED sub-3 = the matrix-core comparability, GAUGE-NORMALIZED T̃:
+  ‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0; #53/#54) — the XL chart-existence DROPPED. Builds the two-sided loss_squeeze +
+  MP split to-spec against crux2's trimmed structure @c1ce00f. Own worktree (workspace/dgc-sub34). pp2 backup if it walls.
+- **D1 #42 ≥-leg (`rlctAt_deepest_le_of_optimal`):** #111-check verdict — (a) the general-v homogeneous-residual
+  chart is NEW (block_elimination only normal-forms target B) AND shares technique with #44's deepest squeeze →
+  ONE cert. pp2 EXTENDS #48 to the general-v squeeze datum (serves #44 sub-3 [v=deepest] + D1 (a) [arbitrary
+  v∈optimalSet]); consumers differ only by basepoint + the homogeneous-scaling step (rlctAtOn_mono = Aoyagi
+  Lemma 1(1)). crux2 builds the D1≥ WIRING skeleton now (structure-light, green-tool route around the shared
+  chart); heavy chart part gated on pp2's general-v cert.
 
 **CANONICAL CERT LINEAGE (for #28 — pp2's authoritative tips, 2026-06-22):**
 - g138 design (C1 = blow-up + det-1 triangular peel + recurse): **origin/g138-c1-peel-prose @0823917** ← canonical
