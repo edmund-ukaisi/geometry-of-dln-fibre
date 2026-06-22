@@ -4594,6 +4594,37 @@ prove nonbase status, construct a classifier, prove back-to-label coverage,
 prove a Lemma 5 order count, prove pole order, prove normal crossings, or
 extract RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 own-block counted-datum classifier
+
+Reproduction:
+`reproduction-lemma5-eq5-ownblock-countdatum-classifier-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-ownblock-countdatum-classifier.md`.
+Review artifact:
+`review-lemma5-eq5-ownblock-countdatum-classifier-a5.md`.
+
+Lean now packages finite supplied Eq5 own-block source labels as a counted
+datum classifier:
+
+```text
+aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound
+aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_blockWidth
+aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_leftEndpointMin
+aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected
+aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected_lt
+```
+
+The classifier maps a supplied label `(S,k)` to
+`some (pOf label, T label S)`.  Lean proves the `mapsTo` field from the
+existing one-branch Eq5 own-block payload and keeps `Set.InjOn classify
+labels` as a hypothesis.
+
+This is supplied classifier packaging only.  It does not construct Eq5
+vectors, prove nonbase status, derive classifier injectivity, lift local
+introduced labels to a terminal domain, prove back-to-label coverage, prove a
+Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.
+
 ## 2026-06-22 Lean Lemma 5 Eq5 alpha endpoint value-image split
 
 Reproduction:

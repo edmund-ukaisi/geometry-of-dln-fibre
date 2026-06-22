@@ -4713,6 +4713,28 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-width-source-variants-a5.md`.
 
+Latest A5 Eq5 own-block counted-datum classifier update:
+`Lemma5Eq5CountDatumBridge.lean` now also contains
+`aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound`,
+`aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_blockWidth`,
+`aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_leftEndpointMin`,
+`aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected`,
+and
+`aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected_lt`.
+These build an `AoyagiLemma5CountDatumClassifier` from a finite supplied
+family of Eq5 own-block source-label payloads.  The `mapsTo` proof is
+branchwise and uses the existing own-block counted-datum payload; the
+classifier injectivity remains an explicit hypothesis.  This is not source
+construction of the branch family, nonbase status, source-derived
+nonduplication, terminal introduced-domain lifting, back-to-label coverage,
+Lemma 5 order count, pole order, normal crossings, or RLCT.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-countdatum-classifier-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-ownblock-countdatum-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-countdatum-classifier-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.

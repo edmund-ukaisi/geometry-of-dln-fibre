@@ -352,6 +352,262 @@ theorem
       (fun t ht i ↦ le_of_lt (hoffSelected t ht i))
       hS hlast hk hne_base
 
+/-- Build a supplied counted-datum classifier from a finite family of Eq5
+own-block source-label payloads with explicit selected-width bounds.
+
+The classifier sends a supplied source label `label = Sigma.mk S k` to the
+counted datum `some (pOf label, T label S)`.  Injectivity of this map is kept
+as a hypothesis.  This is only classifier packaging; it does not construct Eq5
+branches, prove nonbase status, or prove terminal-minimum coverage. -/
+def
+    aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (labels : Finset (Σ _ : ℕ, ℕ))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : ∀ label ∈ labels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        ell a (pOf label) (alphaOf label) M m C
+        (layerWidth label) (T label))
+    (hblock : ∀ label ∈ labels, C.block (pOf label) label.1)
+    (hlast : C.point ell ≤ L + 1)
+    (hwidth_le : ∀ label ∈ labels,
+      aoyagiSelectedWidthNat ell m (pOf label) ≤
+        (n (label.1 + 1) : ℤ))
+    (hk : ∀ label ∈ labels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m (pOf label) + 1 -
+          (alphaOf label : ℤ))
+    (hne_base : ∀ label ∈ labels,
+      T label label.1 ≠ baseValue (pOf label))
+    (hinj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (some (Sigma.mk (pOf label) (T label label.1)) :
+            AoyagiLemma5CountDatum))
+        ↑labels) :
+    AoyagiLemma5CountDatumClassifier (Σ _ : ℕ, ℕ)
+      ell a M m baseValue labels where
+  classify := fun label ↦
+    some (Sigma.mk (pOf label) (T label label.1))
+  mapsTo := by
+    intro label hlabel
+    have hT_label := hT label hlabel
+    have hp_pos : 1 ≤ pOf label := by
+      have hpos : 1 ≤ alphaOf label := hT_label.alpha_pos
+      have hlt : alphaOf label < pOf label := hT_label.alpha_lt_p
+      omega
+    exact
+      (aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_widthBound
+        L ell a (pOf label) (alphaOf label) n M m baseValue C
+        (layerWidth label) (T label) hell hselected hsource hT_label
+        hp_pos (hblock label hlabel) hlast (hwidth_le label hlabel)
+        (hk label hlabel) (hne_base label hlabel)).1
+  injOn := hinj
+
+/-- Block-width version of
+`aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound`. -/
+def
+    aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_blockWidth
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (labels : Finset (Σ _ : ℕ, ℕ))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : ∀ label ∈ labels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        ell a (pOf label) (alphaOf label) M m C
+        (layerWidth label) (T label))
+    (hactual :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          aoyagiSelectedWidthNat ell m i.val ≤ (n r : ℤ))
+    (hblock : ∀ label ∈ labels, C.block (pOf label) label.1)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : ∀ label ∈ labels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m (pOf label) + 1 -
+          (alphaOf label : ℤ))
+    (hne_base : ∀ label ∈ labels,
+      T label label.1 ≠ baseValue (pOf label))
+    (hinj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (some (Sigma.mk (pOf label) (T label label.1)) :
+            AoyagiLemma5CountDatum))
+        ↑labels) :
+    AoyagiLemma5CountDatumClassifier (Σ _ : ℕ, ℕ)
+      ell a M m baseValue labels :=
+  aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound
+    L ell a n M m baseValue C labels pOf alphaOf layerWidth T
+    hell hselected hsource hT hblock hlast
+    (fun label hlabel ↦
+      C.selectedWidthNat_le_actualWidth_of_block n m hactual
+        (hblock label hlabel))
+    hk hne_base hinj
+
+/-- Left-endpoint/minimum version of the Eq5 own-block counted-datum
+classifier adapter. -/
+def
+    aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_leftEndpointMin
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (labels : Finset (Σ _ : ℕ, ℕ))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : ∀ label ∈ labels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        ell a (pOf label) (alphaOf label) M m C
+        (layerWidth label) (T label))
+    (hleft :
+      ∀ i : Fin ell,
+        (n (C.point i.val) : ℤ) = aoyagiSelectedWidthNat ell m i.val)
+    (hmin :
+      ∀ i : Fin ell, ∀ r : ℕ,
+        C.point i.val ≤ r → r < C.point (i.val + 1) →
+          n (C.point i.val) ≤ n r)
+    (hblock : ∀ label ∈ labels, C.block (pOf label) label.1)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : ∀ label ∈ labels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m (pOf label) + 1 -
+          (alphaOf label : ℤ))
+    (hne_base : ∀ label ∈ labels,
+      T label label.1 ≠ baseValue (pOf label))
+    (hinj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (some (Sigma.mk (pOf label) (T label label.1)) :
+            AoyagiLemma5CountDatum))
+        ↑labels) :
+    AoyagiLemma5CountDatumClassifier (Σ _ : ℕ, ℕ)
+      ell a M m baseValue labels :=
+  aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound
+    L ell a n M m baseValue C labels pOf alphaOf layerWidth T
+    hell hselected hsource hT hblock hlast
+    (fun label hlabel ↦
+      C.selectedWidthNat_le_actualWidth_of_block_of_leftEndpoint_min
+        n m hleft hmin (hblock label hlabel))
+    hk hne_base hinj
+
+/-- Off-selected dominance version of the Eq5 own-block counted-datum
+classifier adapter. -/
+def
+    aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (labels : Finset (Σ _ : ℕ, ℕ))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : ∀ label ∈ labels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        ell a (pOf label) (alphaOf label) M m C
+        (layerWidth label) (T label))
+    (hselectedWidth :
+      ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i ≤ (n t : ℤ))
+    (hblock : ∀ label ∈ labels, C.block (pOf label) label.1)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : ∀ label ∈ labels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m (pOf label) + 1 -
+          (alphaOf label : ℤ))
+    (hne_base : ∀ label ∈ labels,
+      T label label.1 ≠ baseValue (pOf label))
+    (hinj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (some (Sigma.mk (pOf label) (T label label.1)) :
+            AoyagiLemma5CountDatum))
+        ↑labels) :
+    AoyagiLemma5CountDatumClassifier (Σ _ : ℕ, ℕ)
+      ell a M m baseValue labels :=
+  aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound
+    L ell a n M m baseValue C labels pOf alphaOf layerWidth T
+    hell hselected hsource hT hblock hlast
+    (fun label hlabel ↦
+      C.selectedWidthNat_le_actualWidth_of_block_of_offSelected
+        n m (hblock label hlabel) hselectedWidth hoffSelected)
+    hk hne_base hinj
+
+/-- Strict off-selected dominance version of
+`aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected`. -/
+def
+    aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected_lt
+    (L ell a : ℕ) (n : ℕ → ℕ) (M : ℤ)
+    (m : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (labels : Finset (Σ _ : ℕ, ℕ))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hell : 1 ≤ ell)
+    (hselected :
+      (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hsource : ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j)
+    (hT : ∀ label ∈ labels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        ell a (pOf label) (alphaOf label) M m C
+        (layerWidth label) (T label))
+    (hselectedWidth :
+      ∀ i : Fin (ell + 1), (n (C.point i.val) : ℤ) = m i)
+    (hoffSelected :
+      ∀ t : ℕ, (∀ i : Fin (ell + 1), t ≠ C.point i.val) →
+        ∀ i : Fin (ell + 1), m i < (n t : ℤ))
+    (hblock : ∀ label ∈ labels, C.block (pOf label) label.1)
+    (hlast : C.point ell ≤ L + 1)
+    (hk : ∀ label ∈ labels,
+      (label.2 : ℤ) =
+        aoyagiHtildeUpperNat ell a M m (pOf label) + 1 -
+          (alphaOf label : ℤ))
+    (hne_base : ∀ label ∈ labels,
+      T label label.1 ≠ baseValue (pOf label))
+    (hinj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (some (Sigma.mk (pOf label) (T label label.1)) :
+            AoyagiLemma5CountDatum))
+        ↑labels) :
+    AoyagiLemma5CountDatumClassifier (Σ _ : ℕ, ℕ)
+      ell a M m baseValue labels :=
+  aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_offSelected
+    L ell a n M m baseValue C labels pOf alphaOf layerWidth T
+    hell hselected hsource hT hselectedWidth
+    (fun t ht i ↦ le_of_lt (hoffSelected t ht i))
+    hblock hlast hk hne_base hinj
+
 end Aoyagi
 end DLN
 end DLNFibre
