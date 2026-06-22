@@ -245,6 +245,26 @@ theorem rlctAtOn_germ_local {N : Type*} [MeasureSpace N] [TopologicalSpace N]
   congr 1; ext c
   exact ⟨key F G hU₀ c, key G F (fun w hw => (hU₀ w hw).symm) c⟩
 
+/-! ## ⚠ PARKED — TRUE-BUT-OFF-PATH (the SQUEEZE route, g134 finding 2026-06-22)
+
+> **OFF THE LIVE PATH.** The squeeze toolkit below (chain, `IsSchurStraightenSqueeze`,
+> `schur_straighten_squeeze_exists`, the g131 ideal-membership + squeeze-constant lemmas) is GREEN and
+> CORRECT AS STATED — faithful to the residual `Q` (`Q = ∑E² + ‖b·E + S·Γ‖²` as free symbols). But it is
+> NOT the per-node mechanism. ROOT CAUSE (fm3 + rv3 + Codex, decorrelated): the banked blow-up gives
+> `dlnLoss M 0 ∘ pivotBlowupOn = x_p² · Q` — a PRODUCT (monomial route) carrying the `x_p²` exceptional
+> weight the MONOMIAL lane computes. The squeeze recursion is measure-preserving and DROPS that weight,
+> so it would telescope to ambient/2 = 4, not the verified 3/2 (the same dimension-conservation
+> obstruction as the clean-MP `g32` finding — no measure-preserving recursion produces the monomial
+> Jacobian weight). hnode is therefore UNDISCHARGEABLE from the banked atlas (the additive sum is not
+> reachable by a regular c-o-v from the product; residual-squeeze on `Q` is blocked by Jacobian-rank-
+> deficiency of the `(E,SΓ)` map at the deepest point). The live per-node mechanism is the MONOMIAL
+> route (`resolution_charts`).
+>
+> RETAINED, not deleted (true-but-off-path bedrock, like the superseded `IsSchurStraighten`): reusable if
+> a future route ever produces the additive form. **EXCEPTION:** `rlctAtOn_reduced_transport` (the last
+> theorem in this file before the L=1 base) is route-INDEPENDENT (abstract RLCT-transport for any MP
+> reduced-chain embedding) — it STAYS LIVE, NOT parked. -/
+
 /-! ## The SQUEEZE chain (pp2 #129/#130 — the CORRECTED per-node route)
 
 pp2 #129 (decorrelated) RETRACTED the clean measure-preserving-chart route: the per-node transvection
@@ -606,7 +626,11 @@ contract, supplied here as a hypothesis, NOT asserted as `dlnLoss M 0 coords = �
 smuggle guessed plumbing). Given that presentation (`flatCore w = ∑ Erowⱼ² + ‖b·Erow + S·Γ‖²`,
 `G(w.2)² = ‖S·Γ‖²`, `‖b‖² ≤ T²` on a nbhd), the datum's `squeeze` field is `schur_node_squeeze_unif`;
 the rest are the supplied measurability / reduced-core / germ / well-foundedness contracts. This is the
-g131-certified existence content transcribed to Lean — the squeeze, not a clean MP factor (#129). -/
+g131-certified existence content transcribed to Lean — the squeeze, not a clean MP factor (#129).
+
+**PARKED — TRUE-BUT-OFF-PATH (g134):** true given `hnode`, but `hnode` is UNDISCHARGEABLE from the banked
+blow-up — `dlnLoss M 0 ∘ pivotBlowupOn = x_p²·Q` (a product, monomial route), not the additive sum
+`hnode` requires. See the section banner above. Retained as true-but-off-path bedrock. -/
 theorem schur_straighten_squeeze_exists {L nReg : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
     {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] [Zero Y]
     {Mblk : Type*} [Fintype Mblk]
