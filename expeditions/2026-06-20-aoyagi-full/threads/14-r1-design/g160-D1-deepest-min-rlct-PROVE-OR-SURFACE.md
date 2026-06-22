@@ -85,6 +85,40 @@ vs the chart-at-`v` domination (no new primitive, but the non-rank-exact broader
 value-independent (one-citation-clean); the choice is which heavy piece. **Confirmed: NO second citation
 needed; the cost is one new value-independent primitive (L1-b) OR the chart-at-v split.**
 
+## UPDATE (#57 priority, controller's leading-homogeneous-part route REFUTED as a light route)
+The controller asked specifically for the L1-separable derivation via "deepest core = the leading
+homogeneous part of every v's core, from block_elimination + deepest structure." **That clean route does
+NOT exist** (g163, exact-verified on (2,2,2) B=0):
+- At a general fibre point `v`, the core `F_v(w) = ‖∏(v+w)‖²`'s LEADING (lowest-degree) form in `w` has
+  degree **2** (NOT 4) — `v`'s regular directions contribute QUADRATIC leading terms (e.g. at
+  `v=(rank1,rank1 aligned)`, leading form `= a₁²+2a₁b₁+a₃²+b₀²+b₁²`, degree 2). The DEEPEST core's
+  leading form is the full `‖∏(w)‖²`, degree **4**. So **"deepest core = the leading part of v's core" is
+  FALSE** — `v`'s leading form is LOWER-degree (less vanishing), not the deepest core.
+- The DIRECTION is still right (deepest more vanishing — leading degree 4 > 2 — ⟹ more singular ⟹ smaller
+  rlct ⟹ `rlctAt(deepest) ≤ rlctAt(v)`), but making it rigorous needs **"rlct is determined by the
+  leading/Newton form" (Varchenko nondegeneracy)** — which is ALSO a heavy analytic primitive (P2), NOT
+  lighter than the semicontinuity route (P1). No free lunch.
+
+**The honest landscape (g164):** a value-independent D1 (a) NEEDS one of two new heavy analytic primitives
+— (P1) RLCT lower-semicontinuity [g160 route], or (P2) RLCT = rlct-of-the-leading-Newton-form [the
+controller's route, but it needs Varchenko-nondegeneracy, not the clean leading-part claim]. Neither is
+free; the elementary block_elimination split is circular (compares `v`-core to deepest-core across
+different `#regular`, needs the value). **The controller's hoped-for light route is refuted; both routes
+are heavy primitives (both value-independent — still NO 2nd citation).**
+
+## THE CHEAPEST RESOLUTION (scoping Q for the controller — possibly avoids D1 (a) entirely)
+Is the headline keyed to **⨅-over-optimalSet** (`aoyagi_learning_coefficient = ⨅_{v∈optimalSet} rlctAt v`)
+or to the **deepest-point value** (`rlctAt(deepest) = aoyagiLambda`)?
+- If **⨅-over-optimalSet**: `deepest_point_reduction` reduces it to `rlctAt(deepest)` via D1 (a) — which
+  needs the primitive (P1 or P2). D1 (a) is REQUIRED.
+- If **deepest-point value only**: D1 (a) (the `⨅ = deepest` direction, `rlctAt_deepest_le_of_optimal`) is
+  **NOT NEEDED** — only R1 (`resolution_charts` at the deepest) + L2 give the deepest value. The whole
+  primitive question is MOOT.
+So before committing a new analytic primitive (P1/P2), confirm whether the headline genuinely needs the
+`⨅`-over-`optimalSet` form. If it can be deepest-point-keyed (the `deepestPoint` is the canonical
+attainer L2 evaluates — Rung-0c FLAG already keys L2/D1 to the constructed `deepestPoint`), D1 (a) is
+avoidable and the cost vanishes. **This is the cheapest path — check the headline keying first.**
+
 ## Decorrelation
 pp-hall exact algebra (g158 the mono-fails + M-monotonicity-trap catch, g159 the vanishing-order read,
 g161 the semicontinuity route, g162 the scaling-invariance verification). Decorrelated Codex consult on
