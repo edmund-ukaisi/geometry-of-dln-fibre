@@ -68,3 +68,23 @@ b. If those are the discharge obligations, fm3 is chasing the RIGHT shape.
 ## Net
 The interface is correct; the cover/fm3 can build on it. The fuller pass (hnode DISCHARGED from
 `dlnLoss M 0 ∘ pivotBlowupOn` (b1) + the FLAG-A (b2) RLCT-transport closed) comes after fm3 lands green.
+
+## CLOSURE (2026-06-22, the (b1) sharpening — convergence with fm3)
+fm3's discharge surfaced the exact quantitative form of the (b1) obligation this cert named. The
+"contract, not recognizer" caveat is sharper than a caveat: **`dlnLoss M 0 ∘ pivotBlowupOn = x_p²·Q`**,
+NOT the bare residual `Q = ‖Â·A2‖²` (`x_p` = the blow-up pivot coord). I verified this decorrelated
+(sympy, a 3-layer toy: `loss∘blowup − x_p²·Q = 0` exactly), independent of fm3's (2,2,2) sympy and
+Codex — three reads converged. The `x_p²` is forced by MULTILINEARITY: the loss is degree-2 in the
+first-factor block, `pivotBlowupOn` (S1G5Charts:384) scales the WHOLE block by `x_p` (pivot entry
+`= x_p`, active off-pivot `= x_p·x_j`), so `‖prod‖² = x_p²·‖Â·A2‖²`. No reading makes it the bare `Q`.
+
+Consequence: `hnode` + `schur_straighten_squeeze_exists` are FAITHFUL to `flatCore := Q` (the residual);
+fm3's `schur_node_loss_presentation` (`Q = ∑E²+∑(b·E+S·Γ)²`, green, clean-three) anchors that reading.
+They are UNFAITHFUL if read as the presentation of `dlnLoss∘blowup` (off by `x_p²`). Folding `x_p²` into
+`Q` (the surfaced option A) is UNSOUND, not merely lossy: `rlct(x_p²) = 1/2` (`∫|x|^{−2c}` converges iff
+`c<1/2`), so dropping it per-node telescopes to ambient/2 (= 4 for (2,2,2)) — the documented-FALSE error
+of the file's SOUNDNESS NOTE (GeneralR1Recursion.lean:18-24) + g128. The controller's decision (C) routes
+the `x_p²` through the banked monomialThreshold/cover lane (which yields the verified 3/2), keeping the
+per-node squeeze toolkit clean-three / S2-free and off the critical path. Architecture settled correctly;
+no defect in crux2's per-node toolkit — the finding was a pre-emptive wiring guard (no consumer wires
+`flatCore := dlnLoss∘blowup` on any branch yet).
