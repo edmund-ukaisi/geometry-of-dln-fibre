@@ -199,6 +199,15 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
               dlnLoss (fun s => H s - r)
                 (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ) A)
             (fun _ => 0 : Params (fun s => H s - r)) := by
+  -- ROUTE (mapped + partly built; full fill needs a `dlnLoss` measurability/continuity lemma,
+  -- found missing — `fun_prop` deep-recurses on `prodAux`):
+  --   (1) transport through the MP split homeomorph (`rlctAtOn_comp_homeomorph` + `split_mp` +
+  --       `split_zero`) — drops to `rlctAtOn (fun q => ∑q.1² + coreF q.2.1) 0`;
+  --   (2) `rlct_additive_smooth_block` with `G = √∘(coreF∘fst)` (`hGsq` via `dlnLoss_nonneg`,
+  --       `hGmeas` needs `Measurable (dlnLoss M 0)`, `hGne'` lifts the given `hGne` to the product
+  --       nbhd `Uc ×ˢ univ`) — peels `nReg/2`;
+  --   (3) `rlctAtOn_spectator_peel` on `coreF∘fst` (the `nGauge` gauge spectators) then sub-7
+  --       (`deepest_reduced_core_identification`) — lands on `rlctAtOn (dlnLoss M 0) 0`.
   sorry
 
 /-- **The VALUE-FREE L2 reduction (`deepest_regular_core_reduces`).** The local RLCT of `dlnLoss H B`
