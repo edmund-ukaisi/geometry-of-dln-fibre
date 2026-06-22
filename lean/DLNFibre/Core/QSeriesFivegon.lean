@@ -516,4 +516,33 @@ theorem extendℤ_peelCorr_at (m : Fin (N + 2) × Fin (N + 2) → ℕ) (u : ℤ)
   · congr 1
   · exfalso; apply hc; apply Fin.ext; rw [Fin.val_last]; show (N : ℤ).toNat = N; omega
 
+/-- Small-side `codimBil` collapse: the `v`-sum picks `v = N` (where `peelCorr` lives), the eval
+helpers rewrite to `m`'s entries. -/
+theorem codimBil_peelCorr_collapse (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimBil N (extendℤ (peelLower m)) (extendℤ (peelCorr m))
+      = ∑ i ∈ Finset.Icc (1 : ℤ) (N : ℤ), ∑ u ∈ Finset.Icc i (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),
+          extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1) := by
+  unfold codimBil
+  refine Finset.sum_congr rfl fun i hi ↦ Finset.sum_congr rfl fun u hu ↦
+    Finset.sum_congr rfl fun j hj ↦ ?_
+  rw [Finset.mem_Icc] at hi hu hj
+  rw [← Finset.mul_sum, Finset.sum_eq_single_of_mem (N : ℤ) (by rw [Finset.mem_Icc]; omega)
+    (fun v _ hvN ↦ extendℤ_peelCorr_off m u v hvN)]
+  rw [extendℤ_peelLower_at m (i - 1) (j - 1) (by omega), extendℤ_peelCorr_at m u (by omega) (by omega)]
+
+/-- Big-side `codimBil` collapse: the `v`-sum picks `v = N+1` (where `peelLast` lives). -/
+theorem codimBil_peelLast_collapse (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimBil (N + 1) (extendℤ (peelLower m)) (extendℤ (peelLast m))
+      = ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          ∑ j ∈ Finset.Icc u ((N : ℤ) + 1),
+          extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1) := by
+  unfold codimBil
+  simp only [Nat.cast_add, Nat.cast_one]
+  refine Finset.sum_congr rfl fun i hi ↦ Finset.sum_congr rfl fun u hu ↦
+    Finset.sum_congr rfl fun j hj ↦ ?_
+  rw [Finset.mem_Icc] at hi hu hj
+  rw [← Finset.mul_sum, Finset.sum_eq_single_of_mem ((N : ℤ) + 1) (by rw [Finset.mem_Icc]; omega)
+    (fun v _ hvN ↦ extendℤ_peelLast_off m u v hvN)]
+  rw [extendℤ_peelLower_at m (i - 1) (j - 1) (by omega), extendℤ_peelLast_at m u]
+
 end DLNFibre.Core
