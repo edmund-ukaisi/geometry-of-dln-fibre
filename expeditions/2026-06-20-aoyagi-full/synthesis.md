@@ -2,6 +2,16 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
+## ⚠⚠ RECOVERY UPDATE (2026-06-22 ~08:10) — post-VM-crash team rebuilt + a MAJOR statement-fidelity catch
+**Read this first.** A VM crash killed the prior team. Durable base = `origin/expedition/aoyagi-full @e6827ba` (the whole design phase: locked interface, #127 witness, #128 squeeze, certs) — confirmed GREEN by a recreated agent (2m47s cold build). Ledger recovered + pushed to `origin/d1-scope @507eeaa`.
+- **Recreate agents ONLY with `isolation: worktree`** — a non-isolated re-spawn shared rung0-defs cwd and one ran `git reset --hard` there, wiping the ledger (recovered from reflog). Isolated agents (own pinned worktree, reset to @e6827ba) are safe.
+- **★ MAJOR CATCH (crux agent + Codex, decorrelated): the "locked" `schur_straighten_exists` is FALSE-AS-STATED** — (i) DIMENSION bug: `(Fin nReg→ℝ)×(Fin N'→ℝ) ≃ₜ (Fin N→ℝ)` needs N=nReg+N' (no such hyp); (ii) flatCore UNCONDITIONALLY quantified (false for a nonzero constant; must tie flatCore = `dlnLoss M 0`). The design phase was NOT fully complete — the existence theorem statement was never adversarially proof-attempt-checked.
+- **DECISION (A):** adopt `schur_straighten_of_data` (HONEST packaging form: chart χ + factor + pivot data as HYPOTHESES → assembles IsSchurStraighten; green clean-three, on fm-2/consolidate). DROP the false `schur_straighten_exists`. Chart-EXISTENCE = separate downstream obligation (the real content). Cover builds against the packaging form, conditional on chart-existence.
+- **2b OPEN — pp2 (pen-and-paper) reconciling:** R1 per-node (post-blow-up, hard-pivot) chart-existence — is the CLEAN MP-c-o-v factor `flatCore∘χ = u·(ΣEᵢ²+G²)` reachable (#127 blockdiag) OR does R1 ALSO need the two-sided SQUEEZE (crux+Codex cite g128)? Determines the corrected chart-existence form. crux2 HOLDS the existence build for the verdict.
+- **AGENTS NOW:** crux2 (isolated, the crux lane — inherits d15efe1 finished-(1) + schur_straighten_of_data via origin/fm-2/consolidate; scopes (3) MP-shear meanwhile); pp2 (isolated, the 2b reconciliation); old crux/cover/l2 standing down (mis-spawned); cover/l2 re-spawn HELD pending interface fix + 2b. rv-2 on-demand.
+- The fix is honest + the catch is the discipline working (the proof-attempt is the ultimate audit — even on a "locked" interface). Resume construction once (A) is integrated + 2b lands.
+
+
 ## Current read (2026-06-21): ★ R1 EXECUTION — S1.5 sorry CLOSED (6→5) @1304cf2; (2,2,2) route PINNED ★
 
 **Milestone @`1304cf2` (pushed origin, rv-2 auditing):** the S1.5 wire is in — `rlct_additive_smooth_block`
