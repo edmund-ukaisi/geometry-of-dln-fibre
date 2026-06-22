@@ -12,8 +12,8 @@ extraction itself are later layers).
 > `≥ 0`, and `Qseries` has all coefficients `≥ 0`. The geometric factor telescopes:
 > `geomFactor k · (1 − X^k) = 1` for `k ≥ 1` (the inverse-Pochhammer reading).
 >
-> - **Lean:** module `DLNFibre.Core.QSeries` (`lean/DLNFibre/Core/QSeries.lean` @ `<commit-sha>`,
->   staged on branch `expedition/perm-invariance`; SHA to be pinned by the controller at commit).
+> - **Lean:** module `DLNFibre.Core.QSeries` (`lean/DLNFibre/Core/QSeries.lean` @ `9d5002c`,
+>   staged on branch `expedition/perm-invariance`; SHA pinned).
 >   Key names:
 >   - defs: `geomFactor`, `P`, `Pm`, `Pmult`, `Qseries`, `upperPairs`, `NonnegCoeffs`
 >   - constant term `1`: `constantCoeff_geomFactor`, `constantCoeff_P`, `constantCoeff_Pm`,
