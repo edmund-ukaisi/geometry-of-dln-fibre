@@ -7,7 +7,7 @@ rests on — pinned in thread 04 to be the *only* such input.
 > `P a * P b = ∑_{r=0}^{min a b} X^{(a-r)(b-r)} · P (a-r) · P r · P (b-r)`,
 > where `P` is the inverse q-Pochhammer of `Core.QSeries` (M1).
 >
-> - **Lean:** module `DLNFibre.Core.QSeriesDurfee` (`lean/DLNFibre/Core/QSeriesDurfee.lean` @ `<commit-sha>`,
+> - **Lean:** module `DLNFibre.Core.QSeriesDurfee` (`lean/DLNFibre/Core/QSeriesDurfee.lean` @ `9d408a3`,
 >   branch `expedition/perm-invariance`; SHA pinned by the controller at commit). Headline: `durfee`.
 >   Ladder (all green, sorry-free):
 >   - defs: `durfeeTerm`, `durfeeSum`
