@@ -4896,3 +4896,35 @@ counted-datum injectivity, build back-to-label coverage, construct an
 upper-bound classifier, prove no-extra terminal-minimum coverage, prove a
 Lemma 5 order count, prove pole order, prove normal crossings, or extract
 RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 structured injection adapters
+
+Reproduction:
+`reproduction-lemma5-eq5-structured-injection-adapters-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-structured-injection-adapters.md`.
+Review artifact:
+`review-lemma5-eq5-structured-injection-adapters-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5_ownBlock_countDatum_injOn_of_pAlpha_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumCountDatum_injOn_of_eq5OwnBlock_pAlpha_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_none_ne_some_of_terminalEndpointLabel_and_nonbaseBlock
+AoyagiLemma5SuppliedTerminalCandidateFamily.branchLabel_injOn_of_eq5AlphaIndexed_nonbase_terminalEndpointBase
+```
+
+The counted-datum adapter turns supplied `(p, alpha)` injectivity on Eq5
+own-block terminal labels into injectivity of the counted-datum map
+`label |-> some (pOf label, T label label.1)`, using the Eq5 own-block value
+formula `T_s = Htilde'_p - alpha`.  The base/nonbase adapter replaces the
+opaque base-separation hypothesis with the explicit terminal-endpoint base
+label and nonbase block membership: the terminal endpoint is in no half-open
+selected block.
+
+This is structured supplied-hypothesis reduction only.  It does not construct
+Eq5 branches, prove `(p, alpha)` injectivity from source, produce
+terminal-label payloads, build a counted-datum back-to-label map, prove
+no-extra terminal-minimum coverage, prove a Lemma 5 order count, prove pole
+order, prove normal crossings, or extract RLCT.

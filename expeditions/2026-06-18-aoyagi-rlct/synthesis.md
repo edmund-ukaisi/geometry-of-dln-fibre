@@ -4691,6 +4691,27 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-stack-a4.md`.
 
+Latest A5 Eq5 structured injection adapter update:
+`Lemma5Eq5CountDatumBridge.lean` now contains
+`aoyagiLemma5Eq5_ownBlock_countDatum_injOn_of_pAlpha_injOn`, and
+`Lemma5Eq5TerminalClassifier.lean` now contains
+`terminalMinimumCountDatum_injOn_of_eq5OwnBlock_pAlpha_injOn`,
+`branchLabel_none_ne_some_of_terminalEndpointLabel_and_nonbaseBlock`, and
+`branchLabel_injOn_of_eq5AlphaIndexed_nonbase_terminalEndpointBase`.  These
+adapters reduce two opaque supplied injectivity/separation hypotheses to
+structured supplied data: counted-datum injectivity follows from Eq5 own-block
+payloads plus `(p, alpha)` injectivity on terminal labels, and base/nonbase
+branch-label separation follows from an explicit terminal-endpoint base label
+plus nonbase selected-block membership.  They do not source-prove
+`(p, alpha)` injectivity, construct Eq5 branches, produce terminal payloads,
+prove no-extra terminal-minimum coverage, prove a Lemma 5 order count,
+normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-structured-injection-adapters-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-structured-injection-adapters.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-structured-injection-adapters-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

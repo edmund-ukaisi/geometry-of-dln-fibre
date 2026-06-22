@@ -19,6 +19,39 @@ namespace Aoyagi
 
 namespace AoyagiLemma5SuppliedTerminalCandidateFamily
 
+/-- Terminal-minimum Eq5 own-block payloads make the terminal counted-datum
+map injective once the `(p, alpha)` data are injective on terminal labels. -/
+theorem terminalMinimumCountDatum_injOn_of_eq5OwnBlock_pAlpha_injOn
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hT : ∀ label ∈ TC.terminalMinimumLabels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        (N + 1) a (pOf label) (alphaOf label) M m cut
+        (layerWidth label) (T label))
+    (hblock : ∀ label ∈ TC.terminalMinimumLabels,
+      cut.block (pOf label) label.1)
+    (hpAlpha_inj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (Sigma.mk (pOf label) (alphaOf label) : Σ _ : ℕ, ℕ))
+        ↑TC.terminalMinimumLabels) :
+    Set.InjOn
+      (fun label : Σ _ : ℕ, ℕ ↦
+        (some (Sigma.mk (pOf label) (T label label.1)) :
+          AoyagiLemma5CountDatum))
+      ↑TC.terminalMinimumLabels :=
+  aoyagiLemma5Eq5_ownBlock_countDatum_injOn_of_pAlpha_injOn
+    (N + 1) a M m cut TC.terminalMinimumLabels pOf alphaOf layerWidth T
+    hT hblock hpAlpha_inj
+
 /-- Build the terminal-minimum counted-datum classifier from supplied Eq5
 own-block common-domain payload data.
 
@@ -802,6 +835,78 @@ theorem branchLabel_injOn_of_eq5AlphaIndexed_nonbase
       (N + 1) a j M m (TC.family.branches j) alphaOf
       (fun b : β ↦ TC.branchLabel (some b))
       (halpha_inj j hj) (hlabel j hj)) hbj hck_j hbc_label
+
+/-- A terminal-endpoint base label is distinct from every nonbase Eq5 branch
+label whose source coordinate lies in its selected block.
+
+This removes only the base/nonbase separation hypothesis from the finite
+branch-label injection adapter.  It does not prove nonbase branch construction
+or no-extra terminal-minimum coverage. -/
+theorem branchLabel_none_ne_some_of_terminalEndpointLabel_and_nonbaseBlock
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (hbaseLabel :
+      TC.branchLabel none =
+        ((Sigma.mk (cut.point (N + 1) - 1) 1) : Σ _ : ℕ, ℕ))
+    (hbranchBlock :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        cut.block j (TC.branchLabel (some b)).1) :
+    ∀ {b : β}, some b ∈ TC.fullBranches →
+      TC.branchLabel none ≠ TC.branchLabel (some b) := by
+  intro b hb heq
+  have hb_nonbase :
+      some b ∈ TC.family.toAoyagiLemma5SuppliedNonbaseFamily.fullBranches := by
+    simpa [AoyagiLemma5SuppliedTerminalCandidateFamily.fullBranches,
+      AoyagiLemma5SuppliedAdmissibleFamily.fullBranches] using hb
+  rcases
+    (AoyagiLemma5SuppliedNonbaseFamily.some_mem_fullBranches_iff
+      TC.family.toAoyagiLemma5SuppliedNonbaseFamily).mp hb_nonbase
+    with ⟨j, hj, hbj⟩
+  have hsource :
+      (TC.branchLabel (some b)).1 = cut.point (N + 1) - 1 := by
+    have h :=
+      congrArg Sigma.fst (hbaseLabel.symm.trans heq)
+    simpa using h.symm
+  have hbad : cut.block j (cut.point (N + 1) - 1) := by
+    rw [← hsource]
+    exact hbranchBlock j hj b hbj
+  exact (cut.not_block_terminalEndpoint (b := j)) hbad
+
+/-- Branch-label injectivity from Eq5 alpha-indexed nonbase branch data and an
+explicit terminal-endpoint base label. -/
+theorem branchLabel_injOn_of_eq5AlphaIndexed_nonbase_terminalEndpointBase
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (alphaOf : β → ℕ)
+    (halpha_inj :
+      ∀ j ∈ Finset.Icc 1 N,
+        Set.InjOn alphaOf ↑(TC.family.branches j))
+    (hbranchBlock :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        cut.block j (TC.branchLabel (some b)).1)
+    (hbranchLabelFormula :
+      ∀ j ∈ Finset.Icc 1 N, ∀ b ∈ TC.family.branches j,
+        ((TC.branchLabel (some b)).2 : ℤ) =
+          aoyagiHtildeUpperNat (N + 1) a M m j + 1 -
+            (alphaOf b : ℤ))
+    (hbaseLabel :
+      TC.branchLabel none =
+        ((Sigma.mk (cut.point (N + 1) - 1) 1) : Σ _ : ℕ, ℕ)) :
+    Set.InjOn TC.branchLabel ↑TC.fullBranches :=
+  TC.branchLabel_injOn_of_eq5AlphaIndexed_nonbase cut alphaOf
+    halpha_inj hbranchBlock hbranchLabelFormula
+    (TC.branchLabel_none_ne_some_of_terminalEndpointLabel_and_nonbaseBlock
+      cut hbaseLabel hbranchBlock)
 
 /-- Terminal-minimum exactness from Eq5 own-block common-domain payloads and
 explicit alpha-indexed branch-label injection data. -/

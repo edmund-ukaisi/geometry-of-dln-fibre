@@ -413,6 +413,80 @@ def
         (hk label hlabel) (hne_base label hlabel)).1
   injOn := hinj
 
+/-- Eq5 own-block values make the counted-datum map injective once the
+underlying `(p, alpha)` labels are injective.
+
+This is only finite injectivity bookkeeping.  The `(p, alpha)` injectivity is
+still supplied; it is not derived from Aoyagi's printed Eq5 source range. -/
+theorem aoyagiLemma5Eq5_ownBlock_countDatum_injOn_of_pAlpha_injOn
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell)
+    (labels : Finset (Σ _ : ℕ, ℕ))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (hT : ∀ label ∈ labels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        ell a (pOf label) (alphaOf label) M m C
+        (layerWidth label) (T label))
+    (hblock : ∀ label ∈ labels, C.block (pOf label) label.1)
+    (hpAlpha_inj :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          (Sigma.mk (pOf label) (alphaOf label) : Σ _ : ℕ, ℕ))
+        ↑labels) :
+    Set.InjOn
+      (fun label : Σ _ : ℕ, ℕ ↦
+        (some (Sigma.mk (pOf label) (T label label.1)) :
+          AoyagiLemma5CountDatum))
+      ↑labels := by
+  intro x hx y hy hxy
+  have hsigma :
+      ((Sigma.mk (pOf x) (T x x.1)) : Σ _ : ℕ, ℤ) =
+        ((Sigma.mk (pOf y) (T y y.1)) : Σ _ : ℕ, ℤ) := by
+    simpa using Option.some.inj hxy
+  have hp : pOf x = pOf y := congrArg Sigma.fst hsigma
+  have hvalue : T x x.1 = T y y.1 := congrArg Sigma.snd hsigma
+  have hxOwn :
+      AoyagiLemma5Eq5OwnCoordinateBranch
+        ell a (pOf x) (alphaOf x) M m C (T x) :=
+    aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+      ell a (pOf x) (alphaOf x) M m C (layerWidth x) (T x) (hT x hx)
+  have hyOwn :
+      AoyagiLemma5Eq5OwnCoordinateBranch
+        ell a (pOf y) (alphaOf y) M m C (T y) :=
+    aoyagiLemma5Eq5_ownCoordinateBranch_of_piecewiseSourceVector
+      ell a (pOf y) (alphaOf y) M m C (layerWidth y) (T y) (hT y hy)
+  have hxValue :
+      T x x.1 =
+        aoyagiHtildeUpperNat ell a M m (pOf x) - (alphaOf x : ℤ) :=
+    aoyagiLemma5Eq5_ownCoordinate_value
+      ell a (pOf x) (alphaOf x) M m C (T x) hxOwn (hblock x hx)
+  have hyValue :
+      T y y.1 =
+        aoyagiHtildeUpperNat ell a M m (pOf y) - (alphaOf y : ℤ) :=
+    aoyagiLemma5Eq5_ownCoordinate_value
+      ell a (pOf y) (alphaOf y) M m C (T y) hyOwn (hblock y hy)
+  have hraw :
+      aoyagiHtildeUpperNat ell a M m (pOf x) - (alphaOf x : ℤ) =
+        aoyagiHtildeUpperNat ell a M m (pOf y) - (alphaOf y : ℤ) := by
+    calc
+      aoyagiHtildeUpperNat ell a M m (pOf x) - (alphaOf x : ℤ) =
+          T x x.1 := hxValue.symm
+      _ = T y y.1 := hvalue
+      _ = aoyagiHtildeUpperNat ell a M m (pOf y) - (alphaOf y : ℤ) :=
+          hyValue
+  have hraw_same :
+      aoyagiHtildeUpperNat ell a M m (pOf x) - (alphaOf x : ℤ) =
+        aoyagiHtildeUpperNat ell a M m (pOf x) - (alphaOf y : ℤ) := by
+    simpa [hp] using hraw
+  have halpha_int : (alphaOf x : ℤ) = (alphaOf y : ℤ) := by
+    omega
+  have halpha : alphaOf x = alphaOf y := by
+    exact_mod_cast halpha_int
+  apply hpAlpha_inj hx hy
+  simp [hp, halpha]
+
 /-- Block-width version of
 `aoyagiLemma5Eq5_ownBlock_countDatumClassifier_of_labelPayloads_lastPoint_widthBound`. -/
 def

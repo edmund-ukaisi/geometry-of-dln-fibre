@@ -196,6 +196,18 @@ Current terminal branch introduced-domain capacity slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-branch-introduced-domain-capacity-a5.md`.
 Current terminal minimum lower-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-lower-bound-a5.md`.
+Current Eq5 structured injection-adapter slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-structured-injection-adapters-a5.md`.
+
+Lean now exposes the generic counted-datum injectivity adapter from supplied
+Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
+terminal-family convenience theorem for `TC.terminalMinimumLabels`.  It also
+exposes base/nonbase branch-label separation from an explicit terminal-endpoint
+base label and nonbase selected-block membership, plus the corresponding
+branch-label injectivity wrapper.  Keep this as hypothesis reduction only:
+`(p, alpha)` injectivity, terminal Eq5 payloads, Eq5 branch construction,
+back-to-label/no-extra coverage, pole order, normal crossings, and RLCT remain
+unproved.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.
