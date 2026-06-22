@@ -4682,6 +4682,35 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-weighted-source-following-payload-a4.md`.
 
+Latest A4 update: the Case 1(2) J-increment payload has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`Case1DisplayedRowStripJIncrementPayload`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary.post_weight_eq_new_mul_factoredBase_weight_of_ge`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary.jIncrementPayload`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.post_weight_eq_new_mul_factoredBase_weight_of_ge`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.jIncrementPayload`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.post_weight_eq_new_mul_factoredBase_weight_of_ge`,
+and
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.jIncrementPayload`.
+This packages the finite consequences of Aoyagi PDF p. 18's Case 1(2)
+continuation branch where `J` is increased by one: the non-strict next-state
+bound `J+1 <= prefixMinNat n (S+1)`, actual-width validity and inserted
+introduced-label membership/cardinality for `(S,J+1)`, and the post exponent
+certificate domain.  The recurrence projection is deliberately from the
+factored-old base state to the post-state,
+`post.weight i = u * factoredBase.weight i` for `i >= J+1`; it is not a direct
+comparison from the substituted source state, which already contains the old
+selected factor at level `J+J1`.  This is finite supplied-boundary bookkeeping
+only.  It does not construct the chart or post-state, prove nonempty residual
+block after the increment, chart coverage, regularity, Jacobians, a transition
+invariant, Lemma 5 classifier/no-extra/back-to-label data, pole order, normal
+crossings, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-j-increment-payload-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-j-increment-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-j-increment-payload-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

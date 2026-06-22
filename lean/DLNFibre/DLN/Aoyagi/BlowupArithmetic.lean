@@ -5816,6 +5816,33 @@ theorem exists_case1DisplayedRowStrip_sourceOrder_identity_sourceWeights_succWei
 
 end IntroducedLabelRecurrenceState.Case2SuppliedPostData
 
+/-- Finite post-step payload for Aoyagi's displayed Case 1(2) `J`-advance.
+
+This records only the elementary consequences of landing at `(S,J+1)`:
+the non-strict next-state bound, actual-width validity of the fresh label, the
+one-label change in the introduced-label finite domain, and the post-step
+exponent-certificate domain.  It is not chart construction,
+coverage, transition invariance, a Jacobian statement, normal crossings, or
+an RLCT statement. -/
+structure Case1DisplayedRowStripJIncrementPayload
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ) : Prop where
+  continuationBound : J + 1 ≤ prefixMinNat n (S + 1)
+  newLabelActualWidth : actualWidthLabel L n S (J + 1)
+  newLabel_mem_current :
+    Sigma.mk S (J + 1) ∈ introducedLabelFinset L n S (J + 1)
+  newLabel_not_mem_previous :
+    Sigma.mk S (J + 1) ∉ introducedLabelFinset L n S J
+  introducedDomain_eq_insert :
+    introducedLabelFinset L n S (J + 1) =
+      insert (Sigma.mk S (J + 1)) (introducedLabelFinset L n S J)
+  introducedDomain_card_eq_succ :
+    (introducedLabelFinset L n S (J + 1)).card =
+      (introducedLabelFinset L n S J).card + 1
+  exponentDomain :
+    IntroducedLabelExponentCertificates L n S (J + 1) t numerator leastValue
+
 /-- Supplied transition boundary for Aoyagi's displayed Case 1(2) row-strip
 pivot.
 
@@ -6046,6 +6073,28 @@ theorem sourceOrder_identity_substitutedSourceWeights
     rfl
   rwa [hweights] at hq
 
+/-- Recurrence-weight projection for Aoyagi's displayed Case 1(2) row-strip
+post-state: after the fresh label `(S,J+1)` is inserted at level `J`, every
+row weight from `J+1` onward is multiplied by the displayed selected variable.
+
+The comparison is with the factored-old base state, not with the substituted
+source state containing the selected old factor at level `J+J1`. -/
+theorem post_weight_eq_new_mul_factoredBase_weight_of_ge
+    {R : Type*} [CommMonoid R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 i : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u)
+    (hi : J + 1 ≤ i) :
+    post.weight i = u * factoredBase.weight i :=
+  data.recurrencePost.weight_succ_current_eq_new_mul_of_ge data.newLabelActualWidth hi
+
 /-- The supplied exponent post-data extends the introduced-label exponent
 certificate domain by the fresh Case 1(2) displayed row-strip label. -/
 theorem extendExponentDomain
@@ -6065,6 +6114,34 @@ theorem extendExponentDomain
     (data.levelTail.flatTail_abovePivot data.firstJump.selectedIntroduced
       data.firstJump.lt_selectedLevel)
     data.stage_ge_two data.stage_le data.source_col_bound data.exponentPost
+
+/-- Source-facing finite payload for the displayed Case 1(2) statement that
+the continuation branch has `J` increased by one.
+
+All chart-production and post-data fields remain supplied by
+`Case1DisplayedRowStripSuppliedTransitionBoundary`; this theorem only exposes
+the elementary finite-domain consequences of that supplied boundary. -/
+theorem jIncrementPayload
+    {R : Type*} {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {level : ℕ → ℕ → ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0 level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u) :
+    Case1DisplayedRowStripJIncrementPayload L n S J t' numerator' leastValue' where
+  continuationBound := data.continuationBound
+  newLabelActualWidth := data.newLabelActualWidth
+  newLabel_mem_current := by
+    rw [mem_introducedLabelFinset]
+    exact ⟨data.newLabelActualWidth, Or.inr ⟨rfl, le_rfl⟩⟩
+  newLabel_not_mem_previous := not_mem_introducedLabelFinset_case2_new_before L n S J
+  introducedDomain_eq_insert := introducedLabelFinset_succ_eq_insert data.newLabelActualWidth
+  introducedDomain_card_eq_succ := introducedLabelFinset_card_succ_eq_succ data.newLabelActualWidth
+  exponentDomain := data.extendExponentDomain
 
 end Case1DisplayedRowStripSuppliedTransitionBoundary
 
@@ -6181,6 +6258,24 @@ theorem source_step_eq_mulStepAt
     source.step = mulStepAt factoredBase.step u (J + J1) :=
   data.sourcePullback.step_eq_mulStepAt_of_firstJump data.factoredBaseFirstJump
 
+/-- The selected-old pullback boundary keeps the recurrence-weight projection
+from the factored-old base state to the post-state. -/
+theorem post_weight_eq_new_mul_factoredBase_weight_of_ge
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 i : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u)
+    (hi : J + 1 ≤ i) :
+    post.weight i = u * factoredBase.weight i :=
+  data.handoff.post_weight_eq_new_mul_factoredBase_weight_of_ge hi
+
 /-- The row-strip old-weight convention is exactly the supplied source
 pullback recurrence weights. -/
 theorem residualRowStripOldWeight_eq_sourceWeight
@@ -6293,6 +6388,23 @@ theorem extendExponentDomain
         source factoredBase post u) :
     IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
   data.handoff.extendExponentDomain
+
+/-- The selected-old pullback boundary keeps the finite Case 1(2) `J`-advance
+payload from its bundled local handoff. -/
+theorem jIncrementPayload
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (data :
+      Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+        t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u) :
+    Case1DisplayedRowStripJIncrementPayload L n S J t' numerator' leastValue' :=
+  data.handoff.jIncrementPayload
 
 end Case1DisplayedRowStripSelectedOldPullbackBoundary
 
@@ -6572,6 +6684,26 @@ theorem source_step_eq_mulStepAt
     source.step = mulStepAt factoredBase.step u (J + J1) :=
   data.pullback.source_step_eq_mulStepAt
 
+/-- The supplied chart-family boundary keeps the recurrence-weight projection
+from the factored-old base state to the post-state. -/
+theorem post_weight_eq_new_mul_factoredBase_weight_of_ge
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 i : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular)
+    (hi : J + 1 ≤ i) :
+    post.weight i = u * factoredBase.weight i :=
+  data.pullback.post_weight_eq_new_mul_factoredBase_weight_of_ge hi
+
 /-- The supplied chart-family boundary keeps the source-facing Case 1(2)
 source-order identity from the selected-old pullback boundary. -/
 theorem sourceOrder_identity
@@ -6673,6 +6805,25 @@ theorem extendExponentDomain
         source factoredBase post u ChartRegular TransitionRegular) :
     IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
   data.pullback.extendExponentDomain
+
+/-- The supplied chart-family boundary keeps the finite Case 1(2) `J`-advance
+payload from the selected-old pullback boundary. -/
+theorem jIncrementPayload
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {source factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (data :
+      Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+        s0 k0 t t' numerator numerator' leastValue leastValue'
+        source factoredBase post u ChartRegular TransitionRegular) :
+    Case1DisplayedRowStripJIncrementPayload L n S J t' numerator' leastValue' :=
+  data.pullback.jIncrementPayload
 
 end Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
 

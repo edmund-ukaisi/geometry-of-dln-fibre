@@ -4265,9 +4265,22 @@ classifier frontier.  The interval cardinality formula and the local Case
 1(2) `J` increment are source-backed elementary/local facts, but the printed
 paragraph does not supply a classifier, injection, back-to-label map, no-extra
 terminal-minimum coverage, nonbase status, endpoint-chain realisation, or
-terminal source realisation.  The next source-backed frontier is a narrow
-Case 1(2) local `J`-increment bridge under the p. 18 guard, not a Lemma 5
-no-extra counting theorem.
+terminal source realisation.
+
+Latest A4 Case 1(2) J-increment payload update:
+`BlowupArithmetic.lean` now contains
+`Case1DisplayedRowStripJIncrementPayload`,
+`Case1DisplayedRowStripSuppliedTransitionBoundary.jIncrementPayload`,
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.jIncrementPayload`,
+`Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.jIncrementPayload`,
+and the matching
+`post_weight_eq_new_mul_factoredBase_weight_of_ge` projections.  This proves
+the narrow source-backed local bridge under the p. 18 guard: landing at
+`(S,J+1)`, adding exactly the fresh introduced label `(S,J+1)`, extending the
+post exponent domain, and multiplying post recurrence weights by the fresh
+variable relative to the factored-old base state.  This is not a Lemma 5
+no-extra counting theorem and does not provide classifier, injection, or
+back-to-label data.
 
 ## Drift guard
 

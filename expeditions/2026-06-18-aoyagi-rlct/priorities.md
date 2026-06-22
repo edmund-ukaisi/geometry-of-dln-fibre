@@ -21,6 +21,15 @@ on the session's original cwd.
 
 ## Current frontier checkpoint - 2026-06-21
 
+Current A4 Case 1(2) source-backed local frontier has landed:
+`threads/04-blow-up-certificate/reproduction-case1-j-increment-payload-a4.md`.
+Lean now exposes the finite payload for Aoyagi PDF p. 18's `J`-increment
+continuation branch and the factored-base-to-post recurrence-weight update.
+This closes only the local bridge identified by the source audit.  It still
+does not prove a Lemma 5 classifier, injection, back-to-label map, no-extra
+terminal-minimum coverage, chart production, normal crossings, pole order, or
+RLCT extraction.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

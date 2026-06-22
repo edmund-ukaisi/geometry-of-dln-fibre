@@ -3525,3 +3525,43 @@ This is finite representative bookkeeping only.  It does not construct the
 successor chart, produce recurrence or exponent post-data from coordinates,
 prove a transition invariant, handle terminal relabeling, prove normal
 crossings, or extract an RLCT.
+
+## 2026-06-22 Lean Case 1(2) J-increment payload
+
+Reproduction:
+`reproduction-case1-j-increment-payload-a4.md`.
+Statement card:
+`statement-card-a4-case1-j-increment-payload.md`.
+Review artifact:
+`review-case1-j-increment-payload-a4.md`.
+
+Lean now packages the finite payload behind Aoyagi PDF p. 18's statement that
+the displayed Case 1(2) continuation branch has the inductive statement with
+`J` increased by one:
+
+```text
+Case1DisplayedRowStripJIncrementPayload
+Case1DisplayedRowStripSuppliedTransitionBoundary.jIncrementPayload
+Case1DisplayedRowStripSelectedOldPullbackBoundary.jIncrementPayload
+Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.jIncrementPayload
+```
+
+The payload records the non-strict next-state bound
+`J+1 <= prefixMinNat n (S+1)`, actual-width validity for `(S,J+1)`, insertion
+and cardinality of the new introduced-label finite domain, and post exponent
+certificates over `(S,J+1)`.
+
+The companion recurrence projection is also exposed through the same boundary
+layers:
+
+```text
+post.weight i = u * factoredBase.weight i,    for J+1 <= i.
+```
+
+The comparison is with the factored-old base state, not with the substituted
+source state containing the selected old factor at level `J+J1`.
+
+This is supplied-boundary finite bookkeeping only.  It does not construct the
+displayed chart or post-state, prove a nonempty residual block after the
+increment, chart coverage, transition invariance, Jacobian arithmetic, Lemma 5
+classifier/no-extra/back-to-label data, pole order, normal crossings, or RLCT.
