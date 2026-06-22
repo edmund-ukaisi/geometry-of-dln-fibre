@@ -483,6 +483,31 @@ pp2 confirmed transcription-ready, three final pins all aligned with my banked v
    with my g164: light G2 node_loss_pivot_factor + rlctAtOn_reduced_transport; heavy IsSchurStraightenSqueeze
    off-path. Light-vs-heavy waits on crux2's lemma-mapping — wrapper only.
 
+## TRANSPORT-FIELD RESOLVED (g173, crux2 fast-veto) — schur_straighten_squeeze_exists, I produce hnode
+crux2's fast-veto ANSWERS the transport-field: NO, the straighten does NOT generalize. I BUILD the dispatcher
+(classify + hnode production); CONSUME crux2's banked lemmas PER NODE-TYPE. Corrects my "light G2 only" read:
+- MAIN coupled-rank-defect Schur node: the transport is crux2's banked EXISTENCE lemma
+  `schur_straighten_squeeze_exists` (#127/#129/#131). Given MY per-node Schur presentation `hnode`
+  (flatCore w = ∑Erow² + ‖b·Erow + S·Γ‖², G²=‖S·Γ‖², ‖b‖²≤T² near 0 — the post-blow-up (B)-lane contract
+  I SUPPLY), it returns ∃c₁c₂, IsSchurStraightenSqueeze (datum + descent). So the transport FIELD = the
+  IsSchurStraightenSqueeze datum, PRODUCED by schur_straighten_squeeze_exists from my hnode. NEW OBLIGATION
+  on my side: produce hnode per main-Schur node (my schur_node_loss_presentation is the banked seed:
+  ‖Â·A2‖² = ‖row0‖²+‖lower‖²). So the transport is NOT "light G2 only" — it's crux2's squeeze existence
+  consuming my hnode (which itself rests on the G2 pullback + the Schur row-decomp).
+- LEAF (L=1/red≡0): consume dlnLoss_one_layer_deepest (banked terminal).
+- MIXED partial-drop (t_{s-1}>t_s>0, C5): COMPOSE — complement via C1 (main Schur ⟹ my hnode +
+  schur_straighten_squeeze_exists), survivor via C2 (pass-through). pp2 §1.3/§4: C5 = block-column split
+  (complement via C1, survivor via C2); nodeC1/C5 picks the T*-rank pivot. So it REDUCES to the main Schur
+  node on its complement residual — no distinct existence lemma — PROVIDED the C1 complement sub-step's
+  residual presents as the clean main-Schur hnode. ⚠ CAVEAT: pp2 validated (2,2,2)/(3,2,3)/(2,2,2,2)/(4,3,2)
+  — NONE a genuine partial-drop t_{s-1}>t_s>0; the C5-composes claim is DESIGN, not exercised on a true mixed
+  case (crux2's t=(3,3,2,2,2,0) is depth-6, not validated). ANSWER to crux2: reduces (per pp2 design); if a
+  specific mixed C1-complement doesn't present as clean hnode, NEW lemma — flag. Asked pp2: design-only vs exercised.
+Per-node recursion (crux2): classify → (main Schur ⟹ hnode ⟹ schur_straighten_squeeze_exists) | (leaf ⟹
+dlnLoss_one_layer_deepest) | (mixed ⟹ compose) → rlctAtOn_reduced_transport closes descent → recurse on
+S.red (ΣM terminates, my redM_widthSum_lt). INTERFACE CONFIRMED: ChainDimSplit = carrier I populate
+(drop=resolved pivot dims, red=M−drop); presentation data in IsSchurStraightenSqueeze (mine), NOT ChainDimSplit.
+
 FAITHFULNESS CHECK (fm3, g171): the (Mval M T).toNat round-trip needs Mval ≥ 0 — and PivotWitness's `hAdm :
 T ∈ Adm M` field GUARANTEES it (Mval_nonneg_adm). So NO gap: my minAdm_le_Mval_toNat uses Int.toNat_le_toNat
 (monotone regardless of sign — the ≤ is unconditional); the achiever EQUALITY's faithfulness (= ½·m₀, m₀ =
