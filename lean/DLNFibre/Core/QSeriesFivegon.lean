@@ -228,4 +228,29 @@ theorem peelPart_support {m : Fin (N + 2) × Fin (N + 2) → ℕ}
     simp only [Fin.castSucc_le_castSucc_iff] at hp ⊢
     exact hp
 
+/-- **The peel maps `kostantAll d` into `kostantAll d'`** (`d' = d ∘ castSucc`). The `kostantAt`
+constraint transfers by the cover-reindex `peelPart_cover_sum`; the bound and support follow. -/
+theorem peelPart_mem {d : Fin (N + 2) → ℕ} {m : Fin (N + 2) × Fin (N + 2) → ℕ}
+    (hm : m ∈ kostantAll d) : peelPart m ∈ kostantAll (d ∘ Fin.castSucc) := by
+  rw [mem_kostantAll] at hm ⊢
+  obtain ⟨_, hs, hk⟩ := hm
+  have hk' : ∀ k, kostantAt (d ∘ Fin.castSucc) (peelPart m) k := by
+    intro k
+    have hkk := hk k.castSucc
+    rw [kostantAt] at hkk
+    rw [kostantAt]
+    show d k.castSucc = ∑ q ∈ coverF N k, peelPart m q
+    rw [peelPart_cover_sum]
+    exact hkk
+  refine ⟨fun p ↦ ?_, peelPart_support hs, hk'⟩
+  by_cases hp : p.1 ≤ p.2
+  · have hkp := hk' p.1
+    rw [kostantAt] at hkp
+    show peelPart m p ≤ d (Fin.castSucc p.1)
+    rw [show d (Fin.castSucc p.1) = (d ∘ Fin.castSucc) p.1 from rfl, hkp]
+    refine Finset.single_le_sum (f := peelPart m) (fun i _ ↦ Nat.zero_le _) ?_
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨le_refl _, hp⟩
+  · rw [peelPart_support hs p hp]; exact Nat.zero_le _
+
 end DLNFibre.Core
