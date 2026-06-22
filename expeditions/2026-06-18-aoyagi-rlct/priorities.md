@@ -190,6 +190,15 @@ consumption of a supplied obligation, but it still constructs neither `Csucc`
 nor a successor chart/suffix and does not move the source/chart-production
 boundary.
 
+The actual-width supplied-obligation consumer layer now also names
+`ActualWidthSourceSuffixSuppliedCtermPayload` and proves
+`SourceProductionObligation.actualWidth_frontier_suppliedCterm`.  This
+specializes the actual-width stopped frontier to the supplied source suffix
+and rewrites terminal rows through the obligation's supplied `Cterm`, leaving
+the finite center, level, and exponent payloads unchanged.  It still
+constructs neither `Cterm` nor successor/source data and does not move the
+source/chart-production boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

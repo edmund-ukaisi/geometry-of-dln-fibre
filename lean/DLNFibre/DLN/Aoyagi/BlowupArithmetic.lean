@@ -17666,6 +17666,81 @@ abbrev ActualWidthSourceChartFrontierPayload
         case2DisplayedSourceChartMap n hS hcont u residual p = v} =
     Ideal.span ({u} : Set R)
 
+/-- Actual-width stopped displayed source-chart frontier payload with the
+actual source suffix and terminal rows rewritten through a supplied terminal
+matrix.
+
+This is a consumer-side presentation of `ActualWidthSourceChartFrontierPayload`
+specialized to the source suffix.  It is not source production of `Cterm`,
+`Csucc`, the suffix, charts, transitions, normal crossings, pole order, or
+RLCT data. -/
+abbrev ActualWidthSourceSuffixSuppliedCtermPayload
+    {R : Type*} [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ)
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R) :
+    Prop :=
+  (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+    matrixEntryIdeal
+        ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+            (weightedPivotBlockRowOp q
+                  (fun i ↦
+                    pivotFirstX
+                      (case2DisplayedPivotRow n hS hcont)
+                      (case2DisplayedPivotCol n hS hcont)
+                      (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                  case2DisplayedSourceSubstitutionBlock n hS hcont
+                    (case2DisplayedSourceChartMap n hS hcont u residual
+                      (J + 1, J + 1)) residual).submatrix
+                  (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                  (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+            verticalBlock (case2DisplayedSourceOldTopBlock C)
+              (case2DisplayedSourceFollowingFactor n hS hcont C)) *
+          sourceSuffixProduct κ Ctail S hSuffix) =
+    matrixEntryIdeal
+        ((case2DisplayedSourceTerminalWeight
+            (case2DisplayedSourceOldTopWeight pre)
+            ((pre.case2Succ
+              (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+              |>.stageRelabelSuccZero
+              |>.weight (J + 1)) *
+          Cterm) *
+          sourceSuffixProduct κ Ctail S hSuffix)) ∧
+  IntroducedLabelLevelInvariants L n (S + 1) 0
+    ((pre.case2Succ
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+      |>.stageRelabelSuccZero
+      |>.level)
+    (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+  IntroducedLabelExponentCertificates L n (S + 1) 0
+    (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+    (updateSelectedLabelScalar S (J + 1)
+      (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+        ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+    (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+  u ∈
+    {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+      case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+  (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+    u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+  Ideal.span
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+    Ideal.span ({u} : Set R)
+
 /-- Row-exhausted terminal-last displayed source-chart frontier payload with
 transported prefix rows and finite center principalization. -/
 abbrev RowExhaustedTerminalLastSourceChartFrontierPayload
@@ -18358,6 +18433,54 @@ theorem actualWidth_Cterm_eq_originalRows_Csucc
         n data.stage_pos data.continuation hwidth residual C]
     _ = case2DisplayedSourceTerminalOriginalRows (J := J) Csucc := by
       rw [← ob.Csucc_eq_formula]
+
+/-- Actual-width stopped source-suffix frontier stated with the supplied
+terminal matrix `Cterm`.
+
+This consumes the obligation's actual-width frontier payload and its supplied
+terminal-row equality.  It does not construct `Cterm`, `Csucc`, a suffix,
+charts, transitions, normal crossings, pole order, or RLCT data. -/
+theorem actualWidth_frontier_suppliedCterm
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    {residual : ℕ × ℕ → R}
+    {κ : Fin (L + 1) → Type uκ} [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    {hSuffix : S + 1 ≤ L}
+    {C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
+    {Csucc : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R}
+    (ob :
+      SourceProductionObligation data residual κ hSuffix C Ctail Csucc Cterm)
+    (hwidth : n (S + 1) = J + 1) :
+    ActualWidthSourceSuffixSuppliedCtermPayload
+      L n S J t numerator leastValue pre u residual data.stage_pos data.continuation
+      κ hSuffix C Ctail Cterm := by
+  rcases ob.actualWidth_frontier hwidth with
+    ⟨hentry, hlevel, hexp, hmem, hdvd, hspan⟩
+  refine ⟨?_, hlevel, hexp, hmem, hdvd, hspan⟩
+  rcases hentry with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hterm :
+      case2DisplayedSourceTerminalOriginalRows (J := J) C = Cterm :=
+    (ob.actualWidth_Cterm_eq hwidth).symm
+  simpa [hterm] using hq
 
 /-- Row-exhausted terminal rows rewritten as original rows of the supplied
 successor following factor.

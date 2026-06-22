@@ -4242,3 +4242,33 @@ This is finite payload rewriting only.  It does not construct the obligation,
 `Csucc`, `C'^(S+1)`, source suffixes, successor charts, coverage, transition
 regularity, coordinate post-data, normal crossings, pole order, termination,
 RLCT, or repair the printed Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 obligation actual-width Cterm frontier
+
+Reproduction:
+`reproduction-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation-actual-width-cterm-frontier.md`.
+Review artifact:
+`review-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`.
+
+Lean now adds the actual-width stopped analogue of the supplied-`Cterm`
+frontier:
+
+```text
+ActualWidthSourceSuffixSuppliedCtermPayload
+SourceProductionObligation.actualWidth_frontier_suppliedCterm
+```
+
+Under `hwidth : n(S+1)=J+1`, the obligation supplies the existing
+actual-width source-chart frontier with terminal rows written as
+`case2DisplayedSourceTerminalOriginalRows C`, plus the terminal-row equality
+`Cterm = case2DisplayedSourceTerminalOriginalRows C`.  The new projection
+rewrites only that terminal factor to `Cterm`; the source suffix, finite
+center facts, relabelled level payload, and relabelled exponent payload are
+unchanged.
+
+This is finite payload rewriting only.  It does not construct the obligation,
+`Cterm`, `Csucc`, `C'^(S+1)`, source suffixes, successor charts, coverage,
+transition regularity, coordinate post-data, normal crossings, pole order,
+termination, RLCT, or repair the printed Case 2 vector mismatch.

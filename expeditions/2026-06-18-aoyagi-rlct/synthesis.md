@@ -5574,6 +5574,26 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
 
+Latest A4 Case 2 actual-width supplied-`Cterm` frontier consumer:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.ActualWidthSourceSuffixSuppliedCtermPayload`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.actualWidth_frontier_suppliedCterm`.
+Given a supplied `SourceProductionObligation` and actual-width exhaustion
+`n(S+1)=J+1`, the existing actual-width stopped frontier is restated with the
+supplied terminal matrix `Cterm` in the terminal factor.  This consumes only
+`actualWidth_frontier` and `actualWidth_Cterm_eq`; the source suffix, finite
+center, relabelled level, and relabelled exponent payloads are unchanged.  It
+does not construct `Cterm`, `Csucc`, successor source data, suffixes, charts,
+coverage, transition regularity, coordinate post-data, normal crossings, pole
+order, termination, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-actual-width-cterm-frontier.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

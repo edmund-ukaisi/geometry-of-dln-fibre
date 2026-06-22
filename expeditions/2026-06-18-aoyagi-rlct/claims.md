@@ -1741,6 +1741,14 @@ No such claim is formalisation-ready until both fields are filled.
   This is still finite payload rewriting, not construction of `Csucc`,
   suffixes, charts, coverage, transition regularity, or a full transition
   theorem.
+  The actual-width supplied-obligation `Cterm` frontier consumer is now proved
+  as `ActualWidthSourceSuffixSuppliedCtermPayload` and
+  `SourceProductionObligation.actualWidth_frontier_suppliedCterm`.  Under
+  `n(S+1)=J+1`, it specializes the actual-width stopped frontier to the
+  source suffix and rewrites the terminal factor through the supplied matrix
+  `Cterm`.  This consumes only `actualWidth_frontier` and
+  `actualWidth_Cterm_eq`; it does not construct source data or a transition
+  theorem.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

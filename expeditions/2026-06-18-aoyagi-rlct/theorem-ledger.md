@@ -5376,6 +5376,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
 
+Latest A4 Case 2 obligation actual-width Cterm frontier:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.ActualWidthSourceSuffixSuppliedCtermPayload`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.actualWidth_frontier_suppliedCterm`.
+The projection consumes a supplied `SourceProductionObligation` and the
+actual-width stopped branch hypothesis `n(S+1)=J+1`, rewriting the
+actual-width source-suffix frontier's terminal factor from original rows of
+old `C` to the supplied terminal matrix `Cterm`.  The source suffix, finite
+center, relabelled level, and relabelled exponent payloads are unchanged.
+This is finite payload rewriting only; it does not construct the obligation,
+`Cterm`, `Csucc`, `C'^(S+1)`, suffixes, charts, coverage, transition
+regularity, coordinate post-data, normal crossings, pole order, termination,
+or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-actual-width-cterm-frontier.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
