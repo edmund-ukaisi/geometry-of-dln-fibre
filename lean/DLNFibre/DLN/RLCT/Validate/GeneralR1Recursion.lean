@@ -446,6 +446,59 @@ theorem schur_straighten_squeeze_of_data {L : ℕ} {nReg : ℕ} (M : Fin (L + 1)
       = (nReg : ℝ≥0∞) / 2 + rlctAtOn (fun y => G y ^ 2) (0 : Y) :=
   schur_recursion_step_squeeze flatCore h.Fmeas G h.Gmeas h.Gne c₁ c₂ h.c₁pos h.c₂pos h.squeeze
 
+/-! ## The g131 existence-proof content — `flatCore − Φ ∈ ideal(E)` (the squeeze's WHY, pp2 #131)
+
+The per-node squeeze `c₁·Φ ≤ flatCore ≤ c₂·Φ` (the `squeeze` field) is PRODUCED by the structural fact
+`flatCore − Φ ∈ ideal(E)` (the regular pivot-row generators), certified dimension-free in pp2 #131
+(decorrelated, Codex-confirmed). The math is a single hard-pivot Schur elimination — read NOT as a
+loss-value identity (false, #129) but as the **row decomposition** of the product matrix. The two
+algebraic cores, formalised here as reusable matrix-level bedrock:
+
+(1) `schur_row_decomp` — the Schur row-decomposition: with the post-blow-up hard pivot (pivot block `= 1`),
+    the lower rows of `Â·A2` are `lower = b·E_row + S·A2red`, `S = D − b·a` the Schur complement,
+    `E_row` the pivot-row product, `b = Â[1:,0]`.
+(2) `schur_lossDiff_mem_ideal` — hence the Frobenius-loss difference `‖lower‖² − ‖S·A2red‖²` is a
+    cofactor sum `Σⱼ Eⱼ·gⱼ`, so `flatCore − Φ ∈ Ideal.span (range E)`.
+
+Together these are the certified existence content #131 hands the squeeze: the same-zero-set + the
+structural `c₁>0` (bounded-linear-perturbation) then give the `squeeze` field. The remaining analytic
+constant-existence (`c₁>0` on shrinking balls) and the `dlnLoss M 0` blow-up-coordinate assembly are the
+producer that feeds `IsSchurStraightenSqueeze.squeeze`. -/
+
+/-- **(1) The g131 Schur row-decomposition** (the `L·A·R = blockdiag` content as a ROW identity, #131).
+With the post-blow-up hard pivot (pivot block `= 1`), the lower rows of the product `Â·A2` decompose as
+`b·E_row + S·A2red`: `E_row = 1·β + a·Γ` the pivot-row product, `b = Â[1:,0]` the pivot column,
+`S = D − b·a` the Schur complement, `A2red = Γ`. A pure `CommRing` matrix identity (block algebra). -/
+theorem schur_row_decomp {p m k n : Type*} [Fintype p] [Fintype k] [Fintype m] [DecidableEq p]
+    {R : Type*} [CommRing R] (a : Matrix p k R) (b : Matrix m p R) (D : Matrix m k R)
+    (β : Matrix p n R) (Γ : Matrix k n R) :
+    b * β + D * Γ = b * ((1 : Matrix p p R) * β + a * Γ) + (D - b * a) * Γ := by
+  rw [Matrix.one_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_assoc]
+  abel
+
+/-- **(2) The g131 loss-difference is a cofactor sum** (entrywise Frobenius, #131). The
+sum-of-squares difference `‖lower‖² − ‖S·A2red‖²`, with `lower = bErow + SΓ` (the row decomposition),
+equals `Σᵢⱼ (bErow)ᵢⱼ·((bErow)ᵢⱼ + 2(SΓ)ᵢⱼ)` — every term carries a pivot-row factor `bErow`, the
+algebraic root of `flatCore − Φ ∈ ideal(E)`. -/
+theorem schur_lossDiff_eq_cofactor {m n : Type*} [Fintype m] [Fintype n] {R : Type*} [CommRing R]
+    (bErow SΓ : Matrix m n R) :
+    (∑ i, ∑ j, (bErow i j + SΓ i j) ^ 2) - (∑ i, ∑ j, (SΓ i j) ^ 2)
+      = ∑ i, ∑ j, (bErow i j) * (bErow i j + 2 * SΓ i j) := by
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  ring
+
+/-- **(3) Ideal-membership from a cofactor sum** (#131). If `flatCore − Φ = Σⱼ Eⱼ·gⱼ` (the cofactors
+`gⱼ` exposed by `schur_lossDiff_eq_cofactor` after regrouping by the pivot-row generator `Eⱼ`), then
+`flatCore − Φ ∈ Ideal.span (range E)`. The structural fact that PRODUCES the squeeze (#129/#131). -/
+theorem schur_lossDiff_mem_ideal {ι : Type*} [Fintype ι] {R : Type*} [CommRing R]
+    (flatCore Φ : R) (E g : ι → R) (hFΦ : flatCore - Φ = ∑ j, E j * g j) :
+    flatCore - Φ ∈ Ideal.span (Set.range E) := by
+  rw [hFΦ]
+  exact Submodule.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)
+
 /-! ## The L=1 base (the `block_elimination` prototype)
 
 The recursion's leaf. At `L = 1` a `Params` is a SINGLE matrix `A : Matrix (Fin (M 0)) (Fin (M 1)) ℝ`
