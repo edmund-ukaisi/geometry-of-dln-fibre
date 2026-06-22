@@ -115,3 +115,30 @@ FALSE") and gave the SAME fix (constant active-block `N_active = H_0 H_L − (H_
 constant-block resolution; I verified it reconciles the example exactly. Builds on core-P1 (@152ef0d,
 PROVEN), g172 (the per-layer Schur core `S_s`), g150 (the deepest chart / `nReg` / NON-MP transport),
 `block_elimination` (`Skeleton.lean:279`), `d1_222_strata.py` (#112, the non-rank-exact finding).
+
+---
+
+## CONSISTENCY (#62 follow, pp-hall, 2026-06-22) — the domination is on the UNIT-PEELED core `‖∏S_s‖² = dlnLoss(M)0`, `g` peeled identically at both basepoints
+
+cobuild-sub34's downstream note (g157/g174 lineage): the L2-at-general-v core is the full-product Schur
+`‖R‖²`, and `‖R‖² = g²·‖∏S_s‖²` with `g` the inter-layer unit (`g = AB/(AB+VY)`, the `coreAbsorb_rlct`
+weight). So the general-v core domination should be stated on the **unit-peeled** `‖∏S_s‖² = dlnLoss(M)0`
+(the clean reduced chain), not the literal `‖R‖²` — keeping the `rlctAtOn_mono`/core-P1 input on the clean
+core.
+
+**Why `g` peels identically at both basepoints (verified, `g177_g_at_Dv.py`):** `g` depends ONLY on the
+regular/gauge coords `(A, B, Y, V)`, NOT on the reduced coords `(T_s)`. On the CORE fibre, the regular/gauge
+coords are FIXED at their gauge-slice values (`A=B=1`, `Y=V=0`); only the reduced `T_s` vary (with
+`∏S_s = 0`). Hence `g(w0) = 1` AND `g(D(v)) = g(A=1,B=1,Y=0,V=0) = 1` — the **same** unit value at both the
+deepest basepoint `0` and the general core basepoint `D(v)`. So:
+
+    rlctAt(dlnLoss H B, v)       = N_active/2 + rlctAt(‖R‖², D(v))   = N_active/2 + rlctAt(dlnLoss(M)0, D(v))
+    rlctAt(dlnLoss H B, deepest) = N_active/2 + rlctAt(‖R‖², 0)      = N_active/2 + rlctAt(dlnLoss(M)0, 0)
+
+with the `g`-unit peeled identically (`= 1` at both points, a bounded unit in a nbhd, via
+`rlctAtOn_unit_invariant_aux`). The core-P1 domination `rlctAt(dlnLoss(M)0, 0) ≤ rlctAt(dlnLoss(M)0, D(v))`
+then runs on the clean `dlnLoss(M)0` core at both basepoints — exactly the L2 reduction's output. So D1's
+`rlctAtOn_mono`/core-P1 input is the unit-peeled chain, consistent with the L2-at-general-v split against
+`‖R‖²`. (The identification: cobuild-sub34's `coreShearHomeo` part-(a) shear gives `∏S_s`; part-(b) is the
+inter-layer unit `g` = this cert's `g` = the `coreAbsorb_rlct` weight — the construction and cert use the
+identical `g`.)
