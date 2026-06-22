@@ -655,4 +655,37 @@ theorem peelPart_rebuild (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N +
     rw [peelPart_castSucc]
     simp only [rebuild, Fin.lastCases_castSucc]
 
+/-- Left inverse: `rebuild (peelPart m) (lastCol m) = m` for a support-respecting `m`. -/
+theorem rebuild_lastCol (m : Fin (N + 2) × Fin (N + 2) → ℕ)
+    (hs : ∀ p : Fin (N + 2) × Fin (N + 2), ¬ p.1 ≤ p.2 → m p = 0) :
+    rebuild (peelPart m) (lastCol m) = m := by
+  funext p
+  obtain ⟨I, J⟩ := p
+  induction J using Fin.lastCases with
+  | last => simp only [rebuild, Fin.lastCases_last, lastCol]
+  | cast J' =>
+    simp only [rebuild, Fin.lastCases_castSucc]
+    induction J' using Fin.lastCases with
+    | last =>
+      simp only [Fin.lastCases_last]
+      induction I using Fin.lastCases with
+      | last =>
+        simp only [Fin.lastCases_last]
+        exact (hs _ (by simp only [Fin.le_def, Fin.val_last, Fin.coe_castSucc]; omega)).symm
+      | cast I' =>
+        simp only [Fin.lastCases_castSucc]
+        rw [peelPart_last, lastCol]
+        omega
+    | cast J'' =>
+      simp only [Fin.lastCases_castSucc]
+      induction I using Fin.lastCases with
+      | last =>
+        simp only [Fin.lastCases_last]
+        refine (hs _ ?_).symm
+        have := J''.isLt
+        simp only [Fin.le_def, Fin.val_last, Fin.coe_castSucc]; omega
+      | cast I' =>
+        simp only [Fin.lastCases_castSucc]
+        rw [peelPart_castSucc]
+
 end DLNFibre.Core
