@@ -277,3 +277,24 @@ Clean contract: crux2's split must ADD a field `reg_residual : (split w).1 = E w
 green lemma that doesn't compose. Surface to crux2 + controller. The find-confound at the interface:
 the split's truth (MP) ≠ the split's usability (gauge slice). Resolution is crux2's (split contract) +
 possibly the structure (loss_squeeze's reg-slot / sub-6's split_mp dependence).
+
+## g160 DE-ESCALATION — the arbitrary split is FINE; only loss_squeeze's Φ_reg slot changes
+
+Refining g160 after crux2 delivered deepestSplit_exists (arbitrary equivOfCardEq, MP, @a0dc754):
+my "arbitrary split can't realize gauge semantics" was PARTIALLY over-worried. The resolution under
+option (e) is MINIMAL and crux2's split STANDS:
+
+- gaugeDecode recovers the per-layer blocks (X_s,Y_s,Z_s,T_s) via split⁻¹: gaugeDecode q =
+  blockReshape(split⁻¹ q). Since split is a bijection, the arbitrary partition doesn't matter —
+  gaugeDecode undoes it. At q=0: split⁻¹ 0 = wstar (split_basepoint) ⟹ deviation 0 ⟹ blocks 0. ✓
+  (I build gaugeDecode from split⁻¹, satisfying my IsGaugeSliceDecode. Not crux2.)
+- regAbsorb (DeepestSplit self-map, produces E in .1 reading gaugeDecode) + coreAbsorb (S_s).
+- THE ONLY structure change: loss_squeeze's Φ_reg from ∑(split w).1² → ∑(regAbsorb(split w)).1²
+  (the reg block goes THROUGH regAbsorb, symmetric with the core through coreAbsorb). The RAW
+  (split w).1 was the seam; routing it through regAbsorb (which produces E) fixes it.
+- Φ = G'∘split (G' = ∑(regAbsorb q).1² + coreF(coreAbsorb q).2.1) factors through the MP split ⟹
+  sub-5/6/7 UNTOUCHED; the two units (regAbsorb's, coreAbsorb's) peel via weightedThreshold_weight_unit_invariant.
+
+So the fix is: keep crux2's split + ADD regAbsorb field + regAbsorb_rlct + change loss_squeeze's Φ_reg
+slot. crux2's #64 is NOT wasted (the arbitrary MP split is exactly right under option e). The seam
+narrows to the structure's Φ_reg referencing the raw slot instead of the regAbsorb-processed one.
