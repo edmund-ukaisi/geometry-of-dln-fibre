@@ -115,3 +115,22 @@ gauge slice. Either go R-squeeze (purely local) OR re-shape the chart field to a
 `PartialHomeomorph` on a 𝓝 0) and add the local-transport variant (option 2). The current
 global-≃ₜ + ∀-hasDeriv is both over-demanding and (per Codex) possibly unsound to assert. This is
 crux2's interface call; I will not write the structure until it's resolved.
+
+## g153 — raw-∏T core REFUTED (Codex caught it before the build)
+
+Tempted by a simplification: skip the Schur complement, use the RAW ∏T core as the squeeze target Φ.
+MC evidence looked good (L/Φ→1 as deviation→0). Codex xhigh REFUTED it with an exact counterexample
+(verified sympy):
+    C1=[[1,0],[−ε²,ε]], C2=[[1,ε],[ε,0]], C3=[[1,−ε²],[0,ε]]  ⟹  C1C2C3 = blockdiag[1, −ε⁴].
+So ∑E²=0, raw ∏T = ε·0·ε = 0 (interior T2=0), but P11 = −ε⁴. Hence loss=ε⁸, Φ=0 — the upper
+squeeze loss ≤ c₂·Φ=0 is IMPOSSIBLE. The clean lemma |‖P11‖²−‖∏T‖²| ≤ K·∑E² is FALSE (LHS=ε⁸, RHS=0).
+
+WHY it fails: "carries a regular factor" ≠ "charged by E". A zero interior reduced block (T2=0) can
+produce a nonzero product P11 via gauge interactions that CANCEL in the three regular residuals E.
+The MC missed it because the configuration is a measure-zero coincidence (exact cancellation in E).
+
+⟹ The Schur / gauge-normalized core (sub-lemmas 1a #53 + 1b #54) is REQUIRED — not eliminable. The
+g-absorption / Schur complement R = P11 − E10(I+E00)⁻¹E01 is load-bearing. GOOD NEWS: the
+GeneralR1Recursion bedrock `schur_row_decomp` + `schur_lossDiff_eq_cofactor` (already-proven CommRing
+matrix identities) ARE the Schur-complement content — sub-lemma 1a is a specialization, not a rebuild.
+Lesson reinforced: MC guides, exact algebra adjudicates; the "too clean" simplification was the trap.
