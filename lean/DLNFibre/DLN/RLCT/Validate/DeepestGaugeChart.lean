@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Skeleton
 import DLNFibre.DLN.RLCT.Foundations.S1Spectator
+import DLNFibre.DLN.RLCT.Foundations.S1NonMPTransport
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart` — the L2 deepest-point gauge-slice normal form (#44)
@@ -92,51 +93,59 @@ theorem continuous_dlnLoss (H : Fin (L + 1) → ℕ)
     exact ((continuous_prod H).matrix_elem i j).sub continuous_const
   exact hc.pow 2
 
-/-- **The deepest-point gauge-slice chart** (g147 pinned interface, g150 cert). At a rank-`r`-exact
-deepest point, a coordinate change on the flat parameter space `Fin (flatDim H) → ℝ` splitting into
-`nReg` regular gauge directions, the reduced core `Fin (flatDim M) → ℝ`, and `nGauge` spectator
-directions, under which `dlnLoss H B` pulls back (as a germ at `0`) to `∑ regular² + dlnLoss M 0`.
-The chart is a homeomorphism with a **bounded-unit** (not `±1`) Jacobian — the transport is NON-MP. -/
+/-- **The deepest-point gauge-slice squeeze datum** (R-squeeze; g150 cert + the sub-34 g152 finding).
+At a rank-`r`-exact deepest point, a measure-preserving coordinate reindex `split` of the flat
+parameter space `Fin (flatDim H) → ℝ` into `nReg` regular gauge directions, the reduced core
+`Fin (flatDim M) → ℝ`, and `nGauge` spectators, under which the loss `dlnLoss H B` (in flat coords) is
+**two-sidedly squeezed** near the deepest point by `Φ = ∑ regular² + dlnLoss M 0 (core)`:
+`c₁·Φ ≤ loss ≤ c₂·Φ` with `0 < c₁, c₂`.
+
+**Why a SQUEEZE, not a chart equality (sub-34 g152, decorrelated):** the honest gauge slice is a LOCAL
+diffeo (its inverse uses `(I_r+X)⁻¹`, `(I−VY)⁻¹` — blows up off the deepest point), so the global
+`chart : Flat ≃ₜ Flat` + `∀x HasFDerivAt` of the chart-equality form over-reaches (possibly unsound).
+`rlctAtOn` is local, so the squeeze (`rlctAtOn_squeeze`) is the right altitude — matching the blessed
+per-node `schur_recursion_step_squeeze`. The squeeze's core is the GAUGE-NORMALIZED chain (the gauge
+unit `(I−VY)⁻¹` between layers makes the raw-`∏T` squeeze FALSE for matrices; the `Φ`-core
+`dlnLoss M 0 (core)` is the `T̃`-normalized chain in the `core` coords). -/
 structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) where
   /-- The spectator-coordinate count (the remaining flat directions). The reduced widths
-  `M = H − r` and the regular dimension `nReg = r(H⁰+Hᴸ−r)` are pinned in the field types below
-  (not free fields — the construction always uses these). -/
+  `M = H − r` and the regular dimension `nReg = r(H⁰+Hᴸ−r)` are pinned in the field types below. -/
   nGauge : ℕ
   /-- The coordinate split: flat `H`-params ≃ₜ `(regular nReg) × ((reduced core flatDim M) × (spectators))`. -/
   split :
     (Fin (flatDim H) → ℝ) ≃ₜ
       ((Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ)
         × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin nGauge → ℝ)))
-  /-- `split` is measure-preserving (a coordinate reindex) — needed to transport `rlctAtOn`
-  through it via `rlctAtOn_comp_homeomorph`. -/
+  /-- `split` is measure-preserving (a coordinate reindex). -/
   split_mp : MeasurePreserving split volume volume
-  /-- `split` fixes the origin (the deepest-point basepoint, all deviation coords `= 0`). -/
-  split_zero : split 0 = 0
-  /-- The gauge-slice + regular-residual change of variables (a self-homeomorphism of flat space). -/
-  chart : (Fin (flatDim H) → ℝ) ≃ₜ (Fin (flatDim H) → ℝ)
-  /-- The chart derivative (for the bounded-unit Jacobian fact). -/
-  Dchart : (Fin (flatDim H) → ℝ) →
-    ((Fin (flatDim H) → ℝ) →L[ℝ] (Fin (flatDim H) → ℝ))
-  /-- `chart 0` maps back (via the flattening) to the deepest point — the singular zero of the loss. -/
-  chart_zero :
-    (paramsEquivFlat H).symm (chart 0) = deepestPoint H r B hB hr hL
-  /-- `chart` has the stated Fréchet derivative everywhere. -/
-  hasDeriv : ∀ x, HasFDerivAt chart (Dchart x) x
-  /-- The chart Jacobian determinant is a **bounded unit** near `0` (the NON-MP key: `det ≠ ±1`). -/
-  jac_unit :
-    ∃ U ∈ 𝓝 (0 : Fin (flatDim H) → ℝ), ∃ a b : ℝ, 0 < a ∧
-      ∀ x ∈ U, a ≤ |(Dchart x).det| ∧ |(Dchart x).det| ≤ b
-  /-- The loss pulls back (as a germ at `0`) to `∑ regular² + reduced core`. -/
-  loss_form :
-    (fun x => dlnLoss H B ((paramsEquivFlat H).symm (chart x))) =ᶠ[𝓝 0]
-      fun x =>
-        let q := split x
-        (∑ i, q.1 i ^ 2) +
-          dlnLoss (fun s => H s - r)
-            (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
-            ((paramsEquivFlat (fun s => H s - r)).symm q.2.1)
+  /-- `split` carries the flat image of the deepest point to the split origin (deviation coords `= 0`). -/
+  split_basepoint : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0
+  /-- **The loss-squeeze datum.** Near the deepest point (in flat coords), `dlnLoss H B` is two-sidedly
+  bounded by `Φ = ∑ regular² + dlnLoss M 0 (core)` (the smooth regular block + the gauge-normalized
+  reduced core). The matrix-core comparability is the sub-34 pp-hall obligation. -/
+  loss_squeeze :
+    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
+      ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ w ∈ U,
+          0 ≤ (let q := split w
+              (∑ i, q.1 i ^ 2) +
+                dlnLoss (fun s => H s - r)
+                  (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+                  ((paramsEquivFlat (fun s => H s - r)).symm q.2.1)) ∧
+          c₁ * (let q := split w
+              (∑ i, q.1 i ^ 2) +
+                dlnLoss (fun s => H s - r)
+                  (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+                  ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
+            ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
+          dlnLoss H B ((paramsEquivFlat H).symm w)
+            ≤ c₂ * (let q := split w
+              (∑ i, q.1 i ^ 2) +
+                dlnLoss (fun s => H s - r)
+                  (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+                  ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
 
 /-- **Sub-lemma 2 (`deepestPoint_is_rank_exact`).** The constructed deepest point is rank-`r`-exact on
 every interior layer — a restatement of the green `deepestPoint_isDeep` (`IsDeepLayers.2`), exposed in
@@ -147,20 +156,25 @@ theorem deepestPoint_is_rank_exact (H : Fin (L + 1) → ℕ) (r : ℕ)
     ∀ s : Fin L, ((deepestPoint H r B hB hr hL) s).rank = r :=
   (deepestPoint_isDeep H r B hB hr hL).2
 
-/-- **Sub-lemma 3 (`deepest_gauge_chart_exists`, HEAVY #44c).** The gauge-slice chart exists at the
-deepest point. The g150-cert block algebra: per-layer `block_elimination` units `P_s,Q_s`, the
-2-factor block product folded over `L`, the regular-residual det-unit completion, `chart_zero`. -/
-theorem deepest_gauge_chart_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- **Sub-lemma 3 (`deepest_gauge_squeeze_exists`, HEAVY #44c — the sub-34 obligation).** The
+gauge-slice squeeze datum exists at the deepest point. The g150-cert block algebra (re-scoped to the
+squeeze form, sub-34 g152): per-layer `block_elimination` units `P_s,Q_s`, the 2-factor block product
+folded over `L`, the MP regular/core/spectator reindex `split` (`split_mp`/`split_basepoint`), and the
+two-sided `loss_squeeze` (`c₁Φ ≤ loss ≤ c₂Φ`) whose load-bearing content is the matrix-core
+comparability `‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0 (core)`. -/
+theorem deepest_gauge_squeeze_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     Nonempty (DeepestGaugeChart H r B hB hr hL) := by
   sorry
 
-/-- **Sub-lemma 5 (`deepest_nonMP_chart_transport_unit`).** The chart transports the local RLCT:
-`rlctAt (dlnLoss H B) deepest = rlctAtOn (pulled-back loss) 0`. NON-MP — the bounded-unit Jacobian
-`jac_unit` is peeled by `rlctAtOn_unit_invariant_aux` (NOT `rlctAtOn_comp_homeomorph`); `chart_zero`
-pins the basepoint, `loss_form` the germ. -/
-theorem deepest_nonMP_chart_transport_unit (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- **Sub-lemma 5 (`deepest_squeeze_transport`).** The squeeze datum transports the local RLCT:
+`rlctAt (dlnLoss H B) deepest = rlctAtOn Φ wstar`, where `Φ = ∑ regular² + dlnLoss M 0 (core)` and
+`wstar = (paramsEquivFlat H) deepest`. Chain: `rlctAtOn_eq_rlctAt` (Params), Params→flat MP transport
+(`rlctAtOn_comp_homeomorph` on `paramsEquivFlat H`), then `rlctAtOn_squeeze` consuming `loss_squeeze`
+(the local two-sided bound — NO chart, NO measure Jacobian; matches `schur_recursion_step_squeeze`).
+`Φ` and `wstar` feed sub-6 (the smooth-block split). -/
+theorem deepest_squeeze_transport (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (Γ : DeepestGaugeChart H r B hB hr hL) :
@@ -172,8 +186,45 @@ theorem deepest_nonMP_chart_transport_unit (H : Fin (L + 1) → ℕ) (r : ℕ)
               dlnLoss (fun s => H s - r)
                 (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
                 ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
-          (0 : Fin (flatDim H) → ℝ) := by
-  sorry
+          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+  set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
+  set Φ : (Fin (flatDim H) → ℝ) → ℝ := fun x =>
+    let q := Γ.split x
+    (∑ i, q.1 i ^ 2) +
+      dlnLoss (fun s => H s - r)
+        (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+        ((paramsEquivFlat (fun s => H s - r)).symm q.2.1) with hΦ
+  -- Step 1: `rlctAt` on `Params` is `rlctAtOn`; transport Params→flat (MP homeomorph).
+  rw [← rlctAtOn_eq_rlctAt]
+  set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
+    ⟨(paramsEquivFlat H).toEquiv, continuous_paramsEquivFlat H, continuous_paramsEquivFlat_symm H⟩
+    with he
+  have hmp : MeasurePreserving e (volume : Measure (Params H)) volume :=
+    measurePreserving_paramsEquivFlat H
+  have hemb : MeasurableEmbedding e := (paramsEquivFlat H).measurableEmbedding
+  have htrans := rlctAtOn_comp_homeomorph e hmp hemb
+    (fun x : Fin (flatDim H) → ℝ => dlnLoss H B ((paramsEquivFlat H).symm x))
+    (deepestPoint H r B hB hr hL)
+  have hcomp : (fun A : Params H => dlnLoss H B ((paramsEquivFlat H).symm (e A)))
+      = fun A : Params H => dlnLoss H B A := by
+    funext A; congr 1; exact (paramsEquivFlat H).symm_apply_apply A
+  rw [hcomp] at htrans
+  have he_deepest : e (deepestPoint H r B hB hr hL) = wstar := rfl
+  rw [he_deepest] at htrans
+  rw [htrans]
+  -- Step 2: `rlctAtOn_squeeze` consuming the `loss_squeeze` datum, landing on `Φ` at `wstar`.
+  obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ := Γ.loss_squeeze
+  refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φ wstar
+    ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
+    c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => hsq w hw⟩
+  -- `Φ` measurable: regular sum-of-squares + the core loss through the reindex + flattening.
+  rw [hΦ]
+  apply Measurable.add
+  · exact (Finset.measurable_sum _ (fun i _ =>
+      ((measurable_pi_apply i).comp (continuous_fst.comp Γ.split.continuous).measurable).pow_const _))
+  · exact ((continuous_dlnLoss (fun s => H s - r) _).comp
+      (continuous_paramsEquivFlat_symm _)).measurable.comp
+      ((continuous_fst.comp continuous_snd).comp Γ.split.continuous).measurable
 
 /-- **Sub-lemma 7 (`deepest_reduced_core_identification`).** The reduced core loss in flat
 coordinates has the same RLCT as on `Params M`: `rlctAtOn (dlnLoss M 0 ∘ (paramsEquivFlat M).symm) 0
@@ -244,7 +295,7 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
             dlnLoss (fun s => H s - r)
               (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
               ((paramsEquivFlat (fun s => H s - r)).symm q.2.1))
-        (0 : Fin (flatDim H) → ℝ)
+        ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
       = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
         + rlctAtOn
             (fun A : Params (fun s => H s - r) =>
@@ -258,12 +309,12 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hcoreF_meas : Measurable coreF :=
     ((continuous_dlnLoss M _).comp (continuous_paramsEquivFlat_symm M)).measurable
   have hcoreF_nonneg : ∀ y, 0 ≤ coreF y := fun y => dlnLoss_nonneg _ _ _
-  -- Step 1: transport through the measure-preserving split homeomorphism (`split 0 = 0`).
+  -- Step 1: transport through the MP split homeomorphism (`split` carries the basepoint to `0`).
   have hstep1 := rlctAtOn_comp_homeomorph Γ.split Γ.split_mp Γ.split.measurableEmbedding
     (fun q : (Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ) ×
         ((Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)) => (∑ i, q.1 i ^ 2) + coreF q.2.1)
-    (0 : Fin (flatDim H) → ℝ)
-  rw [Γ.split_zero] at hstep1
+    ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
+  rw [Γ.split_basepoint] at hstep1
   have hgoalfun :
       (fun x : Fin (flatDim H) → ℝ =>
         let q := Γ.split x
@@ -337,8 +388,8 @@ theorem deepest_regular_core_reduces (H : Fin (L + 1) → ℕ) (r : ℕ)
               dlnLoss (fun s => H s - r)
                 (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ) A)
             (fun _ => 0 : Params (fun s => H s - r)) := by
-  obtain ⟨Γ⟩ := deepest_gauge_chart_exists H r B hB hr hL
-  rw [deepest_nonMP_chart_transport_unit H r B hB hr hL Γ,
+  obtain ⟨Γ⟩ := deepest_gauge_squeeze_exists H r B hB hr hL
+  rw [deepest_squeeze_transport H r B hB hr hL Γ,
     deepest_regular_smooth_split H r B hB hr hL Γ hGne]
 
 end DLNFibre.DLN.RLCT

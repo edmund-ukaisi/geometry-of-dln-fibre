@@ -83,4 +83,68 @@ theorem weightedThreshold_weight_unit_invariant (F φ : M → ℝ) (wstar : M)
   · rintro ⟨c', rfl, hadm⟩; exact ⟨c', rfl, bwd c' hadm⟩
   · rintro ⟨c', rfl, hadm⟩; exact ⟨c', rfl, fwd c' hadm⟩
 
+/-- **RLCT monotone under germ domination.** If `|G| ≤ |F|` and `G = 0 → F = 0` near `wstar`, then
+`rlctAtOn G ≤ rlctAtOn F` (a more-singular `F` has a larger threshold). The `weightedThreshold`
+admissible set for `F` includes that for `G` (`abs_rpow_neg_mono` on the integrand). Foundations-grade
+S1 primitive — used by `rlctAtOn_squeeze` here and the D1≥ two-point domination. -/
+theorem rlctAtOn_mono (F G : M → ℝ) (wstar : M) (hFmeas : Measurable F)
+    (hdom : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, |G w| ≤ |F w| ∧ (G w = 0 → F w = 0)) :
+    rlctAtOn G wstar ≤ rlctAtOn F wstar := by
+  unfold rlctAtOn weightedThreshold
+  apply sSup_le_sSup
+  rintro c ⟨c', rfl, Ω, hΩopen, hKΩ, hint⟩
+  obtain ⟨V, hV, hVdom⟩ := hdom
+  obtain ⟨W, hWV, hWopen, hwW⟩ := mem_nhds_iff.mp hV
+  have hwΩ : wstar ∈ Ω := hKΩ rfl
+  refine ⟨c', rfl, Ω ∩ W, hΩopen.inter hWopen, Set.singleton_subset_iff.2 ⟨hwΩ, hwW⟩, ?_⟩
+  have hmeasF : AEStronglyMeasurable (fun w => |F w| ^ (-(c' : ℝ)) * (1 : ℝ))
+      (volume.restrict (Ω ∩ W)) :=
+    ((((continuous_abs.measurable).comp hFmeas).pow_const _).mul_const _).aestronglyMeasurable
+  apply MeasureTheory.Integrable.mono (hint.mono_set Set.inter_subset_left) hmeasF
+  have hΩW_meas : MeasurableSet (Ω ∩ W) := (hΩopen.inter hWopen).measurableSet
+  refine (ae_restrict_iff' hΩW_meas).mpr ?_
+  filter_upwards with w hw
+  have hd := hVdom w (hWV hw.2)
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_mul, abs_mul, abs_one, mul_one, mul_one,
+      abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
+      abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+  exact abs_rpow_neg_mono (F w) (G w) c' c'.2 hd.1 hd.2
+
+/-- **The SQUEEZE RLCT-equality.** If `F, Φ ≥ 0` near `wstar`, both measurable, and `c₁·Φ ≤ F ≤ c₂·Φ`
+with `0 < c₁, c₂`, then `rlctAtOn F wstar = rlctAtOn Φ wstar`. The positive constants `c₁, c₂` are units
+stripped by `rlctAtOn_unit_invariant_aux`; the two inequalities give `rlctAtOn_mono` both ways (the
+`F = 0 ⟺ Φ = 0` vanishing from the two-sided bound). NO change of variables, NO measure Jacobian — `F`
+and `Φ` compared at the SAME point. The local non-MP transport tool for the deepest-gauge squeeze
+(`DeepestGaugeChart`) and the per-node `schur_recursion_step_squeeze`. -/
+theorem rlctAtOn_squeeze (F Φ : M → ℝ) (wstar : M) (hFmeas : Measurable F) (hΦmeas : Measurable Φ)
+    (c₁ c₂ : ℝ) (hc₁ : 0 < c₁) (hc₂ : 0 < c₂)
+    (hsq : ∃ U ∈ 𝓝 wstar, ∀ w ∈ U, 0 ≤ Φ w ∧ c₁ * Φ w ≤ F w ∧ F w ≤ c₂ * Φ w) :
+    rlctAtOn F wstar = rlctAtOn Φ wstar := by
+  obtain ⟨U, hU, hbnd⟩ := hsq
+  refine le_antisymm ?_ ?_
+  · rw [show rlctAtOn Φ wstar = rlctAtOn (fun w => c₂ * Φ w) wstar from
+      (rlctAtOn_unit_invariant_aux Φ (fun _ => c₂) wstar c₂ c₂ hc₂ (by fun_prop)
+        ⟨U, hU, fun w _ => by rw [abs_of_pos hc₂]; exact ⟨le_refl _, le_refl _⟩⟩).symm]
+    refine rlctAtOn_mono (fun w => c₂ * Φ w) F wstar (by fun_prop) ⟨U, hU, fun w hw => ?_⟩
+    obtain ⟨hΦ, hlo, hhi⟩ := hbnd w hw
+    have hF0 : 0 ≤ F w := le_trans (mul_nonneg hc₁.le hΦ) hlo
+    refine ⟨?_, fun hFeq => ?_⟩
+    · rw [abs_of_nonneg hF0, abs_of_nonneg (mul_nonneg hc₂.le hΦ)]; exact hhi
+    · show c₂ * Φ w = 0
+      have hΦ0 : Φ w = 0 := le_antisymm (by nlinarith [hFeq ▸ hlo]) hΦ
+      rw [hΦ0, mul_zero]
+  · rw [show rlctAtOn Φ wstar = rlctAtOn (fun w => c₁ * Φ w) wstar from
+      (rlctAtOn_unit_invariant_aux Φ (fun _ => c₁) wstar c₁ c₁ hc₁ (by fun_prop)
+        ⟨U, hU, fun w _ => by rw [abs_of_pos hc₁]; exact ⟨le_refl _, le_refl _⟩⟩).symm]
+    refine rlctAtOn_mono F (fun w => c₁ * Φ w) wstar hFmeas ⟨U, hU, fun w hw => ?_⟩
+    obtain ⟨hΦ, hlo, hhi⟩ := hbnd w hw
+    have hF0 : 0 ≤ F w := le_trans (mul_nonneg hc₁.le hΦ) hlo
+    refine ⟨?_, fun hcF0 => ?_⟩
+    · rw [abs_of_nonneg (mul_nonneg hc₁.le hΦ), abs_of_nonneg hF0]; exact hlo
+    · have hΦ0 : Φ w = 0 := by
+        rcases mul_eq_zero.1 hcF0 with h | h
+        · exact absurd h (ne_of_gt hc₁)
+        · exact h
+      nlinarith [hhi, hΦ0]
+
 end DLNFibre.DLN.RLCT
