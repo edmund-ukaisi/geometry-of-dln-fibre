@@ -89,7 +89,7 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
-      (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge),
+      (coreAbsorb regAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge),
       MeasurePreserving split volume volume ∧
       split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0 ∧
       coreAbsorb 0 = 0 ∧
@@ -101,14 +101,28 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
         = rlctAtOn
             (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
             (0 : DeepestSplit H r nGauge) ∧
+      regAbsorb 0 = 0 ∧
+      (∀ q : DeepestSplit H r nGauge, (regAbsorb q).2.1 = q.2.1) ∧
+      (∀ q : DeepestSplit H r nGauge, (regAbsorb q).2.2 = q.2.2) ∧
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge =>
+            (∑ i, (regAbsorb q).1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge =>
+              (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+            (0 : DeepestSplit H r nGauge) ∧
       ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
         ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
           ∀ w ∈ U,
-            0 ≤ ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
-            c₁ * ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1)
+            0 ≤ ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
+            c₁ * ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split w)).2.1)
               ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
             dlnLoss H B ((paramsEquivFlat H).symm w)
-              ≤ c₂ * ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
+              ≤ c₂ * ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
   sorry
 
 /-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`). Destructures
@@ -117,8 +131,9 @@ theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     Nonempty (DeepestGaugeChart H r B hB hr hL) := by
-  obtain ⟨nGauge, split, coreAbsorb, hsplit_mp, hsplit_base, hca_base, hca_reg, hca_spec,
-    hca_rlct, hsq⟩ := deepest_gauge_construction H r B hB hr hL
+  obtain ⟨nGauge, split, coreAbsorb, regAbsorb, hsplit_mp, hsplit_base, hca_base, hca_reg, hca_spec,
+    hca_rlct, hra_base, hra_core, hra_spec, hra_rlct, hsq⟩ :=
+    deepest_gauge_construction H r B hB hr hL
   exact ⟨{
     nGauge := nGauge
     split := split
@@ -129,6 +144,11 @@ theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     coreAbsorb_regular := hca_reg
     coreAbsorb_spectator := hca_spec
     coreAbsorb_rlct := hca_rlct
+    regAbsorb := regAbsorb
+    regAbsorb_basepoint := hra_base
+    regAbsorb_core := hra_core
+    regAbsorb_spectator := hra_spec
+    regAbsorb_rlct := hra_rlct
     loss_squeeze := hsq }⟩
 
 end DLNFibre.DLN.RLCT

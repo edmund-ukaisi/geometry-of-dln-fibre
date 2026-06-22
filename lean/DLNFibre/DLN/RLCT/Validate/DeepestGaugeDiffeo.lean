@@ -35,6 +35,7 @@ namespace DLNFibre.DLN.RLCT
 
 variable {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M] [FiniteDimensional ℝ M]
 
+omit [FiniteDimensional ℝ M] in
 /-- The determinant of a continuous-linear-equiv (coerced to a continuous linear map) is nonzero:
 its underlying `LinearEquiv` has a unit determinant, and a unit in `ℝ` is nonzero. -/
 theorem clm_det_ne_zero (f' : M ≃L[ℝ] M) : (f' : M →L[ℝ] M).det ≠ 0 := by
@@ -43,6 +44,7 @@ theorem clm_det_ne_zero (f' : M ≃L[ℝ] M) : (f' : M →L[ℝ] M).det ≠ 0 :=
   rw [he]
   exact f'.toLinearEquiv.isUnit_det'.ne_zero
 
+omit [FiniteDimensional ℝ M] in
 /-- **The Jacobian-determinant is continuous at the basepoint** for a `C¹` map. For
 `ContDiffAt ℝ 1 f wstar`, the map `w ↦ |（fderiv ℝ f w).det|` is `ContinuousAt wstar`
 (`ContDiffAt.continuousAt_fderiv` ∘ `ContinuousLinearMap.continuous_det` ∘ `|·|`). -/
@@ -67,7 +69,9 @@ theorem boundedUnit_fderiv_det {f : M → M} {wstar : M} {f' : M ≃L[ℝ] M}
   set d : ℝ := |(f' : M →L[ℝ] M).det| with hd
   have hdpos : 0 < d := abs_pos.mpr (clm_det_ne_zero f')
   -- The value of `|det|` at `wstar` is `d` (since `fderiv f wstar = f'`).
-  have hval : (fun w => |(fderiv ℝ f w).det|) wstar = d := by rw [hf'.fderiv]
+  have hval : (fun w => |(fderiv ℝ f w).det|) wstar = d := by
+    change |(fderiv ℝ f wstar).det| = d
+    rw [hf'.fderiv, hd]
   have hcont : ContinuousAt (fun w => |(fderiv ℝ f w).det|) wstar := continuousAt_abs_fderiv_det hf
   -- `(d/2, d+1)` is an open interval containing the value `d`; pull it back to an open nbhd.
   have hmem : (fun w => |(fderiv ℝ f w).det|) wstar ∈ Set.Ioo (d / 2) (d + 1) := by
@@ -77,8 +81,9 @@ theorem boundedUnit_fderiv_det {f : M → M} {wstar : M} {f' : M ≃L[ℝ] M}
   refine ⟨interior ((fun w => |(fderiv ℝ f w).det|) ⁻¹' Set.Ioo (d / 2) (d + 1)),
     isOpen_interior, mem_interior_iff_mem_nhds.mpr hpre, d / 2, d + 1, by positivity, ?_⟩
   intro w hw
-  have hw' : (fun w => |(fderiv ℝ f w).det|) w ∈ Set.Ioo (d / 2) (d + 1) :=
+  have hwpre : w ∈ (fun w => |(fderiv ℝ f w).det|) ⁻¹' Set.Ioo (d / 2) (d + 1) :=
     interior_subset hw
+  have hw' : (fun w => |(fderiv ℝ f w).det|) w ∈ Set.Ioo (d / 2) (d + 1) := hwpre
   exact ⟨le_of_lt hw'.1, le_of_lt hw'.2⟩
 
 end DLNFibre.DLN.RLCT
