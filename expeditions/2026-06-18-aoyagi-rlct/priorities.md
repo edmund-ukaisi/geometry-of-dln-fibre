@@ -67,6 +67,19 @@ guard, and does not assert stopped-branch exclusivity.  Use this contract
 before attempting any theorem named as source production of `C'^(S+1)` or
 successor following-product data.
 
+Lean now names this frontier as a supplied obligation interface:
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`.
+This `Prop` structure packages, without constructing, the formula equality for
+a supplied `Csucc`, the continuing supplied next chart-family obligation, the
+continuing weighted successor-following payload, the actual-width stopped
+source-suffix/original-row/relabelled-certificate payload, and the
+row-exhausted source-suffix/transported-row payload.  It deliberately has no
+constructor from the current displayed chart boundary.  Treat it as an
+obligation boundary only: no source production of `C'^(S+1)`, suffix
+production, chart coverage, transition regularity, coordinate post-data
+derivation, Jacobian arithmetic, normal crossings, pole order, termination, or
+RLCT is proved by this interface.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

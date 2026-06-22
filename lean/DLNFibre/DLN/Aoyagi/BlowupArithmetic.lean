@@ -17808,6 +17808,88 @@ theorem sourceChartMap_frontierBoundaryPackages
         pre u residual hS hSL hcont hrow exponentPre levelInv leastValueGap
         chartFamily κ hSuffix C Ctail
 
+universe u uκ
+
+/-- Supplied obligation for turning the displayed Case 2 source-chart
+frontier into branchwise successor source data.
+
+The fields name the data a genuine source-production theorem would have to
+provide.  This is an interface only: it does not construct `Csucc`, terminal
+source rows, successor chart families, coverage, transition invariance,
+normal crossings, pole order, or RLCT data from the displayed chart boundary. -/
+structure SourceProductionObligation
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → R)
+    (κ : Fin (L + 1) → Type uκ) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (Csucc : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R) :
+    Prop where
+  frontier :
+    SourceChartFrontierBoundaryPackages.{u, uκ, uκ, uκ, uκ, uκ, uκ}
+      R L n S J t numerator leastValue
+      pre u residual data.stage_pos data.continuation
+  Csucc_eq_formula :
+    Csucc =
+      case2DisplayedSourceSuccessorFollowingFactor
+        n data.stage_pos data.continuation residual C
+  continuing_suppliedNextChartFamily :
+    ∀ (_hnext : J + 2 ≤ prefixMinNat n (S + 1)),
+      ∃ ChartRegularNext TransitionRegularNext,
+        Case2ResidualBlockChartFamilyBoundary
+          n S (J + 1) ChartRegularNext TransitionRegularNext
+  continuing_frontier :
+    ∀ (_hnext : J + 2 ≤ prefixMinNat n (S + 1)),
+      ContinuingWeightedSuccFollowingFrontierPayload
+        L n S J t numerator leastValue pre u residual
+        data.stage_pos data.continuation C
+  actualWidth_frontier :
+    ∀ (_hwidth : n (S + 1) = J + 1),
+      ActualWidthSourceChartFrontierPayload
+        L n S J t numerator leastValue pre u residual
+        data.stage_pos data.continuation C
+        (sourceSuffixProduct κ Ctail S hSuffix)
+  actualWidth_Cterm_eq :
+    ∀ (_hwidth : n (S + 1) = J + 1),
+      Cterm = case2DisplayedSourceTerminalOriginalRows (J := J) C
+  actualWidth_level :
+    ∀ (_hwidth : n (S + 1) = J + 1),
+      IntroducedLabelLevelInvariants L n (S + 1) 0
+        data.terminalRelabelPost.level leastValue'
+  actualWidth_exponent :
+    ∀ (_hwidth : n (S + 1) = J + 1),
+      IntroducedLabelExponentCertificates L n (S + 1) 0
+        t' numerator' leastValue'
+  rowExhausted_frontier :
+    ∀ (hrow : prefixMinNat n S = J + 1),
+      RowExhaustedSourceSuffixTransportedPrefixPayload
+        L n S J pre u residual data.stage_pos data.continuation
+        hrow κ hSuffix C Ctail
+  rowExhausted_Cterm_eq :
+    ∀ (_hrow : prefixMinNat n S = J + 1),
+      Cterm =
+        case2DisplayedSourceTerminalTransportedRows
+          n data.stage_pos data.continuation residual C
+
 end Case2DisplayedSuppliedChartFamilyBoundary
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence

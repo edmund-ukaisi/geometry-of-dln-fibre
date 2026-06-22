@@ -5183,6 +5183,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-branchwise-successor-production-boundary-a4.md`.
 
+Latest A4 Case 2 source-production obligation interface:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`.  This
+is a supplied `Prop` structure, not a theorem.  It packages the branchwise
+successor-production obligations after the displayed Case 2 source chart:
+formula equality for supplied `Csucc`, continuing supplied next chart-family boundary,
+continuing weighted successor-following frontier, actual-width stopped
+source-suffix frontier with original terminal rows and relabelled certificates,
+and row-exhausted source-suffix frontier with transported terminal rows.  No
+inhabitant is constructed from the current displayed boundary.  It is not
+source production of `C'^(S+1)`, suffix production, coverage, transition
+regularity, coordinate post-data derivation, Jacobian arithmetic, normal
+crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

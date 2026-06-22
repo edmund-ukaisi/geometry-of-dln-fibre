@@ -3971,3 +3971,33 @@ coverage and transition regularity, source production of suffix/following
 products, coordinate derivation of corrected post-data, Jacobian arithmetic,
 normal crossings, pole order, termination, RLCT, and repair of the printed
 Case 2 vector mismatch are not claimed.
+
+## 2026-06-22 Lean Case 2 source-production obligation
+
+Reproduction:
+`reproduction-case2-source-production-obligation-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation.md`.
+Review artifact:
+`review-case2-source-production-obligation-a4.md`.
+
+Lean now names the branchwise source-production frontier as a supplied
+interface:
+
+```text
+SourceProductionObligation
+```
+
+inside the `Case2DisplayedSuppliedChartFamilyBoundary` namespace.  The
+structure is `Prop`-valued and has no constructor from the current displayed
+chart boundary.  Its fields require a supplied formula-level successor
+following object `Csucc`, a supplied terminal source matrix `Cterm`, a
+continuing supplied next chart-family boundary, branch-specific frontier
+payloads, and the explicit terminal-row equalities appropriate to the
+actual-width and row-exhausted stopped branches.
+
+This is an obligation interface only.  It does not construct `Csucc`,
+construct `C'^(S+1)`, produce a source suffix, prove chart coverage or
+transition regularity, derive corrected post-data from coordinates, add
+Jacobian arithmetic, prove normal crossings, pole order, termination, RLCT, or
+repair the printed Case 2 vector mismatch.

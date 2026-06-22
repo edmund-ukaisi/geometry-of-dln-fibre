@@ -5053,6 +5053,27 @@ pole order, termination, and RLCT.  Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-branchwise-successor-production-boundary-a4.md`.
 
+Latest A4 interface update: the branchwise Case 2 source-production frontier
+is now named in Lean as the supplied `Prop` structure
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`.
+The structure packages the current frontier boundary, the formula equality
+for a supplied successor following object `Csucc`, a supplied next
+chart-family boundary for the continuing branch, the weighted
+successor-following continuing payload, the actual-width stopped payload with
+`sourceSuffixProduct`, actual-width original terminal rows and relabelled
+`(S+1,0)` certificates, and the row-exhausted transported-prefix payload plus
+transported-row terminal equality.  It deliberately has no constructor from
+the current displayed chart boundary.  This is not source production of
+`C'^(S+1)`, not suffix production, not coverage or transition invariance, not
+coordinate derivation of corrected post-data, and not Jacobian/normal-
+crossing/pole-order/RLCT content.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
