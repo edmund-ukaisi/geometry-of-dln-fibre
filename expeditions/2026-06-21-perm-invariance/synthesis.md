@@ -211,12 +211,15 @@ REMAINING for fivegon (Thm 5.6):
     = codimForm N(extendℤ(peelPart m)) + ∑_{i∈Icc 1(↑N+1)}∑_{u∈Icc i(↑N+1)} extendℤ m (i-1)↑N · extendℤ m u(↑N+1)
     [i-form, a=i-1]. delta_nonneg (Δ≥0). Helpers: extendℤ_peelLast_at/_peelLower_at/_peelCorr_at (col evals),
     codimBil_peelCorr_collapse/_peelLast_collapse (v-sum picks live col), codimBil_diff_eq_delta (peel+drop), sum_Icc_peel_top.
-  - THE BIJECTION (thread-07 piece 1, the flagged grind): fibre {m∈kostantAll d : peelPart m = m'} ↔
-    admissibleXs m' = {x:Fin(N+2)→ℕ | x_i≤b_i (i≤N), ∑x=d_{last}}, b_i=m'(i,last). Forward m↦last-col x;
-    inverse splits col N into (b−x, x). Via Finset.sum_bij'/sum_nbij' OR direct fibre sum. Membership
-    obligations (kostantAt at merged vertex) = the bulk. NOT STARTED.
-  - per-fibre collapse (piece 3): ∑_{fibre(m')} X^{codimForm(N+1)(extendℤ m)}·Pm(N+1)m = X^{codimForm
-    N(extendℤ m')}·Pm N m'·P(d last). Uses codimForm_split (Δ→Δ_b(x)) + Pm split + (4).
+  - THE BIJECTION (thread-07 piece 1): DONE (commit 0ce9200). fibre_sum_reindex: ∑_{m∈(kostantAll d).filter(peelPart·=m')} F m
+    = ∑_{x∈admissibleXs m' (d last)} F(rebuild m' x), via Finset.sum_bij' (lastCol ⇄ rebuild). Axiom-clean.
+    Landed: lastCol/rebuild/boundX/admissibleXs (defs); lastCol_rebuild + rebuild_lastCol (inverses) +
+    peelPart_rebuild (peel recovers m'); lastCol_mem_admissibleXs (fwd maps_to) + rebuild_mem_kostantAll
+    (bwd maps_to, THE crux — old-vertex kostant via peelPart_rebuild+peelPart_cover_sum, new via ∑x=d_last).
+  - per-fibre collapse (piece 3, NOT STARTED): ∑_{fibre(m')} X^{codimForm(N+1)(extendℤ m).toNat}·Pm(N+1)m =
+    X^{codimForm N(extendℤ m').toNat}·Pm N m'·P(d last). Apply fibre_sum_reindex with F=X^…·Pm; then per-x:
+    codimForm_split_explicit (Δ→Δ_b(x), peelPart_rebuild) + toNat split (delta_nonneg + codimForm_extendℤ_nonneg)
+    + Pm(N+1)(rebuild m' x) factorization (col≤N-1 = Pm N m' lower; col N = P(b_i−x_i); col N+1 = P(x_i)) + (4).
   - inner sum = transferRHS (piece 4): LANDED transferRHS_eq discharges; induction mirrors transferRHS recursion (Δ_b(x)=(b_0−x_0)(d−x_0)+Δ' per-step, pure ring).
   - induction on N → fivegon. THEN M4 (chain→Thm5.5) + M6 (Cor 5.10 via M5 bridge + M6-prep [both LANDED]).
 Operator: GRIND ON, full zero-cited, structure survives compaction. Inline only (worktrees too heavy — subagents launch at PRIMARY checkout, fresh worktrees re-clone mathlib).
