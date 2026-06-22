@@ -482,4 +482,38 @@ theorem codimForm_split (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
            - codimBil N (extendℤ (peelLower m)) (extendℤ (peelCorr m))) := by
   rw [codimForm_big, codimForm_peel_lhs]; ring
 
+/-- The last column is carried verbatim: `extendℤ (peelLast m) u (N+1) = extendℤ m u (N+1)`. -/
+theorem extendℤ_peelLast_at (m : Fin (N + 2) × Fin (N + 2) → ℕ) (u : ℤ) :
+    extendℤ (peelLast m) u ((N : ℤ) + 1) = extendℤ m u ((N : ℤ) + 1) := by
+  unfold extendℤ
+  split_ifs with h
+  · congr 1
+    rw [peelLast]
+    have hY : (⟨((N : ℤ) + 1).toNat, by omega⟩ : Fin (N + 2)) = Fin.last (N + 1) := by
+      apply Fin.ext; rw [Fin.val_last]; show ((N : ℤ) + 1).toNat = N + 1; omega
+    split_ifs with hc
+    · congr 1
+    · exact absurd hY hc
+  · rfl
+
+/-- The lower part agrees with `m` on columns `≤ N`: `extendℤ (peelLower m) a b = extendℤ m a b`. -/
+theorem extendℤ_peelLower_at (m : Fin (N + 2) × Fin (N + 2) → ℕ) (a b : ℤ) (hb : b ≤ (N : ℤ)) :
+    extendℤ (peelLower m) a b = extendℤ m a b := by
+  unfold extendℤ
+  by_cases hbox : 0 ≤ a ∧ a ≤ b ∧ b ≤ (N : ℤ)
+  · rw [dif_pos hbox, dif_pos ⟨hbox.1, hbox.2.1, by omega⟩]; rfl
+  · rw [dif_neg hbox, dif_neg (fun h ↦ hbox ⟨h.1, h.2.1, hb⟩)]
+
+/-- The peeled correction at column `N` carries the last column: `extendℤ (peelCorr m) u N =
+extendℤ m u (N+1)` for `0 ≤ u ≤ N`. -/
+theorem extendℤ_peelCorr_at (m : Fin (N + 2) × Fin (N + 2) → ℕ) (u : ℤ) (hu : 0 ≤ u)
+    (huN : u ≤ (N : ℤ)) : extendℤ (peelCorr m) u (N : ℤ) = extendℤ m u ((N : ℤ) + 1) := by
+  unfold extendℤ
+  rw [dif_pos ⟨hu, huN, le_refl _⟩, dif_pos ⟨hu, by omega, by omega⟩]
+  congr 1
+  rw [peelCorr]
+  split_ifs with hc
+  · congr 1
+  · exfalso; apply hc; apply Fin.ext; rw [Fin.val_last]; show (N : ℤ).toNat = N; omega
+
 end DLNFibre.Core
