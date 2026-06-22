@@ -74,3 +74,5 @@ import DLNFibre.Core.QSeriesFivegon
 import DLNFibre.Core.QSeriesShift
 import DLNFibre.Core.QSeriesOrth
 import DLNFibre.Core.QSeriesThm55
+-- Geometric transfer of Cor 5.10: the variety's (C,θ) of Σ̄^r is permutation-invariant (unconditional).
+import DLNFibre.Core.CThetaGeometricPerm
