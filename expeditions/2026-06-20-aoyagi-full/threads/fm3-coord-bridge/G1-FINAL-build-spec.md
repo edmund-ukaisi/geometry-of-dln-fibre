@@ -254,3 +254,19 @@ SESSION STATE (g155): hMid threaded (6f4e70f) + full value-side bedrock (3b2ba20
 sorry-free clean-three(+monomial_rlct). RouteMTree.lean stays UNCOMMITTED (all-stub) pending the seam
 decision — do NOT bank the parallel RouteState recursion until controller+crux2 confirm the driver
 (rebase onto ChainDimSplit vs standalone). The recursion DRIVER is the only piece blocked.
+
+## SEAM DECIDED + REBASE (controller g156) — DRIVER = crux2's ChainDimSplit; drop RouteState
+(a) SEAM: crux2 = per-step straighten / additive nReg/2 descent (ChainDimSplit, value-along-a-path);
+    fm = the blow-up cover / ⨅-min-over-pivot-branches (→ ⨅ monomialThreshold). BOTH needed; the cover
+    STAYS (it IS the ⨅), on top of crux2's descent. My refinement accepted (telescoping ≠ the cover).
+(b) REBASE: YES. Drop the parallel RouteState; rebase the descent-STATE onto crux2's banked ChainDimSplit.
+    Keep the cover-branching + the MonoData accumulator + threshold proofs ON TOP (fm's, per Codex #3).
+    Coordinate the ChainDimSplit interface with crux2 (my 3 questions → crux2 answers + extends
+    ChainDimSplit if the cover-branching needs more). Controller told crux2 to support it.
+CONSEQUENCE for my files: RouteMState's RouteState/widthSum/ncDefect/routeMeasure/routeRel/routeRel_wf
+become DEAD (superseded by ChainDimSplit + its hdrops/ΣM termination) — but MonoData + leafMonoData +
+ALL the appendDivisor/foldDivisors threshold lemmas (3b2ba20→a446bcd) are KEPT (they're on MonoData,
+recursion-driver-agnostic). RouteMTree's routeAtlas gets rewritten to recurse over ChainDimSplit
+(consume crux2's reduction state), NOT WellFounded.fix on RouteState. AWAITING crux2's reply on the
+ChainDimSplit interface shape + whether it carries the per-node pivot-branch data my cover needs (the
+argmaxCellOn pivot cells per node = the branching). Until then: stay on fork-independent value-side.
