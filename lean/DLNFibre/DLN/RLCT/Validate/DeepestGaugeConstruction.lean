@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
+import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction` — the `DeepestGaugeChart` instance (#44c)
@@ -72,6 +73,30 @@ structure IsGaugeSliceDecode (H : Fin (L + 1) → ℕ) (r : ℕ) (nGauge : ℕ)
   /-- At the split origin (the deepest basepoint), every gauge block is `0` (the deepest point is
   the block-normal rank-`r` chain: `X_s=Y_s=Z_s=T_s=0`, i.e. `C_s = blockdiag[I_r, 0]`). -/
   basepoint : gaugeDecode 0 = fun _ => (0, 0, 0, 0)
+
+/-! ## The frame-free slot read (the inner half of `gaugeDecode`)
+
+`gaugeDecode = gaugeSlotRead ∘ frame ∘ (split.symm − deepestFlat)` (g164: the constant gauge frame
+composes on the inside; `split` stays MP). This section builds the FRAME-INDEPENDENT inner read
+`gaugeSlotRead : DeepestSplit → PerLayerGaugeBlocks` — the X/Y/Z blocks off the reg+spectator slots
+(via crux2's `regGaugeSlotEquiv`, the un-flattening of `Fintype.equivFin`), and the `T`-core block off
+the core slot (`= FlatIdx (deepestM)`, type-forced). The frame (a fixed continuous linear iso, #77)
+and `split.symm` compose before it; this read is independent of both. -/
+
+/-- **The frame-free slot read.** Reads a `DeepestSplit` point into per-layer gauge blocks: the
+`X_s, Y_s, Z_s` off the combined reg+spectator slot via `regGaugeSlotEquiv` (un-flattening the
+opaque `Fintype.equivFin` into the legible `RegGaugeIdx` Σ-grouping), and the `T_s`-core off the core
+slot via `paramsEquivFlat (deepestM)`. `gaugeDecode` is this composed AFTER the frame + `split.symm`. -/
+noncomputable def gaugeSlotRead (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) : PerLayerGaugeBlocks H r :=
+  fun s =>
+    let g : RegGaugeIdx H r → ℝ := regGaugeSlotEquiv H r hr hL (q.1, q.2.2)
+    let T : Params (deepestM H r) := (paramsEquivFlat (deepestM H r)).symm q.2.1
+    ( Matrix.of (fun i j => g ⟨s, Sum.inl (Sum.inl (i, j))⟩)
+    , Matrix.of (fun i j => g ⟨s, Sum.inl (Sum.inr (i, j))⟩)
+    , Matrix.of (fun i j => g ⟨s, Sum.inr (i, j)⟩)
+    , T s )
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). The four fields
 are properties of the SAME maps `(split, coreAbsorb)`, so they bundle into one existence statement

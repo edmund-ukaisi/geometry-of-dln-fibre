@@ -217,18 +217,20 @@ def regSliceHomeo {Reg Core Spec : Type*}
   toFun := fun q => ((Ψ (q.1, q.2.2)).1, (q.2.1, q.2.2))
   invFun := fun q => ((Ψ.symm (q.1, q.2.2)).1, (q.2.1, q.2.2))
   left_inv := fun q => by
-    have hsymm : Ψ.symm (Ψ (q.1, q.2.2)) = (q.1, q.2.2) := Ψ.left_inv _
-    have hfst : (Ψ (q.1, q.2.2)).2 = q.2.2 := hΨspec _
-    have : (Ψ.symm ((Ψ (q.1, q.2.2)).1, q.2.2)).1 = q.1 := by
-      rw [← hfst, Prod.mk.eta, hsymm]
-    simp only [this]
+    have hpair : ((Ψ (q.1, q.2.2)).1, q.2.2) = Ψ (q.1, q.2.2) :=
+      Prod.ext rfl (hΨspec _).symm
+    refine Prod.ext ?_ rfl
+    show (Ψ.symm ((Ψ (q.1, q.2.2)).1, q.2.2)).1 = q.1
+    rw [hpair, Ψ.symm_apply_apply]
   right_inv := fun q => by
-    have hsymm : Ψ (Ψ.symm (q.1, q.2.2)) = (q.1, q.2.2) := Ψ.right_inv _
     have hfst : (Ψ.symm (q.1, q.2.2)).2 = q.2.2 := by
-      have := hΨspec (Ψ.symm (q.1, q.2.2)); rwa [hsymm] at this
-    have : (Ψ ((Ψ.symm (q.1, q.2.2)).1, q.2.2)).1 = q.1 := by
-      rw [← hfst, Prod.mk.eta, hsymm]
-    simp only [this]
+      have h := hΨspec (Ψ.symm (q.1, q.2.2))
+      rw [Ψ.apply_symm_apply] at h; exact h
+    have hpair : ((Ψ.symm (q.1, q.2.2)).1, q.2.2) = Ψ.symm (q.1, q.2.2) :=
+      Prod.ext rfl hfst.symm
+    refine Prod.ext ?_ rfl
+    show (Ψ ((Ψ.symm (q.1, q.2.2)).1, q.2.2)).1 = q.1
+    rw [hpair, Ψ.apply_symm_apply]
   continuous_toFun := by
     have hrs : Continuous fun q : Reg × (Core × Spec) => (q.1, q.2.2) :=
       continuous_fst.prodMk (continuous_snd.comp continuous_snd)
