@@ -202,6 +202,8 @@ Current Eq5 endpoint raw-branches slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-branches-a5.md`.
 Current Eq5 endpoint branch-coordinate slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-a5.md`.
+Current Eq5 endpoint branch-coordinate disjointness slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -232,6 +234,17 @@ set and base-value filter, so the existing counted-datum classifier API can be
 used.  It does not prove endpoint distinctness, base-filter survival,
 source-produced coordinates, raw injectivity/disjointness, no-extra coverage,
 pole order, normal crossings, or RLCT.
+
+Lean now also derives cross-coordinate disjointness for Eq5 endpoint raw
+branch sets at distinct interior coordinates from supplied component
+coordinate facts:
+`aoyagiLemma5Eq5EndpointRawBranches_pairwiseDisjoint_of_branchCoord_eq` and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_branchCoord`.
+This removes only the separate raw disjointness hypothesis in the supplied
+endpoint constructor.  Raw value injectivity, base-value membership,
+alpha-domain coverage, endpoint values, source construction/source-label
+legality, base-filter survival, no-extra coverage, pole order, normal
+crossings, and RLCT remain unproved.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.

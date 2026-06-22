@@ -4751,6 +4751,23 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-a5.md`.
 
+Latest A5 Eq5 endpoint branch-coordinate disjointness update:
+`Lemma5Eq5SuppliedCoverage.lean` now also contains
+`aoyagiLemma5Eq5EndpointRawBranches_pairwiseDisjoint_of_branchCoord_eq` and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_branchCoord`.
+These prove cross-coordinate disjointness for Eq5 endpoint raw branch sets at
+distinct interior coordinates from supplied component coordinate facts, and
+use it to remove the separate raw-disjointness hypothesis from the supplied
+endpoint constructor.  This still leaves raw value injectivity, base-value
+membership, alpha coverage, endpoint values, source-produced branch records,
+source-label legality, no-extra coverage, normal crossings, pole order, and
+RLCT unproved.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-branchcoord-disjoint.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

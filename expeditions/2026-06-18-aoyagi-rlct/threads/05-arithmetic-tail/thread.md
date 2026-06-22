@@ -4990,3 +4990,33 @@ coordinate map is source-produced, prove endpoint distinctness or base-filter
 survival, derive raw branch injectivity/disjointness, add a dedicated Eq5
 classifier wrapper, prove no-extra terminal-minimum coverage, prove a Lemma 5
 order count, prove pole order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint branch-coordinate disjointness
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-branchcoord-disjoint.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-branchcoord-disjoint-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5EndpointRawBranches_pairwiseDisjoint_of_branchCoord_eq
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage_of_branchCoord
+```
+
+The disjointness theorem says that if every strict, upper-endpoint, and
+explicitly inserted rising lower-endpoint component record at an interior
+coordinate has supplied coordinate `j`, then raw branch sets for distinct
+interior coordinates are disjoint.  The constructor wrapper uses this theorem
+to remove the separate cross-coordinate raw-disjointness input from the Eq5
+endpoint supplied-family constructor.
+
+This is finite coordinate bookkeeping only.  It does not construct Eq5
+branches or endpoint records, prove source-label legality, prove the
+coordinate map is source-produced, prove endpoint distinctness or base-filter
+survival, derive raw value injectivity, construct a no-extra classifier, prove
+a Lemma 5 order count, prove pole order, prove normal crossings, or extract
+RLCT.
