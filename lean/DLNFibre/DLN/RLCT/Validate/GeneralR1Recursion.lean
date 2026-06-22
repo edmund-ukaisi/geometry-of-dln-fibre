@@ -567,6 +567,36 @@ theorem schur_node_squeeze {M n : Type*} [Fintype M] [Fintype n]
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl (fun j _ => by ring)
 
+/-- **The node squeeze with UNIFORM constants** (the datum-usable form). If the pivot column is bounded
+`∑ᵢ bᵢ² ≤ T²` (which holds on a neighborhood of the deepest point, where `b → 0`), the node squeeze
+holds with FIXED constants `c₁ = (2(1+T²))⁻¹ > 0`, `c₂ = 2+2T²` — independent of the point, as the
+`IsSchurStraightenSqueeze.squeeze` field demands. Monotone-in-`t` strengthening of `schur_node_squeeze`
+(`t² = ‖b‖² ≤ T²`). At the deepest point `T → 0` gives `c₁ → ½`, `c₂ → 2`. -/
+theorem schur_node_squeeze_unif {M n : Type*} [Fintype M] [Fintype n]
+    (Erow : n → ℝ) (b : M → ℝ) (SΓ : M → n → ℝ) (T : ℝ) (hT : (∑ i, (b i) ^ 2) ≤ T ^ 2) :
+    (1 / (2 * (1 + T ^ 2))) * ((∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (SΓ i j) ^ 2))
+        ≤ (∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (b i * Erow j + SΓ i j) ^ 2)
+    ∧ (∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (b i * Erow j + SΓ i j) ^ 2)
+        ≤ (2 + 2 * T ^ 2) * ((∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (SΓ i j) ^ 2)) := by
+  obtain ⟨hlo, hhi⟩ := schur_node_squeeze Erow b SΓ
+  set Φ := (∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (SΓ i j) ^ 2) with hΦdef
+  set F := (∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (b i * Erow j + SΓ i j) ^ 2) with hFdef
+  set t := Real.sqrt (∑ i, (b i) ^ 2) with ht
+  have ht2 : t ^ 2 = ∑ i, (b i) ^ 2 := Real.sq_sqrt (Finset.sum_nonneg (fun i _ => sq_nonneg _))
+  have htT : t ^ 2 ≤ T ^ 2 := ht2 ▸ hT
+  have hΦnn : 0 ≤ Φ := by
+    rw [hΦdef]; exact add_nonneg (Finset.sum_nonneg fun _ _ => by positivity)
+      (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity)
+  have hFnn : 0 ≤ F := by
+    rw [hFdef]; exact add_nonneg (Finset.sum_nonneg fun _ _ => by positivity)
+      (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity)
+  have hden : (0 : ℝ) < 2 * (1 + T ^ 2) := by positivity
+  refine ⟨?_, ?_⟩
+  · rw [div_mul_eq_mul_div, div_le_iff₀ hden]
+    nlinarith [hlo, hFnn, htT]
+  · calc F ≤ (2 + 2 * t ^ 2) * Φ := hhi
+      _ ≤ (2 + 2 * T ^ 2) * Φ := by nlinarith [hΦnn, htT]
+
 /-! ## The L=1 base (the `block_elimination` prototype)
 
 The recursion's leaf. At `L = 1` a `Params` is a SINGLE matrix `A : Matrix (Fin (M 0)) (Fin (M 1)) ℝ`
