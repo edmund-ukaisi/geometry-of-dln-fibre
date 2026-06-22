@@ -458,6 +458,20 @@ So the §2 green-≠-right guard is now machine-checked on the value side: the d
 holds BY the admissible-T witness. STILL AWAITING crux2 on the transport-field (additive-vs-min / which
 lemma the per-cell consequence uses) before pinning the full ValidRouteStep + building the fold.
 
+## VALUE-CONSISTENCY CLOSED + PivotWitness PLACEMENT = SIBLING FIELD (g170, pp2 g186/g187)
+pp2 closed value-consistency: the (a)+(b) contract maps 1:1 onto g183 §2/§4, verified all 6 cases incl
+(4,3,2) [Mval set {6,8,12} all ≥ m₀=6 — the thin case where codim=Mval not cardinality is load-bearing],
+folded into the cert with my foldFamily_* names (origin/g187-foldfamily-value-target @31f00ea). The leaf
+monomials agree with my value-side BY CONSTRUCTION; no separate consistency proof. VALUE-CONSISTENCY: DONE.
+DESIGN DECISION (fm3, the one open co-design pp2 flagged — where the PivotWitness lives on certified
+RouteStep.branch): SIBLING FIELD, NOT folded into the transport datum's center-spec.
+  branch carries: ... (transport datum, crux2's lane) + (witness : (c:cells) → PivotWitness M (codim c))
+Decisive reason: the fold's C≥ consumes ONLY PivotWitness (foldFamily_threshold_ge_of_pivotWitness takes
+no transport datum — pure Adm/Mval), so a sibling field keeps the value half provable WITHOUT unpacking
+the analytic transport datum — respects the value/transport lane separation (g169) AND is robust to crux2's
+pending transport-field shape (folding it in would re-couple the settled value witness to the pending
+transport). Sent pp2 + flagged crux2.
+
 ## WAIT-STATE (g166, controller) — set to assemble on crux2's transport-field adjudication
 Controller: R1's long-pole has collapsed to the SINGLE transport-field confirm (in flight — do NOT
 re-ask crux2). Controller leans the lighter monomial-pullback read (my g164): per-cell consequence =
