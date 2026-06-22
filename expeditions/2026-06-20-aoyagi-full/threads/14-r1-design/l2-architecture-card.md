@@ -210,3 +210,21 @@ comparability `‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0(core)` (gauge-normali
 
 Net: the value-free L2 reduction is PROVEN-modulo the single squeeze-datum existence. The two cert gaps
 (hGne — threaded hypothesis; dlnLoss-measurability — closed via Codex g151) both resolved.
+
+### Update (crux2, 2026-06-22, coreEmbed fix) — gauge-normalized core via coreAbsorb
+
+cobuild-sub34's g153 (decorrelated, exact-numeric + Codex) caught a REAL flaw in the R-squeeze
+structure: the hardcoded `(paramsEquivFlat M).symm` core + the MP `split` force the RAW `∏T` chain,
+making `loss_squeeze` FALSE (`‖T·g·S‖²/‖T·S‖²→∞`, g=(I−VY)⁻¹ between layers). The producer caught a
+consumer-interface bug — decorrelation working.
+
+Fix (Codex g154, winner "design D"): keep `split` MP (core slot = raw `T`); add a `coreAbsorb`
+self-homeo absorbing the gauge unit into the core (fixing reg/spectator slots) + the producer field
+`coreAbsorb_rlct` (absorbed-Φ and raw-disjoint-Φ have the same RLCT — the g-unit peel, via
+`weightedThreshold_transport` + `weightedThreshold_weight_unit_invariant`). `loss_squeeze`/`Φ` use the
+absorbed (T̃-normalized) core; sub-6 inserts one `rw [coreAbsorb_rlct]` before the additive block.
+
+Consuming side (sub-5/6/7 + assembly + `ofExactGerm`) re-proven axiom clean-three against the
+gauge-normalized core (`@bd016d0`). The raw-∏T trap is now structurally impossible. The single open
+obligation is `deepest_gauge_squeeze_exists` (cobuild-sub34's `ofExactGerm` target: split + coreAbsorb
++ the one hard `coreAbsorb_rlct` + `loss_germ`). #54 (Schur core = dlnLoss M 0 T̃) feeds both.
