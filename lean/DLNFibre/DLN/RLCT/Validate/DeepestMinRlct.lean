@@ -160,4 +160,39 @@ theorem deepest_le_of_homogeneous_core
     rlctAtOn F (0 : Fin N → ℝ) ≤ rlctAtOn F v :=
   rlctAtOn_lsc_at_origin F v D hFmeas hhomog
 
+/-! ## The route-1 full-B bridge (D1 ≥-leg `rlctAt_deepest_le_of_optimal`)
+
+The CORE-P1 (`deepest_le_of_homogeneous_core`) compares the homogeneous CORE at the deepest point vs a
+fibre point. The full `rlctAt_deepest_le_of_optimal` is on the FULL loss `dlnLoss H B` (`B ≠ 0`, NOT
+homogeneous). Route 1 (core-level, g170-recommended): reduce BOTH endpoints to the core via L2, then
+compare cores. The regular shift `nReg = r(H⁰+Hᴸ−r)` is CONSTANT on `optimalSet` (product rank `= r`
+everywhere — `g170`), so it cancels:
+
+  `rlctAt(dlnLoss H B) deepest = nReg/2 + rlctAtOn(core) (deepest-core)`   [L2 at deepest, PROVEN]
+  `rlctAt(dlnLoss H B) v       = nReg/2 + rlctAtOn(core) (v-core)`          [L2-at-`v`, the open piece]
+  `rlctAtOn(core) (deepest-core) ≤ rlctAtOn(core) (v-core)`                 [CORE-P1, PROVEN]
+  ⟹ `rlctAt(deepest) ≤ rlctAt(v)`.
+
+**The non-rank-exact-`v` mechanism, pinned (NOT glossed):** it is **L2-at-`v`** — the per-`v` L2
+reduction at a general (possibly NON-rank-exact) fibre point `v` (the `deepest_regular_core_reduces`
+analogue at `v`, the broader homogeneous-residual split, #62). The core comparison itself (CORE-P1) is
+wrapper-free; the wrapper is getting the FULL loss to the core at `v`. The full loss at `v` is NOT
+homogeneous, so ray-domination does NOT apply to it directly — L2-at-`v` is genuinely needed. -/
+
+/-- **D1 ≥-leg full-B bridge (route 1), SKELETON.** Given L2 at deepest (`hDeepest`, PROVEN via
+`deepest_regular_core_reduces`), L2-at-`v` (`hAtV`, the open #62 obligation — the per-`v` reduction at a
+general fibre point), and the CORE-P1 comparison (`hCore`, PROVEN via `deepest_le_of_homogeneous_core`
+on the homogeneous core), the deepest point has `≤` local RLCT: `rlctAt(dlnLoss H B) deepest ≤
+rlctAt(dlnLoss H B) v`. The constant shift `nReg/2` cancels. This composes the proven endpoints; the
+genuine remaining obligation is `hAtV` (L2-at-`v`, non-rank-exact charting). -/
+theorem deepest_le_of_optimal_via_L2 {L : ℕ} (H : Fin (L + 1) → ℕ) (r : ℕ)
+    {B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ}
+    (Ldeepest Lv : ℝ≥0∞) (nReg : ℕ) (coreDeepest coreV : ℝ≥0∞)
+    (hDeepest : Ldeepest = (nReg : ℝ≥0∞) / 2 + coreDeepest)
+    (hAtV : Lv = (nReg : ℝ≥0∞) / 2 + coreV)
+    (hCore : coreDeepest ≤ coreV) :
+    Ldeepest ≤ Lv := by
+  rw [hDeepest, hAtV]
+  gcongr
+
 end DLNFibre.DLN.RLCT
