@@ -55,6 +55,20 @@ chart-tree data `(ι : paths, d : ι→ℕ, k h : (i)→Fin(d i)→ℕ, stratum 
    this lemma). **crux2's natural half IF deconflicted with cover** — the 4-step assembly is spelled in
    g133 (`threshold_eq` → pull out ½ → image=Adm via A+S → `lambdaCore` def). Clean, ~30–50 lines.
 
+## DIVISION — SET by controller (2026-06-22, supersedes the proposal below)
+
+The proposal below mis-attributed crux2's half as item 5 (the value-rearrangement). CORRECTED, final:
+- **fm3 = items 1, 2, 4** — the blow-up tree + the `(ι,d,k,h,stratum)` chart family + C1–C4 node
+  handling; discharges (A)/(K)/(C) from the geometry.
+- **crux2 = item 3** — the rlct-cover BRIDGE = `resolution_charts` proper: `rlctAtOn(core) 0 =
+  ⨅ monomialThreshold` given fm3's cover + per-chart thresholds (the `Case222Cover`/`Case222CoverGE`
+  generalization — the ≤/≥ leaf-integrability + the `g5_pivotNode` cover-integral assembly). Plays to the
+  RLCT-measure strength; NOT item 5.
+- **cover = item 5** — `resolution_value_of_atlas` (`⨅ monomialThreshold = ofReal(lambdaCore M)`); = #21.
+- **(S)/(S-min)** — a formaliser per pp2's design (likely folds into fm3's tree as the achiever path).
+Headline: `resolution_charts` [crux2 item 3 ∘ fm3 geometry] ▸ `resolution_value_of_atlas` [cover]
+⟹ `rlctAtOn(core) = lambdaCore`. Interface pinned by pp2's #26.
+
 ## Proposed division (#27, mirrors the producer/consumer decorrelation that caught g134)
 
 - **fm3 = blow-up-tree / GEOMETRY producer:** items 1–3 + 4's construction. Builds the recursive
