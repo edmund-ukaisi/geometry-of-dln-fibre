@@ -5034,6 +5034,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-successor-following-frontier-payload-a4.md`.
 
+Latest A4 update: the Case 2 source-residual/successor-following product slice
+has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved
+Lean name is
+`Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_successorFollowingFactor`.
+It combines the earlier source-residual/source-following product with the
+successor-following restriction equality, giving the bare lower-row product in
+source-pair notation.  The weighted source-chart variant remains deferred
+until a downstream theorem needs it.  This is not chart production, full
+successor `C'^(S+1)`, transition invariance, normal crossings, pole order, or
+RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-residual-successor-following-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-residual-successor-following-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-residual-successor-following-product-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

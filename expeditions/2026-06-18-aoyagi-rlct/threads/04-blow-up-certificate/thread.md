@@ -3741,3 +3741,38 @@ rows, suffix production, full successor `C'^(S+1)`, successor chart-family
 construction, chart coverage, transition invariance, Jacobian arithmetic,
 normal crossings, pole order, termination, RLCT, or repair of the printed
 Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 source-residual/successor-following product
+
+Reproduction:
+`reproduction-case2-source-residual-successor-following-product-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-residual-successor-following-product.md`.
+Review artifact:
+`review-case2-source-residual-successor-following-product-a4.md`.
+
+Lean now states the bare lower-row product in source-pair notation:
+
+```text
+case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_successorFollowingFactor
+```
+
+The RHS is
+
+```text
+case2SourceResidualBlock(postPivotSourceResidual)
+  *
+case2SourceFollowingFactor(S,J+1,Csucc).
+```
+
+This is just the earlier source-residual/source-following product plus the
+successor-following restriction equality.  Per xhigh review, the weighted
+source-chart variant was not added yet; it should be introduced only if a
+downstream theorem needs the full source-pair RHS under the row diagonal.
+
+This remains formula-level lower-row algebra.  It does not prove source/chart
+production of the residual representative or `Csucc`, weighted handoff,
+pivot-row product, old-top rows, suffix product, full successor `C'^(S+1)`,
+next-center nonemptiness, transition invariance, Jacobian arithmetic, normal
+crossings, pole order, termination, RLCT, or repair of the printed Case 2
+vector mismatch.

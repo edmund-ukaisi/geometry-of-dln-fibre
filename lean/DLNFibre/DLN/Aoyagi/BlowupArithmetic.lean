@@ -13111,6 +13111,30 @@ theorem case2SourceFollowingFactor_successorFollowingFactor_succ
     omega
   simp [case2SourceFollowingFactor, case2DisplayedSourceSuccessorFollowingFactor, hj]
 
+/-- Bare lower-row product in source-residual/source-successor notation.
+
+This rewrites the already proved source-residual/source-following product by
+the formula-level successor following factor `Csucc`.  It is a lower-row
+adapter only: no chart production of the source residual or `Csucc`, no pivot
+row, old top rows, suffix product, transition invariant, or RLCT consequence is
+asserted. -/
+theorem case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_successorFollowingFactor
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    (case2DisplayedPaperDppp n hS hcont residual *
+        case2DisplayedPaperCprime n hS hcont residual C).submatrix
+        (fun i ↦
+          Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+        id =
+      case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+          (case2DisplayedPostPivotSourceResidual n hS hcont residual) *
+        case2SourceFollowingFactor (n := n) (S := S) (J := J + 1)
+          (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C) := by
+  rw [case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_sourceFollowingFactor]
+  rw [case2SourceFollowingFactor_successorFollowingFactor_succ]
+
 /-- Concrete displayed source-chart lower-row handoff rewritten through the
 formula-level source successor following factor.
 

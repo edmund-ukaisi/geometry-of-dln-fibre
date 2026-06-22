@@ -321,6 +321,15 @@ next-continuation guard and finite current-center principalization:
 Keep this theorem-only for now; no `SourceChartFrontierBoundaryPackages` field
 was added, and the finite center ideal facts remain facts about the current
 displayed chart center.
+Current source-residual/successor-following product slice:
+`threads/04-blow-up-certificate/reproduction-case2-source-residual-successor-following-product-a4.md`.
+Lean now rewrites the bare lower rows of `D''' * C'` as
+`case2SourceResidualBlock(postPivotSourceResidual) *
+case2SourceFollowingFactor(S,J+1,Csucc)` in
+`case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_successorFollowingFactor`.
+Per xhigh review, the weighted source-chart variant was not added yet; add it
+only when a downstream theorem needs the fully source-pair RHS under the row
+diagonal.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.

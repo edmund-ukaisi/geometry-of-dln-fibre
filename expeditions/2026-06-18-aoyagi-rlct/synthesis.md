@@ -4615,6 +4615,24 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-successor-following-frontier-payload-a4.md`.
 
+Latest A4 Case 2 source-residual/successor-following product update:
+`BlowupArithmetic.lean` now contains
+`case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_successorFollowingFactor`.
+It rewrites the bare lower rows of `D''' * C'` as the source residual block of
+`case2DisplayedPostPivotSourceResidual` times the source following factor of
+`case2DisplayedSourceSuccessorFollowingFactor`.  This is exactly the missing
+source-pair notation for the bare post-pivot product.  Per xhigh review, the
+weighted source-chart handoff variant was not added yet to avoid theorem
+proliferation; add it only if needed downstream.  This still does not prove
+source/chart production, pivot row, old-top/suffix production, full successor
+`C'^(S+1)`, transition invariance, normal crossings, pole order, termination,
+or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-residual-successor-following-product-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-residual-successor-following-product.md`,
+and
+`threads/04-blow-up-certificate/review-case2-source-residual-successor-following-product-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
