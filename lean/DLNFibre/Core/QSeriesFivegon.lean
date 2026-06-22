@@ -1121,6 +1121,30 @@ noncomputable def qSum {n : ℕ} (b : Fin n → ℕ) (d : ℕ) : ℤ⟦X⟧ :=
 theorem adm_zero (b : Fin 0 → ℕ) (d : ℕ) : adm b d = {![d]} := by
   rw [adm, Finset.filter_true_of_mem (fun x _ i ↦ i.elim0), Finset.Nat.antidiagonalTuple_one]
 
+/-- **`flatDelta` as an explicit double sum** over the row/column pairs `a.castSucc < u`. The bridge
+between the recursive exponent and the `innerSum` codimForm pairing. -/
+theorem flatDelta_eq_finsum {n : ℕ} (b : Fin n → ℕ) (x : Fin (n + 1) → ℕ) :
+    flatDelta n b x
+      = ∑ a : Fin n, ∑ u : Fin (n + 1),
+          (if a.castSucc < u then ((b a : ℤ) - x a.castSucc) * x u else 0) := by
+  induction n with
+  | zero => rw [flatDelta]; simp
+  | succ n ih =>
+    rw [flatDelta_succ, ih (Fin.tail b) (Fin.tail x), Fin.sum_univ_succ]
+    congr 1
+    · -- a = 0 row: the cond holds exactly for u = u'.succ
+      rw [Fin.castSucc_zero, Fin.sum_univ_succ, if_neg (lt_irrefl _), zero_add, Finset.mul_sum]
+      refine Finset.sum_congr rfl fun u _ ↦ ?_
+      rw [if_pos (Fin.succ_pos u)]
+    · -- a = a'.succ rows reindex to the tail finsum (shift u = u'.succ)
+      refine Finset.sum_congr rfl fun a' _ ↦ ?_
+      rw [Fin.sum_univ_succ, if_neg (not_lt_of_le (Fin.zero_le _)), zero_add]
+      refine Finset.sum_congr rfl fun u _ ↦ ?_
+      rw [← Fin.succ_castSucc, Fin.succ_lt_succ_iff]
+      by_cases h : a'.castSucc < u
+      · rw [if_pos h, if_pos h, Fin.tail, Fin.tail, Fin.tail, Fin.succ_castSucc]
+      · rw [if_neg h, if_neg h]
+
 /-- **(Q), general form**: `qSum b d = transferRHS (List.ofFn b) d` — the flat q-sum equals the
 last-column transfer. Induction on `n`: base `qSum [] d = P d`; step peels the first block via
 `adm_peel_sum`, the `flatDelta`/P-factor split, one `durfee`, and the IH. -/
