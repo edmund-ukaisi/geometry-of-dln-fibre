@@ -57,7 +57,7 @@ abbrev DeepestSplit (H : Fin (L + 1) → ℕ) (r nGauge : ℕ) : Type :=
 
 /-- The RAW reduced-core loss in flat coordinates: `‖∏ T_s‖² = dlnLoss M 0` via the fixed flattening
 `paramsEquivFlat M`. (The additive-block + spectator-peel run on this raw disjoint core; the
-gauge-normalized `T̃` core reaches it through `coreAbsorb` + `coreAbsorb_rlct`.) -/
+gauge-normalized Schur core `‖∏ S_s‖²` reaches it through `coreAbsorb` + `coreAbsorb_rlct`.) -/
 noncomputable abbrev deepestCoreF (H : Fin (L + 1) → ℕ) (r : ℕ)
     (y : Fin (flatDim (deepestM H r)) → ℝ) : ℝ :=
   dlnLoss (deepestM H r)
@@ -142,10 +142,14 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
   split_mp : MeasurePreserving split volume volume
   /-- `split` carries the flat image of the deepest point to the split origin (deviation coords `= 0`). -/
   split_basepoint : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0
-  /-- **The gauge-absorption** on split coords (sub-34 g153): a self-homeomorphism that turns the RAW
-  core slot `T_s` into the GAUGE-NORMALIZED `T̃_s = T_s·(I−V_sY_s)⁻¹` (the product Schur complement),
-  fixing the regular and spectator slots. NON-MP (unit Jacobian `det(I−VY)^{−M0}`, `=1` at the basepoint)
-  — needed because the raw-`∏T` squeeze is FALSE for matrices, and a pure MP `split` cannot produce `T̃`. -/
+  /-- **The gauge-absorption** on split coords (sub-34 g153/g156, #61): a self-homeomorphism that turns
+  the RAW core slot `T_s` into the per-layer **SCHUR complement** `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (so that
+  `∏ S_s = R|_{E=0}` = cobuild-sub34's #54 Schur core; sympy-verified), fixing the regular and spectator
+  slots. The per-layer SCHUR `S_s` is the correct object — NOT the per-layer UNIT `T_s·(I−V_sY_s)⁻¹`,
+  which the second g153-litmus (run through `coreAbsorb`) showed gives `Φ = 0` at `∏C = blockdiag[1,−ε⁴]`
+  (loss `= ε⁸ > 0` ⟹ the upper squeeze FAILS). NON-MP (bounded-unit Jacobian, `= 1` at the basepoint) —
+  the raw-`∏T` squeeze is FALSE for matrices, and a pure MP `split` cannot produce `S_s`. The MAP itself
+  is the producer's (`cobuild-sub34`'s `layer_schur_blockDiag`); this field is abstract over it. -/
   coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge
   /-- `coreAbsorb` fixes the origin. -/
   coreAbsorb_basepoint : coreAbsorb 0 = 0
@@ -154,10 +158,11 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
   /-- `coreAbsorb` fixes the spectator slot. -/
   coreAbsorb_spectator : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2
   /-- **The producer's unit-Jacobian absorption identity** (the one hard g-unit-peel field, sub-34's
-  obligation): the absorbed-core `Φ` and the raw-disjoint-core `Φ` have the SAME RLCT at the origin.
-  Proof intent: `π := coreAbsorb`, `rawΦ ∘ π = absorbedΦ` (via `coreAbsorb_regular`),
-  `weightedThreshold_transport` deposits `|det Dπ|` in the weight, `weightedThreshold_weight_unit_invariant`
-  peels the bounded unit (`det(I−VY)^{−M0}`). -/
+  obligation): the absorbed-core `Φ` (with the Schur `S_s` core) and the raw-disjoint-core `Φ` have the
+  SAME RLCT at the origin. Proof intent: `π := coreAbsorb`, `rawΦ ∘ π = absorbedΦ` (via
+  `coreAbsorb_regular`), `weightedThreshold_transport` deposits `|det Dπ|` in the weight,
+  `weightedThreshold_weight_unit_invariant` peels the bounded unit (`coreAbsorb`'s Jacobian, `= 1` at
+  the basepoint). -/
   coreAbsorb_rlct :
     rlctAtOn
         (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
