@@ -166,11 +166,25 @@ theorem deepest_reduced_core_identification (M : Fin (L + 1) → ℕ) :
 core)` has RLCT `nReg/2 + rlctAtOn (dlnLoss M 0) 0`: the `nReg` nondegenerate quadratic directions
 split off additively (`rlct_additive_smooth_block`, with `G = √∘(dlnLoss M 0)`, `G² = dlnLoss M 0`
 via `dlnLoss_nonneg`), the loss-independent gauge spectators peel off (`rlctAtOn_spectator_peel`),
-and the reduced block's RLCT is `rlctAtOn (dlnLoss M 0) 0` (sub-7). -/
+and the reduced block's RLCT is `rlctAtOn (dlnLoss M 0) 0` (sub-7).
+
+**Precondition `hGne` (the reduced-core germ-nonvanishing, found in the build — NOT in the g150/g147
+cert).** `rlct_additive_smooth_block` is FALSE for a germ-vanishing block (13th-finding: `G ≡ 0` near
+`0` ⟹ block RLCT `⊤`). So the split needs the reduced core `dlnLoss M 0` to be `≠ 0` a.e. on a nbhd
+of the deepest core point (the flat origin). This holds when the reduced chain `M = H − r` is
+non-degenerate (the zero-product locus `{prod_M = 0}` is then a proper subvariety, measure zero) — it
+can FAIL if some interior `M_s = H_s − r = 0` (then `prod_M ≡ 0`). Carried as a hypothesis here,
+discharged by the chart-existence/non-degeneracy (the same `hGne`-as-hypothesis discipline as
+`GeneralR1Recursion`'s smooth-split). -/
 theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
-    (Γ : DeepestGaugeChart H r B hB hr hL) :
+    (Γ : DeepestGaugeChart H r B hB hr hL)
+    (hGne : ∃ U ∈ 𝓝 (0 : Fin (flatDim (fun s => H s - r)) → ℝ),
+      ∀ᵐ z ∂(volume.restrict U),
+        dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm z) ≠ 0) :
     rlctAtOn
         (fun x : Fin (flatDim H) → ℝ =>
           let q := Γ.split x
@@ -192,10 +206,17 @@ at the deepest point splits as the regular gauge shift `nReg/2` (`nReg = r(H⁰+
 singular **core RLCT** `rlctAtOn (dlnLoss M 0) 0` on the reduced widths `M = H−r`. This is the gauge
 chart's full content: it carries NO `lambdaCore` (R1's value `rlctAtOn (dlnLoss M 0) 0 =
 ofReal(lambdaCore M)` is folded separately). Assembled from the chart-existence (#44c) + the transport
-+ smooth-split sub-lemmas. -/
++ smooth-split sub-lemmas. The `hGne` (reduced-core germ-nonvanishing) precondition — found in the
+build, NOT in the cert; see `deepest_regular_smooth_split` — is carried: it holds when the reduced
+chain is non-degenerate (no interior `M_s = 0`), discharged at the spine wiring. -/
 theorem deepest_regular_core_reduces (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hGne : ∃ U ∈ 𝓝 (0 : Fin (flatDim (fun s => H s - r)) → ℝ),
+      ∀ᵐ z ∂(volume.restrict U),
+        dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm z) ≠ 0) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
       = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
         + rlctAtOn
@@ -205,6 +226,6 @@ theorem deepest_regular_core_reduces (H : Fin (L + 1) → ℕ) (r : ℕ)
             (fun _ => 0 : Params (fun s => H s - r)) := by
   obtain ⟨Γ⟩ := deepest_gauge_chart_exists H r B hB hr hL
   rw [deepest_nonMP_chart_transport_unit H r B hB hr hL Γ,
-    deepest_regular_smooth_split H r B hB hr hL Γ]
+    deepest_regular_smooth_split H r B hB hr hL Γ hGne]
 
 end DLNFibre.DLN.RLCT
