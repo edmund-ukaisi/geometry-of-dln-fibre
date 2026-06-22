@@ -1689,6 +1689,13 @@ No such claim is formalisation-ready until both fields are filled.
   restriction equality, and it remains only a finite adapter for
   `case2DisplayedSourceSuccessorFollowingFactor`, not arbitrary supplied
   `Csucc` source production.
+  The supplied source-production-obligation projection
+  `SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc` now
+  rewrites row-exhausted `Cterm` as original terminal rows of the supplied
+  `Csucc`, using the obligation's formula equality and the existing
+  transported-row/original-successor-row identity.  This is a consequence of
+  supplied data only, not construction of `Csucc`, suffixes, charts, or a
+  transition theorem.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

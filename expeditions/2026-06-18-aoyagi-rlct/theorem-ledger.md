@@ -5223,6 +5223,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-successor-following-handoff-a4.md`.
 
+Latest A4 Case 2 source-production obligation row-exhausted Csucc projection:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc`.
+Given a supplied `SourceProductionObligation` and the row-exhausted branch
+hypothesis, it rewrites the supplied terminal matrix `Cterm` as original
+terminal rows of the supplied successor factor `Csucc`.  The proof uses only
+`rowExhausted_Cterm_eq`, the existing transported-row/original-successor-row
+identity, and `Csucc_eq_formula`.  It is not construction of the obligation,
+`Csucc`, `C'^(S+1)`, suffixes, charts, transitions, normal crossings, pole
+order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-row-exhausted-csucc.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

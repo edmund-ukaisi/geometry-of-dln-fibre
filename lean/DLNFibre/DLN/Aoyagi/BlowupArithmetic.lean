@@ -17942,6 +17942,60 @@ structure SourceProductionObligation
         case2DisplayedSourceTerminalTransportedRows
           n data.stage_pos data.continuation residual C
 
+namespace SourceProductionObligation
+
+/-- Row-exhausted terminal rows rewritten as original rows of the supplied
+successor following factor.
+
+This consumes only the obligation's supplied formula equality for `Csucc`; it
+does not construct `Csucc`, a suffix, charts, transitions, normal crossings,
+pole order, or RLCT data. -/
+theorem rowExhausted_Cterm_eq_originalRows_Csucc
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    {residual : ℕ × ℕ → R}
+    {κ : Fin (L + 1) → Type uκ} [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    {hSuffix : S + 1 ≤ L}
+    {C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
+    {Csucc : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R}
+    (ob :
+      SourceProductionObligation data residual κ hSuffix C Ctail Csucc Cterm)
+    (hrow : prefixMinNat n S = J + 1) :
+    Cterm = case2DisplayedSourceTerminalOriginalRows (J := J) Csucc := by
+  calc
+    Cterm =
+        case2DisplayedSourceTerminalTransportedRows
+          n data.stage_pos data.continuation residual C :=
+      ob.rowExhausted_Cterm_eq hrow
+    _ =
+        case2DisplayedSourceTerminalOriginalRows (J := J)
+          (case2DisplayedSourceSuccessorFollowingFactor
+            n data.stage_pos data.continuation residual C) :=
+      (case2DisplayedSourceTerminalOriginalRows_successorFollowingFactor
+        n data.stage_pos data.continuation residual C).symm
+    _ = case2DisplayedSourceTerminalOriginalRows (J := J) Csucc := by
+      rw [← ob.Csucc_eq_formula]
+
+end SourceProductionObligation
+
 end Case2DisplayedSuppliedChartFamilyBoundary
 
 /-- Displayed Case 2 `Q/P` identity when row weights are a monomial recurrence

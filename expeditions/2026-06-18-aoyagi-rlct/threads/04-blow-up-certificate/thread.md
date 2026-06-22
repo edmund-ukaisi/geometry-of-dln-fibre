@@ -4035,3 +4035,33 @@ successor chart family, prove chart coverage or transition regularity, derive
 corrected post-data from coordinates, add Jacobian arithmetic, prove normal
 crossings, pole order, termination, RLCT, or repair the printed Case 2 vector
 mismatch.
+
+## 2026-06-22 Lean Case 2 obligation row-exhausted Csucc rows
+
+Reproduction:
+`reproduction-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation-row-exhausted-csucc.md`.
+Review artifact:
+`review-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
+
+Lean now projects a row-exhausted terminal-row consequence from a supplied
+`SourceProductionObligation`:
+
+```text
+SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc
+```
+
+If the row-exhausted branch hypothesis
+`prefixMinNat n S = J+1` is supplied, the obligation gives
+`Cterm = transportedRows(C)`.  The existing row identity rewrites
+`transportedRows(C)` as the original terminal rows of the canonical
+formula-level successor following factor, and the obligation's
+`Csucc_eq_formula` rewrites that canonical factor to the supplied `Csucc`.
+
+This is only a consequence of a supplied obligation.  It does not construct
+the obligation, `Csucc`, `C'^(S+1)`, a suffix, a successor chart family,
+coverage, transition regularity, coordinate post-data, Jacobian arithmetic,
+normal crossings, pole order, termination, RLCT, or repair the printed Case 2
+vector mismatch.  Row `J+1` is original as a row of `Csucc`, not as a row of
+the old `C`.

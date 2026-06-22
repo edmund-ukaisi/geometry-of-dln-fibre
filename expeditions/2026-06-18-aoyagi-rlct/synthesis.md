@@ -5229,6 +5229,24 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-successor-following-handoff-a4.md`.
 
+Latest A4 projection update: the supplied
+`SourceProductionObligation` now exposes the row-exhausted terminal matrix as
+original rows of the supplied successor following factor:
+`SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc`.
+This is the safe downstream use of `Csucc_eq_formula`: under the supplied
+row-exhausted branch hypothesis, `Cterm` is transported-prefix rows of old
+`C`, which are already known to be original terminal rows of the canonical
+successor factor, and the obligation identifies that factor with supplied
+`Csucc`.  This still does not construct the obligation, source-produce
+`C'^(S+1)`, produce a suffix, or move the open chart/coverage/post-data
+boundary.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-row-exhausted-csucc-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-row-exhausted-csucc.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-csucc-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

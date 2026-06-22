@@ -103,6 +103,14 @@ not arbitrary supplied-`Csucc` source production unless an equality to
 `case2DisplayedSourceSuccessorFollowingFactor` is separately supplied, and it
 does not move the open source-production boundary.
 
+The supplied-obligation projection
+`SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc` now also
+records the safe row-exhausted use of that equality: if the row-exhausted
+branch hypothesis is supplied, then the terminal matrix `Cterm` is original
+terminal rows of the supplied `Csucc`.  This still constructs neither the
+obligation nor `Csucc`; it only consumes supplied data without moving the hard
+source-production boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and
