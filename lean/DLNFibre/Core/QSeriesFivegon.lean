@@ -1084,4 +1084,37 @@ theorem adm_peel_sum {M : Type*} [AddCommMonoid M] {n : ℕ} (b : Fin (n + 1) �
   · -- term: F x = F (cons (x 0) (tail x))
     intro x _; exact congrArg F (Fin.cons_self_tail x).symm
 
+/-- The peelable ℤ exponent of the flat q-sum: recursively, the first block `(b₀−x₀)·(∑_{i>0} xᵢ)`
+plus the tail's exponent. A pure-ℤ recursion (no `ℕ`-subtraction), peeling under `Fin.cons`. -/
+def flatDelta : (n : ℕ) → (Fin n → ℕ) → (Fin (n + 1) → ℕ) → ℤ
+  | 0, _, _ => 0
+  | (n + 1), b, x =>
+      ((b 0 : ℤ) - x 0) * (∑ i : Fin (n + 1), (x i.succ : ℤ))
+        + flatDelta n (Fin.tail b) (Fin.tail x)
+
+/-- `flatDelta` peels its first block (definitional unfold of the `succ` branch). -/
+theorem flatDelta_succ {n : ℕ} (b : Fin (n + 1) → ℕ) (x : Fin (n + 2) → ℕ) :
+    flatDelta (n + 1) b x
+      = ((b 0 : ℤ) - x 0) * (∑ i : Fin (n + 1), (x i.succ : ℤ))
+        + flatDelta n (Fin.tail b) (Fin.tail x) := rfl
+
+/-- `flatDelta` is `≥ 0` on admissible tuples (each block factor `bᵢ − xᵢ ≥ 0`, the tail-sum `≥ 0`). -/
+theorem flatDelta_nonneg {n : ℕ} (b : Fin n → ℕ) {x : Fin (n + 1) → ℕ}
+    (hx : ∀ i : Fin n, x i.castSucc ≤ b i) : 0 ≤ flatDelta n b x := by
+  induction n with
+  | zero => rw [flatDelta]
+  | succ n ih =>
+    rw [flatDelta_succ]
+    refine add_nonneg (mul_nonneg ?_ ?_) (ih (Fin.tail b) ?_)
+    · have := hx 0; rw [Fin.castSucc_zero] at this; push_cast; omega
+    · exact Finset.sum_nonneg fun i _ ↦ Int.natCast_nonneg _
+    · intro i; have := hx i.succ; simpa [Fin.tail, Fin.castSucc_succ] using this
+
+/-- **The general flat q-sum**: over admissible tuples `adm b d`, weight `X^{flatDelta}·∏ P(xᵢ)·∏ P(bᵢ−x_{i.castSucc})`. -/
+noncomputable def qSum {n : ℕ} (b : Fin n → ℕ) (d : ℕ) : ℤ⟦X⟧ :=
+  ∑ x ∈ adm b d,
+    X ^ (flatDelta n b x).toNat
+      * (∏ I : Fin (n + 1), P (x I))
+      * (∏ i : Fin n, P (b i - x i.castSucc))
+
 end DLNFibre.Core
