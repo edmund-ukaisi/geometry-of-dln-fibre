@@ -56,6 +56,11 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
     (Fin (flatDim H) → ℝ) ≃ₜ
       ((Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ)
         × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin nGauge → ℝ)))
+  /-- `split` is measure-preserving (a coordinate reindex) — needed to transport `rlctAtOn`
+  through it via `rlctAtOn_comp_homeomorph`. -/
+  split_mp : MeasurePreserving split volume volume
+  /-- `split` fixes the origin (the deepest-point basepoint, all deviation coords `= 0`). -/
+  split_zero : split 0 = 0
   /-- The gauge-slice + regular-residual change of variables (a self-homeomorphism of flat space). -/
   chart : (Fin (flatDim H) → ℝ) ≃ₜ (Fin (flatDim H) → ℝ)
   /-- The chart derivative (for the bounded-unit Jacobian fact). -/
