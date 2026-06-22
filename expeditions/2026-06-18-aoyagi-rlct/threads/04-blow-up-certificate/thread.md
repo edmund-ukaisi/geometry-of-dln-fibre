@@ -3865,3 +3865,37 @@ data, post level/gap data, and finite current-center principalization.  It
 does not produce `C'^(S+1)`, produce the suffix, prove chart coverage,
 transition invariance, Jacobian arithmetic, normal crossings, pole order,
 termination, RLCT, or repair of the printed Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 source-current row reindex
+
+Reproduction:
+`reproduction-case2-source-current-row-reindex-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-current-row-reindex.md`.
+Review artifact:
+`review-case2-source-current-row-reindex-a4.md`.
+
+Lean now names the source row interval `1..n(S+1)` and reindexes it against
+the old-top plus pivot-first following-factor stack:
+
+```text
+case2SourceCurrentRowIndex
+case2SourceOldTopPaperCprimeRowEquiv
+case2SourceCurrentFollowingBlock
+case2SourceSuccessorFollowingBlock
+case2SourceCurrentFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv
+case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv
+```
+
+The first matrix identity says that restricting the old source-coordinate
+following factor `C` to source rows `1..n(S+1)` and reindexing by old top
+rows, the pivot row, and post-pivot rows gives
+`verticalBlock oldTop displayedSourceFollowingFactor`.  The second says the
+same source-row restriction for the formula-level successor following factor
+gives `verticalBlock oldTop paperCprime`.
+
+This is finite source-order bookkeeping only.  It does not produce the
+successor following factor from a chart, prove source production of
+`C'^(S+1)`, produce a suffix, prove recurrence or exponent post-data,
+transition invariance, Jacobian arithmetic, normal crossings, pole order,
+termination, RLCT, or repair of the printed Case 2 vector mismatch.

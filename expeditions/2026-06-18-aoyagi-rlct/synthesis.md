@@ -4991,6 +4991,29 @@ not spend another slice trying to promote those printed families into a
 source-backed no-extra theorem unless a corrected independent construction is
 introduced.
 
+Latest A4 Case 2 source-current row reindex update:
+`BlowupArithmetic.lean` now contains, inside the
+`Case2DisplayedSuppliedChartFamilyBoundary` namespace,
+`case2SourceCurrentRowIndex`,
+`case2SourceOldTopPaperCprimeRowEquiv`,
+`case2SourceCurrentFollowingBlock`, `case2SourceSuccessorFollowingBlock`,
+`case2SourceCurrentFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv`, and
+`case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv`.
+These identify source rows `1..n(S+1)` with the old-top rows, the displayed
+pivot row, and post-pivot rows.  Under that equivalence the old following
+block becomes `[oldTop; displayedSourceFollowingFactor]`, while the
+formula-level successor following block becomes `[oldTop; paperCprime]`.
+This is finite row-reindexing only: no chart production of `Csucc`, source
+production of `C'^(S+1)`, suffix production, recurrence/exponent post-data,
+transition invariant, Jacobian arithmetic, normal crossings, pole order,
+termination, or RLCT is proved.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-row-reindex-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-current-row-reindex.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-current-row-reindex-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

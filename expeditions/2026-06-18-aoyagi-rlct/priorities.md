@@ -37,6 +37,15 @@ continuation branch and the pre-to-post recurrence-weight update.  The
 exponent side uses the corrected Case 2 package already isolated in Lean; this
 does not repair the printed vector mismatch as a source theorem.
 
+The current A4 Case 2 source-order frontier now includes the continuing
+source-current row reindex:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-row-reindex-a4.md`.
+It identifies the old-top plus pivot-first following-factor stack with the
+single source row interval `1..n(S+1)`, and rewrites the formula-level
+successor following block as `[oldTop; paperCprime]`.  This is finite
+row-index bookkeeping only, not chart production, transition invariance,
+normal crossings, pole order, or RLCT.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

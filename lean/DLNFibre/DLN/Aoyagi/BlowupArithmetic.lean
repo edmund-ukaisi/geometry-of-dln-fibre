@@ -13192,6 +13192,173 @@ theorem case2DisplayedSourceSuccessorFollowingFactor_oldRow
   exact case2DisplayedSourceSuccessorFollowingFactor_of_ne
     n hS hcont residual C a hi
 
+/-- Source rows `1,...,n(S+1)` in the current Case 2 following factor. -/
+abbrev case2SourceCurrentRowIndex (n : ℕ → ℕ) (S : ℕ) : Type :=
+  (Finset.Icc 1 (n (S + 1)) : Type)
+
+/-- Reindex old top rows, the displayed pivot row, and post-pivot rows by the
+single current source-row interval `1,...,n(S+1)`.
+
+This is finite row bookkeeping only.  It does not construct a source-produced
+successor following factor. -/
+noncomputable def case2SourceOldTopPaperCprimeRowEquiv
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    case2SourceOldTopRowIndex J ⊕
+        (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) ≃
+      case2SourceCurrentRowIndex n S where
+  toFun
+    | Sum.inl i =>
+        ⟨i.1, by
+          rw [Finset.mem_Icc]
+          have hi := Finset.mem_Icc.mp i.2
+          have hJ_width : J ≤ n (S + 1) := by
+            exact le_trans (by omega : J ≤ J + 1)
+              (le_trans hcont
+                (prefixMinNat_le_width n (by omega : 1 ≤ S + 1)))
+          exact ⟨hi.1, le_trans hi.2 hJ_width⟩⟩
+    | Sum.inr (Sum.inl _) =>
+        ⟨J + 1, by
+          rw [Finset.mem_Icc]
+          exact ⟨by omega,
+            le_trans hcont
+              (prefixMinNat_le_width n (by omega : 1 ≤ S + 1))⟩⟩
+    | Sum.inr (Sum.inr j) =>
+        ⟨j.1.1, by
+          rw [Finset.mem_Icc]
+          have hj := (mem_case2ResidualBlockCols n S J j.1.1).mp j.1.2
+          exact ⟨by omega, hj.2⟩⟩
+  invFun i :=
+    if hle : i.1 ≤ J then
+      Sum.inl ⟨i.1, by
+        rw [Finset.mem_Icc]
+        exact ⟨(Finset.mem_Icc.mp i.2).1, hle⟩⟩
+    else if hpiv : i.1 = J + 1 then
+      Sum.inr (Sum.inl ())
+    else
+      Sum.inr (Sum.inr
+        ⟨⟨i.1, by
+            rw [mem_case2ResidualBlockCols]
+            exact ⟨by omega, (Finset.mem_Icc.mp i.2).2⟩⟩,
+          by
+            intro h
+            have hval : i.1 = J + 1 := by
+              exact congrArg Subtype.val h
+            exact hpiv hval⟩)
+  left_inv := by
+    intro i
+    rcases i with i | i
+    · simp [show i.1 ≤ J from (Finset.mem_Icc.mp i.2).2]
+    · rcases i with u | j
+      · simp [show ¬ J + 1 ≤ J by omega]
+      · have hne : j.1.1 ≠ J + 1 := by
+          intro h
+          exact j.2 (Subtype.ext h)
+        have hnot_le : ¬ j.1.1 ≤ J := by
+          have hj := (mem_case2ResidualBlockCols n S J j.1.1).mp j.1.2
+          omega
+        simp [hnot_le, hne]
+  right_inv := by
+    intro i
+    by_cases hle : i.1 ≤ J
+    · simp [hle]
+    · by_cases hpiv : i.1 = J + 1
+      · apply Subtype.ext
+        simp [hpiv]
+      · ext
+        simp [hle, hpiv]
+
+@[simp] theorem case2SourceOldTopPaperCprimeRowEquiv_inl
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (i : case2SourceOldTopRowIndex J) :
+    (case2SourceOldTopPaperCprimeRowEquiv n hS hcont (Sum.inl i) : ℕ) =
+      i.1 :=
+  rfl
+
+@[simp] theorem case2SourceOldTopPaperCprimeRowEquiv_pivot
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : Unit) :
+    (case2SourceOldTopPaperCprimeRowEquiv n hS hcont (Sum.inr (Sum.inl u)) : ℕ) =
+      J + 1 :=
+  rfl
+
+@[simp] theorem case2SourceOldTopPaperCprimeRowEquiv_tail
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (j : pivotComplement (case2DisplayedPivotCol n hS hcont)) :
+    (case2SourceOldTopPaperCprimeRowEquiv n hS hcont (Sum.inr (Sum.inr j)) : ℕ) =
+      j.1.1 :=
+  rfl
+
+/-- Current source-row following block, with rows `1,...,n(S+1)`. -/
+def case2SourceCurrentFollowingBlock
+    {τ R : Type*} (n : ℕ → ℕ) (S : ℕ) (C : ℕ → τ → R) :
+    Matrix (case2SourceCurrentRowIndex n S) τ R :=
+  fun i a ↦ C i.1 a
+
+/-- Formula-level successor following block, restricted to current source
+rows `1,...,n(S+1)`. -/
+def case2SourceSuccessorFollowingBlock
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    Matrix (case2SourceCurrentRowIndex n S) τ R :=
+  fun i a ↦ case2DisplayedSourceSuccessorFollowingFactor
+    n hS hcont residual C i.1 a
+
+/-- The old current source-row following block reindexes to old top rows
+stacked over the displayed pivot-first following factor. -/
+theorem case2SourceCurrentFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv
+    {τ R : Type*}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : ℕ → τ → R) :
+    (case2SourceCurrentFollowingBlock n S C).submatrix
+        (case2SourceOldTopPaperCprimeRowEquiv n hS hcont) id =
+      verticalBlock (case2DisplayedSourceOldTopBlock (J := J) C)
+        (case2DisplayedSourceFollowingFactor n hS hcont C) := by
+  ext i a
+  rcases i with i | i
+  · rfl
+  · rcases i with u | j
+    · cases u
+      rfl
+    · rfl
+
+/-- The formula-level successor source-row following block reindexes to old
+top rows stacked over Aoyagi's transported `C' = Q^{-1}C`. -/
+theorem case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    (case2SourceSuccessorFollowingBlock n hS hcont residual C).submatrix
+        (case2SourceOldTopPaperCprimeRowEquiv n hS hcont) id =
+      verticalBlock (case2DisplayedSourceOldTopBlock (J := J) C)
+        (case2DisplayedPaperCprime n hS hcont residual C) := by
+  ext i a
+  rcases i with i | i
+  · simpa [case2SourceSuccessorFollowingBlock, case2DisplayedSourceOldTopBlock] using
+      case2DisplayedSourceSuccessorFollowingFactor_oldRow
+        n hS hcont residual C i a
+  · rcases i with u | j
+    · cases u
+      simpa [case2SourceSuccessorFollowingBlock, case2DisplayedPaperCprimeTop] using
+        case2DisplayedSourceSuccessorFollowingFactor_pivotRow
+          n hS hcont residual C a
+    · have hne : j.1.1 ≠ J + 1 := by
+        intro h
+        exact j.2 (Subtype.ext h)
+      have hsucc :=
+        case2DisplayedSourceSuccessorFollowingFactor_of_ne
+          n hS hcont residual C a hne
+      have htail :=
+        case2DisplayedPaperCprimeTail_apply n hS hcont residual C j a
+      simpa [case2SourceSuccessorFollowingBlock, case2DisplayedPaperCprimeTail]
+        using hsucc.trans htail.symm
+
 /-- The next same-stage following-factor restriction is unchanged by replacing
 only row `J+1`. -/
 theorem case2SourceFollowingFactor_successorFollowingFactor_succ

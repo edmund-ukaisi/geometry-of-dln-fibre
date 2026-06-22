@@ -5118,6 +5118,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-stack-a4.md`.
 
+Latest A4 update: the Case 2 source-current row reindex slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`, inside the
+`Case2DisplayedSuppliedChartFamilyBoundary` namespace.  The proved Lean names are
+`case2SourceCurrentRowIndex`, `case2SourceOldTopPaperCprimeRowEquiv`,
+`case2SourceCurrentFollowingBlock`, `case2SourceSuccessorFollowingBlock`,
+`case2SourceCurrentFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv`, and
+`case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv`.
+They reindex source rows `1..n(S+1)` as old-top rows, the displayed pivot row,
+and post-pivot rows.  The old source following block reindexes to
+`[oldTop; displayedSourceFollowingFactor]`, and the formula-level successor
+following block reindexes to `[oldTop; paperCprime]`.  This is finite
+source-order bookkeeping only, not chart production of `Csucc`, source
+production of `C'^(S+1)`, suffix production, recurrence/exponent post-data,
+transition invariance, Jacobian arithmetic, normal crossings, pole order,
+termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-row-reindex-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-current-row-reindex.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-current-row-reindex-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
