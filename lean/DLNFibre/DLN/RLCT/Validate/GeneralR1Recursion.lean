@@ -132,21 +132,63 @@ theorem hardPivot_schur_blockId {m n l : ℕ}
     abel_nf <;>
     ring_nf
 
-/-- **G3.2 crux — the det-1 Schur straightening existence (SPECIFY, body `sorry`; mine).** Within a
-post-blow-up chart (unit pivot available), there exists a measure-preserving det-1 Schur straightening
-realising the `resolvedForm`: the chart `χ` + unit `u` factoring the core as
-`u·(regular block + reduced-chain core)`. The heavy Schur-construction crux (the `(uᵢ,ψᵢ)` adapted
-basis; pp-hall spells the sub-steps). NO monomial weight — that's fm's blow-up. A sorry'd existence ⟹
-vacuous recursion. (Stated abstractly on flat coords; the upstream unit-pivot hypothesis is left
-implicit pending the exact pivot-data interface with fm's blow-up.) -/
-theorem schur_straighten_exists {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
-    (nReg N N' : ℕ) (flatCore : (Fin N → ℝ) → ℝ) :
+/-- **G3.2 crux — the det-1 Schur straightening, HONEST packaging form (GREEN, mine).**
+
+The unconditional existence `∃ χ u …, IsSchurStraighten M S nReg flatCore …` for an *arbitrary*
+`flatCore` is **false** (two independent obstructions, decorrelated pp/Codex 2026-06-22, controller
+Decision (A) 2026-06-22 — dropped):
+- (i) DIMENSION — a homeomorphism `(Fin nReg → ℝ) × (Fin N' → ℝ) ≃ₜ (Fin N → ℝ)` needs
+  `N = nReg + N'` (invariance of domain); quantifying the three dims independently makes it impossible
+  when `N ≠ nReg + N'`.
+- (ii) CLEAN-FACTOR — `redCore_eq` pins `flatRedCore 0 = 0`, so `factor` forces `flatCore (χ 0) = 0`
+  *and* a clean product factorisation `flatCore∘χ = u·(∑Eᵢ²+core)`; the design finding
+  `g128-L2-seam-squeeze-bridge.md` shows that exact clean form is **NOT** reachable by a measure-
+  preserving change of variables (the honest route is the two-sided SQUEEZE), so even with
+  `flatCore = dlnLoss M 0` the unconditional form fails.
+
+So the deliverable is the **packaging**: the heavy *existence* of the measure-preserving chart `χ`
+realising the clean factor `flatCore∘χ =ᶠ u·(∑Eᵢ²+core)` is a separate downstream obligation (the chart-
+existence content — disputed clean-MP-c-o-v vs #127 squeeze, controller reconciling); supplied here as a
+hypothesis, this lemma assembles the `IsSchurStraighten` package, discharging the bookkeeping fields
+(`umeas`, `redCore_eq`, `pivot_active`, `active_nonempty`, `measure_drops`) from the `ChainDimSplit` +
+the supplied data. The locked `IsSchurStraighten` interface is intact; the statement is exactly what is
+true. -/
+theorem schur_straighten_of_data {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    (nReg N N' : ℕ) (flatCore : (Fin N → ℝ) → ℝ)
+    (redEmbed : (Fin N' → ℝ) → Params S.red)
+    (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
+    (hχmp : MeasurePreserving χ volume volume)
+    (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) (humeas : Measurable u)
+    (active : Finset (Fin N')) (p : Fin N') (hp : p ∈ active)
+    -- the supplied clean germ-factorisation (the g128 straightening content, downstream):
+    (hfactor : (fun q => flatCore (χ q)) =ᶠ[nhds 0]
+        (fun q => u q * ((∑ i, q.1 i ^ 2) + dlnLoss S.red 0 (redEmbed q.2)))) :
     ∃ (flatRedCore : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ)
-      (redEmbed : (Fin N' → ℝ) → Params S.red)
-      (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
-      (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) (active : Finset (Fin N')) (p : Fin N'),
-      IsSchurStraighten M S nReg flatCore flatRedCore redEmbed χ u active p := by
-  sorry
+      (redEmbed' : (Fin N' → ℝ) → Params S.red)
+      (χ' : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
+      (u' : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) (active' : Finset (Fin N')) (p' : Fin N'),
+      IsSchurStraighten M S nReg flatCore flatRedCore redEmbed' χ' u' active' p' := by
+  refine ⟨fun q => (∑ i, q.1 i ^ 2) + dlnLoss S.red 0 (redEmbed q.2),
+    redEmbed, χ, u, active, p, ?_⟩
+  refine
+    { measurePreserving := hχmp
+      umeas := humeas
+      redCore_eq := fun q => rfl
+      factor := hfactor
+      pivot_active := hp
+      active_nonempty := ⟨p, hp⟩
+      measure_drops := ?_ }
+  -- ∑ S.red < ∑ M from drop + red = M with 0 < ∑ drop (the ChainDimSplit termination measure).
+  have hle : ∑ s, S.red s ≤ ∑ s, M s :=
+    Finset.sum_le_sum fun s _ => by have := S.hsum s; omega
+  have hne : ∑ s, S.red s ≠ ∑ s, M s := by
+    intro hEq
+    have hdrop0 : ∑ s, S.drop s = 0 := by
+      have hadd : ∑ s, S.drop s + ∑ s, S.red s = ∑ s, M s := by
+        rw [← Finset.sum_add_distrib]; exact Finset.sum_congr rfl fun s _ => S.hsum s
+      omega
+    exact absurd hdrop0 (by have := S.hdrops; omega)
+  omega
 
 /-! ## The G3.2 recursion step (SOUND conditional form — PROVEN)
 
