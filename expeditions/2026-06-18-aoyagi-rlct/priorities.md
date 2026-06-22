@@ -431,6 +431,14 @@ displayed value to `D.exponentMinimum`; the A0 ratio-chart-count lemmas then
 turn the supplied displayed-ratio counts into the chartwise global-minimum
 counts used by `D.exponentOrder`.
 
+Current A6 counted-datum terminal-order handoff:
+`threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`.
+These wrappers are convenience siblings of the raw-bound terminal-order
+sockets.  They replace only the raw terminal upper-bound hypothesis by a
+supplied `TC.TerminalMinimumCountDatumClassifier`, keeping branch-label
+injectivity, active-ratio certificates, chart-count certificates, selected
+provenance, and A0 extraction explicit.
+
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
 terminal-family convenience theorem for `TC.terminalMinimumLabels`.  It also

@@ -2970,7 +2970,9 @@ No such claim is formalisation-ready until both fields are filled.
   supplied final assembly boundary reproduced at
   `threads/06-dln-translation/reproduction-theorem2-final-assembly-a6.md`;
   displayed-ratio count terminal-order bridge reproduced at
-  `threads/06-dln-translation/reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`.
+  `threads/06-dln-translation/reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`;
+  counted-datum classifier terminal-order bridge reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   conditional bridge reviewed at
@@ -2981,6 +2983,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-theorem2-active-chart-terminal-order-bridge-a6.md`;
   displayed-ratio count terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-ratio-count-terminal-order-bridge-a6.md`;
+  counted-datum classifier terminal-order bridge reviewed at
+  `threads/06-dln-translation/review-theorem2-countdatum-terminal-order-bridge-a6.md`;
   final assembly reviewed at
   `threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
@@ -3051,6 +3055,20 @@ No such claim is formalisation-ready until both fields are filled.
   and
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_ratioCount_terminalMinimumLabels_card`
   in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
+  counted-datum classifier terminal-order bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_terminalMinimumLabels_card_of_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLabels_card_of_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_terminalMinimumLabels_card_of_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_terminalMinimumLabels_card_of_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_chartCount_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_ratioCount_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_terminalMinimumLabels_card_of_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_terminalMinimumLabels_card_of_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_chartCount_classifier`, and
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_ratioCount_classifier`
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
   supplied final boundary:
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary`,
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_eq_natCast_sub`,
@@ -3099,7 +3117,10 @@ No such claim is formalisation-ready until both fields are filled.
   count, replaces the raw chart/order equality.  Also proved a displayed-ratio
   count bridge: chart counts may be supplied at the displayed Theorem 2 lambda
   value and are rewritten through the active-ratio minimum certificate to the
-  `D.exponentMinimum` counts used by `D.exponentOrder`.  Selected rank-width
+  `D.exponentMinimum` counts used by `D.exponentOrder`.  Also proved
+  counted-datum classifier variants of the same terminal-order sockets, where
+  a supplied `TC.TerminalMinimumCountDatumClassifier` replaces only the raw
+  terminal upper-bound hypothesis.  Selected rank-width
   hypotheses and the strict source-selected inequality remain explicit
   auxiliary theorem inputs where used.
 - **Assumed.** cited analytic interface A0 and source hypotheses.

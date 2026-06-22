@@ -5531,6 +5531,30 @@ and
 Review:
 `threads/06-dln-translation/review-theorem2-ratio-count-terminal-order-bridge-a6.md`.
 
+Latest A6 counted-datum terminal-order handoff:
+`Theorem2TerminalOrderBridge.lean` now has counted-datum classifier variants
+of the terminal-order final sockets.  Each variant keeps the previous
+active-ratio/chart-count hypotheses and supplied branch-label injectivity, but
+replaces the raw upper-bound input
+`TC.terminalMinimumLabels.card <= data.theorem2OrderFormula` by a supplied
+`TC.TerminalMinimumCountDatumClassifier`.  The new names use the suffix
+`_of_classifier` or `_classifier` to stay within the line-length linter:
+`theorem2FiniteExponentFormulaHypothesis_of_terminalMinimumLabels_card_of_classifier`,
+`theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLabels_card_of_classifier`,
+`theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_classifier`,
+`theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_classifier`,
+the corresponding four `theorem2SuppliedFinalBoundary...` wrappers, and the
+corresponding four `lambda_and_poleOrder...` pair wrappers.  This is finite
+A5-to-A6 handoff only; it does not construct the classifier, branch-label
+injectivity, back-to-label data, source chart counts, pole order without A0,
+normal crossings, or RLCT.
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-countdatum-terminal-order-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-countdatum-terminal-order-bridge-a6.md`.
+
 Latest A4 Case 2 continuing supplied-`Csucc` stack consumer:
 `BlowupArithmetic.lean` now contains
 `Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_Csucc_currentFollowingBlock_eq_formula`

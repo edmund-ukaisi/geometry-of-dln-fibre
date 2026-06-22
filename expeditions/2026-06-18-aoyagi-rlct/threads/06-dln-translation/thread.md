@@ -339,3 +339,49 @@ Boundary: this is only a ratio-count rewrite and final-socket handoff.  It
 does not prove source chart counts, chart-count upper bounds, source-backed
 Lemma 5 no-extra coverage, pole order without A0, normal crossings, or RLCT
 extraction.
+
+## Current slice - 2026-06-22, counted-datum terminal-order handoff
+
+The A6 terminal-order bridge now has counted-datum classifier variants of all
+four terminal-order socket levels: raw terminal-label order equality,
+active-ratio minimum, active chart-count, and displayed-ratio chart-count.
+Each variant keeps supplied branch-label injectivity and replaces only the raw
+upper-bound input
+
+```text
+TC.terminalMinimumLabels.card <= data.theorem2OrderFormula
+```
+
+by a supplied
+
+```text
+TC.TerminalMinimumCountDatumClassifier.
+```
+
+Lean names:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_terminalMinimumLabels_card_of_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_terminalMinimumLabels_card_of_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_terminalMinimumLabels_card_of_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_terminalMinimumLabels_card_of_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_chartCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_ratioCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_terminalMinimumLabels_card_of_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_terminalMinimumLabels_card_of_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_chartCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_ratioCount_classifier
+```
+
+Artifacts:
+
+- `reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`;
+- `statement-card-a6-theorem2-countdatum-terminal-order-bridge.md`;
+- `review-theorem2-countdatum-terminal-order-bridge-a6.md`.
+
+Boundary: this is finite A5-to-A6 handoff only.  It does not construct the
+classifier, branch-label injectivity, back-to-label map, Eq3/Eq4/Eq5
+coverage, source labels, terminal `tilde t=0`, chart production, pole order
+without A0, normal crossings, or RLCT extraction.
