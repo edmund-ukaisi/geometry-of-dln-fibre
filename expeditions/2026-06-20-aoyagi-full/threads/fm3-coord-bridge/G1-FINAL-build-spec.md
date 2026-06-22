@@ -64,6 +64,29 @@ surface the (2,2,2) IsRouteMCover instance when green. EVERY signature now verif
 adapters, no shape gaps. The grind (routeStep + cover_le/cover_ge_div + Fmeas/Uopen/Umem + mult-bound/binding-leaf)
 is pure formalisation against the signed-off interface. === COORDINATION ARC EXHAUSTIVELY CLOSED (g155→g182). ===
 
+## cover_le SEAM — CONSTANT-CARRYING RHS (g185, fm3 flag + crux2 verdict, verified vs bridge proof)
+I flagged: `∫⁻_U |F|^(−c') ≤ Σ_ι ∫_{[0,1]^d} bare-monomialIntegrand` is LITERALLY FALSE — the per-chart unit
+lower bound a (≥a>0, g183) gives |F|^(−c') ≤ a^{−c'}·(monomial)^{−c'}, and the signed-box→[0,1]^d orthant
+fold gives 2^d; both INFLATE. So bare cover_le (no constant) is unprovable (the (c) "fold into the box"
+route is impossible — the a^{−c'}·2^d inflation is IRREDUCIBLE).
+crux2's VERDICT (verified vs the routeM_rlctAtOn_eq_iInf proof body, RouteMBridge): the fix is (a) — WEAKEN
+cover_le to carry a finite constant C(c'):
+  cover_le : ∀ c', ∫⁻_U |F|^(−c') ≤ C(c') · ∑_ι ∫_{unitBox(d i)} monomialIntegrand (d i)(k i)(h i) c'
+  where C : NNReal → ℝ≥0∞ finite (C(c') = a^{−c'}·2^d < ⊤ for c' finite, a>0).
+SOUND (I verified the bridge proof, RouteMBridge:routeM_rlctAtOn_eq_iInf):
+- ≥-leg: `refine lt_of_le_of_lt (hcover.cover_le c') ?_` uses cover_le ONLY for finiteness (∫_U < ⊤ from
+  Σ∫ < ⊤). With the constant: lt_of_le_of_lt (cover_le c') (ENNReal.mul_lt_top hC_fin hΣ_fin) — C·finite =
+  finite. ✓ (verified: the ≥-leg is rlctAtOn_ge_of_integral_lt + the Σ_lt_top split, exponent-finiteness only.)
+- t = ⨅ monomialThreshold is `set` from the EXPONENTS (d,k,h) ONLY (the ≤-leg via cover_ge_div + exists_lt_of_
+  ciInf_lt); C(c') NEVER enters the ⨅. Headline ⨅ UNCHANGED. (Load-bearing: the constant moves finiteness, NOT
+  the threshold.)
+- ≤-leg uses only cover_ge_div — untouched (constants don't affect ¬IntegrableOn).
+crux2 makes the STRUCTURE change on route-m-atlas (cover_le RHS gains C(c'); the ≥-leg gains the mul_lt_top).
+MY cover_le deliverable RHS now = C(c')·Σ∫; I fold BOTH a^{−c'} (unit, g183) AND 2^d (orthant) into C(c') via
+the banked integrableOn_monomial_mul_unit_iff + integrableOn_Icc_symm_of_even; box STAYS unitBox [0,1]^d.
+CONFIRMED the shape to crux2. (Flagged controller: RouteMBridge change on route-m-atlas w/ #38.) GOOD FIND —
+the bare cover_le would have walled the cover_le proof; the constant-carrying form is sound + headline-neutral.
+
 ## CONSUME-SHAPE MINIMAL — already right, NOT over-enriched (g184, crux2 HOLD + verified)
 crux2 HOLD before enriching NodeChartFamily: read the bridge proof body of routeM_rlctAtOn_eq_iInf — it
 references ONLY the 5 fields (cover_le/cover_ge_div/Fmeas/Uopen/Umem) + Skeleton atoms; NEVER a chart φ_i /
