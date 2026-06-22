@@ -5014,6 +5014,24 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-row-reindex-a4.md`.
 
+Latest A4 update: the Case 2 source-current stack slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean name is
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withCorrectedPostData`.
+It restates the previous continuing old-top/source-suffix stack theorem in
+source-current row coordinates, replacing `[oldTop; displayedSourceFollowingFactor]`
+and `[oldTop; paperCprime]` by submatrices of
+`case2SourceCurrentFollowingBlock` and `case2SourceSuccessorFollowingBlock`
+under the finite source-row equivalence.  The theorem preserves next-center
+nonemptiness, corrected post exponent data, post level/gap data, and finite
+current-center principalization.  It is not chart production of `Csucc`,
+source production of `C'^(S+1)`, source-suffix production, transition
+invariance, normal crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-current-stack-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

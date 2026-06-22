@@ -46,6 +46,16 @@ successor following block as `[oldTop; paperCprime]`.  This is finite
 row-index bookkeeping only, not chart production, transition invariance,
 normal crossings, pole order, or RLCT.
 
+That reindex has now been consumed by the continuing source-current stack
+wrapper:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-a4.md`.
+Lean restates the old-top/source-suffix stack theorem using
+`case2SourceCurrentFollowingBlock.submatrix e id` and
+`case2SourceSuccessorFollowingBlock.submatrix e id`, while preserving the
+same non-stack payloads.  This still does not produce `Csucc`, source-produce
+`C'^(S+1)`, produce the source suffix, prove transition invariance, normal
+crossings, pole order, or RLCT.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

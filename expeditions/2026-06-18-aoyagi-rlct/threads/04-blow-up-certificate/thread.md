@@ -3899,3 +3899,36 @@ successor following factor from a chart, prove source production of
 `C'^(S+1)`, produce a suffix, prove recurrence or exponent post-data,
 transition invariance, Jacobian arithmetic, normal crossings, pole order,
 termination, RLCT, or repair of the printed Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 source-current stack
+
+Reproduction:
+`reproduction-case2-source-current-stack-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-current-stack.md`.
+Review artifact:
+`review-case2-source-current-stack-a4.md`.
+
+Lean now consumes the source-current row reindexing API to restate the
+continuing old-top/source-suffix stack identity in source-current row
+coordinates:
+
+```text
+sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withCorrectedPostData
+```
+
+The proof reuses the older
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData`
+payload and rewrites only the two following-factor blocks.  The old side is
+`case2SourceCurrentFollowingBlock.submatrix e id`; the transported side is
+`case2SourceSuccessorFollowingBlock.submatrix e id`, with `e` the finite
+source-row equivalence from old-top/pivot/post-pivot rows to the interval
+`1..n(S+1)`.
+
+This is a row-presentation wrapper.  It carries the previous next-center
+nonemptiness, corrected exponent-domain data, post level/gap data, and finite
+current-center principalization facts, but does not produce `Csucc`, produce
+`C'^(S+1)`, produce the source suffix, prove recurrence/exponent post-data
+from coordinates, transition invariance, Jacobian arithmetic, normal
+crossings, pole order, termination, RLCT, or repair of the printed Case 2
+vector mismatch.

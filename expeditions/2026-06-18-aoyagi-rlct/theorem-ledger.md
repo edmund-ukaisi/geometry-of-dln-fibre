@@ -5139,6 +5139,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-row-reindex-a4.md`.
 
+Latest A4 Case 2 source-current stack update:
+`BlowupArithmetic.lean` now contains, inside the
+`Case2DisplayedSuppliedChartFamilyBoundary` namespace,
+`sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withCorrectedPostData`.
+This is a row-presentation wrapper around
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData`.
+It rewrites the old following stack as
+`case2SourceCurrentFollowingBlock.submatrix e id` and the transported stack as
+`case2SourceSuccessorFollowingBlock.submatrix e id`, where `e` is the finite
+source-row equivalence from old-top/pivot/post-pivot rows to
+`1..n(S+1)`.  The theorem preserves the earlier next-center nonemptiness,
+corrected post exponent data, post level/gap data, and finite current-center
+principalization facts.  It does not produce `Csucc`, source-produce
+`C'^(S+1)`, produce the source suffix, prove transition invariance, normal
+crossings, pole order, termination, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-current-stack-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
