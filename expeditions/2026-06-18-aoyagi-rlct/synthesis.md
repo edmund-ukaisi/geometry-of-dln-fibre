@@ -4674,6 +4674,23 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-row-exhausted-successor-prefix-a4.md`.
 
+Latest A4 Case 2 continuing old-top/source-suffix stack update:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData`.
+This lifts the supplied paper `Q/P` identity through unchanged old top rows
+and multiplies the full pivot-first stack by the raw source suffix
+`sourceSuffixProduct`.  Unlike the lower-row arbitrary-`F` wrapper, it keeps
+the old top rows and transported pivot row by preserving Aoyagi's paper
+factor `C' = Q^-1 C` in pivot-first order.  It still stays below full
+source-ordered successor production: no row equivalence to a source-produced
+`C'^(S+1)`, suffix production, chart coverage, transition invariant, normal
+crossing, pole order, termination, or RLCT is asserted.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-oldtop-source-suffix-stack-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-oldtop-source-suffix-stack.md`,
+and
+`threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-stack-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

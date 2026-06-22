@@ -3837,3 +3837,31 @@ Per xhigh review, this is theorem-only and no new
 construct a full successor `C'^(S+1)`, prove transition invariance, normal
 crossings, pole order, termination, RLCT, or repair of the printed Case 2
 vector mismatch.
+
+## 2026-06-22 Lean Case 2 continuing old-top/source-suffix stack
+
+Reproduction:
+`reproduction-case2-continuing-oldtop-source-suffix-stack-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-oldtop-source-suffix-stack.md`.
+Review artifact:
+`review-case2-continuing-oldtop-source-suffix-stack-a4.md`.
+
+Lean now packages the continuing branch's old-top/source-suffix stack:
+
+```text
+sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData
+```
+
+The theorem lifts the supplied paper `Q/P` identity through unchanged old top
+rows and then right-multiplies by the raw Aoyagi source suffix
+`sourceSuffixProduct`.  It is stronger than the lower-row arbitrary-`F`
+wrapper because it keeps the old top rows and the transported pivot row in
+paper `C'=Q^-1 C`; it is still a supplied-boundary pivot-first stack identity,
+not source production of a source-ordered successor object.
+
+The theorem also carries next-center nonemptiness, corrected post exponent
+data, post level/gap data, and finite current-center principalization.  It
+does not produce `C'^(S+1)`, produce the suffix, prove chart coverage,
+transition invariance, Jacobian arithmetic, normal crossings, pole order,
+termination, RLCT, or repair of the printed Case 2 vector mismatch.

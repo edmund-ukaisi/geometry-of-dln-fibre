@@ -5086,6 +5086,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-row-exhausted-successor-prefix-a4.md`.
 
+Latest A4 update: the Case 2 continuing old-top/source-suffix stack slice has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+name is
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData`.
+It lifts the supplied paper `Q/P` identity through unchanged old top rows,
+then right-multiplies by the raw source suffix `sourceSuffixProduct`.  This is
+not the lower-row arbitrary-`F` wrapper: the theorem keeps the old top rows and
+transported pivot row in paper `C'=Q^-1 C`.  It remains a supplied-boundary
+pivot-first stack identity, not source production of a source-ordered
+successor `C'^(S+1)`, source production of the suffix, transition invariance,
+normal crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-oldtop-source-suffix-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-oldtop-source-suffix-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-stack-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

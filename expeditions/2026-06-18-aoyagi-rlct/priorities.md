@@ -344,6 +344,11 @@ original rows of the formula-level successor following factor `Csucc`, while
 keeping row exhaustion distinct from actual next-width exhaustion.  This is
 only a row-presentation boundary; it is not source production of `Csucc`, the
 suffix, or full successor chart data.
+Current continuing old-top/source-suffix stack slice:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-oldtop-source-suffix-stack-a4.md`.
+Lean now lifts the supplied paper `Q/P` identity through unchanged old top rows
+and multiplies by the raw source suffix, preserving paper `C'=Q^-1 C` in
+pivot-first order.  This is not full source-ordered successor production.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.
@@ -366,8 +371,11 @@ Immediate order:
    weighted lower-row product to paper `C'`, and package
    `SuppliedTerminalCprimeBridge`.  The missing frontier is source-production
    of the full successor object / following-product data from the displayed
-   chart across the continuing and terminal branches.  A thin total-source
-   adapter for paper `C'` is allowed only if it directly serves that frontier.
+   chart across the continuing and terminal branches.  The continuing
+   old-top/source-suffix stack is now banked as a supplied-boundary identity,
+   so further A4 work should avoid equivalent stack wrappers unless a
+   downstream theorem directly consumes them.  A thin total-source adapter for
+   paper `C'` is allowed only if it directly serves that frontier.
    Pen-and-paper reproduction first.  Audit:
    `threads/04-blow-up-certificate/source-frontier-audit-case2-paper-cprime-a4.md`.
 2. Continue the no-extra/classifier frontier only with explicit supplied
