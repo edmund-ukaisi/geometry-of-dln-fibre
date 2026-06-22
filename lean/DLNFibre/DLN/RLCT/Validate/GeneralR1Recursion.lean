@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Skeleton
 import Mathlib.LinearAlgebra.Matrix.SchurComplement
+import Mathlib.LinearAlgebra.Matrix.Vec
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion` — the general-M resolution recursion (det-1 phase)
@@ -131,6 +132,56 @@ theorem hardPivot_schur_blockId {m n l : ℕ}
       Matrix.neg_mul, Matrix.mul_neg, add_zero, zero_add, Matrix.add_mul, Matrix.mul_add] <;>
     abel_nf <;>
     ring_nf
+
+/-! ## Body sub-lemma (3): the det-1 Schur straightening is MEASURE-PRESERVING
+
+The straightening `A ↦ L · A · R` (with `L, R` the det-1 block transvections of `hardPivot_schur_blockId`)
+is measure-preserving for Lebesgue `volume`. Route (Codex g129, decorrelated — the Kronecker-det route
+beats per-entry shear composition): vectorize via `Matrix.vec`, so `vec (L·A·R) = (Rᵀ ⊗ₖ L) *ᵥ vec A`
+(`kronecker_mulVec_vec`); the big matrix `Rᵀ ⊗ₖ L` has `det = det L ^ |κ| · det R ^ |ρ| = 1`
+(`det_kronecker` + `det_transpose`); a det-1 matrix acting by `mulVec` preserves `volume`
+(`Real.map_matrix_volume_pi_eq_smul_volume_pi`, scale `|det|⁻¹ = 1`). **No monomial weight (det 1)** —
+the (A)-lane contributes no Jacobian; the monomial comes only from fm's (B) blow-up. Reusable bedrock,
+gate-independent of the chart-existence FORM (clean-MP vs squeeze). Stated on the vectorized parameter
+space `(κ × ρ) → ℝ` (which carries `volume`; the `Matrix ρ κ ℝ` wrapper does not). -/
+
+open scoped Matrix in
+/-- **A det-1 matrix acts measure-preservingly by `mulVec`** on `ι → ℝ`. The Lebesgue scale factor of a
+linear matrix action is `|det|⁻¹` (`Real.map_matrix_volume_pi_eq_smul_volume_pi`); at `det = 1` it is `1`,
+so the action preserves `volume`. (Reusable: any det-1 linear matrix action.) -/
+theorem mp_mulVec_of_det_one {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (M : Matrix ι ι ℝ) (hM : M.det = 1) :
+    MeasurePreserving (fun v : ι → ℝ => M *ᵥ v) volume volume := by
+  have hne : M.det ≠ 0 := by rw [hM]; norm_num
+  have hmap := Real.map_matrix_volume_pi_eq_smul_volume_pi hne
+  rw [hM] at hmap
+  simp only [inv_one, abs_one, ENNReal.ofReal_one, one_smul] at hmap
+  refine ⟨(Matrix.toLin' M).continuous_of_finiteDimensional.measurable, ?_⟩
+  rw [show (fun v : ι → ℝ => M *ᵥ v) = ⇑(Matrix.toLin' M) from by ext v; simp [Matrix.toLin'_apply]]
+  exact hmap
+
+open scoped Matrix Kronecker in
+/-- **The det-1 two-sided Schur transvection is MEASURE-PRESERVING** on the vectorized parameter space
+`(κ × ρ) → ℝ`: `v ↦ (Rᵀ ⊗ₖ L) *ᵥ v` (the `vec`-image of `A ↦ L·A·R`) preserves `volume`, since
+`det (Rᵀ ⊗ₖ L) = det L ^ |κ| · det R ^ |ρ| = 1`. The (A)-lane straightening carries NO Jacobian weight. -/
+theorem mp_schur_transvection_vec {ρ κ : Type*} [Fintype ρ] [Fintype κ]
+    [DecidableEq ρ] [DecidableEq κ]
+    (L : Matrix ρ ρ ℝ) (R : Matrix κ κ ℝ) (hL : L.det = 1) (hR : R.det = 1) :
+    MeasurePreserving (fun v : (κ × ρ) → ℝ => (Rᵀ ⊗ₖ L) *ᵥ v) volume volume := by
+  refine mp_mulVec_of_det_one (Rᵀ ⊗ₖ L) ?_
+  rw [Matrix.det_kronecker, Matrix.det_transpose, hL, hR]; simp
+
+open scoped Matrix Kronecker in
+/-- **The `vec`-transport identity for the Schur straightening.** `vec (L · A · R) = (Rᵀ ⊗ₖ L) *ᵥ vec A`
+(`kronecker_mulVec_vec` with `B := Rᵀ`, `transpose_transpose`). Lets the matrix-level straightening
+`A ↦ L·A·R` (`hardPivot_schur_blockId`) cross to the measure-preserving vector map
+`mp_schur_transvection_vec` on the vectorized coordinates. -/
+theorem vec_schur_transvection {ρ κ : Type*} [Fintype ρ] [Fintype κ]
+    (L : Matrix ρ ρ ℝ) (R : Matrix κ κ ℝ) (A : Matrix ρ κ ℝ) :
+    Matrix.vec (L * A * R) = (Rᵀ ⊗ₖ L) *ᵥ Matrix.vec A := by
+  have h := Matrix.kronecker_mulVec_vec L A (Rᵀ)
+  rw [Matrix.transpose_transpose] at h
+  rw [h]
 
 /-- **G3.2 crux — the det-1 Schur straightening, HONEST packaging form (GREEN, mine).**
 
