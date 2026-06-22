@@ -105,4 +105,27 @@ theorem monomialThreshold_appendDivisor (md : MonoData) (c : ℕ) (hc : 1 ≤ c)
   · rw [Fin.snoc_last, Fin.snoc_last, axisRatio_regularSeq c hc]
   · exact iInf_congr fun j => by rw [Fin.snoc_castSucc, Fin.snoc_castSucc]
 
+/-- **(C≥ step) Appending a codim-`≥m₀` divisor preserves the `≥ m₀/2` lower bound.** If a chart's
+threshold is `≥ m₀/2` and the next pivot divisor has codim `c ≥ m₀` (`1 ≤ m₀`), the updated threshold
+is still `≥ m₀/2` (the new axis's ratio `c/2 ≥ m₀/2` does not lower the `min`). This is the inductive
+step of `IsResolutionAtlas.threshold_ge` along any append-fold — fork-independent. -/
+theorem monomialThreshold_appendDivisor_ge (md : MonoData) (c m₀ : ℕ) (hm₀ : 1 ≤ m₀) (hcm : m₀ ≤ c)
+    (hge : (m₀ : ℝ≥0∞) / 2 ≤ monomialThreshold md.d md.k md.h) :
+    (m₀ : ℝ≥0∞) / 2
+      ≤ monomialThreshold (md.appendDivisor c).d (md.appendDivisor c).k (md.appendDivisor c).h := by
+  rw [monomialThreshold_appendDivisor md c (le_trans hm₀ hcm)]
+  refine le_min ?_ hge
+  exact ENNReal.div_le_div_right (by exact_mod_cast hcm) 2
+
+/-- **(C=∃ seed) The binding codim-`m₀` divisor caps the threshold at `m₀/2`.** Appending a divisor of
+codim exactly `m₀` (`1 ≤ m₀`) makes the chart threshold `≤ m₀/2` (the new axis binds the `min`). This
+is the achiever's upper bound: on the minimising path, the binding divisor realises `½·m₀`. With the
+matching `≥` (from `monomialThreshold_appendDivisor_ge` down to a `⊤` leaf), `le_antisymm` gives the
+exact `= m₀/2`. Fork-independent. -/
+theorem monomialThreshold_appendDivisor_le_binding (md : MonoData) (m₀ : ℕ) (hm₀ : 1 ≤ m₀) :
+    monomialThreshold (md.appendDivisor m₀).d (md.appendDivisor m₀).k (md.appendDivisor m₀).h
+      ≤ (m₀ : ℝ≥0∞) / 2 := by
+  rw [monomialThreshold_appendDivisor md m₀ hm₀]
+  exact min_le_left _ _
+
 end DLNFibre.DLN.RLCT
