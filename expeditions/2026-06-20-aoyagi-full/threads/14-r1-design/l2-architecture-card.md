@@ -137,3 +137,39 @@ monomial, NOT `Σx²+monomial`. The `+Σx²` shifts the threshold by `n/2`; with
 via a normal-crossing change of variables** — `Σx²` is smooth radial data, not a coordinate monomial
 product (pp + Codex agree); the cusp-volume argument is the clean replacement for the missing
 normal-crossing form. The cusp is unavoidable but light (the ball-volume scaling is the trick).
+
+---
+
+## L2 BUILD STATE (crux2, 2026-06-22) — `origin/fm2/deepest-gauge-chart`
+
+The value-free L2 reduction `deepest_regular_core_reduces` (split APPROVED #44):
+`rlctAt (dlnLoss H B) deepest = nReg/2 + rlctAtOn (dlnLoss M 0) 0`. R1's core value folds separately
+(`▸ resolution_charts`). Modules: `Validate/DeepestGaugeChart.lean` (structure + 7 sub-lemmas +
+assembly), `Foundations/S1Spectator.lean` (the reusable spectator-peel). NOT yet in the aggregator
+(controller wires).
+
+PROVEN (green, axiom clean-three):
+- `rlctAtOn_spectator_peel` (S1Spectator) — loss-independent factor is RLCT-neutral; reusable for D1 #42.
+- sub-2 `deepestPoint_is_rank_exact` (= `deepestPoint_isDeep.2`).
+- sub-7 `deepest_reduced_core_identification` (reduced core flat↔Params via `paramsEquivFlat M`).
+- The structure `DeepestGaugeChart` (g147 interface; refined: `split_mp`, `split_zero`).
+- The assembly `deepest_regular_core_reduces` composes the sub-lemmas green.
+
+OPEN (3 named sorries):
+- sub-3/4 `deepest_gauge_chart_exists` — the XL g150-cert block algebra (#44c, hero-piece).
+- sub-5 `deepest_nonMP_chart_transport_unit` — `weightedThreshold_transport` (homeo chart) + `jac_unit`
+  weight peel + `loss_form` germ + `chart_zero`. ~100-150 lines.
+- sub-6 `deepest_regular_smooth_split` — route built+mapped in-comment (split MP transport + additive
+  block + spectator-peel + sub-7), reverted to clean sorry pending TWO sub-obligations below.
+
+TWO CERT GAPS found in the build (NOT in g150/g147 — decorrelation catch):
+1. **`hGne` (reduced-core germ-nonvanishing).** `rlct_additive_smooth_block` is FALSE for a
+   germ-vanishing block. So sub-6 needs `dlnLoss M 0 ≠ 0` a.e. near the deepest core point. Holds when
+   the reduced chain `M = H−r` is non-degenerate (zero-product locus is a proper subvariety); FAILS if
+   some interior `M_s = 0`. Now a hypothesis of sub-6 + `deepest_regular_core_reduces`, discharged at
+   spine wiring. The cert noted `dlnLoss_nonneg` (sqrt wrapper) but missed nonvanishing.
+2. **`Measurable (dlnLoss M 0)`.** Needed for `rlct_additive_smooth_block`'s `hGmeas`. `fun_prop`
+   deep-recurses on `prodAux`; needs a hand `continuous_prodAux` (induction; the `prodAux` definitional
+   `Fin.cast` makes the entry-product `show` fiddly — a focused cast-handling mini-lemma). Reusable
+   bedrock (every `rlctAtOn` integrand site). Can't live in `Loss.lean` (no `Params` topology there —
+   `Params` is a def wrapper, instance is in `Rlct.lean`); home is downstream of `Rlct`.
