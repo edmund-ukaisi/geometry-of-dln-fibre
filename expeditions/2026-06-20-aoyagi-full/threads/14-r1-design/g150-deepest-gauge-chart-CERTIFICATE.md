@@ -212,3 +212,45 @@ FALSE; the genuine `core_comparability_squeeze`, `c₁<c₂`, is the constructor
 **Consistency with the D1 g173 L2-at-general-v cert:** the core fed to the additive split there is `‖R‖²`
 (`≍ ‖∏S_s‖²` via the unit), so the constant-active-block split is against the full-product `R` at the
 induced basepoint `D(v)` — consistent with g157.
+
+---
+
+## PRECISION (#62 follow-2, pp-hall, 2026-06-22) — EXACT-via-Morse-c-o-v vs SQUEEZE-in-raw-coords (the two coordinate frames)
+
+cobuild-sub34's final sharpening (g158): "the exact germ is FALSE" was itself too strong — the precise
+truth is a TWO-FRAME distinction, both valid:
+
+- **RAW gauge-block coords (no further c-o-v):** the loss is a SQUEEZE, NOT exact:
+      dlnLoss  =  ∑E²  +  ‖R‖²  +  (2⟨R, leak⟩ + ‖leak‖²),     leak = E_{10}(I+E_{00})⁻¹E_{01}.
+  The correction `2⟨R,leak⟩ + ‖leak‖²` is nonzero, bounded by `∑E²` (c₁<c₂→1 at `w0`), the genuine
+  two-sided squeeze `core_comparability_squeeze` (c₁=(2(1+t²))⁻¹, c₂=2+2t²). This is the **Lean datum** —
+  no explicit change of variables built.
+- **AFTER an analytic MORSE / splitting-lemma c-o-v `φ`:** the germ IS exact:
+      dlnLoss ∘ φ  =  ∑Ẽ²  +  ‖R‖²        (c₁=c₂=1, the exact germ).
+  This holds because (verified, `g158_morse_exact.py`) the correction is `O(reg²·core)` and higher —
+  EVERY term carries factors of the regular coords `E_{10}·E_{01}` (numeric: `corr/∑E² → 0` as `→ w0`),
+  with **NO pure-core term**. That is exactly the splitting-lemma condition: the regular block
+  `(E_{00},E_{01},E_{10})` is nondegenerate (Jacobian rank `= nReg` at `w0`) and the correction is a
+  higher-order-in-`E` perturbation absorbable by `Ẽ_i = E_i + h.o.t.(E, core)` completing the square. The
+  c-o-v `φ` **exists** (real theorem); it is **not formalized**.
+
+**Reconciliation of the cert lineage (the apparent flip-flops, all consistent):**
+- #48/g150 "exact germ via the gauge chart" — TRUE under the exact-via-`φ` reading (the g150 body did say
+  "a parameterized analytic Morse/splitting lemma gives the exact germ"). NOT an overclaim.
+- g155 squeeze-downgrade — TRUE under the raw-coords reading (what the Lean builds). NOT a contradiction.
+- The two describe the two coordinate frames (with/without `φ`), not opposite truth-values.
+
+**What the Lean uses:** the SQUEEZE (`core_comparability_squeeze`, c₁<c₂), sidestepping the construction
+of `φ`. `ofExactGerm` (c₁=c₂=1) is dischargeable IN PRINCIPLE (build `φ`) but strictly harder and
+unnecessary — the squeeze suffices for the RLCT. So `ofExactGerm` is a trap as a *required* constructor
+(flagged to crux2); the genuine datum is the two-sided squeeze.
+
+**The complete honest hierarchy (all four levels, RLCT-equivalent, decreasing literalness):**
+1. raw-coords loss `= ∑E² + ‖R‖² + O(reg²·core)`  — SQUEEZE (c₁<c₂→1 at `w0`), the formalized datum;
+2. via `φ`: `∑Ẽ² + ‖R‖²`  — EXACT (c₁=c₂=1), the underlying truth, `φ` not formalized;
+3. `‖R‖²`  — the literal core (full-product Schur `R = P_{11} − P_{10}P_{00}⁻¹P_{01}`);
+4. `‖R‖² ≍ ‖∏S_s‖²` via the inter-layer unit `g` (g174 above); `‖∏S_s‖² = dlnLoss(M)0` the reduced chain
+   fed to `rlct_additive_smooth_block`.
+Each `≍` is a bounded-unit comparability (a squeeze, tight at `w0`), never an exact equality without a
+further c-o-v. The recurring lesson: the honest object is reached by peeling bounded units; name the
+comparability a unit-squeeze, and name which coordinate frame the "exact" claim lives in.
