@@ -228,3 +228,67 @@ Consuming side (sub-5/6/7 + assembly + `ofExactGerm`) re-proven axiom clean-thre
 gauge-normalized core (`@bd016d0`). The raw-∏T trap is now structurally impossible. The single open
 obligation is `deepest_gauge_squeeze_exists` (cobuild-sub34's `ofExactGerm` target: split + coreAbsorb
 + the one hard `coreAbsorb_rlct` + `loss_germ`). #54 (Schur core = dlnLoss M 0 T̃) feeds both.
+
+### Update (crux2, 2026-06-22) — D1 ≥-leg CORE fully proven
+
+`origin/fm2/d1-deepest-min @152ef0d` (rebased onto deepest-gauge-chart for S1NonMPTransport),
+`Validate/DeepestMinRlct.lean`, zero sorries, all axiom clean-three:
+- `rlctAtOn_ray_scaling_invariant` (L1-a): `rlctAtOn F (t•v) = rlctAtOn F v` for homogeneous `F`,
+  `t>0` — the scaling `σ=t•·` (det `t^N`) via `weightedThreshold_transport` + `weightedThreshold_weight_unit_invariant` (the `t^N` weight peel) + homogeneity + `rlctAtOn_unit_invariant_aux` (the `t^D` function peel).
+- `rlctAtOn_lsc_at_origin` (L1-b): `rlctAtOn F 0 ≤ rlctAtOn F v` — the LIGHT nbhd-monotonicity from the
+  `sSup`/`∃Ω∋·` def (the controller's `rlctAt`-hint, g170; g160's "heavy Watanabe/Varchenko primitive" was an overestimate).
+- `deepest_le_of_homogeneous_core`: the D1 (a) CORE, = L1-b.
+
+The hero-task constraint (only S2 citable) HOLDS for the D1 ≥-leg core: "deepest = min-core" is PROVEN
+value-free, NO Aoyagi 2013 Thm 2 citation, NO new analytic primitive. g158's "rlctAt_mono is
+2-funcs-1-point, D1 is 1-func-2-points" gap is bypassed by the L1-a (ray-constancy) + L1-b (limit
+nbhd-monotonicity) decomposition. Remaining: the full-B bridge (CORE → full `dlnLoss H B`) via L2 +
+the constant fibre-rank shift (g170 route 1).
+
+### Update (crux2, 2026-06-22) — #59 obligation (i) `split` DELIVERED (`origin/fm2/split-reindex`)
+
+The `split` field (gauge-slice MP reindex) of `DeepestGaugeChart` is PROVEN sorry-free in
+`Validate/DeepestSplitReindex.lean` (axiom clean-three, no `monomial_rlct`). Three theorems:
+- `layer_block_count {a b r} (r≤a)(r≤b) : a*b = (a−r)(b−r) + r(a+b−r)` — per-layer block identity.
+- `flatDim_deepest_split H r hr hL : flatDim H = deepestNReg H r + flatDim (deepestM H r)
+  + deepestNGauge H r` — the load-bearing dimension identity (`deepestNGauge := flatDim H − nReg −
+  flatDim M ≥ 0`; surplus `= r(2·Σ_interior H_i − (L−1)r) ≥ 0` via each interior `H_i ≥ r`).
+- `deepestSplit_exists H r hr hL wstar : ∃ split : (Fin (flatDim H) → ℝ) ≃ₜ
+  DeepestSplit H r (deepestNGauge H r), MeasurePreserving split volume volume ∧ split wstar = 0`.
+  Built per cobuild-sub34's g159 recipe (relabel+translation, NOT matmul — det=±1, MP):
+  `translation (measurePreserving_sub_right) ∘ relabel (volume_measurePreserving_piCongrLeft via
+  Fintype.equivOfCardEq on the dimension identity) ∘ unpack (volume_measurePreserving_sumPiEquivProdPi
+  ×2)`. The g125-vs-structure MP tension is resolved (g157, recorded above): the unit-Jacobian content
+  stays in cobuild-sub34's `coreAbsorb` (non-MP); `split` is the pure MP reindex.
+
+SEAM-verified: a scratch confirmed `deepestSplit_exists` discharges the `split`/`split_mp`/
+`split_basepoint` fields at `nGauge = deepestNGauge H r`, `wstar = paramsEquivFlat (deepestPoint ...)`.
+HONEST factoring: the split's three fields do NOT pin the slot SEMANTICS (regular = g125 pivots, core
+= `FlatIdx (deepestM H r)` raw `T_s`) — those are pinned only by `loss_squeeze`, so cobuild-sub34
+realizes the concrete partition when wiring (ii)–(iv). g159 flags the `coreAbsorb` GLOBAL homeomorphism
++ its Jacobian as "the wall" — cobuild-sub34's remaining XL.
+
+### FIDELITY FINDING (crux2, 2026-06-22) — interior-only hMid does NOT imply hGne
+
+Threading the locked `hMid` (`∀ s : Fin L, 0 < s.val → r < H s.castSucc`, interior H_1..H_{L-1}) into
+the L2 lemmas surfaced a gap. The L2 lemmas (`deepest_regular_smooth_split`,
+`deepest_regular_core_reduces`) take the analytic `hGne` (`dlnLoss M 0 ∘ flatSymm ≠ 0` a.e. near 0).
+**`hGne` does NOT follow from interior-only `hMid`** — it needs `r < H_s` for ALL `s` (all reduced
+widths `M_s = H_s − r ≥ 1`), endpoints included:
+- `M_0 = 0` (r = H_0, B full row rank): `prod_M` is `0 × M_L` → no entries → `dlnLoss M 0 ≡ 0` → hGne FAILS.
+- `M_L = 0` (r = H_L): `prod_M` is `M_0 × 0` → hGne FAILS.
+- interior `M_s = 0`: `prod_M ≡ 0` → hGne FAILS (this one IS covered by hMid).
+All numerically verified. The endpoint cases are reachable under `hr : ∀ s, r ≤ H s`. Since
+`rlct_additive_smooth_block` is FALSE for a germ-vanishing block, the M_0=0 case breaks the current
+L2 proof route.
+
+RESOLUTION PENDING controller/fm3 verdict:
+- (A) widen the locked form to `r < H_s` for ALL s (contradicts fm3's interior-only lock — needs R1
+  re-confirm);
+- (B) keep interior-only + add a degenerate-endpoint branch (M_0=0 or M_L=0 ⟹ core RLCT 0, separate route).
+
+THE `hMid ⟹ hGne` BRIDGE (non-degenerate all-s case) — HEAVY, roadmap-grade. Two pieces:
+1. `prod_M ≢ 0` when all `M_s ≥ 1` (constructive: an explicit nonzero-product witness). Tractable.
+2. `{A : dlnLoss M 0 A = 0}` measure-zero. Mathlib has NO multivariate "nonzero analytic/poly ⟹ ae ne
+   zero" (only 1-D `IsolatedZeros`). From-scratch: induct on #vars + Fubini to 1-D slices + univariate
+   finite-roots (`Polynomial.setOf_isRoot_finite`). ~150–250 LoC standalone. Shared R1+L2 obligation.
