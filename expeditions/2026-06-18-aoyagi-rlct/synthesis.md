@@ -4493,12 +4493,19 @@ paragraph does not supply a classifier, injection, back-to-label map, no-extra
 terminal-minimum coverage, nonbase status, endpoint-chain realisation, or
 terminal source realisation.
 
-Latest xhigh source-frontier scout recommendation: after the cheap A5 wrapper
-above, pivot back to A4 displayed Case 2 source-chart production.  The next
-source-backed slice should be a pen-and-paper reproduction of the
-source-produced following factor `C' = Q^-1*C` as a total source-coordinate
-object, separated into old top rows, pivot row, and post-pivot tail, and
-stopping before successor chart-family production or transition invariance.
+Latest xhigh source-frontier audit correction: after the cheap A5 wrapper
+above, pivot back to A4 displayed Case 2 source-chart production, but do not
+redo the local `C' = Q^-1*C` algebra.  Existing terminal-frontier artifacts
+already cover the paper transported factor (`case2DisplayedPaperCprime`), the
+top-row correction, unchanged lower tail, the paper-`C'` weighted lower-row
+handoff, and `SuppliedTerminalCprimeBridge`.  A broad new reproduction of that
+calculation is unnecessary.  The genuinely missing A4 frontier is chart/source
+production of the full successor object or successor following-product data
+from the displayed chart across the continuing and terminal branches,
+including old top rows, transported pivot row, post-pivot tail, and suffix
+handling.  Any thin total-source adapter for paper `C'` should be built only
+if it directly serves that source-production theorem.  Durable audit:
+`threads/04-blow-up-certificate/source-frontier-audit-case2-paper-cprime-a4.md`.
 
 Latest A4 Case 1(2) J-increment payload update:
 `BlowupArithmetic.lean` now contains

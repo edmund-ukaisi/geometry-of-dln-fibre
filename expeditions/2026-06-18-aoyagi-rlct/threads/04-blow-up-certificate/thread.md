@@ -3604,3 +3604,23 @@ prefix-minimum terminal exponent.  It does not construct the chart or
 post-state, prove a nonempty residual block after the increment, successor
 chart-family construction, a full next `C'^(S+1)`, transition invariance,
 Jacobian arithmetic, normal crossings, pole order, or RLCT.
+
+## 2026-06-22 Source-frontier audit: Case 2 paper Cprime
+
+Audit artifact:
+`source-frontier-audit-case2-paper-cprime-a4.md`.
+
+xhigh auditor `Gauss` checked whether the next A4 move should reproduce the
+local paper transported factor `C'=Q^-1*C` as a total source-coordinate
+object.  Verdict: a broad new reproduction of that local algebra is not
+needed.  Existing artifacts already define `case2DisplayedPaperCprime`, prove
+its top-row correction and unchanged lower tail, specialize the weighted
+lower-row handoff to paper `C'`, and package `SuppliedTerminalCprimeBridge`.
+
+The missing A4 frontier is chart/source production of the full successor
+object or successor following-product data from the displayed chart across
+the continuing and terminal branches.  Future work should produce, rather
+than supply, the old top rows, transported pivot row, post-pivot tail, and
+suffix handling for the next `C'^(S+1)` or successor following-product
+package.  A thin total-source adapter for paper `C'` is acceptable only if it
+directly serves that source-production theorem.

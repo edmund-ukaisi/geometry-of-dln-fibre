@@ -4949,6 +4949,17 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-j-increment-payload-a4.md`.
 
+Source-frontier audit after the A5 alpha-injection cardinal squeeze:
+a broad new reproduction of the local Case 2 `C'=Q^-1*C` calculation is not
+needed.  Existing A4 artifacts already define the paper transported factor,
+prove its top-row correction and unchanged lower tail, specialize the
+weighted lower-row product to paper `C'`, and package
+`SuppliedTerminalCprimeBridge`.  The missing A4 row is chart/source production
+of the full successor object or successor following-product data from the
+displayed chart across continuing and terminal branches; the current terminal
+bridges deliberately stop at supplied row equations.  Audit:
+`threads/04-blow-up-certificate/source-frontier-audit-case2-paper-cprime-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
