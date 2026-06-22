@@ -123,4 +123,16 @@ def peelPart (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 1) × Fin (N + 
     (m (p.1.castSucc, (Fin.last N).castSucc) + m (p.1.castSucc, Fin.last (N + 1)))
     (fun J₀ ↦ m (p.1.castSucc, J₀.castSucc.castSucc))
 
+/-- `peelPart` value at the merged last column. -/
+@[simp] theorem peelPart_last (m : Fin (N + 2) × Fin (N + 2) → ℕ) (I : Fin (N + 1)) :
+    peelPart m (I, Fin.last N)
+      = m (I.castSucc, (Fin.last N).castSucc) + m (I.castSucc, Fin.last (N + 1)) := by
+  simp [peelPart]
+
+/-- `peelPart` value at an interior column `j = castSucc J₀`. -/
+@[simp] theorem peelPart_castSucc (m : Fin (N + 2) × Fin (N + 2) → ℕ) (I : Fin (N + 1))
+    (J₀ : Fin N) :
+    peelPart m (I, J₀.castSucc) = m (I.castSucc, J₀.castSucc.castSucc) := by
+  simp [peelPart]
+
 end DLNFibre.Core
