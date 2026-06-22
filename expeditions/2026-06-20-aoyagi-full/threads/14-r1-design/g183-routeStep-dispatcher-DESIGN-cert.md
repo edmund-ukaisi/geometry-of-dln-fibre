@@ -287,3 +287,42 @@ foldFamily value-target, the (2,2,2)/(3,2,3)/(4,3,2) validation, the light-datum
 populates `codimsOf` with `(Mval M T).toNat` witnessed codims; `foldFamily_threshold_ge_of_admWitness` +
 `foldFamily_achiever` deliver the value; the light G2 transport (crux2-confirm) wraps each cell. No open
 combinatorial question.
+
+---
+
+## C5 REDUCTION EXERCISED (#68 follow, pp-hall, 2026-06-22) — the mixed partial-drop node reduces to main-Schur, NO new lemma
+
+**crux2's fast-veto question (via fm3): does the C5 mixed partial-drop node (`t_{s-1} > t_s > 0`) reduce to
+the main coupled-rank-defect Schur node, or need a distinct existence lemma?** §1.3/§4 read as "C5 reduces"
+(block-column split: complement via C1, survivor via C2) — but the §5 validation set
+(2,2,2)/(3,2,3)/(2,2,2,2)/(4,3,2) has NO genuine partial-drop (all full-rank-to-coupled C1 or thin C4). So
+"C5 reduces" was DESIGN-only. **EXERCISED now (g191/g192/g193_c5_schur_present.py):** the answer is **C5
+REDUCES to main-Schur on the complement, NO new lemma.**
+
+**The genuine partial-drop:** `M = (3,3,2)`, stratum `T = (2,0)` (`tt = (3,2,0)`, partial-drop
+`t_0 = 3 > t_1 = 2 > 0` at `s=1`). `C1 : 3×3` rank-2 at the basepoint, `C2 : 3×2`, core `‖C1·C2‖²`. The
+block-column split:
+- **SURVIVOR** (rows 0,1 of `C1 ≈ I_2`, the rank-`t_1 = 2` block): `P_0, P_1` have independent linear parts
+  in `b` (`b0,b1,b2,b3`) — **4 SMOOTH regular generators = the `∑Erow²` block** (the C2 pass-through). Straighten
+  them (solve `{E=0}` for `b0..b3`).
+- **COMPLEMENT** (row 2, `C1`'s rank-defect row, the rank-`(t_0−t_1) = 1` drop): `P_2` has ZERO linear part.
+  On `{E=0}` (survivor straightened), `P_2 = (S·b4, S·b5)` where
+      `S = a8 − a6·(survivor)⁻¹·(coupling0) − a7·(survivor)⁻¹·(coupling1)`
+  — **exactly the per-layer Schur complement `T − Z(I+X)⁻¹Y`** (`T = a8`, the complement corner; the g172
+  `S_s` object). Leading term `a8·(b4,b5)` — a single coupled rank-1 defect (pivot `a8`, coupling `(b4,b5)`).
+
+So the complement residual `= ‖S·Γ‖²` with `S` the Schur complement, `Γ = (b4,b5)` — the **CLEAN main-Schur
+hnode form** `flatCore = ∑Erow² + ‖S·Γ‖²`, `G² = ‖S·Γ‖²`. crux2's `schur_straighten_squeeze_exists` applies
+to the complement's C1 (a single coupled-rank-defect node, pivot `a8`). **C5 = C2-survivor (rows 0,1) ⊕
+C1-complement (row 2, main-Schur). NO distinct existence lemma.** ✓
+
+**HONEST CAVEAT (the scope of the exercise):** this exercises the MINIMAL genuine partial-drop — ONE
+partial-drop step, complement rank 1. The multi-partial-drop cases (`(3,3,2,2,2)` `T=(3,2,1,0)` with
+partial-drops at steps 2,3; crux2's depth-6 `t=(3,3,2,2,2,0)`) compose the SAME reduction ITERATIVELY (each
+partial-drop step = one C2-survivor ⊕ C1-complement, recursing on the survivor's later kill-layer) — NOT yet
+run explicitly. The single-step per-node reduction (the thing crux2's existence lemma consumes) IS exercised
++ clean; the iteration over multiple partial-drop steps is design (the recursion applies the same node op
+per step). If a multi-step exercise is wanted, run `(3,3,2,2,2)`. But the per-node C5 reduction — each
+partial-drop step's complement presents as a clean main-Schur node — is exercised, closing crux2's
+transport-field question: the transport datum for every node type (C1, C2, C5-complement) is the SAME
+`schur_straighten_squeeze_exists` / light G2 monomial pullback; C5 needs no new lemma.
