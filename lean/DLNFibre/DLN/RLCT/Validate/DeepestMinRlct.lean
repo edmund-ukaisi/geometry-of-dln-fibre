@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Foundations.S1NonMPTransport
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestMinRlct` — D1 (a): the deepest core point has the min local RLCT
@@ -51,9 +52,51 @@ peeled by `rlctAtOn_unit_invariant_aux`. (ii) DIRECT admissible-set bijection: `
 admissible-set argument, no `HasFDerivAt`. The reachable elementary half of D1 (a). -/
 theorem rlctAtOn_ray_scaling_invariant
     (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ) (t : ℝ) (ht0 : 0 < t)
+    (hFmeas : Measurable F)
     (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w) :
     rlctAtOn F (t • v) = rlctAtOn F v := by
-  sorry
+  have htne : t ≠ 0 := ne_of_gt ht0
+  -- the scaling homeomorphism `σ : w ↦ t • w`, with `σ v = t • v` and derivative `t • id` (det `t^N`).
+  set σ : (Fin N → ℝ) ≃ₜ (Fin N → ℝ) := Homeomorph.smulOfNeZero t htne with hσ
+  have hσapp : ∀ w, σ w = t • w := fun w => rfl
+  set Dσ : (Fin N → ℝ) → ((Fin N → ℝ) →L[ℝ] (Fin N → ℝ)) :=
+    fun _ => t • ContinuousLinearMap.id ℝ (Fin N → ℝ) with hDσ
+  have hderiv : ∀ x, HasFDerivAt (fun w => σ w) (Dσ x) x := fun x => by
+    rw [hDσ]; exact (hasFDerivAt_id x).const_smul t
+  have hdet : ∀ x, (Dσ x).det = t ^ N := fun x => by
+    rw [hDσ, ContinuousLinearMap.det]
+    simp only [ContinuousLinearMap.coe_smul, ContinuousLinearMap.coe_id, LinearMap.det_smul,
+      LinearMap.det_id, mul_one]
+    rw [Module.finrank_pi]; simp
+  -- Step 1 (S1.1, non-MP, `E = ∅`): `wThr F 1 {t•v} = wThr (F∘σ) (|det Dσ|) {σ⁻¹(t•v)}`, basepoint `v`.
+  have hpre : σ ⁻¹' {t • v} = {v} := by
+    ext w; simp only [Set.mem_preimage, Set.mem_singleton_iff, hσapp]
+    constructor
+    · intro h; have := congrArg (fun z => t⁻¹ • z) h; simpa [smul_smul, inv_mul_cancel₀ htne] using this
+    · intro h; rw [h]
+  have htrans := weightedThreshold_transport F (fun _ => (1:ℝ)) (t • v) (fun w => σ w) Dσ ∅
+    σ.isProperMap MeasurableSet.empty (by simp) (by simp) (fun x _ => hderiv x) σ.surjective (by simp)
+  rw [hpre] at htrans
+  -- the transported weight is `1 · |det Dσ| = t^N` (constant, `t > 0`).
+  have hwfun : (fun w => (fun _ => (1:ℝ)) (σ w) * |(Dσ w).det|)
+      = fun _ : Fin N → ℝ => t ^ N := by
+    funext w; rw [hdet, one_mul, abs_of_pos (pow_pos ht0 N)]
+  rw [hwfun] at htrans
+  -- Step 2: peel the constant weight `t^N` (a bounded positive unit).
+  have hpeel := weightedThreshold_weight_unit_invariant (fun w => F (σ w))
+    (fun _ : Fin N → ℝ => t ^ N) v (t ^ N) (t ^ N) (pow_pos ht0 N) measurable_const
+    ⟨Set.univ, Filter.univ_mem, fun _ _ => by rw [abs_of_pos (pow_pos ht0 N)]; exact ⟨le_refl _, le_refl _⟩⟩
+  -- assemble: `rlctAtOn F (t•v) = wThr F 1 {t•v} = wThr (F∘σ) (t^N) {v} = wThr (F∘σ) 1 {v}`.
+  rw [rlctAtOn, htrans, hpeel]
+  -- Step 3: `F∘σ = t^D • F` (homogeneity); peel the constant `t^D`.
+  have hFσ : (fun w => F (σ w)) = fun w => t ^ D * F w := by
+    funext w; rw [hσapp, hhomog]
+  rw [hFσ]
+  have := rlctAtOn_unit_invariant_aux F (fun _ : Fin N → ℝ => t ^ D) v (t ^ D) (t ^ D)
+    (pow_pos ht0 D) measurable_const
+    ⟨Set.univ, Filter.univ_mem, fun _ _ => by rw [abs_of_pos (pow_pos ht0 D)]; exact ⟨le_refl _, le_refl _⟩⟩
+  rw [rlctAtOn, weightedThreshold] at this ⊢
+  exact this
 
 /-- **(L1-b) Lower-semicontinuity of the local RLCT at the ray's origin** — LIGHT (g170/#60; the
 controller's `rlctAt`-def hint dissolved g160's "heavy primitive" overestimate). The deepest core
@@ -63,7 +106,7 @@ point `0 = lim_{s→0} s • v` has RLCT `≤` the (ray-constant) RLCT at `v`: `
 is a nbhd of `s • v` too ⟹ `c'` admissible at `s • v` ⟹ `c' ≤ rlctAtOn F (s•v) = rlctAtOn F v` (L1-a);
 `sSup` over admissible `c'`. NO Fatou / Varchenko / absent-Mathlib analysis — value-independent. -/
 theorem rlctAtOn_lsc_at_origin
-    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ)
+    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ) (hFmeas : Measurable F)
     (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w) :
     rlctAtOn F (0 : Fin N → ℝ) ≤ rlctAtOn F v := by
   unfold rlctAtOn weightedThreshold
@@ -92,7 +135,7 @@ theorem rlctAtOn_lsc_at_origin
     ⟨c', rfl, Ω, hΩopen, Set.singleton_subset_iff.2 hsmem, hint⟩
   have hle_sv : (c' : ℝ≥0∞) ≤ rlctAtOn F (s • v) := by
     rw [rlctAtOn, weightedThreshold]; exact le_sSup hadm_sv
-  rw [rlctAtOn_ray_scaling_invariant F v D s hspos hhomog] at hle_sv
+  rw [rlctAtOn_ray_scaling_invariant F v D s hspos hFmeas hhomog] at hle_sv
   exact hle_sv
 
 /-- **D1 (a) core form (the homogeneity comparison).** For a homogeneous-degree-`D` core `F`, the
@@ -102,9 +145,9 @@ at the limit) + the cone (`0 = lim t•v` in the fibre) meet. The full `rlctAt_d
 (Skeleton) wires this through L2's `deepest_regular_core_reduces` (deepest and `v` both reduce to their
 cores; the cores compare here). -/
 theorem deepest_le_of_homogeneous_core
-    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ)
+    (F : (Fin N → ℝ) → ℝ) (v : Fin N → ℝ) (D : ℕ) (hFmeas : Measurable F)
     (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w) :
     rlctAtOn F (0 : Fin N → ℝ) ≤ rlctAtOn F v :=
-  rlctAtOn_lsc_at_origin F v D hhomog
+  rlctAtOn_lsc_at_origin F v D hFmeas hhomog
 
 end DLNFibre.DLN.RLCT
