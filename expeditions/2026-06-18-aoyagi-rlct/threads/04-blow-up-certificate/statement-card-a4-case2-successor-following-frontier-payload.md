@@ -42,8 +42,9 @@ frontier payload.
 
 ## Deferred
 
-- A `SourceChartFrontierBoundaryPackages` field for this equivalent
-  successor-facing payload.
+- A new `SourceChartFrontierBoundaryPackages` field for this equivalent
+  successor-facing payload.  The theorem-only projection is now recorded in
+  `statement-card-a4-case2-continuing-successor-following-handoff.md`.
 - Source/chart production of `Csucc`, old top rows, suffix product, full
   successor `C'^(S+1)`, chart coverage, arbitrary-pivot coverage, transition
   invariance, Jacobian arithmetic, normal crossings, pole order, termination,

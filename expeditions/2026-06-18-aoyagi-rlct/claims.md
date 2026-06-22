@@ -1680,6 +1680,15 @@ No such claim is formalisation-ready until both fields are filled.
   the terminal product ideal or add chart coverage, source production,
   Jacobian arithmetic, normal crossings/RLCT, termination, transition
   invariance, or printed-vector repair.
+  The continuing weighted successor-following handoff is now proved as
+  `continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing`, with
+  package projection
+  `SourceChartFrontierBoundaryPackages.continuingWeightedSuccFollowing`.  It
+  converts the existing source-following payload to the canonical
+  formula-level successor-following notation by the next same-stage
+  restriction equality, and it remains only a finite adapter for
+  `case2DisplayedSourceSuccessorFollowingFactor`, not arbitrary supplied
+  `Csucc` source production.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

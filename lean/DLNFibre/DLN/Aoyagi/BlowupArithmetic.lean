@@ -17500,6 +17500,33 @@ abbrev ContinuingWeightedSuccFollowingFrontierPayload
         case2DisplayedSourceChartMap n hS hcont u residual p = v} =
     Ideal.span ({u} : Set R)
 
+/-- Finite payload rewrite from source-following notation to the formula-level
+successor-following factor.
+
+The rewrite uses that the `(S,J+1)` following-factor restriction ignores the
+replaced row `J+1`.  It does not produce source data, charts, transitions,
+coverage, normal crossings, pole order, or RLCT data. -/
+theorem continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {residual : ℕ × ℕ → R}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → R}
+    (h :
+      ContinuingWeightedSourceFollowingFrontierPayload
+        L n S J t numerator leastValue pre u residual hS hcont C) :
+    ContinuingWeightedSuccFollowingFrontierPayload
+        L n S J t numerator leastValue pre u residual hS hcont C := by
+  rcases h with ⟨hnonempty, hmain, hmem, hdvd, hspan⟩
+  refine ⟨hnonempty, ?_, hmem, hdvd, hspan⟩
+  rcases hmain with ⟨q, hq, hexp, hlevel, hgap, hcase2⟩
+  refine ⟨q, ?_, hexp, hlevel, hgap, hcase2⟩
+  simpa [case2SourceFollowingFactor_successorFollowingFactor_succ n hS hcont residual C]
+    using hq
+
 /-- Continuing source-chart boundary in successor-following notation, with
 finite next-center nonemptiness and center principalization.
 
@@ -17750,6 +17777,31 @@ structure SourceChartFrontierBoundaryPackages
       (hrow : prefixMinNat n S = J + 1) →
         RowExhaustedSourceSuffixTransportedPrefixPayload
           L n S J pre u residual hS hcont hrow κ hSuffix C Ctail
+
+universe uτ uR uPkg1 uPkg2 uPkg3 uPkg5 uPkg6
+
+/-- Projection of a frontier package's continuing weighted source-following
+payload into formula-level successor-following notation. -/
+theorem SourceChartFrontierBoundaryPackages.continuingWeightedSuccFollowing
+    {τ : Type uτ} {R : Type uR} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {residual : ℕ × ℕ → R}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    (frontier :
+      SourceChartFrontierBoundaryPackages.{uR, uPkg1, uPkg2, uPkg3,
+        uτ, uPkg5, uPkg6}
+        R L n S J t numerator leastValue
+        pre u residual hS hcont)
+    (C : ℕ → τ → R)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1)) :
+    ContinuingWeightedSuccFollowingFrontierPayload
+      L n S J t numerator leastValue pre u residual hS hcont C := by
+  exact
+    continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing
+      (frontier.continuingWeighted C hnext)
 
 /-- Concrete displayed source-chart frontier implication package.
 

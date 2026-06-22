@@ -4001,3 +4001,37 @@ construct `C'^(S+1)`, produce a source suffix, prove chart coverage or
 transition regularity, derive corrected post-data from coordinates, add
 Jacobian arithmetic, prove normal crossings, pole order, termination, RLCT, or
 repair the printed Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 continuing successor-following handoff
+
+Reproduction:
+`reproduction-case2-continuing-successor-following-handoff-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-successor-following-handoff.md`.
+Review artifact:
+`review-case2-continuing-successor-following-handoff-a4.md`.
+
+Lean now adds a finite adapter from the continuing weighted source-following
+frontier payload to the same payload written with the canonical formula-level
+successor following factor:
+
+```text
+continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing
+SourceChartFrontierBoundaryPackages.continuingWeightedSuccFollowing
+```
+
+The generic adapter needs no `hnext`; the source payload already contains the
+next-center nonemptiness witness.  The package projection keeps `hnext` only
+because `SourceChartFrontierBoundaryPackages.continuingWeighted` is a
+branch-conditional field.  The proof rewrites the RHS following factor by
+`case2SourceFollowingFactor_successorFollowingFactor_succ`, using that the
+next same-stage restriction `(S,J+1)` ignores the replaced row `J+1`.
+
+This is a successor-notation handoff only for
+`case2DisplayedSourceSuccessorFollowingFactor`.  It does not prove an
+arbitrary supplied `Csucc` theorem without a separate equality to that formula,
+and it does not construct `C'^(S+1)`, produce a source suffix, construct a
+successor chart family, prove chart coverage or transition regularity, derive
+corrected post-data from coordinates, add Jacobian arithmetic, prove normal
+crossings, pole order, termination, RLCT, or repair the printed Case 2 vector
+mismatch.

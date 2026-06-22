@@ -92,6 +92,17 @@ production, chart coverage, transition regularity, coordinate post-data
 derivation, Jacobian arithmetic, normal crossings, pole order, termination, or
 RLCT is proved by this interface.
 
+Lean now also exposes the finite continuing payload adapter
+`continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing` and the
+package projection
+`SourceChartFrontierBoundaryPackages.continuingWeightedSuccFollowing`.  These
+rewrite the existing continuing weighted source-following payload into
+canonical formula-level successor-following notation by using that the next
+same-stage `(S,J+1)` following-factor restriction ignores row `J+1`.  This is
+not arbitrary supplied-`Csucc` source production unless an equality to
+`case2DisplayedSourceSuccessorFollowingFactor` is separately supplied, and it
+does not move the open source-production boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

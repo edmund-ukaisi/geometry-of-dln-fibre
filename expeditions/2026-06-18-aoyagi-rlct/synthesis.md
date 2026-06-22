@@ -5209,6 +5209,26 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-a4.md`.
 
+Latest A4 finite handoff update: the continuing weighted source-following
+frontier payload now has a successor-notation adapter in Lean:
+`continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing`, plus the
+package projection
+`SourceChartFrontierBoundaryPackages.continuingWeightedSuccFollowing`.
+The proof uses only
+`case2SourceFollowingFactor_successorFollowingFactor_succ`: the next
+same-stage following-factor restriction at `(S,J+1)` ignores row `J+1`, where
+the canonical formula-level successor following factor differs from the old
+source following function.  This closes a theorem-only projection; it is not
+an arbitrary supplied-`Csucc` theorem without a separate equality to
+`case2DisplayedSourceSuccessorFollowingFactor`, and it does not move the open
+source-production boundary.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-successor-following-handoff-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-successor-following-handoff.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-successor-following-handoff-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

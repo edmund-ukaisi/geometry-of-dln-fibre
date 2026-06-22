@@ -5203,6 +5203,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-a4.md`.
 
+Latest A4 Case 2 continuing successor-following handoff:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceChartFrontierBoundaryPackages.continuingWeightedSuccFollowing`.
+These theorems convert the existing continuing weighted source-following
+payload to canonical formula-level successor-following notation, and project
+the same conversion from a frontier package under its existing continuing
+guard.  The proof uses only the finite restriction identity
+`case2SourceFollowingFactor_successorFollowingFactor_succ`; it is not
+arbitrary supplied-`Csucc` source production without a supplied equality to
+`case2DisplayedSourceSuccessorFollowingFactor`, and it does not construct
+`C'^(S+1)`, suffixes, charts, transitions, normal crossings, pole order, or
+RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-successor-following-handoff-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-successor-following-handoff.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-successor-following-handoff-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
