@@ -4,6 +4,38 @@
 
 ## Current read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
+**★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
+- **#64 (e), confirmed-composing (cobuild-sub34 + Codex).** The MP split (`deepestSplit_exists`) delivers RAW
+  slots; its reg slot `(split w).1` is a coordinate PROJECTION, NOT the nonlinear gauge residual E ⟹
+  `loss_squeeze` over it is FALSE (the "green ≠ right" trap — a lemma that proves the wrong thing for its
+  use-site). FIX (e): KEEP the MP split (raw slots) + add `regAbsorb` (non-MP self-map of the split codomain,
+  raw-reg → E = ∏C−D residuals, the regular analog of `coreAbsorb`) + `coreAbsorb` (Schur, raw-core →
+  dlnLoss M 0). Then Φ = ∑(regAbsorb(split w).reg)² + coreF(coreAbsorb(split w).core) = G' ∘ split FACTORS
+  through the MP split ⟹ sub-6 (`rlctAtOn_comp_homeomorph split split_mp`) is UNCHANGED, and the two
+  unit-Jacobians peel separately via `weightedThreshold_weight_unit_invariant`. DIVISION: crux2 = MP split +
+  `regAbsorb` field/`regAbsorb_rlct` (paralleling coreAbsorb) + the SLOT-GROUPING contract (a NAMED obligation:
+  reg slot = raw gauge pivots, core slot = raw T — NOT an arbitrary relabel; the absorptions' clean-shear /
+  unit-Jacobian structure depends on it). cobuild-sub34 = regAbsorb + the two peels + loss_squeeze
+  (`core_comparability_squeeze`) + assembly. **This SUPERSEDES item 3's "split = the heavy long-pole crux2
+  owns": the split is MP-fine; the open work is the regAbsorb addition + the two peels.** (Ledger correction:
+  my earlier "split (i) DONE" bank was PREMATURE — MP-correct but didn't compose; the reg-slot→E reconciliation
+  was the genuine hard core, now closed by (e).)
+- **R1 #39 skeleton GREEN (fm3) + #66 closed (crux2).** crux2 resolved the seam: fm3 CONSTRUCTS the per-node
+  dispatcher; ChainDimSplit = consumed carrier (crux2's straighten did NOT generalize to all C-cases; consumer
+  recipe given). fm3 built the WHOLE recursion shape green (single sorry): `RouteStep M := leaf | branch (cells)
+  (split : cells → ChainDimSplit M) (codim)` + `routeAtlas = WellFounded.fix chainRel_wf` +
+  routeMIota/Fintype/routeD/K/H — the rebase onto ChainDimSplit validated END-TO-END, parallel RouteState
+  DELETED, ΣM-termination = crux2's `sum_red_lt`. hMid all-s re-threaded into `resolution_charts` (@0cedc7e,
+  endpoint M_0/M_L=0 fidelity, NOT vacuous at L=1).
+- **The ONE R1 open core = routeStep, DELEGATED (#68, pp2).** The rank-pattern → leaf/branch + pivot-cell
+  Finset + per-cell (drop,red) ChainDimSplit + codim dispatcher. NO banked split precedent — even (2,2,2)
+  (Case222Resolution.lean) is hand-built coordinate maps, NOT a ChainDimSplit (fm3 g160) ⟹ from-scratch
+  combinatorics whose CORRECTNESS a green build can't catch (any RouteStep value fills the sorry — #64
+  green-≠-right, now on R1's combinatorial core). pp2 designs the cert (generalizing (2,2,2) + one more case;
+  3 correctness obligations: cover + ⨅-min achieves aoyagiLambda CONSISTENT-with-fm3's-foldDivisors-achiever +
+  codim accumulates to C), fm3 transcribes + firms the interface meanwhile. Decorrelated Codex (the green-≠-right
+  risk). It's the formal version of pp2's own #26 Route-M blueprint.
+
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
 Jacobian weight). The pen-and-paper / design side is **complete and corrected** (pp2 arc g132→g153, + g138 §1
