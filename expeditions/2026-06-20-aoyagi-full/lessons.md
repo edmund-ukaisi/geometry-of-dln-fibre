@@ -565,6 +565,33 @@ genuinely COMPLETED, just as "the obligation is filled" must mean it's NON-VACUO
 re-verifies `Build completed successfully` + `#print axioms` at integration (#28) as the backstop — agent
 green-claims are necessary, not sufficient.
 
+## A poles-shift homeo can ride green via a.e.-MP; cutoff-inhabit the germ instead (2026-06-22)
+
+The DeepestGaugeChart absorptions are `≃ₜ` FIELDS (global homeos), but the honest maps are local-only: the
+Schur shift −Z(I+X)⁻¹Y has poles where I+X is singular (I+X=0 at X=−I; X unconstrained over `Matrix r r`), and
+the E-straightening is a nonlinear, non-globally-invertible diffeo. A homeo (`≃ₜ`) needs GLOBAL continuity,
+which the poles-shift lacks.
+
+THE TRAP (identified + avoided): coreAbsorb_rlct was peeled via the measure-preserving route (skew_product MP →
+rlctAtOn_comp_homeomorph). skew_product MP holds a.e. THROUGH the poles (the singular locus is Lebesgue-null),
+so it RODE GREEN — but coreAbsorb : `≃ₜ` built on the honest poles-shift is unsound (a homeo needs the global
+continuity the shift lacks). A green build of the MP peel does NOT certify the homeo is sound. Surfaced by a
+controller consistency-flag ("does coreAbsorb have the same poles issue as regAbsorb?") + cobuild-sub34
+verifying I+X is unconstrained.
+
+THE FIX (cutoff-inhabitation): inhabit the `≃ₜ` field with a global homeo whose GERM at 0 = the real (local)
+map, via a globally-continuous CUTOFF (bump × correction, = the real map on a nbhd of 0, tame far away). rlctAt
+is a germ + the peel (#72) is local, so the far-field is free; the local identity is all the downstream
+consumes. Match the cutoff difficulty to the map: a TRANSLATION (coreAbsorb: core ↦ core + shift) is a global
+`≃ₜ` for ANY globally-continuous shift (free); a NONLINEAR map (regAbsorb, Φ'(0) ≠ id) needs conjugate-by-Φ'(0)
++ cutoff-to-a-contraction + a global-homeo/Hadamard proof — if that walls, relax that field to a LOCAL
+`OpenPartialHomeomorph` (what #72 consumes natively).
+
+LESSON: a measure-theory / MP lemma that holds a.e. can MASK that an underlying homeo isn't globally continuous
+— "green MP peel" ≠ "sound homeo." When a homeo field is inhabited by a map with a singular locus, verify
+global continuity (or cutoff-inhabit the germ). Same class as the vacuity + #70 confounds: green is necessary,
+never sufficient; the controller's consistency-flag was the instrument.
+
 **Surfaced by:** pp2's #70 decorrelated consult "didn't land (CLI flaky — nested background launch)." The
 nested-launch hypothesis was a RED HERRING: a top-level `codex doctor` / `codex --version` hangs identically.
 It is an environment-wide outage, not a nested-launch artifact.
