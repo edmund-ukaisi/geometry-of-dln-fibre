@@ -17773,6 +17773,70 @@ abbrev RowExhaustedSourceSuffixTransportedPrefixPayload
         case2DisplayedSourceChartMap n hS hcont u residual p = v} =
     Ideal.span ({u} : Set R)
 
+/-- Row-exhausted displayed source-chart frontier payload with transported
+prefix rows rewritten through a supplied terminal matrix.
+
+This is a consumer-side presentation of
+`RowExhaustedSourceSuffixTransportedPrefixPayload`: the terminal prefix factor
+is supplied as `Cterm`.  It is not source production of `Cterm`, `Csucc`, the
+suffix, charts, transitions, normal crossings, pole order, or RLCT data. -/
+abbrev RowExhaustedSourceSuffixSuppliedCtermPrefixPayload
+    {R : Type*} [CommRing R]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (pre : IntroducedLabelRecurrenceState L n S J R)
+    (u : R) (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hrow : prefixMinNat n S = J + 1)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R)
+    (Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R) :
+    Prop :=
+  (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+    matrixEntryIdeal
+        ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+            (weightedPivotBlockRowOp q
+                  (fun i ↦
+                    pivotFirstX
+                      (case2DisplayedPivotRow n hS hcont)
+                      (case2DisplayedPivotCol n hS hcont)
+                      (case2DisplayedPaperDchart n hS hcont residual) i ()) *
+                (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                  case2DisplayedSourceSubstitutionBlock n hS hcont
+                    (case2DisplayedSourceChartMap n hS hcont u residual
+                      (J + 1, J + 1)) residual).submatrix
+                  (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+                  (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+            verticalBlock (case2DisplayedSourceOldTopBlock C)
+              (case2DisplayedSourceFollowingFactor n hS hcont C)) *
+          sourceSuffixProduct κ Ctail S hSuffix) =
+    matrixEntryIdeal
+        ((case2DisplayedSourceTerminalWeightPrefixCandidate
+            (case2DisplayedSourceOldTopWeight pre)
+            n hcont
+            (case2_not_next_cont_of_prefixMin_current_eq hS hrow)
+            ((pre.case2Succ
+              (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)))
+              |>.weight (J + 1)) *
+          Cterm.submatrix
+            (case2SourceTerminalRowEquivPrefixOfNotNext n hcont
+              (case2_not_next_cont_of_prefixMin_current_eq hS hrow)).symm id) *
+          sourceSuffixProduct κ Ctail S hSuffix)) ∧
+  u ∈
+    {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+      case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+  (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+    u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+  Ideal.span
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+    Ideal.span ({u} : Set R)
+
 /-- Fielded implication bundle for the displayed Case 2 source-chart frontier.
 
 The fields expose existing consequences under explicit branch hypotheses
@@ -18202,6 +18266,54 @@ theorem rowExhausted_Cterm_eq_originalRows_Csucc
         n data.stage_pos data.continuation residual C).symm
     _ = case2DisplayedSourceTerminalOriginalRows (J := J) Csucc := by
       rw [← ob.Csucc_eq_formula]
+
+/-- Row-exhausted source-suffix frontier stated with the supplied terminal
+matrix `Cterm`.
+
+This consumes the obligation's row-exhausted frontier payload and its supplied
+terminal-row equality.  It does not construct `Cterm`, `Csucc`, a suffix,
+charts, transitions, normal crossings, pole order, or RLCT data. -/
+theorem rowExhausted_frontier_suppliedCtermPrefix
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    {residual : ℕ × ℕ → R}
+    {κ : Fin (L + 1) → Type uκ} [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    {hSuffix : S + 1 ≤ L}
+    {C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
+    {Csucc : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R}
+    (ob :
+      SourceProductionObligation data residual κ hSuffix C Ctail Csucc Cterm)
+    (hrow : prefixMinNat n S = J + 1) :
+    RowExhaustedSourceSuffixSuppliedCtermPrefixPayload
+      L n S J pre u residual data.stage_pos data.continuation hrow
+      κ hSuffix C Ctail Cterm := by
+  rcases ob.rowExhausted_frontier hrow with ⟨hentry, hmem, hdvd, hspan⟩
+  refine ⟨?_, hmem, hdvd, hspan⟩
+  rcases hentry with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hterm :
+      case2DisplayedSourceTerminalTransportedRows
+          n data.stage_pos data.continuation residual C = Cterm :=
+    (ob.rowExhausted_Cterm_eq hrow).symm
+  simpa [hterm] using hq
 
 end SourceProductionObligation
 

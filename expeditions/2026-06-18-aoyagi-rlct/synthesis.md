@@ -5192,16 +5192,16 @@ Latest A4 interface update: the branchwise Case 2 source-production frontier
 is now named in Lean as the supplied `Prop` structure
 `Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`.
 The structure packages the current frontier boundary, the formula equality
-for a supplied successor following object `Csucc`, a supplied next
-chart-family boundary for the continuing branch, the weighted
+for a supplied successor following object `Csucc`, the weighted
 successor-following continuing payload, the actual-width stopped payload with
 `sourceSuffixProduct`, actual-width original terminal rows and relabelled
 `(S+1,0)` certificates, and the row-exhausted transported-prefix payload plus
-transported-row terminal equality.  It deliberately has no constructor from
-the current displayed chart boundary.  This is not source production of
-`C'^(S+1)`, not suffix production, not coverage or transition invariance, not
-coordinate derivation of corrected post-data, and not Jacobian/normal-
-crossing/pole-order/RLCT content.
+transported-row terminal equality.  The formerly present supplied next
+chart-family field has since been removed as vacuous.  It deliberately has no
+constructor from the current displayed chart boundary.  This is not source
+production of `C'^(S+1)`, not suffix production, not coverage or transition
+invariance, not coordinate derivation of corrected post-data, and not
+Jacobian/normal-crossing/pole-order/RLCT content.
 Artifacts:
 `threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-a4.md`
 and
@@ -5324,6 +5324,26 @@ and
 `threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-remove-vacuous-next-boundary.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+
+Latest A4 supplied-obligation consumer update: Lean now names the
+row-exhausted source-suffix frontier with its terminal prefix written through
+the supplied terminal matrix and projects it from
+`SourceProductionObligation`:
+`RowExhaustedSourceSuffixSuppliedCtermPrefixPayload` and
+`SourceProductionObligation.rowExhausted_frontier_suppliedCtermPrefix`.
+Under the supplied row-exhausted branch hypothesis, this consumes the
+obligation's existing transported-prefix frontier plus
+`Cterm = transportedRows(C)` and rewrites only the terminal prefix factor to
+`Cterm.submatrix ...`; the source suffix and finite center facts are
+unchanged.  It does not construct the obligation, `Cterm`, `Csucc`,
+`C'^(S+1)`, suffixes, successor charts, coverage, transitions, coordinate
+post-data, normal crossings, pole order, termination, or RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-row-exhausted-cterm-frontier-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-row-exhausted-cterm-frontier.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-cterm-frontier-a4.md`.
 
 Latest A5 finite-obstruction update: `Lemma5TerminalBridge.lean` now contains
 `terminalMinimumLabels_eq_branchLabelImage_of_card_bound_and_branchLabel_injOn`

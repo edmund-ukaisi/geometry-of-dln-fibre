@@ -9,6 +9,11 @@ Reviewer: xhigh API/source reviewer `Poincare the 2nd`, with Lean API scout
 
 Pass after naming fix.
 
+2026-06-22 API update: this review is a historical audit artifact.  The live
+`SourceProductionObligation` API no longer has the next-boundary field, and
+the constructor wrapper named below has been removed rather than retained with
+an ignored argument.
+
 ## Findings
 
 The original draft name
@@ -25,14 +30,15 @@ predicates.  The theorem was renamed to
 SourceProductionObligation.of_formulaSuccessor_transportTerminalRows_truePredicateNextBoundary
 ```
 
-and the exact-boundary helper
+in the superseded API.  That constructor wrapper has since been removed.  The
+exact-boundary helper
 
 ```text
 Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates
 ```
 
-was added.  The docs now use "true-predicate next boundary" rather than
-"trivial next chart family" in theorem-facing prose.
+remains as an API-audit lemma.  The docs now use "true-predicate next
+boundary" rather than "trivial next chart family" in theorem-facing prose.
 
 ## Soundness
 

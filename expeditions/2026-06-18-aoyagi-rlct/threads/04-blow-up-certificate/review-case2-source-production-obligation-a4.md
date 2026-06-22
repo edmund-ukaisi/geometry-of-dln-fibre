@@ -6,6 +6,11 @@ Reviewers: Beauvoir and Planck, xhigh effort.
 
 Verdict: pass as a supplied interface, with one naming hardening applied.
 
+2026-06-22 API update: this review describes the earlier interface that still
+had a supplied next chart-family field.  That field has since been removed
+after the true-predicate audit; the live `SourceProductionObligation` no
+longer contains `continuing_suppliedNextChartFamily`.
+
 ## Findings
 
 Both reviewers agreed that the next Lean artifact may be a `Prop`-valued
@@ -26,9 +31,11 @@ supplied.
 
 ## Applied Hardening
 
-The continuing next chart-family field was renamed from
+In the historical interface, the continuing next chart-family field was
+renamed from
 `continuing_nextChartFamily` to `continuing_suppliedNextChartFamily`, so the
-field cannot be read as a chart-family construction from the current data.
+field could not be read as a chart-family construction from the current data.
+The field is now removed from the live API.
 
 ## Residual Boundary
 

@@ -8,6 +8,11 @@ Reviewer: xhigh scout Huygens the 2nd.
 
 Pass after two documentation precision fixes.
 
+2026-06-22 API update: this review describes the superseded constructor that
+still carried a supplied next chart-family argument.  The live API removed
+that argument after the true-predicate audit; see
+`reproduction-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+
 ## Findings
 
 First, the summaries said the theorem "removes arbitrary `Csucc/Cterm`
@@ -25,9 +30,11 @@ synthesis now record that two-step reasoning.
 ## Scope Check
 
 No theorem-name mismatch, source-boundary issue, or quiver leakage was found.
-The continuing next chart-family boundary remains a supplied theorem argument
-and is passed directly into the obligation field.  Row-exhausted terminal rows
-remain transported rows, with the obligation field proved by reflexivity.
+In the historical reviewed constructor, the continuing next chart-family
+boundary remained a supplied theorem argument and was passed directly into the
+obligation field.  In the current API that field is removed.  Row-exhausted
+terminal rows remain transported rows, with the obligation field proved by
+reflexivity in the canonical formula-level constructor.
 
 The theorem does not construct source production, successor chart-family data,
 suffixes, coverage, transition regularity, normal crossings, pole order, or

@@ -3992,9 +3992,10 @@ inside the `Case2DisplayedSuppliedChartFamilyBoundary` namespace.  The
 structure is `Prop`-valued and has no constructor from the current displayed
 chart boundary.  Its fields require a supplied formula-level successor
 following object `Csucc`, a supplied terminal source matrix `Cterm`, a
-continuing supplied next chart-family boundary, branch-specific frontier
-payloads, and the explicit terminal-row equalities appropriate to the
-actual-width and row-exhausted stopped branches.
+current frontier package, branch-specific frontier payloads, and the explicit
+terminal-row equalities appropriate to the actual-width and row-exhausted
+stopped branches.  The formerly present continuing supplied next chart-family
+field has since been removed as vacuous.
 
 This is an obligation interface only.  It does not construct `Csucc`,
 construct `C'^(S+1)`, produce a source suffix, prove chart coverage or
@@ -4066,6 +4067,36 @@ normal crossings, pole order, termination, RLCT, or repair the printed Case 2
 vector mismatch.  Row `J+1` is original as a row of `Csucc`, not as a row of
 the old `C`.
 
+## 2026-06-22 Lean Case 2 obligation row-exhausted Cterm frontier
+
+Reproduction:
+`reproduction-case2-source-production-obligation-row-exhausted-cterm-frontier-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-production-obligation-row-exhausted-cterm-frontier.md`.
+Review artifact:
+`review-case2-source-production-obligation-row-exhausted-cterm-frontier-a4.md`.
+
+Lean now names the supplied-`Cterm` row-exhausted source-suffix payload and
+projects it from a supplied `SourceProductionObligation`:
+
+```text
+RowExhaustedSourceSuffixSuppliedCtermPrefixPayload
+SourceProductionObligation.rowExhausted_frontier_suppliedCtermPrefix
+```
+
+Under `hrow : prefixMinNat n S = J+1`, the obligation supplies the existing
+row-exhausted source-suffix frontier with terminal prefix rows written as
+`transportedRows(C)`, plus the terminal-row equality
+`Cterm = transportedRows(C)`.  The new projection rewrites only that terminal
+prefix factor to `Cterm.submatrix ...`; the source suffix and finite center
+facts are unchanged.
+
+This is a supplied-obligation consumer.  It does not construct the
+obligation, `Cterm`, `Csucc`, `C'^(S+1)`, a suffix, a successor chart family,
+coverage, transition regularity, coordinate post-data, Jacobian arithmetic,
+normal crossings, pole order, termination, RLCT, or repair the printed Case 2
+vector mismatch.
+
 ## 2026-06-22 Lean Case 2 obligation Csucc projections
 
 Reproduction:
@@ -4121,11 +4152,11 @@ equality follows from the actual-width collapse of the formula-level successor
 factor; row-exhausted terminal transported-row equality is reflexive.
 
 This is interface assembly only.  It does not construct the continuing next
-chart-family boundary, source-produce `Csucc` or `C'^(S+1)` from chart
-coordinates, produce the suffix, prove coverage or transition regularity,
-derive corrected post-data from coordinates, add Jacobian arithmetic, prove
-normal crossings, pole order, termination, RLCT, or repair the printed Case 2
-vector mismatch.
+chart-family, include a next-chart-family boundary, source-produce `Csucc` or
+`C'^(S+1)` from chart coordinates, produce the suffix, prove coverage or
+transition regularity, derive corrected post-data from coordinates, add
+Jacobian arithmetic, prove normal crossings, pole order, termination, RLCT, or
+repair the printed Case 2 vector mismatch.
 
 ## 2026-06-22 Lean Case 2 true-predicate next boundary
 

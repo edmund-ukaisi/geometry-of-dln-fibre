@@ -4,7 +4,7 @@ Date: 2026-06-22.
 
 Status: supplied-boundary constructor.  This is not chart/source production.
 
-2026-06-22 update: the current Lean API now has the no-extra-boundary
+2026-06-22 update: the current Lean API now has the next-boundary-free
 constructor
 `SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`.
 The supplied-next-chart-family theorem described below has been removed from
@@ -22,14 +22,19 @@ C'_J^(S+1) = Q^-1 C_J^(S+1).
 
 The previously introduced Lean interface `SourceProductionObligation` records
 the branchwise data a full successor-production theorem would have to provide.
-This slice constructs an inhabitant of that interface only after keeping the
-remaining continuing next chart-family boundary explicit.
+This slice originally constructed an inhabitant while keeping a continuing
+next chart-family boundary explicit.  A later API audit found that boundary
+was vacuous in the current predicate-only API, so the live constructor no
+longer asks for it.
 
 ## Supplied Input
 
-The constructor assumes the existing displayed supplied boundary `data`, a
-source following factor `C`, source suffix factors `Ctail`, and the following
-supplied continuing branch field:
+The current constructor assumes the existing displayed supplied boundary
+`data`, residual source coordinates, a source following factor `C`, source
+suffix factors `Ctail`, and the suffix layer bound `S+1 <= L`.
+
+Historically, this reproduction also listed the following supplied continuing
+branch field:
 
 ```text
 ∀ hnext : J+2 <= prefixMinNat n (S+1),
@@ -38,8 +43,10 @@ supplied continuing branch field:
       ChartRegularNext TransitionRegularNext.
 ```
 
-This is the remaining source-production input for the continuing branch.  The
-theorem does not build it from Aoyagi's chart coordinates.
+That field has been removed from `SourceProductionObligation`.  It did not
+encode source production because the predicates could be chosen to be `True`.
+The theorem still does not build successor charts from Aoyagi's chart
+coordinates.
 
 ## Canonical Choices
 
@@ -101,12 +108,12 @@ SourceProductionObligation.of_formulaSuccessor_transportTerminalRows
 
 ## Nonclaims
 
-This theorem does not construct the continuing next chart-family boundary,
-does not prove chart coverage or transition regularity, does not source-produce
-the successor object from coordinates, does not produce the suffix, does not
-derive corrected post-data from coordinates, and does not prove Jacobian
-arithmetic, normal crossings, pole order, termination, RLCT, or repair of the
-printed Case 2 vector mismatch.
+This theorem does not construct or include a continuing next chart-family
+boundary, does not prove chart coverage or transition regularity, does not
+source-produce the successor object from coordinates, does not produce the
+suffix, does not derive corrected post-data from coordinates, and does not
+prove Jacobian arithmetic, normal crossings, pole order, termination, RLCT, or
+repair of the printed Case 2 vector mismatch.
 
 It also does not make the stopped branches exclusive.  It chooses a terminal
 matrix compatible with both actual-width and row-exhausted branch fields under

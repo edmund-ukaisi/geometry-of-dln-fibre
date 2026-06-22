@@ -8,10 +8,10 @@
 
 ## Claim
 
-The current existential chart-family boundary is formally inhabited by choosing
-trivial regularity predicates.  Consequently the canonical formula-level
-`SourceProductionObligation` can be constructed without a separately supplied
-next-boundary witness.
+The historical existential next chart-family boundary was formally inhabited
+by choosing trivial regularity predicates.  This showed that the field did not
+encode source production, and the field has since been removed from
+`SourceProductionObligation`.
 
 ## Inputs
 
@@ -23,20 +23,21 @@ The same inputs as the canonical formula-level constructor:
 - source suffix factors `Ctail`;
 - suffix layer bound `S+1 <= L`.
 
-No source-produced next chart-family data is required because the theorem fills
-that existential with `True` predicates.
+No source-produced next chart-family data was used: the audit filled the
+existential with `True` predicates.
 
 ## Output
 
-A `SourceProductionObligation` with
+Historically, the audit produced a `SourceProductionObligation` with
 
 ```text
 Csucc = case2DisplayedSourceSuccessorFollowingFactor ...
 Cterm = case2DisplayedSourceTerminalTransportedRows ...
 ```
 
-and the continuing next chart-family field filled by
+In the superseded API, the removed field was inhabited by
 `Case2ResidualBlockChartFamilyBoundary.continuingSuccessorBoundary_exists_truePredicates`.
+The live API no longer has that field or the true-predicate constructor wrapper.
 
 ## Nonclaims
 

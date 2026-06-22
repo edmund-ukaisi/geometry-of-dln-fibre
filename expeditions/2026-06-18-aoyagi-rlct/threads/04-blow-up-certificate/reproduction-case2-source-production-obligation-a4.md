@@ -75,9 +75,13 @@ Supplied by an inhabitant of the interface:
 
 - the successor following object `Csucc`;
 - the terminal source matrix `Cterm`;
-- the next continuing chart-family boundary;
 - branch payloads under their explicit branch hypotheses;
 - the source suffix factors and current source following factor.
+
+Historical note: an earlier version also listed a supplied next continuing
+chart-family boundary.  That field has since been removed from
+`SourceProductionObligation` after the true-predicate audit showed it was
+vacuous in the current API.
 
 Deferred:
 

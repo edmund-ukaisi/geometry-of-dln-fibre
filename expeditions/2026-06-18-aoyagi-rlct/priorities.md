@@ -149,6 +149,14 @@ Lean API rather than retained as ignored-argument wrappers.  This is an
 API-hardening correction, not source production; the same source/chart-
 production frontier remains open.
 
+The row-exhausted supplied-obligation consumer layer now also names
+`RowExhaustedSourceSuffixSuppliedCtermPrefixPayload` and proves
+`SourceProductionObligation.rowExhausted_frontier_suppliedCtermPrefix`.  This
+rewrites the existing row-exhausted source-suffix frontier through the
+obligation's supplied terminal matrix `Cterm`, leaving the source suffix and
+finite center facts unchanged.  It still constructs neither the obligation nor
+`Cterm`/`Csucc`, and it does not move the source/chart-production boundary.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

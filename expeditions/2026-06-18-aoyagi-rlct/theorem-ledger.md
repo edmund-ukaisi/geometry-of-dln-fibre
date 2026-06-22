@@ -5206,14 +5206,15 @@ Latest A4 Case 2 source-production obligation interface:
 `Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation`.  This
 is a supplied `Prop` structure, not a theorem.  It packages the branchwise
 successor-production obligations after the displayed Case 2 source chart:
-formula equality for supplied `Csucc`, continuing supplied next chart-family boundary,
-continuing weighted successor-following frontier, actual-width stopped
-source-suffix frontier with original terminal rows and relabelled certificates,
-and row-exhausted source-suffix frontier with transported terminal rows.  No
-inhabitant is constructed from the current displayed boundary.  It is not
-source production of `C'^(S+1)`, suffix production, coverage, transition
-regularity, coordinate post-data derivation, Jacobian arithmetic, normal
-crossings, pole order, termination, or RLCT.  Reproduction:
+formula equality for supplied `Csucc`, continuing weighted
+successor-following frontier, actual-width stopped source-suffix frontier with
+original terminal rows and relabelled certificates, and row-exhausted
+source-suffix frontier with transported terminal rows.  The formerly present
+continuing supplied next chart-family field has since been removed as
+vacuous.  No inhabitant is constructed from the current displayed boundary.
+It is not source production of `C'^(S+1)`, suffix production, coverage,
+transition regularity, coordinate post-data derivation, Jacobian arithmetic,
+normal crossings, pole order, termination, or RLCT.  Reproduction:
 `threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-a4.md`.
 Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation.md`.
@@ -5328,6 +5329,25 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-remove-vacuous-next-boundary.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-remove-vacuous-next-boundary-a4.md`.
+
+Latest A4 Case 2 obligation row-exhausted Cterm frontier:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.RowExhaustedSourceSuffixSuppliedCtermPrefixPayload`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.rowExhausted_frontier_suppliedCtermPrefix`.
+The projection consumes a supplied `SourceProductionObligation` and the
+row-exhausted branch hypothesis, rewriting the row-exhausted source-suffix
+frontier's terminal prefix from transported rows to
+`Cterm.submatrix ...` using the obligation's supplied terminal-row equality.
+This is finite payload rewriting only; it does not construct the obligation,
+`Cterm`, `Csucc`, `C'^(S+1)`, suffixes, charts, coverage, transition
+regularity, coordinate post-data, normal crossings, pole order, termination,
+or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-production-obligation-row-exhausted-cterm-frontier-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-production-obligation-row-exhausted-cterm-frontier.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-production-obligation-row-exhausted-cterm-frontier-a4.md`.
 
 ## Ledger rules
 
