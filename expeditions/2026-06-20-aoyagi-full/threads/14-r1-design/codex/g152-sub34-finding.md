@@ -298,3 +298,26 @@ option (e) is MINIMAL and crux2's split STANDS:
 So the fix is: keep crux2's split + ADD regAbsorb field + regAbsorb_rlct + change loss_squeeze's Φ_reg
 slot. crux2's #64 is NOT wasted (the arbitrary MP split is exactly right under option e). The seam
 narrows to the structure's Φ_reg referencing the raw slot instead of the regAbsorb-processed one.
+
+## g160 WALL DISSOLVED — regAbsorb/coreAbsorb are LOCAL diffeos at w0 (controller, verified)
+
+The regAbsorb global-≃ₜ wall (g159) is AVOIDABLE: rlctAt is a GERM (∃ U ∈ 𝓝 w0), so regAbsorb need
+only be a LOCAL diffeo on a 𝓝 w0 — a PartialHomeomorph at w0, NOT a global Homeomorph of DeepestSplit.
+
+VERIFIED (dE_invertible.py): the nonlinear terms (X1X2, ...) are higher-order, vanish at w0, so
+dE(w0) = the linear part. With reg slot = the g125 boundary pivots {X1, Y2, Z1}:
+  dE/d(reg)|w0 = identity (E00 ∂/∂X1=1, E01 ∂/∂Y2=1, E10 ∂/∂Z1=1), det = 1, INVERTIBLE.
+⟹ regAbsorb is a local diffeo at w0 by the inverse function theorem. NO global cutoff. Same for
+coreAbsorb (its S_s shear is even simpler — already a global homeo, det=1).
+
+KEY CONSEQUENCE for the slot-grouping (IsGaugeSliceDecode / crux2's split): the reg slot MUST be the
+g125 boundary pivots {X1,Y2,Z1}-type (whose linear E-map is invertible), NOT arbitrary equivOfCardEq
+coords. So crux2's split partition is NOT fully free — reg must group the pivots whose dE(w0) is
+invertible. (The arbitrary partition + gaugeDecode-via-split⁻¹ recovers the blocks, and regAbsorb's
+local-diffeo-ness needs reg = the invertible-pivot subspace. Both consistent: gaugeDecode picks the
+pivots out, regAbsorb is the local diffeo on them.)
+
+So the construction reduces to: LOCAL diffeos (regAbsorb, coreAbsorb — exist by IFT, dE(w0) invertible
+verified) + the LOCAL peels (crux2's weightedThreshold_transport stated on a 𝓝, NOT global proper). The
+g159 wall is GONE. regAbsorb buildable as a PartialHomeomorph at w0. Controller's local-vs-global
+resolution — verified, unblocks the build.
