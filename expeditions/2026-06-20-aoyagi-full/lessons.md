@@ -540,3 +540,35 @@ design cert, run an independent reviewer subagent on the NAMED load-bearing clai
 **Operator action (non-blocking):** restoring codex needs the `uvx` git-ssh fetch to `aisi-inspect-tools` to
 succeed (network / ssh / key) — infra the agent cannot fix. Flagged; the expedition continues on subagent
 decorrelation.
+
+## Decorrelation earns its keep: the all-interior-width-=-r confound in #70 (2026-06-22)
+
+The #70 degenerate-boundary cert (g202/g203) was validated by pp2 on 6 configs + an adversarial self-guard
+(g201), and the controller endorsed the g203 sharpening ("flat = pure gauge r²(L−1)") as "clean and right."
+A decorrelated adversarial subagent (substitute for the down codex, opposite-seat, its own exact algebra over
+ℚ) then BROKE part of it:
+- The VALUE (rlctAt(deepest, degenerate) = nReg/2) is SOUND — confirmed on 19 configs, and given a more robust
+  reason than single-orbit: J's image surjects onto the determinantal-variety {rank≤r} tangent at B (dim nReg),
+  capped by the variety, regardless of factorization or B.
+- But deliverable (ii) "flat dim = r²(L−1), pure gauge" is FALSE whenever an interior width exceeds r:
+  flat = ambient − nReg = ΣH_sH_{s+1} − r(H₀+H_L−r) (the fibre tangent dim) depends on interior widths;
+  r²(L−1) (the gauge dim) does not. They coincide IFF every interior width = r — exactly the regime ALL 6
+  validation configs sat in. Witness: (4,2,3,2,4) r2 → flat 16 vs r²(L−1)=12.
+- And the "genuinely flat Morse-Bott" justification is wrong: along the LINEAR nullspace the loss is t⁴, not 0
+  (flat only along the CURVED gauge orbit). The value survives via "smooth codim-nReg fibre cut transversally",
+  not "linear Morse-Bott".
+
+TWO lessons:
+1. A validation set that all shares an unstated special property (here: every interior width = r) validates the
+   SPECIAL case, not the general claim. The controller read 6 configs as general when they were collinear in the
+   confound. When you reach for "clean and right," look for what every example quietly has in common. (Controller
+   owned the endorsement error; Bayesian update.)
+2. With codex down, a decorrelated SUBAGENT (opposite-seat adversary, own exact algebra) caught a real confound
+   the author's self-check + the controller's endorsement missed — fired BEFORE the build (gated on L2), so it
+   prevented a wrong-route build. Substitute decorrelation works; run it on the design before the compute.
+
+BUILD-ROUTE CORRECTION (carry into #70's formalisation): build rlctAt_deepest_degenerate via the smooth
+codim-nReg fibre cut transversally (rank dΦ = nReg) → L2's smooth-block primitive on the ADAPTED (fibre-normal)
+coordinates → rlctAt = nReg/2. NOT via a genuinely-flat linear Morse-Bott complement (the raw nullspace carries
+t⁴). The headline value nReg/2 = aoyagiLambda is unchanged; only the cert's reasoning + the flat-dim formula are
+corrected. Seat's scripts: expeditions/2026-06-20-aoyagi-full/threads/adv-degen-boundary-witness/.
