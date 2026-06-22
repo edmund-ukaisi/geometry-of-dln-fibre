@@ -134,3 +134,33 @@ g-absorption / Schur complement R = P11 − E10(I+E00)⁻¹E01 is load-bearing. 
 GeneralR1Recursion bedrock `schur_row_decomp` + `schur_lossDiff_eq_cofactor` (already-proven CommRing
 matrix identities) ARE the Schur-complement content — sub-lemma 1a is a specialization, not a rebuild.
 Lesson reinforced: MC guides, exact algebra adjudicates; the "too clean" simplification was the trap.
+
+## VERDICT (controller's route-reopen question) — chart collapses YES; coreEmbed fix needed
+
+Controller asked: does a squeeze sub-5 eliminate the chart? Read crux2's PROVEN sub-5 + sub-6:
+
+**YES, the chart collapses.** sub-5 (`deepest_squeeze_transport`, PROVEN) uses ONLY `Γ.split`
+(continuity), `Γ.loss_squeeze`, and the `paramsEquivFlat-H` MP transport. No `chart`/`Dchart`/`jac_unit`
+(gone in the trimmed structure). So the XL chart-existence (cutoff-extension/Dchart/jac_unit/loss_form
+germ) is ELIMINATED. sub-3 (`deepest_gauge_squeeze_exists`) now only produces
+`nGauge`/`split`/`split_mp`/`split_basepoint`/`loss_squeeze`. My job shrinks to: the comparability
+(banked, `DeepestGaugeBlocks`) + the `split` MP reindex + the `loss_squeeze` assembly.
+
+**BUT a consistency bug gates sub-3.** sub-6 (`deepest_regular_smooth_split`, PROVEN) calls
+`rlctAtOn_comp_homeomorph Γ.split Γ.split_mp` ⟹ `split` MUST be measure-preserving. MP `split` (det 1)
+⟹ `(split w).2.1` is a linear reindex of raw flat coords ⟹ the `Φ`-core
+`dlnLoss M 0 ((paramsEquivFlat M).symm (split w).2.1)` is the RAW `∏T` core — which g153 REFUTED. So
+`loss_squeeze` is FALSE as the structure stands; sub-3's `sorry` is currently a FALSE statement.
+
+g153 applies AT the deepest point (confirmed): the CE `C1C2C3 = blockdiag[1,−ε⁴]` has max layer
+deviation `= ε → 0`, so it is in every neighbourhood of `w0`; `rlctAtOn` integrates the full nbhd
+(incl. full-rank points like the CE's rank-2 `C2`). So the refutation is genuinely at `w0`.
+
+**FIX (crux2's structure call, minimal):** add a field
+`coreEmbed : (Fin (flatDim M) → ℝ) → Params M` (the g-absorbing reduced reparametrization), change
+`loss_squeeze`'s `Φ`-core to `dlnLoss M 0 (coreEmbed q.2.1)`. Then `split` stays a pure MP reindex
+(sub-6 unchanged), the g-absorption (`det(I−VY)⁻ᴹ⁰`, a bounded unit) lives in `coreEmbed` and is peeled
+in sub-7 via crux2's PROVEN `weightedThreshold_weight_unit_invariant` (replacing the plain
+`paramsEquivFlat-M comp_homeomorph`). `loss_squeeze` becomes TRUE — the comparability is the banked
+Schur split (`P11 = R + leak`, `R = ‖T̃-chain‖² = dlnLoss M 0(coreEmbed core)`, leak ∈ ideal(reg) ⟹
+`schur_node_squeeze_unif`). Sent to crux2 + controller. Held sub-3 assembly for the coreEmbed fix.
