@@ -1,11 +1,31 @@
-# Statement card — the CORRECTED per-node SQUEEZE datum (`IsSchurStraightenSqueeze` + chain)
+# Statement card — the CORRECTED per-node SQUEEZE lane (datum + chain + EXISTENCE)
 
-- **Status:** `sorry-free` (awaiting fidelity review). Branch `origin/fm2/squeeze-datum` @f6fedb1
-  (squeeze chain + datum, on consolidate base @d82b381). File
-  `lean/DLNFibre/DLN/RLCT/Validate/GeneralR1Recursion.lean`. Build GREEN (2673 jobs, 0 sorry); all new
-  decls axiom clean-three.
+- **Status:** `sorry-free`, per-node lane CLOSED (awaiting fidelity review). Branch
+  `origin/fm2/r1-squeeze-complete` @fb80122 (the canonical line: #129/#130/#131 verdict docs + g131 cert
+  + chain + datum + existence). File `lean/DLNFibre/DLN/RLCT/Validate/GeneralR1Recursion.lean`. Build
+  GREEN (2673 jobs, 0 sorry); ALL decls axiom clean-three (S2-FREE).
 - **Supersedes** the retracted clean-MP datum `IsSchurStraighten` / `schur_straighten_of_data` (pp2 #129).
-  Implements pp2 #129 (squeeze, not clean MP factor) + #130 (the two transport pins).
+  Implements pp2 #129 (squeeze, not clean MP factor) + #130 (the two transport pins) + #131 (the
+  ideal-membership existence content).
+
+## The per-node EXISTENCE (closes the lane)
+
+```text
+schur_straighten_squeeze_exists {L nReg} (M) (S : ChainDimSplit M) {Y}[meas/top/zero] {Mblk}[Fintype]
+    (flatCore : (Fin nReg → ℝ) × Y → ℝ) (G : Y → ℝ) (redEmbed : Y → Params S.red) (T : ℝ)
+    (bcol) (SΓ) (hFmeas) (hGmeas) (hredCore : ∀ y, G y² = dlnLoss S.red 0 (redEmbed y))
+    (hGne) (hdrop : ∑ S.red < ∑ M)
+    (hnode : ∃ U ∈ 𝓝 (0,0), ∀ w ∈ U,
+        flatCore w = (∑ⱼ w.1ⱼ²) + ∑ᵢⱼ (bcol w i · w.1 j + SΓ w i j)²    -- the Schur node form
+        ∧ G w.2² = ∑ᵢⱼ (SΓ w i j)²                                      -- reduced core = ‖SΓ‖²
+        ∧ ∑ᵢ (bcol w i)² ≤ T²) :                                        -- bounded pivot column
+    ∃ c₁ c₂, IsSchurStraightenSqueeze M S flatCore G redEmbed c₁ c₂
+```
+
+`c₁ = (2(1+T²))⁻¹ > 0`, `c₂ = 2+2T²`. **Faithfulness (Codex g132):** the `flatCore = ‖Â·A2‖²`
+coordinate LAYOUT is the blow-up (B)-lane contract — supplied as the explicit `hnode` interface
+hypothesis, NOT asserted as `dlnLoss M 0 coords = ‖Â·A2‖²` (which would smuggle guessed plumbing). The
+`squeeze` field is `schur_node_squeeze_unif`; the others are the supplied contracts.
 
 ## The lemmas (5 new decls)
 
