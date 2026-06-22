@@ -499,6 +499,43 @@ theorem schur_lossDiff_mem_ideal {ι : Type*} [Fintype ι] {R : Type*} [CommRing
   rw [hFΦ]
   exact Submodule.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
+/-- **(4) The squeeze-constant bounds** (the analytic core of the squeeze, #131, blow-up-coord-free).
+`F = (∑ Eᵢ²) + ∑ⱼ (pⱼ + sⱼ)²` is squeezed by `Φ = (∑ Eᵢ²) + ∑ⱼ sⱼ²` whenever the linear perturbation
+`p` (`= b·E_row`) is small relative to `E`: `∑ pⱼ² ≤ t²·∑ Eᵢ²`. Then `Φ ≤ 2(1+t²)·F` (⟹ the lower
+squeeze constant `c₁ = (2(1+t²))⁻¹ > 0`, the STRUCTURAL `c₁>0`) and `F ≤ (2+2t²)·Φ` (⟹ `c₂ = 2+2t²`).
+Summed Young inequalities; `t = sup‖b‖ → 0` at the deepest point gives `c₁ → ½`, `c₂ → 2`. This is the
+bounded-linear-perturbation estimate that PRODUCES the `IsSchurStraightenSqueeze.squeeze` field; the
+`dlnLoss M 0` ⟹ block-`(Â,A2)` blow-up-coordinate assembly (with `p = b·E_row`, `t = ‖b‖`) is the
+remaining producer step (couples to the blow-up lane). -/
+theorem squeeze_bounds_abstract {ι κ : Type*} [Fintype ι] [Fintype κ]
+    (E : ι → ℝ) (p s : κ → ℝ) (t : ℝ)
+    (hp : (∑ j, (p j) ^ 2) ≤ t ^ 2 * (∑ i, (E i) ^ 2)) :
+    ((∑ i, (E i) ^ 2) + (∑ j, (s j) ^ 2))
+        ≤ (2 * (1 + t ^ 2)) * ((∑ i, (E i) ^ 2) + (∑ j, (p j + s j) ^ 2))
+    ∧ ((∑ i, (E i) ^ 2) + (∑ j, (p j + s j) ^ 2))
+        ≤ (2 + 2 * t ^ 2) * ((∑ i, (E i) ^ 2) + (∑ j, (s j) ^ 2)) := by
+  set A := ∑ i, (E i) ^ 2
+  set P := ∑ j, (p j) ^ 2
+  set C := ∑ j, (s j) ^ 2
+  set B := ∑ j, (p j + s j) ^ 2
+  have hAnn : 0 ≤ A := Finset.sum_nonneg (fun i _ => sq_nonneg _)
+  have hBnn : 0 ≤ B := Finset.sum_nonneg (fun j _ => sq_nonneg _)
+  have hCnn : 0 ≤ C := Finset.sum_nonneg (fun j _ => sq_nonneg _)
+  have htsq : 0 ≤ t ^ 2 := sq_nonneg t
+  have hBup : B ≤ 2 * P + 2 * C := by
+    show (∑ j, (p j + s j) ^ 2) ≤ 2 * (∑ j, (p j) ^ 2) + 2 * (∑ j, (s j) ^ 2)
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
+    exact Finset.sum_le_sum (fun j _ => by nlinarith [sq_nonneg (p j - s j)])
+  have hCup : C ≤ 2 * B + 2 * P := by
+    show (∑ j, (s j) ^ 2) ≤ 2 * (∑ j, (p j + s j) ^ 2) + 2 * (∑ j, (p j) ^ 2)
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
+    exact Finset.sum_le_sum (fun j _ => by nlinarith [sq_nonneg (s j + 2 * (p j))])
+  refine ⟨?_, ?_⟩
+  · have h1 : A + C ≤ (1 + 2 * t ^ 2) * A + 2 * B := by nlinarith [hCup, hp]
+    nlinarith [h1, hAnn, hBnn, htsq, mul_nonneg htsq hBnn]
+  · have h2 : A + B ≤ (1 + 2 * t ^ 2) * A + 2 * C := by nlinarith [hBup, hp]
+    nlinarith [h2, hAnn, htsq, mul_nonneg htsq hCnn]
+
 /-! ## The L=1 base (the `block_elimination` prototype)
 
 The recursion's leaf. At `L = 1` a `Params` is a SINGLE matrix `A : Matrix (Fin (M 0)) (Fin (M 1)) ℝ`
