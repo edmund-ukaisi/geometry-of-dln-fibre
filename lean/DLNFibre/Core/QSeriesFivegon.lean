@@ -828,4 +828,14 @@ theorem fibre_sum_reindex {M : Type*} [AddCommMonoid M] (d : Fin (N + 2) → ℕ
     have he : rebuild m' (lastCol m) = m := hm.2 ▸ rebuild_lastCol m (mem_kostantAll.mp hm.1).2.1
     rw [he]
 
+/-- The codimForm exponent of `rebuild m' x`, split as `m'`'s codim plus the `Δ` pairing of its
+last two columns. -/
+theorem codimForm_rebuild (m' : Fin (N + 1) × Fin (N + 1) → ℕ) (x : Fin (N + 2) → ℕ)
+    (hxbound : ∀ I' : Fin (N + 1), x I'.castSucc ≤ m' (I', Fin.last N)) :
+    codimForm (N + 1) (extendℤ (rebuild m' x))
+      = codimForm N (extendℤ m')
+        + ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+            extendℤ (rebuild m' x) (i - 1) (N : ℤ) * extendℤ (rebuild m' x) u ((N : ℤ) + 1) := by
+  rw [codimForm_split_explicit, peelPart_rebuild m' x hxbound]
+
 end DLNFibre.Core
