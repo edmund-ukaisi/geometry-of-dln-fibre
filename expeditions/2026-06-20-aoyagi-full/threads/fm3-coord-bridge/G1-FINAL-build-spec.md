@@ -364,3 +364,20 @@ MY NEXT (the formaliser's lane, INDEPENDENT of pp2's split-construction): build 
 generic fold theorem (Codex's minimal-honest-step items 1-2) — the GUARDRAIL + the target shape pp2's #67/#68
 designs against ("get target-shape from fm3 first"). pp2 designs the rank-pattern → certified-RouteStep
 recipe (#68); I provide the certified type + prove the fold; pp2's construction populates it.
+
+## SCOPING DECISION (g162) — co-design the ValidRouteStep fields with pp2's #68, don't build blind
+The ValidRouteStep certificate must carry, per branch cell, crux2's schur_straighten_squeeze_of_data
+consumed data: nReg, a reduced ambient Y (+ PseudoMetricSpace/MeasureSpace/ProperSpace/BorelSpace/Zero
+instances), flatCore, G, redEmbed (≃ₜ Params S.red), c₁ c₂, the IsSchurStraightenSqueeze datum, the
+node-loss-identification (flatCore = the node's dlnLoss in blow-up coords), and the cover fact. This is a
+HEAVY dependent structure (the Y/instance/universe bundling — same friction as RouteStep : Type 1). The
+EXACT field list depends on pp2's #68 construction (designing it blind = the very wrong-type iteration the
+vacuity-trap find just caught — "state the suspect hypothesis as a known unknown, resolve before proving";
+the certificate's field list IS that hypothesis, #68 is its resolution-in-flight). So: HOLD the certificate
+construction for #68; co-design the fields once pp2's recipe lands. SENT pp2 the target shape (the consumed
+data + the additive-vs-min reconciliation the 3 correctness args must satisfy).
+BANKED THIS SESSION (all green, @origin/fm3/routem aeca9a3): hMid all-s (0cedc7e); value-side foldDivisors
+achiever+threshold_ge (fd4a622); rebase foundation chainWidthSum/redM_widthSum_lt/chainRel_wf/redM_chainRel
+(55db82d). UNCOMMITTED route-check artifact: the recursion skeleton (NodeChartFamily/RouteStep/routeAtlas/
+extraction, single routeStep sorry) — validates the rebase shape; RouteStep type PROVISIONAL (→ ValidRouteStep
+once #68 co-design lands). The recursion DRIVER stands; the dispatcher + certificate are the #68-gated grind.
