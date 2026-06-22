@@ -53,6 +53,17 @@ def ChainDimSplit.splitEquiv {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSp
 
 /-! ## The G3.2 det-1 Schur straightening — `IsSchurStraighten` (the (A) sub-step, SPECIFY)
 
+> **SUPERSEDED (2026-06-22, pp2 #129/#130, controller-blessed).** This `IsSchurStraighten` datum and
+> `schur_straighten_of_data` encode the CLEAN measure-preserving-chart route (`flatCore ∘ χ =ᶠ u · Φ` via
+> a homeomorphism `χ`). pp2 #129 (decorrelated) RETRACTED that route: the per-node transvection is det-1 /
+> measure-preserving (`mp_schur_transvection_vec`) but the LOSS is NOT invariant under it (`L` unipotent
+> ⇏ orthogonal), so the clean factor through a c-o-v is unreachable. The CORRECTED datum is
+> `IsSchurStraightenSqueeze` (below): the two-sided SQUEEZE `c₁·Φ ≤ flatCore ≤ c₂·Φ` at the deepest point
+> (NO chart, NO Jacobian), consumed by `schur_recursion_step_squeeze`. The decls here are retained as a
+> TRUE-but-off-path record: `schur_straighten_of_data` is a true conditional (it packages the datum given
+> the clean factor as a hypothesis), but the clean-factor hypothesis is not satisfiable by the actual loss.
+> Do NOT build the recursion on these; use the squeeze datum.
+
 The (C2) node is **(B) blow-up THEN (A) det-1 Schur** (pp-hall g118/g121). The lanes split it:
 **fm's (B) lane** is the coordinate-subspace blow-up (`pivotBlowupOn`, Jacobian `|u|^{Mval−1}`, the
 monomial weight `(k,h)` → `monomialThreshold`). **My (A) lane** is the det-1 Schur straightening
@@ -374,6 +385,66 @@ theorem schur_recursion_step_squeeze {nReg : ℕ}
         ((hGmeas.comp measurable_snd).pow_const _)
   rw [rlctAtOn_squeeze flatCore (smoothBlockSplitForm G) _ hFmeas hΦmeas c₁ c₂ hc₁ hc₂ hsq]
   exact rlct_additive_smooth_block G 0 hGmeas hGne
+
+/-! ## The CORRECTED per-node datum — `IsSchurStraightenSqueeze` (pp2 #129/#130, controller-blessed)
+
+The faithful per-node straightening datum, replacing the retracted `IsSchurStraighten` (clean MP factor).
+pp2 #129 retracted the clean change-of-variables route (the transvection is det-1/MP but the loss is not
+invariant under it); pp2 #130 read off the two transport pins the faithful datum needs. In the SQUEEZE
+form both pins are met by construction:
+- **(i) anchor at the deepest point** (`χ 0 = 0` in #130's chart language): the squeeze compares
+  `flatCore` and `Φ` at the SAME point, and the rlct is taken AT that point `(0,0)` — so the basepoint IS
+  the deepest point. No chart map; the anchor is the basepoint of `rlctAtOn … (0,0)`.
+- **(ii) genuine unit, bounded away from 0**: the unit role is played by the positive squeeze constants
+  `c₁, c₂` (`0 < c₁`, `0 < c₂`) — bounded away from `0` by construction, exactly what
+  `rlctAtOn_unit_invariant_aux`'s `a > 0` needs. NOT an abstract `Measurable u` (which could vanish).
+- **Φ** `= (nReg unit-coeff regular squares) + dlnLoss S.red 0` (the reduced-chain core), via
+  `G² = dlnLoss S.red 0` (`G = √`, valid by `dlnLoss_nonneg`).
+- The squeeze inequality rests on `flatCore − Φ ∈ ideal(regular gens)` (the Schur identity as
+  ideal-membership) — the EXISTENCE-proof obligation (pp2 #11), NOT a field: the datum carries the
+  squeeze inequality the recursion step consumes. -/
+structure IsSchurStraightenSqueeze {L : ℕ} {nReg : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] [Zero Y]
+    (flatCore : (Fin nReg → ℝ) × Y → ℝ)       -- the post-blow-up per-node core at the deepest point
+    (G : Y → ℝ)                                -- the reduced-chain core (`G² = dlnLoss S.red 0`)
+    (redEmbed : Y → Params S.red)              -- the reduced coords ↪ `Params S.red`
+    (c₁ c₂ : ℝ) : Prop where
+  /-- The per-node core is measurable (polynomial loss). -/
+  Fmeas : Measurable flatCore
+  /-- The reduced core `G` is measurable. -/
+  Gmeas : Measurable G
+  /-- (Φ) The reduced part of `Φ` is the reduced-chain loss: `G² = dlnLoss S.red 0` on the embedded
+  reduced coords — so the structural recursion descends on the smaller chain `S.red`. -/
+  redCore_eq : ∀ y, G y ^ 2 = dlnLoss S.red 0 (redEmbed y)
+  /-- Germ-nonvanishing of `G` at the reduced origin (the S1.5 hygiene; the non-leaf node). -/
+  Gne : ∃ U ∈ nhds (0 : Y), ∀ᵐ z ∂(volume.restrict U), G z ≠ 0
+  /-- (ii) lower squeeze constant is a genuine unit (`> 0`): bounds the loss away from `0·Φ`. -/
+  c₁pos : 0 < c₁
+  /-- (ii) upper squeeze constant is positive. -/
+  c₂pos : 0 < c₂
+  /-- (i)+(ii) THE SQUEEZE at the deepest point `(0,0)`: `c₁·Φ ≤ flatCore ≤ c₂·Φ` near `(0,0)`,
+  `Φ = smoothBlockSplitForm G = (∑ Eᵢ²) + G²`. The anchor `(0,0)` is the deepest point (#130 (i)); the
+  constants `c₁,c₂` are the genuine units (#130 (ii)). NO change of variables, NO measure Jacobian. -/
+  squeeze : ∃ U ∈ nhds ((0, 0) : (Fin nReg → ℝ) × Y), ∀ w ∈ U,
+      0 ≤ smoothBlockSplitForm G w ∧ c₁ * smoothBlockSplitForm G w ≤ flatCore w
+        ∧ flatCore w ≤ c₂ * smoothBlockSplitForm G w
+  /-- Well-foundedness (pp #123): the reduced chain is strictly smaller. -/
+  measure_drops : ∑ s, S.red s < ∑ s, M s
+
+/-- **The CORRECTED per-node rlct split (PROVEN), from the squeeze datum.** Given the
+`IsSchurStraightenSqueeze` datum, the per-node RLCT at the deepest point splits as
+`rlctAtOn flatCore (0,0) = nReg/2 + rlctAtOn (G²) 0` — the regular smooth block plus the reduced-chain
+core. Consumes the datum's squeeze + measurability + germ-nonvanishing via `schur_recursion_step_squeeze`
+(the g128/L2 chain: `rlctAtOn_squeeze` + `rlct_additive_smooth_block`). The recursion step the structural
+recursion descends on; the reduced core `G² = dlnLoss S.red 0` is the smaller-chain loss. -/
+theorem schur_straighten_squeeze_of_data {L : ℕ} {nReg : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y] [OpensMeasurableSpace Y] [Zero Y]
+    (flatCore : (Fin nReg → ℝ) × Y → ℝ) (G : Y → ℝ) (redEmbed : Y → Params S.red) (c₁ c₂ : ℝ)
+    (h : IsSchurStraightenSqueeze M S flatCore G redEmbed c₁ c₂) :
+    rlctAtOn flatCore ((0, 0) : (Fin nReg → ℝ) × Y)
+      = (nReg : ℝ≥0∞) / 2 + rlctAtOn (fun y => G y ^ 2) (0 : Y) :=
+  schur_recursion_step_squeeze flatCore h.Fmeas G h.Gmeas h.Gne c₁ c₂ h.c₁pos h.c₂pos h.squeeze
 
 /-! ## The L=1 base (the `block_elimination` prototype)
 
