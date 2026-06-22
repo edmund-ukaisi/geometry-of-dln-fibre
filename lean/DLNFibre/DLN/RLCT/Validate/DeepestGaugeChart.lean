@@ -251,16 +251,68 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
               dlnLoss (fun s => H s - r)
                 (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ) A)
             (fun _ => 0 : Params (fun s => H s - r)) := by
-  -- ROUTE (mapped + partly built; full fill needs a `dlnLoss` measurability/continuity lemma,
-  -- found missing — `fun_prop` deep-recurses on `prodAux`):
-  --   (1) transport through the MP split homeomorph (`rlctAtOn_comp_homeomorph` + `split_mp` +
-  --       `split_zero`) — drops to `rlctAtOn (fun q => ∑q.1² + coreF q.2.1) 0`;
-  --   (2) `rlct_additive_smooth_block` with `G = √∘(coreF∘fst)` (`hGsq` via `dlnLoss_nonneg`,
-  --       `hGmeas` needs `Measurable (dlnLoss M 0)`, `hGne'` lifts the given `hGne` to the product
-  --       nbhd `Uc ×ˢ univ`) — peels `nReg/2`;
-  --   (3) `rlctAtOn_spectator_peel` on `coreF∘fst` (the `nGauge` gauge spectators) then sub-7
-  --       (`deepest_reduced_core_identification`) — lands on `rlctAtOn (dlnLoss M 0) 0`.
-  sorry
+  set M : Fin (L + 1) → ℕ := fun s => H s - r with hM
+  set coreF : (Fin (flatDim M) → ℝ) → ℝ :=
+    fun y => dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) ((paramsEquivFlat M).symm y)
+    with hcoreF
+  have hcoreF_meas : Measurable coreF :=
+    ((continuous_dlnLoss M _).comp (continuous_paramsEquivFlat_symm M)).measurable
+  have hcoreF_nonneg : ∀ y, 0 ≤ coreF y := fun y => dlnLoss_nonneg _ _ _
+  -- Step 1: transport through the measure-preserving split homeomorphism (`split 0 = 0`).
+  have hstep1 := rlctAtOn_comp_homeomorph Γ.split Γ.split_mp Γ.split.measurableEmbedding
+    (fun q : (Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ) ×
+        ((Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)) => (∑ i, q.1 i ^ 2) + coreF q.2.1)
+    (0 : Fin (flatDim H) → ℝ)
+  rw [Γ.split_zero] at hstep1
+  have hgoalfun :
+      (fun x : Fin (flatDim H) → ℝ =>
+        let q := Γ.split x
+        (∑ i, q.1 i ^ 2) +
+          dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ)
+            ((paramsEquivFlat M).symm q.2.1))
+      = fun x => (fun q : (Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ) ×
+          ((Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)) =>
+          (∑ i, q.1 i ^ 2) + coreF q.2.1) (Γ.split x) := by funext x; rfl
+  rw [hgoalfun, hstep1]
+  -- Step 2: additive smooth-block split on `Y = (core) × (spectator)`, `G = √∘(coreF ∘ fst)`.
+  set G : (Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ) → ℝ := fun p => Real.sqrt (coreF p.1) with hG
+  have hGsq : ∀ p, G p ^ 2 = coreF p.1 := fun p => Real.sq_sqrt (hcoreF_nonneg p.1)
+  have hfun2 :
+      (fun q : (Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ) ×
+          ((Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)) => (∑ i, q.1 i ^ 2) + coreF q.2.1)
+      = fun q => (∑ i, q.1 i ^ 2) + G q.2 ^ 2 := by funext q; rw [hGsq]
+  rw [hfun2]
+  have hGmeas : Measurable G := (Real.continuous_sqrt.measurable.comp hcoreF_meas).comp measurable_fst
+  have hGne' : ∃ U ∈ 𝓝 (0 : (Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)),
+      ∀ᵐ z ∂(volume.restrict U), G z ≠ 0 := by
+    obtain ⟨Uc, hUc, hUcne⟩ := hGne
+    refine ⟨Uc ×ˢ (Set.univ : Set (Fin Γ.nGauge → ℝ)), prod_mem_nhds hUc Filter.univ_mem, ?_⟩
+    have hmono : ∀ᵐ z ∂(volume.restrict (Uc ×ˢ (Set.univ : Set (Fin Γ.nGauge → ℝ)))),
+        coreF z.1 ≠ 0 := by
+      rw [show (volume.restrict (Uc ×ˢ (Set.univ : Set (Fin Γ.nGauge → ℝ))))
+          = (volume.restrict Uc).prod (volume.restrict Set.univ) by
+        rw [Measure.prod_restrict, Measure.volume_eq_prod]]
+      exact (Measure.quasiMeasurePreserving_fst (μ := volume.restrict Uc)
+        (ν := volume.restrict (Set.univ : Set (Fin Γ.nGauge → ℝ)))).ae hUcne
+    filter_upwards [hmono] with z hz
+    rw [hG]; intro hsqrt
+    exact hz (le_antisymm (Real.sqrt_eq_zero'.1 hsqrt) (hcoreF_nonneg z.1))
+  have hadd := rlct_additive_smooth_block (n := r * (H 0 + H (Fin.last L) - r)) G
+    (0 : (Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)) hGmeas hGne'
+  rw [show (0 : (Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ) ×
+      ((Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ)))
+      = ((0 : Fin (r * (H 0 + H (Fin.last L) - r)) → ℝ),
+         (0 : (Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ))) from rfl, hadd]
+  -- Step 3: spectator-peel `rlctAtOn (G²) (0,0) = rlctAtOn coreF 0` then sub-7.
+  have hGsqfun : (fun p : (Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ) => G p ^ 2)
+      = fun p => coreF p.1 := by funext p; rw [hGsq]
+  rw [hGsqfun,
+    show (0 : (Fin (flatDim M) → ℝ) × (Fin Γ.nGauge → ℝ))
+      = ((0 : Fin (flatDim M) → ℝ), (0 : Fin Γ.nGauge → ℝ)) from rfl,
+    rlctAtOn_spectator_peel coreF (0 : Fin (flatDim M) → ℝ) (0 : Fin Γ.nGauge → ℝ)
+      ⟨Metric.ball (0 : Fin Γ.nGauge → ℝ) 1, Metric.isOpen_ball,
+        Metric.mem_ball_self (by norm_num), measure_ball_lt_top⟩,
+    deepest_reduced_core_identification M]
 
 /-- **The VALUE-FREE L2 reduction (`deepest_regular_core_reduces`).** The local RLCT of `dlnLoss H B`
 at the deepest point splits as the regular gauge shift `nReg/2` (`nReg = r(H⁰+Hᴸ−r)`) plus the reduced
