@@ -91,8 +91,8 @@ decisions as "current lean, pending X", not as settled.)
 **TRACKED SOUNDNESS / PRECISION ITEMS (controller holds):**
 1. **hGne** (L2) — reduced-chain non-degeneracy hypothesis; discharge-at-spine-wiring vs stated-headline-hypothesis. Verify vs the actual headline when crux2 reaches spine-wiring.
 2. **deepest = min-core** (D1, #57) — must be PROVEN L1-separable, NOT cited as Aoyagi Thm 2 (only S2 citable); else operator escalation. THE biggest scope risk surfaced.
-3. **split_mp vs T̃-core** (#44 sub-3) — g153 litmus pending: MP split delivers T̃ (ofExactGerm stands) vs needs coreEmbed. Gates sub-3 transcription.
-4. **exact-vs-squeeze** (minor) — cert must not overclaim "exact" if only a squeeze; loss_squeeze accommodates both.
+3. **split_mp vs T̃-core** (#44 sub-3) — RESOLVED (g153 litmus → Φ=0 with the hardcoded core): a pure MP split can't do the non-MP g-absorption ⟹ crux2 implementing the `coreEmbed` field + re-proving sub-6/7 via its weight-invariance lemma. cobuild-sub34's catch (decorrelation: producer caught consumer bug).
+4. **exact-vs-squeeze** — RESOLVED: EXACT (c₁=c₂=1) in the gauge-normalized core (#48 correct, leak absorbed into ∑E²); raw-vs-T̃ is a separate squeeze comparability. pp2 finalizing g155 on cobuild-sub34's #54 confirm.
 
 **CANONICAL CERT LINEAGE (for #28 — pp2's authoritative tips, 2026-06-22):**
 - g138 design (C1 = blow-up + det-1 triangular peel + recurse): **origin/g138-c1-peel-prose @0823917** ← canonical
