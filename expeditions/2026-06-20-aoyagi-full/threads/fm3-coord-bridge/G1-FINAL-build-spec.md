@@ -48,6 +48,22 @@ fm3/routem, byte-identical) = schur_straighten_of_data + rlctAtOn_reduced_transp
 field) for descent; schur_node_squeeze_unif (c₁=(2(1+T²))⁻¹, c₂=2+2T²) explicit-constant bound; measure_drops
 = ChainDimSplit FIELD (S.measure_drops). schur_straighten_squeeze_exists = HEAVY/L2 (NOT R1, g188/g175).
 
+## COVER-FACT SIGNATURES SIGNED OFF (g182, crux2 field-for-field vs IsRouteMCover @31063ec) — no adapters
+crux2 read the actual IsRouteMCover structure + verified my cover-fact signatures MATCH field-for-field:
+(a) BOX: Skeleton.unitBox = Set.univ.pi (fun _ => Set.Icc 0 1) = [0,1]^d (Skeleton:84). My routeM_cover_le
+    RHS uses the SAME Skeleton.unitBox → NO adapter (the staged unitBox-adapter was a contingency for a
+    different box; I use the canonical one). ✓
+(b) cover_ge_div WEIGHT: `* (fun _ => (1:ℝ))` verbatim — `¬ IntegrableOn (fun x => |F x|^(-c') * (fun _ => 1) x) Ω`.
+    Copied exactly. LHS (cover_le): `∫⁻ x in U, ENNReal.ofReal (|F x|^(-c'))` — NO `*1` on LHS (only the
+    RHS-integrand + cover_ge_div carry it). Mine = same. ✓
+PACKAGING (crux2, the 5-field structure): IsRouteMCover = ⟨Fmeas, Uopen, Umem, cover_le, cover_ge_div⟩, so
+routeMCover S := ⟨routeM_Fmeas S, routeM_Uopen S, routeM_Umem S, routeM_cover_le S, routeM_cover_ge_div S⟩.
+crux2 packages it on route-m-atlas (trivial ⟨⟩) → routeM_rlctAtOn_eq_iInf gives rlctAtOn(core)=⨅; then my
+isValue + crux2's RouteMAtlas bundle → headline. crux2 packages EVEN sorry-stubbed (the skeleton), so I
+surface the (2,2,2) IsRouteMCover instance when green. EVERY signature now verified vs ground-truth — no
+adapters, no shape gaps. The grind (routeStep + cover_le/cover_ge_div + Fmeas/Uopen/Umem + mult-bound/binding-leaf)
+is pure formalisation against the signed-off interface. === COORDINATION ARC EXHAUSTIVELY CLOSED (g155→g182). ===
+
 ## Encoding (controller-accepted): WF.fix / NodeChartFamily, Fintype-as-field
 RouteState(L,M); routeMeasure = lex(L,ΣM,ncDefect); routeRel_wf. routeAtlas = WellFounded.fix.
 NodeChartFamily per-leaf record (crux2 leaf-level): {composite chart φ_i, pullback L∘φ_i=monomial·unit
