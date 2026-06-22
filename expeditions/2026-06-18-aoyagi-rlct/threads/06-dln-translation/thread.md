@@ -112,6 +112,34 @@ Definition 3 selection data, prove rank-width hypotheses, prove normal
 crossings, prove Aoyagi Lemma 5 exactness/order count, prove pole order without
 A0, or prove the analytic extraction theorem.
 
+## Current slice - 2026-06-22, finite certificate bridge
+
+The same module now also contains constructors that fill
+`AoyagiTheorem2FiniteExponentFormulaHypothesis` from the A0 finite min/order
+certificate API:
+
+```text
+AoyagiTheorem2FiniteExponentFormulaHypothesis.of_activePair_ratioAt_eq_of_forall_le_of_chart_minCount_eq_of_forall_le
+AoyagiTheorem2FiniteExponentFormulaHypothesis.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_chartCount
+```
+
+The constructor takes an active coordinate whose ratio is the displayed
+Theorem 2 `lambda` value, a lower bound against every active ratio, a chart
+whose global-minimum count is `data.theorem2OrderFormula`, and an upper bound
+against every chart count.  The pair theorem additionally requires the
+explicit A0 extraction hypothesis.
+
+Artifacts:
+
+- `reproduction-theorem2-finite-certificate-bridge-a6.md`;
+- `statement-card-a6-theorem2-finite-certificate-bridge.md`;
+- `review-theorem2-finite-certificate-bridge-a6.md`.
+
+Boundary: this does not prove chart production, unit factors,
+Jacobian/prior exponent correctness, the active-ratio inequalities,
+chart-count upper bounds, Lemma 5 no-extra coverage, pole order without A0,
+or RLCT extraction.
+
 ## Current slice - 2026-06-22, supplied final assembly boundary
 
 The A6 final assembly boundary is

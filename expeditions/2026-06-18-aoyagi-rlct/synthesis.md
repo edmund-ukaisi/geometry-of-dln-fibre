@@ -5405,6 +5405,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-order-formula-bridge-a5.md`.
 
+Latest A6 finite-certificate bridge: `Theorem2FiniteExponentBridge.lean` now
+constructs `AoyagiTheorem2FiniteExponentFormulaHypothesis` from the A0 finite
+min/order certificate API.  If a supplied active coordinate realizes
+`aoyagiTheorem2Lambda_fromCeilData ...`, that displayed value lower-bounds
+every active ratio, a supplied chart has
+`minCountInChart = data.theorem2OrderFormula`, and every chart count is at
+most `data.theorem2OrderFormula`, Lean fills the two finite exponent formula
+fields.  With the explicit A0 extraction hypothesis supplied, Lean also
+derives the final ceiling-data pair for `lambda` and `poleOrder`.  This still
+does not construct exponent data, prove chart production, prove active-ratio
+inequalities or chart-count bounds, prove Lemma 5 no-extra coverage, prove
+pole order without A0, or extract RLCT.
+Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-finite-certificate-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-finite-certificate-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-finite-certificate-bridge-a6.md`.
+
 Latest A6 terminal-order handoff: `Theorem2TerminalOrderBridge.lean` now
 routes the order field of `AoyagiTheorem2FiniteExponentFormulaHypothesis`
 through the supplied Lemma 5 terminal-minimum count.  If the exponent-minimum

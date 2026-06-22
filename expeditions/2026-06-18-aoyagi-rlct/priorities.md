@@ -38,6 +38,14 @@ candidate `exponentMinimum` or `exponentOrder` from supplied active-ratio and
 chart-count bounds.  This is only finite bookkeeping over supplied exponent
 data, not chart production or analytic extraction.
 
+The current A6 finite-certificate bridge is
+`threads/06-dln-translation/reproduction-theorem2-finite-certificate-bridge-a6.md`.
+It uses those A0 finite certificates to build
+`AoyagiTheorem2FiniteExponentFormulaHypothesis` from supplied active-ratio
+and chart-count witnesses/bounds.  This reduces the final socket from two
+opaque finite equalities to explicit finite min/order certificate obligations;
+it still does not prove those obligations from source charts.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

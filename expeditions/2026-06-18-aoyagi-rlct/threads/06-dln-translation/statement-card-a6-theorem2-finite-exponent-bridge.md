@@ -19,6 +19,9 @@ File: `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`.
 - `AoyagiTheorem2FiniteExponentFormulaHypothesis.poleOrder_eq_theorem2OrderFormula_of_extractionHypothesis`
 - `AoyagiTheorem2FiniteExponentFormulaHypothesis.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_extractionHypothesis`
 
+Finite min/order certificate constructors are recorded separately in
+`statement-card-a6-theorem2-finite-certificate-bridge.md`.
+
 ## Hypotheses
 
 - `AoyagiTheorem2FiniteExponentFormulaHypothesis D L ell H r m data`, supplying:
