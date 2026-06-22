@@ -32,3 +32,28 @@ stays executive (delegate object-level).
 
 ## Next action
 Dispatch the sizing pass (thread 01, pen-and-paper, decorrelated Codex) → re-scope the ladder → build.
+
+## 2026-06-22 — SIZING VERDICT (thread 01): NO short zero-cited route to full Cor 5.10 → SCOPE FORK
+Permutation invariance is TRUE (re-confirmed exactly: (1,2,3) perms → (C,θ)=(2,1); (1,2,2,3) → (2,2); single
+adjacent-swap 0/3868 fails; non-monotone-sort 0/1345). But the route analysis (exact algebra; Codex endpoint
+was down) gives a genuine scope-surprise:
+- **(a) adjacent-transposition (zero-cited): TRUE but it is an OPEN PROBLEM.** No value-preserving Kostant
+  bijection (cardinalities differ 2932/3868 — the paper's own line-1122 obstruction), no bounded surgery
+  (edit radius unbounded, grows with |d|) ⟹ a large min-argument tide, HARDER than the landed
+  CCodimZeroMono+Strict pair. AND a purely combinatorial proof of the underlying q-series identity is
+  "an open problem the authors say they lack" — so this route = NEW RESEARCH, not formalising known math.
+- **(b) reduce-to-sort: not independent** — its content is (a) or (d) (the paper's Thm 6.1 itself uses Cor 5.10
+  for non-monotone d; circular).
+- **(c) full Kostant bijection: REFUTED** (cardinalities differ). EXCEPTION: **order-reversal `[a,b]↦[N−b,N−a]`
+  IS a clean codimForm-preserving bijection (0/11795)** ⟹ `(C,θ)(d)=(C,θ)(reverse d)` is a CHEAP zero-cited
+  lemma (order-2 subgroup only).
+- **(d) Thm 5.5 Pochhammer product: CERTIFIED, short to the headline, but CITED.** `Q^r_d = P_r ∑_s (−1)^s
+  q^{C(s,2)} P_s P_{d−r−s}`; `∏_i P_{d_i−r−s}` is manifestly multiset-symmetric ⟹ one-line Cor 5.10. But its
+  DERIVATION is equivariant-cohomology (Mathlib-absent) — a Cited layer (like Aoyagi / Lemma 4.6).
+
+**SCOPE FORK (operator decision — the brief's sanctioned scope-surprise close):**
+(A) CITE Thm 5.5 (named interface, ethos-consistent) → full Cor 5.10 Cited + order-reversal + geometric transfer
+    zero-cited. Short, honest. [RECOMMENDED — zero-cited is an open problem the authors lack.]
+(B) Attempt zero-cited route (a) — NEW research (combinatorial proof the authors don't have); high-risk, multi-week.
+(C) Scope down: land order-reversal + geometric transfer zero-cited; roadmap full Cor 5.10 (no cite-interface).
+Order-reversal fragment is landable zero-cited bedrock regardless. SURFACED to operator.
