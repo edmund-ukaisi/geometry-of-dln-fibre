@@ -1,5 +1,6 @@
 import DLNFibre.Core.QSeriesExtraction
 import DLNFibre.Core.QSeriesThm55
+import Mathlib.Data.Fin.Tuple.Sort
 
 /-!
 # `DLNFibre.Core.CThetaPermInvariance` — permutation invariance of `(C, θ)` (M6, Cor 5.10)
@@ -90,5 +91,25 @@ theorem numTop_comp_perm (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → �
     (h' : (kostantPartitions d r).Nonempty) :
     numTop (d ∘ σ) r h = numTop d r h' :=
   numTop_eq_of_Qseries_eq h h' (Qseries_comp_perm σ d r hr)
+
+/-! ### Reduce-to-sorted form
+
+`d ∘ Tuple.sort d` is the monotone rearrangement of `d` (a specific permutation). The
+permutation-invariance specialises to it: `(C, θ)` of any `d` equals `(C, θ)` of its sorted version, so
+one may always compute on the monotone representative. -/
+
+/-- `(C)` of `d` equals `(C)` of its monotone rearrangement `d ∘ _root_.Tuple.sort d`. -/
+theorem cCodim_comp_sort (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ k, r ≤ d k)
+    (h : (kostantPartitions (d ∘ _root_.Tuple.sort d) r).Nonempty)
+    (h' : (kostantPartitions d r).Nonempty) :
+    cCodim (d ∘ _root_.Tuple.sort d) r h = cCodim d r h' :=
+  cCodim_comp_perm (_root_.Tuple.sort d) d r hr h h'
+
+/-- `(θ)` of `d` equals `(θ)` of its monotone rearrangement `d ∘ _root_.Tuple.sort d`. -/
+theorem numTop_comp_sort (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ k, r ≤ d k)
+    (h : (kostantPartitions (d ∘ _root_.Tuple.sort d) r).Nonempty)
+    (h' : (kostantPartitions d r).Nonempty) :
+    numTop (d ∘ _root_.Tuple.sort d) r h = numTop d r h' :=
+  numTop_comp_perm (_root_.Tuple.sort d) d r hr h h'
 
 end DLNFibre.Core
