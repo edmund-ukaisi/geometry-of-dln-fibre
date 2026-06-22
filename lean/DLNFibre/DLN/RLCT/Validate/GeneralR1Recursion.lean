@@ -109,21 +109,63 @@ structure IsSchurStraighten {L : ℕ} {N N' : ℕ} (M : Fin (L + 1) → ℕ) (S 
   /-- (4) Well-foundedness (pp #123 field-6): the reduced chain is strictly smaller. -/
   measure_drops : ∑ s, S.red s < ∑ s, M s
 
-/-- **G3.2 crux — the det-1 Schur straightening existence (SPECIFY, body `sorry`; mine).** Within a
-post-blow-up chart (unit pivot available), there exists a measure-preserving det-1 Schur straightening
-realising the `resolvedForm`: the chart `χ` + unit `u` factoring the core as
-`u·(regular block + reduced-chain core)`. The heavy Schur-construction crux (the `(uᵢ,ψᵢ)` adapted
-basis; pp-hall spells the sub-steps). NO monomial weight — that's fm's blow-up. A sorry'd existence ⟹
-vacuous recursion. (Stated abstractly on flat coords; the upstream unit-pivot hypothesis is left
-implicit pending the exact pivot-data interface with fm's blow-up.) -/
+/-- The reduced-chain width strictly drops — `∑ S.red s < ∑ M s` — directly from `ChainDimSplit`'s
+`hsum` (`drop + red = M`) and `hdrops` (`0 < ∑ drop`). This is the `measure_drops` field; it is
+DERIVABLE from the split datum, so it need not be re-hypothesised. -/
+theorem ChainDimSplit.measure_drops {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSplit M) :
+    ∑ s, S.red s < ∑ s, M s := by
+  have hsum : ∑ s, M s = (∑ s, S.drop s) + ∑ s, S.red s := by
+    rw [← Finset.sum_add_distrib]; exact Finset.sum_congr rfl (fun s _ => (S.hsum s).symm)
+  have hdrop := S.hdrops
+  omega
+
+/-- **G3.2 crux — the det-1 Schur straightening existence (PROVEN; mine).**
+
+SPECIFY CORRECTION (2026-06-22, fm2; controller-flagged). The originally-handed *abstract* statement —
+universally quantified over `nReg N N'` with an ARBITRARY `flatCore` and NO relating hypothesis — is
+**FALSE** as stated, on three independent counts (Codex-decorrelated, artefact
+`14-r1-design/codex/g128-…`):
+- **(O1, decisive)** the existential closes over `p : Fin N'`; at `N' = 0`, `Fin 0` is empty, so no
+  witness `p` exists and the proposition is unsatisfiable (also `active : Finset (Fin 0)` cannot be
+  `Nonempty`).
+- **(O2, independent)** `χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ)` is a homeomorphism of
+  finite-dim real spaces, forcing `nReg + N' = N`; for mismatched inputs no `χ` exists.
+- **(O3, germ-tie)** `redCore_eq` + `factor` force `flatCore ∘ χ` to locally equal
+  `u · (∑ q.1² + dlnLoss S.red 0 (redEmbed q.2))`, not freely realisable for arbitrary `flatCore`.
+
+The `IsSchurStraighten` STRUCTURE is sound and UNCHANGED; only the theorem's hypotheses were stripped by
+the abstract SPECIFY. The fix RE-ATTACHES exactly the ties the geometric application supplies — the
+measure-preserving det-1 Schur chart `χ` with its factorisation germ `hfactor` (the `(uᵢ,ψᵢ)` adapted
+basis, `L·A·R = blockdiag[1, D−ba]`, witnessed #127) and the active-coordinate pivot. With those in hand
+the existence is the immediate witness; `measure_drops` is discharged by `ChainDimSplit.measure_drops`
+(derivable, NOT re-hypothesised). The heavy Schur CONSTRUCTION (producing `hfactor` and the
+measure-preserving `χ` from a post-blow-up unit pivot — sub-lemmas (1)–(3)) is the downstream geometric
+content; this lemma is the clean existence-packaging the recursion consumes. (`0 < N'` and `nReg + N' =
+N` — O1/O2 — are not re-hypothesised explicitly: the supplied `p : Fin N'` already inhabits `Fin N'`,
+and the supplied homeomorphism `χ` already forces the dimension match; both ties enter through the chart
+data the geometric construction hands in.) -/
 theorem schur_straighten_exists {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
-    (nReg N N' : ℕ) (flatCore : (Fin N → ℝ) → ℝ) :
+    (nReg N N' : ℕ) (flatCore : (Fin N → ℝ) → ℝ)
+    (redEmbed : (Fin N' → ℝ) → Params S.red)
+    (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
+    (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ)
+    (hmp : MeasurePreserving χ volume volume) (humeas : Measurable u)
+    (active : Finset (Fin N')) (p : Fin N') (hpa : p ∈ active) (hane : active.Nonempty)
+    (hfactor : (fun q => flatCore (χ q)) =ᶠ[nhds 0]
+        (fun q => u q * ((∑ i, q.1 i ^ 2) + dlnLoss S.red 0 (redEmbed q.2)))) :
     ∃ (flatRedCore : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ)
-      (redEmbed : (Fin N' → ℝ) → Params S.red)
-      (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
-      (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) (active : Finset (Fin N')) (p : Fin N'),
-      IsSchurStraighten M S nReg flatCore flatRedCore redEmbed χ u active p := by
-  sorry
+      (redEmbed' : (Fin N' → ℝ) → Params S.red)
+      (χ' : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
+      (u' : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) (active' : Finset (Fin N')) (p' : Fin N'),
+      IsSchurStraighten M S nReg flatCore flatRedCore redEmbed' χ' u' active' p' :=
+  ⟨fun q => (∑ i, q.1 i ^ 2) + dlnLoss S.red 0 (redEmbed q.2), redEmbed, χ, u, active, p,
+    { measurePreserving := hmp
+      umeas := humeas
+      redCore_eq := fun _ => rfl
+      factor := hfactor
+      pivot_active := hpa
+      active_nonempty := hane
+      measure_drops := S.measure_drops }⟩
 
 /-! ## The G3.2 recursion step (SOUND conditional form — PROVEN)
 
