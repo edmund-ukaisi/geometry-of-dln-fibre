@@ -178,12 +178,14 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
           dlnLoss H B ((paramsEquivFlat H).symm w)
             ≤ c₂ * ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1)
 
-/-- **Smart constructor from the EXACT germ (the g150 cert's discharge target).** The g150-fix cert
-delivers `dlnLoss H B ∘ flatSymm =ᶠ[𝓝 wstar] Φ` (an EXACT germ equality, `Φ = ∑ regular² +
-dlnLoss M 0 (gauge-normalized core)`), which is the `c₁ = c₂ = 1` case of `loss_squeeze`. This packages
-the cert's exact-germ algebra + the MP reindex into the `DeepestGaugeChart` squeeze datum — the
-frictionless target for `cobuild-sub34` (it proves the exact identity + the split; the squeeze follows
-trivially, NO global chart / `jac_unit` / measure-Jacobian). -/
+/-- **Smart constructor from an EXACT germ** — a CONVENIENCE for the special case `c₁ = c₂ = 1`. If a
+producer delivers `dlnLoss H B ∘ flatSymm =ᶠ[𝓝 wstar] Φ` (an EXACT germ equality), it discharges
+`loss_squeeze` trivially. **NOTE (precision, "name results for what they are"):** the ACTUAL
+gauge-normalized comparability is a genuine SQUEEZE, NOT exact — cobuild-sub34's `core_comparability_squeeze`
+(#54) proves `(2(1+t²))⁻¹·Φ ≤ loss ≤ (2+2t²)·Φ` (`c₁ < c₂`, the regular×regular leak `≤ t²∑E²` charged
+to the regular block, `t = ‖pivot‖ → 0` at `w0`). So `loss_squeeze` is kept GENERAL (`c₁, c₂` > 0, not
+narrowed to exact), and cobuild-sub34 populates it DIRECTLY with those constants — NOT via `ofExactGerm`.
+This helper is for any genuinely-exact consumer only. NO global chart / `jac_unit` / measure-Jacobian. -/
 noncomputable def DeepestGaugeChart.ofExactGerm (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
