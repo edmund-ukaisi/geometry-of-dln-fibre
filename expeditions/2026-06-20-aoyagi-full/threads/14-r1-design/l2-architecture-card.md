@@ -128,6 +128,61 @@ reuses the existing S2 result rather than re-proving it);
 (+) Tonelli for the `∫_D = ∫_y∫_x` split (nonneg integrand).
 *Not lighter:* single-`y_j`/1-D reduction (annulus/box bookkeeping — pp + Codex agree).
 
+---
+
+## #44c obligation (i) — the `split` (gauge-slice MP reindex), crux2 design 2026-06-22
+
+The `DeepestGaugeChart.split` field — obligation (i) of `deepest_gauge_construction`, assigned to crux2
+(my `paramsEquivFlat`/S1 infra is closest), distinct from cobuild-sub34's (ii)–(iv). Resolves the
+g125-vs-structure MP tension and pins the slot semantics cobuild-sub34's squeeze instantiation consumes.
+
+### The MP tension, resolved (g125 vs the structure field type)
+
+pp2's g125 cert says the deepest-point regular-peel chart χ is **unit-Jacobian, NOT MP** (`det =
+(1+w0)²(w4+1)`, intrinsic — the unit-matrix `S₁₁`-multiplication cannot be a det=±1 shear). But the
+structure field is typed `split_mp : MeasurePreserving split`. **Reconciliation (g157, 3-way aligned):**
+`coreAbsorb` = (a) per-layer Schur SHEAR (additive, det=1, MP) + (b) the **non-MP inter-layer unit**
+(the `S₁₁`-multiplication). So the unit-Jacobian g125 content lives ENTIRELY in `coreAbsorb`'s non-MP
+part — `split` stays a pure **measure-preserving (det=±1) linear coordinate reindex**. No contradiction:
+g125's "no det=±1 chart for the regular peel" is about the COMBINED peel (split∘coreAbsorb), not the
+bare reindex.
+
+### What `split` IS (literal slot semantics — the seam with cobuild-sub34's squeeze)
+
+A measure-preserving (det=±1) linear equiv `(Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge`, regrouping
+the RAW flat coordinates of `Params H` (at the deepest point, each layer already in identity-corner form
+`[[I_r+X_s, Y_s],[Z_s, T_s]]` from `deepestPoint`/`block_elimination`) into three disjoint slot-groups,
+composed with the basepoint-centering translation (so `split (flat-image of deepest) = 0`):
+- **regular** (`nReg = r(H⁰+Hᴸ−r)` coords): the g125 regular-pivot RAW entries — `X₁` (r²), `Z₁`
+  ((H⁰−r)·r), `Y_L` (r·(Hᴸ−r)). Count `= r² + (H⁰−r)r + r(Hᴸ−r) = r(H⁰+Hᴸ−r) = nReg` EXACTLY
+  (verified all cases). These are RAW coords, NOT the nonlinear E-residuals — the squeeze relates them.
+- **core** (`flatDim M = Σ M_s·M_{s+1}` coords): the raw `T_s` bottom-right reduced blocks across layers.
+- **spectator** (`nGauge = flatDim H − nReg − flatDim M ≥ 0` coords): the rest.
+
+Disjointness holds for `L ≥ 2` (regular pivots are top-left/bottom-left of layer 0 + top-right of layer
+L−1; core T_s are bottom-right of each layer). `nReg + flatDim M ≤ flatDim H` ⟹ `nGauge ≥ 0` (verified).
+
+### Build route (MP-reindex idiom, ~150–250 LoC, NO new Mathlib-scale dep)
+
+`split = (centering translation) ∘ (paramsEquivFlat-style coordinate selection)`. The coordinate
+selection is a permutation/regrouping `Equiv` of `Fin (flatDim H)` (an explicit index bijection sending
+the regular-pivot / core / spectator raw indices to the three slot-ranges), lifted to `Fin (flatDim H) →
+ℝ ≃ₜ DeepestSplit` by `arrowCongr'` + `MeasurableEquiv.piCongrLeft`/`Equiv.piCongrLeft`-style currying,
+MP by `volume_preserving_arrowCongr'` (det=±1, the same idiom as `measurePreserving_paramsEquivFlat`).
+Translation MP by `measurePreserving_add_left`/`Measure.IsAddLeftInvariant` (Lebesgue translation-inv).
+`split_basepoint` discharged by the translation choice. **The HARD bookkeeping** is the explicit index
+bijection (which raw `FlatIdx H` coordinate lands in which slot) — pure `Fintype.card` arithmetic, no
+analysis.
+
+### The SEAM cobuild-sub34's squeeze must match (interface-lock with cobuild-sub34)
+
+`loss_squeeze` and `coreAbsorb_rlct` are stated in terms of `(split w).1` (regular), `(split w).2.1`
+(core), `(split w).2.2` (spectator). cobuild-sub34's `core_comparability_squeeze` consumes
+`(E, P11, leak, Rcore, t)`; the seam is: **regular slot `(split w).1` = the `E`-feeding raw pivot entries;
+core slot `(split w).2.1` = the raw `T_s` entries that `deepestCoreF` reads as `dlnLoss M 0`.** Both must
+agree on WHICH raw indices are regular vs core. Locked: regular = g125 pivots (X₁,Z₁,Y_L), core = T_s.
+
+
 ### (D) The FULL equality IS needed for R1's UPPER bound (confirmed)
 
 R1's binding chart has `F = Σx² + monomial-core`. S2 (the cited normal-crossing fact) covers a PURE
