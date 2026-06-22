@@ -4928,3 +4928,35 @@ Eq5 branches, prove `(p, alpha)` injectivity from source, produce
 terminal-label payloads, build a counted-datum back-to-label map, prove
 no-extra terminal-minimum coverage, prove a Lemma 5 order count, prove pole
 order, prove normal crossings, or extract RLCT.
+
+## 2026-06-22 Lean Lemma 5 Eq5 endpoint raw branches
+
+Reproduction:
+`reproduction-lemma5-eq5-endpoint-raw-branches-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-raw-branches.md`.
+Review artifact:
+`review-lemma5-eq5-endpoint-raw-branches-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5Eq5EndpointRawBranches
+aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat
+AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage
+```
+
+The raw branch set inserts the supplied upper endpoint at every interior
+coordinate and inserts the supplied lower endpoint exactly in the rising case
+`j<=a` and `j<=ell-a`.  Its value image is the full same-coordinate interval
+when the strict Eq5 branch family covers the strict alpha domain and the
+endpoint branch values are supplied.  The supplied-family wrapper feeds this
+proved raw value image into `ofCoordinateValueCoverage`; base-value
+membership, value injectivity on the raw branch set, and cross-coordinate
+disjointness remain explicit hypotheses.
+
+This is finite supplied coverage assembly only.  It does not construct Eq5
+branches, prove endpoint records are source-produced, prove source-label
+legality, derive raw branch injectivity or disjointness, build a counted-datum
+classifier, prove no-extra terminal-minimum coverage, prove a Lemma 5 order
+count, prove pole order, prove normal crossings, or extract RLCT.

@@ -198,6 +198,8 @@ Current terminal minimum lower-bound slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-lower-bound-a5.md`.
 Current Eq5 structured injection-adapter slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-structured-injection-adapters-a5.md`.
+Current Eq5 endpoint raw-branches slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-branches-a5.md`.
 
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
@@ -208,6 +210,17 @@ branch-label injectivity wrapper.  Keep this as hypothesis reduction only:
 `(p, alpha)` injectivity, terminal Eq5 payloads, Eq5 branch construction,
 back-to-label/no-extra coverage, pole order, normal crossings, and RLCT remain
 unproved.
+
+Lean now also exposes the conditional Eq5 raw coverage constructor:
+`aoyagiLemma5Eq5EndpointRawBranches`,
+`aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat`, and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage`.
+This proves the raw coordinate `value_image` field from strict Eq5
+alpha-domain coverage and supplied endpoint values, with the lower endpoint
+inserted only in the rising region.  It is still supplied-data assembly:
+base-value membership, raw value injectivity, cross-coordinate disjointness,
+source production of endpoint records, source-label legality, no-extra
+coverage, pole order, normal crossings, and RLCT remain unproved.
 
 Recent A4 checkpoint:
 `threads/04-blow-up-certificate/reproduction-case2-displayed-frontier-branch-a4.md`.

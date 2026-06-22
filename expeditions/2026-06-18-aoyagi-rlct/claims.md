@@ -1831,7 +1831,9 @@ No such claim is formalisation-ready until both fields are filled.
   terminal source endpoint payload at
   `threads/05-arithmetic-tail/reproduction-lemma5-terminal-source-endpoint-payload-a5.md`;
   Eq4 rising non-strict endpoint split at
-  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`;
+  Eq5 endpoint raw branches at
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-branches-a5.md`.
 - **Reproduction check.** failed/blocked at
   `threads/05-arithmetic-tail/reproduction-check.md`; isolated Lemma 3
   endpoint arithmetic checked by xhigh `Lorentz the 5th` and recorded at
@@ -1892,7 +1894,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma5-terminal-source-endpoint-payload-a5.md`;
   Eq4 rising non-strict endpoint split checked by xhigh Lean scout `Jason`
   and xhigh hardener `McClintock` at
-  `threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`.
+  `threads/05-arithmetic-tail/review-lemma5-eq4-rising-nonstrict-endpoint-split-a5.md`;
+  Eq5 endpoint raw branches checked by xhigh `Hilbert` at
+  `threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-raw-branches-a5.md`.
 - **Lean target.** isolated Lemma 3 endpoint arithmetic in
   `lean/DLNFibre/DLN/Aoyagi/ArithmeticTail.lean`; isolated Lemma 4 two-value
   count arithmetic in `lean/DLNFibre/DLN/Aoyagi/Lemma4CountArithmetic.lean`;
@@ -1935,7 +1939,10 @@ No such claim is formalisation-ready until both fields are filled.
   `lean/DLNFibre/DLN/Aoyagi/HtildeChainArithmetic.lean` and
   `lean/DLNFibre/DLN/Aoyagi/Lemma5DisplayedVector.lean`;
   actual-width source-label bridge in
-  `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`; broader A5 targets TBD.
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5SourceLabel.lean`;
+  Eq5 supplied endpoint raw coverage in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5SuppliedCoverage.lean`; broader A5
+  targets TBD.
 - **Proved.** `aoyagiLemma3A`, `aoyagiLemma3A_eq_min_add`,
   `int_mul_succ_nonneg`, `aoyagiLemma3A_min_le`,
   `aoyagiLemma3A_at_right`, `aoyagiLemma3A_at_left`,
@@ -2653,6 +2660,16 @@ No such claim is formalisation-ready until both fields are filled.
   These combine supplied back-to-label data with supplied branch-label
   injectivity, and with the selected-width sum for exact cardinality.  They do
   not construct those supplied fields from source.
+  Also proved `aoyagiLemma5Eq5EndpointRawBranches`,
+  `aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat`, and
+  `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage`.  The
+  raw branch set inserts the upper endpoint at every interior coordinate and
+  the lower endpoint exactly in the rising case `j<=a` and `j<=ell-a`.  The
+  value-image theorem proves full same-coordinate interval coverage from
+  strict Eq5 alpha-domain coverage and supplied endpoint value equalities.
+  The constructor wrapper feeds this proved raw coverage into the existing
+  supplied-family constructor, with base-value membership, raw injectivity,
+  and cross-coordinate disjointness still supplied.
 - **Assumed.** for the proved endpoint minimum: integer hypotheses
   `1 <= ell` and `0 <= a <= ell`.  No terminal candidate, feasibility,
   pole-order, or RLCT theorem is accepted yet.

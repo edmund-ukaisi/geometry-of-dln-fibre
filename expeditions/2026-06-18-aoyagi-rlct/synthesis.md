@@ -4712,6 +4712,26 @@ Artifacts:
 and
 `threads/05-arithmetic-tail/review-lemma5-eq5-structured-injection-adapters-a5.md`.
 
+Latest A5 Eq5 endpoint raw-branches update:
+`Lemma5Eq5SuppliedCoverage.lean` now contains
+`aoyagiLemma5Eq5EndpointRawBranches`,
+`aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat`, and
+`AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage`.  The
+raw branch set inserts the supplied upper endpoint at every interior
+coordinate and the supplied lower endpoint exactly when `j<=a` and
+`j<=ell-a`.  The value-image theorem proves the raw coordinate image is the
+same-coordinate interval from strict Eq5 alpha-domain coverage plus supplied
+endpoint values.  The constructor wrapper feeds this proved image into
+`ofCoordinateValueCoverage`, while leaving base-value membership, raw
+injectivity, and cross-coordinate disjointness supplied.  It does not prove
+source-produced endpoint records, source-label legality, no-extra coverage,
+normal crossings, pole order, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-raw-branches-a5.md`,
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-raw-branches.md`,
+and
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-raw-branches-a5.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
