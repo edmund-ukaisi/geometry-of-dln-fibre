@@ -180,7 +180,35 @@ private theorem measurePreserving_coreReassoc (a b c : ℕ) :
     MeasurePreserving
       (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) => ((q.1, q.2.2), q.2.1))
       volume volume := by
-  sorry
+  -- `(reg,(core,spec)) ↦ ((reg,spec),core)` = swap-inner (`core×spec → spec×core`), then
+  -- `prodAssoc.symm` (`reg×(spec×core) → (reg×spec)×core`). Each MP via the product-`volume` form.
+  set A := Fin a → ℝ; set Bb := Fin b → ℝ; set C := Fin c → ℝ
+  -- Step 1: swap the inner `(core, spec) ↦ (spec, core)`.
+  have hswap : MeasurePreserving (Prod.swap : Bb × C → C × Bb) volume volume := by
+    rw [show (volume : Measure (Bb × C)) = (volume : Measure Bb).prod (volume) from
+          Measure.volume_eq_prod _ _,
+      show (volume : Measure (C × Bb)) = (volume : Measure C).prod (volume) from
+          Measure.volume_eq_prod _ _]
+    exact measurePreserving_swap
+  have h1 : MeasurePreserving
+      (Prod.map (id : A → A) (Prod.swap : Bb × C → C × Bb)) volume volume := by
+    rw [show (volume : Measure (A × (Bb × C))) = (volume : Measure A).prod (volume) from
+          Measure.volume_eq_prod _ _,
+      show (volume : Measure (A × (C × Bb))) = (volume : Measure A).prod (volume) from
+          Measure.volume_eq_prod _ _]
+    exact (MeasurePreserving.id (volume : Measure A)).prod hswap
+  -- Step 2: `prodAssoc.symm`: `reg × (spec × core) ↦ (reg × spec) × core`.
+  have h2 : MeasurePreserving
+      (fun q : A × (C × Bb) => ((q.1, q.2.1), q.2.2)) volume volume := by
+    rw [show (volume : Measure (A × (C × Bb)))
+          = (volume : Measure A).prod ((volume : Measure C).prod volume) from by
+          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _],
+      show (volume : Measure ((A × C) × Bb))
+          = ((volume : Measure A).prod volume).prod volume from by
+          rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _]]
+    exact MeasurePreserving.symm MeasurableEquiv.prodAssoc
+      (measurePreserving_prodAssoc (volume : Measure A) volume volume)
+  exact h2.comp h1
 
 /-- **The core-shear is measure-preserving** (Route A core, Codex g165). For any continuous
 `shift : (Fin a → ℝ) × (Fin c → ℝ) → (Fin b → ℝ)`, the fiber-shear
