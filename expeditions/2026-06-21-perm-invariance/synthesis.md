@@ -194,5 +194,27 @@ REMAINING codimForm-split:
   - peel side: codimForm N (extendℤ(peelPart m)) = codimForm N A + codimBil N A R  [rw peelPart_eq_add, extendℤ_add, codimForm_add; codimBil N R A=0 via codimBil_peelCorr_left; codimForm N R = codimBil N R R=0 same]. A=extendℤ(peelLower m), R=extendℤ(peelCorr m).
   - big side: def peelLast (Fin(N+2)², col N+1) + L=extendℤ peelLast; codimForm(N+1)(extendℤ m)=codimForm(N+1)(A+L) via codimForm_congr_onbox (THE flagged risk: the on-box Fin-index/castSucc identity extendℤ m = extendℤ(peelLower m)+L on box-(N+1)); then codimForm_add; L vanishing (analogue of codimBil_peelCorr_left at level N+1); Step D codimForm(N+1) A = codimForm N A (A bound N; v=N+1 terms vanish — ℤ-Icc top-peel via insert/sum_subset).
   - Step E: Δ = codimBil(N+1) A L − codimBil N A R = the j=N+1 slice = explicit ∑_{a<u} m_{a,N}m_{u,N+1}.
-THEN: per-fibre collapse (codimForm split + Pm split + transferRHS_eq) + fivegonSum_fiberwise [LANDED] + induction on N → fivegon (Thm 5.6). THEN M4 (chain→Thm5.5) + M6 (Cor 5.10 via M5 bridge + M6-prep [both LANDED]).
-Operator: GRIND ON, full zero-cited, structure survives compaction. Inline only (worktrees too heavy).
+
+## 2026-06-22 — codimForm SPLIT LANDED (commit a340e01), codimForm-split DONE except Step E
+`codimForm_split` PROVED sorry-free + axiom-clean [propext, Classical.choice, Quot.sound] in
+QSeriesFivegon.lean: `codimForm (N+1) (extendℤ m) = codimForm N (extendℤ (peelPart m)) + (codimBil
+(N+1) A L − codimBil N A R)`, A=extendℤ(peelLower m), R=extendℤ(peelCorr m), L=extendℤ(peelLast m).
+Landed lemmas (all green): codimForm_peel_lhs (peel side), codimForm_peel_rhs (Step A big side, the
+flagged on-box castSucc/Fin.last identity — done via codimForm_congr_onbox + split_ifs/congr), 
+extendℤ_peelLower_col, extendℤ_peelLast_off, codimBil_peelLast_left (Step C), sum_Icc_peel_top
+(private ℤ-Icc top-drop helper), codimForm_peelLower_level (Step D, inside-out 4-fold sum-peel calc),
+codimForm_big (big-side assembly). peelLast def + peelPart_mem + fivegonSum_fiberwise also landed.
+QSeriesFivegon NOT yet in DLNFibre.lean aggregator (WIP — add when fivegon proven).
+
+REMAINING for fivegon (Thm 5.6):
+  - Step E (explicit Δ): codimBil(N+1) A L − codimBil N A R = ∑_{0≤a<u≤N+1} m_{a,N}·m_{u,N+1}
+    [two codimBil collapses: R supported at v=↑N, L at v=↑N+1 (sum_eq_single); difference=j=↑N+1 slice; i-1↦a reindex]. NOT STARTED.
+  - THE BIJECTION (thread-07 piece 1, the flagged grind): fibre {m∈kostantAll d : peelPart m = m'} ↔
+    admissibleXs m' = {x:Fin(N+2)→ℕ | x_i≤b_i (i≤N), ∑x=d_{last}}, b_i=m'(i,last). Forward m↦last-col x;
+    inverse splits col N into (b−x, x). Via Finset.sum_bij'/sum_nbij' OR direct fibre sum. Membership
+    obligations (kostantAt at merged vertex) = the bulk. NOT STARTED.
+  - per-fibre collapse (piece 3): ∑_{fibre(m')} X^{codimForm(N+1)(extendℤ m)}·Pm(N+1)m = X^{codimForm
+    N(extendℤ m')}·Pm N m'·P(d last). Uses codimForm_split (Δ→Δ_b(x)) + Pm split + (4).
+  - inner sum = transferRHS (piece 4): LANDED transferRHS_eq discharges; induction mirrors transferRHS recursion (Δ_b(x)=(b_0−x_0)(d−x_0)+Δ' per-step, pure ring).
+  - induction on N → fivegon. THEN M4 (chain→Thm5.5) + M6 (Cor 5.10 via M5 bridge + M6-prep [both LANDED]).
+Operator: GRIND ON, full zero-cited, structure survives compaction. Inline only (worktrees too heavy — subagents launch at PRIMARY checkout, fresh worktrees re-clone mathlib).
