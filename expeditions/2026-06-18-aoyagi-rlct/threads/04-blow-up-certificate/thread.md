@@ -3711,3 +3711,33 @@ nonemptiness, source production of `F`, old-top rows, suffix production, full
 successor `C'^(S+1)`, chart production, chart coverage, transition
 invariance, Jacobian arithmetic, normal crossings, pole order, termination,
 RLCT, or repair of the printed Case 2 vector mismatch.
+
+## 2026-06-22 Lean Case 2 successor following frontier payload
+
+Reproduction:
+`reproduction-case2-successor-following-frontier-payload-a4.md`.
+Statement card:
+`statement-card-a4-case2-successor-following-frontier-payload.md`.
+Review artifact:
+`review-case2-successor-following-frontier-payload-a4.md`.
+
+Lean now packages the successor-following lower-row handoff with the explicit
+next-continuation guard and finite current-center principalization:
+
+```text
+ContinuingWeightedSuccFollowingFrontierPayload
+sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal
+```
+
+The theorem pairs next residual-block nonemptiness, the successor-following
+lower-row handoff, and the displayed current-center principalization facts.
+Per xhigh review, this is theorem-only: no new
+`SourceChartFrontierBoundaryPackages` field was added, because the existing
+`continuingWeighted` field already exposes an equivalent payload using the
+original `C` tail.
+
+This is not source/chart production of `Csucc`, a pivot-row product, old-top
+rows, suffix production, full successor `C'^(S+1)`, successor chart-family
+construction, chart coverage, transition invariance, Jacobian arithmetic,
+normal crossings, pole order, termination, RLCT, or repair of the printed
+Case 2 vector mismatch.

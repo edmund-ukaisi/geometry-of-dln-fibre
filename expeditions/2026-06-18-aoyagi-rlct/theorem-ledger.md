@@ -5018,6 +5018,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-successor-following-weighted-handoff-a4.md`.
 
+Latest A4 update: the Case 2 successor following frontier payload slice has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are `ContinuingWeightedSuccFollowingFrontierPayload` and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal`.
+The theorem adds the `hnext` nonempty-next-center guard and current-center
+principalization facts to the successor-following lower-row handoff.  It is
+theorem-only, with no new `SourceChartFrontierBoundaryPackages` field.  This
+is not source/chart production of `Csucc`, old-top/suffix production, full
+successor `C'^(S+1)`, transition invariance, normal crossings, pole order, or
+RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-successor-following-frontier-payload-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-successor-following-frontier-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-successor-following-frontier-payload-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -312,6 +312,15 @@ and
 This is still only lower-row formula algebra; `F` is supplied, no `hnext`
 nonempty next-center theorem is included, and no chart production, old-top or
 suffix production, full successor product, or transition invariant follows.
+Current successor following frontier payload slice:
+`threads/04-blow-up-certificate/reproduction-case2-successor-following-frontier-payload-a4.md`.
+Lean now packages the successor-following lower-row handoff with the explicit
+next-continuation guard and finite current-center principalization:
+`ContinuingWeightedSuccFollowingFrontierPayload` and
+`sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal`.
+Keep this theorem-only for now; no `SourceChartFrontierBoundaryPackages` field
+was added, and the finite center ideal facts remain facts about the current
+displayed chart center.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.

@@ -4597,6 +4597,24 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-successor-following-weighted-handoff-a4.md`.
 
+Latest A4 Case 2 successor following frontier payload update:
+`BlowupArithmetic.lean` now contains
+`ContinuingWeightedSuccFollowingFrontierPayload` and
+`sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal`.
+This pairs the explicit next-continuation guard `J+2 <= prefixMinNat n (S+1)`
+with the successor-following lower-row handoff and the existing finite
+principalization facts for the current displayed chart center.  Per xhigh
+review, this stayed theorem-only: no new `SourceChartFrontierBoundaryPackages`
+field was added.  It is still not source/chart production of `Csucc`, a pivot
+row product, old-top/suffix production, full successor `C'^(S+1)`, transition
+invariance, Jacobian arithmetic, normal crossings, pole order, termination, or
+RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-successor-following-frontier-payload-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-successor-following-frontier-payload.md`,
+and
+`threads/04-blow-up-certificate/review-case2-successor-following-frontier-payload-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
