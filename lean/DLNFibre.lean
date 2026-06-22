@@ -66,3 +66,5 @@ import DLNFibre.Core.QSeriesDurfee
 import DLNFibre.Core.QSeriesPeel
 -- (C,θ) extraction (perm-invariance M5/L1): cCodim/numTop recovered from Qseries; the symmetry bridge.
 import DLNFibre.Core.QSeriesExtraction
+-- Permutation invariance prep (perm-invariance M6): Pmult is multiset-symmetric.
+import DLNFibre.Core.CThetaPermInvariance
