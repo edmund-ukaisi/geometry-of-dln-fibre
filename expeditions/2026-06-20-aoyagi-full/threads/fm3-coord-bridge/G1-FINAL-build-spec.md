@@ -110,6 +110,17 @@ MY cover_le deliverable RHS now = C(c')·Σ∫; I fold BOTH a^{−c'} (unit, g18
 the banked integrableOn_monomial_mul_unit_iff + integrableOn_Icc_symm_of_even; box STAYS unitBox [0,1]^d.
 CONFIRMED the shape to crux2. (Flagged controller: RouteMBridge change on route-m-atlas w/ #38.) GOOD FIND —
 the bare cover_le would have walled the cover_le proof; the constant-carrying form is sound + headline-neutral.
+CONVERGENCE (g187, crux2 retracted its stale "adapter staged" comment): crux2 confirms NO constant-free
+adapter — option (b) "adapter normalizes signed-box/monomial·unit → bare-monomial/[0,1]^d" = the SAME
+impossibility as (c) (∫_U ≤ Σ∫ bare-monomial literally false; no adapter erases a^{−c'}·2^d > 1). Lands on
+(a), matching g185. THE DIVISION (crux2 + fm3): I keep charts on the NATURAL SIGNED BOX (chartDomOn — NO
+orthant grind on my side) AND fold BOTH a^{−c'} (integrableOn_monomial_mul_unit_iff) + 2^d
+(integrableOn_Icc_symm_of_even) into C(c'); I produce `∫_U ≤ C(c')·Σ∫_{[0,1]^d} monomial` (the constant IS
+the output, not erased); crux2 weakens the structure to accept C + consumes C·Σ∫. CONFIRMED to crux2.
+Σdrop (crux2 re-answered, prior crossed): hdrops needs only Σdrop>0 (agnostic =2 vs ≥1, both terminate); but
+schurState.red MUST equal what nodeC1's pullback ACTUALLY clears — wire Σdrop=2 (red = M'_0−1, M'_1−1) ONLY
+if nodeC1 genuinely clears row+col; row-only → Σdrop=1. CHECK schur_node_loss_presentation's residual when
+building schurState (the row-split ‖row0‖²+‖lower‖² is row-only ⟹ likely Σdrop=1 unless the full peel runs).
 
 ## CONSUME-SHAPE MINIMAL — already right, NOT over-enriched (g184, crux2 HOLD + verified)
 crux2 HOLD before enriching NodeChartFamily: read the bridge proof body of routeM_rlctAtOn_eq_iInf — it
