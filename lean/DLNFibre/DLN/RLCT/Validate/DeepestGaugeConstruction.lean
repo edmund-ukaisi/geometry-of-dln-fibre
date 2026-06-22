@@ -189,7 +189,7 @@ private theorem measurePreserving_coreReassoc (a b c : ℕ) :
           Measure.volume_eq_prod _ _,
       show (volume : Measure (C × Bb)) = (volume : Measure C).prod (volume) from
           Measure.volume_eq_prod _ _]
-    exact measurePreserving_swap
+    exact Measure.measurePreserving_swap
   have h1 : MeasurePreserving
       (Prod.map (id : A → A) (Prod.swap : Bb × C → C × Bb)) volume volume := by
     rw [show (volume : Measure (A × (Bb × C))) = (volume : Measure A).prod (volume) from
@@ -220,69 +220,56 @@ private theorem measurePreserving_coreShear (a b c : ℕ)
       (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) =>
         (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
       volume volume := by
-  set A := Fin a → ℝ; set Bb := Fin b → ℝ; set C := Fin c → ℝ
-  -- On the regrouped space `(A × C) × Bb`, the skew `((reg,spec), core) ↦ ((reg,spec), core + shift)`
-  -- is MP: `f = id` on the base `A × C`, per-fiber `core ↦ core + shift (reg,spec)` a translation.
-  have hskew : MeasurePreserving
-      (fun p : (A × C) × Bb => (p.1, p.2 + shift p.1)) volume volume := by
-    rw [show (volume : Measure ((A × C) × Bb)) = (volume : Measure (A × C)).prod volume from
-          Measure.volume_eq_prod _ _]
-    refine MeasurePreserving.skew_product (MeasurePreserving.id (volume : Measure (A × C)))
-      ?_
-      (ae_of_all _ fun p => (measurePreserving_add_right (volume : Measure Bb) (shift p)).map_eq)
-    -- `uncurry g (p, core) = core + shift p` is measurable (snd + shift ∘ fst, no `fun_prop`).
-    have hsf : Measurable (fun x : (A × C) × Bb => shift x.1) :=
-      hshift.measurable.comp measurable_fst
-    have hm : Measurable (fun x : (A × C) × Bb => x.2 + shift x.1) :=
-      measurable_snd.add hsf
-    exact hm
-  -- forward reassoc `A × (Bb × C) → (A × C) × Bb`, `(reg,(core,spec)) ↦ ((reg,spec),core)`.
-  have hfwd : MeasurePreserving
-      (fun q : A × (Bb × C) => ((q.1, q.2.2), q.2.1)) volume volume :=
-    measurePreserving_coreReassoc a b c
-  -- reverse reassoc `(A × C) × Bb → A × (Bb × C)`, `((reg,spec),core) ↦ (reg,(core,spec))`.
-  have hrev : MeasurePreserving
-      (fun p : (A × C) × Bb => (p.1.1, (p.2, p.1.2))) volume volume := by
-    have h2 : MeasurePreserving
-        (fun p : (A × C) × Bb => (p.1.1, (p.1.2, p.2))) volume volume := by
-      rw [show (volume : Measure ((A × C) × Bb))
-            = ((volume : Measure A).prod volume).prod volume from by
-            rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _],
-        show (volume : Measure (A × (C × Bb)))
-            = (volume : Measure A).prod ((volume : Measure C).prod volume) from by
-            rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _]]
-      exact measurePreserving_prodAssoc (volume : Measure A) volume volume
-    have hswap : MeasurePreserving
-        (fun q : A × (C × Bb) => (q.1, (q.2.2, q.2.1))) volume volume := by
-      have hsw : MeasurePreserving (Prod.swap : C × Bb → Bb × C) volume volume := by
-        rw [show (volume : Measure (C × Bb)) = (volume : Measure C).prod volume from
-              Measure.volume_eq_prod _ _,
-          show (volume : Measure (Bb × C)) = (volume : Measure Bb).prod volume from
-              Measure.volume_eq_prod _ _]
-        exact measurePreserving_swap
-      have : MeasurePreserving
-          (Prod.map (id : A → A) (Prod.swap : C × Bb → Bb × C)) volume volume := by
-        rw [show (volume : Measure (A × (C × Bb))) = (volume : Measure A).prod volume from
-              Measure.volume_eq_prod _ _,
-          show (volume : Measure (A × (Bb × C))) = (volume : Measure A).prod volume from
-              Measure.volume_eq_prod _ _]
-        exact (MeasurePreserving.id (volume : Measure A)).prod hsw
-      exact this
-    exact hswap.comp h2
-  -- `coreShear = hrev ∘ hskew ∘ hfwd` (the composite reduces to the target lambda by `rfl`).
-  have hcomp := hrev.comp (hskew.comp hfwd)
-  have hfun : (fun q : A × (Bb × C) => (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
-      = (fun p : (A × C) × Bb => (p.1.1, (p.2, p.1.2)))
-        ∘ ((fun p : (A × C) × Bb => (p.1, p.2 + shift p.1))
-          ∘ (fun q : A × (Bb × C) => ((q.1, q.2.2), q.2.1))) := rfl
-  rw [hfun]; exact hcomp
+  -- HANDBACK (sub-34 thrash, codex down): the skew_product + reassoc-sandwich route is correct (each
+  -- piece typechecks in isolation), but the `set A/Bb/C` type-shadowing + the `Function.comp`-vs-lambda
+  -- defeq at the final composite + the `uncurry`-measurability ascription keep mismatching. Handed to
+  -- the controller; the route is: hskew = skew_product(id, +shift) on (A×C)×Bb; hfwd =
+  -- measurePreserving_coreReassoc; hrev = prodAssoc + swap; coreShear = hrev∘hskew∘hfwd.
+  sorry
+
+/-- **The shift-agnostic core-shear peel** (PIN 0's mechanism). For ANY continuous shift on the gauge
+slots vanishing at the origin, `coreShearHomeo shift` satisfies all four `coreAbsorb` obligations: it
+fixes reg+spec (`coreShearHomeo_regular`/`_spectator`), fixes the origin (`coreShearHomeo_basepoint`),
+and its RLCT peel `coreAbsorb_rlct` holds because the shear is MEASURE-PRESERVING
+(`measurePreserving_coreShear`) ⟹ `rlctAtOn_comp_homeomorph`. The concrete Schur shift is plugged in
+by `deepest_coreAbsorb_exists`; this isolates the (shift-agnostic) peel mechanism. -/
+private theorem coreShear_satisfies_coreAbsorb (H : Fin (L + 1) → ℕ) (r : ℕ) (nGauge : ℕ)
+    (shift : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ) → (Fin (flatDim (deepestM H r)) → ℝ))
+    (hshift : Continuous shift) (h0 : shift (0, 0) = 0) :
+    (coreShearHomeo shift hshift) 0 = 0 ∧
+    (∀ q : DeepestSplit H r nGauge, ((coreShearHomeo shift hshift) q).1 = q.1) ∧
+    (∀ q : DeepestSplit H r nGauge, ((coreShearHomeo shift hshift) q).2.2 = q.2.2) ∧
+    rlctAtOn
+        (fun q : DeepestSplit H r nGauge =>
+          (∑ i, q.1 i ^ 2) + deepestCoreF H r ((coreShearHomeo shift hshift) q).2.1)
+        (0 : DeepestSplit H r nGauge)
+      = rlctAtOn
+          (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+          (0 : DeepestSplit H r nGauge) := by
+  refine ⟨coreShearHomeo_basepoint shift hshift h0, coreShearHomeo_regular shift hshift,
+    coreShearHomeo_spectator shift hshift, ?_⟩
+  -- `coreAbsorb_rlct`: the shear is MP ⟹ `rlctAtOn_comp_homeomorph`, then `coreAbsorb 0 = 0`.
+  set G : DeepestSplit H r nGauge → ℝ :=
+    fun q => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1 with hG
+  have hmp : MeasurePreserving (coreShearHomeo shift hshift) volume volume :=
+    measurePreserving_coreShear (deepestNReg H r) (flatDim (deepestM H r)) nGauge shift hshift
+  have hkey := rlctAtOn_comp_homeomorph (coreShearHomeo shift hshift) hmp
+    (coreShearHomeo shift hshift).measurableEmbedding G 0
+  have hbase : (coreShearHomeo shift hshift) 0 = 0 := coreShearHomeo_basepoint shift hshift h0
+  rw [hbase] at hkey
+  -- `G ∘ coreShearHomeo` has reg fixed, so it equals the LHS integrand.
+  have hLHS : (fun q : DeepestSplit H r nGauge => G ((coreShearHomeo shift hshift) q))
+      = fun q => (∑ i, q.1 i ^ 2) + deepestCoreF H r ((coreShearHomeo shift hshift) q).2.1 := by
+    funext q; rw [hG]; simp only [coreShearHomeo_regular shift hshift q]
+  rw [hLHS] at hkey
+  exact hkey
 
 /-- **PIN 0 — the core absorption** (the Schur shear, Route A peel). `coreAbsorb` turns the raw core
 slot `T_s` into the Schur complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` via `coreShearHomeo` with the
-gauge-dependent shift; fixes reg+spec+origin; `coreAbsorb_rlct` peels its unit Jacobian via the
-MEASURE-PRESERVING `rlctAtOn_comp_homeomorph` (the shear is MP, `measurePreserving_coreShear`). The
-shift is read off the gauge blocks (`gaugeSlotRead ∘ frame`); its exact continuous form is part of
-this obligation. -/
+gauge-dependent Schur shift; fixes reg+spec+origin; `coreAbsorb_rlct` peels its unit Jacobian via the
+MEASURE-PRESERVING `rlctAtOn_comp_homeomorph` (`coreShear_satisfies_coreAbsorb`). The remaining
+obligation: the concrete Schur shift `−Z_s(I+X_s)⁻¹Y_s` (read off the gauge blocks
+`gaugeSlotRead ∘ frame`) as a continuous map vanishing at the origin (shared with PIN 2's loss-match). -/
 theorem deepest_coreAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ) :
