@@ -42,6 +42,11 @@ to a later, application-specific part and are not used here.
    the rank pattern is a complete invariant, so orbits, isomorphism classes,
    realizable rank patterns, and Kostant partitions of $\underline d$ are one
    finite set (Corollary 2.9).
+6. **[Permutation invariance of $(C,\theta)$](permutation-invariance-of-C-and-theta.md)** —
+   a first application of the classification, carrying it into Section 5: the
+   codimension $C$ and top-component count $\theta$ of the rank-$\le r$ locus
+   depend only on the multiset of $\underline d$ (Corollary 5.10), via a
+   symmetric Poincaré-series formula (Theorem 5.5) and the fivegon (Theorem 5.6).
 
 A single running example, the dimension vector $(2,2,2)$, is carried through:
 its zero-product locus, its barcode, its rank pattern, and finally its six orbits
@@ -61,12 +66,16 @@ central definitions and results only. The map from chapter to module:
 | 3 | `Core.IntervalModule`, `Core.Barcode`, `Core.Gabriel` |
 | 4 | `Core.RankPattern`, `Core.Gabriel`, `Core.IntervalModule` |
 | 5 | `Core.Orbit`, `Core.OrbitKostant` |
+| 6 | `Core.CTheta`, `Core.QSeriesFivegon`, `Core.QSeriesThm55`, `Core.CThetaPermInvariance`, `Core.CThetaGeometricPerm` |
 
-What is **not** formalised, and is cited to the paper where used: the
-orbit-closure order (Theorem 3.8), the $\operatorname{Ext}(M,M)$ codimension
-(Corollary 3.5), the three computations of $(C, \theta)$ (Sections 5–7), and the
-RLCT identity (Theorem 8.6). These build on the classification developed here and
-are the subject of later work; see [`ROADMAP.md`](../../../ROADMAP.md).
+The development continues beyond the classification in the broader `DLNFibre.Core`
+library: Chapter 6 carries it into Section 5, formalising the $\operatorname{Ext}(M,M)$
+codimension form (Corollary 3.5) and the Poincaré-series computation and
+permutation invariance of $(C,\theta)$ (Corollary 5.10). The precise status of the
+remaining later results — the quadratic-program and explicit-formula computations
+of $(C,\theta)$ (Sections 6–7), and the RLCT identity (Theorem 8.6), whose
+analytic half is **cited** to Aoyagi/Watanabe — is tracked in
+[`ROADMAP.md`](../../../ROADMAP.md).
 
 ## Sources
 
