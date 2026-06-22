@@ -68,26 +68,40 @@ a UNIT pivot (the hypothesis fm's blow-up supplies — at the bare singular orig
 this fails, which is WHY the blow-up runs first). `#109`'s substitution algebra (all diff=0) is the
 SOUND core of this step. -/
 
-/-- **The det-1 Schur straightening datum (the (A) sub-step) — SPECIFY.** A measure-preserving chart
-`χ` (Jacobian 1, the det-1 Schur / Lemma-2-general) factoring `dlnLoss M 0` near the deepest point as
-a unit `u` times `(regular smooth block) + (reduced-chain core dlnLoss M' 0)`, with `M' = S.red`
-strictly smaller. NO monomial weight (that is fm's blow-up). This `resolvedForm` is what
-`schur_recursion_step_sound` consumes and what fm's blow-up cover then resolves. The unit-pivot
-hypothesis is supplied upstream by fm's blow-up (the singular origin's `0` pivot is why the blow-up
-precedes this). -/
-structure IsSchurStraighten {L : ℕ} {N : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+/-- **The det-1 Schur straightening datum (the (A) sub-step) — SPECIFY, fm's 5-point contract.** A
+measure-preserving chart `χ` (Jacobian 1, the det-1 Schur / Lemma-2-general) factoring `dlnLoss M 0`
+near the deepest point as a unit `u` times `(regular smooth block) + (reduced-chain core dlnLoss M' 0)`,
+with `M' = S.red` strictly smaller, AND exposing the explicit coordinate-center index set the blow-up
+fires on. NO monomial weight (that is fm's blow-up). This is the `resolvedForm`. Fields carry fm's
+5-point ask:
+- (1 TYPE) `χ : (Fin nReg → ℝ) × (Fin N' → ℝ) ≃ₜ (Fin N → ℝ)`, `N'` the reduced ambient.
+- (2 MP/det-1) `measurePreserving` — fm's glue composes through with NO Jacobian weight.
+- (3 COORD-CENTER) `active : Finset (Fin N')` + pivot `p` + `centerCoord`: the rank-defect center is the
+  coordinate subspace `{x | ∀ i ∈ active, x i = 0}` (the index set `g5_pivotNode` blows up).
+- (4 REDUCED-CHAIN) `S.red` = M' + `flatRedCore`'s reduced-core component + `measure_drops`.
+- (5 STRICT-TRANSFORM) `factor` — `flatCore ∘ χ = u · flatRedCore` near `0` (the rewrite fm's integrand
+  transport uses; with the analytic unit `u`, MP-transported, no new proof). -/
+structure IsSchurStraighten {L : ℕ} {N N' : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
     (nReg : ℕ)
     (flatCore : (Fin N → ℝ) → ℝ)             -- `dlnLoss M 0` in the post-blow-up flat coords
-    (flatRedCore : (Fin nReg → ℝ) × ((Fin N → ℝ)) → ℝ)  -- the split target (reg block + reduced core)
-    (χ : ((Fin nReg → ℝ) × (Fin N → ℝ)) ≃ₜ (Fin N → ℝ))  -- the det-1 Schur straightening chart
-    (u : (Fin nReg → ℝ) × (Fin N → ℝ) → ℝ) : Prop where
-  /-- The straightening is MEASURE-PRESERVING (det-1, the (A) sub-step contributes no weight). -/
+    (flatRedCore : (Fin nReg → ℝ) × ((Fin N' → ℝ)) → ℝ)  -- split target (reg block + reduced core on N')
+    (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))  -- the det-1 Schur straightening chart
+    (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ)
+    (active : Finset (Fin N')) (p : Fin N') : Prop where
+  /-- (2) The straightening is MEASURE-PRESERVING (det-1, the (A) sub-step contributes no weight). -/
   measurePreserving : MeasurePreserving χ volume volume
   /-- `u` is measurable (the analytic unit). -/
   umeas : Measurable u
-  /-- The det-1 normal form near the deepest point: core = unit · (reg block + reduced core). -/
-  factor : (fun p => flatCore (χ p)) =ᶠ[nhds 0] (fun p => u p * flatRedCore p)
-  /-- Well-foundedness (pp #123 field-6): the reduced chain is strictly smaller. -/
+  /-- (5) STRICT-TRANSFORM: the det-1 normal form near the deepest point —
+  `core ∘ χ = unit · (reg block + reduced core)`. -/
+  factor : (fun q => flatCore (χ q)) =ᶠ[nhds 0] (fun q => u q * flatRedCore q)
+  /-- (3) COORDINATE-CENTER: the pivot lies in the active set (the blow-up's center coords), so the
+  rank-defect center `{q | ∀ i ∈ active, q.2 i = 0}` is a coordinate subspace `g5_pivotNode` can fire
+  on. (`active`/`p` match `pivotBlowupOn`'s `(active : Finset) (p)` signature, S1G5Charts:384.) -/
+  pivot_active : p ∈ active
+  /-- (3) the active set is the blow-up codimension `Mval`-many center coords (nonempty: a real drop). -/
+  active_nonempty : active.Nonempty
+  /-- (4) Well-foundedness (pp #123 field-6): the reduced chain is strictly smaller. -/
   measure_drops : ∑ s, S.red s < ∑ s, M s
 
 /-- **G3.2 crux — the det-1 Schur straightening existence (SPECIFY, body `sorry`; mine).** Within a
@@ -98,11 +112,11 @@ basis; pp-hall spells the sub-steps). NO monomial weight — that's fm's blow-up
 vacuous recursion. (Stated abstractly on flat coords; the upstream unit-pivot hypothesis is left
 implicit pending the exact pivot-data interface with fm's blow-up.) -/
 theorem schur_straighten_exists {L : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
-    (nReg N : ℕ) (flatCore : (Fin N → ℝ) → ℝ)
-    (flatRedCore : (Fin nReg → ℝ) × (Fin N → ℝ) → ℝ) :
-    ∃ (χ : ((Fin nReg → ℝ) × (Fin N → ℝ)) ≃ₜ (Fin N → ℝ))
-      (u : (Fin nReg → ℝ) × (Fin N → ℝ) → ℝ),
-      IsSchurStraighten M S nReg flatCore flatRedCore χ u := by
+    (nReg N N' : ℕ) (flatCore : (Fin N → ℝ) → ℝ)
+    (flatRedCore : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) :
+    ∃ (χ : ((Fin nReg → ℝ) × (Fin N' → ℝ)) ≃ₜ (Fin N → ℝ))
+      (u : (Fin nReg → ℝ) × (Fin N' → ℝ) → ℝ) (active : Finset (Fin N')) (p : Fin N'),
+      IsSchurStraighten M S nReg flatCore flatRedCore χ u active p := by
   sorry
 
 /-! ## The G3.2 recursion step (SOUND conditional form — PROVEN)
