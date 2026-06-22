@@ -35,19 +35,26 @@ classify by the **active layer**, with rank-defect/full-rank read **relative to 
 full-rank-pass-through (C2), or **MIXED partial-drop (C5)** when `t_{s-1} > t_s > 0`. C3 (NC-completion) is
 a divisor-arrangement post-pass, not a node type. {C4, C1, C2, C5} partition the active-layer structure.
 
-- **C1 — coupled rank-defect blow-up** (ITERATED `pivotBlowupOn` — the MONOMIAL mechanism, the live route;
-  the squeeze is OFF-PATH, see §1.6, decision C / g134). The active factor has a genuine rank-defect
-  coupling to the next factor. **(i) `pivotBlowupOn active p`** of the rank-defect center (a smooth
-  coordinate subspace `{pivot-block=0}`, NOT the determinantal variety): `core ∘ φ = x_p²·Q`, Jacobian
-  `|x_p|^{card−1}`. **The `x_p²` is the EXCEPTIONAL DIVISOR** — `(k,h) = (1, card−1)`, ratio `card/2` via
-  `axisRatio_regularSeq` — **ACCOUNTED by `monomialThreshold`, NOT stripped** (`x_p²` vanishes on
-  `{x_p=0}`, so it is NOT a unit and cannot be squeeze-removed; g141). **(ii) RECURSE on the residual `Q`
-  via the dispatcher** — `Q` is a strictly SMALLER core (its singular part is the reduced-width Schur chain
-  `S·A2red`, `S = D − b·a`; the regular pivot row rides as spectator coords; `ΣM` drops ≥1, g142), so the
-  dispatcher re-classifies `Q` (C1/C2/C4/C5) and the next `pivotBlowupOn` fires on `Q`'s rank-defect. The
-  `lex(L,ΣM,ncDefect)` recursion closes C1 MONOMIALLY by iterated blow-up — **NO explicit `lemma2Fwd`-style
-  straightening as a general step** (fm3: `lemma2Fwd` is `(2,2,2)` SCAFFOLDING, not a general mechanism;
-  the blow-up cover `argmaxCellOn` handles chart-locality). The squeeze `flatCore − Φ ∈ ideal(E)` (#131) is
+- **C1 — coupled rank-defect blow-up** (the MONOMIAL mechanism, the live route; the squeeze is OFF-PATH,
+  §1.6, decision C / g134). **TWO steps per node** (fm3's ΣM caveat, #36): the blow-up carries the weight,
+  the EXACT Schur-descent carries the `ΣM`-drop.
+  **(A) `pivotBlowupOn active p`** of the rank-defect center (a smooth coordinate subspace `{pivot-block=0}`,
+  NOT the determinantal variety): `core ∘ φ = x_p²·Q`, Jacobian `|x_p|^{card−1}`. **The `x_p²` is the
+  EXCEPTIONAL DIVISOR** — `(k,h) = (1, card−1)`, ratio `card/2` via `axisRatio_regularSeq`, **ACCOUNTED by
+  `monomialThreshold`, NOT stripped** (`x_p²` vanishes on `{x_p=0}`, NOT a unit; g141). **Step A does NOT
+  drop `ΣM`** — the hard-pivot-normalized residual `Q = ‖Â·A2‖²` has the SAME dimensions `M` (`Â` a full
+  `M_0×M_1` matrix; g143).
+  **(B) the EXACT det-unit Schur-descent** (the `lemma2Fwd` generalization — a concrete det-`±1` c-o-v,
+  lintegral-level splice, NO Jacobian, NOT a two-sided bound): the unit-pivot row/col ops clear `Â`'s pivot
+  row+col (`L·Â·R = blockdiag[1, S]`, `S = D − b·a`), giving `[regular pivot row] + ‖S·A2red‖²` with
+  `‖S·A2red‖² = dlnLoss M' 0`, `M'_0 = M_0−1`, `M'_1 = M_1−1`. **THE `ΣM`-DROP IS HERE** — `ΣM' = ΣM − 2 <
+  ΣM` (`Σdrop = 2 > 0`, the `ChainDimSplit.measure_drops` shape; g143). **(C) RECURSE** on the strictly
+  smaller core `‖S·A2red‖²` via the dispatcher (`lex` terminates via step-B's `Σdrop`). The squeeze
+  `flatCore − Φ ∈ ideal(E)` (#131) is the OFF-PATH BOUND (drops the `x_p²` weight, §1.6) — step B is the
+  EXACT change, NOT the squeeze. **Constructibility of the general exact Schur-descent (vs the
+  rank-deficiency that blocked the SQUEEZE) is the crux2 check, held** (#35/#36); if it does not generalize,
+  C1 falls back to iterated blow-up (the cover handling chart-locality) — but step B is the intended
+  `ΣM`-drop mechanism. The squeeze `flatCore − Φ ∈ ideal(E)` (#131) is
   PARKED off-path — NOT C1's mechanism (it drops the `x_p²` weight, §1.6).
 
 - **C2 — full-rank pass-through** (pp3's catch; the later-factor drop).
@@ -125,11 +132,11 @@ mechanism is OFF-PATH** — triple-decorrelated (decision C / g134: fm3 STOP + c
   the squeeze + `rlctAt_mono` (which strips only genuine units, the `c₁,c₂` constants) cannot remove it —
   doing so DROPS the exceptional weight. A squeeze/det-1-only recursion conserves dimension ⟹ telescopes to
   ambient/2 = 4 for `(2,2,2)`, NOT `3/2` (the g32 dimension-conservation death).
-- **The LIVE route is MONOMIAL via ITERATED `pivotBlowupOn`** (C1 as revised in §1): `pivotBlowupOn` →
-  `x_p²·Q`, `x_p²` the accounted exceptional divisor (`(k,h)=(1,card−1)`, fed to `monomialThreshold`), then
-  RECURSE on the strictly smaller core `Q` via the dispatcher (`ΣM` drops, `lex`-terminates). The
-  `lemma2Fwd` det-`±1` straightening is `(2,2,2)` SCAFFOLDING (fm3's map), NOT a general step — the general
-  route is uniform blow-ups + recursion, the blow-up cover handling chart-locality.
+- **The LIVE route is MONOMIAL** (C1, §1): step A `pivotBlowupOn` → `x_p²·Q` (`x_p²` the accounted
+  exceptional divisor, `(k,h)=(1,card−1)`; step A does NOT drop `ΣM`) + step B the EXACT det-unit
+  Schur-descent (`lemma2Fwd` generalization, NOT the squeeze/bound) which removes the pivot row+col (`ΣM`
+  drops by 2, g143) + step C recurse. The `ΣM`-drop is step B (fm3's #36 caveat); the squeeze is the
+  off-path bound, NOT step B's exact change.
 **The #131 squeeze (`schur_node_squeeze` / `flatCore − Φ ∈ ideal(E)`) and `lemma2Fwd` are both PARKED
 off-path / `(2,2,2)`-specific** — the squeeze is a sound analytic fact but drops the `x_p²` weight;
 `lemma2Fwd` is the `(2,2,2)` presentation. Neither is C1's general mechanism. (The #140 framing calling the
@@ -179,28 +186,30 @@ parametrises it over `M`:
 | (2,2,2)-specific | general-M analogue |
 |---|---|
 | fixed 3-blow-up tree (`Z_A` codim4 → `Z_B` codim4 → incidence codim3) | the C1/C2/C4 branch tree, depth = `lex`-bounded, parametrised over `M` |
-| the explicit incidence chart `A=α[[1,a],[b,ab+δ]]`, `B=[[u−ar,…]]` | the general `pivotBlowupOn active p` (`core∘φ = x_p²·Q`, Jac `x_p^{card−1}`) ITERATED via the dispatcher recursion on the smaller residual `Q` (`S=D−ba` the residual chain) |
+| the explicit incidence chart `A=α[[1,a],[b,ab+δ]]`, `B=[[u−ar,…]]` | the general node = `pivotBlowupOn` (step A, `x_p²` weight, ΣM unchanged) + EXACT Schur-descent (step B, `S=D−ba`, ΣM−2) + recurse (step C) |
 | all 24 leaves' threshold `= 3/2` (a coincidence of `(2,2,2)`) | leaves' thresholds VARY; only the `⨅ = ½·minAdm` via `(C≥)`+`(C=∃)` is general (NOT all-equal) |
-| `lemma2Fwd` det-`±1` one-shot splice | `(2,2,2)` SCAFFOLDING (fm3's map), NOT a general step — the general route is ITERATED `pivotBlowupOn` + recursion (the blow-up cover handles chart-locality); no explicit straightening |
+| `lemma2Fwd` det-`±1` one-shot splice | the per-node EXACT det-unit Schur-descent (step B, the `ΣM`-drop: removes the pivot row+col, `S=D−ba`) — `lemma2Fwd` generalized to a det-`±1` c-o-v (NOT the squeeze/bound); general constructibility = the crux2 check (#36) |
 | conjugation symmetries σ1/σ2/σ3 (S₂-style) | the layer symmetry group; OR the C2/C4 branches cover non-pivot summands without conjugation |
 | `r = 1`, `B = 0` | general `r` (D1 shifts the regular part; the core at general `r` is the C1/C2/C4 tree) |
 **What is reusable as-is** (g3 memo + my reconciliation): the `recStep`/`g5_pivotNode` cover engine
 (`{N}`-generic), the box/Tonelli/monomial toolkit, the S1 transport substrate, `Adm`/`Mval`/`lambdaCore`
 (A1, general), the green `monomialThreshold_ge_of_mult`/`_le_regularSeq`. **What is the general lift:** the
-C1/C2/C4/C5 dispatcher + the general `pivotBlowupOn` node (`x_p²` exceptional weight) ITERATED via the
-recursion on the smaller residual `Q` + the `(S-min)` achiever path. The g3-memo risk #1 (the
-"regular-change generalization") is DISSOLVED, not solved: there is no general explicit regular-change to
-generalize — `lemma2Fwd` was `(2,2,2)` scaffolding; the general route is iterated blow-up + recursion. The
-residual is the dispatcher exhaustiveness + the `(S-min)` achiever.
+C1/C2/C4/C5 dispatcher + the general node (step A `pivotBlowupOn` `x_p²` weight + step B EXACT Schur-descent
+`ΣM`-drop + step C recurse) + the `(S-min)` achiever path. The g3-memo risk #1 (the "regular-change
+generalization") is the **crux2 constructibility check** (#36): does the EXACT det-unit Schur-descent (step
+B, `lemma2Fwd` generalized) construct generally vs the rank-deficiency that blocked the squeeze? If yes,
+C1 is the both-steps node; if not, C1 falls back to iterated blow-up. The residual is the dispatcher
+exhaustiveness + step-B constructibility + the `(S-min)` achiever.
 
 ## §5 — the formaliser interface (what fm3+crux2 build, #27)
 1. **`RouteMNode` dispatcher** — classify a node into C1/C2/C4/C5 (+ C3 post-pass); the branch logic of §1,
    rank read RELATIVE TO THE ACTIVE PREFIX IMAGE (Codex fix 1). Exhaustiveness over layer structures is the
    one combinatorial obligation.
-2. **Per-branch chart + `(k,h)`** — C1: ITERATED `pivotBlowupOn active p` (`core∘φ = x_p²·Q`, the `x_p²`
-   exceptional divisor `(k,h)=(1,card−1)`; `step1A_eq_pivotBlowupOn`/`step2E_eq_pivotBlowupOn` banked) +
-   RECURSE on the smaller residual `Q` via the dispatcher — NO explicit straightening (`lemma2Fwd` is
-   `(2,2,2)` scaffolding); C2: the downstream-descent (recurse on `C_{>s}|im(C_s)`, `L` drops — NOT a det-unit GL absorption, g142); C4: the Fubini product split
+2. **Per-branch chart + `(k,h)`** — C1 (both steps, #36): step A `pivotBlowupOn active p` (`core∘φ = x_p²·Q`,
+   the `x_p²` exceptional divisor `(k,h)=(1,card−1)`; `step1A_eq_pivotBlowupOn`/`step2E_eq_pivotBlowupOn`
+   banked; ΣM unchanged) + step B the EXACT det-unit Schur-descent (`lemma2Fwd` generalized,
+   `measurePreserving_lemma2`; removes pivot row+col, ΣM−2; NOT the squeeze — crux2 constructibility check
+   #36) + step C recurse; C2: the downstream-descent (recurse on `C_{>s}|im(C_s)`, `L` drops — NOT a det-unit GL absorption, g142); C4: the Fubini product split
    (`(2,1,2)`-style); C5: the block-column split → C1 micro-step (complement) + C2 micro-step (survivor).
    C3: NC-completion intersection blow-ups (`k_E ≥ 2` ok, `ncDefect` drops). Read `(k,h)` from the
    strict-transform density (C1-condition). **The squeeze `schur_node_squeeze` AND `lemma2Fwd` are PARKED
@@ -248,5 +257,5 @@ two Codex passes (#132 math, #136 own) CONVERGED on the value; this design folds
 into my taxonomy (k_E≥2 via mult-control not k_E=1; pass-through for later-factor drops; Fubini for pinches;
 geometric-codim read). A fresh decorrelated Codex design check on the taxonomy exhaustiveness + lex
 termination is fired (`codex/g138-routeM-{prompt,answer}.md`) — folded when landed. Scripts: `g137_*` in
-`g129-scripts/` (reconcile, C4+lex, `g141_offpath_confirm`, `g142_residual_smaller`). **Controller correction (§1.6, decision C / g134; refined):** C1's mechanism is ITERATED `pivotBlowupOn` (`x_p²` exceptional weight + recurse on the smaller residual `Q`), NOT the squeeze (off-path) and NOT a `lemma2Fwd` straightening (`(2,2,2)` scaffolding, fm3). Builds on g134/decision-C, #132/#134 (witness + S-min), #136 (pp3 C1–C4), fm3's case222 map (uniform `pivotBlowupOn` node),
+`g129-scripts/` (reconcile, C4+lex, `g141_offpath_confirm`, `g142_residual_smaller`, `g143_both_steps`). **Controller correction (§1.6, decision C / g134; refined #36):** C1 = TWO steps — step A `pivotBlowupOn` (`x_p²` weight, ΣM unchanged) + step B EXACT det-unit Schur-descent (`lemma2Fwd` generalized, the ΣM-drop; NOT the squeeze, which is the off-path bound) + step C recurse. Step-B general constructibility = the crux2 check (#36). Builds on g134/decision-C, #132/#134 (witness + S-min), #136 (pp3 C1–C4), fm3's case222 map (uniform `pivotBlowupOn` node),
 r1-design §1-4 (the value-match + the two proof routes R3a/R3b), `Core.RankPattern`/`OrbitKostant` (carrier).
