@@ -17,23 +17,42 @@ permutation invariance EXTENDS them to all `d` and is the conceptual surprise.
 
 ## Closing criterion
 
-`cCodim`/`numTop` permutation-invariance formalised, green / 0-sorry / axiom-clean, via a **zero-cited
-combinatorial route** (a `codimForm`/Kostant-partition symmetry argument), NOT the paper's
-equivariant-cohomology Poincaré-series derivation (Thm 5.5, which needs machinery Mathlib lacks). A
-refuted/refined/scope-surprise close (the combinatorial route genuinely needs Thm 5.5 ⟹ a Cited layer)
-is also valid — surface with a sized verdict.
+`cCodim`/`numTop` permutation-invariance (Cor 5.10) formalised, green / 0-sorry / axiom-clean, via the
+**FULL ZERO-CITED q-series route** (operator decision, 2026-06-22): build a `Core.QSeries` sub-library
+and reprove the Poincaré-series identities — including RWY 2018's Thm 5.6 via the elementary PEEL
+induction — from `Finset`/`PowerSeries` primitives, with no external citation. Delivers, as bedrock:
+Cor 5.10 + the Poincaré series (Thm 5.5) + the explicit `(C,θ)` for **all** `d` (extending the
+LANDED monotone-only forms) + a reusable q-Pochhammer / q-binomial / q-Vandermonde / Durfee library
+(absent from Mathlib v4.29, upstreamable).
 
-## Provisional ladder (RE-SCOPED BY THE SIZING PASS — do not build before it returns)
+## The route — sized & certified (threads 01–03)
 
-The roadmap flags Cor 5.10 as "a genuine lift, NOT free," but "possibly reachable by an independent
-combinatorial route." The sizing pass settles the route. Candidate shapes:
-- **P-cCodim:** `cCodim` is symmetric in `d`. Route candidates: (a) a `codimForm`/Kostant-partition
-  bijection under permuting `d` (the form's pairing structure under vertex permutation); (b) via the
-  QIP — but `cCodim_eq_qipMin` is *monotone-`d` only*, so reduce a general `d` to `sort d` and show the
-  direct `cCodim d` equals `cCodim (sort d)` (the heart of the invariance).
-- **P-numTop:** `numTop` is symmetric in `d` (same bijection at the minimiser level).
-- **P-geom (corollary):** the geometric `(C,θ)` reading (codim of `Σ̄^r` / #top-dim components) inherits
-  the invariance through the LANDED `Core.CThetaGeometric`/`Core.SigmaComponents` bridges.
+RECORD CORRECTION: the sizing pass's "open problem" was wrong. The one hard link (Thm 5.6 / the "5gon")
+**is** Rimányi–Weigandt–Yong 2018 (arXiv:1608.02030), the paper's own cited `[RWY]`. A direct
+Kostant-bijection proof of perm-invariance IS open (`|M⁺_d|≠|M⁺_{σd}|` blocks it; the direct route
+collapses to a `≥2500 LoC` global swap map — thread 02 OBSTRUCTED-as-shorter), but the q-series route
+sidesteps it by proving the generating-function identity and reading off `(C,θ)`. The chain (thread 03,
+all links exact-verified):
+
+```
+(perm-inv Cor 5.10) ⟸ L0 cCodim d 0=cCodim(sort d)0 ∧ numTop d 0=numTop(sort d)0
+ ⟸ L1 (C,θ)-extraction: lowestTerm(Qseries d r)=numTop·q^{cCodim}  [CLEAN: Pm coeffs ≥0 ⟹ no cancellation]
+ ⟸ L2/Thm5.5  Qseries d r = P r·∑_s (−1)^s q^{C(s,2)} P s·Pmult(d−r−s)   [Pmult MANIFESTLY multiset-symmetric]
+ ⟸ S1–S4 chain  (S1 shift REUSES the LANDED codimForm_update_corner; S3 = q-binomial inversion)
+ ⟸ S0=Thm5.6(5gon)  Pmult d = ∑_{m⊢d} q^{codimForm} Pm m   [= RWY 2018, reproved zero-cited]
+ ⟸ PEEL  induction on N: peeling bijection + codim split c(m)=c(m')+Δ_b(x) + local transfer identity
+```
+
+Build ladder (~6–8 substantive files, ~2–3 wk — sequence bottom-up, serial Lean-writers):
+- **M1 `Core.QSeries` primitives** — `P`/`Pm`/`Pmult`/`Qseries`; `Pm` coeffs ≥0 + constant-term 1.
+- **M2 classical q-facts** — q-binomial theorem/inverse (S3), q-Vandermonde, `N=1` Durfee (some avoidable).
+- **M3 PEEL / Thm 5.6** (the bulk) — the load-bearing **local transfer identity** (PIN symbolically first).
+- **M4 the S1–S4 chain → Thm 5.5** (L2).
+- **M5 L1 extraction** (clean).
+- **M6 `cCodim`/`numTop` symmetry → Cor 5.10** (all `r` via the LANDED `cCodim_rankShift`) + the geometric
+  transfer through `Core.SigmaComponents`/`CThetaGeometric`.
+- **(independent) order-reversal fragment** — `(C,θ)(d)=(C,θ)(reverse d)` via the codimForm-preserving
+  bijection `[a,b]↦[N−b,N−a]` (441/441 verified); ~1 file zero-cited bedrock, landable any time.
 
 ## LANDED bricks (consumable, on `dev`)
 
@@ -44,10 +63,15 @@ of `cCodim·0`); `Core.SigmaComponents`/`ThetaComponentCount`/`CThetaGeometric` 
 
 ## Scope / boundary
 
-- Aim **zero-cited** for the combinatorial invariance (the `(C,θ)` invariants are pure combinatorics of `d`).
-- The equivariant-cohomology Poincaré series (Thm 5.5) is OUT of scope (a likely-Cited heavy layer); the
-  combinatorial route is the target. If the route forces Thm 5.5, surface (Cited layer or sub-expedition).
+- **Zero-cited, including the Poincaré series.** Thm 5.5 / Thm 5.6 are now IN scope — reproved from
+  `Finset`/`PowerSeries` primitives in `Core.QSeries`, NOT cited. (The equivariant-cohomology *derivation*
+  is bypassed; the combinatorial PEEL proof replaces it.) `#print axioms` stays `[propext, Classical.choice,
+  Quot.sound]`.
+- The new q-series sub-library is network-free engine content → lives in `DLNFibre.Core` (never imports DLN).
 - Geometric corollary inherits the existing `[IsAlgClosed k][CharZero k]` scope.
+- Pre-formalisation step (thread 03's flag): PIN the PEEL local transfer identity symbolically
+  (q-Vandermonde × `N=1` Durfee) before the M3 tide — Codex's decomposition is inference, not yet proved
+  from primitives.
 
 ## Operating mode
 

@@ -99,3 +99,19 @@ probe-qseries cracked the FULL route, exact-verified (findings.md committed 092d
 - direct route (thread 02): sizing said HARD (no bijection, unbounded radius, harder than landed CCodim pair);
   probe-direct unproductive so far — likely NOT shorter. AWAITING its verdict to confirm.
 - order-reversal fragment (0/11795): zero-cited bedrock, land regardless.
+
+## 2026-06-22 — ROUTE DECIDED (operator): FULL ZERO-CITED q-series
+Operator chose (A) full zero-cited. Direct route OBSTRUCTED-as-shorter (thread 02: ≥2500 LoC global swap
+map, open form). BUILD the Core.QSeries sub-library + reprove RWY's Thm 5.6 via PEEL, zero-cited. Brief
+re-scoped (closing criterion + the M1–M6 ladder + scope). Build ~6–8 files, ~2–3 wk, serial Lean-writers.
+
+PLAN (bottom-up, serial Lean):
+- PRE: pin PEEL local transfer identity symbolically (q-Vandermonde × N=1 Durfee) — pen-and-paper, parallel.
+- M1 Core.QSeries primitives (P/Pm/Pmult/Qseries + Pm coeffs≥0, const-term 1) — FIRST tide (critical path).
+- M2 classical q-facts (q-binomial inverse/S3, q-Vandermonde, N=1 Durfee).
+- M3 PEEL/Thm 5.6 (bulk; needs the transfer pin).
+- M4 S1–S4 chain → Thm 5.5 (S1 reuses LANDED codimForm_update_corner).
+- M5 L1 extraction (clean). M6 cCodim/numTop symmetry → Cor 5.10 (all r via rankShift) + geometric transfer.
+- order-reversal fragment (independent, ~1 file) — slot in when convenient.
+
+NOW: dispatch (a) transfer-pin pen-and-paper [parallel, no Lean], (b) M1 primitives formaliser [serial Lean].
