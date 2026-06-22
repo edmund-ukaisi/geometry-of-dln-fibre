@@ -2,7 +2,7 @@
 
 **Classical Inputs**
 
-1. **Finite Durfee rectangle identity**  
+1. **Finite Durfee rectangle identity**
    **ESTABLISHED FACT**, supplied as the `N=1` primitive. For `a,b >= 0`,
    \[
    P_aP_b
@@ -19,8 +19,8 @@
    \]
    **Status:** strictly necessary for this proof chain. Since the desired identity specializes to exactly this when `N=1`, any primitive set must imply it. One could prove it from Gaussian-binomial technology, but that is avoidable here.
 
-2. **Finite distributivity / finite reindexing**  
-   **ESTABLISHED algebra**, not a q-series identity. We use that finite sums may be substituted into finite products and reindexed along explicit bijections.  
+2. **Finite distributivity / finite reindexing**
+   **ESTABLISHED algebra**, not a q-series identity. We use that finite sums may be substituted into finite products and reindexed along explicit bijections.
    **Status:** necessary formal infrastructure, but not a classical q-series primitive.
 
 **Avoided:** q-Vandermonde, q-Chu-Vandermonde, and the finite q-binomial theorem are not used. They are only alternative ways to prove the Durfee rectangle identity if one refuses to take it as primitive.

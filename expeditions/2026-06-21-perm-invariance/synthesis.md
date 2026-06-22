@@ -200,7 +200,7 @@ REMAINING codimForm-split:
 QSeriesFivegon.lean: `codimForm (N+1) (extendℤ m) = codimForm N (extendℤ (peelPart m)) + (codimBil
 (N+1) A L − codimBil N A R)`, A=extendℤ(peelLower m), R=extendℤ(peelCorr m), L=extendℤ(peelLast m).
 Landed lemmas (all green): codimForm_peel_lhs (peel side), codimForm_peel_rhs (Step A big side, the
-flagged on-box castSucc/Fin.last identity — done via codimForm_congr_onbox + split_ifs/congr), 
+flagged on-box castSucc/Fin.last identity — done via codimForm_congr_onbox + split_ifs/congr),
 extendℤ_peelLower_col, extendℤ_peelLast_off, codimBil_peelLast_left (Step C), sum_Icc_peel_top
 (private ℤ-Icc top-drop helper), codimForm_peelLower_level (Step D, inside-out 4-fold sum-peel calc),
 codimForm_big (big-side assembly). peelLast def + peelPart_mem + fivegonSum_fiberwise also landed.
@@ -281,3 +281,10 @@ ROUTE: fivegon (Thm 5.6 = RWY 2018, reproved via last-column PEEL transfer) → 
 HONESTY: combinatorial/geometric (C,θ), never rlct_; the rlct=½·codim reading stays Cited (Aoyagi/Watanabe).
 PROCESS: run as a proper expedition — controller delegating tides (formaliser: fivegon M3b, M4→M6, geometric transfer), pen-and-paper de-risk (penpaper-s3: S3 cert), independent review (reviewer: 3 SOUND passes). Worktree: controller-in-worktree ⟹ teammate isolation collapses to shared worktree (serial, no re-clone).
 CLOSE: PR expedition/perm-invariance → dev (operator-authorised, conditional on reviewer-SOUND + controller concurrence; both met).
+
+## 2026-06-22 — Post-review hardening (PR #6 operator review)
+Operator review on PR #6 (commit 36bfc2f) raised three precision/API points; all VALID (controller concurred), all actioned. Math unchanged — API-precision + wording only. Build green (3695), sorry/axiom-clean.
+1. "unconditional / depends only on the multiset" overclaimed the EXPORTED API: the wrappers still take Kostant-set `Nonempty` witnesses, and at N=0 the corner forces r=d₀ (so `hr : ∀ k, r ≤ d k` alone cannot discharge nonemptiness). FIX: added `kostantPartitions_nonempty_of_le` (1≤N + r≤min d ⟹ nonempty; corner r + diagonal d−r, = `kostantPartitions_zero_nonempty` ∘ `kostantPartitions_dminus_eq_image`) + discharged `_of_le` public wrappers (`cCodim`/`numTop`/codim ℕ∞/ncard) conditional only on 1≤N + r≤min d. Reworded module/aggregator/exposition docstrings (dropped "unconditional").
+2. `geomCodim_comp_perm` exported only `.toNat` (erases the ⊤ case). FIX: added ℕ∞ `codimRepCanonical_productRankLocusLE_comp_perm` (via the landed `_enat` bridge) as the main result; renamed the `.toNat` form → `codim_productRankLocusLE_toNat_comp_perm` (name now states `productRankLocusLE`).
+3. trailing whitespace in 6 expedition scratch/synthesis files — cleaned.
+NOTE: the EXPEDITION COMPLETE entry above predates this — read its "UNCONDITIONAL" + `geomCodim_comp_perm` as the renamed `codim_productRankLocusLE_toNat_comp_perm` (`.toNat`) / `codimRepCanonical_productRankLocusLE_comp_perm` (ℕ∞) + the `_of_le` discharged forms.

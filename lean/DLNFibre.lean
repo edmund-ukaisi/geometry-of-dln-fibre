@@ -64,15 +64,16 @@ import DLNFibre.Core.QSeries
 import DLNFibre.Core.QSeriesDurfee
 -- Local transfer identity (perm-invariance M3 engine): transferRHS b d = P d · ∏ P bᵢ.
 import DLNFibre.Core.QSeriesPeel
--- (C,θ) extraction (perm-invariance M5/L1): cCodim/numTop recovered from Qseries; the symmetry bridge.
+-- (C,θ) extraction (M5/L1): cCodim/numTop recovered from Qseries; the symmetry bridge.
 import DLNFibre.Core.QSeriesExtraction
 -- Permutation invariance prep (perm-invariance M6): Pmult is multiset-symmetric.
 import DLNFibre.Core.CThetaPermInvariance
--- Thm 5.6 (the "fivegon", perm-invariance M3b): fivegonSum d = Pmult d, via the last-column transfer.
+-- Thm 5.6 (the "fivegon", perm-invariance M3b): fivegonSum d = Pmult d, via last-column transfer.
 import DLNFibre.Core.QSeriesFivegon
--- Thm 5.5 (M4) chain: corner shift (S1'/S2), inverse-Pochhammer orthogonality, the per-r Poincaré product.
+-- Thm 5.5 (M4): corner shift, inverse-Pochhammer orthogonality, per-r Poincaré product.
 import DLNFibre.Core.QSeriesShift
 import DLNFibre.Core.QSeriesOrth
 import DLNFibre.Core.QSeriesThm55
--- Geometric transfer of Cor 5.10: the variety's (C,θ) of Σ̄^r is permutation-invariant (unconditional).
+-- Geometric transfer of Cor 5.10: the variety's (C,θ) of Σ̄^r is permutation-invariant (given
+-- Kostant-set nonemptiness; discharged from 1 ≤ N + r ≤ min d by the _of_le wrappers).
 import DLNFibre.Core.CThetaGeometricPerm

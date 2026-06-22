@@ -132,7 +132,7 @@ def kostant_fast(d, r):
                 return
             i=starts[idx]
             for c in range(alive[i]+1):
-                cl=dict(closed); 
+                cl=dict(closed);
                 if c: cl[i]=c
                 choose(idx+1, cl)
         choose(0, {})

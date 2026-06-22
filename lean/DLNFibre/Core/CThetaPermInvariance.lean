@@ -92,6 +92,26 @@ theorem numTop_comp_perm (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → �
     numTop (d ∘ σ) r h = numTop d r h' :=
   numTop_eq_of_Qseries_eq h h' (Qseries_comp_perm σ d r hr)
 
+/-! ### Discharged combinatorial API (from `1 ≤ N` + `r ≤ min d`)
+
+The Kostant-set nonemptiness on both sides is discharged by `kostantPartitions_nonempty_of_le`
+(`CCodimCornerMono`), so these are conditional only on the paper's hypotheses `1 ≤ N` and `r ≤ min d`. -/
+
+/-- **Cor 5.10 (combinatorial `C`), from `1 ≤ N` + `r ≤ min d`:** `cCodim (d ∘ σ) r = cCodim d r`,
+with the Kostant-set nonemptiness discharged by `kostantPartitions_nonempty_of_le`. -/
+theorem cCodim_comp_perm_of_le (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (hN : 1 ≤ N) (hr : ∀ k, r ≤ d k) :
+    cCodim (d ∘ σ) r (kostantPartitions_nonempty_of_le hN (fun k ↦ hr (σ k)))
+      = cCodim d r (kostantPartitions_nonempty_of_le hN hr) :=
+  cCodim_comp_perm σ d r hr _ _
+
+/-- **Cor 5.10 (combinatorial `θ`), from `1 ≤ N` + `r ≤ min d`:** `numTop (d ∘ σ) r = numTop d r`. -/
+theorem numTop_comp_perm_of_le (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (hN : 1 ≤ N) (hr : ∀ k, r ≤ d k) :
+    numTop (d ∘ σ) r (kostantPartitions_nonempty_of_le hN (fun k ↦ hr (σ k)))
+      = numTop d r (kostantPartitions_nonempty_of_le hN hr) :=
+  numTop_comp_perm σ d r hr _ _
+
 /-! ### Reduce-to-sorted form
 
 `d ∘ Tuple.sort d` is the monotone rearrangement of `d` (a specific permutation). The

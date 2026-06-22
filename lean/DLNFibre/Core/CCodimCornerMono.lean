@@ -239,6 +239,15 @@ theorem kostantPartitions_zero_nonempty {e : Fin (N + 1) → ℕ} (hN : 1 ≤ N)
     (kostantPartitions e 0).Nonempty :=
   ⟨diagPart e, diagPart_mem hN⟩
 
+/-- `kostantPartitions d r` is nonempty for `N ≥ 1` whenever `r ≤ d k` at every vertex: the corner
+`m_{0N} = r` plus the diagonal `m_{kk} = d_k − r`. (At `N = 0` the corner is the diagonal, forcing
+`r = d₀`, so `1 ≤ N` is needed.) -/
+theorem kostantPartitions_nonempty_of_le {d : Fin (N + 1) → ℕ} {r : ℕ}
+    (hN : 1 ≤ N) (hr : ∀ k, r ≤ d k) : (kostantPartitions d r).Nonempty := by
+  have h0 := kostantPartitions_zero_nonempty (e := dminus d r) hN
+  rw [kostantPartitions_dminus_eq_image hr] at h0
+  exact h0.of_image
+
 /-! ## Corner-monotonicity from the dimension-monotonicity
 
 `cCodim d r ≤ cCodim d s` for `s ≤ r`, via the LANDED rank-shift `cCodim d t = cCodim (d−t) 0` and

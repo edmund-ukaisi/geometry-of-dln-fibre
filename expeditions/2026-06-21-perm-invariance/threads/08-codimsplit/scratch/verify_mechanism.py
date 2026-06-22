@@ -96,7 +96,7 @@ def main():
             lhs1a = codim_v_le(N+1, M, N)
             rhs1a = codim_full(N, M)
             c1a+=1
-            if lhs1a != rhs1a: fail+=1; print("1a FAIL",N,m); 
+            if lhs1a != rhs1a: fail+=1; print("1a FAIL",N,m);
             # Stage1 total: full(N+1)(M) == v<=N part + v=N+1 part
             if codim_full(N+1,M) != lhs1a + stage1b(N,M):
                 fail+=1; print("STAGE1 FAIL",N,m)

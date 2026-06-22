@@ -263,19 +263,23 @@ The permutation invariance therefore transfers to these genuine geometric invari
 
 ??? info "Formalised in Lean — Core.CThetaGeometricPerm"
 
-        theorem geomCodim_comp_perm [IsAlgClosed k] [CharZero k]
-            (σ : Equiv.Perm (Fin (N + 1))) (d) (r) (hr : ∀ j, r ≤ d j) (h h') :
-            (codimRepCanonical (productRankLocusLE (d ∘ σ) r)).toNat
-              = (codimRepCanonical (productRankLocusLE d r)).toNat
+        theorem codimRepCanonical_productRankLocusLE_comp_perm_of_le [IsAlgClosed k] [CharZero k]
+            (σ : Equiv.Perm (Fin (N + 1))) (d) (r) (hN : 1 ≤ N) (hr : ∀ j, r ≤ d j) :
+            codimRepCanonical (productRankLocusLE (d ∘ σ) r)
+              = codimRepCanonical (productRankLocusLE d r)
 
-        theorem ncard_topComponents_comp_perm [IsAlgClosed k] [CharZero k]
-            (σ) (d) (r) (hr : ∀ j, r ≤ d j) (h h') :
-            (topComponents (d ∘ σ) r h).ncard = (topComponents d r h').ncard
+        theorem ncard_topComponents_comp_perm_of_le [IsAlgClosed k] [CharZero k]
+            (σ) (d) (r) (hN : 1 ≤ N) (hr : ∀ j, r ≤ d j) :
+            (topComponents (d ∘ σ) r _).ncard = (topComponents d r _).ncard
 
-    Both are unconditional, composing the geometric bridges
-    (`codimRepCanonical_productRankLocusLE_eq_cCodim`, `numTop_eq_ncard_topComponents`) with the
-    combinatorial `cCodim_comp_perm` / `numTop_comp_perm`. Here `productRankLocusLE d r` is the closed
-    rank-$\le r$ locus $\overline{\Sigma}{}^r$.
+    The codimension equality is in $\mathbb{N}_\infty$ (it does not erase the $\top$ case);
+    `productRankLocusLE d r` is the closed rank-$\le r$ locus $\overline{\Sigma}{}^r$. These compose
+    the geometric bridges (`codimRepCanonical_productRankLocusLE_eq_cCodim_enat`,
+    `numTop_eq_ncard_topComponents`) with the combinatorial `cCodim_comp_perm` / `numTop_comp_perm`.
+    The hypotheses are exactly the paper's: $1 \le N$ (a genuine composition exists — at $N = 0$ the
+    corner forces $r = d_0$) and $r \le \min_i d_i$, from which the Kostant-set nonemptiness on each
+    side is discharged by `kostantPartitions_nonempty_of_le`. General `comp_perm` forms that take the
+    nonemptiness witnesses explicitly are also provided. Sorry-free and axiom-clean.
 
 !!! warning "Scope of the claim"
     These results name the **combinatorial and geometric** invariants $C$ and $\theta$. They are not a
