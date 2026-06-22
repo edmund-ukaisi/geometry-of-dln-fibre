@@ -301,6 +301,17 @@ only row `J+1` of `C` with the transported top row of `Q^-1 C`:
 This gives a real source-shaped object for later continuing/terminal handoffs,
 but it is still not chart production, recurrence/exponent post-data
 production, old-top/suffix production, or a transition invariant.
+Current successor following weighted handoff slice:
+`threads/04-blow-up-certificate/reproduction-case2-successor-following-weighted-handoff-a4.md`.
+Lean now rewrites the paper-`C'` weighted lower-row handoff, both before and
+after a supplied following product `F`, through the formula-level successor
+following factor:
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_withSuccFollowingFactorAndCorrectedData`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_mul_F_withSuccFollowingFactorAndCorrectedData`.
+This is still only lower-row formula algebra; `F` is supplied, no `hnext`
+nonempty next-center theorem is included, and no chart production, old-top or
+suffix production, full successor product, or transition invariant follows.
 
 Current post-pivot source-residual representative slice:
 `threads/04-blow-up-certificate/reproduction-case2-post-pivot-source-residual-a4.md`.

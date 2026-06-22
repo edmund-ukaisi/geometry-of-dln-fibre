@@ -5000,6 +5000,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-successor-following-factor-a4.md`.
 
+Latest A4 update: the Case 2 successor following weighted handoff slice has
+landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean
+names are
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_withSuccFollowingFactorAndCorrectedData`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_mul_F_withSuccFollowingFactorAndCorrectedData`.
+They restate the existing weighted lower-row paper-`C'` handoff using the
+formula-level successor following factor `Csucc`; the only mathematical input
+is that the `(S,J+1)` following restriction ignores row `J+1`.  This is not
+next-center nonemptiness, source production of `F`, old-top/suffix production,
+full successor `C'^(S+1)`, chart production, transition invariance, normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-successor-following-weighted-handoff-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-successor-following-weighted-handoff.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-successor-following-weighted-handoff-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

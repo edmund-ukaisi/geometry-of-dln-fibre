@@ -3682,3 +3682,32 @@ successor factor.  It is not chart production, source-produced recurrence or
 exponent post-data, old-top/suffix production, chart coverage, successor
 chart-family construction, transition invariance, Jacobian arithmetic, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-22 Lean Case 2 successor following weighted handoff
+
+Reproduction:
+`reproduction-case2-successor-following-weighted-handoff-a4.md`.
+Statement card:
+`statement-card-a4-case2-successor-following-weighted-handoff.md`.
+Review artifact:
+`review-case2-successor-following-weighted-handoff-a4.md`.
+
+Lean now rewrites the displayed paper-`C'` weighted lower-row handoff through
+the formula-level successor following factor:
+
+```text
+sourceChartMap_paperCprimeWeightedLowerRows_withSuccFollowingFactorAndCorrectedData
+sourceChartMap_paperCprimeWeightedLowerRows_mul_F_withSuccFollowingFactorAndCorrectedData
+```
+
+The only mathematical input beyond the older handoff theorem is
+`case2SourceFollowingFactor_successorFollowingFactor_succ`: after moving from
+`J` to `J+1`, the following-factor restriction starts at row `J+2`, so it
+does not see the replaced row `J+1`.  The supplied-`F` theorem keeps `F`
+arbitrary and supplied.
+
+This is still lower-row formula algebra.  It does not add next-center
+nonemptiness, source production of `F`, old-top rows, suffix production, full
+successor `C'^(S+1)`, chart production, chart coverage, transition
+invariance, Jacobian arithmetic, normal crossings, pole order, termination,
+RLCT, or repair of the printed Case 2 vector mismatch.

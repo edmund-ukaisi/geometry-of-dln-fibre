@@ -4577,6 +4577,26 @@ Artifacts:
 and
 `threads/04-blow-up-certificate/review-case2-source-successor-following-factor-a4.md`.
 
+Latest A4 Case 2 successor following weighted handoff update:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_withSuccFollowingFactorAndCorrectedData`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.sourceChartMap_paperCprimeWeightedLowerRows_mul_F_withSuccFollowingFactorAndCorrectedData`.
+These rewrite the existing paper-`C'` weighted lower-row handoff through the
+formula-level successor following factor `Csucc`; the supplied-`F` variant
+keeps the same arbitrary following product.  The proof is only the already
+proved restriction equality
+`case2SourceFollowingFactor_successorFollowingFactor_succ`.  This does not
+add `hnext`/next-center nonemptiness, source production of `F`, old-top rows,
+suffix production, full successor `C'^(S+1)`, chart production, transition
+invariance, Jacobian arithmetic, normal crossings, pole order, termination, or
+RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-successor-following-weighted-handoff-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-successor-following-weighted-handoff.md`,
+and
+`threads/04-blow-up-certificate/review-case2-successor-following-weighted-handoff-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
