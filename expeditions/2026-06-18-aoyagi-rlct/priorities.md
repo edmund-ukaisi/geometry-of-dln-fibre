@@ -1546,8 +1546,10 @@ Immediate order:
 7. DLN notation translation. The first formula-notation slice has landed in
    `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`: Definition 3 ceiling data,
    integer reduced widths, indexed selected widths, Theorem 2 order formula,
-   and the three displayed lambda formulas plus rational rewrites.  Keep this
-   layer formula-only.  A thin `Definition3Bridge.lean` wrapper now connects
+   the dimension/rank convention map for converting reduced widths only under
+   explicit pointwise `r <= H s` hypotheses, and the three displayed lambda
+   formulas plus rational rewrites.  Keep this layer formula-only.  A thin
+   `Definition3Bridge.lean` wrapper now connects
    the supplied ceiling datum to existing Lemma 4/Htilde endpoint-zero and
    label-bound APIs, finite same-coordinate count arithmetic, terminal
    singleton/Eq5 bookkeeping, and the Theorem 2 displayed order formula,

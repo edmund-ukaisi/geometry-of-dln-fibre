@@ -2864,10 +2864,22 @@ No such claim is formalisation-ready until both fields are filled.
   main theorem.
 - **Pen-and-paper reproduction.** Definition 3/Theorem 2 formula translation
   reproduced at
-  `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`.
+  `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`;
+  dimension/rank convention map reproduced at
+  `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
+  `DLNFibre.DLN.Aoyagi.aoyagiReducedWidthInt`,
+  `DLNFibre.DLN.Aoyagi.aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le`,
+  `DLNFibre.DLN.Aoyagi.aoyagiReducedWidthInt_nonneg_of_rank_le`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedReducedWidths`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedReducedWidths_apply`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedReducedWidths_eq_natCast_sub_of_rank_le`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedReducedWidths_nonneg_of_rank_le`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthNat_selectedReducedWidths_of_lt`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthNat_selectedReducedWidths_fin`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.theorem2OrderFormula`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average`,
@@ -2895,11 +2907,13 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.selectedWidth_le_pred_of_sourceSelectedInequality`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.htildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq4_localData_of_sourceSelectedInequality`,
-  and
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq5_labelBounds_of_sourceSelectedInequality`,
+  and
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq3_localData_of_sourceSelectedInequality_and_slack`
   in `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`.
 - **Proved.** formula-only arithmetic: integer reduced-width notation,
+  pointwise rank-width conversion/nonnegativity for reduced widths and
+  selected reduced widths under explicit rank-width hypotheses,
   Definition 3 selected-sum average rewrite, equality of the average and
   ceiling displayed lambda formulas under supplied ceiling data, and equality
   of the ceiling and expanded displayed lambda formulas when `0 < ell`.  Also
@@ -2914,7 +2928,8 @@ No such claim is formalisation-ready until both fields are filled.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** full Definition 3 selection inequalities, existence of the
-  selected cutpoints and ceiling datum, the Lemma 4 two-value increment proof,
-  Lemma 5 chart-family construction/coverage and no-extra classifier,
-  conversion of the finite count to pole order, normal crossings, final RLCT
-  theorem, and formal analytic extraction theorem.
+  selected cutpoints and ceiling datum, proof of rank-width inequalities from
+  concrete matrix dimensions and a rank-`r` product, the Lemma 4 two-value
+  increment proof, Lemma 5 chart-family construction/coverage and no-extra
+  classifier, conversion of the finite count to pole order, normal crossings,
+  final RLCT theorem, and formal analytic extraction theorem.

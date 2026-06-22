@@ -296,9 +296,14 @@ It translates Aoyagi Definition 3 and Theorem 2 from PDF pp. 8-9 without using
 the quiver paper and without claiming an RLCT theorem.
 
 Lean now has integer reduced widths
-`aoyagiReducedWidthInt H r s = (H s : Int) - r`, indexed selected widths
-through `AoyagiSelectedCutpoints`, the selected value-set helper
-`aoyagiSelectedWidthValueSet`, and the supplied Definition 3 package
+`aoyagiReducedWidthInt H r s = (H s : Int) - r`.  The dimension/rank
+convention map now adds local bridge lemmas showing that under explicit
+`r <= H s`, this integer width is Nat subtraction coerced to `Int` and is
+nonnegative; selected reduced widths and the Nat-indexed Lemma 5 selected
+width accessor have the corresponding pointwise wrappers.  Lean also has
+indexed selected widths through `AoyagiSelectedCutpoints`, the selected
+value-set helper `aoyagiSelectedWidthValueSet`, and the supplied Definition 3
+package
 `AoyagiDefinition3CeilData`.  The package separates Aoyagi's selected object
 from the ceiling integer `ceilWidth`, and records `0 < ell`, `0 < aParam`,
 `aParam <= ell`, and
@@ -317,13 +322,17 @@ component-count convention.  The three displayed `lambda` forms are named
 
 Artifacts:
 `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`,
+`threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`,
 `threads/06-dln-translation/statement-card-a6-final-formula-notation.md`, and
-`threads/06-dln-translation/review-final-formula-notation-a6.md`.
+`threads/06-dln-translation/statement-card-a6-dimension-rank-convention.md`,
+`threads/06-dln-translation/review-final-formula-notation-a6.md`, and
+`threads/06-dln-translation/review-dimension-rank-convention-a6.md`.
 
 Nonclaims: no full Definition 3 selection inequalities, no existence or
-uniqueness of the selected cutpoints or ceiling datum, no Lemma 4/Lemma 5
-exponent-to-formula bridge, no normal crossings, no pole-order interpretation,
-and no RLCT extraction.
+uniqueness of the selected cutpoints or ceiling datum, no proof of the
+rank-width inequalities from a concrete matrix product, no Lemma 4/Lemma 5
+exponent-to-formula bridge, no normal crossings, no pole-order
+interpretation, and no RLCT extraction.
 
 The Definition 3 bridge slice now also lands in
 `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`.  It consumes

@@ -22,11 +22,81 @@ source rank hypothesis has been supplied. -/
 def aoyagiReducedWidthInt (H : ℕ → ℕ) (r s : ℕ) : ℤ :=
   (H s : ℤ) - (r : ℤ)
 
+/-- Under the rank-width bound at `s`, the integer reduced width is ordinary
+Nat subtraction coerced to `Int`. -/
+theorem aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le
+    (H : ℕ → ℕ) {r s : ℕ} (hr : r ≤ H s) :
+    aoyagiReducedWidthInt H r s = ((H s - r : ℕ) : ℤ) := by
+  unfold aoyagiReducedWidthInt
+  exact (Int.natCast_sub hr).symm
+
+/-- Under the rank-width bound at `s`, the reduced width is nonnegative. -/
+theorem aoyagiReducedWidthInt_nonneg_of_rank_le
+    (H : ℕ → ℕ) {r s : ℕ} (hr : r ≤ H s) :
+    0 ≤ aoyagiReducedWidthInt H r s := by
+  unfold aoyagiReducedWidthInt
+  exact sub_nonneg.mpr (by exact_mod_cast hr)
+
 /-- The selected reduced widths `M^(S_j)` attached to selected cutpoints. -/
 def aoyagiSelectedReducedWidths {ell : ℕ}
     (H : ℕ → ℕ) (r : ℕ) (C : AoyagiSelectedCutpoints ell) :
     Fin (ell + 1) → ℤ :=
   fun j ↦ aoyagiReducedWidthInt H r (C.cut j)
+
+/-- Selected reduced widths are pointwise reduced widths at the cutpoints. -/
+@[simp] theorem aoyagiSelectedReducedWidths_apply {ell : ℕ}
+    (H : ℕ → ℕ) (r : ℕ) (C : AoyagiSelectedCutpoints ell)
+    (j : Fin (ell + 1)) :
+    aoyagiSelectedReducedWidths H r C j =
+      aoyagiReducedWidthInt H r (C.cut j) :=
+  rfl
+
+/-- Pointwise rank-width bounds give the Nat-subtraction form of selected
+reduced widths. -/
+theorem aoyagiSelectedReducedWidths_eq_natCast_sub_of_rank_le {ell : ℕ}
+    (H : ℕ → ℕ) (r : ℕ) (C : AoyagiSelectedCutpoints ell)
+    (hr : ∀ j : Fin (ell + 1), r ≤ H (C.cut j)) (j : Fin (ell + 1)) :
+    aoyagiSelectedReducedWidths H r C j = ((H (C.cut j) - r : ℕ) : ℤ) := by
+  unfold aoyagiSelectedReducedWidths
+  exact aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le H (hr j)
+
+/-- Pointwise rank-width bounds make selected reduced widths nonnegative. -/
+theorem aoyagiSelectedReducedWidths_nonneg_of_rank_le {ell : ℕ}
+    (H : ℕ → ℕ) (r : ℕ) (C : AoyagiSelectedCutpoints ell)
+    (hr : ∀ j : Fin (ell + 1), r ≤ H (C.cut j)) (j : Fin (ell + 1)) :
+    0 ≤ aoyagiSelectedReducedWidths H r C j := by
+  unfold aoyagiSelectedReducedWidths
+  exact aoyagiReducedWidthInt_nonneg_of_rank_le H (hr j)
+
+/-- Nat-indexed selected reduced widths agree with the finite selected family
+on source-range indices. -/
+@[simp] theorem aoyagiSelectedWidthNat_selectedReducedWidths_of_lt {ell : ℕ}
+    (H : ℕ → ℕ) (r i : ℕ) (C : AoyagiSelectedCutpoints ell)
+    (hi : i < ell + 1) :
+    aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) i =
+      aoyagiReducedWidthInt H r (C.cut ⟨i, hi⟩) := by
+  rw [aoyagiSelectedWidthNat_of_lt hi]
+  rfl
+
+/-- Fin-indexed form of the Nat-indexed selected reduced-width accessor. -/
+@[simp] theorem aoyagiSelectedWidthNat_selectedReducedWidths_fin {ell : ℕ}
+    (H : ℕ → ℕ) (r : ℕ) (C : AoyagiSelectedCutpoints ell)
+    (j : Fin (ell + 1)) :
+    aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) j.val =
+      aoyagiReducedWidthInt H r (C.cut j) := by
+  rw [aoyagiSelectedWidthNat_selectedReducedWidths_of_lt H r j.val C j.isLt]
+
+/-- Pointwise rank-width bounds make Nat-indexed selected reduced widths
+nonnegative, including the zero extension outside the selected range. -/
+theorem aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le
+    {ell : ℕ} (H : ℕ → ℕ) {r i : ℕ} (C : AoyagiSelectedCutpoints ell)
+    (hr : ∀ j : Fin (ell + 1), r ≤ H (C.cut j)) :
+    0 ≤ aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) i := by
+  by_cases hi : i < ell + 1
+  · rw [aoyagiSelectedWidthNat_selectedReducedWidths_of_lt H r i C hi]
+    exact aoyagiReducedWidthInt_nonneg_of_rank_le H (hr ⟨i, hi⟩)
+  · unfold aoyagiSelectedWidthNat
+    simp [hi]
 
 /-- The selected value set called `M` in Aoyagi Definition 3.
 

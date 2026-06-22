@@ -42,6 +42,10 @@ or the analytic extraction theorem.  Those remain outside this notation file.
 ## Applied Hardening
 
 - Replaced Nat subtraction for `M^(s)=H^(s)-r` by integer subtraction.
+- Added explicit rank-width bridge lemmas: under pointwise `r <= H s`, the
+  integer reduced width agrees with Nat subtraction coerced to `Int` and is
+  nonnegative.  Selected-width and Nat-indexed accessor wrappers keep the same
+  pointwise hypothesis explicit.
 - Renamed the Definition 3 package to `AoyagiDefinition3CeilData`, making it
   data rather than a `Prop` interface.
 - Added `ell_pos` and `aParam_pos`, while keeping `aParam_le`.

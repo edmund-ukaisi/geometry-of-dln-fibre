@@ -29,7 +29,11 @@ It translates Aoyagi Definition 3 and Theorem 2's displayed arithmetic into
 source-facing notation:
 
 - integer reduced widths `M^(s)=H^(s)-r`;
+- local rank-width bridge lemmas converting integer reduced widths to Nat
+  subtraction only under explicit `r <= H s` hypotheses;
 - indexed selected reduced widths from `AoyagiSelectedCutpoints`;
+- selected reduced-width bridge lemmas for the Nat-indexed Lemma 5 width
+  accessor;
 - a separate selected value set helper, not used for sums;
 - `AoyagiDefinition3CeilData`, separating the selected object from the
   ceiling integer `ceilWidth` and recording `0 < ell`, `0 < a <= ell`;
@@ -40,13 +44,16 @@ source-facing notation:
 Artifacts:
 
 - `reproduction-definition3-theorem2-translation-a6.md`;
+- `reproduction-dimension-rank-convention-a6.md`;
 - `statement-card-a6-final-formula-notation.md`;
-- `review-final-formula-notation-a6.md`.
+- `statement-card-a6-dimension-rank-convention.md`;
+- `review-final-formula-notation-a6.md`;
+- `review-dimension-rank-convention-a6.md`.
 
-Boundary: this is formula bookkeeping only.  It does not prove the full
-Definition 3 selection inequalities, existence of the ceiling datum, Lemma 4
-or Lemma 5 exponent minimisation, normal crossings, pole order, or RLCT
-extraction.
+Boundary: this is convention and formula bookkeeping only.  It does not prove
+rank-width inequalities from a concrete matrix product, the full Definition 3
+selection inequalities, existence of the ceiling datum, Lemma 4 or Lemma 5
+exponent minimisation, normal crossings, pole order, or RLCT extraction.
 
 ## Current slice - 2026-06-22, Definition 3 bridge
 
