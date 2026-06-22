@@ -597,6 +597,48 @@ theorem schur_node_squeeze_unif {M n : Type*} [Fintype M] [Fintype n]
   · calc F ≤ (2 + 2 * t ^ 2) * Φ := hhi
       _ ≤ (2 + 2 * T ^ 2) * Φ := by nlinarith [hΦnn, htT]
 
+/-- **The per-node existence — `schur_straighten_squeeze_exists` (PROVEN, closes the per-node lane).**
+At the post-blow-up 2-factor Schur node, the `IsSchurStraightenSqueeze` datum EXISTS (with explicit
+constants `c₁ = (2(1+T²))⁻¹ > 0`, `c₂ = 2+2T²`). The blow-up lane's job — presenting the node loss in
+Schur form near the deepest point with a bounded pivot column — enters as the EXPLICIT interface
+hypothesis `hnode` (per Codex g132: the `flatCore = ‖Â·A2‖²` coordinate layout is the blow-up (B)-lane
+contract, supplied here as a hypothesis, NOT asserted as `dlnLoss M 0 coords = ‖Â·A2‖²` which would
+smuggle guessed plumbing). Given that presentation (`flatCore w = ∑ Erowⱼ² + ‖b·Erow + S·Γ‖²`,
+`G(w.2)² = ‖S·Γ‖²`, `‖b‖² ≤ T²` on a nbhd), the datum's `squeeze` field is `schur_node_squeeze_unif`;
+the rest are the supplied measurability / reduced-core / germ / well-foundedness contracts. This is the
+g131-certified existence content transcribed to Lean — the squeeze, not a clean MP factor (#129). -/
+theorem schur_straighten_squeeze_exists {L nReg : ℕ} (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M)
+    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] [Zero Y]
+    {Mblk : Type*} [Fintype Mblk]
+    (flatCore : (Fin nReg → ℝ) × Y → ℝ) (G : Y → ℝ) (redEmbed : Y → Params S.red) (T : ℝ)
+    (bcol : (Fin nReg → ℝ) × Y → Mblk → ℝ)
+    (SΓ : (Fin nReg → ℝ) × Y → Mblk → Fin nReg → ℝ)
+    (hFmeas : Measurable flatCore) (hGmeas : Measurable G)
+    (hredCore : ∀ y, G y ^ 2 = dlnLoss S.red 0 (redEmbed y))
+    (hGne : ∃ U ∈ nhds (0 : Y), ∀ᵐ z ∂(volume.restrict U), G z ≠ 0)
+    (hdrop : ∑ s, S.red s < ∑ s, M s)
+    (hnode : ∃ U ∈ nhds ((0, 0) : (Fin nReg → ℝ) × Y), ∀ w ∈ U,
+        flatCore w = (∑ j, (w.1 j) ^ 2) + (∑ i, ∑ j, (bcol w i * w.1 j + SΓ w i j) ^ 2)
+        ∧ G w.2 ^ 2 = (∑ i, ∑ j, (SΓ w i j) ^ 2)
+        ∧ (∑ i, (bcol w i) ^ 2) ≤ T ^ 2) :
+    ∃ c₁ c₂, IsSchurStraightenSqueeze M S flatCore G redEmbed c₁ c₂ := by
+  refine ⟨1 / (2 * (1 + T ^ 2)), 2 + 2 * T ^ 2, ?_⟩
+  obtain ⟨U, hU, hpres⟩ := hnode
+  refine
+    { Fmeas := hFmeas
+      Gmeas := hGmeas
+      redCore_eq := hredCore
+      Gne := hGne
+      c₁pos := by positivity
+      c₂pos := by positivity
+      measure_drops := hdrop
+      squeeze := ⟨U, hU, fun w hw => ?_⟩ }
+  obtain ⟨hflat, hGsq, hbT⟩ := hpres w hw
+  have hΦ : smoothBlockSplitForm G w = (∑ j, (w.1 j) ^ 2) + (∑ i, ∑ j, (SΓ w i j) ^ 2) := by
+    simp only [smoothBlockSplitForm]; rw [hGsq]
+  obtain ⟨hlo, hhi⟩ := schur_node_squeeze_unif (w.1) (bcol w) (SΓ w) T hbT
+  exact ⟨by rw [hΦ]; positivity, by rw [hΦ, hflat]; exact hlo, by rw [hΦ, hflat]; exact hhi⟩
+
 /-! ## The L=1 base (the `block_elimination` prototype)
 
 The recursion's leaf. At `L = 1` a `Params` is a SINGLE matrix `A : Matrix (Fin (M 0)) (Fin (M 1)) ℝ`
