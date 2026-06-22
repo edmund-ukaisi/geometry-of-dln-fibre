@@ -3709,6 +3709,72 @@ theorem aoyagiLemma5_suppliedEndpointCoverage_Eq5_offsets_split
       aoyagiLemma5_suppliedUpper_Eq5_offsets_eq_intervalValueSetNat_of_excess_le_pred
         ell a p M m C Tupper ha hp hexcess_le hupper
 
+/-- A supplied alpha-indexed equation `(5)` branch family, together with
+supplied endpoint branch records, has one-coordinate value image equal to the
+same-coordinate interval, with the lower endpoint needed exactly in the rising
+case.
+
+This is finite supplied-data bookkeeping.  It does not construct the branches,
+prove source-label legality, injectivity, disjointness, classifier data, or an
+order count. -/
+theorem aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split
+    {β : Type*} [DecidableEq β]
+    (ell a p : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (C : AoyagiSelectedCutpoints ell) (Tupper Tlower : ℕ → ℤ)
+    (branches : Finset β) (alphaOf : β → ℕ) (value : β → ℤ)
+    (upper lower : β)
+    (ha : a ≤ ell) (hp : p ∈ Finset.Icc 1 (ell - 1))
+    (halpha_image :
+      branches.image alphaOf = aoyagiLemma5Eq5AlphaDomain ell a p)
+    (hvalue : ∀ b ∈ branches,
+      value b = aoyagiHtildeUpperNat ell a M m p - (alphaOf b : ℤ))
+    (hupper_branch : value upper = Tupper (C.point p - 1))
+    (hlower_branch : p ≤ a → p ≤ ell - a →
+      value lower = Tlower (C.point p - 1))
+    (hupper :
+      Tupper (C.point p - 1) = aoyagiHtildeUpperNat ell a M m p)
+    (hlower : p ≤ a → p ≤ ell - a →
+      Tlower (C.point p - 1) = aoyagiHtildeLowerNat ell a M m p) :
+    (insert upper branches).image value =
+        aoyagiHtildeIntervalValueSetNat ell a M m p ∨
+      (p ≤ a ∧ p ≤ ell - a ∧
+        (insert upper (insert lower branches)).image value =
+          aoyagiHtildeIntervalValueSetNat ell a M m p) := by
+  have hp_pos : 1 ≤ p := (Finset.mem_Icc.mp hp).1
+  have hp_lt : p < ell + 1 := by
+    have hp_le : p ≤ ell - 1 := (Finset.mem_Icc.mp hp).2
+    omega
+  have hoffsets :
+      branches.image value = aoyagiLemma5Eq5OffsetValueSet ell a p M m :=
+    aoyagiLemma5Eq5_alphaIndexedBranch_value_image_eq_offsetValueSet
+      ell a p M m branches alphaOf value halpha_image hvalue
+  have hsplit :=
+    aoyagiLemma5_suppliedEndpointCoverage_Eq5_offsets_split
+      ell a p M m C Tupper Tlower ha hp_pos hp_lt hupper hlower
+  rcases hsplit with hnonrising | hrising
+  · left
+    calc
+      (insert upper branches).image value =
+          insert (value upper) (branches.image value) := by
+            rw [Finset.image_insert]
+      _ =
+          insert (Tupper (C.point p - 1))
+            (aoyagiLemma5Eq5OffsetValueSet ell a p M m) := by
+            rw [hupper_branch, hoffsets]
+      _ = aoyagiHtildeIntervalValueSetNat ell a M m p := hnonrising
+  · right
+    refine ⟨hrising.1, hrising.2.1, ?_⟩
+    calc
+      (insert upper (insert lower branches)).image value =
+          insert (value upper) (insert (value lower) (branches.image value)) := by
+            rw [Finset.image_insert, Finset.image_insert]
+      _ =
+          insert (Tupper (C.point p - 1))
+            (insert (Tlower (C.point p - 1))
+              (aoyagiLemma5Eq5OffsetValueSet ell a p M m)) := by
+            rw [hupper_branch, hlower_branch hrising.1 hrising.2.1, hoffsets]
+      _ = aoyagiHtildeIntervalValueSetNat ell a M m p := hrising.2.2
+
 /-- A supplied equation `(4)` own-coordinate value supplies the lower endpoint
 in the Eq5 lower-plus-strict-offset finite set.
 

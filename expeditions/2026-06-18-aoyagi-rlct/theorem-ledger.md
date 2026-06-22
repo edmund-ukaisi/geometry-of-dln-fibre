@@ -4625,6 +4625,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
 
+Latest A5 Eq5 alpha endpoint value-image split update:
+`Lemma5DisplayedVector.lean` now contains
+`aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.
+For one positive interior coordinate, supplied alpha-indexed Eq5 strict-offset
+branches and supplied endpoint branch records give a disjunctive value-image
+coverage theorem: upper endpoint plus Eq5 offsets fill the interval outside
+the rising case; upper and lower endpoints plus Eq5 offsets fill it in the
+rising case.  This is one-coordinate finite value-image bookkeeping only, not
+branch construction, source-label legality, injectivity, base-value
+membership, cross-coordinate disjointness, classifier construction,
+no-extra terminal-minimum coverage, order count, pole order, normal crossings,
+or RLCT extraction.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-endpoint-value-image-split.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
+
 Latest A4 update: the Case 2 row-exhausted source-suffix payload has landed in
 `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
 `Case2DisplayedSuppliedChartFamilyBoundary.sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFiniteCenterIdeal`,

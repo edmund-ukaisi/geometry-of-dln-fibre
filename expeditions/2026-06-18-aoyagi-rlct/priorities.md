@@ -58,6 +58,8 @@ Current Eq5 endpoint counted-datum bridge slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-counted-datum-bridge-a5.md`.
 Current Eq5 own-block counted/introduced payload slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
+Current Eq5 alpha endpoint value-image split slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
 Current Lemma 4 prefix-profile computation slice:
 `threads/05-arithmetic-tail/reproduction-lemma4-prefix-profile-computations-a5.md`.
 Current Eq5 endpoint prefix-profile slice:
@@ -267,9 +269,14 @@ Immediate order:
    remain unproved.  Do not infer any of these from the conditional terminal
    source-realisation bridge or from the supplied counted-datum back-to-label
    boundary.
-3. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
+3. Use the Eq5 alpha endpoint value-image split only as one-coordinate
+   supplied coverage input.  It still needs branch construction, endpoint
+   source-label legality, value injectivity, base-value membership, and
+   cross-coordinate disjointness before it can feed the generic supplied
+   nonbase-family constructor.
+4. Keep `UpperBoundClassifier` / `TerminalMinimumLabelExactness` supplied
    until those fields are source-backed or separately constructed.
-4. The Eq4 rising non-strict endpoint split is now Lean-packaged as a
+5. The Eq4 rising non-strict endpoint split is now Lean-packaged as a
    dispatcher over existing boundary facts.  Keep the `p+1=a`
    terminal-collision case conditional on supplied Eq4 data, and keep the
    `p=a` branch as no repaired Eq4 piecewise shape plus Eq5 erased-endpoints
@@ -277,9 +284,9 @@ Immediate order:
    beyond explicit local hypotheses, injection, and back-to-label coverage
    remain unproved.  Do not claim Aoyagi's printed Case 1(2) paragraph
    supplies source coverage or injectivity.
-5. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
+6. Case 1(2) uniqueness/injection and back-to-label remain obstructed as
    printed; do not treat the `J`-increase sentence as nonduplication.
-6. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an
+7. The Eq5 post-`p` lower-bound obstruction is now generalized.  Keep it as an
    obstruction record only: it is not a corrected Eq5 construction, a source
    coverage theorem, or a disproof of Lemma 5.
    The post-`p` lower guard is now exactly characterized by the terminal-room

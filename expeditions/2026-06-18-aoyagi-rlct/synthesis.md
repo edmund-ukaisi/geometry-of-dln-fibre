@@ -4239,6 +4239,26 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
 
+Latest A5 Eq5 alpha endpoint value-image split update:
+`Lemma5DisplayedVector.lean` now contains
+`aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.
+For one positive interior coordinate, supplied alpha-indexed Eq5 strict-offset
+branches with alpha image equal to the strict Eq5 alpha domain have value image
+equal to the Eq5 offset set; inserting supplied endpoint branch records fills
+the same-coordinate interval, with only the upper endpoint outside the rising
+case and both endpoints in the rising case.  This is a one-coordinate
+value-image adapter toward supplied coordinate coverage.  It does not
+construct branches, prove endpoint source-label legality, value injectivity,
+base-value membership, cross-coordinate disjointness, classifier data,
+no-extra terminal-minimum coverage, order count, pole order, normal crossings,
+or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-alpha-endpoint-value-image-split.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
+
 Latest source-audit checkpoint:
 xhigh source audit of Aoyagi Lemma 5 pp. 25-27 confirmed the existing
 classifier frontier.  The interval cardinality formula and the local Case

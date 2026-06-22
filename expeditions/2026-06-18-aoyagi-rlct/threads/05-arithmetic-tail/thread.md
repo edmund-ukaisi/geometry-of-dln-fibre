@@ -4482,6 +4482,33 @@ nonbase status, alpha-domain coverage, classifier data, injection,
 back-to-label coverage, no-extra terminal-minimum coverage, order count, pole
 order, normal crossings, or RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 alpha endpoint value-image split
+
+Reproduction:
+`reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-alpha-endpoint-value-image-split.md`.
+Review artifact:
+`review-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
+
+Lean now packages the one-coordinate value-image split:
+
+```text
+aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split
+```
+
+For a supplied alpha-indexed Eq5 strict-offset branch family at an interior
+coordinate `p`, if the alpha image is exactly the strict Eq5 alpha domain and
+the branch values are `Htilde'_p-alpha`, then the branch image is the Eq5
+offset-value set.  Adding a supplied upper endpoint branch fills the interval
+outside the rising case; in the rising case `p<=a` and `p<=ell-a`, adding both
+supplied upper and lower endpoint branches fills the interval.  This is
+one-coordinate finite value-image bookkeeping only.  It does not construct Eq5
+branches, prove source-label legality, prove value injectivity, prove
+base-value membership, prove cross-coordinate disjointness, construct a
+classifier, prove no-extra terminal-minimum coverage, order count, pole order,
+normal crossings, or RLCT.
+
 ## 2026-06-21 Lean Lemma 4 prefix-profile computations
 
 Reproduction:
