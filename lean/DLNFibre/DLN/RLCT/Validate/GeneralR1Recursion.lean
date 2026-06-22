@@ -536,6 +536,37 @@ theorem squeeze_bounds_abstract {ι κ : Type*} [Fintype ι] [Fintype κ]
   · have h2 : A + B ≤ (1 + 2 * t ^ 2) * A + 2 * C := by nlinarith [hBup, hp]
     nlinarith [h2, hAnn, htsq, mul_nonneg htsq hCnn]
 
+/-- **The node-level squeeze** (g131, the per-node existence core). The hard-pivot Schur node loss
+`F = (∑ⱼ Erowⱼ²) + ∑ᵢⱼ (bᵢ·Erowⱼ + (S·Γ)ᵢⱼ)²` (`Erow` = pivot-row product, `lower = b·Erow + S·Γ` by
+`schur_row_decomp`) is squeezed by `Φ = (∑ⱼ Erowⱼ²) + ‖S·Γ‖²` with `t = ‖b‖` (`b` = pivot column):
+`Φ ≤ 2(1+t²)·F` and `F ≤ (2+2t²)·Φ`. The `hp` bound is an EQUALITY `∑ᵢⱼ (bᵢ Erowⱼ)² = ‖b‖²·∑ⱼ Erowⱼ²`
+(reindexed over `M × n`), so `squeeze_bounds_abstract` applies directly. The squeeze constants
+`c₁ = (2(1+t²))⁻¹ > 0`, `c₂ = 2+2t²`. This is the pointwise content of the
+`IsSchurStraightenSqueeze.squeeze` field; `t = ‖b‖ → 0` at the deepest point gives `c₁ → ½`. -/
+theorem schur_node_squeeze {M n : Type*} [Fintype M] [Fintype n]
+    (Erow : n → ℝ) (b : M → ℝ) (SΓ : M → n → ℝ) :
+    ((∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (SΓ i j) ^ 2))
+        ≤ (2 * (1 + (Real.sqrt (∑ i, (b i) ^ 2)) ^ 2))
+            * ((∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (b i * Erow j + SΓ i j) ^ 2))
+    ∧ ((∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (b i * Erow j + SΓ i j) ^ 2))
+        ≤ (2 + 2 * (Real.sqrt (∑ i, (b i) ^ 2)) ^ 2)
+            * ((∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (SΓ i j) ^ 2)) := by
+  set t := Real.sqrt (∑ i, (b i) ^ 2) with ht
+  have key := squeeze_bounds_abstract (ι := n) (κ := M × n) Erow
+    (fun p => b p.1 * Erow p.2) (fun p => SΓ p.1 p.2) t ?_
+  · have hΦ : (∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (SΓ i j) ^ 2)
+        = (∑ j, (Erow j) ^ 2) + (∑ p : M × n, (SΓ p.1 p.2) ^ 2) := by
+      rw [Fintype.sum_prod_type]
+    have hF : (∑ j, (Erow j) ^ 2) + (∑ i, ∑ j, (b i * Erow j + SΓ i j) ^ 2)
+        = (∑ j, (Erow j) ^ 2) + (∑ p : M × n, (b p.1 * Erow p.2 + SΓ p.1 p.2) ^ 2) := by
+      rw [Fintype.sum_prod_type]
+    rw [hΦ, hF]; exact key
+  · have ht2 : t ^ 2 = ∑ i, (b i) ^ 2 := Real.sq_sqrt (Finset.sum_nonneg (fun i _ => sq_nonneg _))
+    rw [ht2, Fintype.sum_prod_type, Finset.sum_mul]
+    refine le_of_eq (Finset.sum_congr rfl (fun i _ => ?_))
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl (fun j _ => by ring)
+
 /-! ## The L=1 base (the `block_elimination` prototype)
 
 The recursion's leaf. At `L = 1` a `Params` is a SINGLE matrix `A : Matrix (Fin (M 0)) (Fin (M 1)) ℝ`
