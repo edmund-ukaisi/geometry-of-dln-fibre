@@ -17,18 +17,20 @@ D1 (a) is ONE function at TWO points — the g158 gap). It decomposes into:
   (`rlctAtOn_comp_homeomorph`) to `t^D · (germ at v)`; the constant `t^D` is a unit
   (`rlctAtOn_unit_invariant_aux`). Reachable from green primitives + the homogeneity hypothesis.
 
-- **(L1-b) lower-semicontinuity at the ray's limit** (the NEW heavy analytic primitive): the deepest
-  `0 = lim_{t→0} t·v`, and `rlctAtOn F 0 ≤ liminf_{t→0} rlctAtOn F (t•v)`. Value-INDEPENDENT (the most
-  singular point of a family has the min RLCT — Watanabe/Varchenko lct-semicontinuity, NOT the
-  resolution, NOT Aoyagi Thm 2), but a genuinely NEW primitive (comparable to `weightedThreshold_transport`),
-  NOT banked in the harness/Mathlib. Carried as a NAMED `sorry` + surfaced (g160/#57).
+- **(L1-b) lower-semicontinuity at the ray's limit** — LIGHT, ~10 lines from the team's OWN `rlctAt`
+  def (g170/#60; the controller's `rlctAt`-def hint dissolved g160's "heavy Watanabe/Varchenko
+  primitive" overestimate). `rlctAtOn F 0 ≤ rlctAtOn F v`: by `sSup_le` over admissible `c'` at `0`,
+  the ray `s•v → 0` enters the open admissible `Ω` for small `s>0` (`IsOpen.mem_nhds`), so `c'` is
+  admissible at `s•v` ⟹ `c' ≤ rlctAtOn (s•v) = rlctAtOn v` (L1-a). NO Fatou / Varchenko / general
+  lct-semicontinuity / absent-Mathlib analysis. Value-INDEPENDENT (NOT R1's value, NOT Aoyagi Thm 2).
 
 - **the fibre cone** (`prod (t • A) = t^L · prod A`, pure algebra): the ray `t·v` stays in the fibre and
   limits to the all-zero deepest core, so the deepest is in every stratum's closure.
 
-ROUTE-FIRST: L1-a stated with the homogeneity as a hypothesis (fm3's `dlnLoss_homogeneous_layer`
-discharges it on `dlnLoss M 0`); L1-b the named heavy primitive; the assembly composes them. The full
-`rlctAt_deepest_le_of_optimal` wires through L2 (`deepest_regular_core_reduces`) to the core.
+STATUS: L1-a + L1-b both PROVEN (zero sorries, axiom clean-three); `deepest_le_of_homogeneous_core` (the
+CORE-P1) PROVEN. The full `rlctAt_deepest_le_of_optimal` (Skeleton) wires this through L2 at every fibre
+point (`deepest_regular_core_reduces` extended deepest→general-`v`) to the homogeneous core — the
+remaining full-B obligation (L2-at-general-`v`), NOT this core comparison.
 -/
 
 open MeasureTheory
