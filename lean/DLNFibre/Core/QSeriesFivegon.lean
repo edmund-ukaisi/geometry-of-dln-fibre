@@ -688,4 +688,31 @@ theorem rebuild_lastCol (m : Fin (N + 2) × Fin (N + 2) → ℕ)
         simp only [Fin.lastCases_castSucc]
         rw [peelPart_castSucc]
 
+/-- Forward map lands in `admissibleXs`: `lastCol m ∈ admissibleXs (peelPart m) (d_last)`. -/
+theorem lastCol_mem_admissibleXs {d : Fin (N + 2) → ℕ} {m : Fin (N + 2) × Fin (N + 2) → ℕ}
+    (hm : m ∈ kostantAll d) :
+    lastCol m ∈ admissibleXs (peelPart m) (d (Fin.last (N + 1))) := by
+  rw [mem_kostantAll] at hm
+  obtain ⟨hb, _, hk⟩ := hm
+  rw [admissibleXs, Finset.mem_filter, Fintype.mem_piFinset]
+  refine ⟨fun I ↦ ?_, ?_⟩
+  · rw [Finset.mem_range, Nat.lt_succ_iff]
+    induction I using Fin.lastCases with
+    | last =>
+      simp only [lastCol, boundX, Fin.lastCases_last]
+      exact hb _
+    | cast I' =>
+      simp only [lastCol, boundX, Fin.lastCases_castSucc, peelPart_last]
+      exact Nat.le_add_left _ _
+  · have hklast := hk (Fin.last (N + 1))
+    unfold kostantAt at hklast
+    have hfilter : (Finset.univ.filter
+        (fun p : Fin (N + 2) × Fin (N + 2) ↦ p.1 ≤ Fin.last (N + 1) ∧ Fin.last (N + 1) ≤ p.2))
+        = Finset.univ.filter (fun p ↦ p.2 = Fin.last (N + 1)) :=
+      Finset.filter_congr (fun p _ ↦ by simp only [Fin.le_last, true_and, Fin.last_le_iff])
+    rw [hklast, hfilter, Finset.sum_filter, Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl fun I _ ↦ ?_
+    rw [Finset.sum_ite_eq' Finset.univ (Fin.last (N + 1)) (fun J ↦ m (I, J))]
+    simp only [Finset.mem_univ, if_true, lastCol]
+
 end DLNFibre.Core
