@@ -321,3 +321,22 @@ So the construction reduces to: LOCAL diffeos (regAbsorb, coreAbsorb — exist b
 verified) + the LOCAL peels (crux2's weightedThreshold_transport stated on a 𝓝, NOT global proper). The
 g159 wall is GONE. regAbsorb buildable as a PartialHomeomorph at w0. Controller's local-vs-global
 resolution — verified, unblocks the build.
+
+## IFT hook pinned (name corrected for v4.29) — regAbsorb via toOpenPartialHomeomorph
+
+Controller named `HasStrictFDerivAt.toPartialHomeomorph`; the ACTUAL v4.29 name is
+**`toOpenPartialHomeomorph`** (Mathlib.Analysis.Calculus.InverseFunctionTheorem.FDeriv / ContDiff —
+don't-trust-recalled-signatures, v4.29 differs). The hooks:
+- `HasStrictFDerivAt.toOpenPartialHomeomorph (hf : HasStrictFDerivAt f (f' : E →L F) a)` [f' an ≃L via
+  the section's `(f' : E ≃L F)` variable] → OpenPartialHomeomorph, source ∋ a.
+- C¹ version: `ContDiffAt.toOpenPartialHomeomorph (hf : ContDiffAt 𝕂 n f a) (hf' : HasFDerivAt f f' a)`,
+  `f' : E ≃L F`, `n ≠ 0`. The E-map is polynomial ⟹ ContDiffAt ⊤; dE(w0)=id ⟹ the ≃L. So regAbsorb =
+  this OpenPartialHomeomorph (source = 𝓝 w0). Companions: `_coe` (map = f near a),
+  `mem_toOpenPartialHomeomorph_source`, `image_mem_..._target`.
+- C¹ upgrade HasFDerivAt→HasStrictFDerivAt: `ContDiffAt.hasStrictFDerivAt (hf : ContDiffAt 𝕂 n f x) (hn : n ≠ 0)`.
+
+REMAINING PEEL GAP (flagged to controller): crux2's #71 rlctAtOn_boundedUnit_homeomorph takes a GLOBAL
+π : M ≃ₜ M (it rests on weightedThreshold_transport's global proper+surjective). The IFT gives an
+OpenPartialHomeomorph (LOCAL). So either (1) cutoff-extend the local diffeo to global (mine), or (2)
+crux2 builds a LOCAL #71/S1.1 variant consuming the OpenPartialHomeomorph's 𝓝-source. Controller's
+framing ("germ-level peel consumes the 𝓝 w0") points to (2). Pending crux2's peel-route + structure fields.
