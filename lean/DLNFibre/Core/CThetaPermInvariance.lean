@@ -112,4 +112,25 @@ theorem numTop_comp_sort (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ k, r ≤ 
     numTop (d ∘ _root_.Tuple.sort d) r h = numTop d r h' :=
   numTop_comp_perm (_root_.Tuple.sort d) d r hr h h'
 
+/-! ### Order reversal (the paper's `↔` symmetry of the quiver, task #5)
+
+Reversing the vertex order `d ↦ (i ↦ d i.rev)` is the permutation `Fin.revPerm`, so `(C, θ)` is
+unchanged — a direct instance of `*_comp_perm`. (`d ∘ Fin.revPerm = fun i ↦ d i.rev` definitionally.)
+This subsumes the standalone interval-reversal bijection. -/
+
+/-- **`C` is order-reversal invariant:** `cCodim (d ∘ Fin.revPerm) r = cCodim d r` — reversing the
+dimension vector leaves the combinatorial codimension unchanged. `cCodim_comp_perm` at `σ = Fin.revPerm`. -/
+theorem cCodim_rev (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ k, r ≤ d k)
+    (h : (kostantPartitions (d ∘ Fin.revPerm) r).Nonempty)
+    (h' : (kostantPartitions d r).Nonempty) :
+    cCodim (d ∘ Fin.revPerm) r h = cCodim d r h' :=
+  cCodim_comp_perm Fin.revPerm d r hr h h'
+
+/-- **`θ` is order-reversal invariant:** `numTop (d ∘ Fin.revPerm) r = numTop d r`. -/
+theorem numTop_rev (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ k, r ≤ d k)
+    (h : (kostantPartitions (d ∘ Fin.revPerm) r).Nonempty)
+    (h' : (kostantPartitions d r).Nonempty) :
+    numTop (d ∘ Fin.revPerm) r h = numTop d r h' :=
+  numTop_comp_perm Fin.revPerm d r hr h h'
+
 end DLNFibre.Core
