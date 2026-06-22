@@ -17,7 +17,9 @@ Producing the instance splits into four named obligations (skeleton-first, `sorr
   the flat params into `(regular residuals) × (raw reduced blocks T_s) × (gauge spectators)`. Pure
   coordinate/measure infra (the `paramsEquivFlat` / S1 idiom).
 - **(ii) gauge-absorption homeomorphism** (`coreAbsorb_exists`): `coreAbsorb` turning raw `T_s` into
-  `T̃_s = T_s·(I−V_sY_s)⁻¹` (the Schur core), fixing reg+spec + origin. (`schur_P11_decomp`'s `R`.)
+  the per-layer **Schur complement** `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (g156/#61: the honest core,
+  NOT the unit `T_s·(I−V_sY_s)⁻¹` which is `0` at `T_s=0`); `∏S_s = R|{E=0}` (`schur_P11_decomp`'s
+  full-product Schur `R`), fixing reg+spec + origin.
 - **(iii) g-unit RLCT peel** (`coreAbsorb_rlct_holds`): absorbed and raw cores have the same RLCT at
   the origin, via `weightedThreshold_weight_unit_invariant` (the det-unit `det(I−VY)⁻ᴹ⁰ ≈ 1`).
 - **(iv) loss-squeeze** (`deepest_loss_squeeze_holds`): the two-sided bound, via the banked
@@ -36,16 +38,18 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
 
-/-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). The four structure
-fields are properties of the SAME constructed maps `(split, coreAbsorb)`, so they are bundled into one
-existence statement (the loss-squeeze + the RLCT-peel are FALSE for arbitrary maps — they hold only for
-the specific gauge-slice maps). Producing this is the heavy geometric construction:
-- `split`: the per-layer `block_elimination` MP reindex (flat ⟶ regular ⊕ raw-core ⊕ spectator),
+/-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). The four fields
+are properties of the SAME maps `(split, coreAbsorb)`, so they bundle into one existence statement
+(the loss-squeeze + RLCT-peel are FALSE for arbitrary maps — they hold only for the specific gauge
+maps). Producing this is the heavy geometric construction:
+- `split`: the `block_elimination` MP reindex (flat ⟶ regular ⊕ raw-core ⊕ spectator),
   `split_basepoint` carries the deepest point to `0`;
-- `coreAbsorb`: the g-absorption `T_s ↦ T_s·(I−V_sY_s)⁻¹` (the Schur core), fixing reg+spec+origin;
-- `coreAbsorb_rlct`: the bounded-unit Jacobian peel (`det(I−VY)⁻ᴹ⁰`, `weightedThreshold_weight_unit_invariant`);
+- `coreAbsorb`: the g-absorption `T_s ↦ S_s = T_s − Z_s(I+X_s)⁻¹Y_s` (the per-layer **Schur
+  complement**, g156/#61 — NOT the unit `T_s·(I−V_sY_s)⁻¹`), fixing reg+spec+origin;
+- `coreAbsorb_rlct`: the bounded-unit Jacobian peel (`det(I−VY)⁻ᴹ⁰` via
+  `weightedThreshold_weight_unit_invariant`);
 - `loss_squeeze`: the two-sided bound (banked `core_comparability_squeeze` + `frobenius_fromBlocks`,
-  g153: the leak ∈ ideal(reg) charged to `∑E²`; core = the absorbed `T̃`, NOT raw `∏T`). -/
+  g153: leak ∈ ideal(reg) charged to `∑E²`; core = Schur `∏S_s` = `R` on `{E=0}`, NOT raw `∏T`). -/
 theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
@@ -72,8 +76,8 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
               ≤ c₂ * ((∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
   sorry
 
-/-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`). Destructures the
-bundled construction into the structure. crux2 wires `deepest_gauge_squeeze_exists := this …`. -/
+/-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`). Destructures
+the bundled construction into the structure. crux2 wires `deepest_gauge_squeeze_exists := this`. -/
 theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
