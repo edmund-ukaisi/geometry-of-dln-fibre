@@ -4656,6 +4656,37 @@ This is common-domain bookkeeping only.  It does not construct terminal
 states, Eq5 vectors, nonbase status, classifier injectivity, back-to-label
 coverage, a Lemma 5 order count, pole order, normal crossings, or RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 terminal counted-datum classifier
+
+Reproduction:
+`reproduction-lemma5-eq5-terminal-countdatum-classifier-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-terminal-countdatum-classifier.md`.
+Review artifact:
+`review-lemma5-eq5-terminal-countdatum-classifier-a5.md`.
+
+Lean now adds `Lemma5Eq5TerminalClassifier.lean` with terminal-minimum
+counted-datum classifier constructors:
+
+```text
+terminalMinimumCountDatumClassifier_of_eq5OwnBlockCommon_widthBound
+terminalMinimumCountDatumClassifier_of_eq5OwnBlockCommon_blockWidth
+terminalMinimumCountDatumClassifier_of_eq5OwnBlockCommon_leftEndpointMin
+terminalMinimumCountDatumClassifier_of_eq5OwnBlockCommon_offSelected
+terminalMinimumCountDatumClassifier_of_eq5OwnBlockCommon_offSelected_lt
+```
+
+For each label in `TC.terminalMinimumLabels`, the classifier maps `(S,k)` to
+`some (pOf label, T label S)`.  Lean proves the classifier `mapsTo` field
+from the Eq5 own-block common-domain payload and keeps classifier injectivity
+as a supplied hypothesis.
+
+This is terminal counted-datum classifier packaging only.  It does not
+construct Eq5 branches, prove that all terminal labels have Eq5 witnesses,
+derive injectivity, build a back-to-label map, prove `UpperBoundClassifier`,
+prove exactness, prove a Lemma 5 order count, prove pole order, prove normal
+crossings, or extract RLCT.
+
 ## 2026-06-22 Lean Lemma 5 Eq5 alpha endpoint value-image split
 
 Reproduction:

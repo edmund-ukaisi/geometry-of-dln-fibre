@@ -82,6 +82,8 @@ Current Eq5 own-block counted-datum classifier slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-countdatum-classifier-a5.md`.
 Current Eq5 own-block common introduced-domain slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-common-introduced-domain-a5.md`.
+Current Eq5 terminal counted-datum classifier slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-countdatum-classifier-a5.md`.
 Current Eq5 alpha endpoint value-image split slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
 Current Lemma 4 prefix-profile computation slice:

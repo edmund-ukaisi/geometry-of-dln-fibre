@@ -102,3 +102,4 @@ import DLNFibre.DLN.Aoyagi.Lemma5TerminalBridge
 import DLNFibre.DLN.Aoyagi.Lemma5TerminalSourceBridge
 import DLNFibre.DLN.Aoyagi.Lemma5Eq5CountDatumBridge
 import DLNFibre.DLN.Aoyagi.Lemma5Eq5EndpointProfile
+import DLNFibre.DLN.Aoyagi.Lemma5Eq5TerminalClassifier

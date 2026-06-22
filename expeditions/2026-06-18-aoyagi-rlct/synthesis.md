@@ -4358,6 +4358,25 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-eq5-ownblock-common-introduced-domain-a5.md`.
 
+Latest A5 Eq5 terminal counted-datum classifier update:
+new module `Lemma5Eq5TerminalClassifier.lean` builds
+`TC.TerminalMinimumCountDatumClassifier` from supplied Eq5 own-block
+common-domain payload data for every label in `TC.terminalMinimumLabels`.
+The classifier sends `label=(S,k)` to `some (pOf label, T label S)`.
+Membership in `TC.terminalMinimumLabels` supplies the common-domain state
+comparison; the existing Eq5 common-domain payload proves `mapsTo`; and
+injectivity remains supplied.  Source-shaped variants derive the selected
+width bound from block-width, left-endpoint/minimum, off-selected, or strict
+off-selected dominance hypotheses.  This is not Eq5 branch construction,
+source-derived injectivity, a back-to-label map, `UpperBoundClassifier`,
+exactness, Lemma 5 order count, pole order, normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-countdatum-classifier-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-countdatum-classifier.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-countdatum-classifier-a5.md`.
+
 Latest A5 Eq5 alpha endpoint value-image split update:
 `Lemma5DisplayedVector.lean` now contains
 `aoyagiLemma5Eq5_alphaIndexedBranch_suppliedEndpointCoverage_value_image_split`.
