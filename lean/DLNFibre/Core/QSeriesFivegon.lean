@@ -545,4 +545,63 @@ theorem codimBil_peelLast_collapse (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
     (fun v _ hvN ↦ extendℤ_peelLast_off m u v hvN)]
   rw [extendℤ_peelLower_at m (i - 1) (j - 1) (by omega), extendℤ_peelLast_at m u]
 
+/-- **Step E — the explicit, manifestly-nonneg Δ**: the codimBil difference is the bilinear pairing
+of `m`'s last two columns over `i ≤ u` (with `a = i-1`, the second-from-last column `N` against the
+last column `N+1`). -/
+theorem codimBil_diff_eq_delta (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimBil (N + 1) (extendℤ (peelLower m)) (extendℤ (peelLast m))
+      - codimBil N (extendℤ (peelLower m)) (extendℤ (peelCorr m))
+    = ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+        extendℤ m (i - 1) (N : ℤ) * extendℤ m u ((N : ℤ) + 1) := by
+  rw [codimBil_peelLast_collapse, codimBil_peelCorr_collapse]
+  -- peel the inner `j` of the big sum at the top `N+1`
+  have hLHS : (∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+                 ∑ j ∈ Finset.Icc u ((N : ℤ) + 1), extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1))
+      = ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          (extendℤ m (i - 1) (N : ℤ) * extendℤ m u ((N : ℤ) + 1)
+           + ∑ j ∈ Finset.Icc u (N : ℤ), extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1)) := by
+    refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun u hu ↦ ?_
+    rw [Finset.mem_Icc] at hu
+    rw [show Finset.Icc u ((N : ℤ) + 1) = insert ((N : ℤ) + 1) (Finset.Icc u (N : ℤ)) from by
+          ext x; simp only [Finset.mem_insert, Finset.mem_Icc]; omega,
+        Finset.sum_insert (by simp [Finset.mem_Icc]),
+        show ((N : ℤ) + 1) - 1 = (N : ℤ) from by ring]
+  rw [hLHS]
+  simp only [Finset.sum_add_distrib]
+  -- the residual triple-sum (`j ≤ N`) drops its `i, u = N+1` slices (empty inner range) → small sum
+  have hP1 : (∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+                ∑ j ∈ Finset.Icc u (N : ℤ), extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1))
+      = ∑ i ∈ Finset.Icc (1 : ℤ) (N : ℤ), ∑ u ∈ Finset.Icc i (N : ℤ),
+          ∑ j ∈ Finset.Icc u (N : ℤ), extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1) := by
+    rw [sum_Icc_peel_top 1 (fun i ↦ ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          ∑ j ∈ Finset.Icc u (N : ℤ), extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1))
+        (by show (∑ u ∈ Finset.Icc ((N : ℤ) + 1) ((N : ℤ) + 1), ∑ j ∈ Finset.Icc u (N : ℤ),
+              extendℤ m (((N : ℤ) + 1) - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1)) = 0
+            rw [Finset.Icc_self, Finset.sum_singleton, Finset.Icc_eq_empty (by omega),
+              Finset.sum_empty])]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [sum_Icc_peel_top i (fun u ↦ ∑ j ∈ Finset.Icc u (N : ℤ),
+          extendℤ m (i - 1) (j - 1) * extendℤ m u ((N : ℤ) + 1))
+        (by show (∑ j ∈ Finset.Icc ((N : ℤ) + 1) (N : ℤ),
+              extendℤ m (i - 1) (j - 1) * extendℤ m ((N : ℤ) + 1) ((N : ℤ) + 1)) = 0
+            rw [Finset.Icc_eq_empty (by omega), Finset.sum_empty])]
+  rw [hP1, add_sub_cancel_right]
+
+/-- **The explicit codimForm split** (`codimForm_split` + Step E): `codimForm (N+1) (extendℤ m) =
+codimForm N (extendℤ (peelPart m)) + Δ` with `Δ` the manifest last-two-columns pairing. -/
+theorem codimForm_split_explicit (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    codimForm (N + 1) (extendℤ m)
+      = codimForm N (extendℤ (peelPart m))
+        + ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+            extendℤ m (i - 1) (N : ℤ) * extendℤ m u ((N : ℤ) + 1) := by
+  rw [codimForm_split, codimBil_diff_eq_delta]
+
+/-- `Δ ≥ 0` — a sum of products of non-negative `extendℤ` entries (needed for the `toNat` exponent
+split in the per-fibre collapse). -/
+theorem delta_nonneg (m : Fin (N + 2) × Fin (N + 2) → ℕ) :
+    0 ≤ ∑ i ∈ Finset.Icc (1 : ℤ) ((N : ℤ) + 1), ∑ u ∈ Finset.Icc i ((N : ℤ) + 1),
+          extendℤ m (i - 1) (N : ℤ) * extendℤ m u ((N : ℤ) + 1) :=
+  Finset.sum_nonneg fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦
+    mul_nonneg (extendℤ_nonneg m _ _) (extendℤ_nonneg m _ _)
+
 end DLNFibre.Core
