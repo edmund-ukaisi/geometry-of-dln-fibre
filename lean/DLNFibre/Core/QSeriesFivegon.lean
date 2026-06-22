@@ -1,5 +1,7 @@
 import DLNFibre.Core.QSeriesPeel
 import DLNFibre.Core.QSeriesExtraction
+import DLNFibre.Core.CThetaQIPConverse
+import DLNFibre.Core.CCodimZeroMono
 
 /-!
 # `DLNFibre.Core.QSeriesFivegon` — Thm 5.6 (the "5gon"), M3b
@@ -116,6 +118,15 @@ theorem fivegon_base (d : Fin 1 → ℕ) : fivegonSum d = Pmult d := by
 `peelPart m` drops the last vertex `Fin.last (N+1)` by merging its column into column `N`
 (`m'_{i,N} = m_{i,N} + m_{i,N+1}`); columns `j < N` are untouched. This is the `m'` of the
 bijection `kostantAll d ↔ Σ_{m'} (last-column data)`. -/
+
+/-- `extendℤ` is additive: `extendℤ (m₁ + m₂) = extendℤ m₁ + extendℤ m₂`. -/
+theorem extendℤ_add (m₁ m₂ : Fin (N + 1) × Fin (N + 1) → ℕ) :
+    extendℤ (m₁ + m₂) = extendℤ m₁ + extendℤ m₂ := by
+  funext a b
+  simp only [extendℤ, Pi.add_apply]
+  split_ifs with h
+  · push_cast; ring
+  · ring
 
 /-- The forward peel map: `m' = peelPart m` on `Fin (N+1)` merges `m`'s columns `N` and `N+1`. -/
 def peelPart (m : Fin (N + 2) × Fin (N + 2) → ℕ) : Fin (N + 1) × Fin (N + 1) → ℕ :=
