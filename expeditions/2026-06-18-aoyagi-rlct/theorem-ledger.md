@@ -4711,6 +4711,30 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-j-increment-payload-a4.md`.
 
+Latest A4 update: the Case 2 displayed J-increment payload has landed in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`Case2DisplayedJIncrementPayload`,
+`Case2DisplayedSuppliedChartFamilyBoundary.post_weight_eq_new_mul_pre_weight_of_ge`,
+and `Case2DisplayedSuppliedChartFamilyBoundary.jIncrementPayload`.  This
+packages the finite consequences of Aoyagi PDF p. 21's displayed Case 2
+continuation branch where `J` is increased by one: the non-strict next-state
+bound `J+1 <= prefixMinNat n (S+1)`, corrected new-label validity for
+`(S,J+1)`, inserted introduced-label membership/cardinality, corrected
+new-label numerator identities, post exponent certificates, and the displayed
+recurrence-weight update `post.weight i = u * pre.weight i` for `i >= J+1`.
+The exponent side uses the corrected Case 2 package already isolated in Lean;
+it does not turn Aoyagi's printed Case 2 vector mismatch into a source theorem.
+This is finite supplied-boundary bookkeeping only.  It does not construct the
+chart or post-state, prove a nonempty residual block after the increment,
+successor chart-family construction, a full next `C'^(S+1)`, transition
+invariance, Jacobian arithmetic, normal crossings, pole order, or RLCT
+extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-j-increment-payload-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-j-increment-payload.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-j-increment-payload-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

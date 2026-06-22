@@ -30,6 +30,13 @@ does not prove a Lemma 5 classifier, injection, back-to-label map, no-extra
 terminal-minimum coverage, chart production, normal crossings, pole order, or
 RLCT extraction.
 
+The parallel A4 displayed Case 2 local frontier has also landed:
+`threads/04-blow-up-certificate/reproduction-case2-j-increment-payload-a4.md`.
+Lean exposes the finite payload for Aoyagi PDF p. 21's `J`-increment
+continuation branch and the pre-to-post recurrence-weight update.  The
+exponent side uses the corrected Case 2 package already isolated in Lean; this
+does not repair the printed vector mismatch as a source theorem.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and

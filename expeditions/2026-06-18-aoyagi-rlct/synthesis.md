@@ -4282,6 +4282,20 @@ variable relative to the factored-old base state.  This is not a Lemma 5
 no-extra counting theorem and does not provide classifier, injection, or
 back-to-label data.
 
+Latest A4 Case 2 displayed J-increment payload update:
+`BlowupArithmetic.lean` now contains `Case2DisplayedJIncrementPayload`,
+`Case2DisplayedSuppliedChartFamilyBoundary.jIncrementPayload`, and
+`Case2DisplayedSuppliedChartFamilyBoundary.post_weight_eq_new_mul_pre_weight_of_ge`.
+This packages the parallel local bridge under Aoyagi PDF p. 21's displayed
+Case 2 continuation guard: landing at `(S,J+1)`, adding exactly the fresh
+introduced label `(S,J+1)`, extending the post exponent domain with the
+corrected Case 2 certificate, projecting corrected new-label numerator
+identities, and multiplying post recurrence weights by the fresh variable
+relative to the supplied pre-state.  This uses the corrected Case 2 exponent
+package already isolated in Lean and does not repair the printed vector
+mismatch as a source theorem.  It is not chart production, a transition
+invariant, pole order, normal crossings, or RLCT.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

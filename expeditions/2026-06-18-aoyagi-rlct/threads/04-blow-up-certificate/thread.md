@@ -3565,3 +3565,42 @@ This is supplied-boundary finite bookkeeping only.  It does not construct the
 displayed chart or post-state, prove a nonempty residual block after the
 increment, chart coverage, transition invariance, Jacobian arithmetic, Lemma 5
 classifier/no-extra/back-to-label data, pole order, normal crossings, or RLCT.
+
+## 2026-06-22 Lean Case 2 displayed J-increment payload
+
+Reproduction:
+`reproduction-case2-j-increment-payload-a4.md`.
+Statement card:
+`statement-card-a4-case2-j-increment-payload.md`.
+Review artifact:
+`review-case2-j-increment-payload-a4.md`.
+
+Lean now packages the finite payload behind Aoyagi PDF p. 21's displayed Case
+2 statement that, under the continuation guard, the inductive statement has
+`J` increased by one:
+
+```text
+Case2DisplayedJIncrementPayload
+Case2DisplayedSuppliedChartFamilyBoundary.jIncrementPayload
+```
+
+The payload records the non-strict next-state bound
+`J+1 <= prefixMinNat n (S+1)`, the corrected Case 2 new-label certificate for
+`(S,J+1)`, actual-width validity, introduced-label insertion and cardinality,
+the corrected new-label numerator identities, and post exponent certificates
+over `(S,J+1)`.
+
+The companion recurrence projection is
+
+```text
+Case2DisplayedSuppliedChartFamilyBoundary.post_weight_eq_new_mul_pre_weight_of_ge
+```
+
+which states `post.weight i = u * pre.weight i` for `J+1 <= i`.
+
+This slice uses the corrected Case 2 exponent package already isolated in
+Lean; it does not assert that Aoyagi's printed Case 2 vector has the corrected
+prefix-minimum terminal exponent.  It does not construct the chart or
+post-state, prove a nonempty residual block after the increment, successor
+chart-family construction, a full next `C'^(S+1)`, transition invariance,
+Jacobian arithmetic, normal crossings, pole order, or RLCT.

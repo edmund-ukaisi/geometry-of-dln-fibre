@@ -9069,6 +9069,39 @@ theorem of_case2Succ_updateSelected
 
 end Case2SourceSelectedSuppliedChartFamilyBoundary
 
+/-- Finite post-step payload for Aoyagi's displayed Case 2 `J`-advance.
+
+This records only the elementary consequences of landing at `(S,J+1)` in the
+continuation branch: the non-strict next-state bound, the corrected new-label
+certificate, the one-label change in the introduced-label finite domain, the
+corrected Case 2 numerator identities, and the post-step exponent-certificate
+domain.  It is not chart construction, source production of the successor
+following factor, transition invariance, a Jacobian statement, normal
+crossings, pole order, or an RLCT statement. -/
+structure Case2DisplayedJIncrementPayload
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ) : Prop where
+  continuationBound : J + 1 ≤ prefixMinNat n (S + 1)
+  correctedNewLabel : CorrectedCase2NewLabelCertificate L n S J
+  newLabelActualWidth : actualWidthLabel L n S (J + 1)
+  newLabel_mem_current :
+    Sigma.mk S (J + 1) ∈ introducedLabelFinset L n S (J + 1)
+  newLabel_not_mem_previous :
+    Sigma.mk S (J + 1) ∉ introducedLabelFinset L n S J
+  introducedDomain_eq_insert :
+    introducedLabelFinset L n S (J + 1) =
+      insert (Sigma.mk S (J + 1)) (introducedLabelFinset L n S J)
+  introducedDomain_card_eq_succ :
+    (introducedLabelFinset L n S (J + 1)).card =
+      (introducedLabelFinset L n S J).card + 1
+  numerator_new_eq_correctedNumerator :
+    numerator S (J + 1) = correctedCase2NewLabelNumerator n S J
+  numerator_new_eq_card :
+    numerator S (J + 1) = ((case2ResidualBlockPivotEntries n S J).card : ℤ)
+  exponentDomain :
+    IntroducedLabelExponentCertificates L n S (J + 1) t numerator leastValue
+
 /-- Displayed top-left Case 2 supplied boundary.
 
 This is the source-displayed specialization of
@@ -9226,6 +9259,31 @@ theorem preCase2Gap
     pre.case2Gap :=
   data.sourceSelectedBoundary.preCase2Gap
 
+/-- Recurrence-weight projection for Aoyagi's displayed Case 2 post-state:
+after the fresh label `(S,J+1)` is inserted at level `J`, every row weight
+from `J+1` onward is multiplied by the displayed selected variable.
+
+The post-state remains supplied by the boundary; this theorem does not assert
+that a chart produces it. -/
+theorem post_weight_eq_new_mul_pre_weight_of_ge
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J i : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (hi : J + 1 ≤ i) :
+    post.weight i = u * pre.weight i :=
+  data.recurrencePost.weight_succ_current_eq_new_mul_of_ge
+    data.correctedNewLabel.introduced.1 hi
+
 /-- The displayed boundary extends finite exponent certificates to `(S,J+1)`. -/
 theorem extendExponentDomain
     {R : Type*} [CommRing R]
@@ -9243,6 +9301,43 @@ theorem extendExponentDomain
         pre post u ChartRegular TransitionRegular) :
     IntroducedLabelExponentCertificates L n S (J + 1) t' numerator' leastValue' :=
   data.sourceSelectedBoundary.extendExponentDomain
+
+/-- Source-facing finite payload for the displayed Case 2 statement that the
+continuation branch has `J` increased by one.
+
+The payload uses the corrected Case 2 exponent package already isolated in
+Lean.  It deliberately does not assert that Aoyagi's printed Case 2 vector has
+the corrected prefix-minimum numerator; that mismatch remains recorded
+separately. -/
+theorem jIncrementPayload
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular) :
+    Case2DisplayedJIncrementPayload L n S J t' numerator' leastValue' where
+  continuationBound := data.continuation
+  correctedNewLabel := data.correctedNewLabel
+  newLabelActualWidth := data.correctedNewLabel.introduced.1
+  newLabel_mem_current := by
+    rw [mem_introducedLabelFinset]
+    exact data.correctedNewLabel.introduced
+  newLabel_not_mem_previous := not_mem_introducedLabelFinset_case2_new_before L n S J
+  introducedDomain_eq_insert :=
+    introducedLabelFinset_succ_eq_insert data.correctedNewLabel.introduced.1
+  introducedDomain_card_eq_succ :=
+    introducedLabelFinset_card_succ_eq_succ data.correctedNewLabel.introduced.1
+  numerator_new_eq_correctedNumerator := data.numerator_new_eq_correctedNumerator
+  numerator_new_eq_card := data.numerator_new_eq_card
+  exponentDomain := data.extendExponentDomain
 
 /-- The displayed boundary preserves the supplied level/least-value bridge
 after the Case 2 `J`-advance. -/
