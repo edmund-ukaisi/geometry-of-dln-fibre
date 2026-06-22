@@ -4566,6 +4566,34 @@ prove nonbase status, construct a classifier, prove back-to-label coverage,
 prove a Lemma 5 order count, prove pole order, prove normal crossings, or
 extract RLCT.
 
+## 2026-06-22 Lean Lemma 5 Eq5 own-block width-source variants
+
+Reproduction:
+`reproduction-lemma5-eq5-ownblock-width-source-variants-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-ownblock-width-source-variants.md`.
+Review artifact:
+`review-lemma5-eq5-ownblock-width-source-variants-a5.md`.
+
+Lean now adds three source-shaped versions of the Eq5 own-block
+counted/introduced payload:
+
+```text
+aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_leftEndpointMin
+aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_offSelected
+aoyagiLemma5Eq5_ownBlock_countDatumSet_mem_introducedLabelFinset_of_lastPoint_offSelected_lt
+```
+
+Each theorem derives the selected-width bound from one of the existing
+`AoyagiSelectedCutpoints` width-dominance APIs, then reuses the raw-width
+own-block payload.  The selected-width source hypotheses and explicit
+nonbase inequality remain hypotheses.
+
+This remains a one-branch payload adapter.  It does not construct Eq5 vectors,
+prove nonbase status, construct a classifier, prove back-to-label coverage,
+prove a Lemma 5 order count, prove pole order, prove normal crossings, or
+extract RLCT.
+
 ## 2026-06-22 Lean Lemma 5 Eq5 alpha endpoint value-image split
 
 Reproduction:

@@ -76,6 +76,8 @@ Current Eq5 own-block counted/introduced payload slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-counted-introduced-payload-a5.md`.
 Current Eq5 own-block block-width payload slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-block-width-payload-a5.md`.
+Current Eq5 own-block width-source variants slice:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-ownblock-width-source-variants-a5.md`.
 Current Eq5 alpha endpoint value-image split slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-alpha-endpoint-value-image-split-a5.md`.
 Current Lemma 4 prefix-profile computation slice:
