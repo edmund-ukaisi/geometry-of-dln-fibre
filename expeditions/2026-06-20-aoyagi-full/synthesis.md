@@ -75,6 +75,28 @@
   the ⨅-keying over optimalSet, loss fidelity, the hMid carve-out honesty, axiom hygiene (only monomial_rlct).
 - **#28 CONSOLIDATION note:** canonical atlas = crux2's route-m-atlas threshold_ge/achiever form; fm3's
   ResolutionAtlas.lean is the STALE stratum/threshold_eq form (fm3's bridge correctly targets the canonical).
+- **★ HEADLINE FIDELITY AUDIT — SURVIVED (decorrelated reviewer + 2 Codex consults; artefacts codex-rv/).** The
+  most load-bearing STABLE claim, aoyagi_learning_coefficient, is FAITHFUL on every axis: (Q1) NON-CIRCULAR —
+  aoyagiLambda is the integer-QIP combinatorial closed form (Lambda.lean imports ONLY Mathlib, structurally
+  cannot reference rlctAt/dlnLoss; bottoms out in [−r²+r(H₀+H_last)]/2 + ½·(Adm M).inf' Mval); the headline is a
+  real analytic→combinatorial bridge, not a tautology. (Q2) ⨅-KEYING faithful — global learning coefficient over
+  optimalSet (= loss zero-set); rlctAt = honest sSup-of-integrable-exponents. (Q3) LOSS = squared Frobenius
+  ‖prod−B‖². (Q5) AXIOMS clean — #print axioms = [propext, sorryAx, Classical.choice, Quot.sound]; the sorryAx is
+  EXACTLY the 3 named rungs (R1@1022 / L2@955 / D1@978) + the single cited axiom monomial_rlct@120 (S2); no leak,
+  θ/order held separate (opaque rlctOrderAt, off-path). (Q6) NAMED right (λ=C/2, not bare codim). VERDICT: faithful,
+  honest, non-tautological. Residual (LOW): add a one-line aoyagiLambda_nonneg to retire the ENNReal.ofReal clamp.
+- **★ (A)→(B) REVERSAL (audit-driven; I was wrong on (A)).** The committed headline is NON-STRICT (hr : ∀ s, r ≤ H s,
+  matching the paper's r ≤ min(ud)). The audit + Codex VERIFIED the boundary r=H_s is TRUE — (3,1,3),r=1 → rlctAt =
+  5/2 = aoyagiLambda (Morse-Bott rank-5, flat core); (1,1),r=1 → 1/2. So strict ∀s r<H_s is a PROOF-CONVENIENCE,
+  not soundness; adding it NARROWS below the paper (under-claim). My (A) "R1 caps the headline at all-s" was
+  CIRCULAR (assumed the strict scope it justified). DECISION: headline stays NON-STRICT (paper-faithful), vindicating
+  crux2's (B) instinct. RECONCILIATION (no rework): the RUNGS keep their non-degenerate/all-s domain (decomposition
+  needs G≢0); the HEADLINE doesn't inherit strict hMid — it CASE-SPLITS: non-degenerate (all M_s≥1) → rungs;
+  degenerate (some M_s=0) → a NEW direct-Morse lemma (#70). Until #70 fills, the degenerate boundary is a NAMED
+  obligation (honest sorry), NOT a narrowing. **CONVENTION subtlety (the mechanism):** rlctAt(F≡0)=⊤ (team sSup
+  convention), so at the boundary the decomposition nReg/2 + rlctAtOn(core) gives ⊤ — FALSE; #70 routes AROUND it,
+  computing rlctAt(deepest)=nReg/2 directly via the rank-nReg Morse-Bott quadratic (vanished-core dirs flat → 0).
+  (Supersedes the earlier "(A) all-s, r=min carve-out" bank above — that was the pre-audit call; corrected to non-strict.)
 
 **Phase.** The general-M monomial route is the live path (the per-node squeeze is OFF-path — blow-up gives
 an x_p²·Q product, not the squeeze's additive sum; no measure-preserving recursion produces the monomial
