@@ -91,3 +91,36 @@ off this path — the transvection's det-1-ness does not make the loss invariant
 `f6fedb1` is on the consolidate base. The canonical integration line is `g129-r1-squeeze-verdict` (pp2
 verdict docs @728fbb0/a1dc1e4 + my cherry-picked squeeze chain @48cefc0). The DATUM commit (the +71 in
 f6fedb1's re-state) still needs cherry-picking onto the verdict line — or merge `fm2/squeeze-datum`.
+
+## Toolkit-instantiation interface (for fm3's coordinate bridge — the review checklist)
+
+fm3 owns the coordinate bridge + final assembly (b1 loss-form identity, b2 transport, the literal
+`schur_straighten_squeeze_exists`), CONSUMING this toolkit. crux2 stays the toolkit authority. fm3's
+concrete coordinate objects MUST match these EXACT hypothesis shapes (the decorrelated interface check,
+to be done on fm3's STATEMENT before proofs):
+
+**For `schur_node_squeeze_unif (Erow : n → ℝ) (b : M → ℝ) (SΓ : M → n → ℝ) (T : ℝ) (hT : ∑ b² ≤ T²)`:**
+- `Erow j` MUST be the pivot-row product `(Â·A2)[0,j]` (`j : Fin nReg`, `nReg = n` = #cols of the product).
+- `b i` MUST be the pivot column `Â[1:,0]ᵢ` (`i : M` = the `m−1` lower rows).
+- `SΓ i j` MUST be the reduced product `(S·A2red)[i,j]`, `S = D − b·a` the Schur complement.
+- `T` any bound with `∑ᵢ (b i)² ≤ T²` (e.g. `T = ‖b‖`; on a nbhd of the deepest point `b → 0` so `T` small).
+- The node loss MUST present as `flatCore = (∑ⱼ Erowⱼ²) + ∑ᵢⱼ (bᵢ·Erowⱼ + SΓᵢⱼ)²` and `Φ`'s reduced part
+  as `∑ᵢⱼ SΓᵢⱼ²`. (This is the `hnode` hypothesis of crux2's abstract `schur_straighten_squeeze_exists`.)
+
+**For `schur_lossDiff_mem_ideal (flatCore Φ : R) (E g : ι → R) (hFΦ : flatCore − Φ = ∑ⱼ Eⱼ·gⱼ)`:**
+- `E j = Erow j` (same pivot-row generators).
+- `g j = ∑ᵢ bᵢ(bᵢ·Erowⱼ + 2·SΓᵢⱼ)` (the explicit cofactors; from `schur_lossDiff_eq_cofactor` regrouped).
+- `flatCore − Φ` MUST equal `∑ⱼ Eⱼ·gⱼ` (provable from `schur_lossDiff_eq_cofactor` + the row decomposition
+  `lower = b·Erow + SΓ` of `schur_row_decomp`).
+
+**For `rlctAtOn_reduced_transport` (b2, FLAG-A):** `redEmbed` MUST be a measure-preserving HOMEOMORPHISM
+`Y ≃ₜ Params S.red` (not the plain `Y → Params` of the datum field), anchored `redEmbed 0 = redZero` with
+`redZero` the explicit reduced deepest point (`Params` has no canonical `Zero`).
+
+**Mismatch to catch:** if fm3's `Erow` is NOT the pivot row (e.g. a raw coordinate), or `p`/`SΓ` are not
+`E`-tied (the perturbation must be `b·Erow`, linear in `E`), the squeeze counterexample `F=(G+E)²`
+(rv3/Codex) re-arises and `squeeze_bounds_abstract` does NOT apply. The `E`-tie is load-bearing.
+
+**Reference instances (crux2-built, on `fm2/r1-squeeze-complete`):** the abstract
+`schur_straighten_squeeze_exists` (the `hnode`-hypothesis form) and `rlctAtOn_reduced_transport` are
+crux2's reference; fm3's concrete versions wire these to the blow-up coords — not competing, consuming.
