@@ -170,3 +170,15 @@ recompile Mathlib unless cache-get, which contends with the live aoyagi sessions
 v4.29 gotchas banked in the M2 card: linear_combination + PowerSeries.Inverse need explicit imports;
 ℤ⟦X⟧ no auto IsLeftCancelMulZero (cancel via unit); le_or_lt absent (use by_cases).
 NEXT: M3 = PEEL / Thm 5.6 (the bulk) — uses the LANDED durfee (M2) as its only classical input (thread 04 pin).
+
+## 2026-06-22 — M3b CRUX CRACKED (peelPart_cover_sum + peelPart_mem), inline zero-cited
+The hardest M3b step — the kostantAt-merge cover-reindex (spec thread-07's "most likely to break") — is
+LANDED green/no-sorry inline: `peelPart_cover_sum` (two Finset.sum_bij reindexes via the additive
+`peelPart_eq`: castSucc non-last + last-column correction), and `peelPart_mem` (peel maps kostantAll d into
+kostantAll d', kostantAt transferring by the cover-reindex). Foundation done: peelPart + peelPart_last/_castSucc
+/_eq/_support/_cover_sum/_mem all green. Operator chose GRIND ON (full zero-cited, vote of confidence).
+EXECUTION: inline only (fresh worktrees re-clone all of mathlib = too heavy; confirmed + aborted perm-m3b).
+REMAINING M3b: the per-fibre weight collapse (codimForm split + Pm split + inner-sum = transferRHS_eq) +
+the fiberwise sum + induction on N → fivegon (Thm 5.6). Then M4 (chain → Thm 5.5) + M6 (Cor 5.10 via the M5
+bridge + M6-prep). All Lean targets = the exact-verified pen-and-paper certificates (thread 03/04/07).
+Landed this session: M2, M3a, M5/L1+bridge, M6-prep, M3b-foundation+crux.
