@@ -200,14 +200,15 @@ continuous + injective (via the partial inverse `πsymm`) + differentiable on th
 `admissible_subset_transport` (which needs only `hproper.continuous`, NOT full properness): the witness
 `Ω` restricts to `Ω ∩ V`, the change of variables runs on `s = πsymm '' (Ω ∩ V) = V ∩ π⁻¹'(Ω ∩ V)` (open,
 `π '' s = Ω ∩ V ⊆ Ω`, `π` inj+diff on `s ⊆ V`). Applied to `π` (forward) and to `πsymm` (reverse) it
-gives the two-sided transport. -/
+gives the two-sided transport. Needs ONLY the left-inverse `hleft` (for injectivity on `s`) — NOT
+`π '' V ⊆ V` (the working set `s` lands `π` in `Ω`, never asking `π` to preserve `V`), so a diffeo
+`π : V → V'` with `V ≠ V'` feeds it directly (g162: bi-invariance is infeasible from the IFT). -/
 private theorem weightedThreshold_le_transport_local {M : Type*}
     [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
     [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
     (F : M → ℝ) (wstar : M) (π πsymm : M → M) (Dπ : M → (M →L[ℝ] M)) (V : Set M)
     (hVopen : IsOpen V) (hwV : wstar ∈ V) (hfix : π wstar = wstar)
-    (hsymmmaps : ∀ w ∈ V, πsymm w ∈ V)
-    (hleft : ∀ w ∈ V, πsymm (π w) = w) (hright : ∀ w ∈ V, π (πsymm w) = w)
+    (hleft : ∀ w ∈ V, πsymm (π w) = w)
     (hπcont : ContinuousOn π V)
     (hderiv : ∀ w ∈ V, HasFDerivAt (fun w => π w) (Dπ w) w) :
     weightedThreshold F (fun _ => (1 : ℝ)) {wstar}
@@ -277,7 +278,15 @@ This is the right altitude for the gauge absorptions: the implicit-function-theo
 `OpenPartialHomeomorph`s (local diffeos, source a `𝓝 wstar`, BOTH `π` and `πsymm` differentiable), with
 `dE(wstar) = id` ⟹ `|det Dπ(wstar)| = 1` ⟹ bounded-unit by continuity. The producer (cobuild-sub34)
 supplies the local data for both directions; this lemma CONSUMES it to discharge `coreAbsorb_rlct`/
-`regAbsorb_rlct`. (Raw-data form, decoupled from the `OpenPartialHomeomorph` API.) -/
+`regAbsorb_rlct`. (Raw-data form, decoupled from the `OpenPartialHomeomorph` API.)
+
+**No bi-invariance (g162 fix).** The IFT diffeo maps `π : V → V'` with `V ≠ V'` (a diffeo pushes
+points out of its source), and no finite intersection of `source/target` preimages is both invariant
+AND open (the missing forward-preimage clause recurs at every iterate). So `π '' V ⊆ V` is INFEASIBLE
+and is NOT required: each direction's change of variables runs on its own working set
+`s = V ∩ π⁻¹'(Ω ∩ V)`, which lands `π` in `Ω` without ever asking `π` to preserve `V`. The minimal
+data is just the two inverse identities + both maps `C¹` on the SAME `V` — take
+`V = h.source ∩ h.target` (open, `∋ wstar`, `⊆ source ∩ target` so both `π`, `πsymm` are `C¹` there). -/
 theorem rlctAtOn_boundedUnit_localHomeomorph {M : Type*}
     [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
     [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
@@ -285,7 +294,6 @@ theorem rlctAtOn_boundedUnit_localHomeomorph {M : Type*}
     (Dπ : M → (M →L[ℝ] M)) (Dπsymm : M → (M →L[ℝ] M)) (V : Set M)
     (hVopen : IsOpen V) (hwV : wstar ∈ V)
     (hfix : π wstar = wstar)
-    (hmaps : ∀ w ∈ V, π w ∈ V) (hsymmmaps : ∀ w ∈ V, πsymm w ∈ V)
     (hleft : ∀ w ∈ V, πsymm (π w) = w) (hright : ∀ w ∈ V, π (πsymm w) = w)
     (hπcont : ContinuousOn π V) (hsymmcont : ContinuousOn πsymm V)
     (hderiv : ∀ w ∈ V, HasFDerivAt (fun w => π w) (Dπ w) w)
@@ -298,7 +306,7 @@ theorem rlctAtOn_boundedUnit_localHomeomorph {M : Type*}
   have hfixsymm : πsymm wstar = wstar := by
     conv_lhs => rw [← hfix]
     exact hleft wstar hwV
-  -- strip the bounded-unit weight `|det Dπ|` (forward) / `|det Dπsymm|` (reverse) — both via the V-bound.
+  -- strip the bounded-unit weight `|det Dπ|` (fwd) / `|det Dπsymm|` (rev) — both via the V-bound.
   have hVnhds : V ∈ 𝓝 wstar := hVopen.mem_nhds hwV
   have hstrip : weightedThreshold (fun w => F (π w)) (fun w => |(Dπ w).det|) {wstar}
       = weightedThreshold (fun w => F (π w)) (fun _ => 1) {wstar} := by
@@ -318,11 +326,13 @@ theorem rlctAtOn_boundedUnit_localHomeomorph {M : Type*}
     weightedThreshold_congr_germ_one (fun w => F (π (πsymm w))) F wstar
       (Filter.eventuallyEq_of_mem hVnhds (fun w hw => by rw [hright w hw]))
   -- FORWARD: `rlctAtOn F = wThr F 1 ≤ wThr (F∘π) |det Dπ| = wThr (F∘π) 1 = rlctAtOn (F∘π)`.
+  -- `hleft` is the left-inverse on `V` (for injectivity on the working set); no `π '' V ⊆ V`.
   have hfwd := weightedThreshold_le_transport_local F wstar π πsymm Dπ V hVopen hwV hfix
-    hsymmmaps hleft hright hπcont hderiv
+    hleft hπcont hderiv
   -- REVERSE (via `πsymm`): `wThr (F∘π) 1 ≤ wThr ((F∘π)∘πsymm) |det Dπsymm| = wThr F 1`.
+  -- here the roles swap: `πsymm`'s left-inverse on `V` is `hright` (`π (πsymm w) = w`).
   have hrev := weightedThreshold_le_transport_local (fun w => F (π w)) wstar πsymm π Dπsymm V
-    hVopen hwV hfixsymm hmaps hright hleft hsymmcont hderivsymm
+    hVopen hwV hfixsymm hright hsymmcont hderivsymm
   rw [hstrip] at hfwd
   rw [hstripsymm, hcomp] at hrev
   -- assemble: `rlctAtOn (F∘π) = wThr (F∘π) 1`, `rlctAtOn F = wThr F 1`; le_antisymm of hrev/hfwd.
