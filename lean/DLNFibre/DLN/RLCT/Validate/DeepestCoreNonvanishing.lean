@@ -1,4 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
+import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
+import Mathlib.Algebra.MvPolynomial.Basic
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestCoreNonvanishing` — the `hMid ⟹ hGne` bridge
@@ -120,22 +122,144 @@ theorem dlnLoss_deepest_core_ne_zero_witness (M : Fin (L + 1) → ℕ) (hpos : �
   simp only [Matrix.zero_apply, sub_zero, hprod] at hsq
   norm_num at hsq
 
-/-- **The reduced core is `≠ 0` a.e. near the origin** (`hGne`, the bridge target). When every reduced
-width `M_s ≥ 1`, `dlnLoss M 0 ∘ (paramsEquivFlat M).symm` is a nonzero polynomial, so its zero set is
-measure-zero, so it is `≠ 0` a.e. (on `U = univ`).
+/-! ## The single-`P` encoding: `dlnLoss M 0 ∘ flatSymm = MvPolynomial.eval` of one `P`
 
-CONNECTION PLAN (the `(c)` connect, crux2): `dlnLoss M 0 ((paramsEquivFlat M).symm z) = eval z P` for a
-single `P : MvPolynomial (Fin (flatDim M)) ℝ` (`P = ∑ᵢⱼ (prod-entry-poly)²`, the entries being products
-of the coordinate variables `X (equivFin ⟨⟨s,i⟩,j⟩)` since `(flatSymm z) s i j = z (equivFin ⟨⟨s,i⟩,j⟩)`
-by `rfl`; lift via `Matrix.map_mul` + `eval (X k) = z k`). `P ≠ 0` from `dlnLoss_deepest_core_ne_zero_witness`
-(`eval (witness-flat) P = dlnLoss(witness) ≠ 0`). Then the general null lemma (#69, decoupled:
-`mvpoly_zeroSet_null (p ≠ 0) : volume {x | eval x p = 0} = 0`) gives `{eval z P = 0}` null, hence `≠ 0`
-a.e. Blocked on #69 landing. -/
+To consume `MvPolynomial.ae_eval_ne_zero` (the `@68ef083` Core brick), express `dlnLoss M 0 (flatSymm z)`
+as `eval z P` for one `P`. `prod`/`prodAux` are ℝ-specific, so we mirror `prodAux` over a generic
+`CommRing` (`prodPolyAux`) and relate by `eval z` (`Matrix.map_mul`, a ring hom). The layer `X`-matrices
+`(Xmat s) i j = X (flat-index of (s,i,j))` satisfy `(Xmat s).map (eval z) = (flatSymm z) s`, so the
+products agree under `eval z`. -/
+
+open MvPolynomial in
+/-- The generic-`CommRing` mirror of `prodAux` (same recursion + cast structure). -/
+noncomputable def prodPolyAux {R : Type*} [CommRing R] (M : Fin (L + 1) → ℕ)
+    (A : (s : Fin L) → Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) R) :
+    (k : ℕ) → (hk : k < L + 1) → Matrix (Fin (M 0)) (Fin (M ⟨k, hk⟩)) R
+  | 0, _ => (1 : Matrix (Fin (M 0)) (Fin (M 0)) R)
+  | k + 1, hk => by
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      refine (prodPolyAux M A k hk') * ?_
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      rw [e1, e2]; exact A ⟨k, hkL⟩
+
+/-- `prodPolyAux` maps to `prodAux` under any ring hom applied per layer: if `(A s).map f = B s` for
+every layer, then `(prodPolyAux M A k).map f = prodAux M B k`. The eval-commutes engine. -/
+theorem prodPolyAux_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
+    (M : Fin (L + 1) → ℕ)
+    (A : (s : Fin L) → Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) R)
+    (B : (s : Fin L) → Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) S)
+    (hAB : ∀ s, (A s).map f = B s) (k : ℕ) (hk : k < L + 1) :
+    (prodPolyAux M A k hk).map f = prodPolyAux M B k hk := by
+  induction k with
+  | zero => simp [prodPolyAux, Matrix.map_one f f.map_zero f.map_one]
+  | succ k ih =>
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      -- both recursions: `prev * (cast layer)`; `.map f` distributes (Matrix.map_mul) + IH + hAB.
+      set LyrA : Matrix (Fin (M ⟨k, hk'⟩)) (Fin (M ⟨k + 1, hk⟩)) R :=
+        (by rw [e1, e2]; exact A ⟨k, hkL⟩) with hLyrA
+      set LyrB : Matrix (Fin (M ⟨k, hk'⟩)) (Fin (M ⟨k + 1, hk⟩)) S :=
+        (by rw [e1, e2]; exact B ⟨k, hkL⟩) with hLyrB
+      show (prodPolyAux M A k hk' * LyrA).map f = prodPolyAux M B k hk' * LyrB
+      rw [Matrix.map_mul, ih hk']
+      congr 1
+      -- `LyrA.map f = LyrB`: cast-transported `(A ⟨k,hkL⟩).map f = B ⟨k,hkL⟩` (hAB).
+      have hcast : LyrA.map f = LyrB := by
+        simp only [hLyrA, hLyrB]
+        rw [← hAB ⟨k, hkL⟩]
+        -- `(cast h (A …)).map f = cast h ((A …).map f)`: map commutes with the dim-cast.
+        ext i j
+        simp only [Matrix.map_apply]
+        congr 1 <;> · rw [e1, e2]
+      exact hcast
+
+/-- `prodPolyAux` over ℝ IS `prodAux` (same recursion + cast structure) — the bridge from the generic
+mirror back to the loss's `prodAux`. By induction (both: base `1`, step `prev * cast layer`). -/
+theorem prodPolyAux_eq_prodAux (M : Fin (L + 1) → ℕ) (A : Params M) (k : ℕ) (hk : k < L + 1) :
+    prodPolyAux M A k hk = prodAux M A k hk := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      conv_lhs => rw [prodPolyAux]
+      conv_rhs => rw [prodAux]
+      rw [ih hk']
+      -- the cast-transported layer is the SAME in both defs (identical `rw [e1,e2]; exact A …`).
+      rfl
+
+/-- The per-layer `X`-variable matrix: entry `(i,j)` is the coordinate variable `X` at the flat index
+of `(s, i, j)` (the `Fintype.equivFin (FlatIdx M)` of `⟨⟨s, i⟩, j⟩`). Its `eval z` is `(flatSymm z) s`. -/
+noncomputable def coreXmat (M : Fin (L + 1) → ℕ) (s : Fin L) :
+    Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) (MvPolynomial (Fin (flatDim M)) ℝ) :=
+  Matrix.of fun i j => MvPolynomial.X ((Fintype.equivFin (FlatIdx M)) ⟨⟨s, i⟩, j⟩)
+
+/-- `(coreXmat M s).map (eval z) = (paramsEquivFlat M).symm z s` — the `X`-matrix evaluates to the
+flat-unpacked layer matrix (each `eval z (X idx) = z idx = (flatSymm z) s i j`, the coordinate `rfl`). -/
+theorem coreXmat_map_eval (M : Fin (L + 1) → ℕ) (z : Fin (flatDim M) → ℝ) (s : Fin L) :
+    (coreXmat M s).map (MvPolynomial.eval z) = ((paramsEquivFlat M).symm z) s := by
+  ext i j
+  simp only [coreXmat, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X]
+  rfl
+
+/-- **The reduced-core polynomial** `P`: `∑ᵢⱼ (prodPolyAux M coreXmat L i j)²` — the formal polynomial
+with `eval z P = dlnLoss M 0 ((paramsEquivFlat M).symm z)`. -/
+noncomputable def corePoly (M : Fin (L + 1) → ℕ) : MvPolynomial (Fin (flatDim M)) ℝ :=
+  ∑ i, ∑ j, (prodPolyAux M (coreXmat M) L (Nat.lt_succ_self L) i j) ^ 2
+
+/-- `eval z (corePoly M) = dlnLoss M 0 ((paramsEquivFlat M).symm z)` — the encoding identity. The
+`prodPolyAux`-over-`coreXmat` maps (via `eval z`, `prodPolyAux_map` + `coreXmat_map_eval`) to
+`prodAux M (flatSymm z) = prod M (flatSymm z)`, and `dlnLoss = ∑ entries²`. -/
+theorem eval_corePoly (M : Fin (L + 1) → ℕ) (z : Fin (flatDim M) → ℝ) :
+    MvPolynomial.eval z (corePoly M)
+      = dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) ((paramsEquivFlat M).symm z) := by
+  have hmap := prodPolyAux_map (MvPolynomial.eval z) M (coreXmat M)
+    (fun s => ((paramsEquivFlat M).symm z) s) (coreXmat_map_eval M z) L (Nat.lt_succ_self L)
+  -- `eval z (prodPolyAux … i j) = (prod M (flatSymm z)) i j` (the map identity, entrywise).
+  have hentry : ∀ i j, MvPolynomial.eval z (prodPolyAux M (coreXmat M) L (Nat.lt_succ_self L) i j)
+      = prod M ((paramsEquivFlat M).symm z) i j := by
+    intro i j
+    have h1 := congrFun (congrFun hmap i) j
+    -- `prodPolyAux M (flatSymm z) L = prodAux M (flatSymm z) L = prod M (flatSymm z)`.
+    rw [prodPolyAux_eq_prodAux M ((paramsEquivFlat M).symm z) L (Nat.lt_succ_self L)] at h1
+    simpa [Matrix.map_apply, prod] using h1
+  -- `dlnLoss M 0 A = ∑ᵢⱼ (prod M A i j)²` (the `− 0` vanishes entrywise).
+  have hdln : dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) ((paramsEquivFlat M).symm z)
+      = ∑ i, ∑ j, (prod M ((paramsEquivFlat M).symm z) i j) ^ 2 := by
+    unfold dlnLoss; simp
+  rw [corePoly, hdln]
+  simp only [map_sum, map_pow]
+  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hentry i j]
+
+/-- **The reduced core is `≠ 0` a.e. near the origin** (`hGne`, the bridge target). When every reduced
+width `M_s ≥ 1`, `dlnLoss M 0 ∘ (paramsEquivFlat M).symm = eval · (corePoly M)` (`eval_corePoly`) with
+`corePoly M ≠ 0` (the witness ⟹ `eval (flat witness) (corePoly M) = dlnLoss(witness) ≠ 0`), so by
+`MvPolynomial.ae_eval_ne_zero` (Core, `@68ef083`) it is `≠ 0` a.e. (on `U = univ`). The `hMid ⟹ hGne`
+bridge's ae-leg — sorry-free, Route-1. -/
 theorem dlnLoss_deepest_core_ae_ne_zero (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 1 ≤ M s) :
     ∃ U ∈ 𝓝 (0 : Fin (flatDim M) → ℝ),
       ∀ᵐ z ∂(volume.restrict U),
         dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ)
           ((paramsEquivFlat M).symm z) ≠ 0 := by
-  sorry
+  -- `corePoly M ≠ 0` from the witness: `eval (flat witness) (corePoly M) = dlnLoss(witness) ≠ 0`.
+  obtain ⟨A, hA⟩ := dlnLoss_deepest_core_ne_zero_witness M hpos
+  have hP_ne : corePoly M ≠ 0 := by
+    intro hP0
+    apply hA
+    have := eval_corePoly M ((paramsEquivFlat M) A)
+    rw [hP0] at this
+    simpa using this.symm
+  -- `ae_eval_ne_zero` at `p := corePoly M`, on `U = univ`, rewritten via `eval_corePoly`.
+  refine ⟨Set.univ, Filter.univ_mem, ?_⟩
+  have hae := MvPolynomial.ae_eval_ne_zero (corePoly M) hP_ne
+  refine (ae_restrict_of_ae hae).mono fun z hz => ?_
+  rw [← eval_corePoly M z]; exact hz
 
 end DLNFibre.DLN.RLCT
