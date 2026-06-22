@@ -35,6 +35,30 @@ routeStep) + cover_le + cover_ge_div (the composed integral Props) + the mult-bo
 Shape STABLE (landed sorry-free). The cover_le/cover_ge_div composition = the analytic grind (my G2 pullbacks
 + ReducedTransport.descent + the argmaxCellOn cover-split, normalized via the banked Case222 adapters).
 
+## ⚠ ReducedTransport is the WRONG per-node mechanism for R1 (g186, crux2 flag + Case222 verified)
+crux2 flagged: rlctAtOn_reduced_transport (via comp_homeomorph) is SUPERSEDED FOR THE LOSS (the transvection
+is det-1/MP but the loss is NOT invariant — L unipotent ⇏ orthogonal; the clean factor-through-a-c-o-v is
+unreachable; pp2 #129/#130, the GeneralR1Recursion SUPERSEDED note). I verified against Case222Resolution
+(the authoritative (2,2,2) anchor) — and crux2 is RIGHT, my g179 ReducedTransport is the wrong layer:
+- Case222Resolution architecture note (lines 12-14): "everything at the lintegral level (the blow-up nodes
+  are NOT homeomorphisms — only lemma2Hom is, entering as a single-chart change-of-variables INSIDE an
+  integral, NEVER an rlctAtOn transport)." Case222Resolution uses rlctAtOn_reduced_transport / squeeze
+  ZERO times. The blow-up nodes are NOT injective at the exceptional divisor ⟹ NOT homeomorphisms ⟹
+  rlctAtOn_reduced_transport (which needs redEmbed a HOMEOMORPHISM) does NOT apply per-node.
+- So the per-node descent is LINTEGRAL-LEVEL inside cover_le (compose node_loss_pivot_factor pullbacks +
+  the lemma2Hom MP change-of-variables AT THE INTEGRAL LEVEL → land the leaf monomialIntegrand). There is
+  NO per-node rlctAtOn transport. The SINGLE rlctAtOn = ⨅ comes from crux2's bridge (routeM_rlctAtOn_eq_iInf)
+  at the TOP, from cover_le/cover_ge_div — NOT a per-node rlctAtOn equality.
+CONSEQUENCE: my ReducedTransport (g179, a per-node rlctAtOn transport bundling rlctAtOn_reduced_transport) is
+TRUE as a lemma but the WRONG TOOL for R1's per-node descent — the per-node map isn't a homeomorphism, so
+there's no per-node rlctAtOn transport to bundle. ReducedTransport is NOT a RouteStep.branch field for R1;
+the descent lives inside cover_le (lintegral). DROP ReducedTransport from the R1 per-cell datum (keep it as
+a TRUE-but-unused lemma, or delete). The per-cell datum = (split, codim, PivotWitness) + the LIGHT pullback
+(node_loss_pivot_factor, used INSIDE cover_le's lintegral CoV), NO ReducedTransport field.
+This is the SAME lesson as g173 (don't relay a transport framing without verifying against the code) — I
+caught it via Case222's lintegral-not-rlctAtOn architecture. SURFACING to crux2 to confirm: R1 descent is
+lintegral-only (cover_le), ReducedTransport/per-node-rlctAtOn NOT used. (My g178/g179 over-bundled it.)
+
 ## BRIDGE-WIRING + Nonempty CATCH (g181, crux2 from landed routeM_rlctAtOn_eq_iInf sig) — HANDLED
 crux2 confirmed (ground truth): routeM_rlctAtOn_eq_iInf takes (ι,d,k,h) as EXPLICIT args — call directly with
 (routeMIota S, routeD S, routeK S, routeH S) + the IsRouteMCover instance; NO adapter, my noncomputable defs
