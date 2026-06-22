@@ -188,3 +188,25 @@ sub-6 `deepest_regular_smooth_split` is now **plumbing-bound** (no conceptual bl
 steps are (a) lift `hGne` (core a.e.) to the product nbhd via `quasiMeasurePreserving_fst`/`.ae`, and
 (b) the 3-way `(reg)×((core)×(spec))` reassociation so the spectator-peel and additive block apply.
 Both reachable; reverted to a clean mapped `sorry` pending a focused fill.
+
+### Update (crux2, 2026-06-22, R-SQUEEZE) — value-free reduction consuming side FULLY PROVEN
+
+The sub-34 worker's g152/g153 decorrelated finding (raw-∏T squeeze REFUTED; global `chart : Flat ≃ₜ
+Flat` over-reaches — honest gauge slice is a LOCAL diffeo) prompted the interface call (crux2 owns it):
+**R-SQUEEZE.** `DeepestGaugeChart` trimmed of `chart`/`Dchart`/`hasDeriv`/`jac_unit`/`loss_form`-equality
+→ a `loss_squeeze` datum (`c₁Φ ≤ dlnLoss∘flat ≤ c₂Φ` near the deepest point, `Φ = ∑reg² + dlnLoss M 0
+core`). Kept `nGauge`/`split`/`split_mp`/`split_basepoint`.
+
+PROVEN (axiom clean-three, `origin/fm2/deepest-gauge-chart @c1ce00f`):
+- sub-2, sub-5 (`deepest_squeeze_transport`: `rlctAtOn_eq_rlctAt` + Params→flat MP + `rlctAtOn_squeeze`),
+  sub-6 (smooth-split, re-based to `wstar`), sub-7, the assembly `deepest_regular_core_reduces`.
+- Foundations bedrock: `rlctAtOn_spectator_peel`, `continuous_prodAux/_prod/_dlnLoss`,
+  `weightedThreshold_weight_unit_invariant`, `rlctAtOn_mono`/`rlctAtOn_squeeze` (re-homed to
+  S1NonMPTransport from GeneralR1Recursion — Foundations-grade, 2nd use).
+
+OPEN — ONLY sub-3 `deepest_gauge_squeeze_exists` (the sub-34/#53/#54 obligation against the trimmed
+structure): the MP `split` reindex + the two-sided `loss_squeeze` whose content is the matrix-core
+comparability `‖T·(I−VY)⁻¹·S‖² ≍ dlnLoss M 0(core)` (gauge-normalized core, NOT raw ∏T).
+
+Net: the value-free L2 reduction is PROVEN-modulo the single squeeze-datum existence. The two cert gaps
+(hGne — threaded hypothesis; dlnLoss-measurability — closed via Codex g151) both resolved.
