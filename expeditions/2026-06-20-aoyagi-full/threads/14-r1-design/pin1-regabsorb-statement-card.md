@@ -57,6 +57,28 @@
 >
 > - **Status.** PIN 1's analytic machinery sorry-free; the shared `deepestEPivot` (def + 3 props)
 >   is the only open hole. Awaiting PIN-1↔PIN-2 coupling fidelity review (crux2) + E_pivot form.
+>
+> - **SHELVED + FIX-IF-REVIVED (deriv-finish, 2026-06-23).** The whole L2 route (regSlice fderiv →
+>   `deepest_loss_squeeze`) is **shelved as redundant** — the headline goes through R1's COVER, which is
+>   frame-free (g156 verdict). Additionally, the `deepestEPivot_deriv` prop is **FALSE as currently
+>   stated** (`deepestEPivot_regSlice_fderiv`, `DeepestGaugeConstruction.lean` line 443, the post-frame
+>   form `∃ F : ≃L, HasStrictFDerivAt (reg-slice) ↑F 0`): under the bare boundary-unit hypotheses
+>   `IsUnit (Pf firstLayer)` / `IsUnit (Qf lastLayer)`, no such `F` exists. **Lean-verified obstruction:**
+>   the `P12` reg-block is `resY = readY_last · (Qf_last.toBlocks₂₂)` (the bottom-right `r`-corner of
+>   `Qf_last`), so a frame `Qf_last = [[I, I], [I, 0]]` (det `1`, hence `IsUnit`, but `toBlocks₂₂ = 0`)
+>   forces `resY ≡ 0`, killing Y-surjectivity (Jacobian rank `8 < 12` on `r=2, H=[4,5,3,4]`). The hole is
+>   **upstream**: `deepestPoint_frame` / `deepestFrameLayer_exists` are bare rank-normal-form witnesses
+>   (`∃ P Q, IsUnit P ∧ IsUnit Q ∧ P·M·Q = corM`) with no sub-block constraint — they admit the
+>   singular-corner witness. **FIX-IF-REVIVED:** (1) strengthen `deepestFrameLayer_exists` /
+>   `deepestPoint_frame` with the conjunct `IsUnit ((Qf s).toBlocks₂₂)` for the boundary layer — always
+>   achievable (the SVD/CS rank-normal form has an invertible corner; failure set is measure-zero);
+>   (2) add the hypothesis `hQf22 : IsUnit ((Qf (lastLayer hL)).toBlocks₂₂)` to
+>   `deepestEPivot_regSlice_fderiv`; (3) close via `equivOfInverse` over the green bricks in
+>   `DeepestRegSliceFderiv.lean` (~150–200 LoC). Closed form (verified): `resX = (Pf_first·[X;Z])[:r] +
+>   readY·(Qf_last.toBlocks₂₁-part)`, `resY = readY·Qf_last.toBlocks₂₂`, `resZ = (Pf_first·[X;Z])[r:]`;
+>   the quadratic `devXZ·devY` term vanishes at the derivative. (The `≥`-leg "deepest is min RLCT" used
+>   downstream is independently established VALUE-FREE via homogeneity in `BoxThresholdBridge.lean`, not
+>   via this frame route.)
 
 ## Notes
 

@@ -118,15 +118,24 @@ theorem core_comparability_squeeze {ι κ : Type*} [Fintype ι] [Fintype κ]
   simp only [hsplit]
   exact squeeze_bounds_abstract E leak Rcore t hleak
 
-/-- **The full-product Frobenius core split** (route-independent, g156-confirmed). For the FULL chain
-product written in block form `P = fromBlocks P00 P01 P10 P11` with the pivot `P00` invertible, the
-squared-Frobenius loss against the deepest value `blockdiag[1, 0]` splits as the regular-residual sum
-`∑E²` (over the `(0,0)−1`, `(0,1)`, `(1,0)` blocks) plus `‖P11‖²`, and `P11 = leak + R` with the
-**full-product Schur complement** `R = P11 − P10·⅟P00·P01` and `leak = P10·⅟P00·P01` (the regular
-endpoint leak `∈ ideal(P10, P01)`). The honest reduced core is `R` (g156: NOT `∏S_s` — the Schur
-complement of a product is not the product of Schur complements; but `R − ∏S_s ∈ ideal(E)`, so the
-two squeeze the same). The thin assembly of `frobenius_fromBlocks` (`f = ·²`) + `schur_P11_decomp`,
-ready for `core_comparability_squeeze`. -/
+/-- **The full-product Frobenius core split** (route-independent). For the FULL chain product written
+in block form `P = fromBlocks P00 P01 P10 P11` with the pivot `P00` invertible, the squared-Frobenius
+loss against the deepest value `blockdiag[1, 0]` splits as the regular-residual sum `∑E²` (over the
+`(0,0)−1`, `(0,1)`, `(1,0)` blocks) plus `‖P11‖²`, and `P11 = leak + R` with the **full-product Schur
+complement** `R = P11 − P10·⅟P00·P01` and `leak = P10·⅟P00·P01`. The endpoint leak `leak` is the regular
+endpoint product `∈ ideal(P10, P01) = ideal(E)` (its factors `P10, P01` are regular residual blocks), so
+its excess is charged to `∑E²` by `core_comparability_squeeze`. **The honest reduced core is `R`** (the
+full-product Schur complement), and that is ALL this lemma asserts. The thin assembly of
+`frobenius_fromBlocks` (`f = ·²`) + `schur_P11_decomp`, ready for `core_comparability_squeeze`.
+
+**⚠ REFUTED reconciliation (g156, do NOT rely on it):** an earlier gloss claimed `R = ∏S_s` (the
+product of per-layer Schur complements) up to `ideal(E)` — i.e. `R − ∏S_s ∈ ideal(E)`, "so the two
+squeeze the same". This is **FALSE**: the Schur complement of a product is not the product of Schur
+complements, and the difference is NOT in `ideal(E)`. Counterexample (g156, `ε = 1/7`): at a point with
+`E = 0` and `∏S_s = 0` one has `R = −ε⁴ ≠ 0`, so `R − ∏S_s = −ε⁴ ∉ ideal(E) = ideal(0) = {0}`. This
+lemma and `core_comparability_squeeze` are **SOUND** because they compare `∑E² + ‖P11‖²` to
+`∑E² + ‖R‖²` via `P11 = leak + R` with `leak ∈ ideal(E)` ALONE — they never mention `∏S_s`. The
+refuted `∏S_s`-comparability was the (shelved) L2 `∏S_s` route, not used here. -/
 theorem fullProduct_core_split {r mlo nhi : Type*} [Fintype r] [DecidableEq r] [Fintype mlo]
     [Fintype nhi]
     (P00 : Matrix r r ℝ) (P01 : Matrix r nhi ℝ) (P10 : Matrix mlo r ℝ) (P11 : Matrix mlo nhi ℝ)
