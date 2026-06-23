@@ -82,6 +82,54 @@ theorem leafStep_threshold :
     monomialThreshold (leafMonoData 0).d (leafMonoData 0).k (leafMonoData 0).h = ⊤ :=
   leafMonoData_threshold 0
 
+/-! ### The degenerate-boundary base case (pp2 #109 g233: `minAdm = 0 ⟺ ∃ s, M_s = 0`)
+
+pp2's decorrelated cert (g232, 1360 M, zero mismatches) sharpens the geometric leaf to the **degenerate
+boundary** `∃ s, M_s = 0` (a width-0 layer bottlenecks the chain through rank 0). `Mval_zeroT_eq` computes
+the all-zeros stratum's codim `Mval M 0 = M_0 · M_1` (the two pivot widths), which gives the recursion's
+ACTUAL base case directly: a collapsed pivot vertex (`M_0 = 0` or `M_1 = 0`) is a leaf. The full
+`∃ s, M_s = 0` ⟺ (including interior `M_{≥2} = 0`) is pp2's sharper form (the interior witness saturates to
+the wall); pp2 refuted the `M_0 = 0 ∨ M_1 = 0` form as the FULL characterization — it is sufficient (proven
+here) but misses interior-zero leaves like `(2,2,0)` (caught instead by `isLeafNode_iff_exists_zero`). -/
+
+/-- **The all-zeros stratum codim is the pivot-width product** `Mval M (fun _ => 0) = M_0 · M_1` (for
+chains of length `≥ 2`). The `tPrev`-vanishing computation: with `T ≡ 0`, `tPrev_j = 0` for `j ≥ 1` and
+`tPrev_0 = M_0`, so only the `j = 0` summand `(M_0)(M_1)` survives. The recursion's base-case codim — `0`
+exactly when a pivot vertex has collapsed. -/
+theorem Mval_zeroT_eq {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) :
+    Mval M (fun _ => 0) = (M 0 : ℤ) * (M 1 : ℤ) := by
+  unfold Mval
+  have hsummand : ∀ j : Fin (L' + 1),
+      (tPrev M (fun _ => 0) j - ((fun _ => 0 : Fin (L' + 1) → ℕ) j : ℤ))
+      * ((M j.succ : ℤ) - ((fun _ => 0 : Fin (L' + 1) → ℕ) j : ℤ))
+      = if j = 0 then (M 0 : ℤ) * (M 1 : ℤ) else 0 := by
+    intro j
+    simp only [tPrev]
+    by_cases hj : j.val = 0
+    · have hj0 : j = 0 := Fin.ext hj
+      subst hj0
+      have hsucc : (0 : Fin (L' + 1)).succ = (1 : Fin (L' + 1 + 1)) := by
+        apply Fin.ext; simp [Fin.succ, Nat.mod_eq_of_lt]
+      simp only [Fin.val_zero, Nat.cast_zero, sub_zero, hsucc, if_true]
+    · have hjne : j ≠ 0 := fun h => hj (by rw [h]; rfl)
+      rw [if_neg hj, if_neg hjne]; simp
+  rw [Finset.sum_congr rfl (fun j _ => hsummand j),
+    Finset.sum_ite_eq' Finset.univ (0 : Fin (L' + 1)) (fun _ => (M 0 : ℤ) * (M 1 : ℤ))]
+  simp
+
+/-- **A collapsed pivot vertex makes the node a leaf** (the recursion's base case). If `M_0 = 0` or
+`M_1 = 0` (a chain of length `≥ 2`), the all-zeros stratum has codim `Mval M 0 = M_0 · M_1 = 0`, so `M` is
+a leaf. This is what the `schurState` descent reaches (it decrements `M_0, M_1` each step until one hits
+`0`); a SUFFICIENT leaf condition, not the full characterization (interior `M_{≥2} = 0` leaves are caught
+by `isLeafNode_iff_exists_zero`). -/
+theorem isLeafNode_of_pivot_width_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ)
+    (h : M 0 = 0 ∨ M 1 = 0) : isLeafNode M := by
+  refine (isLeafNode_iff_exists_zero M).mpr ⟨(fun _ => 0), zero_mem_Adm M, ?_⟩
+  rw [Mval_zeroT_eq]
+  rcases h with h0 | h1
+  · rw [h0]; simp
+  · rw [h1]; simp
+
 /-- **Branch direction (the "too-weak" guard).** If every admissible stratum has positive codim
 (`0 < Mval M T` for all `T ∈ Adm M`), then `M` is NOT a leaf — the recursion does not stop early. The
 contrapositive of `isLeafNode_iff_exists_zero`: a positive-codim-everywhere node is a genuine branch.
