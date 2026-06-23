@@ -73,6 +73,11 @@ cardinality to Theorem 2's displayed lambda formula, and a supplied order
 equality to build `AoyagiTheorem2FiniteExponentFormulaHypothesis`.  It still
 does not prove the lower bound, lambda equality, order equality, selected-width
 provenance, chart production, analytic extraction, pole order, or RLCT.
+The ratio-count variant
+`threads/06-dln-translation/reproduction-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`
+replaces the raw order equality by a supplied chart count at the Case 2 ratio
+and a supplied all-chart upper bound at that ratio; those count facts remain
+source/chart obligations.
 
 The current A4/A0-facing selected-entry local algebra slice is
 `threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`.

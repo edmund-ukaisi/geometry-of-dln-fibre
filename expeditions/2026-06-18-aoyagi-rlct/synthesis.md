@@ -5476,6 +5476,22 @@ and
 Review:
 `threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`.
 
+Latest A6 Case 2 ratio-count finite-formula wrapper:
+`Case2Theorem2FiniteExponentBridge.lean` now also contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`.
+It uses the Case 2 supplied minimum theorem to identify the Case 2 ratio with
+`D.exponentMinimum`, then converts supplied chart-count data at that ratio
+into `D.exponentOrder = data.theorem2OrderFormula` via the A0 finite count
+certificate API.  This replaces a raw supplied order equality by explicit
+finite chart-count obligations, but it does not prove those obligations from
+the source chart family.
+Artifacts:
+`threads/06-dln-translation/reproduction-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-ratio-count-finite-formula-bridge.md`.
+Review:
+`threads/06-dln-translation/review-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`.
+
 Latest A6 terminal-order handoff: `Theorem2TerminalOrderBridge.lean` now
 routes the order field of `AoyagiTheorem2FiniteExponentFormulaHypothesis`
 through the supplied Lemma 5 terminal-minimum count.  If the exponent-minimum

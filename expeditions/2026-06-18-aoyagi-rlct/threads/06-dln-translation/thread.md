@@ -529,3 +529,27 @@ displayed lambda formula, and a supplied order equality.
 Boundary: finite composition only.  It does not prove the lower bound, lambda
 identification, order equality, selected-width provenance, chart production,
 analytic extraction, pole order, or RLCT.
+
+## Current slice - 2026-06-23, Case 2 ratio-count finite formula
+
+Reproduction:
+`reproduction-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`.
+Statement card:
+`statement-card-a6-case2-theorem2-ratio-count-finite-formula-bridge.md`.
+Review artifact:
+`review-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`.
+
+Lean now has a ratio-count variant:
+
+```text
+Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le
+```
+
+It first proves that the Case 2 center-cardinality ratio is the global finite
+minimum, then uses supplied `countInChartAtRatio` data at that ratio to certify
+the exponent order.  This replaces a raw order equality by explicit
+finite chart-count obligations.
+
+Boundary: the chart-count equality and all-chart upper bound remain supplied.
+No chart production, active-ratio lower-bound proof, selected-width
+provenance, analytic extraction, pole order, or RLCT is proved.

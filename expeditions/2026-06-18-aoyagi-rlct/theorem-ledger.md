@@ -5690,6 +5690,21 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`.
 
+Latest A6 Case 2 ratio-count finite-formula wrapper:
+`Case2Theorem2FiniteExponentBridge.lean` now also contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`.
+This theorem replaces the raw supplied order equality by a supplied chart
+whose `countInChartAtRatio` at the Case 2 ratio equals
+`data.theorem2OrderFormula` and a supplied all-chart upper bound at that
+ratio.  It does not prove those chart-count facts, the active-ratio lower
+bound, chart production, analytic extraction, pole order, or RLCT.
+Reproduction:
+`threads/06-dln-translation/reproduction-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-ratio-count-finite-formula-bridge.md`.
+Review:
+`threads/06-dln-translation/review-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

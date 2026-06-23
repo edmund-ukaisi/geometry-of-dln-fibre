@@ -59,6 +59,55 @@ theorem theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fr
       _ = aoyagiTheorem2Lambda_fromCeilData Lthm ell H r m data := hcenter
   exponentOrder_eq_theorem2OrderFormula := horder
 
+set_option linter.style.longLine false
+
+/-- Build the finite Theorem 2 exponent-formula boundary from a displayed
+continuing Case 2 coordinate when the order count is supplied at the displayed
+Case 2 candidate ratio.
+
+The chart-count hypotheses are converted to global-minimum chart counts only
+after the active-ratio lower bound proves that the Case 2 candidate ratio is
+`D.exponentMinimum`. -/
+theorem
+    theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {Lcase : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState Lcase n S J K}
+    {u : K} {residual : ℕ × ℕ → K}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → K}
+    {cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        Lcase n S J t numerator leastValue pre u residual hS hcont C}
+    {D : AoyagiNormalCrossingExponentData}
+    {p : Fin D.numCharts × Fin D.numCoords}
+    (B : Case2DisplayedContinuingA0ExponentCoordinateBridge cert D p)
+    {Lthm ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m)
+    (hcenter :
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 =
+        aoyagiTheorem2Lambda_fromCeilData Lthm ell H r m data)
+    (hleRatio : ∀ p' ∈ D.activePairs,
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 ≤ D.ratioAt p')
+    {c : Fin D.numCharts}
+    (hchart :
+      D.countInChartAtRatio
+          (((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2) c =
+        data.theorem2OrderFormula)
+    (hleChart : ∀ c' : Fin D.numCharts,
+      D.countInChartAtRatio
+          (((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2) c' ≤
+        data.theorem2OrderFormula) :
+    AoyagiTheorem2FiniteExponentFormulaHypothesis D Lthm ell H r m data :=
+  theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData
+    B data hcenter hleRatio
+    (D.exponentOrder_eq_of_countInChartAtRatio_eq_of_forall_le
+      (B.exponentMinimum_eq_centerCard_div_two_of_forall_le hleRatio)
+      hchart hleChart)
+
 end Case2DisplayedContinuingA0ExponentCoordinateBridge
 
 end Aoyagi
