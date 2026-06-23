@@ -16,10 +16,15 @@ single-writer file (adopted into this branch @4052a28). The cast collapses two w
 
 REMAINING on L2 sub-3 — two **PIN-level** obligations (each substantial NEW analytic/geometric proof,
 NOT a kernel-application or short wire):
-- **`deepestEPivot_deriv` (FOLD2, #82):** `HasStrictFDerivAt deepestEPivot D_E 0` — the #91
-  idempotent-sandwich Leibniz derivative of the L-fold matrix product `∏(framedParamsReg)|_0` +
-  the concrete shear `D_E = [[I,Σ],[0,I]]` + unitriangular inverse. No product-derivative infra exists
-  in DLNFibre yet; this is from-scratch.
+- **`deepestEPivot_deriv` (FOLD2, #82):** DE-RISKED to a single analytic obligation @756deaa.
+  BANKED (sorry-free, clean-three): `hasStrictFDerivAt_prodAux_entry`/`_prod_entry` (the L-fold product
+  strict-derivative, entry-wise — didn't exist before) + `regStraightenTotalCLM_equiv_of_regBlock_id`
+  (the GENERIC shear-CLE: `D_E(r,0)=r` ⟹ total CLM is the invertible `id+N`, N²=0, `clmShearEquiv` —
+  Codex-confirmed Route D factoring). With `D_E := fderiv ℝ deepestEPivot 0` (free from `_contdiff`),
+  `_deriv` reduces to ONE fact: `D_E.comp regInCLM = id` (reg-block = identity). That fact IS the #91
+  cert (g213-pin1-de0): the idempotent-sandwich `dP|_0 = Σ_s corner·δC_s·corner` → reg-block Jacobian
+  = id on pivot coords. Named wall (Codex): exposing `regResidualPack`'s reg-coords ARE
+  `(X_first, Y_last, Z_first)` at the gauge=0 slice. Consult: `codex/fold2-deriv-route-{prompt,answer}.md`.
 - **`deepest_loss_squeeze` (FOLD3, #80):** the two-sided Frobenius bound. SIGNATURE FIXED @46295ef —
   caught a g161-class confound: the lemma took `regStraighten`/`coreAbsorb` OPAQUE (only `hsplit_base`),
   so the bound was unprovable for arbitrary maps. Restated to thread the concrete-map identities
