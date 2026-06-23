@@ -494,4 +494,46 @@ theorem frobenius_sq_eq_blocks {a b r mlo nhi : Type*} [Fintype a] [Fintype b]
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex e₁ e₂ N)]
   rw [frobenius_fromBlocks (fun x => x ^ 2)]
 
+/-- **The `dlnLoss`-block two-sided squeeze** (PIN 2's E_pivot-INDEPENDENT matrix core). Given the loss
+energy `∑ᵢⱼ (N i j)²` of a matrix `N` whose reindex into `r ⊕ M` block shape is
+`fromBlocks (P00 − 1) P01 P10 P11` (the deepest-point form: `N = prod − B`, `B` gauge-normalised to
+`blockdiag[1,0]`, `P00 = (reindexed prod)₁₁`), with `P00` invertible and the leak charged
+`∑leak² ≤ t²·∑E²`, the loss is two-sidedly comparable to the CLEAN form `∑E² + ‖Rcore‖²`
+(`Rcore = P11 − P10·⅟P00·P01`, `E = (P00−1, P01, P10)`). The thin chain
+`frobenius_sq_eq_blocks` (relabel) + the `toBlocks/fromBlocks` round-trip + `fullProduct_loss_squeeze`.
+NO dependence on the regular straightening `E_pivot` — it acts on `N`'s own block structure. -/
+theorem dlnLoss_block_squeeze {a b r mlo nhi : Type*} [Fintype a] [Fintype b]
+    [Fintype r] [DecidableEq r] [Fintype mlo] [Fintype nhi]
+    (N : Matrix a b ℝ) (e₁ : a ≃ r ⊕ mlo) (e₂ : b ≃ r ⊕ nhi)
+    (P00 : Matrix r r ℝ) (P01 : Matrix r nhi ℝ) (P10 : Matrix mlo r ℝ) (P11 : Matrix mlo nhi ℝ)
+    [Invertible P00] (t : ℝ)
+    (hblocks : Matrix.reindex e₁ e₂ N
+      = Matrix.fromBlocks (P00 - 1) P01 P10 P11)
+    (hleak : (∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
+        ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+            + (∑ i, ∑ j, (P10 i j) ^ 2))) :
+    ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2)) + (∑ i, ∑ j, (P10 i j) ^ 2))
+          + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))
+        ≤ (2 * (1 + t ^ 2)) * (∑ i, ∑ j, (N i j) ^ 2)
+    ∧ (∑ i, ∑ j, (N i j) ^ 2)
+        ≤ (2 + 2 * t ^ 2)
+            * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2)) + (∑ i, ∑ j, (P10 i j) ^ 2))
+              + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
+  -- The loss `∑(N i j)²` equals `fullProduct_loss_squeeze`'s block-loss form
+  -- `∑(fromBlocks P00 P01 P10 P11 − blockdiag[1,0])²` — both are the `(P00−1, P01, P10, P11)` block sum.
+  -- `fromBlocks P00 P01 P10 P11 − blockdiag[1,0] = fromBlocks (P00−1) P01 P10 P11` (block subtraction).
+  have hfb : Matrix.fromBlocks P00 P01 P10 P11
+      - Matrix.fromBlocks (1 : Matrix r r ℝ) (0 : Matrix r nhi ℝ)
+          (0 : Matrix mlo r ℝ) (0 : Matrix mlo nhi ℝ)
+      = Matrix.fromBlocks (P00 - 1) P01 P10 P11 := by
+    rw [sub_eq_add_neg, Matrix.fromBlocks_neg, Matrix.fromBlocks_add]
+    simp only [neg_zero, add_zero, ← sub_eq_add_neg]
+  have hloss : (∑ i, ∑ j, (N i j) ^ 2)
+      = (∑ i, ∑ j, ((Matrix.fromBlocks P00 P01 P10 P11
+          - Matrix.fromBlocks (1 : Matrix r r ℝ) (0 : Matrix r nhi ℝ)
+              (0 : Matrix mlo r ℝ) (0 : Matrix mlo nhi ℝ)) i j) ^ 2) := by
+    rw [← frobenius_sum_reindex (fun x => x ^ 2) N e₁ e₂, hblocks, hfb]
+  rw [hloss]
+  exact fullProduct_loss_squeeze P00 P01 P10 P11 t hleak
+
 end DLNFibre.DLN.RLCT
