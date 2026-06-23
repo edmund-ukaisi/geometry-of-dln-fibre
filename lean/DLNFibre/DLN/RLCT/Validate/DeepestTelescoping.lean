@@ -141,9 +141,11 @@ idempotent under the chain product, so the running product through `k ≥ 1` lay
 (at width `H 0 × H ⟨k⟩`). Proven by `prodAux_succ` + `framedParamsReg_zero` + `fromBlocks_multiply`
 (the `[1,0;0,0]·[1,0;0,0] = [1,0;0,0]` corner idempotent) + `submatrix_mul_equiv` (interface cancel). -/
 theorem prodAux_framedParamsReg_zero_aux (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
     ∀ (k : ℕ) (hk : k < L + 1), 1 ≤ k →
-      prodAux H (framedParamsReg H r hr hL 0) k hk
+      prodAux H (framedParamsReg H r hr hL P Q 0) k hk
         = Matrix.reindex (rThresholdSplit r (H 0) (hr 0)).symm
             (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)).symm
             (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
@@ -164,21 +166,21 @@ theorem prodAux_framedParamsReg_zero_aux (H : Fin (L + 1) → ℕ) (r : ℕ)
       -- two `Eq.mpr` casts to `rfl`). Rewrite the whole succ-step in one `rw [hstep]`.
       -- the Eq.mpr-cast layer = the corner at the running widths (PROBE-proven: `framedParamsReg_zero`
       -- then `cases e1; cases e2` collapses the two `Eq.mpr` casts to `rfl`).
-      have hlayer : ((by rw [e1, e2]; exact framedParamsReg H r hr hL 0 ⟨k, hkL⟩ :
+      have hlayer : ((by rw [e1, e2]; exact framedParamsReg H r hr hL P Q 0 ⟨k, hkL⟩ :
             Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ))
           = Matrix.reindex (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩)).symm
               (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩)).symm
               (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
-        rw [framedParamsReg_zero H r hr hL ⟨k, hkL⟩]; cases e1; cases e2; rfl
-      have hstep : prodAux H (framedParamsReg H r hr hL 0) (k + 1) hk
-          = prodAux H (framedParamsReg H r hr hL 0) k hk' *
+        rw [framedParamsReg_zero H r hr hL P Q ⟨k, hkL⟩]; cases e1; cases e2; rfl
+      have hstep : prodAux H (framedParamsReg H r hr hL P Q 0) (k + 1) hk
+          = prodAux H (framedParamsReg H r hr hL P Q 0) k hk' *
               Matrix.reindex (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩)).symm
                 (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩)).symm
                 (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
-        show prodAux H (framedParamsReg H r hr hL 0) k hk' *
-            ((by rw [e1, e2]; exact framedParamsReg H r hr hL 0 ⟨k, hkL⟩ :
+        show prodAux H (framedParamsReg H r hr hL P Q 0) k hk' *
+            ((by rw [e1, e2]; exact framedParamsReg H r hr hL P Q 0 ⟨k, hkL⟩ :
               Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)) = _
-        exact congrArg (prodAux H (framedParamsReg H r hr hL 0) k hk' * ·) hlayer
+        exact congrArg (prodAux H (framedParamsReg H r hr hL P Q 0) k hk' * ·) hlayer
       rw [hstep]
       rcases Nat.eq_zero_or_pos k with hk0 | hkpos
       · subst hk0
@@ -194,12 +196,14 @@ gauge-sliced product at the deepest gauge slot is the block-normal corner: `prod
 reindex (fromBlocks 1 0 0 0)` (at width `H 0 × H (last)`). `prod = prodAux L`; specialize the `aux`
 fold at `k = L` (`1 ≤ L`). The `Fin.last L = ⟨L, _⟩` index form aligns by `Fin.ext`. -/
 theorem prodAux_framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    prod H (framedParamsReg H r hr hL 0)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    prod H (framedParamsReg H r hr hL P Q 0)
       = Matrix.reindex (rThresholdSplit r (H 0) (hr 0)).symm
           (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L))).symm
           (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
-  have h := prodAux_framedParamsReg_zero_aux H r hr hL L (Nat.lt_succ_self L) hL
+  have h := prodAux_framedParamsReg_zero_aux H r hr hL P Q L (Nat.lt_succ_self L) hL
   rw [prod]
   rw [h]
   -- `⟨L, _⟩ = Fin.last L` (Fin.ext); the two corner index-forms agree.
