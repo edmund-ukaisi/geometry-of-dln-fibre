@@ -173,6 +173,65 @@ theorem leak_frobenius_bound {r mlo nhi : Type*} [Fintype r] [Fintype mlo] [Fint
   rw [Matrix.mul_assoc]
   exact frobenius_mul_le P10 (N * P01)
 
+/-- **The triple-product Frobenius upper bound**: `∑(P·A·Q)² ≤ (∑P²)·(∑(A·Q)²)` (one `frobenius_mul_le`
+on `P·(A·Q)`), used both directions for the conjugation comparability. -/
+theorem frobenius_triple_le {a b c d : Type*} [Fintype a] [Fintype b] [Fintype c] [Fintype d]
+    (P : Matrix a b ℝ) (A : Matrix b c ℝ) (Q : Matrix c d ℝ) :
+    (∑ i, ∑ j, ((P * A * Q) i j) ^ 2)
+      ≤ (∑ i, ∑ k, (P i k) ^ 2) * (∑ j, ∑ k, ((A * Q) k j) ^ 2) := by
+  rw [Matrix.mul_assoc]; exact frobenius_mul_le P (A * Q)
+
+/-- The transposed-order Frobenius product bound: `∑ j, ∑ k, ((M·N) k j)² ≤ (∑M²)·(∑N²)` (the outer
+sum over the RIGHT-matrix columns), via `Finset.sum_comm` on `frobenius_mul_le`. -/
+theorem frobenius_mul_le' {a b c : Type*} [Fintype a] [Fintype b] [Fintype c]
+    (M : Matrix a b ℝ) (N : Matrix b c ℝ) :
+    (∑ j, ∑ k, ((M * N) k j) ^ 2)
+      ≤ (∑ i, ∑ k, (M i k) ^ 2) * (∑ j, ∑ k, (N k j) ^ 2) := by
+  have hcomm : (∑ j, ∑ k, ((M * N) k j) ^ 2) = ∑ i, ∑ j, ((M * N) i j) ^ 2 := Finset.sum_comm
+  rw [hcomm]; exact frobenius_mul_le M N
+
+/-- **Conjugation Frobenius comparability** (route-independent, the #80 STEP-1 endpoint-frame bound).
+For FIXED invertible endpoint frames `P, Q` (the deepest gauge frame's two boundary units, #77/(iii)),
+the squared-Frobenius energy of the conjugate `P·A·Q` is two-sidedly bounded by that of `A`:
+`∑A² ≤ (∑Pi²·∑Qi²)·∑(P·A·Q)²` and `∑(P·A·Q)² ≤ (∑P²·∑Q²)·∑A²` (`Pi, Qi` the inverses). The upper bound
+is `frobenius_triple_le`; the lower transports it through `A = Pi·(P·A·Q)·Qi`. The bounded conjugation
+carrying `dlnLoss = ‖∏A − B‖² = ‖Pi·(∏C − D)·Qi‖²` to the comparable `‖∏C − D‖²` (the framed loss) —
+the interior frames telescope (`G_s = I`, #77 (iii)), leaving only the constant endpoint conjugation. -/
+theorem conjugation_frobenius_comparable {n m : Type*} [Fintype n] [Fintype m]
+    [DecidableEq n] [DecidableEq m]
+    (P : Matrix n n ℝ) (Q : Matrix m m ℝ) (Pi : Matrix n n ℝ) (Qi : Matrix m m ℝ)
+    (hP : Pi * P = 1) (hQ : Q * Qi = 1) (A : Matrix n m ℝ) :
+    (∑ i, ∑ j, (A i j) ^ 2)
+        ≤ ((∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2))
+            * (∑ i, ∑ j, ((P * A * Q) i j) ^ 2)
+    ∧ (∑ i, ∑ j, ((P * A * Q) i j) ^ 2)
+        ≤ ((∑ i, ∑ k, (P i k) ^ 2) * (∑ j, ∑ k, (Q k j) ^ 2)) * (∑ i, ∑ j, (A i j) ^ 2) := by
+  have hnnP : (0 : ℝ) ≤ ∑ i, ∑ k, (P i k) ^ 2 :=
+    Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
+  have hnnPi : (0 : ℝ) ≤ ∑ i, ∑ k, (Pi i k) ^ 2 :=
+    Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
+  refine ⟨?_, ?_⟩
+  · -- lower: `A = Pi·(P·A·Q)·Qi`, then `frobenius_triple_le` + `frobenius_mul_le'` on the `Qi`-factor.
+    have hA : A = Pi * (P * A * Q) * Qi := by
+      have : Pi * (P * A * Q) * Qi = (Pi * P) * A * (Q * Qi) := by
+        simp only [Matrix.mul_assoc]
+      rw [this, hP, hQ, Matrix.one_mul, Matrix.mul_one]
+    calc (∑ i, ∑ j, (A i j) ^ 2)
+        = ∑ i, ∑ j, ((Pi * (P * A * Q) * Qi) i j) ^ 2 := by rw [← hA]
+      _ ≤ (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, ((P * A * Q) * Qi) k j ^ 2) :=
+          frobenius_triple_le Pi (P * A * Q) Qi
+      _ ≤ (∑ i, ∑ k, (Pi i k) ^ 2) * ((∑ i, ∑ k, ((P * A * Q) i k) ^ 2)
+            * (∑ j, ∑ k, (Qi k j) ^ 2)) :=
+          mul_le_mul_of_nonneg_left (frobenius_mul_le' (P * A * Q) Qi) hnnPi
+      _ = (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2)
+            * (∑ i, ∑ j, ((P * A * Q) i j) ^ 2) := by ring
+  · -- upper: `frobenius_triple_le P A Q`, then `frobenius_mul_le'` on the `A·Q`-factor.
+    calc (∑ i, ∑ j, ((P * A * Q) i j) ^ 2)
+        ≤ (∑ i, ∑ k, (P i k) ^ 2) * (∑ j, ∑ k, ((A * Q) k j) ^ 2) := frobenius_triple_le P A Q
+      _ ≤ (∑ i, ∑ k, (P i k) ^ 2) * ((∑ i, ∑ k, (A i k) ^ 2) * (∑ j, ∑ k, (Q k j) ^ 2)) :=
+          mul_le_mul_of_nonneg_left (frobenius_mul_le' A Q) hnnP
+      _ = (∑ i, ∑ k, (P i k) ^ 2) * (∑ j, ∑ k, (Q k j) ^ 2) * (∑ i, ∑ j, (A i j) ^ 2) := by ring
+
 /-- **The full-product loss squeeze** (route-independent, the #80 matrix-core). For the FULL chain
 product `P = fromBlocks P00 P01 P10 P11` with pivot `P00` invertible (`= I` near the deepest), the
 squared-Frobenius loss against `D = blockdiag[1,0]` is two-sidedly comparable to `∑E² + ‖R‖²`, where
