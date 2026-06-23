@@ -158,3 +158,43 @@ checkout (mathlib `8a178386`); if the symlink/`.lake` did not survive rotation, 
 Controller in a worktree ⟹ teammate `isolation: worktree` collapses to this shared worktree (serial).
 The fresh-worktree baseline build hit the mathlib-clone wall (>10-min bash cap) — Uplift A again;
 deferred (no tide pending the fork).
+
+## RESUME — operator: "go straight to the build, ambitious" (2026-06-23, post-rotation)
+
+Re-read the full expedition state. Operator declined the gating recon hedge and committed to the
+ambitious build of Lemma 4.6 (route (a)≈(b): the comorphism + fixed-fibre height-squeeze; Codex's
+"buildable route", the general bundle theorem stays roadmapped).
+
+**Exact discharge target** (`BundleShiftInterface.cited_bundle_shift`, the only assumed step under the
+`rlct = C/2` payoff): for `0<N`, `B.rank=r`, `r≤d k'`,
+`codimRepCanonical (fibre d (B.map ι)) = codimRepCanonical (productRankLocusLE d r) + r(d_0+d_N−r)`.
+Brick A (landed) gives `codimRepCanonical Σ̄^r = cCodim d r`; via the landed catenary bridge
+(`height_vanishingIdeal_add_varietyDim_eq_card`) the target is the **dimension squeeze**
+`varietyDim(fibre d B) = varietyDim Σ̄^r − r(d_0+d_N−r)`, i.e. `dim Σ̄^r = dim(fibre) + dim Mat^{rk=r}`
+(both RHS dims landed: `SigmaCodim`/`NullstellensatzCodim` + the thermometer `DeterminantalStratumDim`).
+
+**The keystone is constructible — thread-04's "no ring map exists" is "not yet built", not "impossible".**
+`mult` is defined over any `CommRing`, so the product-entry polynomials are just `mult` applied to the
+GENERIC tuple (entries = `MvPolynomial.X` variables) over `MvPolynomial (RepCoord d) k`. Eval at a point
+recovers the actual product (eval is a ring hom, commutes with matrix mult), so:
+- `canonicalCoord '' (fibre d B) = zeroLocus {multPoly(r,c) − C(B r c)}`;
+- `vanishingIdeal(fibre) = radical(span{multPoly(r,c) − C(B r c)})` (Nullstellensatz, `IsAlgClosed`);
+- the comorphism `multComap := aeval multPoly : MvPolynomial(Fin d_N × Fin d_0) k →ₐ MvPolynomial(RepCoord d) k`
+  realises the fibre generator-ideal as `Ideal.map multComap (maxIdeal B)`, i.e. the fibre coordinate
+  ring is `R_total ⧸ (m_B · R_total)` — the "fibre = B/mB" object the height-squeeze consumes.
+
+**Rung-ladder (committed):**
+- **Tide F1 [thread 05, NOW] — the comorphism keystone** (`Core.MultComorphism`): `multPoly`, the
+  eval-compatibility bridge, fibre = zero-locus, `vanishingIdeal(fibre) = radical(fibre-gen-ideal)`, and
+  `multComap` with the `Ideal.map` identification. Discharges the thread-04 blocker concretely.
+- **Tide F2 — the height-squeeze** (`dim(fibre) = dim R_total − dim R_base` on a rank-`r` chart).
+  **Route steer (controller, post-F1-launch): the two-inequality SANDWICH, NOT flatness.** The landed
+  `AffineDomainDimension.affine_domain_height_add_ringKrullDim_quotient_eq` (`height p + dim(A⧸p) = dim A`
+  for a finite-type affine domain `A = MvPolynomial⧸prime`) is **equidimensionality with NO flatness
+  hypothesis** — exactly Codex's upper bound. So F2 dodges **L1-0 flatness** (the wall-within-the-wall
+  that stalled thread-04): upper bound = this affine-domain formula per top component; lower bound = a
+  minimal prime over `m_B` (uses F1's `multComap` + `Ideal.map` identification, NOT flatness). Confirm the
+  exact form once F1 lands. Reducibility subtlety: `codimRepCanonical = height(vanishingIdeal) = min` over
+  components and Σ̄^r is reducible when θ>1, so the sandwich is per-(top-)component — dovetails into F3.
+- **Tide F3 — assembly**: per-component / reducibility bookkeeping → `codimRepCanonical(fibre) = cCodim + shift`;
+  retire `cited_bundle_shift`. Witness `(2,2,2), r=1`: fibre codim `4 = 1 + 3`.
