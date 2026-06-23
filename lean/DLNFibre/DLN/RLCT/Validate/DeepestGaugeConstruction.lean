@@ -144,8 +144,10 @@ theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hca_spec : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2)
     (E_pivot : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ) → (Fin (deepestNReg H r) → ℝ))
     (hEp_contdiff : ContDiff ℝ (⊤ : ℕ∞) E_pivot)
-    (hEp_deriv : HasStrictFDerivAt E_pivot
-      (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ) (Fin nGauge → ℝ)) 0)
+    (D_E : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) →L[ℝ] (Fin (deepestNReg H r) → ℝ))
+    (hEp_deriv : HasStrictFDerivAt E_pivot D_E 0)
+    (e : DeepestSplit H r nGauge ≃L[ℝ] DeepestSplit H r nGauge)
+    (he : (e : DeepestSplit H r nGauge →L[ℝ] DeepestSplit H r nGauge) = regStraightenTotalCLM D_E)
     (hEp_base : E_pivot 0 = 0) :
     ∃ regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge,
       Continuous regStraighten ∧
@@ -173,17 +175,18 @@ theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (fun rg : Fin (deepestNReg H r) → ℝ => ∑ i, rg i ^ 2) (deepestCoreF H r)
     hca_mp hca_base hca_reg hca_spec
     (fun q q' hq hq' => regStraightenOf_regdep E_pivot q q' hq hq') ?_
-  -- The decoupled peel: `f = regStraightenOf E_pivot`, smooth + `dE(0)=id` ⟹ local diffeo.
+  -- The decoupled peel: `f = regStraightenOf E_pivot`, smooth + `dE(0) = the invertible SHEAR e`
+  -- (#120-corrected: NOT `fst` — the opaque layout shears the gauge-X's into reg) ⟹ local diffeo.
   refine rlctAtOn_comp_localDiffeo
     (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
-    (0 : DeepestSplit H r nGauge) (regStraightenOf E_pivot)
-    (ContinuousLinearEquiv.refl ℝ (DeepestSplit H r nGauge)) ?_ ?_ ?_
+    (0 : DeepestSplit H r nGauge) (regStraightenOf E_pivot) e ?_ ?_ ?_
   · -- `regStraightenOf E_pivot` is `ContDiff ⊤`.
     refine ContDiff.prodMk ?_ (ContDiff.prodMk (contDiff_fst.comp contDiff_snd)
       (contDiff_snd.comp contDiff_snd))
     exact hEp_contdiff.comp (contDiff_fst.prodMk (contDiff_snd.comp contDiff_snd))
-  · -- `HasStrictFDerivAt (regStraightenOf E_pivot) (refl) 0`.
-    exact hasStrictFDerivAt_regStraightenOf_refl E_pivot hEp_deriv
+  · -- `HasStrictFDerivAt (regStraightenOf E_pivot) (e) 0`: the assembled total CLM IS `e` (via `he`).
+    rw [he]
+    exact hasStrictFDerivAt_regStraightenOf_gen E_pivot D_E hEp_deriv
   · -- `regStraightenOf E_pivot 0 = 0`.
     exact regStraightenOf_basepoint E_pivot hEp_base
 
@@ -347,10 +350,22 @@ theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
     ContDiff ℝ (⊤ : ℕ∞) (deepestEPivot H r hr hL) :=
   sorry
 
+/-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
+(`d(P−B)|_0 = (Σ_s X_s, Y_L, Z_1)`, idempotent sandwich), the reg-residual's derivative reads the
+reg-X + sums the gauge-X's into reg while keeping the gauge free — the unitriangular shear
+`D_E = [[I, Σ],[0, I]]` on `reg×gauge → reg` (its total `regStraightenTotalCLM D_E` is `[[I,Σ],[0,I]]`
+on `DeepestSplit`, det 1, invertible). Bundled: `∃ D_E (e : ≃L), HasStrictFDerivAt deepestEPivot D_E 0
+∧ (e : →L) = regStraightenTotalCLM D_E`. The invertible `e` is what `rlctAtOn_comp_localDiffeo` takes.
+**OBLIGATION:** the concrete shear `D_E` + its derivative (the #91 block-derivative transcription,
+origin/g213-pin1-de0 @09475f2) + the unitriangular inverse `[[I,−Σ],[0,I]]` for `e`. -/
 theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    HasStrictFDerivAt (deepestEPivot H r hr hL)
-      (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ) (Fin (deepestNGauge H r) → ℝ)) 0 :=
+    ∃ (D_E : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) →L[ℝ]
+        (Fin (deepestNReg H r) → ℝ))
+      (e : DeepestSplit H r (deepestNGauge H r) ≃L[ℝ] DeepestSplit H r (deepestNGauge H r)),
+      HasStrictFDerivAt (deepestEPivot H r hr hL) D_E 0 ∧
+      (e : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r))
+        = regStraightenTotalCLM D_E :=
   sorry
 
 theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -412,11 +427,12 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- PIN 1: `regStraighten` (the (C)-fallback total-fn E-straightening) + its props (against `coreAbsorb`).
   -- The reg-output is the shared `deepestEPivot` (the PIN1↔PIN2 coupling object); its three analytic
   -- props feed PIN 1's IFT peel, its concrete value feeds PIN 2's squeeze.
+  obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ := deepestEPivot_deriv H r hr hL
   obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
       (deepestCoreAbsorb_mp H r hr hL) hca_base hca_reg hca_spec
       (deepestEPivot H r hr hL) (deepestEPivot_contdiff H r hr hL)
-      (deepestEPivot_deriv H r hr hL) (deepestEPivot_base H r hr hL)
+      D_E hEp_deriv eShear he_shear (deepestEPivot_base H r hr hL)
   -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
     deepest_loss_squeeze H r B hB hr hL (deepestNGauge H r) split coreAbsorb regStraighten hsplit_base

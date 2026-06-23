@@ -419,6 +419,46 @@ theorem hasStrictFDerivAt_regStraightenOf_refl (E_pivot : R × S → R)
   rwa [show ((ContinuousLinearEquiv.refl ℝ (R × (C × S))) : (R × (C × S)) →L[ℝ] (R × (C × S)))
     = ContinuousLinearMap.id ℝ (R × (C × S)) from rfl]
 
+/-- The total CLM `regStraightenTotalCLM D_E : (R × (C × S)) →L (R × (C × S))` assembled from a
+reg-component derivative `D_E : (R × S) →L R`: `δ ↦ (D_E(δ.1, δ.2.2), δ.2.1, δ.2.2)`. The derivative of
+`regStraightenOf E_pivot` at `0` when `D E_pivot(0) = D_E`. For the deepest gauge chart `D_E` is the
+**shear** `(reg-X, gauge-X's) ↦ reg-X + Σ gauge-X's` (#120/#91 correction — NOT `fst`), so the total CLM
+is the unitriangular invertible shear `[[I, Σ],[0, I]]` (det 1), which `rlctAtOn_comp_localDiffeo`
+consumes as a `≃L`. -/
+noncomputable def regStraightenTotalCLM (D_E : (R × S) →L[ℝ] R) :
+    (R × (C × S)) →L[ℝ] (R × (C × S)) :=
+  (D_E.comp ((ContinuousLinearMap.fst ℝ R (C × S)).prod
+      ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))))).prod
+    (((ContinuousLinearMap.fst ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))).prod
+      ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))))
+
+/-- **`regStraightenOf E_pivot` strict-diff with the GENERAL assembled derivative** — the form
+the `#120`-corrected `_deriv` needs (the derivative is the invertible SHEAR, NOT `fst`). Given
+`HasStrictFDerivAt E_pivot D_E 0` for any `D_E`, the total map's strict derivative at `0` is
+`regStraightenTotalCLM D_E` (the assembled `(D_E on reg+spec, id on core, id on spec)`). The producer
+supplies the invertible `≃L` agreeing with this CLM (the shear) to the peel. -/
+theorem hasStrictFDerivAt_regStraightenOf_gen (E_pivot : R × S → R) (D_E : (R × S) →L[ℝ] R)
+    (hE : HasStrictFDerivAt E_pivot D_E 0) :
+    HasStrictFDerivAt (regStraightenOf (C := C) E_pivot) (regStraightenTotalCLM (C := C) D_E) 0 := by
+  set proj : (R × (C × S)) →L[ℝ] (R × S) :=
+    (ContinuousLinearMap.fst ℝ R (C × S)).prod
+      ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) with hproj
+  have hproj_sd : HasStrictFDerivAt (fun q : R × (C × S) => (q.1, q.2.2)) proj 0 :=
+    proj.hasStrictFDerivAt
+  have hreg_sd : HasStrictFDerivAt (fun q : R × (C × S) => E_pivot (q.1, q.2.2))
+      (D_E.comp proj) 0 := by
+    have hcomp := hE.comp (x := (0 : R × (C × S))) hproj_sd
+    simpa using hcomp
+  have hcore_sd : HasStrictFDerivAt (fun q : R × (C × S) => q.2.1)
+      ((ContinuousLinearMap.fst ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) 0 :=
+    ((ContinuousLinearMap.fst ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))).hasStrictFDerivAt
+  have hspec_sd : HasStrictFDerivAt (fun q : R × (C × S) => q.2.2)
+      ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) 0 :=
+    ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))).hasStrictFDerivAt
+  have hcs_sd := hcore_sd.prodMk hspec_sd
+  have htotal := hreg_sd.prodMk hcs_sd
+  exact htotal
+
 end RegStraightenOf
 
 end DLNFibre.DLN.RLCT
