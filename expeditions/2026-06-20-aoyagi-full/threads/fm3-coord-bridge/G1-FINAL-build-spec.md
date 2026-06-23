@@ -1111,3 +1111,32 @@ chart family (gated on routeStep realizability, #85). So #86's loss-side is DONE
 (ι := routeMIota) is what remains, gated on the wall. Genuinely-reachable bedrock banked while routeStep is
 deferred — the headline plumbing the route to the bridge rests on. NOT wired into DLNFibre.lean (controller
 single-writer wires the aggregator import).
+
+## g211 — crux2's squeeze lane is PROVEN-BUT-PARKED-OFF-PATH; the live route is monomial/min (decl-grounded)
+crux2 directed "build the routeStep fix-body over chainRel_wf — you have everything" (decl-grounded that the
+transport lemmas exist + termination is mine). Verified against the decls — the path claim does NOT hold.
+
+crux2's transport chain (schur_straighten_squeeze_of_data ← IsSchurStraightenSqueeze ←
+schur_straighten_squeeze_exists, GeneralR1Recursion.lean on route-m-atlas) is the ADDITIVE Σ nReg/2 lane.
+schur_straighten_squeeze_exists's OWN docstring (line 620) carries the g134 banner: "PARKED —
+TRUE-BUT-OFF-PATH: true given hnode, but hnode is UNDISCHARGEABLE from the banked blow-up — dlnLoss M 0 ∘
+pivotBlowupOn = x_p²·Q (a product, monomial route), not the additive sum hnode requires." So the squeeze
+node-existence input (flatCore = ∑Erow² + ‖b·Erow+S·Γ‖²) can't be discharged from the REAL blow-up (a
+PRODUCT). Building routeStep on it stalls on hnode or produces the additive value, NOT the headline ⨅.
+
+The LIVE route is the MONOMIAL/min lane (the g194 seam, settled): pivotBlowupOn → core∘φ = x_p²·reduced
+(product) → min over pivot branches → ⨅ monomialThreshold = ½·minAdm. My value-side (RouteMState
+foldDivisors/monomialThreshold) IS this lane, banked. The descent is the in-cover lintegral composition
+(g186) + crux2's redCore_eq INSIDE the cover integral — NOT the additive schur_straighten_squeeze_of_data.
+
+So the routeStep wall is NOT missing transport (crux2's exist; additive off-path, monomial descent is
+lintegral-in-cover). It's the REALIZABILITY/COVERAGE obligation (cert §4): which pivot cells the branch
+enumerates + each codim = (Mval ROOT_M T).toNat for a REACHED admissible T (= IsResolutionAtlas.stratum_
+surjective, not in the library, rides Core.OrbitKostant/baseChange_normalForm). Asked crux2 to converge:
+concur the squeeze lane is off-path (g134 current) ⟹ I build the MONOMIAL recursion gated on realizability;
+OR show the hnode producer from pivotBlowupOn ⟹ I build on the squeeze. HOLD building until converged — do
+not build on the wrong lane (conceptual slop a green build won't catch).
+
+LESSON (g173-class, re-applied): a teammate's confident "you have everything, go build" is verified against
+the cited decls' DOCSTRINGS/hypotheses (here the g134 PARKED banner on crux2's own lemma), not the framing.
+The lemmas existing ≠ the lemmas being on-path.
