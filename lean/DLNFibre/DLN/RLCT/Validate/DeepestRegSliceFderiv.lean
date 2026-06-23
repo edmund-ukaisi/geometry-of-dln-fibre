@@ -359,7 +359,7 @@ theorem prodAux_regSlice_through_first (H : Fin (L + 1) → ℕ) (r : ℕ)
           exact Matrix.one_mul _
         · show framedParamsReg H r hr hL (r0, 0) (firstLayer hL) = _
           rw [framedParamsReg_regSlice_first H r hr hL hL2 r0]
-          congr 1 <;> (apply Fin.ext; simp [firstLayer, Fin.castSucc, Fin.succ])
+          congr 1
       · -- k ≥ 1: `prodAux (k+1) = prodAux k * C_k`, `C_k` interior corner, `firstShape · corner`.
         have hcorner : framedParamsReg H r hr hL (r0, 0) ⟨k, hkL1⟩
             = Matrix.reindex (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).castSucc) (hr _)).symm
@@ -375,7 +375,7 @@ theorem prodAux_regSlice_through_first (H : Fin (L + 1) → ℕ) (r : ℕ)
         · rw [ih hk' (by omega) (by omega)]
           exact firstShape_mul_corner H r hr hL r0 k hk' _ hk
         · rw [hcorner]
-          congr 1 <;> (apply Fin.ext; simp [Fin.castSucc, Fin.succ])
+          congr 1
 
 /-! ## Scalar calculus helpers (cross terms vanish at the base point) -/
 
