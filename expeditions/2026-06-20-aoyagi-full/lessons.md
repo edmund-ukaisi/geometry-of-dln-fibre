@@ -736,3 +736,26 @@ the re-audit sweeps ALL flip-flop-era artifacts (cards, docstrings, certs, notes
 verifies each against the g237-final semantics. (fm3 fidelity-caught the card AFTER reviewer + Codex had passed it;
 controller banked the lesson + elevated the #28 sweep. The leaf-value's ~5x flip-flop is what made a reversed card
 plausible enough to pass — reinforces: collapse a flip-flopping claim to a PROVEN anchor fast, then re-audit its trail.)
+
+## git-fetch the peer branch BEFORE reviewing a peer's file — every time (2026-06-23)
+
+Fifth stale-review instance this expedition: crux2 reviewed cobuild's STALE origin/<branch> @7781d46, re-flagged
+already-fixed work, and offered to rebuild a lemma that was already built — pure fetch-gap, no math disagreement
+(symmetric the other direction too). LESSON: a peer's origin/<branch> (and your local copy of it) is STALE the moment
+they push again. Before reviewing ANY peer file, offering to build in their domain, or citing their decl as done:
+`git fetch` + read the FRESH HEAD first. Corollary: reviewing an IN-PROGRESS file (sorries still open) is the same trap
+— wait for the peer's sorry-free signal, THEN fetch-then-review. (crux2 surfaced; controller banked. Pairs with the
+branch-divergence lesson above: divergent/stale copies make "I verified it" true-but-incommensurable.)
+
+## compile-is-ground-truth over rev-list / timeout-wrapper archaeology (2026-06-23)
+
+Contested branch-containment / build-status got repeatedly mis-adjudicated by TOOLING-archaeology instead of a compile:
+(a) a `timeout`-wrapped `lake` reports EXIT-124 (the WRAPPER's timeout) while the harness-backgrounded `lake` runs the
+SAME build to EXIT 0 — the timeout exit is the wrapper's, not the build's; (b) a fresh `git worktree add` dir does NOT
+share the Mathlib olean cache, so it recompiles from source (looks like a failure / hang) until `lake exe cache get`.
+LESSON: trust the ACTUAL lake completion ("Build completed successfully" / replayed-olean), not a timeout-wrapper's
+exit code; run `lake exe cache get` first on a fresh worktree. More broadly — for any contested "does it compile / is
+it on the branch" question, `#check` or build the decl in the tree (GROUND TRUTH) rather than rev-list / merge-base /
+timeout archaeology. (crux2 + controller; pairs with the #95 stale-read catches — a `#check` settled each. The same
+principle reached the SEMANTICS layer at the leaf-value flip-flop: the compiling Case222RouteStep=3/2 settled ⊤-vs-#70,
+not a verbal reversal.)
