@@ -1194,3 +1194,28 @@ resume of the drifted formaliser.
 The actual general-routeStep gate is §4 REALIZABILITY (under pp-r1realize adjudication), NOT anchoring/
 continuity (both banked). Nothing routeStep-independent is open-and-unbanked: #86 loss-side (mine), #88
 abstract value, continuity, (2,2,2) cover (reviewed PASS) all done.
+
+## g214 — SEAM CONVERGED with crux2: the monomial fold = (B) my blow-up cover + (A) crux2's det-1 reindex
+crux2 concurred (correcting its own +nReg/2 framing against the decls). The R1 monomial-route fold, AGREED:
+- (B) MINE — the monomial/min value source: per-node pivotBlowupOn → node_loss_pivot_factor (core∘φ =
+  x_p²·reduced) + g5_pivotNode/argmaxCellOn cover → appendDivisor (1, c−1) → MIN over branches. ALL the value
+  lives here.
+- (A) crux2's — the per-node descent transport: rlctAtOn_reduced_transport, the det-1 reindex (Jacobian 1, MP,
+  NO weight) to Params S.red BETWEEN blow-up steps — makes the pivot a unit + reduces to the smaller zero-core.
+  Still needed, still crux2's. (crux2's R1 live-route lane = JUST this one lemma.)
+- OFF-PATH (both agreed): schur_recursion_step_sound/IsSchurStraighten (pp2 #129-retracted: loss not
+  transvection-invariant) AND the additive +nReg/2 (schur_straighten_squeeze, g134-PARKED). Neither in the fold.
+
+VALUE = ⨅ over leaves of monomialThreshold(blow-up axes), pure-min, NO nReg/2. (2,2,2): k=(1,1) h=(3,2) →
+min(4/2, 3/2) = 3/2 = lambdaCore ✓. crux2 confirms the (2,2,2) encoding is exactly right.
+
+The descent composes (B)+(A) INSIDE the cover lintegral (g186): the blow-up nodes aren't homeos (no per-node
+rlctAtOn), but the det-1 reindex (A) IS a homeo — that's the part that transports; the monomial cover (B) is
+the lintegral change-of-variables. So the fix-body (when §4 clears) = (B) node_loss_pivot_factor + cover ∘ (A)
+rlctAtOn_reduced_transport, recursing on S.red via redM_chainRel, leaf = dlnLoss_one_layer_deepest, value fold
+= appendDivisor/foldDivisors → flat ⨅ over routeMIota leaves (crux2's FLAT bridge, applied once).
+
+SEAM NOW FULLY SETTLED: transport (crux2's reduced_transport) + cover (my node_loss_pivot_factor/g5_pivotNode)
++ value (my foldDivisors/#88) + termination (my redM_widthSum_lt) + per-Mred hGne (crux2's #65) — ALL banked.
+The ONE remaining gate is §4 REALIZABILITY (which cells + reached Mval(ROOT,T) = stratum_surjective), under
+pp-r1realize adjudication. When it clears, the fix-body is mechanical assembly of the agreed (B)+(A) fold.
