@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion
 import DLNFibre.DLN.RLCT.Validate.RouteMState
+import DLNFibre.DLN.RLCT.Validate.RouteMLeaf
+import DLNFibre.DLN.RLCT.Validate.SchurState
 import Mathlib.Data.Fintype.Sigma
 
 /-!
@@ -194,13 +196,16 @@ fabricated `(d,k,h)`), so the `branch`'s admissible-`PivotWitness M₀` is hones
 cover as the honesty-gate. The concrete anchors `(2,2,2)`/`(3,2,3)` are `Case222RouteStep`/decidable; the
 general achiever-leaf-existence rides the cascade realizability (`Core.CascadeRealizable`, #116) at #104. -/
 noncomputable def routeStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : RouteStep M₀ M :=
-  if _hleaf : ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat = 0 then
-    -- LEAF: the degenerate boundary (`∃ s, M_s = 0`). The ⊤ non-binding terminal (`leafMonoData 0`);
-    -- its node-RLCT (`#70`/`nReg/2`) is the descent's concern, not this value-fold datum.
+  if _hleaf : isLeafNode M then
+    -- LEAF (`isLeafNode M`, the degenerate boundary `∃ s, M_s = 0`, `isLeafNode_iff_width_zero`). The ⊤
+    -- non-binding terminal (`leafMonoData 0`); its node-RLCT (`#70`/`nReg/2`) is the descent's concern,
+    -- NOT this value-fold datum.
     .leaf (leafMonoData 0)
   else
     -- BRANCH: the general rank-pattern read — emit the per-cell admissible-`Mval` codims + achiever `T*`.
-    -- The single fenced gap (realizability is the COVER's job, #104; anchors are concrete). NOT faked.
+    -- The split is `schurState M` (its `hlo` is `schurState_hlo_of_not_isLeafNode M _hleaf` — a non-leaf
+    -- node has the pivot widths `≥ 1`). The single fenced gap (realizability is the COVER's job, #104;
+    -- anchors are concrete). NOT faked.
     sorry
 
 /-- **The Route-M chart-family recursion (the G1 deliverable, rebased onto `ChainDimSplit`).** With the
