@@ -588,22 +588,192 @@ $t_1{=}1$-only}: R1's \emph{proof} must use Aoyagi's coupled $\operatorname{diag
 recursion (option (ii)) for general branches; the clean disjoint Fubini recursion
 (option (i)) covers only $t_1{=}1$ minimizers. \textbf{R1 design: build option (ii)}
 (Aoyagi's actual coupled recursion); the headline value is safe regardless.}
-\qmark{\textbf{Foresighted-design question (controller, next):} is there a value-only
-upper bound for the minimizing branch that avoids the full per-divisor $b_i$
-accumulation --- e.g.\ resolve only $\{C^{(\text{deepest})}=0\}$ radially (ratio
-$\tfrac12\codim\ge\tfrac12\min$) $+$ the residual threshold $=\tfrac12\Mval(\text{branch})$
-by induction, as Codex's $(3,3,2,2)$ resolution did --- without the $b_i$ bookkeeping? If
-so R1 is materially lighter than Aoyagi's full Cases 1\,\&\,2. Work out before the Lean
-design. (No open \emph{validation} leg remains; this is a design-optimisation question,
-the value being already robust.)}
+\paragraph{The partial-rank dichotomy --- the final characterisation
+(\texttt{verify-r1-shortcut}, both named cases run exactly).} By the layer-1 residual codimension
+$c_1=(M^{(1)}-t_1)(M^{(2)}-t_1)$:
+\begin{itemize}
+\item \textbf{$c_1=0$ (rank full in the smaller dimension): clean, no layer-1 divisor.} Either
+$t_1=M^{(2)}$ (full column rank: $C^{(1)\top}C^{(1)}$ is a unit, $\langle C^{(1)}\cdots\rangle=\langle
+C^{(2)}\cdots\rangle$) or $t_1=M^{(1)}$ (full row rank: $C^{(2)}\mapsto C^{(1)}C^{(2)}$ surjective,
+Jacobian full) --- both reduce to a \emph{fresh lower-depth core} by a unit transform. Witnesses
+$(3,2,2,2)\,t_1{=}2$ and $(2,3,2,2)\,t{=}(2,1,0)$ both land here ($\rlct=3/2=\tfrac12\min\Mval$).
+\item \textbf{$0<t_1<\min(M^{(1)},M^{(2)})$ (genuine partial drop): coupled.} The $\operatorname{diag}(b)$
+invariant; the disjoint factorisation fails (witness $(3,3,2,2)$, $c_1{=}1$, value $=2$).
+\end{itemize}
+\gnote{\textbf{Value certified general-$L$, all branch types} (rank-1, $c_1{=}0$, $c_1{>}0$): every case
+evaluates to exactly $\tfrac12\Mval(\text{branch})$ by ideal-preservation, so
+$\rlct_{\mathrm{core}}=\tfrac12\min_t\Mval(t)$ --- safe to build the headline on. The clean disjoint
+\emph{mechanism} holds for $c_1{=}0$ and rank-1 peels; $c_1{>}0$ needs the coupled recursion.}
+\qmark{\textbf{The one remaining R1-Lean design fork} (value certified either way, so non-blocking):
+does a clean ($c_1{=}0$ / rank-1) peel always reach \emph{some} minimiser? Holds for
+$(2,2,2,2)/(2,3,2,2)/(3,2,2,2)$; \emph{fails} for $(3,3,2,2)$'s binding $t{=}(2,1,0)$ ($c_1{=}1$). If
+``clean-peel-reaches-a-minimiser'' holds general-$L$, R1 builds the \emph{light} disjoint recursion
+(option (i)); else option (ii) (coupled $\operatorname{diag}(b)$) is mandatory for those branches. Settle
+before pinning the routeStep datum.}
 
-\qmark{The hard design questions for R1, to settle in the next pass:
-(1) does the \emph{single binding-divisor} shortcut (iterated block-elim to the
-codim-$\Mval(t)$ residual + one blow-up + a cover lower bound) reproduce
-Aoyagi's $\min M_{s,k}$ for general $L$ --- including the generic-vs-nongeneric-point
-caveat? (2) where exactly is the Case-2 printed typo, and is it confined (as the
-diagnostics claim) to non-binding exponents $2\rlct\le M^{(i)}M^{(j)}$ that never
-attain the min? Both get a decorrelated exact-arithmetic check before any Lean.}
+\gnote{\textbf{The earlier ``hard design questions'' are now settled} (\#18, decorrelated $+$ Codex):
+(1) the \S8 single-binding-divisor one-shot does \emph{not} reproduce $\min M_{s,k}$ for $L\ge3$ (refuted,
+the $(2,2,2,2)$ order-4 witness above); the depth-recursion / coupled recursion does. (2) The Case-2
+printed exponent $(M(S)-J)(M^{(S+1)}-J)$ is the codimension of the blown-up block (image p.20, (T-C)) and
+is confirmed \emph{non-binding} ($2\rlct\le M^{(i)}M^{(j)}$, never attains the min). No open validation leg
+remains; R1 can build.}
+
+% =====================================================================
+\section{Proof, part IV: the minimisation and the closed form (Lemmas 3--5)}
+\label{sec:minimisation}
+% =====================================================================
+
+Part~II gave, per terminal branch (rank-profile $t$), the divisor exponent $M_{s,k}=\Mval(t)$ and
+$\rlct_{\mathrm{core}}=\tfrac12\min_t M_{s,k}$. Turning this into the closed form of
+Theorem~\ref{thm:main} is two nested minimisations: an \emph{inner} balance within a fixed selected set
+(Lemma~3), and the \emph{outer} selection of the set itself (Definition~3 / the $\ell+1$ smallest widths).
+
+\subsection{Lemma 3: the within-set balance (image-confirmed p.24)}\label{ssec:lemma3}
+
+Fix the selected set $\mathcal M=\{M^{(S_1)},\dots,M^{(S_{\ell+1})}\}$, $P:=\sum_k M^{(S_k)}$, and recall
+$\Ms-1<P/\ell\le\Ms$, $a=P-(\Ms-1)\ell$. The terminal branches that can bind the minimum differ only in
+how Aoyagi's local-coordinate construction distributes the split; parametrised by an integer
+$b\in\{0,\dots,\ell-1\}$, the bound is the one-variable quadratic (p.24)
+\[
+ A(b)=b(\ell-a)^2+(\ell-1-b)a^2+\big(b(\ell-a)-(\ell-1-b)a\big)^2
+      =\ell^2 b^2+\ell^2(1-2a)b+a^2\ell(\ell-1),
+\]
+\[
+ \frac{\partial A}{\partial b}=\ell^2(1+2b-2a),\qquad
+ \min_{b\in\{0,\dots,\ell-1\}}A(b)=A(a-1)=A(a)=a\,\ell(\ell-a).
+\]
+The real minimiser is $b=a-\tfrac12$, so the integer neighbours $b=a-1,a$ tie (this tie is exactly what
+$\rorder$ counts, \S\ref{ssec:order}). Dividing by $\ell^2$ and scaling by $\tfrac14$ recovers the first
+variable term of $\rlct$:
+\[
+ \tfrac14\cdot\frac{\min_b A(b)}{\ell^2}=\frac{a(\ell-a)}{4\ell}.
+\]
+\fnote{The only genuinely-analytic minimisation in the value layer, and it is a one-variable integer
+quadratic --- trivial in Lean once stated. Exact arithmetic $+$ decorrelated Codex confirmed the print
+$A(a)=a\ell(\ell-a)$ is \emph{correct} (\texttt{verify-arith-groundtruth.md} Check~5); an earlier draft's
+``typo'' (T-B) was retracted after reading p.24. Domain subtlety only: $A(a-1)$ needs $a\ge1$; at $a=0$
+the lone admissible $b=0$ still gives $0=a\ell(\ell-a)|_{a=0}$.}
+
+\subsection{The set selection and the closed form}
+
+The outer minimisation chooses $\mathcal M$ (hence $\ell$). Geometrically (\S\ref{ssec:candidates}) it is
+$\min_t\Mval(t)$ over the admissible rank-profile lattice; combinatorially (Def.~3, modulo the (T-D)/(F-1)
+underspecification of \S\ref{def:Mset}) the binding $\mathcal M$ is the set of the $\ell+1$ \emph{smallest}
+reduced widths at the balancing $\ell$. Substituting the inner value gives Theorem~\ref{thm:main}:
+\[
+ \rlct=\underbrace{\frac{-r^2+r(H^{(1)}+H^{(L+1)})}{2}}_{\text{Thm 3 regular block}}
+       +\underbrace{\frac{a(\ell-a)}{4\ell}-\frac{\ell(\ell-1)}{4}\Big(\frac P\ell\Big)^2
+        +\frac12\!\!\sum_{i<j}\!M^{(S_i)}M^{(S_j)}}_{=\ \tfrac12\min_t\Mval(t)\ =\ \rlct_{\mathrm{core}}}.
+\]
+
+\subsection{The clean form (the formalisation target)}\label{ssec:clean}
+
+The expedition repackages $\rlct_{\mathrm{core}}$ into a form with no $\Ms$, no $\lceil\cdot\rceil$, and
+small terms. Let $m_1\le\cdots\le m_{\ell+1}$ be the $\ell+1$ smallest reduced widths, $P=\sum_k m_k$, and
+$q=(q_1,\dots,q_\ell)$ the balanced $\ell$-part split of $P$ (each $q_i\in\{\lfloor P/\ell\rfloor,\lceil
+P/\ell\rceil\}$, $\sum_iq_i=P$). Then
+\[
+ \boxed{\ 2\,\rlct_{\mathrm{core}}=\tfrac12\Big(\sum_{i=1}^{\ell}q_i^2-\sum_{k=1}^{\ell+1}m_k^2\Big).\ }
+\]
+This equals the bracketed closed form above for every width vector (exact enumeration $L\le4$ $+$ sampled
+$L=5,6$; \texttt{verify-def3-underspec.md} Check~4), and is \texttt{lambdaCore} in Lean.
+\fnote{\textbf{Why this is the Lean primitive, not Def.~3.} (i) \emph{Total}: the $\ell+1$ smallest widths
+and a balanced split exist for \emph{every} width vector, where Def.~3's inequalities are empty on the
+majority ($105/216$ at $L{=}2$; \S\ref{def:Mset}). (ii) \emph{Permutation-invariant}: $\Mval(t)$ singles
+out $M^{(1)},M^{(2)}$ yet $\Mval_{\min}$ is identical on every ordering of the width multiset (0 violations,
+$L\le4$) --- licenses sorting in \texttt{aoyagiLambda}. (iii) \emph{Small terms}: $\le 2(\ell+1)$ squares,
+keeping \texttt{decide}/\texttt{norm\_num} cheap. Define \texttt{aoyagiLambda} $=$ (Thm-3 prefactor) $+
+\tfrac12\Mval_{\min}$; prove $=$ the clean form (\texttt{lambdaCore\_eq\_clean}) and $=$ the printed
+expression where Def.~3 applies. \emph{Do not transcribe Def.~3's inequalities as the definition.}}
+
+\subsection{Lemmas 4--5: the order $\rorder=a(\ell-a)+1$ (images p.25--26)}\label{ssec:order}
+
+The order $\rorder$ --- the multiplicity of the largest pole of the zeta function
+$\int|F|^{-2c}\varphi\,dw$, geometrically the number of top-dimensional components of the exceptional fibre
+over the binding stratum --- is counted combinatorially. With the partial sums
+$\widetilde H_j=\sum_{l=1}^{j+1}M^{(S_l)}-jM$ (so $\widetilde H_1=\widetilde H_\ell=0$), Lemma~4
+characterises which terminal branch-vectors $T_{s,k}$ attain the minimum: those lying in the range
+$\widetilde T\le T_{s,k}\le\widetilde T'$ cut out by the $(\widetilde H_j)$ --- precisely the balanced
+splits tying in Lemma~3. Lemma~5 counts them over the index range
+$\min\{a,\ell-a\}<j\le\max\{a,\ell-a\}$, giving
+\[
+ \rorder=a(\ell-a)+1.
+\]
+\gnote{This is the \emph{combinatorial} order --- a count of binding branches (for $\ell=1$,
+$a=1$, it is $1$; the unique minimiser). Equating it to the \emph{analytic} pole multiplicity is the step
+that needs meromorphic continuation, which Mathlib lacks.}
+\fnote{\textbf{Deliverable A2 ($\rorder$, secondary).} Land the combinatorial $\rorder=a(\ell-a)+1$ fully
+(same $(\ell,a)$ data as $\rlct$, a clean count). The \emph{analytic} identity ``combinatorial count $=$
+pole multiplicity'' is the named at-risk seam (brief standing decision~6): it rides inside the S2 interface
+for $\rlct$, but as an independent statement for $\rorder$ it needs the order-tracking form of the monomial
+rule. Flag, do not hide --- $\rorder$ is the second deliverable, driven only as far as it cleanly reaches.
+The reproduction of Lemmas 4--5 here is at statement$+$structure fidelity (p.25--26); the index-level
+bookkeeping is referenced to the images, not re-transcribed, as $\rorder$ is off the $\rlct$ critical path.}
+
+% =====================================================================
+\section{The $L=2$ / reduced-rank-regression case, fully worked}
+\label{sec:rrr}
+% =====================================================================
+
+Theorem~\ref{thm:rrr} (RRR) is Theorem~\ref{thm:main} specialised to $L=2$ --- the paper's benchmark and
+the expedition's Deliverable~3 (a self-contained Lean model $+$ theorem, later exposed as the general
+theorem's $L=2$ instance). The formula template is \emph{identical} once $(\ell,a,\Ms,\mathcal M)$ are
+fixed: $\text{Thm 1 expression}-\text{Thm 2 expression}|_{L+1=3}=0$ exactly
+(\texttt{verify-arith-groundtruth.md} Check~4). So the only content beyond Theorem~2 is the $L=2$
+selection's totality and the two explicit regimes.
+
+\subsection{The selection is total and explicit at $L=2$}
+
+With three reduced widths $M^{(1)},M^{(2)},M^{(3)}$, Definition~\ref{def:Mset-L2} is a four-way split:
+$\mathcal M=\{1,2,3\}$ (all three, $\ell=2$) when no width reaches half the sum; otherwise drop the one
+\emph{large} width $M^{(s)}\ge$ (sum of the other two), leaving a size-2 set ($\ell=1$). Unlike general
+Def.~3, this $L=2$ selector \emph{picks a set} wherever a width dominates --- the total version general
+Def.~3 fails to be (the (T-D)/(F-1) gap). It is still not total under ties among the two smallest widths
+(decided only by listing order), which is why even at $L=2$ the geometric $\Mval_{\min}$ is the clean
+primitive.
+
+\subsection{The two regimes (closed form)}
+
+Write the Thm-3 prefactor $\rho_r:=\tfrac{-r^2+r(H^{(1)}+H^{(3)})}{2}$.
+
+\emph{(a) Balanced ($\ell=2$, $\mathcal M=\{1,2,3\}$).} $P=M^{(1)}+M^{(2)}+M^{(3)}$, $\Ms=\lceil P/2\rceil$,
+$a=P-2(\Ms-1)\in\{1,2\}$, and
+\[
+ \rlct=\rho_r+\frac{a(2-a)}{8}-\frac14\Big(\frac P2\Big)^2
+       +\frac12\big(M^{(1)}M^{(2)}+M^{(1)}M^{(3)}+M^{(2)}M^{(3)}\big),\qquad \rorder=a(2-a)+1.
+\]
+Equivalently $\rlct=\rho_r+\tfrac12\Mval_{\min}$ with
+$2\rlct_{\mathrm{core}}=\tfrac12(q_1^2+q_2^2-m_1^2-m_2^2-m_3^2)$, $m$ the three widths, $q$ the balanced
+$2$-split of $P$.
+
+\emph{(b) Dominated ($\ell=1$; e.g.\ $M^{(3)}\ge M^{(1)}+M^{(2)}$, $\mathcal M=\{1,2\}$).} Then $\Ms=P$,
+$a=1$, $a(\ell-a)=0$ and $\ell-1=0$ kill the middle terms, leaving the bare product of the two smaller
+widths:
+\[
+ \rlct=\rho_r+\tfrac12\,M^{(1)}M^{(2)},\qquad \rorder=1,
+\]
+matching the clean form $2\rlct_{\mathrm{core}}=\tfrac12\big((m_1+m_2)^2-m_1^2-m_2^2\big)=m_1m_2$.
+
+\subsection{Ground-truth cross-checks (all PASS, \texttt{verify-arith-groundtruth.md})}
+
+\[
+\begin{array}{l|c|c|c|c|c|c}
+ (H),r & \mathcal M & \ell & \Ms & a & \rlct & \rorder\\\hline
+ (2,2,2),\,r{=}0 & \{1,2,3\} & 2 & 3 & 2 & 3/2 & 1\\
+ (2,1,2),\,r{=}0 & \{1,2,3\} & 2 & 3 & 1 & 1 & 2\\
+ (1,1,3),\,r{=}0 & \{1,2\}\ (\text{drop }M^{(3)}) & 1 & 2 & 1 & 1/2 & 1
+\end{array}
+\]
+(For $(2,2,2,2)$, the $L=3$ equal-width case, the same closed form gives $\rlct=3/2$, $\rorder=3$ --- the
+equal-width Example of \S\ref{def:Mset}, also PASS.)
+
+\fnote{\textbf{Deliverable 3 (RRR), and a design caveat.} (a) Define the RRR model
+($\mathrm{Params}$ for $L=2$, $\mathrm{dlnLoss}$, $\mathtt{rlctRRR}$) and prove Theorem~\ref{thm:rrr} via
+the $L=2$ resolution the build already has. (b) Once general-$L$ lands, expose Theorem~\ref{thm:rrr} as
+its $L=2$ instance. \emph{Caveat (operator, 2026-06-23):} this reproduction is a faithful reference, not a
+binding Lean-API spec --- the Lean should be designed \textbf{general-$L$-first} with RRR as the exposed
+instance, not RRR-first; do not let the $L=2$ closed-form split shape the general \texttt{aoyagiLambda}
+API. The RRR regimes above are the cross-check ground truth, not the data model.}
 
 % =====================================================================
 \section*{Running ledger of typos / underspecifications (to collect)}
