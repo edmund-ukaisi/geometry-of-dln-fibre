@@ -1,6 +1,17 @@
 # Statement card — PIN2 #80 deepest_loss_squeeze (the L2 loss-squeeze chain)
 
-- **Status:** chain `green-pending-cert`. `deepest_loss_squeeze` is **sorry-free GIVEN** the one
+> **SHELVED (2026-06-23, controller adjudication).** The headline `aoyagi_learning_coefficient =
+> ½·minAdm` is SOUND via the **comparability-free R1 COVER route** (recurses on the genuine child
+> loss, no `∏S_s` comparability). The L2 `deepest_loss_squeeze` chain is **REDUNDANT** — `git grep`
+> confirms `deepest_loss_squeeze` / `core_comparability` / `DeepestGaugeChart` are consumed by nothing
+> (BindingSpine takes the real loss via the cover, not this squeeze). So the part-(4) false
+> comparability is MOOT and this cert/chain is **not on the headline's path**. Work is BANKED, not
+> deleted. **KEPT as proven bedrock** (reusable, sorry-free): the frame-family infrastructure
+> (`deepestFrameFamily_exists` + the 6 interface lemmas, `prod_deepestPoint_eq`) and the Core #159
+> one-sided normal forms (`left/right_normal_form_of_*`). The original chain status below is the
+> historical record of the (now-shelved) L2 route.
+
+- **Status (historical, shelved):** chain `green-pending-cert`. `deepest_loss_squeeze` is **sorry-free GIVEN** the one
   geometric cert `framedParams_split_eq_frame_raw` (the single isolated `sorry`). Branch
   `origin/fm2/deepest-gauge-chart-sub34` @bec9d794 (frame-wiring migration done). File
   `lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean`. Build GREEN (2719 jobs);
