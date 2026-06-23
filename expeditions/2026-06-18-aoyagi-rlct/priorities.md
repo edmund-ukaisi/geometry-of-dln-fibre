@@ -2276,6 +2276,17 @@ not analytic atlas coverage, transition regularity, arbitrary-pivot source
 formulas, source production, analytic Jacobian data, normal-crossing
 certificate production, pole order, or RLCT.
 
+The current A4 Case 1/Case 2 selected-entry finite coverage specialization is
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-finite-coverage-a4.md`.
+Lean now exposes the generic finite coverage theorem directly through
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`
+and
+`case1CenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+These are convenience wrappers for the two finite centers; they are not
+source-coordinate formulas for arbitrary pivots, analytic atlas coverage,
+transition regularity, source production, normal-crossing certificate
+production, pole order, or RLCT.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

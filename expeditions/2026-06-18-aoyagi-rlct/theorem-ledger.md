@@ -6377,6 +6377,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-finite-chart-coverage-a4.md`.
 
+Latest A4 Case 1/Case 2 selected-entry finite coverage:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`
+and
+`case1CenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+These specialize the generic finite selected-entry coverage theorem to the
+two Aoyagi finite centers used by the all-pivot certificate wrappers.  They
+are finite chart-map coverage statements only, not arbitrary-pivot source
+production, analytic atlas coverage, transition regularity, source production
+of successors, analytic Jacobian/volume-form control, normal-crossing
+certificate production, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-finite-coverage-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-finite-coverage.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-case2-selected-entry-finite-coverage-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

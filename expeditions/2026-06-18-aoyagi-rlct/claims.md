@@ -1229,7 +1229,16 @@ No such claim is formalisation-ready until both fields are filled.
   a nonzero coordinate as pivot for the all-pivot family.  This is finite map
   coverage only, not analytic atlas coverage, transition regularity,
   arbitrary-pivot source formulas, source production, analytic Jacobian data,
-  normal-crossing certificate production, pole order, or RLCT.
+  normal-crossing certificate production, pole order, or RLCT.  Also
+  specialized this finite coverage theorem to the existing Case 2 and Case 1
+  all-pivot certificates:
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`
+  and
+  `case1CenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+  These are definitional wrappers using the Case 2 continuation nonemptiness
+  and the Case 1 old-generator nonemptiness.  They are not arbitrary-pivot
+  source formulas, analytic atlas coverage, transition regularity, source
+  production, normal-crossing certificate production, pole order, or RLCT.
   Also packaged the finite
   Case 1 first-jump and selected-label hypotheses as
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
@@ -3960,3 +3969,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-selected-entry-finite-chart-coverage.md`.
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-finite-chart-coverage-a4.md`.
+
+Latest A4 Case 1/Case 2 selected-entry finite coverage:
+`SelectedEntryNormalCrossing.lean` now specializes the generic finite
+all-pivot coverage theorem to the existing Case 2 residual-block and Case 1
+center-generator certificate wrappers:
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`
+and
+`case1CenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+These wrappers prove finite chart-map coverage for the two Aoyagi finite
+centers only.  They do not prove arbitrary-pivot source production, analytic
+atlas coverage, transition regularity, source production of successors,
+analytic Jacobian data, normal-crossing certificate production, pole order, or
+RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-finite-coverage-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-finite-coverage.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-case2-selected-entry-finite-coverage-a4.md`.

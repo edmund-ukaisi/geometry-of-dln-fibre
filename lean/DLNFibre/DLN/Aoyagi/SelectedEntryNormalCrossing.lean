@@ -925,6 +925,21 @@ private theorem selectedEntryFamily_exponentOrder_eq_one
   open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
   exact exponentData_exponentOrder_eq_one (K := K) hcenter chartEquiv
 
+private theorem selectedEntryFamily_exists_chartPoint_chartMap_eq_value
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (value : center → K) :
+    ∃ c : Fin (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).numCharts,
+      ∃ x :
+        (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) hcenter chartEquiv).ChartPoint c,
+        (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) hcenter chartEquiv).chartMap c x = value := by
+  open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
+  exact exists_chartPoint_chartMap_eq_value (K := K) hcenter chartEquiv value
+
 /-- Case 2 all-pivot finite selected-entry chart-family certificate for the
 residual-block center.
 
@@ -1056,6 +1071,31 @@ theorem exponentData_exponentOrder_eq_one
         (K := K)
         (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
         (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+
+/-- The Case 2 residual-block all-pivot finite selected-entry family covers
+every finite residual-block center value.
+
+This is finite chart-map coverage only.  It is not source production for
+arbitrary residual-block pivots, analytic atlas coverage, transition
+regularity, normal crossings, pole order, or RLCT extraction. -/
+theorem exists_chartPoint_chartMap_eq_value
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (value : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} → K) :
+    ∃ c : Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts,
+      ∃ x :
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).ChartPoint c,
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).chartMap c x = value := by
+  simpa [case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryFamily_exists_chartPoint_chartMap_eq_value
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      value
 
 /-- Any chart of the Case 2 residual-block all-pivot finite certificate has
 the same finite selected-entry exponent pattern as the displayed Case 2
@@ -1256,6 +1296,31 @@ theorem exponentData_exponentOrder_eq_one
         (K := K)
         (case1CenterGenerators_nonempty n S J J1)
         (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1))
+
+/-- The Case 1 all-pivot finite selected-entry family covers every finite
+Case 1 center-generator value.
+
+This is finite chart-map coverage only.  It is not source production for the
+hidden old source label or arbitrary row-strip pivots, analytic atlas coverage,
+transition regularity, normal crossings, pole order, or RLCT extraction. -/
+theorem exists_chartPoint_chartMap_eq_value
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (value : {g : Case1CenterGenerator //
+        g ∈ case1CenterGenerators n S J J1} → K) :
+    ∃ c : Fin (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).numCharts,
+      ∃ x :
+        (case1CenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n S J J1).ChartPoint c,
+        (case1CenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n S J J1).chartMap c x = value := by
+  simpa [case1CenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryFamily_exists_chartPoint_chartMap_eq_value
+      (K := K)
+      (case1CenterGenerators_nonempty n S J J1)
+      (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1))
+      value
 
 end case1CenterSqFormalJacobianChartFamilyCertificate
 

@@ -5307,3 +5307,31 @@ This is finite selected-entry map coverage only.  It is not analytic atlas
 coverage, transition regularity, source-coordinate formula production for
 arbitrary non-displayed Aoyagi pivots, analytic Jacobian/volume-form control,
 normal-crossing certificate production, pole order, or RLCT extraction.
+
+## 2026-06-23 Lean Case 1/Case 2 selected-entry finite coverage
+
+Reproduction:
+`reproduction-case1-case2-selected-entry-finite-coverage-a4.md`.
+Statement card:
+`statement-card-a4-case1-case2-selected-entry-finite-coverage.md`.
+Review artifact:
+`review-case1-case2-selected-entry-finite-coverage-a4.md`.
+
+Lean now specializes the generic all-pivot finite coverage theorem to the two
+Aoyagi finite centers used by the all-pivot certificates:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value
+case1CenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value
+```
+
+The Case 2 wrapper uses the displayed continuation hypotheses only to supply
+nonemptiness of `case2ResidualBlockPivotEntries n S J`.  The Case 1 wrapper
+uses the old-generator nonemptiness of `case1CenterGenerators n S J J1`.
+Both wrappers are definitional specializations of the generic finite
+selected-entry coverage theorem.
+
+This is finite chart-map coverage only: no arbitrary-pivot source production,
+no analytic atlas coverage, no transition regularity, no analytic
+Jacobian/volume-form control, no normal-crossing certificate production, no
+pole order, and no RLCT extraction.

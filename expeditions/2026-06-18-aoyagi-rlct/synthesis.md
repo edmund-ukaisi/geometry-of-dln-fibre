@@ -6596,6 +6596,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-finite-chart-coverage-a4.md`.
 
+Latest A4 Case 1/Case 2 selected-entry finite coverage:
+`SelectedEntryNormalCrossing.lean` now exposes the generic all-pivot finite
+coverage theorem through the existing Aoyagi finite-center certificate
+wrappers:
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`
+and
+`case1CenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+The Case 2 theorem uses the displayed continuation hypotheses only for
+nonemptiness of the residual-block center; the Case 1 theorem uses
+old-generator nonemptiness.  These are definitional finite coverage wrappers,
+not arbitrary-pivot source-coordinate formulas, analytic atlas coverage,
+transition regularity, source production, normal-crossing certificate
+production, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-finite-coverage-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-finite-coverage.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-case2-selected-entry-finite-coverage-a4.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,
