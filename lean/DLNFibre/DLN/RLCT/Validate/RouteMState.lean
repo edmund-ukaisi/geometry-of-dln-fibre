@@ -319,29 +319,29 @@ in the `foldDivisors`/`codimsOf` form): `le_antisymm` of the C≥ lower bound (`
 gated on the `routeStep` realizability). The binding-leaf `(k,h)=(1, m₀−1)` is automatic: `appendDivisor`
 sets every pivot axis to `(1, c−1)`, so `m₀ ∈ codimsOf i₀` already encodes the codim-`m₀` binding divisor.
 
-### PINNED leaf-value semantics (#108(b), pp2 g236, controller-settled — anchored, not a verbal ruling)
+### PINNED leaf-value semantics (#108(b), pp2 g236, controller-settled canonical — anchored, not verbal)
 
-`foldFamily` computes the COMBINATORIAL `½·minAdm` (`= lambdaCore`, the `B = 0` CORE) as the `⨅` over LEAF
-PATHS of `foldDivisors (codimsOf path)`, where `codimsOf` is the C1/C5-divisor codims ACCUMULATED ALONG the
-path (`MonoData.appendDivisor` at each branch node). Two facts pin the value, settling a 5× oscillation:
+`foldFamily` value `= ⨅` over LEAF PATHS of `foldDivisors (codimsOf path)`; `codimsOf` ACCUMULATES at BRANCH
+nodes via `MonoData.appendDivisor`; the `⊤`-TERMINAL appends NOTHING. The value rides the accumulated
+branch-divisors (`[4,3]` for `(2,2,2)` → `3/2`). This is the COMBINATORIAL `½·minAdm` (`= lambdaCore`, the
+`B = 0` CORE). Settling a 5× oscillation, the canonical pin:
 
-1. **The leaf `= leafMonoData 0` (`⊤`) is a NON-BINDING TERMINATOR** — it appends NO divisor; a path's value
-   is `min` over its ACCUMULATED divisor codims, NOT the leaf's own value. A `0`-binding leaf would wrongly
-   force `⨅ = 0`; the `⊤` (`leafMonoData_threshold`) avoids that. ANCHOR (ground truth, COMPILES):
-   `Case222RouteStep.case222_routeStep_value = 3/2` — the `(2,2,2)` recursion `(2,2,2)→(1,1,2)→(0,0,2)`
-   accumulates branch codims `[4, 3]` (`min(4/2, 3/2) = 3/2 = lambdaCore`); the terminal `(0,0,2)` is the
-   `⊤` leaf, contributing nothing.
+1. **The `0`-BINDING-TRAP is WHY `⊤` not a `0`-leaf (the soundness reason).** A `0`-binding terminal would
+   collapse `⨅ = 0` (WRONG); `⊤` (`leafMonoData_threshold`) is the honest "this resolved chart contributes no
+   further divisor." So `leafMonoData 0` is forced — not a cosmetic choice.
 
-2. **`#70` (`nReg/2`, the degenerate-boundary direct-Morse) is the degenerate-ROOT case ONLY** — the headline
-   case-split when the WHOLE `M₀` is degenerate. It is NOT a per-leaf handler: a mid-recursion degenerate
-   node is a `⊤` TERMINATOR here, not a per-node `rlctAtOn`-claim. `nReg/2` enters ONCE, OUTSIDE this fold
-   (L2's regular shift on a non-degenerate root, `aoyagiLambda = nReg/2 + lambdaCore`; `#70` on a degenerate
-   root) — never both, no double-count.
+2. **`routeStep` = CORE; `nReg/2` is L2's OUTSIDE shift; `#70` = degenerate-ROOT only.** ROOT-vs-TERMINAL
+   case-split (clean, the no-double-count): the recursion is entered ONLY under `hMid` (non-degenerate root →
+   branches); a degenerate node MID-recursion is a `⊤`-TERMINATOR. `#70` handles the degenerate ROOT
+   (`¬hMid` — recursion never entered; a degenerate root → empty branch-accumulation → core-fold `⊤`, which is
+   WHY `#70` is a SEPARATE headline branch). The two NEVER overlap, so `nReg/2` enters exactly ONCE
+   (`aoyagiLambda = nReg/2 + lambdaCore`; L2's `nReg/2` on a non-degenerate root, `#70` on a degenerate root).
 
 The two `⊤`s the oscillation conflated are DIFFERENT objects: (i) the GEOMETRIC `rlctAtOn (dlnLoss M 0) = ⊤`
 at a degenerate NODE (true — `dlnLoss ≡ 0` there — but NOT what this fold claims); (ii) the leaf's
 FOLD-contribution `⊤` (a non-binding terminator). `foldFamily` is (ii). The GEOMETRIC↔combinatorial honesty
-(root `rlctAtOn = ½·minAdm`) is the COVER's job (`IsRouteMCover`, #104), NOT `foldFamily`. -/
+(root `rlctAtOn = ½·minAdm`) is the COVER's job (`IsRouteMCover`, #104), NOT `foldFamily`. ANCHORED:
+`Case222RouteStep` compiles to `3/2` (codims `[4,3]`, `⊤` terminal). -/
 theorem foldFamily_iInf_eq_half_minAdm {ι : Type*} [Nonempty ι] (M : Fin (L + 1) → ℕ)
     (codimsOf : ι → List ℕ) (hm₀ : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
     (hwit : ∀ i, ∀ c ∈ codimsOf i, PivotWitness M c)
