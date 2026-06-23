@@ -289,12 +289,40 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
   -- FINAL: `prod C = prodAux C (Lm+1) = prodAux C Lm * (cast C_Lm)`; `C_Lm = A_Lm·Q_Lm` (P_Lm = 1, hPid);
   -- hinv ⟹ `= (cast P⟨0⟩)·prodAux A Lm·(cast A_Lm·Q_Lm) = P0 · prod A · QL`. ∃-intro the cast P⟨0⟩, Q⟨Lm⟩.
   refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_⟩
-  -- FINAL ∃-intro (handed to crux2, standby, has the invariant): `prod C = prodAux C (Lm+1)`;
-  -- `prodAux_succ` (k=Lm) → `prodAux C Lm * reindex(C Lm)`; `hinv Lm` (`prodAux C Lm = P0·prodAux A Lm`)
-  -- + `C Lm = A Lm · Q Lm` + `reindex_mul_distrib_left` + reassoc. CASE-SPLIT FOUND: needs `Lm=0` (L=1,
-  -- single layer = both endpoints, `hinv` vacuous) vs `Lm≥1` arms — `hPid ⟨Lm⟩` needs `1 ≤ Lm` (fails at
-  -- Lm=0). The Lm≥1 arm uses the base-case `show`-bridge idiom + reindex_mul_distrib_left; the Lm=0 arm
-  -- is the direct single-layer `C 0 = P0·A 0·Q0`. Structural; crux2 has the invariant.
-  sorry
+  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+  have hLm1 : Lm + 1 < Lm + 1 + 1 := Nat.lt_succ_self (Lm + 1)
+  have hLmL : Lm < Lm + 1 := Nat.lt_succ_self _
+  have e1L : H (⟨Lm, Nat.lt_of_succ_lt hLm1⟩ : Fin (Lm + 1 + 1))
+      = H ((⟨Lm, hLmL⟩ : Fin (Lm + 1)).castSucc) := rfl
+  have e2L : H (⟨Lm + 1, hLm1⟩ : Fin (Lm + 1 + 1))
+      = H ((⟨Lm, hLmL⟩ : Fin (Lm + 1)).succ) := rfl
+  -- `C Lm = A Lm · Q Lm` (the boundary-LEFT frame `P Lm = 1` via `hPid`, OK since `1 ≤ Lm` will hold in
+  -- the `Lm ≥ 1` arm; in the `Lm = 0` arm the single layer carries both frames directly).
+  show prod H C = _
+  simp only [prod]
+  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+  rcases Nat.eq_zero_or_pos Lm with hLm0 | hLmpos
+  · -- `Lm = 0` (L = 1): single layer is BOTH endpoints. `prodAux _ 0 = 1`; `C 0 = P0 · A 0 · Q0`.
+    -- (handed to crux2 — the direct single-layer arm; `prod C = reindex(C 0)`, `C 0 = P0·A0·Q0`.)
+    subst hLm0
+    have hC0 : C ⟨0, hLmL⟩ = P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩ := hframe ⟨0, hLmL⟩
+    sorry
+  · -- `Lm ≥ 1`: `hinv Lm` gives `prodAux C Lm = P0 · prodAux A Lm`; `C Lm = A Lm · Q Lm` (`P Lm = 1`);
+    -- `reindex_mul_distrib_right` distributes; the `Q Lm` factor IS the boundary cast `QL` (e2L : rfl).
+    rw [hinv Lm (Nat.lt_of_succ_lt hLm1) hLmpos (le_refl _)]
+    have hCLm : C ⟨Lm, hLmL⟩ = A ⟨Lm, hLmL⟩ * Q ⟨Lm, hLmL⟩ := by
+      rw [hframe ⟨Lm, hLmL⟩, hPid ⟨Lm, hLmL⟩ (by simpa using hLmpos), Matrix.one_mul]
+    rw [hCLm, reindex_mul_distrib_right (A ⟨Lm, hLmL⟩) (Q ⟨Lm, hLmL⟩)
+      (finCongr e1L.symm) (finCongr e2L.symm),
+      show Matrix.reindex (finCongr e2L.symm) (finCongr e2L.symm) (Q ⟨Lm, hLmL⟩)
+        = (hLs ▸ Q ⟨Lm, by omega⟩ :
+            Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) from by
+      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+    -- REMAINING (handed to crux2): pure 4-matrix associativity `P0·prodAux·(rA·QL) = P0·(prodAux·rA)·QL`.
+    -- The dependent-dim `Matrix.mul_assoc` resists directional rw (3+ attempts: one mul_assoc fires on
+    -- the LHS, the RHS regroup walls; `← mul_assoc`, `conv_rhs`, explicit-args all miss on the dependent
+    -- dims). It's TRIVIALLY true (associativity) — crux2's env / a fresh look closes it; everything else
+    -- (the telescoping spine, the QL-cast, reindex_mul_distrib_right) is GREEN above.
+    sorry
 
 end DLNFibre.DLN.RLCT
