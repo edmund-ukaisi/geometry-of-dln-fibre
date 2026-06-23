@@ -44,10 +44,29 @@ cert/chain/assembly). Its remaining content (the genuine geometric core):
    construction). **Remaining:** the actual `Equiv.symm_apply_apply` cascade through the 4-equiv chain
    — overlaps deriv-fm's banked alignment-cancel bedrock (`regGaugeIdxSplit_symm_*`, fm/deriv-spec
    @cdcb4143, lands on this branch with #82/#91); best closed with that, not re-derived.
-2. `endpoint_telescoping` on `deepestPoint_frame` (interior interfaces vanish) ⟹
-   `prod(framedParams(split w)) = P0 · prod(paramsSymm w) · QL`.
-3. `reindex(P0·B·QL) = fromBlocks 1 0 0 0` (B gauge-normalised at rank r — `block_elimination`).
-4. `core_comparability_squeeze` (#54, banked) for the core comparability.
+2. `endpoint_telescoping` (interior interfaces vanish) ⟹ `prod(framedParams(split w)) =
+   P0·prod(paramsSymm w)·QL`. **PROVEN + ready** (DeepestTelescoping). ⚠ Requires the frame family to
+   be **id-on-interior + boundary-only** (`Pf_s=1` for `s≥1`, `Qf_s=1` for `s≤L-2`; boundary frames
+   only) — the raw `deepestPoint_frame` (Classical.choose) does NOT give id-interior. Consistent
+   (interior `deepestPoint_s = corM` ⟹ `1·corM·1 = corM`). **This is the part-(1)/part-(2) COUPLING:
+   deriv-fm's round-trip must target this id-interior family** (interior then trivialises:
+   `framedParams(split w) s = (paramsSymm w)_s`; only the 2 boundary layers carry a real frame).
+3. `reindex(P0·B·QL) = fromBlocks 1 0 0 0`. **REDUCES to part (2) at the deepest point**: `prod(deepestPoint)
+   = B` (`deepestPoint_isDeep.1 ⊆ optimalSet`), so `P0·B·QL = prod(framedParams 0) = corM` (my proven
+   `prodAux_framedParamsReg_zero`). Clean — no separate B `block_elimination` needed.
+4. `core_comparability_squeeze` (#54) — **PROVEN + ready** (gives `∑E²+‖R‖² ≍ ∑E²+‖P11‖²`). **GAP (the
+   substantive open piece of my parts):** the link `∑‖R‖² ≍ deepestCoreF (coreAbsorb (split w)).2.1` is
+   NOT banked. `R = P11 − P10·⅟P00·P01` is the FULL-product Schur core; `deepestCoreF (coreAbsorb…)` is
+   the absorbed per-layer reduced-core loss (`(coreAbsorb q).2.1 = q.2.1 + schurCutoffShift`). They
+   agree only mod regular leakage (g156: `R − ∏S_s ∈ ideal(E)`) — a genuine TWO-SIDED comparability
+   (the cert's γ₁/γ₂), to be proved. **This is the real remaining content of cert parts (2)-(4).**
+
+## Audit (2026-06-23, build-independent, my parts (2)-(4) readiness)
+- Part (2) endpoint_telescoping: PROVEN. Blocked only on the frame-family decision (id-interior).
+- Part (3): reduces to part (2) + `prod(deepestPoint)=B`. Trivial once (2) lands.
+- Part (4): `#54` squeeze PROVEN; the `‖R‖²↔deepestCoreF` g156-leakage comparability is OPEN (the
+  hardest of my parts). Needs the Schur-core ↔ absorbed-reduced-core relation.
+- Assembly: mechanical once parts (1)-(4) + the frame family are in place (chain is sorry-free-given-cert).
 
 The ORIGINAL escalation text below is kept as the dead-route record (the bare-split additive chart).
 
