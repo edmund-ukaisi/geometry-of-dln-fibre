@@ -53,7 +53,17 @@ MP descent). ONE shape (pp-rstar #134) for both C1 (hard-pivot: defect in the `b
 The reduced core `G` and the reduced-coord embed `redEmbed` are SOURCED from `transport` (`transport.G`,
 `transport.redEmbed`), not standalone fields: the squeeze's `G` IS the transport's `G`, so the two descent
 legs compose by construction (no coherence side-condition). `redEmbed` is fed to the squeeze as the
-underlying function of the transport's homeomorphism (`↑transport.redEmbed`). -/
+underlying function of the transport's homeomorphism (`↑transport.redEmbed`).
+
+**LEAF-BASE (the NON-LEAF guard, controller ruling (3) 2026-06-23).** `descentStep` is the NON-LEAF step
+ONLY: `rlctAtOn flatCore (0,0) = nReg/2 + rlctAtOn (dlnLoss S.red 0) 0` must NOT be iterated INTO a
+degenerate leaf (`isLeafNode M ↔ ∃ s, M s = 0`, where `dlnLoss ≡ 0` so `rlctAtOn = ⊤` and
+`nReg/2 + ⊤ = ⊤` is wrong). The guard is BUILT IN: `isSqueeze.Gne` (germ-nonvanishing of `G` on a nbhd of
+`0`) FAILS at a degenerate leaf, so no `RouteMNodeDescent` datum exists there — the datum is inhabitable
+only at non-leaf nodes. The leaf BASE CASE (terminate at the `#108` leaf-terminal `leafMonoData 0`, value
+`0`/`⊤`-non-binding, riding the accumulated branch-divisors) is the G-b RECURSION wrapper's job, NOT this
+step. The descent chain `(2,2,2) → (1,1,2) → (0,0,2)`-leaf terminates because `schurState` decrements
+`M_0,M_1` until some `M_s = 0` (`measure_drops` bounds the depth). -/
 structure RouteMNodeDescent (M : Fin (L + 1) → ℕ) (S : ChainDimSplit M) (nReg : ℕ)
     (Y : Type) [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
     [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y] [OpensMeasurableSpace Y] [Zero Y] where
