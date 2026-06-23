@@ -503,6 +503,39 @@ theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
       Matrix.of_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
       Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, sub_self]
 
+/-- **The reg-residual energy IS the block energy** (the #80 Φ-reg identification, BLOCK-LEVEL). The sum
+of squares of `deepestEPivot p` over `Fin nReg` equals the three residual-block energies of
+`P = reindex(prod(framedParamsReg p))` — `∑(P11−1)² + ∑P12² + ∑P21²`. Via `regResidualPack` as a SUMMING
+bijection (`Equiv.sum_comp`) + `Fintype.sum_sum_type`/`Fintype.sum_prod_type`: NO per-coordinate value of
+`regResidualPack` is used (only its bijectivity), so this is STABLE under the #120 value-changing swap
+(`regResidualPack := regPivotFinEquiv`) — the sum is the same for any bijection of the same type. -/
+theorem deepestEPivot_sq_sum_eq_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
+    (∑ i, (deepestEPivot H r hr hL p i) ^ 2)
+      = (∑ a, ∑ b, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+              (prod H (framedParamsReg H r hr hL p))).toBlocks₁₁ - 1) a b) ^ 2)
+        + ((∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+              (prod H (framedParamsReg H r hr hL p))).toBlocks₁₂ a b) ^ 2)
+          + (∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+              (prod H (framedParamsReg H r hr hL p))).toBlocks₂₁ a b) ^ 2)) := by
+  -- Reindex the `Fin nReg` sum along `regResidualPack` (a bijection — value-irrelevant), then split the
+  -- NESTED sum-type `blk1 ⊕ (blk2 ⊕ blk3)` (`Fintype.sum_sum_type` twice + `Fintype.sum_prod_type`).
+  rw [← Equiv.sum_comp (regResidualPack H r hr).symm (fun i => (deepestEPivot H r hr hL p i) ^ 2),
+    Fintype.sum_sum_type]
+  congr 1
+  · rw [Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
+    simp only [deepestEPivot, Equiv.apply_symm_apply]
+  · rw [Fintype.sum_sum_type]
+    congr 1 <;>
+      (rw [Fintype.sum_prod_type]
+       refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
+       simp only [deepestEPivot, Equiv.apply_symm_apply])
+
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
 is two-sidedly bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`.
 The matrix-block reduction `∏C − blockNormal → P11 = leak + Rcore` (g164 boundary frames) feeding the
@@ -532,17 +565,12 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
           dlnLoss H B ((paramsEquivFlat H).symm w)
             ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  -- **ASSEMBLY (B), the geometric heart — endpoint_telescoping NOW GREEN (FOLD3 done, IsUnit).** The
-  -- per-`w` two-sided bound is the banked leaf core `dlnLoss_two_sided_of_frame` (conjugation +
-  -- block-squeeze composed), fed the per-`w` framed-conjugate `hconj`. The chain: the deepest-point
-  -- frame `deepestPoint_frame` (constant) → `endpoint_telescoping` (per-`w`, framedParams(split w) =
-  -- P_s·(paramsSymm w) s·Q_s) → `dlnLoss_two_sided_of_frame` → Φ-id (`hregval` reg + `hcoreabs` core,
-  -- block-level sum-via-bijection). The ONE non-leaf obligation: `framedParams_split_eq_frame_raw`
-  -- (split coords = fixed-frame gauge coords, the g164/g222 split-vs-frame semantic content) — isolated
-  -- as the leading `hframe_bridge`. The leaf chain banks around it. STILL OPEN (the cert):
-  -- `hframe_bridge` is the genuine geometric relation between the MP `split` reconstruction and the
-  -- frame-conjugate of the raw params; the #120 transparency (pack-cancel) does NOT expose it (it is
-  -- about `deepestPoint_frame`, not `regResidualPack`). Route-first: the cert isolated, the chain leaf.
+  -- **ASSEMBLY (B).** The per-`w` chain: `deepestPoint_frame` (constant units) → `endpoint_telescoping`
+  -- (`framedParams_split_eq_frame_raw` per-`w`) → `dlnLoss_two_sided_of_frame` (banked leaf core) → Φ-id.
+  -- The Φ-reg-id `∑(deepestEPivot)² = ∑E²` (block-level, `deepestEPivot_sq_sum_eq_blocks` below) + the
+  -- core-id (`hcoreabs`) are leaf + BANKED; the one geometric obligation is `framedParams_split_eq_frame_raw`
+  -- (the g164/g222 split-vs-frame relation — the gating input to `hconj`, routed: same root as #82's
+  -- frame-exposure). OPEN: the per-`w` germ around that cert.
   sorry
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
