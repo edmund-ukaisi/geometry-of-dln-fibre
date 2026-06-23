@@ -98,6 +98,46 @@ the layer-1 build.
 `productRankLocusLE ![n,m] r = {M | M.rank ≤ r}` was dropped (non-load-bearing here, fought `multPrefix`
 dependent types); needed when layer 3 uses `Mat^{rk=r}` as the bundle *base*. Tracked.
 
+## Layer-1 design recon LANDED (thread 03, 2026-06-23) — GO, REFRAMED + de-risked
+
+**The wall was mis-scoped.** We do NOT need the general morphism theorem `dim total = dim base + fibre`.
+Two of the three dims are already landed (`dim Σ^r = card − cCodim`, `SigmaCodim`+`NullstellensatzCodim`;
+`dim Mat^{rk=r} = r(d_0+d_N−r)`, the thermometer). So the only unknown is **`dim fibre`**, and the engine
+already carries the lever: the **going-down height-additivity lemma**
+`Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` (`@[stacks 00ON]`, present at v4.29), applied
+via flatness — *already used* in `Core.AffineDomainDimension` / `FlatQuasiFiniteHeight` /
+`PolynomialDimension` (substrate the earlier recon understated). Minimal target: the squeeze
+`(★) varietyDim Σ^r = varietyDim Mat^{rk=r} + varietyDim(fibre)`, equivalent to the codim shift via the
+catenary. Numeric check `(2,2,2),r=1`: `7 = 3 + 4`. Codex (xhigh, decorrelated) converged identically.
+
+**Scope collapses** ~8–15 → **~5–8 modules** (a fixed-fibre flat-height squeeze). **Rung-ladder:**
+L1-0 flatness of `mult` on a rank-`r` chart (NEW, **HIGH** — the wall-within) → L1-1 height-additivity
+(Mathlib+landed pattern) → L1-2 fibre-ring id (NEW, MED) → L1-3 base dim on chart (LANDED+transport) →
+L1-4 height=dim assembly (LANDED) → L1-5 reducibility/per-component bookkeeping (NEW, MED-HIGH) →
+L1-6 output codim bridge (LANDED). **Residual risk concentrates on L1-0 and L1-5.**
+
+**Sequencing (recon's, adopted):** **Tide A** = L1-0 flatness (standalone, gating, thermometer-style) →
+**Tide B** = L1-1→4 squeeze (mostly transport) → **Tide C** = L1-5→6 (retire `cited_bundle_shift`).
+**L1-0 fallback** if flatness walls: a two-inequality sandwich (lower bound cheap via going-down/up;
+upper bound = equidimensionality, the residual hard half); failing that, discharge `r ≤ 1` + roadmap
+generality. Tide A opens with a SPECIFY-first probe of the v4.29 `Module.Flat` descent-along-chart API.
+
+## HOLD — VM rotation (2026-06-23 ~14:15 UTC)
+
+Operator is rotating the VM; holding, will resume in the same session. **State at hold:** everything
+landed is committed + pushed to `origin/expedition/fibre-codimension` (thermometer module + all
+expedition docs incl. the thread-03 design report + thread-04 brief). No live teammates (the Tide A
+formaliser died on a **transient API 529 overload**, and the re-launch was blocked by model
+unavailability — infra, not a math wall; nothing was lost).
+
+**RESUME POINT:** re-launch **Tide A** (`thread 04`, L1-0 flatness — the gating rung) as a background
+`lean-formaliser` once API capacity is back, per `threads/04-l1-flatness/thread.md` (SPECIFY-first API
+probe + hard checkpoint). Build note for resume: the worktree builds via the symlinked shared
+`lean/.lake/packages` → main checkout (mathlib `8a178386`); if the symlink/`​.lake` did not survive
+rotation, re-create it (`rm -rf lean/.lake && mkdir lean/.lake && ln -s
+/home/ubuntu/workspace/geometry-of-dln-fibre/lean/.lake/packages lean/.lake/packages`) — do NOT
+`lake exe cache get`.
+
 ## Process
 
 Controller in a worktree ⟹ teammate `isolation: worktree` collapses to this shared worktree (serial).

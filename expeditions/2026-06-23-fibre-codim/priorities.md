@@ -17,13 +17,28 @@ Controller proposes (VOI × directed suspicion); operator edits directly. Nothin
   (`Core.DeterminantalStratumDim`), via the N=1 quiver specialisation. Green, axiom-clean, reviewed.
   **Reading: layer 1 NOT de-risked** (rode the single-variety catenary, not a morphism-dim theorem).
 
-## Checkpoint (operator) — open layer 1?
+## Done
 
-The thermometer gave no positive signal that **layer 1** (the morphism-dimension wall) is easier than
-the recon feared. Opening it = a multi-module from-scratch AG build behind a missing-Mathlib theorem.
-**Surfaced to the operator**: proceed into layer 1 (recommend a focused layer-1 *design recon* — the
-construction + rung-ladder for `dim total = dim base + fibre dim` in our engine — before a multi-module
-tide), or bank the thermometer here and reassess. Awaiting confirm.
+- **[recon · thread 03] Layer-1 design recon** → **GO, REFRAMED.** We need only `dim fibre` via the
+  going-down height-additivity lemma (not the general morphism theorem); scope ~5–8 modules; risk on
+  L1-0 (flatness) + L1-5 (reducibility). Tide sequencing A/B/C adopted. Codex-converged.
+
+## Pursue (ranked)
+
+1. **[tide · thread 04 = Tide A] L1-0: flatness of `mult` on a rank-`r` chart** (`Module.Flat`). The
+   **gating** rung (the whole squeeze hinges on it) and the wall-within. Route: local triviality ⟹
+   trivial product ⟹ free ⟹ flat. **SPECIFY-first:** probe the v4.29 `Module.Flat` descent/base-change
+   API surface; **checkpoint** if it doesn't support the route — don't grind. **Fallback:**
+   two-inequality sandwich, or discharge `r ≤ 1` (the witness range) + roadmap generality. **VOI:
+   decisive** (gates Tides B, C). **Suspicion: HIGH** (no landed template; `FlatQuasiFiniteHeight`'s
+   shortcut does NOT apply — positive-dim fibre, not quasi-finite).
+
+## Park (unclear-but-keep-going)
+
+- **L1-5 reducibility/per-component** (MED-HIGH): the squeeze must hold per top-dimensional component
+  (`Σ^r`/`fibre` reducible — the θ-story); local triviality bijects the components preserving dim up to
+  the shift. Deferred to Tide C; flagged now so Tide A/B don't assume irreducibility.
+- **Layer 3 future need:** the matrix-rank-locus identification (dropped in thread 02).
 
 ## Park (unclear-but-keep-going)
 
