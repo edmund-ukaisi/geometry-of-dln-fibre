@@ -192,7 +192,18 @@ surviving-1 count of the interval sub-product: `survivors (d_j) (d_i) (cascadeWi
 endpoint widths. Composes `submult_cascade` (the sub-product is a single partial-identity) with
 `rank_partialId`. The full 2-index rank pattern `r_{ij}` of the cascade — the general rank-pattern
 computation the #121-(ii) achiever tie consumes (matched, on a fixed achiever `t = t*`, to the
-independently-defined `r*`). Generalizes `rankPattern_cascade_prefix` (the `i = 0` row). -/
+independently-defined `r*`). Generalizes `rankPattern_cascade_prefix` (the `i = 0` row).
+
+**The endpoint-cap form is correct ONLY under `ht`.** The RHS caps the window-min by the ENDPOINT widths
+`d_i, d_j` (via `cascadeWindow`'s base `d_i` + `survivors`' `min (d_j)(d_i)`), NOT by the intermediate
+widths `d_p` (`i < p < j`). In general (no `ht`) an intermediate `d_p < window-min` PINCHES the true rank
+below this endpoint form — the genuine rank is `min(window-min t, min over ALL widths d_i..d_j)` (pp-rstar
+#121/#127 cert §2b; e.g. `d=(5,1,3,1), t=(3,3,3)`, cell `(0,2)`: endpoint form `3`, true rank `1`, pinched
+by `d_1=1`). The hypothesis `ht : ∀ p, t_p ≤ d_{p.castSucc}` is EXACTLY what kills the pinch: it threads
+through `partialId_mul`'s `ha : a ≤ m` at each block, forcing the window-min `≤` every intermediate width,
+so the intermediate cap never bites and the endpoint form equals the true rank. Verified exact (sympy over
+ℚ): 0 mismatches in 329840 cells under `ht`; the pinch only shows on `t` violating `ht`. So the name =
+content holds — but only with `ht`, which every cascade use-site (admissible `t*`, `adm_le_width`) supplies. -/
 theorem rankPattern_cascade (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
     (ht : ∀ p : Fin N, t p ≤ d p.castSucc) (i j : Fin (N + 1)) (hij : i ≤ j) :
     rankPattern d (cascadeTuple (k := k) d t) i j hij
