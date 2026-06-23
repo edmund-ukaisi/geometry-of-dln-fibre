@@ -214,6 +214,9 @@ theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
       regStraighten 0 = 0 ∧
       (∀ q : DeepestSplit H r nGauge, (regStraighten q).2.1 = q.2.1) ∧
       (∀ q : DeepestSplit H r nGauge, (regStraighten q).2.2 = q.2.2) ∧
+      -- The reg-output IS the pivot residual `E_pivot` on `(reg, spec)` (the defining identity that
+      -- PIN 2's `loss_squeeze` needs — `regStraighten` reads the SAME nonlinear residual the loss does).
+      (∀ q : DeepestSplit H r nGauge, (regStraighten q).1 = E_pivot (q.1, q.2.2)) ∧
       rlctAtOn
           (fun q : DeepestSplit H r nGauge =>
             (∑ i, (regStraighten q).1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
@@ -223,12 +226,13 @@ theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
               (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
             (0 : DeepestSplit H r nGauge) := by
   classical
-  -- The reg-straightening witness and its three structural props.
+  -- The reg-straightening witness and its structural props (incl. the reg-output value).
   refine ⟨regStraightenOf E_pivot,
     continuous_regStraightenOf E_pivot hEp_contdiff.continuous,
     regStraightenOf_basepoint E_pivot hEp_base,
     fun q => regStraightenOf_core E_pivot q,
-    fun q => regStraightenOf_spectator E_pivot q, ?_⟩
+    fun q => regStraightenOf_spectator E_pivot q,
+    fun q => regStraightenOf_fst E_pivot q, ?_⟩
   -- `regAbsorb_rlct`: strip `coreAbsorb` from the core term (reduce), then peel `regStraightenOf`
   -- via the IFT local-diffeo adapter (the decoupled `hpeel`).
   refine rlctAtOn_regAbsorb_reduce coreAbsorb (regStraightenOf E_pivot)
@@ -249,31 +253,6 @@ theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     exact hasStrictFDerivAt_regStraightenOf_gen E_pivot D_E hEp_deriv
   · -- `regStraightenOf E_pivot 0 = 0`.
     exact regStraightenOf_basepoint E_pivot hEp_base
-
-/-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
-is two-sidedly bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`.
-The matrix-block reduction `∏C − blockNormal → P11 = leak + Rcore` (g164 boundary frames) feeding the
-banked `core_comparability_squeeze` (#54: leak ∈ ideal(reg), charged to `∑E²`). `regStraighten` is the
-(C)-fallback total continuous fn; the squeeze is the local `∃ U` germ where `(regStraighten w).1 = E`. -/
-theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ)
-    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
-    (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
-    (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge)
-    (hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0) :
-    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
-      ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
-        ∀ w ∈ U,
-          0 ≤ ((∑ i, (regStraighten (split w)).1 i ^ 2)
-              + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
-          c₁ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
-              + deepestCoreF H r (coreAbsorb (split w)).2.1)
-            ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
-          dlnLoss H B ((paramsEquivFlat H).symm w)
-            ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
-              + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  sorry
 
 /-! ## The measure-preserving core-shear peel (Route A, Codex g165)
 
@@ -478,6 +457,37 @@ theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
       Matrix.of_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
       Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, sub_self]
 
+/-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
+is two-sidedly bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`.
+The matrix-block reduction `∏C − blockNormal → P11 = leak + Rcore` (g164 boundary frames) feeding the
+banked `core_comparability_squeeze` (#54: leak ∈ ideal(reg), charged to `∑E²`). `regStraighten` is the
+(C)-fallback total continuous fn; the squeeze is the local `∃ U` germ where `(regStraighten w).1 = E`.
+**Takes the concrete-map defining identities** (`hregval`: reg-output is the pivot residual
+`deepestEPivot`; `hcoreabs`: `coreAbsorb` is the cutoff Schur shear) — without them the maps are
+arbitrary and the bound is unprovable (the g161-class confound). -/
+theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
+    (hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0)
+    (hregval : ∀ q : DeepestSplit H r (deepestNGauge H r),
+      (regStraighten q).1 = deepestEPivot H r hr hL (q.1, q.2.2))
+    (hcoreabs : coreAbsorb = deepestCoreAbsorb H r hr hL) :
+    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
+      ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ w ∈ U,
+          0 ≤ ((∑ i, (regStraighten (split w)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
+          c₁ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split w)).2.1)
+            ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
+          dlnLoss H B ((paramsEquivFlat H).symm w)
+            ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
+  sorry
+
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
 `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
 `regAbsorb` (`deepest_regAbsorb_exists`, PIN 1), and the `loss_squeeze` (`deepest_loss_squeeze`,
@@ -533,14 +543,15 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- The reg-output is the shared `deepestEPivot` (the PIN1↔PIN2 coupling object); its three analytic
   -- props feed PIN 1's IFT peel, its concrete value feeds PIN 2's squeeze.
   obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ := deepestEPivot_deriv H r hr hL
-  obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_rlct⟩ :=
+  obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_regval, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
       (deepestCoreAbsorb_mp H r hr hL) hca_base hca_reg hca_spec
       (deepestEPivot H r hr hL) (deepestEPivot_contdiff H r hr hL)
       D_E hEp_deriv eShear he_shear (deepestEPivot_base H r hr hL)
-  -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`).
+  -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`'s defining identities).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
-    deepest_loss_squeeze H r B hB hr hL (deepestNGauge H r) split coreAbsorb regStraighten hsplit_base
+    deepest_loss_squeeze H r B hB hr hL split coreAbsorb regStraighten hsplit_base
+      hra_regval hca_def
   exact ⟨deepestNGauge H r, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base,
     hca_base, hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct,
     c₁, c₂, hc₁, hc₂, U, hU, hsq⟩
