@@ -601,13 +601,13 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
               = Matrix.fromBlocks (P00 - 1) P01 P10 P11)
             ∧ (P00 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                 (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
-                (prod H (framedParamsReg H r hr hL (fun s => (deepestPoint_frame H r B hB hr hL s).1) (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)))).toBlocks₁₁)
+                (prod H (framedParamsReg H r hr hL (deepestFrameFamilyP H r B hB hr hL) (deepestFrameFamilyQ H r B hB hr hL) ((split w).1, (split w).2.2)))).toBlocks₁₁)
             ∧ (P01 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                 (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
-                (prod H (framedParamsReg H r hr hL (fun s => (deepestPoint_frame H r B hB hr hL s).1) (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)))).toBlocks₁₂)
+                (prod H (framedParamsReg H r hr hL (deepestFrameFamilyP H r B hB hr hL) (deepestFrameFamilyQ H r B hB hr hL) ((split w).1, (split w).2.2)))).toBlocks₁₂)
             ∧ (P10 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                 (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
-                (prod H (framedParamsReg H r hr hL (fun s => (deepestPoint_frame H r B hB hr hL s).1) (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)))).toBlocks₂₁)
+                (prod H (framedParamsReg H r hr hL (deepestFrameFamilyP H r B hB hr hL) (deepestFrameFamilyQ H r B hB hr hL) ((split w).1, (split w).2.2)))).toBlocks₂₁)
             ∧ ((∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
                 ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
                     + (∑ i, ∑ j, (P10 i j) ^ 2)))
@@ -648,8 +648,8 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0)
     (hregval : ∀ q : DeepestSplit H r (deepestNGauge H r),
       (regStraighten q).1 = deepestEPivot H r hr hL
-        (fun s => (deepestPoint_frame H r B hB hr hL s).1)
-        (fun s => (deepestPoint_frame H r B hB hr hL s).2) (q.1, q.2.2))
+        (deepestFrameFamilyP H r B hB hr hL)
+        (deepestFrameFamilyQ H r B hB hr hL) (q.1, q.2.2))
     (hcoreabs : coreAbsorb = deepestCoreAbsorb H r hr hL) :
     ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
       ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
@@ -702,8 +702,8 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hSreg_eq : Sreg = ∑ i, (regStraighten (split w)).1 i ^ 2 := by
     rw [hregval (split w)]
     rw [deepestEPivot_sq_sum_eq_blocks H r hr hL
-      (fun s => (deepestPoint_frame H r B hB hr hL s).1)
-      (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)]
+      (deepestFrameFamilyP H r B hB hr hL)
+      (deepestFrameFamilyQ H r B hB hr hL) ((split w).1, (split w).2.2)]
     rw [hSreg, h00, h01, h10]; ring
   -- The core-comparability + leak bound fold into the squeeze. `coreΦ = deepestCoreF (coreAbsorb)`.
   rw [hcoreabs]
@@ -815,9 +815,9 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- READING side carries it (the #80 frame-wiring); `split` stays frameless/MP. Bound as plain `let`
   -- (NOT `set`) so it stays definitionally the inlined lambda that `deepest_loss_squeeze`'s `hregval` uses.
   let Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ :=
-    fun s => (deepestPoint_frame H r B hB hr hL s).1
+    deepestFrameFamilyP H r B hB hr hL
   let Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ :=
-    fun s => (deepestPoint_frame H r B hB hr hL s).2
+    deepestFrameFamilyQ H r B hB hr hL
   -- PIN 0: the CONCRETE `coreAbsorb = deepestCoreAbsorb` (the cutoff Schur shear) + its
   -- slot-fix/basepoint/rlct (Option A: concrete, so PIN 2 sees the same map).
   set coreAbsorb := deepestCoreAbsorb H r hr hL with hca_def
