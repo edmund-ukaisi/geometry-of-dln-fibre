@@ -350,12 +350,11 @@ the SHARED coupling object — defined once, consumed by both pins. Its three pr
 expansion `∏(I+X_s) − I` read off the gauge slots, certified `dE(0) = id` (pp2 #91, general L). -/
 
 /-- The pack equivalence `Fin nReg ≃ (r×r) ⊕ ((r×M_L) ⊕ (M_0×r))` — the THREE regular residual blocks
-`(P11−I, P12, P21)` of `∏C` flatten into the `nReg = r(H_0+H_L−r)` reg coordinates. #120-REFACTORED:
-the opaque `Fintype.equivFin` tail is replaced by `regPivotFinEquiv` (the TRANSPARENT
-`finProdFinEquiv`/`finSumFinEquiv` enumeration, `DeepestSplitReindex`) — same target type, but
-COMPUTABLE (`_apply` equation lemmas), so the reg-block-is-id alignment (`deepestEPivot_regSlice_fderiv_id`)
-reduces by `rfl`/`decide`. `_base`/`_contdiff` are equiv-agnostic; #80 is block-level (sum-via-bijection)
-— all stable under the value change. -/
+`(P11−I, P12, P21)` of `∏C` flatten into the `nReg = r(H_0+H_L−r)` reg coordinates. **#120 explicit:**
+`:= regPivotFinEquiv` (the TRANSPARENT `finProdFinEquiv`/`finSumFinEquiv` enumeration in
+`DeepestSplitReindex`), SHARED with `regGaugeIdxSplit`'s reg-half (which routes via
+`regBoundaryToRegGauge ∘ regPivotFinEquiv`), so the two cancel and the gauge-zero reg-slice derivative is
+`id` by construction. `_base`/`_contdiff` need only that it is a coordinate bijection (it is, an `Equiv`). -/
 noncomputable def regResidualPack (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) :
     Fin (deepestNReg H r)
@@ -424,13 +423,20 @@ theorem deepestEPivot_regSlice_fderiv_id (H : Fin (L + 1) → ℕ) (r : ℕ)
     HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
         deepestEPivot H r hr hL (r0, 0))
       (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ)) 0 := by
-  -- ATTEMPT (a), coordinate-wise: the output `Fin nReg → ℝ` derivative is `id` iff each coordinate `i`'s
-  -- derivative is the `i`-th projection. `deepestEPivot (r0,0) i` = a residual block of
-  -- `reindex(prod(framedParamsReg (r0,0)))` selected by `regResidualPack i`. The derivative w.r.t. `r0`
-  -- of that block = the idempotent-sandwich (#91), which on the pivot coord IS `r0 i`. WALL (confirmed
-  -- via g223): exposing that the `regResidualPack i` block-coord receives EXACTLY `r0 i`'s contribution
-  -- needs the SEMANTIC pivot tag (X_first/Y_last/Z_first), which g223 says is the #91/g125 content NOT
-  -- readable from the cardinality-split `regResidualPack`/`regGaugeSlotEquiv`. Flagged (b): thin cert.
+  -- #120 (deriv-fm): the opaque-pack wall is DISSOLVED — `regResidualPack := regPivotFinEquiv` and
+  -- `regGaugeIdxSplit`'s reg-half route via `regBoundaryToRegGauge ∘ regPivotFinEquiv` (the SHARED
+  -- `regPivotFinEquiv`), so the reg-coords ARE the boundary pivots (X_first/Y_last/Z_first) by
+  -- construction. Coordinate-wise (`hasStrictFDerivAt_pi'`): each output coord `i`'s derivative is the
+  -- `i`-th projection.
+  rw [show (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ))
+      = ContinuousLinearMap.pi (fun i => ContinuousLinearMap.proj i) from by ext x i; rfl]
+  refine hasStrictFDerivAt_pi.2 (fun i => ?_)
+  -- Per-coordinate: `HasStrictFDerivAt (fun r0 => deepestEPivot (r0,0) i) (proj i) 0`. The #91
+  -- idempotent-sandwich: `d(prod(framedParamsReg (r0,0)))|_0 = Σ_s corner·δC_s·corner` keeps the
+  -- surviving boundary block at coord `i`; the SHARED `regPivotFinEquiv` cancel identifies it with `r0 i`.
+  -- REMAINING ANALYTIC ATOM (the #91 transcription, per deriv-alignment-sandwich-tactic-cert.md): the
+  -- per-coordinate product-derivative value + the cancel. Skeleton validated (shape typechecks); the
+  -- atom is the patient analytic fill (the Leibniz sandwich VALUE through `prodAux` + the cancel).
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
