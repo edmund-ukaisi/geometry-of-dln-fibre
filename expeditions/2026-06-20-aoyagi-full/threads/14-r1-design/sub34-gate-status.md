@@ -20,11 +20,16 @@ NOT a kernel-application or short wire):
   idempotent-sandwich Leibniz derivative of the L-fold matrix product `∏(framedParamsReg)|_0` +
   the concrete shear `D_E = [[I,Σ],[0,I]]` + unitriangular inverse. No product-derivative infra exists
   in DLNFibre yet; this is from-scratch.
-- **`deepest_loss_squeeze` (FOLD3, #80):** the two-sided Frobenius bound. Matrix core is banked
-  (`dlnLoss_block_squeeze` + `fullProduct_loss_squeeze` + `core_comparability_squeeze`); the OPEN piece
-  is the deepest-point geometric identification (raw `∏A − B` ↔ framed blocks via endpoint conjugation +
-  the framed-vs-raw relation; `(regStraighten(split w)).1 = E`; `deepestCoreF(coreAbsorb …).2.1 = ‖Rcore‖²`)
-  — the g164/g222 geometric content, NOT banked.
+- **`deepest_loss_squeeze` (FOLD3, #80):** the two-sided Frobenius bound. SIGNATURE FIXED @46295ef —
+  caught a g161-class confound: the lemma took `regStraighten`/`coreAbsorb` OPAQUE (only `hsplit_base`),
+  so the bound was unprovable for arbitrary maps. Restated to thread the concrete-map identities
+  (`hregval : (regStraighten q).1 = deepestEPivot (q.1,q.2.2)`; `hcoreabs : coreAbsorb = deepestCoreAbsorb`);
+  `deepest_regAbsorb_exists` now exposes the reg-value (via `regStraightenOf_fst`); `deepest_gauge_construction`
+  threads both. Build GREEN, body sorry. Matrix core banked (`dlnLoss_block_squeeze` +
+  `conjugation_frobenius_comparable` + `core_comparability_squeeze`).
+  **BLOCKED** on the raw↔framed bridge `P·(∏A_w − B)·Q = ∏(framedParams (split w)) − D` (the per-`w`
+  endpoint conjugation) — that IS crux2's `endpoint_telescoping` (#123(iii), still sorry) specialized
+  via the #95-(I) frames. cobuild wires `conjugation_frobenius_comparable` once crux2 lands the bridge.
 
 Both are tracked as #80/#82 (their own PINs). `endpoint_telescoping` (the stronger exact equality) is
 crux2's lane and OFF the L2 critical path (verdict-a: L2 closes via the two-sided BOUND, not the equality).
