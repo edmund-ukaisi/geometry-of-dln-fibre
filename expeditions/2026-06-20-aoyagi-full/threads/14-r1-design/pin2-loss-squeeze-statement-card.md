@@ -2,13 +2,50 @@
 
 - **Status:** chain `green-pending-cert`. `deepest_loss_squeeze` is **sorry-free GIVEN** the one
   geometric cert `framedParams_split_eq_frame_raw` (the single isolated `sorry`). Branch
-  `origin/fm2/deepest-gauge-chart-sub34` @d97e83c6. File
-  `lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean`. Build GREEN (2719 jobs).
-  Sorries in this module: 2 = the cert (mine) + `deepestEPivot_regSlice_fderiv_id` (deriv-fm's #91,
-  pre-existing). Only axiom in the build = `monomial_rlct` (S2). +164/-11 LoC.
-- **CERT ESCALATED (false-as-stated with the bare `split`)** — see "Honest scope" below. NOT forced
-  green: the cert as-stated references the frameless `split`; it needs the frame composed into the
-  decode. The chain wiring is sound and exact; the gap is in the cert's `split` reference.
+  `origin/fm2/deepest-gauge-chart-sub34` @bec9d794 (frame-wiring migration done). File
+  `lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean`. Build GREEN (2719 jobs);
+  downstream `DeepestGaugeChart` also green. Sorries in this module: 2 = the cert (mine) +
+  `deepestEPivot_regSlice_fderiv_id` (deriv-fm's #91). Only axiom = `monomial_rlct` (S2).
+
+## FRAME-WIRING UPDATE (2026-06-23, the escalation RESOLVED in shape)
+
+The earlier escalation (cert false-as-stated: `framedParams` was an ADDITIVE chart `raw + corM`, not
+a frame conjugation) is **resolved by migrating the shared `framedLayer`** (controller call,
+Codex-confirmed). NEW:
+
+    framedLayer P Q X Y Z T = reindex(fromBlocks 1 0 0 0) + P · reindex(fromBlocks X Y Z T) · Q
+
+(was `reindex(fromBlocks (1+X) Y Z T)`). The frame is wired into the READING; `split` stays
+frameless/MP. `framedParams`/`framedParamsReg`/`deepestEPivot` + the 5 deps thread an **explicit frame
+family** `(Pf Qf)`; `deepestPoint_frame` is instantiated only at the cert + `deepest_gauge_construction`.
+At the deepest slot the deviation vanishes ⟹ `framedLayer = corM` (frame-independent base), so the
+idempotent fold + base/contdiff proofs survive. Migration is GREEN; chain still sorry-free given the cert.
+
+**Two consequences (handoff to deriv-fm, who resumes #82/#91 on this branch):**
+- `deepestEPivot`'s reg-slice fderiv at 0 is **no longer `id`** — it is the constant **invertible
+  frame-factor** CLM (`Pf_0` left / `Qf_{L-1}` right r-corner action ∘ the shared `regPivotFinEquiv`
+  cancel; interior frames id). The `deepestEPivot_regSlice_fderiv_id` `id` statement is the pre-frame
+  target, now likely false for a nontrivial frame — restate to the frame factor; in-file ⚠ note added.
+- `regStraightenTotalCLM_equiv_of_regBlock_id` (DeepestRegAbsorbIFT) relaxes its hypothesis from
+  reg-block = id to reg-block = `IsUnit`/invertible (invertible block + shear is still an invertible
+  CLE; consumer needs invertibility only — within crux2's #150 shear-CLE calibration).
+
+## CERT CLOSURE PATH (what remains, precise)
+
+`framedParams_split_eq_frame_raw` is now correctly SHAPED (frame-conjugated, consistent across
+cert/chain/assembly). Its remaining content (the genuine geometric core):
+1. **round-trip** `framedParams(split w) s = P_s · (paramsSymm w)_s · Q_s` — needs `readX/Y/Z (split w)`
+   = the raw-deviation block of `(paramsSymm w − deepestPoint)_s`, i.e. the
+   `regGaugeSlotEquiv ∘ regGaugeIdxSplit ∘ roleSplitIdx ∘ paramsEquivFlat` cancellation through
+   `subRight deepestFlat` + `deepestPoint_frame_normal` (`P·deepestPoint·Q = corM`). **This is the
+   4-equiv decode cancellation — overlaps deriv-fm's banked alignment-cancel bedrock
+   (`regGaugeIdxSplit_symm_*`, fm/deriv-spec @cdcb4143); best closed with that, not from scratch.**
+2. `endpoint_telescoping` on `deepestPoint_frame` (interior interfaces vanish) ⟹
+   `prod(framedParams(split w)) = P0 · prod(paramsSymm w) · QL`.
+3. `reindex(P0·B·QL) = fromBlocks 1 0 0 0` (B gauge-normalised at rank r — `block_elimination`).
+4. `core_comparability_squeeze` (#54, banked) for the core comparability.
+
+The ORIGINAL escalation text below is kept as the dead-route record (the bare-split additive chart).
 
 ## The delivered theorem (green, modulo the cert)
 
