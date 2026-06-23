@@ -693,6 +693,8 @@ Current Eq5 endpoint-family cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-cardinal-squeeze-a5.md`.
 Current Eq5 endpoint-family block-width cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`.
+Current Eq5 endpoint-family order-formula handoff:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-order-formula-bridge-a5.md`.
 Current terminal order formula bridge:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-order-formula-bridge-a5.md`.
 Current terminal order classifier-notation bridge:

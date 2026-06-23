@@ -5488,3 +5488,30 @@ require supplied branch-label injectivity.  They do not construct an
 upper-bound classifier, counted-datum classifier, back-to-label bridge,
 branch-label injection, Eq3/Eq4/Eq5 terminal family, no-extra coverage, pole
 order, normal crossings, or RLCT.
+
+## 2026-06-23 Lean Lemma 5 Eq5 terminal order formula bridge
+
+Reproduction:
+`reproduction-lemma5-eq5-terminal-order-formula-bridge-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-terminal-order-formula-bridge.md`.
+Review artifact:
+`review-lemma5-eq5-terminal-order-formula-bridge-a5.md`.
+
+Lean now specializes the existing Eq5 endpoint-family block-width cardinal
+squeeze to Aoyagi Theorem 2 order notation:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze
+```
+
+For `data : AoyagiDefinition3CeilData (N+1) m`, the theorem binds
+`a=data.aParam` and `M=data.ceilWidth`, uses `data.aParam_le` and
+`data.selectedSum_eq` as the two Definition 3 inputs to the existing Eq5
+count theorem, and rewrites the result as
+`TC.terminalMinimumLabels.card = data.theorem2OrderFormula`.
+
+This is a thin finite handoff.  It does not source-construct the Eq5 endpoint
+family, terminal Eq5 payloads, endpoint-family equality, terminal
+`(p, alpha)` injectivity, branch-label injectivity, no-extra coverage, pole
+order, normal crossings, or RLCT.

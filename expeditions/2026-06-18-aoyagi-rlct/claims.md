@@ -3166,6 +3166,16 @@ No such claim is formalisation-ready until both fields are filled.
   These are only final-order notation rewrites of existing supplied
   classifier/back-to-label routes; exact-count variants still require
   supplied branch-label injectivity.
+  Also proved the Eq5 endpoint-family terminal order-formula handoff in
+  `Lemma5Eq5TerminalOrderBridge.lean`:
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze`.
+  This specializes the existing Eq5 endpoint-family block-width cardinal
+  squeeze to `data : AoyagiDefinition3CeilData (N+1) m`, using
+  `data.aParam_le` and `data.selectedSum_eq` and unfolding
+  `data.theorem2OrderFormula`.  It does not construct Eq5 branches or
+  terminal payloads from source, prove the endpoint-family equality, prove
+  terminal `(p, alpha)` injectivity, prove branch-label injectivity/no-extra
+  coverage, pole order, normal crossings, or RLCT.
   Also proved `aoyagiLemma5Eq5EndpointRawBranches`,
   `aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat`, and
   `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage`.  The
@@ -3335,6 +3345,17 @@ No such claim is formalisation-ready until both fields are filled.
   This is finite notation handoff only and does not construct the classifier,
   branch-label injectivity, back-to-label coverage, no-extra coverage, pole
   order, normal crossings, or RLCT.
+  Latest Eq5 endpoint-family order-formula wrapper: the supplied
+  endpoint-family block-width cardinal squeeze now rewrites directly to
+  `data.theorem2OrderFormula` as
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze`
+  in `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalOrderBridge.lean`.
+  Reproduction:
+  `threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-order-formula-bridge-a5.md`;
+  review:
+  `threads/05-arithmetic-tail/review-lemma5-eq5-terminal-order-formula-bridge-a5.md`.
+  This is finite supplied-payload notation plumbing only and does not move the
+  source-exactness, pole-order, normal-crossing, or RLCT boundary.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 

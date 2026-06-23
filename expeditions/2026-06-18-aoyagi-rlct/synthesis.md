@@ -5706,6 +5706,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-order-classifier-notation-a5.md`.
 
+Latest A5 Eq5 terminal order-formula handoff:
+`Lemma5Eq5TerminalOrderBridge.lean` now specializes the existing Eq5
+endpoint-family block-width cardinal squeeze directly to Theorem 2 order
+notation:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze`.
+For `data : AoyagiDefinition3CeilData (N+1) m`, this binds
+`a=data.aParam` and `M=data.ceilWidth`, then uses `data.aParam_le` and
+`data.selectedSum_eq` to feed the existing Eq5 count theorem and unfolds
+`data.theorem2OrderFormula`.  All Eq5 payloads remain explicit.  This does
+not source-construct Eq5 branches or terminal payloads, prove endpoint-family
+equality, prove terminal `(p, alpha)` injectivity, prove branch-label
+injectivity/no-extra coverage, prove pole order, prove normal crossings, or
+extract RLCT.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-eq5-terminal-order-formula-bridge-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-terminal-order-formula-bridge.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-terminal-order-formula-bridge-a5.md`.
+
 Latest A6 finite-certificate bridge: `Theorem2FiniteExponentBridge.lean` now
 constructs `AoyagiTheorem2FiniteExponentFormulaHypothesis` from the A0 finite
 min/order certificate API.  If a supplied active coordinate realizes
