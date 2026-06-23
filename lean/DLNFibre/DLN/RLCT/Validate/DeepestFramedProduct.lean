@@ -59,6 +59,32 @@ noncomputable def framedParams (H : Fin (L + 1) → ℕ) (r : ℕ)
       (readZ H r hr hL (q.1, q.2.2) s)
       ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
 
+/-- **The `T = 0` framed reconstruction** (the `deepestEPivot` reconstruction half). Reconstructs the
+gauge-sliced layer tuple from the `(reg, gauge)` slots ALONE, with the reduced core block `T_s := 0`
+(the core is `coreAbsorb`'s domain — `deepestEPivot` is the regular residual of `∏C|_{T=0}`, the
+core-INDEPENDENT pivot part, per the #115/g222 cert). Each layer is `framedLayer` of the read blocks
+`(X_s, Y_s, Z_s)` with the `(1,1)` block zeroed. Layout-independent: it does not depend on the final
+`Fin nReg` pack convention (the open obstruction), only on the gauge read `readX/Y/Z`. -/
+noncomputable def framedParamsReg (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) : Params H :=
+  fun s =>
+    framedLayer H r hr s
+      (readX H r hr hL p s) (readY H r hr hL p s) (readZ H r hr hL p s)
+      (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
+
+/-- At the origin gauge slot, `framedParamsReg` is the **block-normal identity chain**: every layer is
+`framedLayer 0 0 0 0 = reindex (fromBlocks 1 0 0 0)` (the deepest value `blockdiag[I_r, 0]`). The base
+fact for `deepestEPivot`'s `_base` (the residual of `∏ blockdiag[I_r,0]` is `0`). -/
+theorem framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    framedParamsReg H r hr hL 0 s
+      = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+          (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+  simp only [framedParamsReg, framedLayer, readX_zero H r hr hL s, readY_zero H r hr hL s,
+    readZ_zero H r hr hL s, add_zero]
+
 /-! ## PIN 2 frame bridge — the telescoping (#80, next chunk)
 
 The geometric bridge `dlnLoss H B (paramsSymm w) ≍ ‖∏(framed C) − D‖²` reduces to: the **endpoint-frame
