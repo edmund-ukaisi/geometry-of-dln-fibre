@@ -75,10 +75,17 @@ and the post-Theorem-3 regular-suspension certificate.
 
 ## Verification
 
-Focused Lean check passed:
+Post-rebase Lean checks passed through the shared-store build wrapper:
 
 ```text
-cd lean && lake env lean DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.NormalCrossingInterface
+cd lean && scripts/lb
+cd lean && scripts/sorries
+git diff --check
 ```
 
-Full verification is recorded after the module/full build closeout.
+`scripts/lb` used the shared mathlib store for revision
+`8a178386ffc0f5fef0b77738bb5449d50efeea95`, acquired a global build slot, and
+set `LEAN_NUM_THREADS=3`.  The focused module build completed successfully
+with 1174 jobs; the full library build completed successfully with 3895 jobs.
+The sorry audit reported `0 sorry, 0 #exit, 0 native_decide, 0 axiom`.
