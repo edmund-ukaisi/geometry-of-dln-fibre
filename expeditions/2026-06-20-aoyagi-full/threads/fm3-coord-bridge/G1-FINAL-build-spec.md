@@ -2,6 +2,39 @@
 
 Every design + interface question is CLOSED. This is the complete spec for the dispatcher grind.
 
+## CERTIFIED-RECURSION ARCHITECTURE RULING (g193, crux2 decl-grounded Q1/Q2/Q3) — gap g192 RESOLVED
+crux2 answered the g192 architecture gap (read schur_recursion_step_sound + #65 + ChainDimSplit at HEAD):
+- Q1 SEAM CONFIRMED (both mechanisms needed; Codex's "telescoping replaces cover" too strong, my 2-mechanism
+  picture right): schur_recursion_step_sound = a SINGLE ADDITIVE step (rlctAtOn(dlnLoss M 0) = nReg/2 +
+  rlctAtOn(G²), additive along ONE path, NO ⨅). The ⨅-over-branches = MY cover (argmaxCellOn pivot cells =
+  branching = min-over-paths). My cover_le/cover_ge_div are the min-half, NOT a duplicate of crux2's per-step.
+- Q2 REBASE = YES: routeAtlas onto ChainDimSplit (drop the parallel RouteState — sync liability). Consume
+  ChainDimSplit M = {drop, red, hsum : drop s + red s = M s, hdrops : 0 < ∑ drop s} + redM (= red) +
+  splitEquiv (Fin(drop s)⊕Fin(red s)≃Fin(M s)) as the node-reduction DATUM; accumulate MonoData alongside
+  (node = (S : ChainDimSplit M) + MonoData; child chain = S.redM). BONUS: hdrops (∑drop>0 ⟹ ∑red<∑M) IS the
+  termination measure — well-foundedness FREE (no separate measure; my chainWidthSum/redM_widthSum_lt already
+  this). crux2 built ChainDimSplit + schur_straighten_of_data to be consumed exactly this way (#66). THIS
+  RESOLVES the g192 split.red-abstract gap: ChainDimSplit IS the certified node datum; split.red = S.redM is
+  the genuine reduced chain by construction (NOT abstract).
+- Q3 hGne = crux2's (#65 dlnLoss_deepest_core_ae_ne_zero, M-PARAMETRIZED: (M)(hpos : ∀ s, 1≤M s) → hGne, fires
+  per-Mred), BUT THE INVARIANT I CARRY: ChainDimSplit's red s = M s − drop s is NOT auto-positive — a step can
+  drop red s = 0. So #65 fires at the next level ONLY IF Mred still has ∀ s, 1≤Mred s. The red s=0 case (vertex
+  fully consumed) IS precisely my C4-TERMINAL (empty active block → terminate branch). So the recursion rule:
+  "BRANCH while red s > 0 ∀ s; red s = 0 ⟹ C4-LEAF." hMid(Mred) re-established per node, C4-gated. This is the
+  ROOT-ANCHORING resolution too (g192/g207): each Mred carries its own hMid(Mred), C4 absorbs the boundary.
+
+⚠ ONE RECONCILIATION TO CONFIRM (additive-vs-min at the recursion level, g186 vs Q2): crux2 Q2 says "consume
+schur_recursion_step_sound per step" in routeAtlas, but g186 (Case222 anchor) established R1's cover is
+LINTEGRAL-ONLY (no per-node rlctAtOn — blow-up nodes aren't homeos). RESOLUTION (my read, to confirm w/ crux2):
+the R1 resolution_charts HEADLINE (rlctAtOn = ⨅ monomialThreshold) goes through MY cover (lintegral, the
+min-half) — I do NOT consume schur_recursion_step_sound per step in routeAtlas (that additive per-step is L2's
+regular-shift lane, the nReg/2 accumulation product_reduction uses, NOT R1's ⨅-form). In routeAtlas I consume
+ChainDimSplit ONLY as the carrier/termination (Q2 bonus), NOT schur_recursion_step_sound as a per-step rlctAtOn.
+The "two mechanisms both needed" (Q1) is at the WHOLE-HEADLINE level (L2 additive shift + R1 min-cover), not
+both inside routeAtlas. SURFACING to crux2 to confirm this is the right read before rebasing.
+ACTIONABLE NOW regardless: (a) rebase routeAtlas onto ChainDimSplit (carrier + hdrops-termination) — Q2 clear;
+(b) thread hMid(Mred) per node, C4 = red s=0 — Q3 clear; (c) the MonoData→(d,k,h) lemma is fork-independent.
+
 ## (2,2,2) MILESTONE BANKED + ARCHITECTURE GAP (g192, fresh formaliser + Codex g206 + pp2 g207)
 A fresh focused lean-formaliser (off fm3/routem) took the #39 grind. RESULT:
 - ✓ (2,2,2) IsRouteMCover FACTS banked + reviewed PASS (#87/#89): RouteMCoverLemmas.lean (abstract cover
