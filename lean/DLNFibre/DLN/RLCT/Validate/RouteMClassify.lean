@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMRecursion
 import DLNFibre.DLN.RLCT.Validate.SchurState
+import DLNFibre.DLN.RLCT.Validate.ResolutionAtlas
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMClassify` — the `routeStep` leaf classifier (fm3, sub-1)
@@ -33,6 +34,40 @@ def isLeafNode (M : Fin (L + 1) → ℕ) : Prop :=
 instance (M : Fin (L + 1) → ℕ) : Decidable (isLeafNode M) := by
   unfold isLeafNode; infer_instance
 
+/-! ## The leaf-fidelity characterization (the base-case gate)
+
+The leaf test `isLeafNode M` (a decidable proxy) is the recursion's BASE CASE — load-bearing, so it
+must EXACTLY capture the geometric leaf. The geometric leaf is "no positive-codim pivot stratum remains":
+there is an admissible rank-pattern `T ∈ Adm M₀` of codim `Mval M T = 0` (the trivial / no-blow-up
+stratum is the minimiser). `isLeafNode_iff_exists_zero` pins the exact `⟺`, and the proof rests on
+`Mval ≥ 0` on `Adm` (`Mval_nonneg_adm`): the minimal codim is `0` iff some admissible stratum attains
+codim `0`. NON-VACUOUS: `Mval M (fun _ => 0)` is NOT always `0` (`= 4` on `(2,2,2)`), so the RHS
+genuinely fails on branch nodes and holds on terminal ones — the test is neither always-leaf nor
+never-leaf. -/
+
+/-- **The leaf-fidelity characterization (EXACT).** `M` is a leaf (`minAdm M = 0`) **iff** there is an
+admissible rank-pattern `T ∈ Adm M` of codim `Mval M T = 0` — the geometric leaf "no positive-codim pivot
+stratum remains". The exact base-case pin: `Mval ≥ 0` on `Adm` (`Mval_nonneg_adm`) makes the minimal codim
+`0` exactly when some admissible stratum attains `0`. (The `⟹` rides `Finset.exists_mem_eq_inf'` — the inf
+is achieved; the `⟸` rides `Finset.inf'_le` + nonnegativity.) -/
+theorem isLeafNode_iff_exists_zero (M : Fin (L + 1) → ℕ) :
+    isLeafNode M ↔ ∃ T ∈ Adm M, Mval M T = 0 := by
+  unfold isLeafNode
+  -- `Mval ≥ 0` on `Adm`, so `inf' Mval ≥ 0`; hence `(inf' Mval).toNat = 0 ↔ inf' Mval = 0`.
+  have hge : 0 ≤ (Adm M).inf' (Adm_nonempty M) (Mval M) :=
+    Finset.le_inf' _ _ (fun T hT => Mval_nonneg_adm M T hT)
+  rw [Int.toNat_eq_zero]
+  constructor
+  · intro hle
+    -- `inf' ≤ 0` and `inf' ≥ 0` give `inf' = 0`, achieved at some `T ∈ Adm M`.
+    have heq : (Adm M).inf' (Adm_nonempty M) (Mval M) = 0 := le_antisymm hle hge
+    obtain ⟨T, hT, hTval⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+    exact ⟨T, hT, by rw [← hTval, heq]⟩
+  · rintro ⟨T, hT, hTval⟩
+    -- a zero-codim admissible stratum drives the inf to `≤ 0`.
+    calc (Adm M).inf' (Adm_nonempty M) (Mval M) ≤ Mval M T := Finset.inf'_le _ hT
+      _ = 0 := hTval
+
 /-- **The leaf arm of the dispatcher.** At a leaf node the chart carries the empty `d = 0` monomial datum
 `leafMonoData 0` (threshold `⊤`): no monomial of its own, the value rides the divisors appended above. The
 `RouteStep.leaf` constructor, root-anchored trivially (a leaf carries no codim/witness — those live on the
@@ -46,6 +81,24 @@ cover `⨅` — the per-leaf value comes entirely from the pivot divisors accumu
 theorem leafStep_threshold :
     monomialThreshold (leafMonoData 0).d (leafMonoData 0).k (leafMonoData 0).h = ⊤ :=
   leafMonoData_threshold 0
+
+/-- **Branch direction (the "too-weak" guard).** If every admissible stratum has positive codim
+(`0 < Mval M T` for all `T ∈ Adm M`), then `M` is NOT a leaf — the recursion does not stop early. The
+contrapositive of `isLeafNode_iff_exists_zero`: a positive-codim-everywhere node is a genuine branch.
+This is the load-bearing fidelity direction (declaring a leaf with a positive-codim stratum remaining
+would stop the recursion early and undershoot the value). -/
+theorem not_isLeafNode_of_all_pos (M : Fin (L + 1) → ℕ)
+    (hpos : ∀ T ∈ Adm M, 0 < Mval M T) : ¬ isLeafNode M := by
+  rw [isLeafNode_iff_exists_zero]
+  rintro ⟨T, hT, hTval⟩
+  exact absurd hTval (by have := hpos T hT; omega)
+
+/-- **Leaf direction (the "too-strong" guard).** If some admissible stratum has codim `0`, then `M` IS a
+leaf — the recursion does not over-run past the terminal node. Restates the `⟸` of
+`isLeafNode_iff_exists_zero` in usable form. -/
+theorem isLeafNode_of_exists_zero (M : Fin (L + 1) → ℕ)
+    (h : ∃ T ∈ Adm M, Mval M T = 0) : isLeafNode M :=
+  (isLeafNode_iff_exists_zero M).mpr h
 
 /-! ## Non-vacuity anchors — the classifier separates genuine branches from terminal leaves -/
 
