@@ -2054,6 +2054,23 @@ No such claim is formalisation-ready until both fields are filled.
   `Cterm`.  This consumes only `actualWidth_frontier` and
   `actualWidth_Cterm_eq`; it does not construct source data or a transition
   theorem.
+  The source-chart frontier package now also has a chart-family-free
+  constructor:
+  `sourceChartMap_frontierBoundaryPackages_withoutChartFamily`, supported by
+  the continuing helpers
+  `sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData_withoutChartFamily`,
+  `sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal_withoutChartFamily`,
+  and
+  `sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal_withoutChartFamily`.
+  The old package remains as a compatibility wrapper, and
+  `SourceProductionObligation.of_formulaSuccessor_transportTerminalRows` now
+  consumes the chart-family-free package.  This removes a vacuous finite
+  caller dependency on `ChartRegular`, `TransitionRegular`, and
+  `Case2ResidualBlockChartFamilyBoundary`.  The stopped fields still keep the
+  accepted branch-implication meanings; the row-exhausted branch remains
+  transported-prefix rows, not original rows.  This is not chart production,
+  source production of `Csucc` or `C'^(S+1)`, suffix production, transition
+  regularity, normal crossings, pole order, termination, or RLCT extraction.
 - **Cited.** none planned.
 - **Deferred.** none planned.
 

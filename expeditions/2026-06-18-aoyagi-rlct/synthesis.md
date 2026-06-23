@@ -6217,6 +6217,37 @@ It rewrites supplied equalities on `Cnc.lossExp` and
 coverage, source-production, active-ratio lower-bound, chart-count, pole-order,
 or RLCT boundary.
 
+Latest A4 Case 2 source-chart frontier package API-hardening:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_frontierBoundaryPackages_withoutChartFamily`, together with
+`sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData_withoutChartFamily`,
+`sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal_withoutChartFamily`,
+and
+`sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal_withoutChartFamily`.
+The package constructs the same
+`SourceChartFrontierBoundaryPackages` implication bundle without requiring a
+caller-supplied `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary`.  Continuing fields are direct finite
+displayed-pivot algebra plus corrected post-data and finite center
+principalization.  Stopped fields retain the accepted branch-implication
+meaning; the proof internally supplies the old abstract chart-family boundary
+with `Case2ResidualBlockChartFamilyBoundary.exists_trivial`.
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows` now
+consumes the chart-free package.
+
+This is finite API hardening only.  It does not produce `Csucc` or
+`C'^(S+1)`, produce suffixes, build chart coverage or transition regularity,
+derive coordinate-produced corrected post-data, identify row-exhausted
+transported rows with original rows, prove normal crossings, prove pole
+order, prove termination, or extract an RLCT.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-frontier-boundary-packages-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-frontier-boundary-packages-without-chart-family-a4.md`
+passed.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

@@ -2134,6 +2134,25 @@ not chart coverage, source production, transition regularity, analytic
 Jacobian control, a total DLN loss certificate, global A0 normal crossings,
 pole order, or RLCT.
 
+The current A4 Case 2 source-chart frontier package API-hardening slice is
+`threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
+Lean now constructs
+`sourceChartMap_frontierBoundaryPackages_withoutChartFamily`, supported by
+chart-family-free continuing helpers for the unweighted source-following
+product, the weighted source-following finite-center payload, and the
+successor-following notation adapter.  The continuing fields use direct
+finite displayed-pivot algebra and corrected post-data.  The stopped fields
+keep the accepted branch-implication scope; their compatibility helpers still
+mention an abstract chart-family boundary, but the new package discharges it
+internally through the canonical `True`-predicate witness.  The consumer
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows` now
+uses the chart-family-free package.  This removes a vacuous caller dependency
+on `ChartRegular`, `TransitionRegular`, and
+`Case2ResidualBlockChartFamilyBoundary`; it is not source production of
+`Csucc` or `C'^(S+1)`, suffix production, chart coverage, transition
+regularity, coordinate-produced corrected post-data, normal crossings, pole
+order, termination, or RLCT.
+
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

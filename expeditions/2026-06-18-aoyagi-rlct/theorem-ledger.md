@@ -6124,6 +6124,32 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-source-chart-selected-entry-microcertificate-adapter-a4.md`.
 
+Latest A4 Case 2 source-chart frontier package without chart-family input:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData_withoutChartFamily`,
+`sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal_withoutChartFamily`,
+`sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal_withoutChartFamily`,
+and `sourceChartMap_frontierBoundaryPackages_withoutChartFamily`.
+These construct the source-chart frontier implication package without
+external `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary` arguments.  Continuing fields are
+proved from the finite displayed pivot identities, corrected selected-label
+post-data, and finite center ideal `(u)`.  Stopped fields retain the previous
+branch-implication APIs; the new package discharges their legacy abstract
+chart-family boundary internally via
+`Case2ResidualBlockChartFamilyBoundary.exists_trivial`.  The in-file consumer
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows` now
+calls the chart-family-free package.  This does not produce source successor
+data, suffix data, charts, transitions, coordinate-produced corrected
+post-data, normal crossings, pole order, termination, or RLCT data; the
+row-exhausted stopped branch remains transported-prefix rows, not original
+rows.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-frontier-boundary-packages-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-frontier-boundary-packages-without-chart-family-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -13236,6 +13236,67 @@ theorem sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAn
       data.successorLeastValueGap,
       data.postCase2Gap⟩
 
+set_option linter.style.longLine false in
+/-- Concrete displayed source-chart continuing package with the next
+same-stage source following factor, without any chart-family boundary input.
+
+This is finite displayed-pivot algebra plus corrected post-data bookkeeping:
+it does not construct charts, coverage, transitions, Jacobians, normal
+crossings, pole order, or RLCT data. -/
+theorem sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData_withoutChartFamily
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (C : ℕ → τ → R) :
+    (case2DisplayedPaperDppp n hS hcont residual *
+        case2DisplayedPaperCprime n hS hcont residual C).submatrix
+        (fun i ↦
+          Sum.inr
+            ((case2DisplayedPivotRowComplementEquivResidualRowSucc
+              n hS hcont).symm i))
+        id =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C ∧
+    IntroducedLabelExponentCertificates L n S (J + 1)
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    IntroducedLabelLevelInvariants L n S (J + 1)
+      ((pre.case2Succ
+        (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).level)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    case2IntroducedLabelLeastValueGap L n S (J + 1)
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+    (pre.case2Succ
+      (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).case2Gap := by
+  let hnew := correctedCase2NewLabelCertificate_of_prefixBound L n hS hSL hcont
+  let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+  let hpost := pre.case2Succ_case2SuppliedPostData upivot
+  let hexpPost :=
+    Case2CorrectedExponentPostData.updateSelected
+      (L := L) (n := n) (S := S) (J := J) t numerator leastValue
+  refine
+    ⟨?_,
+      exponentPre.extendDomain_correctedCase2NewLabel_of_postData hnew hexpPost,
+      hpost.levelInvariants_of_correctedExponentPostData levelInv hexpPost,
+      IntroducedLabelRecurrenceState.case2IntroducedLabelLeastValueGap_succ
+        leastValueGap hexpPost.leastValue_old hexpPost.leastValue_new,
+      hpost.case2Gap_of_leastValueGap_of_correctedExponentPostData
+        levelInv hexpPost leastValueGap⟩
+  simpa using
+    case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_nextSameStageProduct_sourceFollowingFactor
+      n hS hcont residual C
+
 /-- Concrete displayed source-chart package for the continuing Case 2 branch,
 with an arbitrary free pivot-first chart-coordinate following factor `C'`.
 
@@ -19465,6 +19526,72 @@ theorem sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenter
       case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
       case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
 
+set_option linter.style.longLine false in
+/-- Continuing source-chart boundary with weighted paper-`C'` lower rows and
+finite center principalization, without any chart-family boundary input. -/
+theorem sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal_withoutChartFamily
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (C : ℕ → τ → R) :
+    (case2ResidualBlockPivotEntries n S (J + 1)).Nonempty ∧
+    (let row := case2DisplayedPivotRow n hS hcont
+     let col := case2DisplayedPivotCol n hS hcont
+     let A := case2DisplayedPaperDchart n hS hcont residual
+     let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+     let post := pre.case2Succ upivot
+     ∃ q : pivotComplement row → R,
+      (((weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSourceSubstitutionBlock n hS hcont upivot residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          case2DisplayedSourceFollowingFactor n hS hcont C).submatrix
+          (fun i ↦
+            Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+          id) =
+        diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+          (case2DisplayedPostPivotResidualBlock n hS hcont residual *
+            case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C) ∧
+      IntroducedLabelExponentCertificates L n S (J + 1)
+        (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+        (updateSelectedLabelScalar S (J + 1)
+          (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+            ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelLevelInvariants L n S (J + 1)
+        post.level
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      case2IntroducedLabelLeastValueGap L n S (J + 1)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      post.case2Gap) ∧
+    u ∈
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+    (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+      u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+    Ideal.span
+        {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+          case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+      Ideal.span ({u} : Set R) := by
+  exact
+    ⟨case2DisplayedPostPivotResidualBlock_nonempty_of_next n hS hnext,
+      sourceChartMap_paperCprimeWeightedLowerRows_withoutChartFamily
+        pre u residual hS hSL hcont exponentPre levelInv leastValueGap C,
+      case2DisplayedSourceChartMap_value_mem n hS hcont u residual,
+      case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
+      case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
+
 /-- Continuing-branch displayed source-chart frontier payload.
 
 This is the next same-stage lower-row product package together with the
@@ -19671,6 +19798,30 @@ theorem sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterId
       case2DisplayedSourceChartMap_value_mem n hS hcont u residual,
       case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
       case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
+
+set_option linter.style.longLine false in
+/-- Continuing source-chart boundary in successor-following notation, without
+any chart-family boundary input. -/
+theorem sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal_withoutChartFamily
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (C : ℕ → τ → R) :
+    ContinuingWeightedSuccFollowingFrontierPayload
+      L n S J t numerator leastValue pre u residual hS hcont C := by
+  exact
+    continuingWeightedSuccFollowingFrontierPayload_of_sourceFollowing
+      (sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal_withoutChartFamily
+        pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap C)
 
 /-- Actual-width stopped displayed source-chart frontier payload with a supplied
 following factor and finite center principalization. -/
@@ -20109,6 +20260,66 @@ theorem sourceChartMap_frontierBoundaryPackages
         pre u residual hS hSL hcont hrow exponentPre levelInv leastValueGap
         chartFamily κ hSuffix C Ctail
 
+set_option linter.style.longLine false in
+/-- Concrete displayed source-chart frontier implication package with no
+caller-supplied chart-family boundary.
+
+The continuing fields are built from direct corrected-post-data algebra.  The
+stopped terminal helpers still have compatibility APIs phrased through the
+abstract chart-family boundary, so this proof discharges that old boundary
+internally with its canonical `True`-predicate inhabitant.  This removes a
+vacuous caller obligation; it still does not construct an affine atlas,
+source-produced successor data, transitions, normal crossings, pole order, or
+RLCT data. -/
+theorem sourceChartMap_frontierBoundaryPackages_withoutChartFamily
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue) :
+    SourceChartFrontierBoundaryPackages R L n S J t numerator leastValue
+      pre u residual hS hcont := by
+  classical
+  rcases Case2ResidualBlockChartFamilyBoundary.exists_trivial n S J with
+    ⟨ChartRegular, TransitionRegular, chartFamily⟩
+  refine
+    { frontierBranch := case2DisplayedStepBranch_of_cont hS hcont
+      continuing := ?_
+      continuingWeighted := ?_
+      actualWidthStopped := ?_
+      rowExhaustedStopped := ?_
+      rowExhaustedSourceSuffix := ?_ }
+  · intro τ C hnext
+    exact
+      ⟨case2DisplayedPostPivotResidualBlock_nonempty_of_next n hS hnext,
+        sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData_withoutChartFamily
+          pre u residual hS hSL hcont exponentPre levelInv leastValueGap C⟩
+  · intro τ C hnext
+    exact
+      sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal_withoutChartFamily
+        pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap C
+  · intro υ τ inst C F hwidth
+    exact
+      sourceChart_actualWidth_terminalOriginalRowsSuppliedSuffixBoundary_withFiniteCenterIdeal
+        pre u residual hS hSL hcont hwidth exponentPre levelInv leastValueGap
+        chartFamily C F
+  · intro κ inst hSuffix hLast C Ctail hrow
+    exact
+      sourceChart_rowExhausted_terminalLastTransportedPrefixBoundary_withFiniteCenterIdeal
+        pre u residual hS hSL hcont hrow exponentPre levelInv leastValueGap
+        chartFamily κ hSuffix hLast C Ctail
+  · intro κ instF instD hSuffix C Ctail hrow
+    exact
+      sourceChart_rowExhausted_sourceSuffixTransportedPrefixBoundary_withFiniteCenterIdeal
+        pre u residual hS hSL hcont hrow exponentPre levelInv leastValueGap
+        chartFamily κ hSuffix C Ctail
+
 universe u uκ
 
 /-- Supplied obligation for turning the displayed Case 2 source-chart
@@ -20226,9 +20437,9 @@ theorem of_formulaSuccessor_transportTerminalRows
       SourceChartFrontierBoundaryPackages.{u, uκ, uκ, uκ, uκ, uκ, uκ}
         R L n S J t numerator leastValue
         pre u residual data.stage_pos data.continuation :=
-    sourceChartMap_frontierBoundaryPackages
+    sourceChartMap_frontierBoundaryPackages_withoutChartFamily
       pre u residual data.stage_pos data.stage_le data.continuation
-      data.exponentPre data.levelInv data.leastValueGap data.chartFamily
+      data.exponentPre data.levelInv data.leastValueGap
   refine
     { frontier := frontier
       Csucc_eq_formula := rfl

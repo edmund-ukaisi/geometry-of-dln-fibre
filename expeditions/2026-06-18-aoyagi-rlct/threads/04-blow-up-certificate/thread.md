@@ -4859,6 +4859,43 @@ derive coordinate-produced corrected post-data, prove analytic
 Jacobian/volume-form data, prove normal crossings, prove pole order, prove
 termination, or extract an RLCT.
 
+## 2026-06-23 Lean source-chart frontier package without chart-family boundary
+
+Reproduction:
+`reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
+Statement card:
+`statement-card-a4-case2-frontier-boundary-packages-without-chart-family.md`.
+Review artifact:
+`review-case2-frontier-boundary-packages-without-chart-family-a4.md`.
+
+Lean now constructs the displayed Case 2 source-chart frontier implication
+package without a caller-supplied `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary`:
+
+```text
+sourceChartMap_postPivotNextSameStageProduct_withSourceFollowingFactorAndCorrectedPostData_withoutChartFamily
+sourceChartMap_continuingWeightedSourceFollowingPayload_withFiniteCenterIdeal_withoutChartFamily
+sourceChartMap_continuingWeightedSuccFollowingPayload_withFiniteCenterIdeal_withoutChartFamily
+sourceChartMap_frontierBoundaryPackages_withoutChartFamily
+```
+
+The continuing fields use direct finite displayed-pivot algebra, concrete
+`case2Succ` recurrence post-data, corrected selected-label exponent post-data,
+and finite residual-center principalization.  The stopped fields keep the
+previously accepted branch implication meanings; their old compatibility
+helpers still mention an abstract chart-family boundary, but the package
+discharges that internally with the canonical `True`-predicate inhabitant
+rather than asking callers for it.  The older
+`sourceChartMap_frontierBoundaryPackages` theorem remains as a compatibility
+wrapper, and `SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`
+now consumes the chart-family-free package.
+
+This removes a vacuous finite caller dependency.  It does not source-produce
+`Csucc` or `C'^(S+1)`, produce suffixes, construct charts or transitions,
+derive coordinate-produced corrected post-data, identify row-exhausted
+transported rows with original rows, prove normal crossings, prove pole order,
+prove termination, or extract an RLCT.
+
 ## 2026-06-23 xhigh branchwise source-production re-audit
 
 Audit:
