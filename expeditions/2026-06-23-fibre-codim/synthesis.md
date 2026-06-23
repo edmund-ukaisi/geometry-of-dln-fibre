@@ -284,3 +284,38 @@ the chart-localized `multComap` + the Schur freeness/flatness on ONE pivot chart
 — thermometer-style: if chart flatness walls there, we learn it cheaply before the full G2. Only on a GO
 signal: commit full G2 (height-additivity + reducibility) + G3 (assembly) + G4 (DLN wiring). **Worktree
 constraint:** formaliser tides run SEQUENTIALLY here (shared `.lake/build`); G1 → G2a → G2 → G3 → G4.
+
+## G2a GATE VERDICT (thread 09, 2026-06-23) — NO-GO this run; G2 buildable but ~8–12 modules
+
+The gating flatness prototype + decorrelated Codex convergently read **NO-GO** for a cheap landing.
+Per-sub-step: (1) the chart-localized comorphism `IsLocalization.Away.map (multComap) Δ` is REACHABLE
+(compiles); (3) flatness is a one-liner GIVEN the trivialization, via the **tensor** closer `R_t ≃ R_b
+⊗[k] F_E` (`F_E` reducible — the `ℓm=0` relation — NOT a polynomial algebra; Codex corrected my initial
+model) → `Algebra.TensorProduct.instFree` → flat. **The WALL is (2): the Schur trivializing `AlgEquiv`.**
+The engine carries the exact-rank base/total coordinate rings as **opaque `vanishingIdeal`-quotients with
+no explicit presentation**, so the `AlgEquiv` cannot be exhibited without first building the
+determinantal-quotient presentation from scratch. No API gap blocks it — it is a from-scratch
+affine-determinantal-AG build. Codex also refuted the soft-retraction shortcut (section ⊁ going-down;
+counterexample `A→A×A/(t)`) and confirmed v4.29 has no miracle/generic-flatness criterion to bypass it.
+
+**Durable artefact:** `Core/ChartFlatnessProbe.lean` (green, zero sorry, un-aggregated like
+`FlatTrivialProductProbe`) — pins the localized comorphism, `IsLocalization.flat`, the going-down
+consumer, and the corrected tensor Schur closer as compiling `example`s. The future build stands on it.
+
+## ROADMAP — G2 = the determinantal-presentation build (the named wall)
+To close the full identity, build (≈8–12 modules, the dominant cost is the presentation layer, NOT the
+flatness closer):
+1. **Explicit presentation of the exact-rank determinantal coordinate rings** (base `Mat^{rk=r}` and total
+   `Σ^r`) — replace the opaque `vanishingIdeal`-quotients with generators/relations usable for an `AlgEquiv`.
+2. The localized determinantal quotient algebra map (invert the pivot minor) on the pivot chart `U`.
+3. The **Schur `AlgEquiv`** `R_t,loc ≃ R_b,loc ⊗[k] F_E` (the trivialization; the reducible `F_E` model),
+   incl. the inverse formulas through quotient+localization → `Module.Flat` → `HasGoingDown`.
+4. Height-additivity via the LANDED `height_eq_height_add_of_liesOver_of_hasGoingDown` → the `+δ` shift.
+5. Reducibility/min-prime bookkeeping (`F_E` reducible; Brick A `minimalPrimes_sigmaIdeal_eq`) +
+   finite-chart-cover for top-dimension → `codimRepCanonical(fibre E) = cCodim + δ`.
+6. With G1 (`codimRepCanonical_fibre_eq_of_rank_eq`) ⟹ the identity for all rank-r B; G4 discharges
+   `DLN.BundleShiftInterface.cited_bundle_shift`.
+
+**Per the pre-agreed gate contract (NO-GO ⟹ land + roadmap), this expedition's reachable scope is
+complete.** Banked: F1 (comorphism keystone, reusable), the F2 lower bound, G1 (reduce-to-E), two
+route-pinning probes, this precise roadmap. The determinantal-presentation build is sub-expedition-scale.
