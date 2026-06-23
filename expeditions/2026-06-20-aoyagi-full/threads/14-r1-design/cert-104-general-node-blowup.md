@@ -1,5 +1,12 @@
 # Cert #104 — the general per-node blow-up presentation for the binding `hstep`
 
+> **RESOLVED by `cert-104b-two-strata-cover.md` (route (ii)).** The obstruction below is real and
+> precisely located, but it was an artifact of reading ONLY the core stratum (with `nReg := n`) and
+> dropping the outer `D₀` exceptional divisor. The sound uniform `hstep` is the **two-strata cover**
+> `rlctAtOn(dlnLoss M 0) = min{mk/2, rlctAtOn(core)}`, `rlctAtOn(core) = n/2 + child` — see
+> `cert-104b`. This document stands as the derivation of the blow-up algebra + the obstruction
+> diagnosis that motivated the cover.
+
 **Seat.** pen-and-paper (witness), DLNFibre aoyagi-full, task #104 (the R1 geometric heart).
 **Method.** exact symbolic algebra (sympy 1.14) + exact-integer combinatorics + a decorrelated
 xhigh Codex consult. No Lean. **Verification script:**

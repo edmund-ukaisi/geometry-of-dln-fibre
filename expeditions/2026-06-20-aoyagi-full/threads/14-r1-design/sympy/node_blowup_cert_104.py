@@ -126,11 +126,41 @@ def main():
     print(f"     smallest = (2,2,4);  count in range = {len(problem)}")
     print(f"     these occur on descent paths (n fixed, m,k shrink), so are NOT avoidable.")
 
+    # ---- the TWO-STRATA WEIGHTED-COVER (the SOUND uniform hstep, route (ii)) -------------------
+    print("\n[V7] TWO-STRATA COVER: rlct(F,0) = min{ mk/2 , rlct(core) }, rlct(core)=n/2+R/2.")
+    print("     OUTER product-min: F o phi = y0^2 * core, |Jac|=y0^{mk-1}; y0 disjoint from core;")
+    print("       Fubini |y0^2 core|^{-c} y0^{mk-1} conv iff c<mk/2 AND c<rlct(core) -> MIN.")
+    print("     INNER sum-add: core ~ ||Erow||^2 + ||S.Bred||^2 (unit pivot => no internal cap),")
+    print("       disjoint vars -> rlct(core)=n/2 + rlct(child)=n/2 + R/2 (additive).")
+    f7=True
+    for (m,k,n) in itertools.product(range(1,9),range(1,9),range(1,13)):
+        R=minAdm([m-1,k-1,n]) if (m>=1 and k>=1) else 0
+        rlct_core = F(n,2)+F(R,2)
+        cover = min(F(m*k,2), rlct_core)
+        if cover != F(minAdm([m,k,n]),2): f7=False; print("   (V7) FAIL",(m,k,n))
+    print(f"   min{{mk/2, n/2+R/2}} == minAdm/2 over (1..8)^2 x (1..12): {'OK' if f7 else 'FAIL'}")
+
+    print("\n[V8] SPINE RECONCILIATION: cover min{mk/2, n/2+child} == spine hstep nReg/2 + child")
+    print("     (nReg=minAdm-minAdm(red)); needs min{mk,n+R}=nReg+R, true since nReg=min{mk-R,n}.")
+    f8=True
+    for (m,k,n) in itertools.product(range(1,9),range(1,9),range(1,13)):
+        R=minAdm([m-1,k-1,n]); nReg=minAdm([m,k,n])-R
+        cover = min(F(m*k,2), F(n,2)+F(R,2)); spine = F(nReg,2)+F(R,2)
+        if cover != spine: f8=False; print("   (V8) FAIL",(m,k,n))
+    print(f"   cover == spine hstep for all (1..8)^2 x (1..12): {'OK' if f8 else 'FAIL'}")
+
+    print("\n[V9] COVER ANCHORS (both regimes, one uniform presentation):")
+    for (m,k,n) in [(2,2,2),(2,2,4),(1,1,2),(2,1,3),(3,3,3)]:
+        R=minAdm([m-1,k-1,n]); nReg=minAdm([m,k,n])-R
+        d0=F(m*k,2); core=F(n,2)+F(R,2); binder = "D0(y0)" if m*k<=n+R else "Erow+child"
+        print(f"     ({m},{k},{n}): D0=mk/2={d0}  core=(n/2+R/2)={core}  min={min(d0,core)}=minAdm/2={F(minAdm([m,k,n]),2)}"
+              f"  nReg={nReg}  binder={binder}")
+
     print("\n[V-anchor] (2,2,2): minAdm=3, red=(1,1,2) minAdm=1, nReg=2, child rlct=1/2, rlct=3/2")
     M=[2,2,2]; print(f"     minAdm{M}={minAdm(M)} red={redM(M)} minAdm(red)={minAdm(redM(M))} "
                      f"nReg={minAdm(M)-minAdm(redM(M))} rlct={F(minAdm(M),2)}  (D0 ratio mk/2={F(4,2)} is NON-binding; "
                      f"core branch (n+R)/2={F(2+1,2)} binds -> regular regime, nReg=n=2)")
-    print("\nALL CHECKS PASS." if (f4 and f5 and char_ok) else "\nSOME CHECK FAILED.")
+    print("\nALL CHECKS PASS." if (f4 and f5 and char_ok and f7 and f8) else "\nSOME CHECK FAILED.")
 
 if __name__ == "__main__":
     main()
