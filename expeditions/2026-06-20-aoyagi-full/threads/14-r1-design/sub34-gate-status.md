@@ -1,22 +1,33 @@
 # cobuild-sub34 gate status — #44c (L2 deepest gauge-chart instance)
 
 Snapshot of what is built vs. gated, for in-repo visibility (not just teammate messages).
-Branch: `fm2/deepest-gauge-chart-sub34` @ `c88492e`. As of 2026-06-23.
+Branch: `fm2/deepest-gauge-chart-sub34` @ `4052a28`. As of 2026-06-23.
 
-## TL;DR — the cast-independent lane is CLOSED; one machinery dep remains
+## TL;DR — #123 CAST WALL BROKEN + FOLD1 closed; two PIN obligations remain
 
-Everything cobuild-sub34 can build cast-free is BANKED GREEN sorry-free: PIN 0 (`deepest_coreAbsorb_exists`),
-PIN 1 (`deepest_regAbsorb_exists` — the `regAbsorb_rlct` producer, via the IFT adapter
-`rlctAtOn_comp_localDiffeo` + `boundedUnit_fderiv_det` + the `DeepestSplit` Haar instance), the PIN 2
-matrix core (`dlnLoss_block_squeeze` + `conjugation_frobenius_comparable`), `deepestEPivot` def +
-`deepestEPivot_contdiff`, the #95-(I) frames, the gauge-decode contract `deepest_isGaugeSliceDecode`, and
-the `deepest_gauge_squeeze_exists` ASSEMBLY (`deepest_gauge_chart_construct`) green-with-3-named-sorries.
+The #123 dependent-Fin `prodAux` cast wall (the named single L2 gate in the handback) is BROKEN.
+Both cobuild and crux2 cracked it independently; crux2's `DeepestTelescoping.lean` is the authoritative
+single-writer file (adopted into this branch @4052a28). The cast collapses two ways: cobuild's
+`finCongr_refl` (e1,e2 are rfl → outer reindex is Equiv.refl → reindex_refl_refl/rfl), crux2's
+`prodAux_succ_layer` kernel (`cases e1; cases e2`). FOLD1 (value) DONE both:
+- `prodAux_framedParamsReg_zero_aux` + `prodAux_framedParamsReg_zero` (crux2's file, axiom-clean).
+- **`deepestEPivot_base` PROVED** (cobuild, `DeepestGaugeConstruction.lean`, clean-three) — consumes the
+  prod-level corollary; `deepestEPivot 0 = 0` via the reindex-cancellation to `fromBlocks 1 0 0 0`.
 
-The ONLY remaining work is crux2's **3 `prodAux` fold lemmas** (#123, Codex-deferred): value-fold
-(→ `deepestEPivot_base`), derivative-fold (→ `deepestEPivot_deriv`, the g239 `D_E` transcription), and
-telescope-fold (→ `deepest_loss_squeeze` + PIN 2-B). ALL THREE funnel through the same dependent-Fin
-`prodAux` cast (the team-lead-confirmed re-scope: no cast-free lane bypasses differentiating/folding the
-`prodAux` product). cobuild WIRES the three on arrival → `DeepestGaugeChart` sorry-free → cert-review.
+REMAINING on L2 sub-3 — two **PIN-level** obligations (each substantial NEW analytic/geometric proof,
+NOT a kernel-application or short wire):
+- **`deepestEPivot_deriv` (FOLD2, #82):** `HasStrictFDerivAt deepestEPivot D_E 0` — the #91
+  idempotent-sandwich Leibniz derivative of the L-fold matrix product `∏(framedParamsReg)|_0` +
+  the concrete shear `D_E = [[I,Σ],[0,I]]` + unitriangular inverse. No product-derivative infra exists
+  in DLNFibre yet; this is from-scratch.
+- **`deepest_loss_squeeze` (FOLD3, #80):** the two-sided Frobenius bound. Matrix core is banked
+  (`dlnLoss_block_squeeze` + `fullProduct_loss_squeeze` + `core_comparability_squeeze`); the OPEN piece
+  is the deepest-point geometric identification (raw `∏A − B` ↔ framed blocks via endpoint conjugation +
+  the framed-vs-raw relation; `(regStraighten(split w)).1 = E`; `deepestCoreF(coreAbsorb …).2.1 = ‖Rcore‖²`)
+  — the g164/g222 geometric content, NOT banked.
+
+Both are tracked as #80/#82 (their own PINs). `endpoint_telescoping` (the stronger exact equality) is
+crux2's lane and OFF the L2 critical path (verdict-a: L2 closes via the two-sided BOUND, not the equality).
 
 ## Built + GREEN (sorry-free; clean-three)
 
@@ -87,16 +98,16 @@ derivative from `E_pivot`'s reg-derivative `D_E`); `deepest_regAbsorb_exists` ta
 `e` with `(e:→L) = regStraightenTotalCLM D_E`; `deepestEPivot_deriv` bundled `∃ D_E e, … ∧ (e:→L)=…`.
 No interface churn left — the spec is settled.
 
-## The remaining `deepestEPivot` props (the two dependent-Fin/shear grinds)
+## The remaining `deepestEPivot` props
 
-- **`_base`** (`deepestEPivot 0 = 0`): the idempotent product-at-0 fold —
-  `prod H (framedParamsReg 0) = reindex(blockdiag[I,0])` (product of `reindex(blockdiag[I,0])` layers,
-  idempotent), so the residual `(P11−I, P12, P21) = 0`. A `prodAux` dependent-Fin induction + the
-  block-idempotency `fromBlocks 1 0 0 0 ^k = fromBlocks 1 0 0 0` — same difficulty class as the
-  telescoping #111.
+- **`_base`** (`deepestEPivot 0 = 0`): **DONE** (clean-three) via `prodAux_framedParamsReg_zero` (the
+  prod-level FOLD1) + reindex-cancellation (`reindex e f (reindex e.symm f.symm corner) = corner`) →
+  each residual block of `fromBlocks 1 0 0 0` is `0`.
 - **`_deriv`** (the bundled shear): the concrete shear `D_E` + `HasStrictFDerivAt deepestEPivot D_E 0`
   (the #91 block-derivative transcription, `origin/g213-pin1-de0 @09475f2`) + the unitriangular inverse
-  `[[I, −Σ],[0, I]]` packaging the invertible `e`. THE analytic gap.
+  `[[I, −Σ],[0, I]]` packaging the invertible `e`. THE analytic gap — the Leibniz derivative of the
+  L-fold product, each term `corner·dC_s·corner` (idempotent sandwich), no DLNFibre product-derivative
+  infra yet. OPEN.
 
 ## PIN 2-B frame input COMPLETE (#95 Condition (I), in my tree)
 
