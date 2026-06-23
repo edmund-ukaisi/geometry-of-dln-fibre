@@ -1,0 +1,5 @@
+1. **SOUND.** Fact: the two Jacobian c-o-v calls are applied on their actual injective sources, `S \ {x0=0}` and `W \ {u2=0}`. Fact: `coord0_L2S2` proves the outer source lies in `{x0≠0}`, and `W` is already in `{u2≠0}`. The Lemma-2 splice is a global measure-preserving measurable equivalence, so no Jacobian or local injectivity issue is introduced.
+
+2. **SOUND.** Fact: `rlctAtOn_le_of_box_diverges` only needs divergence on every sufficiently small cube for each `c' > 3/2`. One leaf suffices because `phiUnit '' W ⊆ cubeBox ε`, so monotonicity gives the cube integral ≥ that leaf-image integral = `⊤`. No need for all 24 leaves in the `≤` direction.
+
+3. **SOUND, with scope note.** Fact: `Uval ≥ 1` globally, is continuous, and is bounded above on each compact leaf box; the integrand identity is proved with this `Uval`. Therefore the unit cannot vanish or blow up locally, and the divergence threshold is unchanged. Inference: for the later `≥` grind, you still need to apply the unit-invariance/finite-integral side leaf-by-leaf; the current `≤` proof only needs the divergent half.

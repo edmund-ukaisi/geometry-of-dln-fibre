@@ -1,0 +1,382 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.141.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/lean
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019eea0f-afdc-70f0-a2c0-bc5e617afa9f
+--------
+user
+<task>
+I must formalise in Lean 4 + Mathlib v4.29 a self-contained "backward-greedy min-suffix realizer" over ℤ.
+All math is verified true (Monte-Carlo, 0 fails). I need the CLEANEST proof ARCHITECTURE — which
+characterizations / representations minimise Lean friction. I will write the Lean; I want your diagnosis
+of the proof skeleton + which Mathlib idioms to lean on, NOT Lean code I paste blindly.
+
+OBJECTS (all ℤ, nonneg, but nonneg may not even be needed):
+- b : List ℤ, length n  (the "widths", NOT sorted)
+- R : Multiset ℤ, card n (the "pool")
+- sortedAsc : ascending sort.
+- Dom b R := R.card = b.length ∧ ∀ i, (sortedAsc R)[i] ≥ (sortedAsc b.toMultiset)[i]   (pointwise domination of sorted-R over sorted-b).
+
+ENGINE-2 (the crux, verified 0-fail on 10.7M states):
+  Given Dom b R and b ≠ [], let t := b.getLast.  Then
+  (i) ∃ v ∈ R, t ≤ v, and letting v := MIN such element (smallest w ∈ R with t ≤ w),
+  (ii) Dom (b.dropLast) (R.erase v).
+  KEY OBSERVATION I found: Dom depends only on the MULTISET of b. b.dropLast removes the VALUE t=b.getLast
+  once from b's multiset; R.erase v removes v once. So ENGINE-2 is a pure MULTISET fact:
+  "remove value t from b's multiset, remove min{w≥t} from R's multiset; sorted domination is preserved."
+
+ENGINE-1: backwardGreedy b R : List ℤ by strong recursion on R.card. If b=[] return []; else
+  t:=b.getLast; v:=min{w∈R: t≤w}; backwardGreedy (b.dropLast) (R.erase v) ++ [v].
+  Claims given Dom b R, q := backwardGreedy b R:
+   (a) (q:Multiset) = R   (b) q.length=b.length ∧ ∀ j, b[j] ≤ q[j]
+   (c) MIN-SUFFIX-OPTIMALITY: ∀ p a permutation of R with ∀j b[j]≤p[j], ∀ j: ∑_{i≥j} q[i] ≤ ∑_{i≥j} p[i].
+  (NOT naive pairwise exchange — that fails. Use atom: q[n-1]=min{w≥b_{n-1}} ≤ p[n-1] + ENGINE-2 + induction.)
+
+QUESTIONS — I want concrete, decisive guidance:
+1. REPRESENTATION: For Dom, is the cleanest Lean characterization (a) positional getElem on mergeSort lists,
+   (b) the COUNT/filter characterization "∀ threshold τ, (R.filter (·<τ)).card ≤ (b.filter (·<τ)).card"
+   [equiv to pointwise sorted domination], or (c) Mathlib's Multiset ordering / something else?
+   The count form seems erase-friendly. Confirm the equivalence count-form ⟺ sorted-domination and whether
+   it's the right Lean tool, OR warn me if it's a trap.
+2. ENGINE-2 closure proof: give the cleanest argument in the chosen representation. In the count form:
+   for threshold τ, need (R.erase v).filter(<τ).card ≤ (b.erase t).filter(<τ).card given the R/b version.
+   Walk the case split on τ vs t and τ vs v (v=min{w≥t}, so all w with t≤w<v are absent from R).
+   Identify the exact inequality chain. Is count-form actually clean here, or does the min-pick v break it?
+3. ENGINE-1(c) min-suffix optimality: confirm the right-to-left induction works and state the induction
+   hypothesis precisely (what's the statement at the (b.dropLast, R.erase v) level, and how does the atom
+   q_last ≤ p_last + IH give ∑_{i≥j} q ≤ ∑_{i≥j} p for ALL j simultaneously, including j ≤ n-1?).
+   The j-loop is the subtle part: suffix-sum at j = q_last + suffix-sum-of-rest at j. Spell out the splice.
+4. Any Mathlib v4.29 lemmas you're confident exist for: mergeSort sorted+perm, Multiset.sort/coe_sort,
+   Multiset.le_iff_count, filter card under erase, List.find? = min on sorted. (I'll verify names; just point.)
+</task>
+
+<output_contract>
+Four numbered sections matching Q1-Q4. For Q1 a DECISION (which representation) + one-line why.
+For Q2 the inequality chain explicitly (the τ case split). For Q3 the precise IH + the suffix-splice algebra.
+For Q4 a short list of lemma-name leads. Be decisive; flag anything you're unsure is TRUE vs just plausible.
+Keep under ~700 words. No Lean syntax dumps — pseudo-math is fine.
+</output_contract>
+
+<grounding_rules>
+Distinguish what is mathematically certain (you can prove on paper) from Lean-API guesses (lemma names you
+"think" exist). Mark the latter explicitly as "verify name". Do not invent Mathlib lemma signatures as fact.
+</grounding_rules>
+
+codex
+I’ll keep this at proof-architecture level and only inspect Mathlib/doc evidence for the API leads, since the mathematical argument itself is independent of names.
+web search: 
+web search: Mathlib v4.29 Multiset sort List.mergeSort Sorted Perm erase filter card theorem
+codex
+The web search did not surface useful version-specific docs, so I’m going to use the local dependency tree if it is present and treat lemma names as leads rather than promises.
+exec
+/bin/bash -lc 'rg -n "theorem .*mergeSort|def mergeSort|sort.*Multiset|coe_sort|le_iff_count|count_.*erase|filter.*erase|erase.*filter|card_filter" .lake/packages/mathlib/Mathlib Mathlib 2>/dev/null | head -160' in /home/ubuntu/workspace/geometry-of-dln-fibre/lean
+2026-06-21T12:02:52.849765Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019eea0f-afdc-70f0-a2c0-bc5e617afa9f`" }
+ exited 1:
+2026-06-21T12:02:52.851051Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rg -n "theorem .*mergeSort|def mergeSort|sort.*Multiset|coe_sort|le_iff_count|count_.*erase|filter.*erase|erase.*filter|card_filter" .lake/packages/mathlib/Mathlib Mathlib 2>/dev/null | head -160'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc "pwd && rg --files -g 'lake-manifest.json' -g 'lakefile.*' -g 'Mathlib/**/*.lean' -g '.lake/packages/mathlib/Mathlib/**/*.lean' | head -80" in /home/ubuntu/workspace/geometry-of-dln-fibre/lean
+ succeeded in 303ms:
+lake-manifest.json
+lakefile.toml
+
+codex
+The local checkout only shows the project manifests in the allowed read scope; I’ll avoid depending on exact local theorem signatures and mark the Mathlib names as “verify name” in the final answer.
+exec
+/bin/bash -lc "sed -n '1,200p' lake-manifest.json" in /home/ubuntu/workspace/geometry-of-dln-fibre/lean
+ succeeded in 0ms:
+{"version": "1.1.0",
+ "packagesDir": ".lake/packages",
+ "packages":
+ [{"url": "https://github.com/leanprover-community/mathlib4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "8a178386ffc0f5fef0b77738bb5449d50efeea95",
+   "name": "mathlib",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v4.29.0",
+   "inherited": false,
+   "configFile": "lakefile.lean"},
+  {"url": "https://github.com/leanprover-community/plausible",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "83e90935a17ca19ebe4b7893c7f7066e266f50d3",
+   "name": "plausible",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/LeanSearchClient",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "c5d5b8fe6e5158def25cd28eb94e4141ad97c843",
+   "name": "LeanSearchClient",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/import-graph",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "48d5698bc464786347c1b0d859b18f938420f060",
+   "name": "importGraph",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/ProofWidgets4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "3c52dee17f0cd89c1ec14de78920d1bdaa3d26b3",
+   "name": "proofwidgets",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v0.0.95",
+   "inherited": true,
+   "configFile": "lakefile.lean"},
+  {"url": "https://github.com/leanprover-community/aesop",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "7152850e7b216a0d409701617721b6e469d34bf6",
+   "name": "aesop",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "master",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/quote4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "707efb56d0696634e9e965523a1bbe9ac6ce141d",
+   "name": "Qq",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "master",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/batteries",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "756e3321fd3b02a85ffda19fef789916223e578c",
+   "name": "batteries",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover/lean4-cli",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover",
+   "rev": "7802da01beb530bf051ab657443f9cd9bc3e1a29",
+   "name": "Cli",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v4.29.0",
+   "inherited": true,
+   "configFile": "lakefile.toml"}],
+ "name": "DLNFibre",
+ "lakeDir": ".lake"}
+
+exec
+/bin/bash -lc "sed -n '1,160p' lakefile.toml" in /home/ubuntu/workspace/geometry-of-dln-fibre/lean
+exec
+/bin/bash -lc "rg -n \"mathlib|v4\\.29|lean-toolchain\" ." in /home/ubuntu/workspace/geometry-of-dln-fibre/lean
+ succeeded in 125ms:
+name = "DLNFibre"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["DLNFibre"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.29.0"
+
+[[lean_lib]]
+name = "DLNFibre"
+
+ succeeded in 198ms:
+./lake-manifest.json:4: [{"url": "https://github.com/leanprover-community/mathlib4",
+./lake-manifest.json:9:   "name": "mathlib",
+./lake-manifest.json:11:   "inputRev": "v4.29.0",
+./lake-manifest.json:91:   "inputRev": "v4.29.0",
+./lakefile.toml:9:weak.linter.mathlibStandardSet = true
+./lakefile.toml:13:name = "mathlib"
+./lakefile.toml:15:rev = "v4.29.0"
+./lean-toolchain:1:leanprover/lean4:v4.29.0
+./DLNFibre/Core/OrbitCodim.lean:44:the induced ring automorphism of `MvPolynomial (RepCoord d) k`), but Mathlib v4.29 has no transport
+./DLNFibre/DLN/RLCT/Foundations/S1Transport.lean:30:(then `hsurj` still needs invariance-of-domain, absent from Mathlib v4.29).
+./DLNFibre/DLN/RLCT/Skeleton.lean:1331:v4.29). Pointwise-after-sorting is FALSE (`q=[1,3]` vs `Y=[2,2]`) and a prefix/tail two-part split
+./DLNFibre/DLN/RLCT/Skeleton.lean:1499:(majorization) inequality: Mathlib v4.29 has no Schur-convexity / "sum of `k` smallest" API. We
+./CLAUDE.md:7:- Toolchain: Lean `v4.29.0` (`lean-toolchain`), Mathlib `v4.29.0` (`lakefile.toml`). Matches the `ai-research-assistant` harness one level up, so its v4.29 Mathlib idioms transfer.
+./CLAUDE.md:38:- Confirm a Mathlib lemma exists before building a proof around it: `scripts/lean-search "..."`, or `rg` over `.lake/packages/mathlib/Mathlib/`.
+./CLAUDE.md:41:## Mathlib gotchas (v4.29 pin)
+./CLAUDE.md:45:- **`Basis` is `Module.Basis` at the v4.29 pin.** Bare `Basis` is unknown even with full Mathlib imports;
+
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset v4.29 Multiset.sort
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Sort.html
+web search: 
+web search: 'erase_filter' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Basic.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset le_iff_count Multiset
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Sort.html
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/Data/Multiset/Sort.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/v4.29.0/Mathlib/Data/Multiset/Sort.lean
+web search: 
+web search: 'perm_mergeSort' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/List/Sort.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Defs.html
+web search: 
+web search: 'count' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Defs.html
+codex
+I found enough to anchor the API guidance: the v4.29 pin is in the local manifest, and the public docs confirm the broad `Multiset.sort` / `List.Sort` surface. The proof answer itself should not hinge on exact theorem names.
+codex
+1. **Representation**
+
+Decision: use the count/filter characterization as the internal `Dom`.
+
+Define `c_M(τ) := (M.filter (fun x => x < τ)).card`. Use
+`DomC B R := R.card = B.card ∧ ∀ τ, c_R(τ) ≤ c_B(τ)`.
+
+Mathematically certain: with equal cardinalities over a linear order, this is equivalent to sorted pointwise domination. If sorted `rᵢ ≥ bᵢ`, then fewer `R` elements can lie below any threshold. Conversely, if some first/any index has `rᵢ < bᵢ`, take `τ = bᵢ`; then `R` has at least `i+1` elements `< τ`, while `B` has at most `i`, contradiction. Do not use Mathlib’s `Multiset` order for this; that is submultiset/multiplicity inclusion, not stochastic/sorted domination.
+
+2. **ENGINE-2 Closure**
+
+Let `B := b.toMultiset`, `t ∈ B`, and choose `v ∈ R` minimal with `t ≤ v`. Existence: if no `R` element is `≥ t`, then every `R` element is `< t`, so `c_R(t)=n`; but `t ∈ B`, so `c_B(t)<n`, contradicting `c_R(t)≤c_B(t)`.
+
+For closure, prove for every threshold `τ`:
+`c_{R.erase v}(τ) ≤ c_{B.erase t}(τ)`.
+
+Use:
+`c_{R.erase v}(τ)=c_R(τ)-[v<τ]`,
+`c_{B.erase t}(τ)=c_B(τ)-[t<τ]`.
+
+Cases:
+
+- `τ ≤ t`: then `v<τ` and `t<τ` are false. Need `c_R(τ)≤c_B(τ)`, exactly Dom.
+
+- `t < τ ≤ v`: then `t<τ` true, `v<τ` false. Minimality gives no `R` element in `[t,v)`, hence no `R` element in `[t,τ)`, so `c_R(τ)=c_R(t)`. Also `t ∈ B` and `t<τ`, so `c_B(t)+1≤c_B(τ)`. Chain:
+  `c_{R.erase v}(τ)=c_R(τ)=c_R(t)≤c_B(t)≤c_B(τ)-1=c_{B.erase t}(τ)`.
+
+- `v < τ`: then both indicators are `1`. From `c_R(τ)≤c_B(τ)`, subtract one on both sides:
+  `c_R(τ)-1≤c_B(τ)-1`.
+
+This is exactly where count-form pays off.
+
+3. **ENGINE-1(c)**
+
+IH for the recursive call should be:
+
+For `b' := b.dropLast`, `R' := R.erase v`, `q' := greedy b' R'`, for every list `s` with `s.toMultiset = R'` and `∀ i, b'[i]≤s[i]`, and every suffix index `j`,  
+`Suffix(q',j) ≤ Suffix(s,j)`.
+
+For a competitor `p` for `(b,R)`, write `u := p.last`, `p' := p.dropLast`. Feasibility gives `t≤u`, and `u∈R`, so minimality gives `v≤u`.
+
+Subtle point: IH does not apply directly to `p'`, since `p'.toMultiset = R.erase u`, not necessarily `R.erase v`. If `u≠v`, replace one occurrence of `v` in `p'` by `u`; call the result `p♯`. Then `p♯.toMultiset = R.erase v`, and feasibility is preserved because the replaced entry only increases. If `u=v`, take `p♯=p'`.
+
+Now `q = q' ++ [v]`, `p = p' ++ [u]`.
+
+For the last suffix: `v≤u`.
+
+For `j < b'.length`:
+`Suffix(q,j)=Suffix(q',j)+v`
+`≤ Suffix(p♯,j)+v` by IH.
+
+If the replacement position `k` is outside the suffix (`k<j`), then `Suffix(p♯,j)=Suffix(p',j)`, so add `v≤u`. If `k` is inside (`j≤k`), then `Suffix(p♯,j)=Suffix(p',j)+(u-v)`, so adding `v` gives equality with `Suffix(p',j)+u`. Thus always:
+`Suffix(q,j) ≤ Suffix(p',j)+u = Suffix(p,j)`.
+
+4. **Mathlib Leads**
+
+Confirmed broad API surface: `Multiset.sort`, `coe_sort`, `sort_eq`, `pairwise_sort`, `length_sort`, `mem_sort`; `List.sortedLE_mergeSort`, `List.pairwise_mergeSort'`, `List.sortedLE_iff_monotone_get`, `List.SortedLE.monotone_get`. Verify exact v4.29 names locally. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Sort.html))
+
+Verify names: `Multiset.le_iff_count` or nearby count characterization for submultiset order; useful only as a multiplicity helper, not as Dom. Docs confirm `Multiset ≤` is sublist/up-to-permutation, equivalently pointwise multiplicity count. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Defs.html))
+
+Verify names: `filter_erase`, `erase_filter`, `card_erase_of_mem`, `count_erase`. If awkward, prove one local lemma for `card ((M.erase a).filter P)` by cases on `P a`.
+
+For `find?`, verify names like `List.find?_some` / `find?_eq_some`; otherwise prove a tiny sorted-list lemma: first element satisfying `t≤x` is minimal among satisfying members.
+tokens used
+60,893
+1. **Representation**
+
+Decision: use the count/filter characterization as the internal `Dom`.
+
+Define `c_M(τ) := (M.filter (fun x => x < τ)).card`. Use
+`DomC B R := R.card = B.card ∧ ∀ τ, c_R(τ) ≤ c_B(τ)`.
+
+Mathematically certain: with equal cardinalities over a linear order, this is equivalent to sorted pointwise domination. If sorted `rᵢ ≥ bᵢ`, then fewer `R` elements can lie below any threshold. Conversely, if some first/any index has `rᵢ < bᵢ`, take `τ = bᵢ`; then `R` has at least `i+1` elements `< τ`, while `B` has at most `i`, contradiction. Do not use Mathlib’s `Multiset` order for this; that is submultiset/multiplicity inclusion, not stochastic/sorted domination.
+
+2. **ENGINE-2 Closure**
+
+Let `B := b.toMultiset`, `t ∈ B`, and choose `v ∈ R` minimal with `t ≤ v`. Existence: if no `R` element is `≥ t`, then every `R` element is `< t`, so `c_R(t)=n`; but `t ∈ B`, so `c_B(t)<n`, contradicting `c_R(t)≤c_B(t)`.
+
+For closure, prove for every threshold `τ`:
+`c_{R.erase v}(τ) ≤ c_{B.erase t}(τ)`.
+
+Use:
+`c_{R.erase v}(τ)=c_R(τ)-[v<τ]`,
+`c_{B.erase t}(τ)=c_B(τ)-[t<τ]`.
+
+Cases:
+
+- `τ ≤ t`: then `v<τ` and `t<τ` are false. Need `c_R(τ)≤c_B(τ)`, exactly Dom.
+
+- `t < τ ≤ v`: then `t<τ` true, `v<τ` false. Minimality gives no `R` element in `[t,v)`, hence no `R` element in `[t,τ)`, so `c_R(τ)=c_R(t)`. Also `t ∈ B` and `t<τ`, so `c_B(t)+1≤c_B(τ)`. Chain:
+  `c_{R.erase v}(τ)=c_R(τ)=c_R(t)≤c_B(t)≤c_B(τ)-1=c_{B.erase t}(τ)`.
+
+- `v < τ`: then both indicators are `1`. From `c_R(τ)≤c_B(τ)`, subtract one on both sides:
+  `c_R(τ)-1≤c_B(τ)-1`.
+
+This is exactly where count-form pays off.
+
+3. **ENGINE-1(c)**
+
+IH for the recursive call should be:
+
+For `b' := b.dropLast`, `R' := R.erase v`, `q' := greedy b' R'`, for every list `s` with `s.toMultiset = R'` and `∀ i, b'[i]≤s[i]`, and every suffix index `j`,  
+`Suffix(q',j) ≤ Suffix(s,j)`.
+
+For a competitor `p` for `(b,R)`, write `u := p.last`, `p' := p.dropLast`. Feasibility gives `t≤u`, and `u∈R`, so minimality gives `v≤u`.
+
+Subtle point: IH does not apply directly to `p'`, since `p'.toMultiset = R.erase u`, not necessarily `R.erase v`. If `u≠v`, replace one occurrence of `v` in `p'` by `u`; call the result `p♯`. Then `p♯.toMultiset = R.erase v`, and feasibility is preserved because the replaced entry only increases. If `u=v`, take `p♯=p'`.
+
+Now `q = q' ++ [v]`, `p = p' ++ [u]`.
+
+For the last suffix: `v≤u`.
+
+For `j < b'.length`:
+`Suffix(q,j)=Suffix(q',j)+v`
+`≤ Suffix(p♯,j)+v` by IH.
+
+If the replacement position `k` is outside the suffix (`k<j`), then `Suffix(p♯,j)=Suffix(p',j)`, so add `v≤u`. If `k` is inside (`j≤k`), then `Suffix(p♯,j)=Suffix(p',j)+(u-v)`, so adding `v` gives equality with `Suffix(p',j)+u`. Thus always:
+`Suffix(q,j) ≤ Suffix(p',j)+u = Suffix(p,j)`.
+
+4. **Mathlib Leads**
+
+Confirmed broad API surface: `Multiset.sort`, `coe_sort`, `sort_eq`, `pairwise_sort`, `length_sort`, `mem_sort`; `List.sortedLE_mergeSort`, `List.pairwise_mergeSort'`, `List.sortedLE_iff_monotone_get`, `List.SortedLE.monotone_get`. Verify exact v4.29 names locally. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Sort.html))
+
+Verify names: `Multiset.le_iff_count` or nearby count characterization for submultiset order; useful only as a multiplicity helper, not as Dom. Docs confirm `Multiset ≤` is sublist/up-to-permutation, equivalently pointwise multiplicity count. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Multiset/Defs.html))
+
+Verify names: `filter_erase`, `erase_filter`, `card_erase_of_mem`, `count_erase`. If awkward, prove one local lemma for `card ((M.erase a).filter P)` by cases on `P a`.
+
+For `find?`, verify names like `List.find?_some` / `find?_eq_some`; otherwise prove a tiny sorted-list lemma: first element satisfying `t≤x` is minimal among satisfying members.

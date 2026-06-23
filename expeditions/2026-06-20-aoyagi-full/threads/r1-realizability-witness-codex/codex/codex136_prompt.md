@@ -1,0 +1,54 @@
+<task>
+I am de-risking a conjectured identity between two codimension formulas in a deep-linear-network /
+type-A-quiver RLCT problem, by exact integer arithmetic. Derive from definitions; distinguish FACT from
+INFERENCE; exact arithmetic only.
+
+SETUP. A dimension vector M = (M_0,...,M_L) (widths, naturals). An admissible exponent vector
+T = (T_0,...,T_{L-1}) satisfies: (i) T_j ≤ admBound_j (admBound_0=min(M_0,M_1), admBound_s=M_{s+1}, s≥1);
+(ii) T weakly decreasing; (iii) T_{L-1}=0. Running ranks ρ = (M_0, T_0, ..., T_{L-1}) (so ρ_0=M_0,
+ρ_{j}=T_{j-1}); admissibility ⟹ ρ weakly decreasing.
+
+TWO codimensions:
+- (RLCT side) Mval(M,T) = Σ_{j=0}^{L-1} (ρ_j − T_j)(M_{j+1} − T_j), where ρ_j = tPrev = M_0 if j=0 else
+  T_{j-1}. [Aoyagi's per-stratum learning-coefficient contribution.]
+- (Geometric side) The orbit O_M of the type-A quiver representation whose rank pattern is r. Its
+  codimension is multSum(m) = Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} · m_{uv} (N=L), where m_{ij} is the Kostant
+  multiplicity array: m = second difference of r, m_{ij} = r_{ij} − r_{i,j+1} − r_{i-1,j} + r_{i-1,j+1}
+  (out-of-range = 0), on i≤j. For a genuine quiver representation m is a nonnegative integer array
+  (a Kostant partition); r_{ij} = Σ_{k≤i, j≤l} m_{kl} (cumulative).
+
+WHAT I FOUND (exact, all admissible T over L=2..4, widths 1..4):
+- Using the candidate rank pattern r_{ij} = ρ_j + (M_i − ρ_i) for i≤j (else 0), the identity
+  Mval(M,T) = multSum(diff(r)) holds in ALL 10820 cases, 0 failures. Anchors reproduce: (2,2,2) achiever
+  T*=(1,0) → 3; (2,2,2) origin T=0 → 4; (3,2,3) achiever → 5. These match the literature codims.
+- BUT in 7310 of those cases the resulting m has a NEGATIVE entry (always at the corner (N,N)), e.g.
+  M=(1,2,1), T=(0,0): m_{2,2} = −1. A negative m is NOT a valid Kostant partition — so r is not a genuine
+  realizable rank pattern there, even though the algebraic multSum still equals Mval.
+</task>
+
+<output_contract>
+Q1. Is Mval(M,T) = multSum(diff(r)) with r_{ij}=ρ_j+(M_i−ρ_i) an ALGEBRAIC POLYNOMIAL IDENTITY in
+    (M,T) (true regardless of whether r is a realizable rank pattern), or does it depend on r being a
+    genuine pattern? Prove or give the algebraic reason (expand both sides). [If it is a pure polynomial
+    identity, the geometric meaning is separate from the algebra.]
+Q2. The negative-m cases (e.g. M=(1,2,1), T=0, m_{2,2}=−1) — what do they mean? Is the candidate
+    r_{ij}=ρ_j+(M_i−ρ_i) simply the WRONG rank pattern for the orbit there (the true orbit has a different,
+    nonnegative-m pattern with the SAME multSum=Mval), or does the orbit genuinely not exist / the
+    identity genuinely fail geometrically? Consider that M_i can EXCEED ρ_i (a width spike), making
+    (M_i−ρ_i) large and the corner second-difference negative.
+Q3. What is the CORRECT genuine orbit rank pattern r_{ij} of the minimal achiever stratum (or any
+    admissible stratum) as a function of (M,T)? The matrix rank of A_{j-1}...A_i for a generic
+    representative of the stratum. Give the formula and state whether its diff is always a nonnegative
+    Kostant partition.
+Q4. VERDICT: is the geometric-codimension identity Mval(M,T*) = codim O_{M_{T*}} (= multSum of the
+    GENUINE orbit) TRUE and provable for all M, or only for a restricted class (e.g. weakly-increasing or
+    weakly-decreasing M)? Where would the cleanest statement live: as a pure combinatorial identity
+    (Mval = multSum of an explicit m(M,T)), bypassing the rank-pattern realizability question?
+</output_contract>
+
+<grounding_rules>
+- All formulas exactly as stated. Exact integer arithmetic if you compute.
+- FACT (proved/computed) vs INFERENCE (heuristic) explicit.
+- A Kostant partition m must be NONNEGATIVE on i≤j; a negative entry means r is not realizable as a
+  genuine quiver-rep rank pattern.
+</grounding_rules>

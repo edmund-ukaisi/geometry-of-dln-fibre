@@ -1,0 +1,5 @@
+1. **SOUND.** `μ(φ '' N)=0` is exactly the right image-side Luzin-N obligation. The only dropped target points lie in `φ '' V \ φ '' (V \ N) ⊆ φ '' N`, while the reverse difference is empty. Thus the restricted `lintegral`s agree even if `g = ∞` on the exceptional image. Domain-side `μ(N)=0` alone would not suffice without an area/Luzin-N theorem.
+
+2. **SOUND.** The a.e.-disjointness must be imposed on the image leaves `φ_i '' (V_i \ Z_i)`, because those are the sets being summed in the target integral. Domain disjointness would not prevent double-counting target overlap; image a.e.-disjointness places that burden correctly on `hdisj`.
+
+3. **SOUND / faithful, provided the stated `hmeas` covers the image leaves and the per-chart COV hypotheses include the required source-set measurability.** With finite `s`, `U =ᵐ ⋃ images`, pairwise image AEDisjointness, and per-leaf COV, `lintegral` over `ℝ≥0∞` needs no integrability or finiteness assumption. Null exceptional target pieces and null cover discrepancies contribute zero, even for infinite-valued `g`.

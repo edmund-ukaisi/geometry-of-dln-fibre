@@ -1,0 +1,7 @@
+1. **ESTABLISHED:** In case (A), the actual global RLCT is `1/2`. The fibre is the single point `a = 1`, and locally the loss is exactly `(a - 1)^2`, whose RLCT is `1/2`. Thus the headline equality is true here: it equals `aoyagiLambda((1,1),1) = 1/2`. The zero-width-core decomposition is what fails, not the theorem’s value.
+
+2. **ESTABLISHED for this case:** In case (B), the headline equality is very plausibly true, and in fact the local structure gives RLCT `5/2`. Writing the parameters as `u in R^3`, `v in R^3`, the map is `(u,v) ↦ uv^T`; over a rank-one target `B`, every fibre point has `u,v ≠ 0`. The derivative has rank `3 + 3 - 1 = 5`, with one gauge direction `(u,v) ~ (tu,t^{-1}v)`. Hence the loss is Morse-Bott transverse to a smooth 1-dimensional fibre, so the local/global RLCT is `5/2`, matching `aoyagiLambda`.
+
+3. **VERDICT: PROOF-CONVENIENCE.**  
+   **ESTABLISHED:** the strict hypothesis `∀ s, r < H_s` is not soundness-required for the headline equality in the given boundary cases; (A) and (B) both satisfy the headline despite zero reduced widths.  
+   **INFERENCE:** when some `H_s = r`, the correct boundary picture is that the model image is locally the smooth rank-`r` stratum, so the singular core should effectively disappear rather than contribute `⊤`. The decomposition lemma using an identically-zero core is therefore applying the strict-width argument outside its natural range.

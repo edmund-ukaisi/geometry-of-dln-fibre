@@ -1,0 +1,324 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/r1-realizability-witness-codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ef3aa-78b1-7093-847f-9078f591b40f
+--------
+user
+<task>
+I am deciding whether ONE Lean datum structure can serve two related but distinct local resolutions in
+an RLCT (real log-canonical threshold) recursion, or whether two structures are forced. Derive from the
+definitions; distinguish FACT from INFERENCE. Exact algebra only if you compute.
+
+THE DATUM (a Lean structure, call it Datum) carries, for a node:
+  - flatCore : (Fin nReg → ℝ) × Y → ℝ        (the node's local loss core near the deepest point (0,0))
+  - G : Y → ℝ                                 (the reduced-chain core; G² = the smaller chain's loss)
+  - constants c₁,c₂ > 0
+  - a SQUEEZE field:  near (0,0),  c₁·Φ ≤ flatCore ≤ c₂·Φ,  where  Φ = (∑_{j<nReg} w.1_j²) + G(w.2)².
+The datum's CONSEQUENCE (a proven theorem) is:  rlct(flatCore, (0,0)) = nReg/2 + rlct(G², 0).
+So Φ has TWO parts: a regular block of nReg literal coordinate-squares, and the single reduced core G².
+
+TWO NODE TYPES feed this datum:
+  (C1) "hard-pivot" node: flatCore = (∑_j E_j²) + ∑_{i,j} (b_i·E_j + SΓ_{ij})², with the pivot column b
+       BOUNDED (∑ b_i² ≤ T², b→0 at the deepest point). The regular block is ∑E_j² (so nReg = #E),
+       the reduced core is G² = ∑ SΓ². The squeeze holds with c₁=(2(1+T²))⁻¹, c₂=2+2T² (a bounded-linear
+       -perturbation Young estimate). Here the defect lives in the PERTURBATION b·E, NOT in nReg.
+  (C5) "partial-drop" node: a survivor block (rank b) plus a SINGLE rank-1 complement defect δ. The
+       loss is  ∑‖G·p‖² (survivor) + ‖G·q + δ·e‖² (the complement column), e a bounded nonzero gauge
+       vector. A shear δ' = δ + (G·q·e)/‖e‖² gives EXACTLY  loss = ‖e‖²·δ'² + [survivor core projected
+       off e].  So the defect becomes ONE regular square ‖e‖²·δ'² (a Morse ½), and the survivor core is
+       the reduced G². Here the defect lives in the REGULAR block nReg, NOT in a perturbation.
+</task>
+
+<output_contract>
+Q1. Is the C1 node an instance of Datum? (state the field assignments: nReg, the regular block, G, c₁,c₂.)
+Q2. Is the C5 node (after the shear) an instance of Datum? Specifically: can the C5 shear-split
+    loss = ‖e‖²δ'² + (survivor core) be put in the form c₁·Φ ≤ flatCore ≤ c₂·Φ with Φ = (∑_{j<nReg} w.1_j²)
+    + G², by COUNTING the δ'-direction (rescaled by ‖e‖, which is bounded in [c,C], 0<c≤C) as one of the
+    nReg regular coordinates? What are c₁,c₂ then?
+Q3. THE DECISION: does ONE Datum structure cover both C1 and C5, or are two structures forced? The
+    difference is WHERE the defect sits: C1 puts it in the bounded perturbation b·E (squeeze constants
+    ≠1), C5 puts it in the regular block nReg (squeeze constants =1 on that coordinate). Is that a
+    difference of FIELD VALUES (same structure, different producer) or of STRUCTURE (different fields)?
+Q4. Any obstruction to the unified datum? E.g. does counting δ' in nReg require ‖e‖ to be a CONSTANT
+    (not a function of the survivor coords) for the squeeze constants to be uniform? If ‖e‖ varies over
+    the chart in [c,C], does c₁·Φ ≤ flatCore ≤ c₂·Φ still hold with Φ using the UNWEIGHTED δ'² (i.e.
+    absorb ‖e‖² into the squeeze constants)? Give the resulting c₁,c₂ in terms of c,C.
+</output_contract>
+
+<grounding_rules>
+- Datum exactly as stated; the consequence rlct = nReg/2 + rlct(G²) is a theorem you may use.
+- A nondegenerate quadratic in m variables has rlct m/2; a bounded unit u (0<a≤u≤b) does not change rlct.
+- FACT vs INFERENCE explicit. Exact arithmetic if you compute.
+</grounding_rules>
+
+codex
+I’ll treat the datum literally as the contract: its only analytic requirement is the local squeeze against an unweighted regular-square block plus `G²`, and the RLCT splitting is already assumed as a theorem.
+codex
+**Q1. C1 Hard-Pivot**
+
+**FACT.** Yes, C1 is an instance of `Datum`.
+
+Field assignments:
+
+- `nReg = #E`
+- regular block: `∑_j E_j²`
+- reduced core: choose `G` with  
+  `G² = ∑_{i,j} SΓ_{ij}²`
+- `flatCore = ∑_j E_j² + ∑_{i,j} (b_i E_j + SΓ_{ij})²`
+- constants:
+  ```text
+  c₁ = (2(1 + T²))⁻¹
+  c₂ = 2 + 2T²
+  ```
+
+Writing `L_b(E)_{ij} = b_i E_j`, we have `‖L_b E‖² ≤ T² ‖E‖²`. The stated Young-estimate gives
+
+```text
+(2(1+T²))⁻¹ (‖E‖² + ‖SΓ‖²)
+  ≤ ‖E‖² + ‖L_b E + SΓ‖²
+  ≤ (2+2T²)(‖E‖² + ‖SΓ‖²).
+```
+
+**INFERENCE.** In C1, the defect is not counted in `nReg`; it is controlled as a bounded linear perturbation of the regular variables.
+
+---
+
+**Q2. C5 Partial-Drop**
+
+**FACT.** After the shear,
+
+```text
+loss = ‖e‖² δ'² + G²
+```
+
+where `G²` is the survivor/reduced-chain core.
+
+If we use the rescaled regular coordinate
+
+```text
+x = ‖e‖ δ',
+```
+
+then
+
+```text
+loss = x² + G² = Φ.
+```
+
+So C5 is an instance of `Datum` with:
+
+- `nReg = 1` for the single complement defect direction, plus any other already-regular directions if present
+- regular block: `x²`
+- reduced core: survivor `G`
+- constants:
+  ```text
+  c₁ = 1
+  c₂ = 1
+  ```
+
+**INFERENCE.** This is the cleanest conceptual fit: the C5 defect has become an actual Morse square, so it belongs in the regular block.
+
+---
+
+**Q3. One Datum Or Two?**
+
+**FACT.** The stated `Datum` only records:
+
+```text
+flatCore, G, nReg, c₁, c₂, squeeze proof.
+```
+
+It does not record where the defect came from.
+
+**INFERENCE.** One `Datum` structure covers both C1 and C5. The difference is a difference of field values and producer proofs, not of structure.
+
+Use separate constructors/producers, e.g.
+
+```text
+Datum.ofHardPivot
+Datum.ofPartialDropShear
+```
+
+but both can return the same `Datum` type.
+
+C1: defect lives in the perturbation `b · E`, so `nReg = #E` and `c₁,c₂` are nontrivial.
+
+C5: defect lives in the regular block, so `nReg` increases by `1`, and after rescaling the new coordinate the constants are `1,1`.
+
+---
+
+**Q4. Does `‖e‖` Need To Be Constant?**
+
+**FACT.** No. For the squeeze, `‖e‖` does not need to be constant. It only needs uniform bounds on the chart:
+
+```text
+0 < c ≤ ‖e‖ ≤ C.
+```
+
+If we use the unweighted coordinate `δ'`, then
+
+```text
+flatCore = ‖e‖² δ'² + G²
+Φ        = δ'² + G².
+```
+
+Hence
+
+```text
+min(c², 1) · Φ ≤ flatCore ≤ max(C², 1) · Φ.
+```
+
+So the datum works with
+
+```text
+c₁ = min(c², 1)
+c₂ = max(C², 1).
+```
+
+If one has arranged `c ≤ 1 ≤ C`, this simplifies to:
+
+```text
+c₁ = c²
+c₂ = C².
+```
+
+**INFERENCE.** The only real obstruction is loss of a uniform nonzero bound: if `‖e‖` can approach `0` or blow up on the chart, then the unweighted squeeze constants may fail. Constantness is unnecessary; bounded-unit behavior is enough.
+tokens used
+9,502
+**Q1. C1 Hard-Pivot**
+
+**FACT.** Yes, C1 is an instance of `Datum`.
+
+Field assignments:
+
+- `nReg = #E`
+- regular block: `∑_j E_j²`
+- reduced core: choose `G` with  
+  `G² = ∑_{i,j} SΓ_{ij}²`
+- `flatCore = ∑_j E_j² + ∑_{i,j} (b_i E_j + SΓ_{ij})²`
+- constants:
+  ```text
+  c₁ = (2(1 + T²))⁻¹
+  c₂ = 2 + 2T²
+  ```
+
+Writing `L_b(E)_{ij} = b_i E_j`, we have `‖L_b E‖² ≤ T² ‖E‖²`. The stated Young-estimate gives
+
+```text
+(2(1+T²))⁻¹ (‖E‖² + ‖SΓ‖²)
+  ≤ ‖E‖² + ‖L_b E + SΓ‖²
+  ≤ (2+2T²)(‖E‖² + ‖SΓ‖²).
+```
+
+**INFERENCE.** In C1, the defect is not counted in `nReg`; it is controlled as a bounded linear perturbation of the regular variables.
+
+---
+
+**Q2. C5 Partial-Drop**
+
+**FACT.** After the shear,
+
+```text
+loss = ‖e‖² δ'² + G²
+```
+
+where `G²` is the survivor/reduced-chain core.
+
+If we use the rescaled regular coordinate
+
+```text
+x = ‖e‖ δ',
+```
+
+then
+
+```text
+loss = x² + G² = Φ.
+```
+
+So C5 is an instance of `Datum` with:
+
+- `nReg = 1` for the single complement defect direction, plus any other already-regular directions if present
+- regular block: `x²`
+- reduced core: survivor `G`
+- constants:
+  ```text
+  c₁ = 1
+  c₂ = 1
+  ```
+
+**INFERENCE.** This is the cleanest conceptual fit: the C5 defect has become an actual Morse square, so it belongs in the regular block.
+
+---
+
+**Q3. One Datum Or Two?**
+
+**FACT.** The stated `Datum` only records:
+
+```text
+flatCore, G, nReg, c₁, c₂, squeeze proof.
+```
+
+It does not record where the defect came from.
+
+**INFERENCE.** One `Datum` structure covers both C1 and C5. The difference is a difference of field values and producer proofs, not of structure.
+
+Use separate constructors/producers, e.g.
+
+```text
+Datum.ofHardPivot
+Datum.ofPartialDropShear
+```
+
+but both can return the same `Datum` type.
+
+C1: defect lives in the perturbation `b · E`, so `nReg = #E` and `c₁,c₂` are nontrivial.
+
+C5: defect lives in the regular block, so `nReg` increases by `1`, and after rescaling the new coordinate the constants are `1,1`.
+
+---
+
+**Q4. Does `‖e‖` Need To Be Constant?**
+
+**FACT.** No. For the squeeze, `‖e‖` does not need to be constant. It only needs uniform bounds on the chart:
+
+```text
+0 < c ≤ ‖e‖ ≤ C.
+```
+
+If we use the unweighted coordinate `δ'`, then
+
+```text
+flatCore = ‖e‖² δ'² + G²
+Φ        = δ'² + G².
+```
+
+Hence
+
+```text
+min(c², 1) · Φ ≤ flatCore ≤ max(C², 1) · Φ.
+```
+
+So the datum works with
+
+```text
+c₁ = min(c², 1)
+c₂ = max(C², 1).
+```
+
+If one has arranged `c ≤ 1 ≤ C`, this simplifies to:
+
+```text
+c₁ = c²
+c₂ = C².
+```
+
+**INFERENCE.** The only real obstruction is loss of a uniform nonzero bound: if `‖e‖` can approach `0` or blow up on the chart, then the unweighted squeeze constants may fail. Constantness is unnecessary; bounded-unit behavior is enough.
