@@ -143,6 +143,16 @@ displayed Case 2 formal pivot exponent, then `p` is active and
 construct `D` or `p`, prove a global minimum/order count, or provide analytic
 chart/Jacobian data.
 
+The current chart-certificate adapter for that bridge is
+`threads/04-blow-up-certificate/reproduction-case2-chart-certificate-coordinate-adapter-a4.md`.
+Lean now also proves
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.of_chartCertificate_coord_exponents`,
+which consumes supplied exponent equalities on an
+`AoyagiNormalCrossingChartCertificate Cnc` and returns the existing bridge for
+`Cnc.exponentData`.  This is only a projection/API adapter.  It does not
+construct the chart certificate or coordinate, prove chart coverage, move the
+A4 source-production boundary, or prove pole order/RLCT.
+
 The current A4/A0 supplied-minimum bridge is
 `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-minimum-bridge-a4.md`.
 Lean now consumes the supplied coordinate bridge plus an explicit lower bound

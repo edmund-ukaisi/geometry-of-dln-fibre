@@ -45,6 +45,37 @@ structure Case2DisplayedContinuingA0ExponentCoordinateBridge
 
 namespace Case2DisplayedContinuingA0ExponentCoordinateBridge
 
+/-- Build the supplied Case 2/A0 exponent-coordinate bridge when the matching
+exponent equalities are stated on a chart certificate rather than on its
+projected finite exponent data.
+
+This is only a projection adapter.  It does not construct the chart
+certificate, the coordinate, any chart coverage, or any analytic extraction
+input. -/
+theorem of_chartCertificate_coord_exponents
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J K}
+    {u : K} {residual : ℕ × ℕ → K}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → K}
+    {cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        L n S J t numerator leastValue pre u residual hS hcont C}
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hloss : Cnc.lossExp p.1 p.2 = 1)
+    (hjac : Cnc.jacobianPriorExp p.1 p.2 =
+      ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card) :
+    Case2DisplayedContinuingA0ExponentCoordinateBridge cert Cnc.exponentData p where
+  lossExp_eq_one := by
+    simpa using hloss
+  jacobianPriorExp_eq_formalPivotExp := by
+    simpa using hjac
+
 /-- A supplied A0 coordinate matching the displayed continuing Case 2 local
 step is active and has finite ratio equal to half the residual-block center
 cardinality.

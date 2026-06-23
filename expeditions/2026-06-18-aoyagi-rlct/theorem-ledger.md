@@ -5904,6 +5904,21 @@ formula-level transported following rows, but not successor/source production.
 The existing supplied-obligation consumers in `BlowupArithmetic.lean` remain
 the safe Lean boundary.  No new Lean theorem is introduced by this audit.
 
+Latest A4/A0 chart-certificate coordinate adapter:
+`Case2FiniteExponentBridge.lean` now contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.of_chartCertificate_coord_exponents`.
+It consumes supplied exponent equalities on a supplied
+`AoyagiNormalCrossingChartCertificate Cnc` and constructs the existing
+Case 2/A0 coordinate bridge for `Cnc.exponentData`.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-chart-certificate-coordinate-adapter-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-chart-certificate-coordinate-adapter.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-chart-certificate-coordinate-adapter-a4.md`.
+This is a projection adapter only: no chart certificate, coordinate
+production, coverage, active-ratio lower bound, chart count, normal-crossing
+production, pole order, or RLCT is proved.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

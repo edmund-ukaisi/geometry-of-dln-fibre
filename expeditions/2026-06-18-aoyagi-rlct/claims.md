@@ -613,6 +613,14 @@ No such claim is formalisation-ready until both fields are filled.
   stopped, and row-exhausted stopped branches and confirms that existing
   supplied-obligation consumers are the safe boundary; no source-production
   theorem is justified by Aoyagi pp. 19-22 alone.
+  The A4/A0 chart-certificate coordinate adapter
+  `Case2DisplayedContinuingA0ExponentCoordinateBridge.of_chartCertificate_coord_exponents`
+  is also proved in `lean/DLNFibre/DLN/Aoyagi/Case2FiniteExponentBridge.lean`.
+  It takes supplied equalities on `Cnc.lossExp` and
+  `Cnc.jacobianPriorExp` and constructs the existing Case 2/A0 coordinate
+  bridge for `Cnc.exponentData`.  This is definitional projection only; it
+  does not construct the chart certificate, coordinate, active-ratio lower
+  bounds, chart counts, normal crossings, pole order, or RLCT.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity

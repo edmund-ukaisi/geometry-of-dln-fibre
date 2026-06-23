@@ -6074,6 +6074,24 @@ old rows in wide-next cases.  No new Lean target should be named as source
 production unless it builds an independent selected-entry atlas/transition
 construction.
 
+Latest recovery scout round after the VM crash: Franklin checked selected-entry
+atlas/coverage, Chandrasekhar checked the A0 chart-certificate spine versus
+A4 microcertificates, and Volta checked A2/A3.  All three returned freeze
+verdicts for genuine source-moving Lean work: A4 global selected-entry atlas
+coverage, A0 total-loss chart certificate production, and A2/A3 boundary
+removal are not Lean-ready from the current source/policy state.  The only
+small safe target from the round was an A0/A4 projection adapter, now proved
+as
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.of_chartCertificate_coord_exponents`
+with artifacts in
+`threads/04-blow-up-certificate/reproduction-case2-chart-certificate-coordinate-adapter-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-chart-certificate-coordinate-adapter.md`.
+It rewrites supplied equalities on `Cnc.lossExp` and
+`Cnc.jacobianPriorExp` through `Cnc.exponentData`; it does not move the chart,
+coverage, source-production, active-ratio lower-bound, chart-count, pole-order,
+or RLCT boundary.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

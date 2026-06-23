@@ -4848,3 +4848,26 @@ No stronger Lean target is source-faithful from this source slice.  Existing
 finite supplied-obligation consumers are the safe boundary.  Further A4
 progress must construct an independent selected-entry atlas/transition
 package or stay explicitly below chart/source production.
+
+## 2026-06-23 Lean chart-certificate coordinate adapter
+
+Reproduction:
+`reproduction-case2-chart-certificate-coordinate-adapter-a4.md`.
+Statement card:
+`statement-card-a4-case2-chart-certificate-coordinate-adapter.md`.
+Review artifact:
+`review-case2-chart-certificate-coordinate-adapter-a4.md`.
+
+Lean now adds a projection adapter:
+
+```text
+Case2DisplayedContinuingA0ExponentCoordinateBridge.of_chartCertificate_coord_exponents
+```
+
+It consumes supplied exponent equalities stated directly on a supplied
+`AoyagiNormalCrossingChartCertificate Cnc` and constructs the existing
+Case 2/A0 coordinate bridge for `Cnc.exponentData`.  This is only an API
+handoff from chart-certificate fields to finite exponent-data fields.  It
+does not construct `Cnc` or `p`, prove chart coverage, prove active-ratio
+lower bounds, prove chart counts, produce analytic Jacobian/volume data, prove
+normal crossings for the DLN loss, or extract an RLCT.
