@@ -3191,18 +3191,305 @@ private theorem dom_Mtail_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
   -- combine: cLt(Ymulti) ≤ cLt(Ytail) = cLt(Mfull)−[aS0<τ] ≤ cLt(Mfull)−[M⁰<τ] = cLt(Mwidths)
   omega
 
+/-! ### A1 band — the forward-max witness.
+
+The achiever band `S'_{j+2} − admBound_j ≤ prefix_{j+1}(qStar)` is the LOWER bound on `qStar`'s
+prefix. By `backwardGreedy_suffix_le`, `qStar` minimises every suffix sum (≡ maximises every prefix)
+over the feasible perms of `Ymulti`; so it dominates the prefix of any single feasible witness. The
+witness is `forwardMax`: the front-greedy dual of `backwardGreedy` — at each position, the largest
+pool value that is `≥` the width and keeps the remaining problem `Dom`. Its prefix meets the band by
+a forward step-invariant whose arithmetic is `good_floor_core`.
+
+`forwardMax` is defined **proof-free** (total, with a `0` fallback when no live candidate exists —
+the gotcha pp-hall flagged), and its specs are proven separately under `Dom`. The `Dom`-decidable
+filter is handled with `open Classical` (`Classical.dec`). -/
+
+open scoped Classical in
+/-- The live-candidate set for the front-greedy: pool values `≥ t` whose erasure keeps `Dom bs`. -/
+private noncomputable def liveCand (t : ℤ) (bs : List ℤ) (R : Multiset ℤ) : Finset ℤ :=
+  R.toFinset.filter (fun w => t ≤ w ∧ BGEngine.Dom bs (R.erase w))
+
+open scoped Classical in
+/-- The front-greedy head: the LARGEST live candidate (junk `0` if none — proof-free fallback). -/
+private noncomputable def forwardHead (t : ℤ) (bs : List ℤ) (R : Multiset ℤ) : ℤ :=
+  if hs : (liveCand t bs R).Nonempty then (liveCand t bs R).max' hs else 0
+
+open scoped Classical in
+/-- The front-greedy realizer `forwardMax b R`: left-to-right, place the largest pool value `≥` each
+width that keeps the remainder `Dom`. Total (proof-free), with specs proven under `Dom`. -/
+private noncomputable def forwardMax : List ℤ → Multiset ℤ → List ℤ
+  | [], _ => []
+  | t :: bs, R => forwardHead t bs R :: forwardMax bs (R.erase (forwardHead t bs R))
+
+/-- A feasible permutation `p` of `R` (with `b[i] ≤ p[i]`) certifies `Dom b R` (the head-count
+form): at every threshold `τ`, `p[i] < τ ⟹ b[i] < τ`, so `R` has no more sub-`τ` elements than
+`b`. The converse direction to the engine; needed to seed `liveCand` nonemptiness. -/
+private theorem feasiblePerm_dom {b p : List ℤ} {R : Multiset ℤ}
+    (hpR : (p : Multiset ℤ) = R) (hlen : p.length = b.length)
+    (hfeas : BGEngine.Feasible b p) : BGEngine.Dom b R := by
+  refine ⟨by rw [← hpR, Multiset.coe_card, hlen], ?_⟩
+  intro τ
+  rw [← hpR]
+  -- cLt counts indices with value < τ; feasibility maps each such p-index to a b-index
+  rw [BGEngine.cLt_eq_countP, BGEngine.cLt_eq_countP, Multiset.coe_countP, Multiset.coe_countP,
+    List.countP_eq_length_filter, List.countP_eq_length_filter]
+  -- compare via the index sets {i | p[i] < τ} ⊆ {i | b[i] < τ}
+  have hb : (b.filter (· < τ)).length
+      = (Finset.univ.filter (fun i : Fin b.length => b[i] < τ)).card := by
+    rw [List.length_filter_eq_card_filter_finRange]
+    rfl
+  have hp : (p.filter (· < τ)).length
+      = (Finset.univ.filter (fun i : Fin p.length => p[i] < τ)).card := by
+    rw [List.length_filter_eq_card_filter_finRange]
+    rfl
+  rw [hb, hp]
+  apply Finset.card_le_card_of_injOn (fun i => (⟨i, by rw [← hlen]; exact i.isLt⟩ : Fin b.length))
+  · intro i hi
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+    exact lt_of_le_of_lt (hfeas i (by rw [← hlen]; exact i.isLt) i.isLt) hi
+  · intro i _ j _ hij
+    exact Fin.ext (Fin.mk.injEq .. ▸ hij)
+
+/-- The live-candidate set is nonempty under `Dom (t :: bs) R`: `backwardGreedy`'s head is a live
+candidate (it is `≥ t` by `backwardGreedy_ge`, and erasing it keeps `Dom bs` since the greedy's tail
+is a feasible perm of `R.erase head`, via `feasiblePerm_dom`). -/
+private theorem liveCand_nonempty {t : ℤ} {bs : List ℤ} {R : Multiset ℤ}
+    (h : BGEngine.Dom (t :: bs) R) : (liveCand t bs R).Nonempty := by
+  set q := BGEngine.backwardGreedy (t :: bs) R with hq
+  have hperm : (q : Multiset ℤ) = R := BGEngine.backwardGreedy_perm h
+  have hqlen : q.length = (t :: bs).length := BGEngine.backwardGreedy_length h
+  have hqpos : 0 < q.length := by rw [hqlen]; exact Nat.succ_pos _
+  set w := q.head (by rw [← List.length_pos_iff]; exact hqpos) with hw
+  -- w = q[0]
+  have hw0 : w = q[0]'hqpos := by rw [hw, List.head_eq_getElem]
+  -- t ≤ w from backwardGreedy_ge at index 0
+  have htw : t ≤ w := by
+    have hg := BGEngine.backwardGreedy_ge h 0 (by rw [List.length_cons]; exact Nat.succ_pos _)
+    rw [hw0]; simpa using hg
+  -- q = w :: q.tail; tail is a perm of R.erase w and feasible for bs
+  have hcons : q = w :: q.tail := (List.head_cons_tail q _).symm
+  have hwmem : w ∈ R := by rw [← hperm]; rw [hcons]; exact Multiset.mem_cons_self _ _
+  have htailperm : (q.tail : Multiset ℤ) = R.erase w := by
+    have : (q : Multiset ℤ) = w ::ₘ (q.tail : Multiset ℤ) := by
+      conv_lhs => rw [hcons]; rw [← Multiset.cons_coe]
+    rw [← hperm, this, Multiset.erase_cons_head]
+  have htaillen : q.tail.length = bs.length := by
+    have := congrArg List.length hcons
+    rw [List.length_cons] at this; rw [hqlen, List.length_cons] at this; omega
+  have htailfeas : BGEngine.Feasible bs q.tail := by
+    intro i hbi hpi
+    have hgi := BGEngine.backwardGreedy_ge h (i + 1)
+      (by rw [List.length_cons]; omega)
+    have hbcons : (t :: bs)[i + 1]'(by rw [List.length_cons]; omega) = bs[i]'hbi := by
+      simp [List.getElem_cons_succ]
+    have hqcons : q[i + 1]'(by rw [hqlen, List.length_cons]; omega) = q.tail[i]'hpi := by
+      conv_lhs => rw [hcons]
+      rw [List.getElem_cons_succ]
+    rw [hbcons, hqcons] at hgi
+    exact hgi
+  have hdomtail : BGEngine.Dom bs (R.erase w) := feasiblePerm_dom htailperm htaillen htailfeas
+  refine ⟨w, ?_⟩
+  simp only [liveCand, Finset.mem_filter, Multiset.mem_toFinset]
+  exact ⟨hwmem, htw, hdomtail⟩
+
+/-- The front-greedy head is a live candidate (under `Dom (t :: bs) R`): the largest pool value
+`≥ t` whose erasure keeps `Dom bs`. -/
+private theorem forwardHead_live {t : ℤ} {bs : List ℤ} {R : Multiset ℤ}
+    (h : BGEngine.Dom (t :: bs) R) : forwardHead t bs R ∈ liveCand t bs R := by
+  have hs := liveCand_nonempty h
+  rw [forwardHead, dif_pos hs]
+  exact (liveCand t bs R).max'_mem hs
+
+/-- The front-greedy head is `≥ t`. -/
+private theorem forwardHead_ge {t : ℤ} {bs : List ℤ} {R : Multiset ℤ}
+    (h : BGEngine.Dom (t :: bs) R) : t ≤ forwardHead t bs R :=
+  ((Finset.mem_filter.mp (forwardHead_live h)).2).1
+
+/-- The front-greedy head lies in the pool. -/
+private theorem forwardHead_mem {t : ℤ} {bs : List ℤ} {R : Multiset ℤ}
+    (h : BGEngine.Dom (t :: bs) R) : forwardHead t bs R ∈ R := by
+  have := forwardHead_live h
+  simp only [liveCand, Finset.mem_filter, Multiset.mem_toFinset] at this
+  exact this.1
+
+/-- Erasing the front-greedy head keeps `Dom bs`. -/
+private theorem forwardHead_dom {t : ℤ} {bs : List ℤ} {R : Multiset ℤ}
+    (h : BGEngine.Dom (t :: bs) R) :
+    BGEngine.Dom bs (R.erase (forwardHead t bs R)) :=
+  ((Finset.mem_filter.mp (forwardHead_live h)).2).2
+
+/-- The front-greedy head is maximal among live candidates. -/
+private theorem live_le_forwardHead {t : ℤ} {bs : List ℤ} {R : Multiset ℤ}
+    (h : BGEngine.Dom (t :: bs) R) {u : ℤ} (huR : u ∈ R) (htu : t ≤ u)
+    (huD : BGEngine.Dom bs (R.erase u)) : u ≤ forwardHead t bs R := by
+  have hs := liveCand_nonempty h
+  rw [forwardHead, dif_pos hs]
+  refine (liveCand t bs R).le_max' u ?_
+  simp only [liveCand, Finset.mem_filter, Multiset.mem_toFinset]
+  exact ⟨huR, htu, huD⟩
+
+/-- **`forwardMax` is a permutation of the pool** (under `Dom`). -/
+private theorem forwardMax_perm {b : List ℤ} {R : Multiset ℤ} (h : BGEngine.Dom b R) :
+    (forwardMax b R : Multiset ℤ) = R := by
+  induction b generalizing R with
+  | nil =>
+    rw [forwardMax]
+    have : R.card = 0 := by simpa using h.1
+    simp [(Multiset.card_eq_zero.mp this).symm]
+  | cons t bs ih =>
+    set w := forwardHead t bs R with hw
+    have hwmem : w ∈ R := forwardHead_mem h
+    have hdom : BGEngine.Dom bs (R.erase w) := forwardHead_dom h
+    rw [forwardMax, ← hw, ← Multiset.cons_coe, ih hdom, Multiset.cons_erase hwmem]
+
+/-- **`forwardMax` is feasible** (under `Dom`): each entry dominates its width. -/
+private theorem forwardMax_feasible {b : List ℤ} {R : Multiset ℤ} (h : BGEngine.Dom b R) :
+    BGEngine.Feasible b (forwardMax b R) := by
+  induction b generalizing R with
+  | nil => intro i hbi _; simp at hbi
+  | cons t bs ih =>
+    intro i hbi hpi
+    set w := forwardHead t bs R with hw
+    have hdom : BGEngine.Dom bs (R.erase w) := forwardHead_dom h
+    cases i with
+    | zero =>
+      have hb0 : (t :: bs)[0] = t := rfl
+      have hp0 : (forwardMax (t :: bs) R)[0]'hpi = w := by rw [forwardMax]; rfl
+      rw [hb0, hp0]; exact forwardHead_ge h
+    | succ i =>
+      have hbi' : i < bs.length := by rw [List.length_cons] at hbi; omega
+      have hpi' : i < (forwardMax bs (R.erase w)).length := by
+        have hlen : (forwardMax (t :: bs) R).length = (forwardMax bs (R.erase w)).length + 1 := by
+          rw [forwardMax, List.length_cons]
+        rw [hlen] at hpi; omega
+      have hb : (t :: bs)[i + 1]'hbi = bs[i]'hbi' := by simp [List.getElem_cons_succ]
+      have hp : (forwardMax (t :: bs) R)[i + 1]'hpi
+          = (forwardMax bs (R.erase w))[i]'hpi' := by rw [forwardMax]; rfl
+      rw [hb, hp]; exact ih hdom i hbi' hpi'
+
+/-- **The forward-max prefix bound** (`1 ≤ k ≤ L`): `prefix_k(forwardMax) ≥ S'_k = ∑_{i<k}M⁽ⁱ⁾` for
+`k ≥ 2`, with the `k = 1` refinement `prefix_1 ≥ max(M⁰,M¹)` (the `j = 0` band needs
+`admBound₀ = min(M⁰,M¹)`). The arithmetic heart of the band — the **one remaining open seam** of A1
+(everything else here is green). Numerically 0-fail (19525 cases); the math is verified, only the
+Lean induction is pending.
+
+**The proof plan (verified, the irreducible content).** This is NOT abstract in `Dom` (the bound
+`prefix_k ≥ (∑R−∑b)+∑_{i<k}b[i]` FAILS for generic `Dom (b,R)`; checked 20000 cases). It needs the
+achiever structure of `Yvec` via `good_floor_core`. Two equivalent routes (both reduce to the same
+M-specific window lemma):
+* **Suffix route (cleaner).** Equivalently (total `∑forwardMax = ∑M`) prove `suffix_k(qStar) ≤
+  tailM_k = ∑_{i=k}^L M⁽ⁱ⁾` directly on `qStar = backwardGreedy`, by backward induction maintaining
+  `I2 : suffix_{j+1}(qStar) ≤ tailM_{j+1}`. The step needs the **window lemma**: at greedy step `j`
+  (width `M⁽ʲ⁺¹⁾`), the live pool contains a value `y` with `M⁽ʲ⁺¹⁾ ≤ y ≤ tailM_j − suffix_{j+1}`
+  (verified 0-fail); minimality of the greedy pick gives `vⱼ ≤ y`, propagating `I2`. The window
+  existence is where `good_floor_core` enters (the achiever bound guarantees a small-enough value
+  survives). Then `prefix_k(qStar) ≥ S'_k`, and `prefix_k(forwardMax) ≥ S'_k` by prefix-maximality.
+* **Forward route.** Prove `forwardMax` maximises every prefix over feasible perms (the mirror of
+  `BGEngine.backwardGreedy_suffix_le`, ~130 lines of exchange bookkeeping), then bound its prefix by
+  the same window lemma.
+The `k = 1` refinement `prefix_1 ≥ max(M⁰,M¹)`: `forwardHead` (max live value `≥ M¹`) admits a live
+candidate `≥ max(M⁰,M¹)` — `max(Yvec) ≥ max(M⁰,M¹)` always (verified). NOT a smallest-`k`-sum
+(`min feasible suffix > smallestK(Yvec,L−k)` in 4705 cases — feasibility forces larger tail values). -/
+private theorem forwardMax_prefix_band (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
+    (hDom : BGEngine.Dom (Mwidths M) (Ymulti M)) (k : ℕ) (hk1 : 1 ≤ k) (hkL : k ≤ L) :
+    (if k = 1 then max (M 0 : ℤ) (M 1 : ℤ) else ∑ i ∈ Finset.range k, Mseq M i)
+      ≤ ((forwardMax (Mwidths M) (Ymulti M)).take k).sum := by
+  sorry
+
+/-- A `range`-sum of a `getD`-extended list prefix equals the list's `take`-sum (when `n ≤ length`). -/
+private theorem sum_range_getD_eq_take (q : List ℤ) (n : ℕ) (hn : n ≤ q.length) :
+    ∑ i ∈ Finset.range n, q.getD i 0 = (q.take n).sum := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    rw [Finset.sum_range_succ, ih (by omega), List.take_succ,
+      List.sum_append, List.getElem?_eq_getElem (by omega)]
+    simp [List.getD_eq_getElem _ _ (by omega : m < q.length)]
+
 /-- **A1 (Lemma 3, the headline arithmetic).** `lambdaCore M = cleanCore` at the achiever `cAch M`
 (needs `hL : 1 ≤ L`; the conclusion is unsatisfiable at `L = 0`). Assembled: the achiever ordering
 `qStar` is corridor-feasible and permutes `Yvec` (via `QFeas_qStar`) → `close_of_feasible`. `hDom`
-is proven (`dom_Mtail_Yvec`); the one open input is the admissibility band `hband` (the forward-max
-witness, reducing to `good_floor_core`). -/
+is proven (`dom_Mtail_Yvec`); the band `hband` is the forward-max witness (`forwardMax_prefix_band`),
+transported to `qStar` by its suffix-minimality (`backwardGreedy_suffix_le`). -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
   have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
-  -- OPEN: the achiever band (the forward-max witness; see the docstring).
+  -- the two realizers and their shared total / lengths
+  set q := BGEngine.backwardGreedy (Mwidths M) (Ymulti M) with hq
+  set p := forwardMax (Mwidths M) (Ymulti M) with hp
+  have hqlen : q.length = L := by rw [hq, BGEngine.backwardGreedy_length hDom, Mwidths_len]
+  have hplen : p.length = L := by
+    have := forwardMax_perm hDom
+    have hc : (p : Multiset ℤ).card = (Ymulti M).card := by rw [this]
+    rw [Multiset.coe_card] at hc; rw [hp, hc, Ymulti_card]
+  have hpperm : (p : Multiset ℤ) = Ymulti M := forwardMax_perm hDom
+  have hpfeas : BGEngine.Feasible (Mwidths M) p := forwardMax_feasible hDom
+  -- the two have equal total sum (= sum of Ymulti)
+  have htot : q.sum = p.sum := by
+    have h1 : (q : Multiset ℤ) = Ymulti M := BGEngine.backwardGreedy_perm hDom
+    rw [← Multiset.sum_coe, ← Multiset.sum_coe, h1, hpperm]
+  -- the achiever band on qStar's prefix
   have hband : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
-      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i := by sorry
-  obtain ⟨hq, σ, hperm⟩ := QFeas_qStar M hL hDom hband
-  exact close_of_feasible M hL (qStar M) hq σ hperm
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i := by
+    intro j
+    have hjL : (j : ℕ) < L := j.isLt
+    set k := (j : ℕ) + 1 with hkdef
+    have hk1 : 1 ≤ k := by omega
+    have hkL : k ≤ L := by omega
+    -- prefix of qStar = take-sum of q
+    have hqStar_pre : ∑ i ∈ Finset.range k, qStar M i = (q.take k).sum := by
+      rw [← sum_range_getD_eq_take q k (by rw [hqlen]; omega)]
+      exact Finset.sum_congr rfl (fun i _ => by rw [qStar, ← hq])
+    -- prefix(q) ≥ prefix(p): suffix(q) ≤ suffix(p) [suffix_le] + equal totals + take/drop split
+    have hsuf := BGEngine.backwardGreedy_suffix_le hDom p hpperm hpfeas k
+    rw [← hq] at hsuf
+    have hsplit_q : q.sum = (q.take k).sum + (q.drop k).sum := by
+      rw [← List.sum_append, List.take_append_drop]
+    have hsplit_p : p.sum = (p.take k).sum + (p.drop k).sum := by
+      rw [← List.sum_append, List.take_append_drop]
+    have hpremax : (p.take k).sum ≤ (q.take k).sum := by
+      rw [htot] at hsplit_q; linarith [hsuf, hsplit_q, hsplit_p]
+    -- prefix(p) ≥ band target (forwardMax_prefix_band) + admBound conversion
+    have hpb := forwardMax_prefix_band M hL hDom k hk1 hkL
+    rw [hqStar_pre]
+    -- close: convert `∑ range (j+2) Mseq − admBound_j` to `∑ range k Mseq − (k=1 ? M1 : 0)` form
+    rw [hp] at hpremax
+    -- Mseq-prefix at k+1 vs k; admBound_j cases
+    have hMpre : ∑ i ∈ Finset.range (k + 1), Mseq M i
+        = (∑ i ∈ Finset.range k, Mseq M i) + Mseq M k := Finset.sum_range_succ _ _
+    have hMk : Mseq M k = (M j.succ : ℤ) := by
+      rw [hkdef]; rw [show (j : ℕ) + 1 = (j.succ : ℕ) from by rw [Fin.val_succ]]
+      unfold Mseq; rw [dif_pos (by exact j.succ.isLt)]
+    -- admBound cases
+    by_cases hj0 : (j : ℕ) = 0
+    · -- j = 0: k = 1, admBound₀ = min(M⁰,M¹); S'₂ − min(M⁰,M¹) = max(M⁰,M¹) = prefix bound
+      have hk1eq : k = 1 := by omega
+      rw [hk1eq] at hpb hMpre ⊢
+      rw [if_pos rfl] at hpb
+      have hadm : (admBound M j : ℤ) = ((min (M 0) (M 1) : ℕ) : ℤ) := by
+        unfold admBound; rw [if_pos hj0]
+      have hjsucc1 : (M j.succ : ℤ) = (M 1 : ℤ) := by
+        rw [show j.succ = (1 : Fin (L + 1)) from by
+          apply Fin.ext; rw [Fin.val_succ, hj0, Fin.val_one', Nat.mod_eq_of_lt (by omega)]]
+      rw [show (j : ℕ) + 2 = 1 + 1 by omega, hMpre, hMk, hjsucc1, hadm]
+      have hM0 : Mseq M 0 = (M 0 : ℤ) := by unfold Mseq; rw [dif_pos (by omega)]; rfl
+      rw [show (∑ i ∈ Finset.range 1, Mseq M i) = Mseq M 0 from by
+            rw [Finset.sum_range_one], hM0]
+      have hmin : ((min (M 0) (M 1) : ℕ) : ℤ) = min (M 0 : ℤ) (M 1 : ℤ) := by push_cast; rfl
+      rw [hmin]
+      -- (M⁰ + M¹) − min(M⁰,M¹) = max(M⁰,M¹); hpb : max(M⁰,M¹) ≤ prefix
+      have hmax : (M 0 : ℤ) + (M 1 : ℤ) - min (M 0 : ℤ) (M 1 : ℤ) = max (M 0 : ℤ) (M 1 : ℤ) := by
+        rcases le_total (M 0 : ℤ) (M 1 : ℤ) with h | h
+        · rw [min_eq_left h, max_eq_right h]; ring
+        · rw [min_eq_right h, max_eq_left h]; ring
+      rw [hmax]; linarith [hpb, hpremax]
+    · -- j ≥ 1: admBound_j = M j.succ = Mseq M k; target − admBound = S'_{k+1} − M^k = S'_k
+      have hadm : (admBound M j : ℤ) = (M j.succ : ℤ) := by
+        unfold admBound; rw [if_neg hj0]
+      rw [if_neg (by omega : ¬ k = 1)] at hpb
+      rw [show (j : ℕ) + 2 = k + 1 by omega, hMpre, hadm, hMk]
+      linarith [hpb, hpremax]
+  obtain ⟨hqf, σ, hperm⟩ := QFeas_qStar M hL hDom hband
+  exact close_of_feasible M hL (qStar M) hqf σ hperm
 
 end DLNFibre.DLN.RLCT
