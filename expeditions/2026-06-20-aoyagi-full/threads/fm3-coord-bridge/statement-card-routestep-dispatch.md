@@ -28,7 +28,7 @@ The general-M dispatcher's leaf-first classify (the recursion's per-node step), 
 >   the cells + per-cell admissible-`Mval` codims + the achiever `T*` (the rank-pattern read). This is the
 >   formaliser-weeks general dispatcher; realizability (chart path reaches the stratum) is NOT manufactured
 >   here — it lives in the `IsRouteMCover` COVER (#104, the honesty-gate, controller's option-a ruling). The
->   achiever-leaf-existence rides the cascade realizability (`Core.CascadeRealizable.cascadeTuple_mem_realizableRank`,
+>   achiever-leaf-existence rides the cascade realizability (`Core.CascadeRealizable.cascadeTuple_rankFn_mem_range (a Set.range tautology; the GENUINE realizability is #121)`,
 >   #116) at #104.
 > - **Status.** sorry-free except the single fenced branch `sorry` (the named gap). The dispatch + leaf arm
 >   are the landed #103 increment; the value-fold over the actual `routeMIota` rides the general branch.
@@ -51,5 +51,5 @@ is the ROOT-anchored `Mval M₀ T_node` (the `PivotWitness M₀` content), `T_no
 2. **The general branch = the rank-pattern read** (the cells/codim/witness for arbitrary non-leaf `M`: which
    root-anchored `T_node` per node). This is the formaliser-weeks general dispatcher, and its
    achiever-leaf-existence rides the orbit-side realizability tie (#96/#121, `Adm ↔ RealizableRank`) — the
-   genuine gate. Sub-2b (`cascadeTuple_mem_realizableRank`, #116) is the `RealizableRank`-side witness source;
+   genuine gate. Sub-2b (#116) supplies the (0,j)-row computation (rankPattern_cascade_prefix); the genuine realizability tie is #121;
    #121 ties it to `Adm`/`Mval`. The general value-over-`routeMIota` closes once both land (#104-adjacent).

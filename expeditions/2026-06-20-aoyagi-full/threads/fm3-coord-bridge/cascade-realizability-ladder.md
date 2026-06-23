@@ -30,24 +30,34 @@ partial-identity, so its rank = #surviving 1s = window-min — NO `Matrix.rank_m
   block ranks (base `d_0`). ORIENTATION NAILED: the bound is `t_p ≤ d p.castSucc` (= `d_p`, A_p's cols = the
   product middle dim), type-checker-pinned, NOT g228's `d_{p+1}`.
 
-- **RUNG 4 — DONE @8ab9a6d / @4b60dac.** `rankPattern_cascade_prefix`: `rankPattern (cascadeTuple) 0 j =
-  survivors (d_j)(d_0)(cascadeCount 0 j)` (rung 4a, the running-rank ROW, via `rank_partialId`).
-  `cascadeTuple_mem_realizableRank`: `rankFn (cascadeTuple d t) ∈ Set.range (rankFn d)` = `RealizableRank`
-  (rung 4b). **Decl-first reframing:** `embedRank` is a WRAPPER and `RealizableRank = Set.range rankFn`, so the
-  realizability is the `rankFn` computation — NOT an `embedRank`-convention question (de-risked the wait).
-  Membership is `⟨cascadeTuple, rfl⟩`; the NON-VACUITY (named, not smuggled) is the prefix-row characterization.
-  Anchors: (2,2,2) t=[2,1,0], (3,2,3) t=[3,1,0], #107 double-confirmed (pp2 g228 + pp-r1realize xcheck).
+- **RUNG 4a — DONE @8ab9a6d.** `rankPattern_cascade_prefix`: `rankPattern (cascadeTuple) 0 j =
+  survivors (d_j)(d_0)(cascadeCount t 0 j)` — the running-rank ROW of the realized pattern, via
+  `rank_partialId`. THE genuine non-vacuous content of the cascade side. Anchors: (2,2,2) t=[2,1,0], (3,2,3)
+  t=[3,1,0], #107 double-confirmed (pp2 g228 + pp-r1realize xcheck).
 
-- **ROADMAPPED (named in-file, NOT needed for the achiever-row §4).** The interior 2-index window
-  `rankPattern (cascadeTuple) i j` for `i > 0` (the `i`-relative window-min `survivors (d_j)(d_i)(⨅_{i≤s<j}
-  t_s)`, same `partialId_mul` iteration anchored at `i`) — for the literal full `Adm = RealizableRank` 2-index
-  match (#96's bridge). The achiever-row realizability above (the `(0,j)` row) is what achiever-only §4 consumes.
+- **RUNG 4b — a TAUTOLOGY, NOT the realizability (corrected, fm3 #121 anti-vacuity catch).**
+  `cascadeTuple_rankFn_mem_range`: `rankFn (cascadeTuple d t) ∈ Set.range (rankFn d)` is `⟨cascadeTuple, rfl⟩`
+  — VACUOUS as an achiever-realizability claim (every tuple's pattern is in `Set.range rankFn`; it says nothing
+  about WHICH pattern, nothing tying it to the achiever `r*`). Kept only as the trivial membership. The genuine
+  realizability is NOT this lemma — see #121.
 
-## Why this is the unblock
+- **THE GENUINE REALIZABILITY = #121 (NOT done, the orbit-side tie).** `rankFn (cascadeTuple t*) = r*` where
+  `r*` is defined INDEPENDENTLY from `Adm` (the minimising admissible exponent's rank pattern), NOT as
+  `rankFn (cascadeTuple)`. rung-4a (`rankPattern_cascade_prefix`) supplies the cascade `(0,j)` row; #121 defines
+  `r*` from `Adm` and proves the equality (matching `cascadeCount t*` to `r*`'s running ranks). This is the
+  `Adm ↔ RealizableRank` tie. The general routeStep arm (#103) and #116-(2) cite #121, never the rung-4b
+  tautology.
 
-`routeStep`'s general-M body (the committed `sorry` @`RouteMRecursion.lean:184`) needs honest branch
-witnesses; the achiever-branch witness is `T* ∈ RealizableRank M₀`, which RUNG 4 supplies by CONSTRUCTION
-(the cascade + the rank computation), NOT a surjectivity/`stratum_surjective` theorem. With the body filled,
+- **ROADMAPPED.** The interior 2-index window `rankPattern (cascadeTuple) i j` for `i > 0` (the `i`-relative
+  window-min, same `partialId_mul` iteration anchored at `i`) — for the literal full 2-index `Adm =
+  RealizableRank` match. Not needed for the achiever-row.
+
+## Why this is the unblock (with the #121 caveat)
+
+`routeStep`'s general-M body (the committed `sorry` @`RouteMRecursion.lean`) needs honest branch witnesses; the
+achiever-branch witness is that the achiever rank pattern `r*` is realized — `rankFn (cascadeTuple t*) = r*`,
+which the cascade supplies (rung-4a row) ONCE #121 defines `r*` independently and proves the equality. The
+rung-4b `Set.range` membership does NOT supply this (it's the tautology). With #121 + the body filled,
 `routeAtlas`/`routeMIota` go concrete and #103 (the value fold via `foldFamily_iInf_eq_half_minAdm`) closes.
 The leaf classifier (#101/#108) + the branch assembly (#102 sub-2a, `routeStepBranch`) are already banked.
 

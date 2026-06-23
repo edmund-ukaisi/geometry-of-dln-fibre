@@ -87,19 +87,21 @@ theorem rankPattern_cascade_prefix (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
       = survivors (d j) (d 0) (cascadeCount d t 0 j) := by
   rw [rankPattern, submult_cascade_prefix d t ht j, rank_partialId]
 
-/-- **The cascade's rank pattern is realizable** — `rankFn (cascadeTuple d t) ∈ RealizableRank d`. The
-membership is by construction (`⟨cascadeTuple d t, rfl⟩`, the tuple realizes its own pattern); the SUBSTANCE
-(non-vacuity) is `rankPattern_cascade_prefix`, which pins the realized pattern's `(0, j)` row to the
-prescribed running-rank window-min `survivors (d_j) (d_0) (cascadeCount 0 j)`. So for the §4 achiever, with
-`t` = the achiever's running ranks, the cascade realizes the achiever rank pattern's running-rank row — the
-explicit witness that the achiever stratum is reached (NOT a surjectivity theorem).
+/-- The cascade tuple's rank pattern is in the range of `rankFn` — `rankFn (cascadeTuple d t) ∈ Set.range
+(rankFn d)`. **This statement is a TAUTOLOGY** (`⟨cascadeTuple d t, rfl⟩`: every tuple's pattern is in the
+range of `rankFn`); it is **VACUOUS as an achiever-realizability claim** — it says nothing about WHICH pattern
+is realized, in particular nothing tying it to the achiever stratum `r*`. Kept ONLY as the trivial
+`Set.range` membership; the genuine, non-vacuous content lives elsewhere:
 
-**Scope.** This gives the `(0, j)` row (the running ranks the achiever-only §4 consumes). The full interior
-2-index pattern `rankPattern (cascadeTuple) i j` for `i > 0` (needed for the literal `Adm = RealizableRank`
-2-index match, #96) is the `i`-relative window-min `survivors (d_j) (d_i) (windowMin over [i,j))` — the same
-`partialId_mul` iteration anchored at `i` (an `i`-relative count, not the from-`0` `cascadeCount`); roadmapped,
-not needed for the achiever-row realizability here. -/
-theorem cascadeTuple_mem_realizableRank (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) :
+- **The (0, j) row IS computed** (`rankPattern_cascade_prefix`): `rankPattern (cascadeTuple) 0 j = survivors
+  (d_j) (d_0) (cascadeCount t 0 j)`. THAT is the substance — the running-rank row of the realized pattern.
+- **The achiever-realizability tie `rankFn (cascadeTuple t*) = r*` is NOT proven here** and is NOT this lemma.
+  It needs `r*` defined INDEPENDENTLY from `Adm` (the minimising admissible exponent's rank pattern), then the
+  equality matching `cascadeCount t*` to `r*`'s running ranks. That is the orbit-side tie #121 (`Adm ↔
+  RealizableRank`, the genuine realizability) — a real obligation, NOT the `⟨_, rfl⟩` tautology below.
+
+The general routeStep arm (#103) and the genuine #116-(2) realizability must cite #121, never this membership. -/
+theorem cascadeTuple_rankFn_mem_range (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) :
     rankFn d (cascadeTuple (k := k) d t) ∈ Set.range (rankFn (k := k) d) :=
   ⟨cascadeTuple d t, rfl⟩
 

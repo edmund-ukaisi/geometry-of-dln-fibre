@@ -45,4 +45,4 @@ the node's genuine pivot codims (each `≥ minAdm`), and the path-MIN on the ach
 
 Under (B), #103 is tractable now: leaf-first dispatch + an achiever-`T*`-threaded branch (codims root-anchored
 to `M₀`, achiever path = `T*`'s sequence) + `foldFamily_iInf` over `routeMIota`. The cascade realizability
-(#116, `cascadeTuple_mem_realizableRank`) is the `T*`-realization, consumed in the COVER (#104), not here.
+(#116, rankPattern_cascade_prefix) is the (0,j)-row computation; the genuine r* realizability tie is #121, consumed in the COVER (#104), not here.
