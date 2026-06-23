@@ -46,19 +46,39 @@ The min-collapse at the step branch (the load-bearing chain): recurse on the chi
 Morse branch `mkOf M / 2` (`hbase`/`harith_base`). Identical termination shape to the proven additive
 `binding_recursion_of_step` (`BindingRecursion.lean`); the MIN variant transfers cleanly.
 
-## Honest scope / what is NOT here
+## Update — `harith_min` PROVEN + spine base corrected (@c3df23ef)
 
-- **Abstract / route-independent.** The per-node min fact `hstep_min`, the leaf base `hbase`, and the
-  value-side min arithmetic `harith_min`/`harith_base` are HYPOTHESES — the producer (a5f5ceb1's cover
-  atom) discharges them. This file is ONLY the recursion/min-collapse DESIGN; it does NOT prove the
-  per-node min fact (the geometric cover content) nor the value arithmetic instantiation.
-- The instantiation (`rlctOf := rlctAtOn (dlnLoss M 0) deepest`, `redOf := schurStateRed`,
-  `mkOf`/`nRegOf`/`lamOf` := the concrete combinatorial functionals, `degenChild := isLeafNode ∘ …`) is
-  the cross-branch wiring (#151-class), to be done once the cover atom + the value min-arithmetic land.
-- The value-side min arithmetic `lamOf M = min (mkOf M/2) (nRegOf M/2 + lamOf (redOf M))` (the genuine
-  point-min telescope of `lambdaCore`) is NOT yet a proven lemma on-branch — it is the combinatorial
-  obligation the instantiation supplies (analogous to `BindingArith.bind_harith_step` for the additive
-  spine, now in min form).
+The value-side `harith_min` is now a PROVEN on-branch lemma (`BindingMinArith.lean`, clean-three):
+- **`lambdaCore_min_telescope`** (= `harith_min`): GIVEN the cover's minimal-codim min identity at the
+  ℤ-`inf'` level `minAdmZ M = min (mk) (n + minAdmZ (redOf M))` (cert-104b V4, a5f5ceb1's combinatorial
+  content), proves `lambdaCore M = min (mk/2) (n/2 + lambdaCore (redOf M))`. Pure ½-scaling, robust for
+  ALL `L`, `redOf`-agnostic.
+- **`lambdaCore_le_front_mul`** (F2, the `D₀` bound): `lambdaCore M ≤ M₀M₁/2` (`inf'_le` at
+  `zero_mem_Adm` + `Mval_zeroT_eq`).
+- **`lambdaCore_eq_minAdmZ_half`**: `lambdaCore = ½·(ℤ inf')`.
+
+**Adjudication (pen-and-paper obstruction cert + decorrelated Codex, 673 nodes sympy):** the value-level
+min is NOT a genuine selecting min — the descent branch `nReg/2 + lambdaCore(redOf M)` EQUALS
+`lambdaCore M` unconditionally (additive F1), the `mk/2` leaf branch only DOMINATES (F2). The genuine
+selecting min lives in the GEOMETRIC cover (raw smooth-block count, where `D₀` binds on wide-tail nodes
+like `(2,2,4)`), not in `lambdaCore`. `harith_min` is true + honestly labelled; the `mk/2` branch is
+value-level dead weight (caveat in `BindingMinArith.lean`).
+
+**Spine base CORRECTED:** the obstruction found `harith_base : degenChild M → lamOf M = mkOf M/2` is
+FALSE for the geometric `mkOf := M₀M₁` (counterexample `(1,2,1)`: `lambdaCore=1/2 ≠ 1=mkOf/2`). FIXED:
+`hbase` generalized to `degenChild M → rlctOf M = ofReal (lamOf M)` (the `#70` Morse base asserts the
+conclusion at the leaf — honest + maximally general; the producer supplies the base value), dropping the
+false-able `harith_base`. The now-unused `hmk` (`0 ≤ mkOf`) removed (the `mkOf/2` branch is handled
+unconditionally by `ofReal_min`). Spine still PROVEN, clean-three.
+
+## Spine's REMAINING hypotheses (post this round)
+- `hstep_min` — the geometric per-node min fact (a5f5ceb1's cover atom, #9). **The one genuinely-open
+  input.**
+- `hbase` — the `#70` Morse base (`degenChild M → rlctOf M = ofReal (lamOf M)`); the additive spine's
+  `hbase` + arith supplies this (the value `= nReg/2` at the leaf-child level).
+- `harith_min` — **PROVEN** (`lambdaCore_min_telescope`, given the V4 minAdm-min identity).
+- `hdrop`/`hnReg`/`hlam` — termination + nonneg; fall out of `BindingArith`/`MinAdmMono` (the `bind_*`
+  + `chainWidthSum_schurStateRed_lt` + `bind_hlam`), to be wired at instantiation.
 
 ## Related open item (noted, not mine)
 
