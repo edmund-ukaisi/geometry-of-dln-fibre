@@ -258,3 +258,29 @@ Substrate in hand: F1 (`MultComorphism`, the comorphism + fibre ideal), the F2 l
 (`FibreCodim`), the thermometer (`dim Mat^{rk=r}=δ`), Brick A (`SigmaCodim`), the catenary bridge, the
 group/orbit machinery (`Orbit`). Residual risk concentrates on **G2** (the product trivialization) —
 hence the G0 recon probes it first.
+
+## G0 RECON VERDICT (thread 07, 2026-06-23) — CONDITIONAL GO; gate the flatness core
+
+Scout + decorrelated Codex: the chart build is buildable but it IS the real Lie-group submersion made
+affine-AG-concrete — **~6–12 modules, HIGH-risk core = a chart-flatness proof.** Both shortcut hopes
+fail: inner-group route NO-GO (`mult⁻¹(E)` is not a single H-orbit; `OrbitImageDim` can't identify it);
+`fibre(E)=Σ⁰_{d−r}` LITERALLY FALSE (`dim fibre(E)=4 ≠ dim Σ⁰_{(1,1,1)}=1`; correct relation
+`dim fibre(E)=dim Σ⁰_{d−r}+Σ_{i=1}^{N−1} r(2d_i−r)`, still needs the chart infra).
+
+**Substrate finding:** `varietyDim` reads the Zariski CLOSURE dim, not an open chart's coordinate ring;
+G2 lives on the open pivot chart (localize at the pivot minor) ⟹ a NEW localized-chart-ring layer.
+Mathlib v4.29 has NO `Localization.Away` Krull-dim-preservation and NO tensor Krull-dim additivity
+(grep-verified) — so the product-dim mechanism (M-tensor) must be built. **Recommended route: M-goingdown** —
+localize F1's `multComap` to the pivot chart where `mult` IS flat (the bundle), then the LANDED
+`height_eq_height_add_of_liesOver_of_hasGoingDown` gives the shift; reuses landed going-down, one fewer
+missing Mathlib lemma. Wall moves to: a genuine **flatness proof on the chart via the Schur section**.
+
+**Reducibility (Q3):** Brick A `minimalPrimes_sigmaIdeal_eq` (Σ̄^r components = maximal orbit closures);
+the chart trivialization carries components(Σ^r) ↔ components(fibre) with uniform `+δ`, so
+`codimRepCanonical = min over components` survives. (Module ~7–9; part of the hard cluster.)
+
+**Launch order (recon's, adopted):** keep G1 running; then a **gating prototype tide (G2a, thread 09)** =
+the chart-localized `multComap` + the Schur freeness/flatness on ONE pivot chart (the anchor `(2,2,2),r=1`)
+— thermometer-style: if chart flatness walls there, we learn it cheaply before the full G2. Only on a GO
+signal: commit full G2 (height-additivity + reducibility) + G3 (assembly) + G4 (DLN wiring). **Worktree
+constraint:** formaliser tides run SEQUENTIALLY here (shared `.lake/build`); G1 → G2a → G2 → G3 → G4.
