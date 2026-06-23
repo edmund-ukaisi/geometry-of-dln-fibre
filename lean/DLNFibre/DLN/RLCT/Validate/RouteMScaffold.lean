@@ -191,14 +191,15 @@ structure R1BindingCell (M₀ M : Fin (L + 1) → ℕ) where
   hbind : codim = ((Adm M₀).inf' (Adm_nonempty M₀) (Mval M₀)).toNat
 
 /-- **The complement cover** (the named gap): the remaining pivot cells of the general rank-pattern read.
-A finite (possibly empty) family with per-cell `split`/`codim`/per-cell root-anchored `PivotWitness M₀`.
-This is the combinatorial cell decomposition the #99 grind produces for arbitrary non-leaf `M`
-(`r1ComplementData` below is the named obligation). Empty `cells` is allowed — the binding cell alone is a
-valid (degenerate but value-correct) cover; the genuine cover has the non-binding pivot cells here. -/
+A finite (possibly EMPTY) family with per-cell `split`/`codim`/per-cell root-anchored `PivotWitness M₀`.
+This is the combinatorial cell decomposition the #99 grind produces for arbitrary non-leaf `M`. Empty
+`cells` is allowed (NO `Nonempty` field — the binding cell alone, via `branchDataOfReadParts`'s `Sum.inl`,
+is already a valid degenerate-but-value-correct cover); the genuine cover has the non-binding pivot cells
+here. (The producer's `Nonempty` comes from the binding `Sum.inl`, never from `d`, so the field would be a
+spurious obligation on the #99 grind — reviewer catch, dropped.) -/
 structure R1ComplementData (M₀ M : Fin (L + 1) → ℕ) where
   cells : Type
   cellsFin : Fintype cells
-  cellsNe : Nonempty cells
   split : cells → ChainDimSplit M
   codim : cells → ℕ
   witness : (c : cells) → PivotWitness M₀ (codim c)
