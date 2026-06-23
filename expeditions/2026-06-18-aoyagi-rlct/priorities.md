@@ -65,6 +65,19 @@ and chart-count witnesses/bounds.  This reduces the final socket from two
 opaque finite equalities to explicit finite min/order certificate obligations;
 it still does not prove those obligations from source charts.
 
+The current A4/A0-facing selected-entry local algebra slice is
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`.
+Lean now proves the finite selected-entry center square identity
+`sum x_i^2 = u^2 * (1 + sum y_i^2)` and the formal pivot-first determinant
+`det [1 0; y uI] = u^(non-pivot count)`, with a displayed Case 2 wrapper
+identifying the non-pivot exponent as the residual-block center cardinality
+minus one.  Treat this as finite algebra only: the normalized square-sum
+factor is only a unit candidate, and the determinant is not yet an analytic
+Jacobian/volume-form theorem.  The next A0-facing work must still supply
+actual chart neighbourhood/unit nonvanishing, coverage/regularity, and the
+effect of Aoyagi's regular `P`/`Q` changes before constructing an
+`AoyagiNormalCrossingChartCertificate`.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

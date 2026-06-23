@@ -5530,6 +5530,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-chart-family-data-a4.md`.
 
+Latest A4 Case 2 selected-entry center square and formal Jacobian:
+`BlowupArithmetic.lean` now contains `selectedEntryCenterSq`,
+`selectedEntryCenterSq_selectedEntryChartMap`,
+`selectedEntryPivotFirstJacobian`, `selectedEntryPivotFirstJacobian_det`,
+`SelectedEntryChartFamilyData.centerSq_chartMap`,
+`case2DisplayedSourceChartMap_centerSq`,
+`case2DisplayedSourceChartMap_pivotFirstJacobian_det`, and
+`case2DisplayedSourceChartMap_pivotFirstJacobian_exponent_eq_centerCard_sub_one`.
+These prove the finite square-sum pullback for a selected-entry chart and the
+formal pivot-first determinant `det [1 0; y uI] = u^(non-pivot count)`, then
+specialize those facts to Aoyagi's displayed Case 2 residual-block pivot.
+This is useful A0-facing local algebra, but it is not an A0 chart
+certificate: the normalized square-sum factor is only a unit candidate, and
+no analytic nonvanishing, differentiable Jacobian theorem, chart coverage,
+transition regularity, pole order, or RLCT extraction is proved.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-center-sq-jacobian.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-selected-entry-center-sq-jacobian-a4.md`.
+
 Latest A4 Case 2 continuing reindexed source-chart certificate:
 `BlowupArithmetic.lean` now contains
 `Case2DisplayedReindexedNextSourceProductEq`,

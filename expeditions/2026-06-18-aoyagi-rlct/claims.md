@@ -738,6 +738,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-selected-entry-chart-family-data-a4.md`;
 	  xhigh review passed with the printed weight-factor caveat recorded at
 	  `threads/04-blow-up-certificate/review-case2-selected-entry-chart-family-data-a4.md`.
+	  Reproduction of the Case 2 selected-entry center square and formal
+	  Jacobian microcertificate is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`;
+	  xhigh source/math and Lean/API review passed and is saved at
+	  `threads/04-blow-up-certificate/review-case2-selected-entry-center-sq-jacobian-a4.md`.
 	  Reproduction of the Case 2 continuing reindexed source-chart certificate
 	  is saved at
 	  `threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-certificate-a4.md`;
@@ -827,6 +832,19 @@ No such claim is formalisation-ready until both fields are filled.
 	  `Case2ResidualBlockSelectedEntryChartFamilyData`,
 	  `Case2ResidualBlockSelectedEntryChartFamilyData.displayedPivot`, and
 	  `Case2ResidualBlockSelectedEntryChartFamilyData.standard_value_displayedPivot_eq_sourceChartMap`.
+	  Also proved the finite selected-entry center square and formal
+	  pivot-first determinant microcertificate:
+	  `selectedEntryCenterSq`,
+	  `selectedEntryCenterSq_selectedEntryChartMap`,
+	  `selectedEntryPivotFirstJacobian`,
+	  `selectedEntryPivotFirstJacobian_det`,
+	  `SelectedEntryChartFamilyData.centerSq_chartMap`,
+	  `case2DisplayedSourceChartMap_centerSq`,
+	  `case2DisplayedSourceChartMap_pivotFirstJacobian_det`, and
+	  `case2DisplayedSourceChartMap_pivotFirstJacobian_exponent_eq_centerCard_sub_one`.
+	  These are finite algebra only: the normalized square-sum factor is only a
+	  unit candidate, and the determinant is not an analytic derivative or
+	  volume-form theorem.
 	  Also proved
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and

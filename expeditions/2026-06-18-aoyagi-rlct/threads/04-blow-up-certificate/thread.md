@@ -4356,6 +4356,42 @@ source caveat that Aoyagi's printed `b'_i = u b_i` line and later extra
 outside `u diag(b')` line cannot both be read literally; Lean follows the
 corrected post-weight convention.
 
+## 2026-06-23 Lean Case 2 selected-entry center square and formal Jacobian
+
+Reproduction:
+`reproduction-case2-selected-entry-center-sq-jacobian-a4.md`.
+Statement card:
+`statement-card-a4-case2-selected-entry-center-sq-jacobian.md`.
+Review artifact:
+`review-case2-selected-entry-center-sq-jacobian-a4.md`.
+
+Lean now records the finite square-sum and formal determinant calculation for
+the selected-entry blow-up chart:
+
+```text
+selectedEntryCenterSq
+selectedEntryCenterSq_selectedEntryChartMap
+selectedEntryPivotFirstJacobian
+selectedEntryPivotFirstJacobian_det
+SelectedEntryChartFamilyData.centerSq_chartMap
+case2DisplayedSourceChartMap_centerSq
+case2DisplayedSourceChartMap_pivotFirstJacobian_det
+case2DisplayedSourceChartMap_pivotFirstJacobian_exponent_eq_centerCard_sub_one
+```
+
+The square-sum theorem proves that the finite center square pulls back as
+`u^2` times the normalized square-sum.  The determinant theorem proves the
+formal pivot-first block determinant `det [1 0; y uI] = u^(non-pivot count)`;
+the Case 2 wrapper identifies the non-pivot count with the displayed
+residual-block center cardinality minus one.
+
+This is finite algebra only.  It does not prove analytic unit nonvanishing for
+the normalized square-sum factor, an actual derivative/Jacobian theorem,
+chart coverage, transition regularity, an A0 normal-crossing chart
+certificate, pole order, or RLCT extraction.  Aoyagi's later `P` and `Q`
+regular changes still need their own analytic/unit/Jacobian treatment before
+any full chart certificate can consume this as a volume-form statement.
+
 ## 2026-06-23 Lean Case 2 continuing reindexed source-chart certificate
 
 Reproduction:

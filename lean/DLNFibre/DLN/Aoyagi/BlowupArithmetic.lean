@@ -1,6 +1,7 @@
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Matrix.Block
 import Mathlib.Data.Int.Order.Basic
+import Mathlib.Data.Fintype.Sets
 import Mathlib.Tactic
 import DLNFibre.DLN.Aoyagi.EntryIdeal
 import DLNFibre.DLN.Aoyagi.MatrixChain
@@ -1771,6 +1772,70 @@ theorem selectedEntryChartMap_pivot_mem_valueSet
     u ∈ {v : α | ∃ i, i ∈ center ∧ selectedEntryChartMap pivot u residual i = v} :=
   ⟨pivot, hpivot, by simp⟩
 
+section CenterSq
+
+variable {R : Type*} [CommSemiring R]
+
+/-- Finite squared-center expression attached to a list of center generators.
+
+This is only the algebraic square-sum used in Aoyagi's ideal norm convention;
+it is not an analytic norm or an RLCT statement. -/
+def selectedEntryCenterSq (center : Finset ι) (value : ι → R) : R :=
+  ∑ i ∈ center, value i ^ 2
+
+/-- The selected-entry chart pulls the finite center square-sum into a square
+monomial in the selected variable times the normalized square-sum.
+
+This is the elementary algebra behind the local normal-crossing shape of the
+center ideal.  The second factor is only a unit candidate here; no analytic
+unit, chart coverage, Jacobian, pole order, or RLCT extraction is claimed. -/
+theorem selectedEntryCenterSq_selectedEntryChartMap
+    {center : Finset ι} {pivot : ι} (hpivot : pivot ∈ center)
+    (u : R) (residual : ι → R) :
+    selectedEntryCenterSq center (selectedEntryChartMap pivot u residual) =
+      u ^ 2 * (1 + selectedEntryCenterSq (center.erase pivot) residual) := by
+  rw [selectedEntryCenterSq]
+  rw [← Finset.add_sum_erase center
+    (fun i ↦ selectedEntryChartMap pivot u residual i ^ 2) hpivot]
+  simp only [selectedEntryChartMap_pivot]
+  rw [selectedEntryCenterSq]
+  have hsum :
+      (∑ x ∈ center.erase pivot, selectedEntryChartMap pivot u residual x ^ 2) =
+        u ^ 2 * ∑ x ∈ center.erase pivot, residual x ^ 2 := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl ?_
+    intro x hx
+    have hxne : x ≠ pivot := (Finset.mem_erase.mp hx).1
+    rw [selectedEntryChartMap_of_ne u residual hxne]
+    ring
+  rw [hsum]
+  ring
+
+end CenterSq
+
+section PivotFirstJacobian
+
+variable {κ R : Type*} [Fintype κ] [DecidableEq κ] [CommRing R]
+
+/-- Formal pivot-first Jacobian matrix for the selected-entry coordinate
+change `x_p = u`, `x_i = u y_i` after reindexing the non-pivot coordinates by
+`κ`.
+
+This records the finite determinant calculation only.  It is not a derivative
+or an analytic chart-regularity theorem. -/
+def selectedEntryPivotFirstJacobian (u : R) (residual : κ → R) :
+    Matrix (Unit ⊕ κ) (Unit ⊕ κ) R :=
+  fromBlocks 1 0 (fun i _ ↦ residual i) (diagonal fun _ ↦ u)
+
+/-- The formal pivot-first Jacobian determinant of a selected-entry chart is
+`u` to the number of non-pivot center coordinates. -/
+theorem selectedEntryPivotFirstJacobian_det (u : R) (residual : κ → R) :
+    (selectedEntryPivotFirstJacobian u residual).det = u ^ Fintype.card κ := by
+  rw [selectedEntryPivotFirstJacobian, Matrix.det_fromBlocks_zero₁₂, Matrix.det_diagonal]
+  simp
+
+end PivotFirstJacobian
+
 /-- Concrete coordinate data for the selected-entry affine charts over a
 finite center.
 
@@ -1841,6 +1906,34 @@ theorem selected_mem_valueSet
     data.selectedVar pivot x ∈
       {v : α | ∃ i, i ∈ center ∧ data.value pivot x i = v} :=
   ⟨pivot.1, pivot.2, data.value_pivot pivot x⟩
+
+section CenterSq
+
+variable {R : Type*} [CommSemiring R]
+
+/-- Square-sum pullback for a supplied selected-entry chart family.  This is a
+projection of the generic finite algebra, not an analytic chart or unit
+statement. -/
+theorem centerSq_chartMap
+    {center : Finset ι} (data : SelectedEntryChartFamilyData (α := R) center)
+    (pivot : center) (x : data.ChartPoint pivot) :
+    selectedEntryCenterSq center (data.value pivot x) =
+      data.selectedVar pivot x ^ 2 *
+        (1 + selectedEntryCenterSq (center.erase pivot.1) (data.residualCoord pivot x)) := by
+  have hsum :
+      selectedEntryCenterSq center (data.value pivot x) =
+        selectedEntryCenterSq center
+          (selectedEntryChartMap pivot.1 (data.selectedVar pivot x)
+            (data.residualCoord pivot x)) := by
+    rw [selectedEntryCenterSq]
+    apply Finset.sum_congr rfl
+    intro i _hi
+    rw [data.value_eq_selectedEntry]
+  rw [hsum]
+  exact selectedEntryCenterSq_selectedEntryChartMap pivot.2
+    (data.selectedVar pivot x) (data.residualCoord pivot x)
+
+end CenterSq
 
 end SelectedEntryChartFamilyData
 
@@ -10547,6 +10640,58 @@ theorem case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton
     case2_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem
       (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
       u residual
+
+/-- In the displayed source-coordinate Case 2 chart, the finite residual-block
+center square-sum factors as `u^2` times the normalized square-sum.
+
+This is finite algebra for Aoyagi's ideal norm convention.  The normalized
+factor is only a unit candidate at this layer; no analytic unit, chart
+coverage, Jacobian regularity, normal crossings, pole order, or RLCT
+extraction is claimed. -/
+theorem case2DisplayedSourceChartMap_centerSq
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+        (case2DisplayedSourceChartMap n hS hcont u residual) =
+      u ^ 2 *
+        (1 + selectedEntryCenterSq
+          ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual) := by
+  simpa [case2DisplayedSourceChartMap] using
+    selectedEntryCenterSq_selectedEntryChartMap
+      (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
+      u residual
+
+/-- The formal pivot-first selected-entry Jacobian determinant for the
+displayed Case 2 residual center has exponent equal to the number of
+non-pivot residual-block center coordinates.
+
+This is the determinant of the finite algebraic matrix
+`d x / d (u, y)`, after choosing the displayed pivot first.  It is not chart
+coverage, analytic regularity, a volume-form theorem, or an A0 normal-crossing
+certificate. -/
+theorem case2DisplayedSourceChartMap_pivotFirstJacobian_det
+    (n : ℕ → ℕ) {S J : ℕ} (_hS : 1 ≤ S)
+    (_hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    (selectedEntryPivotFirstJacobian
+        (κ := ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1) : Type))
+        u (fun p ↦ residual p.1)).det =
+      u ^ ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card := by
+  simpa using
+    selectedEntryPivotFirstJacobian_det
+      (κ := ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1) : Type))
+      u (fun p ↦ residual p.1)
+
+/-- The displayed Case 2 formal Jacobian exponent is one less than the finite
+residual-center cardinality. -/
+theorem case2DisplayedSourceChartMap_pivotFirstJacobian_exponent_eq_centerCard_sub_one
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card =
+      (case2ResidualBlockPivotEntries n S J).card - 1 := by
+  exact Finset.card_erase_of_mem
+    (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
 
 omit [CommRing R] in
 /-- Equality with the source pair `(J+1,J+1)` is the same as equality with

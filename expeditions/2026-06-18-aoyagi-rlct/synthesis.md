@@ -5594,6 +5594,32 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`.
 
+Latest A4 selected-entry center-square/formal-Jacobian microcertificate:
+`BlowupArithmetic.lean` now contains `selectedEntryCenterSq`,
+`selectedEntryCenterSq_selectedEntryChartMap`,
+`selectedEntryPivotFirstJacobian`, `selectedEntryPivotFirstJacobian_det`,
+`SelectedEntryChartFamilyData.centerSq_chartMap`,
+`case2DisplayedSourceChartMap_centerSq`,
+`case2DisplayedSourceChartMap_pivotFirstJacobian_det`, and
+`case2DisplayedSourceChartMap_pivotFirstJacobian_exponent_eq_centerCard_sub_one`.
+The square-sum theorem proves that the finite selected-entry center square
+pulls back as `u^2` times the normalized square-sum.  The determinant theorem
+proves the formal pivot-first block determinant `det [1 0; y uI] =
+u^(non-pivot count)` and the displayed Case 2 wrapper identifies the exponent
+with the residual-block center cardinality minus one.  This is useful
+A0-facing local algebra, but it is not an A0 normal-crossing chart
+certificate: no analytic unit nonvanishing for the normalized factor, no
+actual derivative/Jacobian theorem, no chart coverage, no transition
+regularity, no pole order, and no RLCT extraction is proved.  Aoyagi's later
+regular `P` and `Q` changes still require their own analytic/unit/Jacobian
+treatment before a full chart certificate can use this as volume-form data.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-center-sq-jacobian.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-selected-entry-center-sq-jacobian-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
