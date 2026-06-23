@@ -5658,6 +5658,21 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-a0-exponent-coordinate-bridge-a4.md`.
 
+Latest A4/A0 Case 2 exponent-minimum bridge:
+`Case2FiniteExponentBridge.lean` now contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.exponentMinimum_eq_centerCard_div_two_of_forall_le`.
+This theorem consumes the supplied Case 2/A0 coordinate bridge and an explicit
+global active-ratio lower bound to prove
+`D.exponentMinimum = card(case2ResidualBlockPivotEntries n S J)/2`.  It does
+not prove the lower bound, construct `D` or `p`, prove an order count, produce
+charts, prove analytic Jacobian/volume data, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-a0-exponent-minimum-bridge-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-a0-case2-exponent-minimum-bridge.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-a0-exponent-minimum-bridge-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

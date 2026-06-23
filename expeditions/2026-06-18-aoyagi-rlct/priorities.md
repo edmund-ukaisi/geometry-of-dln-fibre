@@ -111,6 +111,14 @@ displayed Case 2 formal pivot exponent, then `p` is active and
 construct `D` or `p`, prove a global minimum/order count, or provide analytic
 chart/Jacobian data.
 
+The current A4/A0 supplied-minimum bridge is
+`threads/04-blow-up-certificate/reproduction-case2-a0-exponent-minimum-bridge-a4.md`.
+Lean now consumes the supplied coordinate bridge plus an explicit lower bound
+over all active coordinates to prove
+`D.exponentMinimum = card(case2ResidualBlockPivotEntries n S J)/2`.  The
+lower bound remains a supplied obligation; no order count, chart production,
+analytic Jacobian, pole order, or RLCT extraction is proved.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

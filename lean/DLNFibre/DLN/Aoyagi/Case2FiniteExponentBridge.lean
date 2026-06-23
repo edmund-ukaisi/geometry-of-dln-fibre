@@ -6,8 +6,9 @@ import DLNFibre.DLN.Aoyagi.NormalCrossingInterface
 
 This file connects the displayed continuing Case 2 finite blow-up arithmetic
 to a supplied coordinate of Aoyagi's A0 finite exponent data.  It does not
-construct the exponent data, prove a global minimum, prove chart coverage, or
-invoke the normal-crossing-to-RLCT extraction theorem.
+construct the exponent data, prove the lower bounds needed for an unconditional
+global minimum, prove chart coverage, or invoke the normal-crossing-to-RLCT
+extraction theorem.
 -/
 
 namespace DLNFibre
@@ -115,6 +116,33 @@ theorem ratioAt_eq_centerCard_div_two
     (B : Case2DisplayedContinuingA0ExponentCoordinateBridge cert D p) :
     D.ratioAt p = ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 :=
   (B.activePair_and_ratioAt_eq_centerCard_div_two).2
+
+/-- If the displayed Case 2 local ratio lower-bounds every active coordinate,
+then it is the finite exponent minimum of the supplied A0 exponent data.
+
+This does not prove the lower bound, construct the A0 exponent data, or prove
+any chart/analytic statement. -/
+theorem exponentMinimum_eq_centerCard_div_two_of_forall_le
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J K}
+    {u : K} {residual : ℕ × ℕ → K}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → K}
+    {cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        L n S J t numerator leastValue pre u residual hS hcont C}
+    {D : AoyagiNormalCrossingExponentData}
+    {p : Fin D.numCharts × Fin D.numCoords}
+    (B : Case2DisplayedContinuingA0ExponentCoordinateBridge cert D p)
+    (hle : ∀ p' ∈ D.activePairs,
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 ≤ D.ratioAt p') :
+    D.exponentMinimum =
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 :=
+  D.exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
+    B.activePair B.ratioAt_eq_centerCard_div_two hle
 
 end Case2DisplayedContinuingA0ExponentCoordinateBridge
 

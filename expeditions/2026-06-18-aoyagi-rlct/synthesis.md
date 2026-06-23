@@ -5728,6 +5728,34 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-a0-exponent-coordinate-bridge-a4.md`.
 
+Latest A4/A0 Case 2 exponent-minimum bridge:
+`Case2FiniteExponentBridge.lean` now contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.exponentMinimum_eq_centerCard_div_two_of_forall_le`.
+It consumes the supplied Case 2/A0 exponent-coordinate bridge and an explicit
+global lower bound
+
+```text
+forall p' in D.activePairs,
+  card(case2ResidualBlockPivotEntries n S J)/2 <= D.ratioAt p'
+```
+
+to prove
+
+```text
+D.exponentMinimum = card(case2ResidualBlockPivotEntries n S J)/2.
+```
+
+This is only finite `Finset.min'` bookkeeping.  The lower bound itself is not
+proved, and the result does not produce A0 exponent data, chart coverage,
+analytic Jacobian/volume-form data, exponent order, pole order, or RLCT
+extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-a0-exponent-minimum-bridge-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-a0-case2-exponent-minimum-bridge.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-a0-exponent-minimum-bridge-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

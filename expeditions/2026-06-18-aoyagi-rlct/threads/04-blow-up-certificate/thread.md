@@ -4567,3 +4567,27 @@ This does not construct `D` or `p`, does not prove that this ratio is the
 global minimum, does not prove an order count, and does not construct chart
 coverage, analytic Jacobian data, normal crossings, pole order, or RLCT
 extraction.
+
+## 2026-06-23 Lean A4/A0 Case 2 exponent-minimum bridge
+
+Reproduction:
+`reproduction-case2-a0-exponent-minimum-bridge-a4.md`.
+Statement card:
+`statement-card-a4-a0-case2-exponent-minimum-bridge.md`.
+Review artifact:
+`review-case2-a0-exponent-minimum-bridge-a4.md`.
+
+Lean now consumes the supplied Case 2/A0 coordinate bridge together with a
+global lower-bound hypothesis:
+
+```text
+Case2DisplayedContinuingA0ExponentCoordinateBridge.exponentMinimum_eq_centerCard_div_two_of_forall_le
+```
+
+If every active coordinate ratio in the supplied A0 exponent datum is at
+least `card(case2ResidualBlockPivotEntries n S J)/2`, the theorem proves that
+this value is `D.exponentMinimum`.
+
+This is finite minimum bookkeeping only.  It does not prove the lower bound,
+construct `D` or `p`, prove an order count, construct charts, prove analytic
+Jacobian data, prove pole order, or extract an RLCT.
