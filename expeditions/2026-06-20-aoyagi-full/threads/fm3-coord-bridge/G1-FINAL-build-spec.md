@@ -1381,3 +1381,29 @@ the squeeze datum directly; the monomial/min value is mine (B blow-up). So the r
 correction (PARKED → PROVEN-cond-on-hnode), NOT a fold change. crux2's toolkit is stable + sorry-free on its
 branch; build away. Lesson (precision): a lemma's status (PARKED vs PROVEN-conditional) tracks whether its
 HYPOTHESIS is dischargeable IN SCOPE — re-verify the banner against the owner's current branch, not a stale record.
+
+## g221 — routeStep GREEN-LIT (all gates clear); grind ARCHITECTED + decomposed + dispatched to fresh formaliser
+Controller green-lit the general routeStep body (2026-06-23) — ALL gates cleared: §4 achiever-IN-REACH (pp2
+cascade + pp-r1realize, the achiever-only correction g219); C5 hnode WITNESS (#97); C5 termination CONFIRMED
+(banked chainRel ΣM-decrease SUFFICES, no lex augmentation — pp-r1realize #98); e≠0 resolved (pp2: e=0 is a
+deeper ΣM-dropping node, cover = {e≠0 shear} ∪ {e=0 recurse}, NOT a stall); per-node hnode primitive = crux2's
+schur_straighten_squeeze_exists VERBATIM (C5 node = same call as C1, survivor=SΓ b→0; Fubini-shear fallback).
+routeStep is formaliser-weeks, reachable-but-long, NOT a research gap.
+
+ARCHITECTED (fm3, my lane = architect/relay per controller): wrote the self-contained brief
+(routestep-body-grind-brief.md, committed) + decomposed #99 into 4 reachable sub-targets (lean-formalisation
+"one reachable statement", reject-programmes):
+- #101 sub-1 (START): leaf classifier — isLeafNode (red≡0/IsUnit residual) + leaf arm. Smallest.
+- #102 sub-2: single-node branch constructor (cells=argmaxCellOn, split=schurState, achiever-threaded
+  PivotWitness M₀) — validate vs case222_routeStep_branch. THE substantive piece; achiever-threading = likely wall.
+- #103 sub-3: assemble routeStep (discharge the sorry) + wire foldFamily_iInf over routeMIota → ½·minAdm.
+- #104 sub-4: per-node descent (B node_loss_pivot_factor cover-CoV + A crux2's rlctAtOn_reduced_transport
+  reindex, in the cover lintegral) — coordinate the hnode↔fold boundary with crux2 THROUGH fm3.
+Deps wired: #103 ⊣ #101+#102; #104 ⊣ #103; #99 ⊣ all four.
+
+DISPATCH: I CANNOT spawn background agents (in-process teammate — "Use run_in_background=false"; a sync
+subagent would block my relay-hub for the whole grind). Handed the controller the ready-to-spawn package
+(brief + spawn prompt + decomp) to spawn the FRESH formaliser on its side (also keeps it in the controller's
+registry — avoids the a8c41813 TaskStop-not-found problem). Fresh agent (clean HEAD read @ba71584, NOT a
+resume of the retired a8c41813 per g213) reports to fm3; I relay milestones + walls + the pp2/crux2 boundary.
+The (2,2,2) anchor (Case222RouteStep + #94 cover) is the worked pattern the cascade generalizes.
