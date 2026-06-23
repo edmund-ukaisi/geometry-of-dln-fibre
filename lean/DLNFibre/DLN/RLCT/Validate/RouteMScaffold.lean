@@ -119,4 +119,32 @@ noncomputable def routeAtlasOf (M₀ : Fin (L + 1) → ℕ)
             exact ⟨⟨c, i⟩⟩
           data := fun x => ((child x.1).data x.2).appendDivisor (codim x.1) }
 
+/-! ## Non-vacuity anchor — `routeStepOf` reproduces the worked `(2,2,2)` branch
+
+The fidelity check that the scaffold's leaf-first dispatch + `BranchData` assembly generalizes the
+hand-built `(2,2,2)` template (`Case222RouteStep.case222_routeStep_branch`) exactly. `(2,2,2)` is NOT a
+leaf (`not_isLeafNode_M222`), so `routeStepOf` takes the branch arm; fed the `(2,2,2)` `BranchData` (`Bool`
+cells, the uniform `schurState M222` split, codims `4`/`3`, the `decide`-checked root-anchored witnesses),
+it returns the committed worked-template branch term. Confirms the scaffold is non-vacuous and matches the
+anchor. -/
+
+/-- The `(2,2,2)` `BranchData`: `Bool` pivot cells, the uniform `schurState M222` split, codims `4`/`3`,
+and the `decide`-checked root-anchored witnesses (`RouteMBranch.witness222`). The honest finite-instance
+producer — the witnesses are `decide`-supplied by the caller, not manufactured here. -/
+noncomputable def branchData222 : BranchData M222route M222route where
+  cells := Bool
+  cellsFin := inferInstance
+  cellsNe := ⟨true⟩
+  split := fun _ => schurState M222route M222_hlo
+  codim := fun b => if b then 4 else 3
+  witness := witness222
+
+/-- **`routeStepOf` reproduces `case222_routeStep_branch`** through the scaffold's branch arm. At the
+non-leaf node `(2,2,2)`, `routeStepOf` fed `branchData222` returns the hand-built worked-template branch
+term. The non-vacuity / fidelity check that the scaffold generalizes the `(2,2,2)` anchor exactly. -/
+theorem routeStepOf_M222 :
+    routeStepOf M222route M222route (fun _ => branchData222) = case222_routeStep_branch := by
+  rw [routeStepOf_branch _ not_isLeafNode_M222]
+  rfl
+
 end DLNFibre.DLN.RLCT
