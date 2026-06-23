@@ -340,4 +340,43 @@ theorem deepestSplit_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
         rw [Prod.snd_zero, hinner0]
     exact hunpack0
 
+/-! ## The split as a NAMED homeo with both-side basepoints + MP both directions
+
+`deepestSplit_exists` gives `∃ split, MP split ∧ split wstar = 0`. Consumers (`gaugeDecode`'s
+basepoint, the chart's `split.symm 0 = wstar`) need the homeo NAMED with the inverse basepoint and the
+inverse measure-preservation surfaced, so they don't re-derive each use. `deepestSplitHomeo` is the
+`Classical.choose`; the four facts are projections. Parameterized by `wstar` (specialize
+`wstar := (paramsEquivFlat H) (deepestPoint …)` at the call site, as the chart does). -/
+
+/-- The deepest-point gauge-slice homeo, NAMED (`Classical.choose` of `deepestSplit_exists`). -/
+noncomputable def deepestSplitHomeo (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar : Fin (flatDim H) → ℝ) :
+    (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
+  Classical.choose (deepestSplit_exists H r hr hL wstar)
+
+/-- `deepestSplitHomeo` is measure-preserving (forward). -/
+theorem deepestSplitHomeo_mp (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar : Fin (flatDim H) → ℝ) :
+    MeasurePreserving (deepestSplitHomeo H r hr hL wstar) volume volume :=
+  (Classical.choose_spec (deepestSplit_exists H r hr hL wstar)).1
+
+/-- Forward basepoint: `deepestSplitHomeo wstar = 0`. -/
+theorem deepestSplitHomeo_basepoint (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar : Fin (flatDim H) → ℝ) :
+    deepestSplitHomeo H r hr hL wstar wstar = 0 :=
+  (Classical.choose_spec (deepestSplit_exists H r hr hL wstar)).2
+
+/-- Inverse basepoint: `deepestSplitHomeo.symm 0 = wstar` (the one `gaugeDecode 0 ↦ deepest` needs). -/
+theorem deepestSplitHomeo_symm_basepoint (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar : Fin (flatDim H) → ℝ) :
+    (deepestSplitHomeo H r hr hL wstar).symm 0 = wstar := by
+  rw [← deepestSplitHomeo_basepoint H r hr hL wstar, Homeomorph.symm_apply_apply]
+
+/-- `deepestSplitHomeo.symm` is measure-preserving (the inverse direction). -/
+theorem deepestSplitHomeo_symm_mp (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar : Fin (flatDim H) → ℝ) :
+    MeasurePreserving (deepestSplitHomeo H r hr hL wstar).symm volume volume :=
+  MeasurePreserving.symm (deepestSplitHomeo H r hr hL wstar).toMeasurableEquiv
+    (deepestSplitHomeo_mp H r hr hL wstar)
+
 end DLNFibre.DLN.RLCT
