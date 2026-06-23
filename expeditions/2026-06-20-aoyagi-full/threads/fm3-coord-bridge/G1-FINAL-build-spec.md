@@ -35,6 +35,17 @@ both inside routeAtlas. SURFACING to crux2 to confirm this is the right read bef
 ACTIONABLE NOW regardless: (a) rebase routeAtlas onto ChainDimSplit (carrier + hdrops-termination) — Q2 clear;
 (b) thread hMid(Mred) per node, C4 = red s=0 — Q3 clear; (c) the MonoData→(d,k,h) lemma is fork-independent.
 
+RECONCILIATION RESOLVED + ARCHITECTURE LOCKED (g194, controller): the descent cert = `dlnLoss schurState.red 0`
+via crux2's EXISTING `redCore_eq` (the pointwise datum field `G y² = dlnLoss S.red 0 (redEmbed y)`), used
+INSIDE the lintegral cover — NOT schur_recursion_step_sound (that's L2's rlctAtOn-level additive lane). So my
+g186/g193 read HOLDS: routeAtlas = ChainDimSplit-carrier + MonoData-accumulator + the lintegral cover (g186);
+the per-node descent is redCore_eq (pointwise, in-cover), NOT a per-node rlctAtOn. The certified-recursion is
+LOCKED (controller, pp2 Q1/Q2/Q3 YES + crux2 redCore_eq): schurState DEF (= genuine reduced chain, ChainDimSplit
+IS the datum #66) + descent cert (redCore_eq → dlnLoss schurState.red 0, in the cover lintegral) + root-anchored
+PivotWitness (each Mred carries hMid(Mred), C4 = red s=0 absorbs the boundary). NO controller scoping call
+needed — the design is locked. RESUME #85 (general routeStep on certified ChainDimSplit) + #86 (extraction) +
+#88 (value over routeMIota) on this locked design; formaliser on the anchoring-independent Fmeas meanwhile.
+
 ## (2,2,2) MILESTONE BANKED + ARCHITECTURE GAP (g192, fresh formaliser + Codex g206 + pp2 g207)
 A fresh focused lean-formaliser (off fm3/routem) took the #39 grind. RESULT:
 - ✓ (2,2,2) IsRouteMCover FACTS banked + reviewed PASS (#87/#89): RouteMCoverLemmas.lean (abstract cover
