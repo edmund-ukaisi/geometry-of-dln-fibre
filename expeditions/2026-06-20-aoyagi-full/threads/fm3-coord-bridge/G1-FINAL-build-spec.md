@@ -46,6 +46,19 @@ PivotWitness (each Mred carries hMid(Mred), C4 = red s=0 absorbs the boundary). 
 needed — the design is locked. RESUME #85 (general routeStep on certified ChainDimSplit) + #86 (extraction) +
 #88 (value over routeMIota) on this locked design; formaliser on the anchoring-independent Fmeas meanwhile.
 
+## PER-Mred hGne NULL LEMMA convention + RELAY CHANNEL (g195, crux2 via controller relay)
+The descent's per-Mred hGne consumes a generic matrix-product-zero-set-NULL Core lemma (the SECOND use of the
+deepest-core nonvanishing; #65 dlnLoss_deepest_core_ae_ne_zero @4b4a4cf is the FIRST/deepest case — sorry-free).
+crux2's CONVENTION for the shared Core refactor (matches Params/prod): dependent-Fin indexing (= Params d);
+LEFT-fold base L=1 (prodAux 0 = id; step = prodAux k * layer k; L=1 → prod = A0); volume on the dependent Pi
+(crux2 bridges to flat via paramsEquivFlat downstream). LOAD-BEARING: [∀ i : Fin (L+1), NeZero (d i)] = ALL
+widths INCL ENDPOINTS d 0, d L (prod : Matrix (Fin (d 0)) (Fin (d (last L))) → empty matrix if d 0=0 or d L=0
+→ prod≡0 → zero-set = everything, NOT null; witness needs d 0≥1 AND d L≥1 — the endpoint catch, consistent
+all-s). Consumes #69's MvPolynomial.ae_eval_ne_zero. Green to build (the formaliser's, slots into per-Mred hGne).
+RELAY CHANNEL: the spawned #39 formaliser (agentId a8c41813f2ca4a727) is NOT addressable by crux2's role-name
+(crux2's direct reply bounced). Until crux2 has the agentId, formaliser↔crux2 Qs route THROUGH fm3 (me) — I
+relay both directions. (Controller relayed this convention; I forwarded it to the formaliser.)
+
 ## (2,2,2) MILESTONE BANKED + ARCHITECTURE GAP (g192, fresh formaliser + Codex g206 + pp2 g207)
 A fresh focused lean-formaliser (off fm3/routem) took the #39 grind. RESULT:
 - ✓ (2,2,2) IsRouteMCover FACTS banked + reviewed PASS (#87/#89): RouteMCoverLemmas.lean (abstract cover
