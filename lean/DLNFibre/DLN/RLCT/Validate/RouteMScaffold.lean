@@ -167,4 +167,77 @@ noncomputable def achieverPivotWitness (M : Fin (L + 1) → ℕ) :
     hAdm := h.choose_spec.1
     hCodim := congrArg Int.toNat h.choose_spec.2 }
 
+/-! ## The read body, Shape C — the binding cell split off as green data + the complement as the named gap
+
+The general non-leaf read (#99) produces a `BranchData M₀ M` from two pieces (decorrelated-Codex Shape C,
+`fm3-coord-bridge/codex/readbody-skeleton-answer.md`): a **binding cell** carrying the achiever's
+root-anchored `PivotWitness M₀ (minAdm M₀)` (GREEN — the value fold's `C=∃` leaf is constructed, not
+gapped) + a **complement cover** of the remaining pivot cells (the named gap, the genuine rank-pattern
+read). The producer `branchDataOfReadParts` assembles them via `PUnit ⊕ cells` so the binding cell is
+ALWAYS present (the non-vacuity guard: the achiever leaf cannot be dropped). The per-cell analytic descent
+(`IsSchurStraightenSqueeze`/`hnode`) is carried SEPARATELY at the cover-lintegral level (#104, crux2's
+`redCore_eq`) — NOT a field here, per the §4 feasibility cert §3 ("`redCore_eq` carries the analytic
+descent separately"); the read is the COMBINATORIAL cell/codim/witness emission, the geometric fidelity is
+fm3's R1-result. -/
+
+/-- **The binding cell** (root `M₀`, current `M`): the achiever's root-anchored data. Carries a
+`ChainDimSplit M` (the `T*`-profile split — the achiever's rank-drop, NOT the front-collapsing uniform
+`schurState`, §4 cert §4), the binding `codim`, the root-anchored `PivotWitness M₀ codim`, and the binding
+proof `codim = minAdm M₀`. The `C=∃` leaf the value fold lands on. -/
+structure R1BindingCell (M₀ M : Fin (L + 1) → ℕ) where
+  split : ChainDimSplit M
+  codim : ℕ
+  witness : PivotWitness M₀ codim
+  hbind : codim = ((Adm M₀).inf' (Adm_nonempty M₀) (Mval M₀)).toNat
+
+/-- **The complement cover** (the named gap): the remaining pivot cells of the general rank-pattern read.
+A finite (possibly empty) family with per-cell `split`/`codim`/per-cell root-anchored `PivotWitness M₀`.
+This is the combinatorial cell decomposition the #99 grind produces for arbitrary non-leaf `M`
+(`r1ComplementData` below is the named obligation). Empty `cells` is allowed — the binding cell alone is a
+valid (degenerate but value-correct) cover; the genuine cover has the non-binding pivot cells here. -/
+structure R1ComplementData (M₀ M : Fin (L + 1) → ℕ) where
+  cells : Type
+  cellsFin : Fintype cells
+  cellsNe : Nonempty cells
+  split : cells → ChainDimSplit M
+  codim : cells → ℕ
+  witness : (c : cells) → PivotWitness M₀ (codim c)
+
+/-- **The read body producer** (GREEN): assemble `BranchData M₀ M` from a binding cell + a complement
+cover. The cell type is `PUnit ⊕ d.cells` — the binding cell (`Sum.inl`) is ALWAYS present (the non-vacuity
+guard), the complement cells (`Sum.inr`) are the named-gap cover. `split`/`codim`/`witness` are the
+`Sum.elim` of the two sources. The single named gap is producing the `R1ComplementData` (and the binding
+cell's `T*`-profile split); the binding `witness` is GREEN (`achieverPivotWitness M₀`, see
+`r1BindingCellRoot`). -/
+def branchDataOfReadParts {M₀ M : Fin (L + 1) → ℕ}
+    (b : R1BindingCell M₀ M) (d : R1ComplementData M₀ M) : BranchData M₀ M where
+  cells := PUnit ⊕ d.cells
+  cellsFin := by letI := d.cellsFin; infer_instance
+  cellsNe := ⟨Sum.inl PUnit.unit⟩
+  split := Sum.elim (fun _ => b.split) d.split
+  codim := Sum.elim (fun _ => b.codim) d.codim
+  witness := fun c => match c with
+    | Sum.inl _ => b.witness
+    | Sum.inr c' => d.witness c'
+
+/-- **The binding cell at the ROOT** (`M = M₀`): GREEN, non-vacuous. The achiever's root-anchored
+`PivotWitness M₀ (minAdm M₀)` is `achieverPivotWitness M₀` (the `inf'`-achiever `T*`); the binding proof is
+`rfl`. The `split` field is supplied (the `T*`-profile `ChainDimSplit M₀` — the achiever's rank-drop split,
+the one piece of the binding cell still gated on the §4 chart, here taken as input). Witnesses that the
+binding cell's combinatorial data is constructible: the achiever leaf exists and binds at `minAdm`. -/
+noncomputable def r1BindingCellRoot (M₀ : Fin (L + 1) → ℕ) (split : ChainDimSplit M₀) :
+    R1BindingCell M₀ M₀ where
+  split := split
+  codim := ((Adm M₀).inf' (Adm_nonempty M₀) (Mval M₀)).toNat
+  witness := achieverPivotWitness M₀
+  hbind := rfl
+
+/-- **Non-vacuity guard**: the assembled `BranchData` always has the binding cell — its `cells` is
+inhabited by `Sum.inl PUnit.unit`, and the binding cell's `codim` is `b.codim` (`= minAdm M₀` for a
+`r1BindingCellRoot`). So the read is NOT the empty/degenerate cover — the `C=∃` achiever leaf is present by
+construction. -/
+theorem branchDataOfReadParts_binding_present {M₀ M : Fin (L + 1) → ℕ}
+    (b : R1BindingCell M₀ M) (d : R1ComplementData M₀ M) :
+    (branchDataOfReadParts b d).codim (Sum.inl PUnit.unit) = b.codim := rfl
+
 end DLNFibre.DLN.RLCT
