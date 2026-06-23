@@ -2213,6 +2213,21 @@ it is not a global A0 chart family, active-ratio lower bound, global
 chart-count/order theorem, chart coverage, analytic Jacobian data, pole order,
 or RLCT extraction.
 
+The current A4/A0 Case 1 local chart-certificate contribution slice is
+`threads/04-blow-up-certificate/reproduction-case1-local-chart-certificate-contribution-a4.md`.
+Lean now bundles the selected-old and displayed row-strip local
+microcertificate facts in
+`case1SelectedOldCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`
+and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`.
+Each summary uses the generic `Case1SelectedEntryExponentCoordinateBridge`
+and records local ratio `(1 + J1 * (n(S+1)-J)) / 2`, local finite minimum,
+local chart count `1`, local minimum-coordinate count `1`, and local finite
+order `1`.  The selected-old summary does not construct the hidden old source
+label behind the finite `Unit` token.  This is not global A0 data, chart
+coverage, source production, global lower bounds, pole order, `theta`, or
+RLCT extraction.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

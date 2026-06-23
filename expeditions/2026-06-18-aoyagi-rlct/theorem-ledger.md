@@ -6248,6 +6248,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-local-chart-certificate-contribution-a4.md`.
 
+Latest A4/A0 Case 1 local chart-certificate contributions:
+`Case1FiniteExponentBridge.lean` now proves
+`case1SelectedOldCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`
+and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`.
+Each theorem bundles the generic Case 1 selected-entry bridge for the local
+microcertificate's own exponent data, local ratio
+`(1 + J1 * (n(S+1)-J)) / 2`, local finite minimum, local ratio-count `1`,
+local minimum-count `1`, and local finite order `1`.  They do not construct
+global A0 data, selected-old source labels, chart coverage, active-ratio lower
+bounds, chart counts for the full normal-crossing family, pole order, `theta`,
+or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-local-chart-certificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-local-chart-certificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -716,6 +716,18 @@ No such claim is formalisation-ready until both fields are filled.
   summary only; it does not construct global A0 data, chart coverage,
   active-ratio lower bounds, chart counts for the full normal-crossing family,
   pole order, or RLCT.
+  The A4/A0 Case 1 local chart-certificate contribution summaries
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`
+  and
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`
+  are also proved in
+  `lean/DLNFibre/DLN/Aoyagi/Case1FiniteExponentBridge.lean`.  They bundle the
+  generic Case 1 selected-entry bridge for each local microcertificate's own
+  exponent data with the local ratio, local finite minimum, local ratio-count,
+  local minimum-count, and local finite order.  This is local one-chart
+  bookkeeping only; it does not construct global A0 data, the hidden
+  selected-old source label, chart coverage, active-ratio lower bounds, chart
+  counts for the full normal-crossing family, pole order, `theta`, or RLCT.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -931,6 +943,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-local-chart-certificate-contribution-a4.md`;
 	  xhigh source/fidelity and Lean/API reviews passed and are saved at
 	  `threads/04-blow-up-certificate/review-case2-local-chart-certificate-contribution-a4.md`.
+	  Reproduction of the Case 1 local chart-certificate contributions is saved
+	  at
+	  `threads/04-blow-up-certificate/reproduction-case1-local-chart-certificate-contribution-a4.md`;
+	  xhigh source/fidelity and Lean/API reviews passed and are saved at
+	  `threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -3779,3 +3796,20 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-local-chart-certificate-contribution.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-local-chart-certificate-contribution-a4.md`.
+
+Latest A4/A0 Case 1 local chart-certificate contributions:
+`Case1FiniteExponentBridge.lean` now proves
+`case1SelectedOldCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`
+and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`.
+These bundle the existing generic Case 1 selected-entry bridge for each local
+microcertificate's own exponent data with the local ratio, finite minimum,
+ratio-count, minimum-count, and finite order.  They do not construct global A0
+data, the hidden selected-old source label, chart coverage, a global lower
+bound, a full chart-count theorem, Theorem 2 pole order, `theta`, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-local-chart-certificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-local-chart-certificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.

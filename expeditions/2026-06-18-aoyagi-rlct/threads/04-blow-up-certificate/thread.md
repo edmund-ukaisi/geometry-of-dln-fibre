@@ -5135,3 +5135,34 @@ This is only a local one-chart contribution summary.  It is not a global A0
 chart family, chart coverage, selected-entry atlas, source production,
 analytic Jacobian/volume-form theorem, global active-ratio lower bound, global
 chart-count/order theorem, pole order, or RLCT extraction.
+
+## 2026-06-23 Lean Case 1 local chart-certificate contributions
+
+Reproduction:
+`reproduction-case1-local-chart-certificate-contribution-a4.md`.
+Statement card:
+`statement-card-a4-case1-local-chart-certificate-contribution.md`.
+Review artifact:
+`review-case1-local-chart-certificate-contribution-a4.md`.
+
+Lean now bundles the selected-old and displayed row-strip Case 1 local
+selected-entry contributions:
+
+```text
+case1SelectedOldCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary
+```
+
+Each theorem returns the existing generic Case 1 selected-entry bridge for
+the local microcertificate's exponent data, the bridge ratio
+`(1 + J1 * (n(S+1)-J)) / 2`, the local finite minimum at that ratio, local
+`countInChartAtRatio = 1`, local `minCountInChart = 1`, and local finite
+exponent order `1`.  The selected-old theorem deliberately uses the generic
+bridge, not the A0/source-moving wrapper, so it does not construct the hidden
+old source label behind the finite `Unit` token.
+
+This is only a pair of local one-chart contribution summaries.  It is not a
+global A0 chart family, chart coverage, selected-entry atlas, source
+production, analytic Jacobian/volume-form theorem, global active-ratio lower
+bound, global chart-count/order theorem, Theorem 2 pole order, `theta`, or
+RLCT extraction.

@@ -6460,6 +6460,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-local-chart-certificate-contribution-a4.md`.
 
+Latest A4/A0 Case 1 local chart-certificate contributions:
+`Case1FiniteExponentBridge.lean` now contains
+`case1SelectedOldCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`
+and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`.
+They bundle the existing generic Case 1 selected-entry bridge for each local
+microcertificate's exponent data with the local ratio, finite minimum,
+ratio-count, minimum-count, and finite-order facts.  The selected-old summary
+uses the generic bridge only; selected-old source provenance still belongs in
+the separate `Case1SelectedOldUnitA0ExponentCoordinateBridge` wrapper.  These
+theorems do not construct A0 data, chart coverage, a selected-entry atlas,
+the hidden old source label, analytic Jacobian/volume data, global
+active-ratio lower bounds, global chart counts, pole order, `theta`, or RLCT
+extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-local-chart-certificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-local-chart-certificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
