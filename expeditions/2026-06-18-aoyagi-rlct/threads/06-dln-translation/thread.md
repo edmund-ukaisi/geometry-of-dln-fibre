@@ -553,3 +553,26 @@ finite chart-count obligations.
 Boundary: the chart-count equality and all-chart upper bound remain supplied.
 No chart production, active-ratio lower-bound proof, selected-width
 provenance, analytic extraction, pole order, or RLCT is proved.
+
+## Current slice - 2026-06-23, Case 2 chart-final boundary
+
+Reproduction:
+`reproduction-case2-theorem2-chart-final-bridge-a6.md`.
+Statement card:
+`statement-card-a6-case2-theorem2-chart-final-bridge.md`.
+Review artifact:
+`review-case2-theorem2-chart-final-bridge-a6.md`.
+
+Lean now has a leaf chart-final wrapper:
+
+```text
+Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2SuppliedChartFinalBoundary_of_forall_le_of_centerCard_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le
+```
+
+It carries the Case 2 ratio-count finite formula bridge into
+`AoyagiTheorem2SuppliedChartFinalBoundary` once selected-width provenance and
+the chart-level A0 extraction hypothesis are supplied.
+
+Boundary: this is API plumbing only.  It does not construct charts, prove
+coverage, prove the finite count facts, prove selected-width provenance, prove
+analytic extraction, pole order, or RLCT.

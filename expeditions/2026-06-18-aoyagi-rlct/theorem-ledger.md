@@ -5705,6 +5705,21 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`.
 
+Latest A6 Case 2 chart-final wrapper:
+`Case2Theorem2ChartFinalBridge.lean` now contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2SuppliedChartFinalBoundary_of_forall_le_of_centerCard_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`.
+This theorem carries the supplied Case 2 finite ratio-count formula bridge
+into `AoyagiTheorem2SuppliedChartFinalBoundary` after selected-width
+provenance and chart-level extraction are supplied.  It is a small API handoff
+only: no chart production, chart coverage, finite count proof, analytic
+extraction theorem, pole order, or RLCT is proved.
+Reproduction:
+`threads/06-dln-translation/reproduction-case2-theorem2-chart-final-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-chart-final-bridge.md`.
+Review:
+`threads/06-dln-translation/review-case2-theorem2-chart-final-bridge-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

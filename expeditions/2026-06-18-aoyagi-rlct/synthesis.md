@@ -5492,6 +5492,24 @@ and
 Review:
 `threads/06-dln-translation/review-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`.
 
+Latest A6 Case 2 chart-final wrapper:
+`Case2Theorem2ChartFinalBridge.lean` contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2SuppliedChartFinalBoundary_of_forall_le_of_centerCard_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`.
+It packages selected-width provenance, the supplied chart-level extraction
+hypothesis, and the Case 2 ratio-count finite formula bridge into
+`AoyagiTheorem2SuppliedChartFinalBoundary`.
+
+This is downstream plumbing only.  It does not construct the chart
+certificate, prove chart coverage, prove active-ratio lower bounds, prove
+chart-count facts, prove selected-width provenance, prove analytic extraction,
+pole order, or RLCT.
+Artifacts:
+`threads/06-dln-translation/reproduction-case2-theorem2-chart-final-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-chart-final-bridge.md`.
+Review:
+`threads/06-dln-translation/review-case2-theorem2-chart-final-bridge-a6.md`.
+
 Latest A6 terminal-order handoff: `Theorem2TerminalOrderBridge.lean` now
 routes the order field of `AoyagiTheorem2FiniteExponentFormulaHypothesis`
 through the supplied Lemma 5 terminal-minimum count.  If the exponent-minimum

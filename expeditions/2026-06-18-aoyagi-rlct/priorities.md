@@ -78,6 +78,12 @@ The ratio-count variant
 replaces the raw order equality by a supplied chart count at the Case 2 ratio
 and a supplied all-chart upper bound at that ratio; those count facts remain
 source/chart obligations.
+The chart-final wrapper
+`threads/06-dln-translation/reproduction-case2-theorem2-chart-final-bridge-a6.md`
+carries the same Case 2 finite data into
+`AoyagiTheorem2SuppliedChartFinalBoundary` after selected-width provenance and
+chart-level extraction are supplied.  This is useful downstream plumbing, not
+source-moving chart production.
 
 The current A4/A0-facing selected-entry local algebra slice is
 `threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`.
