@@ -106,6 +106,65 @@ noncomputable def gaugeSlotRead (H : Fin (L + 1) → ℕ) (r : ℕ)
     , Matrix.of (fun i j => g ⟨s, Sum.inr (i, j)⟩)
     , T s )
 
+/-- **`gaugeSlotRead` is continuous** — each per-layer block is a coordinate of the homeomorphism
+`regGaugeSlotEquiv` (the `X/Y/Z` blocks) or of `paramsEquivFlat.symm` (the `T`-core), composed with
+continuous slot projections. The continuity half of `IsGaugeSliceDecode`. -/
+theorem continuous_gaugeSlotRead (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Continuous (gaugeSlotRead H r hr hL) := by
+  have hg : Continuous (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      regGaugeSlotEquiv H r hr hL (q.1, q.2.2)) :=
+    (regGaugeSlotEquiv H r hr hL).continuous.comp
+      (continuous_fst.prodMk (continuous_snd.comp continuous_snd))
+  refine continuous_pi (fun s => ?_)
+  refine Continuous.prodMk ?_ (Continuous.prodMk ?_ (Continuous.prodMk ?_ ?_))
+  · exact continuous_matrix (fun i j =>
+      (continuous_apply (⟨s, Sum.inl (Sum.inl (i, j))⟩ : RegGaugeIdx H r)).comp hg)
+  · exact continuous_matrix (fun i j =>
+      (continuous_apply (⟨s, Sum.inl (Sum.inr (i, j))⟩ : RegGaugeIdx H r)).comp hg)
+  · exact continuous_matrix (fun i j =>
+      (continuous_apply (⟨s, Sum.inr (i, j)⟩ : RegGaugeIdx H r)).comp hg)
+  · exact (continuous_apply s).comp
+      ((continuous_paramsEquivFlat_symm (deepestM H r)).comp (continuous_fst.comp continuous_snd))
+
+/-- **`gaugeSlotRead` at the origin reads all-zero blocks** — `regGaugeSlotEquiv (0,0) = 0` zeroes the
+`X/Y/Z` blocks; `paramsEquivFlat.symm 0 = (fun _ => 0)` (forward `0 ↦ 0` + `symm_apply_apply`) zeroes
+the `T`-core. The basepoint half of `IsGaugeSliceDecode`. -/
+theorem gaugeSlotRead_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    gaugeSlotRead H r hr hL 0 = fun _ => (0, 0, 0, 0) := by
+  funext s
+  have hg : regGaugeSlotEquiv H r hr hL
+      ((0 : DeepestSplit H r (deepestNGauge H r)).1, (0 : DeepestSplit H r (deepestNGauge H r)).2.2)
+      = 0 := by
+    rw [show ((0 : DeepestSplit H r (deepestNGauge H r)).1,
+        (0 : DeepestSplit H r (deepestNGauge H r)).2.2) = 0 from rfl]
+    exact regGaugeSlotEquiv_zero H r hr hL
+  have hfwd : (paramsEquivFlat (deepestM H r)) (fun _ => 0) = 0 := by
+    funext i; show (paramsEquivFlat (deepestM H r)) (fun _ => 0) i = (0 : Fin _ → ℝ) i; rfl
+  have hTfun : (paramsEquivFlat (deepestM H r)).symm
+      ((0 : DeepestSplit H r (deepestNGauge H r)).2.1) = (fun _ => 0) := by
+    rw [show (0 : DeepestSplit H r (deepestNGauge H r)).2.1 = 0 from rfl, ← hfwd,
+      (paramsEquivFlat (deepestM H r)).symm_apply_apply]
+  show (gaugeSlotRead H r hr hL 0 s) = (0, 0, 0, 0)
+  simp only [gaugeSlotRead, hg, hTfun]
+  refine Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_))
+  · ext i j; rfl
+  · ext i j; rfl
+  · ext i j; rfl
+  · rfl
+
+/-- **The deepest-point gauge decode satisfies the slot-grouping contract** (`IsGaugeSliceDecode` —
+the controller's durable slot-grouping pin, the #64-confound guard). `gaugeDecode := gaugeSlotRead`
+(the frame-free read; the constant frame #77 + `split.symm` compose INSIDE, fixing the origin +
+continuous, so the contract's continuity + basepoint hold of the read). Built from `regGaugeSlotEquiv`
+(#78) + the g223 slot-index map + `paramsEquivFlat` (the banked accessors). -/
+theorem deepest_isGaugeSliceDecode (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    IsGaugeSliceDecode H r (deepestNGauge H r) (gaugeSlotRead H r hr hL) where
+  continuous := continuous_gaugeSlotRead H r hr hL
+  basepoint := gaugeSlotRead_zero H r hr hL
+
 /-! ## The two PINNED hard sub-proofs (skeleton-first)
 
 The bundle factors into determined wires + two SUBSTANTIAL sub-proofs, each stated as a named
