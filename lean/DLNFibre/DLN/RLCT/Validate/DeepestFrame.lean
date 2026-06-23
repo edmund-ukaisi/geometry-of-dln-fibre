@@ -144,6 +144,15 @@ theorem deepestPoint_frame_invertible (H : Fin (L + 1) → ℕ) (r : ℕ)
   have h := Classical.choose_spec (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))
   exact ⟨h.1, h.2.1⟩
 
+/-- **The deepest point is in the fibre**: `prod H (deepestPoint) = B` (it minimises the loss to 0).
+From `deepestPoint_isDeep.1 : deepestPoint ∈ optimalSet H B = {w | prod H w = B}`. The part-(3)
+component (`reindex(P0·B·QL) = corM` reduces to telescoping at the deepest point via this). -/
+theorem prod_deepestPoint_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    prod H (deepestPoint H r B hB hr hL) = B :=
+  (deepestPoint_isDeep H r B hB hr hL).1
+
 /-! ## The deepest-point FRAME FAMILY (#80, the id-interior + boundary-only gauge frame)
 
 The per-layer frame family `(Pf, Qf)` for the #80 cert + deriv-fm's #91. UNLIKE the raw two-sided
