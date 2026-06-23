@@ -103,4 +103,13 @@ theorem routeM_rlctAtOn_eq_iInf {N : ℕ} (F : (Fin N → ℝ) → ℝ) (U : Set
         lt_of_lt_of_le hc'lt (iInf_le _ i)
       exact (monomialIntegrand_integrable_of_lt (d i) (k i) (h i) c' hc0 hlt_i).setLIntegral_lt_top
 
+/-- **The (A')↔(B') non-degeneracy bridge** (the R1↔headline seam, fm3 g190). The headline/L2 phrasing
+`r < H s` (regular dim below the layer width) and the R1/RouteMTree phrasing `0 < M s` (positive
+reduced width) are equivalent under `M s = H s − r`. fm3 discharges its committed `(∀ s, 0 < M s)`
+from the headline's `(∀ s, r < H s)` at the call site `M := fun s => H s − r`. One-liner (`omega`).
+The all-`s` form (endpoints included) is load-bearing: `prod M` is empty if `M 0 = 0` or `M (last) = 0`,
+so the headline non-degeneracy must reach the boundary layers. -/
+theorem reduced_pos_iff_r_lt (H r ms : ℕ) (hM : ms = H - r) : r < H ↔ 0 < ms := by
+  rw [hM]; omega
+
 end DLNFibre.DLN.RLCT
