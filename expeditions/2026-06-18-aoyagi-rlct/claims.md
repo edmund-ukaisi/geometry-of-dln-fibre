@@ -3579,3 +3579,21 @@ Reviews:
 `threads/06-dln-translation/review-case1-theorem2-finite-formula-bridge-a6.md`
 and
 `threads/06-dln-translation/review-case1-theorem2-chart-final-bridge-a6.md`.
+
+Latest A4/A0 source-chart selected-entry microcertificate adapter:
+`SelectedEntryNormalCrossing.lean` now contains source-point presentation
+lemmas for `case2DisplayedCenterSqFormalJacobianChartCertificate`, including
+`sourceChartPoint`, `chartMap_sourceChartPoint_eq`,
+`loss_sourceChartPoint_eq_centerSq`, `lossUnit_sourceChartPoint_eq`,
+`jacobianPrior_sourceChartPoint_eq_det`, `loss_monomial_sourceChartPoint`,
+and `jacobianPrior_monomial_sourceChartPoint`.  These identify the existing
+one-chart selected-entry microcertificate at the displayed continuing Case 2
+source chart point.  They do not prove chart coverage, source production,
+transition regularity, analytic unit neighbourhood control, an analytic
+Jacobian/volume-form theorem, total DLN loss control, global A0 normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-chart-selected-entry-microcertificate-adapter.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.

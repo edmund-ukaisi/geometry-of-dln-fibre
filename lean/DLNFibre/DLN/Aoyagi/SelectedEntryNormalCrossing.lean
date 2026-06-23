@@ -443,6 +443,154 @@ def case2DisplayedCenterSqFormalJacobianChartCertificate
 
 namespace case2DisplayedCenterSqFormalJacobianChartCertificate
 
+/-- The point of the local selected-entry microcertificate corresponding to
+the displayed continuing Case 2 source-chart coordinates. -/
+def sourceChartPoint
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : ℕ × ℕ → K) :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).ChartPoint (0 : Fin 1) :=
+  (u, fun p ↦ residual p.1)
+
+/-- The local selected-entry microcertificate chart map agrees with the
+displayed continuing Case 2 source chart map at `sourceChartPoint`. -/
+theorem chartMap_sourceChartPoint_eq
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : ℕ × ℕ → K) :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).chartMap (0 : Fin 1)
+        (sourceChartPoint n hS hcont u residual) =
+      fun p : {p // p ∈ case2ResidualBlockPivotEntries n S J} ↦
+        case2DisplayedSourceChartMap n hS hcont u residual p.1 := by
+  funext p
+  by_cases hp : p.1 = (J + 1, J + 1)
+  · simp [sourceChartPoint, case2DisplayedCenterSqFormalJacobianChartCertificate,
+      selectedEntryCenterSqFormalJacobianChartCertificate, case2DisplayedSourceChartMap,
+      selectedEntryChartMap, hp]
+  · have hmem :
+        p.1 ∈ (case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1) := by
+      simp [Finset.mem_erase, hp, p.2]
+    simp [sourceChartPoint, case2DisplayedCenterSqFormalJacobianChartCertificate,
+      selectedEntryCenterSqFormalJacobianChartCertificate, case2DisplayedSourceChartMap,
+      selectedEntryChartMap, selectedEntryErasedResidual, hp, hmem]
+
+/-- At the displayed continuing Case 2 source-chart point, the local
+microcertificate loss is the finite residual-center square-sum. -/
+theorem loss_sourceChartPoint_eq_centerSq
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : ℕ × ℕ → K) :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).loss
+        ((case2DisplayedCenterSqFormalJacobianChartCertificate
+          (K := K) n hS hcont).chartMap (0 : Fin 1)
+            (sourceChartPoint n hS hcont u residual)) =
+      selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+        (case2DisplayedSourceChartMap n hS hcont u residual) := by
+  rw [chartMap_sourceChartPoint_eq]
+  simpa [case2DisplayedCenterSqFormalJacobianChartCertificate,
+    selectedEntryCenterSqFormalJacobianChartCertificate, selectedEntryCenterSq] using
+    (Finset.sum_attach (case2ResidualBlockPivotEntries n S J)
+      (fun p ↦ case2DisplayedSourceChartMap n hS hcont u residual p ^ 2))
+
+/-- At the displayed continuing Case 2 source-chart point, the local
+microcertificate loss unit is the normalized finite center-square factor. -/
+theorem lossUnit_sourceChartPoint_eq
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : ℕ × ℕ → K) :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).lossUnit (0 : Fin 1)
+        (sourceChartPoint n hS hcont u residual) =
+      selectedEntryCenterSqUnitFactor
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual := by
+  simp only [sourceChartPoint, case2DisplayedCenterSqFormalJacobianChartCertificate,
+    selectedEntryCenterSqFormalJacobianChartCertificate]
+  rw [selectedEntryCenterSqUnitFactor, selectedEntryCenterSqUnitFactor]
+  congr 1
+  rw [selectedEntryCenterSq, selectedEntryCenterSq]
+  refine Finset.sum_congr rfl ?_
+  intro p hp
+  have hmem :
+      p ∈ (case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1) := hp
+  simp [selectedEntryErasedResidual, hmem]
+
+/-- At the displayed continuing Case 2 source-chart point, the local
+microcertificate Jacobian/prior value is the formal pivot-first determinant. -/
+theorem jacobianPrior_sourceChartPoint_eq_det
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : ℕ × ℕ → K) :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).jacobianPrior (0 : Fin 1)
+        (sourceChartPoint n hS hcont u residual) =
+      (selectedEntryPivotFirstJacobian
+        (κ := ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1) : Type))
+        u (fun p ↦ residual p.1)).det := by
+  rw [case2DisplayedSourceChartMap_pivotFirstJacobian_det n hS hcont u residual]
+  simp [sourceChartPoint, case2DisplayedCenterSqFormalJacobianChartCertificate,
+    selectedEntryCenterSqFormalJacobianChartCertificate]
+
+/-- Source-chart presentation of the local selected-entry loss monomial
+identity for the displayed continuing Case 2 microcertificate. -/
+theorem loss_monomial_sourceChartPoint
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : ℕ × ℕ → K) :
+    selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+        (case2DisplayedSourceChartMap n hS hcont u residual) =
+      selectedEntryCenterSqUnitFactor
+          ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual *
+        ∏ j : Fin (case2DisplayedCenterSqFormalJacobianChartCertificate
+            (K := K) n hS hcont).numCoords,
+          (case2DisplayedCenterSqFormalJacobianChartCertificate
+            (K := K) n hS hcont).coord (0 : Fin 1)
+            (sourceChartPoint n hS hcont u residual) j ^
+            (2 *
+              (case2DisplayedCenterSqFormalJacobianChartCertificate
+                (K := K) n hS hcont).lossExp (0 : Fin 1) j) := by
+  rw [← loss_sourceChartPoint_eq_centerSq n hS hcont u residual]
+  rw [← lossUnit_sourceChartPoint_eq n hS hcont u residual]
+  exact
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).loss_monomial
+        (0 : Fin 1) (sourceChartPoint n hS hcont u residual)
+
+/-- Source-chart presentation of the local selected-entry formal
+Jacobian/prior monomial identity for the displayed continuing Case 2
+microcertificate. -/
+theorem jacobianPrior_monomial_sourceChartPoint
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : ℕ × ℕ → K) :
+    (selectedEntryPivotFirstJacobian
+        (κ := ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1) : Type))
+        u (fun p ↦ residual p.1)).det =
+      (case2DisplayedCenterSqFormalJacobianChartCertificate
+          (K := K) n hS hcont).jacobianPriorUnit (0 : Fin 1)
+          (sourceChartPoint n hS hcont u residual) *
+        ∏ j : Fin (case2DisplayedCenterSqFormalJacobianChartCertificate
+            (K := K) n hS hcont).numCoords,
+          (case2DisplayedCenterSqFormalJacobianChartCertificate
+            (K := K) n hS hcont).coord (0 : Fin 1)
+            (sourceChartPoint n hS hcont u residual) j ^
+            (case2DisplayedCenterSqFormalJacobianChartCertificate
+              (K := K) n hS hcont).jacobianPriorExp (0 : Fin 1) j := by
+  rw [← jacobianPrior_sourceChartPoint_eq_det n hS hcont u residual]
+  exact
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).jacobianPrior_monomial
+        (0 : Fin 1) (sourceChartPoint n hS hcont u residual)
+
 /-- The unique coordinate in the Case 2 finite microcertificate has loss
 exponent `1`. -/
 @[simp] theorem lossExp_zero_zero

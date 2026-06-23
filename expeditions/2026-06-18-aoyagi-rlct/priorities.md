@@ -2112,6 +2112,18 @@ checkpoint is reviewed in
 `threads/06-dln-translation/review-case1-theorem2-finite-formula-bridge-a6.md`
 and
 `threads/06-dln-translation/review-case1-theorem2-chart-final-bridge-a6.md`.
+
+The current A4/A0 local source-chart adapter is
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+Lean now evaluates the existing selected-entry one-chart microcertificate at
+the displayed continuing Case 2 source chart point, identifying its chart map,
+loss, loss unit, and Jacobian/prior value with the concrete source-chart
+center-square and formal pivot-first determinant data.  This removes a local
+presentation gap between A4 source-chart algebra and the A0 chart-certificate
+spine, but it is still not coverage, source production, analytic Jacobian
+control, a total DLN loss certificate, global A0 normal crossings, pole order,
+or RLCT.
+
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

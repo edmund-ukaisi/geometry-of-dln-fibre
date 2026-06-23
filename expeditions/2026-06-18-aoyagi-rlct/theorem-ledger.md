@@ -6086,6 +6086,26 @@ Reviews:
 and
 `threads/06-dln-translation/review-case1-theorem2-chart-final-bridge-a6.md`.
 
+Latest A4/A0 source-chart selected-entry microcertificate adapter:
+`SelectedEntryNormalCrossing.lean` now contains
+`case2DisplayedCenterSqFormalJacobianChartCertificate.sourceChartPoint`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.loss_sourceChartPoint_eq_centerSq`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.lossUnit_sourceChartPoint_eq`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.jacobianPrior_sourceChartPoint_eq_det`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.loss_monomial_sourceChartPoint`,
+and
+`case2DisplayedCenterSqFormalJacobianChartCertificate.jacobianPrior_monomial_sourceChartPoint`.
+These evaluate the local selected-entry microcertificate at the displayed
+continuing Case 2 source chart point; they are not chart coverage, source
+production, analytic Jacobian control, total loss control, global A0 normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-chart-selected-entry-microcertificate-adapter.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

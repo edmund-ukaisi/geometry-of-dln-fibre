@@ -4663,6 +4663,40 @@ This is not the global A0 exponent minimum, not a global active-ratio lower
 bound, not a global chart-count/order theorem, not pole order, and not RLCT
 extraction.
 
+## 2026-06-23 Lean Case 2 source-chart selected-entry microcertificate adapter
+
+Reproduction:
+`reproduction-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-chart-selected-entry-microcertificate-adapter.md`.
+Review artifact:
+`review-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+
+Lean now identifies the displayed continuing Case 2 source chart point inside
+the existing selected-entry one-chart finite microcertificate:
+
+```text
+case2DisplayedCenterSqFormalJacobianChartCertificate.sourceChartPoint
+case2DisplayedCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq
+case2DisplayedCenterSqFormalJacobianChartCertificate.loss_sourceChartPoint_eq_centerSq
+case2DisplayedCenterSqFormalJacobianChartCertificate.lossUnit_sourceChartPoint_eq
+case2DisplayedCenterSqFormalJacobianChartCertificate.jacobianPrior_sourceChartPoint_eq_det
+case2DisplayedCenterSqFormalJacobianChartCertificate.loss_monomial_sourceChartPoint
+case2DisplayedCenterSqFormalJacobianChartCertificate.jacobianPrior_monomial_sourceChartPoint
+```
+
+The source chart point is `(u, residual|_{E \\ {p}})` for
+`E = case2ResidualBlockPivotEntries n S J` and `p=(J+1,J+1)`.  At this point,
+the local microcertificate's chart map is the displayed source chart map, its
+loss is the finite residual-center square-sum, its loss unit is the normalized
+square-sum factor, and its Jacobian/prior value is the formal pivot-first
+determinant.
+
+This is a local presentation adapter only.  It is not global chart coverage,
+source production, transition regularity, analytic unit neighbourhood control,
+a true Jacobian/volume-form theorem, a total DLN loss identity, global A0
+normal crossings, pole order, or RLCT extraction.
+
 ## 2026-06-23 Lean direct Case 2 reindexed next-source product
 
 Reproduction:
