@@ -70,6 +70,14 @@ shows the branch fields jointly inhabited with genuine root-anchored data, foldi
 - **T_c achiever-only**: ONE threaded `T*` path (the root minimiser, `Mval M₀ T* = minAdm`); each cell's
   codim = `(Mval M₀ T_c).toNat` for an admissible `T_c` (C≥, the no-undershoot, cardinality-direct
   locally), and the distinguished achiever branch resolves `T*`.
+  **The achiever T\* is realized by an EXPLICIT diagonal cascade** (pp2 §4 seed g219, banked
+  `origin/g219-adm-realizable-seed @f4b3fc9` — NOT a coverage theorem): `cascadeTuple M₀ T* := (fun s =>
+  diag(1^{t_{s+1}}, 0) block)`, with `rankFn M₀ (cascadeTuple M₀ T*) = T*'s pattern` ⟹ `T* ∈ RealizableRank
+  M₀` by definition (`Set.range rankFn`; Core decls `rankFn`/`RealizableRank`/`embedRank` @
+  `OrbitKostant.lean:64/97/149`). So the achiever-branch witness is a CONSTRUCTION (the cascade + a rank
+  computation), not a surjectivity theorem. (The FULL `Adm = RealizableRank` (⊇ via Mathlib `rank_mul_le` +
+  min-dim bottleneck + a 1-index↔2-index reindex `t_j = rankFn M₀ A 0 j`) is a roadmap, NOT needed for
+  achiever-only §4 — sidestep it.)
 - **leaf** iff `red ≡ 0` / `IsUnit residual` (terminal); `leafMonoData`.
 - **termination**: the banked `chainRel` (ΣM-decrease) SUFFICES — no lex augmentation (pp-r1realize
   confirmed; each C5 chart drops ΣM by 2·(complement rank)). e=0 is a DEEPER ΣM-dropping node (recurse on

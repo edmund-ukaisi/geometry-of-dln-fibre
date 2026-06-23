@@ -1407,3 +1407,30 @@ subagent would block my relay-hub for the whole grind). Handed the controller th
 registry — avoids the a8c41813 TaskStop-not-found problem). Fresh agent (clean HEAD read @ba71584, NOT a
 resume of the retired a8c41813 per g213) reports to fm3; I relay milestones + walls + the pp2/crux2 boundary.
 The (2,2,2) anchor (Case222RouteStep + #94 cover) is the worked pattern the cascade generalizes.
+
+## g222 — §4 SEED landed (pp2 g219, banked @f4b3fc9): achiever realized by EXPLICIT diagonal cascade
+pp2 delivered the §4 seed (#96), decorrelated for pp-r1realize, banked origin/g219-adm-realizable-seed
+@f4b3fc9. It confirms the g219 achiever-only correction AND gives the CONSTRUCTIVE realizer that makes
+#102's achiever-threading concrete (not a guess):
+
+Adm M = RealizableRank M, both directions, STRUCTURAL:
+- (⊆) the CANONICAL DIAGONAL CASCADE: C_s = diag(1^{t_{s+1}}, 0) has running rank(C_1···C_j) = t_j, valid IFF
+  t_{s+1} ≤ min(t_s, M^{s+1}) = the admissibility inequality. So every admissible T is realized by its
+  cascade (g217: 5 cases incl achiever). Structural: the running rank IS t_{s+1} exactly when the bottleneck
+  admits it = admissibility.
+- (⊇) rank-mono (append can't raise rank ⟹ weakly-decreasing) + bottleneck (rank ≤ M^{j+1}) = the Adm
+  inequalities (g218: 200 random, 0 violations).
+
+⟹ the achiever T* (Mval-minimiser, T*∈Adm) is ALWAYS in RealizableRank (its cascade). §4 reachability holds,
+needing ONLY T*∈Realizable (the explicit cascade), NOT full stratum_surjective.
+
+LEAN BRIDGE (achiever-only §4, the #102 recipe): cascadeTuple M₀ T* := (fun s => diag-(t_{s+1}) block); prove
+rankFn M₀ (cascadeTuple M₀ T*) = T*'s pattern ⟹ T* ∈ RealizableRank M₀ by def (Set.range rankFn). NO general
+surjectivity. Core decls: rankFn/RealizableRank/embedRank @OrbitKostant.lean:64/97/149. The FULL Adm=Realizable
+(⊇ via Mathlib rank_mul_le + min-dim bottleneck + the 1-index↔2-index reindex t_j = rankFn M₀ A 0 j) is a
+ROADMAP, NOT needed for achiever-only §4 — sidestep it.
+
+IMPACT: #102's achiever-threading (the flagged likely wall) is now MUCH lighter — an explicit diagonal-cascade
+CONSTRUCTION + one rank computation, not a coverage theorem. Folded into the brief + #102. VERDICT (pp2 cc
+pp-r1realize): §4-achiever IN-REACH (constructive cascade + rank-mono, no surjectivity). This is the seed the
+controller's green-light (g221, all-gates-clear) rests on, now decl-grounded.
