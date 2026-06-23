@@ -318,11 +318,10 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
         = (hLs ▸ Q ⟨Lm, by omega⟩ :
             Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) from by
       rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
-    -- REMAINING (handed to crux2): pure 4-matrix associativity `P0·prodAux·(rA·QL) = P0·(prodAux·rA)·QL`.
-    -- The dependent-dim `Matrix.mul_assoc` resists directional rw (3+ attempts: one mul_assoc fires on
-    -- the LHS, the RHS regroup walls; `← mul_assoc`, `conv_rhs`, explicit-args all miss on the dependent
-    -- dims). It's TRIVIALLY true (associativity) — crux2's env / a fresh look closes it; everything else
-    -- (the telescoping spine, the QL-cast, reindex_mul_distrib_right) is GREEN above.
+    -- REMAINING (handed to crux2): pure 4-matrix associativity `P0·prodAux·(rA·QL) = P0·(prodAux·rA)·QL`,
+    -- both `P0·prodAux·rA·QL`. The dependent-dim `Matrix.mul_assoc` resists directional rw (one fires on
+    -- the LHS, the RHS regroup walls — `←`/`conv_rhs`/explicit-args/`▸`-arg all miss on the dependent
+    -- dims). Trivially true; crux2's env / a fresh look closes it. The telescoping spine + QL-cast GREEN.
     sorry
 
 end DLNFibre.DLN.RLCT
