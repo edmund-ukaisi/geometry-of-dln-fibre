@@ -1,5 +1,28 @@
 # Cert #104b — the general per-node `hstep` as a TWO-STRATA weighted-cover (the SOUND uniform route)
 
+> **SCOPE CORRECTION (2026-06-23, R1 cover-producer lane + pen-and-paper adjudication, decorrelated
+> sympy-exact + Codex + `(3,3,3,3)` witness vs `Lambda.lean` ground truth).** The Headline below
+> (`rlctAtOn core 0 = n/2 + R/2` with `n = M^{L+1}` Erow-Morse squares, and the V8 reconciliation
+> `min{mk/2, n/2+R/2} = ½·minAdm`) is **L=2-ONLY**, NOT general-L. The cert's V4–V9 are verified only
+> over **L=2 chains `(m,k,n)`** (`sympy/node_blowup_cert_104.py` range `1..8²×1..12`). For **L≥3 it is
+> FALSE**: the `Erow`-Morse count is **not** `M^{L+1}` — it is **0**. Because `B = A²···A^L` is a
+> product of `≥2` free matrices, every `Erow` entry `B[0,t] + (u·Bred)[t]` is a polynomial of total
+> degree `L−1` (degree ≥2 for L≥3), so the Erow-shear differential **vanishes at the deepest point**:
+> `∑ Erow²` is a sum of squares of degree-(L−1) forms, **not a Morse block**. The V8 telescope then
+> **overshoots** for L≥3 (smallest witness `(3,3,3,3)`: `min{mk, n+R} = min{9, 3+4} = 7 ≠ minAdm = 6`),
+> and **no node-local `n_raw`** repairs it (the true increment `d = minAdm M − minAdm(red M)` is
+> non-local — depends on tail depth: `(4,4,4)`→`d=4`, `(4,4,4,4)`→`d=3`, `(4,4,4,4,4)`→`d=2`). The
+> per-node "blow up layer 0, `B = ∏` remaining, reduce to `schurStateRed`" cover is intrinsically an
+> **L=2 reduction**: `schurStateRed` preserves the layer count `L`, so the child's `B'` is again a deep
+> product — the recursion never reaches the free-`B` (L=2) base case. **General-L needs the iterated
+> rank-profile resolution (per-stratum `½·mval`), NOT a single layer-0 Morse peel — an operator-level
+> re-scope.** What SURVIVES general-L: the outer product-min `rlctAtOn(dlnLoss M 0) 0 = min{mk/2,
+> rlctAtOn core 0}` (the `boxpm`/cover-min, sound), and the value-level reduction `rlctAtOn(core)` to
+> the genuine reduced loss `dlnLoss(schurStateRed M)` (via `ReducedTransport`); what is L=2-ONLY is the
+> inner `rlctAtOn core 0 = n/2 + R/2` Morse split. The same L=2-anchoring applies to the existing
+> `schur_recursion_step_squeeze` / `Case222NodeDescent` (both on the Erow-Morse split). Artifacts:
+> `g-nraw-v8-scripts/` (9 sympy scripts + Codex), banked in the main worktree's expedition tree.
+
 **Seat.** pen-and-paper (witness), DLNFibre aoyagi-full, task #104 (R1 geometric heart), route (ii).
 **Builds on** `cert-104-general-node-blowup.md` (the obstruction finding) + its sympy. **Method.**
 exact symbolic algebra + exact-integer combinatorics + a fresh decorrelated xhigh Codex pass.
