@@ -247,6 +247,53 @@ theorem framedParamsReg_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ)
   simp only [framedParamsReg, framedLayer, readX_regSlice_zero_of_ne H r hr hL r0 _ hfl,
     readZ_regSlice_zero_of_ne H r hr hL r0 _ hfl]
 
+/-! ## The frame value collapse (frame `firstShape` + through-interiors) -/
+
+/-- The reg-slice running product after the first layer: `corM + Pf_first · reindex(devXZ) · Qf_first
+· corM` (the frame-conjugated first-layer deviation, riding on the corner). Right-multiplying by an
+interior corner keeps this shape (corner idempotency on the right). -/
+noncomputable def firstShapeF (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+    (hL : 1 ≤ L) (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (r0 : Fin (deepestNReg H r) → ℝ) (k : ℕ) (hk : k < L + 1) :
+    Matrix (Fin (H 0)) (Fin (H ⟨k, hk⟩)) ℝ :=
+  Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+      (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)).symm
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    + Pf (firstLayer hL)
+      * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+          (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+          (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+            (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+      * Qf (firstLayer hL)
+      * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+          (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+
+/-- `firstShapeF k · (interior corner) = firstShapeF (k')` — right-multiply keeps the shape (both the
+corner base and the frame-term's trailing corner are idempotent under the interface cancel). -/
+theorem firstShapeF_mul_corner (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+    (hL : 1 ≤ L) (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (r0 : Fin (deepestNReg H r) → ℝ) (k : ℕ) (hk : k < L + 1) (k' : ℕ) (hk' : k' < L + 1) :
+    firstShapeF H r hr hL Pf Qf r0 k hk
+        * Matrix.reindex (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)).symm
+            (rThresholdSplit r (H ⟨k', hk'⟩) (hr ⟨k', hk'⟩)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+      = firstShapeF H r hr hL Pf Qf r0 k' hk' := by
+  unfold firstShapeF
+  refine (Matrix.add_mul _ _ _).trans ?_
+  congr 1
+  · -- base corner · corner = corner (interface cancel)
+    exact corner_reindex_mul (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+      (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)) (rThresholdSplit r (H ⟨k', hk'⟩) (hr ⟨k', hk'⟩))
+  · -- the frame term's trailing corner · corner = corner
+    rw [Matrix.mul_assoc, Matrix.mul_assoc,
+      corner_reindex_mul (rThresholdSplit r (H (firstLayer hL).succ) (hr _))
+        (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩))
+        (rThresholdSplit r (H ⟨k', hk'⟩) (hr ⟨k', hk'⟩))]
+    simp only [Matrix.mul_assoc]
+
 /-! ## The explicit Leibniz derivative of the layer-product entries (#156, the value-fold) -/
 
 /-- The explicit recursive Leibniz derivative of the `prodAux` entry `fun y => prodAux (g y) k i j`
