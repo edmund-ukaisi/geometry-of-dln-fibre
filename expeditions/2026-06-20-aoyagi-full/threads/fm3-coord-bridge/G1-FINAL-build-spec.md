@@ -1033,3 +1033,32 @@ the wipe-recovery shape (the Fintype/Σ recursion core), augment with g176/g179/
 (imports: GeneralR1Recursion [ChainDimSplit] + RouteMState [MonoData] + Mathlib.Data.Fintype.Sigma;
 open scoped BigOperators; namespace DLNFibre.DLN.RLCT.) routeStep → ValidRouteStep (certified, with
 pp2's §2 witness + crux2's transport field) once the transport-field lands.
+
+## g208 — general `routeStep` is BLOCKED on realizability; keep the named sorry (decorrelated Codex confirm)
+Resumed #85 (the general `routeStep` gate). Verified the banked state: `schurState` (@442a2e0) closes ONE of
+Codex g206's two missing constructions (the C1 reduced split now exists in Lean). The recursion skeleton
+(`routeAtlas`/carrier/termination/value-fold) builds green (2675), single `sorry` at `routeStep:162`.
+
+VERDICT (mine + decorrelated Codex g208, xhigh, read-only): a general `routeStep` body that is BOTH total-green
+AND certified is **blocked**. Three syntactically-green bodies are all WORSE than the sorry:
+- (i) leaf-everywhere → `leafMonoData` threshold `⊤ ≠ ½·minAdm` (vacuous atlas);
+- (ii) `branch` with `codim = card pivotCoords` → the `(4,3,2)` trap (`card ≠ Mval`);
+- (iii) THE SUBTLE ONE (Codex's refinement): `branch` Unit-cells + `split := schurState M` + `codim := minAdm`
+  (or `T := 0` via `zero_mem_Adm`) TYPE-CHECKS — `PivotWitness.hAdm`/`hCodim` discharge from concrete
+  `Adm`/`Mval` — and forces the abstract fold value, but SMUGGLES the missing realizability theorem in.
+  `PivotWitness M₀ c` proves only `T ∈ Adm M₀ ∧ c = Mval M₀ T`; it does NOT prove the stratum is REACHED by
+  this chart path. That "reached" proof is `IsResolutionAtlas.stratum_surjective`, the field
+  `resolution_value_of_atlas` consumes in the achiever `≤` leg — the dispatcher cannot manufacture it.
+
+The certified body needs three Core-level pieces NOT in the library: (1) a `residualCore`/rank-defect leaf
+classifier (`IsUnit residualCore`, cert §1.1); (2) the realizability/coverage theorem (cert §4: every
+minimiser `T*` reached by a legal chart path — rides `Core.OrbitKostant`/`baseChange_normalForm`); (3) the
+general lintegral recursion descent. (2) is the load-bearing wall.
+
+DONE this session: tightened `routeStep`'s docstring to fence all three obligations + the (iii) smuggling
+trap explicitly (so the next builder doesn't fill the tempting fake branch). Persisted the g208 consult
+(codex/g208-routestep-honest-body-{prompt,answer}.md). The sorry stays NAMED, not stubbed — per disposition
+(don't stub a false/vacuous statement; surface to move the boundary). Highest-EV front per Codex g206 + cert
+remains the concrete `(2,2,2)` `IsRouteMCover` end-to-end (#94, crux2's packaging on route-m-atlas) — does
+NOT need this general dispatcher. SURFACE to controller: general `routeStep` deferred behind the
+realizability theorem (a Core deliverable), not within fm3's reach as a standalone.

@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion
 import DLNFibre.DLN.RLCT.Validate.RouteMState
+import Mathlib.Data.Fintype.Sigma
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMRecursion` — the Route-M recursion REBASED onto `ChainDimSplit`
@@ -24,6 +25,7 @@ The recursion descends `M ↦ S.red` via a `ChainDimSplit M`. Termination is the
 foundation — `redM_widthSum_lt` below names it (it was inlined in crux2's `schur_straighten_of_data`).
 -/
 
+open MeasureTheory
 open scoped BigOperators
 namespace DLNFibre.DLN.RLCT
 
@@ -72,5 +74,165 @@ call on `S.red` is justified by this, independent of how `S` is constructed. -/
 theorem ChainDimSplit.redM_chainRel {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSplit M) :
     chainRel S.red M :=
   S.redM_widthSum_lt
+
+/-! ## The per-cell reduced-chain transport (the LIGHT det-1 reindex — crux2 #73, the recursion-closing link)
+
+The per-cell transport field on a `branch` cell (g178, the light interface — NOT the heavy
+`IsSchurStraightenSqueeze`, which is L2's deepest-gauge node). After the cell's blow-up presents the node
+core as `G²` (my G2 `node_loss_pivot_factor`, threaded at the cover-fact), `ReducedTransport` bundles
+crux2's banked `rlctAtOn_reduced_transport` datum (det-1 measure-preserving reindex) closing the descent:
+`rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) 0` at the child's deepest point. `Y` is the post-blow-up
+reduced ambient (a field — the blow-up reindexes coords, so `Y ≠ Params S.red` literally; `redEmbed` is the
+reindex). `redZero` is pinned to `0 : Params S.red` (the child's deepest point — `hzero : redEmbed 0 = 0`),
+so the descent composes with the recursion on `S.red`. Data-carrying (`Type`, so the dispatcher constructs
+it from the chart). -/
+structure ReducedTransport {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSplit M)
+    (Y : Type) [MeasureSpace Y] [TopologicalSpace Y] [Zero Y] where
+  /-- The cell's post-blow-up core root `G` (`G² =` the reduced loss). -/
+  G : Y → ℝ
+  /-- The det-1 measure-preserving reindex to the reduced chain `Params S.red`. -/
+  redEmbed : Y ≃ₜ Params S.red
+  /-- The reindex is measure-preserving (det 1). -/
+  hmp : MeasurePreserving redEmbed volume volume
+  /-- The reindex is a measurable embedding. -/
+  hemb : MeasurableEmbedding redEmbed
+  /-- The reindex sends the cell's deepest point to the child's deepest point `fun _ => 0 : Params S.red`
+  (`Params` has no canonical `Zero`; the reduced deepest point is the layerwise-zero tuple). -/
+  hzero : redEmbed 0 = (fun _ => 0 : Params S.red)
+  /-- `G² =` the reduced-chain loss on the embedded coords (so the recursion descends on `S.red`). -/
+  hredCore : ∀ y, G y ^ 2 = dlnLoss S.red 0 (redEmbed y)
+
+/-- **The reduced-chain transport closes the descent.** From a `ReducedTransport S Y`, the cell's
+post-blow-up core RLCT equals the child's reduced-chain RLCT at its deepest point `fun _ => 0`:
+`rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) (fun _ => 0)`. Consumes crux2's banked
+`rlctAtOn_reduced_transport` (det-1 MP); the bundled datum + the anchored `hzero` give the
+recursion-closing form (the child's deepest point = the layerwise-zero tuple). -/
+theorem ReducedTransport.descent {L : ℕ} {M : Fin (L + 1) → ℕ} {S : ChainDimSplit M}
+    {Y : Type} [MeasureSpace Y] [TopologicalSpace Y] [Zero Y] (rt : ReducedTransport S Y) :
+    rlctAtOn (fun y => rt.G y ^ 2) (0 : Y)
+      = rlctAtOn (dlnLoss S.red 0) (fun _ => 0 : Params S.red) :=
+  rlctAtOn_reduced_transport S rt.G rt.redEmbed rt.hmp rt.hemb _ rt.hzero rt.hredCore
+
+/-! ## The chart family + the per-node dispatcher (the producer's job — crux2 #66: fm3 constructs)
+
+`NodeChartFamily M` is the output the bridge consumes: the index set `ι` (Fintype, as a field) + the
+per-leaf monomial datum `(d, k, h)` (an `i ↦ MonoData`). The recursion builds it over `chainRel_wf`.
+
+The per-node `RouteStep` is the DISPATCHER's output (crux2 #66: fm3 owns construction; `ChainDimSplit`
+stays the minimal width-only carrier; the pivot-cell coord-center lives in the paired
+`IsSchurStraightenSqueeze` datum, not here). At a node it is EITHER:
+- a `leaf` (terminal — `L = 1` / the bottomed-out chain): one chart, `MonoData` the accumulated path; OR
+- a `branch`: a `Finset` of pivot choices, each a `ChainDimSplit M` whose `red` is `chainRel`-below `M`
+  (`redM_chainRel`), recursed; the per-cell `(d,k,h)` accumulates via `MonoData.appendDivisor` (the
+  codim-`card` pivot axis). `ι` is the `Σ` over pivot cells of the recursed children's `ι` (the BRANCHING
+  = the `⨅`-min over paths). -/
+
+/-- **The Route-M chart family at a node**: the index set `ι` (Fintype + Nonempty, as fields) + the
+per-leaf `(d,k,h)` datum. The output the cover/value bridge consumes. `Nonempty ι` is carried as a field
+(the chart family always has ≥1 leaf) — `routeM_rlctAtOn_eq_iInf` needs `[Nonempty ι]` for the achiever-side
+`iInf_le` (crux2's bridge-wiring catch). -/
+structure NodeChartFamily {L : ℕ} (_M : Fin (L + 1) → ℕ) where
+  ι : Type
+  fintype : Fintype ι
+  nonempty : Nonempty ι
+  data : ι → MonoData
+
+/-- A per-node dispatch result, **root-anchored to `M₀`** (the original ambient) while the node's split
+lives over the current `M`. Either a terminal leaf (its `MonoData`) or a finite branching into pivot
+cells. Each branch cell carries a `ChainDimSplit M` (so its `red = schurState M` descends —
+`redM_chainRel`), the `codim` of its pivot stratum (the `appendDivisor` weight, the geometric **cardinality**
+read directly off the blow-up center), and the **root-anchored `PivotWitness M₀`** certifying
+`codim = (Mval M₀ T).toNat` for an admissible `T ∈ Adm M₀` (pp2 g207/g214 — anchoring at `M₀` not the
+reduced chain, since `minAdm(schurState M) < minAdm(M₀)` would otherwise undershoot; the geometric codim is
+reindex-invariant, so it equals `Mval M₀ T` at every depth). The per-cell TRANSPORT (descent-soundness) is
+crux2's `IsSchurStraightenSqueeze.redCore_eq` (`G² = dlnLoss S.red 0 ∘ redEmbed`, gated on `S.red =
+schurState M`), threaded at the cover-fact lintegral level — NOT a field here. The dispatcher (pp2 g183/g194
+recipe) produces this; STUBBED to pin the shape. -/
+inductive RouteStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : Type 1
+  | leaf (md : MonoData)
+  | branch (cells : Type) (cellsFin : Fintype cells) (cellsNe : Nonempty cells)
+      (split : cells → ChainDimSplit M) (codim : cells → ℕ)
+      (witness : (c : cells) → PivotWitness M₀ (codim c))
+
+/-- The dispatcher: classify a node — root `M₀`, current `M` — into a root-anchored `RouteStep M₀ M`
+(leaf or branching), reading the rank pattern.
+
+**OPEN — a single, precisely-fenced obligation (NOT a vacuously-fillable stub).** Three syntactically-green
+bodies are all *wrong*: (i) `leaf` everywhere makes the atlas trivial (`leafMonoData` has threshold `⊤ ≠
+½·minAdm` in non-degenerate cases — `RouteMState.leafMonoData_threshold`); (ii) a `branch` with `codim =
+card pivotCoords` hits the `(4,3,2)` trap (`card ≠ Mval` there — pp2 cert §7); (iii) — the SUBTLE one (Codex
+g208, decorrelated) — a `branch` with `Unit` cells, `split := schurState M`, and `codim := minAdm` (or `T :=
+0`/the `inf'`-minimiser, whose `PivotWitness.hAdm`/`hCodim` DO discharge via `zero_mem_Adm` + concrete
+`Mval`) type-checks and forces the abstract fold value, but **smuggles** the missing realizability theorem
+into the dispatcher: `PivotWitness M₀ c` proves only `T ∈ Adm M₀ ∧ c = Mval M₀ T`, NOT that the rank stratum
+is *reached by this chart path* (that "reached" proof is `IsResolutionAtlas.stratum_surjective`, which
+`resolution_value_of_atlas` consumes in the achiever `≤` leg — the dispatcher cannot manufacture it). All
+three are **worse than this `sorry`**, so it is left named. The certified body needs three Core-level pieces
+NOT yet in the library (pp2 g183 dispatcher cert §2/§4 + Codex g206/g208, decorrelated):
+1. **a `residualCore` / rank-defect classifier** over `M` deciding `leaf` (`IsUnit residualCore`, cert §1.1 —
+   NOT "no C1 applies") vs `branch` (the rank-pattern read);
+2. **the realizability witness** for each branch cell: `codim = (Mval M₀ T).toNat` for an admissible
+   `T ∈ Adm M₀` that is GENUINELY reached by a legal chart path. Cert §4: "only the minimiser need be
+   reached, but THAT COVERAGE IS A THEOREM" — it rides `Core.OrbitKostant`/`baseChange_normalForm`
+   realizability, not a freebie. This is what builds `witness : PivotWitness M₀ (codim c)` honestly;
+3. **the general lintegral recursion descent** tying the per-cell pullback residual to `dlnLoss (split c).red
+   0` (`split.red = schurState M`, in the cover lintegral via crux2's `redCore_eq`).
+
+The branch SPLIT is already constructible (`schurState M` @442a2e0, given the per-node `hMid`); the carrier,
+termination, and value-fold are banked. The wall is (1)+(2)+(3) — surfaced to the controller (the highest-EV
+front is instead the concrete `(2,2,2)` `IsRouteMCover`, #94, which does NOT need this general dispatcher). -/
+noncomputable def routeStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : RouteStep M₀ M := sorry
+
+/-- **The Route-M chart-family recursion (the G1 deliverable, rebased onto `ChainDimSplit`).** With the
+root ambient `M₀` FIXED, well-founded recursion on `chainRel` (`ΣM`-decrease) over the current node `M`
+builds the `NodeChartFamily`: a `leaf` step ↦ a single chart with its `MonoData`; a `branch` step ↦ the
+`Σ` over pivot cells of the recursed child atlas (`rec (split c).red` justified by `redM_chainRel`, root
+`M₀` UNCHANGED on descent), each chart's `MonoData` getting the codim-`c` pivot axis appended
+(`MonoData.appendDivisor`). The root-anchored witness (`PivotWitness M₀`) rides the dispatch result for the
+value fold; the atlas itself reads only `split`/`codim`/`md`. -/
+noncomputable def routeAtlas (M₀ : Fin (L + 1) → ℕ) :
+    (M : Fin (L + 1) → ℕ) → NodeChartFamily M :=
+  WellFounded.fix chainRel_wf fun M rec =>
+    match routeStep M₀ M with
+    | .leaf md => { ι := PUnit, fintype := inferInstance, nonempty := inferInstance, data := fun _ => md }
+    | .branch cells cellsFin cellsNe split codim _witness =>
+        letI : Fintype cells := cellsFin
+        letI : Nonempty cells := cellsNe
+        let child : (c : cells) → NodeChartFamily (split c).red :=
+          fun c => rec (split c).red (split c).redM_chainRel
+        { ι := Σ c : cells, (child c).ι
+          fintype := by
+            classical
+            letI : ∀ c : cells, Fintype ((child c).ι) := fun c => (child c).fintype
+            infer_instance
+          nonempty := by
+            letI : ∀ c : cells, Nonempty ((child c).ι) := fun c => (child c).nonempty
+            obtain ⟨c⟩ := cellsNe
+            obtain ⟨i⟩ := (child c).nonempty
+            exact ⟨⟨c, i⟩⟩
+          data := fun x => ((child x.1).data x.2).appendDivisor (codim x.1) }
+
+/-- The chart-family index set `ι M` = the atlas's leaves (root = current node at the top of the
+recursion). -/
+def routeMIota {L : ℕ} (M : Fin (L + 1) → ℕ) : Type := (routeAtlas M M).ι
+
+/-- `ι M` is a `Fintype` (carried as the atlas field — finite branching × `ΣM`-bounded depth). -/
+noncomputable instance {L : ℕ} (M : Fin (L + 1) → ℕ) : Fintype (routeMIota M) :=
+  (routeAtlas M M).fintype
+
+/-- `ι M` is `Nonempty` (carried as the atlas field — the chart family always has ≥1 leaf). The
+`[Nonempty ι]` `routeM_rlctAtOn_eq_iInf` needs for the achiever-side `iInf_le` (crux2's bridge catch). -/
+instance {L : ℕ} (M : Fin (L + 1) → ℕ) : Nonempty (routeMIota M) :=
+  (routeAtlas M M).nonempty
+
+/-- Per-leaf chart dimension. -/
+noncomputable def routeD {L : ℕ} (M : Fin (L + 1) → ℕ) (i : routeMIota M) : ℕ :=
+  ((routeAtlas M M).data i).d
+/-- Per-leaf loss-base exponents `k`. -/
+noncomputable def routeK {L : ℕ} (M : Fin (L + 1) → ℕ) (i : routeMIota M) : Fin (routeD M i) → ℕ :=
+  ((routeAtlas M M).data i).k
+/-- Per-leaf Jacobian exponents `h`. -/
+noncomputable def routeH {L : ℕ} (M : Fin (L + 1) → ℕ) (i : routeMIota M) : Fin (routeD M i) → ℕ :=
+  ((routeAtlas M M).data i).h
 
 end DLNFibre.DLN.RLCT
