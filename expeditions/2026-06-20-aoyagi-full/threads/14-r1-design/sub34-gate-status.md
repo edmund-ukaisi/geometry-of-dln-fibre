@@ -43,9 +43,33 @@ is form-agnostic, reviewer-confirmed). PIN 2's squeeze needs its concrete VALUE.
   value (so `(regStraightenOf deepestEPivot (split w)).1 = E`). The telescoping `prod H A = P0·∏C·QL`
   is tracked separately (#111).
 
+## PIN 2 E_pivot-INDEPENDENT matrix core (BANKED @3008c64, sorry-free)
+
+Per the team-lead's 2026-06-23 split-by-E_pivot-dependence, the matrix-side squeeze is closed
+(`DeepestGaugeBlocks.lean`): `frobenius_sum_reindex` (energy invariant under row/col reindex) +
+`frobenius_sq_eq_blocks` (`‖N‖²_F` = the four `r⊕M`-block sum of `N` reindexed) +
+`dlnLoss_block_squeeze` (composes those with the banked `fullProduct_loss_squeeze`: `dlnLoss`
+two-sidedly bounded by `∑(P00−1,P01,P10)² + ‖Rcore‖²` given the block decomposition + leak hyp). No
+`E_pivot` dependence — acts on `dlnLoss`'s own `prod − B`.
+
+## OPEN: the `deepestEPivot` layout obstruction (surfaced to crux2, 2026-06-23)
+
+A load-bearing **soundness obstruction** blocks `deepestEPivot`'s `_deriv` (and hence PIN 1's last prop
++ PIN 2's bridge): `dE(0) = fst` rests on the split's reg slot `Fin nReg` being the STRUCTURED
+`(Σ_s X_s, Y_L, Z_1)` layout (g125), but `regGaugeIdxSplit` (`DeepestSplitReindex.lean:236`) is
+`Fintype.equivFin`-OPAQUE — its own docstring states the `Fin nReg` half does NOT carry per-layer
+`X/Y/Z` structure. The genuine derivative is the rank-`nReg` projection `(all X_s,Y_s,Z_s) ↦ (Σ_s X_s,
+Y_L, Z_1)`, which equals `fst` ONLY if the opaque bijection sends the boundary generators to the
+`nReg`-half — not guaranteed. Confirmed real: `deepestEPivot = fst + (o(|w|) remainder)` is INCOMPATIBLE
+with PIN 2's squeeze (which needs `deepestEPivot ≈ E ≈ Σ X_s ≠ raw reg` at first order — the g161
+counterexample). So `dE(0) = fst` requires the reg slot to BE the boundary generators, a coordinate
+convention crux2 owns (`DeepestSplitReindex`, single-writer). Awaiting crux2's call: (1) restructure the
+reg slot to the legible `(Σ X_s, Y_L, Z_1)` layout, or (2) a pack-by-construction that I'm missing.
+
 ## Assembly status
 
-`deepest_gauge_construction` + `deepest_gauge_chart_construct` build GREEN, threading the concrete
-PIN 0 `deepestCoreAbsorb` + PIN 1 `regStraightenOf deepestEPivot` + PIN 2 `deepest_loss_squeeze`. The
-ONLY open sorries are `deepestEPivot` (def+3 props) and `deepest_loss_squeeze` — both gated on #115's
-form. Once #115 lands, both tails fill and #44c sub-3 (`deepest_gauge_squeeze_exists`) is complete.
+`deepest_gauge_construction` + `deepest_gauge_chart_construct` build GREEN, threading PIN 0
+`deepestCoreAbsorb` + PIN 1 `regStraightenOf deepestEPivot` + PIN 2 `deepest_loss_squeeze`. Open
+sorries: `deepestEPivot` (def + 3 props, blocked on the layout obstruction) and `deepest_loss_squeeze`
+(matrix core banked; the E_pivot-bridge + framed-product bridge remain). PIN 1's IFT peel + PIN 2's
+matrix squeeze are banked sorry-free; the gate is the `deepestEPivot` coordinate convention.
