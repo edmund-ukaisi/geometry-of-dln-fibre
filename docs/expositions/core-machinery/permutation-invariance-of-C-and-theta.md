@@ -287,6 +287,48 @@ The permutation invariance therefore transfers to these genuine geometric invari
     \cdot \operatorname{codim}$ rests on a separate analytic bound and stays **cited** (Aoyagi /
     Watanabe); nothing in this chain is named `rlct`.
 
+## 7. Explicit $(C, \theta)$ for any $d$
+
+Permutation invariance has an immediate payoff for computation. The paper's explicit closed forms —
+$\operatorname{cValue}$ for $C$ and $\operatorname{cTheta}$ for $\theta$ (Theorem 7.10), closed
+expressions in the prefix sums of $\underline d$ — are derived for a **weakly increasing**
+$\underline d$. Permutation invariance removes that restriction: every $\underline d$ has the same
+$(C, \theta)$ as its monotone rearrangement $\underline d \circ \operatorname{sort}$, so the closed
+form evaluated on the sorted vector computes $(C, \theta)$ of the original.
+
+!!! corollary "Explicit $(C, \theta)$ for an arbitrary dimension vector"
+    For $N \ge 1$ (a genuine composition), any dimension vector $\underline d$, and any $r$ in range
+    (the Kostant set nonempty, i.e. $r \le \min_i d_i$),
+
+    $$
+    C(\underline d, r) = \operatorname{cValue}\big((\underline d - r) \circ \operatorname{sort}\big),
+    \qquad
+    \theta(\underline d, r) = \operatorname{cTheta}\big((\underline d - r) \circ \operatorname{sort}\big),
+    $$
+
+    where $\operatorname{sort}$ sorts the (rank-shifted) vector into weakly increasing order. No
+    monotonicity hypothesis on $\underline d$ is needed.
+
+The two steps are the reduce-to-sorted corollary of §3 (the sort is a permutation, so it preserves
+$(C,\theta)$) and the rank-shift $C(\underline d, r) = C(\underline d - r, 0)$, composed with the
+monotone closed form. For $\underline d = (2,3,2)$ at $r = 0$ — not weakly increasing — the formula
+evaluates the closed form on $(2,2,3)$ and returns $(C,\theta) = (4,2)$, the value of §2's table.
+
+??? info "Formalised in Lean — Core.CThetaArbitrary"
+
+        theorem cCodim_eq_cValue_comp_sort (hN : 1 ≤ N) (d : Fin (N + 1) → ℕ) (r : ℕ)
+            (h : (kostantPartitions d r).Nonempty) :
+            cCodim d r h = cValue (dminus d r ∘ Tuple.sort (dminus d r))
+        theorem numTop_eq_cTheta_comp_sort (hN : 1 ≤ N) (d : Fin (N + 1) → ℕ) (r : ℕ)
+            (h : (kostantPartitions d r).Nonempty) :
+            numTop d r h = cTheta (dminus d r ∘ Tuple.sort (dminus d r))
+
+    These carry **no `Monotone d` hypothesis** (it lives only on the internal sorted vector, via
+    Mathlib's `Tuple.monotone_sort`); the rank bound $r \le \min_i d_i$ is derived from `h`, not
+    assumed. The `r = 0` forms are `cCodim_zero_eq_cValue_comp_sort` / `numTop_zero_eq_cTheta_comp_sort`.
+    The non-monotone witness `(2,3,2)` is checked in-file (`cCodim_d232_zero = 4`,
+    `numTop_d232_zero = 2`). Sorry-free and axiom-clean.
+
 ## Sources and cross-references
 
 This is Section 5 of the paper (the Poincaré-series formula and Corollary 5.10), with Theorem 5.6 the
@@ -296,5 +338,7 @@ invariants surveyed in [the high-level overview](../paper-digest/high-level-over
 The formal counterparts are `DLNFibre.Core.CTheta` (the combinatorial $(C,\theta)$),
 `Core.QSeries` / `QSeriesExtraction` (the series and the $(C,\theta)$ extraction),
 `QSeriesFivegon` / `QSeriesShift` / `QSeriesOrth` / `QSeriesThm55` (the fivegon and Theorem 5.5),
-`CThetaPermInvariance` (Corollary 5.10), and `CThetaGeometricPerm` (the geometric reading). The
+`CThetaPermInvariance` (Corollary 5.10), `CThetaGeometricPerm` (the geometric reading), and
+`CThetaArbitrary` (§7, the explicit closed form for arbitrary $\underline d$ — composing the sort
+bridge with the Theorem 7.10 closed forms `cValue`/`cTheta`). The
 $\operatorname{rlct}$ payoff is cited to Aoyagi / Watanabe and is not part of this chain.
