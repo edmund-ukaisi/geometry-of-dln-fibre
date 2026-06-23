@@ -420,14 +420,28 @@ theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
       Equiv.symm_symm]
     exact hprod _ _
 
+/-- **`deepestEPivot`'s reg-block derivative at `0` is the IDENTITY** (the #91 analytic crux,
+g213-pin1-de0). Restricted to the regular slice `r ↦ deepestEPivot (r, 0)`, the strict derivative at
+`0` is `id` — the idempotent-sandwich `dP|_0 = Σ_s corner·δC_s·corner` with the gauge slot held at `0`
+keeps ONLY the `(0,0)`-block `X`-pivot (which equals the reg-input on the pivot coords). This is the
+single analytic obligation of `_deriv`; everything else (the product strict-derivative, the shear-CLE
+packaging) is banked. **OBLIGATION:** the `regResidualPack` ↔ `(X_first, Y_last, Z_first)` pivot-coord
+correspondence at the gauge-zero slice (the #91 transcription / pp2 coordinate cert). -/
+theorem deepestEPivot_regSlice_fderiv_id (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+        deepestEPivot H r hr hL (r0, 0))
+      (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ)) 0 :=
+  sorry
+
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
 (`d(P−B)|_0 = (Σ_s X_s, Y_L, Z_1)`, idempotent sandwich), the reg-residual's derivative reads the
 reg-X + sums the gauge-X's into reg while keeping the gauge free — the unitriangular shear
 `D_E = [[I, Σ],[0, I]]` on `reg×gauge → reg` (its total `regStraightenTotalCLM D_E` is `[[I,Σ],[0,I]]`
 on `DeepestSplit`, det 1, invertible). Bundled: `∃ D_E (e : ≃L), HasStrictFDerivAt deepestEPivot D_E 0
-∧ (e : →L) = regStraightenTotalCLM D_E`. The invertible `e` is what `rlctAtOn_comp_localDiffeo` takes.
-**OBLIGATION:** the concrete shear `D_E` + its derivative (the #91 block-derivative transcription,
-origin/g213-pin1-de0 @09475f2) + the unitriangular inverse `[[I,−Σ],[0,I]]` for `e`. -/
+∧ (e : →L) = regStraightenTotalCLM D_E`. ASSEMBLED from `_contdiff` (→ `D_E := fderiv`), the reg-block
+identity `deepestEPivot_regSlice_fderiv_id` (the #91 crux), and the generic shear-CLE
+`regStraightenTotalCLM_equiv_of_regBlock_id`. -/
 theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     ∃ (D_E : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) →L[ℝ]
@@ -435,8 +449,35 @@ theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
       (e : DeepestSplit H r (deepestNGauge H r) ≃L[ℝ] DeepestSplit H r (deepestNGauge H r)),
       HasStrictFDerivAt (deepestEPivot H r hr hL) D_E 0 ∧
       (e : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r))
-        = regStraightenTotalCLM D_E :=
-  sorry
+        = regStraightenTotalCLM D_E := by
+  -- `D_E := fderiv ℝ deepestEPivot 0` (free from `_contdiff`); its reg-block is `id` (the #91 fact),
+  -- so `regStraightenTotalCLM D_E` is the invertible shear (`regStraightenTotalCLM_equiv_of_regBlock_id`).
+  set D_E := fderiv ℝ (deepestEPivot H r hr hL) 0 with hD_E
+  have hsd : HasStrictFDerivAt (deepestEPivot H r hr hL) D_E 0 :=
+    (deepestEPivot_contdiff H r hr hL).hasStrictFDerivAt (by simp)
+  -- The reg-block: `D_E.comp regInCLM = id`. The reg-slice `r ↦ deepestEPivot (r,0)` has strict
+  -- derivative `D_E.comp regInCLM` (chain rule) AND `id` (#91), so they agree.
+  have hregIn : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ => ((r0, 0) :
+      (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)))
+      (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
+        (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) 0 := by
+    have := (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
+      (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt (x := 0)
+    simpa [regInCLM] using this
+  have hcomp : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+      deepestEPivot H r hr hL (r0, 0)) (D_E.comp regInCLM) 0 := by
+    have hsd0 : HasStrictFDerivAt (deepestEPivot H r hr hL) D_E
+        (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))) := hsd
+    exact hsd0.comp (x := (0 : Fin (deepestNReg H r) → ℝ)) hregIn
+  have hblock : D_E.comp (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
+      (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+      = ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ) := by
+    have h1 := hcomp.hasFDerivAt.fderiv
+    have h2 := (deepestEPivot_regSlice_fderiv_id H r hr hL).hasFDerivAt.fderiv
+    rw [← h1, ← h2]
+  obtain ⟨e, he⟩ := regStraightenTotalCLM_equiv_of_regBlock_id (C := Fin (flatDim (deepestM H r)) → ℝ)
+    D_E hblock
+  exact ⟨D_E, e, hsd, he⟩
 
 theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
