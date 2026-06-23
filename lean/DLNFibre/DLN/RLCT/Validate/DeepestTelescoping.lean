@@ -90,14 +90,18 @@ theorem prodAux_framedParamsReg_zero_aux (H : Fin (L + 1) → ℕ) (r : ℕ)
           = H ((⟨k, hkL⟩ : Fin L).castSucc) := rfl
       have e2 : H (⟨k + 1, hk⟩ : Fin (L+1))
           = H ((⟨k, hkL⟩ : Fin L).succ) := rfl
-      -- WALL (crux2 2026-06-23, #123, codex down): `prodAux_succ` wraps the layer in
-      -- `reindex (finCongr e1.symm) (finCongr e2.symm)`; with `e1, e2 : rfl` typed `H ⟨k,hk'⟩ = H (…castSucc)`
-      -- (defeq-NOT-syntactic sides), `finCongr_refl`/`reindex_refl_refl` will NOT unify to strip the wrapper,
-      -- and a `framedParamsReg_zero` rewrite cannot fire UNDER the wrapper. 4 structurally-distinct attempts
-      -- (simp-strip ×2, `show … from rfl`, defeq `hlayer` rewrite) all fail at the finCongr-cast layer. The
-      -- two building blocks ARE proven (`prodAux_succ`, `corner_reindex_mul` GREEN); the open piece is the
-      -- HEq/cast-design to strip the finCongr — pre-authorized for a fresh-Codex spawn (controller #123), but
-      -- the local codex CLI is non-functional this session (doctor + exec both hang/no-output). Handing back.
+      -- WALL (crux2 2026-06-23, #123): the `prodAux` succ-step cast `H ⟨k,hk'⟩` vs `H (⟨k,hkL⟩.castSucc)`
+      -- (defeq, NOT syntactic) blocks both routes — the matrix-VALUE route (`prodAux_succ`'s `finCongr`
+      -- wrapper: `finCongr_refl`/`reindex_refl_refl` won't unify on the non-syntactic proof; can't rewrite
+      -- `framedParamsReg_zero` under it) AND the ENTRY route (the `contDiff_prodAux_entry` precedent's
+      -- `rw [e1,e2]; exact … ; simp [eq_mpr_eq_cast,cast_eq]` — the `rw [e1]` finds no `H ⟨k,hk'⟩` to rewrite
+      -- because the layer's stated type already carries `.castSucc`). 5 structurally-distinct attempts logged.
+      -- Building blocks PROVEN GREEN: `prodAux_succ`, `corner_reindex_mul` (the idempotent algebra). The open
+      -- piece is the cast-design to align the running-width index forms — controller #123 pre-authorized a
+      -- fresh-Codex spawn, but the local codex CLI is non-functional this session (doctor + exec hang).
+      -- Most promising untried-to-completion: prove via `Matrix.ext` reducing to SCALAR entries (where the
+      -- precedent's `cast_eq` kills the cast), as `contDiff_prodAux_entry` does — hand to cobuild (who proved
+      -- that precedent) or a working Codex. Handing back; the statement is correct, blocks are reusable.
       sorry
 
 /-- **PIN2 endpoint-frame telescoping** (existential endpoints, cobuild's banked shape). If every layer
