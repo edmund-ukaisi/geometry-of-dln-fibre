@@ -127,6 +127,16 @@ theorem reindex_mul_distrib_right {m n m' n' : Type*} [Fintype m] [Fintype n]
   simp only [Matrix.reindex_apply, Equiv.symm_symm]
   rw [Matrix.submatrix_mul_equiv A Q eC.symm eS.symm eS.symm]
 
+/-- **The `finCongr`-reindex collapse** (the FOLD3 endpoint `rfl`-cast closer). Reindexing a matrix along
+`finCongr` of two width-equalities transports it by `▸`: `reindex (finCongr e1) (finCongr e2) M = e2 ▸ e1 ▸ M`.
+Proven by `cases` on the two index equalities (which turns each `finCongr` into `finCongr rfl = Equiv.refl`)
+then `reindex_refl_refl`. The `endpoint_telescoping` base/final steps use this with `e1, e2` between the
+DEFINITIONALLY-equal running widths, so the `▸` transports collapse to the bare matrix. -/
+theorem reindex_finCongr_eq_cast {a b c d : ℕ} (e1 : a = b) (e2 : c = d)
+    (M : Matrix (Fin a) (Fin c) ℝ) :
+    Matrix.reindex (finCongr e1) (finCongr e2) M = e2 ▸ e1 ▸ M := by
+  cases e1; cases e2; simp [finCongr_refl]
+
 /-- **The idempotent fold at `0`** (`prodAux` form, `1 ≤ k`). At the deepest gauge slot, every layer is
 the block-normal corner `reindex (fromBlocks 1 0 0 0)` (`framedParamsReg_zero`), and the corner is
 idempotent under the chain product, so the running product through `k ≥ 1` layers is again the corner
@@ -206,11 +216,13 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
     (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (hframe : ∀ s : Fin L, C s = P s * A s * Q s)
+    (hPunit : ∀ s : Fin L, IsUnit (P s)) (hQunit : ∀ s : Fin L, IsUnit (Q s))
     (hinterface : ∀ (s : Fin L) (hs : (s : ℕ) + 1 < L),
       Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
         P ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix _ _ ℝ)) :
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
+      IsUnit P0 ∧ IsUnit QL ∧
       prod H C = P0 * prod H A * QL := by
   -- ALL interior frames are identity (`hinterface`). `P s = 1` for `1 ≤ s` (interior-left + boundary), and
   -- `Q s = 1` for `s ≤ Lm-1` (interior-right). So `C 0 = P 0 · A 0`, `C s = A s` (1 ≤ s ≤ Lm-1),
@@ -265,24 +277,86 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
               = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
             show prodAux H A 0 (Nat.lt_of_succ_lt hsucc)
               = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl, Matrix.one_mul, hC0]
-          -- Distribute reindex over the boundary product `P⟨0⟩ · A⟨0⟩` (`reindex_mul_distrib_left`),
-          -- then the left factor `reindex (finCongr e1.symm) (finCongr e1.symm) P⟨0⟩` IS the boundary
-          -- cast `h0cs ▸ P⟨0⟩` (both transport `P⟨0⟩` from `H ⟨0,_⟩.castSucc` to `H ⟨0,hk'⟩ = H 0`, rfl).
+          -- Distribute reindex over the boundary product `P⟨0⟩ · A⟨0⟩` (`reindex_mul_distrib_left`):
+          -- `reindex (C⟨0⟩) = reindex (P⟨0⟩·A⟨0⟩) = (reindex (e1,e1) P⟨0⟩) · (reindex (e1,e2) A⟨0⟩)`.
           rw [reindex_mul_distrib_left (P ⟨0, hkL'⟩) (A ⟨0, hkL'⟩)
-            (finCongr e1.symm) (finCongr e2.symm)]
-          -- REMAINING SYNTACTIC FILL: `1 * (reindex P⟨0⟩ · reindex A⟨0⟩) = (cast P⟨0⟩) · (1 · reindex A⟨0⟩)`.
-          -- The MATH is done (reindex_mul_distrib_left distributed the boundary product; the left factor
-          -- `reindex (finCongr e1.symm)² P⟨0⟩` IS the boundary cast `h0cs ▸ P⟨0⟩` since e1 : rfl). The fill
-          -- is the defeq-`1` `Matrix.one_mul` + the `reindex (refl)(refl) = id` collapse — the SAME defeq-
-          -- proof / one_mul-on-defeq-`1` friction crux2 hit (3-attempt cap). Localized; the kernels
-          -- (reindex_mul_distrib_left/right) are the substantive general-layer unblock.
-          sorry
+            (finCongr e1.symm) (finCongr e2.symm),
+          -- Turn each `reindex (finCongr ·)` into its `▸`-transport (`reindex_finCongr_eq_cast`).
+            reindex_finCongr_eq_cast e1.symm e1.symm (P ⟨0, hkL'⟩),
+            reindex_finCongr_eq_cast e1.symm e2.symm (A ⟨0, hkL'⟩)]
+          -- Goal: `1·(P⟨0⟩·A⟨0⟩) = P⟨0⟩·(1·A⟨0⟩)` with the `▸` transports cast-transparent (defeq running
+          -- widths). `show` re-types the LHS `1` (the `prodAux C 0` accumulator, defeq) at the layer's width
+          -- so the rectangular `Matrix.one_mul` unifies; both `1·` factors then drop.
+          show (1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+              (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ) * (P ⟨0, hkL'⟩ * A ⟨0, hkL'⟩)
+            = P ⟨0, hkL'⟩ * ((1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+              (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ) * A ⟨0, hkL'⟩)
+          rw [Matrix.one_mul, Matrix.one_mul]
         · -- step (interior): `C k = A k` (hCAint), reindexed layers agree, P0 left-factors by mul_assoc.
           rw [hCAint ⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ (by simpa using hkpos) (by simp; omega),
             ih (Nat.lt_of_succ_lt hsucc) hkpos (by omega), Matrix.mul_assoc]
-  -- FINAL: `prod C = prodAux C (Lm+1) = prodAux C Lm * (cast C_Lm)`; `C_Lm = A_Lm·Q_Lm` (P_Lm = 1, hPid);
-  -- hinv ⟹ `= (cast P⟨0⟩)·prodAux A Lm·(cast A_Lm·Q_Lm) = P0 · prod A · QL`. ∃-intro the cast P⟨0⟩, Q⟨Lm⟩.
-  refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_⟩
-  sorry
+  -- FINAL: P0 := h0cs ▸ P⟨0⟩, QL := hLs ▸ Q⟨Lm⟩ — units (hPunit/hQunit, cast preserves IsUnit) + the
+  -- product equality (hinv at Lm + the boundary `C Lm = A Lm · Q Lm`).
+  refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_, ?_, ?_⟩
+  · -- IsUnit P0: P⟨0⟩ is a unit (hPunit), the `h0cs ▸` cast (eq of Fin-widths) preserves IsUnit.
+    cases h0cs; exact hPunit ⟨0, by omega⟩
+  · -- IsUnit QL: Q⟨Lm⟩ is a unit (hQunit), the `hLs ▸` cast preserves IsUnit.
+    cases hLs; exact hQunit ⟨Lm, by omega⟩
+  · -- prod C = P0 · prod A · QL. `prod = prodAux (Lm+1)`; `prodAux_succ` at `k = Lm` peels the last layer.
+    -- The boundary `Q⟨Lm⟩` rides off `C⟨Lm⟩`'s column-index (`reindex_mul_distrib_right`) to the endpoint
+    -- cast `hLs ▸ Q⟨Lm⟩`. The accumulator splits by `Lm`: at `Lm = 0` (L = 1) the single layer carries BOTH
+    -- boundary frames; at `1 ≤ Lm` the interior interfaces have collapsed and `hinv` supplies the `P0`-prefix.
+    have eL1 : H (⟨Lm, Nat.lt_of_succ_lt (Nat.lt_succ_self (Lm + 1))⟩ : Fin (Lm + 2))
+        = H ((⟨Lm, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (Lm + 1))⟩ : Fin (Lm + 1)).castSucc) := rfl
+    have eL2 : H (⟨Lm + 1, Nat.lt_succ_self (Lm + 1)⟩ : Fin (Lm + 2))
+        = H ((⟨Lm, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (Lm + 1))⟩ : Fin (Lm + 1)).succ) := rfl
+    -- `prod C = prodAux C Lm * reindex (C⟨Lm⟩)`; `prod A = prodAux A Lm * reindex (A⟨Lm⟩)`.
+    rw [prod, prodAux_succ H C Lm (Nat.lt_succ_self (Lm + 1)) eL1 eL2,
+        prod, prodAux_succ H A Lm (Nat.lt_succ_self (Lm + 1)) eL1 eL2]
+    rcases Nat.eq_zero_or_pos Lm with hLm0 | hLmpos
+    · -- L = 1: `prodAux _ 0 = 1`. Single layer `C⟨0⟩ = P⟨0⟩·A⟨0⟩·Q⟨0⟩` carries both boundary frames.
+      subst hLm0
+      -- Distribute reindex over the single layer's two boundary frames, then collapse each `reindex (finCongr ·)`
+      -- to its `▸`-transport (`reindex_finCongr_eq_cast`).
+      rw [hframe ⟨0, _⟩,
+        reindex_mul_distrib_right (P ⟨0, _⟩ * A ⟨0, _⟩) (Q ⟨0, _⟩) (finCongr eL1.symm) (finCongr eL2.symm),
+        reindex_mul_distrib_left (P ⟨0, _⟩) (A ⟨0, _⟩) (finCongr eL1.symm) (finCongr eL2.symm),
+        reindex_finCongr_eq_cast eL1.symm eL1.symm (P ⟨0, _⟩),
+        reindex_finCongr_eq_cast eL1.symm eL2.symm (A ⟨0, _⟩),
+        reindex_finCongr_eq_cast eL2.symm eL2.symm (Q ⟨0, _⟩)]
+      -- `prodAux _ 0 = 1` (def). Goal `1·(P⟨0⟩·A⟨0⟩·Q⟨0⟩) = P⟨0⟩·(1·A⟨0⟩)·Q⟨0⟩` with `▸` transports
+      -- cast-transparent (defeq running widths). `show` re-types both `1`s (the `prodAux _ 0` accumulators,
+      -- defeq) at the layer's width so the rectangular `Matrix.one_mul` unifies; both `1·` factors then drop.
+      show (1 : Matrix (Fin (H (⟨0, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self 1)⟩ : Fin 1).castSucc))
+            (Fin (H (⟨0, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self 1)⟩ : Fin 1).castSucc)) ℝ)
+            * (P ⟨0, _⟩ * A ⟨0, _⟩ * Q ⟨0, _⟩)
+          = P ⟨0, _⟩ * ((1 : Matrix (Fin (H (⟨0, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self 1)⟩ : Fin 1).castSucc))
+            (Fin (H (⟨0, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self 1)⟩ : Fin 1).castSucc)) ℝ) * A ⟨0, _⟩) * Q ⟨0, _⟩
+      rw [Matrix.one_mul, Matrix.one_mul]
+    · -- 1 ≤ Lm: interior collapsed, `C⟨Lm⟩ = A⟨Lm⟩·Q⟨Lm⟩` (P⟨Lm⟩ = 1, hPid) and `hinv` supplies P0.
+      have hCLm : C ⟨Lm, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (Lm + 1))⟩
+          = A ⟨Lm, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (Lm + 1))⟩
+            * Q ⟨Lm, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (Lm + 1))⟩ := by
+        rw [hframe ⟨Lm, _⟩, hPid ⟨Lm, _⟩ (by simpa using hLmpos), Matrix.one_mul]
+      rw [hinv Lm (Nat.lt_of_succ_lt (Nat.lt_succ_self (Lm + 1))) hLmpos (le_refl Lm), hCLm,
+        reindex_mul_distrib_right (A ⟨Lm, _⟩) (Q ⟨Lm, _⟩) (finCongr eL1.symm) (finCongr eL2.symm),
+        reindex_finCongr_eq_cast eL1.symm eL2.symm (A ⟨Lm, _⟩),
+        reindex_finCongr_eq_cast eL2.symm eL2.symm (Q ⟨Lm, _⟩)]
+      -- Pure associativity `(P 0·acc)·(A⟨Lm⟩·Q⟨Lm⟩) = (P 0·(acc·A⟨Lm⟩))·Q⟨Lm⟩` (no units). `set` the
+      -- `▸`-cast `P0` head to a plain variable, then `simp` evaluates the cast-transparent `▸` on the layer
+      -- factors and `Matrix.mul_assoc` reassociates both sides to the same right-association.
+      -- `(P0·acc)·(A·Q) = (P0·(acc·A))·Q`: `set` the `▸`-cast `P0` head to a plain variable (so the outer
+      -- `*` is a clean `HMul`), `simp only` the remaining cast-transparent `▸` on the layer factors, then three
+      -- left-to-right reassociations (LHS outer, RHS outer, RHS inner) bring both to `P0·(acc·(A·Q))`.
+      -- `cases eL1; cases eL2` collapses every `▸` reindex-transport (`Eq.rec` reduces once the proof is `rfl`,
+      -- even for defeq-not-syntactic endpoints); `cases hLs` collapses `QL`'s boundary `▸`. The goal is then the
+      -- bare `(P 0·acc)·(A·Q) = (P 0·(acc·A))·Q`; three left-to-right reassociations bring both to right-assoc.
+      cases eL1; cases eL2; cases hLs
+      set P0 := h0cs ▸ P ⟨0, by omega⟩ with hP0def
+      -- LHS `(P0·acc)·(A·Q)` reassociates to `P0·(acc·(A·Q))` (`mul_assoc`, clean outer heads); the RHS
+      -- `(P0·(acc·A))·Q` reaches the same by `mul_assoc P0` then `mul_assoc` inside the `P0·_` (the `▸`-wrapped
+      -- `A, Q` ride through as opaque factors — `rw` only needs the `*`-shape, not their internals).
+      rw [Matrix.mul_assoc P0]
+      exact ((Matrix.mul_assoc P0 _ _).trans (congrArg (P0 * ·) (Matrix.mul_assoc _ _ _))).symm
 
 end DLNFibre.DLN.RLCT
