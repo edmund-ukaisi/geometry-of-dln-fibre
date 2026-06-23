@@ -6339,6 +6339,26 @@ normal-crossing-to-RLCT extraction; do not silently cite Aoyagi Lemma 1,
 Aoyagi Theorem 4, regular-coordinate additivity, A2 analytic transport, or
 Lemma 5 no-extra coverage.
 
+Latest A4/A0 selected-entry local ratio chart count:
+`SelectedEntryNormalCrossing.lean` now contains local one-chart count facts
+for the selected-entry microcertificates.  The generic theorem
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one`
+proves that the unique chart has exactly one active coordinate at ratio
+`center.card / 2`, and
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one`
+records the corresponding minimum-coordinate count.  Case 2 and Case 1
+wrappers give the source-facing ratios
+`card(case2ResidualBlockPivotEntries n S J) / 2` and
+`(1 + J1 * (n(S+1)-J)) / 2`.  This is finite-local bookkeeping for the
+one-chart microcertificates only; it is not a global A0 chart-count theorem,
+all-chart upper bound, source production, chart coverage, analytic Jacobian
+control, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-ratio-chart-count-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-ratio-chart-count.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-ratio-chart-count-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

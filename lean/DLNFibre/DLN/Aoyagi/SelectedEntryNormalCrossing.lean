@@ -290,6 +290,74 @@ theorem exponentData_exponentMinimum_eq_centerCard_div_two
   fin_cases j
   exact le_of_eq (by simpa using hratio.symm)
 
+/-- In the local one-coordinate selected-entry microcertificate, the chart
+count at the local ratio `|center| / 2` is `1`. -/
+theorem exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (c :
+      Fin (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).exponentData.numCharts) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData.countInChartAtRatio
+        ((center.card : ℚ) / 2) c = 1 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData
+  fin_cases c
+  rw [AoyagiNormalCrossingExponentData.countInChartAtRatio,
+    AoyagiNormalCrossingExponentData.coordsInChartAtRatio]
+  change
+    ((Finset.univ : Finset (Fin 1)).filter
+      (fun j ↦
+        0 < D.lossExp (0 : Fin 1) j ∧
+          D.ratioAt ((0 : Fin 1), j) = (center.card : ℚ) / 2)).card = 1
+  have hfilter :
+      ((Finset.univ : Finset (Fin 1)).filter
+        (fun j ↦
+          0 < D.lossExp (0 : Fin 1) j ∧
+            D.ratioAt ((0 : Fin 1), j) = (center.card : ℚ) / 2)) =
+        Finset.univ := by
+    apply Finset.filter_true_of_mem
+    intro j _hj
+    fin_cases j
+    exact ⟨by simp [D, selectedEntryCenterSqFormalJacobianChartCertificate],
+      by simpa [D] using exponentData_ratioAt_zero_zero (K := K) pivot⟩
+  rw [hfilter]
+  change (Finset.univ : Finset (Fin 1)).card = 1
+  simp
+
+private theorem countAtLocalRatio_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (c :
+      Fin (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).exponentData.numCharts) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData.countInChartAtRatio
+        ((center.card : ℚ) / 2) c = 1 :=
+  exponentData_countInChartAtRatio_centerCard_div_two_eq_one (K := K) pivot c
+
+/-- In the local one-coordinate selected-entry microcertificate, the
+chartwise minimum-coordinate count is `1`. -/
+theorem exponentData_minCountInChart_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (c :
+      Fin (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).exponentData.numCharts) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData.minCountInChart c = 1 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData
+  rw [D.minCountInChart_eq_countInChartAtRatio_of_exponentMinimum_eq
+    (exponentData_exponentMinimum_eq_centerCard_div_two (K := K) pivot) c]
+  exact exponentData_countInChartAtRatio_centerCard_div_two_eq_one (K := K) pivot c
+
 /-- In the local one-coordinate selected-entry microcertificate, every chart
 has at most one coordinate attaining the finite exponent minimum. -/
 theorem exponentData_minCountInChart_le_one
@@ -554,6 +622,42 @@ theorem exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
     case1CenterGenerators_card, case1StripEntries_card] using
     exponentData_exponentMinimum_eq_centerCard_div_two (K := K)
       (⟨(Sum.inl () : Case1CenterGenerator), case1_selectedOld_mem_center n S J J1⟩)
+
+/-- In the Case 1 selected-old local microcertificate, the chart count at the
+local Case 1 ratio is `1`. -/
+theorem exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1SelectedOldCenterSqFormalJacobianChartCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).exponentData.countInChartAtRatio
+        (((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2) c = 1 := by
+  simpa [case1SelectedOldCenterSqFormalJacobianChartCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.countAtLocalRatio_eq_one
+      (K := K)
+      (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+        case1_selectedOld_mem_center n S J J1⟩)
+      c
+
+/-- In the Case 1 selected-old local microcertificate, the chartwise
+minimum-coordinate count is `1`. -/
+theorem exponentData_minCountInChart_eq_one
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1SelectedOldCenterSqFormalJacobianChartCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).exponentData.minCountInChart c = 1 := by
+  simpa [case1SelectedOldCenterSqFormalJacobianChartCertificate] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one
+      (K := K)
+      (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+        case1_selectedOld_mem_center n S J J1⟩)
+      c
 
 /-- The Case 1 selected-old local one-coordinate microcertificate has finite
 exponent order `1`. -/
@@ -838,6 +942,44 @@ theorem exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
       (⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
         case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
 
+/-- In the displayed Case 1 row-strip local microcertificate, the chart count
+at the local Case 1 ratio is `1`. -/
+theorem exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+        (K := K) n S hJ1 hcol).exponentData.numCharts) :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).exponentData.countInChartAtRatio
+        (((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2) c = 1 := by
+  simpa [case1DisplayedRowStripCenterSqFormalJacobianChartCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.countAtLocalRatio_eq_one
+      (K := K)
+      (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+        case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+      c
+
+/-- In the displayed Case 1 row-strip local microcertificate, the chartwise
+minimum-coordinate count is `1`. -/
+theorem exponentData_minCountInChart_eq_one
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+        (K := K) n S hJ1 hcol).exponentData.numCharts) :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).exponentData.minCountInChart c = 1 := by
+  simpa [case1DisplayedRowStripCenterSqFormalJacobianChartCertificate] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one
+      (K := K)
+      (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+        case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+      c
+
 /-- The displayed Case 1 row-strip local one-coordinate microcertificate has
 finite exponent order `1`. -/
 theorem exponentData_exponentOrder_eq_one
@@ -1107,6 +1249,43 @@ theorem exponentData_exponentMinimum_eq_centerCard_div_two
   fin_cases c
   fin_cases j
   exact le_of_eq (by simpa using hratio.symm)
+
+/-- In the displayed Case 2 local microcertificate, the chart count at half
+the residual-block center cardinality is `1`. -/
+theorem exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2DisplayedCenterSqFormalJacobianChartCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.countInChartAtRatio
+        (((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2) c = 1 := by
+  simpa [case2DisplayedCenterSqFormalJacobianChartCertificate] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.countAtLocalRatio_eq_one
+      (K := K)
+      (pivot := ⟨(J + 1, J + 1),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont⟩)
+      c
+
+/-- In the displayed Case 2 local microcertificate, the chartwise
+minimum-coordinate count is `1`. -/
+theorem exponentData_minCountInChart_eq_one
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2DisplayedCenterSqFormalJacobianChartCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.minCountInChart c = 1 := by
+  simpa [case2DisplayedCenterSqFormalJacobianChartCertificate] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one
+      (K := K)
+      (pivot := ⟨(J + 1, J + 1),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont⟩)
+      c
 
 /-- The Case 2 local one-coordinate microcertificate has finite exponent
 order `1`. -/

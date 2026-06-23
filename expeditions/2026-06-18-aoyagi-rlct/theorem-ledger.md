@@ -6191,6 +6191,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 
+Latest A4/A0 selected-entry local ratio chart count:
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one`,
+`case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one`,
+`case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one`,
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one`,
+and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_eq_one`.
+These prove only the local one-chart `countInChartAtRatio = 1` and
+`minCountInChart = 1` facts for the selected-entry microcertificates.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-ratio-chart-count-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-ratio-chart-count.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-ratio-chart-count-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

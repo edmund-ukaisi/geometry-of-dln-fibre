@@ -3674,3 +3674,18 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case1-source-chart-selected-entry-microcertificate-adapter.md`.
 Review:
 `threads/04-blow-up-certificate/review-case1-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+
+Latest A4/A0 selected-entry local ratio chart count:
+`SelectedEntryNormalCrossing.lean` now proves local ratio-specific chart-count
+facts for the generic selected-entry microcertificate, the displayed Case 2
+microcertificate, and the two displayed Case 1 microcertificates.  The
+chartwise count at the local selected-entry ratio is `1`, and the chartwise
+minimum-coordinate count is also `1`.  This is only finite-local
+`countInChartAtRatio` bookkeeping; it is not a global A0 chart family,
+all-chart upper bound, global pole-order count, source production, chart
+coverage, analytic Jacobian control, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-ratio-chart-count-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-ratio-chart-count.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-ratio-chart-count-a4.md`.

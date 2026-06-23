@@ -5080,3 +5080,29 @@ formal determinant, and monomial-identity evaluations.  It is not source
 production of the hidden old label, chart coverage, transition regularity,
 analytic Jacobian control, a total DLN loss certificate, global A0 normal
 crossings, pole order, or RLCT.
+
+## 2026-06-23 Lean selected-entry local ratio chart count
+
+Reproduction:
+`reproduction-selected-entry-ratio-chart-count-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-ratio-chart-count.md`.
+Review artifact:
+`review-selected-entry-ratio-chart-count-a4.md`.
+
+Lean now proves local one-chart ratio-count facts for the generic
+selected-entry finite normal-crossing microcertificate, its displayed Case 2
+specialization, and the two displayed Case 1 specializations.  At the local
+selected-entry ratio, the unique chart has exactly one active coordinate:
+
+```text
+selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one
+```
+
+The corresponding `minCountInChart = 1` wrappers are also proved.  This is
+finite-local bookkeeping for one-chart microcertificates only.  It is not a
+global A0 chart-count/order theorem, an all-chart upper bound, source
+production, chart coverage, analytic Jacobian control, pole order, or RLCT.

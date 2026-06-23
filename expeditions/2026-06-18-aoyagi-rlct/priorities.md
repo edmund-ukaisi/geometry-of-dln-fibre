@@ -260,6 +260,18 @@ global A0 active-ratio lower bound, global exponent minimum, global chart
 count/order theorem, analytic Jacobian/volume-form theorem, pole order, or
 RLCT extraction.
 
+The current A4/A0 selected-entry ratio-count slice is
+`threads/04-blow-up-certificate/reproduction-selected-entry-ratio-chart-count-a4.md`.
+Lean now proves that the local one-chart selected-entry microcertificates
+have chart count `1` at their own local ratio, and chartwise minimum-coordinate
+count `1`.  The generic ratio is `center.card / 2`, the displayed Case 2
+ratio is `card(case2ResidualBlockPivotEntries n S J) / 2`, and the Case 1
+ratio is `(1 + J1 * (n(S+1)-J)) / 2`.  This is only finite local
+`countInChartAtRatio` bookkeeping for the one-chart microcertificates.  It is
+not a global A0 chart-count/order theorem, an all-chart upper bound for the
+DLN resolution, chart coverage, source production, analytic Jacobian control,
+pole order, or RLCT extraction.
+
 The current A4 Case 1 selected-entry chart-family data slice is
 `threads/04-blow-up-certificate/reproduction-case1-selected-entry-chart-family-data-a4.md`.
 Lean now specializes the generic finite selected-entry chart-family data to
