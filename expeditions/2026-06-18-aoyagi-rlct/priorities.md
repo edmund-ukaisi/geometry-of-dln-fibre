@@ -1917,11 +1917,14 @@ Immediate order:
    as a relative-stratum boundary: `paperEndpointFixedBaseEdgeRankStratum`,
    `paperEndpointFixedBaseSourceRankStratum`, the rank-stratum certificate, and
    the `nhdsWithin` wrappers keep Aoyagi's layer-rank hypotheses explicit
-   without claiming exact-rank openness. Leave A2 at this elementary boundary
-   until A4/A0 produce stable certificate data. Optional future A2 work should
-   be thin source-rank, residual-rank, or hypothesis-weakening wrappers only,
-   not exact-rank openness, full Theorem 3 packaging, or
-   regular-suspension/RLCT transport.
+   without claiming exact-rank openness. The fixed-base/source-rank wrapper
+   now bundles the triangular residual-product endpoint form with the residual
+   rank formulas `rEdge p - r` in
+   `PaperEndpointFixedBaseTriangularResidualProductSourceRanks`. Leave A2 at
+   this elementary boundary until A4/A0 produce stable certificate data.
+   Optional future A2 work should be thin source-rank, residual-rank, or
+   hypothesis-weakening wrappers only, not exact-rank openness, full Theorem 3
+   packaging, or regular-suspension/RLCT transport.
    The continuing Case 2 next-state source-product reindex from displayed
    `Csucc`/post-pivot residual data has landed, and the selected-entry
    chart-family scaffold now identifies the displayed pivot source chart with

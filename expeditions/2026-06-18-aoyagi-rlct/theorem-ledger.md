@@ -167,6 +167,22 @@ This packages exact layer ranks as a relative stratum, not as an ambient open
 neighborhood.  On the source-shaped stratum it rewrites the visited residual
 rank to `rEdge p - r` using the basepoint certificate.
 
+The A2 fixed-base/source-rank-stratum endpoint wrapper has also landed.  New
+Lean names in `ProductReductionBoundary.lean`:
+`PaperEndpointFixedBaseTriangularResidualProductSourceRanks` and
+`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct_sourceRanks`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-source-rank-stratum-theorem3-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-source-rank-stratum-theorem3-boundary.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-source-rank-stratum-theorem3-boundary.md`.
+This bundles the triangular residual-product endpoint form with source-stratum
+residual ranks.  It remains fixed-base and certificate-relative: it does not
+prove exact-rank openness, source-stratum nonemptiness, regular-corner chart
+production, Lemma 1 normalization, ideal transport, normal crossings, pole
+order, or RLCT.
+
 ## Latest A5 Update
 
 The Eq5 alpha-indexed branch source-label slice has landed in

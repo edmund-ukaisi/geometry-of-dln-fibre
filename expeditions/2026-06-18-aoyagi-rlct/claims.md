@@ -161,8 +161,10 @@ No such claim is formalisation-ready until both fields are filled.
   complement. The Aoyagi-style triangular endpoint multiplier wrapper is also
   proved: the deterministic suffix state's `L` is lower unitriangular, and the
   fixed-base certificate exposes regular `[I 0; F3 I]` and `[I F2; 0 I]`
-  factors with proof witness `F2 = -S.B`. The full source Theorem 3 claim
-  remains blocked.
+  factors with proof witness `F2 = -S.B`. The fixed-base/source-rank-stratum
+  endpoint wrapper now bundles that triangular residual-product form with the
+  residual-rank formulas `rEdge p - r`. The full source Theorem 3 claim remains
+  blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -180,7 +182,9 @@ No such claim is formalisation-ready until both fields are filled.
   basis repair checked by xhigh checker `Hooke`; finite chart-data construction
   rechecked by xhigh explorer `Arendt`; paper-order bridge inventory at
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`; triangular
-  endpoint wrapper checked by xhigh reviewer `Kepler`.
+  endpoint wrapper checked by xhigh reviewer `Kepler`; source-rank-stratum
+  endpoint wrapper checked by xhigh reviewer `Carson` in
+  `threads/03-block-product-reduction/review-a2-source-rank-stratum-theorem3-boundary.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -438,6 +442,11 @@ No such claim is formalisation-ready until both fields are filled.
   proved the parameter-space handoff: if edge and `Bprev` families are
   continuous at a parameter and the transformed determinant charts hold there,
   then the same transformed chart predicates hold on a parameter neighborhood.
+  Also proved the fixed-base/source-rank-stratum endpoint wrapper
+  `PaperEndpointFixedBaseTriangularResidualProductSourceRanks` and constructor
+  `PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct_sourceRanks`,
+  which bundle the transformed residual-product endpoint form with the
+  residual-rank formulas `rEdge p - r`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units
@@ -473,6 +482,11 @@ No such claim is formalisation-ready until both fields are filled.
   now packaged as relative-stratum boundaries, not open neighborhoods; see
   `threads/03-block-product-reduction/paper-order-bridge-notes.md` and
   `threads/03-block-product-reduction/reproduction-a2-rank-stratum-boundary.md`.
+  The source-rank/residual-product bundle is recorded at
+  `threads/03-block-product-reduction/reproduction-a2-source-rank-stratum-theorem3-boundary.md`;
+  it is still fixed-base and certificate-relative, not a source proof of
+  regular-corner chart production, exact-rank openness, nonemptiness, Lemma 1
+  normalization, ideal transport, normal crossings, pole order, or RLCT.
 
 ## Claim A3 - deepest singular point
 

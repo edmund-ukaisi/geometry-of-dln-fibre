@@ -178,6 +178,27 @@ exact-rank openness, no Aoyagi Lemma 1/analytic ideal transport, no
 regular-coordinate RLCT additivity, no normal crossings, and no RLCT
 consequence.
 
+The fixed-base/source-rank-stratum endpoint wrapper has now landed.  New Lean
+names in `ProductReductionBoundary.lean`:
+`PaperEndpointFixedBaseTriangularResidualProductSourceRanks` and
+`PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct_sourceRanks`.
+It combines the existing triangular residual-product endpoint theorem with the
+existing source-stratum residual-rank theorem: on
+`paperEndpointFixedBaseSourceRankStratum`, the endpoint block form exposes
+`ChartLocalSuffixState.residualProduct`, and each visited residual block has
+rank `rEdge p - r`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-source-rank-stratum-theorem3-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-source-rank-stratum-theorem3-boundary.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-source-rank-stratum-theorem3-boundary.md`.
+
+This is still a fixed-base, certificate-relative wrapper.  The source rank
+stratum is repo terminology for Aoyagi's fixed layer-rank restrictions; it is
+not an ambient open neighborhood, nonemptiness theorem, or source-produced
+regular-corner chart theorem.  Do not rewrite the residual product as a raw or
+paper-order block product without a separate orientation bridge.
+
 ## Latest A5 Update
 
 The Eq5 alpha-indexed branch source-label slice has landed in

@@ -1212,3 +1212,33 @@ regular-coordinate RLCT bookkeeping, normal crossings, or any RLCT consequence.
 Artifacts:
 `reproduction-a2-rank-stratum-boundary.md` and
 `statement-card-a2-rank-stratum-boundary.md`.
+
+## 2026-06-23 A2 source-rank-stratum endpoint wrapper
+
+Combined the two latest fixed-base A2 boundary pieces: the endpoint triangular
+block form with deterministic transformed residual product, and the source
+rank-stratum residual-rank formula.
+
+New Lean artifacts in `lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`:
+
+- `PaperEndpointFixedBaseTriangularResidualProductSourceRanks`;
+- `PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct_sourceRanks`.
+
+The theorem takes a fixed-base basepoint certificate, a fixed-base
+product-reduction certificate, and membership in
+`paperEndpointFixedBaseSourceRankStratum`.  It returns a bundled endpoint
+conclusion: regular triangular endpoint multipliers expose
+`ChartLocalSuffixState.residualProduct`, and every visited residual block has
+rank `rEdge p - r`.
+
+Scope caveats: "source rank stratum" is repository terminology for Aoyagi's
+fixed layer-rank restrictions.  The stratum supplies rank data for the
+subtraction formula; the determinant-chart hypotheses required by Lemma 2
+remain in the certificate.  This is not exact-rank openness, source-stratum
+nonemptiness, full Theorem 3, Lemma 1 normalization, analytic ideal transport,
+regular-coordinate RLCT bookkeeping, normal crossings, pole order, or RLCT.
+
+Artifacts:
+`reproduction-a2-source-rank-stratum-theorem3-boundary.md`,
+`statement-card-a2-source-rank-stratum-theorem3-boundary.md`, and
+`review-a2-source-rank-stratum-theorem3-boundary.md`.

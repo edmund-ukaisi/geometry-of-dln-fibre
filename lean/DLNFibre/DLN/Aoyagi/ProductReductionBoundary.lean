@@ -95,6 +95,74 @@ def paperEndpointFixedBaseContinuousEdgesRecursiveResidualRanks
       (Fin.last N) p p.succ.le_last).rank =
       rEdge p - Module.finrank K U₀
 
+/-- Source-shaped endpoint conclusion for the fixed-base product-reduction
+boundary: triangular endpoint multipliers expose the transformed residual product,
+and the visited residual blocks have Aoyagi's source-stratum ranks. -/
+structure PaperEndpointFixedBaseTriangularResidualProductSourceRanks
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (r : ℕ) (rEdge : Fin N → ℕ) (x : α) : Prop where
+  triangularResidualProduct :
+    let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+      fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E
+    ∃ F2 : Matrix (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) K,
+      ∃ F3 : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (Fin (Module.finrank K U₀)) K,
+        ∃ Ctop : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K,
+          IsUnit
+              (fromBlocks
+                (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                0 F3
+                (1 : Matrix
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)) K)).det ∧
+            IsUnit
+              (fromBlocks
+                (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                F2 0
+                (1 : Matrix
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0)
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0) K)).det ∧
+            IsUnit Ctop.det ∧
+            fromBlocks
+                (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                0 F3
+                (1 : Matrix
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)) K) *
+              paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E *
+              fromBlocks
+                (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+                F2 0
+                (1 : Matrix
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0)
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0) K) =
+              fromBlocks Ctop 0 0
+                (ChartLocalSuffixState.residualProduct EMat (Fin.last N) 0
+                  (Fin.zero_le (Fin.last N)))
+  sourceResidualRanks :
+    let E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+      fun p ↦ (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E
+    ∀ p : Fin N,
+      (ChartLocalSuffixState.residualBlock EMat (Fin.last N) p p.succ.le_last).rank =
+        rEdge p - r
+
 /-- The product-reduction certificate after restricting to the exact edge-rank
 stratum.  It deliberately records stratum membership instead of claiming exact
 rank is open. -/
@@ -505,6 +573,32 @@ theorem exists_triangularBlockDiagonal_residualProduct
         (ChartLocalSuffixState.residualProduct EMat (Fin.last N) 0
           (Fin.zero_le (Fin.last N))) := by
           rw [hD]
+
+set_option linter.unusedSectionVars false in
+/-- On Aoyagi's source-shaped rank stratum, the fixed-base endpoint certificate
+packages both the triangular residual-product form and the source residual-rank
+formulas. -/
+theorem exists_triangularBlockDiagonal_residualProduct_sourceRanks
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ} {x : α}
+    (base : PaperEndpointBasepointCertificate W B U₀ hU₀)
+    (cert : PaperEndpointFixedBaseProductReductionCertificate W B U₀ hU₀ Cedge rEdge x)
+    (hsrc : x ∈ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge) :
+    PaperEndpointFixedBaseTriangularResidualProductSourceRanks
+      W B U₀ hU₀ Cedge r rEdge x where
+  triangularResidualProduct :=
+    PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct
+      (W := W) (B := B) cert
+  sourceResidualRanks := by
+    dsimp
+    intro p
+    simpa using
+      residualBlock_rank_eq_sourceRankSubProductRank
+        (W := W) (B := B) base cert hsrc p
 
 end PaperEndpointFixedBaseProductReductionCertificate
 
