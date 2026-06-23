@@ -83,3 +83,10 @@ import DLNFibre.Core.CThetaArbitrary
 -- Determinantal-stratum dimension (fibre-codim AG build, rung 1): dim Mat^{rk≤r}_{m×n} = r(n+m−r),
 -- via the N=1 specialisation of the quiver engine (productRankLocusLE ![n,m] r = the determinantal variety).
 import DLNFibre.Core.DeterminantalStratumDim
+-- Generic tuple over the coordinate ring (shared, CommRing): genericTuple + eval_genericTuple,
+-- reused by RankLocusClosed (minor polys) and MultComorphism (the coordinate-ring map of mult).
+import DLNFibre.Core.GenericTuple
+-- Comorphism keystone (fibre-codim AG build, F1): the coordinate-ring map of `mult` (generic product
+-- entries multPoly = mult over MvPolynomial), the bridge eval_multPoly, the fibre as a zero-locus,
+-- and fibreGenIdeal = Ideal.map multComap (maxIdealOfPoint B) — the fibre-ring quotient F2 consumes.
+import DLNFibre.Core.MultComorphism

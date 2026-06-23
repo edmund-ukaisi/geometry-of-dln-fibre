@@ -1,6 +1,7 @@
 import DLNFibre.Core.Setup
 import DLNFibre.Core.OrbitCodim
 import DLNFibre.Core.NullstellensatzCodim
+import DLNFibre.Core.GenericTuple
 import Mathlib.RingTheory.Nullstellensatz
 
 /-!
@@ -61,17 +62,13 @@ example {S : Type*} [CommRing S] (φ : R →+* S) (s : Set R) :
 
 end Contracts
 
-/-! ## The generic product entries `multPoly` -/
+/-! ## The generic product entries `multPoly`
 
-/-- The **generic tuple**: each entry is its own coordinate variable,
-`(genericTuple i) a b = X ⟨i, a, b⟩`, a tuple over the coordinate polynomial ring. -/
-noncomputable def genericTuple (d : Fin (N + 1) → ℕ) :
-    Tuple (k := MvPolynomial (RepCoord d) k) d :=
-  fun i a b ↦ X ⟨i, a, b⟩
-
-@[simp] theorem genericTuple_apply (d : Fin (N + 1) → ℕ) (i : Fin N)
-    (a : Fin (d i.succ)) (b : Fin (d i.castSucc)) :
-    (genericTuple (k := k) d i) a b = X ⟨i, a, b⟩ := rfl
+The **generic tuple** `genericTuple d` (entries = coordinate variables `X ⟨i,a,b⟩`) and the bridge
+`eval_genericTuple` (eval at `canonicalCoord d A` recovers `A`) are reused from
+`Core.RankLocusClosed`, where they were first built for the minor-polynomial / zero-locus work — this
+is their second use (the `bedrock` "lift on second use" rule; both could promote to a more
+foundational home if a third consumer appears). -/
 
 /-- **The generic product entries** `multPoly d r c = (mult d genericTuple) r c`: the polynomial in
 the coordinate ring `MvPolynomial (RepCoord d) k` giving the `(r,c)` entry of the product. -/
@@ -81,15 +78,9 @@ noncomputable def multPoly (d : Fin (N + 1) → ℕ) :
 
 /-! ## The bridge: evaluating the generic product gives the actual product -/
 
-/-- `eval (canonicalCoord d A)` carries `genericTuple` to `A`, entrywise: the generic matrix factor
-`A i`'s coordinate variables evaluate to the entries of `A i`. -/
-theorem map_eval_genericTuple (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i : Fin N) :
-    ((genericTuple (k := k) d i)).map (eval (canonicalCoord d A)) = A i := by
-  ext a b
-  simp [genericTuple, canonicalCoord_apply]
-
 /-- The ring hom `eval (canonicalCoord d A)` carries the generic prefix product to the actual prefix
-product, entrywise — the induction spine of the bridge. -/
+product, entrywise — the induction spine of the bridge. Reuses `eval_genericTuple`
+(`Core.RankLocusClosed`) at the `multPrefix_succ` step. -/
 theorem map_eval_multPrefix (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (j : Fin (N + 1)) :
     (multPrefix d (genericTuple (k := k) d) j).map (eval (canonicalCoord d A))
       = multPrefix d A j := by
@@ -98,7 +89,7 @@ theorem map_eval_multPrefix (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (j 
     simp only [multPrefix_zero]
     exact Matrix.map_one _ (map_zero _) (map_one _)
   | succ i ih =>
-    rw [multPrefix_succ, multPrefix_succ, Matrix.map_mul, ih, map_eval_genericTuple]
+    rw [multPrefix_succ, multPrefix_succ, Matrix.map_mul, ih, eval_genericTuple]
 
 /-- **The bridge (load-bearing).** Evaluating the generic product entry `multPoly d r c` at the
 coordinates of a tuple `A` reproduces the actual product entry `(mult d A) r c`. -/
