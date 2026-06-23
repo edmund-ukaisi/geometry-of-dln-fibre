@@ -4309,3 +4309,49 @@ coverage, transition regularity, coordinate post-data, normal crossings, pole
 order, termination, RLCT, or repair the printed Case 2 vector mismatch.
 No `hnext` or nonempty next-center hypothesis is assumed; the residual tail
 may be empty.
+
+## 2026-06-23 Lean Case 2 selected-entry chart-family data
+
+Reproduction:
+`reproduction-case2-selected-entry-chart-family-data-a4.md`.
+Statement card:
+`statement-card-a4-case2-selected-entry-chart-family-data.md`.
+Review artifact:
+`review-case2-selected-entry-chart-family-data-a4.md`.
+
+Lean now packages the generic finite selected-entry affine chart formula as
+
+```text
+SelectedEntryChartFamilyData
+```
+
+with the standard chart family, pivot/off-pivot value lemmas, divisibility,
+selected-value membership, and finite-center principalization.  It specializes
+this data to the Case 2 residual-block center as
+
+```text
+Case2ResidualBlockSelectedEntryChartFamilyData
+```
+
+and identifies the standard displayed pivot chart with the existing
+`case2DisplayedSourceChartMap`.
+
+The new theorem
+
+```text
+sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData
+```
+
+combines the displayed source-chart `Q/P` identity with the already proved
+next same-stage source-product reindex, returning a row-operation witness and
+the corrected concrete post-data projections for `(S,J+1)`.
+
+This remains finite selected-entry coordinate algebra and displayed
+source-product reindexing only.  It does not prove chart coverage, transition
+regularity, all-pivot chart construction, source production of full
+`C'^(S+1)`, suffix production, coordinate derivation of corrected post-data,
+Jacobian arithmetic, normal crossings, pole order, termination, RLCT, or
+repair of the printed Case 2 vector mismatch.  The review also records the
+source caveat that Aoyagi's printed `b'_i = u b_i` line and later extra
+outside `u diag(b')` line cannot both be read literally; Lean follows the
+corrected post-weight convention.

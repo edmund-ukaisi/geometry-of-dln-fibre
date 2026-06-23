@@ -733,6 +733,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-next-state-source-product-reindex-a4.md`;
 	  xhigh review found no blocking issues and is saved at
 	  `threads/04-blow-up-certificate/review-case2-next-state-source-product-reindex-a4.md`.
+	  Reproduction of the Case 2 selected-entry chart-family data and displayed
+	  source-product bridge is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-selected-entry-chart-family-data-a4.md`;
+	  xhigh review passed with the printed weight-factor caveat recorded at
+	  `threads/04-blow-up-certificate/review-case2-selected-entry-chart-family-data-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -806,11 +811,18 @@ No such claim is formalisation-ready until both fields are filled.
   plus the Case 2 residual-block entry set
   `case2ResidualBlockPivotEntries` and displayed-pivot membership theorem
   `case2_displayedPivot_mem_residualBlockPivotEntries_of_cont`. Also proved
-  selected-entry substitution algebra `selectedEntryChartMap`,
-  `selectedEntryChartMap_pivot`, `selectedEntryChartMap_of_ne`,
-  `selectedEntryChartMap_pivot_dvd`,
-  `selectedEntryChartMap_pivot_mem_valueSet`, and the Case 2 displayed-pivot
-  specialization `case2_displayedPivot_selectedEntryChartMap_value_mem`. Also proved
+	  selected-entry substitution algebra `selectedEntryChartMap`,
+	  `selectedEntryChartMap_pivot`, `selectedEntryChartMap_of_ne`,
+	  `selectedEntryChartMap_pivot_dvd`,
+	  `selectedEntryChartMap_pivot_mem_valueSet`, the selected-entry chart-family
+	  scaffold `SelectedEntryChartFamilyData`, its standard constructor and
+	  value/divisibility/principalization projections, and the Case 2
+	  displayed-pivot specializations
+	  `case2_displayedPivot_selectedEntryChartMap_value_mem`,
+	  `Case2ResidualBlockSelectedEntryChartFamilyData`,
+	  `Case2ResidualBlockSelectedEntryChartFamilyData.displayedPivot`, and
+	  `Case2ResidualBlockSelectedEntryChartFamilyData.standard_value_displayedPivot_eq_sourceChartMap`.
+	  Also proved
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and
   `terminalExponent_lowerTailVector_of_flatFromPred_add`, with the required
@@ -1071,10 +1083,16 @@ No such claim is formalisation-ready until both fields are filled.
   `case2DisplayedSourceTransportedFollowingFactor_eq_displayedTransportedFollowingFactor`,
   and
   `Case2DisplayedSuppliedChartFamilyBoundary.sourceDisplayedQP_sourceChartMap`,
-  proving the source-coordinate displayed chart map, its residual-block
-  restriction to the existing displayed block API, its `u * normalised` form,
-  and the supplied displayed `Q/P` identity in source-chart names.
-  Added the displayed Case 2 residual-block coordinate count:
+	  proving the source-coordinate displayed chart map, its residual-block
+	  restriction to the existing displayed block API, its `u * normalised` form,
+	  and the supplied displayed `Q/P` identity in source-chart names.
+	  Added the displayed source-chart reindexed product bridge
+	  `sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData`, which
+	  composes the source-chart `Q/P` identity with the finite next same-stage
+	  source-product reindex and returns corrected concrete post-data
+	  projections.  This is corrected displayed algebra, not source production
+	  or a literal reading of the inconsistent printed outside-`u` factor.
+	  Added the displayed Case 2 residual-block coordinate count:
   `case2_continuation_le_prefixMinNat_current`,
   `case2_continuation_le_width_next`, `case2ResidualBlockRows_card`,
   `case2ResidualBlockCols_card`, `case2ResidualBlockPivotEntries_card`,

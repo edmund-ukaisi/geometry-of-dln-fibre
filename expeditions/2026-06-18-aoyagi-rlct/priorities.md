@@ -1754,12 +1754,17 @@ Immediate order:
    not exact-rank openness, full Theorem 3 packaging, or
    regular-suspension/RLCT transport.
    The continuing Case 2 next-state source-product reindex from displayed
-   `Csucc`/post-pivot residual data has landed. The next source-moving
-   frontier should be A4/A0: either build the normal-crossing certificate spine
-   with non-vacuous chart/exponent/unit/count fields, or attack genuine
-   source/chart production beyond the formula-level `Csucc` reindex. Do not
-   let this become another supplied-obligation consumer unless it removes a
-   real downstream obstacle.
+   `Csucc`/post-pivot residual data has landed, and the selected-entry
+   chart-family scaffold now identifies the displayed pivot source chart with
+   the generic finite selected-entry chart data.  The next source-moving
+   frontier should be A4/A0: build a non-vacuous normal-crossing/chart
+   certificate spine with actual chart/exponent/unit/count fields, or attack
+   genuine source/chart production beyond the formula-level `Csucc` reindex.
+   Record explicitly that Aoyagi's printed `b'_i = u b_i` and later outside
+   `u diag(b')` lines are not simultaneously literal; future statements using
+   post weights should keep the corrected convention visible.  Do not let this
+   become another supplied-obligation consumer unless it removes a real
+   downstream obstacle.
 7. DLN notation translation. The first formula-notation slice has landed in
    `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`: Definition 3 ceiling data,
    integer reduced widths, indexed selected widths, Theorem 2 order formula,

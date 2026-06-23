@@ -5507,6 +5507,29 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-next-state-source-product-reindex-a4.md`.
 
+Latest A4 Case 2 selected-entry chart-family data:
+`BlowupArithmetic.lean` now contains `SelectedEntryChartFamilyData`,
+`SelectedEntryChartFamilyData.standard`, the pivot/off-pivot/divisibility and
+finite-center principalization projections, the Case 2 specialization
+`Case2ResidualBlockSelectedEntryChartFamilyData`, displayed-pivot adapters,
+and `sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData`.  These
+package the finite selected-entry chart coordinate formula, identify Aoyagi's
+displayed top-left Case 2 pivot chart with `case2DisplayedSourceChartMap`,
+and compose the displayed source-chart `Q/P` identity with the next
+same-stage source-product reindex while returning corrected concrete post-data
+projections.  This is not chart coverage, transition regularity, all-pivot
+chart construction, source production of full `C'^(S+1)`, suffix production,
+coordinate derivation of corrected post-data, Jacobian arithmetic, normal
+crossings, pole order, termination, RLCT, or repair of the printed Case 2
+vector mismatch.  The source caveat is explicit: Aoyagi's printed
+`b'_i = u b_i` line and later outside `u diag(b')` line are not simultaneously
+literal, so Lean follows the corrected post-weight convention.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-chart-family-data-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-chart-family-data.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-selected-entry-chart-family-data-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
