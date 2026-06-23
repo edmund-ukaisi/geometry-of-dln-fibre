@@ -429,6 +429,16 @@ theorem deepestEPivot_regSlice_fderiv_id (H : Fin (L + 1) → ℕ) (r : ℕ)
     HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
         deepestEPivot H r hr hL Pf Qf (r0, 0))
       (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ)) 0 := by
+  -- ⚠ HANDOFF TO deriv-fm (#91, post frame-wiring): with the new frame-conjugated `framedLayer`, the
+  -- reg-slice fderiv at 0 is NO LONGER `id` — it is the CONSTANT INVERTIBLE FRAME FACTOR. By the #91
+  -- idempotent sandwich `d(prod(framedParamsReg (r0,0)))|_0 = Σ_s corM^{<s} · dC_s · corM^{>s}` with
+  -- `dC_s = Pf_s · reindex(fromBlocks dX_s dY_s dZ_s 0) · Qf_s`: the `corM·_·corM` projects to the
+  -- `(1,1)` r-corner; the boundary layers carry `Pf_0` (left) and `Qf_{L-1}` (right) restricted to the
+  -- r-block (interior frames are id by `deepestPoint_interior_frame_id`). So the honest target is
+  -- `HasStrictFDerivAt (reg-slice) F 0` with `F` an INVERTIBLE frame-factor CLM (the `Pf_0`/`Qf_{L-1}`
+  -- r-corner action ∘ the shared `regPivotFinEquiv` cancel), NOT `id`. The `id` statement below is the
+  -- PRE-frame target and is now likely FALSE for a nontrivial frame — deriv-fm: restate to the frame
+  -- factor + relax `regStraightenTotalCLM_equiv_of_regBlock_id` to reg-block = IsUnit/invertible.
   -- #120 (deriv-fm): the opaque-pack wall is DISSOLVED — `regResidualPack := regPivotFinEquiv` and
   -- `regGaugeIdxSplit`'s reg-half route via `regBoundaryToRegGauge ∘ regPivotFinEquiv` (the SHARED
   -- `regPivotFinEquiv`), so the reg-coords ARE the boundary pivots (X_first/Y_last/Z_first) by
