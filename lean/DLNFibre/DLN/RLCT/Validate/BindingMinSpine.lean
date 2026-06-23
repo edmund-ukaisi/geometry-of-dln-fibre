@@ -54,17 +54,19 @@ theorem binding_recursion_of_min_step
     (hstep_min : ∀ M : Fin (L + 1) → ℕ, ¬ degenChild M →
         rlctOf M = min (ENNReal.ofReal (mkOf M / 2))
           (ENNReal.ofReal (nRegOf M / 2) + rlctOf (redOf M)))
-    -- the degenerate-child base: the min has collapsed to the first (Morse) branch
+    -- the degenerate-child base: the result holds directly (the `#70` Morse base — the leaf VALUE is
+    -- `lamOf M`, whatever it is; NOT a `mkOf/2`-specific form, per the pen-and-paper obstruction:
+    -- `harith_base = mkOf/2` is FALSE for the geometric `mkOf := M₀M₁`. Stating the conclusion at the
+    -- base keeps the spine honest + maximally general — the producer supplies the base value).
     (hbase : ∀ M : Fin (L + 1) → ℕ, degenChild M →
-        rlctOf M = ENNReal.ofReal (mkOf M / 2))
-    -- the value-side point-min telescope
+        rlctOf M = ENNReal.ofReal (lamOf M))
+    -- the value-side point-min telescope (proven: `BindingMinArith.lambdaCore_min_telescope`)
     (harith_min : ∀ M : Fin (L + 1) → ℕ, ¬ degenChild M →
         lamOf M = min (mkOf M / 2) (nRegOf M / 2 + lamOf (redOf M)))
-    (harith_base : ∀ M : Fin (L + 1) → ℕ, degenChild M → lamOf M = mkOf M / 2)
     -- termination: the child strictly decreases ΣM on the descent branch
     (hdrop : ∀ M : Fin (L + 1) → ℕ, ¬ degenChild M → ∑ i, redOf M i < ∑ i, M i)
-    -- nonneg of the value functionals (so the `ofReal` split/min is faithful)
-    (hmk : ∀ M : Fin (L + 1) → ℕ, 0 ≤ mkOf M)
+    -- nonneg of the descent functionals (so the `ofReal` split is additive; `mkOf` needs none — the
+    -- `mkOf/2` branch goes through `ofReal_min`, which is unconditional)
     (hnReg : ∀ M : Fin (L + 1) → ℕ, 0 ≤ nRegOf M)
     (hlam : ∀ M : Fin (L + 1) → ℕ, 0 ≤ lamOf M)
     (M : Fin (L + 1) → ℕ) :
@@ -73,10 +75,8 @@ theorem binding_recursion_of_min_step
   | _ n ih =>
     subst hn
     by_cases hdeg : degenChild M
-    · -- base case: the min collapsed to the Morse branch, `rlctOf M = mkOf M / 2 = lamOf M`.
-      rw [hbase M hdeg]
-      congr 1
-      exact_mod_cast (harith_base M hdeg).symm
+    · -- base case (#70 Morse base): the result holds directly.
+      exact hbase M hdeg
     · -- step case: recurse on the child, then collapse the min at the child value.
       have hchild : rlctOf (redOf M) = ENNReal.ofReal (lamOf (redOf M)) :=
         ih (∑ i, redOf M i) (hdrop M hdeg) (redOf M) rfl
