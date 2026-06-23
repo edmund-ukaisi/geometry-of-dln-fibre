@@ -368,9 +368,12 @@ needs the one-step ΣM−2, but A's row-split + recurse is the default; same ter
 === ALL WIRING + DESIGN CLOSED. Framing A locked. The grind is pure formalisation against this spec. ===
 
 ## NON-DEGENERACY HYPOTHESIS (resolved fidelity finding — controller-accepted)
-THE FINDING: the lambdaCore identity rlctAtOn(dlnLoss M 0) 0 = ofReal(lambdaCore M) is FALSE for interior
-M_s=0 (interior H_s=r): prod_M ≡ 0 (0-dim cut, verified /tmp/interior_zero.py) ⟹ RLCT=⊤ ≠ finite lambdaCore.
-So R1 ASSUMES interior M_s≥1 — NOT discharged. Forced by the formula's correctness, not a design choice.
+⚠ THIS BLOCK'S "interior" FRAMING IS SUPERSEDED — the LIVE form is ALL-s (∀ s : Fin (L+1), 0 < M s), see
+"hMid FORM = ALL-s — CONTROLLER RULING (g191)" below + the committed Skeleton:1030. The "interior" wording
+here is the original g154 finding text, kept for history; do NOT quote it as the current predicate.
+THE FINDING: the lambdaCore identity rlctAtOn(dlnLoss M 0) 0 = ofReal(lambdaCore M) is FALSE for ANY M_s=0
+(ANY layer — interior 0-dim cut OR endpoint M_0/M_L=0 = empty matrix): prod_M ≡ 0 ⟹ RLCT=⊤ ≠ finite
+lambdaCore. So R1 ASSUMES 0 < M s for EVERY s — NOT discharged. Forced by the formula's correctness.
 FRAMING (controller-corrected, precision-faithful): this is OUR FORMALISATION CARVE-OUT — refining the
 paper's realisability (r≤min(d⃗), NON-strict ≤, Lehalleur–Rimányi main.tex:1874) to exclude the prod≡0
 degeneracy the combinatorial lambdaCore can't see. Sound + consistent within Aoyagi's realisable domain,
@@ -439,9 +442,11 @@ whenever ANY reduced width M_s=0 — INTERIOR OR ENDPOINT:
   layer makes the lone matrix empty ⟹ prod≡0). The earlier "vacuous at L=1" was an artifact of the wrong
   interior-only form.
 
---- SUPERSEDED (g154, interior-only — kept for the finding's history) ---
-[Was: hMid : ∀ s : Fin L, 0 < s.val → r < H s.castSucc; "hits interior H_1…H_{L-1}, endpoints free".
- The "endpoints free" was the GAP — r=H_0/H_L break R1's identity. Corrected to all-s above.]
+--- SUPERSEDED (g154, interior-only — finding-history only; predicate text REMOVED to stop re-quoting) ---
+[The g154 form was an interior-only guard (Fin-L-indexed, dropped s=0/H_0 and never reached H_L). The
+ "endpoints free" was the GAP — r=H_0/H_L break R1's identity. CORRECTED to all-s (∀ s : Fin (L+1), 0 < M s),
+ committed Skeleton:1030 @0cedc7e. The verbatim interior predicate is deliberately NOT reproduced here — it
+ kept getting copy-quoted as the live form (4× this session). LIVE form is all-s, full stop.]
 
 ## ARCHITECTURE FINDING (g155, Codex-decorrelated + crux2's own design docstring) — RESHAPES #39
 THE FORK on the general-M R1: my RouteMTree.lean re-invents a recursion-state (RouteState/schurState/
