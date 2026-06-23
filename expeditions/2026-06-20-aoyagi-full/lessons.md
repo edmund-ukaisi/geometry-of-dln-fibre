@@ -662,3 +662,16 @@ EARLY: divergent copies of a load-bearing structure must collapse to one BEFORE 
 version (here the L2 PINs). The diagnostic (grep both branches for the disputed token) is cheap — reach for it the
 2nd time a "what does the file say" disagreement repeats, not the 6th. (crux2 found the root cause; controller
 git-verified + declared fm2/split-reindex canonical.)
+
+ADDENDUM — divergence also makes the CONTROLLER nearly re-derive proven work (2026-06-23). Resuming post-compaction,
+I scoped D1's ≥-leg, concluded "r=0 homogeneous deepest=min has an open analytic crux (lsc-at-origin)", and SPAWNED a
+decorrelated pen-and-paper to adjudicate it. Then TaskGet #42 revealed the crux was ALREADY PROVEN sorry-free on
+fm2/d1-deepest-min @8d0fd21 (DeepestMinRlct.lean: rlctAtOn_lsc_at_origin + deepest_le_of_homogeneous_core) — the proof
+lived on a branch my working tree (expedition/aoyagi-full) doesn't show, so it was invisible to file-reads + greps
+scoped to the checkout. Stood the pp down (1 wasted spawn). LESSON: D1 work is scattered across ≥3 branches
+(fm2/d1-deepest-min = canonical proof; d1-scope = roadmap docstring; expedition/aoyagi-full = headline+sorry); the
+TASK DESCRIPTIONS are the only divergence-aware record (#42 already said "PROVEN @8d0fd21"). Before commissioning ANY
+new work on a leg: (1) TaskGet the leg's task FIRST and read its full description, (2) `git grep <target-decl>` across
+ALL branches, not just the checkout. A clean working-tree file-read is NOT evidence the result is unproven — it may be
+proven one branch over. (Reinforces: collapse divergence EARLY — the #28 consolidation deferral is now actively
+costing controller cycles, not just risking future merge pain.)
