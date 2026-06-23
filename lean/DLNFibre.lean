@@ -98,3 +98,7 @@ import DLNFibre.Core.FibreCodim
 -- action + mult-equivariance + height-comap codim-invariance + rank normal form. Reduces Lemma 4.6
 -- to a single normal-form fibre.
 import DLNFibre.Core.FibreNormalForm
+-- Determinantal pivot-chart presentation (rank-chart build G2-1): the Schur rank criterion
+-- rank (fromBlocks Δ B12 B21 B22) = card m ↔ B22 = B21·Δ⁻¹·B12, the explicit chart parametrization
+-- Mat^{rk=r}∩U ≅ GL_r × Mat × Mat, + reusable block-diag rank additivity. Feeds G2-3 (the Schur AlgEquiv).
+import DLNFibre.Core.DeterminantalChart
