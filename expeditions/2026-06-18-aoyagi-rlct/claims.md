@@ -3192,9 +3192,9 @@ No such claim is formalisation-ready until both fields are filled.
   formula for deep linear networks.
 - **Tier.** Final synthesis claim.
 - **Status.** open.  Formula-notation, Definition 3 bridge, Definition 3
-  source-data ceiling, Definition 3 source-data local wrappers, and
-  conditional finite-exponent bridge slices have landed, but the final RLCT
-  theorem remains open.
+  source-data ceiling, Definition 3 source-data local wrappers, Definition 3
+  source-data final-boundary handoff, and conditional finite-exponent bridge
+  slices have landed, but the final RLCT theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -3209,6 +3209,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-definition3-source-data-ceil-a6.md`;
   source-data local wrappers reproduced at
   `threads/06-dln-translation/reproduction-definition3-source-data-local-wrappers-a6.md`;
+  source-data final-boundary handoff reproduced at
+  `threads/06-dln-translation/reproduction-definition3-source-data-final-boundary-a6.md`;
   conditional finite-exponent bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`;
   chart finite-certificate bridge reproduced at
@@ -3241,6 +3243,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-definition3-source-data-ceil-a6.md`;
   source-data local wrappers reviewed at
   `threads/06-dln-translation/review-definition3-source-data-local-wrappers-a6.md`;
+  source-data final-boundary handoff reviewed at
+  `threads/06-dln-translation/review-definition3-source-data-final-boundary-a6.md`;
   conditional bridge reviewed at
   `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`;
   chart finite-certificate bridge reviewed at
@@ -3383,6 +3387,10 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_and_poleOrder_eq_expanded_and_orderFormula`,
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_eq_theorem2Lambda_average_selectedReducedWidths`, and
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.lambda_eq_theorem2Lambda_expanded_selectedReducedWidths`
+  plus
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth`
+  and
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth`
   in `lean/DLNFibre/DLN/Aoyagi/Theorem2FinalAssembly.lean`.
 - **Proved.** formula-only arithmetic: integer reduced-width notation,
   pointwise rank-width conversion/nonnegativity for reduced widths and
@@ -3419,7 +3427,13 @@ No such claim is formalisation-ready until both fields are filled.
   selected-width provenance, A0 extraction, and finite exponent formula
   hypotheses; it projects the displayed lambda/order formulas and finite
   selected-width provenance consequences without constructing the missing
-  certificate.  Also proved an active-ratio terminal-order final-socket bridge:
+  certificate.  Also proved a Definition 3 source-data final-boundary handoff:
+  supplied source data and an explicit source-range rank-width hypothesis
+  existentially produce the selected-width family and ceiling datum used by
+  `AoyagiTheorem2SuppliedFinalBoundary` and
+  `AoyagiTheorem2SuppliedChartFinalBoundary`, while A0 extraction and finite
+  exponent formula hypotheses remain supplied for the produced data.  Also
+  proved an active-ratio terminal-order final-socket bridge:
   a supplied active coordinate realizing the displayed lambda and a supplied
   lower bound against every active ratio fill the exponent-minimum field,
   while the supplied chart/order equality and supplied Lemma 5 terminal-order

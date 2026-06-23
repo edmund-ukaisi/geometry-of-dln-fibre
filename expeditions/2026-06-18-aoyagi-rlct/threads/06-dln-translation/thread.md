@@ -638,3 +638,31 @@ Boundary: selected cutpoints, source data, and rank-width hypotheses remain
 supplied.  This does not prove selected cutpoint existence, nonselected
 inequalities from dimensions, Lemma 5 coverage/no-extra exactness,
 normal-crossing chart production, pole order, or RLCT.
+
+## Current slice - 2026-06-23, Definition 3 source-data final-boundary handoff
+
+Reproduction:
+`reproduction-definition3-source-data-final-boundary-a6.md`.
+Statement card:
+`statement-card-a6-definition3-source-data-final-boundary.md`.
+Review artifact:
+`review-definition3-source-data-final-boundary-a6.md`.
+
+Lean now uses the Definition 3 source-data provenance aggregator to
+existentially produce the selected-width family and ceiling datum needed by
+the final-boundary structures:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth
+```
+
+The theorems package the produced `m,data` into
+`AoyagiTheorem2SuppliedFinalBoundary` or
+`AoyagiTheorem2SuppliedChartFinalBoundary`, returning the same selected-width
+provenance facts as the source-data aggregator.
+
+Boundary: selected cutpoints, source data, source-range rank-width, A0
+extraction, and finite exponent formula hypotheses for the produced data
+remain supplied.  This does not prove active-ratio lower bounds, chart-count
+facts, chart production, pole order, or RLCT.

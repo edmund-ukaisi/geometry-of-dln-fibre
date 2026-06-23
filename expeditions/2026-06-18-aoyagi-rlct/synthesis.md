@@ -481,6 +481,16 @@ bound.  This is source-data aggregation only: selected cutpoints and
 rank-width hypotheses remain supplied, and no Lemma 5 coverage/no-extra
 exactness, chart production, pole order, or RLCT is proved.
 
+The Definition 3 source-data final-boundary handoff now lands in
+`Theorem2FinalAssembly.lean`.  It consumes the source-data provenance
+aggregator to existentially produce `m` and `data`, then packages them into
+the supplied final-boundary and chart-final-boundary structures when the A0
+extraction hypothesis and finite exponent formula hypothesis are supplied for
+the produced data.  This reduces bare selected-width provenance at the final
+socket, but selected cutpoints, source data, source-range rank-width,
+active-ratio/chart-count facts, chart production, pole order, and RLCT remain
+outside this theorem.
+
 The conditional A0/A6 finite-exponent bridge has now landed in
 `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`.  It introduces
 `AoyagiTheorem2FiniteExponentFormulaHypothesis`, which supplies exactly the

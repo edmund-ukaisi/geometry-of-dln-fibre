@@ -5940,6 +5940,25 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-data-local-wrappers-a6.md`.
 
+Latest A6 Definition 3 source-data final-boundary handoff:
+`Theorem2FinalAssembly.lean` now contains
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth`
+and
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth`.
+These use the supplied Definition 3 source data and explicit source-range
+rank-width hypothesis to existentially produce the selected reduced-width
+family and ceiling datum, then fill the selected-width provenance field of the
+final-boundary structures.  The A0 extraction hypothesis and finite exponent
+formula hypothesis for the produced data remain supplied.  They do not
+construct selected cutpoints, prove rank-width hypotheses, prove
+active-ratio/chart-count facts, produce charts, prove pole order, or extract
+an RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-data-final-boundary-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-data-final-boundary.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-data-final-boundary-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

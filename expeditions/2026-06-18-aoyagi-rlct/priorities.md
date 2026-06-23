@@ -77,6 +77,17 @@ bounds under an explicit source-range rank-width hypothesis.  Selected
 cutpoint existence and the rank-width hypothesis remain supplied; this does
 not prove Lemma 5 coverage, pole order, or RLCT.
 
+The current A6 Definition 3 source-data final-boundary handoff is
+`threads/06-dln-translation/reproduction-definition3-source-data-final-boundary-a6.md`.
+Lean now uses the source-data provenance aggregator to existentially produce
+the selected-width family and ceiling datum needed by
+`AoyagiTheorem2SuppliedFinalBoundary` and
+`AoyagiTheorem2SuppliedChartFinalBoundary`.  The selected cutpoints, source
+data, source-range rank-width hypothesis, A0 extraction hypothesis, and finite
+exponent formula hypothesis for the produced data remain supplied; no
+active-ratio/chart-count facts, chart production, pole order, or RLCT are
+proved.
+
 The current A6 Case 2 finite-formula wrapper is
 `threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`.
 Lean now composes the supplied Case 2/A0 coordinate bridge, a supplied

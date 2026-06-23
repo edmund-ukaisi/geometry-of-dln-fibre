@@ -454,6 +454,85 @@ theorem lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_rati
 
 end AoyagiTheorem2SuppliedChartFinalBoundary
 
+namespace AoyagiDefinition3SourceData
+
+/-- Definition 3 source data plus source-range rank-width hypotheses produce
+the selected-width family and ceiling datum needed by the supplied final
+Theorem 2 boundary.
+
+This removes a bare selected-width provenance input from the final socket, but
+the selected cutpoints, source data, rank-width hypothesis, A0 extraction
+hypothesis, and finite exponent formula hypothesis all remain supplied. -/
+theorem exists_theorem2SuppliedFinalBoundary_of_rankWidth
+    {D : AoyagiNormalCrossingExponentData}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder)
+    (hFormula :
+      ∀ {m : Fin (ell + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData ell m),
+        m = aoyagiSelectedReducedWidths H r C →
+        AoyagiTheorem2FiniteExponentFormulaHypothesis D L ell H r m data) :
+    ∃ (m : Fin (ell + 1) → ℤ) (data : AoyagiDefinition3CeilData ell m),
+      AoyagiTheorem2SuppliedFinalBoundary
+          D L ell H r C m data lambda poleOrder ∧
+      (∀ j : Fin (ell + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (ell + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (ell + 1),
+        (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      (∀ i : Fin (ell + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat ell m i) := by
+  rcases S.exists_selectedReducedWidthCeilData_of_rankWidth hr with
+    ⟨m, data, hm, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  refine ⟨m, data, ?_, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  exact
+    { selectedWidths_eq_reduced := hm
+      extractionHypothesis := hNC
+      finiteExponentFormula := hFormula data hm }
+
+/-- Chart-certificate version of
+`exists_theorem2SuppliedFinalBoundary_of_rankWidth`.
+
+The chart certificate and its extraction hypothesis remain supplied.  This
+only packages the Definition 3 source-selected family and ceiling datum before
+calling a supplied finite exponent formula hypothesis for that produced data. -/
+theorem exists_theorem2SuppliedChartFinalBoundary_of_rankWidth
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    (hFormula :
+      ∀ {m : Fin (ell + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData ell m),
+        m = aoyagiSelectedReducedWidths H r C →
+        AoyagiTheorem2FiniteExponentFormulaHypothesis
+          Cnc.exponentData L ell H r m data) :
+    ∃ (m : Fin (ell + 1) → ℤ) (data : AoyagiDefinition3CeilData ell m),
+      AoyagiTheorem2SuppliedChartFinalBoundary
+          Cnc L ell H r C m data lambda poleOrder ∧
+      (∀ j : Fin (ell + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (ell + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (ell + 1),
+        (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      (∀ i : Fin (ell + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat ell m i) := by
+  rcases S.exists_selectedReducedWidthCeilData_of_rankWidth hr with
+    ⟨m, data, hm, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  refine ⟨m, data, ?_, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  exact
+    { selectedWidths_eq_reduced := hm
+      extractionHypothesis := hNC
+      finiteExponentFormula := hFormula data hm }
+
+end AoyagiDefinition3SourceData
+
 end Aoyagi
 end DLN
 end DLNFibre
