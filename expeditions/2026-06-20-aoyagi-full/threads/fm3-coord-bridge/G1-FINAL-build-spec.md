@@ -1140,3 +1140,30 @@ not build on the wrong lane (conceptual slop a green build won't catch).
 LESSON (g173-class, re-applied): a teammate's confident "you have everything, go build" is verified against
 the cited decls' DOCSTRINGS/hypotheses (here the g134 PARKED banner on crux2's own lemma), not the framing.
 The lemmas existing ≠ the lemmas being on-path.
+
+## g212 — crux2's "+nReg/2 escapes the ⨅?" flag RESOLVED with literal (2,2,2) decls: regulars are SPECTATORS
+crux2 raised a sharp load-bearing flag: resolution_charts is pure-⨅ (no +nReg/2 outside, Skeleton:1031), so
+either the per-node +nReg/2 ENCODES into the leaf's monomialThreshold (giving monomialThreshold(smooth-block-d)
+= nReg/2 INSIDE the ⨅) or the pure-⨅ form breaks. Verified against the LITERAL (2,2,2) leaf encoding —
+diagnosis is the OPPOSITE: in the monomial route there is NO +nReg/2 term; the regulars are SPECTATOR axes.
+
+(2,2,2) unit leaf (Case222Resolution:215/219, authoritative): unitK8 = ![1,0,1,0,0,0,0,0], unitH8 =
+![3,0,2,0,0,0,0,0], d=8 = flatDim H222 = 2·2+2·2.
+- axis 0: (k,h)=(1,3) → axisRatio 3 1 = 2 (exceptional, codim-4 stratum)
+- axis 2: (k,h)=(1,2) → axisRatio 2 1 = 3/2 (exceptional, codim-3 = minAdm = binding minimiser)
+- axes 1,3,4,5,6,7: (k,h)=(0,0) → axisRatio 0 0 = ⊤ (the 6 SPECTATOR regular Morse directions)
+⨅ = min(2, 3/2, ⊤×6) = 3/2 = lambdaCore(2,2,2) ✓ (routeM222_leaf_threshold @Case222RouteMCover:44).
+
+RESOLUTION: monomialThreshold(smooth-block) is NOT nReg/2 — it's ⊤ (k=0 ⟹ axisRatio=⊤, leafMonoData_
+threshold). The nReg regulars DON'T bind the ⨅ and DON'T appear additively; they're spectators folded
+harmlessly into the min. The binding value comes ENTIRELY from the exceptional divisors (k=1, axisRatio
+(c−1) 1 = c/2). resolution_charts's pure-⨅ is SOUND because the route is monomial (spectator regulars +
+min-fold exceptionals), NOT additive. The "+nReg/2 into leaf-d" half of crux2's guardrail is VOID — no such
+term in the monomial route.
+
+This decl-confirms the g194/g211 additive-vs-min seam: crux2's schur squeeze gives Σ nReg/2 (additive lane,
+g134-PARKED — hnode undischargeable from the real product blow-up); the monomial leaf gives ⨅ over
+spectator-regulars + exceptionals = ½·minAdm (the headline). CONVERGENCE asked of crux2: routeStep fix-body =
+MONOMIAL recursion (pivotBlowupOn product → appendDivisor (1,c−1) → min/foldDivisors → flat ⨅), gated on
+realizability — NOT the additive squeeze. crux2's FLAT ⨅ bridge (applied once, all leaves) matches routeAtlas's
+Σ-over-cells leaf set.
