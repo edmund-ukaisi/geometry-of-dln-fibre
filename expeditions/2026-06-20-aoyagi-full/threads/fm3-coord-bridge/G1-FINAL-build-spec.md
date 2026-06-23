@@ -1323,3 +1323,33 @@ formaliser, g213) since it's MY type being validated and it's well-scoped comple
 Lean notes: PivotWitness is a Type (data), so codimsOf222_witnessed is a def (not theorem) and the witness
 selection is a decidable if-branch on c (NOT rcases on a Prop-Or — Or.casesOn can't eliminate into a Type
 goal). Hardened the committed type without touching routeStep (still the one §4-gated sorry).
+
+## g219 — §4 AIM CORRECTION (pp-r1realize, decorrelated): value is ACHIEVER-ONLY, NOT full surjectivity
+g216 OVER-AIMED. I framed the §4 wall as "the Adm↔RealizableRank bridge (full stratum_surjective ∀T∈Adm)" —
+but pp-r1realize's decorrelated verdict corrects the aim, and my OWN committed lemma confirms it:
+foldFamily_iInf_eq_half_minAdm (RouteMState:321) has NO stratum_surjective in its signature. It needs ONLY:
+(C≥) per-cell PivotWitness (hwit : ∀ i, ∀ c ∈ codimsOf i, PivotWitness M c) + (C=∃) ONE achiever leaf
+(i₀ + hbind₀ : minAdm ∈ codimsOf i₀). le_antisymm forces only that. Full surjectivity imports a Core-orbit
+dependency (Adm↔RealizableRank) the VALUE NEVER NEEDS. My (2,2,2) validation (g218) already demonstrates
+this concretely: ONE Unit leaf, achiever-only, no surjectivity — folds to 3/2.
+
+CORRECTION to g216: the §4 gap is NOT the Adm↔RealizableRank bridge (that's over-aiming — a theorem the
+value doesn't require; HOLD that probe, do NOT build it). The g216 grep "Adm↔RealizableRank absent" was a
+correct OBSERVATION, but the INFERENCE (that the value needs it) was wrong — the value is achiever-only.
+[Also: the controller notes the Core orbit-Kostant layer DOES exist (baseChange_normalForm/OrbitKostant); my
+earlier "grep empty / absent" on Adm-linkage was partly a quoting artefact. But moot — §4 doesn't route
+through it.]
+
+THE REAL §4 GAP (pp-r1realize): routeStep must emit a genuine BRANCH whose cell holds the ACHIEVER's ranks
+T* (Mval M₀ T* = minAdm), with each step's analytic descent via a GENERAL hnode Schur chart. The ONLY new
+content is the general hnode chart (the g131 hard-pivot, uniformly for general M) — which IS my Q2 caveat
+(schurState.red = the actual pivotBlowupOn residual needs the general node residual id; descent rides hnode).
+So the C5 hnode probe (#97, t=(3,3,2,2,2,0)) is decisive: witness → formaliser-weeks (the general hnode chart
+is buildable), refute → research gap.
+
+NET: HOLD the Adm↔RealizableRank probe (over-aim). The §4 linchpin = the general hnode chart (= my Q2 caveat
+= crux2's transport-field). Continue #94 (2,2,2) coordination; stand by for the C5 (#97) outcome. My (2,2,2)
+value/dispatch validation (g218) already exhibits the achiever-only path end-to-end — the anchor is sound.
+LESSON (disposition): the g216 over-aim is "reaching for a confident headline (the impressive Adm↔RealizableRank
+theorem) — the moment to look for the confound." pp-r1realize's decorrelation caught it; my own lemma's
+signature was the confound. Observe (grep: bridge absent) ≠ interpret (the value needs it).
