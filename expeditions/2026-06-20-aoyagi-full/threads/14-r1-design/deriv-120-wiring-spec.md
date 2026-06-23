@@ -60,6 +60,19 @@ explicit equiv sends each boundary block to the matching `RegGaugeIdx` entry:
       | inr (inl (i,j))    ↦ ⟨Fin.last, inl (inr (i,j))⟩    -- Y_last
       | inr (inr (i,j))    ↦ ⟨0,        inr (i,j)⟩          -- Z_first
 
+**INJECTIVE BY CONSTRUCTION (the controller's sharpening — load-bearing).** The non-injectivity risk
+(the `Σ_s δX_s` sandwich COLLAPSING two distinct reg coords if an opaque split misroutes them) is killed
+because `regBoundaryToRegGauge` routes each `BoundaryPivotIdx` coord to a DISTINCT `RegGaugeIdx` entry:
+the three arms land in disjoint layer-tags × sum-arms (`⟨0, inl(inl)⟩` vs `⟨last, inl(inr)⟩` vs
+`⟨0, inr⟩` — the X_first/Z_first share layer 0 but differ in the OUTER sum-arm `inl` vs `inr`; Y_last has
+a different layer-tag). So it is an `Function.Injective` / `Embedding`, NOT just "some map" — it must be
+stated and proved as such (a `by decide`-able disjointness on the sum-arm/layer-tag, or `Sum.inl.inj` /
+`Sigma.mk.inj` chasing). This makes `regBoundaryEquiv : BoundaryPivotIdx ≃ image` a genuine bijection,
+so the reg-half read is injective, so `Σ_s δX_s|_{reg-half} = δX_first` has NO collapse (the only X in the
+reg image is `X_first`). **Bake `injective_regBoundaryToRegGauge` into the alignment lemma's hypotheses**
+(or derive it once and reuse): the reg-block-is-id proof must invoke it where it argues "exactly one
+surviving X per reg coord."
+
 The gauge half is `RegGaugeIdx \ image(regBoundaryToRegGauge)` (the interior/non-boundary X/Y/Z). The
 two replacements:
 
@@ -150,6 +163,16 @@ wastes the ~200-line formalisation. **Recommend a decorrelated pp2 "coordinate-c
 FIRST** (controller's option C): pin the EXACT `Fin nReg ≃ BoundaryPivotIdx` enumeration + the
 `regBoundaryToRegGauge` routing + the per-coordinate `Σ_s δX_s = δX_first` collapse, sympy/sage-checked at
 a few `(H, r)` (e.g. r=1 M=(1,1,1), r=2 M=(1,0,1,2)). Then the Lean drop-in is mechanical.
+
+## Feasibility — the explicit `Fin nReg ≃ BoundaryPivotIdx` PROVABLY exists
+
+`Fintype.card (BoundaryPivotIdx H r) = deepestNReg H r` is the SAME arithmetic the EXISTING
+`regResidualPack` already proves (`DeepestGaugeConstruction.lean:362-371`: `r·r + r·(H_L−r) + (H₀−r)·r =
+r(H₀+H_L−r)`, via `Nat.le.dest` + `ring`). So the explicit equiv exists by the identical card proof — the
+refactor REPLACES the opaque `Fintype.equivFin` tail with an honest `finCongr`/`finSumFinEquiv`/
+`finProdFinEquiv` enumeration of the same arithmetic, NOT a new existence obligation. Verified by precedent
+(the card proof is copy-able from the live def); a fresh-worktree olean build to typecheck the enumeration
+is the first drop-in step, not a design risk.
 
 ## Banked infra (applies in step 4)
 `fm/deriv-pin1` @fb174f0 — `DeepestFramedDeriv.lean`: `ContDiff.hasStrictFDerivAt` strict-deriv-free
