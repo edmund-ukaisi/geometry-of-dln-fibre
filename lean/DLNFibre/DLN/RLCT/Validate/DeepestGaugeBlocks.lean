@@ -58,6 +58,17 @@ theorem twofactor_block_product {r m₁ m₂ m₃ : Type*} [Fintype r] [Decidabl
           (Z₁ * (1 + X₂) + T₁ * Z₂) (Z₁ * Y₂ + T₁ * T₂) := by
   rw [Matrix.fromBlocks_multiply]
 
+/-- **`blockdiag[I_r, 0]` is corner-idempotent**: `blockdiag · blockdiag = blockdiag`
+(`fromBlocks_multiply`: the `(0,0)` corner is `1·1 = 1`, all other blocks have a `0` factor). The
+step-fact of the deepest-product idempotent fold (the `_base` value-fold's `prodAux` induction — the
+product of `reindex(blockdiag)` layers stays `reindex(blockdiag)`). Reusable, cast-free block algebra. -/
+theorem fromBlocks_blockdiag_idem {r m₀ m₁ m₂ : Type*} [Fintype r] [DecidableEq r] [Fintype m₁]
+    {R : Type*} [CommRing R] :
+    ((Matrix.fromBlocks (1 : Matrix r r R) 0 0 0 : Matrix (r ⊕ m₀) (r ⊕ m₁) R)
+        * (Matrix.fromBlocks (1 : Matrix r r R) 0 0 0 : Matrix (r ⊕ m₁) (r ⊕ m₂) R))
+      = Matrix.fromBlocks (1 : Matrix r r R) 0 0 0 := by
+  rw [Matrix.fromBlocks_multiply]; simp
+
 /-- **The Schur split of the 2-factor product's `(1,1)` block** (g150-fix / g153). The lower-right
 Schur complement `R := P₁₁ − P₁₀·Ainv·P₀₁` (`Ainv` = the pivot inverse) is the clean reduced core
 (the gauge-normalized chain); `P₁₁ = R + P₁₀·Ainv·P₀₁` exhibits the endpoint leak `P₁₁ − R` as a
