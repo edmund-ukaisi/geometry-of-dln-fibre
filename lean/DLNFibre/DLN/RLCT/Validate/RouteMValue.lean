@@ -29,7 +29,16 @@ variable {L : ℕ}
 family of the per-leaf `monomialThreshold` is `½·minAdm(M)`. Reduces to
 `RouteMState.foldFamily_iInf_eq_half_minAdm` — the value rides ONLY the `PivotWitness` codims (no cascade).
 The hypotheses `hdata`/`hwit`/`hbind₀` are what `routeStep`'s branch supplies (the named gap); this is the
-value-fold logic, abstract over the family. -/
+value-fold logic, abstract over the family.
+
+**Root-anchoring (the codims fidelity point, fm3 decl-check).** `hwit` requires each path codim to be a
+`PivotWitness M` — i.e. `codim = (Mval M T).toNat` for `T ∈ Adm M` at the FIXED ROOT `M`, NOT the reduced
+node's `minAdm`. This is load-bearing for `(C≥)`: a reduced node's `minAdm` UNDERSHOOTS (it can be `< minAdm
+M`), which would break the lower bound. Worked anchors (decl-checked): `(2,2,2)` chain `→(1,1,2)→(0,0,2)`
+(2 branch nodes), `codimsOf = [Mval(2,2,2)(0,0)=4, Mval(2,2,2)(1,0)=3=minAdm]`, fold `min(2,3/2)=3/2`;
+`(3,2,3)` chain `→(2,1,3)→(1,0,3)` (2 branch nodes), `codimsOf = [6, 5]` (BOTH root `Mval(3,2,3) T`:
+`Mval(1,0)=5=minAdm` the achiever, `Mval(0,0)=Mval(2,0)=6`; NOT the reduced `minAdm(2,1,3)=2`), fold
+`min(3, 5/2)=5/2`. The `PivotWitness M` type enforces the root-anchoring; this lemma consumes it. -/
 theorem routeM_value_eq (M : Fin (L + 1) → ℕ) (codimsOf : routeMIota M → List ℕ)
     (hdata : ∀ i, (routeAtlas M M).data i = MonoData.foldDivisors (codimsOf i))
     (hm₀ : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
