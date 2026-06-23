@@ -44,17 +44,9 @@ theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k 
     prodAux H A (k + 1) hk
       = (prodAux H A k (Nat.lt_of_succ_lt hk)) *
           (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm) (A ⟨k, Nat.lt_of_succ_lt_succ hk⟩)) := by
-  -- DEFERRED (crux2, cap reached) — SHARPENED for the resumer (needs goal-state feedback, ~1 iteration):
-  -- `obtain rfl : e1 = rfl := Subsingleton.elim _ _` WORKS (the width-eq IS rfl, Eq is a subsingleton),
-  -- same for e2 — so the cast collapses. After the obtains the RHS `reindex (finCongr rfl) (finCongr rfl)`
-  -- IS the identity (`finCongr_refl` Data/Fin/SuccPred + `reindex_refl_refl` Data/Matrix/Defs), leaving
-  -- `prodAux (k+1) = prodAux k * A ⟨k,_⟩` = the def by `rfl`. BUT `simp only [finCongr_refl,
-  -- reindex_refl_refl]` "made no progress" — the post-obtain goal doesn't surface those literal patterns;
-  -- needs the interactive goal-state to pick the right rewrite (likely the `.symm`-of-rfl shape or an
-  -- `Equiv.refl_symm` first). For the FULL telescoping induction, the fold-traversal tool is
-  -- `Matrix.submatrix_mul_equiv` (Data/Matrix/Mul:1151) — commutes reindex through `*` so frames push
-  -- through `prodAux` without the HMul-synth wall. Concrete Mathlib leads, not a from-scratch HEq design.
-  sorry
+  obtain rfl : e1 = rfl := Subsingleton.elim _ _
+  obtain rfl : e2 = rfl := Subsingleton.elim _ _
+  rfl
 
 /-- **PIN2 endpoint-frame telescoping** (existential endpoints, cobuild's banked shape). If every layer
 of `C` is the framed layer `C s = P s · A s · Q s` with `P s, Q s` units, and the interior interfaces
