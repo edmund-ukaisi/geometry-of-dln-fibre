@@ -313,4 +313,98 @@ theorem rlctAtOn_comp_localDiffeo {M : Type*}
     ⟨ag, bg, hagpos, fun w hw => hVgb_bnd w hw.2⟩
   exact hkey
 
+/-! ## The concrete reg-straightening from a pivot map (`regStraightenOf`)
+
+The `regAbsorb` field is a TOTAL self-map of `R × (C × S)` whose reg slot carries the nonlinear
+straightened residual `E_pivot` (reading reg + spec), fixing core + spec. PIN 1's `regAbsorb_rlct`
+needs ONLY that its total strict derivative at `0` is the identity (so the IFT applies); the concrete
+nonlinear form of `E_pivot` is PIN 2's (the squeeze). So PIN 1 abstracts over `E_pivot : R × S → R`
+with `HasStrictFDerivAt E_pivot (fst) 0` — the "`dE(0) = id`" of the ruling, typed precisely: the
+derivative of the reg-component at `0` is the projection `fst : R × S →L R` (identity on the reg
+directions, zero on the spectator), which makes the total map's derivative `id_{R×(C×S)}`. -/
+
+section RegStraightenOf
+variable {R C S : Type*}
+  [NormedAddCommGroup R] [NormedSpace ℝ R]
+  [NormedAddCommGroup C] [NormedSpace ℝ C]
+  [NormedAddCommGroup S] [NormedSpace ℝ S]
+
+/-- The reg-straightening built from a pivot map `E_pivot : R × S → R`: replace the reg slot by
+`E_pivot (reg, spec)`, fix core + spec. (The (C)-fallback total continuous self-map.) -/
+def regStraightenOf (E_pivot : R × S → R) : R × (C × S) → R × (C × S) :=
+  fun q => (E_pivot (q.1, q.2.2), q.2.1, q.2.2)
+
+@[simp] theorem regStraightenOf_core (E_pivot : R × S → R) (q : R × (C × S)) :
+    (regStraightenOf (C := C) E_pivot q).2.1 = q.2.1 := rfl
+
+@[simp] theorem regStraightenOf_spectator (E_pivot : R × S → R) (q : R × (C × S)) :
+    (regStraightenOf (C := C) E_pivot q).2.2 = q.2.2 := rfl
+
+@[simp] theorem regStraightenOf_fst (E_pivot : R × S → R) (q : R × (C × S)) :
+    (regStraightenOf (C := C) E_pivot q).1 = E_pivot (q.1, q.2.2) := rfl
+
+theorem regStraightenOf_basepoint (E_pivot : R × S → R) (h0 : E_pivot 0 = 0) :
+    regStraightenOf (C := C) E_pivot 0 = 0 := by
+  simp only [regStraightenOf]
+  refine Prod.ext ?_ (Prod.ext rfl rfl)
+  show E_pivot (((0 : R × (C × S)).1), ((0 : R × (C × S)).2.2)) = 0
+  rw [← h0]; rfl
+
+theorem continuous_regStraightenOf (E_pivot : R × S → R) (hcont : Continuous E_pivot) :
+    Continuous (regStraightenOf (C := C) E_pivot) := by
+  refine Continuous.prodMk ?_ (Continuous.prodMk (continuous_fst.comp continuous_snd)
+    (continuous_snd.comp continuous_snd))
+  exact hcont.comp (continuous_fst.prodMk (continuous_snd.comp continuous_snd))
+
+/-- The reg-straightening's regular output reads only reg + spec (the `hra_regdep` of
+`rlctAtOn_regAbsorb_reduce`): two points with the same reg AND spec slots have the same reg output. -/
+theorem regStraightenOf_regdep (E_pivot : R × S → R) (q q' : R × (C × S))
+    (hreg : q.1 = q'.1) (hspec : q.2.2 = q'.2.2) :
+    (regStraightenOf (C := C) E_pivot q).1 = (regStraightenOf (C := C) E_pivot q').1 := by
+  simp only [regStraightenOf_fst, hreg, hspec]
+
+/-- **`regStraightenOf E_pivot` has strict derivative `id` at `0`** — the analytic gate of PIN 1.
+Given `HasStrictFDerivAt E_pivot (fst : R × S →L R) 0` (the precise `dE(0) = id`), the total map's
+strict derivative at `0` is `ContinuousLinearMap.id`. Assembled by `HasStrictFDerivAt.prodMk` of the
+three components: reg (`E_pivot ∘ (reg,spec)-projection`, derivative `fst ∘ that = reg-projection`),
+core (`(reg,(core,spec)) ↦ core`, linear), spec (linear). -/
+theorem hasStrictFDerivAt_regStraightenOf (E_pivot : R × S → R)
+    (hE : HasStrictFDerivAt E_pivot (ContinuousLinearMap.fst ℝ R S) 0) :
+    HasStrictFDerivAt (regStraightenOf (C := C) E_pivot)
+      (ContinuousLinearMap.id ℝ (R × (C × S))) 0 := by
+  -- The inner linear projection `(reg,(core,spec)) ↦ (reg,spec)`, strict-diff'able everywhere.
+  set proj : (R × (C × S)) →L[ℝ] (R × S) :=
+    (ContinuousLinearMap.fst ℝ R (C × S)).prod
+      ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) with hproj
+  have hproj_sd : HasStrictFDerivAt (fun q : R × (C × S) => (q.1, q.2.2)) proj 0 :=
+    proj.hasStrictFDerivAt
+  -- reg-component: `E_pivot ∘ proj`, derivative `fst.comp proj = reg-projection`.
+  have hreg_sd : HasStrictFDerivAt (fun q : R × (C × S) => E_pivot (q.1, q.2.2))
+      ((ContinuousLinearMap.fst ℝ R S).comp proj) 0 := by
+    have hcomp := hE.comp (x := (0 : R × (C × S))) hproj_sd
+    simpa using hcomp
+  -- core + spec components: linear projections.
+  have hcore_sd : HasStrictFDerivAt (fun q : R × (C × S) => q.2.1)
+      ((ContinuousLinearMap.fst ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) 0 :=
+    ((ContinuousLinearMap.fst ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))).hasStrictFDerivAt
+  have hspec_sd : HasStrictFDerivAt (fun q : R × (C × S) => q.2.2)
+      ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) 0 :=
+    ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))).hasStrictFDerivAt
+  have hcs_sd : HasStrictFDerivAt (fun q : R × (C × S) => (q.2.1, q.2.2))
+      (((ContinuousLinearMap.fst ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))).prod
+        ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S)))) 0 :=
+    hcore_sd.prodMk hspec_sd
+  have htotal := hreg_sd.prodMk hcs_sd
+  -- The assembled derivative is `id` (each slot projects to itself).
+  refine htotal.congr_fderiv ?_
+  apply ContinuousLinearMap.ext
+  intro x
+  show ((ContinuousLinearMap.fst ℝ R S).comp proj x,
+      (((ContinuousLinearMap.fst ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) x,
+       ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))) x))
+    = x
+  exact Prod.ext rfl (Prod.ext rfl rfl)
+
+end RegStraightenOf
+
 end DLNFibre.DLN.RLCT
