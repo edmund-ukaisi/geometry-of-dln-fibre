@@ -2,25 +2,31 @@ import DLNFibre.DLN.RLCT.Validate.RouteMNodeDescentBuild
 import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
 /-!
-# `RouteMO1Bridge` — the G-b O1 bridge: `dlnLoss`-level per-node descent (fm3 #148/#104)
+# `RouteMO1Bridge` — the MP-chart squeeze descent (fm3 #148; SCOPE-LIMITED, see caveat)
 
-The per-node `hstep` the binding recursion (`BindingRecursion.binding_recursion_of_step`) consumes, at the
-ACTUAL network loss `dlnLoss M 0` (not the abstract `flatCore`): for a non-leaf node, the local RLCT at the
-deepest point splits as
-`rlctAtOn (dlnLoss M 0) (chart (0,0)) = nReg/2 + rlctAtOn (dlnLoss S.red 0) 0`.
+`rlctAtOn (dlnLoss M 0) (chart (0,0)) = nReg/2 + rlctAtOn (dlnLoss S.red 0) 0` from a measure-preserving
+chart `χ : ((Fin nReg → ℝ) × Y) ≃ₜ Params M` + the SQUEEZE of `dlnLoss M 0 ∘ χ` by `smoothBlockSplitForm G`.
+Composes `dlnLoss_chart_squeeze_descent` (chart transport via `rlctAtOn_comp_homeomorph` + the chart-free
+`schur_recursion_step_squeeze`) with `ReducedTransport.descent`.
 
-This is the GEOMETRIC half of G-b (Codex route verdict: the recursion route; rs-grind's `#143` supplies the
-combinatorial `nReg`/telescope/well-foundedness facts). It composes:
-- `dlnLoss_chart_squeeze_descent` — the chart transport (`rlctAtOn_comp_homeomorph`) + the chart-free squeeze
-  (`schur_recursion_step_squeeze`): transport `dlnLoss M 0` to the chart source, where it is squeezed by
-  `smoothBlockSplitForm G`, giving `nReg/2 + rlctAtOn (G²) 0`;
-- `ReducedTransport.descent` — `rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) 0` (crux2's det-1 MP reindex).
+**SOUNDNESS CAVEAT (fm3 + Codex xhigh, 2026-06-23 — name≠content correction).** These lemmas are valid for
+their stated hypotheses, but the hypotheses are NOT a sound per-node `hstep` at a real BLOW-UP node:
+- The MP chart `χ` exists (a `paramsEquivFlat`-style det-1 coordinate reindex). BUT
+- the SQUEEZE `c₁·Φ ≤ dlnLoss M 0 ∘ χ ≤ c₂·Φ` is UNSATISFIABLE from the raw loss via an MP reindex: the
+  hard-pivot Schur normal form (the squeezable `smoothBlockSplitForm`) only appears AFTER the blow-up
+  `A = y₀·Â`; the raw `‖A·B‖²` at the zero-core origin has a rank-0 Jacobian and is NOT locally squeezable.
+- The blow-up's Jacobian (e.g. `y₀³` at `(2,2,2)`) SHIFTS the RLCT threshold (exceptional divisor
+  `(3+1)/(2·1)=2`, not `1/2`); the MP-chart route does NOT carry it (it would only survive when the divisor
+  is non-binding, e.g. `(2,2,2)` accidentally giving `3/2`). So this is NOT a sound descent principle for
+  blow-up nodes.
 
-The producer obligation isolated here (the only formaliser-weeks piece): the per-node `O1Presentation`
-datum — a measure-preserving chart `χ : ((Fin nReg → ℝ) × Y) ≃ₜ Params M` and the SQUEEZE of `dlnLoss M 0 ∘ χ`
-by `smoothBlockSplitForm G` near `(0,0)`. The (2,2,2) anchor cert
-(`case222-hnode-schur-cert.md`) is the C1 prototype: `dlnLoss = ‖A·B‖²`, the A-pivot blow-up presents the
-core in Schur form `∑Erow² + ‖bcol·Erow + SΓ‖²`, `G²` the reduced `(1,1,2)` loss, `nReg = 2`.
+**Therefore:** these lemmas are sound ONLY when `χ` is a genuine MP/unit-Jacobian phase, or when the
+argument is ALREADY a post-blow-up `flatCore` in blown-up coordinates (where `descentStep` /
+`RouteMNodeDescent`, which take `flatCore` = "the post-blow-up per-node core", are the correct, sound tools).
+The per-node `hstep` for `binding_recursion_of_step` at the `dlnLoss` level requires the WEIGHTED-COVER
+route (`weightedThreshold F 1 = weightedThreshold (F ∘ π) |Jac π|`, the blow-up Jacobian explicit in the
+integrand — the existing `(2,2,2)` cover machinery / `#104`), NOT this MP-chart bridge. Kept as the sound
+MP-phase / post-blow-up lemma + the dead-route record; do NOT wire as the blow-up-node `hstep`.
 -/
 
 open scoped ENNReal
