@@ -499,6 +499,49 @@ theorem clmShearEquiv_coe {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M]
     (clmShearEquiv N hN : M →L[ℝ] M) = ContinuousLinearMap.id ℝ M + N := by
   ext x; simp [clmShearEquiv_apply]
 
+/-- **The reg-slice embedding** `R →L R × S`, `r ↦ (r, 0)` — the reg-block reader for `regStraightenTotalCLM`. -/
+def regInCLM : R →L[ℝ] R × S := (ContinuousLinearMap.id ℝ R).prod 0
+
+@[simp] theorem regInCLM_apply (r : R) : (regInCLM : R →L[ℝ] R × S) r = (r, 0) := rfl
+
+/-- **`regStraightenTotalCLM D_E` is an invertible CLE when `D_E`'s reg-block is `id`** (the #120 shear,
+generic form — Route D). If `D_E (r, 0) = r` (`hblock`), the total CLM `δ ↦ (D_E(δ.1,δ.2.2), δ.2.1, δ.2.2)`
+is `id + N` with `N : δ ↦ (D_E(δ.1,δ.2.2) − δ.1, 0, 0)` square-zero (`N`'s output has spec slot `0`, so a
+second `N` reads `D_E(·, 0) = ·` by `hblock`, cancelling). Packaged by `clmShearEquiv`. This is the
+invertible `e` `rlctAtOn_comp_localDiffeo` consumes — decoupled from HOW `D_E`'s reg-block is `id`. -/
+theorem regStraightenTotalCLM_equiv_of_regBlock_id (D_E : (R × S) →L[ℝ] R)
+    (hblock : D_E.comp (regInCLM : R →L[ℝ] R × S) = ContinuousLinearMap.id ℝ R) :
+    ∃ e : (R × (C × S)) ≃L[ℝ] (R × (C × S)),
+      (e : (R × (C × S)) →L[ℝ] (R × (C × S))) = regStraightenTotalCLM (C := C) D_E := by
+  set T := regStraightenTotalCLM (C := C) D_E with hT
+  set N : (R × (C × S)) →L[ℝ] (R × (C × S)) := T - ContinuousLinearMap.id ℝ _ with hN
+  -- `D_E (r, 0) = r` from `hblock`.
+  have hblock' : ∀ r : R, D_E (r, (0 : S)) = r := by
+    intro r
+    have := ContinuousLinearMap.ext_iff.1 hblock r
+    simpa [regInCLM] using this
+  -- `T δ = (D_E (δ.1, δ.2.2), δ.2.1, δ.2.2)`; hence `N δ = (D_E (δ.1, δ.2.2) − δ.1, 0, 0)`.
+  have hTapp : ∀ δ : R × (C × S), T δ = (D_E (δ.1, δ.2.2), δ.2.1, δ.2.2) := by
+    intro δ
+    simp only [hT, regStraightenTotalCLM, ContinuousLinearMap.prod_apply,
+      ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd']
+  have hNapp : ∀ δ : R × (C × S), N δ = (D_E (δ.1, δ.2.2) - δ.1, 0, 0) := by
+    intro δ
+    rw [hN, ContinuousLinearMap.sub_apply, hTapp, ContinuousLinearMap.coe_id', id_eq]
+    ext <;> simp
+  -- `N ∘ N = 0`: `N δ` has spec slot `0`, so the second `N` reads `D_E (·, 0) = ·` (hblock'), cancelling.
+  have hNNpt : ∀ δ : R × (C × S), N (N δ) = 0 := by
+    intro δ
+    rw [hNapp δ, hNapp]
+    -- `(N δ).1 = D_E(δ.1,δ.2.2) − δ.1`, `(N δ).2.2 = 0`; `D_E (·, 0) = ·` by hblock'.
+    simp only [hblock', sub_self]
+    rfl
+  have hNN : N.comp N = 0 := by
+    refine ContinuousLinearMap.ext (fun δ => ?_)
+    rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply, hNNpt]
+  refine ⟨clmShearEquiv N hNN, ?_⟩
+  rw [clmShearEquiv_coe N hNN, hN]; abel
+
 end RegStraightenOf
 
 end DLNFibre.DLN.RLCT
