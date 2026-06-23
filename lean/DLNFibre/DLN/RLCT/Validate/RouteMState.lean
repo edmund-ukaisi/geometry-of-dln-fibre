@@ -307,4 +307,28 @@ theorem foldFamily_threshold_ge_of_pivotWitness {ι : Type*} (M : Fin (L + 1) �
   foldFamily_threshold_ge_of_admWitness M codimsOf hm₀
     (fun i' c hc => ⟨(hwit i' c hc).T, (hwit i' c hc).hAdm, (hwit i' c hc).hCodim⟩) i
 
+/-! ## The abstract-family value (`⨅ = ½·minAdm`) — the certified-`RouteStep` value consequence (#88)
+
+The `IsResolutionAtlas`-value over an ABSTRACT leaf family `(ι, codimsOf)`: given the per-divisor
+root-anchored `PivotWitness` (C≥) AND a designated ACHIEVER leaf `i₀` whose codim-list contains the
+minimal codim `m₀ = minAdm` (C=∃), the `⨅` over the family of the `foldDivisors` thresholds is exactly
+`½·m₀`. This is the full value the cover bridge's `⨅` lands on (the `of_mult_and_achiever` consequence,
+in the `foldDivisors`/`codimsOf` form): `le_antisymm` of the C≥ lower bound (`le_iInf` of
+`foldFamily_threshold_ge_of_pivotWitness`) and the achiever upper bound (`iInf_le` at the achiever leaf,
+`foldFamily_achiever`). Driver-agnostic — over any abstract family, NOT tied to `routeMIota` (which is
+gated on the `routeStep` realizability). The binding-leaf `(k,h)=(1, m₀−1)` is automatic: `appendDivisor`
+sets every pivot axis to `(1, c−1)`, so `m₀ ∈ codimsOf i₀` already encodes the codim-`m₀` binding divisor. -/
+theorem foldFamily_iInf_eq_half_minAdm {ι : Type*} [Nonempty ι] (M : Fin (L + 1) → ℕ)
+    (codimsOf : ι → List ℕ) (hm₀ : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
+    (hwit : ∀ i, ∀ c ∈ codimsOf i, PivotWitness M c)
+    (i₀ : ι) (hbind₀ : ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat ∈ codimsOf i₀) :
+    (⨅ i : ι, monomialThreshold (MonoData.foldDivisors (codimsOf i)).d
+        (MonoData.foldDivisors (codimsOf i)).k (MonoData.foldDivisors (codimsOf i)).h)
+      = ((((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat : ℝ≥0∞)) / 2 := by
+  apply le_antisymm
+  · obtain ⟨i, hi⟩ := foldFamily_achiever codimsOf _ hm₀ i₀
+      (fun c hc => (hwit i₀ c hc).minAdm_le) hbind₀
+    exact le_of_le_of_eq (iInf_le _ i) hi
+  · exact le_iInf (fun i => foldFamily_threshold_ge_of_pivotWitness M codimsOf hm₀ hwit i)
+
 end DLNFibre.DLN.RLCT
