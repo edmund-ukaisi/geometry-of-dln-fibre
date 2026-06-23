@@ -1,7 +1,8 @@
 # Statement card — `routeStep` leaf-first dispatch (#103, the assembly)
 
 The general-M dispatcher's leaf-first classify (the recursion's per-node step), assembled on the settled
-#108 base case. Leaf arm + dispatch CONCRETE; the general branch is the single fenced named gap (→ #104).
+#108 base case. Leaf arm + dispatch CONCRETE; the general branch is the single fenced named gap (the general
+dispatcher BODY → **#85**; the per-node descent-soundness is the SEPARATE #104, the geometric fidelity #135).
 
 ---
 
@@ -55,5 +56,10 @@ is the ROOT-anchored `Mval M₀ T_node` (the `PivotWitness M₀` content), `T_no
 2. **The general branch = the rank-pattern read** (the cells/codim/witness for arbitrary non-leaf `M`: which
    root-anchored `T_node` per node). This is the formaliser-weeks general dispatcher, and its
    achiever-leaf-existence rides the orbit-side realizability tie (#96/#121, `Adm ↔ RealizableRank`) — the
-   genuine gate. Sub-2b (#116) supplies the (0,j)-row computation (rankPattern_cascade_prefix); the genuine realizability tie is #121;
-   #121 ties it to `Adm`/`Mval`. The general value-over-`routeMIota` closes once both land (#104-adjacent).
+   genuine gate. Sub-2b (#116) supplies the (0,j)-row computation (rankPattern_cascade_prefix); the genuine
+   realizability tie is **#121** (`rankFn_cascadeTuple_eq_achieverRankPattern`, PROVEN — `rankFn(cascadeTuple
+   t*) = achieverRankPattern`, the INDEPENDENT `r*` built from `(M,T)` alone; NOT the renamed
+   `cascadeTuple_rankFn_mem_range` ∈-range tautology). **Scope (controller ruling):** the value-over-
+   `routeMIota` closes with the GENERAL dispatcher BODY (**#85**, the general `routeStep`); **#104** is the
+   SEPARATE descent-soundness (cover-CoV), NOT the value-closure. So: value rides #85 (+ the #121 tie for the
+   achiever leaf); #104 is the descent.
