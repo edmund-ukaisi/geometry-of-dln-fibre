@@ -763,6 +763,16 @@ supplied `TC.TerminalMinimumCountDatumClassifier`, keeping branch-label
 injectivity, active-ratio certificates, chart-count certificates, selected
 provenance, and A0 extraction explicit.
 
+Current A6 terminal-order equality bridge:
+`threads/06-dln-translation/reproduction-theorem2-terminal-order-equality-bridge-a6.md`.
+These wrappers accept the exact equality
+`TC.terminalMinimumLabels.card = data.theorem2OrderFormula` as the A6 order
+input.  This is the preferred downstream socket for exact-count routes such as
+the Eq5 endpoint-family handoff, because it avoids restating the large Eq5
+payload block inside final-assembly theorems.  The exact count, active-ratio
+certificates, chart-count certificates, selected provenance, and A0 extraction
+remain supplied.
+
 Lean now exposes the generic counted-datum injectivity adapter from supplied
 Eq5 own-block payloads plus supplied `(p, alpha)` injectivity, and the
 terminal-family convenience theorem for `TC.terminalMinimumLabels`.  It also

@@ -3365,8 +3365,9 @@ No such claim is formalisation-ready until both fields are filled.
 - **Tier.** Final synthesis claim.
 - **Status.** open.  Formula-notation, Definition 3 bridge, Definition 3
   source-data ceiling, Definition 3 source-data local wrappers, Definition 3
-  source-data final-boundary handoff, and conditional finite-exponent bridge
-  slices have landed, but the final RLCT theorem remains open.
+  source-data final-boundary handoff, conditional finite-exponent bridge, and
+  terminal-order equality-bridge slices have landed, but the final RLCT theorem
+  remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -3401,6 +3402,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`;
   chart terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-chart-terminal-order-bridge-a6.md`;
+  terminal-order equality bridge reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-terminal-order-equality-bridge-a6.md`;
   Case 2 finite-formula wrapper reproduced at
   `threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`;
   Case 2 ratio-count finite-formula wrapper reproduced at
@@ -3433,6 +3436,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-theorem2-countdatum-terminal-order-bridge-a6.md`;
   chart terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-chart-terminal-order-bridge-a6.md`;
+  terminal-order equality bridge reviewed at
+  `threads/06-dln-translation/review-theorem2-terminal-order-equality-bridge-a6.md`;
   Case 2 finite-formula wrapper reviewed at
   `threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`;
   Case 2 ratio-count finite-formula wrapper reviewed at
@@ -3545,6 +3550,11 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_chartCount_classifier`, and
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_classifier`
   in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
+  terminal-order equality bridge:
+  finite formula, supplied-final-boundary, chart-final, and pair-form wrappers
+  accepting
+  `TC.terminalMinimumLabels.card = data.theorem2OrderFormula` directly in
+  `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderEqualityBridge.lean`; current
   supplied final boundary:
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary`,
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_eq_natCast_sub`,
@@ -3624,7 +3634,13 @@ No such claim is formalisation-ready until both fields are filled.
   `AoyagiTheorem2SuppliedChartFinalBoundary` and the chart-level extraction
   hypothesis rather than forgetting to bare exponent data.  Selected rank-width
   hypotheses and the strict source-selected inequality remain explicit
-  auxiliary theorem inputs where used.
+  auxiliary theorem inputs where used.  Also proved terminal-order equality
+  bridge variants: an exact equality
+  `TC.terminalMinimumLabels.card = data.theorem2OrderFormula` now feeds the
+  finite formula, supplied final-boundary, chart-final, and pair-form sockets
+  directly.  This is only a finite downstream handoff; it does not prove the
+  exact terminal count, A5 source exactness, chart production, pole order
+  without A0, normal crossings, or RLCT.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** existence and uniqueness of the selected cutpoints and selected

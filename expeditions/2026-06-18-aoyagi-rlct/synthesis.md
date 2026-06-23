@@ -5897,6 +5897,22 @@ and
 Review:
 `threads/06-dln-translation/review-theorem2-countdatum-terminal-order-bridge-a6.md`.
 
+Latest A6 terminal-order equality bridge:
+`Theorem2TerminalOrderEqualityBridge.lean` now accepts an exact terminal count
+`TC.terminalMinimumLabels.card = data.theorem2OrderFormula` directly.  The
+new finite-formula, supplied-final-boundary, chart-final, and pair-form
+wrappers compose that equality with the existing active-ratio and chart-count
+finite certificates.  This is the generic downstream socket for exact-count
+routes such as the Eq5 endpoint-family handoff; it does not source-prove the
+exact count, construct Eq5 branches, prove A5 classifier/injectivity/no-extra
+coverage, produce charts, prove active-ratio or chart-count facts, identify
+pole order without A0, or extract RLCT.  Artifacts:
+`threads/06-dln-translation/reproduction-theorem2-terminal-order-equality-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-terminal-order-equality-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-terminal-order-equality-bridge-a6.md`.
+
 Latest A4 Case 2 continuing supplied-`Csucc` stack consumer:
 `BlowupArithmetic.lean` now contains
 `Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_Csucc_currentFollowingBlock_eq_formula`

@@ -727,3 +727,36 @@ the chart-level A0 extraction hypothesis are supplied.
 Boundary: this is API plumbing only.  It does not construct charts, prove
 coverage, prove finite count facts, prove selected-width provenance, prove
 analytic extraction, pole order, or RLCT.
+
+## Current slice - 2026-06-23, terminal-order equality bridge
+
+Reproduction:
+`reproduction-theorem2-terminal-order-equality-bridge-a6.md`.
+Statement card:
+`statement-card-a6-theorem2-terminal-order-equality-bridge.md`.
+Review artifact:
+`review-theorem2-terminal-order-equality-bridge-a6.md`.
+
+Lean now has a terminal-order equality bridge:
+
+```text
+DLNFibre.DLN.Aoyagi.Theorem2TerminalOrderEqualityBridge
+```
+
+It accepts the exact count
+
+```text
+TC.terminalMinimumLabels.card = data.theorem2OrderFormula
+```
+
+as a first-class A6 input.  The finite formula wrappers compose this equality
+with supplied equalities or finite certificates proving
+`D.exponentOrder = TC.terminalMinimumLabels.card`.  The final-boundary and
+chart-final wrappers then add the already explicit selected-width provenance
+and A0 extraction hypotheses.
+
+Boundary: the exact terminal count remains supplied to this module.  It does
+not construct Eq5 branches, prove A5 classifier/injectivity/back-to-label
+data, prove source-backed no-extra coverage, produce normal-crossing charts,
+prove active-ratio lower bounds, prove chart-count facts, identify pole order
+without A0, or extract RLCT.
