@@ -106,4 +106,65 @@ prodAux H A k * (frame at k)`, interior interfaces cancelling by the `Q s * P s'
 endpoint conjugation + block split are banked (`conjugation_frobenius_comparable`,
 `fullProduct_loss_squeeze`); only this induction remains for PIN 2's bridge. -/
 
+/-! ## `ContDiff` of the layer product (the `deepestEPivot._contdiff` infrastructure)
+
+`deepestEPivot` is `pack ∘ residual ∘ reindex ∘ prod ∘ framedParamsReg`; its `ContDiff ⊤` reduces to
+`ContDiff ⊤ (fun x => prod H (g x))` for `g = framedParamsReg` (each layer affine in the slots, so
+`ContDiff`). The product is the dependent-Fin `prodAux` fold — `ContDiff` ENTRY-WISE (matrix = nested
+`Pi`; `contDiff_pi'` twice), mirroring the green `continuous_prodAux`: base `prodAux 0 = 1` const, step
+`(prodAux k * layer) i j = ∑ m, prodAux k i m · layer m j` (`ContDiff.sum` of `ContDiff.mul`). No
+`ContDiff.matrix_mul` lemma exists in v4.29 — the entry-wise route sidesteps it. -/
+
+/-- **`ContDiff` of the partial-product ENTRIES** under a smooth reconstruction `g : X → Params H`
+(each layer ENTRY `ContDiff ⊤`). Entry-wise to dodge the matrix-norm-instance friction (`Matrix` has
+no canonical `NormedSpace` — `ContDiff` of a matrix-VALUED map needs an opt-in norm; the entries are
+plain ℝ-valued). Induction on `k`, mirroring `continuous_prodAux`: the matrix-mul step is
+`(prodAux k * layer) i j = ∑ m, prodAux k i m · layer m j` (`ContDiff.sum` of `ContDiff.mul`). -/
+theorem contDiff_prodAux_entry {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    (H : Fin (L + 1) → ℕ) (g : X → Params H)
+    (hg : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun x => g x s i j))
+    (k : ℕ) (hk : k < L + 1) :
+    ∀ (i : Fin (H 0)) (j : Fin (H ⟨k, hk⟩)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun x => prodAux H (g x) k hk i j) := by
+  revert hk
+  induction k with
+  | zero =>
+      intro hk i j
+      -- `prodAux 0 = 1`; each entry is `0` or `1`, constant.
+      have : (fun x => prodAux H (g x) 0 hk i j)
+          = fun _ => (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) i j := rfl
+      rw [this]; exact contDiff_const
+  | succ k ih =>
+      intro hk i j
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      -- `prodAux (k+1) i j = ∑ m, prodAux k i m · (cast layer k) m j`.
+      have hentry : (fun x => prodAux H (g x) (k + 1) hk i j)
+          = fun x => ∑ m, prodAux H (g x) k hk' i m
+              * ((by rw [e1, e2]; exact g x ⟨k, hkL⟩ :
+                  Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ) m j) := by
+        funext x; rfl
+      rw [hentry]
+      refine ContDiff.sum (fun m _ => ?_)
+      refine (ih hk' i m).mul ?_
+      -- The cast `⟨k,hk'⟩ = ⟨k,hkL⟩.castSucc` is `Fin.mk` proof-irrelevance (defeq), so the cast layer
+      -- entry IS `g x ⟨k,hkL⟩ m j` up to the `eq_mpr/cast` normal form; `ContDiff` by `hg`.
+      have := hg ⟨k, hkL⟩
+      simp only [e1, e2, eq_mpr_eq_cast, cast_eq] at this ⊢
+      exact this _ _
+
+/-- **`ContDiff` of the full layer-product entries** (`contDiff_prodAux_entry` at `k = L`). -/
+theorem contDiff_prod_entry {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    (H : Fin (L + 1) → ℕ) (g : X → Params H)
+    (hg : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun x => g x s i j))
+    (i : Fin (H 0)) (j : Fin (H (Fin.last L))) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun x => prod H (g x) i j) :=
+  contDiff_prodAux_entry H g hg L (Nat.lt_succ_self L) i j
+
 end DLNFibre.DLN.RLCT
