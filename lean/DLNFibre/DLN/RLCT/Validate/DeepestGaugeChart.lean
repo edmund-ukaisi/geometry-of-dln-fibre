@@ -129,7 +129,7 @@ parameter space `Fin (flatDim H) → ℝ` into `nReg` regular gauge directions, 
 `chart : Flat ≃ₜ Flat` + `∀x HasFDerivAt` over-reaches (its `∀x`-derivative form is unsound — the
 honest gauge geometry is local). `rlctAtOn` is local, so the squeeze (`rlctAtOn_squeeze`) is the right
 altitude — matching the blessed per-node `schur_recursion_step_squeeze`. The absorptions stay `≃ₜ`
-SELF-homeos (`coreAbsorb` an additive translation — global free; `regAbsorb` an `E`-straightening,
+SELF-maps (`coreAbsorb` an additive translation homeo — global free; `regStraighten` an `E`-straightening,
 nonlinear in its own reg slot, made a global homeo by a CUTOFF inhabiting the Schur/E germ at `0`); the
 differentiability lives LOCALLY in the `#71`/`#72` peel hypotheses, NOT as an `∀x` structure field. The
 squeeze's core is the GAUGE-NORMALIZED chain (the gauge unit `g = (I+X)⁻¹` makes the raw-`∏T` squeeze
@@ -175,49 +175,61 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
       = rlctAtOn
           (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
           (0 : DeepestSplit H r nGauge)
-  /-- **The regular-absorption** on split coords (g161, the (e)-fix). The split's regular slot is the
-  RAW gauge pivots `(X,Y,Z)`, NOT the nonlinear regular residual `E = X₁+X₂+X₁X₂+…` the squeeze needs
-  (`loss_squeeze` over `(split w).1` raw is FALSE, g161 counterexample). `regAbsorb` is a self-homeo
-  turning the raw reg slot into `E`, fixing the core and spectator slots — symmetric to `coreAbsorb`
-  (which turns the raw core into the Schur `S_s`, fixing reg+spec). NON-MP (bounded-unit Jacobian, `=1`
-  at the basepoint via the IFT `dE(0)=id`); the MAP is the producer's (cobuild-sub34's IFT diffeo). -/
-  regAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge
-  /-- `regAbsorb` fixes the origin. -/
-  regAbsorb_basepoint : regAbsorb 0 = 0
-  /-- `regAbsorb` fixes the core slot. -/
-  regAbsorb_core : ∀ q : DeepestSplit H r nGauge, (regAbsorb q).2.1 = q.2.1
-  /-- `regAbsorb` fixes the spectator slot. -/
-  regAbsorb_spectator : ∀ q : DeepestSplit H r nGauge, (regAbsorb q).2.2 = q.2.2
+  /-- **The regular-absorption** on split coords (g161, the (e)-fix; the (C) wall-fallback shape). The
+  split's regular slot is the RAW gauge pivots `(X,Y,Z)`, NOT the nonlinear regular residual
+  `E = X₁+X₂+X₁X₂+…` the squeeze needs (`loss_squeeze` over `(split w).1` raw is FALSE, g161
+  counterexample). `regStraighten` turns the raw reg slot into `E`, fixing the core and spectator slots.
+  **A bare TOTAL continuous function, NOT a `≃ₜ`** (the (C) fallback, controller-blessed): the IFT
+  E-straightening is a local diffeo on `𝓝 0` but does NOT extend to a global spectator-fixing homeomorph
+  in Mathlib v4.29 (the piecewise cutoff is discontinuous at `∂V`; no local→global API). A total
+  continuous function keeps GLOBAL measurability (so `loss_squeeze`/`rlctAtOn_squeeze` are unaffected);
+  the LOCAL invertibility + bounded-unit Jacobian live inside the producer's `regAbsorb_rlct` proof (via
+  `rlctAtOn_boundedUnit_localHomeomorph`, crux2 #72, which takes `π/πsymm` as bare functions + `Dπ` + an
+  open `V`, inverses only on `V`). The MAP (the cutoff E-straightening) is the producer's. -/
+  regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge
+  /-- `regStraighten` is (globally) continuous — the (C) fallback's key: total + continuous ⟹ globally
+  measurable, so the squeeze's global measurability is preserved (a local OpenPartialHomeomorph would
+  break it). -/
+  regStraighten_continuous : Continuous regStraighten
+  /-- `regStraighten` fixes the origin. -/
+  regStraighten_basepoint : regStraighten 0 = 0
+  /-- `regStraighten` fixes the core slot. -/
+  regStraighten_core : ∀ q : DeepestSplit H r nGauge, (regStraighten q).2.1 = q.2.1
+  /-- `regStraighten` fixes the spectator slot. -/
+  regStraighten_spectator : ∀ q : DeepestSplit H r nGauge, (regStraighten q).2.2 = q.2.2
   /-- **The regular-unit RLCT peel** (the (e)-fix's reg-side, peeled FIRST so it composes with
-  `coreAbsorb_rlct`): the reg-absorbed `Φ` (regular through `regAbsorb`, core already through `coreAbsorb`)
-  and the reg-raw `Φ` have the SAME RLCT at the origin. Sequenced: `regAbsorb_rlct` peels the reg unit
-  (core stays `coreAbsorb`'d), then `coreAbsorb_rlct` peels the core unit. Discharged via
-  `rlctAtOn_boundedUnit_localHomeomorph` (crux2 #72): `regAbsorb` is a local diffeo, `|det| = 1` at `0`. -/
+  `coreAbsorb_rlct`): the reg-straightened `Φ` (regular through `regStraighten`, core already through
+  `coreAbsorb`) and the reg-raw `Φ` have the SAME RLCT at the origin. Sequenced: `regAbsorb_rlct` peels
+  the reg unit (core stays `coreAbsorb`'d), then `coreAbsorb_rlct` peels the core unit. Discharged via
+  `rlctAtOn_boundedUnit_localHomeomorph` (crux2 #72): `regStraighten` is a local diffeo on an open `V ∋ 0`
+  with `|det| = 1` at `0` — the producer supplies `(πsymm, Dπ, V)` to #72 inside this proof (the V/Dπ
+  data is NOT a structure field — `regAbsorb_rlct` is consumed as a bare equality by sub-6). -/
   regAbsorb_rlct :
     rlctAtOn
         (fun q : DeepestSplit H r nGauge =>
-          (∑ i, (regAbsorb q).1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (∑ i, (regStraighten q).1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
         (0 : DeepestSplit H r nGauge)
       = rlctAtOn
           (fun q : DeepestSplit H r nGauge =>
             (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
           (0 : DeepestSplit H r nGauge)
   /-- **The loss-squeeze datum** (g161 (e)-form). Near the deepest point, `dlnLoss H B` is two-sidedly
-  bounded by `Φ = ∑ (regAbsorb (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1` — the regular
-  slot through `regAbsorb` (→ the nonlinear residual `E`), the core slot through `coreAbsorb` (→ the
-  Schur core). Both gauge units; symmetric. The matrix comparability is cobuild-sub34's (the banked
-  `core_comparability_squeeze`). -/
+  bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1` — the regular
+  slot through `regStraighten` (→ the nonlinear residual `E`), the core slot through `coreAbsorb` (→ the
+  Schur core). The matrix comparability is cobuild-sub34's (the banked `core_comparability_squeeze`).
+  `regStraighten` is total + continuous, so `Φ` is globally measurable — the squeeze (a local `∃ U` germ
+  bound) feeds `rlctAtOn_squeeze` with global measurability intact. -/
   loss_squeeze :
     ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
       ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
         ∀ w ∈ U,
-          0 ≤ ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+          0 ≤ ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
-          c₁ * ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+          c₁ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1)
             ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
           dlnLoss H B ((paramsEquivFlat H).symm w)
-            ≤ c₂ * ((∑ i, (regAbsorb (split w)).1 i ^ 2)
+            ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1)
 
 /-- **Smart constructor from an EXACT germ** — a CONVENIENCE for the special case `c₁ = c₂ = 1`. If a
@@ -260,11 +272,12 @@ noncomputable def DeepestGaugeChart.ofExactGerm (H : Fin (L + 1) → ℕ) (r : �
   coreAbsorb_regular := coreAbsorb_regular
   coreAbsorb_spectator := coreAbsorb_spectator
   coreAbsorb_rlct := coreAbsorb_rlct
-  -- For an EXACT germ the raw reg slot IS `E` (no nonlinear indirection), so `regAbsorb = id`.
-  regAbsorb := Homeomorph.refl _
-  regAbsorb_basepoint := rfl
-  regAbsorb_core := fun _ => rfl
-  regAbsorb_spectator := fun _ => rfl
+  -- For an EXACT germ the raw reg slot IS `E` (no nonlinear indirection), so `regStraighten = id`.
+  regStraighten := id
+  regStraighten_continuous := continuous_id
+  regStraighten_basepoint := rfl
+  regStraighten_core := fun _ => rfl
+  regStraighten_spectator := fun _ => rfl
   regAbsorb_rlct := rfl
   loss_squeeze := by
     obtain ⟨U, hU, hUeq⟩ := loss_germ.exists_mem
@@ -311,12 +324,12 @@ theorem deepest_squeeze_transport (H : Fin (L + 1) → ℕ) (r : ℕ)
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
       = rlctAtOn
           (fun x : Fin (flatDim H) → ℝ =>
-            (∑ i, (Γ.regAbsorb (Γ.split x)).1 i ^ 2)
+            (∑ i, (Γ.regStraighten (Γ.split x)).1 i ^ 2)
               + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
           ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
   set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
   set Φ : (Fin (flatDim H) → ℝ) → ℝ := fun x =>
-    (∑ i, (Γ.regAbsorb (Γ.split x)).1 i ^ 2)
+    (∑ i, (Γ.regStraighten (Γ.split x)).1 i ^ 2)
       + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1 with hΦ
   -- Step 1: `rlctAt` on `Params` is `rlctAtOn`; transport Params→flat (MP homeomorph).
   rw [← rlctAtOn_eq_rlctAt]
@@ -346,7 +359,7 @@ theorem deepest_squeeze_transport (H : Fin (L + 1) → ℕ) (r : ℕ)
   apply Measurable.add
   · exact (Finset.measurable_sum _ (fun i _ =>
       ((measurable_pi_apply i).comp
-        (continuous_fst.comp (Γ.regAbsorb.continuous.comp Γ.split.continuous)).measurable).pow_const _))
+        (continuous_fst.comp (Γ.regStraighten_continuous.comp Γ.split.continuous)).measurable).pow_const _))
   · exact ((continuous_dlnLoss (deepestM H r) _).comp
       (continuous_paramsEquivFlat_symm _)).measurable.comp
       ((continuous_fst.comp continuous_snd).comp
@@ -416,7 +429,7 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
           ((paramsEquivFlat (fun s => H s - r)).symm z) ≠ 0) :
     rlctAtOn
         (fun x : Fin (flatDim H) → ℝ =>
-          (∑ i, (Γ.regAbsorb (Γ.split x)).1 i ^ 2)
+          (∑ i, (Γ.regStraighten (Γ.split x)).1 i ^ 2)
             + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
         ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
       = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
@@ -434,14 +447,14 @@ theorem deepest_regular_smooth_split (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hcoreF_nonneg : ∀ y, 0 ≤ coreF y := fun y => dlnLoss_nonneg _ _ _
   -- Step 1: transport through the MP split homeomorphism (`split` carries the basepoint to `0`).
   have hstep1 := rlctAtOn_comp_homeomorph Γ.split Γ.split_mp Γ.split.measurableEmbedding
-    (fun q : DeepestSplit H r Γ.nGauge => (∑ i, (Γ.regAbsorb q).1 i ^ 2) + coreF (Γ.coreAbsorb q).2.1)
+    (fun q : DeepestSplit H r Γ.nGauge => (∑ i, (Γ.regStraighten q).1 i ^ 2) + coreF (Γ.coreAbsorb q).2.1)
     ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
   rw [Γ.split_basepoint] at hstep1
   have hgoalfun :
       (fun x : Fin (flatDim H) → ℝ =>
-        (∑ i, (Γ.regAbsorb (Γ.split x)).1 i ^ 2) + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
+        (∑ i, (Γ.regStraighten (Γ.split x)).1 i ^ 2) + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
       = fun x => (fun q : DeepestSplit H r Γ.nGauge =>
-          (∑ i, (Γ.regAbsorb q).1 i ^ 2) + coreF (Γ.coreAbsorb q).2.1) (Γ.split x) := by funext x; rfl
+          (∑ i, (Γ.regStraighten q).1 i ^ 2) + coreF (Γ.coreAbsorb q).2.1) (Γ.split x) := by funext x; rfl
   rw [hgoalfun, hstep1]
   -- Step 2a: peel the regular-absorption (`regAbsorb_rlct`) — reg `E` ↦ raw reg (core stays absorbed).
   rw [Γ.regAbsorb_rlct]
