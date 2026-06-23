@@ -2320,6 +2320,170 @@ theorem case1_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem
       Ideal.span ({u} : Set R) :=
   selectedEntryChartMap_centerIdeal_eq_span_singleton hpivot u residual
 
+/-- Concrete selected-entry chart-family data for the finite Case 1 center.
+
+The left `Unit` branch is only the token for the externally chosen old
+exceptional generator, while the right branch is the row-strip center.  This
+records the finite selected-entry coordinate formula for all finite center
+pivots; it is not chart coverage, transition regularity, analytic Jacobian
+control, normal crossings, or RLCT extraction. -/
+abbrev Case1CenterSelectedEntryChartFamilyData
+    (n : ℕ → ℕ) (S J J1 : ℕ) (R : Type*) [Monoid R] :=
+  SelectedEntryChartFamilyData (α := R) (case1CenterGenerators n S J J1)
+
+namespace Case1CenterSelectedEntryChartFamilyData
+
+/-- The standard concrete selected-entry chart family for the finite Case 1
+center. -/
+def standard (n : ℕ → ℕ) (S J J1 : ℕ) (R : Type*) [Monoid R] :
+    Case1CenterSelectedEntryChartFamilyData n S J J1 R :=
+  SelectedEntryChartFamilyData.standard (α := R)
+    (case1CenterGenerators n S J J1)
+
+/-- The old exceptional generator as a point of the finite Case 1 center.
+
+This is the finite token used by the Case 1(1) chart; it does not prove source
+validity of the hidden old label. -/
+def selectedOldPivot (n : ℕ → ℕ) (S J J1 : ℕ) :
+    (case1CenterGenerators n S J J1 : Type) :=
+  ⟨(Sum.inl () : Case1CenterGenerator), case1_selectedOld_mem_center n S J J1⟩
+
+/-- Aoyagi's displayed top-left row-strip pivot as a point of the finite
+Case 1 center, under the finite entry bounds. -/
+def displayedPivot (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1)) :
+    (case1CenterGenerators n S J J1 : Type) :=
+  ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+    case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩
+
+@[simp] theorem selectedOldPivot_val
+    (n : ℕ → ℕ) (S J J1 : ℕ) :
+    (selectedOldPivot n S J J1).1 =
+      (Sum.inl () : Case1CenterGenerator) :=
+  rfl
+
+@[simp] theorem displayedPivot_val
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1)) :
+    (displayedPivot n S hJ1 hcol).1 =
+      (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) :=
+  rfl
+
+@[simp] theorem standard_value_selectedOldPivot
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {R : Type*} [Monoid R] (u : R)
+    (residual : Case1CenterGenerator → R) (g : Case1CenterGenerator) :
+    (standard n S J J1 R).value (selectedOldPivot n S J J1)
+        (u, residual) g =
+      selectedEntryChartMap (Sum.inl () : Case1CenterGenerator) u residual g :=
+  rfl
+
+@[simp] theorem standard_value_displayedPivot
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {R : Type*} [Monoid R] (u : R)
+    (residual : Case1CenterGenerator → R) (g : Case1CenterGenerator) :
+    (standard n S J J1 R).value (displayedPivot n S hJ1 hcol)
+        (u, residual) g =
+      selectedEntryChartMap
+        (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) u residual g :=
+  rfl
+
+/-- In the standard selected-old finite chart family, the selected variable
+occurs among the transformed finite-center values. -/
+theorem standard_selectedOld_selected_mem_valueSet
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {R : Type*} [Monoid R] (u : R)
+    (residual : Case1CenterGenerator → R) :
+    u ∈
+      {v : R | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+        (standard n S J J1 R).value (selectedOldPivot n S J J1)
+          (u, residual) g = v} :=
+  SelectedEntryChartFamilyData.selected_mem_valueSet
+    (standard n S J J1 R) (selectedOldPivot n S J J1) (u, residual)
+
+/-- In the standard displayed-pivot finite chart family, the selected variable
+occurs among the transformed finite-center values. -/
+theorem standard_displayedPivot_selected_mem_valueSet
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {R : Type*} [Monoid R] (u : R)
+    (residual : Case1CenterGenerator → R) :
+    u ∈
+      {v : R | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+        (standard n S J J1 R).value (displayedPivot n S hJ1 hcol)
+          (u, residual) g = v} :=
+  SelectedEntryChartFamilyData.selected_mem_valueSet
+    (standard n S J J1 R) (displayedPivot n S hJ1 hcol) (u, residual)
+
+/-- Square-sum pullback for the standard selected-old finite Case 1 chart
+family.  This is finite algebra only. -/
+theorem standard_centerSq_selectedOldPivot
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {R : Type*} [CommSemiring R] (u : R)
+    (residual : Case1CenterGenerator → R) :
+    selectedEntryCenterSq (case1CenterGenerators n S J J1)
+        ((standard n S J J1 R).value (selectedOldPivot n S J J1)
+          (u, residual)) =
+      u ^ 2 *
+        (1 + selectedEntryCenterSq
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inl () : Case1CenterGenerator)) residual) := by
+  simpa using
+    SelectedEntryChartFamilyData.centerSq_chartMap
+      (standard n S J J1 R) (selectedOldPivot n S J J1) (u, residual)
+
+/-- Square-sum pullback for the standard displayed-pivot finite Case 1 chart
+family.  This is finite algebra only. -/
+theorem standard_centerSq_displayedPivot
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {R : Type*} [CommSemiring R] (u : R)
+    (residual : Case1CenterGenerator → R) :
+    selectedEntryCenterSq (case1CenterGenerators n S J J1)
+        ((standard n S J J1 R).value (displayedPivot n S hJ1 hcol)
+          (u, residual)) =
+      u ^ 2 *
+        (1 + selectedEntryCenterSq
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)) residual) := by
+  simpa using
+    SelectedEntryChartFamilyData.centerSq_chartMap
+      (standard n S J J1 R) (displayedPivot n S hJ1 hcol) (u, residual)
+
+/-- In the standard selected-old finite chart family, the transformed finite
+Case 1 center ideal is generated by the selected variable. -/
+theorem standard_centerIdeal_selectedOldPivot_eq_span_singleton
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {R : Type*} [CommSemiring R] (u : R)
+    (residual : Case1CenterGenerator → R) :
+    Ideal.span
+        {v : R | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+          (standard n S J J1 R).value (selectedOldPivot n S J J1)
+            (u, residual) g = v} =
+      Ideal.span ({u} : Set R) := by
+  simpa using
+    SelectedEntryChartFamilyData.centerIdeal_eq_span_singleton
+      (standard n S J J1 R) (selectedOldPivot n S J J1) (u, residual)
+
+/-- In the standard displayed-pivot finite chart family, the transformed
+finite Case 1 center ideal is generated by the selected variable. -/
+theorem standard_centerIdeal_displayedPivot_eq_span_singleton
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {R : Type*} [CommSemiring R] (u : R)
+    (residual : Case1CenterGenerator → R) :
+    Ideal.span
+        {v : R | ∃ g, g ∈ case1CenterGenerators n S J J1 ∧
+          (standard n S J J1 R).value (displayedPivot n S hJ1 hcol)
+            (u, residual) g = v} =
+      Ideal.span ({u} : Set R) := by
+  simpa using
+    SelectedEntryChartFamilyData.centerIdeal_eq_span_singleton
+      (standard n S J J1 R) (displayedPivot n S hJ1 hcol) (u, residual)
+
+end Case1CenterSelectedEntryChartFamilyData
+
 /-- The finite Case 1 center is nonempty, witnessed by the externally chosen
 old exceptional generator. This is finite center bookkeeping, not a source
 validity theorem for the hidden old label. -/

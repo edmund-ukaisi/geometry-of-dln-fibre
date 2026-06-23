@@ -50,6 +50,34 @@ holding PDF line numbers only in context.
 
 ## Latest A4 Update
 
+The Case 1 selected-entry chart-family data slice has landed.  New Lean names
+in `BlowupArithmetic.lean` include
+`Case1CenterSelectedEntryChartFamilyData`,
+`Case1CenterSelectedEntryChartFamilyData.standard`,
+`Case1CenterSelectedEntryChartFamilyData.selectedOldPivot`,
+`Case1CenterSelectedEntryChartFamilyData.displayedPivot`,
+`Case1CenterSelectedEntryChartFamilyData.standard_value_selectedOldPivot`,
+`Case1CenterSelectedEntryChartFamilyData.standard_value_displayedPivot`,
+`Case1CenterSelectedEntryChartFamilyData.standard_selectedOld_selected_mem_valueSet`,
+`Case1CenterSelectedEntryChartFamilyData.standard_displayedPivot_selected_mem_valueSet`,
+`Case1CenterSelectedEntryChartFamilyData.standard_centerSq_selectedOldPivot`,
+`Case1CenterSelectedEntryChartFamilyData.standard_centerSq_displayedPivot`,
+`Case1CenterSelectedEntryChartFamilyData.standard_centerIdeal_selectedOldPivot_eq_span_singleton`,
+and
+`Case1CenterSelectedEntryChartFamilyData.standard_centerIdeal_displayedPivot_eq_span_singleton`.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-selected-entry-chart-family-data-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-selected-entry-chart-family-data.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-selected-entry-chart-family-data-a4.md`.
+
+This specializes the generic finite selected-entry chart-family data to the
+Case 1 center and records finite coordinate algebra for the selected-old and
+displayed top-left row-strip pivots.  It is not chart coverage, chart
+regularity, transition regularity, analytic Jacobian control, global A0 data,
+pole order, or RLCT extraction.
+
 The Case 1 selected-entry local exponent slice has landed.  New Lean names in
 `SelectedEntryNormalCrossing.lean` include
 `case1SelectedOldCenterSqFormalJacobianChartCertificate.lossExp_zero_zero`,

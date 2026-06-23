@@ -1043,7 +1043,26 @@ No such claim is formalisation-ready until both fields are filled.
   `(1 + J1*(n(S+1)-J))/2`, and their local finite order is `1`.  This is
   not a global A0 active-ratio lower bound, global A0 exponent minimum,
   global chart-count/order theorem, analytic Jacobian/volume-form theorem,
-  pole order, or RLCT. Also packaged the finite
+  pole order, or RLCT. Also proved the Case 1 selected-entry chart-family
+  data slice:
+  `Case1CenterSelectedEntryChartFamilyData`,
+  `Case1CenterSelectedEntryChartFamilyData.standard`,
+  `Case1CenterSelectedEntryChartFamilyData.selectedOldPivot`,
+  `Case1CenterSelectedEntryChartFamilyData.displayedPivot`,
+  `Case1CenterSelectedEntryChartFamilyData.standard_value_selectedOldPivot`,
+  `Case1CenterSelectedEntryChartFamilyData.standard_value_displayedPivot`,
+  `Case1CenterSelectedEntryChartFamilyData.standard_selectedOld_selected_mem_valueSet`,
+  `Case1CenterSelectedEntryChartFamilyData.standard_displayedPivot_selected_mem_valueSet`,
+  `Case1CenterSelectedEntryChartFamilyData.standard_centerSq_selectedOldPivot`,
+  `Case1CenterSelectedEntryChartFamilyData.standard_centerSq_displayedPivot`,
+  `Case1CenterSelectedEntryChartFamilyData.standard_centerIdeal_selectedOldPivot_eq_span_singleton`,
+  and
+  `Case1CenterSelectedEntryChartFamilyData.standard_centerIdeal_displayedPivot_eq_span_singleton`.
+  These are finite coordinate-data and finite algebra facts only: the `Unit`
+  old generator remains a token for an externally chosen source label,
+  arbitrary row-strip pivots are not source-displayed transition formulas,
+  and no chart coverage, regularity, analytic Jacobian, global A0 data, pole
+  order, or RLCT is proved. Also packaged the finite
   Case 1 first-jump and selected-label hypotheses as
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
   `J+J1 < mu_S`, selected introduced label, selected level, gap, componentwise

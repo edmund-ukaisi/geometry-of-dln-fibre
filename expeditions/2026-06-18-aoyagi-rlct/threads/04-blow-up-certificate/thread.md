@@ -4900,3 +4900,32 @@ generic selected-entry microcertificate exponent arithmetic.  It is not a
 global A0 active-ratio lower bound, global exponent minimum, global
 chart-count/order theorem, analytic Jacobian/volume-form theorem, pole order,
 or RLCT extraction.
+
+## 2026-06-23 Lean Case 1 selected-entry chart-family data
+
+Reproduction:
+`reproduction-case1-selected-entry-chart-family-data-a4.md`.
+Statement card:
+`statement-card-a4-case1-selected-entry-chart-family-data.md`.
+Review artifact:
+`review-case1-selected-entry-chart-family-data-a4.md`.
+
+Lean now specializes `SelectedEntryChartFamilyData` to the finite Case 1
+center:
+
+```text
+Case1CenterSelectedEntryChartFamilyData
+Case1CenterSelectedEntryChartFamilyData.standard
+Case1CenterSelectedEntryChartFamilyData.selectedOldPivot
+Case1CenterSelectedEntryChartFamilyData.displayedPivot
+```
+
+It also proves the selected-old and displayed-pivot value formulas, selected
+variable value-set membership, finite center square-sum pullbacks, and finite
+center-ideal principalization for those two displayed pivots.
+
+This is finite coordinate algebra below chart/source production.  The `Unit`
+old-generator branch remains a token for an externally chosen source label,
+non-displayed row-strip pivots are finite chart candidates rather than
+source-displayed transition formulas, and no chart coverage, regularity,
+analytic Jacobian, global A0 data, pole order, or RLCT extraction is proved.

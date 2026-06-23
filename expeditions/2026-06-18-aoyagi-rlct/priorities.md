@@ -248,6 +248,17 @@ global A0 active-ratio lower bound, global exponent minimum, global chart
 count/order theorem, analytic Jacobian/volume-form theorem, pole order, or
 RLCT extraction.
 
+The current A4 Case 1 selected-entry chart-family data slice is
+`threads/04-blow-up-certificate/reproduction-case1-selected-entry-chart-family-data-a4.md`.
+Lean now specializes the generic finite selected-entry chart-family data to
+the Case 1 center, names the selected-old and displayed top-left row-strip
+pivots, and proves their value formulas, selected-variable value-set
+membership, finite center square-sum pullbacks, and finite center-ideal
+principalization.  This is finite coordinate algebra only: the `Unit` branch
+is still a token for an externally chosen old label, non-displayed row-strip
+pivots are not source-produced transition formulas, and no chart coverage,
+regularity, analytic Jacobian, global A0 data, pole order, or RLCT is proved.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:
