@@ -156,4 +156,49 @@ theorem rlctAtOn_regAbsorb_reduce
     exact hstep.symm
   rw [hL, hR, hpeel]
 
+/-! ## The decoupled #72 peel for a core-fixing reg-straightening (the `hpeel` atom)
+
+The decoupled peel `rlctAtOn (fun q => regF (regStraighten q).1 + coreF q.2.1) 0 = rlctAtOn (fun q =>
+regF q.1 + coreF q.2.1) 0` is the #72 bounded-unit-Jacobian RLCT change of variables, with
+`π = regStraighten` (a local diffeo near `0` fixing the core slot) and the comparison function
+`F q = regF q.1 + coreF q.2.1`. Since `regStraighten` fixes the core slot (`(regStraighten q).2.1 =
+q.2.1`), `F (regStraighten q) = regF (regStraighten q).1 + coreF q.2.1` — exactly the peel's LHS
+integrand. The `IsAddHaarMeasure` instance on the product `M = R × (C × S)` is threaded as an EXPLICIT
+hypothesis (#93 fix: the nested-product `volume` does not auto-synthesise it; the producer supplies it
+— discharged either by a product-Haar instance or as a standing hypothesis). The IFT bundle
+(`πsymm, Dπ, Dπsymm, V`, the on-`V` inverse identities + derivatives + bounded-unit `|det|`) is supplied
+by the concrete `regStraighten`'s implicit-function-theorem data (`HasStrictFDerivAt.toOpenPartialHomeomorph`
++ pp2's `dE(0) = id`). -/
+theorem rlctAtOn_regStraighten_peel
+    (hHaar : (volume : Measure (R × (C × S))).IsAddHaarMeasure)
+    (regF : R → ℝ) (coreF : C → ℝ)
+    (regStraighten πsymm : (R × (C × S)) → (R × (C × S)))
+    (hrs_core : ∀ q, (regStraighten q).2.1 = q.2.1)
+    (Dπ Dπsymm : (R × (C × S)) → ((R × (C × S)) →L[ℝ] (R × (C × S))))
+    (V : Set (R × (C × S))) (hVopen : IsOpen V) (hwV : (0 : R × (C × S)) ∈ V)
+    (hfix : regStraighten 0 = 0)
+    (hleft : ∀ w ∈ V, πsymm (regStraighten w) = w) (hright : ∀ w ∈ V, regStraighten (πsymm w) = w)
+    (hπcont : ContinuousOn regStraighten V) (hsymmcont : ContinuousOn πsymm V)
+    (hderiv : ∀ w ∈ V, HasFDerivAt regStraighten (Dπ w) w)
+    (hderivsymm : ∀ w ∈ V, HasFDerivAt πsymm (Dπsymm w) w)
+    (hdetmeas : Measurable fun w => |(Dπ w).det|)
+    (hdetmeassymm : Measurable fun w => |(Dπsymm w).det|)
+    (hbdd : ∃ a b : ℝ, 0 < a ∧ ∀ w ∈ V, a ≤ |(Dπ w).det| ∧ |(Dπ w).det| ≤ b)
+    (hbddsymm : ∃ a b : ℝ, 0 < a ∧ ∀ w ∈ V, a ≤ |(Dπsymm w).det| ∧ |(Dπsymm w).det| ≤ b) :
+    rlctAtOn (fun q : R × (C × S) => regF (regStraighten q).1 + coreF q.2.1) 0
+      = rlctAtOn (fun q : R × (C × S) => regF q.1 + coreF q.2.1) 0 := by
+  haveI := hHaar
+  -- #72 on `F q = regF q.1 + coreF q.2.1`, `π = regStraighten`. `F ∘ π` has the core slot fixed.
+  have hkey := rlctAtOn_boundedUnit_localHomeomorph
+    (fun q : R × (C × S) => regF q.1 + coreF q.2.1) (0 : R × (C × S))
+    regStraighten πsymm Dπ Dπsymm V hVopen hwV hfix hleft hright hπcont hsymmcont
+    hderiv hderivsymm hdetmeas hdetmeassymm hbdd hbddsymm
+  -- `(fun q => regF q.1 + coreF q.2.1) ∘ regStraighten = fun q => regF (regStraighten q).1 + coreF q.2.1`
+  -- (using `regStraighten` fixes the core slot).
+  have hfun : (fun q : R × (C × S) => regF (regStraighten q).1 + coreF (regStraighten q).2.1)
+      = fun q : R × (C × S) => regF (regStraighten q).1 + coreF q.2.1 := by
+    funext q; rw [hrs_core q]
+  rw [hfun] at hkey
+  exact hkey
+
 end DLNFibre.DLN.RLCT
