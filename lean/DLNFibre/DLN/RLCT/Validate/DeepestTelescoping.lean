@@ -289,6 +289,12 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
   -- FINAL: `prod C = prodAux C (Lm+1) = prodAux C Lm * (cast C_Lm)`; `C_Lm = A_Lm·Q_Lm` (P_Lm = 1, hPid);
   -- hinv ⟹ `= (cast P⟨0⟩)·prodAux A Lm·(cast A_Lm·Q_Lm) = P0 · prod A · QL`. ∃-intro the cast P⟨0⟩, Q⟨Lm⟩.
   refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_⟩
+  -- FINAL ∃-intro (handed to crux2, standby, has the invariant): `prod C = prodAux C (Lm+1)`;
+  -- `prodAux_succ` (k=Lm) → `prodAux C Lm * reindex(C Lm)`; `hinv Lm` (`prodAux C Lm = P0·prodAux A Lm`)
+  -- + `C Lm = A Lm · Q Lm` + `reindex_mul_distrib_left` + reassoc. CASE-SPLIT FOUND: needs `Lm=0` (L=1,
+  -- single layer = both endpoints, `hinv` vacuous) vs `Lm≥1` arms — `hPid ⟨Lm⟩` needs `1 ≤ Lm` (fails at
+  -- Lm=0). The Lm≥1 arm uses the base-case `show`-bridge idiom + reindex_mul_distrib_left; the Lm=0 arm
+  -- is the direct single-layer `C 0 = P0·A 0·Q0`. Structural; crux2 has the invariant.
   sorry
 
 end DLNFibre.DLN.RLCT
