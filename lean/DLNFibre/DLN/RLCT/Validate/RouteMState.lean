@@ -341,7 +341,18 @@ The two `⊤`s the oscillation conflated are DIFFERENT objects: (i) the GEOMETRI
 at a degenerate NODE (true — `dlnLoss ≡ 0` there — but NOT what this fold claims); (ii) the leaf's
 FOLD-contribution `⊤` (a non-binding terminator). `foldFamily` is (ii). The GEOMETRIC↔combinatorial honesty
 (root `rlctAtOn = ½·minAdm`) is the COVER's job (`IsRouteMCover`, #104), NOT `foldFamily`. ANCHORED:
-`Case222RouteStep` compiles to `3/2` (codims `[4,3]`, `⊤` terminal). -/
+`Case222RouteStep` compiles to `3/2` (codims `[4,3]`, `⊤` terminal).
+
+### PINNED — the ROOT-ANCHORED codim (controller, 2026-06-23; preventive against the reduced-minAdm conflation)
+
+`codimsOf accumulates ROOT-ANCHORED Mval(M₀, ·) at branch nodes; the ½·minAdm = foldDivisors of these
+root-anchored codims, NOT per-node reduced minAdm.` The decl basis: the `RouteStep.branch` cell witness is
+`PivotWitness M₀ (codim c) = ⟨T, hAdm : T ∈ Adm M₀, hCodim : c = (Mval M₀ T).toNat⟩` — anchored at the FIXED
+root `M₀`, NOT `(schurState M)`. Reading `minAdm` mid-recursion as the REDUCED-state `minAdm(schurState M)`
+would undershoot and silently break the (C≥) lower bound: e.g. on the `(3,2,3)` chain the 2nd branch node
+`(2,1,3)` has reduced-state `minAdm = 2`, but its APPENDED codim is the root `Mval(M₀, T) = 6 ≥ minAdm = 5`;
+using the reduced `2` would undershoot `5`. Root-anchoring exists for exactly this; named here so it is not
+re-derived wrong (the same conflation class as the `(3,2,3)` node-count + leaf-arm-`d` fixes). -/
 theorem foldFamily_iInf_eq_half_minAdm {ι : Type*} [Nonempty ι] (M : Fin (L + 1) → ℕ)
     (codimsOf : ι → List ℕ) (hm₀ : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
     (hwit : ∀ i, ∀ c ∈ codimsOf i, PivotWitness M c)
