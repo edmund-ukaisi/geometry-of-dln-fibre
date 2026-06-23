@@ -13424,14 +13424,152 @@ theorem sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withCor
   simpa using congrArg (fun M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R ↦ M * F) hq
 
 /-- Continuing displayed source-chart stack boundary with old top rows and the
-actual source suffix.
+actual source suffix, without the chart-family boundary.
 
 This lifts the supplied paper `Q/P` identity through the unchanged old top
 rows and then multiplies by Aoyagi's raw source suffix.  The right side keeps
 the paper transported following factor `C' = Q⁻¹ C` in pivot-first order.  This
-is a supplied-boundary stack identity, not source production of a source-ordered
-successor following object, suffix, chart coverage, transition invariant, or
-RLCT consequence. -/
+is a finite stack identity, not source production of a source-ordered successor
+following object, suffix, chart coverage, transition invariant, or RLCT
+consequence. -/
+theorem sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    (case2ResidualBlockPivotEntries n S (J + 1)).Nonempty ∧
+    (let row := case2DisplayedPivotRow n hS hcont
+     let col := case2DisplayedPivotCol n hS hcont
+     let A := case2DisplayedPaperDchart n hS hcont residual
+     let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+     let post := pre.case2Succ upivot
+     let suffix := sourceSuffixProduct κ Ctail S hSuffix
+     ∃ q : pivotComplement row → R,
+      (((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+          (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+            (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+              case2DisplayedSourceSubstitutionBlock n hS hcont upivot residual).submatrix
+              (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+        verticalBlock (case2DisplayedSourceOldTopBlock C)
+          (case2DisplayedSourceFollowingFactor n hS hcont C)) * suffix) =
+      ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+          ((weightedPivotDiagonal (post.weight (J + 1))
+              (fun i : pivotComplement row ↦
+                post.weight (case2ResidualRowLevel n S J i.1)) *
+            case2DisplayedPaperDppp n hS hcont residual)) *
+        verticalBlock (case2DisplayedSourceOldTopBlock C)
+          (case2DisplayedPaperCprime n hS hcont residual C)) * suffix)) ∧
+      IntroducedLabelExponentCertificates L n S (J + 1)
+        (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+        (updateSelectedLabelScalar S (J + 1)
+          (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+            ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelLevelInvariants L n S (J + 1)
+        post.level
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      case2IntroducedLabelLeastValueGap L n S (J + 1)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      post.case2Gap) ∧
+    u ∈
+      {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+        case2DisplayedSourceChartMap n hS hcont u residual p = v} ∧
+    (∀ p, p ∈ case2ResidualBlockPivotEntries n S J →
+      u ∣ case2DisplayedSourceChartMap n hS hcont u residual p) ∧
+    Ideal.span
+        {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
+          case2DisplayedSourceChartMap n hS hcont u residual p = v} =
+      Ideal.span ({u} : Set R) := by
+  let hnew := correctedCase2NewLabelCertificate_of_prefixBound L n hS hSL hcont
+  let row := case2DisplayedPivotRow n hS hcont
+  let col := case2DisplayedPivotCol n hS hcont
+  let A := case2DisplayedPaperDchart n hS hcont residual
+  let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+  let post := pre.case2Succ upivot
+  let hpost := pre.case2Succ_case2SuppliedPostData upivot
+  let hexpPost :=
+    Case2CorrectedExponentPostData.updateSelected
+      (L := L) (n := n) (S := S) (J := J) t numerator leastValue
+  have hpreGap : pre.case2Gap :=
+    IntroducedLabelRecurrenceState.case2Gap_of_leastValueGap
+      pre levelInv leastValueGap
+  let c := hnew
+  rcases
+      c.exists_case2DisplayedQP_mul_sourceSubstitution_of_recurrenceStateGap_succWeights_of_postData
+        hS hcont hpost hpreGap
+        (case2SourceResidualBlock residual) (case2SourceFollowingFactor C) with
+    ⟨q, hq⟩
+  let lowerLeft :=
+    weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+      (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+        case2DisplayedSourceSubstitutionBlock n hS hcont upivot residual).submatrix
+        (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)
+  let lowerRight :=
+    weightedPivotDiagonal (post.weight (J + 1))
+      (fun i : pivotComplement row ↦
+        post.weight (case2ResidualRowLevel n S J i.1)) *
+      case2DisplayedPaperDppp n hS hcont residual
+  have htail :
+      lowerLeft * case2DisplayedSourceFollowingFactor n hS hcont C =
+        lowerRight * case2DisplayedPaperCprime n hS hcont residual C := by
+    simpa [row, col, A, upivot, post, lowerLeft, lowerRight,
+      case2DisplayedPaperDchart, case2DisplayedPaperDppp,
+      case2DisplayedPaperCprime, case2DisplayedPaperQinv,
+      case2DisplayedSourceNormalizedBlock_eq_displayedNormalizedMatrix,
+      case2DisplayedSourceSubstitutionBlock_eq_displayedSubstitutionMatrix,
+      case2DisplayedSourceTransportedFollowingFactor_eq_displayedTransportedFollowingFactor,
+      case2DisplayedSourceFollowingFactor] using hq
+  have hblock :
+      fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0 lowerLeft *
+          verticalBlock (case2DisplayedSourceOldTopBlock C)
+            (case2DisplayedSourceFollowingFactor n hS hcont C) =
+        fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0 lowerRight *
+          verticalBlock (case2DisplayedSourceOldTopBlock C)
+            (case2DisplayedPaperCprime n hS hcont residual C) :=
+    fromBlocks_mul_verticalBlock_eq_of_tail
+      (case2DisplayedSourceOldTopWeight pre)
+      lowerLeft lowerRight
+      (case2DisplayedSourceOldTopBlock C)
+      (case2DisplayedSourceFollowingFactor n hS hcont C)
+      (case2DisplayedPaperCprime n hS hcont residual C)
+      htail
+  refine
+    ⟨case2DisplayedPostPivotResidualBlock_nonempty_of_next n hS hnext,
+      ?_,
+      case2DisplayedSourceChartMap_value_mem n hS hcont u residual,
+      case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
+      case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
+  refine
+    ⟨q, ?_,
+      exponentPre.extendDomain_correctedCase2NewLabel_of_postData hnew hexpPost,
+      hpost.levelInvariants_of_correctedExponentPostData levelInv hexpPost,
+      IntroducedLabelRecurrenceState.case2IntroducedLabelLeastValueGap_succ
+        leastValueGap hexpPost.leastValue_old hexpPost.leastValue_new,
+      hpost.case2Gap_of_leastValueGap_of_correctedExponentPostData
+        levelInv hexpPost leastValueGap⟩
+  exact congrArg
+    (fun M ↦ M * sourceSuffixProduct κ Ctail S hSuffix)
+    hblock
+
+/-- Continuing displayed source-chart stack boundary with old top rows and the
+actual source suffix.
+
+This compatibility wrapper keeps the older chart-family-bearing API.  The
+chart-family boundary is ignored; the finite proof is supplied by
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily`. -/
 theorem sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData
     {R : Type*} [CommRing R]
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
@@ -13497,28 +13635,11 @@ theorem sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrecte
         {v : R | ∃ p, p ∈ case2ResidualBlockPivotEntries n S J ∧
           case2DisplayedSourceChartMap n hS hcont u residual p = v} =
       Ideal.span ({u} : Set R) := by
-  let data :=
-    of_sourceChartMap_case2Succ_updateSelected pre u residual hS hSL hcont
-      exponentPre levelInv leastValueGap chartFamily
-  refine
-    ⟨case2DisplayedPostPivotResidualBlock_nonempty_of_next n hS hnext,
-      ?_,
-      case2DisplayedSourceChartMap_value_mem n hS hcont u residual,
-      case2DisplayedSourceChartMap_center_dvd n hS hcont u residual,
-      case2DisplayedSourceChartMap_centerIdeal_eq_span_singleton n hS hcont u residual⟩
-  rcases data.sourceDisplayedQP_sourceChartMap_paperQP residual C with ⟨q, hq⟩
-  refine ⟨q, ?_, data.extendExponentDomain, data.postLevelInvariants,
-    data.successorLeastValueGap, data.postCase2Gap⟩
-  exact congrArg
-    (fun M ↦ M * sourceSuffixProduct κ Ctail S hSuffix)
-    (fromBlocks_mul_verticalBlock_eq_of_tail
-      (case2DisplayedSourceOldTopWeight pre)
-      _
-      _
-      (case2DisplayedSourceOldTopBlock C)
-      (case2DisplayedSourceFollowingFactor n hS hcont C)
-      (case2DisplayedPaperCprime n hS hcont residual C)
-      hq)
+  let _ := chartFamily
+  exact
+    sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily
+      pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap
+      κ hSuffix C Ctail
 
 /-- Source-order terminal weight matrix for the stopped displayed Case 2
 candidate.

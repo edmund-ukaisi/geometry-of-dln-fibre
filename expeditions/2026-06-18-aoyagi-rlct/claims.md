@@ -767,6 +767,12 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-continuing-certificate-without-chart-family-a4.md`;
 	  xhigh fidelity/bedrock review passed and is saved at
 	  `threads/04-blow-up-certificate/review-case2-continuing-certificate-without-chart-family-a4.md`.
+	  Reproduction of the Case 2 continuing old-top/source-suffix paper-`C'`
+	  stack chart-family-free directification is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`;
+	  xhigh source/reproduction and Lean dependency reviews passed and are
+	  saved at
+	  `threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`.
 	  Reproduction of the A4/A0 Case 2 exponent-coordinate bridge is saved at
 	  `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
@@ -1678,6 +1684,16 @@ No such claim is formalisation-ready until both fields are filled.
   `Case2DisplayedSuppliedChartFamilyBoundary.exists_sourceDisplayedOldTopSourceSuffixProduct_entryIdeal_eq_of_not_next_cont`
   in `BlowupArithmetic.lean`.  It replaces the abstract supplied suffix in
   the stopped source old-top theorem by Aoyagi's raw right suffix product.
+  The continuing old-top/source-suffix paper-`C'` stack now has a
+  chart-family-free constructor
+  `sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily`;
+  the older
+  `sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData`
+  is a compatibility wrapper.  This removes only the vacuous finite
+  `Case2ResidualBlockChartFamilyBoundary` dependency from that stack identity;
+  the raw suffix remains supplied and the theorem does not source-produce
+  `Csucc` or `C'^(S+1)`, suffixes, coverage, transition regularity, analytic
+  Jacobians, normal crossings, pole order, or RLCT.
   The source terminal product candidate checkpoint proves
   `matrixEntryIdeal_submatrix_equiv`,
   `case2SourceTerminalRowIndex`, `case2SourceTerminalRowEquiv`,

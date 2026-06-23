@@ -217,6 +217,18 @@ same non-stack payloads.  This still does not produce `Csucc`, source-produce
 `C'^(S+1)`, produce the source suffix, prove transition invariance, normal
 crossings, pole order, or RLCT.
 
+The old-top/source-suffix paper-`C'` stack itself is now direct with respect
+to finite corrected post-data:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`.
+Lean provides
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily`;
+the older `withCorrectedPostData` API is a compatibility wrapper.  This removes
+a vacuous dependency on `Case2ResidualBlockChartFamilyBoundary` from this
+finite stack identity only.  The supplied raw suffix remains supplied, and
+there is still no source production of `Csucc` or `C'^(S+1)`, suffix
+production, coverage/transition regularity, normal crossings, pole order, or
+RLCT.
+
 The next A4 boundary has been made reproduction-first rather than wrapper-led:
 `threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`.
 It records that a genuine Case 2 source-production theorem must be branchwise:

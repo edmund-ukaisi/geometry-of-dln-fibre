@@ -4731,3 +4731,32 @@ constructors.  It is not source production of `Csucc`, not successor
 chart-family construction, not suffix production, not coverage/transition
 regularity, not an analytic Jacobian/volume-form theorem, not normal
 crossings, not pole order, and not RLCT extraction.
+
+## 2026-06-23 Lean continuing old-top/source-suffix paper-Cprime stack without chart-family boundary
+
+Reproduction:
+`reproduction-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family.md`.
+Review artifact:
+`review-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`.
+
+Lean now constructs the continuing old-top/source-suffix paper-`C'` stack
+identity without a supplied `Case2ResidualBlockChartFamilyBoundary`:
+
+```text
+sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily
+```
+
+The direct proof uses the corrected new-label certificate, concrete
+`case2Succ` recurrence post-data, corrected selected-label exponent post-data,
+the finite displayed `Q/P` witness, old-top row lifting, and right
+multiplication by the supplied raw source suffix.  The older
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData`
+API remains as a compatibility wrapper.
+
+This is finite paper-`C'` stack bookkeeping only.  The source suffix remains
+supplied, and the theorem does not source-produce `Csucc` or `C'^(S+1)`,
+produce suffixes, construct successor chart families, prove coverage or
+transition regularity, prove analytic Jacobian/volume-form data, prove normal
+crossings, prove pole order, or extract an RLCT.

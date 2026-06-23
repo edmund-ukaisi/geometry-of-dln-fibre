@@ -5917,6 +5917,33 @@ Review:
 `threads/04-blow-up-certificate/review-case2-continuing-certificate-without-chart-family-a4.md`
 passed.
 
+Latest A4 old-top/source-suffix paper-`C'` stack chart-family-free
+directification:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily`.
+It proves the same finite continuing stack identity as the old
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withCorrectedPostData`
+theorem, but without `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary` arguments.  The proof uses the
+corrected new-label certificate, concrete `case2Succ` recurrence post-data,
+corrected exponent post-data, the finite displayed `Q/P` witness,
+old-top lifting by `fromBlocks_mul_verticalBlock_eq_of_tail`, and right
+multiplication by the supplied raw source suffix.  The older API remains as a
+compatibility wrapper that ignores its chart-family argument.
+
+This is finite old-top/source-suffix paper-`C'` stack bookkeeping only.  It is
+not source production of `Csucc` or `C'^(S+1)`, not suffix production, not
+successor chart-family construction, not coverage/transition regularity, not
+an analytic Jacobian/volume-form theorem, not normal crossings, not pole
+order, and not RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`
+passed.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
