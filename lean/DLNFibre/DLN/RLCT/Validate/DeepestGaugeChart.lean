@@ -53,9 +53,13 @@ interface. Canonical structure: `fm2/split-reindex` (post-`(C)`-refactor, #90).
   correct: split carries no gauge nonlinearity (det `±1`).
 * `regStraighten : DeepestSplit → DeepestSplit` (a bare TOTAL continuous function post-`(C)`, NOT a
   `≃ₜ`) is the nonlinear `E`-straightening. It reads the WHOLE `q` (reg × core × spec — INCLUDING the
-  spectator, where the interior `X₂` lives), so `(regStraighten q).1 = E` (the cross-layer residuals
-  `E₀₀ = X₁ + X₂ + O(2)`). `regStraighten_core`/`_spectator` fix only the OUTPUT core/spec slots; they do
-  NOT restrict what the `.1`-OUTPUT reads. So `E` IS expressible. (`#82`, the producer's; total fn keeps
+  spectator, where the interior `X₂` lives). **`(regStraighten q).1 = E_pivot`** (RULED 2026-06-23,
+  controller): the core-INDEPENDENT, `dE(0) = id` straightened part — the genuine reg→reg local diffeo.
+  The core-DEPENDENT cross-terms `E − E_pivot ∈ ideal(reg)` (cobuild sympy-verified `E|{reg=0} = 0`) are
+  NOT coordinate — they are LOSS, and charge to PIN2's `∑E²` (cobuild's leak mechanism, `#54`). Rationale:
+  a coordinate-straightening map must not depend on the core it is not straightening; `E_pivot` is the
+  reg→reg diffeo, the residual is loss. `regStraighten_core`/`_spectator` fix only the OUTPUT core/spec
+  slots; they do NOT restrict what the `.1`-OUTPUT reads. (`#82`, the producer's; total fn keeps
   global measurability — the `(C)` fallback.)
 * `coreAbsorb : DeepestSplit ≃ₜ DeepestSplit` (`#79`, DONE) is the ADDITIVE Schur shear (det = 1, MP):
   `coreShearHomeo` with `shift = −Z(I+X)⁻¹Y` reading reg+spec, so `(coreAbsorb q).2.1` = the core-only
@@ -225,7 +229,9 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
   /-- **The regular-absorption** on split coords (g161, the (e)-fix; the (C) wall-fallback shape). The
   split's regular slot is the RAW gauge pivots `(X,Y,Z)`, NOT the nonlinear regular residual
   `E = X₁+X₂+X₁X₂+…` the squeeze needs (`loss_squeeze` over `(split w).1` raw is FALSE, g161
-  counterexample). `regStraighten` turns the raw reg slot into `E`, fixing the core and spectator slots.
+  counterexample). `regStraighten` turns the raw reg slot into `E_pivot` (the core-INDEPENDENT,
+  `dE(0)=id` straightened part; the core-dependent `E − E_pivot ∈ ideal(reg)` charges loss-side to
+  `∑E²`, RULED 2026-06-23), fixing the core and spectator slots.
   **A bare TOTAL continuous function, NOT a `≃ₜ`** (the (C) fallback, controller-blessed): the IFT
   E-straightening is a local diffeo on `𝓝 0` but does NOT extend to a global spectator-fixing homeomorph
   in Mathlib v4.29 (the piecewise cutoff is discontinuous at `∂V`; no local→global API). A total
@@ -337,13 +343,13 @@ noncomputable def DeepestGaugeChart.ofExactGerm (H : Fin (L + 1) → ℕ) (r : �
     · rw [one_mul]; exact le_of_eq heq
 
 /-- **Sub-lemma 2 (`deepestPoint_is_rank_exact`).** The constructed deepest point is rank-`r`-exact on
-every interior layer — a restatement of the green `deepestPoint_isDeep` (`IsDeepLayers.2`), exposed in
-the layer-rank form the gauge chart consumes. -/
+every layer — a restatement of the green `deepestPoint_isDeep` (`IsDeepLayers.2.1`, the rank clause),
+exposed in the layer-rank form the gauge chart consumes. -/
 theorem deepestPoint_is_rank_exact (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     ∀ s : Fin L, ((deepestPoint H r B hB hr hL) s).rank = r :=
-  (deepestPoint_isDeep H r B hB hr hL).2
+  (deepestPoint_isDeep H r B hB hr hL).2.1
 
 /-- **Sub-lemma 3 (`deepest_gauge_squeeze_exists`, HEAVY #44c — the sub-34 obligation).** The
 gauge-slice squeeze datum exists at the deepest point. The g150-cert block algebra (re-scoped to the

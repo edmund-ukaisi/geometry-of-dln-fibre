@@ -498,10 +498,20 @@ and the local RLCT is constant over it (a single GL gauge orbit). It is *not exh
 λ-attaining set (the full set is larger — residual freedom), which is why we key D1/L2 to ONE
 constructed `deepestPoint` rather than this `∀`-predicate. (The discarded per-partial-product form
 was *too weak* — `(2,2,2)`, `(A¹=0, A² invertible)` has all partial products rank `0` but local RLCT
-`2 ≠ 3/2`.) Used only to characterize the witness `deepestPoint_exists` produces. -/
+`2 ≠ 3/2`.) Used only to characterize the witness `deepestPoint_exists` produces.
+
+**Interior block-normality** (third conjunct, #95): on every *strict-interior* layer
+(`0 < s ∧ s+1 < L`, i.e. neither boundary), `w s` equals the block-normal corner `diag(I_r, 0)`
+verbatim (`corM`-shape) — NOT merely rank-`r`. The `wLayers` witness has it (the interior layers ARE
+the corner block), and it is what lets the framed product collapse the interior to identity frames
+(`P_s = Q_s = I`), leaving only the two boundary frames to carry the `block_elimination` units. The
+conjunct is vacuous for `L ≤ 2` (no strict-interior layer) and bites at `L ≥ 3`. -/
 def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
-  w ∈ optimalSet H B ∧ ∀ s : Fin L, (w s).rank = r
+  w ∈ optimalSet H B ∧ (∀ s : Fin L, (w s).rank = r) ∧
+    ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+      w s = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
 
 /-- `[I_r|0] · [I_r;0] = I_r`: projection ∘ embedding (a left inverse) on `Fin r`. -/
 private theorem proj_emb_eq_one {N r : ℕ} (hrN : r ≤ N) :
@@ -872,10 +882,15 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
   rcases Nat.eq_zero_or_pos r with hr0 | hrpos
   · -- r = 0: the all-zero tuple is deep (prod = 0 = B since B.rank = 0).
     subst hr0
-    refine ⟨⟨fun _ => 0, ?_, ?_⟩⟩
+    refine ⟨⟨fun _ => 0, ?_, ?_, ?_⟩⟩
     · show prod H (fun _ => 0) = B
       rw [prod_zero H hL, rank_zero_eq_zero B hB]
     · intro s; show ((0 : Matrix _ _ ℝ)).rank = 0; exact Matrix.rank_zero
+    · -- interior block-normality at r = 0: `corM 0`-shape is the zero matrix, and `w s = 0`.
+      intro s _ _
+      show (0 : Matrix _ _ ℝ) = _
+      ext i j; simp only [Matrix.of_apply, Matrix.zero_apply]
+      rw [if_neg (by rintro ⟨_, h⟩; exact absurd h (Nat.not_lt_zero _))]
   · -- r > 0: rank factorization B = U·V distributed as rank-exactly-r layers (verified 484/484).
     obtain ⟨P, Q, hP, hQ, hPBQ⟩ := block_elimination H r B hB
     set U : Matrix (Fin (H 0)) (Fin r) ℝ := P⁻¹ * embM (H 0) r with hU
@@ -886,39 +901,57 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     rcases Nat.lt_or_ge L 2 with hL1 | hL2
     · -- L = 1: the sole layer is B itself.
       obtain rfl : L = 1 := by omega
-      refine ⟨⟨wSingle H B, prod_wSingle H B, ?_⟩⟩
-      rintro ⟨sv, hsvlt⟩
-      obtain rfl : sv = 0 := by omega
-      have hcast : (⟨0, hsvlt⟩ : Fin 1).castSucc = (0 : Fin (1 + 1)) :=
-        Fin.ext (by simp [Fin.castSucc])
-      have hsucc : (⟨0, hsvlt⟩ : Fin 1).succ = Fin.last 1 := Fin.ext (by simp [Fin.succ])
-      rw [rank_heq (wSingle H B ⟨0, hsvlt⟩) B (congrArg H hcast) (congrArg H hsucc)
-        (by unfold wSingle; rw [dif_pos (show ((⟨0, hsvlt⟩ : Fin 1) : ℕ) = 0 from rfl)]
-            exact mpr_heq _ _)]
-      exact hB
+      refine ⟨⟨wSingle H B, prod_wSingle H B, ?_, ?_⟩⟩
+      · rintro ⟨sv, hsvlt⟩
+        obtain rfl : sv = 0 := by omega
+        have hcast : (⟨0, hsvlt⟩ : Fin 1).castSucc = (0 : Fin (1 + 1)) :=
+          Fin.ext (by simp [Fin.castSucc])
+        have hsucc : (⟨0, hsvlt⟩ : Fin 1).succ = Fin.last 1 := Fin.ext (by simp [Fin.succ])
+        rw [rank_heq (wSingle H B ⟨0, hsvlt⟩) B (congrArg H hcast) (congrArg H hsucc)
+          (by unfold wSingle; rw [dif_pos (show ((⟨0, hsvlt⟩ : Fin 1) : ℕ) = 0 from rfl)]
+              exact mpr_heq _ _)]
+        exact hB
+      · -- interior block-normality is vacuous at L = 1 (no strict-interior layer: `s+1 < 1`).
+        rintro ⟨sv, hsvlt⟩ _ hlt; omega
     · -- L ≥ 2: boundary layers (0 and L-1) plus the corner middle chain.
-      refine ⟨⟨wLayers H r U V, prod_wLayers_ge2 H r U V hr hL2 B hUV, ?_⟩⟩
-      rintro ⟨sv, hsvlt⟩
-      have hk : sv + 1 < L + 1 := by omega
-      rcases Nat.eq_zero_or_pos sv with hs0 | hspos
-      · -- layer 0: rank (U · [I_r|0]) = rank U = r.
-        subst hs0
-        rw [rank_heq (wLayers H r U V ⟨0, hsvlt⟩) (U * projM r (H ⟨0 + 1, hk⟩))
-          rfl rfl (heq_layer0 H r U V hk)]
-        rw [rank_mul_projM r (H ⟨0 + 1, hk⟩) (hr _), hUr]
-      · rcases Nat.lt_or_ge sv (L - 1) with hslt | hsge
-        · -- middle layer: corner block, rank r.
-          rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩)
-            (corM r (H ⟨sv, Nat.lt_of_succ_lt hk⟩) (H ⟨sv + 1, hk⟩))
-            rfl rfl (heq_layerMid H r U V sv hk hspos hslt)]
-          exact corM_rank (hr _) (hr _)
-        · -- last layer (sv = L-1): rank ([I_r;0] · V) = rank V = r.
-          have hsL : sv = L - 1 := by omega
-          rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩) (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
-            rfl (congrArg H (show (⟨sv, hsvlt⟩ : Fin L).succ = Fin.last L from
-              Fin.ext (by simp [Fin.succ]; omega)))
-            (heq_layerLast H r U V sv hk hsL hspos)]
-          rw [rank_embM_mul (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r (hr _), hVr]
+      refine ⟨⟨wLayers H r U V, prod_wLayers_ge2 H r U V hr hL2 B hUV, ?_, ?_⟩⟩
+      · rintro ⟨sv, hsvlt⟩
+        have hk : sv + 1 < L + 1 := by omega
+        rcases Nat.eq_zero_or_pos sv with hs0 | hspos
+        · -- layer 0: rank (U · [I_r|0]) = rank U = r.
+          subst hs0
+          rw [rank_heq (wLayers H r U V ⟨0, hsvlt⟩) (U * projM r (H ⟨0 + 1, hk⟩))
+            rfl rfl (heq_layer0 H r U V hk)]
+          rw [rank_mul_projM r (H ⟨0 + 1, hk⟩) (hr _), hUr]
+        · rcases Nat.lt_or_ge sv (L - 1) with hslt | hsge
+          · -- middle layer: corner block, rank r.
+            rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩)
+              (corM r (H ⟨sv, Nat.lt_of_succ_lt hk⟩) (H ⟨sv + 1, hk⟩))
+              rfl rfl (heq_layerMid H r U V sv hk hspos hslt)]
+            exact corM_rank (hr _) (hr _)
+          · -- last layer (sv = L-1): rank ([I_r;0] · V) = rank V = r.
+            have hsL : sv = L - 1 := by omega
+            rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩) (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
+              rfl (congrArg H (show (⟨sv, hsvlt⟩ : Fin L).succ = Fin.last L from
+                Fin.ext (by simp [Fin.succ]; omega)))
+              (heq_layerLast H r U V sv hk hsL hspos)]
+            rw [rank_embM_mul (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r (hr _), hVr]
+      · -- interior block-normality: strict-interior layers ARE the corner block (the `heq_layerMid`
+        -- HEq already used for the middle rank, converted to an `=` against the inlined corM-shape).
+        rintro ⟨sv, hsvlt⟩ hspos hslt1
+        simp only [Fin.val_mk] at hslt1
+        have hk : sv + 1 < L + 1 := by omega
+        have hspos' : 0 < sv := hspos
+        have hslt : sv < L - 1 := by omega
+        have hheq := heq_layerMid H r U V sv hk hspos' hslt
+        -- `corM r (H ⟨sv,…⟩) (H ⟨sv+1,…⟩) = corM r (H s.castSucc) (H s.succ)` (Fin.ext rfl casts),
+        -- and the latter is the inlined `Matrix.of …`-shape; so `eq_of_heq` closes it.
+        have hc : (⟨sv, Nat.lt_of_succ_lt hk⟩ : Fin (L + 1)) = (⟨sv, hsvlt⟩ : Fin L).castSucc :=
+          Fin.ext rfl
+        have hs : (⟨sv + 1, hk⟩ : Fin (L + 1)) = (⟨sv, hsvlt⟩ : Fin L).succ :=
+          Fin.ext rfl
+        rw [hc, hs] at hheq
+        exact eq_of_heq hheq
 
 /-- **The deepest singular point** of the fibre `mult⁻¹(B)` (Rung-0c FLAG, load-bearing — pp + Codex
 adjudicated). A **single constructed** witness: every layer at the minimal rank `r` (the

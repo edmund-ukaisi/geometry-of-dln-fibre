@@ -48,7 +48,7 @@ theorem deepestPoint_frame_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
                 if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
   intro s
   have hrank : (deepestPoint H r B hB hr hL s).rank = r :=
-    (deepestPoint_isDeep H r B hB hr hL).2 s
+    (deepestPoint_isDeep H r B hB hr hL).2.1 s
   exact Core.Matrix.rank_normal_form_exists (deepestPoint H r B hB hr hL s) hrank
 
 end DLNFibre.DLN.RLCT
