@@ -112,3 +112,4 @@ import DLNFibre.DLN.Aoyagi.Theorem2FinalAssembly
 import DLNFibre.DLN.Aoyagi.Lemma5TerminalOrderBridge
 import DLNFibre.DLN.Aoyagi.Theorem2TerminalOrderBridge
 import DLNFibre.DLN.Aoyagi.Case2FiniteExponentBridge
+import DLNFibre.DLN.Aoyagi.Case2Theorem2FiniteExponentBridge

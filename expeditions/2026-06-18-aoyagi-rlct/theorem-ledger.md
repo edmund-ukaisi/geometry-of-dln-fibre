@@ -5673,6 +5673,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-a0-exponent-minimum-bridge-a4.md`.
 
+Latest A6 Case 2 finite-formula wrapper:
+`Case2Theorem2FiniteExponentBridge.lean` now contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData`.
+This theorem consumes the supplied Case 2/A0 coordinate bridge, an explicit
+global active-ratio lower bound, a supplied equality from the Case 2
+center-cardinality ratio to Theorem 2's displayed lambda formula, and a
+supplied order equality to build
+`AoyagiTheorem2FiniteExponentFormulaHypothesis`.  It does not prove those
+supplied obligations, selected-width provenance, chart production, analytic
+extraction, pole order, or RLCT.
+Reproduction:
+`threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-finite-formula-bridge.md`.
+Review:
+`threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

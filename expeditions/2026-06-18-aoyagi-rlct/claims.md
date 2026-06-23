@@ -3090,6 +3090,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`;
   chart terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-chart-terminal-order-bridge-a6.md`;
+  Case 2 finite-formula wrapper reproduced at
+  `threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`;
   remaining source-obligations boundary map at
   `threads/06-dln-translation/boundary-map-theorem2-remaining-source-obligations-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
@@ -3110,6 +3112,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-theorem2-countdatum-terminal-order-bridge-a6.md`;
   chart terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-chart-terminal-order-bridge-a6.md`;
+  Case 2 finite-formula wrapper reviewed at
+  `threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`;
   final assembly reviewed at
   `threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:

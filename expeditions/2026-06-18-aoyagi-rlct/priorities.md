@@ -65,6 +65,15 @@ and chart-count witnesses/bounds.  This reduces the final socket from two
 opaque finite equalities to explicit finite min/order certificate obligations;
 it still does not prove those obligations from source charts.
 
+The current A6 Case 2 finite-formula wrapper is
+`threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`.
+Lean now composes the supplied Case 2/A0 coordinate bridge, a supplied
+active-ratio lower bound, a supplied equality from the Case 2 center
+cardinality to Theorem 2's displayed lambda formula, and a supplied order
+equality to build `AoyagiTheorem2FiniteExponentFormulaHypothesis`.  It still
+does not prove the lower bound, lambda equality, order equality, selected-width
+provenance, chart production, analytic extraction, pole order, or RLCT.
+
 The current A4/A0-facing selected-entry local algebra slice is
 `threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`.
 Lean now proves the finite selected-entry center square identity

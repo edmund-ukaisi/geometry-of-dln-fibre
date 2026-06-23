@@ -5456,6 +5456,26 @@ and
 Review:
 `threads/06-dln-translation/review-theorem2-finite-certificate-bridge-a6.md`.
 
+Latest A6 Case 2 finite-formula wrapper:
+`Case2Theorem2FiniteExponentBridge.lean` now contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData`.
+It consumes the supplied Case 2/A0 coordinate bridge, an explicit active-ratio
+lower bound at `card(case2ResidualBlockPivotEntries n S J)/2`, a supplied
+equality from that Case 2 center-cardinality ratio to
+`aoyagiTheorem2Lambda_fromCeilData Lthm ell H r m data`, and a supplied order
+equality `D.exponentOrder = data.theorem2OrderFormula`.  It fills
+`AoyagiTheorem2FiniteExponentFormulaHypothesis D Lthm ell H r m data`.
+
+This is finite bridge composition only.  It does not prove the lower bound,
+the Case 2/Theorem 2 lambda equality, the order equality, selected-width
+provenance, chart production, analytic extraction, pole order, or RLCT.
+Artifacts:
+`threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-finite-formula-bridge.md`.
+Review:
+`threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`.
+
 Latest A6 terminal-order handoff: `Theorem2TerminalOrderBridge.lean` now
 routes the order field of `AoyagiTheorem2FiniteExponentFormulaHypothesis`
 through the supplied Lemma 5 terminal-minimum count.  If the exponent-minimum

@@ -499,3 +499,33 @@ The only planned citation remains normal-crossing-to-RLCT extraction.  The map
 explicitly does not cite Aoyagi Lemma 1, Aoyagi Theorem 4,
 regular-coordinate additivity, A2 analytic transport, or Lemma 5 no-extra
 coverage.
+
+## Current slice - 2026-06-23, Case 2 to Theorem 2 finite formula
+
+Reproduction:
+`reproduction-case2-theorem2-finite-formula-bridge-a6.md`.
+Statement card:
+`statement-card-a6-case2-theorem2-finite-formula-bridge.md`.
+Review artifact:
+`review-case2-theorem2-finite-formula-bridge-a6.md`.
+
+Lean now has a leaf bridge module:
+
+```text
+DLNFibre.DLN.Aoyagi.Case2Theorem2FiniteExponentBridge
+```
+
+with theorem:
+
+```text
+Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData
+```
+
+It builds `AoyagiTheorem2FiniteExponentFormulaHypothesis` from the supplied
+Case 2/A0 coordinate bridge, an explicit active-ratio lower bound, a supplied
+equality identifying the Case 2 center-cardinality ratio with Theorem 2's
+displayed lambda formula, and a supplied order equality.
+
+Boundary: finite composition only.  It does not prove the lower bound, lambda
+identification, order equality, selected-width provenance, chart production,
+analytic extraction, pole order, or RLCT.
