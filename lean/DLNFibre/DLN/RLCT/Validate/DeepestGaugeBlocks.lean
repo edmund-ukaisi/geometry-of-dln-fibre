@@ -141,6 +141,38 @@ theorem fullProduct_core_split {r mlo nhi : Type*} [Fintype r] [DecidableEq r] [
     rw [hd]
     simp [Matrix.add_apply]
 
+/-- **Frobenius submultiplicativity** (2-factor, entrywise squared). The squared-Frobenius energy of a
+matrix product is bounded by the product of the factor energies: per-entry Cauchy–Schwarz
+(`Finset.sum_mul_sq_le_sq_mul_sq`) on `(M·N) i j = ∑ₖ M i k · N k j`, then the double-sum factors by
+`Finset.sum_mul_sum`. Route-independent bedrock for the leak bound `hleak`. -/
+theorem frobenius_mul_le {a b c : Type*} [Fintype a] [Fintype b] [Fintype c]
+    (M : Matrix a b ℝ) (N : Matrix b c ℝ) :
+    (∑ i, ∑ j, ((M * N) i j) ^ 2)
+      ≤ (∑ i, ∑ k, (M i k) ^ 2) * (∑ j, ∑ k, (N k j) ^ 2) := by
+  have hentry : ∀ i j, ((M * N) i j) ^ 2 ≤ (∑ k, (M i k) ^ 2) * (∑ k, (N k j) ^ 2) := by
+    intro i j
+    rw [Matrix.mul_apply]
+    exact Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun k => M i k) (fun k => N k j)
+  calc (∑ i, ∑ j, ((M * N) i j) ^ 2)
+      ≤ ∑ i, ∑ j, (∑ k, (M i k) ^ 2) * (∑ k, (N k j) ^ 2) :=
+        Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => hentry i j
+    _ = (∑ i, ∑ k, (M i k) ^ 2) * (∑ j, ∑ k, (N k j) ^ 2) :=
+        (Finset.sum_mul_sum Finset.univ Finset.univ
+          (fun i => ∑ k, (M i k) ^ 2) (fun j => ∑ k, (N k j) ^ 2)).symm
+
+/-- **The leak bound** (`hleak` discharge, route-independent). The endpoint leak `leak = P10·N·P01`
+(`N = ⅟P00 ≈ I` near the deepest point) has squared-Frobenius energy bounded by
+`‖N·P01‖²·(∑ P10²)`, hence (since both `P10, P01` sit inside the regular residual energy `E`, and one
+of them is `≤ t²` near `w0`) is charged to `t²·∑E²` via `core_comparability_squeeze`. Here stated as
+the clean two-factor chain `∑ leak² ≤ (∑ P10²)·(∑ (N·P01)²)` — the geometric `t²` smallness is
+supplied by the consumer from `P10(w0)=0` + continuity. -/
+theorem leak_frobenius_bound {r mlo nhi : Type*} [Fintype r] [Fintype mlo] [Fintype nhi]
+    (N : Matrix r r ℝ) (P01 : Matrix r nhi ℝ) (P10 : Matrix mlo r ℝ) :
+    (∑ i, ∑ j, ((P10 * N * P01) i j) ^ 2)
+      ≤ (∑ i, ∑ k, (P10 i k) ^ 2) * (∑ j, ∑ k, ((N * P01) k j) ^ 2) := by
+  rw [Matrix.mul_assoc]
+  exact frobenius_mul_le P10 (N * P01)
+
 /-- **The per-layer Schur block-diagonalisation** (#44c, g156 / #61 — the corrected `coreAbsorb`
 core object). A gauge layer `C = fromBlocks (1+X) Y Z T` with invertible `(0,0)` corner
 block-diagonalises by the unipotent transvections `L = [[1,0],[−Z⅟(1+X),1]]`,
