@@ -323,6 +323,150 @@ theorem
 
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
+namespace AoyagiDefinition3SourceData
+
+/-- Definition 3 source data plus rank-width hypotheses produce the
+selected-width family and ceiling datum consumed by the supplied Eq5
+terminal-order bridge.
+
+The Eq5 payload, active-ratio certificate, displayed-ratio chart-count
+certificate, and A0 extraction hypothesis remain supplied for the produced
+`m,data`.  The compatibility `P.cut = C` keeps the Eq5 endpoint payload tied
+to the same selected cutpoints as the Definition 3 source data. -/
+theorem
+  exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+    {β : Type*} [DecidableEq β]
+    {D : AoyagiNormalCrossingExponentData}
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    (Ssrc : AoyagiDefinition3SourceData L (n + 1) H r C)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder)
+    (hPayload :
+      ∀ {m : Fin (n + 2) → ℤ}
+        (data : AoyagiDefinition3CeilData (n + 1) m),
+        m = aoyagiSelectedReducedWidths H r C →
+          ∃ (t : ℕ → ℕ → ℕ → ℤ)
+            (numerator leastValue : ℕ → ℕ → ℤ)
+            (TC :
+              AoyagiLemma5SuppliedTerminalCandidateFamily β L width
+                Sfinal Jfinal n data.aParam data.ceilWidth m t numerator
+                leastValue)
+            (P : AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload data TC),
+            P.cut = C ∧
+              ∃ p : Fin D.numCharts × Fin D.numCoords,
+                p ∈ D.activePairs ∧
+                  D.ratioAt p =
+                    aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ∧
+                  (∀ p' ∈ D.activePairs,
+                    aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+                      D.ratioAt p') ∧
+                  ∃ c : Fin D.numCharts,
+                    D.countInChartAtRatio
+                        (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c =
+                      TC.terminalMinimumLabels.card ∧
+                    ∀ c' : Fin D.numCharts,
+                      D.countInChartAtRatio
+                          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c' ≤
+                        TC.terminalMinimumLabels.card) :
+    ∃ (m : Fin (n + 2) → ℤ)
+      (data : AoyagiDefinition3CeilData (n + 1) m),
+      AoyagiTheorem2SuppliedFinalBoundary
+          D L (n + 1) H r C m data lambda poleOrder ∧
+      (∀ j : Fin (n + 2), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (n + 2), 0 ≤ m j) ∧
+      (∀ i : Fin (n + 2),
+        ((n + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (n + 2), m j) ∧
+      (∀ i : Fin (n + 2), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat (n + 1) m i) := by
+  rcases Ssrc.exists_selectedReducedWidthCeilData_of_rankWidth hr with
+    ⟨m, data, hm, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  rcases hPayload data hm with
+    ⟨t, numerator, leastValue, TC, P, hcut, p, hp, hratio, hleRatio,
+      c, hchart, hleChart⟩
+  refine ⟨m, data, ?_, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  have hselectedP : m = aoyagiSelectedReducedWidths H r P.cut := by
+    simpa [hcut] using hm
+  have B :
+      AoyagiTheorem2SuppliedFinalBoundary
+        D L (n + 1) H r P.cut m data lambda poleOrder :=
+    TC.theorem2SuppliedFinalBoundary_of_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+      data P hselectedP hNC hp hratio hleRatio hchart hleChart
+  simpa [hcut] using B
+
+/-- Chart-certificate version of
+`exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`.
+
+This packages Definition 3 source-data provenance before invoking the supplied
+Eq5 endpoint-payload bridge for the produced `m,data`. -/
+theorem
+  exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    (Ssrc : AoyagiDefinition3SourceData L (n + 1) H r C)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    (hPayload :
+      ∀ {m : Fin (n + 2) → ℤ}
+        (data : AoyagiDefinition3CeilData (n + 1) m),
+        m = aoyagiSelectedReducedWidths H r C →
+          ∃ (t : ℕ → ℕ → ℕ → ℤ)
+            (numerator leastValue : ℕ → ℕ → ℤ)
+            (TC :
+              AoyagiLemma5SuppliedTerminalCandidateFamily β L width
+                Sfinal Jfinal n data.aParam data.ceilWidth m t numerator
+                leastValue)
+            (P : AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload data TC),
+            P.cut = C ∧
+              ∃ p : Fin Cnc.numCharts × Fin Cnc.numCoords,
+                p ∈ Cnc.exponentData.activePairs ∧
+                  Cnc.exponentData.ratioAt p =
+                    aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ∧
+                  (∀ p' ∈ Cnc.exponentData.activePairs,
+                    aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+                      Cnc.exponentData.ratioAt p') ∧
+                  ∃ c : Fin Cnc.numCharts,
+                    Cnc.exponentData.countInChartAtRatio
+                        (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c =
+                      TC.terminalMinimumLabels.card ∧
+                    ∀ c' : Fin Cnc.numCharts,
+                      Cnc.exponentData.countInChartAtRatio
+                          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c' ≤
+                        TC.terminalMinimumLabels.card) :
+    ∃ (m : Fin (n + 2) → ℤ)
+      (data : AoyagiDefinition3CeilData (n + 1) m),
+      AoyagiTheorem2SuppliedChartFinalBoundary
+          Cnc L (n + 1) H r C m data lambda poleOrder ∧
+      (∀ j : Fin (n + 2), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (n + 2), 0 ≤ m j) ∧
+      (∀ i : Fin (n + 2),
+        ((n + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (n + 2), m j) ∧
+      (∀ i : Fin (n + 2), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat (n + 1) m i) := by
+  rcases Ssrc.exists_selectedReducedWidthCeilData_of_rankWidth hr with
+    ⟨m, data, hm, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  rcases hPayload data hm with
+    ⟨t, numerator, leastValue, TC, P, hcut, p, hp, hratio, hleRatio,
+      c, hchart, hleChart⟩
+  refine ⟨m, data, ?_, hnat, hnonneg, hstrict, hupper, hNatNonneg⟩
+  have hselectedP : m = aoyagiSelectedReducedWidths H r P.cut := by
+    simpa [hcut] using hm
+  have B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L (n + 1) H r P.cut m data lambda poleOrder :=
+    TC.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+      data P hselectedP hNC hp hratio hleRatio hchart hleChart
+  simpa [hcut] using B
+
+end AoyagiDefinition3SourceData
+
 end Aoyagi
 end DLN
 end DLNFibre

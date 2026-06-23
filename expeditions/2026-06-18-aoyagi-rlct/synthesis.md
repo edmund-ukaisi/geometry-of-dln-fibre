@@ -6499,6 +6499,26 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-theorem2-eq5-terminal-order-bridge-a6.md`.
 
+Latest A6 Definition 3 source-data Eq5 terminal-order bridge:
+`Theorem2Eq5TerminalOrderBridge.lean` now also contains
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`
+and
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`.
+These first use Definition 3 source data plus an explicit source-range
+rank-width hypothesis to produce `m,data`, then call a supplied Eq5
+endpoint-payload callback for that produced pair.  The callback includes
+`P.cut = C`, so the selected cutpoints in the Eq5 payload do not drift away
+from the Definition 3 source data.  This is not a proof of selected-cutpoint
+existence, rank-width from matrix data, Eq5 family construction, Lemma 5
+exactness, active-ratio lower bounds, chart counts, chart production, pole
+order, or RLCT extraction.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-data-eq5-terminal-order-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-data-eq5-terminal-order-bridge.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-data-eq5-terminal-order-bridge-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

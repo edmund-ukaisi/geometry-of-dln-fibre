@@ -3408,8 +3408,9 @@ No such claim is formalisation-ready until both fields are filled.
 - **Status.** open.  Formula-notation, Definition 3 bridge, Definition 3
   source-data ceiling, Definition 3 source-data local wrappers, Definition 3
   source-data final-boundary handoff, conditional finite-exponent bridge,
-  terminal-order equality-bridge, and Eq5 terminal-order bridge slices have
-  landed, but the final RLCT theorem remains open.
+  terminal-order equality-bridge, Eq5 terminal-order bridge, and Definition 3
+  source-data Eq5 terminal-order bridge slices have landed, but the final RLCT
+  theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -3448,6 +3449,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-theorem2-terminal-order-equality-bridge-a6.md`;
   Eq5 terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-eq5-terminal-order-bridge-a6.md`;
+  Definition 3 source-data Eq5 terminal-order bridge reproduced at
+  `threads/06-dln-translation/reproduction-definition3-source-data-eq5-terminal-order-bridge-a6.md`;
   Case 2 finite-formula wrapper reproduced at
   `threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`;
   Case 2 ratio-count finite-formula wrapper reproduced at
@@ -3484,6 +3487,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-theorem2-terminal-order-equality-bridge-a6.md`;
   Eq5 terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-eq5-terminal-order-bridge-a6.md`;
+  Definition 3 source-data Eq5 terminal-order bridge reviewed at
+  `threads/06-dln-translation/review-definition3-source-data-eq5-terminal-order-bridge-a6.md`;
   Case 2 finite-formula wrapper reviewed at
   `threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`;
   Case 2 ratio-count finite-formula wrapper reviewed at
@@ -3610,6 +3615,11 @@ No such claim is formalisation-ready until both fields are filled.
   and
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`
   in `lean/DLNFibre/DLN/Aoyagi/Theorem2Eq5TerminalOrderBridge.lean`; current
+  Definition 3 source-data Eq5 terminal-order bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`
+  and
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2Eq5TerminalOrderBridge.lean`; current
   supplied final boundary:
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary`,
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_eq_natCast_sub`,
@@ -3701,7 +3711,15 @@ No such claim is formalisation-ready until both fields are filled.
   finite/final/chart-final A6 sockets; final-boundary wrappers use the same
   selected cutpoints carried by the supplied Eq5 payload.  This is not a
   source proof of Eq5 families, Lemma 5 exactness, active-ratio bounds, chart
-  counts, chart production, pole order, or RLCT.
+  counts, chart production, pole order, or RLCT.  Also proved a Definition 3
+  source-data Eq5 terminal-order bridge: source data and a source-range
+  rank-width hypothesis existentially produce `m,data`, and a supplied Eq5
+  payload/active-ratio/chart-count callback for that produced pair builds the
+  supplied final-boundary and chart-final-boundary sockets.  The callback
+  requires `P.cut = C`, so the Eq5 payload and Definition 3 source data use
+  the same selected cutpoints.  This is not selected-cutpoint construction,
+  rank-width from matrix data, Eq5 family construction, Lemma 5 exactness,
+  active-ratio bounds, chart counts, chart production, pole order, or RLCT.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** existence and uniqueness of the selected cutpoints and selected

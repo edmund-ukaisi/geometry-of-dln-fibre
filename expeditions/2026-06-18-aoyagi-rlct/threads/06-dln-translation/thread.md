@@ -798,3 +798,32 @@ Boundary: supplied-boundary composition only.  This does not construct Eq5
 endpoint families, prove source-backed Lemma 5 exactness, produce charts,
 prove active-ratio lower bounds, prove displayed-ratio chart-count facts,
 identify pole order without A0, or extract RLCT.
+
+## Current slice - 2026-06-23, Definition 3 source-data Eq5 terminal-order bridge
+
+Reproduction:
+`reproduction-definition3-source-data-eq5-terminal-order-bridge-a6.md`.
+Statement card:
+`statement-card-a6-definition3-source-data-eq5-terminal-order-bridge.md`.
+Review artifact:
+`review-definition3-source-data-eq5-terminal-order-bridge-a6.md`.
+
+Lean now has source-data wrappers in
+`DLNFibre.DLN.Aoyagi.Theorem2Eq5TerminalOrderBridge`:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+```
+
+They use Definition 3 source data and a source-range rank-width hypothesis to
+existentially produce the selected reduced-width family and ceiling datum, then
+invoke a supplied Eq5 endpoint-payload/active-ratio/chart-count callback for
+that produced `m,data`.  The callback includes `P.cut = C`, so the Eq5 payload
+and Definition 3 source data use the same selected cutpoints.
+
+Boundary: source-facing finite composition only.  This does not construct
+selected cutpoints, prove rank-width from matrix data, construct Eq5 endpoint
+families, prove Lemma 5 exactness, prove active-ratio lower bounds, prove
+displayed-ratio chart-count facts, produce normal-crossing charts, identify
+pole order without A0, or extract RLCT.
