@@ -367,6 +367,17 @@ theorem isLeafNode_iff_width_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) :
   rintro ⟨s, hs⟩
   exact (isLeafNode_iff_exists_zero M).mpr (exists_admissible_Mval_zero M s hs)
 
+/-- **A non-leaf node has all widths positive** (the branch's `schurState` precondition). A non-leaf `M`
+(`¬ isLeafNode M`, i.e. `minAdm M ≠ 0`) has every width `≥ 1` (`isLeafNode_iff_width_zero` contrapositive,
+`∃ s, M_s = 0` negated), so in particular the two pivot vertices `M_0, M_1 ≥ 1` — exactly `schurState`'s
+`hlo`. This is the bridge the dispatcher's BRANCH arm rides: the recursion is entered only at a non-leaf
+node, where the C1/C5 `schurState` split applies. -/
+theorem schurState_hlo_of_not_isLeafNode {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) (h : ¬ isLeafNode M) :
+    ∀ s : Fin (L' + 1 + 1), s.val ≤ 1 → 1 ≤ M s := by
+  intro s _
+  by_contra hcon
+  exact h ((isLeafNode_iff_width_zero M).mpr ⟨s, by omega⟩)
+
 /-- **Branch direction (the "too-weak" guard).** If every admissible stratum has positive codim
 (`0 < Mval M T` for all `T ∈ Adm M`), then `M` is NOT a leaf — the recursion does not stop early. The
 contrapositive of `isLeafNode_iff_exists_zero`: a positive-codim-everywhere node is a genuine branch.
