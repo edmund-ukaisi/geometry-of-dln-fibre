@@ -4662,3 +4662,41 @@ is `1`.
 This is not the global A0 exponent minimum, not a global active-ratio lower
 bound, not a global chart-count/order theorem, not pole order, and not RLCT
 extraction.
+
+## 2026-06-23 Lean direct Case 2 reindexed next-source product
+
+Reproduction:
+`reproduction-case2-reindexed-next-source-product-direct-a4.md`.
+Statement card:
+`statement-card-a4-case2-reindexed-next-source-product-direct.md`.
+Review artifact:
+`review-case2-reindexed-next-source-product-direct-a4.md`.
+
+Lean now proves the reindexed next same-stage source-product identity and
+corrected concrete post-data without the supplied chart-family boundary:
+
+```text
+sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData
+```
+
+The theorem uses the low-level displayed `Q/P` identity with concrete
+`case2Succ` recurrence post-data, derives the old recurrence Case 2 gap from
+the level/least-value bridge and integer least-value gap, uses
+`Case2CorrectedExponentPostData.updateSelected` for exponent post-data, lifts
+the lower-row identity through old top rows, and applies the existing finite
+next-source-product reindex.
+
+The older API
+
+```text
+sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData
+```
+
+remains as a compatibility wrapper but delegates to the direct theorem.  This
+removes a vacuous `Case2ResidualBlockChartFamilyBoundary` dependency from a
+finite product/post-data theorem.
+
+This is still not source production of `Csucc`, not successor chart-family
+construction, not suffix production, not coverage/transition regularity, not
+an analytic Jacobian/volume-form theorem, not normal crossings, not pole
+order, and not RLCT extraction.

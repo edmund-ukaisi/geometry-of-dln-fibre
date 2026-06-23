@@ -239,6 +239,21 @@ not arbitrary supplied-`Csucc` source production unless an equality to
 `case2DisplayedSourceSuccessorFollowingFactor` is separately supplied, and it
 does not move the open source-production boundary.
 
+The current A4 Case 2 finite product/post-data boundary removal is
+`threads/04-blow-up-certificate/reproduction-case2-reindexed-next-source-product-direct-a4.md`.
+Lean now proves
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData`
+directly from the low-level displayed `Q/P` identity, the concrete
+`case2Succ` recurrence post-data, the old level/least-value gap bridge, and
+`Case2CorrectedExponentPostData.updateSelected`.  The older theorem
+`sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData` remains as
+a compatibility wrapper, but its proof delegates to the direct theorem and
+does not use the supplied chart-family boundary.  This removes a vacuous
+`Case2ResidualBlockChartFamilyBoundary` dependency from a finite
+source-product identity.  It still does not source-produce `Csucc`, construct
+successor charts or suffixes, prove coverage/transition regularity, compute
+analytic Jacobians, prove normal crossings, pole order, or RLCT.
+
 The supplied-obligation projection
 `SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc` now also
 records the safe row-exhausted use of that equality: if the row-exhausted

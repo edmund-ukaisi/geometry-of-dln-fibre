@@ -5865,6 +5865,30 @@ Review:
 `threads/04-blow-up-certificate/review-selected-entry-local-exponent-min-order-a4.md`
 passed.
 
+Latest A4 Case 2 direct reindexed next-source product:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData`.
+It proves the displayed source-chart `Q/P` identity reindexed to the next
+same-stage source-product shape directly from the low-level finite `Q/P`
+identity, the old level/least-value gap, concrete `case2Succ` recurrence
+post-data, and corrected selected-label exponent overrides.  The old theorem
+`sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData` remains as
+a compatibility wrapper and now delegates to the direct theorem, so the finite
+product/post-data theorem no longer depends on a supplied
+`Case2ResidualBlockChartFamilyBoundary`.
+
+This is a boundary removal for finite Case 2 algebra only.  It does not
+source-produce `Csucc`, construct successor chart families or suffixes, prove
+coverage/transition regularity, provide analytic Jacobian/volume-form data,
+prove normal crossings, pole order, or RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-reindexed-next-source-product-direct-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-reindexed-next-source-product-direct.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-reindexed-next-source-product-direct-a4.md`
+passed.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

@@ -5530,6 +5530,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-chart-family-data-a4.md`.
 
+Latest A4 Case 2 direct reindexed next-source product:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData`.
+The theorem removes the supplied chart-family boundary from the finite
+reindexed next-source-product theorem.  It uses the low-level finite `Q/P`
+identity with concrete `case2Succ` post-data, derives `pre.case2Gap` from the
+old level/least-value bridge and integer least-value gap, uses
+`Case2CorrectedExponentPostData.updateSelected` for the corrected exponent
+post-data, lifts the lower-row identity through old top rows, and applies
+`case2DisplayedPivotFirstRHS_reindex_nextSourceProduct`.  The older theorem
+`sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData` is retained
+as a compatibility wrapper that delegates to the direct theorem.  This is not
+source production of `Csucc`, successor chart production, suffix production,
+coverage/transition regularity, analytic Jacobian data, normal crossings,
+pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-reindexed-next-source-product-direct-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-reindexed-next-source-product-direct.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-reindexed-next-source-product-direct-a4.md`.
+
 Latest A4 Case 2 selected-entry center square and formal Jacobian:
 `BlowupArithmetic.lean` now contains `selectedEntryCenterSq`,
 `selectedEntryCenterSq_selectedEntryChartMap`,

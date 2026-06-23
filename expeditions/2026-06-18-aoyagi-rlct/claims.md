@@ -1178,11 +1178,14 @@ No such claim is formalisation-ready until both fields are filled.
 	  restriction to the existing displayed block API, its `u * normalised` form,
 	  and the supplied displayed `Q/P` identity in source-chart names.
 	  Added the displayed source-chart reindexed product bridge
-	  `sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData`, which
-	  composes the source-chart `Q/P` identity with the finite next same-stage
-	  source-product reindex and returns corrected concrete post-data
-	  projections.  This is corrected displayed algebra, not source production
-	  or a literal reading of the inconsistent printed outside-`u` factor.
+	  `sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData`, now
+	  backed by the direct theorem
+	  `sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData`,
+	  which composes the source-chart `Q/P` identity with the finite next
+	  same-stage source-product reindex and returns corrected concrete
+	  post-data projections without using the supplied chart-family boundary.
+	  This is corrected displayed algebra, not source production or a literal
+	  reading of the inconsistent printed outside-`u` factor.
 	  Added the fielded continuing local certificate
 	  `Case2DisplayedReindexedNextSourceProductEq`,
 	  `Case2DisplayedContinuingReindexedSourceChartCertificate`, and
