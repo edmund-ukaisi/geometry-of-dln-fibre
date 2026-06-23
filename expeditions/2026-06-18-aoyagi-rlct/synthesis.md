@@ -5311,7 +5311,8 @@ Latest A4 projection update: the supplied
 `SourceProductionObligation` now exposes the row-exhausted terminal matrix as
 original rows of the supplied successor following factor:
 `SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc`.
-This is the safe downstream use of `Csucc_eq_formula`: under the supplied
+This is the safe downstream use of the obligation's supplied row-exhausted
+terminal-row equality together with `Csucc_eq_formula`: under the supplied
 row-exhausted branch hypothesis, `Cterm` is transported-prefix rows of old
 `C`, which are already known to be original terminal rows of the canonical
 successor factor, and the obligation identifies that factor with supplied
@@ -5477,6 +5478,24 @@ and
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-countdatum-classifier-order-formula-bridge.md`.
 Review:
 `threads/05-arithmetic-tail/review-lemma5-countdatum-classifier-order-formula-bridge-a5.md`.
+
+Latest A5 terminal order classifier-notation handoff:
+`Lemma5TerminalOrderBridge.lean` now also exposes the existing
+upper-bound-classifier and counted-datum back-to-label routes in Theorem 2
+order notation:
+`terminalMinimumLabels_card_le_theorem2OrderFormula_of_upperBoundClassifier`,
+`terminalMinimumLabels_card_eq_theorem2OrderFormula_of_upperBoundClassifier_and_branchLabel_injOn`,
+`terminalMinimumLabels_card_le_theorem2OrderFormula_of_countDatumBackToBranchLabel`,
+and
+`terminalMinimumLabels_card_eq_theorem2OrderFormula_of_countDatumBackToBranchLabel_and_injOn`.
+These are definitional rewrites from `a*(n+1-a)+1` to
+`data.theorem2OrderFormula`; the classifiers, back-to-label bridge, and
+branch-label injectivity remain supplied.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-order-classifier-notation-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-order-classifier-notation.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-order-classifier-notation-a5.md`.
 
 Latest A6 finite-certificate bridge: `Theorem2FiniteExponentBridge.lean` now
 constructs `AoyagiTheorem2FiniteExponentFormulaHypothesis` from the A0 finite
@@ -6036,6 +6055,24 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-stack-without-chart-family-a4.md`
 passed.
+
+Latest A4 branchwise source-production re-audit:
+`threads/04-blow-up-certificate/audit-case2-branchwise-successor-production-recheck-a4.md`
+records the crash-recovered xhigh branch scout round.  Galileo checked the
+continuing branch, Wegener checked actual-width stopping, and Epicurus checked
+row-exhausted stopping.  The three reports agree that Aoyagi PDF pp. 19-22
+support the displayed local `Q/P` algebra, formula-level transported
+following rows, and finite supplied-boundary consumers, but not
+successor/source production.
+
+Controller decision: freeze A4 Case 2 source production at the supplied
+obligation boundary.  The continuing branch keeps the stronger
+`J+2 <= prefixMinNat n (S+1)` nonempty-next-center guard; actual-width
+stopping collapses to original rows only because `n(S+1)=J+1` empties the
+correction sum; row exhaustion alone gives transported rows and not original
+old rows in wide-next cases.  No new Lean target should be named as source
+production unless it builds an independent selected-entry atlas/transition
+construction.
 
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages

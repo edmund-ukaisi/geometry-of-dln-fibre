@@ -608,7 +608,11 @@ No such claim is formalisation-ready until both fields are filled.
   records that stronger chart-production claims are blocked at the present
   boundary: Aoyagi pp. 19-22 do not provide coordinate production of
   recurrence data, corrected exponent data, a successor chart family, full
-  source-produced `C'^(S+1)`, or a transition invariant.
+  source-produced `C'^(S+1)`, or a transition invariant.  A 2026-06-23
+  xhigh branch re-audit now separately checks the continuing, actual-width
+  stopped, and row-exhausted stopped branches and confirms that existing
+  supplied-obligation consumers are the safe boundary; no source-production
+  theorem is justified by Aoyagi pp. 19-22 alone.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -811,6 +815,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  microcertificate is saved at
 	  `threads/04-blow-up-certificate/reproduction-selected-entry-normal-crossing-microcertificate-a4.md`;
 	  xhigh fidelity/bedrock review is pending.
+	  The 2026-06-23 branchwise source-production re-audit is saved at
+	  `threads/04-blow-up-certificate/audit-case2-branchwise-successor-production-recheck-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1907,10 +1913,10 @@ No such claim is formalisation-ready until both fields are filled.
   The supplied source-production-obligation projection
   `SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc` now
   rewrites row-exhausted `Cterm` as original terminal rows of the supplied
-  `Csucc`, using the obligation's formula equality and the existing
-  transported-row/original-successor-row identity.  This is a consequence of
-  supplied data only, not construction of `Csucc`, suffixes, charts, or a
-  transition theorem.
+  `Csucc`, using the obligation's supplied row-exhausted terminal-row
+  equality, formula equality, and the existing transported-row/original-
+  successor-row identity.  This is a consequence of supplied data only, not
+  construction of `Csucc`, suffixes, charts, or a transition theorem.
   The supplied-obligation projections
   `SourceProductionObligation.continuing_Csucc_tail_eq_original` and
   `SourceProductionObligation.actualWidth_Cterm_eq_originalRows_Csucc` are now
@@ -2992,6 +2998,15 @@ No such claim is formalisation-ready until both fields are filled.
   These combine supplied back-to-label data with supplied branch-label
   injectivity, and with the selected-width sum for exact cardinality.  They do
   not construct those supplied fields from source.
+  Also proved the terminal order classifier-notation handoff in
+  `Lemma5TerminalOrderBridge.lean`:
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_theorem2OrderFormula_of_upperBoundClassifier`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_upperBoundClassifier_and_branchLabel_injOn`,
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_theorem2OrderFormula_of_countDatumBackToBranchLabel`, and
+  `AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_countDatumBackToBranchLabel_and_injOn`.
+  These are only final-order notation rewrites of existing supplied
+  classifier/back-to-label routes; exact-count variants still require
+  supplied branch-label injectivity.
   Also proved `aoyagiLemma5Eq5EndpointRawBranches`,
   `aoyagiLemma5Eq5EndpointRawBranches_value_image_eq_intervalValueSetNat`, and
   `AoyagiLemma5SuppliedNonbaseFamily.ofEq5AlphaIndexedEndpointCoverage`.  The

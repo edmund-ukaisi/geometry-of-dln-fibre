@@ -5461,3 +5461,30 @@ This is a finite A5-to-A6 handoff only.  It does not construct the
 counted-datum classifier, branch-label injectivity, a back-to-label map,
 Eq3/Eq4/Eq5 branch coverage, terminal `tilde t=0`, source labels, pole order,
 normal crossings, or RLCT extraction.
+
+## 2026-06-23 Lean Lemma 5 terminal order classifier notation
+
+Reproduction:
+`reproduction-lemma5-terminal-order-classifier-notation-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-order-classifier-notation.md`.
+Review artifact:
+`review-lemma5-terminal-order-classifier-notation-a5.md`.
+
+Lean now exposes the existing upper-bound-classifier and counted-datum
+back-to-label routes directly in Aoyagi Theorem 2 order notation:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_theorem2OrderFormula_of_upperBoundClassifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_upperBoundClassifier_and_branchLabel_injOn
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_theorem2OrderFormula_of_countDatumBackToBranchLabel
+AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_countDatumBackToBranchLabel_and_injOn
+```
+
+These wrappers only rewrite the already-proved finite bounds
+`a*(n+1-a)+1` as `data.theorem2OrderFormula` for
+`data : AoyagiDefinition3CeilData (n+1) m`.  The exact-count wrappers still
+require supplied branch-label injectivity.  They do not construct an
+upper-bound classifier, counted-datum classifier, back-to-label bridge,
+branch-label injection, Eq3/Eq4/Eq5 terminal family, no-extra coverage, pole
+order, normal crossings, or RLCT.

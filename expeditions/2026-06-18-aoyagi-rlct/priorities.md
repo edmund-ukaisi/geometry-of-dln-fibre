@@ -309,9 +309,10 @@ The supplied-obligation projection
 `SourceProductionObligation.rowExhausted_Cterm_eq_originalRows_Csucc` now also
 records the safe row-exhausted use of that equality: if the row-exhausted
 branch hypothesis is supplied, then the terminal matrix `Cterm` is original
-terminal rows of the supplied `Csucc`.  This still constructs neither the
-obligation nor `Csucc`; it only consumes supplied data without moving the hard
-source-production boundary.
+terminal rows of the supplied `Csucc`.  This uses the obligation's supplied
+row-exhausted terminal-row equality together with its supplied formula
+equality for `Csucc`; it still constructs neither the obligation nor `Csucc`
+and does not move the hard source-production boundary.
 
 The same supplied-obligation consumer layer now also records
 `SourceProductionObligation.continuing_Csucc_tail_eq_original` and
@@ -389,6 +390,16 @@ reindexing from Aoyagi's pivot-first displayed right-hand side to
 `[oldTop(Csucc); residualFollowing(Csucc)]`, not construction of `Csucc`,
 full `C'^(S+1)`, suffixes, successor charts, transition regularity, normal
 crossings, pole order, or RLCT.
+
+The 2026-06-23 xhigh branch re-audit is now recorded at
+`threads/04-blow-up-certificate/audit-case2-branchwise-successor-production-recheck-a4.md`.
+It confirms that no A4 theorem named as successor/source production is safe
+from Aoyagi pp. 19-22 alone.  Continuing, actual-width stopped, and
+row-exhausted stopped branches have distinct guards and row meanings; the
+safe Lean boundary is finite formula-level rewriting plus consumers of a
+supplied `SourceProductionObligation`.  Do not spend another A4 slice trying
+to promote these consumers into source production unless the work builds a
+real selected-entry atlas/transition construction.
 
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
@@ -581,6 +592,8 @@ Current Eq5 endpoint-family block-width cardinal-squeeze slice:
 `threads/05-arithmetic-tail/reproduction-lemma5-eq5-endpoint-family-blockwidth-cardinal-squeeze-a5.md`.
 Current terminal order formula bridge:
 `threads/05-arithmetic-tail/reproduction-lemma5-terminal-order-formula-bridge-a5.md`.
+Current terminal order classifier-notation bridge:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-order-classifier-notation-a5.md`.
 
 Controller direction after the 2026-06-22 source audit: freeze A5 as a
 supplied boundary rather than trying to prove a source-backed Lemma 5
@@ -596,6 +609,12 @@ order notation: supplied branch-label injectivity plus
 `terminalMinimumLabels.card = data.theorem2OrderFormula`.  This remains a
 supplied-boundary handoff; it does not source-prove the upper bound or no-extra
 coverage, and it does not prove pole order.
+
+Lean now also exposes the existing supplied upper-bound-classifier and
+counted-datum back-to-label routes in the same order notation.  These wrappers
+only rewrite the existing finite bounds to `data.theorem2OrderFormula`; they
+do not construct classifiers, back-to-label maps, branch-label injectivity,
+no-extra coverage, pole order, normal crossings, or RLCT.
 
 Current A6 terminal-order handoff:
 `threads/06-dln-translation/reproduction-theorem2-terminal-order-bridge-a6.md`.

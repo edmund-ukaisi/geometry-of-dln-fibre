@@ -184,6 +184,30 @@ The actual-width stopped and row-exhausted stopped hypotheses are not asserted
 to be mutually exclusive.  They expose different existing Lean payloads and
 may overlap in small boundary cases.
 
+## 2026-06-23 Branch Re-Audit
+
+Three independent xhigh scouts rechecked the continuing, actual-width stopped,
+and row-exhausted stopped branches against Aoyagi PDF pp. 19-22 and the
+current Lean boundary.  The durable audit is saved at
+`audit-case2-branchwise-successor-production-recheck-a4.md`.
+
+All three reached the same conclusion: the source supports only the displayed
+local `Q/P` algebra, formula-level transported following rows, and finite
+supplied-boundary consumers.  It does not justify a theorem that the displayed
+Case 2 chart source-produces a successor following object, terminal following
+object, suffix, successor chart family, chart coverage, transition regularity,
+coordinate-derived corrected post-data, Jacobian data, normal crossings, pole
+order, termination, or RLCT.
+
+The re-audit also fixes the branch interpretation:
+
+- continuing branch: keep the stronger `J+2 <= prefixMinNat n (S+1)` guard;
+- actual-width stopped branch: original terminal rows are safe because the
+  `Q^-1 C` correction sum is empty;
+- row-exhausted stopped branch: in the wide-next subcase the pivot row is
+  transported, and becomes an original row only as a row of the formula-level
+  successor factor `Csucc`.
+
 ## Proved, Supplied, Deferred, Cited
 
 Proved at the finite A4 layer:

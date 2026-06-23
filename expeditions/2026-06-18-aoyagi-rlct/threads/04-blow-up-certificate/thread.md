@@ -4824,3 +4824,27 @@ construct successor chart families, prove coverage or transition regularity,
 derive coordinate-produced corrected post-data, prove analytic
 Jacobian/volume-form data, prove normal crossings, prove pole order, prove
 termination, or extract an RLCT.
+
+## 2026-06-23 xhigh branchwise source-production re-audit
+
+Audit:
+`audit-case2-branchwise-successor-production-recheck-a4.md`.
+
+After the crash recovery, three independent xhigh scouts rechecked the A4
+Case 2 continuing, actual-width stopped, and row-exhausted stopped branches.
+They agreed that Aoyagi PDF pp. 19-22 source-proves the local displayed
+`Q/P` algebra and formula-level transported following rows, but not
+successor/source production.
+
+The continuing branch still requires the stronger nonempty-next-center guard
+`J+2 <= prefixMinNat n (S+1)`.  The actual-width stopped branch safely
+collapses the transported pivot row to the old source row only because
+`n(S+1)=J+1` empties the correction sum.  The row-exhausted stopped branch
+does not have that collapse in wide-next cases; its pivot row is transported
+and is an original row only after replacing the old following factor by the
+formula-level successor `Csucc`.
+
+No stronger Lean target is source-faithful from this source slice.  Existing
+finite supplied-obligation consumers are the safe boundary.  Further A4
+progress must construct an independent selected-entry atlas/transition
+package or stay explicitly below chart/source production.

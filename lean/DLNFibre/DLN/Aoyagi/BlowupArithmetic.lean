@@ -20301,9 +20301,9 @@ theorem actualWidth_frontier_suppliedCterm
 /-- Row-exhausted terminal rows rewritten as original rows of the supplied
 successor following factor.
 
-This consumes only the obligation's supplied formula equality for `Csucc`; it
-does not construct `Csucc`, a suffix, charts, transitions, normal crossings,
-pole order, or RLCT data. -/
+This consumes the obligation's supplied row-exhausted terminal-row equality
+and supplied formula equality for `Csucc`; it does not construct `Csucc`, a
+suffix, charts, transitions, normal crossings, pole order, or RLCT data. -/
 theorem rowExhausted_Cterm_eq_originalRows_Csucc
     {R : Type u} [CommRing R]
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
