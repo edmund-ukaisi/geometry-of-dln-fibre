@@ -10974,6 +10974,30 @@ def case2DisplayedPaperQ
       (case2DisplayedPivotCol n hS hcont)
       (case2DisplayedPaperDchart n hS hcont residual))
 
+/-- Aoyagi's displayed Case 2 `Q` column operation is a finite matrix unit.
+This is the unitriangular matrix fact only, not chart regularity. -/
+theorem case2DisplayedPaperQ_isUnit
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    IsUnit (case2DisplayedPaperQ n hS hcont residual) := by
+  simpa [case2DisplayedPaperQ] using
+    pivotQ_isUnit
+      (pivotFirstY
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedPaperDchart n hS hcont residual))
+
+/-- The displayed Case 2 `Q` column operation has unit determinant. -/
+theorem case2DisplayedPaperQ_det_isUnit
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    IsUnit (case2DisplayedPaperQ n hS hcont residual).det :=
+  (Matrix.isUnit_iff_isUnit_det
+      (A := case2DisplayedPaperQ n hS hcont residual)).mp
+    (case2DisplayedPaperQ_isUnit n hS hcont residual)
+
 /-- Aoyagi's displayed Case 2 inverse column operation `Q⁻¹ = [1 y; 0 I]`
 in pivot-first source-coordinate form. -/
 def case2DisplayedPaperQinv
@@ -10988,6 +11012,30 @@ def case2DisplayedPaperQinv
       (case2DisplayedPivotRow n hS hcont)
       (case2DisplayedPivotCol n hS hcont)
       (case2DisplayedPaperDchart n hS hcont residual))
+
+/-- Aoyagi's displayed Case 2 `Q⁻¹` column operation is a finite matrix unit.
+This is the unitriangular matrix fact only, not chart regularity. -/
+theorem case2DisplayedPaperQinv_isUnit
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    IsUnit (case2DisplayedPaperQinv n hS hcont residual) := by
+  simpa [case2DisplayedPaperQinv] using
+    pivotQinv_isUnit
+      (pivotFirstY
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedPaperDchart n hS hcont residual))
+
+/-- The displayed Case 2 `Q⁻¹` column operation has unit determinant. -/
+theorem case2DisplayedPaperQinv_det_isUnit
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    IsUnit (case2DisplayedPaperQinv n hS hcont residual).det :=
+  (Matrix.isUnit_iff_isUnit_det
+      (A := case2DisplayedPaperQinv n hS hcont residual)).mp
+    (case2DisplayedPaperQinv_isUnit n hS hcont residual)
 
 /-- Aoyagi's displayed Case 2 block `D'' = D_chart * Q`, after putting the
 displayed pivot row and column first. -/
@@ -14636,6 +14684,141 @@ theorem sourceChartMap_continuingReindexedSourceChartUnitCertificate
         case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero n hS hcont residual
       centerSqUnitFactor_isUnit :=
         case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit n hS hcont residual }
+
+/-- Ordered-field continuing Case 2 local certificate with the finite
+center-square identity and formal pivot-first determinant calculation.
+
+This packages only finite algebra for the displayed selected-entry chart.  The
+formal determinant field is not an analytic Jacobian/volume-form theorem, and
+the center-square identity is not a total loss monomial identity or an A0
+normal-crossing certificate. -/
+structure Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ)
+    (pre : IntroducedLabelRecurrenceState L n S J K)
+    (u : K) (residual : ℕ × ℕ → K)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : ℕ → τ → K) : Prop where
+  toUnitCertificate :
+    Case2DisplayedContinuingReindexedSourceChartUnitCertificate
+      L n S J t numerator leastValue pre u residual hS hcont C
+  centerSq_eq :
+    selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+        (case2DisplayedSourceChartMap n hS hcont u residual) =
+      u ^ 2 *
+        selectedEntryCenterSqUnitFactor
+          ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual
+  pivotFirstJacobian_det :
+    (selectedEntryPivotFirstJacobian
+        (κ := ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1) : Type))
+        u (fun p ↦ residual p.1)).det =
+      u ^ ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card
+  pivotFirstJacobian_exponent_eq_centerCard_sub_one :
+    ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card =
+      (case2ResidualBlockPivotEntries n S J).card - 1
+  pivotFirstJacobian_exponent_add_one_eq_centerCard :
+    ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card + 1 =
+      (case2ResidualBlockPivotEntries n S J).card
+  newNumerator_eq_pivotFirstJacobian_exponent_add_one :
+    (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator) S (J + 1) =
+      (((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card + 1 : ℕ)
+
+/-- Concrete constructor for the continuing Case 2 local certificate carrying
+the finite center-square identity and formal pivot-first determinant data. -/
+theorem sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCertificate
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (residual : ℕ × ℕ → K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → K) :
+    Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+      L n S J t numerator leastValue pre u residual hS hcont C := by
+  refine
+    { toUnitCertificate :=
+        sourceChartMap_continuingReindexedSourceChartUnitCertificate
+          pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap
+          chartFamily C
+      centerSq_eq := ?_
+      pivotFirstJacobian_det :=
+        case2DisplayedSourceChartMap_pivotFirstJacobian_det n hS hcont u residual
+      pivotFirstJacobian_exponent_eq_centerCard_sub_one :=
+        case2DisplayedSourceChartMap_pivotFirstJacobian_exponent_eq_centerCard_sub_one
+          n hS hcont
+      pivotFirstJacobian_exponent_add_one_eq_centerCard :=
+        Finset.card_erase_add_one
+          (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
+      newNumerator_eq_pivotFirstJacobian_exponent_add_one := ?_ }
+  · simpa [selectedEntryCenterSqUnitFactor] using
+      case2DisplayedSourceChartMap_centerSq n hS hcont u residual
+  · have hnum :
+        (updateSelectedLabelScalar S (J + 1)
+            (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+              ((n (S + 1) : ℤ) - (J : ℤ))) numerator) S (J + 1) =
+          ((case2ResidualBlockPivotEntries n S J).card : ℤ) := by
+      simpa [correctedCase2NewLabelNumerator] using
+        correctedCase2NewLabelNumerator_eq_card_of_cont n hS hcont
+    have hcard :
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card + 1 =
+          (case2ResidualBlockPivotEntries n S J).card :=
+      Finset.card_erase_add_one
+        (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
+    exact hnum.trans (by rw [← hcard])
+
+namespace Case2DisplayedContinuingReindexedSourceChartCertificate
+
+/-- The continuing certificate's supplied `P` row operation and displayed
+`Q/Q⁻¹` column operations have unit determinants.
+
+This is finite unitriangular determinant bookkeeping only; it is not an
+analytic chart-regularity, Jacobian, or volume-form theorem. -/
+theorem exists_reindexedNextSourceProduct_with_PQ_det_units
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {u : R} {residual : ℕ × ℕ → R}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → R}
+    (cert :
+      Case2DisplayedContinuingReindexedSourceChartCertificate
+        L n S J t numerator leastValue pre u residual hS hcont C) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let col := case2DisplayedPivotCol n hS hcont
+    let A := case2DisplayedPaperDchart n hS hcont residual
+    ∃ q : pivotComplement row → R,
+      Case2DisplayedReindexedNextSourceProductEq pre u residual hS hcont C q ∧
+        IsUnit (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ())).det ∧
+        IsUnit (case2DisplayedPaperQ n hS hcont residual).det ∧
+        IsUnit (case2DisplayedPaperQinv n hS hcont residual).det := by
+  rcases cert.reindexedNextSourceProduct with ⟨q, hq⟩
+  refine ⟨q, hq, ?_, ?_, ?_⟩
+  · exact weightedPivotBlockRowOp_det_isUnit q
+      (fun i ↦
+        pivotFirstX
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual) i ())
+  · exact case2DisplayedPaperQ_det_isUnit n hS hcont residual
+  · exact case2DisplayedPaperQinv_det_isUnit n hS hcont residual
+
+end Case2DisplayedContinuingReindexedSourceChartCertificate
 
 /-- Right-multiplied version of
 `case2DisplayedPivotFirstRHS_reindex_nextSourceProduct`.

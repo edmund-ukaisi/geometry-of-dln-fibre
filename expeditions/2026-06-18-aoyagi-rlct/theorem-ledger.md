@@ -5611,6 +5611,31 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
 
+Latest A4 Case 2 continuing center-square/formal-Jacobian certificate:
+`BlowupArithmetic.lean` now contains `case2DisplayedPaperQ_isUnit`,
+`case2DisplayedPaperQ_det_isUnit`, `case2DisplayedPaperQinv_isUnit`,
+`case2DisplayedPaperQinv_det_isUnit`,
+`Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate`,
+`sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCertificate`,
+and
+`Case2DisplayedContinuingReindexedSourceChartCertificate.exists_reindexedNextSourceProduct_with_PQ_det_units`.
+These package the displayed continuing Case 2 local certificate with the
+finite center-square identity, pointwise ordered-field unit factor, formal
+pivot-first determinant exponent, the equality that the corrected new
+numerator is the formal determinant exponent plus one, and finite
+determinant-unit witnesses for displayed `Q/Q^-1` and the supplied `P`
+row-operation.  This remains finite algebra only: no analytic chart
+neighbourhood, chart coverage, transition regularity, analytic `P/Q` unit
+control, differentiable Jacobian or volume theorem, A0 normal-crossing chart
+certificate, pole order, or RLCT extraction is proved.  The p. 21 apparent
+extra-`u` display is recorded as a source caveat, not formalised as a literal
+product theorem.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-center-sq-formal-jacobian-certificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

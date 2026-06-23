@@ -4497,3 +4497,41 @@ unit control on a neighbourhood, not unit control for Aoyagi's later `P`/`Q`
 regular changes, not a total loss unit, not a Jacobian/volume-form theorem,
 not chart coverage or transition regularity, not an A0 normal-crossing chart
 certificate, and not pole order or RLCT extraction.
+
+## 2026-06-23 Lean Case 2 continuing center-square/formal-Jacobian certificate
+
+Reproduction:
+`reproduction-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-center-sq-formal-jacobian-certificate.md`.
+Review artifact:
+`review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+
+Lean now packages the displayed continuing Case 2 local certificate with the
+finite A0-facing step contribution:
+
+```text
+case2DisplayedPaperQ_isUnit
+case2DisplayedPaperQ_det_isUnit
+case2DisplayedPaperQinv_isUnit
+case2DisplayedPaperQinv_det_isUnit
+Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCertificate
+Case2DisplayedContinuingReindexedSourceChartCertificate.exists_reindexedNextSourceProduct_with_PQ_det_units
+```
+
+The certificate carries the center-square factorization, the pointwise
+ordered-field unit witness, the formal pivot-first determinant equality, the
+cardinality statement that this formal determinant exponent is one less than
+the residual-block center cardinality, and the equality saying the corrected
+new numerator is the formal exponent plus one.  It also exports determinant
+unit witnesses for the displayed finite `Q/Q^-1` operations and for the
+supplied `P` row-operation witness inside the continuing product equality.
+
+This remains finite algebra only.  It does not prove a differentiable
+Jacobian or volume-form theorem, analytic unit neighbourhoods, analytic
+regularity of all `P/Q` coordinate changes, chart coverage, transition
+regularity, a total loss monomial identity, an A0 normal-crossing chart
+certificate, pole order, or RLCT extraction.  The apparent extra outside `u`
+in Aoyagi's p. 21 display is recorded as a source caveat, not formalised as a
+literal product identity.

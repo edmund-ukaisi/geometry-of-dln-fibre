@@ -91,6 +91,17 @@ factor.  This still does not supply analytic unit neighbourhoods, the later
 `P`/`Q` unit factors, a total loss unit, chart coverage, transition
 regularity, Jacobian/volume data, normal crossings, pole order, or RLCT.
 
+The current A4/A0 finite step-contribution slice is
+`threads/04-blow-up-certificate/reproduction-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+Lean now packages the displayed continuing certificate with the finite
+center-square factorization, pointwise ordered-field unit witness, formal
+pivot-first determinant exponent, the equality saying the corrected new
+numerator is that formal exponent plus one, and finite determinant-unit
+witnesses for the displayed `Q/Q^-1` operations and the supplied `P` row
+operation.  This is still finite algebra only.  It is not an analytic
+Jacobian/volume-form theorem, does not resolve the p. 21 apparent extra-`u`
+display, and does not construct an `AoyagiNormalCrossingChartCertificate`.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

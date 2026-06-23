@@ -5672,6 +5672,37 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
 
+Latest A4/A0 continuing center-square/formal-Jacobian certificate:
+`BlowupArithmetic.lean` now contains `case2DisplayedPaperQ_isUnit`,
+`case2DisplayedPaperQ_det_isUnit`, `case2DisplayedPaperQinv_isUnit`,
+`case2DisplayedPaperQinv_det_isUnit`,
+`Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate`,
+`sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCertificate`,
+and
+`Case2DisplayedContinuingReindexedSourceChartCertificate.exists_reindexedNextSourceProduct_with_PQ_det_units`.
+This packages the displayed continuing Case 2 local certificate together with
+the finite center-square factorization, the pointwise ordered-field unit
+witness, the formal pivot-first determinant equality
+`det [1 0; y uI] = u^(erased-center cardinality)`, the cardinal arithmetic
+identifying the formal determinant exponent as center cardinality minus one,
+and the finite equality saying the corrected new numerator is that exponent
+plus one.  It also exposes determinant-unit witnesses for the displayed
+`Q/Q^-1` finite column operations and the supplied `P` row-operation witness.
+
+This is an A4/A0-facing finite step contribution only.  It is not a
+differentiable Jacobian theorem, not a volume-form theorem, not analytic unit
+control for all chart factors, not a total DLN loss monomial identity, not
+chart coverage or transition regularity, not an
+`AoyagiNormalCrossingChartCertificate`, and not pole order or RLCT
+extraction.  The p. 21 source display with an apparent extra outside `u` is
+explicitly not formalised as a literal product identity.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-center-sq-formal-jacobian-certificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
