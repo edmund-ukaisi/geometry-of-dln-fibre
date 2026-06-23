@@ -500,18 +500,29 @@ constructed `deepestPoint` rather than this `∀`-predicate. (The discarded per-
 was *too weak* — `(2,2,2)`, `(A¹=0, A² invertible)` has all partial products rank `0` but local RLCT
 `2 ≠ 3/2`.) Used only to characterize the witness `deepestPoint_exists` produces.
 
-**Interior block-normality** (third conjunct, #95): on every *strict-interior* layer
-(`0 < s ∧ s+1 < L`, i.e. neither boundary), `w s` equals the block-normal corner `diag(I_r, 0)`
-verbatim (`corM`-shape) — NOT merely rank-`r`. The `wLayers` witness has it (the interior layers ARE
-the corner block), and it is what lets the framed product collapse the interior to identity frames
-(`P_s = Q_s = I`), leaving only the two boundary frames to carry the `block_elimination` units. The
-conjunct is vacuous for `L ≤ 2` (no strict-interior layer) and bites at `L ≥ 3`. -/
+**Block-normal structure** (conjuncts 3–5, #95, condition (I) — controller + cobuild sympy `L=3`):
+interior `= corM` ALONE is insufficient (the interfaces `G_s = Q_s⁻¹·P_{s+1}⁻¹` leave the layer-0 RIGHT
+and layer-(L−1) LEFT frames surviving), so the complete condition is:
+- (3) *strict-interior* (`0 < s ∧ s+1 < L`): `w s = corM`-shape verbatim (the corner block, not merely
+  rank-`r`) — so interior frames are `P_s = Q_s = I`. Vacuous `L ≤ 2`, bites `L ≥ 3`.
+- (4) *layer 0* RIGHT-frame `= I`: `w 0`'s last `H_1 − r` columns vanish (`r ≤ j ⟹ w 0 i j = 0`).
+- (5) *layer (L−1)* LEFT-frame `= I`: `w (L−1)`'s last `H_{L−1} − r` rows vanish (`r ≤ i ⟹ w (L−1) i j = 0`).
+The `wLayers` witness HAS all three: interior layers ARE `corM`; layer 0 `= U·projM` (last cols 0);
+layer (L−1) `= embM·V` (last rows 0). Only the endpoint frames `P_0, Q_{L−1}` survive → the framed
+product `∏A = P_0⁻¹·(∏corM)·Q_{L−1}⁻¹` (cobuild's `conjugation_frobenius_comparable` closes both PINs). -/
 def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
   w ∈ optimalSet H B ∧ (∀ s : Fin L, (w s).rank = r) ∧
-    ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+    (∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
       w s = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
-        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) ∧
+    -- boundary-inner (I), for `L ≥ 2` (distinct boundary layers): layer-0 RIGHT-frame = I (its last
+    -- `H_1 − r` columns vanish) …
+    (∀ s : Fin L, 2 ≤ L → (s : ℕ) = 0 → ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      r ≤ (j : ℕ) → w s i j = 0) ∧
+    -- … and layer-(L−1) LEFT-frame = I (its last `H_{L−1} − r` rows vanish).
+    ∀ s : Fin L, 2 ≤ L → (s : ℕ) + 1 = L → ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      r ≤ (i : ℕ) → w s i j = 0
 
 /-- `[I_r|0] · [I_r;0] = I_r`: projection ∘ embedding (a left inverse) on `Fin r`. -/
 private theorem proj_emb_eq_one {N r : ℕ} (hrN : r ≤ N) :
@@ -650,6 +661,24 @@ private theorem rank_embM_mul {c : ℕ} (N r : ℕ) (hrN : r ≤ N) (V : Matrix 
   calc V.rank = (projM r N * (embM N r * V)).rank := by
         rw [← Matrix.mul_assoc, projM_embM N r hrN, Matrix.one_mul]
     _ ≤ (embM N r * V).rank := Matrix.rank_mul_le_right _ _
+
+/-- `U * projM` has its last `N − r` columns zero: `r ≤ j ⟹ (U * projM r N) i j = 0` (the layer-0
+RIGHT-frame = I structure — `projM`'s column `j ≥ r` is the zero vector). -/
+private theorem mul_projM_col_vanish {a : ℕ} (r N : ℕ) (U : Matrix (Fin a) (Fin r) ℝ)
+    (i : Fin a) (j : Fin N) (hj : r ≤ (j : ℕ)) : (U * projM r N) i j = 0 := by
+  simp only [projM, Matrix.mul_apply, Matrix.of_apply]
+  apply Finset.sum_eq_zero
+  intro k _
+  rw [if_neg (by intro he; omega), mul_zero]
+
+/-- `embM * V` has its last `N − r` rows zero: `r ≤ i ⟹ (embM N r * V) i j = 0` (the layer-(L−1)
+LEFT-frame = I structure — `embM`'s row `i ≥ r` is the zero vector). -/
+private theorem embM_mul_row_vanish {c : ℕ} (N r : ℕ) (V : Matrix (Fin r) (Fin c) ℝ)
+    (i : Fin N) (j : Fin c) (hi : r ≤ (i : ℕ)) : (embM N r * V) i j = 0 := by
+  simp only [embM, Matrix.mul_apply, Matrix.of_apply]
+  apply Finset.sum_eq_zero
+  intro k _
+  rw [if_neg (by intro he; omega), zero_mul]
 
 /-- The corner block has rank exactly `r` (when `r ≤ m, n`). -/
 private theorem corM_rank {m n r : ℕ} (hrm : r ≤ m) (hrn : r ≤ n) : (corM r m n).rank = r := by
@@ -864,6 +893,13 @@ private theorem rank_heq {m1 n1 m2 n2 : ℕ} (A : Matrix (Fin m1) (Fin n1) ℝ)
     (B : Matrix (Fin m2) (Fin n2) ℝ) (hm : m1 = m2) (hn : n1 = n2) (h : HEq A B) :
     A.rank = B.rank := by subst hm; subst hn; rw [eq_of_heq h]
 
+/-- HEq-transport for a single entry: if `A` and `B` are HEq across `m1=m2`, `n1=n2`, an entry of `A`
+equals the corresponding cast entry of `B`. (Entry-level twin of `rank_heq`.) -/
+private theorem entry_heq {m1 n1 m2 n2 : ℕ} (A : Matrix (Fin m1) (Fin n1) ℝ)
+    (B : Matrix (Fin m2) (Fin n2) ℝ) (hm : m1 = m2) (hn : n1 = n2) (h : HEq A B)
+    (i : Fin m1) (j : Fin n1) : A i j = B (Fin.cast hm i) (Fin.cast hn j) := by
+  subst hm; subst hn; rw [eq_of_heq h]; rfl
+
 
 
 /-- The deepest layers exist for a rank-`r` target (PROVEN). `r = 0` ⟹ the origin / all-zero
@@ -882,7 +918,7 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
   rcases Nat.eq_zero_or_pos r with hr0 | hrpos
   · -- r = 0: the all-zero tuple is deep (prod = 0 = B since B.rank = 0).
     subst hr0
-    refine ⟨⟨fun _ => 0, ?_, ?_, ?_⟩⟩
+    refine ⟨⟨fun _ => 0, ?_, ?_, ?_, ?_, ?_⟩⟩
     · show prod H (fun _ => 0) = B
       rw [prod_zero H hL, rank_zero_eq_zero B hB]
     · intro s; show ((0 : Matrix _ _ ℝ)).rank = 0; exact Matrix.rank_zero
@@ -891,6 +927,10 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
       show (0 : Matrix _ _ ℝ) = _
       ext i j; simp only [Matrix.of_apply, Matrix.zero_apply]
       rw [if_neg (by rintro ⟨_, h⟩; exact absurd h (Nat.not_lt_zero _))]
+    · -- layer-0 cols vanish at r = 0: every entry of `w s = 0` is `0`.
+      intro s _ _ i j _; rfl
+    · -- layer-(L−1) rows vanish at r = 0: same.
+      intro s _ _ i j _; rfl
   · -- r > 0: rank factorization B = U·V distributed as rank-exactly-r layers (verified 484/484).
     obtain ⟨P, Q, hP, hQ, hPBQ⟩ := block_elimination H r B hB
     set U : Matrix (Fin (H 0)) (Fin r) ℝ := P⁻¹ * embM (H 0) r with hU
@@ -901,7 +941,7 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     rcases Nat.lt_or_ge L 2 with hL1 | hL2
     · -- L = 1: the sole layer is B itself.
       obtain rfl : L = 1 := by omega
-      refine ⟨⟨wSingle H B, prod_wSingle H B, ?_, ?_⟩⟩
+      refine ⟨⟨wSingle H B, prod_wSingle H B, ?_, ?_, ?_, ?_⟩⟩
       · rintro ⟨sv, hsvlt⟩
         obtain rfl : sv = 0 := by omega
         have hcast : (⟨0, hsvlt⟩ : Fin 1).castSucc = (0 : Fin (1 + 1)) :=
@@ -913,8 +953,12 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
         exact hB
       · -- interior block-normality is vacuous at L = 1 (no strict-interior layer: `s+1 < 1`).
         rintro ⟨sv, hsvlt⟩ _ hlt; omega
+      · -- layer-0 boundary-inner is vacuous at L = 1 (`2 ≤ L` is false).
+        intro _ hL2 _; omega
+      · -- layer-(L−1) boundary-inner is vacuous at L = 1 (`2 ≤ L` is false).
+        intro _ hL2 _; omega
     · -- L ≥ 2: boundary layers (0 and L-1) plus the corner middle chain.
-      refine ⟨⟨wLayers H r U V, prod_wLayers_ge2 H r U V hr hL2 B hUV, ?_, ?_⟩⟩
+      refine ⟨⟨wLayers H r U V, prod_wLayers_ge2 H r U V hr hL2 B hUV, ?_, ?_, ?_, ?_⟩⟩
       · rintro ⟨sv, hsvlt⟩
         have hk : sv + 1 < L + 1 := by omega
         rcases Nat.eq_zero_or_pos sv with hs0 | hspos
@@ -952,6 +996,37 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
           Fin.ext rfl
         rw [hc, hs] at hheq
         exact eq_of_heq hheq
+      · -- layer-0 RIGHT-frame = I: `w 0 = U · projM r (H 1)` has its last `H_1 − r` columns 0.
+        rintro ⟨sv, hsvlt⟩ _ hs0 i j hj
+        simp only [Fin.val_mk] at hs0
+        subst hs0
+        have hk : 0 + 1 < L + 1 := by omega
+        have hw0 : wLayers H r U V ⟨0, hsvlt⟩ = U * projM r (H ⟨0 + 1, hk⟩) := by
+          have hc : (⟨0 + 1, hk⟩ : Fin (L + 1)) = (⟨0, hsvlt⟩ : Fin L).succ := Fin.ext rfl
+          have hheq := heq_layer0 H r U V hk
+          rw [hc] at hheq
+          exact eq_of_heq hheq
+        rw [hw0]
+        exact mul_projM_col_vanish r (H ⟨0 + 1, hk⟩) U i j hj
+      · -- layer-(L−1) LEFT-frame = I: `w (L−1) = embM (H (L−1)) r · V` has its last `H_{L−1} − r` rows 0.
+        rintro ⟨sv, hsvlt⟩ _ hsL i j hi
+        simp only [Fin.val_mk] at hsL
+        have hk : sv + 1 < L + 1 := by omega
+        have hpos : 0 < sv := by omega
+        have hsL' : sv = L - 1 := by omega
+        -- transport the entry through the `heq_layerLast` HEq: `w s i j` is, after the row/col casts
+        -- (`s.castSucc = ⟨sv,_⟩` rfl; `s.succ = Fin.last L` since `sv+1=L`), the vanishing
+        -- `(embM·V)`-entry.  `rank_heq`'s style: rewrite the entry as a HEq congruence.
+        have hsucc : (⟨sv, hsvlt⟩ : Fin L).succ = Fin.last L := Fin.ext (by simp [Fin.succ]; omega)
+        have hgoal : (wLayers H r U V ⟨sv, hsvlt⟩ : Matrix _ _ ℝ) i j
+            = (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
+                (Fin.cast (congrArg H (rfl : (⟨sv, hsvlt⟩ : Fin L).castSucc = _)) i)
+                (Fin.cast (congrArg H hsucc) j) := by
+          exact entry_heq (wLayers H r U V ⟨sv, hsvlt⟩) (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
+            (congrArg H (rfl : (⟨sv, hsvlt⟩ : Fin L).castSucc = _)) (congrArg H hsucc)
+            (heq_layerLast H r U V sv hk hsL' hpos) i j
+        rw [hgoal]
+        exact embM_mul_row_vanish (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r V _ _ (by simpa using hi)
 
 /-- **The deepest singular point** of the fibre `mult⁻¹(B)` (Rung-0c FLAG, load-bearing — pp + Codex
 adjudicated). A **single constructed** witness: every layer at the minimal rank `r` (the

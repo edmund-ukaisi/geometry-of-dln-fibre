@@ -53,7 +53,7 @@ theorem deepestPoint_frame_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- **Interior layers ARE the block-normal corner** (#95, the (iii) fix). On every strict-interior
 layer (`0 < s ∧ s+1 < L`), the constructed deepest point equals the corner block `diag(I_r, 0)`
-verbatim — the strengthened `IsDeepLayers.2.2`, carried through `Classical.choice` by
+verbatim — the strengthened `IsDeepLayers.2.2.1`, carried through `Classical.choice` by
 `deepestPoint_isDeep`. This is sharper than `deepestPoint_frame_exists` on the interior: there the
 frame `(P_s, Q_s)` is a generic rank-normal-form, here `deepestPoint s` is ALREADY the corner, so the
 interior frame is the IDENTITY (`deepestPoint_interior_frame_id`). -/
@@ -64,7 +64,7 @@ theorem deepestPoint_interior_eq_corM (H : Fin (L + 1) → ℕ) (r : ℕ)
       deepestPoint H r B hB hr hL s
         = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
             if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) :=
-  (deepestPoint_isDeep H r B hB hr hL).2.2
+  (deepestPoint_isDeep H r B hB hr hL).2.2.1
 
 /-- **The interior gauge frame is the identity** (#95). On every strict-interior layer, the trivial
 frame `P = Q = 1` carries the deepest layer to the block-normal corner — because the layer IS the
@@ -84,5 +84,27 @@ theorem deepestPoint_interior_frame_id (H : Fin (L + 1) → ℕ) (r : ℕ)
   intro s hpos hlt
   rw [Matrix.one_mul, Matrix.mul_one]
   exact deepestPoint_interior_eq_corM H r B hB hr hL s hpos hlt
+
+/-- **Layer-0 RIGHT-frame = I** (#95, condition (I), `L ≥ 2`). The deepest point's layer 0 has its
+last `H_1 − r` columns zero (`IsDeepLayers.2.2.2.1`): so layer 0's gauge frame fixes the RIGHT side
+(`Q_0 = I`), and in the framed product only `P_0` survives on the left boundary. -/
+theorem deepestPoint_layer0_cols_vanish (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ∀ s : Fin L, 2 ≤ L → (s : ℕ) = 0 → ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      r ≤ (j : ℕ) → deepestPoint H r B hB hr hL s i j = 0 :=
+  (deepestPoint_isDeep H r B hB hr hL).2.2.2.1
+
+/-- **Layer-(L−1) LEFT-frame = I** (#95, condition (I), `L ≥ 2`). The deepest point's layer `L−1` has
+its last `H_{L−1} − r` rows zero (`IsDeepLayers.2.2.2.2`): so layer `L−1`'s gauge frame fixes the LEFT
+side (`P_{L−1} = I`), and only `Q_{L−1}` survives on the right boundary. Together with
+`deepestPoint_layer0_cols_vanish` + `deepestPoint_interior_eq_corM`, the framed product is
+`∏ Aˢ = P_0⁻¹ · (∏ corM) · Q_{L−1}⁻¹` — only the two endpoint frames. -/
+theorem deepestPoint_layerLast_rows_vanish (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ∀ s : Fin L, 2 ≤ L → (s : ℕ) + 1 = L → ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      r ≤ (i : ℕ) → deepestPoint H r B hB hr hL s i j = 0 :=
+  (deepestPoint_isDeep H r B hB hr hL).2.2.2.2
 
 end DLNFibre.DLN.RLCT
