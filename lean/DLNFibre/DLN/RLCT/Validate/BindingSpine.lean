@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.BindingRecursion
 import DLNFibre.DLN.RLCT.Validate.BindingArith
+import DLNFibre.DLN.RLCT.Validate.MinAdmMono
 
 /-!
 # `BindingSpine` — the binding R1 core identity, reduced to the geometric `hstep` (fm3 #145 meeting-point)
@@ -30,17 +31,6 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L' : ℕ}
 
-/-- A leaf node stays a leaf under `schurStateRed` (a zero width persists: `s ≤ 1` gives `M s − 1 = 0`
-when `M s = 0`; `s ≥ 2` keeps `M s`). So `¬ isLeafNode (schurStateRed M) → ¬ isLeafNode M` — the child's
-non-leaf-ness (the recursion's `¬ degenChild`) implies `M` is non-leaf, which `bind_hdrop` needs for
-`schurState` to be defined. -/
-theorem isLeafNode_schurStateRed_of_isLeafNode (M : Fin (L' + 1 + 1) → ℕ)
-    (h : isLeafNode M) : isLeafNode (schurStateRed M) := by
-  obtain ⟨s, hs⟩ := (isLeafNode_iff_width_zero M).mp h
-  refine (isLeafNode_iff_width_zero (schurStateRed M)).mpr ⟨s, ?_⟩
-  simp only [schurStateRed]
-  split <;> omega
-
 /-- **The binding R1 core identity, modulo the geometric `hstep`/`hbase` + `hMono`.** For a chain of
 `≥ 2` layers (`Fin (L' + 1 + 1)`, so non-leaf nodes admit a `schurState` descent — `bind_hdrop`'s shape),
 given an abstract per-node RLCT functional `rlctOf` satisfying the descent `hstep` (non-leaf-child node) +
@@ -69,5 +59,24 @@ theorem binding_rlct_eq_lambdaCore_of_hstep
     (fun M => bind_hnReg M (hMono M))
     (fun M => bind_hlam M)
     M
+
+/-- **The binding R1 core identity, reduced to JUST the geometric `hstep`/`hbase`** (the tightened
+meeting-point — `hMono` discharged). Since `#149` is now PROVEN (`MinAdmMono.lambdaCore_schurStateRed_le`,
+the running-min-cap cone-transform), the monotonicity hypothesis drops: the ENTIRE combinatorial side of
+the binding G-b (recursion `#145` + arithmetic `#143` + monotonicity `#149`) is discharged, and
+`rlctOf M = ofReal (lambdaCore M)` hangs on EXACTLY the two geometric obligations fm3 owns — the per-node
+RLCT descent `hstep` (non-leaf-child) and the `#70` Morse base `hbase` (degenerate-child). Route-independent
+(`hstep`/`hbase` abstract). The cross-branch headline `#151` instantiates this with the cover-route
+`rlctOf := fun M => rlctAtOn (dlnLoss M 0) (deepest)`. -/
+theorem binding_rlct_eq_lambdaCore_of_hstep'
+    (rlctOf : (Fin (L' + 1 + 1) → ℕ) → ℝ≥0∞)
+    (hstep : ∀ M : Fin (L' + 1 + 1) → ℕ, ¬ isLeafNode (schurStateRed M) →
+        rlctOf M = ENNReal.ofReal (bindNReg M / 2) + rlctOf (schurStateRed M))
+    (hbase : ∀ M : Fin (L' + 1 + 1) → ℕ, isLeafNode (schurStateRed M) →
+        rlctOf M = ENNReal.ofReal (bindNReg M / 2))
+    (M : Fin (L' + 1 + 1) → ℕ) :
+    rlctOf M = ENNReal.ofReal (lambdaCore M) :=
+  binding_rlct_eq_lambdaCore_of_hstep rlctOf
+    (fun M => lambdaCore_schurStateRed_le M) hstep hbase M
 
 end DLNFibre.DLN.RLCT
