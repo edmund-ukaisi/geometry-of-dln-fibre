@@ -27,12 +27,19 @@ dispatcher BODY → **#85**; the per-node descent-soundness is the SEPARATE #104
 > - **Cited.** `leafMonoData` / `Adm` / `Mval` (banked); `isLeafNode_iff_width_zero` (#108, reviewed).
 > - **Deferred (the single named gap).** The GENERAL branch arm (`else` ↦ `sorry`): for a non-leaf `M`, emit
 >   the cells + per-cell admissible-`Mval` codims + the achiever `T*` (the rank-pattern read). This is the
->   formaliser-weeks general dispatcher; realizability (chart path reaches the stratum) is NOT manufactured
->   here — it lives in the `IsRouteMCover` COVER (#104, the honesty-gate, controller's option-a ruling). The
->   achiever-leaf-existence rides the cascade realizability (`Core.CascadeRealizable.cascadeTuple_rankFn_mem_range (a Set.range tautology; the GENUINE realizability is #121)`,
->   #116) at #104.
-> - **Status.** sorry-free except the single fenced branch `sorry` (the named gap). The dispatch + leaf arm
->   are the landed #103 increment; the value-fold over the actual `routeMIota` rides the general branch.
+>   formaliser-weeks general dispatcher BODY (**#85**). The achiever-leaf-existence rides the GENUINE
+>   orbit-side realizability tie **#121** = `rankFn_cascadeTuple_eq_achieverRankPattern` (PROVEN):
+>   `rankFn (cascadeTuple M₀ T*) = achieverRankPattern M₀ T*`, where `achieverRankPattern` is the achiever's
+>   prescribed pattern `r*` built from `(M₀, T*)`/`Adm` ALONE (the formalized #96 `Adm ↔ RealizableRank`
+>   map) — NOT from the cascade. **Do NOT cite `cascadeTuple_rankFn_mem_range` as the realizability**: it is
+>   the VACUOUS `∈`-range tautology (`rankFn (cascadeTuple) ∈ range rankFn := ⟨_, rfl⟩`, f(x)∈range(f)) — it
+>   realizes the cascade's OWN pattern, says nothing about `r*`. #116 supplies the matrix substance
+>   (`rankPattern_cascade_prefix`, the `(0,j)` row); #121 is the genuine `= r*` equality. The per-node
+>   descent-SOUNDNESS (the `IsRouteMCover` cover-CoV) is the SEPARATE **#104**; the geometric-codim fidelity
+>   is **#135**. (So: value-of-the-read rides #85 + the #121 tie; descent rides #104; geometry rides #135.)
+> - **Status.** sorry-free except the single fenced branch `sorry` (the named gap, → #85). The dispatch +
+>   leaf arm are the landed #103 increment; the value-fold over the actual `routeMIota` rides #85 (the general
+>   dispatcher body) + the #121 achiever tie, NOT #104 (which is the separate descent-soundness).
 
 **Value-fold status (the #103 value target) — the WIRING is BUILT (`routeM_value_eq`, `RouteMValue.lean`).**
 `routeM_value_eq` proves `⨅ over routeMIota M of monomialThreshold(routeD/routeK/routeH i) = ½·minAdm(M)`
