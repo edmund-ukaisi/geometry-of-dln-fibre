@@ -192,6 +192,128 @@ theorem exponentData_exponentOrder_eq_one
 
 end selectedEntryCenterSqFormalJacobianChartCertificate
 
+/-- Case 1 specialization of the selected-entry finite microcertificate at
+the old exceptional generator.
+
+The certificate covers only the finite Case 1 center square-sum and formal
+selected-entry determinant for this chart.  The hidden source label behind the
+old generator, chart production, and analytic Jacobian control remain outside
+this local finite certificate. -/
+def case1SelectedOldCenterSqFormalJacobianChartCertificate
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    AoyagiNormalCrossingChartCertificate
+      ({g : Case1CenterGenerator // g ∈ case1CenterGenerators n S J J1} → K) K :=
+  selectedEntryCenterSqFormalJacobianChartCertificate
+    (ι := Case1CenterGenerator)
+    (K := K)
+    (center := case1CenterGenerators n S J J1)
+    ⟨(Sum.inl () : Case1CenterGenerator), by simp [case1CenterGenerators]⟩
+
+namespace case1SelectedOldCenterSqFormalJacobianChartCertificate
+
+/-- The unique coordinate in the Case 1 selected-old finite microcertificate
+has formal Jacobian/prior exponent equal to the row-strip cardinality. -/
+@[simp] theorem jacobianPriorExp_zero_zero
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).jacobianPriorExp (0 : Fin 1) (0 : Fin 1) =
+      J1 * (n (S + 1) - J) := by
+  change
+    ((case1CenterGenerators n S J J1).erase
+        (Sum.inl () : Case1CenterGenerator)).card =
+      J1 * (n (S + 1) - J)
+  exact case1CenterGenerators_erase_selectedOld_card n S J J1
+
+/-- Formal pivot-first determinant for the Case 1 selected-old chart. -/
+theorem pivotFirstJacobian_det
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {R : Type*} [CommRing R]
+    (u : R)
+    (residual :
+      ((case1CenterGenerators n S J J1).erase
+        (Sum.inl () : Case1CenterGenerator) : Type) → R) :
+    (selectedEntryPivotFirstJacobian
+        (κ :=
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inl () : Case1CenterGenerator) : Type))
+        u residual).det =
+      u ^ (J1 * (n (S + 1) - J)) := by
+  have hcard :
+      Fintype.card
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inl () : Case1CenterGenerator) : Type) =
+        J1 * (n (S + 1) - J) := by
+    simpa [Fintype.card_coe] using
+      case1CenterGenerators_erase_selectedOld_card n S J J1
+  rw [selectedEntryPivotFirstJacobian_det, hcard]
+
+end case1SelectedOldCenterSqFormalJacobianChartCertificate
+
+/-- Case 1 specialization of the selected-entry finite microcertificate at
+Aoyagi's displayed row-strip pivot `d_(J+1,J+1)`.
+
+The certificate covers only the finite Case 1 center square-sum and formal
+selected-entry determinant for this chart.  It is not chart coverage,
+transition regularity, or an analytic Jacobian/volume-form theorem. -/
+def case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    AoyagiNormalCrossingChartCertificate
+      ({g : Case1CenterGenerator // g ∈ case1CenterGenerators n S J J1} → K) K :=
+  selectedEntryCenterSqFormalJacobianChartCertificate
+    (ι := Case1CenterGenerator)
+    (K := K)
+    (center := case1CenterGenerators n S J J1)
+    ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+      case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩
+
+namespace case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+
+/-- The unique coordinate in the Case 1 displayed row-strip finite
+microcertificate has formal Jacobian/prior exponent equal to the row-strip
+cardinality. -/
+@[simp] theorem jacobianPriorExp_zero_zero
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).jacobianPriorExp (0 : Fin 1) (0 : Fin 1) =
+      J1 * (n (S + 1) - J) := by
+  change
+    ((case1CenterGenerators n S J J1).erase
+        (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)).card =
+      J1 * (n (S + 1) - J)
+  exact case1CenterGenerators_erase_displayedPivot_card_of_bounds n S hJ1 hcol
+
+/-- Formal pivot-first determinant for the displayed Case 1 row-strip chart. -/
+theorem pivotFirstJacobian_det
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {R : Type*} [CommRing R]
+    (u : R)
+    (residual :
+      ((case1CenterGenerators n S J J1).erase
+        (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) : Type) → R) :
+    (selectedEntryPivotFirstJacobian
+        (κ :=
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) : Type))
+        u residual).det =
+      u ^ (J1 * (n (S + 1) - J)) := by
+  have hcard :
+      Fintype.card
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) : Type) =
+        J1 * (n (S + 1) - J) := by
+    simpa [Fintype.card_coe] using
+      case1CenterGenerators_erase_displayedPivot_card_of_bounds n S hJ1 hcol
+  rw [selectedEntryPivotFirstJacobian_det, hcard]
+
+end case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+
 /-- Case 2 specialization of the selected-entry finite normal-crossing
 microcertificate at Aoyagi's displayed pivot `(J+1,J+1)`.
 

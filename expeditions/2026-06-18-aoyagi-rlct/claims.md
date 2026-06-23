@@ -844,6 +844,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-selected-entry-normal-crossing-microcertificate-a4.md`;
 	  xhigh fidelity/bedrock review passed and is saved at
 	  `threads/04-blow-up-certificate/review-selected-entry-normal-crossing-microcertificate-a4.md`.
+	  Reproduction of the Case 1 selected-entry formal-Jacobian cardinality
+	  slice is saved at
+	  `threads/04-blow-up-certificate/reproduction-case1-selected-entry-formal-jacobian-cardinality-a4.md`;
+	  xhigh source/math and Lean/API review passed and is saved at
+	  `threads/04-blow-up-certificate/review-case1-selected-entry-formal-jacobian-cardinality-a4.md`.
 	  The 2026-06-23 branchwise source-production re-audit is saved at
 	  `threads/04-blow-up-certificate/audit-case2-branchwise-successor-production-recheck-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
@@ -1005,7 +1010,24 @@ No such claim is formalisation-ready until both fields are filled.
   `case1StripCols_eq_case2ResidualBlockCols`,
   `case1StripEntries_subset_case2ResidualBlockPivotEntries`, and
   `case1_displayedPivot_mem_residualBlockPivotEntries_of_bounds`, making the
-  explicit row-validity bound `J+J1 <= mu_S` visible. Also packaged the finite
+  explicit row-validity bound `J+J1 <= mu_S` visible. Also proved the Case 1
+  selected-entry formal-Jacobian cardinality slice:
+  `case1StripRows_card`, `case1StripCols_card`,
+  `case1StripEntries_card`, `case1CenterGenerators_card`,
+  `case1CenterGenerators_erase_card_of_mem`,
+  `case1CenterGenerators_erase_selectedOld_card`,
+  `case1CenterGenerators_erase_displayedPivot_card_of_bounds`,
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate`,
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate.jacobianPriorExp_zero_zero`,
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate.pivotFirstJacobian_det`,
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate`,
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.jacobianPriorExp_zero_zero`,
+  and
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.pivotFirstJacobian_det`.
+  These prove only that the two displayed finite selected-entry charts have
+  formal determinant exponent `J1*(n(S+1)-J)`; they do not prove analytic
+  Jacobian/volume-form control, chart production, coverage, transition
+  regularity, normal crossings, pole order, or RLCT. Also packaged the finite
   Case 1 first-jump and selected-label hypotheses as
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
   `J+J1 < mu_S`, selected introduced label, selected level, gap, componentwise

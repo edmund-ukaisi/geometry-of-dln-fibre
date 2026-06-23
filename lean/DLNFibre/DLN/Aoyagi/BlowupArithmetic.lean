@@ -1509,6 +1509,24 @@ def case1StripCols (n : ℕ → ℕ) (S J : ℕ) : Finset ℕ :=
 def case1StripEntries (n : ℕ → ℕ) (S J J1 : ℕ) : Finset (ℕ × ℕ) :=
   (case1StripRows J J1).product (case1StripCols n S J)
 
+/-- Cardinality of the Case 1 row-strip row range `J+1..J+J1`. -/
+theorem case1StripRows_card (J J1 : ℕ) :
+    (case1StripRows J J1).card = J1 := by
+  rw [case1StripRows, Nat.card_Icc]
+  omega
+
+/-- Cardinality of the Case 1 row-strip column range `J+1..M^(S+1)`. -/
+theorem case1StripCols_card (n : ℕ → ℕ) (S J : ℕ) :
+    (case1StripCols n S J).card = n (S + 1) - J := by
+  rw [case1StripCols, Nat.card_Icc]
+  omega
+
+/-- Cardinality of the finite Case 1 row-strip entry set. -/
+theorem case1StripEntries_card (n : ℕ → ℕ) (S J J1 : ℕ) :
+    (case1StripEntries n S J J1).card = J1 * (n (S + 1) - J) := by
+  simp [case1StripEntries, Finset.card_product, case1StripRows_card,
+    case1StripCols_card]
+
 /-- Finite Case 1 center generators after fixing the chosen old exceptional variable.
 This does not encode Case 1 hypotheses, chart coverage, regularity, exponent updates, or
 termination. -/
@@ -1516,6 +1534,72 @@ def case1CenterGenerators (n : ℕ → ℕ) (S J J1 : ℕ) :
     Finset Case1CenterGenerator :=
   {(Sum.inl () : Case1CenterGenerator)} ∪
     (case1StripEntries n S J J1).image (fun p ↦ (Sum.inr p : Case1CenterGenerator))
+
+/-- Cardinality of the finite Case 1 center: one old exceptional generator
+plus the row-strip entries. -/
+theorem case1CenterGenerators_card (n : ℕ → ℕ) (S J J1 : ℕ) :
+    (case1CenterGenerators n S J J1).card =
+      1 + (case1StripEntries n S J J1).card := by
+  have hinj :
+      Function.Injective (fun p : ℕ × ℕ ↦ (Sum.inr p : Case1CenterGenerator)) := by
+    intro a b h
+    cases h
+    rfl
+  have hcard_image :
+      ((case1StripEntries n S J J1).image
+          (fun p ↦ (Sum.inr p : Case1CenterGenerator))).card =
+        (case1StripEntries n S J J1).card := by
+    rw [Finset.card_image_of_injective _ hinj]
+  have hdisj :
+      Disjoint ({(Sum.inl () : Case1CenterGenerator)} : Finset Case1CenterGenerator)
+        ((case1StripEntries n S J J1).image
+          (fun p ↦ (Sum.inr p : Case1CenterGenerator))) := by
+    rw [Finset.disjoint_left]
+    intro x hx hximage
+    rw [Finset.mem_singleton] at hx
+    subst x
+    rcases Finset.mem_image.mp hximage with ⟨p, _hp, hp⟩
+    cases hp
+  rw [case1CenterGenerators, Finset.card_union_of_disjoint hdisj, hcard_image]
+  simp
+
+/-- Erasing any selected Case 1 center generator leaves `J1*(M^(S+1)-J)`
+non-pivot generators. -/
+theorem case1CenterGenerators_erase_card_of_mem
+    {n : ℕ → ℕ} {S J J1 : ℕ} {pivot : Case1CenterGenerator}
+    (hpivot : pivot ∈ case1CenterGenerators n S J J1) :
+    ((case1CenterGenerators n S J J1).erase pivot).card =
+      J1 * (n (S + 1) - J) := by
+  rw [Finset.card_erase_of_mem hpivot,
+    case1CenterGenerators_card, case1StripEntries_card]
+  omega
+
+/-- Erasing the selected old exceptional generator leaves exactly the Case 1
+row-strip entries. -/
+theorem case1CenterGenerators_erase_selectedOld_card (n : ℕ → ℕ) (S J J1 : ℕ) :
+    ((case1CenterGenerators n S J J1).erase
+        (Sum.inl () : Case1CenterGenerator)).card =
+      J1 * (n (S + 1) - J) := by
+  have hmem :
+      (Sum.inl () : Case1CenterGenerator) ∈ case1CenterGenerators n S J J1 := by
+    simp [case1CenterGenerators]
+  exact case1CenterGenerators_erase_card_of_mem hmem
+
+/-- Erasing Aoyagi's displayed Case 1 row-strip pivot leaves the old
+exceptional generator plus the remaining row-strip entries, hence the same
+finite count `J1 * (M^(S+1)-J)`. -/
+theorem case1CenterGenerators_erase_displayedPivot_card_of_bounds
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1)) :
+    ((case1CenterGenerators n S J J1).erase
+        (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)).card =
+      J1 * (n (S + 1) - J) := by
+  have hmem :
+      (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) ∈
+        case1CenterGenerators n S J J1 := by
+    simp [case1CenterGenerators, case1StripEntries, case1StripRows,
+      case1StripCols, hJ1, hcol]
+  exact case1CenterGenerators_erase_card_of_mem hmem
 
 @[simp] theorem mem_case1StripRows (J J1 i : ℕ) :
     i ∈ case1StripRows J J1 ↔ J + 1 ≤ i ∧ i ≤ J + J1 := by

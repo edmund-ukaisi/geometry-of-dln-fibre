@@ -222,6 +222,20 @@ This proves only that the local one-coordinate microcertificate has finite
 minimum `center.card / 2` and finite order `1`; it does not prove the global
 A0 active-ratio lower bound or global chart-count/order theorem.
 
+The current A4 Case 1 selected-entry formal-Jacobian cardinality slice is
+`threads/04-blow-up-certificate/reproduction-case1-selected-entry-formal-jacobian-cardinality-a4.md`.
+Lean now proves the row-strip cardinality
+`J1 * (n(S+1)-J)`, the erased-center cardinality for any selected Case 1
+center generator, and the two displayed Case 1 finite selected-entry
+microcertificates:
+`case1SelectedOldCenterSqFormalJacobianChartCertificate` and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate`.
+For both displayed charts the formal pivot-first determinant exponent is
+`J1 * (n(S+1)-J)`, matching the finite cardinality component of Aoyagi's
+printed Case 1 increment.  This is not analytic Jacobian/volume-form control,
+chart production, coverage, transition regularity, normal crossings, pole
+order, or RLCT extraction.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:
