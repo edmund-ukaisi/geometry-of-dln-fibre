@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMLeaf
 import DLNFibre.Core.CascadeRealizable
+import DLNFibre.Core.CascadeAchiever
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.CascadeAchiever` — the genuine realizability tie (#121-(ii))
@@ -37,25 +38,12 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
 
-/-- The running rank `ρ` of the achiever, from `(M, T)` alone: `ρ_0 = M_0`, `ρ_{j+1} = T_j`. The
-`expSurvivor` of the cert (`Fin.cases` over `Fin (L+1)`). -/
-def expSurvivor (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Fin (L + 1) → ℕ :=
-  Fin.cases (M 0) T
+/-! The achiever defs `expSurvivor` (the running rank `ρ`) and `achieverRankPattern` (the orbit-stratum
+pattern `r*`) live network-free in `Core.CascadeAchiever` — shared with fm3's `RouteMBranchRead.realizes_ach`
+lock and the geometric-codim identification (#116-(2), #103). Brought into scope here by `open DLNFibre.Core`
+above; the simp lemmas `expSurvivor_zero`/`expSurvivor_succ` are likewise Core-side.
 
-@[simp] theorem expSurvivor_zero (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) :
-    expSurvivor M T 0 = M 0 := rfl
-
-@[simp] theorem expSurvivor_succ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (k : Fin L) :
-    expSurvivor M T k.succ = T k := by
-  simp [expSurvivor]
-
-/-- The orbit-stratum rank pattern `r*` of the admissible achiever, from `(M, T)` ALONE: column-constant
-value `ρ_j` strictly above the diagonal, `M_i` on it, `0` below. Independent of `cascadeTuple`. -/
-def achieverRankPattern (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) :
-    Fin (L + 1) → Fin (L + 1) → ℕ :=
-  fun i j => if i < j then expSurvivor M T j else if i = j then M i else 0
-
-/-! ## H1 — `ρ = expSurvivor` is weakly decreasing under (i)+(ii) -/
+## H1 — `ρ = expSurvivor` is weakly decreasing under (i)+(ii) -/
 
 /-- **H1 (ρ antitone).** Under admissibility clauses (i)-at-0 and (ii), `ρ = expSurvivor M T` is weakly
 decreasing. By `Fin.antitone_iff_succ_le`, reduce to the per-step `ρ_{p+1} ≤ ρ_p`: at `p = 0`,
