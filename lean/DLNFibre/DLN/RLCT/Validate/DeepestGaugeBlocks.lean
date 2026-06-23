@@ -173,6 +173,78 @@ theorem leak_frobenius_bound {r mlo nhi : Type*} [Fintype r] [Fintype mlo] [Fint
   rw [Matrix.mul_assoc]
   exact frobenius_mul_le P10 (N * P01)
 
+/-- **The full-product loss squeeze** (route-independent, the #80 matrix-core). For the FULL chain
+product `P = fromBlocks P00 P01 P10 P11` with pivot `P00` invertible (`= I` near the deepest), the
+squared-Frobenius loss against `D = blockdiag[1,0]` is two-sidedly comparable to `∑E² + ‖R‖²`, where
+`∑E²` is the regular-residual energy (`(P00−1)`, `P01`, `P10` blocks) and `R = P11 − P10·⅟P00·P01` is
+the full-product Schur core. The leak `P11 − R = P10·⅟P00·P01` is charged to `∑E²` (`hleak`: its
+energy `≤ t²·∑E²`, supplied by the consumer from `P10, P01 → 0` + bounded `⅟P00` near the deepest).
+Assembles `fullProduct_core_split` (the `∑E²+‖P11‖²` decomposition + `P11 = leak + R`) into
+`core_comparability_squeeze`. The genuine `c₁ < c₂` squeeze (NOT exact) the loss-side needs. -/
+theorem fullProduct_loss_squeeze {r mlo nhi : Type*} [Fintype r] [DecidableEq r] [Fintype mlo]
+    [Fintype nhi]
+    (P00 : Matrix r r ℝ) (P01 : Matrix r nhi ℝ) (P10 : Matrix mlo r ℝ) (P11 : Matrix mlo nhi ℝ)
+    [Invertible P00] (t : ℝ)
+    (hleak : (∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
+        ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+            + (∑ i, ∑ j, (P10 i j) ^ 2))) :
+    (((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2)) + (∑ i, ∑ j, (P10 i j) ^ 2))
+          + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)))
+        ≤ (2 * (1 + t ^ 2)) * (∑ i, ∑ j, ((Matrix.fromBlocks P00 P01 P10 P11
+            - Matrix.fromBlocks (1 : Matrix r r ℝ) (0 : Matrix r nhi ℝ)
+                (0 : Matrix mlo r ℝ) (0 : Matrix mlo nhi ℝ)) i j) ^ 2)
+    ∧ (∑ i, ∑ j, ((Matrix.fromBlocks P00 P01 P10 P11
+            - Matrix.fromBlocks (1 : Matrix r r ℝ) (0 : Matrix r nhi ℝ)
+                (0 : Matrix mlo r ℝ) (0 : Matrix mlo nhi ℝ)) i j) ^ 2)
+        ≤ (2 + 2 * t ^ 2)
+            * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2)) + (∑ i, ∑ j, (P10 i j) ^ 2))
+              + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
+  obtain ⟨hfrob, hsplit⟩ := fullProduct_core_split P00 P01 P10 P11
+  -- The ⊕-flattened regular-residual energy: `∑_{e:ι} (E e)² = ∑(P00−1)² + (∑P01² + ∑P10²)`.
+  have hEflat : (∑ e : (r × r) ⊕ (r × nhi) ⊕ (mlo × r),
+        (match e with
+          | Sum.inl (i, j) => (P00 - 1) i j
+          | Sum.inr (Sum.inl (i, j)) => P01 i j
+          | Sum.inr (Sum.inr (i, j)) => P10 i j) ^ 2)
+      = ((∑ i, ∑ j, ((P00 - 1) i j) ^ 2)
+          + ((∑ i, ∑ j, (P01 i j) ^ 2) + (∑ i, ∑ j, (P10 i j) ^ 2))) := by
+    rw [Fintype.sum_sum_type]
+    congr 1
+    · simp_rw [Fintype.sum_prod_type]
+    · rw [Fintype.sum_sum_type]; congr 1 <;> simp_rw [Fintype.sum_prod_type]
+  -- The product-index flattenings for `P11`, `leak`, `Rcore`.
+  have hP11flat : (∑ p : mlo × nhi, (P11 p.1 p.2) ^ 2) = ∑ i, ∑ j, (P11 i j) ^ 2 := by
+    rw [Fintype.sum_prod_type]
+  have hleakflat : (∑ p : mlo × nhi, ((P10 * ⅟P00 * P01) p.1 p.2) ^ 2)
+      = ∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2 := by rw [Fintype.sum_prod_type]
+  have hRflat : (∑ p : mlo × nhi, ((P11 - P10 * ⅟P00 * P01) p.1 p.2) ^ 2)
+      = ∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2 := by rw [Fintype.sum_prod_type]
+  -- The loss = `∑E² + ∑P11²` (`hfrob`, reassociated to the ⊕-flatten shape).
+  have hloss : (∑ i, ∑ j, ((Matrix.fromBlocks P00 P01 P10 P11
+        - Matrix.fromBlocks (1 : Matrix r r ℝ) (0 : Matrix r nhi ℝ)
+            (0 : Matrix mlo r ℝ) (0 : Matrix mlo nhi ℝ)) i j) ^ 2)
+      = ((∑ i, ∑ j, ((P00 - 1) i j) ^ 2)
+          + ((∑ i, ∑ j, (P01 i j) ^ 2) + (∑ i, ∑ j, (P10 i j) ^ 2)))
+        + (∑ i, ∑ j, (P11 i j) ^ 2) := by
+    rw [hfrob]; ring
+  -- Apply `core_comparability_squeeze` (single-index) on the flattened blocks.
+  have hcc := core_comparability_squeeze
+    (ι := (r × r) ⊕ (r × nhi) ⊕ (mlo × r)) (κ := mlo × nhi)
+    (E := fun e => match e with
+      | Sum.inl (i, j) => (P00 - 1) i j
+      | Sum.inr (Sum.inl (i, j)) => P01 i j
+      | Sum.inr (Sum.inr (i, j)) => P10 i j)
+    (P11 := fun p => P11 p.1 p.2) (leak := fun p => (P10 * ⅟P00 * P01) p.1 p.2)
+    (Rcore := fun p => (P11 - P10 * ⅟P00 * P01) p.1 p.2) (t := t)
+    (fun p => by simpa using hsplit p.1 p.2)
+    (by rw [hleakflat, hEflat]; convert hleak using 2; ring)
+  obtain ⟨hcc_le, hcc_ge⟩ := hcc
+  rw [hEflat, hP11flat, hRflat] at hcc_le hcc_ge
+  constructor
+  · -- `(∑E² + ∑R²) ≤ 2(1+t²)·loss`. Reassociate `∑E²` and rw `loss`.
+    rw [hloss]; convert hcc_le using 2 <;> ring
+  · rw [hloss]; convert hcc_ge using 2 <;> ring
+
 /-- **The per-layer Schur block-diagonalisation** (#44c, g156 / #61 — the corrected `coreAbsorb`
 core object). A gauge layer `C = fromBlocks (1+X) Y Z T` with invertible `(0,0)` corner
 block-diagonalises by the unipotent transvections `L = [[1,0],[−Z⅟(1+X),1]]`,
