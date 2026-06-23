@@ -4,10 +4,19 @@ import DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion
 /-!
 # `RouteMNodeDescent` — the #135 G-a LOCKED SEAM (fm3 #135-lead, descent side)
 
-The general-M geometric fidelity (#135) splits G-a (the per-node hnode producer — which datum each non-leaf
+The general-M RLCT recursion (#135) splits G-a (the per-node hnode producer — which datum each non-leaf
 node emits) and G-b (the cover lintegral CoV recursing the datum). This file is the **LOCKED producer/
 consumer interface** both sides build against BEFORE parallel-filling — the seam-drift mitigation that worked
 for #99/#125 (`RouteMBranchRead`). It is the DESCENT-side analog of `RouteMBranchRead` (the value-side seam).
+
+**Naming caveat (controller #136 verdict, 2026-06-23).** `descentStep` is an RLCT identity only —
+`rlctAtOn flatCore (0,0) = nReg/2 + rlctAtOn (dlnLoss S.red 0) 0`; it makes NO codim claim. When G-b's
+cover assigns a per-node codim, that codim is the **RESOLUTION / combinatorial `Mval`** (the monomial
+threshold the blow-up presents), NOT the geometric Ext-codim of the cascade's orbit stratum (the two
+agree only on width-monotone `M`, and the cascade's column-constant `achieverRankPattern` differs at
+interior cells from the `Mval=multSum` pattern `r=ρ_j+(M_i−ρ_i)` — pp-rstar #136). The binding headline
+`½·minAdm` uses only the combinatorial `Mval` and is unaffected; the general-M geometric reading is a
+scoped, deferred extension (width-monotone), not what this descent proves.
 
 The per-node datum (pp-rstar #134: ONE shape covers C1 hard-pivot AND C5 partial-drop, differing only in
 FIELD VALUES) bundles:
