@@ -6,6 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
 import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
 import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
+import DLNFibre.DLN.RLCT.Validate.DeepestRegSliceFderiv
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
 
@@ -415,44 +416,29 @@ theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
       Equiv.symm_symm]
     exact hprod _ _
 
-/-- **`deepestEPivot`'s reg-block derivative at `0` is the IDENTITY** (the #91 analytic crux,
-g213-pin1-de0). Restricted to the regular slice `r ↦ deepestEPivot (r, 0)`, the strict derivative at
-`0` is `id` — the idempotent-sandwich `dP|_0 = Σ_s corner·δC_s·corner` with the gauge slot held at `0`
-keeps ONLY the `(0,0)`-block `X`-pivot (which equals the reg-input on the pivot coords). This is the
-single analytic obligation of `_deriv`; everything else (the product strict-derivative, the shear-CLE
-packaging) is banked. **OBLIGATION:** the `regResidualPack` ↔ `(X_first, Y_last, Z_first)` pivot-coord
-correspondence at the gauge-zero slice (the #91 transcription / pp2 coordinate cert). -/
-theorem deepestEPivot_regSlice_fderiv_id (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- **`deepestEPivot`'s reg-block derivative at `0` is an INVERTIBLE FRAME FACTOR** (the #91 analytic
+crux, post frame-conjugation — NOT `id`). With the frame-conjugate `framedLayer = corM + Pf·dev·Qf`,
+the gauge-zero reg-slice `r0 ↦ deepestEPivot Pf Qf (r0, 0)` has strict derivative a constant INVERTIBLE
+CLM `F`: by the idempotent sandwich `dP|_0(δ) = Σ_s corM^{<s}·dC_s·corM^{>s}` with
+`dC_s = Pf_s·reindex(fromBlocks dX_s dY_s dZ_s 0)·Qf_s`, only `s = firstLayer` (X,Z) / `s = lastLayer`
+(Y) survive (the alignment bedrock), and the boundary frames' `r`-corner action ∘ the shared
+`regPivotFinEquiv` cancel gives the invertible `F` (from `IsUnit (Pf firstLayer)` / `IsUnit
+(Qf lastLayer)`). **OBLIGATION (the #91 frame-decorated transcription):** the `prodAuxEntryDeriv`
+Leibniz value collapsed by the corner sandwich + the cancel. -/
+theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
-    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
-    HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
-        deepestEPivot H r hr hL Pf Qf (r0, 0))
-      (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ)) 0 := by
-  -- ⚠ HANDOFF TO deriv-fm (#91, post frame-wiring): with the new frame-conjugated `framedLayer`, the
-  -- reg-slice fderiv at 0 is NO LONGER `id` — it is the CONSTANT INVERTIBLE FRAME FACTOR. By the #91
-  -- idempotent sandwich `d(prod(framedParamsReg (r0,0)))|_0 = Σ_s corM^{<s} · dC_s · corM^{>s}` with
-  -- `dC_s = Pf_s · reindex(fromBlocks dX_s dY_s dZ_s 0) · Qf_s`: the `corM·_·corM` projects to the
-  -- `(1,1)` r-corner; the boundary layers carry `Pf_0` (left) and `Qf_{L-1}` (right) restricted to the
-  -- r-block (interior frames are id by `deepestPoint_interior_frame_id`). So the honest target is
-  -- `HasStrictFDerivAt (reg-slice) F 0` with `F` an INVERTIBLE frame-factor CLM (the `Pf_0`/`Qf_{L-1}`
-  -- r-corner action ∘ the shared `regPivotFinEquiv` cancel), NOT `id`. The `id` statement below is the
-  -- PRE-frame target and is now likely FALSE for a nontrivial frame — deriv-fm: restate to the frame
-  -- factor + relax `regStraightenTotalCLM_equiv_of_regBlock_id` to reg-block = IsUnit/invertible.
-  -- #120 (deriv-fm): the opaque-pack wall is DISSOLVED — `regResidualPack := regPivotFinEquiv` and
-  -- `regGaugeIdxSplit`'s reg-half route via `regBoundaryToRegGauge ∘ regPivotFinEquiv` (the SHARED
-  -- `regPivotFinEquiv`), so the reg-coords ARE the boundary pivots (X_first/Y_last/Z_first) by
-  -- construction. Coordinate-wise (`hasStrictFDerivAt_pi'`): each output coord `i`'s derivative is the
-  -- `i`-th projection.
-  rw [show (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ))
-      = ContinuousLinearMap.pi (fun i => ContinuousLinearMap.proj i) from by ext x i; rfl]
-  refine hasStrictFDerivAt_pi.2 (fun i => ?_)
-  -- Per-coordinate: `HasStrictFDerivAt (fun r0 => deepestEPivot (r0,0) i) (proj i) 0`. The #91
-  -- idempotent-sandwich: `d(prod(framedParamsReg (r0,0)))|_0 = Σ_s corner·δC_s·corner` keeps the
-  -- surviving boundary block at coord `i`; the SHARED `regPivotFinEquiv` cancel identifies it with `r0 i`.
-  -- REMAINING ANALYTIC ATOM (the #91 transcription, per deriv-alignment-sandwich-tactic-cert.md): the
-  -- per-coordinate product-derivative value + the cancel. Skeleton validated (shape typechecks); the
-  -- atom is the patient analytic fill (the Leibniz sandwich VALUE through `prodAux` + the cancel).
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL))) :
+    ∃ F : (Fin (deepestNReg H r) → ℝ) ≃L[ℝ] (Fin (deepestNReg H r) → ℝ),
+      HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          deepestEPivot H r hr hL Pf Qf (r0, 0))
+        (F : (Fin (deepestNReg H r) → ℝ) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
+  -- The #91 frame-decorated sandwich (analytic fill in progress). Reuses (`DeepestRegSliceFderiv`):
+  -- `prodAuxEntryDeriv` (the explicit Leibniz product-fold derivative), the alignment cancel
+  -- (`regGaugeSlotEquiv_regSlice_boundary` — reg-coords route to boundary pivots), the layer slices
+  -- (X/Z only at firstLayer, Y only at lastLayer), and the scalar cross-term `mul_zero` helpers; the
+  -- boundary-frame invertibility `hPf`/`hQf` builds the invertible `F`.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -466,20 +452,23 @@ identity `deepestEPivot_regSlice_fderiv_id` (the #91 crux), and the generic shea
 theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
-    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL))) :
     ∃ (D_E : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) →L[ℝ]
         (Fin (deepestNReg H r) → ℝ))
       (e : DeepestSplit H r (deepestNGauge H r) ≃L[ℝ] DeepestSplit H r (deepestNGauge H r)),
       HasStrictFDerivAt (deepestEPivot H r hr hL Pf Qf) D_E 0 ∧
       (e : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r))
         = regStraightenTotalCLM D_E := by
-  -- `D_E := fderiv ℝ deepestEPivot 0` (free from `_contdiff`); its reg-block is `id` (the #91 fact),
-  -- so `regStraightenTotalCLM D_E` is the invertible shear (`regStraightenTotalCLM_equiv_of_regBlock_id`).
+  -- `D_E := fderiv ℝ deepestEPivot 0` (free from `_contdiff`); its reg-block is the INVERTIBLE frame
+  -- factor `F` (the #91 post-frame fact), so `regStraightenTotalCLM D_E` is the invertible shear
+  -- (`regStraightenTotalCLM_equiv_of_regBlock_isUnit`).
   set D_E := fderiv ℝ (deepestEPivot H r hr hL Pf Qf) 0 with hD_E
   have hsd : HasStrictFDerivAt (deepestEPivot H r hr hL Pf Qf) D_E 0 :=
     (deepestEPivot_contdiff H r hr hL Pf Qf).hasStrictFDerivAt (by simp)
-  -- The reg-block: `D_E.comp regInCLM = id`. The reg-slice `r ↦ deepestEPivot (r,0)` has strict
-  -- derivative `D_E.comp regInCLM` (chain rule) AND `id` (#91), so they agree.
+  -- The reg-block: `D_E.comp regInCLM = ↑F`. The reg-slice `r ↦ deepestEPivot (r,0)` has strict
+  -- derivative `D_E.comp regInCLM` (chain rule) AND `↑F` (#91 frame factor), so they agree.
+  obtain ⟨F, hF⟩ := deepestEPivot_regSlice_fderiv H r hr hL Pf Qf hPf hQf
   have hregIn : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ => ((r0, 0) :
       (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)))
       (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
@@ -492,14 +481,15 @@ theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
     have hsd0 : HasStrictFDerivAt (deepestEPivot H r hr hL Pf Qf) D_E
         (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))) := hsd
     exact hsd0.comp (x := (0 : Fin (deepestNReg H r) → ℝ)) hregIn
+  -- `D_E.comp regInCLM = ↑F` (fderiv uniqueness against `hF`).
   have hblock : D_E.comp (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
       (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
-      = ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ) := by
+      = (F : (Fin (deepestNReg H r) → ℝ) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) := by
     have h1 := hcomp.hasFDerivAt.fderiv
-    have h2 := (deepestEPivot_regSlice_fderiv_id H r hr hL Pf Qf).hasFDerivAt.fderiv
+    have h2 := hF.hasFDerivAt.fderiv
     rw [← h1, ← h2]
-  obtain ⟨e, he⟩ := regStraightenTotalCLM_equiv_of_regBlock_id (C := Fin (flatDim (deepestM H r)) → ℝ)
-    D_E hblock
+  obtain ⟨e, he⟩ := regStraightenTotalCLM_equiv_of_regBlock_isUnit
+    (C := Fin (flatDim (deepestM H r)) → ℝ) D_E F hblock.symm
   exact ⟨D_E, e, hsd, he⟩
 
 theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -825,7 +815,13 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- PIN 1: `regStraighten` (the (C)-fallback total-fn E-straightening) + its props (against `coreAbsorb`).
   -- The reg-output is the shared `deepestEPivot` (the PIN1↔PIN2 coupling object); its three analytic
   -- props feed PIN 1's IFT peel, its concrete value feeds PIN 2's squeeze.
-  obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ := deepestEPivot_deriv H r hr hL Pf Qf
+  -- The boundary frames are invertible (`deepestPoint_frame_invertible`), so the #91 reg-slice fderiv
+  -- frame factor is invertible.
+  have hPf : IsUnit (Pf (firstLayer hL)) :=
+    (deepestPoint_frame_invertible H r B hB hr hL (firstLayer hL)).1
+  have hQf : IsUnit (Qf (lastLayer hL)) :=
+    (deepestPoint_frame_invertible H r B hB hr hL (lastLayer hL)).2
+  obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ := deepestEPivot_deriv H r hr hL Pf Qf hPf hQf
   obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_regval, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
       (deepestCoreAbsorb_mp H r hr hL) hca_base hca_reg hca_spec
