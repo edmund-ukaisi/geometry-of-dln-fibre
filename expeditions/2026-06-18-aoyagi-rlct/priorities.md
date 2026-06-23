@@ -2083,6 +2083,20 @@ Immediate order:
    attempts from the printed equations, and move only source-stable A4/A2/A0
    obligations unless the operator changes the citation policy or supplies a
    corrected A5 construction.
+
+The current A4/A0 Case 1 exponent-coordinate bridge is
+`threads/04-blow-up-certificate/reproduction-case1-a0-exponent-coordinate-bridge-a4.md`.
+Lean now proves that a supplied coordinate of finite normal-crossing exponent
+data with Case 1 selected-entry exponents `lossExp = 1` and
+`jacobianPriorExp = J1 * (n(S+1)-J)` is active and has ratio
+`(1 + J1 * (n(S+1)-J)) / 2`; under an explicit all-active lower bound, that
+ratio is the finite exponent minimum.  The source-moving wrapper
+`Case1SelectedOldUnitA0ExponentCoordinateBridge` carries the existing
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary`, so the `Unit` center token
+is not mistaken for a source-produced old label by itself.  This still does
+not construct the A0 exponent datum, the coordinate, chart coverage,
+analytic Jacobian/volume data, global lower bounds, chart counts, pole order,
+or RLCT extraction.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

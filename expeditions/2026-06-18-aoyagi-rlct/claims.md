@@ -3543,3 +3543,19 @@ No such claim is formalisation-ready until both fields are filled.
   Lemma 5 chart-family construction/coverage and no-extra classifier,
   conversion of the finite count to pole order, normal crossings, final RLCT
   theorem, and formal analytic extraction theorem.
+
+Latest A4/A0 Case 1 exponent-coordinate bridge:
+`Case1FiniteExponentBridge.lean` now contains
+`Case1SelectedEntryExponentCoordinateBridge`,
+`Case1SelectedEntryA0ExponentCoordinateBridge`, and
+`Case1SelectedOldUnitA0ExponentCoordinateBridge`.  These prove that a supplied
+coordinate with Case 1 selected-entry exponents `lossExp = 1` and
+`jacobianPriorExp = J1 * (n(S+1)-J)` is active and has ratio
+`(1 + J1 * (n(S+1)-J)) / 2`; under a supplied all-active lower bound, this
+ratio is the finite exponent minimum.  The selected-old source-moving wrapper
+carries `Case1SelectedOldUnitSuppliedChartFamilyBoundary`; it does not
+construct the A0 exponent data, the coordinate, a chart certificate, a global
+lower bound, chart counts, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-a0-exponent-coordinate-bridge-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-a0-case1-exponent-coordinate-bridge.md`.

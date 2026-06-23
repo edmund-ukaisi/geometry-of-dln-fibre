@@ -6035,6 +6035,31 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-data-final-boundary-a6.md`.
 
+Latest A4/A0 Case 1 exponent-coordinate bridge:
+`Case1FiniteExponentBridge.lean` now contains
+`Case1SelectedEntryExponentCoordinateBridge`,
+`Case1SelectedEntryA0ExponentCoordinateBridge`,
+`Case1SelectedOldUnitA0ExponentCoordinateBridge`,
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.of_coord_exponents`,
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.of_chartCertificate_coord_exponents`,
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.activePair_and_ratioAt_eq_nonpivotCount_add_one_div_two`,
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.exponentMinimum_eq_nonpivotCount_add_one_div_two_of_forall_le`,
+`case1SelectedOldCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`,
+and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`.
+These consume supplied Case 1 selected-entry exponent equalities on a supplied
+coordinate and prove active-pair, ratio, and conditional finite-minimum
+bookkeeping.  The selected-old wrapper carries
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary` so the finite `Unit` token
+does not stand alone as source provenance.  No A0 data or coordinate is
+constructed, and no chart production, global lower bound, chart count, pole
+order, or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-a0-exponent-coordinate-bridge-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-a0-case1-exponent-coordinate-bridge.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-a0-exponent-coordinate-bridge-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

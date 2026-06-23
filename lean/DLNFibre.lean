@@ -115,3 +115,4 @@ import DLNFibre.DLN.Aoyagi.Case2FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case2Theorem2FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case2Theorem2ChartFinalBridge
 import DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+import DLNFibre.DLN.Aoyagi.Case1FiniteExponentBridge

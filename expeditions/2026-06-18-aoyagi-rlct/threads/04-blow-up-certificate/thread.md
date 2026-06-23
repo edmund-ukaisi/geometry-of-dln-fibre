@@ -4929,3 +4929,44 @@ old-generator branch remains a token for an externally chosen source label,
 non-displayed row-strip pivots are finite chart candidates rather than
 source-displayed transition formulas, and no chart coverage, regularity,
 analytic Jacobian, global A0 data, pole order, or RLCT extraction is proved.
+
+## 2026-06-23 Lean A4/A0 Case 1 exponent-coordinate bridge
+
+Reproduction:
+`reproduction-case1-a0-exponent-coordinate-bridge-a4.md`.
+Statement card:
+`statement-card-a4-a0-case1-exponent-coordinate-bridge.md`.
+Review artifact:
+`review-case1-a0-exponent-coordinate-bridge-a4.md`.
+
+Lean now adds a finite Case 1 exponent-coordinate bridge:
+
+```text
+Case1SelectedEntryExponentCoordinateBridge
+Case1SelectedEntryA0ExponentCoordinateBridge
+Case1SelectedOldUnitA0ExponentCoordinateBridge
+```
+
+The generic bridge consumes a supplied finite exponent datum `D`, a supplied
+coordinate `p`, and the exponent equalities
+`D.lossExp p = 1` and
+`D.jacobianPriorExp p = J1 * (n(S+1)-J)`.  It proves that `p` is active and
+that
+
+```text
+D.ratioAt p = (1 + J1 * (n(S+1)-J)) / 2.
+```
+
+With a supplied all-active-coordinate lower bound by this ratio, it also
+proves the corresponding finite `D.exponentMinimum` equality.  The
+source-moving selected-old wrapper carries
+`Case1SelectedOldUnitSuppliedChartFamilyBoundary`, preventing later users from
+treating the finite `Unit` center token as the hidden old label `(s0,k0)`
+without the source boundary.  The selected-old and displayed-row-strip local
+one-coordinate microcertificates also supply the generic bridge for their own
+local exponent data.
+
+This is finite A0-facing arithmetic only.  It does not construct `D` or `p`,
+does not produce chart certificates from the selected-old boundary, does not
+prove a global active-ratio lower bound, chart count, exponent order,
+analytic Jacobian/volume data, chart coverage, pole order, or RLCT extraction.
