@@ -2,6 +2,36 @@
 
 Every design + interface question is CLOSED. This is the complete spec for the dispatcher grind.
 
+## (2,2,2) MILESTONE BANKED + ARCHITECTURE GAP (g192, fresh formaliser + Codex g206 + pp2 g207)
+A fresh focused lean-formaliser (off fm3/routem) took the #39 grind. RESULT:
+- ✓ (2,2,2) IsRouteMCover FACTS banked + reviewed PASS (#87/#89): RouteMCoverLemmas.lean (abstract cover
+  reductions: coverLe_scaling, routeM_coverLe_of_finiteness, routeM_coverGeDiv_of_boxDiverges — the
+  FINITENESS-ONLY cover shape, Codex-confirmed) + Case222RouteMCover.lean (routeM222_Fmeas/Uopen/Umem/cover_le/
+  cover_ge_div, field-for-field vs IsRouteMCover, over F=myF222 U=openBox ι=Fin 1, ⨅=3/2=lambdaCore;
+  sorry-free, clean-three[+monomial_rlct]). The anchor case's cover is DONE. (e222-reindex to dlnLoss H222 0
+  fenced for crux2's packaging.)
+- ⚠ ARCHITECTURE GAP surfaced (correctly handed back, NOT built blind) — the GENERAL routeStep recursion is
+  unsound as a RESOLUTION (two coupled parts, Codex g206 item 2 + pp2 g207, verified vs RouteMRecursion):
+  (1) ROOT-ANCHORING: foldFamily_threshold_ge_of_pivotWitness needs ALL per-leaf codims PivotWitness against
+      the SAME (root) M; routeAtlas recurses into (split c).red ⟹ deeper witnesses anchor at the REDUCED
+      chain, minAdm(reduced)<minAdm(root) ⟹ value UNDERSHOOTS ½·m₀. Fix: root-anchor (codim = Mval(root M, T),
+      T root-admissible — the geometric codim is intrinsic to the ambient, invariant under the det-1 reindex).
+  (2) DEEPER (the real one): split.red is an ABSTRACT ChainDimSplit field — NOTHING ties it to what the pivot
+      blow-up ACTUALLY produces. routeAtlas's child exponents describe dlnLoss (split.red) 0, but the actual
+      pullback residual is whatever the pivot geometry gives. PivotWitness certifies codim/value, NOT the
+      analytic descent. So the recursion is a SYNTACTIC tree, not a certified resolution — the SAME vacuity-trap
+      principle as g161, now at the recursion level (I scoped the certified-RouteStep at g161/g162, deferred;
+      now REQUIRED).
+PROPOSED RULING (awaiting pp2 cert-author confirm, sent): certified recursion — (a) define schurState M pivot :
+ChainDimSplit M concretely (pp2's g183/g194 C1: pivotBlowupOn + the residual), prove routeStep's split =
+schurState so split.red IS the genuine reduced chain; (b) per-cell datum proves residual = dlnLoss
+(schurState.red) 0 (lintegral-transported, g186) + root-anchored PivotWitness. HOLD #85 (general routeStep) +
+#86 (general extraction) + #88 (value over routeMIota) until the ruling. Formaliser meanwhile on the
+anchoring-INDEPENDENT general Fmeas (Continuous/Measurable (dlnLoss M 0)) + routeMBaseNbhd box (decision-free).
+NOTE: this is a GENUINE find (the general recursion's soundness), NOT a regression — the (2,2,2) anchor stands
+(it uses the concrete Case222 charts, sidestepping the abstract recursion). The certified-descent is the last
+real design piece; once pp2 confirms the schurState-def + descent-cert shape, the general grind resumes.
+
 ## Target: ONE unified RouteMAtlas (crux2 @31063ec, headline GREEN given it)
 structure RouteMAtlas M F U ι d k h := { isCover : IsRouteMCover F U ι d k h, isValue : IsResolutionAtlas M ι d k h }
 routeM_rlctAtOn_eq_lambdaCore (atlas) : rlctAtOn F 0 = ofReal (lambdaCore M)  -- GREEN, one Eq.trans.
