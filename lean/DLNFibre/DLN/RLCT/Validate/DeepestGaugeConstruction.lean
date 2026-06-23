@@ -429,7 +429,8 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
-    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL))) :
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1) :
     ∃ F : (Fin (deepestNReg H r) → ℝ) ≃L[ℝ] (Fin (deepestNReg H r) → ℝ),
       HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
           deepestEPivot H r hr hL Pf Qf (r0, 0))
@@ -453,7 +454,8 @@ theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
-    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL))) :
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1) :
     ∃ (D_E : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) →L[ℝ]
         (Fin (deepestNReg H r) → ℝ))
       (e : DeepestSplit H r (deepestNGauge H r) ≃L[ℝ] DeepestSplit H r (deepestNGauge H r)),
@@ -468,7 +470,7 @@ theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (deepestEPivot_contdiff H r hr hL Pf Qf).hasStrictFDerivAt (by simp)
   -- The reg-block: `D_E.comp regInCLM = ↑F`. The reg-slice `r ↦ deepestEPivot (r,0)` has strict
   -- derivative `D_E.comp regInCLM` (chain rule) AND `↑F` (#91 frame factor), so they agree.
-  obtain ⟨F, hF⟩ := deepestEPivot_regSlice_fderiv H r hr hL Pf Qf hPf hQf
+  obtain ⟨F, hF⟩ := deepestEPivot_regSlice_fderiv H r hr hL Pf Qf hPf hQf hQf0 hPfL
   have hregIn : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ => ((r0, 0) :
       (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)))
       (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
@@ -821,7 +823,15 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (deepestPoint_frame_invertible H r B hB hr hL (firstLayer hL)).1
   have hQf : IsUnit (Qf (lastLayer hL)) :=
     (deepestPoint_frame_invertible H r B hB hr hL (lastLayer hL)).2
-  obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ := deepestEPivot_deriv H r hr hL Pf Qf hPf hQf
+  -- ⚠ COBUILD (frame-family wiring): the boundary-inner-trivial conditions `Qf(firstLayer) = 1`
+  -- (layer-0 right-frame, `deepestPoint_layer0_cols_vanish`) and `Pf(lastLayer) = 1` (layer-(L-1)
+  -- left-frame, `deepestPoint_layerLast_rows_vanish`) — the #95-(I) facts. The raw `deepestPoint_frame`
+  -- does NOT guarantee these; cobuild's refined `deepestFrameFamily` does (Pf=Qf=1 off the two
+  -- boundary-carrying slots). Swap `Pf/Qf` to `deepestFrameFamily` + discharge these from its lemmas.
+  have hQf0 : Qf (firstLayer hL) = 1 := by sorry
+  have hPfL : Pf (lastLayer hL) = 1 := by sorry
+  obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ :=
+    deepestEPivot_deriv H r hr hL Pf Qf hPf hQf hQf0 hPfL
   obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_regval, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
       (deepestCoreAbsorb_mp H r hr hL) hca_base hca_reg hca_spec
