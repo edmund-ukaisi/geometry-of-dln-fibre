@@ -184,15 +184,16 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
       prod H C = P0 * prod H A * QL := by
-  -- NEEDED for #80/PIN2 (controller RULING 2026-06-23, verdict-(a) RETRACTED): dlnLoss = ‖∏A − B‖²
-  -- connects to `deepest_loss_squeeze`'s gauge reads VIA `conjugation_frobenius_comparable`, which
-  -- CONSUMES the factored form `∏A = P₀·(∏C)·Q_L` — this telescoping IS that factorization, not dodged
-  -- by a scalar bound. Mechanism: ALL interior frames are identity (`hinterface`: `Q s = 1` for
-  -- `s ≤ L-2`, `P (s+1) = 1` for `s ≤ L-2`, so `P s = 1` for `1 ≤ s ≤ L-1`), so `C s = A s` interior,
-  -- `C 0 = P 0 · A 0`, `C (L-1) = A (L-1) · Q (L-1)`; the product collapses by associativity.
-  -- The frame-threading through `prodAux`'s cast-fold (reusing lemma 1's `prodAux_succ` + cast-strip)
-  -- is the WALL — codex (pre-authorized fallback) down this session; the all-interior-identity
-  -- collapse is the proof PATH, the cast-bookkeeping the open piece. Handing back per 3-attempt cap.
+  -- NEEDED for #80/PIN2 (controller RULING 2026-06-23). Proof PATH (cast SOLVED by `prodAux_succ_layer`;
+  -- the remaining work is the frame-conjugation ASSEMBLY, a substantial multi-step induction):
+  -- ALL interior frames are identity (`hinterface`: `Q s = 1` for s ≤ L-2, `P (s+1) = 1` for s ≤ L-2,
+  -- i.e. `P s = 1` for 1 ≤ s ≤ L-1), so the `P 0`-frame rides the WHOLE product at FIXED width `Fin (H 0)`
+  -- (no cast-threading on the left), only the final boundary layer appends `Q (L-1)`. Witnesses
+  -- `P0 := P 0`, `QL := Q (L-1)` (cast to `(last)`-typed). INVARIANT (induction, 1 ≤ k ≤ L-1):
+  -- `prodAux C k = P 0 * prodAux A k`; the `k = L` step appends `Q (L-1)` via `C (L-1) = A (L-1)·Q (L-1)`.
+  -- OPEN sub-pieces: (a) `hPid` (Fin-coercion `obtain ⟨s',rfl⟩` on `(s:ℕ)` fails — needs Fin.val handling),
+  -- (b) the invariant induction (apply `prodAux_succ_layer` + `C s = A s` interior + assoc), (c) the
+  -- boundary `Q (L-1)` extraction cast. Routed to controller (push-more / cobuild-#80-owner / defer).
   sorry
 
 end DLNFibre.DLN.RLCT
