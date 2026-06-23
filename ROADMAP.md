@@ -193,20 +193,36 @@ worktree, so only the project's own small oleans rebuild — making worktree-per
 under concurrent reads. **Acceptance:** a new worktree is `lake build`-green in seconds, no
 per-worktree Mathlib fetch/decompress.
 
-### Uplift B — controller-in-worktree collapses teammate isolation
-**Plainly.** Per `expedition.md` §Isolation, if the controller runs from a worktree (not the main
-checkout), spawned `isolation: worktree` teammates **collapse onto the controller's worktree** —
-isolation becomes nominal and the team must run **serially** (one editor at a time). The natural
-"controller home" is the main checkout, but it is frequently occupied (e.g. the live `aoyagi-full`
-mega-expedition currently squats the main checkout, partly from a crash) — so concurrent expeditions
-cannot each get a clean isolated controller home. **Uplift options to evaluate:** (i) a convention
-that every expedition controller gets its **own dedicated checkout** (never the shared main checkout),
-with isolation working from there; (ii) make teammate isolation robust to a worktree-based controller
-(genuine nested per-teammate worktrees); (iii) a discipline that the main checkout stays a **free
-controller home on `dev`** and no expedition squats it (the crash that parked aoyagi there is the
-anti-pattern to prevent). **Tie-in:** once Uplift A makes worktrees near-free, giving every controller
-its own checkout (option i) is cheap and dissolves most of B. **Acceptance:** two concurrent
-expeditions each run teammates in genuinely isolated worktrees with parallelism intact.
+### Uplift B — only a main-checkout controller can give teammates isolated worktrees
+**Plainly.** The harness exposes exactly one isolation lever — `isolation: worktree` — and **no
+per-spawn cwd override**. That lever yields *distinct per-teammate* worktrees **only when the controller
+runs from the main checkout**. When the controller is **itself in a worktree**, spawned
+`isolation: worktree` teammates **collapse onto the controller's worktree** (all share one), so they
+must run **serially** — one editor at a time — to avoid clobbering each other. The main checkout is
+therefore a *single* resource: **at most one controller** can use it to get truly-parallel isolated
+teammates; every other controller must run from a worktree and gets only serial teammates. (A
+controller legitimately living in the main checkout — e.g. by an expedition's design — is correct, not
+a squat; it just means that slot is taken.)
+
+**Is the collapse actually a problem?** Often not. For a **sequential** expedition (a rung-ladder where
+teammates run one after another anyway), serial teammates in one shared worktree are fine — the
+centralized merge stays clean and Uplift A keeps each build cheap. The genuine loss is only for
+**wide parallel fan-out** (many independent finders / reviewers / tides at once): a worktree-based
+controller cannot parallelize those, while a main-checkout controller can.
+
+**Options to evaluate:** (i) **accept + schedule** — reserve the main checkout for whichever expedition
+most needs parallel fan-out; run other controllers from worktrees on sequential work (serial teammates,
+cheap builds). (ii) **a manual workaround to verify** — a worktree-controller pre-creates per-teammate
+worktrees (`git worktree add`) and has each teammate `EnterWorktree(path)` into its own (the harness
+does let a pinned-cwd agent switch into an existing worktree); feasibility hinges on teammates having
+that tool and the controller still being able to merge from those trees — **untested**. (iii) a harness
+change making teammate isolation produce genuine nested worktrees from a worktree-based controller.
+
+**Tie-in (corrected):** Uplift A removes the *build-cost* reason isolation was avoided, but it does
+**not** dissolve B — B is a **topology** limit, not a cost one. A makes the *serial* collapse case
+cheap; it does not grant a worktree-controller parallel teammates. **Acceptance:** a controller that is
+not on the main checkout can still run teammates in genuinely isolated, parallel worktrees (via (ii) or
+(iii)).
 
 ## Convention
 
