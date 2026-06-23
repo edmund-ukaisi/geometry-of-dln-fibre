@@ -66,7 +66,6 @@ theorem telescope_Icc_int (q : ℤ → ℤ) {j : ℤ} (hj : 0 ≤ j) :
       apply Finset.sum_congr rfl
       intro n _
       simp only [Function.Embedding.trans_apply, Nat.castEmbedding_apply, addLeftEmbedding_apply]
-      push_cast
       ring_nf
   rw [hsum]
   -- align the cast `((n+1 : ℕ) : ℤ)` in `key`'s LHS, then evaluate via `Int.toNat_of_nonneg`.
@@ -140,18 +139,18 @@ interior `1 ≤ a ≤ b < L`; the **top row** `m 0 b = ρ_b − ρ_{b+1}` (`0 �
 `m (i−1) (j−1)` (with `j−1 < L`) is nonzero only at `i = 1` (top row) and the second `m u v` (with `u ≥ 1`)
 only at `v = L` (right column). The collapse below uses exactly these.
 
-NOTE: the boundary-support lemmas (top-row / right-col / interior-zero) are PROVEN below — the reusable
-foundation. The remaining work is the `codimForm` quadruple→single-sum COLLAPSE (the one `sorry`), tracked
-at #146. The plan (Codex-mapped, `threads/.../codex/mval-collapse-answer.md`), all standard Finset steps:
+PROOF STRUCTURE: the boundary-support lemmas (top-row / right-col / interior-zero) below are the reusable
+foundation; the `codimForm` quadruple→single-sum COLLAPSE (#146) is then PROVED in
+`Mval_eq_codimForm_diffRank_cascadeRank`, all standard Finset steps:
 1. `Finset.sum_eq_single_of_mem (a := (1:ℤ))` on the outer `i`-sum: the `i ≠ 1` terms vanish (factor1
    `m (i−1) (j−1) = 0` by `diffRank_cascadeRank_interior`, since `i−1 ≥ 1` and `j−1 ≤ L−1`).
 2. Inside (`i = 1`), `Finset.sum_eq_single_of_mem (a := (L:ℤ))` on the inner `v`-sum (`L ∈ Icc j L` always):
    the `v < L` terms vanish (factor2 `m u v = 0` by interior, `u ≥ 1`, `v ≤ L−1`). NO j/v swap needed.
-3. Rewrite the surviving factors by `diffRank_cascadeRank_top_row` (`m 0 (j−1) = ρ_{j−1} − ρ_j`) and
-   `diffRank_cascadeRank_right_col` (`m u L = q_u − q_{u−1}`).
-4. Triangular reorder `Σ_{1≤u≤j≤L} → Σ_{j} Σ_{u∈Icc 1 j}` (a local `sum_sigma' + sum_nbij'` lemma);
-   inner telescope `Σ_{u≤j}(q_u − q_{u−1}) = q_j` (`q_0 = 0`, via `Int.Icc_eq_finset_map` + `sum_range_sub`).
-5. ℤ-Icc→`Fin L` reindex (`Int.Icc_eq_finset_map` + `Fin.sum_univ_eq_sum_range`) + `ring` per term to `Mval`. -/
+3. Rewrite the surviving factors by `diffRank_cascadeRank_top_row'` (`m 0 (j−1) = ρ_{j−1} − ρ_j`) and
+   `diffRank_cascadeRank_right_col'` (`m u L = q_u − q_{u−1}`).
+4. Triangular reorder `Σ_{1≤u≤j≤L} → Σ_{j} Σ_{u∈Icc 1 j}` (`sum_Icc_Icc_comm_int`);
+   inner telescope `Σ_{u≤j}(q_u − q_{u−1}) = q_j` (`q_0 = 0`, `telescope_Icc_int` + `qT_zero`).
+5. ℤ-Icc→`Fin L` reindex (`Int.Icc_eq_finset_map` + `Fin.sum_univ_eq_sum_range`) + per term to `Mval`. -/
 
 /-- **Top-row support**: for `0 ≤ b` and `b + 1 ≤ L`, `diffRank (cascadeRank M T) 0 b = ρ_b − ρ_{b+1}`. The
 `r(−1, ·) = 0` boundary kills two terms; the `M_0 − ρ_0 = 0` cancellation (`ρ_0 = M_0`) leaves `ρ_b − ρ_{b+1}`. -/
@@ -281,7 +280,7 @@ theorem rhoT_fin (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (k : Fin L) :
 theorem rhoT_fin_succ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (k : Fin L) :
     rhoT M T ((k : ℤ) + 1) = (T k : ℤ) := by
   unfold rhoT
-  have hkz : ((k : ℤ) + 1).toNat = k.val + 1 := by push_cast; omega
+  have hkz : ((k : ℤ) + 1).toNat = k.val + 1 := by omega
   have hkL : k.val < L := k.isLt
   have hsucc : (⟨min ((k : ℤ) + 1).toNat L, by omega⟩ : Fin (L + 1)) = k.succ := by
     apply Fin.ext; simp only [Fin.val_succ, hkz]; omega
@@ -292,7 +291,7 @@ theorem qT_fin_succ (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (k : Fin L) :
     qT M T ((k : ℤ) + 1) = (M k.succ : ℤ) - (T k : ℤ) := by
   unfold qT
   rw [rhoT_fin_succ M T k]
-  have hkz : ((k : ℤ) + 1).toNat = k.val + 1 := by push_cast; omega
+  have hkz : ((k : ℤ) + 1).toNat = k.val + 1 := by omega
   have hkL : k.val < L := k.isLt
   have hidx : (⟨min ((k : ℤ) + 1).toNat L, by omega⟩ : Fin (L + 1)) = k.succ := by
     apply Fin.ext; simp only [Fin.val_succ, hkz]; omega
