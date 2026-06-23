@@ -107,4 +107,37 @@ theorem deepestPoint_layerLast_rows_vanish (H : Fin (L + 1) → ℕ) (r : ℕ)
       r ≤ (i : ℕ) → deepestPoint H r B hB hr hL s i j = 0 :=
   (deepestPoint_isDeep H r B hB hr hL).2.2.2.2
 
+/-- **Layer-0 LEFT-only frame** (#158, the frame-level (I) bridge, `L ≥ 2`). The entry-vanishing
+`deepestPoint_layer0_cols_vanish` (layer 0 = `[A | 0]`) upgrades to the FRAME level: layer 0 admits a
+LEFT-only normal form — a single invertible `P_0` with `P_0 · deepestPoint_0 = corM` and `Q_0 = I`. So
+in the framed product only `P_0` survives on the left boundary (the inner-facing `Q_0` is trivial — the
+piece `deepestPoint_interior_eq_corM` alone does NOT give, the `1/Q_0` telescoping leftover). Via the
+Core `left_normal_form_of_cols_vanish` on the rank-`r` column-trailing-zero layer. -/
+theorem deepestPoint_layer0_left_frame (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (s : Fin L) (hs0 : (s : ℕ) = 0) :
+    ∃ (P : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ), IsUnit P ∧
+      P * (deepestPoint H r B hB hr hL s)
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) :=
+  Core.Matrix.left_normal_form_of_cols_vanish (deepestPoint H r B hB hr hL s)
+    ((deepestPoint_isDeep H r B hB hr hL).2.1 s)
+    (fun i j hj => deepestPoint_layer0_cols_vanish H r B hB hr hL s hL2 hs0 i j hj)
+
+/-- **Layer-(L−1) RIGHT-only frame** (#158, the frame-level (I) bridge, `L ≥ 2`). The entry-vanishing
+`deepestPoint_layerLast_rows_vanish` (layer `L−1` = `[B; 0]`) upgrades to the FRAME level: layer `L−1`
+admits a RIGHT-only normal form — a single invertible `Q_{L−1}` with `deepestPoint_{L−1} · Q_{L−1} = corM`
+and `P_{L−1} = I`. So in the framed product only `Q_{L−1}` survives on the right boundary (the inner
+`P_{L−1}` is trivial). Via the Core `right_normal_form_of_rows_vanish`. -/
+theorem deepestPoint_layerLast_right_frame (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (s : Fin L) (hsL : (s : ℕ) + 1 = L) :
+    ∃ (Q : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ), IsUnit Q ∧
+      (deepestPoint H r B hB hr hL s) * Q
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) :=
+  Core.Matrix.right_normal_form_of_rows_vanish (deepestPoint H r B hB hr hL s)
+    ((deepestPoint_isDeep H r B hB hr hL).2.1 s)
+    (fun i j hi => deepestPoint_layerLast_rows_vanish H r B hB hr hL s hL2 hsL i j hi)
+
 end DLNFibre.DLN.RLCT

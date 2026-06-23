@@ -1,0 +1,13 @@
+**J3: SOUND.**  
+As described, `descentStep` computes the RLCT of the literal `flatCore222`, not of raw `dlnLoss (2,2,2)` in a blow-up chart. The proof route is a same-ambient two-sided squeeze against `Φ = ∑ Eᵢ² + G²`, followed by a reduced-ambient measure-preserving homeomorphism, so the blow-up Jacobian objection does not apply to this statement. This is sound conditional on the stated squeeze/RLCT invariance theorems really having the hypotheses you say they have. It is not, by itself, evidence that `flatCore222` is the genuine post-blow-up core.
+
+**J4: COSMETIC-ONLY.**  
+For the theorem, `bcol` is not load-bearing except through boundedness near the point. Taking `bcol222 = w.1 0` may make the displayed Schur form geometrically misleading, because the cert’s pivot-column coordinate is independent of the regular `Erow` block, while here the cross-term includes products of regular coordinates. But the squeeze theorem intentionally washes out that distinction: any bounded `bcol`, even `0`, gives the same RLCT decomposition. So this is not a logical vacuity of `descentStep`; it is a faithfulness gap if the anchor is advertised as mirroring the real `(2,2,2)` blow-up core.
+
+**J7: SOUND.**  
+Given the `ReducedTransport` contract you stated, generic flattening legitimately discharges the reduced transport: it is just an MP homeomorphic identification of the reduced parameter space with flat coordinates, with `G²` defined to be the reduced loss pulled back along it. That is not circular for the equality `rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) 0`; it is exactly what pullback invariance is for. The cert’s shear is load-bearing only if one must prove that the true blown-up residual `(y3 - y2 y1)[x6,x7]` really becomes the reduced-chain coordinate `α[β0,β1]`. Since this anchor starts already in flattened reduced `Params`, the shear has been bypassed rather than formalized.
+
+**Cross-cutting.**  
+Using `hred : rlctAtOn (dlnLoss (1,1,2) 0) 0 = 1/2` as a hypothesis is honest if the theorem is explicitly a descent/recursion step. It does hand off the headline numerical endpoint to the child computation, but it does not pretend to prove it locally.
+
+**Overall:** honest decorrelated standalone anchor for the abstract `flatCore222`; not a faithful certificate of the genuine `(2,2,2)` blow-up geometry unless an additional theorem identifies that real core with this `flatCore222`.

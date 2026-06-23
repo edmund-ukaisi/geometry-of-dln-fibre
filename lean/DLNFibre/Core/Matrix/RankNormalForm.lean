@@ -251,4 +251,41 @@ theorem rank_normal_form_exists {a b r : ℕ} (A : Matrix (Fin a) (Fin b) ℝ) (
       _ = Matrix.of (fun (i : Fin a) (j : Fin b) =>
               if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := hBlock
 
+/-- **Left-only rank normal form for a column-trailing-zero matrix.** If `D`'s last `b − r` columns
+vanish (`D i j = 0` for `r ≤ j`) and `D.rank = r`, then a LEFT frame alone (invertible `P`, `Q = I`)
+carries `D` to the block-normal corM: `∃ P unit, P · D = corM`. The vanishing right columns are already
+in corM-shape, so no right-frame is needed to clear them — only `D`'s nonzero `a × r` left block needs
+left-normalizing (it has full column rank `r`). This is the boundary-layer frame the `endpoint_telescoping`
+needs: layer 0's right frame `Q_0 = I`, so only `P_0` survives on the left boundary. -/
+theorem left_normal_form_of_cols_vanish {a b r : ℕ} (D : Matrix (Fin a) (Fin b) ℝ)
+    (hD : D.rank = r) (hcols : ∀ (i : Fin a) (j : Fin b), r ≤ (j : ℕ) → D i j = 0) :
+    ∃ (P : Matrix (Fin a) (Fin a) ℝ), IsUnit P ∧
+      P * D = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  -- CONSTRUCTION (sorry: full-column-rank ⟹ left-invertible, the one-sided normal form). D = [A|0]
+  -- with A = first r cols : Fin a × Fin r of FULL column rank r (the trailing cols vanish, add no rank).
+  -- A's `mulVecLin` is injective (ker = ⊥, rank = ncols = r); `LinearMap.exists_leftInverse_of_injective`
+  -- gives a left-inverse, extended to an invertible `P` with `P·A = [I_r;0]` ⟹ `P·D = P·[A|0] = corM`.
+  -- The zero right-block rides through (`P·0 = 0`, matching corM's zero cols). NOT derivable from the
+  -- generic two-sided rank_normal_form_exists (its `Q` cannot be cheaply set to `I` — `corM·Q⁻¹ ≠ corM`).
+  sorry
+
+/-- **Right-only rank normal form for a row-trailing-zero matrix.** If `D`'s last `a − r` rows vanish
+(`D i j = 0` for `r ≤ i`) and `D.rank = r`, then a RIGHT frame alone (invertible `Q`, `P = I`) carries
+`D` to the block-normal corM: `∃ Q unit, D · Q = corM`. Symmetric to `left_normal_form_of_cols_vanish`:
+the boundary-layer frame for layer `L−1`'s left frame `P_{L−1} = I`, so only `Q_{L−1}` survives on the
+right boundary. -/
+theorem right_normal_form_of_rows_vanish {a b r : ℕ} (D : Matrix (Fin a) (Fin b) ℝ)
+    (hD : D.rank = r) (hrows : ∀ (i : Fin a) (j : Fin b), r ≤ (i : ℕ) → D i j = 0) :
+    ∃ (Q : Matrix (Fin b) (Fin b) ℝ), IsUnit Q ∧
+      D * Q = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  -- CONSTRUCTION (sorry: symmetric to left_normal_form_of_cols_vanish, via transpose). D = [B;0] with
+  -- last (a−r) rows zero ⟹ Dᵀ has last rows... rather: B = first r rows : Fin r × Fin b of FULL row rank r;
+  -- Bᵀ full column rank ⟹ left-invertible (exists_leftInverse_of_injective on Bᵀ.mulVecLin) ⟹ ∃ Q unit,
+  -- B·Q = [I_r | 0] ⟹ D·Q = [B;0]·Q = corM. Or directly: apply left_normal_form_of_cols_vanish to Dᵀ
+  -- (rows↔cols), get P, set Q := Pᵀ, transpose back (Dᵀ.rank = D.rank, (P·Dᵀ)ᵀ = D·Pᵀ, corMᵀ = corM at
+  -- the (a,b)↔(b,a) reindex). The transpose route reuses the left lemma — fill after it.
+  sorry
+
 end DLNFibre.Core.Matrix

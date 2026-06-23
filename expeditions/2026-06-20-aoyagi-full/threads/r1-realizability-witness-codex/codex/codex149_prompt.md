@@ -1,0 +1,46 @@
+<task>
+I need the cleanest PROOF (Lean-grade obligation list) of a monotonicity inequality in a combinatorial
+optimisation. Derive from the definitions; distinguish FACT from INFERENCE; exact integer arithmetic.
+
+SETUP. M = (M_0,...,M_L) widths (naturals). For an exponent vector T = (T_0,...,T_{L-1}):
+  ρ_j := M_0 if j=0 else T_{j-1}   (the "tPrev" / running predecessor)
+  Mval(M,T) := Σ_{j=0}^{L-1} (ρ_j − T_j)·(M_{j+1} − T_j).
+Admissibility admPred(M,T): (i) T_j ≤ admBound_j (admBound_0 = min(M_0,M_1), admBound_s = M_{s+1} for
+s≥1); (ii) T weakly decreasing (i≤j ⟹ T_j ≤ T_i); (iii) T_{L-1}=0.
+minAdm(M) := min over admissible T of Mval(M,T).
+
+GOAL: prove minAdm(M') ≤ minAdm(M) whenever M' ≤ M componentwise (M'_s ≤ M_s for all s). [The application:
+M' = (M_0−1, M_1−1, M_2, ..., M_L), a "schurState" reduction; but componentwise M'≤M is the clean general
+statement.]
+
+THE TRANSFER I found (exact-verified, 6296 cases, 0 failures): the map T ↦ T' with
+  T'_j := min over k≤j of ( min(T_k, admBound(M')_k) )    [the forward-running-min of the capped T]
+sends admPred(M,T) to admPred(M',T') AND satisfies Mval(M', T') ≤ Mval(M, T) for EVERY admissible T.
+Hence minAdm(M') ≤ Mval(M', T'_achiever) ≤ Mval(M, T_achiever) = minAdm(M).
+</task>
+
+<output_contract>
+Q1. Prove (i) T' is admissible for M': admBound(M')_j ≤ admBound(M)_j (from M'≤M), the running-min makes
+    T' weakly decreasing and ≤ admBound(M'), and T'_{L-1}=0. Give the clean argument for each clause.
+Q2. Prove (ii) the KEY inequality Mval(M', T') ≤ Mval(M, T), term by term or by a clean monotonicity.
+    Note BOTH change: M'≤M (widths down) AND T'≤T (the transfer only lowers entries, T'_j ≤ T_j). Also
+    ρ'_j ≤ ρ_j. Analyse the summand (ρ_j − T_j)(M_{j+1} − T_j): lowering T_j raises (ρ_j − T_j) but the
+    factors interact. Is each term monotone, or is a telescoping / per-term argument needed? Give the
+    cleanest decomposition. [Hint to check: is Mval(M,T) = Σ_j (ρ_j−T_j)(M_{j+1}−T_j) ≥ 0 with each factor
+    ≥0 on the admissible cone, and does T'≤T with T' admissible keep each factor ordered?]
+Q3. Is there an EVEN CLEANER proof than the transfer — e.g. a direct argument that minAdm is monotone in
+    M without exhibiting T' (a non-constructive inf'-monotonicity), or a simpler transfer? Rank the
+    candidate proofs by Lean cost (the transfer needs: T' admissible + the Mval-drop; an inf'-argument
+    needs a Finset.inf' monotonicity lemma + the per-T bound).
+Q4. Any failure mode of the transfer I should know? E.g. does the forward-running-min ever lower T'
+    BELOW what's needed (making T' admissible but Mval(M',T') somehow exceed Mval(M,T) in an edge case)?
+    State the precise reason the Mval-drop holds (the sign/ordering that makes it work).
+</output_contract>
+
+<grounding_rules>
+- Definitions exactly as stated. Exact integer arithmetic if you compute.
+- FACT (proved/computed) vs INFERENCE (heuristic) explicit.
+- The NAIVE transfer (clamp T_j := min(T_j, admBound(M')_j) WITHOUT the running-min) FAILS — it breaks
+  weak-decrease when admBound(M')_0 drops below a later T (e.g. M=(1,2,2,1) achiever T*=(1,1,0):
+  clamp→(0,1,0) non-monotone). The running-min is what fixes it. Account for why.
+</grounding_rules>
