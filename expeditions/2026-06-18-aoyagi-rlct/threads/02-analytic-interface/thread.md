@@ -164,3 +164,34 @@ This is a non-vacuous certificate target for future A4 chart production, not
 an analytic theorem.  It does not prove chart construction, coverage, analytic
 nonvanishing, change of variables, Aoyagi Lemma 1, finite formula equalities,
 pole order without A0, or RLCT extraction.
+
+## 2026-06-23 Jacobian-prior loss shift
+
+Lean now adds a finite exponent-array shift operation in
+`lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`:
+
+```text
+jacobianPriorLossShift
+ratioAt_jacobianPriorLossShift_of_mem_activePairs
+exponentMinimum_jacobianPriorLossShift
+coordsInChartAtRatio_jacobianPriorLossShift
+countInChartAtRatio_jacobianPriorLossShift
+minCoordsInChart_jacobianPriorLossShift
+minCountInChart_jacobianPriorLossShift
+exponentOrder_jacobianPriorLossShift
+```
+
+The operation keeps the loss exponents `k` fixed and replaces each
+Jacobian/prior exponent `h` by `h + m*k`.  On active coordinates this shifts
+`(h+1)/(2*k)` by `m/2`, shifts the finite minimum by `m/2`, and preserves the
+minimum-coordinate chart counts and finite order.
+
+Artifacts:
+
+- `reproduction-normal-crossing-jacobian-prior-loss-shift-a0.md`;
+- `statement-card-a0-normal-crossing-jacobian-prior-loss-shift.md`.
+
+This is certificate arithmetic motivated by Aoyagi PDF p. 13's regular-variable
+count.  It is not chart production, analytic regular-coordinate additivity,
+Jacobian/volume-form construction, normal crossings, pole order, or RLCT
+extraction.

@@ -57,6 +57,15 @@ It adds chart counts at an arbitrary candidate ratio and rewrites them to
 This supports source-facing count statements at the displayed Theorem 2 lambda
 without moving chart production or analytic extraction.
 
+The current A0 Jacobian-prior loss-shift slice is
+`threads/02-analytic-interface/reproduction-normal-crossing-jacobian-prior-loss-shift-a0.md`.
+Lean now provides `jacobianPriorLossShift`, which keeps the loss exponent array
+`k` fixed and replaces `h` by `h + m*k`.  It proves the active ratio shift by
+`m/2`, the finite minimum shift by `m/2`, and preservation of the
+minimum-coordinate chart counts and finite order.  This is the finite arithmetic
+socket motivated by Aoyagi PDF p. 13's regular-variable count, not a
+regular-coordinate chart construction or analytic RLCT additivity theorem.
+
 The current A6 finite-certificate bridge is
 `threads/06-dln-translation/reproduction-theorem2-finite-certificate-bridge-a6.md`.
 It uses those A0 finite certificates to build

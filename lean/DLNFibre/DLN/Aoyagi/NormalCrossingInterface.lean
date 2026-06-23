@@ -2,6 +2,7 @@ import DLNFibre.DLN.Basic
 import Mathlib.Algebra.Order.Field.Rat
 import Mathlib.Data.Finset.Max
 import Mathlib.Data.Fintype.Prod
+import Mathlib.Tactic
 
 /-!
 # Finite normal-crossing exponent interface for Aoyagi's RLCT citation
@@ -78,6 +79,62 @@ theorem ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq
   rw [ratioAt, hloss, hjac]
   norm_num
 
+/-- Finite operation that adds `m * k_j` to every Jacobian/prior exponent
+`h_j`, while leaving the loss exponents `k_j` unchanged.
+
+This is only exponent-array arithmetic. It does not construct new charts,
+regular coordinates, normal crossings, or an RLCT additivity theorem. -/
+def jacobianPriorLossShift (D : AoyagiNormalCrossingExponentData) (m : ℕ) :
+    AoyagiNormalCrossingExponentData where
+  numCharts := D.numCharts
+  numCoords := D.numCoords
+  lossExp := D.lossExp
+  jacobianPriorExp := fun c j ↦
+    D.jacobianPriorExp c j + m * D.lossExp c j
+  active_nonempty := D.active_nonempty
+
+@[simp] theorem jacobianPriorLossShift_lossExp
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    (c : Fin D.numCharts) (j : Fin D.numCoords) :
+    (D.jacobianPriorLossShift m).lossExp c j = D.lossExp c j := rfl
+
+@[simp] theorem jacobianPriorLossShift_jacobianPriorExp
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    (c : Fin D.numCharts) (j : Fin D.numCoords) :
+    (D.jacobianPriorLossShift m).jacobianPriorExp c j =
+      D.jacobianPriorExp c j + m * D.lossExp c j := rfl
+
+@[simp] theorem activePairs_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ) :
+    (D.jacobianPriorLossShift m).activePairs = D.activePairs := rfl
+
+@[simp] theorem mem_activePairs_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    (p : Fin D.numCharts × Fin D.numCoords) :
+    p ∈ (D.jacobianPriorLossShift m).activePairs ↔ p ∈ D.activePairs := by
+  rw [activePairs_jacobianPriorLossShift]
+  rfl
+
+/-- On active coordinates, adding `m * k_j` to `h_j` shifts the finite
+normal-crossing ratio by `m/2`.
+
+The active-coordinate hypothesis is essential because `ratioAt` is totalized
+when `k_j = 0`. -/
+theorem ratioAt_jacobianPriorLossShift_of_mem_activePairs
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    {p : Fin D.numCharts × Fin D.numCoords}
+    (hp : p ∈ D.activePairs) :
+    (D.jacobianPriorLossShift m).ratioAt p =
+      D.ratioAt p + (m : ℚ) / 2 := by
+  have hkpos : 0 < D.lossExp p.1 p.2 := (D.mem_activePairs p).mp hp
+  have hk : (D.lossExp p.1 p.2 : ℚ) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hkpos)
+  rw [ratioAt, ratioAt]
+  simp only [jacobianPriorLossShift_jacobianPriorExp, jacobianPriorLossShift_lossExp]
+  norm_num [Nat.cast_add, Nat.cast_mul]
+  field_simp [hk]
+  ring
+
 /-- The finite set of ratios attached to active chart coordinates. -/
 def activeRatios (D : AoyagiNormalCrossingExponentData) : Finset ℚ :=
   D.activePairs.image fun p ↦ D.ratioAt p
@@ -139,6 +196,26 @@ theorem exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
     rcases Finset.mem_image.mp hr with ⟨p', hp', rfl⟩
     exact hle p' hp'
 
+/-- Under a finite Jacobian/prior loss shift, the minimum of the active
+normal-crossing ratios shifts by `m/2`. -/
+theorem exponentMinimum_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ) :
+    (D.jacobianPriorLossShift m).exponentMinimum =
+      D.exponentMinimum + (m : ℚ) / 2 := by
+  rcases D.exists_activePair_ratioAt_eq_exponentMinimum with ⟨p, hp, hratio⟩
+  refine (D.jacobianPriorLossShift m).exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
+    (p := p) ?_ ?_ ?_
+  · rw [D.activePairs_jacobianPriorLossShift m]
+    exact hp
+  · rw [D.ratioAt_jacobianPriorLossShift_of_mem_activePairs m hp, hratio]
+  · intro p' hp'
+    have hpD : p' ∈ D.activePairs :=
+      (D.mem_activePairs_jacobianPriorLossShift m p').mp hp'
+    rw [D.ratioAt_jacobianPriorLossShift_of_mem_activePairs m hpD]
+    simpa [add_comm, add_left_comm, add_assoc] using
+      add_le_add_right (D.exponentMinimum_le_ratioAt_of_mem_activePairs hpD)
+        ((m : ℚ) / 2)
+
 /-- Coordinates in one chart attaining the global exponent minimum. -/
 def minCoordsInChart (D : AoyagiNormalCrossingExponentData)
     (c : Fin D.numCharts) : Finset (Fin D.numCoords) :=
@@ -168,6 +245,39 @@ def coordsInChartAtRatio (D : AoyagiNormalCrossingExponentData)
       0 < D.lossExp c j ∧ D.ratioAt (c, j) = q := by
   simp [coordsInChartAtRatio]
 
+/-- Coordinates at ratio `q` are exactly the shifted-data coordinates at
+ratio `q + m/2`. -/
+theorem coordsInChartAtRatio_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    (q : ℚ) (c : Fin D.numCharts) :
+    (D.jacobianPriorLossShift m).coordsInChartAtRatio
+      (q + (m : ℚ) / 2) c = D.coordsInChartAtRatio q c := by
+  ext j
+  constructor
+  · intro hj
+    rcases ((D.jacobianPriorLossShift m).mem_coordsInChartAtRatio
+      (q + (m : ℚ) / 2) c j).mp hj with ⟨hposShift, hratioShift⟩
+    have hpos : 0 < D.lossExp c j := by simpa using hposShift
+    have hp : (c, j) ∈ D.activePairs := (D.mem_activePairs (c, j)).mpr hpos
+    have hshift := D.ratioAt_jacobianPriorLossShift_of_mem_activePairs m hp
+    have hadd :
+        D.ratioAt (c, j) + (m : ℚ) / 2 =
+          q + (m : ℚ) / 2 := by
+      exact hshift.symm.trans hratioShift
+    exact (D.mem_coordsInChartAtRatio q c j).mpr
+      ⟨hpos, add_right_cancel hadd⟩
+  · intro hj
+    rcases (D.mem_coordsInChartAtRatio q c j).mp hj with ⟨hpos, hratio⟩
+    have hp : (c, j) ∈ D.activePairs := (D.mem_activePairs (c, j)).mpr hpos
+    have hshift := D.ratioAt_jacobianPriorLossShift_of_mem_activePairs m hp
+    exact ((D.jacobianPriorLossShift m).mem_coordsInChartAtRatio
+      (q + (m : ℚ) / 2) c j).mpr
+      ⟨by simpa using hpos, by
+        calc
+          (D.jacobianPriorLossShift m).ratioAt (c, j) =
+              D.ratioAt (c, j) + (m : ℚ) / 2 := hshift
+          _ = q + (m : ℚ) / 2 := by rw [hratio]⟩
+
 /-- The chartwise count used before taking the maximum finite order count. -/
 def minCountInChart (D : AoyagiNormalCrossingExponentData)
     (c : Fin D.numCharts) : ℕ :=
@@ -177,6 +287,16 @@ def minCountInChart (D : AoyagiNormalCrossingExponentData)
 def countInChartAtRatio (D : AoyagiNormalCrossingExponentData)
     (q : ℚ) (c : Fin D.numCharts) : ℕ :=
   (D.coordsInChartAtRatio q c).card
+
+/-- Count form of `coordsInChartAtRatio_jacobianPriorLossShift`. -/
+theorem countInChartAtRatio_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    (q : ℚ) (c : Fin D.numCharts) :
+    (D.jacobianPriorLossShift m).countInChartAtRatio
+      (q + (m : ℚ) / 2) c = D.countInChartAtRatio q c := by
+  rw [countInChartAtRatio, countInChartAtRatio,
+    D.coordsInChartAtRatio_jacobianPriorLossShift m q c]
+  rfl
 
 /-- Once a candidate ratio is identified with the global exponent minimum,
 the source-facing ratio-specific coordinate set is the minimum-coordinate
@@ -196,6 +316,29 @@ theorem minCountInChart_eq_countInChartAtRatio_of_exponentMinimum_eq
     D.minCountInChart c = D.countInChartAtRatio q c := by
   rw [minCountInChart, countInChartAtRatio,
     D.minCoordsInChart_eq_coordsInChartAtRatio_of_exponentMinimum_eq hmin c]
+
+/-- The coordinates attaining the shifted global minimum are the original
+minimum-attaining coordinates. -/
+theorem minCoordsInChart_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    (c : Fin D.numCharts) :
+    (D.jacobianPriorLossShift m).minCoordsInChart c =
+      D.minCoordsInChart c := by
+  rw [(D.jacobianPriorLossShift m).minCoordsInChart_eq_coordsInChartAtRatio_of_exponentMinimum_eq
+    (D.exponentMinimum_jacobianPriorLossShift m) c]
+  rw [D.coordsInChartAtRatio_jacobianPriorLossShift m D.exponentMinimum c]
+  rw [← D.minCoordsInChart_eq_coordsInChartAtRatio_of_exponentMinimum_eq rfl c]
+
+/-- Chartwise minimum counts are preserved by a finite Jacobian/prior loss
+shift. -/
+theorem minCountInChart_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ)
+    (c : Fin D.numCharts) :
+    (D.jacobianPriorLossShift m).minCountInChart c =
+      D.minCountInChart c := by
+  rw [minCountInChart, minCountInChart,
+    D.minCoordsInChart_jacobianPriorLossShift m c]
+  rfl
 
 /-- The chart index set is nonempty because an active coordinate exists. -/
 theorem chart_univ_nonempty (D : AoyagiNormalCrossingExponentData) :
@@ -287,6 +430,21 @@ theorem exponentOrder_eq_of_forall_le_of_exists_chart_minCount_eq
     D.exponentOrder = q := by
   rcases hexists with ⟨c, hchart⟩
   exact D.exponentOrder_eq_of_chart_minCount_eq_of_forall_le hchart hle
+
+/-- The finite pole-order count is unchanged by a Jacobian/prior loss shift.
+
+This is a statement about the finite exponent arrays only, not about analytic
+regular-coordinate additivity. -/
+theorem exponentOrder_jacobianPriorLossShift
+    (D : AoyagiNormalCrossingExponentData) (m : ℕ) :
+    (D.jacobianPriorLossShift m).exponentOrder = D.exponentOrder := by
+  refine (D.jacobianPriorLossShift m).exponentOrder_eq_of_forall_le_of_exists_chart_minCount_eq
+    ?_ ?_
+  · intro c
+    rw [D.minCountInChart_jacobianPriorLossShift m c]
+    exact D.minCountInChart_le_exponentOrder c
+  · rcases D.exists_chart_minCount_eq_exponentOrder with ⟨c, hcount⟩
+    exact ⟨c, by rw [D.minCountInChart_jacobianPriorLossShift m c, hcount]⟩
 
 /-- The exponent order is positive because the global minimum is attained by
 an active coordinate. -/

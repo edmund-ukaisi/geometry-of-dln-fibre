@@ -33,6 +33,94 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## VM Rotation Flush - 2026-06-23
+
+Current worktree:
+`/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct`.
+Current branch: `expedition/aoyagi-rlct`.  Base before this in-progress slice:
+`5007a31 Route Definition 3 source data into final boundary`.
+
+In-progress slice: A0 finite exponent-array arithmetic for the
+post-Theorem-3 regular-variable count, under the narrow name
+`jacobianPriorLossShift`.  This is certificate arithmetic only, not analytic
+regular-coordinate additivity.
+
+Lean status before rotation:
+
+- `lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean` was edited.
+- Focused check passed:
+  `cd lean && lake env lean DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`.
+- No full module build, full library build, sorry scan, xhigh review, commit,
+  or push has been done for this slice yet.
+
+New/changed Lean names in `NormalCrossingInterface.lean`:
+
+```text
+jacobianPriorLossShift
+jacobianPriorLossShift_lossExp
+jacobianPriorLossShift_jacobianPriorExp
+activePairs_jacobianPriorLossShift
+mem_activePairs_jacobianPriorLossShift
+ratioAt_jacobianPriorLossShift_of_mem_activePairs
+exponentMinimum_jacobianPriorLossShift
+coordsInChartAtRatio_jacobianPriorLossShift
+countInChartAtRatio_jacobianPriorLossShift
+minCoordsInChart_jacobianPriorLossShift
+minCountInChart_jacobianPriorLossShift
+exponentOrder_jacobianPriorLossShift
+```
+
+Mathematical content:
+
+- `jacobianPriorLossShift m` keeps `lossExp = k` unchanged and replaces
+  `jacobianPriorExp = h` by `h + m*k`.
+- Active pairs are unchanged.
+- For active coordinates only,
+  `(h + m*k + 1)/(2*k) = (h + 1)/(2*k) + m/2`.
+- Therefore the finite exponent minimum shifts by `m/2`.
+- The ratio-specific coordinate/count sets satisfy
+  shifted count at `q + m/2` equals original count at `q`.
+- Consequently `minCoordsInChart`, `minCountInChart`, and `exponentOrder` are
+  preserved.
+
+Artifacts already added/updated:
+
+- Added
+  `threads/02-analytic-interface/reproduction-normal-crossing-jacobian-prior-loss-shift-a0.md`.
+- Added
+  `threads/02-analytic-interface/statement-card-a0-normal-crossing-jacobian-prior-loss-shift.md`.
+- Updated `threads/02-analytic-interface/thread.md`.
+- Updated `threads/03-block-product-reduction/regular-suspension-plan.md`.
+- Updated `priorities.md`.
+
+Known remaining memory/docs work after resume:
+
+- Add an xhigh review artifact for the new A0 slice after independent review.
+- Update `claims.md` A0 card to include the finite shift slice.
+- Update `theorem-ledger.md` A0 row and latest A0 update.
+- Update this `synthesis.md` latest A0 section to include the completed slice.
+- Possibly update the statement-card verification block after full checks.
+
+Recommended next steps after resume:
+
+1. Re-check status in the Aoyagi worktree:
+   `git status --short --branch`.
+2. Spawn an xhigh reviewer for the finite scope: audit source boundary, Lean
+   names, active-coordinate guard, and nonclaims.
+3. Incorporate review notes and add
+   `review-normal-crossing-jacobian-prior-loss-shift-a0.md`.
+4. Run:
+   `cd lean && lake build DLNFibre.DLN.Aoyagi.NormalCrossingInterface`.
+5. Run:
+   `cd lean && LAKE_JOBS=1 lake build DLNFibre`.
+6. Run:
+   `cd lean && lake env lean DLNFibre.lean`.
+7. Run:
+   `cd lean && scripts/sorries`.
+8. Run:
+   `git diff --check`.
+9. Commit and push to `origin expedition/aoyagi-rlct` if clean.
+
 ## Current source picture
 
 Initial PDF reconnaissance gives these page-pinned source clusters. Thread 01

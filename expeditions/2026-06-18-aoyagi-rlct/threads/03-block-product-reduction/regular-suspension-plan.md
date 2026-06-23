@@ -84,25 +84,36 @@ Prove in Lean before using this plan:
 
 Here `X` will later stand for `C1 - Er`, and `D` for `prod C^(s)`.
 
-## Certificate-arithmetic target
+## Finite certificate-arithmetic socket
 
-Once A4/A5 produce a stable reduced normal-crossing data type, add a
-finite-data operation such as
-
-```text
-regularSuspension c reducedData
-```
-
-and prove finite arithmetic statements with names no broader than their
-content:
+The finite exponent-array socket now exists in
+`lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean` under the narrower
+name
 
 ```text
-exponentMinimum_regularSuspension
-exponentOrder_regularSuspension_of_reduced_attains
+jacobianPriorLossShift
 ```
 
-These should be combinatorial theorems about the certificate data. They should
-not mention RLCT.
+It keeps the loss exponents `k` fixed and replaces the Jacobian/prior exponents
+`h` by `h + c*k`.  Lean proves, for active coordinates, that every ratio shifts
+by `c/2`, that the finite minimum shifts by `c/2`, and that the
+minimum-coordinate chart counts and finite order are preserved:
+
+```text
+ratioAt_jacobianPriorLossShift_of_mem_activePairs
+exponentMinimum_jacobianPriorLossShift
+coordsInChartAtRatio_jacobianPriorLossShift
+countInChartAtRatio_jacobianPriorLossShift
+minCoordsInChart_jacobianPriorLossShift
+minCountInChart_jacobianPriorLossShift
+exponentOrder_jacobianPriorLossShift
+```
+
+This is only combinatorial certificate arithmetic.  It is not the
+regular-suspension chart construction, and it does not justify applying the
+normal-crossing extraction theorem to a reduced certificate and then adding
+`c/2`.  The final single extraction citation must still be applied to the full
+certificate after A4/A5/A2 provide the chart and source-production data.
 
 ## Blockers
 
