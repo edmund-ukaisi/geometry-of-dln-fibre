@@ -179,9 +179,29 @@ NOT yet in the library (pp2 g183 dispatcher cert §2/§4 + Codex g206/g208, deco
    0` (`split.red = schurState M`, in the cover lintegral via crux2's `redCore_eq`).
 
 The branch SPLIT is already constructible (`schurState M` @442a2e0, given the per-node `hMid`); the carrier,
-termination, and value-fold are banked. The wall is (1)+(2)+(3) — surfaced to the controller (the highest-EV
-front is instead the concrete `(2,2,2)` `IsRouteMCover`, #94, which does NOT need this general dispatcher). -/
-noncomputable def routeStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : RouteStep M₀ M := sorry
+termination, and value-fold are banked.
+
+**STRUCTURE FILLED (fm3 #103, controller ruling 2026-06-23): leaf-first dispatch, realizability in the
+COVER.** The dispatch is now leaf-first: `if minAdm M = 0` (the geometric leaf, `isLeafNode`, =
+`∃ s, M_s = 0`, `RouteMClassify.isLeafNode_iff_width_zero`) `then .leaf (leafMonoData 0)` — the ⊤
+non-binding terminal (its node-RLCT `⊤`/`#70` is the DESCENT's concern, NOT the value-fold datum;
+decl-forced + decorrelated-Codex-confirmed, fm3 g236/ee81ce8); `else` the `branch`. The leaf arm + dispatch
+are CONCRETE; the **single remaining gap** (fm3-authorized named `sorry`, NOT faked) is the GENERAL branch
+cell-construction — emitting, for arbitrary non-leaf `M`, the genuine per-cell admissible-`Mval` codims +
+the achiever `T*` (the rank-pattern read). Realizability (that the chart path reaches the stratum) is NOT
+manufactured here — it lives in the `IsRouteMCover` COVER (#104, `cover_le`/`cover_ge_div` catch a
+fabricated `(d,k,h)`), so the `branch`'s admissible-`PivotWitness M₀` is honest-by-construction with the
+cover as the honesty-gate. The concrete anchors `(2,2,2)`/`(3,2,3)` are `Case222RouteStep`/decidable; the
+general achiever-leaf-existence rides the cascade realizability (`Core.CascadeRealizable`, #116) at #104. -/
+noncomputable def routeStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : RouteStep M₀ M :=
+  if _hleaf : ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat = 0 then
+    -- LEAF: the degenerate boundary (`∃ s, M_s = 0`). The ⊤ non-binding terminal (`leafMonoData 0`);
+    -- its node-RLCT (`#70`/`nReg/2`) is the descent's concern, not this value-fold datum.
+    .leaf (leafMonoData 0)
+  else
+    -- BRANCH: the general rank-pattern read — emit the per-cell admissible-`Mval` codims + achiever `T*`.
+    -- The single fenced gap (realizability is the COVER's job, #104; anchors are concrete). NOT faked.
+    sorry
 
 /-- **The Route-M chart-family recursion (the G1 deliverable, rebased onto `ChainDimSplit`).** With the
 root ambient `M₀` FIXED, well-founded recursion on `chainRel` (`ΣM`-decrease) over the current node `M`
