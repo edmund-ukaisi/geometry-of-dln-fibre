@@ -359,63 +359,97 @@ theorem closedBall_rIn_mem_nhds (H : Fin (L + 1) → ℕ) (r : ℕ)
 The `regStraighten` field (#90 (C) fallback) is a bare TOTAL continuous self-map of `DeepestSplit`,
 straightening the raw regular slot into the residual `E` near `0` and tapering to the identity outside.
 Since only CONTINUITY (not a global homeomorphism) is required, the honest construction is a
-**bump-interpolation** `q ↦ ((χ q)·Ereg(q) + (1−χ q)·q.1, q.2)` between the residual reg-target `Ereg`
-and the raw reg slot — globally continuous, core/spectator-fixing (only `.1` moves), `= 0` at the
-origin (where `χ = 1` and `Ereg 0 = 0`), and `= Ereg` on the inner ball (the germ PIN 2 consumes).
-This packaging is **abstract over `Ereg`** (the concrete general-L residual + its `dE(0) = id` derivative
-are the producer's, supplied to `#72` for `regAbsorb_rlct`); it banks the cutoff half regardless. -/
+**bump-interpolation** `q ↦ ((χ g)·Ereg(g) + (1−χ g)·q.1, q.2)` (`g = (q.1, q.2.2)` the gauge slot)
+between the residual reg-target `Ereg` and the raw reg slot — globally continuous, core/spectator-fixing
+(only `.1` moves), `= 0` at the origin (where `χ = 1` and `Ereg 0 = 0`), and `= Ereg` on the inner ball
+(the germ PIN 2 consumes). Crucially `Ereg` and `χ` read only the GAUGE slot `(reg, spec)` (NOT the core
+slot), so the reg-output depends only on `(q.1, q.2.2)` — the `hra_regdep` hypothesis the RLCT reduction
+`rlctAtOn_regAbsorb_reduce` needs. Abstract over `Ereg` (the concrete general-L residual + its
+`dE(0) = id` derivative are the producer's, supplied to `#72`); banks the cutoff half regardless. -/
 
 /-- The bump-interpolated regular straightening: `χ·Ereg + (1−χ)·(raw reg)` on the reg slot, core +
-spectator fixed. `χ` is any bump on `DeepestSplit` (`= 1` near `0`); `Ereg` the residual reg-target. -/
+spectator fixed. `Ereg`/`χ` read only the GAUGE slot `g = (q.1, q.2.2)` (reg + spectator), so the
+reg-output is core-independent. `χ` a bump on `Reg × Spec` (`= 1` near `0`); `Ereg` the residual
+reg-target reading reg + spectator. -/
 noncomputable def regStraightenCutoff (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
-    (Ereg : DeepestSplit H r nGauge → (Fin (deepestNReg H r) → ℝ))
-    (χ : ContDiffBump (0 : DeepestSplit H r nGauge))
+    (Ereg : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) → (Fin (deepestNReg H r) → ℝ))
+    (χ : ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)))
     (q : DeepestSplit H r nGauge) : DeepestSplit H r nGauge :=
-  ((χ q • Ereg q + (1 - χ q) • q.1 : Fin (deepestNReg H r) → ℝ), q.2)
+  ((χ (q.1, q.2.2) • Ereg (q.1, q.2.2) + (1 - χ (q.1, q.2.2)) • q.1 :
+      Fin (deepestNReg H r) → ℝ), q.2)
 
-/-- `regStraightenCutoff` is globally continuous (`χ` continuous, `Ereg` continuous, the spectator/core
-slot `q.2` carried unchanged). -/
+/-- `regStraightenCutoff` is globally continuous (`χ`, `Ereg` continuous in the gauge slot, the
+core/spectator slot `q.2` carried unchanged). -/
 theorem continuous_regStraightenCutoff (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
-    (Ereg : DeepestSplit H r nGauge → (Fin (deepestNReg H r) → ℝ)) (hE : Continuous Ereg)
-    (χ : ContDiffBump (0 : DeepestSplit H r nGauge)) :
+    (Ereg : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) → (Fin (deepestNReg H r) → ℝ))
+    (hE : Continuous Ereg)
+    (χ : ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ))) :
     Continuous (regStraightenCutoff H r nGauge Ereg χ) := by
+  have hg : Continuous fun q : DeepestSplit H r nGauge => (q.1, q.2.2) :=
+    continuous_fst.prodMk (continuous_snd.comp continuous_snd)
   refine Continuous.prodMk (Continuous.add ?_ ?_) continuous_snd
-  · exact χ.continuous.smul hE
-  · exact (continuous_const.sub χ.continuous).smul continuous_fst
+  · exact (χ.continuous.comp hg).smul (hE.comp hg)
+  · exact (continuous_const.sub (χ.continuous.comp hg)).smul continuous_fst
 
 /-- `regStraightenCutoff` fixes the core slot (only the reg component is touched). -/
 theorem regStraightenCutoff_core (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
-    (Ereg : DeepestSplit H r nGauge → (Fin (deepestNReg H r) → ℝ))
-    (χ : ContDiffBump (0 : DeepestSplit H r nGauge)) (q : DeepestSplit H r nGauge) :
+    (Ereg : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) → (Fin (deepestNReg H r) → ℝ))
+    (χ : ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)))
+    (q : DeepestSplit H r nGauge) :
     (regStraightenCutoff H r nGauge Ereg χ q).2.1 = q.2.1 := rfl
 
 /-- `regStraightenCutoff` fixes the spectator slot. -/
 theorem regStraightenCutoff_spectator (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
-    (Ereg : DeepestSplit H r nGauge → (Fin (deepestNReg H r) → ℝ))
-    (χ : ContDiffBump (0 : DeepestSplit H r nGauge)) (q : DeepestSplit H r nGauge) :
+    (Ereg : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) → (Fin (deepestNReg H r) → ℝ))
+    (χ : ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)))
+    (q : DeepestSplit H r nGauge) :
     (regStraightenCutoff H r nGauge Ereg χ q).2.2 = q.2.2 := rfl
+
+/-- **The reg-output is core-independent** (`hra_regdep` for `rlctAtOn_regAbsorb_reduce`): the reg
+component depends only on the reg + spectator slots, since `Ereg`/`χ` read only the gauge slot. -/
+theorem regStraightenCutoff_regdep (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
+    (Ereg : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) → (Fin (deepestNReg H r) → ℝ))
+    (χ : ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)))
+    (q q' : DeepestSplit H r nGauge) (h1 : q.1 = q'.1) (h2 : q.2.2 = q'.2.2) :
+    (regStraightenCutoff H r nGauge Ereg χ q).1 = (regStraightenCutoff H r nGauge Ereg χ q').1 := by
+  show χ (q.1, q.2.2) • Ereg (q.1, q.2.2) + (1 - χ (q.1, q.2.2)) • q.1
+    = χ (q'.1, q'.2.2) • Ereg (q'.1, q'.2.2) + (1 - χ (q'.1, q'.2.2)) • q'.1
+  rw [h1, h2]
 
 /-- `regStraightenCutoff` fixes the origin (`χ 0 = 1`, `Ereg 0 = 0`, so the reg slot is
 `1·0 + 0·0 = 0`). -/
 theorem regStraightenCutoff_zero (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
-    (Ereg : DeepestSplit H r nGauge → (Fin (deepestNReg H r) → ℝ)) (hE0 : Ereg 0 = 0)
-    (χ : ContDiffBump (0 : DeepestSplit H r nGauge)) :
+    (Ereg : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) → (Fin (deepestNReg H r) → ℝ))
+    (hE0 : Ereg (0, 0) = 0)
+    (χ : ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ))) :
     regStraightenCutoff H r nGauge Ereg χ 0 = 0 := by
   have hχ0 : χ 0 = 1 := χ.one_of_mem_closedBall (by simp [χ.rIn_pos.le])
   refine Prod.ext ?_ rfl
-  show χ (0 : DeepestSplit H r nGauge) • Ereg 0 + (1 - χ 0) • (0 : DeepestSplit H r nGauge).1 = 0
-  rw [hχ0, hE0]; simp
+  show χ ((0 : DeepestSplit H r nGauge).1, (0 : DeepestSplit H r nGauge).2.2)
+      • Ereg ((0 : DeepestSplit H r nGauge).1, (0 : DeepestSplit H r nGauge).2.2)
+    + (1 - χ ((0 : DeepestSplit H r nGauge).1, (0 : DeepestSplit H r nGauge).2.2))
+      • (0 : DeepestSplit H r nGauge).1 = 0
+  show χ ((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin nGauge → ℝ))
+      • Ereg ((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin nGauge → ℝ))
+    + (1 - χ ((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin nGauge → ℝ))) • (0 : Fin (deepestNReg H r) → ℝ)
+    = 0
+  rw [show ((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin nGauge → ℝ))
+        = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) from rfl, hχ0]
+  simp only [one_smul, sub_self, zero_smul, add_zero]
+  exact hE0
 
-/-- On the inner ball the cutoff straightening equals the honest residual reg-target (`χ = 1` there) —
-the germ-at-0 agreement PIN 2's loss-squeeze consumes. -/
+/-- On the inner ball (gauge slot) the cutoff straightening equals the honest residual reg-target
+(`χ = 1` there) — the germ-at-0 agreement PIN 2's loss-squeeze consumes. -/
 theorem regStraightenCutoff_eq_of_mem_closedBall (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
-    (Ereg : DeepestSplit H r nGauge → (Fin (deepestNReg H r) → ℝ))
-    (χ : ContDiffBump (0 : DeepestSplit H r nGauge)) (q : DeepestSplit H r nGauge)
-    (hq : q ∈ Metric.closedBall (0 : DeepestSplit H r nGauge) χ.rIn) :
-    regStraightenCutoff H r nGauge Ereg χ q = (Ereg q, q.2) := by
-  have hχq : χ q = 1 := χ.one_of_mem_closedBall hq
+    (Ereg : ((Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) → (Fin (deepestNReg H r) → ℝ))
+    (χ : ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)))
+    (q : DeepestSplit H r nGauge)
+    (hq : (q.1, q.2.2) ∈ Metric.closedBall
+      (0 : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ)) χ.rIn) :
+    regStraightenCutoff H r nGauge Ereg χ q = (Ereg (q.1, q.2.2), q.2) := by
+  have hχq : χ (q.1, q.2.2) = 1 := χ.one_of_mem_closedBall hq
   refine Prod.ext ?_ rfl
-  show χ q • Ereg q + (1 - χ q) • q.1 = Ereg q
+  show χ (q.1, q.2.2) • Ereg (q.1, q.2.2) + (1 - χ (q.1, q.2.2)) • q.1 = Ereg (q.1, q.2.2)
   rw [hχq]; simp
 
 end DLNFibre.DLN.RLCT
