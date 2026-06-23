@@ -33,7 +33,9 @@ all slots incl the interior X_s (the idempotent sandwich keeps the (0,0) X-sum),
 
 **`_base` (`deepestEPivot 0 = 0`).** At reg=gauge=0: every `X_s=Y_s=Z_s=T_s=0`, so each
 `C^(s) = blockdiag[I_r, 0]`. The idempotent `blockdiag[I_r,0]^L = blockdiag[I_r,0]`, so `P = blockdiag[I_r,0]`:
-`P_11 = I_r`, `P_12 = 0`, `P_21 = 0`. Hence `(P_11−I_r, P_12, P_21) = 0`. ✓ (Pure evaluation; no analysis.)
+`P_11 = I_r`, `P_12 = 0`, `P_21 = 0`. Hence `(P_11−I_r, P_12, P_21) = 0`. ✓ The mechanised version is the
+`prodAux`-telescoping `prod_framedParamsReg_zero` (the dependent-Fin cast IS the work — recipe below; not
+"pure evaluation").
 
 **`_contdiff` (`ContDiff ℝ ⊤`).** `P = ∏_s C^(s)` is a polynomial in the matrix entries (iterated matrix
 multiplication is multilinear → polynomial); the reg-block-residual is a linear read-off of `P`'s entries
@@ -71,11 +73,42 @@ reg×gauge (reg-X gets `I` + the gauge-X's get summed in via `Σ`; Y_L/Z_1 the `
 
 ## What cobuild formalises (the three sorries at DeepestGaugeConstruction:313–331)
 
-- `deepestEPivot := pack(P_11−I_r, P_12, P_21)` where `P = ∏_s (reconstruct C^(s) from slots)`. The
-  reconstruction is the inverse of `regGaugeSlotEquiv`/the split layout; the product is `prod`-style but on
-  the EXPLICIT block-normal layers (a fixed polynomial, NOT the dependent-Fin `prodAux` — these are
-  concrete `r`-blocked matrices at the deepest point, same-typed, no cast).
-- `_base`: evaluate at 0 (idempotent blockdiag, pure `simp`/`decide`-able block algebra).
+**IMPLEMENTATION RECONCILE (2026-06-23, against cobuild sub34 @11899a7).** The realised object is NOT
+the "fixed explicit block product, no cast" the earlier draft predicted — cobuild built it on the genuine
+dependent-Fin `prod H (framedParamsReg H r hr hL p)`:
+
+    deepestEPivot p i = (match regResidualPack i with
+      | inl (a,b)        => (P.toBlocks₁₁ − 1) a b
+      | inr (inl (a,b))  => P.toBlocks₁₂ a b
+      | inr (inr (a,b))  => P.toBlocks₂₁ a b)
+    where P := reindex (rThresholdSplit r (H 0) _) (rThresholdSplit r (H last) _) (prod H (framedParamsReg p))
+
+`framedParamsReg p s = framedLayer (readX/Y/Z p s) 0` — the deepest layers in the `(reg,gauge)` slots;
+`framedParamsReg_zero` (DeepestFramedProduct:132) gives `framedParamsReg 0 s = reindex e_s.symm e_{s+1}.symm
+(fromBlocks 1 0 0 0)`. So the product DOES carry the `prodAux` `e1/e2` width-casts (the #111 friction).
+
+- `deepestEPivot`: DONE (the three-block `regResidualPack`-flatten of `P`). `_contdiff`: PROVED @11899a7
+  (`contDiff_prod_entry` + per-entry block read-off + `sub_const`).
+- `_base` (`deepestEPivot 0 = 0`): the cast-aware recipe (handed to cobuild — their file, their write).
+  Crux helper, host in DeepestFramedProduct.lean:
+
+      theorem prod_framedParamsReg_zero :
+        prod H (framedParamsReg H r hr hL 0)
+          = reindex (rThresholdSplit r (H 0) (hr 0)).symm
+              (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L))).symm
+              (fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+
+  Proof = `prodAux` induction (k : 0→L), IH `prodAux ... k = reindex e₀.symm (rThresholdSplit r (H ⟨k,_⟩) _).symm
+  (fromBlocks 1 0 0 0)`. Step: `prodAux(k+1) = prodAux(k) * framedParamsReg 0 ⟨k,_⟩`, rewrite the factor by
+  `framedParamsReg_zero`. Two Mathlib lemmas close the reindex×reindex of two `fromBlocks`:
+  `Matrix.submatrix_mul_equiv` (Mul.lean:1151, @[simp]) cancels the MIDDLE interface (`reindex e.symm =
+  submatrix e`; the layer-k.succ rThresholdSplit = layer-(k+1).castSucc, defeq via prodAux's e1/e2, so the
+  two middle equivs MERGE), then `Matrix.fromBlocks_multiply` (Block.lean:214) gives the corner idempotent
+  `[1,0;0,0]·[1,0;0,0] = [1,0;0,0]`. Then `deepestEPivot_base`: `funext i; rw prod_framedParamsReg_zero`; `P =
+  reindex e₀ eL (reindex e₀.symm eL.symm (fromBlocks 1 0 0 0))` collapses (reindex_reindex cancels) to
+  `fromBlocks 1 0 0 0`; per `regResidualPack` arm: inl `(1−1)=0`, inr-inl `0`, inr-inr `0`. ~25–35 LoC incl
+  the helper. (The earlier "pure simp/decide block algebra" was correct in spirit but under-specified the
+  dependent-Fin telescoping — that is the load-bearing part.)
 - `_contdiff`: polynomial (`ContDiff.matrix_mul` chain + `sub_const`).
 - `_deriv` (CORRECTED): `HasStrictFDerivAt regStraighten (shear-CLE) 0` for the explicit invertible shear
   `e = [[I, Σ],[0, I]]` (det 1) — NOT `fst`. cobuild: (ii) package `e` as a GENUINE invertible CLE
