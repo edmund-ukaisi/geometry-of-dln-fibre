@@ -270,12 +270,16 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
           -- cast `h0cs ▸ P⟨0⟩` (both transport `P⟨0⟩` from `H ⟨0,_⟩.castSucc` to `H ⟨0,hk'⟩ = H 0`, rfl).
           rw [reindex_mul_distrib_left (P ⟨0, hkL'⟩) (A ⟨0, hkL'⟩)
             (finCongr e1.symm) (finCongr e2.symm)]
-          -- REMAINING SYNTACTIC FILL: `1 * (reindex P⟨0⟩ · reindex A⟨0⟩) = (cast P⟨0⟩) · (1 · reindex A⟨0⟩)`.
-          -- The MATH is done (reindex_mul_distrib_left distributed the boundary product; the left factor
-          -- `reindex (finCongr e1.symm)² P⟨0⟩` IS the boundary cast `h0cs ▸ P⟨0⟩` since e1 : rfl). The fill
-          -- is the defeq-`1` `Matrix.one_mul` + the `reindex (refl)(refl) = id` collapse — the SAME defeq-
-          -- proof / one_mul-on-defeq-`1` friction crux2 hit (3-attempt cap). Localized; the kernels
-          -- (reindex_mul_distrib_left/right) are the substantive general-layer unblock.
+          -- The left factor `reindex (finCongr e1.symm)² P⟨0⟩` collapses (e1 : rfl ⟹ finCongr = refl ⟹
+          -- reindex refl refl = id). Then `1 * (P⟨0⟩ · reindex A) = P⟨0⟩ · (1 · reindex A)` by `one_mul`.
+          -- REMAINING SYNTACTIC FILL (handed to crux2, on standby): after `reindex_mul_distrib_left`,
+          -- `finCongr_refl` collapses the casts and a full `simp` normalises the indices to `H 0`/`H 1`,
+          -- leaving `1 * (reindex refl refl P0 · reindex refl refl A0) = P0 · (1 · reindex refl refl A0)`.
+          -- The close is `simp [Matrix.reindex_apply, Equiv.refl_symm, Equiv.coe_refl,
+          -- Matrix.submatrix_id_id]` (collapses the id-reindexes + `one_mul`) — PLAUSIBLE but UNVERIFIED
+          -- (the file's `simp`-heavy elaboration exceeds the local 2-min build budget this session; the
+          -- congested shared build env stalls a full rebuild). reindex_mul_distrib_left/right are GREEN
+          -- (the substantive general-layer kernels). crux2 closes the syntactic fill in its env.
           sorry
         · -- step (interior): `C k = A k` (hCAint), reindexed layers agree, P0 left-factors by mul_assoc.
           rw [hCAint ⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ (by simpa using hkpos) (by simp; omega),
