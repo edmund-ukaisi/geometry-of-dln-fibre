@@ -105,4 +105,98 @@ theorem cascadeTuple_rankFn_mem_range (d : Fin (N + 1) → ℕ) (t : Fin N → �
     rankFn d (cascadeTuple (k := k) d t) ∈ Set.range (rankFn (k := k) d) :=
   ⟨cascadeTuple d t, rfl⟩
 
+/-! ## The interior 2-index window (#122, general `i`): `rankPattern (cascadeTuple) i j` for `i > 0`
+
+The general rank-pattern entry of the cascade — the `i`-RELATIVE running-min over the block window `[i, j)`
+(NOT the from-`0` `cascadeCount`). `submult d (cascadeTuple) i j` (the partial product `A_{j-1} ⋯ A_i`)
+gains a block `A_p` only for `i ≤ p < j`, so the surviving-1 count folds `min (t_p)` over exactly that
+window, capped by the base width `d_i`. This is the genuine general rank-pattern computation (Core-native,
+non-vacuous — it computes actual `Matrix.rank`s); it feeds the #121-(ii) achiever-realizability tie. -/
+
+/-- The `i`-relative surviving-1 count of `submult (cascadeTuple) i j`: base `d_i` (at `j = i`, the
+identity), folding `min (t_p)` for each block `A_p` with `i ≤ p < j` (the `if i ≤ p.castSucc` guard skips the
+blocks below `i`, which `submult i` never multiplies). -/
+def cascadeWindow (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (i : Fin (N + 1)) :
+    (j : Fin (N + 1)) → ℕ :=
+  Fin.induction (d i) (fun p prev => if i ≤ p.castSucc then min (t p) prev else prev)
+
+@[simp] theorem cascadeWindow_zero (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (i : Fin (N + 1)) :
+    cascadeWindow d t i 0 = d i := rfl
+
+@[simp] theorem cascadeWindow_succ (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (i : Fin (N + 1)) (p : Fin N) :
+    cascadeWindow d t i p.succ
+      = if i ≤ p.castSucc then min (t p) (cascadeWindow d t i p.castSucc)
+        else cascadeWindow d t i p.castSucc := by
+  simp [cascadeWindow]
+
+/-- Below/at the base index, the window count is the base width: `cascadeWindow d t i j = d i` for
+`j ≤ i` (no block `A_p` with `p ≥ i` is in `[i, j)`, so every fold guard is false). -/
+theorem cascadeWindow_le_base (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (i j : Fin (N + 1)) (hji : j ≤ i) :
+    cascadeWindow d t i j = d i := by
+  induction j using Fin.induction with
+  | zero => rfl
+  | succ p ih =>
+    have hps : p.castSucc < p.succ := by rw [Fin.lt_def, Fin.val_succ, Fin.val_castSucc]; omega
+    rw [cascadeWindow_succ, if_neg (fun hip =>
+      absurd (lt_of_le_of_lt hip (lt_of_lt_of_le hps hji)) (lt_irrefl _))]
+    exact ih (le_trans (le_of_lt hps) hji)
+
+/-- **#122 — the cascade interval sub-product is a single partial-identity (general `i`).**
+`submult (cascadeTuple) i j = partialId (d_j) (d_i) (cascadeWindow i j)` for `i ≤ j`, by `Fin.induction` on
+`j` through `submult_succ` + `partialId_mul`. Below `i` (`j ≤ i`) the window count stays `d_i` and the only
+reachable case is `j = i` (`submult_self = 1 = partialId (d_i)(d_i)(d_i)`); for `j = p.succ` with `i ≤
+p.castSucc` the block `A_p` mins in `t_p` (the `i ≤ p.castSucc` guard matches `submult_succ`'s hypothesis).
+Generalizes `submult_cascade_prefix` (the `i = 0` case). -/
+theorem submult_cascade (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
+    (ht : ∀ p : Fin N, t p ≤ d p.castSucc) (i j : Fin (N + 1)) (hij : i ≤ j) :
+    submult d (cascadeTuple (k := k) d t) i j hij
+      = partialId k (d j) (d i) (cascadeWindow d t i j) := by
+  induction j using Fin.induction with
+  | zero =>
+    -- `i ≤ 0` ⟹ `i = 0`; `submult 0 0 = 1 = partialId (d 0)(d 0)(d 0)`.
+    have hi0 : i = 0 := Fin.le_zero_iff.1 hij
+    subst hi0
+    rw [submult_self, cascadeWindow_zero]
+    ext a b
+    simp only [partialId, Matrix.of_apply, Matrix.one_apply]
+    by_cases hab : a = b
+    · subst hab; simp [a.isLt]
+    · rw [if_neg hab, if_neg (fun hc => hab (Fin.ext hc.1))]
+  | succ p ih =>
+    by_cases hip : i ≤ p.castSucc
+    · -- the block `A_p` is in the window: `submult i p.succ = A_p * submult i p.castSucc`.
+      rw [submult_succ d (cascadeTuple d t) i p hip, ih hip, cascadeWindow_succ, if_pos hip,
+        show cascadeTuple (k := k) d t p = partialId k (d p.succ) (d p.castSucc) (t p) from rfl,
+        partialId_mul (k := k) (d p.succ) (d p.castSucc) (d i) (t p)
+          (cascadeWindow d t i p.castSucc) (ht p)]
+    · -- `¬ i ≤ p.castSucc` and `i ≤ p.succ` force `i = p.succ` (the base of the window).
+      have hcs : (p.castSucc : Fin (N + 1)).val = p.val := Fin.val_castSucc p
+      have hss : (p.succ : Fin (N + 1)).val = p.val + 1 := Fin.val_succ p
+      have hisucc : i = p.succ := by
+        rcases Nat.lt_or_ge i.val p.succ.val with hlt | hge
+        · exact absurd (by rw [Fin.le_def, hcs]; omega : i ≤ p.castSucc) hip
+        · exact Fin.ext (le_antisymm (by simpa [Fin.le_def] using hij) hge)
+      subst hisucc
+      rw [submult_self, cascadeWindow_succ, if_neg hip]
+      -- cascadeWindow at p.succ (= i, the base) reduces to d i; and submult_self = identity = full partialId
+      rw [cascadeWindow_le_base d t p.succ p.castSucc (Fin.castSucc_le_succ p)]
+      ext a b
+      simp only [partialId, Matrix.of_apply, Matrix.one_apply]
+      by_cases hab : a = b
+      · subst hab; simp [a.isLt]
+      · rw [if_neg hab, if_neg (fun hc => hab (Fin.ext hc.1))]
+
+/-- **#122 — the cascade's general interior rank pattern.** `rankPattern (cascadeTuple) i j` is the
+surviving-1 count of the interval sub-product: `survivors (d_j) (d_i) (cascadeWindow i j) = min
+(cascadeWindow i j) (min (d_j) (d_i))` — the `i`-relative window-min of the block ranks, capped by the
+endpoint widths. Composes `submult_cascade` (the sub-product is a single partial-identity) with
+`rank_partialId`. The full 2-index rank pattern `r_{ij}` of the cascade — the general rank-pattern
+computation the #121-(ii) achiever tie consumes (matched, on a fixed achiever `t = t*`, to the
+independently-defined `r*`). Generalizes `rankPattern_cascade_prefix` (the `i = 0` row). -/
+theorem rankPattern_cascade (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
+    (ht : ∀ p : Fin N, t p ≤ d p.castSucc) (i j : Fin (N + 1)) (hij : i ≤ j) :
+    rankPattern d (cascadeTuple (k := k) d t) i j hij
+      = survivors (d j) (d i) (cascadeWindow d t i j) := by
+  rw [rankPattern, submult_cascade d t ht i j hij, rank_partialId]
+
 end DLNFibre.Core
