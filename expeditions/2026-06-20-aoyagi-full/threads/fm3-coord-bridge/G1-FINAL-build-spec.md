@@ -1277,3 +1277,25 @@ It's a CORRESPONDENCE THEOREM (Adm-exponent ↔ Kostant rank-pattern, two combin
 chart-path realizability. The Adm↔RealizableRank bridge is the load-bearing missing piece — DLN-Foundations or
 Core level, a theorem. Routed to the controller for the pp-r1realize adjudication. NOTHING immediately-buildable
 unblocked by pp2's confirmation (Q2 wiring is downstream of routeStep + transport-field; Q3 is the wall).
+
+## g217 — C5 partial-drop KILL-CONDITION tracked (crux2 affirmed HOLD); fm3 owns the cc-on-(3,3,2) relay
+crux2 affirmed: HOLD generalizing the hnode contract — design DEFAULT is C5 REDUCES (no distinct mixed-node
+lemma; main-Schur schur_straighten_squeeze_exists + my classify→hnode→squeeze/leaf composition covers it).
+Bare extension waits for evidence.
+
+LIVE KILL-CONDITION (tracked, fm3 owns the relay): C5 reduces PROVIDED the C1-complement residual presents
+as the clean main-Schur hnode (∑Erow² + ‖b·Erow+S·Γ‖², G²=‖S·Γ‖², ‖b‖²≤T²). pp2's exercised set has NO
+genuine partial-drop t_{s−1}>t_s>0 (the depth-6 t=(3,3,2,2,2,0) is unvalidated). IF pp2's (3,3,2)
+genuine-partial-drop shows the complement-C1 residual does NOT present as the clean hnode → main-Schur is
+insufficient for C5 → crux2 builds a generalized hnode contract. FM3 ACTION: cc crux2 on pp2's (3,3,2)
+result the moment it lands (the kill-condition watch). Until then: design-default REDUCES, crux2's lemma
+covers it, no preemptive build.
+
+INTERFACE PRECISION (g215-consistent): transport-field = the LIVE IsSchurStraightenSqueeze datum; my fold
+consumes the CONSEQUENCE rlctAtOn_reduced_transport (det-1 reduced-core reindex). NOT the g134-PARKED
+schur_straighten_squeeze_exists PRODUCER (its hnode undischargeable from the product blow-up), and NOT the
+unbuilt hnode-seed schur_node_loss_presentation. The PARKED producer + its hnode seed are the C5-gated pieces
+that only need building IF the (3,3,2) kill-condition fires — flagged the naming to crux2 to keep the record
+exact. Value-side CLOSED (pp2 g190).
+
+OPEN GATE unchanged: §4 realizability (the Adm↔RealizableRank bridge, g216) under pp-r1realize.
