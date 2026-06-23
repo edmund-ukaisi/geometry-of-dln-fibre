@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.S1Fubini
 import DLNFibre.DLN.RLCT.Foundations.S1NonMPTransport
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
+import DLNFibre.DLN.RLCT.Validate.DeepestGaugeDiffeo
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT` — PIN 1's `regAbsorb_rlct` reduction (#44c)
@@ -199,6 +200,117 @@ theorem rlctAtOn_regStraighten_peel
       = fun q : R × (C × S) => regF (regStraighten q).1 + coreF q.2.1 := by
     funext q; rw [hrs_core q]
   rw [hfun] at hkey
+  exact hkey
+
+/-! ## The IFT → #72 adapter (`rlctAtOn_comp_localDiffeo`)
+
+The clean wrapper the detbound card flagged as "the next layer": from a GLOBALLY smooth self-map `f`
+with an INVERTIBLE strict derivative `e : M ≃L[ℝ] M` at `wstar` (and `f` fixing `wstar`), conclude
+`rlctAtOn (F ∘ f) wstar = rlctAtOn F wstar`. The implicit-function-theorem
+(`HasStrictFDerivAt.toOpenPartialHomeomorph`) packages the local inverse; the bounded-unit Jacobian
+(`boundedUnit_fderiv_det`, derived from `ContDiffAt` + the `≃L` derivative) discharges #72's `hbdd`;
+`ContDiffAt.to_localInverse` gives the inverse's smoothness at `f wstar = wstar`, hence its
+differentiability on a shrunk nbhd. The single open `V` is `Φ.source ∩ Φ.target ∩ (inverse-diff nbhd)`,
+on which BOTH inverse identities (`left_inv` on `source`, `right_inv` on `target`) and both derivatives
+hold; the det-bounds are intersected in. This is structure-independent Mathlib glue — it is the only
+analytic content of `regAbsorb_rlct` once the concrete `regStraighten`'s `dE(0) = id` is supplied. -/
+theorem rlctAtOn_comp_localDiffeo {M : Type*}
+    [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
+    [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
+    (F : M → ℝ) (wstar : M) (f : M → M) (e : M ≃L[ℝ] M)
+    (hcontdiff : ContDiff ℝ (⊤ : ℕ∞) f)
+    (hf : HasStrictFDerivAt f (e : M →L[ℝ] M) wstar)
+    (hfix : f wstar = wstar) :
+    rlctAtOn (fun w => F (f w)) wstar = rlctAtOn F wstar := by
+  classical
+  -- The IFT local diffeo `Φ` (toFun defeq `f`), its source/target open, `wstar ∈ source`.
+  set Φ : OpenPartialHomeomorph M M := hf.toOpenPartialHomeomorph f with hΦ
+  have hΦcoe : (Φ : M → M) = f := hf.toOpenPartialHomeomorph_coe
+  have hsrc_open : IsOpen Φ.source := Φ.open_source
+  have htgt_open : IsOpen Φ.target := Φ.open_target
+  have hwsrc : wstar ∈ Φ.source := hf.mem_toOpenPartialHomeomorph_source
+  -- `f wstar ∈ target` and `f wstar = wstar`, so `wstar ∈ target`.
+  have hwtgt : wstar ∈ Φ.target := by
+    have := hf.image_mem_toOpenPartialHomeomorph_target
+    rw [← hΦ] at this
+    rwa [hfix] at this
+  -- The local inverse `g := Φ.symm`, smooth at `f wstar = wstar` (ContDiff IFT).
+  set g : M → M := ⇑Φ.symm with hg
+  -- `f` is `ContDiffAt ⊤` everywhere, with `HasFDerivAt f e wstar` (from `hf`).
+  have hfderiv_wstar : HasFDerivAt f (e : M →L[ℝ] M) wstar := hf.hasFDerivAt
+  have hcda : ContDiffAt ℝ (⊤ : ℕ∞) f wstar := hcontdiff.contDiffAt
+  -- `Φ.symm wstar = wstar` (`Φ wstar = f wstar = wstar`, `wstar ∈ source`, `left_inv`).
+  have hΦwstar : Φ wstar = wstar := by rw [hΦcoe]; exact hfix
+  have hsymm_wstar : Φ.symm wstar = wstar := by
+    conv_lhs => rw [← hΦwstar]
+    exact Φ.left_inv hwsrc
+  -- `g = Φ.symm` is `ContDiffAt ⊤` at `wstar` (`OpenPartialHomeomorph.contDiffAt_symm` at `Φ`).
+  have hg_cda0 : ContDiffAt ℝ (⊤ : ℕ∞) g wstar := by
+    have hcontdiff_at_symm : ContDiffAt ℝ (⊤ : ℕ∞) f (Φ.symm wstar) := by
+      rw [hsymm_wstar]; exact hcontdiff.contDiffAt
+    have hfd : HasFDerivAt (Φ : M → M) (e : M →L[ℝ] M) (Φ.symm wstar) := by
+      rw [hsymm_wstar, hΦcoe]; exact hfderiv_wstar
+    have := Φ.contDiffAt_symm (f₀' := e) hwtgt hfd hcontdiff_at_symm
+    rwa [hg]
+  -- `g` is `ContDiffAt 1` near `wstar` (downgrade ⊤ → 1, then `eventually`).
+  have hg_cda1 : ContDiffAt ℝ (1 : ℕ∞) g wstar := hg_cda0.of_le (by norm_num)
+  have hg_ev : ∀ᶠ y in 𝓝 wstar, ContDiffAt ℝ (1 : ℕ∞) g y :=
+    hg_cda1.eventually (by simp)
+  obtain ⟨Vg, hVg_open, hwVg, hVg_diff⟩ : ∃ Vg : Set M, IsOpen Vg ∧ wstar ∈ Vg ∧
+      ∀ y ∈ Vg, DifferentiableAt ℝ g y := by
+    obtain ⟨U, hU, hUopen, hwU⟩ := eventually_nhds_iff.mp hg_ev
+    exact ⟨U, hUopen, hwU, fun y hy => (hU y hy).differentiableAt (by norm_num)⟩
+  -- Bounded-unit Jacobian for `f` (fwd): `ContDiffAt 1` + `HasFDerivAt f (e:≃L) wstar`.
+  obtain ⟨Vf, hVf_open, hwVf, af, bf, hafpos, hVf_bnd⟩ :=
+    boundedUnit_fderiv_det (f := f) (wstar := wstar) (f' := e)
+      (hcontdiff.contDiffAt.of_le (by norm_num)) hfderiv_wstar
+  -- Bounded-unit Jacobian for `g` (rev): `ContDiffAt 1 g wstar` + `HasFDerivAt g (e.symm:≃L) wstar`.
+  have hg_fderiv_wstar : HasFDerivAt g (e.symm : M →L[ℝ] M) wstar := by
+    have hfd : HasFDerivAt (Φ : M → M) (e : M →L[ℝ] M) (Φ.symm wstar) := by
+      rw [hsymm_wstar, hΦcoe]; exact hfderiv_wstar
+    have := Φ.hasFDerivAt_symm (f' := e) hwtgt hfd
+    rwa [hg]
+  obtain ⟨Vgb, hVgb_open, hwVgb, ag, bg, hagpos, hVgb_bnd⟩ :=
+    boundedUnit_fderiv_det (f := g) (wstar := wstar) (f' := e.symm) hg_cda1 hg_fderiv_wstar
+  -- The single working open `V`: source ∩ target ∩ (g-diff nbhd) ∩ (both det-bound nbhds).
+  set V : Set M := Φ.source ∩ Φ.target ∩ Vg ∩ Vf ∩ Vgb with hV
+  have hVopen : IsOpen V := by
+    refine ((((hsrc_open.inter htgt_open).inter hVg_open).inter hVf_open).inter hVgb_open)
+  have hwV : wstar ∈ V := ⟨⟨⟨⟨hwsrc, hwtgt⟩, hwVg⟩, hwVf⟩, hwVgb⟩
+  -- Inverse identities on `V` (`left_inv` needs source, `right_inv` needs target).
+  have hleft : ∀ w ∈ V, g (f w) = w := by
+    intro w hw
+    have : g (Φ w) = w := Φ.left_inv hw.1.1.1.1
+    rwa [hΦcoe] at this
+  have hright : ∀ w ∈ V, f (g w) = w := by
+    intro w hw
+    have : Φ (Φ.symm w) = w := Φ.right_inv hw.1.1.1.2
+    rwa [hΦcoe, ← hg] at this
+  -- Continuity of `f`, `g` on `V`.
+  have hπcont : ContinuousOn f V := hcontdiff.continuous.continuousOn
+  have hsymmcont : ContinuousOn g V := by
+    refine ContinuousOn.mono ?_ (fun w hw => hw.1.1.2)
+    exact fun w hw => (hVg_diff w hw).continuousAt.continuousWithinAt
+  -- Derivatives on `V`: `Dπ := fderiv f`, `Dπsymm := fderiv g`.
+  have hderiv : ∀ w ∈ V, HasFDerivAt f (fderiv ℝ f w) w :=
+    fun w _ => (hcontdiff.contDiffAt.differentiableAt (by norm_num)).hasFDerivAt
+  have hderivsymm : ∀ w ∈ V, HasFDerivAt g (fderiv ℝ g w) w :=
+    fun w hw => (hVg_diff w hw.1.1.2).hasFDerivAt
+  -- Determinant measurability: `fderiv ℝ ·` is GLOBALLY measurable for ANY map (`measurable_fderiv`,
+  -- finite-dim ⟹ `CompleteSpace`; `BorelSpace M` ⟹ `OpensMeasurableSpace`), so `|det ∘ fderiv|` is
+  -- measurable for `f` AND the only-locally-smooth inverse `g` alike.
+  have hdetmeas : Measurable fun w => |(fderiv ℝ f w).det| :=
+    continuous_abs.measurable.comp (ContinuousLinearMap.continuous_det.measurable.comp
+      (measurable_fderiv ℝ f))
+  have hdetmeassymm : Measurable fun w => |(fderiv ℝ g w).det| :=
+    continuous_abs.measurable.comp (ContinuousLinearMap.continuous_det.measurable.comp
+      (measurable_fderiv ℝ g))
+  -- Assemble #72.  `Dπ w := fderiv ℝ f w` at `wstar` is `e` (so det = |e.det| > 0 ∈ [af,bf]).
+  have hkey := rlctAtOn_boundedUnit_localHomeomorph F wstar f g
+    (fun w => fderiv ℝ f w) (fun w => fderiv ℝ g w) V hVopen hwV hfix
+    hleft hright hπcont hsymmcont hderiv hderivsymm hdetmeas hdetmeassymm
+    ⟨af, bf, hafpos, fun w hw => hVf_bnd w hw.1.2⟩
+    ⟨ag, bg, hagpos, fun w hw => hVgb_bnd w hw.2⟩
   exact hkey
 
 end DLNFibre.DLN.RLCT
