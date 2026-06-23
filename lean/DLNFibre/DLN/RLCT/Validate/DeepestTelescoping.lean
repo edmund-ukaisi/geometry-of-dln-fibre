@@ -201,14 +201,53 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
   have hQid : ∀ s : Fin (Lm + 1), (s : ℕ) + 1 < Lm + 1 →
       Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
     fun s hs => (hinterface s hs).1
-  -- REMAINING ASSEMBLY (de-risked — hPid, hQid, the kernel `prodAux_succ_layer`, and the path all PROVEN):
-  -- INVARIANT (prodAux induction, 1 ≤ k ≤ Lm): `prodAux C k = P 0 * prodAux A k` (P 0 rides at FIXED width
-  -- `Fin (H 0)`; base k=1: `C 0 = P 0·A 0` via hframe + `Q 0 = 1` (hQid); step: `C s = A s` interior via
-  -- hframe + `P s = 1` (hPid) + `Q s = 1` (hQid), then assoc). FINAL (k = Lm+1 = L): append `Q Lm` via
-  -- `C Lm = A Lm · Q Lm` (hframe + `P Lm = 1` from hPid), the boundary right-frame extraction through
-  -- prodAux_succ_layer. Witnesses P0 := P ⟨0,_⟩, QL := the (Fin.last L)-typed Q ⟨Lm,_⟩. Each sub-step is a
-  -- def-cast handled by lemma 1's idiom; it's a 3-sub-proof multi-step induction (base layer-cast / step /
-  -- boundary). Cast SOLVED; the assembly is the open formaliser-work. (controller routing: crux2/cobuild.)
+  -- `C s = A s` for INTERIOR `1 ≤ s ≤ Lm-1` (hframe + hPid + hQid ⟹ both frames identity). PROVEN.
+  have hCAint : ∀ s : Fin (Lm + 1), 1 ≤ (s : ℕ) → (s : ℕ) + 1 < Lm + 1 → C s = A s := by
+    intro s hs1 hslt
+    rw [hframe s, hPid s hs1, hQid s hslt, Matrix.one_mul, Matrix.mul_one]
+  -- ENDPOINT-typed boundary frames (the convene resolution): cast P ⟨0⟩ → `Fin (H 0)` and Q ⟨Lm⟩ →
+  -- `Fin (H (last))` ONCE here, via `Fin.ext` on the index. Then the invariant runs endpoint-typed (the
+  -- HMul `P0 * prodAux A k` typechecks at `Fin (H 0)`, NO per-step boundary cast).
+  have h0cs : (⟨0, by omega⟩ : Fin (Lm + 1)).castSucc = (0 : Fin (Lm + 2)) := by
+    apply Fin.ext; simp [Fin.castSucc]
+  have hLs : (⟨Lm, by omega⟩ : Fin (Lm + 1)).succ = Fin.last (Lm + 1) := by
+    apply Fin.ext; simp [Fin.succ, Fin.last]
+  -- INVARIANT `prodAux C k = (h0cs ▸ P ⟨0⟩) * prodAux A k` (1 ≤ k ≤ Lm), P ⟨0⟩ cast to `Fin (H 0)`.
+  have hinv : ∀ (k : ℕ) (hk : k < Lm + 2), 1 ≤ k → k ≤ Lm →
+      prodAux H C k hk = (h0cs ▸ P ⟨0, by omega⟩) * prodAux H A k hk := by
+    intro k
+    induction k with
+    | zero => intro _ hk0; exact absurd hk0 (by norm_num)
+    | succ k ih =>
+        intro hsucc _ hkLm
+        have e1 : H (⟨k, Nat.lt_of_succ_lt hsucc⟩ : Fin (Lm + 2))
+            = H ((⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ : Fin (Lm + 1)).castSucc) := rfl
+        have e2 : H (⟨k + 1, hsucc⟩ : Fin (Lm + 2))
+            = H ((⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ : Fin (Lm + 1)).succ) := rfl
+        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+        rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+        · subst hk0
+          -- k+1 = 1: `prodAux _ 0 = 1` (def); the layer is `reindex (C ⟨0⟩)` vs `reindex (A ⟨0⟩)`, and
+          -- `C ⟨0⟩ = P ⟨0⟩ · A ⟨0⟩` (Q ⟨0⟩ = 1). So `reindex (C ⟨0⟩) = (cast P ⟨0⟩) · reindex (A ⟨0⟩)`.
+          have hC0 : C ⟨0, Nat.lt_of_succ_lt_succ hsucc⟩
+              = P ⟨0, Nat.lt_of_succ_lt_succ hsucc⟩ * A ⟨0, Nat.lt_of_succ_lt_succ hsucc⟩ := by
+            rw [hframe ⟨0, _⟩, hQid ⟨0, _⟩ (by simp; omega), Matrix.mul_one]
+          simp only [show prodAux H C 0 (Nat.lt_of_succ_lt hsucc)
+              = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+            show prodAux H A 0 (Nat.lt_of_succ_lt hsucc)
+              = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl, Matrix.one_mul, hC0]
+          -- OPEN (base reindex-distribute): `1 * reindex (P·A) = (cast P) * (1 * reindex A)`. After
+          -- `one_mul`, distribute reindex over the product (the left factor's row-reindex = the boundary
+          -- cast P0). The conceptual cast is SOLVED (interior step green); this is the reindex-distribute
+          -- SYNTACTIC fill — the goal's `reindex (finCongr ⋯)` implicit proofs fight `reindex_apply`'s
+          -- pattern-match (3-attempt cap hit on the exact rewrite chain). Localized; convene-ready.
+          sorry
+        · -- step (interior): `C k = A k` (hCAint), reindexed layers agree, P0 left-factors by mul_assoc.
+          rw [hCAint ⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ (by simpa using hkpos) (by simp; omega),
+            ih (Nat.lt_of_succ_lt hsucc) hkpos (by omega), Matrix.mul_assoc]
+  -- FINAL: `prod C = prodAux C (Lm+1) = prodAux C Lm * (cast C_Lm)`; `C_Lm = A_Lm·Q_Lm` (P_Lm = 1, hPid);
+  -- hinv ⟹ `= (cast P⟨0⟩)·prodAux A Lm·(cast A_Lm·Q_Lm) = P0 · prod A · QL`. ∃-intro the cast P⟨0⟩, Q⟨Lm⟩.
+  refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_⟩
   sorry
 
 end DLNFibre.DLN.RLCT
