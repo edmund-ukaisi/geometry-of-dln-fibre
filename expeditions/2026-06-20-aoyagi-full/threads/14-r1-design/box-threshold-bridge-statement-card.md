@@ -45,6 +45,16 @@ theorem box_integrable_of_lt_rlctAtOn_zero_of_homogeneous_of_bounded {N} (F : (F
 
 -- the homogeneity that discharges the ordering for the true loss
 theorem dlnLoss_zero_smul (H) (A) (c) : dlnLoss H 0 (fun s => c • A s) = c ^ (2 * L) * dlnLoss H 0 A
+
+-- THE TURNKEY DELIVERABLE: BoxThresholdBridge for the RAW loss dlnLoss M 0 (flattened), end-to-end
+noncomputable def flatRawLoss (H : Fin (L+1) → ℕ) : (Fin (flatDim H) → ℝ) → ℝ :=
+  fun w => dlnLoss H 0 ((paramsEquivFlat H).symm w)
+theorem flatRawLoss_measurable  (H) : Measurable (flatRawLoss H)
+theorem flatRawLoss_homogeneous (H) (c) (w) : flatRawLoss H (c • w) = c ^ (2*L) * flatRawLoss H w
+theorem boxThresholdBridge_flatRawLoss (H : Fin (L+1) → ℕ)
+    (Vz : Set (Fin (flatDim H) → ℝ)) (hVzm : MeasurableSet Vz) (hVzbdd : Bornology.IsBounded Vz)
+    (c' : NNReal) (hc' : (c' : ℝ≥0∞) < rlctAtOn (flatRawLoss H) 0) :
+    IntegrableOn (fun w => |flatRawLoss H w| ^ (-(c' : ℝ))) Vz volume
 ```
 
 ## English gloss
@@ -97,12 +107,30 @@ IntegrableOn |K|^{−c'} Vz` (`S1NodeCoverBridge.lean`, `fm3/routem-ga-transport
   over `Z`. The bridge serves the proper-space instantiations (`Fin N → ℝ` and its recursion children),
   which is the actual use. Noted, not a hole.
 
-## Open / consumer seam (the one genuine residual, controller-pinned)
+## Consumer seam — RESOLVED (controller ruling, no open work here)
 
-- `hmin` is discharged value-free by homogeneity for any node whose core is the true loss `dlnLoss M 0`.
-  For a node core that is `monomial · unit` POST-Schur-reduction (NOT homogeneous),
-  `deepest_le_of_homogeneous_core` does not apply; that node's `hmin` (or its direct box-integrability)
-  is the spine/atom's to supply — the generic `box_integrable_of_lt_rlctAtOn_deepest` consumes whatever
-  ordering is provided. This is the consumer-interface seam, not an in-lemma hole.
+The recursion-node consumption is a5f5ceb1's GE-leg call, and the monomial·unit ordering is **not** open
+work on this lemma in either branch:
+
+- **Homogeneous node** (the cover consumes `BoxThresholdBridge` at the true loss / a re-pointed child
+  `dlnLoss(child)`, which is itself a raw homogeneous loss): served directly by
+  `boxThresholdBridge_flatRawLoss` / `box_integrable_of_lt_rlctAtOn_zero_of_homogeneous(_of_bounded)`
+  — `hmin` from homogeneity.
+- **Monomial·unit core** (the cover needs the post-Schur reduced core's box-integrability): established
+  by the cover's **monomial machinery** (`integrableOn_monomial_mul_unit_iff` + `monomialThreshold`,
+  the S2 route, à la the `(2,2,2)` `Case222Resolution`) — **NOT** an `hmin` ordering this bridge must
+  force. `deepest_le_of_homogeneous_core` being "too weak" for monomial·unit is moot: that path is
+  S2-monomial, not the homogeneity bridge.
+
+So there is **no open `hmin` residual** on this lemma. `#11 = the generic bridge +
+`gate`/`flatRawLoss` homogeneous forms`, complete. The per-node mechanism (homogeneous true-loss vs
+monomial·unit→S2) is a5f5ceb1's GE-leg instantiation, routed by the controller.
+
+## (2,2,2) gate — PASSED
+
+`boxThresholdBridge_flatRawLoss` instantiates at `H222 = ![2,2,2]` (`flatDim = 8`, matching `myF222`'s
+`Fin 8 → ℝ`; degree `2L = 4`; deepest = origin): for `c' < rlctAtOn (flatRawLoss H222) 0` and bounded
+measurable `Vz`, `|flatRawLoss H222|^{−c'}` is integrable on `Vz`. Validates the generic bridge on the
+concrete homogeneous `(2,2,2)` instance.
 
 Pinned commit (base): `@174cc3f6`.

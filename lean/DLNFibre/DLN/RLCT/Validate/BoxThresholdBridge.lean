@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestMinRlct
 import DLNFibre.DLN.RLCT.Foundations.S1Fubini
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
+import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.BoxThresholdBridge` — the box→point RLCT collapse (#11, R1 bridge)
@@ -153,5 +155,53 @@ theorem box_integrable_of_lt_rlctAtOn_zero_of_homogeneous_of_bounded {N : ℕ}
     IntegrableOn (fun w => |F w| ^ (-(c' : ℝ))) Vz volume :=
   (box_integrable_of_lt_rlctAtOn_zero_of_homogeneous F D hFmeas hhomog (closure Vz)
     hVzbdd.isCompact_closure c' hc').mono_set subset_closure
+
+/-! ## The turnkey `BoxThresholdBridge` for the raw true loss `dlnLoss M 0`
+
+The R1 cover recurses on the per-node **raw** loss `dlnLoss M 0` (every node is a raw DLN loss — the
+NON-homogeneous chart cores `monomial · unit` are the cover's chart pullbacks, whose connection to
+the child raw loss is the GE-leg's own piece, not this bridge). The raw loss is degree-`2L`
+homogeneous (`dlnLoss_zero_smul`) with deepest point the origin, so the homogeneous bridge applies
+directly — once flattened to `Fin (flatDim M) → ℝ` (a proper space; `Params` is a bare `def` without
+the metric/proper structure). The flattening `paramsEquivFlat` is a measure-preserving coordinate
+relabel, hence `smul`-compatible (`paramsEquivFlat (fun s => c • A s) = c • paramsEquivFlat A` by
+`rfl`), so the flat image stays homogeneous. -/
+
+/-- The flattened raw true loss `dlnLoss M 0 ∘ paramsEquivFlat.symm` on `Fin (flatDim M) → ℝ`. -/
+noncomputable def flatRawLoss (H : Fin (L + 1) → ℕ) : (Fin (flatDim H) → ℝ) → ℝ :=
+  fun w => dlnLoss H 0 ((paramsEquivFlat H).symm w)
+
+/-- `flatRawLoss` is measurable (continuous `dlnLoss` ∘ continuous `paramsEquivFlat.symm`). -/
+theorem flatRawLoss_measurable (H : Fin (L + 1) → ℕ) : Measurable (flatRawLoss H) :=
+  ((continuous_dlnLoss H 0).comp (continuous_paramsEquivFlat_symm H)).measurable
+
+/-- `flatRawLoss` is degree-`2L` homogeneous: `flatRawLoss (c • w) = c^(2L) · flatRawLoss w`. The
+flattening is `smul`-compatible, so this is `dlnLoss_zero_smul` transported. -/
+theorem flatRawLoss_homogeneous (H : Fin (L + 1) → ℕ) (c : ℝ) (w : Fin (flatDim H) → ℝ) :
+    flatRawLoss H (c • w) = c ^ (2 * L) * flatRawLoss H w := by
+  unfold flatRawLoss
+  have hsymm : (paramsEquivFlat H).symm (c • w)
+      = (fun s => c • ((paramsEquivFlat H).symm w) s) := by
+    apply (paramsEquivFlat H).injective
+    rw [MeasurableEquiv.apply_symm_apply]
+    show c • w = paramsEquivFlat H (fun s => c • ((paramsEquivFlat H).symm w) s)
+    rw [show paramsEquivFlat H (fun s => c • ((paramsEquivFlat H).symm w) s)
+          = c • paramsEquivFlat H ((paramsEquivFlat H).symm w) from rfl,
+        MeasurableEquiv.apply_symm_apply]
+  rw [hsymm, dlnLoss_zero_smul]
+
+/-- **`BoxThresholdBridge` for the raw true loss `dlnLoss M 0` (flattened) — the turnkey form.**
+For `c'` below the origin threshold `rlctAtOn (flatRawLoss M) 0`, `|flatRawLoss M|^{−c'}` is
+integrable over any **bounded measurable** box `Vz` — the verbatim shape the R1 cover consumes (its
+child node is a raw DLN loss). The raw loss is degree-`2L` homogeneous, deepest point the origin,
+so the box→point collapse is value-free via `deepest_le_of_homogeneous_core`. **No cited surface**
+(the value
+`rlctAtOn (flatRawLoss M) 0 = ½·minAdm` is the spine's S2-only job, not used here). -/
+theorem boxThresholdBridge_flatRawLoss (H : Fin (L + 1) → ℕ)
+    (Vz : Set (Fin (flatDim H) → ℝ)) (hVzm : MeasurableSet Vz) (hVzbdd : Bornology.IsBounded Vz)
+    (c' : NNReal) (hc' : (c' : ENNReal) < rlctAtOn (flatRawLoss H) 0) :
+    IntegrableOn (fun w => |flatRawLoss H w| ^ (-(c' : ℝ))) Vz volume :=
+  box_integrable_of_lt_rlctAtOn_zero_of_homogeneous_of_bounded (flatRawLoss H) (2 * L)
+    (flatRawLoss_measurable H) (flatRawLoss_homogeneous H) Vz hVzm hVzbdd c' hc'
 
 end DLNFibre.DLN.RLCT
