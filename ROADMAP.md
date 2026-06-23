@@ -124,9 +124,15 @@ order (**Thm 3.8**, $\operatorname{orbitRankLocus} M=\bar O_M$) is **Proved in-e
 ideal/closure level). The **per-orbit** geometric reading (combinatorial codimension form $=$ geometric
 orbit-closure codimension) is then **Proved** (`Core.CThetaGeometric.codimRepCanonical_orbitRankLocus_eq_codimForm`,
 and `cCodim_eq_inf_geomCodim`: $C=\min$ over Kostant partitions of the genuine geometric codim).
-**Remaining (future): the $\Sigma^r$-aggregate reading** — `numTop` as the number of top-dimensional
-**geometric** components of the *whole* rank-$r$ locus $\Sigma^r$ — needs a geometric definition of $\Sigma^r$,
-its orbit stratification, and a component-count, none of which depend on `hVoigt`.
+**Landed (closed-locus aggregate, post-PR #6) — the $\overline{\Sigma}{}^r$-aggregate reading is Proved.**
+$\operatorname{codim}\overline{\Sigma}{}^r = C$ (`Core.SigmaCodim`), its irreducible components are the
+orbit closures (`Core.SigmaComponents`), and
+$\theta = \#\{\text{top-dim components of }\overline{\Sigma}{}^r\}$
+(`Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`, unconditional) — see Bundle 1. The one piece
+**not** separately built is the *exact-rank* $\Sigma^r$ (rank *exactly* $r$) as its own variety; but
+$\operatorname{codim}\Sigma^r = \operatorname{codim}\overline{\Sigma}{}^r$ (the Zariski closure
+preserves codimension, LR Cor 4.4 + Lemma 4.5), so the closed locus already carries the aggregate
+$(C,\theta)$ content and carving $\Sigma^r$ out separately is not needed.
 
 ### Bundle 3 — the topology  ·  `DLNFibre.Core` (Poincaré)
 **Plainly.** The Poincaré series (Thm 5.5) and the permutation invariance it yields (Cor 5.10).

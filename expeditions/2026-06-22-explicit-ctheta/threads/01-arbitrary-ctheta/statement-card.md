@@ -1,7 +1,6 @@
 # Statement card — explicit `(C, θ)` for an arbitrary dimension vector
 
-*Module: `lean/DLNFibre/Core/CThetaArbitrary.lean`. SHA below is the branch tip BEFORE the
-controller's integration commit — bump it when committed.*
+*Module: `lean/DLNFibre/Core/CThetaArbitrary.lean`, committed at `d6fb6ba` (feat commit). PR #7 → `dev`.*
 
 ---
 
@@ -10,7 +9,7 @@ controller's integration commit — bump it when committed.*
 > rearrangement `d ∘ Tuple.sort d` — no `Monotone d` hypothesis.
 >
 > - **Lean:** `DLNFibre.Core.cCodim_zero_eq_cValue_comp_sort`
->   (`lean/DLNFibre/Core/CThetaArbitrary.lean` @ `7854591`)
+>   (`lean/DLNFibre/Core/CThetaArbitrary.lean` @ `d6fb6ba`)
 > - **Signature.** `(hN : 1 ≤ N) (d : Fin (N+1) → ℕ) (h : (kostantPartitions d 0).Nonempty) : cCodim d 0 h = cValue (d ∘ Tuple.sort d)`
 > - **Gloss.** `cCodim d 0` (min of `codimForm` over corner-`0` Kostant partitions of `d`) equals the
 >   Thm 7.10 closed form `cValue` applied to the weakly-increasing reordering of `d`. The LHS keeps an

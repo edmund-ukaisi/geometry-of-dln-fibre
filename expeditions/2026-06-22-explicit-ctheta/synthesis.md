@@ -53,4 +53,7 @@ arbitrary-`d` result added; the Process/harness uplift section added).
 **Process note:** the formaliser self-spawned its reviewer (off the leaf-executor rule) — logged in
 `lessons.md`; harmless here.
 
-**Remaining:** exposition section (perm-invariance chapter); commit; signal-and-wait before PR.
+**Done:** exposition §7 added; committed (`d6fb6ba` feat, `0098474` docs) and pushed; **PR #7** opened
+to `dev`. First-round controller review posted (SOUND, independent re-derivation). Operator red-team
+review actioned (ROADMAP exact-vs-closed `Σ^r` contradiction clarified; exposition corollary carries
+`N ≥ 1`; this close metadata + statement-card SHA refreshed). Awaiting operator approve + merge.

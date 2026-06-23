@@ -297,7 +297,8 @@ $(C, \theta)$ as its monotone rearrangement $\underline d \circ \operatorname{so
 form evaluated on the sorted vector computes $(C, \theta)$ of the original.
 
 !!! corollary "Explicit $(C, \theta)$ for an arbitrary dimension vector"
-    For any $\underline d$ and any $r$ in range,
+    For $N \ge 1$ (a genuine composition), any dimension vector $\underline d$, and any $r$ in range
+    (the Kostant set nonempty, i.e. $r \le \min_i d_i$),
 
     $$
     C(\underline d, r) = \operatorname{cValue}\big((\underline d - r) \circ \operatorname{sort}\big),
