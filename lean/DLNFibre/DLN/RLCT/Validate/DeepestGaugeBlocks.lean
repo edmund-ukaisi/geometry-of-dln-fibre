@@ -107,6 +107,40 @@ theorem core_comparability_squeeze {ι κ : Type*} [Fintype ι] [Fintype κ]
   simp only [hsplit]
   exact squeeze_bounds_abstract E leak Rcore t hleak
 
+/-- **The full-product Frobenius core split** (route-independent, g156-confirmed). For the FULL chain
+product written in block form `P = fromBlocks P00 P01 P10 P11` with the pivot `P00` invertible, the
+squared-Frobenius loss against the deepest value `blockdiag[1, 0]` splits as the regular-residual sum
+`∑E²` (over the `(0,0)−1`, `(0,1)`, `(1,0)` blocks) plus `‖P11‖²`, and `P11 = leak + R` with the
+**full-product Schur complement** `R = P11 − P10·⅟P00·P01` and `leak = P10·⅟P00·P01` (the regular
+endpoint leak `∈ ideal(P10, P01)`). The honest reduced core is `R` (g156: NOT `∏S_s` — the Schur
+complement of a product is not the product of Schur complements; but `R − ∏S_s ∈ ideal(E)`, so the
+two squeeze the same). The thin assembly of `frobenius_fromBlocks` (`f = ·²`) + `schur_P11_decomp`,
+ready for `core_comparability_squeeze`. -/
+theorem fullProduct_core_split {r mlo nhi : Type*} [Fintype r] [DecidableEq r] [Fintype mlo]
+    [Fintype nhi]
+    (P00 : Matrix r r ℝ) (P01 : Matrix r nhi ℝ) (P10 : Matrix mlo r ℝ) (P11 : Matrix mlo nhi ℝ)
+    [Invertible P00] :
+    (∑ i, ∑ j, ((Matrix.fromBlocks P00 P01 P10 P11
+            - Matrix.fromBlocks (1 : Matrix r r ℝ) (0 : Matrix r nhi ℝ)
+                (0 : Matrix mlo r ℝ) (0 : Matrix mlo nhi ℝ)) i j) ^ 2)
+        = (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+            + ((∑ i, ∑ j, (P10 i j) ^ 2) + (∑ i, ∑ j, (P11 i j) ^ 2)))
+      ∧ (∀ i j, P11 i j = (P10 * ⅟P00 * P01) i j + (P11 - P10 * ⅟P00 * P01) i j) := by
+  refine ⟨?_, ?_⟩
+  · -- Frobenius block split: `fromBlocks − blockdiag[1,0] = fromBlocks (P00−1) P01 P10 P11`.
+    have hsub : (Matrix.fromBlocks P00 P01 P10 P11
+          - Matrix.fromBlocks (1 : Matrix r r ℝ) (0 : Matrix r nhi ℝ)
+              (0 : Matrix mlo r ℝ) (0 : Matrix mlo nhi ℝ))
+        = Matrix.fromBlocks (P00 - 1) P01 P10 P11 := by
+      rw [sub_eq_add_neg, Matrix.fromBlocks_neg, Matrix.fromBlocks_add]
+      simp [sub_eq_add_neg]
+    rw [hsub]
+    exact frobenius_fromBlocks (fun x => x ^ 2) (P00 - 1) P01 P10 P11
+  · intro i j
+    have hd := schur_P11_decomp (⅟P00) P01 P10 P11
+    rw [hd]
+    simp [Matrix.add_apply]
+
 /-- **The per-layer Schur block-diagonalisation** (#44c, g156 / #61 — the corrected `coreAbsorb`
 core object). A gauge layer `C = fromBlocks (1+X) Y Z T` with invertible `(0,0)` corner
 block-diagonalises by the unipotent transvections `L = [[1,0],[−Z⅟(1+X),1]]`,
