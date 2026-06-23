@@ -358,6 +358,14 @@ CURRENT LIVE FORM = ALL-s (g159/g168, see the "hMid FORM — ALL-s" section belo
 DeepestCoreNonvanishing dlnLoss_deepest_core_ne_zero_witness needs ∀ s, 1≤M_s): the R1/RouteMTree predicate
 is `∀ s : Fin (L+1), 0 < M s` (ALL s, endpoints INCLUDED) — ALREADY committed @0cedc7e (Skeleton:1030).
 
+## hMid FORM = ALL-s — CONTROLLER RULING (g191, git-verified) — CLOSED, do not reopen
+CONTROLLER RULING (2026-06-23): git-verified Skeleton.lean:1030 @0cedc7e = `(hMid : ∀ s : Fin (L + 1),
+0 < M s)`, docstring "ASSUMES 0 < M s for EVERY layer s." ALL-s is correct AND it is what I committed.
+crux2's STOP was reading my SUPERSEDED g154 design TEXT (interior-only), NOT the committed code — the same
+stale-text trap as the coreAbsorb gloss. PROCEED: RouteMTree on the all-s predicate (∀ s : Fin(L+1),
+0 < M s); ANY M_s=0 (interior OR endpoint) → #70 (degenerate-boundary, design-done @g204, direct Morse
+rlctAt=nReg/2, headline non-strict). No re-thread; the code is already right. === hMid CLOSED. ===
+
 ## hMid FORM — ALL-s is R1's NATURAL DOMAIN (g159 + g168 audit clarification; g190 crux2 re-confirm)
 ⚠ The interior-only lock (g154) was INCOMPLETE — missed the ENDPOINTS. SUPERSEDED.
 RE-CONFIRMED (g190, crux2 STOP + controller #69/#70 route-B, dated 2026-06-22): the all-s form is RIGHT and
