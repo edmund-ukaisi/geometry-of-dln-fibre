@@ -213,6 +213,32 @@ construct the chart certificate, prove chart coverage, analytic unit
 nonvanishing, active-ratio bounds, chart-count witnesses or upper bounds,
 Lemma 5 exactness, pole order without A0, or RLCT extraction.
 
+## Current slice - 2026-06-23, chart ratio-count bridge
+
+The chart-certificate final boundary now also accepts chart counts stated at
+the displayed candidate ratio:
+
+```text
+AoyagiTheorem2SuppliedChartFinalBoundary.of_activePair_ratioAt_eq_of_forall_le_of_countInChartAtRatio_eq_of_forall_le
+AoyagiTheorem2SuppliedChartFinalBoundary.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_ratioCount
+```
+
+This variant first uses the supplied active-coordinate witness and all-active
+lower bound to prove that the displayed Theorem 2 lambda formula is
+`Cnc.exponentData.exponentMinimum`.  Only after that identification does it
+turn `countInChartAtRatio displayedLambda` witnesses and upper bounds into the
+displayed order formula.
+
+Artifacts:
+
+- `reproduction-theorem2-chart-ratio-count-bridge-a6.md`;
+- `statement-card-a6-theorem2-chart-ratio-count-bridge.md`;
+- `review-theorem2-chart-ratio-count-bridge-a6.md`.
+
+Boundary: this is finite ratio-count bookkeeping only.  It does not construct
+the chart certificate, prove active-ratio lower bounds, ratio-count witnesses
+or upper bounds, Lemma 5 exactness, pole order without A0, or RLCT extraction.
+
 ## Current slice - 2026-06-22, terminal-order handoff
 
 The A5-to-A6 terminal-order handoff is

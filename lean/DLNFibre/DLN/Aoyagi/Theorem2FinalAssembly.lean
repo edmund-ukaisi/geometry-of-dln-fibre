@@ -277,6 +277,53 @@ theorem of_activePair_ratioAt_eq_of_forall_le_of_chart_minCount_eq_of_forall_le
       .of_activePair_ratioAt_eq_of_forall_le_of_chart_minCount_eq_of_forall_le
         data hp hratio hleRatio hchart hleChart
 
+/-- Build the chart-certificate final boundary from an active-ratio minimum
+certificate and chart counts stated at the displayed candidate ratio.
+
+The ratio-count hypotheses are converted to global-minimum chart counts only
+after the active-ratio minimum certificate proves that the displayed ratio is
+`Cnc.exponentData.exponentMinimum`. -/
+theorem of_activePair_ratioAt_eq_of_forall_le_of_countInChartAtRatio_eq_of_forall_le
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {cuts : AoyagiSelectedCutpoints ell} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hselected : m = aoyagiSelectedReducedWidths H r cuts)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L ell H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L ell H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.countInChartAtRatio
+        (aoyagiTheorem2Lambda_fromCeilData L ell H r m data) c =
+          data.theorem2OrderFormula)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L ell H r m data) c' ≤
+        data.theorem2OrderFormula) :
+    AoyagiTheorem2SuppliedChartFinalBoundary
+      Cnc L ell H r cuts m data lambda poleOrder where
+  selectedWidths_eq_reduced := hselected
+  extractionHypothesis := hNC
+  finiteExponentFormula :=
+    let hmin :
+        Cnc.exponentData.exponentMinimum =
+          aoyagiTheorem2Lambda_fromCeilData L ell H r m data :=
+      Cnc.exponentData.exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
+        hp hratio hleRatio
+    { exponentMinimum_eq_theorem2Lambda_fromCeilData := hmin
+      exponentOrder_eq_theorem2OrderFormula :=
+        Cnc.exponentData.exponentOrder_eq_of_countInChartAtRatio_eq_of_forall_le
+          hmin hchart hleChart }
+
 /-- Forget the chart certificate down to its finite exponent data, recovering
 the existing supplied final boundary. -/
 theorem toSuppliedFinalBoundary
@@ -365,6 +412,43 @@ theorem lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_char
       AoyagiTheorem2SuppliedChartFinalBoundary
         Cnc L ell H r cuts m data lambda poleOrder :=
     of_activePair_ratioAt_eq_of_forall_le_of_chart_minCount_eq_of_forall_le
+      data hselected hNC hp hratio hleRatio hchart hleChart
+  exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+
+/-- Direct pair form when chart counts are supplied at the displayed candidate
+ratio rather than as global-minimum chart counts. -/
+theorem lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_ratioCount
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {cuts : AoyagiSelectedCutpoints ell} {m : Fin (ell + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData ell m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hselected : m = aoyagiSelectedReducedWidths H r cuts)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L ell H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L ell H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.countInChartAtRatio
+        (aoyagiTheorem2Lambda_fromCeilData L ell H r m data) c =
+          data.theorem2OrderFormula)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L ell H r m data) c' ≤
+        data.theorem2OrderFormula) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L ell H r m data ∧
+      poleOrder = data.theorem2OrderFormula := by
+  let B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L ell H r cuts m data lambda poleOrder :=
+    of_activePair_ratioAt_eq_of_forall_le_of_countInChartAtRatio_eq_of_forall_le
       data hselected hNC hp hratio hleRatio hchart hleChart
   exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
 

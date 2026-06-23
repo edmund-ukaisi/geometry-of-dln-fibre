@@ -93,6 +93,24 @@ chart-level A0 extraction hypothesis.  It does not construct the chart
 certificate, prove active-ratio bounds, prove chart-count bounds, prove Lemma 5
 exactness, pole order without A0, or RLCT extraction.
 
+The chart-certificate final socket now also has a displayed-ratio count
+variant.  New Lean names in `Theorem2FinalAssembly.lean`:
+`AoyagiTheorem2SuppliedChartFinalBoundary.of_activePair_ratioAt_eq_of_forall_le_of_countInChartAtRatio_eq_of_forall_le`
+and
+`AoyagiTheorem2SuppliedChartFinalBoundary.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_ratioCount`.
+Reproduction:
+`threads/06-dln-translation/reproduction-theorem2-chart-ratio-count-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-theorem2-chart-ratio-count-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-chart-ratio-count-bridge-a6.md`.
+
+This variant accepts chart counts at the displayed Theorem 2 lambda ratio and
+uses the active-ratio minimum certificate before converting them to
+global-minimum chart counts.  It does not prove the active-ratio bound,
+ratio-count facts, Lemma 5 exactness, pole order without A0, or RLCT
+extraction.
+
 ## Latest A2 Update
 
 The Aoyagi Theorem 3 residual-product endpoint wrapper has landed. The new
