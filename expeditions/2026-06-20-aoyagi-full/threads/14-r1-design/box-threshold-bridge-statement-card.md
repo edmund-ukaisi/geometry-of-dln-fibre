@@ -4,7 +4,8 @@
 deepest point is the global-minimum local RLCT of `dlnLoss M 0` over any bounded region*, which
 collapses a5f5ceb1's cover GE-leg recursive **box-integrability** (`hKint`) to the **point** threshold.
 
-**Status: `sorry-free`, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`).** Built on base
+**Status: `reviewed` — `sorry-free`, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`),
+fidelity-reviewed (faithful / cite-honest / non-vacuous, findings actioned below).** Built on base
 `@174cc3f6` (has `DeepestMinRlct` + `S1Fubini`). File:
 `lean/DLNFibre/DLN/RLCT/Validate/BoxThresholdBridge.lean`. Controller ports it onto
 `fm3/routem-ga-transport` at integration so a5f5ceb1's producer imports it.
@@ -28,12 +29,19 @@ theorem box_integrable_of_lt_rlctAtOn_deepest {M} [PseudoMetricSpace M] [Measure
     (hc' : (c' : ℝ≥0∞) < rlctAtOn F deepest) :
     IntegrableOn (fun w => |F w| ^ (-(c' : ℝ))) Vz volume
 
--- the cite-free BoxThresholdBridge (ordering discharged by homogeneity)
+-- the cite-free BoxThresholdBridge, compact form (ordering discharged by homogeneity)
 theorem box_integrable_of_lt_rlctAtOn_zero_of_homogeneous {N} (F : (Fin N → ℝ) → ℝ) (D : ℕ)
     (hFmeas : Measurable F) (hhomog : ∀ c w, F (c • w) = c ^ D * F w)
     (Vz : Set (Fin N → ℝ)) (hVz : IsCompact Vz) (c' : NNReal)
     (hc' : (c' : ℝ≥0∞) < rlctAtOn F (0 : Fin N → ℝ)) :
     IntegrableOn (fun w => |F w| ^ (-(c' : ℝ))) Vz volume
+
+-- the BoxThresholdBridge predicate's EXACT shape (bounded measurable box) — drop-in for the consumer
+theorem box_integrable_of_lt_rlctAtOn_zero_of_homogeneous_of_bounded {N} (F : (Fin N → ℝ) → ℝ) (D : ℕ)
+    (hFmeas : Measurable F) (hhomog : ∀ c w, F (c • w) = c ^ D * F w)
+    (Vz : Set (Fin N → ℝ)) (_hVzm : MeasurableSet Vz) (hVzbdd : Bornology.IsBounded Vz)
+    (c' : NNReal) (hc' : (c' : ℝ≥0∞) < rlctAtOn F (0 : Fin N → ℝ)) :
+    IntegrableOn (fun w => |F w| ^ (-(c' : ℝ))) Vz volume   -- via closure Vz (proper ⟹ compact) + mono_set
 
 -- the homogeneity that discharges the ordering for the true loss
 theorem dlnLoss_zero_smul (H) (A) (c) : dlnLoss H 0 (fun s => c • A s) = c ^ (2 * L) * dlnLoss H 0 A
@@ -68,12 +76,33 @@ threshold — every point of the box is no more singular than the origin.
 - (2,2,2) GATE: `box_integrable_of_lt_rlctAtOn_zero_of_homogeneous` instantiates at the homogeneous full
   loss (`myF222 = ‖A·B‖²`, degree 4, `rlctAtOn · 0 = 3/2`): `c' < 3/2 ⟹ IntegrableOn |myF222|^{−c'} Vz`.
 
-## Open / consumer interface
+## Consumer-interface match (fidelity review, addressed)
 
-- The bridge's `hmin` is discharged by homogeneity for any node whose core is the true loss
-  `dlnLoss M 0` (homogeneous). For a node core that is `monomial · unit` POST-Schur-reduction (not
-  homogeneous), `deepest_le_of_homogeneous_core` does not apply; that node's `hmin` (or its direct
-  box-integrability) is the spine/atom's to supply — the generic `box_integrable_of_lt_rlctAtOn_deepest`
-  consumes whatever ordering is provided. Pinned with the controller as the consumer-interface seam.
+A reviewer audited fidelity + cite-honesty against the consumer predicate
+`BoxThresholdBridge K := ∀ c' < rlctAtOn K 0, ∀ Vz, MeasurableSet Vz → IsBounded Vz →
+IntegrableOn |K|^{−c'} Vz` (`S1NodeCoverBridge.lean`, `fm3/routem-ga-transport`). Verdict:
+**faithful, clean-three, non-vacuous, no hidden hole.** Findings actioned:
+
+- **Hypothesis shape** (`IsCompact` vs the consumer's `IsBounded + MeasurableSet`): closed — added
+  `box_integrable_of_lt_rlctAtOn_zero_of_homogeneous_of_bounded`, the bounded-measurable form (via
+  `closure Vz` compact on the proper space `Fin N → ℝ`). This is the verbatim drop-in for the
+  predicate. Both forms ship; the consumer picks per its `Vz`.
+- **`dlnLoss M 0` flattening seam**: the docstring no longer asserts the lemma "instantiates at
+  `dlnLoss M 0`" as realised. `dlnLoss_zero_smul` is the homogeneity on `Params` (smul `fun s => c•A s`);
+  the homogeneous lemma takes flat Pi-smul `F (c • w)`. The `Params H ≃ (Fin N → ℝ)` smul-compatibility
+  carrying one to the other is NOT in this module — the consumer (who owns the flattening, e.g.
+  `rlctAtOn_dlnLoss222_transport`) composes them. Docstring now says "a homogeneous `F` of the relevant
+  shape **is** the flattened true loss", not "this lemma instantiates at it".
+- **Scope**: the bridge requires `ProperSpace` (+ loc-finite vol); the consumer predicate is generic
+  over `Z`. The bridge serves the proper-space instantiations (`Fin N → ℝ` and its recursion children),
+  which is the actual use. Noted, not a hole.
+
+## Open / consumer seam (the one genuine residual, controller-pinned)
+
+- `hmin` is discharged value-free by homogeneity for any node whose core is the true loss `dlnLoss M 0`.
+  For a node core that is `monomial · unit` POST-Schur-reduction (NOT homogeneous),
+  `deepest_le_of_homogeneous_core` does not apply; that node's `hmin` (or its direct box-integrability)
+  is the spine/atom's to supply — the generic `box_integrable_of_lt_rlctAtOn_deepest` consumes whatever
+  ordering is provided. This is the consumer-interface seam, not an in-lemma hole.
 
 Pinned commit (base): `@174cc3f6`.

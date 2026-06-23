@@ -122,13 +122,13 @@ theorem box_integrable_of_lt_rlctAtOn_deepest {M : Type*}
     exact ⟨Ω, mem_nhdsWithin_of_mem_nhds (hΩopen.mem_nhds hpΩ), hint⟩
   exact hLI.integrableOn_isCompact hVz
 
-/-- **The `BoxThresholdBridge` for a homogeneous `F` (the cite-free deliverable).** For any
-degree-`D` homogeneous `F` on `Fin N → ℝ`, every exponent `c'` below the *origin* threshold
-`rlctAtOn F 0` makes `|F|^{−c'}` integrable over any compact `Vz`. The ordering hypothesis of
-`box_integrable_of_lt_rlctAtOn_deepest` is discharged value-free by `deepest_le_of_homogeneous_core`
-(the all-zero cone vertex is the global-min RLCT). Instantiates at the flattened true loss
-`dlnLoss M 0` (degree `2L` via `dlnLoss_zero_smul`); e.g. the `(2,2,2)` core `‖A·B‖²` on `Fin 8 → ℝ`
-with `rlctAtOn · 0 = 3/2`. -/
+/-- **The box-threshold bridge for a homogeneous `F` (compact form).** For any degree-`D`
+homogeneous `F` on `Fin N → ℝ`, every exponent `c'` below the *origin* threshold `rlctAtOn F 0`
+makes `|F|^{−c'}` integrable over any compact `Vz`. The ordering hypothesis of the abstract bridge
+is discharged value-free by `deepest_le_of_homogeneous_core` (the all-zero cone vertex is the
+global-min RLCT). A homogeneous `F` of the relevant shape is the flattened true loss `dlnLoss M 0`
+(`dlnLoss_zero_smul` gives degree `2L` on `Params`); e.g. the `(2,2,2)` flattened core `‖A·B‖²` on
+`Fin 8 → ℝ` (`Case222Resolution.myF222`), with `rlctAtOn · 0 = 3/2`. -/
 theorem box_integrable_of_lt_rlctAtOn_zero_of_homogeneous {N : ℕ}
     (F : (Fin N → ℝ) → ℝ) (D : ℕ) (hFmeas : Measurable F)
     (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w)
@@ -137,5 +137,21 @@ theorem box_integrable_of_lt_rlctAtOn_zero_of_homogeneous {N : ℕ}
     IntegrableOn (fun w => |F w| ^ (-(c' : ℝ))) Vz volume :=
   box_integrable_of_lt_rlctAtOn_deepest F hFmeas 0
     (fun p => deepest_le_of_homogeneous_core F p D hFmeas hhomog) Vz hVz c' hc'
+
+/-- **The `BoxThresholdBridge` predicate (bounded-measurable form) for a homogeneous `F`.** The
+shape the R1 cover consumer wants: over any **bounded measurable** box `Vz` (not necessarily
+compact), `c' < rlctAtOn F 0` makes `|F|^{−c'}` integrable. On `Fin N → ℝ` (proper) the bounded `Vz`
+has compact closure (`Bornology.IsBounded.isCompact_closure`); the compact-form bridge gives
+integrability on `closure Vz`, restricted to `Vz` by `IntegrableOn.mono_set subset_closure`.
+`MeasurableSet Vz` is carried to match the consumer predicate verbatim (the proof routes through the
+larger closure, so it is not used for integrability itself). -/
+theorem box_integrable_of_lt_rlctAtOn_zero_of_homogeneous_of_bounded {N : ℕ}
+    (F : (Fin N → ℝ) → ℝ) (D : ℕ) (hFmeas : Measurable F)
+    (hhomog : ∀ (c : ℝ) (w : Fin N → ℝ), F (c • w) = c ^ D * F w)
+    (Vz : Set (Fin N → ℝ)) (_hVzm : MeasurableSet Vz) (hVzbdd : Bornology.IsBounded Vz)
+    (c' : NNReal) (hc' : (c' : ENNReal) < rlctAtOn F (0 : Fin N → ℝ)) :
+    IntegrableOn (fun w => |F w| ^ (-(c' : ℝ))) Vz volume :=
+  (box_integrable_of_lt_rlctAtOn_zero_of_homogeneous F D hFmeas hhomog (closure Vz)
+    hVzbdd.isCompact_closure c' hc').mono_set subset_closure
 
 end DLNFibre.DLN.RLCT
