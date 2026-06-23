@@ -57,4 +57,33 @@ theorem dlnLoss_chart_squeeze_descent {M : Fin (L + 1) → ℕ} {nReg : ℕ}
     ((measurable_dlnLoss M 0).comp hemb.measurable) G hGmeas hGne
     c₁ c₂ hc₁ hc₂ hsq
 
+/-- **The per-node O1 step (the `hstep` the binding recursion consumes), as a composition lemma.** From a
+`ReducedTransport S Y` (the det-1 MP descent, whose `G` is the squeeze's reduced core — the G-sourcing pin)
++ the chart/squeeze data of `dlnLoss_chart_squeeze_descent`, the local RLCT of the network loss at the
+deepest point splits AND descends to the reduced chain:
+`rlctAtOn (dlnLoss M 0) (χ (0,0)) = nReg/2 + rlctAtOn (dlnLoss S.red 0) 0`. Composes
+`dlnLoss_chart_squeeze_descent` (chart + squeeze → `nReg/2 + rlctAtOn (G²) 0`, `G = transport.G`) with
+`ReducedTransport.descent` (`rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) 0`); the two legs share the SAME
+`transport.G`, so they compose with no coherence gap. This is the geometric `O1` for `#145`'s
+`binding_recursion_of_step` (`hstep`), modulo identifying `χ (0,0)` with the node's deepest point. The
+producer (per-node blow-up plumbing, = pending `#104`) supplies the chart + squeeze; `transport.hGne` is the
+non-leaf guard. Stated as a plain lemma (not a bundled structure) — the recursion wires it directly. -/
+theorem dlnLoss_O1_descent {M : Fin (L + 1) → ℕ} {S : ChainDimSplit M} {nReg : ℕ}
+    {Y : Type} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y] [OpensMeasurableSpace Y] [Zero Y]
+    (transport : ReducedTransport S Y)
+    (hGmeas : Measurable transport.G)
+    (hGne : ∃ U ∈ nhds (0 : Y), ∀ᵐ z ∂(volume.restrict U), transport.G z ≠ 0)
+    (chart : ((Fin nReg → ℝ) × Y) ≃ₜ Params M)
+    (hmp : MeasurePreserving chart volume volume) (hemb : MeasurableEmbedding chart)
+    (c₁ c₂ : ℝ) (hc₁ : 0 < c₁) (hc₂ : 0 < c₂)
+    (hsq : ∃ U ∈ nhds ((0, 0) : (Fin nReg → ℝ) × Y), ∀ w ∈ U,
+        0 ≤ smoothBlockSplitForm transport.G w
+          ∧ c₁ * smoothBlockSplitForm transport.G w ≤ (dlnLoss M 0) (chart w)
+          ∧ (dlnLoss M 0) (chart w) ≤ c₂ * smoothBlockSplitForm transport.G w) :
+    rlctAtOn (dlnLoss M 0) (chart (0, 0))
+      = (nReg : ℝ≥0∞) / 2 + rlctAtOn (dlnLoss S.red 0) (fun _ => 0 : Params S.red) := by
+  rw [dlnLoss_chart_squeeze_descent chart hmp hemb transport.G hGmeas hGne c₁ c₂ hc₁ hc₂ hsq,
+    transport.descent]
+
 end DLNFibre.DLN.RLCT
