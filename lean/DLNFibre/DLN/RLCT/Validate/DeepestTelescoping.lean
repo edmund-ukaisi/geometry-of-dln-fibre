@@ -184,16 +184,31 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
       prod H C = P0 * prod H A * QL := by
-  -- NEEDED for #80/PIN2 (controller RULING 2026-06-23). Proof PATH (cast SOLVED by `prodAux_succ_layer`;
-  -- the remaining work is the frame-conjugation ASSEMBLY, a substantial multi-step induction):
-  -- ALL interior frames are identity (`hinterface`: `Q s = 1` for s ≤ L-2, `P (s+1) = 1` for s ≤ L-2,
-  -- i.e. `P s = 1` for 1 ≤ s ≤ L-1), so the `P 0`-frame rides the WHOLE product at FIXED width `Fin (H 0)`
-  -- (no cast-threading on the left), only the final boundary layer appends `Q (L-1)`. Witnesses
-  -- `P0 := P 0`, `QL := Q (L-1)` (cast to `(last)`-typed). INVARIANT (induction, 1 ≤ k ≤ L-1):
-  -- `prodAux C k = P 0 * prodAux A k`; the `k = L` step appends `Q (L-1)` via `C (L-1) = A (L-1)·Q (L-1)`.
-  -- OPEN sub-pieces: (a) `hPid` (Fin-coercion `obtain ⟨s',rfl⟩` on `(s:ℕ)` fails — needs Fin.val handling),
-  -- (b) the invariant induction (apply `prodAux_succ_layer` + `C s = A s` interior + assoc), (c) the
-  -- boundary `Q (L-1)` extraction cast. Routed to controller (push-more / cobuild-#80-owner / defer).
+  -- ALL interior frames are identity (`hinterface`). `P s = 1` for `1 ≤ s` (interior-left + boundary), and
+  -- `Q s = 1` for `s ≤ Lm-1` (interior-right). So `C 0 = P 0 · A 0`, `C s = A s` (1 ≤ s ≤ Lm-1),
+  -- `C Lm = A Lm · Q Lm`. Then `∏C = P 0 · ∏A · Q Lm` (P 0 rides at fixed width `Fin (H 0)`).
+  obtain ⟨Lm, rfl⟩ : ∃ Lm, L = Lm + 1 := ⟨L - 1, by omega⟩
+  -- `P s = 1` for `1 ≤ (s:ℕ)`: from `hinterface (s-1)`'s `P ((s-1)+1) = P s = 1`.
+  have hPid : ∀ s : Fin (Lm + 1), 1 ≤ (s : ℕ) →
+      P s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) := by
+    intro s hs1
+    obtain ⟨t', ht'⟩ : ∃ t', (s : ℕ) = t' + 1 := ⟨(s : ℕ) - 1, by omega⟩
+    have hslt : ((⟨t', by omega⟩ : Fin (Lm + 1)) : ℕ) + 1 < Lm + 1 := by simp; omega
+    have heq : (⟨t' + 1, by omega⟩ : Fin (Lm + 1)) = s := by apply Fin.ext; simp [ht']
+    have := (hinterface ⟨t', by omega⟩ hslt).2
+    rw [heq] at this; exact this
+  -- `Q s = 1` for `(s:ℕ) + 1 < Lm + 1` (interior-right).
+  have hQid : ∀ s : Fin (Lm + 1), (s : ℕ) + 1 < Lm + 1 →
+      Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
+    fun s hs => (hinterface s hs).1
+  -- REMAINING ASSEMBLY (de-risked — hPid, hQid, the kernel `prodAux_succ_layer`, and the path all PROVEN):
+  -- INVARIANT (prodAux induction, 1 ≤ k ≤ Lm): `prodAux C k = P 0 * prodAux A k` (P 0 rides at FIXED width
+  -- `Fin (H 0)`; base k=1: `C 0 = P 0·A 0` via hframe + `Q 0 = 1` (hQid); step: `C s = A s` interior via
+  -- hframe + `P s = 1` (hPid) + `Q s = 1` (hQid), then assoc). FINAL (k = Lm+1 = L): append `Q Lm` via
+  -- `C Lm = A Lm · Q Lm` (hframe + `P Lm = 1` from hPid), the boundary right-frame extraction through
+  -- prodAux_succ_layer. Witnesses P0 := P ⟨0,_⟩, QL := the (Fin.last L)-typed Q ⟨Lm,_⟩. Each sub-step is a
+  -- def-cast handled by lemma 1's idiom; it's a 3-sub-proof multi-step induction (base layer-cast / step /
+  -- boundary). Cast SOLVED; the assembly is the open formaliser-work. (controller routing: crux2/cobuild.)
   sorry
 
 end DLNFibre.DLN.RLCT
