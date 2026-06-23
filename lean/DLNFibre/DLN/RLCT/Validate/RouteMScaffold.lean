@@ -241,4 +241,43 @@ theorem branchDataOfReadParts_binding_present {M₀ M : Fin (L + 1) → ℕ}
     (b : R1BindingCell M₀ M) (d : R1ComplementData M₀ M) :
     (branchDataOfReadParts b d).codim (Sum.inl PUnit.unit) = b.codim := rfl
 
+/-! ## The achiever-only read — the concrete value-correct producer (root `M = M₀`)
+
+The empty-complement instance: a `BranchData M₀ M₀` with the single binding (achiever) cell, no non-binding
+cells. This is the CONCRETE general read at the VALUE level (the headline `½·minAdm` rides only the achiever
+leaf — `routeM_value_eq`'s `C=∃` needs one binding leaf, `C≥` is vacuous over the single cell). It is the
+honest value-correct landing of the #99 read: GREEN, non-vacuous (the achiever `T*` is exhibited), and NOT
+the trap — per the FINAL lock (PivotWitness-only, no `realizes`; `hAdm` fences the cap-bug; geometric
+fidelity is fm3's separate R1-lane). The genuine MULTI-CELL cover (the non-binding cells, for the geometric
+cover #104/#135) refines this by populating `R1ComplementData`; the value is unchanged. The binding cell's
+`T*`-profile `split` is supplied (the one piece still gated on the §4 chart, #135). -/
+
+/-- The empty complement cover: `R1ComplementData M₀ M` with `Empty` cells. The valid degenerate cover (the
+binding cell alone) — the `Nonempty`-free structure (reviewer fix) permits it. -/
+def emptyComplement (M₀ M : Fin (L + 1) → ℕ) : R1ComplementData M₀ M where
+  cells := Empty
+  cellsFin := inferInstance
+  split := fun c => c.elim
+  codim := fun c => c.elim
+  witness := fun c => c.elim
+
+/-- **The achiever-only read** (`M = M₀`, root): the concrete value-correct `BranchData M₀ M₀` — the binding
+(achiever) cell + the empty complement. GREEN, non-vacuous (the achiever `T*` is exhibited via
+`achieverPivotWitness M₀`), with the binding `T*`-profile `split` supplied. The headline value rides this
+single achiever leaf; the multi-cell cover (#104/#135) refines the cover without changing the value. -/
+noncomputable def routeMReadAchieverOnly (M₀ : Fin (L + 1) → ℕ) (split : ChainDimSplit M₀) :
+    BranchData M₀ M₀ :=
+  branchDataOfReadParts (r1BindingCellRoot M₀ split) (emptyComplement M₀ M₀)
+
+/-- The achiever-only read's binding leaf carries `codim = minAdm M₀` (the `C=∃` achiever, by construction).
+The value-correctness anchor: the achiever leaf binds at `minAdm`, so the value fold lands on `½·minAdm`. -/
+theorem routeMReadAchieverOnly_binding_codim (M₀ : Fin (L + 1) → ℕ) (split : ChainDimSplit M₀) :
+    (routeMReadAchieverOnly M₀ split).codim (Sum.inl PUnit.unit)
+      = ((Adm M₀).inf' (Adm_nonempty M₀) (Mval M₀)).toNat := rfl
+
+/-- The achiever-only read's binding witness is the genuine `inf'`-achiever (`achieverPivotWitness M₀`), NOT
+a fabricated codim — the non-vacuity check that the value-correct read exhibits a real admissible `T*`. -/
+theorem routeMReadAchieverOnly_binding_witness (M₀ : Fin (L + 1) → ℕ) (split : ChainDimSplit M₀) :
+    (routeMReadAchieverOnly M₀ split).witness (Sum.inl PUnit.unit) = achieverPivotWitness M₀ := rfl
+
 end DLNFibre.DLN.RLCT
