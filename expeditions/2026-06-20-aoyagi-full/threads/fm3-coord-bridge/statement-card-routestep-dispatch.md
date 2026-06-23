@@ -33,12 +33,16 @@ The general-M dispatcher's leaf-first classify (the recursion's per-node step), 
 > - **Status.** sorry-free except the single fenced branch `sorry` (the named gap). The dispatch + leaf arm
 >   are the landed #103 increment; the value-fold over the actual `routeMIota` rides the general branch.
 
-**Value-fold status (the #103 value target).** `⨅ over routeMIota M₀ of monomialThreshold(data i) =
-½·minAdm(M₀)` for non-degenerate `M₀` is the headline the dispatch feeds. It is **branch-gated**: `routeAtlas`
-(`WellFounded.fix` matching on `routeStep`) cannot unfold through the branch `sorry`, so `routeMIota M222`
-does not compute, and the value-over-`routeMIota` rides the general branch. The ABSTRACT anchor value IS
-banked: `Case222RouteStep.case222_routeStep_value = 3/2` (over `codimsOf222 = [4,3]`, via
-`foldFamily_iInf_eq_half_minAdm`). The `(2,2,2)` recursion is TRACED (pp2 g237 @ee81ce8): node `(2,2,2)`
+**Value-fold status (the #103 value target) — the WIRING is BUILT (`routeM_value_eq`, `RouteMValue.lean`).**
+`routeM_value_eq` proves `⨅ over routeMIota M of monomialThreshold(routeD/routeK/routeH i) = ½·minAdm(M)`
+CONDITIONALLY on (a) the recursion-accumulation `hdata : (routeAtlas M M).data i = foldDivisors (codimsOf i)`
++ (b) the `foldFamily_iInf` data (per-codim root-anchored `PivotWitness M`, an achiever leaf `i₀` with
+`minAdm ∈ codimsOf i₀`). It reduces to `foldFamily_iInf_eq_half_minAdm` — PivotWitness-ONLY, NO cascade. This
+is the honest value-fold LOGIC: it does NOT unfold the branch `sorry` (the hypotheses `hdata`/`hwit`/`i₀` are
+INPUTS the `routeStep` branch supplies — the named gap), and it smuggles nothing (no trap-iii Unit-cell, no
+fabricated achiever). The branch construction (proving `hdata` + emitting the genuine codims/witnesses/achiever
+for general `M`) is the named gap, riding the rank-pattern read / #121. The ABSTRACT anchor value IS banked:
+`Case222RouteStep.case222_routeStep_value = 3/2` (over `codimsOf222 = [4,3]`, via `foldFamily_iInf`). The `(2,2,2)` recursion is TRACED (pp2 g237 @ee81ce8): node `(2,2,2)`
 (BRANCH) appends `Mval((2,2,2),(0,0)) = 4` → `(1,1,2)` (BRANCH) appends `Mval((2,2,2),(1,0)) = 3 = minAdm`
 → `(0,0,2)` (TERMINAL, `⊤`, appends `[]`); `foldDivisors([4,3]) = min(2, 3/2) = 3/2`. So the per-node codim
 is the ROOT-anchored `Mval M₀ T_node` (the `PivotWitness M₀` content), `T_node = (0,0)` then `(1,0)`.
