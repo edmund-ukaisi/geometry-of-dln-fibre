@@ -709,3 +709,30 @@ while the branches move under it. For a NEW unit of work (e.g. when the pp-r1rea
 grind is dispatched), spawn a FRESH agent with a clean read of current HEAD, OR hand a self-contained brief with the
 current decls inlined — cheaper than re-syncing a drifted one. Resume only for genuinely continuous work where the
 agent's accumulated context outweighs the drift. (fm3 g213 @10b6f92; controller will spawn fresh for the §4 dispatch.)
+
+## A passing review can certify a REVERSED claim by auditing an orthogonal-true sub-statement (2026-06-23)
+
+rs-grind's #108 leaf-classifier statement card (@801ecdb) PASSED review — reviewer survived, decorrelated-Codex
+CONCURRED — yet its ⊤-trap caveat asserted the REVERSED leaf-value: "the leaf VALUE must route through the #70 Morse
+handler (rlctAt = nReg/2), not the additive ½·minAdm fold." That is the g233 INTERMEDIATE that pp2's g237 trace + the
+controller's pinning had already reversed (leaf = ⊤ non-binding terminator; value rides the accumulated BRANCH-divisors
+→ ½·minAdm; #70 = degenerate-ROOT-only, NOT per-leaf). The card was written mid-flip-flop and froze a reversed
+intermediate.
+
+THE FAILURE MODE: the caveat's premise "dlnLoss M 0 ≡ 0 at a leaf ⟹ RLCT = ⊤" is TRUE — but that is the NODE's
+GEOMETRIC RLCT, an object ORTHOGONAL to the leaf's FOLD-contribution. The reviewer + Codex audited the true-but-orthogonal
+sub-statement (node-RLCT = ⊤) and concurred, which MASKED the wrong INFERENCE ("⟹ leaf VALUE = #70"). A green review
+(reviewer-survived + decorrelated-Codex-concurred) certified a conceptually-reversed caveat because the audit landed on
+an adjacent true fact, not the exact claim.
+
+LESSON: a passing review — even decorrelated-Codex-concurred — is NECESSARY, not SUFFICIENT; it can certify a REVERSED
+inference when the reviewer audits an orthogonal-but-true neighbour instead of the exact claim (the same "green ≠ The
+Way" gap as the sorry-gate, now at the review layer). Two compounding hazards: (1) artifacts (cards / docstrings / certs /
+notes) written DURING a flip-flop freeze reversed intermediates; (2) a review can "pass" them by auditing the adjacent
+truth. Controller discipline: (a) when a claim has flip-flopped, RE-AUDIT every artifact written in the flip-flop window
+against the FINAL semantics — do not trust a mid-flip-flop "reviewed" stamp; (b) a review must target the EXACT inference,
+not an orthogonal-true neighbour (here: "leaf FOLD-contribution = ⊤ non-binding", NOT "node-RLCT = ⊤"). ACTION for #28:
+the re-audit sweeps ALL flip-flop-era artifacts (cards, docstrings, certs, notes) for reversed-intermediate captures and
+verifies each against the g237-final semantics. (fm3 fidelity-caught the card AFTER reviewer + Codex had passed it;
+controller banked the lesson + elevated the #28 sweep. The leaf-value's ~5x flip-flop is what made a reversed card
+plausible enough to pass — reinforces: collapse a flip-flopping claim to a PROVEN anchor fast, then re-audit its trail.)
