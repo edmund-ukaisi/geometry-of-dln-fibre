@@ -225,6 +225,145 @@ theorem exists_width_zero_of_isLeafNode {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ
   obtain ⟨T, hT, hTval⟩ := (isLeafNode_iff_exists_zero M).mp h
   exact absurd hTval (by have := Mval_pos_of_all_width_pos M T hT hpos; omega)
 
+/-! ### The interior-zero witness (the `⇐` of the degenerate-boundary form)
+
+The converse `∃ s, M_s = 0 ⟹ isLeafNode M` needs an explicit admissible stratum of codim `0` even when the
+collapsed width is interior (`M_{≥2} = 0`). The **prefix-min witness** `witT M j = ⨅_{i ≤ j+1} M_i` (the
+running rank-bottleneck) does it: `witT_eq_min` gives `witT_j = min(prefInf_j, M_{j+1})` and
+`tPrev_witT_eq_prefInf` gives `tPrev_j = prefInf_j`, so every `Mval` summand
+`(tPrev_j − witT_j)(M_{j+1} − witT_j) = (a − min a b)(b − min a b) = 0` telescopes
+(`sub_min_mul_sub_min_zero`) — `Mval M witT = 0` UNCONDITIONALLY. The witness is admissible exactly when
+some width is `0` (the last exponent `witT (last) = ⨅ over the full chain = 0` needs the collapsed width). -/
+
+/-- The telescoping identity `(a − min a b)(b − min a b) = 0` over `ℤ` — the per-summand vanishing. -/
+theorem sub_min_mul_sub_min_zero (a b : ℤ) : (a - min a b) * (b - min a b) = 0 := by
+  rcases le_total a b with h | h
+  · rw [min_eq_left h]; ring
+  · rw [min_eq_right h]; ring
+
+/-- The **prefix-min witness** `witT M j = ⨅_{i ∈ Iic j.succ} M_i` (running rank-bottleneck through index
+`j+1`). The explicit admissible-stratum witness for the interior-zero leaf. -/
+noncomputable def witT (M : Fin (L + 1) → ℕ) : Fin L → ℕ :=
+  fun j => (Finset.Iic j.succ).inf' Finset.nonempty_Iic M
+
+/-- The predecessor prefix `prefInf M j = ⨅_{i ∈ Iic j.castSucc} M_i` (through index `j`) — equals
+`tPrev M witT j`. -/
+noncomputable def prefInf (M : Fin (L + 1) → ℕ) (j : Fin L) : ℕ :=
+  (Finset.Iic j.castSucc).inf' Finset.nonempty_Iic M
+
+/-- `witT_j = min(prefInf_j, M_{j+1})` (split `Iic j.succ = insert j.succ (Iic j.castSucc)`). -/
+theorem witT_eq_min (M : Fin (L + 1) → ℕ) (j : Fin L) :
+    witT M j = min (prefInf M j) (M j.succ) := by
+  unfold witT prefInf
+  have hins : Finset.Iic j.succ = insert j.succ (Finset.Iic j.castSucc) := by
+    ext x
+    simp only [Finset.mem_Iic, Finset.mem_insert]
+    constructor
+    · intro hx
+      rcases eq_or_lt_of_le hx with h | h
+      · exact Or.inl h
+      · exact Or.inr (by rw [Fin.le_castSucc_iff]; exact h)
+    · rintro (rfl | hx)
+      · exact le_refl _
+      · exact le_trans hx (Fin.castSucc_le_succ j)
+  rw [show (Finset.Iic j.succ).inf' Finset.nonempty_Iic M
+      = (insert j.succ (Finset.Iic j.castSucc)).inf'
+          (by rw [← hins]; exact Finset.nonempty_Iic) M from by congr 1, Finset.inf'_insert]
+  exact min_comm _ _
+
+/-- `tPrev M witT j = prefInf_j`: `j = 0 ↦ M_0` (the `Iic 0 = {0}` inf); `j ≥ 1 ↦ witT_{j-1}` (and
+`(j-1).succ = j.castSucc`). -/
+theorem tPrev_witT_eq_prefInf (M : Fin (L + 1) → ℕ) (j : Fin L) :
+    tPrev M (witT M) j = (prefInf M j : ℤ) := by
+  simp only [tPrev]
+  by_cases hj : j.val = 0
+  · rw [if_pos hj]
+    unfold prefInf
+    have hcs : j.castSucc = (0 : Fin (L + 1)) := by apply Fin.ext; simp [hj]
+    simp only [hcs, show Finset.Iic (0 : Fin (L + 1)) = {0} from by
+      ext x; simp [Finset.mem_Iic, Fin.le_zero_iff], Finset.inf'_singleton]
+  · rw [if_neg hj]
+    unfold witT prefInf
+    norm_cast
+    have hidx : (⟨j.val - 1, by omega⟩ : Fin L).succ = j.castSucc := by
+      apply Fin.ext; simp only [Fin.val_succ, Fin.coe_castSucc]; omega
+    simp only [hidx]
+
+/-- **`Mval M witT = 0` unconditionally** — every summand telescopes to `0`
+(`sub_min_mul_sub_min_zero`). -/
+theorem Mval_witT_eq_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) : Mval M (witT M) = 0 := by
+  unfold Mval
+  apply Finset.sum_eq_zero
+  intro j _
+  rw [tPrev_witT_eq_prefInf, witT_eq_min, Nat.cast_min]
+  exact sub_min_mul_sub_min_zero (prefInf M j : ℤ) (M j.succ : ℤ)
+
+/-- `witT_j ≤ M_{j+1}` (`j.succ ∈ Iic j.succ`). -/
+theorem witT_le_succ (M : Fin (L + 1) → ℕ) (j : Fin L) : witT M j ≤ M j.succ :=
+  Finset.inf'_le _ (Finset.mem_Iic.2 le_rfl)
+
+/-- `witT` is weakly decreasing (`Iic i.succ ⊆ Iic j.succ` for `i ≤ j`). -/
+theorem witT_anti (M : Fin (L + 1) → ℕ) {i j : Fin L} (h : i ≤ j) : witT M j ≤ witT M i := by
+  unfold witT
+  exact Finset.inf'_mono (f := M) (Finset.Iic_subset_Iic.2 (Fin.succ_le_succ_iff.2 h))
+    Finset.nonempty_Iic
+
+/-- `witT_0 ≤ min(M_0, M_1) = admBound_0` (`0, 1 ∈ Iic (0.succ = 1)`). -/
+theorem witT_zero_le {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) :
+    witT M (0 : Fin (L' + 1)) ≤ min (M 0) (M 1) := by
+  apply le_min
+  · exact Finset.inf'_le _ (Finset.mem_Iic.2 (by simp))
+  · refine Finset.inf'_le _ (Finset.mem_Iic.2 ?_)
+    have : (0 : Fin (L' + 1)).succ = (1 : Fin (L' + 1 + 1)) := by apply Fin.ext; simp
+    rw [this]
+
+/-- A collapsed width drives the last exponent to `0`: `witT (last) = ⨅ over the full chain = 0`. -/
+theorem witT_last_eq_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) (s : Fin (L' + 1 + 1)) (hs : M s = 0) :
+    witT M (Fin.last L') = 0 := by
+  apply Nat.le_zero.1
+  refine le_trans (Finset.inf'_le M (Finset.mem_Iic.2 ?_)) (le_of_eq hs)
+  exact le_trans (Fin.le_last s) (by rw [Fin.succ_last])
+
+/-- **The prefix-min witness is admissible** when a width has collapsed: weak-decrease (`witT_anti`),
+block bound (`witT_le_succ` / `witT_zero_le`), and the last exponent `0` (`witT_last_eq_zero`). -/
+theorem witT_mem_Adm {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) (s : Fin (L' + 1 + 1)) (hs : M s = 0) :
+    witT M ∈ Adm M := by
+  have hbd : ∀ j : Fin (L' + 1), witT M j ≤ admBound M j := by
+    intro j
+    simp only [admBound]
+    by_cases hj : j.val = 0
+    · simp only [hj, if_true]
+      have hj0 : j = 0 := Fin.ext hj
+      rw [hj0]; exact witT_zero_le M
+    · simp only [hj, if_false]; exact witT_le_succ M j
+  rw [Adm, Finset.mem_filter]
+  refine ⟨?_, hbd, ?_, ?_⟩
+  · rw [Fintype.mem_piFinset]; intro j; rw [Finset.mem_range]; have := hbd j; omega
+  · intro a b hab; exact witT_anti M hab
+  · intro j hj
+    have hjlast : j = Fin.last L' := by apply Fin.ext; simp [Fin.val_last, hj]
+    rw [hjlast]; exact witT_last_eq_zero M s hs
+
+/-- **The interior-zero `⇐`**: a collapsed width yields an admissible stratum of codim `0` (the prefix-min
+witness). With `exists_width_zero_of_isLeafNode` (the `⇒`), this closes the full degenerate-boundary
+characterization `isLeafNode_iff_width_zero`. -/
+theorem exists_admissible_Mval_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ)
+    (s : Fin (L' + 1 + 1)) (hs : M s = 0) : ∃ T ∈ Adm M, Mval M T = 0 :=
+  ⟨witT M, witT_mem_Adm M s hs, Mval_witT_eq_zero M⟩
+
+/-- **The full degenerate-boundary characterization (pp2 #109, EXACT).** A node is a leaf **iff** some
+width has collapsed: `isLeafNode M ⟺ ∃ s, M_s = 0` (chains of length `≥ 2`). The sharpest geometric form —
+the recursion bottoms exactly at the degenerate boundary (a width-0 layer bottlenecks the chain through
+rank 0). `⇒` is `exists_width_zero_of_isLeafNode` (no false leaf); `⇐` is `exists_admissible_Mval_zero`
+(the prefix-min witness). NOTE (the ⊤-trap, pp2 g231): at such a node `dlnLoss M 0 ≡ 0` so its RLCT is `⊤`,
+NOT `½·minAdm = 0` — the leaf VALUE routes through the degenerate-boundary Morse handler (#70), not the
+additive fold. -/
+theorem isLeafNode_iff_width_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) :
+    isLeafNode M ↔ ∃ s, M s = 0 := by
+  refine ⟨exists_width_zero_of_isLeafNode M, ?_⟩
+  rintro ⟨s, hs⟩
+  exact (isLeafNode_iff_exists_zero M).mpr (exists_admissible_Mval_zero M s hs)
+
 /-- **Branch direction (the "too-weak" guard).** If every admissible stratum has positive codim
 (`0 < Mval M T` for all `T ∈ Adm M`), then `M` is NOT a leaf — the recursion does not stop early. The
 contrapositive of `isLeafNode_iff_exists_zero`: a positive-codim-everywhere node is a genuine branch.
@@ -257,5 +396,11 @@ theorem isLeafNode_collapsed : isLeafNode (![0, 0, 2] : Fin 3 → ℕ) := by dec
 are `≥ 1`): the leaf test is `minAdm = 0`, NOT "no `schurState` applies". This is the load-bearing fidelity
 point — a `schurState`-driven recursion that stopped only when the split fails would over-pivot here. -/
 theorem isLeafNode_degenerate_tail : isLeafNode (![2, 2, 0] : Fin 3 → ℕ) := by decide
+
+/-- The full characterization fires on an INTERIOR-zero node: `(3,0,3)` is a leaf via the
+`isLeafNode_iff_width_zero` `⇐` (the prefix-min witness handles `M_1 = 0`), with the collapsed width
+exhibited at `s = 1`. Confirms the interior-zero leg is non-vacuous (not only the `M_0/M_1`-decidable case). -/
+theorem isLeafNode_interior_zero : isLeafNode (![3, 0, 3] : Fin 3 → ℕ) :=
+  (isLeafNode_iff_width_zero _).mpr ⟨1, rfl⟩
 
 end DLNFibre.DLN.RLCT
