@@ -1,0 +1,1 @@
+I’ll keep this as a paper derivation and make the algebra constructive enough for Lean: first fix uniform block notation, then compute the two-layer identity, then package the general induction as an exact recurrence.

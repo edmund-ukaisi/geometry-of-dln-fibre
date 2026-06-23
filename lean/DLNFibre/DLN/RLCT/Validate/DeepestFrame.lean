@@ -144,4 +144,131 @@ theorem deepestPoint_frame_invertible (H : Fin (L + 1) → ℕ) (r : ℕ)
   have h := Classical.choose_spec (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))
   exact ⟨h.1, h.2.1⟩
 
+/-! ## The deepest-point FRAME FAMILY (#80, the id-interior + boundary-only gauge frame)
+
+The per-layer frame family `(Pf, Qf)` for the #80 cert + deriv-fm's #91. UNLIKE the raw two-sided
+`deepestPoint_frame` (`Classical.choose`, not id on interior), this family is **id on the interior**
+and carries a real frame ONLY on the two boundary layers — so the endpoint telescoping's interior
+interfaces vanish (`Qf_s · Pf_{s+1} = 1` for interior `s`), and the boundary frames are ONE-SIDED
+(layer 0 left-only via `left_normal_form_of_cols_vanish` on `deepestPoint 0 = [A|0]`; layer `L−1`
+right-only via `right_normal_form_of_rows_vanish` on `[A;0]`). For `L = 1` the single layer is both
+boundaries — the raw two-sided `deepestPoint_frame` is used. The family satisfies the per-layer
+normalization `Pf_s · deepestPoint_s · Qf_s = corM` for ALL `s` (the part-(1) round-trip input). -/
+
+/-- **The frame family exists** with: per-layer normalization (N), interior-id (d), boundary-inner
+triviality (a)/(b), and boundary invertibility (c). Bundled so the four interface lemmas deriv-fm needs
+are clean projections. -/
+theorem deepestFrameFamily_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ∃ (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+      (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ),
+      -- (N) per-layer normalization to the block-normal corner
+      (∀ s : Fin L, Pf s * deepestPoint H r B hB hr hL s * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) ∧
+      -- (d) interior-id: both frames trivial off the two boundary layers
+      (∀ s : Fin L, 1 ≤ (s : ℕ) →
+        Pf s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)) ∧
+      (∀ s : Fin L, (s : ℕ) + 1 < L →
+        Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) ∧
+      -- (a) layer-0 right-frame trivial, (b) layer-(L-1) left-frame trivial — for `L ≥ 2`
+      (2 ≤ L → Qf ((⟨0, by omega⟩ : Fin L)) = (1 : Matrix (Fin (H ((⟨0, by omega⟩ : Fin L)).succ))
+        (Fin (H ((⟨0, by omega⟩ : Fin L)).succ)) ℝ)) ∧
+      (2 ≤ L → Pf ((⟨L - 1, by omega⟩ : Fin L)) = (1 : Matrix (Fin (H ((⟨L - 1, by omega⟩ : Fin L)).castSucc))
+        (Fin (H ((⟨L - 1, by omega⟩ : Fin L)).castSucc)) ℝ)) ∧
+      -- (c) boundary frames invertible
+      IsUnit (Pf ((⟨0, by omega⟩ : Fin L))) ∧ IsUnit (Qf ((⟨L - 1, by omega⟩ : Fin L))) := by
+  -- #80 frame-family construction (Codex-confirmed: needs the #159 one-sided boundary normal forms).
+  -- L=1: the single layer uses the two-sided `deepestPoint_frame`. L≥2: layer 0 left-only
+  -- (`left_normal_form_of_cols_vanish` on `deepestPoint 0 = [A|0]`), layer L-1 right-only
+  -- (`right_normal_form_of_rows_vanish` on `[A;0]`), strict interior id (`deepestPoint_interior_eq_corM`).
+  -- Isolated obligation: the case-assembly + the boundary one-sided discharge. The cert chain +
+  -- deriv-fm's #91 build green around this (the family DEF + the 4 projections are the interface).
+  sorry
+
+/-- The frame family's left factors `Pf` (the deepest-point gauge frame, id-interior + boundary-left). -/
+noncomputable def deepestFrameFamilyP (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ :=
+  Classical.choose (deepestFrameFamily_exists H r B hB hr hL)
+
+/-- The frame family's right factors `Qf` (id-interior + boundary-right). -/
+noncomputable def deepestFrameFamilyQ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ :=
+  Classical.choose (Classical.choose_spec (deepestFrameFamily_exists H r B hB hr hL))
+
+/-- Bundled spec of `(deepestFrameFamilyP, deepestFrameFamilyQ)` (the `Classical.choose_spec`). -/
+theorem deepestFrameFamily_spec (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (∀ s : Fin L, deepestFrameFamilyP H r B hB hr hL s * deepestPoint H r B hB hr hL s
+        * deepestFrameFamilyQ H r B hB hr hL s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) ∧
+      (∀ s : Fin L, 1 ≤ (s : ℕ) →
+        deepestFrameFamilyP H r B hB hr hL s
+          = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)) ∧
+      (∀ s : Fin L, (s : ℕ) + 1 < L →
+        deepestFrameFamilyQ H r B hB hr hL s
+          = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) ∧
+      (2 ≤ L → deepestFrameFamilyQ H r B hB hr hL ((⟨0, by omega⟩ : Fin L))
+        = (1 : Matrix (Fin (H ((⟨0, by omega⟩ : Fin L)).succ)) (Fin (H ((⟨0, by omega⟩ : Fin L)).succ)) ℝ)) ∧
+      (2 ≤ L → deepestFrameFamilyP H r B hB hr hL ((⟨L - 1, by omega⟩ : Fin L))
+        = (1 : Matrix (Fin (H ((⟨L - 1, by omega⟩ : Fin L)).castSucc)) (Fin (H ((⟨L - 1, by omega⟩ : Fin L)).castSucc)) ℝ)) ∧
+      IsUnit (deepestFrameFamilyP H r B hB hr hL ((⟨0, by omega⟩ : Fin L)))
+        ∧ IsUnit (deepestFrameFamilyQ H r B hB hr hL ((⟨L - 1, by omega⟩ : Fin L))) :=
+  Classical.choose_spec (Classical.choose_spec (deepestFrameFamily_exists H r B hB hr hL))
+
+/-- **(N)** per-layer normalization: `Pf_s · deepestPoint_s · Qf_s = corM`. -/
+theorem deepestFrameFamily_normal (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    deepestFrameFamilyP H r B hB hr hL s * deepestPoint H r B hB hr hL s
+        * deepestFrameFamilyQ H r B hB hr hL s
+      = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+          if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) :=
+  (deepestFrameFamily_spec H r B hB hr hL).1 s
+
+/-- **(d-left)** interior + boundary-right layers have trivial left frame `Pf_s = 1` (for `s ≥ 1`). -/
+theorem deepestFrameFamilyP_interior (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (hs : 1 ≤ (s : ℕ)) :
+    deepestFrameFamilyP H r B hB hr hL s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) :=
+  (deepestFrameFamily_spec H r B hB hr hL).2.1 s hs
+
+/-- **(d-right)** interior + boundary-left layers have trivial right frame `Qf_s = 1` (for `s+1 < L`). -/
+theorem deepestFrameFamilyQ_interior (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (hs : (s : ℕ) + 1 < L) :
+    deepestFrameFamilyQ H r B hB hr hL s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
+  (deepestFrameFamily_spec H r B hB hr hL).2.2.1 s hs
+
+/-- **(a)** layer-0 RIGHT-frame trivial: `Qf (firstLayer) = 1` (`L ≥ 2`). -/
+theorem deepestFrameFamilyQ_firstLayer (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) :
+    deepestFrameFamilyQ H r B hB hr hL ((⟨0, by omega⟩ : Fin L))
+      = (1 : Matrix (Fin (H ((⟨0, by omega⟩ : Fin L)).succ)) (Fin (H ((⟨0, by omega⟩ : Fin L)).succ)) ℝ) :=
+  (deepestFrameFamily_spec H r B hB hr hL).2.2.2.1 hL2
+
+/-- **(b)** layer-(L−1) LEFT-frame trivial: `Pf (lastLayer) = 1` (`L ≥ 2`). -/
+theorem deepestFrameFamilyP_lastLayer (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) :
+    deepestFrameFamilyP H r B hB hr hL ((⟨L - 1, by omega⟩ : Fin L))
+      = (1 : Matrix (Fin (H ((⟨L - 1, by omega⟩ : Fin L)).castSucc)) (Fin (H ((⟨L - 1, by omega⟩ : Fin L)).castSucc)) ℝ) :=
+  (deepestFrameFamily_spec H r B hB hr hL).2.2.2.2.1 hL2
+
+/-- **(c)** boundary frames invertible: `IsUnit (Pf firstLayer)`, `IsUnit (Qf lastLayer)`. -/
+theorem deepestFrameFamily_boundary_isUnit (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    IsUnit (deepestFrameFamilyP H r B hB hr hL ((⟨0, by omega⟩ : Fin L)))
+      ∧ IsUnit (deepestFrameFamilyQ H r B hB hr hL ((⟨L - 1, by omega⟩ : Fin L))) :=
+  (deepestFrameFamily_spec H r B hB hr hL).2.2.2.2.2
+
 end DLNFibre.DLN.RLCT

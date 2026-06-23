@@ -251,4 +251,33 @@ theorem rank_normal_form_exists {a b r : ℕ} (A : Matrix (Fin a) (Fin b) ℝ) (
       _ = Matrix.of (fun (i : Fin a) (j : Fin b) =>
               if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := hBlock
 
+/-- **Left-only rank normal form for a `[A | 0]` matrix** (#159, the boundary-left frame). If a rank-`r`
+matrix `M` has its columns `j ≥ r` vanishing (so `M = [A | 0]` with `A` the first `r` columns, rank
+`r`), then a SINGLE left unit `P` carries it to the block-normal corner `P · M = corM` — no right frame
+needed (the zero columns are already normal). Proven from the column-independence of the first `r`
+columns: extend to an invertible basis `B`, take `P = B⁻¹`. (The right factor of the two-sided
+`rank_normal_form_exists` acts only on the `r × r` active block, which the `[A|0]` shape makes
+absorbable into the left basis choice.) -/
+theorem left_normal_form_of_cols_vanish {a b r : ℕ} (M : Matrix (Fin a) (Fin b) ℝ)
+    (hrank : M.rank = r) (hr : r ≤ b)
+    (hcols : ∀ (i : Fin a) (j : Fin b), r ≤ (j : ℕ) → M i j = 0) :
+    ∃ P : Matrix (Fin a) (Fin a) ℝ, IsUnit P ∧
+      P * M = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  -- #159: the `[A|0]` left-only normal form. Isolated obligation (dispatched separately); the
+  -- frame-family + cert chain build green around it.
+  sorry
+
+/-- **Right-only rank normal form for a `[A ; 0]` matrix** (#159, the boundary-right frame). If a
+rank-`r` matrix `M` has its rows `i ≥ r` vanishing (`M = [A ; 0]`), then a SINGLE right unit `Q`
+carries it to the corner `M · Q = corM`. The transpose of `left_normal_form_of_cols_vanish`. -/
+theorem right_normal_form_of_rows_vanish {a b r : ℕ} (M : Matrix (Fin a) (Fin b) ℝ)
+    (hrank : M.rank = r) (hr : r ≤ a)
+    (hrows : ∀ (i : Fin a) (j : Fin b), r ≤ (i : ℕ) → M i j = 0) :
+    ∃ Q : Matrix (Fin b) (Fin b) ℝ, IsUnit Q ∧
+      M * Q = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  -- #159: the `[A;0]` right-only normal form (transpose of the left version). Isolated obligation.
+  sorry
+
 end DLNFibre.Core.Matrix
