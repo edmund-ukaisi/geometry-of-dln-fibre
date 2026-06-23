@@ -273,4 +273,142 @@ theorem hasStrictFDerivAt_prodAux_entry_explicit {X : Type*} [NormedAddCommGroup
         exact hpre.fun_mul hlayer
       exact HasStrictFDerivAt.fun_sum (fun m (_ : m ∈ Finset.univ) => hsummand m)
 
+/-! ## The framed-layer reg-slice values at the boundary layers -/
+
+/-- The `firstLayer` framed layer on the reg-slice: `Y` vanishes when `L ≥ 2` (first ≠ last). -/
+theorem framedParamsReg_regSlice_first (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (r0 : Fin (deepestNReg H r) → ℝ) :
+    framedParamsReg H r hr hL (r0, 0) (firstLayer hL)
+      = Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+          (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+          (Matrix.fromBlocks (1 + readX H r hr hL (r0, 0) (firstLayer hL)) 0
+            (readZ H r hr hL (r0, 0) (firstLayer hL)) 0) := by
+  have hfl : firstLayer hL ≠ lastLayer hL := by
+    simp only [firstLayer, lastLayer, ne_eq, Fin.mk.injEq]; omega
+  simp only [framedParamsReg, framedLayer, readY_regSlice_zero_of_ne H r hr hL r0 _ hfl]
+
+/-- The `lastLayer` framed layer on the reg-slice: `X, Z` vanish when `L ≥ 2`. -/
+theorem framedParamsReg_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (r0 : Fin (deepestNReg H r) → ℝ) :
+    framedParamsReg H r hr hL (r0, 0) (lastLayer hL)
+      = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+          (rThresholdSplit r (H (lastLayer hL).succ) (hr _)).symm
+          (Matrix.fromBlocks 1 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0) := by
+  have hfl : lastLayer hL ≠ firstLayer hL := by
+    simp only [firstLayer, lastLayer, ne_eq, Fin.mk.injEq]; omega
+  simp only [framedParamsReg, framedLayer, readX_regSlice_zero_of_ne H r hr hL r0 _ hfl,
+    readZ_regSlice_zero_of_ne H r hr hL r0 _ hfl, add_zero]
+
+/-! ## The value-level product collapse on the regular slice
+
+`(firstLayer hL).castSucc = (0 : Fin (L+1))` is `rfl`, so `readZ … firstLayer`'s row index
+`Fin (H (firstLayer).castSucc − r)` is defeq `Fin (H 0 − r)` — no cast threading needed. -/
+
+/-- The reg-slice `firstShape`: the running-product value after the first layer
+(`reindex (fromBlocks (1+Xfirst) 0 Zfirst 0)`), at width `H 0 × H ⟨k⟩`. -/
+noncomputable def firstShape (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+    (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (k : ℕ) (hk : k < L + 1) :
+    Matrix (Fin (H 0)) (Fin (H ⟨k, hk⟩)) ℝ :=
+  Matrix.reindex (rThresholdSplit r (H 0) (hr 0)).symm
+    (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)).symm
+    (Matrix.fromBlocks (1 + readX H r hr hL (r0, 0) (firstLayer hL)) 0
+      (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+
+/-- `firstShape · corner = firstShape` (right-multiply by the interior corner keeps the shape):
+`[[1+X,0],[Z,0]]·[[1,0],[0,0]] = [[1+X,0],[Z,0]]`, the shared interface `eB` cancelling. -/
+theorem firstShape_mul_corner (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+    (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (k : ℕ) (hk : k < L + 1) (b : ℕ) (hb : b < L + 1) :
+    firstShape H r hr hL r0 k hk
+        * Matrix.reindex (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)).symm
+            (rThresholdSplit r (H ⟨b, hb⟩) (hr ⟨b, hb⟩)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+      = firstShape H r hr hL r0 b hb := by
+  simp only [firstShape, Matrix.reindex_apply, Equiv.symm_symm]
+  rw [Matrix.submatrix_mul_equiv _ _ _ (rThresholdSplit r (H ⟨k, hk⟩) (hr ⟨k, hk⟩)) _]
+  congr 1
+  rw [Matrix.fromBlocks_multiply]
+  congr 1 <;>
+    · simp only [Matrix.zero_mul, add_zero]
+      first
+        | exact Matrix.mul_one _
+        | exact Matrix.mul_zero _
+
+/-- Through the first layer (`1 ≤ k ≤ L-1`): the running product is `firstShape` — only the first
+layer's `X`/`Z` contributions survive; later interior layers are corners that keep the shape. -/
+theorem prodAux_regSlice_through_first (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (r0 : Fin (deepestNReg H r) → ℝ) (k : ℕ) (hk : k < L + 1) (hk1 : 1 ≤ k) (hkL : k + 1 ≤ L) :
+    prodAux H (framedParamsReg H r hr hL (r0, 0)) k hk = firstShape H r hr hL r0 k hk := by
+  induction k with
+  | zero => omega
+  | succ k ih =>
+      have hkL1 : k < L := by omega
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      -- layer `k` (the one just folded in) is an INTERIOR layer (k ≠ firstLayer=0 since k≥0 needs care;
+      -- and k ≠ lastLayer=L-1 since k+1 ≤ L-1 i.e. k < L-1). Split on whether k=0 (first) or k≥1.
+      rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+      · -- k = 0: `prodAux 1 = prodAux 0 * C_first = 1 * C_first = firstShape`.
+        subst hk0
+        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) 0 hk
+            (rThresholdSplit r (H ⟨0, hk'⟩) (hr _)) (rThresholdSplit r (H ⟨0 + 1, hk⟩) (hr _))
+            (Matrix.fromBlocks (1 + readX H r hr hL (r0, 0) (firstLayer hL)) 0
+              (readZ H r hr hL (r0, 0) (firstLayer hL)) 0) ?_]
+        · refine Eq.trans ?_ (rfl : _ = firstShape H r hr hL r0 (0 + 1) hk)
+          exact Matrix.one_mul _
+        · show framedParamsReg H r hr hL (r0, 0) (firstLayer hL) = _
+          rw [framedParamsReg_regSlice_first H r hr hL hL2 r0]
+          congr 1 <;> (apply Fin.ext; simp [firstLayer, Fin.castSucc, Fin.succ])
+      · -- k ≥ 1: `prodAux (k+1) = prodAux k * C_k`, `C_k` interior corner, `firstShape · corner`.
+        have hcorner : framedParamsReg H r hr hL (r0, 0) ⟨k, hkL1⟩
+            = Matrix.reindex (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).castSucc) (hr _)).symm
+                (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).succ) (hr _)).symm
+                (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+          apply framedParamsReg_regSlice_interior
+          · simp only [firstLayer, ne_eq, Fin.mk.injEq]; omega
+          · simp only [lastLayer, ne_eq, Fin.mk.injEq]; omega
+        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) k hk
+            (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).castSucc) (hr _))
+            (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).succ) (hr _))
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) ?_]
+        · rw [ih hk' (by omega) (by omega)]
+          exact firstShape_mul_corner H r hr hL r0 k hk' _ hk
+        · rw [hcorner]
+          congr 1 <;> (apply Fin.ext; simp [Fin.castSucc, Fin.succ])
+
+/-! ## Scalar calculus helpers (cross terms vanish at the base point) -/
+
+/-- A product of two functions each vanishing at `x` has strict derivative `0` at `x`. -/
+theorem hasStrictFDerivAt_mul_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {f g : E → ℝ} {f' g' : E →L[ℝ] ℝ} {x : E}
+    (hf : HasStrictFDerivAt f f' x) (hg : HasStrictFDerivAt g g' x)
+    (hfx : f x = 0) (hgx : g x = 0) :
+    HasStrictFDerivAt (fun y => f y * g y) (0 : E →L[ℝ] ℝ) x := by
+  have := hf.mul hg
+  simpa [hfx, hgx] using this
+
+/-- A finite sum of pairwise products, each factor vanishing at `x`, has strict derivative `0`. -/
+theorem hasStrictFDerivAt_sum_mul_zero {ι E : Type*} [Fintype ι] [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (f g : ι → E → ℝ) (f' g' : ι → E →L[ℝ] ℝ) {x : E}
+    (hf : ∀ i, HasStrictFDerivAt (f i) (f' i) x) (hg : ∀ i, HasStrictFDerivAt (g i) (g' i) x)
+    (hf0 : ∀ i, f i x = 0) (hg0 : ∀ i, g i x = 0) :
+    HasStrictFDerivAt (fun y => ∑ i, f i y * g i y) (0 : E →L[ℝ] ℝ) x := by
+  have := HasStrictFDerivAt.fun_sum (u := Finset.univ)
+    (A := fun i y => f i y * g i y) (A' := fun _ => (0 : E →L[ℝ] ℝ))
+    (fun i _ => hasStrictFDerivAt_mul_zero (hf i) (hg i) (hf0 i) (hg0 i))
+  simpa using this
+
+/-! ## Next: the full product collapse + block-entry derivatives + assembly
+
+PAUSED (controller, 2026-06-23): the shared `framedLayer` is migrating from the ADDITIVE chart
+(`reindex (fromBlocks (1+X) Y Z 0)`) to a genuinely FRAME-CONJUGATE form
+(`framedParams(split w) s = P_s · (paramsSymm w)_s · Q_s`). The reg-slice fderiv target then changes
+from `id` to the constant FRAME factor (the invertible shear-CLE form crux2's #150 already accepts).
+The collapse value `fromBlocks (1+X) ((1+X)Y) Z (Z·Y)` and the block-entry derivatives are written
+against the OLD additive shape, so they are deferred to cobuild's branch (fm2/deepest-gauge-chart-sub34,
+single-sourcing `framedParams`) once the rewrite lands. The SHAPE-INDEPENDENT bedrock above (alignment
+cancel, slot reads, the explicit Leibniz `prodAuxEntryDeriv`, the scalar `mul_zero` helpers) carries
+over. -/
+
 end DLNFibre.DLN.RLCT
