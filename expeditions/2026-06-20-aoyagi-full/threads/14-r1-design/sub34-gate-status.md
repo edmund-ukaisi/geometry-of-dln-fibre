@@ -16,15 +16,17 @@ single-writer file (adopted into this branch @4052a28). The cast collapses two w
 
 REMAINING on L2 sub-3 — two **PIN-level** obligations (each substantial NEW analytic/geometric proof,
 NOT a kernel-application or short wire):
-- **`deepestEPivot_deriv` (FOLD2, #82):** DE-RISKED to a single analytic obligation @756deaa.
-  BANKED (sorry-free, clean-three): `hasStrictFDerivAt_prodAux_entry`/`_prod_entry` (the L-fold product
-  strict-derivative, entry-wise — didn't exist before) + `regStraightenTotalCLM_equiv_of_regBlock_id`
-  (the GENERIC shear-CLE: `D_E(r,0)=r` ⟹ total CLM is the invertible `id+N`, N²=0, `clmShearEquiv` —
-  Codex-confirmed Route D factoring). With `D_E := fderiv ℝ deepestEPivot 0` (free from `_contdiff`),
-  `_deriv` reduces to ONE fact: `D_E.comp regInCLM = id` (reg-block = identity). That fact IS the #91
-  cert (g213-pin1-de0): the idempotent-sandwich `dP|_0 = Σ_s corner·δC_s·corner` → reg-block Jacobian
-  = id on pivot coords. Named wall (Codex): exposing `regResidualPack`'s reg-coords ARE
-  `(X_first, Y_last, Z_first)` at the gauge=0 slice. Consult: `codex/fold2-deriv-route-{prompt,answer}.md`.
+- **`deepestEPivot_deriv` (FOLD2, #82):** ASSEMBLY COMPLETE @da45d78 — `_deriv` is PROVEN modulo ONE
+  named sorry. BANKED clean-three: `hasStrictFDerivAt_prodAux_entry`/`_prod_entry` (the L-fold product
+  strict-derivative, didn't exist before), `regStraightenTotalCLM_equiv_of_regBlock_id` (generic shear-CLE,
+  Codex Route D), `regInCLM` (reg-slice embedding). The packaging closes: `D_E := fderiv ℝ deepestEPivot 0`
+  (free) → reg-block `= D_E.comp regInCLM` (chain rule, `hsd.comp (x:=0) hregIn`) → `= id` by the one
+  sorry → `regStraightenTotalCLM_equiv_of_regBlock_id` gives the invertible shear `e`. The SINGLE
+  remaining obligation, now fully isolated: `deepestEPivot_regSlice_fderiv_id :
+  HasStrictFDerivAt (fun r0 => deepestEPivot (r0,0)) id 0` — the #91 idempotent-sandwich (gauge-zero
+  slice → (0,0) X-pivot = reg-input). Named wall (Codex): the `regResidualPack` ↔ `(X_first,Y_last,Z_first)`
+  pivot-coord exposure. Standalone — a clean (a) grind / (b) pp2-cert handoff target.
+  Consult: `codex/fold2-deriv-route-{prompt,answer}.md`.
 - **`deepest_loss_squeeze` (FOLD3, #80):** the two-sided Frobenius bound. SIGNATURE FIXED @46295ef —
   caught a g161-class confound: the lemma took `regStraighten`/`coreAbsorb` OPAQUE (only `hsplit_base`),
   so the bound was unprovable for arbitrary maps. Restated to thread the concrete-map identities
