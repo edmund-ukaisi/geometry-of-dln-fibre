@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# lb — shared-cache + globally-throttled `lake build`. USE INSTEAD OF `lake build`.
+#
+#   docs/policies/lean-build-workflow.md  (the why + the box sizing)
+#
+# Every build (any worktree, any session/teammate) goes through here so that:
+#   1. lean/.lake/packages is a symlink to the shared rev-keyed mathlib store (mmap-shared,
+#      no per-worktree clone) — self-healing, so it works for any worktree-creation path;
+#   2. a GLOBAL flock token pool caps TOTAL concurrent Lean workers across ALL sessions
+#      (the only thing that can — independent controllers can't see each other's -j);
+#   3. the build runs with a capped -j.
+#
+# Config ($LAKE_SHARED/build-config: SLOTS, J) is read EACH run → tunable on the fly.
+#
+# Tested end-to-end on the prior box: rev-parse / store-check / self-heal symlink / flock slot / build
+# all exercised; three bugs fixed (two set -e exits + the -j flag). MEASURED: LEAN_NUM_THREADS caps the
+# number of concurrent `lean` SUBPROCESSES (=1 → 1, =4 → 4), so total workers ≤ SLOTS × J (defaults 2×3).
+# Still to confirm on the target box: lake-store-setup's one-time `cache get`, and tuning SLOTS/J.
+# See docs/policies/lean-build-workflow.md.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LEAN_DIR="$(dirname "$SCRIPT_DIR")"          # .../<worktree>/lean
+cd "$LEAN_DIR"
+
+LAKE_SHARED="${LAKE_SHARED:-$HOME/.lake-shared}"
+
+# --- config: read each invocation (on-the-fly tunable); defaults sized for t3.2xlarge ---
+SLOTS=2 ; J=3
+if [ -f "$LAKE_SHARED/build-config" ]; then . "$LAKE_SHARED/build-config"; fi
+SLOTS="${SLOTS:-2}" ; J="${J:-3}"
+
+# --- mathlib rev for THIS worktree (the store is keyed by it) ---
+REV="$(python3 -c "import json;m=json.load(open('lake-manifest.json'));print(next(p['rev'] for p in m['packages'] if p['name']=='mathlib'))" 2>/dev/null || true)"
+[ -n "$REV" ] || { echo "lb: cannot read mathlib rev from lean/lake-manifest.json" >&2; exit 1; }
+STORE="$LAKE_SHARED/$REV/packages"
+
+# --- the shared store must pre-exist (materialising it is a one-time, >10-min, DETACHED step) ---
+if [ ! -d "$STORE" ]; then
+  echo "lb: shared store missing for mathlib $REV." >&2
+  echo "    run ONCE (detached — it exceeds the 10-min cap):" >&2
+  echo "    nohup $SCRIPT_DIR/lake-store-setup $REV > /tmp/lake-store-$REV.log 2>&1 &" >&2
+  exit 1
+fi
+
+# --- self-heal: lean/.lake/packages -> $STORE   (.lake/build stays local, per-branch) ---
+mkdir -p .lake
+if [ "$(readlink -f .lake/packages 2>/dev/null || true)" != "$(readlink -f "$STORE")" ]; then
+  rm -rf .lake/packages
+  ln -s "$STORE" .lake/packages
+fi
+
+# --- acquire one global build slot (flock token pool; blocks until one frees) ---
+SLOTDIR="$LAKE_SHARED/slots"; mkdir -p "$SLOTDIR"
+got=""
+while [ -z "$got" ]; do
+  for i in $(seq 1 "$SLOTS"); do
+    exec 9>"$SLOTDIR/slot-$i"
+    if flock -n 9; then got="$i"; break; fi
+  done
+  if [ -z "$got" ]; then echo "lb: all $SLOTS global build slots busy; waiting…" >&2; sleep 3; fi
+done
+# fd 9 holds slot #$got for the lifetime of this process; released automatically on exit.
+
+echo "lb: mathlib $REV | slot $got/$SLOTS | LEAN_NUM_THREADS=$J lake build $*" >&2
+source "$HOME/.elan/env" 2>/dev/null || true
+export LEAN_NUM_THREADS="$J"     # lake v4.29/Lake 5.0 has no -j flag; this is the parallelism lever
+exec lake build "$@"

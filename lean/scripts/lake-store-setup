@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# lake-store-setup <mathlib-rev> — materialise the shared, rev-keyed mathlib packages store ONCE.
+#
+#   docs/policies/lean-build-workflow.md
+#
+# Run from any worktree whose lean/lake-manifest.json pins <mathlib-rev>. This does the single slow
+# `lake exe cache get` (clone mathlib + fetch ~7 GB of oleans), moves the result to the shared store
+# ~/.lake-shared/<rev>/packages, symlinks it back, and makes the store read-only. After this, every
+# worktree's `scripts/lb` symlinks to the store (mmap-shared) with no further clone.
+#
+# *** Exceeds the 10-min bash cap — RUN DETACHED: ***
+#   nohup lean/scripts/lake-store-setup <rev> > /tmp/lake-store-<rev>.log 2>&1 &
+#   # then poll the log for "store ready"
+#
+# *** DRAFT — authored during a VM-rotation hold, UNTESTED. Validate on the target box. ***
+set -euo pipefail
+
+REV="${1:?usage: lake-store-setup <mathlib-rev>}"
+LAKE_SHARED="${LAKE_SHARED:-$HOME/.lake-shared}"
+STORE="$LAKE_SHARED/$REV/packages"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LEAN_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$LEAN_DIR"
+
+if [ -d "$STORE" ]; then echo "store already exists: $STORE"; exit 0; fi
+
+# sanity: this worktree's manifest must pin the requested rev
+CUR="$(python3 -c "import json;m=json.load(open('lake-manifest.json'));print(next(p['rev'] for p in m['packages'] if p['name']=='mathlib'))")"
+[ "$CUR" = "$REV" ] || { echo "store-setup: worktree mathlib rev ($CUR) != requested ($REV)" >&2; exit 1; }
+
+echo "materialising shared store for mathlib $REV (one-time, slow — clone + ~7 GB fetch) ..."
+source "$HOME/.elan/env" 2>/dev/null || true
+
+# materialise a REAL .lake/packages here (drop any stale symlink first), then hand it to the store
+rm -rf .lake/packages
+lake exe cache get
+
+mkdir -p "$(dirname "$STORE")"
+mv .lake/packages "$STORE"
+ln -s "$STORE" .lake/packages
+chmod -R a-w "$STORE" 2>/dev/null || true   # read-only: worktrees only read deps; they write .lake/build
+
+echo "store ready: $STORE"
