@@ -1,7 +1,22 @@
 # cobuild-sub34 gate status — #44c (L2 deepest gauge-chart instance)
 
 Snapshot of what is built vs. gated, for in-repo visibility (not just teammate messages).
-Branch: `fm2/deepest-gauge-chart-sub34` @ `1b841e5`. As of 2026-06-23 (post-(C)-refactor + PIN1).
+Branch: `fm2/deepest-gauge-chart-sub34` @ `c88492e`. As of 2026-06-23.
+
+## TL;DR — the cast-independent lane is CLOSED; one machinery dep remains
+
+Everything cobuild-sub34 can build cast-free is BANKED GREEN sorry-free: PIN 0 (`deepest_coreAbsorb_exists`),
+PIN 1 (`deepest_regAbsorb_exists` — the `regAbsorb_rlct` producer, via the IFT adapter
+`rlctAtOn_comp_localDiffeo` + `boundedUnit_fderiv_det` + the `DeepestSplit` Haar instance), the PIN 2
+matrix core (`dlnLoss_block_squeeze` + `conjugation_frobenius_comparable`), `deepestEPivot` def +
+`deepestEPivot_contdiff`, the #95-(I) frames, the gauge-decode contract `deepest_isGaugeSliceDecode`, and
+the `deepest_gauge_squeeze_exists` ASSEMBLY (`deepest_gauge_chart_construct`) green-with-3-named-sorries.
+
+The ONLY remaining work is crux2's **3 `prodAux` fold lemmas** (#123, Codex-deferred): value-fold
+(→ `deepestEPivot_base`), derivative-fold (→ `deepestEPivot_deriv`, the g239 `D_E` transcription), and
+telescope-fold (→ `deepest_loss_squeeze` + PIN 2-B). ALL THREE funnel through the same dependent-Fin
+`prodAux` cast (the team-lead-confirmed re-scope: no cast-free lane bypasses differentiating/folding the
+`prodAux` product). cobuild WIRES the three on arrival → `DeepestGaugeChart` sorry-free → cert-review.
 
 ## Built + GREEN (sorry-free; clean-three)
 
