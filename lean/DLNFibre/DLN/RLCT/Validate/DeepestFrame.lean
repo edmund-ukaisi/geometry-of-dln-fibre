@@ -164,6 +164,70 @@ right-only via `right_normal_form_of_rows_vanish` on `[A;0]`). For `L = 1` the s
 boundaries — the raw two-sided `deepestPoint_frame` is used. The family satisfies the per-layer
 normalization `Pf_s · deepestPoint_s · Qf_s = corM` for ALL `s` (the part-(1) round-trip input). -/
 
+/-- **Per-layer frame existence** (the building block of the family). For each layer `s`, a frame
+`(P, Q)` with the per-layer normalization (N) and the layer-local triviality: `P = 1` if `1 ≤ s`
+(interior-or-right-boundary left frame trivial), `Q = 1` if `s+1 < L` (interior-or-left-boundary right
+frame trivial), both units. Cases: strict interior `P=Q=1` (`deepestPoint = corM`); layer 0 (`L≥2`)
+left-only (`left_normal_form_of_cols_vanish`); layer `L-1` (`L≥2`) right-only
+(`right_normal_form_of_rows_vanish`); `L=1` two-sided (`rank_normal_form_exists`). -/
+theorem deepestFrameLayer_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    ∃ (P : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+      (Q : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ),
+      P * deepestPoint H r B hB hr hL s * Q
+          = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+              if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
+      ∧ (1 ≤ (s : ℕ) → P = 1) ∧ ((s : ℕ) + 1 < L → Q = 1)
+      ∧ IsUnit P ∧ IsUnit Q := by
+  classical
+  have hrank : (deepestPoint H r B hB hr hL s).rank = r :=
+    (deepestPoint_isDeep H r B hB hr hL).2.1 s
+  -- corM shorthand at layer s.
+  set cM : Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ :=
+    Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+      if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) with hcM
+  rcases Nat.lt_or_ge 1 L with hL2 | hL1
+  · -- `L ≥ 2`: the three sub-cases by `(s:ℕ)`.
+    rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+    · -- layer 0: LEFT-only frame, `Q = 1`. cols ≥ r vanish.
+      have hcols : ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)), r ≤ (j : ℕ) →
+          deepestPoint H r B hB hr hL s i j = 0 :=
+        deepestPoint_layer0_cols_vanish H r B hB hr hL s (by omega) hs0
+      obtain ⟨P, hPunit, hPD⟩ := Core.Matrix.left_normal_form_of_cols_vanish
+        (deepestPoint H r B hB hr hL s) hrank hcols
+      refine ⟨P, 1, ?_, ?_, ?_, hPunit, isUnit_one⟩
+      · rw [Matrix.mul_one]; exact hPD
+      · intro h1; omega
+      · intro _; rfl
+    · -- `1 ≤ s`: either strict interior (`s+1 < L`) or layer `L-1` (`s+1 = L`).
+      rcases Nat.lt_or_ge ((s : ℕ) + 1) L with hint | hbnd
+      · -- strict interior: `deepestPoint = corM`, `P = Q = 1`.
+        have heq : deepestPoint H r B hB hr hL s = cM :=
+          deepestPoint_interior_eq_corM H r B hB hr hL s hspos hint
+        refine ⟨1, 1, ?_, ?_, ?_, isUnit_one, isUnit_one⟩
+        · rw [Matrix.one_mul, Matrix.mul_one, heq]
+        · intro _; rfl
+        · intro _; rfl
+      · -- layer `L-1` (`s+1 = L` since `s < L` and `s+1 ≥ L`): RIGHT-only frame, `P = 1`.
+        have hsL : (s : ℕ) + 1 = L := by have := s.isLt; omega
+        have hrows : ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)), r ≤ (i : ℕ) →
+            deepestPoint H r B hB hr hL s i j = 0 :=
+          deepestPoint_layerLast_rows_vanish H r B hB hr hL s (by omega) hsL
+        obtain ⟨Q, hQunit, hQD⟩ := Core.Matrix.right_normal_form_of_rows_vanish
+          (deepestPoint H r B hB hr hL s) hrank hrows
+        refine ⟨1, Q, ?_, ?_, ?_, isUnit_one, hQunit⟩
+        · rw [Matrix.one_mul]; exact hQD
+        · intro _; rfl
+        · intro h; omega
+  · -- `L = 1`: single layer, both boundaries trivial conditions vacuous. Two-sided frame.
+    have hLeq : L = 1 := by omega
+    obtain ⟨P, Q, hPunit, hQunit, hPQ⟩ :=
+      Core.Matrix.rank_normal_form_exists (deepestPoint H r B hB hr hL s) hrank
+    refine ⟨P, Q, hPQ, ?_, ?_, hPunit, hQunit⟩
+    · intro h1; have := s.isLt; omega
+    · intro h; omega
+
 /-- **The frame family exists** with: per-layer normalization (N), interior-id (d), boundary-inner
 triviality (a)/(b), and boundary invertibility (c). Bundled so the four interface lemmas deriv-fm needs
 are clean projections. -/
@@ -188,13 +252,18 @@ theorem deepestFrameFamily_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
         (Fin (H ((⟨L - 1, by omega⟩ : Fin L)).castSucc)) ℝ)) ∧
       -- (c) boundary frames invertible
       IsUnit (Pf ((⟨0, by omega⟩ : Fin L))) ∧ IsUnit (Qf ((⟨L - 1, by omega⟩ : Fin L))) := by
-  -- #80 frame-family construction (Codex-confirmed: needs the #159 one-sided boundary normal forms).
-  -- L=1: the single layer uses the two-sided `deepestPoint_frame`. L≥2: layer 0 left-only
-  -- (`left_normal_form_of_cols_vanish` on `deepestPoint 0 = [A|0]`), layer L-1 right-only
-  -- (`right_normal_form_of_rows_vanish` on `[A;0]`), strict interior id (`deepestPoint_interior_eq_corM`).
-  -- Isolated obligation: the case-assembly + the boundary one-sided discharge. The cert chain +
-  -- deriv-fm's #91 build green around this (the family DEF + the 4 projections are the interface).
-  sorry
+  classical
+  -- Assemble from the per-layer `deepestFrameLayer_exists`: `Pf s`/`Qf s` are its chosen witnesses.
+  choose Pf Qf hN hPint hQint _hPu _hQu using deepestFrameLayer_exists H r B hB hr hL
+  refine ⟨Pf, Qf, hN, hPint, hQint, ?_, ?_, ?_, ?_⟩
+  · -- (a) `Qf ⟨0⟩ = 1`: layer 0 has `(s:ℕ)+1 = 1 < L` (since `L ≥ 2`), so `hQint` fires.
+    intro hL2; exact hQint _ (by simp; omega)
+  · -- (b) `Pf ⟨L-1⟩ = 1`: layer `L-1` has `1 ≤ (s:ℕ) = L-1` (since `L ≥ 2`), so `hPint` fires.
+    intro hL2; exact hPint _ (by simp; omega)
+  · -- (c-left) `IsUnit (Pf ⟨0⟩)`.
+    exact _hPu _
+  · -- (c-right) `IsUnit (Qf ⟨L-1⟩)`.
+    exact _hQu _
 
 /-- The frame family's left factors `Pf` (the deepest-point gauge frame, id-interior + boundary-left). -/
 noncomputable def deepestFrameFamilyP (H : Fin (L + 1) → ℕ) (r : ℕ)
