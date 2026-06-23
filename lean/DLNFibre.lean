@@ -90,3 +90,7 @@ import DLNFibre.Core.GenericTuple
 -- entries multPoly = mult over MvPolynomial), the bridge eval_multPoly, the fibre as a zero-locus,
 -- and fibreGenIdeal = Ideal.map multComap (maxIdealOfPoint B) — the fibre-ring quotient F2 consumes.
 import DLNFibre.Core.MultComorphism
+-- Fibre-codim LOWER bound (partial Lemma 4.6): codimRepCanonical Σ̄^r ≤ codimRepCanonical (mult⁻¹ B)
+-- from mult⁻¹B ⊆ Σ̄^r. The +r(d_0+d_N−r) shift (the identity) stays Cited — it needs the exact-rank
+-- chart trivialization (absent at v4.29); the naïve sandwich is a NO-GO (see the module docstring).
+import DLNFibre.Core.FibreCodim

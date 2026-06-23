@@ -198,3 +198,35 @@ recovers the actual product (eval is a ring hom, commutes with matrix mult), so:
   components and Σ̄^r is reducible when θ>1, so the sandwich is per-(top-)component — dovetails into F3.
 - **Tide F3 — assembly**: per-component / reducibility bookkeeping → `codimRepCanonical(fibre) = cCodim + shift`;
   retire `cited_bundle_shift`. Witness `(2,2,2), r=1`: fibre codim `4 = 1 + 3`.
+
+## F2 OUTCOME — the sandwich is a NO-GO; my route steer was wrong (2026-06-23)
+
+**Correction to my own steer.** I told the operator the sandwich "dodges L1-0 flatness" and "the two
+scariest pieces are dissolved." That was wrong, and Tide F2 + decorrelated Codex caught it:
+
+- **Krull is the wrong direction.** `Ideal.height_le_card_of_mem_minimalPrimes_span` bounds codim
+  *above* by the generator count `d_N·d_0` (≫ the shift `δ = r(d_0+d_N−r)`), not below by `C+δ`. The
+  "lower bound via Krull" I steered toward does not exist without first building the exact-rank chart.
+- **`mult` is genuinely not flat.** Fibre dimension JUMPS as the rank drops — witness `(2,2,2)`: the
+  rank-1 fibre has dim 4 (codim 4 = C+δ = 1+3), the rank-0 fibre `mult⁻¹(0)=Σ̄^0` has dim 5 (codim 3).
+  So `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` does not apply to `multComap` at the
+  closed point `B`. Flatness is NOT dodged; it only holds after restricting to the open exact-rank
+  chart — which is exactly the missing build. The landed affine-domain equidimensionality converts
+  dim-bounds to height-bounds but does not supply the missing fibre-dimension upper bound.
+- **No clean partial identity beyond r=0.** r=1 still needs the chart; r=0 (`fibre(0)=Σ̄^0`, shift 0)
+  is the only clean case and is already landed (`DLN.RlctPayoff`).
+
+**LANDED (honest reachable half, bedrock):** `Core.FibreCodim` — `codimRepCanonical Σ̄^r ≤
+codimRepCanonical(mult⁻¹ B)` (from `mult⁻¹B ⊆ Σ̄^r`), green/sorry-free/axiom-clean, named honestly as a
+one-sided bound, NO-GO documented next to the claim. `[Field k]` only. The future chart build stands on it.
+
+**Corrected roadmap — the genuine remaining content = the rank-chart local-trivialization build** (LR's
+Lie-group submersion, the thing thread-01/thread-04 flagged and the sandwich was hoped to dodge but does
+not): reduce `B` to `E = diag(I_r,0)`; pivot chart `U = D(Δ)` (top-left r×r block invertible, dim δ);
+explicit section `D = C A⁻¹ B`; prove `mult⁻¹(U) ∩ Σ̄^r ≅ U × mult⁻¹(E)` as rings; flat-on-chart ⟹
+going-down ⟹ `height_eq_height_add` per top component; minimum over components via Brick A's
+minimal-prime machinery (`SigmaCodim.minimalPrimes_sigmaIdeal_eq`). Substantial, multi-rung, but concrete
+(explicit charts, not abstract scheme theory). The `BundleShiftInterface` stays Cited until it lands.
+
+**Decision point for the operator** (cost re-calibrated UP from my wrong steer): commit to the chart
+build (ambitious completion, several tides) vs. land-the-half + roadmap + keep Cited.
