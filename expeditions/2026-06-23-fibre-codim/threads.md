@@ -14,4 +14,6 @@
 
 | 09 | chart-flatness-proto | formalisation (tide) | closed | **G2a — gating flatness prototype. VERDICT: NO-GO this run** (tide + decorrelated Codex convergent; a clean thermometer reading). Localized comorphism REACHABLE; flatness reachable GIVEN the trivialization (tensor closer `R_t≃R_b⊗F_E`, `F_E` reducible). **WALL = the Schur `AlgEquiv`**: the engine's exact-rank coordinate rings are opaque `vanishingIdeal`-quotients with no explicit presentation. Full G2 = ~8–12 modules of from-scratch determinantal-AG (no API gap). Durable probe `Core.ChartFlatnessProbe` (green, un-aggregated). Per gate contract ⟹ land + roadmap. |
 
+| 10 | base-chart-presentation | formalisation (tide) | open | **G2-1 — base pivot-chart presentation** (operator: push until 4.6 closes; foundation of the determinantal build). The explicit Schur parametrization of the determinantal base `Mat^{rk=r} ∩ U ≅ GL_r × Mat × Mat` (top-left r×r block invertible ⟹ rank r ⟺ bottom-right = `B21 Δ⁻¹ B12`), the explicit handle the opaque `vanishingIdeal` lacked. SPECIFY-first + decorrelated Codex + checkpoint. Feeds the Schur AlgEquiv (G2-3). |
+
 Status vocabulary: `open` / `in-progress` / `blocked` / `review-pending` / `closed` / `abandoned`.

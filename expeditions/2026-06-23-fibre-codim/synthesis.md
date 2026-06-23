@@ -319,3 +319,20 @@ flatness closer):
 **Per the pre-agreed gate contract (NO-GO ⟹ land + roadmap), this expedition's reachable scope is
 complete.** Banked: F1 (comorphism keystone, reusable), the F2 lower bound, G1 (reduce-to-E), two
 route-pinning probes, this precise roadmap. The determinantal-presentation build is sub-expedition-scale.
+
+## OPERATOR: PUSH UNTIL 4.6 CLOSES (option 2, 2026-06-23)
+
+Operator chose (2): build the determinantal-presentation layer in-place, drive until Lemma 4.6 closes.
+Committing. Tide-ladder (controller decomposition of the ~8–12 modules; refine as tiles land):
+- **G2-1 [thread 10, NOW]** — pivot-chart explicit presentation of the **base** `Mat^{rk=r}`: the Schur
+  parametrization `Mat^{rk=r} ∩ U ≅ GL_r × Mat_{r×(d_0−r)} × Mat_{(d_N−r)×r}` (top-left r×r block `Δ`
+  invertible; bottom-right forced `= B_21 Δ⁻¹ B_12`), dim `= δ = r(d_0+d_N−r)`. The explicit handle the
+  opaque `vanishingIdeal`-quotient lacked; foundation for the Schur AlgEquiv.
+- **G2-2** — explicit presentation of the **total** `Σ^r` on the chart.
+- **G2-3** — the Schur `AlgEquiv` `R_t,loc ≃ R_b,loc ⊗[k] F_E` (reducible `F_E`) → `Module.Flat` → going-down.
+- **G2-4** — height-additivity (LANDED `height_eq_height_add_of_liesOver_of_hasGoingDown`) → `+δ`.
+- **G2-5** — reducibility/min-prime + finite chart-cover → `codimRepCanonical(fibre E) = cCodim + δ`.
+- **G3/G4** — assembly with G1 (`codimRepCanonical_fibre_eq_of_rank_eq`) ⟹ identity for all rank-r B;
+  discharge `DLN.BundleShiftInterface.cited_bundle_shift`.
+Discipline: each tide SPECIFY-first + decorrelated Codex + hard checkpoint; sequential (worktree-shared
+build); controller green-gates + reviewer/Codex on the final discharge. Surface only a genuine wall or completion.
