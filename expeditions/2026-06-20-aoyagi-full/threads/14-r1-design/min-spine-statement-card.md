@@ -71,14 +71,29 @@ conclusion at the leaf — honest + maximally general; the producer supplies the
 false-able `harith_base`. The now-unused `hmk` (`0 ≤ mkOf`) removed (the `mkOf/2` branch is handled
 unconditionally by `ofReal_min`). Spine still PROVEN, clean-three.
 
-## Spine's REMAINING hypotheses (post this round)
-- `hstep_min` — the geometric per-node min fact (a5f5ceb1's cover atom, #9). **The one genuinely-open
-  input.**
-- `hbase` — the `#70` Morse base (`degenChild M → rlctOf M = ofReal (lamOf M)`); the additive spine's
-  `hbase` + arith supplies this (the value `= nReg/2` at the leaf-child level).
-- `harith_min` — **PROVEN** (`lambdaCore_min_telescope`, given the V4 minAdm-min identity).
-- `hdrop`/`hnReg`/`hlam` — termination + nonneg; fall out of `BindingArith`/`MinAdmMono` (the `bind_*`
-  + `chainWidthSum_schurStateRed_lt` + `bind_hlam`), to be wired at instantiation.
+## Tightened cover instantiation `binding_min_rlct_eq_lambdaCore_of_cover` (@280596ae)
+
+`binding_min_rlct_eq_lambdaCore_of_cover` (BindingMinSpine.lean) instantiates the abstract spine with the
+concrete combinatorial functionals (`redOf := schurStateRed`, `lamOf := lambdaCore`,
+`degenChild := isLeafNode ∘ schurStateRed`) + the cover's per-node ℤ weights `mk`/`n`, discharging the
+ENTIRE combinatorial + value side automatically. PROVEN, clean-three.
+
+**Discharged NOW (combinatorial, proven on-branch):**
+- `harith_min` ← `lambdaCore_min_telescope` (given the ℤ min identity `hmin`).
+- `hdrop` ← `bind_hdrop` (via `isLeafNode_schurStateRed_of_isLeafNode` + `chainWidthSum_schurStateRed_lt`).
+- `hnReg` ← the supplied nonneg `hn`; `hlam` ← `bind_hlam`. (`mkOf` needs no nonneg — `ofReal_min`.)
+
+**Open GEOMETRIC inputs (all a5f5ceb1's cover atom #9):**
+- `hstep_min` — the per-node cover min.
+- `hbase` — the `#70` Morse base `isLeafNode(redOf M) → rlctOf M = ofReal(lambdaCore M)`. **GEOMETRIC,
+  open** (Explore audit: a producer obligation, NOT a proven general lemma — the value-side
+  `bind_harith_base` is proven, but the true-loss `rlctAtOn` form at the base is the producer's).
+- `hmin` — the cover's ℤ minimal-codim min identity `minAdmZ M = min(mk, n + minAdmZ(redOf M))`
+  (cert-104b V4; sympy-verified, NOT yet a Lean theorem — the atom's value-side cross-check).
+
+**Honest net-picture correction:** the binding R1 does NOT reduce to JUST `hstep_min`. The combinatorial
+side IS fully closed; the GEOMETRIC side is `hstep_min` + `hbase` (#70) + `hmin` (V4), all the cover
+atom's. The "just hstep_min" hope was off by the #70 base + the V4 identity, both #9's.
 
 ## Related open item (noted, not mine)
 
