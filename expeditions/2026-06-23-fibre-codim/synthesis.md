@@ -359,3 +359,30 @@ at the G2-2 checkpoint before committing the chain):
 **Rungs:** G2-2 = localized base presentation (+ Codex-vet the whole composition); G2-3 = total ring +
 the Schur AlgEquiv + flat/going-down (the wall); G2-4 = the height-additivity + catenary composition →
 codim(fibre E)=C+δ; G2-5 = reducibility/min-prime; G3/G4 = lift via G1 + discharge the interface.
+
+## G2-2 CHECKPOINT — composition NO-GO REFUTED; generator-free base route (2026-06-23)
+
+The G2-2 tide's decorrelated Codex flagged the ring-level composition as NO-GO (claiming the flat-local
+height-additivity identity and catenary are both absent from Mathlib v4.29). **Controller override
+(grep-verified): the engine's OWN landed AG library dissolves both — Codex assessed bare Mathlib, not the
+engine.**
+- The additive identity `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` IS present + used
+  (`FlatQuasiFiniteHeight:75`, `PolynomialDimension:114` — "the load-bearing additive half", pinned in
+  `FlatTrivialProductProbe:104`). Codex confused it with `HasGoingDown.of_flat` (only the inequality). It
+  applies on the LOCALIZED flat rings.
+- The catenary composition `ht_R(Q)=ht_R(I_X)+ht_{R/I_X}(Q/I_X)` follows from the landed poly-bridge
+  (`height_vanishingIdeal_add_varietyDim_eq_card`) + the landed affine-domain equidim
+  (`affine_domain_height_add_ringKrullDim_quotient_eq`), per top component.
+So the chain stays on the height-additivity architecture. Real remaining work = localization-height
+bookkeeping + per-component reducibility (G2-5), NOT absent machinery.
+
+**G2-2 route (GO, generator-free — dodges determinantal-ideal theory, which IS absent at v4.29):** the
+**Schur graph ideal** `J = (detΔ·B22 − B21·adj(Δ)·B12)` in the localized poly ring; prove `J ⊆ I_loc` via
+"detΔ·g_ab vanishes on all Σ̄^r" (G2-1's Schur relation on the chart, trivially on V(detΔ)); upgrade to
+`J = I_loc` by height-comparison (both prime height C; `Ideal.height_strict_mono_of_is_prime`). Base facts
+(`R_base` domain, `dim = δ`) re-exported from `DeterminantalStratumDim` (the N=1-orbit-closure route).
+
+**Reserved alternative for G2-4 (Codex's, genuinely good):** the **total-space explicit-coordinate** route
+— on the chart the fibre is cut by `C+δ` coordinate equations (C for Σ̄^r + δ for E), so `height = C+δ` by
+direct poly/localization transport, no flat-local dimension formula, no catenary. Trades the localization
+bookkeeping for a stronger explicit total presentation in G2-3 (built anyway). Decide G2-4's route after G2-3.
