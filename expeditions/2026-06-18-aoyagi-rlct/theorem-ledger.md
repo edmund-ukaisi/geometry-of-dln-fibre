@@ -6269,6 +6269,31 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
 
+Latest A4/A0 selected-entry multi-chart certificate:
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.lossExp_chart_zero`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPriorExp_chart_zero`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_minCountInChart_eq_one`,
+and
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentOrder_eq_one`.
+The finite chart family is indexed by a supplied equivalence
+`Fin center.card ≃ center`; chart `c` is the existing one-pivot selected-entry
+certificate at the selected pivot.  Its finite exponent data has ratio
+`center.card / 2`, chartwise ratio count `1`, finite minimum
+`center.card / 2`, and finite order `1`.  It does not assert analytic atlas
+coverage, transition regularity, analytic Jacobian/volume-form control, source
+production, global active-ratio lower bounds, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-certificate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-multi-chart-certificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-multi-chart-certificate-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

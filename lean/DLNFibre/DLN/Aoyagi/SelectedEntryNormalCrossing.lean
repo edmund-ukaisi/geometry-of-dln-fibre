@@ -397,6 +397,231 @@ theorem exponentData_exponentOrder_eq_one
 
 end selectedEntryCenterSqFormalJacobianChartCertificate
 
+/-- Finite all-pivot chart-family certificate for the selected-entry
+square-sum and formal pivot-first determinant.
+
+The charts are indexed by a supplied equivalence from `Fin center.card` to the
+finite center subtype.  Chart `c` is exactly the existing one-pivot
+selected-entry certificate for the pivot `chartEquiv c`.  This is finite
+certificate bookkeeping only: it does not prove atlas coverage, transition
+regularity, analytic Jacobian control, or source production. -/
+def selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) :
+    AoyagiNormalCrossingChartCertificate (center → K) K where
+  numCharts := center.card
+  numCoords := 1
+  ChartPoint := fun c ↦
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) (chartEquiv c)).ChartPoint (0 : Fin 1)
+  chartPoint_nonempty := fun c ↦
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) (chartEquiv c)).chartPoint_nonempty (0 : Fin 1)
+  chartMap := fun c x ↦
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) (chartEquiv c)).chartMap (0 : Fin 1) x
+  coord := fun c x ↦
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) (chartEquiv c)).coord (0 : Fin 1) x
+  loss := fun value ↦ selectedEntryCenterSq (Finset.univ : Finset center) value
+  jacobianPrior := fun c x ↦
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) (chartEquiv c)).jacobianPrior (0 : Fin 1) x
+  lossUnit := fun c x ↦
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) (chartEquiv c)).lossUnit (0 : Fin 1) x
+  jacobianPriorUnit := fun c x ↦
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) (chartEquiv c)).jacobianPriorUnit (0 : Fin 1) x
+  lossExp := fun _ _ ↦ 1
+  jacobianPriorExp := fun c _ ↦ (center.erase (chartEquiv c).1).card
+  loss_monomial := by
+    intro c x
+    simpa [selectedEntryCenterSqFormalJacobianChartCertificate] using
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) (chartEquiv c)).loss_monomial (0 : Fin 1) x
+  jacobianPrior_monomial := by
+    intro c x
+    simp [selectedEntryCenterSqFormalJacobianChartCertificate]
+  lossUnit_isUnit := by
+    intro c x
+    exact
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) (chartEquiv c)).lossUnit_isUnit (0 : Fin 1) x
+  jacobianPriorUnit_isUnit := by
+    intro c x
+    exact
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) (chartEquiv c)).jacobianPriorUnit_isUnit (0 : Fin 1) x
+  active_nonempty := by
+    rcases hcenter with ⟨p, hp⟩
+    exact ⟨(chartEquiv.symm ⟨p, hp⟩, (0 : Fin 1)), by simp⟩
+
+namespace selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+
+/-- Every chart in the selected-entry chart family has loss exponent `1` on
+its unique monomial coordinate. -/
+@[simp] theorem lossExp_chart_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).lossExp c (0 : Fin 1) = 1 :=
+  rfl
+
+/-- The formal Jacobian/prior exponent in chart `c` is the number of
+non-pivot center entries for that chart. -/
+@[simp] theorem jacobianPriorExp_chart_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).jacobianPriorExp c (0 : Fin 1) =
+      (center.erase (chartEquiv c).1).card :=
+  rfl
+
+/-- In every chart, the unique active coordinate has finite ratio
+`|center| / 2`. -/
+theorem exponentData_ratioAt_chart_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.ratioAt (c, (0 : Fin 1)) =
+      (center.card : ℚ) / 2 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData
+  have hloss : D.lossExp c (0 : Fin 1) = 1 := rfl
+  have hjac : D.jacobianPriorExp c (0 : Fin 1) + 1 = center.card := by
+    exact Finset.card_erase_add_one (chartEquiv c).2
+  exact D.ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq
+    hloss hjac
+
+/-- The finite exponent minimum of the selected-entry all-pivot chart family
+is `|center| / 2`. -/
+theorem exponentData_exponentMinimum_eq_centerCard_div_two
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.exponentMinimum =
+      (center.card : ℚ) / 2 := by
+  let C :=
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv
+  let D := C.exponentData
+  rcases hcenter with ⟨p, hp⟩
+  let c0 : Fin center.card := chartEquiv.symm ⟨p, hp⟩
+  have hratio :
+      D.ratioAt (c0, (0 : Fin 1)) = (center.card : ℚ) / 2 := by
+    exact exponentData_ratioAt_chart_zero (K := K)
+      (hcenter := ⟨p, hp⟩) chartEquiv c0
+  refine D.exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
+    (D.mem_activePairs_of_lossExp_eq_one (by rfl)) hratio ?_
+  intro p' hp'
+  rcases p' with ⟨c, j⟩
+  fin_cases j
+  exact le_of_eq (by
+    simpa [D] using
+      (exponentData_ratioAt_chart_zero (K := K)
+        (hcenter := ⟨p, hp⟩) chartEquiv c).symm)
+
+/-- In every selected-entry pivot chart, the count at ratio `|center| / 2`
+is `1`. -/
+theorem exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.countInChartAtRatio
+        ((center.card : ℚ) / 2) c = 1 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData
+  rw [AoyagiNormalCrossingExponentData.countInChartAtRatio,
+    AoyagiNormalCrossingExponentData.coordsInChartAtRatio]
+  change
+    ((Finset.univ : Finset (Fin 1)).filter
+      (fun j ↦
+        0 < D.lossExp c j ∧
+          D.ratioAt (c, j) = (center.card : ℚ) / 2)).card = 1
+  have hfilter :
+      ((Finset.univ : Finset (Fin 1)).filter
+        (fun j ↦
+          0 < D.lossExp c j ∧
+            D.ratioAt (c, j) = (center.card : ℚ) / 2)) =
+        Finset.univ := by
+    apply Finset.filter_true_of_mem
+    intro j _hj
+    fin_cases j
+    exact ⟨by simp [D, selectedEntryCenterSqFormalJacobianChartFamilyCertificate],
+      by simpa [D] using
+        exponentData_ratioAt_chart_zero (K := K) hcenter chartEquiv c⟩
+  rw [hfilter]
+  change (Finset.univ : Finset (Fin 1)).card = 1
+  simp
+
+private theorem countAtLocalRatio_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.countInChartAtRatio
+        ((center.card : ℚ) / 2) c = 1 :=
+  exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+    (K := K) hcenter chartEquiv c
+
+/-- In every selected-entry pivot chart, the chartwise minimum-coordinate
+count is `1`. -/
+theorem exponentData_minCountInChart_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.minCountInChart c = 1 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData
+  rw [D.minCountInChart_eq_countInChartAtRatio_of_exponentMinimum_eq
+    (exponentData_exponentMinimum_eq_centerCard_div_two (K := K) hcenter chartEquiv) c]
+  exact exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+    (K := K) hcenter chartEquiv c
+
+/-- The selected-entry all-pivot chart family has finite exponent order `1`. -/
+theorem exponentData_exponentOrder_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.exponentOrder = 1 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData
+  rcases hcenter with ⟨p, hp⟩
+  let c0 : Fin center.card := chartEquiv.symm ⟨p, hp⟩
+  refine D.exponentOrder_eq_of_countInChartAtRatio_eq_of_forall_le
+    (exponentData_exponentMinimum_eq_centerCard_div_two (K := K)
+      (hcenter := ⟨p, hp⟩) chartEquiv)
+    (c := c0) ?_ ?_
+  · exact exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+      (K := K) (hcenter := ⟨p, hp⟩) chartEquiv c0
+  · intro c
+    rw [exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+      (K := K) (hcenter := ⟨p, hp⟩) chartEquiv c]
+
+end selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+
 /-- Case 1 specialization of the selected-entry finite microcertificate at
 the old exceptional generator.
 

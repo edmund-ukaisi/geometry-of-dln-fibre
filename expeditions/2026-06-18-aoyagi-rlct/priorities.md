@@ -294,6 +294,18 @@ is still a token for an externally chosen old label, non-displayed row-strip
 pivots are not source-produced transition formulas, and no chart coverage,
 regularity, analytic Jacobian, global A0 data, pole order, or RLCT is proved.
 
+The current A4/A0 selected-entry multi-chart certificate slice is
+`threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-certificate-a4.md`.
+Lean now lifts the generic one-pivot selected-entry microcertificate to a
+finite all-pivot `AoyagiNormalCrossingChartCertificate`, indexed by a supplied
+equivalence `Fin center.card ≃ center`.  Every chart delegates to the
+one-pivot certificate at its selected pivot, and the finite exponent data has
+ratio `center.card / 2`, chartwise ratio count `1`, finite minimum
+`center.card / 2`, and finite order `1`.  This is finite certificate-family
+bookkeeping only: it does not prove atlas coverage, transition regularity,
+analytic Jacobian/volume-form control, source production, global active-ratio
+lower bounds, pole order, or RLCT.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

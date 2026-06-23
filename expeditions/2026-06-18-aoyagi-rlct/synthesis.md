@@ -6506,6 +6506,31 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
 
+Latest A4/A0 selected-entry multi-chart certificate:
+`SelectedEntryNormalCrossing.lean` now contains
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate` and finite
+exponent-data consequences
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_minCountInChart_eq_one`,
+and
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentOrder_eq_one`.
+The certificate is indexed by a supplied equivalence `Fin center.card ≃ center`;
+chart `c` reuses the existing one-pivot selected-entry certificate for the
+pivot selected by that equivalence.  Every chart has one active coordinate,
+ratio `center.card / 2`, chartwise ratio count `1`, and the finite family has
+minimum `center.card / 2` and order `1`.  This is finite certificate-family
+bookkeeping only.  It is not analytic atlas coverage, transition regularity,
+analytic Jacobian/volume-form control, source production, global active-ratio
+lower bounds, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-certificate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-multi-chart-certificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-multi-chart-certificate-a4.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,

@@ -5166,3 +5166,38 @@ global A0 chart family, chart coverage, selected-entry atlas, source
 production, analytic Jacobian/volume-form theorem, global active-ratio lower
 bound, global chart-count/order theorem, Theorem 2 pole order, `theta`, or
 RLCT extraction.
+
+## 2026-06-23 Lean selected-entry multi-chart certificate
+
+Reproduction:
+`reproduction-selected-entry-multi-chart-certificate-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-multi-chart-certificate.md`.
+Review artifact:
+`review-selected-entry-multi-chart-certificate-a4.md`.
+
+Lean now lifts the generic one-pivot selected-entry microcertificate to a
+finite all-pivot chart-family certificate:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+```
+
+The charts are indexed by a supplied equivalence `Fin center.card ≃ center`;
+chart `c` delegates to the existing one-pivot certificate for the pivot
+selected by that equivalence.  The finite exponent API proves:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentMinimum_eq_centerCard_div_two
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_minCountInChart_eq_one
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentOrder_eq_one
+```
+
+This is the first finite selected-entry chart-family certificate rather than a
+single selected pivot.  It remains finite certificate bookkeeping: it does not
+prove analytic atlas coverage, transition regularity, analytic
+Jacobian/volume-form control, source production of successor matrices or
+post-data, global active-ratio lower bounds, pole order, or RLCT extraction.
+Xhigh fidelity review passed with no required fixes.

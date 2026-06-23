@@ -742,6 +742,17 @@ No such claim is formalisation-ready until both fields are filled.
   bookkeeping only; it does not construct global A0 data, the hidden
   selected-old source label, chart coverage, active-ratio lower bounds, chart
   counts for the full normal-crossing family, pole order, `theta`, or RLCT.
+  The A4/A0 selected-entry all-pivot finite certificate
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate` is also proved
+  in `lean/DLNFibre/DLN/Aoyagi/SelectedEntryNormalCrossing.lean`.  It indexes
+  charts by a supplied equivalence `Fin center.card ≃ center`; each chart
+  delegates to the existing one-pivot selected-entry certificate for the
+  selected pivot.  Its finite exponent data has ratio `center.card / 2`,
+  chartwise ratio count `1`, finite minimum `center.card / 2`, and finite
+  order `1`.  This is finite certificate-family bookkeeping only; it does not
+  construct analytic atlas coverage, transition regularity, analytic
+  Jacobian/volume-form control, source production, global active-ratio lower
+  bounds, pole order, `theta`, or RLCT.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -962,6 +973,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case1-local-chart-certificate-contribution-a4.md`;
 	  xhigh source/fidelity and Lean/API reviews passed and are saved at
 	  `threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
+	  Reproduction of the selected-entry multi-chart certificate is saved at
+	  `threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-certificate-a4.md`;
+	  xhigh fidelity review passed and is saved at
+	  `threads/04-blow-up-certificate/review-selected-entry-multi-chart-certificate-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1174,6 +1189,24 @@ No such claim is formalisation-ready until both fields are filled.
   arbitrary row-strip pivots are not source-displayed transition formulas,
   and no chart coverage, regularity, analytic Jacobian, global A0 data, pole
   order, or RLCT is proved. Also packaged the finite
+  selected-entry all-pivot chart-family certificate:
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.lossExp_chart_zero`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPriorExp_chart_zero`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_countInChartAtRatio_centerCard_div_two_eq_one`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_minCountInChart_eq_one`,
+  and
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentOrder_eq_one`.
+  This finite family is indexed by a supplied equivalence
+  `Fin center.card ≃ center`, delegates each chart to the corresponding
+  one-pivot selected-entry microcertificate, and proves ratio
+  `center.card / 2`, chartwise ratio count `1`, finite minimum
+  `center.card / 2`, and finite order `1`.  It is not analytic chart
+  coverage, transition regularity, source production, analytic Jacobian
+  control, pole order, or RLCT.
+  Also packaged the finite
   Case 1 first-jump and selected-label hypotheses as
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
   `J+J1 < mu_S`, selected introduced label, selected level, gap, componentwise
