@@ -44,12 +44,16 @@ theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k 
     prodAux H A (k + 1) hk
       = (prodAux H A k (Nat.lt_of_succ_lt hk)) *
           (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm) (A ⟨k, Nat.lt_of_succ_lt_succ hk⟩)) := by
-  -- DEFERRED (crux2 3-attempt stop 2026-06-23): e1/e2 are rfl (PROBE 1), but every framing of the
-  -- unfold re-triggers the dependent-Fin HMul instance-synthesis wall — (1) `Matrix.ext` + reindex_apply
-  -- entry-chase, (2) `obtain rfl` + simp, (3) `show`+`rw reindex_refl_refl` — all hit
-  -- "failed to synthesize HMul" because the running product's column type `Fin (H ⟨k,hk⟩)` and the
-  -- (reindexed) layer's row type don't UNIFY for instance resolution despite the value-defeq. Needs
-  -- Codex's HEq-induction design (down) → fresh-session-with-Codex. The statement is the right unfold.
+  -- DEFERRED (crux2, cap reached) — SHARPENED for the resumer (needs goal-state feedback, ~1 iteration):
+  -- `obtain rfl : e1 = rfl := Subsingleton.elim _ _` WORKS (the width-eq IS rfl, Eq is a subsingleton),
+  -- same for e2 — so the cast collapses. After the obtains the RHS `reindex (finCongr rfl) (finCongr rfl)`
+  -- IS the identity (`finCongr_refl` Data/Fin/SuccPred + `reindex_refl_refl` Data/Matrix/Defs), leaving
+  -- `prodAux (k+1) = prodAux k * A ⟨k,_⟩` = the def by `rfl`. BUT `simp only [finCongr_refl,
+  -- reindex_refl_refl]` "made no progress" — the post-obtain goal doesn't surface those literal patterns;
+  -- needs the interactive goal-state to pick the right rewrite (likely the `.symm`-of-rfl shape or an
+  -- `Equiv.refl_symm` first). For the FULL telescoping induction, the fold-traversal tool is
+  -- `Matrix.submatrix_mul_equiv` (Data/Matrix/Mul:1151) — commutes reindex through `*` so frames push
+  -- through `prodAux` without the HMul-synth wall. Concrete Mathlib leads, not a from-scratch HEq design.
   sorry
 
 /-- **PIN2 endpoint-frame telescoping** (existential endpoints, cobuild's banked shape). If every layer
