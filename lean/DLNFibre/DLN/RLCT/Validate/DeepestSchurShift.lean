@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
+import Mathlib.Analysis.Calculus.BumpFunction.Basic
+import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestSchurShift` — the cutoff Schur core-shift (#44c, PIN 0)
@@ -203,5 +205,153 @@ theorem schurShiftRaw_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
   funext i
   show (paramsEquivFlat (deepestM H r)) (fun _ => 0) i = 0
   rfl
+
+/-! ## The det-nonzero unit set and the cutoff
+
+The honest Schur correction is `ContinuousAt` only on the open **unit set** `unitSet` where every
+`det(1 + X_s) ≠ 0`. It contains the origin (`det(1 + 0) = det 1 = 1 ≠ 0`). A `ContDiffBump` `χ` with
+`tsupport χ ⊆ unitSet` and `χ = 1` near the origin gives the **globally continuous** cutoff
+`schurCutoffShift = χ • schurShiftRaw` — continuous everywhere (continuous off `tsupport χ` by
+vanishing, `ContinuousAt` on `tsupport χ ⊆ unitSet` since `schurShiftRaw` is), equal to the honest
+correction on the inner ball where `χ = 1`, and `0` at the origin. -/
+
+/-- The open unit set: the gauge coords where every pivot `1 + X_s` is invertible. -/
+def unitSet (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Set ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :=
+  {p | ∀ s : Fin L, (1 + readX H r hr hL p s).det ≠ 0}
+
+theorem isOpen_unitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    IsOpen (unitSet H r hr hL) := by
+  have hrw : unitSet H r hr hL
+      = ⋂ s : Fin L, {p | (1 + readX H r hr hL p s).det ≠ 0} := by
+    ext p; simp [unitSet, Set.mem_iInter]
+  rw [hrw]
+  refine isOpen_iInter_of_finite (fun s => ?_)
+  have hcont : Continuous (fun p => (1 + readX H r hr hL p s).det) :=
+    (continuous_const.add (continuous_readX H r hr hL s)).matrix_det
+  exact hcont.isOpen_preimage _ isOpen_ne
+
+theorem mem_unitSet_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ∈ unitSet H r hr hL := by
+  intro s
+  rw [readX_zero H r hr hL s, add_zero, Matrix.det_one]
+  exact one_ne_zero
+
+/-- An open ball radius `ε > 0` with `ball 0 ε ⊆ unitSet` (the origin's unit-neighbourhood). -/
+theorem exists_ball_subset_unitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ∃ ε > 0, Metric.ball (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ε
+      ⊆ unitSet H r hr hL := by
+  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp (isOpen_unitSet H r hr hL) 0
+    (mem_unitSet_zero H r hr hL)
+  exact ⟨ε, hε, hball⟩
+
+/-- The chosen unit-ball radius `ε > 0` (with `ball 0 ε ⊆ unitSet`). -/
+noncomputable def unitRadius (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : ℝ :=
+  (exists_ball_subset_unitSet H r hr hL).choose
+
+theorem unitRadius_pos (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : 0 < unitRadius H r hr hL :=
+  (exists_ball_subset_unitSet H r hr hL).choose_spec.1
+
+theorem ball_unitRadius_subset (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Metric.ball (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+        (unitRadius H r hr hL)
+      ⊆ unitSet H r hr hL :=
+  (exists_ball_subset_unitSet H r hr hL).choose_spec.2
+
+/-- The cutoff bump on the gauge slot: a `ContDiffBump` at the origin with outer radius `ε/2`
+(half the unit-ball radius), so its (closed) support sits inside `unitSet`, and `= 1` on the inner
+ball `closedBall 0 (ε/4)`. -/
+noncomputable def cutoffBump (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) where
+  rIn := unitRadius H r hr hL / 4
+  rOut := unitRadius H r hr hL / 2
+  rIn_pos := by have := unitRadius_pos H r hr hL; linarith
+  rIn_lt_rOut := by have := unitRadius_pos H r hr hL; linarith
+
+/-- The raw Schur shift is `ContinuousAt p` on the unit set (every pivot invertible there): each
+layer correction is `ContinuousAt`, and `paramsEquivFlat` is continuous. -/
+theorem continuousAt_schurShiftRaw_of_mem_unitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+    (hp : p ∈ unitSet H r hr hL) :
+    ContinuousAt (schurShiftRaw H r hr hL) p := by
+  unfold schurShiftRaw
+  refine (continuous_paramsEquivFlat (deepestM H r)).continuousAt.comp ?_
+  refine continuousAt_pi.mpr (fun s => continuousAt_schurCorrection H r hr hL s p (hp s))
+
+/-- The (closed) support of the cutoff bump sits inside the unit set: `tsupport χ = closedBall 0
+(ε/2) ⊆ ball 0 ε ⊆ unitSet`. -/
+theorem tsupport_cutoffBump_subset_unitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    tsupport (⇑(cutoffBump H r hr hL)) ⊆ unitSet H r hr hL := by
+  rw [(cutoffBump H r hr hL).tsupport_eq]
+  refine subset_trans ?_ (ball_unitRadius_subset H r hr hL)
+  intro x hx
+  rw [Metric.mem_closedBall] at hx
+  rw [Metric.mem_ball]
+  have hpos := unitRadius_pos H r hr hL
+  show dist x 0 < unitRadius H r hr hL
+  have : (cutoffBump H r hr hL).rOut = unitRadius H r hr hL / 2 := rfl
+  rw [this] at hx
+  linarith
+
+/-! ## The cutoff Schur shift (the concrete `shift` fed to `coreShearHomeo`) -/
+
+/-- **The cutoff Schur shift** (PIN 0's `shift`): `χ • schurShiftRaw`, the honest Schur correction
+multiplied by the gauge-slot bump. Globally continuous (the bump's support sits in the unit set),
+vanishing at the origin, and equal to the honest correction on the inner ball. -/
+noncomputable def schurCutoffShift (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
+    Fin (flatDim (deepestM H r)) → ℝ :=
+  (cutoffBump H r hr hL p) • schurShiftRaw H r hr hL p
+
+/-- **The cutoff Schur shift is globally continuous.** Off `tsupport χ` it vanishes (continuous);
+on `tsupport χ ⊆ unitSet` the raw correction is `ContinuousAt` and `χ` continuous, so the product
+is `ContinuousAt`. `continuous_of_tsupport` glues. -/
+theorem continuous_schurCutoffShift (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Continuous (schurCutoffShift H r hr hL) := by
+  refine continuous_of_tsupport (fun x hx => ?_)
+  -- `x ∈ tsupport (χ • rawSchur) ⊆ tsupport χ ⊆ unitSet`, so `rawSchur` is `ContinuousAt x`.
+  have hxsupp : x ∈ tsupport (⇑(cutoffBump H r hr hL)) := by
+    refine (tsupport_smul_subset_left (⇑(cutoffBump H r hr hL)) (schurShiftRaw H r hr hL)) ?_
+    exact hx
+  have hxU : x ∈ unitSet H r hr hL := tsupport_cutoffBump_subset_unitSet H r hr hL hxsupp
+  have hχ : ContinuousAt (⇑(cutoffBump H r hr hL)) x :=
+    (cutoffBump H r hr hL).continuous.continuousAt
+  have hraw : ContinuousAt (schurShiftRaw H r hr hL) x :=
+    continuousAt_schurShiftRaw_of_mem_unitSet H r hr hL x hxU
+  exact hχ.smul hraw
+
+/-- **The cutoff Schur shift vanishes at the origin** (`schurShiftRaw 0 = 0`, so `χ(0) • 0 = 0`). -/
+theorem schurCutoffShift_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    schurCutoffShift H r hr hL 0 = 0 := by
+  simp only [schurCutoffShift, schurShiftRaw_zero H r hr hL, smul_zero]
+
+/-- **On the inner ball the cutoff equals the honest Schur correction** (`χ = 1` there). The germ-at-0
+agreement PIN 2's loss-squeeze consumes (`rlctAtOn`/the squeeze are local). -/
+theorem schurCutoffShift_eq_raw_of_mem_closedBall (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+    (hp : p ∈ Metric.closedBall (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+      ((cutoffBump H r hr hL).rIn)) :
+    schurCutoffShift H r hr hL p = schurShiftRaw H r hr hL p := by
+  simp only [schurCutoffShift, (cutoffBump H r hr hL).one_of_mem_closedBall hp, one_smul]
+
+/-- The inner ball `closedBall 0 (ε/4)` is a neighbourhood of the origin (`ε > 0`). -/
+theorem closedBall_rIn_mem_nhds (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Metric.closedBall (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+        ((cutoffBump H r hr hL).rIn) ∈ 𝓝 0 :=
+  Metric.closedBall_mem_nhds 0 (cutoffBump H r hr hL).rIn_pos
 
 end DLNFibre.DLN.RLCT
