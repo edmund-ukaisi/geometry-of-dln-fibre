@@ -3,7 +3,9 @@ import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
 import DLNFibre.DLN.RLCT.Validate.DeepestFrame
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
+import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
+import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction` — the `DeepestGaugeChart` instance (#44c)
@@ -123,17 +125,27 @@ The `split` (`deepestSplit_exists`), `coreAbsorb` (`coreShearHomeo` + the Schur 
 determined slot-fix / basepoint / `coreAbsorb_rlct` (the MP route: `measurePreserving_coreShear` ⟹
 `rlctAtOn_comp_homeomorph`, det = 1 — NOT the abstract #71 bounded-unit peel) are wired directly. -/
 
-/-- **PIN 1 — the regular straightening** (the (C) wall-fallback shape, #90). The honest E-straightening
-is a LOCAL diffeo on `𝓝 0` that does NOT extend to a global spectator-fixing homeomorph in Mathlib
-v4.29 (the piecewise cutoff is discontinuous at `∂V`). The (C) fallback (controller-blessed): a bare
-TOTAL CONTINUOUS function `regStraighten` (a cutoff-interpolation between the honest `E` near `0` and
-the identity outside — globally continuous, so `Φ` stays globally measurable for `rlctAtOn_squeeze`),
-core/spectator/origin-fixing, with `regAbsorb_rlct` peeled via `#72`'s LOCAL bounded-unit Jacobian (the
-`(πsymm, Dπ, V)` data lives inside this proof, not as a field). -/
+/-- **PIN 1 — the regular straightening** (the (C) wall-fallback shape, #90). Built from a pivot map
+`E_pivot : Reg × Spec → Reg` (the producer's nonlinear reg-straightening, reading reg + spec): the
+total self-map `regStraightenOf E_pivot` (core/spectator/origin-fixing, globally continuous, so `Φ`
+stays globally measurable for `rlctAtOn_squeeze`). The `regAbsorb_rlct` peel is discharged by
+`rlctAtOn_regAbsorb_reduce` (the `coreAbsorb.symm` conjugation stripping `coreAbsorb` from the core
+term) composed with `rlctAtOn_comp_localDiffeo` (the IFT → `#72` adapter): `E_pivot` need only be
+`ContDiff ℝ ⊤` with `dE(0) = id` (typed as `HasStrictFDerivAt E_pivot (fst) 0`) — its concrete
+nonlinear form is PIN 2's (the squeeze). The `coreAbsorb` MP + slot-fix data threads the reduce. -/
 theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ)
-    (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge) :
+    (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
+    (hca_mp : MeasurePreserving coreAbsorb volume volume)
+    (hca_base : coreAbsorb 0 = 0)
+    (hca_reg : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1)
+    (hca_spec : ∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2)
+    (E_pivot : (Fin (deepestNReg H r) → ℝ) × (Fin nGauge → ℝ) → (Fin (deepestNReg H r) → ℝ))
+    (hEp_contdiff : ContDiff ℝ (⊤ : ℕ∞) E_pivot)
+    (hEp_deriv : HasStrictFDerivAt E_pivot
+      (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ) (Fin nGauge → ℝ)) 0)
+    (hEp_base : E_pivot 0 = 0) :
     ∃ regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge,
       Continuous regStraighten ∧
       regStraighten 0 = 0 ∧
@@ -147,7 +159,32 @@ theorem deepest_regAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
             (fun q : DeepestSplit H r nGauge =>
               (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
             (0 : DeepestSplit H r nGauge) := by
-  sorry
+  classical
+  -- The reg-straightening witness and its three structural props.
+  refine ⟨regStraightenOf E_pivot,
+    continuous_regStraightenOf E_pivot hEp_contdiff.continuous,
+    regStraightenOf_basepoint E_pivot hEp_base,
+    fun q => regStraightenOf_core E_pivot q,
+    fun q => regStraightenOf_spectator E_pivot q, ?_⟩
+  -- `regAbsorb_rlct`: strip `coreAbsorb` from the core term (reduce), then peel `regStraightenOf`
+  -- via the IFT local-diffeo adapter (the decoupled `hpeel`).
+  refine rlctAtOn_regAbsorb_reduce coreAbsorb (regStraightenOf E_pivot)
+    (fun rg : Fin (deepestNReg H r) → ℝ => ∑ i, rg i ^ 2) (deepestCoreF H r)
+    hca_mp hca_base hca_reg hca_spec
+    (fun q q' hq hq' => regStraightenOf_regdep E_pivot q q' hq hq') ?_
+  -- The decoupled peel: `f = regStraightenOf E_pivot`, smooth + `dE(0)=id` ⟹ local diffeo.
+  refine rlctAtOn_comp_localDiffeo
+    (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+    (0 : DeepestSplit H r nGauge) (regStraightenOf E_pivot)
+    (ContinuousLinearEquiv.refl ℝ (DeepestSplit H r nGauge)) ?_ ?_ ?_
+  · -- `regStraightenOf E_pivot` is `ContDiff ⊤`.
+    refine ContDiff.prodMk ?_ (ContDiff.prodMk (contDiff_fst.comp contDiff_snd)
+      (contDiff_snd.comp contDiff_snd))
+    exact hEp_contdiff.comp (contDiff_fst.prodMk (contDiff_snd.comp contDiff_snd))
+  · -- `HasStrictFDerivAt (regStraightenOf E_pivot) (refl) 0`.
+    exact hasStrictFDerivAt_regStraightenOf_refl E_pivot hEp_deriv
+  · -- `regStraightenOf E_pivot 0 = 0`.
+    exact regStraightenOf_basepoint E_pivot hEp_base
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
 is two-sidedly bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`.
@@ -230,6 +267,15 @@ noncomputable def deepestCoreAbsorb (H : Fin (L + 1) → ℕ) (r : ℕ)
     DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
   coreShearHomeo (schurCutoffShift H r hr hL) (continuous_schurCutoffShift H r hr hL)
 
+/-- `deepestCoreAbsorb` is MEASURE-PRESERVING (the det-1 cutoff-Schur shear — `measurePreserving_coreShear`).
+Threaded into PIN 1's `regAbsorb_rlct` (`rlctAtOn_regAbsorb_reduce` needs `coreAbsorb` MP for the
+`coreAbsorb.symm` conjugation that strips it from the core term). -/
+theorem deepestCoreAbsorb_mp (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    MeasurePreserving (deepestCoreAbsorb H r hr hL) volume volume :=
+  measurePreserving_coreShear (deepestNReg H r) (flatDim (deepestM H r)) (deepestNGauge H r)
+    (schurCutoffShift H r hr hL) (continuous_schurCutoffShift H r hr hL)
+
 /-- **PIN 0 — the core absorption obligations**. `deepestCoreAbsorb` fixes reg+spec+origin and its
 `coreAbsorb_rlct` peel holds — all four via the shift-agnostic, MEASURE-PRESERVING
 `coreShear_satisfies_coreAbsorb` (`rlctAtOn_comp_homeomorph` on the det-1 shear). The concrete shift
@@ -249,6 +295,41 @@ theorem deepest_coreAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
             (0 : DeepestSplit H r (deepestNGauge H r)) :=
   coreShear_satisfies_coreAbsorb H r (deepestNGauge H r) (schurCutoffShift H r hr hL)
     (continuous_schurCutoffShift H r hr hL) (schurCutoffShift_zero H r hr hL)
+
+/-! ## The shared pivot map `deepestEPivot` (the PIN1↔PIN2 coupling object)
+
+The reg-straightening's reg-output is `deepestEPivot` — the genuine nonlinear straightened residual
+reading the reg + spectator slots, with `dE(0) = id` (typed `HasStrictFDerivAt deepestEPivot (fst) 0`).
+PIN 1 needs ONLY that derivative fact (the IFT/peel is form-agnostic); PIN 2's squeeze needs its
+concrete value (`(deepestEPivot (split w).reg, (split w).spec)` ≍ the loss residual `E`). So this is
+the SHARED coupling object — defined once, consumed by both pins. Its three properties (`ContDiff ⊤`,
+`HasStrictFDerivAt (fst) 0`, `0 ↦ 0`) are the residual gauge-geometry obligation: the product-residual
+expansion `∏(I+X_s) − I` read off the gauge slots, certified `dE(0) = id` (pp2 #91, general L). -/
+
+/-- The shared pivot map (the reg-straightening's reg-output). **OBLIGATION (#82/#80 coupling):** the
+concrete nonlinear straightened residual. Currently a named hole — its definition + the three props
+below are the single remaining PIN-1 gap, pinned to surface cleanly (the form is crux2/pp2's, the
+squeeze-load-bearing piece for PIN 2). -/
+noncomputable def deepestEPivot (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ) → (Fin (deepestNReg H r) → ℝ) :=
+  sorry
+
+theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ContDiff ℝ (⊤ : ℕ∞) (deepestEPivot H r hr hL) :=
+  sorry
+
+theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    HasStrictFDerivAt (deepestEPivot H r hr hL)
+      (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ) (Fin (deepestNGauge H r) → ℝ)) 0 :=
+  sorry
+
+theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    deepestEPivot H r hr hL 0 = 0 :=
+  sorry
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
 `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
@@ -302,8 +383,13 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   set coreAbsorb := deepestCoreAbsorb H r hr hL with hca_def
   obtain ⟨hca_base, hca_reg, hca_spec, hca_rlct⟩ := deepest_coreAbsorb_exists H r hr hL
   -- PIN 1: `regStraighten` (the (C)-fallback total-fn E-straightening) + its props (against `coreAbsorb`).
+  -- The reg-output is the shared `deepestEPivot` (the PIN1↔PIN2 coupling object); its three analytic
+  -- props feed PIN 1's IFT peel, its concrete value feeds PIN 2's squeeze.
   obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
+      (deepestCoreAbsorb_mp H r hr hL) hca_base hca_reg hca_spec
+      (deepestEPivot H r hr hL) (deepestEPivot_contdiff H r hr hL)
+      (deepestEPivot_deriv H r hr hL) (deepestEPivot_base H r hr hL)
   -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
     deepest_loss_squeeze H r B hB hr hL (deepestNGauge H r) split coreAbsorb regStraighten hsplit_base

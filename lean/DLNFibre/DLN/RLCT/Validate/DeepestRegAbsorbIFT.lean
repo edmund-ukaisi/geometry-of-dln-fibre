@@ -405,6 +405,17 @@ theorem hasStrictFDerivAt_regStraightenOf (E_pivot : R × S → R)
     = x
   exact Prod.ext rfl (Prod.ext rfl rfl)
 
+/-- **`regStraightenOf E_pivot` strict-diff with derivative the `refl` equiv** — the form
+`rlctAtOn_comp_localDiffeo` consumes (it needs the derivative as a `≃L`, not a bare `→L`). The
+identity continuous-linear-equiv `ContinuousLinearEquiv.refl` coerces to `ContinuousLinearMap.id`. -/
+theorem hasStrictFDerivAt_regStraightenOf_refl (E_pivot : R × S → R)
+    (hE : HasStrictFDerivAt E_pivot (ContinuousLinearMap.fst ℝ R S) 0) :
+    HasStrictFDerivAt (regStraightenOf (C := C) E_pivot)
+      ((ContinuousLinearEquiv.refl ℝ (R × (C × S)) : (R × (C × S)) →L[ℝ] (R × (C × S)))) 0 := by
+  have := hasStrictFDerivAt_regStraightenOf (C := C) E_pivot hE
+  rwa [show ((ContinuousLinearEquiv.refl ℝ (R × (C × S))) : (R × (C × S)) →L[ℝ] (R × (C × S)))
+    = ContinuousLinearMap.id ℝ (R × (C × S)) from rfl]
+
 end RegStraightenOf
 
 end DLNFibre.DLN.RLCT
