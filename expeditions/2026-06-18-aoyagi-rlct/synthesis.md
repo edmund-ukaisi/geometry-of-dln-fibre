@@ -471,6 +471,16 @@ Review:
 This removes only the supplied ceiling/residue datum; it does not construct or
 prove uniqueness of selected cutpoints or the selected value set.
 
+The Definition 3 source-data local-wrapper slice now also lands in
+`Definition3Bridge.lean`.  It projects the strict selected inequality already
+stored in `AoyagiDefinition3SourceData` into the existing local Lemma 5
+arithmetic wrappers and packages, under an explicit source-range rank-width
+hypothesis, the selected reduced widths with their ceiling datum, Nat-width
+rewrites, nonnegativity, strict selected inequality, and selected-width upper
+bound.  This is source-data aggregation only: selected cutpoints and
+rank-width hypotheses remain supplied, and no Lemma 5 coverage/no-extra
+exactness, chart production, pole order, or RLCT is proved.
+
 The conditional A0/A6 finite-exponent bridge has now landed in
 `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`.  It introduces
 `AoyagiTheorem2FiniteExponentFormulaHypothesis`, which supplies exactly the

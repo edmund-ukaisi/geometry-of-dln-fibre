@@ -343,6 +343,17 @@ end AoyagiDefinition3CeilData
 
 namespace AoyagiDefinition3SourceData
 
+/-- The strict selected-width inequality from Definition 3, rewritten for the
+selected reduced-width family used by the final formula layer. -/
+theorem selected_strict_selectedReducedWidths
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C) :
+    ∀ i : Fin (ell + 1),
+      (ell : ℤ) * aoyagiSelectedReducedWidths H r C i <
+        ∑ j : Fin (ell + 1), aoyagiSelectedReducedWidths H r C j := by
+  simpa [aoyagiSelectedReducedWidths] using S.selected_strict
+
 /-- Supplied Definition 3 source data determines the ceiling/residue datum and
 retains the strict selected inequality for downstream arithmetic. -/
 theorem exists_ceilData
@@ -355,7 +366,148 @@ theorem exists_ceilData
           ∑ j : Fin (ell + 1), aoyagiSelectedReducedWidths H r C j := by
   rcases AoyagiDefinition3CeilData.nonempty_of_ell_pos
       ell (aoyagiSelectedReducedWidths H r C) S.ell_pos with ⟨data⟩
-  exact ⟨data, by simpa [aoyagiSelectedReducedWidths] using S.selected_strict⟩
+  exact ⟨data, S.selected_strict_selectedReducedWidths⟩
+
+/-- Source data and a ceiling datum give Definition 3's selected-width upper
+bound for the selected reduced widths.
+
+This only consumes the strict selected inequality already stored in the source
+data; it does not construct the selected cutpoints. -/
+theorem selectedWidth_le_pred_of_ceilData
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (data :
+      AoyagiDefinition3CeilData ell (aoyagiSelectedReducedWidths H r C))
+    (i : Fin (ell + 1)) :
+    aoyagiSelectedReducedWidths H r C i ≤ data.ceilWidth - 1 :=
+  data.selectedWidth_le_pred_of_sourceSelectedInequality
+    S.selected_strict_selectedReducedWidths i
+
+/-- Source data plus Definition 3 ceiling data give equation `(4)`'s
+lower-chain label bounds for the selected reduced widths, under the same
+local index guards as the existing finite arithmetic theorem. -/
+theorem htildeLowerNat_add_one_labelBounds_of_ceilData
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (data :
+      AoyagiDefinition3CeilData ell (aoyagiSelectedReducedWidths H r C))
+    {p : ℕ} (hp0 : 1 ≤ p) (hp_a : p ≤ data.aParam) :
+    1 ≤ aoyagiHtildeLowerNat ell data.aParam data.ceilWidth
+          (aoyagiSelectedReducedWidths H r C) p + 1 ∧
+      aoyagiHtildeLowerNat ell data.aParam data.ceilWidth
+          (aoyagiSelectedReducedWidths H r C) p + 1 ≤
+        aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) p :=
+  data.htildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality
+    hp0 hp_a S.selected_strict_selectedReducedWidths
+
+/-- Source data plus Definition 3 ceiling data give equation `(4)`'s local
+finite arithmetic package for the selected reduced widths. -/
+theorem lemma5Eq4_localData_of_ceilData
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (data :
+      AoyagiDefinition3CeilData ell (aoyagiSelectedReducedWidths H r C))
+    {p : ℕ}
+    (hp0 : 1 ≤ p) (hp_tail : p + 1 ≤ data.aParam)
+    (hp_c : p ≤ ell - data.aParam) :
+    p + (ell - data.aParam) + 2 ≤ ell + 1 ∧
+      aoyagiHtildeUpperNat ell data.aParam data.ceilWidth
+          (aoyagiSelectedReducedWidths H r C) p - (p : ℤ) =
+        aoyagiHtildeLowerNat ell data.aParam data.ceilWidth
+          (aoyagiSelectedReducedWidths H r C) p ∧
+      (1 ≤ aoyagiHtildeLowerNat ell data.aParam data.ceilWidth
+            (aoyagiSelectedReducedWidths H r C) p + 1 ∧
+        aoyagiHtildeLowerNat ell data.aParam data.ceilWidth
+            (aoyagiSelectedReducedWidths H r C) p + 1 ≤
+          aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) p) :=
+  data.lemma5Eq4_localData_of_sourceSelectedInequality
+    hp0 hp_tail hp_c S.selected_strict_selectedReducedWidths
+
+/-- Source data plus Definition 3 ceiling data give equation `(5)`'s displayed
+label bounds for the selected reduced widths. -/
+theorem lemma5Eq5_labelBounds_of_ceilData
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (data :
+      AoyagiDefinition3CeilData ell (aoyagiSelectedReducedWidths H r C))
+    {p alpha : ℕ}
+    (hpell : p ≤ ell) (halpha_pos : 1 ≤ alpha)
+    (halpha_le_excess : alpha ≤
+      aoyagiLemma5IntervalExcess ell data.aParam p) :
+    1 ≤ aoyagiHtildeUpperNat ell data.aParam data.ceilWidth
+          (aoyagiSelectedReducedWidths H r C) p + 1 - (alpha : ℤ) ∧
+      aoyagiHtildeUpperNat ell data.aParam data.ceilWidth
+            (aoyagiSelectedReducedWidths H r C) p + 1 - (alpha : ℤ) ≤
+        aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) p :=
+  data.lemma5Eq5_labelBounds_of_sourceSelectedInequality
+    hpell halpha_pos halpha_le_excess S.selected_strict_selectedReducedWidths
+
+/-- Source data plus Definition 3 ceiling data give equation `(3)`'s local
+finite arithmetic package for the selected reduced widths, under the same
+interior and slack hypotheses as the existing finite arithmetic theorem. -/
+theorem lemma5Eq3_localData_of_ceilData_and_slack
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (data :
+      AoyagiDefinition3CeilData ell (aoyagiSelectedReducedWidths H r C))
+    (ha_lt : data.aParam < ell)
+    (hslack :
+      aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) 0 + 2 ≤
+        data.ceilWidth) :
+    (ell - data.aParam) + 2 ≤ ell + 1 ∧
+      aoyagiHtildeUpperNat ell data.aParam data.ceilWidth
+          (aoyagiSelectedReducedWidths H r C) 1 -
+      aoyagiHtildeLowerNat ell data.aParam data.ceilWidth
+          (aoyagiSelectedReducedWidths H r C) 1 =
+        1 ∧
+      (1 ≤ aoyagiHtildeUpperNat ell data.aParam data.ceilWidth
+            (aoyagiSelectedReducedWidths H r C) 1 + 1 ∧
+        aoyagiHtildeUpperNat ell data.aParam data.ceilWidth
+            (aoyagiSelectedReducedWidths H r C) 1 + 1 ≤
+          aoyagiSelectedWidthNat ell (aoyagiSelectedReducedWidths H r C) 1) :=
+  data.lemma5Eq3_localData_of_sourceSelectedInequality_and_slack
+    ha_lt S.selected_strict_selectedReducedWidths hslack
+
+/-- Definition 3 source data plus a source-range rank-width hypothesis package
+the selected reduced-width family, the resulting ceiling datum, Nat-width
+rewrites, nonnegativity, the strict selected inequality, and the selected-width
+upper bound.
+
+The selected cutpoints and source data remain supplied.  The rank-width
+hypothesis is explicit and pointwise on the source layer range. -/
+theorem exists_selectedReducedWidthCeilData_of_rankWidth
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s) :
+    ∃ (m : Fin (ell + 1) → ℤ) (data : AoyagiDefinition3CeilData ell m),
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (ell + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (ell + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (ell + 1),
+        (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      (∀ i : Fin (ell + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat ell m i) := by
+  rcases S.exists_ceilData with ⟨data, hsource⟩
+  let m : Fin (ell + 1) → ℤ := aoyagiSelectedReducedWidths H r C
+  have hrSelected : ∀ j : Fin (ell + 1), r ≤ H (C.cut j) :=
+    fun j ↦ hr (C.cut j) (C.pos j) (S.cut_le j)
+  refine ⟨m, data, rfl, ?_, ?_, ?_, ?_, ?_⟩
+  · intro j
+    exact aoyagiSelectedReducedWidths_eq_natCast_sub_of_rank_le H r C hrSelected j
+  · intro j
+    exact aoyagiSelectedReducedWidths_nonneg_of_rank_le H r C hrSelected j
+  · exact hsource
+  · intro i
+    exact data.selectedWidth_le_pred_of_sourceSelectedInequality hsource i
+  · intro i
+    exact aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le
+      H (r := r) (i := i) C hrSelected
 
 end AoyagiDefinition3SourceData
 

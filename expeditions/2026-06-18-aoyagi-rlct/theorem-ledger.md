@@ -5919,6 +5919,27 @@ This is a projection adapter only: no chart certificate, coordinate
 production, coverage, active-ratio lower bound, chart count, normal-crossing
 production, pole order, or RLCT is proved.
 
+Latest A6 Definition 3 source-data provenance wrappers:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.selected_strict_selectedReducedWidths`,
+`AoyagiDefinition3SourceData.selectedWidth_le_pred_of_ceilData`,
+`AoyagiDefinition3SourceData.htildeLowerNat_add_one_labelBounds_of_ceilData`,
+`AoyagiDefinition3SourceData.lemma5Eq4_localData_of_ceilData`,
+`AoyagiDefinition3SourceData.lemma5Eq5_labelBounds_of_ceilData`,
+`AoyagiDefinition3SourceData.lemma5Eq3_localData_of_ceilData_and_slack`,
+and
+`AoyagiDefinition3SourceData.exists_selectedReducedWidthCeilData_of_rankWidth`.
+These consume supplied Definition 3 source data, a supplied ceiling datum, and
+for the final aggregator an explicit source-range rank-width hypothesis.  They
+do not construct selected cutpoints, prove rank-width hypotheses, prove Lemma
+5 coverage/no-extra exactness, produce normal-crossing charts, prove pole
+order, or extract an RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-data-local-wrappers-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-data-local-wrappers.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-data-local-wrappers-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

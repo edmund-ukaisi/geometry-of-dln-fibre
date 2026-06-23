@@ -65,6 +65,18 @@ and chart-count witnesses/bounds.  This reduces the final socket from two
 opaque finite equalities to explicit finite min/order certificate obligations;
 it still does not prove those obligations from source charts.
 
+The current A6 Definition 3 source-data provenance slice is
+`threads/06-dln-translation/reproduction-definition3-source-data-local-wrappers-a6.md`.
+Lean now projects the strict selected-width inequality stored in
+`AoyagiDefinition3SourceData` into the existing local Definition 3 / Lemma 5
+arithmetic wrappers, and adds
+`AoyagiDefinition3SourceData.exists_selectedReducedWidthCeilData_of_rankWidth`
+to package selected reduced widths, a ceiling datum, Nat-width rewrites,
+nonnegativity, the strict selected inequality, and selected-width upper
+bounds under an explicit source-range rank-width hypothesis.  Selected
+cutpoint existence and the rank-width hypothesis remain supplied; this does
+not prove Lemma 5 coverage, pole order, or RLCT.
+
 The current A6 Case 2 finite-formula wrapper is
 `threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`.
 Lean now composes the supplied Case 2/A0 coordinate bridge, a supplied

@@ -3192,8 +3192,9 @@ No such claim is formalisation-ready until both fields are filled.
   formula for deep linear networks.
 - **Tier.** Final synthesis claim.
 - **Status.** open.  Formula-notation, Definition 3 bridge, Definition 3
-  source-data ceiling, and conditional finite-exponent bridge slices have
-  landed, but the final RLCT theorem remains open.
+  source-data ceiling, Definition 3 source-data local wrappers, and
+  conditional finite-exponent bridge slices have landed, but the final RLCT
+  theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -3206,6 +3207,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`;
   source-data ceiling reproduced at
   `threads/06-dln-translation/reproduction-definition3-source-data-ceil-a6.md`;
+  source-data local wrappers reproduced at
+  `threads/06-dln-translation/reproduction-definition3-source-data-local-wrappers-a6.md`;
   conditional finite-exponent bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`;
   chart finite-certificate bridge reproduced at
@@ -3236,6 +3239,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   source-data ceiling reviewed at
   `threads/06-dln-translation/review-definition3-source-data-ceil-a6.md`;
+  source-data local wrappers reviewed at
+  `threads/06-dln-translation/review-definition3-source-data-local-wrappers-a6.md`;
   conditional bridge reviewed at
   `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`;
   chart finite-certificate bridge reviewed at
@@ -3304,6 +3309,15 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq5_labelBounds_of_sourceSelectedInequality`,
   and
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq3_localData_of_sourceSelectedInequality_and_slack`
+  plus source-data local wrappers
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.selected_strict_selectedReducedWidths`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.selectedWidth_le_pred_of_ceilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.htildeLowerNat_add_one_labelBounds_of_ceilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.lemma5Eq4_localData_of_ceilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.lemma5Eq5_labelBounds_of_ceilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.lemma5Eq3_localData_of_ceilData_and_slack`,
+  and
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_selectedReducedWidthCeilData_of_rankWidth`
   in `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`; current conditional
   finite-exponent bridge:
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2FiniteExponentFormulaHypothesis`,
@@ -3387,7 +3401,15 @@ No such claim is formalisation-ready until both fields are filled.
   Definition 3 source-data ceiling constructor: supplied value-level selected
   cutpoint inequalities plus `0<ell` determine an
   `AoyagiDefinition3CeilData` by Euclidean division, while selected-cutpoint
-  existence remains supplied.  Also proved a conditional finite-exponent
+  existence remains supplied.  Also proved source-data local wrappers that
+  project the strict selected-width inequality from
+  `AoyagiDefinition3SourceData` into the local Definition 3/Lemma 5 arithmetic
+  APIs, and a finite provenance aggregator packaging the selected reduced
+  widths, ceiling datum, natural-width rewrites, nonnegativity, strict
+  selected inequality, selected upper bounds, and Nat-indexed selected-width
+  nonnegativity under an explicit source-range rank-width hypothesis.
+  Selected cutpoints and the rank-width hypothesis remain supplied.  Also
+  proved a conditional finite-exponent
   bridge: from supplied equalities
   `D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData ...` and
   `D.exponentOrder = data.theorem2OrderFormula`, plus
@@ -3420,9 +3442,10 @@ No such claim is formalisation-ready until both fields are filled.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** existence and uniqueness of the selected cutpoints and selected
-  value set, source parameter provenance
-  `m = H(S_j)-r`, proof of rank-width inequalities from concrete matrix
-  dimensions and a rank-`r` product, the finite exponent formula equalities
+  value set, source parameter provenance from concrete Aoyagi matrix data
+  beyond the supplied rank-width/source-data package, proof of rank-width
+  inequalities from concrete matrix dimensions and a rank-`r` product, the
+  finite exponent formula equalities
   from a normal-crossing certificate, the Lemma 4 two-value increment proof,
   Lemma 5 chart-family construction/coverage and no-extra classifier,
   conversion of the finite count to pole order, normal crossings, final RLCT
