@@ -234,6 +234,23 @@ and
 Review:
 `threads/02-analytic-interface/review-normal-crossing-ratio-chart-counts-a0.md`.
 
+Latest A0 Jacobian/prior loss-shift update: `NormalCrossingInterface.lean` now
+also exposes `jacobianPriorLossShift`.  The operation keeps loss exponents
+`k` fixed and replaces each Jacobian/prior exponent `h` by `h + m*k`.  Lean
+proves that, on active coordinates, ratios shift by `m/2`; therefore the finite
+exponent minimum shifts by `m/2`.  It also proves that ratio-specific chart
+counts shift from `q` to `q + m/2`, and that `minCoordsInChart`,
+`minCountInChart`, and `exponentOrder` are preserved.  This is the finite
+certificate-arithmetic socket motivated by Aoyagi PDF p. 13's regular-variable
+count, not a regular-coordinate chart construction or analytic RLCT additivity
+theorem.
+Artifacts:
+`threads/02-analytic-interface/reproduction-normal-crossing-jacobian-prior-loss-shift-a0.md`
+and
+`threads/02-analytic-interface/statement-card-a0-normal-crossing-jacobian-prior-loss-shift.md`.
+Review:
+`threads/02-analytic-interface/review-normal-crossing-jacobian-prior-loss-shift-a0.md`.
+
 ## Latest A2 Update
 
 The residual-product endpoint wrapper for Aoyagi Theorem 3 has landed.

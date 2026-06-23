@@ -2,7 +2,8 @@ import DLNFibre.DLN.Basic
 import Mathlib.Algebra.Order.Field.Rat
 import Mathlib.Data.Finset.Max
 import Mathlib.Data.Fintype.Prod
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 /-!
 # Finite normal-crossing exponent interface for Aoyagi's RLCT citation
@@ -128,7 +129,7 @@ theorem ratioAt_jacobianPriorLossShift_of_mem_activePairs
       D.ratioAt p + (m : ℚ) / 2 := by
   have hkpos : 0 < D.lossExp p.1 p.2 := (D.mem_activePairs p).mp hp
   have hk : (D.lossExp p.1 p.2 : ℚ) ≠ 0 := by
-    exact_mod_cast (Nat.ne_of_gt hkpos)
+    exact Nat.cast_ne_zero.mpr (Nat.ne_of_gt hkpos)
   rw [ratioAt, ratioAt]
   simp only [jacobianPriorLossShift_jacobianPriorExp, jacobianPriorLossShift_lossExp]
   norm_num [Nat.cast_add, Nat.cast_mul]
