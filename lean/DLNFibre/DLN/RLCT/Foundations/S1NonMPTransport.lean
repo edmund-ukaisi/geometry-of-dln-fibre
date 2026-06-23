@@ -160,7 +160,9 @@ ingredients: `weightedThreshold_transport` (S1.1, `E = ∅`) deposits the `|det 
 `π` + `Dπ` + the Jacobian bound (the "global homeomorphism + Jacobian" obligation); this lemma CONSUMES
 them — so it discharges the gauge-absorption RLCT peels (`coreAbsorb_rlct`, `regAbsorb_rlct`) whose
 maps fix the complementary slots and have a bounded-unit gauge Jacobian (`det(I−VY)⁻ᴹ⁰ ≈ 1`) at the
-deepest point. -/
+deepest point. **GLOBAL `π : M ≃ₜ M` form** — for a producer whose diffeo is defined only on a
+neighbourhood (e.g. an IFT `OpenPartialHomeomorph`), use `rlctAtOn_boundedUnit_localHomeomorph`
+below (bare `π/πsymm`, inverses + derivs + det-bound on an open `V ∋ wstar`, no global `≃ₜ`/cutoff). -/
 theorem rlctAtOn_boundedUnit_homeomorph {M : Type*}
     [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
     [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
