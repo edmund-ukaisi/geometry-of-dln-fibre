@@ -451,6 +451,26 @@ displayed-vector construction, no Lemma 4 two-value increment proof, no Lemma
 finite count into Aoyagi's pole-order symbol, no normal crossings, and no RLCT
 extraction.
 
+The Definition 3 source-data ceiling slice has also landed in
+`Definition3Bridge.lean`.  New Lean names:
+`AoyagiDefinition3SourceData`,
+`AoyagiDefinition3CeilData.nonempty_of_ell_pos`, and
+`AoyagiDefinition3SourceData.exists_ceilData`.  The generic constructor proves
+that any integer selected-width family and `0 < ell` determine Definition 3's
+`ceilWidth` and `aParam` by Euclidean division, with
+`sum selected = ell*(ceilWidth-1)+aParam` and `0 < aParam <= ell`.  The
+source-data wrapper records supplied selected cutpoints, value-level selected
+dominance, selected strict inequalities, and value-level nonselected
+inequalities from Definition 3, then produces the ceiling datum and carries the
+strict selected inequality forward.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-data-ceil-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-data-ceil.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-data-ceil-a6.md`.
+This removes only the supplied ceiling/residue datum; it does not construct or
+prove uniqueness of selected cutpoints or the selected value set.
+
 The conditional A0/A6 finite-exponent bridge has now landed in
 `lean/DLNFibre/DLN/Aoyagi/Theorem2FiniteExponentBridge.lean`.  It introduces
 `AoyagiTheorem2FiniteExponentFormulaHypothesis`, which supplies exactly the

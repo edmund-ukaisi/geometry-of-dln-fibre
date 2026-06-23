@@ -83,6 +83,34 @@ Artifacts:
 - `statement-card-a6-definition3-bridge.md`;
 - `review-definition3-bridge-a6.md`.
 
+## Current slice - 2026-06-23, Definition 3 source-data ceiling
+
+`lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean` now also removes the supplied
+ceiling/residue datum once selected cutpoints and `0 < ell` are supplied.
+
+New Lean artifacts:
+
+- `AoyagiDefinition3SourceData`;
+- `AoyagiDefinition3CeilData.nonempty_of_ell_pos`;
+- `AoyagiDefinition3SourceData.exists_ceilData`.
+
+The generic constructor uses integer Euclidean division of the selected-width
+sum by `ell`: if the remainder is zero it sets `aParam = ell`; otherwise it
+sets `aParam` to the positive remainder.  The source-data wrapper records
+value-level selected dominance, selected strict inequalities, and value-level
+nonselected inequalities from Definition 3, then produces an
+`AoyagiDefinition3CeilData` and carries the strict selected inequality forward.
+
+Artifacts:
+
+- `reproduction-definition3-source-data-ceil-a6.md`;
+- `statement-card-a6-definition3-source-data-ceil.md`;
+- `review-definition3-source-data-ceil-a6.md`.
+
+Boundary: this does not construct selected cutpoints, prove the selected value
+set exists for arbitrary widths, prove uniqueness, use nonselected inequalities
+downstream, produce normal crossings, or extract pole order/RLCT.
+
 ## Current slice - 2026-06-22, conditional finite exponent bridge
 
 The A6/A0 bridge layer is

@@ -1955,6 +1955,12 @@ Immediate order:
    singleton/Eq5 bookkeeping, and the Theorem 2 displayed order formula,
    keeping the strict source-selected inequality, Lemma 4 two-value
    hypothesis, Eq4 guards, and Eq3 slack explicit.
+   The supplied ceiling datum has now been reduced to source-data packaging:
+   `AoyagiDefinition3CeilData.nonempty_of_ell_pos` constructs `ceilWidth` and
+   `aParam` by Euclidean division for any selected-width family once `0<ell`,
+   and `AoyagiDefinition3SourceData.exists_ceilData` consumes supplied
+   value-level Definition 3 cutpoint inequalities.  This does not construct the
+   selected cutpoints or prove that the selected value set exists.
    The conditional A0/A6 finite-exponent bridge is also Lean-proved in
    `Theorem2FiniteExponentBridge.lean`: supplied equalities
    `D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData ...` and

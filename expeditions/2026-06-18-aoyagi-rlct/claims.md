@@ -3168,9 +3168,9 @@ No such claim is formalisation-ready until both fields are filled.
   normal-crossing extraction interface gives Aoyagi's RLCT and RLCT-order
   formula for deep linear networks.
 - **Tier.** Final synthesis claim.
-- **Status.** open.  Formula-notation, Definition 3 bridge, and conditional
-  finite-exponent bridge slices have landed, but the final RLCT theorem remains
-  open.
+- **Status.** open.  Formula-notation, Definition 3 bridge, Definition 3
+  source-data ceiling, and conditional finite-exponent bridge slices have
+  landed, but the final RLCT theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -3181,6 +3181,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`;
   dimension/rank convention map reproduced at
   `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`;
+  source-data ceiling reproduced at
+  `threads/06-dln-translation/reproduction-definition3-source-data-ceil-a6.md`;
   conditional finite-exponent bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`;
   chart finite-certificate bridge reproduced at
@@ -3209,6 +3211,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/boundary-map-theorem2-remaining-source-obligations-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
+  source-data ceiling reviewed at
+  `threads/06-dln-translation/review-definition3-source-data-ceil-a6.md`;
   conditional bridge reviewed at
   `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`;
   chart finite-certificate bridge reviewed at
@@ -3244,8 +3248,11 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthNat_selectedReducedWidths_of_lt`,
   `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthNat_selectedReducedWidths_fin`,
   `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.nonempty_of_ell_pos`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.theorem2OrderFormula`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_ceilData`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_ceil`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_expanded`,
@@ -3353,8 +3360,12 @@ No such claim is formalisation-ready until both fields are filled.
   two-value count wrapper under supplied chain bounds and supplied two-value
   increments, and source-selected-inequality wrappers for selected-width and
   local equation `(4)`/`(5)` data.  The local equation `(3)` wrapper also
-  requires the explicit one-unit slack hypothesis.  Also proved a conditional
-  finite-exponent bridge: from supplied equalities
+  requires the explicit one-unit slack hypothesis.  Also proved the
+  Definition 3 source-data ceiling constructor: supplied value-level selected
+  cutpoint inequalities plus `0<ell` determine an
+  `AoyagiDefinition3CeilData` by Euclidean division, while selected-cutpoint
+  existence remains supplied.  Also proved a conditional finite-exponent
+  bridge: from supplied equalities
   `D.exponentMinimum = aoyagiTheorem2Lambda_fromCeilData ...` and
   `D.exponentOrder = data.theorem2OrderFormula`, plus
   `AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder`, Lean derives
@@ -3385,8 +3396,8 @@ No such claim is formalisation-ready until both fields are filled.
   auxiliary theorem inputs where used.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
-- **Deferred.** full Definition 3 selection inequalities, existence of the
-  selected cutpoints and ceiling datum, source parameter provenance
+- **Deferred.** existence and uniqueness of the selected cutpoints and selected
+  value set, source parameter provenance
   `m = H(S_j)-r`, proof of rank-width inequalities from concrete matrix
   dimensions and a rank-`r` product, the finite exponent formula equalities
   from a normal-crossing certificate, the Lemma 4 two-value increment proof,
