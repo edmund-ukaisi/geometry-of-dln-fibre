@@ -4871,3 +4871,32 @@ handoff from chart-certificate fields to finite exponent-data fields.  It
 does not construct `Cnc` or `p`, prove chart coverage, prove active-ratio
 lower bounds, prove chart counts, produce analytic Jacobian/volume data, prove
 normal crossings for the DLN loss, or extract an RLCT.
+
+## 2026-06-23 Lean Case 1 selected-entry local exponent minimum/order
+
+Reproduction:
+`reproduction-case1-selected-entry-local-exponent-min-order-a4.md`.
+Statement card:
+`statement-card-a4-case1-selected-entry-local-exponent-min-order.md`.
+Review artifact:
+`review-case1-selected-entry-local-exponent-min-order-a4.md`.
+
+Lean now specializes the generic selected-entry one-chart finite exponent
+arithmetic to the two displayed Case 1 finite microcertificates:
+
+```text
+case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero
+case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
+case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one
+```
+
+The local finite ratio and local finite minimum are
+`(1 + J1 * (n(S+1)-J)) / 2`, and the local finite exponent order is `1`.
+This composes the Case 1 erased-center cardinality calculation with the
+generic selected-entry microcertificate exponent arithmetic.  It is not a
+global A0 active-ratio lower bound, global exponent minimum, global
+chart-count/order theorem, analytic Jacobian/volume-form theorem, pole order,
+or RLCT extraction.

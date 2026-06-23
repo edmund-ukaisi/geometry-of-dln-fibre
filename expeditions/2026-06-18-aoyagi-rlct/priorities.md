@@ -236,6 +236,18 @@ printed Case 1 increment.  This is not analytic Jacobian/volume-form control,
 chart production, coverage, transition regularity, normal crossings, pole
 order, or RLCT extraction.
 
+The current A4 Case 1 selected-entry local exponent slice is
+`threads/04-blow-up-certificate/reproduction-case1-selected-entry-local-exponent-min-order-a4.md`.
+Lean now composes the Case 1 erased-center count with the generic
+selected-entry one-chart exponent arithmetic.  For both displayed Case 1
+finite microcertificates, the unique coordinate has loss exponent `1`, local
+ratio and local finite minimum
+`(1 + J1 * (n(S+1)-J)) / 2`, and local finite exponent order `1`.  This is
+only the local one-chart finite selected-entry contribution; it is not a
+global A0 active-ratio lower bound, global exponent minimum, global chart
+count/order theorem, analytic Jacobian/volume-form theorem, pole order, or
+RLCT extraction.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

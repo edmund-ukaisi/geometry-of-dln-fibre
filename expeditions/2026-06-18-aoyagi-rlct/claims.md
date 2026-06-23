@@ -1027,7 +1027,23 @@ No such claim is formalisation-ready until both fields are filled.
   These prove only that the two displayed finite selected-entry charts have
   formal determinant exponent `J1*(n(S+1)-J)`; they do not prove analytic
   Jacobian/volume-form control, chart production, coverage, transition
-  regularity, normal crossings, pole order, or RLCT. Also packaged the finite
+  regularity, normal crossings, pole order, or RLCT. Also proved the local
+  finite exponent arithmetic for the two displayed Case 1 selected-entry
+  microcertificates:
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate.lossExp_zero_zero`,
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two`,
+  `case1SelectedOldCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`,
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.lossExp_zero_zero`,
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two`,
+  and
+  `case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`.
+  Their local finite ratio and local finite minimum are
+  `(1 + J1*(n(S+1)-J))/2`, and their local finite order is `1`.  This is
+  not a global A0 active-ratio lower bound, global A0 exponent minimum,
+  global chart-count/order theorem, analytic Jacobian/volume-form theorem,
+  pole order, or RLCT. Also packaged the finite
   Case 1 first-jump and selected-label hypotheses as
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
   `J+J1 < mu_S`, selected introduced label, selected level, gap, componentwise

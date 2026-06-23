@@ -213,6 +213,15 @@ def case1SelectedOldCenterSqFormalJacobianChartCertificate
 namespace case1SelectedOldCenterSqFormalJacobianChartCertificate
 
 /-- The unique coordinate in the Case 1 selected-old finite microcertificate
+has loss exponent `1`. -/
+@[simp] theorem lossExp_zero_zero
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).lossExp (0 : Fin 1) (0 : Fin 1) = 1 :=
+  rfl
+
+/-- The unique coordinate in the Case 1 selected-old finite microcertificate
 has formal Jacobian/prior exponent equal to the row-strip cardinality. -/
 @[simp] theorem jacobianPriorExp_zero_zero
     (n : ℕ → ℕ) (S J J1 : ℕ)
@@ -225,6 +234,47 @@ has formal Jacobian/prior exponent equal to the row-strip cardinality. -/
         (Sum.inl () : Case1CenterGenerator)).card =
       J1 * (n (S + 1) - J)
   exact case1CenterGenerators_erase_selectedOld_card n S J J1
+
+/-- The unique coordinate in the Case 1 selected-old finite microcertificate
+has finite exponent ratio `(1 + J1 * (n(S+1)-J)) / 2`. -/
+theorem exponentData_ratioAt_zero_zero
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).exponentData.ratioAt
+        ((0 : Fin 1), (0 : Fin 1)) =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  simpa [case1SelectedOldCenterSqFormalJacobianChartCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero
+      (K := K)
+      (⟨(Sum.inl () : Case1CenterGenerator), case1_selectedOld_mem_center n S J J1⟩)
+
+/-- The finite exponent minimum of the Case 1 selected-old local
+microcertificate is `(1 + J1 * (n(S+1)-J)) / 2`. -/
+theorem exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).exponentData.exponentMinimum =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  open selectedEntryCenterSqFormalJacobianChartCertificate in
+  simpa [case1SelectedOldCenterSqFormalJacobianChartCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    exponentData_exponentMinimum_eq_centerCard_div_two (K := K)
+      (⟨(Sum.inl () : Case1CenterGenerator), case1_selectedOld_mem_center n S J J1⟩)
+
+/-- The Case 1 selected-old local one-coordinate microcertificate has finite
+exponent order `1`. -/
+theorem exponentData_exponentOrder_eq_one
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).exponentData.exponentOrder = 1 := by
+  simpa [case1SelectedOldCenterSqFormalJacobianChartCertificate] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one
+      (K := K)
+      (⟨(Sum.inl () : Case1CenterGenerator), case1_selectedOld_mem_center n S J J1⟩)
 
 /-- Formal pivot-first determinant for the Case 1 selected-old chart. -/
 theorem pivotFirstJacobian_det
@@ -272,6 +322,16 @@ def case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
 
 namespace case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
 
+/-- The unique coordinate in the displayed Case 1 row-strip finite
+microcertificate has loss exponent `1`. -/
+@[simp] theorem lossExp_zero_zero
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).lossExp (0 : Fin 1) (0 : Fin 1) = 1 :=
+  rfl
+
 /-- The unique coordinate in the Case 1 displayed row-strip finite
 microcertificate has formal Jacobian/prior exponent equal to the row-strip
 cardinality. -/
@@ -287,6 +347,54 @@ cardinality. -/
         (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)).card =
       J1 * (n (S + 1) - J)
   exact case1CenterGenerators_erase_displayedPivot_card_of_bounds n S hJ1 hcol
+
+/-- The unique coordinate in the displayed Case 1 row-strip finite
+microcertificate has finite exponent ratio
+`(1 + J1 * (n(S+1)-J)) / 2`. -/
+theorem exponentData_ratioAt_zero_zero
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).exponentData.ratioAt
+        ((0 : Fin 1), (0 : Fin 1)) =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  simpa [case1DisplayedRowStripCenterSqFormalJacobianChartCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero
+      (K := K)
+      (⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+        case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+
+/-- The finite exponent minimum of the displayed Case 1 row-strip local
+microcertificate is `(1 + J1 * (n(S+1)-J)) / 2`. -/
+theorem exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).exponentData.exponentMinimum =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  open selectedEntryCenterSqFormalJacobianChartCertificate in
+  simpa [case1DisplayedRowStripCenterSqFormalJacobianChartCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    exponentData_exponentMinimum_eq_centerCard_div_two (K := K)
+      (⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+        case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+
+/-- The displayed Case 1 row-strip local one-coordinate microcertificate has
+finite exponent order `1`. -/
+theorem exponentData_exponentOrder_eq_one
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).exponentData.exponentOrder = 1 := by
+  simpa [case1DisplayedRowStripCenterSqFormalJacobianChartCertificate] using
+    selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one
+      (K := K)
+      (⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+        case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
 
 /-- Formal pivot-first determinant for the displayed Case 1 row-strip chart. -/
 theorem pivotFirstJacobian_det
