@@ -1278,3 +1278,36 @@ Artifacts:
 `statement-card-a2-local-source-rank-endpoint-package.md`.
 Review:
 `review-a2-local-source-rank-endpoint-package.md`.
+
+## 2026-06-23 A2 block product-difference algebra
+
+Formalized the p. 13 pointwise block product-difference calculation downstream
+of the triangular endpoint form.  The new theorem
+`triangularBlockProductDifference_fromBlocks_indexed` assumes
+
+```text
+[I 0; F3 I] * T * [I F2; 0 I] = [Ctop 0; 0 D]
+```
+
+and proves
+
+```text
+[I 0; F3 I] * (T - [I 0; 0 0]) * [I F2; 0 I]
+  = [Ctop - I, -F2; -F3, D - F3 * F2].
+```
+
+This is pure block algebra over a commutative ring.  The endpoint wrapper was
+intentionally not added: it would only destruct the existing triangular
+endpoint certificate, and the source-rank field is irrelevant until a concrete
+downstream ideal/certificate theorem needs the exact `T - T0` form.
+
+Scope caveats: this is not source production of the triangular endpoint form,
+full Theorem 3, Aoyagi Lemma 1, analytic generator transport, regular
+suspension, normal crossings, pole order, or RLCT.
+
+Artifacts:
+`reproduction-a2-block-product-difference-algebra.md` and
+`statement-card-a2-block-product-difference-algebra.md`.
+Independent pen-and-paper check: xhigh `Lorentz`.
+Fidelity/scope review: xhigh `Fermat`, accepted in
+`review-a2-block-product-difference-algebra.md`.

@@ -2025,9 +2025,12 @@ Immediate order:
    `paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`
    and `PaperEndpointTriangularSourceRanksLocalCertificate`; it is still a
    relative-stratum package, not exact-rank openness or source-stratum
-   nonemptiness. Leave A2 at this elementary boundary until A4/A0 produce
-   stable certificate data, except for the separate p. 13 block-difference
-   algebra if it stays purely algebraic.
+   nonemptiness. The separate p. 13 block-difference algebra has now landed
+   purely algebraically as
+   `triangularBlockProductDifference_fromBlocks_indexed`: after the triangular
+   endpoint form, subtracting `[I 0; 0 0]` produces the displayed
+   `[Ctop - I, -F2; -F3, D - F3 * F2]` block matrix. Leave A2 at this
+   elementary boundary until A4/A0 produce stable certificate data.
    Optional future A2 work should be thin source-rank, residual-rank, or
    hypothesis-weakening wrappers only, not exact-rank openness, full Theorem 3
    packaging, or regular-suspension/RLCT transport.

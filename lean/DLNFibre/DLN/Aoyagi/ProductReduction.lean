@@ -62,6 +62,48 @@ theorem lowerUnitriangular_mul_fromBlocks_one_zero_indexed
   rw [fromBlocks_multiply]
   simp
 
+/-- Subtracting the rank-model block after triangular endpoint reduction gives
+the displayed product-difference block matrix. -/
+theorem triangularBlockProductDifference_fromBlocks_indexed
+    {ι μ ν : Type*} [Fintype ι] [Fintype μ] [Fintype ν]
+    [DecidableEq ι] [DecidableEq μ] [DecidableEq ν]
+    (F2 : Matrix ι ν K) (F3 : Matrix μ ι K)
+    (Ctop : Matrix ι ι K) (D : Matrix μ ν K)
+    (T : Matrix (ι ⊕ μ) (ι ⊕ ν) K)
+    (htri :
+      fromBlocks (1 : Matrix ι ι K) 0 F3 (1 : Matrix μ μ K) * T *
+        fromBlocks (1 : Matrix ι ι K) F2 0 (1 : Matrix ν ν K) =
+          fromBlocks Ctop 0 0 D) :
+    fromBlocks (1 : Matrix ι ι K) 0 F3 (1 : Matrix μ μ K) *
+        (T - fromBlocks (1 : Matrix ι ι K) 0
+          (0 : Matrix μ ι K) (0 : Matrix μ ν K)) *
+        fromBlocks (1 : Matrix ι ι K) F2 0 (1 : Matrix ν ν K) =
+      fromBlocks (Ctop - 1) (-F2) (-F3) (D - F3 * F2) := by
+  let L : Matrix (ι ⊕ μ) (ι ⊕ μ) K :=
+    fromBlocks (1 : Matrix ι ι K) 0 F3 (1 : Matrix μ μ K)
+  let Rmat : Matrix (ι ⊕ ν) (ι ⊕ ν) K :=
+    fromBlocks (1 : Matrix ι ι K) F2 0 (1 : Matrix ν ν K)
+  let T0 : Matrix (ι ⊕ μ) (ι ⊕ ν) K :=
+    fromBlocks (1 : Matrix ι ι K) 0 (0 : Matrix μ ι K) (0 : Matrix μ ν K)
+  have hsplit : L * (T - T0) * Rmat = L * T * Rmat - L * T0 * Rmat := by
+    simp [sub_eq_add_neg, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
+  have hT0 :
+      L * T0 * Rmat = fromBlocks (1 : Matrix ι ι K) F2 F3 (F3 * F2) := by
+    simp [L, T0, Rmat, fromBlocks_multiply]
+  change L * (T - T0) * Rmat =
+    fromBlocks (Ctop - 1) (-F2) (-F3) (D - F3 * F2)
+  calc
+    L * (T - T0) * Rmat = L * T * Rmat - L * T0 * Rmat := hsplit
+    _ = fromBlocks Ctop 0 0 D -
+        fromBlocks (1 : Matrix ι ι K) F2 F3 (F3 * F2) := by
+      rw [hT0]
+      simpa [L, Rmat] using
+        congrArg
+          (fun M ↦ M - fromBlocks (1 : Matrix ι ι K) F2 F3 (F3 * F2))
+          htri
+    _ = fromBlocks (Ctop - 1) (-F2) (-F3) (D - F3 * F2) := by
+      ext (i | i) (j | j) <;> simp
+
 /-- An upper unitriangular left multiplier preserves existence of an identity-corner chart form. -/
 theorem exists_fromBlocks_one_zero_of_upperUnitriangular_mul {r m n : ℕ}
     (F : Matrix (Fin r) (Fin m) K)
