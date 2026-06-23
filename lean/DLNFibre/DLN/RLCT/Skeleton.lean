@@ -6,6 +6,7 @@ import DLNFibre.DLN.RLCT.Foundations.S1Fubini
 import DLNFibre.DLN.RLCT.BGEngine
 import Mathlib.MeasureTheory.Function.Jacobian
 import Mathlib.Data.Fin.Tuple.Sort
+import Mathlib.Data.List.GetD
 
 /-!
 # `DLNFibre.DLN.RLCT.Skeleton` — the goal skeleton (the contract)
@@ -2907,12 +2908,148 @@ private theorem close_of_feasible (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (q : 
   rw [hc] at *
   linarith [this]
 
+/-- The achiever-width list `[M¹,…,Mᴸ]` and pool `Y`-multiset feeding the BG engine. -/
+noncomputable def Mwidths (M : Fin (L + 1) → ℕ) : List ℤ :=
+  List.ofFn (fun j : Fin L => (M j.succ : ℤ))
+
+/-- The achiever target multiset `Yvec` as a `Multiset ℤ` (the engine's pool). -/
+noncomputable def Ymulti (M : Fin (L + 1) → ℕ) : Multiset ℤ :=
+  (List.ofFn (Yvec M (cAch M)) : Multiset ℤ)
+
+/-- The achiever ordering `q* = backwardGreedy Mwidths Y`, extended by junk `0` past `L`. -/
+noncomputable def qStar (M : Fin (L + 1) → ℕ) : ℕ → ℤ :=
+  fun i ↦ (BGEngine.backwardGreedy (Mwidths M) (Ymulti M)).getD i 0
+
+/-- `Mwidths` has length `L`. -/
+private theorem Mwidths_len (M : Fin (L + 1) → ℕ) : (Mwidths M).length = L := by
+  rw [Mwidths, List.length_ofFn]
+
+/-- `Mwidths[j] = M⁽ʲ⁺¹⁾ = Mseq M (j+1)`. -/
+private theorem Mwidths_get (M : Fin (L + 1) → ℕ) (j : ℕ) (hj : j < L) :
+    (Mwidths M)[j]'(by rw [Mwidths_len]; exact hj) = Mseq M (j + 1) := by
+  simp only [Mwidths, List.getElem_ofFn]; unfold Mseq; rw [dif_pos (by omega)]; rfl
+
+/-- The pool `Ymulti` has card `L`. -/
+private theorem Ymulti_card (M : Fin (L + 1) → ℕ) : (Ymulti M).card = L := by
+  rw [Ymulti, Multiset.coe_card, List.length_ofFn]
+
+/-- **The achiever ordering is QFeasible + permutes `Yvec`** — given the engine precondition `Dom`
+and the band. The easy clauses (`hext`/`htot`/`hpre`/`hge`) are discharged from the engine's perm +
+`_ge`; the band `hadm` is the supplied achiever-structural input. -/
+private theorem QFeas_qStar (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
+    (hDom : BGEngine.Dom (Mwidths M) (Ymulti M))
+    (hband : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+        ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i) :
+    QFeas M (qStar M) ∧
+      ∃ σ : Equiv.Perm (Fin L), ∀ j : Fin L, qStar M (j : ℕ) = Yvec M (cAch M) (σ j) := by
+  set c := cAch M with hc
+  set qList := BGEngine.backwardGreedy (Mwidths M) (Ymulti M) with hqL
+  have hqlen : qList.length = L := by
+    rw [hqL, BGEngine.backwardGreedy_length hDom, Mwidths_len]
+  have hperm : (qList : Multiset ℤ) = Ymulti M := BGEngine.backwardGreedy_perm hDom
+  -- qStar at j<L is the list element
+  have hqget : ∀ j (hj : j < L), qStar M j = qList[j]'(by rw [hqlen]; exact hj) := by
+    intro j hj; rw [qStar, ← hqL, List.getD_eq_getElem _ _ (by rw [hqlen]; exact hj)]
+  -- hge: Mseq M (j+1) ≤ qStar M j  (engine _ge + Mwidths_get)
+  have hge : ∀ j : Fin L, Mseq M ((j : ℕ) + 1) ≤ qStar M (j : ℕ) := by
+    intro j
+    have hjL : (j : ℕ) < L := j.isLt
+    have hg := BGEngine.backwardGreedy_ge hDom (j : ℕ) (by rw [Mwidths_len]; exact hjL)
+    rw [Mwidths_get M (j : ℕ) hjL] at hg
+    rw [hqget (j : ℕ) hjL]; exact hg
+  -- hext: qStar = 0 past L
+  have hext : ∀ j, L ≤ j → qStar M j = 0 := by
+    intro j hj; rw [qStar, ← hqL, List.getD_eq_default _ _ (by rw [hqlen]; exact hj)]
+  -- htot: ∑_{j<L} qStar = ∑ M  (perm: ∑qList = ∑Ymulti = ∑Yvec = ∑M)
+  have hYsum : (Ymulti M).sum = ∑ i : Fin (L + 1), (M i : ℤ) := by
+    rw [Ymulti, Multiset.sum_coe, ← hc, List.sum_ofFn]
+    exact sum_Yvec M hL
+  have htot : ∑ j ∈ Finset.range L, qStar M j = ∑ i ∈ Finset.range (L + 1), Mseq M i := by
+    have hqsum : ∑ j ∈ Finset.range L, qStar M j = qList.sum := by
+      rw [← Fin.sum_univ_eq_sum_range (fun j ↦ qStar M j) L]
+      rw [show (∑ j : Fin L, qStar M (j : ℕ))
+            = ∑ j : Fin L, qList[(j : ℕ)]'(by rw [hqlen]; exact j.isLt) from
+          Finset.sum_congr rfl (fun j _ ↦ hqget (j : ℕ) j.isLt)]
+      rw [← List.sum_ofFn]; congr 1
+      apply List.ext_getElem (by rw [List.length_ofFn]; exact hqlen.symm)
+      intro n h1 h2; rw [List.getElem_ofFn]
+    rw [hqsum, ← Multiset.sum_coe, hperm, hYsum]
+    rw [← Fin.sum_univ_eq_sum_range (fun i ↦ Mseq M i) (L + 1)]
+    exact (Finset.sum_congr rfl (fun i _ ↦ by unfold Mseq; rw [dif_pos i.isLt])).symm
+  -- hpre: prefix_n ≤ S'_n  via suffix-complement (hge + htot)
+  have hpre : ∀ n, n ≤ L → ∑ j ∈ Finset.range n, qStar M j
+      ≤ ∑ i ∈ Finset.range (n + 1), Mseq M i := by
+    intro n hn
+    -- ∑_{j<n} q = ∑M − ∑_{n≤j<L} q ≤ ∑M − ∑_{n≤j<L} Mseq(j+1) = ∑_{i<n+1} Mseq
+    have hsplit : ∑ j ∈ Finset.range L, qStar M j
+        = (∑ j ∈ Finset.range n, qStar M j) + ∑ j ∈ Finset.Ico n L, qStar M j :=
+      (Finset.sum_range_add_sum_Ico _ hn).symm
+    have htail : ∑ j ∈ Finset.Ico n L, Mseq M (j + 1) ≤ ∑ j ∈ Finset.Ico n L, qStar M j := by
+      apply Finset.sum_le_sum; intro j hj; rw [Finset.mem_Ico] at hj
+      exact hge ⟨j, by omega⟩
+    have hMtail : ∑ i ∈ Finset.range (L + 1), Mseq M i
+        = (∑ i ∈ Finset.range (n + 1), Mseq M i) + ∑ j ∈ Finset.Ico n L, Mseq M (j + 1) := by
+      rw [← Finset.sum_range_add_sum_Ico _ (show n + 1 ≤ L + 1 by omega)]
+      congr 1
+      rw [Finset.sum_Ico_eq_sum_range, Finset.sum_Ico_eq_sum_range]
+      apply Finset.sum_congr (by congr 1; omega)
+      intro i _; congr 1; omega
+    rw [htot] at hsplit
+    linarith [hsplit, htail, hMtail]
+  -- σ: qF and Yvec are perms of the same multiset ⟹ related by a permutation
+  set qF : Fin L → ℤ := fun j ↦ qStar M (j : ℕ) with hqF
+  have hqFmulti : (List.ofFn qF : Multiset ℤ) = (List.ofFn (Yvec M c) : Multiset ℤ) := by
+    have hqFlist : List.ofFn qF = qList := by
+      apply List.ext_getElem (by rw [List.length_ofFn]; exact hqlen.symm)
+      intro n h1 h2
+      rw [List.getElem_ofFn]
+      exact hqget n (by rw [List.length_ofFn] at h1; exact h1)
+    rw [hqFlist, hperm, Ymulti]
+  -- equal multisets ⟹ equal sorted forms (the monotone arrangement is multiset-determined)
+  have hmulti_sort : ∀ (f : Fin L → ℤ),
+      (List.ofFn (f ∘ Tuple.sort f) : Multiset ℤ) = (List.ofFn f : Multiset ℤ) := by
+    intro f
+    rw [← Fin.univ_val_map, ← Fin.univ_val_map]
+    conv_rhs => rw [← Multiset.map_univ_val_equiv (Tuple.sort f), Multiset.map_map]
+  have hmono_eq : qF ∘ Tuple.sort qF = Yvec M c ∘ Tuple.sort (Yvec M c) := by
+    rw [← List.ofFn_inj]
+    have hs1 : (List.ofFn (qF ∘ Tuple.sort qF)).SortedLE :=
+      List.sortedLE_ofFn_iff.mpr (Tuple.monotone_sort qF)
+    have hs2 : (List.ofFn (Yvec M c ∘ Tuple.sort (Yvec M c))).SortedLE :=
+      List.sortedLE_ofFn_iff.mpr (Tuple.monotone_sort (Yvec M c))
+    have hp : List.Perm (List.ofFn (qF ∘ Tuple.sort qF))
+        (List.ofFn (Yvec M c ∘ Tuple.sort (Yvec M c))) := by
+      rw [← Multiset.coe_eq_coe, hmulti_sort qF, hmulti_sort (Yvec M c), hqFmulti]
+    exact List.Perm.eq_of_sortedLE hs1 hs2 hp
+  set σ : Equiv.Perm (Fin L) := (Tuple.sort qF).symm.trans (Tuple.sort (Yvec M c)) with hσ
+  have hqFσ : ∀ j : Fin L, qF j = Yvec M c (σ j) := by
+    intro j
+    have := congrArg (fun f ↦ f ((Tuple.sort qF).symm j)) hmono_eq
+    simp only [Function.comp_apply, Equiv.apply_symm_apply] at this
+    rw [hσ]; simp only [Equiv.trans_apply]; rw [← this]
+  exact ⟨QFeas_of_assignment M (qStar M) hext htot hpre hge hband, σ,
+    fun j ↦ by rw [hqF] at hqFσ; exact hqFσ j⟩
+
 /-- **A1 (Lemma 3, the headline arithmetic).** `lambdaCore M = cleanCore` at the achiever `cAch M`.
-The whole proof is assembled (`close_of_feasible` + the green lower-bound / value machinery); the one
-remaining input is the **achiever-Y feasible ordering** (the BG construction), which discharges the
-`QFeas M q` + permutation hypotheses of `close_of_feasible`. -/
+The proof is fully assembled: the achiever ordering `qStar` is corridor-feasible and permutes `Yvec`
+(`QFeas_qStar`), which feeds `close_of_feasible`. Three inputs remain open:
+* `hL : 1 ≤ L` — **STATEMENT-FIDELITY HOLE, not a pp-hall certificate.** The conclusion
+  `∃ c, c ≤ L ∧ 1 ≤ c ∧ …` is *unsatisfiable at `L = 0`* (no `c` with `c ≤ 0 ∧ 1 ≤ c`), so the
+  statement is false there; `1 ≤ L` is genuinely required and is *not* a hypothesis. Fix: add
+  `(hL : 1 ≤ L)` to the signature (the whole engine — `close_of_feasible`, `cAch_spec` — already
+  assumes it). Flagged for the controller — do not discharge from nothing.
+* `hDom` — the BG-engine precondition (`Dom`), a pp-hall certificate (pending).
+* `hband` — the admissibility band on `qStar`'s prefix sums, a pp-hall certificate (pending). -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
-  sorry
+  -- ⚠️ STATEMENT-FIDELITY HOLE: false at L=0; signature needs `(hL : 1 ≤ L)`. See docstring.
+  have hL : 1 ≤ L := by sorry
+  -- pp-hall certificate (pending): the BG-engine domination precondition.
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := by sorry
+  -- pp-hall certificate (pending): the admissibility band on qStar's prefix sums.
+  have hband : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
+      ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i := by sorry
+  obtain ⟨hq, σ, hperm⟩ := QFeas_qStar M hL hDom hband
+  exact close_of_feasible M hL (qStar M) hq σ hperm
 
 end DLNFibre.DLN.RLCT
