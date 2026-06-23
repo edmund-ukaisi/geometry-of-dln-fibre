@@ -29,6 +29,59 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
 
+/-! ## `ContDiff` of the gauge read (the `regGaugeSlotEquiv` linearity, for `_contdiff`)
+
+`regGaugeSlotEquiv` (crux2 #78) is packaged as a `Homeomorph` (coordinate relabels), so its linearity is
+not exposed — but the SAME relabels have `ContinuousLinearEquiv` forms in Mathlib v4.29
+(`ContinuousLinearEquiv.{sumPiEquivProdPi, piCongrLeft}`), whose underlying `Homeomorph` IS the one
+`regGaugeSlotEquiv` uses (`__ := Homeomorph.…`). So a CLE mirror `regGaugeSlotCLE` coerces to the SAME
+function (defeq), giving `ContDiff` of `regGaugeSlotEquiv` (hence of the `readX/Y/Z` entries) via
+`ContinuousLinearEquiv.contDiff`. This is a fact ABOUT crux2's def, not a change to it. -/
+
+/-- The `ContinuousLinearEquiv` mirror of `regGaugeSlotEquiv` (same underlying Homeomorph/function). -/
+noncomputable def regGaugeSlotCLE (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ≃L[ℝ] (RegGaugeIdx H r → ℝ) :=
+  (ContinuousLinearEquiv.sumPiEquivProdPi ℝ (Fin (deepestNReg H r)) (Fin (deepestNGauge H r))
+      (fun _ => ℝ)).symm.trans
+    (ContinuousLinearEquiv.piCongrLeft ℝ (fun _ => ℝ) (regGaugeIdxSplit H r hr hL)).symm
+
+/-- `regGaugeSlotCLE` and `regGaugeSlotEquiv` coerce to the SAME function (the CLE and Homeomorph share
+the underlying relabel). -/
+theorem regGaugeSlotCLE_coe (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (regGaugeSlotCLE H r hr hL : _ → _) = regGaugeSlotEquiv H r hr hL := rfl
+
+/-- The gauge read `regGaugeSlotEquiv` is `ContDiff ⊤` (it is the CLE `regGaugeSlotCLE`). -/
+theorem contDiff_regGaugeSlotEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => regGaugeSlotEquiv H r hr hL p) := by
+  rw [← regGaugeSlotCLE_coe H r hr hL]
+  exact (regGaugeSlotCLE H r hr hL).contDiff
+
+/-- Each `readX` entry is `ContDiff ⊤` (a coordinate of the `ContDiff` gauge read). -/
+theorem contDiff_readX_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => readX H r hr hL p s i j) := by
+  simp only [readX, Matrix.of_apply]
+  exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
+
+/-- Each `readY` entry is `ContDiff ⊤`. -/
+theorem contDiff_readY_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (i : Fin r)
+    (j : Fin (H s.succ - r)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => readY H r hr hL p s i j) := by
+  simp only [readY, Matrix.of_apply]
+  exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
+
+/-- Each `readZ` entry is `ContDiff ⊤`. -/
+theorem contDiff_readZ_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (i : Fin (H s.castSucc - r))
+    (j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => readZ H r hr hL p s i j) := by
+  simp only [readZ, Matrix.of_apply]
+  exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
+
 /-- **The per-layer framed normal-form matrix** `C_s = fromBlocks (1 + X_s) Y_s Z_s T_s`, reindexed
 from the block split `Fin r ⊕ Fin (H_s − r)` to the layer dimension `Fin (H_s)` (via `rThresholdSplit`),
 so it types as a `Params H` layer `Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ`. The gauge blocks
