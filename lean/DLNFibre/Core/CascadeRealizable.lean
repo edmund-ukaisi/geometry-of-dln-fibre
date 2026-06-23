@@ -76,4 +76,14 @@ theorem submult_cascade_prefix (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
       partialId_mul (k := k) (d p.succ) (d p.castSucc) (d 0) (t p)
         (cascadeCount d t 0 p.castSucc) (ht p)]
 
+/-- **Rung 4a — the cascade's prefix rank pattern.** `rankPattern (cascadeTuple) 0 j` is the surviving-1
+count of the prefix sub-product: `survivors (d_j) (d_0) (cascadeCount 0 j) = min (cascadeCount 0 j)
+(min (d_j) (d_0))`. Composes `submult_cascade_prefix` (the sub-product is a single partial-identity) with
+`rank_partialId` (its rank is the count). The achiever's running-rank row `r_{0j}` of the cascade. -/
+theorem rankPattern_cascade_prefix (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
+    (ht : ∀ p : Fin N, t p ≤ d p.castSucc) (j : Fin (N + 1)) :
+    rankPattern d (cascadeTuple (k := k) d t) 0 j (Fin.zero_le j)
+      = survivors (d j) (d 0) (cascadeCount d t 0 j) := by
+  rw [rankPattern, submult_cascade_prefix d t ht j, rank_partialId]
+
 end DLNFibre.Core
