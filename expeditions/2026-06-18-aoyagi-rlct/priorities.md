@@ -2097,6 +2097,21 @@ is not mistaken for a source-produced old label by itself.  This still does
 not construct the A0 exponent datum, the coordinate, chart coverage,
 analytic Jacobian/volume data, global lower bounds, chart counts, pole order,
 or RLCT extraction.
+
+The current A6 Case 1 finite-formula and chart-final wrappers are
+`threads/06-dln-translation/reproduction-case1-theorem2-finite-formula-bridge-a6.md`
+and
+`threads/06-dln-translation/reproduction-case1-theorem2-chart-final-bridge-a6.md`.
+Lean now composes the selected-old Case 1/A0 coordinate bridge with supplied
+active-ratio lower bounds, candidate-ratio/Theorem 2 lambda equality, order or
+chart-count facts, selected-width provenance, and chart-level extraction to
+fill `AoyagiTheorem2FiniteExponentFormulaHypothesis` and
+`AoyagiTheorem2SuppliedChartFinalBoundary`.  This is downstream plumbing
+only: none of the supplied finite or analytic obligations is proved.  The
+checkpoint is reviewed in
+`threads/06-dln-translation/review-case1-theorem2-finite-formula-bridge-a6.md`
+and
+`threads/06-dln-translation/review-case1-theorem2-chart-final-bridge-a6.md`.
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

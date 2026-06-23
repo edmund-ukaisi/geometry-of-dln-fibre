@@ -666,3 +666,64 @@ Boundary: selected cutpoints, source data, source-range rank-width, A0
 extraction, and finite exponent formula hypotheses for the produced data
 remain supplied.  This does not prove active-ratio lower bounds, chart-count
 facts, chart production, pole order, or RLCT.
+
+## Current slice - 2026-06-23, Case 1 to Theorem 2 finite formula
+
+Reproduction:
+`reproduction-case1-theorem2-finite-formula-bridge-a6.md`.
+Statement card:
+`statement-card-a6-case1-theorem2-finite-formula-bridge.md`.
+Review artifact:
+`review-case1-theorem2-finite-formula-bridge-a6.md`.
+
+Lean now has a leaf bridge module:
+
+```text
+DLNFibre.DLN.Aoyagi.Case1Theorem2FiniteExponentBridge
+```
+
+with candidate ratio
+
+```text
+Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2CandidateRatio
+```
+
+and finite-formula wrappers:
+
+```text
+Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_candidateRatio_eq_fromCeilData
+Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_candidateRatio_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le
+```
+
+They build `AoyagiTheorem2FiniteExponentFormulaHypothesis` from the supplied
+selected-old Case 1/A0 coordinate bridge, an explicit active-ratio lower
+bound, a supplied equality identifying the Case 1 candidate ratio with
+Theorem 2's displayed lambda formula, and either a supplied order equality or
+supplied chart-count facts at the Case 1 candidate ratio.
+
+Boundary: finite composition only.  It does not prove the lower bound, lambda
+identification, order equality, chart-count facts, selected-width provenance,
+chart production, analytic extraction, pole order, or RLCT.
+
+## Current slice - 2026-06-23, Case 1 chart-final boundary
+
+Reproduction:
+`reproduction-case1-theorem2-chart-final-bridge-a6.md`.
+Statement card:
+`statement-card-a6-case1-theorem2-chart-final-bridge.md`.
+Review artifact:
+`review-case1-theorem2-chart-final-bridge-a6.md`.
+
+Lean now has a leaf chart-final wrapper:
+
+```text
+Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2SuppliedChartFinalBoundary_of_forall_le_of_candidateRatio_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le
+```
+
+It carries the selected-old Case 1 ratio-count finite formula bridge into
+`AoyagiTheorem2SuppliedChartFinalBoundary` once selected-width provenance and
+the chart-level A0 extraction hypothesis are supplied.
+
+Boundary: this is API plumbing only.  It does not construct charts, prove
+coverage, prove finite count facts, prove selected-width provenance, prove
+analytic extraction, pole order, or RLCT.

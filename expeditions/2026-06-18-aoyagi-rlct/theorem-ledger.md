@@ -6060,6 +6060,32 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-a0-exponent-coordinate-bridge-a4.md`.
 
+Latest A6 Case 1 finite-formula and chart-final wrappers:
+`Case1Theorem2FiniteExponentBridge.lean` now contains
+`Case1SelectedEntryA0ExponentCoordinateBridge.theorem2CandidateRatio`,
+`Case1SelectedEntryA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_candidateRatio_eq_fromCeilData`,
+`Case1SelectedEntryA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_candidateRatio_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`,
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2CandidateRatio`,
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_candidateRatio_eq_fromCeilData`,
+and
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_candidateRatio_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`.
+`Case1Theorem2ChartFinalBridge.lean` now contains
+`Case1SelectedOldUnitA0ExponentCoordinateBridge.theorem2SuppliedChartFinalBoundary_of_forall_le_of_candidateRatio_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`.
+These are supplied-obligation consumers only: they do not prove active-ratio
+lower bounds, candidate-ratio/Theorem 2 lambda equality, chart-count facts,
+selected-width provenance, chart production, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-case1-theorem2-finite-formula-bridge-a6.md`
+and
+`threads/06-dln-translation/reproduction-case1-theorem2-chart-final-bridge-a6.md`.
+Statement cards:
+`threads/06-dln-translation/statement-card-a6-case1-theorem2-finite-formula-bridge.md`
+and
+`threads/06-dln-translation/statement-card-a6-case1-theorem2-chart-final-bridge.md`.
+Reviews:
+`threads/06-dln-translation/review-case1-theorem2-finite-formula-bridge-a6.md`
+and
+`threads/06-dln-translation/review-case1-theorem2-chart-final-bridge-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
