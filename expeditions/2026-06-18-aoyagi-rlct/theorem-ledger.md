@@ -6106,6 +6106,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-chart-selected-entry-microcertificate-adapter-a4.md`.
 
+Latest A4/A0 Case 1 source-chart selected-entry microcertificate adapter:
+`SelectedEntryNormalCrossing.lean` now contains generic source-point lemmas
+under `selectedEntryCenterSqFormalJacobianChartCertificate` and Case 1
+specializations under
+`case1SelectedOldCenterSqFormalJacobianChartCertificate` and
+`case1DisplayedRowStripCenterSqFormalJacobianChartCertificate`.  These
+evaluate finite selected-entry source chart points inside the local
+one-chart microcertificates and identify chart maps, finite losses, loss
+units, formal determinant values, and monomial identities.  They are not
+source production of the hidden old selected label, chart coverage,
+transition regularity, analytic Jacobian control, total loss control, global
+A0 normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-source-chart-selected-entry-microcertificate-adapter.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

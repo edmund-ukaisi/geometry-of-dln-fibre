@@ -91,6 +91,143 @@ def selectedEntryCenterSqFormalJacobianChartCertificate
 
 namespace selectedEntryCenterSqFormalJacobianChartCertificate
 
+/-- The point of the generic selected-entry microcertificate corresponding to
+ambient selected-entry source coordinates `(u, residual)`. -/
+def sourceChartPoint
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).ChartPoint (0 : Fin 1) :=
+  (u, fun p ↦ residual p.1)
+
+/-- The generic selected-entry microcertificate chart map agrees with the
+ambient selected-entry source chart map at `sourceChartPoint`. -/
+theorem chartMap_sourceChartPoint_eq
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).chartMap (0 : Fin 1)
+        (sourceChartPoint pivot u residual) =
+      fun i : center ↦ selectedEntryChartMap pivot.1 u residual i.1 := by
+  funext i
+  by_cases hi : i.1 = pivot.1
+  · simp [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartCertificate,
+      selectedEntryChartMap, hi]
+  · have hmem : i.1 ∈ center.erase pivot.1 := by
+      simp [Finset.mem_erase, hi, i.2]
+    simp [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartCertificate,
+      selectedEntryChartMap, selectedEntryErasedResidual, hi, hmem]
+
+/-- At the generic selected-entry source chart point, the microcertificate
+loss is the finite center square-sum. -/
+theorem loss_sourceChartPoint_eq_centerSq
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).loss
+        ((selectedEntryCenterSqFormalJacobianChartCertificate
+          (K := K) pivot).chartMap (0 : Fin 1)
+            (sourceChartPoint pivot u residual)) =
+      selectedEntryCenterSq center
+        (selectedEntryChartMap pivot.1 u residual) := by
+  rw [chartMap_sourceChartPoint_eq]
+  simpa [selectedEntryCenterSqFormalJacobianChartCertificate, selectedEntryCenterSq] using
+    (Finset.sum_attach center
+      (fun i ↦ selectedEntryChartMap pivot.1 u residual i ^ 2))
+
+/-- At the generic selected-entry source chart point, the microcertificate
+loss unit is the normalized finite center-square factor. -/
+theorem lossUnit_sourceChartPoint_eq
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).lossUnit (0 : Fin 1)
+        (sourceChartPoint pivot u residual) =
+      selectedEntryCenterSqUnitFactor (center.erase pivot.1) residual := by
+  simp only [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartCertificate]
+  rw [selectedEntryCenterSqUnitFactor, selectedEntryCenterSqUnitFactor]
+  congr 1
+  rw [selectedEntryCenterSq, selectedEntryCenterSq]
+  refine Finset.sum_congr rfl ?_
+  intro i hi
+  have hmem : i ∈ center.erase pivot.1 := hi
+  simp [selectedEntryErasedResidual, hmem]
+
+/-- At the generic selected-entry source chart point, the microcertificate
+Jacobian/prior value is the formal pivot-first determinant. -/
+theorem jacobianPrior_sourceChartPoint_eq_det
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).jacobianPrior (0 : Fin 1)
+        (sourceChartPoint pivot u residual) =
+      (selectedEntryPivotFirstJacobian
+        (κ := {i // i ∈ center.erase pivot.1}) u
+        (fun p ↦ residual p.1)).det := by
+  rw [selectedEntryPivotFirstJacobian_det]
+  simp [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartCertificate,
+    Fintype.card_coe]
+
+/-- Source-chart presentation of the generic selected-entry loss monomial
+identity. -/
+theorem loss_monomial_sourceChartPoint
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (u : K) (residual : ι → K) :
+    selectedEntryCenterSq center (selectedEntryChartMap pivot.1 u residual) =
+      selectedEntryCenterSqUnitFactor (center.erase pivot.1) residual *
+        ∏ j : Fin (selectedEntryCenterSqFormalJacobianChartCertificate
+            (K := K) pivot).numCoords,
+          (selectedEntryCenterSqFormalJacobianChartCertificate
+            (K := K) pivot).coord (0 : Fin 1)
+            (sourceChartPoint pivot u residual) j ^
+            (2 *
+              (selectedEntryCenterSqFormalJacobianChartCertificate
+                (K := K) pivot).lossExp (0 : Fin 1) j) := by
+  rw [← loss_sourceChartPoint_eq_centerSq pivot u residual]
+  rw [← lossUnit_sourceChartPoint_eq pivot u residual]
+  exact
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).loss_monomial
+        (0 : Fin 1) (sourceChartPoint pivot u residual)
+
+/-- Source-chart presentation of the generic selected-entry formal
+Jacobian/prior monomial identity. -/
+theorem jacobianPrior_monomial_sourceChartPoint
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (u : K) (residual : ι → K) :
+    (selectedEntryPivotFirstJacobian
+        (κ := {i // i ∈ center.erase pivot.1}) u
+        (fun p ↦ residual p.1)).det =
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+          (K := K) pivot).jacobianPriorUnit (0 : Fin 1)
+          (sourceChartPoint pivot u residual) *
+        ∏ j : Fin (selectedEntryCenterSqFormalJacobianChartCertificate
+            (K := K) pivot).numCoords,
+          (selectedEntryCenterSqFormalJacobianChartCertificate
+            (K := K) pivot).coord (0 : Fin 1)
+            (sourceChartPoint pivot u residual) j ^
+            (selectedEntryCenterSqFormalJacobianChartCertificate
+              (K := K) pivot).jacobianPriorExp (0 : Fin 1) j := by
+  rw [← jacobianPrior_sourceChartPoint_eq_det pivot u residual]
+  exact
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).jacobianPrior_monomial
+        (0 : Fin 1) (sourceChartPoint pivot u residual)
+
 /-- The unique coordinate has loss exponent `1`. -/
 @[simp] theorem lossExp_zero_zero
     {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
@@ -212,6 +349,160 @@ def case1SelectedOldCenterSqFormalJacobianChartCertificate
 
 namespace case1SelectedOldCenterSqFormalJacobianChartCertificate
 
+/-- The point of the Case 1 selected-old microcertificate corresponding to
+finite selected-entry source coordinates. -/
+def sourceChartPoint
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).ChartPoint (0 : Fin 1) :=
+  selectedEntryCenterSqFormalJacobianChartCertificate.sourceChartPoint
+    (K := K)
+    (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+      case1_selectedOld_mem_center n S J J1⟩)
+    u residual
+
+/-- The selected-old microcertificate chart map agrees with the finite
+selected-old selected-entry source chart map at `sourceChartPoint`. -/
+theorem chartMap_sourceChartPoint_eq
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).chartMap (0 : Fin 1)
+        (sourceChartPoint n S J J1 u residual) =
+      fun g : {g // g ∈ case1CenterGenerators n S J J1} ↦
+        selectedEntryChartMap (Sum.inl () : Case1CenterGenerator)
+          u residual g.1 := by
+  simpa [sourceChartPoint, case1SelectedOldCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq
+        (K := K)
+        (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+          case1_selectedOld_mem_center n S J J1⟩)
+        u residual
+
+/-- At the selected-old source chart point, the microcertificate loss is the
+finite Case 1 center square-sum. -/
+theorem loss_sourceChartPoint_eq_centerSq
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).loss
+        ((case1SelectedOldCenterSqFormalJacobianChartCertificate
+          (K := K) n S J J1).chartMap (0 : Fin 1)
+            (sourceChartPoint n S J J1 u residual)) =
+      selectedEntryCenterSq (case1CenterGenerators n S J J1)
+        (selectedEntryChartMap (Sum.inl () : Case1CenterGenerator)
+          u residual) := by
+  simpa [sourceChartPoint, case1SelectedOldCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.loss_sourceChartPoint_eq_centerSq
+        (K := K)
+        (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+          case1_selectedOld_mem_center n S J J1⟩)
+        u residual
+
+/-- At the selected-old source chart point, the microcertificate loss unit is
+the normalized finite Case 1 center-square factor. -/
+theorem lossUnit_sourceChartPoint_eq
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).lossUnit (0 : Fin 1)
+        (sourceChartPoint n S J J1 u residual) =
+      selectedEntryCenterSqUnitFactor
+        ((case1CenterGenerators n S J J1).erase
+          (Sum.inl () : Case1CenterGenerator)) residual := by
+  simpa [sourceChartPoint, case1SelectedOldCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.lossUnit_sourceChartPoint_eq
+        (K := K)
+        (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+          case1_selectedOld_mem_center n S J J1⟩)
+        u residual
+
+/-- At the selected-old source chart point, the microcertificate
+Jacobian/prior value is the formal pivot-first determinant. -/
+theorem jacobianPrior_sourceChartPoint_eq_det
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1SelectedOldCenterSqFormalJacobianChartCertificate
+      (K := K) n S J J1).jacobianPrior (0 : Fin 1)
+        (sourceChartPoint n S J J1 u residual) =
+      (selectedEntryPivotFirstJacobian
+        (κ :=
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inl () : Case1CenterGenerator) : Type))
+        u (fun g ↦ residual g.1)).det := by
+  simpa [sourceChartPoint, case1SelectedOldCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.jacobianPrior_sourceChartPoint_eq_det
+        (K := K)
+        (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+          case1_selectedOld_mem_center n S J J1⟩)
+        u residual
+
+/-- Source-chart presentation of the selected-old loss monomial identity. -/
+theorem loss_monomial_sourceChartPoint
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    selectedEntryCenterSq (case1CenterGenerators n S J J1)
+        (selectedEntryChartMap (Sum.inl () : Case1CenterGenerator)
+          u residual) =
+      selectedEntryCenterSqUnitFactor
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inl () : Case1CenterGenerator)) residual *
+        ∏ j : Fin (case1SelectedOldCenterSqFormalJacobianChartCertificate
+            (K := K) n S J J1).numCoords,
+          (case1SelectedOldCenterSqFormalJacobianChartCertificate
+            (K := K) n S J J1).coord (0 : Fin 1)
+            (sourceChartPoint n S J J1 u residual) j ^
+            (2 *
+              (case1SelectedOldCenterSqFormalJacobianChartCertificate
+                (K := K) n S J J1).lossExp (0 : Fin 1) j) := by
+  simpa [sourceChartPoint, case1SelectedOldCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.loss_monomial_sourceChartPoint
+        (K := K)
+        (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+          case1_selectedOld_mem_center n S J J1⟩)
+        u residual
+
+/-- Source-chart presentation of the selected-old formal Jacobian/prior
+monomial identity. -/
+theorem jacobianPrior_monomial_sourceChartPoint
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (selectedEntryPivotFirstJacobian
+        (κ :=
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inl () : Case1CenterGenerator) : Type))
+        u (fun g ↦ residual g.1)).det =
+      (case1SelectedOldCenterSqFormalJacobianChartCertificate
+          (K := K) n S J J1).jacobianPriorUnit (0 : Fin 1)
+          (sourceChartPoint n S J J1 u residual) *
+        ∏ j : Fin (case1SelectedOldCenterSqFormalJacobianChartCertificate
+            (K := K) n S J J1).numCoords,
+          (case1SelectedOldCenterSqFormalJacobianChartCertificate
+            (K := K) n S J J1).coord (0 : Fin 1)
+            (sourceChartPoint n S J J1 u residual) j ^
+            (case1SelectedOldCenterSqFormalJacobianChartCertificate
+              (K := K) n S J J1).jacobianPriorExp (0 : Fin 1) j := by
+  simpa [sourceChartPoint, case1SelectedOldCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.jacobianPrior_monomial_sourceChartPoint
+        (K := K)
+        (pivot := ⟨(Sum.inl () : Case1CenterGenerator),
+          case1_selectedOld_mem_center n S J J1⟩)
+        u residual
+
 /-- The unique coordinate in the Case 1 selected-old finite microcertificate
 has loss exponent `1`. -/
 @[simp] theorem lossExp_zero_zero
@@ -321,6 +612,171 @@ def case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
       case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩
 
 namespace case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+
+/-- The point of the displayed Case 1 row-strip microcertificate
+corresponding to finite selected-entry source coordinates. -/
+def sourceChartPoint
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).ChartPoint (0 : Fin 1) :=
+  selectedEntryCenterSqFormalJacobianChartCertificate.sourceChartPoint
+    (K := K)
+    (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+      case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+    u residual
+
+/-- The displayed row-strip microcertificate chart map agrees with the finite
+displayed selected-entry source chart map at `sourceChartPoint`. -/
+theorem chartMap_sourceChartPoint_eq
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).chartMap (0 : Fin 1)
+        (sourceChartPoint n S hJ1 hcol u residual) =
+      fun g : {g // g ∈ case1CenterGenerators n S J J1} ↦
+        selectedEntryChartMap
+          (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)
+          u residual g.1 := by
+  simpa [sourceChartPoint, case1DisplayedRowStripCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq
+        (K := K)
+        (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+          case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+        u residual
+
+/-- At the displayed row-strip source chart point, the microcertificate loss
+is the finite Case 1 center square-sum. -/
+theorem loss_sourceChartPoint_eq_centerSq
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).loss
+        ((case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+          (K := K) n S hJ1 hcol).chartMap (0 : Fin 1)
+            (sourceChartPoint n S hJ1 hcol u residual)) =
+      selectedEntryCenterSq (case1CenterGenerators n S J J1)
+        (selectedEntryChartMap
+          (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)
+          u residual) := by
+  simpa [sourceChartPoint, case1DisplayedRowStripCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.loss_sourceChartPoint_eq_centerSq
+        (K := K)
+        (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+          case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+        u residual
+
+/-- At the displayed row-strip source chart point, the microcertificate loss
+unit is the normalized finite Case 1 center-square factor. -/
+theorem lossUnit_sourceChartPoint_eq
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).lossUnit (0 : Fin 1)
+        (sourceChartPoint n S hJ1 hcol u residual) =
+      selectedEntryCenterSqUnitFactor
+        ((case1CenterGenerators n S J J1).erase
+          (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)) residual := by
+  simpa [sourceChartPoint, case1DisplayedRowStripCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.lossUnit_sourceChartPoint_eq
+        (K := K)
+        (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+          case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+        u residual
+
+/-- At the displayed row-strip source chart point, the microcertificate
+Jacobian/prior value is the formal pivot-first determinant. -/
+theorem jacobianPrior_sourceChartPoint_eq_det
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+      (K := K) n S hJ1 hcol).jacobianPrior (0 : Fin 1)
+        (sourceChartPoint n S hJ1 hcol u residual) =
+      (selectedEntryPivotFirstJacobian
+        (κ :=
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) : Type))
+        u (fun g ↦ residual g.1)).det := by
+  simpa [sourceChartPoint, case1DisplayedRowStripCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.jacobianPrior_sourceChartPoint_eq_det
+        (K := K)
+        (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+          case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+        u residual
+
+/-- Source-chart presentation of the displayed row-strip loss monomial
+identity. -/
+theorem loss_monomial_sourceChartPoint
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    selectedEntryCenterSq (case1CenterGenerators n S J J1)
+        (selectedEntryChartMap
+          (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)
+          u residual) =
+      selectedEntryCenterSqUnitFactor
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inr (J + 1, J + 1) : Case1CenterGenerator)) residual *
+        ∏ j : Fin (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+            (K := K) n S hJ1 hcol).numCoords,
+          (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+            (K := K) n S hJ1 hcol).coord (0 : Fin 1)
+            (sourceChartPoint n S hJ1 hcol u residual) j ^
+            (2 *
+              (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+                (K := K) n S hJ1 hcol).lossExp (0 : Fin 1) j) := by
+  simpa [sourceChartPoint, case1DisplayedRowStripCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.loss_monomial_sourceChartPoint
+        (K := K)
+        (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+          case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+        u residual
+
+/-- Source-chart presentation of the displayed row-strip formal
+Jacobian/prior monomial identity. -/
+theorem jacobianPrior_monomial_sourceChartPoint
+    (n : ℕ → ℕ) (S : ℕ) {J J1 : ℕ}
+    (hJ1 : 1 ≤ J1) (hcol : J + 1 ≤ n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (u : K) (residual : Case1CenterGenerator → K) :
+    (selectedEntryPivotFirstJacobian
+        (κ :=
+          ((case1CenterGenerators n S J J1).erase
+            (Sum.inr (J + 1, J + 1) : Case1CenterGenerator) : Type))
+        u (fun g ↦ residual g.1)).det =
+      (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+          (K := K) n S hJ1 hcol).jacobianPriorUnit (0 : Fin 1)
+          (sourceChartPoint n S hJ1 hcol u residual) *
+        ∏ j : Fin (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+            (K := K) n S hJ1 hcol).numCoords,
+          (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+            (K := K) n S hJ1 hcol).coord (0 : Fin 1)
+            (sourceChartPoint n S hJ1 hcol u residual) j ^
+            (case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
+              (K := K) n S hJ1 hcol).jacobianPriorExp (0 : Fin 1) j := by
+  simpa [sourceChartPoint, case1DisplayedRowStripCenterSqFormalJacobianChartCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.jacobianPrior_monomial_sourceChartPoint
+        (K := K)
+        (pivot := ⟨(Sum.inr (J + 1, J + 1) : Case1CenterGenerator),
+          case1_displayedPivot_mem_center_of_bounds n S hJ1 hcol⟩)
+        u residual
 
 /-- The unique coordinate in the displayed Case 1 row-strip finite
 microcertificate has loss exponent `1`. -/

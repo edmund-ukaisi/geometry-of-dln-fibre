@@ -2124,6 +2124,16 @@ spine, but it is still not coverage, source production, analytic Jacobian
 control, a total DLN loss certificate, global A0 normal crossings, pole order,
 or RLCT.
 
+The current A4/A0 Case 1 local source-chart adapter is
+`threads/04-blow-up-certificate/reproduction-case1-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+Lean now evaluates the finite selected-entry source chart points inside the
+selected-old and displayed row-strip one-chart microcertificates.  This closes
+the parallel local presentation gap for Case 1, while keeping the selected-old
+`Unit` token separate from source production of the hidden old label.  It is
+not chart coverage, source production, transition regularity, analytic
+Jacobian control, a total DLN loss certificate, global A0 normal crossings,
+pole order, or RLCT.
+
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

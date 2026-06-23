@@ -5004,3 +5004,42 @@ This is finite A0-facing arithmetic only.  It does not construct `D` or `p`,
 does not produce chart certificates from the selected-old boundary, does not
 prove a global active-ratio lower bound, chart count, exponent order,
 analytic Jacobian/volume data, chart coverage, pole order, or RLCT extraction.
+
+## 2026-06-23 Lean Case 1 source-chart selected-entry microcertificate adapter
+
+Reproduction:
+`reproduction-case1-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+Statement card:
+`statement-card-a4-case1-source-chart-selected-entry-microcertificate-adapter.md`.
+Review artifact:
+`review-case1-source-chart-selected-entry-microcertificate-adapter-a4.md`.
+
+Lean now adds generic selected-entry source-point lemmas under
+`selectedEntryCenterSqFormalJacobianChartCertificate` and specializes them to
+the two Case 1 finite pivots:
+
+```text
+case1SelectedOldCenterSqFormalJacobianChartCertificate.sourceChartPoint
+case1SelectedOldCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq
+case1SelectedOldCenterSqFormalJacobianChartCertificate.loss_sourceChartPoint_eq_centerSq
+case1SelectedOldCenterSqFormalJacobianChartCertificate.lossUnit_sourceChartPoint_eq
+case1SelectedOldCenterSqFormalJacobianChartCertificate.jacobianPrior_sourceChartPoint_eq_det
+case1SelectedOldCenterSqFormalJacobianChartCertificate.loss_monomial_sourceChartPoint
+case1SelectedOldCenterSqFormalJacobianChartCertificate.jacobianPrior_monomial_sourceChartPoint
+
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.sourceChartPoint
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.loss_sourceChartPoint_eq_centerSq
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.lossUnit_sourceChartPoint_eq
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.jacobianPrior_sourceChartPoint_eq_det
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.loss_monomial_sourceChartPoint
+case1DisplayedRowStripCenterSqFormalJacobianChartCertificate.jacobianPrior_monomial_sourceChartPoint
+```
+
+This identifies the finite selected-entry source chart points inside the
+existing one-chart microcertificates for the selected-old `Unit` pivot and the
+displayed row-strip pivot.  It proves chart-map, finite loss, loss-unit,
+formal determinant, and monomial-identity evaluations.  It is not source
+production of the hidden old label, chart coverage, transition regularity,
+analytic Jacobian control, a total DLN loss certificate, global A0 normal
+crossings, pole order, or RLCT.
