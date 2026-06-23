@@ -304,6 +304,29 @@ not an ambient open neighborhood, nonemptiness theorem, or source-produced
 regular-corner chart theorem.  Do not rewrite the residual product as a raw or
 paper-order block product without a separate orientation bridge.
 
+The local source-rank endpoint package has now landed on top of that pointwise
+wrapper.  New Lean names in `ProductReductionBoundary.lean`:
+`paperEndpointFixedBaseSourceRankStratum_selfBase_mem`,
+`paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`,
+`PaperEndpointTriangularSourceRanksLocalCertificate`, and
+`exists_paperEndpointTriangularSourceRanksLocalCertificate`.  It proves
+basepoint source-stratum membership from supplied source rank data, then
+combines the ordinary neighborhood of fixed-base product-reduction
+certificates with the source rank stratum to return the triangular
+residual-product/source-rank endpoint shape as a `nhdsWithin` conclusion.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-local-source-rank-endpoint-package.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-local-source-rank-endpoint-package.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-local-source-rank-endpoint-package.md`.
+
+This is still not exact-rank openness, ambient source-stratum nonemptiness,
+full Theorem 3, Aoyagi Lemma 1 normalization, analytic ideal transport,
+regular-coordinate RLCT additivity, normal crossings, pole order, or RLCT.
+The next distinct A2 candidate is the p. 13 block product-difference algebra,
+provided it stays a pointwise block/ideal statement and not an RLCT shift.
+
 ## Latest A5 Update
 
 The Eq5 alpha-indexed branch source-label slice has landed in

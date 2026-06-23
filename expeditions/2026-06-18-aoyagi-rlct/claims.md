@@ -182,8 +182,10 @@ No such claim is formalisation-ready until both fields are filled.
   fixed-base certificate exposes regular `[I 0; F3 I]` and `[I F2; 0 I]`
   factors with proof witness `F2 = -S.B`. The fixed-base/source-rank-stratum
   endpoint wrapper now bundles that triangular residual-product form with the
-  residual-rank formulas `rEdge p - r`. The full source Theorem 3 claim remains
-  blocked.
+  residual-rank formulas `rEdge p - r`. The local source-rank endpoint package
+  now lifts that pointwise shape into a `nhdsWithin` conclusion relative to
+  the source rank stratum, with an existential wrapper choosing the
+  total-kernel complement. The full source Theorem 3 claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -193,7 +195,9 @@ No such claim is formalisation-ready until both fields are filled.
   basis repair at
   `threads/03-block-product-reduction/through-layer-basis-reproduction.md`;
   triangular endpoint wrapper at
-  `threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`.
+  `threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`;
+  local source-rank endpoint package at
+  `threads/03-block-product-reduction/reproduction-a2-local-source-rank-endpoint-package.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -203,7 +207,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/paper-order-bridge-notes.md`; triangular
   endpoint wrapper checked by xhigh reviewer `Kepler`; source-rank-stratum
   endpoint wrapper checked by xhigh reviewer `Carson` in
-  `threads/03-block-product-reduction/review-a2-source-rank-stratum-theorem3-boundary.md`.
+  `threads/03-block-product-reduction/review-a2-source-rank-stratum-theorem3-boundary.md`;
+  local source-rank endpoint package reviewed in
+  `threads/03-block-product-reduction/review-a2-local-source-rank-endpoint-package.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -465,7 +471,14 @@ No such claim is formalisation-ready until both fields are filled.
   `PaperEndpointFixedBaseTriangularResidualProductSourceRanks` and constructor
   `PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct_sourceRanks`,
   which bundle the transformed residual-product endpoint form with the
-  residual-rank formulas `rEdge p - r`.
+  residual-rank formulas `rEdge p - r`. Also proved
+  `paperEndpointFixedBaseSourceRankStratum_selfBase_mem`,
+  `paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`,
+  `PaperEndpointTriangularSourceRanksLocalCertificate`, and
+  `exists_paperEndpointTriangularSourceRanksLocalCertificate`, which package
+  basepoint source-stratum membership from supplied rank data and the same
+  endpoint source shape as a local relative-neighborhood conclusion over the
+  source rank stratum.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units
@@ -503,9 +516,12 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-a2-rank-stratum-boundary.md`.
   The source-rank/residual-product bundle is recorded at
   `threads/03-block-product-reduction/reproduction-a2-source-rank-stratum-theorem3-boundary.md`;
-  it is still fixed-base and certificate-relative, not a source proof of
-  regular-corner chart production, exact-rank openness, nonemptiness, Lemma 1
-  normalization, ideal transport, normal crossings, pole order, or RLCT.
+  the local relative-neighborhood package is recorded at
+  `threads/03-block-product-reduction/reproduction-a2-local-source-rank-endpoint-package.md`.
+  These are still fixed-base/source-stratum and certificate-relative, not a
+  source proof of regular-corner chart production, exact-rank openness,
+  nonemptiness, Lemma 1 normalization, ideal transport, normal crossings, pole
+  order, or RLCT.
 
 ## Claim A3 - deepest singular point
 

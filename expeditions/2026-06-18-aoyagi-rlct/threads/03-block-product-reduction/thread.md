@@ -1242,3 +1242,39 @@ Artifacts:
 `reproduction-a2-source-rank-stratum-theorem3-boundary.md`,
 `statement-card-a2-source-rank-stratum-theorem3-boundary.md`, and
 `review-a2-source-rank-stratum-theorem3-boundary.md`.
+
+## 2026-06-23 A2 local source-rank endpoint package
+
+Lifted the fixed-base/source-rank endpoint wrapper into the local
+product-reduction boundary.  The new theorem
+`paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`
+uses the existing ordinary neighborhood of fixed-base product-reduction
+certificates, intersects it with `paperEndpointFixedBaseSourceRankStratum`, and
+applies the pointwise source-rank endpoint wrapper.  Thus the conclusion is
+relative to the source rank stratum; it does not assert exact-rank openness.
+
+New Lean artifacts in `lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`:
+
+- `paperEndpointFixedBaseSourceRankStratum_selfBase_mem`;
+- `paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`;
+- `PaperEndpointTriangularSourceRanksLocalCertificate`;
+- `exists_paperEndpointTriangularSourceRanksLocalCertificate`.
+
+This removes a downstream composition step for A2 consumers: after choosing a
+total-kernel complement, the local package directly yields the triangular
+endpoint residual-product/source-rank shape relative to the source rank
+stratum.  The basepoint membership wrapper proves membership in that stratum
+only from supplied product/layer rank equalities and inequalities.  The
+endpoint lower-right block remains
+`ChartLocalSuffixState.residualProduct` for transformed Schur residuals, not a
+raw product of original edge lower-right blocks.
+
+Scope caveats: this is not exact-rank openness, source-stratum nonemptiness,
+full Theorem 3, Aoyagi Lemma 1 normalization, analytic ideal transport,
+regular-coordinate RLCT additivity, normal crossings, pole order, or RLCT.
+
+Artifacts:
+`reproduction-a2-local-source-rank-endpoint-package.md` and
+`statement-card-a2-local-source-rank-endpoint-package.md`.
+Review:
+`review-a2-local-source-rank-endpoint-package.md`.

@@ -2018,8 +2018,16 @@ Immediate order:
    without claiming exact-rank openness. The fixed-base/source-rank wrapper
    now bundles the triangular residual-product endpoint form with the residual
    rank formulas `rEdge p - r` in
-   `PaperEndpointFixedBaseTriangularResidualProductSourceRanks`. Leave A2 at
-   this elementary boundary until A4/A0 produce stable certificate data.
+   `PaperEndpointFixedBaseTriangularResidualProductSourceRanks`. The local
+   source-rank endpoint package now adds basepoint source-stratum membership
+   from supplied rank data and lifts the endpoint source shape to `nhdsWithin`
+   the source rank stratum through
+   `paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`
+   and `PaperEndpointTriangularSourceRanksLocalCertificate`; it is still a
+   relative-stratum package, not exact-rank openness or source-stratum
+   nonemptiness. Leave A2 at this elementary boundary until A4/A0 produce
+   stable certificate data, except for the separate p. 13 block-difference
+   algebra if it stays purely algebraic.
    Optional future A2 work should be thin source-rank, residual-rank, or
    hypothesis-weakening wrappers only, not exact-rank openness, full Theorem 3
    packaging, or regular-suspension/RLCT transport.

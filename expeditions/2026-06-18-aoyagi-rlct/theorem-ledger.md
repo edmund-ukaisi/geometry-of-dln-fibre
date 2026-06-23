@@ -260,6 +260,25 @@ prove exact-rank openness, source-stratum nonemptiness, regular-corner chart
 production, Lemma 1 normalization, ideal transport, normal crossings, pole
 order, or RLCT.
 
+The A2 local source-rank endpoint package has also landed.  New Lean names in
+`ProductReductionBoundary.lean`:
+`paperEndpointFixedBaseSourceRankStratum_selfBase_mem`,
+`paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`,
+`PaperEndpointTriangularSourceRanksLocalCertificate`, and
+`exists_paperEndpointTriangularSourceRanksLocalCertificate`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-local-source-rank-endpoint-package.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-local-source-rank-endpoint-package.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-local-source-rank-endpoint-package.md`.
+This proves basepoint source-stratum membership from supplied rank data and
+lifts the pointwise fixed-base source-rank endpoint wrapper to a local
+relative-neighborhood conclusion over
+`paperEndpointFixedBaseSourceRankStratum`.  It is still not exact-rank
+openness, ambient source-stratum nonemptiness, full Theorem 3, Lemma 1
+normalization, analytic ideal transport, normal crossings, pole order, or RLCT.
+
 ## Latest A5 Update
 
 The Eq5 alpha-indexed branch source-label slice has landed in

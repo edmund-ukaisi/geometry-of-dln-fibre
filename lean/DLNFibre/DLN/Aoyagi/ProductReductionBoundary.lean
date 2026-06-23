@@ -78,6 +78,39 @@ def paperEndpointFixedBaseSourceRankStratum
     x ∈ paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge ∧
     ∀ p : Fin N, r ≤ rEdge p}
 
+/-- The base parameter lies in the source-shaped rank stratum once the source
+rank equalities and inequalities are supplied explicitly.  This proves
+basepoint membership only; it is not exact-rank openness. -/
+theorem paperEndpointFixedBaseSourceRankStratum_selfBase_mem
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} {x₀ : α}
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hprod :
+      Module.finrank K (LinearMap.range (paperTotalMap W B)) = r)
+    (hedge :
+      ∀ p : Fin N,
+        Module.finrank K (LinearMap.range (reverseEdge W B p)) = rEdge p)
+    (hle : ∀ p : Fin N, r ≤ rEdge p) :
+    x₀ ∈ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge := by
+  refine ⟨hprod, ?_, hle⟩
+  intro p
+  have hpCLM :
+      Cedge x₀ p = LinearMap.toContinuousLinearMap (reverseEdge W B p) :=
+    congrFun hbase p
+  have hp :
+      (Cedge x₀ p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ) =
+        reverseEdge W B p := by
+    simpa using
+      congrArg
+        (fun f : reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦
+          (f : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))
+        hpCLM
+  rw [hp]
+  exact hedge p
+
 /-- Residual-rank equalities after restricting the product-reduction certificate to
 the exact edge-rank stratum. -/
 def paperEndpointFixedBaseContinuousEdgesRecursiveResidualRanks
@@ -685,6 +718,40 @@ theorem paperEndpointFixedBaseProductReductionRankStratumCertificate_selfBase_me
     PaperEndpointFixedBaseProductReductionCertificate.rankStratumCertificate
       (W := W) (B := B) hx.1 hx.2.2.1
 
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
+/-- Near a continuous edge family based at `B`, the endpoint triangular
+residual-product/source-rank conclusion holds relative to Aoyagi's source-shaped
+rank stratum.  This is a relative statement, not exact-rank openness. -/
+theorem paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (r : ℕ) (rEdge : Fin N → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    {x : α |
+      PaperEndpointFixedBaseTriangularResidualProductSourceRanks
+        W B U₀ hU₀ Cedge r rEdge x} ∈
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge) := by
+  rw [mem_nhdsWithin_iff_exists_mem_nhds_inter]
+  refine
+    ⟨{x : α |
+      PaperEndpointFixedBaseProductReductionCertificate W B U₀ hU₀ Cedge rEdge x},
+      paperEndpointFixedBaseProductReductionCertificate_selfBase_mem_nhds
+        W B U₀ hU₀ Cedge rEdge hCedge hbase,
+      ?_⟩
+  intro x hx
+  exact
+    PaperEndpointFixedBaseProductReductionCertificate.exists_triangularBlockDiagonal_residualProduct_sourceRanks
+      (W := W) (B := B)
+      (base := paperEndpointBasepointCertificate_of_isCompl W B U₀ hU₀)
+      (cert := hx.1)
+      (hsrc := hx.2)
+
 /-- A local fixed-base package for the proved product-reduction boundary near a base
 paper chain.  This pairs the basepoint adapted-coordinate certificate with the
 neighborhood where the recursive fixed-base product-reduction certificate holds. -/
@@ -811,6 +878,22 @@ def PaperEndpointProductReductionRankStratumLocalCertificate
       PaperEndpointFixedBaseProductReductionRankStratumLocalCertificate
         W B U₀ hU₀ x₀ Cedge rEdge
 
+/-- A continuous reversed-edge family based at `B` admits a local endpoint
+triangular residual-product/source-rank package relative to Aoyagi's source rank
+stratum, after choosing endpoint bases from a total-kernel complement. -/
+def PaperEndpointTriangularSourceRanksLocalCertificate
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α]
+    (x₀ : α)
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (r : ℕ) (rEdge : Fin N → ℕ) : Prop :=
+  ∃ U₀ : Submodule K (reverseVertex W 0),
+    ∃ hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)),
+      {x : α |
+        PaperEndpointFixedBaseTriangularResidualProductSourceRanks
+          W B U₀ hU₀ Cedge r rEdge x} ∈
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge)
+
 /-- Finite-dimensional paper chains admit a local product-reduction certificate near any
 continuous reversed-edge family based at the chain. -/
 theorem exists_paperEndpointProductReductionLocalCertificate
@@ -843,6 +926,23 @@ theorem exists_paperEndpointProductReductionRankStratumLocalCertificate
   exact ⟨U₀, hU₀,
     paperEndpointFixedBaseProductReductionRankStratumLocalCertificate_of_isCompl
       W B U₀ hU₀ Cedge rEdge hCedge hbase⟩
+
+/-- Finite-dimensional paper chains admit a local endpoint triangular
+residual-product/source-rank package, relative to Aoyagi's source rank stratum,
+near any continuous reversed-edge family based at the chain. -/
+theorem exists_paperEndpointTriangularSourceRanksLocalCertificate
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (r : ℕ) (rEdge : Fin N → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    PaperEndpointTriangularSourceRanksLocalCertificate W B x₀ Cedge r rEdge := by
+  rcases exists_paperEndpointBasepointCertificate W B with ⟨U₀, hU₀, _⟩
+  exact ⟨U₀, hU₀,
+    paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source
+      W B U₀ hU₀ Cedge r rEdge hCedge hbase⟩
 
 end FixedBaseProductReductionBoundary
 
