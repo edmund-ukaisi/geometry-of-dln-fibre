@@ -624,6 +624,131 @@ theorem exponentData_exponentOrder_jacobianPriorLossShift
   rw [C.exponentData_jacobianPriorLossShift m]
   exact C.exponentData.exponentOrder_jacobianPriorLossShift m
 
+/-- Multiply the loss and Jacobian/prior displays by supplied unit factors.
+
+The chart maps, coordinates, and exponent arrays are unchanged.  The supplied
+identities say that the new loss and Jacobian/prior functions are the old
+ones multiplied by chartwise unit factors; those factors are absorbed into the
+recorded unit fields.
+
+This is unit-only certificate algebra.  Coordinate monomial factors belong in
+the exponent-shift operations, not in this transformer. -/
+def unitMultiply
+    (C : AoyagiNormalCrossingChartCertificate Param R)
+    (loss' : Param → R)
+    (jacobianPrior' : ∀ c : Fin C.numCharts, C.ChartPoint c → R)
+    (lossFactor jacobianPriorFactor :
+      ∀ c : Fin C.numCharts, C.ChartPoint c → R)
+    (loss_eq :
+      ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+        loss' (C.chartMap c u) = lossFactor c u * C.loss (C.chartMap c u))
+    (jacobianPrior_eq :
+      ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+        jacobianPrior' c u =
+          jacobianPriorFactor c u * C.jacobianPrior c u)
+    (lossFactor_isUnit :
+      ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+        IsUnit (lossFactor c u))
+    (jacobianPriorFactor_isUnit :
+      ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+        IsUnit (jacobianPriorFactor c u)) :
+    AoyagiNormalCrossingChartCertificate Param R where
+  numCharts := C.numCharts
+  numCoords := C.numCoords
+  ChartPoint := C.ChartPoint
+  chartPoint_nonempty := C.chartPoint_nonempty
+  chartMap := C.chartMap
+  coord := C.coord
+  loss := loss'
+  jacobianPrior := jacobianPrior'
+  lossUnit := fun c u ↦ lossFactor c u * C.lossUnit c u
+  jacobianPriorUnit := fun c u ↦
+    jacobianPriorFactor c u * C.jacobianPriorUnit c u
+  lossExp := C.lossExp
+  jacobianPriorExp := C.jacobianPriorExp
+  loss_monomial := by
+    intro c u
+    rw [loss_eq c u, C.loss_monomial c u]
+    rw [mul_assoc]
+  jacobianPrior_monomial := by
+    intro c u
+    rw [jacobianPrior_eq c u, C.jacobianPrior_monomial c u]
+    rw [mul_assoc]
+  lossUnit_isUnit := by
+    intro c u
+    exact IsUnit.mul (lossFactor_isUnit c u) (C.lossUnit_isUnit c u)
+  jacobianPriorUnit_isUnit := by
+    intro c u
+    exact IsUnit.mul (jacobianPriorFactor_isUnit c u)
+      (C.jacobianPriorUnit_isUnit c u)
+  active_nonempty := C.active_nonempty
+
+section UnitMultiply
+
+variable (C : AoyagiNormalCrossingChartCertificate Param R)
+variable (loss' : Param → R)
+variable (jacobianPrior' : ∀ c : Fin C.numCharts, C.ChartPoint c → R)
+variable (lossFactor jacobianPriorFactor :
+  ∀ c : Fin C.numCharts, C.ChartPoint c → R)
+variable (loss_eq :
+  ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+    loss' (C.chartMap c u) = lossFactor c u * C.loss (C.chartMap c u))
+variable (jacobianPrior_eq :
+  ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+    jacobianPrior' c u =
+      jacobianPriorFactor c u * C.jacobianPrior c u)
+variable (lossFactor_isUnit :
+  ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+    IsUnit (lossFactor c u))
+variable (jacobianPriorFactor_isUnit :
+  ∀ (c : Fin C.numCharts) (u : C.ChartPoint c),
+    IsUnit (jacobianPriorFactor c u))
+
+@[simp] theorem unitMultiply_lossExp
+    (c : Fin C.numCharts) (j : Fin C.numCoords) :
+    (C.unitMultiply loss' jacobianPrior' lossFactor jacobianPriorFactor
+      loss_eq jacobianPrior_eq lossFactor_isUnit
+      jacobianPriorFactor_isUnit).lossExp c j = C.lossExp c j :=
+  rfl
+
+@[simp] theorem unitMultiply_jacobianPriorExp
+    (c : Fin C.numCharts) (j : Fin C.numCoords) :
+    (C.unitMultiply loss' jacobianPrior' lossFactor jacobianPriorFactor
+      loss_eq jacobianPrior_eq lossFactor_isUnit
+      jacobianPriorFactor_isUnit).jacobianPriorExp c j =
+      C.jacobianPriorExp c j :=
+  rfl
+
+@[simp] theorem exponentData_unitMultiply :
+    (C.unitMultiply loss' jacobianPrior' lossFactor jacobianPriorFactor
+      loss_eq jacobianPrior_eq lossFactor_isUnit
+      jacobianPriorFactor_isUnit).exponentData = C.exponentData :=
+  rfl
+
+/-- Unit-only multiplication leaves the projected finite exponent minimum
+unchanged. -/
+theorem exponentData_exponentMinimum_unitMultiply :
+    (C.unitMultiply loss' jacobianPrior' lossFactor jacobianPriorFactor
+      loss_eq jacobianPrior_eq lossFactor_isUnit
+      jacobianPriorFactor_isUnit).exponentData.exponentMinimum =
+      C.exponentData.exponentMinimum := by
+  rw [C.exponentData_unitMultiply loss' jacobianPrior' lossFactor
+    jacobianPriorFactor loss_eq jacobianPrior_eq lossFactor_isUnit
+    jacobianPriorFactor_isUnit]
+
+/-- Unit-only multiplication leaves the projected finite exponent order
+unchanged. -/
+theorem exponentData_exponentOrder_unitMultiply :
+    (C.unitMultiply loss' jacobianPrior' lossFactor jacobianPriorFactor
+      loss_eq jacobianPrior_eq lossFactor_isUnit
+      jacobianPriorFactor_isUnit).exponentData.exponentOrder =
+      C.exponentData.exponentOrder := by
+  rw [C.exponentData_unitMultiply loss' jacobianPrior' lossFactor
+    jacobianPriorFactor loss_eq jacobianPrior_eq lossFactor_isUnit
+    jacobianPriorFactor_isUnit]
+
+end UnitMultiply
+
 end AoyagiNormalCrossingChartCertificate
 
 /-- Explicit hypothesis supplied by the cited analytic normal-crossing

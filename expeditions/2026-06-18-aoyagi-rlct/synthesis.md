@@ -270,6 +270,29 @@ and
 Review:
 `threads/02-analytic-interface/review-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`.
 
+Latest A0 chart-certificate unit multiplication:
+`NormalCrossingInterface.lean` now exposes
+`AoyagiNormalCrossingChartCertificate.unitMultiply`.  It takes replacement
+loss and Jacobian/prior functions together with supplied chartwise identities
+saying that they equal unit multipliers times the old certificate functions.
+The multipliers are absorbed into the recorded `lossUnit` and
+`jacobianPriorUnit` fields using `IsUnit.mul`.  Chart maps, coordinates, loss
+exponents, Jacobian/prior exponents, and active-coordinate data are unchanged,
+so the projected exponent data is definitionally `C.exponentData`, and the
+projected finite minimum and order are preserved.
+This is unit-only certificate algebra.  Divisor monomial shifts are outside
+the intended use of this operation unless separately supplied as units, and
+remain the responsibility of exponent-shift APIs such as
+`jacobianPriorLossShift`.  The slice does not construct analytic unit
+neighbourhoods, chart coverage, Jacobian/volume-form control, global
+normal-crossing data, pole order, or RLCT extraction.
+Artifacts:
+`threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-unit-multiply-a0.md`
+and
+`threads/02-analytic-interface/statement-card-a0-normal-crossing-chart-certificate-unit-multiply.md`.
+Review:
+`threads/02-analytic-interface/review-normal-crossing-chart-certificate-unit-multiply-a0.md`.
+
 ## Latest A2 Update
 
 The residual-product endpoint wrapper for Aoyagi Theorem 3 has landed.

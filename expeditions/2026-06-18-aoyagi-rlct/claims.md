@@ -20,7 +20,9 @@ No such claim is formalisation-ready until both fields are filled.
   spine, finite min/order certificates, ratio chart-count rewrites, and
   Jacobian/prior loss-shift arithmetic proved; the chart-certificate lift of
   that shift is also proved as certificate algebra on supplied chart data;
-  analytic extraction remains Cited as extraction-only. A2 interface repair decision saved at
+  unit-only multiplication of chart-certificate loss/Jacobian-prior displays
+  is proved with unchanged exponent data; analytic extraction remains Cited as
+  extraction-only. A2 interface repair decision saved at
   `threads/02-analytic-interface/interface-repair-a2.md`.
 - **Kill-condition.** Aoyagi's final extraction uses an analytic hypothesis not
   captured by the interface we state, or the interface computes a different
@@ -39,7 +41,9 @@ No such claim is formalisation-ready until both fields are filled.
   Jacobian/prior loss shift at
   `threads/02-analytic-interface/reproduction-normal-crossing-jacobian-prior-loss-shift-a0.md`;
   chart-certificate lift at
-  `threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`.
+  `threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`;
+  chart-certificate unit multiplication at
+  `threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-unit-multiply-a0.md`.
 - **Reproduction check.** analytic scout report at
   `threads/02-analytic-interface/scout-report.md`; controller interface draft
   at `threads/02-analytic-interface/interface-draft.md`; xhigh source/API
@@ -54,7 +58,9 @@ No such claim is formalisation-ready until both fields are filled.
   Jacobian/prior loss-shift reviews at
   `threads/02-analytic-interface/review-normal-crossing-jacobian-prior-loss-shift-a0.md`
   and
-  `threads/02-analytic-interface/review-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`.
+  `threads/02-analytic-interface/review-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`;
+  chart-certificate unit multiplication review at
+  `threads/02-analytic-interface/review-normal-crossing-chart-certificate-unit-multiply-a0.md`.
 - **Lean target.** A named hypothesis/interface for concrete
   normal-crossing-certificate extraction, not a theorem pretending to prove the
   analytic extraction or general ideal-generator invariance.
@@ -72,7 +78,10 @@ No such claim is formalisation-ready until both fields are filled.
   `AoyagiNormalCrossingChartCertificate.jacobianPriorLossShift`, whose
   projected finite exponent data is definitionally the finite
   `jacobianPriorLossShift` and whose projected minimum/order consequences are
-  proved. The chart-level final
+  proved, plus `AoyagiNormalCrossingChartCertificate.unitMultiply`, which
+  absorbs supplied chartwise unit factors into the loss and Jacobian/prior
+  unit fields while leaving projected exponent data, finite minimum, and finite
+  order unchanged. The chart-level final
   socket `AoyagiTheorem2SuppliedChartFinalBoundary` is proved in
   `lean/DLNFibre/DLN/Aoyagi/Theorem2FinalAssembly.lean`.
 - **Assumed.** the exact normal-crossing hypotheses once specified: finite
@@ -86,10 +95,11 @@ No such claim is formalisation-ready until both fields are filled.
   only certificate-level elementary transport before the single
   normal-crossing extraction interface. Regular-coordinate additivity is not a
   separate citation; the preferred route is a full regular-suspension
-  certificate. The Lean `jacobianPriorLossShift` lemmas and chart-certificate
-  lift are finite/certificate algebra only and must not be used as an analytic
-  regular-coordinate additivity theorem or as extraction transfer from a
-  reduced certificate.
+  certificate. The Lean `jacobianPriorLossShift` lemmas, chart-certificate
+  lift, and `unitMultiply` are finite/certificate algebra only and must not be
+  used as analytic regular-coordinate additivity, as extraction transfer from a
+  reduced certificate, or as permission to treat divisor monomial shifts as
+  units without separately supplied unit witnesses.
 
 ## Claim A1 - block elimination
 

@@ -78,6 +78,17 @@ data only.  It is not regular-coordinate construction, analytic Jacobian or
 volume-form control, chart coverage, transition regularity, pole order, RLCT
 additivity, or extraction transfer from a reduced certificate.
 
+The current A0 unit-only chart-certificate algebra slice is
+`threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-unit-multiply-a0.md`.
+Lean now provides `AoyagiNormalCrossingChartCertificate.unitMultiply`, which
+absorbs supplied chartwise unit multipliers into the loss and Jacobian/prior
+unit fields while keeping chart maps, coordinates, and both exponent arrays
+unchanged.  Its projected exponent data is definitionally `C.exponentData`,
+so the projected finite minimum and finite order are unchanged.  Divisor
+monomial shifts are outside the intended use of this operation unless separately
+supplied as units; they belong to exponent-shift APIs such as
+`jacobianPriorLossShift`.
+
 The current A6 finite-certificate bridge is
 `threads/06-dln-translation/reproduction-theorem2-finite-certificate-bridge-a6.md`.
 It uses those A0 finite certificates to build

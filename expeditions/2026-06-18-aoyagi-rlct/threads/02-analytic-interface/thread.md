@@ -225,3 +225,32 @@ for a modified `jacobianPrior`; it does not prove an analytic
 Jacobian/volume-form theorem, regular-suspension chart construction, chart
 coverage, transition regularity, pole order, RLCT additivity, or extraction
 transfer from a reduced certificate.
+
+## 2026-06-23 chart-certificate unit multiplication
+
+Lean now adds a unit-only chart-certificate transformer:
+
+```text
+AoyagiNormalCrossingChartCertificate.unitMultiply
+AoyagiNormalCrossingChartCertificate.exponentData_unitMultiply
+AoyagiNormalCrossingChartCertificate.exponentData_exponentMinimum_unitMultiply
+AoyagiNormalCrossingChartCertificate.exponentData_exponentOrder_unitMultiply
+```
+
+The operation takes replacement loss and Jacobian/prior functions, supplied
+chartwise multiplicative identities against the old certificate, and supplied
+unit witnesses for those multipliers.  It absorbs the multipliers into the
+recorded unit fields and leaves the chart maps, coordinates, loss exponents,
+and Jacobian/prior exponents unchanged.  Therefore the projected finite
+exponent data, minimum, and order are unchanged.
+
+Artifacts:
+
+- `reproduction-normal-crossing-chart-certificate-unit-multiply-a0.md`;
+- `statement-card-a0-normal-crossing-chart-certificate-unit-multiply.md`;
+- `review-normal-crossing-chart-certificate-unit-multiply-a0.md`.
+
+This is certificate algebra only.  It does not prove analytic unit
+neighbourhoods, chart construction, chart coverage, a Jacobian/volume-form
+theorem, global normal crossings, pole order, RLCT extraction, or permission
+to treat coordinate monomial factors as units.
