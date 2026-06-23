@@ -11,8 +11,8 @@ the genuine theorem is the **componentwise monotonicity** of the minimal codim `
 
     `(∀ i, M' i ≤ M i) → (Adm M').inf' _ (Mval M') ≤ (Adm M).inf' _ (Mval M)`,
 
-of which `hMono` is the two-front-coordinate-drop corollary at `M' = schurStateRed M`. The load-bearing
-object is the **running-min-cap transfer** `Adm M → Adm M'`,
+of which `hMono` is the two-front-coordinate-drop corollary at `M' = schurStateRed M`. The proof rests on
+the **running-min-cap transfer** `Adm M → Adm M'`,
 
     `T'_j := min_{k ≤ j}( min (T_k) (admBound M' k) )`
 
@@ -138,8 +138,8 @@ theorem runMinCap_le_Msucc (M' : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : F
   exact_mod_cast this
 
 /-- **The characterization** `runMinCap … j = min (T j) (min (tPrev M' (runMinCap …) j) (M' j.succ))` (the
-local cap, `ℤ`-cast). This is the load-bearing structural fact (verified 0-fail): `T'` equals the local min
-of the original exponent, the running predecessor, and the width — NOT merely `≤` them (the cert trap). -/
+local cap, `ℤ`-cast). The structural fact the per-term drop consumes (verified 0-fail): `T'` equals the local
+min of the original exponent, the running predecessor, and the width — NOT merely `≤` them (the cert trap). -/
 theorem runMinCap_eq_local (M' : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (j : Fin L) :
     (runMinCap M' T j : ℤ)
       = min (T j : ℤ) (min (tPrev M' (runMinCap M' T) j) (M' j.succ : ℤ)) := by
