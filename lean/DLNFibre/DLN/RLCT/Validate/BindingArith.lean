@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMNReg
+import DLNFibre.DLN.RLCT.Validate.MinAdmMono
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.BindingArith` — the recursion-arithmetic hypotheses of
@@ -74,5 +75,12 @@ theorem bind_hnReg (M : Fin (L + 1) → ℕ)
     (hMono : lambdaCore (schurStateRed M) ≤ lambdaCore M) :
     0 ≤ bindNReg M := by
   unfold bindNReg; linarith
+
+/-- **`hnReg` UNCONDITIONAL** — `0 ≤ bindNReg M` for every `M`, the `binding_recursion_of_step` form (which
+demands `hnReg` for ALL `M`, not per-node). The monotonicity hypothesis of `bind_hnReg` is now PROVEN
+(`MinAdmMono.lambdaCore_schurStateRed_le`, #149 — the running-min-cap cone-transform), so the binding
+regular count is nonnegative with no remaining named gap. -/
+theorem bind_hnReg_uncond (M : Fin (L + 1) → ℕ) : 0 ≤ bindNReg M :=
+  bind_hnReg M (lambdaCore_schurStateRed_le M)
 
 end DLNFibre.DLN.RLCT
