@@ -86,7 +86,7 @@ makes that bridge explicit, exposing the recursion's threaded input: the CORE bo
 NOT a point-RLCT of the core. The actual chart presentation (`F∘φ = y₀²·core` via
 `dlnLoss_nodeBlowup_factor`, `|det| = |y₀|^{mk−1}` via `pivotBlowupOnDeriv_det`/`flatIdx_layer0_card`)
 is the assembly's plumbing; here `e = mk−1`, `Iy` the bounded pivot interval, `Vz` the core box. -/
-theorem chart_pullback_lt_top_of_boxpm {N : ℕ} {Z : Type*}
+theorem chart_pullback_lt_top_of_boxpm {Z : Type*}
     [MeasureSpace Z] [TopologicalSpace Z] [Zero Z] [SFinite (volume : Measure Z)]
     [BorelSpace Z] [SecondCountableTopology Z]
     (e : ℕ) (c' : ℝ) (hc' : 0 ≤ c') (hc'lt : c' < ((e : ℝ) + 1) / 2)
