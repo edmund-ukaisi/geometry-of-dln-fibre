@@ -107,4 +107,41 @@ theorem deepestPoint_layerLast_rows_vanish (H : Fin (L + 1) → ℕ) (r : ℕ)
       r ≤ (i : ℕ) → deepestPoint H r B hB hr hL s i j = 0 :=
   (deepestPoint_isDeep H r B hB hr hL).2.2.2.2
 
+/-! ## The frame as DATA (function form, for `gaugeDecode`)
+
+`deepestPoint_frame_exists` states `∃ P Q, …` per layer; `gaugeDecode` needs the frame as a *definable
+function* to build a continuous map and prove its basepoint. `deepestPoint_frame` extracts the
+`(P_s, Q_s)` pair via `Classical.choose`; `_normal` / `_invertible` are the two projections. The frame
+is CONSTANT (evaluated at the fixed deepest point, independent of the chart point `w`), so it has a unit
+constant Jacobian — `gaugeDecode = roleSplit ∘ frame ∘ (split.symm − deepestFlat)` is a unit-Jac map. -/
+
+/-- **The per-layer gauge frame at the deepest point, as a function** (the `(P_s, Q_s)` pair).
+`Classical.choose` of `deepestPoint_frame_exists`. Constant in the chart point. -/
+noncomputable def deepestPoint_frame (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ
+      × Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ :=
+  (Classical.choose (deepestPoint_frame_exists H r B hB hr hL s),
+    Classical.choose (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s)))
+
+/-- `(P_s, Q_s)` carry the deepest layer to the block-normal corner: `P_s·(deepestPoint s)·Q_s = corM`. -/
+theorem deepestPoint_frame_normal (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    (deepestPoint_frame H r B hB hr hL s).1 * (deepestPoint H r B hB hr hL s)
+        * (deepestPoint_frame H r B hB hr hL s).2
+      = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+          if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) :=
+  (Classical.choose_spec (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2
+
+/-- Both frame units `P_s, Q_s` are invertible (`IsUnit`). -/
+theorem deepestPoint_frame_invertible (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    IsUnit (deepestPoint_frame H r B hB hr hL s).1
+      ∧ IsUnit (deepestPoint_frame H r B hB hr hL s).2 := by
+  have h := Classical.choose_spec (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))
+  exact ⟨h.1, h.2.1⟩
+
 end DLNFibre.DLN.RLCT
