@@ -440,6 +440,46 @@ classifier, branch-label injectivity, back-to-label map, Eq3/Eq4/Eq5
 coverage, source labels, terminal `tilde t=0`, chart production, pole order
 without A0, normal crossings, or RLCT extraction.
 
+## Current slice - 2026-06-23, chart terminal-order handoff
+
+The chart-certificate final boundary now has A5 terminal-order handoff
+variants in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`.
+These mirror the finite-data terminal-order wrappers but preserve
+`AoyagiNormalCrossingChartCertificate` and the chart-level extraction
+hypothesis:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_chartCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_terminalMinimumLabels_card
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_chartCount_classifier
+AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_classifier
+```
+
+The wrappers consume selected-width provenance, chart-level A0 extraction, an
+active-ratio minimum certificate, chart-count or displayed-ratio chart-count
+data equal to `TC.terminalMinimumLabels.card`, supplied branch-label
+injectivity, a uniform all-chart upper bound by
+`TC.terminalMinimumLabels.card`, and either a supplied terminal upper bound or
+a supplied `TerminalMinimumCountDatumClassifier`.  The finite exponent formula
+field is then filled by the existing A5/A6 terminal-order bridge while the
+final socket stays chart-certificate-shaped.
+
+Artifacts:
+
+- `reproduction-theorem2-chart-terminal-order-bridge-a6.md`;
+- `statement-card-a6-theorem2-chart-terminal-order-bridge.md`;
+- `review-theorem2-chart-terminal-order-bridge-a6.md`.
+
+Boundary: this is finite A5-to-A6 handoff only.  It does not construct chart
+certificates, chart coverage, active-ratio bounds, chart-count facts,
+counted-datum classifiers, branch-label injectivity, Lemma 5 exactness, pole
+order without A0, normal crossings, or RLCT extraction.  The next source-moving
+frontier remains A4/A0 chart/source production.
+
 ## Current slice - 2026-06-22, remaining source obligations boundary map
 
 Roadmap artifact:

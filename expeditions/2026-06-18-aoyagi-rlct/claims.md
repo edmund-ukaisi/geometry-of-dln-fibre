@@ -3000,6 +3000,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-theorem2-ratio-count-terminal-order-bridge-a6.md`;
   counted-datum classifier terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-countdatum-terminal-order-bridge-a6.md`;
+  chart terminal-order bridge reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-chart-terminal-order-bridge-a6.md`;
   remaining source-obligations boundary map at
   `threads/06-dln-translation/boundary-map-theorem2-remaining-source-obligations-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
@@ -3018,6 +3020,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-theorem2-ratio-count-terminal-order-bridge-a6.md`;
   counted-datum classifier terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-countdatum-terminal-order-bridge-a6.md`;
+  chart terminal-order bridge reviewed at
+  `threads/06-dln-translation/review-theorem2-chart-terminal-order-bridge-a6.md`;
   final assembly reviewed at
   `threads/06-dln-translation/review-theorem2-final-assembly-a6.md`.
 - **Lean target.** final theorem TBD after A1-A5.  Current notation layer:
@@ -3102,6 +3106,16 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_chartCount_classifier`, and
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_activePair_ratioCount_classifier`
   in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
+  chart terminal-order bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_terminalMinimumLabels_card`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_terminalMinimumLabels_card`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_classifier`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_chartCount_terminalMinimumLabels_card`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_terminalMinimumLabels_card`,
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_chartCount_classifier`, and
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_classifier`
+  in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`; current
   supplied final boundary:
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary`,
   `DLNFibre.DLN.Aoyagi.AoyagiTheorem2SuppliedFinalBoundary.selectedWidths_eq_natCast_sub`,
@@ -3153,7 +3167,11 @@ No such claim is formalisation-ready until both fields are filled.
   `D.exponentMinimum` counts used by `D.exponentOrder`.  Also proved
   counted-datum classifier variants of the same terminal-order sockets, where
   a supplied `TC.TerminalMinimumCountDatumClassifier` replaces only the raw
-  terminal upper-bound hypothesis.  Selected rank-width
+  terminal upper-bound hypothesis.  Also proved chart-certificate variants of
+  the active chart-count, displayed-ratio count, and counted-datum classifier
+  terminal-order handoffs, preserving
+  `AoyagiTheorem2SuppliedChartFinalBoundary` and the chart-level extraction
+  hypothesis rather than forgetting to bare exponent data.  Selected rank-width
   hypotheses and the strict source-selected inequality remain explicit
   auxiliary theorem inputs where used.
 - **Assumed.** cited analytic interface A0 and source hypotheses.

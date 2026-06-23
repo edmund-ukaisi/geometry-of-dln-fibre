@@ -927,6 +927,357 @@ theorem lambda_and_poleOrder_eq_of_activePair_ratioCount_classifier
       data hselected hNC hp hratio hleRatio hchart hleChart hinj classifier)
   exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
 
+/-- Chart-certificate final boundary from active-ratio and chart-count
+finite certificates routed through supplied Lemma 5 terminal labels. -/
+theorem
+  theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_terminalMinimumLabels_card
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.minCountInChart c = TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.minCountInChart c' ≤ TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (hupper : TC.terminalMinimumLabels.card ≤ data.theorem2OrderFormula) :
+    AoyagiTheorem2SuppliedChartFinalBoundary
+      Cnc L (n + 1) H r C m data lambda poleOrder where
+  selectedWidths_eq_reduced := hselected
+  extractionHypothesis := hNC
+  finiteExponentFormula :=
+    TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_terminalMinimumLabels_card
+      data hp hratio hleRatio hchart hleChart hinj hupper
+
+/-- Chart-certificate final boundary from active-ratio and displayed-ratio
+chart-count certificates routed through supplied Lemma 5 terminal labels. -/
+theorem
+  theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_terminalMinimumLabels_card
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c =
+        TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c' ≤
+        TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (hupper : TC.terminalMinimumLabels.card ≤ data.theorem2OrderFormula) :
+    AoyagiTheorem2SuppliedChartFinalBoundary
+      Cnc L (n + 1) H r C m data lambda poleOrder where
+  selectedWidths_eq_reduced := hselected
+  extractionHypothesis := hNC
+  finiteExponentFormula :=
+    TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_terminalMinimumLabels_card
+      data hp hratio hleRatio hchart hleChart hinj hupper
+
+/-- Counted-datum classifier variant of the chart-certificate final boundary
+with active-ratio and chart-count finite certificates. -/
+theorem theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_classifier
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.minCountInChart c = TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.minCountInChart c' ≤ TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (classifier : TC.TerminalMinimumCountDatumClassifier) :
+    AoyagiTheorem2SuppliedChartFinalBoundary
+      Cnc L (n + 1) H r C m data lambda poleOrder where
+  selectedWidths_eq_reduced := hselected
+  extractionHypothesis := hNC
+  finiteExponentFormula :=
+    TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_chartCount_classifier
+      data hp hratio hleRatio hchart hleChart hinj classifier
+
+/-- Counted-datum classifier variant of the chart-certificate final boundary
+with active-ratio and displayed-ratio chart-count finite certificates. -/
+theorem theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_classifier
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c =
+        TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c' ≤
+        TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (classifier : TC.TerminalMinimumCountDatumClassifier) :
+    AoyagiTheorem2SuppliedChartFinalBoundary
+      Cnc L (n + 1) H r C m data lambda poleOrder where
+  selectedWidths_eq_reduced := hselected
+  extractionHypothesis := hNC
+  finiteExponentFormula :=
+    TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_classifier
+      data hp hratio hleRatio hchart hleChart hinj classifier
+
+/-- Pair-form chart-certificate consequence from active-ratio and chart-count
+certificates routed through supplied Lemma 5 terminal labels. -/
+theorem lambda_and_poleOrder_eq_of_chart_activePair_chartCount_terminalMinimumLabels_card
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.minCountInChart c = TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.minCountInChart c' ≤ TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (hupper : TC.terminalMinimumLabels.card ≤ data.theorem2OrderFormula) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ∧
+      poleOrder = data.theorem2OrderFormula := by
+  let B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L (n + 1) H r C m data lambda poleOrder :=
+    TC.theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_terminalMinimumLabels_card
+      data hselected hNC hp hratio hleRatio hchart hleChart hinj hupper
+  exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+
+/-- Pair-form chart-certificate consequence from active-ratio and
+displayed-ratio chart-count certificates routed through supplied Lemma 5
+terminal labels. -/
+theorem lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_terminalMinimumLabels_card
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c =
+        TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c' ≤
+        TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (hupper : TC.terminalMinimumLabels.card ≤ data.theorem2OrderFormula) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ∧
+      poleOrder = data.theorem2OrderFormula := by
+  let B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L (n + 1) H r C m data lambda poleOrder :=
+    TC.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_terminalMinimumLabels_card
+      data hselected hNC hp hratio hleRatio hchart hleChart hinj hupper
+  exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+
+/-- Pair-form counted-datum classifier consequence from active-ratio and
+chart-count certificates, preserving the chart certificate. -/
+theorem lambda_and_poleOrder_eq_of_chart_activePair_chartCount_classifier
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.minCountInChart c = TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.minCountInChart c' ≤ TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (classifier : TC.TerminalMinimumCountDatumClassifier) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ∧
+      poleOrder = data.theorem2OrderFormula := by
+  let B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L (n + 1) H r C m data lambda poleOrder :=
+    TC.theorem2SuppliedChartFinalBoundary_of_activePair_chartCount_classifier
+      data hselected hNC hp hratio hleRatio hchart hleChart hinj classifier
+  exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+
+/-- Pair-form counted-datum classifier consequence from active-ratio and
+displayed-ratio chart-count certificates, preserving the chart certificate. -/
+theorem lambda_and_poleOrder_eq_of_chart_activePair_ratioCount_classifier
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {width : ℕ → ℕ} {S J n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    {m : Fin (n + 2) → ℤ}
+    (data : AoyagiDefinition3CeilData (n + 1) m)
+    {lambda : ℚ} {poleOrder : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC :
+      AoyagiLemma5SuppliedTerminalCandidateFamily β L width S J
+        n data.aParam data.ceilWidth m t numerator leastValue)
+    (hselected : m = aoyagiSelectedReducedWidths H r C)
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    {p : Fin Cnc.numCharts × Fin Cnc.numCoords}
+    (hp : p ∈ Cnc.exponentData.activePairs)
+    (hratio :
+      Cnc.exponentData.ratioAt p =
+        aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data)
+    (hleRatio : ∀ p' ∈ Cnc.exponentData.activePairs,
+      aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ≤
+        Cnc.exponentData.ratioAt p')
+    {c : Fin Cnc.numCharts}
+    (hchart :
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c =
+        TC.terminalMinimumLabels.card)
+    (hleChart : ∀ c' : Fin Cnc.numCharts,
+      Cnc.exponentData.countInChartAtRatio
+          (aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data) c' ≤
+        TC.terminalMinimumLabels.card)
+    (hinj : Set.InjOn TC.branchLabel ↑TC.fullBranches)
+    (classifier : TC.TerminalMinimumCountDatumClassifier) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L (n + 1) H r m data ∧
+      poleOrder = data.theorem2OrderFormula := by
+  let B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L (n + 1) H r C m data lambda poleOrder :=
+    TC.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_classifier
+      data hselected hNC hp hratio hleRatio hchart hleChart hinj classifier
+  exact B.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+
 end AoyagiLemma5SuppliedTerminalCandidateFamily
 
 end Aoyagi
