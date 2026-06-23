@@ -469,7 +469,7 @@ theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hP : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H (Fin.last L))
         (hr (Fin.last L))) (prod H (framedParamsReg H r hr hL 0)))
       = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
-    rw [prod_framedParamsReg_zero H r hr hL, ← Matrix.reindex_symm,
+    rw [prodAux_framedParamsReg_zero H r hr hL, ← Matrix.reindex_symm,
       Equiv.apply_symm_apply]
   -- Each coordinate reads a block of `P`; all blocks of `fromBlocks 1 0 0 0` give `0` in the residual.
   simp only [deepestEPivot, hP, Pi.zero_apply]

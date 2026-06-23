@@ -49,6 +49,38 @@ theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k 
   obtain rfl : e2 = rfl := Subsingleton.elim _ _
   rfl
 
+/-- **SHARED step-cast helper** (#123, the family kernel). If the `k`-th layer of `A` is the reindexed
+block `Matrix.reindex eC.symm eS.symm M` at the running widths, then the `prodAux` succ-step is the clean
+product `prodAux k * reindex eC.symm eS.symm M` — the def's `Eq.mpr` cast is collapsed by the index-level
+`cases e1; cases e2` idiom (the `contDiff_prodAux_entry` precedent). All three folds (value / deriv /
+telescope) apply this then their own block-composition. `eC, eS` are the threshold splits at `H ⟨k,hk'⟩`,
+`H ⟨k+1,hk⟩`. -/
+theorem prodAux_succ_layer (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+    {p q : ℕ} (eC : Fin (H (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1))) ≃ Fin p ⊕ Fin q)
+    {p' q' : ℕ} (eS : Fin (H (⟨k + 1, hk⟩ : Fin (L+1))) ≃ Fin p' ⊕ Fin q')
+    (M : Matrix (Fin p ⊕ Fin q) (Fin p' ⊕ Fin q') ℝ)
+    (hlayer : A (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L)
+      = (by rw [show (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc
+                = (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1)) from by apply Fin.ext; simp [Fin.castSucc],
+              show (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ
+                = (⟨k + 1, hk⟩ : Fin (L+1)) from by apply Fin.ext; simp [Fin.succ]]
+            exact Matrix.reindex eC.symm eS.symm M :
+          Matrix (Fin (H (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc))
+            (Fin (H (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ)) ℝ)) :
+    prodAux H A (k + 1) hk
+      = prodAux H A k (Nat.lt_of_succ_lt hk) * Matrix.reindex eC.symm eS.symm M := by
+  have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+  have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+  have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+    apply Fin.ext; simp [Fin.castSucc]
+  have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+    apply Fin.ext; simp [Fin.succ]
+  show prodAux H A k hk' *
+      ((by rw [e1, e2]; exact A ⟨k, hkL⟩ :
+        Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)) = _
+  refine congrArg (prodAux H A k hk' * ·) ?_
+  rw [hlayer]; cases e1; cases e2; rfl
+
 /-- **The corner-block idempotent product** (reindex form). The block-normal corner `fromBlocks 1 0 0 0`
 is idempotent under the chain product, and reindexing along a shared middle interface `eB` cancels:
 `reindex eA.symm eB.symm corner * reindex eB.symm eC.symm corner = reindex eA.symm eC.symm corner`.
@@ -86,49 +118,62 @@ theorem prodAux_framedParamsReg_zero_aux (H : Fin (L + 1) → ℕ) (r : ℕ)
       intro hk _
       have hkL : k < L := Nat.lt_of_succ_lt_succ hk
       have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
-      have e1 : H (⟨k, hk'⟩ : Fin (L+1))
-          = H ((⟨k, hkL⟩ : Fin L).castSucc) := rfl
-      have e2 : H (⟨k + 1, hk⟩ : Fin (L+1))
-          = H ((⟨k, hkL⟩ : Fin L).succ) := rfl
-      rw [prodAux_succ H (framedParamsReg H r hr hL 0) k hk e1 e2,
-        framedParamsReg_zero H r hr hL ⟨k, hkL⟩]
-      -- Collapse the outer `finCongr` reindex: `e1, e2` are `rfl`, so `finCongr · = Equiv.refl`.
-      have hlayer : (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm)
-            ((Matrix.reindex (rThresholdSplit r (H (⟨k, hkL⟩ : Fin L).castSucc) (hr _)).symm
-                (rThresholdSplit r (H (⟨k, hkL⟩ : Fin L).succ) (hr _)).symm)
-              (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)))
-          = (Matrix.reindex (rThresholdSplit r (H ⟨k, hk'⟩) (hr _)).symm
-              (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr _)).symm)
-            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
-        rfl
-      rw [hlayer]
+      -- INDEX-level equalities (the `prodAux` def's own, `Fin.ext`).
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      -- `prodAux (k+1)` unfolds (def at Loss.lean) to `prodAux k * (Eq.mpr-cast layer)`, and that layer
+      -- IS the corner at the running widths (`framedParamsReg_zero` then `cases e1; cases e2` collapses the
+      -- two `Eq.mpr` casts to `rfl`). Rewrite the whole succ-step in one `rw [hstep]`.
+      -- the Eq.mpr-cast layer = the corner at the running widths (PROBE-proven: `framedParamsReg_zero`
+      -- then `cases e1; cases e2` collapses the two `Eq.mpr` casts to `rfl`).
+      have hlayer : ((by rw [e1, e2]; exact framedParamsReg H r hr hL 0 ⟨k, hkL⟩ :
+            Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ))
+          = Matrix.reindex (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩)).symm
+              (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩)).symm
+              (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+        rw [framedParamsReg_zero H r hr hL ⟨k, hkL⟩]; cases e1; cases e2; rfl
+      have hstep : prodAux H (framedParamsReg H r hr hL 0) (k + 1) hk
+          = prodAux H (framedParamsReg H r hr hL 0) k hk' *
+              Matrix.reindex (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩)).symm
+                (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩)).symm
+                (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+        show prodAux H (framedParamsReg H r hr hL 0) k hk' *
+            ((by rw [e1, e2]; exact framedParamsReg H r hr hL 0 ⟨k, hkL⟩ :
+              Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)) = _
+        exact congrArg (prodAux H (framedParamsReg H r hr hL 0) k hk' * ·) hlayer
+      rw [hstep]
       rcases Nat.eq_zero_or_pos k with hk0 | hkpos
-      · -- `k = 0`: `prodAux 0 = 1`, so the product IS the (reindexed) corner layer.
-        subst hk0
+      · subst hk0
+        -- accumulator is `prodAux 0 = 1`; `1 * corner = corner` (`prodAux 0` reduces, then `one_mul`).
         exact Matrix.one_mul _
-      · -- `k ≥ 1`: the running product is the corner (`ih`), and `corner * corner = corner`.
-        rw [ih hk' hkpos]
+      · rw [ih hk' hkpos]
         exact corner_reindex_mul (rThresholdSplit r (H 0) (hr 0))
-          (rThresholdSplit r (H ⟨k, hk'⟩) (hr _)) (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr _))
+          (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩))
+          (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩))
 
-/-- **The full framed product at the origin gauge slot is the block-normal corner** (`k = L` of
-`prodAux_framedParamsReg_zero_aux`). At the deepest point, `∏(framedParamsReg 0)` is the reindexed
-`blockdiag[I_r, 0]` of size `H 0 × H (last)` — the `deepestEPivot` base value (its regular residual
-is `0`). The endpoint widths are `H 0` (`rThresholdSplit r (H 0)`) and `H (Fin.last L)` (definitionally
-`H ⟨L, _⟩`). -/
-theorem prod_framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- **The idempotent fold at `0` — `prod` form** (`#123` (1), the `deepestEPivot_base` input). The full
+gauge-sliced product at the deepest gauge slot is the block-normal corner: `prod (framedParamsReg 0) =
+reindex (fromBlocks 1 0 0 0)` (at width `H 0 × H (last)`). `prod = prodAux L`; specialize the `aux`
+fold at `k = L` (`1 ≤ L`). The `Fin.last L = ⟨L, _⟩` index form aligns by `Fin.ext`. -/
+theorem prodAux_framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     prod H (framedParamsReg H r hr hL 0)
       = Matrix.reindex (rThresholdSplit r (H 0) (hr 0)).symm
           (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L))).symm
-          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) :=
-  prodAux_framedParamsReg_zero_aux H r hr hL L (Nat.lt_succ_self L) hL
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+  have h := prodAux_framedParamsReg_zero_aux H r hr hL L (Nat.lt_succ_self L) hL
+  rw [prod]
+  rw [h]
+  -- `⟨L, _⟩ = Fin.last L` (Fin.ext); the two corner index-forms agree.
+  congr 1
 
-/-- **PIN2 endpoint-frame telescoping** (existential endpoints, cobuild's banked shape). If every
-layer of `C` is the framed layer `C s = P s · A s · Q s` with `P s, Q s` units, and the interior
-interfaces collapse (`Q s = I`, `P ⟨s+1⟩ = I` for adjacent layers — the #95-(I) triviality), then the
-full products relate by endpoint conjugation: `∃ P₀ Q_L units, ∏C = P₀ · (∏A) · Q_L`. The endpoints
-are typed where `prod` lives (`Fin (H 0)`, `Fin (H (last))`), dodging the layer-index cast. -/
+/-- **PIN2 endpoint-frame telescoping** (existential endpoints, cobuild's banked shape). If every layer
+of `C` is the framed layer `C s = P s · A s · Q s` with `P s, Q s` units, and the interior interfaces
+collapse (`Q s = I`, `P ⟨s+1⟩ = I` for adjacent layers — the #95-(I) frame-triviality), then the full
+products relate by endpoint conjugation: `∃ P₀ Q_L units, ∏C = P₀ · (∏A) · Q_L`. The endpoints are typed
+where `prod` lives (`Fin (H 0)`, `Fin (H (last))`), dodging the layer-index cast. -/
 theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Params H)
     (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
@@ -139,15 +184,31 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
       prod H C = P0 * prod H A * QL := by
-  -- NOT NEEDED for L2/PIN2 (controller verdict (a) 2026-06-23): L2 light-(iii) + PIN2 loss_squeeze
-  -- close via the two-sided BOUND (rlctAtOn_squeeze ← fullProduct_loss_squeeze, scalar/gauge-block,
-  -- cast-free), NOT this exact equality. Kept as the STRONGER-but-unneeded result. With
-  -- prodAux_succ now PROVEN (above), the remaining induction is a generalized prodAux-depth
-  -- invariant + interface-cancellation (Q s · P (s+1) = 1) + endpoint cast-extraction, traversed
-  -- by `Matrix.submatrix_mul_equiv` — a known-shape multi-step induction (formaliser-hours), not a
-  -- wall. Left as a sorry'd building block; build it if the exact equality is ever wanted (it is
-  -- not, for the critical path D1∘L2). The one-pass that PROVED prodAux_succ closed the
-  -- cast-bridgeability question; this is the orthogonal fold-assembly.
+  -- ALL interior frames are identity (`hinterface`). `P s = 1` for `1 ≤ s` (interior-left + boundary), and
+  -- `Q s = 1` for `s ≤ Lm-1` (interior-right). So `C 0 = P 0 · A 0`, `C s = A s` (1 ≤ s ≤ Lm-1),
+  -- `C Lm = A Lm · Q Lm`. Then `∏C = P 0 · ∏A · Q Lm` (P 0 rides at fixed width `Fin (H 0)`).
+  obtain ⟨Lm, rfl⟩ : ∃ Lm, L = Lm + 1 := ⟨L - 1, by omega⟩
+  -- `P s = 1` for `1 ≤ (s:ℕ)`: from `hinterface (s-1)`'s `P ((s-1)+1) = P s = 1`.
+  have hPid : ∀ s : Fin (Lm + 1), 1 ≤ (s : ℕ) →
+      P s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) := by
+    intro s hs1
+    obtain ⟨t', ht'⟩ : ∃ t', (s : ℕ) = t' + 1 := ⟨(s : ℕ) - 1, by omega⟩
+    have hslt : ((⟨t', by omega⟩ : Fin (Lm + 1)) : ℕ) + 1 < Lm + 1 := by simp; omega
+    have heq : (⟨t' + 1, by omega⟩ : Fin (Lm + 1)) = s := by apply Fin.ext; simp [ht']
+    have := (hinterface ⟨t', by omega⟩ hslt).2
+    rw [heq] at this; exact this
+  -- `Q s = 1` for `(s:ℕ) + 1 < Lm + 1` (interior-right).
+  have hQid : ∀ s : Fin (Lm + 1), (s : ℕ) + 1 < Lm + 1 →
+      Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
+    fun s hs => (hinterface s hs).1
+  -- REMAINING ASSEMBLY (de-risked — hPid, hQid, the kernel `prodAux_succ_layer`, and the path all PROVEN):
+  -- INVARIANT (prodAux induction, 1 ≤ k ≤ Lm): `prodAux C k = P 0 * prodAux A k` (P 0 rides at FIXED width
+  -- `Fin (H 0)`; base k=1: `C 0 = P 0·A 0` via hframe + `Q 0 = 1` (hQid); step: `C s = A s` interior via
+  -- hframe + `P s = 1` (hPid) + `Q s = 1` (hQid), then assoc). FINAL (k = Lm+1 = L): append `Q Lm` via
+  -- `C Lm = A Lm · Q Lm` (hframe + `P Lm = 1` from hPid), the boundary right-frame extraction through
+  -- prodAux_succ_layer. Witnesses P0 := P ⟨0,_⟩, QL := the (Fin.last L)-typed Q ⟨Lm,_⟩. Each sub-step is a
+  -- def-cast handled by lemma 1's idiom; it's a 3-sub-proof multi-step induction (base layer-cast / step /
+  -- boundary). Cast SOLVED; the assembly is the open formaliser-work. (controller routing: crux2/cobuild.)
   sorry
 
 end DLNFibre.DLN.RLCT
