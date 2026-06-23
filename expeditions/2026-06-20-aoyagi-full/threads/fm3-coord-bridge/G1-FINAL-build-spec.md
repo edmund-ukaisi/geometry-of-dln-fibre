@@ -1167,3 +1167,30 @@ spectator-regulars + exceptionals = ½·minAdm (the headline). CONVERGENCE asked
 MONOMIAL recursion (pivotBlowupOn product → appendDivisor (1,c−1) → min/foldDivisors → flat ⨅), gated on
 realizability — NOT the additive squeeze. crux2's FLAT ⨅ bridge (applied once, all leaves) matches routeAtlas's
 Σ-over-cells leaf set.
+
+## g213 — recurring spawned-formaliser STALE-TRANSCRIPT cycle (3rd instance); resume reads old transcript not branch
+The spawned formaliser (a8c41813...) handed back AGAIN on a STALE blocker: "NOT implementing general routeStep
+until you rule PivotWitness anchoring (A) vs (B)" + offered to build "general Continuous(dlnLoss M 0) bedrock
+(~40-80 line prodAux grind)". BOTH are stale-resolved on origin/fm3/routem @b1eb6af:
+- Anchoring: option (A) is COMMITTED (@4802af4, RouteStep (M₀ M) + witness PivotWitness M₀ + routeAtlas (M₀)).
+  Triple-corroborated (g196/g206/g207), discharged in the type. No A/B ruling pending. (The node-anchored
+  PivotWitness M it "saw" was the pre-redirect type.)
+- continuous_dlnLoss / continuous_prodAux / continuous_prod / measurable_dlnLoss for general (H : Fin (L+1) → ℕ)
+  are in LossContinuity.lean @3b05766 — the formaliser's OWN prior commit. My #86 continuous_routeMCore
+  already consumes it. The offered grind is done.
+
+ROOT CAUSE (3rd instance, g173-class): a background agent resumed via SendMessage reads its OWN prior
+transcript snapshot, NOT the current branch HEAD. So it re-surfaces blockers that were resolved AFTER its
+snapshot. FIX applied each time: reply with "pull origin/<branch> @<sha>; verify against git show
+origin/<branch>:<file> (the committed decl), not your transcript" + cite the exact decl lines. The fix sticks
+only if the agent actually re-reads the branch; the loop recurs if it resumes from a stale snapshot again.
+
+PROCESS NOTE for the controller: a long-lived background formaliser accumulates transcript-vs-branch drift
+across resumes. Cheaper to either (a) hand it a SELF-CONTAINED task with the current decls inlined, or (b)
+spawn a FRESH agent (clean read of HEAD) for the next substantial grind, than to repeatedly re-sync a
+drifting one. Recorded so the §4-verdict dispatch (when it lands) goes to a fresh read of b1eb6af, not a
+resume of the drifted formaliser.
+
+The actual general-routeStep gate is §4 REALIZABILITY (under pp-r1realize adjudication), NOT anchoring/
+continuity (both banked). Nothing routeStep-independent is open-and-unbanked: #86 loss-side (mine), #88
+abstract value, continuity, (2,2,2) cover (reviewed PASS) all done.
