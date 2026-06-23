@@ -459,6 +459,46 @@ theorem hasStrictFDerivAt_regStraightenOf_gen (E_pivot : R × S → R) (D_E : (R
   have htotal := hreg_sd.prodMk hcs_sd
   exact htotal
 
+/-! ### The shear `ContinuousLinearEquiv` (guard (ii): package `[[I,Σ],[0,I]]` as a genuine CLE)
+
+The `#120`-corrected `_deriv` needs the total derivative as an INVERTIBLE `≃L` (the unitriangular shear,
+NOT `fst`). `regStraightenTotalCLM D_E` for the shear `D_E` is `id + N` with `N` SQUARE-ZERO (`N` reads
+spec, writes reg; reapplying reads the reg-output's spec `= 0`). A square-zero `N` makes `id + N` a
+genuine `ContinuousLinearEquiv` (inverse `id − N`, since `(id+N)(id−N) = id − N² = id`). This is
+cast-free, layout-independent: the coupling `N` (hence `Σ`) stays abstract. -/
+
+/-- **The shear CLE from a square-zero perturbation**: for `N : M →L M` with `N ∘ N = 0`, the map
+`id + N` is a `ContinuousLinearEquiv` with inverse `id − N` (`(id±N)` compose to `id − N² = id`). -/
+noncomputable def clmShearEquiv {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M]
+    (N : M →L[ℝ] M) (hN : N.comp N = 0) :
+    M ≃L[ℝ] M :=
+  { toFun := fun x => x + N x
+    invFun := fun x => x - N x
+    map_add' := fun x y => by simp only [map_add]; abel
+    map_smul' := fun c x => by simp only [map_smul, RingHom.id_apply]; module
+    left_inv := fun x => by
+      have hNx : N (x + N x) = N x := by
+        rw [map_add]; have : N (N x) = 0 := by rw [← ContinuousLinearMap.comp_apply, hN]; rfl
+        rw [this, add_zero]
+      simp only [hNx]; abel
+    right_inv := fun x => by
+      have hNx : N (x - N x) = N x := by
+        rw [map_sub]; have : N (N x) = 0 := by rw [← ContinuousLinearMap.comp_apply, hN]; rfl
+        rw [this, sub_zero]
+      simp only [hNx]; abel
+    continuous_toFun := continuous_id.add N.continuous
+    continuous_invFun := continuous_id.sub N.continuous }
+
+@[simp] theorem clmShearEquiv_apply {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M]
+    (N : M →L[ℝ] M) (hN : N.comp N = 0) (x : M) :
+    clmShearEquiv N hN x = x + N x := rfl
+
+/-- `clmShearEquiv N hN`, coerced to a `→L`, is `id + N` — the form a derivative goal `rw`s to. -/
+theorem clmShearEquiv_coe {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M]
+    (N : M →L[ℝ] M) (hN : N.comp N = 0) :
+    (clmShearEquiv N hN : M →L[ℝ] M) = ContinuousLinearMap.id ℝ M + N := by
+  ext x; simp [clmShearEquiv_apply]
+
 end RegStraightenOf
 
 end DLNFibre.DLN.RLCT
