@@ -73,6 +73,26 @@ to the existing exponent interface.  It is not Hironaka, analytic chart
 coverage, analytic unit nonvanishing, Aoyagi Lemma 1, finite formula
 equality, pole order without A0, or RLCT extraction.
 
+## Latest A6 Update
+
+The chart-certificate final socket now has a finite-certificate constructor.
+New Lean names in `Theorem2FinalAssembly.lean`:
+`AoyagiTheorem2SuppliedChartFinalBoundary.of_activePair_ratioAt_eq_of_forall_le_of_chart_minCount_eq_of_forall_le`
+and
+`AoyagiTheorem2SuppliedChartFinalBoundary.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_chartCount`.
+Reproduction:
+`threads/06-dln-translation/reproduction-theorem2-chart-finite-certificate-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-theorem2-chart-finite-certificate-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-chart-finite-certificate-bridge-a6.md`.
+
+This replaces the opaque finite formula field of the chart final boundary with
+explicit active-ratio and chart-count witnesses, while still assuming the
+chart-level A0 extraction hypothesis.  It does not construct the chart
+certificate, prove active-ratio bounds, prove chart-count bounds, prove Lemma 5
+exactness, pole order without A0, or RLCT extraction.
+
 ## Latest A2 Update
 
 The Aoyagi Theorem 3 residual-product endpoint wrapper has landed. The new

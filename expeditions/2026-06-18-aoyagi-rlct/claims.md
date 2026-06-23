@@ -2986,6 +2986,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`;
   conditional finite-exponent bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-finite-exponent-bridge-a6.md`;
+  chart finite-certificate bridge reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-chart-finite-certificate-bridge-a6.md`;
   finite active-ratio terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-active-terminal-order-bridge-a6.md`;
   finite active chart-terminal-order bridge reproduced at
@@ -3002,6 +3004,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   conditional bridge reviewed at
   `threads/06-dln-translation/review-theorem2-finite-exponent-bridge-a6.md`;
+  chart finite-certificate bridge reviewed at
+  `threads/06-dln-translation/review-theorem2-chart-finite-certificate-bridge-a6.md`;
   active-ratio terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-active-terminal-order-bridge-a6.md`;
   active chart-terminal-order bridge reviewed at

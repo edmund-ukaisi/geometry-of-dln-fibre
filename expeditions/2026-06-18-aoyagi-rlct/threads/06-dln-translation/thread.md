@@ -185,6 +185,34 @@ normal-crossing chart production, finite exponent formula equalities, Lemma 5
 no-extra coverage/order count, pole order without A0, or the analytic
 extraction theorem.
 
+## Current slice - 2026-06-23, chart finite-certificate bridge
+
+The chart-certificate final boundary now also has a finite-certificate
+constructor in `lean/DLNFibre/DLN/Aoyagi/Theorem2FinalAssembly.lean`:
+
+```text
+AoyagiTheorem2SuppliedChartFinalBoundary.of_activePair_ratioAt_eq_of_forall_le_of_chart_minCount_eq_of_forall_le
+AoyagiTheorem2SuppliedChartFinalBoundary.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula_of_activePair_chartCount
+```
+
+This consumes selected-width provenance, the chart-level A0 extraction
+hypothesis, an active coordinate realizing the displayed Theorem 2 `lambda`
+formula, a lower bound over all active pairs, a chart whose count is the
+displayed order formula, and a chart-count upper bound for every chart.  It
+then constructs the chart-level final boundary and derives the same
+lambda/order pair conclusion.
+
+Artifacts:
+
+- `reproduction-theorem2-chart-finite-certificate-bridge-a6.md`;
+- `statement-card-a6-theorem2-chart-finite-certificate-bridge.md`;
+- `review-theorem2-chart-finite-certificate-bridge-a6.md`.
+
+Boundary: this is still finite final-socket composition.  It does not
+construct the chart certificate, prove chart coverage, analytic unit
+nonvanishing, active-ratio bounds, chart-count witnesses or upper bounds,
+Lemma 5 exactness, pole order without A0, or RLCT extraction.
+
 ## Current slice - 2026-06-22, terminal-order handoff
 
 The A5-to-A6 terminal-order handoff is
