@@ -82,6 +82,15 @@ control for all factors, coverage/regularity, and the effect of Aoyagi's
 regular `P`/`Q` changes before constructing an
 `AoyagiNormalCrossingChartCertificate`.
 
+The same unit factor is now carried by an ordered-field refinement of the
+displayed continuing Case 2 local certificate:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
+Lean packages the existing continuing reindexed source-chart certificate plus
+positivity, nonzero, and `IsUnit` witnesses for the normalized center-square
+factor.  This still does not supply analytic unit neighbourhoods, the later
+`P`/`Q` unit factors, a total loss unit, chart coverage, transition
+regularity, Jacobian/volume data, normal crossings, pole order, or RLCT.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

@@ -5594,6 +5594,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-center-unit-a4.md`.
 
+Latest A4 Case 2 continuing reindexed source-chart unit certificate:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedContinuingReindexedSourceChartUnitCertificate` and
+`sourceChartMap_continuingReindexedSourceChartUnitCertificate`.  These package
+the existing displayed continuing reindexed source-chart certificate together
+with the positivity, nonzero, and `IsUnit` witnesses for the normalized
+selected-entry center-square factor on the erased residual-block center.  This
+is an A4-local ordered-field refinement only: no analytic neighbourhood unit,
+`P`/`Q` unit control, total loss unit, chart coverage, transition regularity,
+Jacobian/volume theorem, A0 normal-crossing certificate, pole order, or RLCT
+extraction is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-reindexed-source-chart-unit-certificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

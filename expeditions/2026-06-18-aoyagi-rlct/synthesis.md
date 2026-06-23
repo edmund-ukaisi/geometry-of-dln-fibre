@@ -5649,6 +5649,29 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-center-unit-a4.md`.
 
+Latest A4 continuing source-chart unit-certificate refinement:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedContinuingReindexedSourceChartUnitCertificate` and
+`sourceChartMap_continuingReindexedSourceChartUnitCertificate`.  This is an
+ordered-field refinement of the displayed continuing Case 2 local
+certificate: it carries the existing
+`Case2DisplayedContinuingReindexedSourceChartCertificate` and adds
+positivity, nonzero, and `IsUnit` witnesses for the normalized selected-entry
+center-square factor on the erased residual-block center.
+
+This moves one selected-entry unit witness into the A4-local certificate
+layer.  It is still not analytic unit control on a constructed neighbourhood,
+not unit control for Aoyagi's later `P`/`Q` changes, not a total loss unit,
+not a Jacobian/volume-form theorem, not chart coverage or transition
+regularity, not an A0 normal-crossing chart certificate, and not pole order or
+RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-reindexed-source-chart-unit-certificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

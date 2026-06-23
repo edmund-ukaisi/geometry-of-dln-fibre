@@ -14571,6 +14571,72 @@ theorem sourceChartMap_continuingReindexedSourceChartCertificate
   · simpa [correctedCase2NewLabelNumerator] using
       correctedCase2NewLabelNumerator_eq_card_of_cont n hS hcont
 
+/-- Ordered-field refinement of the displayed continuing Case 2 local
+certificate that also carries the selected-entry center-square unit factor.
+
+This is still an A4-local certificate.  The unit witness is only the
+pointwise ordered-field unit for the normalized finite square-sum factor; it
+does not prove chart coverage, analytic unit control for Aoyagi's later `P`
+and `Q` changes, a total loss unit, an A0 normal-crossing certificate, pole
+order, or RLCT extraction. -/
+structure Case2DisplayedContinuingReindexedSourceChartUnitCertificate
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (L : ℕ) (n : ℕ → ℕ) (S J : ℕ)
+    (t : ℕ → ℕ → ℕ → ℤ)
+    (numerator leastValue : ℕ → ℕ → ℤ)
+    (pre : IntroducedLabelRecurrenceState L n S J K)
+    (u : K) (residual : ℕ × ℕ → K)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : ℕ → τ → K) : Prop where
+  toReindexedSourceChartCertificate :
+    Case2DisplayedContinuingReindexedSourceChartCertificate
+      L n S J t numerator leastValue pre u residual hS hcont C
+  centerSqUnitFactor_pos :
+    0 <
+      selectedEntryCenterSqUnitFactor
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual
+  centerSqUnitFactor_ne_zero :
+    selectedEntryCenterSqUnitFactor
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual ≠ 0
+  centerSqUnitFactor_isUnit :
+    IsUnit
+      (selectedEntryCenterSqUnitFactor
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual)
+
+/-- Concrete constructor for the ordered-field unit refinement of the
+displayed continuing Case 2 source-chart certificate. -/
+theorem sourceChartMap_continuingReindexedSourceChartUnitCertificate
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (residual : ℕ × ℕ → K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → K) :
+    Case2DisplayedContinuingReindexedSourceChartUnitCertificate
+      L n S J t numerator leastValue pre u residual hS hcont C := by
+  refine
+    { toReindexedSourceChartCertificate :=
+        sourceChartMap_continuingReindexedSourceChartCertificate
+          pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap
+          chartFamily C
+      centerSqUnitFactor_pos :=
+        case2DisplayedSourceChartMap_centerSqUnitFactor_pos n hS hcont residual
+      centerSqUnitFactor_ne_zero :=
+        case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero n hS hcont residual
+      centerSqUnitFactor_isUnit :=
+        case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit n hS hcont residual }
+
 /-- Right-multiplied version of
 `case2DisplayedPivotFirstRHS_reindex_nextSourceProduct`.
 

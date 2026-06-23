@@ -4469,3 +4469,31 @@ nonvanishing on a constructed neighbourhood, not unit control for Aoyagi's
 later `P`/`Q` regular changes, not a total loss unit, not a
 Jacobian/volume-form theorem, not an A0 normal-crossing chart certificate, and
 not pole order or RLCT extraction.
+
+## 2026-06-23 Lean Case 2 continuing reindexed source-chart unit certificate
+
+Reproduction:
+`reproduction-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-reindexed-source-chart-unit-certificate.md`.
+Review artifact:
+`review-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
+
+Lean now packages an ordered-field refinement of the displayed continuing
+Case 2 local certificate:
+
+```text
+Case2DisplayedContinuingReindexedSourceChartUnitCertificate
+sourceChartMap_continuingReindexedSourceChartUnitCertificate
+```
+
+The new certificate contains the existing
+`Case2DisplayedContinuingReindexedSourceChartCertificate` plus positivity,
+nonzero, and `IsUnit` witnesses for the normalized selected-entry
+center-square factor on the erased residual-block center.
+
+This is still A4-local pointwise ordered-field algebra.  It is not analytic
+unit control on a neighbourhood, not unit control for Aoyagi's later `P`/`Q`
+regular changes, not a total loss unit, not a Jacobian/volume-form theorem,
+not chart coverage or transition regularity, not an A0 normal-crossing chart
+certificate, and not pole order or RLCT extraction.

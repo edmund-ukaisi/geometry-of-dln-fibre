@@ -752,6 +752,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-certificate-a4.md`;
 	  xhigh review passed and is saved at
 	  `threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-certificate-a4.md`.
+	  Reproduction of the Case 2 continuing reindexed source-chart unit
+	  certificate is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`;
+	  xhigh source/math and Lean/API review passed and is saved at
+	  `threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-unit-certificate-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -859,6 +864,13 @@ No such claim is formalisation-ready until both fields are filled.
 	  proved pointwise positive/nonzero and a unit over ordered fields, but
 	  this is not analytic nonvanishing on a chart neighbourhood; the determinant
 	  is not an analytic derivative or volume-form theorem.
+	  Also proved the ordered-field local certificate refinement
+	  `Case2DisplayedContinuingReindexedSourceChartUnitCertificate` and
+	  `sourceChartMap_continuingReindexedSourceChartUnitCertificate`, which
+	  package the existing displayed continuing reindexed source-chart
+	  certificate together with the selected-entry center-square unit witness.
+	  This is still not analytic chart coverage, unit control for `P`/`Q`,
+	  a total loss unit, normal crossings, pole order, or RLCT.
 	  Also proved
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and
