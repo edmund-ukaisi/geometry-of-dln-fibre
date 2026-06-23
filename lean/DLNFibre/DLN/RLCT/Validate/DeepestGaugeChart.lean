@@ -38,6 +38,53 @@ ROUTE-FIRST: structure pinned (g147) + 7 sub-lemma signatures + the value-free a
 The reachable sub-lemmas (1,2,5,6,7) route through green primitives; the heavy chart-existence
 (sub-3,4) is the g150-cert-backed block algebra (#44c). The Skeleton `deepest_regular_core_normal_form`
 discharge = this reduction `▸` the R1 core value (controller wires, single-writer for Skeleton).
+
+## The producer contract (authoritative — the single source for `DeepestGaugeConstruction`)
+
+The `deepest_gauge_squeeze_exists` producer (`DeepestGaugeConstruction.lean`, the #59 obligation)
+consumes THIS structure. This block is the authoritative contract; read it instead of re-deriving the
+interface. Canonical structure: `fm2/split-reindex` (post-`(C)`-refactor, #90).
+
+**WHERE EACH PIECE OF THE GAUGE NONLINEARITY LIVES** (the recurring confusion — pin it once):
+* `split` is a PURE measure-preserving RELABEL+translation (`deepestSplit_exists`, #64, DONE). Its reg
+  slot `(split w).1` is a linear PROJECTION (the raw boundary pivots `X₁/Z₁/Y_L`), NOT the residuals
+  `E`; its core slot `(split w).2.1` is the raw `T`-blocks; its spectator `(split w).2.2` is the
+  interior gauge entries. The nReg COUNT is right (`r(H⁰+Hᴸ−r)`), the directions are raw — that is
+  correct: split carries no gauge nonlinearity (det `±1`).
+* `regStraighten : DeepestSplit → DeepestSplit` (a bare TOTAL continuous function post-`(C)`, NOT a
+  `≃ₜ`) is the nonlinear `E`-straightening. It reads the WHOLE `q` (reg × core × spec — INCLUDING the
+  spectator, where the interior `X₂` lives), so `(regStraighten q).1 = E` (the cross-layer residuals
+  `E₀₀ = X₁ + X₂ + O(2)`). `regStraighten_core`/`_spectator` fix only the OUTPUT core/spec slots; they do
+  NOT restrict what the `.1`-OUTPUT reads. So `E` IS expressible. (`#82`, the producer's; total fn keeps
+  global measurability — the `(C)` fallback.)
+* `coreAbsorb : DeepestSplit ≃ₜ DeepestSplit` (`#79`, DONE) is the ADDITIVE Schur shear (det = 1, MP):
+  `coreShearHomeo` with `shift = −Z(I+X)⁻¹Y` reading reg+spec, so `(coreAbsorb q).2.1` = the core-only
+  per-layer Schur `∏S_s` (`S_s = T_s − Z_s(I+X_s)⁻¹Y_s`). The core-output is core-only `∏S_s`,
+  TYPE-FORCED (`deepestCoreF` takes the core slot `Fin (flatDim M) → ℝ` ALONE — the full-product `R`,
+  which depends on `E`, CANNOT be the core-output). NOT the refuted multiplicative `T·(I−VY)⁻¹`.
+* `loss_squeeze` Φ = `∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`
+  = `∑E² + ‖∏S_s‖²-core`. The full-product `R` (`= ∏S_s` only on `{E=0}`) is the LOSS-SIDE comparison
+  object; its `R − ∏S_s` inter-layer discrepancy is the LEAK, charged to `∑E²` (`#54`
+  `core_comparability_squeeze`), NOT a `coreAbsorb` component. There is NO inter-layer-unit peel.
+
+**RLCT-PEEL ROUTES** (both via crux2's peels; NOT `weightedThreshold_weight_unit_invariant`):
+* `coreAbsorb_rlct`: the MP route — `measurePreserving_coreShear` (`#83`) ⟹ `rlctAtOn_comp_homeomorph`
+  (det = 1, no Jacobian). Done in `#79`.
+* `regAbsorb_rlct`: the LOCAL route — `rlctAtOn_boundedUnit_localHomeomorph` (`#72`), which takes
+  `regStraighten`/its local inverse as BARE FUNCTIONS + `Dπ` + an open `V ∋ 0` (inverses only on `V`).
+  The `V`/`Dπ` data lives INSIDE the producer's proof, NOT as structure fields (sub-6 consumes
+  `regAbsorb_rlct` as a bare equality `rw`).
+
+**THE ACCESSOR** (split coords → per-layer gauge blocks): `regGaugeSlotEquiv` (`#78`,
+`DeepestSplitReindex.lean`) — `(Fin nReg → ℝ) × (Fin nGauge → ℝ) ≃ₜ (RegGaugeIdx H r → ℝ)`. Feed
+`(q.1, q.2.2)` (reg AND spec), read per layer `s`: `X_s = g⟨s, .inl (.inl (i,j))⟩`,
+`Y_s = g⟨s, .inl (.inr (i,j))⟩`, `Z_s = g⟨s, .inr (i,j)⟩`. (`DeepestGaugeConstruction`'s `gaugeSlotRead`
+already uses this.) The `T`-core is `(split w).2.1` directly (type-forced `FlatIdx (deepestM)`).
+
+**DONE vs OPEN:** `split` (`#64`) + `coreAbsorb`/`coreAbsorb_rlct` (`#79`) are DONE — CONSUME, do not
+rebuild. The ONLY open producer work: `#80` (`loss_squeeze`, the two-sided `c₁ < c₂` bound, `#54`
+matrix algebra; NOT `ofExactGerm` — the comparability is a genuine squeeze) + `#82` (`regStraighten`
+the `E`-straightening reading all slots + `regAbsorb_rlct` via `#72`).
 -/
 
 open MeasureTheory Matrix
