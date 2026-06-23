@@ -6575,6 +6575,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
 
+Latest A4 selected-entry finite chart coverage:
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value_of_chart_pivot_ne_zero`,
+and
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+The nonzero one-pivot inverse chooses `u = value pivot` and residuals
+`value i / value pivot`; the zero inverse chooses the zero source point; the
+all-pivot theorem chooses a nonzero finite coordinate as pivot when one
+exists.  This is finite selected-entry map coverage only.  It is not analytic
+atlas coverage, transition regularity, arbitrary-pivot source formulas, source
+production, analytic Jacobian/volume-form control, normal-crossing certificate
+production, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-finite-chart-coverage-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-finite-chart-coverage.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-finite-chart-coverage-a4.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,

@@ -1218,7 +1218,18 @@ No such claim is formalisation-ready until both fields are filled.
   These lemmas expose the one-pivot source-point calculation chartwise for
   pivot `chartEquiv c`; they do not prove coverage, transition regularity,
   source production, analytic Jacobian control, global A0 data, pole order, or
-  RLCT.
+  RLCT.  Also proved finite selected-entry chart-map coverage:
+  `selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero`,
+  `selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value_of_chart_pivot_ne_zero`,
+  and
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+  These theorems invert a finite value with nonzero selected pivot by dividing
+  by that pivot, cover the zero value by the zero source point, and then choose
+  a nonzero coordinate as pivot for the all-pivot family.  This is finite map
+  coverage only, not analytic atlas coverage, transition regularity,
+  arbitrary-pivot source formulas, source production, analytic Jacobian data,
+  normal-crossing certificate production, pole order, or RLCT.
   Also packaged the finite
   Case 1 first-jump and selected-label hypotheses as
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary
@@ -3933,3 +3944,19 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-multi-chart-specializations.md`.
 Review:
 `threads/04-blow-up-certificate/review-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+
+Latest A4 selected-entry finite chart coverage:
+`SelectedEntryNormalCrossing.lean` now proves finite map coverage for the
+selected-entry chart maps.  The one-pivot chart covers any value with nonzero
+selected pivot coordinate and covers the zero value by the zero source point.
+The all-pivot chart family covers every value on a nonempty finite center by
+choosing a nonzero coordinate as pivot, or an arbitrary pivot for the zero
+value.  This is finite selected-entry map coverage only; it does not prove
+analytic atlas coverage, transition regularity, arbitrary non-displayed
+Aoyagi source-coordinate formulas, source production, analytic Jacobian data,
+normal-crossing certificate production, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-finite-chart-coverage-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-finite-chart-coverage.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-finite-chart-coverage-a4.md`.

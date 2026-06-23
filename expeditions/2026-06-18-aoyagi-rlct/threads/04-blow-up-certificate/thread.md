@@ -5277,3 +5277,33 @@ certificate bookkeeping only: no arbitrary-pivot source formulas, no `Q/P`
 source production, no analytic coverage or transition regularity, no
 chart-produced post-data, no global A0 lower bound/order theorem, no pole
 order, and no RLCT extraction.
+
+## 2026-06-23 Lean selected-entry finite chart coverage
+
+Reproduction:
+`reproduction-selected-entry-finite-chart-coverage-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-finite-chart-coverage.md`.
+Review artifact:
+`review-selected-entry-finite-chart-coverage-a4.md`.
+
+Lean now proves finite map coverage for the selected-entry chart maps:
+
+```text
+selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
+selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value_of_chart_pivot_ne_zero
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value
+```
+
+For a fixed pivot, a value with nonzero pivot coordinate is inverted by
+choosing `u = value pivot` and residual coordinates `value i / value pivot`.
+The zero value is covered by the zero source point in any pivot chart.  For a
+nonempty finite center, the all-pivot family therefore covers every finite
+center value by either choosing an arbitrary pivot in the zero case or choosing
+a nonzero coordinate as pivot.
+
+This is finite selected-entry map coverage only.  It is not analytic atlas
+coverage, transition regularity, source-coordinate formula production for
+arbitrary non-displayed Aoyagi pivots, analytic Jacobian/volume-form control,
+normal-crossing certificate production, pole order, or RLCT extraction.

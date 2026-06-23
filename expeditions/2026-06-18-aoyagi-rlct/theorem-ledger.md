@@ -6356,6 +6356,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
 
+Latest A4 selected-entry finite chart coverage:
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value_of_chart_pivot_ne_zero`,
+and
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+These are finite inverse/coverage statements for the selected-entry chart
+maps: nonzero pivot values are inverted by division by the pivot coordinate,
+the zero value is covered by the zero source point, and the all-pivot family
+covers every finite center value by choosing a nonzero coordinate as pivot
+when one exists.  This does not assert analytic atlas coverage, transition
+regularity, arbitrary-pivot Aoyagi source-coordinate formulas, source
+production, analytic Jacobian/volume-form control, normal-crossing
+certificate production, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-finite-chart-coverage-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-finite-chart-coverage.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-finite-chart-coverage-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

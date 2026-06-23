@@ -2264,6 +2264,18 @@ bridge only through equality of erased-center cardinalities.  This is not
 source production for arbitrary pivots, chart coverage, transition regularity,
 analytic Jacobian data, global A0 lower bounds, pole order, or RLCT.
 
+The current A4 selected-entry finite chart coverage slice is
+`threads/04-blow-up-certificate/reproduction-selected-entry-finite-chart-coverage-a4.md`.
+Lean now proves that the one-pivot finite selected-entry chart map covers any
+finite center value with nonzero selected pivot coordinate and covers the zero
+value by the zero source point.  The all-pivot finite family covers every
+finite value on a nonempty center by choosing a nonzero coordinate as pivot,
+or an arbitrary pivot in the zero case.  This is useful finite-map coverage
+for the generic selected-entry family and its Case 1/2 finite centers.  It is
+not analytic atlas coverage, transition regularity, arbitrary-pivot source
+formulas, source production, analytic Jacobian data, normal-crossing
+certificate production, pole order, or RLCT.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

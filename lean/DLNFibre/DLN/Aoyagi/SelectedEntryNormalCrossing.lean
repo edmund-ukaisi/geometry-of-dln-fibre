@@ -122,6 +122,54 @@ theorem chartMap_sourceChartPoint_eq
     simp [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartCertificate,
       selectedEntryChartMap, selectedEntryErasedResidual, hi, hmem]
 
+/-- If the selected pivot coordinate of a finite center value is nonzero, the
+one-pivot selected-entry chart has a preimage of that value.
+
+This is finite map coverage for the selected-entry formula only; it does not
+prove analytic chart coverage or transition regularity. -/
+theorem exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (value : center → K) (hpivot : value pivot ≠ 0) :
+    ∃ x :
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).ChartPoint (0 : Fin 1),
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).chartMap (0 : Fin 1) x = value := by
+  let residual : ι → K :=
+    fun i ↦ if h : i ∈ center then value ⟨i, h⟩ / value pivot else 0
+  refine ⟨sourceChartPoint pivot (value pivot) residual, ?_⟩
+  rw [chartMap_sourceChartPoint_eq]
+  funext i
+  by_cases hi : i.1 = pivot.1
+  · cases Subtype.ext hi
+    simp [selectedEntryChartMap]
+  · have hmem : i.1 ∈ center := i.2
+    simp [selectedEntryChartMap, hi, residual, hmem]
+    field_simp [hpivot]
+
+/-- If a finite center value is identically zero, every one-pivot
+selected-entry chart has a zero chart point over it.
+
+This is finite map coverage for the selected-entry formula only; it does not
+prove analytic chart coverage or transition regularity. -/
+theorem exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (value : center → K) (hzero : ∀ i, value i = 0) :
+    ∃ x :
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).ChartPoint (0 : Fin 1),
+      (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).chartMap (0 : Fin 1) x = value := by
+  refine ⟨sourceChartPoint pivot 0 (fun _ ↦ 0), ?_⟩
+  rw [chartMap_sourceChartPoint_eq]
+  funext i
+  rw [hzero i]
+  simp [selectedEntryChartMap]
+
 /-- At the generic selected-entry source chart point, the microcertificate
 loss is the finite center square-sum. -/
 theorem loss_sourceChartPoint_eq_centerSq
@@ -461,6 +509,8 @@ def selectedEntryCenterSqFormalJacobianChartFamilyCertificate
 
 namespace selectedEntryCenterSqFormalJacobianChartFamilyCertificate
 
+open selectedEntryCenterSqFormalJacobianChartCertificate
+
 /-- Every chart in the selected-entry chart family has loss exponent `1` on
 its unique monomial coordinate. -/
 @[simp] theorem lossExp_chart_zero
@@ -650,6 +700,64 @@ theorem chartMap_sourceChartPoint_eq
     using
       selectedEntryCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq
         (chartEquiv c) u residual
+
+/-- In a fixed chart of the all-pivot selected-entry family, a finite center
+value whose selected pivot coordinate is nonzero has a preimage.
+
+This is finite selected-entry map coverage only, not analytic atlas coverage. -/
+theorem exists_chartPoint_chartMap_eq_value_of_chart_pivot_ne_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (value : center → K) (hpivot : value (chartEquiv c) ≠ 0) :
+    ∃ x :
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).ChartPoint c,
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).chartMap c x = value := by
+  simpa [selectedEntryCenterSqFormalJacobianChartFamilyCertificate] using
+    exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
+      (K := K) (chartEquiv c) value hpivot
+
+/-- The all-pivot selected-entry family covers every finite center value.
+
+If the value is zero, any pivot chart maps a zero chart point to it.  Otherwise
+choose a nonzero coordinate as pivot and divide the other coordinates by it.
+This is finite selected-entry map coverage only, not analytic atlas coverage,
+transition regularity, source production, or normal-crossing extraction. -/
+theorem exists_chartPoint_chartMap_eq_value
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (value : center → K) :
+    ∃ c : Fin center.card,
+      ∃ x :
+        (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) hcenter chartEquiv).ChartPoint c,
+        (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) hcenter chartEquiv).chartMap c x = value := by
+  classical
+  by_cases hzero : ∀ i : center, value i = 0
+  · rcases hcenter with ⟨p, hp⟩
+    let c : Fin center.card := chartEquiv.symm ⟨p, hp⟩
+    refine ⟨c, ?_⟩
+    simpa [c, selectedEntryCenterSqFormalJacobianChartFamilyCertificate] using
+      exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero
+        (K := K) (chartEquiv c) value hzero
+  · have hnonzero : ∃ i : center, value i ≠ 0 := by
+      by_contra hnone
+      apply hzero
+      intro i
+      by_contra hi
+      exact hnone ⟨i, hi⟩
+    rcases hnonzero with ⟨p, hp⟩
+    let c : Fin center.card := chartEquiv.symm p
+    have hc : chartEquiv c = p := by simp [c]
+    refine ⟨c, ?_⟩
+    simpa [c, hc, selectedEntryCenterSqFormalJacobianChartFamilyCertificate] using
+      exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
+        (K := K) (chartEquiv c) value (by simpa [hc] using hp)
 
 /-- At an all-pivot family source point, the finite loss is the selected-entry
 center square in the selected pivot chart. -/
