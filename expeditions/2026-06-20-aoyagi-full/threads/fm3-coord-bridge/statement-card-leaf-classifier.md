@@ -39,10 +39,22 @@ geometric characterization. Reviewed (fidelity SURVIVED, a3a7737, decorrelated-C
 > - **Deferred.** none for the classifier. **The leaf VALUE is NOT this gate** — see the caveat.
 > - **Status.** sorry-free + reviewed. Matches pp2 #109 cert (g232/g233, 1360 M, 0 mismatches).
 
-**⊤-TRAP CAVEAT (fidelity-critical, pp2 g231; recorded in the iff docstring).** At a leaf node
-`dlnLoss M 0 ≡ 0` (a width-0 layer makes the product vacuous), so its RLCT is `⊤`, **NOT** `½·minAdm = 0`.
-The leaf VALUE must route through the **#70 degenerate-boundary Morse handler** (`rlctAt = nReg/2`), not the
-additive `½·minAdm` fold. This is the leaf-arm value-wiring obligation for sub-3/sub-4 (open).
+**LEAF VALUE = `leafMonoData 0` (⊤) — CONFIRMED RIGHT (pp2 #108(b) reconciliation g236 @8eea89e, the
+3×-flip-flop settled).** The earlier ⊤-trap worry (that the leaf value must route through `#70`/`nReg/2`)
+is RESOLVED, and the resolution is that the CORE leaf fold is `leafMonoData 0` (⊤) and is correct as-is:
+- **CORE vs WHOLE (Q1).** `routeStep`'s `⨅ monomialThreshold = ½·minAdm = lambdaCore` — the CORE. `nReg/2`
+  is L2's regular-shift OUTSIDE (`aoyagiLambda = nReg/2 + lambdaCore`, g212); `routeStep` does NOT compute
+  `nReg/2`. So no `#70` inside the recursion.
+- **The ⊤ terminal is NON-binding, not a 0-trap (Q2).** The `⨅` is over LEAF PATHS of
+  `foldDivisors (codimsOf path)`, where `codimsOf` = the C1/C5 divisor codims ACCUMULATED ALONG the path
+  (`appendDivisor` at branch nodes), NOT the terminal's own value. The ⊤ terminal contributes no binding
+  value (path threshold = `min` over accumulated divisors). A `0`-binding leaf WOULD force `⨅ = 0` — the ⊤
+  AVOIDS exactly that. (Confirmed by `case222_routeStep_value`: folds `codimsOf = [4,3]` → `min(4/2,3/2) =
+  3/2`, terminal `(0,0,2) = ⊤` — the fm3 decl finding that settled it.)
+- **No double-count (Q3).** CORE divisor-`min` + ⊤ terminal = `lambdaCore`; L2's `nReg/2` once OUTSIDE;
+  `#70` = the degenerate-**ROOT** WHOLE case (the headline case-split), NOT a mid-recursion leaf.
+So `leafStep := .leaf (leafMonoData 0)` is correct; the leaf node's own RLCT `⊤` ≠ its non-binding
+fold-contribution, and that distinction is the resolution (not a wiring obligation).
 
 **LEAF-FIRST DISPATCH (the #103 classify-order constraint, controller via fm3).** `routeStep`'s classify
 must be **leaf-first**: `if isLeafNode M then .leaf … else .branch …` — NOT split-first

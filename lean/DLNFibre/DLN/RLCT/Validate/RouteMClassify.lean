@@ -355,9 +355,12 @@ theorem exists_admissible_Mval_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ)
 width has collapsed: `isLeafNode M ⟺ ∃ s, M_s = 0` (chains of length `≥ 2`). The sharpest geometric form —
 the recursion bottoms exactly at the degenerate boundary (a width-0 layer bottlenecks the chain through
 rank 0). `⇒` is `exists_width_zero_of_isLeafNode` (no false leaf); `⇐` is `exists_admissible_Mval_zero`
-(the prefix-min witness). NOTE (the ⊤-trap, pp2 g231): at such a node `dlnLoss M 0 ≡ 0` so its RLCT is `⊤`,
-NOT `½·minAdm = 0` — the leaf VALUE routes through the degenerate-boundary Morse handler (#70), not the
-additive fold. -/
+(the prefix-min witness). NOTE (the leaf VALUE, settled pp2 g236): the leaf's own node-RLCT is `⊤`
+(`dlnLoss M 0 ≡ 0`), but its *fold-contribution* is the NON-binding `leafMonoData 0` (`⊤`): the value `⨅` is
+over leaf PATHS of `foldDivisors` of the codims ACCUMULATED above, so the path threshold rides those
+divisors, not the terminal's own `⊤`. `routeStep` computes the CORE `½·minAdm = lambdaCore`; the regular
+`nReg/2` shift and the degenerate-ROOT `#70` case sit OUTSIDE the recursion (`aoyagiLambda = nReg/2 +
+lambdaCore`), not at a mid-recursion leaf. So `leafMonoData 0` is the correct leaf datum. -/
 theorem isLeafNode_iff_width_zero {L' : ℕ} (M : Fin (L' + 1 + 1) → ℕ) :
     isLeafNode M ↔ ∃ s, M s = 0 := by
   refine ⟨exists_width_zero_of_isLeafNode M, ?_⟩
