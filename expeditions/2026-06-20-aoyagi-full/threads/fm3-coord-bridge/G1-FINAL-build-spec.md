@@ -2,6 +2,21 @@
 
 Every design + interface question is CLOSED. This is the complete spec for the dispatcher grind.
 
+## PROGRESS (g197): Fmeas bedrock landed + value-side seeds #27 confirmed (crux2)
+- FORMALISER landed the anchoring-independent bedrock (origin/fm3/routem @3b05766, green clean-three):
+  Foundations/LossContinuity.lean — continuous_prodAux/continuous_prod/continuous_dlnLoss/measurable_dlnLoss
+  (general M, the Fmeas building block) + flatOpenBox + isOpen/mem_zero/isBounded (the general bounded box for
+  routeMBaseNbhd — bounded per g183, the ≥-direction needs it). #86's measurability + box sub-facts DONE,
+  decision-independently. NOT wired into DLNFibre.lean (controller single-writer wires). Formaliser now on the
+  certified-recursion grind (schurState + root-anchored routeStep + value fold).
+- crux2 CONFIRMED the value-side atoms @870afff SEED IsResolutionAtlas for its #27 RouteMAtlas packaging — NO
+  value-side gap: monomialThreshold_appendDivisor_ge IS threshold_ge's inductive step, _le_binding IS the
+  achiever's upper bound; resolution_value_of_atlas (cover #21) consumes IsResolutionAtlas (threshold_ge +
+  achiever) directly from my appendDivisor atoms. The fold (_le_binding at the binding node + _ge elsewhere →
+  le_antisymm = m₀/2) is the achiever path. MonoData accumulator stays mine; crux2 consumes the threshold lemmas
+  at the RouteMAtlas seam. So the value-half of #27 is SEEDED — when cover-facts (#87, done for (2,2,2)) +
+  routeMCover land, crux2 packages RouteMAtlas (#27) = my IsRouteMCover + IsResolutionAtlas-from-these-atoms.
+
 ## CERTIFIED-RECURSION ARCHITECTURE RULING (g193, crux2 decl-grounded Q1/Q2/Q3) — gap g192 RESOLVED
 crux2 answered the g192 architecture gap (read schur_recursion_step_sound + #65 + ChainDimSplit at HEAD):
 - Q1 SEAM CONFIRMED (both mechanisms needed; Codex's "telescoping replaces cover" too strong, my 2-mechanism
