@@ -206,6 +206,102 @@ theorem card_regGaugeIdx (H : Fin (L + 1) → ℕ) (r : ℕ)
   unfold deepestNGauge
   omega
 
+/-! ## The #120 explicit boundary-pivot packing (deriv-fm, #82-deriv)
+
+The transparent replacement for the opaque `Fintype.equivFin` reg/gauge split: route the reg slot
+explicitly onto the boundary generators `(X_first, Y_last, Z_first)`, so the reg-block derivative is `id`
+by construction (g213/#91). `regResidualPack` (in `DeepestGaugeConstruction`) and `regGaugeIdxSplit`
+(below) both factor through the SAME `regPivotFinEquiv`, so they cancel. -/
+
+/-- **The boundary-pivot index type** — the residual blocks `(P11−I, P12, P21)` surviving the idempotent
+sandwich: `(r×r) ⊕ ((r×M_L) ⊕ (M_0×r))`, the sum type `regResidualPack` targets, of card `deepestNReg`. -/
+abbrev BoundaryPivotIdx (H : Fin (L + 1) → ℕ) (r : ℕ) : Type :=
+  (Fin r × Fin r) ⊕ ((Fin r × Fin (H (Fin.last L) - r)) ⊕ (Fin (H 0 - r) × Fin r))
+
+/-- **The card match** — `card BoundaryPivotIdx = deepestNReg` (the arithmetic `regResidualPack` proves:
+`r² + r(H_L−r) + (H_0−r)r = r(H_0+H_L−r)`). -/
+theorem card_boundaryPivotIdx (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    Fintype.card (BoundaryPivotIdx H r) = deepestNReg H r := by
+  simp only [BoundaryPivotIdx, Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
+  obtain ⟨a', ha'⟩ := Nat.le.dest (hr 0)
+  obtain ⟨b', hb'⟩ := Nat.le.dest (hr (Fin.last L))
+  unfold deepestNReg
+  rw [← ha', ← hb']
+  simp only [Nat.add_sub_cancel_left]
+  rw [show r + a' + (r + b') - r = r + (a' + b') by omega]
+  ring
+
+/-- **The explicit pivot packing** `Fin (deepestNReg H r) ≃ BoundaryPivotIdx H r` — the TRANSPARENT
+`finProdFinEquiv`/`finSumFinEquiv`/`finCongr` enumeration replacing the opaque `Fintype.equivFin`.
+Computable (has `_apply` equation lemmas), so the cancellation reduces. -/
+noncomputable def regPivotFinEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    Fin (deepestNReg H r) ≃ BoundaryPivotIdx H r :=
+  (finCongr (show deepestNReg H r
+      = r * r + (r * (H (Fin.last L) - r) + (H 0 - r) * r) by
+        obtain ⟨a', ha'⟩ := Nat.le.dest (hr 0)
+        obtain ⟨b', hb'⟩ := Nat.le.dest (hr (Fin.last L))
+        unfold deepestNReg
+        rw [← ha', ← hb']
+        simp only [Nat.add_sub_cancel_left]
+        rw [show r + a' + (r + b') - r = r + (a' + b') by omega]
+        ring)).trans
+    (finSumFinEquiv.symm.trans
+      (Equiv.sumCongr finProdFinEquiv.symm
+        (finSumFinEquiv.symm.trans
+          (Equiv.sumCongr finProdFinEquiv.symm finProdFinEquiv.symm))))
+
+/-- The first layer index `⟨0,_⟩ : Fin L` (`0 < L` from `1 ≤ L`). -/
+def firstLayer (hL : 1 ≤ L) : Fin L := ⟨0, by omega⟩
+
+/-- The last layer `⟨L-1,_⟩ : Fin L`; `.succ` is `Fin.last L` (width `H (Fin.last L)`). -/
+def lastLayer (hL : 1 ≤ L) : Fin L := ⟨L - 1, by omega⟩
+
+/-- `(lastLayer hL).succ` has the same `H`-width as `Fin.last L` — the Y_last column cast. -/
+theorem H_lastLayer_succ (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    H ((lastLayer hL).succ) = H (Fin.last L) := by
+  congr 1; apply Fin.ext; simp [lastLayer, Fin.succ, Fin.last]; omega
+
+/-- **The boundary-generator routing** `BoundaryPivotIdx → RegGaugeIdx` (the reg-half target):
+`X_first` ↦ layer-0 (0,0) entry, `Y_last` ↦ last-layer (0,1) entry, `Z_first` ↦ layer-0 (1,0) entry.
+INJECTIVE (distinct layer-tag × sum-arm). -/
+def regBoundaryToRegGauge (H : Fin (L + 1) → ℕ) (r : ℕ) (hL : 1 ≤ L) :
+    BoundaryPivotIdx H r → RegGaugeIdx H r
+  | Sum.inl (i, j) => ⟨firstLayer hL, Sum.inl (Sum.inl (i, j))⟩
+  | Sum.inr (Sum.inl (i, j)) =>
+      ⟨lastLayer hL, Sum.inl (Sum.inr (i, (finCongr (by rw [H_lastLayer_succ H hL])) j))⟩
+  | Sum.inr (Sum.inr (i, j)) => ⟨firstLayer hL, Sum.inr (i, j)⟩
+
+/-- A LEFT INVERSE of `regBoundaryToRegGauge` (total on `RegGaugeIdx`, inverting on the image). -/
+def regGaugeDecode (H : Fin (L + 1) → ℕ) (r : ℕ) (hL : 1 ≤ L) :
+    RegGaugeIdx H r → BoundaryPivotIdx H r
+  | ⟨_, Sum.inl (Sum.inl (i, j))⟩ => Sum.inl (i, j)
+  | ⟨s, Sum.inl (Sum.inr (i, j))⟩ =>
+      if h : H s.succ - r = H (Fin.last L) - r then Sum.inr (Sum.inl (i, (finCongr h) j))
+      else Sum.inl (i, i)
+  | ⟨s, Sum.inr (i, j)⟩ =>
+      if h : H s.castSucc - r = H 0 - r then Sum.inr (Sum.inr ((finCongr h) i, j))
+      else Sum.inl (j, j)
+
+/-- **`regBoundaryToRegGauge` is INJECTIVE** (the no-collapse fact) — via the left inverse `regGaugeDecode`
+(`decode ∘ route = id`, per arm: X reads back, Y/Z fire their `dif` and the `finCongr` round-trip
+collapses). The reg-half read is injective, so the `Σ_s δX_s` sandwich keeps `X_first` alone. -/
+theorem regBoundaryToRegGauge_injective (H : Fin (L + 1) → ℕ) (r : ℕ) (hL : 1 ≤ L) :
+    Function.Injective (regBoundaryToRegGauge H r hL) := by
+  have hY : H (lastLayer hL).succ - r = H (Fin.last L) - r := by rw [H_lastLayer_succ H hL]
+  have hZ : H ((firstLayer hL).castSucc) - r = H 0 - r := by
+    have hc : (firstLayer hL).castSucc = (0 : Fin (L + 1)) := by
+      apply Fin.ext; simp [firstLayer, Fin.castSucc, Fin.castAdd, Fin.castLE]
+    rw [hc]
+  refine Function.LeftInverse.injective (g := regGaugeDecode H r hL) (fun b => ?_)
+  rcases b with ⟨i, j⟩ | ⟨i, j⟩ | ⟨i, j⟩
+  · rfl
+  · rw [regBoundaryToRegGauge, regGaugeDecode, dif_pos hY]
+    exact congrArg (fun x => Sum.inr (Sum.inl (i, x))) (Fin.ext (by simp [finCongr_apply]))
+  · rw [regBoundaryToRegGauge, regGaugeDecode, dif_pos hZ]
+    exact congrArg (fun x => Sum.inr (Sum.inr (x, j))) (Fin.ext (by simp [finCongr_apply]))
+
 /-- **The role-respecting `Fin`-index equivalence** (the precision-pin core): `Fin (flatDim H) ≃
 Fin nReg ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin nGauge)`, where the MIDDLE summand is the reduced `T`-core
 (`= FlatIdx (deepestM)`) and the outer/right are the reg/gauge entries — slots BY ROLE, NOT arbitrary.
@@ -227,16 +323,54 @@ noncomputable def deepestRoleIndexEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- (Fin nReg ⊕ Fin nGauge) ⊕ Fin (flatDim M) ≃ Fin nReg ⊕ (Fin (flatDim M) ⊕ Fin nGauge).
   refine (Equiv.sumAssoc _ _ _).trans (Equiv.sumCongr (Equiv.refl _) (Equiv.sumComm _ _))
 
+/-- The boundary-generator EMBEDDING `BoundaryPivotIdx ↪ RegGaugeIdx` (from the routing + its injectivity).
+The reg slot's image inside `RegGaugeIdx`. -/
+def regBoundaryEmbed (H : Fin (L + 1) → ℕ) (r : ℕ) (hL : 1 ≤ L) :
+    BoundaryPivotIdx H r ↪ RegGaugeIdx H r :=
+  ⟨regBoundaryToRegGauge H r hL, regBoundaryToRegGauge_injective H r hL⟩
+
+/-- The complement of the boundary image has `Nat.card` = `deepestNGauge` — `card RegGaugeIdx −
+card BoundaryPivotIdx = (nReg + nGauge) − nReg = nGauge`. Stated with `Nat.card` to avoid a
+statement-level `Fintype ↥…ᶜ` synth; the `Fintype` instances are produced locally via `Fintype.ofFinite`. -/
+theorem card_compl_regBoundaryEmbed (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Nat.card (↥(Set.range (regBoundaryEmbed H r hL))ᶜ) = deepestNGauge H r := by
+  classical
+  haveI : Fintype (↥(Set.range (regBoundaryEmbed H r hL))) := Fintype.ofFinite _
+  haveI : Fintype (↥(Set.range (regBoundaryEmbed H r hL))ᶜ) := Fintype.ofFinite _
+  rw [Nat.card_eq_fintype_card]
+  -- `range(embed) ≃ BoundaryPivotIdx` (ofInjective), so `card (range) = card BoundaryPivotIdx = nReg`.
+  have hrange : Fintype.card (↥(Set.range (regBoundaryEmbed H r hL)))
+      = Fintype.card (BoundaryPivotIdx H r) :=
+    (Fintype.card_congr (Equiv.ofInjective _ (regBoundaryEmbed H r hL).injective)).symm
+  -- `card (range) + card (rangeᶜ) = card RegGaugeIdx` via `sumCompl`.
+  have htot : Fintype.card (↥(Set.range (regBoundaryEmbed H r hL)))
+      + Fintype.card (↥(Set.range (regBoundaryEmbed H r hL))ᶜ) = Fintype.card (RegGaugeIdx H r) := by
+    rw [← Fintype.card_sum]
+    exact Fintype.card_congr (Equiv.Set.sumCompl _)
+  rw [hrange, card_boundaryPivotIdx H r hr, card_regGaugeIdx H r hr hL] at htot
+  omega
+
 /-- **The reg-gauge index split** (the `eReg` of `deepestRoleIndexEquiv`, named for reuse):
-`RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r)` — the cardinality split of the
-combined reg+gauge entries into the `nReg` regular + `nGauge` spectator `Fin`-blocks. Opaque
-(`Fintype.equivFin`), so the `Fin nReg`/`Fin nGauge` halves do NOT individually carry the per-layer
-`X/Y/Z` structure; that legibility lives one level up in `RegGaugeIdx` (the per-layer `Σ`). -/
+`RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r)` — the #120 EXPLICIT split: the
+`Fin nReg` (reg) half routes onto the boundary generators via `regBoundaryToRegGauge ∘ regPivotFinEquiv`
+(`regBoundaryEmbed`'s image, `≃ BoundaryPivotIdx ≃ Fin nReg`); the `Fin nGauge` (gauge) half is the
+complement (its enumeration opaque — only the REG half needs the boundary alignment). So `regResidualPack
+:= regPivotFinEquiv` and this split's reg-half SHARE `regPivotFinEquiv`, hence cancel (reg-block = id). -/
 noncomputable def regGaugeIdxSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r) :=
-  (Fintype.equivFin (RegGaugeIdx H r)).trans
-    ((finCongr (card_regGaugeIdx H r hr hL)).trans finSumFinEquiv.symm)
+    RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r) := by
+  classical
+  haveI : Fintype (↥(Set.range (regBoundaryEmbed H r hL))ᶜ) := Fintype.ofFinite _
+  -- `RegGaugeIdx ≃ range(embed) ⊕ range(embed)ᶜ` (sumCompl), reg-half `≃ BoundaryPivotIdx ≃ Fin nReg`
+  -- (the SHARED `regPivotFinEquiv`), gauge-half `≃ Fin nGauge` (opaque enum on the complement).
+  refine (Equiv.Set.sumCompl (Set.range (regBoundaryEmbed H r hL))).symm.trans ?_
+  refine Equiv.sumCongr ?_ ?_
+  · exact (Equiv.ofInjective _ (regBoundaryEmbed H r hL).injective).symm.trans
+      (regPivotFinEquiv H r hr).symm
+  · refine (Fintype.equivFin _).trans (finCongr ?_)
+    have := card_compl_regBoundaryEmbed H r hr hL
+    rwa [Nat.card_eq_fintype_card] at this
 
 /-- **The reg-gauge SLOT bridge** (crux2 #78, for cobuild-sub34's `gaugeDecode` reshape). The split's
 two opaque function-slots recombine to the LEGIBLE per-layer `RegGaugeIdx` coordinate function:
