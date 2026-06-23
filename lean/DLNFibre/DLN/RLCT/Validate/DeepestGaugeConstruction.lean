@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
 import DLNFibre.DLN.RLCT.Validate.DeepestFrame
+import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 
 /-!
@@ -210,26 +211,36 @@ private theorem coreShear_satisfies_coreAbsorb (H : Fin (L + 1) → ℕ) (r : �
   rw [hLHS] at hkey
   exact hkey
 
-/-- **PIN 0 — the core absorption** (the Schur shear, Route A peel). `coreAbsorb` turns the raw core
-slot `T_s` into the Schur complement `S_s = T_s − Z_s(I+X_s)⁻¹Y_s` via `coreShearHomeo` with the
-gauge-dependent Schur shift; fixes reg+spec+origin; `coreAbsorb_rlct` peels its unit Jacobian via the
-MEASURE-PRESERVING `rlctAtOn_comp_homeomorph` (`coreShear_satisfies_coreAbsorb`). The remaining
-obligation: the concrete Schur shift `−Z_s(I+X_s)⁻¹Y_s` (read off the gauge blocks
-`gaugeSlotRead ∘ frame`) as a continuous map vanishing at the origin (shared with PIN 2's loss-match). -/
+/-- **The concrete core absorption** (PIN 0, Route A peel). `coreAbsorb = coreShearHomeo` with the
+globally-continuous **cutoff Schur shift** `schurCutoffShift` (`= χ·(−Z_s(I+X_s)⁻¹Y_s)`, the honest
+Schur correction times the gauge-slot bump; globally continuous via `continuous_of_tsupport`, equal to
+the honest correction on the inner ball). The shift slot type is fixed to `deepestNGauge H r` (the
+spectator count the assembly uses). Concrete (not existential) so PIN 2's `loss_squeeze` sees the same
+definitional map — Codex-confirmed Option A for the PIN0↔PIN2 coupling. -/
+noncomputable def deepestCoreAbsorb (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
+  coreShearHomeo (schurCutoffShift H r hr hL) (continuous_schurCutoffShift H r hr hL)
+
+/-- **PIN 0 — the core absorption obligations**. `deepestCoreAbsorb` fixes reg+spec+origin and its
+`coreAbsorb_rlct` peel holds — all four via the shift-agnostic, MEASURE-PRESERVING
+`coreShear_satisfies_coreAbsorb` (`rlctAtOn_comp_homeomorph` on the det-1 shear). The concrete shift
+is `schurCutoffShift`, continuous and vanishing at the origin. -/
 theorem deepest_coreAbsorb_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (nGauge : ℕ) :
-    ∃ coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge,
-      coreAbsorb 0 = 0 ∧
-      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1) ∧
-      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2) ∧
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (deepestCoreAbsorb H r hr hL) 0 = 0 ∧
+      (∀ q : DeepestSplit H r (deepestNGauge H r), (deepestCoreAbsorb H r hr hL q).1 = q.1) ∧
+      (∀ q : DeepestSplit H r (deepestNGauge H r), (deepestCoreAbsorb H r hr hL q).2.2 = q.2.2) ∧
       rlctAtOn
-          (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
-          (0 : DeepestSplit H r nGauge)
+          (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (∑ i, q.1 i ^ 2) + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1)
+          (0 : DeepestSplit H r (deepestNGauge H r))
         = rlctAtOn
-            (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
-            (0 : DeepestSplit H r nGauge) := by
-  sorry
+            (fun q : DeepestSplit H r (deepestNGauge H r) =>
+              (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+            (0 : DeepestSplit H r (deepestNGauge H r)) :=
+  coreShear_satisfies_coreAbsorb H r (deepestNGauge H r) (schurCutoffShift H r hr hL)
+    (continuous_schurCutoffShift H r hr hL) (schurCutoffShift_zero H r hr hL)
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
 `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
@@ -276,13 +287,14 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `split` (obligation (i), MP reindex carrying the deepest point to `0`).
   obtain ⟨split, hsplit_mp, hsplit_base⟩ :=
     deepestSplit_exists H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
-  -- PIN 0: `coreAbsorb` (the Schur shear) + its slot-fix/basepoint/rlct.
-  obtain ⟨coreAbsorb, hca_base, hca_reg, hca_spec, hca_rlct⟩ :=
-    deepest_coreAbsorb_exists H r B hB hr hL (deepestNGauge H r)
+  -- PIN 0: the CONCRETE `coreAbsorb = deepestCoreAbsorb` (the cutoff Schur shear) + its
+  -- slot-fix/basepoint/rlct (Option A: concrete, so PIN 2 sees the same map).
+  set coreAbsorb := deepestCoreAbsorb H r hr hL with hca_def
+  obtain ⟨hca_base, hca_reg, hca_spec, hca_rlct⟩ := deepest_coreAbsorb_exists H r hr hL
   -- PIN 1: `regAbsorb` (the IFT E-straightening) + its slot-fix/basepoint/rlct (against `coreAbsorb`).
   obtain ⟨regAbsorb, hra_base, hra_core, hra_spec, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
-  -- PIN 2: the loss squeeze.
+  -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb`).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
     deepest_loss_squeeze H r B hB hr hL (deepestNGauge H r) split coreAbsorb regAbsorb hsplit_base
   exact ⟨deepestNGauge H r, split, coreAbsorb, regAbsorb, hsplit_mp, hsplit_base,
