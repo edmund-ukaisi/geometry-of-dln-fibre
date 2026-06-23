@@ -52,31 +52,36 @@ Per the team-lead's 2026-06-23 split-by-E_pivot-dependence, the matrix-side sque
 two-sidedly bounded by `∑(P00−1,P01,P10)² + ‖Rcore‖²` given the block decomposition + leak hyp). No
 `E_pivot` dependence — acts on `dlnLoss`'s own `prod − B`.
 
-## `deepestEPivot` def + infra (BANKED, sorry-free) + the 3 props (in flight)
+## `deepestEPivot` def + infra (BANKED, sorry-free) + the props
 
-- `deepestEPivot` CONCRETE def + `regResidualPack` (the `Fin nReg ≃ (r×r)⊕(r×M_L)⊕(M_0×r)` pack,
-  dim-count proven) @20ad514; `framedParamsReg` (T=0 reconstruction) + `_zero` @2f3508e;
-  `contDiff_prodAux_entry`/`contDiff_prod_entry` (ContDiff of the L-fold dependent-Fin matrix-product
-  ENTRIES — entry-wise to dodge the matrix-no-canonical-NormedSpace friction; the hard `_contdiff`
-  infra, layout-independent) @9aaead1.
-- The 3 props couple to crux2's #120 (reg-slot restructure, touches the shared
-  `regGaugeIdxSplit`/`regGaugeSlotEquiv`): `_contdiff` needs `regGaugeSlotEquiv`'s CLE/linearity
-  (readX/Y/Z entries `ContDiff`); `_base` the idempotent product-at-0 fold; `_deriv` the structured
-  `Fin nReg`. Asked crux2 whether #120 exposes the CLE (then all 3 close fast).
+- `deepestEPivot` CONCRETE def + `regResidualPack` @20ad514; `framedParamsReg` (T=0) + `_zero` @2f3508e;
+  `contDiff_prodAux_entry`/`contDiff_prod_entry` @9aaead1; `regGaugeSlotCLE` + `contDiff_readX/Y/Z_entry`
+  + `contDiff_framedParamsReg_entry` @ecd8d6f.
+- **`deepestEPivot_contdiff` PROVED** (sorry-free) @11899a7: `contDiff_pi` over the `Fin nReg` output,
+  each coordinate a reindexed `prod`-entry, assembled from the ContDiff product/read infra.
 
-## OPEN: the `deepestEPivot` layout obstruction (surfaced to crux2, 2026-06-23)
+## RESOLVED: the `_deriv` layout obstruction → the SHEAR CLE (crux2 #120, 2026-06-23)
 
-A load-bearing **soundness obstruction** blocks `deepestEPivot`'s `_deriv` (and hence PIN 1's last prop
-+ PIN 2's bridge): `dE(0) = fst` rests on the split's reg slot `Fin nReg` being the STRUCTURED
-`(Σ_s X_s, Y_L, Z_1)` layout (g125), but `regGaugeIdxSplit` (`DeepestSplitReindex.lean:236`) is
-`Fintype.equivFin`-OPAQUE — its own docstring states the `Fin nReg` half does NOT carry per-layer
-`X/Y/Z` structure. The genuine derivative is the rank-`nReg` projection `(all X_s,Y_s,Z_s) ↦ (Σ_s X_s,
-Y_L, Z_1)`, which equals `fst` ONLY if the opaque bijection sends the boundary generators to the
-`nReg`-half — not guaranteed. Confirmed real: `deepestEPivot = fst + (o(|w|) remainder)` is INCOMPATIBLE
-with PIN 2's squeeze (which needs `deepestEPivot ≈ E ≈ Σ X_s ≠ raw reg` at first order — the g161
-counterexample). So `dE(0) = fst` requires the reg slot to BE the boundary generators, a coordinate
-convention crux2 owns (`DeepestSplitReindex`, single-writer). Awaiting crux2's call: (1) restructure the
-reg slot to the legible `(Σ X_s, Y_L, Z_1)` layout, or (2) a pack-by-construction that I'm missing.
+The obstruction I surfaced (`dE(0) = fst` needs the opaque `Fin nReg` to be the `(Σ X_s, Y_L, Z_1)`
+boundary generators) was RULED by crux2's #120 (@9d6dc21): **don't restructure the reg slot** (X-sum is
+not index-`Equiv`-expressible); instead **CORRECT the `_deriv` spec** — `dE(0)` is the invertible
+**unitriangular shear** `[[I, Σ],[0, I]]` (det 1; reg-out = reg-X + Σ gauge-X's, gauge-out unchanged),
+NOT `fst`. The IFT peel `rlctAtOn_comp_localDiffeo` takes ANY `≃L`, so the shear closes PIN 1.
+**ABSORBED** @416d76b: `regStraightenTotalCLM D_E` + `hasStrictFDerivAt_regStraightenOf_gen` (the total
+derivative from `E_pivot`'s reg-derivative `D_E`); `deepest_regAbsorb_exists` takes `D_E` + an invertible
+`e` with `(e:→L) = regStraightenTotalCLM D_E`; `deepestEPivot_deriv` bundled `∃ D_E e, … ∧ (e:→L)=…`.
+No interface churn left — the spec is settled.
+
+## The remaining `deepestEPivot` props (the two dependent-Fin/shear grinds)
+
+- **`_base`** (`deepestEPivot 0 = 0`): the idempotent product-at-0 fold —
+  `prod H (framedParamsReg 0) = reindex(blockdiag[I,0])` (product of `reindex(blockdiag[I,0])` layers,
+  idempotent), so the residual `(P11−I, P12, P21) = 0`. A `prodAux` dependent-Fin induction + the
+  block-idempotency `fromBlocks 1 0 0 0 ^k = fromBlocks 1 0 0 0` — same difficulty class as the
+  telescoping #111.
+- **`_deriv`** (the bundled shear): the concrete shear `D_E` + `HasStrictFDerivAt deepestEPivot D_E 0`
+  (the #91 block-derivative transcription, `origin/g213-pin1-de0 @09475f2`) + the unitriangular inverse
+  `[[I, −Σ],[0, I]]` packaging the invertible `e`. THE analytic gap.
 
 ## Assembly status
 
