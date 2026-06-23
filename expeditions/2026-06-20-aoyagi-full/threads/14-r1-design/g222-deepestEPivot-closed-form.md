@@ -40,24 +40,34 @@ multiplication is multilinear → polynomial); the reg-block-residual is a linea
 minus the constant `I_r`. A polynomial map ℝⁿ → ℝᵐ is `ContDiff ℝ ⊤`. ✓ (`Matrix.mul` is bilinear;
 `ContDiff.matrix_mul`-style + `ContDiff.sub_const`.)
 
-**`_deriv` (`HasStrictFDerivAt deepestEPivot (ContinuousLinearMap.fst …) 0`) — the load-bearing #91 match.**
-By #91 (general-L, 40-config adversarial sweep, structural via the idempotent sandwich), the linearisation
-is `d(P−B)|_0 = [[Σ_s X_s, Y_L],[Z_1, 0]]` — i.e. the regular-block residual's derivative at 0 is the
-linear map `(X_1,…,X_L, Y_*, Z_*, T_*) ↦ (Σ_s X_s, Y_L, Z_1)`, each generator coefficient `= I_r`.
+**`_deriv` — CORRECTED (2026-06-23, controller-blessed): the obligation is `HasStrictFDerivAt
+regStraighten (shear-CLE) 0` for an explicit INVERTIBLE shear CLE, NOT `= ContinuousLinearMap.fst`.**
+The earlier `= fst` was an OVER-statement (mine); name=content — the actual derivative is a shear, not a
+reg-projection. Why the correction (the #120 reg-slot analysis):
 
-The reg coordinate is parametrised so its three generator families are EXACTLY `(the X-sum pivot Σ_s X_s,
-the Y_L block, the Z_1 block)` — this is the g125 witness (L=3: the single (0,0)-generator is
-`g0 = w0+w4+w8 = Σ_s X_s`; the pivots are distinct/triangular). So the derivative-at-0, expressed on the
-reg×gauge product, is precisely the **projection onto the reg factor** = `ContinuousLinearMap.fst ℝ
-(Fin nReg → ℝ) (Fin nGauge → ℝ)`. Each `I_r` coefficient = the identity on its generator block; the
-gauge/spectator (interior X_s for s≠the-sum, interior Y_s/Z_s, all T_s) contribute ZERO to the regular
-residual's derivative (the idempotent sandwich annihilates them at 0). So `dE(0) = fst`. ✓
+By #91 (general-L, idempotent sandwich), `d(P−B)|_0 = [[Σ_s X_s, Y_L],[Z_1, 0]]` — the regular-block
+residual's X-corner derivative is the SUM `Σ_s X_s` over ALL L layers. But the reg slot `Fin nReg` carries
+ONE r×r X-block; the L−1 interior X_s live in the GAUGE slot (and `regStraighten` FIXES the spectator —
+`regStraighten_spectator` — so they stay FREE in the output). So `d(regStraighten)(0)` reads the reg-X +
+the gauge-X's, summing into the reg-X output, while KEEPING the gauge-X's: the unitriangular SHEAR
 
-**#91-CONSISTENCY CONFIRMED.** PIN1's `_deriv` cites #91 (does not re-derive). My closed form's
-derivative-at-0 IS #91's `(Σ_s X_s, Y_L, Z_1)`-with-all-coeffs-`I_r`, which on the reg×gauge split is
-`ContinuousLinearMap.fst` exactly. The reg-coordinate parametrisation that makes this `fst` (not some
-other unit) is the g125 distinct-triangular-pivot ordering (X-sum / Y_L / Z_1), already the chosen reg
-layout. No mismatch: #91's "dE(0)=id" = "the reg-residual's derivative is the reg-projection" = `fst`.
+    d(regStraighten)(0) = [[I, Σ],[0, I]]   (reg-out = reg-X + Σ gauge-X's; gauge-out = gauge-X's, unchanged)
+
+— det 1, INVERTIBLE (inverse subtracts the gauge-X's back). It is NOT `fst` (fst would zero the gauge,
+i.e. require the gauge to BE ker(summing); with the opaque `regGaugeIdxSplit`, gauge ≠ ker, so the
+gauge-X's are NOT zeroed — they shear into reg and stay free).
+
+This is SUFFICIENT for PIN1: the peel `rlctAtOn_comp_localDiffeo` (DeepestRegAbsorbIFT:220/§) decl-takes
+`(e : M ≃L[ℝ] M) (hf : HasStrictFDerivAt f (e : M →L M) wstar)` — it needs the derivative to be SOME
+INVERTIBLE CLE, NOT `fst`. The shear `[[I,Σ],[0,I]]` is invertible, so PIN1 closes with `_deriv = e`
+(the shear CLE). No `fst`, no gauge-kill, no reg-slot image/kernel restructure. (Triple-confirmed:
+decl peel-takes-`e` + `regStraighten_spectator`-fixes-gauge + Codex-xhigh decorrelated; shear-invertibility
+elementary, det 1. See `codex/regslot-resolution-answer.md`.)
+
+**#91 reconciliation.** #91's `dE(0) = (Σ_s X_s, Y_L, Z_1)`-all-coeffs-`I_r` IS the shear's action on
+reg×gauge (reg-X gets `I` + the gauge-X's get summed in via `Σ`; Y_L/Z_1 the `I` on their blocks). The
+"=id" of #91 = "the derivative is an invertible unit (det 1)", which the shear is — NOT the reg-projection
+`fst`. The over-statement conflated "invertible unit" with "fst"; the shear is the precise form.
 
 ## What cobuild formalises (the three sorries at DeepestGaugeConstruction:313–331)
 
@@ -67,10 +77,15 @@ layout. No mismatch: #91's "dE(0)=id" = "the reg-residual's derivative is the re
   concrete `r`-blocked matrices at the deepest point, same-typed, no cast).
 - `_base`: evaluate at 0 (idempotent blockdiag, pure `simp`/`decide`-able block algebra).
 - `_contdiff`: polynomial (`ContDiff.matrix_mul` chain + `sub_const`).
-- `_deriv`: the #91 idempotent-sandwich block-derivative → `fst`. The structural core is #91's already-banked
-  argument (origin/g213-pin1-de0 @09475f2); cobuild transcribes it (`HasStrictFDerivAt` of the polynomial
-  product, derivative = the (0,0)-sum + (0,1)-last + (1,0)-first blocks = `fst`).
+- `_deriv` (CORRECTED): `HasStrictFDerivAt regStraighten (shear-CLE) 0` for the explicit invertible shear
+  `e = [[I, Σ],[0, I]]` (det 1) — NOT `fst`. cobuild: (ii) package `e` as a GENUINE invertible CLE
+  (unitriangular + its inverse `[[I, −Σ],[0, I]]`, det 1, the `ContinuousLinearEquiv` — not asserted-invertible);
+  then `HasStrictFDerivAt regStraighten (e : M →L M) 0` via the #91 block-derivative (origin/g213-pin1-de0
+  @09475f2: the (0,0) X-sum + (0,1)-last + (1,0)-first = the shear's action). The peel
+  `rlctAtOn_comp_localDiffeo` consumes `(e, hf)` directly (guard (i): don't weaken past what the peel takes —
+  it takes `e : ≃L`, the shear IS that). Compile arbitrates.
 
 CAVEAT (scope-honest, g125): this is the regular-GENERATOR residual (unit-pivot equivalence), the
 squeeze-load-bearing object — NOT a literal Euclidean equality. That is exactly what PIN1's IFT-peel
-(form-agnostic, needs only `dE(0)=fst` + ContDiff + 0↦0) and PIN2's Φ-component consume.
+(form-agnostic, needs only `dE(0)` an INVERTIBLE CLE — the shear `[[I,Σ],[0,I]]`, NOT `fst` — plus
+ContDiff + 0↦0) and PIN2's Φ-component consume.
