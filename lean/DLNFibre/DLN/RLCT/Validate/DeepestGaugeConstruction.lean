@@ -595,10 +595,21 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                 ≤ γ₁ * (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
   -- ROUTE-FIRST: the chain below is sorry-free given this. The cert is the g164 boundary-frame
   -- extraction (`endpoint_telescoping` on `deepestPoint_frame` + interior-interface vanishing) +
-  -- the split-reg-half structured-equiv (`regBoundaryEmbed`, per deriv-fm) + the core
-  -- comparability (`core_comparability_squeeze`). ESCALATED: as-stated this needs the FRAME
-  -- composed into `split` (the `gaugeDecode = gaugeSlotRead ∘ frame ∘ split.symm` contract); the
-  -- bare `deepestSplit_exists` split is NOT frame-conjugate. See the report for the precise gap.
+  -- the split-reg-half structured-equiv + the core comparability (`core_comparability_squeeze`).
+  --
+  -- ESCALATED (sharpened, build-verified): the cert references `framedParamsReg (split w)`, which
+  -- the leaf reads as the RAW layer blocks of `paramsSymm w` PLUS the additive corner `corM`
+  -- (`framedLayer (1+X) Y Z T = reindex(fromBlocks X Y Z T) + corM` — an additive deviation chart,
+  -- NOT a frame conjugation). But `reindex(P0·N·QL)` telescopes the FRAME-CONJUGATED product
+  -- (layers `P_s·(paramsSymm w)_s·Q_s`). So as-stated the two block sources disagree.
+  --
+  -- DESIGN (controller call, Codex-confirmed): wire the per-layer frame into the READING — change
+  -- `framedLayer` to RECONSTRUCT the raw layer `reindex(fromBlocks X Y Z T)` then conjugate
+  -- `P_s · raw · Q_s` (NOT add corM to pure reads). Keeps `split` frameless (MP preserved). This is a
+  -- change to the SHARED `framedParams`/`framedLayer` (DeepestFramedProduct): `deepestEPivot` reads the
+  -- same object, so deriv-fm's `deepestEPivot_regSlice_fderiv_id` (line ~440) must redefine its reg-block
+  -- as the FRAMED coordinates (the constant frame's derivative at 0 is the frame factor, not `id` —
+  -- folds into their shear-CLE). Held for the controller's shared-root sync with deriv-fm.
   sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
