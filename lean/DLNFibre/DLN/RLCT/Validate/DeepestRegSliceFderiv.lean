@@ -294,6 +294,24 @@ theorem firstShapeF_mul_corner (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s :
         (rThresholdSplit r (H ⟨k', hk'⟩) (hr ⟨k', hk'⟩))]
     simp only [Matrix.mul_assoc]
 
+/-- The `X/Z`-deviation block, reindexed, right-absorbs a corner: `reindex(fromBlocks X 0 Z 0)·corM`
+extends the columns to the corner's target (the `0` right column-block is killed, the left passes). -/
+theorem devXZ_mul_corner {a b c r : ℕ}
+    (eA : Fin a ≃ Fin r ⊕ Fin (a - r)) (eB : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (eC : Fin c ≃ Fin r ⊕ Fin (c - r)) (X : Matrix (Fin r) (Fin r) ℝ)
+    (Z : Matrix (Fin (a - r)) (Fin r) ℝ) :
+    (Matrix.reindex eA.symm eB.symm (Matrix.fromBlocks X 0 Z 0))
+        * (Matrix.reindex eB.symm eC.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0))
+      = Matrix.reindex eA.symm eC.symm (Matrix.fromBlocks X 0 Z 0) := by
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  rw [Matrix.submatrix_mul_equiv (Matrix.fromBlocks X 0 Z 0)
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) eA eB eC]
+  congr 1
+  rw [Matrix.fromBlocks_multiply]
+  congr 1 <;>
+    · simp only [Matrix.mul_zero, add_zero]
+      try exact Matrix.mul_one _
+
 /-! ## The explicit Leibniz derivative of the layer-product entries (#156, the value-fold) -/
 
 /-- The explicit recursive Leibniz derivative of the `prodAux` entry `fun y => prodAux (g y) k i j`
