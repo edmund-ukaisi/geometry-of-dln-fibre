@@ -536,6 +536,71 @@ theorem deepestEPivot_sq_sum_eq_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
        refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
        simp only [deepestEPivot, Equiv.apply_symm_apply])
 
+/-- **The frame-bridge cert** (#80, ruling (b) — the ONE geometric input of the loss squeeze). Packages
+the constant endpoint frames `P0, QL` (with inverses `Pi, Qi`, `Pi·P0 = 1 ∧ QL·Qi = 1`) and a `leak`
+charge constant `t`, and a neighborhood `U` of the deepest point where for each `w ∈ U` the loss matrix
+`N = ∏(paramsSymm w) − B`, conjugated by the endpoint frames and reindexed to `r ⊕ M` block shape, is
+the framed-block form `fromBlocks (P00−1) P01 P10 P11`, with the regular blocks `(P00, P01, P10)` IDENTIFIED
+with the `framedParamsReg` product blocks `Preg = reindex(∏(framedParamsReg (split w).reg, (split w).spec))`
+(the `deepestEPivot` source), the Schur leak charged `∑leak² ≤ t²·∑E²`, and the CORE COMPARABILITY
+`∑(P11 − P10⅟P00 P01)² ≍ deepestCoreF (coreAbsorb (split w)).2.1` (TWO-SIDED, not an equality: the
+full-product Schur core leaks into the regular blocks — g156 — so it agrees with the absorbed per-layer
+core only modulo regular leakage, folded into `c₁/c₂`; the RLCT value stays exact).
+
+This is cobuild's OWN cert (a DIFFERENT object from deriv-fm's #120 reg-slice-of-`deepestEPivot`): it
+is built on `split`/`deepestRoleIndexEquiv` + the core + the gauge, via `endpoint_telescoping`
+(`deepestPoint_frame` boundary frames + interior-interface vanishing) and the `framedParams`/`framedParamsReg`
+identification. **Isolated `sorry` (route-first):** the chain below is sorry-free GIVEN this cert; the
+cert itself is the g164 boundary-frame extraction + the split-reg-half structured-equiv (the
+`regBoundaryEmbed` technique, per deriv-fm). -/
+theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r)) :
+    ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
+      (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
+      (Pi : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
+      (Qi : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
+      (t γ₁ γ₂ : ℝ),
+      Pi * P0 = 1 ∧ QL * Qi = 1 ∧ 0 < γ₁ ∧ 0 < γ₂ ∧
+      0 < (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) ∧
+      0 < (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) ∧
+      ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ w ∈ U,
+          ∃ (P00 : Matrix (Fin r) (Fin r) ℝ)
+            (P01 : Matrix (Fin r) (Fin (H (Fin.last L) - r)) ℝ)
+            (P10 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (P11 : Matrix (Fin (H 0 - r)) (Fin (H (Fin.last L) - r)) ℝ)
+            (_hP00 : Invertible P00),
+            letI : Invertible P00 := _hP00
+            (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)
+              = Matrix.fromBlocks (P00 - 1) P01 P10 P11)
+            ∧ (P00 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (prod H (framedParamsReg H r hr hL ((split w).1, (split w).2.2)))).toBlocks₁₁)
+            ∧ (P01 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (prod H (framedParamsReg H r hr hL ((split w).1, (split w).2.2)))).toBlocks₁₂)
+            ∧ (P10 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (prod H (framedParamsReg H r hr hL ((split w).1, (split w).2.2)))).toBlocks₂₁)
+            ∧ ((∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
+                ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                    + (∑ i, ∑ j, (P10 i j) ^ 2)))
+            ∧ ((∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)
+                ≤ γ₂ * deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1)
+            ∧ (deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1
+                ≤ γ₁ * (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
+  -- ROUTE-FIRST: the chain below is sorry-free given this. The cert is the g164 boundary-frame
+  -- extraction (`endpoint_telescoping` on `deepestPoint_frame` + interior-interface vanishing) +
+  -- the split-reg-half structured-equiv (`regBoundaryEmbed`, per deriv-fm) + the core
+  -- comparability (`core_comparability_squeeze`). ESCALATED: as-stated this needs the FRAME
+  -- composed into `split` (the `gaugeDecode = gaugeSlotRead ∘ frame ∘ split.symm` contract); the
+  -- bare `deepestSplit_exists` split is NOT frame-conjugate. See the report for the precise gap.
+  sorry
+
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
 is two-sidedly bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`.
 The matrix-block reduction `∏C − blockNormal → P11 = leak + Rcore` (g164 boundary frames) feeding the
@@ -565,17 +630,105 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
           dlnLoss H B ((paramsEquivFlat H).symm w)
             ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  -- **ASSEMBLY (B), Codex-designed (loss-squeeze-wire-answer, option iii).** `hframe_bridge` packages the
-  -- per-`w` geometric datum (the g164/g222 split-vs-frame content, the ONE sorry): the constant endpoint
-  -- frames `P0/QL/Pi/Qi/t`, and per `w ∈ U` the block cert (`hconj`: `reindex(P0·(prod(paramsSymm w)−B)·QL)
-  -- = fromBlocks (P00−1) P01 P10 P11`; `P00/P01/P10 = the deepestEPivot blocks of split w`; the leak; and
-  -- the CORE COMPARABILITY `‖Rcore‖² ≤ γ₂·deepestCoreF ∧ deepestCoreF ≤ γ₁·(∑E²+‖Rcore‖²)` — NOT an
-  -- equality, per Codex's flag: the full-product Schur core ≠ the absorbed per-layer core, they agree only
-  -- mod regular leakage). The leaf chain: `dlnLoss_two_sided_of_frame` (∑N² ≍ ∑E²+‖Rcore‖²) +
-  -- `deepestEPivot_sq_sum_eq_blocks` (∑E²=∑(deepestEPivot)²=∑(regStraighten).1² via `hregval`) + the
-  -- core-comparability → `c₁·Φ ≤ dlnLoss ≤ c₂·Φ`. ONE sorry: `hframe_bridge` (the shared frame-exposure
-  -- root; closes via the step-(2) refactor — `framedParams_split_eq_frame_raw` + the core-comparability).
-  sorry
+  -- **ASSEMBLY (B), Codex-designed (loss-squeeze-wire-answer, option iii).** The frame-bridge cert
+  -- `framedParams_split_eq_frame_raw` is the ONE geometric input; the wiring below is sorry-free.
+  classical
+  obtain ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, hP, hQ, hγ₁, hγ₂, hKP_pos, hKi_pos, U, hU, hbr⟩ :=
+    framedParams_split_eq_frame_raw H r B hB hr hL split
+  -- Endpoint-frame energies (the conjugation constants). `KP = ∑P0²·∑QL²`, `Ki = ∑Pi²·∑Qi²`.
+  set KP := (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) with hKP
+  set Ki := (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) with hKi
+  -- `Klo = 2(1+t²)·KP`, `Kup = Ki·(2+2t²)`; both positive (the cert supplies `0 < KP`, `0 < Ki`).
+  set Klo := 2 * (1 + t ^ 2) * KP with hKlo
+  set Kup := Ki * (2 + 2 * t ^ 2) with hKup
+  have hKlo_pos : 0 < Klo := by rw [hKlo]; positivity
+  have hKup_pos : 0 < Kup := by rw [hKup]; positivity
+  have hKup_nonneg : 0 ≤ Kup := le_of_lt hKup_pos
+  -- The two squeeze constants (Codex's, fixed up for the comparability-not-equality core).
+  refine ⟨((1 + γ₁) * Klo)⁻¹, Kup * (1 + γ₂), ?_, ?_, U, hU, ?_⟩
+  · positivity
+  · positivity
+  -- Per-`w` bound.
+  intro w hw
+  obtain ⟨P00, P01, P10, P11, hP00, hconj, h00, h01, h10, hleak, hcore_le, hcore_ge⟩ := hbr w hw
+  letI : Invertible P00 := hP00
+  -- The framed two-sided loss bound on `N = ∏(paramsSymm w) − B` (the banked leaf core).
+  obtain ⟨hlo, hhi⟩ := dlnLoss_two_sided_of_frame
+    (prod H ((paramsEquivFlat H).symm w) - B) P0 QL Pi Qi hP hQ
+    (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+    P00 P01 P10 P11 t hconj hleak
+  -- Name the energies. `Sreg` = the three regular blocks; `Score` = the Schur core; `NN` = loss.
+  set Sreg := ((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+      + (∑ i, ∑ j, (P10 i j) ^ 2)
+    with hSreg
+  set Score := (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2) with hScore
+  set NN := ∑ i, ∑ j, ((prod H ((paramsEquivFlat H).symm w) - B) i j) ^ 2 with hNN
+  -- `dlnLoss = NN` (def-unfold).
+  have hloss_eq : dlnLoss H B ((paramsEquivFlat H).symm w) = NN := rfl
+  -- `Sreg = ∑ i, (regStraighten (split w)).1 i ^ 2` (the Φ-reg identification): via `hregval` →
+  -- `deepestEPivot_sq_sum_eq_blocks` → the block identifications `h00/h01/h10`.
+  have hSreg_eq : Sreg = ∑ i, (regStraighten (split w)).1 i ^ 2 := by
+    rw [hregval (split w)]
+    rw [deepestEPivot_sq_sum_eq_blocks H r hr hL ((split w).1, (split w).2.2)]
+    rw [hSreg, h00, h01, h10]; ring
+  -- The core-comparability + leak bound fold into the squeeze. `coreΦ = deepestCoreF (coreAbsorb)`.
+  rw [hcoreabs]
+  set coreΦ := deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1 with hcoreΦ
+  -- Nonnegativity facts.
+  have hSreg_nn : 0 ≤ Sreg := by
+    rw [hSreg]; positivity
+  have hScore_nn : 0 ≤ Score := by rw [hScore]; positivity
+  have hcoreΦ_nn : 0 ≤ coreΦ := by rw [hcoreΦ]; exact dlnLoss_nonneg _ _ _
+  -- `cleanE = Sreg + Score`; the leaf bounds are `cleanE ≤ Klo·NN` and `NN ≤ Kup·cleanE`.
+  -- (the leaf lemma states them with the explicit constants; identify them with Klo/Kup.)
+  have hlo' : Sreg + Score ≤ Klo * NN := by
+    rw [hKlo, hKP]; exact hlo
+  have hhi' : NN ≤ Kup * (Sreg + Score) := by
+    rw [hKup, hKi, mul_assoc]; exact hhi
+  -- The target Φ for this `w`.
+  set Φ := (∑ i, (regStraighten (split w)).1 i ^ 2) + coreΦ with hΦ
+  have hΦ_nn : 0 ≤ Φ := by
+    rw [hΦ]; refine add_nonneg ?_ hcoreΦ_nn
+    exact Finset.sum_nonneg fun i _ => sq_nonneg _
+  -- `Sreg = ∑(regStraighten …)²`, so `Φ = Sreg + coreΦ`.
+  have hΦ_eq : Φ = Sreg + coreΦ := by rw [hΦ, hSreg_eq]
+  refine ⟨hΦ_nn, ?_, ?_⟩
+  · -- LOWER: `c₁·Φ ≤ dlnLoss = NN`. `Φ = Sreg + coreΦ ≤ Sreg + γ₁·Score ≤ (1+γ₁)(Sreg+Score)
+    -- ≤ (1+γ₁)·Klo·NN`. So `((1+γ₁)Klo)⁻¹·Φ ≤ NN`.
+    rw [hloss_eq]
+    have hstep1 : Φ ≤ Sreg + γ₁ * Score := by
+      rw [hΦ_eq]; linarith [hcore_ge]
+    have hstep2 : Sreg + γ₁ * Score ≤ (1 + γ₁) * (Sreg + Score) := by
+      have hexp : (1 + γ₁) * (Sreg + Score) - (Sreg + γ₁ * Score) = γ₁ * Sreg + Score := by ring
+      have hpos : 0 ≤ γ₁ * Sreg + Score :=
+        add_nonneg (mul_nonneg (le_of_lt hγ₁) hSreg_nn) hScore_nn
+      linarith [hexp, hpos]
+    have hstep3 : (1 + γ₁) * (Sreg + Score) ≤ (1 + γ₁) * (Klo * NN) :=
+      mul_le_mul_of_nonneg_left hlo' (by positivity)
+    have hΦle : Φ ≤ (1 + γ₁) * Klo * NN := by
+      calc Φ ≤ Sreg + γ₁ * Score := hstep1
+        _ ≤ (1 + γ₁) * (Sreg + Score) := hstep2
+        _ ≤ (1 + γ₁) * (Klo * NN) := hstep3
+        _ = (1 + γ₁) * Klo * NN := by ring
+    -- multiply `hΦle : Φ ≤ (1+γ₁)·Klo·NN` by `c₁ = ((1+γ₁)·Klo)⁻¹ ≥ 0`; `c₁·((1+γ₁)·Klo) = 1`.
+    have hden_pos : 0 < (1 + γ₁) * Klo := by positivity
+    have hc₁ := mul_le_mul_of_nonneg_left hΦle (le_of_lt (inv_pos.mpr hden_pos))
+    rw [show ((1 + γ₁) * Klo)⁻¹ * ((1 + γ₁) * Klo * NN) = NN from by
+      field_simp] at hc₁
+    exact hc₁
+  · -- UPPER: `dlnLoss = NN ≤ Kup·(Sreg + Score) ≤ Kup·(Sreg + γ₂·coreΦ) ≤ Kup·(1+γ₂)·Φ`.
+    rw [hloss_eq]
+    have hstep1 : Sreg + Score ≤ Sreg + γ₂ * coreΦ := by linarith [hcore_le]
+    have hstep2 : Sreg + γ₂ * coreΦ ≤ (1 + γ₂) * Φ := by
+      rw [hΦ_eq]
+      have hexp : (1 + γ₂) * (Sreg + coreΦ) - (Sreg + γ₂ * coreΦ) = γ₂ * Sreg + coreΦ := by ring
+      have hpos : 0 ≤ γ₂ * Sreg + coreΦ :=
+        add_nonneg (mul_nonneg (le_of_lt hγ₂) hSreg_nn) hcoreΦ_nn
+      linarith [hexp, hpos]
+    calc NN ≤ Kup * (Sreg + Score) := hhi'
+      _ ≤ Kup * (Sreg + γ₂ * coreΦ) := mul_le_mul_of_nonneg_left hstep1 hKup_nonneg
+      _ ≤ Kup * ((1 + γ₂) * Φ) := mul_le_mul_of_nonneg_left hstep2 hKup_nonneg
+      _ = Kup * (1 + γ₂) * Φ := by ring
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
 `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
