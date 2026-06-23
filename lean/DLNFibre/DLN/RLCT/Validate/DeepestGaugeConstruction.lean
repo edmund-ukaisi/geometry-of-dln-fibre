@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
 import DLNFibre.DLN.RLCT.Validate.DeepestFrame
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
 import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
@@ -306,14 +307,40 @@ the SHARED coupling object — defined once, consumed by both pins. Its three pr
 `HasStrictFDerivAt (fst) 0`, `0 ↦ 0`) are the residual gauge-geometry obligation: the product-residual
 expansion `∏(I+X_s) − I` read off the gauge slots, certified `dE(0) = id` (pp2 #91, general L). -/
 
-/-- The shared pivot map (the reg-straightening's reg-output). **OBLIGATION (#82/#80 coupling):** the
-concrete nonlinear straightened residual. Currently a named hole — its definition + the three props
-below are the single remaining PIN-1 gap, pinned to surface cleanly (the form is crux2/pp2's, the
-squeeze-load-bearing piece for PIN 2). -/
+/-- The pack equivalence `Fin nReg ≃ (r×r) ⊕ ((r×M_L) ⊕ (M_0×r))` — the THREE regular residual blocks
+`(P11−I, P12, P21)` of `∏C` flatten into the `nReg = r(H_0+H_L−r)` reg coordinates (dimension count:
+`r·r + r·M_L + M_0·r = r(H_0+H_L−r)`). A CARDINALITY bijection (`Fintype.equivFin`-based) — the
+specific index alignment is the open `_deriv` obstruction (crux2's fork), but `_base`/`_contdiff` need
+ONLY that it is a coordinate bijection (linear, `0 ↦ 0`). -/
+noncomputable def regResidualPack (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    Fin (deepestNReg H r)
+      ≃ (Fin r × Fin r) ⊕ ((Fin r × Fin (H (Fin.last L) - r)) ⊕ (Fin (H 0 - r) × Fin r)) := by
+  refine (finCongr ?_).trans (Fintype.equivFin _).symm
+  simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
+  show deepestNReg H r = r * r + (r * (H (Fin.last L) - r) + (H 0 - r) * r)
+  -- `r(a+b−r) = r² + r(b−r) + (a−r)r` for `a, b ≥ r` (exact nat subtractions).
+  obtain ⟨a', ha'⟩ := Nat.le.dest (hr 0)
+  obtain ⟨b', hb'⟩ := Nat.le.dest (hr (Fin.last L))
+  unfold deepestNReg
+  rw [← ha', ← hb']
+  simp only [Nat.add_sub_cancel_left]
+  rw [show r + a' + (r + b') - r = r + (a' + b') by omega]
+  ring
+
+/-- The regular residual blocks `(P11 − I, P12, P21)` of the framed product `∏C|_{T=0}`, packed into
+`Fin nReg → ℝ` via `regResidualPack`. `P = ∏ (framedParamsReg p)` reindexed to `r ⊕ M` block shape;
+`P11 = toBlocks₁₁`, `P12 = toBlocks₁₂`, `P21 = toBlocks₂₁`; the residual is `(P11−1, P12, P21)`. -/
 noncomputable def deepestEPivot (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ) → (Fin (deepestNReg H r) → ℝ) :=
-  sorry
+  fun p =>
+    let P := Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H (Fin.last L))
+      (hr (Fin.last L))) (prod H (framedParamsReg H r hr hL p))
+    fun i => match regResidualPack H r hr i with
+      | Sum.inl (a, b) => (P.toBlocks₁₁ - 1) a b
+      | Sum.inr (Sum.inl (a, b)) => P.toBlocks₁₂ a b
+      | Sum.inr (Sum.inr (a, b)) => P.toBlocks₂₁ a b
 
 theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
