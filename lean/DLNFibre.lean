@@ -80,3 +80,6 @@ import DLNFibre.Core.CThetaGeometricPerm
 -- Explicit closed-form (C,θ) for an ARBITRARY (non-monotone) d: compose the sort bridge with the
 -- Monotone-gated cValue/cTheta. cCodim d r = cValue ((d−r) ∘ Tuple.sort (d−r)) (and θ via cTheta).
 import DLNFibre.Core.CThetaArbitrary
+-- Determinantal-stratum dimension (fibre-codim AG build, rung 1): dim Mat^{rk≤r}_{m×n} = r(n+m−r),
+-- via the N=1 specialisation of the quiver engine (productRankLocusLE ![n,m] r = the determinantal variety).
+import DLNFibre.Core.DeterminantalStratumDim
