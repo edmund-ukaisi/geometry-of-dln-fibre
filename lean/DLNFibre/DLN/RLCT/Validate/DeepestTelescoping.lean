@@ -152,15 +152,13 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
       prod H C = P0 * prod H A * QL := by
-  -- NOT NEEDED for L2/PIN2 (controller verdict (a) 2026-06-23): L2 light-(iii) + PIN2 loss_squeeze
-  -- close via the two-sided BOUND (rlctAtOn_squeeze ← fullProduct_loss_squeeze, scalar/gauge-block,
-  -- cast-free), NOT this exact equality. Kept as the STRONGER-but-unneeded result. With prodAux_succ
-  -- now PROVEN (above), the remaining induction is a generalized prodAux-depth invariant +
-  -- interface-cancellation (Q s · P (s+1) = 1) + endpoint cast-extraction, traversed by
-  -- `Matrix.submatrix_mul_equiv` — a known-shape multi-step induction (formaliser-hours), not a wall.
-  -- Left as a sorry'd building block; build it if the exact equality is ever wanted (it is not, for
-  -- the critical path D1∘L2). The one-pass that PROVED prodAux_succ closed the cast-bridgeability
-  -- question; this is the orthogonal fold-assembly.
+  -- NEEDED for #80/PIN2 (controller RULING 2026-06-23, verdict-(a) RETRACTED): dlnLoss = ‖∏A − B‖²
+  -- connects to `deepest_loss_squeeze`'s gauge reads VIA `conjugation_frobenius_comparable`, which
+  -- CONSUMES the factored form `∏A = P₀·(∏C)·Q_L` — this telescoping IS that factorization, not dodged
+  -- by a scalar bound. The induction: a generalized prodAux-depth invariant with frame-conjugation +
+  -- interior interface-cancellation (`Q s = 1`, `P (s+1) = 1`), endpoint cast via the now-PROVEN
+  -- `prodAux_succ` + `cases`-idiom (lemma 1's mechanism). Building blocks ready (prodAux_succ +
+  -- corner_reindex_mul + the cast-strip); this is the frame-conjugation fold-assembly. STILL OPEN.
   sorry
 
 end DLNFibre.DLN.RLCT
