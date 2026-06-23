@@ -644,3 +644,21 @@ codim-nReg fibre cut transversally (rank dΦ = nReg) → L2's smooth-block primi
 coordinates → rlctAt = nReg/2. NOT via a genuinely-flat linear Morse-Bott complement (the raw nullspace carries
 t⁴). The headline value nReg/2 = aoyagiLambda is unchanged; only the cert's reasoning + the flat-dim formula are
 corrected. Seat's scripts: expeditions/2026-06-20-aoyagi-full/threads/adv-degen-boundary-witness/.
+
+## Divergent file copies across branches → phantom disagreement; declare canonical early (2026-06-23)
+
+A 6-pass coordination stall: cobuild-sub34 asserted "your coreAbsorb is the UNIT, fix it to Schur" while crux2
+(correctly) insisted "it's already the additive Schur." Both were right about THEIR OWN branch — DeepestGaugeChart.lean
+had forked into two copies on origin: fm2/split-reindex (517L, the (e)-fix structure, 34 regAbsorb mentions, docstring
+corrected to additive Schur) and fm2/deepest-gauge-chart (467L, pre-(e)-fix, ZERO regAbsorb, the STALE multiplicative
+gloss "T·(I−VY)⁻¹" at line 250). cobuild-sub34 read the stale line-250 gloss on the older branch; crux2 read the
+corrected one on the newer. The "bug" was phantom — the coreAbsorb FIELD is abstract+Schur on both.
+
+LESSON: when two agents persistently disagree about what a file SAYS (not about the math/design), suspect BRANCH
+DIVERGENCE before re-litigating the content — a key file forked into divergent copies makes each "I verified it"
+true-but-incommensurable. Resolution (controller): git-verify the divergence (line counts, key-decl presence e.g.
+`grep -c regAbsorb`, the disputed line) → DECLARE ONE canonical copy → direct everyone to build against it. Do it
+EARLY: divergent copies of a load-bearing structure must collapse to one BEFORE consumers build against the wrong
+version (here the L2 PINs). The diagnostic (grep both branches for the disputed token) is cheap — reach for it the
+2nd time a "what does the file say" disagreement repeats, not the 6th. (crux2 found the root cause; controller
+git-verified + declared fm2/split-reindex canonical.)
