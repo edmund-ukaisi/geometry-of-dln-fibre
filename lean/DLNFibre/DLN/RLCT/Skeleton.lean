@@ -3062,6 +3062,132 @@ private theorem QFeas_qStar (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
   exact ⟨QFeas_of_assignment M (qStar M) hext htot hpre hge hband, σ,
     fun j ↦ by rw [hqF] at hqFσ; exact hqFσ j⟩
 
+/-! ### The BG-engine `Dom` precondition (`dom_Mtail_Yvec`).
+
+`Dom (Mwidths M) (Ymulti M)` is the head-count `cLt(Ymulti,τ) ≤ cLt(Mwidths,τ)` (plus equal card).
+The achiever content is the pointwise `aS M (i+1) ≤ Yvec M c i` (the `i`-th sorted target dominates
+the `(i+1)`-th smallest width), proven from `good_floor_core` / `aS_le_bp1`. The head-count then
+reduces by two `cLt_erase` steps (drop `M⁰` from `Mwidths`, drop the smallest `aS M 0` from the
+target side) plus `aS M 0 ≤ M⁰`. -/
+
+/-- The head-count of an `ofFn` multiset is the count of indices whose value is `< τ`. -/
+private theorem cLt_ofFn (n : ℕ) (f : Fin n → ℤ) (τ : ℤ) :
+    BGEngine.cLt (↑(List.ofFn f) : Multiset ℤ) τ
+      = (Finset.univ.filter (fun i : Fin n => f i < τ)).card := by
+  rw [BGEngine.cLt_eq_countP, ← Fin.univ_val_map, Multiset.countP_map]; rfl
+
+/-- Pointwise domination `A i ≤ B i` gives the reversed head-count `cLt(B) ≤ cLt(A)`. -/
+private theorem cLt_le_of_pointwise (n : ℕ) (A B : Fin n → ℤ) (hAB : ∀ i, A i ≤ B i) (τ : ℤ) :
+    BGEngine.cLt (↑(List.ofFn B) : Multiset ℤ) τ ≤ BGEngine.cLt (↑(List.ofFn A) : Multiset ℤ) τ := by
+  rw [cLt_ofFn, cLt_ofFn]
+  apply Finset.card_le_card
+  intro i hi
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+  exact lt_of_le_of_lt (hAB i) hi
+
+/-- **Achiever pointwise domination** `aS M (i+1) ≤ Yvec M (cAch M) i`: the `i`-th smallest target
+value dominates the `(i+1)`-th smallest reduced width. Balanced block (`i < c`) from
+`good_floor_core` / `aS_le_bp1`; tail (`i ≥ c`) by equality `Yvec i = aS M (i+1)`. -/
+private theorem aS_succ_le_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (i : Fin L) :
+    (aS M ((i : ℕ) + 1) : ℤ) ≤ Yvec M (cAch M) i := by
+  set c := cAch M with hc
+  obtain ⟨hc1, hcleL, _⟩ := cAch_spec M hL
+  set P := Sprefix M (c + 1) with hP
+  set b := P / c with hb
+  set r := P % c with hr
+  have hrlt : r < c := Nat.mod_lt _ hc1
+  have hval : Yvec M c i = (if (i : ℕ) < c then (if (i : ℕ) < c - r then (b : ℤ) else (b : ℤ) + 1)
+      else (aS M ((i : ℕ) + 1) : ℤ)) := rfl
+  rw [hval]
+  by_cases hic : (i : ℕ) < c
+  · rw [if_pos hic]
+    have hgf := good_floor_core M hL (show 1 ≤ (i : ℕ) + 1 by omega) (show (i : ℕ) + 1 ≤ c by omega)
+    rw [← hc, ← hP, show (i : ℕ) + 1 - 1 = (i : ℕ) by omega] at hgf
+    have hPdm : P = c * b + r := (Nat.div_add_mod P c).symm
+    by_cases hir : (i : ℕ) < c - r
+    · rw [if_pos hir]
+      have hle : aS M ((i : ℕ) + 1) ≤ b := by
+        by_contra hgt; push_neg at hgt
+        have hbig : c * (b + 1) ≤ c * aS M ((i : ℕ) + 1) := Nat.mul_le_mul_left c hgt
+        have hexp : c * (b + 1) = c * b + c := by ring
+        omega
+      exact_mod_cast hle
+    · rw [if_neg hir]
+      have hle := aS_le_bp1 M hL (show 1 ≤ (i : ℕ) + 1 by omega) (show (i : ℕ) + 1 ≤ c by omega)
+      rw [← hc, ← hP, ← hb] at hle
+      exact_mod_cast hle
+  · rw [if_neg hic]
+
+/-- `aS M 0 ≤ M 0`: the smallest width is `≤` the first width. -/
+private theorem aS_zero_le (M : Fin (L + 1) → ℕ) : aS M 0 ≤ M 0 := by
+  have h0 : (0 : ℕ) < L + 1 := by omega
+  -- aS M 0 = aSort M ⟨0⟩ = (M ∘ sort M) ⟨0⟩, the minimum of the sorted tuple
+  rw [aS, dif_pos h0, aSort]
+  -- there is a sorted slot `j0` with `sort M j0 = 0`; monotonicity gives the min ≤ M 0
+  set j0 : Fin (L + 1) := (Tuple.sort M).symm 0 with hj0
+  have hsj0 : Tuple.sort M j0 = 0 := by rw [hj0, Equiv.apply_symm_apply]
+  have hmono : (M ∘ Tuple.sort M) (⟨0, h0⟩ : Fin (L + 1)) ≤ (M ∘ Tuple.sort M) j0 :=
+    Tuple.monotone_sort M (by simp [Fin.le_def])
+  simp only [Function.comp_apply, hsj0] at hmono
+  exact hmono
+
+/-- **The BG-engine `Dom` precondition.** `Dom (Mwidths M) (Ymulti M)`: equal card `L`, and the
+head-count `cLt(Ymulti,τ) ≤ cLt(Mwidths,τ)` from the achiever pointwise domination
+`aS_succ_le_Yvec` plus two `cLt_erase` steps (drop `M⁰`, drop the smallest `aS M 0`). -/
+private theorem dom_Mtail_Yvec (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    BGEngine.Dom (Mwidths M) (Ymulti M) := by
+  refine ⟨by rw [Ymulti_card, Mwidths_len], ?_⟩
+  intro τ
+  -- the three multisets, all as coe-ofFn
+  set Mfull : Multiset ℤ := (↑(List.ofFn (fun i : Fin (L + 1) => (M i : ℤ))) : Multiset ℤ) with hMf
+  set Ytail : Multiset ℤ := (↑(List.ofFn (fun i : Fin L => (aS M ((i : ℕ) + 1) : ℤ))) : Multiset ℤ)
+    with hYt
+  -- STEP 1: cLt(Ymulti) ≤ cLt(Ytail)  via the pointwise domination
+  have hstep1 : BGEngine.cLt (Ymulti M) τ ≤ BGEngine.cLt Ytail τ := by
+    rw [Ymulti, hYt]
+    exact cLt_le_of_pointwise L (fun i => (aS M ((i : ℕ) + 1) : ℤ)) (Yvec M (cAch M))
+      (fun i => aS_succ_le_Yvec M hL i) τ
+  -- STEP 2: Mfull = (M 0) ::ₘ Mwidths, so cLt(Mwidths) = cLt(Mfull) − [M⁰<τ]
+  have hMfcons : Mfull = (M 0 : ℤ) ::ₘ (↑(Mwidths M) : Multiset ℤ) := by
+    rw [hMf, Mwidths, List.ofFn_succ, ← Multiset.cons_coe]
+  have hM0mem : (M 0 : ℤ) ∈ Mfull := by rw [hMfcons]; exact Multiset.mem_cons_self _ _
+  have hMwerase : Mfull.erase (M 0 : ℤ) = (↑(Mwidths M) : Multiset ℤ) := by
+    rw [hMfcons, Multiset.erase_cons_head]
+  have hcMw : BGEngine.cLt Mfull τ
+      = BGEngine.cLt (↑(Mwidths M) : Multiset ℤ) τ + (if (M 0 : ℤ) < τ then 1 else 0) := by
+    rw [BGEngine.cLt_erase Mfull (M 0 : ℤ) τ hM0mem, hMwerase]
+  -- STEP 3: ASfull (sorted M) = Mfull as multisets, and Mfull = (aS M 0) ::ₘ Ytail
+  have hASfull : (↑(List.ofFn (fun i : Fin (L + 1) => (aS M (i : ℕ) : ℤ))) : Multiset ℤ) = Mfull := by
+    rw [hMf, ← Fin.univ_val_map, ← Fin.univ_val_map]
+    -- aS M i = M (sort M i) on Fin (L+1); reindex by the perm sort M
+    have hpt : (fun i : Fin (L + 1) => (aS M (i : ℕ) : ℤ))
+        = (fun i : Fin (L + 1) => (M i : ℤ)) ∘ Tuple.sort M := by
+      funext i
+      simp only [Function.comp_apply, aS, dif_pos i.isLt, aSort]
+    rw [hpt, ← Multiset.map_map]
+    congr 1
+    exact Multiset.map_univ_val_equiv (Tuple.sort M)
+  have hAScons : (↑(List.ofFn (fun i : Fin (L + 1) => (aS M (i : ℕ) : ℤ))) : Multiset ℤ)
+      = (aS M 0 : ℤ) ::ₘ Ytail := by
+    rw [List.ofFn_succ, ← Multiset.cons_coe, hYt]
+    rfl
+  have haS0mem : (aS M 0 : ℤ) ∈ Mfull := by rw [← hASfull, hAScons]; exact Multiset.mem_cons_self _ _
+  have hYterase : Mfull.erase (aS M 0 : ℤ) = Ytail := by
+    rw [← hASfull, hAScons, Multiset.erase_cons_head]
+  have hcYt : BGEngine.cLt Mfull τ
+      = BGEngine.cLt Ytail τ + (if (aS M 0 : ℤ) < τ then 1 else 0) := by
+    rw [BGEngine.cLt_erase Mfull (aS M 0 : ℤ) τ haS0mem, hYterase]
+  -- STEP 4: [M⁰<τ] ≤ [aS M 0 < τ]  since aS M 0 ≤ M 0
+  have hind : (if (M 0 : ℤ) < τ then 1 else 0) ≤ (if (aS M 0 : ℤ) < τ then 1 else 0) := by
+    have haS0 : (aS M 0 : ℤ) ≤ (M 0 : ℤ) := by exact_mod_cast aS_zero_le M
+    split_ifs with h1 h2
+    · exact le_refl 1
+    · exact absurd (lt_of_le_of_lt haS0 h1) h2
+    · exact Nat.zero_le _
+    · exact le_refl 0
+  -- combine: cLt(Ymulti) ≤ cLt(Ytail) = cLt(Mfull)−[aS0<τ] ≤ cLt(Mfull)−[M⁰<τ] = cLt(Mwidths)
+  omega
+
 /-- **A1 (Lemma 3, the headline arithmetic).** `lambdaCore M = cleanCore` at the achiever `cAch M`.
 The proof is fully assembled: the achiever ordering `qStar` is corridor-feasible and permutes `Yvec`
 (`QFeas_qStar`), which feeds `close_of_feasible`. Three inputs remain open:
@@ -3070,13 +3196,22 @@ The proof is fully assembled: the achiever ordering `qStar` is corridor-feasible
   statement is false there; `1 ≤ L` is genuinely required and is *not* a hypothesis. Fix: add
   `(hL : 1 ≤ L)` to the signature (the whole engine — `close_of_feasible`, `cAch_spec` — already
   assumes it). Flagged for the controller — do not discharge from nothing.
-* `hDom` — the BG-engine precondition (`Dom`), a pp-hall certificate (pending).
-* `hband` — the admissibility band on `qStar`'s prefix sums, a pp-hall certificate (pending). -/
+* `hDom` — the BG-engine precondition (`Dom`), PROVEN (`dom_Mtail_Yvec`).
+* `hband` — the admissibility band on `qStar`'s prefix sums. **OPEN.** `qStar = backwardGreedy` is
+  the prefix-MAXIMISER over feasible `Ymulti`-arrangements (`backwardGreedy_suffix_le` ⟹ suffix-min ⟹
+  prefix-max, total fixed). So `hband` follows from ONE feasible `Ymulti`-arrangement `p` whose prefix
+  meets the band; via `prefix_edgeQ`, `edgeQ M T*` of the achiever `T* ∈ Adm M` has
+  `prefix_{j+1} = ∑_{i≤j+1}M^i − T*^j ≥ ∑_{i≤j+1}M^i − admBound_j` (admissibility `T*^j ≤ admBound_j`).
+  The remaining content is the EXISTENCE of `T* ∈ Adm M` with edge-multiset `= Ymulti` — the achiever
+  realizability, an own engine (forward smallest-in-window greedy: window-clamp ⟹ `Adm` automatic;
+  non-emptiness from the mean upper-fit + the `good_c`-tied lower-fit `Yvec_lowerfit`). Verified 0-fail
+  numerically (1360/1360); the unbuilt seam is this ~170-line greedy-existence construction (the
+  expedition's `#92`/`#84` deliverable), NOT a short pp-hall certificate. -/
 theorem lambdaCore_eq_clean (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
     ∃ (c : ℕ) (hc : c ≤ L), 1 ≤ c ∧ lambdaCore M = cleanCore c (sortedSmallest M c hc) := by
-  -- pp-hall certificate (pending): the BG-engine domination precondition.
-  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := by sorry
-  -- pp-hall certificate (pending): the admissibility band on qStar's prefix sums.
+  have hDom : BGEngine.Dom (Mwidths M) (Ymulti M) := dom_Mtail_Yvec M hL
+  -- OPEN: the achiever band. Reduces (via prefix-max of `qStar` + `prefix_edgeQ`) to the existence of
+  -- an admissible `T*` with edge-multiset `Ymulti` (the forward window-greedy; see the docstring).
   have hband : ∀ j : Fin L, (∑ i ∈ Finset.range ((j : ℕ) + 2), Mseq M i) - (admBound M j : ℤ)
       ≤ ∑ i ∈ Finset.range ((j : ℕ) + 1), qStar M i := by sorry
   obtain ⟨hq, σ, hperm⟩ := QFeas_qStar M hL hDom hband
