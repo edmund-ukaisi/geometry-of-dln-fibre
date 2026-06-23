@@ -99,6 +99,14 @@ theorem corner_reindex_mul {a b c r : ℕ}
   rw [Matrix.fromBlocks_multiply]
   simp
 
+/-- **4-matrix reassociation** `(a·b)·(c·d) = (a·(b·c))·d` (the FOLD3 endpoint-frame regroup). Clean
+generic statement (no casty terms) so `Matrix.mul_assoc` applies without the dependent-dim explicit-arg
+matching friction; both sides normalise to `a·(b·(c·d))`. -/
+theorem mul_four_reassoc {p q s t : Type*} [Fintype p] [Fintype q] [Fintype s]
+    (a : Matrix p p ℝ) (b : Matrix p q ℝ) (c : Matrix q s ℝ) (d : Matrix s t ℝ) :
+    a * b * (c * d) = a * (b * c) * d := by
+  simp only [Matrix.mul_assoc]
+
 /-- **Reindex distributes over a left endpoint-frame product** (the FOLD3 general-layer kernel). For a
 SQUARE row-frame `P : Matrix m m ℝ` and a general layer `A : Matrix m n ℝ`, reindexing the product
 `P * A` along `(eC, eS)` factors as `(reindex eC eC P) * (reindex eC eS A)` — the frame `P` rides on the
@@ -306,7 +314,25 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
     -- (handed to crux2 — the direct single-layer arm; `prod C = reindex(C 0)`, `C 0 = P0·A0·Q0`.)
     subst hLm0
     have hC0 : C ⟨0, hLmL⟩ = P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩ := hframe ⟨0, hLmL⟩
-    sorry
+    -- `prodAux _ 0 = 1`; `C 0 = P0·A0·Q0`; distribute reindex over both factors (left for P0, right for Q0),
+    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+    rw [show prodAux H C 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      show prodAux H A 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      hC0,
+      reindex_mul_distrib_right (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩) (Q ⟨0, hLmL⟩) (finCongr e1L.symm)
+        (finCongr e2L.symm),
+      reindex_mul_distrib_left (P ⟨0, hLmL⟩) (A ⟨0, hLmL⟩) (finCongr e1L.symm) (finCongr e2L.symm)]
+    -- boundary casts: reindex (finCongr e1L.symm)² P0 = P0-cast, reindex (finCongr e2L.symm)² Q0 = QL-cast.
+    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+    -- `show` forces the reindex refl refl to defeq plain matrices; then `one_mul` both `1·`, both sides
+    -- → `P0·A0·Q0` (LHS `1·(P0·A0·Q0)`, RHS `P0·(1·A0)·Q0`).
+    show (1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+          (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ)
+        * (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩)
+      = P ⟨0, hLmL⟩ * ((1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+            (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ) * A ⟨0, hLmL⟩) * Q ⟨0, hLmL⟩
+    rw [Matrix.one_mul, Matrix.one_mul]
   · -- `Lm ≥ 1`: `hinv Lm` gives `prodAux C Lm = P0 · prodAux A Lm`; `C Lm = A Lm · Q Lm` (`P Lm = 1`);
     -- `reindex_mul_distrib_right` distributes; the `Q Lm` factor IS the boundary cast `QL` (e2L : rfl).
     rw [hinv Lm (Nat.lt_of_succ_lt hLm1) hLmpos (le_refl _)]
@@ -318,15 +344,8 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
         = (hLs ▸ Q ⟨Lm, by omega⟩ :
             Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) from by
       rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
-    -- pure 4-matrix associativity `a·b·(c·d) = a·(b·c)·d` (dependent-dim `Matrix.mul_assoc` won't fire
-    -- via simp/rw — apply it as explicit congr terms): both → `a·(b·(c·d))`.
-    -- REMAINING (handed to crux2): the LAST step, pure 4-matrix associativity `P0·prodAux·(rA·QL) =
-    -- P0·(prodAux·rA)·QL` (both `P0·prodAux·rA·QL`). The dependent-dim `Matrix.mul_assoc` resists EVERY
-    -- directional approach (rw one-at-a-time, ←, simp only, conv_rhs, explicit-first-arg both directions,
-    -- calc) — one fires on the LHS, the RHS regroup consistently "didn't find pattern" because the casty
-    -- `reindex (finCongr ⋯)` / `h0cs ▸` terms elaborate so explicit-arg matching misses on the dependent
-    -- Fin (H _) dims. TRIVIALLY true. The full telescoping spine + QL-cast are GREEN above; crux2's env
-    -- (or `Matrix.mul_assoc`-normalize / a `noncomm`-aware tactic) closes this last assoc.
-    sorry
+    -- pure 4-matrix associativity `P0·prodAux·(rA·QL) = P0·(prodAux·rA)·QL` — via the clean helper
+    -- `mul_four_reassoc` (sidesteps the dependent-dim explicit-arg matching that blocked inline `mul_assoc`).
+    exact mul_four_reassoc _ _ _ _
 
 end DLNFibre.DLN.RLCT
