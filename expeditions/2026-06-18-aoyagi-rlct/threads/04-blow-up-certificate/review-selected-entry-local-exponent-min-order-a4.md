@@ -50,22 +50,26 @@ microcertificate's own exponent data.  This is not a flaw in the reviewed
 slice, but a future API split should reserve the A0 name for actual global A0
 data and put the generic exponent-coordinate bridge under a non-A0 name.
 
+Follow-up: this API split has landed.  The local microcertificate now uses
+`Case2DisplayedContinuingExponentCoordinateBridge`; the A0-facing bridge is a
+wrapper for exponent data intended to represent the full A0 normal-crossing
+problem.
+
 ## Verification
 
 Reviewer ran:
 
 ```text
-cd lean && lake env lean DLNFibre/DLN/Aoyagi/SelectedEntryNormalCrossing.lean
-cd lean && lake build DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
 ```
 
 Controller also ran:
 
 ```text
-cd lean && lake build DLNFibre
+cd lean && scripts/lb
 cd lean && scripts/sorries
 git diff --check
 ```
 
-All checks passed.  The full aggregator build emitted only unrelated
-pre-existing Core linter warnings.
+All checks passed through the shared-store `scripts/lb` workflow.  The full
+aggregator build emitted only unrelated pre-existing Core linter warnings.

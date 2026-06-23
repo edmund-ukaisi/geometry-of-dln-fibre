@@ -34,9 +34,9 @@ Jacobian/prior exponent is exactly `(center.erase pivot).card`.
 
 The Case 2 specialization uses `case2ResidualBlockPivotEntries n S J` with
 the displayed pivot-membership hypothesis.  The local bridge constructs the
-existing Case 2/A0 exponent-coordinate bridge only for this microcertificate's
-own exponent data; the Lean docstring and expedition notes explicitly deny a
-global A0 chart-family, global active-ratio, pole-order, or RLCT claim.
+generic Case 2 exponent-coordinate bridge only for this microcertificate's own
+exponent data; the Lean docstring and expedition notes explicitly deny a global
+A0 chart-family, global active-ratio, pole-order, or RLCT claim.
 
 ## Incorporated Polish
 
@@ -53,17 +53,30 @@ data, including this local microcertificate.  A future hardening step should
 split out a generic exponent-coordinate bridge and reserve the A0 name for a
 global A0-data wrapper.
 
+Follow-up: this hardening has now landed.  The generic finite bridge is
+`Case2DisplayedContinuingExponentCoordinateBridge`, and
+`case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`
+returns that generic bridge for the local microcertificate.  The A0-facing
+`Case2DisplayedContinuingA0ExponentCoordinateBridge` is now a wrapper around
+the generic bridge for later full-A0 exponent data.
+
+Independent xhigh follow-up review `Mencius` passed this hardening: the generic
+bridge stores only the loss/Jacobian exponent equalities, the finite-minimum
+theorem remains conditional on an explicit active-ratio lower bound, the A0
+name is only a wrapper, and the selected-entry local bridge returns the generic
+bridge.
+
 ## Verification
 
 Controller ran:
 
 ```text
-cd lean && lake build DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
-cd lean && lake build DLNFibre
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+cd lean && scripts/lb
 cd lean && scripts/sorries
 git diff --check
 ```
 
 The focused build, full aggregator build, no-sorry check, and diff hygiene
-check passed.  The full build emitted only unrelated pre-existing Core linter
-warnings.
+check passed through the shared-store `scripts/lb` workflow.  The full build
+emitted only unrelated pre-existing Core linter warnings.

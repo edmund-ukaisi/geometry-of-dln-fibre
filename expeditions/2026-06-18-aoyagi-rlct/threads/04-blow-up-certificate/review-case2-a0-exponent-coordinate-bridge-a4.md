@@ -16,11 +16,20 @@ Lean names reviewed:
 ```text
 AoyagiNormalCrossingExponentData.mem_activePairs_of_lossExp_eq_one
 AoyagiNormalCrossingExponentData.ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq
+Case2DisplayedContinuingExponentCoordinateBridge
+Case2DisplayedContinuingExponentCoordinateBridge.activePair_and_ratioAt_eq_centerCard_div_two
+Case2DisplayedContinuingExponentCoordinateBridge.activePair
+Case2DisplayedContinuingExponentCoordinateBridge.ratioAt_eq_centerCard_div_two
 Case2DisplayedContinuingA0ExponentCoordinateBridge
 Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair_and_ratioAt_eq_centerCard_div_two
 Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair
 Case2DisplayedContinuingA0ExponentCoordinateBridge.ratioAt_eq_centerCard_div_two
 ```
+
+Follow-up hardening split the generic finite bridge from the A0-facing wrapper:
+`Case2DisplayedContinuingExponentCoordinateBridge` carries the exponent-array
+calculation, while `Case2DisplayedContinuingA0ExponentCoordinateBridge` wraps
+it for data intended to represent the full A0 problem.
 
 ## Source/Math Review
 
@@ -67,14 +76,11 @@ The reviewer confirmed:
 Focused checks passed:
 
 ```text
-cd lean && lake env lean DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean
-cd lean && lake env lean DLNFibre/DLN/Aoyagi/Case2FiniteExponentBridge.lean
-cd lean && lake build DLNFibre.DLN.Aoyagi.Case2FiniteExponentBridge
-cd lean && lake env lean DLNFibre.lean
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.Case2Theorem2ChartFinalBridge
 ```
 
-The Lean/API reviewer also ran the sorry scanner on the two touched Lean
-modules and found no forbidden constructs.
+The focused builds passed through the shared-store `scripts/lb` workflow.
 
 ## Boundary
 

@@ -632,14 +632,15 @@ No such claim is formalisation-ready until both fields are filled.
   stopped, and row-exhausted stopped branches and confirms that existing
   supplied-obligation consumers are the safe boundary; no source-production
   theorem is justified by Aoyagi pp. 19-22 alone.
-  The A4/A0 chart-certificate coordinate adapter
+  The A4 chart-certificate coordinate adapter
   `Case2DisplayedContinuingA0ExponentCoordinateBridge.of_chartCertificate_coord_exponents`
   is also proved in `lean/DLNFibre/DLN/Aoyagi/Case2FiniteExponentBridge.lean`.
   It takes supplied equalities on `Cnc.lossExp` and
-  `Cnc.jacobianPriorExp` and constructs the existing Case 2/A0 coordinate
-  bridge for `Cnc.exponentData`.  This is definitional projection only; it
-  does not construct the chart certificate, coordinate, active-ratio lower
-  bounds, chart counts, normal crossings, pole order, or RLCT.
+  `Cnc.jacobianPriorExp` and constructs the A0-facing wrapper around the
+  generic Case 2 exponent-coordinate bridge for `Cnc.exponentData`.  This is
+  definitional projection only; it does not construct the chart certificate,
+  coordinate, active-ratio lower bounds, chart counts, normal crossings, pole
+  order, or RLCT.
   Missing arbitrary pivot
   charts,
   non-top-left source-displayed formulas, the full source blockdiag identity
@@ -841,7 +842,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  Reproduction of the selected-entry finite normal-crossing
 	  microcertificate is saved at
 	  `threads/04-blow-up-certificate/reproduction-selected-entry-normal-crossing-microcertificate-a4.md`;
-	  xhigh fidelity/bedrock review is pending.
+	  xhigh fidelity/bedrock review passed and is saved at
+	  `threads/04-blow-up-certificate/review-selected-entry-normal-crossing-microcertificate-a4.md`.
 	  The 2026-06-23 branchwise source-production re-audit is saved at
 	  `threads/04-blow-up-certificate/audit-case2-branchwise-successor-production-recheck-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
@@ -966,11 +968,12 @@ No such claim is formalisation-ready until both fields are filled.
 	  This constructs a one-chart `AoyagiNormalCrossingChartCertificate` only
 	  for the finite selected-entry center square-sum and formal pivot-first
 	  determinant.  Its parameter is the finite-center value function and its
-	  chart residuals are indexed by `center.erase pivot`; the Case 2/A0
-	  coordinate bridge is constructed only for that microcertificate's own
-	  one-coordinate exponent data.  It is not global chart production, chart
-	  coverage, source production, analytic Jacobian/volume-form data, pole
-	  order, or RLCT extraction.
+	  chart residuals are indexed by `center.erase pivot`; the generic Case 2
+	  exponent-coordinate bridge is constructed only for that
+	  microcertificate's own one-coordinate exponent data, while the A0-facing
+	  wrapper remains reserved for later full-A0 data.  It is not global chart
+	  production, chart coverage, source production, analytic
+	  Jacobian/volume-form data, pole order, or RLCT extraction.
 	  Also proved the local finite exponent arithmetic for that
 	  microcertificate's own exponent data:
 	  `selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,

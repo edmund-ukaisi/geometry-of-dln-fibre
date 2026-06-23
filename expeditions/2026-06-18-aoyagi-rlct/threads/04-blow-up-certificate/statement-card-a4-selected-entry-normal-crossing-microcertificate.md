@@ -14,6 +14,7 @@ Names:
 - `case2DisplayedCenterSqFormalJacobianChartCertificate`
 - `case2DisplayedCenterSqFormalJacobianChartCertificate.lossExp_zero_zero`
 - `case2DisplayedCenterSqFormalJacobianChartCertificate.jacobianPriorExp_zero_zero`
+- `Case2DisplayedContinuingExponentCoordinateBridge`
 - `case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`
 
 ## Claim
@@ -64,8 +65,10 @@ u ^ (center.erase pivot).card
 
 with unit factor `1`.  The Case 2 specialization applies this to
 `case2ResidualBlockPivotEntries n S J` at the displayed pivot `(J+1,J+1)`.
-For this microcertificate's own exponent data, the Case 2/A0 exponent
-coordinate bridge is constructed rather than supplied.
+For this microcertificate's own exponent data, the generic Case 2 exponent
+coordinate bridge is constructed rather than supplied.  The A0-facing wrapper
+is reserved for later exponent data meant to represent the full A0
+normal-crossing problem.
 
 ## Not Proved
 
@@ -80,10 +83,14 @@ extraction.
 Controller ran:
 
 ```text
-cd lean && lake build DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+cd lean && scripts/lb
+cd lean && scripts/sorries
+git diff --check
 ```
 
-The focused build passed.  Full-library verification also passed.
+The focused build, full-library build, no-sorry check, and diff hygiene check
+passed through the shared-store `scripts/lb` workflow.
 
 ## Review
 

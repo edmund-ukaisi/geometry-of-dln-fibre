@@ -38,18 +38,21 @@ claimed.
 Focused check reported by the reviewer:
 
 ```text
-cd lean && lake env lean DLNFibre/DLN/Aoyagi/Case2FiniteExponentBridge.lean
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.Case2Theorem2ChartFinalBridge
 ```
 
 Controller verification:
 
 ```text
-cd lean && lake env lean DLNFibre/DLN/Aoyagi/Case2FiniteExponentBridge.lean
-cd lean && lake build DLNFibre.DLN.Aoyagi.Case2FiniteExponentBridge
-cd lean && LAKE_JOBS=1 lake build DLNFibre
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.Case2Theorem2ChartFinalBridge
+cd lean && scripts/lb
+cd lean && scripts/sorries
+git diff --check
 ```
 
-All checks passed.  The full build emitted only pre-existing Core warnings.
+All checks passed through the shared-store `scripts/lb` workflow.  The full
+build emitted only pre-existing Core warnings.
 
 ## Boundary
 

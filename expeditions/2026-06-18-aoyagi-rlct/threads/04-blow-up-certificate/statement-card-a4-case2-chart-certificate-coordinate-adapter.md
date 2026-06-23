@@ -14,8 +14,8 @@ Name:
 
 If a supplied chart certificate `Cnc` has a coordinate `p` whose exponent
 arrays match the displayed continuing Case 2 local calculation, then the
-existing supplied Case 2/A0 exponent-coordinate bridge holds for
-`Cnc.exponentData` at `p`.
+A0-facing wrapper around the generic Case 2 exponent-coordinate bridge holds
+for `Cnc.exponentData` at `p`.
 
 ## Inputs Kept Explicit
 
@@ -38,8 +38,8 @@ The theorem returns:
 Case2DisplayedContinuingA0ExponentCoordinateBridge cert Cnc.exponentData p
 ```
 
-The existing bridge then provides the active-pair and finite-ratio
-consequences.
+The wrapper delegates to the generic bridge, which provides the active-pair
+and finite-ratio consequences.
 
 ## Not Proved
 
@@ -53,10 +53,11 @@ and no RLCT extraction.
 Initial focused check passed:
 
 ```text
-cd lean && lake env lean DLNFibre/DLN/Aoyagi/Case2FiniteExponentBridge.lean
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.Case2Theorem2ChartFinalBridge
 ```
 
-Full build verification is recorded in the review artifact.
+The focused downstream build passed through the shared-store `scripts/lb`
+workflow.  Full build verification is recorded in the review artifact.
 
 ## Review
 

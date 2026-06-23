@@ -74,11 +74,19 @@ AoyagiNormalCrossingExponentData.ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jac
 Case 2 supplied-coordinate bridge:
 
 ```text
+Case2DisplayedContinuingExponentCoordinateBridge
+Case2DisplayedContinuingExponentCoordinateBridge.activePair_and_ratioAt_eq_centerCard_div_two
+Case2DisplayedContinuingExponentCoordinateBridge.activePair
+Case2DisplayedContinuingExponentCoordinateBridge.ratioAt_eq_centerCard_div_two
 Case2DisplayedContinuingA0ExponentCoordinateBridge
 Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair_and_ratioAt_eq_centerCard_div_two
 Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair
 Case2DisplayedContinuingA0ExponentCoordinateBridge.ratioAt_eq_centerCard_div_two
 ```
+
+The generic bridge carries the finite exponent-coordinate calculation.  The
+A0-facing bridge is a wrapper around it and should be used only when the
+supplied data `D` is intended as later full-A0 finite exponent data.
 
 ## Boundary
 

@@ -312,7 +312,7 @@ theorem localExponentCoordinateBridge
     (cert :
       Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
         L n S J t numerator leastValue pre u residual hS hcont C) :
-    Case2DisplayedContinuingA0ExponentCoordinateBridge cert
+    Case2DisplayedContinuingExponentCoordinateBridge cert
       (case2DisplayedCenterSqFormalJacobianChartCertificate
         (K := K) n hS hcont).exponentData
       ((0 : Fin 1), (0 : Fin 1)) where

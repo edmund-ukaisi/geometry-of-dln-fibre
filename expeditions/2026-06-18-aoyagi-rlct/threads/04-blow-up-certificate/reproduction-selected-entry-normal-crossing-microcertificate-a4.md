@@ -116,6 +116,7 @@ selectedEntryCenterSqFormalJacobianChartCertificate.jacobianPriorExp_zero_zero
 case2DisplayedCenterSqFormalJacobianChartCertificate
 case2DisplayedCenterSqFormalJacobianChartCertificate.lossExp_zero_zero
 case2DisplayedCenterSqFormalJacobianChartCertificate.jacobianPriorExp_zero_zero
+Case2DisplayedContinuingExponentCoordinateBridge
 case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge
 ```
 
@@ -134,9 +135,13 @@ case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBrid
   `h = card(center.erase pivot)`.
 - The Case 2 displayed pivot specializes this certificate to
   `case2ResidualBlockPivotEntries n S J`.
-- For this one-coordinate microcertificate's own exponent data, the existing
-  `Case2DisplayedContinuingA0ExponentCoordinateBridge` is no longer a supplied
+- For this one-coordinate microcertificate's own exponent data, the generic
+  `Case2DisplayedContinuingExponentCoordinateBridge` is no longer a supplied
   field: the bridge is constructed by reflexive exponent-array equalities.
+  The A0-facing wrapper
+  `Case2DisplayedContinuingA0ExponentCoordinateBridge` remains reserved for
+  later finite exponent data meant to represent the full A0
+  normal-crossing problem.
 
 ## Not Proved
 
