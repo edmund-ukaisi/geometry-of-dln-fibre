@@ -55,11 +55,12 @@ for general `M`) is the named gap, riding the rank-pattern read / #121. The ABST
 → `(0,0,2)` (TERMINAL, `⊤`, appends `[]`); `foldDivisors([4,3]) = min(2, 3/2) = 3/2`. So the per-node codim
 is the ROOT-anchored `Mval M₀ T_node` (the `PivotWitness M₀` content), `T_node = (0,0)` then `(1,0)`.
 
-**Two blockers to wiring the value-over-`routeMIota` (both flagged, neither faked):**
-1. **Layout (a hard Lean cycle).** Making `routeStep`'s branch split concrete (`schurState M hlo`) needs
-   `hlo`/`isLeafNode` in `routeStep`'s scope, but `isLeafNode` + `schurState_hlo_of_not_isLeafNode` live in
-   `RouteMClassify` which IMPORTS `RouteMRecursion` (where `routeStep` is). Fix = move the leaf classifier
-   UPSTREAM (a new `RouteMLeaf.lean` that `RouteMRecursion` imports). Awaiting the controller's layout call.
+**Two blockers to wiring the value-over-`routeMIota` (1 RESOLVED, 1 the named gap):**
+1. **Layout — RESOLVED (A-refactor @`815cd89`).** The leaf classifier (`isLeafNode` +
+   `schurState_hlo_of_not_isLeafNode`) was moved UPSTREAM into `RouteMLeaf.lean`, which `RouteMRecursion`
+   (where `routeStep` lives) now IMPORTS — so `routeStep`'s leaf-first dispatch has `isLeafNode`/`hlo` in
+   scope (`RouteMRecursion.lean:199`/`206`). The def-ordering cycle is gone; no `RouteStep`-type change was
+   needed (the dispatch body constructs the existing `.branch` fields). NOT an open layout question.
 2. **The general branch = the rank-pattern read** (the cells/codim/witness for arbitrary non-leaf `M`: which
    root-anchored `T_node` per node). This is the formaliser-weeks general dispatcher, and its
    achiever-leaf-existence rides the orbit-side realizability tie (#96/#121, `Adm ↔ RealizableRank`) — the
