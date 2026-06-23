@@ -312,6 +312,70 @@ theorem devXZ_mul_corner {a b c r : ℕ}
     · simp only [Matrix.mul_zero, add_zero]
       try exact Matrix.mul_one _
 
+/-- Through the first layer (`1 ≤ k`, `k + 1 ≤ L`, `L ≥ 2`, `Qf firstLayer = 1`): the running product
+is `firstShapeF` — the first layer's frame-conjugated `X/Z` deviation rides on the corner; the later
+interior layers are corners that keep the shape. -/
+theorem prodAux_regSlice_through_first (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hQf0 : Qf (firstLayer hL) = 1)
+    (r0 : Fin (deepestNReg H r) → ℝ) (k : ℕ) (hk : k < L + 1) (hk1 : 1 ≤ k) (hkL : k + 1 ≤ L) :
+    prodAux H (framedParamsReg H r hr hL Pf Qf (r0, 0)) k hk
+      = firstShapeF H r hr hL Pf Qf r0 k hk := by
+  induction k with
+  | zero => omega
+  | succ k ih =>
+      have hkL1 : k < L := by omega
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+      · -- k = 0: `prodAux 1 = 1 · C_first = C_first = firstShapeF 1` (uses `Qf firstLayer = 1` +
+        -- `devXZ_mul_corner`: the trailing corner absorbs into the `X/Z` deviation).
+        subst hk0
+        -- index-level equalities for the `prodAux 1` cast layer.
+        have e1 : (⟨0, hk'⟩ : Fin (L + 1)) = (⟨0, hkL1⟩ : Fin L).castSucc := by
+          apply Fin.ext; simp [Fin.castSucc]
+        have e2 : (⟨0 + 1, hk⟩ : Fin (L + 1)) = (⟨0, hkL1⟩ : Fin L).succ := by
+          apply Fin.ext; simp [Fin.succ]
+        -- The `prodAux 1` cast layer IS `framedParamsReg first` (cast collapse).
+        have hcast : ((by rw [e1, e2]; exact framedParamsReg H r hr hL Pf Qf (r0, 0) ⟨0, hkL1⟩ :
+            Matrix (Fin (H ⟨0, hk'⟩)) (Fin (H ⟨0 + 1, hk⟩)) ℝ))
+            = framedParamsReg H r hr hL Pf Qf (r0, 0) (firstLayer hL) := by
+          cases e1; cases e2; rfl
+        -- `prodAux 1 = 1 * (cast layer) = framedParamsReg first`.
+        have hstep : prodAux H (framedParamsReg H r hr hL Pf Qf (r0, 0)) (0 + 1) hk
+            = framedParamsReg H r hr hL Pf Qf (r0, 0) (firstLayer hL) := by
+          show prodAux H (framedParamsReg H r hr hL Pf Qf (r0, 0)) 0 hk'
+              * ((by rw [e1, e2]; exact framedParamsReg H r hr hL Pf Qf (r0, 0) ⟨0, hkL1⟩ :
+                Matrix (Fin (H ⟨0, hk'⟩)) (Fin (H ⟨0 + 1, hk⟩)) ℝ)) = _
+          rw [hcast]
+          exact Matrix.one_mul _
+        rw [hstep, framedParamsReg_regSlice_first H r hr hL hL2 Pf Qf r0]
+        -- `firstShapeF 1`: `Qf_0 = 1` + `devXZ_mul_corner` absorb the trailing corner; then the two
+        -- sides match (both `corM + Pf · reindex(fromBlocks X 0 Z 0)`, cols at `⟨1⟩`).
+        rw [firstShapeF, hQf0, Matrix.mul_one, Matrix.mul_assoc,
+          devXZ_mul_corner (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+            (rThresholdSplit r (H (firstLayer hL).succ) (hr _))
+            (rThresholdSplit r (H ⟨0 + 1, hk⟩) (hr _))
+            (readX H r hr hL (r0, 0) (firstLayer hL)) (readZ H r hr hL (r0, 0) (firstLayer hL))]
+        congr 1 <;> · apply Fin.ext; simp [firstLayer, Fin.castSucc, Fin.succ]
+      · -- k ≥ 1: `prodAux (k+1) = prodAux k · corM = firstShapeF k · corM = firstShapeF (k+1)`.
+        have hcorner : framedParamsReg H r hr hL Pf Qf (r0, 0) ⟨k, hkL1⟩
+            = Matrix.reindex (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).castSucc) (hr _)).symm
+                (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).succ) (hr _)).symm
+                (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+          apply framedParamsReg_regSlice_interior
+          · simp only [firstLayer, ne_eq, Fin.mk.injEq]; omega
+          · simp only [lastLayer, ne_eq, Fin.mk.injEq]; omega
+        rw [prodAux_succ_layer H (framedParamsReg H r hr hL Pf Qf (r0, 0)) k hk
+            (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).castSucc) (hr _))
+            (rThresholdSplit r (H (⟨k, hkL1⟩ : Fin L).succ) (hr _))
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) ?_]
+        · rw [ih hk' (by omega) (by omega)]
+          exact firstShapeF_mul_corner H r hr hL Pf Qf r0 k hk' (k + 1) hk
+        · rw [hcorner]
+          congr 1
+
 /-! ## The explicit Leibniz derivative of the layer-product entries (#156, the value-fold) -/
 
 /-- The explicit recursive Leibniz derivative of the `prodAux` entry `fun y => prodAux (g y) k i j`
