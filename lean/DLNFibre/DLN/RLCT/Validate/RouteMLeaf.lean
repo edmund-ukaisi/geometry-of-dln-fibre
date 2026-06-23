@@ -377,4 +377,49 @@ prefix-min witness handles `M_1 = 0`). -/
 theorem isLeafNode_interior_zero : isLeafNode (![3, 0, 3] : Fin 3 → ℕ) :=
   (isLeafNode_iff_width_zero _).mpr ⟨1, rfl⟩
 
+/-! ## Gate 1 — the cascade-rank side-condition from admissibility (#121-(ii) support)
+
+The cascade lemmas (`Core.CascadeRealizable.submult_cascade` / `rankPattern_cascade`) carry the hypothesis
+`ht : ∀ p, t_p ≤ d_{p.castSucc}` (the block's surviving rank is `≤` its source width). For an ADMISSIBLE
+exponent vector `T` (`admPred M T`, the §4 cone) this holds: `adm_le_width` DISCHARGES it from `admPred`,
+so when the cascade is instantiated at an admissible `T` over width-vector `M`, the side-condition is free.
+This is the HONEST cascade side-condition (decision-independent, from `admPred`'s block bound +
+weak-decrease) — distinct from the general-branch construction (which is the named `sorry`). -/
+
+/-- **Gate 1: admissibility discharges the cascade-rank bound** `T_p ≤ M_{p.castSucc}` (`= M_p`). For
+`admPred M T`: `p = 0` ⟹ `T_0 ≤ admBound_0 = min(M_0, M_1) ≤ M_0` (`min_le_left`); `p ≥ 1` ⟹ by
+weak-decrease `T_p ≤ T_{p-1} ≤ admBound_{p-1}`, which is `min(M_0,M_1) ≤ M_1 = M_{1.castSucc}` for `p = 1`
+(`min_le_right`) and `M_p = M_{p.castSucc}` for `p ≥ 2`. The honest side-condition the cascade (`submult_cascade`)
+consumes at an admissible exponent. -/
+theorem adm_le_width {L : ℕ} (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : admPred M T) (p : Fin L) :
+    T p ≤ M p.castSucc := by
+  obtain ⟨hbound, hdecr, _⟩ := hT
+  by_cases hp : p.val = 0
+  · -- p = 0: T_0 ≤ min(M_0,M_1) ≤ M_0 = M_{0.castSucc}.
+    have hb := hbound p
+    simp only [admBound, hp, if_true] at hb
+    have hcs : M p.castSucc = M 0 := by
+      apply congrArg M; apply Fin.ext; rw [Fin.val_castSucc, hp]; rfl
+    rw [hcs]; exact le_trans hb (min_le_left _ _)
+  · -- p ≥ 1: T_p ≤ T_{p-1} ≤ admBound_{p-1}; split p=1 (min_le_right) vs p≥2 (rfl on the index).
+    have hp1le : 1 ≤ p.val := by omega
+    set q : Fin L := ⟨p.val - 1, by omega⟩ with hq
+    have hqv : q.val = p.val - 1 := rfl
+    have hqp : q ≤ p := by rw [Fin.le_def, hqv]; omega
+    have hTq : T p ≤ T q := hdecr q p hqp
+    have hbq := hbound q
+    by_cases hq0 : q.val = 0
+    · -- q = 0 (so p = 1): admBound_0 = min(M_0,M_1) ≤ M_1 = M_{1.castSucc}.
+      simp only [admBound, hq0, if_true] at hbq
+      have hpv1 : p.val = 1 := by rw [hqv] at hq0; omega
+      have hp1 : M p.castSucc = M 1 := by
+        apply congrArg M; apply Fin.ext
+        rw [Fin.val_castSucc, hpv1, Fin.val_one', Nat.mod_eq_of_lt (by omega)]
+      rw [hp1]; exact le_trans hTq (le_trans hbq (min_le_right _ _))
+    · -- q ≥ 1 (p ≥ 2): admBound_q = M_{q.succ} = M_p = M_{p.castSucc}.
+      simp only [admBound, hq0, if_false] at hbq
+      have hidx : M q.succ = M p.castSucc := by
+        apply congrArg M; apply Fin.ext; rw [Fin.val_succ, Fin.val_castSucc, hqv]; omega
+      rw [← hidx]; exact le_trans hTq hbq
+
 end DLNFibre.DLN.RLCT
