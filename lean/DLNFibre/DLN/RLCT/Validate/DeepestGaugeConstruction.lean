@@ -532,15 +532,17 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
           dlnLoss H B ((paramsEquivFlat H).symm w)
             ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  -- **ASSEMBLY (B), the geometric heart — green-pending crux2's `endpoint_telescoping`.** The per-`w`
-  -- two-sided bound is the banked matrix core `dlnLoss_block_squeeze` (uniform `c₁ = (2(1+t²))⁻¹`,
-  -- `c₂ = 2+2t²`), once the per-`w` framed-block decomposition is supplied. That decomposition is the
-  -- BRIDGE: `N_w = prod(paramsSymm w) − B` reindexed (deepest-point frame `deepestPoint_frame_exists` +
-  -- crux2's `endpoint_telescoping` per-`w` conjugation + `conjugation_frobenius_comparable`) into
-  -- `fromBlocks (P00−1) P01 P10 P11`, with `∑E² = ∑(regStraighten(split w)).1²` (`hregval` ⟹ reg-output is
-  -- `deepestEPivot` = the E-residual) and `‖Rcore‖² = deepestCoreF (coreAbsorb(split w)).2.1` (`hcoreabs`
-  -- ⟹ the cutoff-Schur core). BLOCKED on crux2's `endpoint_telescoping` interface (IsUnit P0/QL exposure
-  -- requested) — wires the moment it lands; the matrix core + block-IDs are banked.
+  -- **ASSEMBLY (B), the geometric heart — endpoint_telescoping NOW GREEN (FOLD3 done, IsUnit).** The
+  -- per-`w` two-sided bound is the banked leaf core `dlnLoss_two_sided_of_frame` (conjugation +
+  -- block-squeeze composed), fed the per-`w` framed-conjugate `hconj`. The chain: the deepest-point
+  -- frame `deepestPoint_frame` (constant) → `endpoint_telescoping` (per-`w`, framedParams(split w) =
+  -- P_s·(paramsSymm w) s·Q_s) → `dlnLoss_two_sided_of_frame` → Φ-id (`hregval` reg + `hcoreabs` core,
+  -- block-level sum-via-bijection). The ONE non-leaf obligation: `framedParams_split_eq_frame_raw`
+  -- (split coords = fixed-frame gauge coords, the g164/g222 split-vs-frame semantic content) — isolated
+  -- as the leading `hframe_bridge`. The leaf chain banks around it. STILL OPEN (the cert):
+  -- `hframe_bridge` is the genuine geometric relation between the MP `split` reconstruction and the
+  -- frame-conjugate of the raw params; the #120 transparency (pack-cancel) does NOT expose it (it is
+  -- about `deepestPoint_frame`, not `regResidualPack`). Route-first: the cert isolated, the chain leaf.
   sorry
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
