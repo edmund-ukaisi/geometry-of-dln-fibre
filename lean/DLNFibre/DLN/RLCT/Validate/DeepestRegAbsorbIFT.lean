@@ -97,7 +97,8 @@ REDUCES to the decoupled `regAbsorb`-peel
 its bounded-unit Jacobian); this lemma supplies the conjugation that removes `coreAbsorb` from core
 term on both sides. -/
 theorem rlctAtOn_regAbsorb_reduce
-    (coreAbsorb regAbsorb : (R × (C × S)) ≃ₜ (R × (C × S)))
+    (coreAbsorb : (R × (C × S)) ≃ₜ (R × (C × S)))
+    (regAbsorb : (R × (C × S)) → (R × (C × S)))
     (regF : R → ℝ) (coreF : C → ℝ)
     (hca_mp : MeasurePreserving coreAbsorb volume volume)
     (hca_base : coreAbsorb 0 = 0)
