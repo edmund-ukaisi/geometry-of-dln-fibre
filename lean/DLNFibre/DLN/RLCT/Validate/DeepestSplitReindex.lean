@@ -302,27 +302,6 @@ theorem regBoundaryToRegGauge_injective (H : Fin (L + 1) → ℕ) (r : ℕ) (hL 
   · rw [regBoundaryToRegGauge, regGaugeDecode, dif_pos hZ]
     exact congrArg (fun x => Sum.inr (Sum.inr (x, j))) (Fin.ext (by simp [finCongr_apply]))
 
-/-- **The role-respecting `Fin`-index equivalence** (the precision-pin core): `Fin (flatDim H) ≃
-Fin nReg ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin nGauge)`, where the MIDDLE summand is the reduced `T`-core
-(`= FlatIdx (deepestM)`) and the outer/right are the reg/gauge entries — slots BY ROLE, NOT arbitrary.
-Built from `roleSplitIdx` (the role split) + `Fintype.equivFin` on each summand + `card_regGaugeIdx`
-(reg-gauge count) + `finSumFinEquiv` (the reg/gauge `Fin`-split) + `sumAssoc`. -/
-noncomputable def deepestRoleIndexEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    Fin (flatDim H)
-      ≃ Fin (deepestNReg H r) ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin (deepestNGauge H r)) := by
-  -- `Fin (flatDim H) ≃ FlatIdx H ≃ RegGaugeIdx ⊕ FlatIdx (deepestM)`.
-  refine (Fintype.equivFin (FlatIdx H)).symm.trans ((roleSplitIdx H r hr).trans ?_)
-  -- RegGaugeIdx ≃ Fin nReg ⊕ Fin nGauge; FlatIdx (deepestM) ≃ Fin (flatDim M).
-  have eReg : RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r) :=
-    (Fintype.equivFin (RegGaugeIdx H r)).trans
-      ((finCongr (card_regGaugeIdx H r hr hL)).trans finSumFinEquiv.symm)
-  have eCore : FlatIdx (deepestM H r) ≃ Fin (flatDim (deepestM H r)) :=
-    Fintype.equivFin (FlatIdx (deepestM H r))
-  refine (Equiv.sumCongr eReg eCore).trans ?_
-  -- (Fin nReg ⊕ Fin nGauge) ⊕ Fin (flatDim M) ≃ Fin nReg ⊕ (Fin (flatDim M) ⊕ Fin nGauge).
-  refine (Equiv.sumAssoc _ _ _).trans (Equiv.sumCongr (Equiv.refl _) (Equiv.sumComm _ _))
-
 /-- The boundary-generator EMBEDDING `BoundaryPivotIdx ↪ RegGaugeIdx` (from the routing + its injectivity).
 The reg slot's image inside `RegGaugeIdx`. -/
 def regBoundaryEmbed (H : Fin (L + 1) → ℕ) (r : ℕ) (hL : 1 ≤ L) :
@@ -371,6 +350,28 @@ noncomputable def regGaugeIdxSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
   · refine (Fintype.equivFin _).trans (finCongr ?_)
     have := card_compl_regBoundaryEmbed H r hr hL
     rwa [Nat.card_eq_fintype_card] at this
+
+/-- **The role-respecting `Fin`-index equivalence** (the precision-pin core): `Fin (flatDim H) ≃
+Fin nReg ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin nGauge)`, where the MIDDLE summand is the reduced `T`-core
+(`= FlatIdx (deepestM)`) and the outer/right are the reg/gauge entries — slots BY ROLE, NOT arbitrary.
+Built from `roleSplitIdx` (the role split) + `Fintype.equivFin` on each summand + `card_regGaugeIdx`
+(reg-gauge count) + `finSumFinEquiv` (the reg/gauge `Fin`-split) + `sumAssoc`. -/
+noncomputable def deepestRoleIndexEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Fin (flatDim H)
+      ≃ Fin (deepestNReg H r) ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin (deepestNGauge H r)) := by
+  -- `Fin (flatDim H) ≃ FlatIdx H ≃ RegGaugeIdx ⊕ FlatIdx (deepestM)`.
+  refine (Fintype.equivFin (FlatIdx H)).symm.trans ((roleSplitIdx H r hr).trans ?_)
+  -- RegGaugeIdx ≃ Fin nReg ⊕ Fin nGauge — the SHARED `regGaugeIdxSplit` (the #120 boundary-aware
+  -- split that `regGaugeSlotEquiv` ALSO uses), so `readX/Y/Z (split w)` cancels against `split` by
+  -- construction (the reg-half decode round-trip). FlatIdx (deepestM) ≃ Fin (flatDim M).
+  have eReg : RegGaugeIdx H r ≃ Fin (deepestNReg H r) ⊕ Fin (deepestNGauge H r) :=
+    regGaugeIdxSplit H r hr hL
+  have eCore : FlatIdx (deepestM H r) ≃ Fin (flatDim (deepestM H r)) :=
+    Fintype.equivFin (FlatIdx (deepestM H r))
+  refine (Equiv.sumCongr eReg eCore).trans ?_
+  -- (Fin nReg ⊕ Fin nGauge) ⊕ Fin (flatDim M) ≃ Fin nReg ⊕ (Fin (flatDim M) ⊕ Fin nGauge).
+  refine (Equiv.sumAssoc _ _ _).trans (Equiv.sumCongr (Equiv.refl _) (Equiv.sumComm _ _))
 
 /-- **The reg-gauge SLOT bridge** (crux2 #78, for cobuild-sub34's `gaugeDecode` reshape). The split's
 two opaque function-slots recombine to the LEGIBLE per-layer `RegGaugeIdx` coordinate function:
