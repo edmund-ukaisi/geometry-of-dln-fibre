@@ -695,3 +695,17 @@ ruling (a), task #95). Controller discipline: do NOT confirm a geometric "procee
 witness; demand the decl-first check that the property is in the predicate the choice-term satisfies. This nearly put
 both L2 PINs' framed-product telescoping on frames the choice-opaque `deepestPoint` provably does not have. (crux2
 decl-first-caught; controller ruled the spine-strengthen (a) over the heavier per-layer-nontrivial twisted-product (b).)
+
+## Long-lived RESUMED background agents drift on stale transcripts — spawn FRESH for a new grind (2026-06-23)
+
+fm3's spawned background formaliser (a8c41813) handed back THREE times on STALE blockers: each resume reads its own
+prior transcript SNAPSHOT, not the current branch HEAD, so it re-surfaces obligations resolved AFTER its snapshot
+(asked for a PivotWitness (A)/(B) anchoring ruling already committed @4802af4; offered to build `continuous_dlnLoss`
+already banked @3b05766 — its OWN prior commit). fm3 re-unblocked it each time (pull HEAD, verify against the committed
+decl), but the drift recurred on the next resume.
+
+LESSON: a long-lived RESUMED agent accumulates transcript-vs-branch drift — its context is frozen at spawn/last-resume
+while the branches move under it. For a NEW unit of work (e.g. when the pp-r1realize §4 verdict lands and the routeStep
+grind is dispatched), spawn a FRESH agent with a clean read of current HEAD, OR hand a self-contained brief with the
+current decls inlined — cheaper than re-syncing a drifted one. Resume only for genuinely continuous work where the
+agent's accumulated context outweighs the drift. (fm3 g213 @10b6f92; controller will spawn fresh for the §4 dispatch.)
