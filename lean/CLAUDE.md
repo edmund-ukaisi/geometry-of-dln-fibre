@@ -1,9 +1,16 @@
 # Lean conventions (DLNFibre)
 
 ## Build
+- **Multi-worktree / multi-session: build via `scripts/lb`, NOT bare `lake build`.** `lb` symlinks this
+  worktree's `.lake/packages` to the shared rev-keyed mathlib store (mmap-shared, no per-worktree clone)
+  and throttles total Lean workers across all sessions via a global semaphore. Full rationale + box
+  sizing: [`../docs/policies/lean-build-workflow.md`](../docs/policies/lean-build-workflow.md). **Do NOT
+  `lake exe cache get` in a worktree** — it re-clones ~7 GB and defeats the sharing; the shared store is
+  built once by `scripts/lake-store-setup <mathlib-rev>` (detached; exceeds the 10-min cap).
 - Fresh shells: `source ~/.elan/env` before any `lake` command.
-- Build from this `lean/` directory: `lake build DLNFibre.<Module>`, or `lake build` for the whole library.
-- First build on a machine: `lake exe cache get` fetches Mathlib oleans before `lake build`.
+- Build from this `lean/` directory: `scripts/lb DLNFibre.<Module>`, or `scripts/lb` for the whole
+  library. (Bare `lake build`/`lake env lean` still work for one-off elaboration, but bypass the shared
+  store + the global concurrency cap — fine for a single `#eval`, not for parallel builds.)
 - Toolchain: Lean `v4.29.0` (`lean-toolchain`), Mathlib `v4.29.0` (`lakefile.toml`). Matches the `ai-research-assistant` harness one level up, so its v4.29 Mathlib idioms transfer.
 
 ## Library shape — engine vs application
