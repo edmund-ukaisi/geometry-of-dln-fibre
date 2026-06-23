@@ -29,6 +29,17 @@ theorem matrixEntry_mem {m n : Type*} (A : Matrix m n R) (i : m) (j : n) :
     A i j ∈ matrixEntryIdeal A :=
   Ideal.subset_span ⟨(i, j), rfl⟩
 
+/-- Negating every entry of a matrix does not change its matrix-entry ideal. -/
+theorem matrixEntryIdeal_neg_eq {m n : Type*} (A : Matrix m n R) :
+    matrixEntryIdeal (-A) = matrixEntryIdeal A := by
+  refine le_antisymm ?_ ?_
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    simpa using (matrixEntryIdeal A).neg_mem (matrixEntry_mem A i j)
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    simpa using (matrixEntryIdeal (-A)).neg_mem (matrixEntry_mem (-A) i j)
+
 /-- Reindexing rows and columns by equivalences preserves the matrix-entry
 ideal. -/
 theorem matrixEntryIdeal_submatrix_equiv {m n m' n' : Type*}
@@ -193,6 +204,49 @@ def fourMatrixEntryIdeal {a b m n p : Type*}
     (D : Matrix m p R) : Ideal R :=
   ((matrixEntryIdeal X ⊔ matrixEntryIdeal F2) ⊔ matrixEntryIdeal F3) ⊔ matrixEntryIdeal D
 
+/-- The entries of a four-block matrix generate the supremum of the four block
+entry ideals. -/
+theorem matrixEntryIdeal_fromBlocks_eq_fourMatrixEntryIdeal {ι μ ν : Type*}
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R) :
+    matrixEntryIdeal (fromBlocks X F2 F3 D) = fourMatrixEntryIdeal X F2 F3 D := by
+  have hX : matrixEntryIdeal X ≤ fourMatrixEntryIdeal X F2 F3 D := by
+    unfold fourMatrixEntryIdeal
+    exact (le_sup_left.trans le_sup_left).trans le_sup_left
+  have hF2 : matrixEntryIdeal F2 ≤ fourMatrixEntryIdeal X F2 F3 D := by
+    unfold fourMatrixEntryIdeal
+    exact (le_sup_right.trans le_sup_left).trans le_sup_left
+  have hF3 : matrixEntryIdeal F3 ≤ fourMatrixEntryIdeal X F2 F3 D := by
+    unfold fourMatrixEntryIdeal
+    exact le_sup_right.trans le_sup_left
+  have hD : matrixEntryIdeal D ≤ fourMatrixEntryIdeal X F2 F3 D := by
+    unfold fourMatrixEntryIdeal
+    exact le_sup_right
+  refine le_antisymm ?_ ?_
+  · rw [matrixEntryIdeal, Ideal.span_le]
+    rintro _ ⟨⟨i, j⟩, rfl⟩
+    rcases i with i | i <;> rcases j with j | j
+    · simpa using hX (matrixEntry_mem X i j)
+    · simpa using hF2 (matrixEntry_mem F2 i j)
+    · simpa using hF3 (matrixEntry_mem F3 i j)
+    · simpa using hD (matrixEntry_mem D i j)
+  · unfold fourMatrixEntryIdeal
+    refine sup_le ?_ ?_
+    · refine sup_le ?_ ?_
+      · refine sup_le ?_ ?_
+        · rw [matrixEntryIdeal, Ideal.span_le]
+          rintro _ ⟨⟨i, j⟩, rfl⟩
+          simpa using matrixEntry_mem (fromBlocks X F2 F3 D) (Sum.inl i) (Sum.inl j)
+        · rw [matrixEntryIdeal, Ideal.span_le]
+          rintro _ ⟨⟨i, j⟩, rfl⟩
+          simpa using matrixEntry_mem (fromBlocks X F2 F3 D) (Sum.inl i) (Sum.inr j)
+      · rw [matrixEntryIdeal, Ideal.span_le]
+        rintro _ ⟨⟨i, j⟩, rfl⟩
+        simpa using matrixEntry_mem (fromBlocks X F2 F3 D) (Sum.inr i) (Sum.inl j)
+    · rw [matrixEntryIdeal, Ideal.span_le]
+      rintro _ ⟨⟨i, j⟩, rfl⟩
+      simpa using matrixEntry_mem (fromBlocks X F2 F3 D) (Sum.inr i) (Sum.inr j)
+
 /-- The term `F3 * F2` is redundant once the entries of `F2` and `F3` are generators. -/
 theorem fourMatrixEntryIdeal_sub_mul_eq {a b m n p : Type*} [Fintype n]
     (X : Matrix a b R) (F2 : Matrix n p R) (F3 : Matrix m n R)
@@ -232,6 +286,24 @@ theorem fourMatrixEntryIdeal_sub_mul_eq {a b m n p : Type*} [Fintype n]
         (hmul_le_base (matrixEntry_mem (F3 * F2) i j))
     have hsum := (base ⊔ matrixEntryIdeal (D - F3 * F2)).add_mem hsub hprod
     simpa [Pi.sub_apply] using hsum
+
+/-- The signed block matrix produced by Aoyagi's product-difference calculation
+has the cleaned four-family entry ideal. -/
+theorem matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_fourMatrixEntryIdeal
+    {ι μ ν : Type*} [Fintype ι]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R) :
+    matrixEntryIdeal (fromBlocks X (-F2) (-F3) (D - F3 * F2)) =
+      fourMatrixEntryIdeal X F2 F3 D := by
+  calc
+    matrixEntryIdeal (fromBlocks X (-F2) (-F3) (D - F3 * F2)) =
+        fourMatrixEntryIdeal X (-F2) (-F3) (D - F3 * F2) :=
+      matrixEntryIdeal_fromBlocks_eq_fourMatrixEntryIdeal X (-F2) (-F3) (D - F3 * F2)
+    _ = fourMatrixEntryIdeal X F2 F3 (D - F3 * F2) := by
+      unfold fourMatrixEntryIdeal
+      rw [matrixEntryIdeal_neg_eq F2, matrixEntryIdeal_neg_eq F3]
+    _ = fourMatrixEntryIdeal X F2 F3 D :=
+      fourMatrixEntryIdeal_sub_mul_eq X F2 F3 D
 
 end EntryIdeal
 

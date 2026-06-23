@@ -2053,8 +2053,16 @@ Immediate order:
    purely algebraically as
    `triangularBlockProductDifference_fromBlocks_indexed`: after the triangular
    endpoint form, subtracting `[I 0; 0 0]` produces the displayed
-   `[Ctop - I, -F2; -F3, D - F3 * F2]` block matrix. Leave A2 at this
-   elementary boundary until A4/A0 produce stable certificate data.
+   `[Ctop - I, -F2; -F3, D - F3 * F2]` block matrix. That postponed endpoint
+   wrapper now has a concrete algebraic consumer:
+   `ProductReductionEntryIdealBoundary.lean` packages the scalar
+   matrix-entry-ideal equality
+   `I(T - T0) = <entries(Ctop-I), entries(F2), entries(F3),
+   entries(residualProduct)>` under the existing determinant-unit triangular
+   endpoint/source-rank package. This is still an elementary scalar
+   entry-ideal boundary, not analytic germ-ideal transport.
+   Leave A2 at this elementary boundary until A4/A0 produce stable certificate
+   data.
    Optional future A2 work should be thin source-rank, residual-rank, or
    hypothesis-weakening wrappers only, not exact-rank openness, full Theorem 3
    packaging, or regular-suspension/RLCT transport.

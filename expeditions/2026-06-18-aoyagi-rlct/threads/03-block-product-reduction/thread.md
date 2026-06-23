@@ -1311,3 +1311,45 @@ Artifacts:
 Independent pen-and-paper check: xhigh `Lorentz`.
 Fidelity/scope review: xhigh `Fermat`, accepted in
 `review-a2-block-product-difference-algebra.md`.
+
+## 2026-06-23 A2 product-difference entry-ideal boundary
+
+Returned to the p. 13 product-difference block matrix because it now has a
+concrete downstream consumer: the scalar matrix-entry ideal handoff at the
+fixed-base/source-rank boundary.
+
+New generic Lean artifacts in `lean/DLNFibre/DLN/Aoyagi/EntryIdeal.lean`:
+
+- `matrixEntryIdeal_neg_eq`;
+- `matrixEntryIdeal_fromBlocks_eq_fourMatrixEntryIdeal`;
+- `matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_fourMatrixEntryIdeal`.
+
+New boundary Lean artifacts in
+`lean/DLNFibre/DLN/Aoyagi/ProductReductionEntryIdealBoundary.lean`:
+
+- `matrixEntryIdeal_triangularBlockProductDifference_eq_fourMatrixEntryIdeal`;
+- `PaperEndpointFixedBaseProductDifferenceEntryIdealSourceRanks`;
+- `PaperEndpointFixedBaseTriangularResidualProductSourceRanks.exists_productDifferenceEntryIdeal`;
+- `PaperEndpointFixedBaseTriangularResidualProductSourceRanks.toProductDifferenceEntryIdealSourceRanks`;
+- `paperEndpointFixedBaseProductDifferenceEntryIdeal_selfBase_mem_nhdsWithin_source`;
+- `PaperEndpointProductDifferenceEntryIdealLocalCertificate`;
+- `exists_paperEndpointProductDifferenceEntryIdealLocalCertificate`.
+
+The wrapper takes the existing triangular residual-product/source-rank package,
+uses determinant-unit left/right entry-ideal transport, rewrites the signed
+four-block matrix, and removes the `F3 * F2` correction modulo the entries of
+`F2` and `F3`.  The lower-right block remains
+`ChartLocalSuffixState.residualProduct`; the conclusion is a scalar
+matrix-entry-ideal equality for endpoint matrices, relative to the source rank
+stratum.
+
+Scope caveats: this is not analytic germ-ideal transport, exact-rank openness,
+source-stratum nonemptiness, full Theorem 3, Aoyagi Lemma 1 normalization,
+regular-suspension RLCT additivity, normal-crossing production, pole order, or
+RLCT.
+
+Artifacts:
+`reproduction-a2-product-difference-entry-ideal-boundary.md` and
+`statement-card-a2-product-difference-entry-ideal-boundary.md`.
+Review:
+`review-a2-product-difference-entry-ideal-boundary.md`.
