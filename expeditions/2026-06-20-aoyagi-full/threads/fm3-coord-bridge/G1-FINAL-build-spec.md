@@ -1246,3 +1246,34 @@ is LIVE (pp2 #68); only schur_straighten_squeeze_exists (the hnode producer) is 
 SOUND route is superseded (#129). My monomial fold consumes the consequence rlctAtOn_reduced_transport, not the
 datum directly — answer-independent." Seam exact. Lesson (g173-class): be precise about DATUM vs PRODUCER vs
 the SUPERSEDED-sibling when citing a lemma family's status — they have different lifecycles.
+
+## g216 — §4 reachability decl-reconnaissance: the missing piece is the `Adm ↔ RealizableRank` bridge (a theorem, not a decide)
+pp2 confirmed all 3 routeStep rulings (Q1 anchoring, Q2 descent-soundness, Q3 achiever), with a Q2 simplification.
+Decl-checked each against the tree to locate the EXACT §4 gap (decorrelated input for the controller's
+pp-r1realize commission):
+
+- Q1 (anchoring faithful): codim = Mval(root M, T) invariant under the det-1 reduced reindex (redEmbed is MP/
+  diffeo ⟹ codim is a c-o-v invariant). Confirmed, already in the committed type (option A). g207.
+- Q2 (descent-soundness): NOT a new obligation — it's crux2's IsSchurStraightenSqueeze.redCore_eq (G² =
+  dlnLoss S.red 0 ∘ redEmbed), gated on S.red = schurState. BUT the WIRING (schurState.red = the actual
+  pivotBlowupOn residual chain) needs the GENERAL node residual identity (only the (2,2,2) resolvedForm is
+  concrete; node_loss_pivot_factor @NodeHomogeneity is the per-node G2 but the general residual-CHAIN id isn't
+  built) — and is downstream of routeStep + crux2's transport-field shape. So Q2 closes the CONCEPTUAL
+  obligation, not an independently-buildable step.
+- Q3 (reachability/coverage = stratum_surjective): pp2 says "root-anchored by construction (g148)" — but that's
+  a DESIGN assertion, not a general Lean proof. Decl-check: stratum_surjective for general M is NOT proven
+  anywhere (only the ![1,1] ResolutionAtlas example discharges it). THE GAP, located:
+
+  Adm M (Lambda.lean) = a SEPARATE combinatorial cone (admPred: weak-decrease + last-zero + block-bounds over
+  exponent vectors T : Fin L → ℕ, filtered piFinset). Core.OrbitKostant has RealizableRank d = Set.range
+  (rankFn d) + orbitKostantEquiv (orbits ↔ realizable rank patterns, surjective onto Set.range). But there is
+  NO lemma linking Adm M to rankFn/RealizableRank/orbits (grep empty). So stratum_surjective ("every T ∈ Adm M
+  reached by a chart path") needs the bridge Adm-exponent ↔ rank-pattern ↔ orbit ↔ chart-path. The Core
+  orbit↔rank-pattern half EXISTS; the Adm↔RealizableRank correspondence + rank-pattern↔chart-path-reached are
+  MISSING.
+
+VERDICT INPUT (decorrelated, Lean-side): §4 is NOT "decide over the Adm Finset" (the optimistic hypothesis).
+It's a CORRESPONDENCE THEOREM (Adm-exponent ↔ Kostant rank-pattern, two combinatorial encodings) + the
+chart-path realizability. The Adm↔RealizableRank bridge is the load-bearing missing piece — DLN-Foundations or
+Core level, a theorem. Routed to the controller for the pp-r1realize adjudication. NOTHING immediately-buildable
+unblocked by pp2's confirmation (Q2 wiring is downstream of routeStep + transport-field; Q3 is the wall).
