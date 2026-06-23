@@ -657,6 +657,55 @@ theorem rlctAtOn_reduced_transport {L : ℕ} {M : Fin (L + 1) → ℕ} (S : Chai
     funext y; exact hredCore y
   rw [hpull, rlctAtOn_comp_homeomorph redEmbed hmp hemb (dlnLoss S.red 0) 0, hzero]
 
+/-- **The bundled per-cell reduced-transport datum** (fm3's `RouteStep.branch` field; sibling to the
+value-side `PivotWitness`). Carries the det-1 MP reindex from a post-blow-up reduced ambient `Y` to
+`Params S.red`, with the node core presented as `G²`. The recursion's RLCT-descent link: the consuming
+`ReducedTransport.transport` (below) gives `rlctAtOn (G²) 0 = rlctAtOn (dlnLoss S.red 0) redZero`, so the
+fold descends to the child `S.red`. `Type`-valued (it carries `Y` + instances); the transport content is
+the `Prop` extracted by `.transport`. The producer (the blow-up chart) names `Y`/`redEmbed`/`redZero`;
+when the blow-up lands the reduced core ON `Params S.red` directly, take `Y = Params S.red`,
+`redEmbed = Homeomorph.refl`, `redZero = 0` (the `ofRefl` smart-ctor below). -/
+structure ReducedTransport {L : ℕ} {M : Fin (L + 1) → ℕ} (S : ChainDimSplit M) : Type 1 where
+  /-- The post-blow-up reduced ambient (a measurable topological space with a basepoint). -/
+  Y : Type
+  [meas : MeasureSpace Y]
+  [top : TopologicalSpace Y]
+  [zero : Zero Y]
+  /-- The node core presented on `Y` (the residual whose square is the reduced loss). -/
+  G : Y → ℝ
+  /-- The det-1 MP homeomorphic reindex `Y ≃ₜ Params S.red`. -/
+  redEmbed : Y ≃ₜ Params S.red
+  /-- `redEmbed` is measure-preserving (det = 1 — no Jacobian weight). -/
+  hmp : MeasurePreserving redEmbed volume volume
+  /-- `redEmbed` is a measurable embedding (for the change-of-variables). -/
+  hemb : MeasurableEmbedding redEmbed
+  /-- The child recursion's basepoint in `Params S.red` (named explicitly — `Params` has no canonical
+  `Zero`; the dispatcher READS this as the child's deepest point). -/
+  redZero : Params S.red
+  /-- `redEmbed` is anchored at the basepoints. -/
+  hzero : redEmbed 0 = redZero
+  /-- The node core pulls back to the reduced-chain loss: `G y² = dlnLoss S.red 0 (redEmbed y)`. -/
+  hredCore : ∀ y, G y ^ 2 = dlnLoss S.red 0 (redEmbed y)
+
+attribute [instance] ReducedTransport.meas ReducedTransport.top ReducedTransport.zero
+
+/-- **The RLCT-descent link from a `ReducedTransport`** (the consuming lemma — the `Prop` content).
+`rlctAtOn (rt.G ·²) 0 = rlctAtOn (dlnLoss S.red 0) rt.redZero` — the per-cell transport that closes the
+recursion onto the child `S.red`. Just `rlctAtOn_reduced_transport` applied to the bundle's fields. -/
+theorem ReducedTransport.transport {L : ℕ} {M : Fin (L + 1) → ℕ} {S : ChainDimSplit M}
+    (rt : ReducedTransport S) :
+    rlctAtOn (fun y => rt.G y ^ 2) (0 : rt.Y) = rlctAtOn (dlnLoss S.red 0) rt.redZero :=
+  rlctAtOn_reduced_transport S rt.G rt.redEmbed rt.hmp rt.hemb rt.redZero rt.hzero rt.hredCore
+
+/-! **Collapse case (fm3's design-Q (i)).** When the post-blow-up reduced ambient IS `Params S.red`
+(no genuine reindex), instantiate `ReducedTransport` directly with `Y := Params S.red`,
+`redEmbed := Homeomorph.refl _`, `redZero := (0 : Params S.red)` (the Pi-zero), `hmp`/`hemb` from the
+identity, leaving only `hredCore : G y² = dlnLoss S.red 0 y`. (No smart-constructor is shipped: the
+`Params` Pi-instances are heavy to elaborate through the structure's instance-fields — the SAME friction
+that makes the general bundle carry `Y` + instances explicitly. The producer supplies them at the
+instantiation site, where `Y` is concrete.) The GENERAL bundle (Y a field) is the answer to (i): keep `Y`
+general — the blow-up chart is not `Params S.red` definitionally; `redEmbed` is the genuine MP reindex. -/
+
 /-! ## The L=1 base (the `block_elimination` prototype)
 
 The recursion's leaf. At `L = 1` a `Params` is a SINGLE matrix `A : Matrix (Fin (M 0)) (Fin (M 1)) ℝ`
