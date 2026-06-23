@@ -59,6 +59,25 @@ def ratioAt (D : AoyagiNormalCrossingExponentData)
   ((D.jacobianPriorExp p.1 p.2 + 1 : ℕ) : ℚ) /
     (2 * (D.lossExp p.1 p.2 : ℚ))
 
+/-- A coordinate with loss exponent `1` is active. -/
+theorem mem_activePairs_of_lossExp_eq_one
+    (D : AoyagiNormalCrossingExponentData)
+    {p : Fin D.numCharts × Fin D.numCoords}
+    (hloss : D.lossExp p.1 p.2 = 1) :
+    p ∈ D.activePairs :=
+  (D.mem_activePairs p).mpr (by simp [hloss])
+
+/-- If a coordinate has loss exponent `1` and supplied numerator `N = h+1`,
+then its finite normal-crossing ratio is `N/2`. -/
+theorem ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq
+    (D : AoyagiNormalCrossingExponentData)
+    {p : Fin D.numCharts × Fin D.numCoords} {N : ℕ}
+    (hloss : D.lossExp p.1 p.2 = 1)
+    (hjac : D.jacobianPriorExp p.1 p.2 + 1 = N) :
+    D.ratioAt p = (N : ℚ) / 2 := by
+  rw [ratioAt, hloss, hjac]
+  norm_num
+
 /-- The finite set of ratios attached to active chart coordinates. -/
 def activeRatios (D : AoyagiNormalCrossingExponentData) : Finset ℚ :=
   D.activePairs.image fun p ↦ D.ratioAt p

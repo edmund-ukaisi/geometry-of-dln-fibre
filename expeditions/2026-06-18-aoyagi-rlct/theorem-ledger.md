@@ -5636,6 +5636,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
 
+Latest A4/A0 Case 2 exponent-coordinate bridge:
+`NormalCrossingInterface.lean` now contains
+`AoyagiNormalCrossingExponentData.mem_activePairs_of_lossExp_eq_one` and
+`AoyagiNormalCrossingExponentData.ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq`.
+`Case2FiniteExponentBridge.lean` contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge`,
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair_and_ratioAt_eq_centerCard_div_two`,
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair`, and
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.ratioAt_eq_centerCard_div_two`.
+These prove that a supplied coordinate of a supplied A0 exponent datum is
+active and has ratio `card(case2ResidualBlockPivotEntries n S J)/2`, assuming
+the coordinate's loss exponent is `1` and its Jacobian/prior exponent is the
+displayed Case 2 formal pivot exponent.  This is not construction of the
+exponent datum or coordinate, not a global finite minimum/order theorem, not
+chart production, not an analytic Jacobian/volume theorem, and not pole order
+or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-a0-case2-exponent-coordinate-bridge.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-a0-exponent-coordinate-bridge-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

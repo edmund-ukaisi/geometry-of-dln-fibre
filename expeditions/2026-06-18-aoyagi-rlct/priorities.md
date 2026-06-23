@@ -102,6 +102,15 @@ operation.  This is still finite algebra only.  It is not an analytic
 Jacobian/volume-form theorem, does not resolve the p. 21 apparent extra-`u`
 display, and does not construct an `AoyagiNormalCrossingChartCertificate`.
 
+The current A4/A0 supplied-coordinate bridge is
+`threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`.
+Lean now proves that if a later A0 exponent datum `D` supplies a coordinate
+`p` whose loss exponent is `1` and whose Jacobian/prior exponent is the
+displayed Case 2 formal pivot exponent, then `p` is active and
+`D.ratioAt p = card(case2ResidualBlockPivotEntries n S J)/2`.  This does not
+construct `D` or `p`, prove a global minimum/order count, or provide analytic
+chart/Jacobian data.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

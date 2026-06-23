@@ -4535,3 +4535,35 @@ regularity, a total loss monomial identity, an A0 normal-crossing chart
 certificate, pole order, or RLCT extraction.  The apparent extra outside `u`
 in Aoyagi's p. 21 display is recorded as a source caveat, not formalised as a
 literal product identity.
+
+## 2026-06-23 Lean A4/A0 Case 2 exponent-coordinate bridge
+
+Reproduction:
+`reproduction-case2-a0-exponent-coordinate-bridge-a4.md`.
+Statement card:
+`statement-card-a4-a0-case2-exponent-coordinate-bridge.md`.
+Review artifact:
+`review-case2-a0-exponent-coordinate-bridge-a4.md`.
+
+Lean now connects the displayed continuing Case 2 local finite arithmetic to
+a supplied coordinate of later A0 exponent data:
+
+```text
+AoyagiNormalCrossingExponentData.mem_activePairs_of_lossExp_eq_one
+AoyagiNormalCrossingExponentData.ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq
+Case2DisplayedContinuingA0ExponentCoordinateBridge
+Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair_and_ratioAt_eq_centerCard_div_two
+Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair
+Case2DisplayedContinuingA0ExponentCoordinateBridge.ratioAt_eq_centerCard_div_two
+```
+
+The bridge assumes a supplied `D : AoyagiNormalCrossingExponentData` and a
+supplied coordinate `p`.  If `D.lossExp p = 1` and
+`D.jacobianPriorExp p` is the displayed Case 2 formal pivot exponent, Lean
+proves that `p` is active and
+`D.ratioAt p = card(case2ResidualBlockPivotEntries n S J)/2`.
+
+This does not construct `D` or `p`, does not prove that this ratio is the
+global minimum, does not prove an order count, and does not construct chart
+coverage, analytic Jacobian data, normal crossings, pole order, or RLCT
+extraction.

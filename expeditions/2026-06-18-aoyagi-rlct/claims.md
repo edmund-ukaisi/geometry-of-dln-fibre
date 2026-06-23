@@ -762,6 +762,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
 	  `threads/04-blow-up-certificate/review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+	  Reproduction of the A4/A0 Case 2 exponent-coordinate bridge is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`;
+	  xhigh source/math and Lean/API review passed and is saved at
+	  `threads/04-blow-up-certificate/review-case2-a0-exponent-coordinate-bridge-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in

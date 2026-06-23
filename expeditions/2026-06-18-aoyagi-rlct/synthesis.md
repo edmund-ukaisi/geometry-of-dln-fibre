@@ -5703,6 +5703,31 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
 
+Latest A4/A0 Case 2 supplied exponent-coordinate bridge:
+`NormalCrossingInterface.lean` now contains the generic finite A0 helpers
+`AoyagiNormalCrossingExponentData.mem_activePairs_of_lossExp_eq_one` and
+`AoyagiNormalCrossingExponentData.ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq`.
+The new module `Case2FiniteExponentBridge.lean` contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge`,
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair_and_ratioAt_eq_centerCard_div_two`,
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.activePair`, and
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.ratioAt_eq_centerCard_div_two`.
+
+The bridge consumes a supplied A0 exponent datum `D`, a supplied coordinate
+`p`, and a displayed continuing Case 2 local certificate.  If the supplied
+coordinate has `lossExp = 1` and `jacobianPriorExp` equal to the formal
+pivot-first determinant exponent, Lean proves `p in D.activePairs` and
+`D.ratioAt p = card(case2ResidualBlockPivotEntries n S J)/2`.  It deliberately
+does not construct `D` or `p`, prove a global minimum, prove an exponent-order
+count, construct charts, or upgrade the formal determinant to an analytic
+Jacobian/volume-form theorem.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-a0-case2-exponent-coordinate-bridge.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-a0-exponent-coordinate-bridge-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
