@@ -759,3 +759,24 @@ it on the branch" question, `#check` or build the decl in the tree (GROUND TRUTH
 timeout archaeology. (crux2 + controller; pairs with the #95 stale-read catches — a `#check` settled each. The same
 principle reached the SEMANTICS layer at the leaf-value flip-flop: the compiling Case222RouteStep=3/2 settled ⊤-vs-#70,
 not a verbal reversal.)
+
+## Anchors sharing a structural property can't catch a bug that only manifests when it fails — test a property-breaking witness (2026-06-23)
+
+The #116 ht-discharge (admissibility ⟹ t_s ≤ M_s, the realizability side-condition) had an OBVIOUS-looking shortcut:
+wire it from admBound-AT-s directly (admBound gives T_s ≤ M_{s+1}). This PASSES the decide-check anchors
+(2,2,2)/(3,2,3) — but is WRONG: ht needs T_s ≤ M_s, and on an INCREASING-width step (M_s < M_{s+1}) the shortcut
+(T_s ≤ M_{s+1}) is strictly WEAKER than ht. The anchors have NO increasing-width steps, so admBound-direct
+COINCIDENTALLY works there → the anchors ALONE cannot surface the bug. pp-r1realize's decorrelated increasing-width
+witnesses M=(2,1,3,2)/(3,1,1,2)/(2,3,1,2) expose it; the correct route is weak-decrease (t_s ≤ t_{s-1} ≤
+admBound(s-1) ≤ M_s — uses the PREVIOUS block's bound + admissibility's monotone-decrease conjunct).
+
+LESSON: a decide-check against ANCHORS confirms the mechanism FIRES, but if the anchors SHARE a structural property
+(here: no increasing-width steps), they are STRUCTURALLY INCAPABLE of catching a bug that only manifests when that
+property FAILS — the wrong proof passes the anchors and masquerades as general. This is the (c)-leak class sharpened:
+not just "anchor-proven ≠ general-proven", but "the anchors may not even DETECT the gap." Discipline: when an
+anchor-decide-checked claim IS the general-M obligation, ALSO decide-check a NON-ANCHOR witness chosen ADVERSARIALLY to
+BREAK the anchors' shared structural property — ask "what do all my anchors have in common that the shortcut could
+exploit?" and construct one that lacks it. The anchors prove the mechanism; the property-breaker proves the proof-ROUTE
+is general, not a coincidence. (pp-r1realize decorrelated-caught the admBound-direct shortcut; fm3 relayed the
+weak-decrease guard + the M=(2,1,3,2) increasing-width decide-check; controller banked. Pairs with the precision/(c)-leak
+discipline and the #28 "statement = name = real content" audit.)
