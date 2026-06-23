@@ -12,7 +12,11 @@
 #
 # Config ($LAKE_SHARED/build-config: SLOTS, J) is read EACH run → tunable on the fly.
 #
-# *** DRAFT — authored during a VM-rotation hold, UNTESTED. Validate on the target box. ***
+# Tested end-to-end on the prior box: rev-parse / store-check / self-heal symlink / flock slot / build
+# all exercised; three bugs fixed (two set -e exits + the -j flag). MEASURED: LEAN_NUM_THREADS caps the
+# number of concurrent `lean` SUBPROCESSES (=1 → 1, =4 → 4), so total workers ≤ SLOTS × J (defaults 2×3).
+# Still to confirm on the target box: lake-store-setup's one-time `cache get`, and tuning SLOTS/J.
+# See docs/policies/lean-build-workflow.md.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -23,7 +27,7 @@ LAKE_SHARED="${LAKE_SHARED:-$HOME/.lake-shared}"
 
 # --- config: read each invocation (on-the-fly tunable); defaults sized for t3.2xlarge ---
 SLOTS=2 ; J=3
-[ -f "$LAKE_SHARED/build-config" ] && . "$LAKE_SHARED/build-config"
+if [ -f "$LAKE_SHARED/build-config" ]; then . "$LAKE_SHARED/build-config"; fi
 SLOTS="${SLOTS:-2}" ; J="${J:-3}"
 
 # --- mathlib rev for THIS worktree (the store is keyed by it) ---
@@ -54,10 +58,11 @@ while [ -z "$got" ]; do
     exec 9>"$SLOTDIR/slot-$i"
     if flock -n 9; then got="$i"; break; fi
   done
-  [ -z "$got" ] && { echo "lb: all $SLOTS global build slots busy; waiting…" >&2; sleep 3; }
+  if [ -z "$got" ]; then echo "lb: all $SLOTS global build slots busy; waiting…" >&2; sleep 3; fi
 done
 # fd 9 holds slot #$got for the lifetime of this process; released automatically on exit.
 
-echo "lb: mathlib $REV | slot $got/$SLOTS | lake build -j $J $*" >&2
+echo "lb: mathlib $REV | slot $got/$SLOTS | LEAN_NUM_THREADS=$J lake build $*" >&2
 source "$HOME/.elan/env" 2>/dev/null || true
-exec lake build -j "$J" "$@"
+export LEAN_NUM_THREADS="$J"     # lake v4.29/Lake 5.0 has no -j flag; this is the parallelism lever
+exec lake build "$@"

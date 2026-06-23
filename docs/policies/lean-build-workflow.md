@@ -22,8 +22,10 @@ worktree.
 The only code compiled locally is the *project's own* modules — **mathlib is fetched, not built** (see
 the two-layer model below). But compiling one of our modules loads its transitive mathlib imports
 **into memory**, so a single `lean` worker holds roughly **0.5–2 GB resident** (more for
-import-heavy or `decide`/kernel-heavy modules). `lake build` spawns one worker per core by default
-(`-j`), so **N independent sessions each running a build → N × cores workers**, each holding mathlib.
+import-heavy or `decide`/kernel-heavy modules). By default `lake build` runs as many `lean` workers as
+cores; per-build parallelism is set by the **`LEAN_NUM_THREADS`** environment variable — Lake 5.0 /
+Lean v4.29 exposes **no `-j` flag**. So **N independent sessions each running a build → N × cores
+workers**, each holding mathlib.
 
 **RAM is the binding constraint**: exceeding physical memory triggers the OOM killer, which kills
 `lean` processes and fails builds confusingly. CPU oversubscription (more workers than cores) is
@@ -80,11 +82,14 @@ Each worktree's `.lake/packages` becomes a **symlink** to this store. Builds rea
 2. **Acquires a global build slot** — a shared counting semaphore (a pool of `flock` lockfiles) that
    caps the **total** number of concurrent builds across **all** sessions on the machine. This is the
    only thing that can bound global concurrency, since independent sessions do not otherwise coordinate.
-3. **Builds with a capped `-j`.**
+3. **Builds with capped parallelism** — sets `LEAN_NUM_THREADS=J` before `lake build` (Lake v4.29 has
+   no `-j` flag).
 
 The pool size (`SLOTS`) and per-build parallelism (`J`) are read from a config file on **every**
 invocation, so they retune live — edit the file and the next build adapts. Total concurrent workers ≈
-`SLOTS × J`.
+`SLOTS × J`. **Measured on the Lean v4.29 toolchain: `LEAN_NUM_THREADS` caps the number of concurrent
+`lean` *subprocesses* — `LEAN_NUM_THREADS=1` → 1 process, `=4` → 4 — so `SLOTS × J` genuinely bounds the
+total worker count, not merely the number of build invocations.**
 
 Building the store is a separate helper (`lean/scripts/lake-store-setup <mathlib-rev>`): it runs the
 slow one-time `cache get`, so it is long-running and should be run detached. The wrapper requires the
