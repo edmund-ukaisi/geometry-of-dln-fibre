@@ -1087,3 +1087,27 @@ reading its OWN pre-redirect transcript (the node-anchored PivotWitness M, super
 PivotWitness M₀). The fix was already committed. Lesson re-applied: a teammate's "the type has bug X" claim is
 verified against `git show origin/<branch>:<file>` (the committed decl), not against the framing or a
 transcript snapshot. Confirmed @4802af4 RouteMRecursion.lean:151/155/193 before replying.
+
+## g210 — #86 extraction layer LANDED (routeMAmbient/Core/BaseNbhd + the keystone transport), routeStep-independent
+Banked the flat-coordinate extraction the headline feeds into crux2's bridge (RouteMExtraction.lean, green
+2647, sorry-free): routeMAmbient M := flatDim M (the bridge's N); routeMCore M := dlnLoss M 0 ∘
+(paramsEquivFlat M).symm (the bridge's F); routeMBaseNbhd M := flatOpenBox (flatDim M) (the bridge's U,
+bounded open box ∋0). + base-nbhd facts (open/∋0/bounded), core facts (continuous/measurable), and THE
+KEYSTONE: rlctAtOn_routeMCore_transport M : rlctAtOn (routeMCore M) 0 = rlctAtOn (dlnLoss M 0) (fun _ => 0).
+
+The keystone is the general-M analog of ParamsFlat222's rlctAtOn_dlnLoss222_transport: via
+rlctAtOn_comp_homeomorph (S1Fubini, the MP-homeo RLCT transport) + paramsEquivFlat_deepest (the flattening
+sends the deepest layerwise-zero tuple to flat 0 — proven by rfl, the flattening is zero-preserving) +
+routeMCore_comp_paramsEquivFlat (routeMCore ∘ paramsEquivFlat = dlnLoss M 0). paramsEquivFlatHomeo upgrades
+the ≃ᵐ to ≃ₜ (the two ParamsFlat continuities).
+
+CONVENTION VERIFIED against the headline: resolution_charts (Skeleton:1029) states rlctAtOn (dlnLoss M 0)
+(fun _ => 0 : Params M) = ⨅ …; the keystone's RHS is exactly this deepest point. So the headline chains:
+routeMCore/routeMBaseNbhd → crux2's routeM_rlctAtOn_eq_iInf → rlctAtOn (routeMCore M) 0 = ⨅ → the keystone →
+rlctAtOn (dlnLoss M 0) (deepest) = ⨅. Conventions align.
+
+SCOPE: this layer is routeStep-INDEPENDENT (the loss-side F/U/N plumbing); the bridge's ι d k h come from the
+chart family (gated on routeStep realizability, #85). So #86's loss-side is DONE; the chart-family wiring
+(ι := routeMIota) is what remains, gated on the wall. Genuinely-reachable bedrock banked while routeStep is
+deferred — the headline plumbing the route to the bridge rests on. NOT wired into DLNFibre.lean (controller
+single-writer wires the aggregator import).
