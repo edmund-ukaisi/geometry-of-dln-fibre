@@ -36,4 +36,44 @@ theorem submult_cascade_single (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (s 
   rw [submult_succ d (cascadeTuple d t) s.castSucc s le_rfl, submult_self, Matrix.mul_one]
   rfl
 
+/-- The surviving-1 count of the cascade sub-product over `[i, j]`: `d_i` at the empty window `i = j`
+(the identity), and `min (t_p) (prev)` gaining the block `A_p` at each step. The recursion mirrors
+`submult_succ` (left-multiply by `A_p = partialId · t_p`, so `partialId_mul` takes the `min`). The
+window-min capped by `d_i` (the base width). -/
+def cascadeCount (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (i : Fin (N + 1)) :
+    (j : Fin (N + 1)) → ℕ :=
+  Fin.induction (d i) (fun p prev => min (t p) prev)
+
+@[simp] theorem cascadeCount_self (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (i : Fin (N + 1)) :
+    cascadeCount d t i 0 = d i := rfl
+
+@[simp] theorem cascadeCount_succ (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) (i : Fin (N + 1)) (p : Fin N) :
+    cascadeCount d t i p.succ = min (t p) (cascadeCount d t i p.castSucc) := by
+  simp [cascadeCount]
+
+/-- **Rung 3 — the cascade interval sub-product is a single partial-identity** (the window-min iteration).
+`submult (cascadeTuple) 0 j = partialId (d_j) (d_0) (cascadeCount 0 j)`, with `cascadeCount` the running
+`min` of the block ranks (capped by `d_0`). By `Fin.induction` on `j` through `submult_succ`, applying the
+product law `partialId_mul` at each step (the `t_p ≤ d_{p+1}` middle-dimension bound holds for the cascade's
+admissible ranks — supplied as `ht`). The `i = 0` prefix row carries the running ranks `rankFn(0,j)`. -/
+theorem submult_cascade_prefix (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
+    (ht : ∀ p : Fin N, t p ≤ d p.castSucc) (j : Fin (N + 1)) :
+    submult d (cascadeTuple (k := k) d t) 0 j (Fin.zero_le j)
+      = partialId k (d j) (d 0) (cascadeCount d t 0 j) := by
+  induction j using Fin.induction with
+  | zero =>
+    rw [submult_self, cascadeCount_self]
+    -- the identity = the full partial-identity (every diagonal entry survives, `a < d 0` always)
+    ext a b
+    simp only [partialId, Matrix.of_apply, Matrix.one_apply]
+    by_cases hab : a = b
+    · subst hab; simp [a.isLt]
+    · rw [if_neg hab, if_neg (fun hc => hab (Fin.ext hc.1))]
+  | succ p ih =>
+    rw [submult_succ d (cascadeTuple d t) 0 p (Fin.zero_le _), ih, cascadeCount_succ,
+      show cascadeTuple (k := k) d t p
+          = partialId k (d p.succ) (d p.castSucc) (t p) from rfl,
+      partialId_mul (k := k) (d p.succ) (d p.castSucc) (d 0) (t p)
+        (cascadeCount d t 0 p.castSucc) (ht p)]
+
 end DLNFibre.Core
