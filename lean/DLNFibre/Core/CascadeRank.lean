@@ -100,4 +100,34 @@ theorem rank_partialId (r c t : ℕ) : (partialId k r c t).rank = survivors r c 
       rw [← hcol]; exact Submodule.subset_span ⟨_, rfl⟩
   rw [hspan, finrank_span_eq_card hbli, Fintype.card_fin]
 
+/-- **Rung 3 atom — the partial-identity product law (the window-min step).** With the surviving rank
+bounded by the middle dimension (`a ≤ m`, the cascade's `t_{s+1} ≤ M_{s+1}` admissibility), a product of
+two cascade blocks is again a partial-identity, surviving-1 count the `min`:
+`partialId r m a * partialId m c b = partialId r c (min a b)`. The entry
+`(P_a · P_b) i j = ∑_l P_a i l · P_b l j` is nonzero only when `l = i = j` with `i < a, i < b`, i.e.
+`i = j ∧ i < min a b` (and `i < a ≤ m` makes `l = i` a valid middle index). Iterating this gives the
+cascade window-min (the count-the-1s lever). -/
+theorem partialId_mul (r m c a b : ℕ) (ha : a ≤ m) :
+    (partialId k r m a) * (partialId k m c b) = partialId k r c (min a b) := by
+  ext i j
+  simp only [Matrix.mul_apply, partialId, Matrix.of_apply]
+  by_cases hsurv : (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < min a b
+  · obtain ⟨hij, hlt⟩ := hsurv
+    have hia : (i : ℕ) < a := lt_of_lt_of_le hlt (min_le_left _ _)
+    have hib : (i : ℕ) < b := lt_of_lt_of_le hlt (min_le_right _ _)
+    have him : (i : ℕ) < m := lt_of_lt_of_le hia ha
+    rw [if_pos ⟨hij, hlt⟩, Finset.sum_eq_single (⟨(i : ℕ), him⟩ : Fin m)]
+    · rw [if_pos ⟨rfl, hia⟩, if_pos ⟨hij ▸ rfl, hib⟩, mul_one]
+    · intro l _ hl
+      have hli : (l : ℕ) ≠ (i : ℕ) := fun h => hl (Fin.ext h)
+      rw [if_neg (fun hc => hli hc.1.symm), zero_mul]
+    · intro h; exact absurd (Finset.mem_univ _) h
+  · rw [if_neg hsurv]
+    apply Finset.sum_eq_zero
+    intro l _
+    by_cases h1 : (i : ℕ) = (l : ℕ) ∧ (i : ℕ) < a
+    · rw [if_pos h1, one_mul]
+      exact if_neg (fun h2 => hsurv ⟨h1.1.trans h2.1, lt_min h1.2 (h1.1 ▸ h2.2)⟩)
+    · rw [if_neg h1, zero_mul]
+
 end DLNFibre.Core
