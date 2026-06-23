@@ -270,17 +270,19 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
           -- cast `h0cs ▸ P⟨0⟩` (both transport `P⟨0⟩` from `H ⟨0,_⟩.castSucc` to `H ⟨0,hk'⟩ = H 0`, rfl).
           rw [reindex_mul_distrib_left (P ⟨0, hkL'⟩) (A ⟨0, hkL'⟩)
             (finCongr e1.symm) (finCongr e2.symm)]
-          -- The left factor `reindex (finCongr e1.symm)² P⟨0⟩` collapses (e1 : rfl ⟹ finCongr = refl ⟹
-          -- reindex refl refl = id). Then `1 * (P⟨0⟩ · reindex A) = P⟨0⟩ · (1 · reindex A)` by `one_mul`.
-          -- REMAINING SYNTACTIC FILL (handed to crux2, on standby): after `reindex_mul_distrib_left`,
-          -- `finCongr_refl` collapses the casts and a full `simp` normalises the indices to `H 0`/`H 1`,
-          -- leaving `1 * (reindex refl refl P0 · reindex refl refl A0) = P0 · (1 · reindex refl refl A0)`.
-          -- The close is `simp [Matrix.reindex_apply, Equiv.refl_symm, Equiv.coe_refl,
-          -- Matrix.submatrix_id_id]` (collapses the id-reindexes + `one_mul`) — PLAUSIBLE but UNVERIFIED
-          -- (the file's `simp`-heavy elaboration exceeds the local 2-min build budget this session; the
-          -- congested shared build env stalls a full rebuild). reindex_mul_distrib_left/right are GREEN
-          -- (the substantive general-layer kernels). crux2 closes the syntactic fill in its env.
-          sorry
+          -- The left factor collapses (e1 : rfl ⟹ finCongr = refl ⟹ reindex refl refl = id); a full
+          -- `simp` first normalises the casty indices (`H ⟨0,hkL'⟩.castSucc → H 0`, `P ⟨0,hkL'⟩ → P 0`),
+          -- THEN (indices now syntactic at `H 0`/`H 1`) `reindex_refl_refl` + `Matrix.one_mul` fire.
+          -- `reindex (finCongr e1.symm)² P⟨0⟩ ≡ P⟨0⟩` and `reindex … A⟨0⟩ ≡ A⟨0⟩` DEFINITIONALLY
+          -- (finCongr on the rfl-proof e1 is refl; reindex refl refl unfolds to submatrix id id = the
+          -- matrix). `show` forces the goal to the defeq clean form, then `one_mul` clears both `1·`.
+          show (1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+                (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ)
+              * (P ⟨0, hkL'⟩ * A ⟨0, hkL'⟩)
+            = P ⟨0, hkL'⟩ * ((1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+                  (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ)
+                * A ⟨0, hkL'⟩)
+          rw [Matrix.one_mul, Matrix.one_mul]
         · -- step (interior): `C k = A k` (hCAint), reindexed layers agree, P0 left-factors by mul_assoc.
           rw [hCAint ⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ (by simpa using hkpos) (by simp; omega),
             ih (Nat.lt_of_succ_lt hsucc) hkpos (by omega), Matrix.mul_assoc]
