@@ -1353,3 +1353,31 @@ value/dispatch validation (g218) already exhibits the achiever-only path end-to-
 LESSON (disposition): the g216 over-aim is "reaching for a confident headline (the impressive Adm↔RealizableRank
 theorem) — the moment to look for the confound." pp-r1realize's decorrelation caught it; my own lemma's
 signature was the confound. Observe (grep: bridge absent) ≠ interpret (the value needs it).
+
+## g220 — C5/mixed-node CLOSED (crux2); schur_straighten_squeeze_exists reclassified PARKED→PROVEN-cond-on-hnode
+crux2 closed the mixed-node verdict (decl-verified HEAD): IsSchurStraightenSqueeze (:406) +
+schur_straighten_squeeze_exists (:610) are stated for a SINGLE ChainDimSplit M node. My C5 = C2-survivor ⊕
+C1-complement, the complement = the clean single-node hnode → schur_straighten_squeeze_exists applies
+DIRECTLY (exercised on (3,3,2), not assumed). crux2 will NOT generalize; the per-node primitive is CLOSED.
+
+SCOPE (matches my honest caveat): the lemma is PER-NODE (single coupled-rank-defect step). Multi-partial-drop
+is the SAME reduction ITERATED, and the iteration lives in MY WF recursion (each complement = a fresh clean
+main-Schur node), NOT in crux2's lemma. So: per-node primitive = crux2's (closed); the FOLD/iteration = mine.
+TRIGGER to revisit: only if pp2's (3,3,2,2,2) multi-step surfaces a step that does NOT present as a clean
+single-node hnode → ping crux2 (the g217 kill-condition; crux2 doesn't expect it).
+
+STATUS RECLASSIFICATION (corrects g211/g215, decl-verified on crux2's fm2/split-reindex @7674b86):
+schur_straighten_squeeze_exists is no longer labelled "g134-PARKED off-path" — crux2 REMOVED the PARKED
+banner; GeneralR1Recursion is now SORRY-FREE on its branch (the superseded clean-chart schur_straighten_exists
+sorry removed; the lone sorry still showing on expedition/aoyagi-full is pending the #28 merge). The correct
+status: schur_straighten_squeeze_exists is PROVEN CONDITIONAL ON the EXPLICIT hnode hypothesis (the clean
+Schur presentation flatCore = ∑Erow² + ‖b·Erow+S·Γ‖², G²=‖S·Γ‖², ‖b‖²≤T²) — and hnode IS dischargeable where
+the node presents cleanly (the exercised C5-complement / single-coupled-defect cases). The g134 "undischargeable
+from the product blow-up" concern is now SCOPED to the g217 kill-condition (does it stay clean for deeper
+multi-drops), NOT a blanket "off-path."
+
+MY FOLD UNCHANGED: it consumes the CONSEQUENCE rlctAtOn_reduced_transport (the det-1 reduced-core reindex), not
+the squeeze datum directly; the monomial/min value is mine (B blow-up). So the reclassification is a status-label
+correction (PARKED → PROVEN-cond-on-hnode), NOT a fold change. crux2's toolkit is stable + sorry-free on its
+branch; build away. Lesson (precision): a lemma's status (PARKED vs PROVEN-conditional) tracks whether its
+HYPOTHESIS is dischargeable IN SCOPE — re-verify the banner against the owner's current branch, not a stale record.
