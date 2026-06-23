@@ -5106,3 +5106,32 @@ The corresponding `minCountInChart = 1` wrappers are also proved.  This is
 finite-local bookkeeping for one-chart microcertificates only.  It is not a
 global A0 chart-count/order theorem, an all-chart upper bound, source
 production, chart coverage, analytic Jacobian control, pole order, or RLCT.
+
+## 2026-06-23 Lean Case 2 local chart-certificate contribution
+
+Reproduction:
+`reproduction-case2-local-chart-certificate-contribution-a4.md`.
+Statement card:
+`statement-card-a4-case2-local-chart-certificate-contribution.md`.
+Review artifact:
+`review-case2-local-chart-certificate-contribution-a4.md`.
+
+Lean now bundles the displayed continuing Case 2 local selected-entry
+contribution:
+
+```text
+case2DisplayedCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary
+```
+
+The theorem returns the existing generic source bridge for the local
+microcertificate's exponent data, the source-bridge ratio
+`card(case2ResidualBlockPivotEntries n S J) / 2`, the local finite minimum at
+that ratio, local `countInChartAtRatio = 1`, local `minCountInChart = 1`, and
+local finite exponent order `1`.  The ratio conjunct is proved through the
+bridge projection, so the source certificate's finite cardinality equality is
+visible in the proof path.
+
+This is only a local one-chart contribution summary.  It is not a global A0
+chart family, chart coverage, selected-entry atlas, source production,
+analytic Jacobian/volume-form theorem, global active-ratio lower bound, global
+chart-count/order theorem, pole order, or RLCT extraction.

@@ -2200,6 +2200,19 @@ not chart coverage, source production, transition regularity, analytic
 Jacobian control, a total DLN loss certificate, global A0 normal crossings,
 pole order, or RLCT.
 
+The current A4/A0 Case 2 local chart-certificate contribution slice is
+`threads/04-blow-up-certificate/reproduction-case2-local-chart-certificate-contribution-a4.md`.
+Lean now bundles the displayed continuing source bridge with the local
+one-chart selected-entry microcertificate facts:
+`case2DisplayedCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`.
+It records the generic bridge for the local exponent data, the source-bridge
+ratio `card(case2ResidualBlockPivotEntries n S J) / 2`, the local finite
+minimum at that ratio, local chart count `1`, local minimum-coordinate count
+`1`, and local finite order `1`.  This remains local finite bookkeeping only:
+it is not a global A0 chart family, active-ratio lower bound, global
+chart-count/order theorem, chart coverage, analytic Jacobian data, pole order,
+or RLCT extraction.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

@@ -6441,6 +6441,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-ratio-chart-count-a4.md`.
 
+Latest A4/A0 Case 2 local chart-certificate contribution:
+`SelectedEntryNormalCrossing.lean` now contains
+`case2DisplayedCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`.
+It bundles the existing displayed continuing source bridge for the local
+microcertificate's exponent data with the local ratio, finite minimum,
+ratio-count, minimum-count, and finite-order facts.  The ratio is proved
+through the bridge projection
+`Case2DisplayedContinuingExponentCoordinateBridge.ratioAt_eq_centerCard_div_two`,
+so the source certificate's cardinality equality remains in the proof path.
+This theorem is a local summary only: it does not construct A0 data, chart
+coverage, a selected-entry atlas, source successor charts, analytic
+Jacobian/volume data, global active-ratio lower bounds, global chart counts,
+pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-local-chart-certificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-local-chart-certificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-local-chart-certificate-contribution-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

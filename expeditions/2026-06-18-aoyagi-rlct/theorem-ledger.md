@@ -6232,6 +6232,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-ratio-chart-count-a4.md`.
 
+Latest A4/A0 Case 2 local chart-certificate contribution:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2DisplayedCenterSqFormalJacobianChartCertificate.localChartCertificateContribution_summary`.
+The theorem bundles the generic Case 2 source bridge for the local
+microcertificate's own exponent data, the source-bridge ratio
+`card(case2ResidualBlockPivotEntries n S J) / 2`, local finite minimum,
+local ratio-count `1`, local minimum-count `1`, and local finite order `1`.
+It does not construct global A0 data, chart coverage, active-ratio lower
+bounds, chart counts for the full normal-crossing family, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-local-chart-certificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-local-chart-certificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-local-chart-certificate-contribution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

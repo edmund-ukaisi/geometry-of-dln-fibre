@@ -1332,6 +1332,53 @@ theorem localExponentCoordinateBridge
   lossExp_eq_one := rfl
   jacobianPriorExp_eq_formalPivotExp := rfl
 
+/-- Local finite contribution of the displayed continuing Case 2
+selected-entry chart certificate.
+
+This bundles the source-coordinate bridge with the local one-chart finite
+ratio, minimum, chart-count, minimum-count, and order facts for this
+microcertificate's own exponent data.  It does not construct the global A0
+chart family and does not prove a global lower bound, pole order, or RLCT. -/
+theorem localChartCertificateContribution_summary
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J K}
+    {u : K} {residual : ℕ × ℕ → K}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → K}
+    (cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        L n S J t numerator leastValue pre u residual hS hcont C) :
+    Case2DisplayedContinuingExponentCoordinateBridge cert
+      (case2DisplayedCenterSqFormalJacobianChartCertificate
+        (K := K) n hS hcont).exponentData
+      ((0 : Fin 1), (0 : Fin 1)) ∧
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.ratioAt
+        ((0 : Fin 1), (0 : Fin 1)) =
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 ∧
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.exponentMinimum =
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 ∧
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.countInChartAtRatio
+        (((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2)
+        (0 : Fin 1) = 1 ∧
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.minCountInChart (0 : Fin 1) = 1 ∧
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.exponentOrder = 1 := by
+  let B := localExponentCoordinateBridge cert
+  refine ⟨B, ?_, ?_, ?_, ?_, ?_⟩
+  · exact B.ratioAt_eq_centerCard_div_two
+  · exact exponentData_exponentMinimum_eq_centerCard_div_two (K := K) n hS hcont
+  · exact exponentData_countInChartAtRatio_centerCard_div_two_eq_one
+      (K := K) n hS hcont (0 : Fin 1)
+  · exact exponentData_minCountInChart_eq_one (K := K) n hS hcont (0 : Fin 1)
+  · exact exponentData_exponentOrder_eq_one (K := K) n hS hcont
+
 end case2DisplayedCenterSqFormalJacobianChartCertificate
 
 end Aoyagi
