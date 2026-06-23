@@ -5657,6 +5657,31 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
 
+Latest A4 Case 2 continuing certificate chart-family-free directification:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_continuingReindexedSourceChartCertificate_withoutChartFamily`,
+`sourceChartMap_continuingReindexedSourceChartUnitCertificate_withoutChartFamily`,
+and
+`sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily`.
+The old constructors
+`sourceChartMap_continuingReindexedSourceChartCertificate`,
+`sourceChartMap_continuingReindexedSourceChartUnitCertificate`, and
+`sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCertificate`
+remain compatibility wrappers and ignore the old chart-family argument.  The
+direct constructors use the chart-family-free reindexed next-source-product
+theorem plus finite selected-entry/unit/formal-Jacobian facts; no
+`ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary` input remains on the direct path.
+This is still only local finite Case 2 certificate packaging: no source
+production of `Csucc`, successor chart or suffix production, coverage,
+transition regularity, analytic Jacobian/volume-form theorem, normal
+crossings, pole order, or RLCT extraction is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-certificate-without-chart-family-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-certificate-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-certificate-without-chart-family-a4.md`.
+
 Latest A4/A0 Case 2 exponent-coordinate bridge:
 `NormalCrossingInterface.lean` now contains
 `AoyagiNormalCrossingExponentData.mem_activePairs_of_lossExp_eq_one` and

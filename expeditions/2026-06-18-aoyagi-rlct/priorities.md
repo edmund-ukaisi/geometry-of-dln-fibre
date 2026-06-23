@@ -122,6 +122,18 @@ operation.  This is still finite algebra only.  It is not an analytic
 Jacobian/volume-form theorem, does not resolve the p. 21 apparent extra-`u`
 display, and does not construct an `AoyagiNormalCrossingChartCertificate`.
 
+The same continuing certificate stack is now direct with respect to the
+finite product/post-data path:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-certificate-without-chart-family-a4.md`.
+Lean now provides chart-family-free constructors for the displayed continuing
+certificate, the ordered-field unit refinement, and the
+center-square/formal-Jacobian refinement.  The older chart-family-bearing APIs
+remain compatibility wrappers only.  This removes a vacuous finite dependency
+on `Case2ResidualBlockChartFamilyBoundary`; it still does not source-produce
+`Csucc`, construct successor charts or suffixes, prove coverage/transition
+regularity, provide analytic Jacobian data, prove normal crossings, pole
+order, or RLCT.
+
 The current A4/A0 supplied-coordinate bridge is
 `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`.
 Lean now proves that if a later A0 exponent datum `D` supplies a coordinate

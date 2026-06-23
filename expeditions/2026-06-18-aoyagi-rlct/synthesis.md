@@ -5889,6 +5889,34 @@ Review:
 `threads/04-blow-up-certificate/review-case2-reindexed-next-source-product-direct-a4.md`
 passed.
 
+Latest A4 continuing certificate chart-family-free directification:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_continuingReindexedSourceChartCertificate_withoutChartFamily`,
+`sourceChartMap_continuingReindexedSourceChartUnitCertificate_withoutChartFamily`,
+and
+`sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily`.
+These constructors build the displayed continuing Case 2 local certificate,
+its ordered-field unit refinement, and its center-square/formal-Jacobian
+refinement from finite selected-entry algebra, concrete `case2Succ`
+recurrence data, corrected selected-label exponent data, and the direct
+reindexed next-source-product identity.  They take no `ChartRegular`,
+`TransitionRegular`, or `Case2ResidualBlockChartFamilyBoundary` arguments.
+The older chart-family-bearing constructors remain as compatibility wrappers
+that delegate to the direct constructors.
+
+This removes only the vacuous finite chart-family boundary from these local
+continuing-certificate constructors.  It is not source production of `Csucc`,
+not successor chart-family or suffix construction, not coverage/transition
+regularity, not an analytic Jacobian/volume-form theorem, not normal
+crossings, not pole order, and not RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-certificate-without-chart-family-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-certificate-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-certificate-without-chart-family-a4.md`
+passed.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

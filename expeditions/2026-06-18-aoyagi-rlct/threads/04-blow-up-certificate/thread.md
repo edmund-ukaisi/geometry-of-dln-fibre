@@ -4700,3 +4700,34 @@ This is still not source production of `Csucc`, not successor chart-family
 construction, not suffix production, not coverage/transition regularity, not
 an analytic Jacobian/volume-form theorem, not normal crossings, not pole
 order, and not RLCT extraction.
+
+## 2026-06-23 Lean continuing certificate without chart-family boundary
+
+Reproduction:
+`reproduction-case2-continuing-certificate-without-chart-family-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-certificate-without-chart-family.md`.
+Review artifact:
+`review-case2-continuing-certificate-without-chart-family-a4.md`.
+
+Lean now constructs the continuing local certificate stack without a supplied
+`Case2ResidualBlockChartFamilyBoundary`:
+
+```text
+sourceChartMap_continuingReindexedSourceChartCertificate_withoutChartFamily
+sourceChartMap_continuingReindexedSourceChartUnitCertificate_withoutChartFamily
+sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily
+```
+
+The direct constructors use the chart-family-free reindexed next-source-product
+identity, concrete `case2Succ` recurrence post-data, corrected selected-label
+exponent post-data, finite selected-entry principalization, the ordered-field
+center-square unit facts, and the formal pivot-first determinant facts.  The
+older chart-family-bearing constructors remain as compatibility wrappers and
+delegate to these direct constructors.
+
+This removes only a vacuous finite dependency from the local certificate
+constructors.  It is not source production of `Csucc`, not successor
+chart-family construction, not suffix production, not coverage/transition
+regularity, not an analytic Jacobian/volume-form theorem, not normal
+crossings, not pole order, and not RLCT extraction.

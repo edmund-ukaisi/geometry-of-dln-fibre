@@ -762,6 +762,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
 	  `threads/04-blow-up-certificate/review-case2-continuing-center-sq-formal-jacobian-certificate-a4.md`.
+	  Reproduction of the Case 2 continuing certificate chart-family-free
+	  directification is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-continuing-certificate-without-chart-family-a4.md`;
+	  xhigh fidelity/bedrock review passed and is saved at
+	  `threads/04-blow-up-certificate/review-case2-continuing-certificate-without-chart-family-a4.md`.
 	  Reproduction of the A4/A0 Case 2 exponent-coordinate bridge is saved at
 	  `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
@@ -1194,6 +1199,18 @@ No such claim is formalisation-ready until both fields are filled.
 	  next-center nonemptiness, reindexed next-source product, corrected post
 	  data, post-weight convention, and new-numerator center cardinality without
 	  entering A0 normal-crossing data.
+	  Added chart-family-free direct constructors
+	  `sourceChartMap_continuingReindexedSourceChartCertificate_withoutChartFamily`,
+	  `sourceChartMap_continuingReindexedSourceChartUnitCertificate_withoutChartFamily`,
+	  and
+	  `sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily`.
+	  The older chart-family-bearing continuing certificate constructors remain
+	  compatibility wrappers only.  The direct path uses finite selected-entry
+	  algebra, concrete `case2Succ` recurrence post-data, corrected exponent
+	  post-data, and the chart-family-free reindexed next-source-product theorem;
+	  it does not source-produce `Csucc`, successor chart families, suffixes,
+	  coverage, transition regularity, analytic Jacobian data, normal crossings,
+	  pole order, or RLCT.
 	  Added the displayed Case 2 residual-block coordinate count:
   `case2_continuation_le_prefixMinNat_current`,
   `case2_continuation_le_width_next`, `case2ResidualBlockRows_card`,

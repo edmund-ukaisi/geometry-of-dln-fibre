@@ -14647,13 +14647,13 @@ structure Case2DisplayedContinuingReindexedSourceChartCertificate
       (case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1))).case2Gap
 
 /-- Concrete constructor for the displayed continuing Case 2 source-chart
-certificate.
+certificate, without the chart-family boundary.
 
 The continuing guard supplies nonemptiness of the next residual center.  The
 reindexed product still uses the formula-level successor following factor; this
 theorem does not construct a successor source object, chart family, normal
 crossing certificate, pole order, or RLCT data. -/
-theorem sourceChartMap_continuingReindexedSourceChartCertificate
+theorem sourceChartMap_continuingReindexedSourceChartCertificate_withoutChartFamily
     {τ R : Type*} [CommRing R]
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
     {t : ℕ → ℕ → ℕ → ℤ}
@@ -14666,17 +14666,13 @@ theorem sourceChartMap_continuingReindexedSourceChartCertificate
     (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
     (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
     (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
-    {ChartRegular : ℕ × ℕ → Prop}
-    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
-    (chartFamily :
-      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
     (C : ℕ → τ → R) :
     Case2DisplayedContinuingReindexedSourceChartCertificate
       L n S J t numerator leastValue pre u residual hS hcont C := by
   rcases
-    sourceChartMap_reindexedNextSourceProduct_withCorrectedPostData
+    sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData
       pre u residual hS hSL hcont exponentPre levelInv leastValueGap
-      chartFamily C with
+      C with
     ⟨q, hprod, hexponent, hlevel, hleast, hgap⟩
   refine
     { displayedPivot_mem :=
@@ -14709,6 +14705,38 @@ theorem sourceChartMap_continuingReindexedSourceChartCertificate
   · exact ⟨q, by simpa [Case2DisplayedReindexedNextSourceProductEq] using hprod⟩
   · simpa [correctedCase2NewLabelNumerator] using
       correctedCase2NewLabelNumerator_eq_card_of_cont n hS hcont
+
+/-- Concrete constructor for the displayed continuing Case 2 source-chart
+certificate.
+
+The continuing guard supplies nonemptiness of the next residual center.  The
+reindexed product still uses the formula-level successor following factor.  The
+chart-family boundary is retained only for compatibility with the older API;
+the proof delegates to the chart-family-free constructor. -/
+theorem sourceChartMap_continuingReindexedSourceChartCertificate
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) :
+    Case2DisplayedContinuingReindexedSourceChartCertificate
+      L n S J t numerator leastValue pre u residual hS hcont C := by
+  let _ := chartFamily
+  exact
+    sourceChartMap_continuingReindexedSourceChartCertificate_withoutChartFamily
+      pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap C
 
 /-- Ordered-field refinement of the displayed continuing Case 2 local
 certificate that also carries the selected-entry center-square unit factor.
@@ -14743,7 +14771,39 @@ structure Case2DisplayedContinuingReindexedSourceChartUnitCertificate
         ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual)
 
 /-- Concrete constructor for the ordered-field unit refinement of the
-displayed continuing Case 2 source-chart certificate. -/
+displayed continuing Case 2 source-chart certificate, without the
+chart-family boundary. -/
+theorem sourceChartMap_continuingReindexedSourceChartUnitCertificate_withoutChartFamily
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (residual : ℕ × ℕ → K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (C : ℕ → τ → K) :
+    Case2DisplayedContinuingReindexedSourceChartUnitCertificate
+      L n S J t numerator leastValue pre u residual hS hcont C := by
+  refine
+    { toReindexedSourceChartCertificate :=
+        sourceChartMap_continuingReindexedSourceChartCertificate_withoutChartFamily
+          pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap
+          C
+      centerSqUnitFactor_pos :=
+        case2DisplayedSourceChartMap_centerSqUnitFactor_pos n hS hcont residual
+      centerSqUnitFactor_ne_zero :=
+        case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero n hS hcont residual
+      centerSqUnitFactor_isUnit :=
+        case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit n hS hcont residual }
+
+/-- Concrete constructor for the ordered-field unit refinement of the
+displayed continuing Case 2 source-chart certificate.  The chart-family
+boundary is retained only for compatibility with the older API. -/
 theorem sourceChartMap_continuingReindexedSourceChartUnitCertificate
     {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
@@ -14764,17 +14824,10 @@ theorem sourceChartMap_continuingReindexedSourceChartUnitCertificate
     (C : ℕ → τ → K) :
     Case2DisplayedContinuingReindexedSourceChartUnitCertificate
       L n S J t numerator leastValue pre u residual hS hcont C := by
-  refine
-    { toReindexedSourceChartCertificate :=
-        sourceChartMap_continuingReindexedSourceChartCertificate
-          pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap
-          chartFamily C
-      centerSqUnitFactor_pos :=
-        case2DisplayedSourceChartMap_centerSqUnitFactor_pos n hS hcont residual
-      centerSqUnitFactor_ne_zero :=
-        case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero n hS hcont residual
-      centerSqUnitFactor_isUnit :=
-        case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit n hS hcont residual }
+  let _ := chartFamily
+  exact
+    sourceChartMap_continuingReindexedSourceChartUnitCertificate_withoutChartFamily
+      pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap C
 
 /-- Ordered-field continuing Case 2 local certificate with the finite
 center-square identity and formal pivot-first determinant calculation.
@@ -14819,8 +14872,9 @@ structure Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCert
       (((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card + 1 : ℕ)
 
 /-- Concrete constructor for the continuing Case 2 local certificate carrying
-the finite center-square identity and formal pivot-first determinant data. -/
-theorem sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCertificate
+the finite center-square identity and formal pivot-first determinant data,
+without the chart-family boundary. -/
+theorem sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily
     {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
     {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
     {t : ℕ → ℕ → ℕ → ℤ}
@@ -14833,18 +14887,14 @@ theorem sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCerti
     (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
     (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
     (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
-    {ChartRegular : ℕ × ℕ → Prop}
-    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
-    (chartFamily :
-      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
     (C : ℕ → τ → K) :
     Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
       L n S J t numerator leastValue pre u residual hS hcont C := by
   refine
     { toUnitCertificate :=
-        sourceChartMap_continuingReindexedSourceChartUnitCertificate
+        sourceChartMap_continuingReindexedSourceChartUnitCertificate_withoutChartFamily
           pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap
-          chartFamily C
+          C
       centerSq_eq := ?_
       pivotFirstJacobian_det :=
         case2DisplayedSourceChartMap_pivotFirstJacobian_det n hS hcont u residual
@@ -14870,6 +14920,35 @@ theorem sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCerti
       Finset.card_erase_add_one
         (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
     exact hnum.trans (by rw [← hcard])
+
+/-- Concrete constructor for the continuing Case 2 local certificate carrying
+the finite center-square identity and formal pivot-first determinant data.
+The chart-family boundary is retained only for compatibility with the older
+API. -/
+theorem sourceChartMap_continuingReindexedSourceChartCenterSqFormalJacobianCertificate
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (residual : ℕ × ℕ → K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → K) :
+    Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+      L n S J t numerator leastValue pre u residual hS hcont C := by
+  let _ := chartFamily
+  exact
+    sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily
+      pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap C
 
 namespace Case2DisplayedContinuingReindexedSourceChartCertificate
 
