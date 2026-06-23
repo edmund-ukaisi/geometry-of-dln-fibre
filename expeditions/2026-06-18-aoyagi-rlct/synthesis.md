@@ -6480,6 +6480,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
 
+Latest A6 Eq5 terminal-order bridge:
+`Theorem2Eq5TerminalOrderBridge.lean` now contains
+`AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,
+`AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload.terminalMinimumLabels_card_eq_theorem2OrderFormula`,
+and displayed-ratio finite/final/chart-final wrappers ending in
+`suppliedEq5EndpointBlockWidthPayload`.  These package the large supplied Eq5
+endpoint block-width payload, extract the exact count
+`TC.terminalMinimumLabels.card = data.theorem2OrderFormula`, and feed it into
+the existing exact-count A6 sockets.  The final-boundary wrappers use the same
+selected cutpoints `P.cut` carried by the supplied Eq5 payload.  This is not a
+source proof of Eq5 endpoint families, Lemma 5 exactness, active-ratio lower
+bounds, chart counts, chart production, pole order, or RLCT extraction.
+Reproduction:
+`threads/06-dln-translation/reproduction-theorem2-eq5-terminal-order-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-theorem2-eq5-terminal-order-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-eq5-terminal-order-bridge-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -760,3 +760,41 @@ not construct Eq5 branches, prove A5 classifier/injectivity/back-to-label
 data, prove source-backed no-extra coverage, produce normal-crossing charts,
 prove active-ratio lower bounds, prove chart-count facts, identify pole order
 without A0, or extract RLCT.
+
+## Current slice - 2026-06-23, Eq5 terminal-order bridge
+
+Reproduction:
+`reproduction-theorem2-eq5-terminal-order-bridge-a6.md`.
+Statement card:
+`statement-card-a6-theorem2-eq5-terminal-order-bridge.md`.
+Review artifact:
+`review-theorem2-eq5-terminal-order-bridge-a6.md`.
+
+Lean now has
+
+```text
+DLNFibre.DLN.Aoyagi.Theorem2Eq5TerminalOrderBridge
+```
+
+with the supplied payload
+
+```text
+AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload
+```
+
+and displayed-ratio finite/final/chart-final wrappers ending in
+`suppliedEq5EndpointBlockWidthPayload`.  The payload packages the large Eq5
+endpoint block-width hypotheses, extracts
+
+```text
+TC.terminalMinimumLabels.card = data.theorem2OrderFormula,
+```
+
+and feeds that equality into the existing exact-count A6 sockets.  The
+final-boundary wrappers use the same selected cutpoints `P.cut` carried by the
+supplied Eq5 payload.
+
+Boundary: supplied-boundary composition only.  This does not construct Eq5
+endpoint families, prove source-backed Lemma 5 exactness, produce charts,
+prove active-ratio lower bounds, prove displayed-ratio chart-count facts,
+identify pole order without A0, or extract RLCT.
