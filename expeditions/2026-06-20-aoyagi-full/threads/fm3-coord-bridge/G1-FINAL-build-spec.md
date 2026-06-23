@@ -2,6 +2,27 @@
 
 Every design + interface question is CLOSED. This is the complete spec for the dispatcher grind.
 
+## RECURSION BUILD-SHAPE (g198, crux2 decl-grounded Q1/Q2/Q3) — the concrete routeAtlas shape for #85
+crux2 answered the general-routeStep BUILD questions (grepped ChainDimSplit + IsSchurStraighten at HEAD):
+- Q1 CARRIER: NO banked iterated WellFounded.fix. ChainDimSplit M = single-step {drop, red, hsum, hdrops}.
+  Build the fix on the measure ∑_s M s, step M → S.red, leaf at L=1 / red≡0 (prod_one_layer /
+  dlnLoss_one_layer_deepest = banked leaf terminators). TERMINATION BANKED: ∑ S.red < ∑ M = the measure_drops
+  field (GeneralR1Recursion:122/:432) OR re-derive in ONE omega from S.hsum + S.hdrops (schur_straighten_of_data:191
+  does it: hle ∑red≤∑M from hsum, hne ≠ from 0<∑drop). = my banked chainWidthSum/redM_widthSum_lt exactly.
+- Q2 BRANCHING (decisive build-shape): ChainDimSplit is a SINGLE PATH (one {drop,red}) — does NOT carry a
+  pivot-branch Finset. The branching (my ⨅-min over pivot cells = argmaxCellOn / active:Finset / g5_pivotNode)
+  is MY cover/blow-up lane. So routeMIota = Σ over (MY pivot Finset) × (the descent over ChainDimSplit) — the
+  second of my two g157 options. Each ChainDimSplit = one reduction path; the min-over-branches layers on my
+  side. ⚠ CAVEAT: IsSchurStraighten's active:Finset + pivot p is ONE blow-up node's coordinate-CENTER, NOT a
+  branch-set — do NOT mistake it for the branching Finset.
+- Q3 hGne per-Mred, C4-gated: #65 fires at EACH S.red level IF ∀s 1≤S.red s; S.red s = 0 (vertex consumed) =
+  C4-terminal. "recurse while S.red s > 0 ∀s; S.red s = 0 ⟹ C4-leaf." (= g194/g196.)
+SO routeAtlas (the concrete #85 shape): WellFounded.fix on ∑M; at a node, classify → leaf (L=1/red≡0/IsUnit) |
+branch (MY pivot Finset of cells, each cell → a ChainDimSplit M [via schurState] + the codim/PivotWitness +
+descend on S.red via measure_drops). ι = Σ over (pivot Finset) of (child ι). The straighten (schur_recursion_
+step_sound per step) = crux2's value-along-path; the ⨅-over-branches = my cover. MonoData/foldDivisors
+driver-agnostic. Relayed to the formaliser (#85).
+
 ## PROGRESS (g197): Fmeas bedrock landed + value-side seeds #27 confirmed (crux2)
 - FORMALISER landed the anchoring-independent bedrock (origin/fm3/routem @3b05766, green clean-three):
   Foundations/LossContinuity.lean — continuous_prodAux/continuous_prod/continuous_dlnLoss/measurable_dlnLoss
