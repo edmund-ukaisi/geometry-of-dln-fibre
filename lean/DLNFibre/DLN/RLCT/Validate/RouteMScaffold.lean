@@ -147,4 +147,24 @@ theorem routeStepOf_M222 :
   rw [routeStepOf_branch _ not_isLeafNode_M222]
   rfl
 
+/-! ## The achiever-witness extractor — the binding cell's `PivotWitness` (decision-independent primitive)
+
+The `minAdm`-achiever yields a root-anchored `PivotWitness M (minAdm M)`: the admissible exponent `T*`
+minimising `Mval` over `Adm M` (`Finset.exists_mem_eq_inf'`) certifies the binding codim `minAdm`. This is
+the witness EVERY non-leaf read needs for its binding cell (the leaf that achieves `½·minAdm` in the value
+fold), whatever the cell decomposition — a single achiever cell (the value-correct waypoint) or the binding
+cell of the genuine multi-cell cover. It is NOT a cell decomposition itself; it is the per-cell witness
+primitive the decomposition consumes. Non-vacuous: `T*` is exhibited via `exists_mem_eq_inf'`. -/
+
+/-- **The `minAdm`-achiever's root-anchored `PivotWitness`.** The admissible `T*` minimising `Mval` over
+`Adm M` certifies the binding codim `minAdm M = ((Adm M).inf' Mval).toNat`: `T* ∈ Adm M` (`hAdm`) and
+`minAdm = (Mval M T*).toNat` (`hCodim`, since `Mval M T* = inf'` and `.toNat` is a function). The binding
+cell's witness, decomposition-agnostic. -/
+noncomputable def achieverPivotWitness (M : Fin (L + 1) → ℕ) :
+    PivotWitness M (((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat) :=
+  let h := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+  { T := h.choose
+    hAdm := h.choose_spec.1
+    hCodim := congrArg Int.toNat h.choose_spec.2 }
+
 end DLNFibre.DLN.RLCT
