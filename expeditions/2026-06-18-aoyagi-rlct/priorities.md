@@ -306,6 +306,15 @@ bookkeeping only: it does not prove atlas coverage, transition regularity,
 analytic Jacobian/volume-form control, source production, global active-ratio
 lower bounds, pole order, or RLCT.
 
+The current all-pivot source-point presentation adapter is
+`threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-source-point-adapter-a4.md`.
+It delegates chart `c` of the all-pivot certificate to the one-pivot
+source-point calculation at `chartEquiv c`, exposing chart-map, finite-loss,
+loss-unit, formal determinant, and monomial identities for later concrete
+Case 1/2 wrappers.  It is still finite presentation only, not chart coverage,
+transition regularity, analytic Jacobian control, source production, global A0
+data, pole order, or RLCT.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

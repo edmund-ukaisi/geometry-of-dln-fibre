@@ -6531,6 +6531,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-multi-chart-certificate-a4.md`.
 
+Latest A4/A0 selected-entry multi-chart source-point adapter:
+`SelectedEntryNormalCrossing.lean` now contains generic source-point
+presentation lemmas under
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate`:
+`sourceChartPoint`, `chartMap_sourceChartPoint_eq`,
+`loss_sourceChartPoint_eq_centerSq`, `lossUnit_sourceChartPoint_eq`,
+`jacobianPrior_sourceChartPoint_eq_det`, `loss_monomial_sourceChartPoint`, and
+`jacobianPrior_monomial_sourceChartPoint`.  For a chart index `c`, these
+delegate to the one-pivot source-point calculation for the pivot
+`chartEquiv c`.  This is a finite presentation adapter only, useful for later
+Case 1/2 all-pivot wrappers.  It is not analytic atlas coverage, transition
+regularity, analytic Jacobian/volume-form control, source production, global
+A0 data, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-source-point-adapter-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-multi-chart-source-point-adapter.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-multi-chart-source-point-adapter-a4.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,

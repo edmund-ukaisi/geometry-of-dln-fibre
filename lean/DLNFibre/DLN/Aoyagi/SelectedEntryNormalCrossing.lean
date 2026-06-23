@@ -620,6 +620,148 @@ theorem exponentData_exponentOrder_eq_one
     rw [exponentData_countInChartAtRatio_centerCard_div_two_eq_one
       (K := K) (hcenter := ⟨p, hp⟩) chartEquiv c]
 
+/-- The source point of chart `c` in the all-pivot selected-entry chart
+family, obtained by delegating to the one-pivot source point at the selected
+pivot. -/
+def sourceChartPoint
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).ChartPoint c :=
+  selectedEntryCenterSqFormalJacobianChartCertificate.sourceChartPoint
+    (chartEquiv c) u residual
+
+/-- In chart `c`, the all-pivot family chart map at the source point is the
+one-pivot selected-entry source chart map for the selected pivot. -/
+theorem chartMap_sourceChartPoint_eq
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).chartMap c
+        (sourceChartPoint hcenter chartEquiv c u residual) =
+      fun i : center ↦ selectedEntryChartMap (chartEquiv c).1 u residual i.1 := by
+  simpa [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartFamilyCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.chartMap_sourceChartPoint_eq
+        (chartEquiv c) u residual
+
+/-- At an all-pivot family source point, the finite loss is the selected-entry
+center square in the selected pivot chart. -/
+theorem loss_sourceChartPoint_eq_centerSq
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).loss
+        ((selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) hcenter chartEquiv).chartMap c
+            (sourceChartPoint hcenter chartEquiv c u residual)) =
+      selectedEntryCenterSq center
+        (selectedEntryChartMap (chartEquiv c).1 u residual) := by
+  simpa [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartFamilyCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.loss_sourceChartPoint_eq_centerSq
+        (chartEquiv c) u residual
+
+/-- At an all-pivot family source point, the loss unit is the selected pivot's
+normalized finite center-square factor. -/
+theorem lossUnit_sourceChartPoint_eq
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).lossUnit c
+        (sourceChartPoint hcenter chartEquiv c u residual) =
+      selectedEntryCenterSqUnitFactor
+        (center.erase (chartEquiv c).1) residual := by
+  simpa [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartFamilyCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.lossUnit_sourceChartPoint_eq
+        (chartEquiv c) u residual
+
+/-- At an all-pivot family source point, the formal Jacobian/prior value is the
+selected pivot-first formal determinant. -/
+theorem jacobianPrior_sourceChartPoint_eq_det
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (u : K) (residual : ι → K) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).jacobianPrior c
+        (sourceChartPoint hcenter chartEquiv c u residual) =
+      (selectedEntryPivotFirstJacobian
+        (κ := {i // i ∈ center.erase (chartEquiv c).1}) u
+        (fun p ↦ residual p.1)).det := by
+  simpa [sourceChartPoint, selectedEntryCenterSqFormalJacobianChartFamilyCertificate]
+    using
+      selectedEntryCenterSqFormalJacobianChartCertificate.jacobianPrior_sourceChartPoint_eq_det
+        (chartEquiv c) u residual
+
+/-- Source-point presentation of the loss monomial identity in chart `c` of the
+all-pivot selected-entry family. -/
+theorem loss_monomial_sourceChartPoint
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (u : K) (residual : ι → K) :
+    selectedEntryCenterSq center
+        (selectedEntryChartMap (chartEquiv c).1 u residual) =
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).lossUnit c
+          (sourceChartPoint hcenter chartEquiv c u residual) *
+        ∏ j : Fin (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) hcenter chartEquiv).numCoords,
+          (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) hcenter chartEquiv).coord c
+            (sourceChartPoint hcenter chartEquiv c u residual) j ^
+            (2 *
+              (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+                (K := K) hcenter chartEquiv).lossExp c j) := by
+  rw [← loss_sourceChartPoint_eq_centerSq hcenter chartEquiv c u residual]
+  exact
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).loss_monomial c
+        (sourceChartPoint hcenter chartEquiv c u residual)
+
+/-- Source-point presentation of the formal Jacobian/prior monomial identity
+in chart `c` of the all-pivot selected-entry family. -/
+theorem jacobianPrior_monomial_sourceChartPoint
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card)
+    (u : K) (residual : ι → K) :
+    (selectedEntryPivotFirstJacobian
+        (κ := {i // i ∈ center.erase (chartEquiv c).1}) u
+        (fun p ↦ residual p.1)).det =
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).jacobianPriorUnit c
+          (sourceChartPoint hcenter chartEquiv c u residual) *
+        ∏ j : Fin (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) hcenter chartEquiv).numCoords,
+          (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) hcenter chartEquiv).coord c
+            (sourceChartPoint hcenter chartEquiv c u residual) j ^
+            (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+              (K := K) hcenter chartEquiv).jacobianPriorExp c j := by
+  rw [← jacobianPrior_sourceChartPoint_eq_det hcenter chartEquiv c u residual]
+  exact
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).jacobianPrior_monomial c
+        (sourceChartPoint hcenter chartEquiv c u residual)
+
 end selectedEntryCenterSqFormalJacobianChartFamilyCertificate
 
 /-- Case 1 specialization of the selected-entry finite microcertificate at

@@ -1205,7 +1205,20 @@ No such claim is formalisation-ready until both fields are filled.
   `center.card / 2`, chartwise ratio count `1`, finite minimum
   `center.card / 2`, and finite order `1`.  It is not analytic chart
   coverage, transition regularity, source production, analytic Jacobian
-  control, pole order, or RLCT.
+  control, pole order, or RLCT.  Also proved the finite source-point
+  presentation adapter for that all-pivot certificate:
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartPoint_eq_centerSq`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartPoint_eq`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartPoint_eq_det`,
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartPoint`,
+  and
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartPoint`.
+  These lemmas expose the one-pivot source-point calculation chartwise for
+  pivot `chartEquiv c`; they do not prove coverage, transition regularity,
+  source production, analytic Jacobian control, global A0 data, pole order, or
+  RLCT.
   Also packaged the finite
   Case 1 first-jump and selected-label hypotheses as
   `Case1FirstJumpHypotheses`, including the strict nonterminal boundary

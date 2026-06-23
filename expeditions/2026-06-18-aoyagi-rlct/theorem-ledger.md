@@ -6294,6 +6294,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-multi-chart-certificate-a4.md`.
 
+Latest A4/A0 selected-entry multi-chart source-point adapter:
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartPoint_eq_centerSq`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartPoint_eq`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartPoint_eq_det`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartPoint`,
+and
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartPoint`.
+Each chart `c` delegates to the existing one-pivot source-point calculation
+for pivot `chartEquiv c`.  This is finite presentation only and does not
+assert atlas coverage, transition regularity, analytic Jacobian/volume-form
+control, source production, global A0 normal-crossing data, pole order, or
+RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-source-point-adapter-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-multi-chart-source-point-adapter.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-multi-chart-source-point-adapter-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

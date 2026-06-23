@@ -5201,3 +5201,31 @@ prove analytic atlas coverage, transition regularity, analytic
 Jacobian/volume-form control, source production of successor matrices or
 post-data, global active-ratio lower bounds, pole order, or RLCT extraction.
 Xhigh fidelity review passed with no required fixes.
+
+## 2026-06-23 Lean selected-entry multi-chart source-point adapter
+
+Reproduction:
+`reproduction-selected-entry-multi-chart-source-point-adapter-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-multi-chart-source-point-adapter.md`.
+Review artifact:
+`review-selected-entry-multi-chart-source-point-adapter-a4.md`.
+
+Lean now adds source-point presentation lemmas for the finite all-pivot
+selected-entry chart-family certificate:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartPoint_eq_centerSq
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartPoint_eq
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartPoint_eq_det
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartPoint
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartPoint
+```
+
+Each chart `c` delegates to the existing one-pivot source-point calculation at
+the pivot `chartEquiv c`.  This is a finite presentation adapter only: it does
+not prove analytic atlas coverage, transition regularity, analytic
+Jacobian/volume-form control, source production, global A0 data, pole order, or
+RLCT extraction.  Xhigh review passed with no required fixes.
