@@ -247,4 +247,74 @@ theorem contDiff_prod_entry {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ 
     ContDiff ℝ (⊤ : ℕ∞) (fun x => prod H (g x) i j) :=
   contDiff_prodAux_entry H g hg L (Nat.lt_succ_self L) i j
 
+/-- **`HasStrictFDerivAt` of the partial-product ENTRIES** (the `_deriv` infrastructure, entry-wise to
+dodge the matrix-norm instance, mirroring `contDiff_prodAux_entry`). If each layer ENTRY has a strict
+derivative `g' s i j` at `x`, then each `prodAux` entry has the LEIBNIZ strict derivative
+`∑ m, (prodAux k i m) · (layer deriv) + (prodAux k deriv) · (layer i m)` — built by `HasStrictFDerivAt.sum`
+of `HasStrictFDerivAt.mul`. The derivative VALUE is the sum-of-products `prodAux'`; the deepest-point
+specialization (idempotent sandwich, #91) collapses it to the `(Σ X_s, Y_L, Z_1)` shear. -/
+theorem hasStrictFDerivAt_prodAux_entry {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    (H : Fin (L + 1) → ℕ) (g : X → Params H) (x : X)
+    (g' : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)), X →L[ℝ] ℝ)
+    (hg : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      HasStrictFDerivAt (fun y => g y s i j) (g' s i j) x)
+    (k : ℕ) (hk : k < L + 1) :
+    ∀ (i : Fin (H 0)) (j : Fin (H ⟨k, hk⟩)),
+      ∃ D : X →L[ℝ] ℝ, HasStrictFDerivAt (fun y => prodAux H (g y) k hk i j) D x := by
+  revert hk
+  induction k with
+  | zero =>
+      intro hk i j
+      -- `prodAux 0 = 1`; each entry is constant, derivative `0`.
+      refine ⟨0, ?_⟩
+      have : (fun y => prodAux H (g y) 0 hk i j)
+          = fun _ => (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) i j := rfl
+      rw [this]; exact hasStrictFDerivAt_const _ _
+  | succ k ih =>
+      intro hk i j
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      -- `prodAux (k+1) i j = ∑ m, prodAux k i m · (cast layer k) m j`.
+      have hentry : (fun y => prodAux H (g y) (k + 1) hk i j)
+          = fun y => ∑ m, prodAux H (g y) k hk' i m
+              * ((by rw [e1, e2]; exact g y ⟨k, hkL⟩ :
+                  Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ) m j) := by
+        funext y; rfl
+      rw [hentry]
+      -- Each summand `prodAux k i m * (cast layer) m j` has a strict derivative (product rule).
+      -- `HasStrictFDerivAt.sum` over `m`; each summand via `HasStrictFDerivAt.mul` of (ih) and (the
+      -- cast-normalised layer entry, `simp [e1,e2,eq_mpr_eq_cast,cast_eq]` to `g · ⟨k,hkL⟩`, then `hg`).
+      have hsummand : ∀ m : Fin (H ⟨k, hk'⟩), ∃ D : X →L[ℝ] ℝ,
+          HasStrictFDerivAt (fun y => prodAux H (g y) k hk' i m
+              * ((by rw [e1, e2]; exact g y ⟨k, hkL⟩ :
+                  Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ) m j)) D x := by
+        intro m
+        obtain ⟨Dpre, hDpre⟩ := ih hk' i m
+        have hlayer : HasStrictFDerivAt
+            (fun y => (by rw [e1, e2]; exact g y ⟨k, hkL⟩ :
+                Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ) m j)
+            (g' ⟨k, hkL⟩ (e1 ▸ m) (e2 ▸ j)) x := by
+          have := hg ⟨k, hkL⟩ (e1 ▸ m) (e2 ▸ j)
+          simp only [eq_mpr_eq_cast, cast_eq] at this ⊢
+          exact this
+        exact ⟨_, hDpre.mul hlayer⟩
+      choose D hD using hsummand
+      exact ⟨∑ m, D m, HasStrictFDerivAt.fun_sum (fun m _ => hD m)⟩
+
+/-- **`HasStrictFDerivAt` of the full layer-product entries** (`hasStrictFDerivAt_prodAux_entry` at
+`k = L`): each entry of `fun y => prod H (g y) i j` has a strict derivative at `x`, given each layer
+entry does. The `_deriv` input — `deepestEPivot` is a constant-linear post-composition of these. -/
+theorem hasStrictFDerivAt_prod_entry {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    (H : Fin (L + 1) → ℕ) (g : X → Params H) (x : X)
+    (g' : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)), X →L[ℝ] ℝ)
+    (hg : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      HasStrictFDerivAt (fun y => g y s i j) (g' s i j) x)
+    (i : Fin (H 0)) (j : Fin (H (Fin.last L))) :
+    ∃ D : X →L[ℝ] ℝ, HasStrictFDerivAt (fun y => prod H (g y) i j) D x :=
+  hasStrictFDerivAt_prodAux_entry H g x g' hg L (Nat.lt_succ_self L) i j
+
 end DLNFibre.DLN.RLCT
