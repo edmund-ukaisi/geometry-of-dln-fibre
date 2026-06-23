@@ -138,6 +138,33 @@ theorem framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
   simp only [framedParamsReg, framedLayer, readX_zero H r hr hL s, readY_zero H r hr hL s,
     readZ_zero H r hr hL s, add_zero]
 
+/-- Each `framedParamsReg` layer ENTRY is `ContDiff ⊤` in the `(reg, gauge)` slots: the entry is a
+`fromBlocks (1+X) Y Z 0` block entry (reindexed), i.e. `1+readX` / `readY` / `readZ` / `0`, each
+`ContDiff` (the read entries + `const`). The `_contdiff` layer input to `contDiff_prod_entry`. -/
+theorem contDiff_framedParamsReg_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsReg H r hr hL p s i j) := by
+  -- The entry is `(fromBlocks (1+X) Y Z 0) (e₁.symm i) (e₂.symm j)`; case-split on the sum indices.
+  have hentry : (fun p => framedParamsReg H r hr hL p s i j)
+      = fun p => Matrix.fromBlocks (1 + readX H r hr hL p s) (readY H r hr hL p s)
+          (readZ H r hr hL p s) (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
+          ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)) i)
+          ((rThresholdSplit r (H s.succ) (hr s.succ)) j) := by
+    funext p
+    simp only [framedParamsReg, framedLayer, Matrix.reindex_apply, Matrix.submatrix_apply,
+      Equiv.symm_symm]
+  rw [hentry]
+  rcases (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) i with a | a <;>
+    rcases (rThresholdSplit r (H s.succ) (hr s.succ)) j with b | b <;>
+    simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
+      Matrix.fromBlocks_apply₂₂, Matrix.add_apply, Matrix.one_apply, Matrix.zero_apply]
+  · -- (1 + X) entry: `(if a = b then 1 else 0) + readX … a b` — the `if` is a constant in `p`.
+    exact contDiff_const.add (contDiff_readX_entry H r hr hL s a b)
+  · exact contDiff_readY_entry H r hr hL s a b
+  · exact contDiff_readZ_entry H r hr hL s a b
+  · exact contDiff_const
+
 /-! ## PIN 2 frame bridge — the telescoping (#80, next chunk)
 
 The geometric bridge `dlnLoss H B (paramsSymm w) ≍ ‖∏(framed C) − D‖²` reduces to: the **endpoint-frame
