@@ -350,25 +350,17 @@ the SHARED coupling object — defined once, consumed by both pins. Its three pr
 expansion `∏(I+X_s) − I` read off the gauge slots, certified `dE(0) = id` (pp2 #91, general L). -/
 
 /-- The pack equivalence `Fin nReg ≃ (r×r) ⊕ ((r×M_L) ⊕ (M_0×r))` — the THREE regular residual blocks
-`(P11−I, P12, P21)` of `∏C` flatten into the `nReg = r(H_0+H_L−r)` reg coordinates (dimension count:
-`r·r + r·M_L + M_0·r = r(H_0+H_L−r)`). A CARDINALITY bijection (`Fintype.equivFin`-based) — the
-specific index alignment is the open `_deriv` obstruction (crux2's fork), but `_base`/`_contdiff` need
-ONLY that it is a coordinate bijection (linear, `0 ↦ 0`). -/
+`(P11−I, P12, P21)` of `∏C` flatten into the `nReg = r(H_0+H_L−r)` reg coordinates. #120-REFACTORED:
+the opaque `Fintype.equivFin` tail is replaced by `regPivotFinEquiv` (the TRANSPARENT
+`finProdFinEquiv`/`finSumFinEquiv` enumeration, `DeepestSplitReindex`) — same target type, but
+COMPUTABLE (`_apply` equation lemmas), so the reg-block-is-id alignment (`deepestEPivot_regSlice_fderiv_id`)
+reduces by `rfl`/`decide`. `_base`/`_contdiff` are equiv-agnostic; #80 is block-level (sum-via-bijection)
+— all stable under the value change. -/
 noncomputable def regResidualPack (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) :
     Fin (deepestNReg H r)
-      ≃ (Fin r × Fin r) ⊕ ((Fin r × Fin (H (Fin.last L) - r)) ⊕ (Fin (H 0 - r) × Fin r)) := by
-  refine (finCongr ?_).trans (Fintype.equivFin _).symm
-  simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
-  show deepestNReg H r = r * r + (r * (H (Fin.last L) - r) + (H 0 - r) * r)
-  -- `r(a+b−r) = r² + r(b−r) + (a−r)r` for `a, b ≥ r` (exact nat subtractions).
-  obtain ⟨a', ha'⟩ := Nat.le.dest (hr 0)
-  obtain ⟨b', hb'⟩ := Nat.le.dest (hr (Fin.last L))
-  unfold deepestNReg
-  rw [← ha', ← hb']
-  simp only [Nat.add_sub_cancel_left]
-  rw [show r + a' + (r + b') - r = r + (a' + b') by omega]
-  ring
+      ≃ (Fin r × Fin r) ⊕ ((Fin r × Fin (H (Fin.last L) - r)) ⊕ (Fin (H 0 - r) × Fin r)) :=
+  regPivotFinEquiv H r hr
 
 /-- The regular residual blocks `(P11 − I, P12, P21)` of the framed product `∏C|_{T=0}`, packed into
 `Fin nReg → ℝ` via `regResidualPack`. `P = ∏ (framedParamsReg p)` reindexed to `r ⊕ M` block shape;
