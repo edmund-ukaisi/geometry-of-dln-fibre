@@ -5,7 +5,10 @@
 > `(M, T)` ALONE (no `cascadeTuple`, no matrix): `rankFn M (cascadeTuple M T) = achieverRankPattern M T`.
 
 - **Lean:** `DLNFibre.DLN.RLCT.rankFn_cascadeTuple_eq_achieverRankPattern`
-  (`lean/DLNFibre/DLN/RLCT/Validate/CascadeAchiever.lean` @ `fb2ba3c`)
+  (`lean/DLNFibre/DLN/RLCT/Validate/CascadeAchiever.lean` @ `0211927`). The two defs `expSurvivor` /
+  `achieverRankPattern` are hoisted to **`DLNFibre.Core.CascadeAchiever`** (network-free, `Fin`/`ℕ` only) so
+  fm3's `RouteMBranchRead.realizes_ach` lock + the geometric-codim identification import the SAME decl; the
+  H-lemmas and the tie theorem stay DLN-side (they need `Adm`/`admPred`/`adm_le_width`).
 - **Gloss.** `rankFn M A i j` is the total `ℕ`-valued rank pattern of a tuple `A` (`(submult A i j).rank`
   on the `i ≤ j` triangle, `0` below). `achieverRankPattern M T i j` is the combinatorial `if`-formula
   `if i < j then expSurvivor M T j else if i = j then M i else 0`, with `expSurvivor M T` the running rank
