@@ -17,9 +17,14 @@ The two analytic facts reduce, via the abstract `RouteMCoverLemmas`, to BANKED `
 - `cover_ge_div` ← `routeM_coverGeDiv_of_boxDiverges` + the `(2,2,2)` box divergence (the content of
   `rlctAtOn_myF222_le`'s `≤`-leg, at-and-above the threshold).
 
-`myF222` is the flat `(2,2,2)` core; the seam to `dlnLoss H222 0` is `dlnLoss222_eq_myF222` (banked) —
-crux2 may instead key the instance to `myF222` directly (the rlct transports via
-`rlctAtOn_dlnLoss222_transport`). Here `F = myF222`.
+`myF222` is the flat `(2,2,2)` core; here `F = myF222` throughout (these facts say NOTHING about
+`dlnLoss H222 0` directly). The seam to the network loss is NOT a bare equality: `dlnLoss222_eq_myF222`
+(`Case222Algebra`) proves `dlnLoss H222 0 = myF222 ∘ e222`, i.e. `myF222` precomposed with a coordinate
+REINDEX `e222` (a measure-preserving linear change). So lifting these `myF222`-cover facts to a
+`dlnLoss H222 0` RLCT statement requires transporting across `e222` (`rlctAtOn_dlnLoss222_transport`,
+banked) — the `e222` reindex must stay explicit in that chain, not be elided. The cover facts here are
+honestly scoped to the flat core; the `e222`-transport to the network loss is the consumer's
+(crux2's) step.
 -/
 
 open MeasureTheory
