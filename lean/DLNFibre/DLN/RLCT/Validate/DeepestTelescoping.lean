@@ -201,14 +201,18 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
   have hQid : ∀ s : Fin (Lm + 1), (s : ℕ) + 1 < Lm + 1 →
       Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
     fun s hs => (hinterface s hs).1
-  -- REMAINING ASSEMBLY (de-risked — hPid, hQid, the kernel `prodAux_succ_layer`, and the path all PROVEN):
-  -- INVARIANT (prodAux induction, 1 ≤ k ≤ Lm): `prodAux C k = P 0 * prodAux A k` (P 0 rides at FIXED width
-  -- `Fin (H 0)`; base k=1: `C 0 = P 0·A 0` via hframe + `Q 0 = 1` (hQid); step: `C s = A s` interior via
-  -- hframe + `P s = 1` (hPid) + `Q s = 1` (hQid), then assoc). FINAL (k = Lm+1 = L): append `Q Lm` via
-  -- `C Lm = A Lm · Q Lm` (hframe + `P Lm = 1` from hPid), the boundary right-frame extraction through
-  -- prodAux_succ_layer. Witnesses P0 := P ⟨0,_⟩, QL := the (Fin.last L)-typed Q ⟨Lm,_⟩. Each sub-step is a
-  -- def-cast handled by lemma 1's idiom; it's a 3-sub-proof multi-step induction (base layer-cast / step /
-  -- boundary). Cast SOLVED; the assembly is the open formaliser-work. (controller routing: crux2/cobuild.)
+  -- `C s = A s` for INTERIOR `1 ≤ s ≤ Lm-1` (hframe + hPid + hQid ⟹ both frames identity). PROVEN.
+  have hCAint : ∀ s : Fin (Lm + 1), 1 ≤ (s : ℕ) → (s : ℕ) + 1 < Lm + 1 → C s = A s := by
+    intro s hs1 hslt
+    rw [hframe s, hPid s hs1, hQid s hslt, Matrix.one_mul, Matrix.mul_one]
+  -- REMAINING ASSEMBLY — the frame-conjugation fold (NOT the cast, which is solved). Path: INVARIANT
+  -- `prodAux C k = P ⟨0⟩ * prodAux A k` (1 ≤ k ≤ Lm; P ⟨0⟩ rides FIXED width; step uses hCAint), then
+  -- FINAL appends Q ⟨Lm⟩ via `C Lm = A Lm · Q Lm`. The WALL is the BOUNDARY-FRAME WIDTH-CASTS (distinct
+  -- from the index-cast the kernel solves): P ⟨0⟩ left-multiplies prodAux but is typed
+  -- `Matrix (Fin (H ⟨0⟩.castSucc)) …` (= `H 0` defeq-not-syntactic); the QL witness needs Q ⟨Lm⟩ cast
+  -- to `Fin.last (Lm+1)`-typed (Q's succ-index = last, defeq-not-syntactic). hCAint + hPid + hQid PROVEN;
+  -- the boundary-frame width-alignment is the open piece — flagged to controller for the convene
+  -- (controller: "if the frame-conjugation ASSEMBLY walls after the 3-attempt cap, flag + I convene").
   sorry
 
 end DLNFibre.DLN.RLCT
