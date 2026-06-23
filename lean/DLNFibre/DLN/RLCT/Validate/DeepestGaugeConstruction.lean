@@ -120,7 +120,8 @@ obligation with its signature pinned (`sorry` body, validated by the assembly ty
   (#54) over the bounded boundary frame factors (g164). The geometric heart.
 
 The `split` (`deepestSplit_exists`), `coreAbsorb` (`coreShearHomeo` + the Schur shift), and the
-determined slot-fix / basepoint / `coreAbsorb_rlct` (#71, global shear det = 1) are wired directly. -/
+determined slot-fix / basepoint / `coreAbsorb_rlct` (the MP route: `measurePreserving_coreShear` ⟹
+`rlctAtOn_comp_homeomorph`, det = 1 — NOT the abstract #71 bounded-unit peel) are wired directly. -/
 
 /-- **PIN 1 — the regular straightening** (the (C) wall-fallback shape, #90). The honest E-straightening
 is a LOCAL diffeo on `𝓝 0` that does NOT extend to a global spectator-fixing homeomorph in Mathlib
