@@ -1756,15 +1756,21 @@ Immediate order:
    The continuing Case 2 next-state source-product reindex from displayed
    `Csucc`/post-pivot residual data has landed, and the selected-entry
    chart-family scaffold now identifies the displayed pivot source chart with
-   the generic finite selected-entry chart data.  The next source-moving
-   frontier should be A4/A0: build a non-vacuous normal-crossing/chart
-   certificate spine with actual chart/exponent/unit/count fields, or attack
-   genuine source/chart production beyond the formula-level `Csucc` reindex.
+   the generic finite selected-entry chart data.  The displayed continuing
+   source-chart certificate now packages this into an A4-local fielded
+   certificate with finite principalization, corrected post-data, next-center
+   nonemptiness, and reindexed next-source product.  The next source-moving
+   frontier should be A4/A0: either build the one-step selected-entry
+   squared-center-norm/Jacobian microcertificate over an appropriate real or
+   ordered-field setting, or design the supplied A0 monomial/unit extension.
+   Do not feed the A4 local certificate directly into
+   `AoyagiNormalCrossingChartCertificate` without actual loss/Jacobian
+   monomial identities and unit fields.
+   The next source-moving frontier should not be another consumer of supplied
+   obligations unless it removes a real downstream obstacle.
    Record explicitly that Aoyagi's printed `b'_i = u b_i` and later outside
    `u diag(b')` lines are not simultaneously literal; future statements using
-   post weights should keep the corrected convention visible.  Do not let this
-   become another supplied-obligation consumer unless it removes a real
-   downstream obstacle.
+   post weights should keep the corrected convention visible.
 7. DLN notation translation. The first formula-notation slice has landed in
    `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`: Definition 3 ceiling data,
    integer reduced widths, indexed selected widths, Theorem 2 order formula,

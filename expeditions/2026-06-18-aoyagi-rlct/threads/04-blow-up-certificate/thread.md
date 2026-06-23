@@ -4355,3 +4355,44 @@ repair of the printed Case 2 vector mismatch.  The review also records the
 source caveat that Aoyagi's printed `b'_i = u b_i` line and later extra
 outside `u diag(b')` line cannot both be read literally; Lean follows the
 corrected post-weight convention.
+
+## 2026-06-23 Lean Case 2 continuing reindexed source-chart certificate
+
+Reproduction:
+`reproduction-case2-continuing-reindexed-source-chart-certificate-a4.md`.
+Statement card:
+`statement-card-a4-case2-continuing-reindexed-source-chart-certificate.md`.
+Review artifact:
+`review-case2-continuing-reindexed-source-chart-certificate-a4.md`.
+
+Lean now packages the displayed continuing Case 2 source chart as an A4-local
+fielded certificate:
+
+```text
+Case2DisplayedContinuingReindexedSourceChartCertificate
+```
+
+The certificate includes the displayed pivot source-chart formula, finite
+center membership/divisibility/principalization, corrected post-weight
+convention, nonempty next residual center under the continuing guard, the
+reindexed next same-stage source-product equality, corrected exponent/level
+post-data, and the equality between the corrected new numerator and the
+residual-block center cardinality.  The matrix equality itself is abbreviated
+as:
+
+```text
+Case2DisplayedReindexedNextSourceProductEq
+```
+
+and the concrete constructor is:
+
+```text
+sourceChartMap_continuingReindexedSourceChartCertificate
+```
+
+This is not an A0 normal-crossing certificate.  It does not include
+loss/Jacobian-prior monomial identities, unit factors, analytic chart coverage,
+successor transition regularity, source production of `Csucc`, source suffix
+production, terminal source production, pole order, or RLCT extraction.  It
+keeps the corrected post-weight convention visible and does not double-count
+the printed outside `u` factor.

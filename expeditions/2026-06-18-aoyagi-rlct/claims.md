@@ -738,6 +738,11 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-selected-entry-chart-family-data-a4.md`;
 	  xhigh review passed with the printed weight-factor caveat recorded at
 	  `threads/04-blow-up-certificate/review-case2-selected-entry-chart-family-data-a4.md`.
+	  Reproduction of the Case 2 continuing reindexed source-chart certificate
+	  is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-certificate-a4.md`;
+	  xhigh review passed and is saved at
+	  `threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-certificate-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -1092,6 +1097,14 @@ No such claim is formalisation-ready until both fields are filled.
 	  source-product reindex and returns corrected concrete post-data
 	  projections.  This is corrected displayed algebra, not source production
 	  or a literal reading of the inconsistent printed outside-`u` factor.
+	  Added the fielded continuing local certificate
+	  `Case2DisplayedReindexedNextSourceProductEq`,
+	  `Case2DisplayedContinuingReindexedSourceChartCertificate`, and
+	  `sourceChartMap_continuingReindexedSourceChartCertificate`, packaging the
+	  displayed source chart, finite center principalization, continuing
+	  next-center nonemptiness, reindexed next-source product, corrected post
+	  data, post-weight convention, and new-numerator center cardinality without
+	  entering A0 normal-crossing data.
 	  Added the displayed Case 2 residual-block coordinate count:
   `case2_continuation_le_prefixMinNat_current`,
   `case2_continuation_le_width_next`, `case2ResidualBlockRows_card`,

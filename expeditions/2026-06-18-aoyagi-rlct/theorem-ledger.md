@@ -5530,6 +5530,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-chart-family-data-a4.md`.
 
+Latest A4 Case 2 continuing reindexed source-chart certificate:
+`BlowupArithmetic.lean` now contains
+`Case2DisplayedReindexedNextSourceProductEq`,
+`Case2DisplayedContinuingReindexedSourceChartCertificate`, and
+`sourceChartMap_continuingReindexedSourceChartCertificate`.  These package the
+displayed continuing source-chart formula, finite center
+membership/divisibility/principalization, the corrected post-weight convention,
+next-center nonemptiness under `J+2 <= prefixMinNat n (S+1)`, the reindexed
+next same-stage source-product equality, corrected exponent/level/gap
+post-data, and the corrected new-numerator center-cardinality equality.  This
+is A4-local data, not an A0 normal-crossing chart certificate: no loss or
+Jacobian-prior monomial identities, unit factors, analytic coverage,
+successor transition regularity, source production of `Csucc`, suffix
+production, pole order, or RLCT extraction are proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-certificate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-continuing-reindexed-source-chart-certificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-certificate-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
