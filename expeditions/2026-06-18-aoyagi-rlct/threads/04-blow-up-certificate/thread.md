@@ -4625,3 +4625,40 @@ This is a local finite normal-crossing microcertificate only.  It is not chart
 coverage, source production of successor data, analytic regularity, an
 analytic Jacobian or volume-form theorem, a total DLN loss monomial identity,
 a global A0 chart family, pole order, or RLCT extraction.
+
+## 2026-06-23 Lean selected-entry local finite exponent minimum/order
+
+Reproduction:
+`reproduction-selected-entry-local-exponent-min-order-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-local-exponent-min-order.md`.
+Review artifact:
+`review-selected-entry-local-exponent-min-order-a4.md`.
+
+Lean now computes the finite exponent consequences of the local
+one-coordinate selected-entry microcertificate:
+
+```text
+selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero
+selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two
+selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_le_one
+selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one
+case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero
+case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two
+case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one
+```
+
+The unique local coordinate has `k=1` and
+`h = card(center.erase pivot)`, so `h+1 = center.card` and its finite ratio is
+`center.card / 2`.  Since this finite certificate has one active coordinate,
+the microcertificate's own finite exponent minimum is also `center.card / 2`.
+Its finite exponent order is `1`: the finite exponent interface gives
+positivity, and every chart has at most one coordinate.
+
+For the displayed Case 2 residual-block center, the local finite minimum is
+`card(case2ResidualBlockPivotEntries n S J) / 2` and the local finite order
+is `1`.
+
+This is not the global A0 exponent minimum, not a global active-ratio lower
+bound, not a global chart-count/order theorem, not pole order, and not RLCT
+extraction.

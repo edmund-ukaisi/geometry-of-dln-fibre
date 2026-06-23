@@ -901,6 +901,18 @@ No such claim is formalisation-ready until both fields are filled.
 	  one-coordinate exponent data.  It is not global chart production, chart
 	  coverage, source production, analytic Jacobian/volume-form data, pole
 	  order, or RLCT extraction.
+	  Also proved the local finite exponent arithmetic for that
+	  microcertificate's own exponent data:
+	  `selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+	  `selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+	  `selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`,
+	  `case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+	  `case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+	  and
+	  `case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`.
+	  The local finite minimum is `center.card / 2` and the local finite
+	  order is `1`; this is not the global A0 minimum, global A0 order, pole
+	  order, or RLCT.
 	  Also proved
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and

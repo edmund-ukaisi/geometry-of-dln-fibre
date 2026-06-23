@@ -111,6 +111,85 @@ namespace selectedEntryCenterSqFormalJacobianChartCertificate
       (center.erase pivot.1).card :=
   rfl
 
+/-- The unique coordinate has finite exponent ratio `|center| / 2`. -/
+theorem exponentData_ratioAt_zero_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData.ratioAt ((0 : Fin 1), (0 : Fin 1)) =
+      (center.card : ℚ) / 2 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData
+  have hloss : D.lossExp (0 : Fin 1) (0 : Fin 1) = 1 := rfl
+  have hjac : D.jacobianPriorExp (0 : Fin 1) (0 : Fin 1) + 1 =
+      center.card := by
+    exact Finset.card_erase_add_one pivot.2
+  exact D.ratioAt_eq_nat_div_two_of_lossExp_eq_one_of_jacobianPriorExp_add_one_eq
+    hloss hjac
+
+/-- The one-coordinate finite exponent minimum of the local selected-entry
+microcertificate is `|center| / 2`. -/
+theorem exponentData_exponentMinimum_eq_centerCard_div_two
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData.exponentMinimum =
+      (center.card : ℚ) / 2 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData
+  have hratio :
+      D.ratioAt ((0 : Fin 1), (0 : Fin 1)) =
+        (center.card : ℚ) / 2 :=
+    exponentData_ratioAt_zero_zero (K := K) pivot
+  refine D.exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
+    (D.mem_activePairs_of_lossExp_eq_one (by rfl)) hratio ?_
+  intro p hp
+  rcases p with ⟨c, j⟩
+  fin_cases c
+  fin_cases j
+  exact le_of_eq (by simpa using hratio.symm)
+
+/-- In the local one-coordinate selected-entry microcertificate, every chart
+has at most one coordinate attaining the finite exponent minimum. -/
+theorem exponentData_minCountInChart_le_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center)
+    (c :
+      Fin (selectedEntryCenterSqFormalJacobianChartCertificate
+        (K := K) pivot).exponentData.numCharts) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData.minCountInChart c ≤ 1 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData
+  rw [AoyagiNormalCrossingExponentData.minCountInChart,
+    AoyagiNormalCrossingExponentData.minCoordsInChart]
+  refine le_trans (Finset.card_filter_le _ _) ?_
+  change (Finset.univ : Finset (Fin 1)).card ≤ 1
+  simp
+
+/-- The local one-coordinate selected-entry microcertificate has finite
+exponent order `1`. -/
+theorem exponentData_exponentOrder_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (pivot : center) :
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData.exponentOrder = 1 := by
+  let D :=
+    (selectedEntryCenterSqFormalJacobianChartCertificate
+      (K := K) pivot).exponentData
+  apply le_antisymm
+  · rcases D.exists_chart_minCount_eq_exponentOrder with ⟨c, hc⟩
+    rw [← hc]
+    exact exponentData_minCountInChart_le_one (K := K) pivot c
+  · exact D.one_le_exponentOrder
+
 end selectedEntryCenterSqFormalJacobianChartCertificate
 
 /-- Case 2 specialization of the selected-entry finite normal-crossing
@@ -155,6 +234,66 @@ coordinates. -/
       (K := K) n hS hcont).jacobianPriorExp (0 : Fin 1) (0 : Fin 1) =
       ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card :=
   rfl
+
+/-- The unique coordinate in the Case 2 finite microcertificate has finite
+exponent ratio equal to half the residual-block center cardinality. -/
+theorem exponentData_ratioAt_zero_zero
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.ratioAt
+        ((0 : Fin 1), (0 : Fin 1)) =
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 :=
+  selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero
+    (K := K)
+    ⟨(J + 1, J + 1),
+      case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont⟩
+
+/-- The finite exponent minimum of the Case 2 local microcertificate is half
+the residual-block center cardinality. -/
+theorem exponentData_exponentMinimum_eq_centerCard_div_two
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.exponentMinimum =
+      ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 := by
+  let D :=
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData
+  have hratio :
+      D.ratioAt ((0 : Fin 1), (0 : Fin 1)) =
+        ((case2ResidualBlockPivotEntries n S J).card : ℚ) / 2 :=
+    exponentData_ratioAt_zero_zero (K := K) n hS hcont
+  refine D.exponentMinimum_eq_of_activePair_ratioAt_eq_of_forall_le
+    (D.mem_activePairs_of_lossExp_eq_one (by rfl)) hratio ?_
+  intro p hp
+  rcases p with ⟨c, j⟩
+  fin_cases c
+  fin_cases j
+  exact le_of_eq (by simpa using hratio.symm)
+
+/-- The Case 2 local one-coordinate microcertificate has finite exponent
+order `1`. -/
+theorem exponentData_exponentOrder_eq_one
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData.exponentOrder = 1 := by
+  let D :=
+    (case2DisplayedCenterSqFormalJacobianChartCertificate
+      (K := K) n hS hcont).exponentData
+  apply le_antisymm
+  · rcases D.exists_chart_minCount_eq_exponentOrder with ⟨c, hc⟩
+    rw [← hc]
+    rw [AoyagiNormalCrossingExponentData.minCountInChart,
+      AoyagiNormalCrossingExponentData.minCoordsInChart]
+    refine le_trans (Finset.card_filter_le _ _) ?_
+    change (Finset.univ : Finset (Fin 1)).card ≤ 1
+    simp
+  · exact D.one_le_exponentOrder
 
 /-- The Case 2 finite microcertificate supplies the exponent-coordinate bridge
 for its own one-coordinate exponent data.

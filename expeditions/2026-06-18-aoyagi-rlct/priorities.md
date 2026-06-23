@@ -155,6 +155,19 @@ chart family for the DLN loss, prove chart coverage, source production,
 analytic regularity, an analytic Jacobian/volume-form theorem, active-ratio
 lower bounds, pole order, or RLCT extraction.
 
+The local finite exponent arithmetic for that microcertificate is also
+Lean-proved in the same file:
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+and
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`.
+This proves only that the local one-coordinate microcertificate has finite
+minimum `center.card / 2` and finite order `1`; it does not prove the global
+A0 active-ratio lower bound or global chart-count/order theorem.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

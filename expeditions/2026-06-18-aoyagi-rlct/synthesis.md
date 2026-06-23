@@ -5841,6 +5841,30 @@ Review:
 `threads/04-blow-up-certificate/review-selected-entry-normal-crossing-microcertificate-a4.md`
 passed after polish.
 
+Latest A4 selected-entry local finite exponent minimum/order:
+`SelectedEntryNormalCrossing.lean` now also proves
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_minCountInChart_le_one`,
+`selectedEntryCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_ratioAt_zero_zero`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentMinimum_eq_centerCard_div_two`,
+and
+`case2DisplayedCenterSqFormalJacobianChartCertificate.exponentData_exponentOrder_eq_one`.
+For the one-coordinate local microcertificate, the finite ratio and finite
+minimum are `center.card / 2`, and the finite order is `1`; the Case 2
+specialization replaces `center` by `case2ResidualBlockPivotEntries n S J`.
+This is only the microcertificate's own finite exponent data.  It does not
+prove the global A0 minimum, a global A0 order count, chart production, pole
+order, or RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-local-exponent-min-order-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-local-exponent-min-order.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-local-exponent-min-order-a4.md`
+passed.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

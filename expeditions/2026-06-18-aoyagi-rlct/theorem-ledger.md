@@ -5697,6 +5697,23 @@ Review:
 `threads/04-blow-up-certificate/review-selected-entry-normal-crossing-microcertificate-a4.md`
 passed after polish.
 
+Latest A4 selected-entry local finite exponent minimum/order:
+`SelectedEntryNormalCrossing.lean` now proves local finite exponent
+consequences for the microcertificate's own one-coordinate exponent data:
+the unique ratio is `center.card / 2`, the finite exponent minimum is
+`center.card / 2`, every chart has minimum-coordinate count at most `1`, and
+the finite exponent order is `1`.  The Case 2 specialization gives ratio and
+minimum `card(case2ResidualBlockPivotEntries n S J) / 2` and order `1`.
+This is not the global A0 minimum, not a global A0 chart-count/order theorem,
+not chart production, not pole order, and not RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-local-exponent-min-order-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-local-exponent-min-order.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-local-exponent-min-order-a4.md`
+passed.
+
 Latest A6 Case 2 finite-formula wrapper:
 `Case2Theorem2FiniteExponentBridge.lean` now contains
 `Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData`.
