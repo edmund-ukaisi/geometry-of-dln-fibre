@@ -44,6 +44,15 @@ geometric characterization. Reviewed (fidelity SURVIVED, a3a7737, decorrelated-C
 The leaf VALUE must route through the **#70 degenerate-boundary Morse handler** (`rlctAt = nReg/2`), not the
 additive `½·minAdm` fold. This is the leaf-arm value-wiring obligation for sub-3/sub-4 (open).
 
+**LEAF-FIRST DISPATCH (the #103 classify-order constraint, controller via fm3).** `routeStep`'s classify
+must be **leaf-first**: `if isLeafNode M then .leaf … else .branch …` — NOT split-first
+(`if schurState-applicable then branch else leaf`). The `(2,2,0)` anchor is the proof the order matters: both
+pivot vertices are `≥ 1` so `schurState` IS technically applicable, yet `minAdm = 0` ⟹ it is a LEAF. A
+split-first dispatch would wrongly branch there and over-pivot past the geometric leaf → wrong value.
+Leaf-first checks `minAdm = 0` first and stops even when the split is technically applicable. The leaf test
+GATES the branch — which is why `isLeafNode_iff_width_zero` (RHS = "a collapsed width / no positive-codim
+stratum", NOT "split fails") is the load-bearing base case the dispatch ORDER consumes.
+
 > **Claim (the branch constructor — sub-2a).** The generic `RouteStep.branch` assembly, consuming
 > root-anchored witnesses.
 >
