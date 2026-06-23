@@ -1,5 +1,6 @@
 import DLNFibre.Core.CascadeRank
 import DLNFibre.Core.Submult
+import DLNFibre.Core.OrbitKostant
 
 /-!
 # `DLNFibre.Core.CascadeRealizable` — the diagonal cascade realizes its rank pattern
@@ -85,5 +86,21 @@ theorem rankPattern_cascade_prefix (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ)
     rankPattern d (cascadeTuple (k := k) d t) 0 j (Fin.zero_le j)
       = survivors (d j) (d 0) (cascadeCount d t 0 j) := by
   rw [rankPattern, submult_cascade_prefix d t ht j, rank_partialId]
+
+/-- **The cascade's rank pattern is realizable** — `rankFn (cascadeTuple d t) ∈ RealizableRank d`. The
+membership is by construction (`⟨cascadeTuple d t, rfl⟩`, the tuple realizes its own pattern); the SUBSTANCE
+(non-vacuity) is `rankPattern_cascade_prefix`, which pins the realized pattern's `(0, j)` row to the
+prescribed running-rank window-min `survivors (d_j) (d_0) (cascadeCount 0 j)`. So for the §4 achiever, with
+`t` = the achiever's running ranks, the cascade realizes the achiever rank pattern's running-rank row — the
+explicit witness that the achiever stratum is reached (NOT a surjectivity theorem).
+
+**Scope.** This gives the `(0, j)` row (the running ranks the achiever-only §4 consumes). The full interior
+2-index pattern `rankPattern (cascadeTuple) i j` for `i > 0` (needed for the literal `Adm = RealizableRank`
+2-index match, #96) is the `i`-relative window-min `survivors (d_j) (d_i) (windowMin over [i,j))` — the same
+`partialId_mul` iteration anchored at `i` (an `i`-relative count, not the from-`0` `cascadeCount`); roadmapped,
+not needed for the achiever-row realizability here. -/
+theorem cascadeTuple_mem_realizableRank (d : Fin (N + 1) → ℕ) (t : Fin N → ℕ) :
+    rankFn d (cascadeTuple (k := k) d t) ∈ Set.range (rankFn (k := k) d) :=
+  ⟨cascadeTuple d t, rfl⟩
 
 end DLNFibre.Core
