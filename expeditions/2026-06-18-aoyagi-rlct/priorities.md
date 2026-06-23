@@ -139,6 +139,22 @@ over all active coordinates to prove
 lower bound remains a supplied obligation; no order count, chart production,
 analytic Jacobian, pole order, or RLCT extraction is proved.
 
+The current A4/A0 selected-entry finite normal-crossing microcertificate is
+`threads/04-blow-up-certificate/reproduction-selected-entry-normal-crossing-microcertificate-a4.md`.
+Lean now constructs a one-chart `AoyagiNormalCrossingChartCertificate` for
+the finite selected-entry center square-sum and the formal pivot-first
+determinant:
+`selectedEntryCenterSqFormalJacobianChartCertificate`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate`, and
+`case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`.
+The generic certificate uses a finite-center value function as its parameter
+and residual coordinates indexed by `center.erase pivot`.  This removes the
+supplied exponent-coordinate bridge only for this local one-coordinate
+microcertificate's own exponent data.  It does not construct the global A0
+chart family for the DLN loss, prove chart coverage, source production,
+analytic regularity, an analytic Jacobian/volume-form theorem, active-ratio
+lower bounds, pole order, or RLCT extraction.
+
 ## Current frontier checkpoint - 2026-06-21
 
 Current A4 Case 1(2) source-backed local frontier has landed:

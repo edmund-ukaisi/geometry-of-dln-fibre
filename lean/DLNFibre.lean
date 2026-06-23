@@ -114,3 +114,4 @@ import DLNFibre.DLN.Aoyagi.Theorem2TerminalOrderBridge
 import DLNFibre.DLN.Aoyagi.Case2FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case2Theorem2FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case2Theorem2ChartFinalBridge
+import DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing

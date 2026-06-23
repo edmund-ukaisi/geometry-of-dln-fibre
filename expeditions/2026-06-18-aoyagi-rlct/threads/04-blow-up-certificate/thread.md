@@ -4591,3 +4591,37 @@ this value is `D.exponentMinimum`.
 This is finite minimum bookkeeping only.  It does not prove the lower bound,
 construct `D` or `p`, prove an order count, construct charts, prove analytic
 Jacobian data, prove pole order, or extract an RLCT.
+
+## 2026-06-23 Lean selected-entry finite normal-crossing microcertificate
+
+Reproduction:
+`reproduction-selected-entry-normal-crossing-microcertificate-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-normal-crossing-microcertificate.md`.
+Review artifact:
+`review-selected-entry-normal-crossing-microcertificate-a4.md`.
+
+Lean now packages the selected-entry center-square and formal pivot-first
+determinant calculation as a one-chart finite
+`AoyagiNormalCrossingChartCertificate`:
+
+```text
+selectedEntryCenterSqFormalJacobianChartCertificate
+case2DisplayedCenterSqFormalJacobianChartCertificate
+case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge
+```
+
+The generic certificate has one chart and one coordinate `u`; its loss is the
+finite center square-sum, its parameter is the finite-center value function,
+its residual coordinates are indexed by `center.erase pivot`, its loss unit
+is the normalized square-sum factor, and its `jacobianPrior` field is the
+formal determinant `u ^ card(center.erase pivot)`.  The Case 2 specialization
+uses the displayed pivot `(J+1,J+1)` in
+`case2ResidualBlockPivotEntries n S J`.  For this microcertificate's own
+one-coordinate exponent data, the Case 2/A0 coordinate bridge is constructed
+by reflexive exponent-array equalities.
+
+This is a local finite normal-crossing microcertificate only.  It is not chart
+coverage, source production of successor data, analytic regularity, an
+analytic Jacobian or volume-form theorem, a total DLN loss monomial identity,
+a global A0 chart family, pole order, or RLCT extraction.

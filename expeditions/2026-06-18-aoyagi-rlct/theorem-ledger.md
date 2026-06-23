@@ -5673,6 +5673,30 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-a0-exponent-minimum-bridge-a4.md`.
 
+Latest A4/A0 selected-entry finite normal-crossing microcertificate:
+`SelectedEntryNormalCrossing.lean` now contains
+`selectedEntryCenterSqFormalJacobianChartCertificate`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate`, and
+`case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`.
+This constructs a one-chart `AoyagiNormalCrossingChartCertificate` for the
+finite selected-entry center square-sum and formal pivot-first determinant.
+The parameter is a finite-center value function, the chart residuals are
+indexed by `center.erase pivot`, and the unique coordinate has `lossExp = 1`
+and formal Jacobian/prior exponent `card(center.erase pivot)`.  The Case 2
+displayed pivot specializes this to `case2ResidualBlockPivotEntries n S J`.
+For the microcertificate's own one-coordinate exponent data, the existing
+Case 2/A0 coordinate bridge is constructed rather than supplied.  This is not
+global A0 chart production, chart coverage, source production, analytic
+Jacobian/volume-form data, active-ratio lower bounds, pole order, or RLCT
+extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-normal-crossing-microcertificate-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-normal-crossing-microcertificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-normal-crossing-microcertificate-a4.md`
+passed after polish.
+
 Latest A6 Case 2 finite-formula wrapper:
 `Case2Theorem2FiniteExponentBridge.lean` now contains
 `Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_of_forall_le_of_centerCard_eq_fromCeilData`.

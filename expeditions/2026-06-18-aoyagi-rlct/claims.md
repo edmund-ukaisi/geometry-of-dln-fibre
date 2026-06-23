@@ -770,6 +770,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-minimum-bridge-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
 	  `threads/04-blow-up-certificate/review-case2-a0-exponent-minimum-bridge-a4.md`.
+	  Reproduction of the selected-entry finite normal-crossing
+	  microcertificate is saved at
+	  `threads/04-blow-up-certificate/reproduction-selected-entry-normal-crossing-microcertificate-a4.md`;
+	  xhigh fidelity/bedrock review is pending.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -884,6 +888,19 @@ No such claim is formalisation-ready until both fields are filled.
 	  certificate together with the selected-entry center-square unit witness.
 	  This is still not analytic chart coverage, unit control for `P`/`Q`,
 	  a total loss unit, normal crossings, pole order, or RLCT.
+	  Also proved the selected-entry finite normal-crossing microcertificate
+	  in `lean/DLNFibre/DLN/Aoyagi/SelectedEntryNormalCrossing.lean`:
+	  `selectedEntryCenterSqFormalJacobianChartCertificate`,
+	  `case2DisplayedCenterSqFormalJacobianChartCertificate`, and
+	  `case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`.
+	  This constructs a one-chart `AoyagiNormalCrossingChartCertificate` only
+	  for the finite selected-entry center square-sum and formal pivot-first
+	  determinant.  Its parameter is the finite-center value function and its
+	  chart residuals are indexed by `center.erase pivot`; the Case 2/A0
+	  coordinate bridge is constructed only for that microcertificate's own
+	  one-coordinate exponent data.  It is not global chart production, chart
+	  coverage, source production, analytic Jacobian/volume-form data, pole
+	  order, or RLCT extraction.
 	  Also proved
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and

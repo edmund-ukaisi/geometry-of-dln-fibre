@@ -5810,6 +5810,37 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-a0-exponent-minimum-bridge-a4.md`.
 
+Latest A4/A0 selected-entry finite normal-crossing microcertificate:
+`SelectedEntryNormalCrossing.lean` now contains
+`selectedEntryCenterSqFormalJacobianChartCertificate`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.lossExp_zero_zero`,
+`case2DisplayedCenterSqFormalJacobianChartCertificate.jacobianPriorExp_zero_zero`,
+and
+`case2DisplayedCenterSqFormalJacobianChartCertificate.localExponentCoordinateBridge`.
+The generic certificate packages the selected-entry finite center-square
+pullback as a one-chart `AoyagiNormalCrossingChartCertificate`: the single
+coordinate has loss exponent `1`, the parameter is the finite-center value
+function, the residual coordinates are indexed by `center.erase pivot`, the
+loss unit is the normalized square-sum factor, and the `jacobianPrior` field
+is the formal pivot-first determinant `u ^ card(center.erase pivot)`.  The
+Case 2 specialization uses the displayed pivot `(J+1,J+1)`, and for this
+local microcertificate's own exponent data Lean constructs the Case 2/A0
+exponent-coordinate bridge by reflexive exponent-array equalities.
+
+This is a local finite normal-crossing microcertificate only.  It is not
+chart coverage, source production of successor data, analytic regularity, an
+analytic Jacobian/volume-form theorem, a total DLN loss monomial identity, a
+global A0 chart family, active-ratio lower bounds, pole order, or RLCT
+extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-normal-crossing-microcertificate-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-normal-crossing-microcertificate.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-normal-crossing-microcertificate-a4.md`
+passed after polish.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
