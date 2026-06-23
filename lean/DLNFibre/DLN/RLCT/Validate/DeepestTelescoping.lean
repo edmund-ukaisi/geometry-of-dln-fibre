@@ -219,7 +219,9 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
         P ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix _ _ ℝ)) :
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
-      prod H C = P0 * prod H A * QL := by
+      prod H C = P0 * prod H A * QL
+      ∧ (∀ (hP0 : IsUnit (P (⟨0, by omega⟩ : Fin L))) (hQL : IsUnit (Q (⟨L - 1, by omega⟩ : Fin L))),
+          IsUnit P0 ∧ IsUnit QL) := by
   -- ALL interior frames are identity (`hinterface`). `P s = 1` for `1 ≤ s` (interior-left + boundary), and
   -- `Q s = 1` for `s ≤ Lm-1` (interior-right). So `C 0 = P 0 · A 0`, `C s = A s` (1 ≤ s ≤ Lm-1),
   -- `C Lm = A Lm · Q Lm`. Then `∏C = P 0 · ∏A · Q Lm` (P 0 rides at fixed width `Fin (H 0)`).
@@ -296,7 +298,13 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
             ih (Nat.lt_of_succ_lt hsucc) hkpos (by omega), Matrix.mul_assoc]
   -- FINAL: `prod C = prodAux C (Lm+1) = prodAux C Lm * (cast C_Lm)`; `C_Lm = A_Lm·Q_Lm` (P_Lm = 1, hPid);
   -- hinv ⟹ `= (cast P⟨0⟩)·prodAux A Lm·(cast A_Lm·Q_Lm) = P0 · prod A · QL`. ∃-intro the cast P⟨0⟩, Q⟨Lm⟩.
-  refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_⟩
+  refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_, ?_⟩
+  on_goal 2 =>
+    -- the boundary frames are the witnesses (cast by `h0cs`/`hLs`); `IsUnit` transports along the cast.
+    intro hP0 hQL
+    refine ⟨?_, ?_⟩
+    · cases h0cs; simpa using hP0
+    · cases hLs; simpa using hQL
   -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
   have hLm1 : Lm + 1 < Lm + 1 + 1 := Nat.lt_succ_self (Lm + 1)
   have hLmL : Lm < Lm + 1 := Nat.lt_succ_self _
