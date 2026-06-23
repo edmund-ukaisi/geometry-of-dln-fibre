@@ -51,4 +51,38 @@ theorem deepestPoint_frame_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     (deepestPoint_isDeep H r B hB hr hL).2.1 s
   exact Core.Matrix.rank_normal_form_exists (deepestPoint H r B hB hr hL s) hrank
 
+/-- **Interior layers ARE the block-normal corner** (#95, the (iii) fix). On every strict-interior
+layer (`0 < s ∧ s+1 < L`), the constructed deepest point equals the corner block `diag(I_r, 0)`
+verbatim — the strengthened `IsDeepLayers.2.2`, carried through `Classical.choice` by
+`deepestPoint_isDeep`. This is sharper than `deepestPoint_frame_exists` on the interior: there the
+frame `(P_s, Q_s)` is a generic rank-normal-form, here `deepestPoint s` is ALREADY the corner, so the
+interior frame is the IDENTITY (`deepestPoint_interior_frame_id`). -/
+theorem deepestPoint_interior_eq_corM (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+      deepestPoint H r B hB hr hL s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) :=
+  (deepestPoint_isDeep H r B hB hr hL).2.2
+
+/-- **The interior gauge frame is the identity** (#95). On every strict-interior layer, the trivial
+frame `P = Q = 1` carries the deepest layer to the block-normal corner — because the layer IS the
+corner (`deepestPoint_interior_eq_corM`). So in the framed product `∏ Aˢ`, the interior frames cancel
+to identity and only the two boundary frames carry `block_elimination`'s units (light-(iii)
+telescoping). The uniform existential `deepestPoint_frame_exists` still holds; this names the interior
+witness explicitly. -/
+theorem deepestPoint_interior_frame_id (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+      (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+          * (deepestPoint H r B hB hr hL s)
+          * (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  intro s hpos hlt
+  rw [Matrix.one_mul, Matrix.mul_one]
+  exact deepestPoint_interior_eq_corM H r B hB hr hL s hpos hlt
+
 end DLNFibre.DLN.RLCT
