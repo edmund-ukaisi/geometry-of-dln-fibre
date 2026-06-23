@@ -5321,6 +5321,30 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
 
+Latest A4 Case 2 source-current stack chart-family-free directification:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withoutChartFamily`.
+It has the same finite source-current row stack conclusion as
+`sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withCorrectedPostData`,
+but no `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary` inputs.  The old API is retained as a
+compatibility wrapper and ignores its chart-family argument.  The proof uses
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily`
+and the two source-current row reindex lemmas
+`case2SourceCurrentFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv` and
+`case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv`.
+This is not chart production of the successor following block, source
+production of `Csucc` or `C'^(S+1)`, suffix production, successor chart-family
+construction, coverage, transition regularity, coordinate-derived corrected
+post-data, analytic Jacobian/volume-form theorem, normal crossings, pole
+order, termination, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-without-chart-family-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-current-stack-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-current-stack-without-chart-family-a4.md`.
+
 Latest A4 Case 2 branchwise successor-production boundary:
 `threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`
 records a reproduction-first contract rather than a Lean theorem.  It anchors

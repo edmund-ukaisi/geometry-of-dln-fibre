@@ -243,6 +243,19 @@ explicit; there is still no pivot-row equality, source production of `Csucc`
 or `C'^(S+1)`, suffix production, coverage/transition regularity, analytic
 Jacobian data, normal crossings, pole order, or RLCT.
 
+The source-current row stack wrapper is now also direct with respect to the
+chart-family-free old-top/source-suffix paper-`C'` stack:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-without-chart-family-a4.md`.
+Lean provides
+`sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withoutChartFamily`;
+the older chart-family-bearing API is a compatibility wrapper.  This is only
+formula-level row presentation of the same continuing stack via
+`case2SourceCurrentFollowingBlock` and
+`case2SourceSuccessorFollowingBlock`.  It still does not source-produce
+`Csucc` or `C'^(S+1)`, produce suffixes, construct successor charts, prove
+coverage/transition regularity, analytic Jacobian data, normal crossings, pole
+order, termination, or RLCT.
+
 The next A4 boundary has been made reproduction-first rather than wrapper-led:
 `threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`.
 It records that a genuine Case 2 source-production theorem must be branchwise:

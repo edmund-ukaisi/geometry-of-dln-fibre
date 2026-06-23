@@ -779,6 +779,12 @@ No such claim is formalisation-ready until both fields are filled.
 	  xhigh source-frontier and Lean dependency reviews passed and are saved
 	  at
 	  `threads/04-blow-up-certificate/review-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
+	  Reproduction of the Case 2 source-current stack chart-family-free
+	  directification is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-source-current-stack-without-chart-family-a4.md`;
+	  xhigh source/fidelity and Lean dependency reviews passed and are saved
+	  at
+	  `threads/04-blow-up-certificate/review-case2-source-current-stack-without-chart-family-a4.md`.
 	  Reproduction of the A4/A0 Case 2 exponent-coordinate bridge is saved at
 	  `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
@@ -1709,6 +1715,15 @@ No such claim is formalisation-ready until both fields are filled.
   These remain lower-row finite algebra only and do not add pivot-row
   equality, source-produced successor data, coverage, transition regularity,
   analytic Jacobians, normal crossings, pole order, or RLCT.
+  The source-current row stack wrapper now has chart-family-free constructor
+  `sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withoutChartFamily`;
+  the older chart-family-bearing source-current API is a compatibility
+  wrapper.  This is only formula-level row presentation of the same continuing
+  stack via `case2SourceCurrentFollowingBlock` and
+  `case2SourceSuccessorFollowingBlock`; it does not source-produce `Csucc` or
+  `C'^(S+1)`, produce suffixes, construct successor charts, prove transition
+  regularity, analytic Jacobians, normal crossings, pole order, termination,
+  or RLCT.
   The source terminal product candidate checkpoint proves
   `matrixEntryIdeal_submatrix_equiv`,
   `case2SourceTerminalRowIndex`, `case2SourceTerminalRowEquiv`,

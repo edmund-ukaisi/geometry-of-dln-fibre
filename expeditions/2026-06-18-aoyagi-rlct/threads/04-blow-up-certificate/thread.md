@@ -4792,3 +4792,35 @@ source-produce `Csucc` or `C'^(S+1)`, produce suffixes, construct successor
 chart families, prove coverage or transition regularity, prove analytic
 Jacobian/volume-form data, prove normal crossings, prove pole order, or
 extract an RLCT.
+
+## 2026-06-23 Lean source-current stack without chart-family boundary
+
+Reproduction:
+`reproduction-case2-source-current-stack-without-chart-family-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-current-stack-without-chart-family.md`.
+Review artifact:
+`review-case2-source-current-stack-without-chart-family-a4.md`.
+
+Lean now constructs the continuing source-current row stack wrapper without a
+supplied `Case2ResidualBlockChartFamilyBoundary`:
+
+```text
+sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withoutChartFamily
+```
+
+The theorem destructs the chart-family-free old-top/source-suffix paper-`C'`
+stack theorem, preserves the non-stack payloads, and rewrites only the two
+following-factor stacks through
+`case2SourceCurrentFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv` and
+`case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv`.
+The older `sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withCorrectedPostData`
+API remains as a compatibility wrapper.
+
+This is formula-level source-current row bookkeeping only.  The successor
+block is not chart-produced, and the raw source suffix remains supplied.  The
+theorem does not source-produce `Csucc` or `C'^(S+1)`, produce suffixes,
+construct successor chart families, prove coverage or transition regularity,
+derive coordinate-produced corrected post-data, prove analytic
+Jacobian/volume-form data, prove normal crossings, prove pole order, prove
+termination, or extract an RLCT.

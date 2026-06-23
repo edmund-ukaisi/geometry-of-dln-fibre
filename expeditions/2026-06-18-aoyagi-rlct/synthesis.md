@@ -5969,6 +5969,33 @@ Review:
 `threads/04-blow-up-certificate/review-case2-paper-cprime-lower-rows-without-chart-family-a4.md`
 passed.
 
+Latest A4 source-current stack chart-family-free directification:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withoutChartFamily`.
+It proves the same finite source-current row stack wrapper as the old
+`sourceChartMap_continuingOldTopSourceSuffixSuccFollowingBlock_withCorrectedPostData`
+API, but without `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary` arguments.  The proof destructs
+`sourceChartMap_continuingOldTopSourceSuffixPaperCprimeStack_withoutChartFamily`,
+preserves the next-center, corrected exponent/level/gap, recurrence-gap, and
+finite center-principalization payloads, and rewrites only the two
+following-factor stacks through the existing source-current row reindex
+lemmas.  The older API remains a compatibility wrapper.
+
+This is formula-level source-current row bookkeeping only.  It is not chart
+production of the successor following block, not source production of `Csucc`
+or `C'^(S+1)`, not suffix production, not successor chart-family construction,
+not coverage/transition regularity, not coordinate-derived corrected
+post-data, not analytic Jacobian data, not normal crossings, not pole order,
+not termination, and not RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-without-chart-family-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-current-stack-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-current-stack-without-chart-family-a4.md`
+passed.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0
