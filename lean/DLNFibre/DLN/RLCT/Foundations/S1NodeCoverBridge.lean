@@ -3,21 +3,22 @@ import DLNFibre.DLN.RLCT.Foundations.S1NodeCoverGE
 /-!
 # `DLNFibre.DLN.RLCT.Foundations.S1NodeCoverBridge` — the box→point bridge interface (R1 item 2b)
 
-The reconciliation of the per-node cover's two readings (g156 adjudication, 2026-06-23):
+The per-node cover's interface (g156 adjudication, 2026-06-23): the obligation the cover and the binding
+spine consume is genuinely **box-threaded** — full-ratio-box integrability of the loss density,
+descending to the child's box — NOT a point-RLCT. The clean point-min `rlctAtOn (dlnLoss M 0) 0 =
+min{mk/2, rlctAtOn core 0}` is a true VALUE identity (the NUMBER matches the point threshold), but the
+PROOF obligation per node is `|K|^{−c'}` integrable over the full box `Vz` (`chart_pullback_lt_top_of_boxpm`'s
+`hKint`), which `rlctAtOn K 0` (the point) does NOT supply — the divisor-vs-point gap (the (2,2,2)
+`resolved_residual_lt_top` `recStep` precedent).
 
-- **VALUE level** — the per-node RLCT is the clean point-min `rlctAtOn (dlnLoss M 0) 0 = min{mk/2,
-  rlctAtOn core 0}` (the spine consumes this point value; cobuild's `binding_recursion_of_min_step`
-  stays as-is).
-- **PROOF level** — the cover GE producer genuinely threads the CORE's full-ratio-box integrability
-  (`chart_pullback_lt_top_of_boxpm`'s `hKint`), NOT a point-RLCT (the divisor-vs-point obstruction; the
-  (2,2,2) `resolved_residual_lt_top` `recStep` precedent).
-
-The two coincide via the **bridge fact**: the all-zero deepest point is the GLOBAL-MIN-RLCT point of
-the loss over any bounded region (maximal rank-drop ⇒ every partial-vanishing stratum is *less*
-singular), so the box-integrability threshold equals the point-RLCT. That bridge is proved separately
-(deriv-finish lane); here we (1) STATE it as the precise interface predicate the GE producer consumes,
-and (2) show it discharges `chart_pullback_lt_top_of_boxpm`'s `hKint` — collapsing the box-threaded
-proof to the point-min value.
+So `BoxThresholdBridge K` below is a **box statement** (full `Vz` integrability) PARAMETRISED by the point
+threshold `rlctAtOn K 0`: the antecedent is the point number, the consequent is the full-box obligation.
+It is the box-threaded interface, and it descends one dimension to the child's box. The bridge FACT (that
+the box obligation holds, given the point number) is proved separately (deriv-finish lane: the all-zero
+deepest point is the GLOBAL-MIN-RLCT point — maximal rank-drop ⇒ every partial-vanishing stratum is
+*less* singular — so the point threshold governs every bounded box). Here we (1) STATE it as the precise
+interface predicate the GE producer consumes, and (2) show it discharges
+`chart_pullback_lt_top_of_boxpm`'s `hKint`.
 
 ## The bridge predicate (the side-fact the GE producer consumes)
 `BoxThresholdBridge K`: for every bounded measurable box `Vz` and every `c' < rlctAtOn K 0`, the
