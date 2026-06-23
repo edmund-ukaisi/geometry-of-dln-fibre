@@ -54,7 +54,11 @@ interface. Canonical structure: `fm2/split-reindex` (post-`(C)`-refactor, #90).
 * `regStraighten : DeepestSplit → DeepestSplit` (a bare TOTAL continuous function post-`(C)`, NOT a
   `≃ₜ`) is the nonlinear `E`-straightening. It reads the WHOLE `q` (reg × core × spec — INCLUDING the
   spectator, where the interior `X₂` lives). **`(regStraighten q).1 = E_pivot`** (RULED 2026-06-23,
-  controller): the core-INDEPENDENT, `dE(0) = id` straightened part — the genuine reg→reg local diffeo.
+  controller): the core-INDEPENDENT straightened part — a genuine reg→reg local diffeo with
+  INVERTIBLE derivative at `0` (the #120-corrected `deepestEPivot_deriv`: the unitriangular SHEAR
+  CLE `[[I,Σ],[0,I]]`, det = 1 in straightened coords; the raw `E`-map has `|det| = 1` at `0`, e.g.
+  L=2 `det = −(1+x₁)²(1+x₂) = −1` at `0`). NOT `dE(0) = id` and NOT `= fst` — #72 needs only an
+  INVERTIBLE derivative + bounded-unit Jacobian `|det| ∈ [a,b]`, `0 < a`, which the shear supplies.
   The core-DEPENDENT cross-terms `E − E_pivot ∈ ideal(reg)` (cobuild sympy-verified `E|{reg=0} = 0`) are
   NOT coordinate — they are LOSS, and charge to PIN2's `∑E²` (cobuild's leak mechanism, `#54`). Rationale:
   a coordinate-straightening map must not depend on the core it is not straightening; `E_pivot` is the
@@ -72,8 +76,10 @@ interface. Canonical structure: `fm2/split-reindex` (post-`(C)`-refactor, #90).
   `core_comparability_squeeze`), NOT a `coreAbsorb` component. There is NO inter-layer-unit peel.
 
 **RLCT-PEEL ROUTES** (both via crux2's peels; NOT `weightedThreshold_weight_unit_invariant`):
-* `coreAbsorb_rlct`: the MP route — `measurePreserving_coreShear` (`#83`) ⟹ `rlctAtOn_comp_homeomorph`
-  (det = 1, no Jacobian). Done in `#79`.
+* `coreAbsorb_rlct`: det = 1 EVERYWHERE (the additive shear's Jacobian is block-lower-triangular with
+  identity diagonal — g163, numerically confirmed `det = 1.0000`), so TWO equivalent routes: the MP route
+  (`measurePreserving_coreShear` `#83` ⟹ `rlctAtOn_comp_homeomorph`) OR the bounded-unit `#71` peel with
+  the trivial bound `a = b = 1` (g163, cobuild's choice). Either discharges it — no IFT, no `V`, no `#72`.
 * `regAbsorb_rlct`: the LOCAL route — `rlctAtOn_boundedUnit_localHomeomorph` (`#72`), which takes
   `regStraighten`/its local inverse as BARE FUNCTIONS + `Dπ` + an open `V ∋ 0` (inverses only on `V`).
   The `V`/`Dπ` data lives INSIDE the producer's proof, NOT as structure fields (sub-6 consumes
@@ -229,8 +235,10 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
   /-- **The regular-absorption** on split coords (g161, the (e)-fix; the (C) wall-fallback shape). The
   split's regular slot is the RAW gauge pivots `(X,Y,Z)`, NOT the nonlinear regular residual
   `E = X₁+X₂+X₁X₂+…` the squeeze needs (`loss_squeeze` over `(split w).1` raw is FALSE, g161
-  counterexample). `regStraighten` turns the raw reg slot into `E_pivot` (the core-INDEPENDENT,
-  `dE(0)=id` straightened part; the core-dependent `E − E_pivot ∈ ideal(reg)` charges loss-side to
+  counterexample). `regStraighten` turns the raw reg slot into `E_pivot` (the core-INDEPENDENT
+  straightened part with INVERTIBLE derivative at `0` — the #120-corrected `deepestEPivot_deriv`:
+  unitriangular SHEAR CLE `[[I,Σ],[0,I]]`, det = 1, NOT `dE(0)=id`; #72 needs only invertibility +
+  bounded-unit `|det|∈[a,b]`; the core-dependent `E − E_pivot ∈ ideal(reg)` charges loss-side to
   `∑E²`, RULED 2026-06-23), fixing the core and spectator slots.
   **A bare TOTAL continuous function, NOT a `≃ₜ`** (the (C) fallback, controller-blessed): the IFT
   E-straightening is a local diffeo on `𝓝 0` but does NOT extend to a global spectator-fixing homeomorph
