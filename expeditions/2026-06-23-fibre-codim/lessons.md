@@ -34,3 +34,11 @@
   the ROADMAP "Process / harness uplift A" applied by hand; worth scripting into a worktree hook. (Safety:
   shared `.lake/packages` is read-only at build time; the worktree's own DLNFibre oleans go in its own
   `.lake/build`. Only valid when the dep revs match.)
+- **(rotation hold) Global build semaphore validated + one benign edge case.** With `SLOTS=1`, two
+  concurrent `lb` builds correctly serialise: the loser logs "all 1 global build slots busy; waiting…"
+  until the winner releases the `flock` slot, then proceeds (both green). The cross-session global cap
+  works — the answer to the multi-controller RAM concern. **Known limitation (box-TODO):** `lb`'s
+  `.lake/packages` self-heal runs *before* the slot acquire and is **not concurrency-safe within one
+  worktree** — two `lb` in the *same* worktree could race the `rm -rf`/`ln -s`. Benign in intended use
+  (one build per worktree at a time; distinct worktrees have distinct `.lake`). Fix on the box: wrap the
+  self-heal in a per-worktree `flock` (separate fd from the global build pool).
