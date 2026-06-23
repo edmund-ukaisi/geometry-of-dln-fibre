@@ -1,4 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
+import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
 
 /-!
@@ -182,6 +184,68 @@ theorem readY_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ 
   simp only [readY, Matrix.of_apply, Matrix.zero_apply]
   exact regGaugeSlotEquiv_regSlice_zero_of_notMem H r hr hL r0 _
     (by rw [range_regBoundaryEmbed_eq]; exact notMem_Y_of_ne_last H r hL s hs a b)
+
+/-! ## The framed-layer reg-slice values (frame-conjugate shape: interiors are the corner) -/
+
+/-- An INTERIOR layer (`s ≠ firstLayer`, `s ≠ lastLayer`) of the reg-slice is the constant corner
+`corM = reindex (fromBlocks 1 0 0 0)` — the deviation `fromBlocks 0 0 0 0 = 0` vanishes, so the
+frame term `Pf · reindex 0 · Qf = 0` and `framedLayer = corM` (frame-INDEPENDENT base). -/
+theorem framedParamsReg_regSlice_interior (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (r0 : Fin (deepestNReg H r) → ℝ) (s : Fin L) (hsf : s ≠ firstLayer hL) (hsl : s ≠ lastLayer hL) :
+    framedParamsReg H r hr hL Pf Qf (r0, 0) s
+      = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+          (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+  simp only [framedParamsReg, framedLayer, readX_regSlice_zero_of_ne H r hr hL r0 s hsf,
+    readY_regSlice_zero_of_ne H r hr hL r0 s hsl, readZ_regSlice_zero_of_ne H r hr hL r0 s hsf]
+  rw [show Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 = 0 from by
+      ext a b; rcases a with a | a <;> rcases b with b | b <;> rfl]
+  simp [Matrix.reindex_apply, Matrix.submatrix_zero]
+
+/-- The `firstLayer` framed reg-slice layer (`L ≥ 2`): `Y = 0` (first ≠ last), so it is
+`corM + Pf · reindex(fromBlocks X 0 Z 0) · Qf`. -/
+theorem framedParamsReg_regSlice_first (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (r0 : Fin (deepestNReg H r) → ℝ) :
+    framedParamsReg H r hr hL Pf Qf (r0, 0) (firstLayer hL)
+      = Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+          (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+        + Pf (firstLayer hL)
+          * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+              (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+              (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+                (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+          * Qf (firstLayer hL) := by
+  have hfl : firstLayer hL ≠ lastLayer hL := by
+    simp only [firstLayer, lastLayer, ne_eq, Fin.mk.injEq]; omega
+  simp only [framedParamsReg, framedLayer, readY_regSlice_zero_of_ne H r hr hL r0 _ hfl]
+
+/-- The `lastLayer` framed reg-slice layer (`L ≥ 2`): `X = Z = 0` (last ≠ first), so it is
+`corM + Pf · reindex(fromBlocks 0 Y 0 0) · Qf`. -/
+theorem framedParamsReg_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (r0 : Fin (deepestNReg H r) → ℝ) :
+    framedParamsReg H r hr hL Pf Qf (r0, 0) (lastLayer hL)
+      = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+          (rThresholdSplit r (H (lastLayer hL).succ) (hr _)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+        + Pf (lastLayer hL)
+          * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+              (rThresholdSplit r (H (lastLayer hL).succ) (hr _)).symm
+              (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0)
+          * Qf (lastLayer hL) := by
+  have hfl : lastLayer hL ≠ firstLayer hL := by
+    simp only [firstLayer, lastLayer, ne_eq, Fin.mk.injEq]; omega
+  simp only [framedParamsReg, framedLayer, readX_regSlice_zero_of_ne H r hr hL r0 _ hfl,
+    readZ_regSlice_zero_of_ne H r hr hL r0 _ hfl]
 
 /-! ## The explicit Leibniz derivative of the layer-product entries (#156, the value-fold) -/
 
