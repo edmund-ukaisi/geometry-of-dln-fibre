@@ -213,7 +213,10 @@ with an INVERTIBLE strict derivative `e : M ≃L[ℝ] M` at `wstar` (and `f` fix
 differentiability on a shrunk nbhd. The single open `V` is `Φ.source ∩ Φ.target ∩ (inverse-diff nbhd)`,
 on which BOTH inverse identities (`left_inv` on `source`, `right_inv` on `target`) and both derivatives
 hold; the det-bounds are intersected in. This is structure-independent Mathlib glue — it is the only
-analytic content of `regAbsorb_rlct` once the concrete `regStraighten`'s `dE(0) = id` is supplied. -/
+analytic content of `regAbsorb_rlct` once the concrete `regStraighten`'s `dE(0) = id` is supplied.
+(`ContDiff ℝ ⊤` is a CONVENIENCE above the germ minimum — `ContDiffAt`/`HasStrictFDerivAt` at `wstar`
+would suffice — but the producer's `E_pivot` is globally smooth anyway; `f wstar = wstar` IS required
+by the downstream consumer, which rewrites this peel at the basepoint `0`.) -/
 theorem rlctAtOn_comp_localDiffeo {M : Type*}
     [NormedAddCommGroup M] [NormedSpace ℝ M] [MeasureSpace M] [BorelSpace M]
     [FiniteDimensional ℝ M] [(volume : Measure M).IsAddHaarMeasure]
