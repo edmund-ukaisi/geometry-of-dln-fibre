@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.BindingRecursion
+import DLNFibre.DLN.RLCT.Validate.BindingMinArith
 
 /-!
 # `BindingMinSpine` — the binding R1 core identity via the MIN-recursion (the cover route, fm3)
@@ -90,5 +91,50 @@ theorem binding_recursion_of_min_step
         have h := harith_min M hdeg
         rw [h]; push_cast; ring_nf
       rw [hstep_min M hdeg, hchild, ← ENNReal.ofReal_add hnr hlr, ← ENNReal.ofReal_min, hval]
+
+/-- **The binding R1 core identity via the MIN-recursion, reduced to JUST the geometric cover inputs.**
+The tightened meeting-point: instantiating `binding_recursion_of_min_step` with the concrete combinatorial
+functionals (`redOf := schurStateRed`, `lamOf := lambdaCore`, `degenChild := isLeafNode ∘ schurStateRed`)
+and the cover's per-node ℤ weights `mk`/`n` (the `D₀`-divisor / core counts), the ENTIRE combinatorial +
+value side is discharged automatically:
+- `harith_min` ← `lambdaCore_min_telescope` (from the cover's ℤ minimal-codim min identity `hmin`),
+- `hdrop` ← `bind_hdrop` (`chainWidthSum_schurStateRed_lt`), `hlam` ← `bind_hlam`,
+- `hnReg` ← the supplied nonneg `hn` of the cover core weight (`mkOf` needs no nonneg — the `mk/2`
+  branch goes through the unconditional `ofReal_min`).
+
+so `rlctOf M = ofReal (lambdaCore M)` (`= ½·minAdm`) hangs on EXACTLY the two GEOMETRIC cover inputs the
+producer (a5f5ceb1's atom #9) owns: the per-node min `hstep_min` and the `#70` Morse base `hbase` — plus
+the cover's combinatorial min identity `hmin` (the ℤ-level `minAdmZ M = min(mk, n + minAdmZ(redOf M))`,
+cert-104b V4, the atom's value-side cross-check). Route-independent; the cross-branch headline (#151)
+instantiates this with `rlctOf := fun M => rlctAtOn (dlnLoss M 0) (deepest)`. -/
+theorem binding_min_rlct_eq_lambdaCore_of_cover {L' : ℕ}
+    (rlctOf : (Fin (L' + 1 + 1) → ℕ) → ℝ≥0∞)
+    (mk n : (Fin (L' + 1 + 1) → ℕ) → ℤ)
+    (hn : ∀ M : Fin (L' + 1 + 1) → ℕ, 0 ≤ n M)
+    -- the cover's ℤ minimal-codim min identity (V4) at a non-leaf-child node
+    (hmin : ∀ M : Fin (L' + 1 + 1) → ℕ, ¬ isLeafNode (schurStateRed M) →
+        minAdmZ M = min (mk M) (n M + minAdmZ (schurStateRed M)))
+    -- GEOMETRIC: the per-node cover min (the cover atom #9)
+    (hstep_min : ∀ M : Fin (L' + 1 + 1) → ℕ, ¬ isLeafNode (schurStateRed M) →
+        rlctOf M = min (ENNReal.ofReal ((mk M : ℚ) / 2))
+          (ENNReal.ofReal ((n M : ℚ) / 2) + rlctOf (schurStateRed M)))
+    -- GEOMETRIC: the #70 Morse base at the degenerate-child node
+    (hbase : ∀ M : Fin (L' + 1 + 1) → ℕ, isLeafNode (schurStateRed M) →
+        rlctOf M = ENNReal.ofReal (lambdaCore M))
+    (M : Fin (L' + 1 + 1) → ℕ) :
+    rlctOf M = ENNReal.ofReal (lambdaCore M) :=
+  binding_recursion_of_min_step
+    schurStateRed (fun M => (mk M : ℚ)) (fun M => (n M : ℚ)) lambdaCore rlctOf
+    (fun M => isLeafNode (schurStateRed M))
+    hstep_min hbase
+    -- harith_min: the value-side min telescope from the ℤ identity `hmin`.
+    (fun M hM => lambdaCore_min_telescope M schurStateRed (mk M) (n M) (hmin M hM))
+    -- hdrop: schurStateRed strictly decreases ΣM at a non-leaf node (bind_hdrop's parent-leaf guard).
+    (fun M hM => bind_hdrop M (fun hML => hM (isLeafNode_schurStateRed_of_isLeafNode M hML)))
+    -- hnReg: 0 ≤ (n M : ℚ).
+    (fun M => by show (0 : ℚ) ≤ (n M : ℚ); exact_mod_cast hn M)
+    -- hlam: 0 ≤ lambdaCore M.
+    (fun M => bind_hlam M)
+    M
 
 end DLNFibre.DLN.RLCT
