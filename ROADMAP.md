@@ -72,15 +72,25 @@ and the **elementary integer-square lemma** `isLeast_sumSq` (`Core.CThetaExplici
 Conway–Sloane closest-vector apparatus**; and **$\theta$**: `qipNumMinimisers_eq_cTheta : \#\{\text{QIP
 minimisers}\}=\binom{m}{|\delta|}$ via a minimiser↔$|\delta|$-subset bijection. Witnesses (decide+kernel):
 $(2,2,2)\!\to\!(3,1)$, Ex 6.3 $\to\!(55,4)$, matching the paper. All axiom-clean.
-**Remaining in Bundle 1 (future):** **permutation invariance (Cor 5.10) — a genuine lift, NOT free.**
-`cValue`/`cTheta` read $\underline d$ through order-sensitive prefix sums and the closed form requires
-`Monotone d`; relating $\underline d$ to its sorted form needs either a sort-normalisation bridge or the
-paper's **Poincaré-series route (Bundle 3)**. Also the §4 fibre-codim reduction (Lemma 4.6). The
-**per-orbit** geometric reading (`codimForm` = geometric codimension of the orbit closure $\bar O_M$) is now
-**Proved** (Bundle 2 / expedition `voigt-discharge`); the **aggregate** reading
-"$C=\operatorname{codim}\Sigma^r$" (over the whole rank-$r$ locus $\Sigma^r$) stays open — it needs
-$\Sigma^r$-as-variety and its orbit stratification, not `hVoigt`. The combinatorial $(C,\theta)$ does not
-depend on either.
+**Landed (expedition `perm-invariance`, PR #6, reviewed + bedrock):** **permutation invariance
+(Cor 5.10) — Proved, zero-cited** (`Core.CThetaPermInvariance.cCodim_comp_perm`/`numTop_comp_perm`),
+via a reproof of the **Poincaré-series formula Thm 5.5** (`Core.QSeriesThm55.thm55`) and the **fivegon
+Thm 5.6** (`Core.QSeriesFivegon.fivegon` = RWY 2018), built on a from-scratch $q$-series sub-library
+(Bundle 3's combinatorial route succeeded — see Bundle 3). The **aggregate** geometric reading is now
+also **Proved**: $C=\operatorname{codim}\overline{\Sigma}{}^r$
+(`Core.SigmaCodim.codimRepCanonical_productRankLocusLE_eq_cCodim`) and
+$\theta=\#\{\text{top-dim components of }\overline{\Sigma}{}^r\}$
+(`Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`, unconditional), transported across permutations
+in `Core.CThetaGeometricPerm`.
+**Landed (expedition `explicit-ctheta`, reviewed + bedrock):** the **explicit closed form for an
+arbitrary (non-monotone) $\underline d$** — composing the sort bridge (`cCodim_comp_sort`) with the
+`Monotone`-gated `cValue`/`cTheta` drops the monotonicity gate:
+$C=\operatorname{cValue}((\underline d-r)\circ\operatorname{sort})$,
+$\theta=\operatorname{cTheta}((\underline d-r)\circ\operatorname{sort})$ for any $\underline d$
+(`Core.CThetaArbitrary.cCodim_eq_cValue_comp_sort`/`numTop_eq_cTheta_comp_sort`; witness $(2,3,2)\to(4,2)$).
+**Remaining in Bundle 1 (future):** the §4 **fibre-codim reduction (Lemma 4.6)** — the per-orbit
+geometric reading (`codimForm` = geometric codimension of the orbit closure $\bar O_M$) is **Proved**
+(Bundle 2 / `voigt-discharge`).
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
@@ -119,26 +129,25 @@ and `cCodim_eq_inf_geomCodim`: $C=\min$ over Kostant partitions of the genuine g
 its orbit stratification, and a component-count, none of which depend on `hVoigt`.
 
 ### Bundle 3 — the topology  ·  `DLNFibre.Core` (Poincaré)
-**Plainly.** The Poincaré series in equivariant cohomology (Thm 5.5) and the permutation invariance it yields
-(Cor 5.10). **Reachability:** the heaviest; equivariant-cohomology machinery may be absent in Mathlib. A
-likely **cited** layer, with permutation invariance possibly reachable by an independent combinatorial route
-from Bundle 1.
+**Plainly.** The Poincaré series (Thm 5.5) and the permutation invariance it yields (Cor 5.10).
+**Landed (expedition `perm-invariance`, PR #6, reviewed + bedrock) — zero-cited; the combinatorial route
+won.** Rather than equivariant cohomology (Mathlib-absent), Thm 5.5 and Cor 5.10 were reproved from
+scratch via a from-scratch $q$-series sub-library: the fivegon (Thm 5.6 = RWY 2018,
+`Core.QSeriesFivegon.fivegon`) → the per-corner Poincaré product (Thm 5.5, `Core.QSeriesThm55.thm55`,
+through an inverse-Pochhammer orthogonality `Core.QSeriesOrth.orth` — no $q$-binomial library needed) →
+the manifestly multiset-symmetric closed form ⟹ Cor 5.10 (`Core.CThetaPermInvariance`). Nothing here is
+Cited.
 
-**Permutation invariance (Cor 5.10) — the open lift, scoped (`c-theta` close, 2026-06-18).** $(C,\theta)$
-depend only on the multiset $\{d_0,\dots,d_N\}$, not the order. We did **not** prove this: the landed
-$(C,\theta)$ (Bundle 1) read $\underline d$ through order-sensitive prefix sums ($m,S,a,\delta$) and the QIP /
-closed-form equalities (`cCodim_eq_qipMin`, `qipMin_eq_cValue`) require `Monotone d`; a permuted $\underline d$
-is non-monotone and falls outside them, and `cCodim`/`codimForm`/`kostantPartitions` carry **no manifest
-permutation symmetry** and **no sort-normalisation bridge**. Two routes, cheapest first:
-1. **Combinatorial-bridge recon (do this first).** Probe whether $\min_{\text{Kostant}(\underline d)}$ of the
-   quadratic form is permutation-invariant by an *elementary* argument — a bijection on Kostant partitions
-   under transposition of adjacent $d_i$, or a `cCodim d = cCodim (sort d)` normalisation lemma. If it exists,
-   Cor 5.10 is a **contained Lean tide** (a scout/pen-and-paper recon scopes it; θ needs the same bridge plus a
-   `numTop d 0 = qipNumMinimisers` link, not yet built). The paper did **not** take this route, so its
-   existence is itself an open question.
-2. **Poincaré series (Thm 5.5), the paper's route.** Equivariant cohomology of the strata; the series is
-   manifestly symmetric in $\underline d$, so invariance falls out of its shape. Heavy, Mathlib-absent — if
-   route 1 fails, Cor 5.10 stays **Cited** to this argument, named as such.
+**How it was proved (supersedes the 2026-06-18 `c-theta`-close scoping).** That close framed Cor 5.10 as
+an open lift with two candidate routes — (1) an elementary combinatorial bridge, (2) the paper's
+equivariant-cohomology Poincaré series. **Route 1 won, in a sharpened form.** The bridge is
+`cCodim_comp_sort`/`numTop_comp_sort` ($(C,\theta)$ of $\underline d$ = that of its sorted form), itself a
+corollary of the full $q$-series reproof of Thm 5.5 above — **not** a bare adjacent-transposition
+bijection: the Kostant sets are *not* equinumerous across a permutation (so no value-preserving bijection
+exists), and the invariance is read off the symmetric generating function instead. The
+`numTop d 0 = qipNumMinimisers` link the scoping flagged as "not yet built" is now
+`Core.CThetaThetaBridge.numTop_zero_eq_cTheta`. Combined with the explicit closed form (Bundle 1,
+expedition `explicit-ctheta`), $(C,\theta)$ now has an explicit formula for **arbitrary** $\underline d$.
 
 ### Bundle 4 — the DLN / RLCT application  ·  `DLNFibre.DLN`
 **Plainly.** The square-Frobenius loss $K^{\mathrm{DLN}}_B$, its zero-set = the fibre, and the payoff
@@ -155,6 +164,43 @@ folded into a theorem name. **Depends on:** Bundle 1 (the codimension value).
                                            │
   Bundle 3 (topology) ─────────► permutation invariance (sharpens / cross-checks (C, θ))
 ```
+
+## Process / harness uplift (cross-cutting — not a math bundle)
+
+These are **expedition-infrastructure** debts that tax every Lean expedition, distinct from the math
+bundles above. The operational fix lands in [`docs/policies/expedition.md`](docs/policies/expedition.md)
+§Isolation (+ a helper script / worktree hook); this section tracks the intent and the acceptance bar.
+Both surfaced concretely while standing up the `explicit-ctheta` expedition (2026-06-22): a fresh
+worktree cost a full `cache get` + from-scratch `DLNFibre` build, and the controller could not get true
+teammate isolation because it was itself in a worktree.
+
+### Uplift A — share the Lean dependency cache across worktrees
+**Plainly.** A fresh `git worktree add` checkout has no `.lake`, so making it buildable runs
+`lake exe cache get` (fetch Mathlib + decompress ~8000 oleans, minutes) **and** rebuilds `DLNFibre`'s
+own oleans from scratch — per worktree. With ~20 live worktrees this repeated tax is why expeditions
+have defaulted to "share the controller's one built worktree" instead of true per-teammate isolation.
+`expedition.md` §Isolation already states the principle ("reuse/symlink `.lake/packages` across
+worktrees"); it is **not operationalised**. **Uplift:** a worktree-creation helper (script or hook)
+that symlinks the shared `.lake/packages` (Mathlib + deps, read-only at build time) into each new
+worktree, so only the project's own small oleans rebuild — making worktree-per-teammate near-free.
+**Decide:** the canonical location of the shared `.lake/packages`; symlink vs hardlink; confirm safety
+under concurrent reads. **Acceptance:** a new worktree is `lake build`-green in seconds, no
+per-worktree Mathlib fetch/decompress.
+
+### Uplift B — controller-in-worktree collapses teammate isolation
+**Plainly.** Per `expedition.md` §Isolation, if the controller runs from a worktree (not the main
+checkout), spawned `isolation: worktree` teammates **collapse onto the controller's worktree** —
+isolation becomes nominal and the team must run **serially** (one editor at a time). The natural
+"controller home" is the main checkout, but it is frequently occupied (e.g. the live `aoyagi-full`
+mega-expedition currently squats the main checkout, partly from a crash) — so concurrent expeditions
+cannot each get a clean isolated controller home. **Uplift options to evaluate:** (i) a convention
+that every expedition controller gets its **own dedicated checkout** (never the shared main checkout),
+with isolation working from there; (ii) make teammate isolation robust to a worktree-based controller
+(genuine nested per-teammate worktrees); (iii) a discipline that the main checkout stays a **free
+controller home on `dev`** and no expedition squats it (the crash that parked aoyagi there is the
+anti-pattern to prevent). **Tie-in:** once Uplift A makes worktrees near-free, giving every controller
+its own checkout (option i) is cheap and dissolves most of B. **Acceptance:** two concurrent
+expeditions each run teammates in genuinely isolated worktrees with parallelism intact.
 
 ## Convention
 
