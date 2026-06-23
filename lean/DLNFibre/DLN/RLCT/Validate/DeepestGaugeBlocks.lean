@@ -454,4 +454,44 @@ theorem regSliceHomeo_basepoint {Reg Core Spec : Type*}
   · exact h0
   · exact hsp
 
+/-! ## The E_pivot-INDEPENDENT gauge-block reindex (PIN 2's relabel)
+
+The Frobenius energy `∑ᵢⱼ f(M i j)` of a matrix is invariant under reindexing its rows/columns by
+index equivalences (a pure relabel of the double sum). Composed with `fromBlocks_toBlocks` + the
+entrywise `frobenius_fromBlocks`, this turns `dlnLoss = ‖prod − B‖²` into its `r ⊕ M`-block-sum form
+`∑(P00−blockid)² = ∑P00'² + ∑P01² + ∑P10² + ∑P11²` — the shape `fullProduct_loss_squeeze` consumes.
+**This relabel does NOT touch `E_pivot`**: it acts on `dlnLoss`'s OWN already-formed `prod − B`,
+independent of the regular-straightening's concrete form (team-lead 2026-06-23: the E_pivot-independent
+piece, drivable before the form lands). -/
+
+/-- **Frobenius energy is reindex-invariant** (the relabel of the double sum). For any entry-function
+`f`, summing `f` over the entries of a matrix equals summing over the entries of its row/column
+reindex `Matrix.reindex e₁ e₂ M` (the index equivs relabel the sum bijectively). -/
+theorem frobenius_sum_reindex {a b a' b' : Type*} [Fintype a] [Fintype b] [Fintype a'] [Fintype b']
+    {R S : Type*} [AddCommMonoid S] (f : R → S) (M : Matrix a b R) (e₁ : a ≃ a') (e₂ : b ≃ b') :
+    (∑ i, ∑ j, f (Matrix.reindex e₁ e₂ M i j)) = ∑ i, ∑ j, f (M i j) := by
+  rw [← Equiv.sum_comp e₁ (fun i => ∑ j, f (Matrix.reindex e₁ e₂ M i j))]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [← Equiv.sum_comp e₂ (fun j => f (Matrix.reindex e₁ e₂ M (e₁ i) j))]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply,
+    Equiv.symm_apply_apply]
+
+/-- **The loss as a `r ⊕ M`-block Frobenius sum** (the E_pivot-independent relabel). For any
+row/column index equivs `e₁ : a ≃ r ⊕ mlo`, `e₂ : b ≃ r ⊕ nhi`, the square-Frobenius energy
+`∑ᵢⱼ (N i j)²` of a matrix `N` equals the four-block sum of `N` reindexed into `r ⊕ _` shape — the
+`(P00, P01, P10, P11)` blocks `fullProduct_loss_squeeze` consumes. Pure relabel + `fromBlocks_toBlocks`
++ `frobenius_fromBlocks`; no dependence on the regular straightening. -/
+theorem frobenius_sq_eq_blocks {a b r mlo nhi : Type*} [Fintype a] [Fintype b]
+    [Fintype r] [Fintype mlo] [Fintype nhi]
+    (N : Matrix a b ℝ) (e₁ : a ≃ r ⊕ mlo) (e₂ : b ≃ r ⊕ nhi) :
+    (∑ i, ∑ j, (N i j) ^ 2)
+      = (((∑ i, ∑ j, ((Matrix.reindex e₁ e₂ N).toBlocks₁₁ i j) ^ 2)
+            + (∑ i, ∑ j, ((Matrix.reindex e₁ e₂ N).toBlocks₁₂ i j) ^ 2))
+          + ((∑ i, ∑ j, ((Matrix.reindex e₁ e₂ N).toBlocks₂₁ i j) ^ 2)
+            + (∑ i, ∑ j, ((Matrix.reindex e₁ e₂ N).toBlocks₂₂ i j) ^ 2))) := by
+  rw [← frobenius_sum_reindex (fun x => x ^ 2) N e₁ e₂]
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex e₁ e₂ N)]
+  rw [frobenius_fromBlocks (fun x => x ^ 2)]
+
 end DLNFibre.DLN.RLCT
