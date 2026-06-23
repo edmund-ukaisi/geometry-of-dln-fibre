@@ -431,7 +431,14 @@ theorem deepestEPivot_regSlice_fderiv_id (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
         deepestEPivot H r hr hL (r0, 0))
-      (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ)) 0 :=
+      (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ)) 0 := by
+  -- ATTEMPT (a), coordinate-wise: the output `Fin nReg → ℝ` derivative is `id` iff each coordinate `i`'s
+  -- derivative is the `i`-th projection. `deepestEPivot (r0,0) i` = a residual block of
+  -- `reindex(prod(framedParamsReg (r0,0)))` selected by `regResidualPack i`. The derivative w.r.t. `r0`
+  -- of that block = the idempotent-sandwich (#91), which on the pivot coord IS `r0 i`. WALL (confirmed
+  -- via g223): exposing that the `regResidualPack i` block-coord receives EXACTLY `r0 i`'s contribution
+  -- needs the SEMANTIC pivot tag (X_first/Y_last/Z_first), which g223 says is the #91/g125 content NOT
+  -- readable from the cardinality-split `regResidualPack`/`regGaugeSlotEquiv`. Flagged (b): thin cert.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
