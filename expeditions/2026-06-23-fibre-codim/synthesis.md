@@ -336,3 +336,26 @@ Committing. Tide-ladder (controller decomposition of the ~8–12 modules; refine
   discharge `DLN.BundleShiftInterface.cited_bundle_shift`.
 Discipline: each tide SPECIFY-first + decorrelated Codex + hard checkpoint; sequential (worktree-shared
 build); controller green-gates + reviewer/Codex on the final discharge. Surface only a genuine wall or completion.
+
+## RING-LEVEL ARCHITECTURE for G2-2..G2-4 (controller design, 2026-06-23, post-G2-1)
+
+The target `codimRepCanonical(fibre E) = C + δ` decomposes as a height composition (to be Codex-vetted
+at the G2-2 checkpoint before committing the chain):
+
+1. **Catenary composition (in `MvPolynomial(RepCoord)`):** `codim_Rep(fibre) = C + codim_{Σ̄^r}(fibre)`,
+   for each top component (catenary; `codim_Rep(Σ̄^r) = C` is Brick A). [G2-4]
+2. **Height-additivity on the descended comorphism `A = R_base → B = R_total`:** for `P` a minimal prime
+   of `m_E·B`, `height P = height(m_E) + height(P / m_E·B)`. With `m_E` the maximal ideal of the closed
+   point `E` in the irreducible base `Mat^{rk≤r}`: `height(m_E) = dim R_base = δ` (thermometer), and
+   `height(P/m_E·B) = 0` (P minimal over `m_E·B`) ⟹ `codim_{Σ̄^r}(fibre) = δ`. [G2-4]
+3. **The `HasGoingDown` for (2) holds only on the chart** (mult is NOT globally flat — fibre dim jumps).
+   So localize `A,B` at `det Δ`; on the chart the Schur `AlgEquiv` `B_loc ≅ A_loc ⊗ F_E` gives free ⟹
+   flat ⟹ going-down. Localization bookkeeping: primes meeting the chart keep their height. [G2-3, the wall]
+4. **Prerequisite (G2-2):** explicit presentation of the **localized base ring** `R_base,loc[det Δ⁻¹]`
+   as a polynomial localization in the free Schur coordinates (Δ,B12,B21) — which needs
+   `vanishingIdeal(Mat^{rk≤r})` = the `(r+1)`-minor determinantal ideal (prime; is the radical/vanishing
+   ideal over alg-closed k). G2-1's Schur relation `B22 = B21Δ⁻¹B12` is what makes it free once det Δ⁻¹.
+
+**Rungs:** G2-2 = localized base presentation (+ Codex-vet the whole composition); G2-3 = total ring +
+the Schur AlgEquiv + flat/going-down (the wall); G2-4 = the height-additivity + catenary composition →
+codim(fibre E)=C+δ; G2-5 = reducibility/min-prime; G3/G4 = lift via G1 + discharge the interface.
