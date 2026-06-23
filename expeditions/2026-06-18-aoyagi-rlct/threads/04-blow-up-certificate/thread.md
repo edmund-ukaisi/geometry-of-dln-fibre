@@ -4760,3 +4760,35 @@ supplied, and the theorem does not source-produce `Csucc` or `C'^(S+1)`,
 produce suffixes, construct successor chart families, prove coverage or
 transition regularity, prove analytic Jacobian/volume-form data, prove normal
 crossings, prove pole order, or extract an RLCT.
+
+## 2026-06-23 Lean paper-Cprime lower rows without chart-family boundary
+
+Reproduction:
+`reproduction-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
+Statement card:
+`statement-card-a4-case2-paper-cprime-lower-rows-without-chart-family.md`.
+Review artifact:
+`review-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
+
+Lean now constructs the continuing paper-`C'` lower-row handoff and its
+right-multiplied following-product variant without a supplied
+`Case2ResidualBlockChartFamilyBoundary`:
+
+```text
+sourceChartMap_paperCprimeWeightedLowerRows_withoutChartFamily
+sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withoutChartFamily
+```
+
+The direct proof uses the corrected new-label certificate, concrete
+`case2Succ` recurrence post-data, corrected selected-label exponent post-data,
+the finite displayed source `Q/P` witness, lower-row projection, the weighted
+`D''' * C'` lower-row projection, and the lower-tail identity identifying the
+free rows of `Q^-1 C` with the next same-stage source following factor.  The
+older chart-family-bearing APIs remain compatibility wrappers.
+
+This is finite lower-row paper-`C'` bookkeeping only.  The pivot row is absent
+and the arbitrary following product `F` remains supplied.  The theorems do not
+source-produce `Csucc` or `C'^(S+1)`, produce suffixes, construct successor
+chart families, prove coverage or transition regularity, prove analytic
+Jacobian/volume-form data, prove normal crossings, prove pole order, or
+extract an RLCT.

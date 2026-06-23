@@ -773,6 +773,12 @@ No such claim is formalisation-ready until both fields are filled.
 	  xhigh source/reproduction and Lean dependency reviews passed and are
 	  saved at
 	  `threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`.
+	  Reproduction of the Case 2 paper-`C'` lower-row chart-family-free
+	  directification is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-paper-cprime-lower-rows-without-chart-family-a4.md`;
+	  xhigh source-frontier and Lean dependency reviews passed and are saved
+	  at
+	  `threads/04-blow-up-certificate/review-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
 	  Reproduction of the A4/A0 Case 2 exponent-coordinate bridge is saved at
 	  `threads/04-blow-up-certificate/reproduction-case2-a0-exponent-coordinate-bridge-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
@@ -1694,6 +1700,15 @@ No such claim is formalisation-ready until both fields are filled.
   the raw suffix remains supplied and the theorem does not source-produce
   `Csucc` or `C'^(S+1)`, suffixes, coverage, transition regularity, analytic
   Jacobians, normal crossings, pole order, or RLCT.
+  The underlying paper-`C'` lower-row handoff and its arbitrary
+  right-multiplied following-product variant now also have chart-family-free
+  constructors
+  `sourceChartMap_paperCprimeWeightedLowerRows_withoutChartFamily` and
+  `sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withoutChartFamily`;
+  the older chart-family-bearing lower-row APIs are compatibility wrappers.
+  These remain lower-row finite algebra only and do not add pivot-row
+  equality, source-produced successor data, coverage, transition regularity,
+  analytic Jacobians, normal crossings, pole order, or RLCT.
   The source terminal product candidate checkpoint proves
   `matrixEntryIdeal_submatrix_equiv`,
   `case2SourceTerminalRowIndex`, `case2SourceTerminalRowEquiv`,

@@ -5944,6 +5944,31 @@ Review:
 `threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`
 passed.
 
+Latest A4 paper-`C'` lower-row chart-family-free directification:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_paperCprimeWeightedLowerRows_withoutChartFamily` and
+`sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withoutChartFamily`.
+They prove the same finite lower-row paper-`C'` handoff and arbitrary
+right-multiplied supplied-`F` variant as the old chart-family-bearing APIs,
+but without `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary` arguments.  The direct proof uses the
+corrected new-label certificate, concrete `case2Succ` recurrence post-data,
+corrected exponent post-data, the finite displayed source `Q/P` identity,
+lower-row projection, the weighted `D''' * C'` lower-row projection, and the
+paper-`C'` lower-tail identity.  The older APIs remain compatibility wrappers.
+
+This is finite lower-row paper-`C'` bookkeeping only.  It is not pivot-row
+production, source production of `Csucc` or `C'^(S+1)`, suffix production,
+successor chart-family construction, coverage/transition regularity, analytic
+Jacobian data, normal crossings, pole order, or RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-paper-cprime-lower-rows-without-chart-family-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-paper-cprime-lower-rows-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-paper-cprime-lower-rows-without-chart-family-a4.md`
+passed.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

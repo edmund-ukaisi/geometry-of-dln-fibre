@@ -229,6 +229,20 @@ there is still no source production of `Csucc` or `C'^(S+1)`, suffix
 production, coverage/transition regularity, normal crossings, pole order, or
 RLCT.
 
+The underlying paper-`C'` lower-row handoff is now also direct with respect to
+finite corrected post-data:
+`threads/04-blow-up-certificate/reproduction-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
+Lean provides
+`sourceChartMap_paperCprimeWeightedLowerRows_withoutChartFamily` and
+`sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withoutChartFamily`;
+the older chart-family-bearing APIs are compatibility wrappers.  This removes
+the same vacuous `Case2ResidualBlockChartFamilyBoundary` dependency from the
+lower-row handoff and its right-multiplied supplied-`F` variant only.  The
+equalities remain lower-row statements with the successor lower-row diagonal
+explicit; there is still no pivot-row equality, source production of `Csucc`
+or `C'^(S+1)`, suffix production, coverage/transition regularity, analytic
+Jacobian data, normal crossings, pole order, or RLCT.
+
 The next A4 boundary has been made reproduction-first rather than wrapper-led:
 `threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`.
 It records that a genuine Case 2 source-production theorem must be branchwise:

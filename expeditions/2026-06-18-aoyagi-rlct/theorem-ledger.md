@@ -5297,6 +5297,30 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-oldtop-source-suffix-paper-cprime-stack-without-chart-family-a4.md`.
 
+Latest A4 Case 2 paper-`C'` lower-row chart-family-free directification:
+`BlowupArithmetic.lean` now contains
+`sourceChartMap_paperCprimeWeightedLowerRows_withoutChartFamily` and
+`sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withoutChartFamily`.
+They have the same finite lower-row conclusions as
+`sourceChartMap_paperCprimeWeightedLowerRows_withCorrectedPostData` and
+`sourceChartMap_paperCprimeWeightedLowerRows_mul_followingProduct_withCorrectedPostData`,
+but no `ChartRegular`, `TransitionRegular`, or
+`Case2ResidualBlockChartFamilyBoundary` inputs.  The old APIs are retained as
+compatibility wrappers and ignore their chart-family arguments.  The proof
+uses the corrected new-label certificate, concrete `case2Succ` recurrence
+post-data, corrected exponent post-data, the finite displayed source `Q/P`
+identity, lower-row projection, the weighted `D''' * C'` lower-row projection,
+and the paper-`C'` lower-tail identity.  This is not pivot-row equality,
+source production of `Csucc` or `C'^(S+1)`, suffix production, successor
+chart-family construction, coverage, transition regularity, analytic
+Jacobian/volume-form theorem, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-paper-cprime-lower-rows-without-chart-family.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-paper-cprime-lower-rows-without-chart-family-a4.md`.
+
 Latest A4 Case 2 branchwise successor-production boundary:
 `threads/04-blow-up-certificate/reproduction-case2-branchwise-successor-production-boundary-a4.md`
 records a reproduction-first contract rather than a Lean theorem.  It anchors
