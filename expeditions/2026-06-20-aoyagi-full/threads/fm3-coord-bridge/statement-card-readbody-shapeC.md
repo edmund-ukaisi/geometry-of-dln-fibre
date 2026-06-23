@@ -4,6 +4,11 @@ The general non-leaf `routeStep` read (#99), built green-with-named-gaps in `Rou
 binding (achiever) cell is constructed GREEN; the complement cover is the named gap (a structure the #99
 grind produces). Decorrelated-Codex Shape C (`codex/readbody-skeleton-answer.md`).
 
+**NOTE (controller ruling 2026-06-23, @`4f499ad`):** a CONCRETE achiever-only producer (`PUnit` binding
+cell + empty complement) was built then REVERTED — it is degenerate-as-cover + redundant-as-value (the
+achiever-binds-at-`minAdm` is already `routeM_value_eq`'s `i₀`/`hbind₀`), i.e. trap-(iii) in value-correct
+disguise. The Shape-C structures below are the INTERFACE; the genuine multi-cell read is G-a-gated (#135).
+
 > **Claim.** For a general non-leaf node (root `M₀`, current `M`), the rank-pattern read produces a
 > `BranchData M₀ M` (the `RouteStep.branch` payload) whose binding cell carries the achiever's
 > root-anchored `PivotWitness M₀ (minAdm M₀)` (so the value fold's `C=∃` leaf is present), assembled from
