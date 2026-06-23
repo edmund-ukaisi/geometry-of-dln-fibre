@@ -63,6 +63,15 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
       prod H C = P0 * prod H A * QL := by
+  -- NOT NEEDED for L2/PIN2 (controller verdict (a) 2026-06-23): L2 light-(iii) + PIN2 loss_squeeze
+  -- close via the two-sided BOUND (rlctAtOn_squeeze ← fullProduct_loss_squeeze, scalar/gauge-block,
+  -- cast-free), NOT this exact equality. Kept as the STRONGER-but-unneeded result. With prodAux_succ
+  -- now PROVEN (above), the remaining induction is a generalized prodAux-depth invariant +
+  -- interface-cancellation (Q s · P (s+1) = 1) + endpoint cast-extraction, traversed by
+  -- `Matrix.submatrix_mul_equiv` — a known-shape multi-step induction (formaliser-hours), not a wall.
+  -- Left as a sorry'd building block; build it if the exact equality is ever wanted (it is not, for
+  -- the critical path D1∘L2). The one-pass that PROVED prodAux_succ closed the cast-bridgeability
+  -- question; this is the orthogonal fold-assembly.
   sorry
 
 end DLNFibre.DLN.RLCT
