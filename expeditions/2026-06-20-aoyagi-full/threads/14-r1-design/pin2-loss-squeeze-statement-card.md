@@ -37,9 +37,13 @@ cert/chain/assembly). Its remaining content (the genuine geometric core):
 1. **round-trip** `framedParams(split w) s = P_s · (paramsSymm w)_s · Q_s` — needs `readX/Y/Z (split w)`
    = the raw-deviation block of `(paramsSymm w − deepestPoint)_s`, i.e. the
    `regGaugeSlotEquiv ∘ regGaugeIdxSplit ∘ roleSplitIdx ∘ paramsEquivFlat` cancellation through
-   `subRight deepestFlat` + `deepestPoint_frame_normal` (`P·deepestPoint·Q = corM`). **This is the
-   4-equiv decode cancellation — overlaps deriv-fm's banked alignment-cancel bedrock
-   (`regGaugeIdxSplit_symm_*`, fm/deriv-spec @cdcb4143); best closed with that, not from scratch.**
+   `subRight deepestFlat` + `deepestPoint_frame_normal` (`P·deepestPoint·Q = corM`). **ENABLER DONE
+   (@79e824c6):** `deepestRoleIndexEquiv`'s `eReg` was an OPAQUE `Fintype.equivFin` split, DIFFERENT
+   from the `regGaugeIdxSplit` that `regGaugeSlotEquiv`/`readX/Y/Z` use — so the round-trip could not
+   cancel. Refactored `eReg := regGaugeIdxSplit` (the two now SHARE the reg-gauge split by
+   construction). **Remaining:** the actual `Equiv.symm_apply_apply` cascade through the 4-equiv chain
+   — overlaps deriv-fm's banked alignment-cancel bedrock (`regGaugeIdxSplit_symm_*`, fm/deriv-spec
+   @cdcb4143, lands on this branch with #82/#91); best closed with that, not re-derived.
 2. `endpoint_telescoping` on `deepestPoint_frame` (interior interfaces vanish) ⟹
    `prod(framedParams(split w)) = P0 · prod(paramsSymm w) · QL`.
 3. `reindex(P0·B·QL) = fromBlocks 1 0 0 0` (B gauge-normalised at rank r — `block_elimination`).
