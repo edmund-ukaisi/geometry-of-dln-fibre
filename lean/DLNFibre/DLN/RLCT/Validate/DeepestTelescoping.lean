@@ -86,23 +86,56 @@ theorem prodAux_framedParamsReg_zero_aux (H : Fin (L + 1) → ℕ) (r : ℕ)
       intro hk _
       have hkL : k < L := Nat.lt_of_succ_lt_succ hk
       have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
-      have e1 : H (⟨k, hk'⟩ : Fin (L+1))
-          = H ((⟨k, hkL⟩ : Fin L).castSucc) := rfl
-      have e2 : H (⟨k + 1, hk⟩ : Fin (L+1))
-          = H ((⟨k, hkL⟩ : Fin L).succ) := rfl
-      -- WALL (crux2 2026-06-23, #123): the `prodAux` succ-step cast `H ⟨k,hk'⟩` vs `H (⟨k,hkL⟩.castSucc)`
-      -- (defeq, NOT syntactic) blocks both routes — the matrix-VALUE route (`prodAux_succ`'s `finCongr`
-      -- wrapper: `finCongr_refl`/`reindex_refl_refl` won't unify on the non-syntactic proof; can't rewrite
-      -- `framedParamsReg_zero` under it) AND the ENTRY route (the `contDiff_prodAux_entry` precedent's
-      -- `rw [e1,e2]; exact … ; simp [eq_mpr_eq_cast,cast_eq]` — the `rw [e1]` finds no `H ⟨k,hk'⟩` to rewrite
-      -- because the layer's stated type already carries `.castSucc`). 5 structurally-distinct attempts logged.
-      -- Building blocks PROVEN GREEN: `prodAux_succ`, `corner_reindex_mul` (the idempotent algebra). The open
-      -- piece is the cast-design to align the running-width index forms — controller #123 pre-authorized a
-      -- fresh-Codex spawn, but the local codex CLI is non-functional this session (doctor + exec hang).
-      -- Most promising untried-to-completion: prove via `Matrix.ext` reducing to SCALAR entries (where the
-      -- precedent's `cast_eq` kills the cast), as `contDiff_prodAux_entry` does — hand to cobuild (who proved
-      -- that precedent) or a working Codex. Handing back; the statement is correct, blocks are reusable.
-      sorry
+      -- INDEX-level equalities (the `prodAux` def's own, `Fin.ext`).
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      -- `prodAux (k+1)` unfolds (def at Loss.lean) to `prodAux k * (Eq.mpr-cast layer)`, and that layer
+      -- IS the corner at the running widths (`framedParamsReg_zero` then `cases e1; cases e2` collapses the
+      -- two `Eq.mpr` casts to `rfl`). Rewrite the whole succ-step in one `rw [hstep]`.
+      -- the Eq.mpr-cast layer = the corner at the running widths (PROBE-proven: `framedParamsReg_zero`
+      -- then `cases e1; cases e2` collapses the two `Eq.mpr` casts to `rfl`).
+      have hlayer : ((by rw [e1, e2]; exact framedParamsReg H r hr hL 0 ⟨k, hkL⟩ :
+            Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ))
+          = Matrix.reindex (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩)).symm
+              (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩)).symm
+              (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+        rw [framedParamsReg_zero H r hr hL ⟨k, hkL⟩]; cases e1; cases e2; rfl
+      have hstep : prodAux H (framedParamsReg H r hr hL 0) (k + 1) hk
+          = prodAux H (framedParamsReg H r hr hL 0) k hk' *
+              Matrix.reindex (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩)).symm
+                (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩)).symm
+                (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+        show prodAux H (framedParamsReg H r hr hL 0) k hk' *
+            ((by rw [e1, e2]; exact framedParamsReg H r hr hL 0 ⟨k, hkL⟩ :
+              Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)) = _
+        exact congrArg (prodAux H (framedParamsReg H r hr hL 0) k hk' * ·) hlayer
+      rw [hstep]
+      rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+      · subst hk0
+        -- accumulator is `prodAux 0 = 1`; `1 * corner = corner` (`prodAux 0` reduces, then `one_mul`).
+        exact Matrix.one_mul _
+      · rw [ih hk' hkpos]
+        exact corner_reindex_mul (rThresholdSplit r (H 0) (hr 0))
+          (rThresholdSplit r (H ⟨k, hk'⟩) (hr ⟨k, hk'⟩))
+          (rThresholdSplit r (H ⟨k + 1, hk⟩) (hr ⟨k + 1, hk⟩))
+
+/-- **The idempotent fold at `0` — `prod` form** (`#123` (1), the `deepestEPivot_base` input). The full
+gauge-sliced product at the deepest gauge slot is the block-normal corner: `prod (framedParamsReg 0) =
+reindex (fromBlocks 1 0 0 0)` (at width `H 0 × H (last)`). `prod = prodAux L`; specialize the `aux`
+fold at `k = L` (`1 ≤ L`). The `Fin.last L = ⟨L, _⟩` index form aligns by `Fin.ext`. -/
+theorem prodAux_framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    prod H (framedParamsReg H r hr hL 0)
+      = Matrix.reindex (rThresholdSplit r (H 0) (hr 0)).symm
+          (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L))).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+  have h := prodAux_framedParamsReg_zero_aux H r hr hL L (Nat.lt_succ_self L) hL
+  rw [prod]
+  rw [h]
+  -- `⟨L, _⟩ = Fin.last L` (Fin.ext); the two corner index-forms agree.
+  congr 1
 
 /-- **PIN2 endpoint-frame telescoping** (existential endpoints, cobuild's banked shape). If every layer
 of `C` is the framed layer `C s = P s · A s · Q s` with `P s, Q s` units, and the interior interfaces
