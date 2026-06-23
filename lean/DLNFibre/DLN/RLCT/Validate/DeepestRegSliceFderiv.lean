@@ -411,4 +411,74 @@ single-sourcing `framedParams`) once the rewrite lands. The SHAPE-INDEPENDENT be
 cancel, slot reads, the explicit Leibniz `prodAuxEntryDeriv`, the scalar `mul_zero` helpers) carries
 over. -/
 
+/-! ## Generalized consumer: the shear-CLE with an INVERTIBLE (frame-factor) reg-block
+
+The frame-conjugate `framedLayer` rewrite makes `deepestEPivot`'s reg-slice fderiv reg-block a constant
+INVERTIBLE frame factor `F` (not literally `id`). `regStraightenTotalCLM_equiv_of_regBlock_id` needs the
+block to be `id`; this generalization needs only `F` invertible — the total `[[F, Σ],[0, I]]` is then a
+genuine `≃L` (block upper-triangular, invertible diagonal). `regAbsorb`/`rlctAtOn_comp_localDiffeo`
+consume invertibility, not literal `id`, so this is the interface the resumed assembly targets (within
+crux2's #150 shear-CLE calibration). -/
+
+section RegBlockIsUnit
+variable {R C S : Type*}
+  [NormedAddCommGroup R] [NormedSpace ℝ R]
+  [NormedAddCommGroup C] [NormedSpace ℝ C]
+  [NormedAddCommGroup S] [NormedSpace ℝ S]
+
+/-- **`regStraightenTotalCLM D_E` is an invertible CLE when `D_E`'s reg-block is an invertible `≃L`**
+(the frame-factor generalization of `_of_regBlock_id`). Given a `ContinuousLinearEquiv` `F : R ≃L R`
+whose coercion is the reg-block `D_E.comp regInCLM`, the total `δ ↦ (D_E(δ.1,δ.2.2), δ.2.1, δ.2.2)` is
+`[[F, Σ],[0, I]]`, inverted by `(r',(c',s')) ↦ (F⁻¹(r' − D_E(0,s')), (c',s'))`. -/
+theorem regStraightenTotalCLM_equiv_of_regBlock_isUnit (D_E : (R × S) →L[ℝ] R)
+    (F : R ≃L[ℝ] R)
+    (hF : (F : R →L[ℝ] R) = D_E.comp (regInCLM : R →L[ℝ] R × S)) :
+    ∃ e : (R × (C × S)) ≃L[ℝ] (R × (C × S)),
+      (e : (R × (C × S)) →L[ℝ] (R × (C × S))) = regStraightenTotalCLM (C := C) D_E := by
+  -- `D_E (r, s) = F r + D_E (0, s)` (linearity); reg-out of `T` is `F δ.1 + D_E (0, δ.2.2)`.
+  have hFr : ∀ r : R, F r = D_E (r, (0 : S)) := by
+    intro r
+    have := ContinuousLinearMap.ext_iff.1 hF r
+    simpa [regInCLM] using this
+  have hsplit : ∀ (r : R) (s : S), D_E (r, s) = F r + D_E (0, s) := by
+    intro r s
+    rw [hFr r, ← map_add]
+    congr 1
+    ext <;> simp
+  -- `T δ = (D_E (δ.1, δ.2.2), δ.2.1, δ.2.2)`.
+  have hTapp : ∀ δ : R × (C × S),
+      regStraightenTotalCLM (C := C) D_E δ = (D_E (δ.1, δ.2.2), δ.2.1, δ.2.2) := by
+    intro δ
+    simp only [regStraightenTotalCLM, ContinuousLinearMap.prod_apply,
+      ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd']
+  -- The explicit inverse `(r',(c',s')) ↦ (F⁻¹(r' − D_E(0,s')), (c',s'))`, packaged as a `≃L`.
+  let inv : (R × (C × S)) →L[ℝ] (R × (C × S)) :=
+    ((F.symm : R →L[ℝ] R).comp ((ContinuousLinearMap.fst ℝ R (C × S)) -
+        (D_E.comp ((ContinuousLinearMap.inr ℝ R S).comp
+          ((ContinuousLinearMap.snd ℝ C S).comp (ContinuousLinearMap.snd ℝ R (C × S))))))).prod
+      ((ContinuousLinearMap.snd ℝ R (C × S)))
+  have hinvapp : ∀ δ : R × (C × S),
+      inv δ = (F.symm (δ.1 - D_E (0, δ.2.2)), δ.2.1, δ.2.2) := by
+    intro δ
+    simp only [inv, ContinuousLinearMap.prod_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.sub_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd',
+      ContinuousLinearMap.inr_apply]
+    rfl
+  refine ⟨{ toLinearMap := (regStraightenTotalCLM (C := C) D_E).toLinearMap
+            invFun := inv
+            left_inv := ?_
+            right_inv := ?_
+            continuous_toFun := (regStraightenTotalCLM (C := C) D_E).continuous
+            continuous_invFun := inv.continuous }, rfl⟩
+  · intro δ
+    show inv (regStraightenTotalCLM (C := C) D_E δ) = δ
+    rw [hTapp, hinvapp, hsplit δ.1 δ.2.2]
+    simp only [add_sub_cancel_right, ContinuousLinearEquiv.symm_apply_apply]
+  · intro δ
+    show regStraightenTotalCLM (C := C) D_E (inv δ) = δ
+    rw [hinvapp, hTapp, hsplit _ δ.2.2]
+    simp only [ContinuousLinearEquiv.apply_symm_apply, sub_add_cancel]
+
+end RegBlockIsUnit
+
 end DLNFibre.DLN.RLCT
