@@ -557,4 +557,42 @@ theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     regAbsorb_rlct := hra_rlct
     loss_squeeze := hsq }⟩
 
+/-! ## L2-Skeleton consumption pre-stage (#126, the #28-integration layer)
+
+How the gauge chart's value-free reduction discharges the Skeleton's L2 normal form. The
+value-free `deepest_regular_core_reduces` (DeepestGaugeChart, mine) lands on
+`nReg/2 + rlctAtOn (dlnLoss M 0) 0` — the CORE RLCT, NOT its closed form. The Skeleton's
+`deepest_regular_core_normal_form` (Skeleton.lean:1124) wants `nReg/2 + ofReal(lambdaCore M)`. The
+gap is exactly the **R1 core-value** `rlctAtOn (dlnLoss M 0) 0 = ofReal(lambdaCore M)` (R1's
+`resolution_charts` + A1's `lambdaCore_eq_clean`/`⨅ monomialThreshold = lambdaCore` — R1's lane, in
+flight). Route-first: this conditional bridge takes the R1 value + `hGne` as HYPOTHESES and produces
+the normal-form conclusion, so the controller wires
+`exact deepest_regular_core_normal_form_of … hcore hGne` into the Skeleton sorry once R1's value
+lands — closing the L2 Skeleton obligation in one pass. Decouples L2-integration from R1's completion. -/
+
+/-- **The L2 normal-form, conditional on the R1 core-value** (the #28-integration bridge). Given the
+R1 core-value `hcore : rlctAtOn (dlnLoss M 0) 0 = ofReal(lambdaCore M)` (R1's lane) and the
+reduced-core germ-nonvanishing `hGne`, the local RLCT of `dlnLoss H B` at the deepest point is the
+regular shift `nReg/2` plus the closed-form core `ofReal(lambdaCore M)` — the exact
+`deepest_regular_core_normal_form` conclusion. Proof: `deepest_regular_core_reduces` (value-free,
+mine) `▸` the R1 value `hcore`. -/
+theorem deepest_regular_core_normal_form_of (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hcore : rlctAtOn
+        (fun A : Params (fun s => H s - r) =>
+          dlnLoss (fun s => H s - r)
+            (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ) A)
+        (fun _ => 0 : Params (fun s => H s - r))
+      = ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ))
+    (hGne : ∃ U ∈ 𝓝 (0 : Fin (flatDim (fun s => H s - r)) → ℝ),
+      ∀ᵐ z ∂(volume.restrict U),
+        dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm z) ≠ 0) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+      = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
+        + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ) := by
+  rw [deepest_regular_core_reduces H r B hB hr hL hGne, hcore]
+
 end DLNFibre.DLN.RLCT
