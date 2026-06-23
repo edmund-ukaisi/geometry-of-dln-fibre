@@ -102,8 +102,14 @@ d_N) (Fin d_0) k` the target matrix; `fibre d B = {A | mult d A = B}` (`Core.Set
   errors and no line-length / unused-arg warnings in the new code.
 - `#print axioms` on `eval_multPoly`, `image_fibre_eq_zeroLocus`, `vanishingIdeal_image_fibre_eq_radical`,
   `fibreGenIdeal_eq_map_maxIdealOfPoint`: `[propext, Classical.choice, Quot.sound]` only.
-- Fidelity review (Lean ↔ informal claim): PENDING (reviewer).
-- **Status: sorry-free.**
+- Fidelity review (Lean ↔ informal claim): **PASS** (reviewer, 2026-06-23; decorrelated Codex at
+  `codex-fidelity-{prompt,verdict}.md`). All five deliverables match their informal claims with honest
+  hypotheses and name=content. Drop-probes confirmed: bridge over `ℤ` (CommRing, not Field); `[IsAlgClosed
+  k]` removal from Claim 4 fails (`failed to synthesize IsAlgClosed k`) — consumed there and only there;
+  Claims 3 and 5 build over `ℚ` (non-alg-closed field). Hygiene gate independently re-run: module green
+  (2145 jobs), whole library green (3697 jobs), `scripts/sorries` 0/0/0/0, `#print axioms` on all five
+  headlines `[propext, Classical.choice, Quot.sound]`, Core-only imports confirmed. No edits requested.
+- **Status: sorry-free + reviewed.**
 
 ## Judgement calls
 
