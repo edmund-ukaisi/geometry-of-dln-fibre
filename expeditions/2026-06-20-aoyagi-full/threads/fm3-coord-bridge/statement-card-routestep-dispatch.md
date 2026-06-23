@@ -38,6 +38,18 @@ The general-M dispatcher's leaf-first classify (the recursion's per-node step), 
 (`WellFounded.fix` matching on `routeStep`) cannot unfold through the branch `sorry`, so `routeMIota M222`
 does not compute, and the value-over-`routeMIota` rides the general branch. The ABSTRACT anchor value IS
 banked: `Case222RouteStep.case222_routeStep_value = 3/2` (over `codimsOf222 = [4,3]`, via
-`foldFamily_iInf_eq_half_minAdm`), and the `(2,2,2)` recursion trace `(2,2,2)→(1,1,2)→(0,0,2)` confirms the
-⊤ terminal + accumulated `[4,3]` fold to `3/2 = lambdaCore` (g235). The general value-over-`routeMIota`
-closes once the general branch lands (#104 / the rank-pattern read).
+`foldFamily_iInf_eq_half_minAdm`). The `(2,2,2)` recursion is TRACED (pp2 g237 @ee81ce8): node `(2,2,2)`
+(BRANCH) appends `Mval((2,2,2),(0,0)) = 4` → `(1,1,2)` (BRANCH) appends `Mval((2,2,2),(1,0)) = 3 = minAdm`
+→ `(0,0,2)` (TERMINAL, `⊤`, appends `[]`); `foldDivisors([4,3]) = min(2, 3/2) = 3/2`. So the per-node codim
+is the ROOT-anchored `Mval M₀ T_node` (the `PivotWitness M₀` content), `T_node = (0,0)` then `(1,0)`.
+
+**Two blockers to wiring the value-over-`routeMIota` (both flagged, neither faked):**
+1. **Layout (a hard Lean cycle).** Making `routeStep`'s branch split concrete (`schurState M hlo`) needs
+   `hlo`/`isLeafNode` in `routeStep`'s scope, but `isLeafNode` + `schurState_hlo_of_not_isLeafNode` live in
+   `RouteMClassify` which IMPORTS `RouteMRecursion` (where `routeStep` is). Fix = move the leaf classifier
+   UPSTREAM (a new `RouteMLeaf.lean` that `RouteMRecursion` imports). Awaiting the controller's layout call.
+2. **The general branch = the rank-pattern read** (the cells/codim/witness for arbitrary non-leaf `M`: which
+   root-anchored `T_node` per node). This is the formaliser-weeks general dispatcher, and its
+   achiever-leaf-existence rides the orbit-side realizability tie (#96/#121, `Adm ↔ RealizableRank`) — the
+   genuine gate. Sub-2b (`cascadeTuple_mem_realizableRank`, #116) is the `RealizableRank`-side witness source;
+   #121 ties it to `Adm`/`Mval`. The general value-over-`routeMIota` closes once both land (#104-adjacent).
