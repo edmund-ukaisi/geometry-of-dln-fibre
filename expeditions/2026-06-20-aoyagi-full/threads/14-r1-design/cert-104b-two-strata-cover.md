@@ -152,6 +152,28 @@ divisors of `(ord(Jac)+1)/(2·ord(loss))`; here the binding divisor along the de
 
 ## 4. What the Lean cover datum must carry — for a formaliser
 
+> **CORRECTION (2026-06-23, R1 transport-producer lane, decorrelated-Codex-confirmed).** The
+> single-chart route in items 1–2 below — "define `φ₁`, feed it through `weightedThreshold_transport_aux`,
+> then apply the outer product-min" — is **UNSOUND as a Lean producer**. `weightedThreshold_transport_aux`
+> (`S1Transport.lean`) requires `Function.Surjective π`, and the single-pivot blow-up `φ₁` is **NOT
+> surjective** as a self-map of the flat ambient `Fin N → ℝ`: with `A = y₀·Â`, `Â₀₀ = 1`, the A-block
+> image is `{A₀₀ ≠ 0} ∪ {A = 0}`, missing the positive-measure stratum `{A₀₀ = 0, A ≠ 0}` which
+> **accumulates at the origin** (e.g. `A = (0,0;t,0) → 0`). The transport-file header itself documents
+> that the `≥` direction is FALSE without surjectivity. Consequences: (a) a single pivot chart cannot
+> see the loss germ on the missing stratum, so it is INSUFFICIENT for the equality; (b) the
+> surjectivity-free `weightedThreshold_le_transport` gives only the bound `rlctAtOn F 0 ≤ min{mk/2,
+> rlctAtOn core 0}`, never the equality. **The SOUND route is the argmax/pivot COVER** — the `mk`
+> pivot charts covering `{A ≠ 0}`, glued by a finite-cover-locality lemma so `rlctAtOn F 0 = ⨅_pivot`
+> (per-chart threshold); by row/col-permutation symmetry the `⨅` collapses to `min{mk/2, rlctAtOn
+> core 0}`. This is the SAME engine the existing `(2,2,2)` resolution uses (`Case222RouteMCover` +
+> the `monomialThreshold = ⨅ axisRatio` machinery, built on `g5_flat_cover`, NOT on `transport_aux`);
+> indeed `axisRatio (mk−1) 1 = mk/2` (`axisRatio_regularSeq`) is exactly the `(e+1)/2` y₀-side value of
+> item 2's outer product-min — the cover already computes this divisor ratio. The outer product-min
+> lemma `weightedProductMin_mono1D_of_ne` (proved, `S1WeightedProductMin.lean` @499ded2f) STANDS, but
+> as the **per-chart** threshold computation inside a cover, not as a standalone true-loss producer.
+> The pen-and-paper MIN-fact (`= ½·minAdm`) below is verified TRUTH; only the single-chart-Lean-route
+> is corrected. Artifacts: `codex/transport-surjectivity-{prompt,answer}.md`.
+
 The producer `RouteMNodeDescentExists M S` must emit, per non-leaf node, a datum that establishes
 **at the true-loss level**:
 
