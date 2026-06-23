@@ -40,6 +40,21 @@ Skip the stale worktrees (atlas-value, aoyagi-rlct, case222-wrapper, crux2-*, fi
 fm2-ge, r1-cover, resolution-atlas-scaffold, semantic-audit-ci-roadmap, the `agent-*` scratch,
 a2-theta) — #28 consolidation prunes them anyway.
 
+## Preservation branches to HARVEST in #28 (real work on junk-named branches)
+
+Pushed for safety before the rotation (committed-but-unpushed or uncommitted WIP that a disk
+wipe would lose). Not part of active recreation — cherry-pick into proper branches/Core, then
+prune:
+- **`worktree-agent-a990da42ab6327a35`** (@3af1935): **Core lemma — nonzero MvPolynomial
+  zero-set is Lebesgue-null** (network-free measure brick) + statement card. HARVEST into
+  DLNFibre.Core — reusable; feeds the germ-nonvanishing / `dlnLoss_Sred_ne_ae` fact. The most
+  valuable orphan.
+- `worktree-agent-{a343509c92a882f64, a4ccf37abb7b699dd, a52a193625d60ae22,
+  add28546023f3083e, aeb8a2b2c34bb6803}`: experimental Skeleton.lean mods (+140/+293/+141) +
+  staged foundation copies — likely superseded; diff vs the main branch before discarding.
+- `crux2/fold3-close`: duplicate DeepestTelescoping (canonical is on fm2/deepest-gauge-chart-
+  sub34) — discard after confirming no unique tactic worth keeping.
+
 ## Resume state — the hero task (general-M aoyagi_learning_coefficient = ½·minAdm)
 
 **Binding R1 spine = PROVEN + triple-audited** (rv-ga + decorrelated Codex): arithmetic
