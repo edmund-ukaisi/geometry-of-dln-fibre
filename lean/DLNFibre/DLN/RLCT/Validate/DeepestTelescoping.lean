@@ -49,6 +49,38 @@ theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k 
   obtain rfl : e2 = rfl := Subsingleton.elim _ _
   rfl
 
+/-- **SHARED step-cast helper** (#123, the family kernel). If the `k`-th layer of `A` is the reindexed
+block `Matrix.reindex eC.symm eS.symm M` at the running widths, then the `prodAux` succ-step is the clean
+product `prodAux k * reindex eC.symm eS.symm M` — the def's `Eq.mpr` cast is collapsed by the index-level
+`cases e1; cases e2` idiom (the `contDiff_prodAux_entry` precedent). All three folds (value / deriv /
+telescope) apply this then their own block-composition. `eC, eS` are the threshold splits at `H ⟨k,hk'⟩`,
+`H ⟨k+1,hk⟩`. -/
+theorem prodAux_succ_layer (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+    {p q : ℕ} (eC : Fin (H (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1))) ≃ Fin p ⊕ Fin q)
+    {p' q' : ℕ} (eS : Fin (H (⟨k + 1, hk⟩ : Fin (L+1))) ≃ Fin p' ⊕ Fin q')
+    (M : Matrix (Fin p ⊕ Fin q) (Fin p' ⊕ Fin q') ℝ)
+    (hlayer : A (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L)
+      = (by rw [show (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc
+                = (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1)) from by apply Fin.ext; simp [Fin.castSucc],
+              show (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ
+                = (⟨k + 1, hk⟩ : Fin (L+1)) from by apply Fin.ext; simp [Fin.succ]]
+            exact Matrix.reindex eC.symm eS.symm M :
+          Matrix (Fin (H (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc))
+            (Fin (H (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ)) ℝ)) :
+    prodAux H A (k + 1) hk
+      = prodAux H A k (Nat.lt_of_succ_lt hk) * Matrix.reindex eC.symm eS.symm M := by
+  have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+  have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+  have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+    apply Fin.ext; simp [Fin.castSucc]
+  have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+    apply Fin.ext; simp [Fin.succ]
+  show prodAux H A k hk' *
+      ((by rw [e1, e2]; exact A ⟨k, hkL⟩ :
+        Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)) = _
+  refine congrArg (prodAux H A k hk' * ·) ?_
+  rw [hlayer]; cases e1; cases e2; rfl
+
 /-- **The corner-block idempotent product** (reindex form). The block-normal corner `fromBlocks 1 0 0 0`
 is idempotent under the chain product, and reindexing along a shared middle interface `eB` cancels:
 `reindex eA.symm eB.symm corner * reindex eB.symm eC.symm corner = reindex eA.symm eC.symm corner`.
