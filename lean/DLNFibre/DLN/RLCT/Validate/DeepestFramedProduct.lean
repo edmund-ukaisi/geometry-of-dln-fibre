@@ -59,4 +59,19 @@ noncomputable def framedParams (H : Fin (L + 1) → ℕ) (r : ℕ)
       (readZ H r hr hL (q.1, q.2.2) s)
       ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
 
+/-! ## PIN 2 frame bridge — the telescoping (#80, next chunk)
+
+The geometric bridge `dlnLoss H B (paramsSymm w) ≍ ‖∏(framed C) − D‖²` reduces to: the **endpoint-frame
+telescoping** `prod H A = P_0⁻¹ · (prod H C) · Q_{L-1}⁻¹` (under #95-(I): interior frames `= I` via
+`deepestPoint_interior_eq_corM`, boundary-inner `= I` via `deepestPoint_layer{0,Last}_*_vanish`, so the
+interior interfaces `Q_s⁻¹·P_{s+1}⁻¹ = 1` collapse) → `conjugation_frobenius_comparable` (the endpoint
+conjugation, banked) → `fullProduct_loss_squeeze` (the block split, banked) + the gauge-read identities.
+
+The telescoping is a cast-heavy `prodAux` induction with per-layer dependent-`Fin` endpoint frames
+(`P_0 : Matrix (Fin (H 0)) …` vs `P ⟨0,_⟩ : Matrix (Fin (H ⟨0,_⟩.castSucc)) …` — the `H 0` vs
+`H ⟨0,_⟩.castSucc` cast). Built next as a dedicated lemma; the route is: induct on `prodAux H A k`,
+carry the invariant `prodAux H A k = (P_0⁻¹ · prodAux H C k · (frame at k))`, the interior interfaces
+cancelling by `hchain`. The endpoint conjugation + block split are already banked
+(`conjugation_frobenius_comparable`, `fullProduct_loss_squeeze`). -/
+
 end DLNFibre.DLN.RLCT
