@@ -3,6 +3,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
 import DLNFibre.DLN.RLCT.Validate.DeepestFrame
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
+import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
 import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
@@ -460,8 +461,22 @@ theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    deepestEPivot H r hr hL 0 = 0 :=
-  sorry
+    deepestEPivot H r hr hL 0 = 0 := by
+  -- At the origin slot, `∏(framedParamsReg 0)` is the reindexed corner `fromBlocks 1 0 0 0`
+  -- (`prod_framedParamsReg_zero`); the outer `reindex` in `P` cancels it, so `P = fromBlocks 1 0 0 0`.
+  funext i
+  -- The matrix `P` defining the coordinates is the cancelled corner.
+  have hP : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H (Fin.last L))
+        (hr (Fin.last L))) (prod H (framedParamsReg H r hr hL 0)))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
+    rw [prod_framedParamsReg_zero H r hr hL, ← Matrix.reindex_symm,
+      Equiv.apply_symm_apply]
+  -- Each coordinate reads a block of `P`; all blocks of `fromBlocks 1 0 0 0` give `0` in the residual.
+  simp only [deepestEPivot, hP, Pi.zero_apply]
+  rcases regResidualPack H r hr i with ⟨a, b⟩ | ⟨a, b⟩ | ⟨a, b⟩ <;>
+    simp only [Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.sub_apply,
+      Matrix.of_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
+      Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, sub_self]
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
 `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
