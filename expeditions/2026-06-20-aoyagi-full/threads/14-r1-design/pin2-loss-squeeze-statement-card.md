@@ -61,12 +61,19 @@ cert/chain/assembly). Its remaining content (the genuine geometric core):
    agree only mod regular leakage (g156: `R − ∏S_s ∈ ideal(E)`) — a genuine TWO-SIDED comparability
    (the cert's γ₁/γ₂), to be proved. **This is the real remaining content of cert parts (2)-(4).**
 
-## Audit (2026-06-23, build-independent, my parts (2)-(4) readiness)
-- Part (2) endpoint_telescoping: PROVEN. Blocked only on the frame-family decision (id-interior).
-- Part (3): reduces to part (2) + `prod(deepestPoint)=B`. Trivial once (2) lands.
-- Part (4): `#54` squeeze PROVEN; the `‖R‖²↔deepestCoreF` g156-leakage comparability is OPEN (the
-  hardest of my parts). Needs the Schur-core ↔ absorbed-reduced-core relation.
-- Assembly: mechanical once parts (1)-(4) + the frame family are in place (chain is sorry-free-given-cert).
+## Audit (2026-06-23, updated after the frame-family build + the g156 finding)
+- **Frame family: PROVEN bedrock.** `deepestFrameFamily_exists` (id-interior + boundary-only) is
+  sorry-free (per-layer helper `deepestFrameLayer_exists` + `choose`; boundary via #159, interior id,
+  L=1 two-sided). The 6 interface lemmas + #159 (proven, spliced from fm/regslice-id @4505ceb8) all
+  sorry-free. Cert/chain/assembly WIRED to `deepestFrameFamilyP/Q`. DeepestFrame.lean sorry-free.
+- Part (2) endpoint_telescoping: PROVEN, ready (the family supplies the id-interior `hinterface`).
+- Part (3): `prod_deepestPoint_eq` PROVEN; the corner-reindex reduces to (2).
+- **Part (4): FALSE-AS-STATED, HALTED.** `‖R‖²↔‖∏S_s‖²` is FALSE in general (sympy-verified
+  counterexample L=2,r=1,reddim=2: `E=0` but `∏S_s=0` while `R=−ε⁴≠0`). The `#54` squeeze is proven; the
+  core↔core link needs a non-cancellation hypothesis (NC) `∏‖S_s‖≤κ‖∏S_s‖`, auto-discharged only in the
+  scalar-reduced-core case. Banked: `codex/g156-leakage-answer.md`. AWAITING the pen-and-paper soundness
+  adjudication (cover-route-redundant vs needs-NC vs scalar-core-restriction).
+- Assembly: mechanical once part (4) resolves + deriv-fm's #91/part-1 merges (chain sorry-free-given-cert).
 
 The ORIGINAL escalation text below is kept as the dead-route record (the bare-split additive chart).
 
