@@ -547,4 +547,59 @@ theorem dlnLoss_block_squeeze {a b r mlo nhi : Type*} [Fintype a] [Fintype b]
   rw [hloss]
   exact fullProduct_loss_squeeze P00 P01 P10 P11 t hleak
 
+/-- **The endpoint-frame loss two-sided bound** (the #80 leaf chain). For a loss matrix `N` whose
+endpoint-frame conjugate `P0·N·QL` reindexes to the framed block form `fromBlocks (P00−1) P01 P10 P11`
+(P0, QL the constant boundary frames, with inverses `Pi, Qi`), and the leak charged `∑leak² ≤ t²·∑E²`,
+the loss energy `∑N²` is two-sidedly comparable to the CLEAN form `∑E² + ‖Rcore‖²`. Composes
+`conjugation_frobenius_comparable` (`∑N² ≍ ∑(P0·N·QL)²`) with `dlnLoss_block_squeeze` (the framed-block
+split). The constants fold the endpoint-frame energies. This is the route-(a) leaf core of
+`deepest_loss_squeeze`; the per-`w` framed-conjugate relation `hconj` is the geometric input (its source
+is the frame-bridge cert + `endpoint_telescoping`). -/
+theorem dlnLoss_two_sided_of_frame {n m r mlo nhi : Type*}
+    [Fintype n] [Fintype m] [Fintype r] [DecidableEq r] [Fintype mlo] [Fintype nhi]
+    [DecidableEq n] [DecidableEq m]
+    (N : Matrix n m ℝ) (P0 : Matrix n n ℝ) (QL : Matrix m m ℝ)
+    (Pi : Matrix n n ℝ) (Qi : Matrix m m ℝ) (hP : Pi * P0 = 1) (hQ : QL * Qi = 1)
+    (e₁ : n ≃ r ⊕ mlo) (e₂ : m ≃ r ⊕ nhi)
+    (P00 : Matrix r r ℝ) (P01 : Matrix r nhi ℝ) (P10 : Matrix mlo r ℝ) (P11 : Matrix mlo nhi ℝ)
+    [Invertible P00] (t : ℝ)
+    (hconj : Matrix.reindex e₁ e₂ (P0 * N * QL) = Matrix.fromBlocks (P00 - 1) P01 P10 P11)
+    (hleak : (∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
+        ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+            + (∑ i, ∑ j, (P10 i j) ^ 2))) :
+    ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2)) + (∑ i, ∑ j, (P10 i j) ^ 2))
+          + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))
+        ≤ ((2 * (1 + t ^ 2)) * ((∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2)))
+            * (∑ i, ∑ j, (N i j) ^ 2)
+    ∧ (∑ i, ∑ j, (N i j) ^ 2)
+        ≤ ((∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2))
+            * ((2 + 2 * t ^ 2)
+              * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                    + (∑ i, ∑ j, (P10 i j) ^ 2))
+                + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))) := by
+  -- The framed-block squeeze on `P0·N·QL` (`dlnLoss_block_squeeze` via `hconj`).
+  obtain ⟨hblo, hbhi⟩ := dlnLoss_block_squeeze (P0 * N * QL) e₁ e₂ P00 P01 P10 P11 t hconj hleak
+  -- The endpoint-conjugation comparability (`∑N² ≍ ∑(P0·N·QL)²`).
+  obtain ⟨hclo, hchi⟩ := conjugation_frobenius_comparable P0 QL Pi Qi hP hQ N
+  set E := (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2)) + (∑ i, ∑ j, (P10 i j) ^ 2))
+      + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2) with hE
+  set C := ∑ i, ∑ j, ((P0 * N * QL) i j) ^ 2 with hC
+  set NN := ∑ i, ∑ j, (N i j) ^ 2 with hNN
+  set KP := (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) with hKP
+  set Ki := (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) with hKi
+  -- `hblo : E ≤ 2(1+t²)·C`, `hchi : C ≤ KP·NN` ⟹ `E ≤ 2(1+t²)·KP·NN`.
+  have hKP_nonneg : 0 ≤ KP :=
+    mul_nonneg (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)
+      (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)
+  have hKi_nonneg : 0 ≤ Ki :=
+    mul_nonneg (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)
+      (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)
+  have ht2 : (0 : ℝ) ≤ 2 * (1 + t ^ 2) := by positivity
+  refine ⟨?_, ?_⟩
+  · calc E ≤ 2 * (1 + t ^ 2) * C := hblo
+      _ ≤ 2 * (1 + t ^ 2) * (KP * NN) := mul_le_mul_of_nonneg_left hchi ht2
+      _ = 2 * (1 + t ^ 2) * KP * NN := by ring
+  · calc NN ≤ Ki * C := hclo
+      _ ≤ Ki * ((2 + 2 * t ^ 2) * E) := mul_le_mul_of_nonneg_left hbhi hKi_nonneg
+
 end DLNFibre.DLN.RLCT
