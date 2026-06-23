@@ -1299,3 +1299,27 @@ that only need building IF the (3,3,2) kill-condition fires — flagged the nami
 exact. Value-side CLOSED (pp2 g190).
 
 OPEN GATE unchanged: §4 realizability (the Adm↔RealizableRank bridge, g216) under pp-r1realize.
+
+## g218 — (2,2,2) RouteStep VALIDATION banked: committed type inhabited + folds to 3/2 (de-risk, §4-ungated)
+Built Case222RouteStep.lean (@9ad72f3, green 2677, sorry-free): a non-vacuity/fidelity check that the
+committed RouteStep/PivotWitness/NodeChartFamily/foldFamily types admit a GENUINE (2,2,2) instance folding
+to 3/2 — WITHOUT the general routeStep body (still sorry, §4-gated). The (2,2,2) reachability is
+finite/decidable, so the achiever witnesses are constructed directly (no general coverage theorem needed).
+
+- pivotWitness222_step1 : PivotWitness M222route 4 (T=(0,0), Adm/Mval by decide); step2 : PivotWitness M222route 3
+  (T=(1,0), Mval=3=minAdm, the binding). minAdm_M222 = 3 by decide.
+- case222_routeStep_value = 3/2 (⨅ over the codimsOf=[4,3] family, via foldFamily_iInf_eq_half_minAdm).
+  Axioms clean-three + monomial_rlct.
+- case222_routeStep_branch : RouteStep M222route M222route — the committed branch constructor inhabited with
+  genuine root-anchored data (Bool cells, schurState splits, codims 4/3, two PivotWitness M222route). Axioms
+  clean-three.
+
+WHY THIS MATTERS (bedrock, not visible-progress): it proves the committed type is NON-VACUOUS + root-anchored
++ folds correctly on the anchor — directly answering "does the type admit a real (2,2,2) instance giving 3/2?"
+(yes). De-risks the type the general fix-body fills. Built it MYSELF (not via the drift-prone background
+formaliser, g213) since it's MY type being validated and it's well-scoped completion (comparative-advantage
+"Just Do It"). Distinct from crux2's #94 cover wrap (this is the value/dispatch side; #94 is the cover side).
+
+Lean notes: PivotWitness is a Type (data), so codimsOf222_witnessed is a def (not theorem) and the witness
+selection is a decidable if-branch on c (NOT rcases on a Prop-Or — Or.casesOn can't eliminate into a Type
+goal). Hardened the committed type without touching routeStep (still the one §4-gated sorry).
