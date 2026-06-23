@@ -347,8 +347,39 @@ noncomputable def deepestEPivot (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    ContDiff ℝ (⊤ : ℕ∞) (deepestEPivot H r hr hL) :=
-  sorry
+    ContDiff ℝ (⊤ : ℕ∞) (deepestEPivot H r hr hL) := by
+  -- Each layer entry of `framedParamsReg` is `ContDiff` (`contDiff_framedParamsReg_entry`), so each
+  -- entry of `prod H (framedParamsReg ·)` is `ContDiff` (`contDiff_prod_entry`).
+  have hlayer : ∀ (s : Fin L) (a : Fin (H s.castSucc)) (b : Fin (H s.succ)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsReg H r hr hL p s a b) :=
+    contDiff_framedParamsReg_entry H r hr hL
+  have hprod : ∀ (a : Fin (H 0)) (b : Fin (H (Fin.last L))),
+      ContDiff ℝ (⊤ : ℕ∞) (fun p => prod H (framedParamsReg H r hr hL p) a b) :=
+    fun a b => contDiff_prod_entry H (framedParamsReg H r hr hL) hlayer a b
+  -- `deepestEPivot p` is a `Fin nReg → ℝ` whose each coordinate is (a `prod`-entry, reindexed) − const.
+  refine contDiff_pi.2 (fun i => ?_)
+  -- The `i`-coordinate selects one match-arm (independent of `p`); rewrite to that arm, then it is a
+  -- reindexed `prod`-entry (minus the constant `1` on the `inl` arm).
+  have hcoord : (fun p => deepestEPivot H r hr hL p i)
+      = fun p =>
+        let P := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+          (prod H (framedParamsReg H r hr hL p))
+        match regResidualPack H r hr i with
+        | Sum.inl (a, b) => (P.toBlocks₁₁ - 1) a b
+        | Sum.inr (Sum.inl (a, b)) => P.toBlocks₁₂ a b
+        | Sum.inr (Sum.inr (a, b)) => P.toBlocks₂₁ a b := rfl
+  rw [hcoord]
+  rcases regResidualPack H r hr i with ⟨a, b⟩ | ⟨a, b⟩ | ⟨a, b⟩
+  · simp only [Matrix.toBlocks₁₁, Matrix.sub_apply, Matrix.of_apply, Matrix.reindex_apply,
+      Matrix.submatrix_apply, Equiv.symm_symm]
+    exact (hprod _ _).sub contDiff_const
+  · simp only [Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+      Equiv.symm_symm]
+    exact hprod _ _
+  · simp only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+      Equiv.symm_symm]
+    exact hprod _ _
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
 (`d(P−B)|_0 = (Σ_s X_s, Y_L, Z_1)`, idempotent sandwich), the reg-residual's derivative reads the
