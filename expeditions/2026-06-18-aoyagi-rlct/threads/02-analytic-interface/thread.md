@@ -195,3 +195,33 @@ This is certificate arithmetic motivated by Aoyagi PDF p. 13's regular-variable
 count.  It is not chart production, analytic regular-coordinate additivity,
 Jacobian/volume-form construction, normal crossings, pole order, or RLCT
 extraction.
+
+## 2026-06-23 chart-certificate Jacobian-prior loss shift
+
+Lean now lifts the finite exponent-array shift to the chart-certificate spine:
+
+```text
+AoyagiNormalCrossingChartCertificate.jacobianPriorLossShift
+AoyagiNormalCrossingChartCertificate.exponentData_jacobianPriorLossShift
+AoyagiNormalCrossingChartCertificate.exponentData_exponentMinimum_jacobianPriorLossShift
+AoyagiNormalCrossingChartCertificate.exponentData_exponentOrder_jacobianPriorLossShift
+```
+
+The operation leaves the chart maps, coordinates, loss, loss unit, and
+Jacobian/prior unit unchanged, and replaces the chart certificate's
+Jacobian/prior value by the old value times
+`prod_j coord_j^(m * lossExp_j)`.  The projected finite exponent data is
+definitionally the existing `jacobianPriorLossShift` on
+`AoyagiNormalCrossingExponentData`.
+
+Artifacts:
+
+- `reproduction-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`;
+- `statement-card-a0-normal-crossing-chart-certificate-jacobian-prior-loss-shift.md`;
+- `review-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`.
+
+This is certificate algebra on supplied chart data.  It defines a certificate
+for a modified `jacobianPrior`; it does not prove an analytic
+Jacobian/volume-form theorem, regular-suspension chart construction, chart
+coverage, transition regularity, pole order, RLCT additivity, or extraction
+transfer from a reduced certificate.

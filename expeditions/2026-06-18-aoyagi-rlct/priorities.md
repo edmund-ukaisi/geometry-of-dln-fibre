@@ -66,6 +66,18 @@ minimum-coordinate chart counts and finite order.  This is the finite arithmetic
 socket motivated by Aoyagi PDF p. 13's regular-variable count, not a
 regular-coordinate chart construction or analytic RLCT additivity theorem.
 
+The current chart-certificate lift of that slice is
+`threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`.
+Lean now also provides
+`AoyagiNormalCrossingChartCertificate.jacobianPriorLossShift`, which keeps the
+supplied chart maps, coordinates, loss, loss unit, and Jacobian/prior unit
+unchanged, multiplies the supplied `jacobianPrior` value by the coordinate
+monomial `prod_j coord_j^(m*k_j)`, and projects definitionally to the existing
+finite exponent-data shift.  This is certificate algebra on supplied chart
+data only.  It is not regular-coordinate construction, analytic Jacobian or
+volume-form control, chart coverage, transition regularity, pole order, RLCT
+additivity, or extraction transfer from a reduced certificate.
+
 The current A6 finite-certificate bridge is
 `threads/06-dln-translation/reproduction-theorem2-finite-certificate-bridge-a6.md`.
 It uses those A0 finite certificates to build

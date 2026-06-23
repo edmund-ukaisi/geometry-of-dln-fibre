@@ -251,6 +251,25 @@ and
 Review:
 `threads/02-analytic-interface/review-normal-crossing-jacobian-prior-loss-shift-a0.md`.
 
+Latest A0 chart-certificate lift: `NormalCrossingInterface.lean` now also
+exposes `AoyagiNormalCrossingChartCertificate.jacobianPriorLossShift`.  It
+leaves the supplied chart maps, coordinates, loss, loss unit, and
+Jacobian/prior unit unchanged, and changes the chart certificate's
+`jacobianPrior` field by multiplying by `prod_j coord_j^(m*k_j)`.  Its
+projected exponent data is definitionally the existing finite
+`AoyagiNormalCrossingExponentData.jacobianPriorLossShift m`, so the projected
+finite minimum shifts by `m/2` and the projected finite order is preserved.
+This is certificate algebra on supplied chart data, not regular-coordinate
+construction, analytic Jacobian/volume-form control, regular-suspension
+additivity, pole order, RLCT extraction, or extraction transfer from a reduced
+certificate.
+Artifacts:
+`threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`
+and
+`threads/02-analytic-interface/statement-card-a0-normal-crossing-chart-certificate-jacobian-prior-loss-shift.md`.
+Review:
+`threads/02-analytic-interface/review-normal-crossing-chart-certificate-jacobian-prior-loss-shift-a0.md`.
+
 ## Latest A2 Update
 
 The residual-product endpoint wrapper for Aoyagi Theorem 3 has landed.

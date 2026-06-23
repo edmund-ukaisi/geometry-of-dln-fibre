@@ -547,6 +547,83 @@ def exponentData (C : AoyagiNormalCrossingChartCertificate Param R) :
     0 < C.lossExp p.1 p.2
   simp
 
+/-- Chart-certificate lift of the finite Jacobian/prior loss shift.
+
+The chart maps, coordinates, loss, and unit factors are unchanged.  The
+Jacobian/prior value is multiplied by the coordinate monomial
+`prod_j coord_j^(m * k_j)`, so the projected finite exponent data is exactly
+`C.exponentData.jacobianPriorLossShift m`.
+
+This is only certificate algebra.  It does not construct regular coordinates,
+prove chart coverage, or provide an analytic regular-suspension theorem. -/
+def jacobianPriorLossShift
+    (C : AoyagiNormalCrossingChartCertificate Param R) (m : ℕ) :
+    AoyagiNormalCrossingChartCertificate Param R where
+  numCharts := C.numCharts
+  numCoords := C.numCoords
+  ChartPoint := C.ChartPoint
+  chartPoint_nonempty := C.chartPoint_nonempty
+  chartMap := C.chartMap
+  coord := C.coord
+  loss := C.loss
+  jacobianPrior := fun c u ↦
+    C.jacobianPrior c u *
+      ∏ j : Fin C.numCoords, C.coord c u j ^ (m * C.lossExp c j)
+  lossUnit := C.lossUnit
+  jacobianPriorUnit := C.jacobianPriorUnit
+  lossExp := C.lossExp
+  jacobianPriorExp := fun c j ↦ C.jacobianPriorExp c j + m * C.lossExp c j
+  loss_monomial := C.loss_monomial
+  jacobianPrior_monomial := by
+    intro c u
+    rw [C.jacobianPrior_monomial c u]
+    rw [mul_assoc]
+    congr 1
+    rw [← Finset.prod_mul_distrib]
+    refine Finset.prod_congr rfl ?_
+    intro j _hj
+    rw [pow_add]
+  lossUnit_isUnit := C.lossUnit_isUnit
+  jacobianPriorUnit_isUnit := C.jacobianPriorUnit_isUnit
+  active_nonempty := C.active_nonempty
+
+@[simp] theorem jacobianPriorLossShift_lossExp
+    (C : AoyagiNormalCrossingChartCertificate Param R) (m : ℕ)
+    (c : Fin C.numCharts) (j : Fin C.numCoords) :
+    (C.jacobianPriorLossShift m).lossExp c j = C.lossExp c j :=
+  rfl
+
+@[simp] theorem jacobianPriorLossShift_jacobianPriorExp
+    (C : AoyagiNormalCrossingChartCertificate Param R) (m : ℕ)
+    (c : Fin C.numCharts) (j : Fin C.numCoords) :
+    (C.jacobianPriorLossShift m).jacobianPriorExp c j =
+      C.jacobianPriorExp c j + m * C.lossExp c j :=
+  rfl
+
+@[simp] theorem exponentData_jacobianPriorLossShift
+    (C : AoyagiNormalCrossingChartCertificate Param R) (m : ℕ) :
+    (C.jacobianPriorLossShift m).exponentData =
+      C.exponentData.jacobianPriorLossShift m :=
+  rfl
+
+/-- The chart-certificate Jacobian/prior loss shift shifts the projected
+finite exponent minimum by `m/2`. -/
+theorem exponentData_exponentMinimum_jacobianPriorLossShift
+    (C : AoyagiNormalCrossingChartCertificate Param R) (m : ℕ) :
+    (C.jacobianPriorLossShift m).exponentData.exponentMinimum =
+      C.exponentData.exponentMinimum + (m : ℚ) / 2 := by
+  rw [C.exponentData_jacobianPriorLossShift m]
+  exact C.exponentData.exponentMinimum_jacobianPriorLossShift m
+
+/-- The chart-certificate Jacobian/prior loss shift preserves the projected
+finite exponent order. -/
+theorem exponentData_exponentOrder_jacobianPriorLossShift
+    (C : AoyagiNormalCrossingChartCertificate Param R) (m : ℕ) :
+    (C.jacobianPriorLossShift m).exponentData.exponentOrder =
+      C.exponentData.exponentOrder := by
+  rw [C.exponentData_jacobianPriorLossShift m]
+  exact C.exponentData.exponentOrder_jacobianPriorLossShift m
+
 end AoyagiNormalCrossingChartCertificate
 
 /-- Explicit hypothesis supplied by the cited analytic normal-crossing
