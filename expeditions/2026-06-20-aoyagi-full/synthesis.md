@@ -2,7 +2,57 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
+## Current read (2026-06-23): re-grounding after compaction — the per-layer-Morse→CITE drift located + CORRECTED; R1 is the S2-only explicit-charts grind, NOT a cite
+
+**Trigger.** Operator flagged (twice) that my post-compaction context did not reference the expedition
+policies / files — first the deeper regroup ("the 'cite Aoyagi budget' framing is incoherent for an
+INDEPENDENT Aoyagi formalisation"), then "compactification doesn't reference the expedition files —
+re-read them." Owned: the controller tick MANDATES a full re-ground (expedition.md §State) after any
+compaction; skipping it is what let a cite-drift sit uncorrected. Re-grounded fully now
+(expedition.md / brief / priorities / synthesis / threads / lessons).
+
+**The drift, located precisely (the untracked `threads/14-r1-design/Lge3-morse-count-crosscheck.md`).**
+It correctly REFUTES the **per-layer Morse recursion** `rlctAtOn(core)=M_last/2 + child` as L=2-only
+(structural root: blow up layer 0 → `Erow` is a degree-`(L−1)` form for L≥3, not a free Morse
+coordinate; `schurStateRed` preserves depth so the recursion never reaches the L=2 free-`B` base) — that
+refutation STANDS. But it then DRIFTED to "the realistic general-L route is **(ii) cite Aoyagi
+`rlct=½·codim`**" — a forbidden 2nd citation that contradicts the brief (S2-only) and `lessons.md`
+(citing `rlct=codim/2` was explicitly rejected — cites away the new content, breaches
+Aoyagi-independence). **Root of the drift:** the crosscheck lost sight that the expedition ALREADY built
+the determinantal resolution as explicit charts — the SETTLED g152/g153 mechanism (per-node blow-up +
+det-1 **measure-preserving** Schur peel + recurse, monomial-min-fold, codims = Mval) + pp2's landed #68
+RouteStep cert IS the rank-profile determinantal resolution, **proven from scratch, S2-only**. The
+per-layer Morse recursion was a refuted shortcut (deriv-finish's retracted "Route A"), never the settled
+design. Crosscheck §4's cite recommendation is now banner-RETRACTED in-file; §1–§3 kept.
+
+**My #18 partial-rank validation (post-regroup) = the CORRECTION, landing back on the settled design.**
+Decorrelated from the paper images, #18 re-confirmed: the clean-disjoint depth-recursion is rank-1-only;
+partial rank (t₁≥2) is exactly the coupled `diag(b)` Schur structure (witness (3,3,2,2) t=(2,1,0)); the
+VALUE `½·min Mval` is robust general-L, all branches (ideal-preservation + cover lower bound; confirmed
+`(3,3,2,2)→2`). That coupled Schur recursion = the settled g152/g153 det-1 peel. So #18 walked the
+crosscheck's drift back to the settled, S2-only, from-scratch resolution. Three shortcuts now recorded
+dead, NONE of which was ever the settled design: §8 one-shot (L≥3), per-node Morse recursion (L≥3,
+the crosscheck), clean-disjoint depth-recursion (t₁=1-only).
+
+**Actual state (verified against the branch, not guessed).** On `expedition/aoyagi-full`: latest commits
+are all `lessons:`/`synthesis:` docs; `30b57535` = "rs-grind's trap-iii routeStep body" (5th vacuity
+surfacing) — R1's routeStep is MID-LEAN-GRIND on `fm3/routem` (unmerged; that's why
+`routeStep`/`RouteMTree` aren't in the main checkout). So R1's OPEN work is the **Lean build** (the
+explicit-charts dispatcher, fighting vacuity traps), NOT a math-design question — the math is settled +
+re-confirmed. Integration #6 is OVERDUE (merge `fm3/routem` + `fm2/deepest-gauge-chart*` + `crux2/*`
+into the expedition branch). Headline `aoyagi_learning_coefficient` proven-conditional (4 gates: #59
+gauge chart / #39 R1 dispatcher / #70 degenerate boundary / #42 D1 ≥-leg). Reproduction (#14) + RRR
+(#17) are the operator-requested deliverables: reproduction §0–§3.4 + typo ledger DONE (was untracked,
+now banked this commit; §4 Lemmas 3–5 / §5 RRR remain); RRR Lean not started.
+
+**Net + next.** The operator's regroup pulled the controller toward reproduction + understanding + R1
+hard-validation (vision-maintenance). That arc is largely complete and its verdict is REASSURING: R1 is
+sound, S2-only, explicit-charts-from-scratch — no conceptual wall, no 2nd citation. Next: finish the
+reproduction (§4/§5) + RRR write-up as the operator asked; then re-engage the Lean frontier (routeStep
+vacuity on fm3/routem, integration #6, D1 #7). Standing process fix: re-ground (synthesis + brief) after
+EVERY compaction before acting — banked as a lesson.
+
+## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
 - **#64 (e), confirmed-composing (cobuild-sub34 + Codex).** The MP split (`deepestSplit_exists`) delivers RAW

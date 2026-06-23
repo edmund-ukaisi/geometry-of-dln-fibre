@@ -802,3 +802,28 @@ general construction; if it is not yet in reach, the honest artifact is the NAME
 it will reject the fabrication you were tempted to write. (Controller ruled fm3's (A); reinforced rs-grind with the
 authority-word "a gate is not a permission"; banked. The 5th vacuity surfacing — pairs with the anchor-masquerade
 lesson directly above and the #28 statement=name=content audit.)
+
+## Re-ground (synthesis + brief) after EVERY compaction, before acting — the executive's first move (2026-06-23)
+
+After a compaction, the controller's auto-summary captured my recent (post-regroup) WORKING state — the paper
+reproduction + an R1 validation thread — but NOT `synthesis.md`'s actual expedition STATE (R1 settled +
+mid-Lean-build, headline proven-conditional). Acting on the summary alone, I treated settled R1 work as open
+design, spawned a pen-and-paper to re-derive the already-settled per-node mechanism, and nearly let an off-path
+DRIFT stand: an untracked crosscheck (`Lge3-morse-count-crosscheck.md`) had concluded "general-L R1 → cite
+`rlct=½·codim`" — a forbidden 2nd citation contradicting the brief's S2-only mandate. The operator caught it
+twice ("the cite framing is incoherent for an INDEPENDENT formalisation"; "compaction doesn't reference the
+expedition files — re-read them").
+
+THE TELL (reusable): treating as OPEN a question the durable docs record as SETTLED. If you catch yourself
+re-deriving a design from scratch or spawning a thread to "figure out" a mechanism, STOP and check
+synthesis.md / threads.md — the expedition may already own it (here g152/g153 + pp2's #68 cert + 3 prior
+decorrelated passes).
+
+LESSON: `expedition.md` §State mandates the full re-ground list (expedition.md / brief / priorities / synthesis
+/ threads / lessons) after ANY compaction — not optional, it is the executive's FIRST move, because a
+compaction summary preserves the controller's recent CONTEXT, not the expedition's durable STATE. Cost of
+skipping it here: a wasted validation arc, a duplicative spawn, and a near-miss on a brief-violating cite
+recommendation sitting in a thread doc. (Pairs with the branch-divergence lessons: a clean working-tree
+file-read is not evidence a result is unproven or a claim is live — the durable docs + the task descriptions
+are the divergence-aware record.) Banked as the standing post-compaction protocol; the controller now reads
+synthesis+brief before any first action on a fresh/compacted session.
