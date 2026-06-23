@@ -94,3 +94,7 @@ import DLNFibre.Core.MultComorphism
 -- from mult⁻¹B ⊆ Σ̄^r. The +r(d_0+d_N−r) shift (the identity) stays Cited — it needs the exact-rank
 -- chart trivialization (absent at v4.29); the naïve sandwich is a NO-GO (see the module docstring).
 import DLNFibre.Core.FibreCodim
+-- Fibre-codim G1 (rank-chart build): same rank ⟹ same fibre codim (N≥1), via the GL×GL end-factor
+-- action + mult-equivariance + height-comap codim-invariance + rank normal form. Reduces Lemma 4.6
+-- to a single normal-form fibre.
+import DLNFibre.Core.FibreNormalForm
