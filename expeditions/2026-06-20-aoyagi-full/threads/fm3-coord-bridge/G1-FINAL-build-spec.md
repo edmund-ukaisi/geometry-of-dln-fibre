@@ -46,6 +46,33 @@ PivotWitness (each Mred carries hMid(Mred), C4 = red s=0 absorbs the boundary). 
 needed — the design is locked. RESUME #85 (general routeStep on certified ChainDimSplit) + #86 (extraction) +
 #88 (value over routeMIota) on this locked design; formaliser on the anchoring-independent Fmeas meanwhile.
 
+## ROOT-ANCHORING RESOLVED — codim is ROOT-anchored, distinct from per-Mred hMid (g196, pp2 g207/g208/g209)
+pp2 (now #39 PRODUCER) pinned the codim anchoring (converges with g192/g194). TWO DISTINCT anchorings — do
+NOT conflate (this is the subtle point):
+- PivotWitness CODIM = ROOT-anchored: codim = the GEOMETRIC codim in the ORIGINAL ambient = the pivot stratum
+  CARDINALITY = (Mval ROOT_M T_node).toNat, T_node ∈ Adm(ROOT M). NOT Mval(split.red, T_local) — that
+  UNDERSHOOTS (minAdm(schurState M) < minAdm(root M) ALWAYS; (2,2,2): root minAdm 3, schurState (1,1,2) minAdm 1;
+  a child codim=1 < m₀=3 ⟹ foldFamily_threshold_ge FAILS). (2,2,2) codimsOf=[4,3] = Mval(ROOT (2,2,2), T) at BOTH
+  nodes (step-1 T=(0,0)→4, step-2 T=(1,0)→3); NOT the reduced Mval (gives 2,1 — wrong). This is for the VALUE.
+- hMid / hGne = per-Mred: each reduced chain's own non-degeneracy (∀ s, 1≤Mred s), for crux2's #65 per-Mred
+  hGne in the descent. SEPARATE from the codim anchoring. (g194's "each Mred carries hMid(Mred)" = THIS, the
+  hGne invariant — NOT the codim, which is root-anchored.)
+WHY the unified tree forces the geometric recursion (pp2, honest): foldFamily reads codimsOf ONLY (tree-shape
+irrelevant), so candidate-1 flat-branch DOES give the VALUE (⨅ over Adm of Mval(ROOT,T)/2 = lambdaCore). BUT
+cover_le needs REAL charts (iterated pivotBlowupOn, Case222 step-1→step-2→leaf); a flat branch has NO charts.
+The UNIFIED RouteStep (one tree → isCover + isValue) ⟹ the tree MUST be the geometric rank-descent; the value
+reads codimsOf off it. Confirms g194 (the certified recursion IS the geometric one).
+THE LEAN ROUTE (pp2 recommendation, the cleaner one): codim = the pivot stratum CARDINALITY directly (a ℕ from
+the blow-up center), prove codim = Mval(ROOT M, T) as PivotWitness.hCodim (the C1-condition, g183 §2). This
+DECOUPLES split.red = schurState (width bookkeeping, per-node) from codim (geometric, ROOT-anchored) — sidesteps
+threading root M through the WF.fix. PivotWitness's M = the ROOT M (hAdm : T ∈ Adm ROOT_M, hCodim : codim =
+(Mval ROOT_M T).toNat); the cardinality c is carried directly, the hCodim proves it = root Mval.
+schurState DEF (pp2): (M_0−1, M_1−1, M_{≥2}), split.red = schurState, Σred<ΣM via hdrops. ACTIONABLE: formaliser
+builds schurState def + PivotWitness root-anchored (cardinality-direct) + the foldFamily value over routeMIota.
+pp2 spells either root-M-carry vs cardinality-direct against (2,2,2) on request (cardinality-direct preferred).
+RESUME #85 (general routeStep on certified ChainDimSplit) + #86 (extraction) + #88 (value over routeMIota) on
+this locked design; formaliser on the anchoring-independent Fmeas meanwhile.
+
 ## PER-Mred hGne NULL LEMMA convention + RELAY CHANNEL (g195, crux2 via controller relay)
 The descent's per-Mred hGne consumes a generic matrix-product-zero-set-NULL Core lemma (the SECOND use of the
 deepest-core nonvanishing; #65 dlnLoss_deepest_core_ae_ne_zero @4b4a4cf is the FIRST/deepest case — sorry-free).
