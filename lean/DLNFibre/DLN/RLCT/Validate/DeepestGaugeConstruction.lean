@@ -565,12 +565,16 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
           dlnLoss H B ((paramsEquivFlat H).symm w)
             ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  -- **ASSEMBLY (B).** The per-`w` chain: `deepestPoint_frame` (constant units) → `endpoint_telescoping`
-  -- (`framedParams_split_eq_frame_raw` per-`w`) → `dlnLoss_two_sided_of_frame` (banked leaf core) → Φ-id.
-  -- The Φ-reg-id `∑(deepestEPivot)² = ∑E²` (block-level, `deepestEPivot_sq_sum_eq_blocks` below) + the
-  -- core-id (`hcoreabs`) are leaf + BANKED; the one geometric obligation is `framedParams_split_eq_frame_raw`
-  -- (the g164/g222 split-vs-frame relation — the gating input to `hconj`, routed: same root as #82's
-  -- frame-exposure). OPEN: the per-`w` germ around that cert.
+  -- **ASSEMBLY (B), Codex-designed (loss-squeeze-wire-answer, option iii).** `hframe_bridge` packages the
+  -- per-`w` geometric datum (the g164/g222 split-vs-frame content, the ONE sorry): the constant endpoint
+  -- frames `P0/QL/Pi/Qi/t`, and per `w ∈ U` the block cert (`hconj`: `reindex(P0·(prod(paramsSymm w)−B)·QL)
+  -- = fromBlocks (P00−1) P01 P10 P11`; `P00/P01/P10 = the deepestEPivot blocks of split w`; the leak; and
+  -- the CORE COMPARABILITY `‖Rcore‖² ≤ γ₂·deepestCoreF ∧ deepestCoreF ≤ γ₁·(∑E²+‖Rcore‖²)` — NOT an
+  -- equality, per Codex's flag: the full-product Schur core ≠ the absorbed per-layer core, they agree only
+  -- mod regular leakage). The leaf chain: `dlnLoss_two_sided_of_frame` (∑N² ≍ ∑E²+‖Rcore‖²) +
+  -- `deepestEPivot_sq_sum_eq_blocks` (∑E²=∑(deepestEPivot)²=∑(regStraighten).1² via `hregval`) + the
+  -- core-comparability → `c₁·Φ ≤ dlnLoss ≤ c₂·Φ`. ONE sorry: `hframe_bridge` (the shared frame-exposure
+  -- root; closes via the step-(2) refactor — `framedParams_split_eq_frame_raw` + the core-comparability).
   sorry
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
