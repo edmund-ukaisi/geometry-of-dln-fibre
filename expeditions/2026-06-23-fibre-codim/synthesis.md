@@ -230,3 +230,31 @@ minimal-prime machinery (`SigmaCodim.minimalPrimes_sigmaIdeal_eq`). Substantial,
 
 **Decision point for the operator** (cost re-calibrated UP from my wrong steer): commit to the chart
 build (ambitious completion, several tides) vs. land-the-half + roadmap + keep Cited.
+
+## BUILD COMMITTED — the rank-chart trivialization (operator: "A. Build it!", 2026-06-23)
+
+Operator chose (A): build the full Lemma 4.6 identity via the rank-chart local-trivialization. The
+target (Core): `codimRepCanonical (fibre d B) = cCodim d r + r(d_0+d_N−r)` for `B` rank r, r≤min d, 0<N.
+
+**Rung-ladder (the LR submersion, made engine-concrete):**
+- **G0 [thread 07, design recon, NOW]** — pin the formalization decomposition + probe the G2 crux
+  (product trivialization + dim-additivity) for v4.29 reachability; group-reduction vs inner-quiver
+  route; decorrelated Codex; output the confirmed ladder + per-rung risk + go/no-go.
+- **G1 [thread 08, formaliser, NOW (parallel, independent)]** — **reduce to normal form.**
+  `codimRepCanonical (fibre d B) = codimRepCanonical (fibre d E)` for `B` rank r, `E = diag(I_r,0)`, via
+  the `GL_{d_N}×GL_{d_0}` linear action on `Rep_d` (on the end factors A_N, A_1) + mult-equivariance
+  `mult(P·A)=P_N·mult(A)·P_0⁻¹` + codim-invariance under the induced coordinate-ring algebra
+  automorphism (`NullstellensatzCodim.height_map_algEquiv`) + rank-normal-form transitivity (any rank-r
+  `B = P_N·E·P_0⁻¹`). Reduces the whole problem to the SINGLE fibre over `E`. Independent of G2/G3,
+  bankable regardless — safe to build now.
+- **G2 [the crux]** — chart trivialization: `mult⁻¹(U) ∩ Σ^r ≅ U × mult⁻¹(E)` over the pivot chart
+  `U = {top-left r×r block invertible}` via the explicit section; → dim-additivity over the chart.
+- **G3 [assembly]** — `dim Σ̄^r = δ + dim(fibre over E)` (chart is dense open in the top stratum) +
+  Brick A min-over-components (`SigmaCodim.minimalPrimes_sigmaIdeal_eq`) → `codimRepCanonical(fibre E) =
+  cCodim + δ`. With G1 ⟹ the identity for all B of rank r.
+- **G4 [DLN wiring]** — discharge `BundleShiftInterface.cited_bundle_shift` (instantiate K, `B.map ι`). Thin.
+
+Substrate in hand: F1 (`MultComorphism`, the comorphism + fibre ideal), the F2 lower bound
+(`FibreCodim`), the thermometer (`dim Mat^{rk=r}=δ`), Brick A (`SigmaCodim`), the catenary bridge, the
+group/orbit machinery (`Orbit`). Residual risk concentrates on **G2** (the product trivialization) —
+hence the G0 recon probes it first.
