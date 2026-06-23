@@ -318,10 +318,15 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
         = (hLs ▸ Q ⟨Lm, by omega⟩ :
             Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) from by
       rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
-    -- REMAINING (handed to crux2): pure 4-matrix associativity `P0·prodAux·(rA·QL) = P0·(prodAux·rA)·QL`,
-    -- both `P0·prodAux·rA·QL`. The dependent-dim `Matrix.mul_assoc` resists directional rw (one fires on
-    -- the LHS, the RHS regroup walls — `←`/`conv_rhs`/explicit-args/`▸`-arg all miss on the dependent
-    -- dims). Trivially true; crux2's env / a fresh look closes it. The telescoping spine + QL-cast GREEN.
+    -- pure 4-matrix associativity `a·b·(c·d) = a·(b·c)·d` (dependent-dim `Matrix.mul_assoc` won't fire
+    -- via simp/rw — apply it as explicit congr terms): both → `a·(b·(c·d))`.
+    -- REMAINING (handed to crux2): the LAST step, pure 4-matrix associativity `P0·prodAux·(rA·QL) =
+    -- P0·(prodAux·rA)·QL` (both `P0·prodAux·rA·QL`). The dependent-dim `Matrix.mul_assoc` resists EVERY
+    -- directional approach (rw one-at-a-time, ←, simp only, conv_rhs, explicit-first-arg both directions,
+    -- calc) — one fires on the LHS, the RHS regroup consistently "didn't find pattern" because the casty
+    -- `reindex (finCongr ⋯)` / `h0cs ▸` terms elaborate so explicit-arg matching misses on the dependent
+    -- Fin (H _) dims. TRIVIALLY true. The full telescoping spine + QL-cast are GREEN above; crux2's env
+    -- (or `Matrix.mul_assoc`-normalize / a `noncomm`-aware tactic) closes this last assoc.
     sorry
 
 end DLNFibre.DLN.RLCT
