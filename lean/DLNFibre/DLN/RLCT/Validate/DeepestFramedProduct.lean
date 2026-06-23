@@ -67,11 +67,17 @@ telescoping** `prod H A = P_0⁻¹ · (prod H C) · Q_{L-1}⁻¹` (under #95-(I)
 interior interfaces `Q_s⁻¹·P_{s+1}⁻¹ = 1` collapse) → `conjugation_frobenius_comparable` (the endpoint
 conjugation, banked) → `fullProduct_loss_squeeze` (the block split, banked) + the gauge-read identities.
 
-The telescoping is a cast-heavy `prodAux` induction with per-layer dependent-`Fin` endpoint frames
-(`P_0 : Matrix (Fin (H 0)) …` vs `P ⟨0,_⟩ : Matrix (Fin (H ⟨0,_⟩.castSucc)) …` — the `H 0` vs
-`H ⟨0,_⟩.castSucc` cast). Built next as a dedicated lemma; the route is: induct on `prodAux H A k`,
-carry the invariant `prodAux H A k = (P_0⁻¹ · prodAux H C k · (frame at k))`, the interior interfaces
-cancelling by `hchain`. The endpoint conjugation + block split are already banked
-(`conjugation_frobenius_comparable`, `fullProduct_loss_squeeze`). -/
+**The statement SHAPE is solved** (the cast obstacle): state it with EXISTENTIAL endpoints —
+`∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ),
+IsUnit P0 ∧ IsUnit QL ∧ prod H C = P0 * prod H A * QL`, with hypotheses: per-layer frames
+`P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ`, `Q : … (Fin (H s.succ)) …`,
+`hframe : ∀ s, C s = P s * A s * Q s`, `hunit : ∀ s, IsUnit (P s) ∧ IsUnit (Q s)`, and the
+INTERFACE-VANISHING conditions `Q s * P s' = 1` for adjacent `s + 1 = s'` (the #95-(I) frame-triviality
+makes the interfaces `I`). Existential `P0, QL` are naturally typed where `prod` lives (`H 0`, `H (last)`)
+— this DODGES the `H 0` vs `H ⟨0,_⟩.castSucc` cast that breaks an explicit-endpoint statement (probed,
+typechecks). The PROOF is the cast-heavy `prodAux` induction: invariant `prodAux H C k = P0 *
+prodAux H A k * (frame at k)`, interior interfaces cancelling by the `Q s * P s' = 1` conditions. The
+endpoint conjugation + block split are banked (`conjugation_frobenius_comparable`,
+`fullProduct_loss_squeeze`); only this induction remains for PIN 2's bridge. -/
 
 end DLNFibre.DLN.RLCT
