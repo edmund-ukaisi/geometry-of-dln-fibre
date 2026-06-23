@@ -13543,6 +13543,370 @@ theorem case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_succ
   rw [case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_sourceFollowingFactor]
   rw [case2SourceFollowingFactor_successorFollowingFactor_succ]
 
+set_option linter.flexible false in
+
+/-- Reindex old top rows, the surviving displayed pivot row, and post-pivot
+residual rows as the next same-stage source row stack.
+
+This is finite row bookkeeping only.  It does not construct a successor chart
+or source-produce the next following factor. -/
+noncomputable def case2SourceOldTopSuccResidualRowEquiv
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    case2SourceOldTopRowIndex J ⊕
+        (Unit ⊕ pivotComplement (case2DisplayedPivotRow n hS hcont)) ≃
+      case2SourceOldTopRowIndex (J + 1) ⊕
+        Case2ResidualRowIndex n S (J + 1) where
+  toFun
+    | Sum.inl i =>
+        Sum.inl ⟨i.1, by
+          rw [Finset.mem_Icc]
+          exact ⟨(Finset.mem_Icc.mp i.2).1,
+            le_trans (Finset.mem_Icc.mp i.2).2 (by omega : J ≤ J + 1)⟩⟩
+    | Sum.inr (Sum.inl _) =>
+        Sum.inl ⟨J + 1, by
+          rw [Finset.mem_Icc]
+          exact ⟨by omega, le_rfl⟩⟩
+    | Sum.inr (Sum.inr i) =>
+        Sum.inr (case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont i)
+  invFun
+    | Sum.inl i =>
+        if hle : i.1 ≤ J then
+          Sum.inl ⟨i.1, by
+            rw [Finset.mem_Icc]
+            exact ⟨(Finset.mem_Icc.mp i.2).1, hle⟩⟩
+        else
+          Sum.inr (Sum.inl ())
+    | Sum.inr i =>
+        Sum.inr (Sum.inr
+          ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+  left_inv := by
+    intro i
+    rcases i with i | i
+    · simp [show i.1 ≤ J from (Finset.mem_Icc.mp i.2).2]
+    · rcases i with u | i
+      · simp
+      · simp
+  right_inv := by
+    intro i
+    rcases i with i | i
+    · by_cases hle : i.1 ≤ J
+      · simp [hle]
+      · have hi : i.1 = J + 1 := by
+          have hupper := (Finset.mem_Icc.mp i.2).2
+          omega
+        simp [hle]
+        exact Subtype.ext hi.symm
+    · simp
+
+set_option linter.flexible false in
+
+/-- Reindex old top following-factor rows, the surviving displayed pivot
+column, and post-pivot residual columns as the next same-stage following-row
+stack.
+
+These are columns of the displayed `D'''` block, but rows of the following
+factor.  The old-top part therefore uses the source-row interval type. -/
+noncomputable def case2SourceOldTopSuccResidualColEquiv
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    case2SourceOldTopRowIndex J ⊕
+        (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) ≃
+      case2SourceOldTopRowIndex (J + 1) ⊕
+        Case2ResidualColIndex n S (J + 1) where
+  toFun
+    | Sum.inl i =>
+        Sum.inl ⟨i.1, by
+          rw [Finset.mem_Icc]
+          exact ⟨(Finset.mem_Icc.mp i.2).1,
+            le_trans (Finset.mem_Icc.mp i.2).2 (by omega : J ≤ J + 1)⟩⟩
+    | Sum.inr (Sum.inl _) =>
+        Sum.inl ⟨J + 1, by
+          rw [Finset.mem_Icc]
+          exact ⟨by omega, le_rfl⟩⟩
+    | Sum.inr (Sum.inr j) =>
+        Sum.inr (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont j)
+  invFun
+    | Sum.inl i =>
+        if hle : i.1 ≤ J then
+          Sum.inl ⟨i.1, by
+            rw [Finset.mem_Icc]
+            exact ⟨(Finset.mem_Icc.mp i.2).1, hle⟩⟩
+        else
+          Sum.inr (Sum.inl ())
+    | Sum.inr j =>
+        Sum.inr (Sum.inr
+          ((case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm j))
+  left_inv := by
+    intro j
+    rcases j with j | j
+    · simp [show j.1 ≤ J from (Finset.mem_Icc.mp j.2).2]
+    · rcases j with u | j
+      · simp
+      · simp
+  right_inv := by
+    intro j
+    rcases j with j | j
+    · by_cases hle : j.1 ≤ J
+      · simp [hle]
+      · have hj : j.1 = J + 1 := by
+          have hupper := (Finset.mem_Icc.mp j.2).2
+          omega
+        simp [hle]
+        exact Subtype.ext hj.symm
+    · simp
+
+/-- The pivot-first transported following factor reindexes to the next
+same-stage source stack: old rows `1..J+1` of the formula-level successor
+factor over the next residual-column tail.
+
+This is row bookkeeping for `C' = Q⁻¹ C`; it is not source production of
+`C'^(S+1)` or chart production. -/
+theorem case2DisplayedSuccessorFollowingFactor_reindex_nextSource
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    (verticalBlock (case2DisplayedSourceOldTopBlock (J := J) C)
+        (case2DisplayedPaperCprime n hS hcont residual C)).submatrix
+        (case2SourceOldTopSuccResidualColEquiv n hS hcont).symm id =
+      verticalBlock
+        (case2DisplayedSourceOldTopBlock (J := J + 1)
+          (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C))
+        (case2SourceFollowingFactor (n := n) (S := S) (J := J + 1)
+          (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C)) := by
+  rw [case2DisplayedPaperCprime_eq_verticalBlock]
+  ext i a
+  rcases i with i | j
+  · by_cases hle : i.1 ≤ J
+    · have hne : i.1 ≠ J + 1 := by omega
+      simp [case2SourceOldTopSuccResidualColEquiv, hle,
+        case2DisplayedSourceOldTopBlock,
+        case2DisplayedSourceSuccessorFollowingFactor, hne]
+    · have hi : i.1 = J + 1 := by
+        have hupper := (Finset.mem_Icc.mp i.2).2
+        omega
+      simpa [case2SourceOldTopSuccResidualColEquiv, hle,
+        case2DisplayedSourceOldTopBlock, hi] using
+        (case2DisplayedSourceSuccessorFollowingFactor_pivotRow
+          n hS hcont residual C a).symm
+  · have hne : j.1 ≠ J + 1 := by
+      have hj := (mem_case2ResidualBlockCols n S (J + 1) j.1).mp j.2
+      omega
+    simp [case2SourceOldTopSuccResidualColEquiv,
+      case2DisplayedPaperCprimeTail_apply, case2SourceFollowingFactor,
+      case2DisplayedSourceSuccessorFollowingFactor, hne]
+
+/-- The weighted displayed `D'''` block reindexes to the next same-stage
+source product block.
+
+The old top weights are rewritten from the pre-state to the concrete
+`case2Succ` post-state using the explicit source-validity of the new label.
+The lower-right block is the zero-extended post-pivot source residual
+restricted back to the next residual domain.  This is finite matrix
+bookkeeping only. -/
+theorem case2DisplayedWeightedDppp_reindex_nextSource
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+    let post := pre.case2Succ upivot
+    (fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+        (weightedPivotDiagonal (post.weight (J + 1))
+          (fun i : pivotComplement row ↦
+            post.weight (case2ResidualRowLevel n S J i.1)) *
+          case2DisplayedPaperDppp n hS hcont residual)).submatrix
+        (case2SourceOldTopSuccResidualRowEquiv n hS hcont).symm
+        (case2SourceOldTopSuccResidualColEquiv n hS hcont).symm =
+      fromBlocks (case2DisplayedSourceOldTopWeight (J := J + 1) post) 0 0
+        (diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+          case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+            (case2DisplayedPostPivotSourceResidual n hS hcont residual)) := by
+  classical
+  dsimp only
+  let post := pre.case2Succ u
+  let hnew := correctedCase2NewLabelCertificate_of_prefixBound L n hS hSL hcont
+  let hpost := pre.case2Succ_case2SuppliedPostData u
+  ext r c
+  rcases r with r | r
+  · rcases c with c | c
+    · by_cases hr : r.1 ≤ J
+      · by_cases hc : c.1 ≤ J
+        · have hwr :
+              post.weight r.1 = pre.weight r.1 := by
+            simpa [post, hpost] using
+              pre.weight_succ_current_eq_of_le hnew.introduced.1 post
+                hpost.level_old hpost.var_old hpost.level_new hr
+          by_cases hrc : r = c
+          · subst c
+            simpa [case2SourceOldTopSuccResidualRowEquiv,
+              case2SourceOldTopSuccResidualColEquiv, hr,
+              case2DisplayedSourceOldTopWeight] using hwr.symm
+          · simp [case2SourceOldTopSuccResidualRowEquiv,
+              case2SourceOldTopSuccResidualColEquiv, hr, hc,
+              case2DisplayedSourceOldTopWeight, hrc]
+        · have hcval : c.1 = J + 1 := by
+            have hupper := (Finset.mem_Icc.mp c.2).2
+            omega
+          have hne : r ≠ c := by
+            intro hrc
+            have : r.1 = c.1 := congrArg Subtype.val hrc
+            omega
+          simp [case2SourceOldTopSuccResidualRowEquiv,
+            case2SourceOldTopSuccResidualColEquiv, hr, hcval,
+            case2DisplayedSourceOldTopWeight, hne]
+      · have hrval : r.1 = J + 1 := by
+          have hupper := (Finset.mem_Icc.mp r.2).2
+          omega
+        by_cases hc : c.1 ≤ J
+        · have hne : r ≠ c := by
+            intro hrc
+            have : r.1 = c.1 := congrArg Subtype.val hrc
+            omega
+          simp [case2SourceOldTopSuccResidualRowEquiv,
+            case2SourceOldTopSuccResidualColEquiv, hc, hrval,
+            case2DisplayedSourceOldTopWeight, hne]
+        · have hcval : c.1 = J + 1 := by
+            have hupper := (Finset.mem_Icc.mp c.2).2
+            omega
+          have hrc : r = c := by
+            ext
+            simp [hrval, hcval]
+          simp [case2SourceOldTopSuccResidualRowEquiv,
+            case2SourceOldTopSuccResidualColEquiv, hcval,
+            case2DisplayedSourceOldTopWeight, weightedPivotDiagonal,
+            case2DisplayedPaperDppp, weightedPivotClearedBlock, hrc,
+            Matrix.fromBlocks_multiply]
+    · by_cases hr : r.1 ≤ J
+      · simp [case2SourceOldTopSuccResidualRowEquiv,
+          case2SourceOldTopSuccResidualColEquiv, hr]
+      · have hrval : r.1 = J + 1 := by
+          have hupper := (Finset.mem_Icc.mp r.2).2
+          omega
+        simp [case2SourceOldTopSuccResidualRowEquiv,
+          case2SourceOldTopSuccResidualColEquiv, hrval,
+          weightedPivotDiagonal, case2DisplayedPaperDppp,
+          weightedPivotClearedBlock, Matrix.fromBlocks_multiply]
+  · rcases c with c | c
+    · by_cases hc : c.1 ≤ J
+      · simp [case2SourceOldTopSuccResidualRowEquiv,
+          case2SourceOldTopSuccResidualColEquiv, hc]
+      · have hcval : c.1 = J + 1 := by
+          have hupper := (Finset.mem_Icc.mp c.2).2
+          omega
+        simp [case2SourceOldTopSuccResidualRowEquiv,
+          case2SourceOldTopSuccResidualColEquiv, hcval,
+          weightedPivotDiagonal, case2DisplayedPaperDppp,
+          weightedPivotClearedBlock, Matrix.fromBlocks_multiply]
+    · rw [case2SourceResidualBlock_postPivotSourceResidual]
+      simp [case2SourceOldTopSuccResidualRowEquiv,
+        case2SourceOldTopSuccResidualColEquiv, weightedPivotDiagonal,
+        case2DisplayedPaperDppp, weightedPivotClearedBlock,
+        Matrix.fromBlocks_multiply, Matrix.diagonal_mul,
+        case2DisplayedPostPivotResidualBlock, case2ResidualRowLevel]
+
+/-- The displayed pivot-first continuing Case 2 right-hand side reindexes to
+the next same-stage source product shape.
+
+The top block is the successor old-top rows `1..J+1`; the lower block is the
+post-pivot residual block multiplied by the successor following-factor tail.
+No `hnext` or nonempty next-center hypothesis is assumed; the residual tail
+may be empty.  This is a product-level finite reindexing theorem only.  It
+does not construct `Csucc`, produce a successor chart family or suffix, prove
+transition invariance, normal crossings, pole order, termination, or RLCT
+data. -/
+theorem case2DisplayedPivotFirstRHS_reindex_nextSourceProduct
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : ℕ → τ → R) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+    let post := pre.case2Succ upivot
+    let Csucc := case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C
+    ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+        (weightedPivotDiagonal (post.weight (J + 1))
+          (fun i : pivotComplement row ↦
+            post.weight (case2ResidualRowLevel n S J i.1)) *
+          case2DisplayedPaperDppp n hS hcont residual) *
+        verticalBlock (case2DisplayedSourceOldTopBlock (J := J) C)
+          (case2DisplayedPaperCprime n hS hcont residual C)).submatrix
+        (case2SourceOldTopSuccResidualRowEquiv n hS hcont).symm id =
+      fromBlocks (case2DisplayedSourceOldTopWeight (J := J + 1) post) 0 0
+        (diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+          case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+            (case2DisplayedPostPivotSourceResidual n hS hcont residual)) *
+        verticalBlock
+          (case2DisplayedSourceOldTopBlock (J := J + 1) Csucc)
+          (case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) Csucc)) := by
+  dsimp only
+  simp only [case2DisplayedSourceChartMap_pivot]
+  rw [← Matrix.submatrix_mul_equiv
+    (fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+      (weightedPivotDiagonal ((pre.case2Succ u).weight (J + 1))
+        (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+          (pre.case2Succ u).weight (case2ResidualRowLevel n S J i.1)) *
+        case2DisplayedPaperDppp n hS hcont residual))
+    (verticalBlock (case2DisplayedSourceOldTopBlock (J := J) C)
+      (case2DisplayedPaperCprime n hS hcont residual C))
+    (case2SourceOldTopSuccResidualRowEquiv n hS hcont).symm
+    (case2SourceOldTopSuccResidualColEquiv n hS hcont).symm
+    (id : τ → τ)]
+  have hleft :=
+    case2DisplayedWeightedDppp_reindex_nextSource pre u residual hS hSL hcont
+  simp only [case2DisplayedSourceChartMap_pivot] at hleft
+  rw [hleft]
+  rw [case2DisplayedSuccessorFollowingFactor_reindex_nextSource n hS hcont residual C]
+
+/-- Right-multiplied version of
+`case2DisplayedPivotFirstRHS_reindex_nextSourceProduct`.
+
+The final factor `F` may be Aoyagi's remaining source suffix, but this theorem
+does not produce that suffix or any successor chart data. -/
+theorem case2DisplayedPivotFirstRHS_reindex_nextSourceProduct_mul
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C : ℕ → τ → R) (F : Matrix τ υ R) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+    let post := pre.case2Succ upivot
+    let Csucc := case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C
+    ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+        (weightedPivotDiagonal (post.weight (J + 1))
+          (fun i : pivotComplement row ↦
+            post.weight (case2ResidualRowLevel n S J i.1)) *
+          case2DisplayedPaperDppp n hS hcont residual) *
+        verticalBlock (case2DisplayedSourceOldTopBlock (J := J) C)
+          (case2DisplayedPaperCprime n hS hcont residual C)).submatrix
+        (case2SourceOldTopSuccResidualRowEquiv n hS hcont).symm id) * F =
+      (fromBlocks (case2DisplayedSourceOldTopWeight (J := J + 1) post) 0 0
+        (diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+          case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+            (case2DisplayedPostPivotSourceResidual n hS hcont residual)) *
+        verticalBlock
+          (case2DisplayedSourceOldTopBlock (J := J + 1) Csucc)
+          (case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) Csucc)) * F := by
+  exact congrArg (fun M ↦ M * F)
+    (case2DisplayedPivotFirstRHS_reindex_nextSourceProduct
+      pre u residual hS hSL hcont C)
+
 /-- Concrete displayed source-chart lower-row handoff rewritten through the
 formula-level source successor following factor.
 

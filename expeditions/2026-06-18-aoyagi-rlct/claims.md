@@ -720,6 +720,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  Review of the Case 2 continuing supplied-`Csucc` stack consumer is saved
 	  at
 	  `threads/04-blow-up-certificate/review-case2-source-production-obligation-continuing-csucc-stack-a4.md`.
+	  Reproduction of the Case 2 next-state source-product reindex is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-next-state-source-product-reindex-a4.md`;
+	  xhigh review found no blocking issues and is saved at
+	  `threads/04-blow-up-certificate/review-case2-next-state-source-product-reindex-a4.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in

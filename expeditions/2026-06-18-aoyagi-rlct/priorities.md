@@ -199,6 +199,16 @@ the finite center, level, and exponent payloads unchanged.  It still
 constructs neither `Cterm` nor successor/source data and does not move the
 source/chart-production boundary.
 
+The continuing Case 2 product-level source reindex now also lands the next
+same-stage source-product shape.  Lean names the old-top-plus-pivot/residual
+row and column equivalences and proves
+`case2DisplayedPivotFirstRHS_reindex_nextSourceProduct`, plus a
+right-multiplied version for a supplied final factor.  This is finite matrix
+reindexing from Aoyagi's pivot-first displayed right-hand side to
+`[oldTop(Csucc); residualFollowing(Csucc)]`, not construction of `Csucc`,
+full `C'^(S+1)`, suffixes, successor charts, transition regularity, normal
+crossings, pole order, or RLCT.
+
 Current A5 state includes the terminal source-realisation bridge slice, the
 terminal source endpoint payload slice, and counted-datum classifier-boundary
 slices.  A supplied full-family branch fills the terminal Eq5 singleton and
@@ -1731,12 +1741,13 @@ Immediate order:
    be thin source-rank, residual-rank, or hypothesis-weakening wrappers only,
    not exact-rank openness, full Theorem 3 packaging, or
    regular-suspension/RLCT transport.
-   The next source-moving frontier should be A4/A0: either build the
-   normal-crossing certificate spine with non-vacuous chart/exponent/unit/count
-   fields, or start the continuing Case 2 next-state source-product reindex
-   from the displayed `Csucc`/post-pivot residual data. Do not let this become
-   another supplied-obligation consumer unless it removes a real downstream
-   obstacle.
+   The continuing Case 2 next-state source-product reindex from displayed
+   `Csucc`/post-pivot residual data has landed. The next source-moving
+   frontier should be A4/A0: either build the normal-crossing certificate spine
+   with non-vacuous chart/exponent/unit/count fields, or attack genuine
+   source/chart production beyond the formula-level `Csucc` reindex. Do not
+   let this become another supplied-obligation consumer unless it removes a
+   real downstream obstacle.
 7. DLN notation translation. The first formula-notation slice has landed in
    `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`: Definition 3 ceiling data,
    integer reduced widths, indexed selected widths, Theorem 2 order formula,

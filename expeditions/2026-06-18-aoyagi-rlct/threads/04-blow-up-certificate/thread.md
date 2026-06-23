@@ -4272,3 +4272,40 @@ This is finite payload rewriting only.  It does not construct the obligation,
 `Cterm`, `Csucc`, `C'^(S+1)`, source suffixes, successor charts, coverage,
 transition regularity, coordinate post-data, normal crossings, pole order,
 termination, RLCT, or repair the printed Case 2 vector mismatch.
+
+## 2026-06-23 Lean Case 2 next-state source-product reindex
+
+Reproduction:
+`reproduction-case2-next-state-source-product-reindex-a4.md`.
+Statement card:
+`statement-card-a4-case2-next-state-source-product-reindex.md`.
+Review artifact:
+`review-case2-next-state-source-product-reindex-a4.md`.
+
+Lean now adds the finite product-level reindexing from Aoyagi's displayed
+Case 2 pivot-first right-hand side to the next same-stage source-product
+shape:
+
+```text
+case2SourceOldTopSuccResidualRowEquiv
+case2SourceOldTopSuccResidualColEquiv
+case2DisplayedSuccessorFollowingFactor_reindex_nextSource
+case2DisplayedWeightedDppp_reindex_nextSource
+case2DisplayedPivotFirstRHS_reindex_nextSourceProduct
+case2DisplayedPivotFirstRHS_reindex_nextSourceProduct_mul
+```
+
+The old top rows plus the surviving pivot row are reindexed as source rows
+`1..J+1`, and the displayed pivot complements are reindexed as the next
+residual row/column domains for `(S,J+1)`.  The product theorem keeps the
+formula-level successor following factor explicit and packages the lower block
+as the post-pivot source residual block times the successor following tail.
+The right-multiplied corollary allows a supplied final factor such as the
+remaining source suffix.
+
+This is finite row/column/product reindexing only.  It does not construct
+`Csucc`, source-produce `C'^(S+1)`, produce suffixes, prove successor charts,
+coverage, transition regularity, coordinate post-data, normal crossings, pole
+order, termination, RLCT, or repair the printed Case 2 vector mismatch.
+No `hnext` or nonempty next-center hypothesis is assumed; the residual tail
+may be empty.

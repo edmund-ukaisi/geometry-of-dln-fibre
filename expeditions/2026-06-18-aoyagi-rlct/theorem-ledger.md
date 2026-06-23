@@ -5418,6 +5418,29 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-production-obligation-actual-width-cterm-frontier-a4.md`.
 
+Latest A4 Case 2 next-state source-product reindex:
+`BlowupArithmetic.lean` now contains
+`case2SourceOldTopSuccResidualRowEquiv`,
+`case2SourceOldTopSuccResidualColEquiv`,
+`case2DisplayedSuccessorFollowingFactor_reindex_nextSource`,
+`case2DisplayedWeightedDppp_reindex_nextSource`,
+`case2DisplayedPivotFirstRHS_reindex_nextSourceProduct`, and
+`case2DisplayedPivotFirstRHS_reindex_nextSourceProduct_mul`.
+These prove finite row/column/product reindexing from the displayed
+pivot-first Case 2 right-hand side to the next same-stage source-product
+shape.  The product side keeps the formula-level successor following factor
+explicit and rewrites the lower block as the post-pivot source residual block
+times the successor following tail.  This is not construction of `Csucc`,
+source production of full `C'^(S+1)`, suffix production, successor chart
+construction, coverage/transition regularity, coordinate post-data,
+normal crossings, pole order, termination, RLCT, or repair of the printed
+Case 2 vector mismatch.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-next-state-source-product-reindex-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-next-state-source-product-reindex.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-next-state-source-product-reindex-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
