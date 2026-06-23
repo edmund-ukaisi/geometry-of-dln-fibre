@@ -83,6 +83,28 @@ No interface churn left — the spec is settled.
   (the #91 block-derivative transcription, `origin/g213-pin1-de0 @09475f2`) + the unitriangular inverse
   `[[I, −Σ],[0, I]]` packaging the invertible `e`. THE analytic gap.
 
+## PIN 2-B frame input COMPLETE (#95 Condition (I), in my tree)
+
+crux2's #95 Condition (I) (@1c23203) is merged + GREEN in my `DeepestFrame.lean`: the three
+block-normal companions `deepestPoint_interior_eq_corM` (interior frame = id),
+`deepestPoint_layer0_cols_vanish` + `deepestPoint_layerLast_rows_vanish` (the boundary-inner conjuncts,
+ENTRY form (A) — my recommended choice-stable shape, last cols/rows zero). So the framed product
+telescopes `∏A = P_0⁻¹·(∏corM)·Q_{L-1}⁻¹` with only the 2 endpoint frames surviving. The frame side of
+PIN 2-B is fully unblocked.
+
+## NET: the single remaining machinery dependency
+
+After all the convergences (the IFT adapter `rlctAtOn_comp_localDiffeo`, the det-bound
+`boundedUnit_fderiv_det`, the `DeepestSplit` Haar instance, `conjugation_frobenius_comparable`,
+`dlnLoss_block_squeeze`, the #95-(I) frames, `deepestEPivot_contdiff` — all GREEN on my branch), the
+open work funnels through exactly TWO machinery pieces held by the owners:
+- **pp2's `D_E`** (the #91 block-derivative in my `regStraightenTotalCLM` encoding) → closes `_deriv`.
+- **crux2's #111 `prodAux_succ` cast** (`obtain rfl + rfl`, COMPLETED) → closes `_base` (the idempotent
+  fold) AND PIN 2-B's boundary `prodAux` telescoping.
+When both land, I wire them into the already-built producer/adapter (closing #82), assemble PIN 2-B
+(frames #95-(I) + `conjugation_frobenius_comparable` + `dlnLoss_block_squeeze` + the leak), and ping
+crux2 for the #80+#82 cert-review.
+
 ## Assembly status
 
 `deepest_gauge_construction` + `deepest_gauge_chart_construct` build GREEN, threading PIN 0
