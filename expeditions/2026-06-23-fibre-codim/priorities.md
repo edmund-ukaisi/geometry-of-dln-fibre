@@ -25,13 +25,17 @@ Controller proposes (VOI × directed suspicion); operator edits directly. Nothin
 
 ## Pursue (ranked)
 
-1. **[tide · thread 04 = Tide A] L1-0: flatness of `mult` on a rank-`r` chart** (`Module.Flat`). The
-   **gating** rung (the whole squeeze hinges on it) and the wall-within. Route: local triviality ⟹
-   trivial product ⟹ free ⟹ flat. **SPECIFY-first:** probe the v4.29 `Module.Flat` descent/base-change
-   API surface; **checkpoint** if it doesn't support the route — don't grind. **Fallback:**
-   two-inequality sandwich, or discharge `r ≤ 1` (the witness range) + roadmap generality. **VOI:
-   decisive** (gates Tides B, C). **Suspicion: HIGH** (no landed template; `FlatQuasiFiniteHeight`'s
-   shortcut does NOT apply — positive-dim fibre, not quasi-finite).
+**Tide A (L1-0) CHECKPOINTED, not proved** (`Core.FlatTrivialProductProbe`, builds green): the
+`Module.Flat` API is viable at v4.29, but the flat route needs a from-scratch coordinate-ring map
+`A →+* B` for `mult` (none in the engine) + chart localisation + trivialisation — ~8–12 modules, NOT an
+API gap. Revises L1-0 cost up.
+
+**Operator re-scope decision (the resume fork — synthesis § HOLD is authoritative):**
+1. **Ring-map / Spec construction for `mult`** (~8–12 modules) — the honest flat route; would warrant
+   its own design recon.
+2. **Fallback: two-inequality dimension sandwich** — cheap lower bound (going-down/up) + the
+   equidimensionality upper bound (the residual hard half).
+3. **Discharge `r ≤ 1` + roadmap generality** — minimal; retire `cited_bundle_shift` only at `r ≤ 1`.
 
 ## Park (unclear-but-keep-going)
 

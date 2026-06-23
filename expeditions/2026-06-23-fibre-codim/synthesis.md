@@ -130,11 +130,26 @@ expedition docs incl. the thread-03 design report + thread-04 brief). No live te
 formaliser died on a **transient API 529 overload**, and the re-launch was blocked by model
 unavailability — infra, not a math wall; nothing was lost).
 
-**RESUME POINT:** re-launch **Tide A** (`thread 04`, L1-0 flatness — the gating rung) as a background
-`lean-formaliser` once API capacity is back, per `threads/04-l1-flatness/thread.md` (SPECIFY-first API
-probe + hard checkpoint). Build note for resume: the worktree builds via the symlinked shared
-`lean/.lake/packages` → main checkout (mathlib `8a178386`); if the symlink/`​.lake` did not survive
-rotation, re-create it (`rm -rf lean/.lake && mkdir lean/.lake && ln -s
+**Tide A ALREADY reached its verdict** (captured in `lean/DLNFibre/Core/FlatTrivialProductProbe.lean` —
+builds green, an un-aggregated `example`-block contract artefact) before the overload deaths: the
+`Module.Flat` API is fully viable at v4.29 (the `example`-blocks pin free⟹flat, flat-local-on-base
+`Module.flat_of_localized_span`, `RingHom.Flat.propertyIsLocal`, the height-additivity lemma). **But the
+flat route is unreachable until a from-scratch coordinate-ring algebra map `A →+* B` for `mult` exists** —
+the engine has none (`mult` is set-level on `Tuple d`, codim via `vanishingIdeal`/`Ideal.height`; no Spec,
+no scheme, no algebra map between base/total coordinate rings). Building that ring map + the determinantal
+chart localisation + the section trivialisation is an **~8–12-module affine-AG construction — NOT an API
+gap.** This **revises L1-0's cost UP** from the design recon's optimistic read.
+
+**RESUME = an operator re-scope decision (NOT a blind Tide A re-launch):**
+(a) commit to the ~8–12-module coordinate-ring-map / Spec construction for `mult` (the honest flat route);
+(b) the **fallback two-inequality dimension sandwich** (cheap lower bound via going-down/up; upper bound =
+equidimensionality, the residual hard half); or (c) discharge the witness range `r ≤ 1` + roadmap
+generality. The probe file pins the verified downstream API so whichever route is chosen stands on
+confirmed contracts.
+
+**Build note for resume:** the worktree builds via the symlinked shared `lean/.lake/packages` → main
+checkout (mathlib `8a178386`); if the symlink/`.lake` did not survive rotation, re-create it
+(`rm -rf lean/.lake && mkdir lean/.lake && ln -s
 /home/ubuntu/workspace/geometry-of-dln-fibre/lean/.lake/packages lean/.lake/packages`) — do NOT
 `lake exe cache get`.
 
