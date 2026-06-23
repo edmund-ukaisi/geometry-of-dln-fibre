@@ -1219,3 +1219,30 @@ SEAM NOW FULLY SETTLED: transport (crux2's reduced_transport) + cover (my node_l
 + value (my foldDivisors/#88) + termination (my redM_widthSum_lt) + per-Mred hGne (crux2's #65) — ALL banked.
 The ONE remaining gate is §4 REALIZABILITY (which cells + reached Mval(ROOT,T) = stratum_surjective), under
 pp-r1realize adjudication. When it clears, the fix-body is mechanical assembly of the agreed (B)+(A) fold.
+
+## g215 — PRECISION CORRECTION (crux2): the IsSchurStraightenSqueeze DATUM is LIVE; only the _exists producer is PARKED
+g211/g214 said "crux2's squeeze lane is off-path" too broadly. crux2 corrected it; verified against the decls
+(GeneralR1Recursion.lean). The precise status:
+- IsSchurStraightenSqueeze (struct :426) + schur_recursion_step_squeeze (:395) + schur_straighten_squeeze_of_data
+  (:460) = LIVE, the CORRECTED per-node (A)-lane datum (two-sided squeeze c₁·Φ ≤ flatCore ≤ c₂·Φ, NO chart;
+  conclusion rlctAtOn flatCore (0,0) = nReg/2 + rlctAtOn(G²) 0). pp2's #68 co-design depends on it being live.
+- ONLY schur_straighten_squeeze_exists (:634, the hnode PRODUCER) is g134-PARKED: its hnode (additive Schur
+  presentation flatCore = ∑Erow² + ‖b·Erow+S·Γ‖²) is undischargeable from the real PRODUCT blow-up (x_p²·Q).
+- schur_recursion_step_SOUND / IsSchurStraighten (clean MP-chart) = genuinely superseded (#129, loss not
+  chart-invariant). Off-path — unchanged.
+
+WHY THE FOLD IS UNCHANGED: there are TWO valid decompositions of the SAME per-node RLCT:
+- ADDITIVE (squeeze): rlctAtOn flatCore = nReg/2 + rlctAtOn(dlnLoss S.red 0) (the L2 lane).
+- MONOMIAL (my fold): blow-up → flatCore∘φ = x_p²·Q (product) → cover CoV → ⨅ over blow-up axes (regulars =
+  SPECTATOR axes, g212; nReg/2 absorbed in the spectator structure, NOT a separate additive term).
+Both give the same value. My fold takes the MONOMIAL path and consumes only the CONSEQUENCE
+rlctAtOn_reduced_transport (:672, rlctAtOn(G²) 0 = rlctAtOn(dlnLoss S.red 0) redZero — the reduced-CORE
+reindex, det-1, G = reduced prodS chain, NO nReg/2; unit in c₁/c₂). It is a COMPONENT lemma parametric in G;
+consuming the consequence (not the datum directly) is answer-independent, so the fold is unaffected by which
+producer supplies the datum. (2,2,2) pure-min k=(1,1) h=(3,2) → 3/2 unchanged.
+
+NET CORRECTION to g211/g214: replace "the squeeze lane is off-path" with "the IsSchurStraightenSqueeze DATUM
+is LIVE (pp2 #68); only schur_straighten_squeeze_exists (the hnode producer) is g134-PARKED; the clean-chart
+SOUND route is superseded (#129). My monomial fold consumes the consequence rlctAtOn_reduced_transport, not the
+datum directly — answer-independent." Seam exact. Lesson (g173-class): be precise about DATUM vs PRODUCER vs
+the SUPERSEDED-sibling when citing a lemma family's status — they have different lifecycles.
