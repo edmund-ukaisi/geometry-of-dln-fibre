@@ -675,3 +675,23 @@ new work on a leg: (1) TaskGet the leg's task FIRST and read its full descriptio
 ALL branches, not just the checkout. A clean working-tree file-read is NOT evidence the result is unproven — it may be
 proven one branch over. (Reinforces: collapse divergence EARLY — the #28 consolidation deferral is now actively
 costing controller cycles, not just risking future merge pain.)
+
+## Classical.choice discards the witness's structure — only the PREDICATE survives (2026-06-23)
+
+I told cobuild "(iii) confirmed, proceed" — that the deepest point's interior frames are trivial (G_s=I, clean
+telescoping ∏A = P_0⁻¹·∏C·Q_{L-1}⁻¹), citing #77's docstring ("interior deepest layers are already block-normal").
+crux2's decl-first verification caught it WRONG before a build: `deepestPoint := (Classical.choice (deepestPoint_exists
+…)).1` is CHOICE-OPAQUE, and `IsDeepLayers` (the only thing `deepestPoint_isDeep` exposes) pins ONLY per-layer
+`rank = r` — NOT the block-normal/corM structure. #77 therefore uses the GENERIC `rank_normal_form_exists` → per-layer-
+NONTRIVIAL frames, not interior-identity. The docstring's "interior block-normal" is true of the wLayers WITNESS that
+`deepestPoint_exists` constructs — but `Classical.choice` DISCARDS that witness; the surviving handle on the extracted
+`deepestPoint` is exactly `IsDeepLayers`, nothing more.
+
+LESSON: a property holds for a `Classical.choice`-extracted term ONLY IF it is in the PREDICATE the existence
+quantifies over — never because the existence PROOF (or a docstring describing the construction) happens to build a
+witness with that property. To make a construction-property usable downstream, it must be CARRIED IN THE PREDICATE
+(here: strengthen `IsDeepLayers` to add the corM-interior conjunct + have `deepestPoint_exists` establish it — controller
+ruling (a), task #95). Controller discipline: do NOT confirm a geometric "proceed" off a docstring's description of the
+witness; demand the decl-first check that the property is in the predicate the choice-term satisfies. This nearly put
+both L2 PINs' framed-product telescoping on frames the choice-opaque `deepestPoint` provably does not have. (crux2
+decl-first-caught; controller ruled the spine-strengthen (a) over the heavier per-layer-nontrivial twisted-product (b).)
