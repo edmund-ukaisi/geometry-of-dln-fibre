@@ -155,10 +155,12 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
   -- NEEDED for #80/PIN2 (controller RULING 2026-06-23, verdict-(a) RETRACTED): dlnLoss = ‖∏A − B‖²
   -- connects to `deepest_loss_squeeze`'s gauge reads VIA `conjugation_frobenius_comparable`, which
   -- CONSUMES the factored form `∏A = P₀·(∏C)·Q_L` — this telescoping IS that factorization, not dodged
-  -- by a scalar bound. The induction: a generalized prodAux-depth invariant with frame-conjugation +
-  -- interior interface-cancellation (`Q s = 1`, `P (s+1) = 1`), endpoint cast via the now-PROVEN
-  -- `prodAux_succ` + `cases`-idiom (lemma 1's mechanism). Building blocks ready (prodAux_succ +
-  -- corner_reindex_mul + the cast-strip); this is the frame-conjugation fold-assembly. STILL OPEN.
+  -- by a scalar bound. Mechanism: ALL interior frames are identity (`hinterface`: `Q s = 1` for
+  -- `s ≤ L-2`, `P (s+1) = 1` for `s ≤ L-2`, so `P s = 1` for `1 ≤ s ≤ L-1`), so `C s = A s` interior,
+  -- `C 0 = P 0 · A 0`, `C (L-1) = A (L-1) · Q (L-1)`; the product collapses by associativity.
+  -- The frame-threading through `prodAux`'s cast-fold (reusing lemma 1's `prodAux_succ` + cast-strip)
+  -- is the WALL — codex (pre-authorized fallback) down this session; the all-interior-identity
+  -- collapse is the proof PATH, the cast-bookkeeping the open piece. Handing back per 3-attempt cap.
   sorry
 
 end DLNFibre.DLN.RLCT
