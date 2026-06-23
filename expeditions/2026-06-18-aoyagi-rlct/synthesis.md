@@ -6551,6 +6551,30 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-multi-chart-source-point-adapter-a4.md`.
 
+Latest A4/A0 Case 1/Case 2 selected-entry multi-chart specializations:
+`SelectedEntryNormalCrossing.lean` now specializes the generic all-pivot
+finite selected-entry chart family to the Case 2 residual-block center and the
+Case 1 center-generator set:
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate` and
+`case1CenterSqFormalJacobianChartFamilyCertificate`.  It rewrites the Case 2
+finite ratio/minimum to
+`((prefixMinNat n S - J) * (n(S+1)-J)) / 2`, and the Case 1 finite
+ratio/minimum to `(1 + J1 * (n(S+1)-J)) / 2`; every chart has ratio count
+`1`, minimum-coordinate count `1`, and the all-pivot finite family has order
+`1`.  `SelectedEntryNormalCrossing.lean` also adds the Case 2 arbitrary-chart
+exponent-array adapter and summary, while `Case1FiniteExponentBridge.lean`
+adds the analogous Case 1 adapter and summary.  The Case 2 adapter uses only
+equality of erased-center cardinalities with the displayed pivot, not source
+identity of arbitrary pivots.  This is not arbitrary-pivot source production,
+chart coverage, transition regularity, analytic Jacobian data, global A0
+lower bounds, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-multi-chart-specializations.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,

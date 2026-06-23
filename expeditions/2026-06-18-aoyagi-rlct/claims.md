@@ -3910,3 +3910,26 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case1-local-chart-certificate-contribution.md`.
 Review:
 `threads/04-blow-up-certificate/review-case1-local-chart-certificate-contribution-a4.md`.
+
+Latest A4/A0 Case 1/Case 2 selected-entry multi-chart specializations:
+`SelectedEntryNormalCrossing.lean` now proves the finite all-pivot Case 2
+certificate
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate`, its
+rewritten ratio/minimum/count/order facts for the selected-coordinate count
+`(prefixMinNat n S - J) * (n(S+1)-J)`, and its exponent-array bridge/summary
+for arbitrary finite pivot charts.  `SelectedEntryNormalCrossing.lean` also
+proves the finite all-pivot Case 1 certificate
+`case1CenterSqFormalJacobianChartFamilyCertificate` and its rewritten
+ratio/minimum/count/order facts for `1 + J1 * (n(S+1)-J)`;
+`Case1FiniteExponentBridge.lean` adds the matching Case 1 exponent-array
+bridge/summary.  These are finite certificate specializations only.  The Case
+2 arbitrary-chart bridge uses equality of erased-center cardinalities with the
+displayed pivot, not source identity of arbitrary pivots.  This checkpoint
+does not prove arbitrary-pivot source formulas, `Q/P` source production, chart
+coverage, transition regularity, analytic Jacobian data, global A0 lower
+bounds, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-multi-chart-specializations.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-case2-selected-entry-multi-chart-specializations-a4.md`.

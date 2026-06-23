@@ -558,6 +558,71 @@ theorem localChartCertificateContribution_summary
 
 end case1DisplayedRowStripCenterSqFormalJacobianChartCertificate
 
+namespace case1CenterSqFormalJacobianChartFamilyCertificate
+
+/-- Any chart of the Case 1 all-pivot finite certificate supplies the generic
+Case 1 selected-entry exponent-coordinate bridge for its own one-coordinate
+exponent data.
+
+This is only an exponent-array adapter.  It does not identify arbitrary
+pivot charts with Aoyagi's source-displayed Case 1 charts, and it does not
+prove source production, chart coverage, regularity, or a global A0 lower
+bound. -/
+theorem localExponentCoordinateBridge_anyChart
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    Case1SelectedEntryExponentCoordinateBridge n S J J1
+      (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData
+      (c, (0 : Fin 1)) where
+  lossExp_eq_one := rfl
+  jacobianPriorExp_eq_nonpivotCount :=
+    jacobianPriorExp_chart_zero_eq_nonpivotCount (K := K) n S J J1 c
+
+/-- Local finite contribution summary for an arbitrary chart of the Case 1
+all-pivot certificate.
+
+This bundles exponent-array compatibility with the chart's finite ratio,
+minimum, chart-count, minimum-count, and order facts. -/
+theorem localChartFamilyCertificateContribution_summary
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    Case1SelectedEntryExponentCoordinateBridge n S J J1
+      (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData
+      (c, (0 : Fin 1)) ∧
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.ratioAt (c, (0 : Fin 1)) =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 ∧
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.exponentMinimum =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 ∧
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.countInChartAtRatio
+        (((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2) c = 1 ∧
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.minCountInChart c = 1 ∧
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.exponentOrder = 1 := by
+  let B := localExponentCoordinateBridge_anyChart (K := K) n S J J1 c
+  refine ⟨B, ?_, ?_, ?_, ?_, ?_⟩
+  · exact exponentData_ratioAt_chart_zero_eq_nonpivotCount_add_one_div_two
+      (K := K) n S J J1 c
+  · exact exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
+      (K := K) n S J J1
+  · exact exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one
+      (K := K) n S J J1 c
+  · exact exponentData_minCountInChart_eq_one (K := K) n S J J1 c
+  · exact exponentData_exponentOrder_eq_one (K := K) n S J J1
+
+end case1CenterSqFormalJacobianChartFamilyCertificate
+
 end Aoyagi
 end DLN
 end DLNFibre

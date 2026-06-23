@@ -6316,6 +6316,46 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-multi-chart-source-point-adapter-a4.md`.
 
+Latest A4/A0 Case 1/Case 2 selected-entry multi-chart specializations:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate` and
+Case 2 finite exponent consequences
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero_eq_selectedCoordinateCount_div_two`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPriorExp_chart_zero_eq_displayedFormalPivotExp`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentMinimum_eq_selectedCoordinateCount_div_two`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exponentData_countInChartAtRatio_selectedCoordinateCount_div_two_eq_one`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exponentData_minCountInChart_eq_one`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentOrder_eq_one`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.localExponentCoordinateBridge_anyChart`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.localChartFamilyCertificateContribution_summary`.
+It also proves `case1CenterSqFormalJacobianChartFamilyCertificate` and Case 1
+finite exponent consequences
+`case1CenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero_eq_nonpivotCount_add_one_div_two`,
+`case1CenterSqFormalJacobianChartFamilyCertificate.jacobianPriorExp_chart_zero_eq_nonpivotCount`,
+`case1CenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two`,
+`case1CenterSqFormalJacobianChartFamilyCertificate.exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one`,
+`case1CenterSqFormalJacobianChartFamilyCertificate.exponentData_minCountInChart_eq_one`,
+and
+`case1CenterSqFormalJacobianChartFamilyCertificate.exponentData_exponentOrder_eq_one`; the Case 1 bridge and summary
+`case1CenterSqFormalJacobianChartFamilyCertificate.localExponentCoordinateBridge_anyChart`
+and
+`case1CenterSqFormalJacobianChartFamilyCertificate.localChartFamilyCertificateContribution_summary`
+live in `Case1FiniteExponentBridge.lean`.  The finite ratios/minima are
+rewritten to `((prefixMinNat n S - J) * (n(S+1)-J)) / 2` in Case 2 and
+`(1 + J1 * (n(S+1)-J)) / 2` in Case 1, with chartwise ratio count `1`,
+minimum-coordinate count `1`, and order `1`.  The Case 2 arbitrary-chart
+bridge is exponent-array only and uses equality of erased-center cardinalities
+with the displayed pivot; it is not arbitrary-pivot source production.  This
+checkpoint does not prove chart coverage, transition regularity, analytic
+Jacobian data, global A0 lower bounds, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-multi-chart-specializations.md`.
+Review:
+`threads/04-blow-up-certificate/review-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

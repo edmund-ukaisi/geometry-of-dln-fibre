@@ -764,6 +764,393 @@ theorem jacobianPrior_monomial_sourceChartPoint
 
 end selectedEntryCenterSqFormalJacobianChartFamilyCertificate
 
+/-- Canonical noncomputable chart enumeration for a finite center subtype.
+
+This is only an indexing choice for finite chart-family certificates. -/
+private noncomputable def finsetSubtypeChartEquiv
+    {ι : Type*} [DecidableEq ι] (center : Finset ι) :
+    Fin center.card ≃ center := by
+  classical
+  simpa [Fintype.card_coe] using (Fintype.equivFin center).symm
+
+private theorem selectedEntryFamily_exponentMinimum_eq_centerCard_div_two
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.exponentMinimum =
+      (center.card : ℚ) / 2 := by
+  open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
+  exact exponentData_exponentMinimum_eq_centerCard_div_two (K := K)
+    hcenter chartEquiv
+
+private theorem selectedEntryFamily_countInChartAtRatio_centerCard_div_two_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.countInChartAtRatio
+        ((center.card : ℚ) / 2) c = 1 := by
+  open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
+  exact exponentData_countInChartAtRatio_centerCard_div_two_eq_one (K := K)
+    hcenter chartEquiv c
+
+private theorem selectedEntryFamily_minCountInChart_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (c : Fin center.card) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.minCountInChart c = 1 := by
+  open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
+  exact exponentData_minCountInChart_eq_one (K := K) hcenter chartEquiv c
+
+private theorem selectedEntryFamily_exponentOrder_eq_one
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) :
+    (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) hcenter chartEquiv).exponentData.exponentOrder = 1 := by
+  open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
+  exact exponentData_exponentOrder_eq_one (K := K) hcenter chartEquiv
+
+/-- Case 2 all-pivot finite selected-entry chart-family certificate for the
+residual-block center.
+
+The charts range over every selected residual-block entry.  This is finite
+certificate bookkeeping only: it does not prove source production for
+non-displayed pivots, chart coverage, transition regularity, analytic Jacobian
+control, normal crossings, pole order, or RLCT extraction. -/
+noncomputable def case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    AoyagiNormalCrossingChartCertificate
+      ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} → K) K :=
+  selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+    (ι := ℕ × ℕ)
+    (K := K)
+    (center := case2ResidualBlockPivotEntries n S J)
+    (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+    (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+
+namespace case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+
+/-- In any Case 2 residual-block pivot chart, the unique active coordinate has
+finite ratio equal to half the residual-block selected-coordinate count. -/
+theorem exponentData_ratioAt_chart_zero_eq_selectedCoordinateCount_div_two
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.ratioAt (c, (0 : Fin 1)) =
+      (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  simpa [case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate,
+    case2ResidualBlockPivotEntries_card] using
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c
+
+/-- In any Case 2 residual-block pivot chart, the formal Jacobian/prior
+exponent equals the displayed-pivot erased-center count.  This uses only the
+fact that erasing any member of the same finite center leaves the same
+cardinality. -/
+theorem jacobianPriorExp_chart_zero_eq_displayedFormalPivotExp
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).jacobianPriorExp c (0 : Fin 1) =
+      ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card := by
+  change
+    ((case2ResidualBlockPivotEntries n S J).erase
+      ((finsetSubtypeChartEquiv
+        (case2ResidualBlockPivotEntries n S J)) c).1).card =
+    ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)).card
+  rw [Finset.card_erase_of_mem
+      ((finsetSubtypeChartEquiv
+        (case2ResidualBlockPivotEntries n S J)) c).2,
+    Finset.card_erase_of_mem
+      (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)]
+
+/-- The finite exponent minimum of the Case 2 residual-block all-pivot
+certificate is half the residual-block selected-coordinate count. -/
+theorem exponentData_exponentMinimum_eq_selectedCoordinateCount_div_two
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.exponentMinimum =
+      (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  simpa [case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate,
+    case2ResidualBlockPivotEntries_card] using
+    selectedEntryFamily_exponentMinimum_eq_centerCard_div_two
+        (K := K)
+        (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+        (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+
+/-- In every Case 2 residual-block pivot chart, the count at the local
+selected-coordinate ratio is `1`. -/
+theorem exponentData_countInChartAtRatio_selectedCoordinateCount_div_two_eq_one
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.countInChartAtRatio
+        ((((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2) c = 1 := by
+  simpa [case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate,
+    case2ResidualBlockPivotEntries_card] using
+    selectedEntryFamily_countInChartAtRatio_centerCard_div_two_eq_one
+        (K := K)
+        (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+        (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c
+
+/-- In every Case 2 residual-block pivot chart, the chartwise
+minimum-coordinate count is `1`. -/
+theorem exponentData_minCountInChart_eq_one
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.minCountInChart c = 1 := by
+  simpa [case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryFamily_minCountInChart_eq_one
+        (K := K)
+        (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+        (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c
+
+/-- The Case 2 residual-block all-pivot finite certificate has finite
+exponent order `1`. -/
+theorem exponentData_exponentOrder_eq_one
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.exponentOrder = 1 := by
+  simpa [case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryFamily_exponentOrder_eq_one
+        (K := K)
+        (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+        (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+
+/-- Any chart of the Case 2 residual-block all-pivot finite certificate has
+the same finite selected-entry exponent pattern as the displayed Case 2
+continuing bridge.
+
+This is only an exponent-array adapter.  It does not identify a non-displayed
+pivot chart with Aoyagi's displayed source chart, and it does not prove source
+production, chart coverage, regularity, or a global A0 lower bound. -/
+theorem localExponentCoordinateBridge_anyChart
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J K}
+    {u : K} {residual : ℕ × ℕ → K}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → K}
+    (cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        L n S J t numerator leastValue pre u residual hS hcont C)
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    Case2DisplayedContinuingExponentCoordinateBridge cert
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData
+      (c, (0 : Fin 1)) where
+  lossExp_eq_one := rfl
+  jacobianPriorExp_eq_formalPivotExp :=
+    jacobianPriorExp_chart_zero_eq_displayedFormalPivotExp
+      (K := K) n hS hcont c
+
+/-- Local finite contribution summary for an arbitrary chart of the Case 2
+residual-block all-pivot certificate.
+
+This bundles exponent-array compatibility with the chart's finite ratio,
+minimum, chart-count, minimum-count, and order facts. -/
+theorem localChartFamilyCertificateContribution_summary
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J K}
+    {u : K} {residual : ℕ × ℕ → K}
+    {hS : 1 ≤ S} {hcont : J + 1 ≤ prefixMinNat n (S + 1)}
+    {C : ℕ → τ → K}
+    (cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        L n S J t numerator leastValue pre u residual hS hcont C)
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).exponentData.numCharts) :
+    Case2DisplayedContinuingExponentCoordinateBridge cert
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).exponentData
+      (c, (0 : Fin 1)) ∧
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.ratioAt (c, (0 : Fin 1)) =
+      (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 ∧
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.exponentMinimum =
+      (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 ∧
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.countInChartAtRatio
+        ((((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2) c = 1 ∧
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.minCountInChart c = 1 ∧
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.exponentOrder = 1 := by
+  let B := localExponentCoordinateBridge_anyChart cert c
+  refine ⟨B, ?_, ?_, ?_, ?_, ?_⟩
+  · exact exponentData_ratioAt_chart_zero_eq_selectedCoordinateCount_div_two
+      (K := K) n hS hcont c
+  · exact exponentData_exponentMinimum_eq_selectedCoordinateCount_div_two
+      (K := K) n hS hcont
+  · exact exponentData_countInChartAtRatio_selectedCoordinateCount_div_two_eq_one
+      (K := K) n hS hcont c
+  · exact exponentData_minCountInChart_eq_one (K := K) n hS hcont c
+  · exact exponentData_exponentOrder_eq_one (K := K) n hS hcont
+
+end case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+
+/-- Case 1 all-pivot finite selected-entry chart-family certificate for the
+center consisting of the old exceptional generator and the row strip.
+
+The charts range over every finite Case 1 center generator.  This is finite
+certificate bookkeeping only: it does not prove source production for
+arbitrary pivots, chart coverage, transition regularity, analytic Jacobian
+control, normal crossings, pole order, or RLCT extraction. -/
+noncomputable def case1CenterSqFormalJacobianChartFamilyCertificate
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    AoyagiNormalCrossingChartCertificate
+      ({g : Case1CenterGenerator // g ∈ case1CenterGenerators n S J J1} → K) K :=
+  selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+    (ι := Case1CenterGenerator)
+    (K := K)
+    (center := case1CenterGenerators n S J J1)
+    (case1CenterGenerators_nonempty n S J J1)
+    (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1))
+
+namespace case1CenterSqFormalJacobianChartFamilyCertificate
+
+/-- In any Case 1 center-generator pivot chart, the unique active coordinate
+has finite ratio equal to half the Case 1 selected-coordinate count. -/
+theorem exponentData_ratioAt_chart_zero_eq_nonpivotCount_add_one_div_two
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.ratioAt (c, (0 : Fin 1)) =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  simpa [case1CenterSqFormalJacobianChartFamilyCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exponentData_ratioAt_chart_zero
+      (K := K)
+      (case1CenterGenerators_nonempty n S J J1)
+      (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1)) c
+
+/-- In any Case 1 center-generator pivot chart, the formal Jacobian/prior
+exponent equals the non-pivot Case 1 center count. -/
+theorem jacobianPriorExp_chart_zero_eq_nonpivotCount
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).jacobianPriorExp c (0 : Fin 1) =
+      J1 * (n (S + 1) - J) := by
+  change
+    ((case1CenterGenerators n S J J1).erase
+      ((finsetSubtypeChartEquiv
+        (case1CenterGenerators n S J J1)) c).1).card =
+    J1 * (n (S + 1) - J)
+  exact case1CenterGenerators_erase_card_of_mem
+    ((finsetSubtypeChartEquiv (case1CenterGenerators n S J J1)) c).2
+
+/-- The finite exponent minimum of the Case 1 all-pivot certificate is half
+the Case 1 selected-coordinate count. -/
+theorem exponentData_exponentMinimum_eq_nonpivotCount_add_one_div_two
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.exponentMinimum =
+      ((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2 := by
+  simpa [case1CenterSqFormalJacobianChartFamilyCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    selectedEntryFamily_exponentMinimum_eq_centerCard_div_two
+        (K := K)
+        (case1CenterGenerators_nonempty n S J J1)
+        (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1))
+
+/-- In every Case 1 center-generator pivot chart, the count at the local
+Case 1 selected-coordinate ratio is `1`. -/
+theorem exponentData_countInChartAtRatio_nonpivotCount_add_one_div_two_eq_one
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.countInChartAtRatio
+        (((1 + J1 * (n (S + 1) - J) : ℕ) : ℚ) / 2) c = 1 := by
+  simpa [case1CenterSqFormalJacobianChartFamilyCertificate,
+    case1CenterGenerators_card, case1StripEntries_card] using
+    selectedEntryFamily_countInChartAtRatio_centerCard_div_two_eq_one
+        (K := K)
+        (case1CenterGenerators_nonempty n S J J1)
+        (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1)) c
+
+/-- In every Case 1 center-generator pivot chart, the chartwise
+minimum-coordinate count is `1`. -/
+theorem exponentData_minCountInChart_eq_one
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case1CenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n S J J1).exponentData.numCharts) :
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.minCountInChart c = 1 := by
+  simpa [case1CenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryFamily_minCountInChart_eq_one
+        (K := K)
+        (case1CenterGenerators_nonempty n S J J1)
+        (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1)) c
+
+/-- The Case 1 all-pivot finite certificate has finite exponent order `1`. -/
+theorem exponentData_exponentOrder_eq_one
+    (n : ℕ → ℕ) (S J J1 : ℕ)
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    (case1CenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n S J J1).exponentData.exponentOrder = 1 := by
+  simpa [case1CenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryFamily_exponentOrder_eq_one
+        (K := K)
+        (case1CenterGenerators_nonempty n S J J1)
+        (finsetSubtypeChartEquiv (case1CenterGenerators n S J J1))
+
+end case1CenterSqFormalJacobianChartFamilyCertificate
+
 /-- Case 1 specialization of the selected-entry finite microcertificate at
 the old exceptional generator.
 

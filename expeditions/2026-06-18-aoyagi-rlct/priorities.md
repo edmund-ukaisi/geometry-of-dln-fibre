@@ -2249,6 +2249,21 @@ label behind the finite `Unit` token.  This is not global A0 data, chart
 coverage, source production, global lower bounds, pole order, `theta`, or
 RLCT extraction.
 
+The current A4/A0 Case 1/Case 2 selected-entry all-pivot specialization slice
+is
+`threads/04-blow-up-certificate/reproduction-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+Lean now instantiates the generic all-pivot finite selected-entry certificate
+at `case2ResidualBlockPivotEntries n S J` and
+`case1CenterGenerators n S J J1`.  The Case 2 finite minimum is rewritten as
+`((prefixMinNat n S - J) * (n(S+1)-J)) / 2`; the Case 1 finite minimum is
+rewritten as `(1 + J1 * (n(S+1)-J)) / 2`.  Each all-pivot family has
+chartwise ratio count `1`, minimum-coordinate count `1`, and finite exponent
+order `1`.  The new bridge adapters are exponent-array adapters only; in
+Case 2, arbitrary finite pivot charts are related to the displayed continuing
+bridge only through equality of erased-center cardinalities.  This is not
+source production for arbitrary pivots, chart coverage, transition regularity,
+analytic Jacobian data, global A0 lower bounds, pole order, or RLCT.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

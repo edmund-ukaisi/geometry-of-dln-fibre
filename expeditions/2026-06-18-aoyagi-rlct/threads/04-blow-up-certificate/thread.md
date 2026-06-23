@@ -5229,3 +5229,51 @@ the pivot `chartEquiv c`.  This is a finite presentation adapter only: it does
 not prove analytic atlas coverage, transition regularity, analytic
 Jacobian/volume-form control, source production, global A0 data, pole order, or
 RLCT extraction.  Xhigh review passed with no required fixes.
+
+## 2026-06-23 Lean Case 1/Case 2 selected-entry multi-chart specializations
+
+Reproduction:
+`reproduction-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+Statement card:
+`statement-card-a4-case1-case2-selected-entry-multi-chart-specializations.md`.
+Review artifact:
+`review-case1-case2-selected-entry-multi-chart-specializations-a4.md`.
+
+Lean now specializes the finite all-pivot selected-entry certificate to the
+two Aoyagi finite centers:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+case1CenterSqFormalJacobianChartFamilyCertificate
+```
+
+For Case 2, under the displayed continuation assumptions, the finite family
+has chart ratio and finite minimum
+
+```text
+((prefixMinNat n S - J) * (n(S+1)-J)) / 2
+```
+
+with chartwise ratio count `1`, chartwise minimum count `1`, and finite
+exponent order `1`.  For Case 1, the corresponding finite ratio/minimum is
+
+```text
+(1 + J1 * (n(S+1)-J)) / 2.
+```
+
+The slice also adds finite exponent-array adapters:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.localExponentCoordinateBridge_anyChart
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.localChartFamilyCertificateContribution_summary
+case1CenterSqFormalJacobianChartFamilyCertificate.localExponentCoordinateBridge_anyChart
+case1CenterSqFormalJacobianChartFamilyCertificate.localChartFamilyCertificateContribution_summary
+```
+
+The Case 2 arbitrary-chart bridge uses only equality of erased-center
+cardinalities with the displayed pivot; it does not identify arbitrary finite
+pivots with Aoyagi's displayed source chart.  This checkpoint remains finite
+certificate bookkeeping only: no arbitrary-pivot source formulas, no `Q/P`
+source production, no analytic coverage or transition regularity, no
+chart-produced post-data, no global A0 lower bound/order theorem, no pole
+order, and no RLCT extraction.
