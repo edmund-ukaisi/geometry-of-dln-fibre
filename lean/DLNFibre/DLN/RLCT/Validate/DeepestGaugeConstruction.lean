@@ -25,7 +25,9 @@ Producing the instance splits into four named obligations (skeleton-first, `sorr
   NOT the unit `T_s·(I−V_sY_s)⁻¹` which is `0` at `T_s=0`); `∏S_s = R|{E=0}` (`schur_P11_decomp`'s
   full-product Schur `R`), fixing reg+spec + origin.
 - **(iii) g-unit RLCT peel** (`coreAbsorb_rlct_holds`): absorbed and raw cores have the same RLCT at
-  the origin, via `weightedThreshold_weight_unit_invariant` (the det-unit `det(I−VY)⁻ᴹ⁰ ≈ 1`).
+  the origin, via the MEASURE-PRESERVING route — `measurePreserving_coreShear` (the additive Schur
+  shear is `det = 1`) ⟹ `rlctAtOn_comp_homeomorph` (NO Jacobian/weight bookkeeping; #61/g156 corrected
+  the refuted non-MP `det(I−VY)⁻ᴹ⁰` weight-unit route of the multiplicative form).
 - **(iv) loss-squeeze** (`deepest_loss_squeeze_holds`): the two-sided bound, via the banked
   `core_comparability_squeeze` + `frobenius_fromBlocks` (g153: leak ∈ ideal(reg) charged to `∑E²`).
 
