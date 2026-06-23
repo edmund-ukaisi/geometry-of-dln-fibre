@@ -527,6 +527,15 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
           dlnLoss H B ((paramsEquivFlat H).symm w)
             ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
+  -- **ASSEMBLY (B), the geometric heart — green-pending crux2's `endpoint_telescoping`.** The per-`w`
+  -- two-sided bound is the banked matrix core `dlnLoss_block_squeeze` (uniform `c₁ = (2(1+t²))⁻¹`,
+  -- `c₂ = 2+2t²`), once the per-`w` framed-block decomposition is supplied. That decomposition is the
+  -- BRIDGE: `N_w = prod(paramsSymm w) − B` reindexed (deepest-point frame `deepestPoint_frame_exists` +
+  -- crux2's `endpoint_telescoping` per-`w` conjugation + `conjugation_frobenius_comparable`) into
+  -- `fromBlocks (P00−1) P01 P10 P11`, with `∑E² = ∑(regStraighten(split w)).1²` (`hregval` ⟹ reg-output is
+  -- `deepestEPivot` = the E-residual) and `‖Rcore‖² = deepestCoreF (coreAbsorb(split w)).2.1` (`hcoreabs`
+  -- ⟹ the cutoff-Schur core). BLOCKED on crux2's `endpoint_telescoping` interface (IsUnit P0/QL exposure
+  -- requested) — wires the moment it lands; the matrix core + block-IDs are banked.
   sorry
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
