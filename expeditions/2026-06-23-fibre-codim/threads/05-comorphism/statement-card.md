@@ -3,7 +3,7 @@
 Module `lean/DLNFibre/Core/MultComorphism.lean` (new file, imports `Core.Setup`, `Core.OrbitCodim`,
 `Core.NullstellensatzCodim`, `Mathlib.RingTheory.Nullstellensatz`). Import to be appended to
 `DLNFibre.lean` (single-writer; controller wires it). Sorry-free, axiom-clean (`propext,
-Classical.choice, Quot.sound`). Commit `f36def67`.
+Classical.choice, Quot.sound`). Commit `15bdcb63` (Lean module); card-SHA pinned at the next commit.
 
 **Scope (name = content).** The coordinate-ring map for the multiplication map `mult` and the
 identification of the fibre `mult⁻¹(B)` as a zero-locus / coordinate-ring quotient. The construction
