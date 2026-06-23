@@ -282,6 +282,95 @@ theorem one_le_exponentOrder (D : AoyagiNormalCrossingExponentData) :
 
 end AoyagiNormalCrossingExponentData
 
+universe u
+
+/-- Source-facing normal-crossing chart certificate.
+
+This records the finite chart domains, chart map, coordinates, monomial
+loss/Jacobian-prior identities, unit factors, and exponent arrays from
+Aoyagi's normal-crossing display.  It is a certificate *spine*: it does not
+state that the charts analytically cover a neighbourhood, that the chart map
+is proper or analytic, or that the analytic normal-crossing extraction theorem
+applies.  Those remain in the explicit extraction hypothesis below.
+
+Aoyagi prints the unit-free monomial form on PDF pp. 5-6; the unit fields allow
+the standard normal-crossing form and specialize to the printed display by
+taking both units to be `1`. -/
+structure AoyagiNormalCrossingChartCertificate
+    (Param R : Type*) [CommMonoid R] where
+  numCharts : ℕ
+  numCoords : ℕ
+  ChartPoint : Fin numCharts → Type u
+  chartPoint_nonempty : ∀ c : Fin numCharts, Nonempty (ChartPoint c)
+  chartMap : ∀ c : Fin numCharts, ChartPoint c → Param
+  coord : ∀ c : Fin numCharts, ChartPoint c → Fin numCoords → R
+  loss : Param → R
+  jacobianPrior : ∀ c : Fin numCharts, ChartPoint c → R
+  lossUnit : ∀ c : Fin numCharts, ChartPoint c → R
+  jacobianPriorUnit : ∀ c : Fin numCharts, ChartPoint c → R
+  lossExp : Fin numCharts → Fin numCoords → ℕ
+  jacobianPriorExp : Fin numCharts → Fin numCoords → ℕ
+  loss_monomial :
+    ∀ (c : Fin numCharts) (u : ChartPoint c),
+      loss (chartMap c u) =
+        lossUnit c u * ∏ j : Fin numCoords,
+          coord c u j ^ (2 * lossExp c j)
+  jacobianPrior_monomial :
+    ∀ (c : Fin numCharts) (u : ChartPoint c),
+      jacobianPrior c u =
+        jacobianPriorUnit c u * ∏ j : Fin numCoords,
+          coord c u j ^ jacobianPriorExp c j
+  lossUnit_isUnit :
+    ∀ (c : Fin numCharts) (u : ChartPoint c), IsUnit (lossUnit c u)
+  jacobianPriorUnit_isUnit :
+    ∀ (c : Fin numCharts) (u : ChartPoint c), IsUnit (jacobianPriorUnit c u)
+  active_nonempty :
+    ∃ p : Fin numCharts × Fin numCoords, 0 < lossExp p.1 p.2
+
+namespace AoyagiNormalCrossingChartCertificate
+
+variable {Param R : Type*} [CommMonoid R]
+
+/-- Forget the chart-level functions and units, keeping only the finite
+exponent arrays used by the arithmetic normal-crossing interface. -/
+def exponentData (C : AoyagiNormalCrossingChartCertificate Param R) :
+    AoyagiNormalCrossingExponentData where
+  numCharts := C.numCharts
+  numCoords := C.numCoords
+  lossExp := C.lossExp
+  jacobianPriorExp := C.jacobianPriorExp
+  active_nonempty := C.active_nonempty
+
+@[simp] theorem exponentData_numCharts
+    (C : AoyagiNormalCrossingChartCertificate Param R) :
+    C.exponentData.numCharts = C.numCharts := rfl
+
+@[simp] theorem exponentData_numCoords
+    (C : AoyagiNormalCrossingChartCertificate Param R) :
+    C.exponentData.numCoords = C.numCoords := rfl
+
+@[simp] theorem exponentData_lossExp
+    (C : AoyagiNormalCrossingChartCertificate Param R)
+    (c : Fin C.numCharts) (j : Fin C.numCoords) :
+    C.exponentData.lossExp c j = C.lossExp c j := rfl
+
+@[simp] theorem exponentData_jacobianPriorExp
+    (C : AoyagiNormalCrossingChartCertificate Param R)
+    (c : Fin C.numCharts) (j : Fin C.numCoords) :
+    C.exponentData.jacobianPriorExp c j = C.jacobianPriorExp c j := rfl
+
+@[simp] theorem mem_exponentData_activePairs
+    (C : AoyagiNormalCrossingChartCertificate Param R)
+    (p : Fin C.numCharts × Fin C.numCoords) :
+    p ∈ C.exponentData.activePairs ↔ 0 < C.lossExp p.1 p.2 := by
+  change
+    p ∈ ((Finset.univ : Finset (Fin C.numCharts × Fin C.numCoords)).filter
+      fun p ↦ 0 < C.lossExp p.1 p.2) ↔
+    0 < C.lossExp p.1 p.2
+  simp
+
+end AoyagiNormalCrossingChartCertificate
+
 /-- Explicit hypothesis supplied by the cited analytic normal-crossing
 extraction theorem.
 
@@ -292,6 +381,44 @@ structure AoyagiNormalCrossingExtractionHypothesis
     (D : AoyagiNormalCrossingExponentData) (lambda : ℚ) (theta : ℕ) : Prop where
   lambda_eq_exponentMinimum : lambda = D.exponentMinimum
   theta_eq_exponentOrder : theta = D.exponentOrder
+
+namespace AoyagiNormalCrossingChartCertificate
+
+variable {Param R : Type*} [CommMonoid R]
+
+/-- Chart-level version of the cited extraction hypothesis.
+
+The theorem that turns a genuine analytic chart certificate into this
+hypothesis is the single allowed analytic citation. -/
+structure ExtractionHypothesis
+    (C : AoyagiNormalCrossingChartCertificate Param R)
+    (lambda : ℚ) (theta : ℕ) : Prop where
+  toExponentData :
+    AoyagiNormalCrossingExtractionHypothesis C.exponentData lambda theta
+
+namespace ExtractionHypothesis
+
+/-- The cited chart-level extraction hypothesis identifies the external
+learning coefficient with the finite exponent minimum of the certificate. -/
+theorem lambda_eq_exponentMinimum
+    {C : AoyagiNormalCrossingChartCertificate Param R}
+    {lambda : ℚ} {theta : ℕ}
+    (H : C.ExtractionHypothesis lambda theta) :
+    lambda = C.exponentData.exponentMinimum :=
+  H.toExponentData.lambda_eq_exponentMinimum
+
+/-- The cited chart-level extraction hypothesis identifies the external order
+with the finite exponent order of the certificate. -/
+theorem theta_eq_exponentOrder
+    {C : AoyagiNormalCrossingChartCertificate Param R}
+    {lambda : ℚ} {theta : ℕ}
+    (H : C.ExtractionHypothesis lambda theta) :
+    theta = C.exponentData.exponentOrder :=
+  H.toExponentData.theta_eq_exponentOrder
+
+end ExtractionHypothesis
+
+end AoyagiNormalCrossingChartCertificate
 
 end Aoyagi
 end DLN

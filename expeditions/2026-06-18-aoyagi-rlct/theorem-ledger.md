@@ -46,6 +46,33 @@ holding PDF line numbers only in context.
 | Notation translation to repo DLN dimensions | A6 | Aoyagi PDF pp. 7-9 and pp. 11-14 | source inventory; selected cutpoint API | formula reproduced at `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`; dimension/rank convention reproduced at `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`; source/API xhigh checks incorporated | `aoyagiReducedWidthInt`, `aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le`, `aoyagiReducedWidthInt_nonneg_of_rank_le`, `aoyagiSelectedReducedWidths`, `aoyagiSelectedReducedWidths_apply`, `aoyagiSelectedReducedWidths_eq_natCast_sub_of_rank_le`, `aoyagiSelectedReducedWidths_nonneg_of_rank_le`, `aoyagiSelectedWidthNat_selectedReducedWidths_of_lt`, `aoyagiSelectedWidthNat_selectedReducedWidths_fin`, `aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le`, `AoyagiDefinition3CeilData`, `theorem2OrderFormula`, `aoyagiTheorem2Lambda_average`, `aoyagiTheorem2Lambda_ceil`, `aoyagiTheorem2Lambda_expanded`, `selectedWidthAverage_eq_ceil`, `aoyagiTheorem2Lambda_average_eq_fromCeilData`, and `aoyagiTheorem2Lambda_average_eq_expanded_ofCeilData` proved in `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`; rank-width hypotheses remain explicit | reviewed at `threads/06-dln-translation/review-final-formula-notation-a6.md` and `threads/06-dln-translation/review-dimension-rank-convention-a6.md`; statement cards `threads/06-dln-translation/statement-card-a6-final-formula-notation.md` and `threads/06-dln-translation/statement-card-a6-dimension-rank-convention.md` |
 | Definition 3 selected-sum bridge | A6 | Aoyagi PDF pp. 8-9 and pp. 24-25 | A6 notation; Lemma 4/Htilde arithmetic | reproduced at `threads/06-dln-translation/reproduction-definition3-lemma4-bridge-a6.md`; xhigh source check incorporated | `AoyagiDefinition3CeilData.one_le_ell`, `one_le_aParam`, `terminalEndpoint_eq_zero`, `htildeLowerChain_last_eq_zero`, `htildeUpperChain_last_eq_zero`, `htildeLowerNat_last_eq_zero`, `htildeUpperNat_last_eq_zero`, `htildeUpperNat_pred_eq_sub_lastWidth`, `Hlast_eq_zero_of_htildeChainBounds`, `intervalSize_excess_sum_Icc_eq_theorem2OrderFormula`, `htildeIntervalValueSetNat_excess_sum_Icc_eq_theorem2OrderFormula`, `htildeIntervalValueSetNat_terminal_eq_singleton_zero`, `suppliedTerminalZero_Eq5_offsets_eq_intervalValueSetNat`, `lemma4_twoValueCount_of_htildeChainBounds`, `selectedWidth_le_pred_of_sourceSelectedInequality`, `htildeLowerNat_add_one_labelBounds_of_sourceSelectedInequality`, `lemma5Eq4_localData_of_sourceSelectedInequality`, `lemma5Eq5_labelBounds_of_sourceSelectedInequality`, and `lemma5Eq3_localData_of_sourceSelectedInequality_and_slack` proved in `lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`; count/order wrappers are finite arithmetic only | reviewed at `threads/06-dln-translation/review-definition3-bridge-a6.md`; statement card `threads/06-dln-translation/statement-card-a6-definition3-bridge.md` |
 
+## Latest A0 Update
+
+The normal-crossing chart-certificate spine has landed.  New Lean names in
+`NormalCrossingInterface.lean` include
+`AoyagiNormalCrossingChartCertificate`,
+`AoyagiNormalCrossingChartCertificate.exponentData`,
+`AoyagiNormalCrossingChartCertificate.mem_exponentData_activePairs`, and
+`AoyagiNormalCrossingChartCertificate.ExtractionHypothesis`.  New Lean names
+in `Theorem2FinalAssembly.lean` include
+`AoyagiTheorem2SuppliedChartFinalBoundary`,
+`AoyagiTheorem2SuppliedChartFinalBoundary.toSuppliedFinalBoundary`,
+`AoyagiTheorem2SuppliedChartFinalBoundary.lambda_eq_theorem2Lambda_fromCeilData`,
+`AoyagiTheorem2SuppliedChartFinalBoundary.poleOrder_eq_theorem2OrderFormula`,
+and
+`AoyagiTheorem2SuppliedChartFinalBoundary.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula`.
+Reproduction:
+`threads/02-analytic-interface/reproduction-normal-crossing-chart-certificate-spine-a0.md`.
+Statement card:
+`threads/02-analytic-interface/statement-card-a0-normal-crossing-chart-certificate-spine.md`.
+Review:
+`threads/02-analytic-interface/review-normal-crossing-chart-certificate-spine-a0.md`.
+
+This records the source-facing finite chart/unit/monomial spine and projects it
+to the existing exponent interface.  It is not Hironaka, analytic chart
+coverage, analytic unit nonvanishing, Aoyagi Lemma 1, finite formula
+equality, pole order without A0, or RLCT extraction.
+
 ## Latest A2 Update
 
 The Aoyagi Theorem 3 residual-product endpoint wrapper has landed. The new

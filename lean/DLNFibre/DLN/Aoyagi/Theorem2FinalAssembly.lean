@@ -211,6 +211,91 @@ theorem lambda_eq_theorem2Lambda_expanded_selectedReducedWidths
 
 end AoyagiTheorem2SuppliedFinalBoundary
 
+/-- Chart-certificate version of the supplied final boundary.
+
+This replaces the bare finite exponent array by a source-facing
+normal-crossing chart certificate and projects its finite exponent data into
+the existing final boundary.  The chart-level extraction hypothesis is still
+the cited analytic boundary; this structure does not construct charts, prove
+coverage, nonvanishing units, finite exponent formula equalities, or the
+analytic extraction theorem. -/
+structure AoyagiTheorem2SuppliedChartFinalBoundary
+    {Param R : Type*} [CommMonoid R]
+    (Cnc : AoyagiNormalCrossingChartCertificate Param R)
+    (L ell : ℕ) (H : ℕ → ℕ) (r : ℕ)
+    (C : AoyagiSelectedCutpoints ell) (m : Fin (ell + 1) → ℤ)
+    (data : AoyagiDefinition3CeilData ell m)
+    (lambda : ℚ) (poleOrder : ℕ) : Prop where
+  selectedWidths_eq_reduced :
+    m = aoyagiSelectedReducedWidths H r C
+  extractionHypothesis :
+    Cnc.ExtractionHypothesis lambda poleOrder
+  finiteExponentFormula :
+    AoyagiTheorem2FiniteExponentFormulaHypothesis
+      Cnc.exponentData L ell H r m data
+
+namespace AoyagiTheorem2SuppliedChartFinalBoundary
+
+/-- Forget the chart certificate down to its finite exponent data, recovering
+the existing supplied final boundary. -/
+theorem toSuppliedFinalBoundary
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell} {m : Fin (ell + 1) → ℤ}
+    {data : AoyagiDefinition3CeilData ell m} {lambda : ℚ} {poleOrder : ℕ}
+    (B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L ell H r C m data lambda poleOrder) :
+    AoyagiTheorem2SuppliedFinalBoundary
+      Cnc.exponentData L ell H r C m data lambda poleOrder where
+  selectedWidths_eq_reduced := B.selectedWidths_eq_reduced
+  extractionHypothesis := B.extractionHypothesis.toExponentData
+  finiteExponentFormula := B.finiteExponentFormula
+
+/-- Chart-certificate final boundary, projected to the ceiling-data lambda
+formula. -/
+theorem lambda_eq_theorem2Lambda_fromCeilData
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell} {m : Fin (ell + 1) → ℤ}
+    {data : AoyagiDefinition3CeilData ell m} {lambda : ℚ} {poleOrder : ℕ}
+    (B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L ell H r C m data lambda poleOrder) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L ell H r m data :=
+  B.toSuppliedFinalBoundary.lambda_eq_theorem2Lambda_fromCeilData
+
+/-- Chart-certificate final boundary, projected to Aoyagi's order formula. -/
+theorem poleOrder_eq_theorem2OrderFormula
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell} {m : Fin (ell + 1) → ℤ}
+    {data : AoyagiDefinition3CeilData ell m} {lambda : ℚ} {poleOrder : ℕ}
+    (B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L ell H r C m data lambda poleOrder) :
+    poleOrder = data.theorem2OrderFormula :=
+  B.toSuppliedFinalBoundary.poleOrder_eq_theorem2OrderFormula
+
+/-- Pair form of the chart-certificate final boundary. -/
+theorem lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell} {m : Fin (ell + 1) → ℤ}
+    {data : AoyagiDefinition3CeilData ell m} {lambda : ℚ} {poleOrder : ℕ}
+    (B :
+      AoyagiTheorem2SuppliedChartFinalBoundary
+        Cnc L ell H r C m data lambda poleOrder) :
+    lambda = aoyagiTheorem2Lambda_fromCeilData L ell H r m data ∧
+      poleOrder = data.theorem2OrderFormula :=
+  B.toSuppliedFinalBoundary.lambda_and_poleOrder_eq_fromCeilData_and_orderFormula
+
+end AoyagiTheorem2SuppliedChartFinalBoundary
+
 end Aoyagi
 end DLN
 end DLNFibre

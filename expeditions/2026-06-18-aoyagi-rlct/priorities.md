@@ -19,7 +19,7 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
-## Current A0 checkpoint - 2026-06-22
+## Current A0 checkpoint - 2026-06-23
 
 The finite normal-crossing exponent interface has landed in
 `lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`.  It filters active
@@ -30,6 +30,18 @@ proved: `AoyagiNormalCrossingExtractionHypothesis` is the explicit cited
 boundary.  This module does not prove chart production, unit nonvanishing,
 Aoyagi Lemma 1, regular-coordinate additivity, Theorem 4, pole order, or RLCT
 extraction.
+
+The A0 chart-certificate spine now also lives in
+`NormalCrossingInterface.lean`:
+`AoyagiNormalCrossingChartCertificate` records chart domains, chart maps,
+coordinates, loss/Jacobian-prior monomial identities, unit factors, unit
+witnesses, and exponent arrays, and projects to the existing finite exponent
+data.  `Theorem2FinalAssembly.lean` adds
+`AoyagiTheorem2SuppliedChartFinalBoundary`, a chart-certificate version of the
+existing supplied final socket.  This is the preferred target for future A4
+chart production.  It is not a theorem that charts exist, cover a
+neighbourhood, have analytic nonvanishing units, or satisfy the analytic
+normal-crossing extraction theorem.
 
 The current A0 finite-certificate slice is
 `threads/02-analytic-interface/reproduction-normal-crossing-finite-certificates-a0.md`.

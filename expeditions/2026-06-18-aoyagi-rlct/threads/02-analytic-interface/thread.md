@@ -132,3 +132,35 @@ Artifacts:
 - `reproduction-normal-crossing-ratio-chart-counts-a0.md`;
 - `statement-card-a0-normal-crossing-ratio-chart-counts.md`;
 - `review-normal-crossing-ratio-chart-counts-a0.md`.
+
+## 2026-06-23 chart-certificate spine
+
+Lean now adds a source-facing chart-certificate spine in
+`lean/DLNFibre/DLN/Aoyagi/NormalCrossingInterface.lean`:
+
+```text
+AoyagiNormalCrossingChartCertificate
+AoyagiNormalCrossingChartCertificate.exponentData
+AoyagiNormalCrossingChartCertificate.ExtractionHypothesis
+```
+
+The certificate records finite chart domains, chart maps, coordinates,
+loss/Jacobian-prior functions, monomial identities with unit factors, unit
+witnesses, and exponent arrays.  Forgetting this data gives the existing
+`AoyagiNormalCrossingExponentData`.  The chart-level extraction hypothesis is
+only a wrapper around the existing cited
+`AoyagiNormalCrossingExtractionHypothesis`.
+
+`lean/DLNFibre/DLN/Aoyagi/Theorem2FinalAssembly.lean` now also contains
+`AoyagiTheorem2SuppliedChartFinalBoundary`, which projects a supplied chart
+certificate into the existing final boundary.
+
+Artifacts:
+
+- `reproduction-normal-crossing-chart-certificate-spine-a0.md`;
+- `statement-card-a0-normal-crossing-chart-certificate-spine.md`.
+
+This is a non-vacuous certificate target for future A4 chart production, not
+an analytic theorem.  It does not prove chart construction, coverage, analytic
+nonvanishing, change of variables, Aoyagi Lemma 1, finite formula equalities,
+pole order without A0, or RLCT extraction.
