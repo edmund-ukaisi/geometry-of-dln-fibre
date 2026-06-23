@@ -96,4 +96,11 @@ explicit-pack infra exists on any fetched branch (`fm2/deepest-gauge-chart-sub34
   leak into these theorems, since they use only the sorry-free `deepestEPivot` / `deepestEPivot_contdiff`).
 - **LoC:** ~150 (module), 5 public declarations + 1 `Prop` def + 1 `simp` lemma.
 
-**Status.** sorry-free (awaiting reviewer fidelity check).
+**Status.** sorry-free + reviewed (fidelity PASS, machine-verified: the `_of_shear` ∃-shape matches
+`deepestEPivot_deriv` by `exact`; the square-zero algebra re-derived pointwise against the real
+`regStraightenTotalCLM` def; `IsRegShearDeriv` confirmed equivalent to the base reg-block-id form and
+genuinely not leaf-closable; clean-three axioms). Reviewer note that "this branch deletes the base's
+`deepestEPivot_regSlice_fderiv_id`" is a MISATTRIBUTION — `git diff origin/fm2/deepest-gauge-chart-sub34
+...fm/deriv-pin1` is +267/-0, two ADDED files only; the reviewer's worktree compared against the sibling
+`fm/regslice-id` base, not this branch's actual base. This module touches `DeepestGaugeConstruction.lean`
+zero lines.
