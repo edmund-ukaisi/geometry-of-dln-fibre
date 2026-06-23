@@ -1353,3 +1353,42 @@ Artifacts:
 `statement-card-a2-product-difference-entry-ideal-boundary.md`.
 Review:
 `review-a2-product-difference-entry-ideal-boundary.md`.
+
+## 2026-06-23 A2 regular-variable count and finite shift
+
+Returned to the regular block families isolated after Aoyagi Theorem 3:
+`C1 - Er`, `F2`, and `F3`.  The pen-and-paper calculation records their scalar
+entry count as
+
+```text
+r^2 + r(H^(L+1)-r) + (H^(1)-r)r
+  = -r^2 + r(H^(1)+H^(L+1)).
+```
+
+Under endpoint rank-width bounds, half of this count is the regular term
+already named in the Theorem 2 formula layer.
+
+New Lean artifacts:
+
+- `aoyagiTheorem2RegularVariableCount`;
+- `aoyagiTheorem2RegularTerm_eq_half_regularVariableCount`;
+- `AoyagiNormalCrossingExponentData.exponentMinimum_jacobianPriorLossShift_regularVariableCount`;
+- `AoyagiNormalCrossingExponentData.exponentOrder_jacobianPriorLossShift_regularVariableCount`;
+- `AoyagiNormalCrossingChartCertificate.exponentData_exponentMinimum_jacobianPriorLossShift_regularVariableCount`;
+- `AoyagiNormalCrossingChartCertificate.exponentData_exponentOrder_jacobianPriorLossShift_regularVariableCount`;
+- `AoyagiTheorem2FiniteExponentFormulaHypothesis.of_regularVariableCountShift`;
+- `AoyagiTheorem2FiniteExponentFormulaHypothesis.of_chart_regularVariableCountShift`.
+
+The first two names live in `lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`; the
+finite-shift bridge lives in `lean/DLNFibre/DLN/Aoyagi/RegularVariableShift.lean`.
+
+Scope caveats: this is finite count and exponent-array arithmetic only.  It
+does not construct a regular-suspension chart, transport analytic ideals,
+invoke Aoyagi Lemma 1, prove regular-coordinate RLCT additivity, produce a
+normal-crossing certificate, prove pole order, or prove an RLCT theorem.
+
+Artifacts:
+`reproduction-a2-regular-variable-count.md` and
+`statement-card-a2-regular-variable-count.md`.
+Review:
+`review-a2-regular-variable-count.md`.

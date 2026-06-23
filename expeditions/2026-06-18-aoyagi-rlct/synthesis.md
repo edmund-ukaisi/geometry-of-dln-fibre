@@ -407,6 +407,32 @@ This is scalar endpoint matrix-entry ideal algebra only.  It is not analytic
 germ-ideal transport, exact-rank openness, full Theorem 3, Aoyagi Lemma 1,
 regular-suspension, pole order, normal crossings, or RLCT.
 
+The post-Theorem-3 regular-variable count has now landed as finite arithmetic.
+New Lean names in `FinalFormula.lean`:
+`aoyagiTheorem2RegularVariableCount` and
+`aoyagiTheorem2RegularTerm_eq_half_regularVariableCount`.  New Lean names in
+`RegularVariableShift.lean`:
+`AoyagiNormalCrossingExponentData.exponentMinimum_jacobianPriorLossShift_regularVariableCount`,
+`AoyagiNormalCrossingExponentData.exponentOrder_jacobianPriorLossShift_regularVariableCount`,
+`AoyagiNormalCrossingChartCertificate.exponentData_exponentMinimum_jacobianPriorLossShift_regularVariableCount`,
+`AoyagiNormalCrossingChartCertificate.exponentData_exponentOrder_jacobianPriorLossShift_regularVariableCount`,
+`AoyagiTheorem2FiniteExponentFormulaHypothesis.of_regularVariableCountShift`,
+and
+`AoyagiTheorem2FiniteExponentFormulaHypothesis.of_chart_regularVariableCountShift`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-variable-count.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-variable-count.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-variable-count.md`.
+
+This proves that the scalar count of `C1 - Er`, `F2`, and `F3` is the displayed
+regular term after dividing by two, under the endpoint rank-width bounds.  It
+then applies the existing finite `jacobianPriorLossShift` socket with that
+count.  This is not a regular-suspension chart construction, analytic ideal
+transport, Aoyagi Lemma 1, regular-coordinate RLCT additivity,
+normal-crossing production, pole order, or RLCT.
+
 ## Latest A5 Update
 
 The Eq5 alpha-indexed branch source-label slice has landed in

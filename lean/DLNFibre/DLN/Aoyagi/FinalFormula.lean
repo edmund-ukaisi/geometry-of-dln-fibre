@@ -144,6 +144,26 @@ end AoyagiDefinition3CeilData
 def aoyagiTheorem2RegularTerm (L : ℕ) (H : ℕ → ℕ) (r : ℕ) : ℚ :=
   (-((r : ℚ) ^ 2) + (r : ℚ) * ((H 1 : ℚ) + (H (L + 1) : ℚ))) / 2
 
+/-- The scalar count of the three regular block families after Aoyagi Theorem 3:
+`C1-Er`, `F2`, and `F3`. -/
+def aoyagiTheorem2RegularVariableCount (L : ℕ) (H : ℕ → ℕ) (r : ℕ) : ℕ :=
+  r * r + r * (H (L + 1) - r) + (H 1 - r) * r
+
+/-- The finite regular block-entry count gives the regular term in the
+displayed Theorem 2 lambda formula.
+
+This is only arithmetic for the count of the three regular block families.  It
+does not prove regular-suspension normal crossings or RLCT additivity. -/
+theorem aoyagiTheorem2RegularTerm_eq_half_regularVariableCount
+    (L : ℕ) (H : ℕ → ℕ) {r : ℕ}
+    (hsource : r ≤ H 1) (htarget : r ≤ H (L + 1)) :
+    aoyagiTheorem2RegularTerm L H r =
+      (aoyagiTheorem2RegularVariableCount L H r : ℚ) / 2 := by
+  unfold aoyagiTheorem2RegularTerm aoyagiTheorem2RegularVariableCount
+  rw [Nat.cast_add, Nat.cast_add, Nat.cast_mul, Nat.cast_mul, Nat.cast_mul,
+    Nat.cast_sub htarget, Nat.cast_sub hsource]
+  ring
+
 /-- The selected-width average appearing in the first displayed form of
 Aoyagi Theorem 2.  The denominator is Aoyagi's `ell`, although there are
 `ell+1` selected widths. -/

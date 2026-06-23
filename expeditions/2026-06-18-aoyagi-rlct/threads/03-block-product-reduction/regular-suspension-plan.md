@@ -115,6 +115,31 @@ normal-crossing extraction theorem to a reduced certificate and then adding
 `c/2`.  The final single extraction citation must still be applied to the full
 certificate after A4/A5/A2 provide the chart and source-production data.
 
+## Regular-variable count bridge
+
+The finite count itself is now named in
+`lean/DLNFibre/DLN/Aoyagi/FinalFormula.lean`:
+
+```text
+aoyagiTheorem2RegularVariableCount
+aoyagiTheorem2RegularTerm_eq_half_regularVariableCount
+```
+
+Under the endpoint bounds `r <= H 1` and `r <= H (L+1)`, Lean proves that half
+of the scalar count of `C1 - Er`, `F2`, and `F3` is exactly the already-named
+regular term in Aoyagi Theorem 2's displayed lambda formula.
+
+The finite socket is connected in
+`lean/DLNFibre/DLN/Aoyagi/RegularVariableShift.lean`: applying
+`jacobianPriorLossShift` with that count shifts the finite minimum by the
+regular term and preserves the finite order.  The file also gives constructors
+from a reduced finite formula hypothesis to the shifted finite formula
+hypothesis, both for raw finite exponent data and for supplied chart
+certificates.
+
+This closes only the finite arithmetic bridge.  It still does not construct
+the regular-suspension chart or justify analytic additivity.
+
 ## Blockers
 
 - A4 reduced certificate is still blocked by width notation, missing pivot
