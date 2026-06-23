@@ -31,7 +31,10 @@
   admissibility by `adm_le_width` (gate-1, committed). Both are reproved upstream on the branch, not external.
 - **Deferred.** none. (The downstream `T* ∈ RealizableRank` membership and the `r* = orbit-stratum` reading
   for the §4 achiever consume this equality; they are separate obligations, not this card.)
-- **Status.** sorry-free; axioms = clean-three `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no
+- **Status.** sorry-free + **reviewed** (independent fidelity review, 2026-06-23: all five gates PASS —
+  independence, proven-not-assumed, (i)+(ii)-only scope re-verified by re-proving the tie from an
+  (i)+(ii)-only hypothesis, non-vacuity on the 4-property witness, name=content; decorrelated Codex consult
+  concurred). Axioms = clean-three `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no
   `monomial_rlct`, no `native_decide`).
 
 ## Non-vacuity (in-file, CERT §3)
