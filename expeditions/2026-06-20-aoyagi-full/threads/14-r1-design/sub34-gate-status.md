@@ -52,6 +52,18 @@ Per the team-lead's 2026-06-23 split-by-E_pivot-dependence, the matrix-side sque
 two-sidedly bounded by `∑(P00−1,P01,P10)² + ‖Rcore‖²` given the block decomposition + leak hyp). No
 `E_pivot` dependence — acts on `dlnLoss`'s own `prod − B`.
 
+## `deepestEPivot` def + infra (BANKED, sorry-free) + the 3 props (in flight)
+
+- `deepestEPivot` CONCRETE def + `regResidualPack` (the `Fin nReg ≃ (r×r)⊕(r×M_L)⊕(M_0×r)` pack,
+  dim-count proven) @20ad514; `framedParamsReg` (T=0 reconstruction) + `_zero` @2f3508e;
+  `contDiff_prodAux_entry`/`contDiff_prod_entry` (ContDiff of the L-fold dependent-Fin matrix-product
+  ENTRIES — entry-wise to dodge the matrix-no-canonical-NormedSpace friction; the hard `_contdiff`
+  infra, layout-independent) @9aaead1.
+- The 3 props couple to crux2's #120 (reg-slot restructure, touches the shared
+  `regGaugeIdxSplit`/`regGaugeSlotEquiv`): `_contdiff` needs `regGaugeSlotEquiv`'s CLE/linearity
+  (readX/Y/Z entries `ContDiff`); `_base` the idempotent product-at-0 fold; `_deriv` the structured
+  `Fin nReg`. Asked crux2 whether #120 exposes the CLE (then all 3 close fast).
+
 ## OPEN: the `deepestEPivot` layout obstruction (surfaced to crux2, 2026-06-23)
 
 A load-bearing **soundness obstruction** blocks `deepestEPivot`'s `_deriv` (and hence PIN 1's last prop
