@@ -1062,3 +1062,28 @@ trap explicitly (so the next builder doesn't fill the tempting fake branch). Per
 remains the concrete `(2,2,2)` `IsRouteMCover` end-to-end (#94, crux2's packaging on route-m-atlas) — does
 NOT need this general dispatcher. SURFACE to controller: general `routeStep` deferred behind the
 realizability theorem (a Core deliverable), not within fm3's reach as a standalone.
+
+## g209 — root-anchoring TRIPLE-corroborated + ALREADY committed (pp2 g207, via formaliser); stale-read trap
+pp2's g207 constructibility cert (origin/g207-constructibility) independently FOUND the root-anchoring
+requirement: codim must be `Mval(ROOT M, T)`, NOT `Mval(node's reduced M, T)` — because `minAdm(schurState M)
+< minAdm(root M)` in EVERY case (g207-verified: (2,2,2) 3→1, (3,2,3) 5→2, (3,3,3) 7→4). A reduced-anchored
+witness undershoots ½·m₀; foldFamily_threshold_ge_of_pivotWitness would FAIL on a path with
+codim=minAdm(child)<m₀.
+
+ALREADY DISCHARGED in the committed type (@4802af4): `RouteStep (M₀ M)` carries `witness : PivotWitness M₀
+(codim c)` [root-anchored], and `routeAtlas (M₀)` threads the FIXED root M₀ through the WellFounded.fix while
+recursing on split.red. This is pp2's option (A). PivotWitness M₀ c bundles ⟨T, hAdm : T∈Adm M₀, hCodim :
+c=(Mval M₀ T).toNat⟩ — so (A) already keeps PivotWitness's M=root AND has hCodim against root M; pp2's (B)
+(bare-ℕ codim + prove hCodim against root) is what PivotWitness M₀ already encodes. (A)/(B) converge; (A) is
+built + green. SETTLED: (A) as committed.
+
+Root-anchoring is now TRIPLE-corroborated: my g196 + Codex g206 pt2 + pp2 g207. This NARROWS the wall: routeStep
+is NOT blocked on anchoring (settled) — blocked on REALIZABILITY (the §4 coverage theorem). pp2 also flagged
+split.red is NOT free (flat-branch arbitrary split.red gives value but no cover charts ⟹ cover_le unprovable;
+the tree must be the geometric pivotBlowupOn resolution) — the same realizability constraint from the cover side.
+
+STALE-READ TRAP (recurring, g173-class): the formaliser surfaced this as a "bug in the current type" while
+reading its OWN pre-redirect transcript (the node-anchored PivotWitness M, superseded by @4802af4's
+PivotWitness M₀). The fix was already committed. Lesson re-applied: a teammate's "the type has bug X" claim is
+verified against `git show origin/<branch>:<file>` (the committed decl), not against the framing or a
+transcript snapshot. Confirmed @4802af4 RouteMRecursion.lean:151/155/193 before replying.
