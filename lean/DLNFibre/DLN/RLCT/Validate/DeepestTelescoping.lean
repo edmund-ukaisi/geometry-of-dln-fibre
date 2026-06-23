@@ -99,6 +99,34 @@ theorem corner_reindex_mul {a b c r : ℕ}
   rw [Matrix.fromBlocks_multiply]
   simp
 
+/-- **Reindex distributes over a left endpoint-frame product** (the FOLD3 general-layer kernel). For a
+SQUARE row-frame `P : Matrix m m ℝ` and a general layer `A : Matrix m n ℝ`, reindexing the product
+`P * A` along `(eC, eS)` factors as `(reindex eC eC P) * (reindex eC eS A)` — the frame `P` rides on the
+row-index alone, so its reindex is the diagonal `(eC, eC)` and the shared middle interface `eC.symm`
+cancels (`submatrix_mul_equiv`). This is the boundary-frame extraction the `endpoint_telescoping` base
+step needs (`reindex (C ⟨0⟩) = (cast P₀) · reindex (A ⟨0⟩)` when `C ⟨0⟩ = P₀ · A ⟨0⟩`). Generic over the
+index types — `m, n` any Fintypes, `eC, eS` any reindex equivs. -/
+theorem reindex_mul_distrib_left {m n m' n' : Type*} [Fintype m] [Fintype n]
+    [Fintype m'] [Fintype n']
+    (P : Matrix m m ℝ) (A : Matrix m n ℝ) (eC : m ≃ m') (eS : n ≃ n') :
+    Matrix.reindex eC eS (P * A)
+      = Matrix.reindex eC eC P * Matrix.reindex eC eS A := by
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  rw [Matrix.submatrix_mul_equiv P A eC.symm eC.symm eS.symm]
+
+/-- **Reindex distributes over a right endpoint-frame product** (the FOLD3 boundary-`Q` kernel). For a
+general layer `A : Matrix m n ℝ` and a SQUARE column-frame `Q : Matrix n n ℝ`, reindexing `A * Q` along
+`(eC, eS)` factors as `(reindex eC eS A) * (reindex eS eS Q)` — `Q` rides on the column-index, so the
+shared middle interface `eS.symm` cancels. The boundary-right-frame extraction the `endpoint_telescoping`
+final step needs (`reindex (C ⟨Lm⟩) = reindex (A ⟨Lm⟩) · (cast Q_Lm)` when `C ⟨Lm⟩ = A ⟨Lm⟩ · Q_Lm`). -/
+theorem reindex_mul_distrib_right {m n m' n' : Type*} [Fintype m] [Fintype n]
+    [Fintype m'] [Fintype n']
+    (A : Matrix m n ℝ) (Q : Matrix n n ℝ) (eC : m ≃ m') (eS : n ≃ n') :
+    Matrix.reindex eC eS (A * Q)
+      = Matrix.reindex eC eS A * Matrix.reindex eS eS Q := by
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  rw [Matrix.submatrix_mul_equiv A Q eC.symm eS.symm eS.symm]
+
 /-- **The idempotent fold at `0`** (`prodAux` form, `1 ≤ k`). At the deepest gauge slot, every layer is
 the block-normal corner `reindex (fromBlocks 1 0 0 0)` (`framedParamsReg_zero`), and the corner is
 idempotent under the chain product, so the running product through `k ≥ 1` layers is again the corner
@@ -227,20 +255,27 @@ theorem endpoint_telescoping (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Par
         rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
         rcases Nat.eq_zero_or_pos k with hk0 | hkpos
         · subst hk0
+          set hkL' := Nat.lt_of_succ_lt_succ hsucc with hkL'def
           -- k+1 = 1: `prodAux _ 0 = 1` (def); the layer is `reindex (C ⟨0⟩)` vs `reindex (A ⟨0⟩)`, and
           -- `C ⟨0⟩ = P ⟨0⟩ · A ⟨0⟩` (Q ⟨0⟩ = 1). So `reindex (C ⟨0⟩) = (cast P ⟨0⟩) · reindex (A ⟨0⟩)`.
-          have hC0 : C ⟨0, Nat.lt_of_succ_lt_succ hsucc⟩
-              = P ⟨0, Nat.lt_of_succ_lt_succ hsucc⟩ * A ⟨0, Nat.lt_of_succ_lt_succ hsucc⟩ := by
+          have hC0 : C ⟨0, hkL'⟩
+              = P ⟨0, hkL'⟩ * A ⟨0, hkL'⟩ := by
             rw [hframe ⟨0, _⟩, hQid ⟨0, _⟩ (by simp; omega), Matrix.mul_one]
           simp only [show prodAux H C 0 (Nat.lt_of_succ_lt hsucc)
               = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
             show prodAux H A 0 (Nat.lt_of_succ_lt hsucc)
               = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl, Matrix.one_mul, hC0]
-          -- OPEN (base reindex-distribute): `1 * reindex (P·A) = (cast P) * (1 * reindex A)`. After
-          -- `one_mul`, distribute reindex over the product (the left factor's row-reindex = the boundary
-          -- cast P0). The conceptual cast is SOLVED (interior step green); this is the reindex-distribute
-          -- SYNTACTIC fill — the goal's `reindex (finCongr ⋯)` implicit proofs fight `reindex_apply`'s
-          -- pattern-match (3-attempt cap hit on the exact rewrite chain). Localized; convene-ready.
+          -- Distribute reindex over the boundary product `P⟨0⟩ · A⟨0⟩` (`reindex_mul_distrib_left`),
+          -- then the left factor `reindex (finCongr e1.symm) (finCongr e1.symm) P⟨0⟩` IS the boundary
+          -- cast `h0cs ▸ P⟨0⟩` (both transport `P⟨0⟩` from `H ⟨0,_⟩.castSucc` to `H ⟨0,hk'⟩ = H 0`, rfl).
+          rw [reindex_mul_distrib_left (P ⟨0, hkL'⟩) (A ⟨0, hkL'⟩)
+            (finCongr e1.symm) (finCongr e2.symm)]
+          -- REMAINING SYNTACTIC FILL: `1 * (reindex P⟨0⟩ · reindex A⟨0⟩) = (cast P⟨0⟩) · (1 · reindex A⟨0⟩)`.
+          -- The MATH is done (reindex_mul_distrib_left distributed the boundary product; the left factor
+          -- `reindex (finCongr e1.symm)² P⟨0⟩` IS the boundary cast `h0cs ▸ P⟨0⟩` since e1 : rfl). The fill
+          -- is the defeq-`1` `Matrix.one_mul` + the `reindex (refl)(refl) = id` collapse — the SAME defeq-
+          -- proof / one_mul-on-defeq-`1` friction crux2 hit (3-attempt cap). Localized; the kernels
+          -- (reindex_mul_distrib_left/right) are the substantive general-layer unblock.
           sorry
         · -- step (interior): `C k = A k` (hCAint), reindexed layers agree, P0 left-factors by mul_assoc.
           rw [hCAint ⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ (by simpa using hkpos) (by simp; omega),
