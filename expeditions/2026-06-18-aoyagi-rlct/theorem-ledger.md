@@ -5572,6 +5572,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-continuing-reindexed-source-chart-certificate-a4.md`.
 
+Latest A4 Case 2 selected-entry center unit factor:
+`BlowupArithmetic.lean` now contains `selectedEntryCenterSq_nonneg`,
+`selectedEntryCenterSqUnitFactor`,
+`selectedEntryCenterSqUnitFactor_pos`,
+`selectedEntryCenterSqUnitFactor_ne_zero`,
+`selectedEntryCenterSqUnitFactor_isUnit`,
+`case2DisplayedSourceChartMap_centerSqUnitFactor_pos`,
+`case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero`, and
+`case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit`.  These prove the
+normalized finite selected-entry square-sum factor is positive/nonzero under
+ordered commutative semiring hypotheses and is a unit over an ordered field.  The
+displayed Case 2 wrappers specialize this to the erased residual-block center
+after choosing the displayed pivot.  This is pointwise finite algebra only:
+no arbitrary-field or complex-field statement, analytic unit neighbourhood,
+`P`/`Q` unit control, total loss unit, chart coverage, normal-crossing
+certificate, pole order, or RLCT extraction is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-unit-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-center-unit.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-selected-entry-center-unit-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

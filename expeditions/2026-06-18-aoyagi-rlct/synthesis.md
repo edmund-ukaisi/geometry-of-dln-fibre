@@ -5620,6 +5620,35 @@ and
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-center-sq-jacobian-a4.md`.
 
+Latest A4 selected-entry center unit-factor microcertificate:
+`BlowupArithmetic.lean` now contains `selectedEntryCenterSq_nonneg`,
+`selectedEntryCenterSqUnitFactor`,
+`selectedEntryCenterSqUnitFactor_pos`,
+`selectedEntryCenterSqUnitFactor_ne_zero`,
+`selectedEntryCenterSqUnitFactor_isUnit`,
+`case2DisplayedSourceChartMap_centerSqUnitFactor_pos`,
+`case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero`, and
+`case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit`.  These prove that
+the normalized finite selected-entry square-sum factor
+`1 + selectedEntryCenterSq center value` is positive and nonzero under the
+ordered commutative semiring hypotheses used by Mathlib, and is a unit over
+an ordered field.  The displayed Case 2 wrappers specialize this to the erased
+residual-block center
+`(case2ResidualBlockPivotEntries n S J).erase (J+1,J+1)`.
+
+This closes only the pointwise finite unit fact for that selected-entry
+square-sum factor.  It is not arbitrary-field or complex-field algebra, not
+analytic unit control on a constructed chart neighbourhood, not unit control
+for Aoyagi's later regular `P`/`Q` changes, not a total loss unit, not a
+Jacobian/volume-form theorem, not an A0 normal-crossing chart certificate, and
+not pole order or RLCT extraction.
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-unit-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-center-unit.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-selected-entry-center-unit-a4.md`.
+
 Latest A6 supplied final assembly update: `Theorem2FinalAssembly.lean` now
 contains `AoyagiTheorem2SuppliedFinalBoundary`.  The boundary packages
 selected-width provenance `m = aoyagiSelectedReducedWidths H r C`, the A0

@@ -4432,3 +4432,40 @@ successor transition regularity, source production of `Csucc`, source suffix
 production, terminal source production, pole order, or RLCT extraction.  It
 keeps the corrected post-weight convention visible and does not double-count
 the printed outside `u` factor.
+
+## 2026-06-23 Lean Case 2 selected-entry center unit factor
+
+Reproduction:
+`reproduction-case2-selected-entry-center-unit-a4.md`.
+Statement card:
+`statement-card-a4-case2-selected-entry-center-unit.md`.
+Review artifact:
+`review-case2-selected-entry-center-unit-a4.md`.
+
+Lean now proves the pointwise finite unit factor for the selected-entry
+center square:
+
+```text
+selectedEntryCenterSq_nonneg
+selectedEntryCenterSqUnitFactor
+selectedEntryCenterSqUnitFactor_pos
+selectedEntryCenterSqUnitFactor_ne_zero
+selectedEntryCenterSqUnitFactor_isUnit
+case2DisplayedSourceChartMap_centerSqUnitFactor_pos
+case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero
+case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit
+```
+
+The generic ordered commutative semiring lemmas prove
+`0 <= selectedEntryCenterSq center value` and
+`0 < 1 + selectedEntryCenterSq center value`.  The ordered-field lemma then
+turns the resulting nonzero element into a field unit.  The displayed Case 2
+wrappers specialize this to the erased residual-block center
+`(case2ResidualBlockPivotEntries n S J).erase (J+1,J+1)`.
+
+This is still pointwise finite algebra for one normalized square-sum factor.
+It is not an arbitrary-field or complex-field statement, not analytic
+nonvanishing on a constructed neighbourhood, not unit control for Aoyagi's
+later `P`/`Q` regular changes, not a total loss unit, not a
+Jacobian/volume-form theorem, not an A0 normal-crossing chart certificate, and
+not pole order or RLCT extraction.

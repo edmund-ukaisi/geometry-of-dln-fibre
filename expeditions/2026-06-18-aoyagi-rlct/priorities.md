@@ -72,10 +72,14 @@ Lean now proves the finite selected-entry center square identity
 `det [1 0; y uI] = u^(non-pivot count)`, with a displayed Case 2 wrapper
 identifying the non-pivot exponent as the residual-block center cardinality
 minus one.  Treat this as finite algebra only: the normalized square-sum
-factor is only a unit candidate, and the determinant is not yet an analytic
-Jacobian/volume-form theorem.  The next A0-facing work must still supply
-actual chart neighbourhood/unit nonvanishing, coverage/regularity, and the
-effect of Aoyagi's regular `P`/`Q` changes before constructing an
+factor has now been proved positive/nonzero, hence a field unit over an
+ordered field, in
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-unit-a4.md`.
+This is still only pointwise finite algebra for one normalized factor; the
+determinant is not yet an analytic Jacobian/volume-form theorem.  The next
+A0-facing work must still supply actual chart neighbourhoods, analytic unit
+control for all factors, coverage/regularity, and the effect of Aoyagi's
+regular `P`/`Q` changes before constructing an
 `AoyagiNormalCrossingChartCertificate`.
 
 ## Current frontier checkpoint - 2026-06-21

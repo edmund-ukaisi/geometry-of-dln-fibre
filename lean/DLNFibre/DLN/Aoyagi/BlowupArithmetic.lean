@@ -1,4 +1,5 @@
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Data.Matrix.Block
 import Mathlib.Data.Int.Order.Basic
 import Mathlib.Data.Fintype.Sets
@@ -1811,7 +1812,53 @@ theorem selectedEntryCenterSq_selectedEntryChartMap
   rw [hsum]
   ring
 
+omit [DecidableEq ι] in
+/-- A finite selected-entry center square-sum is nonnegative over an ordered
+commutative semiring. -/
+theorem selectedEntryCenterSq_nonneg
+    [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R]
+    (center : Finset ι) (value : ι → R) :
+    0 ≤ selectedEntryCenterSq center value := by
+  rw [selectedEntryCenterSq]
+  exact Finset.sum_nonneg fun i _hi ↦ sq_nonneg (value i)
+
+omit [DecidableEq ι] in
+/-- The normalized selected-entry square-sum factor `1 + sum y_i^2`. -/
+def selectedEntryCenterSqUnitFactor
+    (center : Finset ι) (value : ι → R) : R :=
+  1 + selectedEntryCenterSq center value
+
+omit [DecidableEq ι] in
+/-- The normalized selected-entry square-sum factor is positive over an
+ordered commutative semiring. -/
+theorem selectedEntryCenterSqUnitFactor_pos
+    [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R]
+    (center : Finset ι) (value : ι → R) :
+    0 < selectedEntryCenterSqUnitFactor center value := by
+  rw [selectedEntryCenterSqUnitFactor]
+  exact add_pos_of_pos_of_nonneg zero_lt_one
+    (selectedEntryCenterSq_nonneg center value)
+
+omit [DecidableEq ι] in
+/-- The normalized selected-entry square-sum factor is nonzero over an ordered
+commutative semiring. -/
+theorem selectedEntryCenterSqUnitFactor_ne_zero
+    [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R]
+    (center : Finset ι) (value : ι → R) :
+    selectedEntryCenterSqUnitFactor center value ≠ 0 :=
+  ne_of_gt (selectedEntryCenterSqUnitFactor_pos center value)
+
 end CenterSq
+
+omit [DecidableEq ι] [Monoid α] in
+/-- The normalized selected-entry square-sum factor is a field unit over an
+ordered field. -/
+theorem selectedEntryCenterSqUnitFactor_isUnit
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (center : Finset ι) (value : ι → K) :
+    IsUnit (selectedEntryCenterSqUnitFactor center value) :=
+  isUnit_iff_ne_zero.mpr
+    (selectedEntryCenterSqUnitFactor_ne_zero center value)
 
 section PivotFirstJacobian
 
@@ -10661,6 +10708,49 @@ theorem case2DisplayedSourceChartMap_centerSq
     selectedEntryCenterSq_selectedEntryChartMap
       (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
       u residual
+
+/-- In the displayed Case 2 selected-entry chart, the normalized finite
+center-square factor is positive over an ordered commutative ring.
+
+This is only pointwise finite algebra for the selected residual-block center;
+it is not chart coverage, analytic unit control, a total loss unit, or an
+A0 normal-crossing certificate. -/
+theorem case2DisplayedSourceChartMap_centerSqUnitFactor_pos
+    (n : ℕ → ℕ) {S J : ℕ} (_hS : 1 ≤ S)
+    (_hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R]
+    (residual : ℕ × ℕ → R) :
+    0 <
+      selectedEntryCenterSqUnitFactor
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual :=
+  selectedEntryCenterSqUnitFactor_pos
+    ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual
+
+/-- In the displayed Case 2 selected-entry chart, the normalized finite
+center-square factor is nonzero over an ordered commutative ring. -/
+theorem case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero
+    (n : ℕ → ℕ) {S J : ℕ} (_hS : 1 ≤ S)
+    (_hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R]
+    (residual : ℕ × ℕ → R) :
+    selectedEntryCenterSqUnitFactor
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual ≠ 0 :=
+  selectedEntryCenterSqUnitFactor_ne_zero
+    ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual
+
+omit [CommRing R] in
+/-- In the displayed Case 2 selected-entry chart, the normalized finite
+center-square factor is a field unit over an ordered field. -/
+theorem case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit
+    (n : ℕ → ℕ) {S J : ℕ} (_hS : 1 ≤ S)
+    (_hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (residual : ℕ × ℕ → K) :
+    IsUnit
+      (selectedEntryCenterSqUnitFactor
+        ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual) :=
+  selectedEntryCenterSqUnitFactor_isUnit
+    ((case2ResidualBlockPivotEntries n S J).erase (J + 1, J + 1)) residual
 
 /-- The formal pivot-first selected-entry Jacobian determinant for the
 displayed Case 2 residual center has exponent equal to the number of

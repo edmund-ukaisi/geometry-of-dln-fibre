@@ -743,6 +743,10 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-sq-jacobian-a4.md`;
 	  xhigh source/math and Lean/API review passed and is saved at
 	  `threads/04-blow-up-certificate/review-case2-selected-entry-center-sq-jacobian-a4.md`.
+	  Reproduction of the Case 2 selected-entry center unit factor is saved at
+	  `threads/04-blow-up-certificate/reproduction-case2-selected-entry-center-unit-a4.md`;
+	  xhigh source/math and Lean/API review passed and is saved at
+	  `threads/04-blow-up-certificate/review-case2-selected-entry-center-unit-a4.md`.
 	  Reproduction of the Case 2 continuing reindexed source-chart certificate
 	  is saved at
 	  `threads/04-blow-up-certificate/reproduction-case2-continuing-reindexed-source-chart-certificate-a4.md`;
@@ -842,9 +846,19 @@ No such claim is formalisation-ready until both fields are filled.
 	  `case2DisplayedSourceChartMap_centerSq`,
 	  `case2DisplayedSourceChartMap_pivotFirstJacobian_det`, and
 	  `case2DisplayedSourceChartMap_pivotFirstJacobian_exponent_eq_centerCard_sub_one`.
-	  These are finite algebra only: the normalized square-sum factor is only a
-	  unit candidate, and the determinant is not an analytic derivative or
-	  volume-form theorem.
+	  Also proved the selected-entry center unit-factor microcertificate:
+	  `selectedEntryCenterSq_nonneg`,
+	  `selectedEntryCenterSqUnitFactor`,
+	  `selectedEntryCenterSqUnitFactor_pos`,
+	  `selectedEntryCenterSqUnitFactor_ne_zero`,
+	  `selectedEntryCenterSqUnitFactor_isUnit`,
+	  `case2DisplayedSourceChartMap_centerSqUnitFactor_pos`,
+	  `case2DisplayedSourceChartMap_centerSqUnitFactor_ne_zero`, and
+	  `case2DisplayedSourceChartMap_centerSqUnitFactor_isUnit`.
+	  These are finite algebra only: the normalized square-sum factor is now
+	  proved pointwise positive/nonzero and a unit over ordered fields, but
+	  this is not analytic nonvanishing on a chart neighbourhood; the determinant
+	  is not an analytic derivative or volume-form theorem.
 	  Also proved
   the Case 1 tail-lowering terminal-exponent arithmetic
   `lowerTailVector`, `terminalExponent_lowerTailVector_of_flatFromPred`, and
