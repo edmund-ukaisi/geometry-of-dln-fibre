@@ -702,3 +702,29 @@ exact ways (Singular Krull dim, 13 cases incl. N=3; sympy Jacobian rank) and **r
 - **H5 — catenary closer:** `height(fibreGenIdeal) = card − varietyDim(fibre) = C+δ` (min-prime / top-comp
   dim, reducibility via Brick A `minimalPrimes_sigmaIdeal_eq`), combine with H1 ⟹ `codim(fibre)=C+δ`. Then
   G4: discharge `BundleShiftInterface`.
+
+## ROUTE B KILLED (circular) → ROUTE c (homogeneous sweep) is the path (thread 27→28, 2026-06-24)
+
+**H4 landed the engine-side assembly + the conditional capstone** (`codimRepCanonical_fibre_eq_of_minimalPrimes_height_bounds` + the G1-transport `..._at_witness`, committed in probe modules; base-δ bricks + equidim + the H5 min-over-components closer in `FibreDimFibration`/probes — all green/axiom-clean), reducing `codim(fibre)=C+δ` to per-component dimension facts. Thread 27 (pen-and-paper, 2 decorrelated Codices, 9-case exact) then **killed route B and certified route c:**
+
+- **Route B (Jacobian rank ≥ C+δ) is CIRCULAR.** At a generic SMOOTH point, `rank(d mult_A) = card − dim F_α`
+  is rank-nullity (an IDENTITY), so "`rank ≥ C+δ` on every component" ⟺ "`dim F_α ≤ card−C−δ`" = the
+  conclusion. The `+C` has NO independent handle (`rank = δ + codim Ō_M` is EXACTLY refuted); the bound is
+  NON-uniform (fails at singular sub-loci). The δ-part (`image ⊇ T_E Mat^{≤r}`, orbit-tangent) is clean but
+  insufficient. **Do not build route B.** (The factor-rank strata are NOT the components — the recurring confound.)
+- **Route c (the equivariant homogeneous SWEEP) is the clean general argument — BOTH directions at once,
+  flatness-free, no Jacobians/smoothness/components.** `H = GL_{d_N}×GL_{d_0}` acts through the end vertices
+  (`mult_smul`); `Mat^{=r} = H·E` one orbit (`exists_baseChange_of_rank_eq`) ⟹ `Σ^r = H·F`; the action map
+  `H×F → Σ^r` has `Stab_H(E)`-coset fibres (homogeneous ⟹ uniform, NO flatness) ⟹ **`dim Σ^r = δ + dim F`**;
+  density `dim Σ^r = dim Σ̄^r` (Step C, Cited LR 4.4/4.5) + landed `dim Σ̄^r = card−C` (`SigmaCodim`) ⟹
+  **`codim F = C+δ`**. Reuses landed engine (`mult_smul`, `exists_baseChange_of_rank_eq`, G1, the δ
+  thermometer, `SigmaCodim`, the orbit-dim machinery `OrbitImageDim`/`JacobianTrdeg`).
+- **The ONE new rung** = Step B (the homogeneous-sweep dim identity, an orbit-dimension count on the engine
+  substrate — NOT a general fibre-dim theorem, NOT the flatness wall). **The ONE Cited bridge** = Step C
+  (`dim Σ^r = dim Σ̄^r`, density; try to prove it cheaply since `varietyDim` IS closure-dim, else name it).
+  So route c reduces `BundleShiftInterface` from FULLY Cited to **proved modulo one standard density fact**.
+
+**NOW (thread 28):** the route-c formaliser tide — Step B (sweep) + Step C + assembly + G1 lift ⟹
+`codimRepCanonical(fibre d B) = C+δ` (Core). Then a final DLN tide discharges `BundleShiftInterface` (G4,
+full reviewer + Codex gate). The H4 Jacobian capstones are off the proof-path (route B circular) but the
+base-δ/equidim/`SigmaCodim`/closer bricks are route c's substrate. Cert: `threads/27-.../certificate.md`.
