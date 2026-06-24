@@ -7,6 +7,10 @@ import Mathlib.Algebra.MvPolynomial.Rename
 import DLNFibre.Core.RankLocusClosed
 import DLNFibre.Core.MultComorphism
 import DLNFibre.Core.SigmaComponents
+import DLNFibre.Core.SigmaCodim
+import DLNFibre.Core.DeterminantalStratumDim
+import Mathlib.Data.Fintype.Pigeonhole
+import Mathlib.RingTheory.Ideal.Height
 
 /-!
 # `DLNFibre.Core.DeterminantalChartRing` — the bordered Schur minor (G2-2 foundation)
@@ -223,12 +227,12 @@ product matrix `multPoly d` (`Core.MultComorphism`) evaluates at `canonicalCoord
 `mult d A`, which vanishes on `Σ̄^r = productRankLocusLE d r` (rank `≤ r`). General in `N`. This is
 the bridge feeding the localized Schur graph ideal `J`. -/
 
-/-- Evaluating an `(r+1)`-minor of the generic product matrix `multPoly d` at the coordinates of a
-tuple `A` gives the corresponding `(r+1)`-minor of the actual product `mult d A` (`eval_multPoly`
-entrywise through `det`/`submatrix`). -/
+/-- Evaluating any square minor of the generic product matrix `multPoly d` at the coordinates of a
+tuple `A` gives the corresponding minor of the actual product `mult d A` (`eval_multPoly` entrywise
+through `det`/`submatrix`). General in the minor index type `ι`. -/
 theorem eval_det_submatrix_multPoly {k : Type u} [Field k] {N : ℕ} (d : Fin (N + 1) → ℕ)
-    (A : Tuple (k := k) d) {r : ℕ} (br : Fin (r + 1) → Fin (d (Fin.last N)))
-    (bc : Fin (r + 1) → Fin (d 0)) :
+    (A : Tuple (k := k) d) {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (br : ι → Fin (d (Fin.last N))) (bc : ι → Fin (d 0)) :
     eval (canonicalCoord d A) (((Matrix.of (multPoly d)).submatrix br bc).det)
       = ((mult d A).submatrix br bc).det := by
   rw [RingHom.map_det (eval (canonicalCoord d A))]
@@ -255,5 +259,131 @@ theorem det_submatrix_multPoly_mem_sigmaIdeal {k : Type u} [Field k] {N : ℕ}
         rw [aeval_def, eval]; rfl]
   rw [eval_det_submatrix_multPoly d A br bc]
   exact submatrix_det_eq_zero_of_rank_le hA br bc
+
+/-! ## Step (b₀): the localized base ideal has height `C` (`height Iad = C`)
+
+The localized base ideal `Iad = (sigmaIdeal ![q,p] r).map (algebraMap to the localization at detΔ)`
+has the same height `C` as `sigmaIdeal`: localizing at `detΔ` (not in the prime `sigmaIdeal`)
+preserves the height (`IsLocalization.height_map_of_disjoint`). The non-membership
+`detΔ ∉ sigmaIdeal` is witnessed by `diag(I_r, 0)` in the base: rank `≤ r` (a pigeonhole column
+count) yet its top-left `r×r` minor is `det I_r = 1 ≠ 0`. This is the localized base codimension
+`= C`, the prerequisite the `Iad = J` height comparison consumes. Specialised to `N = 1`. -/
+
+variable {k : Type u} [Field k]
+
+/-- The pivot minor polynomial: the determinant of the top-left `r×r` submatrix of the generic
+single matrix `multPoly (dStratum q p)`. Inverting it is the pivot chart; `Localization.Away` of it
+is the localized base ring. -/
+noncomputable def detPivotPoly (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    MvPolynomial (RepCoord (dStratum q p)) k :=
+  ((Matrix.of (multPoly (dStratum q p))).submatrix
+    (fun i : Fin r ↦ (Fin.castLE hp i : Fin (dStratum q p (Fin.last 1))))
+    (fun j : Fin r ↦ (Fin.castLE hq j : Fin (dStratum q p 0)))).det
+
+/-- The witness tuple `diag(I_r, 0)` (entry `(i,j) = 1` iff `i = j < r`): a single matrix in the
+determinantal base `Σ̄^r` whose top-left `r×r` block is the identity. -/
+noncomputable def chartWitness (q p r : ℕ) : Tuple (k := k) (dStratum q p) :=
+  fun _ i j ↦ if i.val = j.val ∧ i.val < r then 1 else 0
+
+/-- `mult` of the witness tuple is its single matrix (the `N = 1` product is the lone factor). -/
+theorem mult_chartWitness (q p r : ℕ) :
+    mult (dStratum q p) (chartWitness (k := k) q p r) = chartWitness (k := k) q p r 0 := by
+  have hdef : mult (dStratum q p) (chartWitness (k := k) q p r)
+      = chartWitness (k := k) q p r 0
+        * multPrefix (dStratum q p) (chartWitness q p r) (Fin.castSucc (0 : Fin 1)) := rfl
+  have h1 : multPrefix (dStratum q p) (chartWitness (k := k) q p r) (Fin.castSucc (0 : Fin 1))
+      = (1 : Matrix (Fin (dStratum q p (Fin.castSucc (0 : Fin 1))))
+            (Fin (dStratum q p (Fin.castSucc (0 : Fin 1)))) k) := rfl
+  rw [hdef, h1]; exact Matrix.mul_one _
+
+/-- The witness has rank `≤ r`: every `(r+1)×(r+1)` minor vanishes — among `r+1` chosen columns,
+either one indexes a zero column (`≥ r`) or two coincide (pigeonhole into `Fin r`). -/
+theorem rank_chartWitness_le (q p r : ℕ) :
+    (chartWitness (k := k) q p r 0).rank ≤ r := by
+  rw [rank_le_iff_forall_submatrix_det_eq_zero]
+  intro er ec
+  by_cases h : ∃ j, r ≤ (ec j).val
+  · obtain ⟨j, hj⟩ := h
+    apply det_eq_zero_of_column_eq_zero j
+    intro i; simp only [Matrix.submatrix_apply, chartWitness]; rw [if_neg]; rintro ⟨_, hlt⟩; omega
+  · simp only [not_exists, not_le] at h
+    obtain ⟨j1, j2, hne, heq⟩ := Fintype.exists_ne_map_eq_of_card_lt
+      (fun j : Fin (r + 1) ↦ (⟨(ec j).val, h j⟩ : Fin r)) (by simp)
+    have hcoleq : ec j1 = ec j2 := Fin.ext (by simpa using heq)
+    exact det_zero_of_column_eq hne (fun i ↦ by simp only [Matrix.submatrix_apply, hcoleq])
+
+/-- The witness lies in the determinantal base `Σ̄^r = productRankLocusLE ![q,p] r`. -/
+theorem chartWitness_mem (q p r : ℕ) :
+    chartWitness (k := k) q p r ∈ productRankLocusLE (k := k) (dStratum q p) r := by
+  rw [mem_productRankLocusLE, mult_chartWitness]; exact rank_chartWitness_le q p r
+
+/-- The witness's top-left `r×r` minor of `mult` is the identity matrix. -/
+theorem mult_chartWitness_pivot_submatrix (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    (mult (dStratum q p) (chartWitness (k := k) q p r)).submatrix
+        (fun i : Fin r ↦ (Fin.castLE hp i : Fin (dStratum q p (Fin.last 1))))
+        (fun j : Fin r ↦ (Fin.castLE hq j : Fin (dStratum q p 0)))
+      = (1 : Matrix (Fin r) (Fin r) k) := by
+  ext i j
+  rw [Matrix.submatrix_apply, mult_chartWitness]
+  simp only [chartWitness, Fin.castLE, Matrix.one_apply]
+  by_cases h : i = j
+  · subst h; rw [if_pos ⟨rfl, i.isLt⟩, if_pos rfl]
+  · rw [if_neg, if_neg h]; rintro ⟨he, _⟩; exact h (Fin.ext he)
+
+/-- The witness's top-left `r×r` minor is `det I_r = 1`. -/
+theorem detPivot_chartWitness (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    eval (canonicalCoord (dStratum q p) (chartWitness (k := k) q p r)) (detPivotPoly q p r hp hq)
+      = 1 := by
+  rw [detPivotPoly, eval_det_submatrix_multPoly,
+    mult_chartWitness_pivot_submatrix q p r hp hq, det_one]
+
+
+/-- `detΔ ∉ sigmaIdeal ![q,p] r`: the pivot minor does not vanish on all of the base — it is `1`
+at the witness `diag(I_r,0)`. -/
+theorem detPivotPoly_notMem_sigmaIdeal (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    detPivotPoly (k := k) q p r hp hq ∉ sigmaIdeal (k := k) (dStratum q p) r := by
+  rw [sigmaIdeal, mem_vanishingIdeal_iff]
+  intro hmem
+  have := hmem (canonicalCoord (dStratum q p) (chartWitness q p r))
+    ⟨chartWitness q p r, chartWitness_mem q p r, rfl⟩
+  rw [show aeval (R := k) (canonicalCoord (dStratum q p) (chartWitness q p r))
+        (detPivotPoly q p r hp hq)
+      = eval (canonicalCoord (dStratum q p) (chartWitness q p r)) (detPivotPoly q p r hp hq) from by
+        rw [aeval_def, eval]; rfl,
+    detPivot_chartWitness q p r hp hq] at this
+  exact one_ne_zero this
+
+/-- **Step (b₀): the localized base ideal has the same height as the base ideal.** Localizing the
+prime determinantal-base ideal `sigmaIdeal ![q,p] r` at the pivot minor `detΔ` (which is not in it)
+preserves height: `height Iad = height sigmaIdeal`. Over an algebraically closed field (for the base
+ideal to be prime). This is the localized base codimension; with engine Brick A
+(`height sigmaIdeal = cCodim = C`) it gives `height Iad = C`. -/
+theorem height_map_sigmaIdeal_away [IsAlgClosed k] (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    ((sigmaIdeal (k := k) (dStratum q p) r).map
+        (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+          (Localization.Away (detPivotPoly (k := k) q p r hp hq)))).height
+      = (sigmaIdeal (k := k) (dStratum q p) r).height := by
+  haveI hprime : (sigmaIdeal (k := k) (dStratum q p) r).IsPrime := by
+    rw [sigmaIdeal]; exact isPrime_vanishingIdeal_productRankLocusLE_stratum q p r hq hp
+  have hdisj := (Ideal.disjoint_powers_iff_notMem
+      (detPivotPoly (k := k) q p r hp hq) hprime.isRadical).2
+    (detPivotPoly_notMem_sigmaIdeal q p r hp hq)
+  exact IsLocalization.height_map_of_disjoint (Submonoid.powers (detPivotPoly q p r hp hq))
+    (sigmaIdeal (dStratum q p) r) hdisj
+
+/-- **The localized base codimension is `C`** (`height Iad = C`). Combines the localization-height
+transport with engine Brick A (`height sigmaIdeal = cCodim ![q,p] r`). Over an algebraically closed
+field of characteristic `0`. -/
+theorem height_map_sigmaIdeal_away_eq_cCodim [IsAlgClosed k] [CharZero k]
+    (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (hne : (kostantPartitions (dStratum q p) r).Nonempty :=
+      kostantPartitions_stratum_nonempty q p r hq hp) :
+    ((sigmaIdeal (k := k) (dStratum q p) r).map
+        (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+          (Localization.Away (detPivotPoly (k := k) q p r hp hq)))).height
+      = ((cCodim (dStratum q p) r hne).toNat : ℕ∞) := by
+  rw [height_map_sigmaIdeal_away q p r hp hq,
+    ← codimRepCanonical_productRankLocusLE_eq_height_sigmaIdeal,
+    codimRepCanonical_productRankLocusLE_eq_cCodim_enat (dStratum q p) r hne]
 
 end DLNFibre.Core
