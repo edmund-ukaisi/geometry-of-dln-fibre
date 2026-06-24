@@ -2164,3 +2164,32 @@ prove analytic coordinate chart status, exact-rank/source-rank openness,
 regular-suspension chart construction, block-difference wrapper transport,
 analytic germ-ideal transport, coverage, Jacobian compatibility, normal
 crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 A2 product-reduction step product-difference wrapper
+
+Reproduction:
+`reproduction-a2-product-reduction-step-product-difference-wrapper.md`.
+Statement card:
+`statement-card-a2-product-reduction-step-product-difference-wrapper.md`.
+Review:
+`review-a2-product-reduction-step-product-difference-wrapper.md`.
+
+Lean now connects the p. 13 coordinate package to the one-step product and
+product-difference block identities:
+
+```text
+productReductionStepCoordinate_triangularBlockProduct
+productReductionStepCoordinate_productDifference
+```
+
+The theorem consumes a prior triangular product hypothesis
+`[I 0; F3old I] T = [C1 0; 0 D] [A1 A2; A3 A4]`, sets
+`y = x.toChart`, and proves
+`[I 0; y.F3 I] T [I y.F2; 0 I] = [y.Ctop 0; 0 y.D*y.C]`.
+Subtracting `[I 0; 0 0]` gives the signed p. 13 block
+`[y.Ctop-I, -y.F2; -y.F3, y.D*y.C - y.F3*y.F2]`.
+
+Boundary: finite block algebra only.  No inverse of `D` is used.  The
+lower-right correction is `F3*F2`.  The suffix-state adapter from
+`ChartLocalSuffixState.BlockDiagonal` and the coordinate-ideal naming bridge
+remain separate later wrappers.

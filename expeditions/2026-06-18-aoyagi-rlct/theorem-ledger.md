@@ -7460,6 +7460,23 @@ openness, block-difference wrapper, regular-suspension construction,
 analytic germ transport, coverage, Jacobian compatibility, normal crossings,
 pole order, or RLCT extraction.
 
+Latest A2 product-reduction step product-difference wrapper:
+`ProductReduction.lean` now proves
+`productReductionStepCoordinate_triangularBlockProduct` and
+`productReductionStepCoordinate_productDifference`.  The first theorem turns
+the prior triangular product hypothesis
+`[I 0; F3old I] T = [C1 0; 0 D] [A1 A2; A3 A4]` into the next diagonal
+product using `x.toChart`; the second applies
+`triangularBlockProductDifference_fromBlocks_indexed` to get the signed block
+with lower-right correction `D*C - F3*F2`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-reduction-step-product-difference-wrapper.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-reduction-step-product-difference-wrapper.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-reduction-step-product-difference-wrapper.md`.
+Nonclaims: no suffix-state adapter, no analytic coordinate-chart construction,
+no ideal transport, no normal crossings, pole order, or RLCT extraction.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and

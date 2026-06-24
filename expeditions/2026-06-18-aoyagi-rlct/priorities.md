@@ -3109,11 +3109,18 @@ The current A2 product-reduction triangular coordinate chart slice is
 Lean now packages the one-step p. 13 forward/inverse coordinate formulas and
 determinant-domain preservation in `ProductReduction.lean`, retaining passive
 `D`, `A1`, and `A3` and never inverting `D`.  Next A2 source-moving target:
-wrap these coordinates around the existing one-step block diagonalisation and
-product-difference block identity, with lower-right correction `F3*F2`, not
-`F2*F3`.  Keep this as elementary block algebra; do not turn it into analytic
-coverage, regular-suspension construction, normal crossings, pole order, or
-RLCT.
+instantiate these step wrappers from `ChartLocalSuffixState.BlockDiagonal`, so
+the deterministic suffix-state fields visibly supply the prior triangular
+product hypothesis.  The lower-right correction remains `F3*F2`, not `F2*F3`.
+Keep this as elementary block algebra; do not turn it into analytic coverage,
+regular-suspension construction, normal crossings, pole order, or RLCT.
+
+Latest A2 wrapper landed in `ProductReduction.lean`:
+`productReductionStepCoordinate_triangularBlockProduct` and
+`productReductionStepCoordinate_productDifference` consume a prior triangular
+product hypothesis and produce the next diagonal product plus the signed p. 13
+product-difference block `D*C - F3*F2`.  The suffix-state adapter and the
+coordinate-ideal naming bridge remain next targets.
 
 Next A4 finite-atlas target from xhigh scouting: if returning to Case 2 chart
 family plumbing, define fixed raw-pivot finite selected-entry algebra

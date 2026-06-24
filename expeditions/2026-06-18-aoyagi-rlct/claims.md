@@ -4570,6 +4570,23 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-product-reduction-triangular-coordinate-chart.md`.
 
+Latest A2 product-reduction step product-difference wrapper:
+`ProductReduction.lean` now proves
+`productReductionStepCoordinate_triangularBlockProduct` and
+`productReductionStepCoordinate_productDifference`.  These theorems consume a
+prior triangular product hypothesis
+`[I 0; F3old I] T = [C1 0; 0 D] [A1 A2; A3 A4]`, use `x.toChart`, and prove
+the next diagonal product plus the signed p. 13 product-difference block
+with lower-right correction `D*C - F3*F2`.  No inverse of `D` is used.  This
+is finite block algebra only, not a suffix-state adapter, analytic chart,
+ideal-transport theorem, normal-crossing statement, pole-order result, or RLCT
+extraction.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-reduction-step-product-difference-wrapper.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-reduction-step-product-difference-wrapper.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-reduction-step-product-difference-wrapper.md`.
+
 Latest A4 Case 2 transition-generated Q/P package:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.

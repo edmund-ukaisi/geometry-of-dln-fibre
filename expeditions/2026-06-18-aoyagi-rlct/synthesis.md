@@ -8588,6 +8588,27 @@ Next wrapper target: connect these structure-level coordinates to
 cleanup, without claiming analytic coverage, Jacobian compatibility, normal
 crossings, pole order, or RLCT.
 
+Latest A2 product-reduction step product-difference wrapper:
+`ProductReduction.lean` now proves
+`productReductionStepCoordinate_triangularBlockProduct` and
+`productReductionStepCoordinate_productDifference`.  Given raw coordinates on
+the determinant chart and a prior triangular product hypothesis
+`[I 0; F3old I] T = [C1 0; 0 D] [A1 A2; A3 A4]`, these theorems use
+`x.toChart` to prove the next diagonal product and then the signed p. 13
+product-difference block
+`[Ctop-I, -F2; -F3, D*C - F3*F2]`.  This connects the coordinate bijection to
+the existing block identities while keeping the result as finite algebra: no
+inverse of `D`, no analytic chart/coverage/ideal-transport claim, no normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-reduction-step-product-difference-wrapper.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-reduction-step-product-difference-wrapper.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-reduction-step-product-difference-wrapper.md`.
+Next A2 target: instantiate the prior triangular product hypothesis from
+`ChartLocalSuffixState.BlockDiagonal`, then add the coordinate-ideal naming
+bridge in the later ideal/coordinate layer.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

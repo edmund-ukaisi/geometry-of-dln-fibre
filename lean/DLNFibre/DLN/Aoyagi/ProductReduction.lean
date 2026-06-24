@@ -679,6 +679,96 @@ theorem productReductionStepCoordinate_right_inverse
           sub_eq_add_neg] using hneg
       exact neg_neg F2
 
+/-- The p. 13 one-step coordinate change turns a prior triangular product
+identity into the next block-diagonal product identity.
+
+The hypothesis `hT` records the already-accumulated lower triangular
+multiplier.  The new variables are `x.toChart`, and the lower-right block is
+`D * C`, with no inverse of `D`. -/
+theorem productReductionStepCoordinate_triangularBlockProduct
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [DecidableEq π] [Fintype μ] [DecidableEq μ] [Fintype ν]
+    [DecidableEq ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hx : x.detChart)
+    (T : Matrix (ρ ⊕ π) (ρ ⊕ ν) K)
+    (hT :
+      fromBlocks (1 : Matrix ρ ρ K) 0 x.F3 (1 : Matrix π π K) * T =
+        fromBlocks x.C1 0 0 x.D * fromBlocks x.A1 x.A2 x.A3 x.A4) :
+    let y : ProductReductionStepChartCoordinates ρ π μ ν K := x.toChart
+    fromBlocks (1 : Matrix ρ ρ K) 0 y.F3 (1 : Matrix π π K) * T *
+        fromBlocks (1 : Matrix ρ ρ K) y.F2 0 (1 : Matrix ν ν K) =
+      fromBlocks y.Ctop 0 0 (y.D * y.C) := by
+  cases x with
+  | mk C1 D F3old A1 A2 A3 A4 =>
+      let X : Matrix π ρ K := D * A3 * (C1 * A1)⁻¹
+      have hlower :
+          fromBlocks (1 : Matrix ρ ρ K) 0 (F3old - X)
+              (1 : Matrix π π K) =
+            fromBlocks (1 : Matrix ρ ρ K) 0 (-X) (1 : Matrix π π K) *
+              fromBlocks (1 : Matrix ρ ρ K) 0 F3old (1 : Matrix π π K) := by
+        rw [lowerUnitriangular_mul_fromBlocks_one_zero_indexed]
+        simp [X, sub_eq_add_neg, add_comm]
+      have hstep :=
+        productReduction_chartLocalInductionStep_fromBlocks_indexed
+          (C1 := C1) (D := D) (A1 := A1) (A2 := A2) (A3 := A3) (A4 := A4)
+          hx.1 hx.2
+      dsimp [ProductReductionStepRawCoordinates.toChart]
+      calc
+        fromBlocks (1 : Matrix ρ ρ K) 0 (F3old - X) (1 : Matrix π π K) * T *
+            fromBlocks (1 : Matrix ρ ρ K) (-(A1⁻¹ * A2)) 0 (1 : Matrix ν ν K)
+            =
+          (fromBlocks (1 : Matrix ρ ρ K) 0 (-X) (1 : Matrix π π K) *
+              fromBlocks (1 : Matrix ρ ρ K) 0 F3old (1 : Matrix π π K)) * T *
+            fromBlocks (1 : Matrix ρ ρ K) (-(A1⁻¹ * A2)) 0 (1 : Matrix ν ν K) := by
+            rw [hlower]
+        _ =
+          fromBlocks (1 : Matrix ρ ρ K) 0 (-X) (1 : Matrix π π K) *
+              (fromBlocks (1 : Matrix ρ ρ K) 0 F3old (1 : Matrix π π K) * T) *
+            fromBlocks (1 : Matrix ρ ρ K) (-(A1⁻¹ * A2)) 0 (1 : Matrix ν ν K) := by
+            simp [Matrix.mul_assoc]
+        _ =
+          fromBlocks (1 : Matrix ρ ρ K) 0 (-X) (1 : Matrix π π K) *
+              (fromBlocks C1 0 0 D * fromBlocks A1 A2 A3 A4) *
+            fromBlocks (1 : Matrix ρ ρ K) (-(A1⁻¹ * A2)) 0 (1 : Matrix ν ν K) := by
+            rw [hT]
+        _ = fromBlocks (C1 * A1) 0 0 (D * (A4 - A3 * A1⁻¹ * A2)) := by
+            simpa [X] using hstep
+
+/-- The p. 13 one-step coordinate change gives the displayed signed
+product-difference block.
+
+The lower-right correction is `F3 * F2`, matching the block dimensions and the
+source calculation. -/
+theorem productReductionStepCoordinate_productDifference
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [DecidableEq π] [Fintype μ] [DecidableEq μ] [Fintype ν]
+    [DecidableEq ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hx : x.detChart)
+    (T : Matrix (ρ ⊕ π) (ρ ⊕ ν) K)
+    (hT :
+      fromBlocks (1 : Matrix ρ ρ K) 0 x.F3 (1 : Matrix π π K) * T =
+        fromBlocks x.C1 0 0 x.D * fromBlocks x.A1 x.A2 x.A3 x.A4) :
+    let y : ProductReductionStepChartCoordinates ρ π μ ν K := x.toChart
+    fromBlocks (1 : Matrix ρ ρ K) 0 y.F3 (1 : Matrix π π K) *
+        (T - fromBlocks (1 : Matrix ρ ρ K) 0
+          (0 : Matrix π ρ K) (0 : Matrix π ν K)) *
+        fromBlocks (1 : Matrix ρ ρ K) y.F2 0 (1 : Matrix ν ν K) =
+      fromBlocks (y.Ctop - 1) (-y.F2) (-y.F3) (y.D * y.C - y.F3 * y.F2) := by
+  let y : ProductReductionStepChartCoordinates ρ π μ ν K := x.toChart
+  have htri :
+      fromBlocks (1 : Matrix ρ ρ K) 0 y.F3 (1 : Matrix π π K) * T *
+          fromBlocks (1 : Matrix ρ ρ K) y.F2 0 (1 : Matrix ν ν K) =
+        fromBlocks y.Ctop 0 0 (y.D * y.C) := by
+    simpa [y] using
+      productReductionStepCoordinate_triangularBlockProduct
+        (x := x) hx T hT
+  simpa [y] using
+    triangularBlockProductDifference_fromBlocks_indexed
+      (F2 := y.F2) (F3 := y.F3) (Ctop := y.Ctop) (D := y.D * y.C)
+      (T := T) htri
+
 /-- One suffix step for chart-local product reduction with a supplied transformed edge. -/
 theorem productReduction_chartLocal_suffixStep_fromBlocks_indexed
     {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π] [DecidableEq π]
