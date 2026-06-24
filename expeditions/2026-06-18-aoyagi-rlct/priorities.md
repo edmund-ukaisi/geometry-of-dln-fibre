@@ -459,7 +459,7 @@ Xhigh review passed in
 after a wording repair from source/target residual labels to row/column
 left/right endpoint residual labels.
 
-A2 product-difference coordinate source data is in progress:
+A2 product-difference coordinate source data has now landed:
 `threads/03-block-product-reduction/reproduction-a2-product-difference-coordinate-source-data.md`.
 Lean scalarizes the cleaned p. 13 ideal-level generator family
 `C1-Er`, `F2`, `F3`, and `prod_s C^(s)` as
@@ -471,6 +471,15 @@ regular-suspension certificate, normal crossings, pole order, or RLCT.
 Xhigh review passed after repairing the reproduction's source anchor to
 separate the literal signed/corrected p. 13 display from the cleaned
 entry-ideal family.
+
+The literal product-difference coordinate ideal bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-literal-product-difference-coordinate-ideal-bridge.md`.
+Lean proves
+`AoyagiProductDifferenceCoordinateIndex.matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_entryIdeal`,
+so the literal signed/corrected p. 13 block directly generates the combined
+product-difference coordinate ideal.  This closes the naming bridge; the next
+A2 source-moving work is the regular-suspension chart argument itself, not
+another finite ideal regrouping wrapper.
 
 A2 regular-suspension normal-crossing construction is not Lean-ready:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`.
@@ -3119,8 +3128,8 @@ Latest A2 wrapper landed in `ProductReduction.lean`:
 `productReductionStepCoordinate_triangularBlockProduct` and
 `productReductionStepCoordinate_productDifference` consume a prior triangular
 product hypothesis and produce the next diagonal product plus the signed p. 13
-product-difference block `D*C - F3*F2`.  The suffix-state adapter and the
-coordinate-ideal naming bridge remain next targets.
+product-difference block `D*C - F3*F2`.  The suffix-state adapter and literal
+coordinate-ideal naming bridge have now landed separately.
 
 Latest A2 suffix-state adapter landed in `ProductReduction.lean`:
 `ChartLocalSuffixState.stepRawCoordinates*` now instantiates the prior product
@@ -3135,8 +3144,14 @@ specialize the adapter to the actual recursive
 `S = suffixState E j p.succ hpj`, choosing `F3prev` via
 `suffixState_L_eq_lowerUnitriangular`.  The theorem boundary keeps
 `S.BlockDiagonal P hpj` and the transformed-edge determinant chart as local
-inputs.  Next A2 target: add the coordinate-ideal naming bridge in the later
-ideal/coordinate layer.
+inputs.
+
+Latest A2 literal coordinate-ideal bridge landed in
+`RegularSuspensionCoordinates.lean`:
+`AoyagiProductDifferenceCoordinateIndex.matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_entryIdeal`
+connects the literal signed/corrected p. 13 block to the cleaned
+product-difference scalar-coordinate ideal.  Next A2 target: probe the actual
+regular-suspension chart/source-production argument.
 
 Next A4 finite-atlas target from xhigh scouting: if returning to Case 2 chart
 family plumbing, define fixed raw-pivot finite selected-entry algebra

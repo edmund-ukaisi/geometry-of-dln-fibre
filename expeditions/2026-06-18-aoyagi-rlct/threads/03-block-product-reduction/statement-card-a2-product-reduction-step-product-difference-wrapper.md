@@ -43,10 +43,10 @@ No inverse of `D` is introduced.  The lower-right correction is `F3*F2`.
 
 ## Deferred
 
-The suffix-state adapter that instantiates the prior product hypothesis from
-`ChartLocalSuffixState.BlockDiagonal` remains a later wrapper.  The coordinate
-ideal bridge to `AoyagiProductDifferenceCoordinateIndex.entryIdeal` is also a
-separate ideal-layer naming slice.
+The suffix-state adapter and actual recursive `suffixState` specialization
+are recorded separately.  The literal signed-block bridge to
+`AoyagiProductDifferenceCoordinateIndex.entryIdeal` is recorded in
+`statement-card-a2-literal-product-difference-coordinate-ideal-bridge.md`.
 
 ## Nonclaims
 

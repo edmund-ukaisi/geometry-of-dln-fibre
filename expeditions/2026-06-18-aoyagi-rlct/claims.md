@@ -5719,6 +5719,7 @@ adds the endpoint product-entry count `H 1 * H(N+1)` to
 Lean names:
 `AoyagiProductDifferenceCoordinateIndex`,
 `AoyagiProductDifferenceCoordinateIndex.entryIdeal_eq_fourMatrixEntryIdeal`,
+`AoyagiProductDifferenceCoordinateIndex.matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_entryIdeal`,
 `AoyagiProductDifferenceCoordinateIndex.value_centered_continuousAt`,
 `AoyagiProductDifferenceCoordinateIndex.card_eq_endpointProductEntryCount`,
 `paperEndpointProductDifferenceCoordinateIndex_card_eq_endpointProductEntryCount`,
@@ -5733,6 +5734,22 @@ Nonclaims: no exact-rank or source-rank openness, no analytic coordinate
 chart, no regular-suspension chart construction, no analytic germ-ideal
 transport, no coverage, no transition regularity, no Jacobian compatibility,
 no normal crossings, no pole-order theorem, and no RLCT theorem.
+
+Latest A2 literal product-difference coordinate ideal bridge:
+Lean now proves
+`AoyagiProductDifferenceCoordinateIndex.matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_entryIdeal`.
+It directly identifies the matrix-entry ideal of the literal signed/corrected
+p. 13 block `fromBlocks X (-F2) (-F3) (D - F3*F2)` with
+`AoyagiProductDifferenceCoordinateIndex.entryIdeal X F2 F3 D`.  This composes
+the existing signed-block cleanup with
+`AoyagiProductDifferenceCoordinateIndex.entryIdeal_eq_fourMatrixEntryIdeal`.
+The only finiteness input is the summation index in `F3*F2`, and the
+correction is `F3*F2`, not `F2*F3`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-literal-product-difference-coordinate-ideal-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-literal-product-difference-coordinate-ideal-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-literal-product-difference-coordinate-ideal-bridge.md`.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

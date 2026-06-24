@@ -2100,6 +2100,7 @@ Lean now scalarizes the cleaned p. 13 product-difference ideal-level family in
 ```text
 AoyagiProductDifferenceCoordinateIndex
 AoyagiProductDifferenceCoordinateIndex.entryIdeal_eq_fourMatrixEntryIdeal
+AoyagiProductDifferenceCoordinateIndex.matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_entryIdeal
 AoyagiProductDifferenceCoordinateIndex.value_centered_continuousAt
 AoyagiProductDifferenceCoordinateIndex.card_eq_endpointProductEntryCount
 paperEndpointProductDifferenceCoordinateIndex_card_eq_endpointProductEntryCount
@@ -2127,6 +2128,35 @@ normal crossings, pole order, or RLCT is proved.
 Xhigh review by `Descartes the 3rd` passed after repairing the reproduction's
 source anchor to distinguish the literal signed/corrected p. 13 display from
 the cleaned four-family entry-ideal generator package.
+
+## 2026-06-24 A2 literal product-difference coordinate ideal bridge
+
+Reproduction:
+`reproduction-a2-literal-product-difference-coordinate-ideal-bridge.md`.
+Statement card:
+`statement-card-a2-literal-product-difference-coordinate-ideal-bridge.md`.
+Review:
+`review-a2-literal-product-difference-coordinate-ideal-bridge.md`.
+
+Lean now names the direct ideal bridge from the literal signed/corrected p. 13
+block to the combined product-difference coordinate ideal:
+
+```text
+AoyagiProductDifferenceCoordinateIndex.matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_entryIdeal
+```
+
+For arbitrary `X`, `F2`, `F3`, and `D`, it proves
+
+```text
+matrixEntryIdeal (fromBlocks X (-F2) (-F3) (D - F3 * F2))
+  =
+AoyagiProductDifferenceCoordinateIndex.entryIdeal X F2 F3 D.
+```
+
+The theorem is finite scalar ideal algebra only.  It uses the previous
+signed-block cleanup and
+`AoyagiProductDifferenceCoordinateIndex.entryIdeal_eq_fourMatrixEntryIdeal`;
+the correction is `F3*F2`, not `F2*F3`.
 
 ## 2026-06-24 A2 product-reduction triangular coordinate chart
 
@@ -2191,8 +2221,9 @@ Subtracting `[I 0; 0 0]` gives the signed p. 13 block
 
 Boundary: finite block algebra only.  No inverse of `D` is used.  The
 lower-right correction is `F3*F2`.  The suffix-state adapter from
-`ChartLocalSuffixState.BlockDiagonal` and the coordinate-ideal naming bridge
-remain separate later wrappers.
+`ChartLocalSuffixState.BlockDiagonal` is recorded separately, and the
+coordinate-ideal naming bridge is recorded in the literal product-difference
+coordinate ideal bridge card.
 
 ## 2026-06-24 A2 suffix-state step coordinate adapter
 

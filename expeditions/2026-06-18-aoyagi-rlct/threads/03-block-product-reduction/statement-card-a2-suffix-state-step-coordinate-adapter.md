@@ -49,7 +49,8 @@ No inverse of `S.D` is used.
 
 The actual recursive `suffixState` specialization is recorded separately in
 `statement-card-a2-suffix-state-step-coordinate-specialization.md`.  The
-coordinate-ideal naming bridge remains in the ideal/coordinate layer.
+literal signed-block coordinate-ideal bridge is recorded in
+`statement-card-a2-literal-product-difference-coordinate-ideal-bridge.md`.
 
 ## Nonclaims
 

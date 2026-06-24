@@ -56,7 +56,8 @@ This card does not derive `S.BlockDiagonal P hpj` from the full recursive
 chart hypotheses.  That remains the role of `suffixState_blockDiagonal` and
 outer callers.
 
-The coordinate-ideal naming bridge remains in the ideal/coordinate layer.
+The literal signed-block coordinate-ideal bridge is recorded in
+`statement-card-a2-literal-product-difference-coordinate-ideal-bridge.md`.
 
 ## Nonclaims
 

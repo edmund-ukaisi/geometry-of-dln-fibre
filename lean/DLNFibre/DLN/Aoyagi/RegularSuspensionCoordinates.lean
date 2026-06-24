@@ -372,6 +372,22 @@ theorem entryIdeal_eq_fourMatrixEntryIdeal [CommRing R]
       rintro _ ⟨c, rfl⟩
       exact Ideal.subset_span ⟨Sum.inr c, rfl⟩
 
+/-- The literal signed p. 13 product-difference block generates the scalar
+product-difference coordinate ideal. -/
+theorem matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_entryIdeal [CommRing R]
+    [Fintype ι]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R) :
+    matrixEntryIdeal (fromBlocks X (-F2) (-F3) (D - F3 * F2)) =
+      entryIdeal X F2 F3 D := by
+  calc
+    matrixEntryIdeal (fromBlocks X (-F2) (-F3) (D - F3 * F2)) =
+        fourMatrixEntryIdeal X F2 F3 D :=
+      matrixEntryIdeal_fromBlocks_neg_neg_sub_mul_eq_fourMatrixEntryIdeal
+        X F2 F3 D
+    _ = entryIdeal X F2 F3 D :=
+      (entryIdeal_eq_fourMatrixEntryIdeal X F2 F3 D).symm
+
 /-- Centered continuity of the regular and residual blocks combines into
 centered continuity for every product-difference scalar coordinate. -/
 theorem value_centered_continuousAt
