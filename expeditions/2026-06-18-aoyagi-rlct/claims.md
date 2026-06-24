@@ -1322,6 +1322,17 @@ No such claim is formalisation-ready until both fields are filled.
   `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq_sourceSelectedChartMapOfMem`,
   connecting each all-pivot certificate chart to the existing
   source-selected Case 2 chart map.
+  Added the source-selected monomial/principalization adapters
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.centerIdeal_sourceSelectedChartMap_eq_span_singleton`,
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartPoint_eq_sourceSelectedCenterSq`,
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartPoint_eq_sourceSelectedUnitFactor`,
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartPoint_eq_sourceSelectedDet`,
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartPoint_sourceSelected`,
+  and
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartPoint_sourceSelected`,
+  exposing the finite center principalization, loss/Jacobian monomial fields,
+  normalized loss unit, and formal pivot-first determinant in those
+  source-selected chart-map names.
   Added the displayed Case 2 recurrence-gap row-weight bridge
   `monomialTail_eq_one_of_forall_eq_one`,
   `monomialRec_eq_of_step_eq_one_on_Ico`,
@@ -4021,6 +4032,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-extraction-handoff.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.
+
+Latest A4/A0 Case 2 all-pivot source-selected monomial/principalization adapter:
+`SelectedEntryNormalCrossing.lean` now states the all-pivot finite
+selected-entry certificate's center-ideal principalization, loss source-point
+equality, loss-unit equality, formal Jacobian/prior determinant equality, and
+loss/Jacobian monomial identities in the source-selected chart-map names for
+the pivot enumerated by each chart.  This is finite selected-entry algebra in
+source-selected names only; it is not arbitrary-pivot source production,
+analytic chart coverage, transition regularity, analytic Jacobian/volume
+control, global normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-all-pivot-source-selected-monomial-principalization.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
 
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves

@@ -6413,6 +6413,29 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.
 
+Latest A4/A0 Case 2 all-pivot source-selected monomial/principalization adapter:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.centerIdeal_sourceSelectedChartMap_eq_span_singleton`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartPoint_eq_sourceSelectedCenterSq`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartPoint_eq_sourceSelectedUnitFactor`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartPoint_eq_sourceSelectedDet`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartPoint_sourceSelected`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartPoint_sourceSelected`.
+These transport the generic selected-entry center-ideal principalization,
+finite loss monomial identity, normalized center-square unit, formal
+pivot-first determinant, and Jacobian/prior monomial identity to the
+source-selected Case 2 chart map for each chart-selected residual-block pivot.
+This is finite source-selected selected-entry algebra only, not arbitrary-pivot
+source production, analytic chart coverage, transition regularity, analytic
+Jacobian/volume control, global normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-all-pivot-source-selected-monomial-principalization.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns

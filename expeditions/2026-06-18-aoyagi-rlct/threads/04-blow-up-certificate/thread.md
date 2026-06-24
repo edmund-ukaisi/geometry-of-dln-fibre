@@ -5508,3 +5508,38 @@ It does not generalize to arbitrary pivots and does not prove source-produced
 recurrence weights, successor matrices, terminal products, transition
 invariance, chart coverage, Jacobian arithmetic, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-24 Lean Case 2 all-pivot source-selected monomial/principalization adapter
+
+Reproduction:
+`reproduction-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+Statement card:
+`statement-card-a4-case2-all-pivot-source-selected-monomial-principalization.md`.
+Review artifact:
+`review-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+
+Lean now exposes the Case 2 residual-block all-pivot selected-entry finite
+certificate's local monomial and principalization facts in the source-selected
+chart-map names for the pivot enumerated by each chart:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.centerIdeal_sourceSelectedChartMap_eq_span_singleton
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartPoint_eq_sourceSelectedCenterSq
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartPoint_eq_sourceSelectedUnitFactor
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartPoint_eq_sourceSelectedDet
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartPoint_sourceSelected
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartPoint_sourceSelected
+```
+
+For chart `c`, the finite chart enumeration supplies a pivot
+`p_c in case2ResidualBlockPivotEntries n S J`.  The new lemmas transport the
+generic selected-entry center-ideal principalization, finite loss monomial
+identity, normalized center-square unit, formal pivot-first determinant, and
+Jacobian/prior monomial identity through the existing equality with
+`case2SourceSelectedChartMapOfMem p_c.2 u residual`.
+
+This is finite selected-entry algebra in source-selected names.  It does not
+prove arbitrary-pivot source production, that Aoyagi displays every non-top-left
+chart, successor matrix or suffix production, recurrence/exponent post-data,
+analytic chart coverage, transition regularity, analytic Jacobian/volume
+control, global normal crossings, pole order, or RLCT extraction.

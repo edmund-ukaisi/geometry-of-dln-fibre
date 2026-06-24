@@ -6665,6 +6665,38 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.
 
+Latest A4/A0 Case 2 all-pivot source-selected monomial/principalization adapter:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.centerIdeal_sourceSelectedChartMap_eq_span_singleton`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartPoint_eq_sourceSelectedCenterSq`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartPoint_eq_sourceSelectedUnitFactor`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartPoint_eq_sourceSelectedDet`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartPoint_sourceSelected`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartPoint_sourceSelected`.
+For chart `c`, these expose the all-pivot finite certificate's finite
+principalization, loss monomial field, normalized square-sum unit, formal
+pivot-first determinant, and Jacobian/prior monomial field in the
+source-selected Case 2 chart-map names for the pivot enumerated by `c`.
+This is source-selected finite selected-entry algebra only.  It is not
+arbitrary-pivot source production, analytic chart coverage, transition
+regularity, analytic Jacobian/volume control, a total DLN loss certificate,
+global A0 normal crossings, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-all-pivot-source-selected-monomial-principalization.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+
+Next A4 source-facing candidate from xhigh scout `Pasteur`: use the chart
+index `c` of the all-pivot certificate to instantiate
+`Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`
+and project `sourceSelectedQP_sourceChartMap` for the chart-selected pivot.
+This is still only a supplied-boundary/QP adapter; chart/transition regularity
+remain supplied and no non-top-left source-displayed formula or chart coverage
+is proved.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

@@ -2312,6 +2312,30 @@ Theorem 2 order data, or RLCT extraction.  The next source-moving A4/A0 work
 should still target actual certificate production or monomial/unit data, not
 another consumer of a supplied extraction hypothesis.
 
+The current A4/A0 Case 2 all-pivot source-selected monomial/principalization
+adapter is
+`threads/04-blow-up-certificate/reproduction-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
+Lean now states the all-pivot finite certificate's center-ideal
+principalization, loss source-point equality, loss-unit equality, formal
+Jacobian/prior determinant equality, and loss/Jacobian monomial identities in
+the source-selected chart-map names for the pivot enumerated by each chart.
+This removes a local presentation gap between the finite chart-family
+certificate and the source-selected Case 2 chart algebra.  It is not
+arbitrary-pivot source production, analytic chart coverage, transition
+regularity, analytic Jacobian/volume control, global A0 normal crossings, pole
+order, or RLCT.  The next source-moving A4/A0 work should still target actual
+chart/certificate production or the supplied A0 monomial/unit extension for
+the total DLN loss, not another consumer of supplied extraction.
+
+Xhigh scout `Pasteur` identified the next narrow A4 source-facing candidate:
+from chart index `c`, instantiate
+`Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`
+with the chart-selected pivot and project
+`sourceSelectedQP_sourceChartMap`.  This would remove the remaining need for
+callers to resupply the pivot membership already chosen by the all-pivot
+certificate.  Keep chart/transition regularity as supplied predicates and do
+not claim arbitrary-pivot source-displayed formulas or chart coverage.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate
