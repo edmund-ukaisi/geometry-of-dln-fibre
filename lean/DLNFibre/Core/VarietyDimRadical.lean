@@ -15,14 +15,24 @@ the **reduced / closed-set** structure: `ringKrullDim (R ⧸ I)` depends on `I` 
 radical (both quotients have the same prime spectrum). So the route-(c) dimension build works
 through `vanishingIdeal` (radical by construction) and never needs `fibreGenIdeal` to be radical.
 
+A companion `varietyDim` invariance, the foundation of the route-(c) chart trivialization
+(thread 31 rung 2): `varietyDim` transports across a **coordinate-ring `AlgEquiv`**
+(`varietyDim_eq_of_coordRingAlgEquiv`) — even between varieties in *different* ambient affine
+spaces. A regular isomorphism of affine varieties induces such an `AlgEquiv`, so this is the bridge
+that carries the pivot-chart trivialization `mult⁻¹(U) ∩ Σ^r ≅ U × F` to a `varietyDim` equality
+without ever realizing both sides in one ambient space.
+
 ## Main results
 - `ringKrullDim_quotient_radical` — `ringKrullDim (R ⧸ I) = ringKrullDim (R ⧸ I.radical)`.
 - `ringKrullDim_quotient_eq_of_radical_eq` — same Krull dim for two ideals with equal radical.
+- `varietyDim_eq_of_coordRingAlgEquiv` — `varietyDim` transport across a coordinate-ring `AlgEquiv`.
 -/
 
 namespace DLNFibre.Core
 
-open PrimeSpectrum
+open PrimeSpectrum MvPolynomial
+
+universe u
 
 /-- **Radical-insensitivity of the quotient Krull dimension.** `ringKrullDim (R ⧸ I)` depends on `I`
 only through its radical: `Spec (R ⧸ I) = zeroLocus I = zeroLocus I.radical = Spec (R ⧸ I.radical)`
@@ -38,6 +48,19 @@ theorem ringKrullDim_quotient_eq_of_radical_eq {R : Type*} [CommRing R] {I J : I
     (h : I.radical = J.radical) :
     ringKrullDim (R ⧸ I) = ringKrullDim (R ⧸ J) := by
   rw [ringKrullDim_quotient_radical I, ringKrullDim_quotient_radical J, h]
+
+/-- **`varietyDim` transports across a coordinate-ring `AlgEquiv`.** If the coordinate rings
+`MvPolynomial σ k ⧸ vanishingIdeal Z` and `MvPolynomial τ k ⧸ vanishingIdeal W` are `k`-algebra
+isomorphic (the algebraic content of a regular isomorphism `Z ≅ W` of affine varieties, possibly in
+different ambient spaces `σ`, `τ`), then `varietyDim Z = varietyDim W`. The Krull dimension is a
+ring-isomorphism invariant (`ringKrullDim_eq_of_ringEquiv`); the `unbotD 0` wrapper is preserved. -/
+theorem varietyDim_eq_of_coordRingAlgEquiv {k : Type u} [Field k] {σ τ : Type u}
+    {Z : Set (σ → k)} {W : Set (τ → k)}
+    (e : (MvPolynomial σ k ⧸ vanishingIdeal k Z) ≃ₐ[k]
+          (MvPolynomial τ k ⧸ vanishingIdeal k W)) :
+    varietyDim Z = varietyDim W := by
+  unfold varietyDim
+  rw [ringKrullDim_eq_of_ringEquiv e.toRingEquiv]
 
 end DLNFibre.Core
 
