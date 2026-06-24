@@ -2793,3 +2793,16 @@ chart-final Theorem 2 socket after selected-width provenance, the chart-level
 extraction hypothesis, and finite Theorem 2 exponent formula are supplied.
 It does not prove atlas existence, coverage, regularity, source production,
 finite formulas, pole order, termination, or RLCT.
+
+The A6/A2 source-range rank-width bridge has now landed:
+`threads/06-dln-translation/reproduction-definition3-source-range-rank-width-a6.md`.
+Lean proves that the rank of `paperTotalMap W B` is bounded by every layer
+dimension via reversed-chain through-subspaces, then packages
+`paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth` and
+`AoyagiDefinition3SourceData.exists_selectedReducedWidthCeilData_of_sourceRankStratum`.
+This removes the separate source-range rank-width hypothesis from the
+Definition 3 ceiling constructor when source-rank stratum membership and the
+explicit dimension convention `H(k+1)=finrank K (W k)` are supplied.  Next A6
+rank-provenance work can connect this to the final-boundary and Eq5 handoffs
+only where it removes a real repeated hypothesis; do not clone all wrappers by
+default.

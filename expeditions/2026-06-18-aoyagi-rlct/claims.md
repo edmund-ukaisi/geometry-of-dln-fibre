@@ -4655,3 +4655,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-final-socket.md`.
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
+
+Latest A6/A2 source-range rank-width bridge:
+`Definition3RankWidthBridge.lean` now proves
+`paperTotalMap_rank_le_layer_finrank`,
+`paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth`, and
+`AoyagiDefinition3SourceData.exists_selectedReducedWidthCeilData_of_sourceRankStratum`.
+It derives `forall s, 1<=s -> s<=N+1 -> r<=H s` from the total product rank
+field of `paperEndpointFixedBaseSourceRankStratum`, plus the explicit layer
+dimension convention `H(k+1)=finrank K (W k)`, then feeds this into the
+existing Definition 3 source-data ceiling constructor.  Selected cutpoints,
+Definition 3 source data, exact-rank openness, finite exponent formulas,
+normal crossings, pole order, and RLCT remain outside this theorem.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-range-rank-width-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-range-rank-width.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-range-rank-width-a6.md`.

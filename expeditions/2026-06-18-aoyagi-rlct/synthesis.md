@@ -7313,6 +7313,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
 
+A6/A2 rank-width provenance follow-through:
+`Definition3RankWidthBridge.lean` now proves
+`paperTotalMap_rank_le_layer_finrank`,
+`paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth`, and
+`AoyagiDefinition3SourceData.exists_selectedReducedWidthCeilData_of_sourceRankStratum`.
+The bridge uses the through-subspace construction for the reversed product
+chain to show that the product rank is bounded by every layer dimension, then
+rewrites through the explicit convention
+`H(k+1)=Module.finrank K (W k)`.  It removes the separate source-range
+rank-width input for the Definition 3 ceiling constructor when an A2
+source-rank stratum membership is available.  It does not construct selected
+cutpoints, Definition 3 source data, exact-rank openness, chart coverage,
+finite exponent formulas, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-range-rank-width-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-range-rank-width.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-range-rank-width-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -7048,6 +7048,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
 
+Latest A6/A2 source-range rank-width bridge:
+`Definition3RankWidthBridge.lean` proves
+`paperTotalMap_rank_le_layer_finrank`,
+`paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth`, and
+`AoyagiDefinition3SourceData.exists_selectedReducedWidthCeilData_of_sourceRankStratum`.
+It uses the through-subspace theorem for the reversed chain to bound the total
+product rank by each layer finrank, rewrites through the explicit convention
+`H(k+1)=finrank K (W k)`, and feeds the result into the existing Definition 3
+source-data ceiling constructor.  It proves no selected-cutpoint existence,
+Definition 3 source-data existence, exact-rank openness, finite exponent
+formula, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-range-rank-width-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-range-rank-width.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-range-rank-width-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
