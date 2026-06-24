@@ -6284,3 +6284,31 @@ This is finite terminal-row bookkeeping only.  It does not construct source
 data, terminal chart data, `Csucc`, suffixes, successor chart families,
 transition regularity, chart coverage, normal crossings, pole order,
 termination, RLCT, or a repair of the printed Case 2 vector mismatch.
+
+## 2026-06-24 Lean Case 2 constructed old-top `Cprime` terminal prefix
+
+Reproduction:
+`reproduction-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix.md`.
+Review:
+`review-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+
+Lean now reindexes the constructed old-top/free-`Cprime` terminal rows onto
+terminal-prefix rows under the stopped-prefix hypothesis:
+
+```text
+case2DisplayedSourceTerminalCprimePrefixCandidate_constructedWithOldTopFromCprime_eq_terminalStackPrefix
+case2DisplayedSourceTerminalProductPrefixCandidate_constructedWithOldTopFromCprime_eq_weight_mul_terminalStackPrefix_mul
+```
+
+The explicit prefix matrix is the terminal-prefix reindexing of
+`[Cold; case2DisplayedFreeCprimeTop ... Cprime]`.  The stopped terminal-prefix
+product candidate rewrites to the terminal-prefix weight times this explicit
+matrix, followed by the supplied suffix `F`.
+
+This is finite prefix-row/product bookkeeping only.  It requires `hstop`; it
+does not collapse the transported pivot row to an original source row, and it
+does not construct source data, terminal charts, suffixes, transition
+regularity, chart coverage, normal crossings, pole order, termination, or
+RLCT.

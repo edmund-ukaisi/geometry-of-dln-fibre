@@ -4544,3 +4544,18 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-rows.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+
+Latest A4 Case 2 constructed old-top `Cprime` terminal prefix:
+`BlowupArithmetic.lean` now reindexes the constructed terminal source-row
+matrix `[Cold; top(Cprime)]` to the stopped terminal-prefix row type under
+`hstop : not (J+2 <= prefixMinNat n (S+1))`, and rewrites the stopped
+terminal-prefix product candidate through that explicit prefix matrix.  This
+requires the stopped-prefix row equivalence and does not use actual-width
+collapse.  It proves no source production, terminal chart construction, suffix
+production, transition regularity, chart coverage, normal crossings, pole
+order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.

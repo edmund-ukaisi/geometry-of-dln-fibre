@@ -2709,3 +2709,10 @@ matrix as a `SuppliedTerminalCprimeBridge`, and rewrites the stopped terminal
 product candidate through it.  This is terminal-row bookkeeping only; do not
 read it as source production of `C'^(S+1)` or as the source-current
 `[Cold; Cprime]` block theorem.
+
+The stopped terminal-prefix consumer for the same constructed data has also
+landed in
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+It requires `hstop` and reindexes `[Cold; top(Cprime)]` to terminal-prefix
+rows, then rewrites the terminal-prefix product candidate.  It still does not
+use actual-width collapse or source-produce terminal data.

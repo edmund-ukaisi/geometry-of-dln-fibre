@@ -6948,6 +6948,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` terminal prefix:
+`BlowupArithmetic.lean` now proves
+`case2DisplayedSourceTerminalCprimePrefixCandidate_constructedWithOldTopFromCprime_eq_terminalStackPrefix`
+and
+`case2DisplayedSourceTerminalProductPrefixCandidate_constructedWithOldTopFromCprime_eq_weight_mul_terminalStackPrefix_mul`.
+These are finite consumers of the explicit constructed source-row terminal
+matrix `[Cold; top(Cprime)]` under the stopped-prefix row equivalence.  No
+actual-width original-row collapse, source production, terminal chart
+construction, suffix production, transition regularity, coverage, normal
+crossings, pole order, termination, or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

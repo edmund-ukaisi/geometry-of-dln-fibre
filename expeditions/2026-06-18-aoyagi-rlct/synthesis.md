@@ -7183,6 +7183,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` terminal prefix:
+`BlowupArithmetic.lean` now proves the stopped-prefix consumer for the
+constructed terminal rows:
+`case2DisplayedSourceTerminalCprimePrefixCandidate_constructedWithOldTopFromCprime_eq_terminalStackPrefix`
+and
+`case2DisplayedSourceTerminalProductPrefixCandidate_constructedWithOldTopFromCprime_eq_weight_mul_terminalStackPrefix_mul`.
+Under the stopped-prefix hypothesis, the explicit source-row terminal matrix
+`[Cold; top(Cprime)]` is reindexed onto terminal-prefix rows and consumed by
+the terminal-prefix product form.  This is finite row/product bookkeeping
+only; no actual-width collapse, source production, terminal chart, suffix,
+transition regularity, coverage, normal crossings, pole order, termination, or
+RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

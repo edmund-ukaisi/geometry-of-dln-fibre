@@ -17794,6 +17794,38 @@ theorem cprimePrefixCandidate_eq
 
 end SuppliedTerminalCprimeBridge
 
+set_option linter.style.longLine false in
+/-- The stopped terminal-prefix `C'` candidate for the constructed
+old-top/free-`C'` source following factor is the terminal-prefix reindexing of
+`[Cold; top(C')]`.
+
+This is finite reindexing bookkeeping only; it does not construct
+source-produced terminal data. -/
+theorem case2DisplayedSourceTerminalCprimePrefixCandidate_constructedWithOldTopFromCprime_eq_terminalStackPrefix
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedSourceTerminalCprimePrefixCandidate n hS hcont hstop residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime) =
+      ((verticalBlock Cold (case2DisplayedFreeCprimeTop n hS hcont Cprime)).submatrix
+        (case2SourceTerminalRowEquiv J).symm id).submatrix
+        (case2SourceTerminalRowEquivPrefixOfNotNext n hcont hstop).symm id := by
+  let bridge :=
+    SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime
+      n hS hcont residual Cold Cprime
+  simpa [bridge] using
+    SuppliedTerminalCprimeBridge.cprimePrefixCandidate_eq
+      (n := n) (S := S) (J := J) (hS := hS) (hcont := hcont)
+      (residual := residual)
+      (C := case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+        n hS hcont residual Cold Cprime)
+      bridge hstop
+
 /-- Terminal-prefix-row version of the stopped displayed Case 2 source terminal
 product candidate. -/
 def case2DisplayedSourceTerminalProductPrefixCandidate
@@ -17899,6 +17931,38 @@ theorem terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul
   rw [case2DisplayedSourceTerminalCprimePrefixCandidate, bridge.cprimeCandidate_eq]
 
 end SuppliedTerminalCprimeBridge
+
+set_option linter.style.longLine false in
+/-- The stopped terminal-prefix product candidate for the constructed
+old-top/free-`C'` source following factor rewrites to the explicit terminal
+prefix matrix `[Cold; top(C')]`.
+
+This is a finite product-form consumer.  It does not construct terminal charts,
+source-produced terminal data, normal crossings, pole order, or RLCT data. -/
+theorem case2DisplayedSourceTerminalProductPrefixCandidate_constructedWithOldTopFromCprime_eq_weight_mul_terminalStackPrefix_mul
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (n : ℕ → ℕ) {S : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (F : Matrix τ υ R) :
+    case2DisplayedSourceTerminalProductPrefixCandidate Wold n hS hcont hstop
+        b0 residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime) F =
+      (case2DisplayedSourceTerminalWeightPrefixCandidate Wold n hcont hstop b0 *
+        ((verticalBlock Cold (case2DisplayedFreeCprimeTop n hS hcont Cprime)).submatrix
+          (case2SourceTerminalRowEquiv J).symm id).submatrix
+          (case2SourceTerminalRowEquivPrefixOfNotNext n hcont hstop).symm id) * F :=
+  SuppliedTerminalCprimeBridge.terminalPrefixProduct_eq_weight_mul_CtermPrefix_mul
+    (SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime
+      n hS hcont residual Cold Cprime)
+    Wold hstop b0 F
 
 /-- Reindexing the stopped source-row product candidate onto the terminal
 prefix row range preserves its matrix-entry ideal. -/
