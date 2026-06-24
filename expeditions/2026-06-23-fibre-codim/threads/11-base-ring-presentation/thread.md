@@ -113,3 +113,98 @@ So the full iso is genuinely needed for `height J = C`. The Codex-validated lowe
 5. Regularity `A_loc/Iad ≅ Sd` ⟹ regular dim δ: `IsRegularLocalRing` (no global API) via
    `Localization.AtPrime` + `IsLocalization.AtPrime.ringKrullDim_eq_height` + `MvPolynomial.ringKrullDim`.
 Mathlib lemmas all confirmed present. `ker_aeval_eq_graphIdeal`'s `⊆`-induction is the genuine bulk.
+
+---
+
+## CLOSEOUT (thread 11) — 2026-06-24
+
+**Status: CLOSED.** The base-codimension content of G2-2 is landed (sorry-free, axiom-clean,
+aggregated, pushed). The localized graph-ideal elimination is split off to a **fresh tide** (handoff
+below) — it is ≈ all three banked seams combined and the most reindex-heavy, so it deserves clean
+context.
+
+### Landed (all in `lean/DLNFibre/Core/DeterminantalChartRing.lean`, on `origin/expedition/fibre-codimension`)
+| Seam | Headline theorem(s) | Commit |
+|---|---|---|
+| Bordered Schur minor | `det_fromBlocks_scalar_eq` (`BorderedId`; + `borderedId_of_det_ne_zero`, `borderedId_map`, `borderedId_of_map`); `schur_expr_eq_zero_of_rank_le` | `9e7ce92c` (aggregated) |
+| `(r+1)`-minor lift | `eval_det_submatrix_multPoly`, `det_submatrix_multPoly_mem_sigmaIdeal` | `ccaab34d` |
+| `height Iad = C` | `detPivotPoly`, `chartWitness` (+`mult_chartWitness`, `rank_chartWitness_le`, `chartWitness_mem`, `mult_chartWitness_pivot_submatrix`, `detPivot_chartWitness`), `detPivotPoly_notMem_sigmaIdeal`, `height_map_sigmaIdeal_away`, `height_map_sigmaIdeal_away_eq_cCodim` | `a6bd7c25` |
+| Elimination de-risk + Codex consult (docs) | — | `91ac8eaf` (HEAD) |
+
+Statement card: `threads/11-base-ring-presentation/statement-card.md` (sub-rung 1; status sorry-free,
+awaiting reviewer fidelity read). Codex artefacts: `codex/g2-2-{,encoding-,elimination-}{prompt,answer}.md`.
+
+---
+
+## HANDOFF → fresh elimination tide (G2-2 step ii): `Iad = J` + `A_loc/Iad ≅ Sd` (regular, dim δ)
+
+**Goal.** Expose, on the pivot chart, the facts `{Iad = J, A_loc/Iad regular of dim δ}` for the
+localized determinantal base — feeding the G2-3 total presentation / G2-4 height-additivity chain.
+Build on `DeterminantalChartRing` (Core only; never import `DLNFibre.DLN`). `δ = r(p+q−r)`, `C = (p−r)(q−r)`.
+
+**Objects (landed, ready to use).**
+- `A_eng := MvPolynomial (RepCoord (dStratum q p)) k` (`RepCoord (dStratum q p) = Σ _ : Fin 1, Fin p × Fin q`).
+- `detPivotPoly q p r hp hq : A_eng` — the pivot minor `detΔ` (top-left r×r det of `multPoly`).
+- `A_loc := Localization.Away (detPivotPoly …)`; `Iad := (sigmaIdeal (dStratum q p) r).map (algebraMap A_eng A_loc)`.
+- **`height Iad = C`** is LANDED: `height_map_sigmaIdeal_away_eq_cCodim` (= `cCodim`, which is `C`).
+- `det_submatrix_multPoly_mem_sigmaIdeal` — every `(r+1)`-minor of `multPoly` ∈ `sigmaIdeal` (the `J ⊆ Iad` seed).
+- `sigmaIdeal (dStratum q p) r` and `Iad` are PRIME (`isPrime_vanishingIdeal_productRankLocusLE_stratum`, `[IsAlgClosed k]`; for `Iad`, localize a prime not meeting the monoid).
+
+**Step 1 — the reusable graph-ideal kernel lemma `ker_aeval_eq_graphIdeal` (the genuinely-new core).**
+`ker (aeval c : MvPolynomial ι R →ₐ[R] R) = Ideal.span (Set.range fun i ↦ X i − C (c i))`, `[Finite ι]`.
+- Easy `⊇` is DONE (probe): `Ideal.span_le` + `simp [RingHom.mem_ker]`.
+- `⊆` is the induction: `Finite.induction_empty_option`. **Universe caveat:** the base case uses
+  `PEmpty : Type (u+1)`; state the predicate carefully (`P : ∀ (α) [Fintype α], Prop`, with `c` quantified
+  inside) and watch universes. `Option` step: `MvPolynomial.optionEquivLeft` turns `MvPolynomial (Option α)`
+  into `Polynomial (MvPolynomial α)`; peel the `none` variable via `Polynomial.ker_evalRingHom`
+  (`= span {X − C x}`, in `RingTheory/Polynomial/Ideal.lean`) and the `some` variables via the IH.
+  Confirmed API: `MvPolynomial.isEmptyAlgEquiv`, `optionEquivLeft`/`_X_some`/`_X_none`/`_C`,
+  `Polynomial.ker_evalRingHom`, `Finite.induction_empty_option`. ~60-100 LoC; the long pole.
+- Best as its own small module `Core/MvPolynomialGraphIdeal.lean` (reusable, pure MvPolynomial, no DLN/RepCoord).
+- Consequences: `J` prime via `RingHom.ker_isPrime (aeval …)` (needs `IsDomain` of the base — for `Sd`
+  use `IsLocalization.isDomain_of_le_nonZeroDivisors` + `powers_le_nonZeroDivisors_of_noZeroDivisors`
+  + `detΔS ≠ 0` which is `det_mvPolynomialX`-style nonzero); and the quotient iso
+  `MvPolynomial B22block Sd / J ≅ₐ Sd` via `quotientKerAlgEquivOfSurjective` (surjective onto constants:
+  `fun y ↦ ⟨C y, by simp⟩`) + `Ideal.quotientEquivAlgOfEq (ker_aeval_eq_graphIdeal …).symm`.
+
+**Step 2 — block relabeling (use this, NOT a per-index `aeval psiGen`).** The per-index classifier pays
+the `dStratum q p (Fin.castSucc 0) = q` / `omega` tax repeatedly (it is `rfl` but does not flow into
+`omega`). Instead relabel once. The decomposition equiv ASSEMBLES (verified in SPECIFY):
+- `Fin p ≃ Fin r ⊕ Fin (p−r)` := `(finCongr (by omega : p = r + (p−r))).trans finSumFinEquiv.symm`;
+  same for `Fin q`.
+- `Fin p × Fin q ≃ ((Fin r×Fin r)⊕(Fin r×Fin(q−r)))⊕((Fin(p−r)×Fin r)⊕(Fin(p−r)×Fin(q−r)))`
+  := `Equiv.sumProdDistrib _ _ _ |>.trans (Equiv.sumCongr (Equiv.prodSumDistrib …) (Equiv.prodSumDistrib …))`
+  (precompose `Equiv.prodCongr` of the two `Fin` splits).
+- Drop the `Σ _ : Fin 1` with `Equiv.uniqueSigma`; reassociate/commute (`Equiv.sumAssoc`/`sumComm`) so the
+  final sum is **`B22block ⊕ SchurVar`** (orientation trap: `MvPolynomial.sumAlgEquiv R S₁ S₂` gives
+  `MvPolynomial (S₁ ⊕ S₂) R ≃ₐ MvPolynomial S₁ (MvPolynomial S₂ R)` with `S₁` the OUTER block — so
+  `S₁ = B22block` to put B22 outermost for elimination).
+- `MvPolynomial.renameEquiv` (relabel `RepCoord` ≃ `B22block ⊕ SchurVar`) then `MvPolynomial.sumAlgEquiv`
+  ⟹ `A_eng ≃ₐ MvPolynomial B22block (MvPolynomial SchurVar k)`. Localize at `detΔ` ⟹ work over `Sd`.
+- `SchurVar := (Fin r×Fin r)⊕(Fin r×Fin(q−r))⊕(Fin(p−r)×Fin r)` (the free Δ,B12,B21 coords);
+  `Sd := Localization.Away (detΔS)` where `ΔS i j := X (Sum.inl (i,j))`. The forced B22 value is
+  `forcedB22 a b := algebraMap _ Sd ((B21S * (ΔS).adjugate * B12S) a b) * IsLocalization.Away.invSelf detΔS`
+  — use `Matrix.adjugate` (NOT `Matrix.inv`); confirmed to typecheck.
+
+**Step 3 — `height J = C`.** From `MvPolynomial B22block Sd / J ≅ Sd` + the poly/localization dimension
+bridge: `height J = (#A_eng vars) − δ = pq − δ = C`. Use `MvPolynomial.ringKrullDim_of_isNoetherianRing`
+(reindex `SchurVar ≃ Fin δ`) + the localization-height tools. (The landed `varietyDim_…_stratum` gives
+`dim base = δ` already, if useful as a cross-check.)
+
+**Step 4 — `Iad = J`.** `J ⊆ Iad` from `det_submatrix_multPoly_mem_sigmaIdeal` (the Schur entries are
+localized `(r+1)`-minors), transported through the relabel/localization equivs. Then:
+`le_antisymm hJI` + `by_contra hnot` ⟹ `J < Iad` ⟹ `Ideal.height_strict_mono_of_is_prime` gives
+`height J < height Iad`, but both `= C` (landed `height Iad = C` + step 3) — contradiction.
+
+**Step 5 — regularity / dim δ.** `A_loc/Iad ≅ₐ Sd` (from step 4 + the quotient iso) ⟹ regular of dim δ.
+Mathlib has `IsRegularLocalRing` but no robust global `IsRegularRing`; expose locally: for each maximal
+`m` of `A_loc/Iad`, `Localization.AtPrime m` is regular of dim δ. API: `IsLocalization.AtPrime.ringKrullDim_eq_height`,
+`IsLocalization.height_map_of_disjoint`, `IsLocalization.isMaximal_iff_isMaximal_disjoint`,
+`MvPolynomial.ringKrullDim_of_isNoetherianRing` (reindex `SchurVar ≃ Fin δ`). [If G2-3/G2-4 only need
+the smooth/free presentation rather than literal regularity, exposing `A_loc/Iad ≅ Sd` may suffice —
+confirm with the controller against the G2-3 spec.]
+
+**Witness throughout:** the `(2,2,2), r = 1` base chart (`q=p=2, r=1`: `δ=3`, `C=1`).
+**Codex consults to read:** `codex/g2-2-encoding-answer.md` (direction-B, explicit-inverse) and
+`codex/g2-2-elimination-answer.md` (the route above, incl. the Q3-squeeze refutation). All Mathlib
+lemma names in this handoff were grep-confirmed present at the v4.29 pin.
