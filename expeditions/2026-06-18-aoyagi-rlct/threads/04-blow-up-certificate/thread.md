@@ -5543,3 +5543,36 @@ prove arbitrary-pivot source production, that Aoyagi displays every non-top-left
 chart, successor matrix or suffix production, recurrence/exponent post-data,
 analytic chart coverage, transition regularity, analytic Jacobian/volume
 control, global normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 chart-index source-selected boundary/QP bridge
+
+Reproduction:
+`reproduction-case2-chart-index-source-selected-boundary-qp-a4.md`.
+Statement card:
+`statement-card-a4-case2-chart-index-source-selected-boundary-qp.md`.
+Review artifact:
+`review-case2-chart-index-source-selected-boundary-qp-a4.md`.
+
+Lean now uses the chart index of the Case 2 residual-block all-pivot
+selected-entry certificate to instantiate the existing source-selected
+supplied-boundary constructor at the pivot enumerated by that chart:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBoundary_of_chart_case2Succ_updateSelected
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedQP_sourceChartMap_of_chart_case2Succ_updateSelected
+```
+
+The first theorem passes the chart-selected pivot membership into
+`Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`.
+The second theorem projects the existing source-selected `Q/P` source-chart-map
+identity from that boundary, with the same `row`, `col`, normalized block,
+source following factor, and transported following factor bindings.
+
+This removes only the need for callers to resupply the pivot membership already
+chosen by the finite all-pivot chart index.  Chart regularity and transition
+regularity remain supplied by `Case2ResidualBlockChartFamilyBoundary`, and the
+post-data are the constructor's concrete `case2Succ` plus corrected selected
+label updates.  It is not arbitrary-pivot source production, a claim that
+Aoyagi displays non-top-left charts, chart coverage, analytic atlas
+construction, transition regularity, analytic Jacobian/volume control, global
+normal crossings, pole order, or RLCT extraction.

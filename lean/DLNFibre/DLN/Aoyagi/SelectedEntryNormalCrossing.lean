@@ -1365,6 +1365,109 @@ theorem jacobianPrior_monomial_sourceChartPoint_sourceSelected
         (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
         c u residual
 
+/-- A chart index of the Case 2 all-pivot selected-entry certificate
+instantiates the existing source-selected supplied-boundary constructor at
+the pivot enumerated by that chart.
+
+This removes only the manual resupply of the pivot membership already chosen
+by the all-pivot chart family.  The chart-family regularity predicates remain
+supplied, and this is not chart coverage, source production, normal crossings,
+pole order, or RLCT extraction. -/
+theorem sourceSelectedBoundary_of_chart_case2Succ_updateSelected
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular) :
+    let pivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c
+    Case2SourceSelectedSuppliedChartFamilyBoundary K L n S J pivot.1
+      t
+      (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+      numerator
+      (updateSelectedLabelScalar S (J + 1)
+        (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+          ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+      leastValue
+      (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue)
+      pre (pre.case2Succ u) u ChartRegular TransitionRegular := by
+  dsimp only
+  exact
+    Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected
+      pre u hS hSL hcont
+      ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c).2
+      exponentPre levelInv leastValueGap chartFamily
+
+/-- The source-selected `Q/P` source-chart-map identity for the pivot selected
+by a chart of the Case 2 all-pivot selected-entry certificate.
+
+The theorem is the existing supplied-boundary projection after instantiating
+the boundary at the chart-selected pivot.  It does not prove that Aoyagi
+displays non-top-left pivot charts, chart coverage, chart-produced post-data,
+normal crossings, pole order, or RLCT extraction. -/
+theorem sourceSelectedQP_sourceChartMap_of_chart_case2Succ_updateSelected
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → K) (C : ℕ → τ → K) :
+    let data :=
+      sourceSelectedBoundary_of_chart_case2Succ_updateSelected
+        (K := K) (L := L) (n := n) (S := S) (J := J)
+        (t := t) (numerator := numerator) (leastValue := leastValue)
+        pre u hS hSL hcont c exponentPre levelInv leastValueGap
+        chartFamily
+    let row := case2ResidualBlockPivotRowOfMem data.pivot_mem
+    let col := case2ResidualBlockPivotColOfMem data.pivot_mem
+    let A := case2SourceSelectedNormalizedBlockOfMem data.pivot_mem residual
+    let Csrc := case2SourceSelectedFollowingFactorOfMem data.pivot_mem C
+    let Ctr :=
+      case2SourceSelectedTransportedFollowingFactorOfMem data.pivot_mem residual C
+    ∃ q : pivotComplement row → K,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (Matrix.diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionBlockOfMem data.pivot_mem u residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          Csrc =
+        (weightedPivotDiagonal
+            ((pre.case2Succ u).weight (case2ResidualRowLevel n S J row))
+            (fun i : pivotComplement row ↦
+              (pre.case2Succ u).weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A)) *
+          Ctr := by
+  exact
+    (sourceSelectedBoundary_of_chart_case2Succ_updateSelected
+      (K := K) (L := L) (n := n) (S := S) (J := J)
+      (t := t) (numerator := numerator) (leastValue := leastValue)
+      pre u hS hSL hcont c exponentPre levelInv leastValueGap
+      chartFamily).sourceSelectedQP_sourceChartMap residual C
+
 /-- Any chart of the Case 2 residual-block all-pivot finite certificate has
 the same finite selected-entry exponent pattern as the displayed Case 2
 continuing bridge.

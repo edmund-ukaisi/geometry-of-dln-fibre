@@ -6436,6 +6436,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
 
+Latest A4/A0 Case 2 chart-index source-selected boundary/QP bridge:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBoundary_of_chart_case2Succ_updateSelected`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedQP_sourceChartMap_of_chart_case2Succ_updateSelected`.
+The first theorem instantiates the existing source-selected supplied-boundary
+constructor at the pivot selected by the all-pivot finite chart index; the
+second theorem applies the existing source-selected `Q/P` source-chart-map
+projection to that boundary.  This is a finite chart-index adapter only.  It
+does not prove arbitrary-pivot source production, analytic chart coverage,
+transition regularity, chart-produced post-data, analytic Jacobian/volume-form
+control, global normal crossings, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-source-selected-boundary-qp-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-chart-index-source-selected-boundary-qp.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-source-selected-boundary-qp-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns

@@ -4048,6 +4048,29 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
 
+Latest A4/A0 Case 2 chart-index source-selected boundary/QP bridge:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBoundary_of_chart_case2Succ_updateSelected`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedQP_sourceChartMap_of_chart_case2Succ_updateSelected`.
+For chart index `c`, the finite chart enumeration supplies a pivot
+`p_c in case2ResidualBlockPivotEntries n S J`.  The boundary wrapper passes
+`p_c.2` into the existing source-selected supplied-boundary constructor with
+post-state `pre.case2Succ u` and corrected selected-label exponent updates.
+The `Q/P` wrapper then applies the existing
+`sourceSelectedQP_sourceChartMap` projection for that boundary.  This is only
+a chart-index-to-supplied-boundary adapter plus projection of an existing
+finite source-selected matrix identity.  It does not prove arbitrary-pivot
+source production, that Aoyagi displays every non-top-left chart, chart or
+transition regularity, chart coverage, chart-produced recurrence/exponent
+data, analytic Jacobian/volume control, global normal crossings, pole order,
+or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-source-selected-boundary-qp-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-chart-index-source-selected-boundary-qp.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-source-selected-boundary-qp-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

@@ -6689,13 +6689,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-all-pivot-source-selected-monomial-principalization-a4.md`.
 
-Next A4 source-facing candidate from xhigh scout `Pasteur`: use the chart
-index `c` of the all-pivot certificate to instantiate
-`Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`
-and project `sourceSelectedQP_sourceChartMap` for the chart-selected pivot.
-This is still only a supplied-boundary/QP adapter; chart/transition regularity
-remain supplied and no non-top-left source-displayed formula or chart coverage
-is proved.
+The current A4/A0 Case 2 chart-index source-selected boundary/QP bridge is
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-source-selected-boundary-qp-a4.md`.
+Lean now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBoundary_of_chart_case2Succ_updateSelected`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedQP_sourceChartMap_of_chart_case2Succ_updateSelected`.
+For chart `c`, the finite all-pivot enumeration supplies the residual-block
+pivot membership used by
+`Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`;
+the `Q/P` theorem is the existing
+`sourceSelectedQP_sourceChartMap` projection from that instantiated boundary.
+This removes another caller-facing supplied-membership seam while keeping
+chart/transition regularity supplied.  It is not arbitrary-pivot source
+production, not a claim that Aoyagi displays non-top-left charts, not chart
+coverage, not chart-produced post-data, not analytic Jacobian/volume control,
+not global normal crossings, not pole order, and not RLCT extraction.  The
+next source-moving A4/A0 work should target actual certificate production or
+total-loss monomial/unit extension, rather than another wrapper over supplied
+boundary data.
 
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains

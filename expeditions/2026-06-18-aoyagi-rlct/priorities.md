@@ -2327,14 +2327,20 @@ order, or RLCT.  The next source-moving A4/A0 work should still target actual
 chart/certificate production or the supplied A0 monomial/unit extension for
 the total DLN loss, not another consumer of supplied extraction.
 
-Xhigh scout `Pasteur` identified the next narrow A4 source-facing candidate:
-from chart index `c`, instantiate
+The A4 chart-index source-selected boundary/QP bridge is now landed:
+`SelectedEntryNormalCrossing.lean` uses a chart index `c` of the all-pivot
+certificate to instantiate
 `Case2SourceSelectedSuppliedChartFamilyBoundary.of_case2Succ_updateSelected`
-with the chart-selected pivot and project
-`sourceSelectedQP_sourceChartMap`.  This would remove the remaining need for
-callers to resupply the pivot membership already chosen by the all-pivot
-certificate.  Keep chart/transition regularity as supplied predicates and do
-not claim arbitrary-pivot source-displayed formulas or chart coverage.
+and project `sourceSelectedQP_sourceChartMap` for the chart-selected pivot.
+This removes the remaining need for callers to resupply the pivot membership
+already chosen by the all-pivot certificate.  Chart/transition regularity
+remain supplied predicates, and the result is not an arbitrary-pivot
+source-displayed formula or chart coverage theorem.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-source-selected-boundary-qp-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-chart-index-source-selected-boundary-qp.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-source-selected-boundary-qp-a4.md`.
 
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
