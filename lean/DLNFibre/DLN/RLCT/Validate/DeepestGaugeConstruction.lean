@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeChart
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeBlocks
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
+import DLNFibre.DLN.RLCT.Validate.DeepestFrameRaw
 import DLNFibre.DLN.RLCT.Validate.DeepestFrame
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
 import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
@@ -694,28 +695,45 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- cancellation was not definitional and the round-trip could not be proved). The whole downstream chain
   -- (incl. `deepestSplit_exists`) still builds green after the swap.
   --
-  -- PROGRESS (this tide, 2026-06-24): the CONCRETE `deepestSplit` map + the round-trip INDEX HALF are
-  -- BANKED sorry-free in `DeepestSplitConcrete` (axiom-clean `[propext, Classical.choice, Quot.sound]`):
-  --   • `deepestSplit` (the named `deepestSplit_exists` witness) + `deepestSplit_mp_basepoint`;
-  --   • `regGaugeSlotEquiv_deepestSplit`: `regGaugeSlotEquiv ((deepestSplit w).reg, .gauge) idx
-  --       = (w − wstar) (deepestRoleIndexEquiv.symm (regGaugeRecombine (regGaugeIdxSplit idx)))`
-  --     — the `piCongrLeft`/`sumPiEquivProdPi` cancellation chase (the HIGHEST-RISK Lean step, the two
-  --     `regGaugeIdxSplit` enumerations cancelling through the `Sum.rec` recombination), now DONE;
-  --   • `readX/Y/Z_deepestSplit`: the X/Y/Z-arm specializations.
+  -- BANKED sorry-free (this tide, 2026-06-24): the round-trip INDEX HALF (`DeepestSplitConcrete`) PLUS
+  -- the two J-INDEPENDENT step-(1) atoms (`DeepestFrameRaw`, axiom-clean `[propext, Classical.choice,
+  -- Quot.sound]`, NO sorryAx — these were the highest-risk index/cast lemmas):
+  --   • `deepestSplit` + `deepestSplit_mp_basepoint`; `regGaugeSlotEquiv_deepestSplit`;
+  --     `readX/Y/Z_deepestSplit` (the X/Y/Z-arm index round-trip).
+  --   • `deepestRoleIndexEquiv_symm_recombine` (the index identity, generic over `a : RegGaugeIdx`):
+  --       `deepestRoleIndexEquiv.symm (regGaugeRecombine (regGaugeIdxSplit a))
+  --        = Fintype.equivFin (FlatIdx H) (roleSplitIdx.symm (Sum.inl a))` — the two `regGaugeIdxSplit`
+  --       enumerations cancel; the core `Fintype.equivFin (FlatIdx M)` never appears (recombine image is
+  --       the reg/gauge summand only). Proof: `Equiv.symm_apply_eq` + `conv_rhs => erw [trans_apply …]`
+  --       (the keyed `rw`/`simp` matcher MISSES the EquivLike-coercion form at v4.29 — `erw` is required)
+  --       + per-arm `sumCongr`/`sumAssoc`/`sumComm`-apply.
+  --   • `paramsEquivFlat_apply_equivFin`: `paramsEquivFlat H A (Fintype.equivFin (FlatIdx H) idx)
+  --       = A idx.1.1 idx.1.2 idx.2` (the `arrowCongr'`/`piCurry`/`Sigma.uncurry` decode).
+  --   • `rThresholdSplit_symm_inl/inr`: the per-vertex threshold-split inverse (`castLE` / `r + ·`),
+  --       the cast atom for the `roleSplitIdx.symm` block-position decode (probed tractable via `Fin.ext`).
   --
-  -- SUB-BLOCKER (precise; remaining content, on TOP of the banked round-trip index half):
-  --   (i-matrix) Join the round-trip INDEX coordinate `(w − wstar)(eIdx.symm (regGaugeRecombine …))` to
-  --       the RAW LAYER ENTRY: `eIdx.symm (regGaugeRecombine (regGaugeIdxSplit ⟨s, X/Y/Z-arm⟩))
-  --       = Fintype.equivFin (FlatIdx H) (roleSplitIdx.symm (Sum.inl ⟨s, X/Y/Z-arm⟩))`, whose
-  --       `(w − wstar)`-value IS the `(i,j)` block entry of layer `s` of `(paramsEquivFlat.symm w −
-  --       deepestPoint)` — needs `roleSplitIdx_symm`/`paramsEquivFlat`-apply unfolds (the FlatIdx → layer
-  --       entry decode). Then `framedLayer (frame) (readX/Y/Z (deepestSplit w)) = P_s·(paramsSymm w)_s·Q_s`
-  --       via `deepestPoint_frame_normal` (the corM base = `P_s·deepest_s·Q_s`) + additive split.
-  --   (ii) Restate this cert against `deepestSplit` (or thread a `split = deepestSplit` hyp from
-  --       `deepest_gauge_construction`'s `deepestSplit_exists` site).
-  --   (iii) Then steps (2)–(4): `endpoint_telescoping` (interfaces collapse, banked), `reindex(P0·B·QL) =
-  --        fromBlocks 1 0 0 0` (B gauge-normalised at rank r), and `core_comparability_squeeze` (#54,
-  --        banked). Reachable once (i-matrix)+(ii) land. Est. remaining ~200-300 lines (Codex `xhigh`).
+  -- SUB-BLOCKER (precise; remaining content). The J-INDEPENDENT readX/Y/Z → raw-entry chain is now
+  -- mechanically reachable from the banked atoms: `readX_deepestSplit` ▸ `deepestRoleIndexEquiv_symm_recombine`
+  -- ▸ `(w − wstar) f = w f − wstar f` ▸ (`w f = paramsEquivFlat (paramsEquivFlat.symm w) f`)
+  -- `paramsEquivFlat_apply_equivFin` — leaving the `roleSplitIdx.symm (inl ⟨s, X/Y/Z-arm⟩)` block-position
+  -- decode (a sigma-trans `.symm` chase through `layerEntrySplit`/`rThresholdSplit_symm_*`, ~30–50 lines/arm,
+  -- probed convergent), then the entry-wise `reindex(fromBlocks readX readY readZ Tcore) =
+  -- (paramsEquivFlat.symm w − deepestPoint) s` (`Matrix.ext` + 4-way `rThresholdSplit` split; T-arm via the
+  -- core-half decode), then `framedLayer (frame) … = P_s·(paramsEquivFlat.symm w)_s·Q_s` via
+  -- `deepestPoint_frame_normal` + additive split, then `endpoint_telescoping` (interfaces collapse at 2≤L —
+  -- `deepestPoint_interior_frame_id` / `_frame_Qf_eq_one` / `_frame_Pf_eq_one`, banked). Coupling: thread a
+  -- `hsplit : ∀ w, split w = deepestSplit … (paramsEquivFlat (deepestPoint)) w` hyp (cert + `deepest_loss_squeeze`)
+  -- and inline the concrete `deepestSplit` at the `deepest_gauge_construction` site so `hsplit := rfl`
+  -- (Codex `xhigh` verdict A; lowest churn).
+  --
+  -- *** SHARED-J RECONCILIATION (the J-DEPENDENT tail — do NOT pick an independent column-split here). ***
+  -- The final step `reindex(P0·(prod(paramsSymm w) − B)·QL) = fromBlocks (P00−1) P01 P10 P11` and the
+  -- `h00/h01/h10` energy-block identification both USE the boundary frame `P0, QL`. PIN1's re-architecture
+  -- determines the last-layer frame by a B-pivot column-split permutation Π_J (pivot columns to front so
+  -- B22 is invertible). The `reindex(P0·B·QL) = fromBlocks 1 0 0 0` normalisation MUST use the SAME pivot
+  -- set J as PIN1's frame, else they misalign (controller coupling alert, 2026-06-24). So this step is
+  -- LEFT for the shared-J reconciliation: parametrize on the PIN1 boundary frame / J rather than choosing one.
+  -- core comparability is `core_comparability_squeeze` (#54, banked, J-independent).
   sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
