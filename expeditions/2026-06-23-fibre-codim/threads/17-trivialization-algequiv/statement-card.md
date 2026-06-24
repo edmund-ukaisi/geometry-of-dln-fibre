@@ -7,7 +7,7 @@
 > trivialization (the certified route (b), thread 16).
 >
 > - **Lean (descent):** `DLNFibre.Core.isReduced_of_tensor`
->   (`lean/DLNFibre/Core/FibreReducedTrivialization.lean` @ `91c77ff0`)
+>   (`lean/DLNFibre/Core/FibreReducedTrivialization.lean` @ `ce647225`)
 > - **Lean (chain):** `DLNFibre.Core.fibreGenIdeal_isRadical_of_trivialization` (same file/SHA)
 > - **Lean (collapse):** `DLNFibre.Core.vanishingIdeal_fibre_eq_fibreGenIdeal_of_trivialization`
 >   (same file/SHA)
